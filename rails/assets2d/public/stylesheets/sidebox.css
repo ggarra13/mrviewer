@@ -1,0 +1,169 @@
+
+/* ###### Browser-specific Styles ###### */
+
+/* For IE & Mozilla-based browsers: */
+
+.LHS {
+  float: left;
+  clear: left;
+}
+
+.RHS {
+  float: right;
+  clear: right;
+}
+
+.content {
+  text-align: justify;
+  line-height: 1.5em;
+  margin-top: 0;
+  margin-bottom: 0;
+  margin-left: 14em;
+  padding: 0 1em 1ex 1em;
+}
+
+
+/* ###### Body Text ###### */
+
+body {
+  background-color: white;
+  color: black;
+  font-family: verdana, tahoma, helvetica, arial, sans-serif;
+  font-size: 95%;
+  margin: 0;
+}
+
+h1, h2, h3 {
+  font-family: "trebuchet ms", tahoma, sans-serif;
+}
+
+h1 {
+  font-weight: bold;
+  font-size: 150%;
+  border-bottom-style: solid;
+  border-bottom-width: 1px;
+  padding-bottom: 0.5ex;
+}
+
+h2 {
+  font-size: 120%;
+}
+
+img {
+  border: none;
+}
+
+
+.content p {
+  padding-bottom: 2ex;
+}
+
+.content a {
+  font-weight: bold;
+  font-size: 90%;
+}
+
+.record {
+}
+
+table,td,th{
+  border-width: 1px;
+  border-style: solid;
+  border-collapse:collapse;
+  margin:0;
+  padding:0;
+}
+
+td,th{
+  padding:.2em .5em;
+  vertical-align:top;
+}
+
+a {
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+/* ###### Header ###### */
+
+#header {
+  border-bottom-style: solid;
+  border-bottom-width: 2px;
+  height: 5.5em;
+  margin-bottom: 5mm;
+  padding: 0 2.5mm 0 5mm;
+  background-repeat: no-repeat;
+}
+
+.headerTitle {
+  font-size: 300%;
+  font-weight: bold;
+  line-height: 1.25em;
+}
+
+/* ###### Side Box ###### */
+
+div.sidebar {
+  border-style: solid none solid none;
+  border-width: 2px 0 2px 0;
+  width: 12em;
+  margin-top: 0;
+  margin-bottom: 1.25ex;
+}
+
+.sidebar h2 {
+  font-size: 95%;
+  font-weight: bold;
+  border-bottom-style: dashed;
+  border-bottom-width: 1px;
+  margin-top: 0;
+  padding: 0.25ex 0.25em 0.25ex 0.75em;
+}
+
+.sidebar a {
+  text-decoration: none;
+  display: block;
+  padding: 0.35ex 0.35em 0.35ex 0.35em;
+}
+
+.sidebar a:hover {
+  text-decoration: underline;
+  display: block;
+  padding: 0.35ex 0.35em 0.35ex 0.35em;
+}
+
+.sidebar ul {
+  font-size: 85%;
+  line-height: 80%;
+  position: relative;
+  left: -2em;
+  list-style-type: none;
+}
+
+.sidebar ul li.subsection_start {
+  margin-top: 6px; padding-top: 4px; border-top: 1px dashed;
+}
+
+/* ###### Footer ###### */
+
+#footer {
+  padding-top: 0.75ex;
+  padding-bottom: 0.75ex;
+  clear: left;
+}
+
+#footer div {
+  font-size: 85%;
+  line-height: 1.25em;
+  text-align: right;
+  padding-right: 3mm;
+}
+
+.footerLHS {
+  float: left;
+  clear: left;
+  padding-left: 3mm;
+}

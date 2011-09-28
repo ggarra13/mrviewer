@@ -1,0 +1,2804 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir header_name 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "string"} {public
+} 
+
+decl {\#include "core/mrvAudioEngine.h"} {} 
+
+decl {\#include "core/exrImage.h"} {} 
+
+decl {\#include "core/stubImage.h"} {} 
+
+decl {\#include "core/mrvColorSpaces.h"} {} 
+
+decl {\#include "gui/mrvMainWindow.h"} {} 
+
+decl {\#include "gui/mrvImageView.h"} {} 
+
+decl {\#include "gui/mrvImageBrowser.h"} {} 
+
+decl {\#include "gui/mrvBrowser.h"} {} 
+
+decl {\#include "gui/mrvPreferencesBrowser.h"} {} 
+
+decl {\#include "gui/mrvCTLBrowser.h"} {} 
+
+decl {\#include "mrvFileRequester.h"} {} 
+
+decl {\#include "gui/mrvTimecode.h"} {} 
+
+decl {\#include "gui/mrvTimeline.h"} {} 
+
+decl {\#include "gui/mrvColorOps.h"} {} 
+
+decl {\#include "gui/mrvHistogram.h"} {} 
+
+decl {\#include "gui/mrvVectorscope.h"} {} 
+
+decl {\#include "gui/mrvImageInformation.h"} {} 
+
+decl {\#include "gui/mrvDatabaseBrowser.h"} {} 
+
+decl {\#include "gui/mrvPreferences.h"} {} 
+
+decl {\#include "gui/mrvLogDisplay.h"} {} 
+
+decl {\#include "mrvPlayback.h"} {} 
+
+decl {\#include "mrvVersion.h"} {} 
+
+decl {\#include "mrvIccProfileUI.h"} {} 
+
+decl {\#include "mrvColorAreaUI.h"} {} 
+
+decl {\#include "icons/icons.c"} {} 
+
+decl {\#include "fltk/ColorChooser.h"} {} 
+
+decl {\#include "fltk/ask.h"} {} 
+
+decl {\#include "fltk/run.h"} {} 
+
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+} {
+  {fltk::Window} {} {
+    label {CTL Browser}
+    xywh {444 307 395 440} horizontal hide resizable hotspot modal
+  } {
+    {fltk::Group} {} {
+      xywh {10 25 375 405}
+    } {
+      {fltk::Browser} {} {
+        label {Select a CTL script}
+        user_data {&ctl} user_data_type {std::string*}
+        callback {int elem = o->value();
+if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
+*v = o->child(elem)->label();} open
+        xywh {0 0 375 365}
+        extra_code {if ( !ctl.empty() )
+{
+  o->set_prefix(prefix);
+  fltk::Widget* elem = o->find( ctl.c_str() );
+  o->value(-1);
+  for (int i = 0; i < o->children(); ++i )
+  {
+    if ( o->child(i) == elem ) {
+      o->value(i); break;
+    }
+  }
+}}
+        class {mrv::CTLBrowser}
+      } {}
+      {fltk::Button} {} {
+        label Accept
+        user_data w user_data_type {fltk::Window*}
+        callback {v->make_exec_return(true);}
+        xywh {195 375 85 25}
+      }
+      {fltk::Button} {} {
+        label Cancel
+        user_data w user_data_type {fltk::Window*}
+        callback {v->make_exec_return(false);}
+        xywh {290 375 80 25}
+      }
+    }
+  }
+  code {if (!w->exec()) return "";
+return ctl;} {}
+} 
+
+namespace mrv {open
+} {
+  decl {class Browser;} {public
+  }
+  decl {class DatabaseBrowser;} {public
+  }
+  decl {class Histogram;} {public
+  }
+  decl {class ImageBrowser;} {public
+  }
+  decl {class ImageInformation;} {public
+  }
+  decl {class ImageView;} {public
+  }
+  decl {class LogDisplay;} {public
+  }
+  decl {class MainWindow;} {public
+  }
+  decl {class PreferencesBrowser;} {public
+  }
+  decl {class Timecode;} {public
+  }
+  decl {class Timeline;} {public
+  }
+  decl {class Vectorscope;} {public
+  }
+  decl {class ViewerUI;} {public
+  }
+  decl {class ICCProfileListUI;} {public
+  }
+  decl {class ColorAreaUI;} {public
+  }
+  class ReelUI {} {
+    Function {make_window(ViewerUI* main)} {private
+    } {
+      {fltk::Window} uiMain {
+        label {Reel List} open
+        xywh {439 259 405 350} hide resizable
+        extra_code {o->size_range(350,320);
+// Make the window transient
+o->child_of( main->uiMain );}
+      } {
+        {fltk::Browser} uiBrowser {
+          xywh {0 32 405 318} box UP_BOX
+          extra_code {o->main( main );
+o->scrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ) );
+o->hscrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ));
+o->scrollbar.color( o->buttoncolor() );
+o->hscrollbar.color( o->buttoncolor() );}
+          class {mrv::ImageBrowser}
+        } {}
+        {fltk::Group} {} {open
+          xywh {0 0 405 32} box UP_BOX
+        } {
+          {fltk::Choice} {} {
+            user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+            callback {v->reel(o->value());} open
+            xywh {5 5 120 20} align 36 box THIN_DOWN_BOX
+            extra_code {uiBrowser->reel_display(o);}
+          } {}
+          {fltk::Group} uiReelOps {open
+            xywh {130 3 81 26}
+          } {
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {const char* name = fltk::input("Reel Name", "reel" );
+if ( name == NULL ) return;
+v->new_reel(name);}
+              tooltip {Create a new reel}
+              xywh {0 0 26 26} box UP_BOX shortcut 0x4006e
+              extra_code {o->image( reel_24 );}
+            }
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->save_reel();}
+              tooltip {Save current reel}
+              xywh {26 0 26 26} box UP_BOX
+              extra_code {o->image( reel_save_24 );}
+            }
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->remove_reel();}
+              tooltip {Delete current reel}
+              xywh {52 0 26 26} box UP_BOX
+              extra_code {o->image( reel_delete_24 );}
+            }
+          }
+          {fltk::Group} uiImageOps {open
+            xywh {216 3 105 26}
+          } {
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->open();}
+              tooltip {Open new image, sequence or movie}
+              xywh {1 0 26 26} box UP_BOX shortcut 0x4006f
+              extra_code {o->image(file_open_24);}
+            }
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->save();}
+              tooltip {Save current image, sequence or movie.}
+              xywh {27 0 26 26} box UP_BOX shortcut 0x40073
+              extra_code {o->image(file_save_24);}
+            }
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->clone_current();}
+              tooltip {Clone image}
+              xywh {53 0 26 26} box UP_BOX shortcut 0x40063
+              extra_code {o->image(file_clone_24);}
+            }
+            {fltk::Button} {} {
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->remove_current();}
+              tooltip {Remove current image from reel.}
+              xywh {79 0 26 26} box UP_BOX shortcut 0xffff
+              extra_code {o->image(file_delete_24);}
+            }
+          }
+          {fltk::Group} uiViewerOps {open
+            xywh {324 3 79 26}
+          } {
+            {fltk::Button} {} {
+              label CTL
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->attach_ctl_script();}
+              tooltip {Set image CTL script}
+              xywh {0 0 26 26} box UP_BOX labelfont 1
+            }
+            {fltk::Button} {} {
+              label BG
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->change_background();}
+              tooltip {Set image as background}
+              xywh {26 0 26 26} box UP_BOX labelfont 1
+            }
+            {fltk::Button} {} {
+              label EDL
+              user_data uiBrowser user_data_type {mrv::ImageBrowser*}
+              callback {v->toggle_edl();}
+              tooltip {Toggle Reel in Timeline}
+              xywh {52 0 26 26} box UP_BOX labelfont 1 labelsize 11
+            }
+          }
+        }
+      }
+    }
+    Function {ReelUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~ReelUI()} {open
+    } {
+      code {delete uiBrowser; uiBrowser = NULL;
+delete uiMain;} {}
+    }
+  }
+  class ImageInfoUI {} {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label {Media Information} open
+        xywh {368 61 405 530} hide resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );}
+      } {
+        {fltk::Group} uiInfoText {
+          xywh {2 2 403 526}
+          extra_code {o->main( main );}
+          class {mrv::ImageInformation}
+        } {}
+      }
+    }
+    Function {ImageInfoUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~ImageInfoUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class AboutUI {} {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label {About mrViewer} open
+        xywh {24 65 445 395} hide resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );} modal
+      } {
+        {fltk::TabGroup} {} {
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {v->uiAbout->uiGPUInfo->clear();
+v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );}
+          xywh {4 4 441 391}
+        } {
+          {fltk::Group} {} {
+            label mrViewer open
+            xywh {0 20 440 371}
+          } {
+            {fltk::TextDisplay} {} {
+              xywh {15 15 415 345} textsize 14
+              extra_code {o->text( mrv::about_message().c_str() );}
+            }
+          }
+          {fltk::Group} {} {
+            label HW open
+            xywh {0 20 440 371} hide
+          } {
+            {fltk::TextDisplay} uiCPUInfo {
+              label {CPU Information}
+              xywh {15 30 415 96} align 1 textsize 14
+              extra_code {o->text( mrv::cpu_information().c_str() );}
+            }
+            {fltk::Browser} uiGPUInfo {
+              label {GPU Information} open
+              xywh {16 151 415 205}
+              extra_code {static int widths[] = {
+160,
+o->w()-160,
+0
+};
+
+o->column_widths( widths );
+o->value(-1);}
+              class {mrv::Browser}
+            } {}
+          }
+          {fltk::Group} {} {
+            label Formats open
+            xywh {0 20 445 370} hide
+          } {
+            {fltk::Browser} {} {
+              xywh {15 15 415 345}
+              extra_code {static const char* col_labels[] = {
+"",
+"",
+"",
+"Extension",
+"Handler",
+"Format Name",
+0
+};
+
+static int col_widths[] = {
+20,
+20,
+20,
+120,
+120,
+300,
+0
+};
+o->column_labels( col_labels );
+o->column_widths( col_widths );
+o->add( ffmpeg_formats().c_str() );
+o->value(-1);}
+            } {}
+          }
+          {fltk::Group} {} {
+            label Codecs
+            xywh {0 20 445 375} vertical hide
+          } {
+            {fltk::Browser} {} {
+              label Video open
+              xywh {15 20 410 150}
+              extra_code {o->add( ffmpeg_video_codecs().c_str() );
+o->value(-1);}
+            } {}
+            {fltk::Browser} {} {
+              label Audio open
+              xywh {15 190 415 110}
+              extra_code {o->add( ffmpeg_audio_codecs().c_str() );
+o->value(-1);}
+            } {}
+            {fltk::Browser} {} {
+              label Subtitles
+              xywh {15 315 415 55}
+              extra_code {o->add( ffmpeg_subtitle_codecs().c_str() );
+o->value(-1);}
+            } {}
+          }
+          {fltk::Group} {} {
+            label Protocols
+            xywh {0 20 445 370} vertical hide deactivate
+          } {
+            {fltk::Browser} {} {
+              xywh {15 15 415 345}
+              extra_code {o->add( ffmpeg_protocols().c_str() );
+o->value(-1);}
+            } {}
+          }
+          {fltk::Group} {} {
+            label {Motion Estimation Methods}
+            xywh {0 20 445 370} vertical hide
+          } {
+            {fltk::Browser} {} {
+              xywh {15 15 415 345}
+              extra_code {static int col_widths[] = {
+120,
+300,
+0
+};
+o->column_widths( col_widths );
+o->add( ffmpeg_motion_estimation_methods().c_str() );
+o->value(-1);}
+            } {}
+          }
+        }
+      }
+    }
+    Function {AboutUI(ViewerUI* m)} {open
+    } {
+      code {make_window( m );} {}
+    }
+    Function {~AboutUI()} {open
+    } {
+      code {delete uiMain;} {}
+    }
+  }
+  class VectorscopeUI {} {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label Vectorscope open
+        xywh {101 340 325 240} hide resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );}
+      } {
+        {fltk::Widget} uiVectorscope {
+          xywh {4 4 319 231}
+          extra_code {o->main( main );}
+          class {mrv::Vectorscope}
+        }
+      }
+    }
+    Function {VectorscopeUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~VectorscopeUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class HistogramUI {} {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label Histogram
+        xywh {188 170 325 240} hide resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );
+o->size_range(325, 80);}
+      } {
+        {fltk::PackedGroup} {} {open
+          xywh {3 5 321 230}
+        } {
+          {fltk::Widget} uiHistogram {
+            xywh {1 0 319 190} resizable
+            extra_code {o->main( main );}
+            class {mrv::Histogram}
+          }
+          {fltk::Group} {} {
+            xywh {7 195 310 30}
+          } {
+            {fltk::Group} {} {open
+              xywh {0 5 160 25}
+            } {
+              {fltk::InvisibleBox} {} {
+                label Channel
+                xywh {0 0 65 25} align 32
+              }
+              {fltk::PopupMenu} {} {
+                label RGB
+                callback {int c = o->value();
+uiHistogram->channel( (mrv::Histogram::Channel) c );
+o->label( o->child( c )->label() );}
+                xywh {66 0 85 25} align 48
+                extra_code {o->value(0);}
+              } {
+                {fltk::Item} {} {
+                  label RGB
+                  }
+                {fltk::Item} {} {
+                  label Red
+                  }
+                {fltk::Item} {} {
+                  label Green
+                  }
+                {fltk::Item} {} {
+                  label Blue
+                  }
+                {fltk::Item} {} {
+                  label Lumma
+                  }
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {164 5 146 25}
+            } {
+              {fltk::InvisibleBox} {} {
+                label Type
+                xywh {1 0 49 25} align 32
+              }
+              {fltk::PopupMenu} {} {
+                label Linear
+                callback {int c = o->value();
+uiHistogram->histogram_type( (mrv::Histogram::Type) c);
+o->label( o->child( c )->label() );} open
+                xywh {51 0 95 25} align 48
+                extra_code {o->value( (int) uiHistogram->histogram_type() );
+o->label( o->child( o->value() )->label() );}
+              } {
+                {fltk::Item} {} {
+                  label Linear
+                  }
+                {fltk::Item} {} {
+                  label Logarithmic
+                  }
+                {fltk::Item} {} {
+                  label {Square Root}
+                  }
+              }
+            }
+          }
+        }
+      }
+    }
+    Function {HistogramUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~HistogramUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class PreferencesUI {open
+  } {
+    Function {make_window()} {open private
+    } {
+      {fltk::Window} uiMain {
+        label Preferences open
+        xywh {476 114 640 475} resizable visible
+      } {
+        {fltk::WizardGroup} uiWizard {
+          label Settings open
+          xywh {207 24 433 416}
+        } {
+          {fltk::Group} {} {
+            label {User Interface} open
+            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label {Window Behavior}
+              xywh {16 25 355 100} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsAlwaysOnTop {
+                label {Always on Top}
+                tooltip {When selected, mrViewer's window will always show up on top of other windows on the desktop.}
+                xywh {25 14 19 25} align 8 labelsize 11 value 1
+              }
+              {fltk::CheckButton} uiPrefsSingleInstance {
+                label {Single Instance}
+                tooltip {When selected, only a single mrViewer instance is allowed.  
+If you try to open several mrViewers with different images, all these images will be sent to the already open mrViewer.}
+                xywh {24 40 20 25} align 8 labelsize 11 value 1
+              }
+              {fltk::Group} uiPrefsOpenMode {
+                xywh {160 9 130 81} box EMBOSSED_BOX
+              } {
+                {fltk::RadioButton} {} {
+                  label Normal
+                  tooltip {When selected, mrViewer will resize its window to the first image.}
+                  xywh {15 6 19 20} align 8 labelsize 11 value 1
+                }
+                {fltk::RadioButton} {} {
+                  label Fullscreen
+                  tooltip {When selected, mrViewer will start in full screen mode.}
+                  xywh {15 31 19 20} align 8 labelsize 11
+                }
+                {fltk::RadioButton} {} {
+                  label Presentation
+                  tooltip {When selected, mrViewer will start in presentation mode.}
+                  xywh {15 56 19 20} align 8 labelsize 11
+                }
+              }
+            }
+            {fltk::Group} {} {
+              label {UI Elements}
+              xywh {16 154 355 96} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsTopbar {
+                label Topbar
+                tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible. }
+                xywh {5 5 25 25} align 8 labelsize 11 value 1
+              }
+              {fltk::CheckButton} uiPrefsPixelToolbar {
+                label {Pixel Toolbar}
+                tooltip {When selected, mrViewer will start with the pixel toolbar shown.}
+                xywh {5 36 25 25} align 8 labelsize 11 value 1
+              }
+              {fltk::CheckButton} uiPrefsTimeline {
+                label Timeline
+                tooltip {When selected, mrViewer will start with the timeline shown.}
+                xywh {5 66 25 25} align 8 labelsize 11 value 1
+              }
+              {fltk::CheckButton} uiPrefsReelList {
+                label {Reel List}
+                tooltip {When selected, mrViewer will start with the reel list already open.}
+                xywh {120 5 25 25} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHistogram {
+                label Histogram
+                tooltip {When selected, mrViewer will start with the histogram already open.}
+                xywh {240 36 25 25} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsVectorscope {
+                label Vectorscope
+                tooltip {When selected, mrViewer will start with the vectorscope already open.}
+                xywh {240 66 25 25} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsImageInfo {
+                label {Media Info}
+                tooltip {When selected, mrViewer will start with the media information window already open.}
+                xywh {120 36 25 25} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsColorArea {
+                label {Color Area}
+                tooltip {When selected, mrViewer will start with the color area window already open.}
+                xywh {120 66 25 25} align 8 labelsize 11
+              }
+            }
+            {fltk::Group} {} {
+              label Timeline
+              xywh {18 272 350 70} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiPrefsTimelineDisplay {
+                label Display
+                tooltip {How to display timeline by default.}
+                xywh {105 25 190 25}
+                extra_code {o->value(0);}
+              } {
+                {fltk::Item} {} {
+                  label Frames
+                  }
+                {fltk::Item} {} {
+                  label Seconds
+                  }
+                {fltk::Item} {} {
+                  label Time
+                  }
+                {fltk::Item} {} {
+                  label {Non-Drop Frame Timecode}
+                  }
+                {fltk::Item} {} {
+                  label {Drop Frame Timecode}
+                  }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label {View Window} open
+            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Defaults open
+              xywh {15 32 378 135} box ROUNDED_BOX
+            } {
+              {fltk::ValueInput} uiPrefsViewGain {
+                label Gain
+                tooltip {Sets the default gain when mrViewer starts.}
+                xywh {45 20 80 25} labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
+              }
+              {fltk::ValueInput} uiPrefsViewGamma {
+                label Gamma
+                tooltip {Sets the default gamma when mrViewer starts.}
+                xywh {280 20 60 25} labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
+              }
+              {fltk::CheckButton} uiPrefsViewPixelRatio {
+                label {Compensate Pixel Ratio}
+                tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.}
+                xywh {198 55 20 22} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsViewLut {
+                label {Lut Active}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                tooltip {When mrViewer starts, the 3D Lut will be active.}
+                xywh {198 80 20 22} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsSafeAreas {
+                label {Safe Areas}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                tooltip {When mrViewer starts, the safe area display will be active by default.}
+                xywh {198 107 20 20} align 8 labelsize 11
+              }
+              {fltk::Choice} uiPrefsCropArea {
+                label Crop
+                user_data this user_data_type {mrv::PreferencesUI*}
+                tooltip {Allows you to select a standard cropping area around image.}
+                xywh {15 80 155 25} align 1 labelsize 11
+              } {
+                {fltk::Item} {} {
+                  label {0.00 None}
+                  }
+                {fltk::Item} {} {
+                  label {1.00 Square}
+                  }
+                {fltk::Item} {} {
+                  label {1.19 Movietone}
+                  }
+                {fltk::Item} {} {
+                  label {1.37 Academy (Full Frame)}
+                  }
+                {fltk::Item} {} {
+                  label {1.50 Still Photo}
+                  }
+                {fltk::Item} {} {
+                  label {1.56 STV - HDTV (14:9)}
+                  }
+                {fltk::Item} {} {
+                  label {1.66 European Widescreen}
+                  }
+                {fltk::Item} {} {
+                  label {1.77 HDTV (16:9)}
+                  }
+                {fltk::Item} {} {
+                  label {1.85 Widescreen (3-perf)}
+                  }
+                {fltk::Item} {} {
+                  label {2.10 VistaVision}
+                  }
+                {fltk::Item} {} {
+                  label {2.20 70mm}
+                  }
+                {fltk::Item} {} {
+                  label {2.35 CinemaScope (old 2.35)}
+                  }
+                {fltk::Item} {} {
+                  label {2.39 Panavision (new 2.35)}
+                  }
+                {fltk::Item} {} {
+                  label {4.00 Polyvision}
+                  }
+              }
+            }
+            {fltk::Group} uiPrefsHud {
+              label HUD
+              user_data this user_data_type {mrv::PreferencesUI*} open
+              tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.}
+              xywh {18 195 375 117} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsHudFilename {
+                label Filename
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {119 37 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudDirectory {
+                label Directory
+                user_data this user_data_type {mrv::PreferencesUI*} selected
+                xywh {119 10 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudFrame {
+                label Frame
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {16 35 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudFrameRange {
+                label {Frame Range}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {15 62 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudResolution {
+                label Resolution
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {234 10 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudFPS {
+                label FPS
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {16 10 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudIPTC {
+                label {IPTC Data}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {234 37 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudAVDifference {
+                label {AV Difference}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {119 62 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudTimecode {
+                label Timecode
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {15 87 20 20} align 8 labelsize 11
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label Colors
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              xywh {13 24 378 81} box ROUNDED_BOX
+            } {
+              {fltk::Button} uiPrefsViewBG {
+                label Background
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Background Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();}
+                tooltip {Selects the background color of areas outside the current image.}
+                xywh {131 15 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+              {fltk::Button} uiPrefsViewText {
+                label {Text Overlay}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();
+v->refresh();}
+                tooltip {Selects the color of text overlays printed over the current image.}
+                xywh {131 45 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+              {fltk::Button} uiPrefsViewSelection {
+                label Selection
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Selection Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();
+v->refresh();}
+                tooltip {Selects the color of the selection rectangle over the current image.}
+                xywh {246 15 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+              {fltk::Button} uiPrefsViewHud {
+                label HUD
+                xywh {246 45 25 25} align 4 box EMBOSSED_BOX
+              }
+            }
+          }
+          {fltk::Group} Playback {
+            label Playback
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::CheckButton} uiPrefsAutoPlayback {
+              label {Auto Playback}
+              tooltip {Start Playback when opening files.}
+              xywh {285 24 20 25} align 4
+            }
+            {fltk::Group} {} {
+              label Defaults
+              xywh {50 68 285 121} align 5 box ROUNDED_BOX
+            } {
+              {fltk::Group} {} {
+                xywh {110 50 150 26}
+              } {
+                {fltk::ValueInput} uiPrefsFPS {
+                  label Speed
+                  xywh {0 1 75 25} labelsize 11 minimum 0.001 maximum 120 step 0.01 value 24
+                }
+                {fltk::PopupMenu} {} {
+                  label FPS
+                  callback {float g = atof( o->child( o->value() )->label() );
+uiPrefsFPS->value( g );}
+                  xywh {75 0 75 25} labelsize 11
+                } {
+                  {fltk::Item} {} {
+                    label {59.94}
+                    }
+                  {fltk::Item} {} {
+                    label 50
+                    }
+                  {fltk::Item} {} {
+                    label {29.97}
+                    }
+                  {fltk::Item} {} {
+                    label 25
+                    }
+                  {fltk::Item} {} {
+                    label 24
+                    }
+                  {fltk::Item} {} {
+                    label {14.985}
+                    }
+                  {fltk::Item} {} {
+                    label {12.5}
+                    }
+                  {fltk::Item} {} {
+                    label 12
+                    }
+                }
+              }
+              {fltk::Choice} uiPrefsLoopMode {
+                label {Looping Mode}
+                tooltip {Select default looping mode in timeline.}
+                xywh {110 81 90 25} labelsize 11
+              } {
+                {fltk::Item} {} {
+                  label Stop
+                  }
+                {fltk::Item} {} {
+                  label Loop
+                  }
+                {fltk::Item} {} {
+                  label {Ping Pong}
+                  }
+              }
+            }
+            {fltk::CheckButton} uiPrefsPlayAllFrames {
+              label {Play All Frames}
+              tooltip {If set, mrViewer will always show all frames even if frame rate is not reached.
+If not set, mrViewer may speed up or skip showing some frames in order to keep the frame rate.}
+              xywh {230 84 20 25} align 4 labelsize 11
+            }
+          }
+          {fltk::Group} {} {
+            label Caches
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Sequences
+              xywh {15 40 373 97} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiPrefsCachePixelType {
+                label {Pixel Type}
+                xywh {118 30 155 25}
+              } {
+                {fltk::Item} {} {
+                  label {same as loaded}
+                  }
+                {fltk::Item} {} {
+                  label {8-bits integer}
+                  }
+                {fltk::Item} {} {
+                  label {16-bits float}
+                  }
+                {fltk::Item} {} {
+                  label {32-bits float}
+                  }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label {3D Luts}
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Algorithm
+              tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
+              xywh {33 32 340 140} box ROUNDED_BOX
+            } {
+              {fltk::Choice} ODT_algorithm {
+                label ODT
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {Preferences::LutAlgorithm x = (Preferences::LutAlgorithm) o->value();
+uiODT_CTL->activate();
+uiODT_ICC->activate();
+if ( x == Preferences::kLutOnlyCTL )
+    uiODT_ICC->deactivate();
+if ( x == Preferences::kLutOnlyICC )
+    uiODT_CTL->deactivate();
+v->refresh();}
+                tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
+When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
+If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
+                xywh {85 45 195 25}
+              } {
+                {fltk::Item} {} {
+                  label {Prefer CTL}
+                  }
+                {fltk::Item} {} {
+                  label {Always CTL}
+                  }
+                {fltk::Item} {} {
+                  label {Prefer ICC}
+                  }
+                {fltk::Item} {} {
+                  label {Always ICC}
+                  }
+              }
+              {fltk::Choice} RT_algorithm {
+                label RT
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {Preferences::LutAlgorithm x = (Preferences::LutAlgorithm) o->value();
+uiRT_CTL->activate();
+uiRT_ICC->activate();
+if ( x == Preferences::kLutOnlyCTL )
+    uiRT_ICC->deactivate();
+if ( x == Preferences::kLutOnlyICC )
+    uiRT_CTL->deactivate();
+v->refresh();}
+                tooltip {mrViewer supports either ICC profiles or a CTL script for the render transform (RT) of your images.  This setting prioritizes choosing one over the other. 
+When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
+If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
+}
+                xywh {85 97 195 25}
+              } {
+                {fltk::Item} {} {
+                  label {Prefer CTL}
+                  }
+                {fltk::Item} {} {
+                  label {Always CTL}
+                  }
+                {fltk::Item} {} {
+                  label {Prefer ICC}
+                  }
+                {fltk::Item} {} {
+                  label {Always ICC}
+                  }
+              }
+            }
+            {fltk::Group} {} {
+              label Quality
+              tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
+              xywh {33 257 340 75} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiLUT_quality {
+                label Resolution
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {v->refresh();}
+                tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
+Note that large 3D Luts can use quite a lot of memory.  
+
+Size     Memory    Max. Error
+32        1/3 Mb     12.5%
+64           3 Mb       1.6%
+128       24 Mb       0.7%
+
+It is recommended this setting is left at 64x64x64.
+
+The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
+}
+                xywh {110 30 170 25}
+              } {
+                {fltk::Item} {} {
+                  label {No Baking}
+                  }
+                {fltk::Item} {} {
+                  label 32x32x32
+                  }
+                {fltk::Item} {} {
+                  label 64x64x64
+                  }
+                {fltk::Item} {} {
+                  label 128x128x128
+                  }
+              }
+            }
+            {fltk::Group} {} {
+              label {Rendering Intent}
+              xywh {33 192 340 45} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiICC_intent {
+                label ICC
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {v->refresh();} open
+                tooltip {When using luts with ICC profiles, this setting allows you to select the ICC rendering intent.   Rendering intents are mostly used for printing to film or paper to emulate or proof the output of the output device (ODT), particularly when it does not have the same gamut (color/white range) as the linear RGB/XYZ space.
+}
+                xywh {110 10 170 25}
+              } {
+                {fltk::Item} {} {
+                  label Perceptual
+                  tooltip xxxx
+                  }
+                {fltk::Item} {} {
+                  label {Relative Colorimetric}
+                  }
+                {fltk::Item} {} {
+                  label {Absolute Colorimetric}
+                  }
+                {fltk::Item} {} {
+                  label Saturation
+                  }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label {CTL Paths}
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Browser} uiPrefsCTLModulePath {
+              label CTL_MODULE_PATH
+              xywh {13 32 380 115}
+            } {}
+            {fltk::Browser} uiPrefsCTLScripts {
+              label {CTL scripts}
+              xywh {13 177 380 190}
+            } {}
+          }
+          {fltk::Group} {} {
+            label {Default Output Device Transform (ODT)}
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Display open
+              xywh {13 22 370 345} box ROUNDED_BOX
+            } {
+              {fltk::Group} uiODT_CTL {open
+                xywh {85 10 255 265} horizontal
+              } {
+                {fltk::Group} {} {
+                  xywh {0 0 255 35}
+                } {
+                  {fltk::Input} uiODT_CTL_transform {
+                    label Transform
+                    user_data this user_data_type {mrv::PreferencesUI*}
+                    callback {mrv::Preferences::ODT_CTL_transform = o->text();
+v->refresh();}
+                    tooltip {The name of the CTL display transform
+(Environment variable: MRV_ODT_CTL_TRANSFORM)}
+                    xywh {15 5 185 25} labelsize 11
+                  }
+                  {fltk::Button} {} {
+                    label Pick
+                    callback {std::string c = make_ctl_browser(uiODT_CTL_transform->text(), "ODT_");
+if (c.empty()) return;
+uiODT_CTL_transform->static_text(c.c_str());
+uiODT_CTL_transform->do_callback();}
+                    xywh {200 5 55 25}
+                  }
+                }
+                {fltk::Group} {} {
+                  label {Chromaticities (CIE)} open
+                  tooltip {The CIE x,y coordinates of the primaries and white point of the display
+(like Rec. ITU-R BT.709-3)
+
+(Environment variable: MRV_ODT_CTL_CHROMATICITIES)}
+                  xywh {5 35 250 155} align 132 box ENGRAVED_BOX
+                } {
+                  {fltk::InvisibleBox} {} {
+                    label X
+                    xywh {100 8 25 25}
+                  }
+                  {fltk::InvisibleBox} {} {
+                    label Y
+                    xywh {175 8 25 25}
+                  }
+                  {fltk::Group} {} {
+                    label Red
+                    xywh {45 23 190 35} align 4 labelsize 11
+                  } {
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_red_x {
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.red.x = o->value();}
+                      tooltip {The Red CIE X coordinate of the display}
+                      xywh {10 10 85 25} step 0.0001 value 0.64
+                    }
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_red_y {
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.red.y = o->value();}
+                      tooltip {The Red CIE Y coordinate of the display}
+                      xywh {105 10 85 25} step 0.0001 value 0.33
+                    }
+                  }
+                  {fltk::Group} {} {
+                    label Green
+                    xywh {45 53 190 35} align 4 labelsize 11
+                  } {
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_green_x {
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();}
+                      tooltip {The Green CIE X coordinate of the display}
+                      xywh {10 10 85 25} step 0.0001 value 0.3
+                    }
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_green_y {
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();}
+                      tooltip {The Green CIE Y coordinate of the display}
+                      xywh {105 10 85 25} step 0.0001 value 0.6
+                    }
+                  }
+                  {fltk::Group} {} {
+                    label Blue
+                    xywh {45 83 190 35} align 4 labelsize 11
+                  } {
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_blue_x {
+                      user_data this user_data_type {mrv::PreferencesUI*}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value(); 
+v->refresh();}
+                      tooltip {The Blue CIE X coordinate of the display}
+                      xywh {10 10 85 25} step 0.0001 value 0.15
+                    }
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_blue_y {
+                      user_data this user_data_type {mrv::PreferencesUI*}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();
+v->refresh();}
+                      tooltip {The Blue CIE Y coordinate of the display}
+                      xywh {105 10 85 25} step 0.0001 value 0.06
+                    }
+                  }
+                  {fltk::Group} {} {
+                    label White
+                    xywh {45 113 190 35} align 4 labelsize 11
+                  } {
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_white_x {
+                      user_data this user_data_type {mrv::PreferencesUI*}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();
+v->refresh();}
+                      tooltip {The White CIE X coordinate of the display}
+                      xywh {10 10 85 25} step 0.0001 value 0.3127
+                    }
+                    {fltk::ValueInput} uiODT_CTL_chromaticities_white_y {
+                      user_data this user_data_type {mrv::PreferencesUI*}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.white.y = o->value();
+v->refresh();}
+                      tooltip {The White CIE Y coordinate of the display}
+                      xywh {105 10 85 25} step 0.0001 value 0.329
+                    }
+                  }
+                }
+                {fltk::Group} {} {
+                  label {White Luminance}
+                  xywh {115 200 130 35} align 132 labelsize 11
+                } {
+                  {fltk::ValueInput} uiODT_CTL_white_luminance {
+                    label {cd/m2}
+                    user_data this user_data_type {mrv::PreferencesUI*}
+                    callback {mrv::Preferences::ODT_CTL_white_luminance = o->value();
+v->refresh();}
+                    tooltip {The luminance, in cd/m2, of the display.
+
+(Environment variable:
+CTL_DISPLAY_WHITE_LUMINANCE)}
+                    xywh {10 5 90 25} align 136 maximum 500 step 0.1 value 120
+                  }
+                }
+                {fltk::Group} {} {
+                  label {Surround Luminance}
+                  tooltip {
+(Environment variable:
+CTL_DISPLAY_WHITE_LUMINANCE)}
+                  xywh {125 230 120 35} align 132 labelsize 11
+                } {
+                  {fltk::ValueInput} uiODT_CTL_surround_luminance {
+                    label {cd/m2}
+                    user_data this user_data_type {mrv::PreferencesUI*}
+                    callback {mrv::Preferences::ODT_CTL_surround_luminance = o->value();
+v->refresh();}
+                    tooltip {The luminance, in cd/m2, of the background that surrounds the display.
+
+(Environment variable:
+MRV_ODT_CTL_SURROUND_LUMINANCE)}
+                    xywh {0 10 90 25} align 136 maximum 500 step 0.1 value 12
+                  }
+                }
+              }
+              {fltk::Group} uiODT_ICC {open
+                xywh {35 285 312 45}
+              } {
+                {fltk::Input} uiODT_ICC_profile {
+                  label {ICC profile}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::Preferences::ODT_ICC_profile = o->text();
+v->refresh();}
+                  tooltip {The name of the default ICC profile for your ODT (monitor)
+(Environment variable: MRV_ODT_ICC_PROFILE)}
+                  xywh {55 15 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Load
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {const char* c = open_icc_profile(uiODT_ICC_profile->text());
+uiODT_ICC_profile->static_text(c);
+uiODT_ICC_profile->do_callback();}
+                  xywh {245 15 55 25}
+                }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label {Default Rendering Transform (RT)}
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} uiRT_CTL {
+              label {Render Transforms}
+              xywh {15 32 375 155} box ROUNDED_BOX
+            } {
+              {fltk::Group} {} {
+                xywh {100 15 255 30}
+              } {
+                {fltk::Input} uiCTL_8bits_load_transform {
+                  label {8-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::rendering_transform_8bits = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for 8 bit images (jpg, bmp, etc)
+(Environment variable: MRV_CTL_RT_8bits)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ctl_browser(uiCTL_8bits_load_transform->text(), "RT_");
+if (c.empty()) return;
+uiCTL_8bits_load_transform->static_text(c.c_str());
+uiCTL_8bits_load_transform->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+              {fltk::Group} {} {open
+                xywh {100 45 255 30}
+              } {
+                {fltk::Input} uiCTL_16bits_load_transform {
+                  label {16-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::rendering_transform_16bits = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for 16-bit images (cin, tiff, etc)
+(Environment variable: MRV_CTL_RT_16bits)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RT_");
+if (c.empty()) return;
+uiCTL_16bits_load_transform->static_text(c.c_str());
+uiCTL_16bits_load_transform->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+              {fltk::Group} {} {
+                xywh {100 75 255 30}
+              } {
+                {fltk::Input} uiCTL_32bits_load_transform {
+                  label {32-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::rendering_transform_32bits = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for 32-bit int images (openexr integers, etc)
+(Environment variable: MRV_CTL_RT_32bits)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RT_");
+if (c.empty()) return;
+uiCTL_16bits_load_transform->static_text(c.c_str());
+uiCTL_16bits_load_transform->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+              {fltk::Group} {} {
+                xywh {100 105 255 30}
+              } {
+                {fltk::Input} uiCTL_float_load_transform {
+                  label float
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::rendering_transform_float = o->text();
+v->refresh();}
+                  tooltip {The name of the CTL default image transform for half and float images (OpenEXR, dpx, etc)
+(Environment variable: MRV_CTL_RT_float)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Pick
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {std::string c = make_ctl_browser(uiCTL_float_load_transform->text(), "RT_");
+if (c.empty()) return;
+uiCTL_float_load_transform->static_text(c.c_str());
+uiCTL_float_load_transform->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+            }
+            {fltk::Group} uiRT_ICC {
+              label {ICC Profiles}
+              xywh {15 212 375 155} box ROUNDED_BOX
+            } {
+              {fltk::Group} {} {
+                xywh {100 15 255 30}
+              } {
+                {fltk::Input} uiICC_8bits_profile {
+                  label {8-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::icc_profile_8bits = o->text();
+v->refresh();}
+                  tooltip {The name of the default ICC profile for 8 bit images (jpg, bmp, etc)
+(Environment variable: MRV_ICC_RT_8bits)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Load
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {const char* c = open_icc_profile(uiICC_8bits_profile->text());
+uiICC_8bits_profile->static_text(c);
+uiICC_8bits_profile->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+              {fltk::Group} {} {
+                xywh {100 45 255 30}
+              } {
+                {fltk::Input} uiICC_16bits_profile {
+                  label {16-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::icc_profile_16bits = o->text();
+v->refresh();}
+                  tooltip {The name of the default ICC profile for 16-bit images (cin, tiff, etc)
+(Environment variable: MRV_ICC_RT_16bits)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Load
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {const char* c = open_icc_profile(uiICC_16bits_profile->text());
+uiICC_16bits_profile->static_text(c);
+uiICC_16bits_profile->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+              {fltk::Group} {} {
+                xywh {100 75 255 30}
+              } {
+                {fltk::Input} uiICC_32bits_profile {
+                  label {32-bits}
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::icc_profile_32bits = o->text();
+v->refresh();}
+                  tooltip {The name of the default ICC profile for 32-bit int images (openexr integers, etc)
+(Environment variable: MRV_ICC_RT_32bits)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Load
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {const char* c = open_icc_profile(uiICC_32bits_profile->text());
+uiICC_32bits_profile->static_text(c);
+uiICC_32bits_profile->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+              {fltk::Group} {} {
+                xywh {100 105 255 30}
+              } {
+                {fltk::Input} uiICC_float_profile {
+                  label float
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {mrv::CMedia::icc_profile_float = o->text();
+v->refresh();}
+                  tooltip {The name of the default ICC profile for half and float images (OpenEXR, dpx, etc)
+(Environment variable: MRV_ICC_RT_float)}
+                  xywh {0 0 190 25} align 132 labelsize 11
+                }
+                {fltk::Button} {} {
+                  label Load
+                  user_data this user_data_type {mrv::PreferencesUI*}
+                  callback {const char* c = open_icc_profile(uiICC_float_profile->text());
+uiICC_float_profile->static_text(c);
+uiICC_float_profile->do_callback();}
+                  xywh {190 0 55 25}
+                }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label Loading
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {open
+              xywh {25 25 333 132} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsAutoReload {
+                label {Auto Reload}
+                tooltip {When turned on, files are automatically reloaded if changed on disk.}
+                xywh {25 22 25 25} value 1
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label Video
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Choice} VideoDriver {
+              label Driver open
+              xywh {78 37 290 25}
+            } {
+              {fltk::Item} {} {
+                label OpenGL
+                }
+            }
+            {fltk::Group} {} {
+              label Stereo open
+              xywh {68 97 298 160} box ROUNDED_BOX
+            } {
+              {fltk::Choice} {} {
+                label Type
+                xywh {80 25 175 25}
+              } {
+                {fltk::Item} {} {
+                  label None
+                  }
+                {fltk::Item} {} {
+                  label {Red-Cyan Anaglyph}
+                  }
+                {fltk::Item} {} {
+                  label Pattern
+                  }
+                {fltk::Item} {} {
+                  label {Shutter Glasses}
+                  }
+              }
+              {fltk::Group} {} {
+                label {Flip Stereo Images} open
+                xywh {30 85 245 50} box BORDER_FRAME buttonbox NO_BOX
+              } {
+                {fltk::CheckButton} {} {
+                  label Left
+                  xywh {45 15 25 25}
+                }
+                {fltk::CheckButton} {} {
+                  label Right
+                  xywh {165 15 25 25}
+                }
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label Audio
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Choice} AudioDriver {
+              label Driver
+              xywh {63 22 290 25}
+            } {}
+            {fltk::Browser} uiPrefsAudioDevice {
+              label Devices
+              xywh {25 70 328 107}
+              extra_code {//
+// Initialize an audio engine to get devices
+//
+mrv::AudioEngine* engine = mrv::AudioEngine::factory();
+delete engine;
+
+const mrv::AudioEngine::DeviceList& devices = mrv::AudioEngine::devices();
+mrv::AudioEngine::DeviceList::const_iterator i = devices.begin();
+mrv::AudioEngine::DeviceList::const_iterator e = devices.end();
+for ( ; i != e; ++i )
+   {
+      o->add( (*i).description.c_str() );
+   }}
+            } {}
+          }
+          {fltk::Group} {} {
+            label Database
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Choice} DatabaseDriver {
+              label Driver open
+              xywh {73 32 290 25}
+            } {
+              {fltk::Item} {} {
+                label None
+                }
+              {fltk::Item} {} {
+                label PostgreSQL
+                }
+            }
+          }
+        }
+        {fltk::Group} {} {open
+          xywh {5 5 195 434}
+        } {
+          {fltk::Browser} {} {
+            label Module
+            user_data this user_data_type {mrv::PreferencesUI*}
+            callback {o->update( v );} open
+            xywh {0 20 195 410}
+            class {mrv::PreferencesBrowser}
+          } {
+            {fltk::ItemGroup} {} {
+              label {User Interface} open
+              vertical
+            } {
+              {fltk::ItemGroup} {} {
+                label {View Window} open
+                vertical
+              } {
+                {fltk::Item} {} {
+                  label Colors
+                  }
+              }
+            }
+            {fltk::Item} {} {
+              label Playback
+              }
+            {fltk::Item} {} {
+              label Caches
+              }
+            {fltk::ItemGroup} {} {
+              label {3D Luts} open
+              vertical
+            } {
+              {fltk::Item} {} {
+                label Paths
+                }
+              {fltk::Item} {} {
+                label {Default ODT}
+                }
+              {fltk::Item} {} {
+                label {Default RT}
+                }
+            }
+            {fltk::Item} {} {
+              label Loading
+              }
+            {fltk::Item} {} {
+              label Video
+              }
+            {fltk::Item} {} {
+              label Audio
+              }
+            {fltk::Item} {} {
+              label Database
+              }
+          }
+        }
+        {fltk::Group} {} {open
+          xywh {212 441 402 34}
+        } {
+          {fltk::Button} {} {
+            label Revert
+            user_data this user_data_type {mrv::PreferencesUI*}
+            callback {// reload preferences
+mrv::Preferences prefs(v);}
+            tooltip {Revert settings to last saved preferences.}
+            xywh {0 3 132 27}
+          }
+          {fltk::Button} {} {
+            label Save
+            callback {mrv::Preferences::save();}
+            tooltip {Save preferences to disk as a default.}
+            xywh {135 3 132 27}
+          }
+          {fltk::Button} {} {
+            label OK
+            user_data this user_data_type {mrv::PreferencesUI*}
+            callback {v->uiMain->hide();
+v->refresh();}
+            tooltip {Accept settings but don't save.}
+            xywh {270 3 132 27}
+          }
+        }
+      }
+    }
+    Function {PreferencesUI()} {} {
+      code {make_window();} {}
+    }
+    Function {~PreferencesUI()} {} {
+      code {delete uiMain;} {}
+    }
+    Function {refresh()} {} {
+      code {fltk::Window* w = fltk::Window::first();
+for ( ; w ; w = w->next() )
+   w->redraw();} {}
+    }
+  }
+  class SaveOptionsUI {} {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label {Save Options} open
+        xywh {493 194 315 375} horizontal hide resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );} modal
+      } {
+        {fltk::Group} {} {open
+          xywh {8 14 302 356} box EMBOSSED_BOX
+        } {
+          {fltk::Group} {} {
+            xywh {16 16 275 45} box ENGRAVED_BOX
+          } {
+            {fltk::InvisibleBox} {} {
+              label Format
+              xywh {10 10 75 25} box FLAT_BOX
+            }
+            {fltk::PopupMenu} uiSaveFormat {
+              label {Name (.ext)}
+              xywh {80 10 180 25}
+            } {
+              {fltk::Item} {} {
+                label {ILM OpenEXR (.exr)}
+                }
+              {fltk::Item} {} {
+                label {JPEG (.jpg)}
+                }
+              {fltk::Item} {} {
+                label {Microsoft Bitmap (.bmp)}
+                }
+              {fltk::Item} {} {
+                label {TIFF (.tif)}
+                }
+              {fltk::Item} {} {
+                label {Targa (.tga)}
+                }
+            }
+          }
+          {fltk::Group} {} {
+            xywh {16 71 275 45} box ENGRAVED_BOX
+          } {
+            {fltk::InvisibleBox} {} {
+              label Compression
+              xywh {25 10 90 25} box FLAT_BOX
+            }
+            {fltk::PopupMenu} uiSaveCompression {
+              label None
+              xywh {115 10 95 25}
+            } {}
+          }
+          {fltk::Group} {} {
+            xywh {16 126 275 45} box ENGRAVED_BOX
+          } {
+            {fltk::InvisibleBox} {} {
+              label {Render Intent}
+              xywh {5 10 110 25} box FLAT_BOX
+            }
+            {fltk::PopupMenu} uiSaveRenderIntent {
+              label Relative
+              xywh {115 10 95 25}
+            } {
+              {fltk::Item} {} {
+                label Saturation
+                }
+              {fltk::Item} {} {
+                label Perceptual
+                }
+              {fltk::Item} {} {
+                label Absolute
+                }
+              {fltk::Item} {} {
+                label Relative
+                }
+            }
+          }
+          {fltk::Group} {} {
+            xywh {16 181 275 45} box ENGRAVED_BOX
+          } {
+            {fltk::InvisibleBox} {} {
+              label Channels
+              xywh {15 10 100 25} box FLAT_BOX
+            }
+            {fltk::PopupMenu} uiSaveChannels {
+              label {All Possible}
+              xywh {115 10 95 25}
+            } {
+              {fltk::Item} {} {
+                label {All Possible}
+                }
+              {fltk::Item} {} {
+                label RGBA
+                }
+              {fltk::Item} {} {
+                label RGB
+                }
+              {fltk::Item} {} {
+                label {Alpha Only}
+                }
+            }
+          }
+          {fltk::Group} {} {
+            xywh {16 236 275 45} box ENGRAVED_BOX
+          } {
+            {fltk::InvisibleBox} {} {
+              label Frames
+              xywh {15 10 100 25} box FLAT_BOX
+            }
+            {fltk::PopupMenu} uiSaveFrames {
+              label Current
+              xywh {115 10 95 25}
+            } {
+              {fltk::Item} {} {
+                label All
+                }
+              {fltk::Item} {} {
+                label Timeline
+                }
+              {fltk::Item} {} {
+                label Current
+                }
+            }
+          }
+          {fltk::Group} {} {
+            xywh {136 321 150 25}
+          } {
+            {fltk::ReturnButton} {} {
+              label Save
+              xywh {80 0 70 25}
+            }
+            {fltk::Button} {} {
+              label Cancel
+              xywh {0 0 70 25}
+            }
+          }
+        }
+      }
+    }
+    Function {SaveOptionsUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~SaveOptionsUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class StatisticsUI {} {
+    Function {make_window(ViewerUI* main)} {} {
+      {fltk::Window} uiMain {
+        label Statistics
+        xywh {623 472 445 235} hide resizable
+        extra_code {o->child_of( main->uiMain );}
+      } {
+        {fltk::Group} {} {open
+          xywh {9 5 344 218}
+        } {
+          {fltk::Group} {} {
+            label Video open
+            xywh {220 15 200 75} box BORDER_BOX
+          } {
+            {fltk::ValueOutput} uiVideoFramesDropped {
+              label {Dropped Frames}
+              xywh {110 40 80 25}
+            }
+            {fltk::ValueOutput} uiVideoBlocksDecoded {
+              label {Decoded Blocks}
+              xywh {110 10 80 25}
+            }
+          }
+          {fltk::ValueOutput} uiAVDifference {
+            label {A/V Difference}
+            xywh {330 190 80 25}
+          }
+          {fltk::Group} {} {
+            label Audio open
+            xywh {220 110 200 75} box BORDER_BOX
+          } {
+            {fltk::ValueOutput} uiAudioFramesDropped {
+              label {Dropped Frames}
+              xywh {110 45 80 25}
+            }
+            {fltk::ValueOutput} uiAudioBlocksDecoded {
+              label {Decoded Blocks}
+              xywh {110 15 80 25}
+            }
+          }
+          {fltk::Group} {} {
+            label Input open
+            xywh {5 15 205 75} box BORDER_BOX
+          } {
+            {fltk::ValueOutput} uiInputRead {
+              label Read
+              xywh {65 10 95 25}
+            }
+            {fltk::ValueOutput} uiInputBitrate {
+              label Bitrate
+              xywh {65 40 95 25}
+            }
+            {fltk::InvisibleBox} {} {
+              label {KB.}
+              xywh {165 10 30 25} box FLAT_BOX
+            }
+            {fltk::InvisibleBox} {} {
+              label {kb/s}
+              xywh {165 40 30 25} box FLAT_BOX
+            }
+          }
+          {fltk::Group} {} {
+            label Streaming open
+            xywh {5 110 205 100} box BORDER_BOX
+          } {
+            {fltk::ValueOutput} uiStreamSent {
+              label Sent
+              xywh {65 40 95 25}
+            }
+            {fltk::ValueOutput} uiStreamBitrate {
+              label Bitrate
+              xywh {65 70 95 25}
+            }
+            {fltk::InvisibleBox} {} {
+              label {KB.}
+              xywh {165 40 30 25} box FLAT_BOX
+            }
+            {fltk::InvisibleBox} {} {
+              label {kb/s}
+              xywh {165 70 30 25} box FLAT_BOX
+            }
+            {fltk::ValueOutput} uiStreamPackets {
+              label Packets
+              xywh {65 10 95 25}
+            }
+          }
+        }
+      }
+    }
+    Function {StatisticsUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~StatisticsUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class LogUI {} {
+    Function {make_window(ViewerUI* main)} {open
+    } {
+      {fltk::Window} uiMain {
+        label {Log Messages} open
+        xywh {485 182 635 250} hide resizable
+        extra_code {o->child_of( main->uiMain );}
+      } {
+        {fltk::Group} {} {open
+          xywh {5 5 630 240}
+        } {
+          {fltk::TextDisplay} uiLogText {
+            xywh {0 0 625 200}
+            class {mrv::LogDisplay}
+          }
+          {fltk::Group} {} {open
+            xywh {450 200 175 40}
+          } {
+            {fltk::Button} {} {
+              label Save
+              user_data uiLogText user_data_type {mrv::LogDisplay*}
+              callback {v->save();}
+              xywh {90 5 75 30}
+            }
+            {fltk::Button} {} {
+              label Clear
+              user_data uiLogText user_data_type {mrv::LogDisplay*}
+              callback {v->clear();}
+              xywh {10 5 75 30}
+            }
+          }
+        }
+      }
+    }
+    Function {LogUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~LogUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class DatabaseUI {} {
+    Function {make_window(ViewerUI* main)} {open
+    } {
+      {fltk::Window} uiMain {
+        label Database open
+        xywh {655 197 445 565} horizontal hide resizable
+        extra_code {o->child_of( main->uiMain );}
+      } {
+        {fltk::Group} {} {open
+          xywh {10 14 425 536} horizontal box UP_BOX
+        } {
+          {fltk::Group} uiDatabaseBrowser {
+            xywh {0 0 425 536}
+            class {mrv::DatabaseBrowser}
+          } {}
+        }
+      }
+    }
+    Function {DatabaseUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~DatabaseUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+  class ViewerUI {open
+  } {
+    decl {static PreferencesUI* uiPrefs;} {public
+    }
+    decl {static LogUI* uiLog;} {public
+    }
+    decl {static AboutUI* uiAbout;} {public
+    }
+    decl {static ICCProfileListUI* uiICCProfiles;} {public
+    }
+    decl {ReelUI* uiReelWindow;} {public
+    }
+    decl {ImageInfoUI* uiImageInfo;} {public
+    }
+    decl {ColorAreaUI* uiColorArea;} {public
+    }
+    decl {HistogramUI* uiHistogram;} {public
+    }
+    decl {VectorscopeUI* uiVectorscope;} {public
+    }
+    decl {DatabaseUI* uiDatabase;} {public
+    }
+    Function {make_window()} {private
+    } {
+      code {if (!uiPrefs)
+  uiPrefs = new PreferencesUI();} {}
+      {fltk::Window} uiMain {
+        label mrViewer
+        user_data this user_data_type {mrv::ViewerUI*}
+        callback {delete v;}
+        xywh {471 86 640 530} when CHANGED resizable
+        extra_code {o->size_range(640, 550);
+o->main( this );}
+        class {mrv::MainWindow} visible
+      } {
+        {fltk::PackedGroup} uiRegion {open
+          xywh {0 0 640 530}
+        } {
+          {fltk::Group} uiTopBar {
+            xywh {0 0 640 28} box ENGRAVED_BOX
+          } {
+            {fltk::PopupMenu} uiWindows {
+              label W
+              tooltip {Opens different windows}
+              xywh {5 5 20 20}
+            } {
+              {fltk::Item} {} {
+                label Reels
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiReelWindow->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label {Media Info}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiImageInfo->uiMain->show();
+v->uiView->update_image_info();}
+                }
+              {fltk::Item} {} {
+                label {Color Info}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiColorArea->uiMain->show();
+v->uiView->update_color_info();}
+                }
+              {fltk::Item} {} {
+                label Histogram
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiHistogram->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label Vectorscope
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiVectorscope->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label {ICC Profiles}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiICCProfiles->fill();
+v->uiICCProfiles->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label Preferences
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiPrefs->uiMain->child_of( v->uiMain );
+v->uiPrefs->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label Logs
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiLog->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label About
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiAbout->uiMain->show();}
+                }
+            }
+            {fltk::Group} {} {open
+              xywh {30 5 90 20} color 0x53535300
+            } {
+              {fltk::PopupMenu} uiColorChannel {
+                label Color
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiView->channel( o->value() );}
+                tooltip {Allows you to select different ımage channels or layers.}
+                xywh {0 0 90 19} type normal
+              } {}
+            }
+            {fltk::Group} {} {open
+              xywh {130 5 264 20} color 0x53535300
+            } {
+              {fltk::Group} {} {open
+                xywh {0 0 264 20}
+              } {
+                {fltk::InvisibleBox} {} {
+                  label Gain
+                  xywh {0 0 28 17} align 32
+                }
+                {fltk::ValueInput} uiGainInput {
+                  user_data this user_data_type {mrv::ViewerUI*}
+                  callback {v->uiView->gain( o->value() );
+v->uiGain->value( o->value() );}
+                  tooltip {Gain image value.  A simple multiplier of the image pixel values.}
+                  xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.0001 maximum 1024 step 0.001 value 1
+                  extra_code {o->textsize( 12 );}
+                }
+                {fltk::Slider} uiGain {
+                  user_data this user_data_type {mrv::ViewerUI*}
+                  callback {v->uiView->gain( o->value() );
+v->uiGainInput->value( o->value() );}
+                  tooltip {Allows you to adjust the gain or exposure of the image.}
+                  xywh {65 0 70 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.015625 maximum 64 value 1 slider_size 10
+                }
+                {fltk::Group} {} {open
+                  xywh {135 0 95 19}
+                } {
+                  {fltk::Button} {} {
+                    label {@<}
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {v->uiView->exposure_change(-0.5f);}
+                    tooltip {Decrease exposure by 0.5.}
+                    xywh {0 0 16 19}
+                  }
+                  {fltk::Button} uiFstop {
+                    label {+0.0  f/8.0}
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {static float old_gain = 1.0f;
+float gain = v->uiView->gain();
+if ( gain == 1.0f )
+{
+v->uiView->gain( old_gain );
+v->uiGainInput->value( old_gain );
+v->uiGain->value( old_gain );
+}
+else
+{
+old_gain = gain;
+v->uiView->gain( 1.0f );
+v->uiGain->value( 1.0f );
+v->uiGainInput->value( 1.0f );
+}}
+                    tooltip {Displays gain as film exposure and fstop.
+Click to toggle between current and normal exposure.}
+                    xywh {15 0 64 19} labelfont 1
+                    extra_code {o->labelsize( 12 );}
+                  }
+                  {fltk::Button} {} {
+                    label {@>}
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {v->uiView->exposure_change(0.5f);}
+                    tooltip {Increase exposure by 0.5.}
+                    xywh {79 0 16 19}
+                  }
+                }
+                {fltk::Button} uiNormalize {
+                  label Norm
+                  user_data this user_data_type {mrv::ViewerUI*}
+                  callback {v->uiView->toggle_normalize();}
+                  tooltip {Normalize pixel values to remain in [0,1] range.}
+                  xywh {233 0 30 19} type TOGGLE
+                }
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {405 5 155 20} color 0x53535300
+            } {
+              {fltk::Group} {} {open
+                xywh {0 0 155 20}
+              } {
+                {fltk::Group} {} {open
+                  xywh {0 0 155 20}
+                } {
+                  {fltk::PopupMenu} gammaDefaults {
+                    label Gamma
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {float g = atof( o->child( o->value() )->label() );
+v->uiGamma->value(g);
+v->uiGammaInput->value( g );
+v->uiView->gamma(g);}
+                    tooltip {Some default gamma settings.}
+                    xywh {0 0 50 19} box UP_BOX
+                  } {
+                    {fltk::Item} {} {
+                      label {2.2}
+                      }
+                    {fltk::Item} {} {
+                      label {1.8}
+                      }
+                    {fltk::Item} {} {
+                      label {1.00}
+                      }
+                    {fltk::Item} {} {
+                      label {0.55}
+                      }
+                    {fltk::Item} {} {
+                      label {0.45}
+                      }
+                  }
+                  {fltk::ValueInput} uiGammaInput {
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {v->uiView->gamma( o->value() );
+v->uiGamma->value( o->value() );}
+                    tooltip {Allows you to adjust gamma curve for display.
+Value is:  pow( 2, 1/x );}
+                    xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
+                    extra_code {o->textsize(12);}
+                  }
+                  {fltk::Slider} uiGamma {
+                    user_data this user_data_type {mrv::ViewerUI*}
+                    callback {v->uiView->gamma( o->value() );
+v->uiGammaInput->value( o->value() );}
+                    tooltip {Allows you to adjust gamma curve for display.
+Value is:  pow( 2, 1/x );}
+                    xywh {85 0 60 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.25 maximum 4 step 0.01 value 0.25 slider_size 10
+                  }
+                }
+              }
+            }
+            {fltk::Group} {} {
+              xywh {550 5 80 20}
+            } {
+              {fltk::PopupMenu} uiField {
+                label F
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );}
+                tooltip {Changes frame/field display}
+                xywh {0 0 20 20}
+              } {
+                {fltk::Item} {} {
+                  label Frame
+                  }
+                {fltk::Item} {} {
+                  label {Top Field}
+                  }
+                {fltk::Item} {} {
+                  label {Bottom Field}
+                  }
+              }
+              {fltk::Button} uiPixelRatio {
+                label {1:1}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiView->toggle_pixel_ratio();}
+                tooltip {Stretch image to compensate for image's pixel ratio.}
+                xywh {20 0 30 20} type TOGGLE shortcut 0x70
+              }
+              {fltk::Button} uiLUT {
+                label LUT
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiView->toggle_lut();}
+                tooltip {Activate viewer's 3D Lut.}
+                xywh {50 0 30 20} type TOGGLE shortcut 0x74
+              }
+            }
+          }
+          {fltk::Group} uiViewGroup {open
+            xywh {0 25 640 482} resizable
+          } {
+            {fltk::Group} uiView {open
+              xywh {0 0 640 480}
+              extra_code {o->main(this);}
+              class {mrv::ImageView}
+            } {}
+          }
+          {fltk::Group} uiPixelBar {open
+            xywh {0 452 640 28} box FLAT_BOX color 56
+          } {
+            {fltk::Group} {} {open
+              xywh {2 0 634 28}
+            } {
+              {fltk::PopupMenu} uiZoom {
+                label x1
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {int t = o->value();
+float f;
+if ( t < 8 )
+{
+f = 1 / (float) (9-t);
+}
+else if ( t == 17 )
+{
+v->uiView->fit_image();
+return;
+}
+else
+{
+f = t - 7;
+}
+v->uiView->zoom( f );
+o->value(8);}
+                tooltip {Image zoom setting.}
+                xywh {3 5 26 20} when CHANGED box UP_BOX buttonbox BORDER_BOX color 0x53535300 textcolor 0xababab00 buttoncolor 0x53535300 labelcolor 0xababab00 labelsize 10 textsize 10
+                extra_code {o->value(10);}
+              } {
+                {fltk::Item} {} {
+                  label {1/9}
+                  }
+                {fltk::Item} {} {
+                  label {1/8}
+                  }
+                {fltk::Item} {} {
+                  label {1/7}
+                  }
+                {fltk::Item} {} {
+                  label {1/6}
+                  }
+                {fltk::Item} {} {
+                  label {1/5}
+                  }
+                {fltk::Item} {} {
+                  label {1/4}
+                  }
+                {fltk::Item} {} {
+                  label {1/3}
+                  }
+                {fltk::Item} {} {
+                  label {1/2}
+                  }
+                {fltk::Item} {} {
+                  label x1
+                  }
+                {fltk::Item} {} {
+                  label x2
+                  }
+                {fltk::Item} {} {
+                  label x3
+                  }
+                {fltk::Item} {} {
+                  label x4
+                  }
+                {fltk::Item} {} {
+                  label x5
+                  }
+                {fltk::Item} {} {
+                  label x6
+                  }
+                {fltk::Item} {} {
+                  label x7
+                  }
+                {fltk::Item} {} {
+                  label x8
+                  }
+                {fltk::Item} {} {
+                  label x9
+                  }
+                {fltk::Item} {} {
+                  label FIT
+                  }
+              }
+              {fltk::Group} {} {open
+                xywh {29 0 605 28}
+              } {
+                {fltk::Output} uiCoord {
+                  label XY
+                  tooltip {Image coordinate of pixel under mouse.}
+                  xywh {0 3 85 20} align 36 box NO_BOX labelfont 4 color 56 textcolor 0xababab00 labelcolor 0xababab00 labelsize 10 textsize 10
+                }
+                {fltk::Group} {} {open
+                  xywh {85 0 520 28}
+                } {
+                  {fltk::Group} {} {open
+                    xywh {0 0 520 28}
+                  } {
+                    {fltk::Group} {} {open
+                      xywh {0 3 230 20}
+                    } {
+                      {fltk::PopupMenu} uiAColorType {
+                        label RGBA
+                        user_data uiView user_data_type {mrv::ImageView*}
+                        callback {int i = o->value();
+if ( i < 0 ) return;
+o->label( o->child(i)->label() );} open
+                        tooltip {Switch RGBA display between float, hexadecimal (0..0xff) and decimal (0..255).}
+                        xywh {0 0 30 20} labelsize 9
+                        extra_code {o->value(0);}
+                      } {
+                        {fltk::Item} {} {
+                          label RGBA
+                          }
+                        {fltk::Item} {} {
+                          label Hex
+                          }
+                        {fltk::Item} {} {
+                          label 8bit
+                          }
+                      }
+                      {fltk::Output} uiPixelR {
+                        tooltip {Red value of image pixel under mouse.}
+                        xywh {30 0 50 20} align 36 box NO_BOX color 56 textcolor 0xff6a6a00 textsize 10
+                      }
+                      {fltk::Output} uiPixelG {
+                        tooltip {Green value of image pixel under mouse.}
+                        xywh {80 0 50 20} align 36 box NO_BOX color 56 textcolor 0x92ff9200 textsize 10
+                      }
+                      {fltk::Output} uiPixelB {
+                        tooltip {Blue value of image pixel under mouse.}
+                        xywh {130 0 50 20} align 36 box NO_BOX color 56 textcolor 0x42b5ff00 textsize 10
+                      }
+                      {fltk::Output} uiPixelA {
+                        tooltip {Alpha value of image pixel under mouse.}
+                        xywh {180 0 50 20} align 36 box NO_BOX color 56 textcolor 0xcccccc00 textsize 10
+                      }
+                    }
+                    {fltk::Output} uiPixelView {
+                      tooltip {8-bit sample of image pixel under mouse.}
+                      xywh {240 4 20 20} box FLAT_BOX color 0x53535300
+                    }
+                    {fltk::Group} uiPixelInvalid {
+                      label I
+                      tooltip {Some pixel values outside 0.0-1.0 range.}
+                      xywh {261 4 12 20} align 32 hide box ROUNDED_BOX labelfont 5 color 0xe5ff8600 labelcolor 0xc6717100
+                    } {}
+                    {fltk::Group} {} {open
+                      xywh {275 3 173 20}
+                    } {
+                      {fltk::PopupMenu} uiBColorType {
+                        label HSV
+                        user_data uiView user_data_type {mrv::ImageView*}
+                        callback {int i = o->value();
+if ( i < 0 ) return;
+o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );} open
+                        tooltip {Switch pixel color space information display for the pixel under the cursor.}
+                        xywh {0 0 23 20} labelsize 9
+                        extra_code {o->value(0);}
+                      } {
+                        {fltk::Item} {} {
+                          label HSV
+                          }
+                        {fltk::Item} {} {
+                          label HSL
+                          }
+                        {fltk::Item} {} {
+                          label {XYZ CIE XYZ}
+                          }
+                        {fltk::Item} {} {
+                          label {xyY CIE xyY}
+                          }
+                        {fltk::Item} {} {
+                          label {Lab CIELAB (L*a*b*)}
+                          }
+                        {fltk::Item} {} {
+                          label {Luv CIELUV (L*u*v*)}
+                          }
+                        {fltk::Item} {} {
+                          label {YUV (Analog PAL)}
+                          }
+                        {fltk::Item} {} {
+                          label {YDbDr (Analog SECAM/PAL-N)}
+                          }
+                        {fltk::Item} {} {
+                          label {YIQ (Analog NTSC)}
+                          }
+                        {fltk::Item} {} {
+                          label {ITU-601 (Digital PAL/NTSC YCbCr)}
+                          }
+                        {fltk::Item} {} {
+                          label {ITU-702 (Digital HDTV YCbCr)}
+                          }
+                      }
+                      {fltk::Output} uiPixelH {
+                        tooltip {Hue value of image pixel under mouse.}
+                        xywh {23 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
+                      }
+                      {fltk::Output} uiPixelS {
+                        tooltip {Saturation value of image pixel under mouse.}
+                        xywh {73 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
+                      }
+                      {fltk::Output} uiPixelV {
+                        tooltip {Value (Intensity) of image pixel under mouse.}
+                        xywh {123 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
+                      }
+                    }
+                    {fltk::Group} {} {
+                      xywh {451 3 65 20}
+                    } {
+                      {fltk::PopupMenu} uiLType {
+                        label Y
+                        callback {int x = o->value();
+const char* lbl = o->child(x)->label();
+const char name[3] = { lbl[0], lbl[1], 0 };
+o->copy_label( name );} open
+                        tooltip {Switch brightness calculation.
+
+Y (Luminance) is the pixel value according to Rec709:
+      Y = 0.2126 R + 0.7152 G + 0.0722 B
+
+Y' (Lumma) is the weighted pixel value according to:
+      Y' = ( R + G + B ) / 3.0
+
+L (Lightness) is the human perception of luminance of the image which is non linear.
+According to CIE No.15.2:
+      L = (116 * Y ^ 1/3 - 16) / 100
+A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).}
+                        xywh {0 0 15 20}
+                        extra_code {o->value(0);}
+                      } {
+                        {fltk::Item} {} {
+                          label {Y (Luminance)}
+                          }
+                        {fltk::Item} {} {
+                          label {Y' (Lumma)}
+                          vertical
+                        }
+                        {fltk::Item} {} {
+                          label {L (Lightness)}
+                          tooltip {Lightness is the human perceptual response to luminance Y, according to CIE No.15.2:
+
+      L = 116 * (Y/Yn)^1/3 - 16
+
+where Yn is the white reference (usually 1).
+     }
+                          vertical
+                        }
+                      }
+                      {fltk::Output} uiPixelL {
+                        tooltip {Luminance of image pixel under mouse.}
+                        xywh {15 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b2b200 textsize 10
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          }
+          {fltk::Group} uiBottomBar {open
+            xywh {0 480 640 50} box ENGRAVED_BOX
+          } {
+            {fltk::Group} uiTimeToolbar {open
+              xywh {0 0 640 49}
+            } {
+              {fltk::Group} {} {open
+                xywh {0 0 640 49}
+              } {
+                {fltk::Slider} uiTimeline {
+                  user_data this user_data_type {mrv::ViewerUI*}
+                  callback {int64_t frame = (int64_t) o->value();
+v->uiView->seek( frame );}
+                  tooltip {Timeline.}
+                  xywh {5 3 610 21} type TICK_ABOVE resizable textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 50 step 1 value 1 slider_size 20
+                  extra_code {o->main( this );}
+                  class {mrv::Timeline}
+                }
+                {fltk::PopupMenu} uiLoopMode {
+                  label {@b;L}
+                  user_data this user_data_type {mrv::ViewerUI*}
+                  callback {int c = o->value();
+o->label(o->child(c)->label());
+v->uiView->looping( (mrv::ImageView::Looping)c );}
+                  tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )}
+                  xywh {615 2 21 23} box UP_BOX
+                } {
+                  {fltk::Item} {} {
+                    label {@||}
+                    }
+                  {fltk::Item} {} {
+                    label {@b;L}
+                    }
+                  {fltk::Item} {} {
+                    label {@<->}
+                    }
+                }
+                {fltk::Group} {} {open
+                  xywh {0 25 640 24}
+                } {
+                  {fltk::Group} {} {open
+                    xywh {4 2 94 20}
+                  } {
+                    {fltk::PopupMenu} uiTimecodeSwitch {
+                      label {F:}
+                      user_data this user_data_type {mrv::ViewerUI*}
+                      callback {change_timeline_display(v);} open
+                      tooltip {Switch between Frame, Seconds and Timecode display}
+                      xywh {0 0 20 20} box DOWN_BOX
+                    } {
+                      {fltk::Item} {} {
+                        label Frames
+                        }
+                      {fltk::Item} {} {
+                        label Seconds
+                        }
+                      {fltk::Item} {} {
+                        label Time
+                        }
+                      {fltk::Item} {} {
+                        label {Non-Drop Frame Timecode}
+                        }
+                      {fltk::Item} {} {
+                        label {Drop Frame Timecode}
+                        }
+                    }
+                    {fltk::Input} uiFrame {
+                      user_data this user_data_type {mrv::ViewerUI*}
+                      callback {int64_t f = o->value();
+if ( f < v->uiTimeline->minimum() )
+   f = int64_t( uiTimeline->minimum() );
+else if ( f > v->uiTimeline->maximum() )
+   f = int64_t( v->uiTimeline->maximum() );
+v->uiView->seek( f );}
+                      tooltip {Current frame.}
+                      xywh {20 0 70 20} color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                      class {mrv::Timecode}
+                    }
+                  }
+                  {fltk::Group} {} {
+                    xywh {95 0 360 23} resizable
+                  } {
+                    {fltk::Group} {} {open
+                      xywh {0 1 215 22}
+                    } {
+                      {fltk::Button} {} {
+                        label {@|<}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->first_frame();}
+                        tooltip {Go to the beginning of the sequence.}
+                        xywh {3 2 30 18} labelcolor 0x98a8a800
+                      }
+                      {fltk::Button} uiPlayBackwards {
+                        label {@<}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->play_backwards();}
+                        tooltip {Play sequence backwards.}
+                        xywh {33 2 30 18} labelcolor 0x98a8a800
+                      }
+                      {fltk::Button} {} {
+                        label {@<|}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->step_frame(-1);}
+                        tooltip {Go back one frame.}
+                        xywh {63 2 30 18} labelcolor 0x98a8a800
+                      }
+                      {fltk::Button} {} {
+                        label {@||}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->stop();}
+                        tooltip {Stop playback.}
+                        xywh {93 2 30 18} labelcolor 0x98a8a800
+                      }
+                      {fltk::Button} {} {
+                        label {@|>}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->step_frame(1);}
+                        tooltip {Advance one frame.}
+                        xywh {123 2 30 18} labelcolor 0x98a8a800
+                      }
+                      {fltk::Button} uiPlayForwards {
+                        label {@>}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->play_forwards();}
+                        tooltip {Play sequence forward.}
+                        xywh {153 2 30 18} labelcolor 0x98a8a800
+                      }
+                      {fltk::Button} {} {
+                        label {@>|}
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->last_frame();}
+                        tooltip {Go to the end of the sequence.}
+                        xywh {183 2 30 18} labelcolor 0x98a8a800
+                      }
+                    }
+                    {fltk::Group} {} {open
+                      xywh {220 0 65 21}
+                    } {
+                      {fltk::PopupMenu} fpsDefaults {
+                        label FPS
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {int c = o->value();
+
+float g;
+if ( c <= 0 )
+    g = v->uiView->foreground()->image()->fps();
+else
+    g = atof( o->child( o->value() )->label() );
+v->uiView->fps( g );
+v->uiFPS->value( g );}
+                        tooltip {Some default frame rate settings.}
+                        xywh {0 2 30 19} box UP_BOX labelsize 10
+                      } {
+                        {fltk::Item} {} {
+                          label Default
+                          }
+                        {fltk::Item} {} {
+                          label 60
+                          }
+                        {fltk::Item} {} {
+                          label {59.94}
+                          }
+                        {fltk::Item} {} {
+                          label 50
+                          }
+                        {fltk::Item} {} {
+                          label 30
+                          }
+                        {fltk::Item} {} {
+                          label {29.97}
+                          }
+                        {fltk::Item} {} {
+                          label 25
+                          }
+                        {fltk::Item} {} {
+                          label 24
+                          }
+                        {fltk::Item} {} {
+                          label 15
+                          }
+                        {fltk::Item} {} {
+                          label {14.985}
+                          }
+                        {fltk::Item} {} {
+                          label {12.5}
+                          }
+                        {fltk::Item} {} {
+                          label 12
+                          }
+                      }
+                      {fltk::Input} uiFPS {
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->fps( o->fvalue() );}
+                        tooltip {Allows you to adjust frame rate playback.}
+                        xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                        extra_code {o->textcolor( fltk::BLACK );
+o->value(24);}
+                        class {fltk::FloatInput}
+                      }
+                    }
+                    {fltk::Group} {} {open
+                      xywh {287 2 73 19}
+                    } {
+                      {fltk::PopupMenu} uiAudioTracks {
+                        label A
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->audio_stream( o->value() );}
+                        tooltip {Select Audio Track}
+                        xywh {0 0 18 19} when CHANGED box UP_BOX labelsize 10
+                      } {}
+                      {fltk::Slider} {} {
+                        user_data this user_data_type {mrv::ViewerUI*}
+                        callback {v->uiView->volume( o->value() );}
+                        tooltip {Audio Volume}
+                        xywh {18 2 55 15} type TICK_ABOVE align 4 step 0.01 value 1
+                      }
+                    }
+                  }
+                  {fltk::Group} {} {open
+                    xywh {459 2 176 20}
+                  } {
+                    {fltk::Input} uiStartFrame {
+                      label {S:}
+                      user_data this user_data_type {mrv::ViewerUI*}
+                      callback {double f = o->value();
+v->uiTimeline->minimum( f );
+v->uiTimeToolbar->redraw();
+v->uiTimeline->redraw();}
+                      tooltip {Allows you to set starting frame for timeline.}
+                      xywh {16 0 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                      extra_code {o->value(1);}
+                      class {mrv::Timecode}
+                    }
+                    {fltk::Input} uiEndFrame {
+                      label {E:}
+                      user_data this user_data_type {mrv::ViewerUI*}
+                      callback {double f = o->value();
+v->uiTimeline->maximum( f );
+v->uiTimeToolbar->redraw();
+v->uiTimeline->redraw();}
+                      tooltip {Allows you to set the ending frame for timeline.}
+                      xywh {106 0 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                      extra_code {o->value(50);}
+                      class {mrv::Timecode}
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+      code {if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
+
+uiReelWindow = new ReelUI(this);
+uiImageInfo = new ImageInfoUI(this);
+uiColorArea = new ColorAreaUI(this);
+uiVectorscope = new VectorscopeUI(this);
+uiHistogram = new HistogramUI(this);
+if (!uiLog) uiLog   = new LogUI(this);
+//uiDatabase = new DatabaseUI(this);
+if (!uiAbout) uiAbout = new AboutUI(this); // should be static
+
+
+// read and use preferences
+mrv::Preferences prefs( uiPrefs );} {}
+    }
+    Function {ViewerUI()} {} {
+      code {uiMain = make_window();} {}
+    }
+    Function {~ViewerUI()} {open
+    } {
+      code {delete uiICCProfiles; uiICCProfiles = NULL;
+delete uiImageInfo; uiImageInfo = NULL;
+delete uiColorArea; uiColorArea = NULL;
+delete uiHistogram; uiHistogram = NULL;
+delete uiVectorscope; uiVectorscope = NULL;
+delete uiAbout; uiAbout = NULL;
+delete uiLog; uiLog = NULL;
+delete uiMain; uiMain = NULL;
+delete uiReelWindow; uiReelWindow = NULL;} {}
+    }
+  }
+} 

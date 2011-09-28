@@ -1,0 +1,165 @@
+
+
+mrViewer
+--------
+
+	Playback
+	--------
+
+
+	Bugs
+	----
+
+	- FLU file requester can hang.  -- postscript delegate ???
+	  wandImage hangs with pdf.tgz of xemacs.
+
+	- Hotkeys listed in popup menu not working.  Can this be 
+	  automated by keeping popup menu around?
+
+	- Exit while playing can lead to signal 11.
+
+	Installer
+	---------
+
+	- Add mrViewer's icon to installer's shortcut.
+	  Make icon for i686 and x86_64 versions.
+
+	Priorities
+	----------
+
+	- Improve audio/video sync
+	- Change Reel to use EDL Timeline with tracks.
+	- Make sure new installer works as good as old one.
+	- Fix differences in text sizes between win32/linux.
+	- Split audio engines into a dso/dll loading at runtime.
+	- Split draw  engines into a dso/dll loading at runtime.
+	- Split postgreSQL into a dso/dll loading at runtime.
+	- Split mrViewer into main and a library. **ALMOST DONE**
+	- Crate maya plugin that opens mrViewer.
+	- Add a hotkeys widget
+	- Add stereo playback
+
+	Improvements
+	------------
+	
+	- Add statistics window (skipped frames, current display,
+	  # of cache video frames, audio frames, etc)
+
+	- Add hotkeys window and allow user to change hotkeys.
+
+	- Gamma and gain should be different for fg and bg images.
+	  Lut too.  mrvDrawEngine/GLEngine should be modified to make
+	  this more generic.
+
+	- mrvGLEngine should be split into mrvGLTexture and mrvGLEngine.
+
+	- Pixel color queries should allow returning original float values
+	  (as now), color corrected float color values and 
+	  8-bit quantized values of either.
+
+	- Timeline should allow displaying time of current movie or
+	  full edl, even when in edl mode.
+
+	- Add subtitles support.
+
+	- Add Y, U, V display, YUV pixel info, color information and 
+	  histogram.
+
+
+	Code issues
+	-----------
+
+	- baseImage* are used in some non-multithread safe ways, like in
+	  mrvColorInfo.  Make them thread safe.
+
+	- Drawing functions is *too* complex due to handling quads, 8bits,
+	  floats and caches.  ** A TAD IMPROVED **
+
+	- Updating of histogram and vectorscope is done on main thread.
+	  Don't do this.  Histogram and vectorscope should have a bitmap
+	  and main thread should just display this bitmap.
+
+
+	Maya integration
+	----------------
+
+	- Add Maya hook to save/load scenes.
+	- Add hook to display "depth pixel information" (normal, point, etc),
+	  based on throwing a ray thru camera.
+
+
+	FLU
+	---
+
+	- FLU file requester should really be simplified -- too much
+	  ugly code in there.  Use boost::filename
+	- File browser is not displaying preview of image sequences.
+	- File browser should display image icon instead of generic icon.
+	- FLU file requester should update thumbnails of recognized images
+	  on background in main mode.
+
+	Image Information
+	-----------------
+	- Closing mrvImageInformation's groups is not permanent
+	  when switching among two images.
+
+	- ICC should allow loading them.
+
+	- Closing tabs in image information should redraw scroller.
+	  window->redraw() needed.
+
+	- Resizing of image information window leads to issues when scrollbar
+	  appears
+
+	Database
+	--------
+	- Postgress library should be loaded on demand, not linked onto
+	  the executable.
+	- Same with MySQL.
+
+	Ruby
+	----
+	- Create nice HTML code for ruby on rails database.
+	- Create CSS stylesheets for HTML code.
+
+	Features
+	--------
+	- Simple effects:  mirror, flip, rotate
+	- LightTable view (to compare 4-6 more pictures)
+	- Batch renamer
+	- Sets (grouping of pics)
+	- Finding/Sorting
+	- Slideshow
+	- Save Slideshow as movie
+	- Add watermark to web preview
+	- Clean-up names
+	- Add Crop/Rotate/Resize/Transform/Remove Grain/Remove Red Eyes
+	- Adjust HSV, Negative, Levels, Color Balance, Brightness, Contrast
+	- Printing (PDF/Printer)
+	- FLU file icons should be of arbitrary size.
+
+
+
+
+
+Make a command-line mrViewer's core format -> AVI using ffmpeg.
+This will force the creation of libmrvcore.so and removal of any non-core
+dependencies.
+
+
+
+
+
+Frame Cycler
+------------
+
+	* Better command-line, with compositing
+	* LTC audio playback (??) - timecode encoded as audio
+	* SDI support to have GUI and playback in different screens.
+	* XML configurable GUI.
+	* REDCode RAW
+	* Versioning of elements (using file system conventions)
+	* Advanced timing using opengl refresh
+	* YIQ invalid display
+	* Review link transmits commands over TCP/IP.  No other data.
+	* Thumbnail size and aspect ratio (at least on file requester).

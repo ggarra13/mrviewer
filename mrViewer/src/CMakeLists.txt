@@ -1,0 +1,477 @@
+
+
+#
+# These are the libraries we will depend on
+#
+
+# For window management
+FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
+FIND_PACKAGE( FLTK2       REQUIRED )    # for window management
+FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
+FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
+FIND_PACKAGE( Boost       REQUIRED )    # for file system support
+FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
+FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
+FIND_PACKAGE( CTL         REQUIRED )    # for CTL color language
+FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for OpenEXRCTL color language add-ons
+FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
+FIND_PACKAGE( Gettext     REQUIRED )    # for translations
+FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
+# FIND_PACKAGE( RLM         REQUIRED )    # for licensing
+FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
+FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
+# FIND_PACKAGE( AO )    # for ao sound lib
+
+ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS )
+
+
+IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  ADD_DEFINITIONS( -DWIN32 -GR ) 
+  SET(OS_LIBRARIES
+    Winmm ws2_32 glew32
+    )
+  SET( LINK_FLAGS "${LINK_FLAGS} -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCMT" )
+ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  IF(APPLE)
+    # Media libraries for Apple
+    ADD_DEFINITIONS( -DOSX )
+    SET(OS_LIBRARIES
+      )
+  ELSE(APPLE)
+    # Media libraries for Linux
+    # FIND_PACKAGE( ALSA        REQUIRED )
+    FIND_LIBRARY( Xpm Xpm
+      PATHS
+      /usr/local/lib
+      /usr/lib
+      )
+    ADD_DEFINITIONS( -DLINUX -msse ) 
+    SET(OS_LIBRARIES
+      asound
+      ${Xpm} png X11 Xi Xft Xinerama pthread m Xext stdc++ GLEW
+      )
+
+  ENDIF(APPLE)
+ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+
+#
+# List directories for -I options.
+#
+INCLUDE_DIRECTORIES(
+  .
+  ./core
+  ./db
+  ./gui
+  ./video
+  ../../mrClasses/mrClasses
+  /usr/include/cairo
+  ${OPENGL_INCLUDE_DIR}
+  ${FLTK2_INCLUDE_DIR}
+  ${Boost_INCLUDE_DIRS}
+  ${MAGICK++_INCLUDE_DIR}
+  ${OpenEXRCTL_INCLUDE_DIR}
+  ${CTL_INCLUDE_DIR}
+  ${OPENEXR_INCLUDE_DIR}
+  ${FFMPEG_INCLUDE_DIR} 
+  ${POSTGRESQL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
+  ${TCLAP_INCLUDE_DIR}
+  ${RLM_INCLUDE_DIR}
+  ${SampleICC_INCLUDE_DIR}
+  )
+
+
+FLTK_WRAP_UI( mrViewer  
+  gui/mrvIccProfileUI.fl
+  gui/mrvColorAreaUI.fl  
+  gui/mrViewer.fl 
+  )
+
+
+# For windows, this is a non-MFC application
+SET( CMAKE_MFC_FLAG 0 )
+
+SET( SOURCES 
+
+  ${mrViewer_FLTK_UI_SRCS}
+
+  # Image files
+  core/mrvFrame.cpp
+  core/CMedia.cpp
+  core/CMedia_audio.cpp
+  core/mrvColorBarsImage.cpp
+  core/guessImage.cpp
+  core/mapImage.cpp
+  core/mrayImage.cpp
+  core/aviImage.cpp
+  core/clonedImage.cpp
+  core/exrImage.cpp
+  core/hdrImage.cpp
+  core/iffImage.cpp
+  core/pxrzImage.cpp
+  core/ddsImage.cpp
+  core/shmapImage.cpp
+  core/slateImage.cpp
+  core/smpteImage.cpp
+  core/stubImage.cpp
+  core/wandImage.cpp
+  # core/magickImage.cpp
+
+  core/mrSocket.cpp
+  core/mrvAudioEngine.cpp
+  core/mrvColor.cpp
+  core/mrvColorSpaces.cpp
+  core/ctlToLut.cpp
+  core/mrvLicensing.cpp
+  core/mrvPacketQueue.cpp
+  core/mrvPlayback.cpp
+  # core/mrvScale.cpp
+  core/mrvString.cpp
+  core/mrvTimer.cpp
+  core/mrvBarrier.cpp
+  # core/generic/mrEvent.cpp
+
+  core/mrvPC1.cpp
+  core/Sequence.cpp
+  core/mrStackTrace.cpp
+  core/mrvCPU.cpp
+  core/mrvColorProfile.cpp
+
+  db/mrvDatabase.cpp
+  db/mrvPostgreSQL.cpp
+  #   #db/mrvMySQL.cpp # unneeded
+
+  gui/FLU/Flu_Combo_Box.cpp      # needed?
+  gui/FLU/Flu_Combo_Tree.cpp     # needed?
+  gui/FLU/flu_file_chooser_pixmaps.cpp  
+  gui/FLU/Flu_Wrap_Group.cpp 
+  gui/FLU/Flu_File_Chooser.cpp  
+  gui/FLU/flu_pixmaps.cpp               
+  gui/FLU/GridGroup.cpp
+  #   #   FLU/Flu_Combo_List.cpp # unneeded
+
+  gui/mrvColorOps.cpp
+  gui/mrvMedia.cpp
+  gui/mrvBrowser.cpp
+  gui/mrvCTLBrowser.cpp
+  gui/mrvCollapsableGroup.cpp
+  gui/mrvColorInfo.cpp
+  gui/mrvDatabaseBrowser.cpp
+  gui/mrvFileRequester.cpp
+  gui/mrvFLTKHandler.cpp
+  gui/mrvHistogram.cpp
+  gui/mrvImageView.cpp
+  gui/mrvImageBrowser.cpp
+  gui/mrvImageInformation.cpp
+  gui/mrvIO.cpp
+  gui/mrvLogDisplay.cpp
+  gui/mrvMainWindow.cpp
+  gui/mrvPreferences.cpp
+  gui/mrvPreferencesBrowser.cpp
+  gui/mrvTimecode.cpp
+  gui/mrvTimeline.cpp
+  gui/mrvVectorscope.cpp
+  gui/mrvVersion.cpp
+
+  video/mrvDrawEngine.cpp
+  video/mrvGLEngine.cpp
+  video/mrvGLShader.cpp
+  video/mrvGLQuad.cpp
+  video/mrvGLLut3d.cpp
+
+  standalone/mrvRoot.cpp
+  standalone/mrvCommandLine.cpp
+  standalone/main.cpp
+  )
+
+
+
+IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+  FIND_LIBRARY( Boost_filesystem_LIBRARY 
+    NAMES boost_filesystem-mt boost_filesystem
+    PATHS ${Boost_LIBRARY_DIRS}
+    )
+
+  FIND_LIBRARY( Boost_thread_LIBRARY 
+    NAMES boost_thread
+    PATHS ${Boost_LIBRARY_DIRS} 
+    )
+
+  SET( BOOST_LIBRARIES
+    ${Boost_filesystem_LIBRARY}
+    ${Boost_thread_LIBRARY}
+    )
+
+ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  #
+  # Under windows, boost .h files select the appropriate boost static library
+  # automatically to handle the correct linking.
+  #
+  LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
+ENDIF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+IF( AO_FOUND )
+  ADD_DEFINITIONS( -DHAVE_LIB_AO )
+  SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
+  SET( OS_LIBRARIES ${AO_LIBRARIES} ${OS_LIBRARIES} )
+ELSE( AO_FOUND )
+
+  IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+    SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
+  ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
+    SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+  ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+ENDIF( AO_FOUND )
+
+
+SET( LIBRARIES
+  ${POSTGRESQL_LIBRARIES}
+  ${FFMPEG_LIBRARIES}
+  ${MAGICK++_LIBRARIES}
+  ${OpenEXRCTL_LIBRARIES}
+  ${CTL_LIBRARIES}
+  ${OPENEXR_LIBRARIES}
+  ${FLTK2_LIBRARIES}
+  ${OPENGL_LIBRARIES}
+  ${BOOST_LIBRARIES}
+  ${OS_LIBRARIES}
+  ${GLUT_LIBRARY}
+  ${RLM_LIBRARIES}
+  ${SampleICC_LIBRARIES}
+  ${SDL_LIBRARY}
+  )
+
+
+#
+# RELEASE VERSION
+#
+ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
+TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} )
+
+SET_TARGET_PROPERTIES( mrViewer
+  PROPERTIES
+  LINK_FLAGS "${LINK_FLAGS}"
+  )
+
+#
+# DEMO VERSION
+#
+
+# IF( CMAKE_BUILD_TYPE STREQUAL "Release" )
+#   ADD_EXECUTABLE( mrViewer-demo WIN32 MACOSX_BUNDLE ${SOURCES} )
+#   TARGET_LINK_LIBRARIES( mrViewer-demo ${LIBRARIES} )
+#   SET_TARGET_PROPERTIES( mrViewer-demo
+#     PROPERTIES
+#     COMPILE_FLAGS "-DFILMAURA_DEMO" 
+#     LINK_FLAGS "${LINK_FLAGS}"
+#     )
+# ENDIF( CMAKE_BUILD_TYPE STREQUAL "Release" )
+
+
+
+######################################################
+#
+# Installation
+#
+######################################################
+INSTALL( TARGETS mrViewer 
+  RUNTIME DESTINATION bin
+  LIBRARY DESTINATION lib
+)
+
+IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+  # DLLs under windows' mingw get placed on bin/ not lib/
+  SET( BIN_LIBS "" )
+
+  FOREACH( it ${MAGICK++_LIBRARIES} )
+    STRING(REPLACE "lib/" "bin/" it "${it}")
+    LIST( APPEND BIN_LIBS ${it})
+  ENDFOREACH(it)
+
+  FOREACH( it ${FLTK2_LIBRARIES} )
+    IF( ${it} MATCHES ".lib$" )
+      STRING(REGEX REPLACE "fltk2([._])" "fltk2dll\\1" it "${it}")
+      LIST( APPEND BIN_LIBS ${it})
+    ENDIF( ${it} MATCHES ".lib$" )
+  ENDFOREACH(it)
+
+  FOREACH( it ${OPENEXR_LIBRARIES} )
+    STRING(REPLACE ".lib" ".dll" it "${it}")
+    STRING(REPLACE "lib/" "bin/" it "${it}")
+    LIST( APPEND BIN_LIBS ${it})
+  ENDFOREACH(it)
+
+  FOREACH( it ${CTL_LIBRARIES} )
+    STRING(REPLACE ".lib" ".dll" it "${it}")
+    STRING(REPLACE "lib/" "bin/" it "${it}")
+    LIST( APPEND BIN_LIBS ${it})
+  ENDFOREACH(it)
+
+  FOREACH( it ${OpenEXRCTL_LIBRARIES} )
+    STRING(REPLACE ".lib" ".dll" it "${it}")
+    STRING(REPLACE "lib/" "bin/" it "${it}")
+    LIST( APPEND BIN_LIBS ${it})
+  ENDFOREACH(it)
+
+  FOREACH( it ${AO_LIBRARIES} )
+    STRING(REPLACE ".lib" ".dll" it "${it}")
+    STRING(REPLACE "lib/" "bin/" it "${it}")
+    LIST( APPEND BIN_LIBS ${it})
+  ENDFOREACH(it)
+
+  # For windows, we copy the libraries to same location of the executable
+  FOREACH( it ${BOOST_LIBRARIES} ${BIN_LIBS} ${FFMPEG_LIBRARIES} ${POSTGRESQL_LIBRARIES} )
+    FILE(TO_NATIVE_PATH it "${it}" )
+    STRING(REPLACE ".lib" ".dll" it "${it}")
+
+    GET_FILENAME_COMPONENT( OUT ${it} NAME )
+
+    IF( NOT ${it} MATCHES ".(lib|a)$" )
+
+      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
+	copy "${it}" "${LIBRARY_OUTPUT_PATH}/${OUT}"
+	RESULT_VARIABLE result
+	)
+
+      IF( NOT result EQUAL 0 )
+	MESSAGE( ERROR " copy command failed ${result}" )
+      ENDIF( NOT result EQUAL 0 )
+
+    ENDIF( NOT ${it} MATCHES ".(lib|a)$" )
+
+  ENDFOREACH( it )
+
+  SET( OUTDIR 
+    "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
+  FILE( MAKE_DIRECTORY "${OUTDIR}" )
+
+  FOREACH( it ${MAGICK_CODECS} )
+
+    STRING(REPLACE "lib/" "bin/" it "${it}")
+    GET_FILENAME_COMPONENT( OUT ${it} NAME )
+
+    EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
+      copy "${it}" "${OUTDIR}/${OUT}"
+      RESULT_VARIABLE result
+      )
+    
+    IF( NOT result EQUAL 0 )
+      MESSAGE( ERROR " copy command failed ${result}" )
+    ENDIF( NOT result EQUAL 0 )
+
+  ENDFOREACH(it)
+
+ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+
+  #MESSAGE( FATAL_ERROR "Done" )
+
+  SET( OUTDIR
+    "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
+  FILE( MAKE_DIRECTORY ${OUTDIR} )
+
+  FOREACH( it ${MAGICK_CODECS} )
+
+    GET_FILENAME_COMPONENT( BASE ${it} NAME_WE )
+    GET_FILENAME_COMPONENT( PATH ${it} PATH )
+    GET_FILENAME_COMPONENT( OUT ${it} NAME )
+
+    IF( NOT "${it}" STREQUAL "${OUTDIR}/${OUT}" )
+      #MESSAGE( STATUS "ln -s ${it} ${OUTDIR}/${OUT}" )
+
+      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
+	create_symlink "${it}" "${OUTDIR}/${OUT}"
+	RESULT_VARIABLE result
+	)
+      IF( NOT result EQUAL 0 )
+	MESSAGE( ERROR "command failed ${result} for ${it}" )
+      ENDIF( NOT result EQUAL 0 )
+
+      #MESSAGE( STATUS "ln -s ${PATH}/${BASE}.la ${OUTDIR}/${BASE}.la" )
+
+      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
+	create_symlink "${PATH}/${BASE}.la" "${OUTDIR}/${BASE}.la"
+	RESULT_VARIABLE result
+	)
+      IF( NOT result EQUAL 0 )
+	MESSAGE( ERROR "command failed ${result} for ${PATH}/${BASE}.la" )
+      ENDIF( NOT result EQUAL 0 )
+    ENDIF( NOT "${it}" STREQUAL "${OUTDIR}/${OUT}" )
+
+  ENDFOREACH( it )
+
+ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+
+
+#
+# Print out some status to verify configuration
+#
+MESSAGE( STATUS 
+  "-------------------------------------------------------------" )
+MESSAGE( STATUS "Summary for mrViewer:" )
+MESSAGE( STATUS 
+  "-------------------------------------------------------------" )
+
+MESSAGE( STATUS "FLTK2:         ${FLTK2_FOUND} ${FLTK2_VERSION}" )
+MESSAGE( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
+MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
+MESSAGE( STATUS "ImageMagick++: ${MAGICK++_FOUND}" )
+MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
+MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
+MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
+MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
+MESSAGE( STATUS "" )
+
+
+IF(MAGICK_FOUND)
+  MESSAGE( STATUS "ImageMagick   include: ${MAGICK_INCLUDE_DIR}" )
+  MESSAGE( STATUS "ImageMagick   library: ${MAGICK_LIBRARY_DIR}" )
+ENDIF(MAGICK_FOUND)
+
+IF(MAGICK++_FOUND)
+  MESSAGE( STATUS "ImageMagick++ include: ${MAGICK++_INCLUDE_DIR}" )
+  MESSAGE( STATUS "ImageMagick++ library: ${MAGICK++_LIBRARY_DIR}" )
+  MESSAGE( STATUS "ImageMagick++ libs:    ${MAGICK++_LIBRARIES}" )
+ENDIF(MAGICK++_FOUND)
+
+IF(OPENEXR_FOUND)
+  MESSAGE( STATUS "OpenEXR include:       ${OPENEXR_INCLUDE_DIR}" )
+  MESSAGE( STATUS "OpenEXR library:       ${OPENEXR_LIBRARY_DIR}" )
+  MESSAGE( STATUS "OpenEXR libs:          ${OPENEXR_LIBRARIES}" )
+ENDIF(OPENEXR_FOUND)
+
+IF(FLTK2_FOUND)
+  MESSAGE( STATUS "FLTK2 include:         ${FLTK2_INCLUDE_DIR}" )
+  MESSAGE( STATUS "FLTK2 library:         ${FLTK2_LIBRARY_DIR}" )
+  MESSAGE( STATUS "FLTK2 libs:            ${FLTK2_LIBRARIES}" )
+ENDIF(FLTK2_FOUND)
+
+IF(Boost_FOUND)
+  MESSAGE( STATUS "Boost include:         ${Boost_INCLUDE_DIR}" )
+  MESSAGE( STATUS "Boost library:         ${BOOST_LIBRARIES}" )
+ENDIF(Boost_FOUND)
+
+IF(FFMPEG_FOUND)
+  MESSAGE( STATUS "ffmpeg include:        ${FFMPEG_INCLUDE_DIR}" )
+  MESSAGE( STATUS "ffmpeg BSD  codecs:    ${FFMPEG_BSD_LIBRARIES}" )
+  MESSAGE( STATUS "ffmpeg LGPL codecs:    ${FFMPEG_LGPL_LIBRARIES}" )
+  MESSAGE( STATUS "ffmpeg libraries:      ${FFMPEG_LIBRARIES}" )
+ENDIF(FFMPEG_FOUND)
+
+IF(POSTGRESQL_FOUND)
+  MESSAGE( STATUS "PostgreSQL include:    ${POSTGRESQL_INCLUDE_DIR}" )
+  MESSAGE( STATUS "PostgreSQL library:    ${POSTGRESQL_LIBRARY_DIR}" )
+ENDIF(POSTGRESQL_FOUND)
+
+IF(TCLAP_FOUND)
+  MESSAGE( STATUS "TCLAP include:    ${TCLAP_INCLUDE_DIR}" )
+ENDIF(TCLAP_FOUND)
+
+#IF(RLM_FOUND)
+#  MESSAGE( STATUS "RLM include:    ${RLM_INCLUDE_DIR}" )
+#  MESSAGE( STATUS "RLM libraries:  ${RLM_LIBRARIES}" )
+#ENDIF(RLM_FOUND)

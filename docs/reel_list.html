@@ -1,0 +1,127 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>The Reel List Window</title>
+
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+
+<body>
+
+<br>
+
+<h2><span style="text-decoration: underline;">Reel
+List Window</span></h2>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 415px; height: 377px; float: left;" alt="reelList.png" src="images/reelList.png" hspace="20"></td>
+
+      <td>You can bring up the Image Information window by doing
+any of:<br>
+
+      <ul>
+
+        <li>Opening up the window from the main toolbar's 
+          <div class="menu">W</div>
+ button.</li>
+
+        <li>By using
+          <div class="menu">
+RMB-&gt;Window-&gt;Image Info.</div>
+        </li>
+
+        <li>By double clicking on an image in the Reel List
+window.</li>
+
+      </ul>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+The Reel List Window allows you to see all reels loaded as well as all
+images loaded in the currently active reel.<br>
+
+It also allows you to perform some additional operations on the images
+loaded.<br>
+
+<br>
+
+A reel is basically a list of images stored under a particular name.
+&nbsp;This list of images can be reordered simply by doing drag and
+drop of the image. &nbsp;You can also quickly switch from one image
+or
+movie to another by clicking on any item on the list.<br>
+
+<br>
+
+mrViewer allows you to also load reels (.reel files) from the command
+line or by doing drag and drop. &nbsp;When loading a reel, all the
+images listed in the reel will be loaded.<br>
+
+<br>
+
+The reel window also allows you to open a new image or movie, save the
+current image or frame, make a clone of the current image (useful for
+3d renders) or remove the image from the reel.<br>
+
+You can also attach a new CTL transform (3D Lut) to an image, make an
+image always appear as part of the background or play back the whole
+reel as an EDL.<br>
+
+<br>
+
+<h3><a name="Compositing_Images"></a>Compositing
+Images</h3>
+
+mrViewer supports some basic, non destructive A over B compositing.
+&nbsp;This compositing is for display purposes only and it is not
+intended for saving composited images.<br>
+
+<br>
+
+Within the Reel List Window, it is possible to select an image and then
+click on the <span style="font-weight: bold;">BG</span>
+button to make that image be a background image. &nbsp;Afterwards,
+you
+can then switch to a new image and the background image will be
+displayed in the background. &nbsp;The background image is always
+stretched to fit the size of the foreground image.<br>
+
+<br>
+
+The main purpose of this feature is to allow you to interactively see
+your 3d renders over a background plate. &nbsp;This works
+particularly
+well when reading a foreground image that is a file that changes on
+disk or when reading a virtual
+image, such as a mental ray render stub.
+<h3><a name="Playing_Movies_as_an_EDL_Reel"></a>Playing
+Movies as an EDL Reel</h3>
+
+One feature of mrViewer is that it allows you to display multiple
+sequences or movies together. &nbsp;If you load several files into
+a
+reel, you can then toggle EDL mode on and off from the Reel List Window.<br>
+
+The EDL mode allows you to show all movies in a reel one after the
+other, as if all of them had been edited together into a big movie file.<br>
+
+<br>
+
+</body>
+</html>

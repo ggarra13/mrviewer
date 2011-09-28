@@ -1,0 +1,123 @@
+!!FP1.0
+# cgc version 2.2.0017, build date Jan 29 2010
+# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile fp30
+# source file: rgba.cg
+#vendor NVIDIA Corporation
+#version 2.2.0.17
+#profile fp30
+#program main
+#semantic main.fgImage : TEXUNIT0
+#semantic main.lut : TEXUNIT3
+#semantic main.gain
+#semantic main.gamma
+#semantic main.channel
+#semantic main.enableNormalization
+#semantic main.normMin
+#semantic main.normSpan
+#semantic main.enableLut
+#semantic main.lutF
+#semantic main.lutMin
+#semantic main.lutMax
+#semantic main.lutM
+#semantic main.lutT
+#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
+#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1
+#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1
+#var half gain :  : gain : 3 : 1
+#var half gamma :  : gamma : 4 : 1
+#var int channel :  : channel : 5 : 1
+#var bool enableNormalization :  : enableNormalization : 6 : 1
+#var half normMin :  : normMin : 7 : 1
+#var half normSpan :  : normSpan : 8 : 1
+#var bool enableLut :  : enableLut : 9 : 1
+#var bool lutF :  :  : 10 : 0
+#var half lutMin :  : lutMin : 11 : 1
+#var half lutMax :  : lutMax : 12 : 1
+#var half lutM :  : lutM : 13 : 1
+#var half lutT :  : lutT : 14 : 1
+#var half4 main.pixel : $vout.COLOR : COL : -1 : 1
+#default gain = 1
+#default gamma = 0.44995117
+#default channel = 0
+#default enableNormalization = 0
+#default normMin = 0
+#default normSpan = 1
+#default enableLut = 0
+#default lutF = 0
+DECLARE enableNormalization = {0};
+DECLARE normMin = {0};
+DECLARE normSpan = {1};
+DECLARE gain = {1};
+DECLARE enableLut = {0};
+DECLARE lutMin;
+DECLARE lutMax;
+DECLARE lutT;
+DECLARE lutM;
+DECLARE gamma = {0.44995117};
+DECLARE channel = {0};
+TEX   H0, f[TEX0], TEX0, 2D;
+ADDH  H1.xyz, H0, -normMin.x;
+RCPH  H1.w, normSpan.x;
+MOVXC RC.x, enableNormalization;
+MULH  H0.xyz(NE.x), H1, H1.w;
+MULH  H1.xyz, H0, gain.x;
+MINH  H0.xyz, H1, lutMax.x;
+MAXH  H0.xyz, H0, lutMin.x;
+MOVXC RC.x, enableLut;
+MOVH  H1.w, lutT.x;
+LG2H  H0.x, H0.x;
+LG2H  H0.z, H0.z;
+LG2H  H0.y, H0.y;
+MULH  H0.xyz, H0, lutM.x;
+MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H1.w;
+TEX   R0.xyz, H1, TEX3, 3D;
+POWR  H0.x, {2.718282}.x, R0.x;
+POWR  H0.y, {2.718282}.x, R0.y;
+POWR  H0.z, {2.718282}.x, R0.z;
+MOVH  H1.xyz(NE.x), H0;
+POWH  H1.w, H1.z, gamma.x;
+POWH  H2.x, H1.y, gamma.x;
+POWH  H0.x, H1.x, gamma.x;
+MOVH  H0.z, H1.w;
+MOVH  H0.y, H2.x;
+MOVH  H1.xyz, H0;
+MOVR  R0.x, {1};
+SEQR  H0.y, channel.x, R0.x;
+MOVXC RC.x, H0.y;
+MOVR  R0.x, {2};
+SEQR  H0.z, channel.x, R0.x;
+MOVR  R0.x, {3};
+SEQR  H2.y, channel.x, R0.x;
+MOVH  H1.xyz(NE.x), H0.x;
+SEQX  H0.y, H0, {0}.x;
+MULXC HC.x, H0.y, H0.z;
+SEQX  H0.z, H0, {0}.x;
+MOVH  H1.xyz(NE.x), H2.x;
+MULX  H0.y, H0, H0.z;
+MULXC HC.x, H0.y, H2.y;
+MOVR  R0.x, {4};
+SEQR  H0.z, channel.x, R0.x;
+SEQX  H2.y, H2, {0}.x;
+MULX  H0.y, H0, H2;
+MOVH  H1.xyz(NE.x), H1.w;
+MULXC HC.x, H0.y, H0.z;
+SEQX  H2.y, H0.z, {0}.x;
+MOVR  R0.x, {5};
+SEQR  H0.z, channel.x, R0.x;
+MOVH  H1.xyz(NE.x), H0.w;
+MULX  H0.y, H0, H2;
+MULXC HC.x, H0.y, H0.z;
+MULH  H1.x(NE), H0, {0.5};
+ADDH  H0.x, H0, H2;
+SEQX  H0.z, H0, {0}.x;
+MADH  H1.x(NE), H0.w, {0.5}, H1;
+ADDH  H0.x, H0, H1.w;
+MOVR  R0.x, {6};
+SEQR  H1.w, channel.x, R0.x;
+MULX  H0.y, H0, H0.z;
+MULXC HC.x, H0.y, H1.w;
+MULH  H1.xyz(NE.x), H0.x, {0.33333334}.x;
+MOVH  H1.w, H0;
+MOVH  o[COLH], H1;
+END
+# 64 instructions, 1 R-regs, 3 H-regs

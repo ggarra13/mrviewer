@@ -1,0 +1,136 @@
+!!ARBfp1.0
+# cgc version 2.2.0017, build date Jan 29 2010
+# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile arbfp1
+# source file: rgba.cg
+#vendor NVIDIA Corporation
+#version 2.2.0.17
+#profile arbfp1
+#program main
+#semantic main.fgImage : TEXUNIT0
+#semantic main.lut : TEXUNIT3
+#semantic main.gain
+#semantic main.gamma
+#semantic main.channel
+#semantic main.enableNormalization
+#semantic main.normMin
+#semantic main.normSpan
+#semantic main.enableLut
+#semantic main.lutF
+#semantic main.lutMin
+#semantic main.lutMax
+#semantic main.lutM
+#semantic main.lutT
+#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
+#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1
+#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1
+#var half gain :  : c[0] : 3 : 1
+#var half gamma :  : c[1] : 4 : 1
+#var int channel :  : c[2] : 5 : 1
+#var bool enableNormalization :  : c[3] : 6 : 1
+#var half normMin :  : c[4] : 7 : 1
+#var half normSpan :  : c[5] : 8 : 1
+#var bool enableLut :  : c[6] : 9 : 1
+#var bool lutF :  :  : 10 : 0
+#var half lutMin :  : c[7] : 11 : 1
+#var half lutMax :  : c[8] : 12 : 1
+#var half lutM :  : c[9] : 13 : 1
+#var half lutT :  : c[10] : 14 : 1
+#var float4 main.pixel : $vout.COLOR : COL : -1 : 1
+#const c[11] = 0.33333334 1 0 2
+#const c[12] = 3 4 5 6
+#const c[13] = 2.718282 0.69335938 0.5
+#default gain = 1
+#default gamma = 0.44995117
+#default channel = 0
+#default enableNormalization = 0
+#default normMin = 0
+#default normSpan = 1
+#default enableLut = 0
+#default lutF = 0
+PARAM c[14] = { program.local[0..10],
+		{ 0.33333334, 1, 0, 2 },
+		{ 3, 4, 5, 6 },
+		{ 2.718282, 0.69335938, 0.5 } };
+TEMP R0;
+TEMP R1;
+TEMP R2;
+TEMP R3;
+TEX R0, fragment.texcoord[0], texture[0], 2D;
+RCP R1.w, c[5].x;
+ADD R1.xyz, R0, -c[4].x;
+MUL R1.xyz, R1, R1.w;
+CMP R0.xyz, -c[3].x, R1, R0;
+MUL R0.xyz, R0, c[0].x;
+MIN R1.xyz, R0, c[8].x;
+MAX R1.xyz, R1, c[7].x;
+MOV R1.w, c[10].x;
+MOV R3.zw, c[11].xyyw;
+LG2 R1.x, R1.x;
+LG2 R1.y, R1.y;
+LG2 R1.z, R1.z;
+MUL R1.xyz, R1, c[9].x;
+MAD R1.xyz, R1, c[13].y, R1.w;
+CMP R1.xyz, -c[6].x, R1, R0;
+TEX R0.xyz, R1, texture[3], 3D;
+POW R0.x, c[13].x, R0.x;
+POW R0.z, c[13].x, R0.z;
+POW R0.y, c[13].x, R0.y;
+CMP R1.xyz, -c[6].x, R0, R1;
+POW R2.w, R1.y, c[1].x;
+POW R3.x, R1.z, c[1].x;
+POW R2.x, R1.x, c[1].x;
+MOV R1, c[12];
+ADD R0.x, -R3.z, c[2];
+ADD R1.z, -R1, c[2].x;
+ABS R1.z, R1;
+ABS R3.y, R0.x;
+CMP R1.z, -R1, c[11], c[11].y;
+MOV R2.y, R2.w;
+MOV R2.z, R3.x;
+CMP R0.xyz, -R3.y, R2, R2.x;
+CMP R2.y, -R3, c[11].z, c[11];
+ADD R2.z, -R3.w, c[2].x;
+ABS R2.z, R2;
+ABS R2.y, R2;
+CMP R2.z, -R2, c[11], c[11].y;
+CMP R2.y, -R2, c[11].z, c[11];
+MUL R3.y, R2, R2.z;
+CMP R0.xyz, -R3.y, R2.w, R0;
+ADD R3.y, -R1.x, c[2].x;
+ABS R1.x, R2.z;
+CMP R2.z, -R1.x, c[11], c[11].y;
+ABS R3.y, R3;
+MUL R2.y, R2, R2.z;
+CMP R1.x, -R3.y, c[11].z, c[11].y;
+MUL R2.z, R2.y, R1.x;
+CMP R0.xyz, -R2.z, R3.x, R0;
+ADD R1.y, -R1, c[2].x;
+ABS R2.z, R1.y;
+ABS R1.x, R1;
+CMP R1.y, -R1.x, c[11].z, c[11];
+MUL R1.y, R2, R1;
+CMP R1.x, -R2.z, c[11].z, c[11].y;
+MUL R2.y, R1, R1.x;
+CMP R0.xyz, -R2.y, R0.w, R0;
+ABS R1.x, R1;
+CMP R1.x, -R1, c[11].z, c[11].y;
+MUL R1.x, R1.y, R1;
+ADD R1.y, R2.x, R2.w;
+MUL R2.z, R1.x, R1;
+MUL R2.y, R2.x, c[13].z;
+CMP R0.x, -R2.z, R2.y, R0;
+ADD R1.y, R1, R3.x;
+MUL R2.x, R1.y, c[11];
+ABS R1.y, R1.z;
+MAD R2.y, R0.w, c[13].z, R0.x;
+ADD R1.w, -R1, c[2].x;
+ABS R1.z, R1.w;
+CMP R1.y, -R1, c[11].z, c[11];
+CMP R0.x, -R2.z, R2.y, R0;
+CMP R1.z, -R1, c[11], c[11].y;
+MUL R1.x, R1, R1.y;
+MUL R1.x, R1, R1.z;
+CMP result.color.xyz, -R1.x, R2.x, R0;
+MOV result.color.w, R0;
+END
+# 77 instructions, 4 R-regs

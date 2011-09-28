@@ -1,0 +1,162 @@
+/**
+ * @file   yuva.cg
+ * @author gga
+ * @date   Thu Jul  5 22:50:08 2007
+ * 
+ * @brief    simple YUV texture with 3D lut shader
+ * @compile  cgc -profile fp30 YCbCr.cg -o YCbCr.fp30
+ * 
+ */
+
+struct Out
+{ 
+  half4 pixel: COLOR; 
+};
+
+Out main( 
+	 float2 tc: TEXCOORD0, 
+	 uniform sampler2D YImage: TEXUNIT0, 
+	 uniform sampler2D UImage: TEXUNIT1, 
+	 uniform sampler2D VImage: TEXUNIT2, 
+	 uniform sampler3D lut   : TEXUNIT3,
+	 uniform half   gain  = 1.0,
+	 uniform half   gamma = 1.0,
+	 uniform int     channel = 0,
+	 uniform bool   enableNormalization = 0,
+	 uniform half   normMin = 0,
+	 uniform half   normSpan  = 1,
+	 uniform bool   enableLut = 0,
+	 uniform bool   lutF = 0,
+
+	 // For YCbCr (Poyton's matrix * 255)
+	 uniform half3  Koff = half3(-0.0627450980392157, -0.501960784313725, -0.501960784313725 ),
+	 uniform half3  Kr   = half3(1.16438355, 0.0, 1.59602715),
+	 uniform half3  Kg   = half3(1.16438355, -0.3917616, -0.81296805),
+	 uniform half3  Kb   = half3(1.16438355, 2.01723105, 0.0),
+
+// 	 // For YPbPr
+//  	 uniform half3  Koff = half3(0.0, -0.5, -0.5 ),
+// 	 uniform half3  Kr   = half3(1.0, 0.0, 1.402),
+// 	 uniform half3  Kg   = half3(1.0, -0.344136, -0.714136),
+// 	 uniform half3  Kb   = half3(1.0, 1.772, 0.0),
+
+	 uniform half   lutMin, 
+	 uniform half   lutMax, 
+	 uniform half   lutM, 
+	 uniform half   lutT
+	  )
+{ 
+  //
+  // Sample luminance and chroma, convert to RGB. 
+  //
+  half3 pre;
+
+  pre.r = tex2D(YImage, tc).r;  // Y
+  pre.g = tex2D(UImage, tc).r;  // U
+  pre.b = tex2D(VImage, tc).r;  // V
+
+  pre += Koff;
+
+  half4 c;
+
+  c.r = dot(Kr, pre);
+  c.g = dot(Kg, pre);
+  c.b = dot(Kb, pre);
+  c.a = 1.0f;
+
+  //
+  // Apply normalization
+  //
+  if (enableNormalization)
+    {
+      c.rgb = (c.rgb - normMin) / normSpan;
+    }
+
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
+
+
+  //
+  // Apply 3D color lookup table (in log space).
+  //
+  if (enableLut)
+    {
+      if ( lutF )
+	{
+	  //
+	  // Texture hardware does not support
+	  // interpolation between texture samples
+	  // 
+	  half3 i = lutF * half3( lutT + lutM *
+				  log( clamp(c.rgb, lutMin, lutMax) ) );
+
+	  half3 fi = floor(i);
+	  half3 fj = fi + 1;
+	  half3 s = i - fi;
+
+	  fi = fi / lutF;
+	  fj = fj / lutF;
+
+	  half3 c0 = tex3D(lut, half3(fi.x, fi.y, fi.z)).rgb;
+	  half3 c1 = tex3D(lut, half3(fj.x, fi.y, fi.z)).rgb;
+	  half3 c2 = tex3D(lut, half3(fi.x, fj.y, fi.z)).rgb;
+	  half3 c3 = tex3D(lut, half3(fj.x, fj.y, fi.z)).rgb;
+	  half3 c4 = tex3D(lut, half3(fi.x, fi.y, fi.z)).rgb;
+	  half3 c5 = tex3D(lut, half3(fj.x, fi.y, fj.z)).rgb;
+	  half3 c6 = tex3D(lut, half3(fi.x, fj.y, fj.z)).rgb;
+	  half3 c7 = tex3D(lut, half3(fj.x, fj.y, fj.z)).rgb;
+
+	  c.rgb = ((c0 * (1-s.x) + c1 * s.x) * (1-s.y) +
+		   (c2 * (1-s.x) + c3 * s.x) *  s.y) * (1-s.z) +
+	    ((c4 * (1-s.x) + c5 * s.x) * (1-s.y) +
+	     (c6 * (1-s.x) + c7 * s.x) *  s.y) * s.z;
+
+	  c.rgb = exp(c.rgb);
+	}
+      else
+	{
+	  c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
+	  c.rgb = exp( tex3D(lut, c.rgb).rgb );
+	}
+    }
+
+  //
+  // Apply video gamma correction.
+  //
+  c.rgb = pow( c.rgb, gamma );
+
+  //
+  // Apply channel selection
+  //
+  if ( channel == 1 )
+    {
+      c.rgb = c.rrr;
+    }
+  else if ( channel == 2 )
+    {
+      c.rgb = c.ggg;
+    }
+  else if ( channel == 3 )
+    {
+      c.rgb = c.bbb;
+    }
+  else if ( channel == 4 )
+    {
+      c.rgb = c.aaa;
+    }
+  else if ( channel == 5 )
+    {
+      c.r *= 0.5;
+      c.r += c.a * 0.5;
+    }
+  else if ( channel == 6 )
+    {
+      c.rgb = (c.r + c.g + c.b) / 3;
+    }
+
+  Out output;
+  output.pixel = c;
+  return output;
+}

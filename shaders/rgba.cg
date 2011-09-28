@@ -1,0 +1,98 @@
+/**
+ * @file   rgba.cg
+ * @author gga
+ * @date   Thu Jul  5 22:50:08 2007
+ * 
+ * @brief    simple rgba texture with 3D lut shader
+ * @compile  cgc -profile fp30 rgba.cg -o rgba.fp30
+ * 
+ */
+
+struct Out
+{ 
+  half4 pixel: COLOR; 
+};
+
+Out main( 
+	 float2 tc: TEXCOORD0, 
+	 uniform sampler2D fgImage: TEXUNIT0, 
+	 uniform sampler3D lut:     TEXUNIT3,
+	 uniform half   gain  = 1.0,
+	 uniform half   gamma = 0.45,
+	 uniform int    channel = 0,
+	 uniform bool   enableNormalization = 0,
+	 uniform half   normMin = 0,
+	 uniform half   normSpan  = 1,
+	 uniform bool   enableLut = 0,
+	 uniform bool   lutF = 0,
+	 uniform half   lutMin, 
+	 uniform half   lutMax, 
+	 uniform half   lutM, 
+	 uniform half   lutT
+	  )
+{ 
+  //
+  // Sample luminance and chroma, convert to RGB. 
+  //
+  half4 c  = tex2D(fgImage, tc);
+
+  //
+  // Apply normalization
+  //
+  if (enableNormalization)
+    {
+      c.rgb = (c.rgb - normMin) / normSpan;
+    }
+
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
+
+  //
+  // Apply 3D color lookup table (in log space).
+  //
+  if (enableLut)
+    {
+      c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
+      c.rgb = exp( tex3D(lut, c.rgb).rgb ); 
+    }
+
+  //
+  // Apply video gamma correction.
+  // 
+  c.rgb = pow( c.rgb, gamma );
+
+  //
+  // Apply channel selection
+  // 
+  if ( channel == 1 )
+    {
+      c.rgb = c.rrr;
+    }
+  else if ( channel == 2 )
+    {
+      c.rgb = c.ggg;
+    }
+  else if ( channel == 3 )
+    {
+      c.rgb = c.bbb;
+    }
+  else if ( channel == 4 )
+    {
+      c.rgb = c.aaa;
+    }
+  else if ( channel == 5 )
+    {
+      c.r *= 0.5;
+      c.r += c.a * 0.5;
+    }
+  else if ( channel == 6 )
+    {
+      c.rgb = (c.r + c.g + c.b) / 3;
+    }
+
+  Out output;
+  output.pixel = c;
+  return output;
+} 

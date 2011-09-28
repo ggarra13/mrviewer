@@ -1,0 +1,30 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Using the Color Transform Language</title><meta content="Gonzalo Garramuño" name="author"></head><body><h1 style="text-align: center;">Using the Color Transform Language (CTL)</h1><p>mrViewer uses AMPAS' Color Transform Language (CTL) for doing its color corrections and table look ups.</p><p>mrViewer currently ships with some basic transforms that will internally operate on the image on CIE 1931 XYZ space. &nbsp;CIE XYZ is chosen as it represents a virtually unlimited gamut and dynamic range. </p><p>mrViewer
+can have three different CTL transformations active at the same time.
+&nbsp;One transform is attached to the main view window and represents
+the monitor, video or film stock. &nbsp;This transform within the CTL
+naming conventions is often called the Output Device Transform (ODT).
+&nbsp;This transform is set in the main preferences window, in the CTL section. &nbsp;Most projects will require users to set the device transform only once and not change it.</p><p>mrViewer
+ships with one basic ODT pass-thru display transform called
+ODT_monitor.ctl. &nbsp;This transform should be suitable for displaying
+images on a monitor device, as the only transformation performed on the
+image is to apply the luminance and color primaries of your monitor.</p><p>An ODT that tries to emulate film will often require a more complex 2D or 3D table lookup
+to try to emulate the inverse of the Print Film Emulation Transform
+(PFET). &nbsp;The PFET is particular to each film stock and film
+developing laboratory and generating it requires careful evaluation of
+the film stock and developing conditions. &nbsp;For more information about creating the inverse PFET, you should consult your developing laboratory.</p><p>A
+second transform available is the Rendering Transform or&nbsp;RT for
+short. &nbsp; This transformation is unique to each image and project
+and represents the transformation needed to take the RGB pixel values
+stored in an image to a pleasing internal CIE XYZ representation for
+the project. &nbsp;mrViewer ships with a basic Rendering Transform that
+takes scene-linear RGB images to CIE XYZ by converting through HDTV
+Rec709. &nbsp;Depending on the project, the rendering transform will
+vary. &nbsp;In the future, AMPAS will provide a Reference Rendering
+Transform for Film which may become the standard for most film
+productions. &nbsp;If your project requires some special film effect
+(like bleach film), a special render transform should be used.</p>A
+third transform available is the Look Modification Transform (LMT).
+&nbsp;This transformation is intended mainly for camera devices to take
+their input images and color correct them based on certain knobs as
+done on set and is particular to each camera model.<p></p></body></html>

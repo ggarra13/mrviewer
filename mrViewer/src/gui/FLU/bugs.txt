@@ -1,0 +1,26 @@
+
+
+- scroll_to in filedetails is not doing anything -- browser issue?  not 
+  understanding it.  display(index) works ok, but does not  move scrollbar.
+  even when scrollbar is moved, it still does not display in right place.
+  something is resetting yposition()???
+- creating multiple folders one after the other leaves them 
+  unnamed (uncreated?)
+- groups in location tree cannot be selected (Escritorio) --- hard to FIX
+
+- Color scheme sucks -- add theme support **BETTER**
+  the hilight color of the edge of buttons is a tad too bright.  Can we fix it?
+
+- Flu_Separator missing
+
+- browser details' vertical scrollbar is not filling header, it should --
+  or header's last column is not filling width
+
+
+To add:
+- Icons for MOVIE FILES and IMAGE FILES
+- Autocompletion as you type filename/switch
+- Pressing TAB should switch from listing all files to listing options
+- Hiding .dot files/Show hidden files switch
+- Add to favorites needs to indicate that something happened
+

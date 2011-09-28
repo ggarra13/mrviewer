@@ -1,0 +1,191 @@
+
+CREATE DATABASE assets2d_development;
+
+USE assets2d_development;
+
+SET NAMES 'utf8';
+
+CREATE TABLE shows (
+       id	       INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+       name	       VARCHAR(8) NOT NULL,
+       title	       VARCHAR(120),
+       director	       VARCHAR(120),
+       production_date DATE,
+       delivery_date   DATE,
+       studio	       VARCHAR(120),
+       distributor     VARCHAR(120),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE sequences (
+       id	   INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+       name	   VARCHAR(4)) UNIQUE,
+       show_id	   INTEGER UNSIGNED NOT NULL REFERENCES shows(id),
+       UNIQUE(show_id, name),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE shots (
+       id	   INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+       name	   VARCHAR(8)) UNIQUE,
+       sequence_id INTEGER UNSIGNED NOT NULL REFERENCES sequences(id),
+       UNIQUE(sequence_id, name),
+       PRIMARY KEY (id)
+);
+
+CREATE TABLE color_profiles (
+       id		    INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+       name		    VARCHAR(120) UNIQUE,
+       filename		    VARCHAR(1024),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE images (
+       id	     INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+       directory     VARCHAR(1024) NOT NULL,
+       filename	     VARCHAR(256) NOT NULL,
+       frame_start   INTEGER,
+       frame_end     INTEGER,
+       creator	     VARCHAR(20),
+       date	     DATE,
+       shot_id	     INTEGER UNSIGNED REFERENCES shots(id),
+       width	     INTEGER UNSIGNED,
+       height	     INTEGER UNSIGNED,
+       pixel_ratio   FLOAT DEFAULT 1.0,
+       format	     VARCHAR(30),
+       fps	     FLOAT DEFAULT 24,
+       codec	     VARCHAR(10),
+       color_profile_id INTEGER UNSIGNED REFERENCES color_profiles(id),
+       depth	     INTEGER UNSIGNED DEFAULT 32,
+       channels	     INTEGER UNSIGNED DEFAULT 4,
+       fstop	     FLOAT DEFAULT 8.0,
+       gamma	     FLOAT DEFAULT 1.0,
+       online	     BOOLEAN DEFAULT TRUE,
+       backup	     VARCHAR(10),
+       UNIQUE(shot_id, directory, filename),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE audios (
+       id	     INTEGER UNSIGNED NOT NULL AUTO_INCREMENT,
+       directory     VARCHAR(1024) NOT NULL,
+       filename	     VARCHAR(256) NOT NULL,
+       creator	     VARCHAR(20),
+       date	     DATE,
+       shot_id	     INTEGER UNSIGNED REFERENCES shots(id),
+       codec	     VARCHAR(10),
+       channels	     INTEGER UNSIGNED DEFAULT 1,
+       online	     BOOLEAN DEFAULT TRUE,
+       backup	     VARCHAR(10),
+       UNIQUE(shot_id, directory, filename),
+       PRIMARY KEY (id)
+);
+
+
+------------------
+
+PostgreSQL
+----------
+
+> createdb assets2d -U postgres
+
+> psql assets2d -U postgres
+
+#### psql commands
+
+CREATE TABLE shows (
+       id	       SERIAL,
+       name	       VARCHAR(8) NOT NULL UNIQUE,
+       title	       VARCHAR(120),
+       director	       VARCHAR(120),
+       production_date DATE,
+       delivery_date   DATE,
+       studio	       VARCHAR(120),
+       distributor     VARCHAR(120),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE sequences (
+       id	   SERIAL,
+       name	   VARCHAR(4),
+       show_id	   INTEGER NOT NULL REFERENCES shows(id),
+       UNIQUE(show_id, name),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE shots (
+       id	   SERIAL,
+       name	   VARCHAR(8),
+       sequence_id INTEGER NOT NULL REFERENCES sequences(id), 
+       UNIQUE(sequence_id, name),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE color_profiles (
+       id		    SERIAL,
+       name		    VARCHAR(120) UNIQUE,
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE images (
+       id	     SERIAL,
+       directory     VARCHAR(1024) NOT NULL,
+       filename	     VARCHAR(256) NOT NULL,
+       frame_start   INTEGER,
+       frame_end     INTEGER,
+       creator	     VARCHAR(20),
+       date	     DATE,
+       shot_id	     INTEGER REFERENCES shots(id),
+       width	     INTEGER,
+       height	     INTEGER,
+       pixel_ratio   REAL DEFAULT 1.0,
+       format	     VARCHAR(30),
+       fps	     REAL DEFAULT 24,
+       codec	     VARCHAR(10),
+       color_profile_id INTEGER REFERENCES color_profiles(id),
+       depth	     INTEGER DEFAULT 32,
+       channels	     INTEGER DEFAULT 4,
+       fstop	     REAL DEFAULT 8.0,
+       gamma	     REAL DEFAULT 1.0,
+       online	     BOOLEAN DEFAULT TRUE,
+       backup	     VARCHAR(10),
+       UNIQUE(shot_id, directory, filename),
+       PRIMARY KEY (id)
+);
+
+
+CREATE TABLE audios (
+       id	     SERIAL,
+       directory     VARCHAR(1024) NOT NULL,
+       filename	     VARCHAR(256) NOT NULL,
+       creator	     VARCHAR(20),
+       date	     DATE,
+       shot_id	     INTEGER REFERENCES shots(id),
+       codec	     VARCHAR(10),
+       channels	     INTEGER DEFAULT 1,
+       online	     BOOLEAN DEFAULT TRUE,
+       backup	     VARCHAR(10),
+       UNIQUE(shot_id, directory, filename),
+       PRIMARY KEY (id)
+);
+
+
+#### Some demo datasets
+
+INSERT INTO shows (name, title) VALUES ( 'ep2',  'Star Wars - Episode 2');
+
+INSERT INTO sequences (name, show_id) VALUES ( 'ka', (select id from shows where name='ep2'));
+
+INSERT INTO shots (name, sequence_id) VALUES ( 'ka213', (select id from sequences where name='ka'));
+
+INSERT INTO shots (name, sequence_id) VALUES ('ka222', (select id from sequences where name='ka'));
+
+INSERT INTO color_profiles (name) VALUES ('sRGB');

@@ -1,0 +1,68 @@
+
+ 
++ Add mapImage.h/cxx to read .map images (scalars, colors) 
+  **1/2DONE -- BUGGY and NO PYRAMID SUPPORT **
+
++ Add a rpfImage.h image class  **DONE**
+
++ Add a ddsImage.h image class  **DONE**
+
++ Add support for multiple images:
+    - Add wiping between images.
+
++ Add hook onto mrLiquid (mrViewer maya command) ** 1/2 DONE **
+
++ Add a preferences file ( $HOME/.mrViewer ) ** 1/2 DONE **
+    - Theme support?
+    - default gamma and color profiles   **1/2 DONE**
+    - hotkeys?
+
++ Add a file requester?  **1/2 DONE**
+
++ Add better command-line parsing support (good C++ parsing library?)
+
++ Quicktime support  ** DONE, need Linux **
+
++ AVI support ** Needs severe fixing to avoid stuttering issues **
+
++ File chooser preview is not showing images/movies.
+
++ File chooser is missing image icons.
+
+Extras
+------
+
++ Add basic drawing functionality onto an overlay?
+
+========
+
+
+BUGS
+----
+
++ On win32, if window shows up outside view area, we get redraw issues.
+  On fullscreen resize, we get problems too.  
+  ** MOST SERIOUS BUG, GFX CARD RELATED - NUKE HAS ISSUES TOO **
++ Cursor does not change correctly.  Reverts to default.
++ Displaying a large wandImage jpeg takes a long time.  Why?
++ FLU file requester first icon shows a little bit down first time window
+  is opened.
++ FLU file requester shows lists of movies as sequences (need button to
+  avoid this).
+
+
+
+THINGS I DON'T LIKE IN MY CODE
+------------------------------
+
+* lack of C++ namespace use or a common prefix like mr in 
+  mrClasses/mrLiquid.  Use namespace mrv. **IN PROGRESS**
+* Make image browser and image view not use any globals, but use a 
+  pointer within each to allow for multiple viewers eventually. **IN PROGRESS**
+* Add a nicer display of image's properties (with ability to change them)
+* Use of C++ for GUI, instead of scripting language.
+* sound code needs to be moved to its own place
+* Decoding of sound and video need to be done on its own thread.
+* Playing of sound also needs to be in a separate thread (this thread should
+  play all sounds from all images)
+* Make quicktime and avi loaders plugins

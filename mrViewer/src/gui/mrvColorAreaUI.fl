@@ -1,0 +1,48 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir header_name 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "string"} {public
+} 
+
+decl {\#include "core/mrvColorSpaces.h"} {} 
+
+decl {\#include "gui/mrvColorInfo.h"} {} 
+
+decl {\#include "mrViewer.h"} {} 
+
+namespace mrv {open
+} {
+  decl {class ViewerUI;} {public
+  }
+  decl {class ColorInfo;} {public
+  }
+  class ColorAreaUI {} {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label {Color Information} open
+        xywh {391 234 400 260} hide resizable
+        extra_code {// Make the window transient
+o->size_range( 400, 260 );
+o->child_of( (fltk::Window*)main->uiMain );}
+      } {
+        {fltk::Browser} uiColorText {
+          xywh {0 0 400 260}
+          extra_code {o->main( main );}
+          class {mrv::ColorInfo}
+        } {}
+      }
+    }
+    Function {ColorAreaUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~ColorAreaUI()} {} {
+      code {delete uiMain;} {}
+    }
+  }
+} 

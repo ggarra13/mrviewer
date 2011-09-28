@@ -1,0 +1,90 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>3D Lut Preferences</title>
+
+
+  <meta content="Gonzalo Garramu&ntilde;o" name="author">
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+<body>
+
+<h3>3D Lut Preferences</h3>
+
+<br>
+
+The LUT Preferences tab allows you to configure the 3D Lut settings of
+mrViewer.<br>
+
+Note that, unlike all other preference settings, these settings NEVER
+get saved into mrViewer's preference file and are instead always read
+from environment variables. &nbsp;See the <a href="environment_variables.html">Environment Variables </a>section.<br>
+
+The reason for this is to allow you to easily use mrViewer in different
+projects with different LUT settings easily.<br>
+<br>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 437px; height: 487px;" alt="" src="images/Preferences3DLut.png"></td>
+
+      <td>
+      <h3>Display</h3>
+
+
+      <div class="menu">Transform</div>
+
+allows you to configure the CTL script used to convert the
+image from mrViewer's internal floating point data onto your screen.<br>
+
+      <br>
+
+      <div class="menu">Chromaticities</div>
+      <br>
+
+This section allows you to change the default RGB and White
+chromaticies of your monitor. &nbsp;You should not&nbsp;use
+this as a color correction tool.<br>
+
+      <br>
+
+      <div class="menu">White Luminance</div>
+      <br>
+
+This setting specifies the brightness of your monitor. &nbsp;It
+should only be modified if you have a proper callibration tool.<br>
+
+      <br>
+
+      <div class="menu">Surround Luminance</div>
+      <br>
+
+This setting specifies the brightness of your environment or
+surroundings. &nbsp;It should only be modified if you have a proper
+callibration tool.<br>
+
+      <h3>Images</h3>
+
+      <div class="menu">Default Transform</div>
+      <br>
+
+Allows you to specify the default transform for taking an image to
+mrViewer's internal representation, unless the image already comes with
+its own embedded CTL transform.<br>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+</body>
+</html>

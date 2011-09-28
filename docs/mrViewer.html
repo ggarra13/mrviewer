@@ -1,0 +1,2440 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>mrViewer</title>
+
+
+</head>
+
+
+<body>
+
+<h1 style="text-align: center;">mrViewer</h1>
+
+<div style="text-align: center;">
+<h3>Version 1.5</h3>
+
+</div>
+
+<h2 style="text-align: center; text-decoration: underline;">Instruction
+Manual</h2>
+
+<h2>Table of Contents</h2>
+
+<ol style="font-weight: bold;">
+
+</ol>
+
+<ul>
+
+  <li><a href="#Conventions_Used_in_the_Manual">Conventions
+Used in the Manual</a></li>
+
+  <li><a href="#Installing_mrViewer">Installing
+mrViewer</a></li>
+
+  <li><a href="#Starting_mrViewer">Starting mrViewer</a></li>
+
+  <li><a href="#The_Interface">The Interface</a></li>
+
+  <ul>
+
+    <li><a href="#The_main_toolbar"><span style="font-weight: bold;"></span>The Main Toolbar</a></li>
+
+  </ul>
+
+  <ul>
+
+    <li><a href="#The_Pixel_Toolbar">The Pixel
+Toolbar</a></li>
+
+  </ul>
+
+  <ul>
+
+    <ul>
+
+    </ul>
+
+    <ul>
+
+    </ul>
+
+    <li><a href="#Playing_Movies_as_an_EDL_Reel">The
+Timeline</a><span style="font-weight: bold;"></span></li>
+
+    <ul>
+
+      <li><span style="font-weight: bold;"></span><a href="#Timecode__Frame_Display">Timecode / Frame Display</a></li>
+
+      <li><a href="#Playback_Controls">Playback
+Controls</a></li>
+
+      <li><a href="#Playback_Speed_FPS">Playback
+Speed (FPS)</a></li>
+
+      <li><a href="#Audio_Control_Volume">Audio
+Control (Volume)</a></li>
+
+      <li><a href="#Timeline_Display">Start and End
+of Timeline</a></li>
+
+    </ul>
+
+    <li><a href="#Playing_Movies_as_an_EDL_Reel">The
+Reel List</a></li>
+
+    <ul>
+
+      <li><a href="#Compositing_Images">Compositing
+Images</a></li>
+
+      <li><a href="#Playing_Movies_as_an_EDL_Reel">Playing
+Movies as an EDL Reel</a></li>
+
+    </ul>
+    <li><a href="#Image_Information_Window">The Image Information Window</a></li>
+    <ul>
+      <li>Image Information</li>
+      <ul>
+        <li>IPTC Information</li>
+      </ul>
+      <ul>
+        <li>EXIF Information</li>
+      </ul>
+    </ul>
+    <ul>
+      <li>Movie Information</li>
+      <li>Audio Information</li>
+    </ul>
+
+    <li><a href="#The_Color_Area_Window">The Color
+Area Window</a></li>
+
+    <li><a href="#The_Histogram_Window">The
+Histogram Window</a></li>
+
+    <li><a href="#Asset_Tracking">The Vectorscope
+Window</a></li>
+
+    <li>The Preferences Window</li>
+
+    <li>The About Window</li>
+
+  </ul>
+
+  <li><a href="#Asset_Tracking">Asset Tracking</a></li>
+
+  <ul>
+
+    <li>Setting up your database</li>
+
+    <li>Setting up your environment variables</li>
+
+    <li>Installing Ruby on Rails</li>
+
+    <li>Accessing the Ruby on Rails project with your browser</li>
+
+    <li>Customizing the database</li>
+
+  </ul>
+
+  <li><a href="#Color_Management">Color Management</a></li>
+
+  <ul>
+
+    <li>Setting up your monitor</li>
+
+  </ul>
+
+  <ul>
+
+    <ul>
+
+      <li>Using your monitor's EDID (Plug and Play) information</li>
+
+    </ul>
+
+    <li>Using CTL</li>
+
+    <li>Using ICC profiles with CTL</li>
+
+  </ul>
+
+  <li><a href="#Environment_Variables">Environment
+Variables</a></li>
+
+  <li><a href="#Hotkeys">Hotkeys</a></li>
+
+  <ul>
+
+    <li><a href="#Display">Display</a></li>
+
+    <li><a href="#Navigation">Navigation</a></li>
+
+    <li><a href="#Timeline">Timeline</a></li>
+
+    <li><a href="#Playback">Playback</a></li>
+
+  </ul>
+
+  <li><a href="#File_Formats">Supported File Formats</a></li>
+
+  <li><a href="#Licenses">Licenses</a></li>
+
+</ul>
+
+<h2><a name="Conventions_Used_in_the_Manual"></a><span style="text-decoration: underline;">Conventions Used in the
+Manual</span></h2>
+
+To simplify the explanations in this manual, some simple conventions
+are used.<br>
+
+<br>
+
+Clicking on any of the mouse buttons is referred with the nomenclature <span style="font-weight: bold;">LMB</span>, <span style="font-weight: bold;">MMB</span> and <span style="font-weight: bold;">RMB</span> for Left Mouse
+Button, Middle Mouse Button and Right Mouse Button.<br>
+
+<br>
+
+Hotkeys and shortcuts are referred in bold, like: &nbsp;<span style="font-weight: bold;">CTRL + H</span>.<br>
+
+<br>
+
+Menus are often referred as <span style="font-weight: bold;">Window-&gt;Preferences,
+</span>which means go to the option Preferences in the Window
+menu.<br>
+
+<br>
+
+Sections like the following:<br>
+
+<br>
+
+<span style="font-family: monospace;">&gt;&nbsp;mrViewer
+--help</span><br>
+
+<br>
+
+Represent commands you run in the windows console or the Unix shell.
+<h2><a name="Installing_mrViewer"></a><span style="text-decoration: underline;">Installing mrViewer</span></h2>
+
+Installation of mrViewer is done simply by clicking on the icon for its
+installer or by executing the file in a console or shell window.<br>
+
+The installer is multiplatform, and will install all versions of
+mrViewer under a common root directory.<br>
+
+Installation of mrViewer often requires you to have root or System
+Administrator permissions. &nbsp;If you run the installer as a
+normal
+user, you might only be able to install mrViewer to some non-standard
+installation directory, like your home directory.<br>
+
+The installer can also be run in silent mode for remote installs in
+case you want to install mrViewer locally on each machine on your
+network.
+<h2><span style="font-weight: bold; text-decoration: underline;"><a name="Starting_mrViewer"></a>Starting mrViewer</span></h2>
+
+mrViewer can be started in a variety of ways. &nbsp;<br>
+
+<br>
+
+By default, when installing mrViewer, you will also be given the choice
+to create an icon on your desktop. &nbsp;If you have done that, you
+can
+often just click on the mrViewer icon on the desktop.<br>
+
+<br>
+
+If you have no icon on your desktop, the simplest way is
+to go the place where mrViewer was installed, look for the directory
+for the appropiate platform and architecture for your machine and click
+on the mrViewer
+or mrViewer.exe application icon.<br>
+
+<br>
+
+mrViewer can also be started from any command-line or shell window, as
+mrViewer may have already added its path to your standard system PATH
+variable. &nbsp;Open any shell window and then you can type in:<br>
+
+<pre>&gt; mrViewer [-options] [&lt;images...&gt;]</pre>
+
+where -options are optional mrViewer command-line options
+and&nbsp;images are optionally a list of images or sequences you
+want
+to display. &nbsp;For a list of valid options, use:<br>
+
+<pre>&gt; mrViewer -h<br><br></pre>
+
+On certain platforms, like Windows, mrViewer can also associate itself
+to several image and video files it knows about. In that case,
+opening a Windows Explorer window and double-clicking on a file that
+mrViewer recognizes may automatically invoke a new copy of mrViewer.<br>
+
+<h2><a name="The_Interface"></a><span style="text-decoration: underline;">The Interface</span></h2>
+
+<img style="width: 728px; height: 672px;" alt="mainWindow" src="images/mainWindow.png"><br>
+
+<br>
+
+The main interface of mrViewer is divided into 4 main sections:<br>
+
+<ul>
+
+  <li><a href="#The_main_toolbar"><span style="font-weight: bold;">The main toolbar</span></a></li>
+
+  <li><a href="#The_Image_Area"><span style="font-weight: bold;">The image area</span></a></li>
+
+  <li><a href="#The_Pixel_Toolbar"><span style="font-weight: bold;">The pixel view toolbar</span></a></li>
+
+  <li><a href="#The_Timeline"><span style="font-weight: bold;">The timeline</span></a></li>
+
+</ul>
+
+<h3><a name="The_main_toolbar"></a><span style="text-decoration: underline;">The main toolbar</span></h3>
+
+<img style="width: 720px; height: 24px;" alt="mainToolbar" src="images/topToolbar.gif"><br>
+
+<br>
+
+The main toolbar allows you to perform several common operations common
+to the display of the image and bring up other image windows.
+&nbsp;It
+consists, from left to right, of:<br>
+
+The <span style="font-weight: bold;">W </span>icon
+stands for Windows and clicking on it will list all possible windows
+that can be created. &nbsp; Currently, these include:<br>
+
+<ul>
+
+  <li><a href="#Image_Information_Window">The Image
+Information Window</a></li>
+
+  <li><a href="#Reel_List_Window">The Reel List
+Window</a></li>
+
+  <li><a href="#The_Color_Area_Window">The Color
+Area Window</a></li>
+
+  <li><a href="#The_Histogram_Window">The Histogram
+Window</a></li>
+
+  <li><a href="#The_Vectorscope_Window">The
+Vectorscope Window</a></li>
+
+  <li>The About Window</li>
+
+</ul>
+
+The <span style="font-weight: bold;">Channel </span>display
+tells you what channel you are currently viewing (Color in the above
+picture).<br>
+
+The <span style="font-weight: bold;">Gain</span>
+control allows you to change the display gain of the image being
+displayed.<br>
+
+The <span style="font-weight: bold;">F-Stop</span>
+control is another
+way to control gain. It works in F-Stops, which is a common method used
+in photography and film to adjust a camera exposure.<br>
+
+The <span style="font-weight: bold;">Normalization</span>
+button allows
+you to normalize the image within the 0 and 1 range. &nbsp;Its most
+common use is for properly viewing Z-Depth channels or shadow maps.<br>
+
+The <span style="font-weight: bold;">Gamma</span>
+control allows you to modify the display gamma.<br>
+
+The <span style="font-weight: bold;">Field</span>
+control allows you to display the image as a full frame or as video
+fields.<br>
+
+The <span style="font-weight: bold;">1:1 </span>button
+allows you to toggle on and off a compensation for an image's pixel
+ratio.<br>
+
+The <span style="font-weight: bold;">LUT</span>
+button allows you to toggle the 3D LUT color correction for emulation
+of other media on your monitor.<br>
+
+<br>
+
+The main toolbar can be toggled on and off by using the <span style="font-weight: bold;">F1</span> hotkey.<br>
+
+<br>
+
+<h3 style="text-decoration: underline;"><a name="The_Image_Area"></a>The Image Area</h3>
+
+The Image Area is your main viewport. &nbsp;It usually displays one
+image at a time, albeit in the future it will be possible to display
+several images together.<br>
+
+<br>
+
+Within your viewport, your mouse pointer will change to a cross to more
+clearly indicate what pixel you are pointing at.<br>
+
+<br>
+
+You can manipulate the viewport using your mouse and hotkeys in a
+similar way to how maya and 3dmax work. &nbsp;Using your mousewheel
+you
+are able to zoom in and out from the pixel your cursor is pointing at.<br>
+
+<br>
+
+Using the <span style="font-weight: bold;">MMB</span>
+or <span style="font-weight: bold;">ALT+LMB</span>,
+you can scroll around the image canvas.<br>
+
+<br>
+
+Using the <span style="font-weight: bold;">LMB</span>
+you can select an
+area. &nbsp;The main purpose of selecting an area currently is to
+get
+the color information of the whole area.<br>
+
+<h3><a name="The_Pixel_Toolbar"></a><span style="text-decoration: underline;">The Pixel Toolbar</span></h3>
+
+<img style="width: 720px; height: 31px;" alt="pixel bar" src="images/pixelBar.gif"><br>
+
+<br>
+
+The pixel bar contains useful information about the current pixel that
+the mouse is located on, together with the zoom factor currently used
+to display the image.<br>
+
+The <span style="font-weight: bold;">x1</span> box
+displays the current Zoom Factor.<br>
+
+Next to it are the <span style="font-weight: bold;">X and
+Y coordinates</span> of the current cursor location.<br>
+
+Afterwards comes the current pixel color value as an <span style="font-weight: bold;">RGBA</span> float.<br>
+
+Then comes the current pixel value in <span style="font-weight: bold;">HSV</span> (Hue,
+Saturation, Value).<br>
+
+Finally, the current pixel's <span style="font-weight: bold;">Luminance</span>
+is also shown.<br>
+
+<br>
+
+The pixel toolbar can be toggled on and off by using the <span style="font-weight: bold;">F2</span> hotkey.<br>
+
+<br>
+
+<h3><a name="The_Timeline"></a><span style="text-decoration: underline;">The Timeline</span></h3>
+
+<img style="width: 724px; height: 54px;" alt="timelineBar" src="images/TimelineBar.gif"><br>
+
+<br>
+
+The timeline allows you to control what frame in a sequence or movie is
+displayed.<br>
+
+It can be toggled on and off by using the <span style="font-weight: bold;">F3</span> hotkey.<br>
+
+<br>
+
+The slider allows you to easily jump around the video sequence being
+displayed. &nbsp;When in EDL mode (see EDL), the timeline will also
+display each movie sequence as a video segment. &nbsp;The current
+video
+segment will be highlited.<br>
+
+<h4><a name="Timecode__Frame_Display"></a>Timecode
+/ Frame Display</h4>
+
+The <img style="width: 22px; height: 21px;" alt="Fbutton" src="images/Fbutton.gif">
+button refers to the current frame being displayed. &nbsp;Clicking
+on
+it will toggle between displaying the timeline and frame information as
+either frames or timecode.<br>
+
+<h4><a name="Playback_Controls"></a>Playback
+Controls</h4>
+
+<img style="width: 263px; height: 23px;" alt="playbackControls.gif" src="images/playbackControls.gif"><br>
+
+<br>
+
+The playback controls function very similarly to those in your VCR or
+Stereo. &nbsp;They allow you to, from left to right: go to the
+beginning of the movie, play the movie backwards, go back a single
+frame, pause the playback, go forwards one frame, play the movie
+forwards and go to the end of the movie.<br>
+
+Unlike your VCR, there is no fast-forward or rewinding controls.
+&nbsp;That functionality can be obtained by changing the frame rate
+and
+then playing the movie.<br>
+
+If you play a sequence of images, playback will not be smooth at first.
+&nbsp;mrViewer will first try to cache all the images in memory
+before
+playback. &nbsp;If you run out of memory or you start swapping, you
+might not be able to play back the sequence smoothly.<br>
+
+Smooth reverse playback&nbsp;of movie files is largely dependant on
+the codec used in the movie file.<br>
+
+<h4><a name="Playback_Speed_FPS"></a>Playback
+Speed (FPS)</h4>
+
+<img style="width: 86px; height: 23px;" alt="FPScontrol.gif" src="images/FPScontrol.gif"><br>
+
+<br>
+
+The FPS (Frames per Second) control allows you to adjust the speed of
+playback. &nbsp; This allows you to play the sequence in slow
+motion or
+at several times its normal speed.<br>
+
+<h4><a name="Audio_Control_Volume"></a>Audio
+Control (Volume)</h4>
+
+<img style="width: 99px; height: 23px;" alt="audioControl.gif" src="images/audioControl.gif"><br>
+
+<br>
+
+The audio control can be used to switch between different audio tracks
+by clicking on the <span style="font-weight: bold;">A </span>button.
+&nbsp;In addition, the audio volume can be controlled with the
+slider
+next to it. &nbsp;Note that, depending on your platform, changing
+the
+volume may effect all other applications that use sound.<br>
+
+<h4><a name="Timeline_Display"></a>Timeline
+Display</h4>
+
+Finally, the <span style="font-weight: bold;">S</span>
+and<span style="font-weight: bold;"> E </span>inputs
+allow you to change the start and end of the timeline. &nbsp;This
+has
+no effect on changing the actual length of the movie or image sequence,
+and is only provided for playback looping and display purposes.<br>
+
+<br>
+
+<h2><a name="Image_Information_Window"></a><span style="text-decoration: underline;">Image Information Window</span></h2>
+<img style="width: 392px; height: 484px; float: left;" alt="" src="images/imageInfoWindow.png" hspace="20"><br>
+You can bring up the Image Information window by doing any of:<br>
+
+<ul>
+
+  <li>Opening up the window from the main toolbar's <span style="font-weight: bold;">W</span> button.</li>
+
+  <li>By using<span style="font-weight: bold;">
+RMB-&gt;Window-&gt;Image Info.</span></li>
+
+  <li>By double clicking on an image in the Reel List window.</li>
+
+</ul>
+
+
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+The Image Information window displays detailed information about the
+image, movie or sequence being displayed in the foreground.
+&nbsp;The
+available information is:<br>
+
+<br>
+
+<table style="text-align: left; width: 971px; height: 417px;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Directory</td>
+
+      <td style="font-family: monospace;"> refers to the
+directory where the file resides.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Filename</td>
+
+      <td style="font-family: monospace;">refers to the
+filename(s) the movie, image or sequence refers to.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Sequence</td>
+
+      <td style="font-family: monospace;">true if the
+filename refers to a whole sequence of images, false if it refers to a
+single image or movie.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Width</td>
+
+      <td style="font-family: monospace;">the actual width
+of the image, sequence or movie.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Height</span></td>
+
+      <td style="font-family: monospace;">the actual
+height of the image, sequence of movie.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Aspect
+Ratio</td>
+
+      <td style="font-family: monospace;">the actual
+aspect ratio of the image (ie. resolution width / resolution height ).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Pixel
+Ratio</td>
+
+      <td style="font-family: monospace;">the shape of the
+pixels in the image. &nbsp;A pixel ratio of 1 refers to
+square pixels (like those of a printer or monitor). &nbsp;A
+different value
+refers to pixels for other media (usually, NTSC or PAL video).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Depth</td>
+
+      <td style="font-family: monospace;">the color depth
+of each channel (8-bit, 16-bit, or 32-bit for float images).</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">Image
+Channels</td>
+
+      <td style="font-family: monospace;">Number of image
+channels in the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Rendering Intent</span></td>
+
+      <td style="font-family: monospace;">The embedded
+rendering intent for this image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Gamma</td>
+
+      <td style="font-family: monospace;">the built-in
+gamma of the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Render
+Transform<br>
+
+      </td>
+
+      <td style="font-family: monospace;">Any embedded CTL
+(Color Transformation Language) rendering transform.<br>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">ICC Profile</span></td>
+
+      <td style="font-family: monospace;">Any embedded ICC
+(International Color Consortium) profile in the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Format
+      </td>
+
+      <td style="font-family: monospace;">the format of
+the image.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Line Order</span></td>
+
+      <td style="font-family: monospace;">The line order
+of the image (if applicable)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Memory</td>
+
+      <td style="font-weight: bold; font-family: monospace;"><span style="font-weight: normal;">The amount of memory the image
+uses.</span></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Disk space</span></td>
+
+      <td style="font-family: monospace;">The amount of
+disk space the image uses (only applicable if the image is on the
+filesystem)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">Compression</span></td>
+
+      <td style="font-family: monospace;">Compression type
+used to save the image. &nbsp;Some formats allow changing the
+compression type before saving.</td>
+
+    </tr>
+
+    <tr>
+
+      <td><span style="font-family: monospace; font-weight: bold;">Compression
+Ratio</span></td>
+
+      <td style="font-family: monospace;">The percentage
+of compression (ie. the difference between the space the image uses on
+memory and the space it uses on disk)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Creation
+Date</td>
+
+      <td style="font-family: monospace;"> the date the
+image was created or last modified.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">IPTC</td>
+
+      <td style="font-family: monospace;">IPTC
+(International code) attributes if applicable.<br>
+
+      </td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">EXIF</span></td>
+
+      <td style="font-family: monospace;">EXIF attributes
+(if applicable)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Video</td>
+
+      <td style="font-family: monospace;">when a video
+file is displayed, it shows codec, number of video streams and frames
+per second.</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Audio</td>
+
+      <td style="font-family: monospace;">when an audio
+file is attached, it shows codec, number of audio streams, number audio
+channels and audio frequency.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+&nbsp;<br>
+
+Some of these attributes may be interactively modified, either to
+change the display behavior of the image or to modify how an image is
+saved.<br>
+
+<br>
+
+<h2><a name="Reel_List_Window"></a><span style="text-decoration: underline;">Reel List Window</span></h2>
+
+<img style="width: 415px; height: 377px; float: left;" alt="reelList.png" src="images/reelList.png" hspace="20">You can bring up the Image Information window by doing any of:<br>
+
+<ul>
+  <li>Opening up the window from the main toolbar's <span style="font-weight: bold;">W</span> button.</li>
+  <li>By using<span style="font-weight: bold;">
+RMB-&gt;Window-&gt;Image Info.</span></li>
+  <li>By double clicking on an image in the Reel List window.</li>
+</ul>
+
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+The Reel List Window allows you to see all reels loaded as well as all
+images loaded in the currently active reel.<br>
+
+It also allows you to perform some additional operations on the images
+loaded.<br>
+
+<br>
+
+A reel is basically a list of images stored under a particular name.
+&nbsp;This list of images can be reordered simply by doing drag and
+drop of the image. &nbsp;You can also quickly switch from one image
+or
+movie to another by clicking on any item on the list.<br>
+
+<br>
+
+mrViewer allows you to also load reels (.reel files) from the command
+line or by doing drag and drop. &nbsp;When loading a reel, all the
+images listed in the reel will be loaded.<br>
+
+<br>
+
+The reel window also allows you to open a new image or movie, save the
+current image or frame, make a clone of the current image (useful for
+3d renders) or remove the image from the reel.<br>
+
+You can also attach a new CTL transform (3D Lut) to an image, make an
+image always appear as part of the background or play back the whole
+reel as an EDL.<br>
+
+<br>
+
+<h3><a name="Compositing_Images"></a>Compositing Images</h3>
+
+mrViewer supports some basic, non destructive A over B compositing.
+&nbsp;This compositing is for display purposes only and it is not
+intended for saving composited images.<br>
+
+<br>
+
+Within the Reel List Window, it is possible to select an image and then
+click on the <span style="font-weight: bold;">BG</span>
+button to make that image be a background image. &nbsp;Afterwards,
+you
+can then switch to a new image and the background image will be
+displayed in the background. &nbsp;The background image is always
+stretched to fit the size of the foreground image.<br>
+
+<br>
+
+The main purpose of this feature is to allow you to interactively see
+your 3d renders over a background plate. &nbsp;This works
+particularly
+well when reading a foreground image that is a file that changes on
+disk or when reading a virtual
+image, such as a mental ray render stub.
+<h3><a name="Playing_Movies_as_an_EDL_Reel"></a>Playing
+Movies as an EDL Reel</h3>
+
+One feature of mrViewer is that it allows you to display multiple
+sequences or movies together. &nbsp;If you load several files into
+a
+reel, you can then toggle EDL mode on and off from the Reel List Window.<br>
+
+The EDL mode allows you to show all movies in a reel one after the
+other, as if all of them had been edited together into a big movie file.<br>
+
+<br>
+
+<h2 style="text-decoration: underline;"><a name="The_Color_Area_Window"></a>The Color Area Window</h2>
+
+
+<img style="width: 407px; height: 297px; float: left;" alt="" src="images/colorAreaWindow.png" hspace="20"><br>
+
+You can bring up the Color Area Window by doing any of:<br>
+
+<ul>
+  <li>Opening up the window from the main toolbar's <span style="font-weight: bold;">W</span> button.</li>
+  <li>By using<span style="font-weight: bold;">
+RMB-&gt;Window-&gt;Color Info.</span></li>
+</ul>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+
+In addition to the pixel information that is provided in the Pixel
+Toolbar, mrViewer also supports a Color Area Window that displays color
+information about the currently selected area.<br>
+
+For the window to display any information, you need to have an image or
+movie loaded and select an area of it with the <span style="font-weight: bold;">LMB</span>.<br>
+The Color Area window displays the coordinates of the rectangle area
+selected, its&nbsp;width and height in pixels as well as its total size
+in pixels.<br>
+The information displayed are the minimum and maximum values of the
+Red, Green, Blue and Alpha channels for the currently selected layer
+and area. &nbsp;The range represents the absolute difference between
+the maximum and minimum values. &nbsp;Finally, the mean represents the
+mean average of the pixels in the area for that particular channel.<br>
+Similar information is displayed for the Hue, Saturation, Value and Luminance.<br>
+
+<br>
+
+<h2><a name="The_Histogram_Window"></a><span style="text-decoration: underline;">The Histogram Window</span></h2>
+
+<img style="width: 332px; height: 277px; float: left;" alt="" src="images/histogramWindow.png" hspace="20">You can bring up the Color Area Window by doing any of:<br>
+
+<ul>
+  <li>Opening up the window from the main toolbar's <span style="font-weight: bold;">W</span> button.</li>
+  <li>By using<span style="font-weight: bold;">
+RMB-&gt;Window-&gt;Histogram.</span></li>
+</ul>
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+The Histogram Window allows you to see different types of histograms
+for the current image or movie file.<br>
+
+A Histogram represents a chart mapping the occurrance of each color in
+the image, going from black or darker colors on the left side, to white
+or brighter colors on the right side.<br>
+
+Histograms are often used as a debugging aid to interpret color
+information in an image and can easily pinpoint problems in contrast in
+an image.<br>
+
+In the example image above, you can see for example that in the blue
+channel, black or close to black appears often in the image, which may
+or may not be what you want (depending on the image).<br>
+
+A histogram can be shown using a linear, logarithmic or square root
+counter. &nbsp;<br>
+
+A linear display shows a proportianal line for each color count in an
+image. &nbsp;On images where some color like black appears too
+often,
+it may result in a big spike while all other colors remain flat.
+&nbsp;
+A logarithmic or square root histogram takes that same count and
+applies a log or square root operation which makes the chart a little
+bit flatter and often nicer to interpret.<br>
+
+The default histogram type is a logarithmic histogram.<br>
+
+<h2><span style="text-decoration: underline;"><a name="The_Vectorscope_Window"></a>The Vectorscope
+Window</span></h2>
+
+<img style="width: 334px; height: 277px; float: left;" alt="" src="images/vectorscopeWindow.png" hspace="20">You can bring up the Color Area Window by doing any of:<br>
+
+<ul>
+  <li>Opening up the window from the main toolbar's <span style="font-weight: bold;">W</span> button.</li>
+  <li>By using<span style="font-weight: bold;">
+RMB-&gt;Window-&gt;Histogram.</span></li>
+</ul>
+<br>
+
+<br>
+
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+<br>
+A Vectorscope is a tool used mainly in video productions as a debugging
+aid. &nbsp;It basically shows you color information.<br>
+
+The display represents color in a circle or pie and each square
+(R,M,B,C,G,Y) represents a&nbsp;pure primary or secondary color
+according to the NTSC or PAL standards. &nbsp;No red, magenta,
+blue,
+cyan, green or yellow color is expected to be brighter/more saturated
+than the squares (ie. go beyond them).<br>
+
+Each color of the color bars, for example, is expected to land
+perfectly within each of the squares.<br>
+
+However, when dealing with computer graphics or bad video, it is
+perfectly possible for a signal to create colors that are too bright or
+saturated for the TV standards. &nbsp; If a color is too bright or
+saturated, it might lead to problems in the broadcasting of the
+transmission and may force the tv channel to have to desaturate all
+your image.
+<h2 style="text-decoration: underline;"><a name="Asset_Tracking"></a>Asset Tracking</h2>
+
+One unique feature of mrViewer is its built-in asset tracking system.
+&nbsp;With it, every image or movie file that any person in your
+facility views will be recorded into a generic database and it will be
+sorted by show, sequence and shot.<br>
+
+This database can also be accessed through your browser, as a Ruby on
+Rails project for it is also provided.<br>
+
+<br>
+
+<h2 style="text-decoration: underline;"><a name="Color_Management"></a>Color Management</h2>
+
+mrViewer supports probably the most advanced color management system in
+use today, called CTL (Color Transform Language). &nbsp;CTL was
+developed by AMPAS, the Academy of Motion Picture Arts and Sciences,
+with the help of Industrial Light and Magic (ILM).<br>
+
+As the name implies, CTL is an actual&nbsp;language, similar to a
+shading language, which can be used for color transformation of images.
+&nbsp;Its feature set is similar to that of ICC, albeit it goes
+beyond
+it, to also support particular features specific to the movie
+production business. &nbsp;Being a full featured language, the
+possibilities for color correction are unlimited and since CTL scripts
+are&nbsp;just ASCII files, it becomes harder to misinterpret.<br>
+
+Within mrViewer, two or more CTL files are processed and baked into a
+64x64x64 3D Lut which then operates on the image completely with 32-bit
+float information. &nbsp; This will often give you a pretty
+accurate
+approximation of even the most complex transformations.<br>
+
+<br>
+
+In addition to CTL, mrViewer also supports ICC, which is still pretty
+common with the print industry as well as some monitor manufacturers.
+&nbsp;In the future, it is likely that ICC support will be vanished
+and
+that an internal ICC to CTL converter will be provided instead.<br>
+
+<br>
+
+<h2 style="text-decoration: underline;"><a name="Environment_Variables"></a>Environment Variables</h2>
+
+On startup and during different operations, mrViewer reads several
+environment variables that allow you to customize its operation.
+&nbsp;Here's a list of them:<br>
+
+<br>
+
+<table style="width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th style="text-align: center;">Variable</th>
+
+      <th style="text-align: center;"> Explanation</th>
+
+      <th style="text-align: center;"> Default Value</th>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_MODULE_PATH</td>
+
+      <td style="font-family: monospace;">A string of
+colon (Unix) or semicolon (Windows) separated paths that
+mrViewer will use to find .ctl scripts.</td>
+
+      <td style="font-family: monospace;">If unset,
+mrViewer's ctl directory</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_TRANSFORM</td>
+
+      <td style="font-family: monospace;">The CTL script
+used to transform images from CIExy space for display on
+your screen</td>
+
+      <td style="font-family: monospace;">
+transform_display_video</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_IMAGE_DEFAULT_TRANSFORM</td>
+
+      <td style="font-family: monospace;"> A default CTL
+script used to transform images from RGB to CIExy space</td>
+
+      <td style="font-family: monospace;"> transform_RRT</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_CHROMATICITIES</td>
+
+      <td style="font-family: monospace;"> Chromaticities
+of your display</td>
+
+      <td style="font-family: monospace;"> Rec. ITU-R
+BT.709 chromaticities</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_WHITE_LUMINANCE</td>
+
+      <td style="font-family: monospace;"> White Luminance
+of your display</td>
+
+      <td style="font-family: monospace;"> 120 candelas
+per square meter</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_SURROUND_LUMINANCE</td>
+
+      <td style="font-family: monospace;"> Luminance of
+the surrounding environment</td>
+
+      <td style="font-family: monospace;"> 12 candelas per
+square meter</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_HOST</td>
+
+      <td style="font-family: monospace;"> Machine where
+mrViewer's database resides</td>
+
+      <td style="font-family: monospace;"> localhost</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_PORT</td>
+
+      <td style="font-family: monospace;"> TCP/IP Port
+override to use to connect to database</td>
+
+      <td style="font-family: monospace;"> Uses default
+for database type</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_USER</td>
+
+      <td style="font-family: monospace;"> User used to
+login to mrViewer's database</td>
+
+      <td style="font-family: monospace;"> mrviewer</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_PASSWORD</td>
+
+      <td style="font-family: monospace;"> Password used
+to login to mrViewer's database</td>
+
+      <td style="font-family: monospace;"> mrviewer</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_DATABASE</td>
+
+      <td style="font-family: monospace;"> Name of
+mrViewer's database</td>
+
+      <td style="font-family: monospace;">
+assets2d_production</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">SHOW</span></td>
+
+      <td style="font-family: monospace;">If set, any
+image viewed will be stored in the database as belonging to that show.</td>
+
+      <td style="font-family: monospace;">Undefined</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">SEQ</span></td>
+
+      <td style="font-family: monospace;">If set, any
+image viewed will be stored in the database as belonging to that
+sequence.</td>
+
+      <td style="font-family: monospace;">Undefined</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">SHOT</span></td>
+
+      <td style="font-family: monospace;">If set, any
+image viewed will be stored in the database as belonging to that shot.</td>
+
+      <td style="font-family: monospace;">Undefined</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">ICC_PROFILES</td>
+
+      <td style="font-family: monospace;">Directory where
+ICC and ICM profiles reside</td>
+
+      <td style="font-family: monospace;">%WINDIR%/SYSTEM32/spool/drivers/color
+on Windows and
+/usr/share/color/icc on Unix</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace; font-weight: bold;">HOME</td>
+
+      <td style="font-family: monospace;"> Home directory
+for user where mrViewer's preferences will be stored</td>
+
+      <td style="font-family: monospace;">$HOME on Unix
+and %HOMEDIR% on Windows</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<span style="font-family: monospace;"></span>
+<h2><a name="Hotkeys"></a><span style="text-decoration: underline;">Hotkeys</span></h2>
+
+Currently, mrViewer does not yet allow you to redefine your hotkeys,
+albeit this limitation will certainly be lifted in the near future.<br>
+
+<br>
+
+The default hotkey configuration is the following:
+<div style="text-align: center;">
+<h3><a class="mozTocH3" name="Display"></a><span style="text-decoration: underline; font-weight: bold;">Display</span></h3>
+
+</div>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">R</td>
+
+      <td style="font-family: monospace;">Display
+Red&nbsp;&nbsp; Channel</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">G</td>
+
+      <td style="font-family: monospace;">Display Green
+Channel</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">B</td>
+
+      <td style="font-family: monospace;">Display
+Blue&nbsp; Channel</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">A</td>
+
+      <td style="font-family: monospace;">Display Alpha
+Channel</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">O</td>
+
+      <td style="font-family: monospace;">Display Alpha
+Overlayed over RGB</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">L</td>
+
+      <td style="font-family: monospace;">Display
+Luminance (if available)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Z</td>
+
+      <td style="font-family: monospace;">Display Z Depth
+(if available)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">T</td>
+
+      <td style="font-family: monospace;"> Display
+Tag&nbsp;Channel (if available)</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">S</td>
+
+      <td style="font-family: monospace;">Toggle Safe Area
+Display</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">F1</td>
+
+      <td style="font-family: monospace;">Toggle Top
+Toolbar</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">F2</td>
+
+      <td style="font-family: monospace;">Toggle Pixel
+Info Toolbar</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">F3</td>
+
+      <td style="font-family: monospace;">Toggle Timeline</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Spacebar</td>
+
+      <td style="font-family: monospace;">Toggle
+full-screen</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">F12</td>
+
+      <td style="font-family: monospace;">Toggle
+Presentation Mode<br>
+
+This mode is mrViewer's full screen, best antialiased mode, suitable
+for exhibition or projection.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<span style="text-decoration: underline;"><span style="font-weight: bold;"></span></span><br>
+
+<div style="text-align: center;">
+<h3><a class="mozTocH3" name="Navigation"></a><span style="text-decoration: underline; font-weight: bold;">Navigation</span></h3>
+
+</div>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">1-9&nbsp;&nbsp;&nbsp;&nbsp;</td>
+
+      <td style="font-family: monospace;"> Zoom to # times</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Alt
++ RMB or ALT + LMB + MMB</td>
+
+      <td style="font-family: monospace;">Zoom view window
+arbitrarily</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Alt
++ MMB</td>
+
+      <td style="font-family: monospace;">Scroll view
+window</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Mousewheel</td>
+
+      <td style="font-family: monospace;">Zoom in/out</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<div style="text-align: center;">
+<h3><a class="mozTocH3" name="Timeline"></a><span style="font-weight: bold; text-decoration: underline;">Timeline</span></h3>
+
+</div>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Home</td>
+
+      <td style="font-family: monospace;">Go to start of
+sequence</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">End</td>
+
+      <td style="font-family: monospace;">Go to end of
+sequence</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ctrl
++ Home</td>
+
+      <td style="font-family: monospace;">Go to start of
+timeline</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ctrl
++ End</td>
+
+      <td style="font-family: monospace;">Go to end of
+timeline</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">PgUp</td>
+
+      <td style="font-family: monospace;">Go to previous
+image</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">PgDown</td>
+
+      <td style="font-family: monospace;">Go to next image</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Left
+Arrow or NumPad 4</td>
+
+      <td style="font-family: monospace;">Go back a frame
+or previous image</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Right
+Arrow or NumPad 6</td>
+
+      <td style="font-family: monospace;">Go to next frame
+or next image</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Alt
++ Mousewheel</td>
+
+      <td style="font-family: monospace;">Scrub playback</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ctrl
++ Left Arrow</td>
+
+      <td style="font-family: monospace;">Go back 1 second</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ctrl
++ Right Arrow</td>
+
+      <td style="font-family: monospace;">Advance 1 second</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<div style="text-align: center;">
+<h3><a class="mozTocH3" name="Playback"></a><span style="font-weight: bold; text-decoration: underline;">Playback</span></h3>
+
+</div>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Down
+Arrow <span style="font-weight: normal;">or</span>&nbsp;NumPad
+2</td>
+
+      <td style="font-family: monospace;">Play movie
+forwards</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Up
+Arrow <span style="font-weight: normal;">or&nbsp;</span>NumPad
+8</td>
+
+      <td style="font-family: monospace;">Play movie
+backwards</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Shift
++ Down Arrow</td>
+
+      <td style="font-family: monospace;">Play movie 1/2
+normal speed</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Shift
++ Up&nbsp;&nbsp; Arrow</td>
+
+      <td style="font-family: monospace;">Play movie
+backwards 1/2 normal speed</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ctrl&nbsp;
++ Down Arrow</td>
+
+      <td style="font-family: monospace;">Play movie x2
+normal speed</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">Ctrl&nbsp;
++ Up&nbsp;&nbsp; Arrow</td>
+
+      <td style="font-family: monospace;">Play movie
+backwards x2 normal speed</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-weight: bold; font-family: monospace;">NumPad
+5</td>
+
+      <td style="font-family: monospace;">Stop playback.</td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+<h2 style="text-decoration: underline;"><a name="File_Formats"></a>File Formats</h2>
+
+mrViewer supports a number of image formats for reading and writing.
+&nbsp;Here's a brief summary of them:<br>
+
+<br>
+
+<table style="width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <th>
+      <h3>Extension</h3>
+
+      </th>
+
+      <th>
+      <h3>&nbsp;Name</h3>
+
+      </th>
+
+      <th>
+      <h3>&nbsp;Read</h3>
+
+      </th>
+
+      <th>
+      <h3>&nbsp;Write</h3>
+
+      </th>
+
+      <th>
+      <h3>&nbsp;Comments</h3>
+
+      </th>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.avi</td>
+
+      <td style="font-family: monospace;"> AVI</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"> All Channels,
+all codecs</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.bmp</td>
+
+      <td style="font-family: monospace;"> Microsoft's Bitmap</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.cin</td>
+
+      <td style="font-family: monospace;">Cineon</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.ct</td>
+
+      <td style="font-family: monospace;"> mental ray
+floating point color images</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.dds</td>
+
+      <td style="font-family: monospace;">Microsoft Direct
+Draw Surface</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.dpx</td>
+
+      <td style="font-family: monospace;">DPX</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.exr</td>
+
+      <td style="font-family: monospace;">ILM OpenEXR</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace;"> All Channels
+and Layers displayed</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.gif</td>
+
+      <td style="font-family: monospace;">GIF</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.iff</td>
+
+      <td style="font-family: monospace;"> Maya IFF</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.jpeg</td>
+
+      <td style="font-family: monospace;">JPEG</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.map</td>
+
+      <td style="font-family: monospace;"> mental ray
+textures</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"> Only non-tiled
+maps supported</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.mi</td>
+
+      <td style="font-family: monospace;">mental ray
+network render file stubs</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;">Floating point connections</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.mov</td>
+
+      <td style="font-family: monospace;"> Quicktime Movies</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.mpeg</td>
+
+      <td style="font-family: monospace;">Motion Pictures
+Group</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.nt</td>
+
+      <td style="font-family: monospace;"> mental ray
+floating point normal images</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.ogg</td>
+
+      <td style="font-family: monospace;">OGG</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.pdf</td>
+
+      <td style="font-family: monospace;"> Adobe Postscript</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;">Single page, converted to a bitmap</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.pic</td>
+
+      <td style="font-family: monospace;"> Softimage pic</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.png</td>
+
+      <td style="font-family: monospace;">PNG</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.psd</td>
+
+      <td style="font-family: monospace;">Photoshop</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace;"> All Layers
+displayed, paths and vector graphics lost</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.reel</td>
+
+      <td style="font-family: monospace;">mrViewer's reel
+(EDL) files</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.rpf</td>
+
+      <td style="font-family: monospace;">Autodesk 3DS
+Rich Picture Format</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+      <td style="font-family: monospace;">Some layers
+supported</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.shmap</td>
+
+      <td style="font-family: monospace;"> mental ray
+floating point shadow maps</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.st</td>
+
+      <td style="font-family: monospace;"> mental ray
+floating point scalar images</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.tga</td>
+
+      <td style="font-family: monospace;"> Targa</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.tif</td>
+
+      <td style="font-family: monospace;"> TIFF</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace;"> All Layers
+displayed</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.wmv</td>
+
+      <td style="font-family: monospace;"> Microsoft WMV</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;">WMV9 supported,
+but slow</td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.z</td>
+
+      <td style="font-family: monospace;">Rendeman Shadow
+Maps</td>
+
+      <td style="font-family: monospace; text-align: center;">Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+    <tr>
+
+      <td style="font-family: monospace;">.zt</td>
+
+      <td style="font-family: monospace;"> mental ray
+floating point z-depth images</td>
+
+      <td style="font-family: monospace; text-align: center;">
+Yes</td>
+
+      <td style="font-family: monospace; text-align: center;">
+No</td>
+
+      <td style="font-family: monospace;"></td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<h2 style="text-decoration: underline;"><a name="Licenses"></a>Licenses</h2>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 19px; color: rgb(0, 0, 0);">
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 19px; color: rgb(0, 0, 0);"><small><big style="font-weight: bold;">OpenEXR libraries are distributed
+under the following License:</big><br>
+
+<br>
+
+Copyright (c) 2006, Industrial Light &amp; Magic, a division of
+Lucas Digital Ltd. LLC<br>
+
+All rights reserved.<br>
+
+</small>
+<ul>
+
+  <li><small>Redistribution and use in source and binary
+forms, with or
+without modification, are permitted provided that the following
+conditions are met:</small></li>
+
+  <li><small>Redistributions of source code must retain the
+above copyright notice, this list of conditions and the following
+disclaimer.</small></li>
+
+  <li><small>Redistributions in binary form must reproduce
+the above
+copyright notice, this list of conditions and the following disclaimer
+in the documentation and/or other materials provided with the
+distribution.</small></li>
+
+  <li><small>Neither the name of Industrial Light &amp;
+Magic nor the
+names of its contributors may be used to endorse or promote products
+derived from this software without specific prior written permission. </small></li>
+
+</ul>
+
+<small><small>THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT
+HOLDERS AND
+CONTRIBUTORS "AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,
+BUT NOT<br>
+
+LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A
+PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT
+OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE,
+DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY
+THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT
+(INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE
+OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.</small><br>
+
+<br style="font-weight: bold;">
+
+<big style="font-weight: bold;">ImageMagick libraries are
+distributed under the following License:</big></small><br>
+
+<small><br>
+
+<small><span style="font-family: monospace;">Copyright
+1999-2007 ImageMagick Studio LLC, a non-profit organization
+dedicated to making software imaging solutions freely available.</span><br style="font-family: monospace;">
+
+<span style="font-family: monospace;">http://www.imagemagick.org/script/license.php</span></small></small><br>
+
+<big><br>
+
+</big></div>
+
+<span style="font-weight: bold;">CTL and OpenEXR_CTL
+libraries are distributed under the following License:</span></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 19px; text-decoration: none; color: rgb(0, 0, 0);"><small>&nbsp;</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small>Copyright
+&copy; 2006 Academy of Motion Picture Arts and Sciences
+("A.M.P.A.S."). Portions contributed by others as indicated.</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small>All
+rights reserved.</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; text-decoration: none; color: rgb(0, 0, 0);"><small>&nbsp;</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small>A
+world-wide, royalty-free, non-exclusive right to distribute, copy,
+modify, create derivatives, and use, in source and binary forms, is</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small>hereby
+granted, subject to acceptance of this license. Performance of any of
+the aforementioned acts indicates acceptance to be bound by the</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small>following
+terms and conditions:</small></div>
+
+<ul>
+
+  <li><small><small>Redistributions of source code
+must retain the above copyright notice, this list of conditions and the
+Disclaimer of Warranty.</small></small></li>
+
+  <li><small><small>Redistributions in binary form
+must reproduce the
+above copyright&nbsp;notice, this list of conditions and the
+Disclaimer
+of Warranty in the documentation and/or other materials provided with
+the&nbsp;distribution.</small></small></li>
+
+  <li><small><small>Nothing in this license shall be
+deemed to grant
+any rights to&nbsp;trademarks, copyrights, patents, trade secrets
+or
+any other&nbsp;intellectual property of A.M.P.A.S. or any
+contributors,
+except&nbsp;as expressly stated herein, and neither the name of
+A.M.P.A.S.&nbsp;nor of any other contributors to this software, may
+be
+used to endorse or promote products derived from this software
+without&nbsp;specific prior written permission of A.M.P.A.S. or
+contributor,&nbsp;as appropriate.</small></small></li>
+
+</ul>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small>This
+license shall be governed by the laws of the State of California, and
+subject to the jurisdiction of the courts therein.</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; text-decoration: none; color: rgb(0, 0, 0);"><small>&nbsp;</small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small><small>Disclaimer
+of Warranty: THIS SOFTWARE IS PROVIDED BY A.M.P.A.S. AND CONTRIBUTORS
+"AS IS" AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING,</small></small></div>
+
+<div class="paragraph Body" style="margin-bottom: 0px; margin-top: 0px; font-size: 14px; font-weight: normal; line-height: 20px; opacity: 1; color: rgb(0, 0, 0);"><small><small>BUT
+NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR
+A PARTICULAR PURPOSE, AND NON-INFRINGEMENT ARE DISCLAIMED. IN NO EVENT
+SHALL A.M.P.A.S., ANY CONTRIBUTORS OR DISTRIBUTORS BE LIABLE FOR ANY
+DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL
+DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS
+OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION)
+HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT,
+STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING
+IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE
+POSSIBILITY OF SUCH DAMAGE.</small></small>
+<p><span style="font-weight: bold;">Boost libraries
+are distributed under the following License:</span><br>
+
+</p>
+
+<p><small><small>Boost Software License - Version 1.0
+- August 17th, 2003</small><br>
+
+<small><br>
+
+Permission is hereby granted, free of charge, to any person or
+organization obtaining a copy of the software and accompanying
+documentation covered by this license (the "Software") to use,
+reproduce, display, distribute, execute, and transmit the Software, and
+to prepare derivative works of the Software, and to permit
+third-parties to whom the Software is furnished to do so, all subject
+to the following:<br>
+
+<br>
+
+The copyright notices in the Software and this entire statement,
+including the above license grant, this restriction and the following
+disclaimer, must be included in all copies of the Software, in whole or
+in part, and all derivative works of the Software, unless such copies
+or derivative works are solely in the form of machine-executable object
+code generated by a source language processor.<br>
+
+<br>
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS
+OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
+MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, TITLE AND
+NON-INFRINGEMENT. IN NO EVENT SHALL THE COPYRIGHT HOLDERS OR ANYONE
+DISTRIBUTING THE SOFTWARE BE LIABLE FOR ANY DAMAGES OR OTHER LIABILITY,
+WHETHER IN CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN
+CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+SOFTWARE.</small></small></p>
+
+<p><small><small><big style="font-weight: bold;"><big>libtiff
+is distributed under a BSD license.<br>
+
+</big></big></small></small></p>
+
+<p><small><small><big style="font-weight: bold;"><big>zlib
+is distributed under the Zlib license:</big></big></small></small></p>
+
+<small><small> Copyright (C) 1995-2004 Jean-loup Gailly and
+Mark Adler<br>
+
+<br>
+
+This software is provided 'as-is', without any express or implied
+warranty. In no event will the authors be held liable for any damages
+arising from the use of this software.<br>
+
+<br>
+
+Permission is granted to anyone to use this software for any purpose,
+including commercial applications, and to alter it and redistribute it
+freely, subject to the following restrictions:<br>
+
+<br>
+
+1. The origin of this software must not be misrepresented; you must not
+claim that you wrote the original software. If you use this software in
+a product, an acknowledgment in the product documentation would be
+appreciated but is not required.<br>
+
+2. Altered source versions must be plainly marked as such, and must not
+be misrepresented as being the original software.<br>
+
+3. This notice may not be removed or altered from any source
+distribution.</small></small><br>
+
+</div>
+
+</body>
+</html>

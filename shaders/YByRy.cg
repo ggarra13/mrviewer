@@ -1,0 +1,147 @@
+/**
+ * @file   yuva.cg
+ * @author gga
+ * @date   Thu Jul  5 22:50:08 2007
+ * 
+ * @brief    simple YCA texture (OpenEXR) with 3D lut shader
+ * @compile  cgc -profile fp30 YByRy.cg -o YByRy.fp30
+ * 
+ */
+
+struct Out
+{ 
+  half4 pixel: COLOR; 
+};
+
+Out main( 
+	 float2 tc: TEXCOORD0, 
+	 uniform sampler2D YImage: TEXUNIT0, 
+	 uniform sampler2D BYImage: TEXUNIT1, 
+	 uniform sampler2D RYImage: TEXUNIT2, 
+	 uniform sampler3D lut   : TEXUNIT3,
+	 uniform half3  yw   = half3( 0.2126, 0.7152, 0.0722 ),  // HDTV
+	 uniform half   gain  = 1.0,
+	 uniform half   gamma = 1.0,
+	 uniform int    channel = 0,
+	 uniform bool   enableNormalization = 0,
+	 uniform half   normMin = 0,
+	 uniform half   normSpan  = 1,
+	 uniform bool   enableLut = 0,
+	 uniform half   lutF = 0,
+	 uniform half   lutMin, 
+	 uniform half   lutMax, 
+	 uniform half   lutM, 
+	 uniform half   lutT
+	  )
+{ 
+  //
+  // Sample luminance and chroma, convert to RGB. 
+  //
+  half3 pre = half3( 
+		    tex2D(YImage, tc).r,  // Y
+		    tex2D(BYImage, tc).r, // B - Y
+		    tex2D(RYImage, tc).r  // R - Y
+		     );
+
+  half4 c;
+  c.r = (pre.g + 1) * pre.r;
+  c.b = (pre.b + 1) * pre.r;
+  c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
+  c.a = 1.0f;
+
+  //
+  // Apply normalization
+  //
+  if (enableNormalization)
+    {
+      c.rgb = (c.rgb - normMin) / normSpan;
+    }
+
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
+
+
+  //
+  // Apply 3D color lookup table (in log space).
+  //
+  if (enableLut)
+    {
+      if ( lutF )
+	{
+	  //
+	  // Texture hardware does not support
+	  // interpolation between texture samples
+	  // 
+	  half3 i = lutF * half3( lutT + lutM *
+				  log( clamp(c.rgb, lutMin, lutMax) ) );
+
+	  half3 fi = floor(i);
+	  half3 fj = fi + 1;
+	  half3 s = i - fi;
+
+	  fi = fi / lutF;
+	  fj = fj / lutF;
+
+	  half3 c0 = tex3D(lut, half3(fi.x, fi.y, fi.z)).rgb;
+	  half3 c1 = tex3D(lut, half3(fj.x, fi.y, fi.z)).rgb;
+	  half3 c2 = tex3D(lut, half3(fi.x, fj.y, fi.z)).rgb;
+	  half3 c3 = tex3D(lut, half3(fj.x, fj.y, fi.z)).rgb;
+	  half3 c4 = tex3D(lut, half3(fi.x, fi.y, fi.z)).rgb;
+	  half3 c5 = tex3D(lut, half3(fj.x, fi.y, fj.z)).rgb;
+	  half3 c6 = tex3D(lut, half3(fi.x, fj.y, fj.z)).rgb;
+	  half3 c7 = tex3D(lut, half3(fj.x, fj.y, fj.z)).rgb;
+
+	  c.rgb = ((c0 * (1-s.x) + c1 * s.x) * (1-s.y) +
+		   (c2 * (1-s.x) + c3 * s.x) *  s.y) * (1-s.z) +
+	    ((c4 * (1-s.x) + c5 * s.x) * (1-s.y) +
+	     (c6 * (1-s.x) + c7 * s.x) *  s.y) * s.z;
+
+	  c.rgb = exp(c.rgb);
+	}
+      else
+	{
+	  c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
+	  c.rgb = exp( tex3D(lut, c.rgb).rgb );
+	}
+    }
+
+  //
+  // Apply video gamma correction.
+  //
+  c.rgb = pow( c.rgb, gamma );
+
+  //
+  // Apply channel selection
+  //
+  if ( channel == 1 )
+    {
+      c.rgb = c.rrr;
+    }
+  else if ( channel == 2 )
+    {
+      c.rgb = c.ggg;
+    }
+  else if ( channel == 3 )
+    {
+      c.rgb = c.bbb;
+    }
+  else if ( channel == 4 )
+    {
+      c.rgb = c.aaa;
+    }
+  else if ( channel == 5 )
+    {
+      c.r *= 0.5;
+      c.r += c.a * 0.5;
+    }
+  else if ( channel == 6 )
+    {
+      c.rgb = (c.r + c.g + c.b) / 3;
+    }
+
+  Out output;
+  output.pixel = c;
+  return output;
+}

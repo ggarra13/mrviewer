@@ -1,0 +1,18 @@
+#
+#
+#
+
+PROJECT( mrViewer_shaders )
+
+SET( CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/../modules" )
+
+
+FIND_PACKAGE( Cg REQUIRED )
+
+
+
+SET( PROFILES fp30 arbfp1 )
+
+CGC_COMPILE( rgba  ${PROFILES} )
+CGC_COMPILE( YCbCr ${PROFILES} )
+CGC_COMPILE( YByRy ${PROFILES} )

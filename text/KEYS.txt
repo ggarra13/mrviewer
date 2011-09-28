@@ -1,0 +1,56 @@
+Keyboard Commands
+-----------------
+
+Esc      - Exit viewer
+F1       - Toggle Gain/Gamma bar
+F2       - Toggle Color Display bar
+F3       - Toggle Timeline
+Spacebar - Toggle Full Screen
+F12      - Toggle Presentation mode
+
+1-9      - Zoom the corresponding factor
+f        - Fit image in window 
+
+c        - Color Channels
+l        - Lumma Channel
+r        - Red Channel
+g        - Green Channel
+b        - Blue Channel
+a        - Alpha Channel
+o        - Overlay Alpha Channel
+
+[        - Exposure down
+]        - Exposure up
+(        - Gamma down
+)        - Gamma up
+.        - Zoom in under mouse
+,        - Zoom out under mouse
+Spacebar - Full screen with all bars on
+Tab      - Toggle background image
+
+Left Arrow              Step backwards one frame.
+Right Arrow		Step forwards one frame.
+Ctrl+Left Arrow         Step backwards FPS frames.
+Ctrl+Right Arrow        Step forwards FPS frames.
+Down Arrow		Play forward.
+Up   Arrow		Play backwards.
+Home                    Step to beginning of video.
+End                     Step to end of video.
+
+Ctrl+Down Arrow         Play forwards at twice FPS of video
+Ctrl+Up  Arrow          Play backwards at twice FPS of video
+Shift+Down Arrow        Play forwards at half FPS of video
+Shift+Up  Arrow         Play backwards at half FPS of video
+
+CTRL + o - Open new image or video
+CTRL + s - Save frame of video
+CTRL + m - Attach CTL transform to monitor
+CTRL + n - Attach ICC profile to monitor
+
+Mouse
+-----
+
+Shift + Mouse move	Scrub playback.
+MouseWheel              Zoom in/out in place of cursor.
+Left Mouse Button       Select an area for color inquiries.
+Right Mouse Button      Bring up a context sensitive menu.

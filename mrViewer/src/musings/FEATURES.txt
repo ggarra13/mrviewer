@@ -1,0 +1,280 @@
+
+FEATURES
+--------
+
+- and x  Already working or in beta.
+
+(+) Expected for a commercial 1.0 release.
+(*) Planned feature for a 2.0 release.
+(#) Planned feature for a 3.0 or later release.
+
+
+General
+-------
+
+- Multi-platform ( Windows, Linux )
+- Viewer works internally in linear floating point.
+- Fully Multithreaded. 
+- OpenGL acceleration on any low-end graphics card (*ANY* low end GeForce or 
+  Quadro).
+  No need for a graphics card with pixel shaders.
+  (*) For v1.0, there will probably be another version 
+  of the software specifically taking advantage of the latest 
+  GFX cards (NVidia GForce 7 line, etc).
+- Arbitrary 1/10 - x32 Zoom with auto-centering on mouse location.
+- Usage through command-line, GUI, drag and drop, file associations
+  and through reel playlists.
+
+
+Display
+-------
+
+- Full-screen and Presentation modes.
+- ICC/ICM profiles for proper emulation of any media on your monitor.  
+  Allows you to emulate Film, Print, or Video conditions using a
+  combination of 33x33x33 color lattice, 2D LUTS and color matrix 
+  transforms.
+  Each image and sequence can have its own ICC profile, in addition
+  to your monitor ICC profile.
+- Fast dithered 8-bit quantization for display, avoids banding
+  when displaying floating point or HDR images on 8-bit displays.
+- Channel Display:
+	* Color
+	* Red
+	* Green
+	* Blue
+	* Alpha
+	* Alpha Overlay
+	* Luminance
+	* Any PSD / RPF / XCF / OpenEXR / IFF / mental ray layer
+
+
+Color Features
+--------------
+
+- Fast Gain, F-Stop and Gamma controls.
+- Pixel Values display: RGBA, HSV, Luminance.
+- Pixel Area Values Display: Maximum, Minimum, Average in RGBA/HSVL.
+- Image channel normalization onto [0,1] range for display of
+  shadow maps and depth channels.
+- Histogram
+- Vectorscope
+
+
+Command-line
+------------
+
+- Support for shake (seq.@@@.iff 1-120), ilm (seq.1-120.iff) and 
+  nuke (seq.%04d.iff 1-120) image sequence syntaxes.
+- If frame range is not provided, it is guessed from images on disk.
+- Proper cygwin path support.
+
+
+Images
+------
+
+- Support for arbitrary number of channels and layers. 
+- Image sequence support with or without padding with automatic 
+  detection of ranges.
+- Multiple image/sequence storage.
+- Image thumbnail previews.
+- Caching of image sequences in memory for playback.
+- Automatic re-loading and updating of images as they change on disk.
+- Image information with directory, filename, resolution, bit depth, 
+  gamma, pixel ratio, compression, line order, frame ranges, color
+  profile, number of layers, and video and audio stream information.
+- EXIF file information support as provided by most digital photo
+  cameras.  Allows you to obtain aperture, shutter, etc. - viewer uses
+  that information to set fstop automatically.
+- Automatic pixel ratio detection, pixel ratio compensation and
+  frame rate selection for common PAL/NTSC/HDTV resolutions.
+- Automatic baking of image sequences when gain, gamma, icc
+  profile or layer display changes.
+
+
+Video
+-----
+
+- Quicktime/AVI/MPEG/OGG support.  Partial WMV support.
+- Playback supports scrubbing, looping, ping-pong and EDL.
+- Arbitrary frame rate playback for slow motion, rewinding 
+  and fast forwarding with audio.
+- Timeline display as frames, timecode and reel edits (EDL).
+- Playback of Quicktime/AVI files in reels (EDL) for digital dailies,
+  limited only by memory.
+- Multiple Reels (EDL) support. 
+- Reels support re-sorting images using drag&drop.
+- Frame and Field display/playback.
+- Safe Action and Title Area display for 4:3 Video and HDTV. 
+  Safe Action for Film's 1.85:1 and 1.66:1 formats.
+- Built-in generation of SMPTE color bars and gamma charts across 
+  3 brightness levels for monitor calibration.
+
+
+Audio
+-----
+
+- Support for multiple audio tracks in AVI movies.
+- Each image sequence can have an optional .wav or .mp3 file attached 
+  for music/lip-sync.
+
+
+Render Features
+---------------
+
+- Automatic non-destructive compositing of foreground renders over 
+  background image with proper scaling for preview rendering.
+- Arbitrary display and update of all mental ray frame buffers
+  in full float precision while rendering.
+- Cloning and dating of cloned images for versioning of renders.
+- Viewer window remains always on top of other applications.
+- Hooks to mrLiquid and any other mental ray pipeline rather seamlessly.
+- Time stamp with approximate render time (mental ray).
+- Stereoscopic Playback (#)
+
+
+Dailies
+-------
+
+- Annotations    (*)
+- Grease Marker  (*)
+- Remote Dailies (*)
+- A True EDL Timeline (#)
+- Color Grading       (#)
+
+
+Asset Tracking (*)
+--------------
+
+- Automatic logging of each image, sequence, video and audio loaded
+  into a MySQL/Postgress database.  **DONE**
+- RubyOnRails html web page for easily searching and listing of image
+  assets.
+- Secure and Transparent Server connections for remote collaboration (*)
+
+
+Scripting (*)
+---------
+
+- Ability to also use the image viewer as a conversion tool.
+
+
+Image Formats
+-------------
+ 
+R W
+- -
+x 	* mental images' render stub   ( network )
+x	* liquid's render stub         ( connects to liquid's display drivers )
+x 	* mental images' image formats ( shadow maps, .map,
+				         .mt, .nt, .zt, .tt, .ct, .st )
+x x	* ILM's OpenEXR  ( all layers/channels )
+x x	* Digital Moving Picture Exchange's DPX
+x x	* Kodak's Cineon
+x (+)	* Maya IFF       ( 8 bit, 16-bit, z depth )
+x x	* Photoshop PSD  ( 8-bit and 16-bit with Layers )
+x x	* Gimp's XCF     ( with layers )
+x x	* TIFF           ( with layers )
+x (+)	* Autodesk RPF   ( 8-bit, 16-bit )
+x x	* JPEG
+x x	* Softimage PIC
+x (+)	* Microsoft DDS - DirectX Draw Surface
+x x	* CCIR 601 4:1:1 or 4:2:2 YUV
+x	* Pixar's shadow maps
+x	* AVI/Quicktime/MPEG/OGG Video with Audio (WAV/MP3/VORBIS)
+x x     * TGA, BMP, PNG
+x	* MP3/WAV/VORBIS files
+x       * Radiance HDR
+	* Plus other 50+ image formats
+
+
+
+Patents/Licensing Issues
+------------------------
+
+- ALL Libraries used are LGPL, not GPL.
+- AVI supports MPEG-4 x264 compressor.  Patent applies only if sales 
+  reach 100,000 or more.
+- DDS supports the now somewhat obsolete S3TC compression.
+  This patent is still in effect, but ATI's free 3Dc compression
+  offers better compression with no patent issues.
+
+
+==============================
+
+
+
+Known Bugs
+----------
+
+- HTML Documentation is still incomplete.
+- Floating point IFFs are read wrong.
+- 3PS decompressor decompresses additional layers incorrectly.
+  Z decompresses ok.
+- Tiled MAP files are read improperly.
+- Changing FPS on Quicktime movies does not do anything.
+- Comping of front layer over moving sequence is not realtime.
+- PDF with multiple pages can take forever to load.
+- Softimage PIC files are saved without RLE compression.
+- EXR is saved in full float, no option to save in half.
+- Progress bar displays text in black, not widget color.
+- No IFF, MAP, RPF, DDS savers yet.
+
+
+Missing Features
+----------------
+
+Migrate EXR into Imagemagick? NO
+
+Proper saving of important formats (IFF).
+Migrate IFF into Imagemagick.
+
+Masking of Film areas.
+
+List last 10 opened files.
+Migrate Pixar shadow maps into Imagemagick.
+Migrate mray formats into Imagemagick.
+Bookmarks.
+Tiling view of textures.
+DVD --- libdvdcss, libdvdnav, libdvdread
+VCD, SVCD formats
+DVB (Satellite, Digital TV, Cable TV)
+Audio CD  --- libcddb, libcdio
+Audio Equalizer --- goom2k?
+Subtitles ( DVD, SVCD/CVD, DVB, CC, OGM, Matroska, TEXT, vobsub )
+
+
+============================================
+
+
+
+- Add old image/anim formats:
+	* Amiga ANIM/ANIM7/ANIM8
+	* Autodesk FLC/FLIC
+- .srt/avi subtitle support.
+- DVD playback.
+- CD song (.cda) playback/attachment.
+- Proper Windows Media Movie (.wmv) support
+- Overlay plane drawing
+- Video-conferencing
+- Tileable check (criss-cross image)
+- Can be used as a command-line image converter.
+- Can be used to display images off the internet (http)
+
+- Docking interface.  Customize and save your own interface 
+  to your liking.
+- Themes (Look and Feel) support.
+
+- Display images of arbitrary resolution only limited by memory.
+
+
+
+When connected to mrLiquid, mrViewer gives you:
+
+- Selection of objects through the main rendered window.
+- Ability to IPR saved shadow maps.  **DONE**
+- Copy pixel color values onto any maya shader setting.  ** 1/2 DONE **
+- Region rendering and selection.
+- Extended Pixel Info display: point, normal, depth, object name(s), 
+  material(s) and shader(s) 
+- Restoring of materials/lights positions based on clone image

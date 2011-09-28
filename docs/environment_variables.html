@@ -1,0 +1,434 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+  
+  <title>Environment Variables</title>
+</head>
+
+
+<body>
+
+<br>
+
+
+
+<h2 style="text-decoration: underline;"><a name="Environment_Variables"></a>Environment Variables</h2>
+
+
+
+On startup and during different operations, mrViewer reads several
+environment variables that allow you to customize its operation.
+&nbsp;Here's a list of them:<br>
+
+
+
+<br>
+
+
+
+<table style="width: 100%; text-align: left; margin-left: auto; margin-right: auto;" border="1" cellpadding="2" cellspacing="2">
+
+
+
+  <tbody>
+
+
+
+    <tr>
+
+
+
+      <th style="text-align: center; width: 25%;">Variable</th>
+
+
+
+      <th style="text-align: center; width: 50%;"> Explanation</th>
+
+
+
+      <th style="text-align: center; width: 25%;"> Default Value</th>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_MODULE_PATH</td>
+
+
+
+      <td style="font-family: monospace;">A string of
+colon (Unix) or semicolon (Windows) separated paths that
+mrViewer will use to find .ctl scripts.</td>
+
+
+
+      <td style="font-family: monospace;">If unset,
+mrViewer's ctl directory</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_TRANSFORM</td>
+
+
+
+      <td style="font-family: monospace;">The CTL script
+used to transform images from CIExy space for display on
+your screen</td>
+
+
+
+      <td style="font-family: monospace;">
+transform_display_video</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_IMAGE_DEFAULT_TRANSFORM</td>
+
+
+
+      <td style="font-family: monospace;"> A default CTL
+script used to transform images from RGB to CIExy space</td>
+
+
+
+      <td style="font-family: monospace;"> transform_RRT</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_CHROMATICITIES</td>
+
+
+
+      <td style="font-family: monospace;"> Chromaticities
+of your display</td>
+
+
+
+      <td style="font-family: monospace;"> Rec. ITU-R
+BT.709 chromaticities</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_WHITE_LUMINANCE</td>
+
+
+
+      <td style="font-family: monospace;"> White Luminance
+of your display</td>
+
+
+
+      <td style="font-family: monospace;"> 120 candelas
+per square meter</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">CTL_DISPLAY_SURROUND_LUMINANCE</td>
+
+
+
+      <td style="font-family: monospace;"> Luminance of
+the surrounding environment</td>
+
+
+
+      <td style="font-family: monospace;"> 12 candelas per
+square meter</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_HOST</td>
+
+
+
+      <td style="font-family: monospace;"> Machine where
+mrViewer's database resides</td>
+
+
+
+      <td style="font-family: monospace;"> localhost</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_PORT</td>
+
+
+
+      <td style="font-family: monospace;"> TCP/IP Port
+override to use to connect to database</td>
+
+
+
+      <td style="font-family: monospace;"> Uses default
+for database type</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_USER</td>
+
+
+
+      <td style="font-family: monospace;"> User used to
+login to mrViewer's database</td>
+
+
+
+      <td style="font-family: monospace;"> mrviewer</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_PASSWORD</td>
+
+
+
+      <td style="font-family: monospace;"> Password used
+to login to mrViewer's database</td>
+
+
+
+      <td style="font-family: monospace;"> mrviewer</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">MRV_DATABASE</td>
+
+
+
+      <td style="font-family: monospace;"> Name of
+mrViewer's database</td>
+
+
+
+      <td style="font-family: monospace;">
+assets2d_production</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">SHOW</span></td>
+
+
+
+      <td style="font-family: monospace;">If set, any
+image viewed will be stored in the database as belonging to that show.</td>
+
+
+
+      <td style="font-family: monospace;">Undefined</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">SEQ</span></td>
+
+
+
+      <td style="font-family: monospace;">If set, any
+image viewed will be stored in the database as belonging to that
+sequence.</td>
+
+
+
+      <td style="font-family: monospace;">Undefined</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace;"><span style="font-weight: bold;">SHOT</span></td>
+
+
+
+      <td style="font-family: monospace;">If set, any
+image viewed will be stored in the database as belonging to that shot.</td>
+
+
+
+      <td style="font-family: monospace;">Undefined</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">ICC_PROFILES</td>
+
+
+
+      <td style="font-family: monospace;">Directory where
+ICC and ICM profiles reside</td>
+
+
+
+      <td style="font-family: monospace;">%WINDIR%/SYSTEM32/spool/drivers/color
+on Windows and
+/usr/share/color/icc on Unix</td>
+
+
+
+    </tr>
+
+
+
+    <tr>
+
+
+
+      <td style="font-family: monospace; font-weight: bold;">HOME</td>
+
+
+
+      <td style="font-family: monospace;"> Home directory
+for user where mrViewer's preferences will be stored</td>
+
+
+
+      <td style="font-family: monospace;">$HOME on Unix
+and %HOMEDIR% on Windows</td>
+
+
+
+    </tr>
+
+    <tr>
+
+      <td><span style="font-family: monospace; font-weight: bold;">MRV_SHADER_PATH</span></td>
+
+      <td style="font-family: monospace;">Directory where mrViewer's hardware shaders reside.</td>
+
+      <td style="font-family: monospace;">Undefined, mrViewer uses a built-in shader.</td>
+
+    </tr>
+
+
+
+  
+  
+  </tbody>
+</table>
+
+
+
+<span style="font-family: monospace;"></span>
+</body>
+</html>
