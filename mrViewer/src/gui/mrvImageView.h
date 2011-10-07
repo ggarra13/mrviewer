@@ -83,10 +83,9 @@ namespace mrv {
       kHudFrameRange    = 1 << 3,
       kHudResolution    = 1 << 4,
       kHudFPS           = 1 << 5,
-      kHudUnshownFrames = 1 << 6,
-      kHudIPTC          = 1 << 7,
-      kHudAVDifference  = 1 << 8,
-      kHudTimecode      = 1 << 9,
+      kHudIPTC          = 1 << 6,
+      kHudAVDifference  = 1 << 7,
+      kHudTimecode      = 1 << 8,
     };
 
     enum PixelDisplay {

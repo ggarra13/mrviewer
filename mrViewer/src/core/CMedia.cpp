@@ -126,13 +126,16 @@ CMedia::CMedia() :
   _look_mod_transform( NULL ),
   _playback( kStopped ),
   _sequence( NULL ),
+  _video_clock( av_gettime() / 1000000.0 ),
   _context(NULL),
   _audio_codec(NULL),
   _subtitle_index(-1),
   _audio_index(-1),
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
-  _audio_timing( av_gettime() / 1000000.0 ),
+  _video_pts( 0 ),
+  _audio_pts( 0 ),
+  _audio_clock( av_gettime() / 1000000.0 ),
   _audio_buf( NULL ),
   _audio_engine( NULL )
 {
@@ -963,6 +966,8 @@ void CMedia::play(const CMedia::Playback dir,
 
   // clear all packets
   clear_packets();
+  clear_stores(); // clear audio store
+
 
   // Start threads
   PlaybackData* data = new PlaybackData( uiMain, this );
@@ -1520,12 +1525,12 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
 // Convert an FFMPEG pts into a frame number
 boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
-				      const boost::int64_t frame ) const
+				   const boost::int64_t frame ) const
 {
-  double p = (frame - 1) / fps();
-  if ( stream ) p /= av_q2d( stream->time_base );
-  if ( p < 0 )  return AV_NOPTS_VALUE;
-  else return uint64_t(p);
+   double p = (double)(frame - 1) / fps();
+   if ( stream ) p /= av_q2d( stream->time_base );
+   if ( p < 0 )  return AV_NOPTS_VALUE;
+   else return uint64_t(p);
 }
 
 

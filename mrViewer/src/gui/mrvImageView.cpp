@@ -954,30 +954,6 @@ void ImageView::draw()
     }
 
 
-#ifdef FILMAURA_DEMO
-
-  _engine->color( 1.0f, 1.0f, 1.0f );
-
-  int dy = 0;
-  const char* kDEMO = _("*** DEMO ***");
-  dy = h() / 2;
-  _engine->draw_title( 0.5f, dy, kDEMO );
-
-  const char* kNOT_COMMERCIAL = _("NOT FOR COMMERCIAL USE");
-  dy -= 40;
-  _engine->draw_title( 0.25f, dy, kNOT_COMMERCIAL );
-
-  const char* s = kNOT_COMMERCIAL;
-  unsigned int sum = 0;
-  for ( ; *s != 0; ++s )
-    {
-      sum += *s;
-    }
-
-  // Verify text has not been hacked
-  if ( sum != 1537 ) exit(1);
-
-#endif
 
   if ( _hud == kHudNone )
     return;
@@ -1040,9 +1016,9 @@ void ImageView::draw()
 
   if ( (_hud & kHudAVDifference) && img->has_audio() )
     {
-      int64_t avdiff = img->audio_frame() - img->frame();
+      double avdiff = img->audio_pts() - img->video_pts();
       if ( !hud.str().empty() ) hud << " ";
-      sprintf( buf, "% 4" PRId64, avdiff );
+      sprintf( buf, "% 4f", avdiff );
       hud << _("A-V: ") << buf;
     }
 
@@ -1051,14 +1027,23 @@ void ImageView::draw()
   //
   if ( _hud & kHudFPS )
     {
+       static int64_t unshown_frames = 0;
        int64_t frame = img->frame();
 
       if ( _lastFrame != frame )
 	{
 	  int64_t frame_diff = ( frame - _lastFrame );
 
-	  if ( playback() ) frame_diff *= playback();
-	  
+	  if ( playback() ) {
+	     frame_diff *= playback();
+
+	     int64_t absdiff = std::abs(frame_diff);
+	     if ( absdiff > 1 )
+	     {
+		unshown_frames += absdiff;
+
+	     }
+	  }
 	  _lastFrame = frame;
 
 // 	  if ( playback() != kStopped )
@@ -1080,8 +1065,11 @@ void ImageView::draw()
 
 	}
   
-      if ( _hud & kHudFPS && ( _last_fps > 0 ) )
+      if ( _last_fps > 0 )
 	{
+	   sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+	   hud << buf;
+
 	  sprintf( buf, _("FPS: %.2f" ), _last_fps );
 	  
 	  if ( !hud.str().empty() ) hud << " ";

@@ -78,13 +78,14 @@ namespace mrv
 
   private:
     boost::int64_t              _frame;  //!< position in video stream
+    double                      _pts;
     unsigned int                _repeat;  //!< number of frames to repeat
     unsigned int                _width;
     unsigned int                _height;
-    unsigned int                _channels;
+    unsigned int                _channels; //!< number of channels of image
     PixelData                   _data;   //!< video data
     time_t                      _mtime;  //!< creation time of frame
-    Format                      _format; //!< rgb format
+    Format                      _format; //!< rgb/yuv format
     PixelType                   _type;   //!< pixel type
 
   public:
@@ -92,6 +93,7 @@ namespace mrv
 
     VideoFrame() :
       _frame( 0 ),
+      _pts( 0 ),
       _repeat( 0 ),
       _width( 0 ),
       _height( 0 ),
@@ -103,13 +105,15 @@ namespace mrv
     {
     }
     
-    VideoFrame( const boost::int64_t& frame, 
+    VideoFrame( const boost::int64_t& frame,
 		const unsigned int w, const unsigned int h, 
 		const unsigned short c = 4,
 		const Format format  = kRGBA,
 		const PixelType type = kByte,
-		const unsigned int repeat = 0 ) :
+		const unsigned int repeat = 0,
+		const double pts = 0 ) :
       _frame( frame ),
+      _pts( pts ),
       _repeat( repeat ),
       _width( w ),
       _height( h ),
@@ -130,6 +134,7 @@ namespace mrv
     inline self& operator=( const self& b )
     {
       _frame    = b.frame();
+      _pts      = b.pts();
       _repeat   = b.repeat();
       _width    = b.width();
       _height   = b.height(); 
@@ -166,6 +171,8 @@ namespace mrv
 
     inline void    mtime(const time_t c) { _mtime = c; }
     inline time_t  mtime() const         { return _mtime; }
+
+    inline double pts() const { return _pts; }
 
     size_t data_size();
 

@@ -61,6 +61,10 @@ namespace mrv {
 
     virtual bool    find_image( const boost::int64_t frame );
 
+    virtual boost::uint64_t video_pts() { 
+       return frame2pts( get_video_stream(), _frame ); 
+    }
+
     virtual bool has_video() const;
 
     virtual bool has_picture() const { return has_video(); }
@@ -139,9 +143,11 @@ namespace mrv {
      * Store an image frame in cache
      * 
      * @param frame        video frame to store
+     * @param pts          video pts to store
      * 
      */
-    void store_image( const boost::int64_t frame );
+       void store_image( const boost::int64_t frame,
+			 const double pts );
 
     /** 
      * Decode a video packet, returning its frame
@@ -163,7 +169,8 @@ namespace mrv {
     AVStream* get_video_stream() const;
     bool seek_to_position( const boost::int64_t frame, const int flags = 0 );
     int video_stream_index() const;
-    mrv::image_type_ptr allocate_image(const boost::int64_t& frame);
+       mrv::image_type_ptr allocate_image(const boost::int64_t& frame,
+					  const double pts );
 
 
     AVStream* get_subtitle_stream() const;

@@ -33,6 +33,8 @@ using namespace std;
 
 
 
+#define AV_SYNC_THRESHOLD 0.01
+#define AV_NOSYNC_THRESHOLD 10.0
 // #  define DEBUG_THREADS
 
 
@@ -395,7 +397,7 @@ namespace mrv {
 
 
   //
-  // Main loop used to play audio (of any image)
+  // Main loop used to play video (of any image)
   //
   void video_thread( PlaybackData* data )
   {
@@ -422,8 +424,9 @@ namespace mrv {
     cerr << "ENTER VIDEO THREAD " << img->name() << " " << frame << endl;
 #endif
 
-	
-    double diff = 0;
+    double frame_timer = av_gettime() / 1000000.0;
+    double last_delay = 0;
+    double last_pts = 0;
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
@@ -458,8 +461,6 @@ namespace mrv {
 	  }
 
 	double fps = img->play_fps();
-	timer.setDesiredFrameRate( fps );
-	timer.waitUntilNextFrameIsDue();
 
 	img->find_image( frame );
 
@@ -470,22 +471,48 @@ namespace mrv {
 	    timeline->value( tframe );
 	  }
 
+	double delay = 1.0 / fps;
+	// double actual_delay = delay;
 
 	// // Calculate video-audio difference
-	// if ( img->has_audio() )
-	//   {
-	//     int64_t audio_frame = img->audio_frame();
+	if ( img->has_audio() )
+	{
+	   double video_clock = img->video_pts();
+	   double audio_clock = img->audio_pts();
+	   double diff = step * (video_clock - audio_clock);
+	   double absdiff = std::abs(diff);
 
-	//     diff = step * (audio_frame - frame);
-	//     double absdiff = std::abs(diff);
 
-	//     // Adjust speed based on audio difference
-	//     if ( absdiff > 0 && absdiff < fps )
-	//       {
-	// 	 timer.audioTiming( 1.0/fps * diff );
-	//       }
-	//   }
+	   /* Skip or repeat the frame. Take delay into account
+	      FFPlay still doesn't "know if this is the best guess." */
+	   double sync_threshold = (delay > AV_SYNC_THRESHOLD) ? delay : AV_SYNC_THRESHOLD;
+	   if(absdiff < AV_NOSYNC_THRESHOLD) {
+	      if(diff <= -sync_threshold) {
+		 fps = 99999;
+	      } else if(diff >= sync_threshold) {
+		 fps -= diff;
+	      }
+	   }
 
+
+	//    frame_timer += delay;
+
+	//    /* computer the REAL delay */
+	//    actual_delay = frame_timer - (av_gettime() / 1000000.0);
+	//    if(actual_delay < 0.010) {
+	//       /* Really it should skip the picture instead */
+	//       actual_delay = 0.0;
+	//    }
+	//    // fprintf( stderr, "%.3f-%.3f=%.3f %.3f %.3f\n", 
+	//    // 	    video_clock, audio_clock, 
+	//    // 	    diff, delay, actual_delay );
+	}
+	
+	
+	// timer.setDesiredSecondsPerFrame( actual_delay );
+	
+	   timer.setDesiredFrameRate( fps );
+	   timer.waitUntilNextFrameIsDue();
 
 
 	frame += step;

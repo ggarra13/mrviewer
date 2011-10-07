@@ -56,7 +56,7 @@ namespace
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_PACKETS
-//#define DEBUG_STORES
+#define DEBUG_STORES
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
 
@@ -618,7 +618,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 }
 
 
-mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame )
+mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
+					      const double pts )
 { 
   return mrv::image_type_ptr( new image_type( frame,
 					      width(), 
@@ -626,19 +627,24 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame )
 					      _num_channels,
 					      _pix_fmt,
 					      VideoFrame::kByte,
-					      _av_frame->repeat_pict ) );
+					      _av_frame->repeat_pict,
+					      pts ) );
 
 }
 
 
-void aviImage::store_image( const boost::int64_t frame )
+void aviImage::store_image( const boost::int64_t frame, 
+			    const double pts )
 {
   AVStream* stream = get_video_stream();
   unsigned int w = width();
   unsigned int h = height();
 
 
-  mrv::image_type_ptr image = allocate_image(frame);
+  mrv::image_type_ptr image = allocate_image( frame, pts * 
+					      av_q2d( 
+						     get_video_stream()->time_base) 
+					     );
   if ( ! image )
     {
       IMG_ERROR( "No memory for video frame" );
@@ -757,7 +763,7 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
 	}
       else
 	{
-	  store_image( ptsframe );
+	   store_image( ptsframe, pkt.dts );
 	}
     }
 
@@ -950,6 +956,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// the last frame is the one with problem.
 	// If not, we fail.
 	_frame = frame;
+	
 	if ( ! _images.empty() )
 	  {
 	    _hires = _images.back();
@@ -982,6 +989,8 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// 	debug_video_stores(frame);
 	// 	debug_video_packets(frame);
       }
+
+    _video_pts    = _hires->pts();
 
     // Limit (clean) the video store as we play it
     limit_video_store( frame );
@@ -1331,7 +1340,7 @@ void aviImage::populate()
 							 _frameStart, pkt );
 	      if ( status == kDecodeOK )
 		{
-		  store_image( ptsframe );
+		   store_image( ptsframe, pkt.dts );
 		  _frameStart = ptsframe;
 		  got_image = true;
 		}
@@ -1830,7 +1839,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	  DecodeStatus status = decode_image( frame, pkt );
 	  if      ( status == kDecodeOK ) got_image = status;
 	  else if ( status == kDecodeMissingFrame )
-	    store_image( pktframe );
+	     store_image( pktframe, pkt.dts );
 	}
       else
 	{

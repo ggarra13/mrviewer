@@ -81,8 +81,6 @@ namespace mrv {
     void	waitUntilNextFrameIsDue ();
 
 
-    void     audioTiming( double t ) { _timingError += t; }
-
     //-------------------------------------------------
     // Set and get the frame rate, in frames per second
     //-------------------------------------------------

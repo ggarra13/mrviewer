@@ -91,12 +91,12 @@ unsigned int CMedia::samples_for_frame( int frequency,
 					   boost::int64_t frame )
 {
   unsigned int samples = int( double( frequency ) / (double)_fps );
-  unsigned int discrepancy = frequency - int( samples * _fps );
-  if ( discrepancy )
-    {
-      if ( frame % boost::int64_t(_fps) == 1 )
-	samples += discrepancy;
-    }
+  // unsigned int discrepancy = frequency - int( samples * _fps );
+  // if ( discrepancy )
+  //   {
+  //     if ( frame % boost::int64_t(_fps) == 1 )
+  // 	samples += discrepancy;
+  //   }
   return samples;
 }
 
@@ -1415,8 +1415,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     SCOPED_LOCK( _audio_mutex );
 
-    _audio_timing = av_gettime() / 1000000.0;
     _audio_frame = frame;
+    _audio_pts   = (double)frame / fps();
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
 						  frame, LessThanFunctor() );

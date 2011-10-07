@@ -633,13 +633,18 @@ namespace mrv {
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
 
+    virtual double video_clock() { return _video_clock; }
     
+       double audio_clock() {
+	  return _audio_clock;
+       }
+    
+      double video_pts() const { return _video_pts; }
+      double audio_pts() const { return _audio_pts; }
     
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
        
-    inline double audio_timing() { return _audio_timing; }
-
     static std::string rendering_transform_8bits;
     static std::string rendering_transform_16bits;
     static std::string rendering_transform_32bits;
@@ -743,6 +748,7 @@ namespace mrv {
 
     void audio_initialize();
     void audio_shutdown();
+
 
     // Convert a frame into stream's pts
     boost::uint64_t frame2pts( const AVStream* stream,
@@ -853,6 +859,11 @@ namespace mrv {
     boost::int64_t   _frameStart;  //!< start frame for sequence or movie
     boost::int64_t   _frameEnd;    //!< end frame for sequence or movie
 
+       double _audio_pts;
+       double     _audio_clock;
+       double _video_pts;
+       double     _video_clock;
+
     InterlaceType _interlaced;     //!< image is interlaced?
 
     Damage           _image_damage;     //!< flag specifying image damage
@@ -893,10 +904,6 @@ namespace mrv {
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context  
 
-
-    double video_current_pts; //!< current displayed pts (different from video_clock if frame fifos are used) 
-    double video_current_pts_drift; //!< video_current_pts - time (av_gettime) at which we updated video_current_pts - used to have running video pts
-
     PacketQueue      _video_packets;
     PacketQueue      _audio_packets;
     PacketQueue      _subtitle_packets;
@@ -911,7 +918,6 @@ namespace mrv {
     unsigned         _samples_per_sec;   //!< last samples per sec
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
-    double           _audio_timing;   //!< timing of audio frame
     boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
 
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
