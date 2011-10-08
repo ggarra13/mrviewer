@@ -633,14 +633,12 @@ namespace mrv {
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
 
-    virtual double video_clock() { return _video_clock; }
+    double video_clock() const { return _video_clock; }
     
-       double audio_clock() {
-	  return _audio_clock;
-       }
+    double audio_clock() const { return _audio_clock; }
     
-      double video_pts() const { return _video_pts; }
-      double audio_pts() const { return _audio_pts; }
+    double video_pts() const { return _video_pts; }
+    double audio_pts() const { return _audio_pts; }
     
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }

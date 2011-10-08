@@ -35,8 +35,8 @@ using namespace std;
 
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
-// #  define DEBUG_THREADS
 
+//#  define DEBUG_THREADS
 
 #if 0
 #  define DEBUG_DECODE
@@ -125,7 +125,7 @@ namespace mrv {
 		}
 
 
-	      assert( next != 0 );
+	      assert( next != NULL );
 
 	      if ( next != img ) 
 		{
@@ -173,7 +173,7 @@ namespace mrv {
 		    }
 		}
 
-	      assert( next != 0 );
+	      assert( next != NULL );
 
 	      if ( next != img ) 
 		{
@@ -352,7 +352,7 @@ namespace mrv {
     mrv::Timer timer;
 
 #ifdef DEBUG_THREADS
-    cerr << "ENTER SUBTITLE THREAD " << img->name() << " " << frame << endl;
+    cerr << "ENTER SUBTITLE THREAD " << img->name() << endl;
 #endif
 
 
@@ -462,6 +462,52 @@ namespace mrv {
 
 	double fps = img->play_fps();
 
+	double delay = 1.0 / fps;
+	double diff = 0.0;
+	// double actual_delay = delay;
+
+	// // Calculate video-audio difference
+	if ( img->has_audio() )
+	{
+	   double video_clock = img->video_pts();
+	   double audio_clock = img->audio_pts();
+	   diff += step * (audio_clock - video_clock);
+	   double absdiff = std::abs(diff);
+
+
+	   /* Skip or repeat the frame. Take delay into account
+	      FFPlay still doesn't "know if this is the best guess." */
+	   double sync_threshold = (delay > AV_SYNC_THRESHOLD) ? delay : AV_SYNC_THRESHOLD;
+	   if(absdiff < AV_NOSYNC_THRESHOLD) {
+	      if(diff <= -sync_threshold) {
+		 fps += diff;
+		 diff = 0;
+	      } else if(diff >= sync_threshold) {
+		 fps = 999999.0;
+		 diff = 0;
+	      }
+	   }
+
+
+	//    frame_timer += delay;
+
+	//    /* computer the REAL delay */
+	   // actual_delay = frame_timer - (av_gettime() / 1000000.0);
+	   // if(actual_delay < 0.010) {
+	   //    /* Really it should skip the picture instead */
+	   //    actual_delay = 0.0;
+	   // }
+	//    // fprintf( stderr, "%.3f-%.3f=%.3f %.3f %.3f\n", 
+	//    // 	    video_clock, audio_clock, 
+	//    // 	    diff, delay, actual_delay );
+	}
+	
+	
+	//timer.setDesiredSecondsPerFrame( actual_delay );
+	
+	timer.setDesiredFrameRate( fps );
+	timer.waitUntilNextFrameIsDue();
+
 	img->find_image( frame );
 
 	if ( timeline->edl() )
@@ -471,48 +517,6 @@ namespace mrv {
 	    timeline->value( tframe );
 	  }
 
-	double delay = 1.0 / fps;
-	// double actual_delay = delay;
-
-	// // Calculate video-audio difference
-	if ( img->has_audio() )
-	{
-	   double video_clock = img->video_pts();
-	   double audio_clock = img->audio_pts();
-	   double diff = step * (video_clock - audio_clock);
-	   double absdiff = std::abs(diff);
-
-
-	   /* Skip or repeat the frame. Take delay into account
-	      FFPlay still doesn't "know if this is the best guess." */
-	   double sync_threshold = (delay > AV_SYNC_THRESHOLD) ? delay : AV_SYNC_THRESHOLD;
-	   if(absdiff < AV_NOSYNC_THRESHOLD) {
-	      if(diff <= -sync_threshold) {
-		 fps = 99999;
-	      } else if(diff >= sync_threshold) {
-		 fps -= diff;
-	      }
-	   }
-
-
-	//    frame_timer += delay;
-
-	//    /* computer the REAL delay */
-	//    actual_delay = frame_timer - (av_gettime() / 1000000.0);
-	//    if(actual_delay < 0.010) {
-	//       /* Really it should skip the picture instead */
-	//       actual_delay = 0.0;
-	//    }
-	//    // fprintf( stderr, "%.3f-%.3f=%.3f %.3f %.3f\n", 
-	//    // 	    video_clock, audio_clock, 
-	//    // 	    diff, delay, actual_delay );
-	}
-	
-	
-	// timer.setDesiredSecondsPerFrame( actual_delay );
-	
-	   timer.setDesiredFrameRate( fps );
-	   timer.waitUntilNextFrameIsDue();
 
 
 	frame += step;

@@ -14,7 +14,7 @@
 #define ext_fvec_h
 
 #if defined(WIN32) || defined(WIN64)
-#  error Please don't include ext/fvec.h for Windows platforms.
+#  error "Please don't include ext/fvec.h for Windows platforms."
 #endif
 
 #include "xmmintrin.h"

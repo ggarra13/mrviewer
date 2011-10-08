@@ -1248,7 +1248,8 @@ namespace mrv {
     if ( ddsd.dwDepth <= 0 ) ddsd.dwDepth = 1;
     ddsd.dwMipMapCount   = ReadBlobLSBLong(f);
     ddsd.dwAlphaBitDepth = ReadBlobLSBLong(f);
-    fread( ddsd.dwReserved, 1, sizeof(ddsd.dwReserved), f );
+    size_t ok = fread( ddsd.dwReserved, 1, sizeof(ddsd.dwReserved), f );
+    if (!ok) return false;
 
     ddsd.ddpfPixelFormat.dwSize = ReadBlobLSBLong(f);
     ddsd.ddpfPixelFormat.dwFlags = ReadBlobLSBLong(f);

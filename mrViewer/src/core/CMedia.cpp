@@ -311,6 +311,8 @@ CMedia::~CMedia()
 
   if ( _context )
     av_close_input_file( _context );
+
+  _context = NULL;
 }
 
 
@@ -960,6 +962,9 @@ void CMedia::play(const CMedia::Playback dir,
 
   _dts = _audio_frame = _frame;
   _expected = std::numeric_limits< boost::int64_t >::min();
+
+  _audio_clock = 0.0;
+  _video_clock = 0.0;
 
   _audio_buf_used = 0;
 

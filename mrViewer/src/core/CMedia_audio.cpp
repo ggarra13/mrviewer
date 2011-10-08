@@ -56,11 +56,13 @@ namespace {
 
 //#define DEBUG_PACKETS
 //#define DEBUG_STORES
-// #define DEBUG_DECODE
+//#define DEBUG_DECODE
+#define DEBUG_SEEK
 // #define DEBUG
 // #define DEBUG_AUDIO_SPLIT
 
 
+#define FFMPEG_STREAM_BUG_FIX
 
 
 namespace mrv {
@@ -90,13 +92,7 @@ void CMedia::clear_packets()
 unsigned int CMedia::samples_for_frame( int frequency, 
 					   boost::int64_t frame )
 {
-  unsigned int samples = int( double( frequency ) / (double)_fps );
-  // unsigned int discrepancy = frequency - int( samples * _fps );
-  // if ( discrepancy )
-  //   {
-  //     if ( frame % boost::int64_t(_fps) == 1 )
-  // 	samples += discrepancy;
-  //   }
+  unsigned int samples = int( double( frequency ) / _fps );
   return samples;
 }
 
@@ -172,7 +168,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
   //
   idx = audio_stream_index();
   stream = get_audio_stream();
-  assert( stream != 0 );
+  assert( stream != NULL );
 
   boost::int64_t ts = av_rescale_q(offset, base, stream->time_base);
 
@@ -180,7 +176,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
   if ( i >= 0 ) min_ts = stream->index_entries[i].timestamp;
   
   
-  assert( stream != 0 );
+  assert( stream != NULL );
   assert( idx != -1 );
   
 
@@ -434,12 +430,6 @@ void CMedia::populate_audio()
       const AVStream* stream = _context->streams[ i ];
       const AVCodecContext *ctx = stream->codec;
 
-      // We ignore data tracks for now.  Data tracks are, for example,
-      // the timecode track in quicktimes.
-      if ( ctx->codec_type == CODEC_TYPE_DATA )
-	continue;
-
-
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
 	{
@@ -552,10 +542,10 @@ void CMedia::populate_audio()
       duration = boost::int64_t( length * int64_t(_fps + 0.5f) );
     }
 
-  _frameEnd = _frameStart + duration - 1;
-
   bool got_audio = !has_audio();
   unsigned bytes_per_frame = 0;
+
+
   if ( !got_audio )
   {
      AVStream* stream = get_audio_stream();
@@ -659,8 +649,6 @@ void CMedia::populate_audio()
 
       duration = boost::int64_t( length * _fps );
     }
-
-  _frameEnd = _frameStart + duration - 1;
 
 
   _frame = _dts = _expected = _frameStart;
@@ -1294,7 +1282,6 @@ void CMedia::fetch_audio( const boost::int64_t frame )
       {
 	 av_free_packet( &pkt );
 	 IMG_ERROR( _("Could not read audio for frame ") << frame);
-	 _frameEnd = frame-1;
 	 url_ferror(_context->pb);
 	 break;
       }
@@ -1416,7 +1403,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
     SCOPED_LOCK( _audio_mutex );
 
     _audio_frame = frame;
-    _audio_pts   = (double)frame / fps();
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
 						  frame, LessThanFunctor() );
@@ -1428,7 +1414,11 @@ bool CMedia::find_audio( const boost::int64_t frame )
 	return false;
       }
 
+    _audio_pts   = _audio_frame / fps();
+    _audio_clock = av_gettime() / 1000000.0;
+
     result = *i;
+
 
     limit_audio_store( frame );
   }
@@ -1690,6 +1680,7 @@ void CMedia::do_seek()
     {
       if ( has_audio() )
 	{
+	   std::cerr << "decode audio " << _seek_frame << std::endl;
 	  decode_audio( _seek_frame );
 	  find_audio( _seek_frame );
 	}

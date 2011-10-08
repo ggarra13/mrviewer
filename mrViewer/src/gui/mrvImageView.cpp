@@ -1011,7 +1011,7 @@ void ImageView::draw()
       mrv::Timecode::format( buf, mrv::Timecode::kTimecodeNonDrop, 
 			     img->frame(), img->play_fps(), true );
       if ( !hud.str().empty() ) hud << " ";
-      hud << _("TC: ") << buf;
+      hud << _("T: ") << buf;
     }
 
   if ( (_hud & kHudAVDifference) && img->has_audio() )
@@ -1260,7 +1260,7 @@ void ImageView::leftMouseDown(int x, int y)
 
 	    if ( fg->image()->is_sequence() )
 	    {
-	        menu.add( _("Audio/Attach Audio File"), fltk::COMMAND + 'a',
+	        menu.add( _("Audio/Attach Audio File"), NULL,
 	     		 (fltk::Callback*)attach_audio_cb, this );
 	    }
 

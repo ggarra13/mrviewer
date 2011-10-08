@@ -56,7 +56,7 @@ namespace
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_PACKETS
-#define DEBUG_STORES
+//#define DEBUG_STORES
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
 
@@ -991,6 +991,7 @@ bool aviImage::find_image( const boost::int64_t frame )
       }
 
     _video_pts    = _hires->pts();
+    _video_clock = av_gettime() / 1000000.0;
 
     // Limit (clean) the video store as we play it
     limit_video_store( frame );
@@ -1126,62 +1127,68 @@ void aviImage::populate()
       const AVStream* stream = _context->streams[ i ];
       const AVCodecContext *ctx = stream->codec;
 
-      // We ignore data tracks for now.  Data tracks are, for example,
-      // the timecode track in quicktimes.
-      if ( ctx->codec_type == CODEC_TYPE_DATA )
-	continue;
-
 
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
 	{
-	case CODEC_TYPE_VIDEO:
-	  {
-	    video_info_t s;
-	    populate_stream_info( s, msg, ctx, i );
-	    s.has_b_frames = ctx->has_b_frames;
-	    s.fps          = calculate_fps( stream );
-	    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
-	    _video_info.push_back( s );
-	    if ( _video_index < 0 )
+	   // We ignore attachments for now.  
+	   case CODEC_TYPE_ATTACHMENT:
 	      {
-		video_stream( 0 );
-		int w = ctx->width;
-		int h = ctx->height;
-		image_size( w, h );
+		 continue;
 	      }
-	    break;
-	  }
-	case CODEC_TYPE_AUDIO:
-	  {
-	    audio_info_t s;
-	    populate_stream_info( s, msg, ctx, i );
-	    s.channels   = ctx->channels;
-	    s.frequency  = ctx->sample_rate;
-	    s.bitrate    = calculate_bitrate( ctx );
-
-	    _audio_info.push_back( s );
-	    if ( _audio_index < 0 )
-	      _audio_index = 0;
-	    break;
-	  }
-	case CODEC_TYPE_SUBTITLE:
-	  {
-	    subtitle_info_t s;
-	    populate_stream_info( s, msg, ctx, i );
-	    s.bitrate    = calculate_bitrate( ctx );
-	    _subtitle_info.push_back( s );
-	    if ( _subtitle_index < 0 )
-	       _subtitle_index = 0;
-	    break;
-	  }
-	default:
-	  {
-	    const char* stream = stream_type( ctx );
-	    msg << _("\n\nNot a known stream type for stream #") 
-		<< i << (", type ") << stream;
-	    break;
-	  }
+	   // We ignore data tracks for now.  Data tracks are, for example,
+	   // the timecode track in quicktimes.
+	   case CODEC_TYPE_DATA:
+	      {
+		 continue;
+	      }
+	   case CODEC_TYPE_VIDEO:
+	      {
+		 video_info_t s;
+		 populate_stream_info( s, msg, ctx, i );
+		 s.has_b_frames = ctx->has_b_frames;
+		 s.fps          = calculate_fps( stream );
+		 s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
+		 _video_info.push_back( s );
+		 if ( _video_index < 0 )
+		 {
+		    video_stream( 0 );
+		    int w = ctx->width;
+		    int h = ctx->height;
+		    image_size( w, h );
+		 }
+		 break;
+	      }
+	   case CODEC_TYPE_AUDIO:
+	      {
+		 audio_info_t s;
+		 populate_stream_info( s, msg, ctx, i );
+		 s.channels   = ctx->channels;
+		 s.frequency  = ctx->sample_rate;
+		 s.bitrate    = calculate_bitrate( ctx );
+		 
+		 _audio_info.push_back( s );
+		 if ( _audio_index < 0 )
+		    _audio_index = 0;
+		 break;
+	      }
+	   case CODEC_TYPE_SUBTITLE:
+	      {
+		 subtitle_info_t s;
+		 populate_stream_info( s, msg, ctx, i );
+		 s.bitrate    = calculate_bitrate( ctx );
+		 _subtitle_info.push_back( s );
+		 if ( _subtitle_index < 0 )
+		    _subtitle_index = 0;
+		 break;
+	      }
+	   default:
+	      {
+		 const char* stream = stream_type( ctx );
+		 msg << _("\n\nNot a known stream type for stream #") 
+		     << i << (", type ") << stream;
+		 break;
+	      }
 	}
     }
 

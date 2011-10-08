@@ -671,7 +671,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           {fltk::Group} {} {
             label {View Window} open
-            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -767,7 +767,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::CheckButton} uiPrefsHudDirectory {
                 label Directory
-                user_data this user_data_type {mrv::PreferencesUI*} selected
+                user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {119 10 20 20} align 8 labelsize 11
               }
               {fltk::CheckButton} uiPrefsHudFrame {
@@ -1998,14 +1998,14 @@ o->child_of( main->uiMain );} modal
     }
     decl {DatabaseUI* uiDatabase;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
+        callback {delete v;} open
         xywh {471 86 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
@@ -2250,10 +2250,10 @@ Value is:  pow( 2, 1/x );}
             }
           }
           {fltk::Group} uiViewGroup {open
-            xywh {0 25 640 482} resizable
+            xywh {0 25 640 430} resizable
           } {
-            {fltk::Group} uiView {open
-              xywh {0 0 640 480}
+            {fltk::Group} uiView {selected
+              xywh {0 0 640 430}
               extra_code {o->main(this);}
               class {mrv::ImageView}
             } {}

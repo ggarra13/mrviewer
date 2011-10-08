@@ -138,7 +138,9 @@ namespace mrv {
 
     FILE* f = fopen( sequence_filename(frame).c_str(), "rb" );
     mapHeader header;
-    fread( &header, sizeof(header), 1, f );
+
+    size_t ok = fread( &header, sizeof(header), 1, f );
+    if (!ok) return false;
 
     bool swap = false;
 

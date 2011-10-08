@@ -533,7 +533,7 @@ namespace mrv
 	    add_text( _("FourCC"), s.fourcc );
 	    ++group;
 
-	    char* channels;
+	    const char* channels = NULL;
 	    if ( s.channels == 1 )      channels = "Mono";
 	    else if ( s.channels == 2 ) channels = "Stereo";
 	    else if ( s.channels == 6 ) channels = "Dolby 5:1";

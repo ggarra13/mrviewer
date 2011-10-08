@@ -127,8 +127,8 @@ namespace mrv {
 
     FILE* f = fopen( file.c_str(), "rb" );
     mrayHeader header;
-    fread( &header, sizeof(header), 1, f );
-
+    size_t ok = fread( &header, sizeof(header), 1, f );
+    if ( !ok ) return false;
   
     // This is the real byte size of file on disk
     size_t size = sbuf.st_size;
