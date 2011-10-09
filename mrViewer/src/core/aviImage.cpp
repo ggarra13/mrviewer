@@ -506,32 +506,31 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
       else
 	if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	  {
-	  // For video, DTS is really PTS in FFMPEG (yuck)
 	     boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 
-	    if ( playback() == kBackwards )
-	      {
+	     if ( playback() == kBackwards )
+	     {
 		if ( pktframe <= frame ) _audio_packets.push_back( pkt );
 		if ( !has_video() && pktframe < dts ) dts = pktframe;
-	      }
-	    else
-	      {
+	     }
+	     else
+	     {
 		if ( pktframe <= last_frame() ) _audio_packets.push_back( pkt );
 		if ( !has_video() && pktframe > dts ) dts = pktframe;
-	      }
+	     }
+	     
 
-
-	    if ( !got_audio )
-	      {
+	     if ( !got_audio )
+	     {
 		if ( pktframe > frame ) got_audio = true;
 		else if ( pktframe == frame )
-		  {
-		    audio_bytes += pkt.size;
-		    if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-		  }
+		{
+		   audio_bytes += pkt.size;
+		   if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+		}
 		if ( got_audio ) _audio_packets.seek_end(apts);
-	      }
-
+	     }
+	     
 
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
 	    fprintf( stderr, "f: %05" PRId64 " audio pts: %07" PRId64 

@@ -304,7 +304,7 @@ void GLEngine::initialize()
   init_textures();
 
   int argc = 1;
-  char* args[] = { "GlEngine", NULL };
+  static char* args[] = { "GlEngine", NULL };
   glutInit( &argc, args );
 
 // #if defined(WIN32) || defined(WIN64)

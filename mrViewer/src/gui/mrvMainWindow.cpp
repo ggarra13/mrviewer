@@ -78,7 +78,7 @@ namespace mrv {
 #else
     // XOrg / XWindows(TM)
     XEvent ev;
-    static char *names[ ] = { "_NET_WM_STATE", 
+    static char* names[2] = { "_NET_WM_STATE", 
 			      "_NET_WM_STATE_ABOVE" };
     Atom atoms[ 2 ];
     fltk::open_display();

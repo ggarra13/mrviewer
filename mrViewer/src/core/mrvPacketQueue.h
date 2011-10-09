@@ -19,7 +19,6 @@
 #include <boost/cstdint.hpp>
 
 
-
 extern "C" {
 #include <libavformat/avformat.h>
 #define MRV_NOPTS_VALUE (int64_t) AV_NOPTS_VALUE
@@ -65,6 +64,7 @@ namespace mrv {
 
     inline iterator begin()
     {
+      Mutex::scoped_lock lk( _mutex );
       return _packets.begin();
     }
 
@@ -87,6 +87,7 @@ namespace mrv {
 
     inline iterator end()
     {
+      Mutex::scoped_lock lk( _mutex );
       return _packets.end();
     }
 
@@ -144,6 +145,7 @@ namespace mrv {
 
     inline AVPacket& front()
     {
+      Mutex::scoped_lock lk( _mutex );
       assert( ! _packets.empty() );
       return _packets.front();
     }
@@ -156,6 +158,7 @@ namespace mrv {
 
     inline AVPacket& back()
     {
+      Mutex::scoped_lock lk( _mutex );
       assert( ! _packets.empty() );
       return _packets.back();
     }
@@ -190,6 +193,8 @@ namespace mrv {
 	
 #endif
 	  av_free_packet( &pkt );
+	  pkt.data = NULL;
+	  pkt.size = 0;
 	}
 
       _packets.pop_front();

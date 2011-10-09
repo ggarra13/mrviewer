@@ -36,7 +36,7 @@ using namespace std;
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-//#  define DEBUG_THREADS
+#  define DEBUG_THREADS
 
 #if 0
 #  define DEBUG_DECODE
@@ -272,7 +272,9 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
+	cerr << "DECODE AUDIO FRAME START " << frame << endl;
 	CMedia::DecodeStatus status = img->decode_audio( frame );
+	cerr << "DECODE AUDIO FRAME END   " << frame << endl;
 	switch( status )
 	  {
 // 	  case CMedia::kDecodeDone:
@@ -293,6 +295,7 @@ namespace mrv {
 	  case  CMedia::kDecodeLoopEnd:
 	  case  CMedia::kDecodeLoopStart:
 	    {
+	       cerr << "DECODE audio LOOP END WAIT" << endl;
 	      CMedia::Barrier* barrier = img->loop_barrier();
 	      barrier->count( barrier_thread_count( img ) );
 	      // Wait until all threads loop and decode is restarted
@@ -314,7 +317,9 @@ namespace mrv {
 
 	img->find_audio( frame );
 
-	if ( !img->has_video() && timeline->edl() )
+	
+
+	if ( !img->has_picture() && timeline->edl() )
 	  { 
 	     int64_t tframe = ( frame - img->first_frame() + 
 				timeline->location(img) );
@@ -326,8 +331,8 @@ namespace mrv {
       }
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT AUDIO THREAD " << img->name() 
-	 << " stopped? " << img->stopped() << endl;
+    cerr << "EXIT AUDIO THREAD " << img->name() << " at " 
+	 << frame  << "  img: " << img->audio_frame() << endl;
 #endif
 
   } // audio_thread
@@ -450,6 +455,7 @@ namespace mrv {
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
 	    {
+	       cerr << "LOOP VIDEO WAIT " << frame << endl;
 	      CMedia::Barrier* barrier = img->loop_barrier();
 	      barrier->count( barrier_thread_count( img ) );
 	      // Wait until all threads loop and decode is restarted
@@ -526,7 +532,7 @@ namespace mrv {
 
 #ifdef DEBUG_THREADS
     cerr << "EXIT VIDEO THREAD " << img->name() 
-	 << " stopped? " << img->stopped() << endl;
+	 << " at " << frame << "  img: " << img->frame() << endl;
 #endif
 
   }  // video_thread
@@ -625,7 +631,8 @@ namespace mrv {
       }
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT DECODE THREAD " << img->name() << " " << frame << endl;
+    cerr << "EXIT DECODE THREAD " << img->name() << " " << frame 
+	 << "  img: " << img->dts() << endl;
 #endif
 
   }

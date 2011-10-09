@@ -566,11 +566,11 @@ bool CMedia::has_changed()
 
       if ( _sequence[idx]->mtime() != sbuf.st_mtime )
 	{
-	  assert( _frame == _sequence[idx]->frame() );
-	  // update frame...
-	  _sequence[idx].reset();
-	  fetch( _frame );
-	  return false;
+	   assert( _frame == _sequence[idx]->frame() );
+	   // update frame...
+	   _sequence[idx].reset();
+	   fetch( _frame );
+	   return false;
 	}
     }
   else
@@ -947,7 +947,7 @@ void CMedia::thread_exit()
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir, 
-		     mrv::ViewerUI* const uiMain)
+		  mrv::ViewerUI* const uiMain)
 {
 
   if ( dir == _playback && !_threads.empty() ) return;
@@ -1052,7 +1052,6 @@ void CMedia::play(const CMedia::Playback dir,
 // 					                 play_data ) ) );
 // #endif
 
-#if 1
   // Decoding thread
   if ( valid_audio || valid_video || valid_subtitle )
     {
@@ -1061,16 +1060,6 @@ void CMedia::play(const CMedia::Playback dir,
       _threads.push_back( new boost::thread( boost::bind( mrv::decode_thread, 
 							  data ) ) );
     }
-#else
-  if ( is_sequence() )
-    {
-      delete data;
-    }
-  else
-    {
-    }
-#endif
-
 }
 
 /// VCR stop sequence
@@ -1182,6 +1171,8 @@ bool CMedia::frame( const boost::int64_t f )
   pkt.data = NULL;
   pkt.destruct = av_destruct_packet; // prevent av_dup_packet()
   _video_packets.push_back( pkt );
+
+  fetch_audio( _dts );
 
   _expected = _dts + 1;
 
@@ -1711,6 +1702,7 @@ bool CMedia::find_image( const boost::int64_t frame )
 	free(_filename);
 	_filename = NULL;
       }
+
 
       refresh();
       return true;

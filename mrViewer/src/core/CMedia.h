@@ -322,14 +322,14 @@ namespace mrv {
     // Returns true if cache for the frame is already filled, false if not
     bool is_cache_filled(int64_t frame) const;
 
-    // Store a frame in 8-bit sequence cache
+    // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
 
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
 
-    ////////////////// Return the subtitle image
+    ////////////////// Return the 8-bits subtitle image
     inline mrv::image_type_ptr subtitle() const { return _subtitle; }
     inline mrv::image_type_ptr subtitle()       { return _subtitle; }
 
@@ -583,7 +583,7 @@ namespace mrv {
       return _audio_index;
     }
 
-    void audio_file( const char* file );
+    void audio_file( const char* file = "" );
 
     void close_audio();
 
