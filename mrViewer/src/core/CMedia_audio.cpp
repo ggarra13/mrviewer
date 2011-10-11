@@ -59,8 +59,8 @@ namespace {
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
-#define DEBUG_PACKETS
-// #define DEBUG_STORES
+// #define DEBUG_PACKETS
+#define DEBUG_STORES
 // #define DEBUG_DECODE
 // #define DEBUG_SEEK
 // #define DEBUG
@@ -95,11 +95,24 @@ void CMedia::clear_packets()
  * 
  * @return number of audio samples for frame
  */
-unsigned int CMedia::samples_for_frame( int frequency, 
-					   boost::int64_t frame )
+unsigned int CMedia::audio_bytes_per_frame()
 {
-  unsigned int samples = int( double( frequency ) / _fps );
-  return samples;
+   unsigned int ret = 0;
+   if ( has_audio() )
+    {
+      AVStream* stream = get_audio_stream();
+      AVCodecContext *ctx = stream->codec;
+      int channels = ctx->channels;
+      if (channels > 0) {
+	 ctx->request_channels = FFMIN(2, channels);
+      } else {
+	 ctx->request_channels = 2;
+      }
+      int frequency = ctx->sample_rate;
+      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
+      ret = ( frequency * channels * bps ) / _fps;
+    }
+  return ret;
 }
 
 /** 
@@ -238,24 +251,9 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
   boost::int64_t dts = frame;
 
 
-  unsigned int bytes_per_frame = 0;
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
 
-  if ( !got_audio )
-    {
-      AVStream* stream = get_audio_stream();
-      AVCodecContext* ctx = stream->codec;
-      int channels = ctx->channels;
-      if (channels > 0) {
-	 ctx->request_channels = FFMIN(2, channels);
-      } else {
-	 ctx->request_channels = 2;
-      }
-      int frequency = ctx->sample_rate;
-      int bps = 2 * channels;  // hmm... why 2?  should it be sizeof(int16_t)?
-      unsigned int samples = samples_for_frame( frequency, frame );
-      bytes_per_frame = samples * channels * bps;
-    }
 
 
   // Clear the packet
@@ -547,24 +545,9 @@ void CMedia::populate_audio()
     }
 
   bool got_audio = !has_audio();
-  unsigned bytes_per_frame = 0;
+  unsigned bytes_per_frame = audio_bytes_per_frame();
 
 
-  if ( !got_audio )
-  {
-     AVStream* stream = get_audio_stream();
-     AVCodecContext* ctx = stream->codec;
-     int channels = ctx->channels;
-     if (channels > 0) {
-	ctx->request_channels = FFMIN(2, channels);
-     } else {
-	ctx->request_channels = 2;
-     }
-     int frequency = ctx->sample_rate;
-     int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-     unsigned int samples = samples_for_frame( frequency, 1 );
-     bytes_per_frame = samples * channels * bps;
-  }
 
 
   if ( has_audio() )
@@ -1034,10 +1017,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   // Split audio read into frame chunks
   for (;;)
     {
-      unsigned int samples = samples_for_frame( frequency, audio_frame );
-      assert( samples != 0 );
-
-      unsigned int bytes_per_frame = samples * channels * bps;
+      unsigned int bytes_per_frame = audio_bytes_per_frame();
       assert( bytes_per_frame != 0 );
 
       if ( bytes_per_frame > _audio_buf_used ) break;
@@ -1090,7 +1070,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
 		   << _(" need ") 
-		   << samples_for_frame( frequency, frame ) * channels * bps );
+		   << audio_bytes_per_frame() );
     }
 #endif
 
@@ -1267,21 +1247,7 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   av_init_packet( &pkt );
 
   unsigned int audio_bytes = 0;
-
-  // 
-  //   
-  AVStream* stream = get_audio_stream();
-  AVCodecContext *ctx = stream->codec;
-  int channels = ctx->channels;
-  if (channels > 0) {
-     ctx->request_channels = std::min(2, channels);
-  } else {
-     ctx->request_channels = 2;
-  }
-  int frequency = ctx->sample_rate;
-  int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-  unsigned int samples = samples_for_frame( frequency, frame );
-  unsigned bytes_per_frame = samples * channels * bps;
+  unsigned bytes_per_frame = audio_bytes_per_frame();
   
 
   // Loop until an error or we have what we need

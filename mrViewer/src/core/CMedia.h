@@ -516,6 +516,12 @@ namespace mrv {
     /// Return current play rate of movie
     inline double play_fps() const { return _play_fps; }
 
+    /// Change real rate of movie
+    inline void real_fps( double fps ) { _real_fps = fps; }
+
+    /// Return current real rate of movie
+    inline double real_fps() const { return _real_fps; }
+
 
     /// Change audio volume
     virtual void volume( float v );
@@ -742,7 +748,7 @@ namespace mrv {
 			  const image_type::Format format = image_type::kRGBA,
 			  const image_type::PixelType pixel_type = image_type::kFloat );
 
-    unsigned int samples_for_frame( int frequency, boost::int64_t index );
+    unsigned int audio_bytes_per_frame();
 
     void audio_initialize();
     void audio_shutdown();
@@ -839,6 +845,7 @@ namespace mrv {
 
     char*  _label;            //!< optional label drawn superimposed
 
+       double  _real_fps;     //!< actual play speed
     double  _play_fps;        //!< current desired play speed
     double  _fps;             //!< movie's original play speed
 
