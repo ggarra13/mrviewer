@@ -60,7 +60,7 @@ namespace {
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 // #define DEBUG_PACKETS
-// #define DEBUG_STORES
+#define DEBUG_STORES
 // #define DEBUG_DECODE
 // #define DEBUG_SEEK
 // #define DEBUG
@@ -882,11 +882,14 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   // Make sure audio frames are continous during playback to accomodate
   // weird sample rates not evenly divisable by frame rate
+  std::cerr << "AUDIO FRAME " << ptsframe << std::endl;
   if ( _audio_buf_used != 0 && !_audio.empty() )
     {
+       std::cerr << "AUDIO FRAME--> " << ptsframe << std::endl;
        ptsframe = _audio_last_frame + 1;
       // assert( ptsframe <= last_frame() );
     }
+
 
 #ifdef DEBUG
   if ( _audio_buf_used + pkt.size >= _audio_max )
@@ -980,29 +983,15 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   got_audio = kDecodeMissingFrame;
 
 
-  // Get the audio info from the codec context
-  AVStream* stream = get_audio_stream();
-  assert( stream != NULL );
-  AVCodecContext *ctx = stream->codec;
-  int channels = ctx->channels;
-  if (channels > 0) {
-     ctx->request_channels = FFMIN(2, channels);
-  } else {
-     ctx->request_channels = 2;
-  }
-  int frequency = ctx->sample_rate;
-  int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int index = 0;
 
   SCOPED_LOCK( _audio_mutex );
 
 
-
   // Split audio read into frame chunks
   for (;;)
     {
-      unsigned int bytes_per_frame = audio_bytes_per_frame();
       assert( bytes_per_frame != 0 );
 
       if ( bytes_per_frame > _audio_buf_used ) break;
@@ -1364,6 +1353,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     SCOPED_LOCK( _audio_mutex );
 
+    std::cerr << "PLAY AUDIO " << frame << std::endl;
+
     _audio_frame = frame;
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
@@ -1384,7 +1375,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
   }
 
   bool ok = play_audio( result );
-  _audio_pts   = _audio_frame / _play_fps;
+  _audio_pts   = _audio_frame / _fps;
   _audio_clock = av_gettime() / 1000000.0;
   return ok;
 }
