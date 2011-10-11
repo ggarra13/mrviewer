@@ -59,7 +59,7 @@ namespace {
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
-#define DEBUG_PACKETS
+// #define DEBUG_PACKETS
 // #define DEBUG_STORES
 // #define DEBUG_DECODE
 // #define DEBUG_SEEK

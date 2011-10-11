@@ -514,6 +514,8 @@ namespace mrv {
 	timer.setDesiredFrameRate( fps );
 	timer.waitUntilNextFrameIsDue();
 
+	img->real_fps( timer.actualFrameRate() );
+
 	img->find_image( frame );
 
 	if ( timeline->edl() )

@@ -408,9 +408,6 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _selection( mrv::Rectd(0,0) ),
   _playback( kStopped ),
   _looping( kLooping ),
-  _real_fps( 0 ),
-  _last_fps( 0 ),
-  _redraws_fps( 0 ),
   _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
@@ -1046,31 +1043,15 @@ void ImageView::draw()
 	  }
 	  _lastFrame = frame;
 
-// 	  if ( playback() != kStopped )
-// 	    {
-	  if ( frame_diff < uiMain->uiFPS->fvalue() )
-	    {
-	      _timer.waitUntilNextFrameIsDue(); // wait 0 seconds
-	      double timespan = 1.0 / _timer.timeSinceLastFrame() * frame_diff;
-	      _real_fps += timespan;
-	      ++_redraws_fps;
-	      
-	      if ( _redraws_fps >= uiMain->uiFPS->ivalue() )
-		{
-		  _last_fps = _real_fps = _real_fps/_redraws_fps;
-		  _redraws_fps  = 1;
-		}
-	    }
-	  // 	    }
 
 	}
   
-      if ( _last_fps > 0 )
+      if ( img->real_fps() > 0 )
 	{
 	   sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
 	   hud << buf;
 
-	  sprintf( buf, _("FPS: %.2f" ), _last_fps );
+	   sprintf( buf, _("FPS: %.2f" ), img->real_fps() );
 	  
 	  if ( !hud.str().empty() ) hud << " ";
 	  hud << buf;
