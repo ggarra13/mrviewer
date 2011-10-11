@@ -879,13 +879,10 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   ptsframe = get_frame( stream, pkt );
 
-
   // Make sure audio frames are continous during playback to accomodate
   // weird sample rates not evenly divisable by frame rate
-  std::cerr << "AUDIO FRAME " << ptsframe << std::endl;
-  if ( _audio_buf_used != 0 && !_audio.empty() )
+  if (  _audio_buf_used != 0 && !_audio.empty() )
     {
-       std::cerr << "AUDIO FRAME--> " << ptsframe << std::endl;
        ptsframe = _audio_last_frame + 1;
       // assert( ptsframe <= last_frame() );
     }
@@ -988,6 +985,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   SCOPED_LOCK( _audio_mutex );
 
+  boost::int64_t last = audio_frame;
 
   // Split audio read into frame chunks
   for (;;)
@@ -1019,7 +1017,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 	}
 #endif
 
-      index += store_audio( audio_frame, 
+      index += store_audio( last, 
 			    (boost::uint8_t*)_audio_buf + index, 
 			    bytes_per_frame );
 
@@ -1035,7 +1033,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       assert( bytes_per_frame <= _audio_buf_used );
 
       _audio_buf_used -= bytes_per_frame;
-      audio_frame += 1;
+      last += 1;
     }
   
 #ifdef DEBUG_AUDIO_SPLIT
@@ -1353,8 +1351,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     SCOPED_LOCK( _audio_mutex );
 
-    std::cerr << "PLAY AUDIO " << frame << std::endl;
-
     _audio_frame = frame;
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
@@ -1575,8 +1571,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	    {
 	      if ( get_frame( get_audio_stream(), pkt ) == frame )
 		{
-		  int64_t ptsframe;
-		  decode_audio_packet( ptsframe, frame, pkt );
+		  int64_t temp;
+		  decode_audio_packet( temp, frame, pkt );
 		  _audio_packets.pop_front();
 		}
 	      return kDecodeOK;

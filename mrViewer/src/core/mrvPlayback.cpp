@@ -36,7 +36,7 @@ using namespace std;
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-#  define DEBUG_THREADS
+//#  define DEBUG_THREADS
 
 #if 0
 #  define DEBUG_DECODE
@@ -272,7 +272,6 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
-	std::cerr << "---------AUDIO " << frame << std::endl;
 	CMedia::DecodeStatus status = img->decode_audio( frame );
 	switch( status )
 	  {
@@ -472,8 +471,8 @@ namespace mrv {
 	// // Calculate video-audio difference
 	if ( img->has_audio() )
 	{
-	   double video_clock = img->video_pts();
-	   double audio_clock = img->audio_pts();
+	   double video_clock = img->video_clock();
+	   double audio_clock = img->audio_clock();
 
 	   assert( step == 1 || step == -1 );
 
@@ -485,7 +484,6 @@ namespace mrv {
 	      FFPlay still doesn't "know if this is the best guess." */
 	   double sync_threshold = (delay > AV_SYNC_THRESHOLD) ? delay : AV_SYNC_THRESHOLD;
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
-	      // fps += diff * fps;
 	      if(diff >= sync_threshold) {
 		 fps = 999999.0; // skip frame
 	      }

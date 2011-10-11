@@ -1014,7 +1014,7 @@ void ImageView::draw()
   if ( (_hud & kHudAVDifference) && img->has_audio() )
     {
       // double avdiff = img->audio_pts() - img->video_pts();
-      double avdiff = img->audio_frame() - img->frame();
+      double avdiff = img->audio_clock() - img->video_clock();
       if ( !hud.str().empty() ) hud << " ";
       sprintf( buf, "% 4f", avdiff );
       hud << _("A-V: ") << buf;
