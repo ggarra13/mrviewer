@@ -682,7 +682,7 @@ namespace mrv {
     shot_id = "NULL";
 
     login = getenv("USER");
-    if ( !login ) login = "";
+    if ( !login ) login = (char*)"";
 
     const char* show = getenv( "SHOW" );
     if ( show && db )

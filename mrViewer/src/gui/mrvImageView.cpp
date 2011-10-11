@@ -1016,7 +1016,7 @@ void ImageView::draw()
 
   if ( (_hud & kHudAVDifference) && img->has_audio() )
     {
-      double avdiff = img->audio_pts() - img->video_pts();
+      double avdiff = img->audio_clock() - img->video_clock();
       if ( !hud.str().empty() ) hud << " ";
       sprintf( buf, "% 4f", avdiff );
       hud << _("A-V: ") << buf;
@@ -1038,7 +1038,7 @@ void ImageView::draw()
 	     frame_diff *= playback();
 
 	     int64_t absdiff = std::abs(frame_diff);
-	     if ( absdiff > 1 )
+	     if ( absdiff > 1 && absdiff < 10 )
 	     {
 		unshown_frames += absdiff;
 
@@ -1046,34 +1046,17 @@ void ImageView::draw()
 	  }
 	  _lastFrame = frame;
 
-// 	  if ( playback() != kStopped )
-// 	    {
-	  if ( frame_diff < uiMain->uiFPS->fvalue() )
-	    {
-	      _timer.waitUntilNextFrameIsDue(); // wait 0 seconds
-	      double timespan = 1.0 / _timer.timeSinceLastFrame() * frame_diff;
-	      _real_fps += timespan;
-	      ++_redraws_fps;
-	      
-	      if ( _redraws_fps >= uiMain->uiFPS->ivalue() )
-		{
-		  _last_fps = _real_fps = _real_fps/_redraws_fps;
-		  _redraws_fps  = 1;
-		}
-	    }
-	  // 	    }
-
 	}
   
-      if ( _last_fps > 0 )
+      if ( img->real_fps() > 0 )
 	{
 	   sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
 	   hud << buf;
 
-	  sprintf( buf, _("FPS: %.2f" ), _last_fps );
+	   sprintf( buf, _("FPS: %.2f" ), img->real_fps() );
 	  
-	  if ( !hud.str().empty() ) hud << " ";
-	  hud << buf;
+	   if ( !hud.str().empty() ) hud << " ";
+	   hud << buf;
 	}
 
     }
