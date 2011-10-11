@@ -8,11 +8,11 @@ Compilation of mrViewer requires the following libraries:
 - OpenEXR CTL 1.0.1 ( with ImfCtlApplyTransforms )
 - ImageMagick 6.6.8-10
 - TCLAP       1.2.0
-- FLTK        2.0.x
+- FLTK        2.0.x HEAD
 - FFMPEG      HEAD
-- PostgresSQL
+- PostgresSQL 
 - Gettext
-- OpenGL
+- OpenGL      1.4+
 - GLUT        1.2
 
 Compilation is started with 'mk', a bash command which calls cmake in 
