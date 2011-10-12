@@ -51,7 +51,7 @@ namespace
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
-//#define DEBUG_SEEK
+// #define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
@@ -731,7 +731,8 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
       if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
 	IMG_WARNING("Could not decode video frame " << ptsframe 
 		    << " type " << ftype << " pts: " 
-		    << pkt.pts << " dts: " << pkt.dts
+		    << (pkt.pts == MRV_NOPTS_VALUE ?
+			-1 : pkt.pts ) << " dts: " << pkt.dts
 		    << " data: " << (void*)pkt.data);
     }
   else
@@ -1284,7 +1285,6 @@ void aviImage::populate()
 
   bool got_audio = !has_audio();
   unsigned bytes_per_frame = audio_bytes_per_frame();
-
 
   if ( has_video() || has_audio() )
     {
@@ -2050,8 +2050,8 @@ void aviImage::debug_video_packets(const boost::int64_t frame,
 	  std::cerr << "L "; continue;
 	}
 
-      assert( (*iter).pts != MRV_NOPTS_VALUE );
-      boost::int64_t f = pts2frame( get_video_stream(), (*iter).pts );
+      assert( (*iter).dts != MRV_NOPTS_VALUE );
+      boost::int64_t f = pts2frame( get_video_stream(), (*iter).dts );
       if ( _video_packets.is_seek( *iter ) )
 	{
 	  if ( in_preroll )

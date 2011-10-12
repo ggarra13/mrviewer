@@ -276,7 +276,7 @@ namespace mrv
       _size( size ),
       _data( new boost::uint8_t[size] )
     {
-      memcpy(_data, data, size );
+      memcpy( _data, data, size );
     }
 
 

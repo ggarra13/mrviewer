@@ -60,7 +60,7 @@ namespace {
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 // #define DEBUG_PACKETS
-#define DEBUG_STORES
+// #define DEBUG_STORES
 // #define DEBUG_DECODE
 // #define DEBUG_SEEK
 // #define DEBUG
@@ -87,6 +87,31 @@ void CMedia::clear_packets()
 }
 
 
+/** 
+ * Calculate the number of audio samples for a frame
+ * 
+ * @return number of audio samples for frame
+ */
+unsigned int CMedia::audio_bytes_per_frame()
+{
+   unsigned int ret = 0;
+   if ( has_audio() )
+    {
+      AVStream* stream = get_audio_stream();
+      AVCodecContext* ctx = stream->codec;
+      int channels = ctx->channels;
+      if (channels > 0) {
+	 ctx->request_channels = FFMIN(2, channels);
+      } else {
+	 ctx->request_channels = 2;
+      }
+      int frequency = ctx->sample_rate;
+      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
+      ret = (unsigned int)(( frequency * channels * bps ) / _fps);
+    }
+  return ret;
+}
+>>>>>>> sync
 
 /** 
  * Returns the FFMPEG stream index of current audio channel.
@@ -232,9 +257,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
       if ( !got_audio )    _audio_packets.preroll(apts);
     }
 
-
-  // Make sure we are at that frame
-  AVCodecContext *ctx = stream->codec;
 
   boost::int64_t dts = frame;
 
@@ -418,7 +440,7 @@ void CMedia::populate_audio()
     {
       // Get the codec context
       const AVStream* stream = _context->streams[ i ];
-      const AVCodecContext *ctx = stream->codec;
+      const AVCodecContext* ctx = stream->codec;
 
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
@@ -867,7 +889,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   if ( !stream ) return kDecodeNoStream;
 
   // Get the audio codec context
-  AVCodecContext *ctx = stream->codec;
+  AVCodecContext* ctx = stream->codec;
 
 
   assert( !_audio_packets.is_seek( pkt ) );
@@ -879,12 +901,13 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   ptsframe = get_frame( stream, pkt );
 
-  // Make sure audio frames are continous during playback to accomodate
-  // weird sample rates not evenly divisable by frame rate
-  if (  _audio_buf_used != 0 && !_audio.empty() )
+
+  // Make sure audio frames are continous during playback to 
+  // accomodate weird sample rates not evenly divisable by frame rate
+  if ( _audio_buf_used != 0 && !_audio.empty() )
     {
-       ptsframe = _audio_last_frame + 1;
-      // assert( ptsframe <= last_frame() );
+       boost::int64_t nextframe = _audio_last_frame + 1;
+       if ( nextframe > ptsframe ) ptsframe = nextframe;
     }
 
 
@@ -987,6 +1010,8 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   boost::int64_t last = audio_frame;
 
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
+
   // Split audio read into frame chunks
   for (;;)
     {
@@ -1007,15 +1032,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 	}
 #endif
 
-      assert( bytes_per_frame <= _audio_buf_used );
-
-#ifdef DEBUG
-      if ( bytes_per_frame > _audio_buf_used )
-	{
-	  std::cerr << "A  bpf: " << bytes_per_frame << std::endl
-		    << "  used: " << _audio_buf_used << std::endl;
-	}
-#endif
 
       index += store_audio( last, 
 			    (boost::uint8_t*)_audio_buf + index, 
@@ -1042,7 +1058,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
 		   << _(" need ") 
-		   << frequency * channels * bps / _fps );
+		   << audio_bytes_per_frame() );
     }
 #endif
 
@@ -1061,8 +1077,11 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
        int len = size - _audio_buf_used;
 
        if ( len > 0 )
-	  memmove( _audio_buf + _audio_buf_used, 
-		   _audio_buf + _audio_buf_used - len, len );
+       {
+	  memset( _audio_buf + _audio_buf_used, 0, len );
+	  // memmove( _audio_buf + _audio_buf_used, 
+	  // 	   _audio_buf + _audio_buf_used - len, len );
+       }
        _audio_buf_used = size;
        assert( _audio_buf_used % 16 == 0 );
     }
@@ -1149,7 +1168,8 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   int frequency = ctx->sample_rate;
 
   audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
-						       frequency, channels, 
+						       frequency, 
+						       channels, 
 						       buf, size ) );
   if ( aud.get() == NULL )
     {
@@ -1421,6 +1441,9 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   debug_audio_stores(frame, "DOSEEK");
 #endif
 
+  Mutex& m = _audio_packets.mutex();
+  SCOPED_LOCK( m );
+
   assert( _audio_packets.is_seek() || _audio_packets.is_preroll() );
 
   _audio_packets.pop_front();  // pop seek/preroll begin packet
@@ -1436,9 +1459,9 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   }
 
   if ( _audio_last_frame <= last_frame() )
-     return kDecodeError;
+     got_audio = kDecodeError;
 
-  while ( !_audio_packets.is_seek() && !_audio_packets.empty() )
+  while ( !_audio_packets.empty() && !_audio_packets.is_seek() )
     {
       AVPacket& pkt = _audio_packets.front();
 
