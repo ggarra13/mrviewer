@@ -484,9 +484,7 @@ namespace mrv {
 	   double sync_threshold = delay;
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
 	      if (diff <= -sync_threshold) {
-		 // cerr << "FPS " << fps << " -> " 
-		 //      << fps+diff << " diff: " << diff << endl;
-	   	 // fps += diff;
+	   	 fps += diff;
 	      } else if(diff >= sync_threshold) {
 	   	 fps = 999999.0;
 	      }

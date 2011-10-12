@@ -90,9 +90,6 @@ void CMedia::clear_packets()
 /** 
  * Calculate the number of audio samples for a frame
  * 
- * @param frequency   audio frequency
- * @param frame       audio frame
- * 
  * @return number of audio samples for frame
  */
 unsigned int CMedia::audio_bytes_per_frame()
@@ -896,8 +893,8 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && !_audio.empty() )
     {
-       ptsframe = _audio_last_frame + 1;
-       //assert( ptsframe <= last_frame() );
+       boost::int64_t nextframe = _audio_last_frame + 1;
+       if ( nextframe > ptsframe ) ptsframe = nextframe;
     }
 
 #ifdef DEBUG
