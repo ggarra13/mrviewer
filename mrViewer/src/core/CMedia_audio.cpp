@@ -111,7 +111,6 @@ unsigned int CMedia::audio_bytes_per_frame()
     }
   return ret;
 }
->>>>>>> sync
 
 /** 
  * Returns the FFMPEG stream index of current audio channel.
@@ -163,23 +162,6 @@ void CMedia::open_audio_codec()
     }
 }
 
-
-unsigned int CMedia::audio_bytes_per_frame()
-{
-   if ( !has_audio() ) return 0;
-
-   AVStream* stream = get_audio_stream();
-   AVCodecContext* ctx = stream->codec;
-   int channels = ctx->channels;
-   if (channels > 0) {
-      ctx->request_channels = FFMIN(2, channels);
-   } else {
-      ctx->request_channels = 2;
-   }
-   int frequency = ctx->sample_rate;
-   int bps = 2 * channels;  // hmm... why 2?  should it be sizeof(int16_t)?
-   return unsigned(double(frequency * channels * bps) / _fps );
-}
 
 // Seek to the requested frame
 bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
@@ -1009,8 +991,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   SCOPED_LOCK( _audio_mutex );
 
   boost::int64_t last = audio_frame;
-
-  unsigned int bytes_per_frame = audio_bytes_per_frame();
 
   // Split audio read into frame chunks
   for (;;)

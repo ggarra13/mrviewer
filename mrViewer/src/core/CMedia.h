@@ -522,12 +522,6 @@ namespace mrv {
     /// Return current play rate of movie
     inline double play_fps() const { return _play_fps; }
 
-    /// Change real rate of movie
-    inline void real_fps( double fps ) { _real_fps = fps; }
-
-    /// Return current real rate of movie
-    inline double real_fps() const { return _real_fps; }
-
 
     /// Change audio volume
     virtual void volume( float v );
@@ -771,7 +765,6 @@ namespace mrv {
     boost::int64_t pts2frame( const AVStream* stream, 
 			      const boost::int64_t pts ) const;
 
-    unsigned int audio_bytes_per_frame();
     void open_audio_codec();
     void close_audio_codec();
     bool open_audio( const short channels, const unsigned samples );
