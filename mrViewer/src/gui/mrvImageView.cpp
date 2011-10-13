@@ -1038,7 +1038,7 @@ void ImageView::draw()
 	     frame_diff *= playback();
 
 	     int64_t absdiff = std::abs(frame_diff);
-	     if ( absdiff > 1 )
+	     if ( absdiff > 1 && absdiff < 10 )
 	     {
 		unshown_frames += absdiff;
 
