@@ -1012,7 +1012,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   got_audio = kDecodeMissingFrame;
 
 
-  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int index = 0;
 
   SCOPED_LOCK( _audio_mutex );
