@@ -81,20 +81,6 @@ void CMedia::clear_packets()
 }
 
 
-/** 
- * Calculate the number of audio samples for a frame
- * 
- * @param frequency   audio frequency
- * @param frame       audio frame
- * 
- * @return number of audio samples for frame
- */
-unsigned int CMedia::samples_for_frame( int frequency, 
-					   boost::int64_t frame )
-{
-  unsigned int samples = int( double( frequency ) / _fps );
-  return samples;
-}
 
 /** 
  * Returns the FFMPEG stream index of current audio channel.
@@ -238,24 +224,9 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
   AVPacket pkt;
   av_init_packet( &pkt );
 
-  unsigned int bytes_per_frame = 0;
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
 
-  if ( !got_audio )
-    {
-      AVStream* stream = get_audio_stream();
-      AVCodecContext *ctx = stream->codec;
-      int channels = ctx->channels;
-      if (channels > 0) {
-	 ctx->request_channels = FFMIN(2, channels);
-      } else {
-	 ctx->request_channels = 2;
-      }
-      int frequency = ctx->sample_rate;
-      int bps = 2 * channels;  // hmm... why 2?  should it be sizeof(int16_t)?
-      unsigned int samples = samples_for_frame( frequency, frame );
-      bytes_per_frame = samples * channels * bps;
-    }
 
 
   try {
@@ -417,6 +388,25 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
 }
 
 
+unsigned int CMedia::audio_bytes_per_frame()
+{
+   unsigned int ret = 0;
+   if ( has_audio() )
+    {
+      AVStream* stream = get_audio_stream();
+      AVCodecContext *ctx = stream->codec;
+      int channels = ctx->channels;
+      if (channels > 0) {
+	 ctx->request_channels = FFMIN(2, channels);
+      } else {
+	 ctx->request_channels = 2;
+      }
+      int frequency = ctx->sample_rate;
+      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
+      ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
+    }
+   return ret;
+}
 
 // Analyse streams and set input values
 void CMedia::populate_audio()
@@ -543,24 +533,7 @@ void CMedia::populate_audio()
     }
 
   bool got_audio = !has_audio();
-  unsigned bytes_per_frame = 0;
-
-
-  if ( !got_audio )
-  {
-     AVStream* stream = get_audio_stream();
-     AVCodecContext* ctx = stream->codec;
-     int channels = ctx->channels;
-     if (channels > 0) {
-	ctx->request_channels = FFMIN(2, channels);
-     } else {
-	ctx->request_channels = 2;
-     }
-     int frequency = ctx->sample_rate;
-     int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-     unsigned int samples = samples_for_frame( frequency, 1 );
-     bytes_per_frame = samples * channels * bps;
-  }
+  unsigned bytes_per_frame = audio_bytes_per_frame();
 
 
   if ( has_audio() )
@@ -906,7 +879,8 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && !_audio.empty() )
     {
-      ptsframe = _audio_last_frame + 1;
+       boost::int64_t next_frame = _audio_last_frame + 1;
+       if ( next_frame > ptsframe ) ptsframe = next_frame;
       // assert( ptsframe <= last_frame() );
     }
 
@@ -1022,14 +996,12 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
 
 
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
+  assert( bytes_per_frame != 0 );
+
   // Split audio read into frame chunks
   for (;;)
     {
-      unsigned int samples = samples_for_frame( frequency, audio_frame );
-      assert( samples != 0 );
-
-      unsigned int bytes_per_frame = samples * channels * bps;
-      assert( bytes_per_frame != 0 );
 
       if ( bytes_per_frame > _audio_buf_used ) break;
 
@@ -1081,7 +1053,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
 		   << _(" need ") 
-		   << samples_for_frame( frequency, frame ) * channels * bps );
+		   << audio_bytes_per_frame();
     }
 #endif
 
@@ -1255,24 +1227,9 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   AVPacket pkt;
   av_init_packet( &pkt );
 
-  unsigned int bytes_per_frame = 0;
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
 
-  if ( !got_audio )
-    {
-      AVStream* stream = get_audio_stream();
-      AVCodecContext *ctx = stream->codec;
-      int channels = ctx->channels;
-      if (channels > 0) {
-	 ctx->request_channels = std::min(2, channels);
-      } else {
-	 ctx->request_channels = 2;
-      }
-      int frequency = ctx->sample_rate;
-      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-      unsigned int samples = samples_for_frame( frequency, frame );
-      bytes_per_frame = samples * channels * bps;
-    }
 
   // Loop until an error or we have what we need
   while( !got_audio )

@@ -421,24 +421,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   AVPacket pkt;
   av_init_packet( &pkt );
 
-  unsigned int bytes_per_frame = 0;
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
-
-  if ( !got_audio )
-    {
-      AVStream* stream = get_audio_stream();
-      AVCodecContext *ctx = stream->codec;
-      int channels = ctx->channels;
-      if (channels > 0) {
-	 ctx->request_channels = FFMIN(2, channels);
-      } else {
-	 ctx->request_channels = 2;
-      }
-      int frequency = ctx->sample_rate;
-      int bps = 2 * channels;  // hmm... why 2?  should it be sizeof(int16_t)?
-      unsigned int samples = samples_for_frame( frequency, frame );
-      bytes_per_frame = samples * channels * bps;
-    }
 
 
   try {
@@ -1300,22 +1284,8 @@ void aviImage::populate()
   _frameEnd = _frameStart + duration - 1;
 
   bool got_audio = !has_audio();
-  unsigned bytes_per_frame = 0;
-  if ( !got_audio )
-  {
-     AVStream* stream = get_audio_stream();
-     AVCodecContext *ctx = stream->codec;
-     int channels = ctx->channels;
-     if (channels > 0) {
-	ctx->request_channels = FFMIN(2, channels);
-     } else {
-	ctx->request_channels = 2;
-     }
-     int frequency = ctx->sample_rate;
-     int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-     unsigned int samples = samples_for_frame( frequency, 1 );
-     bytes_per_frame = samples * channels * bps;
-  }
+  unsigned bytes_per_frame = audio_bytes_per_frame();
+
 
 
   if ( has_video() || has_audio() )
@@ -1636,25 +1606,9 @@ bool aviImage::fetch(const boost::int64_t frame)
     // Clear the packet
     av_init_packet( &pkt );
 
-    unsigned int bytes_per_frame = 0;
+    unsigned int bytes_per_frame = audio_bytes_per_frame();
     unsigned int audio_bytes = 0;
     
-
-    if ( !got_audio )
-      {
-	AVStream* stream = get_audio_stream();
-	AVCodecContext *ctx = stream->codec;
-	int channels = ctx->channels;
-        if (channels > 0) {
-            ctx->request_channels = FFMIN(2, channels);
-        } else {
-            ctx->request_channels = 2;
-        }
-	int frequency = ctx->sample_rate;
-	int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-	unsigned int samples = samples_for_frame( frequency, frame );
-	bytes_per_frame = samples * channels * bps;
-      }
 
     // Loop until an error or we have what we need
     while( !got_image || !got_audio )

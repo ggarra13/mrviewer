@@ -742,7 +742,7 @@ namespace mrv {
 			  const image_type::Format format = image_type::kRGBA,
 			  const image_type::PixelType pixel_type = image_type::kFloat );
 
-    unsigned int samples_for_frame( int frequency, boost::int64_t index );
+    unsigned int audio_bytes_per_frame();
 
     void audio_initialize();
     void audio_shutdown();
