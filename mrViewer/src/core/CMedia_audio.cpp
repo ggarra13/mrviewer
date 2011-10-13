@@ -57,7 +57,7 @@ namespace {
 //#define DEBUG_PACKETS
 //#define DEBUG_STORES
 //#define DEBUG_DECODE
-#define DEBUG_SEEK
+// #define DEBUG_SEEK
 // #define DEBUG
 // #define DEBUG_AUDIO_SPLIT
 
@@ -403,6 +403,36 @@ unsigned int CMedia::audio_bytes_per_frame()
       }
       int frequency = ctx->sample_rate;
       int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
+      switch(ctx->codec_id) {
+      	 case CODEC_ID_PCM_S32LE:
+      	 case CODEC_ID_PCM_S32BE:
+      	 case CODEC_ID_PCM_U32LE:
+      	 case CODEC_ID_PCM_U32BE:
+      	    bps = 4;
+      	    break;
+      	 case CODEC_ID_PCM_S24LE:
+      	 case CODEC_ID_PCM_S24BE:
+      	 case CODEC_ID_PCM_U24LE:
+      	 case CODEC_ID_PCM_U24BE:
+      	 case CODEC_ID_PCM_S24DAUD:
+      	    bps = 3;
+      	    break;
+      	 case CODEC_ID_PCM_S16LE:
+      	 case CODEC_ID_PCM_S16BE:
+      	 case CODEC_ID_PCM_U16LE:
+      	 case CODEC_ID_PCM_U16BE:
+      	    bps = 2;
+      	    break;
+      	 case CODEC_ID_PCM_S8:
+      	 case CODEC_ID_PCM_U8:
+      	 case CODEC_ID_PCM_ALAW:
+      	 case CODEC_ID_PCM_MULAW:
+      	    bps = 1;
+      	    break;
+      	 default:
+      	    bps = 2; // return ctx->bitrate / _fps
+      	    break;
+      }
       ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
     }
    return ret;

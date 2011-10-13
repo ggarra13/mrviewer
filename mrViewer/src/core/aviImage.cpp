@@ -1109,7 +1109,7 @@ void aviImage::populate()
     {
       // Get the codec context
       const AVStream* stream = _context->streams[ i ];
-      const AVCodecContext *ctx = stream->codec;
+      const AVCodecContext* ctx = stream->codec;
 
 
       // Determine the type and obtain the first index of each type
