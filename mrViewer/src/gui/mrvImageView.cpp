@@ -1052,7 +1052,7 @@ void ImageView::draw()
 	   hud << buf;
 
 	   sprintf( buf, _("FPS: %.2f" ), img->real_fps() );
-	  
+
 	   if ( !hud.str().empty() ) hud << " ";
 	   hud << buf;
 	}

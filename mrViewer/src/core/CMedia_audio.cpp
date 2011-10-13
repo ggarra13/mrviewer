@@ -87,30 +87,7 @@ void CMedia::clear_packets()
 }
 
 
-/** 
- * Calculate the number of audio samples for a frame
- * 
- * @return number of audio samples for frame
- */
-unsigned int CMedia::audio_bytes_per_frame()
-{
-   unsigned int ret = 0;
-   if ( has_audio() )
-    {
-      AVStream* stream = get_audio_stream();
-      AVCodecContext* ctx = stream->codec;
-      int channels = ctx->channels;
-      if (channels > 0) {
-	 ctx->request_channels = FFMIN(2, channels);
-      } else {
-	 ctx->request_channels = 2;
-      }
-      int frequency = ctx->sample_rate;
-      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-      ret = (unsigned int)(( frequency * channels * bps ) / _fps);
-    }
-  return ret;
-}
+
 
 /** 
  * Returns the FFMPEG stream index of current audio channel.
@@ -411,6 +388,55 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
 }
 
 
+unsigned int CMedia::audio_bytes_per_frame()
+{
+   unsigned int ret = 0;
+   if ( has_audio() )
+    {
+      AVStream* stream = get_audio_stream();
+      AVCodecContext *ctx = stream->codec;
+      int channels = ctx->channels;
+      if (channels > 0) {
+	 ctx->request_channels = FFMIN(2, channels);
+      } else {
+	 ctx->request_channels = 2;
+      }
+      int frequency = ctx->sample_rate;
+      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
+      switch(ctx->codec_id) {
+      	 case CODEC_ID_PCM_S32LE:
+      	 case CODEC_ID_PCM_S32BE:
+      	 case CODEC_ID_PCM_U32LE:
+      	 case CODEC_ID_PCM_U32BE:
+      	    bps = 4;
+      	    break;
+      	 case CODEC_ID_PCM_S24LE:
+      	 case CODEC_ID_PCM_S24BE:
+      	 case CODEC_ID_PCM_U24LE:
+      	 case CODEC_ID_PCM_U24BE:
+      	 case CODEC_ID_PCM_S24DAUD:
+      	    bps = 3;
+      	    break;
+      	 case CODEC_ID_PCM_S16LE:
+      	 case CODEC_ID_PCM_S16BE:
+      	 case CODEC_ID_PCM_U16LE:
+      	 case CODEC_ID_PCM_U16BE:
+      	    bps = 2;
+      	    break;
+      	 case CODEC_ID_PCM_S8:
+      	 case CODEC_ID_PCM_U8:
+      	 case CODEC_ID_PCM_ALAW:
+      	 case CODEC_ID_PCM_MULAW:
+      	    bps = 1;
+      	    break;
+      	 default:
+      	    bps = 2; // return ctx->bitrate / _fps
+      	    break;
+      }
+      ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
+    }
+   return ret;
+}
 
 // Analyse streams and set input values
 void CMedia::populate_audio()
@@ -888,8 +914,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && !_audio.empty() )
     {
-       boost::int64_t nextframe = _audio_last_frame + 1;
-       if ( nextframe > ptsframe ) ptsframe = nextframe;
+       boost::int64_t next_frame = _audio_last_frame + 1;
+       if ( next_frame > ptsframe ) ptsframe = next_frame;
+      // assert( ptsframe <= last_frame() );
     }
 
 
@@ -992,10 +1019,12 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   boost::int64_t last = audio_frame;
 
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
+  assert( bytes_per_frame != 0 );
+
   // Split audio read into frame chunks
   for (;;)
     {
-      assert( bytes_per_frame != 0 );
 
       if ( bytes_per_frame > _audio_buf_used ) break;
 
@@ -1217,9 +1246,9 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   AVPacket pkt;
   av_init_packet( &pkt );
 
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
-  unsigned bytes_per_frame = audio_bytes_per_frame();
-  
+
 
   // Loop until an error or we have what we need
   while( !got_audio )

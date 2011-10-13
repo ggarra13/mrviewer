@@ -510,10 +510,10 @@ namespace mrv {
     /// Original play rate of movie
     inline double fps() const { return _fps; }
 
-    /// Store actual play rate of movie
+    /// Change real play rate of movie
     inline void real_fps( double fps ) { _real_fps = fps; }
 
-    /// Return current play rate of movie
+    /// Return current actual play rate of movie
     inline double real_fps() const { return _real_fps; }
 
     /// Change play rate of movie
@@ -845,7 +845,7 @@ namespace mrv {
 
     char*  _label;            //!< optional label drawn superimposed
 
-    double  _real_fps;     //!< real play speed under viewer
+    double  _real_fps;        //!< actual play rate of movie
     double  _play_fps;        //!< current desired play speed
     double  _fps;             //!< movie's original play speed
 
