@@ -19,6 +19,7 @@ using namespace std;
 #include "mrvString.h"
 #include "wandImage.h"
 #include "exrImage.h"
+#include "mrvThread.h"
 #include "mrvI8N.h"
 #include "mrvIO.h"
 

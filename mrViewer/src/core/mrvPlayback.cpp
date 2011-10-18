@@ -36,7 +36,7 @@ using namespace std;
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-// #  define DEBUG_THREADS
+#  define DEBUG_THREADS
 
 #if 0
 #  define DEBUG_DECODE
