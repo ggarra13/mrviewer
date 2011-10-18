@@ -95,6 +95,8 @@ namespace mrv {
 
   bool wandImage::fetch( const boost::int64_t frame ) 
   {
+     SCOPED_LOCK( _mutex );
+
     MagickBooleanType status;
     MagickWandGenesis();
 

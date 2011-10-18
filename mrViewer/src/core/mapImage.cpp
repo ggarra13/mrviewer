@@ -134,6 +134,8 @@ namespace mrv {
   {
     int dw, dh;
 
+     SCOPED_LOCK( _mutex );
+
     _stub = is_stub();
 
     FILE* f = fopen( sequence_filename(frame).c_str(), "rb" );
