@@ -1,10 +1,10 @@
 
 Compilation of mrViewer requires the following libraries:
 
-- Boost       1.42
+- Boost       1.42		DONE
 - SampleICC   1.6.4
-- OpenEXR     1.6.1
-- CTL         1.4.1
+- OpenEXR     1.6.1		DONE
+- CTL         1.4.1		DONE
 - OpenEXR CTL 1.0.1 ( with ImfCtlApplyTransforms )
 - ImageMagick 6.6.8-10
 - TCLAP       1.2.0
@@ -14,6 +14,7 @@ Compilation of mrViewer requires the following libraries:
 - Gettext
 - OpenGL      1.4+
 - GLUT        1.2
+- CMake       2.8
 
 Compilation is started with 'mk', a bash command which calls cmake in 
 the process and later make.  

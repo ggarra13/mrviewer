@@ -462,11 +462,17 @@ namespace mrv {
     /// Sets the first frame in the sequence
     void  last_frame(boost::int64_t x);
 
-    /// Returns the first frame in the sequence
+    /// Returns the first frame in the range of playback
     inline boost::int64_t   first_frame() const { return _frameStart; }
 
-    /// Returns the last frame in the sequence
+    /// Returns the last frame in the range of playback
     inline boost::int64_t   last_frame()  const { return _frameEnd; }
+
+    /// Returns the first frame in the video or sequence
+    inline boost::int64_t   start_frame() const { return _frame_start; }
+
+    /// Returns the last frame in the video or sequence
+    inline boost::int64_t   end_frame()  const { return _frame_end; }
 
     inline InterlaceType interlaced() const { return _interlaced; }
 
@@ -638,6 +644,7 @@ namespace mrv {
 
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
+    std::string sequence_filename( const boost::int64_t frame );
 
     double video_clock() const { return _video_clock; }
     
@@ -717,8 +724,6 @@ namespace mrv {
     void debug_stream_index( const AVStream* stream );
     void debug_audio_stores(const boost::int64_t frame,
 			    const char* routine = "");
-
-    std::string sequence_filename( const boost::int64_t frame );
 
     CMedia();
 
@@ -861,8 +866,12 @@ namespace mrv {
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
     boost::int64_t   _expected;    //!< expected next frame
+
     boost::int64_t   _frameStart;  //!< start frame for sequence or movie
     boost::int64_t   _frameEnd;    //!< end frame for sequence or movie
+
+    boost::int64_t   _frame_start;
+    boost::int64_t   _frame_end;
 
        double _audio_pts;
        double     _audio_clock;

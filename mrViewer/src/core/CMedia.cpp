@@ -178,6 +178,8 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _frame( 1 ),
   _frameStart( 1 ),
   _frameEnd( 1 ),
+  _frame_start( 1 ),
+  _frame_end( 1 ),
   _interlaced( kNoInterlace ),
   _image_damage( kNoDamage ),
   _damageRectangle( 0, 0, 0, 0 ),
@@ -380,6 +382,8 @@ void CMedia::refresh()
 
 void  CMedia::first_frame(boost::int64_t x)
 {
+   if ( x < _frame_start ) x = _frame_start;
+
    _frameStart = x;
    if ( is_sequence() )
    {
@@ -393,6 +397,8 @@ void  CMedia::first_frame(boost::int64_t x)
 
 void  CMedia::last_frame(boost::int64_t x)
 {
+   if ( x > _frame_end ) x = _frame_end;
+
    _frameEnd = x;
    if ( is_sequence() )
    {
@@ -402,6 +408,21 @@ void  CMedia::last_frame(boost::int64_t x)
       boost::uint64_t num = _frameEnd - _frameStart + 1;
       _sequence = new mrv::image_type_ptr[num];
    }
+}
+
+void load_sequence( PlaybackData* data )
+{
+   mrv::ViewerUI* uiMain = data->uiMain;
+   mrv::CMedia* img = data->image;
+   
+   struct stat sbuf;
+   for ( int64_t f = img->first_frame(); f <= img->last_frame(); ++f )
+    {
+      int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
+      if ( result < 0 ) return;
+      img->fetch( f );
+    }
+
 }
 
 /** 
@@ -433,8 +454,8 @@ void CMedia::sequence( const char* fileroot, const boost::int64_t start,
 
   _is_sequence = true;
   _dts = _frame = start;
-  _frameStart = start;
-  _frameEnd = end;
+  _frameStart = _frame_start = start;
+  _frameEnd = _frame_end = end;
 
   delete [] _sequence;
   _sequence = NULL;
@@ -442,21 +463,14 @@ void CMedia::sequence( const char* fileroot, const boost::int64_t start,
   boost::uint64_t num = _frameEnd - _frameStart + 1;
   _sequence = new mrv::image_type_ptr[num];
 
-  // timestamp all pictures
-  struct stat sbuf;
-
-  for ( int64_t f = _frameStart; f <= _frameEnd; ++f )
-    {
-      int result = stat( sequence_filename( f ).c_str(), &sbuf );
-      if ( result < 0 ) return;
-    }
-
+  // load all pictures in new thread 
+  PlaybackData* data = new PlaybackData( NULL, this );
+  _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+						      data ) ) );
 
   if ( ! initialize() )
     return;
   
-  fetch(_dts);
-
   default_icc_profile();
   default_rendering_transform();
   
@@ -984,22 +998,6 @@ void CMedia::play(const CMedia::Playback dir,
 
   PlaybackData* video_data, *audio_data, *subtitle_data;
 
-#if 0
-  bool     valid_video = false;
-  unsigned num_streams = number_of_video_streams();
-  for ( unsigned i = 0; i < num_streams; ++i )
-    {
-      if ( _video_info[i].has_codec ) { valid_video = true; break; }
-    }
-
-  // If there's at least one valid video stream, create video thread
-  if ( valid_video || is_sequence() )
-    {
-      video_data = new PlaybackData( *data );
-      _threads.push_back( new boost::thread( boost::bind( mrv::video_thread, 
-							  video_data ) ) );
-    }
-#else
   bool     valid_video = number_of_video_streams() > 0;
   unsigned num_streams;
 
@@ -1011,7 +1009,6 @@ void CMedia::play(const CMedia::Playback dir,
       _threads.push_back( new boost::thread( boost::bind( mrv::video_thread, 
 							  video_data ) ) );
     }
-#endif
 
   bool valid_audio = false;
   num_streams = number_of_audio_streams();
@@ -1686,6 +1683,9 @@ bool CMedia::find_image( const boost::int64_t frame )
   boost::int64_t f = frame;
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
+
+  _video_pts = f / _fps;
+  _video_clock = av_gettime() / 1000000.0;
 
   // Check if we have a cached frame for this frame
   

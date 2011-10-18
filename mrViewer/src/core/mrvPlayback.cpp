@@ -80,7 +80,7 @@ namespace mrv {
   unsigned int barrier_thread_count( const CMedia* img )
   {
     unsigned r = 1;               // 1 for decode thread
-    if    ( img->hires() )        r += 1;
+    if    ( img->has_picture() )  r += 1;
     if    ( img->has_audio() )    r += 1;
     if    ( img->has_subtitle() ) r += 1;
     return r;
@@ -426,9 +426,6 @@ namespace mrv {
     cerr << "ENTER VIDEO THREAD " << img->name() << " " << frame << endl;
 #endif
 
-    double frame_timer = av_gettime() / 1000000.0;
-    double last_delay = 0;
-    double last_pts = 0;
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
@@ -462,62 +459,44 @@ namespace mrv {
 	    break;
 	  }
 
-	double fps = img->play_fps();
 
+	double fps = img->play_fps();
 	double delay = 1.0 / fps;
 	double diff = 0.0;
-	// double actual_delay = delay;
 
 	// // Calculate video-audio difference
 	if ( img->has_audio() )
 	{
 	   double video_clock = img->video_pts();
 	   double audio_clock = img->audio_pts();
-	   // double video_clock = img->video_clock();
-	   // double audio_clock = img->audio_clock();
+
 	   diff = step * (audio_clock - video_clock);
 	   double absdiff = std::abs(diff);
 
-
 	   /* Skip or repeat the frame. Take delay into account
 	      FFPlay still doesn't "know if this is the best guess." */
-	   double sync_threshold = delay;
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
-	      if (diff <= -sync_threshold) {
+	      if (diff <= -delay) {
 	   	 fps += diff;
-	      } else if(diff >= sync_threshold) {
-	   	 fps = 999999.0;
+	      } else if(diff >= delay && diff < fps) {
+	   	 fps = 999999.0; // skip frame
 	      }
 	   }
-
-
-	   //    frame_timer += delay;
-
-	   //    /* computer the REAL delay */
-	   // actual_delay = frame_timer - (av_gettime() / 1000000.0);
-	   // if(actual_delay < 0.010) {
-	   //    /* Really it should skip the picture instead */
-	   //    actual_delay = 0.0;
-	   // }
-	//    // fprintf( stderr, "%.3f-%.3f=%.3f %.3f %.3f\n", 
-	//    // 	    video_clock, audio_clock, 
-	//    // 	    diff, delay, actual_delay );
 	}
-       
-	//  timer.setDesiredSecondsPerFrame( actual_delay );
 	
 	timer.setDesiredFrameRate( fps );
 	timer.waitUntilNextFrameIsDue();
 
 	img->real_fps( timer.actualFrameRate() );
-
+	
 	img->find_image( frame );
 
 	if ( timeline->edl() )
 	  {
-	    int64_t tframe = frame - img->first_frame() + timeline->location(img);
-	    assert( tframe < int64_t( timeline->maximum() ) );
-	    timeline->value( tframe );
+	     int64_t tframe = ( frame - img->first_frame() + 
+				timeline->location(img) );
+	     assert( tframe < int64_t( timeline->maximum() ) );
+	     timeline->value( tframe );
 	  }
 
 
@@ -588,10 +567,6 @@ namespace mrv {
 	    else if ( status == kLoopAtEnd )
 	      {
 		img->loop_at_end( frame );
-	      }
-	    else
-	      {
-		assert(0);
 	      }
 
 	    // Lock thread until loop status is resolved on all threads

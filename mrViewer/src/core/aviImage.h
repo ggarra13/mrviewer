@@ -101,8 +101,11 @@ namespace mrv {
 				     const char* routine = "");
     void debug_video_stores(const boost::int64_t frame, 
 			    const char* routine = "");
-       virtual void debug_subtitle_stores(const boost::int64_t frame, 
-					  const char* routine = "");
+
+    void debug_subtitle_packets(const boost::int64_t frame, 
+				const char* routine = "");
+    void debug_subtitle_stores(const boost::int64_t frame, 
+			       const char* routine = "");
 
   protected:
 

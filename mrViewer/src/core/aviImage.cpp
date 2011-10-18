@@ -55,7 +55,7 @@ namespace
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-//#define DEBUG_PACKETS
+// #define DEBUG_PACKETS
 //#define DEBUG_STORES
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
@@ -1248,7 +1248,7 @@ void aviImage::populate()
       _frameStart = boost::int64_t( start * _fps ) + 1;
     }
 
-
+  _frame_start = _frameStart;
 
   //
   // BUG FIX for ffmpeg bugs with some codecs/containers.
@@ -1282,6 +1282,7 @@ void aviImage::populate()
     }
 
   _frameEnd = _frameStart + duration - 1;
+  _frame_end = _frameEnd;
 
   bool got_audio = !has_audio();
   unsigned bytes_per_frame = audio_bytes_per_frame();
@@ -1316,7 +1317,7 @@ void aviImage::populate()
 	      if ( status == kDecodeOK )
 		{
 		   store_image( ptsframe, pkt.dts );
-		  _frameStart = ptsframe;
+		  _frameStart = _frame_start = ptsframe;
 		  got_image = true;
 		}
 	    }
@@ -2071,6 +2072,72 @@ void aviImage::debug_video_packets(const boost::int64_t frame,
 	    }
 	}
       else if ( _video_packets.is_preroll( *iter ) )
+	{
+	  std::cerr << "[PREROLL:" << f << "]";
+	  in_preroll = true;
+	}
+      else
+	{
+	  if ( f == frame )  std::cerr << "S";
+	  if ( f == _dts )   std::cerr << "D";
+	  if ( f == _frame ) std::cerr << "F";
+	  std::cerr << f << " ";
+	}
+    }
+  std::cerr << std::endl;
+}
+
+void aviImage::debug_subtitle_packets(const boost::int64_t frame, 
+				      const char* routine)
+{
+  if ( !has_subtitle() ) return;
+
+  mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
+  SCOPED_LOCK( spm );
+
+  mrv::PacketQueue::const_iterator iter = _subtitle_packets.begin();
+  mrv::PacketQueue::const_iterator last = _subtitle_packets.end();
+  std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
+	    << " " << routine << " subtitle packets #" 
+	    << _subtitle_packets.size() << " (" 
+	    << _subtitle_packets.bytes() << "): "
+	    << std::endl;
+
+  bool in_preroll = false;
+  bool in_seek = false;
+  for ( ; iter != last; ++iter )
+    {
+      if ( _subtitle_packets.is_flush( *iter ) )
+	{
+	  std::cerr << "* "; continue;
+	}
+      else if ( _subtitle_packets.is_loop_start( *iter ) ||
+		_subtitle_packets.is_loop_end( *iter ) )
+	{
+	  std::cerr << "L "; continue;
+	}
+
+      assert( (*iter).dts != MRV_NOPTS_VALUE );
+      boost::int64_t f = pts2frame( get_subtitle_stream(), (*iter).dts );
+      if ( _subtitle_packets.is_seek( *iter ) )
+	{
+	  if ( in_preroll )
+	    {
+	      std::cerr << "[PREROLL END: " << f << "]";
+	      in_preroll = false;
+	    }
+	  else if ( in_seek )
+	    {
+	      std::cerr << "<SEEK END:" << f << ">";
+	      in_seek = false;
+	    }
+	  else
+	    {
+	      std::cerr << "<SEEK:" << f << ">";
+	      in_seek = true;
+	    }
+	}
+      else if ( _subtitle_packets.is_preroll( *iter ) )
 	{
 	  std::cerr << "[PREROLL:" << f << "]";
 	  in_preroll = true;

@@ -306,6 +306,7 @@ namespace mrv {
     unsigned int dw = width();
     unsigned int dh = height() - 1;
 
+
     PixelType* pixels = (PixelType*)_hires->data().get();
     boost::uint8_t* src = data;
     if ( z )
@@ -449,6 +450,8 @@ namespace mrv {
     _gamma = 1.0f;
     _num_channels = 0;
     _compression = kNoCompression;
+
+    SCOPED_LOCK( _mutex );
 
     FILE* f = fopen( sequence_filename(frame).c_str(), "rb" );
     if (!f) return false;
