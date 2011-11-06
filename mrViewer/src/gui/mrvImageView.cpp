@@ -1013,8 +1013,8 @@ void ImageView::draw()
 
   if ( (_hud & kHudAVDifference) && img->has_audio() )
     {
-      // double avdiff = img->audio_pts() - img->video_pts();
-      double avdiff = img->audio_clock() - img->video_clock();
+      // double avdiff = img->audio_clock() - img->video_clock();
+       double avdiff = img->avdiff();
       if ( !hud.str().empty() ) hud << " ";
       sprintf( buf, "% 4f", avdiff );
       hud << _("A-V: ") << buf;
@@ -1220,7 +1220,7 @@ void ImageView::leftMouseDown(int x, int y)
 	    unsigned num = image->number_of_subtitle_streams();
 	    if ( num > 0 )
 	    {
-	       item = menu.add( _("Subtitle/No Subtitle"), NULL,
+	       item = menu.add( _("Subtitle/No Subtitle"), 0,
 				(fltk::Callback*)change_subtitle_cb, this );
 	       item->type( fltk::Item::TOGGLE );
 	       if ( image->subtitle_stream() == -1 )
@@ -1231,7 +1231,7 @@ void ImageView::leftMouseDown(int x, int y)
 		  sprintf( buf, _("Subtitle/Track #%d - %s"), i,
 			   image->subtitle_info(i).language.c_str() );
 
-		  item = menu.add( buf, NULL,
+		  item = menu.add( buf, 0,
 				   (fltk::Callback*)change_subtitle_cb, this );
 		  item->type( fltk::Item::TOGGLE );
 		  if ( image->subtitle_stream() == i )
@@ -1241,7 +1241,7 @@ void ImageView::leftMouseDown(int x, int y)
 
 	    if ( fg->image()->is_sequence() )
 	    {
-	        menu.add( _("Audio/Attach Audio File"), NULL,
+	        menu.add( _("Audio/Attach Audio File"), 0,
 	     		 (fltk::Callback*)attach_audio_cb, this );
 	    }
 

@@ -325,6 +325,9 @@ namespace mrv {
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
 
+       inline void avdiff( const double x ) { _avdiff = x; }
+       inline double avdiff() const { return _avdiff; }
+
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
@@ -838,6 +841,7 @@ namespace mrv {
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
+       double    _avdiff;      //!< Audio-Video Difference
     Condition _video_cond;     //!< Condition for video mutex
     Condition _subtitle_cond;  //!< Condition for subtitle mutex
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads

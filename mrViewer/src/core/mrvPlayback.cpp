@@ -469,16 +469,22 @@ namespace mrv {
 	{
 	   double video_clock = img->video_clock();
 	   double audio_clock = img->audio_clock();
+	   // double video_clock = img->video_pts();
+	   // double audio_clock = img->audio_pts();
 
 	   diff = step * (audio_clock - video_clock);
+	   img->avdiff( diff );
 	   double absdiff = std::abs(diff);
 
 	   /* Skip or repeat the frame. Take delay into account
 	      FFPlay still doesn't "know if this is the best guess." */
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
 	      // if (diff <= -delay) {
-	   	 fps -= diff;
+	      // fps -= diff;
 	      // } else
+
+	      fps -= diff;
+
 	      if(diff >= delay && diff < fps) {
 	   	 fps = 999999.0; // skip frame
 	      }
