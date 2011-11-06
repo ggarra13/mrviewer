@@ -13,6 +13,7 @@
 #  FLTK2_IMAGES_LIBRARY = the full path to fltk2_images.lib
 
 SET (FLTK2_DIR $ENV{FLTK2_DIR} )
+MESSAGE( STATUS ${FLTK2_DIR} )
 
 #  Platform dependent libraries required by FLTK2
 IF(WIN32)
@@ -120,11 +121,12 @@ IF(FLTK2_DIR)
     IF(FLUID_COMMAND) 
       SET(FLTK2_FLUID_EXECUTABLE ${FLUID_COMMAND} CACHE FILEPATH "Fluid executable")
     ELSE(FLUID_COMMAND) 
-      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 PATHS 
+      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 fluid2.exe PATHS 
         ${FLTK2_EXECUTABLE_DIRS}
         ${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
         ${FLTK2_EXECUTABLE_DIRS}/Debug
         ${FLTK2_EXECUTABLE_DIRS}/Release
+	${FLTK2_DIR}/fluid/
         NO_SYSTEM_PATH)
     ENDIF(FLUID_COMMAND)
 
@@ -165,7 +167,8 @@ IF(FLTK2_DIR)
 
     # if FLTK2 was not built using CMake
     # Find fluid executable.
-    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 ${FLTK2_INCLUDE_DIR}/fluid)
+    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 fluid2.exe 
+    			PATHS ${FLTK2_DIR}/fluid )	
 
     # Use location of fluid to help find everything else.
     SET(FLTK2_INCLUDE_SEARCH_PATH "")

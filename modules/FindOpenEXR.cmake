@@ -18,6 +18,8 @@ ELSE( OPENEXR_LIBRARY_DIR )
     $ENV{OPENEXR_ROOT}/lib
     $ENV{OPENEXR_ROOT}/lib/Release
     $ENV{OPENEXR_ROOT}/lib/Debug
+    $ENV{OPENEXR_ROOT}/bin/Release
+    $ENV{OPENEXR_ROOT}/bin/Debug
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/lib${CMAKE_BUILD_ARCH}
     )
@@ -27,7 +29,6 @@ ENDIF( OPENEXR_LIBRARY_DIR )
 FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   "$ENV{OPENEXR_ROOT}/include/OpenEXR"
   "$ENV{OPENEXR_ROOT}/include"
-  "$ENV{OPENEXR_ROOT}"
   /usr/local/include/OpenEXR
   /usr/include/OpenEXR
   DOC   "OpenEXR includes"
@@ -83,7 +84,8 @@ IF(NOT OPENEXR_FOUND)
       MESSAGE(FATAL_ERROR
               "OpenEXR required, please specify its location with OPENEXR_ROOT.")
     ELSE(OPENEXR_FIND_REQUIRED)
-      MESSAGE( STATUS "OpenEXR was not found!!!")
+      MESSAGE( STATUS "OpenEXR was not found!!! " ${OPENEXR_INCLUDE_DIR})
+      MESSAGE( STATUS ${OPENEXR_LIBRARIES} )
     ENDIF(OPENEXR_FIND_REQUIRED)
   ENDIF(NOT OPENEXR_FIND_QUIETLY)
 ENDIF(NOT OPENEXR_FOUND)

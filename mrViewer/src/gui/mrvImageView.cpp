@@ -740,7 +740,7 @@ void ImageView::timeout()
 
   mrv::media fg = foreground();
 
-  static double kMinDelay = 0.0041666;
+  static double kMinDelay = 0.0001666;
 
   double delay = 0.005;
   if ( fg )

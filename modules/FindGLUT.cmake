@@ -73,6 +73,7 @@ ELSE (WIN32)
       /usr/local/lib
       /usr/openwin/lib
       /usr/X11R6/lib
+      /usr/lib/x86_64-linux-gnu
     )
 
     FIND_LIBRARY( GLUT_Xi_LIBRARY Xi
@@ -81,6 +82,7 @@ ELSE (WIN32)
       /usr/local/lib
       /usr/openwin/lib
       /usr/X11R6/lib
+      /usr/lib/x86_64-linux-gnu
     )
 
     FIND_LIBRARY( GLUT_Xmu_LIBRARY Xmu
@@ -88,6 +90,7 @@ ELSE (WIN32)
       /usr/local/lib
       /usr/openwin/lib
       /usr/X11R6/lib
+      /usr/lib/x86_64-linux-gnu
     )
 
   ENDIF (APPLE)

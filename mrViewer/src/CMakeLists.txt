@@ -189,8 +189,14 @@ SET( SOURCES
 
 IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
+
+  FIND_LIBRARY( Boost_system_LIBRARY 
+    NAMES boost_system
+    PATHS ${Boost_LIBRARY_DIRS}
+    )
+
   FIND_LIBRARY( Boost_filesystem_LIBRARY 
-    NAMES boost_filesystem-mt boost_filesystem
+    NAMES boost_filesystem boost_filesystem-mt
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
@@ -200,6 +206,7 @@ IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
     )
 
   SET( BOOST_LIBRARIES
+    ${Boost_system_LIBRARY}
     ${Boost_filesystem_LIBRARY}
     ${Boost_thread_LIBRARY}
     )
@@ -247,10 +254,10 @@ SET( LIBRARIES
 #
 # RELEASE VERSION
 #
-ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
-TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} )
+ADD_EXECUTABLE( mrViewer.exe WIN32 ${SOURCES} )
+TARGET_LINK_LIBRARIES( mrViewer.exe ${LIBRARIES} )
 
-SET_TARGET_PROPERTIES( mrViewer
+SET_TARGET_PROPERTIES( mrViewer.exe
   PROPERTIES
   LINK_FLAGS "${LINK_FLAGS}"
   )
@@ -276,7 +283,7 @@ SET_TARGET_PROPERTIES( mrViewer
 # Installation
 #
 ######################################################
-INSTALL( TARGETS mrViewer 
+INSTALL( TARGETS mrViewer.exe
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

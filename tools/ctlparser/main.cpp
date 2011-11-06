@@ -21,7 +21,7 @@ void usage(const char** argv)
        << endl
        << "Example:" << endl
        << endl
-       << argv[0] << " transform_RRT.ctl" << endl
+       << argv[0] << " transform_RRT" << endl
        << endl;
 }
 

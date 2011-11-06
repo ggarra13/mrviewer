@@ -51,11 +51,11 @@ namespace
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
-// #define DEBUG_SEEK
+//#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-// #define DEBUG_PACKETS
+//#define DEBUG_PACKETS
 //#define DEBUG_STORES
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
@@ -68,9 +68,11 @@ namespace
 
 
 //  in ffmpeg, sizes are in bytes...
-#define MAX_VIDEOQ_SIZE (5 * 256 * 1024)
-#define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
-#define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
+#define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
+#define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
+#define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
+#define kMIN_FRAMES 5
+#define kMAX_FRAMES 10
 
 namespace {
   const unsigned int  kMaxCacheImages = 2;
@@ -276,7 +278,6 @@ void aviImage::flush_video()
 /// VCR play (and cache frames if needed) sequence
 void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
 {
-
   CMedia::play( dir, uiMain );
 }
 
@@ -324,7 +325,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
       }
   }
  
-  assert( stream != 0 );
+  assert( stream != NULL );
   assert( idx != -1 );
 
 
@@ -346,6 +347,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
       IMG_ERROR("av_seek_frame raised some exception" );
       return false;
     }
+
 
   bool got_audio = !has_audio();
   bool got_video = !has_video();
@@ -432,7 +434,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
       int error = av_read_frame( _context, &pkt );
       if ( error < 0 )
 	{
-	  int err = url_ferror(_context->pb);
+	  int err = url_ferror( _context->pb );
 	  if ( err != 0 )
 	    {
 	      IMG_ERROR("seek: Could not read frame " << frame << " error: "
@@ -481,9 +483,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 	  else
 	    ftype = 'P';
 
-	  fprintf( stderr, "f: %05" PRId64 " video pts: %07" PRId64 
-		   " dts: %07" PRId64 " as frame: %05" PRId64 " %c\n",
-		   _dts, pkt.pts, pkt.dts, pktframe, ftype );
+	  fprintf( stderr, "f: %05" PRId64 " video dts: %07" PRId64 
+		   " as frame: %05" PRId64 " %c\n",
+		   _dts, pkt.dts, pktframe, ftype );
 #endif
 	  continue;
 	}
@@ -1357,7 +1359,7 @@ void aviImage::populate()
 #ifdef DEBUG_DECODE
 		fprintf( stderr, "POP. A f: %05" PRId64 " audio pts: %07" PRId64 
 			 " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
-			 frame, pkt.pts, pkt.dts, pktframe );
+			 pktframe, pkt.pts, pkt.dts, pktframe );
 #endif
 		continue;
 	     }
@@ -1575,7 +1577,7 @@ bool aviImage::fetch(const boost::int64_t frame)
   bool got_image = !has_video();
   bool got_audio = !has_audio();
 
-  if ( !got_audio && !_audio.empty() )
+  if ( !got_audio )
     {
       got_audio = in_audio_store( frame );
     }
@@ -1745,11 +1747,14 @@ bool aviImage::frame( const boost::int64_t f )
 {
   //  if ( f == _dts ) return false;
 
-  if ( _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
-       _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
-       _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE )
+   if ( ( _video_packets.bytes() +  _audio_packets.bytes() + 
+   	  _subtitle_packets.bytes() > kMAX_QUEUE_SIZE ) //||
+   	// (_audio_packets.bytes() > kMAX_AUDIOQ_SIZE)  ||
+   	// (_video_packets.size() > kMIN_FRAMES) ||
+   	// (_subtitle_packets.size() > kMIN_FRAMES) 
+	)
     {
-      return false;
+     return false;
     }
 
   if ( f < _frameStart )    _dts = _frameStart;
@@ -2164,12 +2169,12 @@ void aviImage::do_seek()
   bool got_image = !has_video();
   bool got_audio = !has_audio();
 
-  if ( !got_image && !_images.empty() )
+  if ( !got_image )
     {
       got_image = in_video_store( _dts );
     }
 
-  if ( !got_audio && !_audio.empty() )
+  if ( !got_audio )
     {
       got_audio = in_audio_store( _dts );
     }
@@ -2196,6 +2201,7 @@ void aviImage::do_seek()
       if ( has_video() )
 	{
 	  decode_video( _seek_frame );
+	  find_image( _seek_frame );
 	}
 
       if ( has_subtitle() )

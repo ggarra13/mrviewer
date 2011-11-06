@@ -36,7 +36,7 @@ using namespace std;
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-#  define DEBUG_THREADS
+//#  define DEBUG_THREADS
 
 #if 0
 #  define DEBUG_DECODE
@@ -467,8 +467,8 @@ namespace mrv {
 	// // Calculate video-audio difference
 	if ( img->has_audio() )
 	{
-	   double video_clock = img->video_pts();
-	   double audio_clock = img->audio_pts();
+	   double video_clock = img->video_clock();
+	   double audio_clock = img->audio_clock();
 
 	   diff = step * (audio_clock - video_clock);
 	   double absdiff = std::abs(diff);
@@ -476,9 +476,10 @@ namespace mrv {
 	   /* Skip or repeat the frame. Take delay into account
 	      FFPlay still doesn't "know if this is the best guess." */
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
-	      if (diff <= -delay) {
-	   	 fps += diff;
-	      } else if(diff >= delay && diff < fps) {
+	      // if (diff <= -delay) {
+	   	 fps -= diff;
+	      // } else
+	      if(diff >= delay && diff < fps) {
 	   	 fps = 999999.0; // skip frame
 	      }
 	   }
@@ -545,6 +546,8 @@ namespace mrv {
 	 << frame << " step " << step << endl;
 #endif
 
+    int64_t oldframe = frame;
+
     while( !img->stopped() )
       {
 
@@ -600,6 +603,7 @@ namespace mrv {
 	// decode position may be several frames advanced as we buffer
 	// multiple frames, so get back the dts frame from image.
 	frame = img->dts();
+
       }
 
 #ifdef DEBUG_THREADS

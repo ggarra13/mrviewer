@@ -72,9 +72,10 @@ SET(BOOST_DIR_MESSAGE "Set the Boost_INCLUDE_DIR cmake cache entry to the ${BOOS
 SET(BOOST_DIR_SEARCH $ENV{BOOST_ROOT})
 IF(BOOST_DIR_SEARCH)
   FILE(TO_CMAKE_PATH ${BOOST_DIR_SEARCH} BOOST_DIR_SEARCH)
-  SET(BOOST_DIR_SEARCH ${BOOST_DIR_SEARCH}/include)
+  SET(BOOST_DIR_SEARCH ${BOOST_DIR_SEARCH}/include ${BOOST_DIR_SEARCH})
 ELSE(BOOST_DIR_SEARCH)
   SET( BOOST_DIR_SEARCH
+    /media/Linux/code/lib/
     /usr/local/include
     /usr/include
     )
@@ -91,6 +92,9 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 # Add in some path suffixes. These will have to be updated whenever a new Boost version comes out.
 SET(SUFFIX_FOR_PATH
+ boost_1_47_0
+ boost_1_46_0
+ boost_1_42_0
  boost-1_35_1
  boost_1_35_1
  boost-1_35_0

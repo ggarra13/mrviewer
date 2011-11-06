@@ -17,6 +17,8 @@ ELSE( CTL_LIBRARY_DIR )
     "$ENV{CTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib/Release"
     "$ENV{CTL_ROOT}/lib/Debug"
+    "$ENV{CTL_ROOT}/bin/Release"
+    "$ENV{CTL_ROOT}/bin/Debug"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/lib${CMAKE_BUILD_ARCH}
     )
@@ -26,7 +28,6 @@ ENDIF( CTL_LIBRARY_DIR )
 FIND_PATH( CTL_INCLUDE_DIR CtlModule.h
   "$ENV{CTL_ROOT}/include/CTL"
   "$ENV{CTL_ROOT}/include"
-  "$ENV{CTL_ROOT}"
   /usr/local/include/CTL
   /usr/include/CTL
   DOC   "CTL includes"

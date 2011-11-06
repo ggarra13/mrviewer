@@ -123,7 +123,7 @@ namespace mrv {
     
     while (error != GL_NO_ERROR)
       {
-	std::cerr << where << ": " << gluErrorString(error) << std::endl;
+	std::cerr << where << ": Error " << error << std::endl;
 	error = glGetError();
       }
 

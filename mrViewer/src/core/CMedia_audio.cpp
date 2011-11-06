@@ -1637,7 +1637,7 @@ void CMedia::do_seek()
 
   bool got_audio = !has_audio();
 
-  if ( !got_audio && !_audio.empty() )
+  if ( !got_audio )
     {
        got_audio = in_audio_store( _seek_frame );
     }
