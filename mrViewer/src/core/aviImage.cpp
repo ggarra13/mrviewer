@@ -11,6 +11,7 @@
 #include <cstdio>
 
 #define __STDC_FORMAT_MACROS
+#define __STDC_LIMIT_MACROS
 #include <inttypes.h>
 
 #include <iostream>
@@ -331,10 +332,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 
   offset = av_rescale_q(offset, base, stream->time_base);
 
+
   bool ok;
   try {
 
-    ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) >= 0;
+     ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) >= 0;
 
     if (!ok)
       {

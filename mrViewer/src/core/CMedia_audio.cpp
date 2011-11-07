@@ -1082,14 +1082,24 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
        //       We repeat some bytes to compensate.
        //
        int size = ( _audio_buf_used / 16 ) * 16;
-       int len = size - _audio_buf_used;
+       int len;
+       if ( size > 0 )
+	  len = size - _audio_buf_used;
+       else
+	  len = 0;
 
        if ( len > 0 )
        {
-	  memcpy( _audio_buf + _audio_buf_used, 
-	   	  _audio_buf + _audio_buf_used - len, len );
-	  // memset( _audio_buf + _audio_buf_used, 0, len );
+	  memmove( _audio_buf + _audio_buf_used, 
+		   _audio_buf + _audio_buf_used - len, len );
        }
+       // else
+       // {
+       //   len = -len;
+       //   memmove( _audio_buf + size - len, 
+       //            _audio_buf + _audio_buf_used - len, len );
+       // }
+       
        _audio_buf_used = size;
        assert( _audio_buf_used % 16 == 0 );
     }

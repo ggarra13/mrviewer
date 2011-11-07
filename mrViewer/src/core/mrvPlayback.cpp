@@ -480,13 +480,11 @@ namespace mrv {
 	      FFPlay still doesn't "know if this is the best guess." */
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
 	      // if (diff <= -delay) {
-	      // fps -= diff;
 	      // } else
+	      	 fps += diff;
 
-	      fps -= diff;
-
-	      if(diff >= delay && diff < fps) {
-	   	 fps = 999999.0; // skip frame
+		 if(diff >= delay && diff < fps) {
+		    fps = 999999.0; // skip frame
 	      }
 	   }
 	}
