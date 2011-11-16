@@ -796,7 +796,7 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {234 37 20 20} align 8 labelsize 11
               }
               {fltk::CheckButton} uiPrefsHudAVDifference {
-                label {AV Difference}
+                label {VA Difference}
                 user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {119 62 20 20} align 8 labelsize 11
               }

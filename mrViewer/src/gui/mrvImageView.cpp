@@ -1017,7 +1017,7 @@ void ImageView::draw()
        double avdiff = img->avdiff();
       if ( !hud.str().empty() ) hud << " ";
       sprintf( buf, "% 4f", avdiff );
-      hud << _("A-V: ") << buf;
+      hud << _("V-A: ") << buf;
     }
 
   //
