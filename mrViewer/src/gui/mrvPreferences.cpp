@@ -276,31 +276,31 @@ namespace mrv {
     fltk::Preferences ui( base, "ui" );
 
     ui.get( "topbar", tmp, 1 );
-    uiPrefs->uiPrefsTopbar->value(tmp);
+    uiPrefs->uiPrefsTopbar->value((bool)tmp);
 
     ui.get( "pixel_toolbar", tmp, 1 );
-    uiPrefs->uiPrefsPixelToolbar->value(tmp);
+    uiPrefs->uiPrefsPixelToolbar->value((bool)tmp);
 
     ui.get( "timeline_toolbar", tmp, 1 );
-    uiPrefs->uiPrefsTimeline->value(tmp);
+    uiPrefs->uiPrefsTimeline->value((bool)tmp);
 
     ui.get( "reel_list", tmp, 0 );
-    uiPrefs->uiPrefsReelList->value(tmp);
+    uiPrefs->uiPrefsReelList->value((bool)tmp);
 
     ui.get( "image_info", tmp, 0 );
-    uiPrefs->uiPrefsImageInfo->value(tmp);
+    uiPrefs->uiPrefsImageInfo->value((bool)tmp);
 
     ui.get( "color_area", tmp, 0 );
-    uiPrefs->uiPrefsColorArea->value(tmp);
+    uiPrefs->uiPrefsColorArea->value((bool)tmp);
 
     ui.get( "histogram", tmp, 0 );
-    uiPrefs->uiPrefsHistogram->value(tmp);
+    uiPrefs->uiPrefsHistogram->value((bool)tmp);
 
     ui.get( "vectorscope", tmp, 0 );
-    uiPrefs->uiPrefsVectorscope->value(tmp);
+    uiPrefs->uiPrefsVectorscope->value((bool)tmp);
 
     ui.get( "timeline_display", tmp, 0 );
-    uiPrefs->uiPrefsTimelineDisplay->value(tmp);
+    uiPrefs->uiPrefsTimelineDisplay->value((bool)tmp);
 
 
     //
@@ -623,7 +623,6 @@ namespace mrv {
   void Preferences::run( mrv::ViewerUI* main )
   {
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
-
 
     //
     // Windows

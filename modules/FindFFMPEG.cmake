@@ -30,7 +30,8 @@ FIND_PATH(FFMPEG_INCLUDE_DIR libavformat/avformat.h
 
 SET( SEARCH_DIRS 
   "$ENV{FFMPEG_ROOT}/bin"
-  "$ENV{FFMPEG_ROOT}/lib"
+  "$ENV{FFMPEG_ROOT}/lib/Release"
+  "$ENV{FFMPEG_ROOT}/lib/"
   "C:/msys/1.0/local/bin"
   "C:/msys/1.0/local/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -64,27 +65,27 @@ ENDIF(MSVC)
 # Find FFMPEG libraries
 #
 FIND_LIBRARY(FFMPEG_avformat_LIBRARY 
-    NAMES avformat avformat-51 avformat-50
+    NAMES avformat avformat-53 avformat-51 avformat-50
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avcodec_LIBRARY 
-    NAMES avcodec avcodec-52 avcodec-51
+    NAMES avcodec avcodec-53 avcodec-52 avcodec-51
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avutil_LIBRARY 
-    NAMES avutil avutil-50 avutil-49
+    NAMES avutil avutil-51 avutil-50 avutil-49
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
-    NAMES avdevice avdevice-50 avdevice-49
+    NAMES avdevice avdevice-53 avdevice-50 avdevice-49
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_swscale_LIBRARY 
-    NAMES swscale swscale-50 swscale-49
+    NAMES swscale swscale-2 swscale-50 swscale-49
     PATHS ${SEARCH_DIRS}
 )
 
@@ -103,6 +104,8 @@ FOREACH( lib
       # This is what it should be, but since msys compiles .lib files
       # as .a files, cmake won't find them.
       #
+      MESSAGE( STATUS ${SEARCH_DIRS} )
+
       FIND_LIBRARY( FFMPEG_${it}_LIBRARY
       	NAMES ${it}  lib${it}  ${it}-0 lib${it}-0 
               ${lib} lib${lib} ${lib}-0 lib${lib}-0 

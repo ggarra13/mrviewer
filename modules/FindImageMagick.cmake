@@ -47,6 +47,8 @@ FIND_LIBRARY( Magick
   NAMES MagickCore CORE_RL_Magick_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
+  "$ENV{MAGICK_HOME}/lib"
+  "$ENV{MAGICK_HOME}/"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -58,6 +60,8 @@ FIND_LIBRARY( Magick++
   NAMES Magick++ CORE_RL_Magick++_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
+  "$ENV{MAGICK_HOME}/lib"
+  "$ENV{MAGICK_HOME}/"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -70,6 +74,8 @@ FIND_LIBRARY( Wand
   NAMES MagickWand CORE_RL_wand_
   PATHS 
   "$ENV{MAGICK_HOME}/wand/.libs"
+  "$ENV{MAGICK_HOME}/lib"
+  "$ENV{MAGICK_HOME}/"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}

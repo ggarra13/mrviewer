@@ -1108,12 +1108,20 @@ void aviImage::populate()
 {
   std::ostringstream msg;
 
+
   // Iterate through all the streams available
   for( unsigned i = 0; i < _context->nb_streams; ++i ) 
     {
+      std::cerr << i << "/" << _context->nb_streams 
+		<< " POP " << __LINE__ << std::endl;
+
       // Get the codec context
       const AVStream* stream = _context->streams[ i ];
+      std::cerr << "stream " << stream << std::endl;
+
+
       const AVCodecContext* ctx = stream->codec;
+      std::cerr << "ctx " << ctx << std::endl;
 
 
       // Determine the type and obtain the first index of each type
@@ -1122,7 +1130,7 @@ void aviImage::populate()
 	   // We ignore attachments for now.  
 	   case CODEC_TYPE_ATTACHMENT:
 	      {
-		 continue;
+		continue;
 	      }
 	   // We ignore data tracks for now.  Data tracks are, for example,
 	   // the timecode track in quicktimes.
@@ -1173,6 +1181,7 @@ void aviImage::populate()
 	   default:
 	      {
 		 const char* stream = stream_type( ctx );
+		 std::cerr << "POP " << __LINE__ << " " << stream << std::endl;
 		 msg << _("\n\nNot a known stream type for stream #") 
 		     << i << (", type ") << stream;
 		 break;
@@ -1195,6 +1204,7 @@ void aviImage::populate()
   if ( has_video() )    open_video_codec();
   if ( has_audio() )    open_audio_codec();
   if ( has_subtitle() ) open_subtitle_codec();
+  std::cerr << "POP " << __LINE__ << std::endl;
 
   // Configure video input properties
   AVStream* stream = NULL;
@@ -1293,6 +1303,7 @@ void aviImage::populate()
 
   if ( has_video() || has_audio() )
     {
+      std::cerr << "populate " << __LINE__ << std::endl;
       // Loop until we get first frame
       AVPacket pkt;
       // Clear the packet
@@ -1523,6 +1534,7 @@ bool aviImage::initialize()
 {
   if ( _context == NULL )
     {
+
       AVFormatParameters params;
       memset(&params, 0, sizeof(params));
 
@@ -1543,9 +1555,9 @@ bool aviImage::initialize()
 
       if ( error >= 0 )
 	{
-
 	  // Allocate an av frame
 	  _av_frame = avcodec_alloc_frame();
+	  
 
 	  populate();
 

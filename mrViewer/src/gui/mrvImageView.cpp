@@ -276,7 +276,7 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 void hud_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
-
+  
   int i;
   int num = uiMain->uiPrefs->uiPrefsHud->children();
   for ( i = 0; i < num; ++i )
@@ -806,10 +806,12 @@ void ImageView::draw()
     {
       if ( ! _engine )
 	{
+	  LOG_INFO( "init draw engine" );
 	  init_draw_engine();
 	}
 
-      if ( !_engine ) return;
+      if ( !_engine )
+	return;
 
       _engine->reset_view_matrix();
 
@@ -830,6 +832,7 @@ void ImageView::draw()
       r = ur / 255.0f;
       g = ur / 255.0f;
       b = ur / 255.0f;
+      a = 1.0f;
     }
   else
     {
@@ -861,15 +864,18 @@ void ImageView::draw()
 
   if ( images.empty() ) return;
 
+  LOG_INFO( "Draw images" );
   _engine->draw_images( images );
 
   if ( !fg ) return;
 
+  LOG_INFO( "Draw mask" );
   if ( _masking != 0.0f )
     {
       _engine->draw_mask( _masking );
     }
 
+  LOG_INFO( "Draw label" );
   const char* label = fg->image()->label();
   if ( label )
     {
@@ -894,6 +900,7 @@ void ImageView::draw()
     }
 
 
+  LOG_INFO( "Draw safe areas" );
   if ( _safeAreas ) 
     {
       const CMedia* img = fg->image();
@@ -954,6 +961,8 @@ void ImageView::draw()
 
   if ( _hud == kHudNone )
     return;
+
+  LOG_INFO( "Draw HUD" );
 
   std::ostringstream hud;
   hud.str().reserve( 512 );

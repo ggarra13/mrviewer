@@ -366,7 +366,7 @@ static int col_widths[] = {
 };
 o->column_labels( col_labels );
 o->column_widths( col_widths );
-o->add( ffmpeg_formats().c_str() );
+//o->add( ffmpeg_formats().c_str() );
 o->value(-1);}
             } {}
           }
@@ -377,19 +377,19 @@ o->value(-1);}
             {fltk::Browser} {} {
               label Video open
               xywh {15 20 410 150}
-              extra_code {o->add( ffmpeg_video_codecs().c_str() );
+              extra_code {//o->add( ffmpeg_video_codecs().c_str() );
 o->value(-1);}
             } {}
             {fltk::Browser} {} {
               label Audio open
               xywh {15 190 415 110}
-              extra_code {o->add( ffmpeg_audio_codecs().c_str() );
+              extra_code {//o->add( ffmpeg_audio_codecs().c_str() );
 o->value(-1);}
             } {}
             {fltk::Browser} {} {
               label Subtitles
               xywh {15 315 415 55}
-              extra_code {o->add( ffmpeg_subtitle_codecs().c_str() );
+              extra_code {//o->add( ffmpeg_subtitle_codecs().c_str() );
 o->value(-1);}
             } {}
           }
@@ -399,7 +399,7 @@ o->value(-1);}
           } {
             {fltk::Browser} {} {
               xywh {15 15 415 345}
-              extra_code {o->add( ffmpeg_protocols().c_str() );
+              extra_code {//o->add( ffmpeg_protocols().c_str() );
 o->value(-1);}
             } {}
           }
@@ -415,7 +415,7 @@ o->value(-1);}
 0
 };
 o->column_widths( col_widths );
-o->add( ffmpeg_motion_estimation_methods().c_str() );
+//o->add( ffmpeg_motion_estimation_methods().c_str() );
 o->value(-1);}
             } {}
           }
@@ -2000,8 +2000,7 @@ o->child_of( main->uiMain );} modal
     }
     Function {make_window()} {open private
     } {
-      code {if (!uiPrefs)
-  uiPrefs = new PreferencesUI();} {}
+      code {if (!uiPrefs) uiPrefs = new PreferencesUI();} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
@@ -2252,13 +2251,13 @@ Value is:  pow( 2, 1/x );}
           {fltk::Group} uiViewGroup {open
             xywh {0 25 640 430} resizable
           } {
-            {fltk::Group} uiView {
+            {fltk::Group} uiView {selected
               xywh {0 0 640 430}
               extra_code {o->main(this);}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {open
+          {fltk::Group} uiPixelBar {
             xywh {0 452 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
@@ -2762,7 +2761,7 @@ v->uiTimeline->redraw();}
                       class {mrv::Timecode}
                     }
                     {fltk::Button} {} {
-                      label S selected
+                      label S
                       xywh {0 2 20 22}
                     }
                     {fltk::Button} {} {
@@ -2791,7 +2790,8 @@ if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );} {}
     }
-    Function {ViewerUI()} {} {
+    Function {ViewerUI()} {open
+    } {
       code {uiMain = make_window();} {}
     }
     Function {~ViewerUI()} {open

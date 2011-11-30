@@ -8,8 +8,9 @@ KERNEL=`uname -s`
 
 if [[ $KERNEL == CYGWIN* ]]; then
     KERNEL=Windows
-    RELEASE=(`cmd /c 'ver'`)
+    RELEASE=`cmd /c 'ver'`
     RELEASE=${RELEASE[5]%.[0-9]*}
+    echo "RELEASE=$RELEASE"
 elif [[ $KERNEL == MINGW* ]]; then
     RELEASE=${KERNEL//*-/}
     KERNEL=Windows
@@ -307,7 +308,7 @@ run_cmake()
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE -DCMAKE_CFG_INTDIR=/$CMAKE_BUILD_TYPE"
     fi
 
-    cmd="cmake ../../../.. -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}' --debug-output"
+    cmd="cmake ../../../.. -DEXECUTABLE_OUTPUT_PATH=$builddir/bin -DLIBRARY_OUTPUT_PATH=$builddir/lib -DCMAKE_LIBRARY_PATH=$builddir/lib -DCMAKE_NATIVE_ARCH=$CMAKE_NATIVE_ARCH -DCMAKE_BUILD_ARCH=$CMAKE_BUILD_ARCH ${cmake_opts} -G '${cmake_generator}'"
 
 
     run_cmd  $cmd

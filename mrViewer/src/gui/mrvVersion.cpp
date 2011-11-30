@@ -207,7 +207,7 @@ namespace mrv
     // Now, add image formats from imagemagick
 
     ExceptionInfo* exception = AcquireExceptionInfo();
-    unsigned long num;
+    size_t num;
     const MagickInfo** magick_info = GetMagickInfoList("*", &num, exception);
     exception=DestroyExceptionInfo(exception);
 
@@ -224,6 +224,7 @@ namespace mrv
 			    m->name, "ImageMagick", m->description );
 	formats.push_back( f );
       }
+
     magick_info = (const MagickInfo **)
       RelinquishMagickMemory((void *) magick_info);
 
@@ -434,7 +435,7 @@ namespace mrv
     av_log_set_callback( mrv::av_log_redirect );
 
 
-    unsigned long magic = 0;
+    size_t magic = 0;
     std::ostringstream o;
 
     unsigned int boost_major = BOOST_VERSION / 100000;

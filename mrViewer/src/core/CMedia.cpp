@@ -17,6 +17,8 @@
 #  include <unistd.h>
 #endif
 
+#define BOOST_FILESYSTEM_VERSION 2
+
 #include <cstdio>     // for snprintf
 #include <cassert>    // for assert
 

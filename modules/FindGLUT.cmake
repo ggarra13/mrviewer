@@ -18,11 +18,14 @@ IF (WIN32)
 
     FIND_PATH( GLUT_INCLUDE_DIR GL/glut.h
       ${GLUT_ROOT_PATH}/include
+      ${GLUT_ROOT_PATH}
       /usr/include
     )
 
     FIND_LIBRARY( GLUT_glut_LIBRARY glut32
       ${OPENGL_LIBRARY_DIR}
+      ${GLUT_ROOT_PATH}/lib
+      ${GLUT_ROOT_PATH}
       /usr/local/lib${CMAKE_BUILD_ARCH}
       /usr/lib
       /usr/lib/w32api
@@ -37,6 +40,8 @@ IF (WIN32)
     )
 
     FIND_LIBRARY( GLUT_glut_LIBRARY glut32 glut
+      ${GLUT_ROOT_PATH}/lib/Release
+      ${GLUT_ROOT_PATH}/lib
       ${GLUT_ROOT_PATH}/Release
       ${OPENGL_LIBRARY_DIR}
     )
@@ -44,7 +49,6 @@ IF (WIN32)
   ENDIF(CYGWIN)
 
 ELSE (WIN32)
-
   IF (APPLE)
 # These values for Apple could probably do with improvement.
     FIND_PATH( GLUT_INCLUDE_DIR glut.h

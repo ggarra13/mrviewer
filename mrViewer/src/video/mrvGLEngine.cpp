@@ -689,7 +689,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  glTranslatef(_view->offset_x() * zoomX + sw, _view->offset_y() * zoomY + sh, 0);
+  glTranslatef(_view->offset_x() * zoomX + sw, _view->offset_y() * zoomY + sh,
+	       0);
   glTranslatef( tx * zoomX, ty * zoomY, 0);
 
   glScalef(zoomX, zoomY, 1.0f);
@@ -698,8 +699,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
 
   glVertex2i(0,  0);
   glVertex2i(rw, 0);
-  glVertex2i(rw, -rh);
-  glVertex2i(0,  -rh);
+  glVertex2i(rw, -(int)rh);
+  glVertex2i(0,  -(int)rh);
 
   glEnd();
 }
@@ -815,6 +816,7 @@ void GLEngine::draw_images( ImageList& images )
   unsigned num_quads = 0;
   ImageList::iterator i = images.begin();
   ImageList::iterator e = images.end();
+
 
   for ( ; i != e; ++i )
     {

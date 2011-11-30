@@ -3296,7 +3296,8 @@ void Flu_File_Chooser::locationCB( const char *path )
   else
     {
       // seach for '(' and if present, extract the drive name and cd to it
-      char *paren = strrchr( path, '(' );
+      char* tmpPath = strdup( path );
+      char *paren = strrchr( tmpPath, '(' );
       if( paren )
 	{
 	  char drive[] = "A:/";
@@ -3307,6 +3308,7 @@ void Flu_File_Chooser::locationCB( const char *path )
 	{
 	  cd( path );
 	}
+      free( tmpPath );
     }
 #else
   cd( path );

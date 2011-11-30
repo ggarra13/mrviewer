@@ -202,7 +202,7 @@ void parse_command_line( const int argc, char** argv,
     }
 
   // Load default preferences
-  mrv::Preferences::run(ui);
+  // mrv::Preferences::run(ui);
 
   //
   // UI command-line overrides

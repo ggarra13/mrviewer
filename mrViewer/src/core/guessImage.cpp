@@ -76,8 +76,10 @@ namespace mrv {
       {
 	if ( type->test )
 	  {
-	    if ( type->test( datas, size ) ) 
-	      return type->get( name, datas );
+	    if ( type->test( datas, size ) )
+	      {
+		return type->get( name, datas );
+	      }
 	  }
 	else
 	  {
@@ -160,7 +162,7 @@ namespace mrv {
 	else
 	  image->filename( name );
       }
-
+  
     delete [] read_data;
 
     if (image == NULL) 
@@ -168,6 +170,7 @@ namespace mrv {
 	LOG_ERROR(name << ": not a recognized format.");
 	return NULL;
       }
+
 
     return dynamic_cast< CMedia* >( image );
   }

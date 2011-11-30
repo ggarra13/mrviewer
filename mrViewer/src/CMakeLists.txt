@@ -6,7 +6,6 @@
 
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
-FIND_PACKAGE( FLTK2       REQUIRED )    # for window management
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
@@ -17,6 +16,7 @@ FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for OpenEXRCTL color language add-ons
 FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
 FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
+FIND_PACKAGE( FLTK2       REQUIRED )    # for window management
 # FIND_PACKAGE( RLM         REQUIRED )    # for licensing
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
@@ -30,7 +30,7 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET(OS_LIBRARIES
     Winmm ws2_32 glew32
     )
-  SET( LINK_FLAGS "${LINK_FLAGS} -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCMT" )
+  SET( LINK_FLAGS "${LINK_FLAGS} -NODEFAULTLIB:LIBCPMT -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCMT" )
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   IF(APPLE)
     # Media libraries for Apple
@@ -67,6 +67,7 @@ INCLUDE_DIRECTORIES(
   ../../mrClasses/mrClasses
   /usr/include/cairo
   ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
   ${FLTK2_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK++_INCLUDE_DIR}
@@ -75,7 +76,6 @@ INCLUDE_DIRECTORIES(
   ${OPENEXR_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR} 
   ${POSTGRESQL_INCLUDE_DIR}
-  ${GLUT_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${RLM_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
@@ -191,19 +191,21 @@ IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 
   FIND_LIBRARY( Boost_system_LIBRARY 
-    NAMES boost_system
+    NAMES boost_system 
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY 
-    NAMES boost_filesystem boost_filesystem-mt
+    NAMES boost_filesystem boost_filesystem-mt 
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_thread_LIBRARY 
-    NAMES boost_thread
+    NAMES boost_thread 
     PATHS ${Boost_LIBRARY_DIRS} 
     )
+
+  SET( BOOST_ALL_DYN_LINK 1 )
 
   SET( BOOST_LIBRARIES
     ${Boost_system_LIBRARY}
@@ -232,10 +234,12 @@ ELSE( AO_FOUND )
   ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 ENDIF( AO_FOUND )
 
+MESSAGE( STATUS "GLUT LIBRARIES=" ${GLUT_LIBRARIES} )
 
 SET( LIBRARIES
   ${POSTGRESQL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
+  ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
   ${OpenEXRCTL_LIBRARIES}
   ${CTL_LIBRARIES}
@@ -244,7 +248,6 @@ SET( LIBRARIES
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
   ${OS_LIBRARIES}
-  ${GLUT_LIBRARY}
   ${RLM_LIBRARIES}
   ${SampleICC_LIBRARIES}
   ${SDL_LIBRARY}
@@ -329,47 +332,10 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     LIST( APPEND BIN_LIBS ${it})
   ENDFOREACH(it)
 
-  # For windows, we copy the libraries to same location of the executable
-  FOREACH( it ${BOOST_LIBRARIES} ${BIN_LIBS} ${FFMPEG_LIBRARIES} ${POSTGRESQL_LIBRARIES} )
-    FILE(TO_NATIVE_PATH it "${it}" )
-    STRING(REPLACE ".lib" ".dll" it "${it}")
-
-    GET_FILENAME_COMPONENT( OUT ${it} NAME )
-
-    IF( NOT ${it} MATCHES ".(lib|a)$" )
-
-      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
-	copy "${it}" "${LIBRARY_OUTPUT_PATH}/${OUT}"
-	RESULT_VARIABLE result
-	)
-
-      IF( NOT result EQUAL 0 )
-	MESSAGE( ERROR " copy command failed ${result}" )
-      ENDIF( NOT result EQUAL 0 )
-
-    ENDIF( NOT ${it} MATCHES ".(lib|a)$" )
-
-  ENDFOREACH( it )
-
   SET( OUTDIR 
     "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
   FILE( MAKE_DIRECTORY "${OUTDIR}" )
 
-  FOREACH( it ${MAGICK_CODECS} )
-
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    GET_FILENAME_COMPONENT( OUT ${it} NAME )
-
-    EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
-      copy "${it}" "${OUTDIR}/${OUT}"
-      RESULT_VARIABLE result
-      )
-    
-    IF( NOT result EQUAL 0 )
-      MESSAGE( ERROR " copy command failed ${result}" )
-    ENDIF( NOT result EQUAL 0 )
-
-  ENDFOREACH(it)
 
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 

@@ -14,6 +14,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
+#define BOOST_FILESYSTEM_VERSION 2
 
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;

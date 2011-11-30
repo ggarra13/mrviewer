@@ -26,7 +26,7 @@
 #  include "icons/viewer.xpm"
 #else
 #  include <windows.h>
-#  include <resource.h>
+//#  include <resource.h>
 #  include <fltk/win32.h>
 #endif
 
@@ -51,8 +51,8 @@ namespace mrv {
     fltk::open_display();  // Needed for icons 
 
 #if defined(WIN32) || defined(WIN64)
-    HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
-    this->icon(data);
+    //HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
+    //this->icon(data);
 #else
 
 #if 0

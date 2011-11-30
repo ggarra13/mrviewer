@@ -16,6 +16,8 @@
 #endif
 
 
+#define BOOST_FILESYSTEM_VERSION 2
+
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64 macro
 

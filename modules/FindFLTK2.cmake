@@ -6,7 +6,7 @@
 #  FLTK2_LIBRARY_DIR, where to find library files
 #  FLTK2_LIBRARIES, list of fltk2 libraries
 #  FLTK2_FOUND, Don't use FLTK2 if false.
-#
+
 # The following settings should not be used in general.
 #  FLTK2_BASE_LIBRARY   = the full path to fltk2.lib
 #  FLTK2_GL_LIBRARY     = the full path to fltk2_gl.lib
@@ -121,7 +121,7 @@ IF(FLTK2_DIR)
     IF(FLUID_COMMAND) 
       SET(FLTK2_FLUID_EXECUTABLE ${FLUID_COMMAND} CACHE FILEPATH "Fluid executable")
     ELSE(FLUID_COMMAND) 
-      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 fluid2.exe PATHS 
+      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2 PATHS 
         ${FLTK2_EXECUTABLE_DIRS}
         ${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
         ${FLTK2_EXECUTABLE_DIRS}/Debug
@@ -167,8 +167,10 @@ IF(FLTK2_DIR)
 
     # if FLTK2 was not built using CMake
     # Find fluid executable.
-    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 fluid2.exe 
-    			PATHS ${FLTK2_DIR}/fluid )	
+    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2 fluid.exe fluid
+    			PATHS ${FLTK2_DIR}/fluid ${FLTK2_DIR}/bin
+			${FLTK2_DIR}/bin/Release )
+
 
     # Use location of fluid to help find everything else.
     SET(FLTK2_INCLUDE_SEARCH_PATH "")
@@ -192,18 +194,22 @@ IF(FLTK2_DIR)
 
     FIND_PATH(FLTK2_INCLUDE_DIR fltk/run.h ${FLTK2_INCLUDE_SEARCH_PATH})
 
+
     SET(FLTK2_LIBRARY_SEARCH_PATH ${FLTK2_LIBRARY_SEARCH_PATH}
       /usr/lib
       /usr/local/fltk2/lib
       /usr/X11R6/lib
       ${FLTK2_INCLUDE_DIR}/lib
       )
+  MESSAGE( STATUS "FLTK2 INC SEARCH PATH=" ${FLTK2_INCLUDE_SEARCH_PATH} )
 
-    FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2
+  MESSAGE( STATUS "FLTK2 LIB SEARCH PATH=" ${FLTK2_LIBRARY_SEARCH_PATH} )
+
+    FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2 fltk2dll
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-    FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2_gl 
+    FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2_gl fltk2dll_gl
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-    FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2_images
+    FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2_images fltk2dll_images
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
 
     # Find the extra libraries needed for the fltk_images library.
@@ -224,8 +230,15 @@ IF(FLTK2_DIR)
         ENDIF("${FLTK2_IMAGES_LDFLAGS}" MATCHES "${FLTK2_LIBS_EXTRACT_REGEX}")
       ENDIF(FLTK2_CONFIG_SCRIPT)
     ENDIF(UNIX)
-
+ 
   ENDIF(FLTK2_BUILT_WITH_CMAKE)
+ELSE(FLTK2_DIR)
+	MESSAGE( STATUS "FLTK2 DIR" )
+	SET( FLTK2_FLUID_EXECUTABLE ${FLTK2_DIR}/bin/fluid )
+	SET( FLTK2_INCLUDE_DIR ${FLTK2_DIR}/fltk )
+	SET( FLTK2_BASE_LIBRARY ${FLTK2_DIR}/lib/ )
+	SET( FLTK2_GL_LIBRARY ${FLTK2_DIR}/lib/Release )
+	SET( FLTK2_IMAGES_LIBRARY ${FLTK2_DIR}/lib/Release )
 ENDIF(FLTK2_DIR)
 
 
@@ -251,6 +264,10 @@ IF(FLTK2_FOUND)
   GET_FILENAME_COMPONENT( FLTK2_LIBRARY_DIR ${FLTK2_BASE_LIBRARY} PATH )
 
 ELSE(FLTK2_FOUND)
+   IF(FLTK2_FLUID_EXECUTABLE)
+      SET( FLTK_FLUID_EXECUTABLE ${FLTK2_FLUID_EXECUTABLE} )
+   ENDIF(FLTK2_FLUID_EXECUTABLE)
+
   # make FIND_PACKAGE friendly
   IF(NOT FLTK2_FIND_QUIETLY)
     IF(FLTK2_FIND_REQUIRED)
