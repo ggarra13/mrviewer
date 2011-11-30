@@ -806,7 +806,6 @@ void ImageView::draw()
     {
       if ( ! _engine )
 	{
-	  LOG_INFO( "init draw engine" );
 	  init_draw_engine();
 	}
 
@@ -864,18 +863,15 @@ void ImageView::draw()
 
   if ( images.empty() ) return;
 
-  LOG_INFO( "Draw images" );
   _engine->draw_images( images );
 
   if ( !fg ) return;
 
-  LOG_INFO( "Draw mask" );
   if ( _masking != 0.0f )
     {
       _engine->draw_mask( _masking );
     }
 
-  LOG_INFO( "Draw label" );
   const char* label = fg->image()->label();
   if ( label )
     {
@@ -900,7 +896,6 @@ void ImageView::draw()
     }
 
 
-  LOG_INFO( "Draw safe areas" );
   if ( _safeAreas ) 
     {
       const CMedia* img = fg->image();
@@ -962,7 +957,6 @@ void ImageView::draw()
   if ( _hud == kHudNone )
     return;
 
-  LOG_INFO( "Draw HUD" );
 
   std::ostringstream hud;
   hud.str().reserve( 512 );
