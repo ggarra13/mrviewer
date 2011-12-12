@@ -1,17 +1,16 @@
 #!/bin/bash
 
-export  BOOST_ROOT="F:/code/lib/"
-export OPENEXR_ROOT="F:/code/lib/Deploy/"
-export     CTL_ROOT="F:/code/lib/Deploy/"
-export  FFMPEG_ROOT="/usr/local/"
-export   FLTK2_DIR="F:/code/lib/fltk-2.0.x-alpha-r9042"
-export MAGICK_HOME="F:/code/lib/ImageMagick-6.6.9-10"
-export GLEW_HOME="F:/code/lib/glew-1.7.0"
-export POSTGRESQL_ROOT="C:/MyProjects/eval/postgresql-8.1.5/src"
-export TCLAP_ROOT="F:/code/lib/tclap-1.2.0"
-export SampleICC_ROOT="F:/code/PD/lib/SampleICC-1.6.5"
-export CXX=i686-mingw-g++
-export CC=i686-mingw-gcc
-export LD=i686-mingw-ld
-export RANLIB=i686-mingw-ranlib
+export  BOOST_ROOT="C:/mrViewer_libs/lib/boost_1_47_0"
+export OPENEXR_ROOT="C:/mrViewer_libs/lib/Deploy"
+export     CTL_ROOT="C:/mrViewer_libs/lib/Deploy"
+export  FFMPEG_ROOT="C:/mrViewer_libs/lib/ffmpeg-dev"
+export  GLUT_ROOT_PATH="F:/code/lib/glut/"
+#export   FLTK2_DIR="C:/mrViewer_libs/lib/fltk-2.0.x-r6970"
+export   FLTK2_DIR="F:/code/lib/fltk-2.0.x-alpha-r9166"
+export MAGICK_HOME="C:/Program Files (x86)/ImageMagick-6.7.3-Q16"
+export GLEW_HOME="C:/mrViewer_libs/lib/glew-1.7.0"
+export POSTGRESQL_ROOT="C:/Program Files (x86)/PostgreSQL/9.1"
+export TCLAP_ROOT="C:/mrViewer_libs/lib/tclap-1.2.0"
+export SampleICC_ROOT="C:/mrViewer_libs/lib/SampleICC-1.6.5"
+
 

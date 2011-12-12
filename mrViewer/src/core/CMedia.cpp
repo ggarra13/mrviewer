@@ -31,6 +31,7 @@ extern "C" {
 #include <algorithm>  // for std::min, std::abs
 #include <limits>
 
+#define BOOST_FILESYSTEM_VERSION 2 
 #undef  __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
@@ -976,8 +977,8 @@ void CMedia::play(const CMedia::Playback dir,
   assert( uiMain != NULL );
 
 
-  _dts = _audio_frame = _frame;
-  _expected = std::numeric_limits< boost::int64_t >::min();
+  _audio_frame = _frame;
+  // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _audio_clock = 0.0;
   _video_clock = 0.0;
@@ -987,7 +988,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   // clear all packets
   clear_packets();
-  clear_stores(); // clear audio store
+  // clear_stores(); // clear audio store
 
 
   // Start threads

@@ -292,7 +292,8 @@ o->child_of( main->uiMain );}
       code {delete uiMain;} {}
     }
   }
-  class AboutUI {} {
+  class AboutUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -303,8 +304,9 @@ o->child_of( main->uiMain );} modal
       } {
         {fltk::TabGroup} {} {
           user_data main user_data_type {mrv::ViewerUI*}
-          callback {v->uiAbout->uiGPUInfo->clear();
-v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );}
+          callback {
+v->uiAbout->uiGPUInfo->clear();
+v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
           xywh {4 4 441 391}
         } {
           {fltk::Group} {} {
@@ -333,7 +335,6 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );}
 o->w()-160,
 0
 };
-
 o->column_widths( widths );
 o->value(-1);}
               class {mrv::Browser}
@@ -343,7 +344,7 @@ o->value(-1);}
             label Formats open
             xywh {0 20 445 370} hide
           } {
-            {fltk::Browser} {} {
+            {fltk::Browser} {} {open
               xywh {15 15 415 345}
               extra_code {static const char* col_labels[] = {
 "",
@@ -366,48 +367,48 @@ static int col_widths[] = {
 };
 o->column_labels( col_labels );
 o->column_widths( col_widths );
-o->add( ffmpeg_formats().c_str() );
+//o->add( ffmpeg_formats().c_str() );
 o->value(-1);}
             } {}
           }
           {fltk::Group} {} {
-            label Codecs
+            label Codecs open
             xywh {0 20 445 375} vertical hide
           } {
             {fltk::Browser} {} {
-              label Video open
+              label Video
               xywh {15 20 410 150}
-              extra_code {o->add( ffmpeg_video_codecs().c_str() );
+              extra_code {//o->add( ffmpeg_video_codecs().c_str()  );
 o->value(-1);}
             } {}
             {fltk::Browser} {} {
               label Audio open
               xywh {15 190 415 110}
-              extra_code {o->add( ffmpeg_audio_codecs().c_str() );
+              extra_code {//o->add( ffmpeg_audio_codecs().c_str() );
 o->value(-1);}
             } {}
             {fltk::Browser} {} {
-              label Subtitles
+              label Subtitles open
               xywh {15 315 415 55}
-              extra_code {o->add( ffmpeg_subtitle_codecs().c_str() );
+              extra_code {//o->add( ffmpeg_subtitle_codecs().c_str() );
 o->value(-1);}
             } {}
           }
           {fltk::Group} {} {
-            label Protocols
+            label Protocols open
             xywh {0 20 445 370} vertical hide deactivate
           } {
-            {fltk::Browser} {} {
+            {fltk::Browser} {} {open
               xywh {15 15 415 345}
-              extra_code {o->add( ffmpeg_protocols().c_str() );
+              extra_code {//o->add( ffmpeg_protocols().c_str() );
 o->value(-1);}
             } {}
           }
           {fltk::Group} {} {
-            label {Motion Estimation Methods}
+            label {Motion Estimation Methods} open
             xywh {0 20 445 370} vertical hide
           } {
-            {fltk::Browser} {} {
+            {fltk::Browser} {} {open selected
               xywh {15 15 415 345}
               extra_code {static int col_widths[] = {
 120,
@@ -415,7 +416,7 @@ o->value(-1);}
 0
 };
 o->column_widths( col_widths );
-o->add( ffmpeg_motion_estimation_methods().c_str() );
+//o->add( ffmpeg_motion_estimation_methods().c_str() );
 o->value(-1);}
             } {}
           }
@@ -545,8 +546,7 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
@@ -1550,7 +1550,7 @@ mrv::AudioEngine::DeviceList::const_iterator i = devices.begin();
 mrv::AudioEngine::DeviceList::const_iterator e = devices.end();
 for ( ; i != e; ++i )
    {
-      o->add( (*i).description.c_str() );
+      //o->add( (*i).description.c_str() );
    }}
             } {}
           }
@@ -2762,7 +2762,7 @@ v->uiTimeline->redraw();}
                       class {mrv::Timecode}
                     }
                     {fltk::Button} {} {
-                      label S selected
+                      label S
                       xywh {0 2 20 22}
                     }
                     {fltk::Button} {} {
@@ -2776,8 +2776,8 @@ v->uiTimeline->redraw();}
           }
         }
       }
-      code {if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
-
+      code {
+if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
 uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
@@ -2786,7 +2786,6 @@ uiHistogram = new HistogramUI(this);
 if (!uiLog) uiLog   = new LogUI(this);
 //uiDatabase = new DatabaseUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
-
 
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );} {}

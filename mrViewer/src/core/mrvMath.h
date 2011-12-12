@@ -14,15 +14,6 @@
 
 #include <cmath>
 
-#if defined(WIN32) || defined(WIN64)
-namespace std {
-  inline int64_t abs( int64_t x )
-  {
-    return x < 0 ? -x : x;
-  }
-}
-#endif
-
 
 namespace mrv {
 

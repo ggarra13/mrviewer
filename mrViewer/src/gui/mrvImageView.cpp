@@ -822,7 +822,7 @@ void ImageView::draw()
   // Clear canvas
   //
   {
-    float r, g, b, a;
+    float r, g, b, a = 0.0f;
     if ( fltk_main()->border() ) 
     {
       uchar ur, ug, ub;

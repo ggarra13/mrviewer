@@ -6,10 +6,10 @@
 
 # For window management
 FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
-FIND_PACKAGE( FLTK2       REQUIRED )    # for window management
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
+FIND_PACKAGE( FLTK2       REQUIRED )    # for window management
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
 FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
 FIND_PACKAGE( CTL         REQUIRED )    # for CTL color language
@@ -26,11 +26,11 @@ ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  ADD_DEFINITIONS( -DWIN32 -GR ) 
+  ADD_DEFINITIONS( -DWIN32 -GR  ) 
   SET(OS_LIBRARIES
-    Winmm ws2_32 glew32
+    Winmm ws2_32 glut32 glew32 
     )
-  SET( LINK_FLAGS "${LINK_FLAGS} -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCMT" )
+  SET( LINK_FLAGS "${LINK_FLAGS} -NODEFAULTLIB:LIBC -NODEFAULTLIB:libcpmtd -NODEFAULTLIB:LIBCPMT -NODEFAULTLIB:LIBCMT -NODEFAULTLIB:LIBCMTD" )
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   IF(APPLE)
     # Media libraries for Apple
@@ -67,6 +67,7 @@ INCLUDE_DIRECTORIES(
   ../../mrClasses/mrClasses
   /usr/include/cairo
   ${OPENGL_INCLUDE_DIR}
+  ${GLUT_INCLUDE_DIR}
   ${FLTK2_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK++_INCLUDE_DIR}
@@ -75,7 +76,6 @@ INCLUDE_DIRECTORIES(
   ${OPENEXR_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR} 
   ${POSTGRESQL_INCLUDE_DIR}
-  ${GLUT_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${RLM_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
@@ -191,17 +191,18 @@ IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 
   FIND_LIBRARY( Boost_system_LIBRARY 
-    NAMES boost_system
+    NAMES boost_system boost_system_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
     )
+    
 
   FIND_LIBRARY( Boost_filesystem_LIBRARY 
-    NAMES boost_filesystem boost_filesystem-mt
+    NAMES boost_filesystem boost_filesystem_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
     )
 
   FIND_LIBRARY( Boost_thread_LIBRARY 
-    NAMES boost_thread
+    NAMES boost_thread boost_thread_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS} 
     )
 
@@ -236,24 +237,26 @@ ENDIF( AO_FOUND )
 SET( LIBRARIES
   ${POSTGRESQL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
+  ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
   ${OpenEXRCTL_LIBRARIES}
   ${CTL_LIBRARIES}
   ${OPENEXR_LIBRARIES}
+  ${OS_LIBRARIES}
   ${FLTK2_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
-  ${OS_LIBRARIES}
-  ${GLUT_LIBRARY}
-  ${RLM_LIBRARIES}
   ${SampleICC_LIBRARIES}
-  ${SDL_LIBRARY}
   )
 
 
 #
 # RELEASE VERSION
 #
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 OLD)
+endif(COMMAND cmake_policy)
+
 ADD_EXECUTABLE( mrViewer.exe WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer.exe ${LIBRARIES} )
 
@@ -290,86 +293,11 @@ INSTALL( TARGETS mrViewer.exe
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
-  # DLLs under windows' mingw get placed on bin/ not lib/
-  SET( BIN_LIBS "" )
-
-  FOREACH( it ${MAGICK++_LIBRARIES} )
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    LIST( APPEND BIN_LIBS ${it})
-  ENDFOREACH(it)
-
-  FOREACH( it ${FLTK2_LIBRARIES} )
-    IF( ${it} MATCHES ".lib$" )
-      STRING(REGEX REPLACE "fltk2([._])" "fltk2dll\\1" it "${it}")
-      LIST( APPEND BIN_LIBS ${it})
-    ENDIF( ${it} MATCHES ".lib$" )
-  ENDFOREACH(it)
-
-  FOREACH( it ${OPENEXR_LIBRARIES} )
-    STRING(REPLACE ".lib" ".dll" it "${it}")
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    LIST( APPEND BIN_LIBS ${it})
-  ENDFOREACH(it)
-
-  FOREACH( it ${CTL_LIBRARIES} )
-    STRING(REPLACE ".lib" ".dll" it "${it}")
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    LIST( APPEND BIN_LIBS ${it})
-  ENDFOREACH(it)
-
-  FOREACH( it ${OpenEXRCTL_LIBRARIES} )
-    STRING(REPLACE ".lib" ".dll" it "${it}")
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    LIST( APPEND BIN_LIBS ${it})
-  ENDFOREACH(it)
-
-  FOREACH( it ${AO_LIBRARIES} )
-    STRING(REPLACE ".lib" ".dll" it "${it}")
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    LIST( APPEND BIN_LIBS ${it})
-  ENDFOREACH(it)
-
-  # For windows, we copy the libraries to same location of the executable
-  FOREACH( it ${BOOST_LIBRARIES} ${BIN_LIBS} ${FFMPEG_LIBRARIES} ${POSTGRESQL_LIBRARIES} )
-    FILE(TO_NATIVE_PATH it "${it}" )
-    STRING(REPLACE ".lib" ".dll" it "${it}")
-
-    GET_FILENAME_COMPONENT( OUT ${it} NAME )
-
-    IF( NOT ${it} MATCHES ".(lib|a)$" )
-
-      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
-	copy "${it}" "${LIBRARY_OUTPUT_PATH}/${OUT}"
-	RESULT_VARIABLE result
-	)
-
-      IF( NOT result EQUAL 0 )
-	MESSAGE( ERROR " copy command failed ${result}" )
-      ENDIF( NOT result EQUAL 0 )
-
-    ENDIF( NOT ${it} MATCHES ".(lib|a)$" )
-
-  ENDFOREACH( it )
 
   SET( OUTDIR 
     "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
   FILE( MAKE_DIRECTORY "${OUTDIR}" )
 
-  FOREACH( it ${MAGICK_CODECS} )
-
-    STRING(REPLACE "lib/" "bin/" it "${it}")
-    GET_FILENAME_COMPONENT( OUT ${it} NAME )
-
-    EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
-      copy "${it}" "${OUTDIR}/${OUT}"
-      RESULT_VARIABLE result
-      )
-    
-    IF( NOT result EQUAL 0 )
-      MESSAGE( ERROR " copy command failed ${result}" )
-    ENDIF( NOT result EQUAL 0 )
-
-  ENDFOREACH(it)
 
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
@@ -379,36 +307,6 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( OUTDIR
     "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
   FILE( MAKE_DIRECTORY ${OUTDIR} )
-
-  FOREACH( it ${MAGICK_CODECS} )
-
-    GET_FILENAME_COMPONENT( BASE ${it} NAME_WE )
-    GET_FILENAME_COMPONENT( PATH ${it} PATH )
-    GET_FILENAME_COMPONENT( OUT ${it} NAME )
-
-    IF( NOT "${it}" STREQUAL "${OUTDIR}/${OUT}" )
-      #MESSAGE( STATUS "ln -s ${it} ${OUTDIR}/${OUT}" )
-
-      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
-	create_symlink "${it}" "${OUTDIR}/${OUT}"
-	RESULT_VARIABLE result
-	)
-      IF( NOT result EQUAL 0 )
-	MESSAGE( ERROR "command failed ${result} for ${it}" )
-      ENDIF( NOT result EQUAL 0 )
-
-      #MESSAGE( STATUS "ln -s ${PATH}/${BASE}.la ${OUTDIR}/${BASE}.la" )
-
-      EXECUTE_PROCESS( COMMAND ${CMAKE_COMMAND} -E 
-	create_symlink "${PATH}/${BASE}.la" "${OUTDIR}/${BASE}.la"
-	RESULT_VARIABLE result
-	)
-      IF( NOT result EQUAL 0 )
-	MESSAGE( ERROR "command failed ${result} for ${PATH}/${BASE}.la" )
-      ENDIF( NOT result EQUAL 0 )
-    ENDIF( NOT "${it}" STREQUAL "${OUTDIR}/${OUT}" )
-
-  ENDFOREACH( it )
 
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
@@ -431,8 +329,11 @@ MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
 MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
-MESSAGE( STATUS "" )
 
+IF(FLTK2_FOUND)
+  MESSAGE( STATUS "FLTK2 INCLUDE DIR=${FLTK2_INCLUDE_DIR}" )
+  MESSAGE( STATUS "FLTK2 LIBRARIES=${FLTK2_LIBRARIES}" )
+ENDIF(FLTK2_FOUND)
 
 IF(MAGICK_FOUND)
   MESSAGE( STATUS "ImageMagick   include: ${MAGICK_INCLUDE_DIR}" )

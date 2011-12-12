@@ -36,8 +36,8 @@
 #  include <GL/glxew.h>
 #endif
 
-
 #include <GL/glut.h>
+
 
 
 #if defined(WIN32) || defined(WIN64)

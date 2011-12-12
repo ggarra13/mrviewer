@@ -13,6 +13,7 @@
 #  FLTK2_IMAGES_LIBRARY = the full path to fltk2_images.lib
 
 SET (FLTK2_DIR $ENV{FLTK2_DIR} )
+MESSAGE( STATUS ${FLTK2_DIR} )
 
 #  Platform dependent libraries required by FLTK2
 IF(WIN32)
@@ -76,7 +77,6 @@ IF(NOT FLTK2_DIR)
     ${FLTK2_DIR_SEARCH}
 
     # Look in standard UNIX install locations.
-    /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/lib/fltk2
     /usr/local/fltk2
 
@@ -121,11 +121,12 @@ IF(FLTK2_DIR)
     IF(FLUID_COMMAND) 
       SET(FLTK2_FLUID_EXECUTABLE ${FLUID_COMMAND} CACHE FILEPATH "Fluid executable")
     ELSE(FLUID_COMMAND) 
-      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 PATHS 
+      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 fluid2.exe PATHS 
         ${FLTK2_EXECUTABLE_DIRS}
         ${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
         ${FLTK2_EXECUTABLE_DIRS}/Debug
         ${FLTK2_EXECUTABLE_DIRS}/Release
+	${FLTK2_DIR}/fluid/
         NO_SYSTEM_PATH)
     ENDIF(FLUID_COMMAND)
 
@@ -140,6 +141,12 @@ IF(FLTK2_DIR)
     SET(FLTK2_BASE_LIBRARY fltk2)
     SET(FLTK2_GL_LIBRARY fltk2_gl)
     SET(FLTK2_IMAGES_LIBRARY fltk2_images)
+
+    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+    SET(FLTK2_BASE_LIBRARY fltk2d)
+    SET(FLTK2_GL_LIBRARY fltk2_gld)
+    SET(FLTK2_IMAGES_LIBRARY fltk2_imagesd)
+    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
 
     # Add the extra libraries
     LOAD_CACHE(${FLTK2_DIR}
@@ -166,7 +173,8 @@ IF(FLTK2_DIR)
 
     # if FLTK2 was not built using CMake
     # Find fluid executable.
-    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 ${FLTK2_INCLUDE_DIR}/fluid)
+    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2 fluid2.exe 
+    			PATHS ${FLTK2_DIR}/fluid )	
 
     # Use location of fluid to help find everything else.
     SET(FLTK2_INCLUDE_SEARCH_PATH "")
@@ -191,18 +199,43 @@ IF(FLTK2_DIR)
     FIND_PATH(FLTK2_INCLUDE_DIR fltk/run.h ${FLTK2_INCLUDE_SEARCH_PATH})
 
     SET(FLTK2_LIBRARY_SEARCH_PATH ${FLTK2_LIBRARY_SEARCH_PATH}
-      /usr/local/lib${CMAKE_BUILD_ARCH}
       /usr/lib
       /usr/local/fltk2/lib
       /usr/X11R6/lib
       ${FLTK2_INCLUDE_DIR}/lib
       )
 
-    FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2
+
+    SET(FLTK2_BASE_LIBRARY "fltk2")
+    SET(FLTK2_GL_LIBRARY "fltk2_gl")
+    SET(FLTK2_IMAGES_LIBRARY "fltk2_images")
+
+    IF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dlld fltk2
+      	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
+      	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gld fltk2_gl
+      	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
+        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_imagesd fltk2_images
+      	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
+
+    ELSE( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+    	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dll fltk2
+      	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
+      	FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2dll_gl fltk2_gl
+      	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
+        FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2dll_images fltk2_images
+      	PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
+
+    ENDIF( CMAKE_BUILD_TYPE STREQUAL "Debug" )
+
+    
+    FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES ${FLTK_BASE_LIBRARY}
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-    FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES fltk2_gl 
+    FIND_LIBRARY(FLTK2_GL_LIBRARY NAMES ${FLTK_GL_LIBRARY}
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
-    FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES fltk2_images
+    FIND_LIBRARY(FLTK2_IMAGES_LIBRARY NAMES ${FLTK_IMAGES_LIBRARY}
       PATHS ${FLTK2_LIBRARY_SEARCH_PATH})
 
     # Find the extra libraries needed for the fltk_images library.

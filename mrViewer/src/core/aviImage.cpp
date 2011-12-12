@@ -1113,8 +1113,9 @@ void aviImage::populate()
     {
       // Get the codec context
       const AVStream* stream = _context->streams[ i ];
+      if ( stream == NULL ) continue;
       const AVCodecContext* ctx = stream->codec;
-
+      if ( ctx == NULL ) continue;
 
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
@@ -1211,7 +1212,6 @@ void aviImage::populate()
     {
       return;  // no stream detected
     }
-
 
 
   _fps = _play_fps = calculate_fps( stream );

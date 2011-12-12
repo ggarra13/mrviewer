@@ -48,8 +48,8 @@ int main( const int argc, char** argv )
   mrv::LoadList files;
   mrv::parse_command_line( argc, argv, ui, files );
 
-  mrv::open_license( argv[0] );
-  mrv::checkout_license();
+  // mrv::open_license( argv[0] );
+  // mrv::checkout_license();
 
   //
   // Window must be shown after images have been loaded.
@@ -87,8 +87,9 @@ int main( const int argc, char** argv )
       ok = -1;
     }
 
-  mrv::checkin_license();
-  mrv::close_license();
+
+  // mrv::checkin_license();
+  // mrv::close_license();
 
   return ok;
 }
@@ -106,16 +107,16 @@ int main( const int argc, char** argv )
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		     LPSTR lpCmdLine, int nCmdShow )
 {
-//   AllocConsole();
-//   freopen("conin$", "r", stdin);
-//   freopen("conout$", "w", stdout);
-//   freopen("conout$", "w", stderr);
+    AllocConsole();
+// //   freopen("conin$", "r", stdin);
+// //   freopen("conout$", "w", stdout);
+    freopen("conout$", "w", stderr);
 
   int rc = main( __argc, __argv );
   
 //   fclose(stdin);
 //   fclose(stdout);
-//   fclose(stderr);
+  fclose(stderr);
 
   return rc; 
 }

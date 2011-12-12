@@ -14,25 +14,17 @@
 #include <vector>
 #include <algorithm>
 
-#include <GL/glew.h>
-#include <wand/magick-wand.h>
-
-
 extern "C" {
 
-// Work-around for MinGW's bad symbol export of extern pointer structs.
-// #if defined(WIN32) || defined(WIN64)
-// #  define extern __declspec(dllimport) extern
-// #endif
-
+#include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
 #include <libavdevice/avdevice.h> 
 
-// #if defined(WIN32) || defined(WIN64)
-// #undef extern
-// #endif
-
 }
+
+#include <GL/glew.h>
+#include <wand/magick-wand.h>
+
 
 #include <fltk/visual.h>
 #include <fltk/Monitor.h>
@@ -207,7 +199,7 @@ namespace mrv
     // Now, add image formats from imagemagick
 
     ExceptionInfo* exception = AcquireExceptionInfo();
-    unsigned long num;
+    size_t num;
     const MagickInfo** magick_info = GetMagickInfoList("*", &num, exception);
     exception=DestroyExceptionInfo(exception);
 
@@ -420,21 +412,23 @@ namespace mrv
     using namespace std;
 
 
-    avcodec_register_all();
-    avdevice_register_all();
-    av_register_all();
-
-
 // #ifdef DEBUG
 //     av_log_set_level(99);
 // #else
     av_log_set_level(-1);
 // #endif
 
+    av_log_set_flags(AV_LOG_SKIP_REPEATED);
     av_log_set_callback( mrv::av_log_redirect );
 
+    avcodec_register_all();
+    avdevice_register_all();
+    av_register_all();;
 
-    unsigned long magic = 0;
+
+
+
+    size_t magic = 0;
     std::ostringstream o;
 
     unsigned int boost_major = BOOST_VERSION / 100000;

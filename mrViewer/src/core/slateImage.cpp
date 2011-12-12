@@ -125,7 +125,7 @@ namespace mrv {
 	double green = start[1] + green_step * y;
 	double blue  = start[2] + blue_step  * y;
 
-	long unsigned num;
+	size_t num;
 	PixelWand** pixels = PixelGetNextIteratorRow(iter, &num );
 
 	for (unsigned x=0; x < W; ++x)

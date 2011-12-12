@@ -24,6 +24,8 @@
 
 FIND_PATH(FFMPEG_INCLUDE_DIR libavformat/avformat.h
   "$ENV{FFMPEG_ROOT}/include"
+  "$ENV{FFMPEG_ROOT}/.."
+  "$ENV{FFMPEG_ROOT}"
   "C:/msys/1.0/local/include"
   /usr/local/include
 )
@@ -31,6 +33,13 @@ FIND_PATH(FFMPEG_INCLUDE_DIR libavformat/avformat.h
 SET( SEARCH_DIRS 
   "$ENV{FFMPEG_ROOT}/bin"
   "$ENV{FFMPEG_ROOT}/lib"
+  "$ENV{FFMPEG_ROOT}/libavcodec"
+  "$ENV{FFMPEG_ROOT}/libavdevice"
+  "$ENV{FFMPEG_ROOT}/libavfilter"
+  "$ENV{FFMPEG_ROOT}/libavformat"
+  "$ENV{FFMPEG_ROOT}/libavutil"
+  "$ENV{FFMPEG_ROOT}/libpostproc"
+  "$ENV{FFMPEG_ROOT}/libswscale"
   "C:/msys/1.0/local/bin"
   "C:/msys/1.0/local/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -64,27 +73,30 @@ ENDIF(MSVC)
 # Find FFMPEG libraries
 #
 FIND_LIBRARY(FFMPEG_avformat_LIBRARY 
-    NAMES avformat avformat-51 avformat-50
+    NAMES avformat
     PATHS ${SEARCH_DIRS}
 )
 
+MESSAGE( STATUS "avformat " ${FFMPEG_avformat_LIBRARY} )
+MESSAGE( STATUS "avformat " ${SEARCH_DIRS} )
+
 FIND_LIBRARY(FFMPEG_avcodec_LIBRARY 
-    NAMES avcodec avcodec-52 avcodec-51
+    NAMES avcodec
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avutil_LIBRARY 
-    NAMES avutil avutil-50 avutil-49
+    NAMES avutil
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
-    NAMES avdevice avdevice-50 avdevice-49
+    NAMES avdevice
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_swscale_LIBRARY 
-    NAMES swscale swscale-50 swscale-49
+    NAMES swscale
     PATHS ${SEARCH_DIRS}
 )
 

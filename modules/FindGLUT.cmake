@@ -23,23 +23,26 @@ IF (WIN32)
 
     FIND_LIBRARY( GLUT_glut_LIBRARY glut32
       ${OPENGL_LIBRARY_DIR}
+      ${GLUT_ROOT_PATH}/lib
+      ${GLUT_ROOT_PATH}/Release
       /usr/local/lib${CMAKE_BUILD_ARCH}
       /usr/lib
       /usr/lib/w32api
       /usr/X11R6/lib
     )
 
-
   ELSE(CYGWIN)
 
     FIND_PATH( GLUT_INCLUDE_DIR GL/glut.h
       ${GLUT_ROOT_PATH}/include
+      ${GLUT_ROOT_PATH}
     )
 
     FIND_LIBRARY( GLUT_glut_LIBRARY glut32 glut
-      ${GLUT_ROOT_PATH}/Release
+      ${GLUT_ROOT_PATH}/lib
       ${OPENGL_LIBRARY_DIR}
     )
+
 
   ENDIF(CYGWIN)
 
@@ -100,8 +103,7 @@ ENDIF (WIN32)
 SET( GLUT_FOUND "NO" )
 IF(GLUT_INCLUDE_DIR)
   IF(GLUT_glut_LIBRARY)
-    # Is -lXi and -lXmu required on all platforms that have it?
-    # If not, we need some way to figure out what platform we are on.
+
     SET( GLUT_LIBRARIES
       ${GLUT_glut_LIBRARY}
       ${GLUT_Xmu_LIBRARY}
@@ -113,6 +115,8 @@ IF(GLUT_INCLUDE_DIR)
 #The following deprecated settings are for backwards compatibility with CMake1.4
     SET (GLUT_LIBRARY ${GLUT_LIBRARIES})
     SET (GLUT_INCLUDE_PATH ${GLUT_INCLUDE_DIR})
+
+    MESSAGE( STATUS ${GLUT_LIBRARIES} )
 
   ENDIF(GLUT_glut_LIBRARY)
 ENDIF(GLUT_INCLUDE_DIR)
