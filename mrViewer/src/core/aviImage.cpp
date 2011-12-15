@@ -45,6 +45,7 @@ namespace
 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
+#define LOG(x) std::cerr << x << std::endl;
 
 // this plays backwards by seeking, which is slow but memory efficient
 //#define USE_SEEK_TO_PLAY_BACKWARDS  
@@ -94,7 +95,7 @@ aviImage::aviImage() :
   _subtitle_codec( NULL )
 {
   _gamma = 1.0f;
-  _compression[0] = _compression[4] = 0;
+  _compression = "";
 
   memset(&_sub, 0, sizeof(AVSubtitle));
 
@@ -1107,6 +1108,7 @@ int aviImage::video_stream_index() const
 void aviImage::populate()
 {
   std::ostringstream msg;
+  
 
   // Iterate through all the streams available
   for( unsigned i = 0; i < _context->nb_streams; ++i ) 
@@ -1116,6 +1118,7 @@ void aviImage::populate()
       if ( stream == NULL ) continue;
       const AVCodecContext* ctx = stream->codec;
       if ( ctx == NULL ) continue;
+
 
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
@@ -1530,16 +1533,17 @@ bool aviImage::initialize()
       static const AVRational time_base = { 1, AV_TIME_BASE };
       params.time_base = time_base;
       params.pix_fmt   = PIX_FMT_NONE;
+      params.initial_pause = 1;  // start stream paused
 
 
       AVInputFormat*     format = NULL;
-      //params.initial_pause = 1;  // start stream paused
-
       int error = av_open_input_file( &_context, filename(), 
 				      format, 0, &params );
 
       if ( error >= 0 )
-	error = av_find_stream_info( _context );
+	{
+	  error = av_find_stream_info( _context );
+	}
 
       if ( error >= 0 )
 	{

@@ -143,14 +143,24 @@ namespace mrv {
 
     void display( image_type_ptr& result, 
 		  const image_type_ptr& src, CMedia* img );
+
+     public:
+       /// Find min/max values for an image, using multithreading if possible
+       void minmax();
+
+       // Retrieve min and max float values of image.  To be used after
+       // minmax() is called once.
+       inline void minmax( float& pMin, float& pMax ) {
+	  pMin = _normMin;
+	  pMax = _normMax;
+       }
+
   protected:
 
 
     /// Find min/max values for an image, using multithreading if possible
     void minmax( float& pMin, float& pMax, const CMedia* img );
 
-    /// Find min/max values for an image, using multithreading if possible
-    void minmax();
 
 
   protected:

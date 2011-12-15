@@ -208,7 +208,7 @@ namespace mrv {
 	THROW(buf);
       }
 
-    long smixer_level = pmin + long( (pmax-pmin) * v);
+    long smixer_level = pmin + long( (pmax*1.5-pmin) * v);
 
 
     for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i) {

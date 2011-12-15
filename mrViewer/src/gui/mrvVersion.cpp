@@ -28,6 +28,7 @@ extern "C" {
 
 #include <fltk/visual.h>
 #include <fltk/Monitor.h>
+#include <fltk/Browser.h>
 
 #include <boost/version.hpp>
 
@@ -94,18 +95,18 @@ namespace mrv
     return kVersion;
   }
 
-  std::string ffmpeg_formats()
+void ffmpeg_formats( fltk::Browser& browser )
   {
     using namespace std;
 
 
-    AVInputFormat *ifmt;
-    AVOutputFormat *ofmt;
-    const char* last_name;
+    AVInputFormat* ifmt = NULL;
+    AVOutputFormat* ofmt = NULL;
+    const char* last_name = NULL;
 
 
     FormatList formats;
-    FormatInfo* f;
+    FormatInfo* f = NULL;
 
     f = new FormatInfo( true, true, false, "EXR", "OpenEXR",
 			"ILM OpenEXR" );
@@ -167,8 +168,8 @@ namespace mrv
     for(;;){
       bool decode = false;
       bool encode = false;
-      const char *name=NULL;
-      const char *long_name=NULL;
+      const char* name=NULL;
+      const char* long_name=NULL;
 
       for(ofmt = av_oformat_next(NULL); ofmt; ofmt = av_oformat_next(ofmt)) {
 	if((name == NULL || strcmp(ofmt->name, name)<0) &&
@@ -224,28 +225,27 @@ namespace mrv
     std::sort( formats.begin(), formats.end(), SortFormatsFunctor() );
 
     // Now concatenate all the stuff into a string
-    std::ostringstream o;
     {
       FormatList::const_iterator i = formats.begin();
       FormatList::const_iterator e = formats.end();
       for ( ; i != e; ++i )
 	{
 	  f = *i;
+	  std::ostringstream o;
 	  o << ( f->decode ? "D\t" : " \t" ) 
 	    << ( f->encode ? "E\t" : " \t" ) 
 	    << ( f->blob   ? "B\t" : " \t" ) 
 	    << f->name << "\t"
 	    << f->module << "\t"
-	    << f->description
-	    << endl;
+	    << f->description;
+	  browser.add( o.str().c_str() );
 	  delete f;
 	}
     }
 
-    return o.str();
   }
 
-  static std::string ffmpeg_codecs(int type)
+static void ffmpeg_codecs(fltk::Browser& browser, int type)
   {
     using namespace std;
 
@@ -297,36 +297,37 @@ namespace mrv
 	break;
       }
 
+      std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
 	<< ( encode ? "E\t" : " \t" )
 	<< "\t"
 	<< ( cap & CODEC_CAP_DRAW_HORIZ_BAND ? "S\t":" \t" )
 	<< ( cap & CODEC_CAP_DR1 ? "D\t":" \t" )
 	<< ( cap & CODEC_CAP_TRUNCATED ? "T\t":" \t" )
-	<< p2->name
-	<< endl;
+	<< p2->name;
+
+      browser.add( o.str().c_str() );
 
       /* if(p2->decoder && decode==0)
 	 printf(" use %s for decoding", p2->decoder->name);*/
     }
 
-    return o.str();
   }
 
 
-  std::string ffmpeg_audio_codecs()
+  void ffmpeg_audio_codecs(fltk::Browser& browser )
   {
-    return ffmpeg_codecs( CODEC_TYPE_AUDIO );
+     return ffmpeg_codecs( browser, CODEC_TYPE_AUDIO );
   }
 
-  std::string ffmpeg_video_codecs()
+  void ffmpeg_video_codecs(fltk::Browser& browser )
   {
-    return ffmpeg_codecs( CODEC_TYPE_VIDEO );
+     return ffmpeg_codecs( browser, CODEC_TYPE_VIDEO );
   }
 
-  std::string ffmpeg_subtitle_codecs()
+  void ffmpeg_subtitle_codecs(fltk::Browser& browser )
   {
-    return ffmpeg_codecs( CODEC_TYPE_SUBTITLE );
+     return ffmpeg_codecs( browser, CODEC_TYPE_SUBTITLE );
   }
 
 

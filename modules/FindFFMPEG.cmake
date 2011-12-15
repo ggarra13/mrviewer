@@ -73,7 +73,7 @@ ENDIF(MSVC)
 # Find FFMPEG libraries
 #
 FIND_LIBRARY(FFMPEG_avformat_LIBRARY 
-    NAMES avformat
+    NAMES avformat avformat-52
     PATHS ${SEARCH_DIRS}
 )
 
@@ -81,22 +81,22 @@ MESSAGE( STATUS "avformat " ${FFMPEG_avformat_LIBRARY} )
 MESSAGE( STATUS "avformat " ${SEARCH_DIRS} )
 
 FIND_LIBRARY(FFMPEG_avcodec_LIBRARY 
-    NAMES avcodec
+    NAMES avcodec avcodec-52
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avutil_LIBRARY 
-    NAMES avutil
+    NAMES avutil avutil-50
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
-    NAMES avdevice
+    NAMES avdevice avdevice-52
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_swscale_LIBRARY 
-    NAMES swscale
+    NAMES swscale swscale-0
     PATHS ${SEARCH_DIRS}
 )
 

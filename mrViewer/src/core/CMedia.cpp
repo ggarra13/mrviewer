@@ -980,6 +980,7 @@ void CMedia::play(const CMedia::Playback dir,
   _audio_frame = _frame;
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
+  _dts = _frame;
   _audio_clock = 0.0;
   _video_clock = 0.0;
 
@@ -988,7 +989,6 @@ void CMedia::play(const CMedia::Playback dir,
 
   // clear all packets
   clear_packets();
-  // clear_stores(); // clear audio store
 
 
   // Start threads

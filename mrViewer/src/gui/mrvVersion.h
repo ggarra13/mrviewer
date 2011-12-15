@@ -13,16 +13,21 @@
 
 #include <string>
 
+namespace fltk
+{
+class Browser;
+}
+
 namespace mrv
 {
   class ViewerUI;
 
-  std::string ffmpeg_formats();
-  std::string ffmpeg_video_codecs();
-  std::string ffmpeg_audio_codecs();
-  std::string ffmpeg_subtitle_codecs();
-  std::string ffmpeg_protocols();
-  std::string ffmpeg_motion_estimation_methods();
+void ffmpeg_formats( fltk::Browser& b );
+void ffmpeg_video_codecs( fltk::Browser& b );
+void ffmpeg_audio_codecs( fltk::Browser& b  );
+void ffmpeg_subtitle_codecs( fltk::Browser& b);
+std::string ffmpeg_protocols();
+std::string ffmpeg_motion_estimation_methods();
 
 
   const char* version();

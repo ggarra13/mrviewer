@@ -1437,8 +1437,8 @@ int Flu_File_Chooser::FileInput::handle( int event )
 	  std::string v(value());
 #ifdef WIN32
 	  // turn "C:" into "C:\"
-	  if( v.size() >= 2 )
-	    if( v[1] == ':' && v[2] == '\0' )
+	  if( v.size() >= 3 )
+	    if( v.size() == 2 && v[1] == ':' )
 	      {
 		v += "/";
 		value( v.c_str() );
@@ -2912,11 +2912,11 @@ void Flu_File_Chooser::Entry::draw()
       icon->draw( X, h()/2-icon->h()/2 );
       X += icon->w()+2;
     }
-
-  if( shortname[0] != '\0' )
+  
+  if( shortname.size() > 0 )
     labeltype()->draw( shortname.c_str(), fltk::Rectangle( X, 0, nameW, h() ),
 		       fltk::ALIGN_LEFT );
-  else if( altname[0] != '\0' )
+  else if( altname.size() > 0 )
     labeltype()->draw( altname.c_str(), fltk::Rectangle( X, 0, nameW, h() ),
 		       fltk::ALIGN_LEFT );
   else
@@ -3197,16 +3197,16 @@ void Flu_File_Chooser::cleanupPath( std::string &s )
   for( oldPos = 0, newPos = 0; oldPos < s.size(); oldPos++ )
     {
       // remove "./"
-      if( s[oldPos] == '.' && s[oldPos+1] == '/' )
+      if( s[oldPos] == '.' && oldPos+1 < s.size() && s[oldPos+1] == '/' )
 	oldPos += 2;
 
       // convert "//" to "/"
-      else if( s[oldPos] == '/' && s[oldPos+1] == '/' )
+      else if( s[oldPos] == '/' && oldPos+1 < s.size() && s[oldPos+1] == '/' )
 	oldPos++;
 
 #ifdef WIN32
       // downcase "c:" to "C:"
-      else if( s[oldPos+1] == ':' )
+      else if( oldPos+1 < s.size() && s[oldPos+1] == ':' )
 	s[oldPos] = toupper( s[oldPos] );
 #endif
 
@@ -3967,7 +3967,8 @@ void Flu_File_Chooser::cd( const char *path )
 #ifdef WIN32
   // set the location input value
   // check for drives
-  if( currentDir[1] == ':' && currentDir[3] == '\0' )
+  if( currentDir.size() > 1 && currentDir[1] == ':' && 
+	  currentDir.size() == 2 )
     {
       location->text( currentDir.c_str() );
     }

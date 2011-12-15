@@ -304,8 +304,7 @@ o->child_of( main->uiMain );} modal
       } {
         {fltk::TabGroup} {} {
           user_data main user_data_type {mrv::ViewerUI*}
-          callback {
-v->uiAbout->uiGPUInfo->clear();
+          callback {v->uiAbout->uiGPUInfo->clear();
 v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
           xywh {4 4 441 391}
         } {
@@ -344,7 +343,7 @@ o->value(-1);}
             label Formats open
             xywh {0 20 445 370} hide
           } {
-            {fltk::Browser} {} {open
+            {fltk::Browser} {} {
               xywh {15 15 415 345}
               extra_code {static const char* col_labels[] = {
 "",
@@ -367,7 +366,9 @@ static int col_widths[] = {
 };
 o->column_labels( col_labels );
 o->column_widths( col_widths );
-//o->add( ffmpeg_formats().c_str() );
+
+
+ffmpeg_formats(*o);
 o->value(-1);}
             } {}
           }
@@ -378,19 +379,19 @@ o->value(-1);}
             {fltk::Browser} {} {
               label Video
               xywh {15 20 410 150}
-              extra_code {//o->add( ffmpeg_video_codecs().c_str()  );
+              extra_code {ffmpeg_video_codecs(*o);
 o->value(-1);}
             } {}
             {fltk::Browser} {} {
               label Audio open
               xywh {15 190 415 110}
-              extra_code {//o->add( ffmpeg_audio_codecs().c_str() );
+              extra_code {ffmpeg_audio_codecs(*o);
 o->value(-1);}
             } {}
             {fltk::Browser} {} {
               label Subtitles open
               xywh {15 315 415 55}
-              extra_code {//o->add( ffmpeg_subtitle_codecs().c_str() );
+              extra_code {ffmpeg_subtitle_codecs(*o);
 o->value(-1);}
             } {}
           }
@@ -398,9 +399,9 @@ o->value(-1);}
             label Protocols open
             xywh {0 20 445 370} vertical hide deactivate
           } {
-            {fltk::Browser} {} {open
+            {fltk::Browser} {} {selected
               xywh {15 15 415 345}
-              extra_code {//o->add( ffmpeg_protocols().c_str() );
+              extra_code {o->add( ffmpeg_protocols().c_str() );
 o->value(-1);}
             } {}
           }
@@ -408,7 +409,7 @@ o->value(-1);}
             label {Motion Estimation Methods} open
             xywh {0 20 445 370} vertical hide
           } {
-            {fltk::Browser} {} {open selected
+            {fltk::Browser} {} {
               xywh {15 15 415 345}
               extra_code {static int col_widths[] = {
 120,
@@ -416,7 +417,7 @@ o->value(-1);}
 0
 };
 o->column_widths( col_widths );
-//o->add( ffmpeg_motion_estimation_methods().c_str() );
+o->add( ffmpeg_motion_estimation_methods().c_str() );
 o->value(-1);}
             } {}
           }
@@ -551,7 +552,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {476 114 640 475} resizable visible
+        xywh {484 206 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1550,7 +1551,7 @@ mrv::AudioEngine::DeviceList::const_iterator i = devices.begin();
 mrv::AudioEngine::DeviceList::const_iterator e = devices.end();
 for ( ; i != e; ++i )
    {
-      //o->add( (*i).description.c_str() );
+      o->add( (*i).description.c_str() );
    }}
             } {}
           }
@@ -2776,8 +2777,7 @@ v->uiTimeline->redraw();}
           }
         }
       }
-      code {
-if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
+      code {if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
 uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);

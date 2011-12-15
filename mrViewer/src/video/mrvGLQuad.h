@@ -38,6 +38,11 @@ namespace mrv {
     void lut( const CMedia* img );
     inline void clear_lut() { _lut = NULL; } // lut is not deleted here
 
+       inline void minmax( float fmin, float fmax ) {
+	  _normMin = fmin;
+	  _normMax = fmax;
+       }
+
   protected:
     void init_texture();
 

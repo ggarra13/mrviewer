@@ -379,7 +379,12 @@ void GLEngine::initialize()
 	  if ( env )
 	    {
 	      directory = env;
-	      directory += N_("/shaders");
+#if defined(WIN32) || defined(WIN64)
+	      directory += "\\";
+#else
+	      directory += "/";
+#endif
+	      directory += N_("shaders");
 	    }
 	}
       else
@@ -811,6 +816,13 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
+  float normMin = 0.0f, normMax = 1.0f;
+  if ( _view->normalize() )
+  {
+     minmax();
+     minmax( normMin, normMax );
+  }
+
 
   unsigned num_quads = 0;
   ImageList::iterator i = images.begin();
@@ -861,6 +873,7 @@ void GLEngine::draw_images( ImageList& images )
 
       const Image_ptr& img = *i;
       GLQuad* quad = *q;
+      quad->minmax( normMin, normMax );
 
       if ( _view->use_lut() )
 	{
