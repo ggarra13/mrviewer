@@ -469,7 +469,7 @@ namespace mrv {
     if ( !env )
       {
 	ctlEnv += root;
-	ctlEnv += "/ctl";
+	ctlEnv += N_("/ctl");
       }
     else
       {

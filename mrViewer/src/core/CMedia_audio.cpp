@@ -15,8 +15,6 @@
 #include "mrvPacketQueue.h"
 
 
-#include <sys/stat.h>
-
 #if defined(WIN32) || defined(WIN64)
 #  include <direct.h>
 #  define getcwd _getcwd
@@ -453,7 +451,7 @@ void CMedia::populate_audio()
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
 	{
-	case CODEC_TYPE_AUDIO:
+	case AVMEDIA_TYPE_AUDIO:
 	  {
 	    audio_info_t s;
 	    populate_stream_info( s, msg, ctx, i );
@@ -661,7 +659,6 @@ void CMedia::populate_audio()
   //
   // Miscellaneous information
   //
-  char buf[256];
   AVMetadata* m = NULL;
 
   stream = get_audio_stream();

@@ -70,6 +70,7 @@ namespace mrv {
     FILE* f = NULL;
 
     try {
+      
       f = fopen( file, "w" );
 
       if ( !f ) throw;

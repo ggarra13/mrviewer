@@ -379,12 +379,7 @@ void GLEngine::initialize()
 	  if ( env )
 	    {
 	      directory = env;
-#if defined(WIN32) || defined(WIN64)
-	      directory += "\\";
-#else
-	      directory += "/";
-#endif
-	      directory += N_("shaders");
+	      directory += N_("/shaders");
 	    }
 	}
       else

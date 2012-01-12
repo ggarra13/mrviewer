@@ -81,6 +81,7 @@ namespace mrv
     int idx[2];
     int count = 0;  // number of periods found (from end)
 
+
     const char* e = file.c_str();
     const char* i = e + file.size() - 1;
     for ( ; i >= e; --i )
@@ -96,7 +97,7 @@ namespace mrv
 
 	if ( count == 1 && (*i != '@' && *i != '#' && *i != 'd' && 
 			    *i != 'l' && *i != '%' && *i != '-' &&
-			    (*i < '0' || *i > '9')) )
+			    *i != 'I' && (*i < '0' || *i > '9')) )
 	  break;
       }
 
@@ -104,6 +105,7 @@ namespace mrv
 
     if ( count == 2 )
       {
+
 	root  = file.substr( 0, idx[1]+1 );
 	frame = file.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = file.substr( idx[0], file.size()-idx[0] );
@@ -111,10 +113,11 @@ namespace mrv
 	// If extension is one of a movie/audio file, return false
 	if ( ext == ".avi" || ext == ".mov"  || ext == ".divx" ||
 	     ext == ".wmv" || ext == ".mpeg" || ext == ".mpg"  ||
-	     ext == ".qt"  || ext == ".wav" )
+	     ext == ".qt"  || ext == ".wav"  || ext == ".VOB" )
 	  return false;
 
-	return is_valid_frame_spec( frame );
+	bool ok = is_valid_frame_spec( frame );
+	return ok;
       }
     else
       {
@@ -148,20 +151,25 @@ namespace mrv
     char buf[1024];
     if ( dir.string() == "" ) {
       dir = fs::path( getcwd(buf,1024), fs::native );
+      std::cerr << "DIR " << dir << std::endl;
     }
 
 
     if ( ( ! fs::exists( dir ) ) || 
 	 ( ! fs::is_directory( dir ) ) )
+    {
+       std::cerr << "no exist or no directory" << std::endl;
       return false;
-
+    }
 
     // Check if sequence is in ILM format first  ( image.1-30.exr )
     stringArray tokens;
     mrv::split_string( tokens, fileroot, "." );
     if ( tokens.size() > 2 )
       {
+
 	const std::string& range = tokens[ tokens.size()-2 ];
+
 	if ( mrv::matches_chars(range.c_str(), "0123456789-") )
 	  {
 	    stringArray frames;
@@ -196,8 +204,9 @@ namespace mrv
 
     std::string root, frame, ext;
     if ( ! split_sequence( root, frame, ext, file.leaf() ) )
+    {
       return false; // NOT a recognized sequence
-
+    }
 
     std::string croot;
     std::string cext;

@@ -283,13 +283,13 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 	continue;
 
       switch(p2->type) {
-      case CODEC_TYPE_VIDEO:
+      case AVMEDIA_TYPE_VIDEO:
 	type_str = "V";
 	break;
-      case CODEC_TYPE_AUDIO:
+      case AVMEDIA_TYPE_AUDIO:
 	type_str = "A";
 	break;
-      case CODEC_TYPE_SUBTITLE:
+      case AVMEDIA_TYPE_SUBTITLE:
 	type_str = "S";
 	break;
       default:
@@ -317,17 +317,17 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
   void ffmpeg_audio_codecs(fltk::Browser& browser )
   {
-     return ffmpeg_codecs( browser, CODEC_TYPE_AUDIO );
+     return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
   }
 
   void ffmpeg_video_codecs(fltk::Browser& browser )
   {
-     return ffmpeg_codecs( browser, CODEC_TYPE_VIDEO );
+     return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
   }
 
   void ffmpeg_subtitle_codecs(fltk::Browser& browser )
   {
-     return ffmpeg_codecs( browser, CODEC_TYPE_SUBTITLE );
+     return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
   }
 
 
@@ -422,10 +422,12 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
     av_log_set_callback( mrv::av_log_redirect );
 
+
     avcodec_register_all();
     avdevice_register_all();
-    av_register_all();;
 
+    av_register_all();
+    avformat_network_init();
 
 
 

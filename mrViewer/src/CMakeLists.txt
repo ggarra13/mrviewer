@@ -257,10 +257,10 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 OLD)
 endif(COMMAND cmake_policy)
 
-ADD_EXECUTABLE( mrViewer.exe WIN32 ${SOURCES} )
-TARGET_LINK_LIBRARIES( mrViewer.exe ${LIBRARIES} )
+ADD_EXECUTABLE( mrViewer ${SOURCES} )
+TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} )
 
-SET_TARGET_PROPERTIES( mrViewer.exe
+SET_TARGET_PROPERTIES( mrViewer
   PROPERTIES
   LINK_FLAGS "${LINK_FLAGS}"
   )
@@ -286,7 +286,7 @@ SET_TARGET_PROPERTIES( mrViewer.exe
 # Installation
 #
 ######################################################
-INSTALL( TARGETS mrViewer.exe
+INSTALL( TARGETS mrViewer
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
 )

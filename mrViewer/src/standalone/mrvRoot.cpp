@@ -11,6 +11,7 @@
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
 
 #if defined(WIN32) || defined(WIN64)
 #  include <io.h>      // for _access
@@ -181,10 +182,14 @@ namespace mrv {
 	fs::path rootdir( binpath );
 	rootdir = rootdir.remove_leaf();
 	rootdir = rootdir.branch_path();
-	rootdir /= "..";
+
+#ifdef LINUX
+	rootdir = rootdir.remove_leaf();
+#endif
 
 	std::string root = "MRV_ROOT=";
 	root += rootdir.string().c_str();
+
 
 	putenv( strdup( (char*)root.c_str() ) );
       }

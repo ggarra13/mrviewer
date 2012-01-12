@@ -9,10 +9,12 @@ KERNEL=`uname -s`
 if [[ $KERNEL == CYGWIN* ]]; then
     KERNEL=Windows
     RELEASE=(`cmd /c 'ver'`)
-    RELEASE=${RELEASE[5]%.[0-9]*}
+    RELEASE=${RELEASE[4]%.[0-9]*}
 elif [[ $KERNEL == MINGW* ]]; then
     RELEASE=${KERNEL//*-/}
     KERNEL=Windows
+    RELEASE=`cmd /c 'ver'`
+    RELEASE=${RELEASE[4]%.[0-9]*}
 else
     RELEASE=`uname -r`
 fi

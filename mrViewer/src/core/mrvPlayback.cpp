@@ -567,6 +567,7 @@ namespace mrv {
 
 	frame += step;
 
+
 	CMedia* next = NULL;
 	CheckStatus status = check_loop( frame, img, timeline );
 	if ( status != kNoChange )

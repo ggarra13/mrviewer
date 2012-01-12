@@ -26,7 +26,6 @@ FIND_PATH(FFMPEG_INCLUDE_DIR libavformat/avformat.h
   "$ENV{FFMPEG_ROOT}/include"
   "$ENV{FFMPEG_ROOT}/.."
   "$ENV{FFMPEG_ROOT}"
-  "C:/msys/1.0/local/include"
   /usr/local/include
 )
 
@@ -40,8 +39,6 @@ SET( SEARCH_DIRS
   "$ENV{FFMPEG_ROOT}/libavutil"
   "$ENV{FFMPEG_ROOT}/libpostproc"
   "$ENV{FFMPEG_ROOT}/libswscale"
-  "C:/msys/1.0/local/bin"
-  "C:/msys/1.0/local/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
   )
 
@@ -68,73 +65,43 @@ IF(MSVC)
 
 ENDIF(MSVC)
 
+MESSAGE( "SEARCH DIRS=" ${SEARCH_DIRS} )
 
 #
 # Find FFMPEG libraries
 #
 FIND_LIBRARY(FFMPEG_avformat_LIBRARY 
-    NAMES avformat avformat-52
+    NAMES avformat avformat-52 avformat-53
     PATHS ${SEARCH_DIRS}
 )
 
-MESSAGE( STATUS "avformat " ${FFMPEG_avformat_LIBRARY} )
-MESSAGE( STATUS "avformat " ${SEARCH_DIRS} )
 
 FIND_LIBRARY(FFMPEG_avcodec_LIBRARY 
-    NAMES avcodec avcodec-52
+    NAMES avcodec avcodec-52 avcodec-53
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avutil_LIBRARY 
-    NAMES avutil avutil-50
+    NAMES avutil avutil-50  avutil-51
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
-    NAMES avdevice avdevice-52
+    NAMES avdevice avdevice-52  avdevice-53
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_swscale_LIBRARY 
-    NAMES swscale swscale-0
+    NAMES swscale swscale-0 swscale-2
     PATHS ${SEARCH_DIRS}
 )
 
-FOREACH( lib 
-    a52 amr_nb amr_wb dc1394 dirac dts faac faad gsm 
-    lagarith mp3lame nut postproc-51 postproc 
-    swscale theora 
-    vorbis vorbisenc-2 vorbisenc x264-50 x264
-    xvidcore z 
-    )
-    STRING( REGEX REPLACE "-[0-9]+" "" it ${lib} )
-
-
-    IF(WIN32)
-      #
-      # This is what it should be, but since msys compiles .lib files
-      # as .a files, cmake won't find them.
-      #
-      FIND_LIBRARY( FFMPEG_${it}_LIBRARY
-      	NAMES ${it}  lib${it}  ${it}-0 lib${it}-0 
-              ${lib} lib${lib} ${lib}-0 lib${lib}-0 
-      	PATHS ${SEARCH_DIRS}
-      	)
-
-    ELSE(WIN32)
-      FIND_LIBRARY( FFMPEG_${it}_LIBRARY
-	NAMES ${it} lib${lib} lib${it} lib${it}-0
-	PATHS ${SEARCH_DIRS}
-	)
-
-    ENDIF(WIN32)
-
-    IF( NOT FFMPEG_${it}_LIBRARY )
-      SET( FFMPEG_${it}_LIBRARY "" )
-    ENDIF( NOT FFMPEG_${it}_LIBRARY )
-ENDFOREACH( lib )
-
 MESSAGE( STATUS "FFMPEG_INCLUDE_DIR=" ${FFMPEG_INCLUDE_DIR} )
+MESSAGE( STATUS "FFMPEG_avutil_LIBRARY=" ${FFMPEG_avutil_LIBRARY} )
+MESSAGE( STATUS "FFMPEG_avformat_LIBRARY=" ${FFMPEG_avformat_LIBRARY} )
+MESSAGE( STATUS "FFMPEG_avcodec_LIBRARY=" ${FFMPEG_avcodec_LIBRARY} )
+MESSAGE( STATUS "FFMPEG_avdevice_LIBRARY=" ${FFMPEG_avdevice_LIBRARY} )
+MESSAGE( STATUS "FFMPEG_swscale_LIBRARY=" ${FFMPEG_swscale_LIBRARY} )
 
 IF(FFMPEG_INCLUDE_DIR)
   IF(FFMPEG_avformat_LIBRARY)
@@ -148,23 +115,14 @@ IF(FFMPEG_INCLUDE_DIR)
             ${FFMPEG_avformat_LIBRARY} # LGPL
             ${FFMPEG_avutil_LIBRARY}   # LGPL
 	    ${FFMPEG_avdevice_LIBRARY} # LGPL
-	    ${FFMPEG_swscale_LIBRARY}  # GPL
+	    ${FFMPEG_swscale_LIBRARY}  # LGPL
             )
 
 	  SET( FFMPEG_BSD_LIBRARIES
-            ${FFMPEG_gsm_LIBRARY}       # BSD
-	    ${FFMPEG_nut_LIBRARY}       # MIT
-            ${FFMPEG_theora_LIBRARY}    # BSD
-            ${FFMPEG_vorbis_LIBRARY}    # BSD
-            ${FFMPEG_vorbisenc_LIBRARY} # BSD
-            ${FFMPEG_z_LIBRARY}         # Zlib
 	    )
 	  
 	  SET( FFMPEG_LGPL_LIBRARIES
-            ${FFMPEG_BASIC_LIBRARIES} # LPGL
-            ${FFMPEG_dc1394_LIBRARY}  # GPL/LGPL
-	    ${FFMPEG_dirac_LIBRARY}   # LPGL & Free of patents (verified by BBC)
-	    ${FFMPEG_mp3lame_LIBRARY} # LPGL
+	    ${FFMPEG_BASIC_LIBRARIES}
 	    )
 	  
           SET( FFMPEG_LIBRARIES  
@@ -173,8 +131,6 @@ IF(FFMPEG_INCLUDE_DIR)
 	  
 	  
 	  SET( FFMPEG_GPL_LIBRARIES
-	    ${FFMPEG_a52_LIBRARY}      # GPL
-	    ${FFMPEG_dts_LIBRARY}      # GPL
 	    ${FFMPEG_postproc_LIBRARY} # GPL
 	    ${FFMPEG_swscale_LIBRARY}  # GPL
 	    )
@@ -199,28 +155,10 @@ ENDIF(FFMPEG_INCLUDE_DIR)
 
 MARK_AS_ADVANCED(
   FFMPEG_INCLUDE_DIR
-  FFMPEG_a52_LIBRARY
-  FFMPEG_amr_nb_LIBRARY
-  FFMPEG_amr_wb_LIBRARY
   FFMPEG_avformat_LIBRARY
   FFMPEG_avcodec_LIBRARY
   FFMPEG_avutil_LIBRARY
   FFMPEG_avdevice_LIBRARY
-  FFMPEG_dc1394_LIBRARY
-  FFMPEG_dirac_LIBRARY
-  FFMPEG_dts_LIBRARY
-  FFMPEG_faac_LIBRARY
-  FFMPEG_faad_LIBRARY
-  FFMPEG_gsm_LIBRARY
-  FFMPEG_lagarith_LIBRARY
-  FFMPEG_mp3lame_LIBRARY
-  FFMPEG_nut_LIBRARY
   FFMPEG_postproc_LIBRARY
   FFMPEG_swscale_LIBRARY
-  FFMPEG_theora_LIBRARY
-  FFMPEG_vorbis_LIBRARY
-  FFMPEG_vorbisenc_LIBRARY
-  FFMPEG_x264_LIBRARY
-  FFMPEG_xvidcore_LIBRARY
-  FFMPEG_z_LIBRARY
   )

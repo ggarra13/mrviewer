@@ -80,6 +80,7 @@ namespace mrv {
 	}
 
       cerr << endl
+	   << "Names cannot contain spaces in their paths." << endl << endl
 	   << "Examples:" << endl << endl
 	   <<	"  > " << cmd << " background.dpx texture.map" << endl
 	   <<	"  > " << cmd << " beauty.1-20.iff background.%04d.exr 1-20" << endl
@@ -182,9 +183,11 @@ void parse_command_line( const int argc, char** argv,
 	    load.push_back( mrv::LoadInfo(arg) );
 	  }
 	else
-	  {
+	{
 	    boost::int64_t start = mrv::kMinFrame, end = mrv::kMaxFrame;
 	    std::string fileroot( arg );
+
+
 	    if ( mrv::is_valid_sequence( fileroot.c_str() ) )
 	      {
 		mrv::get_sequence_limits( start, end, fileroot );

@@ -51,7 +51,7 @@ namespace fs = boost::filesystem;
 #include "mrvThread.h"
 #include "mrvI8N.h"
 #include "mrvOS.h"
-
+#include "mrvTimer.h"
 
 namespace {
 
@@ -416,12 +416,23 @@ void load_sequence( PlaybackData* data )
    mrv::ViewerUI* uiMain = data->uiMain;
    mrv::CMedia* img = data->image;
    
+   mrv::Timer timer;
+
    struct stat sbuf;
    for ( int64_t f = img->first_frame(); f <= img->last_frame(); ++f )
     {
       int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
       if ( result < 0 ) return;
+
+
       img->fetch( f );
+      
+      while ( img->image_damage() & CMedia::kDamageContents )
+      {
+	 timer.setDesiredFrameRate( img->fps() );
+	 timer.waitUntilNextFrameIsDue();
+      }
+
     }
 
 }
@@ -1321,16 +1332,16 @@ const char* CMedia::stream_type( const AVCodecContext* codec_context )
   const char* stream;
   switch( codec_context->codec_type ) 
     {
-    case CODEC_TYPE_VIDEO:
+    case AVMEDIA_TYPE_VIDEO:
       stream = "video";
       break;
-    case CODEC_TYPE_AUDIO:
+    case AVMEDIA_TYPE_AUDIO:
       stream = "audio";
       break;
-    case CODEC_TYPE_DATA:
+    case AVMEDIA_TYPE_DATA:
       stream = "data";
       break;
-    case CODEC_TYPE_SUBTITLE:
+    case AVMEDIA_TYPE_SUBTITLE:
       stream = "subtitle";
       break;
     default:
@@ -1813,7 +1824,7 @@ void CMedia::default_rendering_transform()
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-  if ( stream->codec->codec_type != CODEC_TYPE_VIDEO ) return;
+  if ( stream->codec->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
   unsigned max_distance  = 0;
   unsigned num_keyframes = 0;

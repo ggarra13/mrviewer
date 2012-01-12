@@ -68,6 +68,8 @@ FIND_LIBRARY( Magick++
   DOC   "ImageMagick's Magick++ library"
 )
 
+MESSAGE( STATUS "MAGICK: "  "$ENV{MAGICK_HOME}/VisualMagick/lib"  )
+
 
 FIND_LIBRARY( Wand 
   NAMES MagickWand CORE_RL_wand_

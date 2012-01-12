@@ -1110,31 +1110,32 @@ void aviImage::populate()
   std::ostringstream msg;
   
 
+
   // Iterate through all the streams available
   for( unsigned i = 0; i < _context->nb_streams; ++i ) 
     {
       // Get the codec context
       const AVStream* stream = _context->streams[ i ];
+
       if ( stream == NULL ) continue;
       const AVCodecContext* ctx = stream->codec;
       if ( ctx == NULL ) continue;
-
 
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
 	{
 	   // We ignore attachments for now.  
-	   case CODEC_TYPE_ATTACHMENT:
+	   case AVMEDIA_TYPE_ATTACHMENT:
 	      {
 		 continue;
 	      }
 	   // We ignore data tracks for now.  Data tracks are, for example,
 	   // the timecode track in quicktimes.
-	   case CODEC_TYPE_DATA:
+	   case AVMEDIA_TYPE_DATA:
 	      {
 		 continue;
 	      }
-	   case CODEC_TYPE_VIDEO:
+	   case AVMEDIA_TYPE_VIDEO:
 	      {
 		 video_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
@@ -1151,7 +1152,7 @@ void aviImage::populate()
 		 }
 		 break;
 	      }
-	   case CODEC_TYPE_AUDIO:
+	   case AVMEDIA_TYPE_AUDIO:
 	      {
 		 audio_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
@@ -1164,7 +1165,7 @@ void aviImage::populate()
 		    _audio_index = 0;
 		 break;
 	      }
-	   case CODEC_TYPE_SUBTITLE:
+	   case AVMEDIA_TYPE_SUBTITLE:
 	      {
 		 subtitle_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
@@ -1184,6 +1185,7 @@ void aviImage::populate()
 	}
     }
 
+
   if ( msg.str().size() > 0 )
     {
       mrvALERT( filename() << msg.str() );
@@ -1199,6 +1201,7 @@ void aviImage::populate()
   if ( has_video() )    open_video_codec();
   if ( has_audio() )    open_audio_codec();
   if ( has_subtitle() ) open_subtitle_codec();
+
 
   // Configure video input properties
   AVStream* stream = NULL;
