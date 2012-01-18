@@ -59,6 +59,7 @@ typedef __int64 int64_t;
 #include "fltk/HighlightButton.h"
 #include <fltk/LabelType.h>
 #include <fltk/ItemGroup.h>
+#include "fltk/events.h"  // for timeout methods
 #include "fltk/run.h"  // for timeout methods
 
 #include "flu_pixmaps.h"
@@ -441,6 +442,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( "mpeg", "MPEG Movie", &reel );
   add_type( "wmv",  "WMV Movie", &reel );
   add_type( "vob",  "VOB Movie", &reel );
+  add_type( "mp4",  "MP4 Movie", &reel );
 
   history = currentHist = NULL;
   walkingHistory = false;
@@ -1021,6 +1023,7 @@ int Flu_File_Chooser::handle( int event )
     {
       dragX = fltk::event_x();
       dragY = fltk::event_y();
+
     }
 
   if( fltk::DoubleBufferWindow::handle( event ) )
@@ -1038,58 +1041,61 @@ int Flu_File_Chooser::handle( int event )
       select_all();
       return 1;
     }
-  else if( event == fltk::DRAG )
-    {
-
-      if( selectionType & MULTI )
+  switch( event )
+  {
+     case fltk::DRAG:
 	{
-	  fltk::Group* g = getEntryGroup();
-	  // toggle all items from the last selected item to this one
-	  if( lastSelected != NULL )
-	    {
-
+	   
+	   if( selectionType & MULTI )
+	   {
+	      fltk::Group* g = getEntryGroup();
+	      // toggle all items from the last selected item to this one
+	      if( lastSelected != NULL )
+	      {
+		 
 	      // get the index of the last selected item and this item
-	      int lastindex = -1, thisindex = -1;
-
-	      int i;
+		 int lastindex = -1, thisindex = -1;
+		 
+		 int i;
 	      for( i = 0; i < g->children(); i++ )
-		{
-		  if( g->child(i) == lastSelected )
+	      {
+		 if( g->child(i) == lastSelected )
 		    lastindex = i;
-		  if( g->child(i) == this )
+		 if( g->child(i) == this )
 		    thisindex = i;
-		  if( lastindex >= 0 && thisindex >= 0 )
+		 if( lastindex >= 0 && thisindex >= 0 )
 		    break;
-		}
+	      }
 	      if( lastindex >= 0 && thisindex >= 0 )
 		{
-		  // loop from this item to the last item, 
+		   // loop from this item to the last item, 
 		  // toggling each item except the last
-		  int inc;
-		  if( thisindex > lastindex )
-		    inc = -1;
-		  else
-		    inc = 1;
-		  Entry *e;
-		  for( i = thisindex; i != lastindex; i += inc )
-		    {
+		   int inc;
+		   if( thisindex > lastindex )
+		      inc = -1;
+		   else
+		      inc = 1;
+		   Entry *e;
+		   for( i = thisindex; i != lastindex; i += inc )
+		   {
 		      e = (Entry*)g->child(i);
 		      e->selected()? e->clear_selected() : e->set_selected();
 		      e->redraw();
-		    }
-// 		  lastSelected = this;
-// 		  if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-// 		    previewGroup->file = currentDir + filename;
-		  redraw();
+		   }
+		   // 		  lastSelected = this;
+		   // 		  if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
+		   // 		    previewGroup->file = currentDir + filename;
+		   redraw();
 		}
 	      redraw();
 	      if( selected() )
-		trashBtn->activate();
+		 trashBtn->activate();
 	      return 1;
-	    }
+	      }
+	   }
 	}
-    }
-
+ 
+  }
   return 0;
 }
 

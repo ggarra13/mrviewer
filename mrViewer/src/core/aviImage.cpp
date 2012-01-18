@@ -27,6 +27,7 @@ using namespace std;
 #endif
 
 
+
 #include "aviImage.h"
 #include "mrvImageView.h"
 #include "mrvPlayback.h"
@@ -915,6 +916,18 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
   return false;
 }
 
+void aviImage::dump_metadata( AVDictionary *m )
+{
+    if(m && !(av_dict_get(m, "language", NULL, 0)))
+    {
+       AVDictionaryEntry* tag = NULL;
+       
+       while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
+	  _iptc.insert( std::make_pair( tag->key, tag->value ) ); 
+       }
+    }
+}
+
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
@@ -1406,8 +1419,39 @@ void aviImage::populate()
      AVStream* stream = get_video_stream();
      if ( stream->metadata ) m = stream->metadata;
   }
+  
+  
+  AVDictionaryEntry* tag = av_dict_get(m, "language", NULL, 0);
+  
+  if (tag)
+     _iptc.insert( std::make_pair("Language", tag->value) );
+  
+  dump_metadata( _context->metadata );
 
   
+  for (int i = 0; i < _context->nb_chapters; ++i) 
+  {
+     AVChapter *ch = _context->chapters[i];
+     dump_metadata(ch->metadata);
+  }
+       
+  if ( _context->nb_programs )
+  {
+     for (int i = 0; i < _context->nb_programs; ++i) 
+     {
+	AVDictionaryEntry* tag = 
+	     av_dict_get(_context->programs[i]->metadata,
+			 "name", NULL, 0);
+	char buf[256];
+	sprintf( buf, "Program %d", i );
+	if ( tag ) 
+	   _iptc.insert( std::make_pair(buf, tag->value) );
+	dump_metadata( _context->programs[i]->metadata );
+     }
+  }
+  
+
+#if 0
   AVMetadataTag* tag;
 
   tag = av_metadata_get( m, "album", NULL, 0 );
@@ -1523,6 +1567,8 @@ void aviImage::populate()
     {
       _iptc.insert( std::make_pair("Track", tag->value) );
     }
+#endif
+
 }
 
 bool aviImage::initialize()

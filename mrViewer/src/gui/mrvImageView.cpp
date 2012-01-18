@@ -2160,6 +2160,7 @@ int ImageView::handle(int event)
     case fltk::DND_RELEASE:
       return 1;
     case fltk::PASTE:
+       std::cerr << "PASTE" << std::endl;
       browser()->handle_dnd();
       return 1;
     default:

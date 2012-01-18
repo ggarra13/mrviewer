@@ -1755,6 +1755,8 @@ namespace mrv {
   {
     std::string filenames = fltk::event_text();
 
+    std::cerr << "filenames " << filenames << std::endl;
+
     stringArray files;
     mrv::split_string( files, filenames, "\n" ); 
 
