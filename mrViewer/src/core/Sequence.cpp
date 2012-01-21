@@ -151,7 +151,6 @@ namespace mrv
     char buf[1024];
     if ( dir.string() == "" ) {
       dir = fs::path( getcwd(buf,1024), fs::native );
-      std::cerr << "DIR " << dir << std::endl;
     }
 
 

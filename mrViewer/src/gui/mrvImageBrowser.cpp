@@ -1271,7 +1271,12 @@ namespace mrv {
 	  }
 	else
 	  {
-	    load_image( load.filename.c_str(), load.start, load.end );
+	     mrv::media fg = load_image( load.filename.c_str(), 
+					 load.start, load.end );
+	     if (!fg) 
+	     {
+		LOG_ERROR( "Could not load " << load.filename.c_str() );
+	     }
 	  }
 
 	if ( w ) progress->step(1);

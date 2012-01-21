@@ -51,6 +51,9 @@ int main( const int argc, char** argv )
   // mrv::open_license( argv[0] );
   // mrv::checkout_license();
 
+  mrv::LoadList::iterator i = files.begin();
+  mrv::LoadList::iterator e = files.end();
+
   //
   // Window must be shown after images have been loaded.
   // 
