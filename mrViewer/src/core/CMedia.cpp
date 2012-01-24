@@ -258,6 +258,7 @@ void CMedia::clear_sequence()
     {
       _sequence[i].reset();
     }
+
 }
 
 /** 
@@ -429,7 +430,7 @@ void load_sequence( PlaybackData* data )
       
       while ( img->image_damage() & CMedia::kDamageContents )
       {
-	 timer.setDesiredFrameRate( img->fps() );
+	 timer.setDesiredFrameRate( img->fps() / 2 );
 	 timer.waitUntilNextFrameIsDue();
       }
 
@@ -598,6 +599,7 @@ bool CMedia::has_changed()
 	   // update frame...
 	   _sequence[idx].reset();
 	   fetch( _frame );
+	   cache( _hires );
 	   return false;
 	}
     }
@@ -1747,6 +1749,7 @@ bool CMedia::find_image( const boost::int64_t frame )
 	SCOPED_LOCK( _mutex );
 	SCOPED_LOCK( _subtitle_mutex );
 	fetch(f);
+	cache( _hires );
      }
      else
      {

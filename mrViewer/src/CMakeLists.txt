@@ -257,7 +257,7 @@ if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 OLD)
 endif(COMMAND cmake_policy)
 
-ADD_EXECUTABLE( mrViewer ${SOURCES} )
+ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} )
 
 SET_TARGET_PROPERTIES( mrViewer

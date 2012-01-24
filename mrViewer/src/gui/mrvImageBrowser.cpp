@@ -532,19 +532,19 @@ namespace mrv {
     char buf[4096], created_at[256];
 
     std::string image_id;
-    sprintf( buf, "SELECT id FROM images "
-	     "WHERE directory='%s' AND filename='%s'",
+    sprintf( buf, N_("SELECT id FROM images "
+		     "WHERE directory='%s' AND filename='%s'"),
 	     img->directory().c_str(), img->name().c_str() );
     image_id = buf;
 
     time_t t = ::time( NULL );
-    strftime( created_at, 256, "%F %H:%M:%S", localtime( &t ) );
+    strftime( created_at, 256, N_("%F %H:%M:%S"), localtime( &t ) );
 
     unsigned num_video_streams = img->number_of_video_streams();
     for ( unsigned i = 0; i < num_video_streams; ++i )
       {
-	sprintf( buf, "SELECT id FROM videos "
-		 "WHERE image_id=( %s ) AND stream=%d;",
+	 sprintf( buf, N_("SELECT id FROM videos "
+			  "WHERE image_id=( %s ) AND stream=%d;"),
 		 image_id.c_str(), i );
 	if (! db->sql( buf ) )
 	  {
@@ -563,15 +563,15 @@ namespace mrv {
 	  }
 
 	const CMedia::video_info_t& s = img->video_info(i);
-	sprintf( buf, "INSERT INTO "
-		 "videos"
-		 "( image_id, stream, codec, "
-		 "created_at, updated_at, "
-		 "fourcc, pixel_format, fps, start, duration )"
-		 " VALUES "
-		 "( ( %s ), %d, '%s', "
-		 "'%s', '%s', "
-		 "'%s', '%s', %g, %g, %g );",
+	sprintf( buf, N_("INSERT INTO "
+			 "videos"
+			 "( image_id, stream, codec, "
+			 "created_at, updated_at, "
+			 "fourcc, pixel_format, fps, start, duration )"
+			 " VALUES "
+			 "( ( %s ), %d, '%s', "
+			 "'%s', '%s', "
+			 "'%s', '%s', %g, %g, %g );" ),
 		 image_id.c_str(), i,
 		 s.codec_name.c_str(),
 		 created_at, created_at,
@@ -606,23 +606,24 @@ namespace mrv {
 
     char date[256], created_at[256];
     time_t t = img->ctime();
-    strftime( date, 256, "%F %H:%M:%S", localtime( &t ) );
+    strftime( date, 256, N_("%F %H:%M:%S"), localtime( &t ) );
 
     t = ::time(NULL);
-    strftime( created_at, 256, "%F %H:%M:%S", localtime( &t ) );
+    strftime( created_at, 256, N_("%F %H:%M:%S"), localtime( &t ) );
 
 
     std::string image_id;
-    sprintf( buf, "SELECT id FROM images "
-	     "WHERE directory='%s' AND filename='%s'",
+    sprintf( buf, N_("SELECT id FROM images "
+		     "WHERE directory='%s' AND filename='%s'"),
 	     img->directory().c_str(), img->name().c_str() );
     image_id = buf;
 
     unsigned num_audio_streams = img->number_of_audio_streams();
     for ( unsigned i = 0; i < num_audio_streams; ++i )
       {
-	sprintf( buf, "SELECT id FROM audios "
-		 "WHERE directory='%s' AND filename='%s' AND stream=%d;",
+	 sprintf( buf, N_("SELECT id FROM audios "
+			  "WHERE directory='%s' AND filename='%s'"
+			  " AND stream=%d;"),
 		 img->directory().c_str(), img->name().c_str(), i );
 	if (! db->sql( buf ) )
 	  {
@@ -641,17 +642,17 @@ namespace mrv {
 	  }
 
 	const CMedia::audio_info_t& s = img->audio_info(i);
-	sprintf( buf, "INSERT INTO audios"
-		 "( directory, filename, stream, image_id, creator, "
-		 "created_at, updated_at, "
-		 "disk_space, date, shot_id, codec, fourcc, "
-		 "channels, frequency, bitrate, start, duration )"
-		 " VALUES "
-		 "('%s', '%s', %d, ( %s ), '%s', "
-		 "'%s', '%s', "
-		 "%u, '%s', ( %s ), '%s', '%s', %u, %u,"
-		 "%u, %g, %g );",
-		 img->directory().c_str(), img->name().c_str(), i,
+	sprintf( buf, N_("INSERT INTO audios"
+			 "( directory, filename, stream, image_id, creator, "
+			 "created_at, updated_at, "
+			 "disk_space, date, shot_id, codec, fourcc, "
+			 "channels, frequency, bitrate, start, duration )"
+			 " VALUES "
+			 "('%s', '%s', %d, ( %s ), '%s', "
+			 "'%s', '%s', "
+			 "%u, '%s', ( %s ), '%s', '%s', %u, %u,"
+			 "%u, %g, %g );" ),
+			 img->directory().c_str(), img->name().c_str(), i,
 		 image_id.c_str(),
 		 login,
 		 created_at, created_at,
@@ -679,20 +680,20 @@ namespace mrv {
   {
     char buf[4096];
     std::string seq_id;
-    shot_id = "NULL";
+    shot_id = N_("NULL");
 
-    login = getenv("USER");
+    login = getenv(N_("USER"));
     if ( !login ) login = (char*)"";
 
-    const char* show = getenv( "SHOW" );
+    const char* show = getenv( N_("SHOW") );
     if ( show && db )
       {
-	sprintf( buf, "INSERT INTO shows(name) VALUES ('%s');", show ); 
+	 sprintf( buf, N_("INSERT INTO shows(name) VALUES ('%s');"), show ); 
 	db->sql( buf );
 
-	const char* seq  = getenv( "SEQ" );
+	const char* seq  = getenv( N_("SEQ") );
 
-	const char* shot = getenv( "SHOT" );
+	const char* shot = getenv( N_("SHOT") );
 	if ( !seq && shot )
 	  {
 	    seq_id = shot;
@@ -709,25 +710,27 @@ namespace mrv {
 
 	if ( seq )
 	  {
-	    sprintf( buf, "INSERT INTO sequences(name, show_id)"
-		     " VALUES "
-		     "('%s', ( SELECT id FROM shows WHERE name = '%s') );",
+	     sprintf( buf, N_("INSERT INTO sequences(name, show_id)"
+			      " VALUES "
+			      "('%s', "
+			      "( SELECT id FROM shows WHERE name = '%s') );" ),
 		     seq, show ); 
 	    db->sql( buf );
 
 	    if ( shot )
 	      {
-		sprintf( buf, "INSERT INTO shots(name, sequence_id)"
-			 " VALUES "
-			 "( '%s', "
-			 "  ( SELECT id FROM sequences WHERE name = '%s')"
-			 ");", 
+		 sprintf( buf, N_( "INSERT INTO shots(name, sequence_id)"
+				   " VALUES "
+				   "( '%s', "
+				   "  ( SELECT id FROM sequences "
+				   "WHERE name = '%s')"
+				   ");" ), 
 			 shot, seq ); 
 		db->sql( buf );
 
-		shot_id = "SELECT id FROM shots WHERE name = '";
+		shot_id = N_("SELECT id FROM shots WHERE name = '" );
 		shot_id += shot;
-		shot_id += "'";
+		shot_id += N_("'");
 	      }
 	  }
       }
@@ -743,49 +746,49 @@ namespace mrv {
     std::string shot_id;
     db_envvars( login, shot_id );
 
-    std::string icc_profile_id = "NULL";
+    std::string icc_profile_id = N_("NULL");
     const char* icc_profile = img->icc_profile();
     if ( icc_profile )
       {
 	char buf[4096];
-	sprintf( buf, "INSERT INTO icc_profiles(name)"
-		 " VALUES "
-		 "( '%s' );", icc_profile ); 
+	sprintf( buf, N_("INSERT INTO icc_profiles(name)"
+			 " VALUES "
+			 "( '%s' );" ), icc_profile ); 
 	db->sql( buf );
 
-	icc_profile_id = "SELECT id FROM icc_profiles WHERE name = '";
+	icc_profile_id = N_("SELECT id FROM icc_profiles WHERE name = '" );
 	icc_profile_id += icc_profile;
-	icc_profile_id += "'";
+	icc_profile_id += N_("'");
       }
 
     std::string rendering_transform_id = "NULL";
     if ( img->rendering_transform() )
       {
 	char buf[4096];
-	sprintf( buf, "INSERT INTO render_transforms(name)"
-		 " VALUES "
-		 "( '%s' );", img->rendering_transform() ); 
+	sprintf( buf, N_("INSERT INTO render_transforms(name)"
+			 " VALUES "
+			 "( '%s' );" ), img->rendering_transform() ); 
 	db->sql( buf );
 
-	rendering_transform_id = "SELECT id FROM render_transforms "
-	  "WHERE name = '";
+	rendering_transform_id = N_("SELECT id FROM render_transforms "
+				    "WHERE name = '");
 	rendering_transform_id += img->rendering_transform();
-	rendering_transform_id += "'";
+	rendering_transform_id += N_("'");
       }
 
     std::string look_mod_transform_id = "NULL";
     if ( img->look_mod_transform() )
       {
 	char buf[4096];
-	sprintf( buf, "INSERT INTO look_mod_transforms(name)"
-		 " VALUES "
-		 "( '%s' );", img->look_mod_transform() ); 
+	sprintf( buf, N_("INSERT INTO look_mod_transforms(name)"
+			 " VALUES "
+			 "( '%s' );"), img->look_mod_transform() ); 
 	db->sql( buf );
 
-	look_mod_transform_id = "SELECT id FROM look_mod_transforms "
-	  "WHERE name = '";
+	look_mod_transform_id = N_("SELECT id FROM look_mod_transforms "
+				   "WHERE name = '");
 	look_mod_transform_id += img->look_mod_transform();
-	look_mod_transform_id += "'";
+	look_mod_transform_id += N_("'");
       }
 
     float fstop = 8.0f;
@@ -828,8 +831,8 @@ namespace mrv {
 
     char* buf = new char[ thumbnail.size() + 4096 ];
 
-    sprintf( buf, "SELECT id FROM images "
-	     "WHERE directory='%s' AND filename='%s';",
+    sprintf( buf, N_("SELECT id FROM images "
+		     "WHERE directory='%s' AND filename='%s';" ),
 	     img->directory().c_str(), img->name().c_str() );
     if (! db->sql( buf ) )
       {
@@ -1275,7 +1278,8 @@ namespace mrv {
 					 load.start, load.end );
 	     if (!fg) 
 	     {
-		LOG_ERROR( "Could not load " << load.filename.c_str() );
+		LOG_ERROR( _("Could not load '") << load.filename.c_str() 
+			   << N_("'") );
 	     }
 	  }
 
