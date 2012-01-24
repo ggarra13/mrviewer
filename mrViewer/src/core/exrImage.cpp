@@ -129,10 +129,11 @@ namespace mrv {
   bool exrImage::fetch( const boost::int64_t frame ) 
   {
 
-    try {
+     try {
+
+	SCOPED_LOCK( _mutex );  // needed to avoid crash
 
       InputFile in( sequence_filename(frame).c_str() );
-
 
 
       const Header& h = in.header();
@@ -150,14 +151,11 @@ namespace mrv {
       int dx = dataWindow.min.x;
       int dy = dataWindow.min.y;
 
-//       std::cerr << "WxH 1: " << dw << "x" << dh << std::endl;
 
 //       int dpw = displayWindow.max.x - displayWindow.min.x + 1;
 //       if ( dpw > dw ) dw = dpw;
 //       int dph = displayWindow.max.y - displayWindow.min.y + 1;
 //       if ( dph > dh ) dh = dpw;
-
-//       std::cerr << "WxH 2: " << dw << "x" << dh << std::endl;
 
 
       image_size( dw, dh );
@@ -407,6 +405,7 @@ namespace mrv {
 
       Imf::ChannelList channels = h.channels();
 
+
       _layers.clear();
       _num_channels = 0;
       _gamma = 2.2f;
@@ -454,6 +453,7 @@ namespace mrv {
 	  alpha_layers();
 	}
 
+
       Imf::ChannelList::Iterator i = channels.begin();
       Imf::ChannelList::Iterator e = channels.end();
 
@@ -479,6 +479,7 @@ namespace mrv {
 	  ++_num_channels;
 	}
 
+
       // Deal with layers next like (Normals, Motion, etc)
       {
 	stringSet layerSet;
@@ -500,6 +501,7 @@ namespace mrv {
       if ( channelPrefix != NULL )
 	{
 	  
+
 	  unsigned int numChannels = 0;
 	  
 	  Imf::ChannelList::ConstIterator i;
@@ -545,14 +547,17 @@ namespace mrv {
 	      numChannels = 3;
 	    }
 
+
 	  allocate_pixels( frame, numChannels, format,
 			   pixel_type_conversion( imfPixelType ) );
+
 
 	  boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
 	  memset( pixels, 0, _hires->data_size() );
 
 	  size_t xs = _hires->pixel_size() * _hires->channels();
 	  size_t ys = xs * dw;
+
 
 	  // Then, prepare frame buffer for them
 	  int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -573,6 +578,7 @@ namespace mrv {
 	      ++numChannels;
 	    }
 
+
 	}
       else
 	{
@@ -588,6 +594,7 @@ namespace mrv {
 	  static size_t xs[4], ys[4];
 	  static int offsets[4];
 	  offsets[0]  = 0;
+
 
 	  const char** channelName;
 	  if ( has_yca )
@@ -628,6 +635,7 @@ namespace mrv {
 
 	  for ( int i = 0; i < 4; ++i )
 	    {
+
 	      ch = channels.findChannel( channelName[i] );
 	      if ( !ch ) continue;
 	      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
@@ -637,6 +645,7 @@ namespace mrv {
 	  unsigned int num_channels = _num_channels;
 	  if ( num_channels > 4 )       num_channels = 4;
 	  else if ( num_channels == 2 ) num_channels = 3;
+
 
 
 	  allocate_pixels( frame, num_channels, format,
@@ -654,12 +663,14 @@ namespace mrv {
 	    }
 	  else
 	    {
+
 	      for ( int i = 0; i < 4; ++i )
 		{
 		  xs[i] = _hires->pixel_size() * num_channels;
 		  ys[i] = xs[i] * dw;
 		}
 	    }
+
 
 	  boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
 	  int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -672,6 +683,7 @@ namespace mrv {
 
 	      char* ptr = (char*)base + offsets[i] * _hires->pixel_size();
 
+
 	      fb.insert( channelName[i], 
 			 Slice( imfPixelType, ptr,
 				xs[i], ys[i], ch->xSampling, ch->ySampling ) );
@@ -679,6 +691,7 @@ namespace mrv {
 	}
 
       in.setFrameBuffer(fb);
+
 
       in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
@@ -715,6 +728,7 @@ namespace mrv {
 						    3 + 1*has_alpha,
 						    format,
 						    image_type::kFloat ) );
+
 
 	  for ( unsigned y = 0; y < h; ++y )
 	    {

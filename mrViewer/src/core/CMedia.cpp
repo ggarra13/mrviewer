@@ -597,6 +597,9 @@ bool CMedia::has_changed()
 	   assert( _frame == _sequence[idx]->frame() );
 	   // update frame...
 	   _sequence[idx].reset();
+
+	   
+	   SCOPED_LOCK( _mutex );
 	   fetch( _frame );
 	   cache( _hires );
 	   return false;
@@ -606,6 +609,7 @@ bool CMedia::has_changed()
     {
       if ( !_fileroot ) return false;
 
+      SCOPED_LOCK( _mutex );
       int result = stat( _fileroot, &sbuf );
       if ( result == -1 ) return false;
 
@@ -816,6 +820,7 @@ void CMedia::channel( const char* chinput )
   if (to_fetch) 
     {
       clear_sequence();
+      SCOPED_LOCK( _mutex );
       fetch(_frame);
     }
   refresh();
