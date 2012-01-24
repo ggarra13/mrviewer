@@ -316,7 +316,7 @@ CMedia::~CMedia()
   audio_shutdown();
 
   if ( _context )
-    av_close_input_file( _context );
+    avformat_close_input( &_context );
 
   _context = NULL;
 }
