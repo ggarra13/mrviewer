@@ -426,13 +426,12 @@ void load_sequence( PlaybackData* data )
       if ( result < 0 ) return;
 
 
+      mrv::CMedia::Mutex& vpm = img->video_mutex();
+      SCOPED_LOCK( vpm );
+
       img->fetch( f );
+      img->cache( img->hires() );
       
-      while ( img->image_damage() & CMedia::kDamageContents )
-      {
-	 timer.setDesiredFrameRate( img->fps() / 2 );
-	 timer.waitUntilNextFrameIsDue();
-      }
 
     }
 
