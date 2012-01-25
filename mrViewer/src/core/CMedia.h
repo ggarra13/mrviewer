@@ -364,8 +364,10 @@ namespace mrv {
 
     ////////////////// Static functions
     static CMedia* guess_image( const char* name, 
-				   const boost::uint8_t* datas = NULL,
-				   const int size = 0 );
+				const boost::int64_t frameStart,
+				const boost::int64_t frameEnd,
+				const boost::uint8_t* datas = NULL,
+				const int size = 0 );
 
     ////////////////////////
     // Image information

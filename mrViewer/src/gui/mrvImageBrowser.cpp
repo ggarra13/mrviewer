@@ -1061,7 +1061,7 @@ namespace mrv {
     int idx = value(); 
     if ( idx < 0 ) return mrv::media();
 
-    CMedia* newImg = CMedia::guess_image( root );
+    CMedia* newImg = CMedia::guess_image( root, 1, 40 );
 
     // did not recognize new image, keep old
     mrv::media m = reel->images[idx];
@@ -1192,7 +1192,7 @@ namespace mrv {
 
     mrv::check_license_status();
 
-    CMedia* img = CMedia::guess_image( name );
+    CMedia* img = CMedia::guess_image( name, start, end );
     if ( img == NULL ) return mrv::media();
 
     img->fetch( img->first_frame() );

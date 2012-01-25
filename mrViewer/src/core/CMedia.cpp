@@ -469,6 +469,7 @@ void CMedia::sequence( const char* fileroot, const boost::int64_t start,
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
 
+
   delete [] _sequence;
   _sequence = NULL;
 

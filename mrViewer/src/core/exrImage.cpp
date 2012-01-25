@@ -131,235 +131,235 @@ namespace mrv {
 
      try {
 
-	SCOPED_LOCK( _mutex );  // needed to avoid crash
-
-      InputFile in( sequence_filename(frame).c_str() );
-
-
-      const Header& h = in.header();
-      const Box2i& displayWindow = h.displayWindow();
-      const Box2i& dataWindow = h.dataWindow();
-      _pixel_ratio = h.pixelAspectRatio();
-      _lineOrder   = h.lineOrder();
-      _fps         = 24.0f;
-
-      _compression = h.compression(); 
-
-      int dw = dataWindow.max.x - dataWindow.min.x + 1;
-      int dh = dataWindow.max.y - dataWindow.min.y + 1;
-      if ( dw <= 0 || dh <= 0 ) return false;
-      int dx = dataWindow.min.x;
-      int dy = dataWindow.min.y;
+	 SCOPED_LOCK( _mutex );  // needed to avoid unknown crash
+	
+	 InputFile in( sequence_filename(frame).c_str() );
 
 
-//       int dpw = displayWindow.max.x - displayWindow.min.x + 1;
-//       if ( dpw > dw ) dw = dpw;
-//       int dph = displayWindow.max.y - displayWindow.min.y + 1;
-//       if ( dph > dh ) dh = dpw;
+	const Header& h = in.header();
+	const Box2i& displayWindow = h.displayWindow();
+	const Box2i& dataWindow = h.dataWindow();
+	_pixel_ratio = h.pixelAspectRatio();
+	_lineOrder   = h.lineOrder();
+	_fps         = 24.0f;
 
+	_compression = h.compression(); 
+	
+	int dw = dataWindow.max.x - dataWindow.min.x + 1;
+	int dh = dataWindow.max.y - dataWindow.min.y + 1;
+	if ( dw <= 0 || dh <= 0 ) return false;
+	int dx = dataWindow.min.x;
+	int dy = dataWindow.min.y;
+	
+	
+	//       int dpw = displayWindow.max.x - displayWindow.min.x + 1;
+	//       if ( dpw > dw ) dw = dpw;
+	//       int dph = displayWindow.max.y - displayWindow.min.y + 1;
+	//       if ( dph > dh ) dh = dpw;
+	
 
-      image_size( dw, dh );
+	image_size( dw, dh );
 
-      const char* channelPrefix = channel();
+	const char* channelPrefix = channel();
 
-      _rendering_intent = kRelativeIntent;
+	_rendering_intent = kRelativeIntent;
 
-      const Imf::StringAttribute *attr =
+	const Imf::StringAttribute *attr =
 	h.findTypedAttribute<Imf::StringAttribute> ( N_("renderingTransform") );
-      if ( attr )
+	if ( attr )
 	{
-	  rendering_transform( attr->value().c_str() );
+	   rendering_transform( attr->value().c_str() );
 	}
 
-      {
-	const Imf::StringAttribute *attr =
-	  h.findTypedAttribute<Imf::StringAttribute>( N_("lookModTransform") );
-	if ( attr )
-	  {
-	    look_mod_transform( attr->value().c_str() );
-	  }
+	{
+	   const Imf::StringAttribute *attr =
+	   h.findTypedAttribute<Imf::StringAttribute>( N_("lookModTransform") );
+	   if ( attr )
+	   {
+	      look_mod_transform( attr->value().c_str() );
+	   }
       }
 
       {
-	const Imf::ChromaticitiesAttribute *attr =
-	  h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
-	if ( attr )
-	  {
+	 const Imf::ChromaticitiesAttribute *attr =
+	 h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
+	 if ( attr )
+	 {
 	    chromaticities( attr->value() );
+	 }
+      }
+
+      {
+	 const Imf::V2fAttribute *attr =
+	 h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
+	 if ( attr )
+	 {
+	 }
+      }
+
+      {
+	 const Imf::IntAttribute *attr =
+	 h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
+	 if ( attr )
+	 {
+	 }
+      }
+
+      {
+	 const Imf::StringAttribute *attr =
+	 h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
+	 if ( attr )
+	  {
+	     _exif.insert( std::make_pair( _("Owner"), attr->value()) );
 	  }
       }
 
       {
-	const Imf::V2fAttribute *attr =
-	  h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
-	if ( attr )
-	  {
-	  }
-      }
-
-      {
-	const Imf::IntAttribute *attr =
-	  h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
-	if ( attr )
-	  {
-	  }
-      }
-
-      {
-	const Imf::StringAttribute *attr =
-	  h.findTypedAttribute<Imf::StringAttribute>( N_("owner") );
-	if ( attr )
-	  {
-	    _exif.insert( std::make_pair( _("Owner"), attr->value()) );
-	  }
-      }
-
-      {
-	const Imf::StringAttribute *attr =
-	  h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
-	if ( attr )
-	  {
+	 const Imf::StringAttribute *attr =
+	 h.findTypedAttribute<Imf::StringAttribute>(  N_("comments") );
+	 if ( attr )
+	 {
 	    _exif.insert( std::make_pair( _("Comments"), attr->value()) );
-	  }
+	 }
       }
 
       {
-	const Imf::StringAttribute *attr =
-	  h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
-	if ( attr )
-	  {
+	 const Imf::StringAttribute *attr =
+	 h.findTypedAttribute<Imf::StringAttribute>( N_("capDate") );
+	 if ( attr )
+	 {
 	    _iptc.insert( std::make_pair( _("Capture Date"), attr->value()) );
-	  }
+	 }
       }
-
+      
       {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
-	if ( attr )
-	  {
+	 const Imf::FloatAttribute *attr =
+	 h.findTypedAttribute<Imf::FloatAttribute>( N_("utcOffset") );
+	 if ( attr )
+	 {
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("UTC Offset"), buf) );
-	  }
+	 }
       }
 
       {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
-	if ( attr )
-	  {
+	 const Imf::FloatAttribute *attr =
+	 h.findTypedAttribute<Imf::FloatAttribute>( N_("longitude") );
+	 if ( attr )
+	 {
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("Longitude"), buf) );
-	  }
+	 }
       }
 
       {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
-	if ( attr )
-	  {
+	 const Imf::FloatAttribute *attr =
+	 h.findTypedAttribute<Imf::FloatAttribute>( N_("latitude") );
+	 if ( attr )
+	 {
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("Latitude"), buf) );
-	  }
+	 }
       }
 
       {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
-	if ( attr )
-	  {
+	 const Imf::FloatAttribute *attr =
+	 h.findTypedAttribute<Imf::FloatAttribute>( N_("altitude") );
+	 if ( attr )
+	 {
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _iptc.insert( std::make_pair( _("Altitude"), buf) );
-	  }
+	 }
       }
 
       {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
-	if ( attr )
-	  {
+	 const Imf::FloatAttribute *attr =
+	 h.findTypedAttribute<Imf::FloatAttribute>( N_("focus") );
+	 if ( attr )
+	 {
 	    char buf[128];
 	    sprintf( buf, N_("%f"), attr->value() );
 	    _exif.insert( std::make_pair( _("Focus"), buf) );
-	  }
+	 }
       }
 
       {
 	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
+	h.findTypedAttribute<Imf::FloatAttribute>( N_("expTime") );
 	if ( attr )
-	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Exposure Time"), buf) );
-	  }
+	{
+	   char buf[128];
+	   sprintf( buf, N_("%f"), attr->value() );
+	   _exif.insert( std::make_pair( _("Exposure Time"), buf) );
+	}
       }
 
       {
 	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
+	h.findTypedAttribute<Imf::FloatAttribute>( N_("aperture") );
 	if ( attr )
-	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Aperture"), buf) );
-	  }
-      }
-
-
-      {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
-	if ( attr )
-	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("ISO Speed"), buf) );
-	  }
+	{
+	   char buf[128];
+	   sprintf( buf, N_("%f"), attr->value() );
+	   _exif.insert( std::make_pair( _("Aperture"), buf) );
+	}
       }
 
 
       {
 	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("keyCode") );
+	h.findTypedAttribute<Imf::FloatAttribute>( N_("isoSpeed") );
 	if ( attr )
-	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Key Code"), buf) );
-	  }
+	{
+	   char buf[128];
+	   sprintf( buf, N_("%f"), attr->value() );
+	   _exif.insert( std::make_pair( _("ISO Speed"), buf) );
+	}
+      }
+      
+
+      {
+	const Imf::FloatAttribute *attr =
+	h.findTypedAttribute<Imf::FloatAttribute>( N_("keyCode") );
+	if ( attr )
+	{
+	   char buf[128];
+	   sprintf( buf, N_("%f"), attr->value() );
+	   _exif.insert( std::make_pair( _("Key Code"), buf) );
+	}
       }
 
       {
 	const Imf::FloatAttribute *attr =
 	h.findTypedAttribute<Imf::FloatAttribute>( N_("timeCode") );
 	if ( attr )
-	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Timecode"), buf) );
-	  }
+	{
+	   char buf[128];
+	   sprintf( buf, N_("%f"), attr->value() );
+	   _exif.insert( std::make_pair( _("Timecode"), buf) );
+	}
       }
 
       {
 	const Imf::StringAttribute *attr =
 	h.findTypedAttribute<Imf::StringAttribute>( N_("wrapmodes") );
 	if ( attr )
-	  {
-	    _exif.insert( std::make_pair( _("Wrap Modes"), attr->value()) );
-	  }
+	{
+	   _exif.insert( std::make_pair( _("Wrap Modes"), attr->value()) );
+	}
       }
 
       if ( h.hasTileDescription() )
-	{
-	  const Imf::TileDescription& desc = h.tileDescription();
-	  char buf[128];
-
-	  switch( desc.mode )
-	    {
+      {
+	 const Imf::TileDescription& desc = h.tileDescription();
+	 char buf[128];
+	 
+	 switch( desc.mode )
+	 {
 	    case Imf::ONE_LEVEL:
 	      break;
 	    case Imf::MIPMAP_LEVELS:
@@ -375,30 +375,30 @@ namespace mrv {
 	    default:
 	      IMG_ERROR("Unknown mipmap mode");
 	      break;
-	    }
-
-	  switch( desc.roundingMode )
-	    {
+	 }
+	 
+	 switch( desc.roundingMode )
+	 {
 	    case Imf::ROUND_DOWN:
-	      _exif.insert( std::make_pair( _("Rounding Mode"), _("Down") ) );
-	      break;
+	       _exif.insert( std::make_pair( _("Rounding Mode"), _("Down") ) );
+	       break;
 	    case Imf::ROUND_UP:
 	      _exif.insert( std::make_pair( _("Rounding Mode"), _("Up") ) );
 	      break;
 	    default:
-	      IMG_ERROR( _("Unknown rounding mode") );
-	      break;
-	    }
-	}
+	       IMG_ERROR( _("Unknown rounding mode") );
+	       break;
+	 }
+      }
 
 
       {
 	const Imf::RationalAttribute* attr =
-	  h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
+	h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
 	if ( attr )
-	  {
-	    _fps = (double) attr->value();
-	  }
+	{
+	   _fps = (double) attr->value();
+	}
 
 	if ( _play_fps <= 0 ) _play_fps = _fps;
       }
@@ -692,8 +692,9 @@ namespace mrv {
 
       in.setFrameBuffer(fb);
 
-
+      
       in.readPixels( dataWindow.min.y, dataWindow.max.y );
+      
 
       if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
 	   dataWindow.max.x != dw || dataWindow.max.y != dh )

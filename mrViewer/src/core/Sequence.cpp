@@ -158,7 +158,7 @@ namespace mrv
 	 ( ! fs::is_directory( dir ) ) )
     {
        std::cerr << "no exist or no directory" << std::endl;
-      return false;
+       return false;
     }
 
     // Check if sequence is in ILM format first  ( image.1-30.exr )

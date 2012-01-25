@@ -90,25 +90,33 @@ namespace mrv {
 
 
   CMedia* CMedia::guess_image( const char* file, 
-				     const boost::uint8_t* datas,
-				     const int len )
+			       const boost::int64_t frameStart,
+			       const boost::int64_t frameEnd,
+			       const boost::uint8_t* datas,
+			       const int len )
   {
-    int64_t lastFrame = 1;
-    int64_t frame = 1;
+    int64_t lastFrame = frameEnd;
+    int64_t frame = frameStart;
 
     bool is_seq = false;
     std::string tmp;
 
     const char* root = file;
-    if ( mrv::fileroot( tmp, std::string(file) ) )
+    if ( mrv::fileroot( tmp, std::string(file) )  )
       {
 	is_seq = true;
-	bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
-	if ( ok ) root = tmp.c_str();
+
+	if ( frame == -9999 )
+	{
+	   bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
+
+	   
+	   if ( ok ) root = tmp.c_str();
+	}
       }
 
     char name[1024];
-    if ( root != file )
+    if ( is_seq )
       {
 	sprintf( name, root, frame );
       }
@@ -116,6 +124,7 @@ namespace mrv {
       {
 	strncpy( name, root, 1024 );
       }
+
 
     boost::uint8_t* read_data = 0;
     size_t size = len;

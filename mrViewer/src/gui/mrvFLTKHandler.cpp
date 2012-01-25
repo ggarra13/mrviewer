@@ -19,7 +19,7 @@ namespace mrv {
   fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
 				   int len )
   {
-    CMedia* img = CMedia::guess_image( filename, header, len );
+     CMedia* img = CMedia::guess_image( filename, -9999, -9999, header, len );
     if ( !img ) return NULL;
 
     // Fetch first frame
