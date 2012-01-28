@@ -110,7 +110,9 @@ namespace mrv {
        {
 	  bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
 	  if ( !ok )
-	     mrvALERT("Sequence " << root << " has no frame limits" );
+	  {
+	     mrvALERT("Sequence '" << root << "' has no frame limits" );
+	  }
        }
     }
 
