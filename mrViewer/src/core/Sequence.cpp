@@ -308,7 +308,8 @@ namespace mrv
   {
     std::string root, frame, ext;
     bool sequence = split_sequence( root, frame, ext, file );
-    if ( !sequence ) {
+    if ( !sequence ) 
+    {
       fileroot = file;
       return false;
     }

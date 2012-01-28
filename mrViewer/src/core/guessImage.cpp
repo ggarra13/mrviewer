@@ -103,14 +103,16 @@ namespace mrv {
 
     const char* root = file;
     if ( mrv::fileroot( tmp, std::string(file) ) )
-      {
-	is_seq = true;
-	if ( start == std::numeric_limits<boost::int64_t>::min() )
-	{
-	   bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
-	   if ( ok ) root = tmp.c_str();
-	}
-      }
+    {
+       is_seq = true; 
+       root = tmp.c_str();
+       if ( frame == std::numeric_limits<boost::int64_t>::min() )
+       {
+	  bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
+	  if ( !ok )
+	     mrvALERT("Sequence " << root << " has no frame limits" );
+       }
+    }
 
     char name[1024];
     if ( is_seq )
@@ -122,7 +124,6 @@ namespace mrv {
 	strncpy( name, root, 1024 );
       }
 
-    std::cerr << "name " << name << std::endl;
 
     boost::uint8_t* read_data = 0;
     size_t size = len;
