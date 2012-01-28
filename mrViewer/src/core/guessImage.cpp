@@ -89,12 +89,14 @@ namespace mrv {
   }
 
 
-  CMedia* CMedia::guess_image( const char* file, 
-				     const boost::uint8_t* datas,
-				     const int len )
+  CMedia* CMedia::guess_image( const char* file,
+			       const boost::uint8_t* datas,
+			       const int len,
+			       const boost::int64_t start,
+			       const boost::int64_t end )
   {
-    int64_t lastFrame = 1;
-    int64_t frame = 1;
+    int64_t lastFrame = end;
+    int64_t frame = start;
 
     bool is_seq = false;
     std::string tmp;
@@ -103,12 +105,15 @@ namespace mrv {
     if ( mrv::fileroot( tmp, std::string(file) ) )
       {
 	is_seq = true;
-	bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
-	if ( ok ) root = tmp.c_str();
+	if ( start == std::numeric_limits<boost::int64_t>::min() )
+	{
+	   bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
+	   if ( ok ) root = tmp.c_str();
+	}
       }
 
     char name[1024];
-    if ( root != file )
+    if ( is_seq )
       {
 	sprintf( name, root, frame );
       }
@@ -116,6 +121,8 @@ namespace mrv {
       {
 	strncpy( name, root, 1024 );
       }
+
+    std::cerr << "name " << name << std::endl;
 
     boost::uint8_t* read_data = 0;
     size_t size = len;
@@ -153,9 +160,10 @@ namespace mrv {
 
     CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
 				(int)size );
+    std::cerr << "Image " << image << std::endl;
     if ( image ) 
       {
-	if ( frame != lastFrame )
+	if ( is_seq )
 	  image->sequence( tmp.c_str(), frame, lastFrame );
 	else
 	  image->filename( name );

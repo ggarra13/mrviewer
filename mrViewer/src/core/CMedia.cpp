@@ -444,7 +444,8 @@ void load_sequence( PlaybackData* data )
  * @param start     start frame
  * @param end       end   frame
  */
-void CMedia::sequence( const char* fileroot, const boost::int64_t start,
+void CMedia::sequence( const char* fileroot, 
+		       const boost::int64_t start,
 		       const boost::int64_t end )
 {
   SCOPED_LOCK( _mutex );
@@ -579,10 +580,10 @@ bool CMedia::has_changed()
 {
   struct stat sbuf;
 
+  SCOPED_LOCK( _mutex );
+
   if ( is_sequence() ) 
     {
-      SCOPED_LOCK( _mutex );
-
       std::string file = sequence_filename(_frame);
 
       int result = stat( file.c_str(), &sbuf );
@@ -598,8 +599,6 @@ bool CMedia::has_changed()
 	   // update frame...
 	   _sequence[idx].reset();
 
-	   
-	   SCOPED_LOCK( _mutex );
 	   fetch( _frame );
 	   cache( _hires );
 	   return false;
@@ -609,7 +608,6 @@ bool CMedia::has_changed()
     {
       if ( !_fileroot ) return false;
 
-      SCOPED_LOCK( _mutex );
       int result = stat( _fileroot, &sbuf );
       if ( result == -1 ) return false;
 

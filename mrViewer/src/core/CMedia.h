@@ -18,6 +18,7 @@
 #include <vector>
 #include <string>
 #include <deque>
+#include <limits>
 
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
@@ -363,9 +364,13 @@ namespace mrv {
     virtual void loop_at_end( const boost::int64_t frame ); 
 
     ////////////////// Static functions
-    static CMedia* guess_image( const char* name, 
-				   const boost::uint8_t* datas = NULL,
-				   const int size = 0 );
+    static CMedia* guess_image( const char* name,
+				const boost::uint8_t* datas = NULL,
+				const int size = 0,
+				const boost::int64_t 
+				first = std::numeric_limits<boost::int64_t>::min(),
+				const boost::int64_t 
+				end = std::numeric_limits<boost::int64_t>::max() );
 
     ////////////////////////
     // Image information

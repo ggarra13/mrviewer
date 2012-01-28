@@ -1192,7 +1192,7 @@ namespace mrv {
 
     mrv::check_license_status();
 
-    CMedia* img = CMedia::guess_image( name );
+    CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
     if ( img == NULL ) return mrv::media();
 
     img->fetch( img->first_frame() );
