@@ -160,7 +160,6 @@ namespace mrv {
 
     CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
 				(int)size );
-    std::cerr << "Image " << image << std::endl;
     if ( image ) 
       {
 	if ( is_seq )
