@@ -2984,22 +2984,29 @@ void ImageView::step_frame( int64_t n )
 
   int64_t f = frame();
 
+  ImageView::Looping loop = looping();
   if ( n > 0 )
     {
-      if ( end - n < f )
-	{
-	  f = start + ( f - (end - n) ) - 1;
-	}
-      else
-	{
+       if ( end - n < f )
+       {
+	  if ( loop == ImageView::kLooping )
+	     f = start + ( f - (end - n) ) - 1;
+	  else
+	     f = end;
+       }
+       else
+       {
 	  f += n;
-	}
+       }
     }
   else
     {
       if ( start - n > f )
 	{
-	  f = end - ( (start - n) - f ) + 1;
+	   if ( loop == ImageView::kLooping )
+	      f = end - ( (start - n) - f ) + 1;
+	   else
+	      f = start;
 	}
       else
 	{

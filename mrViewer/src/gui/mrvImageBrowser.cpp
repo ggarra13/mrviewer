@@ -38,6 +38,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvLicensing.h"
 #include "core/Sequence.h"
 #include "core/mrvAudioEngine.h"
+#include "core/mrvThread.h"
 
 #include "db/mrvDatabase.h"
 
@@ -1079,6 +1080,8 @@ namespace mrv {
 
     this->remove( m );
 
+    mrv::CMedia::Mutex& vpm = newImg->video_mutex();
+    SCOPED_LOCK( vpm );
     newImg->fetch( frame );
     newImg->default_icc_profile();
     newImg->default_rendering_transform();
@@ -1195,7 +1198,13 @@ namespace mrv {
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
     if ( img == NULL ) return mrv::media();
 
-    img->fetch( img->first_frame() );
+    {
+       mrv::CMedia::Mutex& vpm = img->video_mutex();
+       SCOPED_LOCK(vpm);
+
+       img->fetch( img->first_frame() );
+    }
+
     img->default_icc_profile();
     img->default_rendering_transform();
 

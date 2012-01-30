@@ -166,7 +166,7 @@ namespace mrv {
     if ( image ) 
       {
 	if ( is_seq )
-	  image->sequence( tmp.c_str(), frame, lastFrame );
+	  image->sequence( root, frame, lastFrame );
 	else
 	  image->filename( name );
       }

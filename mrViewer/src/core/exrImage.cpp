@@ -131,8 +131,6 @@ namespace mrv {
 
      try {
 
-	SCOPED_LOCK( _mutex );  // needed to avoid crash
-
       InputFile in( sequence_filename(frame).c_str() );
 
 

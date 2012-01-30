@@ -96,148 +96,147 @@ namespace mrv {
 
   bool wandImage::fetch( const boost::int64_t frame ) 
   {
-     SCOPED_LOCK( _mutex );
 
-    MagickBooleanType status;
-    MagickWandGenesis();
+     MagickBooleanType status;
+     MagickWandGenesis();
 
-    /*
-      Read an image.
-    */
-    MagickWand* wand = NewMagickWand(); 
-    status = MagickReadImage( wand, sequence_filename(frame).c_str() );
-    if (status == MagickFalse)
-      ThrowWandException(wand);
+     /*
+       Read an image.
+     */
+     MagickWand* wand = NewMagickWand(); 
+     status = MagickReadImage( wand, sequence_filename(frame).c_str() );
+     if (status == MagickFalse)
+	ThrowWandException(wand);
 
-    _format = strdup( MagickGetImageFormat( wand ) );
+     _format = strdup( MagickGetImageFormat( wand ) );
 
-    _layers.clear();
-    _num_channels = 0;
+     _layers.clear();
+     _num_channels = 0;
 
-    rgb_layers();
-    lumma_layers();
+     rgb_layers();
+     lumma_layers();
 
-    unsigned numLayers = MagickGetNumberImages( wand );
-    if ( numLayers > 1 )
-      {
+     unsigned numLayers = MagickGetNumberImages( wand );
+     if ( numLayers > 1 )
+     {
 	const char* channelName = channel();
 
 	int index = 0;
 	for ( unsigned i = 1; i < numLayers; ++i )
-	  {
-	    char layername[256];
+	{
+	   char layername[256];
 
-	    MagickSetIteratorIndex( wand, i );
-	    const char* label = MagickGetImageProperty( wand, "label" );
-	    if ( label == NULL )
-	      {
-		sprintf( layername, _("Layer %d"), i+1 );
-	      }
-	    else
-	      {
-		strcpy( layername, label );
-	      }
+	   MagickSetIteratorIndex( wand, i );
+	   const char* label = MagickGetImageProperty( wand, "label" );
+	   if ( label == NULL )
+	   {
+	      sprintf( layername, _("Layer %d"), i+1 );
+	   }
+	   else
+	   {
+	      strcpy( layername, label );
+	   }
 
-	    _layers.push_back( layername );
-	    ++_num_channels;
+	   _layers.push_back( layername );
+	   ++_num_channels;
 
-	    if ( channelName && strcmp( layername, channelName ) == 0 )
-	      {
-		index = i;
-	      } 
-	  }
+	   if ( channelName && strcmp( layername, channelName ) == 0 )
+	   {
+	      index = i;
+	   } 
+	}
 
 	MagickSetIteratorIndex( wand, index );
-      }
+     }
     
 
-    bool has_alpha = false;
-    MagickBooleanType matte = MagickGetImageMatte( wand );
-    if ( matte == MagickTrue )
-      {
+     bool has_alpha = false;
+     MagickBooleanType matte = MagickGetImageMatte( wand );
+     if ( matte == MagickTrue )
+     {
 	has_alpha = true;
 	alpha_layers();
-      }
+     }
 
-    /*
-      Copy pixels from magick to class
-    */
-    unsigned int dw = MagickGetImageWidth( wand );
-    unsigned int dh = MagickGetImageHeight( wand );
+     /*
+       Copy pixels from magick to class
+     */
+     unsigned int dw = MagickGetImageWidth( wand );
+     unsigned int dh = MagickGetImageHeight( wand );
 
 
-    // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
-    // pixels, for some weird reason.
+     // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
+     // pixels, for some weird reason.
 
 #if 1
-    Image* img = GetImageFromMagickWand( wand );
-    unsigned long depth = img->depth;
+     Image* img = GetImageFromMagickWand( wand );
+     unsigned long depth = img->depth;
 #else
-    unsigned long depth = MagickGetImageDepth( wand );
+     unsigned long depth = MagickGetImageDepth( wand );
 #endif
     
-    image_type::PixelType pixel_type = image_type::kByte;
-    StorageType storage = CharPixel;
+     image_type::PixelType pixel_type = image_type::kByte;
+     StorageType storage = CharPixel;
 
-    if ( depth == 16 ) 
-      {
+     if ( depth == 16 ) 
+     {
 	pixel_type = image_type::kShort;
 	storage = ShortPixel;
-      }
+     }
     
-    if ( depth >= 32 ) 
-      {
+     if ( depth >= 32 ) 
+     {
 	pixel_type = image_type::kFloat;
 	storage = FloatPixel;
-      }
+     }
 
 
 
-    image_size( dw, dh );
+     image_size( dw, dh );
 
-    const char* channels;
-    if ( has_alpha )
-      {
+     const char* channels;
+     if ( has_alpha )
+     {
 	channels = "RGBA";
 	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type );
-      }
-    else
-      {
+     }
+     else
+     {
 	channels = "RGB";
 	allocate_pixels( frame, 3, image_type::kRGB, pixel_type );
-      }
+     }
     
-    PixelType* pixels = (PixelType*)_hires->data().get();
-    MagickExportImagePixels( wand, 0, 0, dw, dh, channels, storage, pixels );
+     PixelType* pixels = (PixelType*)_hires->data().get();
+     MagickExportImagePixels( wand, 0, 0, dw, dh, channels, storage, pixels );
 
-    if ( has_alpha )
-      {
+     if ( has_alpha )
+     {
 	for ( unsigned y = 0; y < dh; ++y )
-	  {
-	    for ( unsigned x = 0; x < dw; ++x )
-	      {
-		PixelType p = _hires->pixel( x, y );
-		p.r *= p.a;
-		p.g *= p.a;
-		p.b *= p.a;
-		_hires->pixel( x, y, p );
-	      }
-	  }
-      }
+	{
+	   for ( unsigned x = 0; x < dw; ++x )
+	   {
+	      PixelType p = _hires->pixel( x, y );
+	      p.r *= p.a;
+	      p.g *= p.a;
+	      p.b *= p.a;
+	      _hires->pixel( x, y, p );
+	   }
+	}
+     }
 
   
-    _compression = MagickGetImageCompression( wand );
+     _compression = MagickGetImageCompression( wand );
 
-    _gamma = (float) MagickGetImageGamma( wand );
-    if (_gamma <= 0.f ) _gamma = 1.0f;
+     _gamma = (float) MagickGetImageGamma( wand );
+     if (_gamma <= 0.f ) _gamma = 1.0f;
 
-    double rx, ry, gx, gy, bx, by, wx, wy;
-    MagickGetImageRedPrimary( wand, &rx, &ry );
-    MagickGetImageGreenPrimary( wand, &gx, &gy );
-    MagickGetImageBluePrimary( wand, &bx, &by );
-    MagickGetImageWhitePoint( wand, &wx, &wy );
-    if ( rx > 0.0 && ry > 0.0 )
-      {
+     double rx, ry, gx, gy, bx, by, wx, wy;
+     MagickGetImageRedPrimary( wand, &rx, &ry );
+     MagickGetImageGreenPrimary( wand, &gx, &gy );
+     MagickGetImageBluePrimary( wand, &bx, &by );
+     MagickGetImageWhitePoint( wand, &wx, &wy );
+     if ( rx > 0.0 && ry > 0.0 )
+     {
 	_chromaticities.red.x = rx;
 	_chromaticities.red.y = ry;
 	_chromaticities.green.x = gx;
@@ -246,54 +245,54 @@ namespace mrv {
 	_chromaticities.blue.y = by;
 	_chromaticities.white.x = wx;
 	_chromaticities.white.y = wy;
-      }
+     }
 
-    _exif.clear();
-    _iptc.clear();
+     _exif.clear();
+     _iptc.clear();
 
-    GetImageProperty( img, "exif:*" );
-    ResetImagePropertyIterator( img );
-    const char* property = GetNextImageProperty(img);
-    while ( property )
-      {
+     GetImageProperty( img, "exif:*" );
+     ResetImagePropertyIterator( img );
+     const char* property = GetNextImageProperty(img);
+     while ( property )
+     {
 	const char* value = GetImageProperty( img, property );
 	if ( value )
-	  {
-	    //
-	    // Format for exif property in imagemagick is like:
-	    //       "Exif:InteroperabilityVersion"
-	    //
-	    // Make that string into something prettier
-	    //
-	    std::string key;
-	    for (const char* p = property + 5; *p != '\0'; ++p)
-	      {
-		if ( (isupper((int) ((unsigned char) *p)) != 0) &&
-		     (islower((int) ((unsigned char) *(p+1))) != 0))
-		  key += ' ';
-		key += *p;
-	      }
-	    _exif.insert( std::make_pair( key, value ) );
-	  }
+	{
+	   //
+	   // Format for exif property in imagemagick is like:
+	   //       "Exif:InteroperabilityVersion"
+	   //
+	   // Make that string into something prettier
+	   //
+	   std::string key;
+	   for (const char* p = property + 5; *p != '\0'; ++p)
+	   {
+	      if ( (isupper((int) ((unsigned char) *p)) != 0) &&
+		   (islower((int) ((unsigned char) *(p+1))) != 0))
+		 key += ' ';
+	      key += *p;
+	   }
+	   _exif.insert( std::make_pair( key, value ) );
+	}
 	property = GetNextImageProperty(img);
-      }
+     }
 
 
-    size_t profileSize;
-    unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
-    if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
-    if ( profileSize > 0 )
-      {
+     size_t profileSize;
+     unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
+     if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
+     if ( profileSize > 0 )
+     {
 	_profile = strdup( fileroot() );
 	mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
-      }
+     }
 
-    _rendering_intent = (CMedia::RenderingIntent) 
-      MagickGetImageRenderingIntent( wand );
+     _rendering_intent = (CMedia::RenderingIntent) 
+     MagickGetImageRenderingIntent( wand );
 
-    tmp = MagickGetImageProfile( wand, "iptc", &profileSize );
-    if ( profileSize > 0 )
-      {
+     tmp = MagickGetImageProfile( wand, "iptc", &profileSize );
+     if ( profileSize > 0 )
+     {
 	char* attribute;
 	const char* tag;
 	long dataset, record, sentinel;
@@ -305,15 +304,15 @@ namespace mrv {
 	  Identify IPTC data.
 	*/
 	for (i=0; i < profileSize; i += length)
-	  {
-	    length=1;
-	    sentinel = tmp[i++];
-	    if (sentinel != 0x1c)
+	{
+	   length=1;
+	   sentinel = tmp[i++];
+	   if (sentinel != 0x1c)
 	      continue;
-	    dataset = tmp[i++];
-	    record  = tmp[i++];
-	    switch (record)
-	      {
+	   dataset = tmp[i++];
+	   record  = tmp[i++];
+	   switch (record)
+	   {
 	      case 5: tag = _("Image Name"); break;
 	      case 7: tag = _("Edit Status"); break;
 	      case 10: tag = _("Priority"); break;
@@ -367,25 +366,25 @@ namespace mrv {
 	      case 218: tag = _("Custom Field 19"); break;
 	      case 219: tag = _("Custom Field 20"); break;
 	      default: tag = _("unknown"); break;
-	      }
-	    length = (size_t) (tmp[i++] << 8);
-	    length |= tmp[i++];
-	    attribute=(char *) AcquireMagickMemory((length+MaxTextExtent)*
-						   sizeof(*attribute));
-	    if (attribute != (char *) NULL)
-	      {
-		(void) CopyMagickString(attribute,(char *) tmp+i,
-					length+1);
-		_iptc.insert( std::make_pair( tag, attribute ) );
-		attribute=(char *) RelinquishMagickMemory(attribute);
-	      }
-	  }
-      }
+	   }
+	   length = (size_t) (tmp[i++] << 8);
+	   length |= tmp[i++];
+	   attribute=(char *) AcquireMagickMemory((length+MaxTextExtent)*
+						  sizeof(*attribute));
+	   if (attribute != (char *) NULL)
+	   {
+	      (void) CopyMagickString(attribute,(char *) tmp+i,
+				      length+1);
+	      _iptc.insert( std::make_pair( tag, attribute ) );
+	      attribute=(char *) RelinquishMagickMemory(attribute);
+	   }
+	}
+     }
 
-    DestroyMagickWand( wand );
-    MagickWandTerminus();
+     DestroyMagickWand( wand );
+     MagickWandTerminus();
 
-    return true;
+     return true;
   }
 
 
