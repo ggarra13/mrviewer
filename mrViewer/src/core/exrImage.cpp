@@ -465,11 +465,11 @@ namespace mrv {
 	  if ( name == N_("R") || name == N_("G") || name == N_("B") ||
 	       name == N_("A") || name == N_("Y") || name == N_("BY") || 
 	       name == N_("RY") ||
-	       name == N_("Red") || name == N_("Green") || name == N_("Blue") || 
-	       name == N_("Alpha") ||
+	       name == N_("RED") || name == N_("GREEN") || name == N_("BLUE") || 
+	       name == N_("ALPHA") ||
 	       // international versions
-	       name == _("Red") || name == _("Green") || name == _("Blue") || 
-	       name == _("Alpha")
+	       name == _("RED") || name == _("GREEN") || name == _("BLUE") || 
+	       name == _("ALPHA")
 	       ) 
 	    continue;
 	  if ( name.find( N_(".") ) != string::npos ) continue;
@@ -487,8 +487,18 @@ namespace mrv {
 	stringSet::const_iterator e = layerSet.end();
 	for ( ; i != e; ++i )
 	  {
-	    _layers.push_back( (*i) );
+	     _layers.push_back( (*i) );
 	    ++_num_channels;
+
+	    Imf::ChannelList::ConstIterator x;
+	    Imf::ChannelList::ConstIterator s;
+	    Imf::ChannelList::ConstIterator e;
+	    channels.channelsWithPrefix( (*i).c_str(), s, e );
+	    for ( x = s; x != e; ++x )
+	    {
+	       const char* layerName = x.name();
+	       _layers.push_back( layerName );
+	    }
 	  }
       }
 
@@ -511,8 +521,8 @@ namespace mrv {
 	  for ( i = s; i != e; ++i )
 	    {
 	      const char* layerName = i.name();
-	      const Imf::Channel* ch = channels.findChannel( layerName );
 
+	      const Imf::Channel* ch = channels.findChannel( layerName );
 	      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
 
 	      ++numChannels;
@@ -568,6 +578,7 @@ namespace mrv {
 	      const Imf::Channel* ch = channels.findChannel( layerName );
 
 	      if ( numChannels >= 4 ) continue;
+
 	      char* buf = (char*)base + 1 * numChannels * _hires->pixel_size();
 
 	      fb.insert( layerName, 
