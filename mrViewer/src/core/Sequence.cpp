@@ -33,6 +33,8 @@ using namespace std;
 namespace fs = boost::filesystem;
 
 
+#define LOG_ERROR(x) std::cerr << x << std::endl
+
 #include "Sequence.h"
 #include "mrvString.h"
 
@@ -157,8 +159,8 @@ namespace mrv
     if ( ( ! fs::exists( dir ) ) || 
 	 ( ! fs::is_directory( dir ) ) )
     {
-       std::cerr << "no exist or no directory" << std::endl;
-      return false;
+       LOG_ERROR("Directory '" << dir << "' does no exist or no directory");
+       return false;
     }
 
     // Check if sequence is in ILM format first  ( image.1-30.exr )
@@ -175,6 +177,8 @@ namespace mrv
 	    mrv::split_string( frames, range, "-" );
 	    if ( frames.size() > 1 )
 	      {
+		 int digits = frames[0].size();
+
 		frameStart = atoi( frames[0].c_str() );
 		frameEnd   = atoi( frames[1].c_str() );
 
@@ -186,11 +190,13 @@ namespace mrv
 		    fileroot += ".";
 		    if ( *i == range )
 		      {
-			fileroot += "%" PRId64;
+			 char buf[256];
+			 sprintf( buf, "%%0%d" PRId64, digits );
+			 fileroot += buf;
 		      }
 		    else
 		      {
-			fileroot += *i;
+			 fileroot += *i;
 		      }
 		  }
 

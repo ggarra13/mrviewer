@@ -82,8 +82,8 @@ namespace mrv {
       cerr << endl
 	   << "Names cannot contain spaces in their paths." << endl << endl
 	   << "Examples:" << endl << endl
-	   <<	"  > " << cmd << " background.dpx texture.map" << endl
-	   <<	"  > " << cmd << " beauty.1-20.iff background.%04d.exr 1-20" << endl
+	   <<	"  > " << cmd << " background.dpx texture.png" << endl
+	   <<	"  > " << cmd << " beauty.001-020.iff background.%04d.exr 1-20" << endl
 	   <<	"  > " << cmd << " beauty.mov beauty.@@.iff 1-20 beauty.avi" << endl;
     }
   };

@@ -989,7 +989,7 @@ namespace mrv {
 
 
   mrv::media ImageBrowser::add( const char* filename, 
-				     const int64_t start, const int64_t end )
+				const int64_t start, const int64_t end )
   {
     std::string file( filename );
 
@@ -1052,7 +1052,7 @@ namespace mrv {
    * Replace current image with a new file.
    * 
    * @param file new file name  ( mray.1.exr )
-   * @param root root file name ( mray.%d.exr )
+   * @param root root file name ( mray.%l04d.exr )
    */
   mrv::media ImageBrowser::replace( const char* file, const char* root )
   {
