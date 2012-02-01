@@ -485,7 +485,7 @@ namespace mrv {
     env = getenv( "MAGICK_CODER_MODULE_PATH");
     if ( !env )
       {
-	static const std::string magick_version = "6.3.4";
+	static const std::string magick_version = "6.6.8";
 
 	std::string ctl = "MAGICK_CODER_MODULE_PATH=" + root;
 	ctl += "/lib/ImageMagick-";

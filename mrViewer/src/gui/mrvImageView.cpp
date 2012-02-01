@@ -2979,20 +2979,27 @@ void ImageView::step_frame( int64_t n )
   assert( n != 0 );
   if ( n == 0 ) return;
 
+  stop();
+
   int64_t start = (int64_t) timeline()->minimum();
   int64_t end   = (int64_t) timeline()->maximum();
 
   int64_t f = frame();
 
   ImageView::Looping loop = looping();
+
   if ( n > 0 )
     {
-       if ( end - n < f )
+       if ( f + n > end )
        {
 	  if ( loop == ImageView::kLooping )
-	     f = start + ( f - (end - n) ) - 1;
+	  {
+	     f = start + ( f + n - end) - 1;
+	  }
 	  else
+	  {
 	     f = end;
+	  }
        }
        else
        {
@@ -3001,12 +3008,16 @@ void ImageView::step_frame( int64_t n )
     }
   else
     {
-      if ( start - n > f )
+      if ( f + n < start )
 	{
 	   if ( loop == ImageView::kLooping )
-	      f = end - ( (start - n) - f ) + 1;
+	   {
+	      f = end - (start - f + n) - 1;
+	   }
 	   else
+	   {
 	      f = start;
+	   }
 	}
       else
 	{
@@ -3014,7 +3025,9 @@ void ImageView::step_frame( int64_t n )
 	}
     }
 
+  
   seek( f );
+  uiMain->uiFrame->frame(f);
 }
 
 
