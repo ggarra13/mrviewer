@@ -19,7 +19,7 @@
 
 + Add a file requester?  **1/2 DONE**
 
-+ Add better command-line parsing support (good C++ parsing library?)
++ Add better command-line parsing support (good C++ parsing library?) **DONE**
 
 + Quicktime support  ** DONE, need Linux **
 
@@ -61,8 +61,3 @@ THINGS I DON'T LIKE IN MY CODE
   pointer within each to allow for multiple viewers eventually. **IN PROGRESS**
 * Add a nicer display of image's properties (with ability to change them)
 * Use of C++ for GUI, instead of scripting language.
-* sound code needs to be moved to its own place
-* Decoding of sound and video need to be done on its own thread.
-* Playing of sound also needs to be in a separate thread (this thread should
-  play all sounds from all images)
-* Make quicktime and avi loaders plugins

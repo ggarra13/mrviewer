@@ -702,6 +702,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   glVertex2i(0,  -rh);
 
   glEnd();
+
 }
 
 /** 
@@ -930,7 +931,7 @@ void GLEngine::draw_images( ImageList& images )
 	   }
 	}
       
-      
+      if ( i+1 == e ) wipe_area();
       quad->draw( texWidth, texHeight );
       
       glEnable( GL_BLEND );
@@ -957,30 +958,37 @@ void GLEngine::draw_images( ImageList& images )
 
     }
 
+  glDisable( GL_SCISSOR_TEST );
   glDisable( GL_BLEND );
 }
 
 
+
 void GLEngine::wipe_area()
 {
-//   int  x = 0;
-//   int  y = 0;
-//   int  w = this->w();
-//   int  h = this->h();
+  int  w = _view->w();
+  int  h = _view->h();
 
-//   switch( _view->wipe_direction() )
-//     {
-//     case ImageView::kWipeVertical:
-//       h *= _view->wipe_amount();
-//       break;
-//     case ImageView::kWipeHorizontal:
-//       w *= _view->wipe_amount();
-//       break;
-//     default:
-//       LOG_ERROR( _("Unknown wipe direction") );
-//     }
+  if ( _view->wipe_direction() == ImageView::kNoWipe )
+     return;
+  else if ( _view->wipe_direction() & ImageView::kWipeVertical )
+  {
+     w *= _view->wipe_amount();
+  }
+  else if ( _view->wipe_direction() & ImageView::kWipeHorizontal )
+  {
+     h *= _view->wipe_amount();
+  }
+  else
+  {
+     LOG_ERROR( _("Unknown wipe direction") );
+  }
+  
+  glEnable( GL_SCISSOR_TEST );
 
-//   glScissor( x, y, w, h );
+  int  x = 0;
+  int  y = 0;
+  glScissor( x, y, w, h );
 }
 
 

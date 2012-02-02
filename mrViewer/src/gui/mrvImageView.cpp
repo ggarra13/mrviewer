@@ -388,7 +388,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _normalize( false ),
   _safeAreas( false ),
   _masking( 0.0f ),
-  _wipe_dir( kWipeVertical ),
+  _wipe_dir( kNoWipe ),
   _wipe( 1.0 ),
   _gamma( 1.0f ),
   _gain( 1.0f ), 
@@ -1059,6 +1059,13 @@ void ImageView::draw()
 
     }
 
+  if ( _hud & kHudWipe )
+    {
+       if ( _wipe_dir == kWipeVertical )
+	  hud << "Wipe V";
+       if ( _wipe_dir == kWipeHorizontal )
+	  hud << "Wipe H";
+    }
 
   if ( !hud.str().empty() )
     {
@@ -1077,6 +1084,7 @@ void ImageView::draw()
 	  y -= yi;
 	}
     }
+
 }
 
 
@@ -1091,8 +1099,8 @@ void ImageView::draw()
  */
 void ImageView::leftMouseDown(int x, int y)	
 {
-  lastX		= x;
-  lastY		= y;
+   lastX = x;
+   lastY = y;
 
   flags		|= kMouseDown;
 	
@@ -1112,6 +1120,11 @@ void ImageView::leftMouseDown(int x, int y)
       flags |= kMouseLeft;
       _selection = mrv::Rectd( 0, 0, 0, 0 );
       
+
+      if ( _wipe_dir != kNoWipe )
+      {
+	 _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
+      }
 
 //       if ( fltk::event_is_click() && fltk::event_clicks() > 0 )
 // 	{
@@ -1794,6 +1807,22 @@ int ImageView::keyDown(unsigned int rawkey)
       redraw();
       return 1;
     }
+  else if ( rawkey == 'w' )
+  {
+     if ( _wipe_dir == kNoWipe )  {
+	_wipe_dir = kWipeVertical;
+	_wipe = 1.0;
+     }
+     else if ( _wipe_dir & kWipeVertical )
+     {
+	_wipe_dir = kWipeHorizontal;
+	_wipe = 1.0;
+     }
+     else if ( _wipe_dir & kWipeHorizontal ) {
+	_wipe_dir = kNoWipe;
+	redraw();
+     }
+  }
   else if ( rawkey == fltk::LeftKey || rawkey == fltk::Keypad4 ) 
     {
       if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
@@ -2114,6 +2143,20 @@ int ImageView::handle(int event)
       leftMouseUp(fltk::event_x(), fltk::event_y());
       break;
     case fltk::MOVE:
+       if ( _wipe_dir != kNoWipe )
+       {
+	  switch( _wipe_dir )
+	  {
+	     case kWipeVertical:
+		_wipe = (fltk::event_x() - lastX) / (float)w();
+		break;
+	     case kWipeHorizontal:
+		_wipe = (lastY - fltk::event_y()) / (float)h();
+		break;
+	  }
+	  redraw();
+	  return 1;
+       }
       if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
 	   fltk::event_key_state( fltk::RightShiftKey ) )
 	{
@@ -2160,7 +2203,6 @@ int ImageView::handle(int event)
     case fltk::DND_RELEASE:
       return 1;
     case fltk::PASTE:
-       std::cerr << "PASTE" << std::endl;
       browser()->handle_dnd();
       return 1;
     default:

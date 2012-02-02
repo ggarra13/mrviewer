@@ -71,8 +71,10 @@ namespace mrv {
     };
 
     enum WipeDirection {
-      kWipeVertical,
-      kWipeHorizontal
+    kNoWipe = 0,
+    kWipeVertical = 1,
+    kWipeHorizontal = 2,
+    kWipeFrozen = 4
     };
 
     enum HudDisplay {
@@ -86,6 +88,7 @@ namespace mrv {
       kHudIPTC          = 1 << 6,
       kHudAVDifference  = 1 << 7,
       kHudTimecode      = 1 << 8,
+      kHudWipe          = 1 << 9,
     };
 
     enum PixelDisplay {
@@ -301,6 +304,9 @@ namespace mrv {
 
     /// Refresh audio tracks
     void refresh_audio_tracks() const;
+
+       WipeDirection wipe_direction() const { return _wipe_dir; }
+       float wipe_amount() const { return _wipe; }
 
   protected:
 

@@ -399,7 +399,7 @@ o->value(-1);}
             label Protocols open
             xywh {0 20 445 370} vertical hide deactivate
           } {
-            {fltk::Browser} {} {selected
+            {fltk::Browser} {} {
               xywh {15 15 415 345}
               extra_code {o->add( ffmpeg_protocols().c_str() );
 o->value(-1);}
@@ -547,12 +547,13 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {484 206 640 475} resizable visible
+        xywh {265 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -805,6 +806,11 @@ If you try to open several mrViewers with different images, all these images wil
                 label Timecode
                 user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {15 87 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsHudWipeMode {
+                label {Wipe Mode}
+                user_data this user_data_type {mrv::PreferencesUI*} selected
+                xywh {235 62 20 20} align 8 labelsize 11
               }
             }
           }
@@ -1584,7 +1590,7 @@ for ( ; i != e; ++i )
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open

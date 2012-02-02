@@ -897,6 +897,8 @@ namespace mrv {
     }
     glEnd();
 
+
+
     if ( _shader )
       {
 	_shader->disable();
