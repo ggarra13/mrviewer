@@ -1811,17 +1811,19 @@ int ImageView::keyDown(unsigned int rawkey)
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
-	_wipe = 1.0;
+	_wipe = fltk::event_x() / w();
      }
      else if ( _wipe_dir & kWipeVertical )
      {
 	_wipe_dir = kWipeHorizontal;
-	_wipe = 1.0;
+	_wipe = (h() - fltk::event_y()) / h();
      }
      else if ( _wipe_dir & kWipeHorizontal ) {
 	_wipe_dir = kNoWipe;
-	redraw();
      }
+
+     redraw();
+     return 1;
   }
   else if ( rawkey == fltk::LeftKey || rawkey == fltk::Keypad4 ) 
     {
@@ -2148,10 +2150,12 @@ int ImageView::handle(int event)
 	  switch( _wipe_dir )
 	  {
 	     case kWipeVertical:
-		_wipe = (fltk::event_x() - lastX) / (float)w();
+		_wipe = fltk::event_x() / (float)w();
 		break;
 	     case kWipeHorizontal:
-		_wipe = (lastY - fltk::event_y()) / (float)h();
+		_wipe = (h() - fltk::event_y()) / (float)h();
+		break;
+	     default:
 		break;
 	  }
 	  redraw();

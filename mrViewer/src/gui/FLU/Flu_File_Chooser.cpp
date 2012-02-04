@@ -1636,10 +1636,6 @@ void Flu_File_Chooser::PreviewGroup::draw()
 
 void Flu_File_Chooser::ImgTxtPreview::draw()
 {
-  std::cerr << "draw image at parent " 
-	    << parent()->x() 
-	    << " " << parent()->y() << std::endl;
-  std::cerr << "draw image at " << x() << " " << y() << std::endl;
   fltk::Group::draw();
 }
 

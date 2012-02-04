@@ -3,20 +3,20 @@ Compilation of mrViewer requires the following libraries:
 
 - Boost       1.42		DONE
 - SampleICC   1.6.4             mingw cross compiled
-- OpenEXR     1.6.1             missing zdll.lib
-- Zlib        1.2.5
+- OpenEXR     1.6.1             DONE
+- Zlib        1.2.5		DONE
 - IlmBase     1.0.1             DONE
 - CTL         1.4.1		DONE
 - OpenEXR CTL 1.0.1 ( with ImfCtlApplyTransforms )
 - ImageMagick 6.6.8-10          DONE precompiled
-- TCLAP       1.2.0             DONE mingw
+- TCLAP       1.2.0             DONE
 - FLTK        2.0.x  HEAD       DONE
-- FFMPEG      HEAD
-- PostgresSQL 
-- Gettext     1.5?
-- OpenGL      1.4+
+- FFMPEG      HEAD              DONE
+- PostgresSQL                   DONE precompiled
+- Gettext     1.5?              DONE
+- OpenGL      1.4+              DONE
 - GLEW        1.7               DONE precompiled
-- GLUT        1.2
+- GLUT        1.2               DONE
 - CMake       2.8               DONE
 
 Compilation is started with 'mk', a bash command which calls cmake in 
