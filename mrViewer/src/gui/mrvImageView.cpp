@@ -1820,6 +1820,7 @@ int ImageView::keyDown(unsigned int rawkey)
      }
      else if ( _wipe_dir & kWipeHorizontal ) {
 	_wipe_dir = kNoWipe;
+	_wipe = 0.0f;
      }
 
      redraw();

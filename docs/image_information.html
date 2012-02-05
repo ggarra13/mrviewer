@@ -281,7 +281,7 @@ image was created or last modified.</td>
 If an image contains IPTC attributes, they will be listed in this tab.
 <h3><a name="EXIF_Tab"></a>EXIF Tab</h3>
 If an image contains EXIF attributes, they will be listed in this tab.<br>
-<h3><a name="Video_Tab_"></a>Video Tab<br>
+<h3><a name="Video_Tab"></a>Video Tab<br>
 </h3>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
   <tbody>
@@ -301,10 +301,18 @@ If an image contains EXIF attributes, they will be listed in this tab.<br>
       <td style="font-family: monospace;">FPS</td>
       <td style="font-family: monospace;">Playback speed ( in Frames per Second )</td>
     </tr>
+    <tr>
+      <td style="font-family: monospace;">Start</td>
+      <td style="font-family: monospace;">Time of start of video</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Duration</td>
+      <td style="font-family: monospace;">Duration of video</td>
+    </tr>
   </tbody>
 </table>
 
-<br>
+
 <h3><a name="Audio_Tab"></a>Audio Tab</h3>
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
   <tbody>
@@ -325,8 +333,51 @@ If an image contains EXIF attributes, they will be listed in this tab.<br>
       <td style="font-family: monospace;">Number of audio channels in movie or audio file</td>
     </tr>
     <tr>
-      <td style="font-family: monospace;">Frequency</td>
-      <td style="font-family: monospace;">Audio frequency of movie or audio file (in bytes per second)</td>
+      <td style="font-family: monospace;">Frequency</td><td style="font-family: monospace;">Audio frequency of movie or audio file (in bytes per second)</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Avg. Bitrate</td>
+      <td style="font-family: monospace;">Average bitrate of audio</td>    
+    </tr>
+    <tr>
+      
+      <td style="font-family: monospace;">Language</td>
+      <td style="font-family: monospace;">Language of audio track if known</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Start</td>
+      <td style="font-family: monospace;">Time of start of audio</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Duration</td>
+      <td style="font-family: monospace;">Duration of audio</td>
+    </tr>
+  </tbody>
+</table>
+<br>
+<h3><a name="Subtitle_Tab"></a>Subtitle Tab<br>
+</h3>
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+  <tbody>
+    <tr>
+      <td style="font-family: monospace;">Codec</td>
+      <td style="font-family: monospace;">Subtitle codec used in the movie</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">FourCC</td>
+      <td style="font-family: monospace;">FourCC name of codec if any</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Avg. Bitrate</td>
+      <td style="font-family: monospace;">Average bitrate of titles if possible to compute</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Start</td>
+      <td style="font-family: monospace;">Time of start of subtitles</td>
+    </tr>
+    <tr>
+      <td style="font-family: monospace;">Duration</td>
+      <td style="font-family: monospace;">Duration of subtitles</td>
     </tr>
   </tbody>
 </table>
