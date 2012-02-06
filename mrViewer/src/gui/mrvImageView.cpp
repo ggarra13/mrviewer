@@ -1124,6 +1124,7 @@ void ImageView::leftMouseDown(int x, int y)
       if ( _wipe_dir != kNoWipe )
       {
 	 _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
+	 window()->cursor(fltk::CURSOR_CROSS);
       }
 
 //       if ( fltk::event_is_click() && fltk::event_clicks() > 0 )
@@ -1812,15 +1813,18 @@ int ImageView::keyDown(unsigned int rawkey)
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
 	_wipe = fltk::event_x() / w();
+	window()->cursor(fltk::CURSOR_WE);
      }
      else if ( _wipe_dir & kWipeVertical )
      {
 	_wipe_dir = kWipeHorizontal;
 	_wipe = (h() - fltk::event_y()) / h();
+	window()->cursor(fltk::CURSOR_NS);
      }
      else if ( _wipe_dir & kWipeHorizontal ) {
 	_wipe_dir = kNoWipe;
 	_wipe = 0.0f;
+	window()->cursor(fltk::CURSOR_CROSS);
      }
 
      redraw();
@@ -2152,9 +2156,11 @@ int ImageView::handle(int event)
 	  {
 	     case kWipeVertical:
 		_wipe = fltk::event_x() / (float)w();
+		window()->cursor(fltk::CURSOR_WE);
 		break;
 	     case kWipeHorizontal:
 		_wipe = (h() - fltk::event_y()) / (float)h();
+		window()->cursor(fltk::CURSOR_NS);
 		break;
 	     default:
 		break;
