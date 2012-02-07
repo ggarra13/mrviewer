@@ -234,8 +234,11 @@ namespace mrv
   }
 
 
-  void parse_reel( mrv::LoadList& sequences, const char* reelfile )
+void parse_reel( mrv::LoadList& sequences, bool& edl,
+		 const char* reelfile )
   {
+     edl = false;
+
     FILE* f = fopen( reelfile, "r" );
     if (!f ) return;
 
@@ -256,6 +259,10 @@ namespace mrv
 	    char* root = c;
 	    char* range = NULL;
 	    char* s = c + strlen(c) - 1;
+	    if ( std::string(c) == "EDL" ) {
+	       edl = true;
+	       continue;
+	    }
 	    for ( ; s != c; --s )
 	      {
 

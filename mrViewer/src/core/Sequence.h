@@ -94,9 +94,10 @@ namespace mrv
    * Parse a text .reel file and extract each sequence line from it
    * 
    * @param sequences list of sequences.  New sequences are appended in order.
+   * @param edl       if sequence is an edl.
    * @param edlfile   filename of .reel file.
    */
-  void parse_reel( LoadList& sequences, const char* reelfile );
+void parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
 
   /** 
    * Obtain the frame range of a sequence by scanning the directory where it

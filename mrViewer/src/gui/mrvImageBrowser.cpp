@@ -433,7 +433,7 @@ namespace mrv {
     if ( !file ) return;
 
     std::string reelname( file );
-    if ( reelname.substr(reelname.size()-6, 5) != ".reel" )
+    if ( reelname.substr(reelname.size()-5, 5) != ".reel" )
       {
 	reelname += ".reel";
       }
@@ -462,6 +462,9 @@ namespace mrv {
 	    fprintf( f, "%s\n", img->fileroot() );
 	  }
       }
+
+    if ( timeline()->edl() )
+       fprintf( f, "EDL\n" );
 
     fclose(f);
 
@@ -1352,16 +1355,22 @@ namespace mrv {
    */
   void ImageBrowser::load_reel( const char* name )
   {
-    mrv::LoadList sequences;
-    parse_reel( sequences, name );
+     bool edl;
+     mrv::LoadList sequences;
+     parse_reel( sequences, edl, name );
 
-    fs::path path( name, fs::native );
-    std::string reelname = path.leaf().c_str();
-    reelname = reelname.substr(0, reelname.size()-5);
+     fs::path path( name, fs::native );
+     std::string reelname = path.leaf().c_str();
+     reelname = reelname.substr(0, reelname.size()-5);
+     
+     new_reel( reelname.c_str() );
 
-    new_reel( reelname.c_str() );
+     load( sequences );
 
-    load( sequences );
+     if ( edl )
+     {
+	toggle_edl();
+     }
   }
 
   void ImageBrowser::load( const stringArray& files )

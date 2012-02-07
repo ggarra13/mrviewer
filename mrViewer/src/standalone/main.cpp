@@ -59,14 +59,6 @@ int main( const int argc, char** argv )
   // 
   image_list->load( files );
 
-  //
-  // If more than one image was loaded, toggle EDL mode
-  // (should be a preference)
-  //
-  if ( files.size() > 1 )
-    {
-      image_list->toggle_edl();
-    }
 
 
   int ok;
