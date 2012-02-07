@@ -2136,7 +2136,7 @@ int ImageView::handle(int event)
       return 1;
     case fltk::ENTER:
       focus(this);
-      fltk::GlWindow::handle( event ); 
+      fltk::GlWindow::handle( event );
       window()->cursor(fltk::CURSOR_CROSS);
       return 1;
     case fltk::LEAVE:

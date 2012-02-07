@@ -1,0 +1,65 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+  <meta content="text/html;charset=ISO-8859-1" http-equiv="Content-Type">
+  <title>The About Window</title>
+</head>
+
+
+<body>
+
+<h2>The About Window</h2>
+
+<br>
+
+The About Window gives you some basic information about the viewer.
+<br>
+
+<table>
+  <tr>
+    <td>
+    <img style="width: 392px; height: 484px; float: left;" alt="" src="images/About_Main.png" hspace="20">
+    </td>
+    <td>
+      This tab shows copyrights, license and version information about mrViewer and some of the libraries that mrViewer uses.
+    </td>x
+  </tr>
+  <tr>
+    <td>
+      <img style="width: 392px; height: 484px; float: left;" alt="" src="images/About_CPU.png" hspace="20">
+    </td>
+    <td>
+      This tab provides information about the hardware of your machine (CPU and GPU).
+    </td>
+  </tr>
+  
+  <tr>
+    <td>
+      <img style="width: 392px; height: 484px; float: left;" alt="" src="images/About_Codecs.png" hspace="20">
+      <br>
+    </td>
+    <td>
+      This tab provides information about the codecs recognized for decoding and encoding.
+    </td>
+  </tr>
+  <tr>
+    <td>
+      <img style="width: 392px; height: 484px; float: left;" alt="" src="images/About_Protocols.png" hspace="20">
+      <br>
+    </td>
+    <td>
+      This tab provides information about the protocols supported to play back movies on the network (not implemented in mrViewer yet).
+    </td>
+  </tr>
+  <tr>
+    <td>
+<img style="width: 392px; height: 484px; float: left;" alt="" src="images/About_Motion_Estimation.png" hspace="20">
+    </td>
+    <td>
+      This tab provides information about the algorithms supported for motion estimation during encoding of movies (not supported yet in mrViewer).
+    </td>
+  </tr>
+</table>
+
+</body>
+</html>

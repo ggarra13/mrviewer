@@ -217,6 +217,7 @@ namespace mrv
 					    "Load Monitor Profile" );
     if ( !profile ) return;
 
+    mrv::Preferences::ODT_ICC_profile = profile;
     mrv::colorProfile::set_monitor_profile( profile, index );
   }
 
