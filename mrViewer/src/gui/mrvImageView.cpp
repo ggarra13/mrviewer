@@ -404,6 +404,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _showPixelRatio( false ),
   _useLUT( false ),
   _volume( 1.0f ),
+  _flip( kFlipNone ),
   _timeout( NULL ),
   _selection( mrv::Rectd(0,0) ),
   _playback( kStopped ),
@@ -1827,6 +1828,18 @@ int ImageView::keyDown(unsigned int rawkey)
 	window()->cursor(fltk::CURSOR_CROSS);
      }
 
+     redraw();
+     return 1;
+  }
+  else if ( rawkey == 'x' )
+  {
+     _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
+     redraw();
+     return 1;
+  }
+  else if ( rawkey == 'y' )
+  {
+     _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
      redraw();
      return 1;
   }

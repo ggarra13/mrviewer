@@ -12,7 +12,10 @@
 #define wandImage_h
 
 #include <CMedia.h>
+
+extern "C" {
 #include <wand/magick-wand.h>
+}
 
 namespace mrv {
 

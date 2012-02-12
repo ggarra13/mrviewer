@@ -77,6 +77,12 @@ namespace mrv {
     kWipeFrozen = 4
     };
 
+       enum FlipDirection {
+       kFlipNone = 0,
+       kFlipHorizontal = 1,
+       kFlipVertical   = 2,
+       };
+
     enum HudDisplay {
       kHudNone          = 0,
       kHudFilename      = 1 << 0,
@@ -291,6 +297,7 @@ namespace mrv {
 
     DrawEngine* const engine() const { return _engine; }
 
+    FlipDirection flip() const { return _flip; }
 
     float masking() const { return _masking; }
     void masking( float f ) { _masking = f; }
@@ -404,6 +411,7 @@ namespace mrv {
     FieldDisplay _field;
     bool         _showBG, _showPixelRatio, _useLUT;
     float        _volume;
+       FlipDirection _flip;
 
     ///////////////////
     // Popup menu

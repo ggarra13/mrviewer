@@ -414,7 +414,7 @@ namespace mrv {
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
     fltk::Preferences cache( base, "cache" );
-    cache.get("pixel_type", tmp, 1 );
+    cache.get("pixel_type", tmp, 0 );
     uiPrefs->uiPrefsCachePixelType->value( tmp );
 
     //

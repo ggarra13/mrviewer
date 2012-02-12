@@ -767,6 +767,17 @@ namespace mrv {
     else
       glScalef( float(dw), float(dh), 1.0f );
 
+    if ( _view->flip() != ImageView::kFlipNone )
+    {
+       float x = 1.0f, y = 1.0f;
+       if ( _view->flip() & ImageView::kFlipVertical )
+	  x = -1.0f;
+       if ( _view->flip() & ImageView::kFlipHorizontal )
+	  y = -1.0f;
+
+       glScalef( x, y, 1.0f );
+    }
+
 
     // If in presentation mode (fullscreen), we use a linear texture filter.
     // Otherwise, use a nearest one to clearly show pixels.

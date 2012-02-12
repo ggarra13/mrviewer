@@ -553,7 +553,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {265 286 640 475} resizable visible
+        xywh {267 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -809,7 +809,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::CheckButton} uiPrefsHudWipeMode {
                 label {Wipe Mode}
-                user_data this user_data_type {mrv::PreferencesUI*} selected
+                user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {235 62 20 20} align 8 labelsize 11
               }
             }
@@ -1605,7 +1605,7 @@ for ( ; i != e; ++i )
               label Playback
               }
             {fltk::Item} {} {
-              label Caches
+              label Caches selected
               }
             {fltk::ItemGroup} {} {
               label {3D Luts} open
