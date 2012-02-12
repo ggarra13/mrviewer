@@ -1116,17 +1116,17 @@ void aviImage::populate()
       switch( ctx->codec_type ) 
 	{
 	   // We ignore attachments for now.  
-	   case CODEC_TYPE_ATTACHMENT:
+	   case AVMEDIA_TYPE_ATTACHMENT:
 	      {
 		 continue;
 	      }
 	   // We ignore data tracks for now.  Data tracks are, for example,
 	   // the timecode track in quicktimes.
-	   case CODEC_TYPE_DATA:
+	   case AVMEDIA_TYPE_DATA:
 	      {
 		 continue;
 	      }
-	   case CODEC_TYPE_VIDEO:
+	   case AVMEDIA_TYPE_VIDEO:
 	      {
 		 video_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
@@ -1143,7 +1143,7 @@ void aviImage::populate()
 		 }
 		 break;
 	      }
-	   case CODEC_TYPE_AUDIO:
+	   case AVMEDIA_TYPE_AUDIO:
 	      {
 		 audio_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
@@ -1156,7 +1156,7 @@ void aviImage::populate()
 		    _audio_index = 0;
 		 break;
 	      }
-	   case CODEC_TYPE_SUBTITLE:
+	   case AVMEDIA_TYPE_SUBTITLE:
 	      {
 		 subtitle_info_t s;
 		 populate_stream_info( s, msg, ctx, i );

@@ -291,13 +291,13 @@ namespace mrv
 	continue;
 
       switch(p2->type) {
-      case CODEC_TYPE_VIDEO:
+      case AVMEDIA_TYPE_VIDEO:
 	type_str = "V";
 	break;
-      case CODEC_TYPE_AUDIO:
+      case AVMEDIA_TYPE_AUDIO:
 	type_str = "A";
 	break;
-      case CODEC_TYPE_SUBTITLE:
+      case AVMEDIA_TYPE_SUBTITLE:
 	type_str = "S";
 	break;
       default:
@@ -324,17 +324,17 @@ namespace mrv
 
   std::string ffmpeg_audio_codecs()
   {
-    return ffmpeg_codecs( CODEC_TYPE_AUDIO );
+    return ffmpeg_codecs( AVMEDIA_TYPE_AUDIO );
   }
 
   std::string ffmpeg_video_codecs()
   {
-    return ffmpeg_codecs( CODEC_TYPE_VIDEO );
+    return ffmpeg_codecs( AVMEDIA_TYPE_VIDEO );
   }
 
   std::string ffmpeg_subtitle_codecs()
   {
-    return ffmpeg_codecs( CODEC_TYPE_SUBTITLE );
+    return ffmpeg_codecs( AVMEDIA_TYPE_SUBTITLE );
   }
 
 

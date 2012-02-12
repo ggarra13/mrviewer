@@ -1332,16 +1332,16 @@ const char* CMedia::stream_type( const AVCodecContext* codec_context )
   const char* stream;
   switch( codec_context->codec_type ) 
     {
-    case CODEC_TYPE_VIDEO:
+    case AVMEDIA_TYPE_VIDEO:
       stream = "video";
       break;
-    case CODEC_TYPE_AUDIO:
+    case AVMEDIA_TYPE_AUDIO:
       stream = "audio";
       break;
-    case CODEC_TYPE_DATA:
+    case AVMEDIA_TYPE_DATA:
       stream = "data";
       break;
-    case CODEC_TYPE_SUBTITLE:
+    case AVMEDIA_TYPE_SUBTITLE:
       stream = "subtitle";
       break;
     default:
@@ -1820,7 +1820,7 @@ void CMedia::default_rendering_transform()
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-  if ( stream->codec->codec_type != CODEC_TYPE_VIDEO ) return;
+  if ( stream->codec->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
   unsigned max_distance  = 0;
   unsigned num_keyframes = 0;
