@@ -141,13 +141,13 @@ Timer::waitUntilNextFrameIsDue ()
     float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
     		              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
  
-    _timingError += timeSinceLastSleep - _spf;
+    // _timingError += timeSinceLastSleep - _spf;
 
-    if (_timingError < -2 * _spf)
-    	_timingError = -2 * _spf;
+    // if (_timingError < -2 * _spf)
+    // 	_timingError = -2 * _spf;
 
-    if (_timingError >  2 * _spf)
-    	_timingError =  2 * _spf;
+    // if (_timingError >  2 * _spf)
+    // 	_timingError =  2 * _spf;
 
     _lastFrameTime = now;
 
