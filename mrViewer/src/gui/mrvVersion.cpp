@@ -18,7 +18,6 @@ extern "C" {
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
-#include <libavdevice/avdevice.h> 
 
 }
 
@@ -424,7 +423,6 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
 
     avcodec_register_all();
-    avdevice_register_all();
 
     av_register_all();
     avformat_network_init();

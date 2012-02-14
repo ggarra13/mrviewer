@@ -107,14 +107,12 @@ IF(FFMPEG_INCLUDE_DIR)
   IF(FFMPEG_avformat_LIBRARY)
     IF(FFMPEG_avcodec_LIBRARY)
       IF(FFMPEG_avutil_LIBRARY)
-	IF(FFMPEG_avdevice_LIBRARY)
           SET( FFMPEG_FOUND "YES" )
 	  
           SET( FFMPEG_BASIC_LIBRARIES 
             ${FFMPEG_avcodec_LIBRARY}  # LGPL, but Sorenson patent may apply
             ${FFMPEG_avformat_LIBRARY} # LGPL
             ${FFMPEG_avutil_LIBRARY}   # LGPL
-	    ${FFMPEG_avdevice_LIBRARY} # LGPL
 	    ${FFMPEG_swscale_LIBRARY}  # LGPL
             )
 
@@ -127,12 +125,12 @@ IF(FFMPEG_INCLUDE_DIR)
 	  
           SET( FFMPEG_LIBRARIES  
 	    ${FFMPEG_LGPL_LIBRARIES} 
-	    ${FFMPEG_BSD_LIBRARIES} )
+	    ${FFMPEG_BSD_LIBRARIES} 
+	    )
 	  
 	  
 	  SET( FFMPEG_GPL_LIBRARIES
 	    ${FFMPEG_postproc_LIBRARY} # GPL
-	    ${FFMPEG_swscale_LIBRARY}  # GPL
 	    )
 	  
 	  SET( FFMPEG_NONGPL_LIBRARIES
@@ -147,7 +145,6 @@ IF(FFMPEG_INCLUDE_DIR)
             # (after 100,000 copies sold)
 	    ${FFMPEG_lagarith_LIBRARY} # as XviD (shares code)
 	    )
-	ENDIF(FFMPEG_avdevice_LIBRARY)
       ENDIF(FFMPEG_avutil_LIBRARY)
     ENDIF(FFMPEG_avcodec_LIBRARY)
   ENDIF(FFMPEG_avformat_LIBRARY)
