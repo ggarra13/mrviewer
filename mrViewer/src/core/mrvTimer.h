@@ -85,7 +85,10 @@ namespace mrv {
     // Set and get the frame rate, in frames per second
     //-------------------------------------------------
 
-    void	setDesiredFrameRate (double fps) { _spf = 1 / fps; }
+    void	setDesiredFrameRate (double fps) {
+       _pspf = _spf;
+       _spf = 1 / fps; 
+    }
     inline double actualFrameRate() { return _actualFrameRate; }
 
 
@@ -108,6 +111,8 @@ namespace mrv {
 
     double	_spf;				// desired frame rate,
     						// in seconds per frame
+
+    double      _pspf;                       // last frame rate we waited on
 
     timeval	_lastFrameTime;			// time when we displayed the
     						// last frame

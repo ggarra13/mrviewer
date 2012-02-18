@@ -462,18 +462,21 @@ namespace mrv {
 
 	double fps = img->play_fps();
 	double delay = 1.0 / fps;
-	double diff = 0.0;
 
 	// // Calculate video-audio difference
 	if ( img->has_audio() )
 	{
 	   double audio_clock = img->audio_clock();
 	   double video_clock = img->video_clock();
-	   //double audio_clock = img->audio_pts();
-	   //double video_clock = img->video_pts();
+	   // double audio_pts = img->audio_pts();
+	   // double video_pts = img->video_pts();
 
-	   diff = step * (video_clock - audio_clock);
+	   double diff = step * (video_clock - audio_clock);
+
+	   if ( diff > 10.0 ) diff = 0.0; // for miscount when starting
+
 	   img->avdiff( diff );
+
 	   double absdiff = std::abs(diff);
 
 	   /* Skip or repeat the frame. Take delay into account
@@ -483,16 +486,17 @@ namespace mrv {
 	   {
 	      if (diff <= -sync_threshold )
 	      {
-	      	 fps = 999999999; // skip frame
-	      } 
-	      else if (diff >= sync_threshold) 
+	      	 fps = 999999999.0; // skip frame
+	      }
+	      else if ( diff >= sync_threshold )
 	      {
-		 fps -= diff / delay;
+		 fps -= diff * 2;
 	      }
 	   }
 
 	}
 	
+
 	timer.setDesiredFrameRate( fps );
 	timer.waitUntilNextFrameIsDue();
 
