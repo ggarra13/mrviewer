@@ -472,7 +472,9 @@ namespace mrv {
 	   double video_clock = img->video_clock();
 	   double audio_clock = img->audio_clock();
 	   diff = step * (audio_clock - video_clock);
-	   
+
+	   if ( diff > 10 ) diff = 0.0;
+
 	   img->avdiff( diff );
 
 	   double absdiff = std::abs(diff);
@@ -483,13 +485,14 @@ namespace mrv {
 	   double sync_threshold = delay;
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
 	      if (diff <= -sync_threshold) {
-	   	 fps += diff;
+		fps += diff;
 	      } else if(diff >= sync_threshold) {
-	   	 fps = 999999.0;
+		fps = 999999.0;
 	      }
 	   }
 
 	}
+
 	
 	
 	timer.setDesiredFrameRate( fps );
