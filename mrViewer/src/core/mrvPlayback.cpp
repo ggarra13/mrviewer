@@ -462,6 +462,8 @@ namespace mrv {
 	double fps = img->play_fps();
 
 	double delay = 1.0 / fps;
+	
+
 	double diff = 0.0;
 
 	// // Calculate video-audio difference
@@ -471,9 +473,11 @@ namespace mrv {
 	   // double audio_clock = img->audio_pts();
 	   double video_clock = img->video_clock();
 	   double audio_clock = img->audio_clock();
-	   diff = step * (audio_clock - video_clock);
+	   diff = step * (video_clock - audio_clock);
 
-	   if ( diff > 10 ) diff = 0.0;
+
+
+	   if ( diff > 1000.0 ) diff = 0.0;
 
 	   img->avdiff( diff );
 
@@ -484,13 +488,13 @@ namespace mrv {
 	      FFPlay still doesn't "know if this is the best guess." */
 	   double sync_threshold = delay;
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
-	      if (diff <= -sync_threshold) {
-		fps += diff;
-	      } else if(diff >= sync_threshold) {
-		fps = 999999.0;
+	      double sdiff = step * diff;
+	      if (sdiff <= -sync_threshold) {
+	      	 fps = 99999999.0;
+	      } else if(sdiff >= delay*2) {
+		 fps /= 2.0;
 	      }
 	   }
-
 	}
 
 	
@@ -499,6 +503,7 @@ namespace mrv {
 	timer.waitUntilNextFrameIsDue();
 
 	img->real_fps( timer.actualFrameRate() );
+
 	img->find_image( frame );
 
 	if ( timeline->edl() )

@@ -78,7 +78,7 @@ namespace mrv
 
   private:
     boost::int64_t              _frame;  //!< position in video stream
-    double                      _pts;
+       double                      _pts;  //!< video pts in ffmpeg
     unsigned int                _repeat;  //!< number of frames to repeat
     unsigned int                _width;
     unsigned int                _height;

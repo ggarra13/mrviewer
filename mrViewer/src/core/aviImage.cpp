@@ -632,8 +632,9 @@ void aviImage::store_image( const boost::int64_t frame,
 
   mrv::image_type_ptr image = allocate_image( frame, pts * 
 					      av_q2d( 
-						     get_video_stream()->time_base) 
-					     );
+						     stream->time_base
+						      ) 
+					      );
   if ( ! image )
     {
       IMG_ERROR( "No memory for video frame" );
@@ -992,7 +993,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// 	debug_video_packets(frame);
       }
 
-    _video_pts    = _hires->pts();
+    _video_pts   = _hires->pts();
     _video_clock = av_gettime() / 1000000.0;
 
     // Limit (clean) the video store as we play it

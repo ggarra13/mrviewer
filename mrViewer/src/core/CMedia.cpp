@@ -128,6 +128,9 @@ CMedia::CMedia() :
   _look_mod_transform( NULL ),
   _playback( kStopped ),
   _sequence( NULL ),
+  _audio_pts( 0 ),
+  _audio_clock( av_gettime() / 1000000.0 ),
+  _video_pts( 0 ),
   _video_clock( av_gettime() / 1000000.0 ),
   _context(NULL),
   _audio_codec(NULL),
@@ -135,9 +138,6 @@ CMedia::CMedia() :
   _audio_index(-1),
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
-  _video_pts( 0 ),
-  _audio_pts( 0 ),
-  _audio_clock( av_gettime() / 1000000.0 ),
   _audio_buf( NULL ),
   _audio_engine( NULL )
 {
@@ -996,8 +996,8 @@ void CMedia::play(const CMedia::Playback dir,
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _dts = _frame;
-  _audio_clock = 0.0;
-  _video_clock = 0.0;
+  _audio_clock = av_gettime() / 1000000.0;
+  _video_clock = av_gettime() / 1000000.0;
 
   _audio_buf_used = 0;
 
@@ -1547,7 +1547,7 @@ boost::uint64_t CMedia::frame2pts( const AVStream* stream,
 
 // Convert an FFMPEG pts into a frame number
 boost::int64_t CMedia::pts2frame( const AVStream* stream, 
-				     const boost::int64_t pts ) const
+				  const boost::int64_t pts ) const
 {
   assert( pts != MRV_NOPTS_VALUE );
 
