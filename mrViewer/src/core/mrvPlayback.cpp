@@ -492,7 +492,7 @@ namespace mrv {
 	      if (sdiff <= -sync_threshold) {
 	      	 fps = 99999999.0;
 	      } else if(sdiff >= delay*2) {
-		 fps /= 2.0;
+		 fps -= sdiff;
 	      }
 	   }
 	}
