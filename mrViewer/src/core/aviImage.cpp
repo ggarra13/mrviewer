@@ -59,7 +59,9 @@ namespace
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_PACKETS
+//#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_STORES
+//#define DEBUG_STORES_DETAIL
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
 
@@ -75,7 +77,6 @@ namespace
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
 #define kMIN_FRAMES 5
-#define kMAX_FRAMES 10
 
 namespace {
   const unsigned int  kMaxCacheImages = 2;
@@ -433,7 +434,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 
   try {
 
+     mrv::Timer timer;
+
     while (!got_video || !got_audio) {
+
 
       int error = av_read_frame( _context, &pkt );
       if ( error < 0 )
@@ -1319,8 +1323,10 @@ void aviImage::populate()
       av_init_packet( &pkt );
 
       bool got_image = false;
+      mrv::Timer timer;
       while( !got_image )
 	{
+
 	  int error = av_read_frame( _context, &pkt );
 	  if ( error < 0 )
 	  {
@@ -1667,6 +1673,7 @@ bool aviImage::fetch(const boost::int64_t frame)
     unsigned int audio_bytes = 0;
 
     // Loop until an error or we have what we need
+    mrv::Timer timer;
     while( !got_image || !got_audio )
       {
 
@@ -1804,7 +1811,7 @@ bool aviImage::frame( const boost::int64_t f )
   //  if ( f == _dts ) return false;
 
    if ( ( _video_packets.bytes() +  _audio_packets.bytes() + 
-   	  _subtitle_packets.bytes() > kMAX_QUEUE_SIZE ) //||
+   	  _subtitle_packets.bytes() > kMAX_QUEUE_SIZE ) // ||
    	// (_audio_packets.bytes() > kMAX_AUDIOQ_SIZE)  ||
    	// (_video_packets.size() > kMIN_FRAMES) ||
    	// (_subtitle_packets.size() > kMIN_FRAMES) 
@@ -2016,6 +2023,11 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	      return kDecodeOK;
 	    }
 
+	  // Limit storage of frames to only half fps.  For example, 15 frames
+	  // for a fps of 30.
+	  if ( _images.size() >= fps()/2 )
+	     return kDecodeDone;
+
 	  got_image = decode_image( frame, pkt );
 
 	  _video_packets.pop_front();
@@ -2068,9 +2080,12 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
   video_cache_t::const_iterator last = _images.end();
   
   std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
-       << " " << routine << " video stores  #" 
-       << _images.size() << ": "
-       << std::endl;
+	    << " " << routine << " video stores  #" 
+	    << _images.size() << ": " << (*iter)->frame() << "-" 
+	    << (*(last-1))->frame() 
+	    << std::endl;
+
+#ifdef DEBUG_VIDEO_STORES_DETAIL
   for ( ; iter != last; ++iter )
     {
       boost::int64_t f = (*iter)->frame();
@@ -2080,6 +2095,7 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
       std::cerr << f << " ";
     }
   std::cerr << endl;
+#endif
 }
 
 
@@ -2098,6 +2114,7 @@ void aviImage::debug_video_packets(const boost::int64_t frame,
 	    << _video_packets.size() << " (" << _video_packets.bytes() << "): "
 	    << std::endl;
 
+#ifdef DEBUG_PACKETS_DETAIL
   bool in_preroll = false;
   bool in_seek = false;
   for ( ; iter != last; ++iter )
@@ -2146,6 +2163,8 @@ void aviImage::debug_video_packets(const boost::int64_t frame,
 	}
     }
   std::cerr << std::endl;
+#endif
+
 }
 
 void aviImage::debug_subtitle_packets(const boost::int64_t frame, 

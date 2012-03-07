@@ -59,6 +59,7 @@ namespace {
 
 // #define DEBUG_PACKETS
 // #define DEBUG_STORES
+// #define DEBUG_AUDIO_STORES_DETAIL
 // #define DEBUG_DECODE
 // #define DEBUG_SEEK
 // #define DEBUG
@@ -999,6 +1000,7 @@ CMedia::DecodeStatus
 CMedia::decode_audio( boost::int64_t& audio_frame,
 		      const boost::int64_t frame, const AVPacket& pkt )
 {
+
   audio_frame = frame;
 
   CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
@@ -1098,7 +1100,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 // Return the number of frames cached for jog/shuttle
 unsigned int CMedia::max_audio_frames()
 {
-  return unsigned( fps() * 2 );
+  return unsigned( fps() );
 }
 
 
@@ -1680,6 +1682,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 	    << " A:" << frame << " " << routine << " audio stores #"
 	    << _audio.size() << ": "
 	    << std::endl;
+#ifdef DEBUG_AUDIO_STORES_DETAIL
   for ( ; iter != last; ++iter )
     {
       boost::int64_t f = (*iter)->frame();
@@ -1689,6 +1692,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
       std::cerr << f << " ";
     }
   std::cerr << std::endl;
+#endif
 }
 
 

@@ -429,6 +429,8 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
+
+	img->wait_image();
 	CMedia::DecodeStatus status = img->decode_video( frame );
 	switch( status )
 	  {
@@ -444,7 +446,6 @@ namespace mrv {
 	      continue;
 	    }
 	    failed_frame = frame;
-	    img->wait_image();
 	    continue;
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:

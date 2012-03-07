@@ -1562,7 +1562,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
 // Return the number of frames cached for jog/shuttle
 unsigned int CMedia::max_video_frames()
 {
-  return unsigned( fps() * 2 );
+  return unsigned( fps() );
   // return int( fps() * 0.5 );
   // return 15;
 }
