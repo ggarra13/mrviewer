@@ -66,6 +66,8 @@ typedef __int64 int64_t;
 #include "Flu_File_Chooser.h"
 #include "flu_file_chooser_pixmaps.h"
 
+#include "core/Sequence.h"
+
 using namespace fltk;
 
 
@@ -750,10 +752,12 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     filelist->begin();
     filelist->end();
 
-    fileDetailsGroup = new fltk::Group( 2, 2, fileGroup->w()-4, fileGroup->h()-4 );
+    fileDetailsGroup = new fltk::Group( 2, 2, fileGroup->w()-4, 
+					fileGroup->h()-4 );
     fileDetailsGroup->begin();
     {
-      filedetails = new FileDetails( 0, 0, fileGroup->w()-4, fileGroup->h()-4, this );
+      filedetails = new FileDetails( 0, 0, fileGroup->w()-4, 
+				     fileGroup->h()-4, this );
       filedetails->box( fltk::FLAT_BOX );
       filedetails->column_labels( col_labels );
       filedetails->column_widths( col_widths );
@@ -1546,34 +1550,50 @@ void Flu_File_Chooser::PreviewGroup::draw()
     }
 
   struct stat statbuf;
-  int ok = stat( file.c_str(), &statbuf );
-  if( ok )
-    {
-      switch( errno )
+
+  std::string root;
+  boost::int64_t frameStart=1, frameEnd=50;
+  bool ok = mrv::get_sequence_limits( frameStart,
+				      frameEnd, 
+				      file );
+  if (ok)
+  {
+     std::string root;
+     ok = mrv::fileroot( root, file );
+     char buf[1024];
+     sprintf( buf, root.c_str(), frameStart );
+     file = buf;
+  }
+  else 
+  {
+     int ok = stat( file.c_str(), &statbuf );
+     if( ok )
+     {
+	switch( errno )
 	{
 #if !defined(WIN32) && !defined(WIN64)
 	case ELOOP:
-	  label( "Too many symlinks" ); break;
+	   label( "Too many symlinks" ); break;
 #endif
-	case ENAMETOOLONG:
-	case ENOTDIR:
-	case ENOENT:
-	  label( "Bad\npath" ); break;
-	case ENOMEM:
-	  label( "Not\nMemory" ); break;
-	case EACCES:
-	default:
-	  label( "Not\nReadable" ); break;
+	   case ENAMETOOLONG:
+	   case ENOTDIR:
+	   case ENOENT:
+	      label( "Bad\npath" ); break;
+	   case ENOMEM:
+	      label( "Not\nMemory" ); break;
+	   case EACCES:
+	   default:
+	      label( "Not\nReadable" ); break;
 	}
-      fltk::Group::draw();
-      return;
-    }
-
+	fltk::Group::draw();
+	return;
+     }
+  }
   if( lastFile != file )
     {
       lastFile = file;
 
-      handled = 0;
+      handled = NULL;
       PreviewWidgetBase *next;
       for( int i = (int)chooser->previewHandlers.size()-1; i >= 0; i-- )
 	{
@@ -1582,15 +1602,16 @@ void Flu_File_Chooser::PreviewGroup::draw()
 	  if( !handled )
 	    {
 	      fltk::Group *p = next->parent();
-	      fltk::Group::add( next );
  
+	      //fltk::Group::add( next );
 	      if( next->preview( file.c_str() ) != 0 )
 		{
-		  handled = next;
+		   handled = next;
 		}
-	      fltk::Group::remove( *next );
-	      if( p )
-		p->add( next );
+	      //fltk::Group::remove( next );
+
+	      //if ( p ) p->add( handled );
+
 	    }
 	}
     }
@@ -1605,32 +1626,17 @@ void Flu_File_Chooser::PreviewGroup::draw()
     {
       label( "" );
 
-      static int count = 0;
-      ++count;
-
-      if ( count > 2 )
-	{
-	  fltk::Group::draw();
-	  return;
-	}
-
-      fltk::Group *p = handled->parent();
-
-
       handled->resize( box()->dx(), box()->dy(),
  		       w() - box()->dw(), h()- box()->dh() );
       handled->set_visible();
 
       fltk::Group::add( handled );
       fltk::Group::draw();
-      fltk::Group::remove( *handled );
+      fltk::Group::remove( handled );
 
       handled->clear_visible();
 
-      if( p ) 
-	{
-	  p->add( handled );
-	}
+
     }
 }
 
@@ -1644,15 +1650,11 @@ int Flu_File_Chooser::ImgTxtPreview::preview( const char *filename )
 {
   int	        w = 0, h = 0;		// Width and height of preview image
 
-  window()->cursor( fltk::CURSOR_WAIT );
-  fltk::check();
 
   fltk::SharedImage* img = fltk::SharedImage::get( filename );
 
   if( img )
     {
-      window()->cursor( fltk::CURSOR_DEFAULT );
-      fltk::check();
       img->measure(w, h);
     }
 
@@ -1670,9 +1672,6 @@ int Flu_File_Chooser::ImgTxtPreview::preview( const char *filename )
 	}
       else
 	return 0;
-
-      window()->cursor( fltk::CURSOR_DEFAULT );
-      fltk::check();
 
       // Scan the buffer for printable chars...
       unsigned char *ptr;
@@ -3680,6 +3679,9 @@ void Flu_File_Chooser::cd( const char *path )
   reloadBtn->activate();
   newDirBtn->activate();
   previewBtn->activate();
+  previewBtn->value(true);
+  previewBtn->do_callback();
+
   hiddenFiles->activate();
   addFavoriteBtn->activate();
 
