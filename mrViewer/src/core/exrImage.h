@@ -16,6 +16,9 @@
 #include <ImfLineOrder.h>
 #include <ImfCompression.h>
 #include <ImfPixelType.h>
+#include <ImfHeader.h>
+#include <ImfFrameBuffer.h>
+
 
 
 namespace mrv {
@@ -51,14 +54,19 @@ namespace mrv {
     /// Returns the image line order (if any)
     virtual const char* const line_order() const { return kLineOrder[_lineOrder]; }
 
-    bool fetch( const boost::int64_t frame );
+    virtual bool fetch( const boost::int64_t frame );
+       bool fetch_mipmap( const boost::int64_t frame, int lx, int ly );
 
     static bool save( const char* file, const CMedia* img );
 
   protected:
+       bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
+			   boost::int64_t frame );
+       void read_header_attr( const Imf::Header& h, boost::int64_t frame );
 
     image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
 
+       bool          _has_yca;
     Imf::LineOrder   _lineOrder;
     Imf::Compression _compression;
   };
