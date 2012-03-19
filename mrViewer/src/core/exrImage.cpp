@@ -315,7 +315,8 @@ bool exrImage::find_channels( const Imf::Header& h,
       const char* channelPrefix = channel();
       if ( channelPrefix != NULL )
 	{
-	  
+
+	   std::cerr << "Channel " << channelPrefix << std::endl;
 
 	  unsigned int numChannels = 0;
 	  
@@ -464,7 +465,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  else if ( num_channels == 2 ) num_channels = 3;
 
 
-
+	  std::cerr << "allocate pixels " << num_channels << std::endl;
 	  allocate_pixels( frame, num_channels, format,
 			   pixel_type_conversion( imfPixelType ) );
 	  if ( _has_yca )
@@ -481,6 +482,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  else
 	    {
 
+	       std::cerr << "not yca " << num_channels << std::endl;
 	      for ( int i = 0; i < 4; ++i )
 		{
 		  xs[i] = _hires->pixel_size() * num_channels;
@@ -495,12 +497,14 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  boost::uint8_t* base   = ( pixels + start );
 	  for ( int i = 0; i < 4; ++i )
 	    {
+	       std::cerr << "find channel " << channelName[i] << std::endl;
 	      ch = channels.findChannel( channelName[i] );
 	      if ( !ch ) continue;
+	      std::cerr << "found channel " << channelName[i] << std::endl;
 
 	      char* ptr = (char*)base + offsets[i] * _hires->pixel_size();
 
-
+	      std::cerr << "insert " << ptr << std::endl;
 	      fb.insert( channelName[i], 
 			 Slice( imfPixelType, ptr,
 				xs[i], ys[i], ch->xSampling, ch->ySampling ) );
@@ -863,7 +867,6 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
     } 
     catch( const std::exception& e )
       {
-	 std::cerr << "FAILED LOAD" << std::endl;
 	mrvALERT( e.what() );
 	return false;
       }
