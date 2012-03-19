@@ -55,17 +55,24 @@ namespace mrv {
     virtual const char* const line_order() const { return kLineOrder[_lineOrder]; }
 
     virtual bool fetch( const boost::int64_t frame );
-       bool fetch_mipmap( const boost::int64_t frame, int lx, int ly );
 
     static bool save( const char* file, const CMedia* img );
 
+       int levelX() { return _levelX; }
+       int levelY() { return _levelY; }
+
+       void levelX( const int lx ) { _levelX = lx; }
+       void levelY( const int ly ) { _levelY = ly; }
+
   protected:
+       bool fetch_mipmap( const boost::int64_t frame );
        bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
 			   boost::int64_t frame );
        void read_header_attr( const Imf::Header& h, boost::int64_t frame );
 
     image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
 
+       int _levelX, _levelY; //<- r/mipmap levels
        bool          _has_yca;
     Imf::LineOrder   _lineOrder;
     Imf::Compression _compression;

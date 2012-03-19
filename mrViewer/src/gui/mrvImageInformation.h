@@ -60,6 +60,7 @@ namespace mrv
     static void enum_cb( fltk::PopupMenu* w, ImageInformation* v );
 
     static void toggle_tab( fltk::Widget* w, void* data );
+    static void int_slider_cb( fltk::Slider* w, void* data );
     static void float_slider_cb( fltk::Slider* w, void* data );
 
     double to_memory( double value, const char*& extension );

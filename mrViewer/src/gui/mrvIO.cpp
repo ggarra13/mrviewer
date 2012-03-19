@@ -30,6 +30,8 @@ namespace mrv {
 
     _alert = (char*) malloc( strlen(str) + 1 );
     strcpy( _alert, str );
+
+    fltk::alert( _alert );
   }
 
   const char* alert()

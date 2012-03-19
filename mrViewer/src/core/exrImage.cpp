@@ -85,7 +85,9 @@ namespace mrv {
 
 
   exrImage::exrImage() :
-    CMedia()
+  CMedia(),
+  _levelX( 0 ),
+  _levelY( 0 )
   {
   }
 
@@ -124,28 +126,26 @@ namespace mrv {
   /** 
    * Fetch the current EXR image
    * 
-   * 
    * @return true if success, false if not
    */
-bool exrImage::fetch_mipmap( const boost::int64_t frame,
-			     int lx,
-			     int ly) 
+bool exrImage::fetch_mipmap( const boost::int64_t frame ) 
   {
 
      try {
 	
-	std::string fileName =  sequence_filename(frame);
+	std::string fileName = sequence_filename(frame);
 
 	TiledInputFile in( fileName.c_str() );
 
-	if (!in.isValidLevel (lx, ly))
+	if (!in.isValidLevel (_levelX, _levelY))
 	{
-	   THROW (Iex::InputExc, "Level (" << lx << ", " << ly << ") does "
+	   THROW (Iex::InputExc, "Level (" << _levelX << ", " 
+		  << _levelY << ") does "
 		  "not exist in file " << fileName << ".");
 	}
 
 	Imf::Header h = in.header();
-	h.dataWindow() = in.dataWindowForLevel (lx, ly);
+	h.dataWindow() = in.dataWindowForLevel(_levelX, _levelY);
 	h.displayWindow() = h.dataWindow();
 
 	read_header_attr( h, frame );
@@ -157,10 +157,8 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame,
 	in.setFrameBuffer(fb);
 
 
-	if ( lx > 0 || ly > 0 )
-	{
-	   int tx = in.numXTiles (lx);
-	   int ty = in.numYTiles (ly);
+	int tx = in.numXTiles( _levelX );
+	int ty = in.numYTiles( _levelY );
 	
 	//
 	// For maximum speed, try to read the tiles in
@@ -171,15 +169,15 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame,
 	{
 	   for (int y = 0; y < ty; ++y)
 	      for (int x = 0; x < tx; ++x)
-		 in.readTile (x, y, lx, ly);
+		 in.readTile (x, y, _levelX, _levelY);
 	}
 	else
 	{
 	   for (int y = ty - 1; y >= 0; --y)
 	      for (int x = 0; x < tx; ++x)
-		 in.readTile (x, y, lx, ly);
+		 in.readTile (x, y, _levelX, _levelY);
 	}
-      }
+     
      }
      catch( const std::exception& e )
      {
@@ -774,12 +772,9 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
      try {
 
-      int lx = 0;
-      int ly = 0;
-
-      if ( lx > 0 || ly > 0 )
+      if ( _levelX > 0 || _levelY > 0 )
       {
-	 return fetch_mipmap( frame, lx, ly );
+	 return fetch_mipmap( frame );
       }
 
       InputFile in( sequence_filename(frame).c_str() );

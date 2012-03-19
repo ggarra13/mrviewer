@@ -39,6 +39,7 @@ using namespace std;
 #include "mrvImageView.h"
 #include "mrViewer.h"
 #include "CMedia.h"
+#include "exrImage.h"
 
 #include "mrvI8N.h"
 
@@ -146,6 +147,68 @@ namespace mrv
     fltk::FloatInput* n = (fltk::FloatInput*) data;
     n->value( s->value() );
     n->do_callback();
+  }
+
+  void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
+  {
+    fltk::IntInput* n = (fltk::IntInput*) data;
+    n->value( (int)s->value() );
+    n->do_callback();
+  }
+
+  static void change_mipmap_cb( fltk::IntInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
+    if ( img )
+    {
+       img->levelX( w->ivalue() );
+       img->levelY( w->ivalue() );
+       bool ok = img->fetch( view->frame() );
+       if (ok)
+       {
+	  view->redraw();
+       }
+    }
+  }
+
+  static void change_x_ripmap_cb( fltk::IntInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
+    if ( img )
+    {
+       img->levelX( w->ivalue() );
+       bool ok = img->fetch( view->frame() );
+       if (ok)
+       {
+	  view->redraw();
+       }
+    }
+  }
+
+  static void change_y_ripmap_cb( fltk::IntInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
+    if ( img )
+    {
+       img->levelY( w->ivalue() );
+       bool ok = img->fetch( view->frame() );
+       if (ok)
+       {
+	  view->redraw();
+       }
+    }
   }
 
   static void change_pixel_ratio_cb( fltk::FloatInput* w, void* d )
@@ -471,6 +534,34 @@ namespace mrv
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	  {
+	     if ( i->first == "Mipmap Levels" )
+	     {
+		exrImage* exr = dynamic_cast< exrImage* >( img );
+		if ( exr )
+		{
+		   add_int( _("Mipmap Level"), exr->levelX(), true,
+			    (fltk::Callback*)change_mipmap_cb, 0, 20 );
+		   exr->levelY( exr->levelX() );
+		}
+	     }
+	     if ( i->first == "X Ripmap Levels" )
+	     {
+		exrImage* exr = dynamic_cast< exrImage* >( img );
+		if ( exr )
+		{
+		   add_int( _("X Ripmap Level"), exr->levelX(), true,
+			    (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
+		}
+	     }
+	     if ( i->first == "Y Ripmap Levels" )
+	     {
+		exrImage* exr = dynamic_cast< exrImage* >( img );
+		if ( exr )
+		{
+		   add_int( _("Y Ripmap Level"), exr->levelY(), true,
+			    (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
+		}
+	     }
 	    add_text( i->first.c_str(), i->second.c_str(), false );
 	  }
 	m_curr->layout();
@@ -816,7 +907,8 @@ namespace mrv
 				  fltk::Callback* callback, 
 				  const int minV, const int maxV )
   {
-    fltk::Color colA = get_title_color();
+
+     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
     int hh = line_height();
@@ -830,26 +922,47 @@ namespace mrv
     }
 
     {
-      fltk::IntInput* widget = new fltk::IntInput( kMiddle, 0, w()-kMiddle, hh );
-      widget->value( content );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
-      widget->color( colB );
+      fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
+      p->box( fltk::FLAT_BOX );
+      p->set_horizontal();
+      p->begin();
+
       if ( !editable )
 	{
+	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, p->w(), hh );
+	  widget->value( (int)content );
+	  widget->align(fltk::ALIGN_LEFT);
+	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( fltk::FLAT_BOX );
 	}
       else 
 	{
-	  if ( callback )
-	    widget->callback( callback, img );
+	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
+	  widget->value( (int)content );
+	  widget->align(fltk::ALIGN_LEFT);
+	  widget->color( colB );
+
+	  if ( callback ) widget->callback( callback, uiMain->uiView );
+
+	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
+	  slider->type(fltk::Slider::TICK_ABOVE);
+	  slider->minimum( minV );
+	  slider->maximum( maxV );
+	  slider->value( content );
+	  slider->step( 1.0 );
+	  slider->linesize(1);
+	  // slider->slider_size(10);
+	  slider->when( fltk::WHEN_CHANGED );
+	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
+
+	  p->resizable(slider);
 	}
-      g->add( widget );
-      g->resizable( widget );
+      p->end();
+      g->add( p );
+      g->resizable( p );
     }
     m_curr->add( g );
-
   }
 
   void ImageInformation::add_enum( const char* name,
@@ -950,7 +1063,7 @@ namespace mrv
 				  const unsigned int minV,
 				  const unsigned int maxV )
   {
-    fltk::Color colA = get_title_color();
+     fltk::Color colA = get_title_color();
     fltk::Color colB = get_widget_color();
 
     int hh = line_height();
@@ -964,23 +1077,45 @@ namespace mrv
     }
 
     {
-      fltk::IntInput* widget = new fltk::IntInput( kMiddle, 0, w()-kMiddle, hh );
-      widget->value( (int) content );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
-      widget->color( colB );
+      fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
+      p->box( fltk::FLAT_BOX );
+      p->set_horizontal();
+      p->begin();
+
       if ( !editable )
 	{
+	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, p->w(), hh );
+	  widget->value( (int)content );
+	  widget->align(fltk::ALIGN_LEFT);
+	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( fltk::FLAT_BOX );
 	}
       else 
 	{
-	  if ( callback )
-	    widget->callback( callback, img );
+	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
+	  widget->value( (int)content );
+	  widget->align(fltk::ALIGN_LEFT);
+	  widget->color( colB );
+
+	  if ( callback ) widget->callback( callback, uiMain->uiView );
+
+	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
+	  slider->type(fltk::Slider::TICK_ABOVE);
+	  slider->minimum( minV );
+	  slider->maximum( maxV );
+	  slider->value( content );
+	  slider->step( 1.0 );
+	  slider->linesize(1);
+	  // slider->slider_size(10);
+	  slider->when( fltk::WHEN_CHANGED );
+	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
+
+	  p->resizable(slider);
 	}
-      g->add( widget );
-      g->resizable( widget );
+      p->end();
+      g->add( p );
+      g->resizable( p );
     }
     m_curr->add( g );
 
