@@ -10,6 +10,7 @@
 
 
 #include <iostream>
+#include <vector>
 #include <algorithm>
 #include <limits>       // for quietNaN
 
@@ -194,10 +195,7 @@ bool exrImage::find_channels( const Imf::Header& h,
    const Box2i& dataWindow = h.dataWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
-   if ( dw <= 0 || dh <= 0 ) {
-      std::cerr << " dw <= 0 || dh <= 0 " << std::endl;
-      return false;
-   }
+   if ( dw <= 0 || dh <= 0 )  return false;
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
@@ -312,11 +310,10 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
 
 
+      std::vector< std::string > channelList;
       const char* channelPrefix = channel();
       if ( channelPrefix != NULL )
 	{
-
-	   std::cerr << "Channel " << channelPrefix << std::endl;
 
 	  unsigned int numChannels = 0;
 	  
@@ -329,15 +326,16 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  for ( i = s; i != e; ++i )
 	    {
 	      const char* layerName = i.name();
-
 	      const Imf::Channel* ch = channels.findChannel( layerName );
-	      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+	      if ( !ch ) continue;
 
+	      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+   
+	      channelList.push_back( layerName );
 	      ++numChannels;
 	    }
 	  if ( numChannels == 0 )
 	    {
-	       std::cerr << "numChannels 0" << std::endl;
 	      mrvALERT( _("Image file \"") << filename() << 
 			_("\" has no channels named with prefix \"") 
 			<< channelPrefix << "\"." );
@@ -380,20 +378,21 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 			_hires->channels() );
 	  boost::uint8_t* base = pixels + start;
-	  numChannels = 0;
-	  for ( i = s; i != e; ++i )
-	    {
-	      const char* layerName = i.name();
-	      const Imf::Channel* ch = channels.findChannel( layerName );
 
-	      if ( numChannels >= 4 ) continue;
+	  Imf::Channel* ch = NULL;
+	  int idx = 0;
+	  for ( i = s; i != e; ++i, ++idx )
+	    {
+	       const std::string& layerName = channelList[numChannels-idx-1];
+	       ch = channels.findChannel( layerName.c_str() );
+
+	       if ( !ch ) continue;
 
 	      char* buf = (char*)base + 1 * numChannels * _hires->pixel_size();
-
-	      fb.insert( layerName, 
+	      
+	      fb.insert( layerName.c_str(), 
 			 Slice( imfPixelType, buf, xs, ys,
 				ch->xSampling, ch->ySampling) );
-	      ++numChannels;
 	    }
 
 
@@ -449,28 +448,33 @@ bool exrImage::find_channels( const Imf::Header& h,
 		}
 	    }
 
-	  const Imf::Channel* ch;
-
-	  for ( int i = 0; i < 4; ++i )
-	    {
-
-	      ch = channels.findChannel( channelName[i] );
-	      if ( !ch ) continue;
-	      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
-	    }
-
-
 	  unsigned int num_channels = _num_channels;
 	  if ( num_channels > 4 )       num_channels = 4;
 	  else if ( num_channels == 2 ) num_channels = 3;
 
 
-	  std::cerr << "allocate pixels " << num_channels << std::endl;
+
+	  const Imf::Channel* ch = NULL;
+	  Imf::ChannelList::Iterator it = channels.begin();
+	  Imf::ChannelList::Iterator ie = channels.end();
+	  for ( int i = 0; ((i < num_channels) && (it != ie)); ++i, ++it )
+	    {
+	       const char* name = it.name();
+	       if ( !name ) continue;
+
+	       ch = &it.channel();
+	       channelList.push_back( name );
+
+	       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+	    }
+
+
+
 	  allocate_pixels( frame, num_channels, format,
 			   pixel_type_conversion( imfPixelType ) );
 	  if ( _has_yca )
 	    {
-	      for ( int i = 0; i < 4; ++i )
+	      for ( int i = 0; i < num_channels; ++i )
 		xs[i] = _hires->pixel_size();
 
 	      unsigned int dw2 = dw / 2;
@@ -482,8 +486,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  else
 	    {
 
-	       std::cerr << "not yca " << num_channels << std::endl;
-	      for ( int i = 0; i < 4; ++i )
+	      for ( int i = 0; i < num_channels; ++i )
 		{
 		  xs[i] = _hires->pixel_size() * num_channels;
 		  ys[i] = xs[i] * dw;
@@ -495,20 +498,20 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 			_hires->channels() );
 	  boost::uint8_t* base   = ( pixels + start );
-	  for ( int i = 0; i < 4; ++i )
-	    {
-	       std::cerr << "find channel " << channelName[i] << std::endl;
-	      ch = channels.findChannel( channelName[i] );
-	      if ( !ch ) continue;
-	      std::cerr << "found channel " << channelName[i] << std::endl;
 
-	      char* ptr = (char*)base + offsets[i] * _hires->pixel_size();
+	  it = channels.begin();
+	  ie = channels.end();
+	  for ( int i = 0; ((i < num_channels) && (it != ie)); ++i, ++it )
+	  {
+	     ch = channels.findChannel( channelList[num_channels-i-1].c_str() );
+	     if ( !ch ) continue;
 
-	      std::cerr << "insert " << ptr << std::endl;
-	      fb.insert( channelName[i], 
-			 Slice( imfPixelType, ptr,
-				xs[i], ys[i], ch->xSampling, ch->ySampling ) );
-	    }
+	     char* ptr = (char*)base + offsets[i] * _hires->pixel_size();
+	     
+	     fb.insert( channelList[num_channels-i-1].c_str(), 
+			Slice( imfPixelType, ptr,
+			       xs[i], ys[i], ch->xSampling, ch->ySampling ) );
+	  }
 	}
 
       return true;
