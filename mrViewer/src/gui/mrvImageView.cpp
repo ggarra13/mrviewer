@@ -2348,6 +2348,13 @@ void ImageView::channel( unsigned short c )
   const char* lbl = uiColorChannel->child(c)->label();
   std::string channelName( lbl );
 
+  std::string ext = channelName;
+  int pos = ext.rfind('.');
+  if ( pos != std::string::npos )
+  {
+     ext = ext.substr( pos+1, ext.size() );
+  }
+
   uiColorChannel->value( c );
   uiColorChannel->label( lbl );
   uiColorChannel->redraw();
@@ -2357,19 +2364,19 @@ void ImageView::channel( unsigned short c )
     {
       _channelType = kAlphaOverlay;
     }
-  else if ( channelName == "Red" )
+  else if ( channelName == "Red" || ext == N_("R") )
     {
       _channelType = kRed;
     }
-  else if ( channelName == "Green" )
+  else if ( channelName == "Green" || ext == N_("G") )
     {
       _channelType = kGreen;
     }
-  else if ( channelName == "Blue" )
+  else if ( channelName == "Blue"  || ext == N_("B"))
     {
       _channelType = kBlue;
     }
-  else if ( channelName == "Alpha" )
+  else if ( channelName == "Alpha" || ext == N_("A") )
     {
       _channelType = kAlpha;
     }
@@ -2380,8 +2387,13 @@ void ImageView::channel( unsigned short c )
   
   mrv::media fg = foreground();
   mrv::media bg = background();
-  if ( fg ) fg->image()->channel( lbl );
-  if ( bg ) bg->image()->channel( lbl );
+
+  if ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
+       ext != N_("A") )
+  {
+     if ( fg ) fg->image()->channel( lbl );
+     if ( bg ) bg->image()->channel( lbl );
+  }
 
   smart_refresh();
 }

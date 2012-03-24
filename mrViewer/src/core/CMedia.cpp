@@ -791,6 +791,7 @@ void CMedia::channel( const char* chinput )
 {
   const char* c = chinput;
   std::string ch( chinput );
+
   if ( ch == "Color" || ch == "Red" || ch == "Green" || ch == "Blue" ||
        ch == "Alpha" || ch == "Alpha Overlay" || ch == "Lumma" )
    c = NULL;
