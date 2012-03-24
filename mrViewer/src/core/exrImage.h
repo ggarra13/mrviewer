@@ -17,6 +17,7 @@
 #include <ImfCompression.h>
 #include <ImfPixelType.h>
 #include <ImfHeader.h>
+#include <ImfChannelList.h>
 #include <ImfFrameBuffer.h>
 
 
@@ -65,6 +66,15 @@ namespace mrv {
        void levelY( const int ly ) { _levelY = ly; }
 
   protected:
+       bool channels_order( 
+			   const boost::int64_t frame,
+			   Imf::ChannelList::ConstIterator s,
+			   Imf::ChannelList::ConstIterator e,
+			   Imf::ChannelList& channels,
+			   const Imf::Header& hdr, 
+			   Imf::FrameBuffer& fb
+			    );
+       void ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame );
        bool fetch_mipmap( const boost::int64_t frame );
        bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
 			   boost::int64_t frame );

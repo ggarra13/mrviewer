@@ -122,7 +122,208 @@ namespace mrv {
   }
 
 
+bool exrImage::channels_order(
+			      const boost::int64_t frame,
+			      Imf::ChannelList::ConstIterator s,
+			      Imf::ChannelList::ConstIterator e,
+			      Imf::ChannelList& channels,
+			      const Imf::Header& h, 
+			      Imf::FrameBuffer& fb
+			      )
+{
+  
+   const Box2i& dataWindow = h.dataWindow();
+   int dw = dataWindow.max.x - dataWindow.min.x + 1;
+   int dh = dataWindow.max.y - dataWindow.min.y + 1;
+   if ( dw <= 0 || dh <= 0 )  return false;
+   int dx = dataWindow.min.x;
+   int dy = dataWindow.min.y;
 
+   int order[4];
+   order[0] = order[1] = order[2] = order[3] = 0;
+
+   // First, count the number of channels
+   int idx = 0;
+   Imf::PixelType imfPixelType = Imf::UINT;
+   std::vector< std::string > channelList;
+   Imf::ChannelList::ConstIterator i;
+   unsigned int numChannels = 0;
+   for ( i = s; i != e; ++i, ++idx )
+   {
+      const std::string layerName = i.name();
+      const Imf::Channel* ch = channels.findChannel( 
+						    layerName.c_str()
+						     );
+      if ( !ch ) continue;
+   
+      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+      
+      std::string ext = layerName;
+      int pos = layerName.rfind( N_(".") );
+      if ( pos != string::npos )
+      {
+	 ext = ext.substr( pos+1, ext.size() );
+      }
+
+      std::transform( ext.begin(), ext.end(), ext.begin(),
+		      (int(*)(int)) toupper);
+      if ( ext == N_("R") || ext == N_("RED") || 
+	   ext == N_("Y")  ) order[0] = idx;
+      if ( ext == N_("G") || ext == N_("GREEN") || 
+	   ext == N_("RY") ) order[1] = idx;
+      if ( ext == N_("B") || ext == N_("BLUE")|| 
+	   ext == N_("BY") ) order[2] = idx;
+      if ( ext == N_("A") || ext == N_("ALPHA") ) order[3] = idx;
+      channelList.push_back( layerName );
+      ++numChannels;
+   }
+
+   if ( numChannels == 0 && channel() )
+   {
+      mrvALERT( _("Image file \"") << filename() << 
+		_("\" has no channels named with prefix \"") 
+		<< channel() << "\"." );
+      return false;
+   }
+   else if ( numChannels > 4 && channel() )
+   {
+      mrvALERT( _("Image file \"") << filename() 
+		<< _("\" contains more than 4 channels "
+		     "named with prefix \"") 
+		<< channel() << "\"" );
+      numChannels = 4;
+   }
+   
+   // Prepare format
+   image_type::Format format = VideoFrame::kLumma;
+   int offsets[4];
+   offsets[0]  = 0;
+   if ( _has_yca )
+   {
+      unsigned size  = dw * dh;
+      unsigned size2 = dw * dh / 4;
+      offsets[1]  = size;
+      offsets[2]  = size + size2;
+      offsets[3]  = size + size2 * 2;
+      if ( numChannels >= 3 && has_alpha() )
+      {
+	 format = VideoFrame::kYByRy420A;
+	 numChannels = 4;
+      }
+      else if ( numChannels >= 2 )
+      {
+	 format = VideoFrame::kYByRy420;
+	 numChannels = 3;
+      }
+   }
+   else
+   {
+      offsets[1]  = 1;
+      offsets[2]  = 2;
+      offsets[3]  = 3;
+      
+      if ( numChannels >= 3 && has_alpha() )
+      {
+	 format = VideoFrame::kRGBA;
+	 numChannels = 4;
+      }
+      else if ( numChannels >= 2 )
+      {
+	 format = VideoFrame::kRGB;
+	 numChannels = 3;
+      }
+   }
+   
+   allocate_pixels( frame, numChannels, format,
+		    pixel_type_conversion( imfPixelType ) );
+   
+   static size_t xs[4], ys[4];
+   if ( _has_yca )
+   {
+      for ( int i = 0; i < numChannels; ++i )
+	 xs[i] = _hires->pixel_size();
+      
+      unsigned int dw2 = dw / 2;
+      ys[0] = xs[0] * dw;
+      ys[1] = xs[0] * dw2;
+      ys[2] = xs[0] * dw2;
+      ys[3] = xs[0] * dw;
+   }
+   else
+   {
+      
+      for ( int i = 0; i < numChannels; ++i )
+      {
+	 xs[i] = _hires->pixel_size() * numChannels;
+	 ys[i] = xs[i] * dw;
+      }
+   }
+   
+
+
+   boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
+   memset( pixels, 0, _hires->data_size() );
+   
+
+   // Then, prepare frame buffer for them
+   int start = ( (-dx - dy * dw) * _hires->pixel_size() *
+		 _hires->channels() );
+   boost::uint8_t* base = pixels + start;
+
+   Imf::Channel* ch = NULL;
+   idx = 0;
+   for ( i = s; i != e && idx < 4; ++i, ++idx )
+   {
+      int k = order[idx];
+      const std::string& layerName = channelList[k];
+
+
+      ch = channels.findChannel( layerName.c_str() );
+      
+      if ( !ch ) continue;
+      
+      char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
+      
+      fb.insert( layerName.c_str(), 
+		 Slice( imfPixelType, buf, xs[idx], ys[idx],
+			ch->xSampling, ch->ySampling) );
+   }
+
+   return true;
+}
+
+void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
+{
+   Imf::Chromaticities cr;
+   if ( Imf::hasChromaticities( hdr ) )
+      cr = Imf::chromaticities( hdr );
+   
+   V3f yw = Imf::RgbaYca::computeYw(cr);
+   
+   unsigned w = width();
+   unsigned h = height();
+   
+   image_type::Format format = ( has_alpha() ? 
+				 image_type::kRGBA : 
+				 image_type::kRGB );
+   
+   mrv::image_type_ptr rgba( new image_type( frame, w, h, 
+					     3 + 1*has_alpha(),
+					     format,
+					     image_type::kFloat ) );
+   
+   
+   for ( unsigned y = 0; y < h; ++y )
+   {
+      for ( unsigned x = 0; x < w; ++x )
+      {
+	 CMedia::PixelType p = _hires->pixel( x, y );
+	 rgba->pixel( x, y, p );
+      }
+   }
+
+	  _hires = rgba;
+}
 
   /** 
    * Fetch the current EXR image
@@ -209,7 +410,6 @@ bool exrImage::find_channels( const Imf::Header& h,
    Imf::ChannelList channels = h.channels();
 
 
-   Imf::PixelType imfPixelType = Imf::UINT;
 
    _layers.clear();
    _num_channels = 0;
@@ -278,7 +478,8 @@ bool exrImage::find_channels( const Imf::Header& h,
 	   name == _("RED") || name == _("GREEN") || name == _("BLUE") || 
 	   name == _("ALPHA")
 	   ) 
-	 continue;
+	 continue; // these channels are handled in shader directly
+
       if ( name.find( N_(".") ) != string::npos ) continue;
       _layers.push_back( i.name() );
       ++_num_channels;
@@ -310,7 +511,6 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
 
 
-      std::vector< std::string > channelList;
       const char* channelPrefix = channel();
       if ( channelPrefix != NULL )
 	{
@@ -322,196 +522,14 @@ bool exrImage::find_channels( const Imf::Header& h,
 	  Imf::ChannelList::ConstIterator e;
 	  channels.channelsWithPrefix( channelPrefix, s, e );
 
-	  // First, count the number of channels
-	  for ( i = s; i != e; ++i )
-	    {
-	      const char* layerName = i.name();
-	      const Imf::Channel* ch = channels.findChannel( layerName );
-	      if ( !ch ) continue;
-
-	      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
-   
-	      channelList.push_back( layerName );
-	      ++numChannels;
-	    }
-	  if ( numChannels == 0 )
-	    {
-	      mrvALERT( _("Image file \"") << filename() << 
-			_("\" has no channels named with prefix \"") 
-			<< channelPrefix << "\"." );
-	      return false;
-	    }
-	  else if ( numChannels > 4 )
-	    {
-	      mrvALERT( _("Image file \"") << filename() 
-			<< _("\" contains more than 4 channels "
-			     "named with prefix \"") 
-			<< channelPrefix << "\"" );
-	      numChannels = 4;
-	    }
-
-	  // Prepare format
-	  image_type::Format format = VideoFrame::kLumma;
-	  if ( numChannels >= 4 )
-	    {
-	      format = VideoFrame::kRGBA;
-	    }
-	  else if ( numChannels >= 2 )
-	    {
-	      format = VideoFrame::kRGB;
-	      numChannels = 3;
-	    }
-
-
-	  allocate_pixels( frame, numChannels, format,
-			   pixel_type_conversion( imfPixelType ) );
-
-
-	  boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-	  memset( pixels, 0, _hires->data_size() );
-
-	  size_t xs = _hires->pixel_size() * _hires->channels();
-	  size_t ys = xs * dw;
-
-
-	  // Then, prepare frame buffer for them
-	  int start = ( (-dx - dy * dw) * _hires->pixel_size() *
-			_hires->channels() );
-	  boost::uint8_t* base = pixels + start;
-
-	  Imf::Channel* ch = NULL;
-	  int idx = 0;
-	  for ( i = s; i != e; ++i, ++idx )
-	    {
-	       const std::string& layerName = channelList[numChannels-idx-1];
-	       ch = channels.findChannel( layerName.c_str() );
-
-	       if ( !ch ) continue;
-
-	      char* buf = (char*)base + 1 * numChannels * _hires->pixel_size();
-	      
-	      fb.insert( layerName.c_str(), 
-			 Slice( imfPixelType, buf, xs, ys,
-				ch->xSampling, ch->ySampling) );
-	    }
-
-
+	  channels_order( frame, s, e, channels, h, fb );
 	}
       else
 	{
-	  static const char* rgbaChannels[] = {
-	    N_("R"), N_("G"), N_("B"), N_("A")
-	  };
-	  static const char* ycaChannels[] = {
-	    N_("Y"), N_("RY"), N_("BY"), N_("A")
-	  };
-	  
-	  image_type::Format format = VideoFrame::kLumma;
+	  Imf::ChannelList::Iterator s = channels.begin();
+	  Imf::ChannelList::Iterator e = channels.end();
 
-	  static size_t xs[4], ys[4];
-	  static int offsets[4];
-	  offsets[0]  = 0;
-
-
-	  const char** channelName;
-	  if ( _has_yca )
-	    {
-	      unsigned size  = dw * dh;
-	      unsigned size2 = dw * dh / 4;
-	      offsets[1]  = size;
-	      offsets[2]  = size + size2;
-	      offsets[3]  = size + size2 * 2;
-	      channelName = ycaChannels;
- 	      if ( has_alpha )
-		{
-		  format = VideoFrame::kYByRy420A;
-		}
-	      else if ( _num_channels >= 2 )
-		{
-		  format = VideoFrame::kYByRy420;
-		}
-	    }
-	  else
-	    {
-	      offsets[1]  = 1;
-	      offsets[2]  = 2;
-	      offsets[3]  = 3;
-
-	      channelName = rgbaChannels;
-	      if ( has_alpha )
-		{
-		  format = VideoFrame::kRGBA;
-		}
-	      else if ( _num_channels >= 2 )
-		{
-		  format = VideoFrame::kRGB;
-		}
-	    }
-
-	  unsigned int num_channels = _num_channels;
-	  if ( num_channels > 4 )       num_channels = 4;
-	  else if ( num_channels == 2 ) num_channels = 3;
-
-
-
-	  const Imf::Channel* ch = NULL;
-	  Imf::ChannelList::Iterator it = channels.begin();
-	  Imf::ChannelList::Iterator ie = channels.end();
-	  for ( int i = 0; ((i < num_channels) && (it != ie)); ++i, ++it )
-	    {
-	       const char* name = it.name();
-	       if ( !name ) continue;
-
-	       ch = &it.channel();
-	       channelList.push_back( name );
-
-	       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
-	    }
-
-
-
-	  allocate_pixels( frame, num_channels, format,
-			   pixel_type_conversion( imfPixelType ) );
-	  if ( _has_yca )
-	    {
-	      for ( int i = 0; i < num_channels; ++i )
-		xs[i] = _hires->pixel_size();
-
-	      unsigned int dw2 = dw / 2;
-	      ys[0] = xs[0] * dw;
-	      ys[1] = xs[0] * dw2;
-	      ys[2] = xs[0] * dw2;
-	      ys[3] = xs[0] * dw;
-	    }
-	  else
-	    {
-
-	      for ( int i = 0; i < num_channels; ++i )
-		{
-		  xs[i] = _hires->pixel_size() * num_channels;
-		  ys[i] = xs[i] * dw;
-		}
-	    }
-
-
-	  boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-	  int start = ( (-dx - dy * dw) * _hires->pixel_size() *
-			_hires->channels() );
-	  boost::uint8_t* base   = ( pixels + start );
-
-	  it = channels.begin();
-	  ie = channels.end();
-	  for ( int i = 0; ((i < num_channels) && (it != ie)); ++i, ++it )
-	  {
-	     ch = channels.findChannel( channelList[num_channels-i-1].c_str() );
-	     if ( !ch ) continue;
-
-	     char* ptr = (char*)base + offsets[i] * _hires->pixel_size();
-	     
-	     fb.insert( channelList[num_channels-i-1].c_str(), 
-			Slice( imfPixelType, ptr,
-			       xs[i], ys[i], ch->xSampling, ch->ySampling ) );
-	  }
+	  channels_order( frame, s, e, channels, h, fb );
 	}
 
       return true;
@@ -809,7 +827,6 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
       FrameBuffer fb;
       bool ok = find_channels( h, fb, frame );
       if (!ok) return false;
-      
 
       in.setFrameBuffer(fb);
 
@@ -836,44 +853,16 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
       if ( _has_yca && !supports_yuv() )
 	{
-	  Imf::Chromaticities cr;
-	  if ( Imf::hasChromaticities( h ) )
-	    cr = Imf::chromaticities( h );
-
-	  V3f yw = Imf::RgbaYca::computeYw(cr);
-
-	  unsigned w = width();
-	  unsigned h = height();
-	  
-	  image_type::Format format = ( has_alpha() ? 
-					image_type::kRGBA : 
-					image_type::kRGB );
-       
-	  mrv::image_type_ptr rgba( new image_type( frame, w, h, 
-						    3 + 1*has_alpha(),
-						    format,
-						    image_type::kFloat ) );
-
-
-	  for ( unsigned y = 0; y < h; ++y )
-	    {
-	      for ( unsigned x = 0; x < w; ++x )
-		{
-		  CMedia::PixelType p = _hires->pixel( x, y );
-		  rgba->pixel( x, y, p );
-		}
-	    }
-
-	  _hires = rgba;
+	   ycc2rgba( h, frame );
 	}
 
     } 
     catch( const std::exception& e )
       {
+	 cerr << e.what() << endl;
 	mrvALERT( e.what() );
 	return false;
       }
-
 
     return true;
   }

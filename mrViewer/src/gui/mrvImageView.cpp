@@ -146,6 +146,20 @@ namespace
 	if ( strcmp( shortcuts[i].channel, channel ) == 0 )
 	  return shortcuts[i].key;
       }
+
+    std::string channelName = channel;
+    int pos = channelName.rfind( '.' );
+    if ( pos != std::string::npos )
+    {
+       std::string ext = channelName.substr( pos+1, channelName.size() );
+       std::transform( ext.begin(), ext.end(), ext.begin(),
+		       (int(*)(int)) toupper );
+       if ( ext == N_("R") || ext == N_("RED")   ) return 'r';
+       if ( ext == N_("G") || ext == N_("GREEN") ) return 'g';
+       if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
+       if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
+    }
+
     return 0;
   }
 
@@ -2662,6 +2676,7 @@ void ImageView::update_layers()
   int ch = uiColorChannel->value();
 
   char* channelName = NULL;
+  
 
   if ( ch >= 0 && ch < uiColorChannel->children() )
     {
@@ -3106,7 +3121,11 @@ void ImageView::first_frame()
   CMedia* img = fg->image();
 
   if (!img) return;
+
+  int64_t t = timeline()->minimum();
   int64_t f = img->first_frame();
+  if ( t > f ) f = t;
+
   if ( timeline()->edl() )
     {
       f = timeline()->location(img);
@@ -3128,7 +3147,10 @@ void ImageView::last_frame()
 
   CMedia* img = fg->image();
 
+  int64_t t = timeline()->maximum();
   int64_t f = img->last_frame();
+  if ( t < f ) f = t;
+
   if ( timeline()->edl() )
     {
       f -= img->first_frame();
