@@ -112,10 +112,15 @@ namespace mrv
 	frame = file.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = file.substr( idx[0], file.size()-idx[0] );
 
+
+	std::string tmp = ext;
+	std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+			(int(*)(int)) tolower);
+
 	// If extension is one of a movie/audio file, return false
-	if ( ext == ".avi" || ext == ".mov"  || ext == ".divx" ||
-	     ext == ".wmv" || ext == ".mpeg" || ext == ".mpg"  ||
-	     ext == ".qt"  || ext == ".wav"  || ext == ".VOB" )
+	if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
+	     tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
+	     tmp == ".qt"  || tmp == ".wav"  || tmp == ".vob" )
 	  return false;
 
 	bool ok = is_valid_frame_spec( frame );

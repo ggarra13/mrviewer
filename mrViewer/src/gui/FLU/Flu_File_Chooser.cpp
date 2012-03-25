@@ -67,20 +67,21 @@ typedef __int64 int64_t;
 #include "flu_file_chooser_pixmaps.h"
 
 #include "core/Sequence.h"
+#include "core/mrvI8N.h"
 
 using namespace fltk;
 
 
 // set default language strings
-std::string Flu_File_Chooser::favoritesTxt = "Favorites";
+std::string Flu_File_Chooser::favoritesTxt = _("Favorites");
 #ifdef WIN32
-std::string Flu_File_Chooser::myComputerTxt = "My Computer";
-std::string Flu_File_Chooser::myDocumentsTxt = "My Documents";
-std::string Flu_File_Chooser::desktopTxt = "Desktop";
+std::string Flu_File_Chooser::myComputerTxt = _("My Computer");
+std::string Flu_File_Chooser::myDocumentsTxt = _("My Documents");
+std::string Flu_File_Chooser::desktopTxt = _("Desktop");
 #else
-std::string Flu_File_Chooser::myComputerTxt = "Home";
-std::string Flu_File_Chooser::myDocumentsTxt = "Temporary";
-std::string Flu_File_Chooser::desktopTxt = "Desktop";
+std::string Flu_File_Chooser::myComputerTxt = _("Home");
+std::string Flu_File_Chooser::myDocumentsTxt = _("Temporary");
+std::string Flu_File_Chooser::desktopTxt = _("Desktop");
 #endif
 
 std::string Flu_File_Chooser::detailTxt[] = { "Name", "Size", "Date", "Type", "Frames" };
@@ -4137,7 +4138,23 @@ void Flu_File_Chooser::cd( const char *path )
 						frame,
 						ext, 
 						name );
+		 
+		 bool is_sequence = false;
 		 if ( root != "" && frame != "" && ext != "" )
+		    is_sequence = true;
+
+		 std::string tmp = ext;
+		 std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+				 (int(*)(int)) tolower);
+		 if ( tmp == N_(".avi") || tmp == N_(".mov") || 
+		      tmp == N_(".divx") ||
+		      tmp == N_(".wmv") || tmp == N_(".mpeg") ||
+		      tmp == N_(".mpg")  ||
+		      tmp == N_(".qt")  || tmp == N_(".wav")  ||
+		      tmp == N_(".vob") )
+		    is_sequence = false;
+
+		 if ( is_sequence )
 		  {
 		    Sequence seq;
 		    seq.ext = ext;
