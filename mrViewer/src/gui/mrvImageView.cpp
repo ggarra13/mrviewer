@@ -147,18 +147,34 @@ namespace
 	  return shortcuts[i].key;
       }
 
+    static std::string oldChannel;
     std::string channelName = channel;
-    int pos = channelName.rfind( '.' );
+    int pos  = channelName.rfind( '.' );
+    int pos2;
+    if ( channelName.size() > oldChannel.size() )
+    {
+       pos2 = channelName.find( oldChannel );
+       if ( pos2 == std::string::npos ) return 0; 
+    }
+    else
+    {
+       pos2 = oldChannel.find( channelName );
+       if ( pos2 == std::string::npos ) return 0; 
+    }
+
     if ( pos != std::string::npos )
     {
        std::string ext = channelName.substr( pos+1, channelName.size() );
        std::transform( ext.begin(), ext.end(), ext.begin(),
 		       (int(*)(int)) toupper );
+       if ( ext == N_("COLOR") ) return 'c';
        if ( ext == N_("R") || ext == N_("RED")   ) return 'r';
        if ( ext == N_("G") || ext == N_("GREEN") ) return 'g';
        if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
        if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
     }
+
+    oldChannel = channelName;
 
     return 0;
   }
@@ -2348,11 +2364,36 @@ void ImageView::channel( unsigned short c )
   const char* lbl = uiColorChannel->child(c)->label();
   std::string channelName( lbl );
 
+  static std::string oldChannel;
+
   std::string ext = channelName;
   int pos = ext.rfind('.');
+
+  int pos2 = oldChannel.rfind('.');
+
   if ( pos != std::string::npos )
   {
      ext = ext.substr( pos+1, ext.size() );
+  }
+
+  if ( pos != pos2 && channelName.size() > oldChannel.size() )
+  {
+     pos2 = channelName.find( oldChannel );
+     if ( pos2 == std::string::npos ) ext = ""; 
+  }
+  else
+  {
+     if ( pos != pos2 )
+     {
+	pos2 = oldChannel.find( channelName );
+	if ( pos2 == std::string::npos ) ext = ""; 
+     }
+     else
+     {
+	std::string temp1 = channelName.substr( 0, pos );
+	std::string temp2 = oldChannel.substr( 0, pos2 );
+	if ( temp1 != temp2 ) ext = ""; 
+     }
   }
 
   uiColorChannel->value( c );
@@ -2394,6 +2435,8 @@ void ImageView::channel( unsigned short c )
      if ( fg ) fg->image()->channel( lbl );
      if ( bg ) bg->image()->channel( lbl );
   }
+
+  oldChannel = channelName;
 
   smart_refresh();
 }

@@ -4130,75 +4130,25 @@ void Flu_File_Chooser::cd( const char *path )
 	      }
 	    else
 	      {
-		bool is_sequence = false;
-		char* seqfile = strdup(name);
-		char* s = seqfile + strlen(seqfile) - 1;
-		bool in_number = false;
-		bool in_ext = true;
-		int  number = 0;
-		int ext = 0;
-		for ( ; s != seqfile; --s )
-		  {
-		    if ( in_ext )
-		      {
-			if ( ( *s >= 'A' && *s <= 'Z' ) ||
-			     ( *s >= 'a' && *s <= 'z' ) )
-			  continue; // still valid
-			in_ext = false;
-			if ( *s != '.' ) break; // not a sequence
-
-			if ( strcmp( s, ".VOB" ) == 0 || 
-			     strcmp( s, ".vob" ) == 0 || 
-			     strcmp( s, ".WMV"  ) == 0 ||
-			     strcmp( s, ".wmv"  ) == 0 ||
-			     strcmp( s, ".mov"  ) == 0 ||
-			     strcmp( s, ".MOV"  ) == 0 ||
-			     strcmp( s, ".qt"   ) == 0 ||
-			     strcmp( s, ".QT"   ) == 0 ||
-			     strcmp( s, ".divx" ) == 0 ||
-			     strcmp( s, ".DIVX" ) == 0 ||
-			     strcmp( s, ".wav"  ) == 0 ||
-			     strcmp( s, ".WAV"  ) == 0 ||
-			     strcmp( s, ".mpg"  ) == 0 ||
-			     strcmp( s, ".mpeg" ) == 0 ||
-			     strcmp( s, ".mp3"  ) == 0 ||
-			     strcmp( s, ".mp4"  ) == 0 ||
-			     strcmp( s, ".avi"  ) == 0 ||
-			     strcmp( s, ".AVI"  ) == 0 )
-			  break; // movie/audio file, not a sequence
-
-			ext = s - seqfile;
-			in_number = true;
-		      }
-		    else if ( in_number )
-		      {
-			if ( *s >= '0' && *s <= '9' ) continue;
-			in_number = false;
-			if ( *s != '.' && *s != '_' &&
-			     *s != '-' ) break; // not a sequence
-			number = s - seqfile + 1;
-		      }
-		    else
-		      {
-			is_sequence = true; break; // SUCCESS!!!
-		      }
-		  }
-
-		if ( is_sequence )
+		 std::string root;
+		 std::string frame;
+		 std::string ext;
+		 bool ok = mrv::split_sequence( root,
+						frame,
+						ext, 
+						name );
+		if ( ok )
 		  {
 		    Sequence seq;
-		    seq.ext = seqfile + ext;
-		    *(seqfile + ext) = 0;
-		    seq.number = seqfile + number;
-		    *(seqfile + number) = 0;
-		    seq.root = seqfile;
+		    seq.ext = ext;
+		    seq.number = frame;
+		    seq.root = root;
 		    tmpseqs.push_back( seq );
 		  }
 		else
 		  {
 		    files.push_back( name );
 		  }
-		free(seqfile);
 	      }
 	}
 

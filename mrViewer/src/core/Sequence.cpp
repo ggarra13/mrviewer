@@ -52,7 +52,7 @@ namespace mrv
     bool range_found = false;
     for ( ++c; *c != 0; ++c )
       {
-	if ( *c == '-' ) { range_found = true; continue; }
+	if ( !range_found && *c == '-' ) { range_found = true; continue; }
 
 	if ( *c != '+' && *c >= '0' && *c <= '9' ) continue;
 
