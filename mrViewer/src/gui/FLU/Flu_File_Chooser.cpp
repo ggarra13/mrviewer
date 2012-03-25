@@ -4137,7 +4137,7 @@ void Flu_File_Chooser::cd( const char *path )
 						frame,
 						ext, 
 						name );
-		if ( ok )
+		 if ( root != "" && frame != "" && ext != "" )
 		  {
 		    Sequence seq;
 		    seq.ext = ext;
