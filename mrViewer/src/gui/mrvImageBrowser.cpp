@@ -1785,6 +1785,24 @@ namespace mrv {
     stringArray files;
     mrv::split_string( files, filenames, "\n" ); 
 
+    stringArray::iterator i = files.begin();
+    stringArray::iterator e = files.end();
+    for ( ; i != e; ++i )
+    {
+       std::string file = *i;
+       std::string root, frame, ext;
+       mrv::split_sequence( root, frame, ext, file );
+       if ( frame != "" )
+       {
+	  file = root;
+	  for ( int i = 0; i < frame.size(); ++i )
+	     if ( frame[i] == '0' ) file += '@';
+	  file += '@';
+	  file += ext;
+       }
+       *i = file;
+    }
+
     load( files );
 
     last_image();

@@ -90,32 +90,32 @@ std::string Flu_File_Chooser::diskTypesTxt[6] = { "Floppy Disk", "Removable Disk
 						      "Local Disk", "Compact Disk",
 						      "Network Disk", "RAM Disk" };
 
-std::string Flu_File_Chooser::filenameTxt = "Filename";
-std::string Flu_File_Chooser::okTxt = "Ok";
-std::string Flu_File_Chooser::cancelTxt = "Cancel";
-std::string Flu_File_Chooser::locationTxt = "Location";
-std::string Flu_File_Chooser::showHiddenTxt = "Show Hidden Files";
-std::string Flu_File_Chooser::fileTypesTxt = "File Types";
-std::string Flu_File_Chooser::directoryTxt = "Directory";
-std::string Flu_File_Chooser::allFilesTxt = "All Files (*)";
-std::string Flu_File_Chooser::defaultFolderNameTxt = "New Folder";
+std::string Flu_File_Chooser::filenameTxt = _("Filename");
+std::string Flu_File_Chooser::okTxt = _("Ok");
+std::string Flu_File_Chooser::cancelTxt = _("Cancel");
+std::string Flu_File_Chooser::locationTxt = _("Location");
+std::string Flu_File_Chooser::showHiddenTxt = _("Show Hidden Files");
+std::string Flu_File_Chooser::fileTypesTxt = _("File Types");
+std::string Flu_File_Chooser::directoryTxt = _("Directory");
+std::string Flu_File_Chooser::allFilesTxt = _("All Files (*)");
+std::string Flu_File_Chooser::defaultFolderNameTxt = _("New Folder");
 
-std::string Flu_File_Chooser::backTTxt = "Go back one directory in the history";
-std::string Flu_File_Chooser::forwardTTxt = "Go forward one directory in the history";
-std::string Flu_File_Chooser::upTTxt = "Go to the parent directory";
-std::string Flu_File_Chooser::reloadTTxt = "Refresh this directory";
-std::string Flu_File_Chooser::trashTTxt = "Delete file(s)";
-std::string Flu_File_Chooser::newDirTTxt = "Create new directory";
-std::string Flu_File_Chooser::addFavoriteTTxt = "Add this directory to my favorites";
-std::string Flu_File_Chooser::previewTTxt = "Preview files";
-std::string Flu_File_Chooser::listTTxt = "List mode";
-std::string Flu_File_Chooser::wideListTTxt = "Wide list mode";
-std::string Flu_File_Chooser::detailTTxt = "Detail mode";
+std::string Flu_File_Chooser::backTTxt = _("Go back one directory in the history");
+std::string Flu_File_Chooser::forwardTTxt = _("Go forward one directory in the history");
+std::string Flu_File_Chooser::upTTxt = _("Go to the parent directory");
+std::string Flu_File_Chooser::reloadTTxt = _("Refresh this directory");
+std::string Flu_File_Chooser::trashTTxt = _("Delete file(s)");
+std::string Flu_File_Chooser::newDirTTxt = _("Create new directory");
+std::string Flu_File_Chooser::addFavoriteTTxt = _("Add this directory to my favorites");
+std::string Flu_File_Chooser::previewTTxt = _("Preview files");
+std::string Flu_File_Chooser::listTTxt = _("List mode");
+std::string Flu_File_Chooser::wideListTTxt = _("Wide list mode");
+std::string Flu_File_Chooser::detailTTxt = _("Detail mode");
 
-std::string Flu_File_Chooser::createFolderErrTxt = "Could not create directory '%s'. You may not have permission to perform this operation.";
-std::string Flu_File_Chooser::deleteFileErrTxt = "An error ocurred while trying to delete '%s'.";
-std::string Flu_File_Chooser::fileExistsErrTxt = "File '%s' already exists!";
-std::string Flu_File_Chooser::renameErrTxt = "Unable to rename '%s' to '%s'";
+std::string Flu_File_Chooser::createFolderErrTxt = _("Could not create directory '%s'. You may not have permission to perform this operation.");
+std::string Flu_File_Chooser::deleteFileErrTxt = _("An error ocurred while trying to delete '%s'.");
+std::string Flu_File_Chooser::fileExistsErrTxt = _("File '%s' already exists!");
+std::string Flu_File_Chooser::renameErrTxt = _("Unable to rename '%s' to '%s'");
 
 const char *col_labels[] = {
   Flu_File_Chooser::detailTxt[0].c_str(),
