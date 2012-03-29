@@ -810,7 +810,7 @@ namespace mrv {
     CHECK_GL( "draw_quad enable 2D textures" );
 
     bool use_lut = _view->use_lut() && _lut && GLEW_EXT_texture3D;
-    if ( use_lut )
+    if ( use_lut && _lut )
       {
 	_lut->enable();
       }
@@ -839,7 +839,7 @@ namespace mrv {
 
 	_shader->setUniform( "channel", _view->channel_type() );
 
-	if ( use_lut )
+	if ( use_lut && _lut )
 	  {
 	    _shader->setUniform( "enableLut", 1 );
 	    _shader->setUniform( "lutMin", _lut->lutMin );
@@ -932,7 +932,7 @@ namespace mrv {
 	glDisable( GL_TEXTURE_2D );
       }
 
-    if ( use_lut )
+    if ( use_lut && _lut )
       {
 	_lut->disable();
       }
