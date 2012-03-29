@@ -721,7 +721,7 @@ bool ImageView::should_update( mrv::media& fg )
 
 	  if ( img->image_damage() & CMedia::kDamageContents )
 	    {
-	      resize_background();
+	       // resize_background();
 	      update = true;
 	    }
 
@@ -3055,7 +3055,10 @@ void ImageView::toggle_lut()
 {
   _useLUT = !_useLUT;
   flush_caches();
-  if ( _useLUT ) damage_contents();
+  if ( _useLUT ) {
+     damage_contents();
+     _engine->refresh_luts();
+  }
   smart_refresh();
 }
 

@@ -52,7 +52,8 @@ namespace mrv {
     lutT( 0 ),
     lutF( 0 ),
     texId( 0 ),
-    _lutN( N )
+    _lutN( N ),
+    _inited( false )
   {
     glGenTextures( 1, &texId );
   }
@@ -91,6 +92,7 @@ namespace mrv {
   //
   void GLLut3d::clear_lut()
   {
+     _inited = false;
     lut.resizeErase( lut_size() );
     for ( size_t i = 0; i < lut_size(); ++i )
       lut[i] = 0;
@@ -242,10 +244,10 @@ namespace mrv {
     half* inited = lut;
 
     Imf::Array<half> pixelValues ( lut_size() );
-    if ( !inited )
+    if ( !_inited )
       {
-	clear_lut();
-	init_pixel_values( pixelValues );
+	 clear_lut();
+	 init_pixel_values( pixelValues );
       }
     else
       {
@@ -286,6 +288,7 @@ namespace mrv {
       {
 	ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
 		  channelNames );
+	_inited = true;
       }
     catch( const std::exception& e )
       {
@@ -363,7 +366,7 @@ namespace mrv {
     half* inited = lut;
 
     Imf::Array<float> pixelValues ( lut_size() );
-    if ( !inited )
+    if ( !_inited )
       {
 	clear_lut();
 	init_pixel_values( pixelValues );
@@ -386,6 +389,7 @@ namespace mrv {
 // 		 (flags & kXformLast) ? icSigRgbData : icSigXYZData, 
 		 (flags & kXformFirst) );
 
+
     icStatusCMM status;
     {
       Transforms::const_iterator i = start;
@@ -393,7 +397,7 @@ namespace mrv {
 	{
 	  const char* name = (*i).name.c_str();
 	  CIccProfile* pIcc = colorProfile::get( name );
-	  if ( !pIcc ) 
+	  if ( !pIcc )
 	    {
 	      LOG_ERROR( _("Could not locate ICC profile \"") 
 			 << name << N_("\"") );
@@ -423,13 +427,14 @@ namespace mrv {
     unsigned src_space = cmm.GetSourceSpace();
     
     if ( !((src_space==icSigRgbData)  ||
-	 (src_space==icSigLabData)  ||
-	 (src_space==icSigXYZData)  ||
-	 (src_space==icSigCmykData) ||
-	 (src_space==icSigMCH4Data) ||
-	 (src_space==icSigMCH5Data) ||
-	 (src_space==icSigMCH6Data))) 
-      {
+	   (src_space==icSigGrayData) ||
+	   (src_space==icSigLabData)  ||
+	   (src_space==icSigXYZData)  ||
+	   (src_space==icSigCmykData) ||
+	   (src_space==icSigMCH4Data) ||
+	   (src_space==icSigMCH5Data) ||
+	   (src_space==icSigMCH6Data)) ) 
+    {
 	LOG_ERROR( _("Invalid source profile/image pixel format") );
 	return false;
       }
@@ -474,14 +479,21 @@ namespace mrv {
 		       "Colors may look weird displayed as RGB.") );
       }
 
+    status = cmm.Begin();
+    if ( status != icCmmStatOk )
+    {
+       icc_cmm_error(  _("Could not init cmm: "), status );
+       return false;
+    }
+
     float* p = new float[channels];
     for (size_t i = 0; i < lut_size()/4; ++i) 
       {
 	int j = i*4;
 	status = cmm.Apply( p, &(pixelValues[j]) );
 	if ( status != icCmmStatOk) {
-	  icc_cmm_error( "Apply: ", status );
-	  return false;
+	   icc_cmm_error( _("Apply: ") , status );
+	   return false;
 	}
 
 	if ( convert )
@@ -495,6 +507,8 @@ namespace mrv {
 	lut[j+1] = p[1];
 	lut[j+2] = p[2];
       }
+
+    _inited = true;
     delete [] p;
 
     return true;

@@ -112,6 +112,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   static std::string fileExistsErrTxt;
   static std::string renameErrTxt;
 
+  static bool singleButtonTravelDrawer;
+
   //! This class must be derived from to create a "preview" widget.
   /*! Simply derive from this class and overload fltk::Group's methods to create a widget
     able to preview whatever file type you want. Register it with Flu_File_Chooser::add_preview_handler()

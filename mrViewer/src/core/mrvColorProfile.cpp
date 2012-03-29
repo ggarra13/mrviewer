@@ -70,6 +70,7 @@ namespace mrv
       {
 	delete i->second;
       }
+    profiles.clear();
   }
 
   /** 
@@ -205,50 +206,50 @@ namespace mrv
     using namespace std;
     std::ostringstream o; o.str().reserve(2048);
 
-    icHeader* pHdr = &pIcc->m_Header;
+    icHeader& hdr = pIcc->m_Header;
     CIccInfo  Fmt;
     char buf[64];
 
     o << "Profile ID:       ";
-    if(Fmt.IsProfileIDCalculated(&pHdr->profileID))
-      o << Fmt.GetProfileID(&pHdr->profileID) << endl;
+    if(Fmt.IsProfileIDCalculated(&(hdr.profileID)))
+       o << Fmt.GetProfileID(&(hdr.profileID)) << endl;
     else
       o << "Profile ID not calculated." << endl;
 
     // Note: Fmt uses a static buffer for strings. That's why we repeat the
     //       'o << stuff' instead of concatenating directly.
-    o << "Size:             " << pHdr->size 
-      << " (" << hex << showbase << pHdr->size << dec << ") bytes" << endl
+    o << "Size:             " << hdr.size 
+      << " (" << hex << showbase << hdr.size << dec << ") bytes" << endl
       << endl
       << "Header" << endl
       << "------" << endl
-      << "Attributes:       " << Fmt.GetDeviceAttrName(pHdr->attributes) << endl;
-    o << "Cmm:              " << Fmt.GetCmmSigName((icCmmSignature)(pHdr->cmmId))
+      << "Attributes:       " << Fmt.GetDeviceAttrName(hdr.attributes) << endl;
+    o << "Cmm:              " << Fmt.GetCmmSigName((icCmmSignature)(hdr.cmmId))
       << endl    
       << "Creation Date:    " 
-      << pHdr->date.month << "/" << pHdr->date.day << "/" << pHdr->date.year
-      << "  " << setw(2) << setfill('0') << pHdr->date.hours 
-      << ":" << setw(2) << setfill('0') << pHdr->date.minutes 
-      << ":" << setw(2) << setfill('0') << pHdr->date.seconds
+      << hdr.date.month << "/" << hdr.date.day << "/" << hdr.date.year
+      << "  " << setw(2) << setfill('0') << hdr.date.hours 
+      << ":" << setw(2) << setfill('0') << hdr.date.minutes 
+      << ":" << setw(2) << setfill('0') << hdr.date.seconds
       << endl
-      << "Creator:          " << icGetSig(buf, pHdr->creator) << endl;
-    o << "Data Color Space: " << Fmt.GetColorSpaceSigName(pHdr->colorSpace) << endl;
-    o << "Flags             " << Fmt.GetProfileFlagsName(pHdr->flags) << endl;
-    o << "PCS Color Space:  " << Fmt.GetColorSpaceSigName(pHdr->pcs) << endl;
-    o << "Platform:         " << Fmt.GetPlatformSigName(pHdr->platform) << endl;
+      << "Creator:          " << icGetSig(buf, hdr.creator) << endl;
+    o << "Data Color Space: " << Fmt.GetColorSpaceSigName(hdr.colorSpace) << endl;
+    o << "Flags             " << Fmt.GetProfileFlagsName(hdr.flags) << endl;
+    o << "PCS Color Space:  " << Fmt.GetColorSpaceSigName(hdr.pcs) << endl;
+    o << "Platform:         " << Fmt.GetPlatformSigName(hdr.platform) << endl;
     o << "Rendering Intent: " 
-      << Fmt.GetRenderingIntentName((icRenderingIntent)(pHdr->renderingIntent)) 
+      << Fmt.GetRenderingIntentName((icRenderingIntent)(hdr.renderingIntent)) 
       << endl;
-    o << "Type:             " << Fmt.GetProfileClassSigName(pHdr->deviceClass) 
+    o << "Type:             " << Fmt.GetProfileClassSigName(hdr.deviceClass) 
       << endl;
-    o << "Version:          " << Fmt.GetVersionName(pHdr->version) << endl
+    o << "Version:          " << Fmt.GetVersionName(hdr.version) << endl
       << "Illuminant:     "
       << "  X=" 
-      << setiosflags(ios::fixed) << setprecision(4) << icFtoD(pHdr->illuminant.X)
+      << setiosflags(ios::fixed) << setprecision(4) << icFtoD(hdr.illuminant.X)
       << ", Y=" 
-      << setiosflags(ios::fixed) << setprecision(4) << icFtoD(pHdr->illuminant.Y) 
+      << setiosflags(ios::fixed) << setprecision(4) << icFtoD(hdr.illuminant.Y) 
       << ", Z=" 
-      << setiosflags(ios::fixed) << setprecision(4) << icFtoD(pHdr->illuminant.Z) 
+      << setiosflags(ios::fixed) << setprecision(4) << icFtoD(hdr.illuminant.Z) 
       << endl;
     return o.str();
   }

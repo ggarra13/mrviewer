@@ -1791,14 +1791,15 @@ namespace mrv {
     {
        std::string file = *i;
        std::string root, frame, ext;
-       mrv::split_sequence( root, frame, ext, file );
-       if ( frame != "" )
+       bool ok = mrv::split_sequence( root, frame, ext, file );
+       if ( root != "" && frame != "" && ext != N_(".jpg") && 
+	    ext != N_(".JPG") )
        {
-	  file = root;
-	  for ( int i = 0; i < frame.size(); ++i )
-	     if ( frame[i] == '0' ) file += '@';
-	  file += '@';
-	  file += ext;
+    	  file = root;
+    	  for ( int i = 0; i < frame.size(); ++i )
+    	     if ( frame[i] == '0' ) file += '@';
+    	  file += '@';
+    	  file += ext;
        }
        *i = file;
     }

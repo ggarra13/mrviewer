@@ -146,6 +146,7 @@ namespace mrv {
     GLuint texId;                          //!< The lut opengl texture index
     unsigned         _lutN;                //!< Size of lut (one axis)
     Imf::Array<half> lut;                  //!< The lut data
+    bool _inited;
 
     static LutsMap _luts;                   //!< The list of luts
   };

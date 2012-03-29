@@ -116,6 +116,7 @@ std::string Flu_File_Chooser::createFolderErrTxt = _("Could not create directory
 std::string Flu_File_Chooser::deleteFileErrTxt = _("An error ocurred while trying to delete '%s'.");
 std::string Flu_File_Chooser::fileExistsErrTxt = _("File '%s' already exists!");
 std::string Flu_File_Chooser::renameErrTxt = _("Unable to rename '%s' to '%s'");
+bool Flu_File_Chooser::singleButtonTravelDrawer = true;
 
 const char *col_labels[] = {
   Flu_File_Chooser::detailTxt[0].c_str(),
@@ -2591,39 +2592,51 @@ int Flu_File_Chooser::Entry::handle( int event )
 
   fltk::Group *g = chooser->getEntryGroup();
   if( event == fltk::PUSH )
-    {
-      if( fltk::event_clicks() > 0 )
+  {
+     if ( Flu_File_Chooser::singleButtonTravelDrawer )
+     {
+	if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
 	{
-	  fltk::event_clicks(0);
-	  // double-clicking a favorite cd's to it
-	  if( type == ENTRY_FAVORITE )
-	    {
-	      chooser->delayedCd = filename;
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
-	    }
-	  // double-clicking a directory cd's to it
-	  else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
-	    {
 #ifdef WIN32
-	      if( filename[1] == ':' )
-		chooser->delayedCd = filename;
-	      else
+	   if( filename[1] == ':' )
+	      chooser->delayedCd = filename;
+	   else
 #endif
-		chooser->delayedCd = chooser->currentDir + filename + "/";
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
-	    }
-	  // double-clicking a file chooses it if we are in file selection mode
-	  else if( !(chooser->selectionType & DIRECTORY) ||
-		   (chooser->selectionType & STDFILE) )
-	    {
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::selectCB, chooser );
-	    }
-	  if( selected() )
-	    chooser->trashBtn->activate();
-	  return 1;
+	      chooser->delayedCd = chooser->currentDir + filename + "/";
+	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
 	}
-
-      /*
+     }
+     if( fltk::event_clicks() > 0 )
+     {
+	fltk::event_clicks(0);
+	// double-clicking a favorite cd's to it
+	if( type == ENTRY_FAVORITE )
+	{
+	   chooser->delayedCd = filename;
+	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	}
+	else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
+	{
+#ifdef WIN32
+	   if( filename[1] == ':' )
+	      chooser->delayedCd = filename;
+	   else
+#endif
+	      chooser->delayedCd = chooser->currentDir + filename + "/";
+	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	}
+	// double-clicking a file chooses it if we are in file selection mode
+	else if( !(chooser->selectionType & DIRECTORY) ||
+		 (chooser->selectionType & STDFILE) )
+	{
+	   fltk::add_timeout( 0.0f, Flu_File_Chooser::selectCB, chooser );
+	}
+	if( selected() )
+	   chooser->trashBtn->activate();
+	  return 1;
+     }
+     
+     /*
       if( selected && !fltk::event_button3() && !fltk::event_state(fltk::CTRL) && !fltk::event_state(fltk::SHIFT) )
 	{
 	  // only allow editing of certain files and directories

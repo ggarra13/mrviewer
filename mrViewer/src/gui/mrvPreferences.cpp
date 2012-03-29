@@ -39,6 +39,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvFLTKHandler.h"
+#include "gui/FLU/Flu_File_Chooser.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 
@@ -400,6 +401,11 @@ namespace mrv {
     hud.get("iptc", tmp, 0 );
     uiPrefs->uiPrefsHudIPTC->value( tmp );
 
+    fltk::Preferences flu( ui, "file_requester" );
+    flu.get("quick_folder_travel", tmp, 1 );
+    uiPrefs->uiPrefsFileReqFolder->value( tmp );
+    Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
+
     //
     // playback 
     //
@@ -695,6 +701,12 @@ namespace mrv {
       view->safe_areas(true);
 
     //
+    // Handle file requester
+    //
+    Flu_File_Chooser::singleButtonTravelDrawer = (bool)
+    uiPrefs->uiPrefsFileReqFolder->value();
+
+    //
     // Handle crop area (masking)
     //
     int crop = uiPrefs->uiPrefsCropArea->value();
@@ -856,6 +868,13 @@ namespace mrv {
     colors.set( "background_color", bgcolor );
     colors.set( "text_color", textcolor );
     colors.set( "selection_color", selectioncolor );
+
+    fltk::Preferences flu( ui, "file_requester" );
+    flu.set("quick_folder_travel", 
+	    uiPrefs->uiPrefsFileReqFolder->value());
+    
+    Flu_File_Chooser::singleButtonTravelDrawer = 
+    uiPrefs->uiPrefsFileReqFolder->value();
 
     //
     // playback prefs
