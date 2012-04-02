@@ -84,11 +84,11 @@ std::string Flu_File_Chooser::myDocumentsTxt = _("Temporary");
 std::string Flu_File_Chooser::desktopTxt = _("Desktop");
 #endif
 
-std::string Flu_File_Chooser::detailTxt[] = { "Name", "Size", "Date", "Type", "Frames" };
-std::string Flu_File_Chooser::contextMenuTxt[3] = { "New Folder", "Rename", "Delete" };
-std::string Flu_File_Chooser::diskTypesTxt[6] = { "Floppy Disk", "Removable Disk",
-						      "Local Disk", "Compact Disk",
-						      "Network Disk", "RAM Disk" };
+std::string Flu_File_Chooser::detailTxt[] = { _("Name"), _("Size"), _("Date"), _("Type"), _("Frames") };
+std::string Flu_File_Chooser::contextMenuTxt[3] = { _("New Folder"), _("Rename"), _("Delete") };
+std::string Flu_File_Chooser::diskTypesTxt[6] = { _("Floppy Disk"), _("Removable Disk"),
+						  _("Local Disk"), _("Compact Disk"),
+						  _("Network Disk"), _("RAM Disk") };
 
 std::string Flu_File_Chooser::filenameTxt = _("Filename");
 std::string Flu_File_Chooser::okTxt = _("Ok");
@@ -1448,7 +1448,7 @@ int Flu_File_Chooser::FileInput::handle( int event )
 	  chooser->filenameTabCallback = true;
 	  std::string v(value());
 #ifdef WIN32
-	  // turn "C:" into "C:\"
+	  // turn "C:" into "C:/"
 	  if( v.size() >= 3 )
 	    if( v.size() == 2 && v[1] == ':' )
 	      {

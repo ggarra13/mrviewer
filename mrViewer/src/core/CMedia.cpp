@@ -417,7 +417,8 @@ void load_sequence( PlaybackData* data )
    mrv::ViewerUI* uiMain = data->uiMain;
    mrv::CMedia* img = data->image;
    
-   mrv::Timer timer;
+   mrv::CMedia::Mutex& vpm = img->video_mutex();
+   SCOPED_LOCK( vpm );
 
    struct stat sbuf;
    for ( int64_t f = img->first_frame(); f <= img->last_frame(); ++f )
@@ -426,12 +427,8 @@ void load_sequence( PlaybackData* data )
       if ( result < 0 ) return;
 
 
-      mrv::CMedia::Mutex& vpm = img->video_mutex();
-      SCOPED_LOCK( vpm );
-
       img->fetch( f );
       img->cache( img->hires() );
-      
 
     }
 
@@ -1229,11 +1226,15 @@ void CMedia::seek( const boost::int64_t f )
  */
 void CMedia::cache( const mrv::image_type_ptr& pic )
 {
+   assert( pic != NULL );
+
+   if ( !is_sequence()) return;
+
   boost::int64_t f = pic->frame();
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
 
-  boost::uint64_t idx = f - _frameStart;
+  boost::int64_t idx = f - _frameStart;
   if ( _sequence[idx] ) return;
 
   _sequence[idx] = pic;
@@ -1711,17 +1712,13 @@ bool CMedia::find_image( const boost::int64_t frame )
 
   if ( _sequence && _sequence[idx] )
     {
+       SCOPED_LOCK( _mutex );
+       _hires = _sequence[idx];
+       assert( _hires != NULL );
+       _frame = f;
 
-      {
-	SCOPED_LOCK( _mutex );
-	_hires = _sequence[idx];
-	assert( _hires != NULL );
-	_frame = f;
-
-	free(_filename);
-	_filename = NULL;
-      }
-
+       free(_filename);
+       _filename = NULL;
 
       refresh();
       return true;

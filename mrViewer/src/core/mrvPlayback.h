@@ -43,7 +43,6 @@ namespace mrv {
       uiMain( main ),
       image( img )
     {
-      assert( uiMain != NULL );
       assert( image  != NULL );
     }
 
@@ -51,7 +50,6 @@ namespace mrv {
       uiMain( b.uiMain ),
       image( b.image )
     {
-      assert( uiMain != NULL );
       assert( image != NULL );
     }
 
