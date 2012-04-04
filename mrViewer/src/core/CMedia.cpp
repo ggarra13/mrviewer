@@ -1230,6 +1230,8 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 
    if ( !is_sequence()) return;
 
+   SCOPED_LOCK( _mutex );
+
   boost::int64_t f = pic->frame();
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
