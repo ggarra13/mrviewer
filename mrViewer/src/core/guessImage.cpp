@@ -166,9 +166,13 @@ namespace mrv {
     if ( image ) 
       {
 	if ( is_seq )
+	{
 	  image->sequence( root, frame, lastFrame );
+	}
 	else
+	{
 	  image->filename( name );
+	}
       }
 
     delete [] read_data;

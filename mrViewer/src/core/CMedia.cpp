@@ -31,6 +31,8 @@ extern "C" {
 #include <algorithm>  // for std::min, std::abs
 #include <limits>
 
+#include <fltk/run.h>
+
 #define BOOST_FILESYSTEM_VERSION 2 
 #undef  __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
@@ -417,12 +419,13 @@ void load_sequence( PlaybackData* data )
    mrv::ViewerUI* uiMain = data->uiMain;
    mrv::CMedia* img = data->image;
    
-   mrv::CMedia::Mutex& vpm = img->video_mutex();
-   SCOPED_LOCK( vpm );
 
    struct stat sbuf;
    for ( int64_t f = img->first_frame(); f <= img->last_frame(); ++f )
-    {
+   {
+      mrv::CMedia::Mutex& vpm = img->video_mutex();
+      SCOPED_LOCK( vpm );
+
       int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
       if ( result < 0 ) return;
 
@@ -474,9 +477,9 @@ void CMedia::sequence( const char* fileroot,
   _sequence = new mrv::image_type_ptr[num];
 
   // load all pictures in new thread 
-  PlaybackData* data = new PlaybackData( NULL, this );
-  _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-						      data ) ) );
+  // PlaybackData* data = new PlaybackData( NULL, this );
+  // _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+  // 						      data ) ) );
 
   if ( ! initialize() )
     return;
