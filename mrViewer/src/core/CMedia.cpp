@@ -693,7 +693,7 @@ void CMedia::image_size( int w, int h )
       if ( _fps == 0 ) _fps = _play_fps = 29.97;
     }
 
-  if ( _fps == 0 ) 
+  if ( _fps == 0 )
     {
       _fps = _play_fps = 24; 
     }

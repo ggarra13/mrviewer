@@ -146,14 +146,19 @@ namespace mrv {
 	      status = kEndLoop;
 	    }
 	  else if ( loop == ImageView::kPingPong )
-	    {
+	  {
 	      frame = last - 1;
 	      step  = -1;
 	      img->frame( last );
 	      view->playback( ImageView::kBackwards );
 	      img->playback( CMedia::kBackwards );
 	      status = kEndChangeDirection;
-	    }
+	  }
+	  else
+	  {
+	      view->playback( ImageView::kStopped );
+	      img->playback( CMedia::kStopped );
+	  }
 	  break;
 	}
       case kLoopAtStart:
@@ -202,6 +207,11 @@ namespace mrv {
 	      img->playback( CMedia::kForwards );
 	      status = kEndChangeDirection;
 	    }
+	  else
+	  {
+	      view->playback( ImageView::kStopped );
+	      img->playback( CMedia::kStopped );
+	  }
 	  break;
 	}
       default:

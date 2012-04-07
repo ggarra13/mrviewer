@@ -428,6 +428,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   posX( 4 ),
   posY( 22 ),
   flags( 0 ),
+  _channel( 0 ),
   _channelType( kRGB ),
   _field( kFrameDisplay ),
   _showBG( true ),
@@ -2359,10 +2360,12 @@ void ImageView::channel( unsigned short c )
 { 
   _channel = c;
 
+
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   
   const char* lbl = uiColorChannel->child(c)->label();
   std::string channelName( lbl );
+
 
   static std::string oldChannel;
 
