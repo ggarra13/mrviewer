@@ -914,8 +914,6 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 
   image_damage( image_damage() | kDamageSubtitle );
 
-  _subtitle_cond.notify_one();
-
   limit_subtitle_store( frame );
 
   return false;

@@ -1019,7 +1019,7 @@ void CMedia::play(const CMedia::Playback dir,
   unsigned num_streams;
 
   // If there's at least one valid video stream, create video thread
-  if ( valid_video || is_sequence() )
+  if ( valid_video || is_sequence() || has_picture() )
     {
       valid_video = true;
       video_data = new PlaybackData( *data );
@@ -1061,12 +1061,6 @@ void CMedia::play(const CMedia::Playback dir,
 							  subtitle_data ) ) );
     }
 
-// #if defined(FOUR_THREADS)
-//   // Playback thread
-//   PlaybackData* play_data = new PlaybackData( *data );
-//   _threads.push_back( new boost::thread( boost::bind( mrv::playback_thread, 
-// 					                 play_data ) ) );
-// #endif
 
   // Decoding thread
   if ( valid_audio || valid_video || valid_subtitle )
@@ -1096,7 +1090,6 @@ void CMedia::stop()
     _audio_packets.cond().notify_one();
     _video_packets.cond().notify_one();
     _subtitle_packets.cond().notify_one();
-    _video_cond.notify_one();
 
     // Wait for all threads to exit
     wait_for_threads();
@@ -1154,7 +1147,7 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( !is_sequence() ) return true;
+  if ( !has_picture() ) return true;
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 256 * 1024)
@@ -1344,19 +1337,19 @@ const char* CMedia::stream_type( const AVCodecContext* codec_context )
   switch( codec_context->codec_type ) 
     {
     case AVMEDIA_TYPE_VIDEO:
-      stream = "video";
+       stream = _("video");
       break;
     case AVMEDIA_TYPE_AUDIO:
-      stream = "audio";
+       stream = _("audio");
       break;
     case AVMEDIA_TYPE_DATA:
-      stream = "data";
+       stream = _("data");
       break;
     case AVMEDIA_TYPE_SUBTITLE:
-      stream = "subtitle";
+       stream = _("subtitle");
       break;
     default:
-      stream = "unknown";
+       stream = _("unknown");
       break;
     }
   return stream;
@@ -1391,7 +1384,7 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
   std::string fourcc;
   if ( !ascii )
     {
-      sprintf( buf, "0x%08x", codec_tag );
+       sprintf( buf, N_("0x%08x"), codec_tag );
     }
 
   fourcc = buf;
@@ -1417,14 +1410,14 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
     codec_name = p->name;
     if (enc->codec_id == CODEC_ID_MP3) {
       if (enc->sub_id == 2)
-	codec_name = "mp2";
+	 codec_name = N_("mp2");
       else if (enc->sub_id == 1)
-	codec_name = "mp1";
+	 codec_name = N_("mp1");
     }
   } else if (enc->codec_id == CODEC_ID_MPEG2TS) {
     /* fake mpeg2 transport stream codec (currently not
        registered) */
-    codec_name = "mpeg2ts";
+     codec_name = N_("mpeg2ts");
   } else if (enc->codec_name[0] != '\0') {
     codec_name = enc->codec_name;
   } else {
@@ -1432,14 +1425,14 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
     if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
 	  && isprint((enc->codec_tag>>16)&0xFF) && 
 	  isprint((enc->codec_tag>>24)&0xFF)){
-      snprintf(buf, sizeof(buf), "%c%c%c%c / 0x%04X",
+       snprintf(buf, sizeof(buf), N_("%c%c%c%c / 0x%04X"),
 	       enc->codec_tag & 0xff,
 	       (enc->codec_tag >> 8) & 0xff,
 	       (enc->codec_tag >> 16) & 0xff,
 	       (enc->codec_tag >> 24) & 0xff,
 	       enc->codec_tag);
     } else {
-      snprintf(buf, sizeof(buf), "0x%04x", enc->codec_tag);
+       snprintf(buf, sizeof(buf), N_("0x%04x"), enc->codec_tag);
     }
     codec_name = buf;
   }
@@ -1508,14 +1501,14 @@ void CMedia::populate_stream_info( StreamInfo& s,
     {
       has_codec = false;
       const char* type = stream_type( codec_context );
-      msg << "\n\nNot a known codec " << codec_name(codec_context) 
-	  << " for " << " stream #" << stream_index << ", type " << type;
+      msg << _("\n\nNot a known codec ") << codec_name(codec_context) 
+	  << _(" for stream #") << stream_index << _(", type ") << type;
     }
 
   s.stream_index = stream_index;
   s.has_codec    = has_codec;
-  s.codec_name = codec_name( codec_context );
-  s.fourcc     = codec_tag2fourcc( codec_context->codec_tag );
+  s.codec_name   = codec_name( codec_context );
+  s.fourcc       = codec_tag2fourcc( codec_context->codec_tag );
 
   AVStream* stream = _context->streams[stream_index];
   double time  = av_q2d( stream->time_base );

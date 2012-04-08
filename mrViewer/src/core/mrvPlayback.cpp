@@ -459,7 +459,7 @@ namespace mrv {
 	    continue;
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
-	    {
+	     {
 	      CMedia::Barrier* barrier = img->loop_barrier();
 	      barrier->count( barrier_thread_count( img ) );
 	      // Wait until all threads loop and decode is restarted
@@ -608,7 +608,6 @@ namespace mrv {
 					 uiMain, timeline, status );
 	    // if ( end == kEndStop || end == kEndNextImage ) continue; 
 
-	    // std::cerr << "DEC CONTINUE " << frame << std::endl;
 	  }
 
 	// If we could not get a frame (buffers full, usually),

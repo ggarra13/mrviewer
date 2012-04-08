@@ -847,8 +847,6 @@ namespace mrv {
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
        double    _avdiff;      //!< Audio-Video Difference
-    Condition _video_cond;     //!< Condition for video mutex
-    Condition _subtitle_cond;  //!< Condition for subtitle mutex
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
 
 
@@ -874,7 +872,7 @@ namespace mrv {
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
-    boost::int64_t   _expected;    //!< expected next frame
+    boost::int64_t   _expected;    //!< expected next frame fetch
 
     boost::int64_t   _frameStart;  //!< start frame for sequence or movie
     boost::int64_t   _frameEnd;    //!< end frame for sequence or movie
@@ -913,8 +911,8 @@ namespace mrv {
 
     thread_pool_t  _threads;         //!< any threads associated with process
 
-    //   8-bit frame
-    mrv::image_type_ptr* _sequence; //!< For sequences, holds each 8-bit frame
+
+    mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     
 
     stringArray  _layers;                //!< list of layers in file
