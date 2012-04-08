@@ -1037,6 +1037,8 @@ namespace mrv {
 	return;
       }
   
+    m->image()->stop();
+
     if ( uiMain->uiView->background() == m )
       {
 	uiMain->uiView->background( mrv::media() );
@@ -2137,6 +2139,9 @@ namespace mrv {
 	first = img->first_frame();
 	frame = img->frame();
 	last  = img->last_frame();
+
+	if (frame > last ) frame = last;
+	if (frame < first ) frame = first;
       }
     else
       {
@@ -2159,6 +2164,7 @@ namespace mrv {
 
     timeline()->minimum( first );
     timeline()->maximum( last );
+    timeline()->value( frame );
     uiMain->uiStartFrame->value( first );
     uiMain->uiEndFrame->value( last );
     uiMain->uiFrame->value( frame );
