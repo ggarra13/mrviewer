@@ -2162,12 +2162,16 @@ namespace mrv {
 
 	first = 1;
 
-	mrv::media m = reel->images.back();
+	mrv::media m = current_image();
 	if (! m ) return;
 
 	CMedia* img = m->image();
-
 	frame = timeline()->offset( img ) + img->frame();
+
+	m = reel->images.back();
+	if (! m ) return;
+
+	img = m->image();
 	last  = ( timeline()->offset( img ) + 
 		  img->last_frame() - img->first_frame() + 1 );
 

@@ -674,8 +674,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   double sw = ((double)_view->w() -  texWidth * zoomX) / 2;
   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-  unsigned rw = unsigned( r.w() * texWidth  );
-  unsigned rh = unsigned( r.h() * texHeight );
+  int rw = int( r.w() * texWidth  );
+  int rh = int( r.h() * texHeight );
 
   unsigned tx = unsigned( r.x() * texWidth  );
   unsigned ty = unsigned( texHeight - r.y() * texHeight );
