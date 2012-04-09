@@ -604,6 +604,7 @@ namespace mrv {
     }
 
     void audio_file( const char* file = "" );
+    std::string audio_file() const { return _audio_file; }
 
     void close_audio();
 
@@ -661,6 +662,7 @@ namespace mrv {
     double video_pts() const { return _video_pts; }
     double audio_pts() const { return _audio_pts; }
     
+
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
        
@@ -895,6 +897,9 @@ namespace mrv {
     // Hi-res/quality image (usually floating point)
     mrv::image_type_ptr _hires;
     mrv::image_type_ptr _subtitle;
+
+       //
+       std::string _audio_file;
 
     // Image color profile for ICC
     char*     _profile;

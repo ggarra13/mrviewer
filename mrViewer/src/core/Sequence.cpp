@@ -258,6 +258,13 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
 	    if ( strlen(c) <= 1 ) continue; // empty line
 	    c[ strlen(c)-1 ] = 0;  // remove newline
 
+	    if ( strncmp( "audio: ", c, 7 ) == 0 )
+	    {
+	       if ( !sequences.empty() )
+		  sequences.back().audio = c+7;
+	       continue;
+	    }
+
 	    boost::int64_t start = kMinFrame;
 	    boost::int64_t end   = kMaxFrame;
 

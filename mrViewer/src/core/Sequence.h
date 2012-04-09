@@ -30,6 +30,7 @@ namespace mrv
   struct LoadInfo
   {
     std::string filename;
+    std::string audio;
     boost::int64_t start;
     boost::int64_t end;
     bool    reel;
@@ -53,6 +54,7 @@ namespace mrv
 
     LoadInfo( const LoadInfo& b ) :
       filename( b.filename ),
+      audio( b.audio ),
       start( b.start ),
       end( b.end ),
       reel( b.reel )

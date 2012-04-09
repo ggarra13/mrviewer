@@ -177,7 +177,7 @@ namespace mrv {
 
     delete [] read_data;
 
-    if (image == NULL) 
+    if (image == NULL && strncmp( ".reel", root + strlen(root)-5, 5 ) ) 
       {
 	LOG_ERROR(name << ": not a recognized format.");
 	return NULL;

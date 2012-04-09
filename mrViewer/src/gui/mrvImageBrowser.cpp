@@ -456,6 +456,8 @@ namespace mrv {
 	  {
 	    fprintf( f, "%s %" PRId64 "-%" PRId64 "\n", img->fileroot(), 
 		     img->first_frame(), img->last_frame() );
+	    if ( img->has_audio() )
+	       fprintf( f, "audio: %s\n", img->audio_file().c_str() );
 	  }
 	else
 	  {
@@ -1295,6 +1297,10 @@ namespace mrv {
 		LOG_ERROR( _("Could not load '") << load.filename.c_str() 
 			   << N_("'") );
 	     }
+	     if ( load.audio != "" ) 
+	     {
+		fg->image()->audio_file( load.audio.c_str() );
+	     }
 	  }
 
 	if ( w ) progress->step(1);
@@ -1580,6 +1586,9 @@ namespace mrv {
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
+    mrv::media m = current_image();
+    m->image()->stop();
+
     unsigned sel = value() + 1;
     if ( sel == 0 ) return;
 
@@ -1610,6 +1619,9 @@ namespace mrv {
   {
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
+
+    mrv::media m = current_image();
+    m->image()->stop();
 
     int sel = value() - 1;
     if ( sel < -1 ) return;

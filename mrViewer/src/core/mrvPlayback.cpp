@@ -235,9 +235,13 @@ namespace mrv {
 			  mrv::Timeline* timeline )
   {
      boost::int64_t last = ( boost::int64_t ) timeline->maximum();
-     if ( img->last_frame() < last ) last = img->last_frame();
      boost::int64_t first = ( boost::int64_t ) timeline->minimum();
-     if ( img->first_frame() > first ) first = img->first_frame();
+
+     if ( timeline->edl() )
+     {
+	if ( img->last_frame() < last ) last = img->last_frame();
+	if ( img->first_frame() > first ) first = img->first_frame();
+     }
 
     if ( frame > last )
       {
@@ -623,7 +627,8 @@ namespace mrv {
 	// After read, when playing backwards or playing audio files,
 	// decode position may be several frames advanced as we buffer
 	// multiple frames, so get back the dts frame from image.
-	frame = img->dts();
+	if ( img->has_video() && img->has_audio() )
+	   frame = img->dts();
       }
 
 #ifdef DEBUG_THREADS

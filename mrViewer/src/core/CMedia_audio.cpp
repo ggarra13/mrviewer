@@ -818,6 +818,7 @@ void CMedia::audio_file( const char* file )
      mrvALERT( file << _(": Could not find stream info") );
   }
 
+  _audio_file = file;
   populate_audio();
 }
 
