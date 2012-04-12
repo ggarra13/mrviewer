@@ -293,7 +293,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
   static const AVRational base = { 1, AV_TIME_BASE };
 
-  if ( !_context) return false;
+  if ( _context == NULL ) return false;
 
 
   boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
