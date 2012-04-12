@@ -293,6 +293,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
   static const AVRational base = { 1, AV_TIME_BASE };
 
+  if ( !_context) return false;
 
 
   boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
@@ -305,6 +306,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
     {
       idx = audio_stream_index();
       stream = get_audio_stream();
+      if ( stream == NULL ) return false;
       assert( stream != 0 );
 
       boost::int64_t ts = av_rescale_q(offset, base, stream->time_base);
@@ -317,6 +319,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   if ( has_video() ) {
     AVStream* st = get_video_stream();
     assert( st != 0 );
+    if ( st == NULL ) return false;
 
     boost::int64_t ts  = av_rescale_q(offset, base, st->time_base);
 
