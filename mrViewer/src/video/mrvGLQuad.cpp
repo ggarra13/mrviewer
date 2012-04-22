@@ -944,6 +944,7 @@ namespace mrv {
   void GLQuad::lut( const CMedia* img )
   {
     if ( _lut && img == _image ) return;
+
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;
   }

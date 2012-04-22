@@ -437,34 +437,35 @@ namespace mrv {
     {
 	LOG_ERROR( _("Invalid source profile/image pixel format") );
 	return false;
-      }
+    }
 
     bool convert = false;
     unsigned dst_space = cmm.GetDestSpace();
     unsigned channels  = 3;
     switch( dst_space )
       {
-      case icSigXYZData:
-	if ( (flags & kXformLast) ) convert = true;  
-	// fall through - No break here
-      case icSigRgbData:
-      case icSigLabData:
-      case icSigCmyData:
-	channels = 3; break;
-      case icSig4colorData:
-      case icSigCmykData:
-	channels = 4; break;
-      case icSig5colorData:
-	channels = 5; break;
-      case icSig6colorData:
-	channels = 6; break;
-      case icSig7colorData:
-	channels = 7; break;
-      case icSig8colorData:
-	channels = 8; break;
-      default:
-	LOG_ERROR( _("Invalid destination profile/image format") );
-	return false;
+	 case icSigXYZData:
+	    if ( (flags & kXformLast) ) convert = true;  
+	    // fall through - No break here
+	 // case icSigGrayData:
+	 case icSigRgbData:
+	 case icSigLabData:
+	 case icSigCmyData:
+	    channels = 3; break;
+	 case icSig4colorData:
+	 case icSigCmykData:
+	    channels = 4; break;
+	 case icSig5colorData:
+	    channels = 5; break;
+	 case icSig6colorData:
+	    channels = 6; break;
+	 case icSig7colorData:
+	    channels = 7; break;
+	 case icSig8colorData:
+	    channels = 8; break;
+	 default:
+	    LOG_ERROR( _("Invalid destination profile/image format") );
+	    return false;
       }
 
     if ( channels > 3 )
@@ -526,12 +527,12 @@ namespace mrv {
   {
     switch( (*start).type )
       {
-      case Transform::kCTL:
-	return lut->calculate_ctl( start, end, header, flags );
-      case Transform::kICC:
-	return lut->calculate_icc( start, end, flags );
-      default:
-	return false;
+	 case Transform::kCTL:
+	    return lut->calculate_ctl( start, end, header, flags );
+	 case Transform::kICC:
+	    return lut->calculate_icc( start, end, flags );
+	 default:
+	    return false;
       }
   }
 
@@ -798,7 +799,6 @@ namespace mrv {
 	if ( ! lut->calculate( lut, start, e, header, (XformFlags)flags ) )
 	  return NULL;
       }
-
 
     lut->create_gl_texture();
 

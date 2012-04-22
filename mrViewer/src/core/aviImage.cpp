@@ -28,6 +28,7 @@ using namespace std;
 
 
 
+
 #include "aviImage.h"
 #include "mrvImageView.h"
 #include "mrvPlayback.h"
@@ -116,8 +117,10 @@ aviImage::~aviImage()
 
   flush_video();
 
-  sws_freeContext( _convert_ctx );
-  av_free( _av_frame );
+  if ( _convert_ctx )
+     sws_freeContext( _convert_ctx );
+  if ( _av_frame )
+     av_free( _av_frame );
 
   if ( _video_index >= 0 )
     close_video_codec();
@@ -226,6 +229,8 @@ bool aviImage::has_video() const
 void aviImage::open_video_codec()
 {
   AVStream *stream = get_video_stream();
+  if ( stream == NULL ) return;
+
   AVCodecContext *ctx = stream->codec;
   _video_codec = avcodec_find_decoder( ctx->codec_id );
 
@@ -266,7 +271,7 @@ void aviImage::open_video_codec()
 void aviImage::close_video_codec()
 {
   AVStream *stream = get_video_stream();
-  if ( stream && stream->codec )
+  if ( ( stream != NULL ) && ( stream->codec != NULL ) )
     avcodec_close( stream->codec );
 }
 
@@ -275,7 +280,11 @@ void aviImage::close_video_codec()
 void aviImage::flush_video()
 {
   if ( has_video() )
-    avcodec_flush_buffers( get_video_stream()->codec );
+  {
+     AVStream* stream = get_video_stream();
+     if ( stream != NULL && stream->codec != NULL )
+	avcodec_flush_buffers( stream->codec );
+  }
 }
 
 
@@ -335,6 +344,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   assert( stream != NULL );
   assert( idx != -1 );
 
+  if ( stream == NULL ) return false;
 
   offset = av_rescale_q(offset, base, stream->time_base);
 
@@ -1128,6 +1138,7 @@ void aviImage::populate()
 {
   std::ostringstream msg;
   
+  if ( _context == NULL ) return;
 
 
   // Iterate through all the streams available
@@ -1160,9 +1171,10 @@ void aviImage::populate()
 		 populate_stream_info( s, msg, ctx, i );
 		 s.has_b_frames = ctx->has_b_frames;
 		 s.fps          = calculate_fps( stream );
-		 s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
+		 if ( avcodec_get_pix_fmt_name( ctx->pix_fmt ) )
+		    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
 		 _video_info.push_back( s );
-		 if ( _video_index < 0 )
+		 if ( _video_index < 0 && s.has_codec )
 		 {
 		    video_stream( 0 );
 		    int w = ctx->width;
@@ -1180,7 +1192,7 @@ void aviImage::populate()
 		 s.bitrate    = calculate_bitrate( ctx );
 		 
 		 _audio_info.push_back( s );
-		 if ( _audio_index < 0 )
+		 if ( _audio_index < 0 && s.has_codec )
 		    _audio_index = 0;
 		 break;
 	      }
@@ -1259,6 +1271,7 @@ void aviImage::populate()
     {
       _frameStart = boost::int64_t( ( _fps * ( double )_context->start_time / 
 				      ( double )AV_TIME_BASE ) ) + 1;
+      std::cerr << "StART FROM STaRt TiME" << std::endl;
     }
   else
     {
@@ -1274,7 +1287,7 @@ void aviImage::populate()
 	  if ( d < start ) start = d;
 	}
 
-      _frameStart = boost::int64_t( start * _fps ) + 1;
+      _frameStart = start; 
     }
 
   _frame_start = _frameStart;
@@ -1415,6 +1428,7 @@ void aviImage::populate()
   //
   // Miscellaneous information
   //
+
   char buf[256];
   AVMetadata* m = _context->metadata;
   if ( has_audio() )
@@ -1458,124 +1472,6 @@ void aviImage::populate()
      }
   }
   
-
-#if 0
-  AVMetadataTag* tag;
-
-  tag = av_metadata_get( m, "album", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Album", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "artist", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Artist", tag->value) );
-    }
-	
-  tag = av_metadata_get( m, "album_artist", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Album Artist", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "comment", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Comment", tag->value) );
-    }
-  
-  tag = av_metadata_get( m, "composer", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Composer", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "copyright", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Copyright", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "creation_time", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Creation Time", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "date", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Date", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "disc", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Disc", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "encoder", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Encoder", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "filename", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Filename", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "genre", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Genre", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "language", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Language", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "performer", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Performer", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "publisher", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Publisher", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "service_name", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Service Name", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "service_provider", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Service Provider", tag->value) );
-    }
-  
-  tag = av_metadata_get( m, "title", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Title", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "track", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Track", tag->value) );
-    }
-#endif
 
 }
 

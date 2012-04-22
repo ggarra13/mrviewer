@@ -1452,6 +1452,8 @@ double CMedia::calculate_fps( const AVStream* stream )
 {
   double fps;
 
+  assert( stream != NULL );
+
   if ( stream->r_frame_rate.den && stream->r_frame_rate.num > 1  )
     {
       fps = av_q2d( stream->r_frame_rate );

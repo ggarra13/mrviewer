@@ -866,7 +866,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
 void CMedia::clear_stores()
 {
 #ifdef DEBUG_DECODE
-  std::cerr << "clear audio stores" << std::endl;
+   std::cerr << ">>>>>>>>>>> clear audio stores" << std::endl;
 #endif
 
   SCOPED_LOCK( _audio_mutex );
@@ -914,7 +914,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   if ( _audio_buf_used != 0 && !_audio.empty() )
     {
        boost::int64_t next_frame = _audio_last_frame + 1;
-       if ( next_frame > ptsframe ) ptsframe = next_frame;
+       if ( next_frame > ptsframe ) {
+	  ptsframe = next_frame;
+       }
       // assert( ptsframe <= last_frame() );
     }
 
@@ -962,7 +964,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 		      << _(" audio used: ") << _audio_buf_used 
 		       );
 	   
-	  return kDecodeOK;
+	  return kDecodeMissingSamples;
 	}
 
 
@@ -1221,6 +1223,8 @@ CMedia::store_audio( const boost::int64_t audio_frame,
  */
 void CMedia::fetch_audio( const boost::int64_t frame )
 {
+   std::cerr << "FETCH " << frame << " EXPECTED " << _expected << std::endl;
+
   // Seek to the correct position if necessary
   if ( frame != _expected )
     {
