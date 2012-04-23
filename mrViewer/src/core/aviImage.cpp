@@ -247,16 +247,16 @@ void aviImage::open_video_codec()
   ctx->skip_loop_filter= skip_loop_filter;
   ctx->error_concealment= error_concealment;
 
-  float aspect_ratio;
+  double aspect_ratio;
   if ( ctx->sample_aspect_ratio.num == 0 )
     aspect_ratio = 0;
   else
     aspect_ratio = av_q2d( ctx->sample_aspect_ratio ) *
-      ctx->width / ctx->height;
+    ctx->width / ctx->height;
 
 
 
-  float image_ratio = (float) width() / (float)height();
+  double image_ratio = (float) width() / (float)height();
   if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
   if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0f;
@@ -640,7 +640,7 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 
 
 void aviImage::store_image( const boost::int64_t frame, 
-			    const double pts )
+			    const boost::int64_t pts )
 {
   AVStream* stream = get_video_stream();
   unsigned int w = width();
@@ -850,18 +850,18 @@ void aviImage::limit_subtitle_store(const boost::int64_t frame)
   switch( playback() )
     {
     case kBackwards:
-      first = frame - fps() * 2;
-      last  = frame;
-      if ( _dts < first ) first = _dts;
+       first = frame - (boost::int64_t)fps() * 2;
+       last  = frame;
+       if ( _dts < first ) first = _dts;
       break;
     case kForwards:
       first = frame;
-      last  = frame + fps() * 2;
+      last  = frame + (boost::int64_t)fps() * 2;
       if ( _dts > last )   last = _dts;
       break;
     default:
-       first = frame - fps() * 2;
-       last  = frame + fps() * 2;
+       first = frame - (boost::int64_t)fps() * 2;
+       last  = frame + (boost::int64_t)fps() * 2;
       if ( first < first_frame() ) first = first_frame();
       if ( last  > last_frame() )   last = last_frame();
       break;
@@ -1169,7 +1169,7 @@ void aviImage::populate()
 	      {
 		 video_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
-		 s.has_b_frames = ctx->has_b_frames;
+		 s.has_b_frames = (bool)ctx->has_b_frames;
 		 s.fps          = calculate_fps( stream );
 		 if ( avcodec_get_pix_fmt_name( ctx->pix_fmt ) )
 		    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
@@ -1271,7 +1271,6 @@ void aviImage::populate()
     {
       _frameStart = boost::int64_t( ( _fps * ( double )_context->start_time / 
 				      ( double )AV_TIME_BASE ) ) + 1;
-      std::cerr << "StART FROM STaRt TiME" << std::endl;
     }
   else
     {
@@ -1287,7 +1286,7 @@ void aviImage::populate()
 	  if ( d < start ) start = d;
 	}
 
-      _frameStart = start; 
+      _frameStart = (boost::int64_t)start; 
     }
 
   _frame_start = _frameStart;
@@ -1388,7 +1387,7 @@ void aviImage::populate()
 	
 		if ( !got_audio )
 		{
-		   int audio_bytes = 0;
+		   unsigned audio_bytes = 0;
 		   if ( pktframe > _frameStart ) got_audio = true;
 		   else if ( pktframe == _frameStart )
 		   {
@@ -1429,7 +1428,6 @@ void aviImage::populate()
   // Miscellaneous information
   //
 
-  char buf[256];
   AVMetadata* m = _context->metadata;
   if ( has_audio() )
   {
@@ -1451,7 +1449,7 @@ void aviImage::populate()
   dump_metadata( _context->metadata );
 
   
-  for (int i = 0; i < _context->nb_chapters; ++i) 
+  for (unsigned i = 0; i < _context->nb_chapters; ++i) 
   {
      AVChapter *ch = _context->chapters[i];
      dump_metadata(ch->metadata);
@@ -1459,7 +1457,7 @@ void aviImage::populate()
        
   if ( _context->nb_programs )
   {
-     for (int i = 0; i < _context->nb_programs; ++i) 
+     for (unsigned i = 0; i < _context->nb_programs; ++i) 
      {
 	AVDictionaryEntry* tag = 
 	     av_dict_get(_context->programs[i]->metadata,
@@ -2202,14 +2200,14 @@ void aviImage::do_seek()
 
 void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 {
-  unsigned imgw = width();
-  unsigned imgh = height();
+  int imgw = width();
+  int imgh = height();
 
 
-  unsigned dstx = FFMIN(FFMAX(rect.x, 0), imgw);
-  unsigned dsty = FFMIN(FFMAX(rect.y, 0), imgh);
-  unsigned dstw = FFMIN(FFMAX(rect.w, 0), imgw - dstx);
-  unsigned dsth = FFMIN(FFMAX(rect.h, 0), imgh - dsty);
+  int dstx = FFMIN(FFMAX(rect.x, 0), imgw);
+  int dsty = FFMIN(FFMAX(rect.y, 0), imgh);
+  int dstw = FFMIN(FFMAX(rect.w, 0), imgw - dstx);
+  int dsth = FFMIN(FFMAX(rect.h, 0), imgh - dsty);
 
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );

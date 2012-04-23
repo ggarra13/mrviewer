@@ -526,12 +526,7 @@ void CMedia::populate_audio()
     }
   else
     {
-      double start = std::numeric_limits< double >::max();
-
-      double d = _audio_info[ _audio_index ].start;
-      if ( d < start ) start = d;
-
-      _frameStart = boost::int64_t( start * _fps ) + 1;
+       _frameStart = boost::int64_t( _audio_info[ _audio_index ].start );
     }
 
 
@@ -607,7 +602,7 @@ void CMedia::populate_audio()
 	
 		if ( !got_audio )
 		{
-		   int audio_bytes = 0;
+		   unsigned audio_bytes = 0;
 		   if ( pktframe > _frameStart ) got_audio = true;
 		   else if ( pktframe == _frameStart )
 		   {
@@ -1223,8 +1218,6 @@ CMedia::store_audio( const boost::int64_t audio_frame,
  */
 void CMedia::fetch_audio( const boost::int64_t frame )
 {
-   std::cerr << "FETCH " << frame << " EXPECTED " << _expected << std::endl;
-
   // Seek to the correct position if necessary
   if ( frame != _expected )
     {

@@ -78,7 +78,7 @@ namespace mrv
 
   private:
     boost::int64_t              _frame;  //!< position in video stream
-       double                      _pts;  //!< video pts in ffmpeg
+    boost::int64_t              _pts;  //!< video pts in ffmpeg
     unsigned int                _repeat;  //!< number of frames to repeat
     unsigned int                _width;
     unsigned int                _height;
@@ -111,7 +111,7 @@ namespace mrv
 		const Format format  = kRGBA,
 		const PixelType type = kByte,
 		const unsigned int repeat = 0,
-		const double pts = 0 ) :
+		const boost::int64_t pts = 0 ) :
       _frame( frame ),
       _pts( pts ),
       _repeat( repeat ),
@@ -172,7 +172,7 @@ namespace mrv
     inline void    mtime(const time_t c) { _mtime = c; }
     inline time_t  mtime() const         { return _mtime; }
 
-    inline double pts() const { return _pts; }
+    inline boost::int64_t pts() const { return _pts; }
 
     size_t data_size();
 

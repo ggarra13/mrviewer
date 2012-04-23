@@ -94,9 +94,9 @@ namespace mrv {
 
     if ( _format >= kYByRy420 )
       {
-	p.r = (cb + 1) * yp;
-	p.b = (cr + 1) * yp;
-	p.g = boost::uint16_t( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * 32767.0f);
+	 p.r = float( (cb + 1) * yp );
+	 p.b = float( (cr + 1) * yp );
+	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * 32767.0f);
       }
     else if ( _format >= kITU_702_YCbCr420 )
       {
@@ -116,9 +116,9 @@ namespace mrv {
 	float Cb = float( short(cb) - 128 );
 	float Cr = float( short(cr) - 128 );
 
-	p.r = Y * 0.00456621                    + Cr * 0.00625893f;
-	p.g = Y * 0.00456621 - Cb * 0.00153632f - Cr * 0.00318811f;
-	p.b = Y * 0.00456621 + Cb * 0.00791071f;
+	p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
+	p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;
+	p.b = Y * 0.00456621f + Cb * 0.00791071f;
 
 	// Sanity check. Needed, as ffmpeg can return invalid values
 	if ( p.r < 0.0f )      p.r = 0.0f;

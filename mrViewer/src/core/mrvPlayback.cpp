@@ -54,7 +54,7 @@ struct timespec {
 
 void nanosleep( const struct timespec* req, struct timespec* rem )
 {
-  Sleep( 1000 * req->tv_sec + req->tv_nsec / 1e7f );
+   Sleep( DWORD(1000 * req->tv_sec + req->tv_nsec / 1e7f) );
 }
 
 #endif
@@ -335,7 +335,7 @@ namespace mrv {
 	     int64_t tframe = ( frame - img->first_frame() + 
 				timeline->location(img) );
 	     assert( tframe < int64_t( timeline->maximum() ) );
-	     timeline->value( tframe );
+	     timeline->value( double( tframe ) );
 	  }
 
 	frame += step;
@@ -525,7 +525,7 @@ namespace mrv {
 	  {
 	    int64_t tframe = frame - img->first_frame() + timeline->location(img);
 	    assert( tframe < int64_t( timeline->maximum() ) );
-	    timeline->value( tframe );
+	    timeline->value( double( tframe ) );
 	  }
 
 
@@ -627,8 +627,7 @@ namespace mrv {
 	// After read, when playing backwards or playing audio files,
 	// decode position may be several frames advanced as we buffer
 	// multiple frames, so get back the dts frame from image.
-	if ( ( img->has_video()  && img->has_audio() ) || 
-	     ( !img->has_video() && img->has_audio() ) )
+	if ( img->has_video() || img->has_audio() )
 	   frame = img->dts();
       }
 
