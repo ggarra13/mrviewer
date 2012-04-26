@@ -56,7 +56,7 @@ namespace
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
 //#define DEBUG_SEEK
-//#define DEBUG_SEEK_VIDEO_PACKETS
+#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_PACKETS
@@ -349,12 +349,13 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   offset = av_rescale_q(offset, base, stream->time_base);
 
 
-  bool ok;
+  int ok;
   try {
 
-     ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) >= 0;
+     ok = avformat_seek_file( _context, idx, INT64_MIN, offset, INT64_MAX, 0 ); 
+			      // AVSEEK_FLAG_BACKWARD ) >= 0;
 
-    if (!ok)
+    if (ok < 0)
       {
 	IMG_ERROR( "Could not seek to frame " << frame );
 	return false;
@@ -370,6 +371,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   bool got_audio = !has_audio();
   bool got_video = !has_video();
   bool got_subtitle = !has_subtitle();
+
+  if ( !got_video )
+    {
+      got_video = in_video_store( frame );
+    }
 
   if ( !got_audio )
     {
@@ -444,7 +450,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
 
-
   try {
 
      mrv::Timer timer;
@@ -482,18 +487,23 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 #ifndef USE_SEEK_TO_PLAY_BACKWARDS
 	      if ( pktframe < dts ) dts = pktframe;
 #endif
+	      if ( !got_video && pktframe <= frame ) 
+	      {
+		 _video_packets.seek_end(vpts);
+		 got_video = true;
+	      }
 	    }
 	  else
 	    {
 	      _video_packets.push_back( pkt );
 	      if ( pktframe > dts ) dts = pktframe;
+	      if ( !got_video && pktframe >= frame ) 
+	      {
+		 _video_packets.seek_end(vpts);
+		 got_video = true;
+	      }
 	    }
 
-	  if ( !got_video && pktframe >= frame ) 
-	    {
-	      _video_packets.seek_end(vpts);
-	      got_video = true;
-	    }
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
 	  char ftype;
