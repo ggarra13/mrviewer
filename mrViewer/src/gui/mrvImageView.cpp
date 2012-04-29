@@ -762,10 +762,6 @@ void ImageView::timeout()
       int64_t frame = boost::int64_t( timeline->value() );
       mrv::media newfg = timeline->media_at( frame );
 
-      if ( !newfg )
-	{
-	  std::cerr << "[BUG] set to empty fg " << frame << std::endl;
-	}
 
       if ( newfg != foreground() ) foreground( newfg );
     }
