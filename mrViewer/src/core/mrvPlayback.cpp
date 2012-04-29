@@ -115,13 +115,13 @@ namespace mrv {
 	      if ( !next )
 		{
 		  if ( loop == ImageView::kLooping )
-		    {
-		      next = timeline->image_at( int64_t(timeline->minimum()) );
-		    }
+		  {
+		     next = timeline->image_at( int64_t(timeline->minimum()) );
+		  }
 		  else
-		    {
-		      next = img;
-		    }
+		  {
+		     next = img;
+		  }
 		}
 
 
@@ -147,9 +147,9 @@ namespace mrv {
 	    }
 	  else if ( loop == ImageView::kPingPong )
 	  {
-	      frame = last - 1;
+	      frame = frame - 1;
 	      step  = -1;
-	      img->frame( last );
+	      img->frame( frame );
 	      view->playback( ImageView::kBackwards );
 	      img->playback( CMedia::kBackwards );
 	      status = kEndChangeDirection;
@@ -173,9 +173,9 @@ namespace mrv {
 		      next = timeline->image_at( int64_t(timeline->maximum()) );
 		    }
 		  else
-		    {
-		      next = img;
-		    }
+		  {
+		     next = img;
+		  }
 		}
 
 	      assert( next != NULL );
@@ -200,9 +200,9 @@ namespace mrv {
 	    }
 	  else if ( loop == ImageView::kPingPong )
 	    {
-	      frame = first + 1;
+	      frame = frame + 1;
 	      step  = 1;
-	      img->frame( first );
+	      img->frame( frame );
 	      view->playback( ImageView::kForwards );
 	      img->playback( CMedia::kForwards );
 	      status = kEndChangeDirection;
@@ -241,10 +241,10 @@ namespace mrv {
      if ( timeline->edl() )
      {
 	boost::int64_t offset = timeline->offset(img);
-	if ( img->last_frame() + offset< last ) 
-	   last = img->last_frame() + offset;
-	if ( img->first_frame() + offset > first ) 
-	   first = img->first_frame() + offset;
+	boost::int64_t s = img->first_frame() + offset;
+	boost::int64_t e = img->last_frame() + offset;
+	if ( e < last )  last = e;
+	if ( s > first ) first = s;
 	f += offset;
      }
      
