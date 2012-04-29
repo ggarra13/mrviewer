@@ -150,7 +150,7 @@ namespace mrv {
      * 
      */
        void store_image( const boost::int64_t frame,
-			 const boost::int64_t pts );
+			 const double pts );
 
     /** 
      * Decode a video packet, returning its frame
