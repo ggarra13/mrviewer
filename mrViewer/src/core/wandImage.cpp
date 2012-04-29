@@ -26,7 +26,7 @@ using namespace std;
 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
-#define ThrowWandException(wand) \
+#define ThrowWandException( wand ) \
   { \
     ExceptionType severity; \
    \
@@ -106,7 +106,7 @@ namespace mrv {
      MagickWand* wand = NewMagickWand(); 
      status = MagickReadImage( wand, sequence_filename(frame).c_str() );
      if (status == MagickFalse)
-	ThrowWandException(wand);
+	ThrowWandException( wand );
 
      _format = strdup( MagickGetImageFormat( wand ) );
 
@@ -498,7 +498,7 @@ namespace mrv {
     if (status == MagickFalse)
       {
 	if ( must_convert ) delete [] pixels;
-	ThrowWandException(wand);
+	ThrowWandException( wand );
       }
 
     MagickSetImageGamma( wand, gamma() );

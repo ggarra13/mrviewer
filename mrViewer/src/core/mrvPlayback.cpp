@@ -136,11 +136,7 @@ namespace mrv {
 		}
 	    }
 
-	  if ( img->first_frame() == img->last_frame() ) 
-	    {
-	      status = kEndStop;
-	    }
-	  else if ( loop == ImageView::kLooping )
+	  if ( loop == ImageView::kLooping )
 	    {
 	      frame  = first;
 	      status = kEndLoop;
@@ -189,11 +185,7 @@ namespace mrv {
 		}
 	    }
 
-	  if ( img->first_frame() == img->last_frame() ) 
-	    {
-	      status = kEndStop;
-	    }
-	  else if ( loop == ImageView::kLooping )
+	  if ( loop == ImageView::kLooping )
 	    {
 	      frame  = last;
 	      status = kEndLoop;
