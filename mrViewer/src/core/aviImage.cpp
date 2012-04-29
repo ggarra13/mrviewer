@@ -28,6 +28,8 @@ using namespace std;
 
 
 
+
+#include "libavutil/pixdesc.h"
 #include "aviImage.h"
 #include "mrvImageView.h"
 #include "mrvPlayback.h"
@@ -116,8 +118,10 @@ aviImage::~aviImage()
 
   flush_video();
 
-  sws_freeContext( _convert_ctx );
-  av_free( _av_frame );
+  if ( _convert_ctx )
+     sws_freeContext( _convert_ctx );
+  if ( _av_frame )
+     av_free( _av_frame );
 
   if ( _video_index >= 0 )
     close_video_codec();
@@ -226,6 +230,8 @@ bool aviImage::has_video() const
 void aviImage::open_video_codec()
 {
   AVStream *stream = get_video_stream();
+  if ( stream == NULL ) return;
+
   AVCodecContext *ctx = stream->codec;
   _video_codec = avcodec_find_decoder( ctx->codec_id );
 
@@ -242,23 +248,24 @@ void aviImage::open_video_codec()
   ctx->skip_loop_filter= skip_loop_filter;
   ctx->error_concealment= error_concealment;
 
-  float aspect_ratio;
+  double aspect_ratio;
   if ( ctx->sample_aspect_ratio.num == 0 )
     aspect_ratio = 0;
   else
     aspect_ratio = av_q2d( ctx->sample_aspect_ratio ) *
-      ctx->width / ctx->height;
+    ctx->width / ctx->height;
 
 
 
-  float image_ratio = (float) width() / (float)height();
+  double image_ratio = (float) width() / (float)height();
   if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
   if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0f;
   else _pixel_ratio = aspect_ratio / image_ratio;
 
+  AVDictionary* info = NULL;
   if ( _video_codec == NULL || 
-       avcodec_open( ctx, _video_codec ) < 0 )
+       avcodec_open2( ctx, _video_codec, &info ) < 0 )
     _video_index = -1;
 
 }
@@ -266,7 +273,7 @@ void aviImage::open_video_codec()
 void aviImage::close_video_codec()
 {
   AVStream *stream = get_video_stream();
-  if ( stream && stream->codec )
+  if ( ( stream != NULL ) && ( stream->codec != NULL ) )
     avcodec_close( stream->codec );
 }
 
@@ -275,7 +282,11 @@ void aviImage::close_video_codec()
 void aviImage::flush_video()
 {
   if ( has_video() )
-    avcodec_flush_buffers( get_video_stream()->codec );
+  {
+     AVStream* stream = get_video_stream();
+     if ( stream != NULL && stream->codec != NULL )
+	avcodec_flush_buffers( stream->codec );
+  }
 }
 
 
@@ -293,6 +304,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
   static const AVRational base = { 1, AV_TIME_BASE };
 
+  if ( _context == NULL ) return false;
 
 
   boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
@@ -305,6 +317,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
     {
       idx = audio_stream_index();
       stream = get_audio_stream();
+      if ( stream == NULL ) return false;
       assert( stream != 0 );
 
       boost::int64_t ts = av_rescale_q(offset, base, stream->time_base);
@@ -317,6 +330,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   if ( has_video() ) {
     AVStream* st = get_video_stream();
     assert( st != 0 );
+    if ( st == NULL ) return false;
 
     boost::int64_t ts  = av_rescale_q(offset, base, st->time_base);
 
@@ -332,6 +346,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   assert( stream != NULL );
   assert( idx != -1 );
 
+  if ( stream == NULL ) return false;
 
   offset = av_rescale_q(offset, base, stream->time_base);
 
@@ -357,6 +372,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   bool got_audio = !has_audio();
   bool got_video = !has_video();
   bool got_subtitle = !has_subtitle();
+
+  if ( !got_video )
+    {
+      got_video = in_video_store( frame );
+    }
 
   if ( !got_audio )
     {
@@ -430,7 +450,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 
   unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
-
 
   try {
 
@@ -627,7 +646,7 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 
 
 void aviImage::store_image( const boost::int64_t frame, 
-			    const double pts )
+			    const boost::int64_t pts )
 {
   AVStream* stream = get_video_stream();
   unsigned int w = width();
@@ -837,18 +856,18 @@ void aviImage::limit_subtitle_store(const boost::int64_t frame)
   switch( playback() )
     {
     case kBackwards:
-      first = frame - fps() * 2;
-      last  = frame;
-      if ( _dts < first ) first = _dts;
+       first = frame - (boost::int64_t)fps() * 2;
+       last  = frame;
+       if ( _dts < first ) first = _dts;
       break;
     case kForwards:
       first = frame;
-      last  = frame + fps() * 2;
+      last  = frame + (boost::int64_t)fps() * 2;
       if ( _dts > last )   last = _dts;
       break;
     default:
-       first = frame - fps() * 2;
-       last  = frame + fps() * 2;
+       first = frame - (boost::int64_t)fps() * 2;
+       last  = frame + (boost::int64_t)fps() * 2;
       if ( first < first_frame() ) first = first_frame();
       if ( last  > last_frame() )   last = last_frame();
       break;
@@ -882,8 +901,9 @@ void aviImage::open_subtitle_codec()
   ctx->skip_loop_filter= skip_loop_filter;
   ctx->error_concealment= error_concealment;
 
+  AVDictionary* info = NULL;
   if ( _subtitle_codec == NULL || 
-       avcodec_open( ctx, _subtitle_codec ) < 0 )
+       avcodec_open2( ctx, _subtitle_codec, &info ) < 0 )
     _subtitle_index = -1;
 }
 
@@ -1125,6 +1145,7 @@ void aviImage::populate()
 {
   std::ostringstream msg;
   
+  if ( _context == NULL ) return;
 
 
   // Iterate through all the streams available
@@ -1155,11 +1176,12 @@ void aviImage::populate()
 	      {
 		 video_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
-		 s.has_b_frames = ctx->has_b_frames;
+		 s.has_b_frames = (bool)ctx->has_b_frames;
 		 s.fps          = calculate_fps( stream );
-		 s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
+		 if ( avcodec_get_pix_fmt_name( ctx->pix_fmt ) )
+		    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
 		 _video_info.push_back( s );
-		 if ( _video_index < 0 )
+		 if ( _video_index < 0 && s.has_codec )
 		 {
 		    video_stream( 0 );
 		    int w = ctx->width;
@@ -1177,7 +1199,7 @@ void aviImage::populate()
 		 s.bitrate    = calculate_bitrate( ctx );
 		 
 		 _audio_info.push_back( s );
-		 if ( _audio_index < 0 )
+		 if ( _audio_index < 0 && s.has_codec )
 		    _audio_index = 0;
 		 break;
 	      }
@@ -1271,7 +1293,7 @@ void aviImage::populate()
 	  if ( d < start ) start = d;
 	}
 
-      _frameStart = boost::int64_t( start * _fps ) + 1;
+      _frameStart = (boost::int64_t)start; 
     }
 
   _frame_start = _frameStart;
@@ -1372,7 +1394,7 @@ void aviImage::populate()
 	
 		if ( !got_audio )
 		{
-		   int audio_bytes = 0;
+		   unsigned audio_bytes = 0;
 		   if ( pktframe > _frameStart ) got_audio = true;
 		   else if ( pktframe == _frameStart )
 		   {
@@ -1412,8 +1434,8 @@ void aviImage::populate()
   //
   // Miscellaneous information
   //
-  char buf[256];
-  AVMetadata* m = _context->metadata;
+
+  AVDictionary* m = _context->metadata;
   if ( has_audio() )
   {
      AVStream* stream = get_audio_stream();
@@ -1434,7 +1456,7 @@ void aviImage::populate()
   dump_metadata( _context->metadata );
 
   
-  for (int i = 0; i < _context->nb_chapters; ++i) 
+  for (unsigned i = 0; i < _context->nb_chapters; ++i) 
   {
      AVChapter *ch = _context->chapters[i];
      dump_metadata(ch->metadata);
@@ -1442,7 +1464,7 @@ void aviImage::populate()
        
   if ( _context->nb_programs )
   {
-     for (int i = 0; i < _context->nb_programs; ++i) 
+     for (unsigned i = 0; i < _context->nb_programs; ++i) 
      {
 	AVDictionaryEntry* tag = 
 	     av_dict_get(_context->programs[i]->metadata,
@@ -1456,143 +1478,20 @@ void aviImage::populate()
   }
   
 
-#if 0
-  AVMetadataTag* tag;
-
-  tag = av_metadata_get( m, "album", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Album", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "artist", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Artist", tag->value) );
-    }
-	
-  tag = av_metadata_get( m, "album_artist", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Album Artist", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "comment", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Comment", tag->value) );
-    }
-  
-  tag = av_metadata_get( m, "composer", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Composer", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "copyright", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Copyright", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "creation_time", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Creation Time", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "date", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Date", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "disc", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Disc", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "encoder", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Encoder", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "filename", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Filename", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "genre", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Genre", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "language", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Language", tag->value ) );
-    }
-
-  tag = av_metadata_get( m, "performer", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Performer", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "publisher", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Publisher", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "service_name", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Service Name", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "service_provider", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Service Provider", tag->value) );
-    }
-  
-  tag = av_metadata_get( m, "title", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Title", tag->value) );
-    }
-
-  tag = av_metadata_get( m, "track", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Track", tag->value) );
-    }
-#endif
-
 }
 
 bool aviImage::initialize()
 {
   if ( _context == NULL )
     {
-      AVFormatParameters params;
-      memset(&params, 0, sizeof(params));
-
-
-      static const AVRational time_base = { 1, AV_TIME_BASE };
-      params.time_base = time_base;
-      params.pix_fmt   = PIX_FMT_NONE;
-      params.initial_pause = 1;  // start stream paused
-
+      AVDictionary *opts = NULL;
+      av_dict_set(&opts, "initial_pause", "1", 0);
 
       AVInputFormat*     format = NULL;
-      int error = av_open_input_file( &_context, filename(), 
-				      format, 0, &params );
+      // int error = av_open_input_file( &_context, filename(), 
+      // 				 format, 0, &params );
+      int error = avformat_open_input( &_context, filename(), 
+				       format, &opts );
 
       if ( error >= 0 )
 	{
@@ -2303,14 +2202,14 @@ void aviImage::do_seek()
 
 void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 {
-  unsigned imgw = width();
-  unsigned imgh = height();
+  int imgw = width();
+  int imgh = height();
 
 
-  unsigned dstx = FFMIN(FFMAX(rect.x, 0), imgw);
-  unsigned dsty = FFMIN(FFMAX(rect.y, 0), imgh);
-  unsigned dstw = FFMIN(FFMAX(rect.w, 0), imgw - dstx);
-  unsigned dsth = FFMIN(FFMAX(rect.h, 0), imgh - dsty);
+  int dstx = FFMIN(FFMAX(rect.x, 0), imgw);
+  int dsty = FFMIN(FFMAX(rect.y, 0), imgh);
+  int dstw = FFMIN(FFMAX(rect.w, 0), imgw - dstx);
+  int dsth = FFMIN(FFMAX(rect.h, 0), imgh - dsty);
 
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );
