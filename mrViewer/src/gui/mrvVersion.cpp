@@ -46,7 +46,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "1.0 beta8 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "1.0 beta9 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo

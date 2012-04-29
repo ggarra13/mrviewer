@@ -383,7 +383,16 @@ namespace mrv
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
 
-    if ( f <= 1 ) return 0;
+    double mn = minimum();
+    double mx = maximum();
+    if ( mn > mx ) 
+    {
+       double t = mx;
+       mx = mn; mn = t;
+    }
+
+    if ( f < mn ) return mn;
+    if ( f > mx ) return mx;
 
     int64_t  t = 1;
     unsigned r = 0;
@@ -413,7 +422,16 @@ namespace mrv
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
 
-    if ( f < 1 ) return mrv::media();
+    double mn = minimum();
+    double mx = maximum();
+    if ( mn > mx ) 
+    {
+       double t = mx;
+       mx = mn; mn = t;
+    }
+
+    if ( f < mn ) return mrv::media();
+    if ( f > mx ) return mrv::media();
 
     int64_t  t = 1;
     unsigned r = 0;

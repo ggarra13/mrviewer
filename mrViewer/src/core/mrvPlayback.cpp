@@ -236,18 +236,23 @@ namespace mrv {
   {
      boost::int64_t last = ( boost::int64_t ) timeline->maximum();
      boost::int64_t first = ( boost::int64_t ) timeline->minimum();
+     boost::int64_t f = frame;
 
      if ( timeline->edl() )
      {
-	if ( img->last_frame() < last ) last = img->last_frame();
-	if ( img->first_frame() > first ) first = img->first_frame();
+	boost::int64_t offset = timeline->offset(img);
+	if ( img->last_frame() + offset< last ) 
+	   last = img->last_frame() + offset;
+	if ( img->first_frame() + offset > first ) 
+	   first = img->first_frame() + offset;
+	f += offset;
      }
-
-    if ( frame > last )
+     
+    if ( f > last )
       {
 	return kLoopAtEnd;
       }
-    else if ( frame < first )
+    else if ( f < first )
       {	
 	return kLoopAtStart;
       }

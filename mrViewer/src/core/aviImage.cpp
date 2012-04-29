@@ -29,6 +29,7 @@ using namespace std;
 
 
 
+#include "libavutil/pixdesc.h"
 #include "aviImage.h"
 #include "mrvImageView.h"
 #include "mrvPlayback.h"
@@ -56,7 +57,7 @@ namespace
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
 //#define DEBUG_SEEK
-#define DEBUG_SEEK_VIDEO_PACKETS
+//#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_PACKETS
@@ -262,8 +263,9 @@ void aviImage::open_video_codec()
   if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0f;
   else _pixel_ratio = aspect_ratio / image_ratio;
 
+  AVDictionary* info = NULL;
   if ( _video_codec == NULL || 
-       avcodec_open( ctx, _video_codec ) < 0 )
+       avcodec_open2( ctx, _video_codec, &info ) < 0 )
     _video_index = -1;
 
 }
@@ -905,8 +907,9 @@ void aviImage::open_subtitle_codec()
   ctx->skip_loop_filter= skip_loop_filter;
   ctx->error_concealment= error_concealment;
 
+  AVDictionary* info = NULL;
   if ( _subtitle_codec == NULL || 
-       avcodec_open( ctx, _subtitle_codec ) < 0 )
+       avcodec_open2( ctx, _subtitle_codec, &info ) < 0 )
     _subtitle_index = -1;
 }
 
@@ -1438,7 +1441,7 @@ void aviImage::populate()
   // Miscellaneous information
   //
 
-  AVMetadata* m = _context->metadata;
+  AVDictionary* m = _context->metadata;
   if ( has_audio() )
   {
      AVStream* stream = get_audio_stream();
@@ -1487,19 +1490,15 @@ bool aviImage::initialize()
 {
   if ( _context == NULL )
     {
-      AVFormatParameters params;
-      memset(&params, 0, sizeof(params));
 
-
-      static const AVRational time_base = { 1, AV_TIME_BASE };
-      params.time_base = time_base;
-      params.pix_fmt   = PIX_FMT_NONE;
-      params.initial_pause = 1;  // start stream paused
-
+      AVDictionary *opts = NULL;
+      av_dict_set(&opts, "initial_pause", "1", 0);
 
       AVInputFormat*     format = NULL;
-      int error = av_open_input_file( &_context, filename(), 
-				      format, 0, &params );
+      // int error = av_open_input_file( &_context, filename(), 
+      // 				 format, 0, &params );
+      int error = avformat_open_input( &_context, filename(), 
+				       format, &opts );
 
       if ( error >= 0 )
 	{
