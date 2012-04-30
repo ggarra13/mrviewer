@@ -762,7 +762,6 @@ void ImageView::timeout()
       int64_t frame = boost::int64_t( timeline->value() );
       mrv::media newfg = timeline->media_at( frame );
 
-
       if ( newfg != foreground() ) foreground( newfg );
     }
 

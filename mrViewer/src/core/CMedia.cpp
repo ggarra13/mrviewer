@@ -1572,36 +1572,33 @@ unsigned int CMedia::max_video_frames()
 
 void CMedia::loop_at_start( const boost::int64_t frame )
 {
-  boost::uint64_t pts = frame2pts( NULL, frame );
-  _video_packets.loop_at_start( pts );
+   _video_packets.loop_at_start( frame );
 
-  if ( number_of_audio_streams() > 0 )
-    {
-      boost::uint64_t pts = frame2pts( get_audio_stream(), frame );
-      _audio_packets.loop_at_start( pts );
-    }
-
+   if ( number_of_audio_streams() > 0 )
+   {
+      _audio_packets.loop_at_start( frame );
+   }
+   
   if ( number_of_subtitle_streams() > 0 )
-    {
-      boost::uint64_t pts = frame2pts( NULL, frame );
-      _subtitle_packets.loop_at_start( pts );
-    }
+  {
+     _subtitle_packets.loop_at_start( frame );
+  }
 }
 
 
 
 void CMedia::loop_at_end( const boost::int64_t frame )
 {
-  _video_packets.loop_at_end( frame );
+   _video_packets.loop_at_end( frame );
 
   if ( number_of_audio_streams() > 0 )
     {
-      _audio_packets.loop_at_end( frame );
+       _audio_packets.loop_at_end( frame );
     }
 
   if ( number_of_subtitle_streams() > 0 )
     {
-      _subtitle_packets.loop_at_end( frame );
+       _subtitle_packets.loop_at_end( frame );
     }
 }
 
@@ -1629,7 +1626,6 @@ int64_t CMedia::wait_image()
 	{
 	  const AVPacket& pkt = _video_packets.front();
 
-	  boost::int64_t pktframe;
 	  if ( pkt.pts != MRV_NOPTS_VALUE )
 	     return pkt.pts;
 	  else
@@ -1643,6 +1639,7 @@ int64_t CMedia::wait_image()
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
+
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
   if ( _video_packets.empty() )
@@ -1659,11 +1656,15 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_start() )
 	{
+	  AVPacket& pkt = _video_packets.front();
+	  frame = pkt.pts;
 	  _video_packets.pop_front();
 	  return kDecodeLoopStart;
 	}
       else if ( _video_packets.is_loop_end() )
 	{
+	  AVPacket& pkt = _video_packets.front();
+	  frame = pkt.pts;
 	  _video_packets.pop_front();
 	  return kDecodeLoopEnd;
 	}

@@ -98,8 +98,15 @@ namespace mrv {
     EndStatus status = kEndStop;
     CMedia* next = NULL;
 
-    boost::int64_t last = ( int64_t ) timeline->maximum();
-    boost::int64_t first = ( int64_t ) timeline->minimum();
+    boost::int64_t offset = timeline->offset( img );
+    boost::int64_t last = ( int64_t ) timeline->maximum() - offset;
+    boost::int64_t first = ( int64_t ) timeline->minimum() - offset;
+
+
+    if ( img->last_frame() <= last )
+       last = img->last_frame();
+    if ( img->first_frame() >= first )
+       first = img->first_frame();
 
 
     ImageView::Looping loop = view->looping();
@@ -111,12 +118,12 @@ namespace mrv {
 	{
 	  if ( timeline->edl() )
 	    {
-	      next = timeline->image_at( frame + timeline->offset(img) );
+	      next = timeline->image_at( frame + offset );
 	      if ( !next )
 		{
 		  if ( loop == ImageView::kLooping )
 		  {
-		     next = timeline->image_at( int64_t(timeline->minimum()) );
+		     next = timeline->image_at( first );
 		  }
 		  else
 		  {
@@ -129,26 +136,27 @@ namespace mrv {
 
 	      if ( next != img ) 
 		{
-		  next->preroll( next->first_frame() );
-		  next->play( CMedia::kForwards, uiMain );
-		  status = kEndNextImage;
-		  break;
+		   frame = next->first_frame();
+		   next->preroll( frame );
+		   next->play( CMedia::kForwards, uiMain );
+		   status = kEndNextImage;
+		   break;
 		}
 	    }
 
 	  if ( loop == ImageView::kLooping )
-	    {
-	      frame  = first;
-	      status = kEndLoop;
-	    }
+	  {
+	     frame = first + 1;
+	     status = kEndLoop;
+	  }
 	  else if ( loop == ImageView::kPingPong )
 	  {
-	      frame = frame - 1;
-	      step  = -1;
-	      img->frame( frame );
-	      view->playback( ImageView::kBackwards );
-	      img->playback( CMedia::kBackwards );
-	      status = kEndChangeDirection;
+	     frame = last - 1;
+	     step  = -1;
+	     view->playback( ImageView::kBackwards );
+	     img->frame( frame );
+	     img->playback( CMedia::kBackwards );
+	     status = kEndChangeDirection;
 	  }
 	  else
 	  {
@@ -161,13 +169,13 @@ namespace mrv {
 	{
 	  if ( timeline->edl() )
 	    {
-	      next = timeline->image_at( frame + timeline->offset(img) );
+	      next = timeline->image_at( frame + offset );
 	      if ( !next )
 		{
 		  if ( loop == ImageView::kLooping )
-		    {
-		      next = timeline->image_at( int64_t(timeline->maximum()) );
-		    }
+		  {
+		     next = timeline->image_at( last );
+		  }
 		  else
 		  {
 		     next = img;
@@ -178,26 +186,27 @@ namespace mrv {
 
 	      if ( next != img ) 
 		{
-		  next->preroll( next->last_frame() );
-		  next->play( CMedia::kBackwards, uiMain );
-		  status = kEndNextImage;
-		  break;
+		   frame = next->last_frame();
+		   next->preroll( frame );
+		   next->play( CMedia::kBackwards, uiMain );
+		   status = kEndNextImage;
+		   break;
 		}
 	    }
 
 	  if ( loop == ImageView::kLooping )
 	    {
-	      frame  = last;
+	       frame = last - 1;
 	      status = kEndLoop;
 	    }
 	  else if ( loop == ImageView::kPingPong )
 	    {
-	      frame = frame + 1;
-	      step  = 1;
-	      img->frame( frame );
-	      view->playback( ImageView::kForwards );
-	      img->playback( CMedia::kForwards );
-	      status = kEndChangeDirection;
+	       frame = first + 1;
+	       step = 1;
+	       view->playback( ImageView::kForwards );
+	       img->frame( frame );
+	       img->playback( CMedia::kForwards );
+	       status = kEndChangeDirection;
 	    }
 	  else
 	  {
@@ -223,16 +232,16 @@ namespace mrv {
 
 
   CheckStatus check_loop( int64_t& frame,
-			  const CMedia* img, 
+			  CMedia* img, 
 			  mrv::Timeline* timeline )
   {
      boost::int64_t last = ( boost::int64_t ) timeline->maximum();
      boost::int64_t first = ( boost::int64_t ) timeline->minimum();
      boost::int64_t f = frame;
+     boost::int64_t offset = timeline->offset(img);
 
      if ( timeline->edl() )
      {
-	boost::int64_t offset = timeline->offset(img);
 	boost::int64_t s = img->first_frame() + offset;
 	boost::int64_t e = img->last_frame() + offset;
 	if ( e < last )  last = e;
@@ -242,11 +251,13 @@ namespace mrv {
      
     if ( f > last )
       {
-	return kLoopAtEnd;
+	 img->loop_at_end( frame-1 );
+	 return kLoopAtEnd;
       }
     else if ( f < first )
       {	
-	return kLoopAtStart;
+	 img->loop_at_start( frame+1 );
+	 return kLoopAtStart;
       }
 
     return kNoChange;
@@ -283,6 +294,7 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
+	if ( step == 0 ) break;
 	CMedia::DecodeStatus status = img->decode_audio( frame );
 	switch( status )
 	  {
@@ -329,10 +341,10 @@ namespace mrv {
 
 	if ( !img->has_picture() && timeline->edl() )
 	  { 
-	     int64_t tframe = ( frame - img->first_frame() + 
-				timeline->location(img) );
-	     assert( tframe < int64_t( timeline->maximum() ) );
-	     timeline->value( double( tframe ) );
+	     int64_t f = frame + timeline->offset(img);
+	     assert( f < int64_t( timeline->maximum() ) );
+	     assert( f > int64_t( timeline->minimum() ) );
+	     timeline->value( double( f ) );
 	  }
 
 	frame += step;
@@ -372,6 +384,8 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
+
+	if ( step == 0 ) break;
 
 	int64_t frame = img->frame();
 	CMedia::DecodeStatus status = img->decode_subtitle( frame );
@@ -440,6 +454,7 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
+	if ( step == 0 ) break;
 
 	img->wait_image();
 	CMedia::DecodeStatus status = img->decode_video( frame );
@@ -520,9 +535,12 @@ namespace mrv {
 
 	if ( timeline->edl() )
 	  {
-	    int64_t tframe = frame - img->first_frame() + timeline->location(img);
-	    assert( tframe < int64_t( timeline->maximum() ) );
-	    timeline->value( double( tframe ) );
+	    int64_t f = frame + timeline->offset(img);
+	    if ( f > timeline->maximum() )
+	       f = int64_t( timeline->maximum() );
+	    if ( f < timeline->minimum() )
+	       f = int64_t( timeline->minimum() );
+	    timeline->value( double( f ) );
 	  }
 
 
@@ -586,14 +604,6 @@ namespace mrv {
 	CheckStatus status = check_loop( frame, img, timeline );
 	if ( status != kNoChange )
 	  {
-	    if ( status == kLoopAtStart )
-	      {
-		img->loop_at_start( frame );
-	      }
-	    else if ( status == kLoopAtEnd )
-	      {
-		img->loop_at_end( frame );
-	      }
 
 	    // Lock thread until loop status is resolved on all threads
 	    CMedia::Barrier* barrier = img->loop_barrier();
@@ -609,7 +619,10 @@ namespace mrv {
 					 uiMain, timeline, status );
 	    // if ( end == kEndStop || end == kEndNextImage ) continue; 
 
+
 	  }
+
+
 
 	// If we could not get a frame (buffers full, usually),
 	// wait a little.
@@ -626,6 +639,7 @@ namespace mrv {
 	// multiple frames, so get back the dts frame from image.
 	if ( img->has_video() || img->has_audio() )
 	   frame = img->dts();
+
       }
 
 #ifdef DEBUG_THREADS
