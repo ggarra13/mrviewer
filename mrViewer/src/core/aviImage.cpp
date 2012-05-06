@@ -461,7 +461,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
       int error = av_read_frame( _context, &pkt );
       if ( error < 0 )
 	{
-	  int err = url_ferror( _context->pb );
+	   int err = _context->pb ? _context->pb->error : 0;
 	  if ( err != 0 )
 	    {
 	      IMG_ERROR("seek: Could not read frame " << frame << " error: "
@@ -1350,7 +1350,7 @@ void aviImage::populate()
 	  int error = av_read_frame( _context, &pkt );
 	  if ( error < 0 )
 	  {
-	     int err = url_ferror(_context->pb);
+	     int err = _context->pb ? _context->pb->error : 0;
 	     if ( err != 0 )
 	     {
 		IMG_ERROR("populate: Could not read frame 1 error: "
@@ -1495,7 +1495,7 @@ bool aviImage::initialize()
 
       if ( error >= 0 )
 	{
-	  error = av_find_stream_info( _context );
+	   error = avformat_find_stream_info( _context, NULL );
 	}
 
       if ( error >= 0 )
@@ -1577,12 +1577,12 @@ bool aviImage::fetch(const boost::int64_t frame)
 	int error = av_read_frame( _context, &pkt );
 	if ( error < 0 )
 	  {
-	    int err = url_ferror( _context->pb );
-	    if ( err != 0 )
-	      {
+	     int err = _context->pb ? _context->pb->error : 0;
+	     if ( err != 0 )
+	     {
 		IMG_ERROR("fetch: Could not read frame " << frame << " error: "
 			  << strerror(err) );
-	      }
+	     }
 	    break;
 	  }
 
