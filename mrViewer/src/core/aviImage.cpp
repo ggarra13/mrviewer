@@ -462,18 +462,18 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
       if ( error < 0 )
 	{
 	   int err = _context->pb ? _context->pb->error : 0;
-	  if ( err != 0 )
-	    {
+	   if ( err != 0 )
+	   {
 	      IMG_ERROR("seek: Could not read frame " << frame << " error: "
 			<< strerror(err) );
-	    }
+	   }
 
-	  if ( !got_video    ) _video_packets.seek_end(vpts);
-	  if ( !got_audio    ) _audio_packets.seek_end(apts);
-	  if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
+	   if ( !got_video    ) _video_packets.seek_end(vpts);
+	   if ( !got_audio    ) _audio_packets.seek_end(apts);
+	   if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
 
-	  ok = false;
-	  break;
+	   ok = false;
+	   break;
 	}
 
 
