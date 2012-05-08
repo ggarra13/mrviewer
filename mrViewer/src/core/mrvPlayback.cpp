@@ -341,9 +341,15 @@ namespace mrv {
 
 	if ( !img->has_picture() && timeline->edl() )
 	  { 
-	     int64_t f = frame + timeline->offset(img);
-	     assert( f < int64_t( timeline->maximum() ) );
-	     assert( f > int64_t( timeline->minimum() ) );
+	     int64_t f;
+	     if ( img->first_frame() >= 1 )
+		f = frame;
+	     else
+		f = frame + timeline->offset(img);
+	     if ( f > timeline->maximum() )
+		f = int64_t( timeline->maximum() );
+	     if ( f < timeline->minimum() )
+		f = int64_t( timeline->minimum() );
 	     timeline->value( double( f ) );
 	  }
 
@@ -535,12 +541,16 @@ namespace mrv {
 
 	if ( timeline->edl() )
 	  {
-	    int64_t f = frame + timeline->offset(img);
-	    if ( f > timeline->maximum() )
-	       f = int64_t( timeline->maximum() );
-	    if ( f < timeline->minimum() )
-	       f = int64_t( timeline->minimum() );
-	    timeline->value( double( f ) );
+	     int64_t f;
+	     if ( img->first_frame() >= 1 )
+		f = frame;
+	     else
+		f = frame + timeline->offset(img);
+	     if ( f > timeline->maximum() )
+		f = int64_t( timeline->maximum() );
+	     if ( f < timeline->minimum() )
+		f = int64_t( timeline->minimum() );
+	     timeline->value( double( f ) );
 	  }
 
 

@@ -381,6 +381,8 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	      for (int x = 0; x < tx; ++x)
 		 in.readTile (x, y, _levelX, _levelY);
 	}
+
+	return true;
      
      }
      catch( const std::exception& e )
