@@ -342,7 +342,7 @@ namespace mrv {
 	if ( !img->has_picture() && timeline->edl() )
 	  { 
 	     int64_t f;
-	     if ( img->first_frame() >= 1 )
+	     if ( img->first_frame() > 1 )
 		f = frame;
 	     else
 		f = frame + timeline->offset(img);
@@ -542,7 +542,7 @@ namespace mrv {
 	if ( timeline->edl() )
 	  {
 	     int64_t f;
-	     if ( img->first_frame() >= 1 )
+	     if ( img->first_frame() > 1 )
 		f = frame;
 	     else
 		f = frame + timeline->offset(img);
