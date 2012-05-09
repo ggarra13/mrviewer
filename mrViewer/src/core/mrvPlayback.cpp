@@ -25,6 +25,7 @@ using namespace std;
 #include "core/mrvTimer.h"
 #include "core/mrvThread.h"
 
+#include "gui/mrvIO.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
 #include "mrViewer.h"
@@ -32,6 +33,10 @@ using namespace std;
 #include "mrvPlayback.h"
 
 
+namespace 
+{
+  const char* kModule = "play";
+}
 
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
@@ -95,12 +100,19 @@ namespace mrv {
 			 const CheckStatus end )
   {
     mrv::ImageView* view = uiMain->uiView;
+
     EndStatus status = kEndStop;
     CMedia* next = NULL;
+    if ( view == NULL || timeline == NULL || img == NULL )
+    { 
+       LOG_ERROR( "view " << view << " timeline " << timeline
+		  << "img " << img );
+       return status;
+    }
 
     boost::int64_t offset = timeline->offset( img );
-    boost::int64_t last = ( int64_t ) timeline->maximum() - offset;
-    boost::int64_t first = ( int64_t ) timeline->minimum() - offset;
+    boost::int64_t last = ( int64_t ) timeline->maximum();
+    boost::int64_t first = ( int64_t ) timeline->minimum();
 
 
     if ( img->last_frame() <= last )
@@ -117,13 +129,16 @@ namespace mrv {
       case kLoopAtEnd:
 	{
 	  if ( timeline->edl() )
-	    {
+	  {
+	     boost::int64_t f;
 	      next = timeline->image_at( frame + offset );
+	      f = timeline->global_to_local( frame + offset );
 	      if ( !next )
 		{
 		  if ( loop == ImageView::kLooping )
 		  {
-		     next = timeline->image_at( first );
+		     next = timeline->image_at( timeline->minimum() );
+		     f = timeline->global_to_local( timeline->minimum() );
 		  }
 		  else
 		  {
@@ -131,16 +146,15 @@ namespace mrv {
 		  }
 		}
 
-
 	      assert( next != NULL );
 
-	      if ( next != img ) 
-		{
-		   frame = next->first_frame();
-		   next->preroll( frame );
-		   next->play( CMedia::kForwards, uiMain );
-		   status = kEndNextImage;
-		   break;
+	      if ( next != img && next != NULL) 
+	      {
+		 frame = f;
+		 next->preroll( frame );
+		 next->play( CMedia::kForwards, uiMain );
+		 status = kEndNextImage;
+		 break;
 		}
 	    }
 
@@ -169,25 +183,27 @@ namespace mrv {
 	{
 	  if ( timeline->edl() )
 	    {
-	      next = timeline->image_at( frame + offset );
-	      if ( !next )
-		{
+	       boost::int64_t f;
+	       next = timeline->image_at( frame + offset );
+	       f = timeline->global_to_local( frame + offset );
+	       if ( !next )
+	       {
 		  if ( loop == ImageView::kLooping )
 		  {
-		     next = timeline->image_at( last );
+		     next = timeline->image_at( timeline->maximum() );
+		     f = timeline->global_to_local( timeline->maximum() );
 		  }
 		  else
 		  {
 		     next = img;
 		  }
-		}
+	       }
 
 	      assert( next != NULL );
 
-	      if ( next != img ) 
+	      if ( next != img && next != NULL ) 
 		{
-		   frame = next->last_frame();
-		   next->preroll( frame );
+		   next->preroll( f );
 		   next->play( CMedia::kBackwards, uiMain );
 		   status = kEndNextImage;
 		   break;

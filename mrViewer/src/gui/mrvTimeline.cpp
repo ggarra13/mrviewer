@@ -453,6 +453,39 @@ namespace mrv
     if ( !m ) return NULL;
     return m->image();
   }
+  /** 
+   * Given an image, return its offset from frame 1 when in edl mode
+   * 
+   * @param img image to search in edl list
+   * 
+   * @return offset in timeline
+   */
+int64_t Timeline::global_to_local( const int64_t frame ) const
+  {
+
+    const mrv::Reel& reel = browser()->current_reel();
+    assert( reel );
+
+    mrv::MediaList::const_iterator i = reel->images.begin();
+    mrv::MediaList::const_iterator e = reel->images.end();
+
+    int64_t r = 0;
+    uint64_t t = 0;
+    for ( ; i != e; ++i )
+      {
+	CMedia* img = (*i)->image();
+	assert( img != NULL );
+
+	uint64_t size = img->last_frame() - img->first_frame() + 1;
+	if ( frame > t && t+size < frame )
+	   t += size;
+	else if ( frame >= t )
+	{
+	   r = frame - int64_t(t);
+	}
+      }
+    return r;
+  }
 
   void change_timeline_display( mrv::ViewerUI* uiMain )
   {

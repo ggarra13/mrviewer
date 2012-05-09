@@ -70,6 +70,8 @@ namespace mrv
     mrv::media media_at( const int64_t frame ) const;
     CMedia* image_at( const int64_t frame ) const;
 
+    int64_t global_to_local( const int64_t frame ) const;
+
   protected:
     bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
     void draw_ticks(const fltk::Rectangle& r, int min_spacing);
