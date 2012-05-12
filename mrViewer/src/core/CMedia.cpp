@@ -1830,7 +1830,7 @@ void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
   if ( stream->codec->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
-  unsigned max_distance  = 0;
+  uint64_t max_distance  = 0;
   unsigned num_keyframes = 0;
 
   int num = stream->nb_index_entries;

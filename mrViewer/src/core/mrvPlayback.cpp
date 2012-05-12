@@ -103,13 +103,7 @@ namespace mrv {
 
     EndStatus status = kEndStop;
     CMedia* next = NULL;
-    if ( view == NULL || timeline == NULL || img == NULL )
-    { 
-       LOG_ERROR( "view " << view << " timeline " << timeline
-		  << "img " << img );
-       return status;
-    }
-
+ 
     boost::int64_t offset = timeline->offset( img );
     boost::int64_t last = ( int64_t ) timeline->maximum();
     boost::int64_t first = ( int64_t ) timeline->minimum();

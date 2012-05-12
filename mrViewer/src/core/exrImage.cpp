@@ -140,7 +140,7 @@ bool exrImage::channels_order(
    int dy = dataWindow.min.y;
 
    int order[4];
-   order[0] = order[1] = order[2] = order[3] = 0;
+   order[0] = order[1] = order[2] = order[3] = -1;
 
    // First, count the number of channels
    int idx = 0;
@@ -155,7 +155,7 @@ bool exrImage::channels_order(
 						    layerName.c_str()
 						     );
       if ( !ch ) continue;
-   
+
       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
       
       std::string ext = layerName;
@@ -167,16 +167,20 @@ bool exrImage::channels_order(
 
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
-      if ( ext == N_("R") || ext == N_("RED") || 
-	   ext == N_("Y")  ) order[0] = idx;
-      if ( ext == N_("G") || ext == N_("GREEN") || 
-	   ext == N_("RY") ) order[1] = idx;
-      if ( ext == N_("B") || ext == N_("BLUE")|| 
-	   ext == N_("BY") ) order[2] = idx;
-      if ( ext == N_("A") || ext == N_("ALPHA") ) order[3] = idx;
+      if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
+			      ext == N_("Y") ) ) order[0] = idx;
+      if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
+			      ext == N_("RY") ) ) order[1] = idx;
+      if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
+			      ext == N_("BY") ) ) order[2] = idx;
+      if ( order[3] == -1 && (ext == N_("A") || 
+			      ext == N_("ALPHA") ) ) order[3] = idx;
       channelList.push_back( layerName );
       ++numChannels;
    }
+
+   for ( int i = 0; i < 4; ++i )
+      if ( order[i] == -1 ) order[i] = 0;
 
    if ( numChannels == 0 && channel() )
    {
@@ -277,7 +281,6 @@ bool exrImage::channels_order(
       int k = order[idx];
       const std::string& layerName = channelList[k];
 
-
       ch = channels.findChannel( layerName.c_str() );
       
       if ( !ch ) continue;
@@ -322,7 +325,7 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
       }
    }
 
-	  _hires = rgba;
+   _hires = rgba;
 }
 
   /** 

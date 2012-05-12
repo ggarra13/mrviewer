@@ -481,7 +481,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 	   t += size;
 	else if ( frame >= t )
 	{
-	   r = frame - int64_t(t);
+	   r = frame - int64_t(t) + img->first_frame() - 1;
 	}
       }
     return r;
