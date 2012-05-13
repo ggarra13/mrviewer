@@ -114,14 +114,16 @@ namespace mrv {
 
   ImagePixel VideoFrame::pixel( const unsigned int x, const unsigned int y )
   {
-    if ( !_data ) 
+     if ( !_data ) {
       return ImagePixel(std::numeric_limits<float>::quiet_NaN(),
 			std::numeric_limits<float>::quiet_NaN(),
 			std::numeric_limits<float>::quiet_NaN(),
 			std::numeric_limits<float>::quiet_NaN());
+     }
 
     assert( x < _width  );
     assert( y < _height );
+
 
     switch( _type )
       {

@@ -912,7 +912,7 @@ void ImageView::draw()
       _engine->draw_text( dx, dy, label );
     }
 
-  if ( _selection.w() > 0 || _selection.h() < 0 )
+  if ( _selection.w() > 0 || _selection.h() > 0 )
     {
       uchar r, g,  b;
       fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );

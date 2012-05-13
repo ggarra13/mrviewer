@@ -151,7 +151,7 @@ namespace mrv
     unsigned int ymin = 0;
 
     mrv::Rectd selection = uiMain->uiView->selection();
-    if ( selection.w() > 0 || selection.h() < 0 )
+    if ( selection.w() > 0 || selection.h() > 0 )
       {
 	xmin = (unsigned int)(xmax * selection.x());
 	ymin = (unsigned int)(ymax * selection.y());

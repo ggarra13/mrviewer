@@ -136,6 +136,7 @@ namespace mrv
     CMedia* img = m->image();
     if (!img) return;
 
+
     mrv::image_type_ptr pic;
     {
       CMedia::Mutex& m = img->video_mutex();
@@ -165,7 +166,8 @@ namespace mrv
     unsigned int ymin = 0;
 
     mrv::Rectd selection = uiMain->uiView->selection();
-    if ( selection.w() > 0 || selection.h() < 0 )
+
+    if ( selection.w() > 0 || selection.h() > 0 )
       {
 	xmin = (unsigned int)(xmax * selection.x());
 	ymin = (unsigned int)(ymax * selection.y());
@@ -174,16 +176,21 @@ namespace mrv
 	ymax = ymin + (unsigned int)(ymax  * selection.h());
       }
 
+    assert( xmin <= img->width() );
+    assert( ymin <= img->height() );
+    assert( xmax <= img->width() );
+    assert( ymax <= img->height() );
 
     unsigned int stepY = (ymax - ymin) / w();
     unsigned int stepX = (xmax - xmin) / h();
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
+    
 
     uchar rgb[3];
     for ( unsigned y = ymin; y < ymax; y += stepY )
       {
-	for ( unsigned x = ymax; x < xmax; x += stepX )
+	for ( unsigned x = xmin; x < xmax; x += stepX )
 	  {
 	    const CMedia::PixelType& p = pic->pixel( x, y );
 	    rgb[0] = (uchar)Imath::clamp(p.r * 255.0f, 0.f, 255.f);
