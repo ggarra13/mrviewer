@@ -130,7 +130,10 @@ namespace mrv
 
 #else
 
-    CMedia* img = uiMain->uiView->foreground()->image();
+    media m = uiMain->uiView->foreground();
+    if (!m) return;
+
+    CMedia* img = m->image();
     if (!img) return;
 
     mrv::image_type_ptr pic;
