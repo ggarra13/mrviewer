@@ -402,7 +402,7 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 
 void ImageView::create_timeout( double t )
 {
-  add_timeout( t );
+   add_timeout( float(t) );
 }
 
 void ImageView::delete_timeout()
@@ -777,7 +777,7 @@ void ImageView::timeout()
       if ( delay < kMinDelay ) delay = kMinDelay;
     }
 
-  repeat_timeout( delay );
+  repeat_timeout( float(delay) );
 
   if ( should_update( fg ) ) 
     {
@@ -792,7 +792,7 @@ void ImageView::timeout()
 	      CMedia* img = fg->image();
 	      
 	      frame = (int64_t) img->frame();
-	      timeline->value(frame);
+	      timeline->value( double(frame) );
 	      timeline->redraw();
 	      if ( img && img->first_frame() != img->last_frame() &&
 		   this->frame() != frame )
@@ -1653,21 +1653,21 @@ void ImageView::mouseDrag(int x,int y)
 	  unsigned int texWidth = pic->width();
 	  unsigned int texHeight = pic->height();
 
-	  float xf = lastX;
-	  float yf = lastY;
+	  float xf = float(lastX);
+	  float yf = float(lastY);
 	  image_coordinates( pic, xf, yf );
 	  if ( xf < 0 ) xf = 0;
-	  else if ( xf > texWidth )  xf = texWidth;
+	  else if ( xf > texWidth )  xf = float(texWidth);
 	  if ( yf < 0 ) yf = 0;
-	  else if ( yf > texHeight ) yf = texHeight;
+	  else if ( yf > texHeight ) yf = float(texHeight);
 
-	  float xn = x;
-	  float yn = y;
+	  float xn = float(x);
+	  float yn = float(y);
 	  image_coordinates( pic, xn, yn );
 	  if ( xn < 0 ) xn = 0;
-	  else if ( xn > texWidth )  xn = texWidth;
+	  else if ( xn > texWidth )  xn = float(texWidth);
 	  if ( yn < 0 ) yn = 0;
-	  else if ( yn > texHeight ) yn = texHeight;
+	  else if ( yn > texHeight ) yn = float(texHeight);
 
 	  xf = floor(xf);
 	  yf = floor(yf);
@@ -1839,13 +1839,13 @@ int ImageView::keyDown(unsigned int rawkey)
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
-	_wipe = fltk::event_x() / w();
+	_wipe = fltk::event_x() / float( w() );
 	window()->cursor(fltk::CURSOR_WE);
      }
      else if ( _wipe_dir & kWipeVertical )
      {
 	_wipe_dir = kWipeHorizontal;
-	_wipe = (h() - fltk::event_y()) / h();
+	_wipe = (h() - fltk::event_y()) / float( h() );
 	window()->cursor(fltk::CURSOR_NS);
      }
      else if ( _wipe_dir & kWipeHorizontal ) {
@@ -2567,7 +2567,7 @@ float ImageView::calculate_fstop( float exposure ) const
 		    }
 		  else
 		    {
-		      t = 1.0 - t / fabs(seq2 - seq1);
+		      t = 1.0f - t / fabs(seq2 - seq1);
 		    }
 		  exposure -= t;
 		}
@@ -3178,7 +3178,7 @@ void ImageView::first_frame()
 
   if (!img) return;
 
-  int64_t t = timeline()->minimum();
+  int64_t t = int64_t( timeline()->minimum() );
   int64_t f = img->first_frame();
   if ( t > f ) f = t;
 
@@ -3203,7 +3203,7 @@ void ImageView::last_frame()
 
   CMedia* img = fg->image();
 
-  int64_t t = timeline()->maximum();
+  int64_t t = int64_t( timeline()->maximum() );
   int64_t f = img->last_frame();
   if ( t < f ) f = t;
 
