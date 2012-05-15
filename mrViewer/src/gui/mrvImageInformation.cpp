@@ -447,9 +447,9 @@ namespace mrv
     add_text( _("Rendering Intent"), 
 	      kRenderingIntent[ (int) img->rendering_intent() ] );
 
-#if 0
-    add_float( _("Gamma"), img->gamma(), true, change_gamma_cb, 0.01f,
-	       4.0f );
+#if 1
+    add_float( _("Gamma"), img->gamma(), true, 
+	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
 #endif
     
     const Imf::Chromaticities& c = img->chromaticities(); 

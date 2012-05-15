@@ -217,12 +217,13 @@ namespace mrv {
 	   {
 	      PixelType p = _hires->pixel( x, y );
 
-	      // if ( depth >= 32 )
-	      // {
-	      // 	 p.r *= p.a;
-	      // 	 p.g *= p.a;
-	      // 	 p.b *= p.a;
-	      // }
+	      //@bug: png return alpha of 2.0 in ImageMagick.
+	      if ( p.a > 1.0f ) p.a = 1.0f;
+
+	      p.r *= p.a;
+	      p.g *= p.a;
+	      p.b *= p.a;
+
 	      _hires->pixel( x, y, p );
 	   }
 	}
@@ -499,6 +500,8 @@ namespace mrv {
 	pixels = (boost::uint8_t*)frame->data().get();
       }
 
+    MagickSetImageGamma( wand, gamma() );
+
     status = MagickConstituteImage( wand, width(), height(), 
 				    channels, storage, pixels );
     if (status == MagickFalse)
@@ -507,7 +510,6 @@ namespace mrv {
 	ThrowWandException( wand );
       }
 
-    MagickSetImageGamma( wand, gamma() );
 
     if ( must_convert )
       {
@@ -524,6 +526,7 @@ namespace mrv {
 	  }
       }
     
+    MagickSetImageGamma( wand, gamma() );
 
     //
     // Store EXIF and IPTC data (if any)
