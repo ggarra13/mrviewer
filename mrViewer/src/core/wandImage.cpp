@@ -216,9 +216,13 @@ namespace mrv {
 	   for ( unsigned x = 0; x < dw; ++x )
 	   {
 	      PixelType p = _hires->pixel( x, y );
-	      p.r *= p.a;
-	      p.g *= p.a;
-	      p.b *= p.a;
+
+	      // if ( depth >= 32 )
+	      // {
+	      // 	 p.r *= p.a;
+	      // 	 p.g *= p.a;
+	      // 	 p.b *= p.a;
+	      // }
 	      _hires->pixel( x, y, p );
 	   }
 	}
@@ -454,6 +458,8 @@ namespace mrv {
 	storage = CharPixel;
 	break;
       }
+
+
 
     // Set matte (alpha)
     MagickBooleanType matte = MagickFalse;
