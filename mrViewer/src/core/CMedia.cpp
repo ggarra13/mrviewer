@@ -477,9 +477,9 @@ void CMedia::sequence( const char* fileroot,
   _sequence = new mrv::image_type_ptr[num];
 
   // load all pictures in new thread 
-  // PlaybackData* data = new PlaybackData( NULL, this );
-  // _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-  // 						      data ) ) );
+  PlaybackData* data = new PlaybackData( NULL, this );
+  _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+  						      data ) ) );
 
   if ( ! initialize() )
     return;
@@ -1731,7 +1731,7 @@ bool CMedia::find_image( const boost::int64_t frame )
     {
       char* old = _filename;
       _filename = NULL;
-      if ( strcmp( filename(), old ) != 0 )
+      if ( strcmp( sequence_filename(f).c_str(), old ) != 0 )
 	should_load = true;
       free( old );
     }
@@ -1744,7 +1744,8 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( should_load )
   {
      _dts = f;
-     if ( fs::exists( filename() ) )
+     std::string file =  sequence_filename(f);
+     if ( fs::exists(file) )
      {
 	SCOPED_LOCK( _audio_mutex );
 	SCOPED_LOCK( _mutex );
@@ -1754,6 +1755,7 @@ bool CMedia::find_image( const boost::int64_t frame )
      }
      else
      {
+	LOG_ERROR( file << _(" is missing.") );
 	return false;
      }
   }

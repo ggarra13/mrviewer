@@ -390,7 +390,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
      }
      catch( const std::exception& e )
      {
-	mrvALERT( e.what() );
+	LOG_ERROR( e.what() );
 	return false;
      }
   }
@@ -802,63 +802,62 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
   bool exrImage::fetch( const boost::int64_t frame ) 
   {
 
-     try {
+     try 
+     {
 
-      if ( _levelX > 0 || _levelY > 0 )
-      {
-	 return fetch_mipmap( frame );
-      }
-
-      InputFile in( sequence_filename(frame).c_str() );
-
-
-      const Header& h = in.header();
-      const Box2i& displayWindow = h.displayWindow();
-      const Box2i& dataWindow = h.dataWindow();
-
-
-      _pixel_ratio = h.pixelAspectRatio();
-      _lineOrder   = h.lineOrder();
-      _fps         = 24.0f;
-
-      _compression = h.compression(); 
-
-
-
-      _rendering_intent = kRelativeIntent;
-
-      read_header_attr( h, frame );
-
-
-
-      FrameBuffer fb;
-      bool ok = find_channels( h, fb, frame );
-      if (!ok) return false;
-
-      in.setFrameBuffer(fb);
-
-      in.readPixels( dataWindow.min.y, dataWindow.max.y );
- 
-      int dw = dataWindow.max.x - dataWindow.min.x + 1;
-      int dh = dataWindow.max.y - dataWindow.min.y + 1;
-      if ( dw <= 0 || dh <= 0 ) return false;
-
-
-      if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
-	   dataWindow.max.x != dw || dataWindow.max.y != dh )
-	data_window( dataWindow.min.x, dataWindow.min.y,
-		     dataWindow.max.x, dataWindow.max.y );
-
-      if ( displayWindow != dataWindow )
+	if ( _levelX > 0 || _levelY > 0 )
 	{
-	  data_window( dataWindow.min.x, dataWindow.min.y,
-		       dataWindow.max.x, dataWindow.max.y );
-	  display_window( displayWindow.min.x, displayWindow.min.y,
-			  displayWindow.max.x, displayWindow.max.y );
+	   return fetch_mipmap( frame );
+	}
+
+	InputFile in( sequence_filename(frame).c_str() );
+
+
+	const Header& h = in.header();
+	const Box2i& displayWindow = h.displayWindow();
+	const Box2i& dataWindow = h.dataWindow();
+
+
+	_pixel_ratio = h.pixelAspectRatio();
+	_lineOrder   = h.lineOrder();
+	_fps         = 24.0f;
+
+	_compression = h.compression(); 
+
+	_rendering_intent = kRelativeIntent;
+
+	read_header_attr( h, frame );
+
+
+
+	FrameBuffer fb;
+	bool ok = find_channels( h, fb, frame );
+	if (!ok) return false;
+      
+	in.setFrameBuffer(fb);
+
+	in.readPixels( dataWindow.min.y, dataWindow.max.y );
+ 
+	int dw = dataWindow.max.x - dataWindow.min.x + 1;
+	int dh = dataWindow.max.y - dataWindow.min.y + 1;
+	if ( dw <= 0 || dh <= 0 ) return false;
+	
+
+	if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
+	     dataWindow.max.x != dw || dataWindow.max.y != dh )
+	   data_window( dataWindow.min.x, dataWindow.min.y,
+			dataWindow.max.x, dataWindow.max.y );
+	
+	if ( displayWindow != dataWindow )
+	{
+	   data_window( dataWindow.min.x, dataWindow.min.y,
+			dataWindow.max.x, dataWindow.max.y );
+	   display_window( displayWindow.min.x, displayWindow.min.y,
+			   displayWindow.max.x, displayWindow.max.y );
 	}
 
 
-      if ( _has_yca && !supports_yuv() )
+	if ( _has_yca && !supports_yuv() )
 	{
 	   ycc2rgba( h, frame );
 	}
@@ -866,8 +865,7 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
     } 
     catch( const std::exception& e )
       {
-	 cerr << e.what() << endl;
-	mrvALERT( e.what() );
+	LOG_ERROR( e.what() );
 	return false;
       }
 
@@ -962,7 +960,7 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
     }
     catch( std::exception& e )
       {
-	mrvALERT( e.what() );
+	LOG_ERROR( e.what() );
       }
 
     delete [] base;
