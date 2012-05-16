@@ -477,9 +477,9 @@ void CMedia::sequence( const char* fileroot,
   _sequence = new mrv::image_type_ptr[num];
 
   // load all pictures in new thread 
-  PlaybackData* data = new PlaybackData( NULL, this );
-  _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-  						      data ) ) );
+  // PlaybackData* data = new PlaybackData( NULL, this );
+  // _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+  // 						      data ) ) );
 
   if ( ! initialize() )
     return;
