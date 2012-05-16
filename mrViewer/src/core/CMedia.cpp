@@ -719,7 +719,6 @@ image_type::PixelType CMedia::depth() const
 void CMedia::gamma( const float x )
 {
   _gamma = x;
-  image_damage( image_damage() | kDamageData );
   refresh();
 }
 

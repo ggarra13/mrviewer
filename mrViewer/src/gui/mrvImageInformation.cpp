@@ -230,6 +230,7 @@ namespace mrv
 
     CMedia* img = fg->image();
     img->gamma( w->fvalue() );
+    view->gamma( w->fvalue() );
     view->redraw();
   }
 
@@ -447,10 +448,9 @@ namespace mrv
     add_text( _("Rendering Intent"), 
 	      kRenderingIntent[ (int) img->rendering_intent() ] );
 
-#if 1
     add_float( _("Gamma"), img->gamma(), true, 
 	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
-#endif
+
     
     const Imf::Chromaticities& c = img->chromaticities(); 
     sprintf( buf, "R: %g %g    G: %g %g    B: %g %g",
