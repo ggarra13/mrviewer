@@ -874,13 +874,13 @@ void ImageView::draw()
   ImageList images;
   images.reserve(2);
 
-  if ( _showBG && bg && bg != fg )
+  if ( _showBG && bg && bg != fg && bg->image() )
     {
        if ( bg->image()->has_picture() )
 	  images.push_back( bg->image() );
     }
 
-  if ( fg )
+  if ( fg && fg->image() )
     {
        if ( fg->image()->has_picture() )
 	  images.push_back( fg->image() );
@@ -890,7 +890,7 @@ void ImageView::draw()
 
   _engine->draw_images( images );
 
-  if ( !fg ) return;
+  if ( !fg || fg->image() == NULL ) return;
 
   if ( _masking != 0.0f )
     {
