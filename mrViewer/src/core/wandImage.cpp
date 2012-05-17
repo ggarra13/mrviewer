@@ -209,26 +209,6 @@ namespace mrv {
      PixelType* pixels = (PixelType*)_hires->data().get();
      MagickExportImagePixels( wand, 0, 0, dw, dh, channels, storage, pixels );
 
-     if ( has_alpha )
-     {
-	for ( unsigned y = 0; y < dh; ++y )
-	{
-	   for ( unsigned x = 0; x < dw; ++x )
-	   {
-	      PixelType p = _hires->pixel( x, y );
-
-	      //@bug: png return alpha of 2.0 in ImageMagick.
-	      if ( p.a > 1.0f ) p.a = 1.0f;
-
-	      p.r *= p.a;
-	      p.g *= p.a;
-	      p.b *= p.a;
-
-	      _hires->pixel( x, y, p );
-	   }
-	}
-     }
-
   
      _compression = MagickGetImageCompression( wand );
 
