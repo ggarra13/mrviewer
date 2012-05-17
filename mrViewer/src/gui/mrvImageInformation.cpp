@@ -236,7 +236,12 @@ namespace mrv
 
   double ImageInformation::to_memory( double value, const char*& extension )
   {
-    if ( value >= 1073741824 )
+     if ( value >= 1099511627776 )
+      {
+	value /= 1099511627776;
+	extension = N_("Tb");
+      }
+    else if ( value >= 1073741824 )
       {
 	value /= 1073741824.0;
 	extension = N_("Gb");
