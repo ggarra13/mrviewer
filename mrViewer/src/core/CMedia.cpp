@@ -855,9 +855,8 @@ void CMedia::timestamp(const boost::uint64_t idx )
   if ( result < 0 ) return;
 
   pic->mtime( sbuf.st_mtime );
-  if ( _disk_space == 0 ) _disk_space = sbuf.st_size;
-  else _disk_space = (_disk_space + sbuf.st_size)/2;
-  _disk_space *= size_t( last_frame() - first_frame() + 1 );
+  _disk_space += sbuf.st_size;
+  image_damage( image_damage() | kDamageData );
 }
 
 
