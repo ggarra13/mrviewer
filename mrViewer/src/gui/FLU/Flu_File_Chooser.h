@@ -289,8 +289,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   fltk::ReturnButton ok;
   fltk::Button cancel;
 
-  // apparently there is a bug in VC6 that prevents friend classes from accessing
-  // non-public members. stupid windows
+  // apparently there is a bug in VC6 that prevents friend classes 
+  // from accessing non-public members. stupid windows
   // several other compilers were reported to have a problem with this too, so 
   // i'm just making the whole class public to eliminate potential problems.
   // bad c++ - i know...
@@ -438,9 +438,19 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
       // We should really use fltk's flags for this, but this
       // causes problems with fltk::Browser
-      void set_selected()   { selected_ = true;  }
+      void set_selected()   { 
+	 selected_ = true; 
+	 color( fltk::DARK_BLUE );
+	 textcolor( fltk::WHITE );
+	 redraw();
+      }
       bool selected()       { return selected_;  }
-      void clear_selected() { selected_ = false; }
+	 void clear_selected() { 
+	    selected_ = false; 
+	    textcolor( fltk::BLACK );
+	    color( fltk::GRAY85 ); 
+	    redraw(); 
+	 }
 
 
       std::string filename, date, filesize, shortname, 

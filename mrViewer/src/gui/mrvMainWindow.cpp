@@ -26,8 +26,8 @@
 #  include "icons/viewer.xpm"
 #else
 #  include <windows.h>
-//#  include <resource.h>
 #  include <fltk/win32.h>
+#  include "resource.h"
 #endif
 
 
@@ -51,18 +51,20 @@ namespace mrv {
     fltk::open_display();  // Needed for icons 
 
 #if defined(WIN32) || defined(WIN64)
-    // HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
-    // this->icon(data);
+    HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
+    this->icon(data);
 #else
 
-#if 0
+#if 1
+    fltk::open_display();
+    
     // XpmCreatePixmapFromData comes from libXpm (libgd-xpm* on Debian)
     Pixmap p, mask;
     if ( XpmCreatePixmapFromData(fltk::xdisplay,
 				 DefaultRootWindow(fltk::xdisplay),
 				 viewer_xpm, &p, &mask, NULL) == XpmSuccess )
       {
-	this->icon((char *)p);
+	 //this->icon((char*)p);
       }
 #endif
 
@@ -121,7 +123,7 @@ namespace mrv {
   {
     if ( event == fltk::ENTER )
       {
-	show();
+	 show(0, NULL);
       }
 
     return fltk::Window::handle( event );

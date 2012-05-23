@@ -34,7 +34,7 @@ using namespace std;
 
 int main( const int argc, char** argv ) 
 {
-  fltk::lock();   // Initialize X11 thread system
+   // fltk::lock();   // Initialize X11 thread system
 
 
   // Try to set MRV_ROOT if not set already
@@ -42,8 +42,6 @@ int main( const int argc, char** argv )
 
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();
-
-  mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
 
   mrv::LoadList files;
   mrv::parse_command_line( argc, argv, ui, files );
@@ -57,6 +55,7 @@ int main( const int argc, char** argv )
   //
   // Window must be shown after images have been loaded.
   // 
+  mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
   image_list->load( files );
 
 

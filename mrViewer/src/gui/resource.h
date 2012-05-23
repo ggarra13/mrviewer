@@ -1,1 +1,2 @@
-IDI_ICON1 ICON "mrViewer.ico"
+
+#define IDI_ICON1                       101

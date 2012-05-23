@@ -755,7 +755,7 @@ namespace mrv {
     //
     // Handle fullscreen and presentation mode
     //
-    main->uiMain->show();
+    main->uiMain->show(0, NULL);
     fltk::check();
 
     fltk::RadioButton* r;

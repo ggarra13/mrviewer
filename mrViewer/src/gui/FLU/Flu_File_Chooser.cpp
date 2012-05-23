@@ -2585,10 +2585,31 @@ int Flu_File_Chooser::Entry::handle( int event )
     }
 
   if( event == fltk::FOCUS || event == fltk::UNFOCUS )
+  {
     return 1;
+  }
 
-  if( event == fltk::ENTER || event == fltk::LEAVE )
-    return 1;
+  if( event == fltk::ENTER )
+  {
+     if (!selected()) {
+	color( fltk::CYAN );
+	redraw();
+     }
+     return 1;
+  }
+  if( event == fltk::LEAVE )
+  {
+     if (!selected()) {
+	color( fltk::GRAY85 );
+	redraw();
+     }
+     return 1;
+  }
+
+  if ( event == fltk::MOVE )
+  {
+     return 1;
+  }
 
   fltk::Group *g = chooser->getEntryGroup();
   if( event == fltk::PUSH )
@@ -2907,16 +2928,6 @@ void Flu_File_Chooser::Entry::draw()
       return;
     }
 
-  if ( selected() )
-    {
-      color( fltk::DARK_BLUE );
-      textcolor( fltk::WHITE );
-    }
-  else
-    {
-      color( fltk::GRAY85 );
-      textcolor( fltk::BLACK );
-    }
   draw_box();
 
   int X = 4;
@@ -4566,7 +4577,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
 	const char *filename, int type,
 	int *count = 0, FluStringVector *filelist = 0 )
 {
-  static Flu_File_Chooser *fc = NULL;
+   static Flu_File_Chooser *fc = NULL;
   static std::string retname;
 
   if( !fc )
