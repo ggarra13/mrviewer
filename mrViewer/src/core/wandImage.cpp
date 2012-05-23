@@ -480,7 +480,6 @@ namespace mrv {
 	pixels = (boost::uint8_t*)frame->data().get();
       }
 
-    MagickSetImageGamma( wand, gamma() );
 
     status = MagickConstituteImage( wand, width(), height(), 
 				    channels, storage, pixels );
@@ -519,16 +518,16 @@ namespace mrv {
     status = MagickWriteImage( wand, file );
 
 
-    if (status == MagickFalse)
-      {
-	if ( must_convert ) delete [] pixels;
-	ThrowWandException( wand );
-      }
-
     if ( must_convert ) delete [] pixels;
+
 
     DestroyMagickWand( wand );
     MagickWandTerminus();
+
+    if (status == MagickFalse)
+      {
+	ThrowWandException( wand );
+      }
 
     return true;
   }

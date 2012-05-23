@@ -514,7 +514,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     userDocs = "/tmp/";
   }
 #endif
-  configFilename = userHome + ".Flu_File_Chooser.favorites";
+  configFilename = userHome + "/.Flu_File_Chooser.favorites";
 
   selectionType = type;
   filenameEnterCallback = filenameTabCallback = false;
@@ -713,18 +713,18 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   {
     fltk::Group *g2 = new fltk::Group( 401, 3, 81, 25 );
     g2->begin();
-    listMode = kNone;
+    listMode = kWide;
     fileListBtn = new fltk::ToggleButton( 0, 0, 25, 25 );
-    fileListBtn->value(1);
     fileListBtn->callback( _listModeCB, this );
     fileListBtn->image( file_list_img );
     fileListBtn->tooltip( listTTxt.c_str() );
     fileListWideBtn = new fltk::ToggleButton( 29, 0, 25, 25 );
     fileListWideBtn->callback( _listModeCB, this );
+    fileListWideBtn->value(1);
     fileListWideBtn->image( file_listwide_img );
     fileListWideBtn->tooltip( wideListTTxt.c_str() );
     fileDetailsBtn = new fltk::ToggleButton( 58, 0, 25, 25 );
-     fileDetailsBtn->image( fileDetails );
+    fileDetailsBtn->image( fileDetails );
     fileDetailsBtn->callback( _listModeCB, this );
     fileDetailsBtn->tooltip( detailTTxt.c_str() );
     g2->end();
@@ -860,6 +860,8 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   cd( NULL ); // prime with the current directory
   clear_history();
   cd( pathname );
+
+  fileListWideBtn->do_callback();
 
   // if pathname does not start with "/" or "~", set the filename to it
   if( pathname && pathname[0] != '/' && pathname[1] != ':' && pathname[0] != '~' )
@@ -3668,6 +3670,7 @@ void Flu_File_Chooser::cd( const char *path )
   Entry *entry;
   char cwd[1024];
 
+
   if( !path || path[0] == '\0' )
     {
       path = getcwd( cwd, 1024 );
@@ -3742,7 +3745,7 @@ void Flu_File_Chooser::cd( const char *path )
   // check for favorites
   if( streq( path, FAVORITES_UNIQUE_STRING ) )
     {
-      currentDir = FAVORITES_UNIQUE_STRING;
+      currentDir = ""; // FAVORITES_UNIQUE_STRING;
       addToHistory();
 
       newDirBtn->deactivate();
@@ -3845,7 +3848,7 @@ void Flu_File_Chooser::cd( const char *path )
   else
     {
       // concatenate currentDir with path to make an absolute path
-      currentDir += path;
+       currentDir += path;
     }
 
 
@@ -3904,7 +3907,7 @@ void Flu_File_Chooser::cd( const char *path )
       if( listMode )
 	{
 	  filelist->relayout();
-	}
+	} 
       else
 	{
 	  filedetails->relayout();
