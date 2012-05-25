@@ -377,7 +377,11 @@ namespace mrv {
   
   bool CMedia::save( const char* file ) const
   {
-    if ( strncmp( file + strlen(file) - 4, ".exr", 4 ) == 0 )
+     std::string tmp = file;
+     std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+		     (int(*)(int)) tolower);
+
+     if ( strncmp( tmp.c_str() + tmp.size() - 4, ".exr", 4 ) == 0 )
       {
 	return exrImage::save( file, this );
       }

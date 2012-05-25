@@ -162,7 +162,8 @@ fltk::xpmImage up_folder_img( (char*const*)big_folder_up_xpm ),
   little_desktop( (char*const*)mini_desktop_xpm ),
   bigdocuments( (char*const*)bigdocuments_xpm ),
   bigtemporary( (char*const*)bigtemporary_xpm ),
-  reel( (char*const*) reel_xpm );
+  reel( (char*const*) reel_xpm ),
+  picture( (char*const*) image_xpm );
 
 #define streq(a,b) (strcmp(a,b)==0)
 
@@ -230,7 +231,8 @@ static std::string flu_get_special_folder( int csidl )
 
 // taken explicitly from fltk/src/filename_match.cxx
 // and changed to support case-sensitive matching
-static int flu_filename_match(const char *s, const char *p)
+static int flu_filename_match(const char *s, const char *p,
+			      bool downcase = true)
 {
   int matched;
 
@@ -243,7 +245,7 @@ static int flu_filename_match(const char *s, const char *p)
 
     case '*' :	// match 0-n of any characters
       if (!*p) return 1; // do trailing * quickly
-      while (!flu_filename_match(s, p)) if (!*s++) return 0;
+      while (!flu_filename_match(s, p, downcase)) if (!*s++) return 0;
       return 1;
 
     case '[': {	// match one character in set of form [abc-d] or [^a-b]
@@ -267,16 +269,16 @@ static int flu_filename_match(const char *s, const char *p)
 
     case '{' : // {pattern1|pattern2|pattern3}
     NEXTCASE:
-    if (flu_filename_match(s,p)) return 1;
-    for (matched = 0;;) {
-      switch (*p++) {
-      case '\\': if (*p) p++; break;
-      case '{': matched++; break;
-      case '}': if (!matched--) return 0; break;
-      case '|': case ',': if (matched==0) goto NEXTCASE;
-      case 0: return 0;
-      }
-    }
+       if (flu_filename_match(s,p,downcase)) return 1;
+       for (matched = 0;;) {
+	  switch (*p++) {
+	     case '\\': if (*p) p++; break;
+	     case '{': matched++; break;
+	     case '}': if (!matched--) return 0; break;
+	     case '|': case ',': if (matched==0) goto NEXTCASE;
+	     case 0: return 0;
+	  }
+       }
     case '|':	// skip rest of |pattern|pattern} when called recursively
     case ',':
       for (matched = 0; *p && matched >= 0;) {
@@ -299,7 +301,10 @@ static int flu_filename_match(const char *s, const char *p)
 #ifdef WIN32
       if (tolower(*s) != tolower(*(p-1))) return 0;
 #else
-      if( *s != *(p-1) ) return 0;
+      if ( downcase )
+	 if (tolower(*s) != tolower(*(p-1))) return 0;
+      else
+	 if( *s != *(p-1) ) return 0;
 #endif
       s++;
       break;
@@ -413,7 +418,7 @@ Flu_File_Chooser::find_type( const char *extension )
 Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				    const char *pat, int type,
 				    const char *title )
-  : fltk::DoubleBufferWindow( 600, 400, title ),
+  : fltk::DoubleBufferWindow( 600, 480, title ),
     filename( 70, 0, w()-70-85-10, 25, "" ),
     ok( w()-90, 0, 85, 25 ),
     cancel( w()-90, 0, 85, 25 )
@@ -447,6 +452,29 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( "wmv",  "WMV Movie", &reel );
   add_type( "vob",  "VOB Movie", &reel );
   add_type( "mp4",  "MP4 Movie", &reel );
+  add_type( "exr",  "EXR Picture", &picture );
+  add_type( "tif",  "TIFF Picture", &picture );
+  add_type( "tiff",  "TIFF Picture", &picture );
+  add_type( "iff",  "IFF Picture", &picture );
+  add_type( "gif",  "GIF Picture", &picture );
+  add_type( "png",  "PNG Picture", &picture );
+  add_type( "bmp",  "BMP Picture", &picture );
+  add_type( "jpg",  "JPEG Picture", &picture );
+  add_type( "jpeg", "JPEG Picture", &picture );
+  add_type( "map",  "Map Picture", &picture );
+  add_type( "dpx",  "DPX Picture", &picture );
+  add_type( "cin",  "Cineon Picture", &picture );
+  add_type( "ct",  "mental ray Contour Picture", &picture );
+  add_type( "nt",  "mental ray Normal Picture", &picture );
+  add_type( "mt",  "mental ray Motion Picture", &picture );
+  add_type( "pic", "Softimage Picture", &picture );
+  add_type( "psd", "Photoshop Picture", &picture );
+  add_type( "rgb", "RGB Picture", &picture );
+  add_type( "rpf", "Rich Picture Format", &picture );
+  add_type( "shmap", "mental ray Shadow Map", &picture );
+  add_type( "sgi", "SGI Picture", &picture );
+  add_type( "tga", "Targa Picture", &picture );
+  add_type( "zt",  "mental ray Depth Picture", &picture );
 
   history = currentHist = NULL;
   walkingHistory = false;
@@ -865,7 +893,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   // if pathname does not start with "/" or "~", set the filename to it
   if( pathname && pathname[0] != '/' && pathname[1] != ':' && pathname[0] != '~' )
-    filename.value( pathname );
+     filename.value( pathname );
 }
 
 Flu_File_Chooser::~Flu_File_Chooser()
@@ -881,6 +909,7 @@ Flu_File_Chooser::~Flu_File_Chooser()
   filedetails->clear();
 
   clear_history();
+  unselect_all();
 }
 
 void Flu_File_Chooser::hideCB()
@@ -1239,12 +1268,13 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	 {
 	   if( recycle )
 	     {
-	       if( !fltk::ask( "Really send '%s' to the Recycle Bin?", first ) )
+		if( !fltk::ask( _("Really send '%s' to the Recycle Bin?"), 
+				first ) )
 		 return;
 	     }
 	   else
 	     {
-	       if( !fltk::ask( "Really delete '%s'?", first ) )
+		if( !fltk::ask( _("Really delete '%s'?"), first ) )
 		 return;
 	     }
 	 }
@@ -1252,12 +1282,12 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	 {
 	   if( recycle )
 	     {
-	       if( !fltk::ask( "Really send these %d files to the Recycle Bin?", selected ) )
+		if( !fltk::ask( _("Really send these %d files to the Recycle Bin?"), selected ) )
 		 return;
 	     }
 	   else
 	     {
-	       if( !fltk::ask( "Really delete these %d files?", selected ) )
+		if( !fltk::ask( _("Really delete these %d files?"), selected ) )
 		 return;
 	     }
 	 }
@@ -1577,17 +1607,17 @@ void Flu_File_Chooser::PreviewGroup::draw()
 	{
 #if !defined(WIN32) && !defined(WIN64)
 	case ELOOP:
-	   label( "Too many symlinks" ); break;
+	   label( _("Too many symlinks") ); break;
 #endif
 	   case ENAMETOOLONG:
 	   case ENOTDIR:
 	   case ENOENT:
-	      label( "Bad\npath" ); break;
+	      label( _("Bad\npath") ); break;
 	   case ENOMEM:
-	      label( "Not\nMemory" ); break;
+	      label( _("Not\nMemory") ); break;
 	   case EACCES:
 	   default:
-	      label( "Not\nReadable" ); break;
+	      label( _("Not\nReadable") ); break;
 	}
 	fltk::Group::draw();
 	return;
@@ -1873,6 +1903,7 @@ void Flu_File_Chooser::okCB()
 	  hide();
 	}
     }
+
   lastSelected = NULL;
 }
 
@@ -2546,7 +2577,7 @@ void Flu_File_Chooser::Entry::inputCB()
 	  updateIcon();
 	}
       // QUESTION: should we set the chooser filename to the modified name?
-      //chooser->filename.value( filename.c_str() );
+      chooser->filename.value( filename.c_str() );
     }
 
   // only turn off editing if we have a successful name change
@@ -2593,6 +2624,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 
   if( event == fltk::ENTER )
   {
+     // if user enters an entry cell, color it cyan
      if (!selected()) {
 	color( fltk::CYAN );
 	redraw();
@@ -2601,7 +2633,13 @@ int Flu_File_Chooser::Entry::handle( int event )
   }
   if( event == fltk::LEAVE )
   {
-     if (!selected()) {
+     // if user leaves an entry cell, color it gray or blue
+     if (selected()) {
+	color( fltk::DARK_BLUE );
+	redraw();
+     }
+     else
+     {
 	color( fltk::GRAY85 );
 	redraw();
      }
@@ -2656,7 +2694,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 	}
 	if( selected() )
 	   chooser->trashBtn->activate();
-	  return 1;
+	return 1;
      }
      
      /*
@@ -2986,10 +3024,8 @@ void Flu_File_Chooser::unselect_all()
   for( int i = 0; i < g->children(); ++i )
     {
       e = ((Entry*)g->child(i));
-      if ( e->selected() )
-	{
-	  e->clear_selected();
-	}
+      e->clear_selected();
+      e->color( fltk::GRAY85 );
       e->editMode = 0;
     }
   lastSelected = 0;
@@ -4117,7 +4153,8 @@ void Flu_File_Chooser::cd( const char *path )
 		  for( unsigned int i = 0; i < userPatterns.size(); i++ )
 		    {
 		      if( flu_filename_match( name,
-					      userPatterns[i].c_str() ) != 0 )
+					      userPatterns[i].c_str(),
+					      true ) != 0 )
 			{
 			  cull = false;
 			  break;
@@ -4137,7 +4174,8 @@ void Flu_File_Chooser::cd( const char *path )
 		  for( unsigned int i = 0; i < currentPatterns.size(); i++ )
 		    {
 		      if( flu_filename_match( name,
-					      currentPatterns[i].c_str() ) != 0 )
+					      currentPatterns[i].c_str(),
+					      true ) != 0 )
 			{
 			  cull = false;
 			  break;
