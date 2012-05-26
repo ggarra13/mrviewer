@@ -62,7 +62,7 @@ namespace mrv
     void remove_all();
 
     void last_image();
-    void change_image( unsigned i ) { value(i); change_image(); }
+    void change_image( unsigned i );
     void previous_image();
     void next_image();
 

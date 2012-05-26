@@ -1168,6 +1168,12 @@ namespace mrv {
   }
 
 
+  void ImageBrowser::change_image(unsigned i)
+  { 
+     value(i); 
+     change_image(); 
+  }
+
   /** 
    * Change to last image in image browser
    * 
@@ -1950,25 +1956,28 @@ namespace mrv {
    */
   void ImageBrowser::seek( const int64_t tframe )
   {
-    uiMain->uiFrame->value( tframe );
-    uiMain->uiFrame->redraw();
+     boost::int64_t f = tframe;
+
+     uiMain->uiFrame->value( tframe );
+     uiMain->uiFrame->redraw();
 
     timeline()->value( tframe );
     timeline()->redraw();
 
-    boost::int64_t f = tframe;
 
     if ( timeline()->edl() )
       {
+	ImageView::Playback playback = uiMain->uiView->playback();
+
 	// Check if we need to change to a new sequence based on frame
-	mrv::media m = current_image();
-	if (! m ) return;
+	 mrv::media m = timeline()->media_at( f );
+	 if (! m ) return;
 
 	CMedia* img = m->image();
 
 	boost::int64_t pos = timeline()->offset( img );
 	int size = img->last_frame() - img->first_frame() + 1;
-	ImageView::Playback playback = uiMain->uiView->playback();
+
 
 	if ( f < timeline()->minimum() )
 	  {
@@ -1979,23 +1988,21 @@ namespace mrv {
 	    f = int64_t(timeline()->minimum() + f - timeline()->maximum()) - 1;
 	  }
 
-	if ( f <= pos || f - pos > size )
+
+	if ( m != uiMain->uiView->foreground() )
 	  {
 	     uiMain->uiView->stop();
 
-	    unsigned int i = timeline()->index( f );
-	    change_image(i);
 
-	    mrv::media newm = current_image();
-	    CMedia* newimg = newm->image();
+	     unsigned int i = timeline()->index( f );
+	     f = timeline()->global_to_local( f );
+	     img->seek( f );
+	     if ( playback != ImageView::kStopped )
+	     {
+	       img->play( (CMedia::Playback)playback, uiMain);
+	     }
 
-	    f -= timeline()->location( newimg );
-	    f += newimg->first_frame();
-	    newimg->seek( f );
-	    if ( playback != ImageView::kStopped )
-	      {
-		newimg->play( (CMedia::Playback)playback, uiMain);
-	      }
+	     change_image(i);
 	  }
 	else
 	  {

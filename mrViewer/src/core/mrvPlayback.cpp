@@ -49,6 +49,8 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
+//#define DEBUG_THREADS
+
 
 #if defined(WIN32) || defined(WIN64)
 
@@ -233,7 +235,7 @@ namespace mrv {
 
     if ( status == kEndStop || status == kEndNextImage )
       {
-	img->playback( CMedia::kStopped );
+	 img->playback( CMedia::kStopped );
       }
 
     return status;
@@ -469,6 +471,7 @@ namespace mrv {
 	if ( step == 0 ) break;
 
 	img->wait_image();
+
 	CMedia::DecodeStatus status = img->decode_video( frame );
 	switch( status )
 	  {
@@ -547,11 +550,13 @@ namespace mrv {
 
 	if ( timeline->edl() )
 	  {
+	     assert( img != NULL );
 	     int64_t f = frame + timeline->location(img) - img->first_frame();
-	     if ( f > timeline->maximum() )
-		f = int64_t( timeline->maximum() );
-	     if ( f < timeline->minimum() )
-		f = int64_t( timeline->minimum() );
+
+	     assert( f <= timeline->maximum() );
+	     assert( f >= timeline->minimum() );
+
+
 	     timeline->value( double( f ) );
 	  }
 
@@ -616,7 +621,6 @@ namespace mrv {
 	CheckStatus status = check_loop( frame, img, timeline );
 	if ( status != kNoChange )
 	  {
-
 	    // Lock thread until loop status is resolved on all threads
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    barrier->count( barrier_thread_count( img ) );
@@ -629,6 +633,7 @@ namespace mrv {
 	    // and return new frame and step.
 	    EndStatus end = handle_loop( frame, step, img, 
 					 uiMain, timeline, status );
+
 	    // if ( end == kEndStop || end == kEndNextImage ) continue; 
 
 
