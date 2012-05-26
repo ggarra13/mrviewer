@@ -329,7 +329,7 @@ namespace mrv {
 	  case  CMedia::kDecodeLoopStart:
 	    {
 	      CMedia::Barrier* barrier = img->loop_barrier();
-	      barrier->count( barrier_thread_count( img ) );
+	      // barrier->count( barrier_thread_count( img ) );
 	      // Wait until all threads loop and decode is restarted
 	      barrier->wait();
 	      continue;
@@ -416,7 +416,7 @@ namespace mrv {
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
 	    CMedia::Barrier* barrier = img->loop_barrier();
-	    barrier->count( barrier_thread_count( img ) );
+	    // barrier->count( barrier_thread_count( img ) );
 	    // Wait until all threads loop and decode is restarted
 	    barrier->wait();
 	    continue;
@@ -492,7 +492,7 @@ namespace mrv {
 	  case CMedia::kDecodeLoopStart:
 	     {
 	      CMedia::Barrier* barrier = img->loop_barrier();
-	      barrier->count( barrier_thread_count( img ) );
+	      // barrier->count( barrier_thread_count( img ) );
 	      // Wait until all threads loop and decode is restarted
 	      barrier->wait();
 	      continue;
@@ -624,7 +624,7 @@ namespace mrv {
 	    // Lock thread until loop status is resolved on all threads
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    barrier->count( barrier_thread_count( img ) );
-	    // Wait until all threads loop
+	    // Wait until all threads loop or exit
 	    barrier->wait();
 
 	    if ( img->stopped() ) break;
@@ -634,7 +634,7 @@ namespace mrv {
 	    EndStatus end = handle_loop( frame, step, img, 
 					 uiMain, timeline, status );
 
-	    // if ( end == kEndStop || end == kEndNextImage ) continue; 
+	    // if ( end == kEndStop || end == kEndNextImage ) continue;
 
 
 	  }

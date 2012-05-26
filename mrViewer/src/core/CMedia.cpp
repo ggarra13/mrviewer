@@ -1759,7 +1759,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   }
 
   _frame = f;
-    
+
 
   refresh();
   return true;
