@@ -34,8 +34,10 @@ using namespace std;
 
 int main( const int argc, char** argv ) 
 {
-   // fltk::lock();   // Initialize X11 thread system
+  fltk::lock();   // Initialize X11 thread system
 
+
+  setlocale (LC_ALL, "");
 
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );

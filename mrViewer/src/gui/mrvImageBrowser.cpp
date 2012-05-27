@@ -1383,7 +1383,7 @@ namespace mrv {
 
      if ( edl )
      {
-	toggle_edl();
+	set_edl();
      }
   }
 
@@ -1993,16 +1993,15 @@ namespace mrv {
 	  {
 	     uiMain->uiView->stop();
 
-
 	     unsigned int i = timeline()->index( f );
 	     f = timeline()->global_to_local( f );
 	     img->seek( f );
+	     change_image(i);
 	     if ( playback != ImageView::kStopped )
 	     {
-	       img->play( (CMedia::Playback)playback, uiMain);
+	       uiMain->uiView->play( (CMedia::Playback)playback);
 	     }
 
-	     change_image(i);
 	  }
 	else
 	  {
@@ -2099,6 +2098,23 @@ namespace mrv {
   {
     uiMain->uiFrame->value( f );
     uiMain->uiFrame->redraw();
+  }
+
+  void ImageBrowser::set_edl()
+  {
+    mrv::media m = current_image();
+    if (!m) return;
+
+    CMedia* img = m->image();
+    int64_t frame = img->frame();
+
+    timeline()->edl( true );
+    timeline()->redraw();
+    if ( !img ) return;
+
+    int64_t f = frame - img->first_frame() + timeline()->location( img );
+    uiMain->uiFrame->value( f );
+    timeline()->value( f );
   }
 
   void ImageBrowser::toggle_edl()

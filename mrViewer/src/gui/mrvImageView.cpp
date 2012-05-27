@@ -450,6 +450,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 
 void ImageView::stop_playback()
 {
+
   mrv::media fg = foreground();
   if ( fg ) fg->image()->stop();
 
@@ -3311,8 +3312,6 @@ void ImageView::playback( const ImageView::Playback b )
 
   uiMain->uiPlayForwards->redraw();
   uiMain->uiPlayBackwards->redraw();
-
-  mrv::check_license_status();
 
 }
 
