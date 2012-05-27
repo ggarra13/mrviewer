@@ -2006,10 +2006,13 @@ namespace mrv {
 	  }
 	else
 	  {
-	    f -= timeline()->location( img );
-	    f += img->first_frame();
-
-	    img->seek( f );
+	     f = timeline()->global_to_local( f );
+	     img->stop();
+	     img->seek( f );
+	     if ( playback != ImageView::kStopped )
+	     {
+	       img->play( (CMedia::Playback)playback, uiMain);
+	     }
 	  }
       }
     else
