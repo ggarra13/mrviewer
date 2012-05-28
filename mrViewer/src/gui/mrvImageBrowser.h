@@ -93,6 +93,7 @@ namespace mrv
 
     void frame( const int64_t f );
 
+       void clear_edl();
        void set_edl();
 
     void toggle_edl();

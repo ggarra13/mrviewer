@@ -465,7 +465,7 @@ namespace mrv {
 	  }
       }
 
-    if ( timeline()->edl() )
+    if ( reel->edl )
        fprintf( f, "EDL\n" );
 
     fclose(f);
@@ -1136,6 +1136,15 @@ namespace mrv {
 	value(0);
       }
 
+    if ( reel->edl )
+    {
+       set_edl();
+    }
+    else
+    {
+       clear_edl();
+    }
+
     change_image();
   }
 
@@ -1333,7 +1342,7 @@ namespace mrv {
 	// display first image for good EDL playback
 	this->change_image( 0 );
 
-	if ( !timeline()->edl() )
+	if ( !reel->edl )
 	  {
 	    mrv::media m = current_image();
 	    CMedia* img = m->image();
@@ -1354,7 +1363,7 @@ namespace mrv {
 	if ( m )
 	  {
 	    CMedia* img = m->image();
-	    if ( timeline()->edl() || 
+	    if ( reel->edl || 
 		 img->first_frame() != img->last_frame() )
 	      uiMain->uiView->play_forwards();
 	  }
@@ -1384,6 +1393,10 @@ namespace mrv {
      if ( edl )
      {
 	set_edl();
+     }
+     else
+     {
+	clear_edl();
      }
   }
 
@@ -2100,8 +2113,31 @@ namespace mrv {
     uiMain->uiFrame->redraw();
   }
 
+  void ImageBrowser::clear_edl()
+  {
+     mrv::Reel reel = current_reel();
+     reel->edl = false;
+
+    mrv::media m = current_image();
+    if (!m) return;
+
+    CMedia* img = m->image();
+    int64_t frame = img->frame();
+
+    timeline()->edl( false );
+    timeline()->redraw();
+    if ( !img ) return;
+
+    uiMain->uiFrame->value( frame );
+    timeline()->value( frame );
+    adjust_timeline();
+  }
+
   void ImageBrowser::set_edl()
   {
+     mrv::Reel reel = current_reel();
+     reel->edl = true;
+
     mrv::media m = current_image();
     if (!m) return;
 
@@ -2126,6 +2162,8 @@ namespace mrv {
     int64_t frame = img->frame();
 
     timeline()->edl( !timeline()->edl() );
+    mrv::Reel reel = current_reel();
+    reel->edl = timeline()->edl();
     timeline()->redraw();
     if ( !img ) return;
 
