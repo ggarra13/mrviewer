@@ -97,8 +97,6 @@ namespace mrv {
 
     virtual void subtitle_stream( int idx );
 
-    virtual void debug_video_packets(const boost::int64_t frame, 
-				     const char* routine = "");
     void debug_video_stores(const boost::int64_t frame, 
 			    const char* routine = "");
 

@@ -11,6 +11,7 @@
 #include <iostream>
 
 #include "tclap/CmdLine.h"
+#include "mrvI8N.h"
 #include "mrvCommandLine.h"
 #include "mrvPreferences.h"
 #include "mrvString.h"
@@ -38,7 +39,7 @@ namespace mrv {
       // Output usage line
       //
       cerr << endl << endl
-	   << "Usage:"
+	   << _("Usage:")
 	   << endl << endl
 	   << "  " << cmd << " ";
 
@@ -52,7 +53,7 @@ namespace mrv {
       // Output options in shorter format than TCLAP's default
       //
       cerr << endl << endl
-	   << "Options:" << endl << endl;
+	   << _("Options:") << endl << endl;
 
       //
       // Find longest argument for formatting
@@ -80,8 +81,8 @@ namespace mrv {
 	}
 
       cerr << endl
-	   << "Names cannot contain spaces in their paths." << endl << endl
-	   << "Examples:" << endl << endl
+	   << _("Names cannot contain spaces in their paths.") << endl << endl
+	   << _("Examples:") << endl << endl
 	   <<	"  > " << cmd << " background.dpx texture.png" << endl
 	   <<	"  > " << cmd << " beauty.001-020.iff background.%04d.exr 1-20" << endl
 	   <<	"  > " << cmd << " beauty.mov beauty.@@.iff 1-20 beauty.avi" << endl;
@@ -96,16 +97,16 @@ void parse_command_line( const int argc, char** argv,
 			 mrv::LoadList& load )
 {
   // Some default values
-  double gamma = ui->uiPrefs->uiPrefsViewGamma->value();
-  double gain  = ui->uiPrefs->uiPrefsViewGain->value();
+  float gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
+  float gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
   std::string db_driver = "postgresql";
 
   try {
     using namespace TCLAP;
 
     CmdLine cmd( 
-		"A professional image and movie viewer\n"
-		"Examples:\n"
+		_("A professional image and movie viewer\n"
+		  "Examples:\n")
 		 , ' ', mrv::version() );
 
     //
@@ -117,22 +118,22 @@ void parse_command_line( const int argc, char** argv,
     //
     // The command-line arguments (parsed in order)
     //
-    ValueArg< double > 
+    ValueArg< float > 
       agamma("g", "gamma", 
-	     "Override viewer's default gamma.", false, gamma, "float");
+	     _("Override viewer's default gamma."), false, gamma, "float");
 
-    ValueArg< double > 
+    ValueArg< float > 
       again( "", "gain", 
-	    "Override viewer's default gain.", false, gain, "float");
+	     _("Override viewer's default gain."), false, gain, "float");
 
     ValueArg< std::string > 
       adbdriver( "", "dbd", 
-		 "Override viewer's default database driver.", false, 
+		 _("Override viewer's default database driver."), false, 
 		 db_driver, "string");
 
     UnlabeledMultiArg< std::string > 
-      afiles("files",
-	     "Images, sequences or movies to display.", false, "images");
+    afiles(_("files"),
+	   _("Images, sequences or movies to display."), false, "images");
 
     cmd.add(agamma);
     cmd.add(again);
@@ -206,7 +207,6 @@ void parse_command_line( const int argc, char** argv,
 
   // Load default preferences
   mrv::Preferences::run(ui);
-
   //
   // UI command-line overrides
   //

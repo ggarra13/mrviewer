@@ -16,6 +16,7 @@
 #include <fltk/run.h>
 
 
+#include "core/mrvI8N.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "mrViewer.h"
@@ -37,10 +38,21 @@ int main( const int argc, char** argv )
   fltk::lock();   // Initialize X11 thread system
 
 
-  setlocale (LC_ALL, "");
 
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
+
+#ifdef USE_GETTEXT
+
+  setlocale (LC_MESSAGES, "");
+
+  std::string tmp = getenv("MRV_ROOT");
+  tmp += "/locale";
+
+  bindtextdomain("mrViewer", tmp.c_str());
+  textdomain("mrViewer");
+
+#endif
 
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();

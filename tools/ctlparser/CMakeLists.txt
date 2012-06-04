@@ -1,4 +1,8 @@
 
+if(COMMAND cmake_policy)
+  cmake_policy(SET CMP0003 NEW)
+endif(COMMAND cmake_policy)
+
 FIND_PACKAGE( CTL REQUIRED )
 
 INCLUDE_DIRECTORIES( ${CTL_INCLUDE_DIR} ${OPENEXR_INCLUDE_DIR} )
@@ -8,6 +12,7 @@ SET( LIBRARIES ${CTL_LIBRARIES}  )
 ELSE(WIN32)
 SET( LIBRARIES ${CTL_LIBRARIES} pthread )
 ENDIF()
+
 
 
 ADD_EXECUTABLE( ctlparser main.cpp )

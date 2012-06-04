@@ -775,6 +775,8 @@ namespace mrv {
 	view->toggle_fullscreen();
       }
 
+    main->uiMain->set_icon();
+
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
   }

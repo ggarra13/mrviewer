@@ -1725,8 +1725,8 @@ bool aviImage::frame( const boost::int64_t f )
 
 
 #ifdef DEBUG_DECODE
-  LOG_INFO( "------- FRAME DONE " << f << " _dts: " << _dts << " _frame: " 
-	    << _frame << " _expected: "  << _expected << endl << endl );
+  LOG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: " 
+	    << _frame << " _expected: "  << _expected );
 #endif
 
   return true;
@@ -1922,7 +1922,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 
 	  // Limit storage of frames to only half fps.  For example, 15 frames
 	  // for a fps of 30.
-	  if ( _images.size() >= fps()/2 )
+	  if ( _images.size() >= fps() )
 	     return kDecodeDone;
 
 	  got_image = decode_image( frame, pkt );
@@ -1996,73 +1996,6 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
 }
 
 
-void aviImage::debug_video_packets(const boost::int64_t frame, 
-				   const char* routine)
-{
-  if ( !has_video() ) return;
-
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
-
-  mrv::PacketQueue::const_iterator iter = _video_packets.begin();
-  mrv::PacketQueue::const_iterator last = _video_packets.end();
-  std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
-	    << " " << routine << " video packets #" 
-	    << _video_packets.size() << " (" << _video_packets.bytes() << "): "
-	    << std::endl;
-
-#ifdef DEBUG_PACKETS_DETAIL
-  bool in_preroll = false;
-  bool in_seek = false;
-  for ( ; iter != last; ++iter )
-    {
-      if ( _video_packets.is_flush( *iter ) )
-	{
-	  std::cerr << "* "; continue;
-	}
-      else if ( _video_packets.is_loop_start( *iter ) ||
-		_video_packets.is_loop_end( *iter ) )
-	{
-	  std::cerr << "L "; continue;
-	}
-
-      assert( (*iter).dts != MRV_NOPTS_VALUE );
-      boost::int64_t f = pts2frame( get_video_stream(), (*iter).dts );
-      if ( _video_packets.is_seek( *iter ) )
-	{
-	  if ( in_preroll )
-	    {
-	      std::cerr << "[PREROLL END: " << f << "]";
-	      in_preroll = false;
-	    }
-	  else if ( in_seek )
-	    {
-	      std::cerr << "<SEEK END:" << f << ">";
-	      in_seek = false;
-	    }
-	  else
-	    {
-	      std::cerr << "<SEEK:" << f << ">";
-	      in_seek = true;
-	    }
-	}
-      else if ( _video_packets.is_preroll( *iter ) )
-	{
-	  std::cerr << "[PREROLL:" << f << "]";
-	  in_preroll = true;
-	}
-      else
-	{
-	  if ( f == frame )  std::cerr << "S";
-	  if ( f == _dts )   std::cerr << "D";
-	  if ( f == _frame ) std::cerr << "F";
-	  std::cerr << f << " ";
-	}
-    }
-  std::cerr << std::endl;
-#endif
-
-}
 
 void aviImage::debug_subtitle_packets(const boost::int64_t frame, 
 				      const char* routine)
@@ -2076,7 +2009,7 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
   mrv::PacketQueue::const_iterator last = _subtitle_packets.end();
   std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
 	    << " " << routine << " subtitle packets #" 
-	    << _subtitle_packets.size() << " (" 
+	    << _subtitle_packets.size() << " (bytes:" 
 	    << _subtitle_packets.bytes() << "): "
 	    << std::endl;
 
@@ -2154,10 +2087,10 @@ void aviImage::do_seek()
   if ( !got_image || !got_audio )
     {
       if ( _seek_frame != _expected )
-	{
-	  clear_packets();
-	  _expected = _dts - 1;
-	}
+      	{
+      	   clear_packets();
+      	  _expected = _dts - 1;
+      	}
 
       fetch(_seek_frame);
     }

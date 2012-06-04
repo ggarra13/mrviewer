@@ -38,7 +38,6 @@ namespace mrv {
   MainWindow::MainWindow( int W, int H, const char* title ) :
     fltk::Window( W, H, title )
   {
-    set_icon();
   }
 
   MainWindow::~MainWindow()
@@ -49,14 +48,13 @@ namespace mrv {
   void MainWindow::set_icon()
   {
     fltk::open_display();  // Needed for icons 
-
+    
 #if defined(WIN32) || defined(WIN64)
     HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
     this->icon(data);
 #else
 
 #if 1
-    fltk::open_display();
     
     // XpmCreatePixmapFromData comes from libXpm (libgd-xpm* on Debian)
     Pixmap p, mask;
@@ -64,7 +62,7 @@ namespace mrv {
 				 DefaultRootWindow(fltk::xdisplay),
 				 viewer_xpm, &p, &mask, NULL) == XpmSuccess )
       {
-	 //this->icon((char*)p);
+	 this->icon((char*)p);
       }
 #endif
 

@@ -41,7 +41,6 @@ namespace
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-// #  define DEBUG_THREADS
 
 #if 0
 #  define DEBUG_DECODE
@@ -49,7 +48,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-//#define DEBUG_THREADS
+// #define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -127,32 +126,32 @@ namespace mrv {
 	  if ( timeline->edl() )
 	  {
 	     boost::int64_t f;
-	      next = timeline->image_at( frame + offset );
-	      f = timeline->global_to_local( frame + offset );
-	      if ( !next )
+	     next = timeline->image_at( frame + offset );
+	     f = timeline->global_to_local( frame + offset );
+	     if ( !next )
+	     {
+		if ( loop == ImageView::kLooping )
 		{
-		  if ( loop == ImageView::kLooping )
-		  {
-		     next = timeline->image_at( timeline->minimum() );
-		     f = timeline->global_to_local( timeline->minimum() );
-		  }
-		  else
-		  {
-		     next = img;
-		  }
+		   f = boost::int64_t(timeline->minimum());
+		   next = timeline->image_at( f );
+		   f = timeline->global_to_local( f );
 		}
-
-	      assert( next != NULL );
-
-	      if ( next != img && next != NULL) 
-	      {
-		 frame = f;
-		 next->preroll( frame );
-		 next->play( CMedia::kForwards, uiMain );
-		 status = kEndNextImage;
-		 break;
+		else
+		{
+		   next = img;
 		}
-	    }
+	     }
+	     
+	     assert( next != NULL );
+	     
+	     if ( next != img && next != NULL) 
+	     {
+		next->preroll( f );
+		next->play( CMedia::kForwards, uiMain );
+		status = kEndNextImage;
+		break;
+	     }
+	  }
 
 	  if ( loop == ImageView::kLooping )
 	  {
@@ -186,8 +185,9 @@ namespace mrv {
 	       {
 		  if ( loop == ImageView::kLooping )
 		  {
-		     next = timeline->image_at( timeline->maximum() );
-		     f = timeline->global_to_local( timeline->maximum() );
+		     f = boost::int64_t( timeline->maximum() );
+		     next = timeline->image_at( f );
+		     f = timeline->global_to_local( f );
 		  }
 		  else
 		  {
@@ -299,7 +299,8 @@ namespace mrv {
 
 
 #ifdef DEBUG_THREADS
-    cerr << "ENTER AUDIO THREAD " << img->name() << " " << frame << endl;
+    cerr << "ENTER AUDIO THREAD " << img->name() << " " << data 
+	 << " frame " << frame << endl;
 #endif
 
 
@@ -329,6 +330,7 @@ namespace mrv {
 	  case  CMedia::kDecodeLoopStart:
 	    {
 	      CMedia::Barrier* barrier = img->loop_barrier();
+	      barrier->count( barrier_thread_count( img ) );
 	      // Wait until all threads loop and decode is restarted
 	      barrier->wait();
 	      continue;
@@ -364,8 +366,8 @@ namespace mrv {
       }
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT AUDIO THREAD " << img->name() << " at " 
-	 << frame  << "  img: " << img->audio_frame() << endl;
+    cerr << "EXIT AUDIO THREAD " << img->name() << " " << data 
+	 << " frame " << img->audio_frame() << endl;
 #endif
 
   } // audio_thread
@@ -416,6 +418,7 @@ namespace mrv {
 	  case CMedia::kDecodeLoopStart:
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
+	    barrier->count( barrier_thread_count( img ) );
 	    barrier->wait();
 	    continue;
 	  }
@@ -450,18 +453,22 @@ namespace mrv {
     mrv::Timeline*   timeline = uiMain->uiTimeline;
     assert( timeline != NULL );
 
+    int64_t frame        = img->frame();
+    int64_t failed_frame = std::numeric_limits< int64_t >::min();
+
+#ifdef DEBUG_THREADS
+    cerr << "ENTER VIDEO THREAD " << img->name() << " " << data 
+	 << " frame " << frame << endl;
+#endif
+
     // delete the data (we don't need it anymore)
     delete data;
 
-    int64_t frame        = img->frame();
-    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 
     mrv::Timer timer;
 
-#ifdef DEBUG_THREADS
-    cerr << "ENTER VIDEO THREAD " << img->name() << " " << frame << endl;
-#endif
+    boost::int64_t oldf = frame;
 
     while ( !img->stopped() )
       {
@@ -470,11 +477,13 @@ namespace mrv {
 
 	img->wait_image();
 
+
 	CMedia::DecodeStatus status = img->decode_video( frame );
+
 	switch( status )
 	  {
-// 	  case CMedia::kDecodeDone:
-// 	    continue;
+ 	  case CMedia::kDecodeDone:
+	     continue;
 	  case CMedia::kDecodeError:
 	    frame += step;
 	    continue;
@@ -491,6 +500,7 @@ namespace mrv {
 	     {
 	      CMedia::Barrier* barrier = img->loop_barrier();
 	      // Wait until all threads loop and decode is restarted
+	      barrier->count( barrier_thread_count( img ) );
 	      barrier->wait();
 	      continue;
 	    }
@@ -566,7 +576,7 @@ namespace mrv {
 
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT VIDEO THREAD " << img->name() 
+    cerr << "EXIT VIDEO THREAD " << img->name() << " " << data
 	 << " at " << frame << "  img: " << img->frame() << endl;
 #endif
 
@@ -583,26 +593,29 @@ namespace mrv {
     mrv::ViewerUI*     uiMain   = data->uiMain;
     assert( uiMain != NULL );
 
+
     CMedia* img = data->image;
     assert( img != NULL );
 
     mrv::Timeline*   timeline = uiMain->uiTimeline;
     assert( timeline != NULL );
 
-    // delete the data (we don't need it anymore)
-    delete data;
-
-
     int step = (int) img->playback();
 
     int64_t frame = img->dts() - step;
 
-
-
 #ifdef DEBUG_THREADS
-    cerr << "ENTER DECODE THREAD " << img->name() << " " 
+    cerr << "ENTER DECODE THREAD " << img->name() << " " << data << " frame "
 	 << frame << " step " << step << endl;
 #endif
+
+    // delete the data (we don't need it anymore)
+    delete data;
+
+
+
+
+
 
     while( !img->stopped() )
       {
@@ -613,6 +626,7 @@ namespace mrv {
 	    frame = img->dts();
 	  }
 
+	step = (int) img->playback();
 	frame += step;
 
 	CMedia* next = NULL;
@@ -634,7 +648,7 @@ namespace mrv {
 					 uiMain, timeline, status );
 	   
 	    if ( img->stopped() ) { 
-	       img->frame( frame );
+	       // img->frame( frame );
 	       break;
 	    }
 
@@ -645,13 +659,14 @@ namespace mrv {
 	// If we could not get a frame (buffers full, usually),
 	// wait a little.
 	if ( !img->frame( frame ) )
-	  {
+	{
 	    timespec req;
 	    req.tv_sec = 0;
 	    req.tv_nsec = (long)( 10 * 1e7f); // 10 ms.
 	    nanosleep( &req, NULL );
-	  }
+	}
 	
+
 	// After read, when playing backwards or playing audio files,
 	// decode position may be several frames advanced as we buffer
 	// multiple frames, so get back the dts frame from image.
@@ -661,8 +676,8 @@ namespace mrv {
       }
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT DECODE THREAD " << img->name() << " " << frame 
-	 << "  img: " << img->dts() << endl;
+    cerr << "EXIT DECODE THREAD " << img->name() << " " << data << " frame " 
+	 << frame << "  img: " << img->dts() << endl;
 #endif
 
   }

@@ -21,7 +21,9 @@ FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 # FIND_PACKAGE( AO )    # for ao sound lib
+FIND_PACKAGE( Gettext     REQUIRED )
 
+# ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS )
 ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS )
 
 
@@ -187,7 +189,15 @@ SET( SOURCES
 
 
 
+
+
 IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
+       EXECUTE_PROCESS( COMMAND 
+        xgettext -d mrViewer -s --c++ -k_ -o po/mrViewer.po ${SOURCES}
+  	WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+  	RESULT_VARIABLE ok_xgettext
+  	ERROR_VARIABLE  error_xgettext)
 
 
   FIND_LIBRARY( Boost_system_LIBRARY 
@@ -217,6 +227,14 @@ ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
   # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
   #
+  MESSAGE( STATUS "OK" )
+  FIND_LIBRARY( libintl_LIBRARY
+  		NAMES libintl-8.lib libintl.dll.a libintl
+		PATHS $ENV{LIBINTL_ROOT} )
+
+  SET( BOOST_LIBRARIES
+       ${libintl_LIBRARY} )
+
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
@@ -256,6 +274,7 @@ SET( LIBRARIES
 if(COMMAND cmake_policy)
   cmake_policy(SET CMP0003 OLD)
 endif(COMMAND cmake_policy)
+
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} )

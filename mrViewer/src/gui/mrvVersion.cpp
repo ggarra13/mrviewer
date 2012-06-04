@@ -46,7 +46,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "1.0 beta14 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "1.0 beta15 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -385,6 +385,10 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
     return o.str();
   }
+
+#if defined(WIN32) || defined(WIN64)
+#define vsnprintf _vsnprintf
+#endif
 
   //
   // Redirects ffmpeg's av_log messages to mrViewer's log window.

@@ -128,7 +128,7 @@ void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
   if (sig == SIGSEGV)
      fprintf( stderr, "Got signal %d, faulty address is %p, "
 	      "from %p\n", sig, info->si_addr, 
-	      uc->uc_mcontext.gregs[REG_RIP]);
+	      (void*)uc->uc_mcontext.gregs[REG_RIP]);
   else if ( sig == SIGFPE )
      fprintf( stderr, "Got Floating Point Exception.\n");
   else

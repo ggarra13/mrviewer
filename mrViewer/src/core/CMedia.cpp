@@ -395,7 +395,7 @@ void  CMedia::first_frame(boost::int64_t x)
       _sequence = NULL;
       
       boost::uint64_t num = _frameEnd - _frameStart + 1;
-      _sequence = new mrv::image_type_ptr[num];
+      _sequence = new mrv::image_type_ptr[ unsigned(num) ];
    }
 }
 
@@ -410,7 +410,7 @@ void  CMedia::last_frame(boost::int64_t x)
       _sequence = NULL;
       
       boost::uint64_t num = _frameEnd - _frameStart + 1;
-      _sequence = new mrv::image_type_ptr[num];
+      _sequence = new mrv::image_type_ptr[ unsigned(num) ];
    }
 }
 
@@ -474,7 +474,7 @@ void CMedia::sequence( const char* fileroot,
   _sequence = NULL;
 
   boost::uint64_t num = _frameEnd - _frameStart + 1;
-  _sequence = new mrv::image_type_ptr[num];
+  _sequence = new mrv::image_type_ptr[ unsigned(num) ];
 
   // load all pictures in new thread 
   // PlaybackData* data = new PlaybackData( NULL, this );
@@ -989,7 +989,7 @@ void CMedia::play(const CMedia::Playback dir,
   _playback = dir;
 
   assert( uiMain != NULL );
-
+  assert( _threads.size() == 0 );
 
   _audio_frame = _frame;
   // _expected = std::numeric_limits< boost::int64_t >::min();
@@ -1068,40 +1068,42 @@ void CMedia::play(const CMedia::Playback dir,
       _threads.push_back( new boost::thread( boost::bind( mrv::decode_thread, 
 							  data ) ) );
     }
+
+  assert( _threads.size() <= ( 1 + valid_audio + valid_video + 
+			       valid_subtitle ) );
+
 }
 
 /// VCR stop sequence
 void CMedia::stop()
 {
 
-  if ( _playback != kStopped ) {
-    _playback = kStopped;
 
-    //
-    // Notify loop barrier, to exit any wait on a loop
-    //
-    if ( _loop_barrier ) _loop_barrier->notify_all();
+  _playback = kStopped;
 
-    // Notify packets, to make sure that audio thread exits any wait lock
-    // This needs to be done even if no audio is playing, as user might
-    // have turned off audio, but audio thread is still active.
-    _audio_packets.cond().notify_one();
-    _video_packets.cond().notify_one();
-    _subtitle_packets.cond().notify_one();
+  //
+  // Notify loop barrier, to exit any wait on a loop
+  //
+  if ( _loop_barrier ) _loop_barrier->notify_all();
 
-    // Wait for all threads to exit
-    wait_for_threads();
+  // Notify packets, to make sure that audio thread exits any wait lock
+  // This needs to be done even if no audio is playing, as user might
+  // have turned off audio, but audio thread is still active.
+  _audio_packets.cond().notify_one();
+  _video_packets.cond().notify_one();
+  _subtitle_packets.cond().notify_one();
 
-    // Clear barrier
-    delete _loop_barrier; _loop_barrier = NULL;
+  // Wait for all threads to exit
+  wait_for_threads();
 
-    // Clear any audio/video/subtitle packets
-    clear_packets();
+  // Clear barrier
+  delete _loop_barrier; _loop_barrier = NULL;
 
-    // Queue thumbnail for update
-    image_damage( image_damage() | kDamageThumbnail );
-  }
+  // Clear any audio/video/subtitle packets
+  clear_packets();
 
+  // Queue thumbnail for update
+  image_damage( image_damage() | kDamageThumbnail );
 
 }
 
@@ -1902,8 +1904,12 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
   mrv::PacketQueue::const_iterator last = _video_packets.end();
   std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
 	    << " " << routine << " video packets #" 
-	    << _video_packets.size() << " (" << _video_packets.bytes() << "): "
+	    << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): "
 	    << std::endl;
+  if ( iter == last )
+  {
+     std::cerr << "***EMPTY***";
+  }
 
   bool in_preroll = false;
   bool in_seek = false;
