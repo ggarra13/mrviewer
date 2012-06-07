@@ -110,9 +110,9 @@ namespace mrv {
     boost::int64_t first = ( int64_t ) timeline->minimum();
 
 
-    if ( img->last_frame() <= last )
+    if ( img->last_frame() < last )
        last = img->last_frame();
-    if ( img->first_frame() >= first )
+    if ( img->first_frame() > first )
        first = img->first_frame();
 
 
@@ -213,7 +213,7 @@ namespace mrv {
 	    }
 	  else if ( loop == ImageView::kPingPong )
 	    {
-	       frame = first + 1;
+	       frame = first;
 	       step = 1;
 	       view->playback( ImageView::kForwards );
 	       img->frame( frame );
@@ -399,7 +399,6 @@ namespace mrv {
     while ( !img->stopped() )
       {
 	int step = (int) img->playback();
-
 	if ( step == 0 ) break;
 
 	int64_t frame = img->frame();
@@ -468,22 +467,21 @@ namespace mrv {
 
     mrv::Timer timer;
 
-    boost::int64_t oldf = frame;
 
     while ( !img->stopped() )
       {
-	int step = (int) img->playback();
-	if ( step == 0 ) break;
-
 	img->wait_image();
 
+
+	int step = (int) img->playback();
+	if ( step == 0 ) break;
 
 	CMedia::DecodeStatus status = img->decode_video( frame );
 
 	switch( status )
 	  {
- 	  case CMedia::kDecodeDone:
-	     continue;
+	     // case CMedia::kDecodeDone:
+	     //    continue;
 	  case CMedia::kDecodeError:
 	    frame += step;
 	    continue;
@@ -553,7 +551,6 @@ namespace mrv {
 
 	img->real_fps( timer.actualFrameRate() );
 
-
 	img->find_image( frame );
 
 	if ( timeline->edl() )
@@ -569,7 +566,6 @@ namespace mrv {
 	  }
 
 
-
 	frame += step;
 
       }
@@ -577,7 +573,7 @@ namespace mrv {
 
 #ifdef DEBUG_THREADS
     cerr << "EXIT VIDEO THREAD " << img->name() << " " << data
-	 << " at " << frame << "  img: " << img->frame() << endl;
+	 << " at " << frame << "  img->frame: " << img->frame() << endl;
 #endif
 
   }  // video_thread
@@ -601,6 +597,7 @@ namespace mrv {
     assert( timeline != NULL );
 
     int step = (int) img->playback();
+
 
     int64_t frame = img->dts() - step;
 
@@ -677,7 +674,7 @@ namespace mrv {
 
 #ifdef DEBUG_THREADS
     cerr << "EXIT DECODE THREAD " << img->name() << " " << data << " frame " 
-	 << frame << "  img: " << img->dts() << endl;
+	 << frame << "  dts: " << img->dts() << endl;
 #endif
 
   }

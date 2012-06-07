@@ -66,7 +66,7 @@ namespace {
 
 // #define DEBUG_SEEK
 // #define DEBUG_PACKETS
-// #define DEBUG_STORES
+#define DEBUG_STORES
 
 // #define DEBUG_DECODE
 // #define DEBUG_AUDIO_SPLIT

@@ -1578,7 +1578,14 @@ namespace mrv {
     int sel = value();
     if ( sel < 0 ) return;
 
-    uiMain->uiView->background( reel->images[sel] );
+    if ( uiMain->uiView->background() == reel->images[sel] )
+    {
+       uiMain->uiView->background( mrv::media() );
+    }
+    else
+    {
+       uiMain->uiView->background( reel->images[sel] );
+    }
   }
 
 

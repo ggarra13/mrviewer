@@ -18,6 +18,7 @@
 #  include <unistd.h>
 #endif
 
+#include <stdint.h>
 
 #if defined(__i386__) || defined(_M_IX86)
 #  define ARCH_X86
@@ -28,27 +29,51 @@
 #endif
 
 #ifdef ARCH_X86_64
-#  define REGa    rax
-#  define REGb    rbx
-#  define REGc    rcx
-#  define REGd    rdx
-#  define REGS    rsi
-#  define REG_a  "rax"
-#  define REG_b  "rbx"
-#  define REG_c  "rcx"
-#  define REG_d  "rdx"
-#  define REG_S  "rsi"
+#    define OPSIZE "q"
+#    define REG_a "rax"
+#    define REG_b "rbx"
+#    define REG_c "rcx"
+#    define REG_d "rdx"
+#    define REG_D "rdi"
+#    define REG_S "rsi"
+#    define PTR_SIZE "8"
+
+typedef int64_t x86_reg;
+
+#    define REG_SP "rsp"
+#    define REG_BP "rbp"
+#    define REGBP   rbp
+#    define REGa    rax
+#    define REGb    rbx
+#    define REGc    rcx
+#    define REGd    rdx
+#    define REGSP   rsp
+
+#elif ARCH_X86_32
+
+#    define OPSIZE "l"
+#    define REG_a "eax"
+#    define REG_b "ebx"
+#    define REG_c "ecx"
+#    define REG_d "edx"
+#    define REG_D "edi"
+#    define REG_S "esi"
+#    define PTR_SIZE "4"
+
+typedef int32_t x86_reg;
+
+#    define REG_SP "esp"
+#    define REG_BP "ebp"
+#    define REGBP   ebp
+#    define REGa    eax
+#    define REGb    ebx
+#    define REGc    ecx
+#    define REGd    edx
+#    define REGSP   esp
 #else
-#  define REGa    eax
-#  define REGb    ebx
-#  define REGc    ecx
-#  define REGd    edx
-#  define REGS    esi
-#  define REG_a  "eax"
-#  define REG_b  "ebx"
-#  define REG_c  "ecx"
-#  define REG_d  "edx"
-#  define REG_S  "esi"
+
+typedef int x86_reg;
+
 #endif
 
 CpuCaps gCpuCaps;

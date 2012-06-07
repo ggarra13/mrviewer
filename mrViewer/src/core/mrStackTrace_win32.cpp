@@ -47,6 +47,9 @@
 
 #define EH  ExceptionHandler
 
+#if defined(_M_X64) || defined(__x86_64__)
+#  define ARCH_X86_64
+#endif
 
 namespace mr {
 
@@ -314,9 +317,13 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
    // Notes: AddrModeFlat is just an assumption. I hate VDM debugging.
    // Notes: will have to be #ifdef-ed for Alphas; MIPSes are dead anyway,
    // and good riddance.
-   s.AddrPC.Offset = c.Eip;
+
    s.AddrPC.Mode = AddrModeFlat;
+#ifdef ARCH_X86_64
+#else
+   s.AddrPC.Offset = c.Eip;
    s.AddrFrame.Offset = c.Ebp;
+#endif
    s.AddrFrame.Mode = AddrModeFlat;
 
    memset( pSym, '\0', IMGSYMLEN + MAXNAMELEN );
@@ -342,10 +349,13 @@ void ExceptionHandler::ShowStack( HANDLE hThread, CONTEXT& c )
       // if this returns ERROR_INVALID_ADDRESS (487) or ERROR_NOACCESS (998),
       // you can assume that either you are done, or that the stack is so
       // hosed that the next deeper frame could not be found.
+
+#ifdef ARCH_X86_64
+#else
       if ( ! pSW( imageType, hProcess, hThread, &s, &c, NULL,
 		  pSFTA, pSGMB, NULL ) )
 	 break;
-
+#endif
       // display its contents
       sprintf( tmp, "%3d %c%c %08lx %08lx %08lx %08lx ",
 	       frameNum, s.Far? 'F': '.', s.Virtual? 'V': '.',

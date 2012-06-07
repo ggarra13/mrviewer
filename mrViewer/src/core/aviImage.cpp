@@ -69,7 +69,6 @@ namespace
 
 // #define SEEK_WITH_BYTES
 
-// #define USE_FFPLAY
 
 #define FFMPEG_STREAM_BUG_FIX
 
@@ -1923,7 +1922,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  // Limit storage of frames to only half fps.  For example, 15 frames
 	  // for a fps of 30.
 	  if ( _images.size() >= fps() )
-	     return kDecodeDone;
+	     return kDecodeOK;
 
 	  got_image = decode_image( frame, pkt );
 
