@@ -49,7 +49,7 @@ typedef int64_t x86_reg;
 #    define REGd    rdx
 #    define REGSP   rsp
 
-#elif ARCH_X86_32
+#elif defined(ARCH_X86)
 
 #    define OPSIZE "l"
 #    define REG_a "eax"
@@ -136,7 +136,9 @@ static void check_os_katmai_support( void );
 // return TRUE if cpuid supported
 static bool has_cpuid(void)
 {
-#ifdef _MSC_VER
+#ifdef ARCH_X86_64
+   return true;
+#elif defined(_MSC_VER)
   unsigned long BitChanged;
 	
   // We've to check if we can toggle the flag register bit 21
@@ -221,7 +223,9 @@ static bool has_cpuid(void)
 static void
 do_cpuid(unsigned int eaxval, unsigned int* eregs)
 {
-#ifdef _MSC_VER
+#ifdef ARCH_X86_64
+   return;
+#elif defined(_MSC_VER)
   __asm  {
     mov	edi, eregs
     mov REGa, eaxval
@@ -461,7 +465,7 @@ static void sigfpe_handler_sse( int signal, struct sigcontext sc )
 }
 #endif /* __linux__ && _POSIX_SOURCE && X86_FXSR_MAGIC */
 
-#ifdef WIN32
+#if ((defined(__MINGW32__) || defined(__CYGWIN__) || defined(_MSC_VER)) && !defined(ARCH_X86_64))
 LONG CALLBACK win32_sig_handler_sse(EXCEPTION_POINTERS* ep)
 {
   if(ep->ExceptionRecord->ExceptionCode==EXCEPTION_ILLEGAL_INSTRUCTION){
@@ -472,7 +476,7 @@ LONG CALLBACK win32_sig_handler_sse(EXCEPTION_POINTERS* ep)
   }
   return EXCEPTION_CONTINUE_SEARCH;
 }
-#endif /* WIN32 */
+#endif /* defined(__MINGW32__) || defined(__CYGWIN__) */
 
 /* If we're running on a processor that can do SSE, let's see if we
  * are allowed to or not.  This will catch 2.4.0 or later kernels that
