@@ -14,9 +14,9 @@ decl {\#include <string>} {public
 
 decl {\#include <algorithm>} {} 
 
-decl {\#include "SampleICC/IccProfile.h"} {} 
+decl {\#include "IccProfile.h"} {} 
 
-decl {\#include "SampleICC/IccUtil.h"} {} 
+decl {\#include "IccUtil.h"} {} 
 
 decl {\#include "core/mrvColorProfile.h"} {} 
 

@@ -81,6 +81,13 @@ MACRO( CHECK_ARCHITECTURE )
     #
     # @todo: add windows 64-bit OS detection here
     #
+    IF (WIN64)
+       SET( OS_32_BITS 1 )
+       SET( OS_64_BITS 1 )
+    ELSE(WIN64)
+       SET( OS_32_BITS 1 )
+       SET( OS_64_BITS 0 )
+    ENDIF(WIN64)
 
   ENDIF( UNIX )
 

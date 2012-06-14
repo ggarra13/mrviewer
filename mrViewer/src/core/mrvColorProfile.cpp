@@ -12,8 +12,8 @@
 #include <iomanip>
 
 
-#include <SampleICC/IccTag.h>
-#include <SampleICC/IccUtil.h>
+#include "IccTag.h"
+#include "IccUtil.h"
 
 
 #include "mrvColorProfile.h"

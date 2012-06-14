@@ -37,6 +37,9 @@
 #include "mrvRectangle.h"
 #include "mrvBarrier.h"
 
+#undef min
+#undef max
+
 struct AVFormatContext;
 struct AVFrame;
 struct AVCodec;
@@ -821,6 +824,10 @@ namespace mrv {
 
     virtual void flush_video() {};
     void flush_audio();
+
+       // Auxiliary function to handle decoding audio in messy new api.
+       int decode_audio3(AVCodecContext* avctx, int16_t* samples,
+			 int* frame_size_ptr, AVPacket* avpkt);
 
   protected:
     static const char* stream_type( const AVCodecContext* );

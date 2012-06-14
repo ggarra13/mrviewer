@@ -47,7 +47,9 @@ FIND_LIBRARY( Magick
   NAMES MagickCore CORE_RL_magick_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
+  "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
+  "$ENV{MAGICK_HOME}/VisualMagick/lib/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -60,7 +62,9 @@ FIND_LIBRARY( Magick++
   NAMES Magick++ CORE_RL_Magick++_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
+  "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
+  "$ENV{MAGICK_HOME}/VisualMagick/lib/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -75,7 +79,9 @@ FIND_LIBRARY( Wand
   NAMES MagickWand CORE_RL_wand_
   PATHS 
   "$ENV{MAGICK_HOME}/wand/.libs"
+  "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/bin"
+  "$ENV{MAGICK_HOME}/VisualMagick/lib/x${CMAKE_BUILD_ARCH}"
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
@@ -91,7 +97,7 @@ GET_FILENAME_COMPONENT(MAGICK_LIBRARY_DIR ${Magick}   PATH)
 
 IF(WIN32)
   FILE( GLOB MAGICK_CODECS 
-    "$ENV{MAGICK_HOME}/VisualMagick/bin/IM_MOD_*.dll"
+    "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}/IM_MOD_*.dll"
     "$ENV{MAGICK_HOME}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders/*.dll"
     )
 ELSE(WIN32)

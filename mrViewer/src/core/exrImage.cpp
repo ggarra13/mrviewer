@@ -201,23 +201,24 @@ bool exrImage::channels_order(
    // Prepare format
    image_type::Format format = VideoFrame::kLumma;
    int offsets[4];
-   offsets[0]  = 0;
+   offsets[0] = 0;
    if ( _has_yca )
    {
       unsigned size  = dw * dh;
       unsigned size2 = dw * dh / 4;
       offsets[1]  = size;
       offsets[2]  = size + size2;
-      offsets[3]  = size + size2 * 2;
+      offsets[3]  = 0;
       if ( numChannels >= 3 && has_alpha() )
       {
 	 format = VideoFrame::kYByRy420A;
 	 numChannels = 4;
+	 offsets[3]  = size + size2 * 2;
       }
-      else if ( numChannels >= 2 )
+      else if ( numChannels >= 1 )
       {
-	 format = VideoFrame::kYByRy420;
 	 numChannels = 3;
+	 format = VideoFrame::kYByRy420;
       }
    }
    else
@@ -279,11 +280,13 @@ bool exrImage::channels_order(
    for ( i = s; i != e && idx < 4; ++i, ++idx )
    {
       int k = order[idx];
+
       const std::string& layerName = channelList[k];
 
       ch = channels.findChannel( layerName.c_str() );
       
       if ( !ch ) continue;
+
       
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
       

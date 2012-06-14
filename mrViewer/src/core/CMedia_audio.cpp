@@ -235,7 +235,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
       int error = av_read_frame( _context, &pkt );
       if ( error < 0 )
 	{
-	  int err = url_ferror(_context->pb);
+	  int err = _context->pb ? _context->pb->error : 0;
 	  if ( err != 0 )
 	    {
 	      IMG_ERROR("seek: Could not read frame " << frame << " error: "
@@ -572,7 +572,7 @@ void CMedia::populate_audio()
 	  int error = av_read_frame( _context, &pkt );
 	  if ( error < 0 )
 	  {
-	     int err = url_ferror(_context->pb);
+	    int err = _context->pb ? _context->pb->error : 0;
 	     if ( err != 0 )
 	     {
 		IMG_ERROR("populate_audio: Could not read frame 1 error: "
@@ -655,123 +655,124 @@ void CMedia::populate_audio()
   //
   // Miscellaneous information
   //
-  AVMetadata* m = NULL;
+  AVDictionary* m = NULL;
 
   stream = get_audio_stream();
   if ( stream->metadata ) m = stream->metadata;
 
+  if ( !m ) return;
   
-  AVMetadataTag* tag;
+  AVDictionaryEntry* tag;
 
-  tag = av_metadata_get( m, "album", NULL, 0 );
+  tag = av_dict_get( m, "album", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Album", tag->value) );
     }
 
-  tag = av_metadata_get( m, "artist", NULL, 0 );
+  tag = av_dict_get( m, "artist", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Artist", tag->value) );
     }
 	
-  tag = av_metadata_get( m, "album_artist", NULL, 0 );
+  tag = av_dict_get( m, "album_artist", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Album Artist", tag->value) );
     }
 
-  tag = av_metadata_get( m, "comment", NULL, 0 );
+  tag = av_dict_get( m, "comment", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Comment", tag->value) );
     }
   
-  tag = av_metadata_get( m, "composer", NULL, 0 );
+  tag = av_dict_get( m, "composer", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Composer", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "copyright", NULL, 0 );
+  tag = av_dict_get( m, "copyright", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Copyright", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "creation_time", NULL, 0 );
+  tag = av_dict_get( m, "creation_time", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Creation Time", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "date", NULL, 0 );
+  tag = av_dict_get( m, "date", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Date", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "disc", NULL, 0 );
+  tag = av_dict_get( m, "disc", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Disc", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "encoder", NULL, 0 );
+  tag = av_dict_get( m, "encoder", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Encoder", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "filename", NULL, 0 );
+  tag = av_dict_get( m, "filename", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Filename", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "genre", NULL, 0 );
+  tag = av_dict_get( m, "genre", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Genre", tag->value) );
     }
 
-  tag = av_metadata_get( m, "language", NULL, 0 );
+  tag = av_dict_get( m, "language", NULL, 0 );
   if ( tag )
     {
        _iptc.insert( std::make_pair("Language", tag->value ) );
     }
 
-  tag = av_metadata_get( m, "performer", NULL, 0 );
+  tag = av_dict_get( m, "performer", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Performer", tag->value) );
     }
 
-  tag = av_metadata_get( m, "publisher", NULL, 0 );
+  tag = av_dict_get( m, "publisher", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Publisher", tag->value) );
     }
 
-  tag = av_metadata_get( m, "service_name", NULL, 0 );
+  tag = av_dict_get( m, "service_name", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Service Name", tag->value) );
     }
 
-  tag = av_metadata_get( m, "service_provider", NULL, 0 );
+  tag = av_dict_get( m, "service_provider", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Service Provider", tag->value) );
     }
   
-  tag = av_metadata_get( m, "title", NULL, 0 );
+  tag = av_dict_get( m, "title", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Title", tag->value) );
     }
 
-  tag = av_metadata_get( m, "track", NULL, 0 );
+  tag = av_dict_get( m, "track", NULL, 0 );
   if ( tag )
     {
       _iptc.insert( std::make_pair("Track", tag->value) );
@@ -794,13 +795,11 @@ void CMedia::audio_file( const char* file )
    }
 
   _expected = 0;
-  AVFormatParameters params;
+  AVDictionary* params = NULL;
   AVInputFormat*   format = NULL;
-  memset(&params, 0, sizeof(params));
-  params.initial_pause = 1;  // start stream paused
 
-  int error = av_open_input_file( &_context, file, 
-				  format, 0, &params );
+  int error = avformat_open_input( &_context, file,
+				   format, &params );
   if ( error < 0 )
   {
      mrvALERT( file << _(": Could not open filename") );
@@ -870,6 +869,49 @@ void CMedia::clear_stores()
   _audio_buf_used = 0;
 }
 
+
+int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
+			  int *frame_size_ptr,
+			  AVPacket *avpkt)
+{   
+   AVFrame frame;
+   int ret, got_frame = 0;
+   
+   if (avctx->get_buffer != avcodec_default_get_buffer) {
+      avctx->get_buffer = avcodec_default_get_buffer;
+      avctx->release_buffer = avcodec_default_release_buffer;
+   }
+
+    ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
+
+    if (ret >= 0 && got_frame) {
+        int ch, plane_size;
+        int planar = av_sample_fmt_is_planar(avctx->sample_fmt);
+        int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels,
+                                                   frame.nb_samples,
+                                                   avctx->sample_fmt, 1);
+        if (*frame_size_ptr < data_size) {
+	   IMG_ERROR( "Output buffer size is too small for "
+		      "the current frame (" 
+		      << *frame_size_ptr << " < " << data_size << ")" );
+	   return AVERROR(EINVAL);
+        }
+
+        memcpy(samples, frame.extended_data[0], plane_size);
+
+        if (planar && avctx->channels > 1) {
+            uint8_t *out = ((uint8_t *)samples) + plane_size;
+            for (ch = 1; ch < avctx->channels; ch++) {
+                memcpy(out, frame.extended_data[ch], plane_size);
+                out += plane_size;
+            }
+        }
+        *frame_size_ptr = data_size;
+    } else {
+        *frame_size_ptr = 0;
+    }
+    return ret;
+}
 
 
 /** 
@@ -944,10 +986,10 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
        assert( pkt_temp.data != NULL );
        assert( _audio_buf_used % 16 == 0 );
        assert( audio_size > 0 );
-       int ret = avcodec_decode_audio3( ctx, 
-					( int16_t * )( (char*)_audio_buf + 
-						       _audio_buf_used ), 
-					&audio_size, &pkt_temp );
+       int ret = decode_audio3( ctx, 
+				( int16_t * )( (char*)_audio_buf + 
+					       _audio_buf_used ), 
+				&audio_size, &pkt_temp );
 
       // If no samples are returned, then break now
       if ( ret <= 0 )
@@ -1255,7 +1297,6 @@ void CMedia::fetch_audio( const boost::int64_t frame )
       {
   	 // av_free_packet( &pkt );
   	 IMG_ERROR( _("Could not read audio for frame ") << frame);
-  	 url_ferror(_context->pb);
   	 break;
       }
 

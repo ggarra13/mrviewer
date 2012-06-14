@@ -8,11 +8,14 @@ IF(NOT SampleICC_ROOT)
 ENDIF( NOT SampleICC_ROOT)
 
 SET( SEARCH_INCLUDE_PATHS
+  "${SampleICC_ROOT}/IccProfLib"
+  "${SampleICC_ROOT}/SampleICC"
+  "${SampleICC_ROOT}/include/IccProfLib"
+  "${SampleICC_ROOT}/include/SampleICC"
   "${SampleICC_ROOT}/include"
-  "${SampleICC_ROOT}"
   ${CMAKE_SYSTEM_INCLUDE_PATH}
-  /usr/local/include
-  /usr/include
+  /usr/local/include/SampleICC
+  /usr/include/SampleICC
   )
 
 
@@ -30,24 +33,31 @@ IF( WIN32 )
     IF( MSVC80 )
       SET( compiler "vc8" )
     ENDIF( MSVC80 )
+    IF( MSVC100 )
+      SET( compiler "vc10" )
+    ENDIF( MSVC100 )
   ENDIF( MSVC )
 
   SET( SEARCH_PATHS 
+    "${SampleICC_ROOT}/x${CMAKE_BUILD_ARCH}/${CMAKE_BUILD_TYPE}"
     "${SampleICC_ROOT}/${compiler}/lib/${CMAKE_BUILD_TYPE}"
     "${SampleICC_ROOT}/${compiler}/lib"
-    "${SampleICC_ROOT}/lib/${CMAKE_BUILD_TYPE}"
+    "${SampleICC_ROOT}/lib/x${CMAKE_BUILD_ARCH}/${CMAKE_BUILD_TYPE}"
     "${SampleICC_ROOT}/lib"
-    "${SampleICC_ROOT}/IccProfLib/${CMAKE_BUILD_TYPE}_CRTDLL"
     ${SEARCH_PATHS}
     )
 ENDIF( WIN32 )
 
 
 FIND_PATH( SampleICC_INCLUDE_DIR 
-  NAMES SampleICC/IccProfile.h IccProfLib/IccProfile.h
+  NAMES IccProfile.h
   PATHS ${SEARCH_INCLUDE_PATHS}
   NO_DEFAULT_PATH
   )
+MESSAGE( "SampleICC_INCLUDE_DIR= ${SampleICC_INCLUDE_DIR}" )
+MESSAGE( "SEARCH_INCLUDE_PATHS=  ${SEARCH_INCLUDE_PATHS}" )
+MESSAGE( "SEARCH_PATHS=  ${SEARCH_PATHS}" )
+
 
 FIND_LIBRARY( SampleICC 
   NAMES SampleICC IccProfLib IccProfLib_CRTDLL

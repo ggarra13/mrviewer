@@ -21,7 +21,7 @@
 #include <ImfHeader.h>
 #include <ImfArray.h>
 
-#include <SampleICC/IccCmm.h>
+#include "IccCmm.h"
 
 #include <boost/shared_ptr.hpp>
 

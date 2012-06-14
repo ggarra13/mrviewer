@@ -13,7 +13,6 @@
 #  FLTK2_IMAGES_LIBRARY = the full path to fltk2_images.lib
 
 SET (FLTK2_DIR $ENV{FLTK2_DIR} )
-MESSAGE( STATUS ${FLTK2_DIR} )
 
 #  Platform dependent libraries required by FLTK2
 IF(WIN32)
@@ -121,11 +120,12 @@ IF(FLTK2_DIR)
     IF(FLUID_COMMAND) 
       SET(FLTK2_FLUID_EXECUTABLE ${FLUID_COMMAND} CACHE FILEPATH "Fluid executable")
     ELSE(FLUID_COMMAND) 
-      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2 PATHS 
+      FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2_wdll.exe fluid2.exe fluid2 PATHS 
         ${FLTK2_EXECUTABLE_DIRS}
         ${FLTK2_EXECUTABLE_DIRS}/RelWithDebInfo
         ${FLTK2_EXECUTABLE_DIRS}/Debug
         ${FLTK2_EXECUTABLE_DIRS}/Release
+	${FLTK2_DIR}/bin/x${CMAKE_BUILD_ARCH}
 	${FLTK2_DIR}/fluid/
         NO_SYSTEM_PATH)
     ENDIF(FLUID_COMMAND)
@@ -136,7 +136,7 @@ IF(FLTK2_DIR)
     
 
 
-    SET(FLTK2_INCLUDE_DIR ${FLTK2_DIR})
+    SET(FLTK2_INCLUDE_DIR ${FLTK2_DIR}/include)
 
 
     	FIND_LIBRARY(FLTK2_BASE_LIBRARY NAMES fltk2dll fltk2
@@ -173,10 +173,11 @@ IF(FLTK2_DIR)
 
     # if FLTK2 was not built using CMake
     # Find fluid executable.
-    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2 
+    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2 
     			PATHS 
 			${FLTK2_DIR}/fluid 
-			)	
+			${FLTK2_DIR}/bin/x${CMAKE_BUILD_ARCH}/Release
+			)
 
     # Use location of fluid to help find everything else.
     SET(FLTK2_INCLUDE_SEARCH_PATH "")
@@ -192,6 +193,7 @@ IF(FLTK2_DIR)
     ENDIF(FLTK2_FLUID_EXECUTABLE)
 
     SET(FLTK2_INCLUDE_SEARCH_PATH ${FLTK2_INCLUDE_SEARCH_PATH}
+      ${FLTK2_DIR}/include
       ${FLTK2_DIR}
       /usr/local/include
       /usr/include
@@ -203,12 +205,15 @@ IF(FLTK2_DIR)
       MESSAGE( FLTK2_INCLUDE_DIR ${FLTK2_INCLUDE_DIR}  ${FLTK2_DIR})
 
     SET(FLTK2_LIBRARY_SEARCH_PATH ${FLTK2_LIBRARY_SEARCH_PATH}
+      ${FLTK2_DIR}/lib/x${CMAKE_BUILD_ARCH}/Release
+      ${FLTK2_DIR}/lib/x${CMAKE_BUILD_ARCH}/Debug
       /usr/lib
       /usr/local/fltk2/lib
       /usr/X11R6/lib
-      ${FLTK2_INCLUDE_DIR}/lib
+      ${FLTK2_INCLUDE_DIR}/lib/
       )
 
+      MESSAGE( STATUS "SEARCH=" ${FLTK2_LIBRARY_SEARCH_PATH} )
 
 
 
@@ -278,7 +283,8 @@ ELSE(FLTK2_FOUND)
   # make FIND_PACKAGE friendly
   IF(NOT FLTK2_FIND_QUIETLY)
     IF(FLTK2_FIND_REQUIRED)
-      MESSAGE(STATUS "include: " ${FLTK2_INCLUDE_DIR} "libs: " ${FLTK2_LIBRARIES} )
+      MESSAGE(STATUS "include: " ${FLTK2_INCLUDE_DIR} 
+      		     " libs: " ${FLTK2_LIBRARIES} )
       MESSAGE(FATAL_ERROR
               "FLTK2 required, please specify its location with FLTK2_DIR.")
     ELSE(FLTK2_FIND_REQUIRED)

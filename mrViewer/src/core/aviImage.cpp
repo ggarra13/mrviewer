@@ -751,10 +751,18 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
   if ( status != kDecodeOK )
     {
       char ftype;
-      if (_av_frame->pict_type == FF_B_TYPE)
+      if (_av_frame->pict_type == AV_PICTURE_TYPE_B)
 	ftype = 'B';
-      else if (_av_frame->pict_type == FF_I_TYPE)
+      else if (_av_frame->pict_type == AV_PICTURE_TYPE_I)
 	ftype = 'I';
+      else if (_av_frame->pict_type == AV_PICTURE_TYPE_S)
+	ftype = 'S';
+      else if (_av_frame->pict_type == AV_PICTURE_TYPE_SI)
+	ftype = 'SI';
+      else if (_av_frame->pict_type == AV_PICTURE_TYPE_SP)
+	ftype = 'SP';
+      else if (_av_frame->pict_type == AV_PICTURE_TYPE_BI)
+	ftype = 'BI';
       else
 	ftype = 'P';
       if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
@@ -1124,8 +1132,13 @@ void aviImage::video_stream( int x )
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420A;
       break;
     default:
+#if LIBAVUTIL_VERSION_MINOR >= 56
+       IMG_ERROR( _("Unknown destination video frame format: ") 
+		  << _av_dst_pix_fmt );
+#else
        IMG_ERROR( _("Unknown destination video frame format: ") 
 		  << avcodec_get_pix_fmt_name( _av_dst_pix_fmt ) );
+#endif
       _pix_fmt = VideoFrame::kBGRA; break;
     }
 
@@ -1177,8 +1190,13 @@ void aviImage::populate()
 		 populate_stream_info( s, msg, ctx, i );
 		 s.has_b_frames = (bool)ctx->has_b_frames;
 		 s.fps          = calculate_fps( stream );
-		 if ( avcodec_get_pix_fmt_name( ctx->pix_fmt ) )
-		    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
+// #if LIBAVUTIL_VERSION_MINOR >= 56
+// 		 if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
+// 		    s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
+// #else
+// 		 if ( avcodec_get_pix_fmt_name( ctx->pix_fmt ) )
+// 		    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
+// #endif
 		 _video_info.push_back( s );
 		 if ( _video_index < 0 && s.has_codec )
 		 {
@@ -1919,7 +1937,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	      return kDecodeOK;
 	    }
 
-	  // Limit storage of frames to only half fps.  For example, 15 frames
+	  // Limit storage of frames to only fps.  For example, 30 frames
 	  // for a fps of 30.
 	  if ( _images.size() >= fps() )
 	     return kDecodeOK;

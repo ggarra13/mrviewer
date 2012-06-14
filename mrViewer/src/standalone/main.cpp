@@ -116,16 +116,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		     LPSTR lpCmdLine, int nCmdShow )
 {
  
-     // AllocConsole();
-//   freopen("conin$", "r", stdin);
-//   freopen("conout$", "w", stdout);
-   // freopen("conout$", "w", stderr);
+  // AllocConsole();
+  // freopen("conin$", "r", stdin);
+  // freopen("conout$", "w", stdout);
+  // freopen("conout$", "w", stderr);
 
   int rc = main( __argc, __argv );
   
-//   fclose(stdin);
-//   fclose(stdout);
-   // fclose(stderr);
+  // fclose(stdin);
+  // fclose(stdout);
+  // fclose(stderr);
 
   return rc; 
 }

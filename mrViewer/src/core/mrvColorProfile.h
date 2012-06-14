@@ -17,7 +17,7 @@
 #include <cstdio>
 #include <cstdlib>
 
-#include <SampleICC/IccProfile.h>
+#include "IccProfile.h"
 
 #include "mrvString.h"
 

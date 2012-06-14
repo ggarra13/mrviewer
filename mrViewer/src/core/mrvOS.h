@@ -11,11 +11,13 @@
 #ifndef mrvOS_h
 #define mrvOS_h
 
-#if defined(WIN32) || defined(WIN64)
+
+#if (defined(_WIN32) || defined(_WIN64))
 
 #  define vsnprintf       _vsnprintf
 #  define putenv(x)       _putenv(x)
 #  define strdup(x)       _strdup(x)
+#undef stricmp
 #  define strcasecmp(a,b) stricmp(a,b)
 #  define strtok_r(a,b,c) strtok(a,b)
 #  define snprintf        _snprintf

@@ -29,10 +29,10 @@ namespace fs = boost::filesystem;
 #include <fltk/run.h>
 
 // CORE classes
-#include "core/mrvOS.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
+#include "core/mrvOS.h"
 
 // GUI  classes
 #include "gui/mrvColorOps.h"
@@ -611,11 +611,7 @@ namespace mrv {
 	for ( int i = 0; i < num; ++i )
 	  {
 	    const char* label = uiPrefs->DatabaseDriver->child(i)->label();
-#if defined(WIN32)
-	    if ( strcmp( env, label ) == 0 )
-#else
 	    if ( strcasecmp( env, label ) == 0 )
-#endif
 	      {
 		uiPrefs->DatabaseDriver->value(i); break;
 	      }

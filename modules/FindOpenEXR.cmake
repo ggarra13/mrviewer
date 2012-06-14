@@ -15,6 +15,7 @@ IF( OPENEXR_LIBRARY_DIR )
   SET( SEARCH_DIRS "${OPENEXR_LIBRARY_DIR}" )
 ELSE( OPENEXR_LIBRARY_DIR )
   SET( SEARCH_DIRS 
+    $ENV{OPENEXR_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
     $ENV{OPENEXR_ROOT}/lib
     $ENV{OPENEXR_ROOT}/lib/Release
     $ENV{OPENEXR_ROOT}/lib/Debug
@@ -39,6 +40,8 @@ FIND_LIBRARY( IlmImf
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR IlmImf library"
 )
+
+MESSAGE( "IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath 
   NAMES Imath_dll Imath_dll_d Imath Imathd libImath 

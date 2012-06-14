@@ -14,11 +14,16 @@ IF( CTL_LIBRARY_DIR )
   SET( SEARCH_DIRS "${CTL_LIBRARY_DIR}" )
 ELSE( CTL_LIBRARY_DIR )
   SET( SEARCH_DIRS 
-    "$ENV{CTL_ROOT}/lib"
+    "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{CTL_ROOT}/lib/Release"
+    "$ENV{CTL_ROOT}/lib"
+    "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{CTL_ROOT}/lib/Debug"
+    "$ENV{CTL_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{CTL_ROOT}/bin/Release"
+    "$ENV{CTL_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{CTL_ROOT}/bin/Debug"
+    "$ENV{CTL_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/lib${CMAKE_BUILD_ARCH}
     )
@@ -54,9 +59,9 @@ FIND_LIBRARY( IlmCtlSimd
 
 SET(CTL_LIBRARIES ${IlmCtlSimd} ${IlmCtlMath} ${IlmCtl} )
 
-IF(WIN32)
+IF(WIN32 OR WIN64)
   ADD_DEFINITIONS( "-DCTL_DLL" )
-ENDIF(WIN32)
+ENDIF(WIN32 OR WIN64)
 
 
 IF(NOT CTL_FOUND)

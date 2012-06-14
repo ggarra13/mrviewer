@@ -36,6 +36,7 @@ extern "C" {
 #include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
+#include "core/mrvOS.h"
 #include "video/mrvDrawEngine.h"
 #include "mrViewer.h"
 
@@ -332,12 +333,12 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
   std::string ffmpeg_protocols()
   {
-    URLProtocol *up;
+    // Urlprotocol *up;
     std::ostringstream o;
-    for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
-      {
-	o << " " << up->name << ":";
-      }
+    // for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
+    //  {
+    //	o << " " << up->name << ":";
+    //  }
     return o.str();
   }
 
@@ -386,9 +387,6 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     return o.str();
   }
 
-#if defined(WIN32) || defined(WIN64)
-#define vsnprintf _vsnprintf
-#endif
 
   //
   // Redirects ffmpeg's av_log messages to mrViewer's log window.

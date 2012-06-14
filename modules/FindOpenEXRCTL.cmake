@@ -14,12 +14,16 @@ IF( OpenEXRCTL_LIBRARY_DIR )
   SET( SEARCH_DIRS "${OpenEXRCTL_LIBRARY_DIR}" )
 ELSE( OpenEXRCTL_LIBRARY_DIR )
   SET( SEARCH_DIRS 
-    "$ENV{OpenEXRCTL_ROOT}/lib"
+    "$ENV{OpenEXRCTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{OpenEXRCTL_ROOT}/lib/Release"
+    "$ENV{OpenEXRCTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{OpenEXRCTL_ROOT}/lib/Debug"
-    "$ENV{CTL_ROOT}/lib"
+    "$ENV{OpenEXRCTL_ROOT}/lib"
+    "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{CTL_ROOT}/lib/Release"
+    "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{CTL_ROOT}/lib/Debug"
+    "$ENV{CTL_ROOT}/lib"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/lib${CMAKE_BUILD_ARCH}
     )
@@ -43,6 +47,7 @@ FIND_LIBRARY( IlmImfCtl
   DOC   "OpenEXRCTL IlmImfCtl library"
 )
 
+MESSAGE( ${SEARCH_DIRS} )
 
 SET(OpenEXRCTL_LIBRARIES ${IlmImfCtl} )
 
@@ -60,7 +65,7 @@ IF(NOT OpenEXRCTL_FOUND)
   IF(NOT OpenEXRCTL_FIND_QUIETLY)
     IF(OpenEXRCTL_FIND_REQUIRED)
       MESSAGE( STATUS "OpenEXRCTL_INCLUDE_DIR ${OpenEXRCTL_INCLUDE_DIR}" )
-      MESSAGE( STATUS "OpenEXRCTL_INCLUDE_DIR ${OpenEXRCTL_LIBRARIES}" )
+      MESSAGE( STATUS "OpenEXRCTL_LIBRARIES ${OpenEXRCTL_LIBRARIES}" )
       MESSAGE(FATAL_ERROR
               "OpenEXRCTL required, please specify its location with OpenEXRCTL_ROOT.")
     ELSE(OpenEXRCTL_FIND_REQUIRED)
