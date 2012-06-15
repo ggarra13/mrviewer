@@ -156,6 +156,7 @@ bool exrImage::channels_order(
 						     );
       if ( !ch ) continue;
 
+
       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
       
       std::string ext = layerName;
@@ -175,12 +176,12 @@ bool exrImage::channels_order(
 			      ext == N_("BY") ) ) order[2] = idx;
       if ( order[3] == -1 && (ext == N_("A") || 
 			      ext == N_("ALPHA") ) ) order[3] = idx;
+
+
       channelList.push_back( layerName );
       ++numChannels;
    }
 
-   for ( int i = 0; i < 4; ++i )
-      if ( order[i] == -1 ) order[i] = 0;
 
    if ( numChannels == 0 && channel() )
    {
@@ -197,6 +198,8 @@ bool exrImage::channels_order(
 		<< channel() << "\"" );
       numChannels = 4;
    }
+
+   if ( numChannels == 1 ) order[0] = 0;
    
    // Prepare format
    image_type::Format format = VideoFrame::kLumma;
@@ -280,13 +283,15 @@ bool exrImage::channels_order(
    for ( i = s; i != e && idx < 4; ++i, ++idx )
    {
       int k = order[idx];
+      if ( k == -1 ) continue;
+   
 
       const std::string& layerName = channelList[k];
 
       ch = channels.findChannel( layerName.c_str() );
       
       if ( !ch ) continue;
-
+      
       
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
       
@@ -462,7 +467,8 @@ bool exrImage::find_channels( const Imf::Header& h,
       lumma_layers();
    }
 
-   if ( channels.findChannel( "A" ) )
+   if ( channels.findChannel( N_("A") ) ||
+	channels.findChannel( N_("ALPHA") ) )
    {
       has_alpha = true;
       alpha_layers();
@@ -490,9 +496,13 @@ bool exrImage::find_channels( const Imf::Header& h,
 	   ) 
 	 continue; // these channels are handled in shader directly
 
+      // Don't count layer.channel
       if ( name.find( N_(".") ) != string::npos ) continue;
+
+
       _layers.push_back( i.name() );
       ++_num_channels;
+
    }
 
 
@@ -524,10 +534,6 @@ bool exrImage::find_channels( const Imf::Header& h,
       const char* channelPrefix = channel();
       if ( channelPrefix != NULL )
 	{
-
-	  unsigned int numChannels = 0;
-	  
-	  Imf::ChannelList::ConstIterator i;
 	  Imf::ChannelList::ConstIterator s;
 	  Imf::ChannelList::ConstIterator e;
 	  channels.channelsWithPrefix( channelPrefix, s, e );
