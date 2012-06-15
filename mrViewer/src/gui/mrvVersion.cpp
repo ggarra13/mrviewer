@@ -333,12 +333,22 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 
   std::string ffmpeg_protocols()
   {
-    // Urlprotocol *up;
     std::ostringstream o;
-    // for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
-    //  {
-    //	o << " " << up->name << ":";
-    //  }
+#if LIBAVUTIL_VERSION_MINOR > 32
+    void* opaque = NULL;
+    const char* up;
+    for( up = avio_enum_protocols( &opaque, 0 ); up; 
+	 up = avio_enum_protocols( &opaque, 0 ) )
+      {
+	o << " " << up << ":";
+      }
+#else
+    URLProtocol* up;
+    for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
+     {
+    	o << " " << up->name << ":";
+     }
+#endif
     return o.str();
   }
 

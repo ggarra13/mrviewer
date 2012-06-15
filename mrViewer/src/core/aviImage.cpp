@@ -28,8 +28,10 @@ using namespace std;
 
 
 
-
+extern "C" {
 #include "libavutil/pixdesc.h"
+}
+
 #include "aviImage.h"
 #include "mrvImageView.h"
 #include "mrvPlayback.h"
@@ -750,30 +752,16 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status != kDecodeOK )
     {
-      char ftype;
-      if (_av_frame->pict_type == AV_PICTURE_TYPE_B)
-	ftype = 'B';
-      else if (_av_frame->pict_type == AV_PICTURE_TYPE_I)
-	ftype = 'I';
-      else if (_av_frame->pict_type == AV_PICTURE_TYPE_S)
-	ftype = 'S';
-      else if (_av_frame->pict_type == AV_PICTURE_TYPE_SI)
-	ftype = 'SI';
-      else if (_av_frame->pict_type == AV_PICTURE_TYPE_SP)
-	ftype = 'SP';
-      else if (_av_frame->pict_type == AV_PICTURE_TYPE_BI)
-	ftype = 'BI';
-      else
-	ftype = 'P';
-      if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
-	IMG_WARNING("Could not decode video frame " << ptsframe 
-		    << " type " << ftype << " pts: " 
-		    << (pkt.pts == MRV_NOPTS_VALUE ?
+       char ftype = av_get_picture_type_char( _av_frame->pict_type );
+       if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
+	  IMG_WARNING("Could not decode video frame " << ptsframe 
+		      << " type " << ftype << " pts: " 
+		      << (pkt.pts == MRV_NOPTS_VALUE ?
 			-1 : pkt.pts ) << " dts: " << pkt.dts
-		    << " data: " << (void*)pkt.data);
+		      << " data: " << (void*)pkt.data);
     }
   else
-    {
+  {
       if ( ptsframe < frame )
 	{
 	  status = kDecodeMissingFrame;
@@ -944,18 +932,6 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
   limit_subtitle_store( frame );
 
   return false;
-}
-
-void aviImage::dump_metadata( AVDictionary *m )
-{
-    if(m && !(av_dict_get(m, "language", NULL, 0)))
-    {
-       AVDictionaryEntry* tag = NULL;
-       
-       while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-	  _iptc.insert( std::make_pair( tag->key, tag->value ) ); 
-       }
-    }
 }
 
 bool aviImage::find_image( const boost::int64_t frame )
@@ -1132,13 +1108,9 @@ void aviImage::video_stream( int x )
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420A;
       break;
     default:
-#if LIBAVUTIL_VERSION_MINOR >= 56
        IMG_ERROR( _("Unknown destination video frame format: ") 
-		  << _av_dst_pix_fmt );
-#else
-       IMG_ERROR( _("Unknown destination video frame format: ") 
-		  << avcodec_get_pix_fmt_name( _av_dst_pix_fmt ) );
-#endif
+		  << av_get_pix_fmt_name( _av_dst_pix_fmt ) );
+
       _pix_fmt = VideoFrame::kBGRA; break;
     }
 
@@ -1190,13 +1162,8 @@ void aviImage::populate()
 		 populate_stream_info( s, msg, ctx, i );
 		 s.has_b_frames = (bool)ctx->has_b_frames;
 		 s.fps          = calculate_fps( stream );
-// #if LIBAVUTIL_VERSION_MINOR >= 56
-// 		 if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
-// 		    s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
-// #else
-// 		 if ( avcodec_get_pix_fmt_name( ctx->pix_fmt ) )
-// 		    s.pixel_format = avcodec_get_pix_fmt_name( ctx->pix_fmt );
-// #endif
+		 if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
+ 		    s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
 		 _video_info.push_back( s );
 		 if ( _video_index < 0 && s.has_codec )
 		 {
@@ -1465,11 +1432,6 @@ void aviImage::populate()
   }
   
   
-  AVDictionaryEntry* tag = av_dict_get(m, "language", NULL, 0);
-  
-  if (tag)
-     _iptc.insert( std::make_pair("Language", tag->value) );
-  
   dump_metadata( _context->metadata );
 
   
@@ -1505,8 +1467,6 @@ bool aviImage::initialize()
       av_dict_set(&opts, "initial_pause", "1", 0);
 
       AVInputFormat*     format = NULL;
-      // int error = av_open_input_file( &_context, filename(), 
-      // 				 format, 0, &params );
       int error = avformat_open_input( &_context, filename(), 
 				       format, &opts );
 

@@ -189,7 +189,6 @@ namespace mrv {
 					 );
     virtual bool    find_subtitle( const boost::int64_t frame );
 
-       void dump_metadata( AVDictionary* m );
   protected:
 
     std::string _format;

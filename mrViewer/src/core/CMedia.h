@@ -825,6 +825,8 @@ namespace mrv {
     virtual void flush_video() {};
     void flush_audio();
 
+       void dump_metadata( AVDictionary* m );
+
        // Auxiliary function to handle decoding audio in messy new api.
        int decode_audio3(AVCodecContext* avctx, int16_t* samples,
 			 int* frame_size_ptr, AVPacket* avpkt);

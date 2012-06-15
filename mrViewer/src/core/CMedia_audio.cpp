@@ -120,9 +120,10 @@ void CMedia::open_audio_codec()
   AVCodecContext* ctx = stream->codec;
   _audio_codec = avcodec_find_decoder( ctx->codec_id );
   
+  AVDictionary* opts = NULL;
 
   if ( _audio_codec == NULL || 
-       avcodec_open( ctx, _audio_codec ) < 0 )
+       avcodec_open2( ctx, _audio_codec, &opts ) < 0 )
     {
        IMG_ERROR( _("Could not open audio codec") );
       _audio_index = -1;
@@ -660,124 +661,19 @@ void CMedia::populate_audio()
   stream = get_audio_stream();
   if ( stream->metadata ) m = stream->metadata;
 
-  if ( !m ) return;
-  
-  AVDictionaryEntry* tag;
+  dump_metadata( _context->metadata );
 
-  tag = av_dict_get( m, "album", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Album", tag->value) );
-    }
+}
 
-  tag = av_dict_get( m, "artist", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Artist", tag->value) );
-    }
-	
-  tag = av_dict_get( m, "album_artist", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Album Artist", tag->value) );
-    }
+void CMedia::dump_metadata( AVDictionary *m )
+{
+   if(!m) return;
 
-  tag = av_dict_get( m, "comment", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Comment", tag->value) );
-    }
-  
-  tag = av_dict_get( m, "composer", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Composer", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "copyright", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Copyright", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "creation_time", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Creation Time", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "date", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Date", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "disc", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Disc", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "encoder", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Encoder", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "filename", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Filename", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "genre", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Genre", tag->value) );
-    }
-
-  tag = av_dict_get( m, "language", NULL, 0 );
-  if ( tag )
-    {
-       _iptc.insert( std::make_pair("Language", tag->value ) );
-    }
-
-  tag = av_dict_get( m, "performer", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Performer", tag->value) );
-    }
-
-  tag = av_dict_get( m, "publisher", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Publisher", tag->value) );
-    }
-
-  tag = av_dict_get( m, "service_name", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Service Name", tag->value) );
-    }
-
-  tag = av_dict_get( m, "service_provider", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Service Provider", tag->value) );
-    }
-  
-  tag = av_dict_get( m, "title", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Title", tag->value) );
-    }
-
-  tag = av_dict_get( m, "track", NULL, 0 );
-  if ( tag )
-    {
-      _iptc.insert( std::make_pair("Track", tag->value) );
-    }
-
+   AVDictionaryEntry* tag = NULL;
+   
+   while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
+      _iptc.insert( std::make_pair( tag->key, tag->value ) ); 
+   }
 }
 
 
@@ -802,14 +698,14 @@ void CMedia::audio_file( const char* file )
 				   format, &params );
   if ( error < 0 )
   {
-     mrvALERT( file << _(": Could not open filename") );
+     mrvALERT( file << _(": Could not open filename.") );
   }
 
-  error = av_find_stream_info( _context ) < 0;
+  error = avformat_find_stream_info( _context, &params ) < 0;
 
   if ( error < 0 )
   {
-     mrvALERT( file << _(": Could not find stream info") );
+     mrvALERT( file << _(": Could not find stream info.") );
   }
 
   _audio_file = file;
@@ -891,7 +787,7 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
                                                    frame.nb_samples,
                                                    avctx->sample_fmt, 1);
         if (*frame_size_ptr < data_size) {
-	   IMG_ERROR( "Output buffer size is too small for "
+	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
 		      "the current frame (" 
 		      << *frame_size_ptr << " < " << data_size << ")" );
 	   return AVERROR(EINVAL);
@@ -961,7 +857,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 #ifdef DEBUG
   if ( _audio_buf_used + pkt.size >= _audio_max )
     {
-      IMG_ERROR( _("too much audio used:") << _audio_buf_used  );
+      IMG_ERROR( _("Too much audio used:") << _audio_buf_used  );
     }
 #endif
 
@@ -1021,7 +917,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   if ( pkt_temp.size == 0 ) return kDecodeOK;
 
-  IMG_ERROR( _("decode_audio3 missed decoding some samples") );
+  IMG_ERROR( _("decode_audio - missed decoding some samples") );
 
   return kDecodeMissingSamples;
 }
