@@ -1244,7 +1244,9 @@ void Flu_File_Chooser::trashCB( bool recycle )
 
   bool inFavorites = ( currentDir == FAVORITES_UNIQUE_STRING );
   if( inFavorites )
+  {
     recycle = false;
+  }
 
   // see how many files are selected
   std::string name;
@@ -2656,25 +2658,15 @@ int Flu_File_Chooser::Entry::handle( int event )
   {
      if ( Flu_File_Chooser::singleButtonTravelDrawer )
      {
-	if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
-	{
-#ifdef WIN32
-	   if( filename[1] == ':' )
-	      chooser->delayedCd = filename;
-	   else
-#endif
-	      chooser->delayedCd = chooser->currentDir + filename + "/";
-	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
-	}
-     }
-     if( fltk::event_clicks() > 0 )
-     {
-	fltk::event_clicks(0);
 	// double-clicking a favorite cd's to it
 	if( type == ENTRY_FAVORITE )
 	{
-	   chooser->delayedCd = filename;
-	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	   if ( fltk::event_clicks() > 1 )
+	   {
+	      fltk::event_clicks(0);
+	      chooser->delayedCd = filename;
+	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	   }
 	}
 	else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
 	{
@@ -2686,17 +2678,41 @@ int Flu_File_Chooser::Entry::handle( int event )
 	      chooser->delayedCd = chooser->currentDir + filename + "/";
 	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
 	}
-	// double-clicking a file chooses it if we are in file selection mode
-	else if( !(chooser->selectionType & DIRECTORY) ||
-		 (chooser->selectionType & STDFILE) )
-	{
-	   fltk::add_timeout( 0.0f, Flu_File_Chooser::selectCB, chooser );
-	}
-	if( selected() )
-	   chooser->trashBtn->activate();
-	return 1;
      }
      
+     if( fltk::event_clicks() > 0 )
+	{
+	   if( type == ENTRY_FAVORITE )
+	   {
+	      fltk::event_clicks(0);
+	      chooser->delayedCd = filename;
+	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	   }
+	   else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
+	   {
+	      fltk::event_clicks(0);
+#ifdef WIN32
+	      if( filename[1] == ':' )
+		 chooser->delayedCd = filename;
+	      else
+#endif
+		 chooser->delayedCd = chooser->currentDir + filename + "/";
+	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	   }
+	   // double-clicking a file chooses it if we are in file selection mode
+	   else if( !(chooser->selectionType & DIRECTORY) ||
+		    (chooser->selectionType & STDFILE) )
+	   {
+	      fltk::event_clicks(0);
+	      fltk::add_timeout( 0.0f, Flu_File_Chooser::selectCB, chooser );
+	   }
+	   if( selected() )
+	      chooser->trashBtn->activate();
+	   return 1;
+	}
+     
+     
+
      /*
       if( selected && !fltk::event_button3() && !fltk::event_state(fltk::CTRL) && !fltk::event_state(fltk::SHIFT) )
 	{
@@ -3781,7 +3797,7 @@ void Flu_File_Chooser::cd( const char *path )
   // check for favorites
   if( streq( path, FAVORITES_UNIQUE_STRING ) )
     {
-      currentDir = ""; // FAVORITES_UNIQUE_STRING;
+      currentDir = FAVORITES_UNIQUE_STRING;
       addToHistory();
 
       newDirBtn->deactivate();
