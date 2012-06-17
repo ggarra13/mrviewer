@@ -136,6 +136,11 @@ namespace mrv
     if ( i == profiles.end() ) return NULL;
 
     CIccProfile* d = OpenIccProfile( file );
+    if (!d)
+      {
+	LOG_ERROR("Could not open ICC profile \"" << file << "\".");
+	return NULL;
+      }
     return d;
   }
 
