@@ -11,7 +11,9 @@
 #ifndef mainWindow_h
 #define mainWindow_h
 
+
 #include <fltk/Window.h>
+
 
 namespace mrv {
 
@@ -46,6 +48,7 @@ namespace mrv {
     void iconize_all();
 
   protected:
+
     ViewerUI* uiMain;
   };
 

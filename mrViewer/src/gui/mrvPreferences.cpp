@@ -753,10 +753,12 @@ namespace mrv {
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
     change_timeline_display(main);
 
+
     //
     // Handle fullscreen and presentation mode
     //
     main->uiMain->show(0, NULL);
+    main->uiMain->set_icon();
     fltk::check();
 
     fltk::RadioButton* r;
@@ -776,7 +778,6 @@ namespace mrv {
 	view->toggle_fullscreen();
       }
 
-    main->uiMain->set_icon();
 
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();

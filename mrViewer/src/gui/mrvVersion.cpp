@@ -453,10 +453,6 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
       << "mrViewer depends on:" << endl
       << endl
-      // #if !defined(WIN32) && !defined(WIN64)
-      //       << "MinGW 1.0" << endl
-      //       << endl
-      // #endif
       << "Boost v" << boost_major << "." 
       << boost_minor << "." << boost_teeny << endl
       << "http://www.boost.org/" << endl
@@ -475,15 +471,14 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "libavutil\tv" << AV_STRINGIFY( LIBAVUTIL_VERSION ) << endl
       << "libavcodec\tv" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
       << "libavformat\tv" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
-      << "libavdevice\tv" << AV_STRINGIFY( LIBAVDEVICE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "(C) 2000-2006 Fabrice Bellard, et al." << endl
       << endl
-      << "ILM OpenEXR v1.5 or later" << endl
+      << "ILM OpenEXR v1.7 or later" << endl
       << "http://www.openexr.org/" << endl
       << "(C) 2005-2007 Industrial Light & Magic" << endl
       << endl
-      << "AMPAS CTL v1.0 or later" << endl
+      << "AMPAS CTL v1.2 or later" << endl
       << "http://www.openexr.org/" << endl
       << "(C) 2007 AMPAS and Industrial Light & Magic" << endl
       << endl

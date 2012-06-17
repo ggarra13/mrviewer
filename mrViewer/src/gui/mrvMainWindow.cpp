@@ -54,8 +54,6 @@ namespace mrv {
     this->icon(data);
 #else
 
-#if 1
-    
     // XpmCreatePixmapFromData comes from libXpm (libgd-xpm* on Debian)
     Pixmap p, mask;
     if ( XpmCreatePixmapFromData(fltk::xdisplay,
@@ -66,8 +64,8 @@ namespace mrv {
       }
 #endif
 
-#endif // WIN32
   }
+
 
   void MainWindow::always_on_top() 
   {

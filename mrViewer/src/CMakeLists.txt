@@ -29,7 +29,7 @@ ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  ADD_DEFINITIONS( -DWIN32 -GR  ) 
+  ADD_DEFINITIONS( -DWIN32  ) 
   SET(OS_LIBRARIES
     Winmm ws2_32 ${GLEW_LIBRARIES}
     )
@@ -229,7 +229,6 @@ ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
   # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
   #
-  MESSAGE( STATUS "OK" )
   FIND_LIBRARY( libintl_LIBRARY
   		NAMES libintl-8.lib libintl.dll.a libintl
 		PATHS $ENV{LIBINTL_ROOT} )
@@ -248,6 +247,7 @@ ELSE( AO_FOUND )
 
   IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
+    SET( SOURCES gui/resource.rc ${SOURCES} )
   ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
     SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
   ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
