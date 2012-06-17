@@ -190,5 +190,6 @@ void ICCProfileListUI::show_info() {
   if (!w) return;
   const char* label = w->label();
   if (!label) return;
+  if (!_info) return;
   _info->replace( label );
 }

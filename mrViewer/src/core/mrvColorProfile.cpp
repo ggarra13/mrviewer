@@ -111,7 +111,6 @@ namespace mrv
     ProfileData::iterator i = profiles.find( file );
     if ( i != profiles.end() ) return;
 
-
     CIccProfile* d = OpenIccProfile( file );
     if (!d) 
       {
@@ -120,6 +119,7 @@ namespace mrv
       }
 
     profiles.insert( std::make_pair( file, d ) );
+
   }
 
   /** 
@@ -134,7 +134,9 @@ namespace mrv
     if ( file == NULL ) return NULL;
     ProfileData::iterator i = profiles.find( file );
     if ( i == profiles.end() ) return NULL;
-    return i->second;
+
+    CIccProfile* d = OpenIccProfile( file );
+    return d;
   }
 
   stringArray colorProfile::list()

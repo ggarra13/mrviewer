@@ -162,22 +162,22 @@ void ColorInfo::update( const CMedia* src,
   if ( src && (selection.w() > 0 || selection.h() < 0) )
     {
       CMedia::PixelType hmin( std::numeric_limits<float>::max(),
-				 std::numeric_limits<float>::max(),
-				 std::numeric_limits<float>::max(),
-				 std::numeric_limits<float>::max()  );
+			      std::numeric_limits<float>::max(),
+			      std::numeric_limits<float>::max(),
+			      std::numeric_limits<float>::max() );
 
       CMedia::PixelType pmin( std::numeric_limits<float>::max(),
-				 std::numeric_limits<float>::max(),
-				 std::numeric_limits<float>::max(),
-				 std::numeric_limits<float>::max()  );
+			      std::numeric_limits<float>::max(),
+			      std::numeric_limits<float>::max(),
+			      std::numeric_limits<float>::max() );
       CMedia::PixelType pmax( std::numeric_limits<float>::min(),
-				 std::numeric_limits<float>::min(),
-				 std::numeric_limits<float>::min(),
-				 std::numeric_limits<float>::min() );
+			      std::numeric_limits<float>::min(),
+			      std::numeric_limits<float>::min(),
+			      std::numeric_limits<float>::min() );
       CMedia::PixelType hmax( std::numeric_limits<float>::min(),
-				 std::numeric_limits<float>::min(),
-				 std::numeric_limits<float>::min(),
-				 std::numeric_limits<float>::min() );
+			      std::numeric_limits<float>::min(),
+			      std::numeric_limits<float>::min(),
+			      std::numeric_limits<float>::min() );
       CMedia::PixelType pmean( 0, 0, 0, 0 );
       CMedia::PixelType hmean( 0, 0, 0, 0 );
 
@@ -193,10 +193,24 @@ void ColorInfo::update( const CMedia* src,
       unsigned int xmax = xmin + (unsigned int)(W * selection.w()) - 1;
       unsigned int ymax = ymin + (unsigned int)(H * selection.h()) - 1;
 
+      if ( xmax < xmin ) {
+	 unsigned tmp = xmax;
+	 xmax = xmin;
+	 xmin = xmax;
+      }
+
+      if ( ymax < ymin ) { 
+	 unsigned tmp = ymax;
+	 ymax = ymin;
+	 ymin = ymax;
+      }
+
       assert( xmax <= W );
       assert( ymax <= H );
       assert( xmin <= W );
       assert( ymin <= H );
+      assert( xmax <= xmin );
+      assert( ymax <= ymin );
 
       
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
@@ -277,7 +291,7 @@ void ColorInfo::update( const CMedia* src,
 
       unsigned spanX = (xmax-xmin+1);
       unsigned spanY = (ymax-ymin+1);
-      unsigned numPixels = spanX * spanY; 
+      unsigned numPixels = spanX * spanY;
 
       text << std::endl
 	   << _("Area") << ": (" << xmin << ", " << ymin 
@@ -285,9 +299,10 @@ void ColorInfo::update( const CMedia* src,
 	   << ", " << ymax << ")" << std::endl
 	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
 	   << numPixels << " "
-	   << ( numPixels > 1 ? _("pixels") : _("pixel") )
+	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
 	   << std::endl;
       area->copy_label( text.str().c_str() );
+
 
       text.str("");
       text << "@b;\t"

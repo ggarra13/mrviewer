@@ -32,14 +32,15 @@ namespace mrv {open
   class ICCProfileUI {open
   } {
     decl {CIccProfile* _profile;} {}
-    Function {ICCProfileUI()} {} {
+    Function {ICCProfileUI()} {open
+    } {
       code {_profile = NULL;
 make_window();} {}
     }
     Function {~ICCProfileUI()} {} {}
     Function {make_window()} {} {
       {fltk::Window} uiMain {open
-        xywh {625 275 650 485} resizable visible
+        xywh {627 276 650 485} resizable visible
       } {
         {fltk::PackedGroup} {} {open
           xywh {12 14 625 471}
@@ -82,10 +83,10 @@ o->column_labels( labels );}
         }
       }
     }
-    Function {replace( const std::string& name )} {open selected
+    Function {replace( const std::string& name )} {open
     } {
       code {_profile = mrv::colorProfile::get( name.c_str() );
-fill( name );
+if (_profile) fill( name );
 uiMain->show();} {}
     }
     Function {fill( const std::string& name )} {private
@@ -117,8 +118,7 @@ uiTags->redraw();
 
 fill_text();} {}
     }
-    Function {fill_text()} {open
-    } {
+    Function {fill_text()} {} {
       code {uiText->text("");
 if (!_profile) return;
 
@@ -140,9 +140,10 @@ uiText->redraw();} {}
   class ICCProfileListUI {open
   } {
     decl {ICCProfileUI* _info;} {}
-    Function {make_window()} {} {
+    Function {make_window()} {open
+    } {
       {fltk::Window} uiMain {
-        label {ICC Profiles Inspector} open
+        label {ICC Profiles Inspector}
         xywh {414 58 630 460} hide resizable
       } {
         {fltk::PackedGroup} {} {open
@@ -168,7 +169,8 @@ uiText->redraw();} {}
           }
         }
       }
-      code {_info = new ICCProfileUI();} {}
+      code {_info = new ICCProfileUI();} {selected
+      }
     }
     Function {ICCProfileListUI( mrv::ViewerUI* main )} {} {
       code {uiMain = make_window();
@@ -197,6 +199,7 @@ fltk::Widget* w = uiProfiles->child(idx);
 if (!w) return;
 const char* label = w->label();
 if (!label) return;
+if (!_info) return;
 _info->replace( label );} {}
     }
   }
