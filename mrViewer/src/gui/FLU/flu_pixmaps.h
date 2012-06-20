@@ -52,5 +52,6 @@ FLU_EXPORT extern const char* const home_xpm[];
 FLU_EXPORT extern const char* const reload_xpm[];
 FLU_EXPORT extern const char* const reel_xpm[];
 FLU_EXPORT extern const char* const image_xpm[];
+FLU_EXPORT extern const char* const music_xpm[];
 
 #endif

@@ -10,6 +10,10 @@
  * Attn: Jason Bryan Re: FLU 1224 Kinnear Rd, Columbus, Ohio 43212
  *
  ***************************************************************/
+
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
+
 #include <iostream>
 using namespace std;
 
@@ -24,6 +28,7 @@ using namespace std;
 #include <sys/types.h>
 #include <sys/stat.h>
 
+#include <limits>
 #include <vector>
 #include <string>
 #include <algorithm>
@@ -163,7 +168,8 @@ fltk::xpmImage up_folder_img( (char*const*)big_folder_up_xpm ),
   bigdocuments( (char*const*)bigdocuments_xpm ),
   bigtemporary( (char*const*)bigtemporary_xpm ),
   reel( (char*const*) reel_xpm ),
-  picture( (char*const*) image_xpm );
+picture( (char*const*) image_xpm ),
+music( (char*const*) music_xpm );
 
 #define streq(a,b) (strcmp(a,b)==0)
 
@@ -443,38 +449,45 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   cancel.labelsize( (float)normal_size );
 
   add_type( NULL, directoryTxt.c_str(), &folder_closed );
-  add_type( "mov",  "Quicktime Movie", &reel );
-  add_type( "qt",   "Quicktime Movie", &reel );
-  add_type( "avi",  "AVI Movie", &reel );
-  add_type( "divx", "DIVX Movie", &reel );
-  add_type( "mpg",  "MPEG Movie", &reel );
-  add_type( "mpeg", "MPEG Movie", &reel );
-  add_type( "wmv",  "WMV Movie", &reel );
-  add_type( "vob",  "VOB Movie", &reel );
-  add_type( "mp4",  "MP4 Movie", &reel );
-  add_type( "exr",  "EXR Picture", &picture );
-  add_type( "tif",  "TIFF Picture", &picture );
-  add_type( "tiff",  "TIFF Picture", &picture );
-  add_type( "iff",  "IFF Picture", &picture );
-  add_type( "gif",  "GIF Picture", &picture );
-  add_type( "png",  "PNG Picture", &picture );
-  add_type( "bmp",  "BMP Picture", &picture );
-  add_type( "jpg",  "JPEG Picture", &picture );
-  add_type( "jpeg", "JPEG Picture", &picture );
-  add_type( "map",  "Map Picture", &picture );
-  add_type( "dpx",  "DPX Picture", &picture );
-  add_type( "cin",  "Cineon Picture", &picture );
-  add_type( "ct",  "mental ray Contour Picture", &picture );
-  add_type( "nt",  "mental ray Normal Picture", &picture );
-  add_type( "mt",  "mental ray Motion Picture", &picture );
-  add_type( "pic", "Softimage Picture", &picture );
-  add_type( "psd", "Photoshop Picture", &picture );
-  add_type( "rgb", "RGB Picture", &picture );
-  add_type( "rpf", "Rich Picture Format", &picture );
-  add_type( "shmap", "mental ray Shadow Map", &picture );
-  add_type( "sgi", "SGI Picture", &picture );
-  add_type( "tga", "Targa Picture", &picture );
-  add_type( "zt",  "mental ray Depth Picture", &picture );
+  add_type( N_("mov"),   _( "Quicktime Movie"), &reel );
+  add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
+  add_type( N_("avi"),   _( "AVI Movie"), &reel );
+  add_type( N_("divx"),  _( "DIVX Movie"), &reel );
+  add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
+  add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
+  add_type( N_("wmv"),   _( "WMV Movie"), &reel );
+  add_type( N_("vob"),   _( "VOB Movie"), &reel );
+  add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
+  add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
+  add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
+  add_type( N_("cin"),   _( "Cineon Picture"), &picture );
+  add_type( N_("ct"),    _( "mental ray Contour Picture"), &picture );
+  add_type( N_("dpx"),   _( "DPX Picture"), &picture );
+  add_type( N_("exr"),   _( "EXR Picture"), &picture );
+  add_type( N_("tif"),   _( "TIFF Picture"), &picture );
+  add_type( N_("iff"),   _( "IFF Picture"), &picture );
+  add_type( N_("jpg"),   _( "JPEG Picture"), &picture );
+  add_type( N_("jpeg"),  _( "JPEG Picture"), &picture );
+  add_type( N_("map"),   _( "Map Picture"), &picture );
+  add_type( N_("gif"),   _( "GIF Picture"), &picture );
+  add_type( N_("nt"),    _( "mental ray Normal Picture"), &picture );
+  add_type( N_("mt"),    _( "mental ray Motion Picture"), &picture );
+  add_type( N_("pic"),   _( "Softimage Picture"), &picture );
+  add_type( N_("png"),   _( "PNG Picture"), &picture );
+  add_type( N_("psd"),   _( "Photoshop Picture"), &picture );
+  add_type( N_("rgb"),   _( "RGB Picture"), &picture );
+  add_type( N_("rpf"),   _( "Rich Picture Format"), &picture );
+  add_type( N_("shmap"), _( "mental ray Shadow Map"), &picture );
+  add_type( N_("sgi"),   _( "SGI Picture"), &picture );
+  add_type( N_("st"),    _( "mental ray Scalar Picture"), &picture );
+  add_type( N_("sxr"),   _( "Stereo EXR Picture"), &picture );
+  add_type( N_("tga"),   _( "Targa Picture"), &picture );
+  add_type( N_("tif"),   _( "TIFF Picture"), &picture );
+  add_type( N_("tiff"),  _( "TIFF Picture"), &picture );
+  add_type( N_("zt"),    _( "mental ray Z Depth Picture"), &picture );
+  add_type( N_("mp3"),   _( "MP3 music"), &music );
+  add_type( N_("ogg"),   _( "OGG music"), &music );
+  add_type( N_("wav"),   _( "Wave music"), &music );
 
   history = currentHist = NULL;
   walkingHistory = false;
@@ -4375,6 +4388,9 @@ void Flu_File_Chooser::cd( const char *path )
 	      entry->altname += "-";
 	      entry->altname += (*i).ext;
 	    }
+
+	  entry->updateIcon();
+
 	  ++numFiles;
 	  if( listMode )
 	    filelist->add( entry );
@@ -4406,38 +4422,35 @@ void Flu_File_Chooser::cd( const char *path )
 	  // store size as human readable and sortable integer
 	  entry->isize = s.st_size;
 	  if( isDir && entry->isize == 0 )
+	  {
 	    entry->filesize = "";
+	  }
 	  else
-	    {
-	      char buf[32];
-	      /*
-		if( (entry->isize >> 40) > 0 ) // terrabytes
-		{
-		double TB = double(entry->isize)/double(1<<40);
-		sprintf( buf, "%.1f TB", TB );
-		}
-	      */
-	      if( (entry->isize >> 30) > 0 ) // gigabytes
-		{
-		  double GB = double(entry->isize)/double(1<<30);
-		  sprintf( buf, "%.1f GB", GB );
-		}
-	      else if( (entry->isize >> 20) > 0 ) // megabytes
-		{
-		  double MB = double(entry->isize)/double(1<<20);
-		  sprintf( buf, "%.1f MB", MB );
-		}
-	      else if( (entry->isize >> 10) > 0 ) // kilabytes
-		{
-		  double KB = double(entry->isize)/double(1<<10);
-		  sprintf( buf, "%.1f KB", KB );
-		}
-	      else // bytes
-		{
-		  sprintf( buf, "%d bytes", (int)entry->isize );
-		}
-	      entry->filesize = buf;
-	    }
+	  {
+	     char buf[32];
+	      
+	     if( (entry->isize >> 30) > 0 ) // gigabytes
+	     {
+		double GB = double(entry->isize)/double(1<<30);
+		sprintf( buf, "%.1f GB", GB );
+	     }
+	     else if( (entry->isize >> 20) > 0 ) // megabytes
+	     {
+		double MB = double(entry->isize)/double(1<<20);
+		sprintf( buf, "%.1f MB", MB );
+	     }
+	     else if( (entry->isize >> 10) > 0 ) // kilabytes
+	     {
+		double KB = double(entry->isize)/double(1<<10);
+		sprintf( buf, "%.1f KB", KB );
+	     }
+	     else // bytes
+	     {
+		sprintf( buf, "%d bytes", (int)entry->isize );
+	     }
+	     entry->filesize = buf;
+	     entry->updateIcon();
+	  }
 
 	  // store date as human readable and sortable integer
 	  entry->date = formatDate( ctime( &s.st_mtime ) );//ctime( &s.st_mtime );

@@ -30,7 +30,7 @@ namespace {
 
   static const std::string kImagePattern =
     "bmp,bit,cin,ct,dpx,exr,iff,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,png,psd,rgb,rpf,"
-    "shmap,sgi,st,tga,tif,tiff,zt";
+    "shmap,sgi,st,sxr,tga,tif,tiff,zt";
 
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 

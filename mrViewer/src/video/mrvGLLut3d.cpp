@@ -469,16 +469,16 @@ namespace mrv {
       }
 
     if ( channels > 3 )
-      {
-	LOG_WARNING( _("Destination color space has more than 3 channels - "
-		       "only first 3 will be shown.") );
-      }
-
+    {
+       LOG_WARNING( _("Destination color space has more than 3 channels - "
+		      "only first 3 will be shown.") );
+    }
+       
     if ( dst_space != icSigRgbData && dst_space != icSigXYZData )
-      {
-	LOG_WARNING( _("Destination color space is not RGB or XYZ.  "
-		       "Colors may look weird displayed as RGB.") );
-      }
+    {
+       LOG_WARNING( _("Destination color space is not RGB or XYZ.  "
+		      "Colors may look weird displayed as RGB.") );
+    }
 
     status = cmm.Begin();
     if ( status != icCmmStatOk )
@@ -563,12 +563,19 @@ namespace mrv {
 	key += name;
 	key += " (C)";
 	transforms.push_back( t );
-	if ( warn )
-	  {
-	    LOG_WARNING( _("RT Lut is set to prefer ICC profile but only "
-			   "CTL script found in \"") 
+
+	static const CMedia* lastImg = NULL;
+
+	if ( lastImg != img )
+	{  
+	   if ( warn )
+	   {
+	      LOG_WARNING( _("RT Lut is set to prefer ICC profile but only "
+			     "CTL script found in \"") 
 			 << img->name() << N_("\"") );
-	  }
+	   }
+	   lastImg = img;
+	}
 	ok = true;
       }
 
@@ -681,17 +688,26 @@ namespace mrv {
 
     if ( transforms.empty() ) 
       {
-        const char* err = N_("");
-	if ( algorithm == Preferences::kLutPreferICC ||
-	     algorithm == Preferences::kLutPreferCTL )
-	  err = _("No CTL script or ICC profile");
-	else if ( find_ctl )
-	  err = _("No CTL script");
-	else if ( find_icc )
-	  err = _("No ICC profile");
+	 static const CMedia* lastImg = NULL;
 
-	LOG_ERROR( _("No valid RT transform for \"") 
-		   << img->name() << _("\": ") << err << N_(".") );
+	 if ( img != lastImg )
+	 {
+
+	    const char* err = N_("");
+	    if ( algorithm == Preferences::kLutPreferICC ||
+		 algorithm == Preferences::kLutPreferCTL )
+	       err = _("No CTL script or ICC profile");
+	    else if ( find_ctl )
+	       err = _("No CTL script");
+	    else if ( find_icc )
+	       err = _("No ICC profile");
+	    
+	    LOG_ERROR( _("No valid RT transform for \"") 
+		       << img->name() << N_("\": ") << err << N_(".") );
+	 }
+
+	lastImg = img;
+
 	return NULL;
       }
 
@@ -718,16 +734,23 @@ namespace mrv {
 
     if ( transforms.size() == num )
       {
-        const char* err = N_("");
-	if ( algorithm == Preferences::kLutPreferICC ||
-	     algorithm == Preferences::kLutPreferCTL )
-	  err = _("No CTL script or ICC profile");
-	else if ( find_ctl )
-	  err = _("No CTL script");
-	else if ( find_icc )
-	  err = _("No ICC profile");
+	 static const CMedia* lastImg = NULL;
 
-	LOG_ERROR( _("No valid ODT transform: ") << err << N_(".") );
+	 if ( img != lastImg )
+	 {
+	    const char* err = N_("");
+	    if ( algorithm == Preferences::kLutPreferICC ||
+		 algorithm == Preferences::kLutPreferCTL )
+	       err = _("No CTL script or ICC profile");
+	    else if ( find_ctl )
+	       err = _("No CTL script");
+	    else if ( find_icc )
+	       err = _("No ICC profile");
+
+	    LOG_ERROR( _("No valid ODT transform: ") << err << N_(".") );
+	 }
+
+	lastImg = img;
 	return NULL;
       }
 

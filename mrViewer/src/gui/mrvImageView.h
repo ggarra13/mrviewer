@@ -225,6 +225,9 @@ namespace mrv {
     /// True if 3D LUT is on, false if not.
     bool use_lut() const { return _useLUT; }
 
+    /// True if 3D LUT is on, false if not.
+    void use_lut(const bool t) { _useLUT = t; }
+
     /// True if background is active
     bool show_background() const { return _showBG; }
 

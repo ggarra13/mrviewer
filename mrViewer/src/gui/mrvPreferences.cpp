@@ -695,8 +695,10 @@ namespace mrv {
     if ( main->uiPixelRatio->value() )
        main->uiView->toggle_pixel_ratio();
     main->uiLUT->value( uiPrefs->uiPrefsViewLut->value() );
-
+    
     mrv::ImageView* view = main->uiView;
+    view->use_lut( uiPrefs->uiPrefsViewLut->value() );
+
 
     if ( uiPrefs->uiPrefsSafeAreas->value() )
       view->safe_areas(true);
