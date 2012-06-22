@@ -4,4 +4,4 @@
 # If you change this key, all old signed cookies will become invalid!
 # Make sure the secret is at least 30 characters and all random,
 # no regular words or you'll be exposed to dictionary attacks.
-Assets::Application.config.secret_token = '9017bdcd35e4e42378092df9528d0eee9805e00db1a2916a6aad16cd2a31a772bf4e16185e23691b95e56ab6102352420a28c3a64612beb2262e23979bd7c283'
+Assets2d::Application.config.secret_token = 'c2d2a21790bdbe1cc4147f2b277d5df632cdd03f0f6f0019ac941473d87df06c668f40975bf97be39319221baeb2022c0fcbab64ff5e131b2e38c50ad277db30'
