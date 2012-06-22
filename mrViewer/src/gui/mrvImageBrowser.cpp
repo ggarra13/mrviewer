@@ -57,7 +57,7 @@ namespace fs = boost::filesystem;
 
 namespace 
 {
-  const char* kModule = "gui";
+  const char* kModule = "db";
 }
 
 
@@ -595,6 +595,11 @@ namespace mrv {
 		       << _("' to database '") << db->database() 
 		       << "': " << endl << db->error() );
 	  }
+	else
+	{
+	   LOG_INFO( img->filename() << _(": added video to database '") 
+		     << db->database() << _("'.") );
+	}
       }
   }
 
@@ -679,6 +684,11 @@ namespace mrv {
 		       << _("' to database '") << db->database() 
 		       << "': " << endl << db->error() );
 	  }
+	else
+	{
+	   LOG_INFO( img->filename() << _(": added audio to database '") 
+		     << db->database() << _("'.") );
+	}
       }
   }
 
@@ -695,7 +705,11 @@ namespace mrv {
     if ( show && db )
       {
 	 sprintf( buf, N_("INSERT INTO shows(name) VALUES ('%s');"), show ); 
-	db->sql( buf );
+
+	 if ( db->sql( buf ) )
+	 {
+	    LOG_INFO( _("Inserted show '") << show << _("'.") );
+	 }
 
 	const char* seq  = getenv( N_("SEQ") );
 
@@ -721,7 +735,12 @@ namespace mrv {
 			      "('%s', "
 			      "( SELECT id FROM shows WHERE name = '%s') );" ),
 		     seq, show ); 
-	    db->sql( buf );
+	    
+	     if ( db->sql( buf ) )
+	     {
+		LOG_INFO( _("Inserted sequence '") << seq << _("' into show '")
+			  << show << _("'." ) );
+	     }
 
 	    if ( shot )
 	      {
@@ -732,7 +751,13 @@ namespace mrv {
 				   "WHERE name = '%s')"
 				   ");" ), 
 			 shot, seq ); 
-		db->sql( buf );
+
+		 if ( db->sql( buf ) )
+		 {
+		    LOG_INFO( _("Added shot '") << shot << _("' to sequence '") 
+			      << seq << _("'.") );
+		 }
+
 
 		shot_id = N_("SELECT id FROM shots WHERE name = '" );
 		shot_id += shot;
@@ -760,7 +785,12 @@ namespace mrv {
 	sprintf( buf, N_("INSERT INTO icc_profiles(name)"
 			 " VALUES "
 			 "( '%s' );" ), icc_profile ); 
-	db->sql( buf );
+	if ( db->sql( buf ) )
+	{
+	   LOG_INFO( img->filename() << _(": added ICC ") << 
+		     icc_profile << _(" to database '") 
+		     << db->database() << _("'.") );
+	}
 
 	icc_profile_id = N_("SELECT id FROM icc_profiles WHERE name = '" );
 	icc_profile_id += icc_profile;
@@ -773,8 +803,13 @@ namespace mrv {
 	char buf[4096];
 	sprintf( buf, N_("INSERT INTO render_transforms(name)"
 			 " VALUES "
-			 "( '%s' );" ), img->rendering_transform() ); 
-	db->sql( buf );
+			 "( '%s' );" ), img->rendering_transform() );
+	if ( db->sql( buf ) )
+	{
+	   LOG_INFO( img->filename() << _(": added render transform ") << 
+		     img->rendering_transform() << _(" to database '") 
+		     << db->database() << _("'.") );
+	}
 
 	rendering_transform_id = N_("SELECT id FROM render_transforms "
 				    "WHERE name = '");
@@ -789,7 +824,12 @@ namespace mrv {
 	sprintf( buf, N_("INSERT INTO look_mod_transforms(name)"
 			 " VALUES "
 			 "( '%s' );"), img->look_mod_transform() ); 
-	db->sql( buf );
+	if ( db->sql( buf ) )
+	{
+	   LOG_INFO( img->filename() << _(": added look mod transform ") << 
+		     img->look_mod_transform() << _(" to database '") 
+		     << db->database() << _("'.") );
+	}
 
 	look_mod_transform_id = N_("SELECT id FROM look_mod_transforms "
 				   "WHERE name = '");
@@ -908,6 +948,12 @@ namespace mrv {
 		   << _("' to database '") << db->database() 
 		   << "': " << endl << db->error() );
       }
+    else
+    {
+       LOG_INFO( _("Added image '") << img->filename() 
+		 << _("' to database '") << db->database()
+		 << _("'.") );
+    }
 
     delete [] buf;
   }

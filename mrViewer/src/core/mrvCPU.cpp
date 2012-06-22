@@ -223,7 +223,7 @@ static bool has_cpuid(void)
 static void
 do_cpuid(unsigned int eaxval, unsigned int* eregs)
 {
-#ifdef ARCH_X86_64
+#ifdef _WIN64
    return;
 #elif defined(_MSC_VER)
   __asm  {

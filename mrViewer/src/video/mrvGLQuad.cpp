@@ -220,10 +220,11 @@ namespace mrv {
     _yw[1] = 0.7152f;
     _yw[2] = 0.0722f;
  
-    if      ( GLEngine::supports_yuva() ) _num_textures = 4;
-    else if ( GLEngine::supports_yuv() )  _num_textures = 3;
+    if ( GLEngine::supports_yuv() )  _num_textures = 4;
 
-    if ( GLEngine::pboTextures() ) glGenBuffers( _num_textures, _pbo );
+    if ( GLEngine::pboTextures() ) {
+       glGenBuffers( _num_textures, _pbo );
+    }
 
     glGenTextures( _num_textures, _texId );
 
@@ -331,6 +332,7 @@ namespace mrv {
 	      if ( ! glUnmapBuffer(GL_PIXEL_UNPACK_BUFFER_ARB) )
 		{
 		  LOG_ERROR("Could not unmap pixel buffer #" << idx );
+		  return;
 		}
 
 	      //
@@ -423,6 +425,7 @@ namespace mrv {
 	if ( GLEngine::halfTextures() )     internalFormat = GL_LUMINANCE16F_ARB;
 	else if ( GLEngine::floatTextures ) internalFormat = GL_LUMINANCE32F_ARB;
       }
+
 
     for ( unsigned i = 0; i < channels; ++i )
       {
