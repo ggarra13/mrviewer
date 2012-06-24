@@ -1,4 +1,64 @@
-Assets2d::Application.routes.draw do
+Assets::Application.routes.draw do
+  resources :video_categories do as_routes end
+
+  resources :video_categories
+
+  resources :videos do as_routes end
+
+  resources :videos
+
+  resources :users do as_routes end
+
+  resources :users
+
+  resources :sequences do as_routes end
+
+  resources :sequences
+
+  resources :shots do as_routes end
+
+  resources :shots
+
+  resources :render_transforms do as_routes end
+
+  resources :render_transforms
+
+  resources :look_mod_transforms do as_routes end
+
+  resources :look_mod_transforms
+
+  resources :audio_categories do as_routes end
+
+  resources :audio_categories
+
+  resources :categories do as_routes end
+
+  resources :categories
+
+  resources :audios do as_routes end
+
+  resources :audios
+
+  resources :image_categories do as_routes end
+
+  resources :image_categories
+
+  resources :pixel_formats do as_routes end
+
+  resources :pixel_formats
+
+  resources :icc_profiles do as_routes end
+
+  resources :icc_profiles
+
+  resources :images do as_routes end
+
+  resources :images
+
+  resources :shows do as_routes end
+
+  resources :shows
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

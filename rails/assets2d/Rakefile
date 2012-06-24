@@ -4,4 +4,4 @@
 
 require File.expand_path('../config/application', __FILE__)
 
-Assets2d::Application.load_tasks
+Assets::Application.load_tasks

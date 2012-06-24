@@ -58,6 +58,7 @@ namespace mrv
       return false;
 
     _connected = true;
+    LOG_INFO( _("Connected to database '") << _database << N_("'.") );
 
     return true;
   }

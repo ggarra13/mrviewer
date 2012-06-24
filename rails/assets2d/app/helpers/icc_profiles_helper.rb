@@ -1,0 +1,2 @@
+module IccProfilesHelper
+end

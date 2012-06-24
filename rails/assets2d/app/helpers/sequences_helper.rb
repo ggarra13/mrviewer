@@ -1,0 +1,2 @@
+module SequencesHelper
+end
