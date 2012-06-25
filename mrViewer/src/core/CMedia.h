@@ -493,6 +493,8 @@ namespace mrv {
     /// Returns the pixel format of the image
     image_type::Format pixel_format() const;
 
+    const char* const pixel_format_name() const;
+
     /// Returns the pixel type of the image
     image_type::PixelType depth() const;
 

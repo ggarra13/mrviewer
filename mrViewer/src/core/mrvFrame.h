@@ -30,6 +30,7 @@ namespace mrv
   class VideoFrame
   {
   public:
+       static const char* const fmts[];
 
     //! Channel formats
     enum Format {
@@ -162,6 +163,8 @@ namespace mrv
     inline void      format( Format f ) { _format = f; }
     inline Format    format()     const { return _format; }
 
+    inline const char* const pixel_format() const { return fmts[_format]; } 
+
     inline void      pixel_type( PixelType t ) { _type = t; }
     inline PixelType pixel_type() const        { return _type; }
     unsigned short   pixel_size();
@@ -181,7 +184,8 @@ namespace mrv
     inline const PixelData& data() const { return _data; }
 
     ImagePixel pixel( const unsigned int x, const unsigned int y );
-    void pixel( const unsigned int x, const unsigned int y, const ImagePixel& p );
+    void pixel( const unsigned int x, const unsigned int y, 
+		const ImagePixel& p );
 
     inline bool operator==( const self& b ) const
     {

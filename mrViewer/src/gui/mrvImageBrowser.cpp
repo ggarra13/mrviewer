@@ -569,20 +569,43 @@ namespace mrv {
 	  }
 
 	const CMedia::video_info_t& s = img->video_info(i);
+
+
+	std::string pixel_format_id = "NULL";
+	if ( s.pixel_format.c_str() )
+	{
+	   char buf[4096];
+	   sprintf( buf, N_("INSERT INTO pixel_formats(name)"
+			    " VALUES "
+			    "( '%s' );"), s.pixel_format.c_str() ); 
+	   if ( db->sql( buf ) )
+	   {
+	      LOG_INFO( img->filename() << _(": added pixel format '") << 
+			s.pixel_format.c_str() << _("' to database '") 
+			<< db->database() << _("'.") );
+	   }
+	   
+	   pixel_format_id = N_("SELECT id FROM pixel_formats "
+				"WHERE name='");
+	   pixel_format_id += s.pixel_format.c_str();
+	   pixel_format_id += N_("'");
+	}
+
+
 	sprintf( buf, N_("INSERT INTO "
 			 "videos"
 			 "( image_id, stream, codec, "
 			 "created_at, updated_at, "
-			 "fourcc, pixel_format, fps, start, duration )"
+			 "fourcc, pixel_format_id, fps, start, duration )"
 			 " VALUES "
 			 "( ( %s ), %d, '%s', "
 			 "'%s', '%s', "
-			 "'%s', '%s', %g, %g, %g );" ),
+			 "'%s', ( %s ), %g, %g, %g );" ),
 		 image_id.c_str(), i,
 		 s.codec_name.c_str(),
 		 created_at, created_at,
 		 s.fourcc.c_str(),
-		 s.pixel_format.c_str(),
+		 pixel_format_id.c_str(),
 		 s.fps,
 		 s.start,
 		 s.duration
@@ -625,7 +648,7 @@ namespace mrv {
 
     std::string image_id;
     sprintf( buf, N_("SELECT id FROM images "
-		     "WHERE directory='%s' AND filename='%s'"),
+		     "WHERE directory='%s' AND filename='%s';"),
 	     img->directory().c_str(), img->name().c_str() );
     image_id = buf;
 
@@ -837,6 +860,26 @@ namespace mrv {
 	look_mod_transform_id += N_("'");
       }
 
+    std::string pixel_format_id = "NULL";
+    if ( img->pixel_format_name() )
+      {
+	char buf[4096];
+	sprintf( buf, N_("INSERT INTO pixel_formats(name)"
+			 " VALUES "
+			 "( '%s' );"), img->pixel_format_name() ); 
+	if ( db->sql( buf ) )
+	{
+	   LOG_INFO( img->filename() << _(": added pixel format ") << 
+		     img->pixel_format_name() << _(" to database '") 
+		     << db->database() << _("'.") );
+	}
+
+	pixel_format_id = N_("SELECT id FROM pixel_formats "
+				   "WHERE name = '");
+	pixel_format_id += img->pixel_format_name();
+	pixel_format_id += N_("'");
+      }
+
     float fstop = 8.0f;
     const char* fnumber = img->exif( "F Number" );
     if ( fnumber == NULL )
@@ -913,14 +956,15 @@ namespace mrv {
 	     "created_at, updated_at, "
 	     "disk_space, date, shot_id, width, height, pixel_ratio, format, "
 	     "fps, codec, icc_profile_id, render_transform_id, "
-	     "look_mod_transform_id, depth, num_channels, layers,"
+	     "look_mod_transform_id, pixel_format_id, "
+	     "depth, num_channels, layers,"
 	     "fstop, gamma, thumbnail, thumbnail_width, thumbnail_height )"
 	     " VALUES "
 	     "('%s', '%s', %" PRId64 ", %" PRId64 ", '%s', "
 	     "'%s', '%s', "
 	     "%lu, '%s', ( %s ), %u, %u, %g, '%s',"
 	     " %g, '%s', ( %s ), ( %s ), "
-	     "( %s ), %d, %d, '%s', "
+	     "( %s ), ( %s ), %d, %d, '%s', "
 	     "%g, %g, '%s', %d, %d);",
 	     img->directory().c_str(), img->name().c_str(),
 	     img->first_frame(), img->last_frame(),
@@ -935,6 +979,7 @@ namespace mrv {
 	     icc_profile_id.c_str(),
 	     rendering_transform_id.c_str(),
 	     look_mod_transform_id.c_str(),
+	     pixel_format_id.c_str(),
 	     img->depth(), img->number_of_channels(),
 	     layers.c_str(),
 	     fstop, img->gamma(),

@@ -1,5 +1,5 @@
 class Audio < ActiveRecord::Base
-
+  
   TIME = [ 'Start', 'Duration' ]
   TIME_COLUMNS = /^(?:#{TIME.join('|')})$/
 
@@ -8,6 +8,7 @@ class Audio < ActiveRecord::Base
 
   EDITABLE = [ 'Online', 'Rating', 'Backup', 'Label color', 'Description' ]
 
+  belongs_to :image
   
   validates_presence_of     :directory
   validates_presence_of     :filename
@@ -27,6 +28,9 @@ class Audio < ActiveRecord::Base
   validates_numericality_of :bitrate,      :integer_only => true
   validates_uniqueness_of   :filename, :scope => [ :directory, :stream ]
 
-#  has_one :image
+
+  def to_label
+    "Audio: ##{stream+1}"
+  end
 
 end

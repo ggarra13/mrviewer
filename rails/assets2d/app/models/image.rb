@@ -13,9 +13,18 @@ class Image < ActiveRecord::Base
 
   has_many :videos
   has_many :audios
-  #has_one  :shot
-  #has_one  :render_transform
-  #has_one  :look_mod_transform
+  has_one  :shot
+
+  has_one  :icc_profile
+  has_one  :render_transform
+  has_one  :look_mod_transform
+  has_one  :pixel_format
+
+  belongs_to :shot
+  belongs_to :icc_profile
+  belongs_to :render_transform
+  belongs_to :look_mod_transform
+  belongs_to :pixel_format
 
   validates_presence_of     :directory
   validates_presence_of     :filename
@@ -68,4 +77,9 @@ class Image < ActiveRecord::Base
     img.format = 'PNG'
     img.write(file)
   end
+
+  def to_label
+    "Image: #{filename}"
+  end
+
 end

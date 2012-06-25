@@ -39,6 +39,36 @@ namespace
 
 namespace mrv {
 
+const char* const VideoFrame::fmts[] = {
+"Lumma",
+"LummaA",
+"BGR",
+"BGRA",
+"RGB",
+"RGBA",
+
+"ITU_601_YCbCr420",
+"ITU_601_YCbCr420A",
+"ITU_601_YCbCr422",
+"ITU_601_YCbCr422A",
+"ITU_601_YCbCr444",
+"ITU_601_YCbCr444A",
+
+"ITU_702_YCbCr420",
+"ITU_702_YCbCr420A", // @todo: not done
+"ITU_702_YCbCr422",
+"ITU_702_YCbCr422A", // @todo: not done
+"ITU_702_YCbCr444",
+"ITU_702_YCbCr444A", // @todo: not done
+
+"YByRy420",
+"YByRy420A", // @todo: not done
+"YByRy422",
+"YByRy422A", // @todo: not done
+"YByRy444",
+"YByRy444A", // @todo: not done
+};
+
   unsigned short VideoFrame::pixel_size()
   {
     switch( _type )

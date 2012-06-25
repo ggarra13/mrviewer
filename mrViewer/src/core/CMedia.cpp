@@ -710,6 +710,12 @@ image_type::Format CMedia::pixel_format() const
   else return image_type::kLumma;
 }
 
+const char* const CMedia::pixel_format_name() const
+{
+   if ( _hires ) return _hires->pixel_format();
+   else return "Lumma";
+}
+
 image_type::PixelType CMedia::depth() const
 {
   if ( _hires )      return _hires->pixel_type();
