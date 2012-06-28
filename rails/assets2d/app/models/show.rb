@@ -1,5 +1,5 @@
 class Show < ActiveRecord::Base
-  # attr_accessible :title, :body
+
   validates_presence_of :title, :director, :studio, :distributor
 
   validates_length_of     :name, :within => 3..8

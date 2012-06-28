@@ -27,6 +27,7 @@
       <%= link_to "Videos", :controller => 'videos', :action => 'index' %>
       <%= link_to "Audios", :controller => 'audios', :action => 'index' %>
       <%= link_to "Categories", :controller => 'categories', :action => 'index' %>
+      <%= link_to "Image Categories", :controller => 'image_categories', :action => 'index' %>
       <%= link_to "Video Categories", :controller => 'video_categories', :action => 'index' %>
       <%= link_to "Audio Categories", :controller => 'audio_categories', :action => 'index' %>
       <%= link_to "ICC Profiles", :controller => 'icc_profiles', :action => 'index' %>
@@ -35,7 +36,7 @@
     </div>
   </div>
 
-<p style="color: green"><%= flash[:notice] %></p>
+<p style="color: red"><%= flash[:notice] %></p>
 
 <%= yield  %>
 
@@ -49,7 +50,7 @@
   </div>
 
   <div>
-    Copyright 2007 - Film Aura, LLC.
+    Copyright 2012 - Film Aura, LLC.
   </div>
 
   <div>

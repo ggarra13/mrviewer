@@ -25,6 +25,7 @@
 #include <string>
 #include <limits>
 
+
 using namespace std;
 
 #define BOOST_FILESYSTEM_VERSION 2
@@ -37,6 +38,7 @@ namespace fs = boost::filesystem;
 
 #include "Sequence.h"
 #include "mrvString.h"
+#include "mrvI8N.h"
 
 
 namespace mrv
@@ -155,6 +157,7 @@ namespace mrv
 
     fs::path file = fs::path( fileroot, fs::native );
     fs::path dir = file.branch_path();
+
     char buf[1024];
     if ( dir.string() == "" ) {
       dir = fs::path( getcwd(buf,1024), fs::native );
@@ -164,7 +167,8 @@ namespace mrv
     if ( ( ! fs::exists( dir ) ) || 
 	 ( ! fs::is_directory( dir ) ) )
     {
-       LOG_ERROR("Directory '" << dir << "' does no exist or no directory");
+       LOG_ERROR( _("Directory '") << dir << 
+		  _("' does no exist or no directory") );
        return false;
     }
 
@@ -332,6 +336,9 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
   bool fileroot( std::string& fileroot, const std::string& file )
   {
     std::string root, frame, ext;
+    fs::path path = fs::path( file, fs::native );
+
+
     bool sequence = split_sequence( root, frame, ext, file );
     if ( !sequence ) 
     {

@@ -540,7 +540,8 @@ namespace mrv {
     std::string image_id;
     sprintf( buf, N_("SELECT id FROM images "
 		     "WHERE directory='%s' AND filename='%s'"),
-	     img->directory().c_str(), img->name().c_str() );
+	     db->quote( img->directory() ).c_str(),
+	     db->quote( img->name() ).c_str() );
     image_id = buf;
 
     time_t t = ::time( NULL );
@@ -577,17 +578,18 @@ namespace mrv {
 	   char buf[4096];
 	   sprintf( buf, N_("INSERT INTO pixel_formats(name)"
 			    " VALUES "
-			    "( '%s' );"), s.pixel_format.c_str() ); 
+			    "( '%s' );"), 
+		    db->quote( s.pixel_format ).c_str() ); 
 	   if ( db->sql( buf ) )
 	   {
 	      LOG_INFO( img->filename() << _(": added pixel format '") << 
-			s.pixel_format.c_str() << _("' to database '") 
+			s.pixel_format << _("' to database '") 
 			<< db->database() << _("'.") );
 	   }
 	   
 	   pixel_format_id = N_("SELECT id FROM pixel_formats "
 				"WHERE name='");
-	   pixel_format_id += s.pixel_format.c_str();
+	   pixel_format_id += db->quote( s.pixel_format );
 	   pixel_format_id += N_("'");
 	}
 
@@ -602,9 +604,9 @@ namespace mrv {
 			 "'%s', '%s', "
 			 "'%s', ( %s ), %g, %g, %g );" ),
 		 image_id.c_str(), i,
-		 s.codec_name.c_str(),
+		 db->quote( s.codec_name ).c_str(),
 		 created_at, created_at,
-		 s.fourcc.c_str(),
+		 db->quote( s.fourcc ).c_str(),
 		 pixel_format_id.c_str(),
 		 s.fps,
 		 s.start,
@@ -648,8 +650,9 @@ namespace mrv {
 
     std::string image_id;
     sprintf( buf, N_("SELECT id FROM images "
-		     "WHERE directory='%s' AND filename='%s';"),
-	     img->directory().c_str(), img->name().c_str() );
+		     "WHERE directory='%s' AND filename='%s'"),
+	     db->quote( img->directory() ).c_str(), 
+	     db->quote( img->name() ).c_str() );
     image_id = buf;
 
     unsigned num_audio_streams = img->number_of_audio_streams();
@@ -658,7 +661,8 @@ namespace mrv {
 	 sprintf( buf, N_("SELECT id FROM audios "
 			  "WHERE directory='%s' AND filename='%s'"
 			  " AND stream=%d;"),
-		 img->directory().c_str(), img->name().c_str(), i );
+		  db->quote( img->directory() ).c_str(), 
+		  db->quote( img->name() ).c_str(), i+1 );
 	if (! db->sql( buf ) )
 	  {
 	    LOG_ERROR( _("Could not find audio '") << img->filename() 
@@ -686,13 +690,14 @@ namespace mrv {
 			 "'%s', '%s', "
 			 "%u, '%s', ( %s ), '%s', '%s', %u, %u,"
 			 "%u, %g, %g );" ),
-			 img->directory().c_str(), img->name().c_str(), i,
+		 db->quote( img->directory() ).c_str(), 
+		 db->quote( img->name() ).c_str(), i+1,
 		 image_id.c_str(),
 		 login,
 		 created_at, created_at,
 		 0, date,
 		 shot_id.c_str(),
-		 s.codec_name.c_str(),
+		 db->quote( s.codec_name ).c_str(),
 		 s.fourcc.c_str(),
 		 s.channels,
 		 s.frequency,
@@ -702,7 +707,7 @@ namespace mrv {
 		 );
 	if ( ! db->sql( buf ) )
 	  {
-	    LOG_ERROR( _("Could not add audio track #") << i 
+	    LOG_ERROR( _("Could not add audio track #") << i+1 
 		       << _(" for '") << img->filename() 
 		       << _("' to database '") << db->database() 
 		       << "': " << endl << db->error() );
@@ -722,6 +727,7 @@ namespace mrv {
     shot_id = N_("NULL");
 
     login = getenv(N_("USER"));
+    if ( !login ) login = getenv(N_("USERNAME"));
     if ( !login ) login = (char*)"";
 
     const char* show = getenv( N_("SHOW") );
@@ -805,9 +811,9 @@ namespace mrv {
     if ( icc_profile )
       {
 	char buf[4096];
-	sprintf( buf, N_("INSERT INTO icc_profiles(name)"
+	sprintf( buf, N_("INSERT INTO icc_profiles(name, filename)"
 			 " VALUES "
-			 "( '%s' );" ), icc_profile ); 
+			 "( '%s', '%s' );" ), icc_profile, icc_profile ); 
 	if ( db->sql( buf ) )
 	{
 	   LOG_INFO( img->filename() << _(": added ICC ") << 
@@ -815,7 +821,7 @@ namespace mrv {
 		     << db->database() << _("'.") );
 	}
 
-	icc_profile_id = N_("SELECT id FROM icc_profiles WHERE name = '" );
+	icc_profile_id = N_("SELECT id FROM icc_profiles WHERE filename = '" );
 	icc_profile_id += icc_profile;
 	icc_profile_id += N_("'");
       }
@@ -922,7 +928,8 @@ namespace mrv {
 
     sprintf( buf, N_("SELECT id FROM images "
 		     "WHERE directory='%s' AND filename='%s';" ),
-	     img->directory().c_str(), img->name().c_str() );
+	     db->quote( img->directory() ).c_str(), 
+	     db->quote( img->name() ).c_str() );
     if (! db->sql( buf ) )
       {
 	LOG_ERROR( _("Could not find image table '") << img->filename() 
@@ -966,7 +973,8 @@ namespace mrv {
 	     " %g, '%s', ( %s ), ( %s ), "
 	     "( %s ), ( %s ), %d, %d, '%s', "
 	     "%g, %g, '%s', %d, %d);",
-	     img->directory().c_str(), img->name().c_str(),
+	     db->quote( img->directory() ).c_str(), 
+	     db->quote( img->name() ).c_str(),
 	     img->first_frame(), img->last_frame(),
 	     login,
 	     created_at, created_at, 

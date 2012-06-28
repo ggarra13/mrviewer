@@ -11,20 +11,24 @@ class Image < ActiveRecord::Base
 
   EDITABLE = [ 'Online', 'Rating', 'Backup', 'Label color', 'Description' ]
 
-  has_many :videos
-  has_many :audios
-  has_one  :shot
+  has_many :videos, :dependent => :destroy
+  has_many :audios, :dependent => :destroy
 
+  has_one  :shot
   has_one  :icc_profile
   has_one  :render_transform
   has_one  :look_mod_transform
   has_one  :pixel_format
+  has_one  :image_category
 
+  belongs_to :image_category
   belongs_to :shot
   belongs_to :icc_profile
   belongs_to :render_transform
   belongs_to :look_mod_transform
   belongs_to :pixel_format
+
+  has_one     :category, :through => :image_categories
 
   validates_presence_of     :directory
   validates_presence_of     :filename
@@ -36,7 +40,7 @@ class Image < ActiveRecord::Base
   validates_numericality_of :height, :only_integer => true
   validates_numericality_of :pixel_ratio
   validates_length_of       :format, :in => 3..30
-  validates_length_of       :codec, :in => 3..10
+  validates_length_of       :codec, :in => 0..10
   validates_numericality_of :disk_space, :only_integer => true
   validates_numericality_of :fps
   validates_numericality_of :fstop
@@ -56,9 +60,6 @@ class Image < ActiveRecord::Base
   :if => Proc.new { |image| not image.online },
   :message => "can't be blank when not online"
 
-  class << self
-    attr_accessor :thumbs
-  end
 
   def create_png
     file = "app/assets/images/dbimage-#{id}.png"
@@ -72,6 +73,10 @@ class Image < ActiveRecord::Base
       data = thumbnail.unpack('C*').map { |x| x / 255.0 }
     end
 
+    if data.size >= w * h * 4
+      data = data[0..w*h*4-1]
+    end
+
 
     img = Magick::Image.constitute( w, h, 'BGRA', data )
     img.format = 'PNG'
@@ -79,7 +84,7 @@ class Image < ActiveRecord::Base
   end
 
   def to_label
-    "Image: #{filename}"
+    "#{directory}/#{filename}"
   end
 
 end

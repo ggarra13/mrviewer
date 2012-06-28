@@ -7,6 +7,10 @@ class Video < ActiveRecord::Base
   TIME = [ 'Start', 'Duration' ]
   TIME_COLUMNS = /^(?:#{TIME.join('|')})$/
 
+  has_one     :video_category
+  belongs_to  :video_category
+
+  has_one     :category, :through => :video_categories
 
   has_one     :pixel_format
   belongs_to  :pixel_format
@@ -26,6 +30,6 @@ class Video < ActiveRecord::Base
   end
 
   def to_label
-    "Video: ##{stream+1}"
+    "#{image.directory}/#{image.filename} ##{stream}"
   end
 end

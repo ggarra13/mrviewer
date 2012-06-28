@@ -9,6 +9,6 @@ class ImagesController < ApplicationController
                      :icc_profile, :render_transform, 
                      :look_mod_transform, :rating, 
                      :online, :backup, :description ]
-    conf.actions = [ :list, :show, :update, :search ]
+    conf.actions = [ :list, :show, :search ]
   end
 end 

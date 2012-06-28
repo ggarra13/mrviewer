@@ -2,7 +2,13 @@
 # migrations feature of ActiveRecord to incrementally modify your database, and
 # then regenerate this schema definition.
 
-ActiveRecord::Schema.define(:version => 15) do
+ActiveRecord::Schema.define(:version => 16) do
+
+  create_table "categories", :force => true do |t|
+    t.column "name", :string, :limit => 1024, :null => false
+  end
+
+  add_index "categories", ["name"], :name => "categories_name_key", :unique => true
 
   create_table "audio_categories", :force => true do |t|
     t.column "audio_id",    :integer
@@ -33,11 +39,6 @@ ActiveRecord::Schema.define(:version => 15) do
 
   add_index "audios", ["directory", "filename", "stream"], :name => "audios_idx", :unique => true
 
-  create_table "categories", :force => true do |t|
-    t.column "name", :string, :limit => 1024, :null => false
-  end
-
-  add_index "categories", ["name"], :name => "categories_name_key", :unique => true
 
   create_table "icc_profiles", :force => true do |t|
     t.column "name",     :string, :limit => 256
@@ -140,8 +141,8 @@ ActiveRecord::Schema.define(:version => 15) do
     t.column "email",                     :string
     t.column "crypted_password",          :string,   :limit => 40
     t.column "salt",                      :string,   :limit => 40
-    t.column "created_at",                :datetime,               :null => false
-    t.column "updated_at",                :datetime,               :null => false
+    t.column "created_at",                :datetime, :null => false
+    t.column "updated_at",                :datetime, :null => false
     t.column "remember_token",            :string
     t.column "remember_token_expires_at", :datetime
   end

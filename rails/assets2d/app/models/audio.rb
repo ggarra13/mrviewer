@@ -9,7 +9,13 @@ class Audio < ActiveRecord::Base
   EDITABLE = [ 'Online', 'Rating', 'Backup', 'Label color', 'Description' ]
 
   belongs_to :image
+  belongs_to :shot
+
+  has_one    :audio_category
+  belongs_to :audio_category
   
+  has_one     :category, :through => :audio_categories
+
   validates_presence_of     :directory
   validates_presence_of     :filename
   validates_presence_of     :date
@@ -30,7 +36,7 @@ class Audio < ActiveRecord::Base
 
 
   def to_label
-    "Audio: ##{stream+1}"
+    "#{directory}/#{filename} - #{stream}"
   end
 
 end

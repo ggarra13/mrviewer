@@ -2,6 +2,7 @@ class Shot < ActiveRecord::Base
 
   belongs_to :sequence
 
+
   validates_presence_of :name
   validates_presence_of :sequence_id
   validates_format_of   :name, :with => /^\w{2,3}\d{2,3}\w$/i, 
@@ -13,7 +14,15 @@ class Shot < ActiveRecord::Base
 
   has_many   :images
   has_many   :audios
+  has_many   :videos, :through => :images
 
+  def validate
+    $stderr.puts "HELLO"
+    if name !~ /^#{sequence.name}/
+      errors.add(:name, 
+                 "must be the same prefix as the sequence")
+    end
+  end
 
   def show
     if sequence_id

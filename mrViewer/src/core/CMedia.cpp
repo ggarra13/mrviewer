@@ -1135,9 +1135,13 @@ std::string CMedia::directory() const
   fs::path file = fs::path( fileroot(), fs::native );
   std::string path( file.branch_path().string() );
   char buf[1024];
-  if ( path == "" ) {
+  const char* const p = path.c_str();
+  if ( p[0] != '/' && p[1] != ':' ) {
     file = fs::path( getcwd(buf,1024), fs::native );
-    path = file.string();
+    std::string f = file.string();
+    f += "/";
+    f += path;
+    path = f;
   }
   return path;
 }

@@ -11,18 +11,18 @@ module VideosHelper
   end
     
   def directory_column(record)
-    if record.kind_of?( Image )
-      h( record.directory )
-    else
+    if record.kind_of?( Video )
       h( record.image.directory )
+    else
+      h( record.directory )
     end
   end
     
   def filename_column(record)
-    if record.kind_of?( Image )
-      h( record.filename )
-    else
+    if record.kind_of?( Video )
       h( record.image.filename )
+    else
+      h( record.filename )
     end
   end
     

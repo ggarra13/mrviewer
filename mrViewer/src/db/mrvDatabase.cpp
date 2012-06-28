@@ -40,7 +40,21 @@ namespace mrv
 #ifdef DEBUG
     if ( !database) database = "assets2d_development";
 #else
-    if ( !database) database = "assets2d_production";
+    if ( !database) {
+       const char* rails = getenv("RAILS_ENV");
+       if (rails)
+       {
+	  if ( strcmp(rails, "production") == 0 )
+	     database = "assets2d_production";
+	  else if ( strcmp( rails, "test" ) == 0 )
+	     database = "assets2d_test";
+       }
+
+       if ( !database)
+       {
+	  database = "assets2d_development";
+       }
+    }
 #endif
 
     _host = strdup( host );
