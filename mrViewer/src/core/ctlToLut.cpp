@@ -40,6 +40,8 @@
 
 #include <ctlToLut.h>
 
+#include "core/mrvOS.h"
+
 #include <ImfCtlApplyTransforms.h>
 #include <CtlSimdInterpreter.h>
 #include <ImfStandardAttributes.h>

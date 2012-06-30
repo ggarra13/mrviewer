@@ -10,16 +10,7 @@
 ------------------------------------------------------------------------ */
 
 
-/* ###### General Color Scheme ###### */
-#header, #footer
-{
-  background-color: #101080;
-}
 
-#header div, #header div *, .headerTitle, #footer *
-{ 
-  color: #E0E0E0;
-}
 
 th, .sidebar div, .sidebar h2
 { /* Background Color (darker): */  background-color: #F3FFED; }
@@ -30,13 +21,6 @@ th, .sidebar div, .sidebar h2
 
 /* ###### Special Colors ###### */
 
-#header a {  
-  border: 2px solid;
-}
-
-#header a:hover { 
-  color: #C0C000;
-}
 
 .sidebar a {  
   color: #008500;
@@ -46,34 +30,4 @@ th, .sidebar div, .sidebar h2
   /* Message Color */ color: #3a89af;
 }
 
-.sidebar a:hover {  
-  color: #008500;
-  background-color: #F3FFED;
-}
 
-.content a {
-  color: #008500;
-  background-color: #F6FFF2;
-}
-
-.operation{ 
-  background-color: #F6FFF2;
-}
-
-
-#footer a { 
-  color: #C0C000;
-}
-
-#footer div {  
-  color: #C0C000;
-}
-
-.config_info .section_header {
-/* Text Color: */  color: #008500;
-/* Background Color (darker): */  background-color: #F3FFED;
-}
-.config_info tr.section_header {
-/* Background Color (darker): */  background-color: #ffe4c4;
- /* Border Color: */  border-color: #008500; 
-}

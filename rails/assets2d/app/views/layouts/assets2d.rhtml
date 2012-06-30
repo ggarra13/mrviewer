@@ -19,7 +19,8 @@
   
   <div id="header">
     <span class="headerTitle">2D Assets</span>
-    <div class="menuBar">
+    <div>
+    <span class="menuBar">
       <%= link_to "Shows", :controller => 'shows', :action => 'index' %>
       <%= link_to "Sequences", :controller => 'sequences', :action => 'index' %>
       <%= link_to "Shots", :controller => 'shots', :action => 'index' %>
@@ -27,12 +28,15 @@
       <%= link_to "Videos", :controller => 'videos', :action => 'index' %>
       <%= link_to "Audios", :controller => 'audios', :action => 'index' %>
       <%= link_to "Categories", :controller => 'categories', :action => 'index' %>
+    </span>
+    <span class="menuBar">
       <%= link_to "Image Categories", :controller => 'image_categories', :action => 'index' %>
       <%= link_to "Video Categories", :controller => 'video_categories', :action => 'index' %>
       <%= link_to "Audio Categories", :controller => 'audio_categories', :action => 'index' %>
       <%= link_to "ICC Profiles", :controller => 'icc_profiles', :action => 'index' %>
       <%= link_to "Render Transforms", :controller => 'render_transforms', :action => 'index' %>
       <%= link_to "Look Mod Transforms", :controller => 'look_mod_transforms', :action => 'index' %>
+    </span>
     </div>
   </div>
 

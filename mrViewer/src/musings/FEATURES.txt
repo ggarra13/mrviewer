@@ -212,8 +212,6 @@ Known Bugs
 - 3PS decompressor decompresses additional layers incorrectly.
   Z decompresses ok.
 - Tiled MAP files are read improperly.
-- Changing FPS on Quicktime movies does not do anything.
-- Comping of front layer over moving sequence is not realtime.
 - PDF with multiple pages can take forever to load.
 - Softimage PIC files are saved without RLE compression.
 - EXR is saved in full float, no option to save in half.
@@ -224,12 +222,7 @@ Known Bugs
 Missing Features
 ----------------
 
-Migrate EXR into Imagemagick? NO
-
 Proper saving of important formats (IFF).
-Migrate IFF into Imagemagick.
-
-Masking of Film areas.
 
 List last 10 opened files.
 Migrate Pixar shadow maps into Imagemagick.
@@ -237,11 +230,8 @@ Migrate mray formats into Imagemagick.
 Bookmarks.
 Tiling view of textures.
 DVD --- libdvdcss, libdvdnav, libdvdread
-VCD, SVCD formats
-DVB (Satellite, Digital TV, Cable TV)
-Audio CD  --- libcddb, libcdio
 Audio Equalizer --- goom2k?
-Subtitles ( DVD, SVCD/CVD, DVB, CC, OGM, Matroska, TEXT, vobsub )
+Subtitles ( SVCD/CVD, DVB, CC, OGM, Matroska, TEXT, vobsub )
 
 
 ============================================
@@ -253,12 +243,9 @@ Subtitles ( DVD, SVCD/CVD, DVB, CC, OGM, Matroska, TEXT, vobsub )
 	* Autodesk FLC/FLIC
 - .srt/avi subtitle support.
 - DVD playback.
-- CD song (.cda) playback/attachment.
-- Proper Windows Media Movie (.wmv) support
 - Overlay plane drawing
 - Video-conferencing
 - Tileable check (criss-cross image)
-- Can be used as a command-line image converter.
 - Can be used to display images off the internet (http)
 
 - Docking interface.  Customize and save your own interface 
@@ -273,7 +260,6 @@ When connected to mrLiquid, mrViewer gives you:
 
 - Selection of objects through the main rendered window.
 - Ability to IPR saved shadow maps.  **DONE**
-- Copy pixel color values onto any maya shader setting.  ** 1/2 DONE **
 - Region rendering and selection.
 - Extended Pixel Info display: point, normal, depth, object name(s), 
   material(s) and shader(s) 

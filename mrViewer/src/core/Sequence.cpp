@@ -39,6 +39,7 @@ namespace fs = boost::filesystem;
 #include "Sequence.h"
 #include "mrvString.h"
 #include "mrvI8N.h"
+#include "mrvOS.h"
 
 
 namespace mrv

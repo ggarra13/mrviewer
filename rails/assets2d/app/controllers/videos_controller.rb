@@ -4,6 +4,6 @@ class VideosController < ApplicationController
                      :directory, :filename, :stream, :codec,
                      :fourcc,
                      :fps, :start, :duration ]
-    conf.actions = [ :list, :show, :update, :search ]
+    conf.actions = [ :list, :show, :search ]
   end
 end 

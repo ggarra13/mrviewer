@@ -416,12 +416,6 @@ namespace mrv {
 	}
 
 	/* do not align transfers */
-	status = snd_pcm_sw_params_set_xfer_align(_pcm_handle, swparams, 1);
-	if (status < 0)
-	  {
-	    sprintf( buf, "Couldn't set sw align transfer: %s", snd_strerror(status));
-	    THROW(buf);
-	  }
 
 	/* commit the params structure to ALSA */
 	status = snd_pcm_sw_params(_pcm_handle, swparams);

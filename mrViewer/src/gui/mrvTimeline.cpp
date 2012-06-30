@@ -317,6 +317,7 @@ namespace mrv
 	  }
 
 	frame = 1;
+	unsigned idx = 0;
 	for ( i = reel->images.begin(); i != e; frame += size, ++i )
 	  {
 	    CMedia* img = (*i)->image();

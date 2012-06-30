@@ -30,6 +30,6 @@ class Video < ActiveRecord::Base
   end
 
   def to_label
-    "#{image.directory}/#{image.filename} ##{stream}"
+    "#{image.directory}/#{image.filename} Stream ##{stream}"
   end
 end

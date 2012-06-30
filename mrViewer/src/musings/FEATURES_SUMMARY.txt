@@ -35,6 +35,9 @@ Display
   transforms.
   Each image and sequence can have its own ICC profile, in addition
   to your monitor ICC profile.
+- CTL support for proper emulation of any media on your monitor.
+  Allows you to emulate Film, Print, or Video conditions using a
+  the Color Transform Language ( CTL ).
 - Fast dithered 8-bit quantization for display, avoids banding
   when displaying floating point or HDR images on 8-bit displays.
 - Channel Display:
@@ -44,7 +47,7 @@ Display
 	* Blue
 	* Alpha
 	* Alpha Overlay
-	* Luminance
+	* Lumma
 	* Any PSD / RPF / XCF / OpenEXR / IFF / mental ray layer
 
 
@@ -99,8 +102,7 @@ Images
 Video
 -----
 
-- Quicktime/AVI/MPEG/OGG support.  Partial WMV support.
-  Full WMV support (*)
+- Quicktime/AVI/MPEG/OGG/WMV support.
 - Playback supports scrubbing, looping, ping-pong and EDL.
 - Arbitrary frame rate playback for slow motion, rewinding 
   and fast forwarding with audio.
@@ -160,12 +162,6 @@ Asset Tracking
 - FTPS (Secure) downloading of assets for remote collaboration. (*)
 
 
-Scripting (*)
----------
-
-- Ability to also use the image viewer as a conversion tool.
-
-
 User Preferences
 ----------------
 
@@ -203,7 +199,7 @@ x x	* Softimage PIC
 x 	* Microsoft DDS - DirectX Draw Surface
 x x	* CCIR 601 4:1:1 or 4:2:2 YUV
 x	* Pixar's shadow maps
-x	* AVI/Quicktime/MPEG/OGG Video with Audio (WAV/MP3/VORBIS)
+x	* AVI/Quicktime/MPEG/OGG/WMV Video with Audio (WAV/MP3/VORBIS)
 x x     * TGA, BMP, PNG
 x	* MP3/WAV/VORBIS files
 	* Plus other 50+ image formats

@@ -552,7 +552,7 @@ namespace mrv {
       {
 	 sprintf( buf, N_("SELECT id FROM videos "
 			  "WHERE image_id=( %s ) AND stream=%d;"),
-		 image_id.c_str(), i );
+		 image_id.c_str(), i+1 );
 	if (! db->sql( buf ) )
 	  {
 	    LOG_ERROR( _("Could not find video '") << img->filename() 
@@ -603,7 +603,7 @@ namespace mrv {
 			 "( ( %s ), %d, '%s', "
 			 "'%s', '%s', "
 			 "'%s', ( %s ), %g, %g, %g );" ),
-		 image_id.c_str(), i,
+		 image_id.c_str(), i+1,
 		 db->quote( s.codec_name ).c_str(),
 		 created_at, created_at,
 		 db->quote( s.fourcc ).c_str(),
@@ -648,7 +648,7 @@ namespace mrv {
     strftime( created_at, 256, N_("%F %H:%M:%S"), localtime( &t ) );
 
 
-    std::string image_id;
+    std::string image_id = "NULL";
     sprintf( buf, N_("SELECT id FROM images "
 		     "WHERE directory='%s' AND filename='%s'"),
 	     db->quote( img->directory() ).c_str(), 

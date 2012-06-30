@@ -37,6 +37,8 @@
 #include "mrvRectangle.h"
 #include "mrvBarrier.h"
 
+#include "mrvOS.h"
+
 #undef min
 #undef max
 

@@ -106,6 +106,7 @@ CMedia::CMedia() :
   _mtime( 0 ),
   _disk_space( 0 ),
   _loop_barrier( NULL ),
+  _avdiff( 0.0 ),
   _seek_req( false ),
   _seek_frame( 1 ),
   _channel( NULL ),

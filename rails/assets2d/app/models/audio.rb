@@ -36,7 +36,7 @@ class Audio < ActiveRecord::Base
 
 
   def to_label
-    "#{directory}/#{filename} - #{stream}"
+    "#{directory}/#{filename} Stream #{stream}"
   end
 
 end
