@@ -3,4 +3,5 @@ class ShotsController < ApplicationController
     conf.columns = [ :sequence, :name, :images, :audios ]   
     conf.actions = [ :list, :create, :show, :update, :search ]
   end
+
 end

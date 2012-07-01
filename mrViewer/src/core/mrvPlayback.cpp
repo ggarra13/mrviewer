@@ -311,8 +311,8 @@ namespace mrv {
 	CMedia::DecodeStatus status = img->decode_audio( frame );
 	switch( status )
 	  {
-// 	  case CMedia::kDecodeDone:
-// 	    continue;
+ 	  case CMedia::kDecodeDone:
+ 	    break;
 	  case CMedia::kDecodeError:
 	    frame += step;
 	    img->audio_frame( frame );

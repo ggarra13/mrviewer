@@ -38,7 +38,7 @@ namespace {
       { "YDD",	"Analog SECAM/PAL-N",	"Y Db Dr" },
       { "YIQ",	"Analog NTSC",	   	"Y I Q"   },
       { "601",	"Digital PAL/NTSC",	"Y Cb Cr" },
-      { "720",	"Digital HDTV",	   	"Y Cb Cr" },
+      { "702",	"Digital HDTV",	   	"Y Cb Cr" },
     };
 
 
@@ -99,7 +99,7 @@ namespace mrv {
 
   namespace color {
 
-    Imf::Chromaticities kITU_720_chroma;
+    Imf::Chromaticities kITU_702_chroma;
     Imath::V3f     kD50_whitePoint(0.3457f, 0.3585f, 0.2958f);
     Imath::V3f     kD65_whitePoint(0.3127f, 0.3290f, 0.3582f);
 
@@ -282,8 +282,8 @@ namespace mrv {
 			  );
       }
 
-      // ITU. 720  (Digital HDTV )
-      ImagePixel to_ITU720( const ImagePixel& rgb )
+      // ITU. 702  (Digital HDTV )
+      ImagePixel to_ITU702( const ImagePixel& rgb )
       {
 	return ImagePixel(
 			   rgb.r * 0.299f + rgb.g * 0.587f + rgb.b * 0.114f,

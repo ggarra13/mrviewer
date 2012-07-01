@@ -1592,7 +1592,7 @@ void ImageView::mouseMove(int x, int y)
     case color::kITU_601:
       hsv = color::rgb::to_ITU601( rgba );   break;
     case color::kITU_702:
-      hsv = color::rgb::to_ITU720( rgba );   break;
+      hsv = color::rgb::to_ITU702( rgba );   break;
     default:
       LOG_ERROR("Unknown color type");
     }

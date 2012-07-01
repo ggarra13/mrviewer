@@ -49,18 +49,30 @@ Y coordinates</span> of the current cursor location.<br>
 
 
 
-Afterwards comes the current pixel color value as an <span style="font-weight: bold;">RGBA</span> float.<br>
+Afterwards comes the current pixel color value as an <span style="font-weight: bold;">RGBA</span> float or as <span style="font-weight: bold;">8 bits</span> or as <span style="font-weight: bold;">8 bits hex</span>.<br>
 
 
 
 Then comes the current pixel value in <span style="font-weight: bold;">HSV</span> (Hue,
-Saturation, Value).<br>
+Saturation, Value). You can also select it to change it to display:
+<p><span style="font-weight: bold;">HSL</span> (Hue, Saturation, Luminance)</p>
+<p><span style="font-weight: bold;">CIE XYZ</span></p>
+<p><span style="font-weight: bold;">CIE xyY</span></p>
+<p><span style="font-weight: bold;">CIELab L*a*b</span></p>
+<p><span style="font-weight: bold;">CIELuv L*u*v</span></p<
+<p><span style="font-weight: bold;">YUV Pal</span></p>
+<p><span style="font-weight: bold;">YDbDr Secam/PalN</span></p>
+<p><span style="font-weight: bold;">YIQ NTSC</span></p>
+<p><span style="font-weight: bold;">ITU-601 Digital Pal/NTSC</span></p>
+<p><span style="font-weight: bold;">ITU.702 Digital HDTV</span> </p></br>
 
 
 
-Finally, the current pixel's <span style="font-weight: bold;">Luminance</span>
+Finally, the current pixel's <span style="font-weight: bold;">Rec.709 Luminance (Y)  Y = 0.2126 R + 0.7152 G + 0.772 B</span>
 is also shown.<br>
-
+You can change it to display:
+<p><span style="font-weight: bold;">Lumma       Y' = ( R + G + B / 3 )</span></p>
+<p><span style="font-weight: bold;">Lightness   L = (116 * Y ^ 1/3 ) / 100</span></p>
 
 
 <br>

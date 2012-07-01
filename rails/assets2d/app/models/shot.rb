@@ -17,7 +17,6 @@ class Shot < ActiveRecord::Base
   has_many   :videos, :through => :images
 
   def validate
-    $stderr.puts "HELLO"
     if name !~ /^#{sequence.name}/
       errors.add(:name, 
                  "must be the same prefix as the sequence")

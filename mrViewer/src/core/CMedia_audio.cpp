@@ -1009,6 +1009,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   if ( _audio_buf_used > 0 )
     {
+
        assert( index + _audio_buf_used < _audio_max );
        memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
        
@@ -1021,12 +1022,12 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
        if ( len > 0 )
        {
-	  memmove( _audio_buf + _audio_buf_used, 
-		   _audio_buf + _audio_buf_used - len, len );
+       	  memmove( _audio_buf + _audio_buf_used, 
+       	  	   _audio_buf + _audio_buf_used - len, len );
        }
        
        _audio_buf_used = size;
-       assert( _audio_buf_used % 16 == 0 );
+       // assert( _audio_buf_used % 16 == 0 );
     }
 
   return got_audio;
