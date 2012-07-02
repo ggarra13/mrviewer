@@ -466,7 +466,8 @@ namespace mrv {
 
 
     mrv::Timer timer;
-
+    double fps = img->play_fps();
+    timer.setDesiredFrameRate( fps );
 
     while ( !img->stopped() )
       {
@@ -506,7 +507,7 @@ namespace mrv {
 	    break;
 	  }
 
-	double fps = img->play_fps();
+	fps = img->play_fps();
 
 	double delay = 1.0 / fps;
 	
@@ -518,6 +519,7 @@ namespace mrv {
 	{
 	   // double video_clock = img->video_pts();
 	   // double audio_clock = img->audio_pts();
+
 	   double video_clock = img->video_clock();
 	   double audio_clock = img->audio_clock();
 	   diff = step * (video_clock - audio_clock);
@@ -531,23 +533,23 @@ namespace mrv {
 	   double absdiff = std::abs(diff);
 
 
-	   /* Skip or repeat the frame. Take delay into account
-	      FFPlay still doesn't "know if this is the best guess." */
+	   // Skip or repeat the frame. Take delay into account
+	   //    FFPlay still doesn't "know if this is the best guess."
 	   double sync_threshold = delay;
 	   if(absdiff < AV_NOSYNC_THRESHOLD) {
 	      double sdiff = step * diff;
+
 	      if (sdiff <= -sync_threshold) {
 	      	 fps = 99999999.0;
-	      } else if(sdiff >= delay*2) {
-		 fps -= sdiff;
+	      } else if (sdiff >= delay*2) {
+		 fps -= sdiff*4;
 	      }
 	   }
 	}
 
-	
-	
 	timer.setDesiredFrameRate( fps );
 	timer.waitUntilNextFrameIsDue();
+
 
 	img->real_fps( timer.actualFrameRate() );
 
