@@ -138,8 +138,6 @@ Timer::waitUntilNextFrameIsDue ()
 
     gettimeofday (&now, 0);
 
- #if defined(WIN32) || defined(WIN64)
-
     float timeSinceLastSleep = now.tv_sec  - _lastFrameTime.tv_sec +
     		              (now.tv_usec - _lastFrameTime.tv_usec) * 1e-6f;
  
@@ -150,8 +148,6 @@ Timer::waitUntilNextFrameIsDue ()
 
     if (_timingError >  2 * _spf)
     	_timingError =  2 * _spf;
-
- #endif
 
     _lastFrameTime = now;
 
