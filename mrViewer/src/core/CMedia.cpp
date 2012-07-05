@@ -232,17 +232,17 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
 boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
    assert( stream != NULL );
-   boost::int64_t pts;
+   boost::int64_t frame;
    if ( pkt.pts != MRV_NOPTS_VALUE )
    {
-      pts = pts2frame( stream, pkt.pts );
+      frame = pts2frame( stream, pkt.pts );
    }
    else
    {
       assert( pkt.dts != MRV_NOPTS_VALUE );
-      pts = pts2frame( stream, pkt.dts );
+      frame = pts2frame( stream, pkt.dts );
    }
-   return pts;
+   return frame;
 }
 
 
@@ -1551,6 +1551,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
 boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
 				   const boost::int64_t frame ) const
 {
+   assert( frame >= _frameStart );
    double p = (double)(frame - 1) / fps();
    if ( stream ) p /= av_q2d( stream->time_base );
    if ( p < 0 )  return AV_NOPTS_VALUE;
@@ -1563,9 +1564,10 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
 				  const boost::int64_t pts ) const
 {
   assert( pts != MRV_NOPTS_VALUE );
+  if (!stream) return 0;
 
   double p = av_q2d( stream->time_base ) * pts;
-  return boost::int64_t( p * fps() + 0.5 ) + 1; // _frameStart; //is wrong
+  return boost::int64_t( p * fps() + 0.5 ) + 1; //  _frameStart; //is wrong
 
 }
 
@@ -1938,6 +1940,8 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 
       assert( (*iter).dts != MRV_NOPTS_VALUE );
       boost::int64_t f = (*iter).dts;
+      f = pts2frame( get_video_stream(), f );
+
       if ( _video_packets.is_seek( *iter ) )
 	{
 	  if ( in_preroll )

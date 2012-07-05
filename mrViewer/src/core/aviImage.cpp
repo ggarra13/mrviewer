@@ -308,9 +308,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   if ( _context == NULL ) return false;
 
 
-  boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
+  // boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
+  boost::int64_t offset = boost::int64_t((frame * AV_TIME_BASE) / fps());
 
 
+#if 1
   //
   // Find minimum byte position between audio and video stream
   //
@@ -355,13 +357,28 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
   bool ok;
   try {
 
-     ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) >= 0;
+     ok = avformat_seek_file( _context, idx, INT64_MIN, offset, INT64_MAX, 
+      			      AVSEEK_FLAG_BACKWARD ) == 0;
+     //ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) == 0;
 
     if (!ok)
       {
 	IMG_ERROR( "Could not seek to frame " << frame );
 	return false;
       }
+#else
+  bool ok;
+  try {
+
+     ok = avformat_seek_file( _context, -1, INT64_MIN, offset, INT64_MAX, 
+			      AVSEEK_FLAG_BACKWARD ) == 0;
+    if (!ok)
+      {
+	IMG_ERROR( "Could not seek to frame " << frame );
+	return false;
+      }
+#endif
+
   }
   catch( ... )
     {
@@ -439,9 +456,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 #ifdef DEBUG_SEEK
   LOG_INFO( "BEFORE SEEK:" );
   debug_video_packets(frame);
-  debug_audio_packets(frame);
 #endif
 
+#ifdef DEBUG_SEEK_AUDIO_PACKETS
+  debug_audio_packets(frame);
+#endif
 
   boost::int64_t dts = frame;
 
@@ -454,8 +473,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 
   try {
 
-     mrv::Timer timer;
-
     while (!got_video || !got_audio) {
 
 
@@ -467,6 +484,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 	   {
 	      IMG_ERROR("seek: Could not read frame " << frame << " error: "
 			<< strerror(err) );
+	   }
+	   else
+	   {
+	      IMG_ERROR("seek: Could not read frame " << frame  );
 	   }
 
 	   if ( !got_video    ) _video_packets.seek_end(vpts);
@@ -482,6 +503,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 	{
 	  // For video, DTS is really PTS in FFMPEG (yuck)
 	   boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
+
+
 	  if ( playback() == kBackwards )
 	    {
 	      if ( pktframe <= frame )
@@ -623,6 +646,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 #ifdef DEBUG_SEEK
   LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected );
   debug_video_packets(frame);
+#endif
+#ifdef DEBUG_SEEK_AUDIO_PACKETS
   debug_audio_packets(frame);
 #endif
 
@@ -652,6 +677,7 @@ void aviImage::store_image( const boost::int64_t frame,
   AVStream* stream = get_video_stream();
   unsigned int w = width();
   unsigned int h = height();
+
 
 
   mrv::image_type_ptr image = allocate_image( frame, pts * 
@@ -765,10 +791,6 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
       if ( ptsframe < frame )
 	{
 	  status = kDecodeMissingFrame;
-#if 0
-	  std::cerr << "decode_image got frame " << ptsframe << " for " 
-		    << frame << " audio: " << audio_frame() << std::endl;
-#endif
 	}
       else
 	{
@@ -1327,7 +1349,6 @@ void aviImage::populate()
       av_init_packet( &pkt );
 
       bool got_image = false;
-      mrv::Timer timer;
       while( !got_image )
 	{
 
@@ -1521,7 +1542,8 @@ bool aviImage::fetch(const boost::int64_t frame)
 
   if ( frame != _expected )
     {
-      seek_to_position( frame, AVSEEK_FLAG_BACKWARD );
+       if ( ! seek_to_position( frame, AVSEEK_FLAG_BACKWARD ) )
+	  LOG_ERROR("Could not seek to frame " << frame );
 
       SCOPED_LOCK( _audio_mutex ); // needed
       _audio_buf_used = 0;
@@ -1547,7 +1569,6 @@ bool aviImage::fetch(const boost::int64_t frame)
     unsigned int audio_bytes = 0;
 
     // Loop until an error or we have what we need
-    mrv::Timer timer;
     while( !got_image || !got_audio )
       {
 

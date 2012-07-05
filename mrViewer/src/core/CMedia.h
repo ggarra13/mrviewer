@@ -794,6 +794,7 @@ namespace mrv {
 
     int audio_stream_index() const;
     AVStream* get_audio_stream() const;
+    virtual AVStream* get_video_stream() const { return NULL; } ;
 
     void fetch_audio( const boost::int64_t frame );
     void populate_audio();

@@ -103,17 +103,17 @@ namespace mrv {
     FILE* f = fopen( filename, "rb" );
     if (!f)
       {
-	THROW_ERRNO ("Can't load shader file " << filename <<
-		     " (%T)");
+	THROW_ERRNO ("Can't load shader file '" << filename <<
+		     "' (%T)");
       }
 
     fseek( f, 0, SEEK_END );
-    int len = ftell (f);
+    size_t len = ftell (f);
     fseek( f, 0, SEEK_SET );
 	
     char* code = new char[len + 1];
 
-    int read = fread( code, 1, len, f );
+    size_t read = fread( code, 1, len, f );
     if (read != len)
       {
 	fclose(f);

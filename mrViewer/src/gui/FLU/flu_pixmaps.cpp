@@ -1978,7 +1978,7 @@ const char * const image_xpm[] = {
 
 /* XPM */
 const char * const music_xpm[] = {
-"24 24 4 1",
+"24 24 3 1",
 " 	c None",
 "+	c #000000",
 "@	c #0321FF",

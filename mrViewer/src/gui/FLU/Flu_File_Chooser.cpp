@@ -2320,7 +2320,11 @@ int Flu_File_Chooser::FileDetails::handle( int event )
 
 Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d, 
 				Flu_File_Chooser *c )
-  : fltk::Input( 0, 0, 0, 0 )
+: fltk::Input( 0, 0, 0, 0 ),
+  filename( name ),
+  type( t ),
+  details( d ),
+  chooser( c )
 {
   resize( 0, 0, DEFAULT_ENTRY_WIDTH, 20 );
   textsize( 12 );
@@ -2332,10 +2336,6 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
   box( fltk::FLAT_BOX );
   when( fltk::WHEN_RELEASE_ALWAYS | fltk::WHEN_ENTER_KEY_ALWAYS );
   callback( _inputCB, this );
-  filename = name;
-  chooser = c;
-  details = d;
-  type = t;
   icon = NULL;
   editMode = 0;
   description = "";
@@ -2348,6 +2348,7 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
 
   updateSize();
   updateIcon();
+
 }
 
 void Flu_File_Chooser::Entry::updateIcon()
@@ -2387,7 +2388,8 @@ void Flu_File_Chooser::Entry::updateIcon()
       description = tt->type;
     }
   // if there is no icon, assign a default one
-  if( !icon && type==ENTRY_FILE && !(chooser->selectionType & DEACTIVATE_FILES) )
+  if( !icon && type==ENTRY_FILE && 
+      !(chooser->selectionType & DEACTIVATE_FILES) )
     icon = chooser->defaultFileIcon;
   if( type==ENTRY_FAVORITE )
     icon = &little_favorites;
@@ -2402,7 +2404,7 @@ void Flu_File_Chooser::Entry::updateIcon()
 
   if ( icon )
     {
-      int w,h;
+      int w = 0, h = 0;
       icon->measure(w,h);
     }
 
@@ -3717,8 +3719,8 @@ struct SequenceSort
     if ( a.ext < b.ext ) return true;
     else if ( a.ext > b.ext ) return false;
 
-    int as = a.number.size();
-    int bs = b.number.size();
+    size_t as = a.number.size();
+    size_t bs = b.number.size();
     if ( as < bs ) return true;
     else if ( as > bs ) return false;
 
@@ -4274,6 +4276,8 @@ void Flu_File_Chooser::cd( const char *path )
 	  {
 	    entry = new Entry( (*i).c_str(), ENTRY_DIR,
 			       fileDetailsBtn->value(), this );
+	    if (!entry) continue;
+
 	    if( listMode )
 	      filelist->insert( *entry, 0 );
 	    else
@@ -4340,7 +4344,7 @@ void Flu_File_Chooser::cd( const char *path )
 		      seqname += "%0";
 		      char buf[19]; buf[18] = 0;
 #ifdef WIN32
-		      seqname += itoa( (*i).number.size(), buf, 10 );
+		      seqname += itoa( int((*i).number.size()), buf, 10 );
 #else
 		      sprintf( buf, "%ld", (*i).number.size() );
 		      seqname += buf;
@@ -4407,12 +4411,18 @@ void Flu_File_Chooser::cd( const char *path )
 	{
 	  entry = new Entry( (*i).c_str(), ENTRY_FILE,
 			     fileDetailsBtn->value(), this );
+
 	  if( listMode )
+	  {
 	    filelist->add( entry );
+	  }
 	  else
+	  {
 	    filedetails->add( entry );
+	  }
 	  numFiles++;
 	  lastAddedFile = entry->filename.c_str();
+
 
 	  // get some information about the file
 	  fullpath = pathbase + *i;
@@ -4467,6 +4477,7 @@ void Flu_File_Chooser::cd( const char *path )
 	    entry->permissions += perms[entry->pG];
 	    entry->permissions += perms[entry->pO];
 	  */
+
 
 	  entry->updateSize();
 	  entry->updateIcon();
