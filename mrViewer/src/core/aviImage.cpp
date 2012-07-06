@@ -298,7 +298,8 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
 }
 
 // Seek to the requested frame
-bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
+bool aviImage::seek_to_position( const boost::int64_t ptsframe, 
+				 const int flags )
 {
   AVStream* stream = NULL;
   int idx = -1;
@@ -309,10 +310,12 @@ bool aviImage::seek_to_position( const boost::int64_t frame, const int flags )
 
 
   // boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
-  boost::int64_t offset = boost::int64_t((frame * AV_TIME_BASE) / fps());
 
+  boost::int64_t offset = boost::int64_t((ptsframe * AV_TIME_BASE) / fps());
 
-#if 1
+  boost::int64_t frame = ptsframe;
+
+#if 0
   //
   // Find minimum byte position between audio and video stream
   //
