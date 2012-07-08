@@ -1730,8 +1730,8 @@ namespace mrv {
 
 	CMedia* img = m->image();
 
-	int64_t offset = timeline()->offset( img );
-	seek( offset + img->first_frame() );
+	int64_t pos = timeline()->location( img );
+	seek( pos );
       }
   }
 
@@ -1761,8 +1761,8 @@ namespace mrv {
 
 	CMedia* img = m->image();
 
-	int64_t offset = timeline()->offset( img );
-	seek( offset + img->first_frame() );
+	int64_t pos = timeline()->location( img );
+	seek( pos );
       }
   }
 
@@ -2071,7 +2071,7 @@ namespace mrv {
    * Switch to a new frame on one image if in EDL mode or
    * in all images of reel if not.
    * 
-   * @param f new frame
+   * @param tframe new frame in timeline
    */
   void ImageBrowser::seek( const int64_t tframe )
   {
@@ -2089,13 +2089,10 @@ namespace mrv {
 	ImageView::Playback playback = uiMain->uiView->playback();
 
 	// Check if we need to change to a new sequence based on frame
-	 mrv::media m = timeline()->media_at( f );
+	 mrv::media m = timeline()->media_at( tframe );
 	 if (! m ) return;
 
 	CMedia* img = m->image();
-
-	boost::int64_t pos = timeline()->offset( img );
-	int size = img->last_frame() - img->first_frame() + 1;
 
 
 	if ( f < timeline()->minimum() )

@@ -3179,9 +3179,7 @@ void ImageView::first_frame()
 
   if (!img) return;
 
-  int64_t t = int64_t( timeline()->minimum() );
   int64_t f = img->first_frame();
-  if ( t > f ) f = t;
 
   if ( timeline()->edl() )
     {
@@ -3193,20 +3191,23 @@ void ImageView::first_frame()
 	  return;
 	}
     }
+
+  int64_t t = int64_t( timeline()->minimum() );
+  if ( t > f ) f = t;
+
   seek( f );
 }
 
 /// Change frame number to last frame of image
 void ImageView::last_frame()
 {
+
   mrv::media fg = foreground();
   if ( ! fg ) return;
 
   CMedia* img = fg->image();
 
-  int64_t t = int64_t( timeline()->maximum() );
   int64_t f = img->last_frame();
-  if ( t < f ) f = t;
 
   if ( timeline()->edl() )
     {
@@ -3218,6 +3219,10 @@ void ImageView::last_frame()
 	  return;
 	}
     }
+
+  int64_t t = int64_t( timeline()->maximum() );
+  if ( t < f ) f = t;
+
   seek( f );
 }
 

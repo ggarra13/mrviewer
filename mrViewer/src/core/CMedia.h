@@ -244,7 +244,7 @@ namespace mrv {
     bool save( const char* filename ) const;
 
     /// Set the image pixel ratio
-    inline void  pixel_ratio( float f ) { _pixel_ratio = f; refresh(); }
+    inline void  pixel_ratio( double f ) { _pixel_ratio = f; refresh(); }
 
     /////////////////// Set the image size, allocating a 4-float buffer
     void image_size( int w, int h );
@@ -388,7 +388,7 @@ namespace mrv {
     inline unsigned int  height() const { return _h; }
 
     /// Return the image pixel ratio
-    inline float pixel_ratio() const    { return _pixel_ratio; }
+    inline double pixel_ratio() const    { return _pixel_ratio; }
 
     /// Returns the file format of the image
     virtual const char* const format() const { return "Unknown"; };
@@ -666,8 +666,8 @@ namespace mrv {
     
     double audio_clock() const { return _audio_clock; }
     
-    double video_pts() const { return _video_pts; }
-    double audio_pts() const { return _audio_pts; }
+    boost::int64_t video_pts() const { return _video_pts; }
+    boost::int64_t audio_pts() const { return _audio_pts; }
     
 
     static bool supports_yuv()         { return _supports_yuv; }
@@ -877,7 +877,7 @@ namespace mrv {
     double  _play_fps;        //!< current desired play speed
     double  _fps;             //!< movie's original play speed
 
-    float           _pixel_ratio;  //!< pixel ratio of image
+    double          _pixel_ratio;  //!< pixel ratio of image
     unsigned short  _num_channels; //!< number of channels
 
     // mostly unused --- keep?
@@ -896,9 +896,9 @@ namespace mrv {
     boost::int64_t   _frame_start;
     boost::int64_t   _frame_end;
 
-       double _audio_pts;
+    boost::int64_t _audio_pts;
        double     _audio_clock;
-       double _video_pts;
+    boost::int64_t _video_pts;
        double     _video_clock;
 
     InterlaceType _interlaced;     //!< image is interlaced?

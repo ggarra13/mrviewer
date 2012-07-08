@@ -168,18 +168,18 @@ namespace mrv {
     void limit_subtitle_store( const boost::int64_t frame );
 
     virtual AVStream* get_video_stream() const;
-    bool seek_to_position( const boost::int64_t frame, const int flags = 0 );
+    bool seek_to_position( const boost::int64_t frame );
     int video_stream_index() const;
        mrv::image_type_ptr allocate_image(const boost::int64_t& frame,
-					  const double pts );
+					  const boost::int64_t& pts );
 
 
     AVStream* get_subtitle_stream() const;
     void flush_subtitle();
     bool in_subtitle_store( const boost::int64_t frame );
     int  subtitle_stream_index() const;
-       void store_subtitle( const boost::int64_t frame,
-			    const boost::int64_t repeat );
+       void store_subtitle( const boost::int64_t& frame,
+			    const boost::int64_t& repeat );
     DecodeStatus handle_subtitle_packet_seek( boost::int64_t& frame, 
 					      const bool is_seek );
     DecodeStatus decode_subtitle_packet( boost::int64_t& pktframe,

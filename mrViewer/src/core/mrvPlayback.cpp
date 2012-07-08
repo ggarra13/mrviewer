@@ -106,6 +106,7 @@ namespace mrv {
     CMedia* next = NULL;
  
     boost::int64_t offset = timeline->offset( img );
+
     boost::int64_t last = ( int64_t ) timeline->maximum();
     boost::int64_t first = ( int64_t ) timeline->minimum();
 
@@ -125,9 +126,15 @@ namespace mrv {
 	{
 	  if ( timeline->edl() )
 	  {
-	     boost::int64_t f;
-	     next = timeline->image_at( frame + offset );
-	     f = timeline->global_to_local( frame + offset );
+	     boost::int64_t f = frame;
+
+	     f -= img->first_frame();
+	     f += timeline->location(img);
+	     
+
+	     next = timeline->image_at( f );
+
+	     f = timeline->global_to_local( f );
 	     if ( !next )
 	     {
 		if ( loop == ImageView::kLooping )
@@ -178,9 +185,13 @@ namespace mrv {
 	{
 	  if ( timeline->edl() )
 	    {
-	       boost::int64_t f;
-	       next = timeline->image_at( frame + offset );
-	       f = timeline->global_to_local( frame + offset );
+	       boost::int64_t f = frame;
+
+	       f -= img->first_frame();
+	       f += timeline->location(img);
+
+	       next = timeline->image_at( f );
+	       f = timeline->global_to_local( f );
 	       if ( !next )
 	       {
 		  if ( loop == ImageView::kLooping )
@@ -247,18 +258,17 @@ namespace mrv {
 			  CMedia* img, 
 			  mrv::Timeline* timeline )
   {
-     boost::int64_t last = ( boost::int64_t ) timeline->maximum();
-     boost::int64_t first = ( boost::int64_t ) timeline->minimum();
+     boost::int64_t last = timeline->global_to_local( timeline->maximum() );
+     boost::int64_t first = timeline->global_to_local( timeline->minimum() );
+
      boost::int64_t f = frame;
-     boost::int64_t offset = timeline->offset(img);
 
      if ( timeline->edl() )
      {
-	boost::int64_t s = img->first_frame() + offset;
-	boost::int64_t e = img->last_frame() + offset;
+	boost::int64_t s = img->first_frame();
+	boost::int64_t e = img->last_frame();
 	if ( e < last )  last = e;
 	if ( s > first ) first = s;
-	f += offset;
      }
      
     if ( f > last )
