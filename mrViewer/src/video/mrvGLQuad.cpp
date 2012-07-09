@@ -423,7 +423,7 @@ namespace mrv {
     if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
       {
 	if ( GLEngine::halfTextures() )     internalFormat = GL_LUMINANCE16F_ARB;
-	else if ( GLEngine::floatTextures ) internalFormat = GL_LUMINANCE32F_ARB;
+	else if ( GLEngine::floatTextures() ) internalFormat = GL_LUMINANCE32F_ARB;
       }
 
 

@@ -149,8 +149,8 @@ namespace
 
     static std::string oldChannel;
     std::string channelName = channel;
-    int pos  = channelName.rfind( '.' );
-    int pos2;
+    size_t pos  = channelName.rfind( '.' );
+    size_t pos2;
     if ( channelName.size() > oldChannel.size() )
     {
        pos2 = channelName.find( oldChannel );
@@ -538,8 +538,8 @@ void ImageView::copy_pixel() const
   if ( !pic ) return;
 
 
-  float x = float(lastX);
-  float y = float(lastY);
+  double x = double(lastX);
+  double y = double(lastY);
 
   if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
     return;
@@ -558,8 +558,8 @@ void ImageView::copy_pixel() const
   sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
 
   // Copy text to both the clipboard and to X's XA_PRIMARY
-  fltk::copy( buf, strlen(buf), true );
-  fltk::copy( buf, strlen(buf), false );
+  fltk::copy( buf, unsigned( strlen(buf) ), true );
+  fltk::copy( buf, unsigned( strlen(buf) ), false );
 }
 
 /** 
@@ -571,17 +571,17 @@ void ImageView::copy_pixel() const
  * @param y   window's y position
  */
 void ImageView::image_coordinates( const mrv::image_type_ptr& img, 
-				   float& x, float& y ) const
+				   double& x, double& y ) const
 {
   int ww = img->width();
   int hh = img->height();
   if ( _showPixelRatio ) hh = (int) (hh / pixel_ratio());
 
-  float tw = (ww / 2.0f);
-  float th = (hh / 2.0f);
+  double tw = (ww / 2.0);
+  double th = (hh / 2.0);
 
-  x -= (w() - ww) / 2.0f; 
-  y += (h() - hh) / 2.0f;
+  x -= (w() - ww) / 2.0; 
+  y += (h() - hh) / 2.0;
 
   y = (this->h() - y - 1);
 
@@ -610,10 +610,10 @@ void ImageView::fit_image()
   const CMedia* img = fg->image();
   if ( img->width() <= 0 ) return;
 
-  float w = (float) fltk_main()->w();
-  float z = w / (float)img->width();
+  double w = (double) fltk_main()->w();
+  double z = w / (double)img->width();
   
-  float h = (float) fltk_main()->h();
+  double h = (double) fltk_main()->h();
   if ( uiMain->uiTopBar->visible() )
     h -= uiMain->uiTopBar->h();
   if ( uiMain->uiPixelBar->visible() )
@@ -625,8 +625,8 @@ void ImageView::fit_image()
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
-  xoffset = yoffset = 0.0f;
-  zoom( z );
+  xoffset = yoffset = 0.0;
+  zoom( float(z) );
 
   redraw();
 }
@@ -906,7 +906,7 @@ void ImageView::draw()
 
 
       int dx, dy;
-      dx = w() / 2 - strlen(label)*3;
+      dx = int( (double) w() / (double) 2 - strlen(label)*3 );
       dy = 24;
 
       _engine->color( r, g, b );
@@ -925,17 +925,17 @@ void ImageView::draw()
   if ( _safeAreas ) 
     {
       const CMedia* img = fg->image();
-      float aspect = (float) img->width() / (float) img->height();
+      double aspect = (float) img->width() / (float) img->height();
 
       // Safe areas may change when pixel ratio is active
-      float pr = 1.0;
+      double pr = 1.0;
       if ( uiMain->uiPixelRatio->value() )
 	{
-	  pr = img->pixel_ratio();
-	  aspect *= pr;
+	   pr = img->pixel_ratio();
+	   aspect *= pr;
 	}
 
-      if ( aspect < 1.66f || (aspect >= 1.77 && aspect <= 1.78) )
+      if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
 	{
 	  // Assume NTSC/PAL
 	  float f = img->height() * 1.33f;
@@ -1259,7 +1259,7 @@ void ImageView::leftMouseDown(int x, int y)
 	    
 	    Image_ptr image = fg->image();
 
-	    unsigned num = image->number_of_subtitle_streams();
+	    size_t num = image->number_of_subtitle_streams();
 	    if ( num > 0 )
 	    {
 	       item = menu.add( _("Subtitle/No Subtitle"), 0,
@@ -1431,8 +1431,8 @@ void ImageView::mouseMove(int x, int y)
       focus(this);
     }
 
-  float xf = (float) x;
-  float yf = (float) y;
+  double xf = (double) x;
+  double yf = (double) y;
 
   mrv::media fg = foreground();
   if ( !fg ) return;
@@ -1654,21 +1654,21 @@ void ImageView::mouseDrag(int x,int y)
 	  unsigned int texWidth = pic->width();
 	  unsigned int texHeight = pic->height();
 
-	  float xf = float(lastX);
-	  float yf = float(lastY);
+	  double xf = double(lastX);
+	  double yf = double(lastY);
 	  image_coordinates( pic, xf, yf );
 	  if ( xf < 0 ) xf = 0;
-	  else if ( xf > texWidth )  xf = float(texWidth);
+	  else if ( xf > texWidth )  xf = double(texWidth);
 	  if ( yf < 0 ) yf = 0;
-	  else if ( yf > texHeight ) yf = float(texHeight);
+	  else if ( yf > texHeight ) yf = double(texHeight);
 
-	  float xn = float(x);
-	  float yn = float(y);
+	  double xn = double(x);
+	  double yn = double(y);
 	  image_coordinates( pic, xn, yn );
 	  if ( xn < 0 ) xn = 0;
-	  else if ( xn > texWidth )  xn = float(texWidth);
+	  else if ( xn > texWidth )  xn = double(texWidth);
 	  if ( yn < 0 ) yn = 0;
-	  else if ( yn > texHeight ) yn = float(texHeight);
+	  else if ( yn > texHeight ) yn = double(texHeight);
 
 	  xf = floor(xf);
 	  yf = floor(yf);
@@ -1677,13 +1677,13 @@ void ImageView::mouseDrag(int x,int y)
 
 	  if ( xn < xf ) 
 	    {
-	      float tmp = xf;
+	      double tmp = xf;
 	      xf = xn;
 	      xn = tmp;
 	    }
 	  if ( yn < yf ) 
 	    {
-	      float tmp = yf;
+	      double tmp = yf;
 	      yf = yn;
 	      yn = tmp;
 	    }
@@ -2366,9 +2366,9 @@ void ImageView::channel( unsigned short c )
   static std::string oldChannel;
 
   std::string ext = channelName;
-  int pos = ext.rfind('.');
+  size_t pos = ext.rfind('.');
 
-  int pos2 = oldChannel.rfind('.');
+  size_t pos2 = oldChannel.rfind('.');
 
   if ( pos != std::string::npos )
   {
@@ -2393,7 +2393,7 @@ void ImageView::channel( unsigned short c )
 	std::string temp2 = oldChannel.substr( 0, pos2 );
 	if ( temp1 != temp2 ) ext = ""; 
      }
-  }
+  } 
 
   uiColorChannel->value( c );
   uiColorChannel->label( lbl );
@@ -2660,12 +2660,12 @@ void ImageView::exposure_change( float d )
 void ImageView::zoom_under_mouse( float z, int x, int y )
 {
   if ( z == _zoom || z > kMaxZoom || z < kMinZoom ) return;
-  float mw = (float) w() / 2;
-  float mh = (float) h() / 2;
-  float offx = mw - x;
-  float offy = mh - y;
-  float xf = (float) x;
-  float yf = (float) y;
+  double mw = (double) w() / 2;
+  double mh = (double) h() / 2;
+  double offx = mw - x;
+  double offy = mh - y;
+  double xf = (double) x;
+  double yf = (double) y;
 
   mrv::media fg = foreground();
   if ( ! fg ) {
@@ -2693,14 +2693,14 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   int   h = pic->height();
   yoffset = h2 - ( h - yf - 1);
   xoffset -= (offx / _zoom);
-  float ratio = 1.0f;
+  double ratio = 1.0f;
   if ( _showPixelRatio ) ratio = img->pixel_ratio();
   yoffset += (offy / _zoom * ratio);
   mouseMove( x, y );
 }
 
 
-float ImageView::pixel_ratio() const
+double ImageView::pixel_ratio() const
 {
   mrv::media fg = foreground();
   if ( !fg ) return 1.0f;
@@ -2863,11 +2863,11 @@ void ImageView::refresh_audio_tracks() const
   CMedia* img = fg->image();
 
   uiMain->uiAudioTracks->clear();
-  unsigned int numTracks = img->number_of_audio_streams();
-  for ( unsigned int i = 0; i < numTracks; ++i )
+  size_t numTracks = img->number_of_audio_streams();
+  for ( size_t i = 0; i < numTracks; ++i )
     {
       char buf[80];
-      sprintf( buf, "Track #%02d", i);
+      sprintf( buf, "Track #%02ld", i );
       uiMain->uiAudioTracks->add( buf );
     }
   uiMain->uiAudioTracks->add( "<no audio>" );

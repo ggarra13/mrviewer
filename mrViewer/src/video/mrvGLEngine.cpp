@@ -233,7 +233,7 @@ void GLEngine::init_textures()
   CHECK_GL("init_textures get max texture size");
 
 #ifndef TEST_NO_PBO_TEXTURES // test not using pbo textures
-  _pboTextures = (bool) GLEW_ARB_pixel_buffer_object;
+  _pboTextures = bool( GLEW_ARB_pixel_buffer_object );
 #endif
 
   _has_yuv = false;
@@ -600,7 +600,7 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
 
   glPushAttrib(GL_LIST_BIT);
     glListBase(sCharset);
-    glCallLists(strlen(s), GL_UNSIGNED_BYTE, s);
+    glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
   glPopAttrib();
 }
 
@@ -689,7 +689,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  glTranslatef(_view->offset_x() * zoomX + sw, _view->offset_y() * zoomY + sh, 0);
+  glTranslated(_view->offset_x() * zoomX + sw, 
+	       _view->offset_y() * zoomY + sh, 0);
   glTranslatef( tx * zoomX, ty * zoomY, 0);
 
   glScalef(zoomX, zoomY, 1.0f);
@@ -711,44 +712,44 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
  * @param percentX  percentage in X of area 
  * @param percentY  percentage in Y of area
  */
-void GLEngine::draw_safe_area( const float percentX, const float percentY,
+void GLEngine::draw_safe_area( const double percentX, const double percentY,
 			       const char* name )
 {
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
-  float zoomX = _view->zoom();
-  float zoomY = _view->zoom();
+  double zoomX = _view->zoom();
+  double zoomY = _view->zoom();
 
-  float pr = 1.0f;
+  double pr = 1.0;
   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
 
-  float sw = ((float)_view->w() - texWidth  * zoomX) / 2;
-  float sh = ((float)_view->h() - texHeight * zoomY) / 2;
+  double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+  double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-  float tw = texWidth  / 2.0f;
-  float th = texHeight / 2.0f;
+  double tw = texWidth  / 2.0f;
+  double th = texHeight / 2.0f;
 
-  glTranslatef(_view->offset_x() * zoomX + sw, 
+  glTranslated(_view->offset_x() * zoomX + sw, 
 	       _view->offset_y() * zoomY + sh, 0);
-  glTranslatef(tw * zoomX, th * zoomY, 0);
+  glTranslated(tw * zoomX, th * zoomY, 0);
 
-  glScalef(zoomX * percentX, zoomY * percentY * pr, 1.0f);
+  glScaled(zoomX * percentX, zoomY * percentY * pr, 1.0f);
 
 
   glBegin(GL_LINE_LOOP);
 
-  glVertex2f(-tw,-th);
-  glVertex2f(tw, -th);
-  glVertex2f(tw,  th);
-  glVertex2f(-tw, th);
+  glVertex2d(-tw,-th);
+  glVertex2d(tw, -th);
+  glVertex2d(tw,  th);
+  glVertex2d(-tw, th);
 
   glEnd();
 
   if ( name )
     {
       glPushMatrix();
-      glTranslatef(tw+5, th, 0);
+      glTranslated(tw+5, th, 0);
       glScalef( 0.1f, 0.1f, 1.0f );
       for (const char* p = name; *p; ++p)
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
@@ -760,11 +761,11 @@ void GLEngine::draw_safe_area( const float percentX, const float percentY,
 
 
 
-void GLEngine::alloc_quads( unsigned int num )
+void GLEngine::alloc_quads( size_t num )
 {
-  unsigned num_quads = _quads.size();
+  size_t num_quads = _quads.size();
   _quads.reserve( num );
-  for ( unsigned q = num_quads; q < num; ++q )
+  for ( size_t q = num_quads; q < num; ++q )
     {
       mrv::GLQuad* quad = new mrv::GLQuad( _view );
       _quads.push_back( quad );
@@ -820,7 +821,7 @@ void GLEngine::draw_images( ImageList& images )
   }
 
 
-  unsigned num_quads = 0;
+  size_t num_quads = 0;
   ImageList::iterator i = images.begin();
   ImageList::iterator e = images.end();
 
@@ -831,7 +832,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( img->has_picture()  ) ++num_quads;
     }
 
-  unsigned num = _quads.size();
+  size_t num = _quads.size();
   if ( num_quads > num )
     {
       alloc_quads( num_quads );

@@ -8,8 +8,6 @@
  * 
  */
 
-#define __STDC_FORMAT_MACROS
-#include <inttypes.h>  // for PRId64
 
 #include <iostream>
 using namespace std;
@@ -229,12 +227,13 @@ namespace mrv
     if (!fg) return;
 
     CMedia* img = fg->image();
-    img->gamma( w->fvalue() );
-    view->gamma( w->fvalue() );
+    img->gamma( float(w->fvalue()) );
+    view->gamma( float(w->fvalue()) );
     view->redraw();
   }
 
-  double ImageInformation::to_memory( double value, const char*& extension )
+boost::int64_t ImageInformation::to_memory( boost::int64_t value,
+					    const char*& extension )
   {
      if ( value >= 1099511627776 )
       {
@@ -243,7 +242,7 @@ namespace mrv
       }
     else if ( value >= 1073741824 )
       {
-	value /= 1073741824.0;
+	value /= 1073741824;
 	extension = N_("Gb");
       }
     else if ( value >= 1048576 )
@@ -299,9 +298,9 @@ namespace mrv
 
     ++group;
 
-    unsigned int num_video_streams = img->number_of_video_streams();
-    unsigned int num_audio_streams = img->number_of_audio_streams();
-    unsigned int num_subtitle_streams = img->number_of_subtitle_streams();
+    unsigned int num_video_streams = unsigned( img->number_of_video_streams() );
+    unsigned int num_audio_streams = unsigned( img->number_of_audio_streams() );
+    unsigned int num_subtitle_streams = unsigned( img->number_of_subtitle_streams() );
     if ( img->has_video() || img->has_audio() )
       {
 	add_int( _("Video Streams"), num_video_streams );
@@ -343,7 +342,7 @@ namespace mrv
     char buf[256];
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
     add_text( _("Aspect Ratio"), buf );
-    add_float( _("Pixel Ratio"), img->pixel_ratio(), true,
+    add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
     mrv::Recti& window = img->data_window();
@@ -481,18 +480,19 @@ namespace mrv
     ++group;
 
     const char* space_type = NULL;
-    double memory_space = to_memory( img->memory(), space_type );
+    double memory_space = double( to_memory( img->memory(), space_type ) );
     sprintf( buf, N_("%.1f %s"), memory_space, space_type );
     add_text( _("Memory"), buf );
 
 
     if ( img->disk_space() >= 0 )
       {
-	double disk_space = to_memory( img->disk_space(), space_type );
-	double pct   = 100.0 * ( (double) img->disk_space() /
-				 (double) img->memory() );
+	 long double disk_space = double( to_memory( img->disk_space(),
+						     space_type ) );
+	 long double pct   = 100.0 * ( (long double) img->disk_space() /
+				       (long double) img->memory() );
 	
-	sprintf( buf, N_("%.1f %s  (%.2f %% of memory size)"), 
+	sprintf( buf, N_("%.1Lf %s  (%.2Lf %% of memory size)"), 
 		 disk_space, space_type, pct );
 	add_text( _("Disk space"), buf );
 
@@ -971,9 +971,9 @@ namespace mrv
   }
 
   void ImageInformation::add_enum( const char* name,
-				   const unsigned int content,
+				   const size_t content,
 				   const char** options,
-				   const int num,
+				   const size_t num,
 				   const bool editable,
 				   fltk::Callback* callback 
 				   )
@@ -996,11 +996,11 @@ namespace mrv
       widget->type( 0 );
       widget->align( fltk::ALIGN_LEFT | fltk::ALIGN_INSIDE );
       widget->color( colB );
-      for ( int i = 0; i < num; ++i )
+      for ( size_t i = 0; i < num; ++i )
 	{
 	  widget->add( options[i] );
 	}
-      widget->value( content );
+      widget->value( unsigned(content) );
       widget->copy_label( options[content] );
 
       if ( !editable )
@@ -1020,6 +1020,7 @@ namespace mrv
 
   }
 
+
   void ImageInformation::add_enum( const char* name,
 				   const std::string& content,
 				   stringArray& options,
@@ -1027,7 +1028,7 @@ namespace mrv
 				   fltk::Callback* callback 
 				   )
   {
-    unsigned index;
+    size_t index;
     stringArray::iterator it = std::find( options.begin(), options.end(),
 					  content );
     if ( it != options.end() )
@@ -1040,9 +1041,9 @@ namespace mrv
 	options.push_back( content );
       }
 
-    unsigned int num = options.size();
+    size_t num = options.size();
     const char** opts = new const char*[num];
-    for ( unsigned i = 0; i < num; ++i )
+    for ( size_t i = 0; i < num; ++i )
       opts[i] = options[i].c_str();
 
     add_enum( name, index, opts, num, editable, callback );

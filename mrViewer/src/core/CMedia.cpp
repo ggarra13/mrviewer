@@ -99,6 +99,7 @@ std::string CMedia::icc_profile_float;
 CMedia::CMedia() :
   _w( 0 ),
   _h( 0 ),
+  _internal( false ),
   _is_sequence( false ),
   _fileroot( NULL ),
   _filename( NULL ),
@@ -1768,7 +1769,8 @@ bool CMedia::find_image( const boost::int64_t frame )
      }
      else
      {
-	LOG_ERROR( file << _(" is missing.") );
+	if ( ! internal() )
+	   LOG_ERROR( file << _(" is missing.") );
 	return false;
      }
   }

@@ -11,6 +11,9 @@
 #ifndef mrvImageInformation_h
 #define mrvImageInformation_h
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
+
 #include <fltk/ScrollGroup.h>
 
 #include "core/mrvRectangle.h"
@@ -63,7 +66,7 @@ namespace mrv
     static void int_slider_cb( fltk::Slider* w, void* data );
     static void float_slider_cb( fltk::Slider* w, void* data );
 
-    double to_memory( double value, const char*& extension );
+    int64_t to_memory( int64_t value, const char*& extension );
 
     mrv::Browser* add_browser( mrv::CollapsableGroup* g );
 
@@ -92,9 +95,9 @@ namespace mrv
     void add_time( const char* name, const double content, 
 		    const bool editable = false );
 
-    void add_enum( const char* name, const unsigned int content, 
+    void add_enum( const char* name, const size_t content, 
 		   const char** options,
-		   const int num, const bool editable = false,
+		   const size_t num, const bool editable = false,
 		   fltk::Callback* callback = NULL );
 
     void add_enum( const char* name, const std::string& content, 

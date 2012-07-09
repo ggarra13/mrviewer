@@ -50,8 +50,8 @@ namespace mrv {
 
     virtual void draw_mask(const float pct);
     
-    virtual void draw_safe_area( const float percentX, 
-				 const float percentY,
+    virtual void draw_safe_area( const double percentX, 
+				 const double percentY,
 				 const char* name = 0 );
 
     /// Convert fg image to engine's drawable image
@@ -89,7 +89,7 @@ namespace mrv {
     static void handle_cg_errors();
 
     /// Allocate a number of quads
-    void alloc_quads( unsigned int num );
+    void alloc_quads( size_t num );
 
     /// Function used to initialize all of opengl
     void initialize();

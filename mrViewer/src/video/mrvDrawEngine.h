@@ -128,7 +128,7 @@ namespace mrv {
     virtual void wipe_area() = 0;
     
     /// Draw a safe area rectangle
-    virtual void draw_safe_area( const float percentX, const float percentY,
+    virtual void draw_safe_area( const double percentX, const double percentY,
 				 const char* name = 0 ) = 0;
 
     /// Draw mask area rectangles

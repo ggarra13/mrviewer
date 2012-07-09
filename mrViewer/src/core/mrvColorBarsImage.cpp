@@ -20,6 +20,7 @@ namespace mrv {
   {
     _fileroot = strdup( "Color Bars" );
     _gamma = 1.0f;
+    _internal = true;
     default_layers();
 
     _frameStart = 1;

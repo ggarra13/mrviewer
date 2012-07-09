@@ -249,6 +249,10 @@ namespace mrv {
     /////////////////// Set the image size, allocating a 4-float buffer
     void image_size( int w, int h );
 
+       /////////////// Set to true if image is internal and no filename is used
+       bool internal() const { return _internal; }
+       const void internal(bool t) { _internal = t; }
+
     ///
     virtual void channel( const char* c );
     virtual const char* channel() const { return _channel; };
@@ -358,13 +362,16 @@ namespace mrv {
     inline void audio_frame( const boost::int64_t f ) { _audio_frame = f; }
     inline boost::int64_t   audio_frame() const { return _audio_frame; }
 
-    ////////////////// Seek to a specific frame in current image 
+    ////////////////// Seek to a specific frame in current image. 
+    ////////////////// Frame is local to the video/sequence, not timeline.
     void seek( const boost::int64_t frame );
 
     ////////////////// Pre-roll sequence for playback
+    ////////////////// Frame is local to the video/sequence, not timeline.
     virtual void preroll( const boost::int64_t frame );
 
     ////////////////// Add a loop to packet lists
+    ////////////////// Frame is local to the video/sequence, not timeline.
     virtual void loop_at_start( const boost::int64_t frame ); 
     virtual void loop_at_end( const boost::int64_t frame ); 
 
@@ -467,7 +474,7 @@ namespace mrv {
 
     virtual void video_stream( int x ) {}
 
-    virtual unsigned number_of_video_streams() const { return 0; }
+    virtual size_t number_of_video_streams() const { return 0; }
 
     /// Sets the first frame in the sequence
     void  first_frame(boost::int64_t x);
@@ -851,6 +858,7 @@ namespace mrv {
 
 
     unsigned int  _w, _h;     //!< width and height of image
+       bool   _internal;      //!< image is internal with no filename
     bool   _is_sequence;      //!< true if a sequence
     char*  _fileroot;         //!< root name of image sequence
     char*  _filename;         //!< generated filename of a frame

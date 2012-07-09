@@ -160,7 +160,7 @@ bool exrImage::channels_order(
       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
       
       std::string ext = layerName;
-      int pos = layerName.rfind( N_(".") );
+      size_t pos = layerName.rfind( N_(".") );
       if ( pos != string::npos )
       {
 	 ext = ext.substr( pos+1, ext.size() );
@@ -248,7 +248,7 @@ bool exrImage::channels_order(
    static size_t xs[4], ys[4];
    if ( _has_yca )
    {
-      for ( int i = 0; i < numChannels; ++i )
+      for ( unsigned i = 0; i < numChannels; ++i )
 	 xs[i] = _hires->pixel_size();
       
       unsigned int dw2 = dw / 2;
@@ -260,7 +260,7 @@ bool exrImage::channels_order(
    else
    {
       
-      for ( int i = 0; i < numChannels; ++i )
+      for ( unsigned i = 0; i < numChannels; ++i )
       {
 	 xs[i] = _hires->pixel_size() * numChannels;
 	 ys[i] = xs[i] * dw;

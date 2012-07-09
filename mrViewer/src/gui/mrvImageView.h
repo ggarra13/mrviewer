@@ -294,9 +294,9 @@ namespace mrv {
     // Toggle between fullscreen and normal resolution
     void toggle_fullscreen();
 
-    inline float offset_x() const { return xoffset; }
-    inline float offset_y() const { return yoffset; }
-    float pixel_ratio() const;
+    inline double offset_x() const { return xoffset; }
+    inline double offset_y() const { return yoffset; }
+    double pixel_ratio() const;
 
     DrawEngine* const engine() const { return _engine; }
 
@@ -360,7 +360,7 @@ namespace mrv {
 
     /// Given two window coordinates, return pixel coordinates
     void image_coordinates( const mrv::image_type_ptr& img,
-			    float& x, float& y ) const;
+			    double& x, double& y ) const;
 
     /// Clear image sequence caches
     void flush_caches();
@@ -392,7 +392,7 @@ namespace mrv {
     float        _gamma;      //<- display gamma
     float        _gain;       //<- display gain (exposure)
     float	 _zoom;       //<- display zoom
-    float	 xoffset, yoffset; //<- display offsets
+    double	 xoffset, yoffset; //<- display offsets
 
 
 

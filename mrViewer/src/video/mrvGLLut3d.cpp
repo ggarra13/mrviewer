@@ -490,13 +490,13 @@ namespace mrv {
     float* p = new float[channels];
     for (size_t i = 0; i < lut_size()/4; ++i) 
       {
-	int j = i*4;
-	status = cmm.Apply( p, &(pixelValues[j]) );
-	if ( status != icCmmStatOk) {
-	   icc_cmm_error( _("Apply: ") , status );
-	   return false;
+	 size_t j = i*4;
+	 status = cmm.Apply( p, &(pixelValues[j]) );
+	 if ( status != icCmmStatOk) {
+	    icc_cmm_error( _("Apply: ") , status );
+	    return false;
 	}
-
+	 
 	if ( convert )
 	  {
 	    icXyzFromPcs( p );
@@ -711,7 +711,7 @@ namespace mrv {
 	return NULL;
       }
 
-    unsigned num = transforms.size();
+    size_t num = transforms.size();
 
     algorithm = uiPrefs->ODT_algorithm->value();
     find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
@@ -769,7 +769,7 @@ namespace mrv {
 
 
     Imf::Header header( img->width(), img->height(),
-			img->pixel_ratio() );
+			float( img->pixel_ratio() ) );
     Imf::addChromaticities( header, img->chromaticities() );
 
     unsigned size = 64;

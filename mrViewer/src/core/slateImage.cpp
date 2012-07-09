@@ -32,6 +32,7 @@ namespace mrv {
     CMedia()
   {
     _gamma = 1.0f;
+    _internal = true;
 
     _fileroot = strdup( src->fileroot() );
 
@@ -42,6 +43,9 @@ namespace mrv {
     _fstart = src->first_frame();
     _fend   = src->last_frame();
     _ctime = time(NULL);
+
+    _frameStart = 1;
+    _frameEnd   = 60;
 
     image_size( _w, _h );
     allocate_pixels( _fstart );
@@ -205,13 +209,26 @@ namespace mrv {
 	take = atoi( tokens[1].c_str() );
       }
 
-    std::string& shot = tokens[0];
-    std::string  seq  = tokens[0];
-    size_t pos = seq.find_first_of("0123456789");
-    if ( pos != string::npos )
-      {
-	seq = seq.substr( 0, pos );
-      }
+    char* tmp = NULL;
+
+    std::string seq, shot;
+    tmp = getenv( "SEQ" );
+    if ( tmp ) seq = tmp;
+    else
+    {
+       seq = tokens[0];
+
+       size_t pos = seq.find_first_of("0123456789");
+       if ( pos != string::npos )
+       {
+	  seq = seq.substr( 0, pos );
+       }
+    }
+       
+    tmp = getenv( "SHOT" );
+    if ( tmp ) shot = tmp;
+    else shot = tokens[0];
+
 
 
     static const char* kTitles[] = {
@@ -292,8 +309,8 @@ namespace mrv {
       EXCEPTION( "Could not draw image" );
 
 
-    MagickGetImagePixels(wand, 0, 0, W, H, "RGBA", FloatPixel, 
-			 _hires->data().get() );
+    MagickExportImagePixels(wand, 0, 0, W, H, "RGBA", FloatPixel, 
+			    _hires->data().get() );
 
     DestroyPixelWand( pwand );
     DestroyDrawingWand( dwand );

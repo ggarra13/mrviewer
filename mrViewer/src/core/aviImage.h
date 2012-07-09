@@ -77,7 +77,7 @@ namespace mrv {
       return _video_info[i];
     }
 
-    virtual unsigned int number_of_video_streams() const { 
+    virtual size_t number_of_video_streams() const { 
       return _video_info.size(); 
     }
 
