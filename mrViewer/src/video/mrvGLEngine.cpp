@@ -206,7 +206,10 @@ void GLEngine::init_charset()
     sprintf( font_name, N_("-*-fixed-*-r-normal--%d-0-0-0-c-0-iso8859-1"),
 	     fontsize );
     XFontStruct* hfont = XLoadQueryFont( gdc, font_name );
-    if (!hfont) LOG_ERROR( _("Could not open any font of size ") << fontsize);
+    if (!hfont) {
+       LOG_ERROR( _("Could not open any font of size ") << fontsize);
+       return;
+    }
 
     // Create GL lists out of XFont
     sCharset = glGenLists( numChars );
@@ -599,8 +602,11 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
   glRasterPos2s( x, y );
 
   glPushAttrib(GL_LIST_BIT);
-    glListBase(sCharset);
-    glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
+  if ( sCharset )
+  {
+     glListBase(sCharset);
+     glCallLists( GLsizei( strlen(s) ), GL_UNSIGNED_BYTE, s);
+  }
   glPopAttrib();
 }
 
