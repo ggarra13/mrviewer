@@ -666,8 +666,8 @@ namespace mrv {
     
     double audio_clock() const { return _audio_clock; }
     
-    double video_pts() const { return _video_pts; }
-    double audio_pts() const { return _audio_pts; }
+    boost::int64_t video_pts() const { return _video_pts; }
+    boost::int64_t audio_pts() const { return _audio_pts; }
     
 
     static bool supports_yuv()         { return _supports_yuv; }
@@ -896,9 +896,9 @@ namespace mrv {
     boost::int64_t   _frame_start;
     boost::int64_t   _frame_end;
 
-       double _audio_pts;
+       boost::int64_t _audio_pts;
        double     _audio_clock;
-       double _video_pts;
+       boost::int64_t _video_pts;
        double     _video_clock;
 
     InterlaceType _interlaced;     //!< image is interlaced?

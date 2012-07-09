@@ -298,7 +298,7 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
 }
 
 // Seek to the requested frame
-bool aviImage::seek_to_position( const boost::int64_t ptsframe, 
+bool aviImage::seek_to_position( const boost::int64_t frame, 
 				 const int flags )
 {
   AVStream* stream = NULL;
@@ -311,65 +311,9 @@ bool aviImage::seek_to_position( const boost::int64_t ptsframe,
 
   // boost::int64_t offset = boost::int64_t(((frame - _frameStart) * AV_TIME_BASE) / fps());
 
-  boost::int64_t offset = boost::int64_t((ptsframe * AV_TIME_BASE) / fps());
-
-  boost::int64_t frame = ptsframe;
-
-#if 0
-  //
-  // Find minimum byte position between audio and video stream
-  //
-  if ( has_audio() )
-    {
-      idx = audio_stream_index();
-      stream = get_audio_stream();
-      if ( stream == NULL ) return false;
-      assert( stream != 0 );
-
-      boost::int64_t ts = av_rescale_q(offset, base, stream->time_base);
-
-      int i = av_index_search_timestamp( stream, ts, AVSEEK_FLAG_BACKWARD );
-      if ( i >= 0 ) min_ts = stream->index_entries[i].timestamp;
-
-    }
-
-  if ( has_video() ) {
-    AVStream* st = get_video_stream();
-    assert( st != 0 );
-    if ( st == NULL ) return false;
-
-    boost::int64_t ts  = av_rescale_q(offset, base, st->time_base);
-
-    int i = av_index_search_timestamp( st, ts, AVSEEK_FLAG_BACKWARD );
-
-    if ( !stream || (i >= 0 && st->index_entries[i].timestamp < min_ts) )
-      {
-	idx = video_stream_index();
-	stream = st;
-      }
-  }
- 
-  assert( stream != NULL );
-  assert( idx != -1 );
-
-  if ( stream == NULL ) return false;
-
-  offset = av_rescale_q(offset, base, stream->time_base);
+  boost::int64_t offset = boost::int64_t((frame * AV_TIME_BASE) / fps());
 
 
-  bool ok;
-  try {
-
-     ok = avformat_seek_file( _context, idx, INT64_MIN, offset, INT64_MAX, 
-      			      AVSEEK_FLAG_BACKWARD ) == 0;
-     //ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) == 0;
-
-    if (!ok)
-      {
-	IMG_ERROR( "Could not seek to frame " << frame );
-	return false;
-      }
-#else
   bool ok;
   try {
 
@@ -380,7 +324,6 @@ bool aviImage::seek_to_position( const boost::int64_t ptsframe,
 	IMG_ERROR( "Could not seek to frame " << frame );
 	return false;
       }
-#endif
 
   }
   catch( ... )
@@ -1546,7 +1489,7 @@ bool aviImage::fetch(const boost::int64_t frame)
   if ( frame != _expected )
     {
        if ( ! seek_to_position( frame, AVSEEK_FLAG_BACKWARD ) )
-	  LOG_ERROR("Could not seek to frame " << frame );
+	  LOG_ERROR("seek_to_position: Could not seek to frame " << frame );
 
       SCOPED_LOCK( _audio_mutex ); // needed
       _audio_buf_used = 0;
@@ -2302,7 +2245,7 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
 
   if ( repeat <= 1 )
   {
-     repeat = fps() * 3;
+     repeat = boost::int64_t( fps() * 3 );
   }
 
   int got_sub = 0;
