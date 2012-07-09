@@ -258,13 +258,16 @@ namespace mrv {
 			  CMedia* img, 
 			  mrv::Timeline* timeline )
   {
-     boost::int64_t last = timeline->global_to_local( timeline->maximum() );
-     boost::int64_t first = timeline->global_to_local( timeline->minimum() );
+     boost::int64_t last = timeline->maximum();
+     boost::int64_t first = timeline->minimum();
 
      boost::int64_t f = frame;
 
      if ( timeline->edl() )
      {
+	last = timeline->global_to_local( last );
+	first = timeline->global_to_local( first );
+
 	boost::int64_t s = img->first_frame();
 	boost::int64_t e = img->last_frame();
 	if ( e < last )  last = e;
