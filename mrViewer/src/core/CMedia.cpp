@@ -1022,7 +1022,7 @@ void CMedia::play(const CMedia::Playback dir,
   PlaybackData* video_data, *audio_data, *subtitle_data;
 
   bool     valid_video = number_of_video_streams() > 0;
-  unsigned num_streams;
+  size_t num_streams;
 
   // If there's at least one valid video stream, create video thread
   if ( valid_video || is_sequence() || has_picture() )
@@ -1035,7 +1035,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   bool valid_audio = false;
   num_streams = number_of_audio_streams();
-  for ( unsigned i = 0; i < num_streams; ++i )
+  for ( size_t i = 0; i < num_streams; ++i )
     {
       if ( _audio_info[i].has_codec ) { valid_audio = true; break; }
     }
@@ -1052,7 +1052,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   bool valid_subtitle = false;
   num_streams = number_of_subtitle_streams();
-  for ( unsigned i = 0; i < num_streams; ++i )
+  for ( size_t i = 0; i < num_streams; ++i )
     {
       if ( _subtitle_info[i].has_codec ) { valid_subtitle = true; break; }
     }
