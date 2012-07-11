@@ -1267,11 +1267,37 @@ namespace mrv {
 
 	assert( (unsigned)sel < reel->images.size() );
 
+	mrv::media om = uiMain->uiView->foreground();
+
+	int audio_idx = -1;
+	int sub_idx = -1;
+	if ( timeline()->edl() )
+	{
+	   if ( om )
+	   {
+	      sub_idx = om->image()->subtitle_stream();
+	      audio_idx = om->image()->audio_stream();
+	   }
+	}
+
 	mrv::media m = reel->images[sel];
 	assert( m != NULL );
 
 	uiMain->uiView->foreground( m );
-	adjust_timeline();
+
+	if ( timeline()->edl() )
+	{
+	   if ( sub_idx < m->image()->number_of_subtitle_streams() )
+	      m->image()->subtitle_stream( sub_idx );
+	   
+	   if ( audio_idx < m->image()->number_of_audio_streams() )
+	      m->image()->audio_stream( audio_idx );
+	}
+	else
+	{
+	   adjust_timeline();
+	}
+
       }
   }
 
@@ -1634,6 +1660,7 @@ namespace mrv {
       }
 
     change_image();
+    adjust_timeline();
     redraw();
   }
 

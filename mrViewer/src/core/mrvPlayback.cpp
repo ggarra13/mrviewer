@@ -130,7 +130,6 @@ namespace mrv {
 
 	     f -= img->first_frame();
 	     f += timeline->location(img);
-	     
 
 	     next = timeline->image_at( f );
 
@@ -150,9 +149,10 @@ namespace mrv {
 	     }
 	     
 	     assert( next != NULL );
-	     
+
 	     if ( next != img && next != NULL) 
 	     {
+
 		next->preroll( f );
 		next->play( CMedia::kForwards, uiMain );
 		status = kEndNextImage;
@@ -265,13 +265,15 @@ namespace mrv {
 
      if ( timeline->edl() )
      {
-	last = timeline->global_to_local( last );
-	first = timeline->global_to_local( first );
+	boost::int64_t s = timeline->location(img);
+	boost::int64_t e = img->last_frame() - img->first_frame();
+	e += timeline->location(img);
 
-	boost::int64_t s = img->first_frame();
-	boost::int64_t e = img->last_frame();
 	if ( e < last )  last = e;
 	if ( s > first ) first = s;
+
+	last = timeline->global_to_local( last );
+	first = timeline->global_to_local( first );
      }
      
     if ( f > last )
@@ -322,6 +324,10 @@ namespace mrv {
 	int step = (int) img->playback();
 	if ( step == 0 ) break;
 	CMedia::DecodeStatus status = img->decode_audio( frame );
+	if ( frame > img->last_frame() )
+	   status = CMedia::kDecodeLoopEnd;
+	if ( frame < img->first_frame() )
+	   status = CMedia::kDecodeLoopStart;
 	switch( status )
 	  {
  	  case CMedia::kDecodeDone:
@@ -416,6 +422,12 @@ namespace mrv {
 
 	int64_t frame = img->frame();
 	CMedia::DecodeStatus status = img->decode_subtitle( frame );
+
+	if ( frame > img->last_frame() )
+	   status = CMedia::kDecodeLoopEnd;
+	if ( frame < img->first_frame() )
+	   status = CMedia::kDecodeLoopStart;
+
 	switch( status )
 	  {
 	  case CMedia::kDecodeError:
@@ -491,6 +503,11 @@ namespace mrv {
 	if ( step == 0 ) break;
 
 	CMedia::DecodeStatus status = img->decode_video( frame );
+
+	if ( frame > img->last_frame() )
+	   status = CMedia::kDecodeLoopEnd;
+	if ( frame < img->first_frame() )
+	   status = CMedia::kDecodeLoopStart;
 
 	switch( status )
 	  {

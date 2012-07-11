@@ -1496,12 +1496,13 @@ bool aviImage::fetch(const boost::int64_t frame)
 
   if ( frame != _expected )
     {
-       if ( ! seek_to_position( frame ) )
+       bool ok = seek_to_position( frame );
+       if ( !ok )
 	  IMG_ERROR("seek_to_position: Could not seek to frame " << frame );
 
       SCOPED_LOCK( _audio_mutex ); // needed
       _audio_buf_used = 0;
-      return true;
+      return ok;
     }
 
 
