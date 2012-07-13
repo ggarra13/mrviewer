@@ -27,6 +27,7 @@
 #include <limits>
 #include <iomanip>
 #include <sstream>
+#include <set>
 
 
 #include <fltk/visual.h>
@@ -111,6 +112,8 @@ struct ChannelShortcuts
 
 ChannelShortcuts shortcuts[] = {
   { _("Color"), 'c'         },
+  { _("left"),  'c'         },
+  { _("right"), 'c'         },
   { _("RGBA"),  'c'         },
   { _("RGB"),   'c'         },
   { _("Red"),   'r'         },
@@ -429,6 +432,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   posY( 22 ),
   flags( 0 ),
   _channel( 0 ),
+  _old_channel( 0 ),
   _channelType( kRGB ),
   _field( kFrameDisplay ),
   _showBG( true ),
@@ -2042,9 +2046,12 @@ int ImageView::keyDown(unsigned int rawkey)
 	{
 	  if ( rawkey == uiColorChannel->child(c)->shortcut() )
 	    {
-	      if ( c == _channel ) c = 0;
-	      channel( c );
-	      return 1;
+	       if ( c == _channel ) 
+	       {
+		  c = _old_channel;
+	       }
+	       channel( c );
+	       return 1;
 	    }
 	}
     }
@@ -2745,16 +2752,36 @@ void ImageView::update_layers()
   stringArray::const_iterator i = layers.begin();
   stringArray::const_iterator e = layers.end();
 
-  int v   = 0;
+  int v   = -1;
   int idx = 0;
+  std::set< short > shortcuts;
+
+  if (!channelName) v = 0;
+
   for ( ; i != e; ++i, ++idx )
     {
       const std::string& name = (*i).c_str();
       fltk::Widget* o = uiColorChannel->add( name.c_str(), NULL );
-      short shortcut = get_shortcut( name.c_str() );
-      if ( shortcut )  o->shortcut( shortcut );
-      if ( channelName && name == channelName ) v = idx;
+
+      if ( channelName && ( name == channelName ) )
+      {
+	 v = idx;
+	 _old_channel = v;
+      }
+
+      if ( v >= 0 )
+      {
+	 short shortcut = get_shortcut( name.c_str() );
+	 if ( shortcut && shortcuts.find( shortcut ) == shortcuts.end())
+	 { 
+	    o->shortcut( shortcut );
+	    shortcuts.insert( shortcut );
+	 }
+      }
+
     }
+
+  if ( v == -1 ) v = 0;
 
   free( channelName );
 
