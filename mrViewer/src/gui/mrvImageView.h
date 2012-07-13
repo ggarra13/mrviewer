@@ -175,6 +175,9 @@ namespace mrv {
     void channel( unsigned short c );
     unsigned short channel() const { return _channel; };
 
+    void old_channel( unsigned short c ) { _old_channel = c; };
+    unsigned short old_channel() const { return _old_channel; };
+
     /// Return current channel shown in viewer
     ChannelType channel_type() const { return _channelType; };
 
@@ -406,6 +409,7 @@ namespace mrv {
 
     //! Channel index
     unsigned short     _channel;
+       unsigned short     _old_channel; // previously selected color channelx
 
     //! Channel type (RGB, R, G, B, A, L )
     mrv::ChannelType   _channelType;

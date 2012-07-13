@@ -66,7 +66,7 @@ namespace {
 
 // #define DEBUG_SEEK
 // #define DEBUG_PACKETS
-#define DEBUG_STORES
+// #define DEBUG_STORES
 
 // #define DEBUG_DECODE
 // #define DEBUG_AUDIO_SPLIT
@@ -1143,6 +1143,10 @@ std::string CMedia::directory() const
     std::string f = file.string();
     f += "/";
     f += path;
+
+    if ( f.substr( f.length()-1, 1 ) == "/" )
+       f = f.substr(0, f.length()-1 );
+
     path = f;
   }
   return path;

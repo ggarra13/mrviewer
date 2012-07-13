@@ -310,9 +310,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
    // if ( _context->start_time != AV_NOPTS_VALUE )
    //    offset += _context->start_time;
 
-
-   boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
-   // cerr << "offset " << offset << " off " << off << endl;
+  boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
 
   try {
 
