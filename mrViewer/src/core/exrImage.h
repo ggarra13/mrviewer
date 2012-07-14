@@ -59,6 +59,7 @@ namespace mrv {
 
     static bool save( const char* file, const CMedia* img );
 
+
        int levelX() { return _levelX; }
        int levelY() { return _levelY; }
 
@@ -74,6 +75,14 @@ namespace mrv {
 			   const Imf::Header& hdr, 
 			   Imf::FrameBuffer& fb
 			    );
+       bool channels_order_multi( 
+			   const boost::int64_t frame,
+			   Imf::ChannelList::ConstIterator s,
+			   Imf::ChannelList::ConstIterator e,
+			   Imf::ChannelList& channels,
+			   const Imf::Header& hdr, 
+			   Imf::FrameBuffer& fb
+			    );
        void ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame );
        bool fetch_mipmap( const boost::int64_t frame );
        bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
@@ -82,10 +91,12 @@ namespace mrv {
 
     image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
 
+     protected:
+
        int _levelX, _levelY; //<- r/mipmap levels
-       bool          _has_yca;
-    Imf::LineOrder   _lineOrder;
-    Imf::Compression _compression;
+       bool _has_yca, _has_left_eye, _has_right_eye, _left_red;
+       Imf::LineOrder   _lineOrder;
+       Imf::Compression _compression;
   };
 
 }
