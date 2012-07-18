@@ -58,10 +58,10 @@ namespace mrv {
       //
       // Find longest argument for formatting
       //
-      unsigned len = 0;
+      size_t len = 0;
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
 	{
-	  if ( (*it)->longID().size() > len ) len = (*it)->longID().size();
+	   if ( (*it)->longID().size() > len ) len = (*it)->longID().size();
 	}
 
       //
@@ -72,7 +72,7 @@ namespace mrv {
 	  const std::string& ID = (*it)->longID();
 	  cerr << "  " << ID;
 
-	  for ( unsigned i = ID.size(); i < len; ++i )
+	  for ( size_t i = ID.size(); i < len; ++i )
 	    {
 	      cerr << " ";
 	    }
