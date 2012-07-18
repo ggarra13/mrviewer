@@ -258,8 +258,8 @@ namespace mrv {
 			  CMedia* img, 
 			  mrv::Timeline* timeline )
   {
-     boost::int64_t last = timeline->maximum();
-     boost::int64_t first = timeline->minimum();
+     boost::int64_t last = boost::int64_t( timeline->maximum() );
+     boost::int64_t first = boost::int64_t( timeline->minimum() );
 
      boost::int64_t f = frame;
 
@@ -579,7 +579,6 @@ namespace mrv {
 
 	timer.setDesiredFrameRate( fps );
 	timer.waitUntilNextFrameIsDue();
-
 
 	img->real_fps( timer.actualFrameRate() );
 
