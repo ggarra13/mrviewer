@@ -763,12 +763,12 @@ namespace mrv {
 
     glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
     glScalef( _view->zoom(), _view->zoom(), 1.0f);
-    glTranslatef( _view->offset_x(), _view->offset_y(), 0.0f );
+    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
     if ( _view->main()->uiPixelRatio->value() )
-      glScalef( float(dw), dh / _view->pixel_ratio(), 1.0f );
+      glScaled( double(dw), dh / _view->pixel_ratio(), 1.0 );
     else
-      glScalef( float(dw), float(dh), 1.0f );
+      glScaled( double(dw), double(dh), 1.0f );
 
     if ( _view->flip() != ImageView::kFlipNone )
     {
@@ -1025,8 +1025,8 @@ namespace mrv {
     float sw = ((float)_view->w() - dw * _view->zoom()) / 2;
     float sh = ((float)_view->h() - dh * _view->zoom()) / 2;
 
-    float dx = (_view->offset_x() * _view->zoom() + sw);
-    float dy = (_view->offset_y() * _view->zoom() + sh);
+    double dx = (_view->offset_x() * _view->zoom() + sw);
+    double dy = (_view->offset_y() * _view->zoom() + sh);
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
@@ -1036,7 +1036,7 @@ namespace mrv {
 
 
     unsigned H = dh - 1;
-    float yp = dy - _view->zoom();
+    double yp = dy - _view->zoom();
 
     const boost::uint8_t* base = (const boost::uint8_t*)_pixels.get();
 
@@ -1049,7 +1049,7 @@ namespace mrv {
 	//    glRasterPos2f(dx, yp);
 	// we do:
 	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, dx, yp, NULL );
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
 	//
 
 	unsigned int r = (H - y) * dw;
@@ -1076,7 +1076,7 @@ namespace mrv {
 	//    glRasterPos2f(dx, yp-0.499f);
 	// we do:
 	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, dx, yp-0.499f, NULL );
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp-0.499), NULL );
 	//
 
 	unsigned int r = (H - y) * dw;
@@ -1103,11 +1103,11 @@ namespace mrv {
     ///// Draw Buffer
     glPixelZoom( _view->zoom(), _view->zoom() );
 
-    float sw = ((float)_view->w() - dw * _view->zoom()) / 2;
-    float sh = ((float)_view->h() - dh * _view->zoom()) / 2;
+    double sw = ((double)_view->w() - dw * _view->zoom()) / 2;
+    double sh = ((double)_view->h() - dh * _view->zoom()) / 2;
 
-    float dx = (_view->offset_x() * _view->zoom() + sw);
-    float dy = (_view->offset_y() * _view->zoom() + sh);
+    double dx = (_view->offset_x() * _view->zoom() + sw);
+    double dy = (_view->offset_y() * _view->zoom() + sh);
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
@@ -1120,7 +1120,7 @@ namespace mrv {
 
 
     unsigned H = dh - 1;
-    float yp = dy - _view->zoom();
+    double yp = dy - _view->zoom();
 
     const boost::uint8_t* base = (const boost::uint8_t*)_pixels.get();
 
@@ -1133,7 +1133,7 @@ namespace mrv {
 	//    glRasterPos2f(dx, yp);
 	// we do:
 	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, dx, yp, NULL );
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
 	//
 	unsigned int r = H - (y / 2)*2;
 	if ( field == ImageView::kTopField )
@@ -1155,7 +1155,7 @@ namespace mrv {
 
     // To avoid floating point errors, we send two lines
     // when zoom is not an integer.
-    yp = dy - _view->zoom();
+    yp = double(dy) - _view->zoom();
     for (unsigned int y = 0; y <= H; ++y)
       {
 	yp += _view->zoom();
@@ -1165,7 +1165,7 @@ namespace mrv {
 	//    glRasterPos2f(dx, yp-0.499f);
 	// we do:
 	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, dx, yp-0.499f, NULL );
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp-0.499), NULL );
 	//
 
 	unsigned int r = H - (y / 2)*2;
