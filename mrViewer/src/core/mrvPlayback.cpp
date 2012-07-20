@@ -152,7 +152,7 @@ namespace mrv {
 
 	     if ( next != img && next != NULL) 
 	     {
-
+		img->playback( CMedia::kStopped );
 		next->preroll( f );
 		next->play( CMedia::kForwards, uiMain );
 		status = kEndNextImage;
@@ -210,6 +210,7 @@ namespace mrv {
 
 	      if ( next != img && next != NULL ) 
 		{
+		   img->playback( CMedia::kStopped );
 		   next->preroll( f );
 		   next->play( CMedia::kBackwards, uiMain );
 		   status = kEndNextImage;
@@ -233,8 +234,8 @@ namespace mrv {
 	    }
 	  else
 	  {
-	      view->playback( ImageView::kStopped );
 	      img->playback( CMedia::kStopped );
+	      view->playback( ImageView::kStopped );
 	  }
 	  break;
 	}
@@ -278,12 +279,12 @@ namespace mrv {
      
     if ( f > last )
       {
-	 img->loop_at_end( frame-1 );
+	 img->loop_at_end( last );
 	 return kLoopAtEnd;
       }
     else if ( f < first )
       {	
-	 img->loop_at_start( frame+1 );
+	 img->loop_at_start( first );
 	 return kLoopAtStart;
       }
 
@@ -323,6 +324,7 @@ namespace mrv {
       {
 	int step = (int) img->playback();
 	if ( step == 0 ) break;
+
 	CMedia::DecodeStatus status = img->decode_audio( frame );
 	if ( frame > img->last_frame() )
 	   status = CMedia::kDecodeLoopEnd;
@@ -504,6 +506,7 @@ namespace mrv {
 
 	CMedia::DecodeStatus status = img->decode_video( frame );
 
+
 	if ( frame > img->last_frame() )
 	   status = CMedia::kDecodeLoopEnd;
 	if ( frame < img->first_frame() )
@@ -655,6 +658,8 @@ namespace mrv {
 	  }
 
 	step = (int) img->playback();
+	if ( step == 0 ) break;
+
 	frame += step;
 
 	CMedia* next = NULL;
@@ -675,11 +680,8 @@ namespace mrv {
 	    EndStatus end = handle_loop( frame, step, img, 
 					 uiMain, timeline, status );
 	   
-	    if ( img->stopped() ) { 
-	       // img->frame( frame );
-	       break;
-	    }
-
+	    if ( img->stopped() ) break;
+	
 	  }
 
 
@@ -700,6 +702,7 @@ namespace mrv {
 	// multiple frames, so get back the dts frame from image.
 	if ( img->has_video() || img->has_audio() )
 	   frame = img->dts();
+
 
       }
 
