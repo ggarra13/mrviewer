@@ -3342,6 +3342,8 @@ void ImageView::playback( const ImageView::Playback b )
       uiMain->uiPlayBackwards->value(0);
     }
 
+
+
   uiMain->uiPlayForwards->redraw();
   uiMain->uiPlayBackwards->redraw();
 

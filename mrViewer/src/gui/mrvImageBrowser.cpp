@@ -1949,7 +1949,11 @@ namespace mrv {
     std::string filenames = fltk::event_text();
 
     stringArray files;
+#if defined(WIN32) || defined(WIN64)
     mrv::split_string( files, filenames, "\n" ); 
+#else
+    mrv::split_string( files, filenames, "\r\n" ); 
+#endif
 
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();

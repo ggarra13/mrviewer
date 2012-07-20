@@ -1085,8 +1085,6 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
-
-
   _playback = kStopped;
 
   //
@@ -1100,6 +1098,7 @@ void CMedia::stop()
   _audio_packets.cond().notify_one();
   _video_packets.cond().notify_one();
   _subtitle_packets.cond().notify_one();
+
 
   // Wait for all threads to exit
   wait_for_threads();
