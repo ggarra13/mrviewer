@@ -1085,6 +1085,8 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
+   if ( _playback == kStopped ) return;
+
   _playback = kStopped;
 
   //

@@ -822,10 +822,6 @@ void ImageView::timeout()
       redraw();
     }
 
-
-
-
-
 }
 
 /** 
@@ -1745,6 +1741,16 @@ int ImageView::keyDown(unsigned int rawkey)
      if ( rawkey == 's' )
      {
 	browser()->save();
+	return 1;
+     }
+     if ( rawkey == 'i' )
+     {
+	attach_color_profile_cb( NULL, this );
+	return 1;
+     }
+     if ( rawkey == 't' )
+     {
+	attach_ctl_script_cb( NULL, this );
 	return 1;
      }
      if ( rawkey == 'm' )

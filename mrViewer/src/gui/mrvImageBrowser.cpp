@@ -1847,6 +1847,7 @@ namespace mrv {
       }
     else if ( button == 3 )
       {
+
 	fltk::Menu menu(0,0,0,0);
 
 	mrv::Reel reel = current_reel();
