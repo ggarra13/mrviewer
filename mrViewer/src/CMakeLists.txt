@@ -155,6 +155,7 @@ SET( SOURCES
   gui/FLU/GridGroup.cpp
   #   #   FLU/Flu_Combo_List.cpp # unneeded
 
+  gui/mrvHotkey.cpp
   gui/mrvColorOps.cpp
   gui/mrvMedia.cpp
   gui/mrvBrowser.cpp

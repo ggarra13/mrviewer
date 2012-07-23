@@ -74,6 +74,7 @@
 #include "gui/mrvTimecode.h"
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvHotkey.h"
 #include "gui/mrvImageView.h"
 
 // Widgets
@@ -130,6 +131,7 @@ ChannelShortcuts shortcuts[] = {
   { _("UV"), 'u' },
   { _("ST"), 'u' },
 };
+
 
 
 
@@ -253,6 +255,11 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
+    }
+  else if ( strcmp( name, "Hotkeys") == 0 )
+    {
+      uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
+      uiMain->uiHotkey->uiMain->show();
     }
   else if ( strcmp( name, "Logs") == 0 )
     {
@@ -1730,74 +1737,74 @@ void ImageView::mouseDrag(int x,int y)
 int ImageView::keyDown(unsigned int rawkey)
 {
 
-  if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-       fltk::event_key_state( fltk::RightCtrlKey ) )
-  {
-     if ( rawkey == 'o' )
-     {
-	browser()->open();
-	return 1;
-     }
-     if ( rawkey == 's' )
-     {
-	browser()->save();
-	return 1;
-     }
-     if ( rawkey == 'i' )
-     {
-	attach_color_profile_cb( NULL, this );
-	return 1;
-     }
-     if ( rawkey == 't' )
-     {
-	attach_ctl_script_cb( NULL, this );
-	return 1;
-     }
-     if ( rawkey == 'm' )
+   if ( kOpenImage.match( rawkey ) )
+   {
+      browser()->open();
+      return 1;
+   }
+
+   if ( kSaveImage.match( rawkey ) )
+   {
+      browser()->save();
+      return 1;
+   }
+
+   if ( kIccProfile.match( rawkey ) )
+   {
+      attach_color_profile_cb( NULL, this );
+      return 1;
+   }
+   
+   if ( kCTLScript.match( rawkey ) )
+   {
+      attach_ctl_script_cb( NULL, this );
+      return 1;
+   }
+
+   if ( kMonitorCTLScript.match( rawkey ) )
      {
 	monitor_ctl_script_cb( NULL, NULL );
 	return 1;
      }
-     if ( rawkey == 'n' )
-     {
-	monitor_icc_profile_cb( NULL, NULL );
-	return 1;
-     }
-  }
 
-  std::string key( fltk::event_text() );
+   if ( kMonitorIccProfile.match( rawkey ) )
+   {
+      monitor_icc_profile_cb( NULL, NULL );
+      return 1;
+   }
 
-  if ( key == "]" )
-    {
+
+   if ( kExposureMore.match( rawkey ) )
+   {
       exposure_change( 0.5f );
-    }
-  else if ( key == "[" )
+   }
+   else if ( kExposureLess.match( rawkey ) )
     {
       exposure_change( -0.5f );
     }
-  else if ( key == ")" )
+   else if ( kGammaMore.match( rawkey ) )
     {
       gamma( gamma() + 0.1f );
     }
-  else if ( key == "(" )
+   else if ( kGammaLess.match( rawkey ) )
     {
       gamma( gamma() - 0.1f );
     }
-  else if ( rawkey == fltk::LeftAltKey ) 
-    {
+   else if ( rawkey == fltk::LeftAltKey ) 
+   {
       flags |= kLeftAlt;
       return 1;
-    } 
-  else if ( rawkey >= '0' && rawkey <= '9' ) 
+   }
+  else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
     {
-      if ( rawkey <= '1' )
+      if ( rawkey == kZoomMin.key )
 	{
 	  xoffset = yoffset = 0;
 	  zoom( 1.0f );
 	}
       else
 	{
-	  float z = (float) (rawkey - '0');
+	  float z = (float) (rawkey - kZoomMin.key);
 	  if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
 	       fltk::event_key_state( fltk::RightCtrlKey ) )
 	    z = 1.0f / z;
@@ -1805,19 +1812,19 @@ int ImageView::keyDown(unsigned int rawkey)
 	}
       return 1;
     }
-  else if ( rawkey == '.' )
+  else if ( kZoomIn.match( rawkey ) )
     {
       zoom_under_mouse( _zoom * 2.0f, 
 			fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == ',' )
+  else if ( kZoomOut.match( rawkey ) )
     {
       zoom_under_mouse( _zoom * 0.5f, 
 			fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == ' ' ) 
+  else if ( kFullScreen.match( rawkey ) ) 
     {
       // full screen...
       if ( fltk_main()->border() )
@@ -1835,18 +1842,18 @@ int ImageView::keyDown(unsigned int rawkey)
       xoffset = yoffset = 0;
       return 1;
     }
-  else if ( rawkey == 'f' ) 
+  else if ( kFitScreen.match( rawkey ) ) 
     {
       fit_image();
       return 1;
     }
-  else if ( rawkey == 's' )
+  else if ( kSafeAreas.match( rawkey ) )
     {
       _safeAreas ^= true;
       redraw();
       return 1;
     }
-  else if ( rawkey == 'w' )
+  else if ( kWipe.match( rawkey ) )
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
@@ -1868,19 +1875,19 @@ int ImageView::keyDown(unsigned int rawkey)
      redraw();
      return 1;
   }
-  else if ( rawkey == 'x' )
+  else if ( kFlipX.match( rawkey ) )
   {
      _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
      redraw();
      return 1;
   }
-  else if ( rawkey == 'y' )
+  else if ( kFlipY.match( rawkey ) )
   {
      _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
      redraw();
      return 1;
   }
-  else if ( rawkey == fltk::LeftKey || rawkey == fltk::Keypad4 ) 
+  else if ( kFrameStepBack.match(rawkey) ) 
     {
       if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
 	   fltk::event_key_state( fltk::RightCtrlKey ) )
@@ -1901,7 +1908,7 @@ int ImageView::keyDown(unsigned int rawkey)
 	}
       return 1;
     }
-  else if ( rawkey == fltk::RightKey || rawkey == fltk::Keypad6 ) 
+  else if ( kFrameStepFwd.match( rawkey ) ) 
     {
       if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
 	   fltk::event_key_state( fltk::RightCtrlKey ) )
@@ -1922,7 +1929,7 @@ int ImageView::keyDown(unsigned int rawkey)
 	}
       return 1;
     }
-  else if ( rawkey == fltk::UpKey || rawkey == fltk::Keypad8 ) 
+  else if ( kPlayBack.match( rawkey ) ) 
     {
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
@@ -1943,7 +1950,7 @@ int ImageView::keyDown(unsigned int rawkey)
       play_backwards();
       return 1;
     }
-  else if ( rawkey == fltk::DownKey || rawkey == fltk::Keypad2 ) 
+  else if ( kPlayFwd.match( rawkey ) ) 
     {
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
@@ -1963,24 +1970,24 @@ int ImageView::keyDown(unsigned int rawkey)
       play_forwards();
       return 1;
     }
-  else if ( rawkey == fltk::ReturnKey || rawkey == fltk::Keypad5 ) 
+  else if ( kStop.match( rawkey ) ) 
     {
       stop();
       return 1;
     }
-  else if ( rawkey == fltk::PageUpKey ) 
+  else if ( kPreviousImage.match( rawkey ) ) 
     {
       previous_image_cb(this, browser());
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == fltk::PageDownKey ) 
+  else if ( kNextImage.match( rawkey ) ) 
     {
       next_image_cb(this, browser());
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == fltk::HomeKey ) 
+  else if ( kFirstFrame.match( rawkey ) ) 
     {
       if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
 	   fltk::event_key_state( fltk::RightCtrlKey ) )
@@ -1990,7 +1997,7 @@ int ImageView::keyDown(unsigned int rawkey)
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == fltk::EndKey ) 
+  else if ( kLastFrame.match( rawkey ) ) 
     {
       if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
 	   fltk::event_key_state( fltk::RightCtrlKey ) )
@@ -2000,13 +2007,13 @@ int ImageView::keyDown(unsigned int rawkey)
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == fltk::TabKey ) 
+  else if ( kToggleBG.match( rawkey ) ) 
     {
       toggle_background();
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
-  else if ( rawkey == fltk::F1Key )
+  else if ( kToggleTopBar.match( rawkey ) )
     {
       if ( uiMain->uiTopBar->visible() ) uiMain->uiTopBar->hide();
       else uiMain->uiTopBar->show();
@@ -2016,7 +2023,7 @@ int ImageView::keyDown(unsigned int rawkey)
       uiMain->uiRegion->redraw();
       return 1;
     }
-  else if ( rawkey == fltk::F2Key )
+  else if ( kTogglePixelBar.match( rawkey ) )
     {
       if ( uiMain->uiPixelBar->visible() ) uiMain->uiPixelBar->hide();
       else uiMain->uiPixelBar->show();
@@ -2026,7 +2033,7 @@ int ImageView::keyDown(unsigned int rawkey)
       uiMain->uiRegion->redraw();
       return 1;
     }
-  else if ( rawkey == fltk::F3Key )
+  else if ( kToggleTimeline.match( rawkey ) )
     {
       if ( uiMain->uiBottomBar->visible() ) uiMain->uiBottomBar->hide();
       else uiMain->uiBottomBar->show();
@@ -2036,7 +2043,7 @@ int ImageView::keyDown(unsigned int rawkey)
       uiMain->uiRegion->redraw();
       return 1;
     }
-  else if ( rawkey == fltk::F12Key )
+  else if ( kTogglePresentation.match( rawkey ) )
     {
       toggle_fullscreen();
       return 1;

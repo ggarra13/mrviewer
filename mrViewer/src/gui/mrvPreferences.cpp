@@ -234,6 +234,7 @@ namespace mrv {
   LogUI*            ViewerUI::uiLog   = NULL;
   PreferencesUI*    ViewerUI::uiPrefs = NULL;
   ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
+  HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
 
   std::string         Preferences::ODT_CTL_transform;
