@@ -49,6 +49,8 @@ decl {\#include "gui/mrvPreferences.h"} {}
 
 decl {\#include "gui/mrvLogDisplay.h"} {} 
 
+decl {\#include "gui/mrvHotkey.h"} {} 
+
 decl {\#include "mrvPlayback.h"} {} 
 
 decl {\#include "mrvVersion.h"} {} 
@@ -65,7 +67,7 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
   {fltk::Window} {} {
     label {CTL Browser}
@@ -144,6 +146,8 @@ namespace mrv {open
   decl {class ICCProfileListUI;} {public
   }
   decl {class ColorAreaUI;} {public
+  }
+  decl {class HotkeyUI;} {public
   }
   class ReelUI {} {
     Function {make_window(ViewerUI* main)} {private
@@ -292,8 +296,7 @@ o->child_of( main->uiMain );}
       code {delete uiMain;} {}
     }
   }
-  class AboutUI {open
-  } {
+  class AboutUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -547,8 +550,7 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
@@ -1933,8 +1935,8 @@ o->child_of( main->uiMain );} modal
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
-        label {Log Messages} open
-        xywh {485 182 635 250} hide resizable
+        label {Log Messages}
+        xywh {487 205 635 250} hide resizable
         extra_code {o->child_of( main->uiMain );}
       } {
         {fltk::Group} {} {open
@@ -1963,7 +1965,8 @@ o->child_of( main->uiMain );} modal
         }
       }
     }
-    Function {LogUI(ViewerUI* m)} {} {
+    Function {LogUI(ViewerUI* m)} {open
+    } {
       code {make_window( m );} {}
     }
     Function {~LogUI()} {} {
@@ -1995,6 +1998,35 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain;} {}
     }
   }
+  class HotkeyUI {open
+  } {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label Hotkeys open
+        xywh {805 233 450 400} resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );} modal visible
+      } {
+        {fltk::Group} {} {open selected
+          xywh {5 25 445 375} vertical
+        } {
+          {fltk::Browser} uiFunction {
+            label Function open
+            xywh {20 0 415 360}
+            extra_code {mrv::fill_uiFunction( o );}
+          } {}
+        }
+      }
+    }
+    Function {HotkeyUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~HotkeyUI()} {open
+    } {
+      code {delete uiMain;} {}
+    }
+  }
   class ViewerUI {open
   } {
     decl {static PreferencesUI* uiPrefs;} {public
@@ -2004,6 +2036,8 @@ o->child_of( main->uiMain );} modal
     decl {static AboutUI* uiAbout;} {public
     }
     decl {static ICCProfileListUI* uiICCProfiles;} {public
+    }
+    decl {static HotkeyUI* uiHotkey;} {public
     }
     decl {ReelUI* uiReelWindow;} {public
     }
@@ -2017,15 +2051,15 @@ o->child_of( main->uiMain );} modal
     }
     decl {DatabaseUI* uiDatabase;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
-        xywh {164 126 640 530} when CHANGED resizable
+        callback {delete v;}
+        xywh {638 208 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2033,11 +2067,11 @@ o->main( this );}
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
         } {
-          {fltk::Group} uiTopBar {
+          {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W
+              label W open
               tooltip {Opens different windows}
               xywh {5 5 20 20}
             } {
@@ -2079,6 +2113,9 @@ v->uiICCProfiles->uiMain->show();}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiPrefs->uiMain->child_of( v->uiMain );
 v->uiPrefs->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label Hotkeys
                 }
               {fltk::Item} {} {
                 label Logs
@@ -2802,7 +2839,7 @@ o->value(1);
 v->uiStartFrame->value( f );
 v->uiStartFrame->redraw();
 v->uiTimeline->minimum( f );
-v->uiTimeline->redraw();} selected
+v->uiTimeline->redraw();}
                       xywh {0 2 20 22}
                     }
                     {fltk::Button} {} {
@@ -2836,7 +2873,8 @@ v->uiTimeline->redraw();}
           }
         }
       }
-      code {if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
+      code {if (!uiHotkey) uiHotkey = new HotkeyUI(this);
+if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
 uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
