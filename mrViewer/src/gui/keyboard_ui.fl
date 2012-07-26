@@ -1,0 +1,135 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <cstdio>} {} 
+
+decl {\#include <iostream>} {} 
+
+decl {\#include <fltk/events.h>} {} 
+
+decl {\#include "mrvHotkey.h"} {public
+} 
+
+namespace mrv {open
+} {
+  class ChooseHotkey {open
+  } {
+    decl {mrv::Hotkey hk;} {public
+    }
+    decl {mrv::Hotkey backup;} {public
+    }
+    Function {make_window()} {open
+    } {
+      {fltk::Window} uiMain {open
+        xywh {641 525 360 130} resizable
+        extra_code {o->shortcut(0);} modal visible
+      } {
+        {fltk::Input} uiKey {
+          label Key
+          xywh {45 5 140 25}
+        }
+        {fltk::CheckButton} uiShift {
+          label Shift
+          xywh {20 38 20 25}
+        }
+        {fltk::CheckButton} uiCtrl {
+          label Ctrl
+          xywh {75 39 25 25}
+        }
+        {fltk::CheckButton} uiAlt {
+          label Alt
+          xywh {125 40 25 25}
+        }
+        {fltk::CheckButton} uiMeta {
+          label Meta
+          xywh {170 40 25 25}
+        }
+        {fltk::Button} {} {
+          label Okay
+          user_data this user_data_type {ChooseHotkey*}
+          callback {v->hk.ctrl  = v->uiCtrl->value();
+v->hk.alt   = v->uiAlt->value();
+v->hk.meta  = v->uiMeta->value();
+v->hk.shift = v->uiShift->value();
+
+if ( v->uiKey->text() )
+{
+  std::string text = v->uiKey->text();
+
+  unsigned key = 0;
+  for (int i = 0; i < 45; i++)
+     if (text == table[i].text) {key = table[i].n; break;}
+
+  if ( key == 0 )
+  {
+	char buffer[128];
+  	for( int i = fltk::F1Key; i <= fltk::F12Key; ++i )
+  	{
+		sprintf(buffer, "F%d", i - fltk::F0Key);
+     		if ( text == buffer ) { key = i; break; }
+  	}
+  }
+
+  if ( key > 0 ) v->hk.key = key;
+  else v->hk.key = v->uiKey->text()[0];
+  v->hk.text = v->uiKey->text();
+}
+
+v->uiMain->hide();}
+          xywh {250 86 51 24}
+        }
+        {fltk::Button} {} {
+          label Cancel
+          user_data this user_data_type {ChooseHotkey*}
+          callback {v->hk = v->backup;
+v->uiMain->hide();}
+          xywh {305 86 50 24}
+        }
+      }
+    }
+    Function {ChooseHotkey( const mrv::Hotkey& h )} {open
+    } {
+      code {backup = h;
+hk = h;} {}
+    }
+    Function {fill()} {open
+    } {
+      code {uiCtrl->value( hk.ctrl );
+uiMeta->value( hk.meta );
+uiAlt->value( hk.alt );
+uiShift->value( hk.shift );
+
+char buffer[100];
+const char *keyname = buffer;
+unsigned k = hk.key;
+if (!k) {
+      keyname = "0";
+   } else if (k <= 7) {
+      sprintf(buffer, "(mouse button %d)", k);
+   } else if (k < 256 && k != 32) {
+      sprintf(buffer, "%c", k);
+   } else if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
+      sprintf(buffer, "F%d", k - fltk::F0Key);
+   } else {
+      sprintf(buffer, "0x%04x", k);
+      for (int i = 0; i < 45; i++)
+	 if (table[i].n == k) {keyname = table[i].text; break;}
+   }
+
+if (k == 0 )
+   uiKey->text( hk.text.c_str() );
+else
+   uiKey->text( keyname );} {}
+    }
+    Function {~ChooseHotkey()} {open
+    } {
+      code {delete uiMain; uiMain = NULL;} {selected
+      }
+    }
+  }
+} 

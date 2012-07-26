@@ -43,6 +43,7 @@ namespace fs = boost::filesystem;
 #include "gui/FLU/Flu_File_Chooser.h"
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvHotkey.h"
 
 // Widgets
 #include "mrvColorAreaUI.h"
@@ -619,6 +620,42 @@ namespace mrv {
 	  }
       }
 
+    //
+    // Hotkeys
+    //
+    fltk::Preferences keys( base, "hotkeys" );
+    for ( int i = 0; hotkeys[i].name != "END"; ++i )
+    {
+       keys.get( (hotkeys[i].name + " ctrl").c_str(), 
+		 tmp, (int)hotkeys[i].hotkey.ctrl );
+       if ( tmp ) hotkeys[i].hotkey.ctrl = true;
+       else       hotkeys[i].hotkey.ctrl = false;
+       keys.get( (hotkeys[i].name + " alt").c_str(), 
+		 tmp, (int)hotkeys[i].hotkey.alt );
+       if ( tmp ) hotkeys[i].hotkey.alt = true;
+       else       hotkeys[i].hotkey.alt = false;
+
+       keys.get( (hotkeys[i].name + " meta").c_str(), 
+		 tmp, (int)hotkeys[i].hotkey.meta );
+       if ( tmp ) hotkeys[i].hotkey.meta = true;
+       else       hotkeys[i].hotkey.meta = false;
+
+
+       keys.get( (hotkeys[i].name + " shift").c_str(), 
+		 tmp, (int)hotkeys[i].hotkey.shift );
+       if ( tmp ) hotkeys[i].hotkey.shift = true;
+       else       hotkeys[i].hotkey.shift = false;
+
+       keys.get( (hotkeys[i].name + " key").c_str(), 
+		 tmp, (int)hotkeys[i].hotkey.key );
+       hotkeys[i].hotkey.key = unsigned(tmp);
+       
+       keys.get( (hotkeys[i].name + " text").c_str(), 
+		 tmpS, 
+		 hotkeys[i].hotkey.text.c_str(), 16 );
+       hotkeys[i].hotkey.text = tmpS;
+
+    }
 
     // Add FLTK image handler (for file requester icons) 
     fltk::SharedImage::add_handler( mrv::fltk_handler );
@@ -996,6 +1033,26 @@ namespace mrv {
       driver = uiPrefs->DatabaseDriver->child(i)->label();
     if ( driver ) db.set( "driver", driver );
 
+    //
+    // Hotkeys
+    //
+    fltk::Preferences keys( base, "hotkeys" );
+    for ( int i = 0; hotkeys[i].name != "END"; ++i )
+    {
+       keys.set( (hotkeys[i].name + " ctrl").c_str(), 
+		 hotkeys[i].hotkey.ctrl );
+       keys.set( (hotkeys[i].name + " alt").c_str(), 
+		 hotkeys[i].hotkey.alt );
+       keys.set( (hotkeys[i].name + " meta").c_str(), 
+		 hotkeys[i].hotkey.meta );
+       keys.set( (hotkeys[i].name + " shift").c_str(), 
+		 hotkeys[i].hotkey.shift );
+       keys.set( (hotkeys[i].name + " key").c_str(), 
+		 (int)hotkeys[i].hotkey.key );
+       keys.set( (hotkeys[i].name + " text").c_str(), 
+		 hotkeys[i].hotkey.text.c_str() );
+
+    }
   }
 
 

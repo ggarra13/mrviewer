@@ -90,6 +90,7 @@ FLTK_WRAP_UI( mrViewer
   gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl  
   gui/mrViewer.fl 
+  gui/keyboard_ui.fl 
   )
 
 

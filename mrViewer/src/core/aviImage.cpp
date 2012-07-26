@@ -1438,10 +1438,16 @@ bool aviImage::initialize()
     {
       AVDictionary *opts = NULL;
       av_dict_set(&opts, "initial_pause", "1", 0);
+      // av_dict_set(&opts, "probesize", 50 * AV_TIME_BASE );
+      // av_dict_set(&opts, "analyzeduration", 50 * AV_TIME_BASE );
 
       AVInputFormat*     format = NULL;
       int error = avformat_open_input( &_context, filename(), 
 				       format, &opts );
+
+      // Change probesize and analyze duration to 50 secs to detect subtitles.
+      _context->probesize = 50 * AV_TIME_BASE;
+      _context->max_analyze_duration = 50 * AV_TIME_BASE;
 
       if ( error >= 0 )
 	{
