@@ -38,10 +38,22 @@ Hotkey kFlipY( false, false, false, false, 'y' );
 
 Hotkey kFrameStepBack( false, false, false, false, fltk::LeftKey, "", 
 		       fltk::Keypad4 );
+Hotkey kFrameStepFPSBack( true, false, false, false, fltk::LeftKey, "", 
+			  fltk::Keypad4 );
 Hotkey kFrameStepFwd( false, false, false, false, fltk::RightKey, "", 
 		      fltk::Keypad6 );
+Hotkey kFrameStepFPSFwd( true, false, false, false, fltk::RightKey, "", 
+			 fltk::Keypad6 );
+Hotkey kPlayBackTwiceSpeed( true, false, false, false, 
+			    fltk::UpKey, "", fltk::Keypad8 );
+Hotkey kPlayBackHalfSpeed( false, false, true, false, 
+			   fltk::UpKey, "", fltk::Keypad8 );
 Hotkey kPlayBack( false, false, false, false, fltk::UpKey, "", fltk::Keypad8 );
 Hotkey kPlayFwd( false, false, false, false, fltk::DownKey, "", fltk::Keypad2 );
+Hotkey kPlayFwdTwiceSpeed( true, false, false, false, 
+			   fltk::DownKey, "", fltk::Keypad2 );
+Hotkey kPlayFwdHalfSpeed( false, false, true, false, 
+			  fltk::DownKey, "", fltk::Keypad2 );
 Hotkey kStop( false, false, false, false, fltk::ReturnKey, "", fltk::Keypad5 );
 
 Hotkey kPreviousImage( false, false, false, false, fltk::PageUpKey );
@@ -87,9 +99,15 @@ HotkeyEntry( _("Wipe"), kWipe),
 HotkeyEntry( _("Flip X"), kFlipX),
 HotkeyEntry( _("Flip Y"), kFlipY),
 HotkeyEntry( _("Frame Step Backwards"), kFrameStepBack),
+HotkeyEntry( _("Frame Step FPS Backwards"), kFrameStepFPSBack),
 HotkeyEntry( _("Frame Step Forwards"), kFrameStepFwd),
+HotkeyEntry( _("Frame Step FPS Forwards"), kFrameStepFPSFwd),
 HotkeyEntry( _("Play Backwards"), kPlayBack),
+HotkeyEntry( _("Play Backwards X2  Speed"), kPlayBackTwiceSpeed),
+HotkeyEntry( _("Play Backwards 1/2 Speed"), kPlayBackHalfSpeed),
 HotkeyEntry( _("Play Forwards"), kPlayFwd),
+HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
+HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
 HotkeyEntry( _("Stop"), kStop),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
 HotkeyEntry( _("Next Image"), kNextImage ),
