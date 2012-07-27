@@ -68,8 +68,8 @@ struct Hotkey
 	}
 	if ( shift )
 	{ 
-	   if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-		fltk::event_key_state( fltk::RightCtrlKey ) )
+	   if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+		fltk::event_key_state( fltk::RightShiftKey ) )
 	      ok = true;
 	   else
 	      return false;
@@ -145,9 +145,15 @@ extern Hotkey kFlipX;
 extern Hotkey kFlipY;
 
 extern Hotkey kFrameStepBack;
+extern Hotkey kFrameStepFPSBack;
 extern Hotkey kFrameStepFwd;
+extern Hotkey kFrameStepFPSFwd;
 extern Hotkey kPlayBack;
+extern Hotkey kPlayBackTwiceSpeed;
+extern Hotkey kPlayBackHalfSpeed;
 extern Hotkey kPlayFwd;
+extern Hotkey kPlayFwdTwiceSpeed;
+extern Hotkey kPlayFwdHalfSpeed;
 extern Hotkey kStop;
 
 extern Hotkey kPreviousImage;

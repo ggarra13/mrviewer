@@ -15,6 +15,8 @@ decl {\#include <fltk/events.h>} {}
 decl {\#include "mrvHotkey.h"} {public
 } 
 
+decl {\#include <fltk/Item.h>} {} 
+
 namespace mrv {open
 } {
   class ChooseHotkey {open
@@ -25,8 +27,9 @@ namespace mrv {open
     }
     Function {make_window()} {open
     } {
-      {fltk::Window} uiMain {open
-        xywh {641 525 360 130} resizable
+      {fltk::Window} uiMain {
+        label {Choose Hotkey} open
+        xywh {653 631 360 130} resizable
         extra_code {o->shortcut(0);} modal visible
       } {
         {fltk::Input} uiKey {
@@ -90,6 +93,24 @@ v->uiMain->hide();}
 v->uiMain->hide();}
           xywh {305 86 50 24}
         }
+        {fltk::PopupMenu} uiSpecialKey {
+          label Special
+          user_data uiKey user_data_type {fltk::Input*}
+          callback {int idx = o->value();
+const char* text = o->child(idx)->label();
+uiKey->text( text );} open selected
+          xywh {195 5 65 25}
+          extra_code {for (int i = 0; i < 45; i++)
+{
+   uiSpecialKey->add( table[i].text );
+}
+char buf[128];
+for (int i = 1; i < 13; i++)
+{
+   sprintf( buf, "F%d", i );
+   uiSpecialKey->add(buf);
+}}
+        } {}
       }
     }
     Function {ChooseHotkey( const mrv::Hotkey& h )} {open
@@ -118,7 +139,12 @@ if (!k) {
    } else {
       sprintf(buffer, "0x%04x", k);
       for (int i = 0; i < 45; i++)
-	 if (table[i].n == k) {keyname = table[i].text; break;}
+      {
+	 if (table[i].n == k) {
+	 	keyname = table[i].text; 
+	 	break;
+	 }
+	}
    }
 
 if (k == 0 )
@@ -128,8 +154,7 @@ else
     }
     Function {~ChooseHotkey()} {open
     } {
-      code {delete uiMain; uiMain = NULL;} {selected
-      }
+      code {delete uiMain; uiMain = NULL;} {}
     }
   }
 } 

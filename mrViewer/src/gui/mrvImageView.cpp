@@ -1894,67 +1894,103 @@ int ImageView::keyDown(unsigned int rawkey)
      redraw();
      return 1;
   }
+  else if ( kFrameStepFPSBack.match(rawkey) ) 
+   {
+      mrv::media fg = foreground();
+      if ( ! fg ) return 1;
+      
+      const CMedia* img = fg->image();
+      
+      double fps = 24;
+      if ( img ) fps = img->play_fps();
+      
+      step_frame( int64_t(-fps) );
+      return 1;
+   }
   else if ( kFrameStepBack.match(rawkey) ) 
-    {
-      if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-	   fltk::event_key_state( fltk::RightCtrlKey ) )
-	{
-	  mrv::media fg = foreground();
-	  if ( ! fg ) return 1;
+  {
+     step_frame( -1 );
+     return 1;
+  }
+  else if ( kFrameStepFPSBack.match(rawkey) ) 
+  {
+     mrv::media fg = foreground();
+     if ( ! fg ) return 1;
 	  
-	  const CMedia* img = fg->image();
-
-	  double fps = 24;
-	  if ( img ) fps = img->play_fps();
-
-	  step_frame( int64_t(-fps) );
-	}
-      else
-	{
-	  step_frame( -1 );
-	}
-      return 1;
-    }
+     const CMedia* img = fg->image();
+     
+     double fps = 24;
+     if ( img ) fps = img->play_fps();
+     
+     step_frame( int64_t(fps) );
+     return 1;
+  }
   else if ( kFrameStepFwd.match( rawkey ) ) 
-    {
-      if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-	   fltk::event_key_state( fltk::RightCtrlKey ) )
-	{
-	  mrv::media fg = foreground();
-	  if ( ! fg ) return 1;
-	  
-	  const CMedia* img = fg->image();
+  {
+     step_frame( 1 );
+     return 1;
+  }
+  else if ( kPlayBackTwiceSpeed.match( rawkey ) )
+  {
+      mrv::media fg = foreground();
+      if ( ! fg ) return 1;
 
-	  double fps = 24;
-	  if ( img ) fps = img->play_fps();
-
-	  step_frame( int64_t(fps) );
-	}
-      else
-	{
-	  step_frame( 1 );
-	}
+      const CMedia* img = fg->image();
+      double FPS = 24;
+      if ( img ) FPS = img->play_fps();
+      fps( FPS * 2 );
+      play_backwards();
       return 1;
-    }
+  }
+  else if ( kPlayBackHalfSpeed.match( rawkey ) )
+  {
+      mrv::media fg = foreground();
+      if ( ! fg ) return 1;
+
+      const CMedia* img = fg->image();
+      double FPS = 24;
+      if ( img ) FPS = img->play_fps();
+      fps( FPS / 2 );
+      play_backwards();
+      return 1;
+  }
   else if ( kPlayBack.match( rawkey ) ) 
     {
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
 
       const CMedia* img = fg->image();
+      double FPS = 24;
+      if ( img ) FPS = img->play_fps();
+      fps( FPS );
 
+      play_backwards();
+      return 1;
+    }
+  else if ( kPlayFwdTwiceSpeed.match( rawkey ) ) 
+    {
+      mrv::media fg = foreground();
+      if ( ! fg ) return 1;
+
+      const CMedia* img = fg->image();
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
 
-      if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-	   fltk::event_key_state( fltk::RightCtrlKey ) )
-	fps( FPS * 2 );
-      else if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-		fltk::event_key_state( fltk::RightShiftKey )  )
-	fps( FPS / 2 );
-      else
-	fps( FPS );
-      play_backwards();
+      fps( FPS * 2 );
+      play_forwards();
+      return 1;
+    }
+  else if ( kPlayFwdHalfSpeed.match( rawkey ) ) 
+    {
+      mrv::media fg = foreground();
+      if ( ! fg ) return 1;
+
+      const CMedia* img = fg->image();
+      double FPS = 24;
+      if ( img ) FPS = img->play_fps();
+
+      fps( FPS / 2 );
+      play_forwards();
       return 1;
     }
   else if ( kPlayFwd.match( rawkey ) ) 
@@ -1965,15 +2001,8 @@ int ImageView::keyDown(unsigned int rawkey)
       const CMedia* img = fg->image();
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
+      fps( FPS );
 
-      if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-	   fltk::event_key_state( fltk::RightCtrlKey ) )
-	fps( FPS * 2 );
-      else if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-		fltk::event_key_state( fltk::RightShiftKey ) )
-	fps( FPS / 2 );
-      else
-	fps( FPS );
       play_forwards();
       return 1;
     }

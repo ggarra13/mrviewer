@@ -38,9 +38,14 @@ using namespace std;
 #include "mrViewer.h"
 #include "CMedia.h"
 #include "exrImage.h"
+#include "mrvIO.h"
 
 #include "mrvI8N.h"
 
+
+namespace {
+const char* kModule = "info";
+}
 
 namespace mrv
 {
@@ -525,6 +530,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	  {
+	     LOG_INFO( "hdr: " << i->first );
 	    add_text( i->first.c_str(), i->second.c_str(), false );
 	  }
 	m_curr->layout();
@@ -868,7 +874,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     int hh = line_height();
     fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, 
+					       strdup( name ) );
       widget->box( fltk::FLAT_BOX );
       widget->color( colA );
       widget->labelcolor( fltk::BLACK );
