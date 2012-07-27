@@ -1912,7 +1912,7 @@ int ImageView::keyDown(unsigned int rawkey)
      step_frame( -1 );
      return 1;
   }
-  else if ( kFrameStepFPSBack.match(rawkey) ) 
+  else if ( kFrameStepFPSFwd.match(rawkey) ) 
   {
      mrv::media fg = foreground();
      if ( ! fg ) return 1;
