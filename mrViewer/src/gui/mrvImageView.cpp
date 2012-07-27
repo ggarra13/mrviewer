@@ -1181,11 +1181,11 @@ void ImageView::leftMouseDown(int x, int y)
       if ( (flags & kLeftAlt) == 0 )
       {
 	 fltk::Menu menu(0,0,0,0);
-	 menu.add( _("File/Open"), fltk::CTRL + 'o',
+	 menu.add( _("File/Open"), kOpenImage.hotkey(),
 		   (fltk::Callback*)open_cb, browser() ); 
 	 mrv::media fg = foreground();
 	 if ( fg )
-	    menu.add( _("File/Save Frame As"), fltk::CTRL + 's',
+	    menu.add( _("File/Save Frame As"), kSaveImage.hotkey(),
 		      (fltk::Callback*)save_cb, browser() ); 
 	 
 	 char buf[256];
@@ -1203,7 +1203,7 @@ void ImageView::leftMouseDown(int x, int y)
 	 if ( fg && fg->image()->has_picture() )
 	 {
 
-	    menu.add( "View/Safe Areas", 's', 
+	    menu.add( "View/Safe Areas", kSafeAreas.hotkey(), 
 		      (fltk::Callback*)safe_areas_cb, this );
 	    
 	    num = uiMain->uiPrefs->uiPrefsCropArea->children();
@@ -1228,9 +1228,9 @@ void ImageView::leftMouseDown(int x, int y)
 	       if ( hud() & (1 << i) ) item->set();
 	    }
 	    
-      	    menu.add( _("Image/Next"), fltk::PageDownKey, 
+      	    menu.add( _("Image/Next"), kNextImage.hotkey(), 
 		      (fltk::Callback*)next_image_cb, browser());
-	    menu.add( _("Image/Previous"), fltk::PageUpKey, 
+	    menu.add( _("Image/Previous"), kPreviousImage.hotkey(), 
 		      (fltk::Callback*)previous_image_cb, 
 		      browser(), fltk::MENU_DIVIDER);
 
@@ -1251,17 +1251,18 @@ void ImageView::leftMouseDown(int x, int y)
 	    }
 	    
 	    menu.add( _("Image/Attach CTL Rendering Transform"), 
-		      fltk::COMMAND + 'T', 
+		      kCTLScript.hotkey(), 
 		      (fltk::Callback*)attach_ctl_script_cb, 
 		      this, fltk::MENU_DIVIDER);
 	    menu.add( _("Image/Attach ICC Color Profile"), 
-		      fltk::COMMAND + 'I', 
+		      kIccProfile.hotkey(), 
 		      (fltk::Callback*)attach_color_profile_cb, 
 		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Set as Background"), 0, 
+	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(), 
 		      (fltk::Callback*)set_as_background_cb, 
 		      (void*)this);
-	    menu.add( _("Image/Toggle Background"), fltk::TabKey, 
+	    menu.add( _("Image/Toggle Background"), 
+		      kToggleBG.hotkey(), 
 		      (fltk::Callback*)toggle_background_cb, (void*)this);
 	    
 	    Image_ptr image = fg->image();
@@ -1290,23 +1291,23 @@ void ImageView::leftMouseDown(int x, int y)
 
 	    if ( fg->image()->is_sequence() )
 	    {
-	        menu.add( _("Audio/Attach Audio File"), 0,
+	       menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
 	     		 (fltk::Callback*)attach_audio_cb, this );
 	    }
 
 	    menu.add( _("Pixel/Copy RGBA Values to Clipboard"), 
-		      fltk::COMMAND + 'c', 
+		      kCopyRGBAValues.hotkey(), 
 		      (fltk::Callback*)copy_pixel_rgba_cb, (void*)this);
 	 }
 
 
 
 	  menu.add( _("Monitor/Attach CTL Display Transform"), 
-		   fltk::COMMAND + 'M', 
+		    kMonitorCTLScript.hotkey(), 
 		   (fltk::Callback*)monitor_ctl_script_cb, 
 		   NULL);
 	  menu.add( _("Monitor/Attach ICC Color Profile"), 
-		   fltk::COMMAND + 'N', 
+		    kMonitorIccProfile.hotkey(), 
 		    (fltk::Callback*)monitor_icc_profile_cb, 
 		    this, fltk::MENU_DIVIDER);
 
@@ -1770,6 +1771,12 @@ int ImageView::keyDown(unsigned int rawkey)
    if ( kMonitorIccProfile.match( rawkey ) )
    {
       monitor_icc_profile_cb( NULL, NULL );
+      return 1;
+   }
+
+   if ( kSetAsBG.match( rawkey ) )
+   {
+      set_as_background_cb( NULL, this );
       return 1;
    }
 

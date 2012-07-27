@@ -10,6 +10,8 @@
 #include "keyboard_ui.h"
 #include "mrViewer.h"
 
+#include "core/mrvI8N.h"
+
 #include "mrvHotkey.h"
 
 
@@ -63,99 +65,108 @@ Hotkey kExposureLess( false, false, false, false, 0, "[" );
 Hotkey kGammaMore( false, false, false, false, 0, ")" );
 Hotkey kGammaLess( false, false, false, false, 0, "(" );
 
+Hotkey kSetAsBG( false, false, false, false, 0 );
+
+
+Hotkey kAttachAudio( false, false, false, false, 0 );
+Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
+
 
 HotkeyEntry hotkeys[] = {
-HotkeyEntry("Open Image", kOpenImage),
-HotkeyEntry("Save Image", kSaveImage),
-HotkeyEntry("Image Icc Profile", kIccProfile ),
-HotkeyEntry("Image CTL script", kCTLScript ),
-HotkeyEntry("Monitor Icc Profile", kMonitorIccProfile ),
-HotkeyEntry("Monitor CTL script", kMonitorCTLScript ),
-HotkeyEntry("Zoom Minimum", kZoomMin),
-HotkeyEntry("Zoom Maximum", kZoomMax),
-HotkeyEntry("Fit Screen", kFitScreen),
-HotkeyEntry("Safe Areas", kSafeAreas),
-HotkeyEntry("Wipe", kWipe),
-HotkeyEntry("Flip X", kFlipX),
-HotkeyEntry("Flip Y", kFlipY),
-HotkeyEntry("Frame Step Backwards", kFrameStepBack),
-HotkeyEntry("Frame Step Forwards", kFrameStepFwd),
-HotkeyEntry("Play Backwards", kPlayBack),
-HotkeyEntry("Play Forwards", kPlayFwd),
-HotkeyEntry("Stop", kStop),
-HotkeyEntry("Previous Image", kPreviousImage ),
-HotkeyEntry("Next Image", kNextImage ),
-HotkeyEntry("First Frame", kFirstFrame ),
-HotkeyEntry("Last Frame", kLastFrame ),
-HotkeyEntry("Toggle Background", kToggleBG ),
-HotkeyEntry("Toggle Top Bar", kToggleTopBar ),
-HotkeyEntry("Toggle Pixel Bar", kTogglePixelBar ),
-HotkeyEntry("Toggle Bottom Bar", kToggleTimeline ),
-HotkeyEntry("Toggle Full Screen", kFullScreen),
-HotkeyEntry("Toggle Presentation", kTogglePresentation ),
-HotkeyEntry("Scrub", kScrub),
-HotkeyEntry("Exposure More", kExposureMore),
-HotkeyEntry("Exposure Less", kExposureLess),
-HotkeyEntry("Gamma More", kGammaMore),
-HotkeyEntry("Gamma Less", kGammaLess),
-HotkeyEntry("END", kGammaLess),
+HotkeyEntry( _("Open Image"), kOpenImage),
+HotkeyEntry( _("Save Image"), kSaveImage),
+HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
+HotkeyEntry( _("Image CTL script"), kCTLScript ),
+HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
+HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
+HotkeyEntry( _("Zoom Minimum"), kZoomMin),
+HotkeyEntry( _("Zoom Maximum"), kZoomMax),
+HotkeyEntry( _("Fit Screen"), kFitScreen),
+HotkeyEntry( _("Safe Areas"), kSafeAreas),
+HotkeyEntry( _("Wipe"), kWipe),
+HotkeyEntry( _("Flip X"), kFlipX),
+HotkeyEntry( _("Flip Y"), kFlipY),
+HotkeyEntry( _("Frame Step Backwards"), kFrameStepBack),
+HotkeyEntry( _("Frame Step Forwards"), kFrameStepFwd),
+HotkeyEntry( _("Play Backwards"), kPlayBack),
+HotkeyEntry( _("Play Forwards"), kPlayFwd),
+HotkeyEntry( _("Stop"), kStop),
+HotkeyEntry( _("Previous Image"), kPreviousImage ),
+HotkeyEntry( _("Next Image"), kNextImage ),
+HotkeyEntry( _("First Frame"), kFirstFrame ),
+HotkeyEntry( _("Last Frame"), kLastFrame ),
+HotkeyEntry( _("Toggle Background"), kToggleBG ),
+HotkeyEntry( _("Toggle Top Bar"), kToggleTopBar ),
+HotkeyEntry( _("Toggle Pixel Bar"), kTogglePixelBar ),
+HotkeyEntry( _("Toggle Bottom Bar"), kToggleTimeline ),
+HotkeyEntry( _("Toggle Full Screen"), kFullScreen),
+HotkeyEntry( _("Toggle Presentation"), kTogglePresentation ),
+HotkeyEntry( _("Scrub"), kScrub),
+HotkeyEntry( _("Exposure More"), kExposureMore),
+HotkeyEntry( _("Exposure Less"), kExposureLess),
+HotkeyEntry( _("Gamma More"), kGammaMore),
+HotkeyEntry( _("Gamma Less"), kGammaLess),
+HotkeyEntry( _("Set As BG Image"), kSetAsBG),
+HotkeyEntry( _("Attach Audio File"), kAttachAudio),
+HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
+HotkeyEntry( N_("END"), kGammaLess),
 };
 
 
 struct TableText table[] = {
-  {fltk::EscapeKey, "Escape"},
-  {fltk::BackSpaceKey, "BackSpace"},
-  {fltk::TabKey, "Tab"},
-  {fltk::ReturnKey, "Return"},
-  {fltk::PrintKey, "Print"},
+{fltk::EscapeKey, _("Escape")},
+{fltk::BackSpaceKey, _("BackSpace")},
+{fltk::TabKey, _("Tab")},
+{fltk::ReturnKey, _("Return")},
+{fltk::PrintKey, _("Print")},
 
-  {fltk::ScrollLockKey, "ScrollLock"},
-  {fltk::PauseKey, "Pause"},
-  {fltk::InsertKey, "Insert"},
-  {fltk::HomeKey, "Home"},
-  {fltk::PageUpKey, "PageUp"},
+{fltk::ScrollLockKey, _("ScrollLock")},
+{fltk::PauseKey, _("Pause")},
+{fltk::InsertKey, _("Insert")},
+{fltk::HomeKey, _("Home")},
+{fltk::PageUpKey, _("PageUp")},
 
-  {fltk::DeleteKey, "Delete"},
-  {fltk::EndKey, "End"},
-  {fltk::PageDownKey, "PageDown"},
-  {fltk::LeftKey, "Left"},
-  {fltk::UpKey, "Up"},
+{fltk::DeleteKey, _("Delete")},
+{fltk::EndKey, _("End")},
+{fltk::PageDownKey, _("PageDown")},
+{fltk::LeftKey, _("Left")},
+{fltk::UpKey, _("Up")},
 
-  {fltk::RightKey, "Right"},
-  {fltk::DownKey, "Down"},
-  {fltk::LeftShiftKey, "LeftShift"},
-  {fltk::RightShiftKey, "RightShift"},
-  {fltk::LeftCtrlKey, "LeftCtrl"},
+{fltk::RightKey, _("Right")},
+{fltk::DownKey, _("Down")},
+{fltk::LeftShiftKey, _("LeftShift")},
+{fltk::RightShiftKey, _("RightShift")},
+{fltk::LeftCtrlKey, _("LeftCtrl")},
 
-  {fltk::RightCtrlKey, "RightCtrl"},
-  {fltk::CapsLockKey, "CapsLock"},
-  {fltk::LeftAltKey, "LeftAlt"},
-  {fltk::RightAltKey, "RightAlt"},
-  {fltk::LeftMetaKey, "LeftMeta"},
+{fltk::RightCtrlKey, _("RightCtrl")},
+{fltk::CapsLockKey, _("CapsLock")},
+{fltk::LeftAltKey, _("LeftAlt")},
+{fltk::RightAltKey, _("RightAlt")},
+{fltk::LeftMetaKey, _("LeftMeta")},
 
-  {fltk::RightMetaKey, "RightMeta"},
-  {fltk::MenuKey, "Menu"},
-  {fltk::NumLockKey, "NumLock"},
-  {fltk::KeypadEnter, "KeypadEnter"},
-  {fltk::MultiplyKey, "Multiply"},
+{fltk::RightMetaKey, _("RightMeta")},
+{fltk::MenuKey, _("Menu")},
+{fltk::NumLockKey, _("NumLock")},
+{fltk::KeypadEnter, _("KeypadEnter")},
+{fltk::MultiplyKey, _("Multiply")},
 
-  {fltk::AddKey, "Add"},
-  {fltk::SubtractKey, "Subtract"},
-  {fltk::DecimalKey, "Decimal"},
-  {fltk::DivideKey, "Divide"},
-  {fltk::Keypad0, "Keypad0"},
+{fltk::AddKey, _("Add")},
+{fltk::SubtractKey, _("Subtract")},
+{fltk::DecimalKey, _("Decimal")},
+{fltk::DivideKey, _("Divide")},
+{fltk::Keypad0, _("Keypad0")},
 
-  {fltk::Keypad1, "Keypad1"},
-  {fltk::Keypad2, "Keypad2"},
-  {fltk::Keypad3, "Keypad3"},
-  {fltk::Keypad4, "Keypad4"},
-  {fltk::Keypad5, "Keypad5"},
+{fltk::Keypad1, _("Keypad1")},
+{fltk::Keypad2, _("Keypad2")},
+{fltk::Keypad3, _("Keypad3")},
+{fltk::Keypad4, _("Keypad4")},
+{fltk::Keypad5, _("Keypad5")},
 
-  {fltk::Keypad6, "Keypad6"},
-  {fltk::Keypad7, "Keypad7"},
-  {fltk::Keypad8, "Keypad8"},
-  {fltk::Keypad9, "Keypad9"},
-  {fltk::SpaceKey,"Space (' ')"}
+{fltk::Keypad6, _("Keypad6")},
+{fltk::Keypad7, _("Keypad7")},
+{fltk::Keypad8, _("Keypad8")},
+{fltk::Keypad9, _("Keypad9")},
+{fltk::SpaceKey,_("Space (' ')")}
 };
 
 
@@ -163,7 +174,7 @@ void fill_uiFunction( fltk::Browser* b )
 {
    const char* labels[] = {"Function", "Hotkey", NULL};
    b->column_labels( labels );
-   const int widths[] = {200, -1, -1};
+   const int widths[] = {240, -1, -1};
    b->column_widths( widths );
    
    b->clear();
