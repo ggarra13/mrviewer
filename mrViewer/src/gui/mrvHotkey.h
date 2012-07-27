@@ -104,6 +104,17 @@ struct Hotkey
 	return ok;
      }
 
+     unsigned hotkey()
+     {
+	unsigned r = 0;
+	if ( ctrl ) r += fltk::CTRL;
+	if ( shift ) r += fltk::SHIFT;
+	if ( meta ) r += fltk::META;
+	if ( alt ) r += fltk::ALT;
+	r += key;
+	return r;
+     }
+
    public:
      bool ctrl;
      bool meta;
@@ -158,6 +169,12 @@ extern Hotkey kExposureMore;
 extern Hotkey kExposureLess;
 extern Hotkey kGammaMore;
 extern Hotkey kGammaLess;
+
+extern Hotkey kSetAsBG;
+
+extern Hotkey kAttachAudio;
+
+extern Hotkey kCopyRGBAValues;
 
 
 struct HotkeyEntry
