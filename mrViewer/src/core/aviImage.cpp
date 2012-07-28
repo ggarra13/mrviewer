@@ -2128,7 +2128,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	b = v & 0xff;
 
 	if ( a == 255 && r == 0 && g == 0 && b == 0 )
-	   r = g = b = 255;
+	   r = g = 255;
 
 	*d++ = r;
 	*d++ = g;
@@ -2268,7 +2268,7 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
 
   if ( repeat <= 1 )
   {
-     repeat = boost::int64_t( fps() * 3 );
+     repeat = boost::int64_t( fps() * 4 );
   }
 
   int got_sub = 0;
