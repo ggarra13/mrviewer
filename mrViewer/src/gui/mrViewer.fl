@@ -2005,7 +2005,7 @@ o->child_of( main->uiMain );} modal
     } {
       {fltk::Window} uiMain {
         label Hotkeys open
-        xywh {357 166 450 400} resizable
+        xywh {359 189 450 400} resizable
         extra_code {// Make the window transient
 o->child_of( main->uiMain );} modal visible
       } {
@@ -2015,7 +2015,7 @@ o->child_of( main->uiMain );} modal visible
           {fltk::Browser} uiFunction {
             label Function
             user_data this user_data_type {HotkeyUI*}
-            callback {mrv::select_hotkey( v );} open selected
+            callback {mrv::select_hotkey( v );} open
             xywh {20 0 415 315}
             extra_code {mrv::fill_uiFunction( o );}
           } {}
@@ -2035,7 +2035,8 @@ o->child_of( main->uiMain );} modal visible
       code {delete uiMain;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2066,7 +2067,7 @@ o->child_of( main->uiMain );} modal visible
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {358 46 640 530} when CHANGED resizable
+        xywh {360 69 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2074,7 +2075,7 @@ o->main( this );}
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
         } {
-          {fltk::Group} uiTopBar {
+          {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
@@ -2123,6 +2124,9 @@ v->uiPrefs->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label Hotkeys
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiHotkey->uiMain->child_of( v->uiMain );
+v->uiHotkey->uiMain->show();} selected
                 }
               {fltk::Item} {} {
                 label Logs
