@@ -181,7 +181,7 @@ extern Hotkey kSetAsBG;
 extern Hotkey kAttachAudio;
 
 extern Hotkey kCopyRGBAValues;
-
+extern Hotkey kCloneImage;
 
 struct HotkeyEntry
 {

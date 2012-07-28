@@ -82,7 +82,7 @@ Hotkey kSetAsBG( false, false, false, false, 0 );
 
 Hotkey kAttachAudio( false, false, false, false, 0 );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
-
+Hotkey kCloneImage( false, false, false, false, 0 );
 
 HotkeyEntry hotkeys[] = {
 HotkeyEntry( _("Open Image"), kOpenImage),
@@ -127,6 +127,7 @@ HotkeyEntry( _("Gamma Less"), kGammaLess),
 HotkeyEntry( _("Set As BG Image"), kSetAsBG),
 HotkeyEntry( _("Attach Audio File"), kAttachAudio),
 HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
+HotkeyEntry( _("Clone Image"), kCloneImage),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 

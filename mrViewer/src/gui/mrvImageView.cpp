@@ -1237,7 +1237,7 @@ void ImageView::leftMouseDown(int x, int y)
 	    const stubImage* img = dynamic_cast< const stubImage* >( image() );
 	    if ( img )
 	    {
-	       menu.add("Image/Clone", 0, 
+	       menu.add("Image/Clone", kCloneImage.hotkey(), 
 			(fltk::Callback*)clone_image_cb, browser());
 	       menu.add("Image/Clone All Channels", 0, 
 			(fltk::Callback*)clone_all_cb, 
@@ -1245,7 +1245,7 @@ void ImageView::leftMouseDown(int x, int y)
 	    }
 	    else
 	    {
-	       menu.add("Image/Clone", 0, 
+	       menu.add("Image/Clone", kCloneImage.hotkey(), 
 			(fltk::Callback*)clone_image_cb, browser(),
 			fltk::MENU_DIVIDER);
 	    }
@@ -1743,45 +1743,42 @@ int ImageView::keyDown(unsigned int rawkey)
       browser()->open();
       return 1;
    }
-
-   if ( kSaveImage.match( rawkey ) )
+   else if ( kCloneImage.match( rawkey ) )
+   {
+      clone_image_cb( NULL, browser() );
+      return 1;
+   }
+   else if ( kSaveImage.match( rawkey ) )
    {
       browser()->save();
       return 1;
    }
-
-   if ( kIccProfile.match( rawkey ) )
+   else if ( kIccProfile.match( rawkey ) )
    {
       attach_color_profile_cb( NULL, this );
       return 1;
    }
-   
-   if ( kCTLScript.match( rawkey ) )
+   else if ( kCTLScript.match( rawkey ) )
    {
       attach_ctl_script_cb( NULL, this );
       return 1;
    }
-
-   if ( kMonitorCTLScript.match( rawkey ) )
-     {
-	monitor_ctl_script_cb( NULL, NULL );
-	return 1;
-     }
-
-   if ( kMonitorIccProfile.match( rawkey ) )
+   else if ( kMonitorCTLScript.match( rawkey ) )
+   {
+      monitor_ctl_script_cb( NULL, NULL );
+      return 1;
+   }
+   else if ( kMonitorIccProfile.match( rawkey ) )
    {
       monitor_icc_profile_cb( NULL, NULL );
       return 1;
    }
-
-   if ( kSetAsBG.match( rawkey ) )
+   else if ( kSetAsBG.match( rawkey ) )
    {
       set_as_background_cb( NULL, this );
       return 1;
    }
-
-
-   if ( kExposureMore.match( rawkey ) )
+   else if ( kExposureMore.match( rawkey ) )
    {
       exposure_change( 0.5f );
    }
@@ -1802,23 +1799,23 @@ int ImageView::keyDown(unsigned int rawkey)
       flags |= kLeftAlt;
       return 1;
    }
-  else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
-    {
+   else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
+   {
       if ( rawkey == kZoomMin.key )
-	{
-	  xoffset = yoffset = 0;
-	  zoom( 1.0f );
-	}
+      {
+	 xoffset = yoffset = 0;
+	 zoom( 1.0f );
+      }
       else
-	{
-	  float z = (float) (rawkey - kZoomMin.key);
-	  if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-	       fltk::event_key_state( fltk::RightCtrlKey ) )
+      {
+	 float z = (float) (rawkey - kZoomMin.key);
+	 if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+	      fltk::event_key_state( fltk::RightCtrlKey ) )
 	    z = 1.0f / z;
-	  zoom_under_mouse( z, fltk::event_x(), fltk::event_y() );
-	}
+	 zoom_under_mouse( z, fltk::event_x(), fltk::event_y() );
+      }
       return 1;
-    }
+   }
   else if ( kZoomIn.match( rawkey ) )
     {
       zoom_under_mouse( _zoom * 2.0f, 
@@ -1893,6 +1890,10 @@ int ImageView::keyDown(unsigned int rawkey)
      _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
      redraw();
      return 1;
+  }
+  else if ( kAttachAudio.match(rawkey) ) 
+  {
+     attach_audio_cb( NULL, this );
   }
   else if ( kFrameStepFPSBack.match(rawkey) ) 
    {
