@@ -529,10 +529,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
-	  {
-	     LOG_INFO( "hdr: " << i->first );
-	    add_text( i->first.c_str(), i->second.c_str(), false );
-	  }
+	   add_text( i->first.c_str(), i->second.c_str(), false );
 	m_curr->layout();
 	m_curr->parent()->layout();
       }
