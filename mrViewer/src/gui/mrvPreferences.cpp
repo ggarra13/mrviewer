@@ -312,7 +312,7 @@ namespace mrv {
     //
     fltk::Preferences win( ui, "window" );
 
-    win.get( "always_on_top", tmp, 1 );
+    win.get( "always_on_top", tmp, 0 );
     uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
 
     win.get( "open_mode", tmp, 0 ); 
