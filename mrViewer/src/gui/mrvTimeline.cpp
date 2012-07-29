@@ -70,7 +70,7 @@ namespace mrv
 	if ( uiMain->uiFrame && uiMain->uiFrame->value() < 1 ) 
 	  uiFrame->value(1);
 
-	unsigned total = 0;
+	uint64_t total = 0;
 
 	const mrv::Reel& reel = browser()->current_reel();
 	mrv::MediaList::const_iterator i = reel->images.begin();
@@ -82,9 +82,10 @@ namespace mrv
 	    total += img->last_frame() - img->first_frame() + 1;
 	  }
 
-	maximum( total );
+	maximum( double(total) );
 	if ( uiMain->uiEndFrame ) uiMain->uiEndFrame->value( total );
-	if ( uiFrame && uiFrame->value() > total ) uiFrame->value(total);
+	if ( uiFrame && uiFrame->value() > int64_t(total) ) 
+	   uiFrame->value(total);
       }
 
     redraw();
@@ -392,8 +393,8 @@ namespace mrv
        mx = mn; mn = t;
     }
 
-    if ( f < mn ) return mn;
-    if ( f > mx ) return mx;
+    if ( f < boost::int64_t(mn) ) return 0;
+    if ( f > boost::int64_t(mx) ) return unsigned(e - i);
 
     int64_t  t = 1;
     unsigned r = 0;
@@ -478,9 +479,9 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 	assert( img != NULL );
 
 	uint64_t size = img->last_frame() - img->first_frame() + 1;
-	if ( frame > t && t+size < frame )
+	if ( boost::uint64_t(frame) > t && t+size < boost::uint64_t(frame) )
 	   t += size;
-	else if ( frame >= t )
+	else if ( boost::uint64_t(frame) >= t )
 	{
 	   r = frame - int64_t(t) + img->first_frame() - 1;
 	   return r;

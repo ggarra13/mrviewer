@@ -699,6 +699,7 @@ void CMedia::audio_file( const char* file )
   if ( error < 0 )
   {
      mrvALERT( file << _(": Could not open filename.") );
+     return;
   }
 
   error = avformat_find_stream_info( _context, &params ) < 0;
@@ -706,6 +707,7 @@ void CMedia::audio_file( const char* file )
   if ( error < 0 )
   {
      mrvALERT( file << _(": Could not find stream info.") );
+     return;
   }
 
   _audio_file = file;
