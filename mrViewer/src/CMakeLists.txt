@@ -196,7 +196,7 @@ SET( SOURCES
 
 IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
-  EXECUTE_PROCESS( COMMAND xgettext  -d mrViewer -a -s -c++ -k_ ${SOURCES} -o po/messages.po 
+  EXECUTE_PROCESS( COMMAND xgettext  -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     RESULT_VARIABLE ok_xgettext
     ERROR_VARIABLE  error_xgettext)
