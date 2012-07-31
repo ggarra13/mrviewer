@@ -14,6 +14,8 @@ decl {\#include <string>} {public
 
 decl {\#include <algorithm>} {} 
 
+decl {\#include "core/mrvI8N.h"} {} 
+
 decl {\#include "IccProfile.h"} {} 
 
 decl {\#include "IccUtil.h"} {} 
@@ -92,7 +94,7 @@ uiMain->show();} {}
     Function {fill( const std::string& name )} {private
     } {
       code {uiMain->copy_label( name.c_str() );
-uiText->text("");
+uiText->text(N_(""));
 uiTags->clear();
 
 if (!_profile) return;
@@ -119,7 +121,7 @@ uiTags->redraw();
 fill_text();} {}
     }
     Function {fill_text()} {} {
-      code {uiText->text("");
+      code {uiText->text(N_(""));
 if (!_profile) return;
 
 int idx = uiTags->value();

@@ -13,6 +13,10 @@ ELSE(WIN32)
 SET( LIBRARIES ${CTL_LIBRARIES} pthread )
 ENDIF()
 
+  EXECUTE_PROCESS( COMMAND xgettext -s -c++ -k_ main.cpp -o po/messages.pot 
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    RESULT_VARIABLE ok_xgettext
+    ERROR_VARIABLE  error_xgettext)
 
 
 ADD_EXECUTABLE( ctlparser main.cpp )

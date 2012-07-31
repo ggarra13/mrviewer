@@ -506,7 +506,6 @@ namespace mrv {
 
 	CMedia::DecodeStatus status = img->decode_video( frame );
 
-
 	if ( frame > img->last_frame() )
 	   status = CMedia::kDecodeLoopEnd;
 	if ( frame < img->first_frame() )
@@ -585,6 +584,7 @@ namespace mrv {
 
 	img->real_fps( timer.actualFrameRate() );
 
+	
 	img->find_image( frame );
 
 	if ( timeline->edl() )
@@ -683,8 +683,6 @@ namespace mrv {
 	    if ( img->stopped() ) break;
 	
 	  }
-
-
 
 	// If we could not get a frame (buffers full, usually),
 	// wait a little.

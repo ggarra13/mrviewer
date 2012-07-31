@@ -683,8 +683,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   int rw = int( r.w() * texWidth  );
   int rh = int( r.h() * texHeight );
 
-  unsigned tx = unsigned( r.x() * texWidth  );
-  unsigned ty = unsigned( texHeight - r.y() * texHeight );
+  double tx = double( r.x() * texWidth  );
+  double ty = double( texHeight - r.y() * texHeight );
 
   assert( tx <= texWidth );
   assert( ty <= texHeight);
@@ -695,9 +695,11 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
+
+
   glTranslated(_view->offset_x() * zoomX + sw, 
-	       _view->offset_y() * zoomY + sh, 0);
-  glTranslatef( tx * zoomX, ty * zoomY, 0);
+  	       _view->offset_y() * zoomY + sh, 0);
+  glTranslated( tx * zoomX, ty * zoomY, 0);
 
   glScalef(zoomX, zoomY, 1.0f);
 

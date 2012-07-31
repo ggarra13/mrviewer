@@ -482,6 +482,11 @@ bool exrImage::channels_order_multi(
    }
    else if ( numChannels >= 2 )
    {
+      if ( numChannels == 2 && _has_yca == false )
+      {
+	 order[2] = order[1];
+      }
+
       format = VideoFrame::kRGB;
       numChannels = 3;
    }
