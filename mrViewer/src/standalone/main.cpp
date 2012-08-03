@@ -31,8 +31,6 @@
 
 using namespace std;
 
-
-
 int main( const int argc, char** argv ) 
 {
   fltk::lock();   // Initialize X11 thread system

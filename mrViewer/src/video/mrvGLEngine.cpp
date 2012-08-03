@@ -673,9 +673,12 @@ void GLEngine::draw_mask( const float pct )
  */
 void GLEngine::draw_rectangle( const mrv::Rectd& r )
 {
-  float zoomX = _view->zoom();
-  float zoomY = _view->zoom();
-  if ( _view->main()->uiPixelRatio->value() ) zoomY /= _view->pixel_ratio();
+  double zoomX = _view->zoom();
+  double zoomY = _view->zoom();
+  double pr = 1.0;
+  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+
+  zoomY *= pr;
 
   double sw = ((double)_view->w() -  texWidth * zoomX) / 2;
   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
@@ -696,12 +699,11 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   glLoadIdentity();
 
 
-
   glTranslated(_view->offset_x() * zoomX + sw, 
   	       _view->offset_y() * zoomY + sh, 0);
   glTranslated( tx * zoomX, ty * zoomY, 0);
-
-  glScalef(zoomX, zoomY, 1.0f);
+  
+  glScaled( zoomX, zoomY, 1.0 );
 
   glBegin(GL_LINE_LOOP);
 
