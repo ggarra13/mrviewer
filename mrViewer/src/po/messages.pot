@@ -1,0 +1,2335 @@
+# SOME DESCRIPTIVE TITLE.
+# Copyright (C) YEAR THE PACKAGE'S COPYRIGHT HOLDER
+# This file is distributed under the same license as the PACKAGE package.
+# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+#
+#, fuzzy
+msgid ""
+msgstr ""
+"Project-Id-Version: PACKAGE VERSION\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2012-08-03 16:22-0300\n"
+"PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
+"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
+"Language-Team: LANGUAGE <LL@li.org>\n"
+"Language: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=CHARSET\n"
+"Content-Transfer-Encoding: 8bit\n"
+
+#: core/aviImage.cpp:1471
+msgid ""
+"\n"
+"\n"
+"Could not open avi file"
+msgstr ""
+
+#: core/CMedia_audio.cpp:486 core/aviImage.cpp:1192
+msgid ""
+"\n"
+"\n"
+"No audio or video stream in file"
+msgstr ""
+
+#: core/CMedia.cpp:1523
+msgid ""
+"\n"
+"\n"
+"Not a known codec "
+msgstr ""
+
+#: core/CMedia_audio.cpp:472 core/aviImage.cpp:1177
+msgid ""
+"\n"
+"\n"
+"Not a known stream type for stream #"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:1154
+#, c-format
+msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1086
+#, c-format
+msgid " UF: %<PRId64> "
+msgstr ""
+
+#: core/stubImage.cpp:823
+msgid " at port "
+msgstr ""
+
+#: core/CMedia_audio.cpp:894
+msgid " audio max: "
+msgstr ""
+
+#: core/CMedia_audio.cpp:895
+msgid " audio used: "
+msgstr ""
+
+#: core/stubImage.cpp:359
+msgid " expected: "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:619 gui/mrvImageBrowser.cpp:711
+msgid " for '"
+msgstr ""
+
+#: core/CMedia.cpp:1524
+msgid " for stream #"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1000
+msgid " from "
+msgstr ""
+
+#: core/aviImage.cpp:947
+msgid " instead"
+msgstr ""
+
+#: core/CMedia.cpp:1778
+msgid " is missing."
+msgstr ""
+
+#: core/CMedia_audio.cpp:1001
+msgid " need "
+msgstr ""
+
+#: core/CMedia_audio.cpp:1322 core/aviImage.cpp:952
+msgid " not found"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1137
+msgid " not found in reel"
+msgstr ""
+
+#: core/aviImage.cpp:946
+msgid " not found, choosing "
+msgstr ""
+
+#: core/CMedia_audio.cpp:893
+msgid " ret: "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:820 gui/mrvImageBrowser.cpp:839
+#: gui/mrvImageBrowser.cpp:859 gui/mrvImageBrowser.cpp:879
+msgid " to database '"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1000
+msgid " used: "
+msgstr ""
+
+#: core/aviImage.cpp:968
+msgid " video frame, cache "
+msgstr ""
+
+#: core/exrImage.cpp:201
+msgid "\" contains more than 4 channels named with prefix \""
+msgstr ""
+
+#: core/exrImage.cpp:193
+msgid "\" has no channels named with prefix \""
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:443
+#, c-format
+msgid ""
+"#\n"
+"# mrViewer Reel \"%s\"\n"
+"# \n"
+"# Created with mrViewer\n"
+"#\n"
+"\n"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:1143
+#, c-format
+msgid "% 8.0f seconds %d ms."
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:512
+#, c-format
+msgid "%.2f %%"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:644
+#, c-format
+msgid "%d Hz."
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:646 gui/mrvImageInformation.cpp:678
+#, c-format
+msgid "%d kb/s"
+msgstr ""
+
+#: core/Sequence.cpp:172
+msgid "' does no exist or no directory"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:559 gui/mrvImageBrowser.cpp:669
+#: gui/mrvImageBrowser.cpp:936
+msgid "' in database '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:770
+msgid "' into show '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:586 gui/mrvImageBrowser.cpp:620
+#: gui/mrvImageBrowser.cpp:712 gui/mrvImageBrowser.cpp:1001
+#: gui/mrvImageBrowser.cpp:1007
+msgid "' to database '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:786
+msgid "' to sequence '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:587 gui/mrvImageBrowser.cpp:626
+#: gui/mrvImageBrowser.cpp:718 gui/mrvImageBrowser.cpp:740
+#: gui/mrvImageBrowser.cpp:771 gui/mrvImageBrowser.cpp:787
+#: gui/mrvImageBrowser.cpp:821 gui/mrvImageBrowser.cpp:840
+#: gui/mrvImageBrowser.cpp:860 gui/mrvImageBrowser.cpp:880
+#: gui/mrvImageBrowser.cpp:1008
+msgid "'."
+msgstr ""
+
+#: core/aviImage.cpp:969
+msgid ") cache size: "
+msgstr ""
+
+#: core/CMedia.cpp:1524
+msgid ", type "
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:130
+msgid "35mm Academy"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:137
+msgid "35mm Anamorphic"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:132
+msgid "35mm European Widescreen"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:135
+msgid "35mm Flat"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:138
+msgid "35mm Panavision"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:794
+msgid "3D Lut for "
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:136
+msgid "70mm"
+msgstr ""
+
+#: core/CMedia_audio.cpp:709
+msgid ": Could not find stream info."
+msgstr ""
+
+#: core/CMedia_audio.cpp:701
+msgid ": Could not open filename."
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:819
+msgid ": added ICC "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:717
+msgid ": added audio to database '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:858
+msgid ": added look mod transform "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:878
+msgid ": added pixel format "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:585
+msgid ": added pixel format '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:838
+msgid ": added render transform "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:625
+msgid ": added video to database '"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:316
+msgid "A"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:108
+msgid ""
+"A professional image and movie viewer\n"
+"Examples:\n"
+msgstr ""
+
+#: core/exrImage.cpp:747
+msgid "ALPHA"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:454
+msgid "AVI Movie"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:453
+msgid "Absolute"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:172
+msgid "Add"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:114
+msgid "Add this directory to my favorites"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1006
+msgid "Added image '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:786
+msgid "Added shot '"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:105
+msgid "All Files (*)"
+msgstr ""
+
+#: gui/mrvImageView.cpp:123
+msgid "Alpha"
+msgstr ""
+
+#: gui/mrvImageView.cpp:124
+msgid "Alpha Overlay"
+msgstr ""
+
+#: core/exrImage.cpp:945
+msgid "Altitude"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:121
+#, c-format
+msgid "An error ocurred while trying to delete '%s'."
+msgstr ""
+
+#: core/exrImage.cpp:978
+msgid "Aperture"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:496
+msgid "Apply: "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1678
+msgid ""
+"Are you sure you want to\n"
+"remove all images from reel?"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:297
+msgid "Area"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:349
+msgid "Aspect Ratio"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:128
+msgid "Attach Audio File"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:710
+msgid "Attribute"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:96
+msgid "Audio"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:625
+#, c-format
+msgid "Audio Stream #%d"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:312
+msgid "Audio Streams"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1322
+msgid "Audio frame "
+msgstr ""
+
+#: core/CMedia_audio.cpp:892
+msgid "Audio missed for frame: "
+msgstr ""
+
+#: gui/mrvImageView.cpp:1294
+msgid "Audio/Attach Audio File"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1119
+msgid "Audios #"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:647 gui/mrvImageInformation.cpp:679
+msgid "Avg. Bitrate"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:3537
+msgid "B"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:593
+msgid "B Frames"
+msgstr ""
+
+#: core/exrImage.cpp:746
+msgid "BLUE"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:137
+msgid "BackSpace"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1630
+msgid ""
+"Bad\n"
+"path"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:461
+msgid "Bitmap Picture"
+msgstr ""
+
+#: gui/mrvImageView.cpp:122
+msgid "Blue"
+msgstr ""
+
+#: core/stubImage.cpp:921
+msgid "Buffer was NULL - internal error"
+msgstr ""
+
+#: core/wandImage.cpp:319
+msgid "Byline"
+msgstr ""
+
+#: core/wandImage.cpp:320
+msgid "Byline Title"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:468
+msgid "CIExy Chromaticities"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:470
+msgid "CIExy White Point"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:100
+msgid "Cancel"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:161
+msgid "CapsLock"
+msgstr ""
+
+#: core/wandImage.cpp:330
+msgid "Caption"
+msgstr ""
+
+#: core/wandImage.cpp:332
+msgid "Caption Writer"
+msgstr ""
+
+#: core/exrImage.cpp:901
+msgid "Capture Date"
+msgstr ""
+
+#: core/wandImage.cpp:304
+msgid "Category"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:643
+msgid "Channels"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:139
+msgid "Cinemascope"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:463
+msgid "Cineon Picture"
+msgstr ""
+
+#: core/wandImage.cpp:321
+msgid "City"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:130
+msgid "Clone Image"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:247
+#, c-format
+msgid ""
+"Cloned Image\n"
+"Name: %s\n"
+"Date: %s\n"
+"Resolution: %dx%d"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:591 gui/mrvImageInformation.cpp:631
+#: gui/mrvImageInformation.cpp:674
+msgid "Codec"
+msgstr ""
+
+#: gui/mrvImageView.cpp:115
+msgid "Color"
+msgstr ""
+
+#: core/exrImage.cpp:892
+msgid "Comments"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:95
+msgid "Compact Disk"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:509
+msgid "Compression"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:513
+msgid "Compression Ratio"
+msgstr ""
+
+#: db/mrvPostgreSQL.cpp:61
+msgid "Connected to database '"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:129
+msgid "Copy RGBA Values"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:97
+msgid "Copy/Color"
+msgstr ""
+
+#: core/wandImage.cpp:329
+msgid "Copyright String"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:710
+msgid "Could not add audio track #"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1000
+msgid "Could not add image '"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:411
+#, c-format
+msgid "Could not add profile \"%s\" to CMM: "
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:618
+msgid "Could not add video track #"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:120
+#, c-format
+msgid ""
+"Could not create directory '%s'. You may not have permission to perform this "
+"operation."
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:668
+msgid "Could not find audio '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:935
+msgid "Could not find image table '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:558
+msgid "Could not find video '"
+msgstr ""
+
+#: gui/mrvDatabaseBrowser.cpp:87
+msgid "Could not get images in database: "
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:486
+msgid "Could not init cmm: "
+msgstr ""
+
+#: gui/mrvImageView.cpp:517
+msgid "Could not initialize draw engine"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1437
+msgid "Could not load '"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:402
+msgid "Could not locate ICC profile \""
+msgstr ""
+
+#: video/mrvGLEngine.cpp:210
+msgid "Could not open any font of size "
+msgstr ""
+
+#: core/CMedia_audio.cpp:128
+msgid "Could not open audio codec"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1273
+msgid "Could not open audio driver"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1194
+msgid "Could not read audio for frame "
+msgstr ""
+
+#: core/wandImage.cpp:324
+msgid "Country"
+msgstr ""
+
+#: core/wandImage.cpp:323
+msgid "Country Code"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:113
+msgid "Create new directory"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1931
+msgid "Create/Checkered"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1915
+msgid "Create/Color Bars/PAL"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1917
+msgid "Create/Color Bars/PAL HDTV"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1911
+msgid "Create/Color Bars/SMPTE NTSC"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1913
+msgid "Create/Color Bars/SMPTE NTSC HDTV"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1919
+msgid "Create/Gamma Chart/1.4"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1921
+msgid "Create/Gamma Chart/1.8"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1923
+msgid "Create/Gamma Chart/2.2"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1925
+msgid "Create/Gamma Chart/2.4"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1927
+msgid "Create/Gradient/Linear"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1929
+msgid "Create/Gradient/Luminance"
+msgstr ""
+
+#: core/wandImage.cpp:314
+msgid "Created Date"
+msgstr ""
+
+#: core/wandImage.cpp:315
+msgid "Created Time"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:519
+msgid "Creation Date"
+msgstr ""
+
+#: core/wandImage.cpp:327
+msgid "Credit"
+msgstr ""
+
+#: core/wandImage.cpp:333
+msgid "Custom Field 1"
+msgstr ""
+
+#: core/wandImage.cpp:342
+msgid "Custom Field 10"
+msgstr ""
+
+#: core/wandImage.cpp:343
+msgid "Custom Field 11"
+msgstr ""
+
+#: core/wandImage.cpp:344
+msgid "Custom Field 12"
+msgstr ""
+
+#: core/wandImage.cpp:345
+msgid "Custom Field 13"
+msgstr ""
+
+#: core/wandImage.cpp:346
+msgid "Custom Field 14"
+msgstr ""
+
+#: core/wandImage.cpp:347
+msgid "Custom Field 15"
+msgstr ""
+
+#: core/wandImage.cpp:348
+msgid "Custom Field 16"
+msgstr ""
+
+#: core/wandImage.cpp:349
+msgid "Custom Field 17"
+msgstr ""
+
+#: core/wandImage.cpp:350
+msgid "Custom Field 18"
+msgstr ""
+
+#: core/wandImage.cpp:351
+msgid "Custom Field 19"
+msgstr ""
+
+#: core/wandImage.cpp:334
+msgid "Custom Field 2"
+msgstr ""
+
+#: core/wandImage.cpp:352
+msgid "Custom Field 20"
+msgstr ""
+
+#: core/wandImage.cpp:335
+msgid "Custom Field 3"
+msgstr ""
+
+#: core/wandImage.cpp:336
+msgid "Custom Field 4"
+msgstr ""
+
+#: core/wandImage.cpp:337
+msgid "Custom Field 5"
+msgstr ""
+
+#: core/wandImage.cpp:338
+msgid "Custom Field 6"
+msgstr ""
+
+#: core/wandImage.cpp:339
+msgid "Custom Field 7"
+msgstr ""
+
+#: core/wandImage.cpp:340
+msgid "Custom Field 8"
+msgstr ""
+
+#: core/wandImage.cpp:341
+msgid "Custom Field 9"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:455
+msgid "DIVX Movie"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:465
+msgid "DPX Picture"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:356
+msgid "Data Window"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:92
+msgid "Date"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:174
+msgid "Decimal"
+msgstr ""
+
+#: core/exrImage.cpp:65
+msgid "Decreasing Y"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:93 gui/mrvHotkey.cpp:148
+msgid "Delete"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:112
+msgid "Delete file(s)"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:384
+msgid "Depth"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:85 gui/FLU/Flu_File_Chooser.cpp:89
+msgid "Desktop"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:473
+msgid ""
+"Destination color space has more than 3 channels - only first 3 will be "
+"shown."
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:479
+msgid ""
+"Destination color space is not RGB or XYZ.  Colors may look weird displayed "
+"as RGB."
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:118
+msgid "Detail mode"
+msgstr ""
+
+#: core/CMedia_audio.cpp:999
+msgid "Did not fill audio frame "
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:104 gui/mrvImageInformation.cpp:301
+msgid "Directory"
+msgstr ""
+
+#: core/Sequence.cpp:171
+msgid "Directory '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:260
+#, c-format
+msgid ""
+"Directory: %s\n"
+"Name: %s\n"
+"Resolution: %dx%d\n"
+"Frames: %<PRId64>-%<PRId64>"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:502
+msgid "Disk space"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:362
+msgid "Display Window"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:175
+msgid "Divide"
+msgstr ""
+
+#: core/exrImage.cpp:1059 gui/mrvHotkey.cpp:155
+msgid "Down"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:613 gui/mrvImageInformation.cpp:654
+#: gui/mrvImageInformation.cpp:686
+msgid "Duration"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:94
+msgid "EXIF"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:466
+msgid "EXR Picture"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:133
+msgid "Early 35mm"
+msgstr ""
+
+#: core/wandImage.cpp:302
+msgid "Edit Status"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:149
+msgid "End"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:447
+msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
+msgstr ""
+
+#: gui/mrvHotkey.cpp:136
+msgid "Escape"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:85
+msgid "Examples:"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:124
+msgid "Exposure Less"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:123
+msgid "Exposure More"
+msgstr ""
+
+#: core/exrImage.cpp:967
+msgid "Exposure Time"
+msgstr ""
+
+#: gui/mrvImageView.cpp:3535
+msgid "F"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1038
+msgid "F: "
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:609
+msgid "FPS"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1089
+#, c-format
+msgid "FPS: %.2f"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:81
+msgid "Favorites"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:122
+#, c-format
+msgid "File '%s' already exists!"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:103
+msgid "File Types"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1184
+msgid "File/Open"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1188
+msgid "File/Save Frame As"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:98 gui/mrvImageInformation.cpp:302
+msgid "Filename"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:114
+msgid "First Frame"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:96
+msgid "Fit Screen"
+msgstr ""
+
+#: core/wandImage.cpp:306
+msgid "Fixture Identifier"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:99
+msgid "Flip X"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:100
+msgid "Flip Y"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:154
+msgid "Float Textures:\t"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:94
+msgid "Floppy Disk"
+msgstr ""
+
+#: core/exrImage.cpp:956
+msgid "Focus"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:477
+msgid "Format"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:592 gui/mrvImageInformation.cpp:632
+#: gui/mrvImageInformation.cpp:675
+msgid "FourCC"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:324
+msgid "Frame End"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:323
+msgid "Frame Start"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:101
+msgid "Frame Step Backwards"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:102
+msgid "Frame Step FPS Backwards"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:104
+msgid "Frame Step FPS Forwards"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:103
+msgid "Frame Step Forwards"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:92
+msgid "Frames"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:645
+msgid "Frequency"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:312
+msgid "G"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:472
+msgid "GIF Picture"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:269
+msgid "GLEW Initialize Error: "
+msgstr ""
+
+#: core/exrImage.cpp:746
+msgid "GREEN"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:460
+msgid "Gamma"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:126
+msgid "Gamma Less"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:125
+msgid "Gamma More"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:108
+msgid "Go back one directory in the history"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:109
+msgid "Go forward one directory in the history"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:110
+msgid "Go to the parent directory"
+msgstr ""
+
+#: core/stubImage.cpp:358
+msgid "Got: "
+msgstr ""
+
+#: gui/mrvImageView.cpp:121
+msgid "Green"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:134
+msgid "HDTV / Widescreen 16:9"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:155
+msgid "Half Textures:\t"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:152
+msgid "Hardware Shaders:\t"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:460
+msgid "Hardware shaders not available."
+msgstr ""
+
+#: core/wandImage.cpp:326
+msgid "Headline"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:329
+msgid "Height"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:87 gui/mrvHotkey.cpp:145
+msgid "Home"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:474
+msgid "ICC Profile"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:468
+msgid "IFF Picture"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:93
+msgid "IPTC"
+msgstr ""
+
+#: core/exrImage.cpp:990
+msgid "ISO Speed"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1136
+msgid "Image"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:91
+msgid "Image CTL script"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:385
+msgid "Image Channels"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:90
+msgid "Image Icc Profile"
+msgstr ""
+
+#: core/wandImage.cpp:301
+msgid "Image Name"
+msgstr ""
+
+#: core/exrImage.cpp:192 core/exrImage.cpp:200
+msgid "Image file \""
+msgstr ""
+
+#: gui/mrvImageView.cpp:1253
+msgid "Image/Attach CTL Rendering Transform"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1896
+msgid "Image/Attach CTL Script"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1257 gui/mrvImageBrowser.cpp:1893
+msgid "Image/Attach ICC Color Profile"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1240 gui/mrvImageView.cpp:1248
+#: gui/mrvImageBrowser.cpp:1875 gui/mrvImageBrowser.cpp:1885
+msgid "Image/Clone"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1242 gui/mrvImageBrowser.cpp:1877
+msgid "Image/Clone All Channels"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1231
+msgid "Image/Next"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1233
+msgid "Image/Previous"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1261 gui/mrvImageBrowser.cpp:1901
+msgid "Image/Set as Background"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1264
+msgid "Image/Toggle Background"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:136
+msgid "Images, sequences or movies to display."
+msgstr ""
+
+#: core/exrImage.cpp:64
+msgid "Increasing Y"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:144
+msgid "Insert"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:770
+msgid "Inserted sequence '"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:740
+msgid "Inserted show '"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:423
+msgid "Invalid Profile for CMM: "
+msgstr ""
+
+#: db/mrvDatabase.cpp:105
+msgid "Invalid database driver "
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:467
+msgid "Invalid destination profile/image format"
+msgstr ""
+
+#: core/stubImage.cpp:930
+msgid "Invalid pixel buffer coordinates "
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:438
+msgid "Invalid source profile/image pixel format"
+msgstr ""
+
+#: core/aviImage.cpp:1006
+msgid "Invalid video stream "
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:469 gui/FLU/Flu_File_Chooser.cpp:470
+msgid "JPEG Picture"
+msgstr ""
+
+#: core/exrImage.cpp:1002
+msgid "Key Code"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:176
+msgid "Keypad0"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:178
+msgid "Keypad1"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:179
+msgid "Keypad2"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:180
+msgid "Keypad3"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:181
+msgid "Keypad4"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:182
+msgid "Keypad5"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:184
+msgid "Keypad6"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:185
+msgid "Keypad7"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:186
+msgid "Keypad8"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:187
+msgid "Keypad9"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:169
+msgid "KeypadEnter"
+msgstr ""
+
+#: core/wandImage.cpp:307
+msgid "Keyword"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:590 gui/mrvImageInformation.cpp:630
+#: gui/mrvImageInformation.cpp:673
+msgid "Known Codec"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:650 gui/mrvImageInformation.cpp:682
+msgid "Language"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:115
+msgid "Last Frame"
+msgstr ""
+
+#: core/exrImage.cpp:934
+msgid "Latitude"
+msgstr ""
+
+#: core/wandImage.cpp:133
+#, c-format
+msgid "Layer %d"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:151
+msgid "Left"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:162
+msgid "LeftAlt"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:158
+msgid "LeftCtrl"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:164
+msgid "LeftMeta"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:156
+msgid "LeftShift"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:481
+msgid "Line Order"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:116
+msgid "List mode"
+msgstr ""
+
+#: gui/mrvImageBrowser.cpp:1421
+#, c-format
+msgid "Loading \"%s\""
+msgstr ""
+
+#: video/mrvGLEngine.cpp:1289
+msgid "Loading built-in NV3.0 rgba shader"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:1294
+msgid "Loading built-in arbfp1 rgba shader"
+msgstr ""
+
+#: core/wandImage.cpp:331
+msgid "Local Caption"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:95
+msgid "Local Disk"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:101
+msgid "Location"
+msgstr ""
+
+#: core/exrImage.cpp:923
+msgid "Longitude"
+msgstr ""
+
+#: gui/mrvImageView.cpp:125 gui/mrvImageInformation.cpp:393
+msgid "Lumma"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:140
+msgid "MGM Camera 65"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:488
+msgid "MP3 music"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:460
+msgid "MP4 Movie"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:456 gui/FLU/Flu_File_Chooser.cpp:457
+msgid "MPEG Movie"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:92
+msgid "Main"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:471
+msgid "Map Picture"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:158
+msgid "Max. Texture Size:\t"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:318 gui/mrvColorInfo.cpp:374
+msgid "Maximum"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:340 gui/mrvColorInfo.cpp:396
+msgid "Mean"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:490
+msgid "Memory"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:167
+msgid "Menu"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:323 gui/mrvColorInfo.cpp:379
+msgid "Minimum"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:550
+msgid "Mipmap Level"
+msgstr ""
+
+#: core/exrImage.cpp:1039
+msgid "Mipmap Levels"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:93
+msgid "Monitor CTL script"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:92
+msgid "Monitor Icc Profile"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1305
+msgid "Monitor/Attach CTL Display Transform"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1309
+msgid "Monitor/Attach ICC Color Profile"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:170
+msgid "Multiply"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:83
+msgid "My Computer"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:84
+msgid "My Documents"
+msgstr ""
+
+#: gui/mrvImageView.cpp:128
+msgid "N"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:128 gui/mrvImageInformation.cpp:129
+msgid "NTSC Video"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:92
+msgid "Name"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:84
+msgid "Names cannot contain spaces in their paths."
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:96
+msgid "Network Disk"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:93 gui/FLU/Flu_File_Chooser.cpp:106
+msgid "New Folder"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:113
+msgid "Next Image"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:153 video/mrvGLEngine.cpp:154
+#: video/mrvGLEngine.cpp:155 video/mrvGLEngine.cpp:157
+#: video/mrvGLEngine.cpp:161 video/mrvGLEngine.cpp:162
+#: video/mrvGLEngine.cpp:163
+msgid "No"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:701 video/mrvGLLut3d.cpp:746
+msgid "No CTL script"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:699 video/mrvGLLut3d.cpp:744
+msgid "No CTL script or ICC profile"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:703 video/mrvGLLut3d.cpp:748
+msgid "No ICC profile"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1118
+msgid "No memory for audio frame"
+msgstr ""
+
+#: core/stubImage.cpp:915
+msgid "No such framebuffer - cannot set pixel"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:750
+msgid "No valid ODT transform: "
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:705
+msgid "No valid RT transform for \""
+msgstr ""
+
+#: video/mrvGLEngine.cpp:156
+msgid "Non-POT Textures:\t"
+msgstr ""
+
+#: core/exrImage.cpp:52 core/iffImage.cpp:35
+msgid "None"
+msgstr ""
+
+#: gui/mrvImageView.cpp:129
+msgid "Normals"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1632
+msgid ""
+"Not\n"
+"Memory"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1635
+msgid ""
+"Not\n"
+"Readable"
+msgstr ""
+
+#: core/stubImage.cpp:684
+msgid "Not a mental ray stub file anymore."
+msgstr ""
+
+#: gui/mrvHotkey.cpp:168
+msgid "NumLock"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:653
+msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:629
+msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:489
+msgid "OGG music"
+msgstr ""
+
+#: core/wandImage.cpp:318
+msgid "Object Cycle"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:99
+msgid "Ok"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:88
+msgid "Open Image"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:56
+msgid "Options:"
+msgstr ""
+
+#: core/wandImage.cpp:325
+msgid "Original Transmission Reference"
+msgstr ""
+
+#: core/wandImage.cpp:316
+msgid "Originating Program"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:131
+msgid "Override viewer's default database driver."
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:127
+msgid "Override viewer's default gain."
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:123
+msgid "Override viewer's default gamma."
+msgstr ""
+
+#: core/exrImage.cpp:883
+msgid "Owner"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:153
+msgid "PBO Textures:\t"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:476
+msgid "PNG Picture"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:150
+msgid "PageDown"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:146
+msgid "PageUp"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:143
+msgid "Pause"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:452
+msgid "Perceptual"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:477
+msgid "Photoshop Picture"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:596
+msgid "Pixel Format"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:350
+msgid "Pixel Ratio"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1298
+msgid "Pixel/Copy RGBA Values to Clipboard"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:105
+msgid "Play Backwards"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:107
+msgid "Play Backwards 1/2 Speed"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:106
+msgid "Play Backwards X2  Speed"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:108
+msgid "Play Forwards"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:110
+msgid "Play Forwards 1/2 Speed"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:109
+msgid "Play Forwards X2  Speed"
+msgstr ""
+
+#: core/CMedia_audio.cpp:1285
+msgid "Playback of audio frame failed"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:115
+msgid "Preview files"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:112
+msgid "Previous Image"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:140
+msgid "Print"
+msgstr ""
+
+#: core/wandImage.cpp:303
+msgid "Priority"
+msgstr ""
+
+#: core/iffImage.cpp:441
+msgid "Problem with tile"
+msgstr ""
+
+#: core/wandImage.cpp:317
+msgid "Program Version"
+msgstr ""
+
+#: core/wandImage.cpp:322
+msgid "Province State"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:452 gui/FLU/Flu_File_Chooser.cpp:453
+msgid "Quicktime Movie"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:310
+msgid "R"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:96
+msgid "RAM Disk"
+msgstr ""
+
+#: core/exrImage.cpp:746
+msgid "RED"
+msgstr ""
+
+#: gui/mrvImageView.cpp:119
+msgid "RGB"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:478
+msgid "RGB Picture"
+msgstr ""
+
+#: gui/mrvImageView.cpp:118
+msgid "RGBA"
+msgstr ""
+
+#: core/exrImage.cpp:53 core/iffImage.cpp:36
+msgid "RLE"
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:604
+msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:573
+msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
+msgstr ""
+
+#: core/exrImage.cpp:66
+msgid "Random Y"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:335 gui/mrvColorInfo.cpp:391
+msgid "Range"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1292
+#, c-format
+msgid "Really delete '%s'?"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1305
+#, c-format
+msgid "Really delete these %d files?"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1286
+#, c-format
+msgid "Really send '%s' to the Recycle Bin?"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1300
+#, c-format
+msgid "Really send these %d files to the Recycle Bin?"
+msgstr ""
+
+#: gui/mrvImageView.cpp:120
+msgid "Red"
+msgstr ""
+
+#: core/wandImage.cpp:312
+msgid "Reference Date"
+msgstr ""
+
+#: core/wandImage.cpp:313
+msgid "Reference Number"
+msgstr ""
+
+#: core/wandImage.cpp:311
+msgid "Reference Service"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:111
+msgid "Refresh this directory"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:454
+msgid "Relative"
+msgstr ""
+
+#: core/wandImage.cpp:308
+msgid "Release Date"
+msgstr ""
+
+#: core/wandImage.cpp:309
+msgid "Release Time"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:94
+msgid "Removable Disk"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:93
+msgid "Rename"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:446
+msgid "Render Pixel Format"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:473
+msgid "Render Transform"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:150
+msgid "Renderer:\t"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:457
+msgid "Rendering Intent"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:139
+msgid "Return"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:479
+msgid "Rich Picture Format"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:154
+msgid "Right"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:163
+msgid "RightAlt"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:160
+msgid "RightCtrl"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:166
+msgid "RightMeta"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:157
+msgid "RightShift"
+msgstr ""
+
+#: core/exrImage.cpp:1059 core/exrImage.cpp:1062
+msgid "Rounding Mode"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:163
+msgid "SDI Output:\t"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:481
+msgid "SGI Picture"
+msgstr ""
+
+#: gui/mrvImageView.cpp:132
+msgid "ST"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:97
+msgid "Safe Areas"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:451
+msgid "Saturation"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:89
+msgid "Save Image"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:142
+msgid "ScrollLock"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:122
+msgid "Scrub"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:317
+msgid "Sequence"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:127
+msgid "Set As BG Image"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:102
+msgid "Show Hidden Files"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:92 gui/mrvColorInfo.cpp:300
+msgid "Size"
+msgstr ""
+
+#: core/stubImage.cpp:822
+msgid "Socket error: Could not connect to "
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:475
+msgid "Softimage Picture"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:188
+msgid "Space (' ')"
+msgstr ""
+
+#: core/wandImage.cpp:310
+msgid "Special Instructions"
+msgstr ""
+
+#: core/wandImage.cpp:328
+msgid "Src"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:612 gui/mrvImageInformation.cpp:653
+#: gui/mrvImageInformation.cpp:685
+msgid "Start"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:483
+msgid "Stereo EXR Picture"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:111
+msgid "Stop"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:97
+msgid "Subtitle"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:668
+#, c-format
+msgid "Subtitle Stream #%d"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:313
+msgid "Subtitle Streams"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1273
+msgid "Subtitle/No Subtitle"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1281
+#, c-format
+msgid "Subtitle/Track #%d - %s"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:173
+msgid "Subtract"
+msgstr ""
+
+#: core/wandImage.cpp:305
+msgid "Supplemental Category"
+msgstr ""
+
+#: gui/mrvImageView.cpp:3536
+msgid "T"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1046
+msgid "T: "
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:467 gui/FLU/Flu_File_Chooser.cpp:485
+#: gui/FLU/Flu_File_Chooser.cpp:486
+msgid "TIFF Picture"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:138
+msgid "Tab"
+msgstr ""
+
+#: gui/mrvImageView.cpp:130
+msgid "Tag"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:484
+msgid "Targa Picture"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:88
+msgid "Temporary"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:160
+msgid "Texture Units:\t"
+msgstr ""
+
+#: core/exrImage.cpp:1013
+msgid "Timecode"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:116
+msgid "Toggle Background"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:119
+msgid "Toggle Bottom Bar"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:120
+msgid "Toggle Full Screen"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:118
+msgid "Toggle Pixel Bar"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:121
+msgid "Toggle Presentation"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:117
+msgid "Toggle Top Bar"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:1625
+msgid "Too many symlinks"
+msgstr ""
+
+#: core/CMedia_audio.cpp:858
+msgid "Too much audio used:"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:92
+msgid "Type"
+msgstr ""
+
+#: core/exrImage.cpp:912
+msgid "UTC Offset"
+msgstr ""
+
+#: gui/mrvImageView.cpp:131
+msgid "UV"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:123
+#, c-format
+msgid "Unable to rename '%s' to '%s'"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:450
+msgid "Undefined"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:141 video/mrvGLEngine.cpp:144
+#: video/mrvGLEngine.cpp:147
+msgid "Unknown"
+msgstr ""
+
+#: core/stubImage.cpp:501 gui/mrvImageInformation.cpp:381
+msgid "Unknown bit depth"
+msgstr ""
+
+#: core/aviImage.cpp:1085
+msgid "Unknown destination video frame format: "
+msgstr ""
+
+#: video/mrvGLLut3d.cpp:300
+msgid "Unknown error returned from ctlToLut"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:443
+msgid "Unknown render pixel format"
+msgstr ""
+
+#: core/exrImage.cpp:1065
+msgid "Unknown rounding mode"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:995
+msgid "Unknown wipe direction"
+msgstr ""
+
+#: core/exrImage.cpp:1062 gui/mrvHotkey.cpp:152
+msgid "Up"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:42
+msgid "Usage:"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:359
+msgid "Using hardware shader profile: "
+msgstr ""
+
+#: gui/mrvImageView.cpp:1055
+msgid "V-A: "
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:459
+msgid "VOB Movie"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:710
+msgid "Value"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:149
+msgid "Vendor:\t"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:151
+msgid "Version:\t"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:95 gui/mrvImageInformation.cpp:127
+msgid "Video"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:585
+#, c-format
+msgid "Video Stream #%d"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:311
+msgid "Video Streams"
+msgstr ""
+
+#: core/aviImage.cpp:966
+msgid "Video Sync master frame "
+msgstr ""
+
+#: gui/mrvImageView.cpp:1225
+#, c-format
+msgid "View/Hud/%s"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1213
+#, c-format
+msgid "View/Mask/%s"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1206
+msgid "View/Safe Areas"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:458
+msgid "WMV Movie"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:490
+msgid "Wave music"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:117
+msgid "Wide list mode"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:131
+msgid "Widescreen (HDTV + STV)"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:328
+msgid "Width"
+msgstr ""
+
+#: gui/mrvImageView.cpp:1199
+#, c-format
+msgid "Windows/%s"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:98
+msgid "Wipe"
+msgstr ""
+
+#: core/exrImage.cpp:1022
+msgid "Wrap Modes"
+msgstr ""
+
+#: core/stubImage.cpp:357
+msgid "Wrond data size received."
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:560
+msgid "X Ripmap Level"
+msgstr ""
+
+#: core/exrImage.cpp:1046
+msgid "X Ripmap Levels"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:569
+msgid "Y Ripmap Level"
+msgstr ""
+
+#: core/exrImage.cpp:1048
+msgid "Y Ripmap Levels"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:161
+msgid "YUV  Support:\t"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:162
+msgid "YUVA Support:\t"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:153 video/mrvGLEngine.cpp:154
+#: video/mrvGLEngine.cpp:155 video/mrvGLEngine.cpp:157
+#: video/mrvGLEngine.cpp:161 video/mrvGLEngine.cpp:162
+#: video/mrvGLEngine.cpp:163
+msgid "Yes"
+msgstr ""
+
+#: gui/mrvImageView.cpp:126
+msgid "Z"
+msgstr ""
+
+#: core/iffImage.cpp:494 core/iffImage.cpp:530 gui/mrvImageView.cpp:127
+msgid "Z Depth"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:95
+msgid "Zoom Maximum"
+msgstr ""
+
+#: gui/mrvHotkey.cpp:94
+msgid "Zoom Minimum"
+msgstr ""
+
+#: core/CMedia.cpp:1360
+msgid "audio"
+msgstr ""
+
+#: core/CMedia.cpp:1363
+msgid "data"
+msgstr ""
+
+#: core/CMedia_audio.cpp:918
+msgid "decode_audio - missed decoding some samples"
+msgstr ""
+
+#: standalone/mrvCommandLine.cpp:135
+msgid "files"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:379
+msgid "float (32-bits per channel)"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:377
+msgid "half float (16-bits per channel)"
+msgstr ""
+
+#: gui/mrvImageView.cpp:958 gui/mrvImageView.cpp:973
+msgid "hdtv"
+msgstr ""
+
+#: gui/mrvImageView.cpp:116
+msgid "left"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:462
+msgid "mental ray Bit Picture"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:464
+msgid "mental ray Contour Picture"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:474
+msgid "mental ray Motion Picture"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:473
+msgid "mental ray Normal Picture"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:482
+msgid "mental ray Scalar Picture"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:480
+msgid "mental ray Shadow Map"
+msgstr ""
+
+#: gui/FLU/Flu_File_Chooser.cpp:487
+msgid "mental ray Z Depth Picture"
+msgstr ""
+
+#: video/mrvGLEngine.cpp:478
+msgid "mrViewer does not support YUV images."
+msgstr ""
+
+#: video/mrvGLEngine.cpp:473
+msgid "mrViewer supports YUV through shaders."
+msgstr ""
+
+#: video/mrvGLEngine.cpp:469
+msgid "mrViewer supports YUVA through shaders."
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:302
+msgid "pixel"
+msgstr ""
+
+#: gui/mrvColorInfo.cpp:302
+msgid "pixels"
+msgstr ""
+
+#: core/stubImage.cpp:346
+msgid "recv() failed"
+msgstr ""
+
+#: gui/mrvImageView.cpp:117
+msgid "right"
+msgstr ""
+
+#: core/stubImage.cpp:89 core/stubImage.cpp:206
+msgid "send() failed"
+msgstr ""
+
+#: core/CMedia.cpp:1366
+msgid "subtitle"
+msgstr ""
+
+#: gui/mrvImageView.cpp:951 gui/mrvImageView.cpp:981
+msgid "tv action"
+msgstr ""
+
+#: gui/mrvImageView.cpp:952 gui/mrvImageView.cpp:982
+msgid "tv title"
+msgstr ""
+
+#: core/CMedia.cpp:1369 core/wandImage.cpp:353
+msgid "unknown"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:371
+msgid "unsigned byte (8-bits per channel)"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:375
+msgid "unsigned int (32-bits per channel)"
+msgstr ""
+
+#: gui/mrvImageInformation.cpp:373
+msgid "unsigned short (16-bits per channel)"
+msgstr ""
+
+#: core/CMedia.cpp:1357
+msgid "video"
+msgstr ""

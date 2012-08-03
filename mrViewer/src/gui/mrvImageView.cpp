@@ -229,55 +229,55 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 {
   const char* name = o->label();
 
-  if ( strcmp( name, "Reels" ) == 0 )
+  if ( strcmp( name, _("Reels") ) == 0 )
     {
       uiMain->uiReelWindow->uiMain->show();
     }
-  else if ( strcmp( name, "Media Info") == 0 )
+  else if ( strcmp( name, _("Media Info")) == 0 )
     {
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
     }
-  else if ( strcmp( name, "Color Info") == 0 )
+  else if ( strcmp( name, _("Color Info")) == 0 )
     {
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
     }
-  else if ( strcmp( name, "Histogram") == 0 )
+  else if ( strcmp( name, _("Histogram")) == 0 )
     {
       uiMain->uiHistogram->uiMain->show();
     }
-  else if ( strcmp( name, "Vectorscope") == 0 )
+  else if ( strcmp( name, _("Vectorscope")) == 0 )
     {
       uiMain->uiVectorscope->uiMain->show();
     }
-  else if ( strcmp( name, "Preferences") == 0 )
+  else if ( strcmp( name, _("Preferences")) == 0 )
     {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
     }
-  else if ( strcmp( name, "Hotkeys") == 0 )
+  else if ( strcmp( name, _("Hotkeys")) == 0 )
     {
       uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
       uiMain->uiHotkey->uiMain->show();
     }
-  else if ( strcmp( name, "Logs") == 0 )
+  else if ( strcmp( name, _("Logs")) == 0 )
     {
       uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
       uiMain->uiLog->uiMain->show();
     }
-  else if ( strcmp( name, "About") == 0 )
+  else if ( strcmp( name, _("About")) == 0 )
     {
       uiMain->uiAbout->uiMain->show();
     }
-  else if ( strcmp( name, "ICC Profiles" ) == 0 )
+  else if ( strcmp( name, _("ICC Profiles") ) == 0 )
     {
       uiMain->uiICCProfiles->uiMain->show();
       uiMain->uiICCProfiles->fill();
     }
   else
     {
-      LOG_ERROR("Unknown Window \"" << name << "\"");
+       LOG_ERROR( _("Unknown Window \"") << name << "\"");
     }
 }
 
@@ -1203,7 +1203,7 @@ void ImageView::leftMouseDown(int x, int y)
 	 if ( fg && fg->image()->has_picture() )
 	 {
 
-	    menu.add( "View/Safe Areas", kSafeAreas.hotkey(), 
+	    menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(), 
 		      (fltk::Callback*)safe_areas_cb, this );
 	    
 	    num = uiMain->uiPrefs->uiPrefsCropArea->children();
@@ -1237,15 +1237,15 @@ void ImageView::leftMouseDown(int x, int y)
 	    const stubImage* img = dynamic_cast< const stubImage* >( image() );
 	    if ( img )
 	    {
-	       menu.add("Image/Clone", kCloneImage.hotkey(), 
+	       menu.add( _("Image/Clone"), kCloneImage.hotkey(), 
 			(fltk::Callback*)clone_image_cb, browser());
-	       menu.add("Image/Clone All Channels", 0, 
+	       menu.add( _("Image/Clone All Channels"), 0, 
 			(fltk::Callback*)clone_all_cb, 
 			browser(), fltk::MENU_DIVIDER);
 	    }
 	    else
 	    {
-	       menu.add("Image/Clone", kCloneImage.hotkey(), 
+	       menu.add( _("Image/Clone"), kCloneImage.hotkey(), 
 			(fltk::Callback*)clone_image_cb, browser(),
 			fltk::MENU_DIVIDER);
 	    }
@@ -1839,7 +1839,6 @@ int ImageView::keyDown(unsigned int rawkey)
 	}
       else
       { 
-	 fltk_main()->border(true);
 	 resize_main_window();
       }
       fltk_main()->relayout();
@@ -2184,17 +2183,16 @@ void ImageView::toggle_fullscreen()
       if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
       resize_main_window();
-      fltk_main()->show();
     }
 
-
-  fltk::check();
-  
-  // fltk_main()->take_focus();
+  fltk_main()->take_focus();
   //   window()->take_focus();
   //   fltk::focus( fltk_main() );
 
   take_focus();
+
+  fltk::check();
+  
 
   fit_image();
 }
@@ -3054,8 +3052,11 @@ void ImageView::resize_main_window()
   if ( posY + h > maxh ) posY = maxh - h;
   if ( posY < miny )     posY = miny;
 
+
+
   fltk_main()->fullscreen_off( posX, posY, w, h);
   fltk_main()->border( true );
+  fltk_main()->show();
 
   if ( fit ) fit_image();
 }
