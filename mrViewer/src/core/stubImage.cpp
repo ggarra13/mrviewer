@@ -140,7 +140,7 @@ namespace mrv {
 		parser.ignore(nMax, '\n');
 
 		if ( ! buffers.empty() )
-		  img->new_buffer( fb->index, fb->width, fb->height );
+		   img->new_buffer( fb->index, fb->width, fb->height );
 
 		buffers.push_back( fb );
 	      }
@@ -593,23 +593,25 @@ namespace mrv {
     image_size( ws, wh );
     _pixel_ratio = other->pixel_ratio();
 
-    stubImage* otherStub = static_cast< stubImage* >( const_cast< CMedia*>(other) );
-    _layers = otherStub->layers();
-    _num_channels = otherStub->number_of_channels();
+    stubImage* oStub = static_cast< stubImage* >( const_cast< CMedia*>(other) );
+    _layers = oStub->layers();
+    _num_channels = oStub->number_of_channels();
 
-    PixelBuffers::const_iterator i = otherStub->_pixelBuffers.begin();
-    PixelBuffers::const_iterator e = otherStub->_pixelBuffers.end();
+    PixelBuffers::const_iterator i = oStub->_pixelBuffers.begin();
+    PixelBuffers::const_iterator e = oStub->_pixelBuffers.end();
     for ( ; i != e; ++i )
       {
 	new_buffer( i->first, ws, wh );
 
 	mrv::image_type_ptr buffer = _pixelBuffers[i->first];
-	mrv::image_type_ptr origBuffer = otherStub->frame_buffer( i->first );
-	buffer = origBuffer;
+	mrv::image_type_ptr origBuffer = oStub->frame_buffer( i->first );
+	*buffer = *origBuffer;
       }
 
-    _layerBuffers = otherStub->_layerBuffers;
 
+    _layerBuffers = oStub->_layerBuffers;
+    if ( oStub->channel() )
+       _channel = strdup( oStub->channel() );
 
     const char* profile = other->icc_profile();
     if ( profile )  icc_profile( profile );
@@ -640,11 +642,40 @@ namespace mrv {
 	mr_cleanup_socket_library();
       }
 
+    wait_for_rthreads();
+
     clear_buffers();
   }
 
 
 
+void stubImage::wait_for_rthreads()
+{
+  // Wait for all threads to exit
+   thread_pool_t::iterator i = _rthreads.begin();
+   thread_pool_t::iterator e = _rthreads.end();
+   for ( ;i != e; ++i )
+   {
+      // std::cerr << "join thread" << std::endl;
+      // (*i)->join();
+      // std::cerr << "joined thread" << std::endl;
+      delete *i;
+   }
+
+   _rthreads.clear();
+}
+
+void stubImage::thread_exit()
+{
+  thread_pool_t::iterator i = _rthreads.begin();
+  thread_pool_t::iterator e = _rthreads.end();
+  for ( ; i != e; ++i )
+    {
+      delete *i;
+    }
+
+  _rthreads.clear();
+}
   /*! Test a block of data read from the start of the file to see if it
     looks like the start of an .stub file. This returns true if the 
     data contains STUB's magic number and a "channels" string in the 8th
@@ -770,7 +801,7 @@ namespace mrv {
 	    if ( ret == true )
 	      {
 		_ctime = sbuf.st_mtime;
-		if ( ! _threads.empty() )
+		if ( ! _rthreads.empty() )
 		  {
 		    _aborted = true;
 		    thread_exit();
@@ -788,7 +819,7 @@ namespace mrv {
 	    // if not connected to host already, return true
 	    // Otherwise, image is already being refreshed thanks to stub
 	    // connection (no need to reload image)
-	    if ( _threads.empty() ) return true;
+	    if ( _rthreads.empty() ) return true;
 	  }
       }
     return false;
@@ -796,7 +827,7 @@ namespace mrv {
 
   bool stubImage::fetch(const int64_t frame) 
   {
-    if ( !_threads.empty() ) return true;
+    if ( !_rthreads.empty() ) return true;
 
     struct stat sbuf;
     int result = stat( filename(), &sbuf );
@@ -828,7 +859,7 @@ namespace mrv {
     stubData* data = new stubData( id );
     data->stub = this;
 
-    _threads.push_back( new boost::thread( boost::bind( mray_read, data ) ) );
+    _rthreads.push_back( new boost::thread( boost::bind( mray_read, data ) ) );
     return true;
   }
 

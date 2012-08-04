@@ -328,9 +328,13 @@ namespace mrv {
     for ( ; i != e; ++i, ++idx )
       {
 	if ( (*i)->name == name ) {
-	  _reel = idx;
-	  change_reel();
-	  return *i;
+	   if ( _reel >= 0 )
+	   {
+	      uiMain->uiView->stop();
+	   }
+	   _reel = idx;
+	   change_reel();
+	   return *i;
 	}
       }
     return mrv::Reel();
@@ -348,6 +352,11 @@ namespace mrv {
   {
     assert( idx < _reels.size() );
     if ( _reel == idx ) return _reels[ idx ];
+
+    if ( _reel >= 0 )
+    {
+       uiMain->uiView->stop();
+    }
 
     _reel = idx;
     change_reel();
@@ -1624,6 +1633,7 @@ namespace mrv {
     if (!reel) return;
 
     mrv::media orig = reel->images[sel];
+    if (!orig || !orig->image() ) return;
 
     // @hmm.... this needs fixing
     stubImage* copy = new stubImage( orig->image() );
@@ -1738,8 +1748,7 @@ namespace mrv {
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    mrv::media m = current_image();
-    m->image()->stop();
+    uiMain->uiView->stop();
 
     unsigned sel = value() + 1;
     if ( sel == 0 ) return;
@@ -1772,8 +1781,7 @@ namespace mrv {
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    mrv::media m = current_image();
-    m->image()->stop();
+    uiMain->uiView->stop();
 
     int sel = value() - 1;
     if ( sel < -1 ) return;
@@ -1876,7 +1884,7 @@ namespace mrv {
 			 (fltk::Callback*)clone_image_cb, this);
 		menu.add( _("Image/Clone All Channels"), 0, 
 		     (fltk::Callback*)clone_all_cb, 
-		     NULL, fltk::MENU_DIVIDER);
+		     this, fltk::MENU_DIVIDER);
 	      }
 	    else
 	      {
@@ -1932,7 +1940,7 @@ namespace mrv {
 		  (fltk::Callback*)checkered_cb, this);
 
 	if (valid)
-	  menu.add("Create/Slate", 0, (fltk::Callback*)slate_cb, this);
+	   menu.add( _("Create/Slate"), 0, (fltk::Callback*)slate_cb, this);
 
 	menu.popup( fltk::Rectangle( x, y, 80, 1) );
 	return 1;

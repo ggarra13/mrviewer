@@ -463,10 +463,10 @@ void ImageView::stop_playback()
 {
 
   mrv::media fg = foreground();
-  if ( fg ) fg->image()->stop();
+  if ( fg && !fg->image()->stopped()) fg->image()->stop();
 
   mrv::media bg = background();
-  if ( bg ) bg->image()->stop();
+  if ( bg && !bg->image()->stopped()) bg->image()->stop();
 }
 
 
@@ -2856,12 +2856,12 @@ void ImageView::foreground( mrv::media fg )
   mrv::media old = foreground();
   if ( old == fg ) return;
 
-#if 0
+
   if ( old && playback() != kStopped )
     {
       old->image()->stop();
     }
-#endif
+
 
   delete_timeout();
 
@@ -2885,19 +2885,24 @@ void ImageView::foreground( mrv::media fg )
   if ( fg ) 
     {
       CMedia* img = fg->image();
-      if ( img->gamma() > 0.0f ) gamma( img->gamma() );
-      refresh_fstop();
+      
+      if ( img )
+      {
 
-      if ( img->width() > 160 && !fltk_main()->border() )  fit_image();
+	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
+	 refresh_fstop();
+	 
+	 if ( img->width() > 160 && !fltk_main()->border() )  fit_image();
+      
+	 img->image_damage( img->image_damage() | CMedia::kDamageContents );
 
-      img->image_damage( img->image_damage() | CMedia::kDamageContents );
 
-
-      bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
-      if ( dynamic_cast< stubImage* >( img ) || reload )
-	{
-	  create_timeout( 0.2 );
-	}
+	 bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
+	 if ( dynamic_cast< stubImage* >( img ) || reload )
+	 {
+	    create_timeout( 0.2 );
+	 }
+      }
     }
 
 

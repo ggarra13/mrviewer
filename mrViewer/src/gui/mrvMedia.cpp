@@ -121,6 +121,7 @@ namespace mrv {
 	  if ( _thumbnail == NULL ) return;
 	}
 
+
       _thumbnail->setsize( w, h );
 
       uchar* ptr = (uchar*) _thumbnail->buffer();

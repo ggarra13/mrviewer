@@ -80,6 +80,8 @@ namespace mrv {
 
     void start_timer();
     void end_timer();
+       void wait_for_rthreads();
+       void thread_exit();
 
   protected:
 
@@ -89,6 +91,7 @@ namespace mrv {
 
     time_t _startRenderTime;
 
+    thread_pool_t  _rthreads;  //!< render threads used to monitor
     bool  _aborted;
     float _version;
     unsigned int   _portA;

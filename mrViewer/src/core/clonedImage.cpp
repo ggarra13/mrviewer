@@ -69,7 +69,9 @@ namespace mrv {
       CMedia::Mutex& m = img->video_mutex();
       SCOPED_LOCK(m);
       _hires = img->hires();
+      _label = strdup( img->label() );
     }
+
 
 
     //   setsize( -1, -1 );
