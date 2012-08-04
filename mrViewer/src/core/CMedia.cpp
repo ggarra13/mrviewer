@@ -1085,7 +1085,6 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
-   if ( _playback == kStopped ) return;
 
   _playback = kStopped;
 
@@ -1104,6 +1103,7 @@ void CMedia::stop()
 
   // Wait for all threads to exit
   wait_for_threads();
+
 
   // Clear barrier
   delete _loop_barrier; _loop_barrier = NULL;
