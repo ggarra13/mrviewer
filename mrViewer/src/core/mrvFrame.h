@@ -131,21 +131,8 @@ namespace mrv
     }
     
     void allocate();
-
-    inline self& operator=( const self& b )
-    {
-      _frame    = b.frame();
-      _pts      = b.pts();
-      _repeat   = b.repeat();
-      _width    = b.width();
-      _height   = b.height(); 
-      _channels = b.channels();
-      _format   = b.format();
-      _mtime    = b.mtime();
-      _type     = b.pixel_type();
-      _data     = b.data();
-      return *this;
-    }
+       
+    self& operator=( const self& b );
 
     inline void width( const unsigned w ) { _width = w;  }
     inline unsigned int width()  const    { return _width;  }

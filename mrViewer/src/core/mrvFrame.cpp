@@ -333,4 +333,20 @@ const char* const VideoFrame::fmts[] = {
       }
   }
 
+VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
+{
+   _frame    = b.frame();
+   _pts      = b.pts();
+   _repeat   = b.repeat();
+   _width    = b.width();
+   _height   = b.height(); 
+   _channels = b.channels();
+   _format   = b.format();
+   _mtime    = b.mtime();
+   _type     = b.pixel_type();
+   allocate();
+   memcpy( _data.get(), b.data().get(), data_size() );
+   return *this;
+}
+
 } // namespace mrv
