@@ -25,7 +25,7 @@ FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( Gettext     REQUIRED )
 
 # ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS )
-ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS )
+ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -41,6 +41,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     SET(OS_LIBRARIES
       )
   ELSE(APPLE)
+
+
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
     FIND_LIBRARY( Xpm Xpm
@@ -48,7 +50,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/local/lib
       /usr/lib
       )
-    ADD_DEFINITIONS( -DLINUX -msse ) 
+    ADD_DEFINITIONS( -DUSE_GETTEXT -DLINUX -msse ) 
     SET(OS_LIBRARIES
       asound
       ${Xpm} png X11 Xi Xft Xinerama pthread m Xext stdc++ GLEW
@@ -233,7 +235,7 @@ ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
   # automatically to handle the correct linking.
   #
   FIND_LIBRARY( libintl_LIBRARY
-  		NAMES libintl-8.lib libintl.dll.a libintl
+  		NAMES libintl-8 libintl.lib libintl
 		PATHS $ENV{LIBINTL_ROOT} )
 
   SET( BOOST_LIBRARIES

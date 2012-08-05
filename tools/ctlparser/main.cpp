@@ -7,11 +7,16 @@
 #include <CtlSimdInterpreter.h>
 #include <CtlFunctionCall.h>
 
-
+#ifdef USE_GETTEXT
 #include <libintl.h>
 #define _(String)  gettext(String)
 #define gettext_noop(String) String
 #define N_(String) gettext_noop (String)
+#else
+#define _(String)  String
+#define gettext_noop(String) String
+#define N_(String) gettext_noop(String)
+#endif
 
 // #include <ImathMath.h>
 // #include <IexBaseExc.h>
@@ -35,9 +40,11 @@ void usage(const char** argv)
 int main( const int argc, const char** argv )
 {
    
+#ifdef USE_GETTEXT
    setlocale( LC_ALL, "" );
    bindtextdomain( "ctlparser", "/usr/share/locale" );
    textdomain( "ctlparser" );
+#endif
 
   if ( argc != 2 )
     {

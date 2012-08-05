@@ -68,10 +68,9 @@ namespace mrv {
       CMedia* img = const_cast< CMedia* >( other );
       CMedia::Mutex& m = img->video_mutex();
       SCOPED_LOCK(m);
-      _hires = img->hires();
-      _label = strdup( img->label() );
+      _hires.reset( new mrv::image_type() );
+      *_hires = *(img->hires());
     }
-
 
 
     //   setsize( -1, -1 );

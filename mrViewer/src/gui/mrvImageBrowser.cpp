@@ -1190,10 +1190,6 @@ namespace mrv {
 
     mrv::media newm( new mrv::gui::media(newImg) );
 
-    Element* nw = new_image( m );
-    fltk::Group::replace( idx, *nw );
-
-    this->remove( m );
 
     mrv::CMedia::Mutex& vpm = newImg->video_mutex();
     SCOPED_LOCK( vpm );
@@ -1202,6 +1198,11 @@ namespace mrv {
     newImg->default_rendering_transform();
     newImg->decode_video( frame );
     newImg->find_image( frame );
+
+    Element* nw = new_image( newm );
+    fltk::Group::replace( idx, *nw );
+
+    this->remove( m );
 
     if ( playback != CMedia::kStopped )
       newImg->play( playback, uiMain );

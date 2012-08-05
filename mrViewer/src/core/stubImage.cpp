@@ -604,8 +604,8 @@ namespace mrv {
 	new_buffer( i->first, ws, wh );
 
 	mrv::image_type_ptr buffer = _pixelBuffers[i->first];
-	mrv::image_type_ptr origBuffer = oStub->frame_buffer( i->first );
-	*buffer = *origBuffer;
+	mrv::image_type_ptr oBuffer = oStub->frame_buffer( i->first );
+	*buffer = *oBuffer;
       }
 
 
@@ -1007,7 +1007,7 @@ void stubImage::thread_exit()
 	}
       else
 	{
-	  int fb  = _layerBuffers[ _channel ];
+	  int fb = _layerBuffers[ _channel ];
 	  _hires = _pixelBuffers[fb];
 	}
     }

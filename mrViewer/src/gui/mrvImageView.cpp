@@ -3479,7 +3479,7 @@ void ImageView::stop()
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
-  delete_timeout();
+ 
   redraw();
   thumbnails();
 }
