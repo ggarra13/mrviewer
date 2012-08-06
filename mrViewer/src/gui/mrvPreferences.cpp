@@ -9,6 +9,7 @@
  */
 
 #include <stdlib.h>
+#include <stdio.h>
 #include <string.h>
 #include <ctype.h>
 #include <iostream>
@@ -615,6 +616,9 @@ namespace mrv {
 	    const char* label = uiPrefs->DatabaseDriver->child(i)->label();
 	    if ( strcasecmp( env, label ) == 0 )
 	      {
+		char buf[1024];
+		sprintf( buf, "MRV_DATABASE_DRIVER=%s", env );
+		putenv( strdup(buf) );
 		uiPrefs->DatabaseDriver->value(i); break;
 	      }
 	  }
@@ -1031,7 +1035,9 @@ namespace mrv {
     const char* driver = NULL;
     if ( i >= 0 && i < uiPrefs->DatabaseDriver->children() )
       driver = uiPrefs->DatabaseDriver->child(i)->label();
-    if ( driver ) db.set( "driver", driver );
+    if ( driver ) {
+       db.set( "driver", driver );
+    }
 
     //
     // Hotkeys

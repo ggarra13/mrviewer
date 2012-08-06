@@ -55,12 +55,10 @@ msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgid " UF: %<PRId64> "
 msgstr " CNM: %<PRId64> "
 
-#  en el puerto 
-#: core/stubImage.cpp:823
+#: core/stubImage.cpp:854
 msgid " at port "
 msgstr " en el puerto "
 
-#  max. audio: 
 #: core/CMedia_audio.cpp:894
 msgid " audio max: "
 msgstr " max. audio: "
@@ -2302,12 +2300,12 @@ msgid "mrViewer does not support YUV images."
 msgstr "mrViewer no soporta imágenes de YUV."
 
 #: video/mrvGLEngine.cpp:473
-msgid "mrViewer supports YUV through shaders."
-msgstr "mrViewer soporta YUV con shaders."
+msgid "mrViewer supports YUV images through shaders."
+msgstr "mrViewer soporta imágenes YUV con shaders."
 
 #: video/mrvGLEngine.cpp:469
-msgid "mrViewer supports YUVA through shaders."
-msgstr "mrViewer soporta YUVA con shaders."
+msgid "mrViewer supports YUVA images through shaders."
+msgstr "mrViewer soporta imágenes YUVA con shaders."
 
 #: gui/mrvColorInfo.cpp:302
 msgid "pixel"

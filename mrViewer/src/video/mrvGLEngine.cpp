@@ -466,11 +466,11 @@ void GLEngine::initialize()
     {
       if ( _has_yuva )
 	{
-	  LOG_INFO( _("mrViewer supports YUVA through shaders.") );
+	  LOG_INFO( _("mrViewer supports YUVA images through shaders.") );
 	}
       else
 	{
-	  LOG_INFO( _("mrViewer supports YUV through shaders.") );
+	  LOG_INFO( _("mrViewer supports YUV images through shaders.") );
 	}
     }
   else

@@ -1775,7 +1775,9 @@ bool CMedia::find_image( const boost::int64_t frame )
      else
      {
 	if ( ! internal() )
+	{
 	   LOG_ERROR( file << _(" is missing.") );
+	}
 	return false;
      }
   }

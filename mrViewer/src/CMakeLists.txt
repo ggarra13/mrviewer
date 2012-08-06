@@ -22,7 +22,6 @@ FIND_PACKAGE( GLEW        REQUIRED )    # for command-line parsing
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 # FIND_PACKAGE( AO )    # for ao sound lib
-FIND_PACKAGE( Gettext     REQUIRED )
 
 # ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS )
 ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS )

@@ -20,6 +20,7 @@ using namespace std;
 #include "fltk/Valuator.h"
 #include "fltk/layout.h"
 
+#include "fltk/events.h"
 #include "fltk/damage.h"
 #include "fltk/draw.h"
 
@@ -358,4 +359,14 @@ fltk::Widget* Flu_Wrap_Group::previous( const fltk::Widget* w ) const
   unsigned int i = find( w );
   if ( i == 0 ) return NULL;
   return child(i - 1);
+}
+
+int Flu_Wrap_Group::handle( int event )
+{
+   if ( event == fltk::MOUSEWHEEL )
+   {
+      fltk::e_dy = fltk::event_dy() * 8;
+   }
+
+   return fltk::ScrollGroup::handle( event );
 }
