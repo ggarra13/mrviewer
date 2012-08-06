@@ -3061,6 +3061,9 @@ void ImageView::resize_main_window()
 
   fltk_main()->fullscreen_off( posX, posY, w, h);
   fltk_main()->border( true );
+#ifdef LINUX
+  fltk_main()->hide();  // @bug: window decoration is missing otherwise
+#endif
   fltk_main()->show();
 
   if ( fit ) fit_image();

@@ -109,6 +109,8 @@ class FLU_EXPORT Flu_Wrap_Group : public fltk::ScrollGroup
   inline void scroll_to( const fltk::Widget& w )
     { scroll_to( &w ); }
 
+  virtual int handle( int event );
+
   virtual void layout();
 
   virtual void draw();

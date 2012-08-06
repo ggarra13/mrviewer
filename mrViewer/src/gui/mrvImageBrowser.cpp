@@ -809,6 +809,8 @@ namespace mrv {
 
   void ImageBrowser::add_image( const mrv::media& m )
   {
+    if (!db) return;
+
     const CMedia* img = m->image();
 
     char* login;
@@ -1067,7 +1069,6 @@ namespace mrv {
       db = mrv::Database::factory();
       if ( !db )
 	{
-	  LOG_ERROR( img->name() << ": Could not open database driver" );
 	  return m;
 	}
     }
