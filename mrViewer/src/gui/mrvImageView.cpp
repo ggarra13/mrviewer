@@ -1839,6 +1839,9 @@ int ImageView::keyDown(unsigned int rawkey)
 	}
       else
       { 
+#ifdef LINUX
+	 fltk_main()->hide();  // @bug: window decoration is missing otherwise
+#endif
 	 resize_main_window();
       }
       fltk_main()->relayout();
@@ -2201,6 +2204,9 @@ void ImageView::toggle_fullscreen()
       if ( has_bottom_bar)  uiMain->uiBottomBar->show();
       if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
+#ifdef LINUX
+      fltk_main()->hide();  // @bug: window decoration is missing otherwise
+#endif
       resize_main_window();
     }
 
@@ -3079,10 +3085,6 @@ void ImageView::resize_main_window()
 
 
   fltk_main()->fullscreen_off( posX, posY, w, h);
-  fltk_main()->border( true );
-#ifdef LINUX
-  fltk_main()->hide();  // @bug: window decoration is missing otherwise
-#endif
   fltk_main()->show();
 
   if ( fit ) fit_image();
@@ -3137,7 +3139,6 @@ void ImageView::toggle_normalize()
   damage_contents();
   redraw();
 }
-
 
 /** 
  * Toggle pixel ratio stretching

@@ -815,7 +815,7 @@ namespace mrv {
     {
        int x = uiPrefs->uiWindowXPosition->value();
        int y = uiPrefs->uiWindowYPosition->value();
-       main->uiMain->resize( x, y, 640, 480 );
+       main->uiMain->position( x, y );
     }
 
     main->uiMain->show(0, NULL);
