@@ -55,6 +55,7 @@ int main( const int argc, char** argv )
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();
 
+
   mrv::LoadList files;
   mrv::parse_command_line( argc, argv, ui, files );
 

@@ -23,7 +23,6 @@
 #include <ImfOutputFile.h>
 #include <ImathMath.h> // for Math:: functions
 #include <ImathBox.h>  // for Box2i
-#include <ImfStandardAttributes.h>
 #include <ImfIntAttribute.h>
 #include <ImfRgbaYca.h>
 
@@ -1114,7 +1113,8 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 	_rendering_intent = kRelativeIntent;
 
-	read_header_attr( h, frame );
+	if ( _exif.empty() || _iptc.empty() )
+	   read_header_attr( h, frame );
 
 
 
