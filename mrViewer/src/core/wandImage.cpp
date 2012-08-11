@@ -232,36 +232,36 @@ namespace mrv {
 	_chromaticities.white.y = wy;
      }
 
-     _exif.clear();
-     _iptc.clear();
-
-     GetImageProperty( img, "exif:*" );
-     ResetImagePropertyIterator( img );
-     const char* property = GetNextImageProperty(img);
-     while ( property )
+     if ( _exif.empty() )
      {
-	const char* value = GetImageProperty( img, property );
-	if ( value )
-	{
-	   //
-	   // Format for exif property in imagemagick is like:
-	   //       "Exif:InteroperabilityVersion"
-	   //
-	   // Make that string into something prettier
-	   //
-	   std::string key;
-	   for (const char* p = property + 5; *p != '\0'; ++p)
-	   {
-	      if ( (isupper((int) ((unsigned char) *p)) != 0) &&
-		   (islower((int) ((unsigned char) *(p+1))) != 0))
-		 key += ' ';
-	      key += *p;
-	   }
-	   _exif.insert( std::make_pair( key, value ) );
-	}
-	property = GetNextImageProperty(img);
-     }
 
+	GetImageProperty( img, "exif:*" );
+	ResetImagePropertyIterator( img );
+	const char* property = GetNextImageProperty(img);
+	while ( property )
+	{
+	   const char* value = GetImageProperty( img, property );
+	   if ( value )
+	   {
+	      //
+	      // Format for exif property in imagemagick is like:
+	      //       "Exif:InteroperabilityVersion"
+	      //
+	      // Make that string into something prettier
+	      //
+	      std::string key;
+	      for (const char* p = property + 5; *p != '\0'; ++p)
+	      {
+		 if ( (isupper((int) ((unsigned char) *p)) != 0) &&
+		      (islower((int) ((unsigned char) *(p+1))) != 0))
+		    key += ' ';
+		 key += *p;
+	      }
+	      _exif.insert( std::make_pair( key, value ) );
+	   }
+	   property = GetNextImageProperty(img);
+	}
+     }
 
      size_t profileSize;
      unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
@@ -275,97 +275,100 @@ namespace mrv {
      _rendering_intent = (CMedia::RenderingIntent) 
      MagickGetImageRenderingIntent( wand );
 
-     tmp = MagickGetImageProfile( wand, "iptc", &profileSize );
-     if ( profileSize > 0 )
+     if ( _iptc.empty() )
      {
-	char* attribute;
-	const char* tag;
-	long dataset, record, sentinel;
 
-	size_t i;
-	size_t length;
-
-	/*
-	  Identify IPTC data.
-	*/
-	for (i=0; i < profileSize; i += length)
+	tmp = MagickGetImageProfile( wand, "iptc", &profileSize );
+	if ( profileSize > 0 )
 	{
-	   length=1;
-	   sentinel = tmp[i++];
-	   if (sentinel != 0x1c)
-	      continue;
-	   dataset = tmp[i++];
-	   record  = tmp[i++];
-	   switch (record)
+	   char* attribute;
+	   const char* tag;
+	   long dataset, record, sentinel;
+
+	   size_t i;
+	   size_t length;
+
+	   /*
+	     Identify IPTC data.
+	   */
+	   for (i=0; i < profileSize; i += length)
 	   {
-	      case 5: tag = _("Image Name"); break;
-	      case 7: tag = _("Edit Status"); break;
-	      case 10: tag = _("Priority"); break;
-	      case 15: tag = _("Category"); break;
-	      case 20: tag = _("Supplemental Category"); break;
-	      case 22: tag = _("Fixture Identifier"); break;
-	      case 25: tag = _("Keyword"); break;
-	      case 30: tag = _("Release Date"); break;
-	      case 35: tag = _("Release Time"); break;
-	      case 40: tag = _("Special Instructions"); break;
-	      case 45: tag = _("Reference Service"); break;
-	      case 47: tag = _("Reference Date"); break;
-	      case 50: tag = _("Reference Number"); break;
-	      case 55: tag = _("Created Date"); break;
-	      case 60: tag = _("Created Time"); break;
-	      case 65: tag = _("Originating Program"); break;
-	      case 70: tag = _("Program Version"); break;
-	      case 75: tag = _("Object Cycle"); break;
-	      case 80: tag = _("Byline"); break;
-	      case 85: tag = _("Byline Title"); break;
-	      case 90: tag = _("City"); break;
-	      case 95: tag = _("Province State"); break;
-	      case 100: tag = _("Country Code"); break;
-	      case 101: tag = _("Country"); break;
-	      case 103: tag = _("Original Transmission Reference"); break;
-	      case 105: tag = _("Headline"); break;
-	      case 110: tag = _("Credit"); break;
-	      case 115: tag = _("Src"); break;
-	      case 116: tag = _("Copyright String"); break;
-	      case 120: tag = _("Caption"); break;
-	      case 121: tag = _("Local Caption"); break;
-	      case 122: tag = _("Caption Writer"); break;
-	      case 200: tag = _("Custom Field 1"); break;
-	      case 201: tag = _("Custom Field 2"); break;
-	      case 202: tag = _("Custom Field 3"); break;
-	      case 203: tag = _("Custom Field 4"); break;
-	      case 204: tag = _("Custom Field 5"); break;
-	      case 205: tag = _("Custom Field 6"); break;
-	      case 206: tag = _("Custom Field 7"); break;
-	      case 207: tag = _("Custom Field 8"); break;
-	      case 208: tag = _("Custom Field 9"); break;
-	      case 209: tag = _("Custom Field 10"); break;
-	      case 210: tag = _("Custom Field 11"); break;
-	      case 211: tag = _("Custom Field 12"); break;
-	      case 212: tag = _("Custom Field 13"); break;
-	      case 213: tag = _("Custom Field 14"); break;
-	      case 214: tag = _("Custom Field 15"); break;
-	      case 215: tag = _("Custom Field 16"); break;
-	      case 216: tag = _("Custom Field 17"); break;
-	      case 217: tag = _("Custom Field 18"); break;
-	      case 218: tag = _("Custom Field 19"); break;
-	      case 219: tag = _("Custom Field 20"); break;
-	      default: tag = _("unknown"); break;
-	   }
-	   length = (size_t) (tmp[i++] << 8);
-	   length |= tmp[i++];
-	   attribute=(char *) AcquireMagickMemory((length+MaxTextExtent)*
-						  sizeof(*attribute));
-	   if (attribute != (char *) NULL)
-	   {
-	      (void) CopyMagickString(attribute,(char *) tmp+i,
-				      length+1);
-	      _iptc.insert( std::make_pair( tag, attribute ) );
-	      attribute=(char *) RelinquishMagickMemory(attribute);
+	      length=1;
+	      sentinel = tmp[i++];
+	      if (sentinel != 0x1c)
+		 continue;
+	      dataset = tmp[i++];
+	      record  = tmp[i++];
+	      switch (record)
+	      {
+		 case 5: tag = _("Image Name"); break;
+		 case 7: tag = _("Edit Status"); break;
+		 case 10: tag = _("Priority"); break;
+		 case 15: tag = _("Category"); break;
+		 case 20: tag = _("Supplemental Category"); break;
+		 case 22: tag = _("Fixture Identifier"); break;
+		 case 25: tag = _("Keyword"); break;
+		 case 30: tag = _("Release Date"); break;
+		 case 35: tag = _("Release Time"); break;
+		 case 40: tag = _("Special Instructions"); break;
+		 case 45: tag = _("Reference Service"); break;
+		 case 47: tag = _("Reference Date"); break;
+		 case 50: tag = _("Reference Number"); break;
+		 case 55: tag = _("Created Date"); break;
+		 case 60: tag = _("Created Time"); break;
+		 case 65: tag = _("Originating Program"); break;
+		 case 70: tag = _("Program Version"); break;
+		 case 75: tag = _("Object Cycle"); break;
+		 case 80: tag = _("Byline"); break;
+		 case 85: tag = _("Byline Title"); break;
+		 case 90: tag = _("City"); break;
+		 case 95: tag = _("Province State"); break;
+		 case 100: tag = _("Country Code"); break;
+		 case 101: tag = _("Country"); break;
+		 case 103: tag = _("Original Transmission Reference"); break;
+		 case 105: tag = _("Headline"); break;
+		 case 110: tag = _("Credit"); break;
+		 case 115: tag = _("Src"); break;
+		 case 116: tag = _("Copyright String"); break;
+		 case 120: tag = _("Caption"); break;
+		 case 121: tag = _("Local Caption"); break;
+		 case 122: tag = _("Caption Writer"); break;
+		 case 200: tag = _("Custom Field 1"); break;
+		 case 201: tag = _("Custom Field 2"); break;
+		 case 202: tag = _("Custom Field 3"); break;
+		 case 203: tag = _("Custom Field 4"); break;
+		 case 204: tag = _("Custom Field 5"); break;
+		 case 205: tag = _("Custom Field 6"); break;
+		 case 206: tag = _("Custom Field 7"); break;
+		 case 207: tag = _("Custom Field 8"); break;
+		 case 208: tag = _("Custom Field 9"); break;
+		 case 209: tag = _("Custom Field 10"); break;
+		 case 210: tag = _("Custom Field 11"); break;
+		 case 211: tag = _("Custom Field 12"); break;
+		 case 212: tag = _("Custom Field 13"); break;
+		 case 213: tag = _("Custom Field 14"); break;
+		 case 214: tag = _("Custom Field 15"); break;
+		 case 215: tag = _("Custom Field 16"); break;
+		 case 216: tag = _("Custom Field 17"); break;
+		 case 217: tag = _("Custom Field 18"); break;
+		 case 218: tag = _("Custom Field 19"); break;
+		 case 219: tag = _("Custom Field 20"); break;
+		 default: tag = _("unknown"); break;
+	      }
+	      length = (size_t) (tmp[i++] << 8);
+	      length |= tmp[i++];
+	      attribute=(char *) AcquireMagickMemory((length+MaxTextExtent)*
+						     sizeof(*attribute));
+	      if (attribute != (char *) NULL)
+	      {
+		 (void) CopyMagickString(attribute,(char *) tmp+i,
+					 length+1);
+		 _iptc.insert( std::make_pair( tag, attribute ) );
+		 attribute=(char *) RelinquishMagickMemory(attribute);
+	      }
 	   }
 	}
      }
-
      DestroyMagickWand( wand );
      MagickWandTerminus();
 

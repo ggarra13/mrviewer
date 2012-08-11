@@ -70,6 +70,8 @@ namespace mrv {
 
     const char* get_error( const char* data, int pos );
     const char* get_glsl_error();
+    const char* get_shader_error(GLuint shader);
+    const char* get_program_error(GLuint program);
 
   protected:
     GLuint      _frag_target;

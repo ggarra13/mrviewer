@@ -311,22 +311,24 @@ namespace mrv {
     //
     // ui/window preferences
     //
-    fltk::Preferences win( ui, "window" );
-
-    win.get( "always_on_top", tmp, 0 );
-    uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
-
-    win.get( "open_mode", tmp, 0 ); 
-    
     {
-      fltk::RadioButton* r;
-      for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
-	{
-	  r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child( i );
-	  r->value(0);
-	}
-      r = (fltk::RadioButton*)uiPrefs->uiPrefsOpenMode->child( tmp );
-      r->value(1);
+       fltk::Preferences win( ui, "window" );
+       
+       win.get( "always_on_top", tmp, 0 );
+       uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
+    
+       win.get( "open_mode", tmp, 0 ); 
+    
+       {
+	  fltk::RadioButton* r;
+	  for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
+	  {
+	     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child( i );
+	     r->value(0);
+	  }
+	  r = (fltk::RadioButton*)uiPrefs->uiPrefsOpenMode->child( tmp );
+	  r->value(1);
+       }
     }
 
 
@@ -404,6 +406,14 @@ namespace mrv {
     uiPrefs->uiPrefsHudFrameRange->value( tmp );
     hud.get("iptc", tmp, 0 );
     uiPrefs->uiPrefsHudIPTC->value( tmp );
+
+    fltk::Preferences win( view, "window" );
+    win.get("fixed_position", tmp, 0 );
+    uiPrefs->uiWindowFixedPosition->value( tmp );
+    win.get("x_position", tmp, 0 );
+    uiPrefs->uiWindowXPosition->value( tmp );
+    win.get("y_position", tmp, 0 );
+    uiPrefs->uiWindowYPosition->value( tmp );
 
     fltk::Preferences flu( ui, "file_requester" );
     flu.get("quick_folder_travel", tmp, 1 );
@@ -801,9 +811,17 @@ namespace mrv {
     //
     // Handle fullscreen and presentation mode
     //
+    if ( uiPrefs->uiWindowFixedPosition->value() )
+    {
+       int x = uiPrefs->uiWindowXPosition->value();
+       int y = uiPrefs->uiWindowYPosition->value();
+       main->uiMain->resize( x, y, 640, 480 );
+    }
+
     main->uiMain->show(0, NULL);
     main->uiMain->set_icon();
     fltk::check();
+
 
     fltk::RadioButton* r;
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(1);
@@ -842,16 +860,18 @@ namespace mrv {
     //
     // window options
     //
-    fltk::Preferences win( ui, "window" );
-    win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
-    int tmp = 0;
-    for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
-      fltk::RadioButton* r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(i);
-      if ( r->value() ) {
-	tmp = i; break;
-      }
+    {
+       fltk::Preferences win( ui, "window" );
+       win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
+       int tmp = 0;
+       for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
+	  fltk::RadioButton* r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(i);
+	  if ( r->value() ) {
+	     tmp = i; break;
+	  }
+       }
+       win.set( "open_mode", tmp );
     }
-    win.set( "open_mode", tmp );
 
     //
     // ui options
@@ -882,16 +902,16 @@ namespace mrv {
     //
     // view/colors prefs
     //
-    {    
-      fltk::Preferences colors( view, "colors" );
-      tmp = uiPrefs->uiPrefsViewBG->color();
-      colors.set("background_color", tmp );
-      tmp = uiPrefs->uiPrefsViewText->color();
-      colors.set("text_overlay_color", tmp );
-      tmp = uiPrefs->uiPrefsViewSelection->color();
-      colors.set("selection_color", tmp );
-      tmp = uiPrefs->uiPrefsViewHud->color();
-      colors.set("hud_color", tmp );
+    {
+       fltk::Preferences colors( view, "colors" );
+       int tmp = uiPrefs->uiPrefsViewBG->color();
+       colors.set("background_color", tmp );
+       tmp = uiPrefs->uiPrefsViewText->color();
+       colors.set("text_overlay_color", tmp );
+       tmp = uiPrefs->uiPrefsViewSelection->color();
+       colors.set("selection_color", tmp );
+       tmp = uiPrefs->uiPrefsViewHud->color();
+       colors.set("hud_color", tmp );
     }
 
 
@@ -908,6 +928,13 @@ namespace mrv {
     hud.set("resolution", uiPrefs->uiPrefsHudResolution->value() );
     hud.set("frame_range", uiPrefs->uiPrefsHudFrameRange->value() );
     hud.set("iptc", uiPrefs->uiPrefsHudIPTC->value() );
+
+    {
+       fltk::Preferences win( view, "window" );
+       win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
+       win.set("x_position", uiPrefs->uiWindowXPosition->value() );
+       win.set("y_position", uiPrefs->uiWindowYPosition->value() );
+    }
 
     //
     // ui/colors prefs

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-08-05 13:51-0300\n"
+"POT-Creation-Date: 2012-08-11 16:47-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -87,7 +87,7 @@ msgstr ""
 msgid " instead"
 msgstr ""
 
-#: core/CMedia.cpp:1778
+#: core/CMedia.cpp:1779
 msgid " is missing."
 msgstr ""
 
@@ -124,11 +124,11 @@ msgstr ""
 msgid " video frame, cache "
 msgstr ""
 
-#: core/exrImage.cpp:201
+#: core/exrImage.cpp:200
 msgid "\" contains more than 4 channels named with prefix \""
 msgstr ""
 
-#: core/exrImage.cpp:193
+#: core/exrImage.cpp:192
 msgid "\" has no channels named with prefix \""
 msgstr ""
 
@@ -277,7 +277,7 @@ msgid ""
 "Examples:\n"
 msgstr ""
 
-#: core/exrImage.cpp:747
+#: core/exrImage.cpp:746
 msgid "ALPHA"
 msgstr ""
 
@@ -293,7 +293,7 @@ msgstr ""
 msgid "Absolute"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:172
+#: gui/mrvHotkey.cpp:173
 msgid "Add"
 msgstr ""
 
@@ -321,7 +321,7 @@ msgstr ""
 msgid "Alpha Overlay"
 msgstr ""
 
-#: core/exrImage.cpp:945
+#: core/exrImage.cpp:944
 msgid "Altitude"
 msgstr ""
 
@@ -330,7 +330,7 @@ msgstr ""
 msgid "An error ocurred while trying to delete '%s'."
 msgstr ""
 
-#: core/exrImage.cpp:978
+#: core/exrImage.cpp:977
 msgid "Aperture"
 msgstr ""
 
@@ -352,7 +352,7 @@ msgstr ""
 msgid "Aspect Ratio"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:128
+#: gui/mrvHotkey.cpp:129
 msgid "Attach Audio File"
 msgstr ""
 
@@ -393,7 +393,7 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:3545
+#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:3564
 msgid "B"
 msgstr ""
 
@@ -401,11 +401,11 @@ msgstr ""
 msgid "B Frames"
 msgstr ""
 
-#: core/exrImage.cpp:746
+#: core/exrImage.cpp:745
 msgid "BLUE"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:137
+#: gui/mrvHotkey.cpp:138
 msgid "BackSpace"
 msgstr ""
 
@@ -427,11 +427,11 @@ msgstr ""
 msgid "Buffer was NULL - internal error"
 msgstr ""
 
-#: core/wandImage.cpp:319
+#: core/wandImage.cpp:322
 msgid "Byline"
 msgstr ""
 
-#: core/wandImage.cpp:320
+#: core/wandImage.cpp:323
 msgid "Byline Title"
 msgstr ""
 
@@ -447,23 +447,23 @@ msgstr ""
 msgid "Cancel"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:161
+#: gui/mrvHotkey.cpp:162
 msgid "CapsLock"
 msgstr ""
 
-#: core/wandImage.cpp:330
+#: core/wandImage.cpp:333
 msgid "Caption"
 msgstr ""
 
-#: core/wandImage.cpp:332
+#: core/wandImage.cpp:335
 msgid "Caption Writer"
 msgstr ""
 
-#: core/exrImage.cpp:901
+#: core/exrImage.cpp:900
 msgid "Capture Date"
 msgstr ""
 
-#: core/wandImage.cpp:304
+#: core/wandImage.cpp:307
 msgid "Category"
 msgstr ""
 
@@ -479,11 +479,11 @@ msgstr ""
 msgid "Cineon Picture"
 msgstr ""
 
-#: core/wandImage.cpp:321
+#: core/wandImage.cpp:324
 msgid "City"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:130
+#: gui/mrvHotkey.cpp:131
 msgid "Clone Image"
 msgstr ""
 
@@ -509,7 +509,7 @@ msgstr ""
 msgid "Color Info"
 msgstr ""
 
-#: core/exrImage.cpp:892
+#: core/exrImage.cpp:891
 msgid "Comments"
 msgstr ""
 
@@ -529,7 +529,7 @@ msgstr ""
 msgid "Connected to database '"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:129
+#: gui/mrvHotkey.cpp:130
 msgid "Copy RGBA Values"
 msgstr ""
 
@@ -537,7 +537,7 @@ msgstr ""
 msgid "Copy/Color"
 msgstr ""
 
-#: core/wandImage.cpp:329
+#: core/wandImage.cpp:332
 msgid "Copyright String"
 msgstr ""
 
@@ -613,11 +613,11 @@ msgstr ""
 msgid "Could not read audio for frame "
 msgstr ""
 
-#: core/wandImage.cpp:324
+#: core/wandImage.cpp:327
 msgid "Country"
 msgstr ""
 
-#: core/wandImage.cpp:323
+#: core/wandImage.cpp:326
 msgid "Country Code"
 msgstr ""
 
@@ -673,11 +673,11 @@ msgstr ""
 msgid "Create/Slate"
 msgstr ""
 
-#: core/wandImage.cpp:314
+#: core/wandImage.cpp:317
 msgid "Created Date"
 msgstr ""
 
-#: core/wandImage.cpp:315
+#: core/wandImage.cpp:318
 msgid "Created Time"
 msgstr ""
 
@@ -685,87 +685,87 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: core/wandImage.cpp:327
+#: core/wandImage.cpp:330
 msgid "Credit"
 msgstr ""
 
-#: core/wandImage.cpp:333
+#: core/wandImage.cpp:336
 msgid "Custom Field 1"
 msgstr ""
 
-#: core/wandImage.cpp:342
+#: core/wandImage.cpp:345
 msgid "Custom Field 10"
 msgstr ""
 
-#: core/wandImage.cpp:343
+#: core/wandImage.cpp:346
 msgid "Custom Field 11"
 msgstr ""
 
-#: core/wandImage.cpp:344
+#: core/wandImage.cpp:347
 msgid "Custom Field 12"
 msgstr ""
 
-#: core/wandImage.cpp:345
+#: core/wandImage.cpp:348
 msgid "Custom Field 13"
 msgstr ""
 
-#: core/wandImage.cpp:346
+#: core/wandImage.cpp:349
 msgid "Custom Field 14"
 msgstr ""
 
-#: core/wandImage.cpp:347
+#: core/wandImage.cpp:350
 msgid "Custom Field 15"
 msgstr ""
 
-#: core/wandImage.cpp:348
+#: core/wandImage.cpp:351
 msgid "Custom Field 16"
 msgstr ""
 
-#: core/wandImage.cpp:349
+#: core/wandImage.cpp:352
 msgid "Custom Field 17"
 msgstr ""
 
-#: core/wandImage.cpp:350
+#: core/wandImage.cpp:353
 msgid "Custom Field 18"
 msgstr ""
 
-#: core/wandImage.cpp:351
+#: core/wandImage.cpp:354
 msgid "Custom Field 19"
 msgstr ""
 
-#: core/wandImage.cpp:334
+#: core/wandImage.cpp:337
 msgid "Custom Field 2"
 msgstr ""
 
-#: core/wandImage.cpp:352
+#: core/wandImage.cpp:355
 msgid "Custom Field 20"
 msgstr ""
 
-#: core/wandImage.cpp:335
+#: core/wandImage.cpp:338
 msgid "Custom Field 3"
 msgstr ""
 
-#: core/wandImage.cpp:336
+#: core/wandImage.cpp:339
 msgid "Custom Field 4"
 msgstr ""
 
-#: core/wandImage.cpp:337
+#: core/wandImage.cpp:340
 msgid "Custom Field 5"
 msgstr ""
 
-#: core/wandImage.cpp:338
+#: core/wandImage.cpp:341
 msgid "Custom Field 6"
 msgstr ""
 
-#: core/wandImage.cpp:339
+#: core/wandImage.cpp:342
 msgid "Custom Field 7"
 msgstr ""
 
-#: core/wandImage.cpp:340
+#: core/wandImage.cpp:343
 msgid "Custom Field 8"
 msgstr ""
 
-#: core/wandImage.cpp:341
+#: core/wandImage.cpp:344
 msgid "Custom Field 9"
 msgstr ""
 
@@ -785,15 +785,15 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:174
+#: gui/mrvHotkey.cpp:175
 msgid "Decimal"
 msgstr ""
 
-#: core/exrImage.cpp:65
+#: core/exrImage.cpp:64
 msgid "Decreasing Y"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:93 gui/mrvHotkey.cpp:148
+#: gui/FLU/Flu_File_Chooser.cpp:93 gui/mrvHotkey.cpp:149
 msgid "Delete"
 msgstr ""
 
@@ -854,11 +854,11 @@ msgstr ""
 msgid "Display Window"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:175
+#: gui/mrvHotkey.cpp:176
 msgid "Divide"
 msgstr ""
 
-#: core/exrImage.cpp:1059 gui/mrvHotkey.cpp:155
+#: core/exrImage.cpp:1058 gui/mrvHotkey.cpp:156
 msgid "Down"
 msgstr ""
 
@@ -879,11 +879,11 @@ msgstr ""
 msgid "Early 35mm"
 msgstr ""
 
-#: core/wandImage.cpp:302
+#: core/wandImage.cpp:305
 msgid "Edit Status"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:149
+#: gui/mrvHotkey.cpp:150
 msgid "End"
 msgstr ""
 
@@ -891,7 +891,7 @@ msgstr ""
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
-#: gui/mrvHotkey.cpp:136
+#: gui/mrvHotkey.cpp:137
 msgid "Escape"
 msgstr ""
 
@@ -899,19 +899,19 @@ msgstr ""
 msgid "Examples:"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:124
+#: gui/mrvHotkey.cpp:125
 msgid "Exposure Less"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:123
+#: gui/mrvHotkey.cpp:124
 msgid "Exposure More"
 msgstr ""
 
-#: core/exrImage.cpp:967
+#: core/exrImage.cpp:966
 msgid "Exposure Time"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3543
+#: gui/mrvImageView.cpp:3562
 msgid "F"
 msgstr ""
 
@@ -953,23 +953,23 @@ msgstr ""
 msgid "Filename"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:114
+#: gui/mrvHotkey.cpp:115
 msgid "First Frame"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:96
+#: gui/mrvHotkey.cpp:97
 msgid "Fit Screen"
 msgstr ""
 
-#: core/wandImage.cpp:306
+#: core/wandImage.cpp:309
 msgid "Fixture Identifier"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:99
+#: gui/mrvHotkey.cpp:100
 msgid "Flip X"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:100
+#: gui/mrvHotkey.cpp:101
 msgid "Flip Y"
 msgstr ""
 
@@ -981,7 +981,7 @@ msgstr ""
 msgid "Floppy Disk"
 msgstr ""
 
-#: core/exrImage.cpp:956
+#: core/exrImage.cpp:955
 msgid "Focus"
 msgstr ""
 
@@ -1002,19 +1002,19 @@ msgstr ""
 msgid "Frame Start"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:101
+#: gui/mrvHotkey.cpp:102
 msgid "Frame Step Backwards"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:102
+#: gui/mrvHotkey.cpp:103
 msgid "Frame Step FPS Backwards"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:104
+#: gui/mrvHotkey.cpp:105
 msgid "Frame Step FPS Forwards"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:103
+#: gui/mrvHotkey.cpp:104
 msgid "Frame Step Forwards"
 msgstr ""
 
@@ -1038,7 +1038,11 @@ msgstr ""
 msgid "GLEW Initialize Error: "
 msgstr ""
 
-#: core/exrImage.cpp:746
+#: video/mrvGLShader.cpp:228
+msgid "GLSL error in file "
+msgstr ""
+
+#: core/exrImage.cpp:745
 msgid "GREEN"
 msgstr ""
 
@@ -1046,11 +1050,11 @@ msgstr ""
 msgid "Gamma"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:126
+#: gui/mrvHotkey.cpp:127
 msgid "Gamma Less"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:125
+#: gui/mrvHotkey.cpp:126
 msgid "Gamma More"
 msgstr ""
 
@@ -1090,7 +1094,7 @@ msgstr ""
 msgid "Hardware shaders not available."
 msgstr ""
 
-#: core/wandImage.cpp:326
+#: core/wandImage.cpp:329
 msgid "Headline"
 msgstr ""
 
@@ -1102,7 +1106,7 @@ msgstr ""
 msgid "Histogram"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:87 gui/mrvHotkey.cpp:145
+#: gui/FLU/Flu_File_Chooser.cpp:87 gui/mrvHotkey.cpp:146
 msgid "Home"
 msgstr ""
 
@@ -1126,7 +1130,7 @@ msgstr ""
 msgid "IPTC"
 msgstr ""
 
-#: core/exrImage.cpp:990
+#: core/exrImage.cpp:989
 msgid "ISO Speed"
 msgstr ""
 
@@ -1134,7 +1138,7 @@ msgstr ""
 msgid "Image"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:91
+#: gui/mrvHotkey.cpp:92
 msgid "Image CTL script"
 msgstr ""
 
@@ -1142,15 +1146,15 @@ msgstr ""
 msgid "Image Channels"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:90
+#: gui/mrvHotkey.cpp:91
 msgid "Image Icc Profile"
 msgstr ""
 
-#: core/wandImage.cpp:301
+#: core/wandImage.cpp:304
 msgid "Image Name"
 msgstr ""
 
-#: core/exrImage.cpp:192 core/exrImage.cpp:200
+#: core/exrImage.cpp:191 core/exrImage.cpp:199
 msgid "Image file \""
 msgstr ""
 
@@ -1195,11 +1199,11 @@ msgstr ""
 msgid "Images, sequences or movies to display."
 msgstr ""
 
-#: core/exrImage.cpp:64
+#: core/exrImage.cpp:63
 msgid "Increasing Y"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:144
+#: gui/mrvHotkey.cpp:145
 msgid "Insert"
 msgstr ""
 
@@ -1215,8 +1219,8 @@ msgstr ""
 msgid "Invalid Profile for CMM: "
 msgstr ""
 
-#: db/mrvDatabase.cpp:105
-msgid "Invalid database driver "
+#: db/mrvDatabase.cpp:110
+msgid "Invalid database driver '"
 msgstr ""
 
 #: video/mrvGLLut3d.cpp:467
@@ -1239,55 +1243,55 @@ msgstr ""
 msgid "JPEG Picture"
 msgstr ""
 
-#: core/exrImage.cpp:1002
+#: core/exrImage.cpp:1001
 msgid "Key Code"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:176
+#: gui/mrvHotkey.cpp:177
 msgid "Keypad0"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:178
+#: gui/mrvHotkey.cpp:179
 msgid "Keypad1"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:179
+#: gui/mrvHotkey.cpp:180
 msgid "Keypad2"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:180
+#: gui/mrvHotkey.cpp:181
 msgid "Keypad3"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:181
+#: gui/mrvHotkey.cpp:182
 msgid "Keypad4"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:182
+#: gui/mrvHotkey.cpp:183
 msgid "Keypad5"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:184
+#: gui/mrvHotkey.cpp:185
 msgid "Keypad6"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:185
+#: gui/mrvHotkey.cpp:186
 msgid "Keypad7"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:186
+#: gui/mrvHotkey.cpp:187
 msgid "Keypad8"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:187
+#: gui/mrvHotkey.cpp:188
 msgid "Keypad9"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:169
+#: gui/mrvHotkey.cpp:170
 msgid "KeypadEnter"
 msgstr ""
 
-#: core/wandImage.cpp:307
+#: core/wandImage.cpp:310
 msgid "Keyword"
 msgstr ""
 
@@ -1300,11 +1304,11 @@ msgstr ""
 msgid "Language"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:115
+#: gui/mrvHotkey.cpp:116
 msgid "Last Frame"
 msgstr ""
 
-#: core/exrImage.cpp:934
+#: core/exrImage.cpp:933
 msgid "Latitude"
 msgstr ""
 
@@ -1313,23 +1317,23 @@ msgstr ""
 msgid "Layer %d"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:151
+#: gui/mrvHotkey.cpp:152
 msgid "Left"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:162
+#: gui/mrvHotkey.cpp:163
 msgid "LeftAlt"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:158
+#: gui/mrvHotkey.cpp:159
 msgid "LeftCtrl"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:164
+#: gui/mrvHotkey.cpp:165
 msgid "LeftMeta"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:156
+#: gui/mrvHotkey.cpp:157
 msgid "LeftShift"
 msgstr ""
 
@@ -1354,7 +1358,7 @@ msgstr ""
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
-#: core/wandImage.cpp:331
+#: core/wandImage.cpp:334
 msgid "Local Caption"
 msgstr ""
 
@@ -1370,7 +1374,7 @@ msgstr ""
 msgid "Logs"
 msgstr ""
 
-#: core/exrImage.cpp:923
+#: core/exrImage.cpp:922
 msgid "Longitude"
 msgstr ""
 
@@ -1422,7 +1426,7 @@ msgstr ""
 msgid "Memory"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:167
+#: gui/mrvHotkey.cpp:168
 msgid "Menu"
 msgstr ""
 
@@ -1434,15 +1438,15 @@ msgstr ""
 msgid "Mipmap Level"
 msgstr ""
 
-#: core/exrImage.cpp:1039
+#: core/exrImage.cpp:1038
 msgid "Mipmap Levels"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:93
+#: gui/mrvHotkey.cpp:94
 msgid "Monitor CTL script"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:92
+#: gui/mrvHotkey.cpp:93
 msgid "Monitor Icc Profile"
 msgstr ""
 
@@ -1454,7 +1458,7 @@ msgstr ""
 msgid "Monitor/Attach ICC Color Profile"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:170
+#: gui/mrvHotkey.cpp:171
 msgid "Multiply"
 msgstr ""
 
@@ -1490,7 +1494,7 @@ msgstr ""
 msgid "New Folder"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:113
+#: gui/mrvHotkey.cpp:114
 msgid "Next Image"
 msgstr ""
 
@@ -1533,7 +1537,7 @@ msgstr ""
 msgid "Non-POT Textures:\t"
 msgstr ""
 
-#: core/exrImage.cpp:52 core/iffImage.cpp:35
+#: core/exrImage.cpp:51 core/iffImage.cpp:35
 msgid "None"
 msgstr ""
 
@@ -1557,7 +1561,7 @@ msgstr ""
 msgid "Not a mental ray stub file anymore."
 msgstr ""
 
-#: gui/mrvHotkey.cpp:168
+#: gui/mrvHotkey.cpp:169
 msgid "NumLock"
 msgstr ""
 
@@ -1573,7 +1577,7 @@ msgstr ""
 msgid "OGG music"
 msgstr ""
 
-#: core/wandImage.cpp:318
+#: core/wandImage.cpp:321
 msgid "Object Cycle"
 msgstr ""
 
@@ -1581,7 +1585,7 @@ msgstr ""
 msgid "Ok"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:88
+#: gui/mrvHotkey.cpp:89
 msgid "Open Image"
 msgstr ""
 
@@ -1589,11 +1593,11 @@ msgstr ""
 msgid "Options:"
 msgstr ""
 
-#: core/wandImage.cpp:325
+#: core/wandImage.cpp:328
 msgid "Original Transmission Reference"
 msgstr ""
 
-#: core/wandImage.cpp:316
+#: core/wandImage.cpp:319
 msgid "Originating Program"
 msgstr ""
 
@@ -1609,7 +1613,7 @@ msgstr ""
 msgid "Override viewer's default gamma."
 msgstr ""
 
-#: core/exrImage.cpp:883
+#: core/exrImage.cpp:882
 msgid "Owner"
 msgstr ""
 
@@ -1621,15 +1625,15 @@ msgstr ""
 msgid "PNG Picture"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:150
+#: gui/mrvHotkey.cpp:151
 msgid "PageDown"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:146
+#: gui/mrvHotkey.cpp:147
 msgid "PageUp"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:143
+#: gui/mrvHotkey.cpp:144
 msgid "Pause"
 msgstr ""
 
@@ -1653,27 +1657,27 @@ msgstr ""
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:105
+#: gui/mrvHotkey.cpp:106
 msgid "Play Backwards"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:107
+#: gui/mrvHotkey.cpp:108
 msgid "Play Backwards 1/2 Speed"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:106
+#: gui/mrvHotkey.cpp:107
 msgid "Play Backwards X2  Speed"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:108
+#: gui/mrvHotkey.cpp:109
 msgid "Play Forwards"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:110
+#: gui/mrvHotkey.cpp:111
 msgid "Play Forwards 1/2 Speed"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:109
+#: gui/mrvHotkey.cpp:110
 msgid "Play Forwards X2  Speed"
 msgstr ""
 
@@ -1689,15 +1693,15 @@ msgstr ""
 msgid "Preview files"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:112
+#: gui/mrvHotkey.cpp:113
 msgid "Previous Image"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:140
+#: gui/mrvHotkey.cpp:141
 msgid "Print"
 msgstr ""
 
-#: core/wandImage.cpp:303
+#: core/wandImage.cpp:306
 msgid "Priority"
 msgstr ""
 
@@ -1705,11 +1709,15 @@ msgstr ""
 msgid "Problem with tile"
 msgstr ""
 
-#: core/wandImage.cpp:317
+#: core/wandImage.cpp:320
 msgid "Program Version"
 msgstr ""
 
-#: core/wandImage.cpp:322
+#: video/mrvGLShader.cpp:219
+msgid "Program did not link. Error: "
+msgstr ""
+
+#: core/wandImage.cpp:325
 msgid "Province State"
 msgstr ""
 
@@ -1725,7 +1733,7 @@ msgstr ""
 msgid "RAM Disk"
 msgstr ""
 
-#: core/exrImage.cpp:746
+#: core/exrImage.cpp:745
 msgid "RED"
 msgstr ""
 
@@ -1741,7 +1749,7 @@ msgstr ""
 msgid "RGBA"
 msgstr ""
 
-#: core/exrImage.cpp:53 core/iffImage.cpp:36
+#: core/exrImage.cpp:52 core/iffImage.cpp:36
 msgid "RLE"
 msgstr ""
 
@@ -1753,7 +1761,7 @@ msgstr ""
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 
-#: core/exrImage.cpp:66
+#: core/exrImage.cpp:65
 msgid "Random Y"
 msgstr ""
 
@@ -1789,15 +1797,15 @@ msgstr ""
 msgid "Reels"
 msgstr ""
 
-#: core/wandImage.cpp:312
+#: core/wandImage.cpp:315
 msgid "Reference Date"
 msgstr ""
 
-#: core/wandImage.cpp:313
+#: core/wandImage.cpp:316
 msgid "Reference Number"
 msgstr ""
 
-#: core/wandImage.cpp:311
+#: core/wandImage.cpp:314
 msgid "Reference Service"
 msgstr ""
 
@@ -1809,11 +1817,11 @@ msgstr ""
 msgid "Relative"
 msgstr ""
 
-#: core/wandImage.cpp:308
+#: core/wandImage.cpp:311
 msgid "Release Date"
 msgstr ""
 
-#: core/wandImage.cpp:309
+#: core/wandImage.cpp:312
 msgid "Release Time"
 msgstr ""
 
@@ -1841,7 +1849,7 @@ msgstr ""
 msgid "Rendering Intent"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:139
+#: gui/mrvHotkey.cpp:140
 msgid "Return"
 msgstr ""
 
@@ -1849,27 +1857,27 @@ msgstr ""
 msgid "Rich Picture Format"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:154
+#: gui/mrvHotkey.cpp:155
 msgid "Right"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:163
+#: gui/mrvHotkey.cpp:164
 msgid "RightAlt"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:160
+#: gui/mrvHotkey.cpp:161
 msgid "RightCtrl"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:166
+#: gui/mrvHotkey.cpp:167
 msgid "RightMeta"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:157
+#: gui/mrvHotkey.cpp:158
 msgid "RightShift"
 msgstr ""
 
-#: core/exrImage.cpp:1059 core/exrImage.cpp:1062
+#: core/exrImage.cpp:1058 core/exrImage.cpp:1061
 msgid "Rounding Mode"
 msgstr ""
 
@@ -1885,7 +1893,7 @@ msgstr ""
 msgid "ST"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:97
+#: gui/mrvHotkey.cpp:98
 msgid "Safe Areas"
 msgstr ""
 
@@ -1893,15 +1901,15 @@ msgstr ""
 msgid "Saturation"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:89
+#: gui/mrvHotkey.cpp:90
 msgid "Save Image"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:142
+#: gui/mrvHotkey.cpp:143
 msgid "ScrollLock"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:122
+#: gui/mrvHotkey.cpp:123
 msgid "Scrub"
 msgstr ""
 
@@ -1909,8 +1917,12 @@ msgstr ""
 msgid "Sequence"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:127
+#: gui/mrvHotkey.cpp:128
 msgid "Set As BG Image"
+msgstr ""
+
+#: video/mrvGLShader.cpp:204
+msgid "Shader did not compile. Error: "
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:102
@@ -1929,15 +1941,15 @@ msgstr ""
 msgid "Softimage Picture"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:188
+#: gui/mrvHotkey.cpp:189
 msgid "Space (' ')"
 msgstr ""
 
-#: core/wandImage.cpp:310
+#: core/wandImage.cpp:313
 msgid "Special Instructions"
 msgstr ""
 
-#: core/wandImage.cpp:328
+#: core/wandImage.cpp:331
 msgid "Src"
 msgstr ""
 
@@ -1950,7 +1962,7 @@ msgstr ""
 msgid "Stereo EXR Picture"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:111
+#: gui/mrvHotkey.cpp:112
 msgid "Stop"
 msgstr ""
 
@@ -1976,15 +1988,15 @@ msgstr ""
 msgid "Subtitle/Track #%d - %s"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:173
+#: gui/mrvHotkey.cpp:174
 msgid "Subtract"
 msgstr ""
 
-#: core/wandImage.cpp:305
+#: core/wandImage.cpp:308
 msgid "Supplemental Category"
 msgstr ""
 
-#: gui/mrvImageView.cpp:3544
+#: gui/mrvImageView.cpp:3563
 msgid "T"
 msgstr ""
 
@@ -1997,7 +2009,7 @@ msgstr ""
 msgid "TIFF Picture"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:138
+#: gui/mrvHotkey.cpp:139
 msgid "Tab"
 msgstr ""
 
@@ -2017,31 +2029,31 @@ msgstr ""
 msgid "Texture Units:\t"
 msgstr ""
 
-#: core/exrImage.cpp:1013
+#: core/exrImage.cpp:1012
 msgid "Timecode"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:116
+#: gui/mrvHotkey.cpp:117
 msgid "Toggle Background"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:119
+#: gui/mrvHotkey.cpp:120
 msgid "Toggle Bottom Bar"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:120
+#: gui/mrvHotkey.cpp:121
 msgid "Toggle Full Screen"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:118
+#: gui/mrvHotkey.cpp:119
 msgid "Toggle Pixel Bar"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:121
+#: gui/mrvHotkey.cpp:122
 msgid "Toggle Presentation"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:117
+#: gui/mrvHotkey.cpp:118
 msgid "Toggle Top Bar"
 msgstr ""
 
@@ -2057,7 +2069,7 @@ msgstr ""
 msgid "Type"
 msgstr ""
 
-#: core/exrImage.cpp:912
+#: core/exrImage.cpp:911
 msgid "UTC Offset"
 msgstr ""
 
@@ -2099,7 +2111,7 @@ msgstr ""
 msgid "Unknown render pixel format"
 msgstr ""
 
-#: core/exrImage.cpp:1065
+#: core/exrImage.cpp:1064
 msgid "Unknown rounding mode"
 msgstr ""
 
@@ -2107,7 +2119,7 @@ msgstr ""
 msgid "Unknown wipe direction"
 msgstr ""
 
-#: core/exrImage.cpp:1062 gui/mrvHotkey.cpp:152
+#: core/exrImage.cpp:1061 gui/mrvHotkey.cpp:153
 msgid "Up"
 msgstr ""
 
@@ -2199,11 +2211,11 @@ msgstr ""
 msgid "Windows/%s"
 msgstr ""
 
-#: gui/mrvHotkey.cpp:98
+#: gui/mrvHotkey.cpp:99
 msgid "Wipe"
 msgstr ""
 
-#: core/exrImage.cpp:1022
+#: core/exrImage.cpp:1021
 msgid "Wrap Modes"
 msgstr ""
 
@@ -2215,7 +2227,7 @@ msgstr ""
 msgid "X Ripmap Level"
 msgstr ""
 
-#: core/exrImage.cpp:1046
+#: core/exrImage.cpp:1045
 msgid "X Ripmap Levels"
 msgstr ""
 
@@ -2223,7 +2235,7 @@ msgstr ""
 msgid "Y Ripmap Level"
 msgstr ""
 
-#: core/exrImage.cpp:1048
+#: core/exrImage.cpp:1047
 msgid "Y Ripmap Levels"
 msgstr ""
 
@@ -2248,14 +2260,6 @@ msgstr ""
 
 #: core/iffImage.cpp:494 core/iffImage.cpp:530 gui/mrvImageView.cpp:127
 msgid "Z Depth"
-msgstr ""
-
-#: gui/mrvHotkey.cpp:95
-msgid "Zoom Maximum"
-msgstr ""
-
-#: gui/mrvHotkey.cpp:94
-msgid "Zoom Minimum"
 msgstr ""
 
 #: core/CMedia.cpp:1360
@@ -2362,7 +2366,7 @@ msgstr ""
 msgid "tv title"
 msgstr ""
 
-#: core/CMedia.cpp:1369 core/wandImage.cpp:353
+#: core/CMedia.cpp:1369 core/wandImage.cpp:356
 msgid "unknown"
 msgstr ""
 

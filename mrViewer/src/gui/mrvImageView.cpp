@@ -1939,7 +1939,10 @@ int ImageView::keyDown(unsigned int rawkey)
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
       fps( FPS * 2 );
-      play_backwards();
+      if ( img->playback() == CMedia::kBackwards )
+	 stop();
+      else
+	 play_backwards();
       return 1;
   }
   else if ( kPlayBackHalfSpeed.match( rawkey ) )
@@ -1951,7 +1954,11 @@ int ImageView::keyDown(unsigned int rawkey)
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
       fps( FPS / 2 );
-      play_backwards();
+
+      if ( img->playback() == CMedia::kBackwards )
+	 stop();
+      else
+	 play_backwards();
       return 1;
   }
   else if ( kPlayBack.match( rawkey ) ) 
@@ -1964,7 +1971,10 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      play_backwards();
+      if ( img->playback() == CMedia::kBackwards )
+	 stop();
+      else
+	 play_backwards();
       return 1;
     }
   else if ( kPlayFwdTwiceSpeed.match( rawkey ) ) 
@@ -1977,7 +1987,10 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS * 2 );
-      play_forwards();
+      if ( img->playback() == CMedia::kForwards )
+	 stop();
+      else
+	 play_forwards();
       return 1;
     }
   else if ( kPlayFwdHalfSpeed.match( rawkey ) ) 
@@ -1990,7 +2003,10 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS / 2 );
-      play_forwards();
+      if ( img->playback() == CMedia::kForwards )
+	 stop();
+      else
+	 play_forwards();
       return 1;
     }
   else if ( kPlayFwd.match( rawkey ) ) 
@@ -2003,7 +2019,10 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      play_forwards();
+      if ( img->playback() == CMedia::kForwards )
+	 stop();
+      else
+	 play_forwards();
       return 1;
     }
   else if ( kStop.match( rawkey ) ) 

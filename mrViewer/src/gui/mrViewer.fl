@@ -556,7 +556,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {638 249 640 475} hide resizable
+        xywh {638 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -675,43 +675,26 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window}
+            label {View Window} open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Defaults
-              xywh {15 32 378 135} box ROUNDED_BOX
+              label Defaults open
+              xywh {13 32 378 135} box ROUNDED_BOX
             } {
               {fltk::ValueInput} uiPrefsViewGain {
                 label Gain
                 tooltip {Sets the default gain when mrViewer starts.}
-                xywh {45 20 80 25} labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
+                xywh {45 20 80 25} color 0xffffff00 labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
               }
               {fltk::ValueInput} uiPrefsViewGamma {
                 label Gamma
                 tooltip {Sets the default gamma when mrViewer starts.}
-                xywh {280 20 60 25} labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
-              }
-              {fltk::CheckButton} uiPrefsViewPixelRatio {
-                label {Compensate Pixel Ratio}
-                tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.}
-                xywh {198 55 20 22} align 8 labelsize 11
-              }
-              {fltk::CheckButton} uiPrefsViewLut {
-                label {Lut Active}
-                user_data this user_data_type {mrv::PreferencesUI*}
-                tooltip {When mrViewer starts, the 3D Lut will be active.}
-                xywh {198 80 20 22} align 8 labelsize 11
-              }
-              {fltk::CheckButton} uiPrefsSafeAreas {
-                label {Safe Areas}
-                user_data this user_data_type {mrv::PreferencesUI*}
-                tooltip {When mrViewer starts, the safe area display will be active by default.}
-                xywh {198 107 20 20} align 8 labelsize 11
+                xywh {280 20 60 25} color 0xffffff00 labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
               }
               {fltk::Choice} uiPrefsCropArea {
                 label Crop
-                user_data this user_data_type {mrv::PreferencesUI*}
+                user_data this user_data_type {mrv::PreferencesUI*} open
                 tooltip {Allows you to select a standard cropping area around image.}
                 xywh {15 80 155 25} align 1 labelsize 11
               } {
@@ -740,7 +723,7 @@ If you try to open several mrViewers with different images, all these images wil
                   label {1.77 HDTV (16:9)}
                   }
                 {fltk::Item} {} {
-                  label {1.85 Widescreen (3-perf)}
+                  label {1.85 Widescreen (3-perf)} selected
                   }
                 {fltk::Item} {} {
                   label {2.10 VistaVision}
@@ -758,12 +741,29 @@ If you try to open several mrViewers with different images, all these images wil
                   label {4.00 Polyvision}
                   }
               }
+              {fltk::CheckButton} uiPrefsViewPixelRatio {
+                label {Compensate Pixel Ratio}
+                tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.}
+                xywh {198 55 20 22} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsViewLut {
+                label {Lut Active}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                tooltip {When mrViewer starts, the 3D Lut will be active.}
+                xywh {198 80 20 22} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsSafeAreas {
+                label {Safe Areas}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                tooltip {When mrViewer starts, the safe area display will be active by default.}
+                xywh {198 107 20 20} align 8 labelsize 11
+              }
             }
             {fltk::Group} uiPrefsHud {
               label HUD
               user_data this user_data_type {mrv::PreferencesUI*}
               tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.}
-              xywh {18 195 375 117} box ROUNDED_BOX
+              xywh {15 196 373 122} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsHudFilename {
                 label Filename
@@ -816,12 +816,29 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {235 62 20 20} align 8 labelsize 11
               }
             }
+            {fltk::Group} {} {
+              label Positioning open
+              xywh {18 337 355 40} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiWindowFixedPosition {
+                label {Fixed Position}
+                xywh {20 10 100 20}
+              }
+              {fltk::ValueInput} uiWindowXPosition {
+                label {X:}
+                xywh {180 5 60 25} color 0xffffff00
+              }
+              {fltk::ValueInput} uiWindowYPosition {
+                label {Y:}
+                xywh {260 5 60 25} color 0xffffff00
+              }
+            }
           }
           {fltk::Group} {} {
             label Colors
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {13 24 378 81} box ROUNDED_BOX
             } {
               {fltk::Button} uiPrefsViewBG {
@@ -860,6 +877,13 @@ v->refresh();}
               }
               {fltk::Button} uiPrefsViewHud {
                 label HUD
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick HUD Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();
+v->refresh();}
                 xywh {246 45 25 25} align 4 box EMBOSSED_BOX
               }
             }
@@ -996,7 +1020,7 @@ if ( x == Preferences::kLutOnlyICC )
     uiODT_CTL->deactivate();
 v->refresh();}
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
-When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
+When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
                 xywh {85 45 195 25}
               } {
@@ -1025,7 +1049,7 @@ if ( x == Preferences::kLutOnlyICC )
     uiRT_CTL->deactivate();
 v->refresh();}
                 tooltip {mrViewer supports either ICC profiles or a CTL script for the render transform (RT) of your images.  This setting prioritizes choosing one over the other. 
-When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
+When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
                 xywh {85 97 195 25}
@@ -1046,7 +1070,7 @@ If unsure what this means, keep your display and images setting always using the
             }
             {fltk::Group} {} {
               label Quality
-              tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
+              tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
               xywh {33 257 340 75} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
@@ -1058,12 +1082,12 @@ Note that large 3D Luts can use quite a lot of memory.
 
 Size     Memory    Max. Error
 32        1/3 Mb     12.5%
-64           3 Mb       1.6%
+64          3 Mb      1.6%
 128       24 Mb       0.7%
 
 It is recommended this setting is left at 64x64x64.
 
-The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
+The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
 }
                 xywh {110 30 170 25}
               } {
@@ -1299,7 +1323,7 @@ uiODT_ICC_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label {Default Rendering Transform (RT)}
+            label {Default Rendering Transform (RT)}
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
@@ -1664,7 +1688,7 @@ mrv::Preferences prefs(v);}
           {fltk::Button} {} {
             label Save
             callback {mrv::Preferences::save();}
-            tooltip {Save preferences to disk as a default.}
+            tooltip {Save preferences to disk as a default.}
             xywh {135 3 132 27}
           }
           {fltk::Button} {} {
@@ -1999,15 +2023,14 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain;} {}
     }
   }
-  class HotkeyUI {open
-  } {
+  class HotkeyUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label Hotkeys open
-        xywh {359 189 450 400} resizable
+        xywh {361 212 450 400} hide resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} modal visible
+o->child_of( main->uiMain );} modal
       } {
         {fltk::Group} {} {open
           xywh {5 25 445 375} vertical
@@ -2035,8 +2058,7 @@ o->child_of( main->uiMain );} modal visible
       code {delete uiMain;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2059,7 +2081,7 @@ o->child_of( main->uiMain );} modal visible
     }
     decl {DatabaseUI* uiDatabase;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2067,10 +2089,10 @@ o->child_of( main->uiMain );} modal visible
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {360 69 640 530} when CHANGED resizable
+        xywh {364 115 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2126,7 +2148,7 @@ v->uiPrefs->uiMain->show();}
                 label Hotkeys
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiHotkey->uiMain->child_of( v->uiMain );
-v->uiHotkey->uiMain->show();} selected
+v->uiHotkey->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label Logs
@@ -2146,7 +2168,7 @@ v->uiHotkey->uiMain->show();} selected
                 label Color
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiView->channel( o->value() );}
-                tooltip {Allows you to select different ımage channels or layers.}
+                tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
               } {}
             }
@@ -2264,7 +2286,7 @@ v->uiView->gamma(g);}
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( o->value() );
 v->uiGamma->value( o->value() );}
-                    tooltip {Allows you to adjust gamma curve for display.
+                    tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
                     extra_code {o->textsize(12);}
@@ -2316,7 +2338,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::Group} uiViewGroup {open
+          {fltk::Group} uiViewGroup {
             xywh {0 25 640 430} resizable
           } {
             {fltk::Group} uiView {
@@ -2415,7 +2437,7 @@ o->value(8);}
               } {
                 {fltk::Output} uiCoord {
                   label XY
-                  tooltip {Image coordinate of pixel under mouse.}
+                  tooltip {Image coordinate of pixel under mouse.}
                   xywh {0 3 85 20} align 36 box NO_BOX labelfont 4 color 56 textcolor 0xababab00 labelcolor 0xababab00 labelsize 10 textsize 10
                 }
                 {fltk::Group} {} {open
@@ -2433,7 +2455,7 @@ o->value(8);}
                         callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( o->child(i)->label() );} open
-                        tooltip {Switch RGBA display between float, hexadecimal (0..0xff) and decimal (0..255).}
+                        tooltip {Switch RGBA display between float, hexadecimal (0..0xff) and decimal (0..255).}
                         xywh {0 0 30 20} labelsize 9
                         extra_code {o->value(0);}
                       } {
@@ -2448,19 +2470,19 @@ o->label( o->child(i)->label() );} open
                           }
                       }
                       {fltk::Output} uiPixelR {
-                        tooltip {Red value of image pixel under mouse.}
+                        tooltip {Red value of image pixel under mouse.}
                         xywh {30 0 50 20} align 36 box NO_BOX color 56 textcolor 0xff6a6a00 textsize 10
                       }
                       {fltk::Output} uiPixelG {
-                        tooltip {Green value of image pixel under mouse.}
+                        tooltip {Green value of image pixel under mouse.}
                         xywh {80 0 50 20} align 36 box NO_BOX color 56 textcolor 0x92ff9200 textsize 10
                       }
                       {fltk::Output} uiPixelB {
-                        tooltip {Blue value of image pixel under mouse.}
+                        tooltip {Blue value of image pixel under mouse.}
                         xywh {130 0 50 20} align 36 box NO_BOX color 56 textcolor 0x42b5ff00 textsize 10
                       }
                       {fltk::Output} uiPixelA {
-                        tooltip {Alpha value of image pixel under mouse.}
+                        tooltip {Alpha value of image pixel under mouse.}
                         xywh {180 0 50 20} align 36 box NO_BOX color 56 textcolor 0xcccccc00 textsize 10
                       }
                     }
@@ -2550,7 +2572,7 @@ Y (Luminance) is the pixel value according to Rec709:
 Y' (Lumma) is the weighted pixel value according to:
       Y' = ( R + G + B ) / 3.0
 
-L (Lightness) is the human perception of luminance of the image which is non linear.
+L (Lightness) is the human perception of luminance of the image which is non linear.
 According to CIE No.15.2:
       L = (116 * Y ^ 1/3 - 16) / 100
 A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).}

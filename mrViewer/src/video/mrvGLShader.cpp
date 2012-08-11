@@ -11,6 +11,7 @@
 #include <iostream>
 #include <Iex.h>
 
+#include "core/mrvI8N.h"
 #include "mrvGLShader.h"
 #include "mrvGLEngine.h"
 
@@ -58,7 +59,26 @@ namespace mrv {
   {
     GLint length;
     static char error[4096];
+    error[4095] = 0;
     glGetInfoLogARB(_program, 4095, &length, error);
+    return error;
+  }
+
+  const char* GLShader::get_shader_error(GLuint shader)
+  {
+    GLint length;
+    static char error[4096];
+    error[4095] = 0;
+    glGetShaderInfoLog(shader, 4095, &length, error);
+    return error;
+  }
+
+  const char* GLShader::get_program_error(GLuint program)
+  {
+    GLint length;
+    static char error[4096];
+    error[4095] = 0;
+    glGetProgramInfoLog(program, 4095, &length, error);
     return error;
   }
 
@@ -175,20 +195,41 @@ namespace mrv {
 	glShaderSource( shader, 1, (const GLcharARB**)&code, &len ); 
 	glCompileShaderARB( shader );
 
-	glAttachObjectARB( _program, shader );
-	glDeleteObjectARB( shader ); 
+	GLint bDidCompile;
+	glGetShaderiv(shader, GL_COMPILE_STATUS, &bDidCompile);
 
+	if ( !bDidCompile )
+	{
+	   delete [] code;
+	   THROW(Iex::BaseExc, _("Shader did not compile. Error: ") <<
+		 get_shader_error( shader ) );
+	}
+
+	glAttachObjectARB( _program, shader );
+
+	glDeleteObjectARB( shader ); 
 	glLinkProgramARB( _program );
+
+	GLint bDidLink;
+	glGetProgramiv( _program, GL_LINK_STATUS, &bDidLink);
+	if ( !bDidLink )
+	{
+	   glDeleteObjectARB( _program );
+	   delete [] code;
+	   THROW( Iex::BaseExc, _("Program did not link. Error: ") 
+		  << get_program_error( _program ) );
+	}
 
 	GLint ok;
 	glGetObjectParameterivARB( _program, GL_OBJECT_LINK_STATUS_ARB, &ok );
 	if (!ok) {
 	  delete [] code;
-	  glDeleteObjectARB( shader );
 
-	  THROW (Iex::BaseExc, "GLSL error in "
-		 << filename << " file\n" << get_glsl_error() );
+	  THROW (Iex::BaseExc, _("GLSL error in file ")
+		 << filename << ": " << get_glsl_error() );
+
 	}
+
       }
   }
 

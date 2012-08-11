@@ -29,7 +29,7 @@ Hotkey kZoomMax( false, false, false, false, '9' );
 
 Hotkey kZoomIn( false, false, false, false, '.' );
 Hotkey kZoomOut( false, false, false, false, ',' );
-Hotkey kFullScreen( false, false, false, false, ' ' );
+Hotkey kFullScreen( false, false, false, false, fltk::F11Key );
 Hotkey kFitScreen( false, false, false, false, 'f' );
 Hotkey kSafeAreas( false, false, false, false, 's' );
 Hotkey kWipe( false, false, false, false, 'w' );
@@ -49,7 +49,8 @@ Hotkey kPlayBackTwiceSpeed( true, false, false, false,
 Hotkey kPlayBackHalfSpeed( false, false, true, false, 
 			   fltk::UpKey, "", fltk::Keypad8 );
 Hotkey kPlayBack( false, false, false, false, fltk::UpKey, "", fltk::Keypad8 );
-Hotkey kPlayFwd( false, false, false, false, fltk::DownKey, "", fltk::Keypad2 );
+Hotkey kPlayFwd( false, false, false, false, fltk::SpaceKey, "", 
+		 fltk::Keypad2 );
 Hotkey kPlayFwdTwiceSpeed( true, false, false, false, 
 			   fltk::DownKey, "", fltk::Keypad2 );
 Hotkey kPlayFwdHalfSpeed( false, false, true, false, 
@@ -91,8 +92,8 @@ HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
 HotkeyEntry( _("Image CTL script"), kCTLScript ),
 HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
 HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
-HotkeyEntry( _("Zoom Minimum"), kZoomMin),
-HotkeyEntry( _("Zoom Maximum"), kZoomMax),
+//HotkeyEntry( _("Zoom Minimum"), kZoomMin),
+//HotkeyEntry( _("Zoom Maximum"), kZoomMax),
 HotkeyEntry( _("Fit Screen"), kFitScreen),
 HotkeyEntry( _("Safe Areas"), kSafeAreas),
 HotkeyEntry( _("Wipe"), kWipe),
