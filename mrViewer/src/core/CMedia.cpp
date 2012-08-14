@@ -342,9 +342,51 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 				channels, format, pixel_type ) );
 }
 
+void CMedia::allocate_pixels_stereo( const boost::int64_t& frame,
+				     const unsigned int channels,
+				     const image_type::Format format,
+				     const image_type::PixelType pixel_type )
+{
+  SCOPED_LOCK( _mutex );
+  _hires.reset( new image_type( frame, width(), height(), 
+				channels, format, pixel_type ) );
+  _stereo[0].reset( new image_type( frame, width(), height(), 
+				    channels, format, pixel_type ) );
+  _stereo[1].reset( new image_type( frame, width(), height(), 
+				    channels, format, pixel_type ) );
+}
+
+mrv::image_type_ptr CMedia::anaglyph( bool left_view ) 
+{
+   image_type::Pixel* p = (image_type::Pixel*)hires()->data().get();
+   image_type::Pixel* l = (image_type::Pixel*)left()->data().get();
+   image_type::Pixel* r = (image_type::Pixel*)right()->data().get();
+   for (unsigned y = 0; y < height(); ++y )
+   {
+      for ( unsigned x = 0; x < width(); ++x )
+      {
+	 if ( left_view )
+	 {
+	    p[x + y*width() ].r = l[x + y*width() ].r;
+	    p[x + y*width() ].g = r[x + y*width() ].g;
+	    p[x + y*width() ].b = r[x + y*width() ].b;
+	 }
+	 else
+	 {
+	    p[x + y*width() ].r = r[x + y*width() ].r;
+	    p[x + y*width() ].g = l[x + y*width() ].g;
+	    p[x + y*width() ].b = l[x + y*width() ].b;
+	 }
+     }
+   }
+   return hires();
+}
+				
+
+
 
 void CMedia::display_window( const int xmin, const int ymin,
-				const int xmax, const int ymax )
+			     const int xmax, const int ymax )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
@@ -567,6 +609,26 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
   // For image sequences
   char buf[1024];
   sprintf( buf, _fileroot, frame );
+
+  return std::string( buf );
+}
+
+
+std::string CMedia::stereo_sequence_filename( const boost::int64_t frame,
+					      const char* view )
+{
+
+  std::string f = _fileroot;
+  size_t i = f.find( N_("%V") );
+  if ( i != std::string::npos )
+  {
+     f[i+1] = 's';
+  }
+
+  // For image sequences
+  char buf[1024];
+  sprintf( buf, f.c_str(), view, frame );
+
   return std::string( buf );
 }
 

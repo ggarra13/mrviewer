@@ -2066,7 +2066,7 @@ namespace mrv {
 	f += t;
 	uiMain->uiFrame->value( f );
 	uiMain->uiFrame->redraw();
-	timeline()->value(f);
+	timeline()->value( double(f) );
 	timeline()->redraw();
       }
 
@@ -2119,7 +2119,7 @@ namespace mrv {
   {
      boost::int64_t f = tframe;
 
-     uiMain->uiFrame->value( tframe );
+     uiMain->uiFrame->value( double(tframe) );
      uiMain->uiFrame->redraw();
 
     timeline()->value( tframe );
@@ -2274,7 +2274,7 @@ namespace mrv {
     if ( !img ) return;
 
     uiMain->uiFrame->value( frame );
-    timeline()->value( frame );
+    timeline()->value( double(frame) );
     adjust_timeline();
   }
 
@@ -2315,14 +2315,14 @@ namespace mrv {
     if ( !timeline()->edl() )
       {
 	uiMain->uiFrame->value( frame );
-	timeline()->value( frame );
+	timeline()->value( double(frame) );
 	adjust_timeline();
       }
     else
       {
 	int64_t f = frame - img->first_frame() + timeline()->location( img );
 	uiMain->uiFrame->value( f );
-	timeline()->value( f );
+	timeline()->value( double(f) );
       }
   }
  
@@ -2387,14 +2387,14 @@ namespace mrv {
       }
 
 
-    timeline()->minimum( first );
-    timeline()->maximum( last );
-    timeline()->value( frame );
-    uiMain->uiStartFrame->value( first );
-    uiMain->uiEndFrame->value( last );
-    uiMain->uiFrame->value( frame );
-
-    timeline()->redraw();
+     timeline()->minimum( double(first) );
+     timeline()->maximum( double(last) );
+     timeline()->value( frame );
+     uiMain->uiStartFrame->value( first );
+     uiMain->uiEndFrame->value( last );
+     uiMain->uiFrame->value( frame );
+     
+     timeline()->redraw();
   }
 
 

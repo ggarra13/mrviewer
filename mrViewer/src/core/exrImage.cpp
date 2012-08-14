@@ -668,6 +668,12 @@ bool exrImage::find_channels( const Imf::Header& h,
    if ( layers.find( N_("left") ) != layers.end() )
       _has_left_eye = true;
 
+   std::string t = _fileroot;
+   if ( t.find( N_("%V") ) != std::string::npos )
+   {
+      _has_left_eye = true;
+      _has_right_eye = true;
+   }
 
    _layers.clear();
 
@@ -747,7 +753,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	   ) 
 	 continue; // these channels are handled in shader directly
 
-      // Don't count layer.channel
+      // Don't count layer.channel those are handled later
       if ( name.find( N_(".") ) != string::npos ) continue;
 
 
