@@ -880,14 +880,24 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     }
 
     {
-      fltk::Input* widget = new fltk::Input( kMiddle, 0, w()-kMiddle, hh );
-      widget->value( content );
+       fltk::Widget* widget = NULL;
+       if ( !editable )
+       {
+	  fltk::Output* o = new fltk::Output( kMiddle, 0, w()-kMiddle, hh );
+	  widget = o;
+	  o->value( content );
+       }
+       else
+       {
+	  fltk::Input* o = new fltk::Input( kMiddle, 0, w()-kMiddle, hh );
+	  widget = o;
+	  o->value( content );
+       }
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
       if ( !editable )
 	{
-	  widget->deactivate();
 	  widget->box( fltk::FLAT_BOX );
 	}
       else 

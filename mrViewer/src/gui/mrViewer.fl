@@ -149,11 +149,14 @@ namespace mrv {open
   }
   decl {class HotkeyUI;} {public
   }
-  class ReelUI {} {
-    Function {make_window(ViewerUI* main)} {private
+  decl {class PaintUI;} {public
+  }
+  class ReelUI {open
+  } {
+    Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label {Reel List} open
+        label {Reel List}
         xywh {439 259 405 350} hide resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
@@ -168,7 +171,7 @@ o->scrollbar.color( o->buttoncolor() );
 o->hscrollbar.color( o->buttoncolor() );}
           class {mrv::ImageBrowser}
         } {}
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {0 0 405 32} box UP_BOX
         } {
           {fltk::Choice} {} {
@@ -264,7 +267,8 @@ v->new_reel(name);}
         }
       }
     }
-    Function {ReelUI(ViewerUI* m)} {} {
+    Function {ReelUI(ViewerUI* m)} {open
+    } {
       code {make_window( m );} {}
     }
     Function {~ReelUI()} {open
@@ -459,7 +463,8 @@ o->child_of( main->uiMain );}
       code {delete uiMain;} {}
     }
   }
-  class HistogramUI {} {
+  class HistogramUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -550,13 +555,12 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {open
-  } {
-    Function {make_window()} {open private
+  class PreferencesUI {} {
+    Function {make_window()} {private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {638 286 640 475} resizable visible
+        xywh {638 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -723,7 +727,7 @@ If you try to open several mrViewers with different images, all these images wil
                   label {1.77 HDTV (16:9)}
                   }
                 {fltk::Item} {} {
-                  label {1.85 Widescreen (3-perf)} selected
+                  label {1.85 Widescreen (3-perf)}
                   }
                 {fltk::Item} {} {
                   label {2.10 VistaVision}
@@ -1998,7 +2002,8 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain;} {}
     }
   }
-  class DatabaseUI {} {
+  class DatabaseUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
@@ -2058,7 +2063,8 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2081,6 +2087,7 @@ o->child_of( main->uiMain );} modal
     }
     decl {DatabaseUI* uiDatabase;} {public
     }
+    decl {PaintUI* uiPaint;} {}
     Function {make_window()} {private
     } {
       code {if (!uiPrefs)
@@ -2911,9 +2918,11 @@ uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
 uiVectorscope = new VectorscopeUI(this);
 uiHistogram = new HistogramUI(this);
+uiPaint = new PaintUI(this);
 if (!uiLog) uiLog   = new LogUI(this);
 //uiDatabase = new DatabaseUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
+
 
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );
@@ -2935,6 +2944,41 @@ delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiMain; uiMain = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
+    }
+  }
+  class PaintUI {open
+  } {
+    Function {make_window( ViewerUI* m )} {open
+    } {
+      {fltk::Window} {} {
+        label Paint selected
+        xywh {330 212 80 425} horizontal resizable visible
+      } {
+        {fltk::Group} {} {open
+          xywh {6 9 68 80}
+        } {
+          {fltk::Button} {} {
+            label Sel
+            xywh {0 0 30 35}
+          }
+          {fltk::Button} {} {
+            label Draw
+            xywh {38 0 30 35}
+          }
+          {fltk::Button} {} {
+            label Circ
+            xywh {0 45 30 35}
+          }
+          {fltk::Button} {} {
+            label Rect
+            xywh {38 45 30 35}
+          }
+        }
+      }
+    }
+    Function {PaintUI(ViewerUI* m)} {open
+    } {
+      code {make_window( m );} {}
     }
   }
 } 

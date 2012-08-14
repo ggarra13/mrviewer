@@ -1262,6 +1262,17 @@ namespace mrv {
 	style->labelsize( 10 );
       }
 
+    style = fltk::Style::find( "Output" );
+    if ( style )
+      {
+// 	style->color( mrv::lighter( bgcolor, 0x20 ) );
+	style->color( bgcolor );
+	style->textcolor( textcolor );
+	style->labelcolor( textcolor );
+	style->textsize( 10 );
+	style->labelsize( 10 );
+      }
+
     // this has default_style
     style = fltk::Style::find( "Window" );
     if ( style )

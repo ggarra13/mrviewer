@@ -342,6 +342,14 @@ namespace mrv {
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
 
+    inline mrv::image_type_ptr anaglyph( bool left_view = true );
+
+    inline mrv::image_type_ptr left() const { return _stereo[0]; }
+    inline mrv::image_type_ptr left()       { return _stereo[0]; }
+
+    inline mrv::image_type_ptr right() const { return _stereo[1]; }
+    inline mrv::image_type_ptr right()       { return _stereo[1]; }
+
     ////////////////// Return the 8-bits subtitle image
     inline mrv::image_type_ptr subtitle() const { return _subtitle; }
     inline mrv::image_type_ptr subtitle()       { return _subtitle; }
@@ -669,6 +677,9 @@ namespace mrv {
 
     std::string sequence_filename( const boost::int64_t frame );
 
+       std::string stereo_sequence_filename( const boost::int64_t frame,
+					     const char* view = "left" );
+
     double video_clock() const { return _video_clock; }
     
     double audio_clock() const { return _audio_clock; }
@@ -775,7 +786,12 @@ namespace mrv {
     void allocate_pixels( const boost::int64_t& frame,
 			  const unsigned int channels = 4,
 			  const image_type::Format format = image_type::kRGBA,
-			  const image_type::PixelType pixel_type = image_type::kFloat );
+			  const image_type::PixelType pixel_type = image_type::kFloat ); 
+
+    void allocate_pixels_stereo( const boost::int64_t& frame,
+				 const unsigned int channels = 4,
+				 const image_type::Format format = image_type::kRGBA,
+				 const image_type::PixelType pixel_type = image_type::kFloat );
 
     unsigned int audio_bytes_per_frame();
 
@@ -918,6 +934,7 @@ namespace mrv {
 
     // Hi-res/quality image (usually floating point)
     mrv::image_type_ptr _hires;
+    mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
 
        //
