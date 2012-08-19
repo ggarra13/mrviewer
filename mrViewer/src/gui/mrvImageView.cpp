@@ -77,6 +77,7 @@
 #include "gui/mrvHotkey.h"
 #include "gui/mrvImageView.h"
 
+
 // Widgets
 #include "mrViewer.h"
 #include "mrvIccProfileUI.h"
@@ -237,6 +238,11 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     {
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
+    }
+  else if ( strcmp( name, _("Paint Info")) == 0 )
+    {
+      uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
+      uiMain->uiPaint->uiMain->show();
     }
   else if ( strcmp( name, _("Color Info")) == 0 )
     {
@@ -448,6 +454,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _volume( 1.0f ),
   _flip( kFlipNone ),
   _timeout( NULL ),
+  _mode( kSelection ),
   _selection( mrv::Rectd(0,0) ),
   _playback( kStopped ),
   _looping( kLooping ),
@@ -831,6 +838,22 @@ void ImageView::timeout()
 
 }
 
+void ImageView::redo_draw()
+{
+   _shapes.push_back( _undo_shapes.back() );
+   uiMain->uiPaint->uiUndoDraw->activate();
+   _undo_shapes.pop_back();
+   redraw();
+}
+
+void ImageView::undo_draw()
+{
+   _undo_shapes.push_back( _shapes.back() );
+   uiMain->uiPaint->uiRedoDraw->activate();
+   _shapes.pop_back();
+   redraw();
+}
+
 /** 
  * Main fltk drawing routine
  * 
@@ -985,7 +1008,7 @@ void ImageView::draw()
 
     }
 
-
+  _engine->draw_annotation( _shapes );
 
   if ( _hud == kHudNone )
     return;
@@ -1153,8 +1176,51 @@ void ImageView::leftMouseDown(int x, int y)
       }
 
       flags |= kMouseLeft;
-      _selection = mrv::Rectd( 0, 0, 0, 0 );
-      
+
+      if ( _mode == kSelection )
+      {
+	 _selection = mrv::Rectd( 0, 0, 0, 0 );
+      }
+      else if ( _mode == kDraw )
+      {
+	 mrv::media fg = foreground();
+	 if ( !fg ) return;
+
+	 CMedia* img = fg->image();
+	 CMedia::Mutex& m = img->video_mutex();
+	 SCOPED_LOCK( m );
+	 mrv::image_type_ptr pic = img->hires();
+	 if ( !pic ) return;
+
+	 double xf = x;
+	 double yf = y;
+	 image_coordinates( pic, xf, yf );
+
+	 unsigned int W = pic->width();
+	 unsigned int H = pic->height();
+
+	 GLPathShape* s = new GLPathShape;
+
+	 uchar r, g, b;
+	 fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
+
+	 s->r = r / 255.0f;
+	 s->g = g / 255.0f;
+	 s->b = b / 255.0f;
+	 s->a = 1.0f;
+	 s->pen_size = uiMain->uiPaint->uiPenSize->value();
+	 yf  = H - yf;
+	 yf -= H/2;
+	 xf -= W/2;
+	 Point p( xf, yf );
+	 s->pts.push_back( p );
+
+	 _shapes.push_back( mrv::shape_type_ptr(s) );
+	 uiMain->uiPaint->uiUndoDraw->activate();
+
+	 _undo_shapes.clear();
+	 uiMain->uiPaint->uiRedoDraw->deactivate();
+      }
 
       if ( _wipe_dir != kNoWipe )
       {
@@ -1683,35 +1749,53 @@ void ImageView::mouseDrag(int x,int y)
 	  xn = floor(xn+0.5f);
 	  yn = floor(yn+0.5f);
 
-	  if ( xn < xf ) 
-	    {
-	      double tmp = xf;
-	      xf = xn;
-	      xn = tmp;
-	    }
-	  if ( yn < yf ) 
-	    {
-	      double tmp = yf;
-	      yf = yn;
-	      yn = tmp;
-	    }
-	  assert( xf <= xn );
-	  assert( yf <= yn );
 
-	  unsigned dx = (unsigned) std::abs( xn - xf );
-	  unsigned dy = (unsigned) std::abs( yn - yf );
-
-
-	  // store selection square
 	  unsigned W = texWidth;
 	  unsigned H = texHeight;
-	  if ( dx > W ) dx = W;
-	  if ( dy > H ) dy = H;
 
-	  _selection = mrv::Rectd( (double)xf/(double)W, 
-				   (double)yf/(double)H, 
-				   (double)dx/(double)W, 
-				   (double)dy/(double)H );
+	  if ( _mode == kSelection )
+	  {
+	     if ( xn < xf ) 
+	     {
+		double tmp = xf;
+		xf = xn;
+		xn = tmp;
+	     }
+	     if ( yn < yf ) 
+	     {
+		double tmp = yf;
+		yf = yn;
+		yn = tmp;
+	     }
+	     assert( xf <= xn );
+	     assert( yf <= yn );
+
+	     unsigned dx = (unsigned) std::abs( xn - xf );
+	     unsigned dy = (unsigned) std::abs( yn - yf );
+
+
+	     // store selection square
+	     if ( dx > W ) dx = W;
+	     if ( dy > H ) dy = H;
+
+	     _selection = mrv::Rectd( (double)xf/(double)W, 
+				      (double)yf/(double)H, 
+				      (double)dx/(double)W, 
+				      (double)dy/(double)H );
+	  }
+	  else if ( _mode == kDraw )
+	  {
+	     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+	     GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+	     if ( s )
+	     {
+		yn  = H - yn;
+		yn -= H/2;
+		xn -= W/2;
+		mrv::Point p( xn, yn );
+		s->pts.push_back( p );
+	     }
+	  }
 	  assert( _selection.x() >= 0.0 && _selection.x() <= 1.0);
 	  assert( _selection.y() >= 0.0 && _selection.y() <= 1.0);
 	  assert( _selection.w() >= 0.0 && _selection.w() <= 1.0);

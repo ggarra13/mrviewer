@@ -22,6 +22,7 @@ namespace mrv {
 
   class GLShader;
   class GLQuad;
+  class GLShape;
 
 
   class GLEngine : public mrv::DrawEngine {
@@ -60,6 +61,10 @@ namespace mrv {
     virtual void draw_title(const float size,
 			    const int y, const char* text );
     virtual void draw_text(const int x, const int y, const char* text );
+
+       virtual void pen_size( double d );
+    virtual void draw_annotation( const std::vector< mrv::shape_type_ptr >& 
+				  shapes );
 
     virtual void resize_background();
 

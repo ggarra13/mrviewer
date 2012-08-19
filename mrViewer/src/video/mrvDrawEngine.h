@@ -19,6 +19,7 @@
 #include "core/CMedia.h"
 #include "core/mrvRectangle.h"
 
+#include "video/mrvGLShape.h"
 
 namespace boost {
   class thread;
@@ -126,6 +127,7 @@ namespace mrv {
 
     /// Wipe area (scissor test)
     virtual void wipe_area() = 0;
+
     
     /// Draw a safe area rectangle
     virtual void draw_safe_area( const double percentX, const double percentY,
@@ -133,6 +135,11 @@ namespace mrv {
 
     /// Draw mask area rectangles
     virtual void draw_mask(const float pct) = 0;
+       
+    // Set pen size for drawing annotation shapes
+    virtual void pen_size( double d ) = 0;
+
+    virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 
     CMedia* const background();
 

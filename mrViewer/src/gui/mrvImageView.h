@@ -24,6 +24,9 @@
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
 
+#include "OpenEXR/ImathVec.h"
+#include "video/mrvGLShape.h"
+
 namespace fltk {
   class Menu;
 }
@@ -49,6 +52,11 @@ namespace mrv {
       kMouseRight  = 1 << 4,
       kLeftAlt     = 1 << 5,
       kMouseMove   = 1 << 6,
+    };
+
+    enum Mode {
+    kSelection = 1 << 0,
+    kDraw      = 1 << 1,
     };
 
     enum Looping {
@@ -102,6 +110,7 @@ namespace mrv {
       kRGBA_Hex,
       kRGBA_Decimal
     };
+
 
   public:
     ImageView(int X, int Y, int W, int H, const char *l=0);
@@ -321,6 +330,16 @@ namespace mrv {
        WipeDirection wipe_direction() const { return _wipe_dir; }
        float wipe_amount() const { return _wipe; }
 
+
+       void selection_mode() { _mode = kSelection; }
+       void draw_mode()      { _mode = kDraw; }
+
+       bool has_redo() { return (_undo_shapes.size() > 0); }
+       bool has_undo() { return (_shapes.size() > 0); }
+
+       void undo_draw();
+       void redo_draw();
+
   protected:
 
     void stop_playback();
@@ -437,6 +456,12 @@ namespace mrv {
     ///////////////////
     // Rectangle selection
     ///////////////////
+    Mode _mode;
+
+    Imath::V4f _pen_color;
+       double _pen_size;
+    GLShapeList _undo_shapes;
+    GLShapeList _shapes;
     mrv::Rectd _selection;
 
     ///////////////////

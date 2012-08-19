@@ -186,6 +186,7 @@ SET( SOURCES
   video/mrvGLShader.cpp
   video/mrvGLQuad.cpp
   video/mrvGLLut3d.cpp
+  video/mrvGLShape.cpp
 
   standalone/mrvRoot.cpp
   standalone/mrvCommandLine.cpp

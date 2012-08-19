@@ -61,6 +61,7 @@
 #include "gui/mrvPreferences.h"
 #include "mrViewer.h"
 
+#include "video/mrvGLShape.h"
 #include "video/mrvGLShader.h"
 #include "video/mrvGLEngine.h"
 #include "video/mrvGLQuad.h"
@@ -538,7 +539,7 @@ void GLEngine::color( uchar r, uchar g, uchar b, uchar a = 255 )
   glColor4ub( r, g, b, a );
 }
 
-void GLEngine::color( float r, float g, float b, float a = 255 )
+void GLEngine::color( float r, float g, float b, float a = 1.0 )
 {
   glColor4f( r, g, b, a );
 }
@@ -622,9 +623,12 @@ void GLEngine::draw_mask( const float pct )
 
   glColor3f( 0.0f, 0.0f, 0.0f );
 
-#if 0
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+
+  int dw = texWidth;
+  int dh = texHeight;
+  
   glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
   glTranslatef( _view->offset_x(), _view->offset_y(), 0.0f );
@@ -633,7 +637,6 @@ void GLEngine::draw_mask( const float pct )
     glScalef( float(dw), dh / _view->pixel_ratio(), 1.0f );
   else
     glScalef( float(dw), float(dh), 1.0f );
-#endif
 
   double aspect = (double) texWidth / (double) texHeight;   // 1.3
   double target_aspect = 1.0 / pct;
@@ -653,7 +656,8 @@ void GLEngine::draw_mask( const float pct )
 
   //
   // Top mask
-  //
+  // //
+  // glRectd( -0.5, 0.5 - amount, 0.5, 0.5 );
   glBegin( GL_POLYGON );
   {
     glVertex3d( -0.5,  0.5, 0. );
@@ -705,6 +709,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   
   glScaled( zoomX, zoomY, 1.0 );
 
+  glLineWidth( 1.0 );
+
   glBegin(GL_LINE_LOOP);
 
   glVertex2i(0,  0);
@@ -746,6 +752,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
   glScaled(zoomX * percentX, zoomY * percentY * pr, 1.0f);
 
+  
+  glLineWidth( 1.0 );
 
   glBegin(GL_LINE_LOOP);
 
@@ -973,6 +981,82 @@ void GLEngine::draw_images( ImageList& images )
   glDisable( GL_BLEND );
 }
 
+
+void GLEngine::pen_size( double d )
+{
+   glPointSize( d );
+   glLineWidth( d );
+}
+
+void GLEngine::draw_annotation( const std::vector< mrv::shape_type_ptr >& 
+				shapes )
+{
+   glMatrixMode (GL_MODELVIEW);
+   glLoadIdentity();
+   
+
+
+   double pr = 1.0;
+   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+
+   double zoomX = _view->zoom();
+   double zoomY = _view->zoom();
+
+   double tw = texWidth  / 2.0f;
+   double th = texHeight / 2.0f;
+
+   double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
+
+   glTranslated(_view->offset_x() * zoomX + sw, 
+		_view->offset_y() * zoomY + sh, 0);
+   glTranslated(tw * zoomX, th * zoomY, 0);
+   
+   glScaled(zoomX, zoomY * pr, 1.0f);
+
+   
+
+
+   //Turn off writing to the Color Buffer and Depth Buffer
+   //We want to draw to the Stencil Buffer only
+   glColorMask(false, false, false, false);
+
+   //Enable the Stencil Buffer
+   glEnable(GL_STENCIL_TEST);
+
+   //Set 1 into the stencil buffer
+   glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
+   glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
+
+   glBegin( GL_POLYGON );
+   glVertex2f( 0.0, 0.0 );
+   glVertex2f( 300.0, 0.0 );
+   glVertex2f( 300.0, 300.0 );
+   glVertex2f( 0.0, 300.0 );
+   glEnd();
+
+   //Turn on Color Buffer and Depth Buffer
+   glColorMask(true, true, true, true);
+
+   //Only write to the Stencil Buffer where 1 is set
+   glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
+   //Keep the content of the Stencil Buffer
+   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+   glDisable( GL_DEPTH_TEST );
+   glEnable( GL_LINE_SMOOTH );
+   glEnable( GL_POINT_SMOOTH );
+
+   size_t e = shapes.size();
+   for ( size_t i = 0; i < e; ++i )
+   {
+      color( shapes[i]->r, shapes[i]->g, shapes[i]->b, shapes[i]->a );
+      pen_size( shapes[i]->pen_size );
+      shapes[i]->draw();
+   }
+
+   glEnable( GL_DEPTH_TEST );
+}
 
 
 void GLEngine::wipe_area()

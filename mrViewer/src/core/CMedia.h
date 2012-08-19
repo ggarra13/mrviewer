@@ -876,6 +876,7 @@ namespace mrv {
     unsigned int  _w, _h;     //!< width and height of image
        bool   _internal;      //!< image is internal with no filename
     bool   _is_sequence;      //!< true if a sequence
+    bool   _is_stereo;        //!< true if part of stereo pair of images
     char*  _fileroot;         //!< root name of image sequence
     char*  _filename;         //!< generated filename of a frame
     time_t _ctime, _mtime;    //!< creation and modification time of image

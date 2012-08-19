@@ -669,7 +669,7 @@ bool exrImage::find_channels( const Imf::Header& h,
       _has_left_eye = true;
 
    std::string t = _fileroot;
-   if ( t.find( N_("%V") ) != std::string::npos )
+   if ( _is_stereo )
    {
       _has_left_eye = true;
       _has_right_eye = true;
