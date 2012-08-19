@@ -497,22 +497,6 @@ namespace mrv {
 	ThrowWandException( wand );
       }
 
-
-    // Image* image = GetImageFromMagickWand( wand );
-    // DrawingWand* draw = DrawAllocateWand( NULL, image );
-    // DrawSetStrokeOpacity(draw, 1.0);
-    // PixelWand* pixelwand = NewPixelWand();
-    // PixelSetRed( pixelwand, 0.0 );
-    // PixelSetGreen( pixelwand, 0.0 );
-    // PixelSetBlue( pixelwand, 1.0 );
-    // PixelSetAlpha( pixelwand, 1.0 );
-    // DrawColor(draw, 0.0, 0.0, ResetMethod);
-    // DrawSetStrokeColor(draw, pixelwand);
-    // DrawSetFillColor(draw, pixelwand);
-    // DrawLine( draw, 0, 0, 1.0, 1.0 );
-    // DestroyPixelWand( pixelwand );
-    // DestroyDrawingWand( draw );
-
     if ( must_convert )
       {
 	unsigned int dh = height();
@@ -528,7 +512,33 @@ namespace mrv {
 	  }
       }
     
+
     MagickSetImageGamma( wand, gamma() );
+
+
+    // DrawingWand* draw = NewDrawingWand();
+    // DrawSetStrokeOpacity(draw, 1.0);
+
+    // PixelWand* pixelwand = NewPixelWand();
+    // PixelSetColor( pixelwand, "blue" );
+
+    //   DrawSetStrokeColor(draw, pixelwand);
+    //   DrawLine( draw, 0, 0, 400, 120 );
+
+    //   PointInfo* pnts = new PointInfo[4];
+    //   for ( int i = 0; i < 4; ++i )
+    //   {
+    // 	 pnts[i].x = 2 * i;
+    // 	 pnts[i].y = 10 * i;
+    //   }
+    //   DrawPolyline( draw, 4, pnts );
+
+    // MagickDrawImage(wand, draw);
+
+    // DestroyDrawingWand( draw );
+    // DestroyPixelWand( pixelwand );
+
+
 
     //
     // Store EXIF and IPTC data (if any)
@@ -540,8 +550,8 @@ namespace mrv {
      */
     status = MagickWriteImage( wand, file );
 
-
     if ( must_convert ) delete [] pixels;
+
 
 
     DestroyMagickWand( wand );
@@ -551,6 +561,7 @@ namespace mrv {
       {
 	ThrowWandException( wand );
       }
+
 
     return true;
   }

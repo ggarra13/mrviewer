@@ -101,6 +101,7 @@ CMedia::CMedia() :
   _h( 0 ),
   _internal( false ),
   _is_sequence( false ),
+  _is_stereo( false ),
   _fileroot( NULL ),
   _filename( NULL ),
   _ctime( 0 ),
@@ -503,6 +504,13 @@ void CMedia::sequence( const char* fileroot,
 
   _fileroot = strdup( fileroot );
 
+  std::string f = _fileroot;
+  if ( f.find( N_("%V") ) != std::string::npos )
+  {
+     _is_stereo = true;
+  }
+
+
   if ( _filename ) {
     free( _filename );
     _filename = NULL;
@@ -561,6 +569,7 @@ void CMedia::filename( const char* n )
     }
 
   _is_sequence = false;
+  _is_stereo = false;
   _dts = _frame = _frameStart = _frameEnd = 1;
 
 
@@ -605,6 +614,11 @@ const char* CMedia::filename() const
 std::string CMedia::sequence_filename( const boost::int64_t frame )
 {
   if ( !is_sequence() ) return _fileroot;
+
+  if ( _is_stereo )
+  {
+     return stereo_sequence_filename( frame, "left" );
+  }
 
   // For image sequences
   char buf[1024];
