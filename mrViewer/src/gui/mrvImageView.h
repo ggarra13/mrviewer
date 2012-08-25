@@ -24,7 +24,6 @@
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
 
-#include "OpenEXR/ImathVec.h"
 #include "video/mrvGLShape.h"
 
 namespace fltk {
@@ -57,6 +56,7 @@ namespace mrv {
     enum Mode {
     kSelection = 1 << 0,
     kDraw      = 1 << 1,
+    kErase     = 1 << 2,
     };
 
     enum Looping {
@@ -333,6 +333,7 @@ namespace mrv {
 
        void selection_mode() { _mode = kSelection; }
        void draw_mode()      { _mode = kDraw; }
+       void erase_mode()     { _mode = kErase; }
 
        bool has_redo() { return (_undo_shapes.size() > 0); }
        bool has_undo() { return (_shapes.size() > 0); }
@@ -423,6 +424,7 @@ namespace mrv {
     // Old state for actions
     //
     int           posX, posY;  //<- non-fullscreen window position
+       double          X, Y;   //<- draw cursor coordinates
     int		lastX, lastY;  //<- last mouse coordinates
     int		       flags;  //<- flags containing current user action
 
@@ -458,8 +460,6 @@ namespace mrv {
     ///////////////////
     Mode _mode;
 
-    Imath::V4f _pen_color;
-       double _pen_size;
     GLShapeList _undo_shapes;
     GLShapeList _shapes;
     mrv::Rectd _selection;

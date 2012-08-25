@@ -274,7 +274,7 @@ bool exrImage::channels_order(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() );
+   // memset( pixels, 0, _hires->data_size() );
    
 
    // Then, prepare frame buffer for them
@@ -288,7 +288,6 @@ bool exrImage::channels_order(
    {
       int k = order[idx];
       if ( k == -1 ) continue;
-   
 
       const std::string& layerName = channelList[k];
 
@@ -374,7 +373,7 @@ bool exrImage::channels_order_multi(
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
       
-      if ( (root == "LEFT") || ( root == "" && !_has_left_eye ) )
+      if ( (root == N_("LEFT")) || ( root == "" && !_has_left_eye ) )
       { 
 	 if ( _left_red )
 	 {
@@ -470,9 +469,9 @@ bool exrImage::channels_order_multi(
    image_type::Format format = VideoFrame::kLumma;
    int offsets[4];
    offsets[0] = 0;
-   offsets[1]  = 1;
-   offsets[2]  = 2;
-   offsets[3]  = 3;
+   offsets[1] = 1;
+   offsets[2] = 2;
+   offsets[3] = 3;
       
    if ( numChannels >= 3 && has_alpha() )
    {
@@ -503,7 +502,7 @@ bool exrImage::channels_order_multi(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() );
+   // memset( pixels, 0, _hires->data_size() );
    
 
    // Then, prepare frame buffer for them

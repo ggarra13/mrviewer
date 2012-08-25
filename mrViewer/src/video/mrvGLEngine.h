@@ -62,7 +62,8 @@ namespace mrv {
 			    const int y, const char* text );
     virtual void draw_text(const int x, const int y, const char* text );
 
-       virtual void pen_size( double d );
+       virtual void draw_cursor( const double x, const double y );
+
     virtual void draw_annotation( const std::vector< mrv::shape_type_ptr >& 
 				  shapes );
 

@@ -135,10 +135,9 @@ namespace mrv {
 
     /// Draw mask area rectangles
     virtual void draw_mask(const float pct) = 0;
-       
-    // Set pen size for drawing annotation shapes
-    virtual void pen_size( double d ) = 0;
 
+       virtual void draw_cursor( const double x, const double y ) = 0;
+       
     virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 
     CMedia* const background();

@@ -2127,9 +2127,6 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	g = (v >> 8) & 0xff;
 	b = v & 0xff;
 
-	if ( a == 255 && r == 0 && g == 0 && b == 0 )
-	   r = g = 255;
-
 	*d++ = r;
 	*d++ = g;
 	*d++ = b;

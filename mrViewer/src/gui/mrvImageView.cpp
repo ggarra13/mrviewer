@@ -228,62 +228,70 @@ void save_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 
 void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 {
-  const char* name = o->label();
+   int idx = -1;
+   fltk::Group* g = o->parent();
+   for ( int i = 0; i < g->children(); ++i )
+   {
+      if ( o == g->child(i) ) {
+	 idx = i; break;
+      }
+   }
 
-  if ( strcmp( name, _("Reels") ) == 0 )
+  if ( idx == 0 )
     {
       uiMain->uiReelWindow->uiMain->show();
     }
-  else if ( strcmp( name, _("Media Info")) == 0 )
-    {
+  else if ( idx == 1 )
+  {
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
-    }
-  else if ( strcmp( name, _("Paint Info")) == 0 )
-    {
-      uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
-      uiMain->uiPaint->uiMain->show();
-    }
-  else if ( strcmp( name, _("Color Info")) == 0 )
+  }
+  else if ( idx == 2 )
     {
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
     }
-  else if ( strcmp( name, _("Histogram")) == 0 )
+  else if ( idx == 3 )
+    {
+      uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
+      uiMain->uiPaint->uiMain->show();
+    }
+  else if ( idx == 4 )
     {
       uiMain->uiHistogram->uiMain->show();
     }
-  else if ( strcmp( name, _("Vectorscope")) == 0 )
+  else if ( idx == 5 )
     {
       uiMain->uiVectorscope->uiMain->show();
     }
-  else if ( strcmp( name, _("Preferences")) == 0 )
+  else if ( idx == 6 )
     {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
     }
-  else if ( strcmp( name, _("Hotkeys")) == 0 )
+  else if ( idx == 7 )
     {
       uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
       uiMain->uiHotkey->uiMain->show();
     }
-  else if ( strcmp( name, _("Logs")) == 0 )
+  else if ( idx == 8 )
     {
       uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
       uiMain->uiLog->uiMain->show();
     }
-  else if ( strcmp( name, _("About")) == 0 )
+  else if ( idx == 9 )
     {
       uiMain->uiAbout->uiMain->show();
     }
-  else if ( strcmp( name, _("ICC Profiles") ) == 0 )
+  else if ( idx == 10 )
     {
       uiMain->uiICCProfiles->uiMain->show();
       uiMain->uiICCProfiles->fill();
     }
   else
     {
-       LOG_ERROR( _("Unknown Window \"") << name << "\"");
+       const char* name = o->label();
+       LOG_ERROR( _("Unknown Window \"") << name << "\"" );
     }
 }
 
@@ -462,7 +470,8 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
-  mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER );
+  mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
+	fltk::STENCIL_BUFFER );
 }
 
 
@@ -952,6 +961,7 @@ void ImageView::draw()
     }
 
 
+
   if ( _safeAreas ) 
     {
       const CMedia* img = fg->image();
@@ -1009,6 +1019,30 @@ void ImageView::draw()
     }
 
   _engine->draw_annotation( _shapes );
+
+  if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
+  {
+     mrv::media fg = foreground();
+     if ( !fg ) return;
+
+     CMedia* img = fg->image();
+     mrv::image_type_ptr pic = img->hires();
+     if ( !pic ) return;
+
+     double xf = X;
+     double yf = Y;
+
+     image_coordinates( pic, xf, yf );
+
+     unsigned int W = pic->width();
+     unsigned int H = pic->height();
+
+     yf = H - yf;
+     yf -= H/2;
+     xf -= W/2;
+
+     _engine->draw_cursor( xf, yf );
+  }
 
   if ( _hud == kHudNone )
     return;
@@ -1181,8 +1215,10 @@ void ImageView::leftMouseDown(int x, int y)
       {
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
       }
-      else if ( _mode == kDraw )
+      else if ( _mode == kDraw || _mode == kErase )
       {
+	 _selection = mrv::Rectd( 0, 0, 0, 0 );
+
 	 mrv::media fg = foreground();
 	 if ( !fg ) return;
 
@@ -1194,12 +1230,17 @@ void ImageView::leftMouseDown(int x, int y)
 
 	 double xf = x;
 	 double yf = y;
+
 	 image_coordinates( pic, xf, yf );
 
 	 unsigned int W = pic->width();
 	 unsigned int H = pic->height();
 
-	 GLPathShape* s = new GLPathShape;
+	 GLPathShape* s;
+	 if ( _mode == kDraw )
+	    s = new GLPathShape;
+	 else if ( _mode == kErase )
+	    s = new GLErasePathShape;
 
 	 uchar r, g, b;
 	 fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
@@ -1209,9 +1250,12 @@ void ImageView::leftMouseDown(int x, int y)
 	 s->b = b / 255.0f;
 	 s->a = 1.0f;
 	 s->pen_size = uiMain->uiPaint->uiPenSize->value();
+
 	 yf  = H - yf;
 	 yf -= H/2;
 	 xf -= W/2;
+
+
 	 Point p( xf, yf );
 	 s->pts.push_back( p );
 
@@ -1783,11 +1827,15 @@ void ImageView::mouseDrag(int x,int y)
 				      (double)dx/(double)W, 
 				      (double)dy/(double)H );
 	  }
-	  else if ( _mode == kDraw )
+	  else if ( _mode == kDraw || _mode == kErase )
 	  {
 	     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
 	     GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
-	     if ( s )
+	     if ( s == NULL )
+	     {
+		LOG_ERROR( _("Not a GLPathShape pointer") );
+	     }
+	     else
 	     {
 		yn  = H - yn;
 		yn -= H/2;
@@ -2354,6 +2402,9 @@ int ImageView::handle(int event)
       leftMouseUp(fltk::event_x(), fltk::event_y());
       break;
     case fltk::MOVE:
+       X = fltk::event_x();
+       Y = fltk::event_y();
+
        if ( _wipe_dir != kNoWipe )
        {
 	  switch( _wipe_dir )
@@ -2386,10 +2437,16 @@ int ImageView::handle(int event)
 	{
 	  mouseMove(fltk::event_x(), fltk::event_y());
 	}
+
+      if ( _mode == kDraw || _mode == kErase )
+	 redraw();
+
       break;
     case fltk::DRAG:
-      mouseDrag(fltk::event_x(), fltk::event_y());
-      break;
+       X = fltk::event_x();
+       Y = fltk::event_y();
+       mouseDrag( X, Y );
+       break;
       //     case fltk::SHORTCUT:
     case fltk::KEY:
       lastX = fltk::event_x();

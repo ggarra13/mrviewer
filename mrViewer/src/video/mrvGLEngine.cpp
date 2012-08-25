@@ -611,6 +611,38 @@ void GLEngine::draw_text( const int x, const int y, const char* s )
   glPopAttrib();
 }
 
+void GLEngine::draw_cursor( const double x, const double y )
+{ 
+   glMatrixMode (GL_MODELVIEW);
+   glLoadIdentity();
+   
+   double pr = 1.0;
+   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+
+   double zoomX = _view->zoom();
+   double zoomY = _view->zoom();
+
+   double tw = texWidth  / 2.0f;
+   double th = texHeight / 2.0f;
+
+   double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
+   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
+
+   glTranslated(_view->offset_x() * zoomX + sw, 
+		_view->offset_y() * zoomY + sh, 0);
+   glTranslated(tw * zoomX, th * zoomY, 0);
+   
+   glScaled(zoomX, zoomY * pr, 1.0f);
+
+   glColor4f( 1, 0, 0, 1 );
+
+   glPointSize( _view->main()->uiPaint->uiPenSize->value() );
+
+   glBegin( GL_POINTS );
+   glVertex2f( x, y );
+   glEnd();
+}
+
 /** 
  * Draws the mask
  * 
@@ -982,11 +1014,6 @@ void GLEngine::draw_images( ImageList& images )
 }
 
 
-void GLEngine::pen_size( double d )
-{
-   glPointSize( d );
-   glLineWidth( d );
-}
 
 void GLEngine::draw_annotation( const std::vector< mrv::shape_type_ptr >& 
 				shapes )
@@ -1015,47 +1042,26 @@ void GLEngine::draw_annotation( const std::vector< mrv::shape_type_ptr >&
    glScaled(zoomX, zoomY * pr, 1.0f);
 
    
+   glClear(GL_STENCIL_BUFFER_BIT);
 
+   glEnable( GL_STENCIL_TEST );
 
-   //Turn off writing to the Color Buffer and Depth Buffer
-   //We want to draw to the Stencil Buffer only
-   glColorMask(false, false, false, false);
+   glEnable(GL_BLEND);
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   //Enable the Stencil Buffer
-   glEnable(GL_STENCIL_TEST);
-
-   //Set 1 into the stencil buffer
-   glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
-   glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
-
-   glBegin( GL_POLYGON );
-   glVertex2f( 0.0, 0.0 );
-   glVertex2f( 300.0, 0.0 );
-   glVertex2f( 300.0, 300.0 );
-   glVertex2f( 0.0, 300.0 );
-   glEnd();
-
-   //Turn on Color Buffer and Depth Buffer
-   glColorMask(true, true, true, true);
-
-   //Only write to the Stencil Buffer where 1 is set
-   glStencilFunc(GL_EQUAL, 1, 0xFFFFFFFF);
-   //Keep the content of the Stencil Buffer
-   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-
-   glDisable( GL_DEPTH_TEST );
    glEnable( GL_LINE_SMOOTH );
-   glEnable( GL_POINT_SMOOTH );
+   glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
 
-   size_t e = shapes.size();
-   for ( size_t i = 0; i < e; ++i )
+   GLShapeList::const_reverse_iterator i = shapes.rbegin();
+   GLShapeList::const_reverse_iterator e = shapes.rend();
+
+   for ( ; i != e; ++i )
    {
-      color( shapes[i]->r, shapes[i]->g, shapes[i]->b, shapes[i]->a );
-      pen_size( shapes[i]->pen_size );
-      shapes[i]->draw();
+      (*i)->draw();
    }
 
-   glEnable( GL_DEPTH_TEST );
+   glDisable(GL_BLEND);
+   glDisable(GL_STENCIL_TEST);
 }
 
 
