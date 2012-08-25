@@ -9,6 +9,9 @@ snap 3
 decl {\#include "string"} {public
 } 
 
+decl {\#include "core/mrvI8N.h"} {selected public
+} 
+
 decl {\#include "core/mrvColorSpaces.h"} {} 
 
 decl {\#include "gui/mrvColorInfo.h"} {} 

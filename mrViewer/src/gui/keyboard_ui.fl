@@ -15,6 +15,9 @@ decl {\#include <fltk/events.h>} {}
 decl {\#include "mrvHotkey.h"} {public
 } 
 
+decl {\#include "core/mrvI8N.h"} {selected
+} 
+
 decl {\#include <fltk/Item.h>} {} 
 
 namespace mrv {open
@@ -29,7 +32,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Choose Hotkey} open
-        xywh {653 631 360 130} resizable
+        xywh {655 631 360 130} resizable
         extra_code {o->shortcut(0);} modal visible
       } {
         {fltk::Input} uiKey {
@@ -98,7 +101,7 @@ v->uiMain->hide();}
           user_data uiKey user_data_type {fltk::Input*}
           callback {int idx = o->value();
 const char* text = o->child(idx)->label();
-uiKey->text( text );} open selected
+uiKey->text( text );} open
           xywh {195 5 65 25}
           extra_code {for (int i = 0; i < 45; i++)
 {

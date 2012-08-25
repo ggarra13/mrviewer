@@ -9,6 +9,8 @@ snap 3
 decl {\#include "string"} {public
 } 
 
+decl {\#include "core/mrvI8N.h"} {} 
+
 decl {\#include "core/mrvAudioEngine.h"} {} 
 
 decl {\#include "core/exrImage.h"} {} 
@@ -151,8 +153,7 @@ namespace mrv {open
   }
   decl {class PaintUI;} {public
   }
-  class ReelUI {open
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -440,8 +441,7 @@ o->value(-1);}
       code {delete uiMain;} {}
     }
   }
-  class VectorscopeUI {open
-  } {
+  class VectorscopeUI {} {
     Function {make_window(ViewerUI* main)} {private
     } {
       {fltk::Window} uiMain {
@@ -555,9 +555,8 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {open
-  } {
-    Function {make_window()} {open private
+  class PreferencesUI {} {
+    Function {make_window()} {private
     } {
       {fltk::Window} uiMain {
         label Preferences open
@@ -2063,6 +2062,102 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain;} {}
     }
   }
+  class PaintUI {} {
+    Function {make_window( ViewerUI* m )} {open
+    } {
+      {fltk::Window} uiMain {
+        label Paint open
+        xywh {794 336 110 425} horizontal resizable visible
+      } {
+        {fltk::Group} {} {open
+          xywh {10 9 90 201}
+        } {
+          {fltk::Button} uiSelection {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->selection_mode();
+o->value(1);
+uiDraw->value(0);}
+            tooltip {Area Select Tool}
+            xywh {2 0 43 35}
+            extra_code {o->value(1);
+o->image( select_pic );}
+          }
+          {fltk::Button} uiDraw {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->draw_mode();
+o->value(1);
+uiSelection->value(0);
+uiErase->value(0);}
+            tooltip {Freehand Drawing Tool}
+            xywh {50 0 40 35}
+            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/draw.xpm}
+            extra_code {o->image( draw );}
+          }
+          {fltk::Button} uiErase {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->erase_mode();
+o->value(1);
+uiSelection->value(0);
+uiDraw->value(0);}
+            tooltip {Eraser Tool}
+            xywh {50 41 40 35}
+            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
+            extra_code {o->image( erase );}
+          }
+          {fltk::ValueSlider} uiPenSize {
+            label {Pen Size}
+            tooltip {Selects the size of brush.}
+            xywh {5 91 85 30} align 1 minimum 1 maximum 10 step 1 linesize -2 value 5
+          }
+          {fltk::Button} uiUndoDraw {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->undo_draw();
+
+if ( !v->uiView->has_undo() )
+ o->deactivate();}
+            tooltip {Undo Last Shape Drawn}
+            xywh {5 166 34 35}
+            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
+            extra_code {o->image( undo );
+if ( !m->uiView->has_undo() )
+ o->deactivate();
+else
+ o->activate();}
+          }
+          {fltk::Button} uiRedoDraw {
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiView->redo_draw();
+if ( !v->uiView->has_redo() )
+   o->deactivate();
+else
+   o->activate();}
+            tooltip {Redo Previous Shape Drawn}
+            xywh {50 166 34 35}
+            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/redo.xpm}
+            extra_code {o->image( redo );
+if ( !m->uiView->has_redo() )
+   o->deactivate();
+else
+   o->activate();}
+          }
+          {fltk::Button} uiPenColor {
+            label {Pen Color}
+            callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick Draw Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();}
+            tooltip {Selects the background color of areas outside the current image.}
+            xywh {60 136 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
+          }
+        }
+      }
+    }
+    Function {PaintUI(ViewerUI* m)} {open
+    } {
+      code {make_window( m );} {}
+    }
+  }
   class ViewerUI {open
   } {
     decl {static PreferencesUI* uiPrefs;} {public
@@ -2089,7 +2184,7 @@ o->child_of( main->uiMain );} modal
     }
     decl {PaintUI* uiPaint;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2097,10 +2192,10 @@ o->child_of( main->uiMain );} modal
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {364 115 640 530} when CHANGED hide resizable
+        xywh {368 161 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2125,15 +2220,15 @@ o->main( this );}
 v->uiView->update_image_info();}
                 }
               {fltk::Item} {} {
-                label {Paint Info}
-                user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiPaint->uiMain->show();}
-                }
-              {fltk::Item} {} {
                 label {Color Info}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
 v->uiView->update_color_info();}
+                }
+              {fltk::Item} {} {
+                label {Paint Tools}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiPaint->uiMain->show();} selected
                 }
               {fltk::Item} {} {
                 label Histogram
@@ -2949,85 +3044,9 @@ delete uiHistogram; uiHistogram = NULL;
 delete uiVectorscope; uiVectorscope = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
+delete uiPaint; uiPaint = NULL;
 delete uiMain; uiMain = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
-    }
-  }
-  class PaintUI {open
-  } {
-    Function {make_window( ViewerUI* m )} {open
-    } {
-      {fltk::Window} uiMain {
-        label Paint open
-        xywh {352 336 110 425} horizontal resizable visible
-      } {
-        {fltk::Group} {} {open
-          xywh {5 9 105 191}
-        } {
-          {fltk::Button} uiSelection {
-            label Sel
-            user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->selection_mode();
-o->value(1);
-uiDraw->value(0);} selected
-            xywh {2 0 43 35}
-            extra_code {o->value(1);}
-          }
-          {fltk::Button} uiDraw {
-            label Draw
-            user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->draw_mode();
-o->value(1);
-uiSelection->value(0);}
-            xywh {50 0 40 35}
-          }
-          {fltk::ValueSlider} uiPenSize {
-            label {Pen Size}
-            xywh {5 56 85 30} align 1 minimum 1 maximum 10 step 1 linesize -2 value 5
-          }
-          {fltk::Button} uiUndoDraw {
-            label Undo
-            user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->undo_draw();
-
-if ( !v->uiView->has_undo() )
- o->deactivate();}
-            xywh {0 166 40 25}
-            extra_code {if ( !m->uiView->has_undo() )
- o->deactivate();
-else
- o->activate();}
-          }
-          {fltk::Button} uiRedoDraw {
-            label Redo
-            user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->redo_draw();
-if ( !v->uiView->has_redo() )
-   o->deactivate();
-else
-   o->activate();}
-            xywh {50 166 40 25}
-            extra_code {if ( !m->uiView->has_redo() )
-   o->deactivate();
-else
-   o->activate();}
-          }
-          {fltk::Button} uiPenColor {
-            label {Pen Color}
-            callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick Draw Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
-o->redraw();}
-            tooltip {Selects the background color of areas outside the current image.}
-            xywh {60 101 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
-          }
-        }
-      }
-    }
-    Function {PaintUI(ViewerUI* m)} {open
-    } {
-      code {make_window( m );} {}
     }
   }
 } 
