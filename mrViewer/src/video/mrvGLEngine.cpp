@@ -947,6 +947,7 @@ void GLEngine::draw_images( ImageList& images )
 	   {
 	      if ( !img->is_cache_filled( pic->frame() ) )
 	      {
+
 		 if ( Preferences::cache_type != Preferences::kCacheAsLoaded &&
 		      pic->pixel_type() != image_type::kByte )
 		 {
