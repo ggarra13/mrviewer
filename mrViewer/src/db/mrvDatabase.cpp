@@ -76,7 +76,7 @@ namespace mrv
     std::string driver;
     const char* var = getenv("MRV_DATABASE_DRIVER");
     if ( var ) driver = var;
-    if ( driver == "" ) driver = "postgresql";
+    if ( driver == "" ) driver = "None";
 
     LOG_ERROR( "MRV_DATABASE_DRIVER: " << driver );
     LOG_ERROR( "MRV_HOST: " << _host << " MRV_PORT: " << _port );

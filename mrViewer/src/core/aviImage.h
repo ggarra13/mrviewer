@@ -81,6 +81,9 @@ namespace mrv {
       return _video_info.size(); 
     }
 
+       static bool save( const char* filename );
+       bool save_frame( const mrv::image_type_ptr pic );
+
     virtual void sequence( const char* fileroot, 
 			   const boost::int64_t start, 
 			   const boost::int64_t end ) {}

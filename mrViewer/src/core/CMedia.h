@@ -240,7 +240,7 @@ namespace mrv {
     virtual ~CMedia();
 
 
-    /// Save the image under a new filename (opening a file requester)
+    /// Save the image under a new filename 
     bool save( const char* filename ) const;
 
     /// Set the image pixel ratio
@@ -341,6 +341,8 @@ namespace mrv {
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
+    inline void hires( const mrv::image_type_ptr pic)
+       { _hires = pic; refresh(); } 
 
     inline mrv::image_type_ptr anaglyph( bool left_view = true );
 

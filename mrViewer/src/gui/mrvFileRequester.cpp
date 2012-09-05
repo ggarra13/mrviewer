@@ -9,7 +9,14 @@
  * 
  */
 
+#define __STDC_FORMAT_MACROS
+
+#include <inttypes.h>
+
 #include <fltk/file_chooser.h>
+#include <fltk/ProgressBar.h>
+#include <fltk/run.h>
+
 
 #include "CMedia.h"
 #include "mrvImageBrowser.h"
@@ -17,6 +24,11 @@
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
 #include "mrViewer.h"
+#include "core/aviImage.h"
+#include "gui/mrvImageView.h"
+#include "gui/mrvTimeline.h"
+
+#include <GL/gl.h>
 
 #include "FLU/Flu_File_Chooser.h"
 
@@ -223,15 +235,100 @@ namespace mrv
 
 
 
-  void save_image_file( const CMedia* image, const char* startdir )
+  void save_image_file( CMedia* image, const char* startdir )
   {
     if (!image) return;
 
     const char* file = flu_save_chooser("Save Image", 
 					kSAVE_IMAGE_PATTERN.c_str(), startdir);
     if ( !file ) return;
+
     image->save( file );
   }
+
+void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain, 
+			 const char* startdir)
+{
+    if (!img) return;
+
+    const char* file = flu_save_chooser("Save Sequence", 
+					kSAVE_IMAGE_PATTERN.c_str(), startdir);
+    if ( !file ) return;
+
+    
+     std::string root, fileseq = file;
+     bool ok = mrv::fileroot( root, fileseq );
+     if ( !ok ) return;
+
+     std::string tmp = root;
+     std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+		     (int(*)(int)) tolower);
+
+     if ( strncmp( tmp.c_str() + tmp.size() - 4, ".avi", 4 ) == 0 ||
+	  strncmp( tmp.c_str() + tmp.size() - 4, ".mov", 4 ) == 0 )
+      {
+	 aviImage::save( file );
+	 return;
+      }
+
+     fltk::ProgressBar* progress = NULL;
+     fltk::Window* main = (fltk::Window*)uiMain->uiMain;
+     fltk::Window* w = new fltk::Window( main->x(), main->y() + main->h()/2, 
+					 main->w(), 80 );
+     w->child_of(main);
+     w->begin();
+     mrv::Timeline* timeline = uiMain->uiTimeline;
+     int64_t first = timeline->minimum();
+     int64_t last  = timeline->maximum();
+     progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
+     progress->range( 0, last - first + 1 );
+     progress->align( fltk::ALIGN_TOP );
+     char title[1024];
+     sprintf( title, "Saving Sequence %" PRId64 " - %" PRId64,
+	      first, last );
+     progress->label( title );
+     progress->showtext(true);
+     w->end();
+     w->show();
+
+     fltk::check();
+     
+     int64_t dts = first;
+     int64_t frame = first;
+     int64_t failed_frame = frame-1;
+
+     const char* fileroot = root.c_str();
+
+     for ( ; frame <= last; ++frame )
+     {
+	int step = 1;
+	
+	uiMain->uiReelWindow->uiBrowser->seek( frame );
+	mrv::media fg = uiMain->uiView->foreground();
+	if (!fg) break;
+
+	CMedia* img = fg->image();
+	
+	{
+	   char buf[1024];
+	   sprintf( buf, fileroot, frame );
+	   img->save( buf );
+	}
+	
+	progress->step(1);
+	fltk::check();
+	
+	if ( !w->visible() ) {
+	   break;
+	}
+     }
+
+    if ( w )
+      {
+	w->hide();
+	w->destroy();
+      }
+}
 
 
   /** 

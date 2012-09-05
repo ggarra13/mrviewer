@@ -223,6 +223,7 @@ namespace mrv {
     /// Turn on or off safe areas
     void safe_areas( const bool t ) { _safeAreas = t; }
 
+    /// Return status of safe areas
     bool safe_areas() { return _safeAreas; }
   
     /// Normalize value
@@ -430,16 +431,16 @@ namespace mrv {
 
     //! Channel index
     unsigned short     _channel;
-       unsigned short     _old_channel; // previously selected color channelx
+    unsigned short     _old_channel; // previously selected color channel
 
     //! Channel type (RGB, R, G, B, A, L )
     mrv::ChannelType   _channelType;
 
     //! Flags for state of display - unneeded?, should use uiMain->uiLUT, etc.
-    FieldDisplay _field;
-    bool         _showBG, _showPixelRatio, _useLUT;
-    float        _volume;
-       FlipDirection _flip;
+    FieldDisplay  _field;
+    bool          _showBG, _showPixelRatio, _useLUT;
+    float         _volume;
+    FlipDirection _flip;
 
     ///////////////////
     // Popup menu

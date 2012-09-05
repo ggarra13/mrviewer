@@ -42,6 +42,7 @@ namespace mrv
     void clone_current();
     void open();
     void save();
+    void save_sequence();
     void save_reel();
     void load_reel( const char* name );
     void remove_reel();

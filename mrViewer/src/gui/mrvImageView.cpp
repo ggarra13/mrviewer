@@ -29,6 +29,13 @@
 #include <sstream>
 #include <set>
 
+#ifdef WIN32
+#include <winsock2.h>
+#include <windows.h>
+#endif
+
+#include <GL/gl.h>
+
 
 #include <fltk/visual.h>
 #include <fltk/events.h>
@@ -52,6 +59,7 @@
 #include "ImathMath.h" // for Math:: functions
 
 
+#include "core/CMedia.h"
 // CORE classes
 #include "core/mrvColor.h"
 #include "core/mrvColorProfile.h"
@@ -63,6 +71,7 @@
 #include "core/stubImage.h"
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
+#include "core/mrvFrame.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -221,9 +230,82 @@ void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
   uiReelWindow->open();
 }
 
-void save_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
+void save_cb( fltk::Widget* o, mrv::ImageView* view )
 {
-  uiReelWindow->save();
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  view->browser()->save();
+}
+
+void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  view->stop();
+  float gamma = view->gamma();
+  view->gamma( 1.0 );
+  float zoom = view->zoom();
+  view->zoom( 1.0 );
+  view->redraw();
+  fltk::check();
+
+  mrv::CMedia* img = fg->image();
+  if ( !img ) return;
+
+  unsigned w = img->width();
+  unsigned h = img->height();
+
+  mrv::image_type_ptr hires( new mrv::image_type( img->frame(),
+						  w, h, 4,
+						  mrv::image_type::kRGBA,
+						  mrv::image_type::kFloat
+						  )
+			     );
+
+
+  float* data = new float[ 4 * w * h ];
+
+  glPixelStorei( GL_PACK_ALIGNMENT, 1 );
+  glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
+
+  // Flip image vertically
+  for ( int x = 0; x < w; ++x )
+  {
+     int y2 = h-1;
+     for ( int y = 0; y < h; ++y, --y2 )
+     {
+	mrv::ImagePixel p;
+	p.r = data[   4*( x + y * w ) ];
+	p.g = data[ 1+4*( x + y * w ) ];
+	p.b = data[ 2+4*( x + y * w ) ];
+	p.a = data[ 3+4*( x + y * w ) ];
+	hires->pixel( x, y2, p );
+     }
+  }
+
+  // Store old image
+  mrv::image_type_ptr old = img->hires();
+
+  // Set new hires image from snapshot
+  img->hires( hires );
+
+  // Save image
+  view->browser()->save();
+
+  // Return all to normal
+  img->hires( old );
+  view->zoom( zoom );
+  view->gamma( gamma );
+  view->redraw();
+
+}
+
+void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  view->stop();
+  view->browser()->save_sequence();
 }
 
 void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
@@ -239,20 +321,24 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 
   if ( idx == 0 )
     {
+       // Reel window
       uiMain->uiReelWindow->uiMain->show();
     }
   else if ( idx == 1 )
   {
+       // Media Info
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
   }
   else if ( idx == 2 )
     {
+       // Color Area
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
     }
   else if ( idx == 3 )
     {
+       // Paint Tools
       uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPaint->uiMain->show();
     }
@@ -266,27 +352,27 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     }
   else if ( idx == 6 )
     {
+      uiMain->uiICCProfiles->uiMain->show();
+      uiMain->uiICCProfiles->fill();
+    }
+  else if ( idx == 7 )
+    {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
     }
-  else if ( idx == 7 )
+  else if ( idx == 8 )
     {
       uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
       uiMain->uiHotkey->uiMain->show();
     }
-  else if ( idx == 8 )
+  else if ( idx == 9 )
     {
       uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
       uiMain->uiLog->uiMain->show();
     }
-  else if ( idx == 9 )
-    {
-      uiMain->uiAbout->uiMain->show();
-    }
   else if ( idx == 10 )
     {
-      uiMain->uiICCProfiles->uiMain->show();
-      uiMain->uiICCProfiles->fill();
+      uiMain->uiAbout->uiMain->show();
     }
   else
     {
@@ -928,6 +1014,8 @@ void ImageView::draw()
 
   if ( images.empty() ) return;
 
+  // _engine->init_fbo( images );
+
   _engine->draw_images( images );
 
   if ( !fg || fg->image() == NULL ) return;
@@ -1046,6 +1134,8 @@ void ImageView::draw()
 
   if ( _hud == kHudNone )
     return;
+
+  // _engine->end_fbo( images );
 
   std::ostringstream hud;
   hud.str().reserve( 512 );
@@ -1295,9 +1385,15 @@ void ImageView::leftMouseDown(int x, int y)
 		   (fltk::Callback*)open_cb, browser() ); 
 	 mrv::media fg = foreground();
 	 if ( fg )
+	 {
 	    menu.add( _("File/Save Frame As"), kSaveImage.hotkey(),
-		      (fltk::Callback*)save_cb, browser() ); 
-	 
+		      (fltk::Callback*)save_cb, this ); 
+	    menu.add( _("File/Save GL Snapshot As"), kSaveSnapshot.hotkey(),
+		      (fltk::Callback*)save_snap_cb, this ); 
+	    menu.add( _("File/Save Sequence As"), kSaveSequence.hotkey(),
+		      (fltk::Callback*)save_sequence_cb, this ); 
+	 }
+
 	 char buf[256];
 	 const char* tmp; 
 	 fltk::Widget* item;
@@ -1451,6 +1547,7 @@ void ImageView::leftMouseUp( int x, int y )
   flags &= ~kMouseMove;
   flags &= ~kZoom;
   
+  cursor( fltk::CURSOR_CROSS );
   int button = fltk::event_button();
   if (button == 1)
     flags &= ~kMouseLeft;
@@ -1749,6 +1846,7 @@ void ImageView::mouseDrag(int x,int y)
 	} 
       else if ( flags & kMouseMove )
 	{
+	   cursor( fltk::CURSOR_MOVE );
 	  xoffset += dx / _zoom;
 	  yoffset -= dy / _zoom;
 	  lastX = x;

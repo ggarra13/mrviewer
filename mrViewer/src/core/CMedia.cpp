@@ -173,7 +173,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _channel( NULL ),
   _label( NULL ),
   _real_fps( 0 ),
-  _play_fps( 0 ),
+  _play_fps( 24.0 ),
   _fps( 0 ),
   _pixel_ratio( 1.0f ),
   _num_channels( 0 ),
@@ -1317,7 +1317,8 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 {
    assert( pic != NULL );
 
-   if ( !is_sequence()) return;
+   if ( !is_sequence()) 
+      return;
 
    SCOPED_LOCK( _mutex );
 

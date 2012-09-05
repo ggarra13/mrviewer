@@ -44,6 +44,10 @@ namespace mrv {
     virtual void color( uchar r, uchar g, uchar b, uchar a  );
     virtual void color( float r, float g, float b, float a );
 
+    // Init FB0 Drawing   
+       virtual bool init_fbo( ImageList& images );
+       virtual void end_fbo( ImageList& images );
+
     /// Draw a rectangle
     virtual void draw_rectangle( const mrv::Rectd& r );
 
@@ -62,7 +66,7 @@ namespace mrv {
 			    const int y, const char* text );
     virtual void draw_text(const int x, const int y, const char* text );
 
-       virtual void draw_cursor( const double x, const double y );
+    virtual void draw_cursor( const double x, const double y );
 
     virtual void draw_annotation( const std::vector< mrv::shape_type_ptr >& 
 				  shapes );
@@ -77,6 +81,7 @@ namespace mrv {
     static bool halfTextures()  { return _halfTextures;  }
     static bool floatTextures() { return _floatTextures; }
     static bool sdiOutput()     { return _sdiOutput;     }
+    static bool fboRenderBuffer()  { return _fboRenderBuffer; }
     static GLint maxTexUnits()  { return _maxTexUnits;   }
 
     static GLShader* rgbaShader()    { return _rgba; }
@@ -130,9 +135,11 @@ namespace mrv {
 
     int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
+       GLuint textureId;       //!< The off-screen texture
     GLuint lutId;              //!< The lut texture index
     float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
 
+       GLuint id, rid;
 
     QuadList  _quads;
 
@@ -150,6 +157,7 @@ namespace mrv {
     static bool _pow2Textures;    //!< only power of 2 textures supported
     static bool _pboTextures;     //!< Pixel Buffer Objects?
     static bool _sdiOutput;       //!< SDI output
+    static bool _fboRenderBuffer; //!< Framebuffer object
 
     static GLuint     sCharset;   //!< display list for characters
 
