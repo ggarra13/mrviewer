@@ -555,19 +555,20 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {} {
-    Function {make_window()} {private
+  class PreferencesUI {open
+  } {
+    Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {638 286 640 475} hide resizable
+        xywh {638 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings open
+          label Settings open selected
           xywh {207 24 433 416}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {8 24 412 382} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -679,7 +680,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window} open
+            label {View Window}
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -839,7 +840,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label Colors open
+            label Colors
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -893,7 +894,7 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label {File Requester} open
+            label {File Requester}
             xywh {8 24 410 380} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
@@ -974,33 +975,6 @@ uiPrefsFPS->value( g );}
               tooltip {If set, mrViewer will always show all frames even if frame rate is not reached.
 If not set, mrViewer may speed up or skip showing some frames in order to keep the frame rate.}
               xywh {230 84 20 25} align 4 labelsize 11
-            }
-          }
-          {fltk::Group} {} {
-            label Caches
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
-          } {
-            {fltk::Group} {} {
-              label Sequences
-              xywh {15 40 373 97} box ROUNDED_BOX
-            } {
-              {fltk::Choice} uiPrefsCachePixelType {
-                label {Pixel Type}
-                xywh {118 30 155 25}
-              } {
-                {fltk::Item} {} {
-                  label {same as loaded}
-                  }
-                {fltk::Item} {} {
-                  label {8-bits integer}
-                  }
-                {fltk::Item} {} {
-                  label {16-bits float}
-                  }
-                {fltk::Item} {} {
-                  label {32-bits float}
-                  }
-              }
             }
           }
           {fltk::Group} {} {
@@ -2066,8 +2040,8 @@ o->child_of( main->uiMain );} modal
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
-        label Paint open
-        xywh {794 336 110 425} horizontal resizable visible
+        label Paint
+        xywh {798 336 110 425} horizontal resizable visible
       } {
         {fltk::Group} {} {open
           xywh {10 9 90 201}
@@ -2157,9 +2131,12 @@ o->redraw();}
     } {
       code {make_window( m );} {}
     }
+    Function {~PaintUI()} {open
+    } {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2192,10 +2169,10 @@ o->redraw();}
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {368 161 640 530} when CHANGED resizable
+        xywh {372 207 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2228,7 +2205,7 @@ v->uiView->update_color_info();}
               {fltk::Item} {} {
                 label {Paint Tools}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiPaint->uiMain->show();} selected
+                callback {v->uiPaint->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label Histogram

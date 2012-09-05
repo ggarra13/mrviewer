@@ -16,9 +16,11 @@
 
 
 namespace mrv {
-
+// ctrl, meta, alt, shift, key
 Hotkey kOpenImage( true, false, false, false, 'o' );
 Hotkey kSaveImage( true, false, false, false, 's' );
+Hotkey kSaveSequence( true, false, false, true, 's' );
+Hotkey kSaveSnapshot( false, false, true, false, 's' );
 Hotkey kIccProfile( true, false, false, false, 'i' );
 Hotkey kCTLScript( true, false, false, false, 't' );
 Hotkey kMonitorCTLScript( true, false, false, false, 'm' );
@@ -88,6 +90,8 @@ Hotkey kCloneImage( false, false, false, false, 0 );
 HotkeyEntry hotkeys[] = {
 HotkeyEntry( _("Open Image"), kOpenImage),
 HotkeyEntry( _("Save Image"), kSaveImage),
+HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
+HotkeyEntry( _("Save Sequence"), kSaveSequence),
 HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
 HotkeyEntry( _("Image CTL script"), kCTLScript ),
 HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),

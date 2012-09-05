@@ -107,6 +107,10 @@ namespace mrv {
     virtual void color( uchar r, uchar g, uchar b, uchar a = 255  ) = 0;
     virtual void color( float r, float g, float b, float a = 1.0f ) = 0;
 
+    // Init FB0 Drawing   
+    virtual bool init_fbo( ImageList& images ) = 0;
+    virtual void end_fbo( ImageList& images ) = 0;
+
     /// Draw a rectangle
     virtual void draw_rectangle( const mrv::Rectd& r ) = 0;
 

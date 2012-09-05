@@ -195,7 +195,6 @@ bool exrImage::channels_order(
    }
    else if ( numChannels > 4 && channel() )
    {
-      cerr << __LINE__ << endl;
       mrvALERT( _("Image file \"") << filename() 
 		<< _("\" contains more than 4 channels "
 		     "named with prefix \"") 
@@ -674,106 +673,109 @@ bool exrImage::find_channels( const Imf::Header& h,
       _has_right_eye = true;
    }
 
-   _layers.clear();
-
-
-   _num_channels = 0;
-   _gamma = 2.2f;
-
-   bool has_rgb = false, has_alpha = false;
-   if ( channels.findChannel( N_("R") ) ||
-	channels.findChannel( N_("G") ) ||
-	channels.findChannel( N_("B") ) )
+   if ( _layers.empty() )
    {
-      has_rgb = true;
-   }
 
-   _has_yca = false;
-   if ( !has_rgb )
-   {
-      if ( channels.findChannel( N_("Y") ) )
-      {
-	 _layers.push_back( N_("Y") ); ++_num_channels;
-      }
-      if ( channels.findChannel( N_("RY") ) )
-      {
-	 _layers.push_back( N_("RY") ); ++_num_channels;
-      }
-      if ( channels.findChannel( N_("BY") ) )
-      {
-	 _layers.push_back( N_("BY") ); ++_num_channels;
-      }
+      _layers.clear();
 
-      if ( ! _layers.empty() ) 
+
+      _num_channels = 0;
+      _gamma = 2.2f;
+
+      bool has_rgb = false, has_alpha = false;
+      if ( channels.findChannel( N_("R") ) ||
+	   channels.findChannel( N_("G") ) ||
+	   channels.findChannel( N_("B") ) )
       {
-	 _has_yca = true; 
-	 rgb_layers(); _num_channels -= 3;
+	 has_rgb = true;
+      }
+      
+      _has_yca = false;
+      if ( !has_rgb )
+      {
+	 if ( channels.findChannel( N_("Y") ) )
+	 {
+	    _layers.push_back( N_("Y") ); ++_num_channels;
+	 }
+	 if ( channels.findChannel( N_("RY") ) )
+	 {
+	    _layers.push_back( N_("RY") ); ++_num_channels;
+	 }
+	 if ( channels.findChannel( N_("BY") ) )
+	 {
+	    _layers.push_back( N_("BY") ); ++_num_channels;
+	 }
+	 
+	 if ( ! _layers.empty() ) 
+	 {
+	    _has_yca = true; 
+	    rgb_layers(); _num_channels -= 3;
+	    lumma_layers();
+	 }
+      }
+      else
+      {
+	 rgb_layers();
 	 lumma_layers();
       }
-   }
-   else
-   {
-      rgb_layers();
-      lumma_layers();
-   }
-
-   if ( channels.findChannel( N_("A") ) ||
-	channels.findChannel( N_("ALPHA") ) )
-   {
-      has_alpha = true;
-      alpha_layers();
-   }
-
-   if ( _has_left_eye || _has_right_eye )
-   {
-      _layers.push_back( "left.anaglyph" );
-      _layers.push_back( "right.anaglyph" );
-   }
+      
+      if ( channels.findChannel( N_("A") ) ||
+	   channels.findChannel( N_("ALPHA") ) )
+      {
+	 has_alpha = true;
+	 alpha_layers();
+      }
+      
+      if ( _has_left_eye || _has_right_eye )
+      {
+	 _layers.push_back( "left.anaglyph" );
+	 _layers.push_back( "right.anaglyph" );
+      }
 
 
-   Imf::ChannelList::Iterator i = channels.begin();
-   Imf::ChannelList::Iterator e = channels.end();
+      Imf::ChannelList::Iterator i = channels.begin();
+      Imf::ChannelList::Iterator e = channels.end();
 
-   // Deal with single channels first, like Tag, Z Depth, etc.
-   for ( ; i != e; ++i )
-   {
-      std::string name( i.name() );
-      // Make names all uppercase, to avoid confusion
-      std::transform(name.begin(), name.end(), name.begin(), 
-		     (int(*)(int)) toupper);
-      if ( name == N_("R") || name == N_("G") || name == N_("B") ||
-	   name == N_("A") || name == N_("Y") || name == N_("BY") || 
-	   name == N_("RY") ||
-	   name == N_("RED") || name == N_("GREEN") || name == N_("BLUE") || 
-	   name == N_("ALPHA") ||
-	   // international versions
-	   name == _("RED") || name == _("GREEN") || name == _("BLUE") || 
-	   name == _("ALPHA")
-	   ) 
-	 continue; // these channels are handled in shader directly
-
-      // Don't count layer.channel those are handled later
-      if ( name.find( N_(".") ) != string::npos ) continue;
-
-
-      _layers.push_back( i.name() );
-      ++_num_channels;
-
-   }
-
+      // Deal with single channels first, like Tag, Z Depth, etc.
+      for ( ; i != e; ++i )
+      {
+	 std::string name( i.name() );
+	 // Make names all uppercase, to avoid confusion
+	 std::transform(name.begin(), name.end(), name.begin(), 
+			(int(*)(int)) toupper);
+	 if ( name == N_("R") || name == N_("G") || name == N_("B") ||
+	      name == N_("A") || name == N_("Y") || name == N_("BY") || 
+	      name == N_("RY") ||
+	      name == N_("RED") || name == N_("GREEN") || name == N_("BLUE") || 
+	      name == N_("ALPHA") ||
+	      // international versions
+	      name == _("RED") || name == _("GREEN") || name == _("BLUE") || 
+	      name == _("ALPHA")
+	      ) 
+	    continue; // these channels are handled in shader directly
+	 
+	 // Don't count layer.channel those are handled later
+	 if ( name.find( N_(".") ) != string::npos ) continue;
+	 
+	 
+	 _layers.push_back( i.name() );
+	 ++_num_channels;
+	 
+      }
+      
 
       // Deal with layers next like (Normals, Motion, etc)
       {
-	stringSet layerSet;
-	channels.layers( layerSet );
+	 stringSet layerSet;
+	 channels.layers( layerSet );
 
-	stringSet::const_iterator i = layerSet.begin();
-	stringSet::const_iterator e = layerSet.end();
-	for ( ; i != e; ++i )
-	  {
-	     _layers.push_back( (*i) );
+	 stringSet::const_iterator i = layerSet.begin();
+	 stringSet::const_iterator e = layerSet.end();
+	 for ( ; i != e; ++i )
+	 {
+	    _layers.push_back( (*i) );
 	    ++_num_channels;
-
+	    
 	    Imf::ChannelList::ConstIterator x;
 	    Imf::ChannelList::ConstIterator s;
 	    Imf::ChannelList::ConstIterator e;
@@ -783,55 +785,55 @@ bool exrImage::find_channels( const Imf::Header& h,
 	       const char* layerName = x.name();
 	       _layers.push_back( layerName );
 	    }
-	  }
+	 }
       }
-
-
-      const char* channelPrefix = channel();
-      if ( channelPrefix != NULL )
-	{
-	   std::string ext = channel();
-	   std::string root = "";
-	   size_t pos = ext.rfind( N_(".") );
-	   if ( pos != string::npos )
-	   {
-	      root = ext.substr( 0, pos );
-	      ext = ext.substr( pos+1, ext.size() );
-	   }
+   }
       
-	   std::transform( root.begin(), root.end(), root.begin(),
-			   (int(*)(int)) toupper);
-	   std::transform( ext.begin(), ext.end(), ext.begin(),
-			   (int(*)(int)) toupper);
-	   
-	   if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
-	   {
-	      if (root == "LEFT" ) _left_red = true;
-	      else _left_red = false;
-
-	      Imf::ChannelList::Iterator s = channels.begin();
-	      Imf::ChannelList::Iterator e = channels.end();
-	      channels_order_multi( frame, s, e, channels, h, fb );
-	   }
-	   else
-	   {
-	      Imf::ChannelList::ConstIterator s;
-	      Imf::ChannelList::ConstIterator e;
-	      channels.channelsWithPrefix( channelPrefix, s, e );
-
-	      channels_order( frame, s, e, channels, h, fb );
-	   }
-	}
+   const char* channelPrefix = channel();
+   if ( channelPrefix != NULL )
+   {
+      std::string ext = channelPrefix;
+      std::string root = "";
+      size_t pos = ext.rfind( N_(".") );
+      if ( pos != string::npos )
+      {
+	 root = ext.substr( 0, pos );
+	 ext = ext.substr( pos+1, ext.size() );
+      }
+      
+      std::transform( root.begin(), root.end(), root.begin(),
+		      (int(*)(int)) toupper);
+      std::transform( ext.begin(), ext.end(), ext.begin(),
+		      (int(*)(int)) toupper);
+      
+      if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
+      {
+	 if (root == "LEFT" ) _left_red = true;
+	 else _left_red = false;
+	 
+	 Imf::ChannelList::Iterator s = channels.begin();
+	 Imf::ChannelList::Iterator e = channels.end();
+	 channels_order_multi( frame, s, e, channels, h, fb );
+      }
       else
-	{
-
-	  Imf::ChannelList::Iterator s = channels.begin();
-	  Imf::ChannelList::Iterator e = channels.end();
-
-	  channels_order( frame, s, e, channels, h, fb );
-	}
-
-      return true;
+      {
+	 Imf::ChannelList::ConstIterator s;
+	 Imf::ChannelList::ConstIterator e;
+	 channels.channelsWithPrefix( channelPrefix, s, e );
+	 
+	 channels_order( frame, s, e, channels, h, fb );
+      }
+   }
+   else
+   {
+      
+      Imf::ChannelList::Iterator s = channels.begin();
+      Imf::ChannelList::Iterator e = channels.end();
+      
+      channels_order( frame, s, e, channels, h, fb );
+   }
+   
+   return true;
 
 }
 
@@ -842,7 +844,9 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	h.findTypedAttribute<Imf::StringAttribute> ( N_("renderingTransform") );
       if ( attr )
 	{
-	  rendering_transform( attr->value().c_str() );
+	   if ( rendering_transform() &&
+		attr->value() != rendering_transform() )
+	      rendering_transform( attr->value().c_str() );
 	}
 
       {
@@ -850,7 +854,9 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	  h.findTypedAttribute<Imf::StringAttribute>( N_("lookModTransform") );
 	if ( attr )
 	  {
-	    look_mod_transform( attr->value().c_str() );
+	     if ( look_mod_transform() &&
+		  attr->value() != look_mod_transform() )
+		look_mod_transform( attr->value().c_str() );
 	  }
       }
 
@@ -1229,14 +1235,21 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
     if (!pic) return false;
 
     CMedia::PixelType* base = new CMedia::PixelType[dw*dh];
-    
-    for ( unsigned y = 0; y < dh; ++y )
-      {
-	for ( unsigned x = 0; x < dw; ++x )
-	  {
-	    base[ x + y * dw ] = pic->pixel( x, y );
-	  }
-      }
+    if ( pic->pixel_type() == mrv::image_type::kFloat )
+    {
+       memcpy( base, pic->data().get(), 
+	       sizeof(float) * pic->channels() * dw * dh );
+    }
+    else
+    {
+       for ( unsigned y = 0; y < dh; ++y )
+       {
+	  for ( unsigned x = 0; x < dw; ++x )
+    	  {
+    	    base[ x + y * dw ] = pic->pixel( x, y );
+    	  }
+       }
+    }
 
     FrameBuffer fb; 
     fb.insert( N_("R"), Slice( Imf::FLOAT, (char*) &base->r, xs, ys ) );
@@ -1245,8 +1258,9 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
     if ( has_alpha )
       {
-	fb.insert( N_("A"), Slice( Imf::FLOAT, (char*) &base->a, xs, ys ) );
+    	fb.insert( N_("A"), Slice( Imf::FLOAT, (char*) &base->a, xs, ys ) );
       }
+
 
     try {
       OutputFile out( file, hdr );

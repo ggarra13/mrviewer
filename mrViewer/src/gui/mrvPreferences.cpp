@@ -251,7 +251,6 @@ namespace mrv {
   std::string         Preferences::CTL_float_save_transform;
   std::string         Preferences::root;
   std::string         Preferences::tempDir = "/usr/tmp/";
-  Preferences::CacheType Preferences::cache_type = kCacheAsLoaded;
 
   int   Preferences::bgcolor;
   int   Preferences::textcolor;
@@ -379,7 +378,7 @@ namespace mrv {
       colors.get("selection_color", tmp, 0x0000FF00 );
       uiPrefs->uiPrefsViewSelection->color( tmp );
 
-      colors.get("hud_color", tmp, 0x80808000 );
+      colors.get("hud_color", tmp, 0xF0F08000 );
       uiPrefs->uiPrefsViewHud->color( tmp );
     }
 
@@ -433,9 +432,6 @@ namespace mrv {
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
-    fltk::Preferences cache( base, "cache" );
-    cache.get("pixel_type", tmp, 0 );
-    uiPrefs->uiPrefsCachePixelType->value( tmp );
 
     //
     // audio
@@ -958,13 +954,6 @@ namespace mrv {
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
-
-
-    //
-    // Cache
-    //
-    fltk::Preferences cache( base, "cache" );
-    cache.set("pixel_type", uiPrefs->uiPrefsCachePixelType->value() );
 
 
     fltk::Preferences loading( base, "loading" );

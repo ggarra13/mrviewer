@@ -102,12 +102,13 @@ namespace mrv {
   GLShader* GLEngine::_YByRy  = NULL;
   GLShader* GLEngine::_YByRyA = NULL;
 
-  GLint  GLEngine::_maxTexUnits   = 1;
-  bool   GLEngine::_floatTextures = false;
-  bool   GLEngine::_halfTextures  = false;
-  bool   GLEngine::_pow2Textures  = true;
-  bool   GLEngine::_pboTextures   = false;
-  bool   GLEngine::_sdiOutput     = false;
+  GLint  GLEngine::_maxTexUnits     = 1;
+  bool   GLEngine::_floatTextures   = false;
+  bool   GLEngine::_halfTextures    = false;
+  bool   GLEngine::_pow2Textures    = true;
+  bool   GLEngine::_pboTextures     = false;
+  bool   GLEngine::_sdiOutput       = false;
+  bool   GLEngine::_fboRenderBuffer = false;
 
   GLuint GLEngine::sCharset = 0;   // display list for characters
   unsigned int GLEngine::_maxTexWidth;
@@ -482,7 +483,7 @@ void GLEngine::initialize()
   _floatTextures     = (bool) GLEW_ARB_color_buffer_float;
   _halfTextures      = (bool) GLEW_ARB_half_float_pixel;
   _pow2Textures      = !GLEW_ARB_texture_non_power_of_two;
-
+  _fboRenderBuffer   = GLEW_ARB_framebuffer_object;
 
   alloc_quads( 4 );
 
@@ -542,6 +543,101 @@ void GLEngine::color( uchar r, uchar g, uchar b, uchar a = 255 )
 void GLEngine::color( float r, float g, float b, float a = 1.0 )
 {
   glColor4f( r, g, b, a );
+}
+
+bool GLEngine::init_fbo( ImageList& images )
+{
+   if ( ! _fboRenderBuffer ) return false;
+
+   glGenTextures(1, &textureId);
+   glBindTexture(GL_TEXTURE_2D, textureId);
+   glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+   glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+
+   GLenum internalFormat = GL_RGBA32F_ARB;
+   GLenum dataFormat = GL_RGBA;
+   GLenum pixelType = GL_FLOAT;
+   unsigned w = images.back()->width();
+   unsigned h = images.back()->height();
+
+   glTexImage2D(GL_TEXTURE_2D, 
+		0, // level
+		internalFormat, // internal format
+		w, h, 
+		0, // border
+		dataFormat,  // texture data format
+		pixelType, // texture pixel type 
+		NULL);    // texture pixel data
+
+
+   glGenFramebuffers(1, &id);
+   glBindFramebuffer(GL_FRAMEBUFFER, id);
+
+   glGenRenderbuffers(1, &rid);
+   glBindRenderbuffer( GL_RENDERBUFFER, rid );
+
+
+
+   if ( w > GL_MAX_RENDERBUFFER_SIZE ) return false;
+   if ( h > GL_MAX_RENDERBUFFER_SIZE ) return false;
+
+   glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL, 
+			  w, h );
+   glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+ 
+   // attach a texture to FBO color attachement point
+   glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
+    			  GL_TEXTURE_2D, textureId, 0);
+
+   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
+			     GL_RENDERBUFFER, rid);
+
+   glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, 
+			     GL_RENDERBUFFER, rid);
+
+   GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
+   if ( status != GL_FRAMEBUFFER_COMPLETE )
+   {
+      switch( status )
+      {
+	 case GL_FRAMEBUFFER_UNSUPPORTED:
+	    LOG_ERROR( _("Unsupported internal format") );
+	    return false;
+	 case GL_FRAMEBUFFER_INCOMPLETE_ATTACHMENT:
+	    LOG_ERROR( _("Framebuffer incomplete: Attachment is NOT complete.") );
+	    return false;
+	    
+	 case GL_FRAMEBUFFER_INCOMPLETE_MISSING_ATTACHMENT:
+	    LOG_ERROR( _("Framebuffer incomplete: No image is attached to FBO.") );
+	    return false;
+	 case GL_FRAMEBUFFER_INCOMPLETE_DRAW_BUFFER:
+	    LOG_ERROR( _("Framebuffer incomplete: Draw buffer." ) );
+	    return false;
+
+	 case GL_FRAMEBUFFER_INCOMPLETE_READ_BUFFER:
+	    LOG_ERROR( _("Framebuffer incomplete: Read buffer.") );
+	    return false;
+      }
+   }
+   return true;
+}
+
+void GLEngine::end_fbo( ImageList& images )
+{
+   if ( ! _fboRenderBuffer ) return;
+   
+   glBindTexture(GL_TEXTURE_2D, textureId);
+   unsigned w = images.back()->width();
+   unsigned h = images.back()->height();
+   glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
+   glBindTexture(GL_TEXTURE_2D, 0);
+	
+   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+   glDeleteFramebuffers(1, &id);
+   glDeleteRenderbuffers(1, &rid);
+
+   
 }
 
 void GLEngine::draw_title( const float size,
@@ -942,45 +1038,6 @@ void GLEngine::draw_images( ImageList& images )
 	   }
 	   
 	   quad->bind( pic );
-	   
-	   if ( img->is_sequence() )
-	   {
-	      if ( !img->is_cache_filled( pic->frame() ) )
-	      {
-
-		 if ( Preferences::cache_type != Preferences::kCacheAsLoaded &&
-		      pic->pixel_type() != image_type::kByte )
-		 {
-		    image_type::PixelType pixel_type;
-		    switch( Preferences::cache_type )
-		    {
-		       case Preferences::kCacheHalf:
-			  pixel_type = image_type::kHalf;
-			  break;
-		       case Preferences::kCacheFloat:
-			  pixel_type = image_type::kFloat;
-			  break;
-		       case Preferences::kCache8bits:
-		       default:
-			  pixel_type = image_type::kByte;
-			  break;
-		    }
-		    
-		    image_type_ptr dst( new image_type(
-						       pic->frame(),
-						       pic->width(),
-						       pic->height(),
-						       pic->channels(),
-						       pic->format(),
-						       pixel_type
-						       ) 
-					);
-		    display( dst, pic, img );
-		    pic = dst;
-		 }
-		 img->cache( pic );
-	      }
-	   }
 	}
       
       if ( i+1 == e ) wipe_area();
@@ -994,11 +1051,8 @@ void GLEngine::draw_images( ImageList& images )
 	  if ( sub )
 	    {
 	      ++q;
-	      // if ( img->image_damage() & CMedia::kDamageSubtitle )
-	      // {
-		 quad->bind( sub );
-	      // }
 
+	      quad->bind( sub );
 	      quad->draw( texWidth, texHeight );
 	    }
 	}

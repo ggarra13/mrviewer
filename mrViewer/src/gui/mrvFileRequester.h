@@ -107,8 +107,17 @@ namespace mrv
    * @param image      image to save (directory)
    * @param startdir   start directory to save to
    */
-  void save_image_file( const CMedia* image,
+  void save_image_file( CMedia* image,
 			const char* startdir = NULL );
+  /** 
+   * Save an image under a new filename
+   * 
+   * @param image      image to save (directory)
+   * @param startdir   start directory to save to
+   */
+  void save_sequence_file( CMedia* image,
+			   const mrv::ViewerUI* uiMain,
+			   const char* startdir = NULL );
 
   /** 
    * Save a reel under a new filename

@@ -901,13 +901,16 @@ namespace mrv {
     glBegin( GL_POLYGON );
     {
       glTexCoord2f( 0.0f, _uvMax.v );
-      glVertex3f( -0.5f, -0.5f, 0.f );
+      glVertex3d( -0.5, -0.5, 0.0 );
+
       glTexCoord2f( _uvMax.u, _uvMax.v );
-      glVertex3f(  0.5f, -0.5f, 0.f );
+      glVertex3d(  0.5, -0.5, 0.0 );
+
       glTexCoord2f( _uvMax.u, 0.0f );
-      glVertex3f(  0.5f,  0.5f, 0.f );
+      glVertex3d(  0.5, 0.5, 0.0 );
+
       glTexCoord2f( 0.0f, 0.0f );
-      glVertex3f( -0.5f,  0.5f, 0.f );
+      glVertex3d( -0.5, 0.5, 0.0 );
     }
     glEnd();
 

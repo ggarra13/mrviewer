@@ -1597,6 +1597,22 @@ namespace mrv {
     mrv::save_image_file( orig->image() );  // @todo: popup gui options
   }
 
+  /** 
+   * Save current sequence being displayed,
+   * giving it a new dummy filename.
+   * 
+   */
+  void ImageBrowser::save_sequence()
+  {
+    mrv::Reel reel = current_reel();
+    if (!reel) return;
+
+    int sel = value();
+    if ( sel < 0 ) return;
+
+    mrv::media orig = reel->images[sel];
+    mrv::save_sequence_file( orig->image(), uiMain );  
+  }
 
   /** 
    * Clone current image buffer being displayed,

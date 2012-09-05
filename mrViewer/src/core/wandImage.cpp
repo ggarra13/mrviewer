@@ -16,10 +16,12 @@ using namespace std;
 #include <algorithm>
 #include <wand/MagickWand.h>
 
+#include "Sequence.h"
 #include "mrvColorProfile.h"
 #include "mrvString.h"
 #include "wandImage.h"
 #include "exrImage.h"
+#include "aviImage.h"
 #include "mrvThread.h"
 #include "mrvI8N.h"
 #include "mrvIO.h"
@@ -379,11 +381,19 @@ namespace mrv {
 
 
   
+
   bool CMedia::save( const char* file ) const
   {
      std::string tmp = file;
      std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 		     (int(*)(int)) tolower);
+
+     if ( strncmp( tmp.c_str() + tmp.size() - 4, ".avi", 4 ) == 0 ||
+	  strncmp( tmp.c_str() + tmp.size() - 4, ".mov", 4 ) == 0 ||
+	  strncmp( tmp.c_str() + tmp.size() - 4, ".mp4", 4 ) == 0 )
+      {
+	return aviImage::save( file );
+      }
 
      if ( strncmp( tmp.c_str() + tmp.size() - 4, ".exr", 4 ) == 0 )
       {
@@ -514,30 +524,6 @@ namespace mrv {
     
 
     MagickSetImageGamma( wand, gamma() );
-
-
-    // DrawingWand* draw = NewDrawingWand();
-    // DrawSetStrokeOpacity(draw, 1.0);
-
-    // PixelWand* pixelwand = NewPixelWand();
-    // PixelSetColor( pixelwand, "blue" );
-
-    //   DrawSetStrokeColor(draw, pixelwand);
-    //   DrawLine( draw, 0, 0, 400, 120 );
-
-    //   PointInfo* pnts = new PointInfo[4];
-    //   for ( int i = 0; i < 4; ++i )
-    //   {
-    // 	 pnts[i].x = 2 * i;
-    // 	 pnts[i].y = 10 * i;
-    //   }
-    //   DrawPolyline( draw, 4, pnts );
-
-    // MagickDrawImage(wand, draw);
-
-    // DestroyDrawingWand( draw );
-    // DestroyPixelWand( pixelwand );
-
 
 
     //
