@@ -630,6 +630,8 @@ namespace mrv {
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
 
+     void get_audio_frame( int16_t* samples, int& frame_size ) const;
+
     void close_audio();
 
     const char* const exif( const std::string& name ) const;

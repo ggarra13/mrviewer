@@ -47,7 +47,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "1.8.1 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "1.9.0 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -270,7 +270,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 	}
 	if(p2 && strcmp(p->name, p2->name)==0){
 	  if(p->decode) decode=1;
-	  if(p->encode) encode=1;
+	  if(p->encode2) encode=1;
 	  cap |= p->capabilities;
 	}
       }

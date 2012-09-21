@@ -16,7 +16,7 @@
 #include <fltk/file_chooser.h>
 #include <fltk/ProgressBar.h>
 #include <fltk/run.h>
-
+#include <fltk/ask.h>
 
 #include "CMedia.h"
 #include "mrvImageBrowser.h"
@@ -31,7 +31,9 @@
 #include <GL/gl.h>
 
 #include "FLU/Flu_File_Chooser.h"
+#include <boost/filesystem.hpp>
 
+namespace fs = boost::filesystem;
 
 namespace {
 
@@ -240,7 +242,7 @@ namespace mrv
     if (!image) return;
 
     const char* file = flu_save_chooser("Save Image", 
-					kSAVE_IMAGE_PATTERN.c_str(), startdir);
+					kIMAGE_PATTERN.c_str(), startdir);
     if ( !file ) return;
 
     image->save( file );
@@ -252,24 +254,29 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
     if (!img) return;
 
     const char* file = flu_save_chooser("Save Sequence", 
-					kSAVE_IMAGE_PATTERN.c_str(), startdir);
+					kIMAGE_PATTERN.c_str(), startdir);
     if ( !file ) return;
 
     
-     std::string root, fileseq = file;
-     bool ok = mrv::fileroot( root, fileseq );
-     if ( !ok ) return;
-
-     std::string tmp = root;
+     std::string tmp = file;
      std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 		     (int(*)(int)) tolower);
+     std::string ext = tmp.c_str() + tmp.size() - 4;
 
-     if ( strncmp( tmp.c_str() + tmp.size() - 4, ".avi", 4 ) == 0 ||
-	  strncmp( tmp.c_str() + tmp.size() - 4, ".mov", 4 ) == 0 )
+     bool movie = false;
+     if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" )
       {
-	 aviImage::save( file );
-	 return;
+	 movie = true;
       }
+
+     std::string root, fileseq = file;
+     bool ok = mrv::fileroot( root, fileseq );
+     if ( !ok && !movie ) return;
+
+     if ( movie )
+     {
+	root = root.substr( 0, root.size() - 4 );
+     }
 
      fltk::ProgressBar* progress = NULL;
      fltk::Window* main = (fltk::Window*)uiMain->uiMain;
@@ -288,6 +295,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	      first, last );
      progress->label( title );
      progress->showtext(true);
+     w->set_modal();
      w->end();
      w->show();
 
@@ -299,7 +307,13 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
      const char* fileroot = root.c_str();
 
-     for ( ; frame <= last; ++frame )
+     mrv::media old;
+     bool open_movie = false;
+     int movie_count = 1;
+
+     bool edl = uiMain->uiTimeline->edl();
+
+     for ( ; frame <= last+5; ++frame )
      {
 	int step = 1;
 	
@@ -308,11 +322,59 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	if (!fg) break;
 
 	CMedia* img = fg->image();
+
+	if ( old != fg )
+	{
+	   old = fg;
+	   if ( open_movie )
+	   {
+	      aviImage::close_movie();
+	      open_movie = false;
+	   }
+	   if ( movie )
+	   {
+	      char buf[256];
+	      if ( edl )
+	      {
+		 sprintf( buf, "%s%d%s", root.c_str(), movie_count,
+			  ext.c_str() );
+	      }
+	      else
+	      {
+		 sprintf( buf, "%s%s", root.c_str(), ext.c_str() );
+	      }
+
+	      if ( fs::exists( buf ) )
+	      {
+		 int ok = fltk::ask( "Do you want to replace '%s'",
+				     buf );
+		 if (!ok) 
+		 {
+		    break;
+		 }
+	      }
+
+	      if ( aviImage::open_movie( buf, img ) )
+	      {
+		 open_movie = true;
+		 ++movie_count;
+	      }
+	   }
+	}
+
 	
 	{
-	   char buf[1024];
-	   sprintf( buf, fileroot, frame );
-	   img->save( buf );
+	   
+	   if (movie)
+	   {
+	      aviImage::save_movie_frame( img );
+	   }
+	   else 
+	   {
+	      char buf[1024];
+	      sprintf( buf, fileroot, frame );
+	      img->save( buf );
+	   }
 	}
 	
 	progress->step(1);
@@ -321,6 +383,12 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	if ( !w->visible() ) {
 	   break;
 	}
+     }
+
+     if ( open_movie )
+     {
+	aviImage::close_movie();
+	open_movie = false;
      }
 
     if ( w )

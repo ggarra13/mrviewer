@@ -81,7 +81,10 @@ namespace mrv {
       return _video_info.size(); 
     }
 
-       static bool save( const char* filename );
+       static bool open_movie( const char* filename, const CMedia* img );
+       static bool save_movie_frame( const CMedia* img );
+       static bool close_movie();
+
        bool save_frame( const mrv::image_type_ptr pic );
 
     virtual void sequence( const char* fileroot, 
@@ -191,6 +194,7 @@ namespace mrv {
 					 const AVPacket& pkt
 					 );
     virtual bool    find_subtitle( const boost::int64_t frame );
+
 
   protected:
 

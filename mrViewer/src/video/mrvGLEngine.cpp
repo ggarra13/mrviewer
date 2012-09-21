@@ -728,14 +728,14 @@ void GLEngine::draw_cursor( const double x, const double y )
 		_view->offset_y() * zoomY + sh, 0);
    glTranslated(tw * zoomX, th * zoomY, 0);
    
-   glScaled(zoomX, zoomY * pr, 1.0f);
+   glScaled(zoomX, zoomY * pr, 1.0);
 
    glColor4f( 1, 0, 0, 1 );
 
-   glPointSize( _view->main()->uiPaint->uiPenSize->value() );
+   glPointSize( float(_view->main()->uiPaint->uiPenSize->value()) );
 
    glBegin( GL_POINTS );
-   glVertex2f( x, y );
+   glVertex2d( x, y );
    glEnd();
 }
 
@@ -759,12 +759,12 @@ void GLEngine::draw_mask( const float pct )
   
   glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
-  glTranslatef( _view->offset_x(), _view->offset_y(), 0.0f );
+  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
   if ( _view->main()->uiPixelRatio->value() )
-    glScalef( float(dw), dh / _view->pixel_ratio(), 1.0f );
+    glScaled( double(dw), dh / _view->pixel_ratio(), 1.0 );
   else
-    glScalef( float(dw), float(dh), 1.0f );
+    glScaled( double(dw), double(dh), 1.0f );
 
   double aspect = (double) texWidth / (double) texHeight;   // 1.3
   double target_aspect = 1.0 / pct;

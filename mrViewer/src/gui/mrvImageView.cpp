@@ -254,6 +254,10 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::CMedia* img = fg->image();
   if ( !img ) return;
 
+
+  unsigned vw = view->w();
+  unsigned vh = view->h();
+
   unsigned w = img->width();
   unsigned h = img->height();
 
@@ -268,7 +272,16 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
   float* data = new float[ 4 * w * h ];
 
   glPixelStorei( GL_PACK_ALIGNMENT, 1 );
-  glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
+
+  double x = (vw-w)/2;
+  if ( vw < w ) x = 0;  
+
+  double y = (vh-h)/2;
+  if ( vh < h ) y = 0;
+
+  view->fit_image();
+
+  glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
 
   // Flip image vertically
   for ( int x = 0; x < w; ++x )
@@ -556,8 +569,11 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
+  int stereo = fltk::STEREO;
+  if ( !can_do( fltk::STEREO ) ) stereo = 0;
+
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
-	fltk::STENCIL_BUFFER );
+	fltk::STENCIL_BUFFER | stereo );
 }
 
 
@@ -949,6 +965,15 @@ void ImageView::undo_draw()
    redraw();
 }
 
+void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
+			   double x, double y, const char* text )
+{
+   _engine->color( (uchar)0, (uchar)0, (uchar)0 );
+   _engine->draw_text( x+1, y-1, text ); // draw shadow
+   _engine->color( r, g, b );
+   _engine->draw_text( x, y, text );  // draw text
+}
+
 /** 
  * Main fltk drawing routine
  * 
@@ -1036,8 +1061,7 @@ void ImageView::draw()
       dx = int( (double) w() / (double) 2 - strlen(label)*3 );
       dy = 24;
 
-      _engine->color( r, g, b );
-      _engine->draw_text( dx, dy, label );
+      draw_text( r, g, b, dx, dy, label );
     }
 
   if ( _selection.w() > 0 || _selection.h() > 0 )
@@ -1165,7 +1189,7 @@ void ImageView::draw()
 
   if ( !hud.str().empty() )
     {
-      _engine->draw_text( 5, y, hud.str().c_str() );
+       draw_text( r, g, b, 5, y, hud.str().c_str() );
       y -= yi; hud.str("");
     }
 
@@ -1175,7 +1199,7 @@ void ImageView::draw()
   if ( _hud & kHudResolution )
     {
       sprintf( buf, "%d x %d", img->width(), img->height() );
-      _engine->draw_text( 5, y, buf );
+       draw_text( r, g, b, 5, y, buf );
       y -= yi;
     }
 
@@ -1251,7 +1275,7 @@ void ImageView::draw()
 
   if ( !hud.str().empty() )
     {
-      _engine->draw_text( 5, y, hud.str().c_str() );
+       draw_text( r, g, b, 5, y, hud.str().c_str() );
       y -= yi;
     }
 
@@ -1262,7 +1286,7 @@ void ImageView::draw()
       for ( ; i != e; ++i )
 	{
 	  std::string text = i->first + ": " + i->second;
-	  _engine->draw_text( 5, y, text.c_str() );
+	  draw_text( r, g, b, 5, y, text.c_str() );
 	  y -= yi;
 	}
     }
