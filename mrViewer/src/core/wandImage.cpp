@@ -388,13 +388,6 @@ namespace mrv {
      std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 		     (int(*)(int)) tolower);
 
-     if ( strncmp( tmp.c_str() + tmp.size() - 4, ".avi", 4 ) == 0 ||
-	  strncmp( tmp.c_str() + tmp.size() - 4, ".mov", 4 ) == 0 ||
-	  strncmp( tmp.c_str() + tmp.size() - 4, ".mp4", 4 ) == 0 )
-      {
-	return aviImage::save( file );
-      }
-
      if ( strncmp( tmp.c_str() + tmp.size() - 4, ".exr", 4 ) == 0 )
       {
 	return exrImage::save( file, this );

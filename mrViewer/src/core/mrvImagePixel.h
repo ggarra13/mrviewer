@@ -33,6 +33,8 @@ namespace mrv {
 
 #ifdef MR_SSE
 
+    ImagePixel( const ImagePixel& b ) : _L( b._L ) {}
+
     ImagePixel( const F32vec4& b ) : _L( b ) {}
 
     ImagePixel& operator=( const F32vec4& b ) {

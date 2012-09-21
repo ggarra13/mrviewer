@@ -41,6 +41,7 @@ ELSE( CG_LIBRARY_DIR )
   SET( SEARCH_DIRS 
     ${CG_ROOT}/lib${CMAKE_BUILD_ARCH}
     ${CG_ROOT}/lib
+    /usr/lib/x86_64-linux-gnu
     ${CMAKE_SYSTEM_LIBRARY_PATH} )
 ENDIF( CG_LIBRARY_DIR )
 

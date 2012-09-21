@@ -358,6 +358,10 @@ namespace mrv {
     int  keyDown(unsigned int);
     int  keyUp(unsigned int);
 
+       void draw_text( unsigned char r, unsigned char g, unsigned char b,
+		       double x, double y, const char* text );
+		       
+
     /// Create thumbnails for images
     void thumbnails();
 
