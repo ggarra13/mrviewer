@@ -273,8 +273,13 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
      bool ok = mrv::fileroot( root, fileseq );
      if ( !ok && !movie ) return;
 
+     mrv::Timeline* timeline = uiMain->uiTimeline;
+     int64_t first = timeline->minimum();
+     int64_t last  = timeline->maximum();
+
      if ( movie )
      {
+	last += 5;
 	root = root.substr( 0, root.size() - 4 );
      }
 
@@ -284,9 +289,6 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 					 main->w(), 80 );
      w->child_of(main);
      w->begin();
-     mrv::Timeline* timeline = uiMain->uiTimeline;
-     int64_t first = timeline->minimum();
-     int64_t last  = timeline->maximum();
      progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
      progress->range( 0, last - first + 1 );
      progress->align( fltk::ALIGN_TOP );
@@ -313,7 +315,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
      bool edl = uiMain->uiTimeline->edl();
 
-     for ( ; frame <= last+5; ++frame )
+     for ( ; frame <= last; ++frame )
      {
 	int step = 1;
 	
