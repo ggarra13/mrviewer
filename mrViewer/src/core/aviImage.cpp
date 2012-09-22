@@ -2883,8 +2883,7 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 
     AVCodecContext* c = st->codec;
     c->codec_id = codec_id;
-    c->codec_type = AVMEDIA_TYPE_AUDIO;
-    c->strict_std_compliance= FF_COMPLIANCE_EXPERIMENTAL;
+    // c->strict_std_compliance= FF_COMPLIANCE_EXPERIMENTAL;
 
     /* put sample parameters */
     c->sample_fmt = AV_SAMPLE_FMT_S16;
@@ -2917,6 +2916,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     /* increment frequency by 110 Hz per second */
     tincr2 = 2 * M_PI * 110.0 / c->sample_rate / c->sample_rate;
 
+    if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
+        audio_input_frame_size = 10000;
+    else
+        audio_input_frame_size = c->frame_size;
+    samples = (int16_t*) av_malloc(audio_input_frame_size *
+                        av_get_bytes_per_sample(c->sample_fmt) *
+                        c->channels);
     return true;
 }
 
@@ -2933,31 +2939,28 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
     if ( i == end ) return;
 
     audio_type_ptr result = *i;
-    samples = (int16_t*) result->data();
+
+    memcpy( samples, result->data(), result->size()/2 );
+
+    // samples = (int16_t*) result->data();
     frame_size = (int) result->size();
 }
 
 
-static void get_audio_frame(int16_t *samples, enum AVSampleFormat sample_fmt,
-			    int frame_size, int nb_channels)
-{
-    int j, i, v;
-    int16_t *q;
+// static void get_audio_frame(int16_t *samples, int frame_size, int nb_channels)
+// {
+//     int j, i, v;
+//     int16_t *q;
 
-    if (!samples)
-       samples = (int16_t*) av_malloc(frame_size *
-				      av_get_bytes_per_sample(sample_fmt) *
-				      nb_channels);
-
-    q = samples;
-    for (j = 0; j < frame_size; j++) {
-        v = (int)(sin(t) * 10000);
-        for (i = 0; i < nb_channels; i++)
-            *q++ = v;
-        t     += tincr;
-        tincr += tincr2;
-    }
-}
+//     q = samples;
+//     for (j = 0; j < frame_size; j++) {
+//         v = (int)(sin(t) * 10000);
+//         for (i = 0; i < nb_channels; i++)
+//             *q++ = v;
+//         t     += tincr;
+//         tincr += tincr2;
+//     }
+// }
 
 static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 			      const CMedia* img)
@@ -2971,22 +2974,23 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    pkt.size = 0;
    pkt.data = NULL;
 
-   get_audio_frame(samples, c->sample_fmt, c->frame_size, c->channels);
-   frame->nb_samples = c->frame_size;
-
-   int ok = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
+   img->get_audio_frame(samples, audio_input_frame_size);
+   frame->nb_samples = ( audio_input_frame_size / c->channels /
+    			 av_get_bytes_per_sample(c->sample_fmt) );
+   c->frame_size = frame->nb_samples;
+   int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
 				     (uint8_t *)samples,
-				     c->frame_size *
+				     frame->nb_samples *
 				     av_get_bytes_per_sample(c->sample_fmt) *
 				     c->channels, 1);
-   if (!ok)
+   if (err)
    {
       LOG_ERROR( _("Could not fill audio frame") );
       return;
    }
 
-   ok = avcodec_encode_audio2(c, &pkt, frame, &got_packet);
-   if (!ok || !got_packet )
+   err = avcodec_encode_audio2(c, &pkt, frame, &got_packet);
+   if (err || !got_packet )
    {
       LOG_ERROR( _("Could not encode audio frame") );
       return;

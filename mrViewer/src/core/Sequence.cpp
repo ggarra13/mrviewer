@@ -225,21 +225,35 @@ namespace mrv
 
     std::string croot;
     std::string cext;
+    std::string cframe;
     frameStart = mrv::kMaxFrame;
-
+    int pad = 1;
 
     fs::directory_iterator e; // default constructor yields path end
     for ( fs::directory_iterator i( dir ); i != e; ++i )
       {
 	if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
 
-	split_sequence( croot, frame, cext, (*i).leaf() );
+	split_sequence( croot, cframe, cext, (*i).leaf() );
 	if ( cext != ext || croot != root ) continue;  // not this sequence
 
-	boost::int64_t f = atoi( frame.c_str() );
+	if ( cframe[0] == '0' ) pad = cframe.size();
+
+
+	boost::int64_t f = atoi( cframe.c_str() );
 	if ( f < frameStart ) frameStart = f;
 	if ( f > frameEnd )   frameEnd   = f;
       }
+
+
+    sprintf( buf, "%%0%d" PRId64, pad );
+    split_sequence( root, frame, ext, fileroot );
+
+    fileroot = root;
+    fileroot += buf;
+    fileroot += ext;
+
+
     return true;
   }
 
@@ -351,10 +365,14 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
 
     char full[1024];
     if ( pad == 0 )
+    {
       sprintf( full, "%s%%" PRId64 "%s", root.c_str(), ext.c_str() );
+    }
     else
+    {
       sprintf( full, "%s%%0%d" PRId64 "%s", root.c_str(), pad, ext.c_str() );
-  
+    }
+
     fileroot = full;
     return true;
   }
