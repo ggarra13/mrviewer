@@ -279,7 +279,6 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
      if ( movie )
      {
-	last += 5;
 	root = root.substr( 0, root.size() - 4 );
      }
 
@@ -293,7 +292,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
      progress->range( 0, last - first + 1 );
      progress->align( fltk::ALIGN_TOP );
      char title[1024];
-     sprintf( title, "Saving Sequence %" PRId64 " - %" PRId64,
+     sprintf( title, "Saving Sequence(s) %" PRId64 " - %" PRId64,
 	      first, last );
      progress->label( title );
      progress->showtext(true);

@@ -1994,10 +1994,14 @@ namespace mrv {
        {
     	  file = root;
     	  for ( int i = 0; i < frame.size(); ++i )
+	  {
     	     if ( frame[i] == '0' ) file += '@';
+	     else break;
+	  }
     	  file += '@';
     	  file += ext;
        }
+
        *i = file;
     }
 
