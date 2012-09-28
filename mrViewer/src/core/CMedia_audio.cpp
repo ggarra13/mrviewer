@@ -804,6 +804,7 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
                 out += plane_size;
             }
         }
+
         *frame_size_ptr = data_size;
     } else {
         *frame_size_ptr = 0;
@@ -1278,7 +1279,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
   if ( ! _audio_engine ) return false;
   
-
 
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
