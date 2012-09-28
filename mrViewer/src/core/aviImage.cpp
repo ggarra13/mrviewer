@@ -2742,22 +2742,6 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
        return false;
     }
 
-    // if ( frame_count >= img->last_frame() - img->first_frame() + 1 )
-    // {
-    //    for (got_pic = 1; got_pic; ++frame_count) {
-	  
-    // 	  ret = avcodec_encode_video2(c, &pkt, NULL, &got_pic);
-    // 	  if (ret < 0) {
-    // 	     LOG_ERROR( "error encoding video frame");
-    // 	     break;
-    // 	  }
-
-    // 	  if (got_pic) {
-    // 	     av_free_packet(&pkt);
-    // 	  }
-    //    }
-    // }
-
     frame_count++;
     return true;
 }
@@ -2766,7 +2750,8 @@ static AVStream *add_video_stream(AVFormatContext *oc,
 				  enum CodecID codec_id,
 				  const CMedia* img )
 {
-    /* find the video encoder */
+    /* find the video encoder */  
+   codec_id = AV_CODEC_ID_MSMPEG4V3;
     *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
        LOG_ERROR( _( "Video codec not found") );
@@ -2799,8 +2784,8 @@ static AVStream *add_video_stream(AVFormatContext *oc,
        of which frame timestamps are represented. for fixed-fps content,
        timebase should be 1/framerate and timestamp increments should be
        identically 1. */
-    c->time_base.den = img->fps();
-    c->time_base.num = 1;
+    c->time_base.den = 1000 * img->fps();
+    c->time_base.num = 1000;
     c->ticks_per_frame = 2;
     c->gop_size = 2; /* emit one intra frame every twelve frames at most */
     c->pix_fmt = STREAM_PIX_FMT;
@@ -2809,6 +2794,12 @@ static AVStream *add_video_stream(AVFormatContext *oc,
     if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
         /* just for testing, we also add B frames */
         c->max_b_frames = 2;
+    }
+    if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
+        /* Needed to avoid using macroblocks in which some coeffs overflow.
+         * This does not happen with normal video, it just happens here as
+         * the motion of the chroma plane does not match the luma plane. */
+        c->mb_decision = 2;
     }
     // c->b_quant_factor = 1;
     // c->b_quant_offset = 0.0f;
@@ -2856,13 +2847,52 @@ static int audio_input_frame_size = 0;
 
 AVCodec* audio_cdc, *video_codec;
 
+
+
+/* check that a given sample format is supported by the encoder */
+static int check_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
+{
+    const enum AVSampleFormat *p = codec->sample_fmts;
+
+    while (*p != AV_SAMPLE_FMT_NONE) {
+        if (*p == sample_fmt)
+            return 1;
+        p++;
+    }
+    return 0;
+}
+
+/* select layout with the highest channel count */
+static int select_channel_layout(AVCodec *codec)
+{
+    const uint64_t *p;
+    uint64_t best_ch_layout = 0;
+    int best_nb_channells   = 0;
+
+    if (!codec->channel_layouts)
+        return AV_CH_LAYOUT_STEREO;
+
+    p = codec->channel_layouts;
+    while (*p) {
+        int nb_channels = av_get_channel_layout_nb_channels(*p);
+
+        if (nb_channels > best_nb_channells) {
+            best_ch_layout    = *p;
+            best_nb_channells = nb_channels;
+        }
+        p++;
+    }
+    return best_ch_layout;
+}
+
+
 /*
  * add an audio output stream
  */
 static AVStream *add_audio_stream(AVFormatContext* oc,
 				  AVCodec** codec,
 				  enum CodecID codec_id,
-				  int frequency)
+				  const CMedia* img )
 {
     /* find the audio encoder */
    codec_id = AV_CODEC_ID_MP2;
@@ -2887,8 +2917,15 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 
     /* put sample parameters */
     c->sample_fmt = AV_SAMPLE_FMT_S16;
+    if (!check_sample_fmt(*codec, c->sample_fmt)) {
+       LOG_ERROR( _("Encoder does not support ") <<
+		 av_get_sample_fmt_name(c->sample_fmt));
+       return NULL;
+    }
+
     c->bit_rate = 64000;
-    c->sample_rate = frequency;
+    c->sample_rate = img->audio_frequency();
+    c->channel_layout = select_channel_layout(*codec);
     c->channels = 2;
 
     // some formats want stream headers to be separate
@@ -2910,19 +2947,21 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        return false;
     }
     
-    /* init signal generator */
-    t     = 0;
-    tincr = 2 * M_PI * 110.0 / c->sample_rate;
-    /* increment frequency by 110 Hz per second */
-    tincr2 = 2 * M_PI * 110.0 / c->sample_rate / c->sample_rate;
 
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
+    {
         audio_input_frame_size = 10000;
+    }
     else
+    {
         audio_input_frame_size = c->frame_size;
-    samples = (int16_t*) av_malloc(audio_input_frame_size *
-                        av_get_bytes_per_sample(c->sample_fmt) *
-                        c->channels);
+    }
+
+    samples = (int16_t*) av_malloc( audio_input_frame_size * c->channels *
+				    av_get_bytes_per_sample(c->sample_fmt)
+				    * 2
+				    );
+
     return true;
 }
 
@@ -2940,33 +2979,21 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
 
     audio_type_ptr result = *i;
 
-    memcpy( samples, result->data(), result->size()/2 );
+    frame_size = result->size();
+
+    memcpy( samples, result->data(), frame_size );
 
     // samples = (int16_t*) result->data();
-    frame_size = (int) result->size();
+    // frame_size = (int) result->size();
 }
 
 
-// static void get_audio_frame(int16_t *samples, int frame_size, int nb_channels)
-// {
-//     int j, i, v;
-//     int16_t *q;
-
-//     q = samples;
-//     for (j = 0; j < frame_size; j++) {
-//         v = (int)(sin(t) * 10000);
-//         for (i = 0; i < nb_channels; i++)
-//             *q++ = v;
-//         t     += tincr;
-//         tincr += tincr2;
-//     }
-// }
 
 static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 			      const CMedia* img)
 {
    AVPacket pkt = {0};
-   AVFrame *frame = avcodec_alloc_frame();
+   AVFrame* frame = avcodec_alloc_frame();
    int got_packet;
    
    AVCodecContext* c = st->codec;
@@ -2974,15 +3001,22 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    pkt.size = 0;
    pkt.data = NULL;
 
-   img->get_audio_frame(samples, audio_input_frame_size);
-   frame->nb_samples = ( audio_input_frame_size / c->channels /
-    			 av_get_bytes_per_sample(c->sample_fmt) );
-   c->frame_size = frame->nb_samples;
+
+   img->get_audio_frame(samples, c->frame_size);
+
+   c->frame_size /= c->channels;
+   c->frame_size /= av_get_bytes_per_sample(c->sample_fmt);
+
+   frame->nb_samples     = c->frame_size;
+   frame->format         = c->sample_fmt;
+   frame->channel_layout = c->channel_layout;
+
    int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
-				     (uint8_t *)samples,
-				     frame->nb_samples *
-				     av_get_bytes_per_sample(c->sample_fmt) *
-				     c->channels, 1);
+				      (uint8_t *)samples,
+				      frame->nb_samples *
+				      av_get_bytes_per_sample(c->sample_fmt) *
+				      c->channels,
+				      1);
    if (err)
    {
       LOG_ERROR( _("Could not fill audio frame") );
@@ -2997,11 +3031,23 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    }
 
     pkt.stream_index = st->index;
+    if (got_packet) {
+       if (pkt.pts != AV_NOPTS_VALUE)
+	  pkt.pts = av_rescale_q(pkt.pts, c->time_base, st->time_base);
+       if (pkt.dts != AV_NOPTS_VALUE)
+	  pkt.dts = av_rescale_q(pkt.dts, c->time_base, st->time_base);
+       if (pkt.duration > 0)
+	  pkt.duration = av_rescale_q(pkt.duration, c->time_base, 
+				      st->time_base);
+    }
 
     /* write the compressed frame in the media file */
     if (av_interleaved_write_frame(oc, &pkt) != 0) {
        LOG_ERROR( _("Error while writing audio frame") );
     }
+
+    av_free( frame );
+
 }
 
 static void close_audio_static(AVFormatContext *oc, AVStream *st)
@@ -3042,7 +3088,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
     
       if (img->has_audio() && fmt->audio_codec != CODEC_ID_NONE) {
 	 audio_st = add_audio_stream(oc, &audio_cdc, fmt->audio_codec,
-				     img->audio_frequency());
+				     img );
       }
       
 
@@ -3097,11 +3143,23 @@ bool aviImage::save_movie_frame( const CMedia* img )
 
    /* write interleaved audio and video frames */
    if (!video_st || (video_st && audio_st && audio_pts < video_pts)) {
-      write_audio_frame(oc, audio_st, img);
+      while ( audio_pts < video_pts )
+      {
+
+	 write_audio_frame(oc, audio_st, img);
+
+	 audio_pts = ((double)audio_st->pts.val * audio_st->time_base.num / 
+		      audio_st->time_base.den);
+      }
+
+      if ( video_st ) 
+	 write_video_frame(oc, video_st, img);
    } else {
       write_video_frame(oc, video_st, img);
-      picture->pts++;
    }
+   
+   picture->pts += 1;
+
 
    return true;
 }

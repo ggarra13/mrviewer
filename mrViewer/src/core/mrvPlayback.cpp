@@ -162,7 +162,7 @@ namespace mrv {
 
 	  if ( loop == ImageView::kLooping )
 	  {
-	     frame = first + 1;
+	     frame = first;
 	     status = kEndLoop;
 	  }
 	  else if ( loop == ImageView::kPingPong )
@@ -220,7 +220,7 @@ namespace mrv {
 
 	  if ( loop == ImageView::kLooping )
 	    {
-	       frame = last - 1;
+	       frame = last;
 	      status = kEndLoop;
 	    }
 	  else if ( loop == ImageView::kPingPong )
@@ -706,7 +706,7 @@ namespace mrv {
 
 #ifdef DEBUG_THREADS
     cerr << "EXIT DECODE THREAD " << img->name() << " " << data << " frame " 
-	 << frame << "  dts: " << img->dts() << endl;
+	 << img->frame() << "  dts: " << img->dts() << endl;
 #endif
 
   }
