@@ -29,17 +29,21 @@ using namespace std;
 
 
 extern "C" {
+#include "libavutil/audioconvert.h"
+#include "libavutil/mathematics.h"
 #include "libavutil/pixdesc.h"
+
 }
 
 #include "aviImage.h"
 #include "mrvImageView.h"
 #include "mrvPlayback.h"
-#include "gui/mrvIO.h"          // @todo: change to some static variable
+#include "gui/mrvIO.h"
 #include "mrvFrameFunctors.h"
 #include "mrvThread.h"
 #include "mrvCPU.h"
 #include "mrvColorSpaces.h"
+
 
 
 namespace 
@@ -2619,6 +2623,7 @@ static bool open_video(AVFormatContext *oc, AVStream *st,
         video_outbuf      = (uint8_t*)av_malloc(video_outbuf_size);
     }
 
+    
     /* Allocate the encoded raw picture. */
     picture = alloc_picture(c->pix_fmt, img->width(), img->height());
     if (!picture) {
@@ -2750,10 +2755,13 @@ static AVStream *add_video_stream(AVFormatContext *oc,
 				  enum CodecID codec_id,
 				  const CMedia* img )
 {
-    /* find the video encoder */  
+
+   if ( img->width() == 0 ) return NULL;
+
+   /* find the video encoder */  
    codec_id = AV_CODEC_ID_MSMPEG4V3;
-    *codec = avcodec_find_encoder(codec_id);
-    if (!(*codec)) {
+   *codec = avcodec_find_encoder(codec_id);
+   if (!(*codec)) {
        LOG_ERROR( _( "Video codec not found") );
        return NULL;
     }
@@ -2825,6 +2833,10 @@ static AVStream *add_video_stream(AVFormatContext *oc,
     // c->intra_dc_precision = 1;
     // c->keyint_min = 4;
 
+    int qscale = 1;
+    c->flags |= CODEC_FLAG_QSCALE;
+    c->global_quality = FF_QP2LAMBDA * qscale;
+
     // some formats want stream headers to be separate
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= CODEC_FLAG_GLOBAL_HEADER;
@@ -2895,7 +2907,7 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 				  const CMedia* img )
 {
     /* find the audio encoder */
-   codec_id = AV_CODEC_ID_MP2;
+   codec_id = AV_CODEC_ID_PCM_S16LE;
    *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
        LOG_ERROR( _("Audio codec not found") );
@@ -2941,13 +2953,12 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 {
     AVCodecContext* c = st->codec;
 
-    /* open it */
+   /* open it */
     if (avcodec_open2(c, codec, NULL) < 0) {
        LOG_ERROR( _("Could not open audio codec" ) );
        return false;
     }
     
-
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
         audio_input_frame_size = 10000;
@@ -2975,7 +2986,10 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
     audio_cache_t::const_iterator i = std::lower_bound( begin, end, 
 							_frame,
 							LessThanFunctor() );
-    if ( i == end ) return;
+    if ( i == end ) {
+       frame_size = 0;
+       return;
+    }
 
     audio_type_ptr result = *i;
 
@@ -2994,6 +3008,7 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 {
    AVPacket pkt = {0};
    AVFrame* frame = avcodec_alloc_frame();
+   avcodec_get_frame_defaults(frame);
    int got_packet;
    
    AVCodecContext* c = st->codec;
@@ -3002,29 +3017,37 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    pkt.data = NULL;
 
 
-   img->get_audio_frame(samples, c->frame_size);
+   int size = 0;
 
-   c->frame_size /= c->channels;
-   c->frame_size /= av_get_bytes_per_sample(c->sample_fmt);
+   img->get_audio_frame(samples, size);
+
+   if ( size != 0 )
+   {
+      c->frame_size = size;
+      c->frame_size /= c->channels;
+      c->frame_size /= av_get_bytes_per_sample(c->sample_fmt);
+   }
 
    frame->nb_samples     = c->frame_size;
    frame->format         = c->sample_fmt;
    frame->channel_layout = c->channel_layout;
 
+
    int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
 				      (uint8_t *)samples,
 				      frame->nb_samples *
-				      av_get_bytes_per_sample(c->sample_fmt) *
-				      c->channels,
+				      c->channels *
+				      av_get_bytes_per_sample( c->sample_fmt ),
 				      1);
-   if (err)
+   if (err < 0)
    {
-      LOG_ERROR( _("Could not fill audio frame") );
+      LOG_ERROR( _("Could not fill audio frame. Error: ") << err );
       return;
    }
 
+
    err = avcodec_encode_audio2(c, &pkt, frame, &got_packet);
-   if (err || !got_packet )
+   if (err < 0 || !got_packet )
    {
       LOG_ERROR( _("Could not encode audio frame") );
       return;
@@ -3060,65 +3083,66 @@ static void close_audio_static(AVFormatContext *oc, AVStream *st)
 
 bool aviImage::open_movie( const char* filename, const CMedia* img )
 {
-   int ret = 0;
 
    int i;
    frame_count = 0;
 
    av_register_all();
 
-   if ( oc == NULL )
-   {
-      avformat_alloc_output_context2(&oc, NULL, NULL, filename);
-      if (!oc) {
-	 LOG_INFO( _("Could not deduce output format from file extension: using MPEG.") );
-	 avformat_alloc_output_context2(&oc, NULL, "mpeg", filename);
-      }
+   if ( oc != NULL ) return false;
 
-   
-      fmt = oc->oformat;
-
-
-      video_st = NULL;
-      audio_st = NULL;
-      if (fmt->video_codec != CODEC_ID_NONE) {
-	 video_st = add_video_stream(oc, &video_codec, fmt->video_codec, img);
-      }
-   
-    
-      if (img->has_audio() && fmt->audio_codec != CODEC_ID_NONE) {
-	 audio_st = add_audio_stream(oc, &audio_cdc, fmt->audio_codec,
-				     img );
-      }
+   int err = avformat_alloc_output_context2(&oc, NULL, NULL,
+					    filename);
+   if (!oc || err < 0) {
+      LOG_INFO( _("Could not deduce output format from file extension: using MPEG.") );
       
-
-    /* Now that all the parameters are set, we can open the audio and
-     * video codecs and allocate the necessary encode buffers. */
-    if (video_st)
-       if ( ! open_video(oc, video_st, img) )
-	  return false;
-
-    if (audio_st)
-       if ( ! open_audio_static(oc, audio_cdc, audio_st) )
-       {
-	  audio_st = NULL;
-	  if ( !video_st ) return false;
-       }
-
-    if (!(fmt->flags & AVFMT_NOFILE)) {
-        if (avio_open(&oc->pb, filename, AVIO_FLAG_WRITE) < 0) {
-	   LOG_ERROR( _("Could not open '") << filename << "'" );
-	   return false;
-        }
-    }
-
-    picture->pts = 0;
-
-    /* Write the stream header, if any. */
-    avformat_write_header(oc, NULL);
-
-
+      err = avformat_alloc_output_context2(&oc, NULL, "mpeg", filename);
+      if ( err < 0 )
+      {
+	 LOG_ERROR( _("Could not open mpeg movie") );
+	 return false;
+      }
    }
+
+   fmt = oc->oformat;
+
+   video_st = NULL;
+   audio_st = NULL;
+   if (fmt->video_codec != CODEC_ID_NONE) {
+      video_st = add_video_stream(oc, &video_codec, fmt->video_codec, img);
+   }
+       
+   if (img->has_audio() && fmt->audio_codec != CODEC_ID_NONE) {
+      audio_st = add_audio_stream(oc, &audio_cdc, fmt->audio_codec,
+				  img );
+   }
+   
+   
+   /* Now that all the parameters are set, we can open the audio and
+    * video codecs and allocate the necessary encode buffers. */
+   if (video_st)
+      if ( ! open_video(oc, video_st, img) )
+	 return false;
+   
+   if (audio_st)
+      if ( ! open_audio_static(oc, audio_cdc, audio_st) )
+      {
+	 audio_st = NULL;
+	 if ( !video_st ) return false;
+      }
+   
+   if (!(fmt->flags & AVFMT_NOFILE)) {
+      if (avio_open(&oc->pb, filename, AVIO_FLAG_WRITE) < 0) {
+	 LOG_ERROR( _("Could not open '") << filename << "'" );
+	 return false;
+      }
+   }
+   
+   picture->pts = 0;
+   
+   /* Write the stream header, if any. */
+   avformat_write_header(oc, NULL);
+
 
    return true;
 

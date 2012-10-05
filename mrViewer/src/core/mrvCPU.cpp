@@ -12,8 +12,9 @@
 #include "mrvOS.h"
 #include "mrvCPU.h"
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(WIN32) || defined(_WIN64)
 #  include <windows.h>
+#  include <intrin.h>
 #else
 #  include <unistd.h>
 #endif
@@ -224,6 +225,7 @@ static void
 do_cpuid(unsigned int eaxval, unsigned int* eregs)
 {
 #ifdef _WIN64
+   __cpuid( (int*)eregs, eaxval );
    return;
 #elif defined(_MSC_VER)
   __asm  {
