@@ -16,8 +16,9 @@
 
 #include "fltk/Browser.h"
 
+#include "core/Sequence.h"
+#include "core/mrvServer.h"
 #include "gui/mrvReelList.h"
-#include "Sequence.h"
 #include "gui/mrvMedia.h"
 
 namespace fltk
@@ -47,6 +48,7 @@ namespace mrv
     void load_reel( const char* name );
     void remove_reel();
 
+    unsigned number_of_reels() const { return _reels.size(); }
     mrv::Reel new_reel( const char* name = "reel" );
     mrv::Reel current_reel() const;
     mrv::Reel reel( const char* name );
@@ -69,7 +71,7 @@ namespace mrv
 
     void insert( unsigned idx, mrv::media& img );
 
-    // @todo: these should be factored to a database helper class
+       // @todo: these should be factored to a database helper class
     void add_image( const mrv::media& img );
     void add_video( const mrv::media& img );
     void add_audio( const mrv::media& img );
@@ -81,8 +83,8 @@ namespace mrv
 		    const boost::int64_t end = -999999 );
     
 
-    void load( const LoadList& files );
-    void load( const stringArray& files );
+    void load( const LoadList& files, bool progressBar = true );
+       void load( const stringArray& files, bool progressBar = true );
 
 
     mrv::media replace( const char* file, const char* root );

@@ -19,6 +19,8 @@
 #include <netinet/in.h>
 #endif
 
+#include <fltk/run.h>
+
 #include "shmapImage.h"
 #include "byteSwap.h"
 
@@ -98,7 +100,7 @@ namespace mrv {
   {
     int dw, dh;
 
-    FILE* f = fopen( sequence_filename(frame).c_str(), "rb" );
+    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
     shadowHeader header;
     size_t sum = fread( &header, sizeof(shadowHeader), 1, f );
     if ( sum != 1 )

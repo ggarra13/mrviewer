@@ -25,6 +25,8 @@
 #include "mrvPreferences.h"
 #include "mrViewer.h"
 #include "core/aviImage.h"
+#include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
 
@@ -237,166 +239,181 @@ namespace mrv
 
 
 
-  void save_image_file( CMedia* image, const char* startdir )
-  {
-    if (!image) return;
-
-    const char* file = flu_save_chooser("Save Image", 
-					kIMAGE_PATTERN.c_str(), startdir);
+void save_image_file( CMedia* image, const char* startdir )
+{
+   if (!image) return;
+   
+   const char* file = flu_save_chooser("Save Image", 
+				       kIMAGE_PATTERN.c_str(), startdir);
     if ( !file ) return;
-
+    
     image->save( file );
-  }
+}
 
 void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain, 
 			 const char* startdir)
 {
-    if (!img) return;
+   if (!img) return;
+   
+   const char* file = flu_save_chooser("Save Sequence", 
+				       kIMAGE_PATTERN.c_str(), startdir);
+   if ( !file ) return;
+   
+   
+   std::string tmp = file;
+   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+		   (int(*)(int)) tolower);
+   std::string ext = tmp.c_str() + tmp.size() - 4;
 
-    const char* file = flu_save_chooser("Save Sequence", 
-					kIMAGE_PATTERN.c_str(), startdir);
-    if ( !file ) return;
-
-    
-     std::string tmp = file;
-     std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-		     (int(*)(int)) tolower);
-     std::string ext = tmp.c_str() + tmp.size() - 4;
-
-     bool movie = false;
-     if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" )
+   bool movie = false;
+   if ( img->has_audio() )
+   {
+      if ( ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
+   	   ext == ".mpg" || ext == ".mpeg" )
       {
-	 movie = true;
+   	 char buf[256];
+   	 sprintf( buf, _("Movie file %s with sound is not supported yet.  "
+   			 "Use .avi"),
+   		  ext.c_str() );
+   	 mrvALERT( buf );
+   	 return;
       }
+   }
 
-     std::string root, fileseq = file;
-     bool ok = mrv::fileroot( root, fileseq );
-     if ( !ok && !movie ) return;
+   if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
+	ext == ".mpg" || ext == ".mpeg"  )
+   {
+      movie = true;
+   }
 
-     mrv::Timeline* timeline = uiMain->uiTimeline;
-     int64_t first = timeline->minimum();
-     int64_t last  = timeline->maximum();
+   std::string root, fileseq = file;
+   bool ok = mrv::fileroot( root, fileseq );
+   if ( !ok && !movie ) return;
+   
+   mrv::Timeline* timeline = uiMain->uiTimeline;
+   int64_t first = timeline->minimum();
+   int64_t last  = timeline->maximum();
+   
+   if ( movie )
+   {
+      root = root.substr( 0, root.size() - 4 );
+   }
 
-     if ( movie )
-     {
-	root = root.substr( 0, root.size() - 4 );
-     }
+   fltk::ProgressBar* progress = NULL;
+   fltk::Window* main = (fltk::Window*)uiMain->uiMain;
+   fltk::Window* w = new fltk::Window( main->x(), main->y() + main->h()/2, 
+				       main->w(), 80 );
+   w->child_of(main);
+   w->begin();
+   progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
+   progress->range( 0, last - first + 1 );
+   progress->align( fltk::ALIGN_TOP );
+   char title[1024];
+   sprintf( title, _("Saving Sequence(s) %" PRId64 " - %" PRId64 ),
+	    first, last );
+   progress->label( title );
+   progress->showtext(true);
+   w->set_modal();
+   w->end();
+   w->show();
+   
+   fltk::check();
+   
+   int64_t dts = first;
+   int64_t frame = first;
+   int64_t failed_frame = frame-1;
+   
+   const char* fileroot = root.c_str();
 
-     fltk::ProgressBar* progress = NULL;
-     fltk::Window* main = (fltk::Window*)uiMain->uiMain;
-     fltk::Window* w = new fltk::Window( main->x(), main->y() + main->h()/2, 
-					 main->w(), 80 );
-     w->child_of(main);
-     w->begin();
-     progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
-     progress->range( 0, last - first + 1 );
-     progress->align( fltk::ALIGN_TOP );
-     char title[1024];
-     sprintf( title, "Saving Sequence(s) %" PRId64 " - %" PRId64,
-	      first, last );
-     progress->label( title );
-     progress->showtext(true);
-     w->set_modal();
-     w->end();
-     w->show();
-
-     fltk::check();
+   mrv::media old;
+   bool open_movie = false;
+   int movie_count = 1;
      
-     int64_t dts = first;
-     int64_t frame = first;
-     int64_t failed_frame = frame-1;
-
-     const char* fileroot = root.c_str();
-
-     mrv::media old;
-     bool open_movie = false;
-     int movie_count = 1;
-
-     bool edl = uiMain->uiTimeline->edl();
-
-     for ( ; frame <= last; ++frame )
-     {
-	int step = 1;
-	
-	uiMain->uiReelWindow->uiBrowser->seek( frame );
-	mrv::media fg = uiMain->uiView->foreground();
-	if (!fg) break;
-
-	CMedia* img = fg->image();
-
-	if ( old != fg )
-	{
-	   old = fg;
-	   if ( open_movie )
-	   {
-	      aviImage::close_movie();
-	      open_movie = false;
-	   }
-	   if ( movie )
-	   {
-	      char buf[256];
-	      if ( edl )
-	      {
-		 sprintf( buf, "%s%d%s", root.c_str(), movie_count,
-			  ext.c_str() );
-	      }
-	      else
-	      {
-		 sprintf( buf, "%s%s", root.c_str(), ext.c_str() );
-	      }
-
-	      if ( fs::exists( buf ) )
-	      {
-		 int ok = fltk::ask( "Do you want to replace '%s'",
-				     buf );
-		 if (!ok) 
-		 {
-		    break;
-		 }
-	      }
-
-	      if ( aviImage::open_movie( buf, img ) )
-	      {
-		 open_movie = true;
-		 ++movie_count;
-	      }
-	   }
-	}
-
-	
-	{
-	   
-	   if (movie)
-	   {
-	      aviImage::save_movie_frame( img );
-	   }
-	   else 
-	   {
-	      char buf[1024];
-	      sprintf( buf, fileroot, frame );
-	      img->save( buf );
-	   }
-	}
-	
-	progress->step(1);
-	fltk::check();
-	
-	if ( !w->visible() ) {
-	   break;
-	}
-     }
-
-     if ( open_movie )
-     {
-	aviImage::close_movie();
-	open_movie = false;
-     }
-
-    if ( w )
+   bool edl = uiMain->uiTimeline->edl();
+   
+   for ( ; frame <= last; ++frame )
+   {
+      int step = 1;
+      
+      uiMain->uiReelWindow->uiBrowser->seek( frame );
+      mrv::media fg = uiMain->uiView->foreground();
+      if (!fg) break;
+      
+      CMedia* img = fg->image();
+      
+      if ( old != fg )
       {
-	w->hide();
-	w->destroy();
+	 old = fg;
+	 if ( open_movie )
+	 {
+	    aviImage::close_movie();
+	    open_movie = false;
+	 }
+	 if ( movie )
+	 {
+	    char buf[256];
+	    if ( edl )
+	    {
+	       sprintf( buf, "%s%d%s", root.c_str(), movie_count,
+			  ext.c_str() );
+	    }
+	    else
+	    {
+	       sprintf( buf, "%s%s", root.c_str(), ext.c_str() );
+	    }
+
+	    if ( fs::exists( buf ) )
+	    {
+	       int ok = fltk::ask( "Do you want to replace '%s'",
+				   buf );
+	       if (!ok) 
+	       {
+		  break;
+	       }
+	    }
+
+	    if ( aviImage::open_movie( buf, img ) )
+	    {
+	       open_movie = true;
+	       ++movie_count;
+	    }
+	 }
       }
+
+	
+      {
+	   
+	 if (movie)
+	 {
+	    aviImage::save_movie_frame( img );
+	 }
+	 else 
+	 {
+	    char buf[1024];
+	    sprintf( buf, fileroot, frame );
+	    img->save( buf );
+	 }
+      }
+	
+      progress->step(1);
+      fltk::check();
+	
+      if ( !w->visible() ) {
+	 break;
+      }
+   }
+
+   if ( open_movie )
+   {
+      aviImage::close_movie();
+      open_movie = false;
+   }
+
+   if ( w )
+   {
+      w->hide();
+      w->destroy();
+   }
 }
 
 

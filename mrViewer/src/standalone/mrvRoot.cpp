@@ -183,10 +183,6 @@ namespace mrv {
 	rootdir = rootdir.remove_leaf();
 	rootdir = rootdir.branch_path();
 
-#ifdef LINUX
-	rootdir = rootdir.remove_leaf();
-#endif
-
 	std::string root = "MRV_ROOT=";
 	root += rootdir.string().c_str();
 

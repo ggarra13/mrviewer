@@ -126,6 +126,8 @@ SET( SOURCES
   # core/magickImage.cpp
 
   core/mrSocket.cpp
+  core/mrvClient.cpp
+  core/mrvServer.cpp
   core/mrvAudioEngine.cpp
   core/mrvColor.cpp
   core/mrvColorSpaces.cpp
@@ -208,6 +210,11 @@ IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
   MESSAGE( STATUS ${error_xgettext} )
 
 
+  FIND_LIBRARY( Boost_locale_LIBRARY 
+    NAMES boost_locale boost_locale_vc100_mt_1_47
+    PATHS ${Boost_LIBRARY_DIRS}
+    )
+
   FIND_LIBRARY( Boost_system_LIBRARY 
     NAMES boost_system boost_system_vc100_mt_1_47
     PATHS ${Boost_LIBRARY_DIRS}
@@ -225,6 +232,7 @@ IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
     )
 
   SET( BOOST_LIBRARIES
+    ${Boost_locale_LIBRARY}
     ${Boost_system_LIBRARY}
     ${Boost_filesystem_LIBRARY}
     ${Boost_thread_LIBRARY}
@@ -239,8 +247,10 @@ ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
   		NAMES libintl-8 libintl.lib libintl
 		PATHS $ENV{LIBINTL_ROOT} )
 
+
   SET( BOOST_LIBRARIES
-       ${libintl_LIBRARY} )
+       	${libintl_LIBRARY} )
+
 
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -329,7 +339,6 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 
-  #MESSAGE( FATAL_ERROR "Done" )
 
   SET( OUTDIR
     "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )

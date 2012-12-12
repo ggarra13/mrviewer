@@ -92,6 +92,10 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 # Add in some path suffixes. These will have to be updated whenever a new Boost version comes out.
 SET(SUFFIX_FOR_PATH
+ boost_1_51_0
+ boost_1_50_0
+ boost_1_49_0
+ boost_1_48_0
  boost_1_47_0
  boost_1_46_0
  boost_1_42_0
@@ -139,7 +143,7 @@ IF(Boost_INCLUDE_DIR)
   SET(Boost_LIBRARY_DIR ${Boost_INCLUDE_DIR})
 
   IF("${Boost_LIBRARY_DIR}" MATCHES "boost-[0-9]+")
-    GET_FILENAME_COMPONENT(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR} PATH)
+     GET_FILENAME_COMPONENT(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR} PATH)
   ENDIF ("${Boost_LIBRARY_DIR}" MATCHES "boost-[0-9]+")
 
   IF("${Boost_LIBRARY_DIR}" MATCHES "/boost$")
@@ -159,7 +163,11 @@ IF(Boost_INCLUDE_DIR)
     IF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
       SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/stage/lib)
     ELSE(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
-      SET(Boost_LIBRARY_DIR "")
+      IF(EXISTS "${Boost_LIBRARY_DIR}/lib")
+         SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/lib)
+      ELSE(EXISTS "${Boost_LIBRARY_DIR}/lib")
+         SET(Boost_LIBRARY_DIR "")
+      ENDIF(EXISTS "${Boost_LIBRARY_DIR}/lib")
     ENDIF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
   ENDIF(EXISTS "${Boost_LIBRARY_DIR}/lib${CMAKE_BUILD_ARCH}")
 
@@ -174,6 +182,8 @@ IF(Boost_INCLUDE_DIR)
     SET(Boost_LIBRARY_DIRS ${Boost_LIBRARY_DIR})
   ENDIF(Boost_LIBRARY_DIR AND EXISTS "${Boost_LIBRARY_DIR}")
 ENDIF(Boost_INCLUDE_DIR)
+
+MESSAGE( ">>> BOOST LIBRARY DIR: " ${Boost_LIBRARY_DIR} )
 
 IF(NOT Boost_FOUND)
   IF(NOT Boost_FIND_QUIETLY)

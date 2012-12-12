@@ -10,6 +10,8 @@
 
 #include <iostream>
 
+#include <fltk/run.h>
+
 
 // Image types
 #include "exrImage.h"
@@ -69,7 +71,7 @@ namespace mrv {
 
 
   CMedia* test_image( const char* name, 
-			 boost::uint8_t* datas, int size )
+		      boost::uint8_t* datas, int size )
   {
     ImageTypes* type = image_filetypes;
     for ( ; type->get; ++type )
@@ -123,7 +125,7 @@ namespace mrv {
       }
     else
       {
-	strncpy( name, root, 1024 );
+	 strncpy( name, root, 1024 );
       }
 
 
@@ -132,7 +134,7 @@ namespace mrv {
     const boost::uint8_t* test_data = datas;
     if (!datas) {
       size = 1024;
-      FILE* fp = fopen(name, "rb");
+      FILE* fp = fltk::fltk_fopen(name, "rb");
       if (!fp) 
 	{
 	  if ( is_seq )
@@ -147,11 +149,11 @@ namespace mrv {
 		  loc += 2;
 		}
 
-	      mrvALERT("Image sequence \"" << quoted << "\" not found");
+	      mrvALERT("Image sequence \"" << quoted << "\" not found.");
 	    }
 	  else
 	    {
-	      mrvALERT("Image \"" << name << "\" not found");
+	      mrvALERT("Image \"" << name << "\" not found.");
 	    }
 	  return NULL;
 	}
@@ -162,7 +164,7 @@ namespace mrv {
     }
 
     CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
-				(int)size );
+				(unsigned int)size );
     if ( image ) 
       {
 	if ( is_seq )

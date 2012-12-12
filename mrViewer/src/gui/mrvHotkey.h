@@ -126,6 +126,7 @@ struct Hotkey
 };
 
 extern Hotkey kOpenImage;
+extern Hotkey kSaveReel;
 extern Hotkey kSaveImage;
 extern Hotkey kSaveSnapshot;
 extern Hotkey kSaveSequence;

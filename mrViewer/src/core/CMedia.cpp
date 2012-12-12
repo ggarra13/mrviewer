@@ -33,7 +33,6 @@ extern "C" {
 
 #include <fltk/run.h>
 
-#define BOOST_FILESYSTEM_VERSION 2 
 #undef  __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
@@ -258,7 +257,7 @@ void CMedia::clear_sequence()
 
   SCOPED_LOCK( _mutex);
 
-  boost::uint64_t num = _frameEnd - _frameStart + 1;
+  boost::uint64_t num = _frame_end - _frame_start + 1;
   for ( boost::uint64_t i = 0; i < num; ++i )
     {
       _sequence[i].reset();
@@ -432,31 +431,13 @@ void CMedia::refresh()
 void  CMedia::first_frame(boost::int64_t x)
 {
    if ( x < _frame_start ) x = _frame_start;
-
    _frameStart = x;
-   if ( is_sequence() )
-   {
-      delete [] _sequence;
-      _sequence = NULL;
-      
-      boost::uint64_t num = _frameEnd - _frameStart + 1;
-      _sequence = new mrv::image_type_ptr[ unsigned(num) ];
-   }
 }
 
 void  CMedia::last_frame(boost::int64_t x)
 {
    if ( x > _frame_end ) x = _frame_end;
-
    _frameEnd = x;
-   if ( is_sequence() )
-   {
-      delete [] _sequence;
-      _sequence = NULL;
-      
-      boost::uint64_t num = _frameEnd - _frameStart + 1;
-      _sequence = new mrv::image_type_ptr[ unsigned(num) ];
-   }
 }
 
 void load_sequence( PlaybackData* data )
@@ -499,7 +480,7 @@ void CMedia::sequence( const char* fileroot,
   assert( start < end );
 
   if ( _fileroot && strcmp( fileroot, _fileroot ) == 0 && 
-       start == _frameStart && end == _frameEnd )
+       start == _frame_start && end == _frame_end )
     return;
 
   _fileroot = strdup( fileroot );
@@ -570,7 +551,7 @@ void CMedia::filename( const char* n )
 
   _is_sequence = false;
   _is_stereo = false;
-  _dts = _frame = _frameStart = _frameEnd = 1;
+  _dts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
 
 
   timestamp();
@@ -665,9 +646,12 @@ bool CMedia::has_changed()
       std::string file = sequence_filename(_frame);
 
       int result = stat( file.c_str(), &sbuf );
-      if ( result == -1 ) return false;
+      if ( (result == -1) || (_frame < _frame_start) ||
+			      ( _frame > _frameEnd ) ) return false;
 
-      boost::uint64_t idx = _frame - _frameStart;
+      assert( _frame <= _frameEnd );
+      assert( _frame >= _frameStart );
+      boost::uint64_t idx = _frame - _frame_start;
 
       if ( !_sequence || !_sequence[idx] ) return false;
 
@@ -1200,8 +1184,8 @@ void CMedia::stop()
  */
 std::string CMedia::name() const
 {
-  fs::path file = fs::path( fileroot(), fs::native );
-  return file.leaf();
+  fs::path file = fs::path( fileroot() );
+  return file.leaf().string();
 }
 
 
@@ -1211,12 +1195,12 @@ std::string CMedia::name() const
  */
 std::string CMedia::directory() const
 {
-  fs::path file = fs::path( fileroot(), fs::native );
+  fs::path file = fs::path( fileroot() );
   std::string path( file.branch_path().string() );
   char buf[1024];
   const char* const p = path.c_str();
   if ( p[0] != '/' && p[1] != ':' ) {
-    file = fs::path( getcwd(buf,1024), fs::native );
+    file = fs::path( getcwd(buf,1024) );
     std::string f = file.string();
     f += "/";
     f += path;
@@ -1326,7 +1310,7 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
 
-  boost::int64_t idx = f - _frameStart;
+  boost::int64_t idx = f - _frame_start;
   if ( _sequence[idx] ) return;
 
   _sequence[idx] = pic;
@@ -1348,7 +1332,7 @@ bool CMedia::is_cache_filled(boost::int64_t frame) const
   if ( frame < _frameStart ) frame = _frameStart;
   if ( frame > _frameEnd )   frame = _frameEnd;
 
-  boost::uint64_t i = frame - _frameStart;
+  boost::uint64_t i = frame - _frame_start;
   if ( !_sequence[i] ) return false;
 
   return true;
@@ -1390,7 +1374,7 @@ size_t CMedia::memory() const
   size_t r = 0;
   if ( _sequence )
     {
-      boost::uint64_t frames = _frameEnd - _frameStart + 1;
+      boost::uint64_t frames = _frame_end - _frame_start + 1;
       for ( boost::uint64_t i = 0; i < frames; ++i )
 	{
 	  mrv::image_type_ptr s = _sequence[i];
@@ -1798,8 +1782,8 @@ bool CMedia::find_image( const boost::int64_t frame )
 
   // Check if we have a cached frame for this frame
   
-  boost::uint64_t idx = f - _frameStart;
-  assert( idx <= (_frameEnd - _frameStart) );
+  boost::uint64_t idx = f - _frame_start;
+  assert( idx <= (_frame_end - _frame_start) );
 
   if ( _sequence && _sequence[idx] )
     {

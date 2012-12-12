@@ -22,7 +22,9 @@ namespace mrv {
   //
   void parse_command_line( const int argc, char** argv,
 			   mrv::ViewerUI* ui, 
-			   mrv::LoadList& files );
+			   mrv::LoadList& files,
+			   std::string& host,
+			   std::string& group );
 }
 
 

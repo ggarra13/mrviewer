@@ -61,6 +61,7 @@
 
 #include "core/CMedia.h"
 // CORE classes
+#include "core/mrvClient.h"
 #include "core/mrvColor.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvI8N.h"
@@ -236,6 +237,14 @@ void save_cb( fltk::Widget* o, mrv::ImageView* view )
   if ( !fg ) return;
 
   view->browser()->save();
+}
+
+void save_reel_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  view->browser()->save_reel();
 }
 
 void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
@@ -536,6 +545,8 @@ void ImageView::delete_timeout()
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   fltk::GlWindow( X, Y, W, H, l ),
+  _client( NULL ),
+  _server( NULL ),
   uiMain( NULL ),
   _engine( NULL ),
   _normalize( false ),
@@ -580,21 +591,35 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 void ImageView::stop_playback()
 {
 
+
   mrv::media fg = foreground();
   if ( fg && !fg->image()->stopped()) fg->image()->stop();
 
   mrv::media bg = background();
   if ( bg && !bg->image()->stopped()) bg->image()->stop();
+
+  if ( _client )
+  {
+     _client->send( "stop" );
+     seek( timeline()->value() );
+  }
+  else if ( _server )
+  {
+     _server->send( "stop" );
+     seek( timeline()->value() );
+  }
 }
 
 
 ImageView::~ImageView()
 {
+   _server = NULL;
+  _client = NULL;
   // make sure to stop any playback
   stop_playback();
 
   delete_timeout();
-  delete _engine;
+  delete _engine; _engine = NULL;
 }
 
 fltk::Window* ImageView::fltk_main()
@@ -1410,6 +1435,8 @@ void ImageView::leftMouseDown(int x, int y)
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
+	    menu.add( _("File/Save Reel As"), kSaveReel.hotkey(),
+		      (fltk::Callback*)save_reel_cb, this ); 
 	    menu.add( _("File/Save Frame As"), kSaveImage.hotkey(),
 		      (fltk::Callback*)save_cb, this ); 
 	    menu.add( _("File/Save GL Snapshot As"), kSaveSnapshot.hotkey(),
@@ -3467,6 +3494,20 @@ void ImageView::frame( const int64_t f )
 void ImageView::seek( const int64_t f )
 {
 
+
+   if ( _client )
+   {
+      char buf[256];
+      sprintf( buf, "seek %" PRId64, f );
+      _client->send(buf);
+   }
+   else if ( _server )
+   {
+      char buf[256];
+      sprintf( buf, "seek %" PRId64, f );
+      _server->send(buf);
+   }
+
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
   browser()->seek( f );
@@ -3707,6 +3748,29 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir ) 
 { 
+   if ( _client )
+   {
+      if ( dir == CMedia::kForwards )
+      {
+	 _client->send("playfwd");
+      }
+      else
+      {
+	 _client->send("playback");
+      }
+   }
+   else if ( _server )
+   {
+      if ( dir == CMedia::kForwards )
+      {
+	 _server->send("playfwd");
+      }
+      else
+      {
+	 _server->send("playback");
+      }
+   }
+
   playback( (Playback) dir );
 
   delete_timeout();

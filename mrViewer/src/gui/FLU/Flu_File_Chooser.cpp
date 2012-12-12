@@ -64,6 +64,7 @@ typedef __int64 int64_t;
 #include "fltk/HighlightButton.h"
 #include <fltk/LabelType.h>
 #include <fltk/ItemGroup.h>
+#include "fltk/utf.h" 
 #include "fltk/events.h"  // for timeout methods
 #include "fltk/run.h"  // for timeout methods
 
@@ -855,7 +856,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   // try to load the favorites
   {
-    FILE *f = fopen( configFilename.c_str(), "r" );
+    FILE *f = fltk::fltk_fopen( configFilename.c_str(), "r" );
     if( f )
       {
 	buf[0] = '\0';
@@ -1223,6 +1224,7 @@ void Flu_File_Chooser::recursiveScan( const char *dir, FluStringVector *files )
   dirent **e;
   char *name;
   std::string fullpath;
+
   int num = fltk::filename_list( dir, &e );
   for( int i = 0; i < num; i++ )
     {
@@ -1323,7 +1325,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	     }
 	   
 	   // save the favorites
-	   FILE *f = fopen( configFilename.c_str(), "w" );
+	   FILE *f = fltk::fltk_fopen( configFilename.c_str(), "w" );
 	   if( f )
 	     {
 	       for( i = 0; i < favoritesList->children(); ++i )
@@ -1615,7 +1617,8 @@ void Flu_File_Chooser::PreviewGroup::draw()
   }
   else 
   {
-     int ok = stat( file.c_str(), &statbuf );
+#undef stat
+     int ok = fltk::fltk_stat( file.c_str(), &statbuf );
      if( ok )
      {
 	switch( errno )
@@ -1712,7 +1715,7 @@ int Flu_File_Chooser::ImgTxtPreview::preview( const char *filename )
       image( NULL );
 
       // Try reading the first 1k of data for a label...
-      FILE *f = fopen( filename, "rb" );
+      FILE *f = fltk::fltk_fopen( filename, "rb" );
       if( f )
 	{
 	  size_t bytes = fread( previewTxt, 1, sizeof(previewTxt) - 1, f );
@@ -3220,7 +3223,7 @@ void Flu_File_Chooser::addToFavoritesCB()
     }
 
   // save the favorites
-  FILE *f = fopen( configFilename.c_str(), "w" );
+  FILE *f = fltk::fltk_fopen( configFilename.c_str(), "w" );
   if( !f ) return;
 
   for( int i = 0; i < favoritesList->children(); ++i )
@@ -3544,7 +3547,7 @@ void Flu_File_Chooser::buildLocationCombo()
   char	dummy[256], mountPoint[256], line[1024];	// Input line
   std::string mount;
 
-  fstab = fopen( "/etc/fstab", "r" );	// Otherwise fallback to full list
+  fstab = fltk::fltk_fopen( "/etc/fstab", "r" );	// Otherwise fallback to full list
   if( fstab )
     {
       while( fgets( line, 1024, fstab ) )
@@ -4137,6 +4140,8 @@ void Flu_File_Chooser::cd( const char *path )
   // read the directory
   dirent **e;
   char *name;
+
+
   int num = fltk::filename_list( pathbase.c_str(), &e );
   if( num > 0 )
     {

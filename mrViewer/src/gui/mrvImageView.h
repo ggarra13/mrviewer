@@ -38,7 +38,7 @@ namespace mrv {
   class Timeline;
   class DrawEngine;
   class Event;
-
+  class Parser;
 
   class ImageView : public fltk::GlWindow
   {
@@ -342,6 +342,10 @@ namespace mrv {
        void undo_draw();
        void redo_draw();
 
+     public:
+       mrv::Parser*   _client;
+       mrv::Parser*   _server;
+
   protected:
 
     void stop_playback();
@@ -404,6 +408,7 @@ namespace mrv {
 
     /// Refresh the fstop display
     void refresh_fstop() const;
+
 
   protected:
     mrv::ViewerUI* uiMain;
