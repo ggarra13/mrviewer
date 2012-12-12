@@ -555,16 +555,15 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {638 286 640 475} resizable visible
+        xywh {637 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings open selected
+          label Settings open
           xywh {207 24 433 416}
         } {
           {fltk::Group} {} {
@@ -2041,7 +2040,7 @@ o->child_of( main->uiMain );} modal
     } {
       {fltk::Window} uiMain {
         label Paint
-        xywh {798 336 110 425} horizontal resizable visible
+        xywh {801 336 110 425} horizontal hide resizable
       } {
         {fltk::Group} {} {open
           xywh {10 9 90 201}
@@ -2136,7 +2135,8 @@ o->redraw();}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2169,10 +2169,10 @@ o->redraw();}
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {372 207 640 530} when CHANGED hide resizable
+        xywh {381 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2692,7 +2692,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {
+          {fltk::Group} uiBottomBar {open
             xywh {0 478 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -2935,20 +2935,22 @@ v->uiTimeline->redraw();}
                       extra_code {o->value(50);}
                       class {mrv::Timecode}
                     }
-                    {fltk::Button} {} {
+                    {fltk::Button} uiStartButton {
                       label S
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {static boost::int64_t oldf;
-boost::int64_t f;
+                      callback {boost::int64_t f;
 
 if (o->value() )
 {
- f = oldf;
+  mrv::media fg = v->uiView->foreground();
+  if ( fg )
+  {
+    f = fg->image()->start_frame();
+  }
  o->value(0);
 }
 else
 {
-oldf = v->uiTimeline->minimum();
 f = v->uiFrame->value();
 v->uiView->stop();
 o->value(1);
@@ -2957,23 +2959,30 @@ o->value(1);
 v->uiStartFrame->value( f );
 v->uiStartFrame->redraw();
 v->uiTimeline->minimum( f );
+mrv::media fg = v->uiView->foreground();
+if ( fg )
+{
+  fg->image()->first_frame( f );
+}
 v->uiTimeline->redraw();}
                       xywh {0 2 20 22}
                     }
-                    {fltk::Button} {} {
+                    {fltk::Button} uiEndButton {
                       label E
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {static boost::int64_t oldf;
-boost::int64_t f;
+                      callback {boost::int64_t f;
 
 if (o->value() )
 {
- f = oldf;
+ mrv::media fg = v->uiView->foreground();
+ if (fg)
+ {
+   f = fg->image()->end_frame();
+ }
  o->value(0);
 }
 else
 {
-oldf = v->uiTimeline->maximum();
 f = v->uiFrame->value();
 v->uiView->stop();
 o->value(1);
@@ -2981,7 +2990,12 @@ o->value(1);
 v->uiEndFrame->value( f );
 v->uiEndFrame->redraw();
 v->uiTimeline->maximum( f );
-v->uiTimeline->redraw();}
+mrv::media fg = v->uiView->foreground();
+if ( fg )
+{
+  fg->image()->last_frame( f );
+}
+v->uiTimeline->redraw();} selected
                       xywh {90 2 20 20} vertical
                     }
                   }

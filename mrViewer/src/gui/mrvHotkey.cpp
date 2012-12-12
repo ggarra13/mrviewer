@@ -18,6 +18,7 @@
 namespace mrv {
 // ctrl, meta, alt, shift, key
 Hotkey kOpenImage( true, false, false, false, 'o' );
+Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
 Hotkey kSaveSnapshot( false, false, true, false, 's' );

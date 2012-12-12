@@ -3,14 +3,19 @@
 #include <cstring>
 #include <cstdlib>
 
+#include "mrvIO.h"
 #include "mrSocket.h"
 
 #define QLEN            6               /* size of request queue        */
 
+namespace {
+const char* kModule = "sock";
+}
+
 
 bool mr_init_socket_library()
 {
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
    // Initialize winsock
    WORD wVersionRequested = MAKEWORD(1,1);
    WSADATA wsaData;
@@ -38,8 +43,7 @@ bool mr_init_socket_library()
    if (wsaData.wVersion != wVersionRequested)
    {	
       WSACleanup();
-      fprintf(stderr,"Wrong winsock version\n");
-      fflush(stderr);
+      LOG_ERROR("Wrong winsock version\n");
       return false;
    }
 #endif
@@ -49,7 +53,7 @@ bool mr_init_socket_library()
 
 void mr_cleanup_socket_library()
 {
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
    // release winsock
    WSACleanup();
 #endif
@@ -71,32 +75,28 @@ MR_SOCKET mr_new_socket_client( const char* host, const int port,
    if (port > 0)                   /* test for illegal value       */
       sad.sin_port = htons((u_short)port);
    else {                          /* print error message and exit */
-      fprintf(stderr,"bad port number %d\n", port);
-      fflush(stderr);
+      LOG_ERROR("Bad port number " << port);
       return -1;
    }
 
    /* Convert host name to equivalent IP address and copy to sad. */
    ptrh = gethostbyname(host);
    if ( ((char *)ptrh) == NULL ) {
-      fprintf(stderr,"invalid host: %s\n", host);
-      fflush(stderr);
+      LOG_ERROR( "Invalid host: " << host);
       return -1;
    }
    memcpy(&sad.sin_addr, ptrh->h_addr, ptrh->h_length);
 
    /* Map TCP transport protocol name to protocol number */
    if ( (ptrp = getprotobyname( protocol )) == 0) {
-      fprintf(stderr, "cannot map \"%s\" to protocol number", protocol);
-      fflush(stderr);
+      LOG_ERROR( "Cannot map \"" << protocol << "\" to protocol number");
       return -1;
    }
 
    /* Create a socket */
    sd = socket(PF_INET, SOCK_STREAM, ptrp->p_proto);
    if (sd < 0) {
-      fprintf(stderr, "socket creation failed\n");
-      fflush(stderr);
+      LOG_ERROR( "Socket creation failed\n" );
       return -1;
    }
 
@@ -123,35 +123,31 @@ MR_SOCKET mr_new_socket_server( const char* host, const int port,
 
    memset((char *)&sad,0,sizeof(sad)); /* clear sockaddr structure */
    sad.sin_family = AF_INET;         /* set family to Internet     */
-   sad.sin_addr.s_addr = INADDR_ANY; /* set the local IP address   */
+   sad.sin_addr.s_addr = htonl( INADDR_ANY ); /* set the local IP address   */
 
    if (port > 0)                   /* test for illegal value       */
       sad.sin_port = htons((u_short)port);
    else {                          /* print error message and exit */
-      fprintf(stderr,"bad port number %d\n", port);
-      fflush(stderr);
+      LOG_ERROR( "Bad port number " << port);
       return -1;
    }
 
    /* Map TCP transport protocol name to protocol number */
    if ( (ptrp = getprotobyname( protocol )) == 0) {
-      fprintf(stderr, "cannot map \"%s\" to protocol number", protocol);
-      fflush(stderr);
+      LOG_ERROR( "Cannot map \"" << protocol << "\" to protocol number");
       return -1;
    }
 
    /* Create a socket */
    sd = socket(PF_INET, SOCK_STREAM, ptrp->p_proto);
    if (sd < 0) {
-      fprintf(stderr, "socket creation failed\n");
-      fflush(stderr);
+      LOG_ERROR( "Socket creation failed" );
       return -1;
    }
 
    /* Bind a local address to the socket */
    if (bind(sd, (struct sockaddr *)&sad, sizeof(sad)) < 0) {
-      fprintf(stderr,"bind failed\n");
-      fflush(stderr);
+      LOG_ERROR( "bind failed\n");
       closesocket(sd);
       return -1;
    }
@@ -159,8 +155,7 @@ MR_SOCKET mr_new_socket_server( const char* host, const int port,
    /* Specify size of request queue */
    if (listen(sd, QLEN) < 0) 
    {
-      fprintf(stderr,"listen failed\n");
-      fflush(stderr);
+      LOG_ERROR("listen failed\n");
       closesocket(sd);
       return -1;
    }

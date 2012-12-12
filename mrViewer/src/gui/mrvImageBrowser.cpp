@@ -14,7 +14,6 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#define BOOST_FILESYSTEM_VERSION 2
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;
 
@@ -447,7 +446,16 @@ namespace mrv {
 	reelname += ".reel";
       }
 
-    FILE* f = fopen( reelname.c_str(), "w" );
+    std::cerr << "fltk_fopen " << reelname << std::endl;
+
+    FILE* f = fltk::fltk_fopen( reelname.c_str(), "w" );
+    if (!f)
+    {
+       mrvALERT("Could not save '" << reelname << "'" );
+       return;
+    }
+
+    std::cerr << "fprintf " << reelname << std::endl;
 
     fprintf( f, _("#\n"
 		  "# mrViewer Reel \"%s\"\n"
@@ -1290,6 +1298,7 @@ namespace mrv {
 	      audio_idx = om->image()->audio_stream();
 	   }
 	}
+	
 
 	mrv::media m = reel->images[sel];
 	assert( m != NULL );
@@ -1385,7 +1394,8 @@ namespace mrv {
    * Open new image, sequence or movie file(s) from a load list.
    * 
    */
-  void ImageBrowser::load( const mrv::LoadList& files )
+void ImageBrowser::load( const mrv::LoadList& files,
+			 bool progressBar )
   {
     //
     // Create a progress window
@@ -1401,21 +1411,21 @@ namespace mrv {
     fltk::Window* w = NULL;
     fltk::ProgressBar* progress = NULL;
 
-    if ( files.size() > 1 )
+    if ( files.size() > 1 && progressBar )
       {
-	w = new fltk::Window( main->x(), main->y() + main->h()/2, 
-			      main->w(), 80 );
-	w->child_of(main);
-	w->clear_border();
-	w->begin();
-	progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
-	progress->range( 0, files.size() );
-	progress->align( fltk::ALIGN_TOP );
-	progress->showtext(true);
-	w->end();
+    	w = new fltk::Window( main->x(), main->y() + main->h()/2, 
+    			      main->w(), 80 );
+    	w->child_of(main);
+    	w->clear_border();
+    	w->begin();
+    	progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
+    	progress->range( 0, files.size() );
+    	progress->align( fltk::ALIGN_TOP );
+    	progress->showtext(true);
+    	w->end();
 
-	w->show();
-	fltk::check();
+    	w->show();
+    	fltk::check();
       }
 
     mrv::LoadList::const_iterator i = files.begin();
@@ -1518,8 +1528,8 @@ namespace mrv {
      mrv::LoadList sequences;
      parse_reel( sequences, edl, name );
 
-     fs::path path( name, fs::native );
-     std::string reelname = path.leaf().c_str();
+     fs::path path( name );
+     std::string reelname = path.leaf().string();
      reelname = reelname.substr(0, reelname.size()-5);
      
      new_reel( reelname.c_str() );
@@ -1536,7 +1546,8 @@ namespace mrv {
      }
   }
 
-  void ImageBrowser::load( const stringArray& files )
+void ImageBrowser::load( const stringArray& files,
+			 const bool progress )
   {
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
@@ -1566,7 +1577,7 @@ namespace mrv {
 	  }
       }
 
-    load( loadlist );
+    load( loadlist, progress );
   }
 
   /** 
@@ -1976,7 +1987,7 @@ namespace mrv {
     std::string filenames = fltk::event_text();
 
     stringArray files;
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
     mrv::split_string( files, filenames, "\n" ); 
 #else
     mrv::split_string( files, filenames, "\r\n" ); 
@@ -2383,9 +2394,18 @@ namespace mrv {
 
 	if (frame > last ) frame = last;
 	if (frame < first ) frame = first;
+
+	bool pushed = first > img->start_frame();
+	uiMain->uiStartButton->value( pushed );
+
+	pushed = last < img->end_frame();
+	uiMain->uiEndButton->value( pushed );
       }
     else
       {
+	uiMain->uiStartButton->value( false );
+	uiMain->uiEndButton->value( false );
+
 	mrv::Reel reel = current_reel();
 	if ( !reel || reel->images.empty() ) return;
 
@@ -2413,7 +2433,6 @@ namespace mrv {
      uiMain->uiStartFrame->value( first );
      uiMain->uiEndFrame->value( last );
      uiMain->uiFrame->value( frame );
-     
      timeline()->redraw();
   }
 

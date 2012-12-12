@@ -13,6 +13,7 @@
 #include <cstdlib>
 
 #include <fltk/TextBuffer.h>
+#include <fltk/run.h>
 #include <gui/mrvLogDisplay.h>
 
 namespace mrv {
@@ -71,7 +72,7 @@ namespace mrv {
 
     try {
       
-      f = fopen( file, "w" );
+       f = fltk::fltk_fopen( file, "w" );
 
       if ( !f ) throw;
       if ( fputs( buffer_->text(), f ) < 0 ) throw;

@@ -18,6 +18,7 @@
 #include "mrvImageView.h"
 #include "mrViewer.h"
 #include "mrvVersion.h"
+#include "mrvServer.h"
 
 
 namespace mrv {
@@ -94,12 +95,16 @@ namespace mrv {
 //
 void parse_command_line( const int argc, char** argv,
 			 mrv::ViewerUI* ui, 
-			 mrv::LoadList& load )
+			 mrv::LoadList& load,
+			 std::string& host,
+			 std::string& group)
 {
   // Some default values
   float gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
   float gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
   std::string db_driver = "postgresql";
+  host = "";
+  group = "239.255.0.1";
 
   try {
     using namespace TCLAP;
@@ -131,6 +136,16 @@ void parse_command_line( const int argc, char** argv,
 		 _("Override viewer's default database driver."), false, 
 		 db_driver, "string");
 
+    ValueArg< std::string > 
+    ahostname( "t", N_("host"), 
+	       _("Override viewer's default client hostname."), false, 
+	       host, "string");
+
+    ValueArg< std::string > 
+    agroup( N_("p"), N_("group"), 
+	     _("Override viewer's default server/client group."), false, 
+	     group, "string");
+
     UnlabeledMultiArg< std::string > 
     afiles(_("files"),
 	   _("Images, sequences or movies to display."), false, "images");
@@ -138,6 +153,8 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(adbdriver);
+    cmd.add(ahostname);
+    cmd.add(agroup);
     cmd.add(afiles);
 
     //
@@ -152,6 +169,9 @@ void parse_command_line( const int argc, char** argv,
     gamma = agamma.getValue();
     gain  = again.getValue();
     db_driver = adbdriver.getValue();
+    host = ahostname.getValue();
+    group = agroup.getValue();
+
 
     //
     // Parse image list to split into sequences/images and reels

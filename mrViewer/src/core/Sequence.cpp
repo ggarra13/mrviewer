@@ -8,9 +8,13 @@
  * 
  */
 
+#include <sys/types.h>
+#include <sys/stat.h>
+
 #if defined(WIN32) || defined(WIN64)
 #include <direct.h>
 #define getcwd _getcwd
+#define S_ISDIR(x) _S_IFDIR(x)
 #else
 #include <unistd.h>
 #endif
@@ -25,12 +29,12 @@
 #include <string>
 #include <limits>
 
+#include <fltk/run.h>
 
 using namespace std;
 
-#define BOOST_FILESYSTEM_VERSION 2
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem.hpp>
+#include <boost/locale.hpp>
 namespace fs = boost::filesystem;
 
 
@@ -155,21 +159,25 @@ namespace mrv
   {
 
     frameStart = frameEnd = mrv::kMinFrame;
+  
+    // My encoding type
+    // Create and install global locale
+    std::locale::global(boost::locale::generator().generate(""));
 
-    fs::path file = fs::path( fileroot, fs::native );
+    fs::path::imbue( std::locale() );
+
+    fs::path file = fs::path( fileroot.c_str() );
     fs::path dir = file.branch_path();
 
     char buf[1024];
     if ( dir.string() == "" ) {
-      dir = fs::path( getcwd(buf,1024), fs::native );
+       dir = fs::path( getcwd(buf,1024) );
     }
 
-
-    if ( ( ! fs::exists( dir ) ) || 
-	 ( ! fs::is_directory( dir ) ) )
+    if ( ( !fs::exists( dir ) ) || ( !fs::is_directory( dir ) ) )
     {
        LOG_ERROR( _("Directory '") << dir << 
-		  _("' does no exist or no directory") );
+		  _("' does not exist or no directory") );
        return false;
     }
 
@@ -187,7 +195,7 @@ namespace mrv
 	    mrv::split_string( frames, range, "-" );
 	    if ( frames.size() > 1 )
 	      {
-		 int digits = frames[0].size();
+		unsigned digits = (unsigned) frames[0].size();
 
 		frameStart = atoi( frames[0].c_str() );
 		frameEnd   = atoi( frames[1].c_str() );
@@ -218,7 +226,7 @@ namespace mrv
 
 
     std::string root, frame, ext;
-    if ( ! split_sequence( root, frame, ext, file.leaf() ) )
+    if ( ! split_sequence( root, frame, ext, file.leaf().string() ) )
     {
       return false; // NOT a recognized sequence
     }
@@ -227,17 +235,17 @@ namespace mrv
     std::string cext;
     std::string cframe;
     frameStart = mrv::kMaxFrame;
-    int pad = 1;
+    unsigned pad = 1;
 
-    fs::directory_iterator e; // default constructor yields path end
-    for ( fs::directory_iterator i( dir ); i != e; ++i )
+    fs::directory_iterator e; // default constructor yields path iter. end
+    for ( fs::directory_iterator i( dir ) ; i != e; ++i )
       {
 	if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
 
-	split_sequence( croot, cframe, cext, (*i).leaf() );
+	split_sequence( croot, cframe, cext, (*i).path().leaf().string() );
 	if ( cext != ext || croot != root ) continue;  // not this sequence
 
-	if ( cframe[0] == '0' ) pad = cframe.size();
+	if ( cframe[0] == '0' ) pad = (unsigned) cframe.size();
 
 
 	boost::int64_t f = atoi( cframe.c_str() );
@@ -263,8 +271,8 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
   {
      edl = false;
 
-    FILE* f = fopen( reelfile, "r" );
-    if (!f ) return;
+     FILE* f = fltk::fltk_fopen( reelfile, "r" );
+     if (!f ) return;
 
     char buf[1024];
     while ( !feof(f) )
@@ -351,7 +359,7 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
   bool fileroot( std::string& fileroot, const std::string& file )
   {
     std::string root, frame, ext;
-    fs::path path = fs::path( file, fs::native );
+    fs::path path = fs::path( file );
 
 
     bool sequence = split_sequence( root, frame, ext, file );

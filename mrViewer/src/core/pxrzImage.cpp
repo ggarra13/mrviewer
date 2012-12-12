@@ -24,7 +24,9 @@
 #  include <cmath>        // for isnan(), isinf()
 #endif
 
+#include <fltk/run.h>
 
+#include "mrvIO.h"
 #include "pxrzImage.h"
 #include "byteSwap.h"
 
@@ -43,6 +45,8 @@ namespace {
     float m1[16];
     float m2[16];
   };
+
+const char* kModule = "pxr";
 
 } // namespace
 
@@ -101,14 +105,19 @@ namespace mrv {
   {
     int dw, dh;
 
-    FILE* f = fopen( filename(), "rb" );
+    FILE* f = fltk::fltk_fopen( filename(), "rb" );
+    if ( !f )
+    {
+       LOG_ERROR( "Could not open shadow map image." );
+    }
+
     shadowHeader header;
     size_t sum = fread( &header, sizeof(shadowHeader), 1, f );
     if ( sum != 1 )
       {
-	fclose(f);
-	cerr << "Could not load shadow map image" << endl;
-	return false;
+	 LOG_ERROR( "Could not open shadow map image." );
+	 fclose(f);
+	 return false;
       }
 
     dw = ntohs( header.width );

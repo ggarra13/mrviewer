@@ -15,6 +15,8 @@
 #include <cstdlib>
 #include <cmath>
 
+#include <fltk/run.h>
+
 #include <half.h>
 #include <halfFunction.h>
 
@@ -1232,7 +1234,7 @@ namespace mrv {
     /*
       Open image file.
     */
-    FILE* f = fopen( sequence_filename(frame).c_str(), "r" );
+    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "r" );
     if ( !f ) return false;
 
     /*

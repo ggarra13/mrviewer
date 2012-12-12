@@ -12,6 +12,10 @@
 
 #include <iostream>
 
+#ifdef LINUX
+#include <X11/Xlib.h>
+#endif
+
 #include <fltk/ask.h>
 #include <fltk/run.h>
 
@@ -21,6 +25,7 @@
 #include "gui/mrvImageView.h"
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
+#include "core/mrvServer.h"
 #include "mrvColorProfile.h"
 #include "mrvException.h"
 #include "mrvLicensing.h"
@@ -31,8 +36,12 @@
 
 using namespace std;
 
+
 int main( const int argc, char** argv ) 
 {
+#ifdef LINUX
+   XInitThreads();
+#endif
   fltk::lock();   // Initialize X11 thread system
 
 
@@ -57,7 +66,9 @@ int main( const int argc, char** argv )
 
 
   mrv::LoadList files;
-  mrv::parse_command_line( argc, argv, ui, files );
+  std::string host;
+  std::string group;
+  mrv::parse_command_line( argc, argv, ui, files, host, group );
 
   // mrv::open_license( argv[0] );
   // mrv::checkout_license();
@@ -71,7 +82,41 @@ int main( const int argc, char** argv )
   mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
   image_list->load( files );
 
+  
+  if (host == "" && group != "")
+  {
+     std::cerr << "start server at 4333" << std::endl;
+     mrv::ServerData* data = new mrv::ServerData;
+     data->ui = ui;
+     data->port = 4333;
+     data->group = "4333";
+     // data->host = "localhost";
+     // data->group = group;
+     boost::thread( boost::bind( mrv::server_thread, 
+				 data ) );
+  }
+  else
+  {
+     mrv::ServerData* data;
 
+     // std::cerr << "start server at 5001" << std::endl;
+     // data = new mrv::ServerData;
+     // data->ui = ui;
+     // data->port = 5001;
+     // data->group = "5001";
+     // boost::thread( boost::bind( mrv::server_thread, 
+     //  				 data ) );
+
+     std::cerr << "start client at 5000" << std::endl;
+     data = new mrv::ServerData;
+     data->ui = ui;
+     data->client = true;
+     data->host = host;
+     data->port = 4333;
+     data->group = "4333";
+     boost::thread( boost::bind( mrv::client_thread, 
+				 data ) );
+  }
 
   int ok;
 
@@ -115,16 +160,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		     LPSTR lpCmdLine, int nCmdShow )
 {
  
-  // AllocConsole();
+  AllocConsole();
   // freopen("conin$", "r", stdin);
   // freopen("conout$", "w", stdout);
-  // freopen("conout$", "w", stderr);
+  freopen("conout$", "w", stderr);
 
   int rc = main( __argc, __argv );
   
   // fclose(stdin);
   // fclose(stdout);
-  // fclose(stderr);
+  fclose(stderr);
 
   return rc; 
 }

@@ -19,6 +19,8 @@
 #include <limits>
 #include <algorithm>
 
+#include <fltk/run.h>
+
 #include "mrThread.h"
 #include "stubImage.h"
 #include "mrvImageBrowser.h"
@@ -530,7 +532,12 @@ namespace mrv {
 
   void rmanImage::parse_stub()
   {
-    FILE* f = fopen( filename(), "rb" );
+     FILE* f = fltk::fltk_fopen( filename(), "rb" );
+     if (!f) {
+	LOG_ERROR("Could not open '" << filename() << "'" );
+	return;
+     }
+
     char data[129];
     size_t num = fread(data, sizeof(char), 129, f);
     if ( num != 128 ) {

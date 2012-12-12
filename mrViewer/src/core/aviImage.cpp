@@ -1259,10 +1259,12 @@ void aviImage::populate()
 	  if ( d < start ) start = d;
 	}
 
+
       _frameStart = (boost::int64_t)start; 
     }
+  
 
-  _frame_start = _frameStart;
+  _frame_start = _frame = _frameStart;
 
   //
   // BUG FIX for ffmpeg bugs with some codecs/containers.
@@ -1332,7 +1334,6 @@ void aviImage::populate()
 	      if ( status == kDecodeOK )
 		{
 		   store_image( ptsframe, pkt.dts );
-		  _frameStart = _frame_start = ptsframe;
 		  got_image = true;
 		}
 	    }
@@ -2758,7 +2759,7 @@ static AVStream *add_video_stream(AVFormatContext *oc,
 
    if ( img->width() == 0 ) return NULL;
 
-   /* find the video encoder */  
+   /* find the video encoder */
    codec_id = AV_CODEC_ID_MSMPEG4V3;
    *codec = avcodec_find_encoder(codec_id);
    if (!(*codec)) {

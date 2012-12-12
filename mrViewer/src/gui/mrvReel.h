@@ -22,12 +22,12 @@ namespace mrv
 
   struct Reel_t
   {
-    Reel_t( const char* n ) : name( n ) {}
-    ~Reel_t() {}
+       Reel_t( const char* n ) : name( n ), edl(false) {}
+       ~Reel_t() {}
 
        bool         edl;
-    std::string    name;
-    MediaList    images;
+       std::string  name;
+       MediaList    images;
   };
 
   typedef boost::shared_ptr< Reel_t > Reel;
