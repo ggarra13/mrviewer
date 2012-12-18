@@ -600,12 +600,12 @@ void ImageView::stop_playback()
 
   if ( _client )
   {
-     _client->send( "stop" );
+     _client->send2( "stop" );
      seek( timeline()->value() );
   }
   else if ( _server )
   {
-     _server->send( "stop" );
+     _server->send2( "stop" );
      seek( timeline()->value() );
   }
 }
@@ -3499,13 +3499,13 @@ void ImageView::seek( const int64_t f )
    {
       char buf[256];
       sprintf( buf, "seek %" PRId64, f );
-      _client->send(buf);
+      _client->send2(buf);
    }
    else if ( _server )
    {
       char buf[256];
       sprintf( buf, "seek %" PRId64, f );
-      _server->send(buf);
+      _server->send2(buf);
    }
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
@@ -3752,22 +3752,22 @@ void ImageView::play( const CMedia::Playback dir )
    {
       if ( dir == CMedia::kForwards )
       {
-	 _client->send("playfwd");
+	 _client->send2("playfwd");
       }
       else
       {
-	 _client->send("playback");
+	 _client->send2("playback");
       }
    }
    else if ( _server )
    {
       if ( dir == CMedia::kForwards )
       {
-	 _server->send("playfwd");
+	 _server->send2("playfwd");
       }
       else
       {
-	 _server->send("playback");
+	 _server->send2("playback");
       }
    }
 
