@@ -1,7 +1,7 @@
 #include <fltk/xpmImage.h>
 
 /* XPM */
-static const char * reel_delete_24_xpm[] = {
+static const char * const reel_delete_24_xpm[] = {
 "24 24 132 2",
 "  	c None",
 ". 	c #C40000",
@@ -161,7 +161,7 @@ static const char * reel_delete_24_xpm[] = {
 "                                                "};
 static fltk::xpmImage reel_delete_24(reel_delete_24_xpm);
 /* XPM */
-static const char * reel_24_xpm[] = {
+static const char * const reel_24_xpm[] = {
 "24 24 51 1",
 " 	c None",
 ".	c #000000",
@@ -240,7 +240,7 @@ static const char * reel_24_xpm[] = {
 "                        "};
 static fltk::xpmImage reel_24(reel_24_xpm);
 /* XPM */
-static const char * reel_save_24_xpm[] = {
+static const char * const reel_save_24_xpm[] = {
 "24 24 72 1",
 " 	c None",
 ".	c #000000",
@@ -340,7 +340,7 @@ static const char * reel_save_24_xpm[] = {
 "                        "};
 static fltk::xpmImage reel_save_24(reel_save_24_xpm);
 /* XPM */
-static const char * file_open_24_xpm[] = {
+static const char * const file_open_24_xpm[] = {
 "24 24 209 2",
 "  	c None",
 ". 	c #565A2E",
@@ -577,7 +577,7 @@ static const char * file_open_24_xpm[] = {
 "                                                "};
 static fltk::xpmImage file_open_24(file_open_24_xpm);
 /* XPM */
-static const char * file_save_24_xpm[] = {
+static const char * const file_save_24_xpm[] = {
 "24 24 192 2",
 "  	c None",
 ". 	c #565A2E",
@@ -797,7 +797,7 @@ static const char * file_save_24_xpm[] = {
 "                                                "};
 static fltk::xpmImage file_save_24(file_save_24_xpm);
 /* XPM */
-static const char * file_clone_24_xpm[] = {
+static const char * const file_clone_24_xpm[] = {
 "24 24 181 2",
 "  	c None",
 ". 	c #0000FD",
@@ -1006,7 +1006,7 @@ static const char * file_clone_24_xpm[] = {
 "              . . . . . . . . . . . . . . . . . "};
 static fltk::xpmImage file_clone_24(file_clone_24_xpm);
 /* XPM */
-static const char * file_delete_24_xpm[] = {
+static const char * const file_delete_24_xpm[] = {
 "24 24 236 2",
 "  	c None",
 ". 	c #EA5C5C",
@@ -1270,7 +1270,7 @@ static const char * file_delete_24_xpm[] = {
 "                                                "};
 static fltk::xpmImage file_delete_24(file_delete_24_xpm);
 /* XPM */
-static const char * file_delete_all_24_xpm[] = {
+static const char * const file_delete_all_24_xpm[] = {
 "24 24 290 2",
 "  	c None",
 ". 	c #575A2E",
@@ -1588,7 +1588,7 @@ static const char * file_delete_all_24_xpm[] = {
 "        !     U+*@U+u+q =@-@+@;@>@A.A.g+V+V+z+,@"};
 static fltk::xpmImage file_delete_all_24(file_delete_all_24_xpm);
 /* XPM */
-static char * draw_xpm[] = {
+static const char * const draw_xpm[] = {
 "26 28 143 2",
 "  	c None",
 ". 	c #91755A",
@@ -1763,7 +1763,7 @@ static char * draw_xpm[] = {
 "                                                    "};
 static fltk::xpmImage draw(draw_xpm);
 /* XPM */
-static char * erase_xpm[] = {
+static const char * const erase_xpm[] = {
 "28 28 147 2",
 "  	c None",
 ". 	c #C89A98",
@@ -1944,7 +1944,7 @@ static char * erase_xpm[] = {
 static fltk::xpmImage erase(erase_xpm);
 /* XPM */
 /* XPM */
-static char * undo_xpm[] = {
+static const char * const undo_xpm[] = {
 "32 32 140 2",
 "  	c None",
 ". 	c #BCB1A1",
@@ -2120,7 +2120,7 @@ static char * undo_xpm[] = {
 "                                                                "};
 static fltk::xpmImage undo(undo_xpm);
 /* XPM */
-static char * redo_xpm[] = {
+static const char * const redo_xpm[] = {
 "32 32 140 2",
 "  	c None",
 ". 	c #BAAD96",
@@ -2298,7 +2298,7 @@ static char * redo_xpm[] = {
 static fltk::xpmImage redo(redo_xpm);
 /* XPM */
 /* XPM */
-static char * select_xpm[] = {
+static const char * const select_xpm[] = {
 "27 28 21 1",
 " 	c None",
 ".	c #000000",
