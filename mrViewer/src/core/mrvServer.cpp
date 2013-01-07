@@ -581,8 +581,6 @@ void server_thread( const ServerData* s )
 
       server rp(io_service, listen_endpoint, s->ui);
 
-      delete s;
-
       io_service.run();
    }
    catch (std::exception& e)
@@ -593,30 +591,5 @@ void server_thread( const ServerData* s )
 }
 
 } // namespace mrv
-
-
-#if 0
-
-int main( const int argc, const char** argv )
-{
-   mrv::ServerData* data = new mrv::ServerData;
-   if ( argc > 1 )
-   {
-      data->host = argv[1];
-      data->ui = NULL;
-      boost::thread t( boost::bind( mrv::client_thread, data ) );
-      t.join();
-   }
-   else
-   {
-      data->ui = NULL;
-      boost::thread t( boost::bind( mrv::server_thread, data ) );
-      t.join();
-   }
-
-   return 0;
-}
-
-#endif
 
 
