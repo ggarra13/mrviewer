@@ -63,7 +63,7 @@ namespace mrv {
 
 	while ( card > -1 )
 	  {
-	    char* psz_card_name;
+	    char* psz_card_name = NULL;
 	    snd_ctl_t*      p_ctl;
 	    snd_pcm_info_t* pcm_info;
 	    int pcm_device = -1;
