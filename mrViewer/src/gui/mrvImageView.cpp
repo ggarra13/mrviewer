@@ -530,6 +530,14 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+void ImageView::send( std::string m )
+{
+
+  if ( _client )
+  {
+     _client->write( m );
+  }
+}
 
 
 void ImageView::create_timeout( double t )
@@ -546,7 +554,6 @@ void ImageView::delete_timeout()
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   fltk::GlWindow( X, Y, W, H, l ),
   _client( NULL ),
-  _server( NULL ),
   uiMain( NULL ),
   _engine( NULL ),
   _normalize( false ),
@@ -598,23 +605,16 @@ void ImageView::stop_playback()
   mrv::media bg = background();
   if ( bg && !bg->image()->stopped()) bg->image()->stop();
 
-  if ( _client )
-  {
-     _client->send2( "stop" );
-     seek( timeline()->value() );
-  }
-  else if ( _server )
-  {
-     _server->send2( "stop" );
-     seek( timeline()->value() );
-  }
+
+  send( "stop" );
+  seek( timeline()->value() );
 }
 
 
 ImageView::~ImageView()
 {
-   _server = NULL;
-  _client = NULL;
+   _client = NULL;
+
   // make sure to stop any playback
   stop_playback();
 
@@ -3495,18 +3495,10 @@ void ImageView::seek( const int64_t f )
 {
 
 
-   if ( _client )
-   {
-      char buf[256];
-      sprintf( buf, "seek %" PRId64, f );
-      _client->send2(buf);
-   }
-   else if ( _server )
-   {
-      char buf[256];
-      sprintf( buf, "seek %" PRId64, f );
-      _server->send2(buf);
-   }
+   char buf[256];
+   sprintf( buf, "seek %" PRId64, f );
+   send(buf);
+  
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
@@ -3748,28 +3740,15 @@ void ImageView::play_forwards()
  */
 void ImageView::play( const CMedia::Playback dir ) 
 { 
-   if ( _client )
+   if ( dir == CMedia::kForwards )
    {
-      if ( dir == CMedia::kForwards )
-      {
-	 _client->send2("playfwd");
-      }
-      else
-      {
-	 _client->send2("playback");
-      }
+      send("playfwd");
    }
-   else if ( _server )
+   else
    {
-      if ( dir == CMedia::kForwards )
-      {
-	 _server->send2("playfwd");
-      }
-      else
-      {
-	 _server->send2("playback");
-      }
+      send("playback");
    }
+
 
   playback( (Playback) dir );
 

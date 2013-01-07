@@ -58,7 +58,7 @@ namespace mrv {
     Pixmap p, mask;
     if ( XpmCreatePixmapFromData(fltk::xdisplay,
 				 DefaultRootWindow(fltk::xdisplay),
-				 viewer_xpm, &p, &mask, NULL) == XpmSuccess )
+				 (char**)viewer_xpm, &p, &mask, NULL) == XpmSuccess )
       {
 	 this->icon((char*)p);
       }
@@ -76,11 +76,11 @@ namespace mrv {
 #else
     // XOrg / XWindows(TM)
     XEvent ev;
-    static char* names[2] = { "_NET_WM_STATE", 
-			      "_NET_WM_STATE_ABOVE" };
+    static const char* const names[2] = { "_NET_WM_STATE", 
+					  "_NET_WM_STATE_ABOVE" };
     Atom atoms[ 2 ];
     fltk::open_display();
-    XInternAtoms(fltk::xdisplay, names, 2, False, atoms );
+    XInternAtoms(fltk::xdisplay, (char**)names, 2, False, atoms );
     Atom net_wm_state = atoms[ 0 ];
     Atom net_wm_state_above = atoms[ 1 ];
     ev.type = ClientMessage;

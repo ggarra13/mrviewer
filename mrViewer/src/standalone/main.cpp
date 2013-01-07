@@ -23,6 +23,7 @@
 #include "core/mrvI8N.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvIO.h"
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
 #include "core/mrvServer.h"
@@ -35,6 +36,10 @@
 
 
 using namespace std;
+
+namespace {
+const char* const kModule = "main"; 
+}
 
 
 int main( const int argc, char** argv ) 
@@ -85,15 +90,16 @@ int main( const int argc, char** argv )
   
   if (host == "" && group != "")
   {
-     std::cerr << "start server at 4333" << std::endl;
+
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
      data->port = 4333;
      data->group = "4333";
      // data->host = "localhost";
      // data->group = group;
+     LOG_INFO( "Start server at port " << data->port );
      boost::thread( boost::bind( mrv::server_thread, 
-				 data ) );
+     				 data ) );
   }
   else
   {
@@ -107,13 +113,14 @@ int main( const int argc, char** argv )
      // boost::thread( boost::bind( mrv::server_thread, 
      //  				 data ) );
 
-     std::cerr << "start client at 5000" << std::endl;
      data = new mrv::ServerData;
      data->ui = ui;
      data->client = true;
      data->host = host;
      data->port = 4333;
      data->group = "4333";
+
+     LOG_INFO( "Start client at " << host << ", port " << data->port );
      boost::thread( boost::bind( mrv::client_thread, 
 				 data ) );
   }
@@ -160,16 +167,16 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		     LPSTR lpCmdLine, int nCmdShow )
 {
  
-  AllocConsole();
+   // AllocConsole();
   // freopen("conin$", "r", stdin);
   // freopen("conout$", "w", stdout);
-  freopen("conout$", "w", stderr);
+  // freopen("conout$", "w", stderr);
 
   int rc = main( __argc, __argv );
   
   // fclose(stdin);
   // fclose(stdout);
-  fclose(stderr);
+  // fclose(stderr);
 
   return rc; 
 }

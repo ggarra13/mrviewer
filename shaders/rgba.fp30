@@ -1,9 +1,9 @@
 !!FP1.0
-# cgc version 3.0.0007, build date Jul 22 2010
+# cgc version 3.0.0016, build date Feb 13 2011
 # command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile fp30
 # source file: rgba.cg
 #vendor NVIDIA Corporation
-#version 3.0.0.07
+#version 3.0.0.16
 #profile fp30
 #program main
 #semantic main.fgImage : TEXUNIT0
@@ -49,8 +49,8 @@ DECLARE normMin = {0};
 DECLARE normSpan = {1};
 DECLARE gain = {1};
 DECLARE enableLut = {0};
-DECLARE lutMin;
 DECLARE lutMax;
+DECLARE lutMin;
 DECLARE lutT;
 DECLARE lutM;
 DECLARE gamma = {0.44995117};
@@ -72,52 +72,54 @@ MULH  H0.xyz, H0, lutM.x;
 MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H1.w;
 TEX   R0.xyz, H1, TEX3, 3D;
 POWR  H0.x, {2.718282}.x, R0.x;
+MOVR  R0.x, {1};
+SEQR  H1.w, channel.x, R0.x;
+MOVR  R0.x, {2};
+SEQR  H2.x, channel, R0;
 POWR  H0.y, {2.718282}.x, R0.y;
 POWR  H0.z, {2.718282}.x, R0.z;
 MOVH  H1.xyz(NE.x), H0;
-POWH  H1.w, H1.z, gamma.x;
-POWH  H2.x, H1.y, gamma.x;
+MOVXC RC.x, H1.w;
 POWH  H0.x, H1.x, gamma.x;
-MOVH  H0.z, H1.w;
-MOVH  H0.y, H2.x;
+POWH  H0.z, H1.z, gamma.x;
+POWH  H0.y, H1.y, gamma.x;
 MOVH  H1.xyz, H0;
-MOVR  R0.x, {1};
-SEQR  H0.y, channel.x, R0.x;
-MOVXC RC.x, H0.y;
-MOVR  R0.x, {2};
-SEQR  H0.z, channel.x, R0.x;
-MOVR  R0.x, {3};
-SEQR  H2.y, channel.x, R0.x;
 MOVH  H1.xyz(NE.x), H0.x;
+SEQX  H1.w, H1, {0}.x;
+MOVH  H0.xyz, H1;
+MULXC HC.x, H1.w, H2;
+MOVH  H0.xyz(NE.x), H1.y;
+MOVH  H1.xyz, H0;
+MOVR  R0.x, {3};
+SEQR  H0.y, channel.x, R0.x;
+SEQX  H0.x, H2, {0};
+MULX  H0.x, H1.w, H0;
+MULXC HC.x, H0, H0.y;
 SEQX  H0.y, H0, {0}.x;
-MULXC HC.x, H0.y, H0.z;
-SEQX  H0.z, H0, {0}.x;
-MOVH  H1.xyz(NE.x), H2.x;
-MULX  H0.y, H0, H0.z;
-MULXC HC.x, H0.y, H2.y;
+MOVH  H1.xyz(NE.x), H0.z;
 MOVR  R0.x, {4};
 SEQR  H0.z, channel.x, R0.x;
-SEQX  H2.y, H2, {0}.x;
-MULX  H0.y, H0, H2;
-MOVH  H1.xyz(NE.x), H1.w;
+MULX  H0.y, H0.x, H0;
 MULXC HC.x, H0.y, H0.z;
-SEQX  H2.y, H0.z, {0}.x;
-MOVR  R0.x, {5};
-SEQR  H0.z, channel.x, R0.x;
 MOVH  H1.xyz(NE.x), H0.w;
-MULX  H0.y, H0, H2;
-MULXC HC.x, H0.y, H0.z;
-MULH  H1.x(NE), H0, {0.5};
-ADDH  H0.x, H0, H2;
+MOVR  R0.x, {5};
+SEQR  H2.x, channel, R0;
 SEQX  H0.z, H0, {0}.x;
-MADH  H1.x(NE), H0.w, {0.5}, H1;
-ADDH  H0.x, H0, H1.w;
+MULX  H1.w, H0.y, H0.z;
+MOVH  H0.x, H1;
+MULXC HC.x, H1.w, H2;
+MULH  H0.x(NE), H1, {0.5};
+MADH  H0.x(NE), H0.w, {0.5}, H0;
+ADDH  H0.y, H0.x, H1;
+ADDH  H1.x, H0.y, H1.z;
+MOVH  H0.yz, H1;
+MOVH  o[COLH].xyz, H0;
 MOVR  R0.x, {6};
-SEQR  H1.w, channel.x, R0.x;
-MULX  H0.y, H0, H0.z;
-MULXC HC.x, H0.y, H1.w;
-MULH  H1.xyz(NE.x), H0.x, {0.33333334}.x;
-MOVH  H1.w, H0;
-MOVH  o[COLH], H1;
+SEQX  H0.x, H2, {0};
+SEQR  H0.y, channel.x, R0.x;
+MULX  H0.x, H1.w, H0;
+MULXC HC.x, H0, H0.y;
+MULH  o[COLH].xyz(NE.x), H1.x, {0.33333334}.x;
+MOVH  o[COLH].w, H0;
 END
-# 64 instructions, 1 R-regs, 3 H-regs
+# 66 instructions, 1 R-regs, 3 H-regs

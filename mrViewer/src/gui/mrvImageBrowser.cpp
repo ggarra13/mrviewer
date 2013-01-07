@@ -1396,7 +1396,7 @@ namespace mrv {
    */
 void ImageBrowser::load( const mrv::LoadList& files,
 			 bool progressBar )
-  {
+{
     //
     // Create a progress window
     //
@@ -1514,7 +1514,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	      uiMain->uiView->play_forwards();
 	  }
       }
-  }
+}
 
 
   /** 
