@@ -27,6 +27,7 @@
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
 #include "core/mrvServer.h"
+#include "core/mrvClient.h"
 #include "mrvColorProfile.h"
 #include "mrvException.h"
 #include "mrvLicensing.h"
@@ -105,7 +106,6 @@ int main( const int argc, char** argv )
   {
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
-     data->client = true;
      data->host = host;
      data->port = 4333;
      data->group = "4333";
