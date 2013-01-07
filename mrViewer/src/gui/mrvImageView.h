@@ -344,9 +344,10 @@ namespace mrv {
 
      public:
        mrv::Parser*   _client;
-       mrv::Parser*   _server;
 
   protected:
+
+       void send( std::string msg );
 
     void stop_playback();
 
