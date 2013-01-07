@@ -45,7 +45,7 @@ const char* const kModule = "main";
 int main( const int argc, char** argv ) 
 {
 #ifdef LINUX
-   XInitThreads();
+  XInitThreads();
 #endif
   fltk::lock();   // Initialize X11 thread system
 
@@ -103,17 +103,7 @@ int main( const int argc, char** argv )
   }
   else
   {
-     mrv::ServerData* data;
-
-     // std::cerr << "start server at 5001" << std::endl;
-     // data = new mrv::ServerData;
-     // data->ui = ui;
-     // data->port = 5001;
-     // data->group = "5001";
-     // boost::thread( boost::bind( mrv::server_thread, 
-     //  				 data ) );
-
-     data = new mrv::ServerData;
+     mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
      data->client = true;
      data->host = host;
