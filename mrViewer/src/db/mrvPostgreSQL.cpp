@@ -65,8 +65,10 @@ namespace mrv
 
   PostgreSQL::~PostgreSQL()
   {
-    clear_error();
-    PQfinish(_connection); _connection = NULL;
+     clear_error();
+     if ( _connection )
+     	PQfinish(_connection);
+     _connection = NULL;
   }
 
 

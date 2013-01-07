@@ -65,6 +65,8 @@ bool Parser::parse( const std::string& m )
    std::string cmd;
    is >> cmd;
 
+   if ( !ui ) return false;
+
    static mrv::Reel r;
 
    if ( cmd == "Reel" )

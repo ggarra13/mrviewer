@@ -86,10 +86,12 @@ namespace mrv
 
   Database::~Database()
   {
+     std::cerr << "~Database" << std::endl;
     free( (void*) _host );
     free( (void*) _user );
     free( (void*) _passwd );
     free( (void*) _database );
+     std::cerr << "~Database ok" << std::endl;
   }
 
   Database* Database::factory()

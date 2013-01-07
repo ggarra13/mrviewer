@@ -2169,7 +2169,7 @@ o->redraw();}
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {381 231 640 530} when CHANGED resizable
+        xywh {384 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2995,7 +2995,7 @@ if ( fg )
 {
   fg->image()->last_frame( f );
 }
-v->uiTimeline->redraw();} selected
+v->uiTimeline->redraw();}
                       xywh {90 2 20 20} vertical
                     }
                   }
@@ -3029,15 +3029,26 @@ if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);} {}
     Function {~ViewerUI()} {open
     } {
       code {delete uiICCProfiles; uiICCProfiles = NULL;
+std::cerr << "uiICCProfiles" << std::endl;
 delete uiImageInfo; uiImageInfo = NULL;
+std::cerr << "uiImageInfo" << std::endl;
 delete uiColorArea; uiColorArea = NULL;
+std::cerr << "uiColorArea" << std::endl;
 delete uiHistogram; uiHistogram = NULL;
+std::cerr << "uiHistogram" << std::endl;
 delete uiVectorscope; uiVectorscope = NULL;
+std::cerr << "uiVectorscope" << std::endl;
 delete uiAbout; uiAbout = NULL;
+std::cerr << "uiAbout" << std::endl;
 delete uiLog; uiLog = NULL;
+std::cerr << "uiLog" << std::endl;
 delete uiPaint; uiPaint = NULL;
+std::cerr << "uiPaint" << std::endl;
 delete uiMain; uiMain = NULL;
-delete uiReelWindow; uiReelWindow = NULL;} {}
+std::cerr << "uiMain" << std::endl;
+delete uiReelWindow; uiReelWindow = NULL;
+std::cerr << "uiReelWindow" << std::endl;} {selected
+      }
     }
   }
 } 
