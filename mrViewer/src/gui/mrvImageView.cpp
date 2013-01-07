@@ -613,6 +613,7 @@ void ImageView::stop_playback()
 
 ImageView::~ImageView()
 {
+   //  delete _client;
    _client = NULL;
 
   // make sure to stop any playback

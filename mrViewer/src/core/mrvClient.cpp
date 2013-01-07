@@ -124,6 +124,7 @@ void client::stop()
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
    deadline_.cancel();
+   ui = NULL;
 }
 
 
