@@ -197,6 +197,8 @@ struct TableText table[] = {
 
 void fill_uiFunction( fltk::Browser* b )
 {
+   if (!b) return;
+
    const char* labels[] = {"Function", "Hotkey", NULL};
    b->column_labels( labels );
    const int widths[] = {240, -1, -1};

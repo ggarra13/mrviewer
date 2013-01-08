@@ -617,7 +617,11 @@ ImageView::~ImageView()
    _client = NULL;
 
   // make sure to stop any playback
-  stop_playback();
+  mrv::media fg = foreground();
+  if ( fg && !fg->image()->stopped()) fg->image()->stop();
+
+  mrv::media bg = background();
+  if ( bg && !bg->image()->stopped()) bg->image()->stop();
 
   delete_timeout();
   delete _engine; _engine = NULL;
@@ -635,7 +639,8 @@ const fltk::Window* ImageView::fltk_main() const
 
 
 ImageBrowser* 
-ImageView::browser() { 
+ImageView::browser() {
+   assert( uiMain->uiReelWindow->uiBrowser );
   return uiMain->uiReelWindow->uiBrowser;
 }
 

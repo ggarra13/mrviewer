@@ -40,6 +40,12 @@ namespace mrv
   {
   }
 
+Timeline::~Timeline()
+{
+   _edl = false;
+   uiMain = NULL;
+}
+
   mrv::ImageBrowser* Timeline::browser() const
   {
     return uiMain->uiReelWindow->uiBrowser;

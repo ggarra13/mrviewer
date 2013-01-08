@@ -43,6 +43,7 @@ namespace mrv
   public:
     Timeline( int x, int y, int w, int h, char* l = 0 );
     Timeline( int w, int h, char* l = 0 );
+    ~Timeline();
 
     Timecode::Display display() const { return _display; }
     void display(Timecode::Display x) { _display = x; redraw(); }
