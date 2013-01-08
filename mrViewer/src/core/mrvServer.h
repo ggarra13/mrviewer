@@ -26,6 +26,7 @@ class Parser
 {
    public:
      Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
+     ~Parser();
      
      bool parse( const std::string& m );
      void write( std::string s )

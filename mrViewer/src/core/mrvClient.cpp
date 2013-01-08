@@ -330,6 +330,9 @@ void client_thread( const ServerData* s )
     client c(io_service, s->ui);
     c.start(r.resolve(tcp::resolver::query(s->host, s->group)));
 
+
+    delete s;
+
     io_service.run();
 
    }
@@ -337,7 +340,6 @@ void client_thread( const ServerData* s )
    {
       std::cerr << "Client Exception: " << e.what() << std::endl;
    }
-   s->ui->uiView->_client = NULL;
 }
 
 

@@ -16,6 +16,10 @@
 #include <fstream>
 #include <set>
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
+
+
 // #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 
 #include <boost/bind.hpp>
@@ -58,6 +62,10 @@ ui( v )
       ui->uiView->_client = this;
 }
 
+Parser::~Parser()
+{
+   ui->uiView->_client = NULL;
+}
 
 bool Parser::parse( const std::string& m )
 {
@@ -169,7 +177,14 @@ bool Parser::parse( const std::string& m )
 	    cmd += (*j)->image()->name();
 	    cmd += "\"";
 	    deliver( cmd );
+
+	    char buf[128];
+	    boost::int64_t frame = (*j)->image()->frame();
+	    sprintf( buf, "seek %" PRId64, frame );
+	    cmd = buf;
+	    deliver( cmd );
 	 }
+
 
       }
 
@@ -580,6 +595,8 @@ void server_thread( const ServerData* s )
       tcp::endpoint listen_endpoint(tcp::v4(), s->port);
 
       server rp(io_service, listen_endpoint, s->ui);
+
+      delete s;
 
       io_service.run();
    }
