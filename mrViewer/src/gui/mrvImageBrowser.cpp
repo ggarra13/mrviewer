@@ -291,19 +291,16 @@ namespace mrv {
   ImageBrowser::~ImageBrowser()
   {
     int num = children();
-    std::cerr << "~ImageBrowser num " << num << std::endl;
     for ( int j = 0; j < num; ++j )
       fltk::Browser::remove( child(0) );
 
-    std::cerr << "~ImageBrowser child ok db:" << db << std::endl;
-
     delete db; db = NULL;
-    std::cerr << "~ImageBrowser ok" << std::endl;
   }
 
   mrv::Timeline* ImageBrowser::timeline()
   {
     assert( uiMain != NULL );
+    assert( uiMain->uiTimeline != NULL );
     return uiMain->uiTimeline;
   }
 

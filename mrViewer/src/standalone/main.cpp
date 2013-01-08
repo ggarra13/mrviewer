@@ -136,7 +136,6 @@ int main( const int argc, char** argv )
       ok = -1;
     }
 
-
   // mrv::checkin_license();
   // mrv::close_license();
 
