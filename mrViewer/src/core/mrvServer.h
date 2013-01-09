@@ -21,6 +21,9 @@ using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
 class ViewerUI;
+class Parser;
+
+typedef std::vector< Parser* > ParserList;
 
 class Parser
 {
@@ -29,10 +32,7 @@ class Parser
      ~Parser();
      
      bool parse( const std::string& m );
-     void write( std::string s )
-     {
-	deliver( s );
-     }
+     void write( std::string s );
      virtual void deliver( std::string m ) = 0;
 
    public:

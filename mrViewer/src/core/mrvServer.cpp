@@ -7,7 +7,6 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// g++ mrvServer.cpp mrvClient.cpp -o server -lboost_system -lboost_thread -lpthread
 // 
 #include <algorithm>
 #include <cstdlib>
@@ -58,13 +57,34 @@ Parser::Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v ) :
 socket_( io_service ),
 ui( v ) 
 {
-   if ( !ui->uiView->_client )
-      ui->uiView->_client = this;
 }
 
 Parser::~Parser()
 {
-   ui->uiView->_client = NULL;
+   if ( !ui || !ui->uiView ) return;
+
+   ParserList::iterator i = ui->uiView->_clients.begin();
+   ParserList::iterator e = ui->uiView->_clients.end();
+   for ( ; i != e; ++i  )
+   {
+      if ( *i == this )
+      {
+	 ui->uiView->_clients.erase( i );
+	 break;
+      }
+   }
+   ui = NULL;
+}
+
+void Parser::write( std::string s )
+{
+   if ( !ui || !ui->uiView ) return;
+
+   ParserList::iterator i = ui->uiView->_clients.begin();
+   ParserList::iterator e = ui->uiView->_clients.end();
+   
+   for ( ; i != e; ++i )
+      (*i)->deliver( s );
 }
 
 bool Parser::parse( const std::string& m )
@@ -209,46 +229,46 @@ bool Parser::parse( const std::string& m )
    }
    else if ( cmd == "stop" )
    {
-      mrv::Parser* c = ui->uiView->_client;
-      ui->uiView->_client = NULL;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
 
       boost::int64_t f;
       is >> f;
       ui->uiView->stop();
 
-      ui->uiView->_client = c;
+      ui->uiView->_clients = c;
       return true;
    }
    else if ( cmd == "playfwd" )
    {
-      mrv::Parser* c = ui->uiView->_client;
-      ui->uiView->_client = NULL;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
 
       ui->uiView->play_forwards();
 
-      ui->uiView->_client = c;
+      ui->uiView->_clients = c;
       return true;
    }
    else if ( cmd == "playback" )
    {
-      mrv::Parser* c = ui->uiView->_client;
-      ui->uiView->_client = NULL;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
 
       ui->uiView->play_backwards();
 
-      ui->uiView->_client = c;
+      ui->uiView->_clients = c;
       return true;
    }
    else if ( cmd == "seek" )
    {
-      mrv::Parser* c = ui->uiView->_client;
-      ui->uiView->_client = NULL;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
 
       boost::int64_t f;
       is >> f;
       ui->uiView->seek( f );
 
-      ui->uiView->_client = c;
+      ui->uiView->_clients = c;
 
       return true;
    }
@@ -295,6 +315,8 @@ tcp::socket& tcp_session::socket()
 void tcp_session::start()
 {
    
+   ui->uiView->_clients.push_back( this );
+
    start_read();
    
    //	std::cerr << "start1: " << socket_.native_handle() << std::endl;
@@ -372,9 +394,14 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 	    if ( msg != "" && msg != "OK" && msg != "Not OK")
 	    {
 	       if ( parse( msg ) )
+	       {
+		  write( msg );
 		  deliver( "OK" );
+	       }
 	       else
+	       {
 		  deliver( "Not OK" );
+	       }
 	    }
 	 }
       } 
@@ -604,7 +631,6 @@ void server_thread( const ServerData* s )
    {
       std::cerr << "Exception: " << e.what() << "\n";
    }
-   s->ui->uiView->_client = NULL;
 }
 
 } // namespace mrv

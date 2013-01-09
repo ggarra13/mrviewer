@@ -533,10 +533,11 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 void ImageView::send( std::string m )
 {
 
-  if ( _client )
-  {
-     _client->write( m );
-  }
+   ParserList::iterator i = _clients.begin();
+   ParserList::iterator e = _clients.end();
+
+   if ( i != e )
+      (*i)->write( m );
 }
 
 
@@ -553,7 +554,6 @@ void ImageView::delete_timeout()
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   fltk::GlWindow( X, Y, W, H, l ),
-  _client( NULL ),
   uiMain( NULL ),
   _engine( NULL ),
   _normalize( false ),
@@ -613,8 +613,8 @@ void ImageView::stop_playback()
 
 ImageView::~ImageView()
 {
-   //  delete _client;
-   _client = NULL;
+
+   _clients.clear();
 
   // make sure to stop any playback
   mrv::media fg = foreground();
