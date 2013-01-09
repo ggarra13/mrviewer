@@ -100,6 +100,7 @@ stopped_(false),
 deadline_(io_service),
 Parser( io_service, v )
 {
+   ui->uiView->_clients.push_back( this );
 }
 
 // Called by the user of the client class to initiate the connection process.

@@ -20,6 +20,7 @@
 
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
+#include "core/mrvServer.h"
 
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
@@ -343,7 +344,7 @@ namespace mrv {
        void redo_draw();
 
      public:
-       mrv::Parser*   _client;
+       ParserList   _clients;
 
   protected:
 
