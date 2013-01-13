@@ -97,14 +97,14 @@ void parse_command_line( const int argc, char** argv,
 			 mrv::ViewerUI* ui, 
 			 mrv::LoadList& load,
 			 std::string& host,
-			 std::string& group)
+			 unsigned& port )
 {
   // Some default values
   float gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
   float gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
   std::string db_driver = "postgresql";
   host = "";
-  group = "239.255.0.1";
+  port = 0;
 
   try {
     using namespace TCLAP;
@@ -141,10 +141,10 @@ void parse_command_line( const int argc, char** argv,
 	       _("Override viewer's default client hostname."), false, 
 	       host, "string");
 
-    ValueArg< std::string > 
-    agroup( N_("p"), N_("group"), 
-	     _("Override viewer's default server/client group."), false, 
-	     group, "string");
+    ValueArg< unsigned > 
+    aport( N_("p"), N_("port"), 
+	     _("Set viewer's default server/client port."), false, 
+	     port, "string");
 
     UnlabeledMultiArg< std::string > 
     afiles(_("files"),
@@ -154,7 +154,7 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(again);
     cmd.add(adbdriver);
     cmd.add(ahostname);
-    cmd.add(agroup);
+    cmd.add(aport);
     cmd.add(afiles);
 
     //
@@ -170,7 +170,7 @@ void parse_command_line( const int argc, char** argv,
     gain  = again.getValue();
     db_driver = adbdriver.getValue();
     host = ahostname.getValue();
-    group = agroup.getValue();
+    port = aport.getValue();
 
 
     //

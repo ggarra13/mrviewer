@@ -63,6 +63,11 @@ namespace mrv {
       virtual void print( const char* c );
     };
 
+    struct connbuffer : public logbuffer
+    {
+      virtual void print( const char* c );
+    };
+
 
     struct  errorstream : public std::ostream
     {
@@ -91,7 +96,17 @@ namespace mrv {
       ~infostream() { delete rdbuf(); };
     };
 
+    struct  connstream : public std::ostream
+    {
+      connstream() : std::ostream( new connbuffer )
+      { 
+	flags( std::ios::showpoint | std::ios::right | std::ios::fixed );
+      };
+      ~connstream() { delete rdbuf(); };
+    };
 
+
+    extern connstream  conn;
     extern infostream  info;
     extern warnstream  warn;
     extern errorstream error;
@@ -117,10 +132,14 @@ namespace mrv {
 #define mrvLOG_INFO(m, x)    do {		 \
     mrv::io::info << _("       ") << N_("[") << m << N_("] ") << x; \
   } while(0)
+#define mrvCONN_INFO(m, x)    do {		 \
+    mrv::io::conn << _("{conn} ") << N_("[") << m << N_("] ") << x; \
+  } while(0)
 
 #define LOG_ERROR(x)   mrvLOG_ERROR( kModule, x << std::endl )
 #define LOG_WARNING(x) mrvLOG_WARNING( kModule, x << std::endl )
 #define LOG_INFO(x)    mrvLOG_INFO( kModule, x << std::endl )
+#define LOG_CONN(x)    mrvCONN_INFO( kModule, x << std::endl )
 
 #define DBG(x) do { \
     mrv::io::info << _("mrViewer DBG : ") << x << " at "            \

@@ -93,6 +93,16 @@ namespace mrv {
       std::cout << c;
     }
 
+    void connbuffer::print( const char* c )
+    {
+      // Send string to Log Window in Connection panel
+       if ( ViewerUI::uiConnection )
+	  ViewerUI::uiConnection->uiLog->info( c );
+       
+       std::cout << c;
+    }
+
+    connstream  conn;
     infostream  info;
     warnstream  warn;
     errorstream error;

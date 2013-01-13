@@ -330,7 +330,8 @@ namespace mrv {
 	if ( (*i)->name == name ) {
 	   if ( _reel >= 0 )
 	   {
-	      uiMain->uiView->stop();
+	      if ( uiMain->uiView->playback() != ImageView::kStopped )
+		 uiMain->uiView->stop();
 	   }
 	   _reel = idx;
 	   change_reel();
@@ -447,16 +448,12 @@ namespace mrv {
 	reelname += ".reel";
       }
 
-    std::cerr << "fltk_fopen " << reelname << std::endl;
-
     FILE* f = fltk::fltk_fopen( reelname.c_str(), "w" );
     if (!f)
     {
        mrvALERT("Could not save '" << reelname << "'" );
        return;
     }
-
-    std::cerr << "fprintf " << reelname << std::endl;
 
     fprintf( f, _("#\n"
 		  "# mrViewer Reel \"%s\"\n"
@@ -1169,6 +1166,8 @@ namespace mrv {
       uiMain->uiView->background( mrv::media() );
 
     reel->images.erase( i );
+
+    uiMain->uiView->send("sync_image" );
   }
 
 
@@ -1319,6 +1318,21 @@ namespace mrv {
 	   adjust_timeline();
 	}
 
+
+	if ( m != om )
+	{
+	   std::string buf;
+	   buf = "CurrentReel ";
+	   buf += reel->name;
+	   uiMain->uiView->send( buf );
+
+	   buf = "CurrentImage \"";
+	   buf += m->image()->directory();
+	   buf += "/";
+	   buf += m->image()->name();
+	   buf += "\"";
+	   uiMain->uiView->send( buf );
+	}
       }
   }
 
@@ -1405,7 +1419,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
     unsigned  numImages = 0;
     if ( oldreel ) numImages = oldreel->images.size();
 
-    uiMain->uiView->stop();
+    if ( uiMain->uiView->playback() != ImageView::kStopped )
+       uiMain->uiView->stop();
 
     fltk::Window* main = uiMain->uiMain;
 
@@ -1515,6 +1530,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	      uiMain->uiView->play_forwards();
 	  }
       }
+
+    uiMain->uiView->send( "sync_image" );
 }
 
 
@@ -1778,7 +1795,8 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    uiMain->uiView->stop();
+    if ( uiMain->uiView->playback() != ImageView::kStopped )
+       uiMain->uiView->stop();
 
     unsigned sel = value() + 1;
     if ( sel == 0 ) return;
@@ -1811,7 +1829,8 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    uiMain->uiView->stop();
+    if ( uiMain->uiView->playback() != ImageView::kStopped )
+       uiMain->uiView->stop();
 
     int sel = value() - 1;
     if ( sel < -1 ) return;
@@ -1846,7 +1865,8 @@ void ImageBrowser::load( const stringArray& files,
 
     int ok = fltk::Browser::handle( fltk::PUSH );
 
-    uiMain->uiView->stop();
+    if ( uiMain->uiView->playback() != ImageView::kStopped )
+       uiMain->uiView->stop();
 
     int button = fltk::event_button();
     int sel = value();
@@ -2158,9 +2178,11 @@ void ImageBrowser::load( const stringArray& files,
     timeline()->redraw();
 
 
+    mrv::ImageView* view = uiMain->uiView;
+
     if ( timeline()->edl() )
       {
-	ImageView::Playback playback = uiMain->uiView->playback();
+	ImageView::Playback playback = view->playback();
 
 	// Check if we need to change to a new sequence based on frame
 	 mrv::media m = timeline()->media_at( tframe );
@@ -2179,9 +2201,10 @@ void ImageBrowser::load( const stringArray& files,
 	  }
 
 
-	if ( m != uiMain->uiView->foreground() )
+	if ( m != view->foreground() )
 	  {
-	     uiMain->uiView->stop();
+	     if ( playback != ImageView::kStopped )
+		view->stop();
 
 	     unsigned int i = timeline()->index( f );
 	     f = timeline()->global_to_local( f );
@@ -2189,7 +2212,7 @@ void ImageBrowser::load( const stringArray& files,
 	     change_image(i);
 	     if ( playback != ImageView::kStopped )
 	     {
-	       uiMain->uiView->play( (CMedia::Playback)playback);
+	       view->play( (CMedia::Playback)playback);
 	     }
 
 	  }
@@ -2208,20 +2231,14 @@ void ImageBrowser::load( const stringArray& files,
       {
 	mrv::Reel reel = current_reel();
 	if (!reel) return;
-
-	mrv::MediaList::iterator i = reel->images.begin();
-	mrv::MediaList::iterator e = reel->images.end();
-	for ( ; i != e; ++i )
-	  {
-	    CMedia* img = (*i)->image();
-	    img->seek( f );
-	  }
+ 
+	mrv::media fg = view->foreground();
+	
+	CMedia* img = fg->image();
+	img->seek( f );
       }
 
 
-
-
-    mrv::ImageView* view = uiMain->uiView;
 
     if ( view->playback() != ImageView::kStopped ) return;
 

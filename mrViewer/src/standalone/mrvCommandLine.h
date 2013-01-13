@@ -24,7 +24,7 @@ namespace mrv {
 			   mrv::ViewerUI* ui, 
 			   mrv::LoadList& files,
 			   std::string& host,
-			   std::string& group );
+			   unsigned& port );
 }
 
 

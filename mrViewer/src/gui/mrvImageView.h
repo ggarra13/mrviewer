@@ -343,12 +343,12 @@ namespace mrv {
        void undo_draw();
        void redo_draw();
 
+       void send( std::string msg );
+
      public:
        ParserList   _clients;
 
   protected:
-
-       void send( std::string msg );
 
     void stop_playback();
 
