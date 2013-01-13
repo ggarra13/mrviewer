@@ -73,8 +73,8 @@ int main( const int argc, char** argv )
 
   mrv::LoadList files;
   std::string host;
-  std::string group;
-  mrv::parse_command_line( argc, argv, ui, files, host, group );
+  unsigned port;
+  mrv::parse_command_line( argc, argv, ui, files, host, port );
 
   // mrv::open_license( argv[0] );
   // mrv::checkout_license();
@@ -89,26 +89,25 @@ int main( const int argc, char** argv )
   image_list->load( files );
 
   
-  if (host == "" && group != "")
+  if (host == "" && port != 0)
   {
 
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
-     data->port = 4333;
-     data->group = "4333";
-     // data->host = "localhost";
-     // data->group = group;
+     data->port = port;
      LOG_INFO( "Start server at port " << data->port );
      boost::thread( boost::bind( mrv::server_thread, 
      				 data ) );
   }
-  else
+  else if ( host != "" && port != 0 )
   {
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
      data->host = host;
-     data->port = 4333;
-     data->group = "4333";
+     data->port = port;
+     char buf[128];
+     sprintf( buf, "%d", port );
+     data->group = buf;
 
      LOG_INFO( "Start client at " << host << ", port " << data->port );
      boost::thread( boost::bind( mrv::client_thread, 

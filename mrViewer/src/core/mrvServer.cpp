@@ -38,6 +38,8 @@
 #include "mrvClient.h"
 #include "mrvServer.h"
 #include "mrViewer.h"
+#include "gui/mrvLogDisplay.h"
+#include "gui/mrvIO.h"
 #include "gui/mrvReel.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
@@ -47,15 +49,20 @@ using boost::asio::ip::tcp;
 
 //----------------------------------------------------------------------
 
+namespace {
+const char* const kModule = "server";
+}
+
+
 //----------------------------------------------------------------------
 
 namespace mrv {
 
-typedef boost::shared_ptr<tcp_session> tcp_session_ptr;
 
 Parser::Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v ) :
+connected( false ),
 socket_( io_service ),
-ui( v ) 
+ui( v )
 {
 }
 
@@ -78,17 +85,19 @@ Parser::~Parser()
 
 void Parser::write( std::string s )
 {
-   if ( !ui || !ui->uiView ) return;
+   if ( !ui || !ui->uiView || !connected ) return;
 
    ParserList::iterator i = ui->uiView->_clients.begin();
    ParserList::iterator e = ui->uiView->_clients.end();
-   
+
    for ( ; i != e; ++i )
       (*i)->deliver( s );
 }
 
 bool Parser::parse( const std::string& m )
 {
+   if ( !connected ) return false;
+
    std::istringstream is( m );
    std::string cmd;
    is >> cmd;
@@ -143,7 +152,7 @@ bool Parser::parse( const std::string& m )
 	 {
 	    stringArray files;
 	    files.push_back( imgname );
-	    
+	   
 	    ui->uiReelWindow->uiBrowser->load( files, false );
 	 }
       }
@@ -161,6 +170,7 @@ bool Parser::parse( const std::string& m )
 	 mrv::MediaList::iterator j = r->images.begin();
 	 mrv::MediaList::iterator e = r->images.end();
 	 int idx = 0;
+	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
 	    std::string fileroot = (*j)->image()->directory();
@@ -168,9 +178,21 @@ bool Parser::parse( const std::string& m )
 	    fileroot += (*j)->image()->name();
 	    if ( (*j)->image() && fileroot == imgname )
 	    {
+	       ParserList c = ui->uiView->_clients;
+	       ui->uiView->_clients.clear();
 	       ui->uiReelWindow->uiBrowser->change_image( idx );
+	       ui->uiView->_clients = c;
+	       found = true;
 	       break;
 	    }
+	 }
+
+	 if (! found )
+	 {
+	    stringArray files;
+	    files.push_back( imgname );
+	   
+	    ui->uiReelWindow->uiBrowser->load( files, false );
 	 }
       }
 
@@ -204,8 +226,6 @@ bool Parser::parse( const std::string& m )
 	    cmd = buf;
 	    deliver( cmd );
 	 }
-
-
       }
 
       mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
@@ -220,7 +240,9 @@ bool Parser::parse( const std::string& m )
       if ( img )
       {
 	 cmd = "CurrentImage \"";
-	 cmd += img->image()->fileroot();
+	 cmd += img->image()->directory();
+	 cmd += "/";
+	 cmd += img->image()->name();
 	 cmd += "\"";
 	 deliver( cmd );
       }
@@ -314,7 +336,8 @@ tcp::socket& tcp_session::socket()
 // Called by the server object to initiate the four actors.
 void tcp_session::start()
 {
-   
+   connected = true;
+
    ui->uiView->_clients.push_back( this );
 
    start_read();
@@ -346,13 +369,14 @@ void tcp_session::deliver(const std::string msg)
    
    // Signal that the output queue contains messages. Modifying the expiry
    // will wake the output actor, if it is waiting on the timer.
-   //non_empty_output_queue_.expires_at(boost::posix_time::neg_infin);  
-   non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));  
+   non_empty_output_queue_.expires_at(boost::posix_time::neg_infin);  
+   //non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));  
 }
 
 
 void tcp_session::stop()
 {
+   connected = false;
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
    input_deadline_.cancel();
@@ -395,7 +419,7 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 	    {
 	       if ( parse( msg ) )
 	       {
-		  write( msg );
+		  write( msg );  // send message to all clients
 		  deliver( "OK" );
 	       }
 	       else
@@ -414,7 +438,7 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
    }
    else
    {
-      std::cerr << "ERROR handle_read " << ec << std::endl;
+      LOG_ERROR( "ERROR handle_read " << ec );
       stop();
    }
 }
@@ -433,11 +457,12 @@ void tcp_session::await_output()
       // message is added, the timer will be modified and the actor will
       // wake.
       
+
       non_empty_output_queue_.async_wait(
 					 boost::bind(&tcp_session::await_output,
 						     shared_from_this())
-					 );
-      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin); 
+					 ); 
+      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
    }
    else
    {
@@ -562,53 +587,59 @@ void tcp_session::check_deadline(deadline_timer* deadline)
 //
 
 
-class server
+server::server(boost::asio::io_service& io_service,
+	       const tcp::endpoint& listen_endpoint,
+	       mrv::ViewerUI* v)
+: io_service_(io_service),
+  acceptor_(io_service, listen_endpoint),
+  ui_( v )
 {
-public:
-  server(boost::asio::io_service& io_service,
-	 const tcp::endpoint& listen_endpoint,
-	 mrv::ViewerUI* v)
-    : io_service_(io_service),
-      acceptor_(io_service, listen_endpoint),
-      ui_( v )
-  {
-     start_accept();
-  }
+   start_accept();
+}
 
-  void start_accept()
-  {
-     //    tcp_session_ptr new_session(new tcp_session(io_service_, ui_));
-     tcp_session_ptr new_session(
-				 boost::make_shared<tcp_session>(
-								 boost::ref(
-									    io_service_
-									    ),
-								 boost::ref(ui_)
-								 )
-				 );
-     
+void server::start_accept()
+{
+   //    tcp_session_ptr new_session(new tcp_session(io_service_, ui_));
+   tcp_session_ptr new_session(
+			       boost::make_shared<tcp_session>(
+							       boost::ref(
+									  io_service_
+									  ),
+							       boost::ref(ui_)
+							       )
+			       );
+   
 
-    acceptor_.async_accept(new_session->socket(),
-			   boost::bind(&server::handle_accept, this, 
-				       new_session, _1));
-  }
+   acceptor_.async_accept(new_session->socket(),
+			  boost::bind(&server::handle_accept, this, 
+				      new_session, _1));
+}
 
-  void handle_accept(tcp_session_ptr session,
-		     const boost::system::error_code& ec)
-  {
-    if (!ec)
-    {
+void server::handle_accept(tcp_session_ptr session,
+			   const boost::system::error_code& ec)
+{
+   if (!ec)
+   {
       session->start();
-    }
+   }
+   
+   start_accept();
+}
 
-    start_accept();
-  }
+ConnectionUI* ViewerUI::uiConnection = NULL;
 
-private:
-  boost::asio::io_service& io_service_;
-  tcp::acceptor acceptor_;
-  mrv::ViewerUI* ui_;
-};
+void server::create(mrv::ViewerUI* ui)
+{
+   unsigned port = ui->uiConnection->uiServerPort->value();
+   ServerData* data = new ServerData;
+   data->port = port;
+   data->ui = ui;
+
+   boost::thread t( boost::bind( mrv::server_thread, 
+				 data ) );
+}
+
+
 
 //----------------------------------------------------------------------
 
@@ -623,13 +654,19 @@ void server_thread( const ServerData* s )
 
       server rp(io_service, listen_endpoint, s->ui);
 
+      s->ui->uiConnection->uiServerGroup->deactivate();
+      s->ui->uiConnection->uiClientGroup->deactivate();
+
+      LOG_CONN( "Created server at port " << s->port );
+
       delete s;
+
 
       io_service.run();
    }
    catch (std::exception& e)
    {
-      std::cerr << "Exception: " << e.what() << "\n";
+      LOG_ERROR( "Exception: " << e.what() );
    }
 }
 

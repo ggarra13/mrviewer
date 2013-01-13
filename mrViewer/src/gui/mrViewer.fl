@@ -19,6 +19,10 @@ decl {\#include "core/stubImage.h"} {}
 
 decl {\#include "core/mrvColorSpaces.h"} {} 
 
+decl {\#include "core/mrvServer.h"} {} 
+
+decl {\#include "core/mrvClient.h"} {} 
+
 decl {\#include "gui/mrvMainWindow.h"} {} 
 
 decl {\#include "gui/mrvImageView.h"} {} 
@@ -152,6 +156,8 @@ namespace mrv {open
   decl {class HotkeyUI;} {public
   }
   decl {class PaintUI;} {public
+  }
+  decl {class ConnectionUI;} {public
   }
   class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
@@ -1933,11 +1939,12 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class LogUI {} {
+  class LogUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
-        label {Log Messages}
+        label {Log Messages} open
         xywh {487 205 635 250} hide resizable
         extra_code {o->child_of( main->uiMain );}
       } {
@@ -2004,8 +2011,8 @@ o->child_of( main->uiMain );} modal
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label Hotkeys open
-        xywh {361 212 450 400} hide resizable
+        label Hotkeys
+        xywh {364 235 450 400} hide resizable
         extra_code {// Make the window transient
 o->child_of( main->uiMain );} modal
       } {
@@ -2135,6 +2142,74 @@ o->redraw();}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
+  class ConnectionUI {open
+  } {
+    Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label Connections open
+        xywh {398 361 450 400} resizable
+        extra_code {// Make the window transient
+o->child_of( main->uiMain );} modal visible
+      } {
+        {fltk::Group} {} {open
+          xywh {0 5 445 390} vertical
+        } {
+          {fltk::Group} uiServerGroup {open
+            xywh {10 10 405 75} box ROUNDED_BOX
+          } {
+            {fltk::Widget} {} {
+              label Server
+              xywh {55 30 65 25} box FLAT_BOX
+            }
+            {fltk::ValueInput} uiServerPort {
+              label Port
+              xywh {155 30 70 25} step 1 value 4333
+            }
+            {fltk::Button} {} {
+              label Create
+              user_data main user_data_type {mrv::ViewerUI*}
+              callback {mrv::server::create(v);}
+              xywh {245 30 65 25}
+            }
+          }
+          {fltk::Group} uiClientGroup {open
+            xywh {10 105 405 70} box ROUNDED_BOX
+          } {
+            {fltk::Input} uiClientServer {
+              label Server
+              xywh {55 20 145 30}
+              extra_code {o->text("localhost");}
+            }
+            {fltk::ValueInput} uiClientPort {
+              label Port selected
+              xywh {235 20 70 25} step 1 value 4333
+            }
+            {fltk::Button} {} {
+              label Connect
+              user_data main user_data_type {mrv::ViewerUI*}
+              callback {mrv::client::create(v);}
+              xywh {315 20 65 25}
+            }
+          }
+          {fltk::Group} {} {open
+            xywh {15 185 400 150} box ROUNDED_BOX
+          } {
+            {fltk::TextDisplay} uiLog {
+              xywh {10 5 380 140} box FLAT_BOX
+              class {mrv::LogDisplay}
+            }
+          }
+        }
+      }
+    }
+    Function {ConnectionUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~ConnectionUI()} {} {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+  }
   class ViewerUI {open
   } {
     decl {static PreferencesUI* uiPrefs;} {public
@@ -2146,6 +2221,8 @@ o->redraw();}
     decl {static ICCProfileListUI* uiICCProfiles;} {public
     }
     decl {static HotkeyUI* uiHotkey;} {public
+    }
+    decl {static ConnectionUI* uiConnection;} {public
     }
     decl {ReelUI* uiReelWindow;} {public
     }
@@ -2169,19 +2246,19 @@ o->redraw();}
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {399 231 640 530} when CHANGED resizable
+        xywh {411 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
         } {
-          {fltk::Group} uiTopBar {
+          {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W
+              label W open
               tooltip {Opens different windows}
               xywh {5 5 20 20}
             } {
@@ -2222,6 +2299,12 @@ v->uiView->update_color_info();}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiICCProfiles->fill();
 v->uiICCProfiles->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label Connections
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiConnection->uiMain->child_of( v->uiMain );
+v->uiConnection->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label Preferences
@@ -3015,6 +3098,7 @@ if (!uiLog) uiLog   = new LogUI(this);
 //uiDatabase = new DatabaseUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 
+if (!uiConnection) uiConnection = new ConnectionUI( this );
 
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );
@@ -3022,12 +3106,10 @@ mrv::Preferences prefs( uiPrefs );
 if (!uiHotkey) uiHotkey = new HotkeyUI(this);
 if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);} {}
     }
-    Function {ViewerUI()} {open
-    } {
+    Function {ViewerUI()} {} {
       code {uiMain = make_window();} {}
     }
-    Function {~ViewerUI()} {open
-    } {
+    Function {~ViewerUI()} {} {
       code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
@@ -3037,8 +3119,7 @@ delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiMain; uiMain = NULL;
-delete uiReelWindow; uiReelWindow = NULL;} {selected
-      }
+delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
 } 

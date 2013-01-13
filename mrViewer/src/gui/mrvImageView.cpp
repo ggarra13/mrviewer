@@ -379,20 +379,25 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     }
   else if ( idx == 7 )
     {
+      uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
+      uiMain->uiConnection->uiMain->show();
+    }
+  else if ( idx == 8 )
+    {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
     }
-  else if ( idx == 8 )
+  else if ( idx == 9 )
     {
       uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
       uiMain->uiHotkey->uiMain->show();
     }
-  else if ( idx == 9 )
+  else if ( idx == 10 )
     {
       uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
       uiMain->uiLog->uiMain->show();
     }
-  else if ( idx == 10 )
+  else if ( idx == 11 )
     {
       uiMain->uiAbout->uiMain->show();
     }
@@ -537,7 +542,10 @@ void ImageView::send( std::string m )
    ParserList::iterator e = _clients.end();
 
    if ( i != e )
-      (*i)->write( m );
+   {
+      LOG_CONN( m );
+      (*i)->write( m );  //<- this line writes all clients
+   }
 }
 
 
@@ -605,23 +613,22 @@ void ImageView::stop_playback()
   mrv::media bg = background();
   if ( bg && !bg->image()->stopped()) bg->image()->stop();
 
-
-  send( "stop" );
-  seek( timeline()->value() );
 }
 
 
 ImageView::~ImageView()
 {
+   ParserList::iterator i = _clients.begin();
+   ParserList::iterator e = _clients.end();
+   for ( ; i != e; ++i )
+   {
+      (*i)->connected = false;
+   }
 
    _clients.clear();
 
   // make sure to stop any playback
-  mrv::media fg = foreground();
-  if ( fg && !fg->image()->stopped()) fg->image()->stop();
-
-  mrv::media bg = background();
-  if ( bg && !bg->image()->stopped()) bg->image()->stop();
+   stop_playback();
 
   delete_timeout();
   delete _engine; _engine = NULL;
@@ -3805,6 +3812,8 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 { 
+   if ( playback() == kStopped ) return;
+
   _playback = kStopped;
   _last_fps = 0.0;
   _real_fps = 0.0;
@@ -3814,6 +3823,8 @@ void ImageView::stop()
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
+  send( "stop" );
+  seek( timeline()->value() );
  
   redraw();
   thumbnails();

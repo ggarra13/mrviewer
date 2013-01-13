@@ -23,6 +23,7 @@
 #include "mrvServer.h"
 #include "mrvClient.h"
 #include "mrViewer.h"
+#include "gui/mrvIO.h"
 #include "mrvImageView.h"
 
 using boost::asio::deadline_timer;
@@ -109,6 +110,7 @@ void client::start(tcp::resolver::iterator endpoint_iter)
 {
    // Start the connect actor.
    start_connect(endpoint_iter);
+   connected = true;
    
    // Start the deadline actor. You will note that we're not setting any
    // particular deadline here. Instead, the connect and input actors will
@@ -121,6 +123,7 @@ void client::start(tcp::resolver::iterator endpoint_iter)
 // response to graceful termination or an unrecoverable error.
 void client::stop()
 {
+   connected = false;
    stopped_ = true;
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
@@ -133,7 +136,7 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 {
    if (endpoint_iter != tcp::resolver::iterator())
    {
-      std::cout << "Trying " << endpoint_iter->endpoint() << "...\n";
+      LOG_INFO( "Trying " << endpoint_iter->endpoint() << "..." );
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
@@ -162,8 +165,10 @@ void client::handle_connect(const boost::system::error_code& ec,
    // the timeout handler must have run first.
    if (!socket_.is_open())
    {
-      std::cout << "Connect timed out\n";
+      LOG_INFO( "Connect timed out." );
       
+      connected = false;
+
       // Try the next available endpoint.
       start_connect(++endpoint_iter);
    }
@@ -171,7 +176,10 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Check if the connect operation failed before the deadline expired.
    else if (ec)
    {
-      std::cout << "Connect error: " << ec.message() << "\n";
+      LOG_CONN( "Connect error: " << ec.message() );
+      LOG_ERROR( "Connect error: " << ec.message() );
+
+      connected = false;
 
       // We need to close the socket used in the previous connection attempt
       // before starting a new one.
@@ -183,7 +191,13 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Otherwise we have successfully established a connection.
    else
    {
-      std::cout << "Connected to " << endpoint_iter->endpoint() << "\n";
+      LOG_INFO( "Connected to " << endpoint_iter->endpoint() );
+      LOG_CONN( "Connected to " << endpoint_iter->endpoint() );
+
+      connected = true;
+
+      ui->uiConnection->uiServerGroup->deactivate();
+      ui->uiConnection->uiClientGroup->deactivate();
 
       write("sync_image");
 
@@ -256,7 +270,7 @@ void client::handle_read(const boost::system::error_code& ec)
     }
     else
     {
-       std::cout << "Error on receive: " << ec.message() << "\n";
+       LOG_ERROR( "Error on receive: " << ec.message() );
        
        stop();
     }
@@ -286,7 +300,7 @@ void client::handle_write(const boost::system::error_code& ec)
    }
    else
    {
-      std::cout << "Error on heartbeat: " << ec.message() << "\n";
+      LOG_ERROR( "Error on send: " << ec.message() );
       
       stop();
    }
@@ -320,6 +334,20 @@ void client::check_deadline()
 }
 
 
+void client::create(mrv::ViewerUI* ui)
+{
+   unsigned port = ui->uiConnection->uiClientPort->value();
+   ServerData* data = new ServerData;
+   data->port = port;
+   char buf[128];
+   sprintf( buf, "%d", port );
+   data->host = ui->uiConnection->uiClientServer->text();
+   data->group = buf;
+   data->ui = ui;
+
+   boost::thread t( boost::bind( mrv::client_thread, 
+				 data ) );
+}
 
 void client_thread( const ServerData* s )
 {
@@ -331,7 +359,6 @@ void client_thread( const ServerData* s )
     client c(io_service, s->ui);
     c.start(r.resolve(tcp::resolver::query(s->host, s->group)));
 
-
     delete s;
 
     io_service.run();
@@ -339,7 +366,7 @@ void client_thread( const ServerData* s )
    }
    catch (std::exception& e)
    {
-      std::cerr << "Client Exception: " << e.what() << std::endl;
+      LOG_ERROR( "Client Exception: " << e.what() );
    }
 }
 

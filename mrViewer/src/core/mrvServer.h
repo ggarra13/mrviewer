@@ -36,6 +36,7 @@ class Parser
      virtual void deliver( std::string m ) = 0;
 
    public:
+     bool connected;
      tcp::socket socket_;
      mrv::ViewerUI* ui;
 };
@@ -73,6 +74,28 @@ class tcp_session : public boost::enable_shared_from_this< tcp_session >,
      deadline_timer output_deadline_;
      std::deque< std::string > output_queue_;
 
+};
+
+typedef boost::shared_ptr<tcp_session> tcp_session_ptr;
+
+class server
+{
+public:
+     server(boost::asio::io_service& io_service,
+	    const tcp::endpoint& listen_endpoint,
+	    mrv::ViewerUI* v);
+
+     void start_accept();
+
+     void handle_accept(tcp_session_ptr session,
+			const boost::system::error_code& ec);
+
+     static void create(mrv::ViewerUI* ui);
+
+private:
+  boost::asio::io_service& io_service_;
+  tcp::acceptor acceptor_;
+  mrv::ViewerUI* ui_;
 };
 
 struct ServerData

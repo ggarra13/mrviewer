@@ -1113,6 +1113,16 @@ namespace mrv {
       }
 
     // this has default_style
+    style = fltk::Style::find( "ValueInput" );
+    if ( style )
+      {
+	 style->color( bgcolor );
+	 // style->textcolor( textcolor );
+	 // style->buttoncolor( selectioncolor );
+	 // style->labelcolor( textcolor );
+      }
+
+    // this has default_style
     style = fltk::Style::find( "InputBrowser" );
     if ( style )
       {
