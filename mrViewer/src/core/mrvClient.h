@@ -27,7 +27,7 @@ class client : public Parser
 	    mrv::ViewerUI* v); 
 
      void start(tcp::resolver::iterator endpoint_iter);
-     void stop();
+     virtual void stop();
      bool stopped() { return stopped_; }
      void start_connect(tcp::resolver::iterator endpoint_iter);
      void handle_connect(const boost::system::error_code& ec,
@@ -40,6 +40,7 @@ class client : public Parser
      void deliver( std::string m );
 
      static void create( mrv::ViewerUI* main );
+     static void remove( mrv::ViewerUI* main );
 
 private:
   bool stopped_;

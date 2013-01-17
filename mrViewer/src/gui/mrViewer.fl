@@ -2148,15 +2148,15 @@ o->redraw();}
     } {
       {fltk::Window} uiMain {
         label Connections open
-        xywh {398 361 450 400} resizable
+        xywh {401 361 450 400} hide resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} modal visible
+o->child_of( main->uiMain );} modal
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
         } {
           {fltk::Group} uiServerGroup {open
-            xywh {10 10 405 75} box ROUNDED_BOX
+            xywh {15 10 400 75} box ROUNDED_BOX
           } {
             {fltk::Widget} {} {
               label Server
@@ -2174,7 +2174,7 @@ o->child_of( main->uiMain );} modal visible
             }
           }
           {fltk::Group} uiClientGroup {open
-            xywh {10 105 405 70} box ROUNDED_BOX
+            xywh {15 105 400 70} box ROUNDED_BOX
           } {
             {fltk::Input} uiClientServer {
               label Server
@@ -2182,7 +2182,7 @@ o->child_of( main->uiMain );} modal visible
               extra_code {o->text("localhost");}
             }
             {fltk::ValueInput} uiClientPort {
-              label Port selected
+              label Port
               xywh {235 20 70 25} step 1 value 4333
             }
             {fltk::Button} {} {
@@ -2193,11 +2193,27 @@ o->child_of( main->uiMain );} modal visible
             }
           }
           {fltk::Group} {} {open
-            xywh {15 185 400 150} box ROUNDED_BOX
+            xywh {15 235 400 150} box ROUNDED_BOX
           } {
             {fltk::TextDisplay} uiLog {
               xywh {10 5 380 140} box FLAT_BOX
               class {mrv::LogDisplay}
+            }
+          }
+          {fltk::Group} uiDisconnectGroup {open
+            xywh {15 180 400 50} deactivate box ROUNDED_BOX
+          } {
+            {fltk::Button} uiDisconnectServer {
+              label {Disconnect Server}
+              user_data main user_data_type {mrv::ViewerUI*}
+              callback {mrv::server::remove( v );}
+              xywh {20 8 130 35}
+            }
+            {fltk::Button} uiDisconnectClient {
+              label {Disconnect Client}
+              user_data main user_data_type {mrv::ViewerUI*}
+              callback {mrv::client::remove( v );} selected
+              xywh {250 7 130 35}
             }
           }
         }

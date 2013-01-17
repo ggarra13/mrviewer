@@ -38,6 +38,7 @@ namespace fs = boost::filesystem;
 #include "core/Sequence.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvThread.h"
+#include "core/mrStackTrace.h"
 
 #include "db/mrvDatabase.h"
 
@@ -369,13 +370,15 @@ namespace mrv {
    */
   mrv::media ImageBrowser::current_image()
   {
-    mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return mrv::media();
+     return uiMain->uiView->foreground();
 
-    int idx = value(); 
-    if ( idx < 0 ) return mrv::media();
+    // mrv::Reel reel = current_reel();
+    // if ( reel == NULL ) return mrv::media();
 
-    return reel->images[idx];
+    // int idx = value(); 
+    // if ( idx < 0 ) return mrv::media();
+
+    // return reel->images[idx];
   }
 
   /** 
@@ -383,13 +386,15 @@ namespace mrv {
    */
   const mrv::media ImageBrowser::current_image() const
   {
-    mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return mrv::media();
+     return uiMain->uiView->foreground();
+     
+    // mrv::Reel reel = current_reel();
+    // if ( reel == NULL ) return mrv::media();
 
-    int idx = value(); 
-    if ( idx < 0 ) return mrv::media();
+    // int idx = value(); 
+    // if ( idx < 0 ) return mrv::media();
 
-    return reel->images[idx];
+    // return reel->images[idx];
   }
 
   /** 
@@ -1041,6 +1046,7 @@ namespace mrv {
 
     if ( reel->images.size() == 1 )
       {
+	 std::cerr << "ADD" << std::endl;
 	value(0); change_image();
       }
 
@@ -1167,7 +1173,7 @@ namespace mrv {
 
     reel->images.erase( i );
 
-    uiMain->uiView->send("sync_image" );
+    // uiMain->uiView->send("sync_image" );
   }
 
 
@@ -1218,7 +1224,7 @@ namespace mrv {
 
     reel->images.insert( reel->images.begin() + idx, newm );
 
-    // Make sure no alert message if printed
+    // Make sure no alert message is printed
     mrv::alert( NULL );
 
     return newm;
@@ -1298,29 +1304,29 @@ namespace mrv {
 	      audio_idx = om->image()->audio_stream();
 	   }
 	}
-	
 
 	mrv::media m = reel->images[sel];
 	assert( m != NULL );
 
-	uiMain->uiView->foreground( m );
-
-	if ( timeline()->edl() )
-	{
-	   if ( sub_idx < m->image()->number_of_subtitle_streams() )
-	      m->image()->subtitle_stream( sub_idx );
-	   
-	   if ( audio_idx < m->image()->number_of_audio_streams() )
-	      m->image()->audio_stream( audio_idx );
-	}
-	else
-	{
-	   adjust_timeline();
-	}
-
-
 	if ( m != om )
 	{
+
+	   uiMain->uiView->foreground( m );
+
+	   if ( timeline()->edl() )
+	   {
+	      if ( sub_idx < m->image()->number_of_subtitle_streams() )
+		 m->image()->subtitle_stream( sub_idx );
+	      
+	      if ( audio_idx < m->image()->number_of_audio_streams() )
+		 m->image()->audio_stream( audio_idx );
+	   }
+	   else
+	   {
+	      adjust_timeline();
+	   }
+
+
 	   std::string buf;
 	   buf = "CurrentReel ";
 	   buf += reel->name;
@@ -1337,10 +1343,23 @@ namespace mrv {
   }
 
 
+void ImageBrowser::value( int idx )
+{
+   fltk::Browser::value( idx );
+}
+
+int ImageBrowser::value() const
+{
+   return fltk::Browser::value();
+}
+
   void ImageBrowser::change_image(unsigned i)
   { 
-     value(i); 
-     change_image(); 
+     if ( value() != i )
+     {
+	value(i); 
+	change_image(); 
+     }
   }
 
   /** 
@@ -1530,8 +1549,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	      uiMain->uiView->play_forwards();
 	  }
       }
-
-    uiMain->uiView->send( "sync_image" );
 }
 
 
@@ -1802,7 +1819,6 @@ void ImageBrowser::load( const stringArray& files,
     if ( sel == 0 ) return;
 
     if ( sel >= reel->images.size() ) sel = 0;
-
 
     value(sel);
     change_image();
@@ -2157,7 +2173,9 @@ void ImageBrowser::load( const stringArray& files,
       }
     int old_sel = value();
     int ok = fltk::Browser::handle( event );
-    if ( value() != old_sel ) change_image();
+    if ( value() != old_sel ) {
+       change_image();
+    }
     return ok;
   }
 

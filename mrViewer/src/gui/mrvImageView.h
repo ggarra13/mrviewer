@@ -40,6 +40,7 @@ namespace mrv {
   class DrawEngine;
   class Event;
   class Parser;
+  class server;
 
   class ImageView : public fltk::GlWindow
   {
@@ -347,6 +348,7 @@ namespace mrv {
 
      public:
        ParserList   _clients;
+       server*      _server;
 
   protected:
 

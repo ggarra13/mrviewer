@@ -8,8 +8,8 @@
 
 #include <fltk/draw.h>
 
+#include "gui/mrvImageView.h"
 #include "video/mrvGLShape.h"
-
 
 namespace mrv {
 
@@ -65,6 +65,25 @@ void GLPathShape::draw()
 
 }
 
+
+void GLPathShape::send( mrv::ImageView* v )
+{
+   std::string str = "GLPathShape ";
+   	 
+   PointList::iterator i = pts.begin();
+   PointList::iterator e = pts.end();
+
+   std::ostringstream stream;
+   for ( ; i != e; ++i )
+   {
+      stream << (*i) << " ";
+   }
+   stream << std::endl;
+   
+   str += stream.str();
+
+   v->send( str );
+}
 
 void GLErasePathShape::draw()
 {

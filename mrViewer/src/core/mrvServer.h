@@ -34,6 +34,7 @@ class Parser
      bool parse( const std::string& m );
      void write( std::string s );
      virtual void deliver( std::string m ) = 0;
+     virtual void stop() = 0;
 
    public:
      bool connected;
@@ -61,7 +62,7 @@ class tcp_session : public boost::enable_shared_from_this< tcp_session >,
 
      void deliver( const std::string m );
 
-     void stop();
+     virtual void stop();
 
      void start_write();
      void handle_write(const boost::system::error_code& ec);
@@ -85,12 +86,15 @@ public:
 	    const tcp::endpoint& listen_endpoint,
 	    mrv::ViewerUI* v);
 
+     ~server();
+
      void start_accept();
 
      void handle_accept(tcp_session_ptr session,
 			const boost::system::error_code& ec);
 
      static void create(mrv::ViewerUI* ui);
+     static void remove(mrv::ViewerUI* ui);
 
 private:
   boost::asio::io_service& io_service_;
