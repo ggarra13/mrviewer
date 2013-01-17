@@ -136,7 +136,7 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 {
    if (endpoint_iter != tcp::resolver::iterator())
    {
-      LOG_INFO( "Trying " << endpoint_iter->endpoint() << "..." );
+      LOG_CONN( "Trying " << endpoint_iter->endpoint() << "..." );
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
@@ -165,7 +165,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // the timeout handler must have run first.
    if (!socket_.is_open())
    {
-      LOG_INFO( "Connect timed out." );
+      LOG_CONN( "Connect timed out." );
       
       connected = false;
 
@@ -177,8 +177,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    else if (ec)
    {
       LOG_CONN( "Connect error: " << ec.message() );
-      LOG_ERROR( "Connect error: " << ec.message() );
-
+ 
       connected = false;
 
       // We need to close the socket used in the previous connection attempt
@@ -191,7 +190,6 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Otherwise we have successfully established a connection.
    else
    {
-      LOG_INFO( "Connected to " << endpoint_iter->endpoint() );
       LOG_CONN( "Connected to " << endpoint_iter->endpoint() );
 
       connected = true;
@@ -242,11 +240,10 @@ void client::handle_read(const boost::system::error_code& ec)
 	  {
     	     if ( line == "OK" || line == "" )
 	     {
-		// std::cout << "OK" << std::endl;
 	     }
 	     else if ( line == "Not OK" )
 	     {
-		std::cout << "Not OK" << std::endl;
+		LOG_CONN( "Not OK" );
 	     }
 	     else
 	     {
@@ -270,7 +267,7 @@ void client::handle_read(const boost::system::error_code& ec)
     }
     else
     {
-       LOG_ERROR( "Error on receive: " << ec.message() );
+       LOG_CONN( "Error on receive: " << ec.message() );
        
        stop();
     }
@@ -300,7 +297,7 @@ void client::handle_write(const boost::system::error_code& ec)
    }
    else
    {
-      LOG_ERROR( "Error on send: " << ec.message() );
+      LOG_CONN( "Error on send: " << ec.message() );
       
       stop();
    }
@@ -348,6 +345,22 @@ void client::create(mrv::ViewerUI* ui)
    boost::thread t( boost::bind( mrv::client_thread, 
 				 data ) );
 }
+
+void client::remove( mrv::ViewerUI* ui )
+{
+   ParserList::iterator i = ui->uiView->_clients.begin();
+   ParserList::iterator e = ui->uiView->_clients.end();
+
+   for ( ; i != e; ++i )
+   {
+      (*i)->stop();
+   }
+
+   ui->uiConnection->uiClientGroup->activate();
+
+   ui->uiView->_clients.clear();
+}
+
 
 void client_thread( const ServerData* s )
 {

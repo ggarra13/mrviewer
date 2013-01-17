@@ -11,6 +11,8 @@
 namespace mrv
 {
 
+class ImageView;
+
 class Point
 {
    public:
@@ -28,7 +30,6 @@ class Point
      x( b.x ), y( b.y )
      {
      }
-
 
      double x, y;
 };
@@ -62,6 +63,7 @@ class GLPathShape : public GLShape
      ~GLPathShape() {};
      virtual void draw();
 
+     virtual void send( mrv::ImageView* v );
 
      typedef std::vector< Point > PointList;
      PointList pts;

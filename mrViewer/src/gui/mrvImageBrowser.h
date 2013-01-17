@@ -110,6 +110,9 @@ namespace mrv
 
     void handle_dnd();
 
+       void value( int idx );
+       int value() const;
+
     virtual void draw();
     virtual int handle( int event );
 

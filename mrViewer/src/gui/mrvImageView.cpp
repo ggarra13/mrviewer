@@ -1388,11 +1388,16 @@ void ImageView::leftMouseDown(int x, int y)
 	 unsigned int W = pic->width();
 	 unsigned int H = pic->height();
 
+	 std::string str;
 	 GLPathShape* s;
 	 if ( _mode == kDraw )
+	 {
 	    s = new GLPathShape;
+	 }
 	 else if ( _mode == kErase )
+	 {
 	    s = new GLErasePathShape;
+	 }
 
 	 uchar r, g, b;
 	 fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
@@ -1410,6 +1415,9 @@ void ImageView::leftMouseDown(int x, int y)
 
 	 Point p( xf, yf );
 	 s->pts.push_back( p );
+
+
+	 send( str );
 
 	 _shapes.push_back( mrv::shape_type_ptr(s) );
 	 uiMain->uiPaint->uiUndoDraw->activate();

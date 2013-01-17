@@ -1,27 +1,12 @@
 
-BEGIN_NAMESPACE( mr )
 
-class ExceptionHandler
-{
-   public:
-     ExceptionHandler();
-     ~ExceptionHandler();
-     
-     static void ShowStack();
-   private:
-     static void demangle( const char* name );
-     static void bt_sighandler(int sig, siginfo_t *info,
-			       void *secret);
-     void install_signal_handler();
-     void restore_signal_handler();
+#ifndef mrStackTrace_h
+#define mrStackTrace_h
 
-     struct sigaction oldSIGSEGV;
-     struct sigaction oldSIGUSR1;
-     struct sigaction oldSIGBUS;
-     struct sigaction oldSIGILL;
-     struct sigaction oldSIGFPE;
-};
+#if defined(_WIN32) || defined(_WIN64)
+#include "mrStackTrace_win32.h"
+#else
+#include "mrStackTrace_linux.h"
+#endif
 
-END_NAMESPACE( mr )
-
-extern mr::ExceptionHandler gExceptionHandler;
+#endif // mrStackTrace_h

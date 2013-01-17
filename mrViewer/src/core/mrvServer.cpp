@@ -106,7 +106,15 @@ bool Parser::parse( const std::string& m )
 
    static mrv::Reel r;
 
-   if ( cmd == "Reel" )
+   if ( cmd == "GLPathShape" )
+   {
+      Point xy;
+      while (is.get() != '\n' )
+      {
+	 is >> xy.x >> xy.y;
+      }
+   }
+   else if ( cmd == "Reel" )
    {
       std::string name;
       is >> name;
@@ -120,7 +128,12 @@ bool Parser::parse( const std::string& m )
    {
       std::string name;
       is >> name;
-      r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
+
+      mrv::Reel now = ui->uiReelWindow->uiBrowser->current_reel();
+      if ( now->name != name )
+      {
+	 r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
+      }
       if (!r) {
 	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
       }
@@ -419,7 +432,11 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 	    {
 	       if ( parse( msg ) )
 	       {
-		  write( msg );  // send message to all clients
+		  // send message to all clients
+		  // We need to do this to update multiple clients.
+		  // Note that the original client that sent the
+		  // message will get the message back before the OK.
+		  write( msg );  
 		  deliver( "OK" );
 	       }
 	       else
@@ -588,13 +605,23 @@ void tcp_session::check_deadline(deadline_timer* deadline)
 
 
 server::server(boost::asio::io_service& io_service,
-	       const tcp::endpoint& listen_endpoint,
+	       const tcp::endpoint& endpoint,
 	       mrv::ViewerUI* v)
 : io_service_(io_service),
-  acceptor_(io_service, listen_endpoint),
+  acceptor_(io_service),
   ui_( v )
 {
+   
+   acceptor_.open(endpoint.protocol());
+   acceptor_.set_option(tcp::acceptor::reuse_address(true));
+   acceptor_.bind(endpoint);
+   acceptor_.listen();
+
    start_accept();
+}
+
+server::~server()
+{
 }
 
 void server::start_accept()
@@ -639,6 +666,21 @@ void server::create(mrv::ViewerUI* ui)
 				 data ) );
 }
 
+void server::remove( mrv::ViewerUI* ui )
+{
+   ParserList::iterator i = ui->uiView->_clients.begin();
+   ParserList::iterator e = ui->uiView->_clients.end();
+
+   for ( ; i != e; ++i )
+   {
+      (*i)->stop();
+   }
+
+   ui->uiConnection->uiServerGroup->activate();
+
+   delete ui->uiView->_server;
+   ui->uiView->_clients.clear();
+}
 
 
 //----------------------------------------------------------------------
@@ -652,10 +694,12 @@ void server_thread( const ServerData* s )
 
       tcp::endpoint listen_endpoint(tcp::v4(), s->port);
 
-      server rp(io_service, listen_endpoint, s->ui);
+      server* rp = new server(io_service, listen_endpoint, s->ui);
 
+      s->ui->uiView->_server = rp;
       s->ui->uiConnection->uiServerGroup->deactivate();
       s->ui->uiConnection->uiClientGroup->deactivate();
+      s->ui->uiConnection->uiDisconnectGroup->activate();
 
       LOG_CONN( "Created server at port " << s->port );
 
