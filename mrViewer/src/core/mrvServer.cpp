@@ -109,10 +109,52 @@ bool Parser::parse( const std::string& m )
    if ( cmd == "GLPathShape" )
    {
       Point xy;
-      while (is.get() != '\n' )
+      std::string points;
+      GLPathShape* shape = new GLPathShape;
+      std::getline( is, points );
+      is.str( points );
+      is.clear();
+      is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size;
+      while ( is >> xy.x >> xy.y )
       {
-	 is >> xy.x >> xy.y;
+	 shape->pts.push_back( xy );
       }
+      ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
+      ui->uiView->redraw();
+      return true;
+   }
+   else if ( cmd == "GLErasePathShape" )
+   {
+      Point xy;
+      std::string points;
+      GLErasePathShape* shape = new GLErasePathShape;
+      std::getline( is, points );
+      is.str( points );
+      is.clear();
+      is >> shape->pen_size;
+      while ( is >> xy.x >> xy.y )
+      {
+	 shape->pts.push_back( xy );
+      }
+      ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
+      ui->uiView->redraw();
+      return true;
+   }
+   else if ( cmd == "UndoDraw" )
+   {
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->undo_draw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "RedoDraw" )
+   {
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->redo_draw();
+      ui->uiView->_clients = c;
+      return true;
    }
    else if ( cmd == "Reel" )
    {
@@ -130,10 +172,10 @@ bool Parser::parse( const std::string& m )
       is >> name;
 
       mrv::Reel now = ui->uiReelWindow->uiBrowser->current_reel();
-      if ( now->name != name )
-      {
+      if ( now->name == name )
+	 r = now;
+      else
 	 r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
-      }
       if (!r) {
 	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
       }
@@ -678,8 +720,8 @@ void server::remove( mrv::ViewerUI* ui )
 
    ui->uiConnection->uiServerGroup->activate();
 
-   delete ui->uiView->_server;
    ui->uiView->_clients.clear();
+   delete ui->uiView->_server;
 }
 
 
@@ -700,6 +742,8 @@ void server_thread( const ServerData* s )
       s->ui->uiConnection->uiServerGroup->deactivate();
       s->ui->uiConnection->uiClientGroup->deactivate();
       s->ui->uiConnection->uiDisconnectGroup->activate();
+      s->ui->uiConnection->uiDisconnectClient->deactivate();
+      s->ui->uiConnection->uiDisconnectServer->activate();
 
       LOG_CONN( "Created server at port " << s->port );
 

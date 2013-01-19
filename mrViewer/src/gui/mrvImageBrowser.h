@@ -133,7 +133,7 @@ namespace mrv
     int mousePush( int x, int y );
     int mouseRelease( int x, int y );
 
-    mrv::Element* new_image(mrv::media& img);
+    mrv::Element* new_item(mrv::media& img);
 
     mrv::Timeline* timeline();
 

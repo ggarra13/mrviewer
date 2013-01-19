@@ -989,18 +989,29 @@ void ImageView::timeout()
 
 void ImageView::redo_draw()
 {
-   _shapes.push_back( _undo_shapes.back() );
-   uiMain->uiPaint->uiUndoDraw->activate();
-   _undo_shapes.pop_back();
-   redraw();
+   if ( !_undo_shapes.empty() )
+   {
+      _shapes.push_back( _undo_shapes.back() );
+      uiMain->uiPaint->uiUndoDraw->activate();
+      _undo_shapes.pop_back();
+
+      send( "RedoDraw" );
+
+      redraw();
+   }
 }
 
 void ImageView::undo_draw()
 {
-   _undo_shapes.push_back( _shapes.back() );
-   uiMain->uiPaint->uiRedoDraw->activate();
-   _shapes.pop_back();
-   redraw();
+   if ( ! _shapes.empty() )
+   {
+      _undo_shapes.push_back( _shapes.back() );
+      uiMain->uiPaint->uiRedoDraw->activate();
+      _shapes.pop_back();
+      send( "UndoDraw" );
+      redraw();
+   }
+
 }
 
 void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
@@ -1332,7 +1343,14 @@ void ImageView::draw()
 }
 
 
+void ImageView::add_shape( mrv::shape_type_ptr s )
+{
+   _shapes.push_back( s );
+   uiMain->uiPaint->uiUndoDraw->activate();
 
+   _undo_shapes.clear();
+   uiMain->uiPaint->uiRedoDraw->deactivate();
+}
 
 
 /** 
@@ -1419,11 +1437,7 @@ void ImageView::leftMouseDown(int x, int y)
 
 	 send( str );
 
-	 _shapes.push_back( mrv::shape_type_ptr(s) );
-	 uiMain->uiPaint->uiUndoDraw->activate();
-
-	 _undo_shapes.clear();
-	 uiMain->uiPaint->uiRedoDraw->deactivate();
+	 add_shape( mrv::shape_type_ptr(s) );
       }
 
       if ( _wipe_dir != kNoWipe )
@@ -1627,6 +1641,61 @@ void ImageView::leftMouseUp( int x, int y )
     flags &= ~kMouseMiddle;
   else
     flags &= ~kMouseRight;
+
+  //
+  // Send the shapes over the network
+  // 
+  if ( _mode == kDraw )
+  {
+     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+     GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+     if ( s == NULL )
+     {
+	LOG_ERROR( _("Not a GLPathShape pointer") );
+     }
+     else
+     {
+	std::string buf;
+	buf = "GLPathShape ";
+	char tmp[128];
+	sprintf( tmp, "%f %f %f %f %f ", s->r, s->g, s->b, s->a,
+		 s->pen_size );
+	buf += tmp;
+	GLPathShape::PointList::const_iterator i = s->pts.begin();
+	GLPathShape::PointList::const_iterator e = s->pts.end();
+	for ( ; i != e; ++i )
+	{
+	   sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+	   buf += tmp;
+	}
+	send( buf );
+     }
+  }
+  else if ( _mode == kErase )
+  {
+     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+     GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
+     if ( s == NULL )
+     {
+	LOG_ERROR( _("Not a GLErasePathShape pointer") );
+     }
+     else
+     {
+	std::string buf;
+	buf = "GLErasePathShape ";
+	char tmp[128];
+	sprintf( tmp, "%f ", s->pen_size );
+	buf += tmp;
+	GLPathShape::PointList::const_iterator i = s->pts.begin();
+	GLPathShape::PointList::const_iterator e = s->pts.end();
+	for ( ; i != e; ++i )
+	{
+	   sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+	   buf += tmp;
+	}
+	send( buf );
+     }
+  }
 
 }
 
