@@ -346,6 +346,8 @@ namespace mrv {
 
        void send( std::string msg );
 
+       void add_shape( shape_type_ptr shape );
+
      public:
        ParserList   _clients;
        server*      _server;
@@ -412,6 +414,7 @@ namespace mrv {
 
     /// Refresh the fstop display
     void refresh_fstop() const;
+
 
 
   protected:

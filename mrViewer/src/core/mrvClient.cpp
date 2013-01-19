@@ -196,6 +196,9 @@ void client::handle_connect(const boost::system::error_code& ec,
 
       ui->uiConnection->uiServerGroup->deactivate();
       ui->uiConnection->uiClientGroup->deactivate();
+      ui->uiConnection->uiDisconnectGroup->activate();
+      ui->uiConnection->uiDisconnectClient->activate();
+      ui->uiConnection->uiDisconnectServer->deactivate();
 
       write("sync_image");
 

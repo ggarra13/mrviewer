@@ -516,7 +516,7 @@ namespace mrv {
    * 
    * @return fltk::Item*
    */
-  Element* ImageBrowser::new_image( mrv::media& m )
+  Element* ImageBrowser::new_item( mrv::media& m )
   {
     Element* nw = new Element( m );
 
@@ -542,7 +542,7 @@ namespace mrv {
     reel->images.insert( reel->images.begin() + idx, 
 			 media( m ) );
 
-    Element* nw = new_image( m );
+    Element* nw = new_item( m );
     fltk::Browser::insert( *nw, idx );
 
     redraw();
@@ -1040,13 +1040,12 @@ namespace mrv {
 
     reel->images.push_back( m );
 
-    Element* nw = new_image( m );
+    Element* nw = new_item( m );
 
     fltk::Browser::add( nw );
 
     if ( reel->images.size() == 1 )
       {
-	 std::cerr << "ADD" << std::endl;
 	value(0); change_image();
       }
 
@@ -1214,7 +1213,7 @@ namespace mrv {
     newImg->decode_video( frame );
     newImg->find_image( frame );
 
-    Element* nw = new_image( newm );
+    Element* nw = new_item( newm );
     fltk::Group::replace( idx, *nw );
 
     this->remove( m );
@@ -1253,7 +1252,7 @@ namespace mrv {
 	mrv::MediaList::iterator e = reel->images.end();
 	for ( ; i != e; ++i )
 	  {
-	    Element* nw = new_image( *i );
+	    Element* nw = new_item( *i );
 	    fltk::Browser::add( nw );
 	  }
 
