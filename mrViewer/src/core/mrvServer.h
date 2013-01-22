@@ -1,6 +1,8 @@
 #ifndef mrvServer_h
 #define mrvServer_h
 
+#include <deque>
+
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
@@ -55,12 +57,12 @@ class tcp_session : public boost::enable_shared_from_this< tcp_session >,
      void start();
 
      bool stopped();
-
+     
      void start_read();
      void handle_read(const boost::system::error_code& ec);
      void await_output();
 
-     void deliver( const std::string m );
+     virtual void deliver( std::string m );
 
      virtual void stop();
 
@@ -101,6 +103,8 @@ private:
   tcp::acceptor acceptor_;
   mrv::ViewerUI* ui_;
 };
+
+typedef boost::shared_ptr<server> tcp_server_ptr;
 
 struct ServerData
 {

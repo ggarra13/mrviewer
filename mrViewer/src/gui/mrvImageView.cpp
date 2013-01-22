@@ -793,6 +793,9 @@ void ImageView::fit_image()
   if ( h < z ) { z = h; }
 
   xoffset = yoffset = 0.0;
+  char buf[128];
+  sprintf( buf, "Offset %g %g", xoffset, yoffset );
+  send( buf );
   zoom( float(z) );
 
   redraw();
@@ -1990,6 +1993,11 @@ void ImageView::mouseDrag(int x,int y)
 	   cursor( fltk::CURSOR_MOVE );
 	  xoffset += dx / _zoom;
 	  yoffset -= dy / _zoom;
+
+	  char buf[128];
+	  sprintf( buf, "Offset %g %g", xoffset, yoffset );
+	  send( buf );
+
 	  lastX = x;
 	  lastY = y;
 	}
@@ -2057,6 +2065,7 @@ void ImageView::mouseDrag(int x,int y)
 	     unsigned dy = (unsigned) std::abs( yn - yf );
 
 
+
 	     // store selection square
 	     if ( dx > W ) dx = W;
 	     if ( dy > H ) dy = H;
@@ -2065,6 +2074,12 @@ void ImageView::mouseDrag(int x,int y)
 				      (double)yf/(double)H, 
 				      (double)dx/(double)W, 
 				      (double)dy/(double)H );
+
+	     char buf[256];
+	     sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+		      _selection.y(), _selection.w(), _selection.h() );
+	     send( buf );
+
 	  }
 	  else if ( _mode == kDraw || _mode == kErase )
 	  {
@@ -2175,6 +2190,10 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( rawkey == kZoomMin.key )
       {
 	 xoffset = yoffset = 0;
+	 char buf[128];
+	 sprintf( buf, "Offset %g %g", xoffset, yoffset );
+	 send( buf );
+
 	 zoom( 1.0f );
       }
       else
@@ -2217,6 +2236,9 @@ int ImageView::keyDown(unsigned int rawkey)
       }
       fltk_main()->relayout();
       xoffset = yoffset = 0;
+      char buf[128];
+      sprintf( buf, "Offset %g %g", xoffset, yoffset );
+      send( buf );
       return 1;
     }
   else if ( kFitScreen.match( rawkey ) ) 
@@ -2952,7 +2974,7 @@ void ImageView::zoom( float z )
 {
   if ( z > kMaxZoom || z < kMinZoom ) return;
 
-  static char tmp[10];
+  static char tmp[128];
   if ( z >= 1.0f )
     {
       sprintf( tmp, "x%.2g", z );
@@ -2963,6 +2985,10 @@ void ImageView::zoom( float z )
     }
   uiMain->uiZoom->label( tmp );
   uiMain->uiZoom->redraw();
+
+  char buf[128];
+  sprintf( buf, "Zoom %g", z );
+  send( buf );
 
   _zoom = z;
   redraw();
@@ -3156,6 +3182,11 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   double ratio = 1.0f;
   if ( _showPixelRatio ) ratio = img->pixel_ratio();
   yoffset += (offy / _zoom * ratio);
+
+  char buf[128];
+  sprintf( buf, "Offset %g %g", xoffset, yoffset );
+  send( buf );
+
   mouseMove( x, y );
 }
 

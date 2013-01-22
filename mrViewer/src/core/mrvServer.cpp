@@ -140,6 +140,18 @@ bool Parser::parse( const std::string& m )
       ui->uiView->redraw();
       return true;
    }
+   else if ( cmd == "Selection" )
+   {
+      
+      double x, y, w, h;
+      is >> x >> y >> w >> h;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->selection( mrv::Rectd( x, y, w, h ) );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
    else if ( cmd == "UndoDraw" )
    {
       ParserList c = ui->uiView->_clients;
@@ -153,6 +165,28 @@ bool Parser::parse( const std::string& m )
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
       ui->uiView->redo_draw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "Zoom" )
+   {
+      float z;
+      is >> z;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->zoom( z );
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "Offset" )
+   {
+      float x, y;
+      is >> x >> y;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->offset_x( x );
+      ui->uiView->offset_y( y );
+      ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;
    }
@@ -172,7 +206,7 @@ bool Parser::parse( const std::string& m )
       is >> name;
 
       mrv::Reel now = ui->uiReelWindow->uiBrowser->current_reel();
-      if ( now->name == name )
+      if ( now && now->name == name )
 	 r = now;
       else
 	 r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
@@ -416,7 +450,7 @@ bool tcp_session::stopped()
    return !socket_.is_open();
 }
 
-void tcp_session::deliver(const std::string msg)
+void tcp_session::deliver(std::string msg)
 {
    
    output_queue_.push_back(msg + "\n");
@@ -699,7 +733,7 @@ ConnectionUI* ViewerUI::uiConnection = NULL;
 
 void server::create(mrv::ViewerUI* ui)
 {
-   unsigned port = ui->uiConnection->uiServerPort->value();
+   unsigned port = (unsigned) ui->uiConnection->uiServerPort->value();
    ServerData* data = new ServerData;
    data->port = port;
    data->ui = ui;
@@ -721,7 +755,7 @@ void server::remove( mrv::ViewerUI* ui )
    ui->uiConnection->uiServerGroup->activate();
 
    ui->uiView->_clients.clear();
-   delete ui->uiView->_server;
+   ui->uiView->_server.reset();
 }
 
 
@@ -736,9 +770,9 @@ void server_thread( const ServerData* s )
 
       tcp::endpoint listen_endpoint(tcp::v4(), s->port);
 
-      server* rp = new server(io_service, listen_endpoint, s->ui);
-
-      s->ui->uiView->_server = rp;
+      s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
+							     listen_endpoint,
+							     s->ui);
       s->ui->uiConnection->uiServerGroup->deactivate();
       s->ui->uiConnection->uiClientGroup->deactivate();
       s->ui->uiConnection->uiDisconnectGroup->activate();

@@ -336,7 +336,7 @@ void client::check_deadline()
 
 void client::create(mrv::ViewerUI* ui)
 {
-   unsigned port = ui->uiConnection->uiClientPort->value();
+   unsigned port = (unsigned) ui->uiConnection->uiClientPort->value();
    ServerData* data = new ServerData;
    data->port = port;
    char buf[128];
