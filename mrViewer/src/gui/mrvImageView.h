@@ -223,13 +223,15 @@ namespace mrv {
     void update_layers();
 
     /// Turn on or off safe areas
-    void safe_areas( const bool t ) { _safeAreas = t; }
+       void safe_areas( const bool t );
 
     /// Return status of safe areas
     bool safe_areas() { return _safeAreas; }
   
     /// Normalize value
     bool normalize() const;
+
+    void normalize( const bool b );
 
     /// Toggle pixel normalization on and off
     void toggle_normalize();
@@ -240,11 +242,13 @@ namespace mrv {
     /// True if 3D LUT is on, false if not.
     bool use_lut() const { return _useLUT; }
 
-    /// True if 3D LUT is on, false if not.
+    /// Set 3D LUT to on, false if not.
     void use_lut(const bool t) { _useLUT = t; }
 
     /// True if background is active
     bool show_background() const { return _showBG; }
+
+    void show_background( const bool b );
 
     /// Update the image window display
     void update_image_info() const;
@@ -334,7 +338,9 @@ namespace mrv {
     /// Refresh audio tracks
     void refresh_audio_tracks() const;
 
+       void wipe_direction( const WipeDirection& w ) { _wipe_dir = w; }
        WipeDirection wipe_direction() const { return _wipe_dir; }
+       void wipe_amount(float w) { _wipe = w; }
        float wipe_amount() const { return _wipe; }
 
 

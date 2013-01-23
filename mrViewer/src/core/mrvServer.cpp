@@ -190,6 +190,130 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
+   else if ( cmd == "FieldDisplay" )
+   {
+      int field;
+      is >> field;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->field( (mrv::ImageView::FieldDisplay) field );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "Normalize" )
+   {
+      int b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->normalize( b );
+      ui->uiNormalize->state( b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "WipeVertical" )
+   {
+      double b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->wipe_direction( ImageView::kWipeVertical );
+      ui->uiView->wipe_amount( b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "WipeHorizontal" )
+   {
+      double b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->wipe_direction( ImageView::kWipeHorizontal );
+      ui->uiView->wipe_amount( b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "NoWipe" )
+   {
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->wipe_direction( ImageView::kNoWipe );
+      ui->uiView->wipe_amount( 0.0f );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "Gain" )
+   {
+      double f;
+      is >> f;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->gain( f );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "Gamma" )
+   {
+      double f;
+      is >> f;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->gamma( f );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "Mask" )
+   {
+      double b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->masking( b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "SafeAreas" )
+   {
+      int b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->safe_areas( (bool) b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "UseLUT" )
+   {
+      int b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiLUT->state( (bool) b);
+      ui->uiView->use_lut( (bool) b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "ShowBG" )
+   {
+      int b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->show_background( (bool) b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
    else if ( cmd == "Reel" )
    {
       std::string name;
@@ -287,7 +411,46 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   if ( cmd == "sync_image" )
+   else if ( cmd == "CurrentBGImage" )
+   {
+      std::string imgname;
+      is >> imgname;
+      imgname = imgname.substr( 1, imgname.size() - 2 );
+
+      if ( r )
+      {
+	 mrv::MediaList::iterator j = r->images.begin();
+	 mrv::MediaList::iterator e = r->images.end();
+	 int idx = 0;
+	 bool found = false;
+	 for ( ; j != e; ++j, ++idx )
+	 {
+	    std::string fileroot = (*j)->image()->directory();
+	    fileroot += "/";
+	    fileroot += (*j)->image()->name();
+	    if ( (*j)->image() && fileroot == imgname )
+	    {
+	       ParserList c = ui->uiView->_clients;
+	       ui->uiView->_clients.clear();
+	       ui->uiView->background( (*j) );
+	       ui->uiView->_clients = c;
+	       found = true;
+	       break;
+	    }
+	 }
+
+	 if (! found )
+	 {
+	    stringArray files;
+	    files.push_back( imgname );
+	   
+	    ui->uiReelWindow->uiBrowser->load( files, false );
+	 }
+      }
+
+      return true;
+   }
+   else if ( cmd == "sync_image" )
    {
       std::string cmd;
       unsigned num = ui->uiReelWindow->uiBrowser->number_of_reels();
