@@ -216,6 +216,11 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
+
+  char buf[1024];
+  sprintf( buf, "CurrentBGImage \"%s\"", fg->image()->filename() );
+  view->send( buf );
+
   view->background( fg );
 }
 
@@ -419,7 +424,13 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 
   sscanf( fmt, "%f", &mask );
   
+  char buf[128];
+  sprintf( buf, "Mask %f", mask );
+  view->send( buf );
+
   view->masking( mask );
+
+
   view->redraw();
 }
 
@@ -2248,26 +2259,37 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kSafeAreas.match( rawkey ) )
     {
-      _safeAreas ^= true;
-      redraw();
-      return 1;
+       safe_areas( safe_areas() ^ true );
+       redraw();
+       return 1;
     }
   else if ( kWipe.match( rawkey ) )
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
 	_wipe = fltk::event_x() / float( w() );
+
+	char buf[128];
+	sprintf( buf, "WipeVertical %g", _wipe );
+	send( buf );
+
 	window()->cursor(fltk::CURSOR_WE);
      }
      else if ( _wipe_dir & kWipeVertical )
      {
 	_wipe_dir = kWipeHorizontal;
 	_wipe = (h() - fltk::event_y()) / float( h() );
+	char buf[128];
+	sprintf( buf, "WipeHorizontal %g", _wipe );
+	send( buf );
 	window()->cursor(fltk::CURSOR_NS);
      }
      else if ( _wipe_dir & kWipeHorizontal ) {
 	_wipe_dir = kNoWipe;
 	_wipe = 0.0f;
+	char buf[128];
+	sprintf( buf, "NoWipe" );
+	send( buf );
 	window()->cursor(fltk::CURSOR_CROSS);
      }
 
@@ -2546,6 +2568,17 @@ int ImageView::keyUp(unsigned int key)
   return 0;
 }
 
+void ImageView::show_background( const bool b )
+{
+   _showBG = b;
+
+   damage_contents();
+
+   char buf[128];
+   sprintf( buf, "ShowBG %d", (int) b );
+   send( buf );
+}
+
 /** 
  * Toggle between a fullscreen view and a normal view with window borders.
  * 
@@ -2668,14 +2701,19 @@ int ImageView::handle(int event)
 
        if ( _wipe_dir != kNoWipe )
        {
+	  char buf[128];
 	  switch( _wipe_dir )
 	  {
 	     case kWipeVertical:
 		_wipe = fltk::event_x() / (float)w();
+		sprintf( buf, "WipeVertical %g", _wipe );
+		send( buf );
 		window()->cursor(fltk::CURSOR_WE);
 		break;
 	     case kWipeHorizontal:
 		_wipe = (h() - fltk::event_y()) / (float)h();
+		sprintf( buf, "WipeHorizontal %g", _wipe );
+		send( buf );
 		window()->cursor(fltk::CURSOR_NS);
 		break;
 	     default:
@@ -2940,6 +2978,10 @@ void ImageView::gain( const float f )
 
   _gain = f;
 
+  char buf[256];
+  sprintf( buf, "Gain %g", f );
+  send( buf );
+
   refresh_fstop();
   flush_caches();
   smart_refresh();
@@ -2956,6 +2998,10 @@ void ImageView::gamma( const float f )
   if ( _gamma == f ) return;
 
   _gamma = f;
+
+  char buf[256];
+  sprintf( buf, "Gamma %g", f );
+  send( buf );
 
   uiMain->uiGamma->value( f );
   uiMain->uiGammaInput->value( f );
@@ -3508,9 +3554,17 @@ void ImageView::resize_main_window()
  */
 void ImageView::toggle_background()
 {
-  _showBG = !_showBG;
-  damage_contents();
-  redraw();
+   show_background( !show_background() );
+   redraw();
+}
+
+void ImageView::safe_areas( const bool b ) 
+{
+  _safeAreas = b;
+
+  char buf[128];
+  sprintf( buf, "SafeAreas %d", (int)b );
+  send( buf );
 }
 
 /**
@@ -3520,6 +3574,17 @@ void ImageView::toggle_background()
 bool ImageView::normalize() const
 {
   return (bool) uiMain->uiNormalize->value();
+}
+
+void ImageView::normalize( const bool normalize)
+{
+   _normalize = normalize;
+   uiMain->uiNormalize->state( normalize );
+
+   char buf[128];
+   sprintf( buf, "Normalize %d", (int) _normalize );
+   send( buf );
+
 }
 
 void ImageView::damage_contents()
@@ -3546,9 +3611,9 @@ void ImageView::damage_contents()
  */
 void ImageView::toggle_normalize()
 {
-  _normalize = !_normalize;
-  damage_contents();
-  redraw();
+   normalize( !_normalize );
+   damage_contents();
+   redraw();
 }
 
 /** 
@@ -3570,6 +3635,11 @@ void ImageView::toggle_pixel_ratio()
 void ImageView::toggle_lut()
 {
   _useLUT = !_useLUT;
+
+  char buf[128];
+  sprintf( buf, "UseLUT %d", (int)_useLUT );
+  send( buf );
+
   flush_caches();
   if ( _useLUT ) {
      damage_contents();
@@ -3997,6 +4067,10 @@ void ImageView::field( FieldDisplay p )
   };
 
   uiMain->uiField->label( kFieldNames[_field] );
+
+  char buf[128];
+  sprintf( buf, "FieldDisplay %d", _field );
+  send( buf );
 
   damage_contents();
   redraw();
