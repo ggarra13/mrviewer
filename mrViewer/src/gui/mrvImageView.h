@@ -210,6 +210,9 @@ namespace mrv {
     /// Toggle pixel ratio compensation on and off
     void toggle_pixel_ratio();
 
+       bool show_pixel_ratio() const;
+       void show_pixel_ratio( const bool b );
+
     /// Set a new zoom factor
     void zoom( float x );
 

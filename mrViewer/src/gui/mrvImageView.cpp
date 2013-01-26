@@ -2876,6 +2876,10 @@ void ImageView::channel( unsigned short c )
 { 
   _channel = c;
 
+  char buf[128];
+  sprintf( buf, "Channel %d", c );
+  send( buf );
+
 
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   
@@ -3160,8 +3164,8 @@ float ImageView::calculate_exposure() const
  */
 void ImageView::set_fstop_display( float exposure, float fstop ) const
 {
-  char m[20];
-  sprintf( m, "%+1.1f  f/%1.1f", exposure, fstop );
+  char m[64];
+  sprintf( m, "%1.1f  f/%1.1f", exposure, fstop );
   uiMain->uiFstop->copy_label( m );
   uiMain->uiFstop->redraw();
 }
@@ -3622,9 +3626,27 @@ void ImageView::toggle_normalize()
  */
 void ImageView::toggle_pixel_ratio()
 {
-  _showPixelRatio = !_showPixelRatio;
-  damage_contents();
-  redraw();
+   show_pixel_ratio( ! show_pixel_ratio() );
+}
+
+bool ImageView::show_pixel_ratio() const
+{
+   return _showPixelRatio;
+}
+
+void ImageView::show_pixel_ratio( const bool b )
+{
+   _showPixelRatio = b;
+
+   char buf[64];
+   sprintf( buf, "ShowPixelRatio %d", (int) b );
+   send( buf );
+
+   uiMain->uiPixelRatio->value( b );
+
+
+   damage_contents();
+   redraw();
 }
 
 

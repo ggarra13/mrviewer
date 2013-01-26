@@ -190,6 +190,18 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
+   else if ( cmd == "Channel" )
+   {
+      unsigned ch;
+      is >> ch;
+      
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->channel( ch );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
    else if ( cmd == "FieldDisplay" )
    {
       int field;
@@ -310,6 +322,17 @@ bool Parser::parse( const std::string& m )
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
       ui->uiView->show_background( (bool) b );
+      ui->uiView->redraw();
+      ui->uiView->_clients = c;
+      return true;
+   }
+   else if ( cmd == "ShowPixelRatio" )
+   {
+      int b;
+      is >> b;
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->show_pixel_ratio( (bool) b );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;
@@ -475,8 +498,7 @@ bool Parser::parse( const std::string& m )
 	    char buf[128];
 	    boost::int64_t frame = (*j)->image()->frame();
 	    sprintf( buf, "seek %" PRId64, frame );
-	    cmd = buf;
-	    deliver( cmd );
+	    deliver( buf );
 	 }
       }
 
@@ -498,6 +520,31 @@ bool Parser::parse( const std::string& m )
 	 cmd += "\"";
 	 deliver( cmd );
       }
+
+      char buf[256];
+      sprintf(buf, "Gain %g", ui->uiView->gain() );
+      deliver( buf );
+
+      sprintf(buf, "Gamma %g", ui->uiView->gamma() );
+      deliver( buf );
+
+      sprintf(buf, "Channel %d", ui->uiView->channel() );
+      deliver( buf );
+      
+      sprintf(buf, "UseLUT %d", (int)ui->uiView->use_lut() );
+      deliver( buf );
+
+      sprintf(buf, "SafeAreas %d", (int)ui->uiView->safe_areas() );
+      deliver( buf );
+ 
+      sprintf(buf, "ShowPixelRatio %d", (int)ui->uiView->show_pixel_ratio() );
+      deliver( buf );
+
+      sprintf(buf, "Normalize %d", (int)ui->uiView->normalize() );
+      deliver( buf );
+
+      sprintf(buf, "Mask %g", ui->uiView->masking() );
+      deliver( buf );
 
       return true;
    }
