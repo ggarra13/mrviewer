@@ -1939,8 +1939,7 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class LogUI {open
-  } {
+  class LogUI {} {
     Function {make_window(ViewerUI* main)} {open
     } {
       {fltk::Window} uiMain {
@@ -2147,10 +2146,10 @@ o->redraw();}
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label Connections open
-        xywh {401 361 450 400} hide resizable
+        label Connections open selected
+        xywh {596 119 450 400} resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} modal
+o->child_of( main->uiMain );} visible
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
@@ -2212,7 +2211,7 @@ o->child_of( main->uiMain );} modal
             {fltk::Button} uiDisconnectClient {
               label {Disconnect Client}
               user_data main user_data_type {mrv::ViewerUI*}
-              callback {mrv::client::remove( v );} selected
+              callback {mrv::client::remove( v );}
               xywh {250 7 130 35}
             }
           }
