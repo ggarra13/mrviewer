@@ -133,6 +133,8 @@ namespace mrv {
     // Set the current frame rate for sequences in viewer
     void  fps( double x );
 
+       double fps() const;
+
     /// Return the viewer's gamma
     float gamma() const { return _gamma; }
 

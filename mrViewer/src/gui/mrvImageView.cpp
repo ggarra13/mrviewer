@@ -4031,6 +4031,18 @@ void ImageView::stop()
 }
 
 
+
+double ImageView::fps() const
+{
+  mrv::media fg = foreground();
+  if ( fg ) return fg->image()->play_fps();
+
+  mrv::media bg = foreground();
+  if ( bg ) return bg->image()->play_fps();
+
+  return 24;
+}
+
 /** 
  * Change the frame rate of the video playback
  * 
@@ -4049,6 +4061,12 @@ void ImageView::fps( double x )
 //   uiMain->uiStartFrame->fps( x );
 //   uiMain->uiEndFrame->fps( x );
   uiMain->uiFPS->value( x );
+
+
+  char buf[128];
+  sprintf( buf, "FPS %g", x );
+  send( buf );
+
 }
 
 /** 
