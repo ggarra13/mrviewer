@@ -140,6 +140,18 @@ bool Parser::parse( const std::string& m )
       ui->uiView->redraw();
       return true;
    }
+   else if ( cmd == "FPS" )
+   {
+      double fps;
+      is >> fps;
+
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->fps( fps );
+      ui->uiView->_clients = c;
+
+      return true;
+   }
    else if ( cmd == "Selection" )
    {
       
@@ -544,6 +556,9 @@ bool Parser::parse( const std::string& m )
       deliver( buf );
 
       sprintf(buf, "Mask %g", ui->uiView->masking() );
+      deliver( buf );
+
+      sprintf( buf, "FPS %g", ui->uiView->fps() );
       deliver( buf );
 
       return true;

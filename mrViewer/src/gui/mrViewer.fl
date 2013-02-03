@@ -2146,16 +2146,17 @@ o->redraw();}
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label Connections open selected
-        xywh {596 119 450 400} resizable
+        label Connections open
+        xywh {602 165 450 400} hide resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
         } {
-          {fltk::Group} uiServerGroup {open
-            xywh {15 10 400 75} box ROUNDED_BOX
+          {fltk::Group} uiServerGroup {
+            label Server open
+            xywh {15 10 400 75} align 5 box ROUNDED_BOX
           } {
             {fltk::Widget} {} {
               label Server
@@ -2172,12 +2173,13 @@ o->child_of( main->uiMain );} visible
               xywh {245 30 65 25}
             }
           }
-          {fltk::Group} uiClientGroup {open
-            xywh {15 105 400 70} box ROUNDED_BOX
+          {fltk::Group} uiClientGroup {
+            label Client open
+            xywh {15 105 400 70} align 5 box ROUNDED_BOX
           } {
             {fltk::Input} uiClientServer {
               label Server
-              xywh {55 20 145 30}
+              xywh {55 18 145 30}
               extra_code {o->text("localhost");}
             }
             {fltk::ValueInput} uiClientPort {
@@ -2261,10 +2263,10 @@ o->child_of( main->uiMain );} visible
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {411 231 640 530} when CHANGED hide resizable
+        xywh {414 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2790,7 +2792,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {
+          {fltk::Group} uiBottomBar {open
             xywh {0 478 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -2938,8 +2940,9 @@ if ( c <= 0 )
     g = v->uiView->foreground()->image()->fps();
 else
     g = atof( o->child( o->value() )->label() );
+
 v->uiView->fps( g );
-v->uiFPS->value( g );}
+v->uiFPS->value( g );} selected
                         tooltip {Some default frame rate settings.}
                         xywh {0 2 30 19} box UP_BOX labelsize 10
                       } {
