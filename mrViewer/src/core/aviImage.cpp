@@ -194,6 +194,13 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	   (magic & 0xF000) == 0 ) return false;
       return true;
     }
+  else if ( magic == 0x00000144 )
+  {
+     // RED ONE camera images
+     if ( strncmp( (char*)data+4, "RED1", 4 ) != 0 )
+	return false;
+     return true;
+  } 
   else
     {
       // Check for Quicktime
