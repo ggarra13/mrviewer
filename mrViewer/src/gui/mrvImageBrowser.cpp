@@ -2328,6 +2328,8 @@ void ImageBrowser::load( const stringArray& files,
   {
      mrv::Reel reel = current_reel();
      reel->edl = false;
+     timeline()->edl( false );
+     timeline()->redraw();
 
     mrv::media m = current_image();
     if (!m) return;
@@ -2335,19 +2337,23 @@ void ImageBrowser::load( const stringArray& files,
     CMedia* img = m->image();
     int64_t frame = img->frame();
 
-    timeline()->edl( false );
-    timeline()->redraw();
     if ( !img ) return;
 
     uiMain->uiFrame->value( frame );
     timeline()->value( double(frame) );
     adjust_timeline();
+
+    char buf[64];
+    sprintf( buf, "EDL 0" );
+    uiMain->uiView->send( buf );
   }
 
   void ImageBrowser::set_edl()
   {
      mrv::Reel reel = current_reel();
      reel->edl = true;
+     timeline()->edl( true );
+     timeline()->redraw();
 
     mrv::media m = current_image();
     if (!m) return;
@@ -2355,41 +2361,23 @@ void ImageBrowser::load( const stringArray& files,
     CMedia* img = m->image();
     int64_t frame = img->frame();
 
-    timeline()->edl( true );
-    timeline()->redraw();
     if ( !img ) return;
 
     int64_t f = frame - img->first_frame() + timeline()->location( img );
     uiMain->uiFrame->value( f );
     timeline()->value( f );
+
+    char buf[64];
+    sprintf( buf, "EDL 1" );
+    uiMain->uiView->send( buf );
+
   }
 
   void ImageBrowser::toggle_edl()
   {
-    mrv::media m = current_image();
-    if (!m) return;
-
-    CMedia* img = m->image();
-    int64_t frame = img->frame();
-
-    timeline()->edl( !timeline()->edl() );
-    mrv::Reel reel = current_reel();
-    reel->edl = timeline()->edl();
-    timeline()->redraw();
-    if ( !img ) return;
-
-    if ( !timeline()->edl() )
-      {
-	uiMain->uiFrame->value( frame );
-	timeline()->value( double(frame) );
-	adjust_timeline();
-      }
-    else
-      {
-	int64_t f = frame - img->first_frame() + timeline()->location( img );
-	uiMain->uiFrame->value( f );
-	timeline()->value( double(f) );
-      }
+     mrv::Reel reel = current_reel();
+     if ( reel->edl ) clear_edl();
+     else set_edl();
   }
  
 

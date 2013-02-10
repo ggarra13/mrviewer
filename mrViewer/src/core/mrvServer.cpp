@@ -85,13 +85,15 @@ Parser::~Parser()
 
 void Parser::write( std::string s )
 {
-   if ( !ui || !ui->uiView || !connected ) return;
+   if ( !connected || !ui || !ui->uiView ) return;
 
-   ParserList::iterator i = ui->uiView->_clients.begin();
-   ParserList::iterator e = ui->uiView->_clients.end();
+   ParserList::const_iterator i = ui->uiView->_clients.begin();
+   ParserList::const_iterator e = ui->uiView->_clients.end();
 
    for ( ; i != e; ++i )
+   {
       (*i)->deliver( s );
+   }
 }
 
 bool Parser::parse( const std::string& m )
@@ -148,6 +150,33 @@ bool Parser::parse( const std::string& m )
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
       ui->uiView->fps( fps );
+      ui->uiView->_clients = c;
+
+      return true;
+   }
+   else if ( cmd == "EDL" )
+   {
+      int b;
+      is >> b;
+
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      if ( b )
+	 ui->uiReelWindow->uiBrowser->set_edl();
+      else
+	 ui->uiReelWindow->uiBrowser->clear_edl();
+      ui->uiView->_clients = c;
+
+      return true;
+   }
+   else if ( cmd == "Looping" )
+   {
+      int i;
+      is >> i;
+
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->looping( (ImageView::Looping)i );
       ui->uiView->_clients = c;
 
       return true;
@@ -327,6 +356,16 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
+   else if ( cmd == "AudioVolume" )
+   {
+      float t;
+      is >> t;
+
+      ParserList c = ui->uiView->_clients;
+      ui->uiView->_clients.clear();
+      ui->uiView->volume( t );
+      ui->uiView->_clients = c;
+   }
    else if ( cmd == "ShowBG" )
    {
       int b;
@@ -405,6 +444,8 @@ bool Parser::parse( const std::string& m )
 	 }
       }
 
+      ui->uiView->redraw();
+
       return true;
    }
    else if ( cmd == "CurrentImage" )
@@ -444,6 +485,8 @@ bool Parser::parse( const std::string& m )
 	 }
       }
 
+      ui->uiView->redraw();
+
       return true;
    }
    else if ( cmd == "CurrentBGImage" )
@@ -482,6 +525,8 @@ bool Parser::parse( const std::string& m )
 	    ui->uiReelWindow->uiBrowser->load( files, false );
 	 }
       }
+
+      ui->uiView->redraw();
 
       return true;
    }
@@ -531,6 +576,11 @@ bool Parser::parse( const std::string& m )
 	 cmd += img->image()->name();
 	 cmd += "\"";
 	 deliver( cmd );
+
+	 char buf[128];
+	 boost::int64_t frame = img->image()->frame();
+	 sprintf( buf, "seek %" PRId64, frame );
+	 deliver( buf );
       }
 
       char buf[256];
@@ -560,6 +610,11 @@ bool Parser::parse( const std::string& m )
 
       sprintf( buf, "FPS %g", ui->uiView->fps() );
       deliver( buf );
+
+      sprintf( buf, "Looping %d", (int)ui->uiView->looping() );
+      deliver( buf );
+
+      ui->uiView->redraw();
 
       return true;
    }

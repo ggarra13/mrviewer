@@ -4083,12 +4083,25 @@ void ImageView::volume( float v )
 
   mrv::media bg = background();
   if ( bg ) bg->image()->volume( v );
+
+  uiMain->uiVolume->value( v );
+  uiMain->uiVolume->redraw();
+
 }
 
 /// Set Playback looping mode
 void  ImageView::looping( Looping x )
 {
   _looping = x;
+
+  uiMain->uiLoopMode->value( x );
+  uiMain->uiLoopMode->label(uiMain->uiLoopMode->child(x)->label());
+  uiMain->uiLoopMode->redraw();
+
+  char buf[64];
+  sprintf( buf, "Looping %d", x );
+  send( buf );
+
 }
 
 /** 
