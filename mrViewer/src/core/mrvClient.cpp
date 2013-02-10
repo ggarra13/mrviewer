@@ -110,7 +110,7 @@ void client::start(tcp::resolver::iterator endpoint_iter)
 {
    // Start the connect actor.
    start_connect(endpoint_iter);
-   connected = true;
+   // connected = true;
    
    // Start the deadline actor. You will note that we're not setting any
    // particular deadline here. Instead, the connect and input actors will
@@ -211,6 +211,7 @@ void client::handle_connect(const boost::system::error_code& ec,
 
 void client::deliver( const std::string s )
 {
+   std::cerr << "deliver " << s << std::endl;
    start_write( s + "\n" );
 }
 

@@ -2263,7 +2263,7 @@ o->child_of( main->uiMain );}
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {414 231 640 530} when CHANGED resizable
+        xywh {417 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2942,7 +2942,7 @@ else
     g = atof( o->child( o->value() )->label() );
 
 v->uiView->fps( g );
-v->uiFPS->value( g );} selected
+v->uiFPS->value( g );}
                         tooltip {Some default frame rate settings.}
                         xywh {0 2 30 19} box UP_BOX labelsize 10
                       } {
@@ -3003,9 +3003,9 @@ o->value(24);}
                         tooltip {Select Audio Track}
                         xywh {0 0 18 19} when CHANGED box UP_BOX labelsize 10
                       } {}
-                      {fltk::Slider} {} {
+                      {fltk::Slider} uiVolume {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->volume( o->value() );}
+                        callback {v->uiView->volume( o->value() );} selected
                         tooltip {Audio Volume}
                         xywh {18 2 55 15} type TICK_ABOVE align 4 step 0.01 value 1
                       }
