@@ -196,7 +196,7 @@ void client::handle_connect(const boost::system::error_code& ec,
       ui->uiConnection->uiServerGroup->deactivate();
       ui->uiConnection->uiConnect->label("Disconnect");
 
-      write("sync_image");
+      write( N_("sync_image") );
 
       // Start the input actor.
       start_read();
@@ -237,22 +237,22 @@ void client::handle_read(const boost::system::error_code& ec)
        try {
 	  while ( std::getline(is, line) )
 	  {
-    	     if ( line == "OK" || line == "" )
+    	     if ( line == N_("OK") || line == N_("") )
 	     {
 	     }
-	     else if ( line == "Not OK" )
+	     else if ( line == N_("Not OK") )
 	     {
-		LOG_CONN( "Not OK" );
+		LOG_CONN( N_("Not OK") );
 	     }
 	     else
 	     {
 		if ( parse( line ) )
 		{
-		   write( "OK" );
+		   write( N_("OK") );
 		}
 		else
 		{
-		   write( "Not OK" );
+		   write( N_("Not OK") );
 		}
 	     }
 	  }

@@ -109,7 +109,7 @@ bool Parser::parse( const std::string& m )
 
    static mrv::Reel r;
 
-   if ( cmd == "GLPathShape" )
+   if ( cmd == N_("GLPathShape") )
    {
       Point xy;
       std::string points;
@@ -126,7 +126,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->redraw();
       return true;
    }
-   else if ( cmd == "GLErasePathShape" )
+   else if ( cmd == N_("GLErasePathShape") )
    {
       Point xy;
       std::string points;
@@ -143,7 +143,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->redraw();
       return true;
    }
-   else if ( cmd == "FPS" )
+   else if ( cmd == N_("FPS") )
    {
       double fps;
       is >> fps;
@@ -155,7 +155,7 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   else if ( cmd == "EDL" )
+   else if ( cmd == N_("EDL") )
    {
       int b;
       is >> b;
@@ -170,7 +170,7 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   else if ( cmd == "Looping" )
+   else if ( cmd == N_("Looping") )
    {
       int i;
       is >> i;
@@ -182,7 +182,7 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   else if ( cmd == "Selection" )
+   else if ( cmd == N_("Selection") )
    {
       
       double x, y, w, h;
@@ -194,7 +194,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "UndoDraw" )
+   else if ( cmd == N_("UndoDraw") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -202,7 +202,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "RedoDraw" )
+   else if ( cmd == N_("RedoDraw") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -210,7 +210,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Zoom" )
+   else if ( cmd == N_("Zoom") )
    {
       float z;
       is >> z;
@@ -220,7 +220,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Offset" )
+   else if ( cmd == N_("Offset") )
    {
       float x, y;
       is >> x >> y;
@@ -232,7 +232,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Channel" )
+   else if ( cmd == N_("Channel") )
    {
       unsigned ch;
       is >> ch;
@@ -244,7 +244,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "FieldDisplay" )
+   else if ( cmd == N_("FieldDisplay") )
    {
       int field;
       is >> field;
@@ -255,7 +255,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Normalize" )
+   else if ( cmd == N_("Normalize") )
    {
       int b;
       is >> b;
@@ -267,7 +267,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "WipeVertical" )
+   else if ( cmd == N_("WipeVertical") )
    {
       double b;
       is >> b;
@@ -279,7 +279,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "WipeHorizontal" )
+   else if ( cmd == N_("WipeHorizontal") )
    {
       double b;
       is >> b;
@@ -291,7 +291,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "NoWipe" )
+   else if ( cmd == N_("NoWipe") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -301,7 +301,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Gain" )
+   else if ( cmd == N_("Gain") )
    {
       double f;
       is >> f;
@@ -312,7 +312,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Gamma" )
+   else if ( cmd == N_("Gamma") )
    {
       double f;
       is >> f;
@@ -323,7 +323,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Mask" )
+   else if ( cmd == N_("Mask") )
    {
       double b;
       is >> b;
@@ -334,7 +334,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "SafeAreas" )
+   else if ( cmd == N_("SafeAreas") )
    {
       int b;
       is >> b;
@@ -345,7 +345,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "UseLUT" )
+   else if ( cmd == N_("UseLUT") )
    {
       int b;
       is >> b;
@@ -357,7 +357,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "AudioVolume" )
+   else if ( cmd == N_("AudioVolume") )
    {
       float t;
       is >> t;
@@ -367,7 +367,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->volume( t );
       ui->uiView->_clients = c;
    }
-   else if ( cmd == "ShowBG" )
+   else if ( cmd == N_("ShowBG") )
    {
       int b;
       is >> b;
@@ -378,7 +378,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "ShowPixelRatio" )
+   else if ( cmd == N_("ShowPixelRatio") )
    {
       int b;
       is >> b;
@@ -389,7 +389,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "Reel" )
+   else if ( cmd == N_("Reel") )
    {
       std::string name;
       is >> name;
@@ -399,7 +399,7 @@ bool Parser::parse( const std::string& m )
       }
       return true;
    }
-   else if ( cmd == "CurrentReel" )
+   else if ( cmd == N_("CurrentReel") )
    {
       std::string name;
       is >> name;
@@ -414,7 +414,7 @@ bool Parser::parse( const std::string& m )
       }
       return true;
    }
-   else if ( cmd == "Image" )
+   else if ( cmd == N_("Image") )
    {
       std::string imgname;
       is >> imgname;
@@ -449,7 +449,7 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   else if ( cmd == "CurrentImage" )
+   else if ( cmd == N_("CurrentImage") )
    {
       std::string imgname;
       is >> imgname;
@@ -490,7 +490,7 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   else if ( cmd == "CurrentBGImage" )
+   else if ( cmd == N_("CurrentBGImage") )
    {
       std::string imgname;
       is >> imgname;
@@ -531,14 +531,14 @@ bool Parser::parse( const std::string& m )
 
       return true;
    }
-   else if ( cmd == "sync_image" )
+   else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
       unsigned num = ui->uiReelWindow->uiBrowser->number_of_reels();
       for (unsigned i = 0; i < num; ++i )
       {
 	 mrv::Reel r = ui->uiReelWindow->uiBrowser->reel( i );
-	 cmd = "Reel ";
+	 cmd = N_("Reel ");
 	 cmd += r->name;
 	 deliver( cmd );
 
@@ -546,7 +546,7 @@ bool Parser::parse( const std::string& m )
 	 mrv::MediaList::iterator e = r->images.end();
 	 for ( ; j != e; ++j )
 	 {
-	    cmd = "Image \"";
+	    cmd = N_("Image \"");
 	    cmd += (*j)->image()->directory();
 	    cmd += "/";
 	    cmd += (*j)->image()->name();
@@ -555,7 +555,7 @@ bool Parser::parse( const std::string& m )
 
 	    char buf[128];
 	    boost::int64_t frame = (*j)->image()->frame();
-	    sprintf( buf, "seek %" PRId64, frame );
+	    sprintf( buf, N_("seek %") PRId64, frame );
 	    deliver( buf );
 	 }
       }
@@ -563,7 +563,7 @@ bool Parser::parse( const std::string& m )
       mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
       if (r)
       {
-	 cmd = "CurrentReel ";
+	 cmd = N_("CurrentReel ");
 	 cmd += r->name;
 	 deliver( cmd );
       }
@@ -571,7 +571,7 @@ bool Parser::parse( const std::string& m )
       mrv::media img = ui->uiView->foreground();
       if ( img )
       {
-	 cmd = "CurrentImage \"";
+	 cmd = N_("CurrentImage \"");
 	 cmd += img->image()->directory();
 	 cmd += "/";
 	 cmd += img->image()->name();
@@ -580,46 +580,47 @@ bool Parser::parse( const std::string& m )
 
 	 char buf[128];
 	 boost::int64_t frame = img->image()->frame();
-	 sprintf( buf, "seek %" PRId64, frame );
+	 sprintf( buf, N_("seek %") PRId64, frame );
 	 deliver( buf );
       }
 
       char buf[256];
-      sprintf(buf, "Gain %g", ui->uiView->gain() );
+      sprintf(buf, N_("Gain %g"), ui->uiView->gain() );
       deliver( buf );
 
-      sprintf(buf, "Gamma %g", ui->uiView->gamma() );
+      sprintf(buf, N_("Gamma %g"), ui->uiView->gamma() );
       deliver( buf );
 
-      sprintf(buf, "Channel %d", ui->uiView->channel() );
+      sprintf(buf, N_("Channel %d"), ui->uiView->channel() );
       deliver( buf );
       
-      sprintf(buf, "UseLUT %d", (int)ui->uiView->use_lut() );
+      sprintf(buf, N_("UseLUT %d"), (int)ui->uiView->use_lut() );
       deliver( buf );
 
-      sprintf(buf, "SafeAreas %d", (int)ui->uiView->safe_areas() );
+      sprintf(buf, N_("SafeAreas %d"), (int)ui->uiView->safe_areas() );
       deliver( buf );
  
-      sprintf(buf, "ShowPixelRatio %d", (int)ui->uiView->show_pixel_ratio() );
+      sprintf(buf, N_("ShowPixelRatio %d"), 
+	      (int)ui->uiView->show_pixel_ratio() );
       deliver( buf );
 
-      sprintf(buf, "Normalize %d", (int)ui->uiView->normalize() );
+      sprintf(buf, N_("Normalize %d"), (int)ui->uiView->normalize() );
       deliver( buf );
 
-      sprintf(buf, "Mask %g", ui->uiView->masking() );
+      sprintf(buf, N_("Mask %g"), ui->uiView->masking() );
       deliver( buf );
 
-      sprintf( buf, "FPS %g", ui->uiView->fps() );
+      sprintf( buf, N_("FPS %g"), ui->uiView->fps() );
       deliver( buf );
 
-      sprintf( buf, "Looping %d", (int)ui->uiView->looping() );
+      sprintf( buf, N_("Looping %d"), (int)ui->uiView->looping() );
       deliver( buf );
 
       ui->uiView->redraw();
 
       return true;
    }
-   else if ( cmd == "stop" )
+   else if ( cmd == N_("stop") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -631,7 +632,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "playfwd" )
+   else if ( cmd == N_("playfwd") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -641,7 +642,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "playback" )
+   else if ( cmd == N_("playback") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -651,7 +652,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->_clients = c;
       return true;
    }
-   else if ( cmd == "seek" )
+   else if ( cmd == N_("seek") )
    {
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
