@@ -95,7 +95,6 @@ int main( const int argc, char** argv )
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
      data->port = port;
-     LOG_CONN( "Start server at port " << data->port );
      boost::thread( boost::bind( mrv::server_thread, 
      				 data ) );
   }
@@ -109,7 +108,6 @@ int main( const int argc, char** argv )
      sprintf( buf, "%d", port );
      data->group = buf;
 
-     LOG_CONN( "Start client at " << host << ", port " << data->port );
      boost::thread( boost::bind( mrv::client_thread, 
 				 data ) );
   }
