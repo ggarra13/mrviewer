@@ -87,6 +87,7 @@ void Parser::write( std::string s )
 {
    if ( !connected || !ui || !ui->uiView ) return;
 
+
    ParserList::const_iterator i = ui->uiView->_clients.begin();
    ParserList::const_iterator e = ui->uiView->_clients.end();
 
@@ -1004,6 +1005,7 @@ void server::handle_accept(tcp_session_ptr session,
    if (!ec)
    {
       session->start();
+
    }
    
    start_accept();
@@ -1032,7 +1034,8 @@ void server::remove( mrv::ViewerUI* ui )
       (*i)->stop();
    }
 
-   ui->uiConnection->uiServerGroup->activate();
+   ui->uiConnection->uiCreate->label("Create");
+   ui->uiConnection->uiClientGroup->activate();
 
    ui->uiView->_clients.clear();
    ui->uiView->_server.reset();
@@ -1053,11 +1056,9 @@ void server_thread( const ServerData* s )
       s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
 							     listen_endpoint,
 							     s->ui);
-      s->ui->uiConnection->uiServerGroup->deactivate();
+
+      s->ui->uiConnection->uiCreate->label("Disconnect");
       s->ui->uiConnection->uiClientGroup->deactivate();
-      s->ui->uiConnection->uiDisconnectGroup->activate();
-      s->ui->uiConnection->uiDisconnectClient->deactivate();
-      s->ui->uiConnection->uiDisconnectServer->activate();
 
       LOG_CONN( "Created server at port " << s->port );
 
