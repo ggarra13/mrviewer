@@ -2147,9 +2147,9 @@ o->redraw();}
     } {
       {fltk::Window} uiMain {
         label Connections open
-        xywh {602 165 450 400} hide resizable
+        xywh {608 211 450 400} resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );} visible
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
@@ -2166,11 +2166,14 @@ o->child_of( main->uiMain );}
               label Port
               xywh {155 30 70 25} step 1 value 4333
             }
-            {fltk::Button} {} {
+            {fltk::Button} uiCreate {
               label Create
               user_data main user_data_type {mrv::ViewerUI*}
-              callback {mrv::server::create(v);}
-              xywh {245 30 65 25}
+              callback {if ( strcmp( o->label(), "Create" ) == 0 )
+    mrv::server::create(v);
+else
+    mrv::server::remove(v);} selected
+              xywh {235 30 100 25}
             }
           }
           {fltk::Group} uiClientGroup {
@@ -2186,35 +2189,22 @@ o->child_of( main->uiMain );}
               label Port
               xywh {235 20 70 25} step 1 value 4333
             }
-            {fltk::Button} {} {
+            {fltk::Button} uiConnect {
               label Connect
               user_data main user_data_type {mrv::ViewerUI*}
-              callback {mrv::client::create(v);}
-              xywh {315 20 65 25}
+              callback {if ( strcmp( o->label(), "Connect" ) == 0 )
+   mrv::client::create(v);
+else
+   mrv::client::remove(v);}
+              xywh {310 20 85 25}
             }
           }
           {fltk::Group} {} {open
-            xywh {15 235 400 150} box ROUNDED_BOX
+            xywh {15 185 400 200} box ROUNDED_BOX
           } {
             {fltk::TextDisplay} uiLog {
-              xywh {10 5 380 140} box FLAT_BOX
+              xywh {15 5 375 190} box FLAT_BOX
               class {mrv::LogDisplay}
-            }
-          }
-          {fltk::Group} uiDisconnectGroup {open
-            xywh {15 180 400 50} deactivate box ROUNDED_BOX
-          } {
-            {fltk::Button} uiDisconnectServer {
-              label {Disconnect Server}
-              user_data main user_data_type {mrv::ViewerUI*}
-              callback {mrv::server::remove( v );}
-              xywh {20 8 130 35}
-            }
-            {fltk::Button} uiDisconnectClient {
-              label {Disconnect Client}
-              user_data main user_data_type {mrv::ViewerUI*}
-              callback {mrv::client::remove( v );}
-              xywh {250 7 130 35}
             }
           }
         }
@@ -2255,7 +2245,7 @@ o->child_of( main->uiMain );}
     }
     decl {PaintUI* uiPaint;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2263,10 +2253,10 @@ o->child_of( main->uiMain );}
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {417 231 640 530} when CHANGED resizable
+        xywh {420 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3005,7 +2995,7 @@ o->value(24);}
                       } {}
                       {fltk::Slider} uiVolume {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->volume( o->value() );} selected
+                        callback {v->uiView->volume( o->value() );}
                         tooltip {Audio Volume}
                         xywh {18 2 55 15} type TICK_ABOVE align 4 step 0.01 value 1
                       }

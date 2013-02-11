@@ -128,7 +128,6 @@ void client::stop()
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
    deadline_.cancel();
-   ui = NULL;
 }
 
 
@@ -195,10 +194,7 @@ void client::handle_connect(const boost::system::error_code& ec,
       connected = true;
 
       ui->uiConnection->uiServerGroup->deactivate();
-      ui->uiConnection->uiClientGroup->deactivate();
-      ui->uiConnection->uiDisconnectGroup->activate();
-      ui->uiConnection->uiDisconnectClient->activate();
-      ui->uiConnection->uiDisconnectServer->deactivate();
+      ui->uiConnection->uiConnect->label("Disconnect");
 
       write("sync_image");
 
@@ -211,7 +207,6 @@ void client::handle_connect(const boost::system::error_code& ec,
 
 void client::deliver( const std::string s )
 {
-   std::cerr << "deliver " << s << std::endl;
    start_write( s + "\n" );
 }
 
@@ -360,7 +355,8 @@ void client::remove( mrv::ViewerUI* ui )
       (*i)->stop();
    }
 
-   ui->uiConnection->uiClientGroup->activate();
+   ui->uiConnection->uiServerGroup->activate();
+   ui->uiConnection->uiConnect->label("Connect");
 
    ui->uiView->_clients.clear();
 }
