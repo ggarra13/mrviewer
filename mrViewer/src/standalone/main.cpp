@@ -12,13 +12,19 @@
 
 #include <iostream>
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>
+
 #ifdef LINUX
 #include <X11/Xlib.h>
 #endif
 
 #include <fltk/ask.h>
 #include <fltk/run.h>
+#include <fltk/Preferences.h>
 
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
 
 #include "core/mrvI8N.h"
 #include "gui/mrvImageBrowser.h"
@@ -26,6 +32,7 @@
 #include "gui/mrvIO.h"
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
+#include "core/mrvHome.h"
 #include "core/mrvServer.h"
 #include "core/mrvClient.h"
 #include "mrvColorProfile.h"
@@ -43,14 +50,84 @@ const char* const kModule = "main";
 }
 
 
+
+void load_files( mrv::LoadList& files, mrv::ViewerUI* ui )
+{
+   mrv::LoadList::iterator i = files.begin();
+   mrv::LoadList::iterator e = files.end();
+   
+   //
+   // Window must be shown after images have been loaded.
+   // 
+   mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
+   image_list->load( files );
+}
+
+void load_new_files( void* s )
+{
+   mrv::ViewerUI* ui = (mrv::ViewerUI*) s;
+
+   mrv::LoadList files;
+
+   {
+      fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
+			      "mrViewer.lock" );
+      int pid = 1;
+      lock.get( "pid", pid, 1 );
+      
+
+      
+      char* filename;
+      char* audio;
+      int start = 1, end = 50;
+      
+      
+      int groups = lock.groups();
+      
+      for ( int i = 0; i < groups; ++i )
+      {
+	 const char* group = lock.group( i );
+	 fltk::Preferences g( lock, group );
+	 g.get( "filename", filename, "" );
+	 g.get( "audio", audio, "" );
+	 g.get( "start", start, 1 );
+	 g.get( "end", end, 50 );
+	 
+	 mrv::LoadInfo info( filename, start, end );
+	 files.push_back( info );
+      }
+      
+      std::cerr << "files " << files.size() << std::endl;
+   }
+
+   load_files( files, ui );
+
+   std::string lockfile = mrv::homepath();
+   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+   
+   if(fs::exists(lockfile))
+   {
+      if ( ! fs::remove( lockfile ) )
+	 std::cerr << "Could not remove lock file" << std::endl;
+      else
+	 std::cerr << "Removed lock file" << std::endl;
+  }
+
+   fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+			   "mrViewer.lock" );
+   base.set( "pid", 1 );
+   
+   fltk::repeat_timeout( 0.5, load_new_files, (void*)ui );
+   
+}
+
+
 int main( const int argc, char** argv ) 
 {
 #ifdef LINUX
   XInitThreads();
 #endif
   fltk::lock();   // Initialize X11 thread system
-
-
 
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
@@ -72,22 +149,57 @@ int main( const int argc, char** argv )
 
 
   mrv::LoadList files;
+
   std::string host;
   unsigned port;
   mrv::parse_command_line( argc, argv, ui, files, host, port );
 
+
+  std::string lockfile = mrv::homepath();
+  lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+
+  bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
+  if ( port != 0 ) single_instance = false;
+
+  if ( fs::exists( lockfile ) && single_instance )
+  {
+     {
+	fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+				"mrViewer.lock" );
+	
+	mrv::LoadList::iterator i = files.begin();
+	mrv::LoadList::iterator e = files.end();
+	for ( int idx = 0; i != e ; ++i, ++idx )
+	{
+	   char buf[256];
+	   sprintf( buf, "file%d", idx );
+	
+	   fltk::Preferences ui( base, buf );
+	   ui.set( "filename", (*i).filename.c_str() );
+	   ui.set( "audio", (*i).audio.c_str() );
+	   ui.set( "start", (int)(*i).start );
+	   ui.set( "end", (int)(*i).end );
+	   ui.flush();
+	}
+	base.flush();
+     }
+     
+     LOG_INFO( "Another instance of mrViewer open" );
+
+     exit(0);
+  }
+
+  {
+     fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
+			     "mrViewer.lock" );
+     lock.set( "pid", 1 );
+     
+  }
+
   // mrv::open_license( argv[0] );
   // mrv::checkout_license();
 
-  mrv::LoadList::iterator i = files.begin();
-  mrv::LoadList::iterator e = files.end();
-
-  //
-  // Window must be shown after images have been loaded.
-  // 
-  mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
-  image_list->load( files );
-
+  load_files( files, ui );
   
   if (host == "" && port != 0)
   {
@@ -133,6 +245,12 @@ int main( const int argc, char** argv )
       ok = -1;
     }
 
+  if(fs::exists(lockfile))
+  {
+     if ( ! fs::remove( lockfile ) )
+	std::cerr << "Could not remove lockfile " << lockfile << std::endl;
+  }
+
   // mrv::checkin_license();
   // mrv::close_license();
 
@@ -153,7 +271,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		     LPSTR lpCmdLine, int nCmdShow )
 {
  
-   // AllocConsole();
+  // AllocConsole();
   // freopen("conin$", "r", stdin);
   // freopen("conout$", "w", stdout);
   // freopen("conout$", "w", stderr);

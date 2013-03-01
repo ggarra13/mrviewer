@@ -14,7 +14,9 @@
 
 #include <fltk/TextBuffer.h>
 #include <fltk/run.h>
-#include <gui/mrvLogDisplay.h>
+
+#include "core/mrvHome.h"
+#include "gui/mrvLogDisplay.h"
 
 namespace mrv {
   
@@ -56,15 +58,8 @@ namespace mrv {
     char buf[2048];
     if ( !file )
       {
-	const char* home = getenv("HOME");
-	if ( !home )
-	  {
-	    home = getenv("USERPROFILE");
-
-	    if ( !home ) home = "/usr/tmp";
-	  }
-
-	sprintf( buf, "%s/mrViewer.log", home );
+	 std::string home = mrv::homepath();
+	sprintf( buf, "%s/mrViewer.log", home.c_str() );
 	file = buf;
       }
 

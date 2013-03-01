@@ -36,6 +36,7 @@
 
 #include <GL/gl.h>
 
+#include <boost/filesystem.hpp>
 
 #include <fltk/visual.h>
 #include <fltk/events.h>
@@ -54,6 +55,7 @@
 #include <fltk/PopupMenu.h>
 #include <fltk/Monitor.h>
 #include <fltk/Button.h>
+#include <fltk/Preferences.h>
 
 
 #include "ImathMath.h" // for Math:: functions
@@ -73,6 +75,7 @@
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
 #include "core/mrvFrame.h"
+#include "core/mrvHome.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -100,6 +103,8 @@
 
 
 using namespace std;
+
+namespace fs = boost::filesystem;
 
 // FLTK2 currently has a problem with timout's fltk::event_x/y not 
 // taking into account other child widgets.  This works around it.
@@ -932,8 +937,67 @@ bool ImageView::should_update( mrv::media& fg )
 }
 
 
+void ImageView::load_list()
+{
+ 
+   mrv::LoadList files;
+     
+   {
+      fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
+			      "mrViewer.lock" );
+      int pid = 1;
+      lock.get( "pid", pid, 1 );
+      
+
+      
+      char* directory;
+      char* filename;
+      char* audio;
+      int start, end;
+      
+      
+      int groups = lock.groups();
+      
+      for ( int i = 0; i < groups; ++i )
+      {
+	 const char* group = lock.group( i );
+	 fltk::Preferences g( lock, group );
+	 g.get( "filename", filename, "" );
+	 g.get( "audio", audio, "" );
+	 g.get( "start", start, 1 );
+	 g.get( "end", end, 50 );
+
+
+	 mrv::LoadInfo info( filename, start, end );
+	 files.push_back( info );
+      }
+   }
+
+   
+   if ( ! files.empty() )
+   {
+      mrv::ImageBrowser* image_list = uiMain->uiReelWindow->uiBrowser;
+      image_list->load( files );
+   }
+
+   std::string lockfile = mrv::homepath();
+   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+   
+   if(fs::exists(lockfile))
+   {
+      if ( ! fs::remove( lockfile ) )
+   	 LOG_ERROR( "Could not remove lock file!" );
+      
+      fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+   			      "mrViewer.lock" );
+      base.set( "pid", 1 );
+   }
+   
+}
+
 void ImageView::timeout()
 {
+
   //
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
@@ -946,6 +1010,9 @@ void ImageView::timeout()
 
       if ( newfg != foreground() ) foreground( newfg );
     }
+
+  load_list();
+
 
   mrv::media fg = foreground();
 
@@ -1484,14 +1551,14 @@ void ImageView::leftMouseDown(int x, int y)
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
+	    menu.add( _("File/Save Sequence As"), kSaveSequence.hotkey(),
+		      (fltk::Callback*)save_sequence_cb, this ); 
 	    menu.add( _("File/Save Reel As"), kSaveReel.hotkey(),
 		      (fltk::Callback*)save_reel_cb, this ); 
 	    menu.add( _("File/Save Frame As"), kSaveImage.hotkey(),
 		      (fltk::Callback*)save_cb, this ); 
 	    menu.add( _("File/Save GL Snapshot As"), kSaveSnapshot.hotkey(),
 		      (fltk::Callback*)save_snap_cb, this ); 
-	    menu.add( _("File/Save Sequence As"), kSaveSequence.hotkey(),
-		      (fltk::Callback*)save_sequence_cb, this ); 
 	 }
 
 	 char buf[256];
@@ -1933,7 +2000,6 @@ void ImageView::mouseMove(int x, int y)
 
 
 
-
   CMedia::PixelType hsv;
   int cspace = uiMain->uiBColorType->value() + 1;
 
@@ -1972,7 +2038,6 @@ void ImageView::mouseMove(int x, int y)
   uiMain->uiPixelV->text( float_printf( hsv.b ).c_str() );
 
 
-
   mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
     uiMain->uiLType->value();
   hsv.a = calculate_brightness( rgba, brightness_type );
@@ -2002,121 +2067,121 @@ void ImageView::mouseDrag(int x,int y)
       else if ( flags & kMouseMove )
 	{
 	   cursor( fltk::CURSOR_MOVE );
-	  xoffset += dx / _zoom;
-	  yoffset -= dy / _zoom;
+	   xoffset += dx / _zoom;
+	   yoffset -= dy / _zoom;
 
-	  char buf[128];
-	  sprintf( buf, "Offset %g %g", xoffset, yoffset );
-	  send( buf );
+	   char buf[128];
+	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
+	   send( buf );
 
-	  lastX = x;
-	  lastY = y;
+	   lastX = x;
+	   lastY = y;
 	}
       else
 	{
-	  mrv::media fg = foreground();
-	  if ( ! fg ) return;
+	   mrv::media fg = foreground();
+	   if ( ! fg ) return;
 
-	  CMedia* img = fg->image();
+	   CMedia* img = fg->image();
 
-	  mrv::image_type_ptr pic;
-	  {
-	    CMedia::Mutex& m = img->video_mutex();
-	    SCOPED_LOCK(m);
-	    pic = img->hires();
-	  }
-	  if ( !pic ) return;
+	   mrv::image_type_ptr pic;
+	   {
+	      CMedia::Mutex& m = img->video_mutex();
+	      SCOPED_LOCK(m);
+	      pic = img->hires();
+	   }
+	   if ( !pic ) return;
 
-	  unsigned int texWidth = pic->width();
-	  unsigned int texHeight = pic->height();
+	   unsigned int texWidth = pic->width();
+	   unsigned int texHeight = pic->height();
 
-	  double xf = double(lastX);
-	  double yf = double(lastY);
-	  image_coordinates( pic, xf, yf );
-	  if ( xf < 0 ) xf = 0;
-	  else if ( xf > texWidth )  xf = double(texWidth);
-	  if ( yf < 0 ) yf = 0;
-	  else if ( yf > texHeight ) yf = double(texHeight);
+	   double xf = double(lastX);
+	   double yf = double(lastY);
+	   image_coordinates( pic, xf, yf );
+	   if ( xf < 0 ) xf = 0;
+	   else if ( xf > texWidth )  xf = double(texWidth);
+	   if ( yf < 0 ) yf = 0;
+	   else if ( yf > texHeight ) yf = double(texHeight);
 
-	  double xn = double(x);
-	  double yn = double(y);
-	  image_coordinates( pic, xn, yn );
-	  if ( xn < 0 ) xn = 0;
-	  else if ( xn > texWidth )  xn = double(texWidth);
-	  if ( yn < 0 ) yn = 0;
-	  else if ( yn > texHeight ) yn = double(texHeight);
+	   double xn = double(x);
+	   double yn = double(y);
+	   image_coordinates( pic, xn, yn );
+	   if ( xn < 0 ) xn = 0;
+	   else if ( xn > texWidth )  xn = double(texWidth);
+	   if ( yn < 0 ) yn = 0;
+	   else if ( yn > texHeight ) yn = double(texHeight);
 
-	  xf = floor(xf);
-	  yf = floor(yf);
-	  xn = floor(xn+0.5f);
-	  yn = floor(yn+0.5f);
-
-
-	  unsigned W = texWidth;
-	  unsigned H = texHeight;
-
-	  if ( _mode == kSelection )
-	  {
-	     if ( xn < xf ) 
-	     {
-		double tmp = xf;
-		xf = xn;
-		xn = tmp;
-	     }
-	     if ( yn < yf ) 
-	     {
-		double tmp = yf;
-		yf = yn;
-		yn = tmp;
-	     }
-	     assert( xf <= xn );
-	     assert( yf <= yn );
-
-	     unsigned dx = (unsigned) std::abs( xn - xf );
-	     unsigned dy = (unsigned) std::abs( yn - yf );
+	   xf = floor(xf);
+	   yf = floor(yf);
+	   xn = floor(xn+0.5f);
+	   yn = floor(yn+0.5f);
 
 
+	   unsigned W = texWidth;
+	   unsigned H = texHeight;
 
-	     // store selection square
-	     if ( dx > W ) dx = W;
-	     if ( dy > H ) dy = H;
+	   if ( _mode == kSelection )
+	   {
+	      if ( xn < xf ) 
+	      {
+		 double tmp = xf;
+		 xf = xn;
+		 xn = tmp;
+	      }
+	      if ( yn < yf ) 
+	      {
+		 double tmp = yf;
+		 yf = yn;
+		 yn = tmp;
+	      }
+	      assert( xf <= xn );
+	      assert( yf <= yn );
+	      
+	      unsigned dx = (unsigned) std::abs( xn - xf );
+	      unsigned dy = (unsigned) std::abs( yn - yf );
 
-	     _selection = mrv::Rectd( (double)xf/(double)W, 
-				      (double)yf/(double)H, 
-				      (double)dx/(double)W, 
-				      (double)dy/(double)H );
 
-	     char buf[256];
-	     sprintf( buf, "Selection %g %g %g %g", _selection.x(),
-		      _selection.y(), _selection.w(), _selection.h() );
-	     send( buf );
 
-	  }
-	  else if ( _mode == kDraw || _mode == kErase )
-	  {
-	     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
-	     GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
-	     if ( s == NULL )
-	     {
-		LOG_ERROR( _("Not a GLPathShape pointer") );
-	     }
-	     else
-	     {
-		yn  = H - yn;
-		yn -= H/2;
-		xn -= W/2;
-		mrv::Point p( xn, yn );
-		s->pts.push_back( p );
-	     }
-	  }
-	  assert( _selection.x() >= 0.0 && _selection.x() <= 1.0);
-	  assert( _selection.y() >= 0.0 && _selection.y() <= 1.0);
-	  assert( _selection.w() >= 0.0 && _selection.w() <= 1.0);
-	  assert( _selection.h() >= 0.0 && _selection.h() <= 1.0);
+	      // store selection square
+	      if ( dx > W ) dx = W;
+	      if ( dy > H ) dy = H;
 
-	  update_color_info( fg );
+	      _selection = mrv::Rectd( (double)xf/(double)W, 
+				       (double)yf/(double)H, 
+				       (double)dx/(double)W, 
+				       (double)dy/(double)H );
 
-	  mouseMove( x, y );
+	      char buf[256];
+	      sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+		       _selection.y(), _selection.w(), _selection.h() );
+	      send( buf );
+
+	   }
+	   else if ( _mode == kDraw || _mode == kErase )
+	   {
+	      mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+	      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+	      if ( s == NULL )
+	      {
+		 LOG_ERROR( _("Not a GLPathShape pointer") );
+	      }
+	      else
+	      {
+		 yn  = H - yn;
+		 yn -= H/2;
+		 xn -= W/2;
+		 mrv::Point p( xn, yn );
+		 s->pts.push_back( p );
+	      }
+	   }
+	   assert( _selection.x() >= 0.0 && _selection.x() <= 1.0);
+	   assert( _selection.y() >= 0.0 && _selection.y() <= 1.0);
+	   assert( _selection.w() >= 0.0 && _selection.w() <= 1.0);
+	   assert( _selection.h() >= 0.0 && _selection.h() <= 1.0);
+
+	   update_color_info( fg );
+
+	   mouseMove( x, y );
 	}
 
       redraw();
@@ -2682,6 +2747,7 @@ int ImageView::handle(int event)
       return 1;
     case fltk::ENTER:
       focus(this);
+      load_list();
       fltk::GlWindow::handle( event );
       window()->cursor(fltk::CURSOR_CROSS);
       return 1;

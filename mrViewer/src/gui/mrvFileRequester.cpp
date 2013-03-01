@@ -269,14 +269,14 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    if ( img->has_audio() )
    {
       if ( ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
-   	   ext == ".mpg" || ext == ".mpeg" )
+      	   ext == ".mpg" || ext == ".mpeg" )
       {
-   	 char buf[256];
-   	 sprintf( buf, _("Movie file %s with sound is not supported yet.  "
-   			 "Use .avi"),
-   		  ext.c_str() );
-   	 mrvALERT( buf );
-   	 return;
+      	 char buf[256];
+      	 sprintf( buf, _("Movie file %s with sound is not supported yet.  "
+      			 "Use .avi"),
+      		  ext.c_str() );
+      	 mrvALERT( buf );
+      	 return;
       }
    }
 

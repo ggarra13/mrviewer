@@ -3,9 +3,7 @@
 require 'fileutils'
 
 EXCLUDE = %w(
-libGL
-libc
-libstdc\+\+
+libGL\.so
 libm\.so
 .*nvidia.*
 )

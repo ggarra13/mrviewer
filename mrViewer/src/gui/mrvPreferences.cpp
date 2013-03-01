@@ -282,6 +282,9 @@ namespace mrv {
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value(tmp);
 
+    ui.get( "single_instance", tmp, 1 );
+    uiPrefs->uiPrefsSingleInstance->value( tmp );
+
     ui.get( "pixel_toolbar", tmp, 1 );
     uiPrefs->uiPrefsPixelToolbar->value(tmp);
 
@@ -809,15 +812,19 @@ namespace mrv {
     //
     if ( uiPrefs->uiWindowFixedPosition->value() )
     {
-       int x = uiPrefs->uiWindowXPosition->value();
-       int y = uiPrefs->uiWindowYPosition->value();
+       int x = int(uiPrefs->uiWindowXPosition->value());
+       int y = int(uiPrefs->uiWindowYPosition->value());
        main->uiMain->position( x, y );
     }
 
     main->uiMain->show(0, NULL);
-    main->uiMain->set_icon();
     fltk::check();
 
+    main->uiMain->set_icon();
+
+#if defined(_WIN32) || defined(_WIN64)
+    main->uiMain->resize( main->uiMain->w(), main->uiMain->h()-20 );
+#endif
 
     fltk::RadioButton* r;
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(1);
@@ -873,6 +880,7 @@ namespace mrv {
     // ui options
     //
     ui.set( "topbar", (int) uiPrefs->uiPrefsTopbar->value() );
+    ui.set( "single_instance", (int) uiPrefs->uiPrefsSingleInstance->value() );
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
