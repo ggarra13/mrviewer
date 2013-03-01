@@ -49,7 +49,7 @@ namespace mrv {
   {
     fltk::open_display();  // Needed for icons 
     
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
     HICON data = LoadIcon(fltk::xdisplay, MAKEINTRESOURCE(IDI_ICON1));
     this->icon(data);
 #else
@@ -69,7 +69,7 @@ namespace mrv {
 
   void MainWindow::always_on_top() 
   {
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
     // Microsoft (R) Windows(TM)
     SetWindowPos(fltk::xid(this), HWND_TOPMOST, 
 		 0, 0, w()+8, h()+27, 0);

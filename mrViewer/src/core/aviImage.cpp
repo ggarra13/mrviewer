@@ -3099,8 +3099,20 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
 
    if ( oc != NULL ) return false;
 
-   int err = avformat_alloc_output_context2(&oc, NULL, NULL,
-					    filename);
+   std::string ext = "avi";
+   std::string file = filename;
+   size_t pos = file.rfind( '.' );
+   if ( pos != std::string::npos )
+   {
+      ext = file.substr( pos, file.size() );
+   }
+
+   AVOutputFormat* outformat = av_guess_format("avi", filename, NULL);
+   const char* filec = filename;
+   if ( outformat != NULL ) filec = NULL;
+
+   int err = avformat_alloc_output_context2(&oc, outformat, NULL,
+					    filec);
    if (!oc || err < 0) {
       LOG_INFO( _("Could not deduce output format from file extension: using MPEG.") );
       

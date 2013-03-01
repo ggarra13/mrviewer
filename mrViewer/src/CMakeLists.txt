@@ -118,6 +118,7 @@ SET( SOURCES
   core/iffImage.cpp
   core/pxrzImage.cpp
   core/ddsImage.cpp
+  core/mrvHome.cpp
   core/shmapImage.cpp
   core/slateImage.cpp
   core/smpteImage.cpp
