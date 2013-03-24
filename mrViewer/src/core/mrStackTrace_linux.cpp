@@ -30,12 +30,17 @@
 //
 
 
-#include "mrStackTrace_linux.h"
-
 
 #include <cstdio>
 #include <cstdlib>
 #include <cstring>
+#include <iostream>
+
+#include "mrStackTrace_linux.h"
+#include "core/mrvHome.h"
+
+#include <boost/filesystem.hpp>
+namespace fs = boost::filesystem;
 
 #include <execinfo.h>
 
@@ -101,6 +106,16 @@ void ExceptionHandler::demangle( const char* name )
 void ExceptionHandler::bt_sighandler(int sig, siginfo_t *info,
 				     void *secret)
 {
+
+   std::string lockfile = mrv::homepath();
+   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+   if(fs::exists(lockfile))
+   {
+      if ( ! fs::remove( lockfile ) )
+	 std::cerr << "Could not remove lockfile " << lockfile << std::endl;
+   }
+
+   if ( sig == SIGINT ) exit(0);
 
   void *trace[16];
   char **messages = (char **)NULL;
@@ -170,6 +185,7 @@ void ExceptionHandler::install_signal_handler() {
   sigaction(SIGFPE,  &sa, &oldSIGFPE);
   sigaction(SIGTRAP, &sa, &oldSIGFPE);
   sigaction(SIGABRT, &sa, &oldSIGABRT);
+  sigaction(SIGINT, &sa, &oldSIGINT);
   /* ... add any other signal here */
 }
 
@@ -189,6 +205,7 @@ void ExceptionHandler::restore_signal_handler() {
   sigaction(SIGILL,  &oldSIGILL,  NULL);
   sigaction(SIGFPE,  &oldSIGFPE,  NULL);
   sigaction(SIGABRT, &oldSIGABRT, NULL);
+  sigaction(SIGABRT, &oldSIGINT, NULL);
   /* ... add any other signal here */
 }
 

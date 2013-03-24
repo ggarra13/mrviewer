@@ -60,6 +60,7 @@ class ExceptionHandler
      struct sigaction oldSIGILL;
      struct sigaction oldSIGFPE;
      struct sigaction oldSIGABRT;
+     struct sigaction oldSIGINT;
 };
 
 }
