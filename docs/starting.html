@@ -99,5 +99,23 @@ On certain platforms, like Windows, mrViewer can also associate itself
 to several image and video files it knows about. In that case,
 opening a Windows Explorer window and double-clicking on a file that
 mrViewer recognizes may automatically invoke a new copy of mrViewer.
+
+<br>
+If mrViewer has the single instance preference set, only one mrViewer will
+get started and any other image that would go to a new viewer will get
+redirected back to the first instance.
+In order for this to work, mrViewer creates a dummy lock file in your
+home directory in:
+
+
+<div class="console">$HOME/.fltk/filmaura/mrViewer.lock.prefs<br></div>
+on linux
+</br>
+<br>
+and</br>
+<div class="console">
+$USERPROFILE/filmaura/mrViewer.lock.prefs
+</div>
+
 </body>
 </html>
