@@ -47,6 +47,9 @@
 typedef std::vector< std::string > FluStringVector;
 
 
+
+extern std::string retname;
+
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
 FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist );
 FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename );
@@ -421,6 +424,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   };
   static void _qSort( int how, bool caseSort, fltk::Group* const g, 
 		      int low, int high );
+
 
   friend class Entry;
   class Entry : public fltk::Input

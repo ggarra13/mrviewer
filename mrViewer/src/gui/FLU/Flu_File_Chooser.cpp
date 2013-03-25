@@ -2948,7 +2948,7 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
       if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
 	if( contextHandlers[i].ext.size() && contextHandlers[i].ext != ext )
 	  continue;
-      entryPopup.add( contextHandlers[i].name.c_str(), (void*)i );
+      entryPopup.add( contextHandlers[i].name.c_str(), (void*) (intptr_t)i );
     }
   if( ext )
     free( ext );
@@ -4660,16 +4660,21 @@ std::string Flu_File_Chooser::commonStr()
   return common;
 }
 
+std::string retname;
+
 static const char* _flu_file_chooser( const char *message, const char *pattern,
 	const char *filename, int type,
 	int *count = 0, FluStringVector *filelist = 0 )
 {
    static Flu_File_Chooser *fc = NULL;
-  static std::string retname;
 
   if( !fc )
     {
       fc = new Flu_File_Chooser( filename, pattern, type, message );
+      if (fc && retname != "")
+      {
+	 fc->value( retname.c_str() );
+      }
     }
   else
     {
