@@ -50,6 +50,7 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/FLU/Flu_File_Chooser.h"
 
 #if defined(WIN32) || defined(WIN64)
 #  define snprintf _snprintf
@@ -1609,6 +1610,8 @@ void ImageBrowser::load( const stringArray& files,
 	    mrv::get_sequence_limits( start, end, file );
 	    loadlist.push_back( mrv::LoadInfo( file, start, end ) );
 	  }
+
+	retname = file;
       }
 
     load( loadlist, progress );
