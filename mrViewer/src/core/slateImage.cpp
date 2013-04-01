@@ -190,7 +190,7 @@ namespace mrv {
 
     char buf[1024];
 
-    char* show = getenv( "SHOW" );
+    const char* show = getenv( "SHOW" );
     if ( show == NULL ) show = getenv( "JOB" );
     if ( show == NULL ) show = "";
 

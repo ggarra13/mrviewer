@@ -569,7 +569,7 @@ void CMedia::filename( const char* n )
  * 
  * @return filename of the file for current frame
  */
-const char* CMedia::filename() const
+const char* const CMedia::filename() const
 {
   if ( !is_sequence() ) return _fileroot;
   if ( _filename ) return _filename;

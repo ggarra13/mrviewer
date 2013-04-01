@@ -1306,9 +1306,12 @@ void ImageView::draw()
 
   int y = h()-25;
   int yi = 25;
+  static char buf[1024];
+
   if ( _hud & kHudFilename )
     {
-      hud << img->name();
+       sprintf( buf, img->name().c_str(), img->frame() );
+       hud << buf;
     }
 
   if ( img->first_frame() != img->last_frame() && _hud & kHudFrameRange )
@@ -1323,8 +1326,6 @@ void ImageView::draw()
       y -= yi; hud.str("");
     }
 
-
-  static char buf[256];
 
   if ( _hud & kHudResolution )
     {
@@ -3440,8 +3441,10 @@ void ImageView::foreground( mrv::media fg )
       
       if ( img )
       {
+	 
+	 // Per session gamma: requested by Willa
+	 //	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
-	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 	 refresh_fstop();
 	 
 	 if ( img->width() > 160 && !fltk_main()->border() )  fit_image();

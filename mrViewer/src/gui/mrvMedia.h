@@ -35,6 +35,15 @@ namespace mrv {
       media( CMedia* const img );
       ~media();
 
+	 friend
+	 std::ostream& operator<<( std::ostream& o, 
+				   const mrv::gui::media& m )
+	 {
+	    if ( m.image() ) return o << m.image()->filename();
+	    else o << "NULL";
+	 }
+
+
       CMedia* image()             { return _image; }
       const CMedia* image() const { return _image; }
 

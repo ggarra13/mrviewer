@@ -333,12 +333,12 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    
    for ( ; frame <= last; ++frame )
    {
-      int step = 1;
-      
+
       uiMain->uiReelWindow->uiBrowser->seek( frame );
       mrv::media fg = uiMain->uiView->foreground();
       if (!fg) break;
       
+
       CMedia* img = fg->image();
       
       if ( old != fg )
@@ -385,7 +385,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	   
 	 if (movie)
 	 {
-	    aviImage::save_movie_frame( img );
+	    aviImage::save_movie_frame( img, uiMain );
 	 }
 	 else 
 	 {
