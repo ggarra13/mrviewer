@@ -43,7 +43,7 @@ extern "C" {
 #include "mrvThread.h"
 #include "mrvCPU.h"
 #include "mrvColorSpaces.h"
-
+#include "mrViewer.h"
 
 
 namespace 
@@ -251,9 +251,9 @@ void aviImage::open_video_codec()
   static enum AVDiscard skip_frame= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_idct= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_loop_filter= AVDISCARD_DEFAULT;
-  static int error_resilience = 0; //FF_ER_CAREFUL;
-  static int error_concealment = FF_EC_GUESS_MVS|FF_EC_DEBLOCK;
+  static int error_concealment = 3;
 
+  ctx->idct_algo         = FF_IDCT_AUTO;
   ctx->workaround_bugs = workaround_bugs;
   ctx->skip_frame= skip_frame;
   ctx->skip_idct= skip_idct;
@@ -297,7 +297,9 @@ void aviImage::flush_video()
   {
      AVStream* stream = get_video_stream();
      if ( stream != NULL && stream->codec != NULL )
+     {
 	avcodec_flush_buffers( stream->codec );
+     }
   }
 }
 
@@ -483,14 +485,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 	    }
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
-	  char ftype;
-	  if (_av_frame->pict_type == FF_B_TYPE)
-	    ftype = 'B';
-	  else if (_av_frame->pict_type == FF_I_TYPE)
-	    ftype = 'I';
-	  else
-	    ftype = 'P';
-
+	  char ftype = av_get_picture_type_char( _av_frame->pict_type );
 	  fprintf( stderr, "f: %05" PRId64 " video dts: %07" PRId64 
 		   " as frame: %05" PRId64 " %c\n",
 		   _dts, pkt.dts, pktframe, ftype );
@@ -684,7 +679,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   SCOPED_LOCK( _mutex );
 
-  if ( _images.empty() || _images.back()->frame() < frame )
+  if ( _images.empty() ) // || _images.back()->frame() < frame )
   {
      _images.push_back( image );
   }
@@ -719,10 +714,12 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   ptsframe = pts2frame( stream, pkt.dts );
 
+
   int got_pict = 0;
-  avcodec_decode_video2( stream->codec, _av_frame, &got_pict, 
+  int err = avcodec_decode_video2( stream->codec, _av_frame, &got_pict, 
 			 (AVPacket*)&pkt );
-  if ( got_pict == 0 ) return kDecodeError;
+  if ( err < 0 ) return kDecodeError;
+  if ( got_pict == 0 ) return kDecodeMissingFrame;
   return kDecodeOK;
 }
 
@@ -867,9 +864,9 @@ void aviImage::open_subtitle_codec()
   static enum AVDiscard skip_frame= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_idct= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_loop_filter= AVDISCARD_DEFAULT;
-  static int error_resilience = 0; //FF_ER_CAREFUL;
-  static int error_concealment = FF_EC_GUESS_MVS|FF_EC_DEBLOCK;
+  static int error_concealment = 3;
 
+  ctx->idct_algo         = FF_IDCT_AUTO;
   ctx->workaround_bugs = workaround_bugs;
   ctx->skip_frame= skip_frame;
   ctx->skip_idct= skip_idct;
@@ -1333,22 +1330,21 @@ void aviImage::populate()
 	     break;
 	  }
 	  
+	  boost::int64_t pktframe;
 	  if ( has_video() && pkt.stream_index == video_stream_index() )
 	    {
-	      boost::int64_t ptsframe;
-	      DecodeStatus status = decode_video_packet( ptsframe, 
-							 _frameStart, pkt );
+	       DecodeStatus status = decode_video_packet( pktframe, 
+							  _frameStart, pkt );
 	      if ( status == kDecodeOK )
 		{
-		   store_image( ptsframe, pkt.dts );
-		  got_image = true;
+		   store_image( pktframe, pkt.dts );
+		   got_image = true;
 		}
 	    }
 	  else
 	     if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	     {
-		boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
+		pktframe = get_frame( get_audio_stream(), pkt );
 		boost::int64_t dts = _frameStart;
 		if ( playback() == kBackwards )
 		{
@@ -1507,6 +1503,7 @@ bool aviImage::fetch(const boost::int64_t frame)
   cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
+
   bool got_image = !has_video();
   bool got_audio = !has_audio();
 
@@ -1514,6 +1511,11 @@ bool aviImage::fetch(const boost::int64_t frame)
     {
       got_audio = in_audio_store( frame );
     }
+
+  if ( !got_image )
+  {
+     got_image = in_video_store( frame );
+  }
 
 
   if ( frame != _expected )
@@ -1584,13 +1586,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 	      got_image = true;
 
 #ifdef DEBUG_DECODE
-	    char ftype;
-	    if (_av_frame->pict_type == FF_B_TYPE)
-	      ftype = 'B';
-	    else if (_av_frame->pict_type == FF_I_TYPE)
-	      ftype = 'I';
-	    else
-	      ftype = 'P';
+	    char ftype = av_get_picture_type_char(_av_frame->pict_type );
 	    fprintf( stderr, "FETCH V f: %05" PRId64 " video pts: %07" PRId64 
 		     " dts: %07" PRId64 " %c as frame: %05" PRId64 "\n",
 		     frame, pkt.pts, pkt.dts, ftype, pktframe );
@@ -1641,8 +1637,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 		 if ( playback() == kBackwards )
 		 {
 		    if ( pktframe <= frame )
-		       _subtitle_packets.push_back( pkt );
-		 }
+		       _subtitle_packets.push_back( pkt );		 }
 		 else
 		 {
 		    _subtitle_packets.push_back( pkt );
@@ -1731,7 +1726,6 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
       boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
 
-
       if ( !is_seek && _playback == kBackwards && 
 	   pktframe >= frame - max_video_frames() )
 	{
@@ -1744,11 +1738,16 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	{
 	  if ( pktframe >= frame )
 	    {
-	      got_image = decode_image( frame, pkt );
+	       while( !got_image )
+	       {
+		  got_image = decode_image( frame, pkt );
+	       }
 	    }
 	  else
 	    {
-	      decode_video_packet( pktframe, frame, pkt );
+	       // decode_image( pktframe, pkt );
+	       decode_video_packet( pktframe, frame, pkt );
+		  
 	    }
 	}
 
@@ -1814,6 +1813,10 @@ bool aviImage::in_video_store( const boost::int64_t frame )
 
 CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 {
+
+#ifdef DEBUG_STORES
+  debug_video_packets(frame, "decode_video");
+#endif
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -1953,11 +1956,15 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
   
   std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
 	    << " " << routine << " video stores  #" 
-	    << _images.size() << ": " << (*iter)->frame() << "-" 
-	    << (*(last-1))->frame() 
-	    << std::endl;
+	    << _images.size() << ": ";
 
-#ifdef DEBUG_VIDEO_STORES_DETAIL
+
+  if ( iter != last )
+     std::cerr << (*iter)->frame() << "-" 
+	       << (*(last-1))->frame() 
+	       << std::endl;
+
+#ifdef DEBUG_VIDEO_STORE
   for ( ; iter != last; ++iter )
     {
       boost::int64_t f = (*iter)->frame();
@@ -1969,7 +1976,6 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
   std::cerr << endl;
 #endif
 }
-
 
 
 void aviImage::debug_subtitle_packets(const boost::int64_t frame, 
@@ -2652,7 +2658,8 @@ static void close_video(AVFormatContext *oc, AVStream *st)
 }
 
 /* prepare a dummy image */
-static void fill_yuv_image(AVFrame *pict, const CMedia* img )
+static void fill_yuv_image(AVFrame *pict, const CMedia* img,
+			   const mrv::ViewerUI* const ui )
 {
    CMedia* m = (CMedia*) img;
 
@@ -2667,9 +2674,9 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img )
       {
 	 ImagePixel p = hires->pixel( x, y );
 
-	 if ( img->gamma() != 1.0f )
+	 float gamma = 1.0f/ui->uiView->gamma();
+	 if ( gamma != 1.0f )
 	 {
-	    float gamma = 1.0f/img->gamma();
 	    p.r = powf( p.r, gamma );
 	    p.g = powf( p.g, gamma );
 	    p.b = powf( p.b, gamma );
@@ -2680,7 +2687,6 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img )
 	    if (p.r > 1.0f) p.r = 1.0f;
 	    if (p.g > 1.0f) p.g = 1.0f;
 	    if (p.b > 1.0f) p.b = 1.0f;
-
 	 }
 
 	 ImagePixel yuv = color::rgb::to_ITU601( p );
@@ -2698,20 +2704,42 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img )
 }
 
 static bool write_video_frame(AVFormatContext* oc, AVStream* st,
-			      const CMedia* img )
+			      const CMedia* img, 
+			      const mrv::ViewerUI* const ui )
 {
     int out_size, ret;
     AVCodecContext *c = NULL;
 
     c = st->codec;
 
-    if (frame_count >= img->last_frame() - img->first_frame() + 1) {
+    if (oc->oformat->flags & AVFMT_RAWPICTURE) {
+        /* Raw video case - the API will change slightly in the near
+         * future for that. */
+        AVPacket pkt;
+        av_init_packet(&pkt);
+
+        pkt.flags        |= AV_PKT_FLAG_KEY;
+        pkt.stream_index  = st->index;
+        pkt.data          = picture->data[0];
+        pkt.size          = sizeof(AVPicture);
+
+        int ret = av_interleaved_write_frame(oc, &pkt);
+	if ( ret != 0 )
+	   LOG_ERROR( _("Error while writing raw frame") );
+    }
+    else
+    {
+#if 1
+       if (frame_count >= img->last_frame() - img->first_frame() + 1) {
         /* No more frames to compress. The codec has a latency of a few
          * frames if using B-frames, so we get the last frames by
          * passing the same picture again. */
-    } else {
-       fill_yuv_image( picture, img );
-    }
+       } 
+       else 
+#endif
+       {
+	  fill_yuv_image( picture, img, ui );
+       }
 
     AVPacket pkt;
     av_init_packet(&pkt);
@@ -2724,7 +2752,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     ret = avcodec_encode_video2(c, &pkt, picture, &got_pic);
     if (!ret && got_pic && c->coded_frame) {
        c->coded_frame->pts       = pkt.pts;
-       c->coded_frame->key_frame = !!(pkt.flags & AV_PKT_FLAG_KEY);
+       c->coded_frame->key_frame = (pkt.flags & AV_PKT_FLAG_KEY);
     }
 
     /* free any side data since we cannot return it */
@@ -2756,9 +2784,11 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     }
 
     frame_count++;
+    }
+
     return true;
 }
-static AVStream *add_video_stream(AVFormatContext *oc,
+static AVStream* add_video_stream(AVFormatContext *oc,
 				  AVCodec** codec,
 				  enum CodecID codec_id,
 				  const CMedia* img )
@@ -2768,6 +2798,8 @@ static AVStream *add_video_stream(AVFormatContext *oc,
 
    /* find the video encoder */
    codec_id = AV_CODEC_ID_MSMPEG4V3;
+   // codec_id = AV_CODEC_ID_H263P;
+   // codec_id = AV_CODEC_ID_MPEG2VIDEO;
    *codec = avcodec_find_encoder(codec_id);
    if (!(*codec)) {
        LOG_ERROR( _( "Video codec not found") );
@@ -2793,6 +2825,9 @@ static AVStream *add_video_stream(AVFormatContext *oc,
 
     /* put sample parameters */
     c->bit_rate = c->width * c->height * 3;
+    // c->rc_max_rate = ??;
+    // c->rc_buffer_size = ??;
+    // c->field_order = ??;
     c->bit_rate_tolerance = 5000000;
     c->global_quality = 1;
     c->compression_level = FF_COMPRESSION_DEFAULT;
@@ -2803,7 +2838,7 @@ static AVStream *add_video_stream(AVFormatContext *oc,
     c->time_base.den = 1000 * img->fps();
     c->time_base.num = 1000;
     c->ticks_per_frame = 2;
-    c->gop_size = 2; /* emit one intra frame every twelve frames at most */
+    c->gop_size = 2; /* emit one intra frame every two frames at most */
     c->pix_fmt = STREAM_PIX_FMT;
     c->max_b_frames = 0;
     c->me_method = 5;
@@ -2946,7 +2981,7 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
     c->bit_rate = 64000;
     c->sample_rate = img->audio_frequency();
     c->channel_layout = select_channel_layout(*codec);
-    c->channels = 2;
+    c->channels = img->audio_channels();
 
     // some formats want stream headers to be separate
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
@@ -3019,74 +3054,76 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    avcodec_get_frame_defaults(frame);
    int got_packet;
    
-   AVCodecContext* c = st->codec;
-   av_init_packet(&pkt);
-   pkt.size = 0;
-   pkt.data = NULL;
-
-
-   int size = 0;
-
-   img->get_audio_frame(samples, size);
-
-   if ( size != 0 )
    {
+      AVCodecContext* c = st->codec;
+      av_init_packet(&pkt);
+      pkt.size = 0;
+      pkt.data = NULL;
+
+
+      int size = 0;
+       
+      img->get_audio_frame(samples, size);
+       
       c->frame_size = size;
-      c->frame_size /= c->channels;
-      c->frame_size /= av_get_bytes_per_sample(c->sample_fmt);
+      if ( size != 0 )
+      {
+	 c->frame_size /= c->channels;
+	 c->frame_size /= av_get_bytes_per_sample(c->sample_fmt);
+      }
+       
+      frame->nb_samples     = c->frame_size;
+      frame->format         = c->sample_fmt;
+      frame->channel_layout = c->channel_layout;
+       
+      int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
+					 (uint8_t *)samples,
+					 frame->nb_samples *
+					 c->channels *
+					 av_get_bytes_per_sample( c->sample_fmt ),
+					 1);
+      if (err < 0)
+      {
+	 LOG_ERROR( _("Could not fill audio frame. Error: ") << err );
+	 return;
+      }
+       
+       
+      err = avcodec_encode_audio2(c, &pkt, frame, &got_packet);
+      if (err < 0 || !got_packet )
+      {
+	 LOG_ERROR( _("Could not encode audio frame") );
+	 return;
+      }
+       
+      pkt.stream_index = st->index;
+      if (got_packet) {
+	 if (pkt.pts != AV_NOPTS_VALUE)
+	    pkt.pts = av_rescale_q(pkt.pts, c->time_base, st->time_base);
+	 if (pkt.dts != AV_NOPTS_VALUE)
+	    pkt.dts = av_rescale_q(pkt.dts, c->time_base, st->time_base);
+	 if (pkt.duration > 0)
+	    pkt.duration = av_rescale_q(pkt.duration, c->time_base, 
+					st->time_base);
+      }
+       
+      /* write the compressed frame in the media file */
+      if (av_interleaved_write_frame(oc, &pkt) != 0) {
+	 LOG_ERROR( _("Error while writing audio frame") );
+      }
    }
-
-   frame->nb_samples     = c->frame_size;
-   frame->format         = c->sample_fmt;
-   frame->channel_layout = c->channel_layout;
-
-
-   int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
-				      (uint8_t *)samples,
-				      frame->nb_samples *
-				      c->channels *
-				      av_get_bytes_per_sample( c->sample_fmt ),
-				      1);
-   if (err < 0)
-   {
-      LOG_ERROR( _("Could not fill audio frame. Error: ") << err );
-      return;
-   }
-
-
-   err = avcodec_encode_audio2(c, &pkt, frame, &got_packet);
-   if (err < 0 || !got_packet )
-   {
-      LOG_ERROR( _("Could not encode audio frame") );
-      return;
-   }
-
-    pkt.stream_index = st->index;
-    if (got_packet) {
-       if (pkt.pts != AV_NOPTS_VALUE)
-	  pkt.pts = av_rescale_q(pkt.pts, c->time_base, st->time_base);
-       if (pkt.dts != AV_NOPTS_VALUE)
-	  pkt.dts = av_rescale_q(pkt.dts, c->time_base, st->time_base);
-       if (pkt.duration > 0)
-	  pkt.duration = av_rescale_q(pkt.duration, c->time_base, 
-				      st->time_base);
-    }
-
-    /* write the compressed frame in the media file */
-    if (av_interleaved_write_frame(oc, &pkt) != 0) {
-       LOG_ERROR( _("Error while writing audio frame") );
-    }
-
-    av_free( frame );
+    
+    
+   av_free( frame );
 
 }
 
 static void close_audio_static(AVFormatContext *oc, AVStream *st)
 {
-    avcodec_close(st->codec);
+   avcodec_close(st->codec);
 
-    // av_free(samples);
-    av_free(audio_outbuf);
+   // av_free(samples);
+   av_free(audio_outbuf);
 }
 
 bool aviImage::open_movie( const char* filename, const CMedia* img )
@@ -3107,9 +3144,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
       ext = file.substr( pos, file.size() );
    }
 
-   AVOutputFormat* outformat = av_guess_format("avi", filename, NULL);
+   AVOutputFormat* outformat = av_guess_format(NULL, filename, NULL);
    const char* filec = filename;
-   if ( outformat != NULL ) filec = NULL;
+   // if ( outformat != NULL ) filec = NULL;
 
    int err = avformat_alloc_output_context2(&oc, outformat, NULL,
 					    filec);
@@ -3169,7 +3206,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
 }
 
 
-bool aviImage::save_movie_frame( const CMedia* img )
+bool aviImage::save_movie_frame( const CMedia* img,
+				 const mrv::ViewerUI* ui )
 {
 
    double audio_pts, video_pts;
@@ -3183,26 +3221,33 @@ bool aviImage::save_movie_frame( const CMedia* img )
    if (video_st)
       video_pts = ((double)video_st->pts.val * video_st->time_base.num /
 		   video_st->time_base.den);
+   else
+      video_pts = audio_pts;
    
+
+   picture->pts = img->frame();
 
    /* write interleaved audio and video frames */
    if (!video_st || (video_st && audio_st && audio_pts < video_pts)) {
       while ( audio_pts < video_pts )
       {
 
+
 	 write_audio_frame(oc, audio_st, img);
 
-	 audio_pts = ((double)audio_st->pts.val * audio_st->time_base.num / 
-		      audio_st->time_base.den);
+	 double pts = audio_st->pts.val;
+	 if ( pts == 0 ) pts = 1.0;
+
+	 audio_pts += ((double)pts * audio_st->time_base.num / 
+		       audio_st->time_base.den);
       }
 
       if ( video_st ) 
-	 write_video_frame(oc, video_st, img);
+	 write_video_frame(oc, video_st, img, ui);
    } else {
-      write_video_frame(oc, video_st, img);
+      write_video_frame(oc, video_st, img, ui);
    }
    
-   picture->pts += 1;
 
 
    return true;

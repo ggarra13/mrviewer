@@ -20,6 +20,8 @@ extern "C" {
 
 namespace mrv {
 
+  class ViewerUI;
+
   class aviImage : public CMedia 
   {
     aviImage();
@@ -82,7 +84,8 @@ namespace mrv {
     }
 
        static bool open_movie( const char* filename, const CMedia* img );
-       static bool save_movie_frame( const CMedia* img );
+       static bool save_movie_frame( const CMedia* img,
+				     const mrv::ViewerUI* const ui );
        static bool close_movie();
 
        bool save_frame( const mrv::image_type_ptr pic );

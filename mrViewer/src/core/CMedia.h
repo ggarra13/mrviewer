@@ -310,7 +310,7 @@ namespace mrv {
     inline const char* fileroot() const { return _fileroot; };
 
     ////////////////// Return the image filename for current frame
-    const char* filename() const;
+    const char* const filename() const;
 
     ////////////////// Set the image filename (can be a C/C++ 
     ////////////////// sprintf expression like image.%d.exr) to handle

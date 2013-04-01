@@ -299,7 +299,9 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     m_curr = add_browser(m_image);
 
     add_text( _("Directory"), img->directory() );
-    add_text( _("Filename"),  img->name() );
+    char buf[1024];
+    sprintf( buf, img->name().c_str(), img->frame() );
+    add_text( _("Filename"), buf );
 
     ++group;
 
@@ -344,7 +346,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  }
       }
 
-    char buf[256];
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
     add_text( _("Aspect Ratio"), buf );
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
