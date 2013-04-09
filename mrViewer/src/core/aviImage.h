@@ -119,8 +119,8 @@ namespace mrv {
     void open_video_codec();
     void close_video_codec();
        
-       int64_t queue_packets( int64_t frame, bool& got_video, bool& got_audio,
-			      bool& got_subtitle );
+       int64_t queue_packets( int64_t frame, bool got_video, bool got_audio,
+			      bool got_subtitle );
 
     DecodeStatus handle_video_packet_seek( boost::int64_t& frame, 
 					   const bool is_seek );

@@ -61,14 +61,14 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-//#define DEBUG_DECODE
-//#define DEBUG_SEEK
+// #define DEBUG_DECODE
+// #define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-//#define DEBUG_PACKETS
+// #define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
-//#define DEBUG_STORES
+// #define DEBUG_STORES
 //#define DEBUG_STORES_DETAIL
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
@@ -306,8 +306,8 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
   CMedia::play( dir, uiMain );
 }
 
-int64_t aviImage::queue_packets( int64_t frame, bool& got_video, 
-				 bool& got_audio, bool& got_subtitle )
+int64_t aviImage::queue_packets( int64_t frame, bool got_video, 
+				 bool got_audio, bool got_subtitle )
 {
   boost::int64_t vpts = 0, apts = 0, spts = 0;
 
@@ -361,9 +361,8 @@ int64_t aviImage::queue_packets( int64_t frame, bool& got_video,
 			   << strerror(err) );
 	      }
 	   }
-	   if ( !got_video    ) _video_packets.seek_end(vpts);
-	   if ( !got_audio    ) _audio_packets.seek_end(apts);
-	   if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
+
+	   got_video = got_audio = got_subtitle = true;
 
 	   return false;
 	}
@@ -575,13 +574,13 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   try {
      dts = queue_packets( frame, got_video, got_audio, got_subtitle );
 
-     if ( got_video )
+     if ( !got_video )
 	_video_packets.seek_end(vpts);
 
-     if ( got_audio )
+     if ( !got_audio )
 	_audio_packets.seek_end(apts);
 
-     if ( got_subtitle )
+     if ( !got_subtitle )
 	_subtitle_packets.seek_end(spts);
 
   }
@@ -1633,11 +1632,11 @@ CMedia::DecodeStatus
 aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 {
 #ifdef DEBUG_PACKETS
-  debug_video_packets(frame, "BEFORE PREROLL");
+  debug_video_packets(frame, "BEFORE HANDLE PKT SEEK");
 #endif
 
 #ifdef DEBUG_STORES
-  debug_video_stores(frame, "BEFORE PREROLL");
+  debug_video_stores(frame, "BEFORE HANDLE PKT SEEK");
 #endif
 
   Mutex& mutex = _video_packets.mutex();
@@ -1692,11 +1691,11 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
       
 #ifdef DEBUG_PACKETS
-  debug_video_packets(frame, "AFTER PREROLL");
+  debug_video_packets(frame, "AFTER HANDLE PKT SEEK");
 #endif
 
 #ifdef DEBUG_STORES
-  debug_video_stores(frame, "AFTER PREROLL");
+  debug_video_stores(frame, "AFTER HANDLE PKT SEEK");
 #endif
   return got_image;
 }
