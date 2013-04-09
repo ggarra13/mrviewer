@@ -22,6 +22,7 @@
 
 
 extern "C" {
+#include <libavutil/time.h>
 #include <libavformat/avformat.h>
 }
 

@@ -73,10 +73,6 @@ namespace
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
 
-// #define SEEK_WITH_BYTES
-
-
-#define FFMPEG_STREAM_BUG_FIX
 
 
 //  in ffmpeg, sizes are in bytes...
@@ -310,6 +306,170 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
   CMedia::play( dir, uiMain );
 }
 
+int64_t aviImage::queue_packets( int64_t frame, bool& got_video, 
+				 bool& got_audio, bool& got_subtitle )
+{
+  boost::int64_t vpts = 0, apts = 0, spts = 0;
+
+  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+  SCOPED_LOCK( vpm );
+
+  mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
+  SCOPED_LOCK( apm );
+
+  mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
+  SCOPED_LOCK( spm );
+
+
+  if ( !got_video ) {
+    vpts = frame2pts( get_video_stream(), frame );
+  }
+
+  if ( !got_audio ) {
+    apts = frame2pts( get_audio_stream(), frame );
+  }
+
+  if ( !got_subtitle ) {
+    spts = frame2pts( get_subtitle_stream(), frame );
+  }
+
+
+  boost::int64_t dts = frame;
+
+  // Clear the packet
+  AVPacket pkt;
+  av_init_packet( &pkt );
+
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
+  unsigned int audio_bytes = 0;
+
+  while (!got_video || !got_audio) {
+
+      int error = av_read_frame( _context, &pkt );
+      if ( error < 0 )
+	{
+	   if (error == AVERROR_EOF)  
+	   {
+	      IMG_ERROR("seek: end of file");
+	   }
+	   else
+	   {
+	      int err = _context->pb ? _context->pb->error : 0;
+	      if ( err != 0 )
+	      {
+		 IMG_ERROR("seek: Could not read frame " << frame << " error: "
+			   << strerror(err) );
+	      }
+	   }
+	   if ( !got_video    ) _video_packets.seek_end(vpts);
+	   if ( !got_audio    ) _audio_packets.seek_end(apts);
+	   if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
+
+	   return false;
+	}
+
+
+      if ( has_video() && pkt.stream_index == video_stream_index() )
+	{
+	  // For video, DTS is really PTS in FFMPEG (yuck)
+	   boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
+
+	  if ( playback() == kBackwards )
+	    {
+	      if ( pktframe <= frame )
+		_video_packets.push_back( pkt );
+#ifndef USE_SEEK_TO_PLAY_BACKWARDS
+	      if ( pktframe < dts ) dts = pktframe;
+#endif
+	    }
+	  else
+	    {
+	      _video_packets.push_back( pkt );
+	      if ( pktframe > dts ) dts = pktframe;
+	    }
+
+	  if ( !got_video && pktframe >= frame ) 
+	    {
+	      got_video = true;
+	    }
+
+#ifdef DEBUG_SEEK_VIDEO_PACKETS
+	  char ftype = av_get_picture_type_char( _av_frame->pict_type );
+	  fprintf( stderr, "f: %05" PRId64 " video dts: %07" PRId64 
+		   " as frame: %05" PRId64 " %c\n",
+		   _dts, pkt.dts, pktframe, ftype );
+#endif
+	  continue;
+	}
+      else
+	if ( has_audio() && pkt.stream_index == audio_stream_index() )
+	  {
+	     boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+
+	     if ( playback() == kBackwards )
+	     {
+		if ( pktframe <= frame ) _audio_packets.push_back( pkt );
+		if ( !has_video() && pktframe < dts ) dts = pktframe;
+	     }
+	     else
+	     {
+		if ( pktframe <= last_frame() ) _audio_packets.push_back( pkt );
+		if ( !has_video() && pktframe > dts ) dts = pktframe;
+	     }
+	     
+
+	     if ( !got_audio )
+	     {
+		if ( pktframe > frame ) got_audio = true;
+		else if ( pktframe == frame )
+		{
+		   audio_bytes += pkt.size;
+		   if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+		}
+	     }
+	     
+
+#ifdef DEBUG_SEEK_AUDIO_PACKETS
+	    fprintf( stderr, "f: %05" PRId64 " audio pts: %07" PRId64 
+		     " dts: %07" PRId64 " as frame: %05" PRId64 " size: %d\n",
+		     frame, pkt.pts, pkt.dts, pktframe, pkt.size );
+#endif
+	    continue;
+	  }
+      else
+	if ( has_subtitle() && pkt.stream_index == subtitle_stream_index() )
+	  {
+	     boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
+
+	     if ( playback() == kBackwards )
+	      {
+ 		if ( pktframe <= frame )
+		  _subtitle_packets.push_back( pkt );
+	      }
+	    else
+	      {
+		_subtitle_packets.push_back( pkt );
+	      }
+
+	    if ( !got_subtitle && pktframe >= frame )
+	      {
+		got_subtitle = true;
+	      }
+
+#ifdef DEBUG_SEEK_SUBTITLE_PACKETS
+	    fprintf( stderr, 
+		     "f: %05ld audio pts: %07ld dts: %07ld as frame: %05ld\n",
+		     frame, pkt.pts, pkt.dts, pktframe );
+#endif
+	    continue;
+	  }
+
+      av_free_packet( &pkt );
+    }
+
+  return dts;
+}
+
 // Seek to the requested frame
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {
@@ -324,6 +484,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
    //    offset += _context->start_time;
 
   boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
+
+  //  std::cerr << "offset " << offset << "  frame " << frame << std::endl;
 
   try {
 
@@ -364,18 +526,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
       got_subtitle = in_subtitle_store( frame );
     }
 
-
-  boost::int64_t vpts = 0, apts = 0, spts = 0;
-
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
-
-  mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
-  SCOPED_LOCK( apm );
-
-  mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
-  SCOPED_LOCK( spm );
-
+  int64_t vpts = 0, apts = 0, spts = 0;
 
   if ( !got_video ) {
     vpts = frame2pts( get_video_stream(), frame );
@@ -388,7 +539,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   if ( !got_subtitle ) {
     spts = frame2pts( get_subtitle_stream(), frame );
   }
-
 
   if ( _seek_req || _playback != kBackwards )
     {
@@ -420,144 +570,20 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   debug_audio_packets(frame);
 #endif
 
-  boost::int64_t dts = frame;
 
-  // Clear the packet
-  AVPacket pkt;
-  av_init_packet( &pkt );
-
-  unsigned int bytes_per_frame = audio_bytes_per_frame();
-  unsigned int audio_bytes = 0;
-
-
+  int64_t dts = 0;
   try {
+     dts = queue_packets( frame, got_video, got_audio, got_subtitle );
 
-    while (!got_video || !got_audio) {
+     if ( got_video )
+	_video_packets.seek_end(vpts);
 
-      int error = av_read_frame( _context, &pkt );
-      if ( error < 0 )
-	{
-	   if (error == AVERROR_EOF)  
-	   {
-	      IMG_ERROR("seek: end of file");
-	   }
-	   else
-	   {
-	      int err = _context->pb ? _context->pb->error : 0;
-	      if ( err != 0 )
-	      {
-		 IMG_ERROR("seek: Could not read frame " << frame << " error: "
-			   << strerror(err) );
-	      }
-	   }
-	   if ( !got_video    ) _video_packets.seek_end(vpts);
-	   if ( !got_audio    ) _audio_packets.seek_end(apts);
-	   if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
+     if ( got_audio )
+	_audio_packets.seek_end(apts);
 
-	   return false;
-	}
+     if ( got_subtitle )
+	_subtitle_packets.seek_end(spts);
 
-
-      if ( has_video() && pkt.stream_index == video_stream_index() )
-	{
-	  // For video, DTS is really PTS in FFMPEG (yuck)
-	   boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
-
-
-	  if ( playback() == kBackwards )
-	    {
-	      if ( pktframe <= frame )
-		_video_packets.push_back( pkt );
-#ifndef USE_SEEK_TO_PLAY_BACKWARDS
-	      if ( pktframe < dts ) dts = pktframe;
-#endif
-	    }
-	  else
-	    {
-	      _video_packets.push_back( pkt );
-	      if ( pktframe > dts ) dts = pktframe;
-	    }
-
-	  if ( !got_video && pktframe >= frame ) 
-	    {
-	      _video_packets.seek_end(vpts);
-	      got_video = true;
-	    }
-
-#ifdef DEBUG_SEEK_VIDEO_PACKETS
-	  char ftype = av_get_picture_type_char( _av_frame->pict_type );
-	  fprintf( stderr, "f: %05" PRId64 " video dts: %07" PRId64 
-		   " as frame: %05" PRId64 " %c\n",
-		   _dts, pkt.dts, pktframe, ftype );
-#endif
-	  continue;
-	}
-      else
-	if ( has_audio() && pkt.stream_index == audio_stream_index() )
-	  {
-	     boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
-	     if ( playback() == kBackwards )
-	     {
-		if ( pktframe <= frame ) _audio_packets.push_back( pkt );
-		if ( !has_video() && pktframe < dts ) dts = pktframe;
-	     }
-	     else
-	     {
-		if ( pktframe <= last_frame() ) _audio_packets.push_back( pkt );
-		if ( !has_video() && pktframe > dts ) dts = pktframe;
-	     }
-	     
-
-	     if ( !got_audio )
-	     {
-		if ( pktframe > frame ) got_audio = true;
-		else if ( pktframe == frame )
-		{
-		   audio_bytes += pkt.size;
-		   if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-		}
-		if ( got_audio ) _audio_packets.seek_end(apts);
-	     }
-	     
-
-#ifdef DEBUG_SEEK_AUDIO_PACKETS
-	    fprintf( stderr, "f: %05" PRId64 " audio pts: %07" PRId64 
-		     " dts: %07" PRId64 " as frame: %05" PRId64 " size: %d\n",
-		     frame, pkt.pts, pkt.dts, pktframe, pkt.size );
-#endif
-	    continue;
-	  }
-      else
-	if ( has_subtitle() && pkt.stream_index == subtitle_stream_index() )
-	  {
-	     boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
-
-	     if ( playback() == kBackwards )
-	      {
- 		if ( pktframe <= frame )
-		  _subtitle_packets.push_back( pkt );
-	      }
-	    else
-	      {
-		_subtitle_packets.push_back( pkt );
-	      }
-
-	    if ( !got_subtitle && pktframe >= frame )
-	      {
-		_subtitle_packets.seek_end(spts);
-	      }
-
-#ifdef DEBUG_SEEK_SUBTITLE_PACKETS
-	    fprintf( stderr, 
-		     "f: %05ld audio pts: %07ld dts: %07ld as frame: %05ld\n",
-		     frame, pkt.pts, pkt.dts, pktframe );
-#endif
-	    continue;
-	  }
-
-      av_free_packet( &pkt );
-    }
   }
   catch( ... )
     {
@@ -631,7 +657,6 @@ void aviImage::store_image( const boost::int64_t frame,
   unsigned int h = height();
 
 
-
   mrv::image_type_ptr 
   image = allocate_image( frame, boost::int64_t( pts * av_q2d( 
 							      stream->time_base
@@ -679,7 +704,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   SCOPED_LOCK( _mutex );
 
-  if ( _images.empty() ) // || _images.back()->frame() < frame )
+  if ( _images.empty() || _images.back()->frame() < frame )
   {
      _images.push_back( image );
   }
@@ -717,7 +742,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   int got_pict = 0;
   int err = avcodec_decode_video2( stream->codec, _av_frame, &got_pict, 
-			 (AVPacket*)&pkt );
+				   (AVPacket*)&pkt );
   if ( err < 0 ) return kDecodeError;
   if ( got_pict == 0 ) return kDecodeMissingFrame;
   return kDecodeOK;
@@ -731,7 +756,7 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
   boost::int64_t ptsframe;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
-  if ( status != kDecodeOK )
+  if ( status == kDecodeError )
     {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
@@ -749,7 +774,8 @@ aviImage::decode_image( const boost::int64_t frame, const AVPacket& pkt )
 	}
       else
 	{
-	   store_image( ptsframe, pkt.dts );
+	   if ( status == kDecodeOK )
+	      store_image( ptsframe, pkt.dts );
 	}
     }
 
@@ -776,7 +802,6 @@ void aviImage::clear_packets()
 //
 void aviImage::limit_video_store(const boost::int64_t frame)
 {
-
   boost::int64_t first, last;
 
   switch( playback() )
@@ -1017,6 +1042,7 @@ void aviImage::video_stream( int x )
   PixelFormat fmt[] = { PIX_FMT_BGR24, PIX_FMT_BGR32, PIX_FMT_NONE };
   PixelFormat* fmts = fmt;
 
+
   if ( supports_yuv() )
     {
        PixelFormat fmts2[] = { PIX_FMT_BGR24, PIX_FMT_BGR32,
@@ -1031,18 +1057,19 @@ void aviImage::video_stream( int x )
     }
 
   AVStream* stream = get_video_stream();
+  AVCodecContext* codec = stream->codec;
 
-  int has_alpha = ( ( stream->codec->pix_fmt == PIX_FMT_RGBA    ) |
-		    ( stream->codec->pix_fmt == PIX_FMT_ABGR    ) |
-		    ( stream->codec->pix_fmt == PIX_FMT_ARGB    ) |
-		    ( stream->codec->pix_fmt == PIX_FMT_RGB32   ) |
-		    ( stream->codec->pix_fmt == PIX_FMT_RGB32_1 ) |
-		    ( stream->codec->pix_fmt == PIX_FMT_PAL8    ) | 
-		    ( stream->codec->pix_fmt == PIX_FMT_BGR32   ) | 
-		    ( stream->codec->pix_fmt == PIX_FMT_BGR32_1 ) );
+  int has_alpha = ( ( codec->pix_fmt == PIX_FMT_RGBA    ) |
+		    ( codec->pix_fmt == PIX_FMT_ABGR    ) |
+		    ( codec->pix_fmt == PIX_FMT_ARGB    ) |
+		    ( codec->pix_fmt == PIX_FMT_RGB32   ) |
+		    ( codec->pix_fmt == PIX_FMT_RGB32_1 ) |
+		    ( codec->pix_fmt == PIX_FMT_PAL8    ) | 
+		    ( codec->pix_fmt == PIX_FMT_BGR32   ) | 
+		    ( codec->pix_fmt == PIX_FMT_BGR32_1 ) );
 
   _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, 
-						       stream->codec->pix_fmt,
+						       codec->pix_fmt,
 						       has_alpha, NULL );
   if ( _av_dst_pix_fmt < 0 ) _av_dst_pix_fmt = PIX_FMT_BGRA;
 
@@ -1056,8 +1083,11 @@ void aviImage::video_stream( int x )
        _av_dst_pix_fmt == PIX_FMT_BGRA ||
        _av_dst_pix_fmt == PIX_FMT_YUVA420P) alpha_layers();
 
+  if (codec->lowres) {
+     codec->flags |= CODEC_FLAG_EMU_EDGE;
+  }
 
-  unsigned int w = stream->codec->width;
+  unsigned int w = codec->width;
 
   switch( _av_dst_pix_fmt )
     {
@@ -1305,6 +1335,7 @@ void aviImage::populate()
   _frame_end = _frameEnd;
 
   bool got_audio = !has_audio();
+ 
   unsigned bytes_per_frame = audio_bytes_per_frame();
 
   if ( has_video() || has_audio() )
@@ -1333,11 +1364,9 @@ void aviImage::populate()
 	  boost::int64_t pktframe;
 	  if ( has_video() && pkt.stream_index == video_stream_index() )
 	    {
-	       DecodeStatus status = decode_video_packet( pktframe, 
-							  _frameStart, pkt );
+	       DecodeStatus status = decode_image( _frameStart, pkt ); 
 	      if ( status == kDecodeOK )
 		{
-		   store_image( pktframe, pkt.dts );
 		   got_image = true;
 		}
 	    }
@@ -1506,6 +1535,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 
   bool got_image = !has_video();
   bool got_audio = !has_audio();
+  bool got_subtitle = !has_subtitle();
 
   if ( !got_audio )
     {
@@ -1517,6 +1547,10 @@ bool aviImage::fetch(const boost::int64_t frame)
      got_image = in_video_store( frame );
   }
 
+  if ( !got_subtitle )
+  {
+     got_subtitle = in_video_store( frame );
+  }
 
   if ( frame != _expected )
     {
@@ -1532,121 +1566,14 @@ bool aviImage::fetch(const boost::int64_t frame)
 
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;
-  cerr << "FETCH START: " << frame << " V:" << got_image << " A:" << got_audio << endl;
+  cerr << "FETCH START: " << frame << " gotV:" << got_image << " gotA:" << got_audio << endl;
 #endif
 
   boost::int64_t dts = frame;
 
   try {
 
-    AVPacket pkt;
-
-    // Clear the packet
-    av_init_packet( &pkt );
-
-    unsigned int bytes_per_frame = audio_bytes_per_frame();
-    unsigned int audio_bytes = 0;
-
-    // Loop until an error or we have what we need
-    while( !got_image || !got_audio )
-      {
-
-	int error = av_read_frame( _context, &pkt );
-	if ( error < 0 )
-	  {
-	     int err = _context->pb ? _context->pb->error : 0;
-	     if ( err != 0 )
-	     {
-		IMG_ERROR("fetch: Could not read frame " << frame << " error: "
-			  << strerror(err) );
-	     }
-	    break;
-	  }
-
-
-	if ( has_video() && 
-	     pkt.stream_index == video_stream_index() )
-	  {
-	     boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
-
-	    if ( playback() == kBackwards )
-	      {
-		// Only add packet if it comes before seek frame
-		if ( pktframe <= frame )
-		  _video_packets.push_back( pkt );
-		if ( pktframe < dts ) dts = pktframe;
-	      }
-	    else
-	      {
-		_video_packets.push_back( pkt );
-		if ( pktframe > dts ) dts = pktframe;
-	      }
-
-	    if ( pktframe >= frame )
-	      got_image = true;
-
-#ifdef DEBUG_DECODE
-	    char ftype = av_get_picture_type_char(_av_frame->pict_type );
-	    fprintf( stderr, "FETCH V f: %05" PRId64 " video pts: %07" PRId64 
-		     " dts: %07" PRId64 " %c as frame: %05" PRId64 "\n",
-		     frame, pkt.pts, pkt.dts, ftype, pktframe );
-#endif
-	    continue;
-	  }
-	else
-	  if ( has_audio() && pkt.stream_index == audio_stream_index() )
-	    {
-	       boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
-	      if ( playback() == kBackwards )
-		{
-		  // Only add packet if it comes before seek frame
-		  if ( pktframe <= frame )  _audio_packets.push_back( pkt );
-		  if ( !has_video() && pktframe < dts ) dts = pktframe;
-		}
-	      else
-		{
-		  if ( pktframe <= last_frame() ) 
-		     _audio_packets.push_back( pkt );
-		  if ( !has_video() && pktframe > dts ) dts = pktframe;
-		}
-
-
-	      if ( !got_audio )
-		{
-		  if ( pktframe > frame ) got_audio = true;
-		  else if ( pktframe == frame )
-		    {
-		      audio_bytes += pkt.size;
-		      if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-		    }
-		}
-
-
-#ifdef DEBUG_DECODE
-	      fprintf( stderr, "FETCH A f: %05" PRId64 " audio pts: %07" PRId64 
-		       " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
-		       frame, pkt.pts, pkt.dts, pktframe );
-#endif
-	      continue;
-	    }
-	  else
-	    if ( has_subtitle() && pkt.stream_index == subtitle_stream_index() )
-	      {
-		 boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
-		 if ( playback() == kBackwards )
-		 {
-		    if ( pktframe <= frame )
-		       _subtitle_packets.push_back( pkt );		 }
-		 else
-		 {
-		    _subtitle_packets.push_back( pkt );
-		 }
-		continue;
-	      }
-	
-	av_free_packet( &pkt );
-      }
+     dts = queue_packets( frame, got_image, got_audio, got_subtitle );
     
   }
   catch( ... )
@@ -1729,7 +1656,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       if ( !is_seek && _playback == kBackwards && 
 	   pktframe >= frame - max_video_frames() )
 	{
-	  DecodeStatus status = decode_image( frame, pkt );
+	  DecodeStatus status = decode_image( pktframe, pkt );
 	  if      ( status == kDecodeOK ) got_image = status;
 	  else if ( status == kDecodeMissingFrame )
 	     store_image( pktframe, pkt.dts );
@@ -2581,7 +2508,6 @@ void aviImage::loop_at_end( const boost::int64_t frame )
 }
 
 
-#define STREAM_FRAME_RATE 25 /* 25 images/s */
 #define STREAM_PIX_FMT PIX_FMT_YUV420P /* default pix_fmt */
 
 static AVFrame *picture, *tmp_picture;
@@ -2723,9 +2649,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
         pkt.data          = picture->data[0];
         pkt.size          = sizeof(AVPicture);
 
-        int ret = av_interleaved_write_frame(oc, &pkt);
-	if ( ret != 0 )
-	   LOG_ERROR( _("Error while writing raw frame") );
+        ret = av_interleaved_write_frame(oc, &pkt);
     }
     else
     {
@@ -2750,7 +2674,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
     /* encode the image */
     ret = avcodec_encode_video2(c, &pkt, picture, &got_pic);
-    if (!ret && got_pic && c->coded_frame) {
+    if (ret > 0 && got_pic && c->coded_frame) {
        c->coded_frame->pts       = pkt.pts;
        c->coded_frame->key_frame = (pkt.flags & AV_PKT_FLAG_KEY);
     }
@@ -2765,24 +2689,30 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     }
 
     /* If size is zero, it means the image was buffered. */
-    ret = ret ? ret : pkt.size;
+    if ( got_pic )
+    {
 
-    if (c->coded_frame->pts != AV_NOPTS_VALUE)
-       pkt.pts = av_rescale_q(c->coded_frame->pts,
-			      c->time_base, st->time_base);
-    if (c->coded_frame->key_frame)
-       pkt.flags |= AV_PKT_FLAG_KEY;
+       if (c->coded_frame->pts != AV_NOPTS_VALUE)
+	  pkt.pts = av_rescale_q(c->coded_frame->pts,
+				 c->time_base, st->time_base);
+       if (c->coded_frame->key_frame)
+	  pkt.flags |= AV_PKT_FLAG_KEY;
        
-    pkt.stream_index = st->index;
+       pkt.stream_index = st->index;
        
-    /* Write the compressed frame to the media file. */
-    ret = av_interleaved_write_frame(oc, &pkt);
-    
+       /* Write the compressed frame to the media file. */
+       ret = av_interleaved_write_frame(oc, &pkt);
+    }
+    else
+    {
+       ret = 0;
+    }
+
     if (ret != 0) {
        LOG_ERROR( _("Error while writing video frame") );
        return false;
     }
-
+    
     frame_count++;
     }
 
@@ -2797,7 +2727,7 @@ static AVStream* add_video_stream(AVFormatContext *oc,
    if ( img->width() == 0 ) return NULL;
 
    /* find the video encoder */
-   codec_id = AV_CODEC_ID_MSMPEG4V3;
+   // codec_id = AV_CODEC_ID_MPEG4;
    // codec_id = AV_CODEC_ID_H263P;
    // codec_id = AV_CODEC_ID_MPEG2VIDEO;
    *codec = avcodec_find_encoder(codec_id);
@@ -2806,7 +2736,7 @@ static AVStream* add_video_stream(AVFormatContext *oc,
        return NULL;
     }
 
-    AVStream* st = avformat_new_stream(oc, NULL);
+    AVStream* st = avformat_new_stream(oc, *codec);
     if (!st) {
        LOG_ERROR( _("Could not alloc stream") );
        return NULL;
@@ -2826,34 +2756,26 @@ static AVStream* add_video_stream(AVFormatContext *oc,
     /* put sample parameters */
     c->bit_rate = c->width * c->height * 3;
     // c->rc_max_rate = ??;
-    // c->rc_buffer_size = ??;
-    // c->field_order = ??;
-    c->bit_rate_tolerance = 5000000;
-    c->global_quality = 1;
-    c->compression_level = FF_COMPRESSION_DEFAULT;
+    // c->field_order = -1;
+    c->bit_rate_tolerance = 400000;
+    //c->compression_level = FF_COMPRESSION_DEFAULT;
     /* time base: this is the fundamental unit of time (in seconds) in terms
        of which frame timestamps are represented. for fixed-fps content,
        timebase should be 1/framerate and timestamp increments should be
        identically 1. */
-    c->time_base.den = 1000 * img->fps();
+    c->time_base.den = 1000 * img->play_fps();
     c->time_base.num = 1000;
-    c->ticks_per_frame = 2;
-    c->gop_size = 2; /* emit one intra frame every two frames at most */
+    // c->ticks_per_frame = 1;
+    c->gop_size = 12; /* emit one intra frame every twelve frames at most */
     c->pix_fmt = STREAM_PIX_FMT;
-    c->max_b_frames = 0;
-    c->me_method = 5;
+    //c->max_b_frames = 0;
+    //c->me_method = 5;
     if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
         /* just for testing, we also add B frames */
-        c->max_b_frames = 2;
+       c->max_b_frames = 2;
+       // c->b_quant_factor = 1;
+       // c->b_quant_offset = 0.0f;
     }
-    if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
-        /* Needed to avoid using macroblocks in which some coeffs overflow.
-         * This does not happen with normal video, it just happens here as
-         * the motion of the chroma plane does not match the luma plane. */
-        c->mb_decision = 2;
-    }
-    // c->b_quant_factor = 1;
-    // c->b_quant_offset = 0.0f;
     // c->mpeg_quant = 0;
     // c->i_quant_factor = 1.0f;
     // c->i_quant_offset = 0.0f;
@@ -3144,12 +3066,14 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
       ext = file.substr( pos, file.size() );
    }
 
-   AVOutputFormat* outformat = av_guess_format(NULL, filename, NULL);
-   const char* filec = filename;
-   // if ( outformat != NULL ) filec = NULL;
+   // Avoutputformat* outformat = av_guess_format(NULL, filename, NULL);
+   // if ( outformat == NULL )
+   // {
+   //    LOG_ERROR("Could not guess output format from filenmae" );
+   // }
 
-   int err = avformat_alloc_output_context2(&oc, outformat, NULL,
-					    filec);
+
+   int err = avformat_alloc_output_context2(&oc, NULL, NULL, filename);
    if (!oc || err < 0) {
       LOG_INFO( _("Could not deduce output format from file extension: using MPEG.") );
       
@@ -3195,7 +3119,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
       }
    }
    
-   picture->pts = 0;
+   picture->pts = AV_NOPTS_VALUE;
    
    /* Write the stream header, if any. */
    avformat_write_header(oc, NULL);
@@ -3225,14 +3149,11 @@ bool aviImage::save_movie_frame( const CMedia* img,
       video_pts = audio_pts;
    
 
-   picture->pts = img->frame();
 
    /* write interleaved audio and video frames */
    if (!video_st || (video_st && audio_st && audio_pts < video_pts)) {
       while ( audio_pts < video_pts )
       {
-
-
 	 write_audio_frame(oc, audio_st, img);
 
 	 double pts = audio_st->pts.val;
@@ -3248,7 +3169,6 @@ bool aviImage::save_movie_frame( const CMedia* img,
       write_video_frame(oc, video_st, img, ui);
    }
    
-
 
    return true;
 }
