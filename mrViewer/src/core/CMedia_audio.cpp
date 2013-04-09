@@ -27,6 +27,7 @@
 
 
 extern "C" {
+#include <libavutil/time.h>
 #include <libavutil/mathematics.h>
 #include <libavformat/avformat.h>
 }
@@ -68,7 +69,7 @@ namespace {
 // #define DEBUG_SEEK_AUDIO_PACKETS
 
 
-#define FFMPEG_STREAM_BUG_FIX
+// #define FFMPEG_STREAM_BUG_FIX
 
 
 namespace mrv {
