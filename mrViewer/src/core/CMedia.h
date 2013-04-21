@@ -954,6 +954,7 @@ namespace mrv {
     // Look Mod Transform for CTL
     char*     _look_mod_transform;
 
+       unsigned int         _frame_offset;
 
     Playback       _playback;        //!< playback direction or stopped
 

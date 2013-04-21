@@ -116,12 +116,15 @@ namespace mrv {
 
   protected:
 
+       boost::int64_t queue_packets( const boost::int64_t frame,
+				     const bool is_seek,
+				     bool& got_video,
+				     bool& got_audio,
+				     bool& got_subtitle );
+
     void open_video_codec();
     void close_video_codec();
        
-       int64_t queue_packets( int64_t frame, bool& got_video, bool& got_audio,
-			      bool& got_subtitle );
-
     DecodeStatus handle_video_packet_seek( boost::int64_t& frame, 
 					   const bool is_seek );
 
@@ -137,7 +140,7 @@ namespace mrv {
      * @return true if decoded and stored, false if not
      */
     DecodeStatus decode_image( const boost::int64_t frame, 
-			       const AVPacket& pkt );
+			       AVPacket& pkt );
 
     void open_subtitle_codec();
     void close_subtitle_codec();
