@@ -1629,7 +1629,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   if (!stream) return 0;
 
   double p = av_q2d( stream->time_base ) * pts;
-  return boost::int64_t( p * fps() + 0.5 ) + 1 + _frame_offset; 
+  return boost::int64_t( p * fps() + 0.5 ) + 1; 
   //  _frameStart; //is wrong
 
 }
