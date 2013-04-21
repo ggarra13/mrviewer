@@ -62,12 +62,12 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-#define DEBUG_DECODE
+//#define DEBUG_DECODE
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-#define DEBUG_PACKETS
+//#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_STORES
 //#define DEBUG_STORES_DETAIL
@@ -1477,7 +1477,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( has_video() && 
 	     pkt.stream_index == video_stream_index() )
 	  {
-	     boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) - _frame_offset;
+	     boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
+	     - _frame_offset;
 
 	     if ( playback() == kBackwards )
 	     {
@@ -1493,7 +1494,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 		   dts = pktframe;
 	     }
 
-	     if ( !got_video  && pktframe - _frame_offset >= frame )
+	     if ( !got_video  && pktframe >= frame )
 	    {
 	      got_video = true;
 	      if ( is_seek ) _video_packets.seek_end(vpts);
@@ -1510,8 +1511,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	else
 	  if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	    {
-	       boost::int64_t pktframe = get_frame( get_audio_stream(), pkt ) -
-	       _frame_offset;
+	       boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 
 	      if ( playback() == kBackwards )
 		{
@@ -1591,20 +1591,20 @@ bool aviImage::fetch(const boost::int64_t frame)
   bool got_audio = !has_audio();
   bool got_subtitle = !has_subtitle();
 
-  if ( !got_audio )
-    {
-      got_audio = in_audio_store( frame );
-    }
+  // if ( !got_audio )
+  // {
+  //    got_audio = in_audio_store( frame );
+  // }
 
-  if ( !got_video )
-  {
-     got_video = in_video_store( frame );
-  }
+  // if ( !got_video )
+  // {
+  //    got_video = in_video_store( frame );
+  // }
 
-  if ( !got_subtitle )
-  {
-     got_subtitle = in_video_store( frame );
-  }
+  // if ( !got_subtitle )
+  // {
+  //    got_subtitle = in_video_store( frame );
+  // }
 
   if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
     {
@@ -1763,7 +1763,8 @@ int64_t aviImage::wait_image()
 	{
 	  const AVPacket& pkt = _video_packets.front();
 	  
-	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
+	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
+	  _frame_offset;
 	  return pktframe;
 	}
 
@@ -1874,8 +1875,8 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 
 	  // Limit storage of frames to only fps.  For example, 30 frames
 	  // for a fps of 30.
-	  //if ( _images.size() >= fps() )
-	  //   return kDecodeOK;
+	  if ( _images.size() >= fps() )
+	     return kDecodeOK;
 
 	  got_video = decode_image( frame, pkt );
 
@@ -2717,25 +2718,16 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
     AVPacket pkt;
     av_init_packet(&pkt);
-    pkt.data = video_outbuf;
-    pkt.size = video_outbuf_size;
+    pkt.data = NULL; // video_outbuf;
+    pkt.size = 0;    // video_outbuf_size;
 
     int got_pic = 0;
 
     /* encode the image */
     ret = avcodec_encode_video2(c, &pkt, picture, &got_pic);
-    if (ret > 0 && got_pic && c->coded_frame) {
-       c->coded_frame->pts       = pkt.pts;
-       c->coded_frame->key_frame = (pkt.flags & AV_PKT_FLAG_KEY);
-    }
-
-    /* free any side data since we cannot return it */
-    if (pkt.side_data_elems > 0) {
-         int i;
-         for (i = 0; i < pkt.side_data_elems; i++)
-             av_free(pkt.side_data[i].data);
-	 av_freep(&pkt.side_data);
-         pkt.side_data_elems = 0;
+    if (ret < 0) {
+       LOG_ERROR( _("Error while encoding video frame") );
+       return false;
     }
 
     /* If size is zero, it means the image was buffered. */
