@@ -42,7 +42,7 @@ namespace
 #define AV_NOSYNC_THRESHOLD 10.0
 
 
-#if 0
+#if 1
 #  define DEBUG_DECODE
 #  define DEBUG_VIDEO
 #  define DEBUG_AUDIO
@@ -504,12 +504,14 @@ namespace mrv {
 	int step = (int) img->playback();
 	if ( step == 0 ) break;
 
-	CMedia::DecodeStatus status = img->decode_video( frame );
+	CMedia::DecodeStatus status;
 
 	if ( frame > img->last_frame() )
 	   status = CMedia::kDecodeLoopEnd;
-	if ( frame < img->first_frame() )
+	else if ( frame < img->first_frame() )
 	   status = CMedia::kDecodeLoopStart;
+	else
+	   status = img->decode_video( frame );
 
 	switch( status )
 	  {
@@ -584,7 +586,7 @@ namespace mrv {
 
 	img->real_fps( timer.actualFrameRate() );
 
-	
+
 	img->find_image( frame );
 
 	if ( timeline->edl() )
@@ -601,7 +603,6 @@ namespace mrv {
 
 
 	frame += step;
-
       }
 
 

@@ -1751,7 +1751,10 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	  _video_packets.pop_front();  // remove end
 	  assert( !_video_packets.empty() );
 	  AVPacket& pkt = _video_packets.front();
-	  frame = pkt.pts;
+	  if ( pkt.pts != MRV_NOPTS_VALUE )
+	     frame = pkt.pts;
+	  else if ( pkt.dts != MRV_NOPTS_VALUE )
+	     frame = pkt.dts;
 	}
       got_image = kDecodeOK;
       _video_packets.pop_front();
@@ -2005,7 +2008,15 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 	}
 
       assert( (*iter).dts != MRV_NOPTS_VALUE );
-      boost::int64_t f = (*iter).dts;
+
+      boost::int64_t f;
+      if ( (*iter).pts != MRV_NOPTS_VALUE )
+	 f = (*iter).pts;
+      else
+      {
+	 f = (*iter).dts;
+      }
+
       f = pts2frame( get_video_stream(), f );
 
       if ( _video_packets.is_seek( *iter ) )
