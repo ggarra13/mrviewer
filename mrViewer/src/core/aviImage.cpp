@@ -584,10 +584,13 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
      
      if ( got_pict ) {
 	ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
-	ptsframe = pts2frame( stream, ptsframe );
+
+	if ( ptsframe == MRV_NOPTS_VALUE )
+	   ptsframe = frame;
+	else
+	   ptsframe = pts2frame( stream, ptsframe );
 
 	store_image( ptsframe, pkt.dts );
-	if ( err == 0 ) return kDecodeOK;
      }
 
      if ( err == 0 ) return kDecodeMissingFrame;
@@ -1891,8 +1894,8 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 
 	  // Limit storage of frames to only fps.  For example, 30 frames
 	  // for a fps of 30.
-	  // if ( _images.size() >= fps() )
-	  //    return kDecodeOK;
+	  if ( _images.size() >= max_video_frames() )
+	     return kDecodeOK;
 
 
 

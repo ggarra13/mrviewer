@@ -1993,6 +1993,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
      std::cerr << "***EMPTY***";
   }
 
+#ifdef DEBUG_VIDEO_PACKETS
   bool in_preroll = false;
   bool in_seek = false;
   for ( ; iter != last; ++iter )
@@ -2050,6 +2051,8 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 	  std::cerr << f << " ";
 	}
     }
+#endif
+
   std::cerr << std::endl;
 }
 

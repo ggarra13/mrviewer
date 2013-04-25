@@ -162,12 +162,12 @@ namespace mrv {
 
 	  if ( loop == ImageView::kLooping )
 	  {
-	     frame = first;
+	     frame = first - 1;
 	     status = kEndLoop;
 	  }
 	  else if ( loop == ImageView::kPingPong )
 	  {
-	     frame = last - 1;
+	     frame = last;
 	     step  = -1;
 	     view->playback( ImageView::kBackwards );
 	     img->frame( frame );
@@ -220,7 +220,7 @@ namespace mrv {
 
 	  if ( loop == ImageView::kLooping )
 	    {
-	       frame = last;
+	       frame = last + 1;
 	      status = kEndLoop;
 	    }
 	  else if ( loop == ImageView::kPingPong )
@@ -515,7 +515,7 @@ namespace mrv {
 
 	switch( status )
 	  {
-	     // case CMedia::kDecodeDone:
+	     // case CMedia::DecodeDone:
 	     //    continue;
 	  case CMedia::kDecodeError:
 	    frame += step;
@@ -586,6 +586,8 @@ namespace mrv {
 
 	img->real_fps( timer.actualFrameRate() );
 
+
+	//std::cerr << "frame " << frame << std::endl;
 
 	img->find_image( frame );
 
@@ -684,23 +686,25 @@ namespace mrv {
 	    if ( img->stopped() ) break;
 	
 	  }
-
-	// If we could not get a frame (buffers full, usually),
-	// wait a little.
-	if ( !img->frame( frame ) )
+	else
 	{
-	    timespec req;
-	    req.tv_sec = 0;
-	    req.tv_nsec = (long)( 10 * 1e7f); // 10 ms.
-	    nanosleep( &req, NULL );
-	}
-	
+	   // If we could not get a frame (buffers full, usually),
+	   // wait a little.
+	   if ( !img->frame( frame ) )
+	   {
+	      timespec req;
+	      req.tv_sec = 0;
+	      req.tv_nsec = (long)( 10 * 1e7f); // 10 ms.
+	      nanosleep( &req, NULL );
+	   }
+	   
+	   // After read, when playing backwards or playing audio files,
+	   // decode position may be several frames advanced as we buffer
+	   // multiple frames, so get back the dts frame from image.
+	   if ( img->has_video() || img->has_audio() )
+	      frame = img->dts();
 
-	// After read, when playing backwards or playing audio files,
-	// decode position may be several frames advanced as we buffer
-	// multiple frames, so get back the dts frame from image.
-	if ( img->has_video() || img->has_audio() )
-	   frame = img->dts();
+	}
 
 
       }

@@ -38,6 +38,7 @@ Hotkey kSafeAreas( false, false, false, false, 's' );
 Hotkey kWipe( false, false, false, false, 'w' );
 Hotkey kFlipX( false, false, false, false, 'x' );
 Hotkey kFlipY( false, false, false, false, 'y' );
+Hotkey kCenterImage( false, false, false, false, 'h' );
 
 Hotkey kFrameStepBack( false, false, false, false, fltk::LeftKey, "", 
 		       fltk::Keypad4 );
@@ -66,6 +67,7 @@ Hotkey kNextImage( false, false, false, false, fltk::PageDownKey );
 Hotkey kFirstFrame( false, false, false, false, fltk::HomeKey );
 Hotkey kLastFrame( false, false, false, false, fltk::EndKey );
 Hotkey kToggleBG( false, false, false, false, fltk::TabKey );
+
 
 Hotkey kToggleTopBar( false, false, false, false, fltk::F1Key );
 Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
@@ -99,6 +101,7 @@ HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
 HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
 //HotkeyEntry( _("Zoom Minimum"), kZoomMin),
 //HotkeyEntry( _("Zoom Maximum"), kZoomMax),
+HotkeyEntry( _("Center Image"), kCenterImage ),
 HotkeyEntry( _("Fit Screen"), kFitScreen),
 HotkeyEntry( _("Safe Areas"), kSafeAreas),
 HotkeyEntry( _("Wipe"), kWipe),
