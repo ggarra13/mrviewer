@@ -2318,6 +2318,15 @@ int ImageView::keyDown(unsigned int rawkey)
       send( buf );
       return 1;
     }
+  else if ( kCenterImage.match(rawkey) )
+  {
+     xoffset = yoffset = 0;
+     char buf[128];
+     sprintf( buf, "Offset 0 0" );
+     send( buf );
+     redraw();
+     return 1;
+  }
   else if ( kFitScreen.match( rawkey ) ) 
     {
       fit_image();

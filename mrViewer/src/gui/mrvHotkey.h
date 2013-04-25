@@ -141,6 +141,7 @@ extern Hotkey kZoomMax;
 extern Hotkey kZoomIn;
 extern Hotkey kZoomOut;
 extern Hotkey kFullScreen;
+extern Hotkey kCenterImage;
 extern Hotkey kFitScreen;
 extern Hotkey kSafeAreas;
 extern Hotkey kWipe;
