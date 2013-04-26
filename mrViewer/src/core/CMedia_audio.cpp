@@ -1038,8 +1038,12 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 // Return the number of frames cached for jog/shuttle
 unsigned int CMedia::max_audio_frames()
 {
-  return unsigned( fps() );
+   if ( _audio_cache_size > 0 )
+      return _audio_cache_size;
+   else
+      return unsigned( fps() );
 }
+
 
 
 

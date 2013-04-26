@@ -83,7 +83,7 @@ namespace
 #define kMIN_FRAMES 5
 
 namespace {
-  const unsigned int  kMaxCacheImages = 2;
+  const unsigned int  kMaxCacheImages = 70;
 }
 
 namespace mrv {
@@ -1369,7 +1369,7 @@ bool aviImage::initialize()
       else
 	{
 	  _context = NULL;
-	  mrvALERT( filename() << _("\n\nCould not open avi file") );
+	  mrvALERT( filename() << _("\n\nCould not open file") );
 	  return false;
 	}
     }
@@ -1895,8 +1895,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  // Limit storage of frames to only fps.  For example, 30 frames
 	  // for a fps of 30.
 	  if ( _images.size() >= max_video_frames() )
+	  {
 	     return kDecodeOK;
-
+	  }
 
 
 	  got_video = decode_image( frame, pkt );
