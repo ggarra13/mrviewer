@@ -347,15 +347,6 @@ namespace mrv {
 	    failed_frame = frame;
 	    img->wait_audio();
 	    continue;
-	  case  CMedia::kDecodeLoopEnd:
-	  case  CMedia::kDecodeLoopStart:
-	    {
-	      CMedia::Barrier* barrier = img->loop_barrier();
-	      barrier->count( barrier_thread_count( img ) );
-	      // Wait until all threads loop and decode is restarted
-	      barrier->wait();
-	      continue;
-	    }
 	  default:
 	    break;
 	  }
@@ -382,6 +373,19 @@ namespace mrv {
 		f = int64_t( timeline->minimum() );
 	     timeline->value( double( f ) );
 	  }
+
+	switch( status )
+	{
+	  case  CMedia::kDecodeLoopEnd:
+	  case  CMedia::kDecodeLoopStart:
+	    {
+	      CMedia::Barrier* barrier = img->loop_barrier();
+	      barrier->count( barrier_thread_count( img ) );
+	      // Wait until all threads loop and decode is restarted
+	      barrier->wait();
+	      continue;
+	    }
+	}
 
 	frame += step;
       }
@@ -513,6 +517,7 @@ namespace mrv {
 	else
 	   status = img->decode_video( frame );
 
+
 	switch( status )
 	  {
 	     // case CMedia::DecodeDone:
@@ -528,15 +533,6 @@ namespace mrv {
 	    }
 	    failed_frame = frame;
 	    continue;
-	  case CMedia::kDecodeLoopEnd:
-	  case CMedia::kDecodeLoopStart:
-	     {
-	      CMedia::Barrier* barrier = img->loop_barrier();
-	      // Wait until all threads loop and decode is restarted
-	      barrier->count( barrier_thread_count( img ) );
-	      barrier->wait();
-	      continue;
-	    }
 	  default:
 	    break;
 	  }
@@ -586,9 +582,6 @@ namespace mrv {
 
 	img->real_fps( timer.actualFrameRate() );
 
-
-	//std::cerr << "frame " << frame << std::endl;
-
 	img->find_image( frame );
 
 	if ( timeline->edl() )
@@ -603,7 +596,21 @@ namespace mrv {
 	     timeline->value( double( f ) );
 	  }
 
-
+	switch( status )
+	{
+	   case CMedia::kDecodeLoopEnd:
+	   case CMedia::kDecodeLoopStart:
+	      {
+		 CMedia::Barrier* barrier = img->loop_barrier();
+		 // Wait until all threads loop and decode is restarted
+		 barrier->count( barrier_thread_count( img ) );
+		 barrier->wait();
+		 continue;
+	      }
+	   default:
+	      break;
+	}
+	
 	frame += step;
       }
 
@@ -664,7 +671,7 @@ namespace mrv {
 	if ( step == 0 ) break;
 
 	frame += step;
-
+	
 	CMedia* next = NULL;
 	CheckStatus status = check_loop( frame, img, timeline );
 	if ( status != kNoChange )

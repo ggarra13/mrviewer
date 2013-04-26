@@ -627,6 +627,10 @@ namespace mrv {
       return _audio_index;
     }
 
+       static void video_cache_size( unsigned x ) { _video_cache_size = x; }
+
+       static void audio_cache_size( unsigned x ) { _audio_cache_size = x; }
+
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
 
@@ -875,6 +879,8 @@ namespace mrv {
     static unsigned  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
 
+       static unsigned _video_cache_size;
+       static unsigned _audio_cache_size;
 
 
     unsigned int  _w, _h;     //!< width and height of image

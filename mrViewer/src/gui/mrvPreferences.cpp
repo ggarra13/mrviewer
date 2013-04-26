@@ -34,6 +34,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvOS.h"
+#include "core/CMedia.h"
 
 // GUI  classes
 #include "gui/mrvColorOps.h"
@@ -423,7 +424,7 @@ namespace mrv {
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
 
     //
-    // playback 
+    // playback x
     //
     fltk::Preferences playback( base, "playback" );
     playback.get( "auto_playback", tmp, 0 );
@@ -435,6 +436,40 @@ namespace mrv {
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
+    fltk::Preferences caches( base, "caches" );
+    caches.get( "video_fps", tmp, 1 );
+    uiPrefs->uiVideoFPS->value(tmp);
+    if ( uiPrefs->uiVideoFPS->value() )
+    {
+       uiPrefs->uiVideoCacheSize->deactivate();
+    }
+    if ( !tmp )
+    {
+       caches.get( "video", tmp, 70 );
+       uiPrefs->uiVideoCacheSize->value(tmp);
+    }
+    else
+    {
+       tmp = 0;
+    }
+    CMedia::video_cache_size( tmp );
+
+    caches.get( "audio_fps", tmp, 1 );
+    uiPrefs->uiAudioFPS->value( tmp );
+    if ( uiPrefs->uiAudioFPS->value() )
+    {
+       uiPrefs->uiAudioCacheSize->deactivate();
+    }
+    if ( !tmp )
+    {
+       caches.get( "audio", tmp, 70 );
+       uiPrefs->uiAudioCacheSize->value(tmp);
+    }
+    else
+    {
+       tmp = 0;
+    }
+    CMedia::audio_cache_size( tmp );
 
     //
     // audio
@@ -962,6 +997,13 @@ namespace mrv {
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
+
+
+    fltk::Preferences caches( base, "caches" );
+    caches.set( "video_fps", uiPrefs->uiVideoFPS->value() );
+    caches.set( "video", uiPrefs->uiVideoCacheSize->value() );
+    caches.set( "audio_fps", uiPrefs->uiAudioFPS->value() );
+    caches.set( "audio", uiPrefs->uiAudioCacheSize->value() );
 
 
     fltk::Preferences loading( base, "loading" );

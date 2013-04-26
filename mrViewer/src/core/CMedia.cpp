@@ -91,6 +91,8 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
+unsigned CMedia::_audio_cache_size;
+unsigned CMedia::_video_cache_size;
 
 /** 
  * Constructor
@@ -1640,9 +1642,10 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
 // Return the number of frames cached for jog/shuttle
 unsigned int CMedia::max_video_frames()
 {
-  return unsigned( fps() );
-  // return int( fps() * 0.5 );
-  // return 15;
+   if ( _video_cache_size > 0 )
+      return _video_cache_size;
+   else
+      return unsigned( fps() );
 }
 
 

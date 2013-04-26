@@ -561,12 +561,13 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {637 286 640 475} hide resizable
+        xywh {441 195 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -983,13 +984,42 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
+            label Caches open
+            xywh {8 24 415 382} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::ValueSlider} uiVideoCacheSize {
+              label Video
+              xywh {110 30 265 30} align 1 hotspot minimum 15 maximum 250 step 1 value 70
+            }
+            {fltk::ValueSlider} uiAudioCacheSize {
+              label Audio selected
+              xywh {110 90 265 30} align 1 hotspot minimum 15 maximum 250 step 1 value 70
+            }
+            {fltk::LightButton} uiVideoFPS {
+              label FPS
+              callback {if ( uiVideoCacheSize->active() )
+   uiVideoCacheSize->deactivate();
+else
+   uiVideoCacheSize->activate();}
+              xywh {30 30 75 30}
+            }
+            {fltk::LightButton} uiAudioFPS {
+              label FPS
+              callback {if ( uiAudioCacheSize->active() )
+   uiAudioCacheSize->deactivate();
+else
+   uiAudioCacheSize->activate();}
+              xywh {30 90 75 30}
+            }
+          }
+          {fltk::Group} {} {
             label {3D Luts}
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {25 34 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
-              xywh {33 32 340 140} box ROUNDED_BOX
+              xywh {43 42 340 140} box ROUNDED_BOX
             } {
               {fltk::Choice} ODT_algorithm {
                 label ODT
@@ -1005,7 +1035,7 @@ v->refresh();}
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
 When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
-                xywh {85 45 195 25}
+                xywh {95 55 195 25}
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1035,7 +1065,7 @@ v->refresh();}
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
-                xywh {85 97 195 25}
+                xywh {95 107 195 25}
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1054,7 +1084,7 @@ If unsure what this means, keep your display and images setting always using the
             {fltk::Group} {} {
               label Quality
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
-              xywh {33 257 340 75} box ROUNDED_BOX
+              xywh {43 267 340 75} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
                 label Resolution
@@ -1072,7 +1102,7 @@ It is recommended this setting is left at 64x64x64.
 
 The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
 }
-                xywh {110 30 170 25}
+                xywh {120 40 170 25}
               } {
                 {fltk::Item} {} {
                   label {No Baking}
@@ -1090,7 +1120,7 @@ The "No Baking" setting performs the color correction on the image directly inst
             }
             {fltk::Group} {} {
               label {Rendering Intent}
-              xywh {33 192 340 45} box ROUNDED_BOX
+              xywh {43 202 340 45} box ROUNDED_BOX
             } {
               {fltk::Choice} uiICC_intent {
                 label ICC
@@ -1098,7 +1128,7 @@ The "No Baking" setting performs the color correction on the image directly inst
                 callback {v->refresh();} open
                 tooltip {When using luts with ICC profiles, this setting allows you to select the ICC rendering intent.   Rendering intents are mostly used for printing to film or paper to emulate or proof the output of the output device (ODT), particularly when it does not have the same gamut (color/white range) as the linear RGB/XYZ space.
 }
-                xywh {110 10 170 25}
+                xywh {120 20 170 25}
               } {
                 {fltk::Item} {} {
                   label Perceptual
@@ -1608,7 +1638,7 @@ for ( ; i != e; ++i )
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface} open
+              label {User Interface}
               vertical value 1
             } {
               {fltk::ItemGroup} {} {
@@ -2086,7 +2116,7 @@ uiDraw->value(0);}
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
             tooltip {Selects the size of brush.}
-            xywh {5 91 85 30} align 1 minimum 1 maximum 10 step 1 linesize -2 value 5
+            xywh {5 91 85 30} align 1 minimum 1 maximum 10 step 1 linesize 6 value 5
           }
           {fltk::Button} uiUndoDraw {
             user_data m user_data_type {mrv::ViewerUI*}
@@ -2141,15 +2171,14 @@ o->redraw();}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ConnectionUI {open
-  } {
-    Function {make_window(ViewerUI* main)} {open private
+  class ConnectionUI {} {
+    Function {make_window(ViewerUI* main)} {private
     } {
       {fltk::Window} uiMain {
         label Connections open
-        xywh {608 211 450 400} resizable
+        xywh {614 257 450 400} hide resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
@@ -2172,7 +2201,7 @@ o->child_of( main->uiMain );} visible
               callback {if ( strcmp( o->label(), "Create" ) == 0 )
     mrv::server::create(v);
 else
-    mrv::server::remove(v);} selected
+    mrv::server::remove(v);}
               xywh {235 30 100 25}
             }
           }
@@ -2217,8 +2246,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
