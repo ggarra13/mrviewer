@@ -66,6 +66,7 @@ namespace {
 
 // #define DEBUG_SEEK
 // #define DEBUG_PACKETS
+#define DEBUG_VIDEO_PACKETS
 // #define DEBUG_STORES
 
 // #define DEBUG_DECODE
@@ -1261,6 +1262,8 @@ bool CMedia::frame( const boost::int64_t f )
   pkt.destruct = av_destruct_packet; // prevent av_dup_packet()
   _video_packets.push_back( pkt );
 
+  debug_video_packets( f, "FRAME" );
+
   fetch_audio( _dts );
 
   _expected = _dts + 1;
@@ -1282,6 +1285,8 @@ void CMedia::seek( const boost::int64_t f )
 
   _seek_req   = true;
   _seek_frame = f;
+  _expected = f - 2;
+
 
   if ( stopped() )
     {
@@ -2008,7 +2013,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
       else if ( _video_packets.is_loop_start( *iter ) ||
 		_video_packets.is_loop_end( *iter ) )
 	{
-	  std::cerr << "L "; continue;
+	   std::cerr << "L" << (*iter).dts << " "; continue;
 	}
 
       assert( (*iter).dts != MRV_NOPTS_VALUE );
