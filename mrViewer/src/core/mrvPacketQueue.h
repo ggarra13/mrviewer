@@ -104,10 +104,10 @@ namespace mrv {
       assert( pkt.dts != MRV_NOPTS_VALUE );
 
       if ( av_dup_packet(&pkt) < 0 )
-	{
-	  std::cerr << "Could not duplicate packet - not added" << std::endl;
-	  return;
-	}
+      {
+	 std::cerr << "Could not duplicate packet - not added" << std::endl;
+	 return;
+      }
 
       _packets.push_back( pkt );
       _bytes += pkt.size;

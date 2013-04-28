@@ -337,7 +337,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   }
   catch( ... )
     {
-      IMG_ERROR("av_seek_frame raised some exception" );
+      IMG_ERROR("avformat_seek_file raised some exception" );
       return false;
     }
 
@@ -437,7 +437,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 	  max_frames = max_audio_frames();
 	}
 
-      if ( diff > max_frames )
+      if ( abs(diff) > max_frames )
 	{
 	  dts = _dts + int64_t(max_frames) * _playback;
 	}
@@ -1607,20 +1607,20 @@ bool aviImage::fetch(const boost::int64_t frame)
   bool got_audio = !has_audio();
   bool got_subtitle = !has_subtitle();
 
-  if ( !got_audio )
-  {
-     got_audio = in_audio_store( frame );
-  }
+  // if ( !got_audio )
+  // {
+  //    got_audio = in_audio_store( frame );
+  // }
 
-  if ( !got_video )
-  {
-     got_video = in_video_store( frame );
-  }
+  // if ( !got_video )
+  // {
+  //    got_video = in_video_store( frame );
+  // }
 
-  if ( !got_subtitle )
-  {
-     got_subtitle = in_video_store( frame );
-  }
+  // if ( !got_subtitle )
+  // {
+  //    got_subtitle = in_video_store( frame );
+  // }
 
   if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
     {
@@ -1628,8 +1628,8 @@ bool aviImage::fetch(const boost::int64_t frame)
        if ( !ok )
 	  IMG_ERROR("seek_to_position: Could not seek to frame " << frame );
 
-      SCOPED_LOCK( _audio_mutex ); // needed
-      _audio_buf_used = 0;
+       //SCOPED_LOCK( _audio_mutex ); // needed
+       //_audio_buf_used = 0;
       return ok;
     }
 
@@ -2063,14 +2063,14 @@ void aviImage::do_seek()
       got_audio = in_audio_store( _dts );
     }
 
+  if ( _seek_frame != _expected )
+  {
+     clear_packets();
+     _expected = _dts - 1;
+  }
+
   if ( !got_video || !got_audio )
     {
-      if ( _seek_frame != _expected )
-      	{
-      	   clear_packets();
-      	  _expected = _dts - 1;
-      	}
-
       fetch(_seek_frame);
     }
 
@@ -2542,17 +2542,17 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 
 void aviImage::loop_at_start( const boost::int64_t frame )
 {
-  if ( number_of_video_streams() > 0 )
+  if ( has_video() || is_sequence() )
     {
       _video_packets.loop_at_start( frame );
     }
 
-  if ( number_of_audio_streams() > 0 )
+  if ( has_audio() )
     {
       _audio_packets.loop_at_start( frame );
     }
 
-  if ( number_of_subtitle_streams() > 0  )
+  if ( has_subtitle()  )
     {
       _subtitle_packets.loop_at_start( frame );
     }
