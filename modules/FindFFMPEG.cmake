@@ -71,28 +71,33 @@ MESSAGE( "SEARCH DIRS=" ${SEARCH_DIRS} )
 # Find FFMPEG libraries
 #
 FIND_LIBRARY(FFMPEG_avformat_LIBRARY 
-    NAMES avformat avformat-52 avformat-53
+    NAMES avformat avformat-52 avformat-53 avformat-54
     PATHS ${SEARCH_DIRS}
 )
 
 
 FIND_LIBRARY(FFMPEG_avcodec_LIBRARY 
-    NAMES avcodec avcodec-52 avcodec-53
+    NAMES avcodec avcodec-52 avcodec-53 avcodec-54
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avutil_LIBRARY 
-    NAMES avutil avutil-50  avutil-51
+    NAMES avutil avutil-50  avutil-51 avutil-52
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
-    NAMES avdevice avdevice-52  avdevice-53
+    NAMES avdevice avdevice-52 avdevice-53 avdevice-54
     PATHS ${SEARCH_DIRS}
 )
 
 FIND_LIBRARY(FFMPEG_swscale_LIBRARY 
     NAMES swscale swscale-0 swscale-2
+    PATHS ${SEARCH_DIRS}
+)
+
+FIND_LIBRARY(FFMPEG_swresample_LIBRARY 
+    NAMES swresample swresample-0 swresample-2
     PATHS ${SEARCH_DIRS}
 )
 
@@ -102,6 +107,7 @@ MESSAGE( STATUS "FFMPEG_avformat_LIBRARY=" ${FFMPEG_avformat_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_avcodec_LIBRARY=" ${FFMPEG_avcodec_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_avdevice_LIBRARY=" ${FFMPEG_avdevice_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_swscale_LIBRARY=" ${FFMPEG_swscale_LIBRARY} )
+MESSAGE( STATUS "FFMPEG_swresample_LIBRARY=" ${FFMPEG_swresample_LIBRARY} )
 
 IF(FFMPEG_INCLUDE_DIR)
   IF(FFMPEG_avformat_LIBRARY)
@@ -114,6 +120,7 @@ IF(FFMPEG_INCLUDE_DIR)
             ${FFMPEG_avformat_LIBRARY} # LGPL
             ${FFMPEG_avutil_LIBRARY}   # LGPL
 	    ${FFMPEG_swscale_LIBRARY}  # LGPL
+	    ${FFMPEG_swresample_LIBRARY}  # LGPL
             )
 
 	  SET( FFMPEG_BSD_LIBRARIES

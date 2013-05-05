@@ -59,6 +59,10 @@ namespace {
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
+#ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
+#define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
+#endif
+
 // #define DEBUG_PACKETS
 // #define DEBUG_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
@@ -774,7 +778,7 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 			  int *frame_size_ptr,
 			  AVPacket *avpkt)
 {   
-   AVFrame frame;
+   AVFrame frame = { { 0 } };
    int ret, got_frame = 0;
    
    if (avctx->get_buffer != avcodec_default_get_buffer) {
@@ -799,13 +803,14 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 
         memcpy(samples, frame.extended_data[0], plane_size);
 
-        if (planar && avctx->channels > 1) {
+	if (planar && avctx->channels > 1) {
             uint8_t *out = ((uint8_t *)samples) + plane_size;
             for (ch = 1; ch < avctx->channels; ch++) {
                 memcpy(out, frame.extended_data[ch], plane_size);
                 out += plane_size;
             }
         }
+
 
         *frame_size_ptr = data_size;
     } else {
