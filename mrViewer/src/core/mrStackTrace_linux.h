@@ -1,3 +1,4 @@
+
 //
 //  Copyright (c) 2004, Gonzalo Garramuno
 //
@@ -61,6 +62,9 @@ class ExceptionHandler
      struct sigaction oldSIGFPE;
      struct sigaction oldSIGABRT;
      struct sigaction oldSIGINT;
+     struct sigaction oldSIGCHLD;
+     struct sigaction oldSIGTRAP;
+     struct sigaction oldSIGSTOP;
 };
 
 }

@@ -59,7 +59,7 @@ namespace mrv
     bool range_found = false;
     for ( ++c; *c != 0; ++c )
       {
-	if ( !range_found && *c == '-' ) { range_found = true; continue; }
+	 if ( !range_found && *c == '-' ) { range_found = true; continue; }
 
 	if ( *c != '+' && *c >= '0' && *c <= '9' ) continue;
 
@@ -90,6 +90,7 @@ namespace mrv
     int idx[2];
     int count = 0;  // number of periods found (from end)
 
+    int minus = 0; // number of minus signs found
 
     const char* e = file.c_str();
     const char* i = e + file.size() - 1;
@@ -105,14 +106,15 @@ namespace mrv
 	  }
 
 	if ( count == 1 && (*i != '@' && *i != '#' && *i != 'd' && 
-			    *i != 'l' && *i != '%' && *i != '-' &&
+			    *i != 'l' && *i != '%' &&
 			    *i != 'I' && (*i < '0' || *i > '9')) )
 	  break;
+        if ( count == 1 && *i == '-' ) minus++;
       }
 
     if ( count == 0 ) return false;
 
-    if ( count == 2 )
+    if ( count == 2 && minus < 2 )
       {
 
 	root  = file.substr( 0, idx[1]+1 );

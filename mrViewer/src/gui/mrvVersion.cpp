@@ -47,7 +47,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "2.1.1 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "2.1.2 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -334,7 +334,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
   std::string ffmpeg_protocols()
   {
     std::ostringstream o;
-#if LIBAVUTIL_VERSION_MINOR > 32
+#if LIBAVUTIL_VERSION_MAJOR > 50
     void* opaque = NULL;
     const char* up;
     for( up = avio_enum_protocols( &opaque, 0 ); up; 

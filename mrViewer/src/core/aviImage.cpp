@@ -32,6 +32,7 @@ extern "C" {
 #include "libavutil/audioconvert.h"
 #include "libavutil/mathematics.h"
 #include "libavutil/pixdesc.h"
+#include "libavutil/time.h"
 
 }
 
@@ -56,6 +57,10 @@ namespace
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
+
+#ifndef CodecID
+#define CodecID AVCodecID
+#endif
 
 // this plays backwards by seeking, which is slow but memory efficient
 // #define USE_SEEK_TO_PLAY_BACKWARDS  
@@ -2785,7 +2790,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 }
 static AVStream* add_video_stream(AVFormatContext *oc,
 				  AVCodec** codec,
-				  enum CodecID codec_id,
+				  CodecID codec_id,
 				  const CMedia* img )
 {
 

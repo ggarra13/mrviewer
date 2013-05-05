@@ -183,9 +183,11 @@ void ExceptionHandler::install_signal_handler() {
   sigaction(SIGBUS,  &sa, &oldSIGBUS);
   sigaction(SIGILL,  &sa, &oldSIGILL);
   sigaction(SIGFPE,  &sa, &oldSIGFPE);
-  sigaction(SIGTRAP, &sa, &oldSIGFPE);
   sigaction(SIGABRT, &sa, &oldSIGABRT);
   sigaction(SIGINT, &sa, &oldSIGINT);
+  sigaction(SIGCHLD, &sa, &oldSIGCHLD);
+  sigaction(SIGTRAP, &sa, &oldSIGTRAP);
+  sigaction(SIGSTOP, &sa, &oldSIGSTOP);
   /* ... add any other signal here */
 }
 
@@ -205,7 +207,10 @@ void ExceptionHandler::restore_signal_handler() {
   sigaction(SIGILL,  &oldSIGILL,  NULL);
   sigaction(SIGFPE,  &oldSIGFPE,  NULL);
   sigaction(SIGABRT, &oldSIGABRT, NULL);
-  sigaction(SIGABRT, &oldSIGINT, NULL);
+  sigaction(SIGINT,  &oldSIGINT, NULL);
+  sigaction(SIGCHLD, &oldSIGCHLD, NULL);
+  sigaction(SIGTRAP, &oldSIGTRAP, NULL);
+  sigaction(SIGSTOP, &oldSIGSTOP, NULL);
   /* ... add any other signal here */
 }
 

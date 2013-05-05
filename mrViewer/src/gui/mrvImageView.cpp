@@ -948,7 +948,6 @@ void ImageView::load_list()
       int pid = 1;
       lock.get( "pid", pid, 1 );
       
-
       
       char* directory;
       char* filename;
@@ -978,6 +977,7 @@ void ImageView::load_list()
    {
       mrv::ImageBrowser* image_list = uiMain->uiReelWindow->uiBrowser;
       image_list->load( files );
+      refresh();
    }
 
    std::string lockfile = mrv::homepath();
