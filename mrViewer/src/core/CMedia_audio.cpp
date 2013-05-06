@@ -802,7 +802,7 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
         }
 
         memcpy(samples, frame.extended_data[0], plane_size);
-
+	
 	if (planar && avctx->channels > 1) {
             uint8_t *out = ((uint8_t *)samples) + plane_size;
             for (ch = 1; ch < avctx->channels; ch++) {
@@ -810,7 +810,6 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
                 out += plane_size;
             }
         }
-
 
         *frame_size_ptr = data_size;
     } else {

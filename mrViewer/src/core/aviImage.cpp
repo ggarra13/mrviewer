@@ -1054,7 +1054,10 @@ void aviImage::populate()
 		 s.channels   = ctx->channels;
 		 s.frequency  = ctx->sample_rate;
 		 s.bitrate    = calculate_bitrate( ctx );
-		 
+		 AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
+						       "language", NULL, 0);
+		 if ( lang && lang->value )
+		    s.language = lang->value;
 		 _audio_info.push_back( s );
 		 if ( _audio_index < 0 && s.has_codec )
 		    _audio_index = 0;
@@ -1065,6 +1068,10 @@ void aviImage::populate()
 		 subtitle_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
 		 s.bitrate    = calculate_bitrate( ctx );
+		 AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
+						       "language", NULL, 0);
+		 if ( lang && lang->value )
+		    s.language = lang->value;
 		 _subtitle_info.push_back( s );
 		 if ( _subtitle_index < 0 )
 		    _subtitle_index = 0;
