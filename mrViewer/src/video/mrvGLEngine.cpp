@@ -21,11 +21,16 @@
 #include <iostream>
 #include <sstream>
 
+
 #if defined(WIN32) || defined(WIN64)
 #  include <winsock2.h>  // to avoid winsock issues
 #  include <windows.h>
 #  undef min
 #  undef max
+#endif
+
+#if defined(WIN32) || defined(WIN64)
+#  include <fltk/win32.h>   // for fltk::getDC()
 #endif
 
 #include <GL/glew.h>
@@ -40,9 +45,6 @@
 
 
 
-#if defined(WIN32) || defined(WIN64)
-#  include <fltk/win32.h>   // for fltk::getDC()
-#endif
 
 #include <half.h>
 #include <ImfArray.h>
