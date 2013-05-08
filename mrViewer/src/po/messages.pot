@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-05 21:03-0300\n"
+"POT-Creation-Date: 2013-05-07 20:38-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,28 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/aviImage.cpp:1377
+#: core/aviImage.cpp:1384
 msgid ""
 "\n"
 "\n"
 "Could not open file"
 msgstr ""
 
-#: core/CMedia_audio.cpp:492 core/aviImage.cpp:1091
+#: core/CMedia_audio.cpp:492 core/aviImage.cpp:1098
 msgid ""
 "\n"
 "\n"
 "No audio or video stream in file"
 msgstr ""
 
-#: core/CMedia.cpp:1584
+#: core/CMedia.cpp:1588
 msgid ""
 "\n"
 "\n"
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:478 core/aviImage.cpp:1076
+#: core/CMedia_audio.cpp:478 core/aviImage.cpp:1083
 msgid ""
 "\n"
 "\n"
@@ -59,11 +59,11 @@ msgstr ""
 msgid " at port "
 msgstr ""
 
-#: core/CMedia_audio.cpp:902
+#: core/CMedia_audio.cpp:901
 msgid " audio max: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:903
+#: core/CMedia_audio.cpp:902
 msgid " audio used: "
 msgstr ""
 
@@ -75,11 +75,11 @@ msgstr ""
 msgid " for '"
 msgstr ""
 
-#: core/CMedia.cpp:1585
+#: core/CMedia.cpp:1589
 msgid " for stream #"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1008
+#: core/CMedia_audio.cpp:1007
 msgid " from "
 msgstr ""
 
@@ -87,15 +87,15 @@ msgstr ""
 msgid " instead"
 msgstr ""
 
-#: core/CMedia.cpp:1845
+#: core/CMedia.cpp:1849
 msgid " is missing."
 msgstr ""
 
-#: core/CMedia_audio.cpp:1009
+#: core/CMedia_audio.cpp:1008
 msgid " need "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1333 core/aviImage.cpp:837
+#: core/CMedia_audio.cpp:1332 core/aviImage.cpp:837
 msgid " not found"
 msgstr ""
 
@@ -107,7 +107,7 @@ msgstr ""
 msgid " not found, choosing "
 msgstr ""
 
-#: core/CMedia_audio.cpp:901
+#: core/CMedia_audio.cpp:900
 msgid " ret: "
 msgstr ""
 
@@ -116,7 +116,7 @@ msgstr ""
 msgid " to database '"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1008
+#: core/CMedia_audio.cpp:1007
 msgid " used: "
 msgstr ""
 
@@ -199,7 +199,7 @@ msgstr ""
 msgid ") cache size: "
 msgstr ""
 
-#: core/CMedia.cpp:1585
+#: core/CMedia.cpp:1589
 msgid ", type "
 msgstr ""
 
@@ -369,15 +369,15 @@ msgstr ""
 msgid "Audio Streams"
 msgstr ""
 
-#: core/aviImage.cpp:2948
+#: core/aviImage.cpp:2955
 msgid "Audio codec not found"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1333
+#: core/CMedia_audio.cpp:1332
 msgid "Audio frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:900
+#: core/CMedia_audio.cpp:899
 msgid "Audio missed for frame: "
 msgstr ""
 
@@ -385,7 +385,7 @@ msgstr ""
 msgid "Audio/Attach Audio File"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1131
+#: core/CMedia_audio.cpp:1130
 msgid "Audios #"
 msgstr ""
 
@@ -558,11 +558,11 @@ msgstr ""
 msgid "Could not add video track #"
 msgstr ""
 
-#: core/aviImage.cpp:2811 core/aviImage.cpp:2955
+#: core/aviImage.cpp:2818 core/aviImage.cpp:2962
 msgid "Could not alloc stream"
 msgstr ""
 
-#: core/aviImage.cpp:2647
+#: core/aviImage.cpp:2654
 msgid "Could not allocate picture"
 msgstr ""
 
@@ -573,15 +573,15 @@ msgid ""
 "operation."
 msgstr ""
 
-#: core/aviImage.cpp:3148
+#: core/aviImage.cpp:3155
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 
-#: core/aviImage.cpp:3087
+#: core/aviImage.cpp:3094
 msgid "Could not encode audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:3079
+#: core/aviImage.cpp:3086
 msgid "Could not fill audio frame. Error: "
 msgstr ""
 
@@ -617,31 +617,31 @@ msgstr ""
 msgid "Could not locate ICC profile \""
 msgstr ""
 
-#: core/aviImage.cpp:3187
+#: core/aviImage.cpp:3194
 msgid "Could not open '"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:212
+#: video/mrvGLEngine.cpp:214
 msgid "Could not open any font of size "
 msgstr ""
 
-#: core/CMedia_audio.cpp:134 core/aviImage.cpp:2993
+#: core/CMedia_audio.cpp:134 core/aviImage.cpp:3000
 msgid "Could not open audio codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1285
+#: core/CMedia_audio.cpp:1284
 msgid "Could not open audio driver"
 msgstr ""
 
-#: core/aviImage.cpp:3153
+#: core/aviImage.cpp:3160
 msgid "Could not open mpeg movie"
 msgstr ""
 
-#: core/aviImage.cpp:2627
+#: core/aviImage.cpp:2634
 msgid "Could not open video codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1206
+#: core/CMedia_audio.cpp:1205
 msgid "Could not read audio for frame "
 msgstr ""
 
@@ -857,7 +857,7 @@ msgstr ""
 msgid "Detail mode"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1007
+#: core/CMedia_audio.cpp:1006
 msgid "Did not fill audio frame "
 msgstr ""
 
@@ -915,7 +915,7 @@ msgstr ""
 msgid "Edit Status"
 msgstr ""
 
-#: core/aviImage.cpp:2968
+#: core/aviImage.cpp:2975
 msgid "Encoder does not support "
 msgstr ""
 
@@ -923,23 +923,23 @@ msgstr ""
 msgid "End"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:449
+#: video/mrvGLEngine.cpp:451
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
-#: core/aviImage.cpp:2757
+#: core/aviImage.cpp:2764
 msgid "Error while encoding video frame"
 msgstr ""
 
-#: core/aviImage.cpp:3104
+#: core/aviImage.cpp:3111
 msgid "Error while writing audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:2731
+#: core/aviImage.cpp:2738
 msgid "Error while writing raw frame"
 msgstr ""
 
-#: core/aviImage.cpp:2782
+#: core/aviImage.cpp:2789
 msgid "Error while writing video frame"
 msgstr ""
 
@@ -1037,7 +1037,7 @@ msgstr ""
 msgid "Flip Y"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:156
+#: video/mrvGLEngine.cpp:158
 msgid "Float Textures:\t"
 msgstr ""
 
@@ -1082,19 +1082,19 @@ msgstr ""
 msgid "Frame Step Forwards"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:608
+#: video/mrvGLEngine.cpp:610
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:615
+#: video/mrvGLEngine.cpp:617
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:612
+#: video/mrvGLEngine.cpp:614
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:619
+#: video/mrvGLEngine.cpp:621
 msgid "Framebuffer incomplete: Read buffer."
 msgstr ""
 
@@ -1114,7 +1114,7 @@ msgstr ""
 msgid "GIF Picture"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:271
+#: video/mrvGLEngine.cpp:273
 msgid "GLEW Initialize Error: "
 msgstr ""
 
@@ -1162,15 +1162,15 @@ msgstr ""
 msgid "HDTV / Widescreen 16:9"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:157
+#: video/mrvGLEngine.cpp:159
 msgid "Half Textures:\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:154
+#: video/mrvGLEngine.cpp:156
 msgid "Hardware Shaders:\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:462
+#: video/mrvGLEngine.cpp:464
 msgid "Hardware shaders not available."
 msgstr ""
 
@@ -1418,11 +1418,11 @@ msgstr ""
 msgid "Loading \"%s\""
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1434
+#: video/mrvGLEngine.cpp:1436
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1439
+#: video/mrvGLEngine.cpp:1441
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
@@ -1470,7 +1470,7 @@ msgstr ""
 msgid "Map Picture"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:160
+#: video/mrvGLEngine.cpp:162
 msgid "Max. Texture Size:\t"
 msgstr ""
 
@@ -1558,10 +1558,10 @@ msgstr ""
 msgid "Next Image"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:155 video/mrvGLEngine.cpp:156
-#: video/mrvGLEngine.cpp:157 video/mrvGLEngine.cpp:159
-#: video/mrvGLEngine.cpp:163 video/mrvGLEngine.cpp:164
-#: video/mrvGLEngine.cpp:165
+#: video/mrvGLEngine.cpp:157 video/mrvGLEngine.cpp:158
+#: video/mrvGLEngine.cpp:159 video/mrvGLEngine.cpp:161
+#: video/mrvGLEngine.cpp:165 video/mrvGLEngine.cpp:166
+#: video/mrvGLEngine.cpp:167
 msgid "No"
 msgstr ""
 
@@ -1577,7 +1577,7 @@ msgstr ""
 msgid "No ICC profile"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1130
+#: core/CMedia_audio.cpp:1129
 msgid "No memory for audio frame"
 msgstr ""
 
@@ -1593,7 +1593,7 @@ msgstr ""
 msgid "No valid RT transform for \""
 msgstr ""
 
-#: video/mrvGLEngine.cpp:158
+#: video/mrvGLEngine.cpp:160
 msgid "Non-POT Textures:\t"
 msgstr ""
 
@@ -1689,7 +1689,7 @@ msgstr ""
 msgid "Owner"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:155
+#: video/mrvGLEngine.cpp:157
 msgid "PBO Textures:\t"
 msgstr ""
 
@@ -1753,7 +1753,7 @@ msgstr ""
 msgid "Play Forwards X2  Speed"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1296
+#: core/CMedia_audio.cpp:1295
 msgid "Playback of audio frame failed"
 msgstr ""
 
@@ -1905,7 +1905,7 @@ msgstr ""
 msgid "Render Transform"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:152
+#: video/mrvGLEngine.cpp:154
 msgid "Renderer:\t"
 msgstr ""
 
@@ -1945,7 +1945,7 @@ msgstr ""
 msgid "Rounding Mode"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:165
+#: video/mrvGLEngine.cpp:167
 msgid "SDI Output:\t"
 msgstr ""
 
@@ -2106,7 +2106,7 @@ msgstr ""
 msgid "Temporary"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:162
+#: video/mrvGLEngine.cpp:164
 msgid "Texture Units:\t"
 msgstr ""
 
@@ -2142,7 +2142,7 @@ msgstr ""
 msgid "Too many symlinks"
 msgstr ""
 
-#: core/CMedia_audio.cpp:866
+#: core/CMedia_audio.cpp:865
 msgid "Too much audio used:"
 msgstr ""
 
@@ -2167,8 +2167,8 @@ msgstr ""
 msgid "Undefined"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:143 video/mrvGLEngine.cpp:146
-#: video/mrvGLEngine.cpp:149
+#: video/mrvGLEngine.cpp:145 video/mrvGLEngine.cpp:148
+#: video/mrvGLEngine.cpp:151
 msgid "Unknown"
 msgstr ""
 
@@ -2196,11 +2196,11 @@ msgstr ""
 msgid "Unknown rounding mode"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:1140
+#: video/mrvGLEngine.cpp:1142
 msgid "Unknown wipe direction"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:605
+#: video/mrvGLEngine.cpp:607
 msgid "Unsupported internal format"
 msgstr ""
 
@@ -2212,7 +2212,7 @@ msgstr ""
 msgid "Usage:"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:361
+#: video/mrvGLEngine.cpp:363
 msgid "Using hardware shader profile: "
 msgstr ""
 
@@ -2228,11 +2228,11 @@ msgstr ""
 msgid "Value"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:151
+#: video/mrvGLEngine.cpp:153
 msgid "Vendor:\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:153
+#: video/mrvGLEngine.cpp:155
 msgid "Version:\t"
 msgstr ""
 
@@ -2253,7 +2253,7 @@ msgstr ""
 msgid "Video Sync master frame "
 msgstr ""
 
-#: core/aviImage.cpp:2621 core/aviImage.cpp:2805
+#: core/aviImage.cpp:2628 core/aviImage.cpp:2812
 msgid "Video codec not found"
 msgstr ""
 
@@ -2324,18 +2324,18 @@ msgstr ""
 msgid "Y Ripmap Levels"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:163
+#: video/mrvGLEngine.cpp:165
 msgid "YUV  Support:\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:164
+#: video/mrvGLEngine.cpp:166
 msgid "YUVA Support:\t"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:155 video/mrvGLEngine.cpp:156
-#: video/mrvGLEngine.cpp:157 video/mrvGLEngine.cpp:159
-#: video/mrvGLEngine.cpp:163 video/mrvGLEngine.cpp:164
-#: video/mrvGLEngine.cpp:165
+#: video/mrvGLEngine.cpp:157 video/mrvGLEngine.cpp:158
+#: video/mrvGLEngine.cpp:159 video/mrvGLEngine.cpp:161
+#: video/mrvGLEngine.cpp:165 video/mrvGLEngine.cpp:166
+#: video/mrvGLEngine.cpp:167
 msgid "Yes"
 msgstr ""
 
@@ -2355,7 +2355,7 @@ msgstr ""
 msgid "data"
 msgstr ""
 
-#: core/CMedia_audio.cpp:926
+#: core/CMedia_audio.cpp:925
 msgid "decode_audio - missed decoding some samples"
 msgstr ""
 
@@ -2407,15 +2407,15 @@ msgstr ""
 msgid "mental ray Z Depth Picture"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:480
+#: video/mrvGLEngine.cpp:482
 msgid "mrViewer does not support YUV images."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:475
+#: video/mrvGLEngine.cpp:477
 msgid "mrViewer supports YUV images through shaders."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:471
+#: video/mrvGLEngine.cpp:473
 msgid "mrViewer supports YUVA images through shaders."
 msgstr ""
 
