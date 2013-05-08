@@ -4248,11 +4248,12 @@ void Flu_File_Chooser::cd( const char *path )
 		 std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 				 (int(*)(int)) tolower);
 		 if ( tmp == N_(".avi")  || tmp == N_(".mov")  || 
-		      tmp == N_(".divx") ||
+		      tmp == N_(".divx") || tmp == N_("mp3")   ||
 		      tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
-		      tmp == N_(".mpg")  ||
+		      tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
 		      tmp == N_(".qt")   || tmp == N_(".wav")  ||
 		      tmp == N_(".vob")  || tmp == N_(".icc")  ||
+		      tmp == N_(".wav")  ||
 		      tmp == N_(".icm") )
 		    is_sequence = false;
 
