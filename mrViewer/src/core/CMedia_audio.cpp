@@ -30,6 +30,7 @@ extern "C" {
 #include <libavutil/time.h>
 #include <libavutil/mathematics.h>
 #include <libavformat/avformat.h>
+#include <libswresample/swresample.h>
 }
 
 
@@ -810,6 +811,37 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
                 out += plane_size;
             }
         }
+
+	if ( avctx->sample_fmt == AV_SAMPLE_FMT_FLT ||
+	     avctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
+	{
+	   
+	   struct SwrContext * forw_ctx= NULL;
+
+	   uint64_t out_ch_layout = AV_CH_LAYOUT_STEREO;
+	   uint64_t  in_ch_layout = AV_CH_LAYOUT_STEREO;
+	   AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;
+	   AVSampleFormat  in_sample_fmt = AV_SAMPLE_FMT_FLTP;
+	   int in_sample_rate = avctx->sample_rate;
+	   int out_sample_rate = avctx->sample_rate;
+
+	   forw_ctx  = swr_alloc_set_opts(forw_ctx, out_ch_layout,
+					  out_sample_fmt,  out_sample_rate,
+					  in_ch_layout,  in_sample_fmt, 
+					  in_sample_rate,
+					  0, 0);
+	   if(!forw_ctx) {
+	      fprintf(stderr, "Failed to init forw_cts\n");
+	      return 1;
+	   }
+	   if(swr_init( forw_ctx) < 0)
+	      fprintf(stderr, "swr_init(->) failed\n");
+
+	   swr_convert(forw_ctx, (uint8_t**)&samples, data_size/2, 
+		       (const uint8_t **)frame.extended_data, data_size/4);
+	   
+	   data_size /= 2;
+	}
 
         *frame_size_ptr = data_size;
     } else {
