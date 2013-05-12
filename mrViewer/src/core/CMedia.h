@@ -48,6 +48,7 @@ struct AVCodec;
 struct AVPacket;
 struct AVStream;
 struct AVCodecContext;
+struct SwrContext;
 
 // Turn this on to print out stats of decoding
 // #define DEBUG_DECODE
@@ -999,6 +1000,7 @@ namespace mrv {
 
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
+    SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
   };
 

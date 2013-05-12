@@ -790,7 +790,7 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
     ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
-        int ch, plane_size;
+        int plane_size;
         int planar = av_sample_fmt_is_planar(avctx->sample_fmt);
         int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels,
                                                    frame.nb_samples,
@@ -802,26 +802,19 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	   return AVERROR(EINVAL);
         }
 
-        memcpy(samples, frame.extended_data[0], plane_size);
 	
-	if (planar && avctx->channels > 1) {
-            uint8_t *out = ((uint8_t *)samples) + plane_size;
-            for (ch = 1; ch < avctx->channels; ch++) {
-                memcpy(out, frame.extended_data[ch], plane_size);
-                out += plane_size;
-            }
-        }
-
-	if ( avctx->sample_fmt == AV_SAMPLE_FMT_FLT ||
-	     avctx->sample_fmt == AV_SAMPLE_FMT_FLTP )
+	if ( avctx->sample_fmt != AV_SAMPLE_FMT_S16 )
 	{
-	   
-	   struct SwrContext * forw_ctx= NULL;
+	   if (!forw_ctx)
+	   {
+	      LOG_INFO("Create audio conversion from " 
+		       << av_get_sample_fmt_name( avctx->sample_fmt ) );
+	   }
 
 	   uint64_t out_ch_layout = AV_CH_LAYOUT_STEREO;
-	   uint64_t  in_ch_layout = AV_CH_LAYOUT_STEREO;
+	   uint64_t  in_ch_layout = avctx->channel_layout;
 	   AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;
-	   AVSampleFormat  in_sample_fmt = AV_SAMPLE_FMT_FLTP;
+	   AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
 	   int in_sample_rate = avctx->sample_rate;
 	   int out_sample_rate = avctx->sample_rate;
 
@@ -831,16 +824,40 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 					  in_sample_rate,
 					  0, 0);
 	   if(!forw_ctx) {
-	      fprintf(stderr, "Failed to init forw_cts\n");
-	      return 1;
+	      LOG_ERROR("Failed to alloc swresample library");
+	      return 0;
 	   }
 	   if(swr_init( forw_ctx) < 0)
-	      fprintf(stderr, "swr_init(->) failed\n");
+	   {
+	      LOG_ERROR( "Failed to init swresample library" );
+	   }
 
-	   swr_convert(forw_ctx, (uint8_t**)&samples, data_size/2, 
-		       (const uint8_t **)frame.extended_data, data_size/4);
+	   int size;
+
+	   if ( avctx->sample_fmt == AV_SAMPLE_FMT_DBLP ||
+		avctx->sample_fmt == AV_SAMPLE_FMT_DBL )
+	      size = sizeof( double );
+	   else if ( avctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
+		avctx->sample_fmt == AV_SAMPLE_FMT_FLT )
+	      size = sizeof( float );
+	   else if ( avctx->sample_fmt == AV_SAMPLE_FMT_S32 ||
+		     avctx->sample_fmt == AV_SAMPLE_FMT_S32P )
+	      size = sizeof( int );
+	   else if ( avctx->sample_fmt == AV_SAMPLE_FMT_U8 ||
+		     avctx->sample_fmt == AV_SAMPLE_FMT_U8P
+		     )
+	      size = sizeof( uint8_t );
+
+	   swr_convert(forw_ctx, (uint8_t**)&samples, 
+		       ( data_size / sizeof(uint16_t) ), 
+		       (const uint8_t **)frame.extended_data, 
+		       ( data_size / size ) );
 	   
 	   data_size /= 2;
+	}
+	else
+	{
+	   memcpy(samples, frame.extended_data[0], plane_size);
 	}
 
         *frame_size_ptr = data_size;

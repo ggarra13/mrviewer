@@ -24,6 +24,7 @@
 extern "C" {
 #include <libavutil/time.h>
 #include <libavformat/avformat.h>
+#include <libswresample/swresample.h>
 }
 
 
@@ -147,6 +148,7 @@ CMedia::CMedia() :
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
   _audio_buf( NULL ),
+  forw_ctx( NULL ),
   _audio_engine( NULL )
 {
   audio_initialize();
@@ -204,6 +206,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
   _audio_buf( NULL ),
+  forw_ctx( NULL ),
   _audio_engine( NULL )
 {
   unsigned int W = other->width();
@@ -322,6 +325,9 @@ CMedia::~CMedia()
     }
 
   audio_shutdown();
+
+  if ( forw_ctx )
+     swr_free( &forw_ctx );
 
   if ( _context )
     avformat_close_input( &_context );
