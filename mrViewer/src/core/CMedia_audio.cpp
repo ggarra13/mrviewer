@@ -59,6 +59,7 @@ namespace {
 
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
+#define IMG_INFO(x) LOG_INFO( name() << " - " << x )
 
 #ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
@@ -125,6 +126,7 @@ void CMedia::open_audio_codec()
     }
 
   AVCodecContext* ctx = stream->codec;
+  ctx->request_sample_fmt = AV_SAMPLE_FMT_S16;
   _audio_codec = avcodec_find_decoder( ctx->codec_id );
   
   AVDictionary* opts = NULL;
@@ -774,6 +776,14 @@ void CMedia::clear_stores()
   _audio_buf_used = 0;
 }
 
+static inline
+int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
+{
+    if (channel_layout && av_get_channel_layout_nb_channels(channel_layout) == channels)
+        return channel_layout;
+    else
+        return 0;
+}
 
 int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 			  int *frame_size_ptr,
@@ -782,17 +792,11 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
    AVFrame frame = { { 0 } };
    int ret, got_frame = 0;
    
-   if (avctx->get_buffer != avcodec_default_get_buffer) {
-      avctx->get_buffer = avcodec_default_get_buffer;
-      avctx->release_buffer = avcodec_default_release_buffer;
-   }
 
     ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
-        int plane_size;
-        int planar = av_sample_fmt_is_planar(avctx->sample_fmt);
-        int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels,
+        int data_size = av_samples_get_buffer_size(NULL, avctx->channels,
                                                    frame.nb_samples,
                                                    avctx->sample_fmt, 1);
         if (*frame_size_ptr < data_size) {
@@ -807,31 +811,44 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	{
 	   if (!forw_ctx)
 	   {
-	      LOG_INFO("Create audio conversion from " 
+	      IMG_INFO("Create audio conversion from " 
 		       << av_get_sample_fmt_name( avctx->sample_fmt ) );
-	   }
+	      uint64_t  in_ch_layout = get_valid_channel_layout(avctx->channel_layout, 
+								avctx->channels);
+	      if ( in_ch_layout == 0 ) in_ch_layout = AV_CH_LAYOUT_STEREO;
+	      uint64_t out_ch_layout = in_ch_layout;
+	      AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;
+	      AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
+	      int in_sample_rate = avctx->sample_rate;
+	      int out_sample_rate = avctx->sample_rate;
+	      
+	      // fprintf(stderr, "swr_alloc_set_opts NULL, %ld, %s, %d, %ld, %s, %d\n",
+	      // 	      out_ch_layout,
+	      // 	      av_get_sample_fmt_name(out_sample_fmt),  out_sample_rate,
+	      // 	      in_ch_layout,  av_get_sample_fmt_name(in_sample_fmt), 
+	      // 	      in_sample_rate );
 
-	   uint64_t out_ch_layout = AV_CH_LAYOUT_STEREO;
-	   uint64_t  in_ch_layout = avctx->channel_layout;
-	   AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;
-	   AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
-	   int in_sample_rate = avctx->sample_rate;
-	   int out_sample_rate = avctx->sample_rate;
-
-	   forw_ctx  = swr_alloc_set_opts(forw_ctx, out_ch_layout,
-					  out_sample_fmt,  out_sample_rate,
-					  in_ch_layout,  in_sample_fmt, 
-					  in_sample_rate,
-					  0, 0);
-	   if(!forw_ctx) {
-	      LOG_ERROR("Failed to alloc swresample library");
-	      return 0;
+	      forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
+					     out_sample_fmt,  out_sample_rate,
+					     in_ch_layout,  in_sample_fmt, 
+					     in_sample_rate,
+					     0, NULL);
+	      if(!forw_ctx) {
+		 LOG_ERROR("Failed to alloc swresample library");
+		 return 0;
+	      }
+	      if(swr_init( forw_ctx) < 0)
+	      {
+		 char buf[256];
+		 av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
+		 LOG_ERROR( "Failed to init swresample library with " 
+			    << buf << " " 
+			       << av_get_sample_fmt_name(in_sample_fmt)
+			    << " frequency: " << in_sample_rate );
+		 return 0;
+	      }
 	   }
-	   if(swr_init( forw_ctx) < 0)
-	   {
-	      LOG_ERROR( "Failed to init swresample library" );
-	   }
-
+	   
 	   int size;
 
 	   if ( avctx->sample_fmt == AV_SAMPLE_FMT_DBLP ||
@@ -849,15 +866,20 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	      size = sizeof( uint8_t );
 
 	   swr_convert(forw_ctx, (uint8_t**)&samples, 
-		       ( data_size / sizeof(uint16_t) ), 
+		       data_size / sizeof(uint16_t), 
 		       (const uint8_t **)frame.extended_data, 
-		       ( data_size / size ) );
+		       ( data_size / size / avctx->channels ));
 	   
-	   data_size /= 2;
+	   if ( size == sizeof(double) )
+	      data_size /= 4;
+	   else if ( size == sizeof(float) )
+	      data_size /= 2;
+	   else if ( size == sizeof(uint8_t) )
+	      data_size *= 2;
 	}
 	else
 	{
-	   memcpy(samples, frame.extended_data[0], plane_size);
+	   memcpy(samples, frame.extended_data[0], data_size);
 	}
 
         *frame_size_ptr = data_size;
