@@ -1265,7 +1265,7 @@ bool CMedia::frame( const boost::int64_t f )
   pkt.dts = pkt.pts = _dts;
   pkt.size = 0; 
   pkt.data = NULL;
-  pkt.destruct = av_destruct_packet; // prevent av_dup_packet()
+  // pkt.destruct = av_destruct_packet; // prevent av_dup_packet()
   _video_packets.push_back( pkt );
 
   fetch_audio( _dts );
