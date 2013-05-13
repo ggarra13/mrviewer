@@ -1311,6 +1311,24 @@ namespace mrv {
 	if ( m != om )
 	{
 
+	   mrv::media bg = uiMain->uiView->background();
+
+	   char bufs[256];
+
+	   if ( bg )
+	   {
+	      sprintf( bufs, "mrViewer\tFG: %s BG: %s",
+		       m->image()->name().c_str(),
+		       bg->image()->name().c_str() );
+	   }
+	   else
+	   {
+	      sprintf( bufs, "mrViewer\tFG: %s",
+		       m->image()->name().c_str() );
+	   }
+
+	   uiMain->uiMain->copy_label( bufs );
+
 	   uiMain->uiView->foreground( m );
 
 	   if ( timeline()->edl() )
