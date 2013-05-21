@@ -21,7 +21,7 @@ FIND_PATH( GLEW_INCLUDE_DIR GL/glew.h
   /usr/local/glew/include
   )
 
-FIND_LIBRARY( GLEW     glew32 glew GLEW
+FIND_LIBRARY( GLEW   glew32 glew GLEW
   PATHS 
   $ENV{GLEW_ROOT}/lib
   $ENV{GLEW_ROOT}

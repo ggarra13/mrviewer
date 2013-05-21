@@ -44,7 +44,7 @@ IF (WIN32)
       ${OPENGL_LIBRARY_DIR} )
 
     FIND_LIBRARY( GLUT_glut_LIBRARY
-      NAMES freeglut glut32 glut
+      NAMES glut32 freeglut glut
       PATHS ${SEARCH_PATHS}
     )
 

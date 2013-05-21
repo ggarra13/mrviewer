@@ -1798,7 +1798,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  _video_pts = f / _fps;
+  _video_pts = int64_t( f / _fps );
   _video_clock = av_gettime() / 1000000.0;
 
   // Check if we have a cached frame for this frame
