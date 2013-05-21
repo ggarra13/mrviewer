@@ -31,6 +31,7 @@ FIND_PATH(FFMPEG_INCLUDE_DIR libavformat/avformat.h
 
 SET( SEARCH_DIRS 
   "$ENV{FFMPEG_ROOT}/bin"
+  "$ENV{FFMPEG_ROOT}/static"
   "$ENV{FFMPEG_ROOT}/lib"
   "$ENV{FFMPEG_ROOT}/libavcodec"
   "$ENV{FFMPEG_ROOT}/libavdevice"
@@ -118,9 +119,9 @@ IF(FFMPEG_INCLUDE_DIR)
           SET( FFMPEG_BASIC_LIBRARIES 
             ${FFMPEG_avcodec_LIBRARY}  # LGPL, but Sorenson patent may apply
             ${FFMPEG_avformat_LIBRARY} # LGPL
-            ${FFMPEG_avutil_LIBRARY}   # LGPL
 	    ${FFMPEG_swscale_LIBRARY}  # LGPL
 	    ${FFMPEG_swresample_LIBRARY}  # LGPL
+            ${FFMPEG_avutil_LIBRARY}   # LGPL
             )
 
 	  SET( FFMPEG_BSD_LIBRARIES

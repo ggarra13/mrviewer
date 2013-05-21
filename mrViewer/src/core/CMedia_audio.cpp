@@ -1413,7 +1413,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
   }
 
   bool ok = play_audio( result );
-  _audio_pts   = _audio_frame / _fps;
+  _audio_pts   = int64_t( _audio_frame / _fps );
   _audio_clock = av_gettime() / 1000000.0;
   return ok;
 }

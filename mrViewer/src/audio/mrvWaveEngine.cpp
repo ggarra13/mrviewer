@@ -257,14 +257,9 @@ namespace mrv {
 	      }
 
 	    std::string product;
-	    switch( woc.wPid )
-	      {
-	      default:
-		char buf[64];
-		sprintf( buf, "Product: %d", woc.wPid );
-		product = buf;
-		break;
-	      }
+	    char buf[64];
+	    sprintf( buf, "Product: %d", woc.wPid );
+	    product = buf;
 
 	    sprintf( desc, "%s (%s) - %s %s", 
 		     woc.szPname, channels.c_str(), 

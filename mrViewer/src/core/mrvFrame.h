@@ -99,7 +99,6 @@ namespace mrv
       _width( 0 ),
       _height( 0 ),
       _channels( 0 ),
-      _data( NULL ),
       _mtime( 0 ),
       _format( kRGBA ),
       _type( kByte )
