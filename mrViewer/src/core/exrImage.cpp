@@ -245,7 +245,7 @@ bool exrImage::channels_order(
       }
    }
    
-   allocate_pixels( frame, numChannels, format,
+   allocate_pixels( frame, unsigned(numChannels), format,
 		    pixel_type_conversion( imfPixelType ) );
    
    static size_t xs[4], ys[4];
@@ -273,7 +273,7 @@ bool exrImage::channels_order(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   // memset( pixels, 0, _hires->data_size() );
+   memset( pixels, 0, _hires->data_size() ); // Needed for BY and RY pics
    
 
    // Then, prepare frame buffer for them
@@ -488,7 +488,7 @@ bool exrImage::channels_order_multi(
       numChannels = 3;
    }
    
-   allocate_pixels( frame, numChannels, format,
+   allocate_pixels( frame, unsigned(numChannels), format,
 		    pixel_type_conversion( imfPixelType ) );
    
    static size_t xs[4], ys[4];      
@@ -501,7 +501,7 @@ bool exrImage::channels_order_multi(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   // memset( pixels, 0, _hires->data_size() );
+   memset( pixels, 0, _hires->data_size() );
    
 
    // Then, prepare frame buffer for them

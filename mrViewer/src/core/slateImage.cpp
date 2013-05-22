@@ -203,7 +203,7 @@ namespace mrv {
     stringArray tokens;
 
     mrv::split_string( tokens, file, "." );
-    unsigned numTokens = tokens.size();
+    size_t numTokens = tokens.size();
     if ( numTokens >= 4 && numTokens <= 5 )
       {
 	take = atoi( tokens[1].c_str() );

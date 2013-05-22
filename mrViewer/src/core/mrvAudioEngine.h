@@ -116,7 +116,7 @@ namespace mrv {
     bool enabled() const { return _enabled; }
     void disable()       { _enabled = false; }
 
-    void convert_surround_6( const char* data, const size_t size );
+    unsigned channels() const { return _channels; }
 
     // Create an appropriate audio engine for this OS.
     static AudioEngine* factory();
@@ -134,6 +134,7 @@ namespace mrv {
     static DeviceList _devices;     //!< list of devices available
     unsigned int _device_idx;  //!< index to current device being used
     bool         _enabled;
+    unsigned int _channels;
   };
 
 }  // namespace mrv

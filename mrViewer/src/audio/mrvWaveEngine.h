@@ -57,6 +57,7 @@ namespace mrv {
     // Close an audio stream
     virtual bool close();
 
+
   protected:
     // Shutdown the audio engine
     virtual bool shutdown();

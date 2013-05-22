@@ -313,7 +313,7 @@ namespace mrv {
 		    size = w * h * comps * bits/8;
 
 
-		    int pos = parser.tellg();
+		    int pos = (int) parser.tellg();
 		    int read = nRet - pos;
 
 

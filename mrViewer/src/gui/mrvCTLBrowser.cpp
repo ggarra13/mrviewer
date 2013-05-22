@@ -96,6 +96,7 @@ void CTLBrowser::fill()
 	    continue;
 
 	  // valid CTL, add it to the browser
+	  std::cerr << "add " << base << std::endl;
 	  this->add( base.c_str() );
 	}
     }

@@ -91,8 +91,8 @@ namespace mrv {
 	      case 2:
 		channels = "Stereo";
 		break;
-	      case 5:
-		channels = "Dolby Surround";
+	      case 6:
+		channels = "Dolby 5:1";
 		break;
 	      default:
 		char buf[128];
@@ -100,6 +100,8 @@ namespace mrv {
 		channels = buf;
 		break;
 	      }
+
+	    _channels = woc.wChannels;
 
 	    sprintf( name, "%d", i );
 
@@ -410,7 +412,7 @@ namespace mrv {
     // Copy data 
     memcpy( hdr->lpData, data, size );
 
-    hdr->dwBufferLength = size;
+    hdr->dwBufferLength = (DWORD)size;
     hdr->dwLoops        = 1;
     hdr->dwFlags       &= ~WHDR_DONE;
 
