@@ -1432,7 +1432,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     unsigned int audio_bytes = 0;
 
     int eof = false;
-    int counter = 0;
+    unsigned counter = 0;
 
     // Loop until an error or we have what we need
     while( !got_video || !got_audio )
@@ -2701,13 +2701,13 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img,
 
 	 ImagePixel yuv = color::rgb::to_ITU601( p );
 
-	 pict->data[0][y * pict->linesize[0]   + x   ] = yuv.r;
+	 pict->data[0][y * pict->linesize[0]   + x   ] = uint8_t(yuv.r);
 
 	 unsigned x2 = x / 2;
 	 unsigned y2 = y / 2;
 
-	 pict->data[1][y2 * pict->linesize[1] + x2 ] = yuv.g;
-	 pict->data[2][y2 * pict->linesize[2] + x2 ] = yuv.b;
+	 pict->data[1][y2 * pict->linesize[1] + x2 ] = uint8_t(yuv.g);
+	 pict->data[2][y2 * pict->linesize[2] + x2 ] = uint8_t(yuv.b);
       }
    }
        
@@ -2717,7 +2717,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 			      const CMedia* img, 
 			      const mrv::ViewerUI* const ui )
 {
-    int out_size, ret;
+    int ret;
     AVCodecContext *c = NULL;
 
     c = st->codec;
@@ -2840,7 +2840,7 @@ static AVStream* add_video_stream(AVFormatContext *oc,
        of which frame timestamps are represented. for fixed-fps content,
        timebase should be 1/framerate and timestamp increments should be
        identically 1. */
-    c->time_base.den = 1000 * img->play_fps();
+    c->time_base.den = int(1000 * img->play_fps());
     c->time_base.num = 1000;
     // c->ticks_per_frame = 1;
     c->gop_size = 12; /* emit one intra frame every twelve frames at most */
@@ -2917,7 +2917,7 @@ static int check_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
 }
 
 /* select layout with the highest channel count */
-static int select_channel_layout(AVCodec *codec)
+static uint64_t select_channel_layout(AVCodec *codec)
 {
     const uint64_t *p;
     uint64_t best_ch_layout = 0;
@@ -3102,8 +3102,8 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 	 if (pkt.dts != AV_NOPTS_VALUE)
 	    pkt.dts = av_rescale_q(pkt.dts, c->time_base, st->time_base);
 	 if (pkt.duration > 0)
-	    pkt.duration = av_rescale_q(pkt.duration, c->time_base, 
-					st->time_base);
+	    pkt.duration = (int) av_rescale_q(pkt.duration, c->time_base, 
+					      st->time_base);
       }
        
       /* write the compressed frame in the media file */
@@ -3128,7 +3128,6 @@ static void close_audio_static(AVFormatContext *oc, AVStream *st)
 bool aviImage::open_movie( const char* filename, const CMedia* img )
 {
 
-   int i;
    frame_count = 0;
 
    av_register_all();
@@ -3233,8 +3232,8 @@ bool aviImage::save_movie_frame( const CMedia* img,
       {
 	 write_audio_frame(oc, audio_st, img);
 
-	 double pts = audio_st->pts.val;
-	 if ( pts == 0 ) pts = 1.0;
+	 int64_t pts = audio_st->pts.val;
+	 if ( pts == 0 ) pts = 1;
 
 	 audio_pts += ((double)pts * audio_st->time_base.num / 
 		       audio_st->time_base.den);
@@ -3266,7 +3265,7 @@ bool aviImage::close_movie()
        close_audio_static(oc, audio_st);
 
     /* Free the streams. */
-    for (int i = 0; i < oc->nb_streams; i++) {
+    for (unsigned i = 0; i < oc->nb_streams; i++) {
         av_freep(&oc->streams[i]->codec);
         av_freep(&oc->streams[i]);
     }

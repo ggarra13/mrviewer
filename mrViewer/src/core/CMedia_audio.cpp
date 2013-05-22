@@ -404,11 +404,11 @@ unsigned int CMedia::audio_bytes_per_frame()
     {
       AVStream* stream = get_audio_stream();
       AVCodecContext *ctx = stream->codec;
-      int channels = ctx->channels;
+      unsigned int channels = ctx->channels;
       if (channels > 0) {
-	 ctx->request_channels = FFMIN(2, channels);
+      	 ctx->request_channels = FFMIN(_audio_engine->channels(), channels);
       } else {
-	 ctx->request_channels = 2;
+      	 ctx->request_channels = 2;
       }
       int frequency = ctx->sample_rate;
       int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
@@ -811,22 +811,26 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	{
 	   if (!forw_ctx)
 	   {
-	      IMG_INFO("Create audio conversion from " 
-		       << av_get_sample_fmt_name( avctx->sample_fmt ) );
+	      char buf[256];
 	      uint64_t  in_ch_layout = get_valid_channel_layout(avctx->channel_layout, 
 								avctx->channels);
 	      if ( in_ch_layout == 0 ) in_ch_layout = AV_CH_LAYOUT_STEREO;
+
+	      av_get_channel_layout_string( buf, 256, avctx->channels, 
+					    in_ch_layout );
+
+	      IMG_INFO("Create audio conversion from " << buf 
+		       << ", channels " << avctx->channels  
+		       << " format " 
+		       << av_get_sample_fmt_name( avctx->sample_fmt ) 
+		       << ", sample rate " << avctx->sample_rate );
+
 	      uint64_t out_ch_layout = in_ch_layout;
 	      AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;
 	      AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
 	      int in_sample_rate = avctx->sample_rate;
 	      int out_sample_rate = avctx->sample_rate;
 	      
-	      // fprintf(stderr, "swr_alloc_set_opts NULL, %ld, %s, %d, %ld, %s, %d\n",
-	      // 	      out_ch_layout,
-	      // 	      av_get_sample_fmt_name(out_sample_fmt),  out_sample_rate,
-	      // 	      in_ch_layout,  av_get_sample_fmt_name(in_sample_fmt), 
-	      // 	      in_sample_rate );
 
 	      forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
 					     out_sample_fmt,  out_sample_rate,

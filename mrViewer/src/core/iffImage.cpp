@@ -340,7 +340,7 @@ namespace mrv {
 				       (t[1] << 16) +
 				       (t[2] << 8) +
 				       (t[3] << 0) );
-		    p->r = p->g = p->b = v;
+		    p->r = p->g = p->b = float(v);
 		    p->a = 0.0f;
 		  }
 	      }

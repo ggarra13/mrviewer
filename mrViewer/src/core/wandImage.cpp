@@ -119,14 +119,15 @@ namespace mrv {
      rgb_layers();
      lumma_layers();
 
-     unsigned numLayers = MagickGetNumberImages( wand );
+     size_t numLayers = MagickGetNumberImages( wand );
      if ( numLayers > 1 )
      {
 	const char* channelName = channel();
 
-	int index = 0;
-	for ( unsigned i = 1; i < numLayers; ++i )
+	size_t index = 0;
+	for ( size_t i = 1; i < numLayers; ++i )
 	{
+
 	   char layername[256];
 
 	   MagickSetIteratorIndex( wand, i );
@@ -164,8 +165,8 @@ namespace mrv {
      /*
        Copy pixels from magick to class
      */
-     unsigned int dw = MagickGetImageWidth( wand );
-     unsigned int dh = MagickGetImageHeight( wand );
+     size_t dw = MagickGetImageWidth( wand );
+     size_t dh = MagickGetImageHeight( wand );
 
 
      // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
@@ -173,7 +174,7 @@ namespace mrv {
 
 #if 1
      Image* img = GetImageFromMagickWand( wand );
-     unsigned long depth = img->depth;
+     size_t depth = img->depth;
 #else
      unsigned long depth = MagickGetImageDepth( wand );
 #endif
@@ -195,7 +196,7 @@ namespace mrv {
 
 
 
-     image_size( dw, dh );
+     image_size( int(dw), int(dh) );
 
      const char* channels;
      if ( has_alpha )

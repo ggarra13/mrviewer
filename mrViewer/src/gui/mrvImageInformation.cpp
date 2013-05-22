@@ -633,10 +633,11 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	    add_text( _("FourCC"), s.fourcc );
 	    ++group;
 
-	    const char* channels = NULL;
+	    const char* channels = "Stereo";
 	    if ( s.channels == 1 )      channels = "Mono";
 	    else if ( s.channels == 2 ) channels = "Stereo";
 	    else if ( s.channels == 6 ) channels = "Dolby 5:1";
+	    else if ( s.channels == 8 ) channels = "Dolby 7:1";
 	    else {
 	      sprintf( buf, N_("%d"), s.channels );
 	      channels = buf;

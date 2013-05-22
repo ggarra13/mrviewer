@@ -48,7 +48,7 @@ namespace mrv
     void load_reel( const char* name );
     void remove_reel();
 
-    unsigned number_of_reels() const { return _reels.size(); }
+    size_t number_of_reels() const { return _reels.size(); }
     mrv::Reel new_reel( const char* name = "reel" );
     mrv::Reel current_reel() const;
     mrv::Reel reel( const char* name );

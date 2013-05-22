@@ -30,7 +30,8 @@ namespace mrv {
   AudioEngine::DeviceList AudioEngine::_devices;
 
   AudioEngine::AudioEngine() :
-    _device_idx( 0 )
+  _device_idx( 0 ),
+  _channels( 2 )
   {
   }
 
@@ -103,9 +104,5 @@ namespace mrv {
     return r;
   }
 
-
-void AudioEngine::convert_surround_6( const char* data, const size_t size )
-{
-}
 
 } // namespace mrv
