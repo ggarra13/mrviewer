@@ -278,8 +278,8 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    if ( !ok && !movie ) return;
    
    mrv::Timeline* timeline = uiMain->uiTimeline;
-   int64_t first = timeline->minimum();
-   int64_t last  = timeline->maximum();
+   int64_t first = int64_t( timeline->minimum() );
+   int64_t last  = int64_t( timeline->maximum() );
    
    if ( movie )
    {
@@ -293,7 +293,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    w->child_of(main);
    w->begin();
    progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
-   progress->range( 0, last - first + 1 );
+   progress->range( 0, double(last - first + 1) );
    progress->align( fltk::ALIGN_TOP );
    char title[1024];
    sprintf( title, _("Saving Sequence(s) %" PRId64 " - %" PRId64 ),

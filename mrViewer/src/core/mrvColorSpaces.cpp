@@ -193,8 +193,8 @@ namespace mrv {
 
 	if ( yr > 0.008856f )
 	  {
-	    float Yn = pow( (double)yr, 1.0/3.0);
-	    luv.r = 116.0f * Yn - 16.0f; 
+	     float Yn = powf( yr, 1.0f/3.0f);
+	     luv.r = 116.0f * Yn - 16.0f; 
 	  }
 	else
 	  {

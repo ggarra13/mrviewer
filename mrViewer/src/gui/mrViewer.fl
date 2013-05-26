@@ -992,7 +992,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
               xywh {110 30 265 30} align 1 hotspot minimum 15 maximum 250 step 1 value 70
             }
             {fltk::ValueSlider} uiAudioCacheSize {
-              label Audio selected
+              label Audio
               xywh {110 90 265 30} align 1 hotspot minimum 15 maximum 250 step 1 value 70
             }
             {fltk::LightButton} uiVideoFPS {
@@ -2071,12 +2071,13 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
-        label Paint
-        xywh {801 336 110 425} horizontal hide resizable
+        label Paint open
+        xywh {807 336 110 425} horizontal resizable visible
       } {
         {fltk::Group} {} {open
           xywh {10 9 90 201}
@@ -2085,9 +2086,11 @@ o->child_of( main->uiMain );} modal
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiView->selection_mode();
 o->value(1);
-uiDraw->value(0);}
+uiDraw->value(0);
+uiErase->value(0);}
             tooltip {Area Select Tool}
             xywh {2 0 43 35}
+            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm}
             extra_code {o->value(1);
 o->image( select_pic );}
           }
@@ -2107,7 +2110,7 @@ uiErase->value(0);}
             callback {v->uiView->erase_mode();
 o->value(1);
 uiSelection->value(0);
-uiDraw->value(0);}
+uiDraw->value(0);} selected
             tooltip {Eraser Tool}
             xywh {50 41 40 35}
             image {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}

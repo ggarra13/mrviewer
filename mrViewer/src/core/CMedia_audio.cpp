@@ -820,10 +820,10 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 					    in_ch_layout );
 
 	      IMG_INFO("Create audio conversion from " << buf 
-		       << ", channels " << avctx->channels  
-		       << " format " 
+		       << ", channels " << avctx->channels << ", " );
+	      IMG_INFO( "format " 
 		       << av_get_sample_fmt_name( avctx->sample_fmt ) 
-		       << ", sample rate " << avctx->sample_rate );
+			<< ", sample rate " << avctx->sample_rate << "." );
 
 	      uint64_t out_ch_layout = in_ch_layout;
 	      AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;

@@ -11,7 +11,7 @@ Compilation of mrViewer requires the following libraries:
 - ImageMagick 6.6.8-10          DONE precompiled
 - TCLAP       1.2.0             DONE
 - FLTK        2.0.x  HEAD       DONE
-- FFMPEG      HEAD              DONE
+- FFMPEG      HEAD              DONE precompiled
 - PostgresSQL                   DONE precompiled
 - Gettext     1.5?              DONE
 - OpenGL      1.4+              DONE

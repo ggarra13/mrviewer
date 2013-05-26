@@ -23,12 +23,12 @@ namespace mrv
     switch( type )
       {
       case kAsLuminance:
-	L = (0.2126f * rgba.r + 0.7152f * rgba.g + 0.0722 * rgba.b);
+	 L = (0.2126f * rgba.r + 0.7152f * rgba.g + 0.0722f * rgba.b);
 	break;
       case kAsLightness:
-	L = (0.2126f * rgba.r + 0.7152f * rgba.g + 0.0722 * rgba.b);
-	if ( L >= 0.008856f )
-	  L = 116 * (pow( L, 1.0f/3.0f)) - 16;
+	 L = (0.2126f * rgba.r + 0.7152f * rgba.g + 0.0722f * rgba.b);
+	 if ( L >= 0.008856f )
+	    L = 116 * (pow( L, 1.0f/3.0f)) - 16;
       
 	// normalize it to 0...1, instead of 0...100
 	L = L / 100.f;

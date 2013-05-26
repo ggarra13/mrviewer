@@ -240,7 +240,7 @@ void GLEngine::init_textures()
   CHECK_GL("init_textures get max texture size");
 
 #ifndef TEST_NO_PBO_TEXTURES // test not using pbo textures
-  _pboTextures = bool( GLEW_ARB_pixel_buffer_object );
+  _pboTextures = ( GLEW_ARB_pixel_buffer_object != GL_FALSE );
 #endif
 
   _has_yuv = false;
@@ -482,10 +482,10 @@ void GLEngine::initialize()
       LOG_INFO( _("mrViewer does not support YUV images.") );
     }
 
-  _floatTextures     = (bool) GLEW_ARB_color_buffer_float;
-  _halfTextures      = (bool) GLEW_ARB_half_float_pixel;
+  _floatTextures     = ( GLEW_ARB_color_buffer_float != GL_FALSE );
+  _halfTextures      = ( GLEW_ARB_half_float_pixel != GL_FALSE );
   _pow2Textures      = !GLEW_ARB_texture_non_power_of_two;
-  _fboRenderBuffer   = GLEW_ARB_framebuffer_object;
+  _fboRenderBuffer   = ( GLEW_ARB_framebuffer_object != GL_FALSE );
 
   alloc_quads( 4 );
 

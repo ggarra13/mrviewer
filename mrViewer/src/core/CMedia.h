@@ -682,6 +682,7 @@ namespace mrv {
     virtual void debug_subtitle_stores(const boost::int64_t frame, 
 				       const char* routine = "") {};
 
+       virtual void probe_size( unsigned p ) {}
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
     std::string sequence_filename( const boost::int64_t frame );

@@ -496,7 +496,7 @@ void video_thread( PlaybackData* data )
    {
       img->wait_image();
 
-      //      img->debug_video_packets( frame, "PLAYBACK" );
+      // img->debug_video_packets( frame, "PLAYBACK" );
 
       int step = (int) img->playback();
       if ( step == 0 ) break;
