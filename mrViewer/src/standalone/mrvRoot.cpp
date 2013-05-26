@@ -69,12 +69,12 @@ namespace {
 	  through) */
       }
 #elif defined(WIN32) || defined(WIN64)
-    result = GetModuleFileName(NULL, pname, pathsize);
+    result = GetModuleFileName(NULL, pname, DWORD(pathsize));
     if (result > 0)
       {
 	/* fix up the dir slashes... */
-	int len = strlen(pname);
-	int idx;
+	size_t len = strlen(pname);
+	size_t idx;
 	for (idx = 0; idx < len; idx++)
 	  {
 	    if (pname[idx] == '\\') pname[idx] = '/';

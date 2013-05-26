@@ -72,7 +72,7 @@ void CTLBrowser::fill()
        it != tokens.end(); ++it)
     {
       std::string path = *it;
-      if ( ! fs::exists( path ) ) continue;
+      if ( ! fs::exists( path ) || ! fs::is_directory( path ) ) continue;
 
       LOG_INFO( path );
 
@@ -96,7 +96,6 @@ void CTLBrowser::fill()
 	    continue;
 
 	  // valid CTL, add it to the browser
-	  std::cerr << "add " << base << std::endl;
 	  this->add( base.c_str() );
 	}
     }

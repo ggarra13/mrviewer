@@ -195,8 +195,7 @@ namespace mrv {
      }
 
 
-
-     image_size( int(dw), int(dh) );
+     image_size( unsigned(dw), unsigned(dh) );
 
      const char* channels;
      if ( has_alpha )
@@ -226,14 +225,14 @@ namespace mrv {
      MagickGetImageWhitePoint( wand, &wx, &wy );
      if ( rx > 0.0 && ry > 0.0 )
      {
-	_chromaticities.red.x = rx;
-	_chromaticities.red.y = ry;
-	_chromaticities.green.x = gx;
-	_chromaticities.green.y = gy;
-	_chromaticities.blue.x = bx;
-	_chromaticities.blue.y = by;
-	_chromaticities.white.x = wx;
-	_chromaticities.white.y = wy;
+	_chromaticities.red.x = float(rx);
+	_chromaticities.red.y = float(ry);
+	_chromaticities.green.x = float(gx);
+	_chromaticities.green.y = float(gy);
+	_chromaticities.blue.x = float(bx);
+	_chromaticities.blue.y = float(by);
+	_chromaticities.white.x = float(wx);
+	_chromaticities.white.y = float(wy);
      }
 
      if ( _exif.empty() )

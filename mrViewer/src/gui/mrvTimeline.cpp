@@ -385,7 +385,7 @@ Timeline::~Timeline()
    * 
    * @return index of image in image browser list
    */
-  unsigned int Timeline::index( const int64_t f ) const
+  size_t Timeline::index( const int64_t f ) const
   {
     const mrv::Reel& reel = browser()->current_reel();
     mrv::MediaList::const_iterator i = reel->images.begin();
@@ -403,7 +403,7 @@ Timeline::~Timeline()
     if ( f > boost::int64_t(mx) ) return unsigned(e - i);
 
     int64_t  t = 1;
-    unsigned r = 0;
+    size_t r = 0;
     for ( ; i != e; ++i, ++r )
       {
 	CMedia* img = (*i)->image();

@@ -351,20 +351,20 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   bool got_video = !has_video();
   bool got_subtitle = !has_subtitle();
 
-  if ( !got_video )
-    {
-      got_video = in_video_store( frame );
-    }
+  // if ( !got_video )
+  //   {
+  //     got_video = in_video_store( frame );
+  //   }
 
-  if ( !got_audio )
-    {
-      got_audio = in_audio_store( frame );
-    }
+  // if ( !got_audio )
+  //   {
+  //     got_audio = in_audio_store( frame );
+  //   }
 
-  if ( !got_subtitle )
-    {
-      got_subtitle = in_subtitle_store( frame );
-    }
+  // if ( !got_subtitle )
+  //   {
+  //     got_subtitle = in_subtitle_store( frame );
+  //   }
 
 
   boost::int64_t vpts = 0, apts = 0, spts = 0;
@@ -1033,7 +1033,7 @@ void aviImage::populate()
 	      {
 		 video_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
-		 s.has_b_frames = bool( ctx->has_b_frames );
+		 s.has_b_frames = ( ctx->has_b_frames != 0 );
 		 s.fps          = calculate_fps( stream );
 		 if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
  		    s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
@@ -1345,6 +1345,12 @@ void aviImage::populate()
 
 }
 
+void aviImage::probe_size( unsigned p ) 
+{ 
+   _context->probesize = p; 
+   _context->max_analyze_duration = p;
+}
+
 bool aviImage::initialize()
 {
   if ( _context == NULL )
@@ -1363,8 +1369,7 @@ bool aviImage::initialize()
 	   // to detect subtitles.
 	   if ( _context )
 	   {
-	      _context->probesize = 30 * AV_TIME_BASE;
-	      _context->max_analyze_duration = _context->probesize;
+	      probe_size( 30 * AV_TIME_BASE );
 	   }
 	   error = avformat_find_stream_info( _context, NULL );
 	}
@@ -1847,9 +1852,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
       else if ( _video_packets.is_preroll() )
 	{
 	  AVPacket& pkt = _video_packets.front();
+
 	  bool ok = in_video_store( frame );
-	  if ( ok && pts2frame( get_video_stream(), pkt.dts ) != frame )
-	    return kDecodeOK;
+	  if ( ok ) return kDecodeOK;
 
 	  return handle_video_packet_seek( frame, false );
 	}

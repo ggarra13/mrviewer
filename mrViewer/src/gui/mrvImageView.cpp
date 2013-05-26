@@ -303,10 +303,10 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
   glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
 
   // Flip image vertically
-  for ( int x = 0; x < w; ++x )
+  for ( unsigned x = 0; x < w; ++x )
   {
-     int y2 = h-1;
-     for ( int y = 0; y < h; ++y, --y2 )
+     unsigned y2 = h-1;
+     for ( unsigned y = 0; y < h; ++y, --y2 )
      {
 	mrv::ImagePixel p;
 	p.r = data[   4*( x + y * w ) ];
@@ -949,7 +949,6 @@ void ImageView::load_list()
       lock.get( "pid", pid, 1 );
       
       
-      char* directory;
       char* filename;
       char* audio;
       int start, end;
@@ -1099,9 +1098,9 @@ void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
 			   double x, double y, const char* text )
 {
    _engine->color( (uchar)0, (uchar)0, (uchar)0 );
-   _engine->draw_text( x+1, y-1, text ); // draw shadow
+   _engine->draw_text( int(x+1), int(y-1), text ); // draw shadow
    _engine->color( r, g, b );
-   _engine->draw_text( x, y, text );  // draw text
+   _engine->draw_text( int(x), int(y), text );  // draw text
 }
 
 /** 
@@ -2820,7 +2819,7 @@ int ImageView::handle(int event)
     case fltk::DRAG:
        X = fltk::event_x();
        Y = fltk::event_y();
-       mouseDrag( X, Y );
+       mouseDrag( int(X), int(Y) );
        break;
       //     case fltk::SHORTCUT:
     case fltk::KEY:
@@ -4102,7 +4101,7 @@ void ImageView::stop()
   uiMain->uiPlayBackwards->value(0);
 
   send( "stop" );
-  seek( timeline()->value() );
+  seek( int64_t(timeline()->value()) );
  
   redraw();
   thumbnails();

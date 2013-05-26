@@ -67,7 +67,7 @@ namespace mrv
 
     void main( ViewerUI* m ) { uiMain = m; }
 
-    unsigned int  index( const int64_t frame ) const;
+    size_t index( const int64_t frame ) const;
     mrv::media media_at( const int64_t frame ) const;
     CMedia* image_at( const int64_t frame ) const;
 

@@ -89,7 +89,7 @@ namespace mrv {
 	return;
       }
 
-    unsigned cols = fieldArray.size();
+    size_t cols = fieldArray.size();
     unsigned rows = db->number_of_rows();
     for ( unsigned i = 0; i < rows; ++i )
       {
@@ -110,9 +110,9 @@ namespace mrv {
 
 	elem->copy_label( label.c_str() );
 
-	unsigned icon_w = fieldArray[0].size() / (64*3);
+	size_t icon_w = fieldArray[0].size() / (64*3);
 
-	fltk::Image* img = new fltk::Image( fltk::RGB, icon_w, 64, 
+	fltk::Image* img = new fltk::Image( fltk::RGB, unsigned(icon_w), 64, 
 					    fieldArray[0].c_str() );
 	elem->image( img );
 

@@ -91,7 +91,8 @@ namespace mrv
     assert( data != NULL );
     assert( size > 128 );
 
-    CIccProfile* d = OpenIccProfile( (icUInt8Number*)data, size );
+    CIccProfile* d = OpenIccProfile( (icUInt8Number*)data, 
+				     (icUInt32Number)size );
     if (!d) 
       {
 	LOG_ERROR("Could not open ICC profile embedded in \"" << file << "\".");

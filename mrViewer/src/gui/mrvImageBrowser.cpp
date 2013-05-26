@@ -1333,10 +1333,10 @@ namespace mrv {
 
 	   if ( timeline()->edl() )
 	   {
-	      if ( sub_idx < m->image()->number_of_subtitle_streams() )
+	      if ( sub_idx < int(m->image()->number_of_subtitle_streams()) )
 		 m->image()->subtitle_stream( sub_idx );
 	      
-	      if ( audio_idx < m->image()->number_of_audio_streams() )
+	      if ( audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
 	   }
 	   else
@@ -2061,7 +2061,7 @@ void ImageBrowser::load( const stringArray& files,
        if ( root != "" && frame != "" )
        {
     	  file = root;
-    	  for ( int i = 0; i < frame.size(); ++i )
+    	  for ( size_t i = 0; i < frame.size(); ++i )
 	  {
     	     if ( frame[i] == '0' ) file += '@';
 	     else break;

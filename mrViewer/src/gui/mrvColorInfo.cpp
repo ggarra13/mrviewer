@@ -68,8 +68,8 @@ namespace
       }
 
     // Copy text to both the clipboard and to X's XA_PRIMARY
-    fltk::copy( copy.c_str(), copy.size(), true );
-    fltk::copy( copy.c_str(), copy.size(), false );
+    fltk::copy( copy.c_str(), unsigned( copy.size() ), true );
+    fltk::copy( copy.c_str(), unsigned( copy.size() ), false );
   }
 
 }

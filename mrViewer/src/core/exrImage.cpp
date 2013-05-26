@@ -327,7 +327,7 @@ bool exrImage::channels_order_multi(
 
    Imf::ChannelList::ConstIterator sr, er, sl, el;
 
-   int idx = 0;
+   size_t idx = 0;
    Imf::PixelType imfPixelType = Imf::UINT;
    std::vector< std::string > channelList;
    Imf::ChannelList::ConstIterator i;

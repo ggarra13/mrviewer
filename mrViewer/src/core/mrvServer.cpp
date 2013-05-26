@@ -261,15 +261,15 @@ bool Parser::parse( const std::string& m )
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
-      ui->uiView->normalize( b );
-      ui->uiNormalize->state( b );
+      ui->uiView->normalize( ( b != 0 ) );
+      ui->uiNormalize->state( (b != 0 ) );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;
    }
    else if ( cmd == N_("WipeVertical") )
    {
-      double b;
+      float b;
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -281,7 +281,7 @@ bool Parser::parse( const std::string& m )
    }
    else if ( cmd == N_("WipeHorizontal") )
    {
-      double b;
+      float b;
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -314,7 +314,7 @@ bool Parser::parse( const std::string& m )
    }
    else if ( cmd == N_("Gamma") )
    {
-      double f;
+      float f;
       is >> f;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -340,7 +340,7 @@ bool Parser::parse( const std::string& m )
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
-      ui->uiView->safe_areas( (bool) b );
+      ui->uiView->safe_areas( (b != 0) );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;
@@ -351,8 +351,8 @@ bool Parser::parse( const std::string& m )
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
-      ui->uiLUT->state( (bool) b);
-      ui->uiView->use_lut( (bool) b );
+      ui->uiLUT->state( (b != 0) );
+      ui->uiView->use_lut( (b != 0) );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;
@@ -373,7 +373,7 @@ bool Parser::parse( const std::string& m )
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
-      ui->uiView->show_background( (bool) b );
+      ui->uiView->show_background( ( b != 0 ) );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;
@@ -534,10 +534,10 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
-      unsigned num = ui->uiReelWindow->uiBrowser->number_of_reels();
-      for (unsigned i = 0; i < num; ++i )
+      size_t num = ui->uiReelWindow->uiBrowser->number_of_reels();
+      for (size_t i = 0; i < num; ++i )
       {
-	 mrv::Reel r = ui->uiReelWindow->uiBrowser->reel( i );
+	 mrv::Reel r = ui->uiReelWindow->uiBrowser->reel( unsigned(i) );
 	 cmd = N_("Reel ");
 	 cmd += r->name;
 	 deliver( cmd );
