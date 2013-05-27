@@ -76,7 +76,7 @@ namespace mrv {
 	    if ( err == 0 )
 	      {
 		err = snd_card_get_name(card, &psz_card_name);
-		if ( err == 0 ) psz_card_name = "Unknown";
+		if ( err == 0 ) psz_card_name = (char*)"Unknown";
 
 		snd_pcm_info_alloca(&pcm_info);
 
@@ -134,6 +134,9 @@ namespace mrv {
   void ALSAEngine::volume( float v )
   {
 #if 1
+
+     _volume = v;
+
     //
     // This code is a modified version of similar code in amixer.
     //
@@ -207,6 +210,9 @@ namespace mrv {
 	_mixer = NULL;
 	THROW(buf);
       }
+
+    float orig_v= v;
+    if ( v > 1.0f ) v = 1.0f;
 
     long smixer_level = pmin + long( (pmax-pmin) * v);
 
@@ -286,7 +292,7 @@ namespace mrv {
 
 	/* Try for a closest match on audio format */
 	status = -1;
-	for ( ; test_format <= kU16MSB; ++test_format) {
+	for ( ; test_format < kLastPCMFormat; ++test_format) {
 	  switch ( test_format ) {
 	  case kU8:
 	    pcmformat = SND_PCM_FORMAT_U8;
@@ -305,6 +311,21 @@ namespace mrv {
 	    break;
 	  case kU16MSB:
 	    pcmformat = SND_PCM_FORMAT_U16_BE;
+	    break;
+	  case kU24LSB:
+	    pcmformat = SND_PCM_FORMAT_U24_LE;
+	    break;
+	  case kU24MSB:
+	    pcmformat = SND_PCM_FORMAT_U24_BE;
+	    break;
+	  case kU32LSB:
+	    pcmformat = SND_PCM_FORMAT_U32_LE;
+	    break;
+	  case kFloatLSB:
+	    pcmformat = SND_PCM_FORMAT_FLOAT_LE;
+	    break;
+	  case kFloatMSB:
+	    pcmformat = SND_PCM_FORMAT_FLOAT_BE;
 	    break;
 	  default:
 	    pcmformat = (snd_pcm_format_t) 0;
@@ -454,8 +475,17 @@ namespace mrv {
     // for surround sound, swizzle channels based on platform
     //   swizzle_alsa_channels( d );
 
-    int sample_len = size / _sample_size;
+    unsigned sample_len = size / _sample_size;
     const char* sample_buf = data;
+    int16_t* samples = (int16_t*) data;
+
+    if ( _volume > 1.0 )
+    {
+       for ( unsigned i = 0; i <= sample_len; ++i, ++samples )
+       {
+	  *samples *= _volume;
+       }
+    }
 
     while ( sample_len > 0 ) {
       status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
