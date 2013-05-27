@@ -52,6 +52,14 @@ namespace mrv {
 	kS16MSB,
 	kU16LSB,
 	kU16MSB,
+	kU24LSB,
+	kU24MSB,
+	kU32LSB,
+	kU32MSB,
+	kFloatLSB,
+	kFloatMSB,
+	kFloat64LSB,
+	kLastPCMFormat
       };
 
     struct exception : public std::exception
@@ -134,6 +142,7 @@ namespace mrv {
     static DeviceList _devices;     //!< list of devices available
     unsigned int _device_idx;  //!< index to current device being used
     bool         _enabled;
+    float        _volume;
     unsigned int _channels;
   };
 

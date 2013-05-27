@@ -411,31 +411,24 @@ unsigned int CMedia::audio_bytes_per_frame()
       	 ctx->request_channels = 2;
       }
       int frequency = ctx->sample_rate;
-      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)?
-      switch(ctx->codec_id) {
-      	 case CODEC_ID_PCM_S32LE:
-      	 case CODEC_ID_PCM_S32BE:
-      	 case CODEC_ID_PCM_U32LE:
-      	 case CODEC_ID_PCM_U32BE:
+      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)? why 2?  should it be sizeof(int16_t)?
+      switch(ctx->sample_fmt) {
+	 case AV_SAMPLE_FMT_DBL:
+	 case AV_SAMPLE_FMT_DBLP:
+      	    bps = 8;
+      	    break;
+	 case AV_SAMPLE_FMT_FLT:
+	 case AV_SAMPLE_FMT_FLTP:
+	 case AV_SAMPLE_FMT_S32:
+	 case AV_SAMPLE_FMT_S32P:
       	    bps = 4;
       	    break;
-      	 case CODEC_ID_PCM_S24LE:
-      	 case CODEC_ID_PCM_S24BE:
-      	 case CODEC_ID_PCM_U24LE:
-      	 case CODEC_ID_PCM_U24BE:
-      	 case CODEC_ID_PCM_S24DAUD:
-      	    bps = 3;
-      	    break;
-      	 case CODEC_ID_PCM_S16LE:
-      	 case CODEC_ID_PCM_S16BE:
-      	 case CODEC_ID_PCM_U16LE:
-      	 case CODEC_ID_PCM_U16BE:
+	 case AV_SAMPLE_FMT_S16:
+	 case AV_SAMPLE_FMT_S16P:
       	    bps = 2;
       	    break;
-      	 case CODEC_ID_PCM_S8:
-      	 case CODEC_ID_PCM_U8:
-      	 case CODEC_ID_PCM_ALAW:
-      	 case CODEC_ID_PCM_MULAW:
+	 case AV_SAMPLE_FMT_U8:
+	 case AV_SAMPLE_FMT_U8P:
       	    bps = 1;
       	    break;
       	 default:

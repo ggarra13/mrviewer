@@ -561,8 +561,7 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
@@ -930,7 +929,7 @@ v->refresh();}
                 }
                 {fltk::PopupMenu} {} {
                   label FPS
-                  callback {float g = atof( o->child( o->value() )->label() );
+                  callback {float g = (float) atof( o->child( o->value() )->label() );
 uiPrefsFPS->value( g );}
                   xywh {75 0 75 25} labelsize 11
                 } {
@@ -1212,12 +1211,12 @@ uiODT_CTL_transform->do_callback();}
                     xywh {45 23 190 35} align 4 labelsize 11
                   } {
                     {fltk::ValueInput} uiODT_CTL_chromaticities_red_x {
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.red.x = o->value();}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.red.x = (float) o->value();}
                       tooltip {The Red CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.64
                     }
                     {fltk::ValueInput} uiODT_CTL_chromaticities_red_y {
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.red.y = o->value();}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.red.y = (float) o->value();}
                       tooltip {The Red CIE Y coordinate of the display}
                       xywh {105 10 85 25} step 0.0001 value 0.33
                     }
@@ -1227,12 +1226,12 @@ uiODT_CTL_transform->do_callback();}
                     xywh {45 53 190 35} align 4 labelsize 11
                   } {
                     {fltk::ValueInput} uiODT_CTL_chromaticities_green_x {
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();}
                       tooltip {The Green CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.3
                     }
                     {fltk::ValueInput} uiODT_CTL_chromaticities_green_y {
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();}
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();}
                       tooltip {The Green CIE Y coordinate of the display}
                       xywh {105 10 85 25} step 0.0001 value 0.6
                     }
@@ -1243,14 +1242,14 @@ uiODT_CTL_transform->do_callback();}
                   } {
                     {fltk::ValueInput} uiODT_CTL_chromaticities_blue_x {
                       user_data this user_data_type {mrv::PreferencesUI*}
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value(); 
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value(); 
 v->refresh();}
                       tooltip {The Blue CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.15
                     }
                     {fltk::ValueInput} uiODT_CTL_chromaticities_blue_y {
                       user_data this user_data_type {mrv::PreferencesUI*}
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();
 v->refresh();}
                       tooltip {The Blue CIE Y coordinate of the display}
                       xywh {105 10 85 25} step 0.0001 value 0.06
@@ -1262,14 +1261,14 @@ v->refresh();}
                   } {
                     {fltk::ValueInput} uiODT_CTL_chromaticities_white_x {
                       user_data this user_data_type {mrv::PreferencesUI*}
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = o->value();
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();
 v->refresh();}
                       tooltip {The White CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.3127
                     }
                     {fltk::ValueInput} uiODT_CTL_chromaticities_white_y {
                       user_data this user_data_type {mrv::PreferencesUI*}
-                      callback {mrv::Preferences::ODT_CTL_chromaticities.white.y = o->value();
+                      callback {mrv::Preferences::ODT_CTL_chromaticities.white.y = (float) o->value();
 v->refresh();}
                       tooltip {The White CIE Y coordinate of the display}
                       xywh {105 10 85 25} step 0.0001 value 0.329
@@ -1283,7 +1282,7 @@ v->refresh();}
                   {fltk::ValueInput} uiODT_CTL_white_luminance {
                     label {cd/m2}
                     user_data this user_data_type {mrv::PreferencesUI*}
-                    callback {mrv::Preferences::ODT_CTL_white_luminance = o->value();
+                    callback {mrv::Preferences::ODT_CTL_white_luminance = (float) o->value();
 v->refresh();}
                     tooltip {The luminance, in cd/m2, of the display.
 
@@ -1302,7 +1301,7 @@ CTL_DISPLAY_WHITE_LUMINANCE)}
                   {fltk::ValueInput} uiODT_CTL_surround_luminance {
                     label {cd/m2}
                     user_data this user_data_type {mrv::PreferencesUI*}
-                    callback {mrv::Preferences::ODT_CTL_surround_luminance = o->value();
+                    callback {mrv::Preferences::ODT_CTL_surround_luminance = (float) o->value();
 v->refresh();}
                     tooltip {The luminance, in cd/m2, of the background that surrounds the display.
 
@@ -2071,13 +2070,12 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {open
-  } {
+  class PaintUI {} {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {807 336 110 425} horizontal resizable visible
+        xywh {810 336 110 425} horizontal hide resizable
       } {
         {fltk::Group} {} {open
           xywh {10 9 90 201}
@@ -2110,7 +2108,7 @@ uiErase->value(0);}
             callback {v->uiView->erase_mode();
 o->value(1);
 uiSelection->value(0);
-uiDraw->value(0);} selected
+uiDraw->value(0);}
             tooltip {Eraser Tool}
             xywh {50 41 40 35}
             image {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
@@ -2249,7 +2247,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2276,7 +2275,7 @@ else
     }
     decl {PaintUI* uiPaint;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2284,10 +2283,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {420 231 640 530} when CHANGED hide resizable
+        xywh {426 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2390,16 +2389,16 @@ v->uiHotkey->uiMain->show();}
                 }
                 {fltk::ValueInput} uiGainInput {
                   user_data this user_data_type {mrv::ViewerUI*}
-                  callback {v->uiView->gain( o->value() );
-v->uiGain->value( o->value() );}
+                  callback {v->uiView->gain( (float) o->value() );
+v->uiGain->value( (float) o->value() );}
                   tooltip {Gain image value.  A simple multiplier of the image pixel values.}
                   xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.0001 maximum 1024 step 0.001 value 1
                   extra_code {o->textsize( 12 );}
                 }
                 {fltk::Slider} uiGain {
                   user_data this user_data_type {mrv::ViewerUI*}
-                  callback {v->uiView->gain( o->value() );
-v->uiGainInput->value( o->value() );}
+                  callback {v->uiView->gain( (float) o->value() );
+v->uiGainInput->value( (float) o->value() );}
                   tooltip {Allows you to adjust the gain or exposure of the image.}
                   xywh {65 0 70 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.015625 maximum 64 value 1 slider_size 10
                 }
@@ -2465,7 +2464,7 @@ Click to toggle between current and normal exposure.}
                   {fltk::PopupMenu} gammaDefaults {
                     label Gamma
                     user_data this user_data_type {mrv::ViewerUI*}
-                    callback {float g = atof( o->child( o->value() )->label() );
+                    callback {float g = (float) atof( o->child( o->value() )->label() );
 v->uiGamma->value(g);
 v->uiGammaInput->value( g );
 v->uiView->gamma(g);}
@@ -2490,8 +2489,8 @@ v->uiView->gamma(g);}
                   }
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
-                    callback {v->uiView->gamma( o->value() );
-v->uiGamma->value( o->value() );}
+                    callback {v->uiView->gamma( (float) o->value() );
+v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
@@ -2499,8 +2498,8 @@ Value is:  pow( 2, 1/x );}
                   }
                   {fltk::Slider} uiGamma {
                     user_data this user_data_type {mrv::ViewerUI*}
-                    callback {v->uiView->gamma( o->value() );
-v->uiGammaInput->value( o->value() );}
+                    callback {v->uiView->gamma( (float) o->value() );
+v->uiGammaInput->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {85 0 60 18} type {LOG|fltk::Slider::TICK_ABOVE} minimum 0.25 maximum 4 step 0.01 value 0.25 slider_size 10
@@ -2575,7 +2574,7 @@ return;
 }
 else
 {
-f = t - 7;
+f = float(t - 7);
 }
 v->uiView->zoom( f );
 o->value(8);}
@@ -2956,7 +2955,7 @@ v->uiView->seek( f );}
                         user_data this user_data_type {mrv::ViewerUI*}
                         callback {int c = o->value();
 
-float g;
+double g;
 if ( c <= 0 )
     g = v->uiView->foreground()->image()->fps();
 else
@@ -3026,7 +3025,7 @@ o->value(24);}
                       } {}
                       {fltk::Slider} uiVolume {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->volume( o->value() );}
+                        callback {v->uiView->volume((float) o->value() );} selected
                         tooltip {Audio Volume}
                         xywh {18 2 55 15} type TICK_ABOVE align 4 step 0.01 value 1
                       }
@@ -3037,7 +3036,7 @@ o->value(24);}
                   } {
                     {fltk::Input} uiStartFrame {
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {double f = o->value();
+                      callback {double f = (double) o->value();
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
@@ -3048,8 +3047,8 @@ v->uiTimeline->redraw();}
                     }
                     {fltk::Input} uiEndFrame {
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {double f = o->value();
-v->uiTimeline->maximum( f );
+                      callback {boost::int64_t f = o->value();
+v->uiTimeline->maximum( float(f) );
 v->uiTimeToolbar->redraw();
 v->uiTimeline->redraw();}
                       tooltip {Allows you to set the ending frame for timeline.}
@@ -3080,7 +3079,7 @@ o->value(1);
 
 v->uiStartFrame->value( f );
 v->uiStartFrame->redraw();
-v->uiTimeline->minimum( f );
+v->uiTimeline->minimum( double(f) );
 mrv::media fg = v->uiView->foreground();
 if ( fg )
 {
@@ -3105,13 +3104,13 @@ if (o->value() )
 }
 else
 {
-f = v->uiFrame->value();
+f = (boost::int64_t) v->uiFrame->value();
 v->uiView->stop();
 o->value(1);
 }
 v->uiEndFrame->value( f );
 v->uiEndFrame->redraw();
-v->uiTimeline->maximum( f );
+v->uiTimeline->maximum( double(f) );
 mrv::media fg = v->uiView->foreground();
 if ( fg )
 {
