@@ -642,6 +642,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	      sprintf( buf, N_("%d"), s.channels );
 	      channels = buf;
 	    }
+	    add_text( _("Format"), s.format );
 	    add_text( _("Channels"), channels );
 	    sprintf( buf, _("%d Hz."), s.frequency );
 	    add_text( _("Frequency"), buf );

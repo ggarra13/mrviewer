@@ -77,6 +77,13 @@ namespace {
 
 // #define FFMPEG_STREAM_BUG_FIX
 
+#if 1
+AVSampleFormat kInternalSampleFormat = AV_SAMPLE_FMT_S16;
+unsigned kFormatSize = sizeof(int16_t);
+#else
+AVSampleFormat kInternalSampleFormat = AV_SAMPLE_FMT_FLT;
+unsigned kFormatSize = sizeof(float);
+#endif
 
 namespace mrv {
 
@@ -126,7 +133,6 @@ void CMedia::open_audio_codec()
     }
 
   AVCodecContext* ctx = stream->codec;
-  ctx->request_sample_fmt = AV_SAMPLE_FMT_S16;
   _audio_codec = avcodec_find_decoder( ctx->codec_id );
   
   AVDictionary* opts = NULL;
@@ -409,32 +415,10 @@ unsigned int CMedia::audio_bytes_per_frame()
       	 ctx->request_channels = FFMIN(_audio_engine->channels(), channels);
       } else {
       	 ctx->request_channels = 2;
+	 channels = 2;
       }
       int frequency = ctx->sample_rate;
-      int bps = 2;  // hmm... why 2?  should it be sizeof(int16_t)? why 2?  should it be sizeof(int16_t)?
-      switch(ctx->sample_fmt) {
-	 case AV_SAMPLE_FMT_DBL:
-	 case AV_SAMPLE_FMT_DBLP:
-      	    bps = 8;
-      	    break;
-	 case AV_SAMPLE_FMT_FLT:
-	 case AV_SAMPLE_FMT_FLTP:
-	 case AV_SAMPLE_FMT_S32:
-	 case AV_SAMPLE_FMT_S32P:
-      	    bps = 4;
-      	    break;
-	 case AV_SAMPLE_FMT_S16:
-	 case AV_SAMPLE_FMT_S16P:
-      	    bps = 2;
-      	    break;
-	 case AV_SAMPLE_FMT_U8:
-	 case AV_SAMPLE_FMT_U8P:
-      	    bps = 1;
-      	    break;
-      	 default:
-      	    bps = 2; // return ctx->bitrate / _fps
-      	    break;
-      }
+      int bps = kFormatSize;  // hmm... why 2?  should it be sizeof(int16_t)? why 2?  should it be sizeof(int16_t)?
       ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
     }
    return ret;
@@ -462,6 +446,13 @@ void CMedia::populate_audio()
 	    s.channels   = ctx->channels;
 	    s.frequency  = ctx->sample_rate;
 	    s.bitrate    = calculate_bitrate( ctx );
+	    
+	    AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
+						  "language", NULL, 0);
+	    if ( lang && lang->value )
+	       s.language = lang->value;
+	    
+	    s.format = av_get_sample_fmt_name( ctx->sample_fmt );
 
 	    _audio_info.push_back( s );
 	    if ( _audio_index < 0 )
@@ -789,9 +780,11 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
     ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
-        int data_size = av_samples_get_buffer_size(NULL, avctx->channels,
-                                                   frame.nb_samples,
-                                                   avctx->sample_fmt, 1);
+       int plane_size;
+       int planar    = av_sample_fmt_is_planar(avctx->sample_fmt);
+       int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels,
+						  frame.nb_samples,
+						  avctx->sample_fmt, 1);
         if (*frame_size_ptr < data_size) {
 	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
 		      "the current frame (" 
@@ -800,13 +793,15 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
         }
 
 	
-	if ( avctx->sample_fmt != AV_SAMPLE_FMT_S16 )
+	if ( avctx->sample_fmt != kInternalSampleFormat )
 	{
 	   if (!forw_ctx)
 	   {
 	      char buf[256];
-	      uint64_t  in_ch_layout = get_valid_channel_layout(avctx->channel_layout, 
-								avctx->channels);
+	      
+	      uint64_t  in_ch_layout = 
+              get_valid_channel_layout(avctx->channel_layout, avctx->channels);
+	      
 	      if ( in_ch_layout == 0 ) in_ch_layout = AV_CH_LAYOUT_STEREO;
 
 	      av_get_channel_layout_string( buf, 256, avctx->channels, 
@@ -816,13 +811,20 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 		       << ", channels " << avctx->channels << ", " );
 	      IMG_INFO( "format " 
 		       << av_get_sample_fmt_name( avctx->sample_fmt ) 
-			<< ", sample rate " << avctx->sample_rate << "." );
+			<< ", sample rate " << avctx->sample_rate << " to" );
 
 	      uint64_t out_ch_layout = in_ch_layout;
-	      AVSampleFormat  out_sample_fmt = AV_SAMPLE_FMT_S16;
+
+	      av_get_channel_layout_string( buf, 256, avctx->channels, 
+					    out_ch_layout );
+	      AVSampleFormat  out_sample_fmt = kInternalSampleFormat;
 	      AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
 	      int in_sample_rate = avctx->sample_rate;
-	      int out_sample_rate = avctx->sample_rate;
+	      int out_sample_rate = in_sample_rate;
+	      IMG_INFO( buf << ", channels " << avctx->channels << ", format " 
+			<< av_get_sample_fmt_name( out_sample_fmt )
+			<< ", sample rate " 
+			<< out_sample_rate);
 	      
 
 	      forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
@@ -834,49 +836,52 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 		 LOG_ERROR("Failed to alloc swresample library");
 		 return 0;
 	      }
-	      if(swr_init( forw_ctx) < 0)
+	      if(swr_init(forw_ctx) < 0)
 	      {
 		 char buf[256];
 		 av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
 		 LOG_ERROR( "Failed to init swresample library with " 
 			    << buf << " " 
-			       << av_get_sample_fmt_name(in_sample_fmt)
+			    << av_get_sample_fmt_name(in_sample_fmt)
 			    << " frequency: " << in_sample_rate );
 		 return 0;
 	      }
 	   }
 	   
-	   int size;
+ 
+         int size;
 
-	   if ( avctx->sample_fmt == AV_SAMPLE_FMT_DBLP ||
-		avctx->sample_fmt == AV_SAMPLE_FMT_DBL )
-	      size = sizeof( double );
-	   else if ( avctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-		avctx->sample_fmt == AV_SAMPLE_FMT_FLT )
-	      size = sizeof( float );
-	   else if ( avctx->sample_fmt == AV_SAMPLE_FMT_S32 ||
-		     avctx->sample_fmt == AV_SAMPLE_FMT_S32P )
-	      size = sizeof( int );
-	   else if ( avctx->sample_fmt == AV_SAMPLE_FMT_U8 ||
-		     avctx->sample_fmt == AV_SAMPLE_FMT_U8P
-		     )
-	      size = sizeof( uint8_t );
+	 if ( avctx->sample_fmt == AV_SAMPLE_FMT_DBLP ||
+	      avctx->sample_fmt == AV_SAMPLE_FMT_DBL )
+	    size = sizeof( double );
+	 else if ( avctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
+		   avctx->sample_fmt == AV_SAMPLE_FMT_FLT )
+	    size = sizeof( float );
+	 else if ( avctx->sample_fmt == AV_SAMPLE_FMT_S32 ||
+		   avctx->sample_fmt == AV_SAMPLE_FMT_S32P )
+	    size = sizeof( int );
+	 else if ( avctx->sample_fmt == AV_SAMPLE_FMT_U8 ||
+		   avctx->sample_fmt == AV_SAMPLE_FMT_U8P
+		   )
+	    size = sizeof( uint8_t );
 
 	   swr_convert(forw_ctx, (uint8_t**)&samples, 
-		       data_size / sizeof(uint16_t), 
+		       data_size / sizeof(int16_t), 
 		       (const uint8_t **)frame.extended_data, 
-		       ( data_size / size / avctx->channels ));
-	   
-	   if ( size == sizeof(double) )
-	      data_size /= 4;
-	   else if ( size == sizeof(float) )
-	      data_size /= 2;
-	   else if ( size == sizeof(uint8_t) )
-	      data_size *= 2;
+		       data_size / size  );
+
 	}
 	else
 	{
 	   memcpy(samples, frame.extended_data[0], data_size);
+
+	   if (planar && avctx->channels > 1) {
+	      uint8_t *out = ((uint8_t *)samples) + plane_size;
+	      for (int ch = 1; ch < avctx->channels; ch++) {
+		 memcpy(out, frame.extended_data[ch], plane_size);
+		 out += plane_size;
+	      }
+	   }
 	}
 
         *frame_size_ptr = data_size;
@@ -983,7 +988,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
 
-      if ( audio_size <= 0 ) continue;
+      if ( audio_size <= 0 ) break;
 
       _audio_buf_used += audio_size;
     }
@@ -1185,7 +1190,7 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   AVCodecContext* ctx = stream->codec;
 
   // Get the audio info from the codec context
-  int channels = ctx->request_channels;
+  int channels = ctx->channels;
   int frequency = ctx->sample_rate;
 
   audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
@@ -1336,7 +1341,8 @@ bool CMedia::open_audio( const short channels,
   close_audio();
 
   _samples_per_sec = nSamplesPerSec;
-  return _audio_engine->open( channels, nSamplesPerSec );
+  return _audio_engine->open( channels, nSamplesPerSec,
+			      AudioEngine::kFloatLSB, kFormatSize*8);
 }
 
 

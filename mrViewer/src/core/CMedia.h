@@ -139,6 +139,7 @@ namespace mrv {
       unsigned int channels;
       unsigned int frequency;
       unsigned int bitrate;
+      std::string format;
       std::string language;
 
       AudioStream() : StreamInfo(), channels(0), frequency(0), bitrate(0)
@@ -150,6 +151,7 @@ namespace mrv {
 	channels( b.channels ),
 	frequency( b.frequency ),
 	bitrate( b.bitrate ),
+	format( b.format ),
 	language( b.language )
       {
       }
@@ -175,6 +177,7 @@ namespace mrv {
       {
       }
     };
+
     typedef SubtitleStream subtitle_info_t;
     typedef std::vector< subtitle_info_t >   subtitle_info_list_t;
 
