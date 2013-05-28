@@ -355,6 +355,7 @@ namespace mrv {
 	  }
 	}
 
+	_channels = ch;
 	_sample_size = bits * ch / 8;
 
 	/* Set the audio rate */
@@ -477,15 +478,6 @@ namespace mrv {
 
     unsigned sample_len = size / _sample_size;
     const char* sample_buf = data;
-    int16_t* samples = (int16_t*) data;
-
-    if ( _volume > 1.0 )
-    {
-       for ( unsigned i = 0; i <= sample_len; ++i, ++samples )
-       {
-	  *samples *= _volume;
-       }
-    }
 
     while ( sample_len > 0 ) {
       status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);

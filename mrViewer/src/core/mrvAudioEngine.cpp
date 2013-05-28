@@ -91,14 +91,10 @@ namespace mrv {
   {
     AudioEngine* r;
 
-#ifdef HAVE_LIB_AO
-    r = new mrv::AOEngine();
-#else
-  #if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
     r = new mrv::WaveEngine();
-  #elif defined(LINUX) 
+#elif defined(LINUX) 
     r = new mrv::ALSAEngine();
-  #endif
 #endif
 
     return r;

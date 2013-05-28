@@ -1058,6 +1058,9 @@ void aviImage::populate()
 						       "language", NULL, 0);
 		 if ( lang && lang->value )
 		    s.language = lang->value;
+
+		 s.format = av_get_sample_fmt_name( ctx->sample_fmt );
+
 		 _audio_info.push_back( s );
 		 if ( _audio_index < 0 && s.has_codec )
 		    _audio_index = 0;
