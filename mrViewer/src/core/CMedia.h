@@ -36,6 +36,7 @@
 #include "mrvImagePixel.h"
 #include "mrvRectangle.h"
 #include "mrvBarrier.h"
+#include "mrvAudioEngine.h"
 
 #include "mrvOS.h"
 
@@ -1001,7 +1002,8 @@ namespace mrv {
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
-
+       unsigned  _audio_channels;
+       mrv::AudioEngine::AudioFormat _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
     SwrContext* forw_ctx;

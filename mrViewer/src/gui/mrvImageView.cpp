@@ -300,7 +300,7 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
 
   view->fit_image();
 
-  glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
+  glReadPixels( int(x), int(y), w, h, GL_RGBA, GL_FLOAT, data );
 
   // Flip image vertically
   for ( unsigned x = 0; x < w; ++x )

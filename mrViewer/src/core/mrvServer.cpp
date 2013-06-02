@@ -303,7 +303,7 @@ bool Parser::parse( const std::string& m )
    }
    else if ( cmd == N_("Gain") )
    {
-      double f;
+      float f;
       is >> f;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -325,7 +325,7 @@ bool Parser::parse( const std::string& m )
    }
    else if ( cmd == N_("Mask") )
    {
-      double b;
+      float b;
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
@@ -384,7 +384,7 @@ bool Parser::parse( const std::string& m )
       is >> b;
       ParserList c = ui->uiView->_clients;
       ui->uiView->_clients.clear();
-      ui->uiView->show_pixel_ratio( (bool) b );
+      ui->uiView->show_pixel_ratio( (b != 0) );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
       return true;

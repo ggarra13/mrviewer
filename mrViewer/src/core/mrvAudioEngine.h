@@ -11,6 +11,9 @@
 #ifndef mrvAudioEngine_h
 #define mrvAudioEngine_h
 
+extern "C" {
+#include <libavutil/samplefmt.h>
+}
 #include <vector>
 #include <string>
 
@@ -46,20 +49,16 @@ namespace mrv {
 
     enum AudioFormat
       {
-	kU8,
-	kS8,
-	kS16LSB,
-	kS16MSB,
-	kU16LSB,
-	kU16MSB,
-	kU24LSB,
-	kU24MSB,
-	kU32LSB,
-	kU32MSB,
-	kFloatLSB,
-	kFloatMSB,
-	kFloat64LSB,
-	kLastPCMFormat
+      kU8 = 1,
+      kS16LSB,
+      kS16MSB,
+      kS32LSB,
+      kS32MSB,
+      kFloatLSB,
+      kFloatMSB,
+      kDoubleLSB,
+      kDoubleMSB,
+      kLastPCMFormat
       };
 
     struct exception : public std::exception
@@ -126,6 +125,10 @@ namespace mrv {
 
     unsigned channels() const { return _channels; }
 
+    AudioFormat format() const { return _audio_format; }
+
+    static AVSampleFormat ffmpeg_format( const AudioFormat f );
+
     // Create an appropriate audio engine for this OS.
     static AudioEngine* factory();
 
@@ -144,6 +147,7 @@ namespace mrv {
     bool         _enabled;
     float        _volume;
     unsigned int _channels;
+    AudioFormat  _audio_format;
   };
 
 }  // namespace mrv

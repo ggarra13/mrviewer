@@ -77,16 +77,16 @@ namespace {
 
 // #define FFMPEG_STREAM_BUG_FIX
 
-#if 1
-AVSampleFormat kInternalSampleFormat = AV_SAMPLE_FMT_S16;
-unsigned kFormatSize = sizeof(int16_t);
-#else
-AVSampleFormat kInternalSampleFormat = AV_SAMPLE_FMT_FLT;
-unsigned kFormatSize = sizeof(float);
-#endif
 
 namespace mrv {
 
+#if defined(_WIN32) || defined(_WIN64)
+AudioEngine::AudioFormat kIntSampleFormat = mrv::AudioEngine::kS16LSB;
+unsigned kFormatSize = sizeof(int16_t);
+#else
+AudioEngine::AudioFormat kIntSampleFormat = mrv::AudioEngine::kFloatLSB;
+unsigned kFormatSize = sizeof(float);
+#endif
 
 /** 
  * Clear (audio) packets
@@ -409,16 +409,16 @@ unsigned int CMedia::audio_bytes_per_frame()
    if ( has_audio() )
     {
       AVStream* stream = get_audio_stream();
-      AVCodecContext *ctx = stream->codec;
+      AVCodecContext* ctx = stream->codec;
+      
       unsigned int channels = ctx->channels;
-      if (channels > 0) {
-      	 ctx->request_channels = FFMIN(_audio_engine->channels(), channels);
-      } else {
-      	 ctx->request_channels = 2;
-	 channels = 2;
+      if (_audio_engine->channels() > 0 ) {
+      	 channels = FFMIN(_audio_engine->channels(), channels);
       }
+
       int frequency = ctx->sample_rate;
-      int bps = kFormatSize;  // hmm... why 2?  should it be sizeof(int16_t)? why 2?  should it be sizeof(int16_t)?
+      unsigned bps = kFormatSize;
+
       ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
     }
    return ret;
@@ -769,6 +769,29 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
         return 0;
 }
 
+template< typename T >
+struct Swizzle
+{
+     T* ptr;
+     unsigned last;
+     
+     inline Swizzle(void* data, unsigned data_size ) :
+     ptr( (T*) data ),
+     last( data_size / 8*sizeof(T) )
+     {
+     }
+
+     inline void do_it() 
+     {
+	unsigned i;
+	T tmp;
+	for (i = 0; i < last; i++, ptr += 6) {	
+	   tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = tmp;
+	   tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = tmp;
+	}
+     }
+};
+
 int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 			  int *frame_size_ptr,
 			  AVPacket *avpkt)
@@ -781,10 +804,10 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 
     if (ret >= 0 && got_frame) {
        int plane_size;
-       int planar    = av_sample_fmt_is_planar(avctx->sample_fmt);
+       int out_count = avctx->channels * frame.nb_samples * avctx->sample_rate + 256;
        int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels,
 						  frame.nb_samples,
-						  avctx->sample_fmt, 1);
+						  avctx->sample_fmt, 0);
         if (*frame_size_ptr < data_size) {
 	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
 		      "the current frame (" 
@@ -792,8 +815,11 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	   return AVERROR(EINVAL);
         }
 
+	AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 	
-	if ( avctx->sample_fmt != kInternalSampleFormat )
+	if ( ( avctx->sample_fmt != fmt ||
+	       unsigned(avctx->channels) > _audio_channels ) && 
+	       _audio_channels > 0 )
 	{
 	   if (!forw_ctx)
 	   {
@@ -814,14 +840,24 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 			<< ", sample rate " << avctx->sample_rate << " to" );
 
 	      uint64_t out_ch_layout = in_ch_layout;
+	      unsigned out_channels = avctx->channels;
 
-	      av_get_channel_layout_string( buf, 256, avctx->channels, 
+	      if ( out_channels > _audio_channels && _audio_channels > 0 )
+	      	 out_channels = _audio_channels;
+	      else
+		 _audio_channels = avctx->channels;
+
+	      out_ch_layout = get_valid_channel_layout(out_ch_layout,
+						       out_channels);
+	      if ( out_ch_layout == 0 ) out_ch_layout = AV_CH_LAYOUT_STEREO;
+
+	      av_get_channel_layout_string( buf, 256, out_channels, 
 					    out_ch_layout );
-	      AVSampleFormat  out_sample_fmt = kInternalSampleFormat;
+	      AVSampleFormat  out_sample_fmt = fmt;
 	      AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
 	      int in_sample_rate = avctx->sample_rate;
 	      int out_sample_rate = in_sample_rate;
-	      IMG_INFO( buf << ", channels " << avctx->channels << ", format " 
+	      IMG_INFO( buf << ", channels " << out_channels << ", format " 
 			<< av_get_sample_fmt_name( out_sample_fmt )
 			<< ", sample rate " 
 			<< out_sample_rate);
@@ -848,40 +884,46 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	      }
 	   }
 	   
- 
-         int size;
 
-	 if ( avctx->sample_fmt == AV_SAMPLE_FMT_DBLP ||
-	      avctx->sample_fmt == AV_SAMPLE_FMT_DBL )
-	    size = sizeof( double );
-	 else if ( avctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
-		   avctx->sample_fmt == AV_SAMPLE_FMT_FLT )
-	    size = sizeof( float );
-	 else if ( avctx->sample_fmt == AV_SAMPLE_FMT_S32 ||
-		   avctx->sample_fmt == AV_SAMPLE_FMT_S32P )
-	    size = sizeof( int );
-	 else if ( avctx->sample_fmt == AV_SAMPLE_FMT_U8 ||
-		   avctx->sample_fmt == AV_SAMPLE_FMT_U8P
-		   )
-	    size = sizeof( uint8_t );
 
-	   swr_convert(forw_ctx, (uint8_t**)&samples, 
-		       data_size / sizeof(int16_t), 
-		       (const uint8_t **)frame.extended_data, 
-		       data_size / size  );
+	   int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
+				  data_size, 
+				  (const uint8_t **)frame.extended_data, 
+				  frame.nb_samples );
+	   if ( len2 < 0 )
+	   {
+	      IMG_ERROR( "resampling failed" );
+	      return 0;
+	   }
+
+
+	   data_size = ( len2 * _audio_channels *
+	   		 av_get_bytes_per_sample( fmt ) );
+
+	   if ( _audio_channels >= 6 )
+	   {
+	      if ( fmt == AV_SAMPLE_FMT_FLT )
+	      {
+		 Swizzle<float> t( samples, data_size );
+		 t.do_it();
+	      }
+	      else if ( fmt == AV_SAMPLE_FMT_S32 )
+	      {
+		 Swizzle<int32_t> t( samples, data_size );
+		 t.do_it();
+	      }
+	      else if ( fmt == AV_SAMPLE_FMT_S16 )
+	      {
+		 Swizzle<int16_t> t( samples, data_size );
+		 t.do_it();
+	      }
+	   }
 
 	}
 	else
 	{
-	   memcpy(samples, frame.extended_data[0], data_size);
-
-	   if (planar && avctx->channels > 1) {
-	      uint8_t *out = ((uint8_t *)samples) + plane_size;
-	      for (int ch = 1; ch < avctx->channels; ch++) {
-		 memcpy(out, frame.extended_data[ch], plane_size);
-		 out += plane_size;
-	      }
-	   }
+	   if ( _audio_channels > 0 )
+	      memcpy(samples, frame.extended_data[0], data_size);
 	}
 
         *frame_size_ptr = data_size;
@@ -946,14 +988,13 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
 
 
-  assert( pkt.data != NULL );
   assert( _audio_buf != NULL );
   assert( pkt.size + _audio_buf_used < _audio_max );
 
   int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
   assert( pkt_temp.size <= audio_size );
 
-  while ( pkt_temp.size > 0 )
+  while ( pkt_temp.size > 0 || pkt_temp.data == NULL )
     {
        // Decode the audio into the buffer
        assert( _audio_buf_used + pkt_temp.size <= _audio_max );
@@ -979,7 +1020,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 	}
 
 
-      assert( audio_size > 0 );
       assert( ret <= pkt_temp.size );
       assert( ret > 0 );
       assert( audio_size + _audio_buf_used <= _audio_max );
@@ -1058,7 +1098,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 			    (boost::uint8_t*)_audio_buf + index, 
 			    bytes_per_frame );
 
-      if ( audio_frame >= frame ) got_audio = kDecodeOK;
+      if ( last >= frame ) got_audio = kDecodeOK;
 
 #ifdef DEBUG
       if ( bytes_per_frame > _audio_buf_used )
@@ -1190,7 +1230,9 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   AVCodecContext* ctx = stream->codec;
 
   // Get the audio info from the codec context
-  int channels = ctx->channels;
+  int channels = _audio_channels;
+  if ( channels == 0 ) channels = ctx->channels;
+
   int frequency = ctx->sample_rate;
 
   audio_type_ptr aud = audio_type_ptr( new audio_type( audio_frame,
@@ -1298,7 +1340,7 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   	    }
   	}
 
-      //av_free_packet( &pkt );
+      av_free_packet( &pkt );
     }
 }
 
@@ -1308,6 +1350,7 @@ void CMedia::audio_initialize()
 {
   if ( _audio_engine ) return;
   _audio_engine = mrv::AudioEngine::factory();
+  _audio_channels = _audio_engine->channels();
 }
 
 
@@ -1341,8 +1384,12 @@ bool CMedia::open_audio( const short channels,
   close_audio();
 
   _samples_per_sec = nSamplesPerSec;
-  return _audio_engine->open( channels, nSamplesPerSec,
-			      AudioEngine::kFloatLSB, kFormatSize*8);
+  bool ok = _audio_engine->open( channels, nSamplesPerSec,
+				 kIntSampleFormat, kFormatSize*8);
+
+  _audio_channels = _audio_engine->channels();
+  _audio_format   = _audio_engine->format();
+  return ok;
 }
 
 
@@ -1350,7 +1397,8 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 {
   double speedup = _play_fps / _fps;
   unsigned nSamplesPerSec = unsigned( result->frequency() * speedup );
-  if ( nSamplesPerSec != _samples_per_sec )
+  if ( nSamplesPerSec != _samples_per_sec ||
+       result->channels() != _audio_channels )
     {
       SCOPED_LOCK( _audio_mutex );
       if ( ! open_audio( result->channels(), nSamplesPerSec ) )
