@@ -14,7 +14,6 @@
 #include <iostream>
 using namespace std;
 
-#include "alsa/asoundlib.h"
 #include "audio/mrvALSAEngine.h"
 #include "mrvI8N.h"
 
@@ -267,20 +266,27 @@ namespace mrv {
 	snd_pcm_hw_params_t *hwparams;
 	snd_pcm_access_mask_t *access;
 
+	// Allocate a hardware parameters object
 	snd_pcm_hw_params_alloca(&hwparams);
+
+ 
 	snd_pcm_access_mask_alloca(&access);
 
 	//   snd_pcm_access_mask_t *access;
 	//   snd_pcm_access_mask_alloca(&access);
 
+	// Fill it with default values
 	status = snd_pcm_hw_params_any(_pcm_handle, hwparams);
 	if ( status < 0 ) {
 	  sprintf( buf, "Couldn't get hardware config: %s", snd_strerror(status));
 	  THROW(buf);
 	}
 
+
 	/* create a null access mask */
 	snd_pcm_access_mask_none(access);
+
+	/* Interleaved mode */
 	snd_pcm_access_mask_set(access, SND_PCM_ACCESS_RW_INTERLEAVED);
 
 	/* commit the access value to params structure */
@@ -292,54 +298,42 @@ namespace mrv {
 
 	/* Try for a closest match on audio format */
 	status = -1;
-	for ( ; test_format < kLastPCMFormat; ++test_format) {
+	for ( ; test_format > 0; --test_format) {
 	  switch ( test_format ) {
 	  case kU8:
-	    pcmformat = SND_PCM_FORMAT_U8;
-	    break;
-	  case kS8:
-	    pcmformat = SND_PCM_FORMAT_S8;
+	    _pcm_format = SND_PCM_FORMAT_U8;
 	    break;
 	  case kS16LSB:
-	    pcmformat = SND_PCM_FORMAT_S16_LE;
+	    _pcm_format = SND_PCM_FORMAT_S16_LE;
 	    break;
 	  case kS16MSB:
-	    pcmformat = SND_PCM_FORMAT_S16_BE;
+	    _pcm_format = SND_PCM_FORMAT_S16_BE;
 	    break;
-	  case kU16LSB:
-	    pcmformat = SND_PCM_FORMAT_U16_LE;
-	    break;
-	  case kU16MSB:
-	    pcmformat = SND_PCM_FORMAT_U16_BE;
-	    break;
-	  case kU24LSB:
-	    pcmformat = SND_PCM_FORMAT_U24_LE;
-	    break;
-	  case kU24MSB:
-	    pcmformat = SND_PCM_FORMAT_U24_BE;
-	    break;
-	  case kU32LSB:
-	    pcmformat = SND_PCM_FORMAT_U32_LE;
+	  case kS32LSB:
+	    _pcm_format = SND_PCM_FORMAT_U32_LE;
 	    break;
 	  case kFloatLSB:
-	    pcmformat = SND_PCM_FORMAT_FLOAT_LE;
+	    _pcm_format = SND_PCM_FORMAT_FLOAT_LE;
 	    break;
 	  case kFloatMSB:
-	    pcmformat = SND_PCM_FORMAT_FLOAT_BE;
+	    _pcm_format = SND_PCM_FORMAT_FLOAT_BE;
 	    break;
 	  default:
-	    pcmformat = (snd_pcm_format_t) 0;
+	    _pcm_format = (snd_pcm_format_t) 0;
 	    break;
 	  }
-	  if ( pcmformat != 0 ) {
+	  if ( _pcm_format != 0 ) {
 	    /* set the sample bitformat */
-	    status = snd_pcm_hw_params_set_format(_pcm_handle, hwparams, pcmformat);
+	    status = snd_pcm_hw_params_set_format(_pcm_handle, hwparams, _pcm_format);
 	    if ( status >= 0 ) break;
 	  }
 	}
 	if ( status < 0 ) {
 	  THROW( "Couldn't find any hardware audio formats");
 	}
+
+	_audio_format = (mrv::AudioEngine::AudioFormat) (int)(test_format + 1);
+
 
 	/* Set the number of channels */
 	unsigned int ch = channels;
@@ -465,6 +459,47 @@ namespace mrv {
       }
   }
 
+/// *
+//  * http://bugzilla.libsdl.org/show_bug.cgi?id=110
+//  * "For Linux ALSA, this is FL-FR-RL-RR-C-LFE
+//  *  and for Windows DirectX [and CoreAudio], this is FL-FR-C-LFE-RL-RR"
+//  */
+// #define SWIZ6(T) \
+//     T *ptr = (T *) mixbuf; \
+//     Uint32 i; \
+//     for (i = 0; i < this->spec.samples; i++, ptr += 6) { \
+//         T tmp; \
+//         tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = tmp; \
+//         tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = tmp; \
+//     }
+
+// static __inline__ void swizzle_alsa_channels_6_64bit(_THIS) { SWIZ6(uint64_t); }
+// static __inline__ void swizzle_alsa_channels_6_32bit(_THIS) { SWIZ6(uint32_t); }
+// static __inline__ void swizzle_alsa_channels_6_16bit(_THIS) { SWIZ6(uint16_t); }
+// static __inline__ void swizzle_alsa_channels_6_8bit(_THIS) { SWIZ6(uint8_t); }
+
+// #undef SWIZ6
+// /*
+//  * Called right before feeding this->mixbuf to the hardware. Swizzle channels
+//  *  from Windows/Mac order to the format alsalib will want.
+//  */
+// static __inline__ void swizzle_alsa_channels(_THIS)
+// {
+//     if (this->spec.channels == 6) {
+//         const Uint16 fmtsize = (this->spec.format & 0xFF); /* bits/channel. */
+//         if (fmtsize == 16)
+//             swizzle_alsa_channels_6_16bit(this);
+//         else if (fmtsize == 8)
+//             swizzle_alsa_channels_6_8bit(this);
+//         else if (fmtsize == 32)
+//             swizzle_alsa_channels_6_32bit(this);
+//         else if (fmtsize == 64)
+//             swizzle_alsa_channels_6_64bit(this);
+//     }
+
+//     /* !!! FIXME: update this for 7.1 if needed, later. */
+// }
+
 
   bool ALSAEngine::play( const char* data, const size_t size )
   {
@@ -473,8 +508,6 @@ namespace mrv {
 
     int           status;
 
-    // for surround sound, swizzle channels based on platform
-    //   swizzle_alsa_channels( d );
 
     unsigned sample_len = size / _sample_size;
     const char* sample_buf = data;

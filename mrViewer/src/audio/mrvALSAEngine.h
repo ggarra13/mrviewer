@@ -12,6 +12,8 @@
 #ifndef mrvALSAEngine_h
 #define mrvALSAEngine_h
 
+#include <alsa/asoundlib.h>
+
 #include "mrvAudioEngine.h"
 
 typedef struct _snd_pcm   snd_pcm_t;
@@ -64,6 +66,7 @@ protected:
 protected:
   static unsigned int _instances;
   static snd_mixer_t* _mixer;
+  snd_pcm_format_t    _pcm_format;
 };
 
 

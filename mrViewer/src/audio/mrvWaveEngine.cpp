@@ -322,9 +322,11 @@ namespace mrv {
       {
 	flush();
 
+
 	WAVEFORMATEX wavefmt;
 	wavefmt.wFormatTag = WAVE_FORMAT_PCM;
-	wavefmt.nChannels  = channels;
+	if ( channels > _channels ) wavefmt.nChannels = channels;
+	else wavefmt.nChannels = channels;
 	wavefmt.nSamplesPerSec = freq;
 	wavefmt.wBitsPerSample = format <= kS8 ? 8 : 16;
 	wavefmt.nBlockAlign = ( ( wavefmt.wBitsPerSample >> 3 ) * 
@@ -348,6 +350,8 @@ namespace mrv {
 	    _enabled = false;
 	    return false;
 	  }
+
+	_audio_format = format;
 
 	// Allocate internal sound buffer
 	bytesPerBlock = wavefmt.nBlockAlign * _samples_per_block;

@@ -147,6 +147,8 @@ CMedia::CMedia() :
   _audio_index(-1),
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
+  _audio_channels( 0 ),
+  _audio_format( AudioEngine::kS16LSB ),
   _audio_buf( NULL ),
   forw_ctx( NULL ),
   _audio_engine( NULL )
@@ -205,6 +207,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _audio_index(-1),
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
+  _audio_channels( other->_audio_channels ),
   _audio_buf( NULL ),
   forw_ctx( NULL ),
   _audio_engine( NULL )
@@ -327,7 +330,10 @@ CMedia::~CMedia()
   audio_shutdown();
 
   if ( forw_ctx )
+  {
      swr_free( &forw_ctx );
+     forw_ctx = NULL;
+  }
 
   if ( _context )
     avformat_close_input( &_context );
