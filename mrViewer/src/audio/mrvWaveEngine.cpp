@@ -328,7 +328,7 @@ namespace mrv {
 	if ( channels > _channels ) wavefmt.nChannels = channels;
 	else wavefmt.nChannels = channels;
 	wavefmt.nSamplesPerSec = freq;
-	wavefmt.wBitsPerSample = format <= kS8 ? 8 : 16;
+	wavefmt.wBitsPerSample = format <= kU8 ? 8 : 16;
 	wavefmt.nBlockAlign = ( ( wavefmt.wBitsPerSample >> 3 ) * 
 				wavefmt.nChannels );
 	wavefmt.nAvgBytesPerSec = ( wavefmt.nSamplesPerSec * 

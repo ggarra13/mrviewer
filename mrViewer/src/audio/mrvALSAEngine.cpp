@@ -459,47 +459,6 @@ namespace mrv {
       }
   }
 
-/// *
-//  * http://bugzilla.libsdl.org/show_bug.cgi?id=110
-//  * "For Linux ALSA, this is FL-FR-RL-RR-C-LFE
-//  *  and for Windows DirectX [and CoreAudio], this is FL-FR-C-LFE-RL-RR"
-//  */
-// #define SWIZ6(T) \
-//     T *ptr = (T *) mixbuf; \
-//     Uint32 i; \
-//     for (i = 0; i < this->spec.samples; i++, ptr += 6) { \
-//         T tmp; \
-//         tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = tmp; \
-//         tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = tmp; \
-//     }
-
-// static __inline__ void swizzle_alsa_channels_6_64bit(_THIS) { SWIZ6(uint64_t); }
-// static __inline__ void swizzle_alsa_channels_6_32bit(_THIS) { SWIZ6(uint32_t); }
-// static __inline__ void swizzle_alsa_channels_6_16bit(_THIS) { SWIZ6(uint16_t); }
-// static __inline__ void swizzle_alsa_channels_6_8bit(_THIS) { SWIZ6(uint8_t); }
-
-// #undef SWIZ6
-// /*
-//  * Called right before feeding this->mixbuf to the hardware. Swizzle channels
-//  *  from Windows/Mac order to the format alsalib will want.
-//  */
-// static __inline__ void swizzle_alsa_channels(_THIS)
-// {
-//     if (this->spec.channels == 6) {
-//         const Uint16 fmtsize = (this->spec.format & 0xFF); /* bits/channel. */
-//         if (fmtsize == 16)
-//             swizzle_alsa_channels_6_16bit(this);
-//         else if (fmtsize == 8)
-//             swizzle_alsa_channels_6_8bit(this);
-//         else if (fmtsize == 32)
-//             swizzle_alsa_channels_6_32bit(this);
-//         else if (fmtsize == 64)
-//             swizzle_alsa_channels_6_64bit(this);
-//     }
-
-//     /* !!! FIXME: update this for 7.1 if needed, later. */
-// }
-
 
   bool ALSAEngine::play( const char* data, const size_t size )
   {
