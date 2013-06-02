@@ -81,11 +81,9 @@ namespace {
 namespace mrv {
 
 #if defined(_WIN32) || defined(_WIN64)
-AudioEngine::AudioFormat kIntSampleFormat = mrv::AudioEngine::kS16LSB;
-unsigned kFormatSize = sizeof(int16_t);
+AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kS16LSB;
 #else
-AudioEngine::AudioFormat kIntSampleFormat = mrv::AudioEngine::kFloatLSB;
-unsigned kFormatSize = sizeof(float);
+AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #endif
 
 /** 
@@ -417,7 +415,8 @@ unsigned int CMedia::audio_bytes_per_frame()
       }
 
       int frequency = ctx->sample_rate;
-      unsigned bps = kFormatSize;
+      AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+      unsigned bps = av_get_bytes_per_sample( fmt );
 
       ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
     }
@@ -1384,8 +1383,12 @@ bool CMedia::open_audio( const short channels,
   close_audio();
 
   _samples_per_sec = nSamplesPerSec;
+
+  AVSampleFormat fmt = AudioEngine::ffmpeg_format( kSampleFormat );
+  unsigned bps = av_get_bytes_per_sample( fmt ) * 8;
+
   bool ok = _audio_engine->open( channels, nSamplesPerSec,
-				 kIntSampleFormat, kFormatSize*8);
+				 kSampleFormat, bps );
 
   _audio_channels = _audio_engine->channels();
   _audio_format   = _audio_engine->format();
