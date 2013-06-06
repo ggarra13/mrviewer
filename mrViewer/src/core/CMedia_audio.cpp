@@ -512,16 +512,18 @@ void CMedia::populate_audio()
 
   _frameStart = 1;
 
+  double start = 0;
   if ( _context->start_time != MRV_NOPTS_VALUE )
-    {
-      _frameStart = boost::int64_t( ( _fps * ( double )_context->start_time / 
-				      ( double )AV_TIME_BASE ) ) + 1;
-    }
+  {
+     start = ( ( double )_context->start_time / ( double )AV_TIME_BASE );
+  }
   else
-    {
-       _frameStart = boost::int64_t( _audio_info[ _audio_index ].start );
-    }
+  {
+     start = ( ( double )_audio_info[ _audio_index ].start / 
+	       ( double ) AV_TIME_BASE );
+  }
 
+  _frameStart = boost::int64_t( _fps * start ) + 1;
 
 #ifdef FFMPEG_STREAM_BUG_FIX
 
@@ -1127,23 +1129,22 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   if ( _audio_buf_used > 0 )
     {
 
+       //
+       // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
+
+
        assert( index + _audio_buf_used < _audio_max );
        memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
        
-       //
-       // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
-       //       We repeat some bytes to compensate.
-       //
-       int len = _audio_buf_used % 16;
-       int size = _audio_buf_used - len;
 
-       if ( len > 0 )
-       {
-       	  memmove( _audio_buf + _audio_buf_used, 
-       	  	   _audio_buf + _audio_buf_used - len, len );
-       }
+       // if ( len > 0 )
+       // {
+       // 	  memset( _audio_buf + _audio_buf_used - len, 0, len );
+       // 	  // memmove( _audio_buf + _audio_buf_used, 
+       // 	  // 	   _audio_buf + _audio_buf_used - len, len );
+       // }
        
-       _audio_buf_used = size;
+       // _audio_buf_used = _audio_max - index;
        // assert( _audio_buf_used % 16 == 0 );
     }
 

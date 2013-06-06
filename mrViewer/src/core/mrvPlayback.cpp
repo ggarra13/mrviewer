@@ -364,9 +364,7 @@ void audio_thread( PlaybackData* data )
 	 continue;
       }
 
-      img->find_audio( frame );
 
-	
 
       if ( !img->has_picture() && timeline->edl() )
       { 
@@ -378,7 +376,9 @@ void audio_thread( PlaybackData* data )
 	 timeline->value( double( f ) );
       }
 
+      img->find_audio(frame);
 
+	
       frame += step;
    }
 
