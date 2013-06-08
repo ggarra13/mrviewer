@@ -322,7 +322,7 @@ bool exrImage::channels_order_multi(
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
-   int order[4];
+   size_t order[4];
    order[0] = order[1] = order[2] = order[3] = -1;
 
    Imf::ChannelList::ConstIterator sr, er, sl, el;
@@ -512,7 +512,7 @@ bool exrImage::channels_order_multi(
    Imf::Channel* ch = NULL;
    for ( idx = 0; idx < numChannels; ++idx )
    {
-      int k = order[idx];
+      size_t k = order[idx];
       if ( k == -1 ) continue;
    
 

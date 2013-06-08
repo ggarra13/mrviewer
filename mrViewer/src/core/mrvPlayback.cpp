@@ -302,6 +302,8 @@ void audio_thread( PlaybackData* data )
    delete data;
 
    int64_t frame = img->audio_frame();
+   
+
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 
@@ -321,6 +323,7 @@ void audio_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
+
       if ( frame > img->last_frame() )
 	 status = CMedia::kDecodeLoopEnd;
       if ( frame < img->first_frame() )
@@ -351,6 +354,8 @@ void audio_thread( PlaybackData* data )
 	       barrier->wait();
 	       continue;
 	    }
+	 case CMedia::kDecodeOK:
+	    break;
 	 default:
 	    break;
       }

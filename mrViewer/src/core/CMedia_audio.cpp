@@ -582,8 +582,7 @@ void CMedia::populate_audio()
 		boost::int64_t dts = _frameStart;
 		if ( playback() == kBackwards )
 		{
-		   // Only add packet if it comes before seek frame
-		   if ( pktframe <= _frameStart )  
+		   if ( pktframe >= first_frame() )  
 		      _audio_packets.push_back( pkt );
 		   if ( pktframe < dts ) dts = pktframe;
 		}
@@ -793,7 +792,7 @@ struct Swizzle
      }
 };
 
-int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
+int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 			  int *frame_size_ptr,
 			  AVPacket *avpkt)
 {   
@@ -801,14 +800,13 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
    int ret, got_frame = 0;
    
 
-    ret = avcodec_decode_audio4(avctx, &frame, &got_frame, avpkt);
+    ret = avcodec_decode_audio4(ctx, &frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
-       int plane_size;
-       int out_count = avctx->channels * frame.nb_samples * avctx->sample_rate + 256;
-       int data_size = av_samples_get_buffer_size(&plane_size, avctx->channels,
+       int out_count = ctx->channels * frame.nb_samples * ctx->sample_rate + 256;
+       int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
 						  frame.nb_samples,
-						  avctx->sample_fmt, 0);
+						  ctx->sample_fmt, 1);
         if (*frame_size_ptr < data_size) {
 	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
 		      "the current frame (" 
@@ -818,8 +816,8 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 
 	AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 	
-	if ( ( avctx->sample_fmt != fmt ||
-	       unsigned(avctx->channels) > _audio_channels ) && 
+	if ( ( ctx->sample_fmt != fmt ||
+	       unsigned(ctx->channels) > _audio_channels ) && 
 	       _audio_channels > 0 )
 	{
 	   if (!forw_ctx)
@@ -827,26 +825,26 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	      char buf[256];
 	      
 	      uint64_t  in_ch_layout = 
-              get_valid_channel_layout(avctx->channel_layout, avctx->channels);
+              get_valid_channel_layout(ctx->channel_layout, ctx->channels);
 	      
 	      if ( in_ch_layout == 0 ) in_ch_layout = AV_CH_LAYOUT_STEREO;
 
-	      av_get_channel_layout_string( buf, 256, avctx->channels, 
+	      av_get_channel_layout_string( buf, 256, ctx->channels, 
 					    in_ch_layout );
 
 	      IMG_INFO("Create audio conversion from " << buf 
-		       << ", channels " << avctx->channels << ", " );
+		       << ", channels " << ctx->channels << ", " );
 	      IMG_INFO( "format " 
-		       << av_get_sample_fmt_name( avctx->sample_fmt ) 
-			<< ", sample rate " << avctx->sample_rate << " to" );
+		       << av_get_sample_fmt_name( ctx->sample_fmt ) 
+			<< ", sample rate " << ctx->sample_rate << " to" );
 
 	      uint64_t out_ch_layout = in_ch_layout;
-	      unsigned out_channels = avctx->channels;
+	      unsigned out_channels = ctx->channels;
 
 	      if ( out_channels > _audio_channels && _audio_channels > 0 )
 	      	 out_channels = _audio_channels;
 	      else
-		 _audio_channels = avctx->channels;
+		 _audio_channels = ctx->channels;
 
 	      out_ch_layout = get_valid_channel_layout(out_ch_layout,
 						       out_channels);
@@ -855,8 +853,8 @@ int CMedia::decode_audio3(AVCodecContext *avctx, int16_t *samples,
 	      av_get_channel_layout_string( buf, 256, out_channels, 
 					    out_ch_layout );
 	      AVSampleFormat  out_sample_fmt = fmt;
-	      AVSampleFormat  in_sample_fmt = avctx->sample_fmt;
-	      int in_sample_rate = avctx->sample_rate;
+	      AVSampleFormat  in_sample_fmt = ctx->sample_fmt;
+	      int in_sample_rate = ctx->sample_rate;
 	      int out_sample_rate = in_sample_rate;
 	      IMG_INFO( buf << ", channels " << out_channels << ", format " 
 			<< av_get_sample_fmt_name( out_sample_fmt )
@@ -1079,8 +1077,8 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   for (;;)
     {
 
-      if ( bytes_per_frame > _audio_buf_used ) break;
 
+      if ( bytes_per_frame > _audio_buf_used ) break;
 
 #ifdef DEBUG
       if ( index + bytes_per_frame >= _audio_max )
@@ -1094,10 +1092,11 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 	}
 #endif
 
-
+      unsigned idx = index;
       index += store_audio( last, 
 			    (boost::uint8_t*)_audio_buf + index, 
 			    bytes_per_frame );
+
 
       if ( last >= frame ) got_audio = kDecodeOK;
 
@@ -1108,9 +1107,18 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 		    << "  used: " << _audio_buf_used << std::endl;
 	}
 #endif
-      assert( bytes_per_frame <= _audio_buf_used );
 
+
+      assert( bytes_per_frame <= _audio_buf_used );
       _audio_buf_used -= bytes_per_frame;
+
+      if ( bytes_per_frame > _audio_buf_used )
+      {
+	 store_audio( last, (boost::uint8_t*)_audio_buf + idx,
+		      bytes_per_frame + _audio_buf_used );
+	 _audio_buf_used = 0;
+      }
+
       last += 1;
     }
   
@@ -1135,14 +1143,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
        assert( index + _audio_buf_used < _audio_max );
        memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
-       
 
-       // if ( len > 0 )
-       // {
-       // 	  memset( _audio_buf + _audio_buf_used - len, 0, len );
-       // 	  // memmove( _audio_buf + _audio_buf_used, 
-       // 	  // 	   _audio_buf + _audio_buf_used - len, len );
-       // }
        
        // _audio_buf_used = _audio_max - index;
        // assert( _audio_buf_used % 16 == 0 );
@@ -1171,16 +1172,18 @@ void CMedia::audio_stream( int idx )
 
   if ( idx == _audio_index ) return;
 
-  mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
   mrv::PacketQueue::Mutex& am  = _audio_packets.mutex();
   SCOPED_LOCK( am );
-  SCOPED_LOCK( apm );
 
   if ( has_audio() )
     {
       flush_audio();
+      close_audio();
       close_audio_codec();
       _audio_packets.clear();
+      swr_free( &forw_ctx );
+      forw_ctx = NULL;
+      _audio_channels = 0;
     }
 
   clear_stores();
@@ -1224,6 +1227,7 @@ CMedia::store_audio( const boost::int64_t audio_frame,
 
   //  assert( audio_frame <= last_frame()  );
   //  assert( audio_frame >= first_frame() );
+
 
   _audio_last_frame = audio_frame;
 
@@ -1466,8 +1470,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     limit_audio_store( frame );
   }
-
-  bool ok = play_audio( result );
+  
+  bool ok =  play_audio( result );
   _audio_pts   = int64_t( _audio_frame / _fps );
   _audio_clock = av_gettime() / 1000000.0;
   return ok;
@@ -1550,7 +1554,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   if ( _audio_packets.empty() ) return kDecodeError;
 
-  //  if ( is_seek )
+  if ( is_seek )
     {
       AVPacket& pkt = _audio_packets.front();
       frame = get_frame( get_audio_stream(), pkt );
@@ -1666,7 +1670,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
       else
 	{
 	  AVPacket& pkt = _audio_packets.front();
-	  bool ok = in_audio_store( frame );	   
+	  bool ok = in_audio_store( frame );
 	  if ( ok ) 
 	    {
 	      if ( get_frame( get_audio_stream(), pkt ) == frame )

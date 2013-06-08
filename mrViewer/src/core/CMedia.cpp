@@ -246,7 +246,7 @@ boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
    boost::int64_t frame;
    if ( pkt.pts != MRV_NOPTS_VALUE )
    {
-      frame = pts2frame( stream, pkt.pts );
+      frame = pts2frame( stream, pkt.pts ); 
    }
    else
    {
