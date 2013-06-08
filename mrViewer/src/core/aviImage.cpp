@@ -1218,6 +1218,7 @@ void aviImage::populate()
 
   if ( has_video() || has_audio() )
     {
+
       // Loop until we get first frame
       AVPacket pkt;
       // Clear the packet
@@ -1257,6 +1258,11 @@ void aviImage::populate()
 	     if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	     {
 		pktframe = get_frame( get_audio_stream(), pkt );
+		if ( pktframe > _frameStart ) 
+		{
+		   got_audio = true;
+		   continue;
+		}
 		if ( playback() == kBackwards )
 		{
 		   // Only add packet if it comes before seek frame
@@ -1300,7 +1306,6 @@ void aviImage::populate()
   _dts = dts;
   _frame = _audio_frame = _frameStart;
   _expected = _frame;
-
 
   if ( _frame_offset > 3 ) _frame_offset = 0;
 
@@ -1636,21 +1641,29 @@ bool aviImage::fetch(const boost::int64_t frame)
   bool got_audio = !has_audio();
   bool got_subtitle = !has_subtitle();
 
-  // if ( !got_audio )
-  // {
-  //    got_audio = in_audio_store( frame );
-  // }
+  if ( !got_audio )
+  {
+     got_audio = in_audio_store( frame );
+  }
 
-  // if ( !got_video )
-  // {
-  //    got_video = in_video_store( frame );
-  // }
+  if ( !got_video )
+  {
+     got_video = in_video_store( frame );
+  }
 
-  // if ( !got_subtitle )
-  // {
-  //    got_subtitle = in_video_store( frame );
-  // }
+  if ( !got_subtitle )
+  {
+     got_subtitle = in_video_store( frame );
+  }
 
+  if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
+    {
+       bool ok = seek_to_position( frame );
+       if ( !ok )
+	  IMG_ERROR("seek_to_position: Could not seek to frame " 
+		    << frame );
+
+    }
 
 
 #ifdef DEBUG_DECODE
@@ -2094,17 +2107,11 @@ void aviImage::do_seek()
      _expected = _dts - 1;
   }
 
-  if ( (!got_video || !got_audio || !got_subtitle) && _seek_frame != _expected )
-    {
-       bool ok = seek_to_position( _seek_frame );
-       if ( !ok )
-	  IMG_ERROR("seek_to_position: Could not seek to frame " 
-		    << _seek_frame );
-
-    }
 
   if ( stopped() )
     {
+       fetch( _seek_frame );
+
       if ( has_audio() )
 	{
 	  decode_audio( _seek_frame );

@@ -1389,11 +1389,22 @@ bool CMedia::open_audio( const short channels,
 
   _samples_per_sec = nSamplesPerSec;
 
-  AVSampleFormat fmt = AudioEngine::ffmpeg_format( kSampleFormat );
+  AudioEngine::AudioFormat format = kSampleFormat;
+
+  // Avoid conversion to float if unneeded
+  AVCodecContext* ctx = get_audio_stream()->codec;
+  if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+       ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+  {
+     format = AudioEngine::kS16LSB;
+  }
+
+
+  AVSampleFormat fmt = AudioEngine::ffmpeg_format( format );
   unsigned bps = av_get_bytes_per_sample( fmt ) * 8;
 
   bool ok = _audio_engine->open( channels, nSamplesPerSec,
-				 kSampleFormat, bps );
+				 format, bps );
 
   _audio_channels = _audio_engine->channels();
   _audio_format   = _audio_engine->format();
@@ -1424,6 +1435,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
   {
      IMG_ERROR( _("Playback of audio frame failed") );
      close_audio();
+     return false;
   }
   
   return true;
@@ -1471,7 +1483,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
     limit_audio_store( frame );
   }
   
-  bool ok =  play_audio( result );
+  bool ok = play_audio( result );
   _audio_pts   = int64_t( _audio_frame / _fps );
   _audio_clock = av_gettime() / 1000000.0;
   return ok;
@@ -1697,6 +1709,13 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 #ifdef DEBUG_STORES
   debug_audio_stores(frame, "DECODE END");
 #endif
+
+  if ( got_audio )
+  {
+     bool ok = in_audio_store( frame );
+     if ( ok ) return kDecodeOK;
+     return kDecodeMissingFrame;
+  }
 
   return got_audio;
 }
