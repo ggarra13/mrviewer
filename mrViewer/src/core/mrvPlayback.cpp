@@ -316,6 +316,7 @@ void audio_thread( PlaybackData* data )
 	<< " frame " << frame << endl;
 #endif
 
+   mrv::Timer timer;
 
    while ( !img->stopped() )
    {
@@ -337,13 +338,12 @@ void audio_thread( PlaybackData* data )
 	    img->audio_frame( frame );
 	    continue;
 	 case CMedia::kDecodeMissingFrame:
-	    if ( failed_frame == frame ) {
-	       // Failed to find frame twice, skip this frame
+	    timer.setDesiredFrameRate( img->play_fps() );
+	    timer.waitUntilNextFrameIsDue();
+	    if ( img->has_picture() )
+	       frame = img->frame();
+	    else
 	       frame += step;
-	       continue;
-	    }
-	    failed_frame = frame;
-	    img->wait_audio();
 	    continue;
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
@@ -383,7 +383,6 @@ void audio_thread( PlaybackData* data )
 
       img->find_audio(frame);
 
-	
       frame += step;
    }
 
