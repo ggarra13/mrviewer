@@ -250,17 +250,25 @@ void aviImage::open_video_codec()
   _video_codec = avcodec_find_decoder( ctx->codec_id );
 
   static int workaround_bugs = 1;
+  static int lowres = 0;
   static enum AVDiscard skip_frame= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_idct= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_loop_filter= AVDISCARD_DEFAULT;
+  static int idct = FF_IDCT_AUTO;
   static int error_concealment = 3;
 
+  ctx->codec_id        = _video_codec->id;
   ctx->idct_algo         = FF_IDCT_AUTO;
   ctx->workaround_bugs = workaround_bugs;
+  ctx->lowres          = lowres;
   ctx->skip_frame= skip_frame;
-  ctx->skip_idct= skip_idct;
+  ctx->skip_idct = skip_idct;
+  ctx->idct_algo = idct;
   ctx->skip_loop_filter= skip_loop_filter;
   ctx->error_concealment= error_concealment;
+
+  if(_video_codec->capabilities & CODEC_CAP_DR1)
+     ctx->flags |= CODEC_FLAG_EMU_EDGE;
 
   double aspect_ratio;
   if ( ctx->sample_aspect_ratio.num == 0 )
@@ -1203,7 +1211,6 @@ void aviImage::populate()
 
   _frame_offset = 0;
 
-  bool got_audio = !has_audio();
   boost::int64_t dts = _frameStart;
  
   unsigned audio_bytes = 0;
@@ -1216,8 +1223,9 @@ void aviImage::populate()
       // Clear the packet
       av_init_packet( &pkt );
 
+      bool got_audio = ! has_audio();
       bool got_video = ! has_video();
-      while( !got_video )
+      while( !got_video || !got_audio )
 	{
 	  int error = av_read_frame( _context, &pkt );
 	  if ( error < 0 )
@@ -1289,8 +1297,9 @@ void aviImage::populate()
     }
   
 
-  _frame = _dts = _frameStart;
-  _expected = _frame-1;
+  _dts = dts;
+  _frame = _audio_frame = _frameStart;
+  _expected = _frame;
 
 
   if ( _frame_offset > 3 ) _frame_offset = 0;
@@ -1557,7 +1566,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 		}
 	      else
 		{
-		  if ( pktframe <= last_frame() ) 
+		   if ( pktframe <= last_frame() ) 
 		     _audio_packets.push_back( pkt );
 		  if ( !has_video() && pktframe > dts ) dts = pktframe;
 		}
@@ -1642,16 +1651,6 @@ bool aviImage::fetch(const boost::int64_t frame)
   //    got_subtitle = in_video_store( frame );
   // }
 
-  if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
-    {
-       bool ok = seek_to_position( frame );
-       if ( !ok )
-	  IMG_ERROR("seek_to_position: Could not seek to frame " << frame );
-
-       //SCOPED_LOCK( _audio_mutex ); // needed
-       //_audio_buf_used = 0;
-      return ok;
-    }
 
 
 #ifdef DEBUG_DECODE
@@ -2072,6 +2071,7 @@ void aviImage::do_seek()
 
   bool got_video = !has_video();
   bool got_audio = !has_audio();
+  bool got_subtitle = !has_subtitle();
 
   if ( !got_video )
     {
@@ -2083,17 +2083,25 @@ void aviImage::do_seek()
       got_audio = in_audio_store( _dts );
     }
 
+  if ( !got_subtitle )
+  {
+      got_subtitle = in_subtitle_store( _dts );
+  }
+
   if ( _seek_frame != _expected )
   {
      clear_packets();
      _expected = _dts - 1;
   }
 
-  if ( !got_video || !got_audio )
+  if ( (!got_video || !got_audio || !got_subtitle) && _seek_frame != _expected )
     {
-      fetch(_seek_frame);
-    }
+       bool ok = seek_to_position( _seek_frame );
+       if ( !ok )
+	  IMG_ERROR("seek_to_position: Could not seek to frame " 
+		    << _seek_frame );
 
+    }
 
   if ( stopped() )
     {

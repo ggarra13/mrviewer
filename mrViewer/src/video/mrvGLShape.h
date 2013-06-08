@@ -52,7 +52,7 @@ class GLShape
 	a = ai;
      }
      float r, g, b, a;
-     double pen_size;
+     float pen_size;
 };
 
 class GLPathShape : public GLShape
