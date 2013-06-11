@@ -12,6 +12,9 @@
 using namespace std;
 
 #include <cstdio>
+#define __STDC_FORMAT_MACROS
+#define __STDC_LIMIT_MACROS
+#include <inttypes.h>
 
 #include <algorithm>
 #include <wand/MagickWand.h>
@@ -134,7 +137,7 @@ namespace mrv {
 	   const char* label = MagickGetImageProperty( wand, "label" );
 	   if ( label == NULL )
 	   {
-	      sprintf( layername, _("Layer %d"), i+1 );
+	      sprintf( layername, _("Layer %" PRId64 ), i+1 );
 	   }
 	   else
 	   {
