@@ -324,8 +324,6 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {
 
-   if ( _context == NULL ) return false;
-
 
    // double frac = ( (double) (frame - _frameStart) / 
    // 		   (double) (_frameEnd - _frameStart) );
@@ -333,46 +331,45 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
    // if ( _context->start_time != AV_NOPTS_VALUE )
    //    offset += _context->start_time;
 
+
   boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
 
-  try {
+  int flags = 0;
+  flags &= ~AVSEEK_FLAG_BYTE;
 
-     int flags = 0;
-     flags &= ~AVSEEK_FLAG_BYTE;
-
-     int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, INT64_MAX, 
-				   flags );
-     if (ret < 0)
-     {
-	IMG_ERROR( "Could not seek to frame " << frame );
-	return false;
-     }
+  int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, INT64_MAX, 
+   				flags );
+  
+  //  int ret = av_seek_frame( _context, -1, offset, flags );
+  if (ret < 0)
+  {
+     IMG_ERROR( "Could not seek to frame " << frame );
+     return false;
   }
-  catch( ... )
-    {
-      IMG_ERROR("avformat_seek_file raised some exception" );
-      return false;
-    }
+  
 
 
   bool got_audio = !has_audio();
   bool got_video = !has_video();
   bool got_subtitle = !has_subtitle();
 
-  // if ( !got_video )
-  //   {
-  //     got_video = in_video_store( frame );
-  //   }
+  if ( !got_video )
+    {
+      got_video = in_video_store( frame );
+      _video_packets.cond().notify_one();
+    }
 
-  // if ( !got_audio )
-  //   {
-  //     got_audio = in_audio_store( frame );
-  //   }
+  if ( !got_audio )
+    {
+      got_audio = in_audio_store( frame );
+      _audio_packets.cond().notify_one();
+    }
 
-  // if ( !got_subtitle )
-  //   {
-  //     got_subtitle = in_subtitle_store( frame );
-  //   }
+  if ( !got_subtitle )
+    {
+      got_subtitle = in_subtitle_store( frame );
+      _subtitle_packets.cond().notify_one();
+    }
 
 
   boost::int64_t vpts = 0, apts = 0, spts = 0;
@@ -399,27 +396,18 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     spts = frame2pts( get_subtitle_stream(), frame );
   }
 
-
-  if ( _seek_req || _playback != kBackwards )
-    {
-      if ( !got_video )    _video_packets.seek_begin(vpts);
-      if ( !got_audio )    _audio_packets.seek_begin(apts);
-      if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
-    }
+  if ( !_seek_req && playback() == kBackwards )
+  {
+     if ( !got_video )    _video_packets.preroll(vpts);
+     if ( !got_audio )    _audio_packets.preroll(apts);
+     if ( !got_subtitle ) _subtitle_packets.preroll(spts);
+  }
   else
-    {
-
-#ifdef USE_SEEK_TO_PLAY_BACKWARDS
-      if ( !got_video )    _video_packets.seek_begin(vpts);
-      if ( !got_audio )    _audio_packets.seek_begin(apts);
-      if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
-#else
-      if ( !got_video )    _video_packets.preroll(vpts);
-      if ( !got_audio )    _audio_packets.preroll(apts);
-      if ( !got_subtitle ) _subtitle_packets.preroll(spts);
-#endif
-    }
-
+  {
+     if ( !got_video )    _video_packets.seek_begin(vpts);
+     if ( !got_audio )    _audio_packets.seek_begin(apts);
+     if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
+  }
 
 #ifdef DEBUG_SEEK
   LOG_INFO( "BEFORE SEEK:" );
@@ -436,26 +424,23 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   // When pre-rolling, make sure new dts is not at a distance bigger
   // than our image/audio cache.
   //
-  if ( !_seek_req )
-    {
-      int64_t diff = (dts - _dts) * _playback;
+  int64_t diff = (dts - _dts) * _playback;
 
-      unsigned max_frames = 1;
-      if ( has_video() )
-	{
-	  max_frames = max_video_frames();
-	}
-      else if ( has_audio() )
-	{
-	  max_frames = max_audio_frames();
-	}
+  unsigned max_frames = 1;
+  if ( has_video() )
+  {
+     max_frames = max_video_frames();
+  }
+  else if ( has_audio() )
+  {
+     max_frames = max_audio_frames();
+  }
 
-      if ( abs(diff) > max_frames )
-	{
-	  dts = _dts + int64_t(max_frames) * _playback;
-	}
-    }
-
+  if ( abs(diff) > max_frames )
+  {
+     dts = _dts + int64_t(max_frames) * _playback;
+  }
+ 
 
   _dts = dts;
   _expected = dts + 1;
@@ -1427,7 +1412,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 					bool& got_subtitle )
 {
 
-  boost::int64_t dts = frame;
+   boost::int64_t dts = frame;
 
   boost::int64_t vpts, apts, spts;
 
@@ -1443,190 +1428,187 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     spts = frame2pts( get_subtitle_stream(), frame );
   }
 
-  try {
 
-    AVPacket pkt;
+  AVPacket pkt;
 
-    // Clear the packet
-    av_init_packet( &pkt );
+  // Clear the packet
+  av_init_packet( &pkt );
 
-    unsigned int bytes_per_frame = audio_bytes_per_frame();
-    unsigned int audio_bytes = 0;
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
+  unsigned int audio_bytes = 0;
 
-    int eof = false;
-    unsigned counter = 0;
+  int eof = false;
+  unsigned counter = 0;
 
-    // Loop until an error or we have what we need
-    while( !got_video || !got_audio )
-      {
+  // Loop until an error or we have what we need
+  while( !got_video || !got_audio )
+  {
 
-        if (eof) {
-	   if (!got_video && video_stream_index() >= 0) {
-	      av_init_packet(&pkt);
-	      pkt.data = NULL;
-	      pkt.size = 0;
-	      pkt.stream_index = video_stream_index();
-	      _video_packets.push_back( pkt );
-            }
-
-	   AVStream* stream = get_audio_stream();
-	   if (!got_audio && audio_stream_index() >= 0 &&
-	       stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
-	      av_init_packet(&pkt);
-	      pkt.data = NULL;
-	      pkt.size = 0;
-	      pkt.stream_index = audio_stream_index();
-	      _audio_packets.push_back( pkt );
-            }
-
-	   eof = false;
+     if (eof) {
+	if (!got_video && video_stream_index() >= 0) {
+	   av_init_packet(&pkt);
+	   pkt.data = NULL;
+	   pkt.size = 0;
+	   pkt.stream_index = video_stream_index();
+	   _video_packets.push_back( pkt );
 	}
+
+	AVStream* stream = get_audio_stream();
+	if (!got_audio && audio_stream_index() >= 0 &&
+	    stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
+	   av_init_packet(&pkt);
+	   pkt.data = NULL;
+	   pkt.size = 0;
+	   pkt.stream_index = audio_stream_index();
+	   _audio_packets.push_back( pkt );
+	}
+
+	eof = false;
+     }
  
-	int error = av_read_frame( _context, &pkt );
+     int error = av_read_frame( _context, &pkt );
 
-	if ( error < 0 )
-	  {
-	     if ( error == AVERROR_EOF )
-	     {
-		counter++;
-		if ( counter >= _frame_offset ) {
+     if ( error < 0 )
+     {
+	if ( error == AVERROR_EOF )
+	{
+	   counter++;
+	   if ( counter >= _frame_offset ) {
 
-		   if ( is_seek )
-		   {
-		      if ( !got_video    ) _video_packets.seek_end(vpts);
-		      if ( !got_audio    ) _audio_packets.seek_end(apts);
-		      if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
-		   }
-		   break;
-		}
-		eof = true;
-		continue;
-	     }
-	     int err = _context->pb ? _context->pb->error : 0;
-	     if ( err != 0 )
-	     {
-		IMG_ERROR("fetch: Could not read frame " << frame << " error: "
-			  << strerror(err) );
-	     }
-
-	     if ( is_seek )
-	     {
-		if ( !got_video    ) _video_packets.seek_end(vpts);
-		if ( !got_audio    ) _audio_packets.seek_end(apts);
-		if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
-	     }
-
-
-	     av_free_packet( &pkt );
-
-	     break;
-
-	  }
-
-
-	if ( has_video() && 
-	     pkt.stream_index == video_stream_index() )
-	  {
-	     boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
-	     - _frame_offset;
-
-	     if ( playback() == kBackwards )
-	     {
-		// Only add packet if it comes before seek frame
-		if ( pktframe <= frame )
-		  _video_packets.push_back( pkt );
-		if ( pktframe < dts ) dts = pktframe;
-	     }
-	     else
-	     {
-		_video_packets.push_back( pkt );
-		if ( pktframe >= dts ) 
-		   dts = pktframe;
-	     }
-
-	     if ( !got_video  && pktframe >= frame )
-	    {
-	      got_video = true;
-	      if ( is_seek ) _video_packets.seek_end(vpts);
-	    }
-#ifdef DEBUG_DECODE
-	    char ftype = av_get_picture_type_char(_av_frame->pict_type );
-	    fprintf( stderr, "\t[avi] FETCH V f: %05" PRId64 
-		     " video pts: %07" PRId64 
-		     " dts: %07" PRId64 " %c as frame: %05" PRId64 "\n",
-		     frame, pkt.pts, pkt.dts, ftype, pktframe );
-#endif
-	    continue;
-	  }
-	else
-	  if ( has_audio() && pkt.stream_index == audio_stream_index() )
-	    {
-	       boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
-	      if ( playback() == kBackwards )
-		{
-		  // Only add packet if it comes before seek frame
-		  if ( pktframe <= frame )  _audio_packets.push_back( pkt );
-		  if ( !has_video() && pktframe < dts ) dts = pktframe;
-		}
-	      else
-		{
-		   if ( pktframe <= last_frame() ) 
-		     _audio_packets.push_back( pkt );
-		  if ( !has_video() && pktframe > dts ) dts = pktframe;
-		}
-
-
-	      if ( !got_audio )
-		{
-		  if ( pktframe > frame ) got_audio = true;
-		  else if ( pktframe == frame )
-		    {
-		      audio_bytes += pkt.size;
-		      if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-		    }
-		  if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
-		}
-
-
-#ifdef DEBUG_DECODE
-	      fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
-		       " audio pts: %07" PRId64 
-		       " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
-		       frame, pkt.pts, pkt.dts, pktframe );
-#endif
-	      continue;
-	    }
-	  else
-	    if ( has_subtitle() && pkt.stream_index == subtitle_stream_index() )
+	      if ( is_seek )
 	      {
-		 boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
-		 if ( playback() == kBackwards )
-		 {
-		    if ( pktframe <= frame )
-		       _subtitle_packets.push_back( pkt );		 }
-		 else
-		 {
-		    _subtitle_packets.push_back( pkt );
-		 }
-
-		 if ( !got_subtitle && pktframe >= frame )
-		 {
-		    got_subtitle = true;
-		    if ( is_seek ) _subtitle_packets.seek_end(spts);
-		 }
-		continue;
+		 if ( !got_video    ) _video_packets.seek_end(vpts);
+		 if ( !got_audio    ) _audio_packets.seek_end(apts);
+		 if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
 	      }
-	
+	      break;
+	   }
+	   eof = true;
+	   continue;
+	}
+	int err = _context->pb ? _context->pb->error : 0;
+	if ( err != 0 )
+	{
+	   IMG_ERROR("fetch: Could not read frame " << frame << " error: "
+		     << strerror(err) );
+	}
+
+	if ( is_seek )
+	{
+	   if ( !got_video    ) _video_packets.seek_end(vpts);
+	   if ( !got_audio    ) _audio_packets.seek_end(apts);
+	   if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
+	}
+
+
 	av_free_packet( &pkt );
 
-      } // (!got_video || !got_audio)
+	break;
+
+     }
+
+
+     if ( has_video() && 
+	  pkt.stream_index == video_stream_index() )
+     {
+	boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
+	- _frame_offset;
+
+	if ( playback() == kBackwards )
+	{
+	   std::cerr << "pktframe " << pktframe << " <= " 
+		     << frame << " _dts " << _dts << std::endl;
+	   // Only add packet if it comes before seek frame
+	   if ( pktframe <= frame )
+	      _video_packets.push_back( pkt );
+	   if ( pktframe < dts ) dts = pktframe;
+	}
+	else
+	{
+	   _video_packets.push_back( pkt );
+	   if ( pktframe >= dts ) dts = pktframe;
+	}
+
+	if ( !got_video  && pktframe >= frame )
+	{
+	   got_video = true;
+	   if ( is_seek ) _video_packets.seek_end(vpts);
+	}
+#ifdef DEBUG_DECODE
+	char ftype = av_get_picture_type_char(_av_frame->pict_type );
+	fprintf( stderr, "\t[avi] FETCH V f: %05" PRId64 
+		 " video pts: %07" PRId64 
+		 " dts: %07" PRId64 " %c as frame: %05" PRId64 "\n",
+		 frame, pkt.pts, pkt.dts, ftype, pktframe );
+#endif
+	continue;
+     }
+     else
+	if ( has_audio() && pkt.stream_index == audio_stream_index() )
+	{
+	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+
+	   if ( playback() == kBackwards )
+	   {
+	      // Only add packet if it comes before seek frame
+	      if ( pktframe <= frame ) _audio_packets.push_back( pkt );
+	      if ( !has_video() && pktframe < dts ) dts = pktframe;
+	   }
+	   else
+	   {
+	      if ( pktframe <= last_frame() ) 
+		 _audio_packets.push_back( pkt );
+	      if ( !has_video() && pktframe > dts ) dts = pktframe;
+	   }
+
+
+	   if ( !got_audio )
+	   {
+	      if ( pktframe > frame ) got_audio = true;
+	      else if ( pktframe == frame )
+	      {
+		 audio_bytes += pkt.size;
+		 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+	      }
+	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
+	   }
+
+
+#ifdef DEBUG_DECODE
+	   fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
+		    " audio pts: %07" PRId64 
+		    " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
+		    frame, pkt.pts, pkt.dts, pktframe );
+#endif
+	   continue;
+	}
+	else
+	   if ( has_subtitle() && pkt.stream_index == subtitle_stream_index() )
+	   {
+	      boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
+	      if ( playback() == kBackwards )
+	      {
+		 if ( pktframe <= frame )
+		    _subtitle_packets.push_back( pkt );		 }
+	      else
+	      {
+		 _subtitle_packets.push_back( pkt );
+	      }
+
+	      if ( !got_subtitle && pktframe >= frame )
+	      {
+		 got_subtitle = true;
+		 if ( is_seek ) _subtitle_packets.seek_end(spts);
+	      }
+	      continue;
+	   }
+	
+     av_free_packet( &pkt );
+
+  } // (!got_video || !got_audio)
     
-  }
-  catch( ... )
-    {
-      IMG_ERROR("ffmpeg raised an exception");
-    }
+
+  //debug_video_packets( dts, "queue_packets");
 
   return dts;
 }
@@ -1634,12 +1616,12 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 bool aviImage::fetch(const boost::int64_t frame)
 {
 #ifdef DEBUG_DECODE
-  cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
+   cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
-  bool got_video = !has_video();
-  bool got_audio = !has_audio();
-  bool got_subtitle = !has_subtitle();
+   bool got_video = !has_video();
+   bool got_audio = !has_audio();
+   bool got_subtitle = !has_subtitle();
 
   if ( !got_audio )
   {
@@ -1653,7 +1635,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 
   if ( !got_subtitle )
   {
-     got_subtitle = in_video_store( frame );
+     got_subtitle = in_subtitle_store( frame );
   }
 
   if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
@@ -1662,7 +1644,7 @@ bool aviImage::fetch(const boost::int64_t frame)
        if ( !ok )
 	  IMG_ERROR("seek_to_position: Could not seek to frame " 
 		    << frame );
-
+       return ok;
     }
 
 
@@ -1751,11 +1733,13 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
       boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
 
-      if ( !is_seek && _playback == kBackwards && 
-	   pktframe >= frame - max_video_frames() )
+      if ( !is_seek && _playback == kBackwards )
 	{
 	   DecodeStatus status = decode_image( frame, (AVPacket&)pkt );
-	  if      ( status == kDecodeOK ) got_video = status;
+	   if      ( status == kDecodeOK ) {
+	      got_video = status;
+	      store_image( frame, pkt.dts );
+	   }
 	  else if ( status == kDecodeMissingFrame )
 	     store_image( pktframe, pkt.dts );
 	}
@@ -1845,11 +1829,11 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
   SCOPED_LOCK( vpm );
 
   if ( _video_packets.empty() )
-    {
-      bool ok = in_video_store( frame );
-      if ( ok ) return kDecodeOK;
-      return kDecodeMissingFrame;
-    }
+  {
+     bool ok = in_video_store( frame );
+     if ( ok ) return kDecodeOK;
+     return kDecodeMissingFrame;
+  }
 
   DecodeStatus got_video = kDecodeMissingFrame;
 
@@ -2080,26 +2064,6 @@ void aviImage::do_seek()
   if ( _dts == _seek_frame ) return;
 
   _dts = _seek_frame;
-
-
-  bool got_video = !has_video();
-  bool got_audio = !has_audio();
-  bool got_subtitle = !has_subtitle();
-
-  if ( !got_video )
-    {
-      got_video = in_video_store( _dts );
-    }
-
-  if ( !got_audio )
-    {
-      got_audio = in_audio_store( _dts );
-    }
-
-  if ( !got_subtitle )
-  {
-      got_subtitle = in_subtitle_store( _dts );
-  }
 
   if ( _seek_frame != _expected )
   {
