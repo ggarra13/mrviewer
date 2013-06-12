@@ -1357,6 +1357,7 @@ void CMedia::audio_initialize()
 {
   if ( _audio_engine ) return;
   _audio_engine = mrv::AudioEngine::factory();
+  _audio_channels = _audio_engine->channels();
 }
 
 
@@ -1404,6 +1405,7 @@ bool CMedia::open_audio( const short channels,
 
   AVSampleFormat fmt = AudioEngine::ffmpeg_format( format );
   unsigned bps = av_get_bytes_per_sample( fmt ) * 8;
+
 
   bool ok = _audio_engine->open( channels, nSamplesPerSec,
 				 format, bps );

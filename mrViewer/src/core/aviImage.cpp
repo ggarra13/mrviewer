@@ -67,7 +67,7 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-#define DEBUG_DECODE
+// #define DEBUG_DECODE
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
@@ -633,9 +633,9 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 void aviImage::clear_packets()
 {
 
-   //#ifdef DEBUG_PACKETS
-  cerr << "+++++++++++++ CLEAR VIDEO PACKETS" << endl;
-  //#endif
+#ifdef DEBUG_PACKETS
+  cerr << "+++++++++++++ CLEAR VIDEO/AUDIO PACKETS" << endl;
+#endif
   _video_packets.clear();
   _audio_packets.clear();
 
