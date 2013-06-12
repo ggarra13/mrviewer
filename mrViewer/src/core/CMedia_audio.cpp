@@ -921,7 +921,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	}
 	else
 	{
-	   // if ( _audio_channels > 0 )
+	   if ( _audio_channels > 0 )
 	   {
 	      memcpy(samples, frame.extended_data[0], data_size);
 	   }

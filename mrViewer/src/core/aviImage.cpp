@@ -67,7 +67,7 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-//#define DEBUG_DECODE
+#define DEBUG_DECODE
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
@@ -321,7 +321,8 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
 }
 
 // Seek to the requested frame
-bool aviImage::seek_to_position( const boost::int64_t frame )
+bool aviImage::seek_to_position( const boost::int64_t frame,
+				 const int opts )
 {
 
 
@@ -632,9 +633,9 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 void aviImage::clear_packets()
 {
 
-#ifdef DEBUG_PACKETS
+   //#ifdef DEBUG_PACKETS
   cerr << "+++++++++++++ CLEAR VIDEO PACKETS" << endl;
-#endif
+  //#endif
   _video_packets.clear();
   _audio_packets.clear();
 
@@ -1250,15 +1251,10 @@ void aviImage::populate()
 	     if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	     {
 		pktframe = get_frame( get_audio_stream(), pkt );
-		if ( pktframe > _frameStart ) 
-		{
-		   got_audio = true;
-		   continue;
-		}
 		if ( playback() == kBackwards )
 		{
 		   // Only add packet if it comes before seek frame
-		   if ( pktframe <= _frameStart )  
+		   if ( pktframe >= first_frame() )  
 		      _audio_packets.push_back( pkt );
 		   if ( !has_video() && pktframe < dts ) dts = pktframe;
 		}
@@ -1658,8 +1654,8 @@ bool aviImage::fetch(const boost::int64_t frame)
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;
   cerr << "FETCH START: " << frame << " gotV:" << got_video << " gotA:" << got_audio << endl;
-  debug_video_packets(frame, "Fetch");
-  debug_video_stores(frame, "Fetch");
+  debug_audio_packets(frame, "Fetch");
+  debug_audio_stores(frame, "Fetch");
 #endif
 
 
@@ -1677,8 +1673,8 @@ bool aviImage::fetch(const boost::int64_t frame)
   LOG_INFO( "FETCH DONE: " << _dts << "   expected: " << _expected 
 	    << " gotV: " << got_video << " gotA: " << got_audio );
 
-  debug_video_packets(frame, "FETCH");
-  debug_video_stores(frame, "FETCH");
+  debug_audio_packets(frame, "FETCH");
+  debug_audio_stores(frame, "FETCH");
 
   LOG_INFO( "------------------------------------------------------" );
 #endif

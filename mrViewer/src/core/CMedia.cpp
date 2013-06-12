@@ -1088,6 +1088,8 @@ void CMedia::play(const CMedia::Playback dir,
   // clear all packets
   clear_packets();
 
+  seek_to_position( _frame );
+
 
   // Start threads
   PlaybackData* data = new PlaybackData( uiMain, this );
