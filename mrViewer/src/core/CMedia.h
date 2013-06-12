@@ -262,6 +262,7 @@ namespace mrv {
     virtual void channel( const char* c );
     virtual const char* channel() const { return _channel; };
 
+
     // Add default Color, Red, Green, Blue
     void rgb_layers();
 
@@ -861,7 +862,7 @@ namespace mrv {
 			      const boost::uint8_t* buf, const unsigned int size );
 
 
-    bool seek_to_position( const boost::int64_t frame, const int flags = 0 );
+       virtual bool seek_to_position( const boost::int64_t frame, const int flags = 0 );
 
 
     virtual void flush_video() {};

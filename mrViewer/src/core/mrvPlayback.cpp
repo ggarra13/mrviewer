@@ -325,7 +325,6 @@ void audio_thread( PlaybackData* data )
 
       img->wait_audio();
 
-      img->debug_audio_packets( frame, "PLAYBACK" );
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
       if ( frame > img->last_frame() )
