@@ -58,6 +58,31 @@ struct EqualFunctor
   }
 };
 
+struct MoreThanFunctor
+{
+  bool operator()( const int64_t a, const audio_type_ptr& b ) const
+  {
+    if ( !b ) return false;
+    return a > b->frame();
+  }
+  bool operator()( const audio_type_ptr& a, const int64_t b ) const
+  {
+    if ( !a ) return false;
+    return *a > b;
+  }
+
+  bool operator()( const int64_t a, const image_type_ptr& b ) const
+  {
+    if ( !b ) return false;
+    return a > b->frame();
+  }
+  bool operator()( const image_type_ptr& a, const int64_t b ) const
+  {
+    if ( !a ) return false;
+    return a->frame() > b;
+  }
+};
+
 struct LessThanFunctor
 {
   bool operator()( const int64_t a, const audio_type_ptr& b ) const

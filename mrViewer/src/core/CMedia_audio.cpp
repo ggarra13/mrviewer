@@ -803,10 +803,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     ret = avcodec_decode_audio4(ctx, &frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
-       int out_count = ctx->channels * frame.nb_samples * ctx->sample_rate + 256;
        int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
 						  frame.nb_samples,
-						  ctx->sample_fmt, 1);
+						  ctx->sample_fmt, 0);
         if (*frame_size_ptr < data_size) {
 	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
 		      "the current frame (" 
@@ -816,7 +815,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 	AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 	
-	if ( ( ctx->sample_fmt != fmt ||
+
+	if ( ( ctx->sample_fmt != fmt  ||
 	       unsigned(ctx->channels) > _audio_channels ) && 
 	       _audio_channels > 0 )
 	{
@@ -921,8 +921,10 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	}
 	else
 	{
-	   if ( _audio_channels > 0 )
+	   // if ( _audio_channels > 0 )
+	   {
 	      memcpy(samples, frame.extended_data[0], data_size);
+	   }
 	}
 
         *frame_size_ptr = data_size;
@@ -1234,6 +1236,7 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   AVCodecContext* ctx = stream->codec;
 
   // Get the audio info from the codec context
+  if ( ctx->channels == 1 ) _audio_channels = 1;
   int channels = _audio_channels;
   if ( channels == 0 ) channels = ctx->channels;
 
@@ -1354,7 +1357,6 @@ void CMedia::audio_initialize()
 {
   if ( _audio_engine ) return;
   _audio_engine = mrv::AudioEngine::factory();
-  _audio_channels = _audio_engine->channels();
 }
 
 
@@ -1406,7 +1408,10 @@ bool CMedia::open_audio( const short channels,
   bool ok = _audio_engine->open( channels, nSamplesPerSec,
 				 format, bps );
 
-  _audio_channels = _audio_engine->channels();
+  if ( channels == 1 )
+     _audio_channels = 1;
+  else
+     _audio_channels = _audio_engine->channels();
   _audio_format   = _audio_engine->format();
   return ok;
 }

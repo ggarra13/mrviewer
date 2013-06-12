@@ -323,6 +323,9 @@ void audio_thread( PlaybackData* data )
       int step = (int) img->playback();
       if ( step == 0 ) break;
 
+      img->wait_audio();
+
+      img->debug_audio_packets( frame, "PLAYBACK" );
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
       if ( frame > img->last_frame() )
@@ -498,11 +501,9 @@ void video_thread( PlaybackData* data )
 
    while ( !img->stopped() )
    {
-      std::cerr << "wait image" << std::endl;
       img->wait_image();
-      std::cerr << "got image" << std::endl;
 
-      img->debug_video_packets( frame, "PLAYBACK" );
+      // img->debug_video_packets( frame, "PLAYBACK" );
 
       int step = (int) img->playback();
       if ( step == 0 ) break;
@@ -691,8 +692,7 @@ void decode_thread( PlaybackData* data )
       }
       
 
-      std::cerr << "decode " << frame << " dts " << img->dts() << std::endl;
-
+ 
       // If we could not get a frame (buffers full, usually),
       // wait a little.
       if ( !img->frame( frame ) )
