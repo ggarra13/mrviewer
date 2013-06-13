@@ -188,21 +188,15 @@ bool CMedia::seek_to_position( const boost::int64_t frame, const int flags )
   offset = av_rescale_q(offset, base, stream->time_base);
   
   bool ok;
-  try {
 
-    ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) >= 0;
 
-    if (!ok)
-      {
-	IMG_ERROR( "Could not seek to frame " << frame );
-	return false;
-      }
+  ok = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD ) >= 0;
+
+  if (!ok)
+  {
+     IMG_ERROR( "Could not seek to frame " << frame );
+     return false;
   }
-  catch( ... )
-    {
-      IMG_ERROR("av_seek_frame raised some exception" );
-      return false;
-    }
 
   bool got_audio   = !has_audio();
   
