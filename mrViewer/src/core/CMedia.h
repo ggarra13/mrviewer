@@ -232,6 +232,7 @@ namespace mrv {
       kDecodeNoStream,
       kDecodeLoopStart,
       kDecodeLoopEnd,
+      kDecodeBufferFull
     };
 
 
