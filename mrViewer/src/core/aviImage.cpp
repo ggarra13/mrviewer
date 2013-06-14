@@ -1979,7 +1979,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  // for a fps of 30.
 	  if ( _images.size() >= max_video_frames() )
 	  {
-	     return kDecodeOK;
+	     limit_video_store(frame);
 	  }
 
 
