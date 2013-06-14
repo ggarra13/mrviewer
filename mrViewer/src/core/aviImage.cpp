@@ -457,22 +457,26 @@ bool aviImage::seek_to_position( const boost::int64_t frame,
   // When pre-rolling, make sure new dts is not at a distance bigger
   // than our image/audio cache.
   //
-  // int64_t diff = (dts - _dts) * _playback;
 
-  // unsigned max_frames = 1;
-  // if ( has_video() )
-  // {
-  //    max_frames = max_video_frames();
-  // }
-  // else if ( has_audio() )
-  // {
-  //    max_frames = max_audio_frames();
-  // }
+  if (! _seek_req )
+  {
+     int64_t diff = (dts - _dts) * _playback;
 
-  // if ( abs(diff) > max_frames )
-  // {
-  //    dts = _dts + int64_t(max_frames) * _playback;
-  // }
+     unsigned max_frames = 1;
+     if ( has_video() )
+     {
+	max_frames = max_video_frames();
+     }
+     else if ( has_audio() )
+     {
+	max_frames = max_audio_frames();
+     }
+     
+     if ( abs(diff) > max_frames )
+     {
+	dts = _dts + int64_t(max_frames) * _playback;
+     }
+  }
  
 
   _dts = dts;
@@ -707,14 +711,17 @@ void aviImage::limit_video_store(const boost::int64_t frame)
       break;
     }
 
-  //   if ( !_images.empty() )
+  if ( _images.empty() ) return;
+
+  // std::cerr << frame << "  limit " << first << "-" << last << std::endl;
+  // std::cerr << (*_images.begin())->frame() << " ... "
+  // 	    << (*(_images.end()-1))->frame() << std::endl;
+
   //     {
   //       cerr << frame << " store " << _images.front()->frame() << "-" 
   // 	   << _images.back()->frame() << " #" << _images.size() << endl;
   //     }
 
-  //   cerr << frame << " limit " << first << "-" 
-  //        << last << endl;
 
   video_cache_t::iterator end = _images.end();
   _images.erase( std::remove_if( _images.begin(), end,
@@ -1564,9 +1571,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
 	if ( playback() == kBackwards )
 	{
-	   //std::cerr << "pktframe " << pktframe << " <= " 
-	   //	     << frame << " _dts " << _dts << std::endl;
-	   // Only add packet if it comes before seek frame
 	   packets_added++;
 	   if ( pktframe <= frame+1 )
 	      _video_packets.push_back( pkt );
@@ -1579,7 +1583,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   if ( pktframe >= dts ) dts = pktframe;
 	}
 
-	if ( !got_video  && pktframe >= frame )
+	if ( !got_video && pktframe >= frame )
 	{
 	   got_video = true;
 	   if ( is_seek ) {
@@ -1798,11 +1802,18 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
       if ( !is_seek && playback() == kBackwards )
 	{
-	   DecodeStatus status = decode_image( pktframe, (AVPacket&)pkt );
-	   if ( status == kDecodeOK ) 
+	   if (pktframe > frame )
 	   {
-	      got_video = status;
-	      store_image( pktframe, pkt.dts );
+	       decode_video_packet( pktframe, frame, pkt );
+	   }
+	   else
+	   {
+	      DecodeStatus status = decode_image( pktframe, (AVPacket&)pkt );
+	      if ( status == kDecodeOK ) 
+	      {
+		 got_video = status;
+		 store_image( pktframe, pkt.dts );
+	      }
 	   }
 	}
       else
@@ -1966,6 +1977,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 		  pktframe = pts2frame( get_video_stream(), pkt.dts );
 	       else
 		  pktframe = frame;
+
 	      if ( pktframe == frame )
 		{
 		  boost::int64_t ptsframe;
@@ -1980,6 +1992,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  if ( _images.size() >= max_video_frames() )
 	  {
 	     limit_video_store(frame);
+	     return kDecodeBufferFull;
 	  }
 
 

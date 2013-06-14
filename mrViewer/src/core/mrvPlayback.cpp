@@ -521,6 +521,8 @@ void video_thread( PlaybackData* data )
       {
 	 // case CMedia::DecodeDone:
 	 //    continue;
+	 case CMedia::kDecodeBufferFull:
+	    break;
 	 case CMedia::kDecodeError:
 	    frame += step;
 	    continue;
