@@ -15,6 +15,7 @@
 #include "mrvAudioEngine.h"
 
 #if defined(WIN32) || defined(WIN64)
+#    include "audio/mrvDirectXEngine.h"
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
 #    include "audio/mrvALSAEngine.h"
@@ -29,7 +30,7 @@ AudioEngine::DeviceList AudioEngine::_devices;
 AudioEngine::AudioEngine() :
 _device_idx( 0 ),
 _channels( 0 ),
-_audio_format( kS16LSB )
+_audio_format( kFloatLSB )
 {
 }
 
@@ -122,6 +123,7 @@ AudioEngine* AudioEngine::factory()
    AudioEngine* r;
 
 #if defined(_WIN32) || defined(_WIN64)
+   //r = new mrv::DirectXEngine();
    r = new mrv::WaveEngine();
 #elif defined(LINUX) 
    r = new mrv::ALSAEngine();

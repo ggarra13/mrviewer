@@ -37,7 +37,7 @@ class ComboWindow : public MenuWindow {
   public:
     int handle(int);
 //    ComboWindow(int x, int y, int w, int h) : MenuWindow(x, y, w, h) { box(NO_BOX); }
-    ComboWindow(int x, int y, int w, int h) : MenuWindow(x, y, w, h) { ; }
+    ComboWindow(int x, int y, int w, int h) : MenuWindow(x, y, w, h) {}
 };
 
 }

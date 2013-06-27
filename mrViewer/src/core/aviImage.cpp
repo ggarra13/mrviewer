@@ -870,9 +870,11 @@ bool aviImage::find_image( const boost::int64_t frame )
 	if ( ! _images.empty() )
 	  {
 	    _hires = _images.back();
-	    IMG_WARNING( N_("find_image: ") << frame 
-			 << _(" not found, choosing ") << _hires->frame() 
-			 << _(" instead") );
+
+	    if ( _hires->frame() != frame )
+	       IMG_WARNING( N_("find_image: ") << frame 
+			    << _(" not found, choosing ") << _hires->frame() 
+			    << _(" instead") );
 	    refresh();
 	  }
 	else
