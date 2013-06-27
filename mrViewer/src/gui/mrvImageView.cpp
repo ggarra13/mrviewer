@@ -17,7 +17,7 @@
 #include <inttypes.h>  // for PRId64
 
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 #  include <float.h>
 #  define isnan(x) _isnan(x)
 #endif
@@ -29,7 +29,7 @@
 #include <sstream>
 #include <set>
 
-#ifdef WIN32
+#ifdef _WIN32
 #include <winsock2.h>
 #include <windows.h>
 #endif
@@ -3418,6 +3418,8 @@ void ImageView::foreground( mrv::media fg )
   if ( old == fg ) return;
 
 
+  fg->image()->audio_engine()->SoundFocus( uiMain );
+
   if ( old && playback() != kStopped )
     {
       old->image()->stop();
@@ -3602,8 +3604,8 @@ void ImageView::resize_main_window()
 
   fltk::Monitor monitor = fltk::Monitor::all();
   int minx = monitor.work.x();
-  int miny = monitor.work.y();
-  int maxh = monitor.work.h();
+  int miny = monitor.work.y() + 8;
+  int maxh = monitor.work.h() - 8;
   int maxw = monitor.work.w();
 
   bool fit = false;

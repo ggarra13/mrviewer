@@ -81,7 +81,7 @@ namespace {
 namespace mrv {
 
 #if defined(_WIN32) || defined(_WIN64)
-AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kS16LSB;
+AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #else
 AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #endif
@@ -807,8 +807,15 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	   return AVERROR(EINVAL);
         }
 
+	_audio_format = _audio_engine->format();
+
+	if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+	     ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+	{
+	   _audio_format = AudioEngine::kS16LSB;
+	}
+
 	AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-	
 
 	if ( ( ctx->sample_fmt != fmt  ||
 	       unsigned(ctx->channels) > _audio_channels ) && 
@@ -840,16 +847,18 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	      else
 		 _audio_channels = ctx->channels;
 
+
 	      out_ch_layout = get_valid_channel_layout(out_ch_layout,
 						       out_channels);
 	      if ( out_ch_layout == 0 ) out_ch_layout = AV_CH_LAYOUT_STEREO;
-
 	      av_get_channel_layout_string( buf, 256, out_channels, 
 					    out_ch_layout );
+
 	      AVSampleFormat  out_sample_fmt = fmt;
 	      AVSampleFormat  in_sample_fmt = ctx->sample_fmt;
 	      int in_sample_rate = ctx->sample_rate;
 	      int out_sample_rate = in_sample_rate;
+
 	      IMG_INFO( buf << ", channels " << out_channels << ", format " 
 			<< av_get_sample_fmt_name( out_sample_fmt )
 			<< ", sample rate " 
@@ -880,7 +889,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
 
 	   int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
-				  data_size, 
+				  _audio_max, 
 				  (const uint8_t **)frame.extended_data, 
 				  frame.nb_samples );
 	   if ( len2 < 0 )
@@ -1061,6 +1070,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
 
   unsigned int index = 0;
+  unsigned int idx = 0;
 
   SCOPED_LOCK( _audio_mutex );
 
@@ -1088,7 +1098,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 	}
 #endif
 
-      unsigned idx = index;
+      idx = index;
       index += store_audio( last, 
 			    (boost::uint8_t*)_audio_buf + index, 
 			    bytes_per_frame );
@@ -1096,13 +1106,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
       if ( last >= frame ) got_audio = kDecodeOK;
 
-#ifdef DEBUG
-      if ( bytes_per_frame > _audio_buf_used )
-	{
-	  std::cerr << "B  bpf: " << bytes_per_frame << std::endl
-		    << "  used: " << _audio_buf_used << std::endl;
-	}
-#endif
 
 
       assert( bytes_per_frame <= _audio_buf_used );
@@ -1130,7 +1133,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
 
 
-  if ( _audio_buf_used > 0 )
+  if (_audio_buf_used > 0 )
     {
 
        //
@@ -1138,9 +1141,9 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
 
        assert( index + _audio_buf_used < _audio_max );
-       memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
-
+       memmove( _audio_buf, _audio_buf + idx, _audio_buf_used );
        
+
        // _audio_buf_used = _audio_max - index;
        // assert( _audio_buf_used % 16 == 0 );
     }
@@ -1400,15 +1403,26 @@ bool CMedia::open_audio( const short channels,
   AVSampleFormat fmt = AudioEngine::ffmpeg_format( format );
   unsigned bps = av_get_bytes_per_sample( fmt ) * 8;
 
+  bool ok = false;
 
-  bool ok = _audio_engine->open( channels, nSamplesPerSec,
-				 format, bps );
+  for ( short fmt = format; fmt > 0; fmt -= 2 )
+  {
+     for (int ch = channels; ch > 0; ch -= 2 )
+     {
+	ok = _audio_engine->open( ch, nSamplesPerSec,
+				  (AudioEngine::AudioFormat)fmt, bps );
+	if ( ok ) break;
+     }
+     if ( ok ) break;
+  }
 
   if ( channels == 1 )
      _audio_channels = 1;
   else
      _audio_channels = _audio_engine->channels();
-  _audio_format   = _audio_engine->format();
+  _audio_format   =  _audio_engine->format();
+  
+
   return ok;
 }
 
@@ -1431,7 +1445,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
   if ( ! _audio_engine ) return false;
   
-
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
      IMG_ERROR( _("Playback of audio frame failed") );

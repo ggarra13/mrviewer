@@ -20,6 +20,8 @@ extern "C" {
 
 namespace mrv {
 
+class ViewerUI;
+
   class AudioEngine
   {
   public:
@@ -84,6 +86,8 @@ namespace mrv {
 
     // List devices available for playback on machine
     static const DeviceList& devices();
+
+       virtual void SoundFocus( mrv::ViewerUI* ui ) {};
 
     // Return default device (must be first one added)
     std::string default_device() const;

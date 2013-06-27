@@ -35,6 +35,56 @@ namespace mrv {
 
   unsigned int     WaveEngine::_instances = 0;
 
+/* Microsoft speaker definitions */
+#define WAVE_SPEAKER_FRONT_LEFT             0x1
+#define WAVE_SPEAKER_FRONT_RIGHT            0x2
+#define WAVE_SPEAKER_FRONT_CENTER           0x4
+#define WAVE_SPEAKER_LOW_FREQUENCY          0x8
+#define WAVE_SPEAKER_BACK_LEFT              0x10
+#define WAVE_SPEAKER_BACK_RIGHT             0x20
+#define WAVE_SPEAKER_FRONT_LEFT_OF_CENTER   0x40
+#define WAVE_SPEAKER_FRONT_RIGHT_OF_CENTER  0x80
+#define WAVE_SPEAKER_BACK_CENTER            0x100
+#define WAVE_SPEAKER_SIDE_LEFT              0x200
+#define WAVE_SPEAKER_SIDE_RIGHT             0x400
+#define WAVE_SPEAKER_TOP_CENTER             0x800
+#define WAVE_SPEAKER_TOP_FRONT_LEFT         0x1000
+#define WAVE_SPEAKER_TOP_FRONT_CENTER       0x2000
+#define WAVE_SPEAKER_TOP_FRONT_RIGHT        0x4000
+#define WAVE_SPEAKER_TOP_BACK_LEFT          0x8000
+#define WAVE_SPEAKER_TOP_BACK_CENTER        0x10000
+#define WAVE_SPEAKER_TOP_BACK_RIGHT         0x20000
+#define WAVE_SPEAKER_RESERVED               0x80000000
+
+/* Values available for physical and original channels */
+#define AOUT_CHAN_CENTER            0x1
+#define AOUT_CHAN_LEFT              0x2
+#define AOUT_CHAN_RIGHT             0x4
+#define AOUT_CHAN_REARCENTER        0x10
+#define AOUT_CHAN_REARLEFT          0x20
+#define AOUT_CHAN_REARRIGHT         0x40
+#define AOUT_CHAN_MIDDLELEFT        0x100
+#define AOUT_CHAN_MIDDLERIGHT       0x200
+#define AOUT_CHAN_LFE               0x1000
+
+/* Values available for original channels only */
+#define AOUT_CHAN_DOLBYSTEREO       0x10000
+#define AOUT_CHAN_DUALMONO          0x20000
+#define AOUT_CHAN_REVERSESTEREO     0x40000
+
+#define AOUT_CHAN_PHYSMASK          0xFFFF
+#define AOUT_CHAN_MAX               9
+
+static const uint32_t pi_channels_src[] =
+{ WAVE_SPEAKER_FRONT_LEFT, WAVE_SPEAKER_FRONT_RIGHT,
+  WAVE_SPEAKER_FRONT_CENTER, WAVE_SPEAKER_LOW_FREQUENCY,
+  WAVE_SPEAKER_BACK_LEFT, WAVE_SPEAKER_BACK_RIGHT, WAVE_SPEAKER_BACK_CENTER,
+  WAVE_SPEAKER_SIDE_LEFT, WAVE_SPEAKER_SIDE_RIGHT, 0 };
+static const uint32_t pi_channels_in[] =
+{ AOUT_CHAN_LEFT, AOUT_CHAN_RIGHT,
+  AOUT_CHAN_CENTER, AOUT_CHAN_LFE,
+  AOUT_CHAN_REARLEFT, AOUT_CHAN_REARRIGHT, AOUT_CHAN_REARCENTER,
+  AOUT_CHAN_MIDDLELEFT, AOUT_CHAN_MIDDLERIGHT, 0 };
 
   static void MMerror(char *function, MMRESULT code)
   {
@@ -47,7 +97,7 @@ namespace mrv {
   WaveEngine::WaveEngine() :
     AudioEngine(),
     _sample_size(0),
-    _audio_device(0),
+    _audio_device( NULL ),
     _buffer( new WAVEHDR[ kNUM_BUFFERS ] ),
     _data( NULL ),
     _samples_per_block( 48000 ),  // 1 second of 48khz audio
@@ -92,7 +142,10 @@ namespace mrv {
 		channels = "Stereo";
 		break;
 	      case 6:
-		channels = "Dolby 5:1";
+		channels = "5:1";
+		break;
+	      case 8:
+		channels = "7:1";
 		break;
 	      default:
 		char buf[128];
@@ -101,7 +154,7 @@ namespace mrv {
 		break;
 	      }
 
-	    _channels = woc.wChannels;
+	    _channels = 0;
 
 	    sprintf( name, "%d", i );
 
@@ -287,7 +340,7 @@ namespace mrv {
 
     close();
 
-    delete [] _buffer;
+    delete [] _buffer; _buffer = NULL;
 
     return true;
   }
@@ -320,31 +373,79 @@ namespace mrv {
   {
     try
       {
-	flush();
+	close();
+
+	WAVEFORMATEXTENSIBLE wavefmt;
+	memset( &wavefmt, 0, sizeof(wavefmt) );
+
+	for( unsigned i = 0; i < sizeof(pi_channels_src)/sizeof(uint32_t); i++ )
+	{
+	   if( channels & pi_channels_src[i] )
+	      wavefmt.dwChannelMask |= pi_channels_in[i];
+	}
+
+	switch( format )
+	{
+	   case kFloatLSB:
+	      wavefmt.Format.wBitsPerSample = sizeof(float) * 8;
+	      wavefmt.Format.wFormatTag = WAVE_FORMAT_IEEE_FLOAT;
+	      wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_IEEE_FLOAT;
+	      break;
+	   case kS16LSB:
+	      wavefmt.Format.wBitsPerSample = sizeof(short) * 8;
+	      wavefmt.Format.wFormatTag = WAVE_FORMAT_PCM;
+	      wavefmt.SubFormat = KSDATAFORMAT_SUBTYPE_PCM;
+	      break;
+	}
+
+	wavefmt.Samples.wValidBitsPerSample = wavefmt.Format.wBitsPerSample;
+
+	unsigned ch = channels;
+	if ( ch > _channels && _channels > 0 )
+	{
+	   ch = _channels;
+	}
+	_channels = ch;
+	wavefmt.Format.nChannels = ch;
+	wavefmt.Format.nSamplesPerSec = freq;
+	wavefmt.Format.nBlockAlign = wavefmt.Format.wBitsPerSample * ch / 8;
+	wavefmt.Format.nAvgBytesPerSec = freq * wavefmt.Format.nBlockAlign;
+
+	/* Only use the new WAVE_FORMAT_EXTENSIBLE format for multichannel audio */
+	if( ch <= 2 )
+	{
+	   wavefmt.Format.cbSize = 0;
+	}
+	else
+	{
+	   wavefmt.Format.wFormatTag = WAVE_FORMAT_EXTENSIBLE;
+	   wavefmt.Format.cbSize = sizeof(WAVEFORMATEXTENSIBLE) - sizeof(WAVEFORMATEX);
+	}
 
 
-	WAVEFORMATEX wavefmt;
-	wavefmt.wFormatTag = WAVE_FORMAT_PCM;
-	if ( channels > _channels ) wavefmt.nChannels = channels;
-	else wavefmt.nChannels = channels;
-	wavefmt.nSamplesPerSec = freq;
-	wavefmt.wBitsPerSample = format <= kU8 ? 8 : 16;
-	wavefmt.nBlockAlign = ( ( wavefmt.wBitsPerSample >> 3 ) * 
-				wavefmt.nChannels );
-	wavefmt.nAvgBytesPerSec = ( wavefmt.nSamplesPerSec * 
-				    wavefmt.nBlockAlign );
-	wavefmt.cbSize = 0;
-
-	int device = _device_idx - 1;
-	if ( device < 0 ) device = WAVE_MAPPER; // default device
+	unsigned device = _device_idx;
+	if ( device == 0 )
+	   device = WAVE_MAPPER; // default device
 
 
 	MMRESULT result = 
-	  waveOutOpen(&_audio_device, WAVE_MAPPER, &wavefmt,
-		      0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
-
-	if ( result != MMSYSERR_NOERROR )
+	waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
+		      // 0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
+		      0, 0, CALLBACK_NULL|WAVE_FORMAT_DIRECT|WAVE_ALLOWSYNC );
+	if ( result != MMSYSERR_NOERROR || _audio_device == NULL )
 	  {
+	     if( result == WAVERR_BADFORMAT )
+	     {
+		LOG_ERROR( "waveOutOpen failed WAVERR_BADFORMAT" );
+	     }
+	     else if( result == MMSYSERR_ALLOCATED )
+	     {
+		LOG_ERROR( "waveOutOpen failed WAVERR_ALLOCATED" );
+	     }
+	     else if ( result == MMSYSERR_INVALFLAG )
+	     {
+		LOG_ERROR( "waveOutOpen invalid flag" );
+	     }
 	    close();
 	    MMerror( "waveOutOpen", result );
 	    _enabled = false;
@@ -354,7 +455,7 @@ namespace mrv {
 	_audio_format = format;
 
 	// Allocate internal sound buffer
-	bytesPerBlock = wavefmt.nBlockAlign * _samples_per_block;
+	bytesPerBlock = wavefmt.Format.nBlockAlign * _samples_per_block;
 	unsigned int bytes = kNUM_BUFFERS * bytesPerBlock;
 	_data = new aligned16_uint8_t[ bytes ];
 	memset( _data, 0, bytes );

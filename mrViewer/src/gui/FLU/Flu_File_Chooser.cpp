@@ -74,8 +74,11 @@ typedef __int64 int64_t;
 
 #include "core/Sequence.h"
 #include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 
 using namespace fltk;
+
+static const char* kModule = "filereq";
 
 
 // set default language strings
@@ -305,7 +308,7 @@ static int flu_filename_match(const char *s, const char *p,
     case '\\':	// quote next character
       if (*p) p++;
     default:
-#ifdef WIN32
+#ifdef _WIN32
       if (tolower(*s) != tolower(*(p-1))) return 0;
 #else
       if ( downcase )
@@ -663,7 +666,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   location->maxh( 500 );
   // location->pop_height( 200 );
   // location->tree.all_branches_always_open( true );
-#ifdef WIN32
+#ifdef _WIN32
   // location->tree.show_root( false );
 #endif
   // location->tree.show_connectors( false );
@@ -678,7 +681,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   hiddenFiles = new fltk::CheckButton( 0, 3, 130, 25, showHiddenTxt.c_str() );
   hiddenFiles->callback( reloadCB, this );
-#ifdef WIN32
+#ifdef _WIN32
   hiddenFiles->hide();
 #endif
 
@@ -793,8 +796,8 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     filelist->type( fltk::ScrollGroup::HORIZONTAL );
     filelist->spacing( 4, 1 );
 
-    filelist->begin();
-    filelist->end();
+    // filelist->begin();
+    // filelist->end();
 
     fileDetailsGroup = new fltk::Group( 2, 2, fileGroup->w()-4, 
 					fileGroup->h()-4 );
@@ -903,6 +906,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   clear_history();
   cd( pathname );
 
+  fileListWideBtn->redraw();
   fileListWideBtn->do_callback();
 
   // if pathname does not start with "/" or "~", set the filename to it
@@ -1358,7 +1362,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	       if( ((Entry*)g->child(i))->type == ENTRY_DIR )
 		 {
 		   // if we are recycling in windows, then the recursive part happens automatically
-#ifdef WIN32
+#ifdef _WIN32
 		   if( !recycle )
 #endif
 		     {
@@ -1391,7 +1395,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 		     }
 		 }
 
-#ifdef WIN32
+#ifdef _WIN32
 	       // this moves files to the recycle bin, depending on the value of 'recycle'
 	       {
 		 size_t len = name.size();
@@ -1496,7 +1500,7 @@ int Flu_File_Chooser::FileInput::handle( int event )
 	{
 	  chooser->filenameTabCallback = true;
 	  std::string v(value());
-#ifdef WIN32
+#ifdef _WIN32
 	  // turn "C:" into "C:/"
 	  if( v.size() >= 3 )
 	    if( v.size() == 2 && v[1] == ':' )
@@ -2452,8 +2456,8 @@ void Flu_File_Chooser::listModeCB( fltk::Widget* o )
       while( filelist->children() )
 	filedetails->add( filelist->child(0) );
 
-      filedetails->relayout();
       filelist->hide();
+      filedetails->relayout();
       fileDetailsGroup->show();
       fileDetailsGroup->parent()->resizable( fileDetailsGroup );
 
@@ -3196,7 +3200,7 @@ const char* Flu_File_Chooser::value( int n )
 
 void Flu_File_Chooser::reloadCB()
 {
-#ifdef WIN32
+#ifdef _WIN32
   refreshDrives = true;
 #endif
   cd( currentDir.c_str() );
@@ -3761,7 +3765,7 @@ void Flu_File_Chooser::cd( const char *path )
   previewGroup->file = "";
   previewGroup->redraw();
 
-  filelist->scroll_to_beginning();
+  // filelist->scroll_to_beginning();
 
   bool listMode = !fileDetailsBtn->value() || streq( path, FAVORITES_UNIQUE_STRING );
 
@@ -3872,7 +3876,7 @@ void Flu_File_Chooser::cd( const char *path )
 	  backCB();
 	  return;
 	}
-#ifdef WIN32
+#ifdef _WIN32
       // if we are at the desktop already, then we cannot go back any further
       //if( currentDir == "/Desktop/" )
       //{
@@ -3906,7 +3910,7 @@ void Flu_File_Chooser::cd( const char *path )
 	  }
     }
   // check for absolute path
-#ifdef WIN32
+#ifdef _WIN32
   else if( path[1] == ':' || path[0] == '/' )
 #else
   else if( path[0] == '/' )
@@ -3928,7 +3932,7 @@ void Flu_File_Chooser::cd( const char *path )
 
   cleanupPath( currentDir );
 
-#ifdef WIN32
+#ifdef _WIN32
   bool isTopDesktop = ( currentDir == (desktopTxt+"/") );
   bool isDesktop = correctPath( currentDir );
   if( isTopDesktop )
@@ -3938,7 +3942,7 @@ void Flu_File_Chooser::cd( const char *path )
     upDirBtn->deactivate();
 #endif
 
-#ifdef WIN32
+#ifdef _WIN32
   bool root = false;
   // check for my computer
   if( currentDir == "/" )
@@ -4051,7 +4055,7 @@ void Flu_File_Chooser::cd( const char *path )
   if( currentDir[currentDir.size()-1] != '/' )
     currentDir += "/";
 
-#ifdef WIN32
+#ifdef _WIN32
   {
     std::string tmp = currentDir;
     if( isTopDesktop )
@@ -4066,11 +4070,11 @@ void Flu_File_Chooser::cd( const char *path )
 
   delayedCd = "./";
 
-#ifdef WIN32
+#ifdef _WIN32
   // set the location input value
   // check for drives
   if( currentDir.size() > 1 && currentDir[1] == ':' && 
-	  currentDir.size() == 2 )
+      currentDir.size() == 2 )
     {
       location->text( currentDir.c_str() );
     }
@@ -4085,7 +4089,7 @@ void Flu_File_Chooser::cd( const char *path )
   buildLocationCombo();
   updateLocationQJ();
 
-#ifdef WIN32
+#ifdef _WIN32
   if( root )
     return;
 #endif
@@ -4516,10 +4520,12 @@ void Flu_File_Chooser::cd( const char *path )
     }  // num > 0
 
   // sort the files: directories first, then files
-  if( listMode )
+  if( listMode ) {
     filelist->sort( numDirs );
-  else
+  }
+  else {
     filedetails->sort( numDirs );
+  }
 
 
   // see if the user pushed <Tab> in the filename input field

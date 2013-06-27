@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-05-30 11:34-0300\n"
+"POT-Creation-Date: 2013-06-26 15:06-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,28 +17,28 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/aviImage.cpp:1392
+#: core/aviImage.cpp:1438
 msgid ""
 "\n"
 "\n"
 "Could not open file"
 msgstr ""
 
-#: core/CMedia_audio.cpp:484 core/aviImage.cpp:1101
+#: core/CMedia_audio.cpp:472 core/aviImage.cpp:1146
 msgid ""
 "\n"
 "\n"
 "No audio or video stream in file"
 msgstr ""
 
-#: core/CMedia.cpp:1596
+#: core/CMedia.cpp:1602
 msgid ""
 "\n"
 "\n"
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:470 core/aviImage.cpp:1086
+#: core/CMedia_audio.cpp:458 core/aviImage.cpp:1131
 msgid ""
 "\n"
 "\n"
@@ -59,11 +59,11 @@ msgstr ""
 msgid " at port "
 msgstr ""
 
-#: core/CMedia_audio.cpp:987
+#: core/CMedia_audio.cpp:1019
 msgid " audio max: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:988
+#: core/CMedia_audio.cpp:1020
 msgid " audio used: "
 msgstr ""
 
@@ -75,27 +75,27 @@ msgstr ""
 msgid " for '"
 msgstr ""
 
-#: core/CMedia.cpp:1597
+#: core/CMedia.cpp:1603
 msgid " for stream #"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1095
+#: core/CMedia_audio.cpp:1128
 msgid " from "
 msgstr ""
 
-#: core/aviImage.cpp:832
+#: core/aviImage.cpp:877
 msgid " instead"
 msgstr ""
 
-#: core/CMedia.cpp:1857
+#: core/CMedia.cpp:1863
 msgid " is missing."
 msgstr ""
 
-#: core/CMedia_audio.cpp:1096
+#: core/CMedia_audio.cpp:1129
 msgid " need "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1424 core/aviImage.cpp:837
+#: core/CMedia_audio.cpp:1488 core/aviImage.cpp:882
 msgid " not found"
 msgstr ""
 
@@ -103,11 +103,11 @@ msgstr ""
 msgid " not found in reel"
 msgstr ""
 
-#: core/aviImage.cpp:831
+#: core/aviImage.cpp:876
 msgid " not found, choosing "
 msgstr ""
 
-#: core/CMedia_audio.cpp:986
+#: core/CMedia_audio.cpp:1018
 msgid " ret: "
 msgstr ""
 
@@ -116,11 +116,11 @@ msgstr ""
 msgid " to database '"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1095
+#: core/CMedia_audio.cpp:1128
 msgid " used: "
 msgstr ""
 
-#: core/aviImage.cpp:853
+#: core/aviImage.cpp:898
 msgid " video frame, cache "
 msgstr ""
 
@@ -195,11 +195,11 @@ msgstr ""
 msgid "'."
 msgstr ""
 
-#: core/aviImage.cpp:854
+#: core/aviImage.cpp:899
 msgid ") cache size: "
 msgstr ""
 
-#: core/CMedia.cpp:1597
+#: core/CMedia.cpp:1603
 msgid ", type "
 msgstr ""
 
@@ -231,11 +231,11 @@ msgstr ""
 msgid "70mm"
 msgstr ""
 
-#: core/CMedia_audio.cpp:707
+#: core/CMedia_audio.cpp:696
 msgid ": Could not find stream info."
 msgstr ""
 
-#: core/CMedia_audio.cpp:699
+#: core/CMedia_audio.cpp:688
 msgid ": Could not open filename."
 msgstr ""
 
@@ -369,15 +369,15 @@ msgstr ""
 msgid "Audio Streams"
 msgstr ""
 
-#: core/aviImage.cpp:2963
+#: core/aviImage.cpp:3024
 msgid "Audio codec not found"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1424
+#: core/CMedia_audio.cpp:1488
 msgid "Audio frame "
 msgstr ""
 
-#: core/CMedia_audio.cpp:985
+#: core/CMedia_audio.cpp:1017
 msgid "Audio missed for frame: "
 msgstr ""
 
@@ -385,7 +385,7 @@ msgstr ""
 msgid "Audio/Attach Audio File"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1218
+#: core/CMedia_audio.cpp:1249
 msgid "Audios #"
 msgstr ""
 
@@ -393,7 +393,7 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:4196
+#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:4198
 msgid "B"
 msgstr ""
 
@@ -427,11 +427,11 @@ msgstr ""
 msgid "Buffer was NULL - internal error"
 msgstr ""
 
-#: core/wandImage.cpp:325
+#: core/wandImage.cpp:328
 msgid "Byline"
 msgstr ""
 
-#: core/wandImage.cpp:326
+#: core/wandImage.cpp:329
 msgid "Byline Title"
 msgstr ""
 
@@ -451,11 +451,11 @@ msgstr ""
 msgid "CapsLock"
 msgstr ""
 
-#: core/wandImage.cpp:336
+#: core/wandImage.cpp:339
 msgid "Caption"
 msgstr ""
 
-#: core/wandImage.cpp:338
+#: core/wandImage.cpp:341
 msgid "Caption Writer"
 msgstr ""
 
@@ -463,7 +463,7 @@ msgstr ""
 msgid "Capture Date"
 msgstr ""
 
-#: core/wandImage.cpp:310
+#: core/wandImage.cpp:313
 msgid "Category"
 msgstr ""
 
@@ -483,7 +483,7 @@ msgstr ""
 msgid "Cineon Picture"
 msgstr ""
 
-#: core/wandImage.cpp:327
+#: core/wandImage.cpp:330
 msgid "City"
 msgstr ""
 
@@ -537,7 +537,7 @@ msgstr ""
 msgid "Copy/Color"
 msgstr ""
 
-#: core/wandImage.cpp:335
+#: core/wandImage.cpp:338
 msgid "Copyright String"
 msgstr ""
 
@@ -558,11 +558,11 @@ msgstr ""
 msgid "Could not add video track #"
 msgstr ""
 
-#: core/aviImage.cpp:2826 core/aviImage.cpp:2970
+#: core/aviImage.cpp:2887 core/aviImage.cpp:3031
 msgid "Could not alloc stream"
 msgstr ""
 
-#: core/aviImage.cpp:2662
+#: core/aviImage.cpp:2723
 msgid "Could not allocate picture"
 msgstr ""
 
@@ -573,15 +573,15 @@ msgid ""
 "operation."
 msgstr ""
 
-#: core/aviImage.cpp:3162
+#: core/aviImage.cpp:3223
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 
-#: core/aviImage.cpp:3102
+#: core/aviImage.cpp:3163
 msgid "Could not encode audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:3094
+#: core/aviImage.cpp:3155
 msgid "Could not fill audio frame. Error: "
 msgstr ""
 
@@ -617,7 +617,7 @@ msgstr ""
 msgid "Could not locate ICC profile \""
 msgstr ""
 
-#: core/aviImage.cpp:3201
+#: core/aviImage.cpp:3262
 msgid "Could not open '"
 msgstr ""
 
@@ -625,31 +625,31 @@ msgstr ""
 msgid "Could not open any font of size "
 msgstr ""
 
-#: core/CMedia_audio.cpp:145 core/aviImage.cpp:3008
+#: core/CMedia_audio.cpp:141 core/aviImage.cpp:3069
 msgid "Could not open audio codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1376
+#: core/CMedia_audio.cpp:1440
 msgid "Could not open audio driver"
 msgstr ""
 
-#: core/aviImage.cpp:3167
+#: core/aviImage.cpp:3228
 msgid "Could not open mpeg movie"
 msgstr ""
 
-#: core/aviImage.cpp:2642
+#: core/aviImage.cpp:2703
 msgid "Could not open video codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1293
+#: core/CMedia_audio.cpp:1324
 msgid "Could not read audio for frame "
 msgstr ""
 
-#: core/wandImage.cpp:330
+#: core/wandImage.cpp:333
 msgid "Country"
 msgstr ""
 
-#: core/wandImage.cpp:329
+#: core/wandImage.cpp:332
 msgid "Country Code"
 msgstr ""
 
@@ -705,11 +705,11 @@ msgstr ""
 msgid "Create/Slate"
 msgstr ""
 
-#: core/wandImage.cpp:320
+#: core/wandImage.cpp:323
 msgid "Created Date"
 msgstr ""
 
-#: core/wandImage.cpp:321
+#: core/wandImage.cpp:324
 msgid "Created Time"
 msgstr ""
 
@@ -717,87 +717,87 @@ msgstr ""
 msgid "Creation Date"
 msgstr ""
 
-#: core/wandImage.cpp:333
+#: core/wandImage.cpp:336
 msgid "Credit"
 msgstr ""
 
-#: core/wandImage.cpp:339
+#: core/wandImage.cpp:342
 msgid "Custom Field 1"
 msgstr ""
 
-#: core/wandImage.cpp:348
+#: core/wandImage.cpp:351
 msgid "Custom Field 10"
 msgstr ""
 
-#: core/wandImage.cpp:349
+#: core/wandImage.cpp:352
 msgid "Custom Field 11"
 msgstr ""
 
-#: core/wandImage.cpp:350
+#: core/wandImage.cpp:353
 msgid "Custom Field 12"
 msgstr ""
 
-#: core/wandImage.cpp:351
+#: core/wandImage.cpp:354
 msgid "Custom Field 13"
 msgstr ""
 
-#: core/wandImage.cpp:352
+#: core/wandImage.cpp:355
 msgid "Custom Field 14"
 msgstr ""
 
-#: core/wandImage.cpp:353
+#: core/wandImage.cpp:356
 msgid "Custom Field 15"
 msgstr ""
 
-#: core/wandImage.cpp:354
+#: core/wandImage.cpp:357
 msgid "Custom Field 16"
 msgstr ""
 
-#: core/wandImage.cpp:355
+#: core/wandImage.cpp:358
 msgid "Custom Field 17"
 msgstr ""
 
-#: core/wandImage.cpp:356
+#: core/wandImage.cpp:359
 msgid "Custom Field 18"
 msgstr ""
 
-#: core/wandImage.cpp:357
+#: core/wandImage.cpp:360
 msgid "Custom Field 19"
 msgstr ""
 
-#: core/wandImage.cpp:340
+#: core/wandImage.cpp:343
 msgid "Custom Field 2"
 msgstr ""
 
-#: core/wandImage.cpp:358
+#: core/wandImage.cpp:361
 msgid "Custom Field 20"
 msgstr ""
 
-#: core/wandImage.cpp:341
+#: core/wandImage.cpp:344
 msgid "Custom Field 3"
 msgstr ""
 
-#: core/wandImage.cpp:342
+#: core/wandImage.cpp:345
 msgid "Custom Field 4"
 msgstr ""
 
-#: core/wandImage.cpp:343
+#: core/wandImage.cpp:346
 msgid "Custom Field 5"
 msgstr ""
 
-#: core/wandImage.cpp:344
+#: core/wandImage.cpp:347
 msgid "Custom Field 6"
 msgstr ""
 
-#: core/wandImage.cpp:345
+#: core/wandImage.cpp:348
 msgid "Custom Field 7"
 msgstr ""
 
-#: core/wandImage.cpp:346
+#: core/wandImage.cpp:349
 msgid "Custom Field 8"
 msgstr ""
 
-#: core/wandImage.cpp:347
+#: core/wandImage.cpp:350
 msgid "Custom Field 9"
 msgstr ""
 
@@ -857,7 +857,7 @@ msgstr ""
 msgid "Detail mode"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1094
+#: core/CMedia_audio.cpp:1127
 msgid "Did not fill audio frame "
 msgstr ""
 
@@ -911,11 +911,11 @@ msgstr ""
 msgid "Early 35mm"
 msgstr ""
 
-#: core/wandImage.cpp:308
+#: core/wandImage.cpp:311
 msgid "Edit Status"
 msgstr ""
 
-#: core/aviImage.cpp:2983
+#: core/aviImage.cpp:3044
 msgid "Encoder does not support "
 msgstr ""
 
@@ -927,19 +927,19 @@ msgstr ""
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
-#: core/aviImage.cpp:2772
+#: core/aviImage.cpp:2833
 msgid "Error while encoding video frame"
 msgstr ""
 
-#: core/aviImage.cpp:3119
+#: core/aviImage.cpp:3180
 msgid "Error while writing audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:2746
+#: core/aviImage.cpp:2807
 msgid "Error while writing raw frame"
 msgstr ""
 
-#: core/aviImage.cpp:2797
+#: core/aviImage.cpp:2858
 msgid "Error while writing video frame"
 msgstr ""
 
@@ -963,7 +963,7 @@ msgstr ""
 msgid "Exposure Time"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4194
+#: gui/mrvImageView.cpp:4196
 msgid "F"
 msgstr ""
 
@@ -1025,7 +1025,7 @@ msgstr ""
 msgid "Fit Screen"
 msgstr ""
 
-#: core/wandImage.cpp:312
+#: core/wandImage.cpp:315
 msgid "Fixture Identifier"
 msgstr ""
 
@@ -1174,7 +1174,7 @@ msgstr ""
 msgid "Hardware shaders not available."
 msgstr ""
 
-#: core/wandImage.cpp:332
+#: core/wandImage.cpp:335
 msgid "Headline"
 msgstr ""
 
@@ -1218,7 +1218,7 @@ msgstr ""
 msgid "Image Icc Profile"
 msgstr ""
 
-#: core/wandImage.cpp:307
+#: core/wandImage.cpp:310
 msgid "Image Name"
 msgstr ""
 
@@ -1303,7 +1303,7 @@ msgstr ""
 msgid "Invalid source profile/image pixel format"
 msgstr ""
 
-#: core/aviImage.cpp:891
+#: core/aviImage.cpp:936
 msgid "Invalid video stream "
 msgstr ""
 
@@ -1359,7 +1359,7 @@ msgstr ""
 msgid "KeypadEnter"
 msgstr ""
 
-#: core/wandImage.cpp:313
+#: core/wandImage.cpp:316
 msgid "Keyword"
 msgstr ""
 
@@ -1380,9 +1380,9 @@ msgstr ""
 msgid "Latitude"
 msgstr ""
 
-#: core/wandImage.cpp:137
+#: core/wandImage.cpp:140
 #, c-format
-msgid "Layer %d"
+msgid "Layer %<PRId64>"
 msgstr ""
 
 #: gui/mrvHotkey.cpp:160
@@ -1426,7 +1426,7 @@ msgstr ""
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr ""
 
-#: core/wandImage.cpp:337
+#: core/wandImage.cpp:340
 msgid "Local Caption"
 msgstr ""
 
@@ -1577,7 +1577,7 @@ msgstr ""
 msgid "No ICC profile"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1217
+#: core/CMedia_audio.cpp:1248
 msgid "No memory for audio frame"
 msgstr ""
 
@@ -1645,7 +1645,7 @@ msgstr ""
 msgid "OGG music"
 msgstr ""
 
-#: core/wandImage.cpp:324
+#: core/wandImage.cpp:327
 msgid "Object Cycle"
 msgstr ""
 
@@ -1661,11 +1661,11 @@ msgstr ""
 msgid "Options:"
 msgstr ""
 
-#: core/wandImage.cpp:331
+#: core/wandImage.cpp:334
 msgid "Original Transmission Reference"
 msgstr ""
 
-#: core/wandImage.cpp:322
+#: core/wandImage.cpp:325
 msgid "Originating Program"
 msgstr ""
 
@@ -1753,7 +1753,7 @@ msgstr ""
 msgid "Play Forwards X2  Speed"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1387
+#: core/CMedia_audio.cpp:1450
 msgid "Playback of audio frame failed"
 msgstr ""
 
@@ -1769,7 +1769,7 @@ msgstr ""
 msgid "Print"
 msgstr ""
 
-#: core/wandImage.cpp:309
+#: core/wandImage.cpp:312
 msgid "Priority"
 msgstr ""
 
@@ -1777,7 +1777,7 @@ msgstr ""
 msgid "Problem with tile"
 msgstr ""
 
-#: core/wandImage.cpp:323
+#: core/wandImage.cpp:326
 msgid "Program Version"
 msgstr ""
 
@@ -1785,7 +1785,7 @@ msgstr ""
 msgid "Program did not link. Error: "
 msgstr ""
 
-#: core/wandImage.cpp:328
+#: core/wandImage.cpp:331
 msgid "Province State"
 msgstr ""
 
@@ -1861,15 +1861,15 @@ msgstr ""
 msgid "Red"
 msgstr ""
 
-#: core/wandImage.cpp:318
+#: core/wandImage.cpp:321
 msgid "Reference Date"
 msgstr ""
 
-#: core/wandImage.cpp:319
+#: core/wandImage.cpp:322
 msgid "Reference Number"
 msgstr ""
 
-#: core/wandImage.cpp:317
+#: core/wandImage.cpp:320
 msgid "Reference Service"
 msgstr ""
 
@@ -1881,11 +1881,11 @@ msgstr ""
 msgid "Relative"
 msgstr ""
 
-#: core/wandImage.cpp:314
+#: core/wandImage.cpp:317
 msgid "Release Date"
 msgstr ""
 
-#: core/wandImage.cpp:315
+#: core/wandImage.cpp:318
 msgid "Release Time"
 msgstr ""
 
@@ -2026,11 +2026,11 @@ msgstr ""
 msgid "Space (' ')"
 msgstr ""
 
-#: core/wandImage.cpp:316
+#: core/wandImage.cpp:319
 msgid "Special Instructions"
 msgstr ""
 
-#: core/wandImage.cpp:334
+#: core/wandImage.cpp:337
 msgid "Src"
 msgstr ""
 
@@ -2073,11 +2073,11 @@ msgstr ""
 msgid "Subtract"
 msgstr ""
 
-#: core/wandImage.cpp:311
+#: core/wandImage.cpp:314
 msgid "Supplemental Category"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4195
+#: gui/mrvImageView.cpp:4197
 msgid "T"
 msgstr ""
 
@@ -2142,7 +2142,7 @@ msgstr ""
 msgid "Too many symlinks"
 msgstr ""
 
-#: core/CMedia_audio.cpp:952
+#: core/CMedia_audio.cpp:984
 msgid "Too much audio used:"
 msgstr ""
 
@@ -2180,7 +2180,7 @@ msgstr ""
 msgid "Unknown bit depth"
 msgstr ""
 
-#: core/aviImage.cpp:984
+#: core/aviImage.cpp:1029
 msgid "Unknown destination video frame format: "
 msgstr ""
 
@@ -2249,11 +2249,11 @@ msgstr ""
 msgid "Video Streams"
 msgstr ""
 
-#: core/aviImage.cpp:851
+#: core/aviImage.cpp:896
 msgid "Video Sync master frame "
 msgstr ""
 
-#: core/aviImage.cpp:2636 core/aviImage.cpp:2820
+#: core/aviImage.cpp:2697 core/aviImage.cpp:2881
 msgid "Video codec not found"
 msgstr ""
 
@@ -2347,15 +2347,15 @@ msgstr ""
 msgid "Z Depth"
 msgstr ""
 
-#: core/CMedia.cpp:1435
+#: core/CMedia.cpp:1441
 msgid "audio"
 msgstr ""
 
-#: core/CMedia.cpp:1438
+#: core/CMedia.cpp:1444
 msgid "data"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1013
+#: core/CMedia_audio.cpp:1042
 msgid "decode_audio - missed decoding some samples"
 msgstr ""
 
@@ -2439,7 +2439,7 @@ msgstr ""
 msgid "send() failed"
 msgstr ""
 
-#: core/CMedia.cpp:1441
+#: core/CMedia.cpp:1447
 msgid "subtitle"
 msgstr ""
 
@@ -2451,7 +2451,7 @@ msgstr ""
 msgid "tv title"
 msgstr ""
 
-#: core/CMedia.cpp:1444 core/wandImage.cpp:359
+#: core/CMedia.cpp:1450 core/wandImage.cpp:362
 msgid "unknown"
 msgstr ""
 
@@ -2467,6 +2467,6 @@ msgstr ""
 msgid "unsigned short (16-bits per channel)"
 msgstr ""
 
-#: core/CMedia.cpp:1432
+#: core/CMedia.cpp:1438
 msgid "video"
 msgstr ""

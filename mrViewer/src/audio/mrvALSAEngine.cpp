@@ -354,7 +354,8 @@ namespace mrv {
 
 	/* Set the audio rate */
 	unsigned int exact_rate = freq;
-	status = snd_pcm_hw_params_set_rate_near(_pcm_handle, hwparams, &exact_rate, NULL);
+	status = snd_pcm_hw_params_set_rate_near(_pcm_handle, hwparams, 
+						 &exact_rate, NULL);
 	if ( status < 0 ) {
 	  sprintf( buf, "Couldn't set audio frequency: %s", snd_strerror(status));
 	  THROW(buf);
@@ -370,7 +371,8 @@ namespace mrv {
 
 	/* set the time per hardware sample transfer */
 	status = snd_pcm_hw_params_set_period_time_near(_pcm_handle,
-							hwparams, &period_time, 0);
+							hwparams, &period_time,
+							0);
 	if ( status < 0 )
 	  {
 	    THROW("hw_params_set_period_time_near");
@@ -388,7 +390,8 @@ namespace mrv {
 	/* "set" the hardware with the desired parameters */
 	status = snd_pcm_hw_params(_pcm_handle, hwparams);
 	if ( status < 0 ) {
-	  sprintf(buf, "Couldn't set hardware audio parameters: %s", snd_strerror(status));
+	  sprintf(buf, "Couldn't set hardware audio parameters: %s", 
+		  snd_strerror(status));
 	  THROW(buf);
 	}
 
@@ -414,18 +417,22 @@ namespace mrv {
 	snd_pcm_sw_params_alloca(&swparams);
 	status = snd_pcm_sw_params_current(_pcm_handle, swparams);
 	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't get software config: %s", snd_strerror(status));
+	  sprintf( buf, "Couldn't get software config: %s",
+		   snd_strerror(status));
 	  THROW(buf);
 	}
 
 	/* allow transfers to start when there are four periods */
-	status = snd_pcm_sw_params_set_start_threshold(_pcm_handle, swparams, 0);
+	status = snd_pcm_sw_params_set_start_threshold(_pcm_handle, swparams, 
+						       0);
 	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set start threshold: %s", snd_strerror(status));
+	  sprintf( buf, "Couldn't set start threshold: %s", 
+		   snd_strerror(status));
 	  THROW(buf);
 	}
 
-	status = snd_pcm_sw_params_set_avail_min(_pcm_handle, swparams, period_size);
+	status = snd_pcm_sw_params_set_avail_min(_pcm_handle, swparams, 
+						 period_size);
 	if ( status < 0 ) {
 	  sprintf( buf, "Couldn't set avail min: %s", snd_strerror(status));
 	  THROW(buf);
@@ -436,7 +443,8 @@ namespace mrv {
 	/* commit the params structure to ALSA */
 	status = snd_pcm_sw_params(_pcm_handle, swparams);
 	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set software audio parameters: %s", snd_strerror(status));
+	  sprintf( buf, "Couldn't set software audio parameters: %s", 
+		   snd_strerror(status));
 	  THROW(buf);
 	}
 

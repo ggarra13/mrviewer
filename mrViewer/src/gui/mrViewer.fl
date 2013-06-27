@@ -561,7 +561,8 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
@@ -1584,7 +1585,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Audio
+            label Audio open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} AudioDriver {
@@ -1592,8 +1593,8 @@ uiICC_float_profile->do_callback();}
               xywh {63 22 290 25}
             } {}
             {fltk::Browser} uiPrefsAudioDevice {
-              label Devices
-              xywh {25 70 328 107}
+              label Devices selected
+              xywh {25 70 328 107} type Multi
               extra_code {//
 // Initialize an audio engine to get devices
 //
@@ -1607,6 +1608,7 @@ for ( ; i != e; ++i )
    {
       o->add( (*i).description.c_str() );
    }}
+              class {fltk::Browser}
             } {}
           }
           {fltk::Group} {} {
@@ -2088,7 +2090,7 @@ uiDraw->value(0);
 uiErase->value(0);}
             tooltip {Area Select Tool}
             xywh {2 0 43 35}
-            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm}
+            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm}
             extra_code {o->value(1);
 o->image( select_pic );}
           }
@@ -2100,7 +2102,7 @@ uiSelection->value(0);
 uiErase->value(0);}
             tooltip {Freehand Drawing Tool}
             xywh {50 0 40 35}
-            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/draw.xpm}
+            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/draw.xpm}
             extra_code {o->image( draw );}
           }
           {fltk::Button} uiErase {
@@ -2111,13 +2113,13 @@ uiSelection->value(0);
 uiDraw->value(0);}
             tooltip {Eraser Tool}
             xywh {50 41 40 35}
-            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
+            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
             extra_code {o->image( erase );}
           }
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
             tooltip {Selects the size of brush.}
-            xywh {5 91 85 30} align 1 minimum 1 maximum 10 step 1 linesize 6 value 5
+            xywh {5 91 85 30} align 1 minimum 1 maximum 10 step 1 value 5
           }
           {fltk::Button} uiUndoDraw {
             user_data m user_data_type {mrv::ViewerUI*}
@@ -2127,7 +2129,7 @@ if ( !v->uiView->has_undo() )
  o->deactivate();}
             tooltip {Undo Last Shape Drawn}
             xywh {5 166 34 35}
-            image {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
+            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
             extra_code {o->image( undo );
 if ( !m->uiView->has_undo() )
  o->deactivate();
@@ -2247,8 +2249,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3025,7 +3026,7 @@ o->value(24);}
                       } {}
                       {fltk::Slider} uiVolume {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->volume((float) o->value() );} selected
+                        callback {v->uiView->volume((float) o->value() );}
                         tooltip {Audio Volume}
                         xywh {18 2 55 15} type TICK_ABOVE align 4 step 0.01 value 1
                       }
