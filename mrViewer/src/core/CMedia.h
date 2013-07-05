@@ -781,7 +781,7 @@ namespace mrv {
     void wait_for_threads();
 
     static CMedia* get(CMedia* (*create)(),
-			  const char* name, const boost::uint8_t* datas = 0) {
+		       const char* name, const boost::uint8_t* datas = 0) {
       CMedia* img = (CMedia*)create();
       return (CMedia*) img;
     }
