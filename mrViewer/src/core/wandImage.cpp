@@ -158,8 +158,8 @@ namespace mrv {
     
 
      bool has_alpha = false;
-     MagickBooleanType matte = MagickGetImageMatte( wand );
-     if ( matte == MagickTrue )
+     MagickBooleanType alpha = MagickGetImageAlphaChannel( wand );
+     if ( alpha == MagickTrue )
      {
 	has_alpha = true;
 	alpha_layers();

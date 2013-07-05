@@ -36,7 +36,6 @@ namespace mrv {
        static bool test_filename( const char* filename );
     static bool test(const boost::uint8_t *data, unsigned len);
     static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
-       std::cerr << name << std::endl;
       return CMedia::get(create, name, datas);
     }
 
