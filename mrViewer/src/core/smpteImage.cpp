@@ -26,12 +26,12 @@ namespace mrv {
     CMedia(),
     type_(c)
   {
-    _fileroot = "internal";
-    _internal = true;
-    _gamma = 1.0f;
-    default_layers();
-    image_size( dw, dh );
-    allocate_pixels(1);
+     _fileroot = strdup("internal");
+     _internal = true;
+     _gamma = 1.0f;
+     default_layers();
+     image_size( dw, dh );
+     allocate_pixels(1);
   }
 
 
