@@ -51,7 +51,7 @@ typedef std::vector< std::string > FluStringVector;
 extern std::string retname;
 
 FLU_EXPORT const char* flu_file_chooser( const char *message, const char *pattern, const char *filename );
-FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist );
+FLU_EXPORT int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact );
 FLU_EXPORT const char* flu_save_chooser( const char *message, const char *pattern, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename );
 FLU_EXPORT const char* flu_dir_chooser( const char *message, const char *filename, bool showFiles );
@@ -165,7 +165,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
   //! Constructor opening a file chooser with title \b title visiting directory \b path with files filtered according to \b pattern. \b type is a logical OR of Flu_File_Chooser::SINGLE, Flu_File_Chooser::MULTI, and Flu_File_Chooser::DIRECTORY 
   Flu_File_Chooser( const char *path, const char *pattern, int type, 
-		    const char *title );
+		    const char *title, const bool compact );
 
   //! Destructor
   ~Flu_File_Chooser();
@@ -195,6 +195,10 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   //! deprecated - do not use - right click to change filenames
   inline bool allow_file_editing() const
     { return fileEditing; }
+
+  inline void compact_files( const bool compact ) { _compact = compact; }
+
+  inline bool compact_files() const { return _compact; }
 
   //! Set whether file sorting is case insensitive. Default value is case-insensitive for windows, case-sensitive for everything else
   inline void case_insensitive_sort( bool b )
@@ -288,6 +292,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   const char *value( int n );
 
   FileInput filename;
+
+  bool _compact;
 
   fltk::ReturnButton ok;
   fltk::Button cancel;

@@ -307,6 +307,7 @@ void audio_thread( PlaybackData* data )
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 
+   mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*   timeline = uiMain->uiTimeline;
    assert( timeline != NULL );
 
@@ -333,8 +334,6 @@ void audio_thread( PlaybackData* data )
 	 status = CMedia::kDecodeLoopStart;
       switch( status )
       {
-	 case CMedia::kDecodeDone:
- 	    break;
 	 case CMedia::kDecodeError:
 	    frame += step;
 	    img->audio_frame( frame );
@@ -343,9 +342,16 @@ void audio_thread( PlaybackData* data )
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
 	    if ( img->has_picture() )
-	       frame = img->frame();
+	    {
+	       boost::int64_t f = img->frame();
+	       if ( f <= frame ) {
+		  frame += step;
+	       }
+	       else frame = f;
+	    }
 	    else
 	       frame += step;
+	    img->audio_frame( frame );
 	    continue;
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
@@ -385,6 +391,7 @@ void audio_thread( PlaybackData* data )
 
       img->find_audio(frame);
 
+      img->audio_frame( frame );
       frame += step;
    }
 
@@ -712,7 +719,6 @@ void decode_thread( PlaybackData* data )
 	 frame = img->dts();
       }
       
-
 
    }
 

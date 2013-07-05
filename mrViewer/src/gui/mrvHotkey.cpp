@@ -18,6 +18,7 @@
 namespace mrv {
 // ctrl, meta, alt, shift, key
 Hotkey kOpenImage( true, false, false, false, 'o' );
+Hotkey kOpenSingleImage( true, false, true, false, 'o' );
 Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
@@ -91,7 +92,9 @@ Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 
 HotkeyEntry hotkeys[] = {
-HotkeyEntry( _("Open Image"), kOpenImage),
+HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
+HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
+HotkeyEntry( _("Save Reel"), kSaveReel),
 HotkeyEntry( _("Save Image"), kSaveImage),
 HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
 HotkeyEntry( _("Save Sequence"), kSaveSequence),

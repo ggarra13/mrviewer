@@ -445,7 +445,9 @@ void CMedia::populate_audio()
 	    if ( lang && lang->value )
 	       s.language = lang->value;
 	    
-	    s.format = av_get_sample_fmt_name( ctx->sample_fmt );
+	    const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
+
+	    if ( fmt ) s.format = fmt; 
 
 	    _audio_info.push_back( s );
 	    if ( _audio_index < 0 )

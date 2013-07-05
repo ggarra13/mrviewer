@@ -35,7 +35,8 @@ namespace mrv
    * 
    * @return opened filename(s)
    */
-  stringArray open_image_file( const char* startfile = NULL );
+stringArray open_image_file( const char* startfile = NULL,
+			     const bool compact_files = true );
 
   /** 
    * Opens a file requester to load a color profile
