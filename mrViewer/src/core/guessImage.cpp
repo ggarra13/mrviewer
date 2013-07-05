@@ -57,7 +57,7 @@ namespace mrv {
     {
       { stubImage::test,  NULL,            stubImage::get },
       { exrImage::test,   NULL,            exrImage::get },
-      { aviImage::test,   NULL,            aviImage::get },
+      { aviImage::test,   aviImage::test_filename,  aviImage::get },
       { iffImage::test,   NULL,            iffImage::get },
       { mapImage::test,   NULL,            mapImage::get },
       { hdrImage::test,   NULL,            hdrImage::get },
@@ -80,6 +80,9 @@ namespace mrv {
 	  {
 	    if ( type->test( datas, size ) ) 
 	      return type->get( name, datas );
+	    else
+	       if ( type->test_filename && type->test_filename( name ) )
+		  return type->get( name, datas );
 	  }
 	else
 	  {

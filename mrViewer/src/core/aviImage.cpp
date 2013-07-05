@@ -67,7 +67,7 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-// #define DEBUG_DECODE
+//#define DEBUG_DECODE
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
@@ -135,6 +135,12 @@ aviImage::~aviImage()
 }
 
 
+bool aviImage::test_filename( const char* buf )
+{
+   if ( strncmp( buf, "/dev/sr", 7 ) == 0 )
+      return true;
+   return false;
+}
 
 
 /*! Test a block of data read from the start of the file to see if it
@@ -155,6 +161,11 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       // MPEG movie
       return true;
     }
+  else if ( magic == 0x1a45dfa3 )
+  {
+     // Matroska
+     return true;
+  }
   else if ( magic == 0x3026B275 )
     {
       // WMV movie
@@ -212,6 +223,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	   strncmp( (char*)data+4, "mdat", 4 ) != 0 &&
 	   strncmp( (char*)data+4, "wide", 4 ) != 0 )
 	return false;
+
 
       return true;
     }
@@ -1050,6 +1062,7 @@ void aviImage::populate()
   if ( _context == NULL ) return;
 
 
+  
   // Iterate through all the streams available
   for( unsigned i = 0; i < _context->nb_streams; ++i ) 
     {
@@ -1060,6 +1073,7 @@ void aviImage::populate()
       const AVCodecContext* ctx = stream->codec;
       if ( ctx == NULL ) continue;
 
+      
       // Determine the type and obtain the first index of each type
       switch( ctx->codec_type ) 
 	{
@@ -1076,6 +1090,7 @@ void aviImage::populate()
 	      }
 	   case AVMEDIA_TYPE_VIDEO:
 	      {
+		 
 		 video_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
 		 s.has_b_frames = ( ctx->has_b_frames != 0 );
@@ -1094,17 +1109,29 @@ void aviImage::populate()
 	      }
 	   case AVMEDIA_TYPE_AUDIO:
 	      {
+		 
 		 audio_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
+		 
 		 s.channels   = ctx->channels;
 		 s.frequency  = ctx->sample_rate;
 		 s.bitrate    = calculate_bitrate( ctx );
-		 AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
-						       "language", NULL, 0);
-		 if ( lang && lang->value )
-		    s.language = lang->value;
 
-		 s.format = av_get_sample_fmt_name( ctx->sample_fmt );
+		 
+		 if ( stream->metadata )
+		 {
+		    AVDictionaryEntry* lang = av_dict_get(stream->metadata, 
+							  "language", NULL, 0);
+		    if ( lang && lang->value )
+		       s.language = lang->value;
+		 }
+		 else
+		 {
+		    s.language = "en";
+		 }
+
+		 const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
+		 if ( fmt ) s.format = fmt;
 
 		 _audio_info.push_back( s );
 		 if ( _audio_index < 0 && s.has_codec )
@@ -1113,6 +1140,7 @@ void aviImage::populate()
 	      }
 	   case AVMEDIA_TYPE_SUBTITLE:
 	      {
+		 
 		 subtitle_info_t s;
 		 populate_stream_info( s, msg, ctx, i );
 		 s.bitrate    = calculate_bitrate( ctx );
@@ -1172,6 +1200,7 @@ void aviImage::populate()
 
   _fps = _play_fps = calculate_fps( stream );
 
+  
 
 #ifdef DEBUG_STREAM_INDICES
   debug_stream_index( stream );
@@ -1248,6 +1277,7 @@ void aviImage::populate()
 
   _frame_offset = 0;
 
+  
   boost::int64_t dts = _frameStart;
  
   unsigned audio_bytes = 0;
@@ -1261,6 +1291,7 @@ void aviImage::populate()
       // Clear the packet
       av_init_packet( &pkt );
 
+      
       bool got_audio = ! has_audio();
       bool got_video = ! has_video();
       while( !got_video || !got_audio )
@@ -1280,6 +1311,7 @@ void aviImage::populate()
 	  boost::int64_t pktframe;
 	  if ( has_video() && pkt.stream_index == video_stream_index() )
 	    {
+	       
 	       DecodeStatus status = decode_image( _frameStart, pkt ); 
 	      if ( status == kDecodeOK )
 		{
@@ -1294,6 +1326,7 @@ void aviImage::populate()
 	  else
 	     if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	     {
+		
 		pktframe = get_frame( get_audio_stream(), pkt );
 		if ( playback() == kBackwards )
 		{
@@ -1312,6 +1345,7 @@ void aviImage::populate()
 	
 		if ( !got_audio )
 		{
+		   
 		   if ( pktframe > _frameStart ) got_audio = true;
 		   else if ( pktframe == _frameStart )
 		   {
@@ -1331,6 +1365,7 @@ void aviImage::populate()
 	  av_free_packet( &pkt );
 	}
 
+      
       find_image( _frameStart );
     }
   
@@ -1342,6 +1377,7 @@ void aviImage::populate()
   if ( _frame_offset > 3 ) _frame_offset = 0;
 
 
+  
   //
   // Format
   //
@@ -1357,14 +1393,17 @@ void aviImage::populate()
   AVDictionary* m = _context->metadata;
   if ( has_audio() )
   {
+     
      AVStream* stream = get_audio_stream();
      if ( stream->metadata ) m = stream->metadata;
   }
   else if ( has_video() )
   {
+     
      AVStream* stream = get_video_stream();
      if ( stream->metadata ) m = stream->metadata;
   }
+  
   
   
   dump_metadata( _context->metadata );
@@ -1372,14 +1411,18 @@ void aviImage::populate()
   
   for (unsigned i = 0; i < _context->nb_chapters; ++i) 
   {
+     
      AVChapter *ch = _context->chapters[i];
+     
      dump_metadata(ch->metadata);
   }
        
   if ( _context->nb_programs )
   {
+     
      for (unsigned i = 0; i < _context->nb_programs; ++i) 
      {
+	
 	AVDictionaryEntry* tag = 
 	     av_dict_get(_context->programs[i]->metadata,
 			 "name", NULL, 0);
@@ -1390,7 +1433,8 @@ void aviImage::populate()
 	dump_metadata( _context->programs[i]->metadata );
      }
   }
-  
+ 
+   
 
 }
 
@@ -1487,6 +1531,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
   int eof = false;
   unsigned counter = 0;
   unsigned packets_added = 0;
+  unsigned audio_packets = 0;
 
   // Loop until an error or we have what we need
   while( !got_video || !got_audio )
@@ -1613,7 +1658,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( has_audio() && pkt.stream_index == audio_stream_index() )
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
+	   audio_packets++;
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
@@ -1717,7 +1762,11 @@ bool aviImage::fetch(const boost::int64_t frame)
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;
   cerr << "FETCH START: " << frame << " gotV:" << got_video << " gotA:" << got_audio << endl;
+#endif
+#ifdef DEBUG_PACKETS
   debug_audio_packets(frame, "Fetch");
+#endif
+#ifdef DEBUG_STORES
   debug_audio_stores(frame, "Fetch");
 #endif
 
@@ -2281,12 +2330,12 @@ void aviImage::subtitle_stream( int idx )
 void aviImage::store_subtitle( const boost::int64_t& frame,
 			       const boost::int64_t& repeat )
 {
-  if ( _sub.format != 0 )
-    {
-      IMG_ERROR("Subtitle format " << _sub.format << " not yet handled");
-      subtitle_stream(-1);
-      return;
-    }
+  // if ( _sub.format != 0 )
+  //   {
+  //     IMG_ERROR("Subtitle format " << _sub.format << " not yet handled");
+  //     subtitle_stream(-1);
+  //     return;
+  //   }
 
   unsigned w = width();
   unsigned h = height();
@@ -2450,6 +2499,7 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
 	   if ( status == kDecodeOK || status == kDecodeMissingFrame )
 	   {
 	      store_subtitle( ptsframe, repeat );
+
 	      if ( status == kDecodeOK ) got_subtitle = status;
 	   }
 	}
@@ -2511,6 +2561,7 @@ int64_t aviImage::wait_subtitle()
 
 CMedia::DecodeStatus aviImage::decode_subtitle( boost::int64_t& frame )
 {
+   if ( _subtitle_index < 0 ) return kDecodeOK;
 
   mrv::PacketQueue::Mutex& vpm = _subtitle_packets.mutex();
   SCOPED_LOCK( vpm );

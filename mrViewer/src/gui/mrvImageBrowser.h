@@ -42,6 +42,7 @@ namespace mrv
     void clone_all_current();
     void clone_current();
     void open();
+    void open_single();
     void save();
     void save_sequence();
     void save_reel();

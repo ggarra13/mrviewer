@@ -1641,9 +1641,16 @@ void ImageBrowser::load( const stringArray& files,
    */
   void ImageBrowser::open()
   {
-    stringArray files = mrv::open_image_file();
+     stringArray files = mrv::open_image_file(NULL,true);
     if (files.empty()) return;
     load( files );
+  }
+
+  void ImageBrowser::open_single()
+  {
+     stringArray files = mrv::open_image_file(NULL,false);
+     if (files.empty()) return;
+     load( files );
   }
 
   /** 

@@ -94,9 +94,9 @@ namespace mrv
   stringArray open_reel( const char* startfile )
   {
     stringArray filelist;
-    flu_multi_file_chooser( "Load Reel(s)", 
+    flu_multi_file_chooser( _("Load Reel(s)"), 
 			    kREEL_PATTERN.c_str(), startfile,
-			    filelist );
+			    filelist, false );
     return filelist;
   }
 
@@ -108,12 +108,16 @@ namespace mrv
    * 
    * @return Each file to be opened
    */
-  stringArray open_image_file( const char* startfile )
+stringArray open_image_file( const char* startfile, const bool compact_images )
   {
     stringArray filelist;
-    flu_multi_file_chooser( "Load Image(s)", 
+
+    std::string title = _("Load Image");
+    if ( compact_images ) title = _("Load Movie or Sequence");
+
+    flu_multi_file_chooser( title.c_str(), 
 			    kIMAGE_PATTERN.c_str(), startfile,
-			    filelist );
+			    filelist, compact_images );
 
     return filelist;
   }

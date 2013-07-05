@@ -427,11 +427,13 @@ Flu_File_Chooser::find_type( const char *extension )
 
 Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				    const char *pat, int type,
-				    const char *title )
+				    const char *title,
+				    const bool compact )
   : fltk::DoubleBufferWindow( 600, 480, title ),
     filename( 70, 0, w()-70-85-10, 25, "" ),
     ok( w()-90, 0, 85, 25 ),
-    cancel( w()-90, 0, 85, 25 )
+    cancel( w()-90, 0, 85, 25 ),
+    _compact( compact )
 {
   int normal_size = 12;
 
@@ -620,7 +622,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   documentsBtn->highlight_color( hi );
   documentsBtn->callback( _documentsCB, this );
   {
-#ifdef WIN32
+#ifdef _WIN32
     fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 222, 100, 20,
 						    myDocumentsTxt.c_str() );
     documentsBtn->image( &bigdocuments );
@@ -1608,52 +1610,57 @@ void Flu_File_Chooser::PreviewGroup::draw()
 
   std::string root;
   boost::int64_t frameStart=1, frameEnd=50;
-  bool ok = mrv::get_sequence_limits( frameStart,
+
+  if ( chooser->compact_files() )
+  {
+     bool ok = mrv::get_sequence_limits( frameStart,
 				      frameEnd, 
 				      file );
-  if (ok)
-  {
-     std::string root;
-     ok = mrv::fileroot( root, file );
-     char buf[1024];
-     sprintf( buf, root.c_str(), frameStart );
-     file = buf;
-  }
-  else 
-  {
-#undef stat
-     int ok = fltk::fltk_stat( file.c_str(), &statbuf );
-     if( ok )
+     if (ok)
      {
-	switch( errno )
+	std::string root;
+	ok = mrv::fileroot( root, file );
+	char buf[1024];
+	sprintf( buf, root.c_str(), frameStart );
+	file = buf;
+     }
+     else 
+     {
+#undef stat
+	int ok = fltk::fltk_stat( file.c_str(), &statbuf );
+	if( ok )
 	{
+	   switch( errno )
+	   {
 #if !defined(WIN32) && !defined(WIN64)
-	case ELOOP:
-	   label( _("Too many symlinks") ); break;
+	      case ELOOP:
+		 label( _("Too many symlinks") ); break;
 #endif
-	   case ENAMETOOLONG:
-	   case ENOTDIR:
-	   case ENOENT:
-	      label( _("Bad\npath") ); break;
-	   case ENOMEM:
-	      label( _("Not\nMemory") ); break;
-	   case EACCES:
-	   default:
-	      label( _("Not\nReadable") ); break;
+	      case ENAMETOOLONG:
+	      case ENOTDIR:
+	      case ENOENT:
+		 label( _("Bad\npath") ); break;
+	      case ENOMEM:
+		 label( _("Not\nMemory") ); break;
+	      case EACCES:
+	      default:
+		 label( _("Not\nReadable") ); break;
+	   }
+	   fltk::Group::draw();
+	   return;
 	}
-	fltk::Group::draw();
-	return;
      }
   }
+  
   if( lastFile != file )
-    {
-      lastFile = file;
-
-      handled = NULL;
-      PreviewWidgetBase *next;
-      for( int i = (int)chooser->previewHandlers.size()-1; i >= 0; i-- )
+     {
+	lastFile = file;
+	
+	handled = NULL;
+	PreviewWidgetBase *next;
+	for( int i = (int)chooser->previewHandlers.size()-1; i >= 0; i-- )
 	{
-	  next = chooser->previewHandlers[i];
+	   next = chooser->previewHandlers[i];
 	  next->hide();
 	  if( !handled )
 	    {
@@ -1694,6 +1701,7 @@ void Flu_File_Chooser::PreviewGroup::draw()
 
 
     }
+  
 }
 
 void Flu_File_Chooser::ImgTxtPreview::draw()
@@ -4171,7 +4179,7 @@ void Flu_File_Chooser::cd( const char *path )
 	  // was this file specified explicitly?
 	  isCurrentFile = ( currentFile == name );
 
-#ifndef WIN32
+#ifndef _WIN32
 	  // filter hidden files
 	  if( !isCurrentFile && !hiddenFiles->value() && ( name[0] == '.' ) )
 	    continue;
@@ -4236,6 +4244,9 @@ void Flu_File_Chooser::cd( const char *path )
 	      }
 	    else
 	      {
+
+		 bool is_sequence = false;
+
 		 std::string root;
 		 std::string frame;
 		 std::string ext;
@@ -4243,23 +4254,29 @@ void Flu_File_Chooser::cd( const char *path )
 						frame,
 						ext, 
 						name );
+		 if ( compact_files() )
+		 {
 		 
-		 bool is_sequence = false;
-		 if ( root != "" && frame != "" && ext != "" )
-		    is_sequence = true;
-
-		 std::string tmp = ext;
-		 std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-				 (int(*)(int)) tolower);
-		 if ( tmp == N_(".avi")  || tmp == N_(".mov")  || 
-		      tmp == N_(".divx") || tmp == N_("mp3")   ||
-		      tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
-		      tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
-		      tmp == N_(".qt")   || tmp == N_(".wav")  ||
-		      tmp == N_(".vob")  || tmp == N_(".icc")  ||
-		      tmp == N_(".wav")  ||
-		      tmp == N_(".icm") )
+		    if ( root != "" && frame != "" && ext != "" )
+		       is_sequence = true;
+		    
+		    std::string tmp = ext;
+		    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+				    (int(*)(int)) tolower);
+		    if ( tmp == N_(".avi")  || tmp == N_(".mov")  || 
+			 tmp == N_(".divx") || tmp == N_("mp3")   ||
+			 tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
+			 tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
+			 tmp == N_(".qt")   || tmp == N_(".wav")  ||
+			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
+			 tmp == N_(".wav")  ||
+			 tmp == N_(".icm") )
+		       is_sequence = false;
+		 }
+		 else
+		 {
 		    is_sequence = false;
+		 }
 
 		 if ( is_sequence )
 		  {
@@ -4670,14 +4687,17 @@ std::string Flu_File_Chooser::commonStr()
 std::string retname;
 
 static const char* _flu_file_chooser( const char *message, const char *pattern,
-	const char *filename, int type,
-	int *count = 0, FluStringVector *filelist = 0 )
+				      const char *filename, int type,
+				      int *count = 0, 
+				      FluStringVector *filelist = 0,
+				      const bool compact_files = true )
 {
    static Flu_File_Chooser *fc = NULL;
 
   if( !fc )
     {
-      fc = new Flu_File_Chooser( filename, pattern, type, message );
+       fc = new Flu_File_Chooser( filename, pattern, type, message, 
+				  compact_files );
       if (fc && retname != "")
       {
 	 fc->value( retname.c_str() );
@@ -4688,6 +4708,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
       fc->type( type );
       fc->clear_history();
       fc->label( message );
+      fc->compact_files( compact_files );
       if( !filename || filename[0] == '\0' )
 	{
 	  if( (!pattern || !fc->filter() || strcmp(pattern,fc->filter())) && fc->value() )
@@ -4733,11 +4754,11 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
     return 0;
 }
 
-int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist )
+int flu_multi_file_chooser( const char *message, const char *pattern, const char *filename, FluStringVector& filelist, const bool compact_files )
 {
   int count = 0;
   _flu_file_chooser( message, pattern, filename, Flu_File_Chooser::MULTI,
-		     &count, &filelist );
+		     &count, &filelist, compact_files );
   return count;
 }
 

@@ -241,6 +241,11 @@ void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
   uiReelWindow->open();
 }
 
+void open_single_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
+{
+  uiReelWindow->open_single();
+}
+
 void save_cb( fltk::Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
@@ -1039,13 +1044,20 @@ void ImageView::timeout()
 	    {
 	      CMedia* img = fg->image();
 	      
-	      frame = (int64_t) img->frame();
+	      if ( img->has_audio() )
+	      {
+		 frame = img->audio_frame();
+	      }
+	      else
+	      {
+		 frame = img->frame();
+	      }
 	      timeline->value( double(frame) );
 	      timeline->redraw();
 	      if ( img && img->first_frame() != img->last_frame() &&
 		   this->frame() != frame )
 		{
-		  // 		    this->frame( frame );
+		   this->frame( frame );
 		}
 	    }
 	  else
@@ -1546,18 +1558,20 @@ void ImageView::leftMouseDown(int x, int y)
       if ( (flags & kLeftAlt) == 0 )
       {
 	 fltk::Menu menu(0,0,0,0);
-	 menu.add( _("File/Open"), kOpenImage.hotkey(),
+	 menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
 		   (fltk::Callback*)open_cb, browser() ); 
+	 menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
+		   (fltk::Callback*)open_single_cb, browser() );
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
-	    menu.add( _("File/Save Sequence As"), kSaveSequence.hotkey(),
+	    menu.add( _("File/Save/Sequence As"), kSaveSequence.hotkey(),
 		      (fltk::Callback*)save_sequence_cb, this ); 
-	    menu.add( _("File/Save Reel As"), kSaveReel.hotkey(),
+	    menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
 		      (fltk::Callback*)save_reel_cb, this ); 
-	    menu.add( _("File/Save Frame As"), kSaveImage.hotkey(),
+	    menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
 		      (fltk::Callback*)save_cb, this ); 
-	    menu.add( _("File/Save GL Snapshot As"), kSaveSnapshot.hotkey(),
+	    menu.add( _("File/Save/GL Snapshot As"), kSaveSnapshot.hotkey(),
 		      (fltk::Callback*)save_snap_cb, this ); 
 	 }
 
@@ -2202,7 +2216,12 @@ int ImageView::keyDown(unsigned int rawkey)
 
    if ( kOpenImage.match( rawkey ) )
    {
-      browser()->open();
+      open_cb( this, browser() );
+      return 1;
+   }
+   else if ( kOpenSingleImage.match( rawkey ) )
+   {
+      open_single_cb( this, browser() );
       return 1;
    }
    else if ( kCloneImage.match( rawkey ) )
