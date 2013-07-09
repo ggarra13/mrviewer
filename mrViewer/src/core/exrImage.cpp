@@ -666,7 +666,6 @@ bool exrImage::find_channels( const Imf::Header& h,
    if ( layers.find( N_("left") ) != layers.end() )
       _has_left_eye = true;
 
-   std::string t = _fileroot;
    if ( _is_stereo )
    {
       _has_left_eye = true;

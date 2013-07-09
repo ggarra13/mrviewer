@@ -15,7 +15,8 @@
 #include "mrvCommandLine.h"
 #include "mrvPreferences.h"
 #include "mrvString.h"
-#include "mrvImageView.h"
+#include "gui/mrvImageView.h"
+#include "gui/mrvTimeline.h"
 #include "mrViewer.h"
 #include "mrvVersion.h"
 #include "mrvServer.h"
@@ -96,6 +97,7 @@ namespace mrv {
 void parse_command_line( const int argc, char** argv,
 			 mrv::ViewerUI* ui, 
 			 mrv::LoadList& load,
+			 bool& edl,
 			 std::string& host,
 			 unsigned& port )
 {
@@ -123,6 +125,10 @@ void parse_command_line( const int argc, char** argv,
     //
     // The command-line arguments (parsed in order)
     //
+    SwitchArg aedl("e", "edl",
+		   _("Turn on EDL when loading multiple images") );
+
+
     ValueArg< float > 
       agamma("g", "gamma", 
 	     _("Override viewer's default gamma."), false, gamma, "float");
@@ -155,6 +161,7 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(adbdriver);
     cmd.add(ahostname);
     cmd.add(aport);
+    cmd.add(aedl);
     cmd.add(afiles);
 
     //
@@ -171,7 +178,7 @@ void parse_command_line( const int argc, char** argv,
     db_driver = adbdriver.getValue();
     host = ahostname.getValue();
     port = aport.getValue();
-
+    edl  = aedl.getValue();
 
     //
     // Parse image list to split into sequences/images and reels
@@ -190,6 +197,7 @@ void parse_command_line( const int argc, char** argv,
 	  {
 	    stringArray tokens;
 	    mrv::split_string( tokens, arg, "-" );
+
 
 	    // frame range
 	    load.back().start = atoi( tokens[0].c_str() );
@@ -218,6 +226,7 @@ void parse_command_line( const int argc, char** argv,
 	  }
       }
 
+
   }
   catch ( TCLAP::ArgException& e )
     {
@@ -230,6 +239,9 @@ void parse_command_line( const int argc, char** argv,
   //
   // UI command-line overrides
   //
+  
+  
+
   ui->uiView->gamma( gamma );
   ui->uiGammaInput->value( gamma );
   ui->uiGamma->value( gamma );

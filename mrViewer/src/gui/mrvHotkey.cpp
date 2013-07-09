@@ -88,6 +88,7 @@ Hotkey kSetAsBG( false, false, false, false, 0 );
 
 
 Hotkey kAttachAudio( false, false, false, false, 0 );
+Hotkey kDetachAudio( false, false, false, false, 0 );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 

@@ -142,6 +142,7 @@ CMedia::CMedia() :
   _video_pts( 0 ),
   _video_clock( av_gettime() / 1000000.0 ),
   _context(NULL),
+  _acontext(NULL),
   _audio_codec(NULL),
   _subtitle_index(-1),
   _audio_index(-1),
@@ -202,6 +203,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _playback( kStopped ),
   _sequence( NULL ),
   _context(NULL),
+  _acontext(NULL),
   _audio_codec(NULL),
   _subtitle_index(-1),
   _audio_index(-1),
@@ -337,6 +339,9 @@ CMedia::~CMedia()
 
   if ( _context )
     avformat_close_input( &_context );
+
+  if ( _acontext )
+    avformat_close_input( &_acontext );
 
   _context = NULL;
 }
@@ -1242,7 +1247,6 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( !has_picture() ) return true;
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 256 * 1024)
@@ -1586,32 +1590,33 @@ double CMedia::calculate_fps( const AVStream* stream )
  * @param stream_index   ffmpeg stream index
  */
 void CMedia::populate_stream_info( StreamInfo& s, 
-				      std::ostringstream& msg,
-				      const AVCodecContext *codec_context, 
-				      const int stream_index )
+				   std::ostringstream& msg,
+				   const AVFormatContext* context,
+				   const AVCodecContext* ctx, 
+				   const int stream_index )
 {
 
   bool has_codec = true;
 
   // Mark streams that we don't have a decoder for
-  AVCodec* codec = avcodec_find_decoder( codec_context->codec_id );
+  AVCodec* codec = avcodec_find_decoder( ctx->codec_id );
   if ( ! codec )
     {
       has_codec = false;
-      const char* type = stream_type( codec_context );
-      msg << _("\n\nNot a known codec ") << codec_name(codec_context) 
+      const char* type = stream_type( ctx );
+      msg << _("\n\nNot a known codec ") << codec_name(ctx) 
 	  << _(" for stream #") << stream_index << _(", type ") << type;
     }
 
   s.stream_index = stream_index;
   s.has_codec    = has_codec;
-  s.codec_name   = codec_name( codec_context );
-  s.fourcc       = codec_tag2fourcc( codec_context->codec_tag );
+  s.codec_name   = codec_name( ctx );
+  s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
 
-  AVStream* stream = _context->streams[stream_index];
+  AVStream* stream = context->streams[stream_index];
   double time  = av_q2d( stream->time_base );
 
-  if ( stream->start_time == MRV_NOPTS_VALUE )
+  if ( stream->start_time == AV_NOPTS_VALUE )
     {
       s.start = 1;
     }
@@ -1620,7 +1625,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
       s.start = stream->start_time * time;
     }
 
-  if ( stream->duration == MRV_NOPTS_VALUE )
+  if ( stream->duration == AV_NOPTS_VALUE )
     {
       s.duration = _context->duration * time;
     }

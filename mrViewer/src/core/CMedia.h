@@ -840,7 +840,8 @@ namespace mrv {
 
     void populate_stream_info( StreamInfo& s, 
 			       std::ostringstream& msg,
-			       const AVCodecContext *codec_context, 
+			       const AVFormatContext* context,
+			       const AVCodecContext* ctx, 
 			       const int stream_index );
 
     void limit_audio_store( const boost::int64_t frame );
@@ -863,7 +864,7 @@ namespace mrv {
 			      const boost::uint8_t* buf, const unsigned int size );
 
 
-       virtual bool seek_to_position( const boost::int64_t frame, const int flags = 0 );
+       virtual bool seek_to_position( const boost::int64_t frame );
 
 
     virtual void flush_video() {};
@@ -987,7 +988,8 @@ namespace mrv {
     Attributes _iptc;                    //!< IPTC attributes
 
     // Audio/Video
-    AVFormatContext* _context;           //!< current read file context  
+    AVFormatContext* _context;           //!< current read file context
+    AVFormatContext* _acontext;          //!< current audio file context
 
     PacketQueue      _video_packets;
     PacketQueue      _audio_packets;
