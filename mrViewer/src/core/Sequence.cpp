@@ -87,6 +87,7 @@ namespace mrv
 		      const std::string& file
 		      )
   {
+
     int idx[2];
     int count = 0;  // number of periods found (from end)
 
@@ -106,7 +107,7 @@ namespace mrv
 	  }
 
 	if ( count == 1 && (*i != '@' && *i != '#' && *i != 'd' && 
-			    *i != 'l' && *i != '%' &&
+			    *i != 'l' && *i != '%' && *i != '-' &&
 			    *i != 'I' && (*i < '0' || *i > '9')) )
 	  break;
         if ( count == 1 && *i == '-' ) minus++;
@@ -116,7 +117,6 @@ namespace mrv
 
     if ( count == 2 && minus < 2 )
       {
-
 	root  = file.substr( 0, idx[1]+1 );
 	frame = file.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = file.substr( idx[0], file.size()-idx[0] );

@@ -29,6 +29,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvI8N.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvTimeline.h"
 #include "gui/mrvIO.h"
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
@@ -149,10 +150,12 @@ int main( const int argc, char** argv )
 
 
   mrv::LoadList files;
+  bool edl;
 
   std::string host;
   unsigned port;
-  mrv::parse_command_line( argc, argv, ui, files, host, port );
+
+  mrv::parse_command_line( argc, argv, ui, files, edl, host, port );
 
 
   std::string lockfile = mrv::homepath();
@@ -200,6 +203,10 @@ int main( const int argc, char** argv )
   // mrv::checkout_license();
 
   load_files( files, ui );
+
+  
+  ui->uiTimeline->edl( edl );
+  
   
   if (host == "" && port != 0)
   {

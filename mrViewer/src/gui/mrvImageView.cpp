@@ -549,11 +549,21 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
   img->audio_file( file );
   view->refresh_audio_tracks();
 
-  // if ( img->has_audio() )
-  //   {
-  //     view->browser()->add_audio( fg );
-  //   }
 }
+
+static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  CMedia* img = fg->image();
+  if ( img == NULL ) return;
+
+  img->audio_file( NULL );
+  view->refresh_audio_tracks();
+
+}
+
 
 
 void ImageView::send( std::string m )
@@ -1044,14 +1054,16 @@ void ImageView::timeout()
 	    {
 	      CMedia* img = fg->image();
 	      
-	      if ( img->has_audio() )
-	      {
-		 frame = img->audio_frame();
-	      }
-	      else
-	      {
+	      static int64_t last = AV_NOPTS_VALUE;
+
+	      // if ( img->has_audio() )
+	      // {
+	      //  	 frame = img->audio_frame();
+	      // }
+	      // else
+	      // {
 		 frame = img->frame();
-	      }
+	      // }
 	      timeline->value( double(frame) );
 	      timeline->redraw();
 	      if ( img && img->first_frame() != img->last_frame() &&
@@ -1676,10 +1688,12 @@ void ImageView::leftMouseDown(int x, int y)
 	       }
 	    }
 
-	    if ( fg->image()->is_sequence() )
+	    if ( 1 )
 	    {
 	       menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
 	     		 (fltk::Callback*)attach_audio_cb, this );
+	       menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
+	     		 (fltk::Callback*)detach_audio_cb, this );
 	    }
 
 	    menu.add( _("Pixel/Copy RGBA Values to Clipboard"), 
@@ -3436,8 +3450,8 @@ void ImageView::foreground( mrv::media fg )
   mrv::media old = foreground();
   if ( old == fg ) return;
 
-
-  fg->image()->audio_engine()->SoundFocus( uiMain );
+  if ( fg )
+     fg->image()->audio_engine()->SoundFocus( uiMain );
 
   if ( old && playback() != kStopped )
     {

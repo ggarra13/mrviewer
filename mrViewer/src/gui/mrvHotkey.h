@@ -184,6 +184,7 @@ extern Hotkey kGammaLess;
 extern Hotkey kSetAsBG;
 
 extern Hotkey kAttachAudio;
+extern Hotkey kDetachAudio;
 
 extern Hotkey kCopyRGBAValues;
 extern Hotkey kCloneImage;
