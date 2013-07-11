@@ -1684,7 +1684,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
      else
      {
 	
-	if ( has_audio() && pkt.stream_index == audio_stream_index() )
+	if ( has_audio() && !_acontext &&
+	     pkt.stream_index == audio_stream_index() )
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 	   
@@ -2361,7 +2362,9 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );
 
+  unsigned y,u,v;
   unsigned r,g,b,a;
+  ImagePixel yuv, rgb;
 
   const unsigned* pal = (const unsigned*)rect.pict.data[1];
 
@@ -2376,26 +2379,33 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	rect.pict.data[0] + 
 	(x-dstx) + (y-dsty) * dstw;
 
-	unsigned v = pal[*s];
-	a = (v >> 24) & 0xff;
-	r = (v >> 16) & 0xff;
-	g = (v >> 8) & 0xff;
-	b = v & 0xff;
+	unsigned t = pal[*s];
+	a = (t >> 24) & 0xff;
+	yuv.b = (t >> 16) & 0xff;
+	yuv.g = (t >> 8) & 0xff;
+	yuv.r = t & 0xff;
 
-	if ( a == 0xff )
-	   if ( r == 0x00 && g == 0x00 && b == 0x00 )
-	   {
-	      r = g = b = 0xff;
-	   }
-	   else
-	   {
-	      r = g = b = 0x00;
-	   }
+	rgb = mrv::color::yuv::to_rgb( yuv );
+
+	if ( rgb.r > 0xff ) rgb.r = 0xff;
+	if ( rgb.r < 0x00 ) rgb.r = 0x00;
+
+	if ( rgb.g > 0xff ) rgb.g = 0xff;
+	if ( rgb.g < 0x00 ) rgb.g = 0x00;
+
+	if ( rgb.b > 0xff ) rgb.b = 0xff;
+	if ( rgb.b < 0x00 ) rgb.b = 0x00;
+
+	// // if ( a == 0xff )
+	// //    if ( r == 0xff && g == 0xff && b == 0xff )
+	// //    {
+	// //       r = g = b = 0x00;
+	// //    }
 	
 
-	*d++ = r;
-	*d++ = g;
-	*d++ = b;
+	*d++ = rgb.r;
+	*d++ = rgb.g;
+	*d++ = rgb.b;
 	*d++ = a;
      }
   }
@@ -3204,8 +3214,11 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 
     c->bit_rate = 64000;
     c->sample_rate = img->audio_frequency();
-    c->channel_layout = select_channel_layout(*codec);
     c->channels = img->audio_channels();
+    if ( c->channels == 1 )
+       c->channel_layout = AV_CH_LAYOUT_MONO;
+    else
+       c->channel_layout = select_channel_layout(*codec);
 
     // some formats want stream headers to be separate
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
@@ -3254,6 +3267,7 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
 							_frame,
 							LessThanFunctor() );
     if ( i == end ) {
+       IMG_ERROR( _("Could not get audio frame ") << _frame );
        frame_size = 0;
        return;
     }
@@ -3264,8 +3278,6 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
 
     memcpy( samples, result->data(), frame_size );
 
-    // samples = (int16_t*) result->data();
-    // frame_size = (int) result->size();
 }
 
 
@@ -3279,7 +3291,6 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    int got_packet;
    
    {
-      AVCodecContext* c = st->codec;
       av_init_packet(&pkt);
       pkt.size = 0;
       pkt.data = NULL;
@@ -3287,28 +3298,43 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 
       int size = 0;
        
+      AVCodecContext* c = st->codec;
+      int bytes_per_sample = av_get_bytes_per_sample(c->sample_fmt);
+
       img->get_audio_frame(samples, size);
-       
-      c->frame_size = size;
-      if ( size != 0 )
-      {
-	 c->frame_size /= c->channels;
-	 c->frame_size /= av_get_bytes_per_sample(c->sample_fmt);
+      if ( size == 0 ) {
+	 LOG_ERROR( _("Could not get audio frame for encoding") );
+	 return;
       }
-       
+
+      c->frame_size = size;
+      c->frame_size /= (c->channels * bytes_per_sample);
+
+
       frame->nb_samples     = c->frame_size;
       frame->format         = c->sample_fmt;
+      // frame->channels       = c->channels;
       frame->channel_layout = c->channel_layout;
+
+      int buffer_size = av_samples_get_buffer_size(NULL, c->channels, 
+						   c->frame_size,
+						   c->sample_fmt, 0);
        
+      std::cerr << "size " << size << std::endl;
+      std::cerr << "c->frame_size " << c->frame_size << std::endl;
+      std::cerr << "buffer size " << buffer_size << std::endl;
+
       int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
-					 (uint8_t *)samples,
-					 frame->nb_samples *
-					 c->channels *
-					 av_get_bytes_per_sample( c->sample_fmt ),
-					 1);
+					 (uint8_t *)samples, buffer_size, 0 );
+
+					 // frame->nb_samples *
+					 // c->channels *
+					 // bytes_per_sample,
+					 // 0);
       if (err < 0)
       {
-	 LOG_ERROR( _("Could not fill audio frame. Error: ") << err );
+	 LOG_ERROR( _("Could not fill audio frame. Error: ") << 
+		    strerror(err) );
 	 return;
       }
        
@@ -3455,10 +3481,11 @@ bool aviImage::save_movie_frame( const CMedia* img,
    if (!video_st || (video_st && audio_st && audio_pts < video_pts)) {
       while ( audio_pts < video_pts )
       {
-	 write_audio_frame(oc, audio_st, img);
-
 	 int64_t pts = audio_st->pts.val;
 	 if ( pts == 0 ) pts = 1;
+
+	 write_audio_frame(oc, audio_st, img);
+
 
 	 audio_pts += ((double)pts * audio_st->time_base.num / 
 		       audio_st->time_base.den);

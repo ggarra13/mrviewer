@@ -65,6 +65,12 @@ namespace mrv {
       ImagePixel to_ITU702( const ImagePixel& rgb );
     }  // namespace rgb
 
+
+  namespace yuv
+  {
+  ImagePixel to_rgb( const ImagePixel& rgb );
+  }
+
     namespace xyz 
     {
     }

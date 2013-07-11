@@ -326,6 +326,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    {
 
       uiMain->uiReelWindow->uiBrowser->seek( frame );
+
       mrv::media fg = uiMain->uiView->foreground();
       if (!fg) break;
       
