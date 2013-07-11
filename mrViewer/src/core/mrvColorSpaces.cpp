@@ -294,6 +294,21 @@ namespace mrv {
 
     } // namespace rgb
 
+  namespace yuv {
+
+      // Analog PAL
+      ImagePixel to_rgb( const ImagePixel& yuv )
+      {
+	ImagePixel   rgb(
+			  1.164 * (yuv.r - 16) + 2.018 * (yuv.g - 128),
+			  1.164 * (yuv.r - 16) - 0.813 * (yuv.b - 128) 
+			  - 0.391 * (yuv.g - 128),
+			  1.164 * (yuv.r - 16) + 1.596 * (yuv.b - 128) 
+			  );
+	return rgb;
+      }
+  }
+
   } // namespace color
 
 } // namespace mrv

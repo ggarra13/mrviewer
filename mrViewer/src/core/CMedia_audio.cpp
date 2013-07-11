@@ -78,6 +78,26 @@ namespace {
 
 // #define FFMPEG_STREAM_BUG_FIX
 
+std::ostream& operator<<( std::ostream& o, mrv::AudioEngine::AudioFormat s )
+{
+   switch( s )
+   {
+      case mrv::AudioEngine::kDoubleLSB:
+	 return o << " dbl_le";
+	 break;
+      case mrv::AudioEngine::kFloatLSB:
+	 return o << " flt_le";
+	 break;
+      case mrv::AudioEngine::kS16LSB:
+	 return o << " s16_le";
+	 break;
+      case mrv::AudioEngine::kU8:
+	 return o << " u8";
+	 break;
+      default:
+	 return o << " unknown";
+   }
+}
 
 namespace mrv {
 
@@ -86,6 +106,8 @@ AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #else
 AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #endif
+
+
 
 /** 
  * Clear (audio) packets
@@ -409,15 +431,24 @@ unsigned int CMedia::audio_bytes_per_frame()
 void CMedia::populate_audio()
 {
 
+   bool separate = true;
+   if ( _audio_file == filename() )
+   {
+      separate = false;
+   }
+
    _audio_info.clear();
 
   std::ostringstream msg;
 
+  AVFormatContext* c = _context;
+  if ( separate ) c = _acontext;
+
   // Iterate through all the streams available
-  for( unsigned i = 0; i < _acontext->nb_streams; ++i ) 
+  for( unsigned i = 0; i < c->nb_streams; ++i ) 
     {
       // Get the codec context
-      const AVStream* stream = _acontext->streams[ i ];
+      const AVStream* stream = c->streams[ i ];
       assert( stream != NULL );
 
       const AVCodecContext* ctx = stream->codec;
@@ -432,7 +463,7 @@ void CMedia::populate_audio()
 	   case AVMEDIA_TYPE_AUDIO:
 	      {
 		 audio_info_t s;
-		 populate_stream_info( s, msg, _acontext, ctx, i );
+		 populate_stream_info( s, msg, c, ctx, i );
 		 s.channels   = ctx->channels;
 		 s.frequency  = ctx->sample_rate;
 		 s.bitrate    = calculate_bitrate( ctx );
@@ -513,9 +544,9 @@ void CMedia::populate_audio()
   _frameStart = 1;
 
   double start = 0;
-  if ( _acontext->start_time != MRV_NOPTS_VALUE )
+  if ( c->start_time != MRV_NOPTS_VALUE )
   {
-     start = ( ( double )_acontext->start_time / ( double )AV_TIME_BASE );
+     start = ( ( double )c->start_time / ( double )AV_TIME_BASE );
   }
   else
   {
@@ -526,9 +557,9 @@ void CMedia::populate_audio()
   _frameStart = boost::int64_t( _fps * start ) + 1;
 
   int64_t duration;
-  if ( _acontext->duration != MRV_NOPTS_VALUE )
+  if ( c->duration != MRV_NOPTS_VALUE )
     {
-      duration = int64_t( (_fps * ( double )(_acontext->duration) / 
+      duration = int64_t( (_fps * ( double )(c->duration) / 
 			   ( double )AV_TIME_BASE ) );
     }
   else 
@@ -553,7 +584,7 @@ void CMedia::populate_audio()
   stream = get_audio_stream();
   if ( stream->metadata ) m = stream->metadata;
 
-  dump_metadata( _acontext->metadata );
+  dump_metadata( c->metadata );
 
 }
 
@@ -584,15 +615,16 @@ void CMedia::audio_file( const char* file )
    swr_free( &forw_ctx );
    forw_ctx = NULL;
    _audio_channels = 0;
+   _audio_format = AudioEngine::kFloatLSB;
    if ( _acontext )
    {
       avformat_close_input( &_acontext );
       _acontext = NULL;
    }
 
-   if ( file == NULL || strcmp( file, "" ) == 0 )
+   if ( file == NULL )
    {
-      return;
+      file = filename();
    }
 
   AVDictionary* params = NULL;
@@ -616,6 +648,8 @@ void CMedia::audio_file( const char* file )
 
   _expected = 0;
   _audio_file = file;
+
+
   populate_audio();
 }
 
@@ -725,7 +759,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	   return AVERROR(EINVAL);
         }
 
-	_audio_format = _audio_engine->format();
 
 	if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
 	     ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
@@ -1376,11 +1409,12 @@ bool CMedia::open_audio( const short channels,
      if ( ok ) break;
   }
 
+  _audio_format = _audio_engine->format();
+
   if ( channels == 1 )
      _audio_channels = 1;
   else
      _audio_channels = _audio_engine->channels();
-  _audio_format   =  _audio_engine->format();
   
 
   return ok;

@@ -80,6 +80,7 @@ namespace mrv {
 
     inline float& operator[](const int i) { return ((float*)this)[i]; }
 
+
   };
 
 
