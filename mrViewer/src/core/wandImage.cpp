@@ -72,7 +72,13 @@ namespace mrv {
     MagickBooleanType status;
     MagickWandGenesis();
     MagickWand* wand = NewMagickWand();
-    status = MagickPingImage( wand, file );
+
+    try {
+       status = MagickPingImage( wand, file );
+    }
+    catch( ... )
+    {
+    }
 
     DestroyMagickWand(wand);
     MagickWandTerminus();

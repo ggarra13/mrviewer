@@ -1782,8 +1782,15 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 
   std::cerr << name() << " S:" << _frame << " D:" << _dts 
 	    << " A:" << frame << " " << routine << " audio stores #"
-	    << _audio.size() << ": "
-	    << std::endl;
+	    << _audio.size() << ": ";
+
+  if ( iter != last )
+     std::cerr << (*iter)->frame() << "-" 
+	       << (*(last-1))->frame() 
+	       << std::endl;
+  else
+     std::cerr << std::endl;
+
 #ifdef DEBUG_AUDIO_STORES_DETAIL
   for ( ; iter != last; ++iter )
     {

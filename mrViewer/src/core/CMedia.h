@@ -641,7 +641,8 @@ namespace mrv {
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
 
-     void get_audio_frame( int16_t* samples, int& frame_size ) const;
+       void get_audio_frame( uint8_t*& samples, int& frame_size,
+			     const AVCodecContext* c ) const;
 
     void close_audio();
 
@@ -679,6 +680,8 @@ namespace mrv {
     Mutex& video_mutex()          { return _mutex; };
 
     virtual void clear_packets();
+
+    mrv::AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
     void debug_audio_packets(const boost::int64_t frame, const char* routine = "");
     virtual void debug_video_packets(const boost::int64_t frame, 

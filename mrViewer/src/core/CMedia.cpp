@@ -149,7 +149,7 @@ CMedia::CMedia() :
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
   _audio_channels( 0 ),
-  _audio_format( AudioEngine::kS16LSB ),
+  _audio_format( AudioEngine::kFloatLSB ),
   _audio_buf( NULL ),
   forw_ctx( NULL ),
   _audio_engine( NULL )

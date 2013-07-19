@@ -33,6 +33,8 @@ extern "C" {
 #include "libavutil/mathematics.h"
 #include "libavutil/pixdesc.h"
 #include "libavutil/time.h"
+#include "libavutil/opt.h"
+#include "libswresample/swresample.h"
 
 }
 
@@ -2945,6 +2947,8 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img,
 	 pict->data[2][y2 * pict->linesize[2] + x2 ] = uint8_t(yuv.b);
       }
    }
+
+   pict->extended_data = pict->data;
        
 }
 
@@ -3129,10 +3133,16 @@ static AVStream* audio_st = NULL, *video_st = NULL;
 /* audio output */
 
 static float t, tincr, tincr2;
-static int16_t* samples = NULL;
-static uint8_t* audio_outbuf = NULL;
-static int audio_outbuf_size = 0;
-static int audio_input_frame_size = 0;
+static uint8_t **src_samples_data = NULL;
+static int       src_samples_linesize;
+static int       src_nb_samples;
+
+static int max_dst_nb_samples;
+uint8_t **dst_samples_data = NULL;
+int       dst_samples_linesize;
+int       dst_samples_size;
+
+struct SwrContext *swr_ctx = NULL;
 
 AVCodec* audio_cdc, *video_codec;
 
@@ -3151,27 +3161,13 @@ static int check_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
     return 0;
 }
 
-/* select layout with the highest channel count */
-static uint64_t select_channel_layout(AVCodec *codec)
+static inline
+int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 {
-    const uint64_t *p;
-    uint64_t best_ch_layout = 0;
-    int best_nb_channells   = 0;
-
-    if (!codec->channel_layouts)
-        return AV_CH_LAYOUT_STEREO;
-
-    p = codec->channel_layouts;
-    while (*p) {
-        int nb_channels = av_get_channel_layout_nb_channels(*p);
-
-        if (nb_channels > best_nb_channells) {
-            best_ch_layout    = *p;
-            best_nb_channells = nb_channels;
-        }
-        p++;
-    }
-    return best_ch_layout;
+    if (channel_layout && av_get_channel_layout_nb_channels(channel_layout) == channels)
+        return channel_layout;
+    else
+        return 0;
 }
 
 
@@ -3183,8 +3179,10 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 				  enum CodecID codec_id,
 				  const CMedia* img )
 {
+   int ret = 0;
+
     /* find the audio encoder */
-   codec_id = AV_CODEC_ID_PCM_S16LE;
+   codec_id = AV_CODEC_ID_AC3;
    *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
        LOG_ERROR( _("Audio codec not found") );
@@ -3205,7 +3203,8 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
     // c->strict_std_compliance= FF_COMPLIANCE_EXPERIMENTAL;
 
     /* put sample parameters */
-    c->sample_fmt = AV_SAMPLE_FMT_S16;
+    c->sample_fmt = AV_SAMPLE_FMT_FLTP;
+
     if (!check_sample_fmt(*codec, c->sample_fmt)) {
        LOG_ERROR( _("Encoder does not support ") <<
 		 av_get_sample_fmt_name(c->sample_fmt));
@@ -3215,10 +3214,10 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
     c->bit_rate = 64000;
     c->sample_rate = img->audio_frequency();
     c->channels = img->audio_channels();
-    if ( c->channels == 1 )
-       c->channel_layout = AV_CH_LAYOUT_MONO;
-    else
-       c->channel_layout = select_channel_layout(*codec);
+
+    c->channel_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
+						  c->channels );
+
 
     // some formats want stream headers to be separate
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
@@ -3231,6 +3230,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 			      AVStream* st )
 
 {
+   std::cerr << "open audio " << __LINE__ << std::endl;
     AVCodecContext* c = st->codec;
 
    /* open it */
@@ -3241,17 +3241,76 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
-        audio_input_frame_size = 10000;
+        src_nb_samples = 10000;
     }
     else
     {
-        audio_input_frame_size = c->frame_size;
+        src_nb_samples = c->frame_size;
+    }
+    
+   std::cerr << "open audio " << __LINE__ << std::endl;
+    if ( c->sample_fmt != AV_SAMPLE_FMT_FLT )
+    {
+        /* set options */
+       swr_ctx  = swr_alloc();
+       if ( swr_ctx == NULL )
+       {
+	  LOG_ERROR( "Could not alloc swr_ctx" );
+	  exit(1);
+       }
+
+        av_opt_set_int       (swr_ctx, "in_channel_count",   c->channels, 0);
+        av_opt_set_int       (swr_ctx, "in_sample_rate",     c->sample_rate, 0);
+        av_opt_set_sample_fmt(swr_ctx, "in_sample_fmt",      AV_SAMPLE_FMT_FLT, 0);
+        av_opt_set_int       (swr_ctx, "out_channel_count",  c->channels,   0);
+        av_opt_set_int       (swr_ctx, "out_sample_rate",    c->sample_rate, 0);
+        av_opt_set_sample_fmt(swr_ctx, "out_sample_fmt",     AV_SAMPLE_FMT_FLTP,     0);
+
+        /* initialize the resampling context */
+        if ((swr_init(swr_ctx)) < 0) {
+            fprintf(stderr, "Failed to initialize the resampling context\n");
+            exit(1);
+        }
     }
 
-    samples = (int16_t*) av_malloc( audio_input_frame_size * c->channels *
-				    av_get_bytes_per_sample(c->sample_fmt)
-				    * 2
-				    );
+   std::cerr << "open audio " << __LINE__ << std::endl;
+    int ret = av_samples_alloc_array_and_samples(&src_samples_data, 
+						 &src_samples_linesize,
+						 c->channels,
+						 src_nb_samples, 
+						 c->sample_fmt, 0);
+    if (ret < 0) {
+        LOG_ERROR("Could not allocate source samples\n");
+        return false;
+    }
+
+    assert( src_samples_data[0] != NULL );
+    assert( src_samples_linesize > 0 );
+
+   std::cerr << "open audio " << __LINE__ << std::endl;
+    int max_dst_nb_samples = src_nb_samples;
+    assert( src_nb_samples > 0 );
+
+    ret = av_samples_alloc_array_and_samples(&dst_samples_data, 
+					     &dst_samples_linesize,
+					     c->channels,
+                                             max_dst_nb_samples,
+					     c->sample_fmt, 0);
+    if ( ret < 0 )
+    {
+       LOG_ERROR( "Could not allocate destination samples" );
+    }
+    
+    assert( dst_samples_data[0] != NULL );
+    assert( dst_samples_linesize != 0 );
+    assert( max_dst_nb_samples > 0 );
+    std::cerr << "open audio " << __LINE__ << " " << (void*)dst_samples_data[0] 
+	      << std::endl;
+    dst_samples_size = av_samples_get_buffer_size(NULL, c->channels, 
+						  max_dst_nb_samples,
+                                                  c->sample_fmt, 0);
+    assert( dst_samples_size > 0 );
+    assert( max_dst_nb_samples > 0 );
 
     return true;
 }
@@ -3259,7 +3318,8 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
 /* prepare a 16 bit dummy audio frame of 'frame_size' samples and
    'nb_channels' channels */
-void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
+void CMedia::get_audio_frame(uint8_t*& buf, int& frame_size,
+			     const AVCodecContext* c ) const
 {
     audio_cache_t::const_iterator begin = _audio.begin();
     audio_cache_t::const_iterator end = _audio.end();
@@ -3276,7 +3336,29 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
 
     frame_size = result->size();
 
-    memcpy( samples, result->data(), frame_size );
+    if ( frame_size > src_nb_samples )
+    {
+       std::cerr << "memcpy begin " << frame_size << " " << buf << " "
+		 << src_nb_samples << std::endl;
+       //assert( frame_size <= src_nb_samples );
+
+       int size = frame_size;
+       size /= c->channels;
+       size /= av_get_bytes_per_sample( c->sample_fmt );
+
+       int ret = av_samples_alloc(src_samples_data, &src_samples_linesize, c->channels,
+			      size, c->sample_fmt, 0);
+
+       if ( ret < 0 )
+       {
+	  LOG_ERROR( "Could not allocate src buffer" );
+	  return;
+       }
+
+    }
+
+    memcpy( buf, result->data(), frame_size );
+    std::cerr << "memcpy end src was " << src_nb_samples << std::endl;
 
 }
 
@@ -3285,11 +3367,14 @@ void CMedia::get_audio_frame(int16_t* samples, int& frame_size ) const
 static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 			      const CMedia* img)
 {
+   std::cerr << "WRITE " << __LINE__ << std::endl;
    AVPacket pkt = {0};
    AVFrame* frame = avcodec_alloc_frame();
    avcodec_get_frame_defaults(frame);
-   int got_packet;
+   int got_packet, ret, dst_nb_samples;
    
+   std::cerr << "WRITE " << __LINE__ << std::endl;
+
    {
       av_init_packet(&pkt);
       pkt.size = 0;
@@ -3301,32 +3386,83 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
       AVCodecContext* c = st->codec;
       int bytes_per_sample = av_get_bytes_per_sample(c->sample_fmt);
 
-      img->get_audio_frame(samples, size);
+      assert( src_samples_data[0] != NULL );
+
+      std::cerr << "WRITE " << __LINE__ << std::endl;
+      img->get_audio_frame(src_samples_data[0], size, c );
       if ( size == 0 ) {
 	 LOG_ERROR( _("Could not get audio frame for encoding") );
 	 return;
       }
 
-      c->frame_size = size;
-      c->frame_size /= (c->channels * bytes_per_sample);
+      if (swr_ctx) {
+	 /* compute destination number of samples */
+	 std::cerr << "WRITE " << __LINE__ << std::endl;
+    	 dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
+	 				 c->sample_rate, c->sample_rate, AV_ROUND_UP);
+   	 if (dst_nb_samples > max_dst_nb_samples) {
+   	    std::cerr << "WRITE " << __LINE__ << std::endl;
+   	    assert( dst_samples_data[0] != NULL );
+   	    av_free(dst_samples_data[0]);
+   	    std::cerr << "WRITE " << __LINE__ << std::endl;
+            ret = av_samples_alloc(dst_samples_data, &dst_samples_linesize, c->channels,
+                                   dst_nb_samples, c->sample_fmt, 0);
+            if (ret < 0)
+   	       exit(1);
+            max_dst_nb_samples = dst_nb_samples;
+   std::cerr << "WRITE " << __LINE__ << std::endl;
+            dst_samples_size = av_samples_get_buffer_size(NULL, c->channels, 
+   							  dst_nb_samples,
+                                                          c->sample_fmt, 0);
+   	 }
+	 
+   std::cerr << "WRITE " << __LINE__ << std::endl;
+	 /* convert to destination format */
+	 ret = swr_convert(swr_ctx,
+			   dst_samples_data, dst_nb_samples,
+			   (const uint8_t **)src_samples_data, src_nb_samples);
+	 if (ret < 0) {
+            fprintf(stderr, "Error while converting\n");
+            exit(1);
+	 }
 
+      } else {
+
+   std::cerr << "WRITE " << __LINE__ << std::endl;
+	 dst_samples_data[0] = src_samples_data[0];
+	 dst_nb_samples = src_nb_samples;
+      }
+
+      c->frame_size = dst_nb_samples;
+      c->frame_size /= c->channels;
+      c->frame_size /= av_get_bytes_per_sample( c->sample_fmt );
+
+      std::cerr << "WRITE " << __LINE__ << std::endl;
 
       frame->nb_samples     = c->frame_size;
-      frame->format         = c->sample_fmt;
-      // frame->channels       = c->channels;
-      frame->channel_layout = c->channel_layout;
 
-      int buffer_size = av_samples_get_buffer_size(NULL, c->channels, 
-						   c->frame_size,
-						   c->sample_fmt, 0);
-       
-      std::cerr << "size " << size << std::endl;
-      std::cerr << "c->frame_size " << c->frame_size << std::endl;
-      std::cerr << "buffer size " << buffer_size << std::endl;
+      assert( dst_samples_data[0] != NULL );
+      assert( dst_samples_size != 0 );
+      // assert( dst_samples_size >= dst_nb_samples );
+      assert( dst_nb_samples > 0 );
+      assert( c->channels > 0 );
+      assert( c->sample_fmt != 0 );
+      
+      int needed_size = av_samples_get_buffer_size(NULL, c->channels,
+						   frame->nb_samples, c->sample_fmt,
+						   0);
+
+      std::cerr << "dst_samples_size " << dst_samples_size
+		<< " dst_nb_samples " << dst_nb_samples
+		<< " c->frame_size " << c->frame_size
+		<< " needed_size " << needed_size
+		<< std::endl;
 
       int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
-					 (uint8_t *)samples, buffer_size, 0 );
+					 dst_samples_data[0], 
+					 frame->nb_samples, 0 );
 
+      std::cerr << "WRITE " << __LINE__ << std::endl;
 					 // frame->nb_samples *
 					 // c->channels *
 					 // bytes_per_sample,
@@ -3339,6 +3475,7 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
       }
        
        
+      std::cerr << "WRITE " << __LINE__ << std::endl;
       err = avcodec_encode_audio2(c, &pkt, frame, &got_packet);
       if (err < 0 || !got_packet )
       {
@@ -3346,6 +3483,8 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 	 return;
       }
        
+   std::cerr << "WRITE " << __LINE__ << std::endl;
+
       pkt.stream_index = st->index;
       if (got_packet) {
 	 if (pkt.pts != AV_NOPTS_VALUE)
@@ -3372,8 +3511,6 @@ static void close_audio_static(AVFormatContext *oc, AVStream *st)
 {
    avcodec_close(st->codec);
 
-   // av_free(samples);
-   av_free(audio_outbuf);
 }
 
 bool aviImage::open_movie( const char* filename, const CMedia* img )
@@ -3462,6 +3599,7 @@ bool aviImage::save_movie_frame( const CMedia* img,
 {
 
    double audio_pts, video_pts;
+   std::cerr << "save frame " << __LINE__ << std::endl;
 
    if (audio_st)
       audio_pts = ((double)audio_st->pts.val * audio_st->time_base.num / 
@@ -3475,6 +3613,7 @@ bool aviImage::save_movie_frame( const CMedia* img,
    else
       video_pts = audio_pts;
    
+   std::cerr << "save frame " << __LINE__ << std::endl;
 
 
    /* write interleaved audio and video frames */
@@ -3484,17 +3623,24 @@ bool aviImage::save_movie_frame( const CMedia* img,
 	 int64_t pts = audio_st->pts.val;
 	 if ( pts == 0 ) pts = 1;
 
+	 std::cerr << "save frame " << __LINE__ << std::endl;
+
 	 write_audio_frame(oc, audio_st, img);
+
+	 std::cerr << "save frame " << __LINE__ << std::endl;
 
 
 	 audio_pts += ((double)pts * audio_st->time_base.num / 
 		       audio_st->time_base.den);
       }
 
+      std::cerr << "save frame " << __LINE__ << std::endl;
       if ( video_st ) 
 	 write_video_frame(oc, video_st, img, ui);
    } else {
+      std::cerr << "save frame " << __LINE__ << std::endl;
       write_video_frame(oc, video_st, img, ui);
+      std::cerr << "save frame " << __LINE__ << std::endl;
    }
    
 

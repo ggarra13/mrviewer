@@ -2219,19 +2219,19 @@ void ImageBrowser::load( const stringArray& files,
      uiMain->uiFrame->value( double(tframe) );
      uiMain->uiFrame->redraw();
 
-    timeline()->value( tframe );
-    timeline()->redraw();
+     timeline()->value( tframe );
+     timeline()->redraw();
 
 
-    mrv::ImageView* view = uiMain->uiView;
+     mrv::ImageView* view = uiMain->uiView;
 
-    if ( timeline()->edl() )
-      {
+     if ( timeline()->edl() )
+     {
 	ImageView::Playback playback = view->playback();
 
 	// Check if we need to change to a new sequence based on frame
-	 mrv::media m = timeline()->media_at( tframe );
-	 if (! m ) return;
+	mrv::media m = timeline()->media_at( tframe );
+	if (! m ) return;
 
 	CMedia* img = m->image();
 

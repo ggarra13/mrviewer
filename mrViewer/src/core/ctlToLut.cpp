@@ -38,6 +38,7 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <ImfForward.h>
 #include <ctlToLut.h>
 
 #include "core/mrvOS.h"
