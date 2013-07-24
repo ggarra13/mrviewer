@@ -607,6 +607,9 @@ void CMedia::dump_metadata( AVDictionary *m )
  */
 void CMedia::audio_file( const char* file )
 {
+
+   SCOPED_LOCK( _audio_mutex );
+
    audio_stream( -1 );
    _audio_file.clear();
    close_audio();
