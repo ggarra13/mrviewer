@@ -3184,7 +3184,7 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 				  const CMedia* img )
 {
     /* find the audio encoder */
-   codec_id = AV_CODEC_ID_PCM_S16LE;
+   codec_id = AV_CODEC_ID_AC3;
    *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
        LOG_ERROR( _("Audio codec not found") );
@@ -3205,7 +3205,7 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
     // c->strict_std_compliance= FF_COMPLIANCE_EXPERIMENTAL;
 
     /* put sample parameters */
-    c->sample_fmt = AV_SAMPLE_FMT_S16;
+    c->sample_fmt = AV_SAMPLE_FMT_FLTP;
     if (!check_sample_fmt(*codec, c->sample_fmt)) {
        LOG_ERROR( _("Encoder does not support ") <<
 		 av_get_sample_fmt_name(c->sample_fmt));
