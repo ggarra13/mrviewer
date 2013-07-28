@@ -641,7 +641,8 @@ namespace mrv {
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
 
-     void get_audio_frame( int16_t* samples, int& frame_size ) const;
+       void get_audio_frame( uint8_t*& samples, int& frame_size,
+			     const AVCodecContext* c ) const;
 
     void close_audio();
 
@@ -703,6 +704,7 @@ namespace mrv {
     boost::int64_t video_pts() const { return _video_pts; }
     boost::int64_t audio_pts() const { return _audio_pts; }
     
+    AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
