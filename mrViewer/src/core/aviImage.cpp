@@ -333,8 +333,7 @@ void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
 }
 
 // Seek to the requested frame
-bool aviImage::seek_to_position( const boost::int64_t frame,
-				 const int opts )
+bool aviImage::seek_to_position( const boost::int64_t frame )
 {
 
 
@@ -347,10 +346,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame,
   // static const AVRational base = { 1, AV_TIME_BASE };
   // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
-  boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
+   boost::int64_t offset = boost::int64_t( ((frame) * AV_TIME_BASE ) / fps() );
 
-  int flags = 0;
-  flags &= ~AVSEEK_FLAG_BYTE;
+   int flags = 0;
+   flags &= ~AVSEEK_FLAG_BYTE;
 
   // AVStream* stream = NULL;
   // int idx = -1;
@@ -389,7 +388,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame,
   
   if (ret < 0)
   {
-     IMG_ERROR( "Could not seek to frame " << frame );
+     IMG_ERROR( _("Could not seek to frame ") << frame );
      return false;
   }
 
@@ -400,7 +399,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame,
   
      if (ret < 0)
      {
-	IMG_ERROR( "Could not seek to frame " << frame );
+	IMG_ERROR( _("Could not seek to frame ") << frame );
 	return false;
      }
   }
@@ -3313,24 +3312,17 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 
       frame->nb_samples     = c->frame_size;
       frame->format         = c->sample_fmt;
-      // frame->channels       = c->channels;
+      frame->channels       = c->channels;
       frame->channel_layout = c->channel_layout;
 
       int buffer_size = av_samples_get_buffer_size(NULL, c->channels, 
 						   c->frame_size,
 						   c->sample_fmt, 0);
        
-      std::cerr << "size " << size << std::endl;
-      std::cerr << "c->frame_size " << c->frame_size << std::endl;
-      std::cerr << "buffer size " << buffer_size << std::endl;
 
       int err = avcodec_fill_audio_frame(frame, c->channels, c->sample_fmt,
 					 (uint8_t *)samples, buffer_size, 0 );
 
-					 // frame->nb_samples *
-					 // c->channels *
-					 // bytes_per_sample,
-					 // 0);
       if (err < 0)
       {
 	 LOG_ERROR( _("Could not fill audio frame. Error: ") << 
@@ -3372,8 +3364,8 @@ static void close_audio_static(AVFormatContext *oc, AVStream *st)
 {
    avcodec_close(st->codec);
 
-   // av_free(samples);
-   av_free(audio_outbuf);
+   av_free(samples);
+   // av_free(audio_outbuf);
 }
 
 bool aviImage::open_movie( const char* filename, const CMedia* img )
