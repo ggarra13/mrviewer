@@ -681,6 +681,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
     default:
       first = frame - max_audio_frames();
       last  = frame + max_audio_frames();
+      if ( _dts > last )   last = _dts;
       if ( first < first_frame() ) first = first_frame();
       if ( last  > last_frame() )   last = last_frame();
       break;
@@ -880,7 +881,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	{
 	   if ( _audio_channels > 0 )
 	   {
-	      memcpy(samples, frame.extended_data[0], data_size);
+ 	      memcpy(samples, frame.extended_data[0], data_size);
 	   }
 	}
 
