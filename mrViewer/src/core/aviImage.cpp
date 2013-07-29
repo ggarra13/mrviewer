@@ -3126,6 +3126,7 @@ AVSampleFormat aformat;
 static uint8_t **src_samples_data = NULL;
 static int       src_samples_linesize;
 static int       src_nb_samples;
+static unsigned  src_samples_size;
 
 static int max_dst_nb_samples;
 uint8_t **dst_samples_data = NULL;
@@ -3241,14 +3242,18 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
-        src_nb_samples = 10000;
+       src_nb_samples = 10000;
     }
     else
     {
         src_nb_samples = c->frame_size;
     }
 
+
     aformat = AudioEngine::ffmpeg_format( img->audio_format() );
+
+    src_samples_size = ( src_nb_samples * c->channels * 
+			 av_get_bytes_per_sample( aformat ) );
 
     if ( aformat != AV_SAMPLE_FMT_S16 )
     {
@@ -3261,7 +3266,6 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 	  exit(1);
        }
 
-       std::cerr << "aformat " << av_get_sample_fmt_name(aformat) << std::endl;
 
         av_opt_set_int       (swr_ctx, "in_channel_count",   c->channels, 0);
         av_opt_set_int       (swr_ctx, "in_sample_rate",     c->sample_rate, 0);
@@ -3322,9 +3326,8 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 void CMedia::get_audio_frame(uint8_t*& buf, int& frame_size,
 			     const AVCodecContext* c ) const
 {
-    audio_cache_t::const_iterator begin = _audio.begin();
     audio_cache_t::const_iterator end = _audio.end();
-    audio_cache_t::const_iterator i = std::lower_bound( begin, end, 
+    audio_cache_t::const_iterator i = std::lower_bound( _audio.begin(), end, 
 							_frame,
 							LessThanFunctor() );
     if ( i == end ) {
@@ -3337,14 +3340,13 @@ void CMedia::get_audio_frame(uint8_t*& buf, int& frame_size,
 
     frame_size = result->size();
 
-    if ( frame_size > src_nb_samples )
+    src_nb_samples = frame_size;
+    src_nb_samples /= c->channels;
+    src_nb_samples /= av_get_bytes_per_sample( aformat );
+
+    if ( frame_size > src_samples_size )
     {
        //assert( frame_size <= src_nb_samples );
-
-       src_nb_samples = frame_size;
-       src_nb_samples /= c->channels;
-       src_nb_samples /= av_get_bytes_per_sample( aformat );
-
        av_free(src_samples_data[0]);
        int ret = av_samples_alloc(src_samples_data, &src_samples_linesize,
 				  c->channels, src_nb_samples,
@@ -3421,7 +3423,6 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 	 }
 
       } else {
-
 	 dst_samples_data[0] = src_samples_data[0];
 	 dst_nb_samples = src_nb_samples;
       }
