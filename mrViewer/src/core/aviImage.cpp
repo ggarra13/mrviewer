@@ -69,15 +69,15 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-//#define DEBUG_DECODE
-//#define DEBUG_SEEK
+// #define DEBUG_DECODE
+// #define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
-//#define DEBUG_SEEK_AUDIO_PACKETS
+// #define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-//#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
-//#define DEBUG_AUDIO_STORES
+// #define DEBUG_AUDIO_STORES
 //#define DEBUG_STORES_DETAIL
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
@@ -301,8 +301,10 @@ void aviImage::open_video_codec()
   else _pixel_ratio = aspect_ratio / image_ratio;
 
   AVDictionary* info = NULL;
+  av_dict_set(&info, "threads", "2", 0);
+
   if ( _video_codec == NULL || 
-       avcodec_open2( ctx, _video_codec, NULL ) < 0 )
+       avcodec_open2( ctx, _video_codec, &info ) < 0 )
     _video_index = -1;
 
 }
@@ -465,7 +467,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
      if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
   }
 
-#ifdef DEBUG_SEEK
+#ifdef DEBUG_SEEK_VIDEO_PACKETS
   LOG_INFO( "BEFORE SEEK:" );
   debug_video_packets(frame);
 #endif
@@ -505,14 +507,19 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
  
 
   _dts = dts;
+
   _expected = dts + 1;
   _seek_req = false;
 
 
 #ifdef DEBUG_SEEK
   LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected );
+#endif
+
+#ifdef DEBUG_SEEK_VIDEO_PACKETS
   debug_video_packets(frame);
 #endif
+
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
   debug_audio_packets(frame);
 #endif
@@ -697,9 +704,11 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 void aviImage::clear_packets()
 {
 
-#ifdef DEBUG_PACKETS
-  cerr << "+++++++++++++ CLEAR VIDEO/AUDIO PACKETS" << endl;
+#ifdef DEBUG_AUDIO_PACKETS
+   cerr << "+++++++++++++ CLEAR VIDEO/AUDIO PACKETS " << _frame 
+	<< " expected: " << _expected << endl;
 #endif
+
   _video_packets.clear();
   _audio_packets.clear();
 
@@ -854,11 +863,11 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
-#ifdef DEBUG_FIND_PACKETS
+#ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "find_image");
 #endif
 
-#ifdef DEBUG_FIND_STORES
+#ifdef DEBUG_VIDEO_STORES
   debug_video_stores(frame, "find_image");
 #endif
 
@@ -1333,7 +1342,7 @@ void aviImage::populate()
 	       else
 	       {
 		  if ( !got_video )
-		     _frame_offset += 1; // pkt.dts - 1;
+		     _frame_offset += 1;
 		}
 	    }
 	  else
@@ -1711,7 +1720,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      else if ( pktframe == frame )
 	      {
 		 audio_bytes += pkt.size;
-		 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+		 // if ( audio_bytes >= bytes_per_frame ) got_audio = true;
 	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
@@ -1789,19 +1798,17 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   }
 	   else
 	   {
-	      if ( pktframe <= last_frame() ) 
-		 _audio_packets.push_back( pkt );
+	      _audio_packets.push_back( pkt );
 	   }
-	
 	
 	   if ( !got_audio )
 	   {
 	      if ( pktframe > frame ) got_audio = true;
-	      else if ( pktframe == frame )
-	      {
-		 audio_bytes += pkt.size;
-		 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-	      }
+	      // else if ( pktframe == frame )
+	      // {
+	      // 	 audio_bytes += pkt.size;
+	      // 	 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+	      // }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
 	   
@@ -1919,15 +1926,8 @@ bool aviImage::frame( const boost::int64_t f )
   else                      _dts = f;
 
 
-  // boost::int64_t tmp = _expected;
 
   fetch(_dts);
-
-  // if ( _acontext )
-  // {
-  //    _expected = tmp;
-  //    fetch_audio( f );
-  // }
 
 #ifdef DEBUG_DECODE
   LOG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: " 
@@ -2063,7 +2063,7 @@ bool aviImage::in_video_store( const boost::int64_t frame )
 CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 {
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "decode_video");
 #endif
 
@@ -2305,38 +2305,53 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 
 void aviImage::do_seek()
 {
-  if ( _dts == _seek_frame ) return;
 
   _dts = _seek_frame;
 
-  if ( _seek_frame != _expected )
+  bool got_video = !has_video();
+
+  if ( !got_video )
+    {
+       got_video = in_video_store( _seek_frame );
+    }
+
+  bool got_audio = !has_audio();
+
+  if ( !got_audio )
+    {
+       got_audio = in_audio_store( _seek_frame );
+    }
+
+
+  if ( _seek_frame != _expected || !got_audio || !got_video )
   {
      clear_packets();
-     _expected = _dts - 1;
+
+     seek_to_position( _seek_frame );
   }
 
+  // Seeking done, turn flag off
+  _seek_req = false;
 
   if ( stopped() )
     {
-       fetch( _seek_frame );
-
-      if ( has_audio() )
-	{
+       if ( has_audio() )
+       {
 	  decode_audio( _seek_frame );
-	}
-      
-      if ( has_video() )
-	{
+       }
+       
+       if ( has_video() )
+       {
 	  decode_video( _seek_frame );
 	  find_image( _seek_frame );
-	}
-
-      if ( has_subtitle() )
-	{
+       }
+       
+       if ( has_subtitle() )
+       {
 	  decode_subtitle( _seek_frame );
 	  find_subtitle( _seek_frame );
-	}
-
+       }
+       
 
 #ifdef DEBUG_VIDEO_STORES
       debug_video_stores(_seek_frame, "doseek" );
@@ -2352,8 +2367,6 @@ void aviImage::do_seek()
 
     }
 
-  // Seeking done, turn flag off
-  _seek_req = false;
 }
 
 //
@@ -3255,7 +3268,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     src_samples_size = ( src_nb_samples * c->channels * 
 			 av_get_bytes_per_sample( aformat ) );
 
-    if ( aformat != AV_SAMPLE_FMT_S16 )
+    if ( aformat != c->sample_fmt )
     {
 
         /* set options */
@@ -3263,7 +3276,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        if ( swr_ctx == NULL )
        {
 	  LOG_ERROR( "Could not alloc swr_ctx" );
-	  exit(1);
+	  return false;
        }
 
 
@@ -3274,11 +3287,19 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         av_opt_set_int       (swr_ctx, "out_sample_rate",    c->sample_rate, 0);
         av_opt_set_sample_fmt(swr_ctx, "out_sample_fmt",     c->sample_fmt, 0);
 	
+
+	LOG_INFO( "Audio conversion of channels " << c->channels << ", freq "
+		  << c->sample_rate << " " << av_get_sample_fmt_name( aformat ) 
+		  << " to " << std::endl
+		  << "                 channels " << c->channels 
+		  << " freq " << c->sample_rate << " "
+		  << av_get_sample_fmt_name( c->sample_fmt ) );
+		   
 	
         /* initialize the resampling context */
         if ((swr_init(swr_ctx)) < 0) {
-            fprintf(stderr, "Failed to initialize the resampling context\n");
-            exit(1);
+           LOG_ERROR( _("Failed to initialize the resampling context") );
+	   return false;
         }
     }
 
@@ -3288,7 +3309,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 						 src_nb_samples, 
 						 aformat, 0);
     if (ret < 0) {
-        LOG_ERROR("Could not allocate source samples\n");
+       LOG_ERROR( _("Could not allocate source samples") );
         return false;
     }
 
@@ -3305,7 +3326,8 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 					     c->sample_fmt, 0);
     if ( ret < 0 )
     {
-       LOG_ERROR( "Could not allocate destination samples" );
+       LOG_ERROR( _("Could not allocate destination samples") );
+       return false;
     }
     
     assert( dst_samples_data[0] != NULL );
@@ -3410,16 +3432,16 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
             dst_samples_size = av_samples_get_buffer_size(NULL, c->channels, 
    							  dst_nb_samples,
                                                           c->sample_fmt, 0);
-      }
-
+	 }
+	 
 	 /* convert to destination format */
 	 assert( dst_nb_samples == src_nb_samples );
 	 ret = swr_convert(swr_ctx,
 			   dst_samples_data, dst_nb_samples,
 			   (const uint8_t **)src_samples_data, src_nb_samples);
 	 if (ret < 0) {
-            fprintf(stderr, "Error while converting\n");
-            exit(1);
+            LOG_ERROR( _("Error while converting") );
+	    return;
 	 }
 
       } else {
@@ -3433,9 +3455,9 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
       frame->nb_samples     = c->frame_size;
-      frame->format         = c->sample_fmt;
-      frame->channels       = c->channels;
-      frame->channel_layout = c->channel_layout;
+      // frame->format         = c->sample_fmt;
+      // frame->channels       = c->channels;
+      // frame->channel_layout = c->channel_layout;
 
       assert( dst_samples_data[0] != NULL );
       assert( dst_samples_size != 0 );
