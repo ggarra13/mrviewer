@@ -51,6 +51,7 @@ class ViewerUI;
 
     enum AudioFormat
       {
+      kNoAudioFormat = 0,
       kU8 = 1,
       kS16LSB,
       kS16MSB,

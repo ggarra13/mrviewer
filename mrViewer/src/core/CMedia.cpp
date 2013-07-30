@@ -67,7 +67,7 @@ namespace {
 
 // #define DEBUG_SEEK
 // #define DEBUG_PACKETS
-#define DEBUG_VIDEO_PACKETS
+// #define DEBUG_VIDEO_PACKETS
 // #define DEBUG_STORES
 
 // #define DEBUG_DECODE
@@ -149,7 +149,7 @@ CMedia::CMedia() :
   _samples_per_sec( 0 ),
   _audio_buf_used( 0 ),
   _audio_channels( 0 ),
-  _audio_format( AudioEngine::kS16LSB ),
+  _audio_format( AudioEngine::kFloatLSB ),
   _audio_buf( NULL ),
   forw_ctx( NULL ),
   _audio_engine( NULL )
@@ -1301,7 +1301,6 @@ void CMedia::seek( const boost::int64_t f )
 
   _seek_req   = true;
   _seek_frame = f;
-  _expected = f - 2;
 
 
   if ( stopped() )

@@ -66,11 +66,11 @@ namespace {
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
 #endif
 
-// #define DEBUG_PACKETS
-// #define DEBUG_STORES
+//#define DEBUG_AUDIO_PACKETS
+//#define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
 // #define DEBUG_DECODE
-// #define DEBUG_SEEK
+//#define DEBUG_SEEK
 // #define DEBUG
 // #define DEBUG_AUDIO_SPLIT
 // #define DEBUG_SEEK_AUDIO_PACKETS
@@ -783,7 +783,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	      uint64_t  in_ch_layout = 
               get_valid_channel_layout(ctx->channel_layout, ctx->channels);
 	      
-	      if ( in_ch_layout == 0 ) in_ch_layout = AV_CH_LAYOUT_STEREO;
+	      if ( in_ch_layout == 0 ) 
+		 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
+							  ctx->channels);
+
+	      if ( in_ch_layout == 0 ) 
+		 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
+							  ctx->channels);
 
 	      av_get_channel_layout_string( buf, 256, ctx->channels, 
 					    in_ch_layout );
@@ -803,9 +809,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 		 _audio_channels = ctx->channels;
 
 
-	      out_ch_layout = get_valid_channel_layout(out_ch_layout,
-						       out_channels);
-	      if ( out_ch_layout == 0 ) out_ch_layout = AV_CH_LAYOUT_STEREO;
 	      av_get_channel_layout_string( buf, 256, out_channels, 
 					    out_ch_layout );
 
@@ -927,7 +930,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && (!_audio.empty()) )
     {
-       ptsframe = _audio_last_frame + 1;
+       ptsframe = _audio_last_frame;
       // assert( ptsframe <= last_frame() );
     }
 
@@ -1029,7 +1032,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   SCOPED_LOCK( _audio_mutex );
 
-  boost::int64_t last = audio_frame;
+  boost::int64_t last = frame;
 
   unsigned int bytes_per_frame = audio_bytes_per_frame();
   assert( bytes_per_frame != 0 );
@@ -1554,18 +1557,16 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   _audio_packets.pop_front();  // pop seek/preroll begin packet
 
   DecodeStatus got_audio = kDecodeMissingFrame;
-  boost::int64_t last;
+  boost::int64_t last = frame;
 
   assert( _audio_buf_used == 0 );
 
   {
     AVPacket& pkt = _audio_packets.front();
-    _audio_last_frame = get_frame( get_audio_stream(), pkt ) - 1;
+    _audio_last_frame = get_frame( get_audio_stream(), pkt );
   }
 
-  if ( _audio_last_frame <= last_frame() )
-     got_audio = kDecodeError;
-
+ 
   while ( !_audio_packets.empty() && !_audio_packets.is_seek() )
     {
       AVPacket& pkt = _audio_packets.front();
@@ -1613,11 +1614,11 @@ bool CMedia::in_audio_store( const boost::int64_t frame )
 
 CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 { 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DECODE");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DECODE");
 #endif
 
@@ -1723,12 +1724,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
   debug_audio_stores(frame, "DECODE END");
 #endif
 
-  // if ( got_audio )
-  // {
-  //    bool ok = in_audio_store( frame );
-  //    if ( ok ) return kDecodeOK;
-  //    return kDecodeMissingFrame;
-  // }
 
   return got_audio;
 }
@@ -1737,8 +1732,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 
 void CMedia::do_seek()
 {
-  if ( _dts == _seek_frame ) return;
-
   _dts = _seek_frame;
 
   bool got_audio = !has_audio();
@@ -1747,12 +1740,11 @@ void CMedia::do_seek()
     {
        got_audio = in_audio_store( _seek_frame );
     }
-  
+
   if ( !got_audio && _seek_frame != _expected )
   {
      clear_packets();
-     _expected = _dts - 1;
-     
+    
      seek_to_position( _seek_frame );
      
      SCOPED_LOCK( _audio_mutex ); // needed
@@ -1786,8 +1778,15 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 
   std::cerr << name() << " S:" << _frame << " D:" << _dts 
 	    << " A:" << frame << " " << routine << " audio stores #"
-	    << _audio.size() << ": "
-	    << std::endl;
+	    << _audio.size() << ": ";
+
+  if ( iter != last )
+  {
+     std::cerr << (*iter)->frame() << "-" << (*(last-1))->frame();
+  }
+
+  std::cerr << std::endl;
+
 #ifdef DEBUG_AUDIO_STORES_DETAIL
   for ( ; iter != last; ++iter )
     {
