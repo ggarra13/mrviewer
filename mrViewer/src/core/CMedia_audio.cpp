@@ -930,7 +930,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && (!_audio.empty()) )
     {
-       ptsframe = _audio_last_frame;
+       ptsframe = _audio_last_frame + 1;
       // assert( ptsframe <= last_frame() );
     }
 
@@ -1032,7 +1032,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   SCOPED_LOCK( _audio_mutex );
 
-  boost::int64_t last = frame;
+  boost::int64_t last = audio_frame;
 
   unsigned int bytes_per_frame = audio_bytes_per_frame();
   assert( bytes_per_frame != 0 );
