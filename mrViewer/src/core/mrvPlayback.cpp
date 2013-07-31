@@ -301,7 +301,7 @@ void audio_thread( PlaybackData* data )
    // delete the data (we don't need it anymore)
    delete data;
 
-   int64_t frame = img->audio_frame();
+   int64_t frame = img->frame();
    
 
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
@@ -390,7 +390,6 @@ void audio_thread( PlaybackData* data )
       }
 
       img->find_audio(frame);
-
       img->audio_frame( frame );
       frame += step;
    }
