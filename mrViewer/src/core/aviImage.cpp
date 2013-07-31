@@ -351,7 +351,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   // static const AVRational base = { 1, AV_TIME_BASE };
   // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
-   boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
+   boost::int64_t offset = boost::int64_t( ((frame-1) * AV_TIME_BASE ) / fps() );
 
    int flags = 0;
    flags &= ~AVSEEK_FLAG_BYTE;
@@ -1720,7 +1720,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      else if ( pktframe == frame )
 	      {
 		 audio_bytes += pkt.size;
-		 // if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+		 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
 	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
@@ -1804,11 +1804,11 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   if ( !got_audio )
 	   {
 	      if ( pktframe > frame ) got_audio = true;
-	      // else if ( pktframe == frame )
-	      // {
-	      // 	 audio_bytes += pkt.size;
-	      // 	 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-	      // }
+	      else if ( pktframe == frame )
+	      {
+	      	 audio_bytes += pkt.size;
+	      	 if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
 	   
@@ -3231,6 +3231,9 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 						     c->channels );
     if ( c->channel_layout == 0 )
        c->channel_layout = get_valid_channel_layout( AV_CH_LAYOUT_5POINT1,
+						     c->channels );
+    if ( c->channel_layout == 0 )
+       c->channel_layout = get_valid_channel_layout( AV_CH_LAYOUT_7POINT1,
 						     c->channels );
 
 
