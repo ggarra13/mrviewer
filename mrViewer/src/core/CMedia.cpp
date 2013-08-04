@@ -1299,6 +1299,7 @@ void CMedia::seek( const boost::int64_t f )
   std::cerr << "------- SEEK " << f << std::endl;
 #endif
 
+
   _seek_req   = true;
   _seek_frame = f;
 
