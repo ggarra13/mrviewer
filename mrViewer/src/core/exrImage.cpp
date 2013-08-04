@@ -1101,11 +1101,11 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
      try 
      {
-
 	if ( _levelX > 0 || _levelY > 0 )
 	{
 	   return fetch_mipmap( frame );
 	}
+
 
 	InputFile in( sequence_filename(frame).c_str() );
 
@@ -1130,16 +1130,22 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 	FrameBuffer fb;
 	bool ok = find_channels( h, fb, frame );
-	if (!ok) return false;
-      
+	if (!ok) {
+	   IMG_ERROR( _("Could not locate channels in header") );
+	   return false;
+	}
+
 	in.setFrameBuffer(fb);
 
+	DBG( "read pixels" );
 	in.readPixels( dataWindow.min.y, dataWindow.max.y );
  
 	int dw = dataWindow.max.x - dataWindow.min.x + 1;
 	int dh = dataWindow.max.y - dataWindow.min.y + 1;
-	if ( dw <= 0 || dh <= 0 ) return false;
-	
+	if ( dw <= 0 || dh <= 0 ) {
+	   IMG_ERROR( _("Data window is negative") );
+	   return false;
+	}
 
 	if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
 	     dataWindow.max.x != dw || dataWindow.max.y != dh )

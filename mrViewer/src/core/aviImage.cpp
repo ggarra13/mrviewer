@@ -74,10 +74,10 @@ namespace
 //#define DEBUG_SEEK_VIDEO_PACKETS
 // #define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-// #define DEBUG_AUDIO_PACKETS
+//#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
-// #define DEBUG_AUDIO_STORES
+//#define DEBUG_AUDIO_STORES
 //#define DEBUG_STORES_DETAIL
 //#define DEBUG_SUBTITLE_STORES
 //#define DEBUG_SUBTITLE_RECT
@@ -906,14 +906,14 @@ bool aviImage::find_image( const boost::int64_t frame )
 	    _hires = _images.back();
 
 	    if ( _hires->frame() != frame )
-	       IMG_WARNING( N_("find_image: ") << frame 
+	       IMG_WARNING( N_("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
 	    refresh();
 	  }
 	else
 	  {
-	     IMG_ERROR( "find_image: " << frame << _(" not found") );
+	     IMG_ERROR( "find_image: frame " << frame << _(" not found") );
 	  }
 	return false;
       }
@@ -1388,7 +1388,8 @@ void aviImage::populate()
 	}
 
       
-      find_image( _frameStart );
+      if ( has_picture() && !_acontext )
+	 find_image( _frameStart );
     }
   
 
@@ -1708,8 +1709,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   }
 	   else
 	   {
-	      if ( pktframe <= last_frame() ) 
-		 _audio_packets.push_back( pkt );
+	      _audio_packets.push_back( pkt );
 	      if ( !has_video() && pktframe > dts ) dts = pktframe;
 	   }
 	   
@@ -2306,6 +2306,8 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 void aviImage::do_seek()
 {
 
+
+   DBG( "do_seek" );
   _dts = _seek_frame;
 
   bool got_video = !has_video();
@@ -2322,25 +2324,33 @@ void aviImage::do_seek()
        got_audio = in_audio_store( _seek_frame );
     }
 
-
-  if ( _seek_frame != _expected || !got_audio || !got_video )
+  if ( !got_audio || !got_video )
   {
+     DBG( "do_seek" );
      clear_packets();
 
+   DBG( "do_seek" );
      seek_to_position( _seek_frame );
   }
+
+   DBG( "do_seek" );
 
   // Seeking done, turn flag off
   _seek_req = false;
 
   if ( stopped() )
     {
-       if ( has_audio() )
+   DBG( "do_seek" );
+
+       if ( has_audio() && !got_audio )
        {
-	  decode_audio( _seek_frame );
+	  DecodeStatus status = decode_audio( _seek_frame );
+	  if ( status != kDecodeOK )
+	     IMG_ERROR( "Decode audio error " << _seek_frame 
+			<< " status: " << status );
        }
        
-       if ( has_video() )
+       if ( has_video() && !got_video )
        {
 	  decode_video( _seek_frame );
 	  find_image( _seek_frame );
@@ -2357,13 +2367,6 @@ void aviImage::do_seek()
       debug_video_stores(_seek_frame, "doseek" );
 #endif
 
-#ifdef DEBUG_AUDIO_PACKETS
-      debug_audio_packets( _seek_frame, "doseek" );
-#endif
-
-#ifdef DEBUG_AUDIO_STORES
-      debug_audio_stores(_seek_frame, "doseek" );
-#endif
 
     }
 
@@ -2389,7 +2392,6 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );
 
-  unsigned y,u,v;
   unsigned r,g,b,a;
   ImagePixel yuv, rgb;
 
@@ -3208,6 +3210,7 @@ static AVStream *add_audio_stream(AVFormatContext* oc,
 
     /* put sample parameters */
     c->sample_fmt = AV_SAMPLE_FMT_S16;
+    // c->sample_fmt = AV_SAMPLE_FMT_FLTP;
 
     if (!check_sample_fmt(*codec, c->sample_fmt)) {
        LOG_ERROR( _("Encoder does not support ") <<

@@ -62,7 +62,7 @@ namespace mrv {
 
     virtual boost::int64_t wait_image();
 
-    virtual bool    find_image( const boost::int64_t frame );
+    virtual bool find_image( const boost::int64_t frame );
 
     virtual boost::uint64_t video_pts() { 
        return frame2pts( get_video_stream(), _frame ); 
