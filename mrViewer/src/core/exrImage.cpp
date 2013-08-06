@@ -1137,7 +1137,6 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 	in.setFrameBuffer(fb);
 
-	DBG( "read pixels" );
 	in.readPixels( dataWindow.min.y, dataWindow.max.y );
  
 	int dw = dataWindow.max.x - dataWindow.min.x + 1;

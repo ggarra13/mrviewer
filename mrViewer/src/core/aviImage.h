@@ -74,6 +74,8 @@ namespace mrv {
 
     virtual void video_stream( int x );
 
+    virtual AVStream* get_video_stream() const;
+
     virtual const video_info_t& video_info( unsigned int i ) const
     {
       assert( i < _video_info.size() );
@@ -185,7 +187,6 @@ namespace mrv {
     void limit_video_store( const boost::int64_t frame );
     void limit_subtitle_store( const boost::int64_t frame );
 
-    virtual AVStream* get_video_stream() const;
     virtual bool seek_to_position( const boost::int64_t frame );
     int video_stream_index() const;
        mrv::image_type_ptr allocate_image(const boost::int64_t& frame,

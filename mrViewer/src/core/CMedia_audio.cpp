@@ -1751,11 +1751,9 @@ void CMedia::do_seek()
      
   }
 
-  _frame = _seek_frame;
 
   if ( stopped() )
   {
-     fetch( _frame );
   
      if ( has_audio() )
      {
@@ -1766,6 +1764,8 @@ void CMedia::do_seek()
 
   // Seeking done, turn flag off
   _seek_req = false;
+
+  find_image( _seek_frame );
 
 }
 
