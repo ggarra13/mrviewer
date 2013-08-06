@@ -67,7 +67,7 @@ namespace {
 
 // #define DEBUG_SEEK
 // #define DEBUG_PACKETS
-// #define DEBUG_VIDEO_PACKETS
+#define DEBUG_VIDEO_PACKETS
 // #define DEBUG_STORES
 
 // #define DEBUG_DECODE
@@ -1677,16 +1677,22 @@ unsigned int CMedia::max_video_frames()
 
 void CMedia::loop_at_start( const boost::int64_t frame )
 {
-   _video_packets.loop_at_start( frame );
+   if ( has_picture() )
+   {
+      _video_packets.loop_at_start( frame );
+      _video_packets.cond().notify_one();
+   }
 
    if ( number_of_audio_streams() > 0 )
    {
       _audio_packets.loop_at_start( frame );
+      _audio_packets.cond().notify_one();
    }
    
   if ( number_of_subtitle_streams() > 0 )
   {
      _subtitle_packets.loop_at_start( frame );
+     _subtitle_packets.cond().notify_one();
   }
 }
 
@@ -1694,16 +1700,22 @@ void CMedia::loop_at_start( const boost::int64_t frame )
 
 void CMedia::loop_at_end( const boost::int64_t frame )
 {
-   _video_packets.loop_at_end( frame );
+   if ( has_picture() )
+   {
+      _video_packets.loop_at_end( frame );
+      _video_packets.cond().notify_one();
+   }
 
   if ( number_of_audio_streams() > 0 )
     {
        _audio_packets.loop_at_end( frame );
+       _audio_packets.cond().notify_one();
     }
 
   if ( number_of_subtitle_streams() > 0 )
     {
        _subtitle_packets.loop_at_end( frame );
+       _subtitle_packets.cond().notify_one();
     }
 }
 
@@ -2015,12 +2027,19 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
   mrv::PacketQueue::const_iterator last = _video_packets.end();
   std::cerr << name() << " S:" << _frame << " D:" << _dts << " V:" << frame 
 	    << " " << routine << " video packets #" 
-	    << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): "
-	    << std::endl;
+	    << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): ";
+
   if ( iter == last )
   {
-     std::cerr << "***EMPTY***";
+     std::cerr << std::endl << "***EMPTY***";
   }
+  else
+  {
+     std::cerr << pts2frame( get_video_stream(), (*iter).dts ) 
+	       << "-" << pts2frame( get_video_stream(), (*(last-1)).dts );
+  }
+
+  std::cerr << std::endl;
 
 #ifdef DEBUG_VIDEO_PACKETS
   bool in_preroll = false;

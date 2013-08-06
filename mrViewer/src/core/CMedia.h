@@ -669,6 +669,10 @@ namespace mrv {
     void seek_request( bool b ) { _seek_req = b; }
     bool seek_request()         { return _seek_req; }
 
+    // Convert a frame into stream's pts
+    boost::uint64_t frame2pts( const AVStream* stream,
+			       const boost::int64_t frame ) const;
+
     virtual void do_seek();
 
     DecodeStatus decode_audio( boost::int64_t& frame );
@@ -701,6 +705,8 @@ namespace mrv {
     
     double audio_clock() const { return _audio_clock; }
     
+    virtual AVStream* get_video_stream() const { return NULL; } ;
+
     boost::int64_t video_pts() const { return _video_pts; }
     boost::int64_t audio_pts() const { return _audio_pts; }
     
@@ -817,9 +823,6 @@ namespace mrv {
     void audio_shutdown();
 
 
-    // Convert a frame into stream's pts
-    boost::uint64_t frame2pts( const AVStream* stream,
-			       const boost::int64_t frame ) const;
 
        // Extract frame from pts or dts
     boost::int64_t get_frame( const AVStream* s, const AVPacket& pkt );
@@ -835,7 +838,6 @@ namespace mrv {
 
     int audio_stream_index() const;
     AVStream* get_audio_stream() const;
-    virtual AVStream* get_video_stream() const { return NULL; } ;
 
     void fetch_audio( const boost::int64_t frame );
     void populate_audio();

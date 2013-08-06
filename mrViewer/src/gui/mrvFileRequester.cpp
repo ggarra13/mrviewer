@@ -395,6 +395,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
       }
    }
 
+
    if ( open_movie )
    {
       aviImage::close_movie();
