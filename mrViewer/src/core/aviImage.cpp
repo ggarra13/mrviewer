@@ -353,7 +353,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   // static const AVRational base = { 1, AV_TIME_BASE };
   // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
-   boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
+   boost::int64_t offset = boost::int64_t( ((frame-1) * AV_TIME_BASE ) / fps() );
 
    int flags = 0;
    flags &= ~AVSEEK_FLAG_BYTE;
@@ -1564,7 +1564,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
      if (eof) {
 	if (!got_video && video_stream_index() >= 0) {
-	   std::cerr << "add eof" << std::endl;
 	   av_init_packet(&pkt);
 	   pkt.data = NULL;
 	   pkt.size = 0;
@@ -1592,8 +1591,9 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
      {
 	if ( error == AVERROR_EOF )
 	{
+	   eof = true;
 	   counter++;
-	   if ( counter >= _frame_offset ) {
+	   if ( counter > _frame_offset ) {
 	      if ( is_seek )
 	      {
 		 if ( !got_video    ) _video_packets.seek_end(vpts);
@@ -1602,7 +1602,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      }
 	      break;
 	   }
-	   eof = true;
 	   continue;
 	}
 	int err = _context->pb ? _context->pb->error : 0;
