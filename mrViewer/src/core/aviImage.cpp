@@ -416,20 +416,20 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   bool got_video = !has_video();
   bool got_subtitle = !has_subtitle();
 
-  if ( !got_video )
-    {
-      got_video = in_video_store( frame );
-    }
+  // if ( !got_video )
+  //   {
+  //     got_video = in_video_store( frame );
+  //   }
 
-  if ( !got_audio )
-    {
-      got_audio = in_audio_store( frame );
-    }
+  // if ( !got_audio )
+  //   {
+  //     got_audio = in_audio_store( frame );
+  //   }
 
-  if ( !got_subtitle )
-    {
-      got_subtitle = in_subtitle_store( frame );
-    }
+  // if ( !got_subtitle )
+  //   {
+  //     got_subtitle = in_subtitle_store( frame );
+  //   }
 
 
   boost::int64_t vpts = 0, apts = 0, spts = 0;
@@ -477,6 +477,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
   debug_audio_packets(frame);
 #endif
+
 
   boost::int64_t dts = queue_packets( frame, true, got_video,
 				      got_audio, got_subtitle );
@@ -1594,7 +1595,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   eof = true;
 	   counter++;
 	   if ( counter > _frame_offset ) {
-	      if ( is_seek )
+	      if ( is_seek || playback() == kBackwards )
 	      {
 		 if ( !got_video    ) _video_packets.seek_end(vpts);
 		 if ( !got_audio    ) _audio_packets.seek_end(apts);
@@ -1641,7 +1642,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( playback() == kBackwards )
 	{
 	   packets_added++;
-	   if ( pktframe <= frame+1 )
+	   if ( pktframe <= frame )
 	      _video_packets.push_back( pkt );
 	   if ( pktframe < dts ) dts = pktframe;
 	}
@@ -1676,7 +1677,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 #endif
 	continue;
      }
-     else if ( has_subtitle() && pkt.stream_index == subtitle_stream_index() )
+     else if ( has_subtitle()  &&
+	       pkt.stream_index == subtitle_stream_index() )
      {
 	boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
 	if ( playback() == kBackwards )
@@ -1843,24 +1845,23 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
 
-  if ( !got_audio )
-  {
-     got_audio = in_audio_store( frame );
-  }
+  // if ( !got_audio )
+  // {
+  //    got_audio = in_audio_store( frame );
+  // }
 
-  if ( !got_video )
-  {
-     got_video = in_video_store( frame );
-  }
+  // if ( !got_video )
+  // {
+  //    got_video = in_video_store( frame );
+  // }
 
-  if ( !got_subtitle )
-  {
-     got_subtitle = in_subtitle_store( frame );
-  }
+  // if ( !got_subtitle )
+  // {
+  //    got_subtitle = in_subtitle_store( frame );
+  // }
 
   if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
     {
-       clear_packets();
        bool ok = seek_to_position( frame );
        if ( !ok )
 	  IMG_ERROR("seek_to_position: Could not seek to frame " 
@@ -1889,7 +1890,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 
-    
+
   boost::int64_t dts = queue_packets( frame, false, got_video, 
 				      got_audio, got_subtitle);
 
@@ -2118,12 +2119,12 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_preroll() )
 	{
-	  AVPacket& pkt = _video_packets.front();
+	   // this is needed here to restore frames in storage
+	   bool ok = in_video_store( frame );
+	   if ( ok ) return kDecodeOK;
 
-	  bool ok = in_video_store( frame );
-	  if ( ok ) return kDecodeOK;
-
-	  return handle_video_packet_seek( frame, false );
+	   got_video = handle_video_packet_seek( frame, false );
+	   continue;
 	}
       else if ( _video_packets.is_loop_start() )
 	{
@@ -2132,13 +2133,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  if ( frame <= pkt.dts )
 	    {
 	      flush_video();
-	      _video_packets.pop_front();
-	      return kDecodeLoopStart;
 	    }
 
-	  bool ok = in_video_store( frame );	   
-	  if ( ok ) return kDecodeOK;
-	  return kDecodeError;
+	  _video_packets.pop_front();
+	  return kDecodeLoopStart;
 	}
       else if ( _video_packets.is_loop_end() )
 	{
@@ -2147,13 +2145,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  if ( frame >= pkt.dts )
 	    {
 	      flush_video();
-	      _video_packets.pop_front();
-	      return kDecodeLoopEnd;
 	    }
 
-	  bool ok = in_video_store( frame );	   
-	  if ( ok ) return kDecodeOK;
-	  return kDecodeError;
+	  _video_packets.pop_front();
+	  return kDecodeLoopEnd;
 	}
       else
 	{
@@ -2248,7 +2243,7 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
 	       << (*(last-1))->frame() 
 	       << std::endl;
 
-#ifdef DEBUG_VIDEO_STORE
+#ifdef DEBUG_STORES_DETAIL
   for ( ; iter != last; ++iter )
     {
       boost::int64_t f = (*iter)->frame();
@@ -2297,11 +2292,12 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
       if ( _subtitle_packets.is_seek( *iter ) )
 	{
 	  if ( in_preroll )
-	    {
-	      std::cerr << "[PREROLL END: " << f << "]";
-	      in_preroll = false;
-	    }
-	  else if ( in_seek )
+	     {
+	       std::cerr << "[PREROLL END: " << f << "]";
+	       in_preroll = false;
+	     }
+	  else 
+	     if ( in_seek )
 	    {
 	      std::cerr << "<SEEK END:" << f << ">";
 	      in_seek = false;
@@ -2335,21 +2331,11 @@ void aviImage::do_seek()
   _dts = _seek_frame;
 
   bool got_video = !has_video();
-
-  if ( !got_video )
-    {
-       got_video = in_video_store( _seek_frame );
-    }
-
   bool got_audio = !has_audio();
-
-  if ( !got_audio )
-    {
-       got_audio = in_audio_store( _seek_frame );
-    }
 
   if ( !got_audio || !got_video )
   {
+     clear_packets();
      fetch( _seek_frame );
   }
 
@@ -2841,6 +2827,8 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 
 void aviImage::loop_at_start( const boost::int64_t frame )
 {
+   _dts = last_frame();
+
   if ( has_video() || is_sequence() )
     {
       _video_packets.loop_at_start( frame );
@@ -2864,22 +2852,24 @@ void aviImage::loop_at_start( const boost::int64_t frame )
 
 void aviImage::loop_at_end( const boost::int64_t frame )
 {
+   _dts = first_frame();
+
    if ( has_picture() )
    {
       _video_packets.loop_at_end( frame );
-      _video_packets.cond().notify_one();
+      _video_packets.cond().notify_all();
    }
 
   if ( has_audio() )
     {
       _audio_packets.loop_at_end( frame );
-      _audio_packets.cond().notify_one();
+      _audio_packets.cond().notify_all();
     }
 
   if ( has_subtitle() )
     {
       _subtitle_packets.loop_at_end( frame );
-      _subtitle_packets.cond().notify_one();
+      _subtitle_packets.cond().notify_all();
     }
 }
 

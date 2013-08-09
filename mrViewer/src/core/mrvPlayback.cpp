@@ -71,10 +71,11 @@ namespace mrv {
 
 
   enum EndStatus {
-    kEndStop,
-    kEndNextImage,
-    kEndChangeDirection,
-    kEndLoop,
+  kEndIgnore,
+  kEndStop,
+  kEndNextImage,
+  kEndChangeDirection,
+  kEndLoop,
   };
 
 
@@ -97,7 +98,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 {
    mrv::ImageView* view = uiMain->uiView;
 
-   EndStatus status = kEndStop;
+   EndStatus status = kEndIgnore;
    CMedia* next = NULL;
    
    boost::int64_t offset = timeline->offset( img );
@@ -119,6 +120,7 @@ EndStatus handle_loop( boost::int64_t& frame,
    {
       case CMedia::kDecodeLoopEnd:
 	 {
+
 	    if ( timeline->edl() )
 	    {
 	       boost::int64_t f = frame;
@@ -155,24 +157,27 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	    }
 
-	    if ( loop == ImageView::kLooping )
+	    if ( frame > last )
 	    {
-	       frame = first;
-	       status = kEndLoop;
-	    }
-	    else if ( loop == ImageView::kPingPong )
-	    {
-	       frame = last;
-	       step  = -1;
-	       view->playback( ImageView::kBackwards );
-	       img->frame( frame );
-	       img->playback( CMedia::kBackwards );
-	       status = kEndChangeDirection;
-	    }
-	    else
-	    {
-	       view->playback( ImageView::kStopped );
-	       img->playback( CMedia::kStopped );
+	       if ( loop == ImageView::kLooping )
+	       {
+		  frame = first;
+		  status = kEndLoop;
+	       }
+	       else if ( loop == ImageView::kPingPong )
+	       {
+		  frame = last;
+		  step  = -1;
+		  view->playback( ImageView::kBackwards );
+		  img->frame( frame );
+		  img->playback( CMedia::kBackwards );
+		  status = kEndChangeDirection;
+	       }
+	       else
+	       {
+		  view->playback( ImageView::kStopped );
+		  img->playback( CMedia::kStopped );
+	       }
 	    }
 	    break;
 	 }
@@ -213,24 +218,27 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	    }
 
-	    if ( loop == ImageView::kLooping )
+	    if ( frame < first )
 	    {
-	       frame = last;
-	       status = kEndLoop;
-	    }
-	    else if ( loop == ImageView::kPingPong )
-	    {
-	       frame = first;
-	       step = 1;
-	       view->playback( ImageView::kForwards );
-	       img->frame( frame );
-	       img->playback( CMedia::kForwards );
-	       status = kEndChangeDirection;
-	    }
-	    else
-	    {
-	       img->playback( CMedia::kStopped );
-	       view->playback( ImageView::kStopped );
+	       if ( loop == ImageView::kLooping )
+	       {
+		  frame = last;
+		  status = kEndLoop;
+	       }
+	       else if ( loop == ImageView::kPingPong )
+	       {
+		  frame = first;
+		  step = 1;
+		  view->playback( ImageView::kForwards );
+		  img->frame( frame );
+		  img->playback( CMedia::kForwards );
+		  status = kEndChangeDirection;
+	       }
+	       else
+	       {
+		  img->playback( CMedia::kStopped );
+		  view->playback( ImageView::kStopped );
+	       }
 	    }
 	    break;
 	 }
@@ -271,14 +279,14 @@ CMedia::DecodeStatus check_loop( int64_t& frame,
       last = timeline->global_to_local( last );
       first = timeline->global_to_local( first );
    }
-     
+
    if ( f > last )
    {
       img->loop_at_end( last );
       return CMedia::kDecodeLoopEnd;
    }
    else if ( f < first )
-   {	
+   {
       img->loop_at_start( first );
       return CMedia::kDecodeLoopStart;
    }
@@ -509,19 +517,16 @@ void video_thread( PlaybackData* data )
       img->wait_image();
 
       // img->debug_video_packets( frame, "PLAYBACK" );
+      // img->debug_video_stores( frame, "PLAYBACK" );
 
       int step = (int) img->playback();
       if ( step == 0 ) break;
 
       CMedia::DecodeStatus status;
 
-      if ( frame > img->last_frame() )
-	 status = CMedia::kDecodeLoopEnd;
-      else if ( frame < img->first_frame() )
-	 status = CMedia::kDecodeLoopStart;
-      else
+      {
 	 status = img->decode_video( frame );
-
+      }
 
       switch( status )
       {
@@ -543,7 +548,10 @@ void video_thread( PlaybackData* data )
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
-	       handle_loop( frame, step, img, uiMain, timeline, status );
+
+	       EndStatus end = handle_loop( frame, step, img, uiMain, 
+					    timeline, status );
+
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
 	       barrier->count( barrier_thread_count( img ) );
@@ -612,7 +620,6 @@ void video_thread( PlaybackData* data )
 
 	 timeline->value( double( f ) );
       }
-
 
       frame += step;
    }
