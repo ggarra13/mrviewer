@@ -216,10 +216,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
   bool got_audio   = !has_audio();
   
-  if ( !got_audio )
-    {
-      got_audio = in_audio_store( frame );
-    }
 
   boost::int64_t apts = 0;
 
@@ -337,7 +333,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
   _dts = dts;
   _expected = dts + 1;
-  // ctx->hurry_up = 0;
   _seek_req = false;
 
 
