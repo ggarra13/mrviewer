@@ -1219,20 +1219,7 @@ std::string CMedia::name() const
 std::string CMedia::directory() const
 {
   fs::path file = fs::path( fileroot() );
-  std::string path( file.branch_path().string() );
-  char buf[1024];
-  const char* const p = path.c_str();
-  if ( p[0] != '/' && p[1] != ':' ) {
-    file = fs::path( getcwd(buf,1024) );
-    std::string f = file.string();
-    f += "/";
-    f += path;
-
-    if ( f.substr( f.length()-1, 1 ) == "/" )
-       f = f.substr(0, f.length()-1 );
-
-    path = f;
-  }
+  std::string path = fs::canonical( fs::absolute( file.branch_path() ) ).string();
   return path;
 }
 
