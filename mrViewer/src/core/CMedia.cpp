@@ -1219,7 +1219,8 @@ std::string CMedia::name() const
 std::string CMedia::directory() const
 {
   fs::path file = fs::path( fileroot() );
-  std::string path = fs::canonical( fs::absolute( file.branch_path() ) ).string();
+  file = fs::absolute( file.branch_path() );
+  std::string path = fs::canonical( file ).string();
   return path;
 }
 
