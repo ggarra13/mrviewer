@@ -140,12 +140,15 @@ namespace mrv {
 	  for (unsigned int x = 0; x < w; ++x )
 	    {
 	      CMedia::PixelType fp = pic->pixel( x, y );
-	      fp.r = Imath::Math<float>::pow( fp.r, gamma );
-	      fp.g = Imath::Math<float>::pow( fp.g, gamma );
-	      fp.b = Imath::Math<float>::pow( fp.b, gamma );
-	      uchar r = (uchar)Imath::clamp(fp.r * 255.0f, 0.f, 255.f);
-	      uchar g = (uchar)Imath::clamp(fp.g * 255.0f, 0.f, 255.f);
-	      uchar b = (uchar)Imath::clamp(fp.b * 255.0f, 0.f, 255.f);
+	      if ( gamma != 1.0f )
+	      {
+		 fp.r = Imath::Math<float>::pow( fp.r, gamma );
+		 fp.g = Imath::Math<float>::pow( fp.g, gamma );
+		 fp.b = Imath::Math<float>::pow( fp.b, gamma );
+	      }
+	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
+	      uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
+	      uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
 	      thumbnail_pixel( ptr, pixeltype, r, g, b );
 	    }
 	}

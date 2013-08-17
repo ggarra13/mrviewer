@@ -1762,6 +1762,8 @@ void CMedia::do_seek()
 
   find_image( _seek_frame );
 
+  // Queue thumbnail for update
+  image_damage( image_damage() | kDamageThumbnail );
 }
 
 
