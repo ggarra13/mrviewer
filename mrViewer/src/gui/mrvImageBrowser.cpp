@@ -2497,13 +2497,16 @@ void ImageBrowser::load( const stringArray& files,
 
     mrv::MediaList::iterator i = reel->images.begin();
     mrv::MediaList::iterator e = reel->images.end();
-    for ( ; i != e; ++i )
+    int h = 0;
+    for ( ; i != e; ++i, ++h )
       {
-	mrv::media m = *i;
+	 Element* elem = (Element*) child( h );
+	mrv::media& m = *i;
 	CMedia* img = m->image();
 	if ( img->image_damage() & CMedia::kDamageThumbnail )
 	  {
 	    m->create_thumbnail();
+	    m->thumbnail()->draw(0, elem->y() );
 	  }
       }
 

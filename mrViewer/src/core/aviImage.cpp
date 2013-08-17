@@ -2376,7 +2376,8 @@ void aviImage::do_seek()
       debug_video_stores(_seek_frame, "doseek" );
 #endif
 
-
+      // Queue thumbnail for update
+      image_damage( image_damage() | kDamageThumbnail );
     }
 
 }
