@@ -2828,7 +2828,6 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 
 void aviImage::loop_at_start( const boost::int64_t frame )
 {
-   _dts = last_frame();
 
   if ( has_video() || is_sequence() )
     {
@@ -2853,7 +2852,6 @@ void aviImage::loop_at_start( const boost::int64_t frame )
 
 void aviImage::loop_at_end( const boost::int64_t frame )
 {
-   _dts = first_frame();
 
    if ( has_picture() )
    {
