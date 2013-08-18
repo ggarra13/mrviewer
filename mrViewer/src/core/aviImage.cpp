@@ -2858,19 +2858,19 @@ void aviImage::loop_at_end( const boost::int64_t frame )
    if ( has_picture() )
    {
       _video_packets.loop_at_end( frame );
-      _video_packets.cond().notify_all();
+      _video_packets.cond().notify_one();
    }
 
   if ( has_audio() )
     {
       _audio_packets.loop_at_end( frame );
-      _audio_packets.cond().notify_all();
+      _audio_packets.cond().notify_one();
     }
 
   if ( has_subtitle() )
     {
       _subtitle_packets.loop_at_end( frame );
-      _subtitle_packets.cond().notify_all();
+      _subtitle_packets.cond().notify_one();
     }
 }
 
