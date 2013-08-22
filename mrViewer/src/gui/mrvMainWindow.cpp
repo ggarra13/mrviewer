@@ -117,11 +117,6 @@ namespace mrv {
    */
   int MainWindow::handle( int event )
   {
-    if ( event == fltk::ENTER )
-      {
-	 show(0, NULL);
-      }
-
     return fltk::Window::handle( event );
   }
 

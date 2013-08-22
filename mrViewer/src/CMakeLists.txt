@@ -18,7 +18,7 @@ FIND_PACKAGE( OpenEXRCTL  REQUIRED )    # for OpenEXRCTL color language add-ons
 FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
 FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
-FIND_PACKAGE( GLEW        REQUIRED )    # for command-line parsing
+FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 # FIND_PACKAGE( RLM         REQUIRED )    # for licensing
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
@@ -27,11 +27,10 @@ FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 # ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS )
 ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS )
 
-
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   ADD_DEFINITIONS( -DWIN32 -D_WIN32_WINNT=0x0501 ) 
   SET(OS_LIBRARIES
-    Winmm Dsound ws2_32 ${GLEW_LIBRARIES}
+    Winmm ws2_32 ${GLEW_LIBRARIES}
     )
   SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF -NODEFAULTLIB:LIBC -NODEFAULTLIB:libcpmtd -NODEFAULTLIB:LIBCPMT -NODEFAULTLIB:LIBCMT -NODEFAULTLIB:LIBCMTD" )
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-08-14 17:56-0300\n"
+"POT-Creation-Date: 2013-08-21 20:00-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,14 +17,14 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/aviImage.cpp:1509
+#: core/aviImage.cpp:1513
 msgid ""
 "\n"
 "\n"
 "Could not open file"
 msgstr ""
 
-#: core/CMedia_audio.cpp:503 core/aviImage.cpp:1200
+#: core/CMedia_audio.cpp:503 core/aviImage.cpp:1204
 msgid ""
 "\n"
 "\n"
@@ -38,7 +38,7 @@ msgid ""
 "Not a known codec "
 msgstr ""
 
-#: core/CMedia_audio.cpp:489 core/aviImage.cpp:1185
+#: core/CMedia_audio.cpp:489 core/aviImage.cpp:1189
 msgid ""
 "\n"
 "\n"
@@ -83,7 +83,7 @@ msgstr ""
 msgid " from "
 msgstr ""
 
-#: core/aviImage.cpp:915
+#: core/aviImage.cpp:919
 msgid " instead"
 msgstr ""
 
@@ -95,7 +95,7 @@ msgstr ""
 msgid " need "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1480 core/aviImage.cpp:920
+#: core/CMedia_audio.cpp:1479 core/aviImage.cpp:924
 msgid " not found"
 msgstr ""
 
@@ -103,7 +103,7 @@ msgstr ""
 msgid " not found in reel"
 msgstr ""
 
-#: core/aviImage.cpp:914
+#: core/aviImage.cpp:918
 msgid " not found, choosing "
 msgstr ""
 
@@ -120,7 +120,7 @@ msgstr ""
 msgid " used: "
 msgstr ""
 
-#: core/aviImage.cpp:936
+#: core/aviImage.cpp:940
 msgid " video frame, cache "
 msgstr ""
 
@@ -195,7 +195,7 @@ msgstr ""
 msgid "'."
 msgstr ""
 
-#: core/aviImage.cpp:937
+#: core/aviImage.cpp:941
 msgid ") cache size: "
 msgstr ""
 
@@ -369,11 +369,11 @@ msgstr ""
 msgid "Audio Streams"
 msgstr ""
 
-#: core/aviImage.cpp:3206
+#: core/aviImage.cpp:3209
 msgid "Audio codec not found"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1480
+#: core/CMedia_audio.cpp:1479
 msgid "Audio frame "
 msgstr ""
 
@@ -389,7 +389,7 @@ msgstr ""
 msgid "Audio/Detach Audio File"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1201
+#: core/CMedia_audio.cpp:1200
 msgid "Audios #"
 msgstr ""
 
@@ -397,7 +397,7 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:4231
+#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:4233
 msgid "B"
 msgstr ""
 
@@ -413,7 +413,7 @@ msgstr ""
 msgid "BackSpace"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1642
+#: gui/FLU/Flu_File_Chooser.cpp:1648
 msgid ""
 "Bad\n"
 "path"
@@ -562,23 +562,23 @@ msgstr ""
 msgid "Could not add video track #"
 msgstr ""
 
-#: core/aviImage.cpp:3074 core/aviImage.cpp:3213
+#: core/aviImage.cpp:3077 core/aviImage.cpp:3216
 msgid "Could not alloc stream"
 msgstr ""
 
-#: core/aviImage.cpp:3347
+#: core/aviImage.cpp:3350
 msgid "Could not allocate destination samples"
 msgstr ""
 
-#: core/aviImage.cpp:3447
+#: core/aviImage.cpp:3450
 msgid "Could not allocate dst samples"
 msgstr ""
 
-#: core/aviImage.cpp:2921
+#: core/aviImage.cpp:2924
 msgid "Could not allocate picture"
 msgstr ""
 
-#: core/aviImage.cpp:3330
+#: core/aviImage.cpp:3333
 msgid "Could not allocate source samples"
 msgstr ""
 
@@ -589,15 +589,15 @@ msgid ""
 "operation."
 msgstr ""
 
-#: core/aviImage.cpp:3562
+#: core/aviImage.cpp:3565
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 
-#: core/aviImage.cpp:3503
+#: core/aviImage.cpp:3506
 msgid "Could not encode audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:3494
+#: core/aviImage.cpp:3497
 msgid "Could not fill audio frame. Error: "
 msgstr ""
 
@@ -613,11 +613,11 @@ msgstr ""
 msgid "Could not find video '"
 msgstr ""
 
-#: core/aviImage.cpp:3374
+#: core/aviImage.cpp:3377
 msgid "Could not get audio frame "
 msgstr ""
 
-#: core/aviImage.cpp:3434
+#: core/aviImage.cpp:3437
 msgid "Could not get audio frame for encoding"
 msgstr ""
 
@@ -645,7 +645,7 @@ msgstr ""
 msgid "Could not locate channels in header"
 msgstr ""
 
-#: core/aviImage.cpp:3602
+#: core/aviImage.cpp:3605
 msgid "Could not open '"
 msgstr ""
 
@@ -653,7 +653,7 @@ msgstr ""
 msgid "Could not open any font of size "
 msgstr ""
 
-#: core/aviImage.cpp:3270
+#: core/aviImage.cpp:3273
 msgid "Could not open audio codec"
 msgstr ""
 
@@ -661,23 +661,23 @@ msgstr ""
 msgid "Could not open audio codec."
 msgstr ""
 
-#: core/CMedia_audio.cpp:1432
+#: core/CMedia_audio.cpp:1431
 msgid "Could not open audio driver"
 msgstr ""
 
-#: core/aviImage.cpp:3567
+#: core/aviImage.cpp:3570
 msgid "Could not open mpeg movie"
 msgstr ""
 
-#: core/aviImage.cpp:2913
+#: core/aviImage.cpp:2916
 msgid "Could not open video codec"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1298
+#: core/CMedia_audio.cpp:1297
 msgid "Could not read audio for frame "
 msgstr ""
 
-#: core/CMedia.cpp:1097 core/aviImage.cpp:398 core/aviImage.cpp:409
+#: core/CMedia.cpp:1097 core/aviImage.cpp:402 core/aviImage.cpp:413
 msgid "Could not seek to frame "
 msgstr ""
 
@@ -955,7 +955,7 @@ msgstr ""
 msgid "Edit Status"
 msgstr ""
 
-#: core/aviImage.cpp:3228
+#: core/aviImage.cpp:3231
 msgid "Encoder does not support "
 msgstr ""
 
@@ -967,23 +967,23 @@ msgstr ""
 msgid "Environment variable MRV_SHADER_PATH not found, using built-in shader."
 msgstr ""
 
-#: core/aviImage.cpp:3461
+#: core/aviImage.cpp:3464
 msgid "Error while converting"
 msgstr ""
 
-#: core/aviImage.cpp:3028
+#: core/aviImage.cpp:3031
 msgid "Error while encoding video frame"
 msgstr ""
 
-#: core/aviImage.cpp:3520
+#: core/aviImage.cpp:3523
 msgid "Error while writing audio frame"
 msgstr ""
 
-#: core/aviImage.cpp:3004
+#: core/aviImage.cpp:3007
 msgid "Error while writing raw frame"
 msgstr ""
 
-#: core/aviImage.cpp:3048
+#: core/aviImage.cpp:3051
 msgid "Error while writing video frame"
 msgstr ""
 
@@ -1007,7 +1007,7 @@ msgstr ""
 msgid "Exposure Time"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4229
+#: gui/mrvImageView.cpp:4231
 msgid "F"
 msgstr ""
 
@@ -1024,7 +1024,7 @@ msgstr ""
 msgid "FPS: %.2f"
 msgstr ""
 
-#: core/aviImage.cpp:3319
+#: core/aviImage.cpp:3322
 msgid "Failed to initialize the resampling context"
 msgstr ""
 
@@ -1355,7 +1355,7 @@ msgstr ""
 msgid "Invalid source profile/image pixel format"
 msgstr ""
 
-#: core/aviImage.cpp:974
+#: core/aviImage.cpp:978
 msgid "Invalid video stream "
 msgstr ""
 
@@ -1649,7 +1649,7 @@ msgstr ""
 msgid "No decoder found for audio stream. ID: "
 msgstr ""
 
-#: core/CMedia_audio.cpp:1200
+#: core/CMedia_audio.cpp:1199
 msgid "No memory for audio frame"
 msgstr ""
 
@@ -1677,13 +1677,13 @@ msgstr ""
 msgid "Normals"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1644
+#: gui/FLU/Flu_File_Chooser.cpp:1650
 msgid ""
 "Not\n"
 "Memory"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1647
+#: gui/FLU/Flu_File_Chooser.cpp:1653
 msgid ""
 "Not\n"
 "Readable"
@@ -1829,7 +1829,7 @@ msgstr ""
 msgid "Play Forwards X2  Speed"
 msgstr ""
 
-#: core/CMedia_audio.cpp:1442
+#: core/CMedia_audio.cpp:1441
 msgid "Playback of audio frame failed"
 msgstr ""
 
@@ -1913,22 +1913,22 @@ msgstr ""
 msgid "Range"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1300
+#: gui/FLU/Flu_File_Chooser.cpp:1306
 #, c-format
 msgid "Really delete '%s'?"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1313
+#: gui/FLU/Flu_File_Chooser.cpp:1319
 #, c-format
 msgid "Really delete these %d files?"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1294
+#: gui/FLU/Flu_File_Chooser.cpp:1300
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1308
+#: gui/FLU/Flu_File_Chooser.cpp:1314
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr ""
@@ -2157,7 +2157,7 @@ msgstr ""
 msgid "Supplemental Category"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4230
+#: gui/mrvImageView.cpp:4232
 msgid "T"
 msgstr ""
 
@@ -2218,7 +2218,7 @@ msgstr ""
 msgid "Toggle Top Bar"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:1637
+#: gui/FLU/Flu_File_Chooser.cpp:1643
 msgid "Too many symlinks"
 msgstr ""
 
@@ -2264,7 +2264,7 @@ msgstr ""
 msgid "Unknown bit depth"
 msgstr ""
 
-#: core/aviImage.cpp:1067
+#: core/aviImage.cpp:1071
 msgid "Unknown destination video frame format: "
 msgstr ""
 
@@ -2333,11 +2333,11 @@ msgstr ""
 msgid "Video Streams"
 msgstr ""
 
-#: core/aviImage.cpp:934
+#: core/aviImage.cpp:938
 msgid "Video Sync master frame "
 msgstr ""
 
-#: core/aviImage.cpp:2907 core/aviImage.cpp:3068
+#: core/aviImage.cpp:2910 core/aviImage.cpp:3071
 msgid "Video codec not found"
 msgstr ""
 

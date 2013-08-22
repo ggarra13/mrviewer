@@ -1015,8 +1015,10 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
 							frame, pkt );
-  if ( got_audio != kDecodeOK ) return got_audio;
-
+  if ( got_audio != kDecodeOK ) {
+     std::cerr << "******* ERROR AUDIO" << std::endl;
+     return got_audio;
+  }
 
   got_audio = kDecodeMissingFrame;
 
@@ -1056,27 +1058,25 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 			    bytes_per_frame );
 
 
-      if ( last >= frame ) got_audio = kDecodeOK;
+      if ( last >= frame )  got_audio = kDecodeOK;
+
 
 
 
       assert( bytes_per_frame <= _audio_buf_used );
       _audio_buf_used -= bytes_per_frame;
 
-      if ( bytes_per_frame > _audio_buf_used )
-      {
-	 store_audio( last, (boost::uint8_t*)_audio_buf + idx,
-		      bytes_per_frame + _audio_buf_used );
-	 _audio_buf_used = 0;
-      }
 
-      last += 1;
+
+
+      ++last;
     }
   
-#ifdef DEBUG_AUDIO_SPLIT
+#ifdef DEBUG
   if ( got_audio != kDecodeOK )
     {
       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
+		   << _(" last ") << last
 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
 		   << _(" need ") 
 		   << audio_bytes_per_frame() );
@@ -1084,18 +1084,14 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 #endif
 
 
-
-  if (_audio_buf_used > 0 )
+  if (_audio_buf_used > 0  )
     {
 
        //
        // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
 
-
-       assert( index + _audio_buf_used < _audio_max );
-       memmove( _audio_buf, _audio_buf + idx, _audio_buf_used );
-       
-
+       memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
+     
        // _audio_buf_used = _audio_max - index;
        // assert( _audio_buf_used % 16 == 0 );
     }
@@ -1310,7 +1306,7 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 	  if ( playback() == kBackwards )
 	  {
 	     // Only add packet if it comes before seek frame
-	     if ( pktframe <= frame+1 )  
+	     if ( pktframe <= frame )  
 		_audio_packets.push_back( pkt );
 	     if ( pktframe < dts ) dts = pktframe;
 	  }

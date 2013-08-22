@@ -2784,9 +2784,11 @@ int ImageView::handle(int event)
 {
   switch( event ) 
     {
-    case fltk::TIMEOUT:
-      timeout();
-      return 1;
+       case fltk::TIMEOUT:
+	  timeout();
+	  return 1;
+       case fltk::FOCUS:
+	  return 1;
     case fltk::ENTER:
       focus(this);
       load_list();

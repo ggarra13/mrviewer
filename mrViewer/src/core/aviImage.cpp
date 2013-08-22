@@ -141,10 +141,14 @@ aviImage::~aviImage()
 
 
 bool aviImage::test_filename( const char* buf )
-{
-   if ( strncmp( buf, "/dev/sr", 7 ) == 0 )
-      return true;
-   return false;
+{ 
+   AVFormatContext* ctx = NULL; 
+   int error = avformat_open_input( &ctx, buf, NULL, NULL );
+   if ( ctx )
+      avformat_close_input( &ctx );
+
+   if ( error <= 0 ) return false;
+   return true;
 }
 
 
@@ -1798,7 +1802,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
-	      if ( pktframe <= frame+1 ) _audio_packets.push_back( pkt );
+	      if ( pktframe <= frame ) _audio_packets.push_back( pkt );
 	   }
 	   else
 	   {
@@ -1931,12 +1935,14 @@ bool aviImage::frame( const boost::int64_t f )
 {
   //  if ( f == _dts ) return false;
 
-   if ( ( _video_packets.bytes() +  _audio_packets.bytes() + 
-   	  _subtitle_packets.bytes() > kMAX_QUEUE_SIZE ) // ||
+   if ( ( _video_packets.size() > kMIN_FRAMES &&
+	  _audio_packets.size() > kMIN_FRAMES &&
+	  ( _video_packets.bytes() +  _audio_packets.bytes() + 
+	    _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  // ||
    	// (_audio_packets.bytes() > kMAX_AUDIOQ_SIZE)  ||
    	// (_video_packets.size() > kMIN_FRAMES) ||
    	// (_subtitle_packets.size() > kMIN_FRAMES) 
-	)
+	    ) ) )
     {
      return false;
     }

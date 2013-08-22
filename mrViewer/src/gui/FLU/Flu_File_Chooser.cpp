@@ -554,14 +554,20 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
 #else
   {
-//     char buf[1024];
-//     fltk::filename_expand( buf, 1024, "~/" );
     userHome = getenv("HOME");
     userDesktop = userHome + "/" + desktopTxt + "/";
     userDocs = "/tmp/";
   }
 #endif
-  configFilename = userHome + "/.Flu_File_Chooser.favorites";
+  configFilename = userHome + "/.fltk/filmaura/";
+
+#if ( defined WIN32 || defined MINGW ) && !defined CYGWIN
+  mkdir( configFilename.c_str() )
+#else
+  mkdir( configFilename.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+#endif
+
+  configFilename += "mrViewer.favorites";
 
   selectionType = type;
   filenameEnterCallback = filenameTabCallback = false;
