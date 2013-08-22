@@ -24,7 +24,6 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 PROJECT( mrViewer )
 
 
-
 IF( UNIX )
   SET( CMAKE_SYSTEM_LIBRARY_PATH )
   INCLUDE( Platform/UnixPaths )

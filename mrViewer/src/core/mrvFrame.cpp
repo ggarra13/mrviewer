@@ -226,7 +226,7 @@ const char* const VideoFrame::fmts[] = {
 	unsigned int xs = static_cast< unsigned int>( x1 );
 	unsigned int xt = std::min( xs + 1, _width - 1 );
 	float t = x1 - xs;
-	float s = 1 - t;
+	float s = 1.0f - t;
 
 	for (unsigned int y = 0; y < _height; ++y)
 	  {
@@ -274,7 +274,7 @@ const char* const VideoFrame::fmts[] = {
 	unsigned int ys = static_cast< unsigned int>( y1 );
 	unsigned int yt = std::min( ys + 1, _height - 1 );
 	float t = y1 - ys;
-	float s = 1 - t;
+	float s = 1.0f - t;
 
 	for (unsigned int x = 0; x < _width; ++x)
 	{

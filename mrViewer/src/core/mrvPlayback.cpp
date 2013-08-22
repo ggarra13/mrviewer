@@ -336,10 +336,6 @@ void audio_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
-      if ( frame > img->last_frame() )
-	 status = CMedia::kDecodeLoopEnd;
-      if ( frame < img->first_frame() )
-	 status = CMedia::kDecodeLoopStart;
       switch( status )
       {
 	 case CMedia::kDecodeError:
@@ -365,7 +361,6 @@ void audio_thread( PlaybackData* data )
 	 case  CMedia::kDecodeLoopStart:
 	    {
 	       CMedia::Barrier* barrier = img->loop_barrier();
-	       barrier->count( barrier_thread_count( img ) );
 	       // Wait until all threads loop and decode is restarted
 	       barrier->wait();
 	       continue;
@@ -460,7 +455,6 @@ void subtitle_thread( PlaybackData* data )
 	  case CMedia::kDecodeLoopStart:
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
-	    barrier->count( barrier_thread_count( img ) );
 	    barrier->wait();
 	    continue;
 	  }
@@ -554,7 +548,6 @@ void video_thread( PlaybackData* data )
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
-	       barrier->count( barrier_thread_count( img ) );
 	       barrier->wait();
 	       continue;
 	    }
@@ -572,8 +565,8 @@ void video_thread( PlaybackData* data )
       // // Calculate video-audio difference
       if ( img->has_audio() )
       {
-	 // double video_clock = img->video_pts();
-	 // double audio_clock = img->audio_pts();
+	 //double video_clock = img->video_pts();
+	 //double audio_clock = img->audio_pts();
 
 	 double video_clock = img->video_clock();
 	 double audio_clock = img->audio_clock();
@@ -592,7 +585,7 @@ void video_thread( PlaybackData* data )
 	 //    FFPlay still doesn't "know if this is the best guess."
 	 double sync_threshold = delay;
 	 if(absdiff < AV_NOSYNC_THRESHOLD) {
-	    double sdiff = step * diff;
+	    double sdiff = diff;
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
