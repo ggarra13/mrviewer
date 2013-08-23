@@ -88,8 +88,6 @@ namespace
 
 //  in ffmpeg, sizes are in bytes...
 #define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
-#define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
-#define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
 #define kMIN_FRAMES 5
 
 namespace {
@@ -1933,17 +1931,22 @@ bool aviImage::fetch(const boost::int64_t frame)
 
 bool aviImage::frame( const boost::int64_t f )
 {
-  //  if ( f == _dts ) return false;
 
-   if ( ( _video_packets.size() > kMIN_FRAMES &&
-	  _audio_packets.size() > kMIN_FRAMES &&
+   if ( ( playback() != kStopped &&
+	  ( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
+	  ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
 	  ( _video_packets.bytes() +  _audio_packets.bytes() + 
-	    _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  // ||
-   	// (_audio_packets.bytes() > kMAX_AUDIOQ_SIZE)  ||
-   	// (_video_packets.size() > kMIN_FRAMES) ||
-   	// (_subtitle_packets.size() > kMIN_FRAMES) 
+	    _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
 	    ) ) )
     {
+       // std::cerr << "false return: " << std::endl;
+       // std::cerr << "vp: " << _video_packets.size() << std::endl;
+       // std::cerr << "ap: " << _audio_packets.size() << std::endl;
+       // std::cerr << "sum: " <<
+       // ( _video_packets.bytes() +  _audio_packets.bytes() + 
+       // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
+       // 		 << std::endl;
+
      return false;
     }
 
