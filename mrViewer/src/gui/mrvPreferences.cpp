@@ -646,6 +646,10 @@ namespace mrv {
     uiPrefs->uiPrefsAutoReload->value(tmp);
 
 
+    fltk::Preferences video( base, "video" );
+    video.get( "blend_mode", tmp, 0 );
+    uiPrefs->uiPrefsBlendMode->value(tmp);
+
     //
     // Database stuff
     //
@@ -1008,6 +1012,9 @@ namespace mrv {
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "auto_reload", (int) uiPrefs->uiPrefsAutoReload->value() );
+
+    fltk::Preferences video( base, "video" );
+    video.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
 
 
     //

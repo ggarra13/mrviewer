@@ -113,6 +113,11 @@ namespace mrv {
       kRGBA_Decimal
     };
 
+    enum BlendMode {
+      kBlendTraditional = 0,
+      kBlendPremult = 1
+    };
+
 
   public:
     ImageView(int X, int Y, int W, int H, const char *l=0);

@@ -533,8 +533,13 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
   glClear( GL_COLOR_BUFFER_BIT );
   glShadeModel( GL_FLAT );
   
+}
+
+void GLEngine::set_blend_function( int source, int dest )
+{
   // So compositing works properly
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+  glBlendFunc( (GLenum) source, (GLenum) dest );
 }
 
 void GLEngine::color( uchar r, uchar g, uchar b, uchar a = 255 )
