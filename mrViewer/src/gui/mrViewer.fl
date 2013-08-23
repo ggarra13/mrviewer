@@ -567,14 +567,14 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {441 195 640 475} hide resizable
+        xywh {450 264 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
           xywh {207 24 433 416}
         } {
           {fltk::Group} {} {
-            label {User Interface}
+            label {User Interface} open
             xywh {8 24 412 382} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -985,7 +985,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
           }
           {fltk::Group} {} {
             label Caches open
-            xywh {8 24 415 382} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {8 24 415 382} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::ValueSlider} uiVideoCacheSize {
               label Video
@@ -1537,8 +1537,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Video open
+            xywh {15 24 405 380} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver open
@@ -1583,6 +1583,22 @@ uiICC_float_profile->do_callback();}
                 }
               }
             }
+            {fltk::Group} {} {open
+              xywh {68 272 300 65} box ROUNDED_BOX
+            } {
+              {fltk::Choice} uiPrefsBlendMode {
+                label {Blend Mode}
+                user_data uiMain user_data_type {ViewerUI*} open selected
+                xywh {85 25 190 25}
+              } {
+                {fltk::Item} {} {
+                  label Traditional
+                  }
+                {fltk::Item} {} {
+                  label Premult
+                  }
+              }
+            }
           }
           {fltk::Group} {} {
             label Audio open
@@ -1593,7 +1609,7 @@ uiICC_float_profile->do_callback();}
               xywh {63 22 290 25}
             } {}
             {fltk::Browser} uiPrefsAudioDevice {
-              label Devices selected
+              label Devices
               xywh {25 70 328 107} type Multi
               extra_code {//
 // Initialize an audio engine to get devices
@@ -2284,10 +2300,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {426 231 640 530} when CHANGED resizable
+        xywh {429 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}

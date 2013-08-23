@@ -100,6 +100,8 @@ namespace mrv {
     /// Clear canvas to a certain color
     virtual void clear_canvas( float r, float g, float b, float a = 0.0f ) = 0;
 
+    virtual void set_blend_function( int source, int dest ) = 0;
+
     /// Reset the view matrix
     virtual void reset_view_matrix() = 0;
     

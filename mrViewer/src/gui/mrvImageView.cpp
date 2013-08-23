@@ -1168,6 +1168,16 @@ void ImageView::draw()
     }
 
     _engine->clear_canvas( r, g, b, a );
+
+    switch( uiPrefs->uiPrefsBlendMode->value() )
+    {
+       case kBlendTraditional:
+	  _engine->set_blend_function( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+	  break;
+       case kBlendPremult:
+	  _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+	  break;
+    }
   }
 
 
