@@ -2411,7 +2411,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );
 
-  unsigned r,g,b,a;
+  unsigned a;
   ImagePixel yuv, rgb;
 
   const unsigned* pal = (const unsigned*)rect.pict.data[1];
@@ -2429,9 +2429,9 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 
 	unsigned t = pal[*s];
 	a = (t >> 24) & 0xff;
-	yuv.b = (t >> 16) & 0xff;
-	yuv.g = (t >> 8) & 0xff;
-	yuv.r = t & 0xff;
+	yuv.b = float( (t >> 16) & 0xff );
+	yuv.g = float( (t >> 8) & 0xff );
+	yuv.r = float( t & 0xff );
 
 	rgb = mrv::color::yuv::to_rgb( yuv );
 
@@ -2451,9 +2451,9 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	// //    }
 	
 
-	*d++ = rgb.r;
-	*d++ = rgb.g;
-	*d++ = rgb.b;
+	*d++ = uint8_t( rgb.r );
+	*d++ = uint8_t( rgb.g );
+	*d++ = uint8_t( rgb.b );
 	*d++ = a;
      }
   }
@@ -3392,7 +3392,7 @@ void CMedia::get_audio_frame(uint8_t*& buf, int& frame_size,
     src_nb_samples /= c->channels;
     src_nb_samples /= av_get_bytes_per_sample( aformat );
 
-    if ( frame_size > src_samples_size )
+    if ( unsigned(frame_size) > src_samples_size )
     {
        //assert( frame_size <= src_nb_samples );
        av_free(src_samples_data[0]);
