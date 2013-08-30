@@ -199,7 +199,7 @@ void CMedia::open_audio_codec()
 // Seek to the requested frame
 bool CMedia::seek_to_position( const boost::int64_t frame )
 {
-   if ( _acontext == NULL ) return false;
+   if ( _acontext == NULL ) return true;
 
   boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
 

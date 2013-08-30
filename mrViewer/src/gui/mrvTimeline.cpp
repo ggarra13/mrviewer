@@ -29,16 +29,16 @@ namespace mrv
 {
 
 
-  Timeline::Timeline( int x, int y, int w, int h, char* l ) :
-    fltk::Slider( x, y, w, h, l ),
-    _edl( false ),
-    _display( Timecode::kFrames ),
-    _fps( 24 ),
-    _display_min(1),
-    _display_max(50),
-    uiMain( NULL )
-  {
-  }
+Timeline::Timeline( int x, int y, int w, int h, char* l ) :
+fltk::Slider( x, y, w, h, l ),
+_edl( false ),
+_display( Timecode::kFrames ),
+_fps( 24 ),
+_display_min(1),
+_display_max(50),
+uiMain( NULL )
+{
+}
 
 Timeline::~Timeline()
 {
@@ -48,6 +48,8 @@ Timeline::~Timeline()
 
   mrv::ImageBrowser* Timeline::browser() const
   {
+     assert( uiMain != NULL );
+     assert( uiMain->uiReelWindow != NULL );
     return uiMain->uiReelWindow->uiBrowser;
   }
 
@@ -282,6 +284,7 @@ Timeline::~Timeline()
     // Draw each rectangle for each segment
     if ( _edl )
       {
+
 	const mrv::Reel& reel = browser()->current_reel();
 	mrv::MediaList::const_iterator i = reel->images.begin();
 	mrv::MediaList::const_iterator e = reel->images.end();
