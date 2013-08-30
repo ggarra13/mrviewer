@@ -567,7 +567,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {450 264 640 475} resizable visible
+        xywh {462 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -658,11 +658,11 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label Timeline
+              label Timeline open
               xywh {25 272 350 70} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsTimelineDisplay {
-                label Display
+                label Display open
                 tooltip {How to display timeline by default.}
                 xywh {105 25 190 25}
                 extra_code {o->value(0);}
@@ -1538,7 +1538,7 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Video open
-            xywh {15 24 405 380} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 24 405 380} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver open
@@ -1550,15 +1550,12 @@ uiICC_float_profile->do_callback();}
             }
             {fltk::Group} {} {
               label Stereo open
-              xywh {68 97 298 160} box ROUNDED_BOX
+              xywh {48 97 318 65} deactivate box ROUNDED_BOX
             } {
               {fltk::Choice} {} {
-                label Type
+                label Type open
                 xywh {80 25 175 25}
               } {
-                {fltk::Item} {} {
-                  label None
-                  }
                 {fltk::Item} {} {
                   label {Red-Cyan Anaglyph}
                   }
@@ -1569,27 +1566,20 @@ uiICC_float_profile->do_callback();}
                   label {Shutter Glasses}
                   }
               }
-              {fltk::Group} {} {
-                label {Flip Stereo Images} open
-                xywh {30 85 245 50} box BORDER_FRAME buttonbox NO_BOX
-              } {
-                {fltk::CheckButton} {} {
-                  label Left
-                  xywh {45 15 25 25}
-                }
-                {fltk::CheckButton} {} {
-                  label Right
-                  xywh {165 15 25 25}
-                }
-              }
             }
             {fltk::Group} {} {open
-              xywh {68 272 300 65} box ROUNDED_BOX
+              xywh {43 272 325 65} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsBlendMode {
                 label {Blend Mode}
                 user_data uiMain user_data_type {ViewerUI*} open selected
-                xywh {85 25 190 25}
+                tooltip {OpenGL blend compositing mode.
+Traditional:
+SC x SA + DC x ( 1 - SA)
+Premult:
+SC + DC x ( 1 - SA )
+where SC is source color, SA is source alpha, and DC is destination color.}
+                xywh {105 25 190 25}
               } {
                 {fltk::Item} {} {
                   label Traditional

@@ -499,6 +499,9 @@ namespace mrv {
    */
   void ImageBrowser::remove_reel()
   {
+    if ( uiMain->uiView->playback() != ImageView::kStopped )
+       uiMain->uiView->stop();
+
     if ( _reels.empty() ) return;
     _reel_display->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
@@ -1744,6 +1747,9 @@ void ImageBrowser::load( const stringArray& files,
   {
     mrv::Reel reel = current_reel();
     if (!reel) return;
+
+    if ( uiMain->uiView->playback() != ImageView::kStopped )
+       uiMain->uiView->stop();
 
     int sel = value();
     if ( sel < 0 ) return;
