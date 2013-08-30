@@ -150,7 +150,7 @@ int main( const int argc, char** argv )
 
 
   mrv::LoadList files;
-  bool edl;
+  bool edl = false;
 
   std::string host;
   unsigned port;
@@ -204,8 +204,8 @@ int main( const int argc, char** argv )
 
   load_files( files, ui );
 
-  
-  ui->uiTimeline->edl( edl );
+  if ( edl )
+     ui->uiTimeline->edl( edl );
   
   
   if (host == "" && port != 0)

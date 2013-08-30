@@ -1295,6 +1295,9 @@ namespace mrv {
 
 	assert( (unsigned)sel < reel->images.size() );
 
+	if ( uiMain->uiView->playback() != ImageView::kStopped )
+	   uiMain->uiView->stop();
+
 	mrv::media om = uiMain->uiView->foreground();
 
 	int audio_idx = -1;
@@ -1320,13 +1323,13 @@ namespace mrv {
 
 	   if ( bg )
 	   {
-	      sprintf( bufs, "mrViewer\tFG: %s BG: %s",
+	      sprintf( bufs, "mrViewer    FG: %s BG: %s",
 		       m->image()->name().c_str(),
 		       bg->image()->name().c_str() );
 	   }
 	   else
 	   {
-	      sprintf( bufs, "mrViewer\tFG: %s",
+	      sprintf( bufs, "mrViewer    FG: %s",
 		       m->image()->name().c_str() );
 	   }
 
@@ -2393,11 +2396,9 @@ void ImageBrowser::load( const stringArray& files,
     if (!m) return;
 
     CMedia* img = m->image();
-    int64_t frame = img->frame();
-
     if ( !img ) return;
 
-    int64_t f = frame - img->first_frame() + timeline()->location( img );
+    int64_t f = img->frame() - img->first_frame() + timeline()->location( img );
     uiMain->uiFrame->value( f );
     timeline()->value( f );
 
