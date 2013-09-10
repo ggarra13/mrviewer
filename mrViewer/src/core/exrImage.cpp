@@ -279,6 +279,8 @@ bool exrImage::channels_order(
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 		 _hires->channels() );
+
+
    boost::uint8_t* base = pixels + start;
 
    Imf::Channel* ch = NULL;
@@ -507,6 +509,7 @@ bool exrImage::channels_order_multi(
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 		 _hires->channels() );
+
    boost::uint8_t* base = pixels + start;
 
    Imf::Channel* ch = NULL;
@@ -535,6 +538,8 @@ bool exrImage::channels_order_multi(
 
 void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
 {
+   SCOPED_LOCK( _mutex );
+
    Imf::Chromaticities cr;
    if ( Imf::hasChromaticities( hdr ) )
       cr = Imf::chromaticities( hdr );
@@ -1136,9 +1141,10 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	}
 
 	in.setFrameBuffer(fb);
-
+	   
 	in.readPixels( dataWindow.min.y, dataWindow.max.y );
- 
+
+
 	int dw = dataWindow.max.x - dataWindow.min.x + 1;
 	int dh = dataWindow.max.y - dataWindow.min.y + 1;
 	if ( dw <= 0 || dh <= 0 ) {

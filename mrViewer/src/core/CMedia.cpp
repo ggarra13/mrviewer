@@ -226,16 +226,16 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
     CMedia::Mutex& m = img->video_mutex();
     SCOPED_LOCK(m);
     _hires = img->hires();
-  }
 
-  if ( xScale != 1.0f || yScale != 1.0f )
+    if ( xScale != 1.0f || yScale != 1.0f )
     {
-      _hires.reset( _hires->scaleX( xScale ) );
-      _hires.reset( _hires->scaleY( yScale ) );
-      _w = _hires->width();
-      _h = _hires->height();
-      _damageRectangle = mrv::Recti(0, 0, _w, _h);
+       _hires.reset( _hires->scaleX( xScale ) );
+       _hires.reset( _hires->scaleY( yScale ) );
+       _w = _hires->width();
+       _h = _hires->height();
+       _damageRectangle = mrv::Recti(0, 0, _w, _h);
     }
+  }
 
   _disk_space = 0;
 }
@@ -466,12 +466,13 @@ void load_sequence( PlaybackData* data )
    mrv::ViewerUI* uiMain = data->uiMain;
    mrv::CMedia* img = data->image;
    
+   delete data;
 
    struct stat sbuf;
    for ( int64_t f = img->first_frame(); f <= img->last_frame(); ++f )
    {
-      mrv::CMedia::Mutex& vpm = img->video_mutex();
-      SCOPED_LOCK( vpm );
+      // mrv::CMedia::Mutex& vpm = img->video_mutex();
+      // SCOPED_LOCK( vpm );
 
       int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
       if ( result < 0 ) return;
@@ -530,13 +531,21 @@ void CMedia::sequence( const char* fileroot,
   boost::uint64_t num = _frameEnd - _frameStart + 1;
   _sequence = new mrv::image_type_ptr[ unsigned(num) ];
 
-  // load all pictures in new thread 
-  // PlaybackData* data = new PlaybackData( NULL, this );
-  // _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-  // 						      data ) ) );
-
   if ( ! initialize() )
     return;
+
+  // load all pictures in new background thread 
+  std::string file = fileroot;
+  std::string root, frame, ext;
+  bool ok = split_sequence( root, frame, ext, file );
+
+  if ( ext != "exr" )
+  {
+     PlaybackData* data = new PlaybackData( NULL, this );
+     _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+							 data ) ) );
+  }
+
   
   default_icc_profile();
   default_rendering_transform();
@@ -825,6 +834,7 @@ void CMedia::chromaticities( const Imf::Chromaticities& c )
  */
 void CMedia::alpha_layers()
 {
+   SCOPED_LOCK( _mutex );
   _layers.push_back( "Alpha" );
   if ( _num_channels != 0 )
     _layers.push_back( "Alpha Overlay" );
@@ -838,6 +848,7 @@ void CMedia::alpha_layers()
  */
 void CMedia::rgb_layers()
 {
+   SCOPED_LOCK( _mutex );
   _layers.insert( _layers.begin(), "Color" );
   _layers.push_back( "Red" );
   _layers.push_back( "Green" );
@@ -862,6 +873,7 @@ void CMedia::lumma_layers()
  */
 void CMedia::default_layers()
 {
+   SCOPED_LOCK( _mutex );
   _layers.clear();
   _num_channels = 0;
   rgb_layers();
