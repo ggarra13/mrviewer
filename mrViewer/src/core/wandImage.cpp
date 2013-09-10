@@ -70,12 +70,10 @@ namespace mrv {
   bool wandImage::test(const char* file)
   {
     MagickBooleanType status;
-    MagickWandGenesis();
     MagickWand* wand = NewMagickWand();
     status = MagickPingImage( wand, file );
 
     DestroyMagickWand(wand);
-    MagickWandTerminus();
 
     if (status == MagickFalse)
       return false;
@@ -89,13 +87,13 @@ namespace mrv {
 
   bool wandImage::initialize()
   {
-    //   MagickWandGenesis();
+    MagickWandGenesis();
     return true;
   }
 
   bool wandImage::release()
   {
-    //   MagickWandTerminus();
+    MagickWandTerminus();
     return true;
   }
 
@@ -104,7 +102,7 @@ namespace mrv {
   {
 
      MagickBooleanType status;
-     MagickWandGenesis();
+     // MagickWandGenesis();
 
      /*
        Read an image.
@@ -212,9 +210,13 @@ namespace mrv {
 	allocate_pixels( frame, 3, image_type::kRGB, pixel_type );
      }
     
-     PixelType* pixels = (PixelType*)_hires->data().get();
-     MagickExportImagePixels( wand, 0, 0, dw, dh, channels, storage, pixels );
+     {
+	SCOPED_LOCK( _mutex );
 
+	PixelType* pixels = (PixelType*)_hires->data().get();
+	MagickExportImagePixels( wand, 0, 0, dw, dh, channels, 
+				 storage, pixels );
+     }
   
      _compression = MagickGetImageCompression( wand );
 
@@ -376,7 +378,6 @@ namespace mrv {
 	}
      }
      DestroyMagickWand( wand );
-     MagickWandTerminus();
 
      return true;
   }

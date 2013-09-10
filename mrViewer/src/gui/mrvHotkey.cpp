@@ -208,7 +208,7 @@ void fill_uiFunction( fltk::Browser* b )
 
    const char* labels[] = {"Function", "Hotkey", NULL};
    b->column_labels( labels );
-   const int widths[] = {240, -1, -1};
+   const int widths[] = {240, -1, 0};
    b->column_widths( widths );
    
    b->clear();
