@@ -109,6 +109,11 @@ bool Parser::parse( const std::string& m )
 
    static mrv::Reel r;
 
+   bool ok = false;
+
+   ParserList c = ui->uiView->_clients;
+   ui->uiView->_clients.clear();
+
    if ( cmd == N_("GLPathShape") )
    {
       Point xy;
@@ -124,7 +129,7 @@ bool Parser::parse( const std::string& m )
       }
       ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
       ui->uiView->redraw();
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("GLErasePathShape") )
    {
@@ -141,176 +146,129 @@ bool Parser::parse( const std::string& m )
       }
       ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
       ui->uiView->redraw();
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("FPS") )
    {
       double fps;
       is >> fps;
 
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->fps( fps );
-      ui->uiView->_clients = c;
 
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("EDL") )
    {
       int b;
       is >> b;
-
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       if ( b )
 	 ui->uiReelWindow->uiBrowser->set_edl();
       else
 	 ui->uiReelWindow->uiBrowser->clear_edl();
-      ui->uiView->_clients = c;
-
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Looping") )
    {
       int i;
       is >> i;
 
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->looping( (ImageView::Looping)i );
-      ui->uiView->_clients = c;
-
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Selection") )
    {
       
       double x, y, w, h;
       is >> x >> y >> w >> h;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->selection( mrv::Rectd( x, y, w, h ) );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("UndoDraw") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->undo_draw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("RedoDraw") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->redo_draw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Zoom") )
    {
       float z;
       is >> z;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->zoom( z );
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Offset") )
    {
       float x, y;
       is >> x >> y;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->offset_x( x );
       ui->uiView->offset_y( y );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Channel") )
    {
       unsigned ch;
       is >> ch;
       
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
-      ui->uiView->channel( ch );
+      if ( ui->uiView->foreground() )
+	 ui->uiView->channel( ch );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("FieldDisplay") )
    {
       int field;
       is >> field;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->field( (mrv::ImageView::FieldDisplay) field );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Normalize") )
    {
       int b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->normalize( ( b != 0 ) );
       ui->uiNormalize->state( (b != 0 ) );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("WipeVertical") )
    {
       float b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->wipe_direction( ImageView::kWipeVertical );
       ui->uiView->wipe_amount( b );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("WipeHorizontal") )
    {
       float b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->wipe_direction( ImageView::kWipeHorizontal );
       ui->uiView->wipe_amount( b );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("NoWipe") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->wipe_direction( ImageView::kNoWipe );
       ui->uiView->wipe_amount( 0.0f );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Gain") )
    {
       float f;
       is >> f;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->gain( f );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Gamma") )
    {
@@ -321,7 +279,7 @@ bool Parser::parse( const std::string& m )
       ui->uiView->gamma( f );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Mask") )
    {
@@ -332,62 +290,48 @@ bool Parser::parse( const std::string& m )
       ui->uiView->masking( b );
       ui->uiView->redraw();
       ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("SafeAreas") )
    {
       int b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->safe_areas( (b != 0) );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("UseLUT") )
    {
       int b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiLUT->state( (b != 0) );
       ui->uiView->use_lut( (b != 0) );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("AudioVolume") )
    {
       float t;
       is >> t;
 
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->volume( t );
-      ui->uiView->_clients = c;
+      ok = true;
    }
    else if ( cmd == N_("ShowBG") )
    {
       int b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->show_background( ( b != 0 ) );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("ShowPixelRatio") )
    {
       int b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->show_pixel_ratio( (b != 0) );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Reel") )
    {
@@ -397,7 +341,7 @@ bool Parser::parse( const std::string& m )
       if (!r) {
 	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
       }
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("CurrentReel") )
    {
@@ -412,7 +356,7 @@ bool Parser::parse( const std::string& m )
       if (!r) {
 	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
       }
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("Image") )
    {
@@ -447,7 +391,7 @@ bool Parser::parse( const std::string& m )
 
       ui->uiView->redraw();
 
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("CurrentImage") )
    {
@@ -468,10 +412,7 @@ bool Parser::parse( const std::string& m )
 	    fileroot += (*j)->image()->name();
 	    if ( (*j)->image() && fileroot == imgname )
 	    {
-	       ParserList c = ui->uiView->_clients;
-	       ui->uiView->_clients.clear();
 	       ui->uiReelWindow->uiBrowser->change_image( idx );
-	       ui->uiView->_clients = c;
 	       found = true;
 	       break;
 	    }
@@ -488,7 +429,7 @@ bool Parser::parse( const std::string& m )
 
       ui->uiView->redraw();
 
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("CurrentBGImage") )
    {
@@ -509,10 +450,7 @@ bool Parser::parse( const std::string& m )
 	    fileroot += (*j)->image()->name();
 	    if ( (*j)->image() && fileroot == imgname )
 	    {
-	       ParserList c = ui->uiView->_clients;
-	       ui->uiView->_clients.clear();
 	       ui->uiView->background( (*j) );
-	       ui->uiView->_clients = c;
 	       found = true;
 	       break;
 	    }
@@ -529,7 +467,7 @@ bool Parser::parse( const std::string& m )
 
       ui->uiView->redraw();
 
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("sync_image") )
    {
@@ -618,54 +556,36 @@ bool Parser::parse( const std::string& m )
 
       ui->uiView->redraw();
 
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("stop") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
-
       boost::int64_t f;
       is >> f;
       ui->uiView->stop();
-
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("playfwd") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
-
       ui->uiView->play_forwards();
-
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("playback") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
-
       ui->uiView->play_backwards();
-
-      ui->uiView->_clients = c;
-      return true;
+      ok = true;
    }
    else if ( cmd == N_("seek") )
    {
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
-
       boost::int64_t f;
       is >> f;
       ui->uiView->seek( f );
 
-      ui->uiView->_clients = c;
-
-      return true;
+      ok = true;
    }
-   return false;
+
+   ui->uiView->_clients = c;
+   return ok;
 }
 
 

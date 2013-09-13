@@ -994,14 +994,18 @@ void ImageView::load_list()
       refresh();
    }
 
-   std::string lockfile = mrv::homepath();
-   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+   std::string lockfile = mrv::lockfile();
    
    if(fs::exists(lockfile))
    {
-      if ( ! fs::remove( lockfile ) )
-   	 LOG_ERROR( "Could not remove lock file!" );
-      
+      try {
+	 if ( ! fs::remove( lockfile ) )
+	    LOG_ERROR( "Could not remove lock file!" );
+      }
+      catch( fs::filesystem_error& e )
+      {
+      }
+
       fltk::Preferences base( fltk::Preferences::USER, "filmaura",
    			      "mrViewer.lock" );
       base.set( "pid", 1 );
