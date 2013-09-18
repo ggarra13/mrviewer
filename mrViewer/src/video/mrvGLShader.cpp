@@ -30,8 +30,6 @@ namespace mrv {
   GLShader::GLShader() :
     _frag_target( 0 ),
     _frag_shader( 0 ),
-    _vtx_target( 0 ),
-    _vtx_shader( 0 ),
     _program( 0 )
   {
   }
@@ -39,8 +37,6 @@ namespace mrv {
   GLShader::GLShader( const char* filename ) :
     _frag_target( 0 ),
     _frag_shader( 0 ),
-    _vtx_target( 0 ),
-    _vtx_shader( 0 ),
     _program( 0 )
   {
     load( filename );

@@ -24,7 +24,6 @@ namespace mrv {
 
     GLhandleARB program()         { return _program;  }
     GLuint      fragment_shader() { return _frag_shader; }
-    GLuint      vertex_shader()   { return _vtx_shader; }
 
     void bind();
     void enable();
@@ -76,8 +75,6 @@ namespace mrv {
   protected:
     GLuint      _frag_target;
     GLuint      _frag_shader;
-    GLuint      _vtx_target;
-    GLuint      _vtx_shader;
 
     GLhandleARB _program;
 

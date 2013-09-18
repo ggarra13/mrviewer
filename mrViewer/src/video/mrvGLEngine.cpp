@@ -926,6 +926,11 @@ void GLEngine::alloc_quads( size_t num )
 }
 
 
+void GLEngine::translate( double x, double y )
+{
+   glTranslated( x, y, 0 );
+}
+
 void GLEngine::draw_images( ImageList& images )
 {
   // Check if lut types changed since last time
@@ -992,25 +997,26 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-#if 0
-  // @todo: this should be refactored here.
+  texWidth  = images.back()->width();
+  texHeight = images.back()->height();
+
   glColor4f(1.0f,1.0f,1.0f,1.0f);
 
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
   glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
   glTranslatef( _view->offset_x(), _view->offset_y(), 0.0f );
 
   if ( _view->main()->uiPixelRatio->value() )
-    glScalef( float(dw), dh / _view->pixel_ratio(), 1.0f );
+    glScaled( double(texWidth), texHeight / _view->pixel_ratio(), 1.0f );
   else
-    glScalef( float(dw), float(dh), 1.0f );
-#endif
+    glScaled( double(texWidth), double(texHeight), 1.0f );
 
 
-  texWidth  = images.back()->width();
-  texHeight = images.back()->height();
   QuadList::iterator q = _quads.begin();
 
+  assert( q != _quads.end() );
 
   i = images.begin();
   e = images.end();
@@ -1019,8 +1025,6 @@ void GLEngine::draw_images( ImageList& images )
 
   for ( ; i != e; ++i, ++q )
     {
-      assert( q != _quads.end() );
-
       const Image_ptr& img = *i;
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );

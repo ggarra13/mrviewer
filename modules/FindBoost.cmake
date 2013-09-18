@@ -75,9 +75,9 @@ IF(BOOST_DIR_SEARCH)
   SET(BOOST_DIR_SEARCH ${BOOST_DIR_SEARCH}/include ${BOOST_DIR_SEARCH})
 ELSE(BOOST_DIR_SEARCH)
   SET( BOOST_DIR_SEARCH
-    /media/Linux/code/lib/
     /usr/local/include
     /usr/include
+    /media/Linux/code/lib/
     )
 ENDIF(BOOST_DIR_SEARCH)
 
@@ -157,9 +157,6 @@ IF(Boost_INCLUDE_DIR)
   ENDIF("${Boost_LIBRARY_DIR}" MATCHES "/include$")
 
 
-  IF(EXISTS "${Boost_LIBRARY_DIR}/lib${CMAKE_BUILD_ARCH}")
-    SET (Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/lib${CMAKE_BUILD_ARCH})
-  ELSE(EXISTS "${Boost_LIBRARY_DIR}/lib${CMAKE_BUILD_ARCH}")
     IF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
       SET(Boost_LIBRARY_DIR ${Boost_LIBRARY_DIR}/stage/lib)
     ELSE(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
@@ -169,7 +166,6 @@ IF(Boost_INCLUDE_DIR)
          SET(Boost_LIBRARY_DIR "")
       ENDIF(EXISTS "${Boost_LIBRARY_DIR}/lib")
     ENDIF(EXISTS "${Boost_LIBRARY_DIR}/stage/lib")
-  ENDIF(EXISTS "${Boost_LIBRARY_DIR}/lib${CMAKE_BUILD_ARCH}")
 
   IF(EXISTS "${Boost_INCLUDE_DIR}")
     SET(Boost_INCLUDE_DIRS ${Boost_INCLUDE_DIR})

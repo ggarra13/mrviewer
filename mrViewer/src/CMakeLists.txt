@@ -90,6 +90,7 @@ INCLUDE_DIRECTORIES(
 
 FLTK_WRAP_UI( mrViewer  
 #  gui/aviSave.fl
+  gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl  
   gui/mrViewer.fl 
@@ -170,6 +171,7 @@ SET( SOURCES
   gui/mrvCollapsableGroup.cpp
   gui/mrvColorInfo.cpp
   gui/mrvDatabaseBrowser.cpp
+  gui/mrvEDLGroup.cpp
   gui/mrvFileRequester.cpp
   gui/mrvFLTKHandler.cpp
   gui/mrvHistogram.cpp
@@ -178,6 +180,7 @@ SET( SOURCES
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
   gui/mrvLogDisplay.cpp
+  gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp

@@ -1257,7 +1257,7 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   unsigned int bytes_per_frame = audio_bytes_per_frame();
   unsigned int audio_bytes = 0;
 
-  int counter = 0;
+  unsigned counter = 0;
   int eof = false;
   boost::int64_t dts = _dts;
 

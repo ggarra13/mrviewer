@@ -65,6 +65,8 @@ decl {\#include "mrvIccProfileUI.h"} {}
 
 decl {\#include "mrvColorAreaUI.h"} {} 
 
+decl {\#include "mrvEDLWindowUI.h"} {} 
+
 decl {\#include "icons/icons.c"} {} 
 
 decl {\#include "fltk/ColorChooser.h"} {} 
@@ -158,6 +160,8 @@ namespace mrv {open
   decl {class PaintUI;} {public
   }
   decl {class ConnectionUI;} {public
+  }
+  decl {class EDLWindowUI;} {public
   }
   class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
@@ -566,8 +570,8 @@ o->label( o->child( o->value() )->label() );}
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences open
-        xywh {462 286 640 475} resizable visible
+        label Preferences
+        xywh {474 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1538,7 +1542,7 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Video open
-            xywh {15 24 405 380} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 24 405 380} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver open
@@ -1572,7 +1576,7 @@ uiICC_float_profile->do_callback();}
             } {
               {fltk::Choice} uiPrefsBlendMode {
                 label {Blend Mode}
-                user_data uiMain user_data_type {ViewerUI*} open selected
+                user_data uiMain user_data_type {ViewerUI*} open
                 tooltip {OpenGL blend compositing mode.
 Traditional:
 SC x SA + DC x ( 1 - SA)
@@ -1728,7 +1732,8 @@ v->refresh();}
     Function {~PreferencesUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {refresh()} {} {
+    Function {refresh()} {selected
+    } {
       code {fltk::Window* w = fltk::Window::first();
 for ( ; w ; w = w->next() )
    w->redraw();} {}
@@ -2255,7 +2260,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2282,18 +2288,20 @@ else
     }
     decl {PaintUI* uiPaint;} {public
     }
-    Function {make_window()} {open private
+    decl {EDLWindowUI* uiEDLWindow;} {public
+    }
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
-        xywh {429 231 640 530} when CHANGED hide resizable
+        callback {delete v;}
+        xywh {12 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3012,12 +3020,12 @@ v->uiFPS->value( g );}
                       }
                       {fltk::Input} uiFPS {
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->fps( o->fvalue() );}
+                        callback {v->uiView->fps( o->value() );}
                         tooltip {Allows you to adjust frame rate playback.}
-                        xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                        xywh {29 2 35 18} when CHANGED hotspot color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                         extra_code {o->textcolor( fltk::BLACK );
 o->value(24);}
-                        class {fltk::FloatInput}
+                        class {fltk::ValueInput}
                       }
                     }
                     {fltk::Group} {} {open
@@ -3149,12 +3157,14 @@ if (!uiConnection) uiConnection = new ConnectionUI( this );
 mrv::Preferences prefs( uiPrefs );
 
 if (!uiHotkey) uiHotkey = new HotkeyUI(this);
-if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);} {}
+if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
+uiEDLWindow = new EDLWindowUI(this);} {}
     }
     Function {ViewerUI()} {} {
       code {uiMain = make_window();} {}
     }
-    Function {~ViewerUI()} {} {
+    Function {~ViewerUI()} {open
+    } {
       code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
@@ -3163,6 +3173,7 @@ delete uiVectorscope; uiVectorscope = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
+delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }

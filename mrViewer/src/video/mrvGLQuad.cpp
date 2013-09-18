@@ -3,7 +3,7 @@
  * @author gga
  * @date   Fri Feb  8 10:14:11 2008
  * 
- * @brief  
+ * @brief  Handle and draw an OpenGL Quad with shaders
  * 
  * 
  */
@@ -422,8 +422,10 @@ namespace mrv {
     GLenum internalFormat = GL_LUMINANCE8;
     if ( pixel_type == GL_HALF_FLOAT_ARB || pixel_type == GL_FLOAT )
       {
-	if ( GLEngine::halfTextures() )     internalFormat = GL_LUMINANCE16F_ARB;
-	else if ( GLEngine::floatTextures() ) internalFormat = GL_LUMINANCE32F_ARB;
+	if ( GLEngine::halfTextures() )     
+	   internalFormat = GL_LUMINANCE16F_ARB;
+	else if ( GLEngine::floatTextures() ) 
+	   internalFormat = GL_LUMINANCE32F_ARB;
       }
 
 
@@ -756,19 +758,6 @@ namespace mrv {
   {  
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
-    // @todo: this matrix transform should be refactored out to be done
-    //        in GLEngine only once.
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-
-    glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
-    glScalef( _view->zoom(), _view->zoom(), 1.0f);
-    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
-
-    if ( _view->main()->uiPixelRatio->value() )
-      glScaled( double(dw), dh / _view->pixel_ratio(), 1.0 );
-    else
-      glScaled( double(dw), double(dh), 1.0f );
 
     if ( _view->flip() != ImageView::kFlipNone )
     {

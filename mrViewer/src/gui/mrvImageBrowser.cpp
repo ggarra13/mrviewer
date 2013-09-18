@@ -50,6 +50,8 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvEDLGroup.h"
+#include "mrvEDLWindowUI.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 
 #if defined(WIN32) || defined(WIN64)
@@ -1443,6 +1445,8 @@ int ImageBrowser::value() const
       }
 
     mrv::media m = this->add( img );
+    mrv::media_track_ptr track = uiMain->uiEDLWindow->uiEDLGroup->current_media_track();
+    if ( m ) track->add( m );
 
     adjust_timeline();
     return m;
@@ -1535,11 +1539,12 @@ void ImageBrowser::load( const mrv::LoadList& files,
     mrv::Reel reel = current_reel();
     if ( !reel || reel->images.empty() ) return;
 
+    mrv::media m = current_image();
+
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
       {
 	this->change_image( (unsigned int)reel->images.size()-1 );
-	mrv::media m = current_image();
 	uiMain->uiFrame->value( m->image()->first_frame() );
       }
     else
