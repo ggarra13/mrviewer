@@ -1212,6 +1212,8 @@ void ImageView::draw()
 
   if ( !fg || fg->image() == NULL ) return;
 
+
+
   if ( _masking != 0.0f )
     {
       _engine->draw_mask( _masking );
@@ -1756,7 +1758,6 @@ void ImageView::leftMouseUp( int x, int y )
   flags &= ~kMouseMove;
   flags &= ~kZoom;
   
-  cursor( fltk::CURSOR_CROSS );
   int button = fltk::event_button();
   if (button == 1)
     flags &= ~kMouseLeft;
@@ -2108,7 +2109,7 @@ void ImageView::mouseDrag(int x,int y)
 	} 
       else if ( flags & kMouseMove )
 	{
-	   cursor( fltk::CURSOR_MOVE );
+	   window()->cursor( fltk::CURSOR_MOVE );
 	   xoffset += dx / _zoom;
 	   yoffset -= dy / _zoom;
 
@@ -4094,7 +4095,7 @@ void ImageView::play( const CMedia::Playback dir )
   playback( (Playback) dir );
 
   delete_timeout();
-  double fps = uiMain->uiFPS->fvalue();
+  double fps = uiMain->uiFPS->value();
 
   create_timeout( 1.0/fps*2 );
 

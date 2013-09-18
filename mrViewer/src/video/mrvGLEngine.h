@@ -60,6 +60,8 @@ namespace mrv {
 				 const double percentY,
 				 const char* name = 0 );
 
+    virtual void translate( double x, double y );
+
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images );
 

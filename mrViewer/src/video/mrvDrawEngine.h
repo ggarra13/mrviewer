@@ -129,6 +129,9 @@ namespace mrv {
     }
 
     /// Convert fg image to engine's drawable image
+       virtual void translate( double x, double y ) = 0;
+
+    /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images ) = 0;
 
     /// Wipe area (scissor test)

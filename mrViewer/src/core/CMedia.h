@@ -342,6 +342,8 @@ namespace mrv {
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
 
+       size_t duration() const { return _frameEnd - _frameStart + 1; }
+
        inline void avdiff( const double x ) { _avdiff = x; }
        inline double avdiff() const { return _avdiff; }
 
