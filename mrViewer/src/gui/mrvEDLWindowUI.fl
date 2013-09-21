@@ -1,0 +1,43 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir header_name 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "mrvEDLGroup.h"} {public
+} 
+
+decl {\#include "mrViewer.h"} {public
+} 
+
+namespace mrv {open
+} {
+  class EDLWindowUI {open
+  } {
+    Function {make_window( mrv::ViewerUI* main )} {open
+    } {
+      {fltk::Window} uiMain {open
+        xywh {336 435 915 170} hide resizable
+      } {
+        {fltk::Group} uiEDLGroup {
+          xywh {5 40 910 130}
+          class {mrv::EDLGroup}
+        } {}
+      }
+    }
+    Function {EDLWindowUI( mrv::ViewerUI* m )} {open
+    } {
+      code {make_window(m);
+uiMain->child_of((fltk::Window*)m->uiMain);
+uiMain->show();} {selected
+      }
+    }
+    Function {~EDLWindowUI()} {open
+    } {
+      code {delete uiEDLGroup; uiEDLGroup = NULL;
+delete uiMain; uiMain = NULL;} {}
+    }
+  }
+} 
