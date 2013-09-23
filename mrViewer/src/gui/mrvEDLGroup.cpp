@@ -1,6 +1,7 @@
 
 #include "mrvMediaTrack.h"
 #include "mrvEDLGroup.h"
+#include "mrvTimeline.h"
 
 #include <fltk/events.h>
 #include <fltk/draw.h>
@@ -96,6 +97,11 @@ int EDLGroup::handle( int event )
 	    MediaTrack::iterator i = _media_track.begin();
 	    MediaTrack::iterator e = _media_track.end();
 	    int diff = fltk::event_x() - _dragX;
+
+	    _timeline->minimum( _timeline->minimum() - diff );
+	    _timeline->maximum( _timeline->maximum() - diff );
+	    _timeline->redraw();
+
 	    for ( ; i != e; ++i )
 	    {
 	       (*i)->translate( diff );

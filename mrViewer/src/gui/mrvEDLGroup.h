@@ -7,6 +7,7 @@
 
 namespace mrv {
 
+class Timeline;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
@@ -49,6 +50,8 @@ class EDLGroup : public fltk::Group
      // Remove an audio track at index i
      void remove_audio_track( int i );
 
+     void timeline( mrv::Timeline* t ) { _timeline = t; }
+
      virtual int  handle( int event );
      virtual void layout();
      virtual void draw();
@@ -58,7 +61,7 @@ class EDLGroup : public fltk::Group
      size_t     _current_media_track;
      MediaTrack _media_track;
      AudioTrack _audio_track;
-
+     mrv::Timeline* _timeline;
 };
 
 }
