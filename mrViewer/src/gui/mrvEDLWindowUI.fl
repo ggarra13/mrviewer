@@ -12,6 +12,8 @@ decl {\#include "mrvEDLGroup.h"} {public
 decl {\#include "mrViewer.h"} {public
 } 
 
+decl {\#include "gui/mrvTimeline.h"} {} 
+
 namespace mrv {open
 } {
   class EDLWindowUI {open
@@ -19,20 +21,25 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {open
-        xywh {336 435 915 170} hide resizable
+        xywh {67 329 915 170} resizable visible
       } {
-        {fltk::Group} uiEDLGroup {
-          xywh {5 40 910 130}
+        {fltk::Group} uiEDLGroup {open
+          xywh {5 30 910 140}
           class {mrv::EDLGroup}
-        } {}
+        } {
+          {fltk::Slider} uiTimeline {selected
+            xywh {5 1 890 30} type TICK_ABOVE deactivate resizable textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 90 step 1 value 1 slider_size 20
+            extra_code {o->main( main );}
+            class {mrv::Timeline}
+          }
+        }
       }
     }
     Function {EDLWindowUI( mrv::ViewerUI* m )} {open
     } {
       code {make_window(m);
 uiMain->child_of((fltk::Window*)m->uiMain);
-uiMain->show();} {selected
-      }
+uiMain->show();} {}
     }
     Function {~EDLWindowUI()} {open
     } {

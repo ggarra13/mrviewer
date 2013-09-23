@@ -20,7 +20,7 @@ class media_track : public fltk::Widget
      typedef std::vector< boost::int64_t > Positions;
 
    public:
-     media_track(int x, int y, int w, int h) : fltk::Widget( x, y, w, h ) {}
+     media_track(int x, int y, int w, int h);
      ~media_track();
 
 
@@ -51,6 +51,8 @@ class media_track : public fltk::Widget
      // Select the media 
      bool select_media( const boost::int64_t pos );
 
+     void translate( int x ) { _panX += x; redraw(); }
+
      void zoom_factor( double f = 1.0 );
 
      virtual int handle( int event );
@@ -61,7 +63,8 @@ class media_track : public fltk::Widget
      mrv::media _selected;
      MediaList  _media;
      Positions  _position;
-
+     int        _panX;
+     double     _zoom;
 };
 
 typedef boost::shared_ptr< media_track > media_track_ptr;

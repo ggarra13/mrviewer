@@ -87,7 +87,7 @@ Timeline::~Timeline()
 	for ( ; i != e; ++i )
 	  {
 	    CMedia* img = (*i)->image();
-	    total += img->last_frame() - img->first_frame() + 1;
+	    total += img->duration();
 	  }
 
 	maximum( double(total) );
@@ -250,7 +250,9 @@ Timeline::~Timeline()
     s.w(slider_size());
     if (!s.w()) {s.w(s.x()-r.x()); s.x(r.x());} // fill slider
     else sglyph=0; // draw our own special glyph
-    draw_glyph(sglyph, s); // draw slider in new position
+
+    if ( active() )
+       draw_glyph(sglyph, s); // draw slider in new position
     return true;
   }
 

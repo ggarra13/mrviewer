@@ -5,8 +5,14 @@
 
 namespace mrv {
 
-static int frame_size = 10;
+static float frame_size = 9.69;
 
+media_track::media_track(int x, int y, int w, int h) : 
+fltk::Widget( x, y, w, h ),
+_panX( 0 )
+{
+}
+ 
 media_track::~media_track()
 {
 }
@@ -18,7 +24,7 @@ void media_track::add( mrv::media m, boost::int64_t frame )
    {
       if ( _position.size() == 0 )
       {
-	 frame = 0;
+	 frame = 1;
       }
       else
       {
@@ -113,17 +119,41 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
 
 void media_track::shift_media_start( mrv::media m, boost::int64_t start )
 {
+   int idx = 0;
    size_t e = _position.size();
    for ( size_t i = 0; i < e; ++i )
    {
       mrv::media fg = _media[i];
       if ( fg == m )
       {
+	 idx = i;
 	 m->image()->first_frame( start );
 	 _position[i] = start;
 	 break;
       }
    }
+
+   // Shift medias that come after
+   for (size_t i = idx+1; i < e; ++i )
+   {
+      boost::int64_t end = _position[i-1] + _media[i-1]->image()->duration();
+      _position[i] = end;
+   }
+
+
+   if ( idx == 0 ) return;
+   
+   // Shift medias that come before
+   for (int i = int(idx)-1; i >= 0; --i )
+   {
+      boost::int64_t start = _position[i+1];
+      boost::int64_t ee = _position[i] + _media[i]->image()->duration();
+      boost::int64_t ss = _position[i];
+      
+      // Shift indexes of position
+      _position[i] = (start - (ee - ss ) );
+   }
+
 }
 
 bool media_track::select_media( const boost::int64_t pos )
@@ -156,7 +186,8 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t end )
       mrv::media fg = _media[i];
       if ( fg == m )
       {
-	 m->image()->last_frame( end - _position[i] + 1 );
+	 m->image()->last_frame( m->image()->last_frame() + end + 
+				 _position[i] );
 	 break;
       }
    }
@@ -172,9 +203,15 @@ int media_track::handle( int event )
 	    _dragX = fltk::event_x();
 	    int x = fltk::event_x();
 	    int y = fltk::event_y();
-	    
-	    select_media( x / frame_size );
 
+	    if ( fltk::event_key() == fltk::MiddleButton )
+	    {
+	       return 0;
+	    }
+	    else
+	    {
+	       select_media( x / frame_size );
+	    }
 	    return 1;
 	 }
       case fltk::DRAG:
@@ -184,12 +221,12 @@ int media_track::handle( int event )
 	       Positions::iterator p = _position.begin();
 	       MediaList::iterator i = _media.begin();
 	       MediaList::iterator e = _media.end();
-	       int diff = (fltk::event_x() - _dragX); // / frame_size;
+	       int diff = (fltk::event_x() - _dragX);
 	       for ( ; i != e; ++i, ++p )
 	       {
 		  if ( *i == _selected )
 		  {
-		     shift_media_start( _selected, *p + diff );
+		     shift_media_end( _selected, *p + diff );
 		     break;
 		  }
 	       }
@@ -207,11 +244,12 @@ void media_track::draw()
 {
    size_t e = _position.size();
 
-   fltk::Widget::draw();
 
    fltk::setcolor( fltk::GRAY33 );
    fltk::fillrect( x(), y(), w(), h() );
    fltk::push_clip( x(), y(), w(), h() );
+
+   fltk::translate( _panX, 0 );
 
    for ( size_t i = 0; i < e; ++i )
    {
@@ -235,7 +273,7 @@ void media_track::draw()
    	 fltk::setcolor( fltk::WHITE );
 
       fltk::drawtext( fg->image()->name().c_str(),
-   		      dx + dw/2, y()+frame_size*2-2 );
+   		      dx + dw/2, y() + frame_size*2-2 );
       
    }
 
