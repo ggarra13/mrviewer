@@ -21,7 +21,7 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {open
-        xywh {67 329 915 170} resizable visible
+        xywh {70 352 915 170} resizable visible
       } {
         {fltk::Group} uiEDLGroup {open
           xywh {5 30 910 140}
@@ -29,7 +29,8 @@ namespace mrv {open
         } {
           {fltk::Slider} uiTimeline {selected
             xywh {5 1 890 30} type TICK_ABOVE deactivate resizable textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 90 step 1 value 1 slider_size 20
-            extra_code {o->main( main );}
+            extra_code {o->main( main );
+uiEDLGroup->timeline( o );}
             class {mrv::Timeline}
           }
         }
