@@ -2,6 +2,7 @@
 #include "mrvMediaTrack.h"
 #include "mrvEDLGroup.h"
 
+#include <fltk/events.h>
 #include <fltk/draw.h>
 #include <fltk/Color.h>
 
@@ -80,6 +81,34 @@ void EDLGroup::layout()
 int EDLGroup::handle( int event )
 {
 
+   switch( event )
+   {
+      case fltk::PUSH:
+	 if ( fltk::event_key() == fltk::MiddleButton )
+	 {
+	    _dragX = fltk::event_x();
+	    return 1;
+	 }
+	 break;
+      case fltk::DRAG:
+	 if ( fltk::event_key() == fltk::MiddleButton )
+	 {
+	    MediaTrack::iterator i = _media_track.begin();
+	    MediaTrack::iterator e = _media_track.end();
+	    int diff = fltk::event_x() - _dragX;
+	    for ( ; i != e; ++i )
+	    {
+	       (*i)->translate( diff );
+	    }
+	    _dragX = fltk::event_x();
+	    return 1;
+	 }
+      default:
+	 break;
+   }
+
+
+
    MediaTrack::iterator i = _media_track.begin();
    MediaTrack::iterator e = _media_track.end();
    for ( ; i != e; ++i )
@@ -95,10 +124,11 @@ int EDLGroup::handle( int event )
 
 void EDLGroup::draw()
 {
-   fltk::Group::draw();
 
    fltk::setcolor( fltk::GRAY20 );
    fltk::fillrect( 0, 0, w(), h() );
+
+   fltk::Group::draw();
 
    MediaTrack::iterator i = _media_track.begin();
    MediaTrack::iterator e = _media_track.end();

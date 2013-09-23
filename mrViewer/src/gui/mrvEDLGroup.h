@@ -54,6 +54,7 @@ class EDLGroup : public fltk::Group
      virtual void draw();
 
    protected:
+     int        _dragX;
      size_t     _current_media_track;
      MediaTrack _media_track;
      AudioTrack _audio_track;
