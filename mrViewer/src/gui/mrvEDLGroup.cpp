@@ -13,7 +13,6 @@ EDLGroup::EDLGroup(int x, int y, int w, int h) :
 _current_media_track( 0 ),
 fltk::Group(x,y,w,h)
 {
-   size_t idx = add_media_track();
 }
 
 EDLGroup::~EDLGroup()
@@ -28,6 +27,7 @@ size_t EDLGroup::add_media_track()
    _media_track.push_back( mrv::media_track_ptr( new 
 						 mrv::media_track(x(), y(),
 								  w(), 30) ) );
+   _media_track.back()->main( timeline()->main() );
    return _media_track.size() - 1;
 }
 
@@ -94,17 +94,17 @@ int EDLGroup::handle( int event )
       case fltk::DRAG:
 	 if ( fltk::event_key() == fltk::MiddleButton )
 	 {
-	    MediaTrack::iterator i = _media_track.begin();
-	    MediaTrack::iterator e = _media_track.end();
 	    int diff = fltk::event_x() - _dragX;
 
 	    _timeline->minimum( _timeline->minimum() - diff );
 	    _timeline->maximum( _timeline->maximum() - diff );
 	    _timeline->redraw();
 
+	    MediaTrack::iterator i = _media_track.begin();
+	    MediaTrack::iterator e = _media_track.end();
 	    for ( ; i != e; ++i )
 	    {
-	       (*i)->translate( diff );
+	       (*i)->translate( diff*9.69 );
 	    }
 	    _dragX = fltk::event_x();
 	    return 1;

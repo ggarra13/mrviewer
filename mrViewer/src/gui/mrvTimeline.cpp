@@ -28,11 +28,11 @@
 namespace mrv
 {
 
+mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
 fltk::Slider( x, y, w, h, l ),
 _edl( false ),
-_display( Timecode::kFrames ),
 _fps( 24 ),
 _display_min(1),
 _display_max(50),

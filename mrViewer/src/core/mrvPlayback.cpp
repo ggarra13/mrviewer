@@ -279,6 +279,13 @@ CMedia::DecodeStatus check_loop( int64_t& frame,
       last = timeline->global_to_local( last );
       first = timeline->global_to_local( first );
    }
+   else
+   {
+      if ( last > img->last_frame() )
+	 last = img->last_frame();
+      else if ( img->first_frame() < first )
+	 first = img->first_frame();
+   }
 
    if ( f > last )
    {

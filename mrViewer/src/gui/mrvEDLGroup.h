@@ -51,6 +51,7 @@ class EDLGroup : public fltk::Group
      void remove_audio_track( int i );
 
      void timeline( mrv::Timeline* t ) { _timeline = t; }
+     mrv::Timeline* timeline() const { return _timeline; }
 
      virtual int  handle( int event );
      virtual void layout();
