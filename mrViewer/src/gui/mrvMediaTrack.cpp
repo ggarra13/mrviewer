@@ -1,7 +1,9 @@
 
 #include <fltk/draw.h>
 #include <fltk/events.h>
-#include "mrvMediaTrack.h"
+#include "gui/mrvMediaTrack.h"
+#include "gui/mrvImageView.h"
+#include "mrViewer.h"
 
 namespace mrv {
 
@@ -47,7 +49,7 @@ mrv::media media_track::media_at_position( const boost::int64_t frame )
       boost::int64_t start = _position[i];
       boost::int64_t end   = _position[i];
       mrv::media m = _media[i];
-      start += m->image()->first_frame() - 1;
+      start += m->image()->first_frame();
       end   += m->image()->duration();
       if ( frame >= start && frame <= end )
       {
@@ -77,8 +79,12 @@ bool media_track::remove( mrv::media m )
 }
 
 // Move a media in track without changing its start or end frames
+// Shift surrounding media to remain attached.
 void media_track::shift_media( mrv::media m, boost::int64_t frame )
 {
+   CMedia::Playback playback = (CMedia::Playback) main()->uiView->playback();
+   main()->uiView->stop();
+
    size_t e = _media.size();
    size_t idx = 0;
 
@@ -100,8 +106,10 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    }
 
 
-   if ( idx == 0 ) return;
-   
+   if ( idx == 0 ) {
+      return;
+   }
+
    // Shift medias that come before
    for (int i = int(idx)-1; i >= 0; --i )
    {
@@ -113,12 +121,14 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
       _position[i] = (start - (ee - ss ) );
    }
 
-
    return;
 }
 
-void media_track::shift_media_start( mrv::media m, boost::int64_t start )
+void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 {
+   CMedia::Playback playback = (CMedia::Playback) main()->uiView->playback();
+   main()->uiView->stop();
+
    int idx = 0;
    size_t e = _position.size();
    for ( size_t i = 0; i < e; ++i )
@@ -127,8 +137,12 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t start )
       if ( fg == m )
       {
 	 idx = i;
-	 m->image()->first_frame( start );
-	 _position[i] = start;
+	 int64_t newpos = _position[i] + diff;
+	 if ( newpos < _position[i] + m->image()->duration() )
+	 {
+	    m->image()->first_frame( m->image()->first_frame() + diff );
+	    _position[i] += diff;
+	 }
 	 break;
       }
    }
@@ -141,8 +155,10 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t start )
    }
 
 
-   if ( idx == 0 ) return;
-   
+   if ( idx == 0 ) {
+      return;
+   }
+
    // Shift medias that come before
    for (int i = int(idx)-1; i >= 0; --i )
    {
@@ -161,6 +177,7 @@ bool media_track::select_media( const boost::int64_t pos )
    bool ok = false;
    size_t e = _position.size();
    _selected.reset();
+
    for ( size_t i = 0; i < e; ++i )
    {
       int64_t start = _position[i];
@@ -178,18 +195,35 @@ bool media_track::select_media( const boost::int64_t pos )
    return ok;
 }
 
-void media_track::shift_media_end( mrv::media m, boost::int64_t end )
+void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 {
+   CMedia::Playback playback = (CMedia::Playback) main()->uiView->playback();
+   main()->uiView->stop();
+
    size_t e = _position.size();
-   for ( size_t i = 0; i < e; ++i )
+   size_t i = 0;
+   for ( ; i < e; ++i )
    {
       mrv::media fg = _media[i];
       if ( fg == m )
       {
-	 m->image()->last_frame( m->image()->last_frame() + end + 
-				 _position[i] );
-	 break;
+	 int64_t pos = m->image()->last_frame() + diff;
+	 if ( pos > m->image()->first_frame() )
+	 {
+	    m->image()->last_frame( pos );
+	    break;
+	 }
       }
+   }
+
+   // Shift medias that come before
+   for ( ; i < e-1; ++i )
+   {
+      boost::int64_t start = _position[i];
+      boost::int64_t ee = _media[i]->image()->duration();
+      
+      // Shift indexes of position
+      _position[i+1] = (start + ee );
    }
    redraw();
 }
@@ -210,7 +244,7 @@ int media_track::handle( int event )
 	    }
 	    else
 	    {
-	       select_media( x / frame_size );
+	       select_media( (x - _panX) / frame_size );
 	    }
 	    return 1;
 	 }
@@ -218,15 +252,14 @@ int media_track::handle( int event )
 	 {
 	    if ( _selected )
 	    {
-	       Positions::iterator p = _position.begin();
 	       MediaList::iterator i = _media.begin();
 	       MediaList::iterator e = _media.end();
 	       int diff = (fltk::event_x() - _dragX);
-	       for ( ; i != e; ++i, ++p )
+	       for ( ; i != e; ++i )
 	       {
 		  if ( *i == _selected )
 		  {
-		     shift_media_end( _selected, *p + diff );
+		     shift_media_end( _selected, diff );
 		     break;
 		  }
 	       }
@@ -272,8 +305,10 @@ void media_track::draw()
       if ( _selected == fg )
    	 fltk::setcolor( fltk::WHITE );
 
+      int ww, hh;
+      fltk::measure( fg->image()->name().c_str(), ww, hh );
       fltk::drawtext( fg->image()->name().c_str(),
-   		      dx + dw/2, y() + frame_size*2-2 );
+   		      dx + dw/2 - ww/2, y() + frame_size*2-2 );
       
    }
 

@@ -66,6 +66,8 @@ namespace mrv
     uint64_t location( const CMedia* img ) const { return offset(img) + 1; }
 
     void main( ViewerUI* m ) { uiMain = m; }
+       ViewerUI* main() const { return uiMain; }
+
 
     size_t index( const int64_t frame ) const;
     mrv::media media_at( const int64_t frame ) const;
@@ -79,8 +81,8 @@ namespace mrv
 
     ImageBrowser* browser() const;
 
+       static mrv::Timecode::Display _display;
     bool   _edl;
-    mrv::Timecode::Display _display;
     double _fps;
     double _display_min;
     double _display_max;
