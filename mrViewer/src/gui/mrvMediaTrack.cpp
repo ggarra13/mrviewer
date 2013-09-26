@@ -82,8 +82,6 @@ bool media_track::remove( mrv::media m )
 // Shift surrounding media to remain attached.
 void media_track::shift_media( mrv::media m, boost::int64_t frame )
 {
-   CMedia::Playback playback = (CMedia::Playback) main()->uiView->playback();
-   main()->uiView->stop();
 
    size_t e = _media.size();
    size_t idx = 0;
@@ -126,8 +124,6 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
 
 void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 {
-   CMedia::Playback playback = (CMedia::Playback) main()->uiView->playback();
-   main()->uiView->stop();
 
    int idx = 0;
    size_t e = _position.size();
@@ -197,8 +193,6 @@ bool media_track::select_media( const boost::int64_t pos )
 
 void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 {
-   CMedia::Playback playback = (CMedia::Playback) main()->uiView->playback();
-   main()->uiView->stop();
 
    size_t e = _position.size();
    size_t i = 0;
@@ -226,12 +220,17 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
       _position[i+1] = (start + ee );
    }
    redraw();
+
 }
 
 int media_track::handle( int event )
 {
    switch( event )
    {
+      case fltk::RELEASE:
+	 main()->uiView->play( _playback );
+	 return 1;
+	 break;
       case fltk::PUSH:
 	 {
 	    _dragX = fltk::event_x();
@@ -244,6 +243,8 @@ int media_track::handle( int event )
 	    }
 	    else
 	    {
+	       _playback = (CMedia::Playback) main()->uiView->playback();
+	       main()->uiView->stop();
 	       select_media( (x - _panX) / frame_size );
 	    }
 	    return 1;
