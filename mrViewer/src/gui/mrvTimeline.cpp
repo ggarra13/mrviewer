@@ -303,7 +303,7 @@ Timeline::~Timeline()
 	for ( ; i != e; frame += size, ++i )
 	  {
 	    CMedia* img = (*i)->image();
-	    size = img->last_frame() - img->first_frame() + 1;
+	    size = img->duration();
 
 	    // skip this block if outside visible timeline span
 	    if ( frame + size < mn || frame > mx ) continue;
@@ -333,7 +333,7 @@ Timeline::~Timeline()
 	for ( i = reel->images.begin(); i != e; frame += size, ++i )
 	  {
 	    CMedia* img = (*i)->image();
-	    size = img->last_frame() - img->first_frame() + 1;
+	    size = img->duration();
 
 	    // skip this block if outside visible timeline span
 	    if ( frame + size < mn || frame > mx ) continue;

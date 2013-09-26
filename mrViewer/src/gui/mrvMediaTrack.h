@@ -71,6 +71,7 @@ class media_track : public fltk::Widget
      Positions  _position;
      double     _panX;
      double     _zoom;
+     CMedia::Playback _playback;
 };
 
 typedef boost::shared_ptr< media_track > media_track_ptr;

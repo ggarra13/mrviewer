@@ -322,8 +322,18 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
     if ( img->first_frame() != img->last_frame() )
       {
-	add_int64( _("Frame Start"), img->first_frame() );
-	add_int64( _("Frame End"), img->last_frame() );
+	add_int64( _("First Frame"), img->first_frame() );
+	add_int64( _("Last Frame"), img->last_frame() );
+      }
+
+    if ( img->start_frame() != img->first_frame() )
+      {
+	add_int64( _("Frame Start"), img->start_frame() );
+      }
+
+    if ( img->end_frame() != img->last_frame() )
+      {
+	add_int64( _("Frame End"), img->end_frame() );
       }
 
     ++group;
