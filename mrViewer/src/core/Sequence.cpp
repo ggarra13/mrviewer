@@ -51,6 +51,20 @@ namespace mrv
   const boost::int64_t kMinFrame = std::numeric_limits< boost::int64_t >::min();
   const boost::int64_t kMaxFrame = std::numeric_limits< boost::int64_t >::max();
 
+  bool is_valid_frame( const std::string framespec )
+  {
+    const char* c = framespec.c_str();
+
+    for ( ++c; *c != 0; ++c )
+      {
+	 if ( *c == '+' || *c == '-' || (*c >= '0' && *c <= '9') ) continue;
+
+	return false;
+      }
+
+    return true;
+  }
+
   bool is_valid_frame_spec( const std::string framespec )
   {
     const char* c = framespec.c_str();
@@ -74,7 +88,7 @@ namespace mrv
    * root name, frame string, and extension
    * 
    * @param root    root name of file sequence
-   * @param frame   frame part of file name
+   * @param frame   frame part of file name (must be @ or # or %d )
    * @param ext     extension of file sequence
    * @param file    original filename, potentially part of a sequence.
    * 
@@ -121,36 +135,51 @@ namespace mrv
 	frame = file.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = file.substr( idx[0], file.size()-idx[0] );
 
-
 	std::string tmp = ext;
 	std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 			(int(*)(int)) tolower);
-
+	
 	// If extension is one of a movie/audio file, return false
 	if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
 	     tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
 	     tmp == ".qt"  || tmp == ".wav"  || tmp == ".vob" )
-	  return false;
+	   return false;
 
-	bool ok = is_valid_frame_spec( frame );
+
+	bool ok = is_valid_frame( ext );
+	if ( ok )
+	{
+	   frame = ext;
+	   ext.clear();
+	}
+
+	ok = is_valid_frame_spec( frame );
 	return ok;
       }
     else
       {
 	root = file.substr( 0, idx[0]+1 );
 	ext  = file.substr( idx[0]+1, file.size() );
-	i = e = ext.c_str();
-	for ( ; *i != 0; ++i )
-	  {
-	    if ( (*i >= '0' && *i <= '9') ||
-		 *i == '-' || *i == '+' ) continue;
-	    frame = "";
-	    return false;
-	  }
 
-	frame = ext;
-	ext   = "";
-	return true;
+
+	bool ok = is_valid_frame_spec( ext );
+	if (ok)
+	{
+	   frame = ext;
+	   ext.clear();
+	   return true;
+	}
+	
+	ok = is_valid_frame( ext );
+	if (ok)
+	{
+	   frame = ext;
+	   ext.clear();
+	   return false;
+	}
+
+	frame = "";
+	return false;
       }
   }
 
@@ -247,6 +276,7 @@ namespace mrv
 	split_sequence( croot, cframe, cext, (*i).path().leaf().string() );
 	if ( cext != ext || croot != root ) continue;  // not this sequence
 
+
 	if ( cframe[0] == '0' ) pad = (unsigned) cframe.size();
 
 
@@ -262,7 +292,6 @@ namespace mrv
     fileroot = root;
     fileroot += buf;
     fileroot += ext;
-
 
     return true;
   }

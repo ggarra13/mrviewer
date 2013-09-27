@@ -124,7 +124,7 @@ namespace mrv {
     char name[1024];
     if ( is_seq )
       {
-	sprintf( name, root, frame );
+	 sprintf( name, root, frame );
       }
     else
       {

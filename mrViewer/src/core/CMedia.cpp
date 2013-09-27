@@ -539,12 +539,12 @@ void CMedia::sequence( const char* fileroot,
   std::string root, frame, ext;
   bool ok = split_sequence( root, frame, ext, file );
 
-  if ( ext != "exr" )
-  {
-     PlaybackData* data = new PlaybackData( NULL, this );
-     _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-							 data ) ) );
-  }
+  // if ( ext != "exr" )
+  // {
+  //    PlaybackData* data = new PlaybackData( NULL, this );
+  //    _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+  // 							 data ) ) );
+  // }
 
   
   default_icc_profile();
