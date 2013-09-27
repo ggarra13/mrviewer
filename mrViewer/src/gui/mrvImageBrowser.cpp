@@ -50,8 +50,6 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
-#include "gui/mrvEDLGroup.h"
-#include "mrvEDLWindowUI.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 
 #if defined(WIN32) || defined(WIN64)
@@ -1445,8 +1443,6 @@ int ImageBrowser::value() const
       }
 
     mrv::media m = this->add( img );
-    mrv::media_track_ptr track = uiMain->uiEDLWindow->uiEDLGroup->current_media_track();
-    if ( m ) track->add( m );
 
     adjust_timeline();
     return m;
