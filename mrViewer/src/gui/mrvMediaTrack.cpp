@@ -307,10 +307,15 @@ void media_track::draw()
    	 fltk::setcolor( fltk::WHITE );
 
       int ww, hh;
-      fltk::measure( fg->image()->name().c_str(), ww, hh );
-      fltk::drawtext( fg->image()->name().c_str(),
-   		      dx + dw/2 - ww/2, y() + frame_size*2-2 );
-      
+      fltk::setfont( fltk::getfont(), 10 );
+      const char* const buf = fg->image()->name().c_str();
+      fltk::measure( buf, ww, hh );
+
+      for ( int j = ww; j < dw-ww/2; j += ww*2 )
+      {
+	 fltk::drawtext( buf,
+			 dx + j - ww/2, y() + frame_size*2-2 );
+      }
    }
 
    fltk::pop_clip();

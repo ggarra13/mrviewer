@@ -1620,8 +1620,8 @@ void Flu_File_Chooser::PreviewGroup::draw()
   if ( chooser->compact_files() )
   {
      bool ok = mrv::get_sequence_limits( frameStart,
-				      frameEnd, 
-				      file );
+					 frameEnd, 
+					 file );
      if (ok)
      {
 	std::string root;
@@ -4260,10 +4260,10 @@ void Flu_File_Chooser::cd( const char *path )
 						frame,
 						ext, 
 						name );
+
 		 if ( compact_files() )
 		 {
-		 
-		    if ( root != "" && frame != "" && ext != "" )
+		    if ( root != "" && frame != "" )
 		       is_sequence = true;
 		    
 		    std::string tmp = ext;
@@ -4283,6 +4283,7 @@ void Flu_File_Chooser::cd( const char *path )
 		 {
 		    is_sequence = false;
 		 }
+
 
 		 if ( is_sequence )
 		  {
