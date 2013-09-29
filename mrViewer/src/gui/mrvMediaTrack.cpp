@@ -1,13 +1,15 @@
 
 #include <fltk/draw.h>
 #include <fltk/events.h>
+#include <fltk/Cursor.h>
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvTimeline.h"
 #include "mrViewer.h"
+#include "mrvEDLWindowUI.h"
 
 namespace mrv {
 
-static float frame_size = 9.69;
 
 media_track::media_track(int x, int y, int w, int h) : 
 fltk::Widget( x, y, w, h ),
@@ -17,6 +19,14 @@ _panX( 0 )
  
 media_track::~media_track()
 {
+}
+
+double media_track::frame_size() const
+{
+   mrv::Timeline* t = main()->uiEDLWindow->uiTimeline;
+   
+   double x = w() / double(t->maximum() - t->minimum() + 1);
+   return x;
 }
 
 // Add a media at a certain frame (or append to end by default)
@@ -136,8 +146,11 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	 int64_t newpos = _position[i] + diff;
 	 if ( newpos < _position[i] + m->image()->duration() )
 	 {
-	    m->image()->first_frame( m->image()->first_frame() + diff );
-	    _position[i] += diff;
+	    main()->uiView->foreground( fg );
+	    CMedia* img = m->image();
+	    img->first_frame( img->first_frame() + diff );
+	    img->seek( img->first_frame() );
+	    // _position[i] += diff;
 	 }
 	 break;
       }
@@ -202,9 +215,11 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
       if ( fg == m )
       {
 	 int64_t pos = m->image()->last_frame() + diff;
-	 if ( pos > m->image()->first_frame() )
+	 if ( pos > m->image()->first_frame() &&
+	      pos <= m->image()->end_frame() )
 	 {
 	    m->image()->last_frame( pos );
+	    m->image()->seek( pos );
 	    break;
 	 }
       }
@@ -223,12 +238,27 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 
 }
 
+
+void  media_track::zoom( double x )
+{
+   mrv::Timeline* t = main()->uiEDLWindow->uiTimeline;
+   t->minimum( t->minimum() * x );
+   t->maximum( t->maximum() * x );
+   t->redraw();
+   redraw();
+}
+
 int media_track::handle( int event )
 {
    switch( event )
    {
       case fltk::RELEASE:
-	 main()->uiView->play( _playback );
+	 if ( _selected )
+	 {
+	    main()->uiView->seek( _frame );
+	    main()->uiView->play( _playback );
+	    _selected.reset();
+	 }
 	 return 1;
 	 break;
       case fltk::PUSH:
@@ -237,22 +267,26 @@ int media_track::handle( int event )
 	    int x = fltk::event_x();
 	    int y = fltk::event_y();
 
-	    if ( fltk::event_key() == fltk::MiddleButton )
+	    if ( fltk::event_key() == fltk::LeftButton )
 	    {
-	       return 0;
+	       cursor( fltk::CURSOR_ARROW );
+	       _playback = (CMedia::Playback) main()->uiView->playback();
+	       main()->uiView->stop();
+	       _frame = main()->uiView->frame();
+	       select_media( (x - _panX) / frame_size() );
+	       return 1;
 	    }
 	    else
 	    {
-	       _playback = (CMedia::Playback) main()->uiView->playback();
-	       main()->uiView->stop();
-	       select_media( (x - _panX) / frame_size );
+	       return 0;
 	    }
-	    return 1;
 	 }
       case fltk::DRAG:
 	 {
 	    if ( _selected )
 	    {
+	       cursor( fltk::CURSOR_WE );
+
 	       MediaList::iterator i = _media.begin();
 	       MediaList::iterator e = _media.end();
 	       int diff = (fltk::event_x() - _dragX);
@@ -260,7 +294,7 @@ int media_track::handle( int event )
 	       {
 		  if ( *i == _selected )
 		  {
-		     shift_media_end( _selected, diff );
+		     shift_media_start( _selected, -diff );
 		     break;
 		  }
 	       }
@@ -269,6 +303,18 @@ int media_track::handle( int event )
 	    _dragX = fltk::event_x();
 	    return 1;
 	 }
+      case fltk::MOUSEWHEEL:
+	if ( fltk::event_dy() < 0.f )
+	  {
+	     zoom( 2.0f );
+	  }
+	else
+	  {
+	     zoom( 0.5f );
+	  }
+	 break;
+      default:
+	 break;
    }
 
    return fltk::Widget::handle( event );
@@ -279,11 +325,13 @@ void media_track::draw()
    size_t e = _position.size();
 
 
+   fltk::load_identity();
    fltk::setcolor( fltk::GRAY33 );
-   fltk::fillrect( x(), y(), w(), h() );
    fltk::push_clip( x(), y(), w(), h() );
+   fltk::fillrect( x(), y(), w(), h() );
 
-   fltk::translate( _panX, 0 );
+   fltk::load_identity();
+   fltk::translate( _panX * frame_size(), 0 );
 
    for ( size_t i = 0; i < e; ++i )
    {
@@ -292,30 +340,39 @@ void media_track::draw()
 
       int64_t pos = _position[i];
 
-      int dx = pos * frame_size;
-      int dw = fg->image()->duration() * frame_size; 
+      int dx = pos * frame_size();
+      int dw = fg->image()->duration() * frame_size(); 
 
-      fltk::setcolor( fltk::DARK_GREEN );
+      if ( main()->uiView->foreground() == fg )
+      {
+	 fltk::setcolor( fltk::DARK_YELLOW );
+      }
+      else
+      {
+	 fltk::setcolor( fltk::DARK_GREEN );
+      }
+
       fltk::fillrect( dx, y(), dw, h() );
-
-      fltk::setcolor( fltk::BLACK );
-      fltk::strokerect( dx, y(), dw, h() );
-
 
       fltk::setcolor( fltk::BLACK );
       if ( _selected == fg )
    	 fltk::setcolor( fltk::WHITE );
+      fltk::strokerect( dx, y(), dw, h() );
+
+
 
       int ww, hh;
-      fltk::setfont( fltk::getfont(), 10 );
+      fltk::setfont( textfont(), 10 );
       const char* const buf = fg->image()->name().c_str();
       fltk::measure( buf, ww, hh );
+      if ( ww < 8 ) ww = 24;
 
       for ( int j = ww; j < dw-ww/2; j += ww*2 )
       {
 	 fltk::drawtext( buf,
-			 dx + j - ww/2, y() + frame_size*2-2 );
+			 dx + j - ww/2, y() + 15 );
       }
+
    }
 
    fltk::pop_clip();

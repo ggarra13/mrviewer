@@ -25,6 +25,9 @@ class media_track : public fltk::Widget
      media_track(int x, int y, int w, int h);
      ~media_track();
 
+     double frame_size() const;
+
+     void zoom( double x );
 
      // Add a media at a certain frame (or append to end by default)
      void add( mrv::media m, boost::int64_t frame = AV_NOPTS_VALUE );
@@ -72,6 +75,7 @@ class media_track : public fltk::Widget
      double     _panX;
      double     _zoom;
      CMedia::Playback _playback;
+     int64_t    _frame;
 };
 
 typedef boost::shared_ptr< media_track > media_track_ptr;

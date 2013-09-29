@@ -104,7 +104,7 @@ int EDLGroup::handle( int event )
 	    MediaTrack::iterator e = _media_track.end();
 	    for ( ; i != e; ++i )
 	    {
-	       (*i)->translate( diff*9.69 );
+	       (*i)->translate( diff );
 	    }
 	    _dragX = fltk::event_x();
 	    return 1;
@@ -132,9 +132,11 @@ void EDLGroup::draw()
 {
 
    fltk::setcolor( fltk::GRAY20 );
-   fltk::fillrect( 0, 0, w(), h() );
+   fltk::fillrect( x(), y(), w(), h() );
 
    fltk::Group::draw();
+
+   // fltk::load_identity();
 
    MediaTrack::iterator i = _media_track.begin();
    MediaTrack::iterator e = _media_track.end();
@@ -142,6 +144,7 @@ void EDLGroup::draw()
    {
       (*i)->draw();
    }
+
 
 }
 
