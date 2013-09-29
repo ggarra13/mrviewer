@@ -15,7 +15,6 @@
 #include "mrvAudioEngine.h"
 
 #if defined(WIN32) || defined(WIN64)
-#    include "audio/mrvDirectXEngine.h"
 #    include "audio/mrvWaveEngine.h"
 #elif defined(LINUX)
 #    include "audio/mrvALSAEngine.h"
