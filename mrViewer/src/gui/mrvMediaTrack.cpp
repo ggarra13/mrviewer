@@ -13,7 +13,8 @@ namespace mrv {
 
 media_track::media_track(int x, int y, int w, int h) : 
 fltk::Widget( x, y, w, h ),
-_panX( 0 )
+_panX( 0 ),
+_zoom( 1.0 )
 {
 }
  
@@ -61,7 +62,7 @@ mrv::media media_track::media_at_position( const boost::int64_t frame )
       mrv::media m = _media[i];
       start += m->image()->first_frame();
       end   += m->image()->duration();
-      if ( frame >= start && frame <= end )
+      if ( frame >= start && frame < end )
       {
 	 return m;
       }
@@ -193,7 +194,7 @@ bool media_track::select_media( const boost::int64_t pos )
       mrv::media fg = _media[i];
       if ( !fg ) continue;
 
-      if ( pos >= start && pos <= start + (int64_t)fg->image()->duration() )
+      if ( pos >= start && pos < start + (int64_t)fg->image()->duration() )
       {
 	 ok = true;
 	 _selected = fg;
@@ -202,6 +203,11 @@ bool media_track::select_media( const boost::int64_t pos )
    }
    redraw();
    return ok;
+}
+
+mrv::Timeline* media_track::timeline() const
+{
+   return main()->uiEDLWindow->uiTimeline;
 }
 
 void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
@@ -241,10 +247,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 
 void  media_track::zoom( double x )
 {
-   mrv::Timeline* t = main()->uiEDLWindow->uiTimeline;
-   t->minimum( t->minimum() * x );
-   t->maximum( t->maximum() * x );
-   t->redraw();
+   _zoom *= x;
    redraw();
 }
 
@@ -257,7 +260,6 @@ int media_track::handle( int event )
 	 {
 	    main()->uiView->seek( _frame );
 	    main()->uiView->play( _playback );
-	    _selected.reset();
 	 }
 	 return 1;
 	 break;
@@ -269,11 +271,25 @@ int media_track::handle( int event )
 
 	    if ( fltk::event_key() == fltk::LeftButton )
 	    {
+
+	       if ( y > h() )
+	       {
+		  _selected.reset();
+		  redraw();
+		  return 1;
+	       }
+
 	       cursor( fltk::CURSOR_ARROW );
 	       _playback = (CMedia::Playback) main()->uiView->playback();
 	       main()->uiView->stop();
 	       _frame = main()->uiView->frame();
-	       select_media( (x - _panX) / frame_size() );
+
+	       mrv::Timeline* t = timeline();
+	       double len = (t->maximum() - t->minimum() + 1);
+	       double p = double(x) / double(w());
+	       p = t->minimum() + p * len;
+
+	       select_media( int64_t(p) );
 	       return 1;
 	    }
 	    else
@@ -294,7 +310,7 @@ int media_track::handle( int event )
 	       {
 		  if ( *i == _selected )
 		  {
-		     shift_media_start( _selected, -diff );
+		     shift_media_start( _selected, diff );
 		     break;
 		  }
 	       }
@@ -303,16 +319,6 @@ int media_track::handle( int event )
 	    _dragX = fltk::event_x();
 	    return 1;
 	 }
-      case fltk::MOUSEWHEEL:
-	if ( fltk::event_dy() < 0.f )
-	  {
-	     zoom( 2.0f );
-	  }
-	else
-	  {
-	     zoom( 0.5f );
-	  }
-	 break;
       default:
 	 break;
    }
