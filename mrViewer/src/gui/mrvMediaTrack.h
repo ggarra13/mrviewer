@@ -15,6 +15,7 @@ extern "C" {
 namespace mrv {
 
 class ViewerUI;
+class Timeline;
 
 class media_track : public fltk::Widget
 {
@@ -46,6 +47,8 @@ class media_track : public fltk::Widget
      void main( mrv::ViewerUI* m ) { _main = m; }
      mrv::ViewerUI* main() const { return _main; }
 
+     mrv::Timeline* timeline() const;
+     
      // Move a media in track without changing its start or end frames.
      // If media overlaps other media, everything is shifted
      void shift_media( mrv::media m, boost::int64_t frame );
@@ -60,8 +63,6 @@ class media_track : public fltk::Widget
      bool select_media( const boost::int64_t pos );
 
      void translate( double x ) { _panX += x; redraw(); }
-
-     void zoom_factor( double f = 1.0 );
 
      virtual int handle( int event );
      virtual void draw();

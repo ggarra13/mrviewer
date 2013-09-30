@@ -91,6 +91,16 @@ int EDLGroup::handle( int event )
 	    return 1;
 	 }
 	 break;
+      case fltk::MOUSEWHEEL:
+	if ( fltk::event_dy() < 0.f )
+	  {
+	     zoom( 0.5f );
+	  }
+	else
+	  {
+	     zoom( 2.0f );
+	  }
+	 break;
       case fltk::DRAG:
 	 if ( fltk::event_key() == fltk::MiddleButton )
 	 {
@@ -126,7 +136,23 @@ int EDLGroup::handle( int event )
    return fltk::Group::handle( event );
 }
 
+void EDLGroup::zoom( double z )
+{
 
+   mrv::Timeline* t = timeline();
+   t->minimum( t->minimum() * z );
+   t->maximum( t->maximum() * z );
+   t->redraw();
+
+
+   MediaTrack::iterator i = _media_track.begin();
+   MediaTrack::iterator e = _media_track.end();
+   for ( ; i != e; ++i )
+   {
+      (*i)->zoom( z );
+   }
+
+}
 
 void EDLGroup::draw()
 {

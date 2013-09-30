@@ -53,11 +53,14 @@ class EDLGroup : public fltk::Group
      void timeline( mrv::Timeline* t ) { _timeline = t; }
      mrv::Timeline* timeline() const { return _timeline; }
 
+     void zoom( double x );
+
      virtual int  handle( int event );
      virtual void layout();
      virtual void draw();
 
    protected:
+     double     _zoom;
      int        _dragX;
      size_t     _current_media_track;
      MediaTrack _media_track;
