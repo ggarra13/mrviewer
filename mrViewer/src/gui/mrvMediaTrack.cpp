@@ -26,7 +26,7 @@ double media_track::frame_size() const
 {
    mrv::Timeline* t = main()->uiEDLWindow->uiTimeline;
    
-   double x = w() / double(t->maximum() - t->minimum() + 1);
+   double x = t->w() / double(t->maximum() - t->minimum() + 1);
    return x;
 }
 
@@ -194,8 +194,14 @@ bool media_track::select_media( const boost::int64_t pos )
       mrv::media fg = _media[i];
       if ( !fg ) continue;
 
-      if ( pos >= start && pos < start + (int64_t)fg->image()->duration() )
+      int64_t duration =  (int64_t)fg->image()->duration();
+      if ( pos >= start && pos < start + duration)
       {
+	 if ( pos < start + duration / 2 )
+	    _at_start = true;
+	 else
+	    _at_start = false;
+
 	 ok = true;
 	 _selected = fg;
 	 break;
@@ -258,6 +264,7 @@ int media_track::handle( int event )
       case fltk::RELEASE:
 	 if ( _selected )
 	 {
+	    main()->uiView->foreground( _selected );
 	    main()->uiView->seek( _frame );
 	    main()->uiView->play( _playback );
 	 }
@@ -310,7 +317,10 @@ int media_track::handle( int event )
 	       {
 		  if ( *i == _selected )
 		  {
-		     shift_media_start( _selected, diff );
+		     if ( _at_start )
+			shift_media_start( _selected, diff );
+		     else
+			shift_media_end( _selected, diff );
 		     break;
 		  }
 	       }
@@ -369,9 +379,11 @@ void media_track::draw()
 
       int ww, hh;
       fltk::setfont( textfont(), 10 );
-      const char* const buf = fg->image()->name().c_str();
+      std::string name = fg->image()->name();
+      const char* const buf = name.c_str();
       fltk::measure( buf, ww, hh );
-      if ( ww < 8 ) ww = 24;
+
+      assert( dw > ww/2 );
 
       for ( int j = ww; j < dw-ww/2; j += ww*2 )
       {

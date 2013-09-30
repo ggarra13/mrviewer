@@ -70,6 +70,7 @@ class media_track : public fltk::Widget
    protected:
      mrv::ViewerUI* _main;
      int        _dragX;
+     bool       _at_start;
      mrv::media _selected;
      MediaList  _media;
      Positions  _position;
