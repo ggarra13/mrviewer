@@ -188,13 +188,18 @@ bool media_track::select_media( const boost::int64_t pos )
    size_t e = _position.size();
    _selected.reset();
 
+   std::cerr << "select media at " << pos << std::endl;
+
    for ( size_t i = 0; i < e; ++i )
    {
-      int64_t start = _position[i];
       mrv::media fg = _media[i];
       if ( !fg ) continue;
 
-      int64_t duration =  (int64_t)fg->image()->duration();
+      CMedia* img = fg->image();
+      //int64_t start = img->first_frame() - img->start_frame() + 1;
+
+      int64_t start = _position[i];
+      int64_t duration = (int64_t)img->duration();
       if ( pos >= start && pos < start + duration)
       {
 	 if ( pos < start + duration / 2 )
@@ -204,6 +209,7 @@ bool media_track::select_media( const boost::int64_t pos )
 
 	 ok = true;
 	 _selected = fg;
+	 main()->uiView->foreground( fg );
 	 break;
       }
    }
@@ -264,7 +270,6 @@ int media_track::handle( int event )
       case fltk::RELEASE:
 	 if ( _selected )
 	 {
-	    main()->uiView->foreground( _selected );
 	    main()->uiView->seek( _frame );
 	    main()->uiView->play( _playback );
 	 }
@@ -295,7 +300,6 @@ int media_track::handle( int event )
 	       double len = (t->maximum() - t->minimum() + 1);
 	       double p = double(x) / double(w());
 	       p = t->minimum() + p * len;
-
 	       select_media( int64_t(p) );
 	       return 1;
 	    }
@@ -313,6 +317,7 @@ int media_track::handle( int event )
 	       MediaList::iterator i = _media.begin();
 	       MediaList::iterator e = _media.end();
 	       int diff = (fltk::event_x() - _dragX);
+	       if ( _zoom > 1.0 ) diff *= _zoom;
 	       for ( ; i != e; ++i )
 	       {
 		  if ( *i == _selected )

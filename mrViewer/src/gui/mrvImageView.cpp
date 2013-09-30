@@ -88,6 +88,7 @@
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
+#include "mrvEDLWindowUI.h"
 #include "gui/mrvImageView.h"
 
 
@@ -345,6 +346,24 @@ void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view )
   view->browser()->save_sequence();
 }
 
+enum WindowList
+{
+kReelWindow = 0,
+kMediaInfo = 1,
+kColorInfo = 2,
+kEDLEdit = 3,
+kPaintTools = 4,
+kHistogram = 5,
+kVectorscope = 6,
+kICCProfiles = 7,
+kConnections = 8,
+kPreferences = 9,
+kHotkeys = 10,
+kLogs = 11,
+kAbout = 12,
+kLastWindow
+};
+
 void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 {
    int idx = -1;
@@ -356,63 +375,68 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
       }
    }
 
-  if ( idx == 0 )
+  if ( idx == kReelWindow )
     {
        // Reel window
       uiMain->uiReelWindow->uiMain->show();
     }
-  else if ( idx == 1 )
+  else if ( idx == kMediaInfo )
   {
        // Media Info
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
   }
-  else if ( idx == 2 )
+  else if ( idx == kColorInfo )
     {
        // Color Area
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
     }
-  else if ( idx == 3 )
+  else if ( idx == kEDLEdit )
+  {
+     uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
+     uiMain->uiEDLWindow->uiMain->show();
+  }
+  else if ( idx == kPaintTools )
     {
        // Paint Tools
       uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPaint->uiMain->show();
     }
-  else if ( idx == 4 )
+  else if ( idx == kHistogram )
     {
       uiMain->uiHistogram->uiMain->show();
     }
-  else if ( idx == 5 )
+  else if ( idx == kVectorscope )
     {
       uiMain->uiVectorscope->uiMain->show();
     }
-  else if ( idx == 6 )
+  else if ( idx == kICCProfiles )
     {
       uiMain->uiICCProfiles->uiMain->show();
       uiMain->uiICCProfiles->fill();
     }
-  else if ( idx == 7 )
+  else if ( idx == kConnections )
     {
       uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
       uiMain->uiConnection->uiMain->show();
     }
-  else if ( idx == 8 )
+  else if ( idx == kPreferences )
     {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
     }
-  else if ( idx == 9 )
+  else if ( idx == kHotkeys )
     {
       uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
       uiMain->uiHotkey->uiMain->show();
     }
-  else if ( idx == 10 )
+  else if ( idx == kLogs )
     {
       uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
       uiMain->uiLog->uiMain->show();
     }
-  else if ( idx == 11 )
+  else if ( idx == kAbout )
     {
       uiMain->uiAbout->uiMain->show();
     }
@@ -2709,12 +2733,13 @@ void ImageView::toggle_fullscreen()
 {
   fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
   fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
+  fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
   fltk::Window* uiReel  = uiMain->uiReelWindow->uiMain;
   fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
 
-  static bool has_image_info, has_color_area, has_reel, has_prefs, has_about,
-    has_top_bar, has_bottom_bar, has_pixel_bar;
+  static bool has_image_info, has_color_area, has_reel, has_edl_edit,
+  has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar;
   if ( fltk_main()->border() )
     {
       posX = fltk_main()->x();
@@ -2723,6 +2748,7 @@ void ImageView::toggle_fullscreen()
       has_image_info = uiImageInfo->visible();
       has_color_area = uiColorArea->visible();
       has_reel       = uiReel->visible();
+      has_edl_edit   = uiEDLWindow->visible();
       has_prefs      = uiPrefs->visible();
       has_about      = uiAbout->visible();
       has_top_bar    = uiMain->uiTopBar->visible();
@@ -2745,6 +2771,7 @@ void ImageView::toggle_fullscreen()
       if ( has_image_info ) uiImageInfo->show();
       if ( has_color_area ) uiColorArea->show();
       if ( has_reel  )      uiReel->show();
+      if ( has_edl_edit )   uiEDLWindow->show();
       if ( has_prefs )      uiPrefs->show();
       if ( has_about )      uiAbout->show();
 

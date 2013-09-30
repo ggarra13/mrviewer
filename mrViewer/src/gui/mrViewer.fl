@@ -1732,8 +1732,7 @@ v->refresh();}
     Function {~PreferencesUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {refresh()} {selected
-    } {
+    Function {refresh()} {} {
       code {fltk::Window* w = fltk::Window::first();
 for ( ; w ; w = w->next() )
    w->redraw();} {}
@@ -2290,15 +2289,15 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
-        xywh {12 231 640 530} when CHANGED resizable
+        callback {delete v;} open
+        xywh {15 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2330,6 +2329,12 @@ v->uiView->update_image_info();}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
 v->uiView->update_color_info();}
+                }
+              {fltk::Item} {} {
+                label {EDL Edit}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiColorArea->uiMain->show();
+v->uiView->update_color_info();} selected
                 }
               {fltk::Item} {} {
                 label {Paint Tools}

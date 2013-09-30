@@ -104,17 +104,21 @@ int EDLGroup::handle( int event )
       case fltk::DRAG:
 	 if ( fltk::event_key() == fltk::MiddleButton )
 	 {
-	    int diff = fltk::event_x() - _dragX;
+	    int diff = ( fltk::event_x() - _dragX );
+	    double amt = diff / (double) w();
+	    mrv::Timeline* t = timeline();
+	    double avg = t->maximum() - t->minimum() + 1;
+	    amt *= avg;
 
-	    _timeline->minimum( _timeline->minimum() - diff );
-	    _timeline->maximum( _timeline->maximum() - diff );
-	    _timeline->redraw();
+	    t->minimum( t->minimum() - amt );
+	    t->maximum( t->maximum() - amt );
+	    t->redraw();
 
 	    MediaTrack::iterator i = _media_track.begin();
 	    MediaTrack::iterator e = _media_track.end();
 	    for ( ; i != e; ++i )
 	    {
-	       (*i)->translate( diff );
+	       (*i)->translate( amt );
 	    }
 	    _dragX = fltk::event_x();
 	    return 1;
