@@ -682,6 +682,13 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
       break;
     }
   
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
+
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
 				NotInRangeFunctor( first, last ) ), end );
@@ -839,6 +846,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	      }
 	   }
 	   
+	   assert( samples != NULL );
+	   assert( frame.extended_data != NULL );
+	   assert( frame.extended_data[0] != NULL );
 
 
 	   int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
@@ -955,7 +965,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
        // Decode the audio into the buffer
        assert( _audio_buf_used + pkt_temp.size <= _audio_max );
        assert( pkt_temp.data != NULL );
-       assert( _audio_buf_used % 16 == 0 );
+       // assert( _audio_buf_used % 16 == 0 );
        assert( audio_size > 0 );
        int ret = decode_audio3( ctx, 
 				( int16_t * )( (char*)_audio_buf + 
@@ -1071,16 +1081,16 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       ++last;
     }
   
-#ifdef DEBUG
-  if ( got_audio != kDecodeOK )
-    {
-      IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
-		   << _(" last ") << last
-		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
-		   << _(" need ") 
-		   << audio_bytes_per_frame() );
-    }
-#endif
+// #ifdef DEBUG
+//   if ( got_audio != kDecodeOK )
+//     {
+//       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
+// 		   << _(" last ") << last
+// 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
+// 		   << _(" need ") 
+// 		   << audio_bytes_per_frame() );
+//     }
+// #endif
 
 
   if (_audio_buf_used > 0  )

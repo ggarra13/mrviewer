@@ -753,6 +753,13 @@ void aviImage::limit_video_store(const boost::int64_t frame)
 
   if ( _images.empty() ) return;
 
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
+
   // std::cerr << frame << "  limit " << first << "-" << last << std::endl;
   // std::cerr << (*_images.begin())->frame() << " ... "
   // 	    << (*(_images.end()-1))->frame() << std::endl;
@@ -799,6 +806,13 @@ void aviImage::limit_subtitle_store(const boost::int64_t frame)
       if ( last  > last_frame() )   last = last_frame();
       break;
     }
+
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
 
   subtitle_cache_t::iterator end = _subtitles.end();
   _subtitles.erase( std::remove_if( _subtitles.begin(), end,

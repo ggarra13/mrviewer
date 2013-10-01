@@ -188,8 +188,6 @@ bool media_track::select_media( const boost::int64_t pos )
    size_t e = _position.size();
    _selected.reset();
 
-   std::cerr << "select media at " << pos << std::endl;
-
    for ( size_t i = 0; i < e; ++i )
    {
       mrv::media fg = _media[i];
@@ -380,7 +378,23 @@ void media_track::draw()
    	 fltk::setcolor( fltk::WHITE );
       fltk::strokerect( dx, y(), dw, h() );
 
+      if ( _selected == fg )
+      {
+   	 fltk::setcolor( fltk::BLUE );
+	 if ( _at_start )
+	 {
+	    fltk::strokerect( dx, y(), dw/2, h() );
+	 }
+	 else
+	 {
+	    fltk::strokerect( dx+dw/2, y(), dw/2, h() );
+	 }
+      }
 
+
+      fltk::setcolor( fltk::BLACK );
+      if ( _selected == fg )
+   	 fltk::setcolor( fltk::WHITE );
 
       int ww, hh;
       fltk::setfont( textfont(), 10 );

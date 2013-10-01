@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-09-28 16:44-0300\n"
+"POT-Creation-Date: 2013-09-30 19:47-0300\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -50,7 +50,7 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1427
+#: gui/mrvImageView.cpp:1451
 #, c-format
 msgid " UF: %<PRId64> "
 msgstr ""
@@ -313,11 +313,11 @@ msgstr ""
 msgid "All Files (*)"
 msgstr ""
 
-#: gui/mrvImageView.cpp:139
+#: gui/mrvImageView.cpp:140
 msgid "Alpha"
 msgstr ""
 
-#: gui/mrvImageView.cpp:140
+#: gui/mrvImageView.cpp:141
 msgid "Alpha Overlay"
 msgstr ""
 
@@ -385,11 +385,11 @@ msgstr ""
 msgid "Audio missed for frame: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:1709
+#: gui/mrvImageView.cpp:1733
 msgid "Audio/Attach Audio File"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1711
+#: gui/mrvImageView.cpp:1735
 msgid "Audio/Detach Audio File"
 msgstr ""
 
@@ -401,7 +401,7 @@ msgstr ""
 msgid "Avg. Bitrate"
 msgstr ""
 
-#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:4248
+#: gui/mrvColorInfo.cpp:314 gui/mrvImageView.cpp:4275
 msgid "B"
 msgstr ""
 
@@ -427,7 +427,7 @@ msgstr ""
 msgid "Bitmap Picture"
 msgstr ""
 
-#: gui/mrvImageView.cpp:138
+#: gui/mrvImageView.cpp:139
 msgid "Blue"
 msgstr ""
 
@@ -513,7 +513,7 @@ msgstr ""
 msgid "Codec"
 msgstr ""
 
-#: gui/mrvImageView.cpp:131
+#: gui/mrvImageView.cpp:132
 msgid "Color"
 msgstr ""
 
@@ -633,7 +633,7 @@ msgstr ""
 msgid "Could not init cmm: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:704
+#: gui/mrvImageView.cpp:728
 msgid "Could not initialize draw engine"
 msgstr ""
 
@@ -1011,11 +1011,11 @@ msgstr ""
 msgid "Exposure Time"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4246
+#: gui/mrvImageView.cpp:4273
 msgid "F"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1379
+#: gui/mrvImageView.cpp:1403
 msgid "F: "
 msgstr ""
 
@@ -1023,7 +1023,7 @@ msgstr ""
 msgid "FPS"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1430
+#: gui/mrvImageView.cpp:1454
 #, c-format
 msgid "FPS: %.2f"
 msgstr ""
@@ -1045,27 +1045,27 @@ msgstr ""
 msgid "File Types"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1589
+#: gui/mrvImageView.cpp:1613
 msgid "File/Open/Movie or Sequence"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1591
+#: gui/mrvImageView.cpp:1615
 msgid "File/Open/Single Image"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1600
+#: gui/mrvImageView.cpp:1624
 msgid "File/Save/Frame As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1602
+#: gui/mrvImageView.cpp:1626
 msgid "File/Save/GL Snapshot As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1598
+#: gui/mrvImageView.cpp:1622
 msgid "File/Save/Reel As"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1596
+#: gui/mrvImageView.cpp:1620
 msgid "File/Save/Sequence As"
 msgstr ""
 
@@ -1210,7 +1210,7 @@ msgstr ""
 msgid "Got: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:137
+#: gui/mrvImageView.cpp:138
 msgid "Green"
 msgstr ""
 
@@ -1282,7 +1282,7 @@ msgstr ""
 msgid "Image file \""
 msgstr ""
 
-#: gui/mrvImageView.cpp:1668
+#: gui/mrvImageView.cpp:1692
 msgid "Image/Attach CTL Rendering Transform"
 msgstr ""
 
@@ -1290,32 +1290,32 @@ msgstr ""
 msgid "Image/Attach CTL Script"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1672 gui/mrvImageBrowser.cpp:2008
+#: gui/mrvImageView.cpp:1696 gui/mrvImageBrowser.cpp:2008
 msgid "Image/Attach ICC Color Profile"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1655 gui/mrvImageView.cpp:1663
+#: gui/mrvImageView.cpp:1679 gui/mrvImageView.cpp:1687
 #: gui/mrvImageBrowser.cpp:1990 gui/mrvImageBrowser.cpp:2000
 msgid "Image/Clone"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1657 gui/mrvImageBrowser.cpp:1992
+#: gui/mrvImageView.cpp:1681 gui/mrvImageBrowser.cpp:1992
 msgid "Image/Clone All Channels"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1646
+#: gui/mrvImageView.cpp:1670
 msgid "Image/Next"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1648
+#: gui/mrvImageView.cpp:1672
 msgid "Image/Previous"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1676 gui/mrvImageBrowser.cpp:2016
+#: gui/mrvImageView.cpp:1700 gui/mrvImageBrowser.cpp:2016
 msgid "Image/Set as Background"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1679
+#: gui/mrvImageView.cpp:1703
 msgid "Image/Toggle Background"
 msgstr ""
 
@@ -1510,7 +1510,7 @@ msgstr ""
 msgid "Longitude"
 msgstr ""
 
-#: gui/mrvImageView.cpp:141 gui/mrvImageInformation.cpp:404
+#: gui/mrvImageView.cpp:142 gui/mrvImageInformation.cpp:404
 msgid "Lumma"
 msgstr ""
 
@@ -1578,11 +1578,11 @@ msgstr ""
 msgid "Monitor Icc Profile"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1722
+#: gui/mrvImageView.cpp:1746
 msgid "Monitor/Attach CTL Display Transform"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1726
+#: gui/mrvImageView.cpp:1750
 msgid "Monitor/Attach ICC Color Profile"
 msgstr ""
 
@@ -1598,7 +1598,7 @@ msgstr ""
 msgid "My Documents"
 msgstr ""
 
-#: gui/mrvImageView.cpp:144
+#: gui/mrvImageView.cpp:145
 msgid "N"
 msgstr ""
 
@@ -1677,7 +1677,7 @@ msgstr ""
 msgid "None"
 msgstr ""
 
-#: gui/mrvImageView.cpp:145
+#: gui/mrvImageView.cpp:146
 msgid "Normals"
 msgstr ""
 
@@ -1693,11 +1693,11 @@ msgid ""
 "Readable"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1804
+#: gui/mrvImageView.cpp:1828
 msgid "Not a GLErasePathShape pointer"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1778 gui/mrvImageView.cpp:2209
+#: gui/mrvImageView.cpp:1802 gui/mrvImageView.cpp:2233
 msgid "Not a GLPathShape pointer"
 msgstr ""
 
@@ -1805,7 +1805,7 @@ msgstr ""
 msgid "Pixel Ratio"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1715
+#: gui/mrvImageView.cpp:1739
 msgid "Pixel/Copy RGBA Values to Clipboard"
 msgstr ""
 
@@ -1885,7 +1885,7 @@ msgstr ""
 msgid "RED"
 msgstr ""
 
-#: gui/mrvImageView.cpp:135
+#: gui/mrvImageView.cpp:136
 msgid "RGB"
 msgstr ""
 
@@ -1893,7 +1893,7 @@ msgstr ""
 msgid "RGB Picture"
 msgstr ""
 
-#: gui/mrvImageView.cpp:134
+#: gui/mrvImageView.cpp:135
 msgid "RGBA"
 msgstr ""
 
@@ -1937,7 +1937,7 @@ msgstr ""
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr ""
 
-#: gui/mrvImageView.cpp:136
+#: gui/mrvImageView.cpp:137
 msgid "Red"
 msgstr ""
 
@@ -2033,7 +2033,7 @@ msgstr ""
 msgid "SGI Picture"
 msgstr ""
 
-#: gui/mrvImageView.cpp:148
+#: gui/mrvImageView.cpp:149
 msgid "ST"
 msgstr ""
 
@@ -2144,11 +2144,11 @@ msgstr ""
 msgid "Subtitle Streams"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1688
+#: gui/mrvImageView.cpp:1712
 msgid "Subtitle/No Subtitle"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1696
+#: gui/mrvImageView.cpp:1720
 #, c-format
 msgid "Subtitle/Track #%d - %s"
 msgstr ""
@@ -2161,11 +2161,11 @@ msgstr ""
 msgid "Supplemental Category"
 msgstr ""
 
-#: gui/mrvImageView.cpp:4247
+#: gui/mrvImageView.cpp:4274
 msgid "T"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1387
+#: gui/mrvImageView.cpp:1411
 msgid "T: "
 msgstr ""
 
@@ -2178,7 +2178,7 @@ msgstr ""
 msgid "Tab"
 msgstr ""
 
-#: gui/mrvImageView.cpp:146
+#: gui/mrvImageView.cpp:147
 msgid "Tag"
 msgstr ""
 
@@ -2242,7 +2242,7 @@ msgstr ""
 msgid "UTC Offset"
 msgstr ""
 
-#: gui/mrvImageView.cpp:147
+#: gui/mrvImageView.cpp:148
 msgid "UV"
 msgstr ""
 
@@ -2260,7 +2260,7 @@ msgstr ""
 msgid "Unknown"
 msgstr ""
 
-#: gui/mrvImageView.cpp:422
+#: gui/mrvImageView.cpp:446
 msgid "Unknown Window \""
 msgstr ""
 
@@ -2304,7 +2304,7 @@ msgstr ""
 msgid "Using hardware shader profile: "
 msgstr ""
 
-#: gui/mrvImageView.cpp:1396
+#: gui/mrvImageView.cpp:1420
 msgid "V-A: "
 msgstr ""
 
@@ -2345,17 +2345,17 @@ msgstr ""
 msgid "Video codec not found"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1640
+#: gui/mrvImageView.cpp:1664
 #, c-format
 msgid "View/Hud/%s"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1628
+#: gui/mrvImageView.cpp:1652
 #, c-format
 msgid "View/Mask/%s"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1621
+#: gui/mrvImageView.cpp:1645
 msgid "View/Safe Areas"
 msgstr ""
 
@@ -2379,7 +2379,7 @@ msgstr ""
 msgid "Width"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1614
+#: gui/mrvImageView.cpp:1638
 #, c-format
 msgid "Windows/%s"
 msgstr ""
@@ -2427,11 +2427,11 @@ msgstr ""
 msgid "Yes"
 msgstr ""
 
-#: gui/mrvImageView.cpp:142
+#: gui/mrvImageView.cpp:143
 msgid "Z"
 msgstr ""
 
-#: core/iffImage.cpp:496 core/iffImage.cpp:532 gui/mrvImageView.cpp:143
+#: core/iffImage.cpp:496 core/iffImage.cpp:532 gui/mrvImageView.cpp:144
 msgid "Z Depth"
 msgstr ""
 
@@ -2459,11 +2459,11 @@ msgstr ""
 msgid "half float (16-bits per channel)"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1272 gui/mrvImageView.cpp:1287
+#: gui/mrvImageView.cpp:1296 gui/mrvImageView.cpp:1311
 msgid "hdtv"
 msgstr ""
 
-#: gui/mrvImageView.cpp:132
+#: gui/mrvImageView.cpp:133
 msgid "left"
 msgstr ""
 
@@ -2519,7 +2519,7 @@ msgstr ""
 msgid "recv() failed"
 msgstr ""
 
-#: gui/mrvImageView.cpp:133
+#: gui/mrvImageView.cpp:134
 msgid "right"
 msgstr ""
 
@@ -2531,11 +2531,11 @@ msgstr ""
 msgid "subtitle"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1265 gui/mrvImageView.cpp:1295
+#: gui/mrvImageView.cpp:1289 gui/mrvImageView.cpp:1319
 msgid "tv action"
 msgstr ""
 
-#: gui/mrvImageView.cpp:1266 gui/mrvImageView.cpp:1296
+#: gui/mrvImageView.cpp:1290 gui/mrvImageView.cpp:1320
 msgid "tv title"
 msgstr ""
 
