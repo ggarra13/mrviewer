@@ -101,7 +101,7 @@ namespace mrv {
     inline void push_back( AVPacket& pkt )
     {
       Mutex::scoped_lock lk( _mutex );
-      assert( pkt.dts != MRV_NOPTS_VALUE );
+      // assert( pkt.dts != MRV_NOPTS_VALUE );
 
       if ( av_dup_packet(&pkt) < 0 )
       {

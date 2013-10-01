@@ -2297,7 +2297,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {15 231 640 530} when CHANGED resizable
+        xywh {323 732 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2333,8 +2333,7 @@ v->uiView->update_color_info();}
               {fltk::Item} {} {
                 label {EDL Edit}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiColorArea->uiMain->show();
-v->uiView->update_color_info();} selected
+                callback {v->uiEDLWindow->uiMain->show();} selected
                 }
               {fltk::Item} {} {
                 label {Paint Tools}

@@ -1641,7 +1641,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
 boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
 				   const boost::int64_t frame ) const
 {
-   assert( frame >= _frameStart );
+   assert( frame >= _frame_start );
+   assert( frame <= _frame_end );
    double p = (double)(frame - 1) / fps();
    if ( stream ) p /= av_q2d( stream->time_base );
    if ( p < 0 )  return AV_NOPTS_VALUE;
@@ -1651,15 +1652,25 @@ boost::uint64_t CMedia::frame2pts( const AVStream* stream,
 
 // Convert an FFMPEG pts into a frame number
 boost::int64_t CMedia::pts2frame( const AVStream* stream, 
-				  const boost::int64_t pts ) const
+				  const boost::int64_t dts ) const
 {
+   static boost::int64_t frame = 0;
+
+   boost::int64_t pts = dts;
+
+   if ( pts == MRV_NOPTS_VALUE ) {
+      if ( frame == _frame_end ) frame -= 1;
+      pts = frame2pts( stream, frame+1 );
+   }
+
+
   assert( pts != MRV_NOPTS_VALUE );
   if (!stream) return 0;
 
   double p = av_q2d( stream->time_base ) * pts;
-  return boost::int64_t( p * fps() + 0.5 ) + 1; 
+  frame = boost::int64_t( p * fps() + 0.5 ) + 1; 
   //  _frameStart; //is wrong
-
+  return frame;
 }
 
 
