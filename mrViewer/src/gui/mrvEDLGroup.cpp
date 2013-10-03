@@ -28,6 +28,7 @@ size_t EDLGroup::add_media_track()
 						 mrv::media_track(x(), y(),
 								  w(), 30) ) );
    _media_track.back()->main( timeline()->main() );
+   
    return _media_track.size() - 1;
 }
 
@@ -144,8 +145,30 @@ void EDLGroup::zoom( double z )
 {
 
    mrv::Timeline* t = timeline();
-   t->minimum( t->minimum() * z );
-   t->maximum( t->maximum() * z );
+
+   double pct = (double) fltk::event_x() / (double)w();
+
+   int64_t tmin = t->minimum();
+   int64_t tmax = t->maximum();
+
+
+   int64_t tdiff = tmax - tmin;
+   int64_t tcur = tmin + pct * tdiff;
+
+
+   tmax *= z;
+   tmin *= z;
+
+   int64_t tlen = tmax - tmin;
+
+   tmax = tcur + ( 1.0 - pct ) * tlen;
+   tmin = tcur - tlen * pct;
+
+
+   if ( tmin < 0.0 ) tmin = 0.0;
+
+   t->minimum( tmin );
+   t->maximum( tmax );
    t->redraw();
 
 
