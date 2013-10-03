@@ -51,6 +51,12 @@ void media_track::add( mrv::media m, boost::int64_t frame )
       }
    }
    _position.push_back( frame );
+
+
+   const mrv::Reel& reel = browser()->current_reel();
+   mrv::media o = reel->images[ _position.size()-1 ];
+   timeline()->maximum( frame + o->image()->duration() );
+
    redraw();
 }
 
@@ -187,8 +193,6 @@ bool media_track::select_media( const boost::int64_t pos )
    size_t e = _position.size();
    _selected.reset();
 
-   std::cerr << "select at pos " << pos << std::endl;
-
    const mrv::Reel& reel = browser()->current_reel();
 
    for ( size_t i = 0; i < e; ++i )
@@ -201,9 +205,6 @@ bool media_track::select_media( const boost::int64_t pos )
 
       int64_t start = _position[i];
       int64_t duration = (int64_t)img->duration();
-
-      std::cerr << i << " start " << start << " end " << start + duration
-		<< std::endl;
 
       if ( pos >= start && pos < start + duration)
       {
@@ -434,7 +435,7 @@ void media_track::draw()
       assert( dw > ww/2 );
 
       fltk::drawtext( buf,
-		      dx + r.w()/2 - ww/2, y() + 15 );
+		      dx + dw/2 - ww/2, y() + 15 );
 
    }
 
