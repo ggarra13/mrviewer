@@ -94,11 +94,11 @@ int EDLGroup::handle( int event )
       case fltk::MOUSEWHEEL:
 	if ( fltk::event_dy() < 0.f )
 	  {
-	     zoom( 0.5f );
+	     zoom( 0.5 );
 	  }
 	else
 	  {
-	     zoom( 2.0f );
+	     zoom( 2.0 );
 	  }
 	 break;
       case fltk::DRAG:

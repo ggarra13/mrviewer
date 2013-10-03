@@ -15,6 +15,7 @@ extern "C" {
 namespace mrv {
 
 class ViewerUI;
+class ImageBrowser;
 class Timeline;
 
 class media_track : public fltk::Widget
@@ -33,10 +34,6 @@ class media_track : public fltk::Widget
      // Add a media at a certain frame (or append to end by default)
      void add( mrv::media m, boost::int64_t frame = AV_NOPTS_VALUE );
 
-     // Return a media based on its index
-     mrv::media media_at( const unsigned i ) { 
-	return _media[i];
-     }
 
      // Return a media based on its position in the track
      mrv::media media_at_position( const boost::int64_t frame );
@@ -46,6 +43,8 @@ class media_track : public fltk::Widget
 
      void main( mrv::ViewerUI* m ) { _main = m; }
      mrv::ViewerUI* main() const { return _main; }
+
+     mrv::ImageBrowser* browser() const;
 
      mrv::Timeline* timeline() const;
      
@@ -72,7 +71,6 @@ class media_track : public fltk::Widget
      int        _dragX;
      bool       _at_start;
      mrv::media _selected;
-     MediaList  _media;
      Positions  _position;
      double     _panX;
      double     _zoom;
