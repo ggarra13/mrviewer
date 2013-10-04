@@ -2288,6 +2288,7 @@ void ImageBrowser::load( const stringArray& files,
 	if (!reel) return;
  
 	mrv::media fg = view->foreground();
+	if (!fg) return;
 	
 	CMedia* img = fg->image();
 	img->seek( f );
