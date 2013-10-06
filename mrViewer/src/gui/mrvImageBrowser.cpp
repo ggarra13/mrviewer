@@ -1178,6 +1178,9 @@ namespace mrv {
 
     reel->images.erase( i );
 
+    uiMain->uiEDLWindow->uiEDLGroup->redraw();
+
+
     // uiMain->uiView->send("sync_image" );
   }
 
@@ -1273,6 +1276,8 @@ namespace mrv {
     {
        clear_edl();
     }
+
+    uiMain->uiEDLWindow->uiEDLGroup->redraw();
 
     change_image();
   }
@@ -1927,6 +1932,7 @@ void ImageBrowser::load( const stringArray& files,
 
     int button = fltk::event_button();
     int sel = value();
+
     if ( button == 1 )
       {
 	int clicks = fltk::event_clicks();
@@ -2169,6 +2175,28 @@ void ImageBrowser::load( const stringArray& files,
 
     reel->images.insert( reel->images.begin() + sel, m );
 
+    //
+    // Adjust timeline position
+    //
+    MediaList::iterator i = reel->images.begin();
+    MediaList::iterator j;
+    MediaList::iterator end = reel->images.end();
+
+
+    (*i)->position( 1 );
+
+    for ( j = i, ++i; i != end; j = i, ++i )
+    {
+       int64_t frame = (*j)->position() + (*j)->image()->duration();
+       (*i)->position( frame );
+    }
+
+
+    //
+    // Redraw EDL window
+    //
+    uiMain->uiEDLWindow->uiEDLGroup->redraw();
+
     if ( timeline()->edl() )
       {
 	int64_t t = timeline()->offset( img );
@@ -2292,6 +2320,7 @@ void ImageBrowser::load( const stringArray& files,
 	if (!reel) return;
  
 	mrv::media fg = view->foreground();
+	if (!fg) return;
 	
 	CMedia* img = fg->image();
 	img->seek( f );

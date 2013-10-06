@@ -33,9 +33,10 @@ namespace mrv {
     int media::_thumbnail_height = 64;
 
     media::media( CMedia* const img ) :
-      _image( img ),
-      _thumbnail( NULL ),
-      _thumbnail_frozen( false )
+    _pos( MRV_NOPTS_VALUE ),
+    _image( img ),
+    _thumbnail( NULL ),
+    _thumbnail_frozen( false )
     {
     }
 

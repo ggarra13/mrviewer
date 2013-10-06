@@ -1,4 +1,6 @@
 
+#include <limits>
+
 #include "mrvMediaTrack.h"
 #include "mrvEDLGroup.h"
 #include "mrvTimeline.h"
@@ -6,6 +8,7 @@
 #include <fltk/events.h>
 #include <fltk/draw.h>
 #include <fltk/Color.h>
+#include <fltk/Window.h>
 
 namespace mrv {
 
@@ -91,6 +94,44 @@ int EDLGroup::handle( int event )
 	    _dragX = fltk::event_x();
 	    return 1;
 	 }
+	 return 0;
+	 break;
+      case fltk::ENTER:
+	 focus(this);
+	 break;
+      case fltk::FOCUS:
+	 return 1;
+	 break;
+      case fltk::KEY:
+	 {
+	    int key = fltk::event_key();
+	    
+
+	    if ( key == 'f' )
+	    {
+	       MediaTrack::iterator i = _media_track.begin();
+	       MediaTrack::iterator e = _media_track.end();
+
+	       int64_t tmin = std::numeric_limits<int64_t>::max();
+	       int64_t tmax = std::numeric_limits<int64_t>::min();
+
+	       for ( ; i != e; ++i )
+	       {
+		  int64_t tmi = (*i)->minimum();
+		  int64_t tma = (*i)->maximum();
+		  if ( tmi < tmin ) tmin = tmi;
+		  if ( tma > tmax ) tmax = tma;
+	       }
+
+	       mrv::Timeline* t = timeline();
+	       t->minimum( tmin );
+	       t->maximum( tmax );
+	       t->redraw();
+	       redraw();
+	       return 1;
+	    }
+	    return 0;
+	 }
 	 break;
       case fltk::MOUSEWHEEL:
 	if ( fltk::event_dy() < 0.f )
@@ -101,7 +142,8 @@ int EDLGroup::handle( int event )
 	  {
 	     zoom( 2.0 );
 	  }
-	 break;
+	return 1;
+	break;
       case fltk::DRAG:
 	 if ( fltk::event_key() == fltk::MiddleButton )
 	 {
@@ -138,7 +180,8 @@ int EDLGroup::handle( int event )
       if ( ret ) return ret;
    }
 
-   return fltk::Group::handle( event );
+   fltk::Group::handle( event );
+   return 1;
 }
 
 void EDLGroup::zoom( double z )
@@ -181,6 +224,7 @@ void EDLGroup::zoom( double z )
 
 }
 
+
 void EDLGroup::draw()
 {
 
@@ -188,8 +232,6 @@ void EDLGroup::draw()
    fltk::fillrect( x(), y(), w(), h() );
 
    fltk::Group::draw();
-
-   // fltk::load_identity();
 
    MediaTrack::iterator i = _media_track.begin();
    MediaTrack::iterator e = _media_track.end();
