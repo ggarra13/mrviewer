@@ -7,6 +7,7 @@
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvReelList.h"
+#include "gui/mrvImageInformation.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
 
@@ -35,26 +36,27 @@ double media_track::frame_size() const
 // Add a media at a certain frame (or append to end by default)
 void media_track::add( mrv::media m, boost::int64_t frame )
 {
-   if ( frame == AV_NOPTS_VALUE )
+   const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return;
+
+   if ( frame == MRV_NOPTS_VALUE )
    {
-      if ( _position.size() == 0 )
+      size_t e = reel->images.size();
+      if ( e < 2 )
       {
 	 frame = 1;
       }
       else
       {
-	 size_t e = _position.size();
-	 frame = _position.back();
-	 const mrv::Reel& reel = browser()->current_reel();
-	 mrv::media o = reel->images[e-1];
+	 mrv::media o = reel->images[e-2];
+	 frame = o->position();
 	 frame += o->image()->duration();
       }
    }
-   _position.push_back( frame );
 
+   m->position( frame );
 
-   const mrv::Reel& reel = browser()->current_reel();
-   mrv::media o = reel->images[ _position.size()-1 ];
+   mrv::media o = reel->images[ reel->images.size()-1 ];
    timeline()->maximum( frame + o->image()->duration() );
 
    redraw();
@@ -67,13 +69,14 @@ mrv::ImageBrowser* media_track::browser() const {
 mrv::media media_track::media_at_position( const boost::int64_t frame )
 {
    const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return mrv::media();
    size_t e = reel->images.size();
 
    for (size_t i = 0; i < e; ++i )
    {
-      boost::int64_t start = _position[i];
-      boost::int64_t end   = _position[i];
       mrv::media m = reel->images[i];
+      boost::int64_t start = m->position();
+      boost::int64_t end   = m->position();
       end   += m->image()->duration();
       if ( frame >= start && frame < end )
       {
@@ -85,11 +88,13 @@ mrv::media media_track::media_at_position( const boost::int64_t frame )
 
 }
 
+
 // Remove a media from the track
 bool media_track::remove( mrv::media m )
-{
+{  
    browser()->remove( m );
-   return false;
+   redraw();
+   return true;
 }
 
 // Move a media in track without changing its start or end frames
@@ -97,8 +102,9 @@ bool media_track::remove( mrv::media m )
 void media_track::shift_media( mrv::media m, boost::int64_t frame )
 {
    const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return;
 
-   size_t e = _position.size();
+   size_t e = reel->images.size();
    size_t idx = 0;
 
    for (size_t i = 0; i < e; ++i )
@@ -106,7 +112,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
       if ( m == reel->images[i] )
       {
 	 idx = i;
-	 _position[i] = frame;
+	 reel->images[i]->position( frame );
 	 break;
       }
    }
@@ -114,8 +120,9 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    // Shift medias that come after
    for (size_t i = idx+1; i < e; ++i )
    {
-      boost::int64_t end = _position[i-1] + reel->images[i-1]->image()->duration();
-      _position[i] = end;
+      mrv::media& fg = reel->images[i-1];
+      boost::int64_t end = fg->position() + fg->image()->duration();
+      reel->images[i]->position( end );
    }
 
 
@@ -126,12 +133,13 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    // Shift medias that come before
    for (int i = int(idx)-1; i >= 0; --i )
    {
-      boost::int64_t start = _position[i+1];
-      boost::int64_t ee = _position[i] + reel->images[i]->image()->duration();
-      boost::int64_t ss = _position[i];
+      boost::int64_t start = reel->images[i+1]->position();
+      mrv::media& o = reel->images[i];
+      boost::int64_t ee = o->position() + o->image()->duration();
+      boost::int64_t ss = o->position();
       
       // Shift indexes of position
-      _position[i] = (start - (ee - ss ) );
+      reel->images[i]->position( start - (ee - ss ) );
    }
 
    return;
@@ -140,23 +148,23 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
 void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 {
    const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return;
 
    int idx = 0;
-   size_t e = _position.size();
+   size_t e = reel->images.size();
    for ( size_t i = 0; i < e; ++i )
    {
       mrv::media fg = reel->images[i];
       if ( fg == m )
       {
 	 idx = i;
-	 int64_t newpos = _position[i] + diff;
-	 if ( newpos < _position[i] + m->image()->duration() )
+	 int64_t newpos = m->position() + diff;
+	 if ( newpos < m->position() + m->image()->duration() )
 	 {
-	    main()->uiView->foreground( fg );
 	    CMedia* img = m->image();
 	    img->first_frame( img->first_frame() + diff );
 	    img->seek( img->first_frame() );
-	    // _position[i] += diff;
+	    main()->uiView->foreground( fg );
 	 }
 	 break;
       }
@@ -165,8 +173,10 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    // Shift medias that come after
    for (size_t i = idx+1; i < e; ++i )
    {
-      boost::int64_t end = _position[i-1] + reel->images[i-1]->image()->duration();
-      _position[i] = end;
+      mrv::media& o = reel->images[i-1];
+      boost::int64_t end = o->position() + o->image()->duration();
+      mrv::media& fg = reel->images[i];
+      fg->position( end );
    }
 
 
@@ -177,12 +187,13 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    // Shift medias that come before
    for (int i = int(idx)-1; i >= 0; --i )
    {
-      boost::int64_t start = _position[i+1];
-      boost::int64_t ee = _position[i] + reel->images[i]->image()->duration();
-      boost::int64_t ss = _position[i];
+      boost::int64_t start = reel->images[i+1]->position();
+      mrv::media& o = reel->images[i];
+      boost::int64_t ee = o->position() + o->image()->duration();
+      boost::int64_t ss = o->position();
       
       // Shift indexes of position
-      _position[i] = (start - (ee - ss ) );
+      o->position( start - (ee - ss ) );
    }
 
 }
@@ -190,10 +201,12 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 bool media_track::select_media( const boost::int64_t pos )
 {
    bool ok = false;
-   size_t e = _position.size();
    _selected.reset();
 
    const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return false;
+
+   size_t e = reel->images.size();
 
    for ( size_t i = 0; i < e; ++i )
    {
@@ -203,15 +216,19 @@ bool media_track::select_media( const boost::int64_t pos )
       CMedia* img = fg->image();
       //int64_t start = img->first_frame() - img->start_frame() + 1;
 
-      int64_t start = _position[i];
+      int64_t start = fg->position();
       int64_t duration = (int64_t)img->duration();
 
       if ( pos >= start && pos < start + duration)
       {
 	 if ( pos < start + duration / 2 )
+	 {
 	    _at_start = true;
+	 }
 	 else
+	 {
 	    _at_start = false;
+	 }
 
 	 ok = true;
 	 _selected = fg;
@@ -231,12 +248,13 @@ mrv::Timeline* media_track::timeline() const
 void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 {
    const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return;
 
-   size_t e = _position.size();
+   size_t e = reel->images.size();
    size_t i = 0;
    for ( ; i < e; ++i )
    {
-      mrv::media fg = reel->images[i];
+      mrv::media& fg = reel->images[i];
       if ( fg == m )
       {
 	 int64_t pos = m->image()->last_frame() + diff;
@@ -245,19 +263,22 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	 {
 	    m->image()->last_frame( pos );
 	    m->image()->seek( pos );
+
+	    main()->uiImageInfo->uiInfoText->refresh();
+	    main()->uiImageInfo->uiInfoText->redraw();
 	    break;
 	 }
       }
    }
 
-   // Shift medias that come before
+   // Shift medias that come after
    for ( ; i < e-1; ++i )
    {
-      boost::int64_t start = _position[i];
+      boost::int64_t start = reel->images[i]->position();
       boost::int64_t ee = reel->images[i]->image()->duration();
       
       // Shift indexes of position
-      _position[i+1] = (start + ee );
+      reel->images[i+1]->position(start + ee );
    }
    redraw();
 
@@ -290,6 +311,8 @@ int media_track::handle( int event )
 
 	    main()->uiView->seek( _frame );
 	    main()->uiView->play( _playback );
+	    main()->uiImageInfo->uiInfoText->refresh();
+	    // main()->uiImageInfo->uiInfoText->redraw();
 	 }
 	 return 1;
 	 break;
@@ -298,6 +321,7 @@ int media_track::handle( int event )
 	    _dragX = fltk::event_x();
 	    int x = fltk::event_x();
 	    int y = fltk::event_y();
+
 
 	    if ( fltk::event_key() == fltk::LeftButton )
 	    {
@@ -326,6 +350,19 @@ int media_track::handle( int event )
 	       return 0;
 	    }
 	 }
+    // case fltk::KEY:
+    //    {
+    // 	  int key = fltk::event_key();
+    // 	  if ( key == fltk::DeleteKey ||
+    // 	       key == fltk::BackSpaceKey )
+    // 	  {
+    // 	     remove( _selected );
+    // 	     return 1;
+    // 	  }
+    // 	  std::cerr << "track key " << key << std::endl;
+    // 	  return fltk::Widget::handle( event );
+    // 	  // return 0;
+    //    }
       case fltk::DRAG:
 	 {
 	    if ( _selected )
@@ -333,6 +370,7 @@ int media_track::handle( int event )
 	       cursor( fltk::CURSOR_WE );
 
 	       const mrv::Reel& reel = browser()->current_reel();
+	       if ( !reel ) return 0;
 	       mrv::MediaList::const_iterator i = reel->images.begin();
 	       mrv::MediaList::const_iterator e = reel->images.end();
  
@@ -361,13 +399,32 @@ int media_track::handle( int event )
    return fltk::Widget::handle( event );
 }
 
+int64_t media_track::minimum() const
+{
+   const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return MRV_NOPTS_VALUE;
+   if ( reel->images.size() == 0 ) return MRV_NOPTS_VALUE;
+   return reel->images[0]->position();
+}
+
+int64_t media_track::maximum() const
+{
+   const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return MRV_NOPTS_VALUE;
+   size_t e = reel->images.size() - 1;
+   return reel->images[e]->position() + reel->images[e]->image()->duration();
+}
+
 void media_track::draw()
 {
-   size_t e = _position.size();
    const mrv::Reel& reel = browser()->current_reel();
+   if ( !reel ) return;
+
+   size_t e = reel->images.size();
 
    fltk::load_identity();
    fltk::setcolor( fltk::GRAY33 );
+
    fltk::push_clip( x(), y(), w(), h() );
    fltk::fillrect( x(), y(), w(), h() );
 
@@ -383,7 +440,7 @@ void media_track::draw()
       mrv::media fg = reel->images[i];
       if (!fg) continue;
 
-      int64_t pos = _position[i];
+      int64_t pos = fg->position();
 
 
       int dx = t->slider_position( pos, ww );
@@ -411,13 +468,25 @@ void media_track::draw()
       if ( _selected == fg )
       {
    	 fltk::setcolor( fltk::BLUE );
+	 int yh = y() + h();
 	 if ( _at_start )
 	 {
-	    fltk::strokerect( r.x(), y(), dw/2, h() );
+	    fltk::newpath();
+	    fltk::addvertex( r.x(), y() );
+	    fltk::addvertex( r.x(), yh );
+	    fltk::addvertex( r.x() + dw/2, yh );
+	    fltk::closepath();
+	    fltk::fillpath();
+
 	 }
 	 else
 	 {
-	    fltk::strokerect( r.x()+dw/2, y(), dw/2, h() );
+	    fltk::newpath();
+	    fltk::addvertex( r.x()+dw, y() );
+	    fltk::addvertex( r.x()+dw, yh );
+	    fltk::addvertex( r.x()+dw/2, yh );
+	    fltk::closepath();
+	    fltk::fillpath();
 	 }
       }
 

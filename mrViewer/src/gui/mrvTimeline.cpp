@@ -87,6 +87,8 @@ Timeline::~Timeline()
 	for ( ; i != e; ++i )
 	  {
 	    CMedia* img = (*i)->image();
+	    if ( (*i)->position() == MRV_NOPTS_VALUE )
+	       (*i)->position( total );
 	    total += img->duration();
 	  }
 
@@ -302,11 +304,12 @@ Timeline::~Timeline()
 
 	for ( ; i != e; frame += size, ++i )
 	  {
-	    CMedia* img = (*i)->image();
-	    size = img->duration();
+	     int64_t pos = (*i)->position();
+	     CMedia* img = (*i)->image();
+	     size = img->duration();
 
 	    // skip this block if outside visible timeline span
-	    if ( frame + size < mn || frame > mx ) continue;
+	     if ( frame + size < mn || frame > mx ) continue;
 
 	    int  dx = slider_position( frame,      ww );
 	    int end = slider_position( frame+size, ww );

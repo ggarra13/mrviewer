@@ -41,6 +41,9 @@ class media_track : public fltk::Widget
      // Remove a media from the track.  Returns true if element was removed.
      bool remove( mrv::media m );
 
+     // Remove a media from track based on its reel index
+     bool remove( int idx );
+
      void main( mrv::ViewerUI* m ) { _main = m; }
      mrv::ViewerUI* main() const { return _main; }
 
@@ -61,6 +64,9 @@ class media_track : public fltk::Widget
      // Select the media 
      bool select_media( const boost::int64_t pos );
 
+     int64_t minimum() const;
+     int64_t maximum() const;
+
      void translate( double x ) { _panX += x; redraw(); }
 
      virtual int handle( int event );
@@ -70,8 +76,7 @@ class media_track : public fltk::Widget
      mrv::ViewerUI* _main;
      int        _dragX;
      bool       _at_start;
-     mrv::media _selected;
-     Positions  _position;
+     mrv::media _selected; 
      double     _panX;
      double     _zoom;
      CMedia::Playback _playback;

@@ -43,6 +43,8 @@ namespace mrv {
 	    else o << "NULL";
 	 }
 
+	 void position( boost::int64_t x ) { _pos = x; }
+	 boost::int64_t position() const { return _pos; }
 
       CMedia* image()             { return _image; }
       const CMedia* image() const { return _image; }
@@ -59,6 +61,7 @@ namespace mrv {
       void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
 			    uchar r, uchar g, uchar b );
 
+	 boost::int64_t  _pos;
       CMedia*   _image;
       fltk::Image* _thumbnail;
       bool         _thumbnail_frozen;

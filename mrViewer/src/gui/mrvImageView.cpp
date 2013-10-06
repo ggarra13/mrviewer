@@ -1108,6 +1108,7 @@ void ImageView::timeout()
 		  // updating frame
 		  this->frame( frame );
 		}
+	      uiMain->uiEDLWindow->uiEDLGroup->redraw();
 	    }
 	  
 	  uiMain->uiFrame->value( frame );
@@ -1930,10 +1931,6 @@ void ImageView::mouseMove(int x, int y)
 {
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-  if ( x >=  0 && y >= 0 && x < this->w() && y < this->h() )
-    {
-      focus(this);
-    }
 
   double xf = (double) x;
   double yf = (double) y;
@@ -2315,18 +2312,22 @@ int ImageView::keyDown(unsigned int rawkey)
    else if ( kExposureMore.match( rawkey ) )
    {
       exposure_change( 0.5f );
+      return 1;
    }
    else if ( kExposureLess.match( rawkey ) )
     {
       exposure_change( -0.5f );
+      return 1;
     }
    else if ( kGammaMore.match( rawkey ) )
     {
       gamma( gamma() + 0.1f );
+      return 1;
     }
    else if ( kGammaLess.match( rawkey ) )
     {
       gamma( gamma() - 0.1f );
+      return 1;
     }
    else if ( rawkey == fltk::LeftAltKey ) 
    {
@@ -2457,6 +2458,7 @@ int ImageView::keyDown(unsigned int rawkey)
   else if ( kAttachAudio.match(rawkey) ) 
   {
      attach_audio_cb( NULL, this );
+     return 1;
   }
   else if ( kFrameStepFPSBack.match(rawkey) ) 
    {
@@ -2892,6 +2894,7 @@ int ImageView::handle(int event)
       if ( _mode == kDraw || _mode == kErase )
 	 redraw();
 
+      return 1;
       break;
     case fltk::DRAG:
        X = fltk::event_x();
@@ -2902,7 +2905,6 @@ int ImageView::handle(int event)
     case fltk::KEY:
       lastX = fltk::event_x();
       lastY = fltk::event_y();
-      focus(this);
       return keyDown(fltk::event_key());
     case fltk::KEYUP:
       return keyUp(fltk::event_key());
@@ -2932,7 +2934,7 @@ int ImageView::handle(int event)
       return fltk::GlWindow::handle( event ); 
     }
 
-  return 1;
+  return 0;
 }
 
 
