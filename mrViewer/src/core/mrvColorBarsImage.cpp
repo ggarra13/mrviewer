@@ -23,7 +23,7 @@ namespace mrv {
     _internal = true;
     default_layers();
 
-    _frameStart = 1;
+    _frameStart = _frame_start = 1;
 
     switch( c )
       {
@@ -58,7 +58,7 @@ namespace mrv {
 	break;
       }
 
-    _frameEnd   = int64_t( _fps * 3 );
+    _frameEnd = _frame_end = int64_t( _fps * 3 );
   }
 
   void ColorBarsImage::smpte_color_bars( 

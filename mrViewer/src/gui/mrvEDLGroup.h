@@ -14,7 +14,6 @@ typedef audio_track* audio_track_ptr;
 class EDLGroup : public fltk::Group
 {
    public:
-     typedef std::vector< media_track_ptr >  MediaTrack;
      typedef std::vector< audio_track_ptr >  AudioTrack;
 
    public:
@@ -23,7 +22,7 @@ class EDLGroup : public fltk::Group
      ~EDLGroup();
 
      // Add a media track and return its index
-     size_t add_media_track();
+     size_t add_media_track( size_t reel_idx );
 
      // Add an audio only track and return its index
      size_t add_audio_track();
@@ -34,12 +33,17 @@ class EDLGroup : public fltk::Group
      // Return the number of audio only tracks
      size_t number_of_audio_tracks();
 
-     media_track_ptr& current_media_track() { 
-	return _media_track[_current_media_track]; 
+     void current_media_track( size_t i );
+
+     mrv::media_track* current_media_track() { 
+	return (mrv::media_track*)this->child(_current_media_track); 
      }
 
      // Return a media track at index i
-     media_track_ptr& media_track( int i );
+     mrv::media_track* media_track( int i )
+     {
+	return (mrv::media_track*)this->child(i); 
+     }
 
      // Return an audio track at index i
      audio_track_ptr& audio_track( int i );
@@ -55,6 +59,8 @@ class EDLGroup : public fltk::Group
 
      void zoom( double x );
 
+     void refresh();
+
      virtual int  handle( int event );
      virtual void layout();
      virtual void draw();
@@ -63,7 +69,6 @@ class EDLGroup : public fltk::Group
      double     _zoom;
      int        _dragX;
      size_t     _current_media_track;
-     MediaTrack _media_track;
      AudioTrack _audio_track;
      mrv::Timeline* _timeline;
 };
