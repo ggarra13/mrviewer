@@ -20,19 +20,35 @@ fltk::Group(x,y,w,h)
 
 EDLGroup::~EDLGroup()
 {
-   _media_track.clear();
    _audio_track.clear();
 }
 
-// Add a media track and return its index
-size_t EDLGroup::add_media_track()
+void EDLGroup::current_media_track( size_t i )
 {
-   _media_track.push_back( mrv::media_track_ptr( new 
-						 mrv::media_track(x(), y(),
-								  w(), 30) ) );
-   _media_track.back()->main( timeline()->main() );
+   if ( i >= children() )
+      throw("Invalid index to current_media_track");
+   _current_media_track = i;
+   redraw();
+}
+
+// Add a media track and return its index
+size_t EDLGroup::add_media_track( size_t r )
+{
+   size_t e = children();
+
+   mrv::media_track* o = new mrv::media_track(x(), y() +
+					      70 * e,
+					      w(), 68);
+ 
+   o->main( timeline()->main() );
+   o->index( r );
+
+   this->add( o );
+
+   e = children() - 1;
+   _current_media_track = e;
    
-   return _media_track.size() - 1;
+   return e;
 }
 
 // Add an audio only track and return its index
@@ -45,20 +61,15 @@ size_t EDLGroup::add_audio_track()
 // Return the number of media tracks
 size_t EDLGroup::number_of_media_tracks()
 {
-   return _media_track.size();
+   return children();
 }
 
-     // Return the number of audio only tracks
+// Return the number of audio only tracks
 size_t EDLGroup::number_of_audio_tracks()
 {
    return _audio_track.size();
 }
 
-// Return a media track at index i
-media_track_ptr& EDLGroup::media_track( int i )
-{
-   return _media_track[i];
-}
 
 // Return an audio track at index i
 audio_track_ptr& EDLGroup::audio_track( int i )
@@ -69,7 +80,7 @@ audio_track_ptr& EDLGroup::audio_track( int i )
 // Remove a media track at index i
 void EDLGroup::remove_media_track( int i )
 {
-   _media_track.erase( _media_track.begin() + i );
+   remove( i );
 }
 
 // Remove an audio track at index i
@@ -94,10 +105,11 @@ int EDLGroup::handle( int event )
 	    _dragX = fltk::event_x();
 	    return 1;
 	 }
-	 return 0;
 	 break;
       case fltk::ENTER:
 	 focus(this);
+	 window()->show();
+	 return 1;
 	 break;
       case fltk::FOCUS:
 	 return 1;
@@ -109,18 +121,32 @@ int EDLGroup::handle( int event )
 
 	    if ( key == 'f' )
 	    {
-	       MediaTrack::iterator i = _media_track.begin();
-	       MediaTrack::iterator e = _media_track.end();
+	       size_t i = 0;
+	       size_t e = children();
 
 	       int64_t tmin = std::numeric_limits<int64_t>::max();
 	       int64_t tmax = std::numeric_limits<int64_t>::min();
 
 	       for ( ; i != e; ++i )
 	       {
-		  int64_t tmi = (*i)->minimum();
-		  int64_t tma = (*i)->maximum();
-		  if ( tmi < tmin ) tmin = tmi;
-		  if ( tma > tmax ) tmax = tma;
+
+		  mrv::media_track* o = (mrv::media_track*)child(i);
+		  mrv::media m = o->selected();
+		  if ( m )
+		  {
+		     int64_t tmi = m->position();
+		     int64_t tma = m->position() + m->image()->duration();
+		     if ( tmi < tmin ) tmin = tmi;
+		     if ( tma > tmax ) tmax = tma;
+		     break;
+		  }
+		  else
+		  {
+		     int64_t tmi = o->minimum();
+		     int64_t tma = o->maximum();
+		     if ( tmi < tmin ) tmin = tmi;
+		     if ( tma > tmax ) tmax = tma;
+		  }
 	       }
 
 	       mrv::Timeline* t = timeline();
@@ -130,7 +156,6 @@ int EDLGroup::handle( int event )
 	       redraw();
 	       return 1;
 	    }
-	    return 0;
 	 }
 	 break;
       case fltk::MOUSEWHEEL:
@@ -156,13 +181,8 @@ int EDLGroup::handle( int event )
 	    t->minimum( t->minimum() - amt );
 	    t->maximum( t->maximum() - amt );
 	    t->redraw();
+	    redraw();
 
-	    MediaTrack::iterator i = _media_track.begin();
-	    MediaTrack::iterator e = _media_track.end();
-	    for ( ; i != e; ++i )
-	    {
-	       (*i)->translate( amt );
-	    }
 	    _dragX = fltk::event_x();
 	    return 1;
 	 }
@@ -170,18 +190,7 @@ int EDLGroup::handle( int event )
 	 break;
    }
 
-
-
-   MediaTrack::iterator i = _media_track.begin();
-   MediaTrack::iterator e = _media_track.end();
-   for ( ; i != e; ++i )
-   {
-      int ret = (*i)->handle( event );
-      if ( ret ) return ret;
-   }
-
-   fltk::Group::handle( event );
-   return 1;
+   return fltk::Group::handle( event );
 }
 
 void EDLGroup::zoom( double z )
@@ -215,15 +224,24 @@ void EDLGroup::zoom( double z )
    t->redraw();
 
 
-   MediaTrack::iterator i = _media_track.begin();
-   MediaTrack::iterator e = _media_track.end();
+   size_t i = 0;
+   size_t e = children();
    for ( ; i != e; ++i )
    {
-      (*i)->zoom( z );
+      mrv::media_track* c = (mrv::media_track*)child(i);
+      c->zoom( z );
    }
 
 }
 
+void EDLGroup::refresh()
+{
+   for ( size_t i = 0; i < children(); ++i )
+   {
+      mrv::media_track* o = (mrv::media_track*) child(i);
+      o->refresh();
+   }
+}
 
 void EDLGroup::draw()
 {
@@ -232,15 +250,6 @@ void EDLGroup::draw()
    fltk::fillrect( x(), y(), w(), h() );
 
    fltk::Group::draw();
-
-   MediaTrack::iterator i = _media_track.begin();
-   MediaTrack::iterator e = _media_track.end();
-   for ( ; i != e; ++i )
-   {
-      (*i)->draw();
-   }
-
-
 }
 
 }

@@ -21,9 +21,6 @@ class Timeline;
 class media_track : public fltk::Widget
 {
    public:
-     typedef std::vector< boost::int64_t > Positions;
-
-   public:
      media_track(int x, int y, int w, int h);
      ~media_track();
 
@@ -39,10 +36,8 @@ class media_track : public fltk::Widget
      mrv::media media_at_position( const boost::int64_t frame );
 
      // Remove a media from the track.  Returns true if element was removed.
-     bool remove( mrv::media m );
+     bool remove( mrv::media& m );
 
-     // Remove a media from track based on its reel index
-     bool remove( int idx );
 
      void main( mrv::ViewerUI* m ) { _main = m; }
      mrv::ViewerUI* main() const { return _main; }
@@ -50,6 +45,8 @@ class media_track : public fltk::Widget
      mrv::ImageBrowser* browser() const;
 
      mrv::Timeline* timeline() const;
+
+     void index( size_t r ) { _reel_idx = r; }
      
      // Move a media in track without changing its start or end frames.
      // If media overlaps other media, everything is shifted
@@ -67,23 +64,24 @@ class media_track : public fltk::Widget
      int64_t minimum() const;
      int64_t maximum() const;
 
-     void translate( double x ) { _panX += x; redraw(); }
+     mrv::media selected() const { return _selected; }
+
+     void refresh();
 
      virtual int handle( int event );
      virtual void draw();
 
    protected:
      mrv::ViewerUI* _main;
+     size_t     _reel_idx;
      int        _dragX;
      bool       _at_start;
-     mrv::media _selected; 
-     double     _panX;
+     static mrv::media _selected; 
      double     _zoom;
      CMedia::Playback _playback;
      int64_t    _frame;
 };
 
-typedef boost::shared_ptr< media_track > media_track_ptr;
 
 
 }
