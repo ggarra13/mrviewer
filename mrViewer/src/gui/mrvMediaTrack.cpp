@@ -172,8 +172,12 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	    int64_t f = img->first_frame();
 	    img->seek(f);
 	    main()->uiView->foreground( fg );
+
 	    if ( ! main()->uiTimeline->edl() )
+	    {
 	       main()->uiStartFrame->value( f );
+	       main()->uiStartButton->value(1);
+	    }
 	 }
 	 break;
       }
@@ -282,7 +286,10 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    m->image()->seek( pos );
 
 	    if ( ! main()->uiTimeline->edl() )
+	    {
 	       main()->uiEndFrame->value( pos );
+	       main()->uiEndButton->value(1);
+	    }
 
 	    main()->uiImageInfo->uiInfoText->refresh();
 	    break;

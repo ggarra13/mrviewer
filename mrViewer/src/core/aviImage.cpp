@@ -686,7 +686,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 CMedia::DecodeStatus
 aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 {
-  boost::int64_t ptsframe;
+  boost::int64_t ptsframe = frame;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status == kDecodeError )

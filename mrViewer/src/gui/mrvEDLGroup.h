@@ -12,7 +12,7 @@ class Element;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
-class EDLGroup : public fltk::Browser
+class EDLGroup : public fltk::Group
 {
    public:
      typedef std::vector< audio_track_ptr >  AudioTrack;

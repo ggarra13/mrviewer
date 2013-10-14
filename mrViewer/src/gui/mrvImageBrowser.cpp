@@ -366,7 +366,10 @@ namespace mrv {
 
 mrv::Reel ImageBrowser::reel_at( unsigned idx )
 {
-   if ( idx >= _reels.size() ) return _reels[0];
+   size_t len = _reels.size();
+   if ( len == 0 ) return mrv::Reel();
+
+   if ( idx >= len ) return _reels[0];
    return _reels[ idx ];
 }
 
@@ -482,16 +485,12 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     for ( ; i != e; ++i )
       {
 	const CMedia* img = (*i)->image();
+	fprintf( f, "%s %" PRId64 "-%" PRId64 "\n", img->fileroot(), 
+		 img->first_frame(), img->last_frame() );
 	if ( img->is_sequence() )
 	  {
-	    fprintf( f, "%s %" PRId64 "-%" PRId64 "\n", img->fileroot(), 
-		     img->first_frame(), img->last_frame() );
 	    if ( img->has_audio() )
 	       fprintf( f, "audio: %s\n", img->audio_file().c_str() );
-	  }
-	else
-	  {
-	    fprintf( f, "%s\n", img->fileroot() );
 	  }
       }
 
@@ -1472,9 +1471,13 @@ int ImageBrowser::value() const
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
-    if ( img->is_sequence() )
+    if ( start != MRV_NOPTS_VALUE )
       {
 	img->first_frame( start );
+      }
+
+    if ( end != MRV_NOPTS_VALUE )
+      {
 	img->last_frame( end );
       }
 
