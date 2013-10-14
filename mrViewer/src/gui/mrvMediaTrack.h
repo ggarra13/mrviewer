@@ -2,12 +2,13 @@
 #define mrvMediaTrack_h
 
 #include <boost/cstdint.hpp>
-#include <fltk/Widget.h>
+#include <fltk/Group.h>
 
 extern "C" {
 #include <libavformat/avformat.h>
 #define MRV_NOPTS_VALUE (int64_t) AV_NOPTS_VALUE
 }
+
 
 #include "mrvMedia.h"
 #include "mrvMediaList.h"
@@ -17,8 +18,9 @@ namespace mrv {
 class ViewerUI;
 class ImageBrowser;
 class Timeline;
+class Element;
 
-class media_track : public fltk::Widget
+class media_track : public fltk::Group
 {
    public:
      media_track(int x, int y, int w, int h);
@@ -33,10 +35,10 @@ class media_track : public fltk::Widget
 
 
      // Return a media based on its position in the track
-     mrv::media media_at_position( const boost::int64_t frame );
+     mrv::media media_at( const boost::int64_t frame );
 
      // Remove a media from the track.  Returns true if element was removed.
-     bool remove( mrv::media& m );
+     bool remove( const mrv::media& m );
 
 
      void main( mrv::ViewerUI* m ) { _main = m; }
@@ -64,7 +66,9 @@ class media_track : public fltk::Widget
      int64_t minimum() const;
      int64_t maximum() const;
 
-     mrv::media selected() const { return _selected; }
+
+     static void selected( mrv::Element* e ) { _selected = e; }
+     static mrv::Element* selected() { return _selected; }
 
      void refresh();
 
@@ -76,7 +80,9 @@ class media_track : public fltk::Widget
      size_t     _reel_idx;
      int        _dragX;
      bool       _at_start;
-     static mrv::media _selected; 
+     static  mrv::Element* _selected;
+
+     // static mrv::media _selected; 
      double     _zoom;
      CMedia::Playback _playback;
      int64_t    _frame;

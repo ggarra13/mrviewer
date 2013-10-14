@@ -50,6 +50,7 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvElement.h"
 #include "gui/mrvEDLGroup.h"
 #include "mrvEDLWindowUI.h"
 #include "gui/FLU/Flu_File_Chooser.h"
@@ -229,14 +230,10 @@ namespace {
 
 namespace mrv {
 
-  class Element : public fltk::Item
-  {
-  public:
-    Element( mrv::media& );
-  };
 
   Element::Element( mrv::media& m ) :
-    fltk::Item( m->image()->fileroot() )
+  fltk::Item( m->image()->fileroot() ),
+  _elem( m )
   {
     m->create_thumbnail();
     image( m->thumbnail() );
@@ -274,7 +271,6 @@ namespace mrv {
       }
     copy_label( info );
   }
-
 
   /** 
    * Constructor
@@ -969,12 +965,19 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     const fltk::Image* thumb = m->thumbnail();
 
     std::string thumbnail;
-
+    int W, H;
     if ( thumb )
       {
+	W = thumb->width();
+	H = thumb->height();
 	thumbnail = db->binary( thumb->buffer(), 
-				thumb->width() * thumb->height() * 4 );
+				W * H * 4 );
       }
+    else
+    {
+       W = 0;
+       H = 0;
+    }
 
     char* buf = new char[ thumbnail.size() + 4096 ];
 
@@ -1044,7 +1047,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	     layers.c_str(),
 	     fstop, img->gamma(),
 	     thumbnail.c_str(),
-	     thumb->width(), thumb->height()
+	     W, H
 	     );
     
     if (! db->sql( buf ) )
@@ -1449,10 +1452,12 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) uiMain->uiFrame->value( start );
 
-    mrv::check_license_status();
-
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
-    if ( img == NULL ) return mrv::media();
+    if ( img == NULL ) 
+    {
+       LOG_ERROR("Unknown image media");
+       return mrv::media();
+    }
 
     {
        mrv::CMedia::Mutex& vpm = img->video_mutex();
@@ -1474,6 +1479,7 @@ int ImageBrowser::value() const
       }
 
     mrv::media m = this->add( img );
+
     mrv::media_track* track = edl_group()->current_media_track();
     if ( m ) track->add( m );
 
@@ -1543,12 +1549,34 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	  }
 	else
 	  {
-	     mrv::media fg = load_image( load.filename.c_str(), 
-					 load.start, load.end );
-	     if (!fg) 
+	     mrv::media fg;
+
+	     if ( load.filename == "SMPTE NTSC Color Bars" )
 	     {
-		LOG_ERROR( _("Could not load '") << load.filename.c_str() 
-			   << N_("'") );
+		ntsc_color_bars_cb(NULL, this);
+	     }
+	     else if ( load.filename == "PAL Color Bars" )
+	     {
+		pal_color_bars_cb(NULL, this);
+	     }
+	     else if ( load.filename == "NTSC HDTV Color Bars" )
+	     {
+		ntsc_hdtv_color_bars_cb(NULL, this);
+	     }
+	     else if ( load.filename == "PAL HDTV Color Bars" )
+	     {
+		pal_hdtv_color_bars_cb(NULL, this);
+	     }
+	     else
+	     {
+
+		fg = load_image( load.filename.c_str(), 
+				 load.start, load.end );
+		if (!fg) 
+		{
+		   LOG_ERROR( _("Could not load '") << load.filename.c_str() 
+			      << N_("'") );
+		}
 	     }
 	     if ( load.audio != "" ) 
 	     {
@@ -1569,6 +1597,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     if ( !reel || reel->images.empty() ) return;
 
     mrv::media m = current_image();
+    if (!m) return;
 
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
@@ -1583,7 +1612,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
 	if ( !reel->edl )
 	  {
-	    mrv::media m = current_image();
 	    CMedia* img = m->image();
 	    int64_t offset = timeline()->offset( img );
 	    uiMain->uiFrame->value( offset + img->first_frame() );

@@ -123,6 +123,9 @@ namespace mrv
     void main( mrv::ViewerUI* m ) { uiMain = m; }
     mrv::ViewerUI* main() { return uiMain; }
 
+     public:
+       static mrv::Element* new_item(mrv::media& img);
+
   protected:
     void db_envvars( char*& login, std::string& shot_id );
 
@@ -136,8 +139,6 @@ namespace mrv
     int mouseDrag( int x, int y );
     int mousePush( int x, int y );
     int mouseRelease( int x, int y );
-
-    mrv::Element* new_item(mrv::media& img);
 
     mrv::Timeline* timeline();
        mrv::EDLGroup* edl_group() const;

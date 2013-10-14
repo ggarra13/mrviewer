@@ -20,16 +20,16 @@ namespace mrv {open
   } {
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
-      {fltk::Window} uiMain {
-        xywh {100 582 915 170} resizable visible
+      {fltk::Window} uiMain {open
+        xywh {195 359 915 170} resizable visible
       } {
-        {fltk::Slider} uiTimeline {
+        {fltk::Slider} uiTimeline {selected
           xywh {10 6 890 30} type TICK_ABOVE deactivate textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 100 step 1 value 1 slider_size 20
           extra_code {o->main( main );}
           class {mrv::Timeline}
         }
         {fltk::Group} uiEDLGroup {
-          xywh {10 30 885 140}
+          xywh {10 35 890 135}
           extra_code {o->timeline( uiTimeline );
 o->add_media_track(0);}
           class {mrv::EDLGroup}
@@ -39,8 +39,7 @@ o->add_media_track(0);}
     Function {EDLWindowUI( mrv::ViewerUI* m )} {open
     } {
       code {make_window(m);
-uiMain->child_of( (fltk::Window*)m->uiMain );} {selected
-      }
+uiMain->child_of( (fltk::Window*)m->uiMain );} {}
     }
     Function {~EDLWindowUI()} {} {
       code {delete uiEDLGroup; uiEDLGroup = NULL;

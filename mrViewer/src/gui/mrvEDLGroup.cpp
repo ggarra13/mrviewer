@@ -1,20 +1,24 @@
 
 #include <limits>
 
-#include "mrvMediaTrack.h"
-#include "mrvEDLGroup.h"
-#include "mrvTimeline.h"
-
 #include <fltk/events.h>
 #include <fltk/draw.h>
 #include <fltk/Color.h>
 #include <fltk/Window.h>
 
+#include "gui/mrvMediaTrack.h"
+#include "gui/mrvEDLGroup.h"
+#include "gui/mrvTimeline.h"
+#include "gui/mrvElement.h"
+#include "gui/mrvImageBrowser.h"
+
 namespace mrv {
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
+fltk::Browser(x,y,w,h),
 _current_media_track( 0 ),
-fltk::Group(x,y,w,h)
+_dragX( 0 ),
+_dragY( 0 )
 {
 }
 
@@ -100,12 +104,33 @@ int EDLGroup::handle( int event )
    switch( event )
    {
       case fltk::PUSH:
-	 if ( fltk::event_key() == fltk::MiddleButton )
 	 {
-	    _dragX = fltk::event_x();
-	    return 1;
+	    if ( fltk::event_key() == fltk::MiddleButton )
+	    {
+	       _dragX = fltk::event_x();
+	       return 1;
+	    }
+
+	    if ( fltk::event_key() == fltk::LeftButton )
+	    {
+	       _dragX = fltk::event_x();
+	       _dragY = fltk::event_y();
+	    }
+
+	    int ok = fltk::Group::handle( event );
+	    if ( ok ) return ok;
+
+	    // if ( fltk::event_key() == fltk::LeftButton )
+	    // {
+	    //    mrv::media_track* t = (mrv::media_track*) child(0);
+	    //    mrv::media m = t->media_at(1);
+	    //    mrv::Element* e = ImageBrowser::new_item( m ); 
+	    //    media_track::selected( e );
+	    //    return 1;
+	    // }
+	    return 0;
+	    break;
 	 }
-	 break;
       case fltk::ENTER:
 	 focus(this);
 	 window()->show();
@@ -131,9 +156,10 @@ int EDLGroup::handle( int event )
 	       {
 
 		  mrv::media_track* o = (mrv::media_track*)child(i);
-		  mrv::media m = o->selected();
-		  if ( m )
+		  mrv::Element* e = o->selected();
+		  if ( e )
 		  {
+		     mrv::media m = e->element();
 		     int64_t tmi = m->position();
 		     int64_t tma = m->position() + m->image()->duration();
 		     if ( tmi < tmin ) tmin = tmi;
@@ -170,7 +196,14 @@ int EDLGroup::handle( int event )
 	return 1;
 	break;
       case fltk::DRAG:
-	 if ( fltk::event_key() == fltk::MiddleButton )
+	 if ( fltk::event_key() == fltk::LeftButton )
+	 {
+	    _dragX = fltk::event_x();
+	    _dragY = fltk::event_y();
+
+	    parent()->redraw();
+	 }
+	 else if ( fltk::event_key() == fltk::MiddleButton )
 	 {
 	    int diff = ( fltk::event_x() - _dragX );
 	    double amt = diff / (double) w();
@@ -250,8 +283,20 @@ void EDLGroup::draw()
    fltk::fillrect( x(), y(), w(), h() );
 
    fltk::Group::draw();
+
+   // mrv::Element* e = mrv::media_track::selected();
+   // if ( e )
+   // {
+   //    fltk::push_matrix();
+   //    fltk::translate( _dragX, _dragY );
+   //    e->draw();
+   //    int ww, hh;
+   //    fltk::measure( e->label(), ww, hh );
+   //    fltk::drawtext( e->label(), 0, 0 );
+   //    fltk::pop_matrix();
+   // }
 }
 
-}
+} // namespace mrv
 
 

@@ -298,11 +298,14 @@ void aviImage::open_video_codec()
 
 
 
-  double image_ratio = (double) width() / (double)height();
-  if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
+  if ( width() > 0 && height() > 0 )
+  {
+     double image_ratio = (double) width() / (double)height();
+     if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
-  if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
-  else _pixel_ratio = aspect_ratio / image_ratio;
+     if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
+     else _pixel_ratio = aspect_ratio / image_ratio;
+  }
 
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);
@@ -1057,25 +1060,25 @@ void aviImage::video_stream( int x )
       _pix_fmt = VideoFrame::kRGBA; break;
     case PIX_FMT_YUV444P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr444; 
+	_pix_fmt = VideoFrame::kITU_709_YCbCr444; 
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr444; 
       break;
     case PIX_FMT_YUV422P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr422;
+	_pix_fmt = VideoFrame::kITU_709_YCbCr422;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr422;
       break;
     case PIX_FMT_YUV420P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr420;
+	_pix_fmt = VideoFrame::kITU_709_YCbCr420;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420;
       break;
     case PIX_FMT_YUVA420P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr420A;
+	_pix_fmt = VideoFrame::kITU_709_YCbCr420A;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420A;
       break;
@@ -2376,6 +2379,7 @@ void aviImage::do_seek()
 	  if ( status != kDecodeOK )
 	     IMG_ERROR( "Decode audio error " << _seek_frame 
 			<< " status: " << status );
+	  find_audio( _seek_frame );
        }
        
        if ( has_video() && !got_video )
