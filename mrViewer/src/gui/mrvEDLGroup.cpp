@@ -15,7 +15,7 @@
 namespace mrv {
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
-fltk::Browser(x,y,w,h),
+fltk::Group(x,y,w,h),
 _current_media_track( 0 ),
 _dragX( 0 ),
 _dragY( 0 )
