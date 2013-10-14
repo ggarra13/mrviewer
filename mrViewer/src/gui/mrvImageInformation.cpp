@@ -455,18 +455,18 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       case VideoFrame::kITU_601_YCbCr420A:
 	format = N_("ITU.601 YCbCr420 A"); break;
 
-      case VideoFrame::kITU_702_YCbCr444A:
-	format = N_("ITU.702 YCbCr444 A"); break;
-      case VideoFrame::kITU_702_YCbCr444:
-	format = N_("ITU.702 YCbCr444"); break;
-      case VideoFrame::kITU_702_YCbCr422A:
-	format = N_("ITU.702 YCbCr422 A"); break;
-      case VideoFrame::kITU_702_YCbCr422:
-	format = N_("ITU.702 YCbCr422"); break;
-      case VideoFrame::kITU_702_YCbCr420:
-	format = N_("ITU.702 YCbCr420"); break;
-      case VideoFrame::kITU_702_YCbCr420A:
-	format = N_("ITU.702 YCbCr420 A"); break;
+      case VideoFrame::kITU_709_YCbCr444A:
+	format = N_("ITU.709 YCbCr444 A"); break;
+      case VideoFrame::kITU_709_YCbCr444:
+	format = N_("ITU.709 YCbCr444"); break;
+      case VideoFrame::kITU_709_YCbCr422A:
+	format = N_("ITU.709 YCbCr422 A"); break;
+      case VideoFrame::kITU_709_YCbCr422:
+	format = N_("ITU.709 YCbCr422"); break;
+      case VideoFrame::kITU_709_YCbCr420:
+	format = N_("ITU.709 YCbCr420"); break;
+      case VideoFrame::kITU_709_YCbCr420A:
+	format = N_("ITU.709 YCbCr420 A"); break;
 
       case VideoFrame::kYByRy420:
 	format = N_("Y BY RY 420"); break;

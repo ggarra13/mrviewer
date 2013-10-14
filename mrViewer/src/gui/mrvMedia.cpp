@@ -135,7 +135,7 @@ namespace mrv {
       fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
 
       // Copy to thumbnail and gamma it
-      float gamma = 1.0f / _image->gamma();
+      double gamma = 1.0 / _image->gamma();
       for (unsigned int y = 0; y < h; ++y )
 	{
 	  for (unsigned int x = 0; x < w; ++x )
@@ -147,6 +147,7 @@ namespace mrv {
 		 fp.g = Imath::Math<float>::pow( fp.g, gamma );
 		 fp.b = Imath::Math<float>::pow( fp.b, gamma );
 	      }
+
 	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
 	      uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
 	      uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);

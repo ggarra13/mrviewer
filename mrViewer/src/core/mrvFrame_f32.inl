@@ -42,7 +42,7 @@ namespace mrv {
 	p.g = col[1];
 	p.b = col[2];
 	break;
-      case kITU_702_YCbCr444:
+      case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
 	{
 	  unsigned int len = _width * _height;
@@ -51,7 +51,7 @@ namespace mrv {
 	  cr = d[ len*2 + offset ];
 	  break;
 	}
-      case kITU_702_YCbCr420A:
+      case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
 	{
@@ -61,7 +61,7 @@ namespace mrv {
 	  unsigned int Cblen   = w2 * h2;
 	  p.a = d[ Ylen + Cblen * 2 + offset];
 	}
-      case kITU_702_YCbCr420:
+      case kITU_709_YCbCr420:
       case kYByRy420:
       case kITU_601_YCbCr420:
 	{
@@ -76,7 +76,7 @@ namespace mrv {
 	  cr = d[ Ylen + Cblen + offset2 ];
 	  break;
 	}
-      case kITU_702_YCbCr422:
+      case kITU_709_YCbCr422:
       case kITU_601_YCbCr422:
 	{
 	  unsigned int  Ylen = _width * _height;
@@ -98,9 +98,9 @@ namespace mrv {
 	 p.b = float( (cr + 1) * yp );
 	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] );
       }
-    else if ( _format >= kITU_702_YCbCr420 )
+    else if ( _format >= kITU_709_YCbCr420 )
       {
-	// ITU_702_YCbCr conversion
+	// ITU_709_YCbCr conversion
 	float  Y = yp;
 	float Pb = cb - 0.5f;
 	float Pr = cr - 0.5f;
@@ -165,7 +165,7 @@ namespace mrv {
 	col[1] = p.g;
 	col[2] = p.b;
 	break;
-      case kITU_702_YCbCr444:
+      case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
 	{
 	  unsigned int len = _width * _height;
@@ -174,7 +174,7 @@ namespace mrv {
 	  cr = d + len*2 + offset;
 	  break;
 	}
-      case kITU_702_YCbCr420A:
+      case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
 	{
@@ -184,7 +184,7 @@ namespace mrv {
 	  unsigned int Cblen   = w2 * h2;
 	  d[ Ylen + Cblen * 2 + offset] = p.a;
 	}
-      case kITU_702_YCbCr420:
+      case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
       case kYByRy420:
 	{
@@ -199,7 +199,7 @@ namespace mrv {
 	  cr = d + Ylen + Cblen + offset2;
 	  break;
 	}
-      case kITU_702_YCbCr422:
+      case kITU_709_YCbCr422:
       case kITU_601_YCbCr422:
 	{
 	  unsigned int  Ylen = _width * _height;
@@ -228,7 +228,7 @@ namespace mrv {
 	    *cr = *cb = 0.0f;
 	  }
       }
-    else if ( _format >= kITU_702_YCbCr420 )
+    else if ( _format >= kITU_709_YCbCr420 )
       {
 	*yp =  p.r * 0.299f    + p.g * 0.587f    + p.b * 0.114f;
 	*cb = -p.r * 0.168736f - p.g * 0.331264f + p.b * 0.5f;

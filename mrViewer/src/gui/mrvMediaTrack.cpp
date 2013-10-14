@@ -2,21 +2,23 @@
 #include <fltk/draw.h>
 #include <fltk/events.h>
 #include <fltk/Cursor.h>
+
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvReelList.h"
+#include "gui/mrvElement.h"
 #include "gui/mrvImageInformation.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
 
 namespace mrv {
 
-mrv::media media_track::_selected; 
+mrv::Element* media_track::_selected = NULL; 
 
 media_track::media_track(int x, int y, int w, int h) : 
-fltk::Widget( x, y, w, h ),
+fltk::Group( x, y, w, h ),
 _zoom( 1.0 )
 {
 }
@@ -24,6 +26,7 @@ _zoom( 1.0 )
 media_track::~media_track()
 {
 }
+
 
 double media_track::frame_size() const
 {
@@ -59,14 +62,15 @@ void media_track::add( mrv::media m, boost::int64_t frame )
    mrv::media o = reel->images[ reel->images.size()-1 ];
    timeline()->maximum( frame + o->image()->duration() );
 
-   redraw();
+   timeline()->redraw();
+   parent()->redraw();
 }
 
 mrv::ImageBrowser* media_track::browser() const {
    return _main->uiReelWindow->uiBrowser;
 }
 
-mrv::media media_track::media_at_position( const boost::int64_t frame )
+mrv::media media_track::media_at( const boost::int64_t frame )
 {
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return mrv::media();
@@ -90,11 +94,12 @@ mrv::media media_track::media_at_position( const boost::int64_t frame )
 
 
 // Remove a media from the track
-bool media_track::remove( mrv::media& m )
+bool media_track::remove( const mrv::media& m )
 {  
    browser()->remove( m );
    browser()->redraw();
-   _selected.reset();
+   delete _selected;
+   _selected = NULL;
    return true;
 }
 
@@ -164,8 +169,11 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	 {
 	    CMedia* img = m->image();
 	    img->first_frame( img->first_frame() + diff );
-	    img->seek( img->first_frame() );
+	    int64_t f = img->first_frame();
+	    img->seek(f);
 	    main()->uiView->foreground( fg );
+	    if ( ! main()->uiTimeline->edl() )
+	       main()->uiStartFrame->value( f );
 	 }
 	 break;
       }
@@ -202,7 +210,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 bool media_track::select_media( const boost::int64_t pos )
 {
    bool ok = false;
-   _selected.reset();
+   delete _selected; _selected = NULL;
 
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return false;
@@ -232,16 +240,20 @@ bool media_track::select_media( const boost::int64_t pos )
 	 }
 
 	 ok = true;
-	 _selected = fg;
+	 _selected = ImageBrowser::new_item( fg );
 	 focus(this);
 	 browser()->reel( _reel_idx );
 	 browser()->change_image( i );
 	 browser()->redraw();
-	 main()->uiView->foreground( fg );
+	 if ( main()->uiTimeline->edl() )
+	 {
+	    main()->uiTimeline->value( fg->position() );
+	 }
 	 break;
       }
    }
-   parent()->redraw();
+   timeline()->redraw();
+   redraw();
    return ok;
 }
 
@@ -269,6 +281,9 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    m->image()->last_frame( pos );
 	    m->image()->seek( pos );
 
+	    if ( ! main()->uiTimeline->edl() )
+	       main()->uiEndFrame->value( pos );
+
 	    main()->uiImageInfo->uiInfoText->refresh();
 	    break;
 	 }
@@ -284,6 +299,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
       // Shift indexes of position
       reel->images[i+1]->position(start + ee );
    }
+   timeline()->redraw();
    redraw();
 
 }
@@ -308,13 +324,15 @@ void media_track::refresh()
 
       fg->position( pos );
    }
+   timeline()->redraw();
    redraw();
 }
 
 void  media_track::zoom( double x )
 {
    _zoom *= x;
-   parent()->redraw();
+   timeline()->redraw();
+   redraw();
 }
 
 int media_track::handle( int event )
@@ -327,8 +345,9 @@ int media_track::handle( int event )
 	    mrv::Timeline* t = main()->uiTimeline;
 	    if ( ! t->edl() )
 	    {
-	       int64_t start = _selected->image()->first_frame();
-	       int64_t end   = _selected->image()->last_frame();
+	       mrv::media fg = _selected->element();
+	       int64_t start = fg->image()->first_frame();
+	       int64_t end   = fg->image()->last_frame();
 	       t->minimum( start );
 	       // main()->uiStartFrame->value( start );
 	       t->maximum( end );
@@ -343,21 +362,24 @@ int media_track::handle( int event )
 	 break;
       case fltk::PUSH:
 	 {
-	    _dragX = fltk::event_x();
-	    int x = fltk::event_x();
-	    int y = fltk::event_y();
+	    int xx = _dragX = fltk::event_x();
  
 	    if ( fltk::event_key() == fltk::LeftButton )
 	    {
+
 	       cursor( fltk::CURSOR_ARROW );
 	       _playback = (CMedia::Playback) main()->uiView->playback();
 	       main()->uiView->stop();
 	       _frame = main()->uiView->frame();
 
 	       mrv::Timeline* t = timeline();
+
+	       int ww = w();
+
 	       double len = (t->maximum() - t->minimum() + 1);
-	       double p = double(x) / double(w());
-	       p = t->minimum() + p * len;
+	       double p = double(xx+x()) / double(ww);
+	       p = t->minimum() + p * len + 0.5f;
+
 	       select_media( int64_t(p) );
 	       return 1;
 	    }
@@ -372,7 +394,8 @@ int media_track::handle( int event )
     	  if ( key == fltk::DeleteKey ||
     	       key == fltk::BackSpaceKey )
     	  {
-    	     remove( _selected );
+	     if ( _selected )
+		remove( _selected->element() );
     	     return 1;
     	  }
     	  break;
@@ -396,16 +419,20 @@ int media_track::handle( int event )
  
 	       for ( ; i != e; ++i )
 	       {
-		  if ( *i == _selected )
+		  if ( *i == _selected->element() )
 		  {
 		     if ( _at_start )
-			shift_media_start( _selected, diff );
+			shift_media_start( _selected->element(), diff );
 		     else
-			shift_media_end( _selected, diff );
+			shift_media_end( _selected->element(), diff );
+		     
+		     _selected->element()->create_thumbnail();
+
 		     break;
 		  }
 	       }
-	       parent()->redraw();
+	       timeline()->redraw();
+	       redraw();
 	    }
 	    _dragX = fltk::event_x();
 	    return 1;
@@ -414,7 +441,7 @@ int media_track::handle( int event )
 	 break;
    }
 
-   return fltk::Widget::handle( event );
+   return fltk::Group::handle( event );
 }
 
 int64_t media_track::minimum() const
@@ -485,11 +512,11 @@ void media_track::draw()
       }
 
       fltk::setcolor( fltk::BLACK );
-      if ( _selected == fg )
+      if ( _selected && _selected->element() == fg )
    	 fltk::setcolor( fltk::WHITE );
       fltk::strokerect( r );
 
-      if ( _selected == fg )
+      if ( _selected && _selected->element() == fg )
       {
    	 fltk::setcolor( fltk::BLUE );
 	 int yh = y() + h();
@@ -515,21 +542,33 @@ void media_track::draw()
       }
 
 
-      fltk::setcolor( fltk::BLACK );
-      if ( _selected == fg )
-   	 fltk::setcolor( fltk::WHITE );
+      fltk::setcolor( fltk::GRAY33 );
+      if ( _selected && _selected->element() == fg )
+   	 fltk::setcolor( fltk::BLACK );
 
       int ww, hh;
       fltk::setfont( textfont(), 10 );
       std::string name = fg->image()->name();
-      const char* const buf = name.c_str();
+      const char* buf = name.c_str();
       fltk::measure( buf, ww, hh );
 
-      assert( dw > ww/2 );
+
+      fltk::drawtext( buf,
+		      dx + dw/2 - ww/2 + 2, y() + 2 + h()/2 );
+
+
+      fltk::setcolor( fltk::BLACK );
+      if ( _selected && _selected->element() == fg )
+   	 fltk::setcolor( fltk::WHITE );
+
+      fltk::setfont( textfont(), 10 );
+      name = fg->image()->name();
+      buf = name.c_str();
+      fltk::measure( buf, ww, hh );
+
 
       fltk::drawtext( buf,
 		      dx + dw/2 - ww/2, y() + h()/2 );
-
    }
 
    fltk::pop_clip();

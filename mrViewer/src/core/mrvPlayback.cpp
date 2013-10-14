@@ -342,7 +342,6 @@ void audio_thread( PlaybackData* data )
       img->wait_audio();
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
-
       switch( status )
       {
 	 case CMedia::kDecodeError:

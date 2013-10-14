@@ -1282,6 +1282,7 @@ bool CMedia::frame( const boost::int64_t f )
 
   fetch_audio( _dts );
 
+  _frame = _dts;
   _expected = _dts + 1;
 
   return true;
@@ -1889,8 +1890,8 @@ bool CMedia::find_image( const boost::int64_t frame )
 	if ( ! internal() )
 	{
 	   LOG_ERROR( file << _(" is missing.") );
+	   return false;
 	}
-	return false;
      }
   }
 

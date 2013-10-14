@@ -1,17 +1,18 @@
 #ifndef mrvEDLGroup_h
 #define mrvEDLGroup_h
 
-#include <fltk/Group.h>
-#include "mrvMediaTrack.h"
+#include <fltk/Browser.h>
 
+#include "mrvMediaTrack.h"
 
 namespace mrv {
 
 class Timeline;
+class Element;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
-class EDLGroup : public fltk::Group
+class EDLGroup : public fltk::Browser
 {
    public:
      typedef std::vector< audio_track_ptr >  AudioTrack;
@@ -67,7 +68,9 @@ class EDLGroup : public fltk::Group
 
    protected:
      double     _zoom;
+     mrv::Element* _drag;
      int        _dragX;
+     int        _dragY;
      size_t     _current_media_track;
      AudioTrack _audio_track;
      mrv::Timeline* _timeline;
