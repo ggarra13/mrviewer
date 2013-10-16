@@ -170,14 +170,14 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	    CMedia* img = m->image();
 	    img->first_frame( img->first_frame() + diff );
 	    int64_t f = img->first_frame();
-	    img->seek(f);
-	    main()->uiView->foreground( fg );
-
 	    if ( ! main()->uiTimeline->edl() )
 	    {
 	       main()->uiStartFrame->value( f );
 	       main()->uiStartButton->value(1);
 	    }
+	    img->seek(f);
+	    main()->uiView->foreground( fg );
+
 	 }
 	 break;
       }
@@ -227,7 +227,6 @@ bool media_track::select_media( const boost::int64_t pos )
       if ( !fg ) continue;
 
       CMedia* img = fg->image();
-      //int64_t start = img->first_frame() - img->start_frame() + 1;
 
       int64_t start = fg->position();
       int64_t duration = (int64_t)img->duration();
@@ -282,14 +281,15 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	 if ( pos > m->image()->first_frame() &&
 	      pos <= m->image()->end_frame() )
 	 {
-	    m->image()->last_frame( pos );
-	    m->image()->seek( pos );
-
 	    if ( ! main()->uiTimeline->edl() )
 	    {
 	       main()->uiEndFrame->value( pos );
 	       main()->uiEndButton->value(1);
 	    }
+
+	    m->image()->last_frame( pos );
+	    m->image()->seek( pos );
+
 
 	    main()->uiImageInfo->uiInfoText->refresh();
 	    break;

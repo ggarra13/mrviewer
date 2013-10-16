@@ -24,6 +24,7 @@
 namespace fltk
 {
   class Choice;
+  class Button;
 }
 
 namespace mrv
@@ -34,6 +35,9 @@ namespace mrv
   class Timeline;
   class EDLGroup;
   class ImageView;
+
+  void start_button_cb(fltk::Button* o, mrv::ViewerUI* v);
+  void end_button_cb(fltk::Button* o, mrv::ViewerUI* v);
 
   class ImageBrowser : public fltk::Browser
   {

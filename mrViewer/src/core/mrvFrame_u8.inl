@@ -103,17 +103,18 @@ namespace mrv {
     else if ( _format >= kITU_709_YCbCr420 )
       {
 	// ITU. 702 YCbCr conversion
-	float  Y = yp / 255.0f;
-	float Pb = cb / 255.0f - 0.5f;
-	float Pr = cr / 255.0f - 0.5f;
+	 float  Y = float(yp) / 255.0f;
+	 float Pb = float(cb) / 255.0f - 0.5f;
+	 float Pr = float(cr) / 255.0f - 0.5f;
 
-	assert( Y >= 0.0f && Y <= 1.0f );
-	assert( Pb >= -0.5f && Pb <= 0.5f );
-	assert( Pr >= -0.5f && Pr <= 0.5f );
+	
+	 assert( Y >= 0.0f && Y <= 1.0f );
+	 assert( Pb >= -0.5f && Pb <= 0.5f );
+	 assert( Pr >= -0.5f && Pr <= 0.5f );
 
-	p.r = Y                  + Pr * 1.402f;
-	p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
-	p.b = Y + Pb * 1.772f;
+	 p.r = Y                  + Pr * 1.402f;
+	 p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
+	 p.b = Y + Pb * 1.772f;
 
       }
     else if ( _format >= kITU_601_YCbCr420 )

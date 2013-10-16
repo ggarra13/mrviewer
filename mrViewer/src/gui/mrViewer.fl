@@ -2297,7 +2297,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {323 732 640 530} when CHANGED resizable
+        xywh {332 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2333,7 +2333,7 @@ v->uiView->update_color_info();}
               {fltk::Item} {} {
                 label {EDL Edit}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiEDLWindow->uiMain->show();} selected
+                callback {v->uiEDLWindow->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label {Paint Tools}
@@ -3078,64 +3078,13 @@ v->uiTimeline->redraw();}
                     {fltk::Button} uiStartButton {
                       label S
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {boost::int64_t f;
-
-if (o->value() )
-{
-  mrv::media fg = v->uiView->foreground();
-  if ( fg )
-  {
-    f = fg->image()->start_frame();
-  }
- o->value(0);
-}
-else
-{
-f = v->uiFrame->value();
-v->uiView->stop();
-o->value(1);
-}
-
-v->uiStartFrame->value( f );
-v->uiStartFrame->redraw();
-v->uiTimeline->minimum( double(f) );
-mrv::media fg = v->uiView->foreground();
-if ( fg )
-{
-  fg->image()->first_frame( f );
-}
-v->uiTimeline->redraw();}
+                      callback {mrv::start_button_cb(o, v);}
                       xywh {0 2 20 22}
                     }
                     {fltk::Button} uiEndButton {
                       label E
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {boost::int64_t f;
-
-if (o->value() )
-{
- mrv::media fg = v->uiView->foreground();
- if (fg)
- {
-   f = fg->image()->end_frame();
- }
- o->value(0);
-}
-else
-{
-f = (boost::int64_t) v->uiFrame->value();
-v->uiView->stop();
-o->value(1);
-}
-v->uiEndFrame->value( f );
-v->uiEndFrame->redraw();
-v->uiTimeline->maximum( double(f) );
-mrv::media fg = v->uiView->foreground();
-if ( fg )
-{
-  fg->image()->last_frame( f );
-}
-v->uiTimeline->redraw();}
+                      callback {mrv::end_button_cb( o, v );} selected
                       xywh {90 2 20 20} vertical
                     }
                   }
