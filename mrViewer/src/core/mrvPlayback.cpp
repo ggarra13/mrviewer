@@ -270,8 +270,7 @@ CMedia::DecodeStatus check_loop( int64_t& frame,
    if ( timeline->edl() )
    {
       boost::int64_t s = timeline->location(img);
-      boost::int64_t e = img->last_frame() - img->first_frame();
-      e += timeline->location(img);
+      boost::int64_t e = s + img->duration() - 1;
 
       if ( e < last )  last = e;
       if ( s > first ) first = s;
@@ -685,15 +684,15 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-
+	 if ( img->stopped() ) break;
 
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
-	 barrier->count( barrier_thread_count( img ) );
+	 int thread_count = barrier_thread_count( img );
+	 barrier->count( thread_count );
 	 // Wait until all threads loop or exit
 	 barrier->wait();
 
-	 if ( img->stopped() ) break;
 
 	 // Do the looping, taking into account ui state
 	 // and return new frame and step.

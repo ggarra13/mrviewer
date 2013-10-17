@@ -35,7 +35,7 @@ public:
   double maximum() { return timeline_->maximum(); }
 
   double value();
-  void   value( double x ) { return timeline_->value(); }
+  void   value( double x ) { timeline_->value(x); }
 
   double fps() { return timeline_->fps(); }
   void   fps( double x );
