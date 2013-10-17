@@ -1018,21 +1018,27 @@ void ImageView::load_list()
       refresh();
    }
 
-   std::string lockfile = mrv::lockfile();
-   
-   if(fs::exists(lockfile))
-   {
-      try {
-	 if ( ! fs::remove( lockfile ) )
-	    LOG_ERROR( "Could not remove lock file!" );
-      }
-      catch( fs::filesystem_error& e )
-      {
-      }
+ 
+   bool single_instance = uiMain->uiPrefs->uiPrefsSingleInstance->value();
 
-      fltk::Preferences base( fltk::Preferences::USER, "filmaura",
-   			      "mrViewer.lock" );
-      base.set( "pid", 1 );
+   if ( single_instance )
+   {
+      std::string lockfile = mrv::lockfile();
+   
+      if(fs::exists(lockfile))
+      {
+	 try {
+	    if ( ! fs::remove( lockfile ) )
+	       LOG_ERROR( "Could not remove lock file!" );
+	 }
+	 catch( fs::filesystem_error& e )
+	 {
+	 }
+
+	 fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+				 "mrViewer.lock" );
+	 base.set( "pid", 1 );
+      }
    }
    
 }

@@ -380,7 +380,7 @@ Timeline::~Timeline()
 	CMedia* timg = (*i)->image();
 	assert( timg != NULL );
 
-	uint64_t size = timg->last_frame() - timg->first_frame() + 1;
+	uint64_t size = timg->duration();
 	t += size;
       }
     return t;
@@ -415,7 +415,7 @@ Timeline::~Timeline()
     for ( ; i != e; ++i, ++r )
       {
 	CMedia* img = (*i)->image();
-	uint64_t size = img->last_frame() - img->first_frame() + 1;
+	uint64_t size = img->duration();
 	t += size;
 	if ( t > f ) break;
       }
@@ -454,7 +454,7 @@ Timeline::~Timeline()
     for ( ; i != e; ++i, ++r )
       {
 	CMedia* img = (*i)->image();
-	uint64_t size = img->last_frame() - img->first_frame() + 1;
+	uint64_t size = img->duration();
 	t += size;
 	if ( t > f ) break;
       }
@@ -492,7 +492,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 	CMedia* img = (*i)->image();
 	assert( img != NULL );
 
-	uint64_t size = img->last_frame() - img->first_frame() + 1;
+	uint64_t size = img->duration();
 	if ( boost::uint64_t(frame) > t && t+size < boost::uint64_t(frame) )
 	   t += size;
 	else if ( boost::uint64_t(frame) >= t )

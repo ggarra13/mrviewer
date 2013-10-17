@@ -144,7 +144,7 @@ int EDLGroup::handle( int event )
 	    int key = fltk::event_key();
 	    
 
-	    if ( key == 'f' )
+	    if ( key == 'f' || key == 'a' )
 	    {
 	       size_t i = 0;
 	       size_t e = children();
@@ -157,7 +157,7 @@ int EDLGroup::handle( int event )
 
 		  mrv::media_track* o = (mrv::media_track*)child(i);
 		  mrv::Element* e = o->selected();
-		  if ( e )
+		  if ( e && key != 'a')
 		  {
 		     mrv::media m = e->element();
 		     int64_t tmi = m->position();

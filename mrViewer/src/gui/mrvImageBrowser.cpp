@@ -1274,7 +1274,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( view()->background() == m ) 
       view()->background( mrv::media() );
     
-    fltk::Browser::remove( i - reel->images.begin() );
+    // fltk::Browser::remove( i - reel->images.begin() );
     reel->images.erase( i );
 
     edl_group()->refresh();
@@ -2665,25 +2665,6 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::draw()
   {
     fltk::Browser::draw();
-
-    mrv::Reel reel = current_reel();
-    if (!reel) return;
-
-    mrv::MediaList::iterator i = reel->images.begin();
-    mrv::MediaList::iterator e = reel->images.end();
-    int h = 0;
-    for ( ; i != e; ++i, ++h )
-      {
-	 Element* elem = (Element*) child( h );
-	mrv::media& m = *i;
-	CMedia* img = m->image();
-	if ( img->image_damage() & CMedia::kDamageThumbnail )
-	  {
-	    m->create_thumbnail();
-	    m->thumbnail()->draw(0, elem->y() );
-	  }
-      }
-
 
     if ( dragging )
       {
