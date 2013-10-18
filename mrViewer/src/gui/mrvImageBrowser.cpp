@@ -1263,7 +1263,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	return;
       }
   
-    m->image()->stop();
+    view()->stop();
 
     if ( view()->background() == m )
       {
@@ -1400,8 +1400,6 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
 	assert( (unsigned)sel < reel->images.size() );
 
-	if ( view()->playback() != ImageView::kStopped )
-	   view()->stop();
 
 	mrv::media om = view()->foreground();
 
@@ -1418,6 +1416,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
 	mrv::media m = reel->images[sel];
 	assert( m != NULL );
+
 
 	if ( m != om )
 	{
@@ -1450,10 +1449,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	      if ( audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
 	   }
-	   else
-	   {
-	      adjust_timeline();
-	   }
+	  
+	   adjust_timeline();
+	   
 
 
 	   std::string buf;
@@ -1484,11 +1482,8 @@ int ImageBrowser::value() const
 
   void ImageBrowser::change_image(unsigned i)
   { 
-     if ( value() != i )
-     {
-	value(i); 
-	change_image(); 
-     }
+     value(i); 
+     change_image(); 
   }
 
   /** 
@@ -1707,7 +1702,10 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	    CMedia* img = m->image();
 	    if ( reel->edl || 
 		 img->first_frame() != img->last_frame() )
-	      view()->play_forwards();
+	    {
+	       img->seek( img->first_frame() );
+	       view()->play_forwards();
+	    }
 	  }
       }
 }
@@ -2415,12 +2413,15 @@ void ImageBrowser::load( const stringArray& files,
 	if ( m != view()->foreground() )
 	  {
 	     if ( playback != ImageView::kStopped )
-		view()->stop();
+	     	view()->stop();
 
 	     unsigned int i = timeline()->index( f );
+
 	     f = timeline()->global_to_local( f );
 	     img->seek( f );
+
 	     change_image(i);
+
 	     if ( playback != ImageView::kStopped )
 	     {
 		view()->play( (CMedia::Playback)playback);
@@ -2452,7 +2453,8 @@ void ImageBrowser::load( const stringArray& files,
 
 
 
-    if ( view()->playback() != ImageView::kStopped ) return;
+    if ( view()->playback() != ImageView::kStopped )  return;
+    
 
     //
     // If stopped, play the audio sample for the frame of both
@@ -2641,13 +2643,13 @@ void ImageBrowser::load( const stringArray& files,
 
 	CMedia* img = m->image();
 	frame = timeline()->offset( img ) + img->frame();
+	timeline()->value( frame );
 
 	m = reel->images.back();
 	if (! m ) return;
 
 	img = m->image();
-	last  = ( timeline()->offset( img ) + 
-		  img->last_frame() - img->first_frame() + 1 );
+	last  = timeline()->offset( img ) + img->duration();
 
       }
 

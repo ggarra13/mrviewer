@@ -76,6 +76,7 @@
 #include "core/mrvColorSpaces.h"
 #include "core/mrvFrame.h"
 #include "core/mrvHome.h"
+#include "core/mrStackTrace.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -661,7 +662,6 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 void ImageView::stop_playback()
 {
 
-
   mrv::media fg = foreground();
   if ( fg && !fg->image()->stopped()) fg->image()->stop();
 
@@ -1056,7 +1056,10 @@ void ImageView::timeout()
       int64_t frame = boost::int64_t( timeline->value() );
       mrv::media newfg = timeline->media_at( frame );
 
-      if ( newfg != foreground() ) foreground( newfg );
+      if ( newfg && newfg != foreground() ) 
+      {
+  	 foreground( newfg );
+      }
     }
 
   load_list();
@@ -3502,12 +3505,9 @@ void ImageView::foreground( mrv::media fg )
   mrv::media old = foreground();
   if ( old == fg ) return;
 
-  if ( fg )
-     fg->image()->audio_engine()->SoundFocus( uiMain );
-
   if ( old && playback() != kStopped )
     {
-      old->image()->stop();
+       old->image()->stop();
     }
 
 
@@ -3880,6 +3880,7 @@ void ImageView::seek( const int64_t f )
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
   browser()->seek( f );
+
   _lastFrame = f;
 
 }
@@ -4130,18 +4131,19 @@ void ImageView::play( const CMedia::Playback dir )
   playback( (Playback) dir );
 
   delete_timeout();
-  double fps = uiMain->uiFPS->value();
 
+  double fps = uiMain->uiFPS->value();
   create_timeout( 1.0/fps*2 );
 
   mrv::media fg = foreground();
-  if ( fg ) 
+  if ( fg )
     {
       fg->image()->play( dir, uiMain);
     }
 
+
   mrv::media bg = background();
-  if ( bg ) bg->image()->play( dir, uiMain);
+  if ( bg && bg != fg ) bg->image()->play( dir, uiMain);
 
 
 }
@@ -4177,6 +4179,8 @@ void ImageView::thumbnails()
 void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
+
+   mrv::media fg = foreground();
 
   _playback = kStopped;
   _last_fps = 0.0;
