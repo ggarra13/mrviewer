@@ -82,8 +82,6 @@ void ExceptionHandler::ShowStack() {
   fprintf( stderr, "[bt] Execution path:\n");
   for (i=0; i<trace_size; ++i)
   {
-     fprintf( stderr, "[bt]" );
-     demangle( messages[i] ); fprintf( stderr, "\n" );
      fprintf( stderr, "[bt] %s\n", messages[i]);
   }
   free( messages );

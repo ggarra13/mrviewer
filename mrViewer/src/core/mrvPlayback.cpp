@@ -125,10 +125,14 @@ EndStatus handle_loop( boost::int64_t& frame,
 	    {
 	       boost::int64_t f = frame;
 
+	       CMedia::Mutex& m = img->video_mutex();
+	       SCOPED_LOCK( m );
+
 	       f -= img->first_frame();
 	       f += timeline->location(img);
 
 	       next = timeline->image_at( f );
+
 
 	       f = timeline->global_to_local( f );
 	       if ( !next )
@@ -145,12 +149,15 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  }
 	       }
 	     
+
 	       assert( next != NULL );
 
 	       if ( next != img && next != NULL) 
 	       {
+		  CMedia::Mutex& m2 = next->video_mutex();
+		  SCOPED_LOCK( m2 );
 		  img->playback( CMedia::kStopped );
-		  next->preroll( f );
+		  next->seek( f );
 		  next->play( CMedia::kForwards, uiMain );
 		  status = kEndNextImage;
 		  break;
@@ -187,10 +194,14 @@ EndStatus handle_loop( boost::int64_t& frame,
 	    {
 	       boost::int64_t f = frame;
 
+	       CMedia::Mutex& m = img->video_mutex();
+	       SCOPED_LOCK( m );
+
 	       f -= img->first_frame();
 	       f += timeline->location(img);
 
 	       next = timeline->image_at( f );
+
 	       f = timeline->global_to_local( f );
 	       if ( !next )
 	       {
@@ -210,8 +221,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL ) 
 	       {
+		  CMedia::Mutex& m2 = next->video_mutex();
+		  SCOPED_LOCK( m2 );
+
 		  img->playback( CMedia::kStopped );
-		  next->preroll( f );
+		  next->seek( f );
 		  next->play( CMedia::kBackwards, uiMain );
 		  status = kEndNextImage;
 		  break;
@@ -266,6 +280,9 @@ CMedia::DecodeStatus check_loop( int64_t& frame,
    boost::int64_t first = boost::int64_t( timeline->minimum() );
 
    boost::int64_t f = frame;
+
+   CMedia::Mutex& m = img->video_mutex();
+   SCOPED_LOCK( m );
 
    if ( timeline->edl() )
    {
@@ -327,7 +344,7 @@ void audio_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER AUDIO THREAD " << img->name() << " " << data 
+   cerr << "ENTER AUDIO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
 
@@ -403,7 +420,8 @@ void audio_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT AUDIO THREAD " << img->name() << " " << data 
+   cerr << "EXIT AUDIO THREAD " << img->name() << " stopped? " 
+	<< img->stopped()  
 	<< " frame " << img->audio_frame() << endl;
 #endif
 
@@ -498,7 +516,7 @@ void video_thread( PlaybackData* data )
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER VIDEO THREAD " << img->name() << " " << data 
+   cerr << "ENTER VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
 
@@ -624,7 +642,8 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT VIDEO THREAD " << img->name() << " " << data
+   cerr << "EXIT VIDEO THREAD " << img->name() << " stopped? "
+	<< img->stopped()
 	<< " at " << frame << "  img->frame: " << img->frame() << endl;
 #endif
 
@@ -654,7 +673,7 @@ void decode_thread( PlaybackData* data )
    int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER DECODE THREAD " << img->name() << " " << data << " frame "
+   cerr << "ENTER DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame "
 	<< frame << " step " << step << endl;
 #endif
 
@@ -684,8 +703,6 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-	 if ( img->stopped() ) break;
-
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
@@ -727,7 +744,7 @@ void decode_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT DECODE THREAD " << img->name() << " " << data << " frame " 
+   cerr << "EXIT DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
 	<< img->frame() << "  dts: " << img->dts() << endl;
 #endif
 

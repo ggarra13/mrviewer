@@ -750,7 +750,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 {   
    AVFrame frame = { { 0 } };
    int ret, got_frame = 0;
-   
 
     ret = avcodec_decode_audio4(ctx, &frame, &got_frame, avpkt);
 
@@ -1465,11 +1464,11 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   {
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
     debug_audio_packets(frame, "FIND");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
     debug_audio_stores(frame, "FIND");
 #endif
 
@@ -1537,11 +1536,11 @@ CMedia::DecodeStatus
 CMedia::handle_audio_packet_seek( boost::int64_t& frame, 
 				  const bool is_seek )
 {
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DOSEEK");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DOSEEK");
 #endif
 
@@ -1586,11 +1585,11 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   if ( _audio_packets.empty() ) return got_audio;
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DOSEEK END");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DOSEEK END");
 #endif
 
@@ -1718,11 +1717,11 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 
     }
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DECODE END");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DECODE END");
 #endif
 
@@ -1757,7 +1756,10 @@ void CMedia::do_seek()
   
      if ( has_audio() )
      {
-	decode_audio( _seek_frame );
+	DecodeStatus status = decode_audio( _seek_frame );
+	if ( status != kDecodeOK )
+	   LOG_ERROR("Decode audio failed for seek frame " 
+		     << _seek_frame );
 	find_audio( _seek_frame );
      }
   }

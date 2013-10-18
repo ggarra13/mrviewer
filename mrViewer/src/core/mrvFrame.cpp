@@ -237,15 +237,15 @@ const char* const VideoFrame::fmts[] = {
 	    const ImagePixel& ps = pixel(xs, y);
 	    const ImagePixel& pt = pixel(xt, y);
 	    
-	    assert( ps.r >= 0.f && ps.r <= 1.0f );
-	    assert( ps.g >= 0.f && ps.g <= 1.0f );
-	    assert( ps.b >= 0.f && ps.b <= 1.0f );
-	    assert( ps.a >= 0.f && ps.a <= 1.0f );
+	    // assert( ps.r >= 0.f && ps.r <= 1.0f );
+	    // assert( ps.g >= 0.f && ps.g <= 1.0f );
+	    // assert( ps.b >= 0.f && ps.b <= 1.0f );
+	    // assert( ps.a >= 0.f && ps.a <= 1.0f );
 
-	    assert( pt.r >= 0.f && pt.r <= 1.0f );
-	    assert( pt.g >= 0.f && pt.g <= 1.0f );
-	    assert( pt.b >= 0.f && pt.b <= 1.0f );
-	    assert( pt.a >= 0.f && pt.a <= 1.0f );
+	    // assert( pt.r >= 0.f && pt.r <= 1.0f );
+	    // assert( pt.g >= 0.f && pt.g <= 1.0f );
+	    // assert( pt.b >= 0.f && pt.b <= 1.0f );
+	    // assert( pt.a >= 0.f && pt.a <= 1.0f );
 
 	    ImagePixel p(
 			 ps.r * s + pt.r * t,
