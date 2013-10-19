@@ -2297,7 +2297,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {332 231 640 530} when CHANGED resizable
+        xywh {335 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -3054,6 +3054,7 @@ o->value(24);}
                     xywh {455 0 180 24}
                   } {
                     {fltk::Input} uiStartFrame {
+                      label S
                       user_data this user_data_type {mrv::ViewerUI*}
                       callback {double f = (double) o->value();
 v->uiTimeline->minimum( f );
@@ -3065,27 +3066,16 @@ v->uiTimeline->redraw();}
                       class {mrv::Timecode}
                     }
                     {fltk::Input} uiEndFrame {
+                      label E
                       user_data this user_data_type {mrv::ViewerUI*}
                       callback {boost::int64_t f = o->value();
 v->uiTimeline->maximum( float(f) );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();}
+v->uiTimeline->redraw();} selected
                       tooltip {Allows you to set the ending frame for timeline.}
                       xywh {110 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(50);}
                       class {mrv::Timecode}
-                    }
-                    {fltk::Button} uiStartButton {
-                      label S
-                      user_data this user_data_type {mrv::ViewerUI*}
-                      callback {mrv::start_button_cb(o, v);}
-                      xywh {0 2 20 22}
-                    }
-                    {fltk::Button} uiEndButton {
-                      label E
-                      user_data this user_data_type {mrv::ViewerUI*}
-                      callback {mrv::end_button_cb( o, v );} selected
-                      xywh {90 2 20 20} vertical
                     }
                   }
                 }

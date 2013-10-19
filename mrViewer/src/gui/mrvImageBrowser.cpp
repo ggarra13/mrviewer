@@ -273,77 +273,6 @@ namespace mrv {
   }
 
 
-  void start_button_cb(fltk::Button* o, mrv::ViewerUI* v)
-  {
-     boost::int64_t f;
-
-     if (o->value() )
-     {
-	mrv::media fg = v->uiView->foreground();
-	if ( fg )
-	{
-	   f = fg->image()->start_frame();
-	}
-	o->value(0);
-     }
-     else
-     {
-	f = v->uiFrame->value();
-	v->uiView->stop();
-	o->value(1);
-     }
-
-     v->uiStartFrame->value( f );
-     v->uiStartFrame->redraw();
-     v->uiTimeline->minimum( double(f) );
-     mrv::media fg = v->uiView->foreground();
-     if ( fg )
-     {
-	if ( v->uiTimeline->edl() )
-	   fg->image()->first_frame( v->uiTimeline->global_to_local(f) );
-	else
-	   fg->image()->first_frame( f );
-     }
-     v->uiEDLWindow->uiEDLGroup->refresh();
-     v->uiTimeline->redraw();
-  }
-
-  void end_button_cb(fltk::Button* o, mrv::ViewerUI* v)
-  {
-     boost::int64_t f;
-
-     if (o->value() )
-     {
-	mrv::media fg = v->uiView->foreground();
-	if (fg)
-	{
-	   f = fg->image()->end_frame();
-	}
-	o->value(0);
-     }
-     else
-     {
-	f = (boost::int64_t) v->uiFrame->value();
-	v->uiView->stop();
-	o->value(1);
-     }
-
-     v->uiEndFrame->value( f );
-     v->uiEndFrame->redraw();
-     v->uiTimeline->maximum( double(f) );
-     mrv::media fg = v->uiView->foreground();
-     if ( fg )
-     {
-	if ( v->uiTimeline->edl() )
-	   fg->image()->last_frame( v->uiTimeline->global_to_local(f) );
-	else
-	   fg->image()->last_frame( f );
-     }
-     v->uiEDLWindow->uiEDLGroup->refresh();
-     v->uiTimeline->redraw();
-  }
-
-
   /** 
    * Constructor
    * 
@@ -2539,12 +2468,6 @@ void ImageBrowser::load( const stringArray& files,
     uiMain->uiFrame->value( frame );
     timeline()->value( double(frame) );
 
-    if ( img->first_frame() != img->start_frame() )
-       uiMain->uiStartButton->value(1);
-
-    if ( img->last_frame() != img->end_frame() )
-       uiMain->uiEndButton->value(1);
-
     adjust_timeline();
 
     char buf[64];
@@ -2567,8 +2490,6 @@ void ImageBrowser::load( const stringArray& files,
 
     int64_t f = img->frame() - img->first_frame() + timeline()->location( img );
     uiMain->uiFrame->value( f );
-    uiMain->uiStartButton->value(0);
-    uiMain->uiEndButton->value(0);
     timeline()->value( f );
 
     char buf[64];
@@ -2622,16 +2543,9 @@ void ImageBrowser::load( const stringArray& files,
 	if (frame > last ) frame = last;
 	if (frame < first ) frame = first;
 
-	bool pushed = first > img->start_frame();
-	uiMain->uiStartButton->value( pushed );
-
-	pushed = last < img->end_frame();
-	uiMain->uiEndButton->value( pushed );
       }
     else
       {
-	uiMain->uiStartButton->value( false );
-	uiMain->uiEndButton->value( false );
 
 	mrv::Reel reel = current_reel();
 	if ( !reel || reel->images.empty() ) return;
@@ -2657,8 +2571,6 @@ void ImageBrowser::load( const stringArray& files,
      timeline()->minimum( double(first) );
      timeline()->maximum( double(last) );
      timeline()->value( frame );
-     uiMain->uiStartFrame->value( first );
-     uiMain->uiEndFrame->value( last );
      uiMain->uiFrame->value( frame );
      timeline()->redraw();
   }
