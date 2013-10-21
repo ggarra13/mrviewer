@@ -417,7 +417,7 @@ int media_track::handle( int event )
 	       if ( !reel ) return 0;
 
 	       int diff = (fltk::event_x() - _dragX);
-	       if ( _zoom < 1.0 && _zoom > 0.0f ) diff /= _zoom;
+	       if ( _zoom > 1.0f ) diff *= _zoom;
 
 	       mrv::MediaList::const_iterator i = reel->images.begin();
 	       mrv::MediaList::const_iterator e = reel->images.end();

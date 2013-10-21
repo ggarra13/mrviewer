@@ -384,8 +384,7 @@ Timeline::~Timeline()
 	CMedia* timg = (*i)->image();
 	assert( timg != NULL );
 
-	uint64_t size = timg->duration();
-	t += size;
+	t += timg->duration();
       }
     return t;
   }
@@ -460,9 +459,8 @@ Timeline::~Timeline()
     for ( ; i != e; ++i, ++r )
       {
 	CMedia* img = (*i)->image();
-	uint64_t size = img->duration();
-	t += size;
-	if ( t > f ) break;
+	t += img->duration();
+ 	if ( t > f ) break;
       }
     if ( r >= reel->images.size() ) return mrv::media();
 

@@ -2347,6 +2347,7 @@ void ImageBrowser::load( const stringArray& files,
 	     unsigned int i = timeline()->index( f );
 
 	     f = timeline()->global_to_local( f );
+	     img->abort( true );
 	     img->seek( f );
 
 	     change_image(i);
@@ -2360,6 +2361,7 @@ void ImageBrowser::load( const stringArray& files,
 	else
 	  {
 	     f = timeline()->global_to_local( f );
+	     img->abort( true );
 	     img->stop();
 	     img->seek( f );
 	     if ( playback != ImageView::kStopped )
@@ -2377,6 +2379,7 @@ void ImageBrowser::load( const stringArray& files,
 	if (!fg) return;
 	
 	CMedia* img = fg->image();
+	img->abort( true );
 	img->seek( f );
       }
 
@@ -2571,6 +2574,8 @@ void ImageBrowser::load( const stringArray& files,
      timeline()->minimum( double(first) );
      timeline()->maximum( double(last) );
      timeline()->value( frame );
+     uiMain->uiStartFrame->value( first );
+     uiMain->uiEndFrame->value( last );
      uiMain->uiFrame->value( frame );
      timeline()->redraw();
   }
