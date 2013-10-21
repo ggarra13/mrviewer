@@ -136,6 +136,7 @@ CMedia::CMedia() :
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
   _playback( kStopped ),
+  _aborted( false ),
   _sequence( NULL ),
   _audio_pts( 0 ),
   _audio_clock( av_gettime() / 1000000.0 ),
@@ -201,6 +202,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
   _playback( kStopped ),
+  _aborted( false ),
   _sequence( NULL ),
   _context(NULL),
   _acontext(NULL),
@@ -1088,6 +1090,7 @@ void CMedia::play(const CMedia::Playback dir,
 
 
   _playback = dir;
+  _aborted = false;
 
   assert( uiMain != NULL );
   assert( _threads.size() == 0 );

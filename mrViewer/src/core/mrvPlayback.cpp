@@ -48,7 +48,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -134,8 +134,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       next = timeline->image_at( f );
 
 
-	       f = timeline->global_to_local( f );
-	       if ( !next )
+	       if ( next )
+	       {
+		  f = timeline->global_to_local( f );
+	       }
+	       else
 	       {
 		  if ( loop == ImageView::kLooping )
 		  {
@@ -565,13 +568,16 @@ void video_thread( PlaybackData* data )
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
+	       if (! img->aborted() )
+	       {
+	       
+		  EndStatus end = handle_loop( frame, step, img, uiMain, 
+					       timeline, status );
 
-	       EndStatus end = handle_loop( frame, step, img, uiMain, 
-					    timeline, status );
-
-	       CMedia::Barrier* barrier = img->loop_barrier();
-	       // Wait until all threads loop and decode is restarted
-	       barrier->wait();
+		  CMedia::Barrier* barrier = img->loop_barrier();
+		  // Wait until all threads loop and decode is restarted
+		  barrier->wait();
+	       }
 	       continue;
 	    }
 	 default:
@@ -690,6 +696,7 @@ void decode_thread( PlaybackData* data )
 
       if ( img->seek_request() )
       {
+	 std::cerr << "SEEK FROM FRAME " << frame << std::endl;
 	 img->do_seek();
 	 frame = img->dts();
       }
@@ -698,11 +705,13 @@ void decode_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
       frame += step;
-	
+      
+
       CMedia* next = NULL;
       CMedia::DecodeStatus status = check_loop( frame, img, timeline );
       if ( status != CMedia::kDecodeOK )
       {
+	 std::cerr << "BARRIER FOR FRAME " << frame << std::endl;
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
@@ -710,12 +719,14 @@ void decode_thread( PlaybackData* data )
 	 // Wait until all threads loop or exit
 	 barrier->wait();
 
+	 if ( ! img->aborted() )
+	 {
+	    // Do the looping, taking into account ui state
+	    // and return new frame and step.
+	    EndStatus end = handle_loop( frame, step, img, 
+					 uiMain, timeline, status );
+	 }
 
-	 // Do the looping, taking into account ui state
-	 // and return new frame and step.
-	 EndStatus end = handle_loop( frame, step, img, 
-				      uiMain, timeline, status );
-	 
 	 if ( img->stopped() ) break;
 	
       }
@@ -724,6 +735,7 @@ void decode_thread( PlaybackData* data )
  
       // If we could not get a frame (buffers full, usually),
       // wait a little.
+      std::cerr << "FRAME " << frame << std::endl;
       while ( !img->frame( frame ) )
       {
 	 timespec req;
@@ -739,6 +751,8 @@ void decode_thread( PlaybackData* data )
       {
 	 frame = img->dts();
       }
+
+      std::cerr << "FRAME DTS " << frame << std::endl;
       
 
    }
