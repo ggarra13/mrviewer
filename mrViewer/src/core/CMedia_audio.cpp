@@ -187,7 +187,7 @@ void CMedia::open_audio_codec()
   else
     {
       if ( !_audio_buf ) {
-	_audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 10;
+	_audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 12;
 	_audio_buf = new aligned16_uint8_t[ _audio_max ];
 	assert( (((unsigned long)_audio_buf) % 16) == 0 );
 	memset( _audio_buf, 0, _audio_max );

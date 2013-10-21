@@ -48,7 +48,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-#define DEBUG_THREADS
+// #define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -574,10 +574,11 @@ void video_thread( PlaybackData* data )
 		  EndStatus end = handle_loop( frame, step, img, uiMain, 
 					       timeline, status );
 
-		  CMedia::Barrier* barrier = img->loop_barrier();
-		  // Wait until all threads loop and decode is restarted
-		  barrier->wait();
 	       }
+
+	       CMedia::Barrier* barrier = img->loop_barrier();
+	       // Wait until all threads loop and decode is restarted
+	       barrier->wait();
 	       continue;
 	    }
 	 default:
@@ -696,7 +697,6 @@ void decode_thread( PlaybackData* data )
 
       if ( img->seek_request() )
       {
-	 std::cerr << "SEEK FROM FRAME " << frame << std::endl;
 	 img->do_seek();
 	 frame = img->dts();
       }
@@ -711,7 +711,6 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-	 std::cerr << "BARRIER FOR FRAME " << frame << std::endl;
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
@@ -735,7 +734,6 @@ void decode_thread( PlaybackData* data )
  
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      std::cerr << "FRAME " << frame << std::endl;
       while ( !img->frame( frame ) )
       {
 	 timespec req;
@@ -751,8 +749,6 @@ void decode_thread( PlaybackData* data )
       {
 	 frame = img->dts();
       }
-
-      std::cerr << "FRAME DTS " << frame << std::endl;
       
 
    }
