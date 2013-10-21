@@ -1129,6 +1129,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( img->has_audio() )
       add_audio( m );
 
+    adjust_timeline();
+
     return m;
   }
 
@@ -2560,7 +2562,6 @@ void ImageBrowser::load( const stringArray& files,
 
 	CMedia* img = m->image();
 	frame = timeline()->offset( img ) + img->frame();
-	timeline()->value( frame );
 
 	m = reel->images.back();
 	if (! m ) return;
