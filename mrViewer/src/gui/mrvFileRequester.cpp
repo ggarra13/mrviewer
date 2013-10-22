@@ -115,6 +115,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
     std::string title = _("Load Image");
     if ( compact_images ) title = _("Load Movie or Sequence");
 
+
     flu_multi_file_chooser( title.c_str(), 
 			    kIMAGE_PATTERN.c_str(), startfile,
 			    filelist, compact_images );

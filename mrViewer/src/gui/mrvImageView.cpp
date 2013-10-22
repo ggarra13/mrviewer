@@ -76,6 +76,7 @@
 #include "core/mrvColorSpaces.h"
 #include "core/mrvFrame.h"
 #include "core/mrvHome.h"
+#include "core/mrStackTrace.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -88,6 +89,7 @@
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
+#include "mrvEDLWindowUI.h"
 #include "gui/mrvImageView.h"
 
 
@@ -345,6 +347,24 @@ void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view )
   view->browser()->save_sequence();
 }
 
+enum WindowList
+{
+kReelWindow = 0,
+kMediaInfo = 1,
+kColorInfo = 2,
+kEDLEdit = 3,
+kPaintTools = 4,
+kHistogram = 5,
+kVectorscope = 6,
+kICCProfiles = 7,
+kConnections = 8,
+kPreferences = 9,
+kHotkeys = 10,
+kLogs = 11,
+kAbout = 12,
+kLastWindow
+};
+
 void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 {
    int idx = -1;
@@ -356,63 +376,68 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
       }
    }
 
-  if ( idx == 0 )
+  if ( idx == kReelWindow )
     {
        // Reel window
       uiMain->uiReelWindow->uiMain->show();
     }
-  else if ( idx == 1 )
+  else if ( idx == kMediaInfo )
   {
        // Media Info
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
   }
-  else if ( idx == 2 )
+  else if ( idx == kColorInfo )
     {
        // Color Area
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
     }
-  else if ( idx == 3 )
+  else if ( idx == kEDLEdit )
+  {
+     uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
+     uiMain->uiEDLWindow->uiMain->show();
+  }
+  else if ( idx == kPaintTools )
     {
        // Paint Tools
       uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPaint->uiMain->show();
     }
-  else if ( idx == 4 )
+  else if ( idx == kHistogram )
     {
       uiMain->uiHistogram->uiMain->show();
     }
-  else if ( idx == 5 )
+  else if ( idx == kVectorscope )
     {
       uiMain->uiVectorscope->uiMain->show();
     }
-  else if ( idx == 6 )
+  else if ( idx == kICCProfiles )
     {
       uiMain->uiICCProfiles->uiMain->show();
       uiMain->uiICCProfiles->fill();
     }
-  else if ( idx == 7 )
+  else if ( idx == kConnections )
     {
       uiMain->uiConnection->uiMain->child_of( uiMain->uiMain );
       uiMain->uiConnection->uiMain->show();
     }
-  else if ( idx == 8 )
+  else if ( idx == kPreferences )
     {
       uiMain->uiPrefs->uiMain->child_of( uiMain->uiMain );
       uiMain->uiPrefs->uiMain->show();
     }
-  else if ( idx == 9 )
+  else if ( idx == kHotkeys )
     {
       uiMain->uiHotkey->uiMain->child_of( uiMain->uiMain );
       uiMain->uiHotkey->uiMain->show();
     }
-  else if ( idx == 10 )
+  else if ( idx == kLogs )
     {
       uiMain->uiLog->uiMain->child_of( uiMain->uiMain );
       uiMain->uiLog->uiMain->show();
     }
-  else if ( idx == 11 )
+  else if ( idx == kAbout )
     {
       uiMain->uiAbout->uiMain->show();
     }
@@ -636,7 +661,6 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 
 void ImageView::stop_playback()
 {
-
 
   mrv::media fg = foreground();
   if ( fg && !fg->image()->stopped()) fg->image()->stop();
@@ -994,21 +1018,27 @@ void ImageView::load_list()
       refresh();
    }
 
-   std::string lockfile = mrv::lockfile();
-   
-   if(fs::exists(lockfile))
-   {
-      try {
-	 if ( ! fs::remove( lockfile ) )
-	    LOG_ERROR( "Could not remove lock file!" );
-      }
-      catch( fs::filesystem_error& e )
-      {
-      }
+ 
+   bool single_instance = uiMain->uiPrefs->uiPrefsSingleInstance->value();
 
-      fltk::Preferences base( fltk::Preferences::USER, "filmaura",
-   			      "mrViewer.lock" );
-      base.set( "pid", 1 );
+   if ( single_instance )
+   {
+      std::string lockfile = mrv::lockfile();
+   
+      if(fs::exists(lockfile))
+      {
+	 try {
+	    if ( ! fs::remove( lockfile ) )
+	       LOG_ERROR( "Could not remove lock file!" );
+	 }
+	 catch( fs::filesystem_error& e )
+	 {
+	 }
+
+	 fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+				 "mrViewer.lock" );
+	 base.set( "pid", 1 );
+      }
    }
    
 }
@@ -1026,7 +1056,10 @@ void ImageView::timeout()
       int64_t frame = boost::int64_t( timeline->value() );
       mrv::media newfg = timeline->media_at( frame );
 
-      if ( newfg != foreground() ) foreground( newfg );
+      if ( newfg && newfg != foreground() ) 
+      {
+  	 foreground( newfg );
+      }
     }
 
   load_list();
@@ -1084,6 +1117,7 @@ void ImageView::timeout()
 		  // updating frame
 		  this->frame( frame );
 		}
+	      uiMain->uiEDLWindow->uiEDLGroup->redraw();
 	    }
 	  
 	  uiMain->uiFrame->value( frame );
@@ -1906,10 +1940,6 @@ void ImageView::mouseMove(int x, int y)
 {
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-  if ( x >=  0 && y >= 0 && x < this->w() && y < this->h() )
-    {
-      focus(this);
-    }
 
   double xf = (double) x;
   double yf = (double) y;
@@ -2070,8 +2100,8 @@ void ImageView::mouseMove(int x, int y)
       hsv = color::rgb::to_yiq( rgba );   break;
     case color::kITU_601:
       hsv = color::rgb::to_ITU601( rgba );   break;
-    case color::kITU_702:
-      hsv = color::rgb::to_ITU702( rgba );   break;
+    case color::kITU_709:
+      hsv = color::rgb::to_ITU709( rgba );   break;
     default:
       LOG_ERROR("Unknown color type");
     }
@@ -2291,18 +2321,22 @@ int ImageView::keyDown(unsigned int rawkey)
    else if ( kExposureMore.match( rawkey ) )
    {
       exposure_change( 0.5f );
+      return 1;
    }
    else if ( kExposureLess.match( rawkey ) )
     {
       exposure_change( -0.5f );
+      return 1;
     }
    else if ( kGammaMore.match( rawkey ) )
     {
       gamma( gamma() + 0.1f );
+      return 1;
     }
    else if ( kGammaLess.match( rawkey ) )
     {
       gamma( gamma() - 0.1f );
+      return 1;
     }
    else if ( rawkey == fltk::LeftAltKey ) 
    {
@@ -2433,6 +2467,7 @@ int ImageView::keyDown(unsigned int rawkey)
   else if ( kAttachAudio.match(rawkey) ) 
   {
      attach_audio_cb( NULL, this );
+     return 1;
   }
   else if ( kFrameStepFPSBack.match(rawkey) ) 
    {
@@ -2709,12 +2744,13 @@ void ImageView::toggle_fullscreen()
 {
   fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
   fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
+  fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
   fltk::Window* uiReel  = uiMain->uiReelWindow->uiMain;
   fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
 
-  static bool has_image_info, has_color_area, has_reel, has_prefs, has_about,
-    has_top_bar, has_bottom_bar, has_pixel_bar;
+  static bool has_image_info, has_color_area, has_reel, has_edl_edit,
+  has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar;
   if ( fltk_main()->border() )
     {
       posX = fltk_main()->x();
@@ -2723,6 +2759,7 @@ void ImageView::toggle_fullscreen()
       has_image_info = uiImageInfo->visible();
       has_color_area = uiColorArea->visible();
       has_reel       = uiReel->visible();
+      has_edl_edit   = uiEDLWindow->visible();
       has_prefs      = uiPrefs->visible();
       has_about      = uiAbout->visible();
       has_top_bar    = uiMain->uiTopBar->visible();
@@ -2745,6 +2782,7 @@ void ImageView::toggle_fullscreen()
       if ( has_image_info ) uiImageInfo->show();
       if ( has_color_area ) uiColorArea->show();
       if ( has_reel  )      uiReel->show();
+      if ( has_edl_edit )   uiEDLWindow->show();
       if ( has_prefs )      uiPrefs->show();
       if ( has_about )      uiAbout->show();
 
@@ -2865,6 +2903,7 @@ int ImageView::handle(int event)
       if ( _mode == kDraw || _mode == kErase )
 	 redraw();
 
+      return 1;
       break;
     case fltk::DRAG:
        X = fltk::event_x();
@@ -2875,7 +2914,6 @@ int ImageView::handle(int event)
     case fltk::KEY:
       lastX = fltk::event_x();
       lastY = fltk::event_y();
-      focus(this);
       return keyDown(fltk::event_key());
     case fltk::KEYUP:
       return keyUp(fltk::event_key());
@@ -2905,7 +2943,7 @@ int ImageView::handle(int event)
       return fltk::GlWindow::handle( event ); 
     }
 
-  return 1;
+  return 0;
 }
 
 
@@ -3467,12 +3505,9 @@ void ImageView::foreground( mrv::media fg )
   mrv::media old = foreground();
   if ( old == fg ) return;
 
-  if ( fg )
-     fg->image()->audio_engine()->SoundFocus( uiMain );
-
   if ( old && playback() != kStopped )
     {
-      old->image()->stop();
+       old->image()->stop();
     }
 
 
@@ -3845,6 +3880,7 @@ void ImageView::seek( const int64_t f )
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
   browser()->seek( f );
+
   _lastFrame = f;
 
 }
@@ -4095,18 +4131,19 @@ void ImageView::play( const CMedia::Playback dir )
   playback( (Playback) dir );
 
   delete_timeout();
-  double fps = uiMain->uiFPS->value();
 
+  double fps = uiMain->uiFPS->value();
   create_timeout( 1.0/fps*2 );
 
   mrv::media fg = foreground();
-  if ( fg ) 
+  if ( fg )
     {
       fg->image()->play( dir, uiMain);
     }
 
+
   mrv::media bg = background();
-  if ( bg ) bg->image()->play( dir, uiMain);
+  if ( bg && bg != fg ) bg->image()->play( dir, uiMain);
 
 
 }
@@ -4142,6 +4179,20 @@ void ImageView::thumbnails()
 void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
+
+   mrv::media fg = foreground();
+
+   if ( fg )
+   {
+      fg->image()->abort( true );
+   }
+
+   mrv::media bg = background();
+
+   if ( bg )
+   {
+      bg->image()->abort( true );
+   }
 
   _playback = kStopped;
   _last_fps = 0.0;

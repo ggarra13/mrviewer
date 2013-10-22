@@ -54,12 +54,12 @@ const char* const VideoFrame::fmts[] = {
 "ITU_601_YCbCr444",
 "ITU_601_YCbCr444A",
 
-"ITU_702_YCbCr420",
-"ITU_702_YCbCr420A", // @todo: not done
-"ITU_702_YCbCr422",
-"ITU_702_YCbCr422A", // @todo: not done
-"ITU_702_YCbCr444",
-"ITU_702_YCbCr444A", // @todo: not done
+"ITU_709_YCbCr420",
+"ITU_709_YCbCr420A", // @todo: not done
+"ITU_709_YCbCr422",
+"ITU_709_YCbCr422A", // @todo: not done
+"ITU_709_YCbCr444",
+"ITU_709_YCbCr444A", // @todo: not done
 
 "YByRy420",
 "YByRy420A", // @todo: not done
@@ -101,13 +101,13 @@ const char* const VideoFrame::fmts[] = {
       case kLumma:
 	size = WH * _channels; break;
 
-      case kITU_702_YCbCr420A:
+      case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
 	size = WH; // alpha
 
       case kYByRy420:
-      case kITU_702_YCbCr420:
+      case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
 	size += WH;   // Y
 	W2 = (_width  + 1) / 2;
@@ -116,7 +116,7 @@ const char* const VideoFrame::fmts[] = {
 	size += 2 * WH2;  // U and V
 	break;
 
-      case kITU_702_YCbCr422:
+      case kITU_709_YCbCr422:
       case kITU_601_YCbCr422:
 	size += WH;   // Y
 	W2 = (_width  + 1) / 2;
@@ -225,20 +225,40 @@ const char* const VideoFrame::fmts[] = {
 	float x1 = x * f;
 	unsigned int xs = static_cast< unsigned int>( x1 );
 	unsigned int xt = std::min( xs + 1, _width - 1 );
+
 	float t = x1 - xs;
+	assert( t <= 1.0f );
+
 	float s = 1.0f - t;
+	assert( s >= 0.0f );
 
 	for (unsigned int y = 0; y < _height; ++y)
 	  {
 	    const ImagePixel& ps = pixel(xs, y);
 	    const ImagePixel& pt = pixel(xt, y);
 	    
+	    // assert( ps.r >= 0.f && ps.r <= 1.0f );
+	    // assert( ps.g >= 0.f && ps.g <= 1.0f );
+	    // assert( ps.b >= 0.f && ps.b <= 1.0f );
+	    // assert( ps.a >= 0.f && ps.a <= 1.0f );
+
+	    // assert( pt.r >= 0.f && pt.r <= 1.0f );
+	    // assert( pt.g >= 0.f && pt.g <= 1.0f );
+	    // assert( pt.b >= 0.f && pt.b <= 1.0f );
+	    // assert( pt.a >= 0.f && pt.a <= 1.0f );
+
 	    ImagePixel p(
 			 ps.r * s + pt.r * t,
 			 ps.g * s + pt.g * t,
 			 ps.b * s + pt.b * t,
 			 ps.a * s + pt.a * t
 			 );
+
+	    assert( p.r >= 0.f && p.r <= 1.0f );
+	    assert( p.g >= 0.f && p.g <= 1.0f );
+	    assert( p.b >= 0.f && p.b <= 1.0f );
+	    assert( p.a >= 0.f && p.a <= 1.0f );
+
 
 	    scaled->pixel( x, y, p );
 	  }
@@ -274,19 +294,37 @@ const char* const VideoFrame::fmts[] = {
 	unsigned int ys = static_cast< unsigned int>( y1 );
 	unsigned int yt = std::min( ys + 1, _height - 1 );
 	float t = y1 - ys;
+	assert( t <= 1.0f );
 	float s = 1.0f - t;
+	assert( s >= 0.0f );
 
 	for (unsigned int x = 0; x < _width; ++x)
 	{
-	    const ImagePixel ps = pixel(x, ys);
-	    const ImagePixel pt = pixel(x, yt);
-	    
+	   const ImagePixel& ps = pixel(x, ys);
+	   const ImagePixel& pt = pixel(x, yt);
+
+
+	    assert( ps.r >= 0.f && ps.r <= 1.0f );
+	    assert( ps.g >= 0.f && ps.g <= 1.0f );
+	    assert( ps.b >= 0.f && ps.b <= 1.0f );
+	    assert( ps.a >= 0.f && ps.a <= 1.0f );
+
+	    assert( pt.r >= 0.f && pt.r <= 1.0f );
+	    assert( pt.g >= 0.f && pt.g <= 1.0f );
+	    assert( pt.b >= 0.f && pt.b <= 1.0f );
+	    assert( pt.a >= 0.f && pt.a <= 1.0f );
+
 	    ImagePixel p(
 			 ps.r * s + pt.r * t,
 			 ps.g * s + pt.g * t,
 			 ps.b * s + pt.b * t,
 			 ps.a * s + pt.a * t
 			 );
+
+	    assert( p.r >= 0.f && p.r <= 1.0f );
+	    assert( p.g >= 0.f && p.g <= 1.0f );
+	    assert( p.b >= 0.f && p.b <= 1.0f );
+	    assert( p.a >= 0.f && p.a <= 1.0f );
 
 	    scaled->pixel( x, y, p );
 	}
@@ -297,13 +335,18 @@ const char* const VideoFrame::fmts[] = {
 
   VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h )
   {
-    float f = (float)w / (float)width();
-    if ( f == 0.f ) f = 1.f;
+     double f;
+     if ( w == 0 || width() == 0 )
+	f = 1.0f;
+     else
+	f = (double)w / (double)width();
 
     VideoFrame* scaledX = scaleX( f );
 
-    f = (float)h / (float)height();
-    if ( f == 0.f ) f = 1.f;
+    if ( h == 0 || height() == 0 )
+       f = 1.0f;
+    else
+       f = (double)h / (double)height();
 
     VideoFrame* scaled  = scaledX->scaleY( f );
     delete scaledX;
@@ -321,9 +364,9 @@ const char* const VideoFrame::fmts[] = {
       case kITU_601_YCbCr420A:
       case kITU_601_YCbCr422A:
       case kITU_601_YCbCr444A:
-      case kITU_702_YCbCr420A:
-      case kITU_702_YCbCr422A:
-      case kITU_702_YCbCr444A:
+      case kITU_709_YCbCr420A:
+      case kITU_709_YCbCr422A:
+      case kITU_709_YCbCr444A:
       case kYByRy420A:
       case kYByRy422A:
       case kYByRy444A:

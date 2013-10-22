@@ -65,6 +65,8 @@ decl {\#include "mrvIccProfileUI.h"} {}
 
 decl {\#include "mrvColorAreaUI.h"} {} 
 
+decl {\#include "mrvEDLWindowUI.h"} {} 
+
 decl {\#include "icons/icons.c"} {} 
 
 decl {\#include "fltk/ColorChooser.h"} {} 
@@ -158,6 +160,8 @@ namespace mrv {open
   decl {class PaintUI;} {public
   }
   decl {class ConnectionUI;} {public
+  }
+  decl {class EDLWindowUI;} {public
   }
   class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
@@ -561,12 +565,13 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
-    Function {make_window()} {private
+  class PreferencesUI {open
+  } {
+    Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences open
-        xywh {477 286 640 475} resizable visible
+        label Preferences
+        xywh {474 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2282,6 +2287,8 @@ else
     }
     decl {PaintUI* uiPaint;} {public
     }
+    decl {EDLWindowUI* uiEDLWindow;} {public
+    }
     Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
@@ -2290,7 +2297,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {18 231 640 530} when CHANGED resizable
+        xywh {335 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2322,6 +2329,11 @@ v->uiView->update_image_info();}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
 v->uiView->update_color_info();}
+                }
+              {fltk::Item} {} {
+                label {EDL Edit}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiEDLWindow->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label {Paint Tools}
@@ -2751,7 +2763,7 @@ o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );} open
                           label {ITU-601 (Digital PAL/NTSC YCbCr)}
                           }
                         {fltk::Item} {} {
-                          label {ITU-702 (Digital HDTV YCbCr)}
+                          label {ITU-709 (Digital HDTV YCbCr)}
                           }
                       }
                       {fltk::Output} uiPixelH {
@@ -3042,6 +3054,7 @@ o->value(24);}
                     xywh {455 0 180 24}
                   } {
                     {fltk::Input} uiStartFrame {
+                      label S
                       user_data this user_data_type {mrv::ViewerUI*}
                       callback {double f = (double) o->value();
 v->uiTimeline->minimum( f );
@@ -3053,78 +3066,16 @@ v->uiTimeline->redraw();}
                       class {mrv::Timecode}
                     }
                     {fltk::Input} uiEndFrame {
+                      label E
                       user_data this user_data_type {mrv::ViewerUI*}
                       callback {boost::int64_t f = o->value();
 v->uiTimeline->maximum( float(f) );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();}
+v->uiTimeline->redraw();} selected
                       tooltip {Allows you to set the ending frame for timeline.}
                       xywh {110 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(50);}
                       class {mrv::Timecode}
-                    }
-                    {fltk::Button} uiStartButton {
-                      label S
-                      user_data this user_data_type {mrv::ViewerUI*}
-                      callback {boost::int64_t f;
-
-if (o->value() )
-{
-  mrv::media fg = v->uiView->foreground();
-  if ( fg )
-  {
-    f = fg->image()->start_frame();
-  }
- o->value(0);
-}
-else
-{
-f = v->uiFrame->value();
-v->uiView->stop();
-o->value(1);
-}
-
-v->uiStartFrame->value( f );
-v->uiStartFrame->redraw();
-v->uiTimeline->minimum( double(f) );
-mrv::media fg = v->uiView->foreground();
-if ( fg )
-{
-  fg->image()->first_frame( f );
-}
-v->uiTimeline->redraw();}
-                      xywh {0 2 20 22}
-                    }
-                    {fltk::Button} uiEndButton {
-                      label E
-                      user_data this user_data_type {mrv::ViewerUI*}
-                      callback {boost::int64_t f;
-
-if (o->value() )
-{
- mrv::media fg = v->uiView->foreground();
- if (fg)
- {
-   f = fg->image()->end_frame();
- }
- o->value(0);
-}
-else
-{
-f = (boost::int64_t) v->uiFrame->value();
-v->uiView->stop();
-o->value(1);
-}
-v->uiEndFrame->value( f );
-v->uiEndFrame->redraw();
-v->uiTimeline->maximum( double(f) );
-mrv::media fg = v->uiView->foreground();
-if ( fg )
-{
-  fg->image()->last_frame( f );
-}
-v->uiTimeline->redraw();}
-                      xywh {90 2 20 20} vertical
                     }
                   }
                 }
@@ -3149,10 +3100,10 @@ if (!uiConnection) uiConnection = new ConnectionUI( this );
 mrv::Preferences prefs( uiPrefs );
 
 if (!uiHotkey) uiHotkey = new HotkeyUI(this);
-if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);} {}
+if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
+uiEDLWindow = new EDLWindowUI(this);} {}
     }
-    Function {ViewerUI()} {open
-    } {
+    Function {ViewerUI()} {} {
       code {uiMain = make_window();} {}
     }
     Function {~ViewerUI()} {open
@@ -3165,9 +3116,9 @@ delete uiVectorscope; uiVectorscope = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
+delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
-delete uiReelWindow; uiReelWindow = NULL;} {selected
-      }
+delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
 } 

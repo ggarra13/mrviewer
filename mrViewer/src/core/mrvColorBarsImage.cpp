@@ -18,16 +18,16 @@ namespace mrv {
   ColorBarsImage::ColorBarsImage( const ColorBarsImage::Type c ) :
     CMedia()
   {
-    _fileroot = strdup( "Color Bars" );
     _gamma = 1.0f;
     _internal = true;
     default_layers();
 
-    _frameStart = 1;
+    _frameStart = _frame_start = 1;
 
     switch( c )
       {
       case kSMPTE_NTSC:
+	 _fileroot = strdup( "SMPTE NTSC Color Bars" );
 	image_size( 720, 480 );
 	allocate_pixels(_frameStart);
 	_pixel_ratio = 0.9f;
@@ -35,21 +35,24 @@ namespace mrv {
 	NTSC_color_bars();
 	break;
       case kPAL:
+	 _fileroot = strdup( "PAL Color Bars" );
 	image_size( 720, 576 );
 	allocate_pixels(_frameStart);
-	_fps = 24.0f;
+	_fps = 25.0f;
 	_pixel_ratio = 1.25f;
 	NTSC_color_bars();
 	break;
       case kPAL_HDTV:
+	 _fileroot = strdup( "PAL HDTV Color Bars" );
 	image_size( 1920, 1080 );
 	allocate_pixels(_frameStart);
 	_pixel_ratio = 1.0;
-	_fps = 24.0f;
+	_fps = 25.0f;
 	NTSC_HDTV_color_bars();
 	break;
       default:
       case kSMPTE_NTSC_HDTV:
+	 _fileroot = strdup( "NTSC HDTV Color Bars" );
 	image_size( 1920, 1080 );
 	allocate_pixels(_frameStart);
 	_pixel_ratio = 1.0;
@@ -58,7 +61,7 @@ namespace mrv {
 	break;
       }
 
-    _frameEnd   = int64_t( _fps * 3 );
+    _frameEnd = _frame_end = int64_t( _fps * 3 );
   }
 
   void ColorBarsImage::smpte_color_bars( 

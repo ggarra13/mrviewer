@@ -125,13 +125,20 @@ EndStatus handle_loop( boost::int64_t& frame,
 	    {
 	       boost::int64_t f = frame;
 
+	       CMedia::Mutex& m = img->video_mutex();
+	       SCOPED_LOCK( m );
+
 	       f -= img->first_frame();
 	       f += timeline->location(img);
 
 	       next = timeline->image_at( f );
 
-	       f = timeline->global_to_local( f );
-	       if ( !next )
+
+	       if ( next )
+	       {
+		  f = timeline->global_to_local( f );
+	       }
+	       else
 	       {
 		  if ( loop == ImageView::kLooping )
 		  {
@@ -145,12 +152,15 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  }
 	       }
 	     
+
 	       assert( next != NULL );
 
 	       if ( next != img && next != NULL) 
 	       {
+		  CMedia::Mutex& m2 = next->video_mutex();
+		  SCOPED_LOCK( m2 );
 		  img->playback( CMedia::kStopped );
-		  next->preroll( f );
+		  next->seek( f );
 		  next->play( CMedia::kForwards, uiMain );
 		  status = kEndNextImage;
 		  break;
@@ -187,10 +197,14 @@ EndStatus handle_loop( boost::int64_t& frame,
 	    {
 	       boost::int64_t f = frame;
 
+	       CMedia::Mutex& m = img->video_mutex();
+	       SCOPED_LOCK( m );
+
 	       f -= img->first_frame();
 	       f += timeline->location(img);
 
 	       next = timeline->image_at( f );
+
 	       f = timeline->global_to_local( f );
 	       if ( !next )
 	       {
@@ -210,8 +224,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL ) 
 	       {
+		  CMedia::Mutex& m2 = next->video_mutex();
+		  SCOPED_LOCK( m2 );
+
 		  img->playback( CMedia::kStopped );
-		  next->preroll( f );
+		  next->seek( f );
 		  next->play( CMedia::kBackwards, uiMain );
 		  status = kEndNextImage;
 		  break;
@@ -267,11 +284,13 @@ CMedia::DecodeStatus check_loop( int64_t& frame,
 
    boost::int64_t f = frame;
 
+   CMedia::Mutex& m = img->video_mutex();
+   SCOPED_LOCK( m );
+
    if ( timeline->edl() )
    {
       boost::int64_t s = timeline->location(img);
-      boost::int64_t e = img->last_frame() - img->first_frame();
-      e += timeline->location(img);
+      boost::int64_t e = s + img->duration() - 1;
 
       if ( e < last )  last = e;
       if ( s > first ) first = s;
@@ -328,7 +347,7 @@ void audio_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER AUDIO THREAD " << img->name() << " " << data 
+   cerr << "ENTER AUDIO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
 
@@ -342,7 +361,6 @@ void audio_thread( PlaybackData* data )
       img->wait_audio();
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
-
       switch( status )
       {
 	 case CMedia::kDecodeError:
@@ -405,7 +423,8 @@ void audio_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT AUDIO THREAD " << img->name() << " " << data 
+   cerr << "EXIT AUDIO THREAD " << img->name() << " stopped? " 
+	<< img->stopped()  
 	<< " frame " << img->audio_frame() << endl;
 #endif
 
@@ -500,7 +519,7 @@ void video_thread( PlaybackData* data )
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER VIDEO THREAD " << img->name() << " " << data 
+   cerr << "ENTER VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
 
@@ -549,9 +568,13 @@ void video_thread( PlaybackData* data )
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
+	       if (! img->aborted() )
+	       {
+	       
+		  EndStatus end = handle_loop( frame, step, img, uiMain, 
+					       timeline, status );
 
-	       EndStatus end = handle_loop( frame, step, img, uiMain, 
-					    timeline, status );
+	       }
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
@@ -626,7 +649,8 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT VIDEO THREAD " << img->name() << " " << data
+   cerr << "EXIT VIDEO THREAD " << img->name() << " stopped? "
+	<< img->stopped()
 	<< " at " << frame << "  img->frame: " << img->frame() << endl;
 #endif
 
@@ -656,7 +680,7 @@ void decode_thread( PlaybackData* data )
    int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER DECODE THREAD " << img->name() << " " << data << " frame "
+   cerr << "ENTER DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame "
 	<< frame << " step " << step << endl;
 #endif
 
@@ -681,26 +705,27 @@ void decode_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
       frame += step;
-	
+      
+
       CMedia* next = NULL;
       CMedia::DecodeStatus status = check_loop( frame, img, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-
-
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
-	 barrier->count( barrier_thread_count( img ) );
+	 int thread_count = barrier_thread_count( img );
+	 barrier->count( thread_count );
 	 // Wait until all threads loop or exit
 	 barrier->wait();
 
-	 if ( img->stopped() ) break;
+	 if ( ! img->aborted() )
+	 {
+	    // Do the looping, taking into account ui state
+	    // and return new frame and step.
+	    EndStatus end = handle_loop( frame, step, img, 
+					 uiMain, timeline, status );
+	 }
 
-	 // Do the looping, taking into account ui state
-	 // and return new frame and step.
-	 EndStatus end = handle_loop( frame, step, img, 
-				      uiMain, timeline, status );
-	 
 	 if ( img->stopped() ) break;
 	
       }
@@ -729,7 +754,7 @@ void decode_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT DECODE THREAD " << img->name() << " " << data << " frame " 
+   cerr << "EXIT DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
 	<< img->frame() << "  dts: " << img->dts() << endl;
 #endif
 

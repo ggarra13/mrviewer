@@ -467,8 +467,8 @@ namespace mrv {
 	      {
 	      case image_type::kITU_601_YCbCr420:
 	      case image_type::kITU_601_YCbCr420A:
-	      case image_type::kITU_702_YCbCr420:
-	      case image_type::kITU_702_YCbCr420A:
+	      case image_type::kITU_709_YCbCr420:
+	      case image_type::kITU_709_YCbCr420A:
 	      case image_type::kYByRy420:
 	      case image_type::kYByRy420A:
 		tw = (tw+1) / 2;
@@ -477,7 +477,7 @@ namespace mrv {
 		oh = (dh+1) / 2;
 		break;
 	      case image_type::kITU_601_YCbCr422:
-	      case image_type::kITU_702_YCbCr422:
+	      case image_type::kITU_709_YCbCr422:
 	      case image_type::kYByRy422:
 	      case image_type::kYByRy422A:
 		tw = (tw+1) / 2;
@@ -864,7 +864,7 @@ namespace mrv {
 	else if ( _shader == GLEngine::YCbCrShader() ||
 		  _shader == GLEngine::YCbCrAShader() )
 	  {
-	    if ( _format >= image_type::kITU_702_YCbCr420 )
+	    if ( _format >= image_type::kITU_709_YCbCr420 )
 	      {
 		// HDTV  YCbCr
 		_shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );

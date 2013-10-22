@@ -97,8 +97,6 @@ void load_new_files( void* s )
 	 mrv::LoadInfo info( filename, start, end );
 	 files.push_back( info );
       }
-      
-      std::cerr << "files " << files.size() << std::endl;
    }
 
    load_files( files, ui );

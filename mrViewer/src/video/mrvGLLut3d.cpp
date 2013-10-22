@@ -20,8 +20,8 @@
 #include <ImfVecAttribute.h>
 #include <ImfStandardAttributes.h>
 
-#include "SampleICC/IccProfile.h"
-#include "SampleICC/IccCmm.h"
+#include "IccProfile.h"
+#include "IccCmm.h"
 
 
 #include "ctlToLut.h"

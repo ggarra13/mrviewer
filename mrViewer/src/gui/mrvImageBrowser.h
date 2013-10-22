@@ -24,6 +24,7 @@
 namespace fltk
 {
   class Choice;
+  class Button;
 }
 
 namespace mrv
@@ -32,6 +33,11 @@ namespace mrv
   class Element;
   class ViewerUI;
   class Timeline;
+  class EDLGroup;
+  class ImageView;
+
+  void start_button_cb(fltk::Button* o, mrv::ViewerUI* v);
+  void end_button_cb(fltk::Button* o, mrv::ViewerUI* v);
 
   class ImageBrowser : public fltk::Browser
   {
@@ -54,6 +60,7 @@ namespace mrv
     mrv::Reel current_reel() const;
     mrv::Reel reel( const char* name );
     mrv::Reel reel( unsigned int idx );
+       mrv::Reel reel_at( unsigned int idx );
 
     mrv::media current_image();
 
@@ -89,9 +96,9 @@ namespace mrv
 
 
     mrv::media replace( const char* file, const char* root );
-    void remove( mrv::media& m );
+    void remove( mrv::media m );
 
-    void refresh( mrv::media& img );
+    void refresh( mrv::media img );
 
     void seek( const int64_t f );
 
@@ -120,6 +127,9 @@ namespace mrv
     void main( mrv::ViewerUI* m ) { uiMain = m; }
     mrv::ViewerUI* main() { return uiMain; }
 
+     public:
+       static mrv::Element* new_item(mrv::media& img);
+
   protected:
     void db_envvars( char*& login, std::string& shot_id );
 
@@ -134,9 +144,10 @@ namespace mrv
     int mousePush( int x, int y );
     int mouseRelease( int x, int y );
 
-    mrv::Element* new_item(mrv::media& img);
-
     mrv::Timeline* timeline();
+       mrv::EDLGroup* edl_group() const;
+
+       mrv::ImageView* view() const;
 
     unsigned       _reel;
     mrv::ReelList  _reels;
