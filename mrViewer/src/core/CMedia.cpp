@@ -136,6 +136,7 @@ CMedia::CMedia() :
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
   _playback( kStopped ),
+  _aborted( false ),
   _sequence( NULL ),
   _audio_pts( 0 ),
   _audio_clock( av_gettime() / 1000000.0 ),
@@ -201,6 +202,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
   _playback( kStopped ),
+  _aborted( false ),
   _sequence( NULL ),
   _context(NULL),
   _acontext(NULL),
@@ -1088,6 +1090,7 @@ void CMedia::play(const CMedia::Playback dir,
 
 
   _playback = dir;
+  _aborted = false;
 
   assert( uiMain != NULL );
   assert( _threads.size() == 0 );
@@ -1282,6 +1285,7 @@ bool CMedia::frame( const boost::int64_t f )
 
   fetch_audio( _dts );
 
+  _frame = _dts;
   _expected = _dts + 1;
 
   return true;
@@ -1641,7 +1645,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
 boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
 				   const boost::int64_t frame ) const
 {
-   assert( frame >= _frameStart );
+   assert( frame >= _frame_start );
+   assert( frame <= _frame_end );
    double p = (double)(frame - 1) / fps();
    if ( stream ) p /= av_q2d( stream->time_base );
    if ( p < 0 )  return AV_NOPTS_VALUE;
@@ -1651,15 +1656,25 @@ boost::uint64_t CMedia::frame2pts( const AVStream* stream,
 
 // Convert an FFMPEG pts into a frame number
 boost::int64_t CMedia::pts2frame( const AVStream* stream, 
-				  const boost::int64_t pts ) const
+				  const boost::int64_t dts ) const
 {
+   static boost::int64_t frame = 0;
+
+   boost::int64_t pts = dts;
+
+   if ( pts == MRV_NOPTS_VALUE ) {
+      if ( frame == _frame_end ) frame -= 1;
+      pts = frame2pts( stream, frame+1 );
+   }
+
+
   assert( pts != MRV_NOPTS_VALUE );
   if (!stream) return 0;
 
   double p = av_q2d( stream->time_base ) * pts;
-  return boost::int64_t( p * fps() + 0.5 ) + 1; 
+  frame = boost::int64_t( p * fps() + 0.5 ) + 1; 
   //  _frameStart; //is wrong
-
+  return frame;
 }
 
 
@@ -1878,8 +1893,8 @@ bool CMedia::find_image( const boost::int64_t frame )
 	if ( ! internal() )
 	{
 	   LOG_ERROR( file << _(" is missing.") );
+	   return false;
 	}
-	return false;
      }
   }
 

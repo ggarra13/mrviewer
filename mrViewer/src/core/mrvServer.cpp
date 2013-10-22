@@ -274,22 +274,16 @@ bool Parser::parse( const std::string& m )
    {
       float f;
       is >> f;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->gamma( f );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
       ok = true;
    }
    else if ( cmd == N_("Mask") )
    {
       float b;
       is >> b;
-      ParserList c = ui->uiView->_clients;
-      ui->uiView->_clients.clear();
       ui->uiView->masking( b );
       ui->uiView->redraw();
-      ui->uiView->_clients = c;
       ok = true;
    }
    else if ( cmd == N_("SafeAreas") )
@@ -579,6 +573,7 @@ bool Parser::parse( const std::string& m )
    {
       boost::int64_t f;
       is >> f;
+
       ui->uiView->seek( f );
 
       ok = true;

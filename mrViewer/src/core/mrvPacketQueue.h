@@ -101,7 +101,7 @@ namespace mrv {
     inline void push_back( AVPacket& pkt )
     {
       Mutex::scoped_lock lk( _mutex );
-      assert( pkt.dts != MRV_NOPTS_VALUE );
+      // assert( pkt.dts != MRV_NOPTS_VALUE );
 
       if ( av_dup_packet(&pkt) < 0 )
       {
@@ -306,7 +306,6 @@ namespace mrv {
 
     void loop_at_start(const int64_t frame)
     {
-      Mutex::scoped_lock lk( _mutex );
       _packets.push_back( _loop_start );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = frame;
@@ -314,7 +313,6 @@ namespace mrv {
 
     void loop_at_end(const int64_t frame)
     {
-      Mutex::scoped_lock lk( _mutex );
       _packets.push_back( _loop_end );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = frame;

@@ -24,7 +24,7 @@ FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 # FIND_PACKAGE( AO )    # for ao sound lib
 
-# ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS )
+# ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS  )
 ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS )
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -90,7 +90,7 @@ INCLUDE_DIRECTORIES(
 
 FLTK_WRAP_UI( mrViewer  
 #  gui/aviSave.fl
-#  gui/mrvEDLWindowUI.fl
+  gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl  
   gui/mrViewer.fl 
@@ -171,7 +171,7 @@ SET( SOURCES
   gui/mrvCollapsableGroup.cpp
   gui/mrvColorInfo.cpp
   gui/mrvDatabaseBrowser.cpp
-#  gui/mrvEDLGroup.cpp
+  gui/mrvEDLGroup.cpp
   gui/mrvFileRequester.cpp
   gui/mrvFLTKHandler.cpp
   gui/mrvHistogram.cpp
@@ -180,7 +180,7 @@ SET( SOURCES
   gui/mrvImageInformation.cpp
   gui/mrvIO.cpp
   gui/mrvLogDisplay.cpp
-#  gui/mrvMediaTrack.cpp
+  gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp

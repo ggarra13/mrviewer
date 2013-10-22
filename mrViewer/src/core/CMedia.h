@@ -342,7 +342,7 @@ namespace mrv {
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
 
-       size_t duration() const { return _frameEnd - _frameStart + 1; }
+    inline uint64_t duration() const { return _frameEnd - _frameStart + 1; }
 
        inline void avdiff( const double x ) { _avdiff = x; }
        inline double avdiff() const { return _avdiff; }
@@ -545,6 +545,9 @@ namespace mrv {
 
     /// VCR play (and cache frames if needed) sequence
     virtual void play( const Playback dir,  mrv::ViewerUI* const uiMain);
+
+       void abort(bool t) { _aborted = t; }
+       bool aborted() { return _aborted; }
 
     /// VCR stop sequence
     virtual void stop();
@@ -978,7 +981,7 @@ namespace mrv {
        unsigned int         _frame_offset;
 
     Playback       _playback;        //!< playback direction or stopped
-
+       bool        _aborted;
 
     thread_pool_t  _threads;         //!< any threads associated with process
 

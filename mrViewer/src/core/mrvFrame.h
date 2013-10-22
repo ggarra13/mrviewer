@@ -49,12 +49,12 @@ namespace mrv
       kITU_601_YCbCr444,
       kITU_601_YCbCr444A,
 
-      kITU_702_YCbCr420,
-      kITU_702_YCbCr420A, // @todo: not done
-      kITU_702_YCbCr422,
-      kITU_702_YCbCr422A, // @todo: not done
-      kITU_702_YCbCr444,
-      kITU_702_YCbCr444A, // @todo: not done
+      kITU_709_YCbCr420,
+      kITU_709_YCbCr420A, // @todo: not done
+      kITU_709_YCbCr422,
+      kITU_709_YCbCr422A, // @todo: not done
+      kITU_709_YCbCr444,
+      kITU_709_YCbCr444A, // @todo: not done
 
       kYByRy420,
       kYByRy420A, // @todo: not done

@@ -196,6 +196,34 @@ namespace mrv
     }
   }
 
+  static void change_first_frame_cb( fltk::IntInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    CMedia* img = dynamic_cast<CMedia*>( fg->image() );
+    if ( img )
+    {
+       img->first_frame( w->ivalue() );
+       view->redraw();
+    }
+  }
+
+  static void change_last_frame_cb( fltk::IntInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    CMedia* img = dynamic_cast<CMedia*>( fg->image() );
+    if ( img )
+    {
+       img->last_frame( w->ivalue() );
+       view->redraw();
+    }
+  }
+
   static void change_y_ripmap_cb( fltk::IntInput* w, void* d )
   {
     mrv::ImageView* view = (mrv::ImageView*) d;
@@ -322,8 +350,10 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
     if ( img->first_frame() != img->last_frame() )
       {
-	add_int64( _("First Frame"), img->first_frame() );
-	add_int64( _("Last Frame"), img->last_frame() );
+	 add_int( _("First Frame"), img->first_frame(), true,
+		  (fltk::Callback*)change_first_frame_cb, 1, 1000 );
+	 add_int( _("Last Frame"), img->last_frame(), true,
+		  (fltk::Callback*)change_last_frame_cb, 50, 1000 );
       }
 
     if ( img->start_frame() != img->first_frame() )
@@ -425,18 +455,18 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       case VideoFrame::kITU_601_YCbCr420A:
 	format = N_("ITU.601 YCbCr420 A"); break;
 
-      case VideoFrame::kITU_702_YCbCr444A:
-	format = N_("ITU.702 YCbCr444 A"); break;
-      case VideoFrame::kITU_702_YCbCr444:
-	format = N_("ITU.702 YCbCr444"); break;
-      case VideoFrame::kITU_702_YCbCr422A:
-	format = N_("ITU.702 YCbCr422 A"); break;
-      case VideoFrame::kITU_702_YCbCr422:
-	format = N_("ITU.702 YCbCr422"); break;
-      case VideoFrame::kITU_702_YCbCr420:
-	format = N_("ITU.702 YCbCr420"); break;
-      case VideoFrame::kITU_702_YCbCr420A:
-	format = N_("ITU.702 YCbCr420 A"); break;
+      case VideoFrame::kITU_709_YCbCr444A:
+	format = N_("ITU.709 YCbCr444 A"); break;
+      case VideoFrame::kITU_709_YCbCr444:
+	format = N_("ITU.709 YCbCr444"); break;
+      case VideoFrame::kITU_709_YCbCr422A:
+	format = N_("ITU.709 YCbCr422 A"); break;
+      case VideoFrame::kITU_709_YCbCr422:
+	format = N_("ITU.709 YCbCr422"); break;
+      case VideoFrame::kITU_709_YCbCr420:
+	format = N_("ITU.709 YCbCr420"); break;
+      case VideoFrame::kITU_709_YCbCr420A:
+	format = N_("ITU.709 YCbCr420 A"); break;
 
       case VideoFrame::kYByRy420:
 	format = N_("Y BY RY 420"); break;
@@ -1136,7 +1166,13 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
 	  slider->minimum( minV );
-	  slider->maximum( maxV );
+
+	  unsigned maxS = 100;
+	  if ( content > 100 ) maxS = 1000;
+	  else if ( content > 1000 ) maxS = 10000;
+	  else if ( content > 10000 ) maxS = 100000;
+	  else if ( content > 100000 ) maxS = 1000000;
+	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );
 	  slider->linesize(1);

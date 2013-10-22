@@ -50,6 +50,9 @@ namespace fs = boost::filesystem;
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvElement.h"
+#include "gui/mrvEDLGroup.h"
+#include "mrvEDLWindowUI.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 
 #if defined(WIN32) || defined(WIN64)
@@ -227,14 +230,10 @@ namespace {
 
 namespace mrv {
 
-  class Element : public fltk::Item
-  {
-  public:
-    Element( mrv::media& );
-  };
 
   Element::Element( mrv::media& m ) :
-    fltk::Item( m->image()->fileroot() )
+  fltk::Item( m->image()->fileroot() ),
+  _elem( m )
   {
     m->create_thumbnail();
     image( m->thumbnail() );
@@ -332,8 +331,8 @@ namespace mrv {
 	if ( (*i)->name == name ) {
 	   if ( _reel >= 0 )
 	   {
-	      if ( uiMain->uiView->playback() != ImageView::kStopped )
-		 uiMain->uiView->stop();
+	      if ( view()->playback() != ImageView::kStopped )
+		 view()->stop();
 	   }
 	   _reel = idx;
 	   change_reel();
@@ -358,7 +357,7 @@ namespace mrv {
 
     if ( _reel >= 0 )
     {
-       uiMain->uiView->stop();
+       view()->stop();
     }
 
     _reel = idx;
@@ -366,12 +365,21 @@ namespace mrv {
     return _reels[ idx ];
   }
 
+mrv::Reel ImageBrowser::reel_at( unsigned idx )
+{
+   size_t len = _reels.size();
+   if ( len == 0 ) return mrv::Reel();
+
+   if ( idx >= len ) return _reels[0];
+   return _reels[ idx ];
+}
+
   /** 
    * @return current image selected or NULL
    */
   mrv::media ImageBrowser::current_image()
   {
-     return uiMain->uiView->foreground();
+     return view()->foreground();
 
     // mrv::Reel reel = current_reel();
     // if ( reel == NULL ) return mrv::media();
@@ -387,7 +395,7 @@ namespace mrv {
    */
   const mrv::media ImageBrowser::current_image() const
   {
-     return uiMain->uiView->foreground();
+     return view()->foreground();
      
     // mrv::Reel reel = current_reel();
     // if ( reel == NULL ) return mrv::media();
@@ -432,6 +440,11 @@ namespace mrv {
     _reel = (unsigned int) _reels.size() - 1;
     _reel_display->add( name.c_str() );
     _reel_display->value( _reel );
+
+    if ( _reel > 0 )
+       uiMain->uiEDLWindow->uiEDLGroup->add_media_track( _reel );
+
+
     if ( ! _reels.empty() ) change_reel();
     return reel;
   }
@@ -473,16 +486,12 @@ namespace mrv {
     for ( ; i != e; ++i )
       {
 	const CMedia* img = (*i)->image();
+	fprintf( f, "%s %" PRId64 "-%" PRId64 "\n", img->fileroot(), 
+		 img->first_frame(), img->last_frame() );
 	if ( img->is_sequence() )
 	  {
-	    fprintf( f, "%s %" PRId64 "-%" PRId64 "\n", img->fileroot(), 
-		     img->first_frame(), img->last_frame() );
 	    if ( img->has_audio() )
 	       fprintf( f, "audio: %s\n", img->audio_file().c_str() );
-	  }
-	else
-	  {
-	    fprintf( f, "%s\n", img->fileroot() );
 	  }
       }
 
@@ -493,18 +502,31 @@ namespace mrv {
 
   }
 
+mrv::ImageView* ImageBrowser::view() const
+{
+   return uiMain->uiView;
+}
+
+mrv::EDLGroup* ImageBrowser::edl_group() const
+{
+   return uiMain->uiEDLWindow->uiEDLGroup;
+}
+
   /** 
    * Remove/Erase current reel
    * 
    */
   void ImageBrowser::remove_reel()
   {
-    if ( uiMain->uiView->playback() != ImageView::kStopped )
-       uiMain->uiView->stop();
+    if ( view()->playback() != ImageView::kStopped )
+       view()->stop();
 
     if ( _reels.empty() ) return;
     _reel_display->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
+
+    edl_group()->remove_media_track( _reel );
+
     if ( _reels.empty() ) new_reel();
     if ( _reel >= (unsigned int)_reels.size() ) 
       _reel = (unsigned int)_reels.size() - 1;
@@ -943,12 +965,19 @@ namespace mrv {
     const fltk::Image* thumb = m->thumbnail();
 
     std::string thumbnail;
-
+    int W, H;
     if ( thumb )
       {
+	W = thumb->width();
+	H = thumb->height();
 	thumbnail = db->binary( thumb->buffer(), 
-				thumb->width() * thumb->height() * 4 );
+				W * H * 4 );
       }
+    else
+    {
+       W = 0;
+       H = 0;
+    }
 
     char* buf = new char[ thumbnail.size() + 4096 ];
 
@@ -1018,7 +1047,7 @@ namespace mrv {
 	     layers.c_str(),
 	     fstop, img->gamma(),
 	     thumbnail.c_str(),
-	     thumb->width(), thumb->height()
+	     W, H
 	     );
     
     if (! db->sql( buf ) )
@@ -1100,6 +1129,8 @@ namespace mrv {
     if ( img->has_audio() )
       add_audio( m );
 
+    adjust_timeline();
+
     return m;
   }
 
@@ -1149,7 +1180,7 @@ namespace mrv {
    * 
    * @param img image to remove
    */
-  void ImageBrowser::remove( mrv::media& m )
+  void ImageBrowser::remove( mrv::media m )
   {
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
@@ -1163,20 +1194,23 @@ namespace mrv {
 	return;
       }
   
-    m->image()->stop();
+    view()->stop();
 
-    if ( uiMain->uiView->background() == m )
+    if ( view()->background() == m )
       {
-	uiMain->uiView->background( mrv::media() );
+	view()->background( mrv::media() );
       }
 
-    uiMain->uiView->foreground( mrv::media() );
-    if ( uiMain->uiView->background() == m ) 
-      uiMain->uiView->background( mrv::media() );
-
+    view()->foreground( mrv::media() );
+    if ( view()->background() == m ) 
+      view()->background( mrv::media() );
+    
+    // fltk::Browser::remove( i - reel->images.begin() );
     reel->images.erase( i );
 
-    // uiMain->uiView->send("sync_image" );
+    edl_group()->refresh();
+
+    view()->send("sync_image" );
   }
 
 
@@ -1272,6 +1306,8 @@ namespace mrv {
        clear_edl();
     }
 
+    edl_group()->redraw();
+
     change_image();
   }
 
@@ -1284,9 +1320,9 @@ namespace mrv {
     int sel = value();
     if ( sel < 0 ) 
       {
-	uiMain->uiView->foreground( mrv::media() );
-	uiMain->uiView->background( mrv::media() );
-	uiMain->uiView->redraw();
+	view()->foreground( mrv::media() );
+	view()->background( mrv::media() );
+	view()->redraw();
       }
     else
       {
@@ -1295,10 +1331,8 @@ namespace mrv {
 
 	assert( (unsigned)sel < reel->images.size() );
 
-	if ( uiMain->uiView->playback() != ImageView::kStopped )
-	   uiMain->uiView->stop();
 
-	mrv::media om = uiMain->uiView->foreground();
+	mrv::media om = view()->foreground();
 
 	int audio_idx = -1;
 	int sub_idx = -1;
@@ -1314,10 +1348,11 @@ namespace mrv {
 	mrv::media m = reel->images[sel];
 	assert( m != NULL );
 
+
 	if ( m != om )
 	{
 
-	   mrv::media bg = uiMain->uiView->background();
+	   mrv::media bg = view()->background();
 
 	   char bufs[256];
 
@@ -1335,7 +1370,7 @@ namespace mrv {
 
 	   uiMain->uiMain->copy_label( bufs );
 
-	   uiMain->uiView->foreground( m );
+	   view()->foreground( m );
 
 	   if ( timeline()->edl() )
 	   {
@@ -1345,23 +1380,22 @@ namespace mrv {
 	      if ( audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
 	   }
-	   else
-	   {
-	      adjust_timeline();
-	   }
+	  
+	   adjust_timeline();
+	   
 
 
 	   std::string buf;
 	   buf = "CurrentReel ";
 	   buf += reel->name;
-	   uiMain->uiView->send( buf );
+	   view()->send( buf );
 
 	   buf = "CurrentImage \"";
 	   buf += m->image()->directory();
 	   buf += "/";
 	   buf += m->image()->name();
 	   buf += "\"";
-	   uiMain->uiView->send( buf );
+	   view()->send( buf );
 	}
       }
   }
@@ -1379,11 +1413,8 @@ int ImageBrowser::value() const
 
   void ImageBrowser::change_image(unsigned i)
   { 
-     if ( value() != i )
-     {
-	value(i); 
-	change_image(); 
-     }
+     value(i); 
+     change_image(); 
   }
 
   /** 
@@ -1418,10 +1449,12 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) uiMain->uiFrame->value( start );
 
-    mrv::check_license_status();
-
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
-    if ( img == NULL ) return mrv::media();
+    if ( img == NULL ) 
+    {
+       LOG_ERROR("Unknown image media");
+       return mrv::media();
+    }
 
     {
        mrv::CMedia::Mutex& vpm = img->video_mutex();
@@ -1436,13 +1469,20 @@ int ImageBrowser::value() const
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
-    if ( img->is_sequence() )
+    if ( start != MRV_NOPTS_VALUE )
       {
 	img->first_frame( start );
+      }
+
+    if ( end != MRV_NOPTS_VALUE )
+      {
 	img->last_frame( end );
       }
 
     mrv::media m = this->add( img );
+
+    mrv::media_track* track = edl_group()->current_media_track();
+    if ( m ) track->add( m );
 
     adjust_timeline();
     return m;
@@ -1462,8 +1502,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
     unsigned  numImages = 0;
     if ( oldreel ) numImages = oldreel->images.size();
 
-    if ( uiMain->uiView->playback() != ImageView::kStopped )
-       uiMain->uiView->stop();
+    if ( view()->playback() != ImageView::kStopped )
+       view()->stop();
 
     fltk::Window* main = uiMain->uiMain;
 
@@ -1510,12 +1550,34 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	  }
 	else
 	  {
-	     mrv::media fg = load_image( load.filename.c_str(), 
-					 load.start, load.end );
-	     if (!fg) 
+	     mrv::media fg;
+
+	     if ( load.filename == "SMPTE NTSC Color Bars" )
 	     {
-		LOG_ERROR( _("Could not load '") << load.filename.c_str() 
-			   << N_("'") );
+		ntsc_color_bars_cb(NULL, this);
+	     }
+	     else if ( load.filename == "PAL Color Bars" )
+	     {
+		pal_color_bars_cb(NULL, this);
+	     }
+	     else if ( load.filename == "NTSC HDTV Color Bars" )
+	     {
+		ntsc_hdtv_color_bars_cb(NULL, this);
+	     }
+	     else if ( load.filename == "PAL HDTV Color Bars" )
+	     {
+		pal_hdtv_color_bars_cb(NULL, this);
+	     }
+	     else
+	     {
+
+		fg = load_image( load.filename.c_str(), 
+				 load.start, load.end );
+		if (!fg) 
+		{
+		   LOG_ERROR( _("Could not load '") << load.filename.c_str() 
+			      << N_("'") );
+		}
 	     }
 	     if ( load.audio != "" ) 
 	     {
@@ -1536,6 +1598,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     if ( !reel || reel->images.empty() ) return;
 
     mrv::media m = current_image();
+    if (!m) return;
 
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
@@ -1550,7 +1613,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
 	if ( !reel->edl )
 	  {
-	    mrv::media m = current_image();
 	    CMedia* img = m->image();
 	    int64_t offset = timeline()->offset( img );
 	    uiMain->uiFrame->value( offset + img->first_frame() );
@@ -1571,7 +1633,10 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	    CMedia* img = m->image();
 	    if ( reel->edl || 
 		 img->first_frame() != img->last_frame() )
-	      uiMain->uiView->play_forwards();
+	    {
+	       img->seek( img->first_frame() );
+	       view()->play_forwards();
+	    }
 	  }
       }
 }
@@ -1649,8 +1714,8 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::open()
   {
      stringArray files = mrv::open_image_file(NULL,true);
-    if (files.empty()) return;
-    load( files );
+     if (files.empty()) return;
+     load( files );
   }
 
   void ImageBrowser::open_single()
@@ -1752,8 +1817,8 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if (!reel) return;
 
-    if ( uiMain->uiView->playback() != ImageView::kStopped )
-       uiMain->uiView->stop();
+    if ( view()->playback() != ImageView::kStopped )
+       view()->stop();
 
     int sel = value();
     if ( sel < 0 ) return;
@@ -1815,13 +1880,13 @@ void ImageBrowser::load( const stringArray& files,
     int sel = value();
     if ( sel < 0 ) return;
 
-    if ( uiMain->uiView->background() == reel->images[sel] )
+    if ( view()->background() == reel->images[sel] )
     {
-       uiMain->uiView->background( mrv::media() );
+       view()->background( mrv::media() );
     }
     else
     {
-       uiMain->uiView->background( reel->images[sel] );
+       view()->background( reel->images[sel] );
     }
   }
 
@@ -1831,7 +1896,7 @@ void ImageBrowser::load( const stringArray& files,
    * 
    * @param img image to refresh
    */
-  void ImageBrowser::refresh( mrv::media& m )
+  void ImageBrowser::refresh( mrv::media m )
   {
     if ( ! m ) return;
 
@@ -1849,8 +1914,8 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    if ( uiMain->uiView->playback() != ImageView::kStopped )
-       uiMain->uiView->stop();
+    if ( view()->playback() != ImageView::kStopped )
+       view()->stop();
 
     unsigned sel = value() + 1;
     if ( sel == 0 ) return;
@@ -1882,12 +1947,16 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    if ( uiMain->uiView->playback() != ImageView::kStopped )
-       uiMain->uiView->stop();
+    if ( view()->playback() != ImageView::kStopped )
+       view()->stop();
 
     int sel = value() - 1;
     if ( sel < -1 ) return;
-    if ( sel < 0 ) sel = (int)reel->images.size() - 1;
+
+    int size = (int) reel->images.size() - 1;
+    if ( size == -1 ) return;
+
+    if ( sel < 0 ) sel = size;
 
     value(sel);
     change_image();
@@ -1918,11 +1987,12 @@ void ImageBrowser::load( const stringArray& files,
 
     int ok = fltk::Browser::handle( fltk::PUSH );
 
-    if ( uiMain->uiView->playback() != ImageView::kStopped )
-       uiMain->uiView->stop();
+    if ( view()->playback() != ImageView::kStopped )
+       view()->stop();
 
     int button = fltk::event_button();
     int sel = value();
+
     if ( button == 1 )
       {
 	int clicks = fltk::event_clicks();
@@ -1936,7 +2006,7 @@ void ImageBrowser::load( const stringArray& files,
 	      {
 		fltk::event_clicks(0);
 		uiMain->uiImageInfo->uiMain->show();
-		uiMain->uiView->update_image_info();
+		view()->update_image_info();
 		return ok;
 	      }
 
@@ -2011,7 +2081,7 @@ void ImageBrowser::load( const stringArray& files,
 
 	    menu.add( _("Image/Set as Background"), 0, 
 		     (fltk::Callback*)set_as_background_cb, 
-		     (void*) uiMain->uiView );
+		     (void*) view() );
 
 	    if ( valid )
 	      {
@@ -2165,6 +2235,28 @@ void ImageBrowser::load( const stringArray& files,
 
     reel->images.insert( reel->images.begin() + sel, m );
 
+    //
+    // Adjust timeline position
+    //
+    MediaList::iterator i = reel->images.begin();
+    MediaList::iterator j;
+    MediaList::iterator end = reel->images.end();
+
+
+    (*i)->position( 1 );
+
+    for ( j = i, ++i; i != end; j = i, ++i )
+    {
+       int64_t frame = (*j)->position() + (*j)->image()->duration();
+       (*i)->position( frame );
+    }
+
+
+    //
+    // Redraw EDL window
+    //
+    uiMain->uiEDLWindow->uiEDLGroup->redraw();
+
     if ( timeline()->edl() )
       {
 	int64_t t = timeline()->offset( img );
@@ -2232,12 +2324,9 @@ void ImageBrowser::load( const stringArray& files,
     timeline()->value( tframe );
     timeline()->redraw();
 
-
-    mrv::ImageView* view = uiMain->uiView;
-
     if ( timeline()->edl() )
       {
-	ImageView::Playback playback = view->playback();
+	 ImageView::Playback playback = view()->playback();
 
 	// Check if we need to change to a new sequence based on frame
 	 mrv::media m = timeline()->media_at( tframe );
@@ -2256,24 +2345,29 @@ void ImageBrowser::load( const stringArray& files,
 	  }
 
 
-	if ( m != view->foreground() )
+	if ( m != view()->foreground() )
 	  {
 	     if ( playback != ImageView::kStopped )
-		view->stop();
+	     	view()->stop();
 
 	     unsigned int i = timeline()->index( f );
+
 	     f = timeline()->global_to_local( f );
+	     img->abort( true );
 	     img->seek( f );
+
 	     change_image(i);
+
 	     if ( playback != ImageView::kStopped )
 	     {
-	       view->play( (CMedia::Playback)playback);
+		view()->play( (CMedia::Playback)playback);
 	     }
 
 	  }
 	else
 	  {
 	     f = timeline()->global_to_local( f );
+	     img->abort( true );
 	     img->stop();
 	     img->seek( f );
 	     if ( playback != ImageView::kStopped )
@@ -2287,22 +2381,24 @@ void ImageBrowser::load( const stringArray& files,
 	mrv::Reel reel = current_reel();
 	if (!reel) return;
  
-	mrv::media fg = view->foreground();
+	mrv::media fg = view()->foreground();
 	if (!fg) return;
 	
 	CMedia* img = fg->image();
+	img->abort( true );
 	img->seek( f );
       }
 
 
 
-    if ( view->playback() != ImageView::kStopped ) return;
+    if ( view()->playback() != ImageView::kStopped )  return;
+    
 
     //
     // If stopped, play the audio sample for the frame of both
     // the fg and bg images.
     //
-    mrv::media fg = view->foreground();
+    mrv::media fg = view()->foreground();
     if ( fg )
       {
 	CMedia* img = fg->image();
@@ -2324,7 +2420,7 @@ void ImageBrowser::load( const stringArray& files,
 	  }
       }
 
-    mrv::media bg = view->background();
+    mrv::media bg = view()->background();
     if ( bg )
       {
 	CMedia* img = bg->image();
@@ -2346,7 +2442,7 @@ void ImageBrowser::load( const stringArray& files,
 	  }
       }
 
-    view->redraw();
+    view()->redraw();
     redraw();
 
   }
@@ -2380,11 +2476,12 @@ void ImageBrowser::load( const stringArray& files,
 
     uiMain->uiFrame->value( frame );
     timeline()->value( double(frame) );
+
     adjust_timeline();
 
     char buf[64];
     sprintf( buf, "EDL 0" );
-    uiMain->uiView->send( buf );
+    view()->send( buf );
   }
 
   void ImageBrowser::set_edl()
@@ -2406,7 +2503,7 @@ void ImageBrowser::load( const stringArray& files,
 
     char buf[64];
     sprintf( buf, "EDL 1" );
-    uiMain->uiView->send( buf );
+    view()->send( buf );
 
   }
 
@@ -2455,16 +2552,9 @@ void ImageBrowser::load( const stringArray& files,
 	if (frame > last ) frame = last;
 	if (frame < first ) frame = first;
 
-	bool pushed = first > img->start_frame();
-	uiMain->uiStartButton->value( pushed );
-
-	pushed = last < img->end_frame();
-	uiMain->uiEndButton->value( pushed );
       }
     else
       {
-	uiMain->uiStartButton->value( false );
-	uiMain->uiEndButton->value( false );
 
 	mrv::Reel reel = current_reel();
 	if ( !reel || reel->images.empty() ) return;
@@ -2475,14 +2565,13 @@ void ImageBrowser::load( const stringArray& files,
 	if (! m ) return;
 
 	CMedia* img = m->image();
-	frame = timeline()->offset( img ) + img->frame();
+	frame = timeline()->offset( img ) + img->frame() - img->first_frame();
 
 	m = reel->images.back();
 	if (! m ) return;
 
 	img = m->image();
-	last  = ( timeline()->offset( img ) + 
-		  img->last_frame() - img->first_frame() + 1 );
+	last  = timeline()->offset( img ) + img->duration();
 
       }
 
@@ -2500,25 +2589,6 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::draw()
   {
     fltk::Browser::draw();
-
-    mrv::Reel reel = current_reel();
-    if (!reel) return;
-
-    mrv::MediaList::iterator i = reel->images.begin();
-    mrv::MediaList::iterator e = reel->images.end();
-    int h = 0;
-    for ( ; i != e; ++i, ++h )
-      {
-	 Element* elem = (Element*) child( h );
-	mrv::media& m = *i;
-	CMedia* img = m->image();
-	if ( img->image_damage() & CMedia::kDamageThumbnail )
-	  {
-	    m->create_thumbnail();
-	    m->thumbnail()->draw(0, elem->y() );
-	  }
-      }
-
 
     if ( dragging )
       {

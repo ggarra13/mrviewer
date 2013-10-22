@@ -81,12 +81,16 @@ Timeline::~Timeline()
 	uint64_t total = 0;
 
 	const mrv::Reel& reel = browser()->current_reel();
+	if ( !reel ) return;
+
 	mrv::MediaList::const_iterator i = reel->images.begin();
 	mrv::MediaList::const_iterator e = reel->images.end();
 
 	for ( ; i != e; ++i )
 	  {
 	    CMedia* img = (*i)->image();
+	    if ( (*i)->position() == MRV_NOPTS_VALUE )
+	       (*i)->position( total );
 	    total += img->duration();
 	  }
 
@@ -288,6 +292,8 @@ Timeline::~Timeline()
       {
 
 	const mrv::Reel& reel = browser()->current_reel();
+	if ( !reel ) return;
+
 	mrv::MediaList::const_iterator i = reel->images.begin();
 	mrv::MediaList::const_iterator e = reel->images.end();
 
@@ -302,11 +308,12 @@ Timeline::~Timeline()
 
 	for ( ; i != e; frame += size, ++i )
 	  {
-	    CMedia* img = (*i)->image();
-	    size = img->duration();
+	     int64_t pos = (*i)->position();
+	     CMedia* img = (*i)->image();
+	     size = img->duration();
 
 	    // skip this block if outside visible timeline span
-	    if ( frame + size < mn || frame > mx ) continue;
+	     if ( frame + size < mn || frame > mx ) continue;
 
 	    int  dx = slider_position( frame,      ww );
 	    int end = slider_position( frame+size, ww );
@@ -365,8 +372,8 @@ Timeline::~Timeline()
   {
     if ( !img ) return 0;
 
-    const mrv::Reel& reel = browser()->current_reel();
-    assert( reel );
+    mrv::Reel reel = browser()->current_reel();
+    if (!reel) return 0;
 
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
@@ -377,8 +384,7 @@ Timeline::~Timeline()
 	CMedia* timg = (*i)->image();
 	assert( timg != NULL );
 
-	uint64_t size = timg->last_frame() - timg->first_frame() + 1;
-	t += size;
+	t += timg->duration();
       }
     return t;
   }
@@ -393,6 +399,8 @@ Timeline::~Timeline()
   size_t Timeline::index( const int64_t f ) const
   {
     const mrv::Reel& reel = browser()->current_reel();
+    if (!reel) return 0;
+
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
 
@@ -412,7 +420,7 @@ Timeline::~Timeline()
     for ( ; i != e; ++i, ++r )
       {
 	CMedia* img = (*i)->image();
-	uint64_t size = img->last_frame() - img->first_frame() + 1;
+	uint64_t size = img->duration();
 	t += size;
 	if ( t > f ) break;
       }
@@ -429,7 +437,7 @@ Timeline::~Timeline()
    */
   mrv::media Timeline::media_at( const int64_t f ) const
   {
-    const mrv::Reel& reel = browser()->current_reel();
+    mrv::Reel reel = browser()->current_reel();
     if (!reel) return mrv::media();
 
     mrv::MediaList::const_iterator i = reel->images.begin();
@@ -451,9 +459,8 @@ Timeline::~Timeline()
     for ( ; i != e; ++i, ++r )
       {
 	CMedia* img = (*i)->image();
-	uint64_t size = img->last_frame() - img->first_frame() + 1;
-	t += size;
-	if ( t > f ) break;
+	t += img->duration();
+ 	if ( t > f ) break;
       }
     if ( r >= reel->images.size() ) return mrv::media();
 
@@ -476,8 +483,8 @@ Timeline::~Timeline()
 int64_t Timeline::global_to_local( const int64_t frame ) const
   {
 
-    const mrv::Reel& reel = browser()->current_reel();
-    assert( reel );
+    mrv::Reel reel = browser()->current_reel();
+    if (!reel) return 0;
 
     mrv::MediaList::const_iterator i = reel->images.begin();
     mrv::MediaList::const_iterator e = reel->images.end();
@@ -489,7 +496,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
 	CMedia* img = (*i)->image();
 	assert( img != NULL );
 
-	uint64_t size = img->last_frame() - img->first_frame() + 1;
+	uint64_t size = img->duration();
 	if ( boost::uint64_t(frame) > t && t+size < boost::uint64_t(frame) )
 	   t += size;
 	else if ( boost::uint64_t(frame) >= t )

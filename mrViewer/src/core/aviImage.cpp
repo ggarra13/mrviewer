@@ -298,11 +298,14 @@ void aviImage::open_video_codec()
 
 
 
-  double image_ratio = (double) width() / (double)height();
-  if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
+  if ( width() > 0 && height() > 0 )
+  {
+     double image_ratio = (double) width() / (double)height();
+     if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
-  if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
-  else _pixel_ratio = aspect_ratio / image_ratio;
+     if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
+     else _pixel_ratio = aspect_ratio / image_ratio;
+  }
 
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);
@@ -683,7 +686,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 CMedia::DecodeStatus
 aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 {
-  boost::int64_t ptsframe;
+  boost::int64_t ptsframe = frame;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status == kDecodeError )
@@ -753,6 +756,13 @@ void aviImage::limit_video_store(const boost::int64_t frame)
 
   if ( _images.empty() ) return;
 
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
+
   // std::cerr << frame << "  limit " << first << "-" << last << std::endl;
   // std::cerr << (*_images.begin())->frame() << " ... "
   // 	    << (*(_images.end()-1))->frame() << std::endl;
@@ -799,6 +809,13 @@ void aviImage::limit_subtitle_store(const boost::int64_t frame)
       if ( last  > last_frame() )   last = last_frame();
       break;
     }
+
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
 
   subtitle_cache_t::iterator end = _subtitles.end();
   _subtitles.erase( std::remove_if( _subtitles.begin(), end,
@@ -1043,25 +1060,25 @@ void aviImage::video_stream( int x )
       _pix_fmt = VideoFrame::kRGBA; break;
     case PIX_FMT_YUV444P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr444; 
+	_pix_fmt = VideoFrame::kITU_709_YCbCr444; 
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr444; 
       break;
     case PIX_FMT_YUV422P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr422;
+	_pix_fmt = VideoFrame::kITU_709_YCbCr422;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr422;
       break;
     case PIX_FMT_YUV420P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr420;
+	_pix_fmt = VideoFrame::kITU_709_YCbCr420;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420;
       break;
     case PIX_FMT_YUVA420P:
       if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_702_YCbCr420A;
+	_pix_fmt = VideoFrame::kITU_709_YCbCr420A;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420A;
       break;
@@ -2062,8 +2079,9 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
 int64_t aviImage::wait_image()
 {
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+
+   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
+   SCOPED_LOCK( vpm );
 
   for(;;)
     {
@@ -2351,6 +2369,7 @@ void aviImage::do_seek()
 
   // Seeking done, turn flag off
   _seek_req = false;
+  _aborted = false;
 
   if ( stopped() )
     {
@@ -2360,15 +2379,18 @@ void aviImage::do_seek()
        {
 	  status = decode_audio( _seek_frame );
 	  if ( status != kDecodeOK )
-	     IMG_ERROR( "Decode audio error " << _seek_frame 
+	     IMG_ERROR( "Decode audio error seek frame " 
+			<< _seek_frame 
 			<< " status: " << status );
+	  find_audio( _seek_frame );
        }
        
        if ( has_video() && !got_video )
        {
 	  status = decode_video( _seek_frame );
 	  if ( status != kDecodeOK )
-	     IMG_ERROR( "Decode video error frame " << _seek_frame 
+	     IMG_ERROR( "Decode video error seek frame " 
+			<< _seek_frame 
 			<< " status: " << status );
 
 	  find_image( _seek_frame );
@@ -2838,6 +2860,7 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 void aviImage::loop_at_start( const boost::int64_t frame )
 {
 
+
   if ( has_video() || is_sequence() )
     {
       _video_packets.loop_at_start( frame );
@@ -2846,9 +2869,11 @@ void aviImage::loop_at_start( const boost::int64_t frame )
 
   if ( has_audio() )
     {
-      _audio_packets.loop_at_start( frame );
-      _audio_packets.cond().notify_one();
+     
+       _audio_packets.loop_at_start( frame );
+       _audio_packets.cond().notify_one();
     }
+
 
   if ( has_subtitle()  )
     {

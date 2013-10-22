@@ -187,7 +187,7 @@ void CMedia::open_audio_codec()
   else
     {
       if ( !_audio_buf ) {
-	_audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 10;
+	_audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 12;
 	_audio_buf = new aligned16_uint8_t[ _audio_max ];
 	assert( (((unsigned long)_audio_buf) % 16) == 0 );
 	memset( _audio_buf, 0, _audio_max );
@@ -682,6 +682,13 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
       break;
     }
   
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
+
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
 				NotInRangeFunctor( first, last ) ), end );
@@ -743,7 +750,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 {   
    AVFrame frame = { { 0 } };
    int ret, got_frame = 0;
-   
 
     ret = avcodec_decode_audio4(ctx, &frame, &got_frame, avpkt);
 
@@ -839,6 +845,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	      }
 	   }
 	   
+	   assert( samples != NULL );
+	   assert( frame.extended_data != NULL );
+	   assert( frame.extended_data[0] != NULL );
 
 
 	   int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
@@ -955,7 +964,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
        // Decode the audio into the buffer
        assert( _audio_buf_used + pkt_temp.size <= _audio_max );
        assert( pkt_temp.data != NULL );
-       assert( _audio_buf_used % 16 == 0 );
+       // assert( _audio_buf_used % 16 == 0 );
        assert( audio_size > 0 );
        int ret = decode_audio3( ctx, 
 				( int16_t * )( (char*)_audio_buf + 
@@ -1071,16 +1080,16 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       ++last;
     }
   
-#ifdef DEBUG
-  if ( got_audio != kDecodeOK )
-    {
-      IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
-		   << _(" last ") << last
-		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
-		   << _(" need ") 
-		   << audio_bytes_per_frame() );
-    }
-#endif
+// #ifdef DEBUG
+//   if ( got_audio != kDecodeOK )
+//     {
+//       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
+// 		   << _(" last ") << last
+// 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
+// 		   << _(" need ") 
+// 		   << audio_bytes_per_frame() );
+//     }
+// #endif
 
 
   if (_audio_buf_used > 0  )
@@ -1455,11 +1464,11 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   {
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
     debug_audio_packets(frame, "FIND");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
     debug_audio_stores(frame, "FIND");
 #endif
 
@@ -1527,11 +1536,11 @@ CMedia::DecodeStatus
 CMedia::handle_audio_packet_seek( boost::int64_t& frame, 
 				  const bool is_seek )
 {
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DOSEEK");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DOSEEK");
 #endif
 
@@ -1576,11 +1585,11 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   if ( _audio_packets.empty() ) return got_audio;
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DOSEEK END");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DOSEEK END");
 #endif
 
@@ -1708,11 +1717,11 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 
     }
 
-#ifdef DEBUG_PACKETS
+#ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DECODE END");
 #endif
 
-#ifdef DEBUG_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DECODE END");
 #endif
 
@@ -1747,7 +1756,10 @@ void CMedia::do_seek()
   
      if ( has_audio() )
      {
-	decode_audio( _seek_frame );
+	DecodeStatus status = decode_audio( _seek_frame );
+	if ( status != kDecodeOK )
+	   LOG_ERROR("Decode audio failed for seek frame " 
+		     << _seek_frame );
 	find_audio( _seek_frame );
      }
   }
