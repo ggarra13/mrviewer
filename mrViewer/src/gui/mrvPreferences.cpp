@@ -317,11 +317,14 @@ namespace mrv {
     {
        fltk::Preferences win( ui, "window" );
        
+       win.get( "auto_fit_image", tmp, 0 );
+       uiPrefs->uiPrefsAutoFitImage->value( tmp );
+
        win.get( "always_on_top", tmp, 0 );
        uiPrefs->uiPrefsAlwaysOnTop->value( tmp );
     
        win.get( "open_mode", tmp, 0 ); 
-    
+
        {
 	  fltk::RadioButton* r;
 	  for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
@@ -904,6 +907,7 @@ namespace mrv {
     //
     {
        fltk::Preferences win( ui, "window" );
+       win.set( "auto_fit_image", (int) uiPrefs->uiPrefsAutoFitImage->value() );
        win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
        int tmp = 0;
        for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {

@@ -383,7 +383,7 @@ namespace mrv {
 
     void damage_contents();
 
-    void leftMouseDown(int,int);
+    int  leftMouseDown(int,int);
     void leftMouseUp(int,int);
     void mouseDrag(int,int);
     void mouseMove(int,int);

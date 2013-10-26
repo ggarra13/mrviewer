@@ -6,17 +6,22 @@
 #include <fltk/Color.h>
 #include <fltk/Window.h>
 
+#include "mrViewer.h"
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvEDLGroup.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvImageBrowser.h"
+#include "mrvEDLWindowUI.h"
 
 namespace mrv {
 
+static int kTrackHeight = 68;
+
+
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
 fltk::Group(x,y,w,h),
-_current_media_track( 0 ),
+_drag( NULL ),
 _dragX( 0 ),
 _dragY( 0 )
 {
@@ -27,12 +32,9 @@ EDLGroup::~EDLGroup()
    _audio_track.clear();
 }
 
-void EDLGroup::current_media_track( size_t i )
-{
-   if ( i >= children() )
-      throw("Invalid index to current_media_track");
-   _current_media_track = i;
-   redraw();
+ImageBrowser* EDLGroup::browser() const
+{ 
+   return uiMain->uiReelWindow->uiBrowser; 
 }
 
 // Add a media track and return its index
@@ -40,17 +42,35 @@ size_t EDLGroup::add_media_track( size_t r )
 {
    size_t e = children();
 
-   mrv::media_track* o = new mrv::media_track(x(), y() +
-					      70 * e,
-					      w(), 68);
+   mrv::Reel reel = browser()->reel( r );
+   if (! reel ) return 0;
+
+   mrv::media_track* o = new mrv::media_track(x(), y() + 70 * e,
+					      w(), kTrackHeight);
  
    o->main( timeline()->main() );
-   o->index( r );
+   o->reel( r );
 
    this->add( o );
 
+   main()->uiEDLWindow->uiEDLChoiceOne->clear();
+   main()->uiEDLWindow->uiEDLChoiceTwo->clear();
+
+   int reels = browser()->number_of_reels();
+   for ( int i = 0; i < reels; ++i )
+   {
+      mrv::Reel track = browser()->reel( i );
+      main()->uiEDLWindow->uiEDLChoiceOne->add( track->name.c_str() );
+      main()->uiEDLWindow->uiEDLChoiceTwo->add( track->name.c_str() );
+   }
+
+   if ( e == 0 )
+      main()->uiEDLWindow->uiEDLChoiceOne->value( r );
+   else
+      main()->uiEDLWindow->uiEDLChoiceTwo->value( r );
+      
+
    e = children() - 1;
-   _current_media_track = e;
    
    return e;
 }
@@ -93,14 +113,26 @@ void EDLGroup::remove_audio_track( int i )
    _audio_track.erase( _audio_track.begin() + i );
 }
 
-void EDLGroup::layout()
+
+void EDLGroup::pan( int diff )
 {
-   fltk::Group::layout();
+
+   mrv::Timeline* t = timeline();  
+ 
+   double amt = diff / (double) t->w();
+   double avg = t->maximum() - t->minimum() + 1;
+   amt *= avg;
+   
+   t->minimum( t->minimum() - amt );
+   t->maximum( t->maximum() - amt );
+   t->redraw();
+   redraw();
+   
+   _dragX = fltk::event_x();
 }
 
 int EDLGroup::handle( int event )
 {
-
    switch( event )
    {
       case fltk::PUSH:
@@ -115,20 +147,40 @@ int EDLGroup::handle( int event )
 	    {
 	       _dragX = fltk::event_x();
 	       _dragY = fltk::event_y();
+
+	       int idx = _dragY / kTrackHeight;
+	       if ( idx < 0 || idx >= children() ) {
+		  return 0;
+	       }
+	       _dragChild = idx;
+
+	       mrv::Timeline* t = timeline();
+	       int ww = t->w();
+	       double len = (t->maximum() - t->minimum() + 1);
+	       double p = double(_dragX) / double(ww);
+	       p = t->minimum() + p * len + 0.5f;
+
+	       mrv::media_track* track = (mrv::media_track*) child(idx);
+	       mrv::media m = track->media_at( p );
+	       if ( m )
+	       {
+		  _drag = ImageBrowser::new_item( m ); 
+		  return 1;
+	       }
 	    }
 
-	    int ok = fltk::Group::handle( event );
-	    if ( ok ) return ok;
-
-	    // if ( fltk::event_key() == fltk::LeftButton )
-	    // {
-	    //    mrv::media_track* t = (mrv::media_track*) child(0);
-	    //    mrv::media m = t->media_at(1);
-	    //    mrv::Element* e = ImageBrowser::new_item( m ); 
-	    //    media_track::selected( e );
-	    //    return 1;
-	    // }
+	    for ( int i = 0; i < children(); ++i )
+	    {
+	       fltk::Widget* c = this->child(i);
+	       if (fltk::event_x() < c->x()) continue;
+	       if (fltk::event_x() >= c->x()+c->w()) continue;
+	       if (fltk::event_y() < c->y() - y() ) continue;
+	       if (fltk::event_y() >= c->y() - y() +c->h()) continue;
+	       
+	       if ( c->send( event ) ) return 1;
+	    }
 	    return 0;
+	    // return fltk::Group::handle( event );
 	    break;
 	 }
       case fltk::ENTER:
@@ -142,7 +194,25 @@ int EDLGroup::handle( int event )
       case fltk::KEY:
 	 {
 	    int key = fltk::event_key();
-	    
+	
+	    if ( key == fltk::DeleteKey )
+	    {
+	       size_t i = 0;
+	       size_t e = children();
+
+	       for ( ; i != e; ++i )
+	       {
+		  mrv::media_track* o = (mrv::media_track*)child(i);
+		  mrv::Element* elem = o->selected();
+		  if ( elem )
+		  {
+		     mrv::media m = elem->element();
+		     browser()->remove( m );
+		     return 1;
+		  }
+	       }
+	       return 0;
+	    }
 
 	    if ( key == 'f' || key == 'a' )
 	    {
@@ -156,10 +226,10 @@ int EDLGroup::handle( int event )
 	       {
 
 		  mrv::media_track* o = (mrv::media_track*)child(i);
-		  mrv::Element* e = o->selected();
-		  if ( e && key != 'a')
+		  mrv::Element* elem = o->selected();
+		  if ( elem && key != 'a')
 		  {
-		     mrv::media m = e->element();
+		     mrv::media m = elem->element();
 		     int64_t tmi = m->position();
 		     int64_t tma = m->position() + m->image()->duration();
 		     if ( tmi < tmin ) tmin = tmi;
@@ -195,30 +265,108 @@ int EDLGroup::handle( int event )
 	  }
 	return 1;
 	break;
-      case fltk::DRAG:
+      case fltk::RELEASE:
 	 if ( fltk::event_key() == fltk::LeftButton )
 	 {
 	    _dragX = fltk::event_x();
 	    _dragY = fltk::event_y();
 
-	    parent()->redraw();
-	 }
-	 else if ( fltk::event_key() == fltk::MiddleButton )
-	 {
-	    int diff = ( fltk::event_x() - _dragX );
-	    double amt = diff / (double) w();
+	    int idx = _dragY / kTrackHeight;
+	    if ( idx >= children() ) {
+	       delete _drag;
+	       _drag = NULL;
+	       return 1;
+	    }
+
+
+	    mrv::media_track* t1 = (mrv::media_track*)child( _dragChild );
+	    mrv::media_track* t2 = (mrv::media_track*)child( idx );
+
 	    mrv::Timeline* t = timeline();
-	    double avg = t->maximum() - t->minimum() + 1;
-	    amt *= avg;
+	    
+	    int ww = t->w();
+	    double len = (t->maximum() - t->minimum() + 1);
+	    double p = double(_dragX) / double(ww);
+	    p = t->minimum() + p * len + 0.5f;
 
-	    t->minimum( t->minimum() - amt );
-	    t->maximum( t->maximum() - amt );
-	    t->redraw();
+
+	    mrv::media m = _drag->element();
+	    if ( t1 == t2 )
+	    {
+	       if ( p < m->position() )
+	       {
+		  t1->remove( m );
+		  t1->insert( p, m );
+		  t1->refresh();
+	       }
+	       else
+	       {
+		  t1->insert( p, m );
+		  t1->remove( m );
+		  t1->refresh();
+	       }
+	    }
+	    else
+	    {
+	       t2->insert( p, m );
+	       t1->remove( m );
+	    }
+
+	    delete _drag;
+	    _drag = NULL;
 	    redraw();
-
-	    _dragX = fltk::event_x();
 	    return 1;
 	 }
+	 break;
+      case fltk::TIMEOUT:
+	 {
+	    int X = fltk::event_x();
+	    if ( X >= w()-64 ) {
+	       pan(-2);
+	       repeat_timeout( 0.1 );
+	    }
+	    else if ( X <= 64 )
+	    {
+	       pan(2);
+	       repeat_timeout( 0.1 );
+	    }
+	    redraw();
+	    return 1;
+	 }
+      case fltk::DRAG:
+	 {
+	    int diff = ( fltk::event_x() - _dragX );
+
+	    if ( fltk::event_key() == fltk::LeftButton )
+	    {
+	       int X = fltk::event_x();
+	       _dragY = fltk::event_y();
+	       if ( _dragY < 32 ) _dragY = 32;
+
+
+	       if ( X >= w()-64 ) {
+		  pan(diff * -2);
+		  add_timeout( 0.1 );
+	       }
+	       else if ( X <= 64 )
+	       {
+		  pan(diff * 2);
+		  add_timeout( 0.1 );
+	       }
+	       else {
+		  _dragX = X;
+	       }
+
+	       redraw();
+	       return 1;
+	    }
+	    else if ( fltk::event_key() == fltk::MiddleButton )
+	    {
+	       pan(diff * 2);
+	       return 1;
+	    }
+	 } 
+	 break;
       default:
 	 break;
    }
@@ -284,17 +432,17 @@ void EDLGroup::draw()
 
    fltk::Group::draw();
 
-   // mrv::Element* e = mrv::media_track::selected();
-   // if ( e )
-   // {
-   //    fltk::push_matrix();
-   //    fltk::translate( _dragX, _dragY );
-   //    e->draw();
+ 
+   if ( _drag )
+   {
+      fltk::push_matrix();
+      fltk::translate( _dragX, _dragY );
+      _drag->draw();
    //    int ww, hh;
    //    fltk::measure( e->label(), ww, hh );
    //    fltk::drawtext( e->label(), 0, 0 );
    //    fltk::pop_matrix();
-   // }
+   }
 }
 
 } // namespace mrv

@@ -26,6 +26,8 @@ namespace mrv {
     ~MainWindow();
     
     void main( ViewerUI* m ) { uiMain = m; };
+
+       virtual void layout();
     
     virtual int handle( int event );
     

@@ -395,6 +395,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     }
   else if ( idx == kEDLEdit )
   {
+     uiMain->uiReelWindow->uiBrowser->set_edl();
      uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
      uiMain->uiEDLWindow->uiMain->show();
   }
@@ -1514,7 +1515,7 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
  * @param x fltk::event_x() coordinate
  * @param y fltk::event_y() coordinate
  */
-void ImageView::leftMouseDown(int x, int y)	
+int ImageView::leftMouseDown(int x, int y)	
 {
    lastX = x;
    lastY = y;
@@ -1531,7 +1532,7 @@ void ImageView::leftMouseDown(int x, int y)
 	 flags  = kMouseDown;
 	 flags |= kMouseMove;
 	 flags |= kMouseMiddle;
-	 return;
+	 return 1;
       }
 
       flags |= kMouseLeft;
@@ -1545,13 +1546,13 @@ void ImageView::leftMouseDown(int x, int y)
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
 
 	 mrv::media fg = foreground();
-	 if ( !fg ) return;
+	 if ( !fg ) return 0;
 
 	 CMedia* img = fg->image();
 	 CMedia::Mutex& m = img->video_mutex();
 	 SCOPED_LOCK( m );
 	 mrv::image_type_ptr pic = img->hires();
-	 if ( !pic ) return;
+	 if ( !pic ) return 0;
 
 	 double xf = x;
 	 double yf = y;
@@ -1607,6 +1608,7 @@ void ImageView::leftMouseDown(int x, int y)
 // 	  fltk::event_clicks(0);
 // 	}
       redraw();
+      return 1;
     }
 
   else if ( button == 2 )
@@ -1614,6 +1616,7 @@ void ImageView::leftMouseDown(int x, int y)
        // handle MMB moves
        flags |= kMouseMove;
        flags |= kMouseMiddle;
+       return 1;
     }
   else
     {
@@ -1770,12 +1773,16 @@ void ImageView::leftMouseDown(int x, int y)
 	  flags |= kMouseRight;
 	  flags |= kZoom;
 	}
+      return 1;
    }
 
   if ( (flags & kLeftAlt) && (flags & kMouseLeft) && (flags & kMouseMiddle) )
     {
       flags |= kZoom;
+      return 1;
     }
+
+  return 0;
 }
 
 
@@ -2130,7 +2137,8 @@ void ImageView::mouseDrag(int x,int y)
     {
       int dx = x - lastX;
       int dy = y - lastY;
-      
+
+
       if ( flags & kZoom ) 
 	{
 	  zoom( _zoom + dx*_zoom / 500.0f );
@@ -2152,6 +2160,7 @@ void ImageView::mouseDrag(int x,int y)
 	}
       else
 	{
+
 	   mrv::media fg = foreground();
 	   if ( ! fg ) return;
 
@@ -2227,6 +2236,8 @@ void ImageView::mouseDrag(int x,int y)
 	      char buf[256];
 	      sprintf( buf, "Selection %g %g %g %g", _selection.x(),
 		       _selection.y(), _selection.w(), _selection.h() );
+
+
 	      send( buf );
 
 	   }
@@ -2853,10 +2864,11 @@ int ImageView::handle(int event)
       window()->cursor(fltk::CURSOR_DEFAULT);
       return 1;
     case fltk::PUSH:
-      leftMouseDown(fltk::event_x(), fltk::event_y());
+      return leftMouseDown(fltk::event_x(), fltk::event_y());
       break;
     case fltk::RELEASE:
       leftMouseUp(fltk::event_x(), fltk::event_y());
+      return 1;
       break;
     case fltk::MOVE:
        X = fltk::event_x();

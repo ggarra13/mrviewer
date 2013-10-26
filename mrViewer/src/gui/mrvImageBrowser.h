@@ -97,6 +97,7 @@ namespace mrv
 
     mrv::media replace( const char* file, const char* root );
     void remove( mrv::media m );
+    void remove( int idx );
 
     void refresh( mrv::media img );
 

@@ -407,7 +407,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
   }
 
   /** 
-   * Create a new reel, giving it a name
+   * Create a new reel, giving it a unique name
    * 
    * @param name Name of new reel
    * 
@@ -441,8 +441,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     _reel_display->add( name.c_str() );
     _reel_display->value( _reel );
 
-    if ( _reel > 0 )
-       uiMain->uiEDLWindow->uiEDLGroup->add_media_track( _reel );
+    uiMain->uiEDLWindow->uiEDLGroup->add_media_track( _reel );
 
 
     if ( ! _reels.empty() ) change_reel();
@@ -565,8 +564,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
-    reel->images.insert( reel->images.begin() + idx, 
-			 media( m ) );
+    reel->images.insert( reel->images.begin() + idx, m );
 
     Element* nw = new_item( m );
     fltk::Browser::insert( *nw, idx );
@@ -1084,6 +1082,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     if ( visible() ) relayout();
 
+
     const CMedia* img = m->image();
 
     if ( dynamic_cast< const stubImage* >( img ) ||
@@ -1178,6 +1177,46 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   /** 
    * Remove an image from image browser list
    * 
+   * @param idx index of image to remove
+   */
+  void ImageBrowser::remove( int idx )
+  {
+    mrv::Reel reel = current_reel();
+    if ( reel == NULL ) return;
+  
+    view()->stop();
+
+    if ( idx < 0 || idx >= reel->images.size() ) return;
+
+    mrv::MediaList::iterator i = reel->images.begin();
+
+    std::cerr << "REMOVE IDX " << idx << " image " 
+	      << reel->images[idx]->image()->name() << std::endl;
+    
+    fltk::Browser::remove( idx );
+    reel->images.erase( i + idx );
+
+    edl_group()->refresh();
+
+    if ( idx > 0 )
+       view()->foreground( *(i + idx-1) );
+    else
+       view()->foreground( mrv::media() );
+
+    char buf[128];
+    sprintf( buf, "Reel %s", reel->name.c_str() );
+    view()->send( buf );
+
+    sprintf( buf, "RemoveImage %d", idx );
+
+    view()->send( buf );
+    redraw();
+  }
+
+
+  /** 
+   * Remove an image from image browser list
+   * 
    * @param img image to remove
    */
   void ImageBrowser::remove( mrv::media m )
@@ -1205,12 +1244,22 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( view()->background() == m ) 
       view()->background( mrv::media() );
     
-    // fltk::Browser::remove( i - reel->images.begin() );
+    int idx = i - reel->images.begin();
+    
+
+    fltk::Browser::remove( idx );
     reel->images.erase( i );
 
     edl_group()->refresh();
 
-    view()->send("sync_image" );
+    char buf[128];
+    sprintf( buf, "Reel %s", reel->name.c_str() );
+    view()->send( buf );
+
+    sprintf( buf, "RemoveImage %d", idx );
+
+    view()->send( buf );
+    redraw();
   }
 
 
@@ -1258,6 +1307,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     if ( playback != CMedia::kStopped )
       newImg->play( playback, uiMain );
+
 
     reel->images.insert( reel->images.begin() + idx, newm );
 
@@ -1481,7 +1531,14 @@ int ImageBrowser::value() const
 
     mrv::media m = this->add( img );
 
-    mrv::media_track* track = edl_group()->current_media_track();
+    size_t i = 0;
+    for ( i = 0; i < number_of_reels(); ++i )
+    {
+       if ( reel == this->reel( i ) )
+	  break;
+    }
+
+    mrv::media_track* track = edl_group()->media_track(i);
     if ( m ) track->add( m );
 
     adjust_timeline();
@@ -1823,7 +1880,6 @@ void ImageBrowser::load( const stringArray& files,
     int sel = value();
     if ( sel < 0 ) return;
 
-    fltk::Browser::remove( sel );
     this->remove( reel->images[sel] );
 
     if ( sel < (int)reel->images.size() )
@@ -2238,19 +2294,7 @@ void ImageBrowser::load( const stringArray& files,
     //
     // Adjust timeline position
     //
-    MediaList::iterator i = reel->images.begin();
-    MediaList::iterator j;
-    MediaList::iterator end = reel->images.end();
-
-
-    (*i)->position( 1 );
-
-    for ( j = i, ++i; i != end; j = i, ++i )
-    {
-       int64_t frame = (*j)->position() + (*j)->image()->duration();
-       (*i)->position( frame );
-    }
-
+    uiMain->uiEDLWindow->uiEDLGroup->refresh();
 
     //
     // Redraw EDL window
