@@ -1108,8 +1108,8 @@ void CMedia::play(const CMedia::Playback dir,
   // clear all packets
   clear_packets();
 
-  if ( ! seek_to_position( _frame ) )
-     IMG_ERROR( _("Could not seek to frame ") << _frame );
+  // if ( ! seek_to_position( _frame ) )
+  //    IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
   PlaybackData* data = new PlaybackData( uiMain, this );

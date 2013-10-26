@@ -97,6 +97,11 @@ void Parser::write( std::string s )
    }
 }
 
+mrv::ImageBrowser* Parser::browser() const
+{
+   return ui->uiReelWindow->uiBrowser;
+}
+
 bool Parser::parse( const std::string& m )
 {
    if ( !connected ) return false;
@@ -162,9 +167,9 @@ bool Parser::parse( const std::string& m )
       int b;
       is >> b;
       if ( b )
-	 ui->uiReelWindow->uiBrowser->set_edl();
+	 browser()->set_edl();
       else
-	 ui->uiReelWindow->uiBrowser->clear_edl();
+	 browser()->clear_edl();
       ok = true;
    }
    else if ( cmd == N_("Looping") )
@@ -331,9 +336,9 @@ bool Parser::parse( const std::string& m )
    {
       std::string name;
       is >> name;
-      r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
+      r = browser()->reel( name.c_str() );
       if (!r) {
-	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
+	 r = browser()->new_reel( name.c_str() );
       }
       ok = true;
    }
@@ -342,14 +347,26 @@ bool Parser::parse( const std::string& m )
       std::string name;
       is >> name;
 
-      mrv::Reel now = ui->uiReelWindow->uiBrowser->current_reel();
+      mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
 	 r = now;
       else
-	 r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
+	 r = browser()->reel( name.c_str() );
       if (!r) {
-	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
+	 r = browser()->new_reel( name.c_str() );
       }
+      ok = true;
+   }
+   else if ( cmd == N_("RemoveImage") )
+   {
+      size_t idx;
+      is >> idx;
+
+      mrv::Reel reel = browser()->current_reel();
+
+      mrv::MediaList::iterator i = reel->images.begin();
+      browser()->remove( *(i+idx) );
+
       ok = true;
    }
    else if ( cmd == N_("Image") )
@@ -357,6 +374,10 @@ bool Parser::parse( const std::string& m )
       std::string imgname;
       is >> imgname;
       imgname = imgname.substr( 1, imgname.size() - 2 );
+
+      boost::int64_t start, end;
+      is >> start;
+      is >> end;
 
       bool found = false;
       if ( r )
@@ -376,10 +397,10 @@ bool Parser::parse( const std::string& m )
       
 	 if (!found)
 	 {
-	    stringArray files;
-	    files.push_back( imgname );
+	    LoadList files;
+	    files.push_back( LoadInfo( imgname, start, end ) );
 	   
-	    ui->uiReelWindow->uiBrowser->load( files, false );
+	    browser()->load( files, false );
 	 }
       }
 
@@ -406,7 +427,7 @@ bool Parser::parse( const std::string& m )
 	    fileroot += (*j)->image()->name();
 	    if ( (*j)->image() && fileroot == imgname )
 	    {
-	       ui->uiReelWindow->uiBrowser->change_image( idx );
+	       browser()->change_image( idx );
 	       found = true;
 	       break;
 	    }
@@ -417,7 +438,7 @@ bool Parser::parse( const std::string& m )
 	    stringArray files;
 	    files.push_back( imgname );
 	   
-	    ui->uiReelWindow->uiBrowser->load( files, false );
+	    browser()->load( files, false );
 	 }
       }
 
@@ -455,7 +476,7 @@ bool Parser::parse( const std::string& m )
 	    stringArray files;
 	    files.push_back( imgname );
 	   
-	    ui->uiReelWindow->uiBrowser->load( files, false );
+	    browser()->load( files, false );
 	 }
       }
 
@@ -466,10 +487,10 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
-      size_t num = ui->uiReelWindow->uiBrowser->number_of_reels();
+      size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
-	 mrv::Reel r = ui->uiReelWindow->uiBrowser->reel( unsigned(i) );
+	 mrv::Reel r = browser()->reel( unsigned(i) );
 	 cmd = N_("Reel ");
 	 cmd += r->name;
 	 deliver( cmd );
@@ -482,21 +503,34 @@ bool Parser::parse( const std::string& m )
 	    cmd += (*j)->image()->directory();
 	    cmd += "/";
 	    cmd += (*j)->image()->name();
-	    cmd += "\"";
-	    deliver( cmd );
+	    cmd += "\" ";
 
 	    char buf[128];
+	    boost::int64_t start = (*j)->image()->first_frame();
+	    boost::int64_t end   = (*j)->image()->last_frame();
+
+	    sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
+		     start, end );
+	    cmd += buf;
+
+	    deliver( cmd );
+
 	    boost::int64_t frame = (*j)->image()->frame();
 	    sprintf( buf, N_("seek %") PRId64, frame );
 	    deliver( buf );
 	 }
       }
 
-      mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
+      mrv::Reel r = browser()->current_reel();
       if (r)
       {
 	 cmd = N_("CurrentReel ");
 	 cmd += r->name;
+	 deliver( cmd );
+      }
+      if ( r->edl )
+      {
+	 cmd = N_("EDL 1");
 	 deliver( cmd );
       }
 

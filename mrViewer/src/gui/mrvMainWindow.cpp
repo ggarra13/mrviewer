@@ -120,5 +120,12 @@ namespace mrv {
     return fltk::Window::handle( event );
   }
 
+void MainWindow::layout()
+{
+   fltk::Window::layout();
+
+   if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+      uiMain->uiView->fit_image();
+}
 
 } // namespace mrv

@@ -570,8 +570,8 @@ o->label( o->child( o->value() )->label() );}
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences
-        xywh {474 286 640 475} hide resizable
+        label Preferences open
+        xywh {477 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -595,6 +595,11 @@ o->label( o->child( o->value() )->label() );}
                 tooltip {When selected, only a single mrViewer instance is allowed.  
 If you try to open several mrViewers with different images, all these images will be sent to the already open mrViewer.}
                 xywh {24 40 20 25} align 8 labelsize 11 value 1
+              }
+              {fltk::CheckButton} uiPrefsAutoFitImage {
+                label {Auto Refit Image} selected
+                tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.}
+                xywh {23 67 20 25} align 8 labelsize 11 value 1
               }
               {fltk::Group} uiPrefsOpenMode {
                 xywh {160 9 130 81} box EMBOSSED_BOX
@@ -988,7 +993,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches
             xywh {8 24 415 382} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::ValueSlider} uiVideoCacheSize {
@@ -1541,7 +1546,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video open
+            label Video
             xywh {15 24 405 380} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
@@ -1638,7 +1643,7 @@ for ( ; i != e; ++i )
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 195 434}
         } {
           {fltk::Browser} {} {
@@ -1649,7 +1654,7 @@ for ( ; i != e; ++i )
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface}
+              label {User Interface} open
               vertical value 1
             } {
               {fltk::ItemGroup} {} {
@@ -2259,8 +2264,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2289,7 +2293,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2297,10 +2301,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {335 231 640 530} when CHANGED resizable
+        xywh {338 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3071,7 +3075,7 @@ v->uiTimeline->redraw();}
                       callback {boost::int64_t f = o->value();
 v->uiTimeline->maximum( float(f) );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();} selected
+v->uiTimeline->redraw();}
                       tooltip {Allows you to set the ending frame for timeline.}
                       xywh {110 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(50);}
