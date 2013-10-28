@@ -77,7 +77,7 @@ namespace mrv
     void previous_image();
     void next_image();
 
-    void insert( unsigned idx, mrv::media& img );
+    void insert( unsigned idx, mrv::media img );
 
        // @todo: these should be factored to a database helper class
     void add_image( const mrv::media& img );
@@ -129,7 +129,7 @@ namespace mrv
     mrv::ViewerUI* main() { return uiMain; }
 
      public:
-       static mrv::Element* new_item(mrv::media& img);
+       static mrv::Element* new_item(mrv::media img);
 
   protected:
     void db_envvars( char*& login, std::string& shot_id );

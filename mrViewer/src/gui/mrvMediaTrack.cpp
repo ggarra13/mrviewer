@@ -104,6 +104,8 @@ int media_track::index_at( const boost::int64_t frame )
    for (size_t i = 0; i < e; ++i )
    {
       mrv::media m = reel->images[i];
+      if ( !m ) continue;
+
       boost::int64_t start = m->position();
       boost::int64_t end   = m->position();
       end   += m->image()->duration();

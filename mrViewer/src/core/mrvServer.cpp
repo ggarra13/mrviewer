@@ -18,7 +18,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-
+#define DEBUG_COMMANDS
 // #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 
 #include <boost/bind.hpp>
@@ -93,6 +93,7 @@ void Parser::write( std::string s )
 
    for ( ; i != e; ++i )
    {
+      LOG_CONN( "deliver:" << s );
       (*i)->deliver( s );
    }
 }
@@ -102,22 +103,29 @@ mrv::ImageBrowser* Parser::browser() const
    return ui->uiReelWindow->uiBrowser;
 }
 
-bool Parser::parse( const std::string& m )
+bool Parser::parse( const std::string& s )
 {
    if ( !connected ) return false;
 
-   std::istringstream is( m );
+   std::istringstream is( s );
    std::string cmd;
    is >> cmd;
 
    if ( !ui ) return false;
 
    static mrv::Reel r;
+   static mrv::media m;
 
    bool ok = false;
 
    ParserList c = ui->uiView->_clients;
    ui->uiView->_clients.clear();
+
+   std::cerr << "CLIENTS CLEAR" << std::endl;
+
+#ifdef DEBUG_COMMANDS
+   DBG( "received: " << cmd );
+#endif
 
    if ( cmd == N_("GLPathShape") )
    {
@@ -364,16 +372,79 @@ bool Parser::parse( const std::string& m )
 
       mrv::Reel reel = browser()->current_reel();
 
-      mrv::MediaList::iterator i = reel->images.begin();
-      browser()->remove( *(i+idx) );
+      std::cerr << "REMOVE IMAGE AT IDX " << idx << std::endl;
+
+      // Store image for insert later
+      size_t e = reel->images.size();
+      int j = 0;
+      for ( ; j != e; ++j )
+      {
+	 if ( j == idx )
+	 {
+	    m = reel->images[j];
+	    break;
+	 }
+      }
+
+      browser()->remove( idx );
 
       ok = true;
+   }
+   else if ( cmd == N_("InsertImage") )
+   {
+      int idx;
+      is >> idx;
+
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      if ( r )
+      {
+	 int j;
+	 size_t e = r->images.size();
+
+	 if ( ! m )
+	 {
+	    for ( j = 0; j != e; ++j )
+	    {
+	       if ( r->images[j]->image()->fileroot() == imgname )
+	       {
+		  m = r->images[j];
+		  break;
+	       }
+	    }
+	 }
+
+	 if ( m )
+	 {
+	    
+	    for ( j = 0; j != e; ++j )
+	    {
+	       if ( j == idx && m->image()->fileroot() == imgname )
+	       {
+		  browser()->insert( idx, m );
+		  ok = true;
+		  break;
+	       }
+	    }
+	    
+	    if ( j == e && m->image()->fileroot() == imgname )
+	    {
+	       browser()->insert( e, m );
+	       ok = true;
+	    }
+
+	    m.reset();
+	 }
+      }
+
    }
    else if ( cmd == N_("Image") )
    {
       std::string imgname;
-      is >> imgname;
-      imgname = imgname.substr( 1, imgname.size() - 2 );
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
 
       boost::int64_t start, end;
       is >> start;
@@ -386,10 +457,7 @@ bool Parser::parse( const std::string& m )
 	 mrv::MediaList::iterator e = r->images.end();
 	 for ( ; j != e; ++j )
 	 {
-	    std::string fileroot = (*j)->image()->directory();
-	    fileroot += "/";
-	    fileroot += (*j)->image()->name();
-	    if ( (*j)->image() && fileroot == imgname )
+	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
 	    {
 	       found = true;
 	    }
@@ -411,8 +479,8 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("CurrentImage") )
    {
       std::string imgname;
-      is >> imgname;
-      imgname = imgname.substr( 1, imgname.size() - 2 );
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
 
       if ( r )
       {
@@ -422,10 +490,7 @@ bool Parser::parse( const std::string& m )
 	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
-	    std::string fileroot = (*j)->image()->directory();
-	    fileroot += "/";
-	    fileroot += (*j)->image()->name();
-	    if ( (*j)->image() && fileroot == imgname )
+	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
 	    {
 	       browser()->change_image( idx );
 	       found = true;
@@ -449,8 +514,8 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("CurrentBGImage") )
    {
       std::string imgname;
-      is >> imgname;
-      imgname = imgname.substr( 1, imgname.size() - 2 );
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
 
       if ( r )
       {
@@ -460,10 +525,7 @@ bool Parser::parse( const std::string& m )
 	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
-	    std::string fileroot = (*j)->image()->directory();
-	    fileroot += "/";
-	    fileroot += (*j)->image()->name();
-	    if ( (*j)->image() && fileroot == imgname )
+	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
 	    {
 	       ui->uiView->background( (*j) );
 	       found = true;
@@ -538,9 +600,7 @@ bool Parser::parse( const std::string& m )
       if ( img )
       {
 	 cmd = N_("CurrentImage \"");
-	 cmd += img->image()->directory();
-	 cmd += "/";
-	 cmd += img->image()->name();
+	 cmd += img->image()->fileroot();
 	 cmd += "\"";
 	 deliver( cmd );
 
@@ -613,6 +673,7 @@ bool Parser::parse( const std::string& m )
       ok = true;
    }
 
+   std::cerr << "CLIENTS RESTORE" << std::endl;
    ui->uiView->_clients = c;
    return ok;
 }
@@ -743,12 +804,15 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 		  // We need to do this to update multiple clients.
 		  // Note that the original client that sent the
 		  // message will get the message back before the OK.
-		  write( msg );  
+		  // write( msg );  
 		  deliver( "OK" );
 	       }
 	       else
 	       {
-		  deliver( "Not OK" );
+		  std::string err = "Not OK for '";
+		  err += msg;
+		  err += "'";
+		  deliver( err );
 	       }
 	    }
 	 }

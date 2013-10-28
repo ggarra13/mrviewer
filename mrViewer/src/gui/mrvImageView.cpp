@@ -600,7 +600,6 @@ void ImageView::send( std::string m )
 
    if ( i != e )
    {
-      LOG_CONN( m );
       (*i)->write( m );  //<- this line writes all clients
    }
 }

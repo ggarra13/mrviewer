@@ -437,6 +437,10 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     _reels.push_back( reel );
     assert( !_reels.empty() );
 
+    char buf[256];
+    sprintf( buf, "Reel %s", reel->name.c_str() );
+    view()->send( buf );
+
     _reel = (unsigned int) _reels.size() - 1;
     _reel_display->add( name.c_str() );
     _reel_display->value( _reel );
@@ -506,6 +510,7 @@ mrv::ImageView* ImageBrowser::view() const
    return uiMain->uiView;
 }
 
+
 mrv::EDLGroup* ImageBrowser::edl_group() const
 {
    return uiMain->uiEDLWindow->uiEDLGroup;
@@ -524,12 +529,26 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     _reel_display->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
 
-    edl_group()->remove_media_track( _reel );
+
+    if ( uiMain->uiEDLWindow->uiEDLChoiceOne->value() == _reel )
+    {
+       edl_group()->remove_media_track( 0 );
+    }
+
+    if ( uiMain->uiEDLWindow->uiEDLChoiceTwo->value() == _reel )
+    {
+       edl_group()->remove_media_track( 1 );
+    }
+
+    uiMain->uiEDLWindow->uiEDLChoiceOne->remove( _reel );
+    uiMain->uiEDLWindow->uiEDLChoiceTwo->remove( _reel );
 
     if ( _reels.empty() ) new_reel();
     if ( _reel >= (unsigned int)_reels.size() ) 
       _reel = (unsigned int)_reels.size() - 1;
     _reel_display->value( _reel );
+    
+
     _reel_display->redraw();
     change_reel();
   }
@@ -541,7 +560,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
    * 
    * @return fltk::Item*
    */
-  Element* ImageBrowser::new_item( mrv::media& m )
+  Element* ImageBrowser::new_item( mrv::media m )
   {
     Element* nw = new Element( m );
 
@@ -557,7 +576,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
    * @param idx where to insert new image
    * @param img image to insert
    */
-  void ImageBrowser::insert( unsigned idx, mrv::media& m )
+  void ImageBrowser::insert( unsigned idx, mrv::media m )
   {
     if ( !m ) return;
 
@@ -568,6 +587,10 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     Element* nw = new_item( m );
     fltk::Browser::insert( *nw, idx );
+
+    char buf[256];
+    sprintf( buf, "InsertImage %d \"%s\"", idx, m->image()->fileroot() );
+    view()->send( buf );
 
     redraw();
   }
@@ -1188,12 +1211,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     if ( idx < 0 || idx >= reel->images.size() ) return;
 
-    mrv::MediaList::iterator i = reel->images.begin();
-
-    std::cerr << "REMOVE IDX " << idx << " image " 
-	      << reel->images[idx]->image()->name() << std::endl;
-    
     fltk::Browser::remove( idx );
+
+    mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
 
     edl_group()->refresh();
@@ -1245,9 +1265,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
       view()->background( mrv::media() );
     
     int idx = i - reel->images.begin();
-    
-
     fltk::Browser::remove( idx );
+
     reel->images.erase( i );
 
     edl_group()->refresh();
@@ -1330,6 +1349,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( reel == NULL ) return;
 
     relayout();
+
     if ( reel->images.empty() )
       {
 	value(-1);
@@ -1340,8 +1360,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	mrv::MediaList::iterator e = reel->images.end();
 	for ( ; i != e; ++i )
 	  {
-	    Element* nw = new_item( *i );
-	    fltk::Browser::add( nw );
+	     Element* nw = new_item( *i );
+
+	     fltk::Browser::add( nw );
 	  }
 
 	value(0);
@@ -1357,6 +1378,11 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     }
 
     edl_group()->redraw();
+
+    char buf[256];
+    sprintf( buf, "Reel %d", _reel );
+    view()->send( buf );
+
 
     change_image();
   }
@@ -1427,7 +1453,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	      if ( sub_idx < int(m->image()->number_of_subtitle_streams()) )
 		 m->image()->subtitle_stream( sub_idx );
 	      
-	      if ( audio_idx < int(m->image()->number_of_audio_streams()) )
+	      if ( audio_idx != -1 &&
+		   audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
 	   }
 	  
@@ -1535,11 +1562,13 @@ int ImageBrowser::value() const
     for ( i = 0; i < number_of_reels(); ++i )
     {
        if ( reel == this->reel( i ) )
-	  break;
+       {
+	  reel->edl = true;
+	  mrv::media_track* track = edl_group()->media_track(i);
+	  if ( m ) track->add( m );
+       }
     }
 
-    mrv::media_track* track = edl_group()->media_track(i);
-    if ( m ) track->add( m );
 
     adjust_timeline();
     return m;
@@ -2286,8 +2315,15 @@ void ImageBrowser::load( const stringArray& files,
 
     redraw();
 
+    char buf[1024];
+    sprintf( buf, "RemoveImage %d", oldsel );
+    view()->send( buf );
+
     reel->images.erase( reel->images.begin() + oldsel );
     if ( oldsel < sel ) sel -= 1;
+
+    sprintf( buf, "InsertImage %d \"%s\"", sel, m->image()->fileroot() );
+    view()->send( buf );
 
     reel->images.insert( reel->images.begin() + sel, m );
 
