@@ -163,15 +163,16 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {} {
+  class ReelUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label {Reel List}
-        xywh {439 259 405 350} hide resizable
+        label {Reel List} open
+        xywh {442 282 405 350} resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );} visible
       } {
         {fltk::Browser} uiBrowser {
           xywh {0 32 405 318} box UP_BOX
@@ -182,7 +183,7 @@ o->scrollbar.color( o->buttoncolor() );
 o->hscrollbar.color( o->buttoncolor() );}
           class {mrv::ImageBrowser}
         } {}
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {0 0 405 32} box UP_BOX
         } {
           {fltk::Choice} {} {
@@ -201,7 +202,7 @@ if ( name == NULL ) return;
 v->new_reel(name);}
               tooltip {Create a new reel}
               xywh {0 0 26 26} box UP_BOX shortcut 0x4006e
-              extra_code {o->image( reel_24 );}
+              extra_code {o->image( reel_new_24 );}
             }
             {fltk::Button} {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
@@ -212,7 +213,7 @@ v->new_reel(name);}
             }
             {fltk::Button} {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->remove_reel();}
+              callback {v->remove_reel();} selected
               tooltip {Delete current reel}
               xywh {52 0 26 26} box UP_BOX
               extra_code {o->image( reel_delete_24 );}
@@ -565,13 +566,12 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {477 286 640 475} resizable visible
+        xywh {480 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -597,7 +597,7 @@ If you try to open several mrViewers with different images, all these images wil
                 xywh {24 40 20 25} align 8 labelsize 11 value 1
               }
               {fltk::CheckButton} uiPrefsAutoFitImage {
-                label {Auto Refit Image} selected
+                label {Auto Refit Image}
                 tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.}
                 xywh {23 67 20 25} align 8 labelsize 11 value 1
               }

@@ -119,7 +119,7 @@ void EDLGroup::pan( int diff )
 
    mrv::Timeline* t = timeline();  
  
-   double amt = diff / (double) t->w();
+   double amt = double(diff) / (double) t->w();
    double avg = t->maximum() - t->minimum() + 1;
    amt *= avg;
    
@@ -128,7 +128,6 @@ void EDLGroup::pan( int diff )
    t->redraw();
    redraw();
    
-   _dragX = fltk::event_x();
 }
 
 int EDLGroup::handle( int event )
@@ -147,6 +146,10 @@ int EDLGroup::handle( int event )
 	    {
 	       _dragX = fltk::event_x();
 	       _dragY = fltk::event_y();
+
+	       // LIMITS
+	       if ( _dragX < 8 ) _dragX = 8;
+	       if ( _dragY < 33 ) _dragY = 33;
 
 	       int idx = _dragY / kTrackHeight;
 	       if ( idx < 0 || idx >= children() ) {
@@ -240,6 +243,9 @@ int EDLGroup::handle( int event )
 		  {
 		     int64_t tmi = o->minimum();
 		     int64_t tma = o->maximum();
+
+		     if ( tmi == tma ) continue;
+
 		     if ( tmi < tmin ) tmin = tmi;
 		     if ( tma > tmax ) tmax = tma;
 		  }
@@ -321,14 +327,14 @@ int EDLGroup::handle( int event )
       case fltk::TIMEOUT:
 	 {
 	    int X = fltk::event_x();
-	    if ( X >= w()-64 ) {
-	       pan(-2);
-	       repeat_timeout( 0.1 );
+	    if ( X >= w()-128 ) {
+	       pan(-1);
+	       repeat_timeout( 0.25 );
 	    }
-	    else if ( X <= 64 )
+	    else if ( X <= 128 )
 	    {
-	       pan(2);
-	       repeat_timeout( 0.1 );
+	       pan(1);
+	       repeat_timeout( 0.25 );
 	    }
 	    redraw();
 	    return 1;
@@ -341,21 +347,24 @@ int EDLGroup::handle( int event )
 	    {
 	       int X = fltk::event_x();
 	       _dragY = fltk::event_y();
-	       if ( _dragY < 32 ) _dragY = 32;
+
+	       // LIMITS
+	       if ( _dragY < 33 ) _dragY = 33;
+	       if ( X < 8 ) X = 8;
 
 
-	       if ( X >= w()-64 ) {
-		  pan(diff * -2);
-		  add_timeout( 0.1 );
-	       }
-	       else if ( X <= 64 )
-	       {
+	       if ( X >= w()-128 ) {
 		  pan(diff * 2);
 		  add_timeout( 0.1 );
 	       }
-	       else {
-		  _dragX = X;
+	       else if ( X <= 128 )
+	       {
+		  pan(diff * -2);
+		  add_timeout( 0.1 );
 	       }
+	       
+	       _dragX = X;
+	       
 
 	       redraw();
 	       return 1;
@@ -363,6 +372,7 @@ int EDLGroup::handle( int event )
 	    else if ( fltk::event_key() == fltk::MiddleButton )
 	    {
 	       pan(diff * 2);
+	       _dragX = fltk::event_x();
 	       return 1;
 	    }
 	 } 
