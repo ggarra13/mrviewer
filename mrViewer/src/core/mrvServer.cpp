@@ -37,12 +37,14 @@
 
 #include "mrvClient.h"
 #include "mrvServer.h"
-#include "mrViewer.h"
+#include "gui/mrvEDLGroup.h"
+#include "mrvEDLWindowUI.h"
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvReel.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "mrViewer.h"
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
@@ -101,6 +103,11 @@ void Parser::write( std::string s )
 mrv::ImageBrowser* Parser::browser() const
 {
    return ui->uiReelWindow->uiBrowser;
+}
+
+mrv::EDLGroup* Parser::edl_group() const
+{
+   return ui->uiEDLWindow->uiEDLGroup;
 }
 
 bool Parser::parse( const std::string& s )
@@ -348,6 +355,38 @@ bool Parser::parse( const std::string& s )
       if (!r) {
 	 r = browser()->new_reel( name.c_str() );
       }
+      ok = true;
+   }
+   else if ( cmd == N_("ShiftMediaStart") )
+   {
+      int reel;
+      is >> reel;
+
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t diff;
+      is >> diff;
+
+      edl_group()->shift_media_start( reel, imgname, diff );
+
+      ok = true;
+   }
+   else if ( cmd == N_("ShiftMediaEnd") )
+   {
+      int reel;
+      is >> reel;
+
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t diff;
+      is >> diff;
+
+      edl_group()->shift_media_end( reel, imgname, diff );
+
       ok = true;
    }
    else if ( cmd == N_("CurrentReel") )

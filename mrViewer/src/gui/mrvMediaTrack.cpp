@@ -1,4 +1,7 @@
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
+
 #include <fltk/draw.h>
 #include <fltk/events.h>
 #include <fltk/Cursor.h>
@@ -10,6 +13,7 @@
 #include "gui/mrvReelList.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvImageInformation.h"
+#include "core/mrvI8N.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
 
@@ -81,6 +85,36 @@ int media_track::index_for( const mrv::media m )
    {
       mrv::media m2 = reel->images[i];
       if ( m == m2 )
+      {
+	 return i;
+      }
+   }
+
+   return -1;
+}
+
+mrv::media media_track::media( const unsigned idx )
+{
+   const mrv::Reel& reel = browser()->reel_at( _reel_idx );
+   if ( !reel ) return mrv::media();
+
+   size_t e = reel->images.size();
+   if ( idx >= e ) return mrv::media();
+   return reel->images[idx];
+}
+
+
+int media_track::index_for( const std::string s )
+{
+   const mrv::Reel& reel = browser()->reel_at( _reel_idx );
+   if ( !reel ) return -1;
+
+   size_t e = reel->images.size();
+
+   for (size_t i = 0; i < e; ++i )
+   {
+      mrv::media m = reel->images[i];
+      if ( m && m->image()->fileroot() == s )
       {
 	 return i;
       }
@@ -223,6 +257,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return;
 
+
    int idx = 0;
    size_t e = reel->images.size();
    for ( size_t i = 0; i < e; ++i )
@@ -244,6 +279,11 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	    img->seek(f);
 	    main()->uiView->foreground( fg );
 
+	    char buf[1024];
+	    sprintf( buf, N_("ShiftMediaStart %") PRId64 
+		     N_(" \"%s\" %") PRId64,
+		     _reel_idx, img->fileroot(), diff );
+	    main()->uiView->send( buf );
 	 }
 	 break;
       }
@@ -336,6 +376,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return;
 
+
    size_t e = reel->images.size();
    size_t i = 0;
    for ( ; i < e; ++i )
@@ -347,14 +388,20 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	 if ( pos > m->image()->first_frame() &&
 	      pos <= m->image()->end_frame() )
 	 {
+	    CMedia* img = m->image();
 	    if ( ! main()->uiTimeline->edl() )
 	    {
 	       main()->uiEndFrame->value( pos );
 	    }
 
-	    m->image()->last_frame( pos );
-	    m->image()->seek( pos );
+	    img->last_frame( pos );
+	    img->seek( pos );
 
+	    char buf[1024];
+	    sprintf( buf, N_( "ShiftMediaEnd %" ) PRId64 
+		     N_(" \"%s\" %" ) PRId64,
+		     _reel_idx, img->fileroot(), diff );
+	    main()->uiView->send( buf );
 
 	    main()->uiImageInfo->uiInfoText->refresh();
 	    break;

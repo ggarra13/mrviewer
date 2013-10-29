@@ -3050,13 +3050,15 @@ void ImageView::channel( unsigned short c )
 { 
   _channel = c;
 
+
+  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+  
+  if ( c >= uiColorChannel->children() ) return;
+
   char buf[128];
   sprintf( buf, "Channel %d", c );
   send( buf );
 
-
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-  
   const char* lbl = uiColorChannel->child(c)->label();
   std::string channelName( lbl );
 
