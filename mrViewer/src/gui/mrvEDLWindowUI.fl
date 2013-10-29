@@ -29,8 +29,8 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {
-        label {EDL Window} open selected
-        xywh {277 496 1000 230} resizable visible
+        label {EDL Window} selected
+        xywh {277 519 1000 230} visible
       } {
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1000 230}

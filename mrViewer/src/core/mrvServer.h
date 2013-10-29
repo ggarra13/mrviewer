@@ -25,6 +25,7 @@ using boost::asio::ip::tcp;
 class ViewerUI;
 class Parser;
 class ImageBrowser;
+class EDLGroup;
 
 typedef std::vector< Parser* > ParserList;
 
@@ -38,6 +39,7 @@ class Parser
      void write( std::string s );
 
      mrv::ImageBrowser* browser() const;
+     mrv::EDLGroup*     edl_group() const;
 
      virtual void deliver( std::string m ) = 0;
      virtual void stop() = 0;

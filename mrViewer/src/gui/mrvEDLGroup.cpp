@@ -75,6 +75,42 @@ size_t EDLGroup::add_media_track( size_t r )
    return e;
 }
 
+bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s, 
+				   boost::int64_t diff )
+{
+
+   for ( int i = 0; i < 2; ++i )
+   {
+      mrv::media_track* t = (mrv::media_track*)child(i);
+      if ( t->reel() == reel_idx )
+      {
+	 int idx = t->index_for(s);
+	 mrv::media m = t->media( idx );
+	 t->shift_media_start( m, diff );
+	 return true;
+      }
+   }
+   return false;
+}
+
+bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s, 
+				 boost::int64_t diff )
+{
+
+   for ( int i = 0; i < 2; ++i )
+   {
+      mrv::media_track* t = (mrv::media_track*)child(i);
+      if ( t->reel() == reel_idx )
+      {
+	 int idx = t->index_for(s);
+	 mrv::media m = t->media( idx );
+	 t->shift_media_end( m, diff );
+	 return true;
+      }
+   }
+   return false;
+}
+
 // Add an audio only track and return its index
 size_t EDLGroup::add_audio_track()
 {

@@ -43,6 +43,12 @@ class EDLGroup : public fltk::Group
 	return (mrv::media_track*)this->child(i); 
      }
 
+     bool shift_media_start( unsigned track_idx, std::string image,
+			     boost::int64_t diff );
+
+     bool shift_media_end( unsigned track_idx, std::string image,
+			     boost::int64_t diff );
+
      // Return an audio track at index i
      audio_track_ptr& audio_track( int i );
 
