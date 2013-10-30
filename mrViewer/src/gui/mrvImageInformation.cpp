@@ -351,20 +351,13 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     if ( img->first_frame() != img->last_frame() )
       {
 	 add_int( _("First Frame"), img->first_frame(), true,
-		  (fltk::Callback*)change_first_frame_cb, 1, 1000 );
+		  (fltk::Callback*)change_first_frame_cb, 1, 100 );
 	 add_int( _("Last Frame"), img->last_frame(), true,
-		  (fltk::Callback*)change_last_frame_cb, 50, 1000 );
+		  (fltk::Callback*)change_last_frame_cb, 2, 100 );
       }
 
-    if ( img->start_frame() != img->first_frame() )
-      {
-	add_int64( _("Frame Start"), img->start_frame() );
-      }
-
-    if ( img->end_frame() != img->last_frame() )
-      {
-	add_int64( _("Frame End"), img->end_frame() );
-      }
+    add_int64( _("Frame Start"), img->start_frame() );
+    add_int64( _("Frame End"), img->end_frame() );
 
     ++group;
     add_int( _("Width"), img->width() );
@@ -1001,7 +994,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       else 
 	{
 	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
-	  widget->value( (int)content );
+	  widget->value( content );
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
 
@@ -1010,7 +1003,14 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
 	  slider->minimum( minV );
-	  slider->maximum( maxV );
+	  unsigned maxS = maxV;
+
+	  if ( content > 100 && maxV < 100 ) maxS = 1000;
+	  else if ( content > 1000 && maxV < 1000 ) maxS = 10000;
+	  else if ( content > 10000 && maxV < 10000 ) maxS = 100000;
+	  else if ( content > 100000 && maxV < 100000 ) maxS = 1000000;
+	  slider->maximum( maxS );
+
 	  slider->value( content );
 	  slider->step( 1.0 );
 	  slider->linesize(1);
@@ -1109,14 +1109,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
   }
 
 
-  void ImageInformation::add_int64( const char* name,
-				    const int64_t content )
-  {
-    char buf[128];
-    sprintf( buf, N_("%" PRId64), content );
-    add_text( name, buf, false );
-  }
-
 
 
   void ImageInformation::add_int( const char* name,
@@ -1167,11 +1159,11 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  slider->type(fltk::Slider::TICK_ABOVE);
 	  slider->minimum( minV );
 
-	  unsigned maxS = 100;
-	  if ( content > 100 ) maxS = 1000;
-	  else if ( content > 1000 ) maxS = 10000;
-	  else if ( content > 10000 ) maxS = 100000;
-	  else if ( content > 100000 ) maxS = 1000000;
+	  unsigned maxS = maxV;
+	  if ( content > 100 && maxV < 100 ) maxS = 1000;
+	  else if ( content > 1000 && maxV < 1000 ) maxS = 10000;
+	  else if ( content > 10000 && maxV < 10000 ) maxS = 100000;
+	  else if ( content > 100000 && maxV < 100000 ) maxS = 1000000;
 	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );
@@ -1216,6 +1208,14 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       }
 
     add_text( name, text, false );
+  }
+
+  void ImageInformation::add_int64( const char* name,
+				    const int64_t content )
+  {
+    char buf[128];
+    sprintf( buf, N_("%" PRId64), content );
+    add_text( name, buf, false );
   }
 
   void ImageInformation::add_rect( const char* name, mrv::Recti& content, 

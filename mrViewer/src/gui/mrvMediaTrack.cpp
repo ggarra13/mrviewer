@@ -282,7 +282,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	    char buf[1024];
 	    sprintf( buf, N_("ShiftMediaStart %") PRId64 
 		     N_(" \"%s\" %") PRId64,
-		     _reel_idx, img->fileroot(), diff );
+		     _reel_idx, img->fileroot(), img->first_frame() );
 	    main()->uiView->send( buf );
 	 }
 	 break;
@@ -400,7 +400,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    char buf[1024];
 	    sprintf( buf, N_( "ShiftMediaEnd %" ) PRId64 
 		     N_(" \"%s\" %" ) PRId64,
-		     _reel_idx, img->fileroot(), diff );
+		     _reel_idx, img->fileroot(), img->last_frame() );
 	    main()->uiView->send( buf );
 
 	    main()->uiImageInfo->uiInfoText->refresh();
@@ -478,7 +478,8 @@ int media_track::handle( int event )
 	    }
 
 	    main()->uiView->seek( _frame );
-	    main()->uiView->play( _playback );
+	    if ( _playback != CMedia::kStopped )
+	       main()->uiView->play( _playback );
 	    main()->uiImageInfo->uiInfoText->refresh();
 	 }
 	 return 1;

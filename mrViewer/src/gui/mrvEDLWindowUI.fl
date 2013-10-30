@@ -14,6 +14,8 @@ decl {\#include "mrViewer.h"} {public
 
 decl {\#include "fltk/ask.h"} {} 
 
+decl {\#include "core/mrvI8N.h"} {} 
+
 decl {\#include "gui/mrvTimeline.h"} {} 
 
 decl {\#include "gui/mrvImageBrowser.h"} {} 

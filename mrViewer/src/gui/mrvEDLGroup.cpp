@@ -76,7 +76,7 @@ size_t EDLGroup::add_media_track( size_t r )
 }
 
 bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s, 
-				   boost::int64_t diff )
+				   boost::int64_t f )
 {
 
    for ( int i = 0; i < 2; ++i )
@@ -86,7 +86,8 @@ bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s,
       {
 	 int idx = t->index_for(s);
 	 mrv::media m = t->media( idx );
-	 t->shift_media_start( m, diff );
+	 m->image()->first_frame( f );
+	 t->refresh();
 	 return true;
       }
    }
@@ -94,7 +95,7 @@ bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s,
 }
 
 bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s, 
-				 boost::int64_t diff )
+				 boost::int64_t f )
 {
 
    for ( int i = 0; i < 2; ++i )
@@ -104,7 +105,8 @@ bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s,
       {
 	 int idx = t->index_for(s);
 	 mrv::media m = t->media( idx );
-	 t->shift_media_end( m, diff );
+	 m->image()->last_frame( f );
+	 t->refresh();
 	 return true;
       }
    }
@@ -203,7 +205,11 @@ int EDLGroup::handle( int event )
 	       mrv::media m = track->media_at( p );
 	       if ( m )
 	       {
-		  _drag = ImageBrowser::new_item( m ); 
+		  _drag = ImageBrowser::new_item( m );
+		  int j = track->index_for( m );
+		  browser()->reel( idx );
+		  browser()->change_image( j );
+		  browser()->redraw();
 		  return 1;
 	       }
 	    }

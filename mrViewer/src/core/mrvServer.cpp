@@ -128,8 +128,6 @@ bool Parser::parse( const std::string& s )
    ParserList c = ui->uiView->_clients;
    ui->uiView->_clients.clear();
 
-   std::cerr << "CLIENTS CLEAR" << std::endl;
-
 #ifdef DEBUG_COMMANDS
    DBG( "received: " << cmd );
 #endif
@@ -409,18 +407,17 @@ bool Parser::parse( const std::string& s )
       size_t idx;
       is >> idx;
 
-      mrv::Reel reel = browser()->current_reel();
-
-      std::cerr << "REMOVE IMAGE AT IDX " << idx << std::endl;
+      r = browser()->current_reel();
 
       // Store image for insert later
-      size_t e = reel->images.size();
+      size_t e = r->images.size();
       int j = 0;
       for ( ; j != e; ++j )
       {
 	 if ( j == idx )
 	 {
-	    m = reel->images[j];
+	    m = r->images[j];
+	    std::cerr << "Remove image " << m << std::endl;
 	    break;
 	 }
       }
@@ -437,6 +434,8 @@ bool Parser::parse( const std::string& s )
       std::string imgname;
       std::getline( is, imgname, '"' ); // skip first quote
       std::getline( is, imgname, '"' );
+
+      r = browser()->current_reel();
 
       if ( r )
       {
@@ -457,12 +456,16 @@ bool Parser::parse( const std::string& s )
 
 	 if ( m )
 	 {
+	    std::cerr << "INSERT IMAGE AT " << idx << " "
+		      << m->image()->fileroot() << std::endl;
 	    
 	    for ( j = 0; j != e; ++j )
 	    {
 	       if ( j == idx && m->image()->fileroot() == imgname )
 	       {
 		  browser()->insert( idx, m );
+		  browser()->change_image( idx );
+		  browser()->redraw();
 		  ok = true;
 		  break;
 	       }
@@ -471,6 +474,8 @@ bool Parser::parse( const std::string& s )
 	    if ( j == e && m->image()->fileroot() == imgname )
 	    {
 	       browser()->insert( e, m );
+	       browser()->change_image( e );
+	       browser()->redraw();
 	       ok = true;
 	    }
 
@@ -523,6 +528,7 @@ bool Parser::parse( const std::string& s )
 
       if ( r )
       {
+	 std::cerr << "CUrrent IMage " << imgname << std::endl;
 	 mrv::MediaList::iterator j = r->images.begin();
 	 mrv::MediaList::iterator e = r->images.end();
 	 int idx = 0;
@@ -531,7 +537,10 @@ bool Parser::parse( const std::string& s )
 	 {
 	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
 	    {
+	       std::cerr << "FOUND " << imgname << " at idx " 
+			 << idx << std::endl;
 	       browser()->change_image( idx );
+	       browser()->redraw();
 	       found = true;
 	       break;
 	    }
@@ -543,6 +552,7 @@ bool Parser::parse( const std::string& s )
 	    files.push_back( imgname );
 	   
 	    browser()->load( files, false );
+	    browser()->redraw();
 	 }
       }
 
@@ -591,7 +601,7 @@ bool Parser::parse( const std::string& s )
       size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
-	 mrv::Reel r = browser()->reel( unsigned(i) );
+	 r = browser()->reel( unsigned(i) );
 	 cmd = N_("Reel ");
 	 cmd += r->name;
 	 deliver( cmd );
@@ -622,7 +632,7 @@ bool Parser::parse( const std::string& s )
 	 }
       }
 
-      mrv::Reel r = browser()->current_reel();
+      r = browser()->current_reel();
       if (r)
       {
 	 cmd = N_("CurrentReel ");
@@ -707,12 +717,13 @@ bool Parser::parse( const std::string& s )
       boost::int64_t f;
       is >> f;
 
+      std::cerr << "received: seek " << f << std::endl;
+
       ui->uiView->seek( f );
 
       ok = true;
    }
 
-   std::cerr << "CLIENTS RESTORE" << std::endl;
    ui->uiView->_clients = c;
    return ok;
 }

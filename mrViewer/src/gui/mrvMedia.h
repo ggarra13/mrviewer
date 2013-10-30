@@ -35,13 +35,6 @@ namespace mrv {
       media( CMedia* const img );
       ~media();
 
-	 friend
-	 std::ostream& operator<<( std::ostream& o, 
-				   const mrv::gui::media& m )
-	 {
-	    if ( m.image() ) return o << m.image()->filename();
-	    else o << "NULL";
-	 }
 
 	 void position( boost::int64_t x ) { _pos = x; }
 	 boost::int64_t position() const { return _pos; }
@@ -62,16 +55,18 @@ namespace mrv {
 			    uchar r, uchar g, uchar b );
 
 	 boost::int64_t  _pos;
-      CMedia*   _image;
-      fltk::Image* _thumbnail;
-      bool         _thumbnail_frozen;
+	 CMedia*   _image;
+	 fltk::Image* _thumbnail;
+	 bool         _thumbnail_frozen;
 
-      static       int _thumbnail_height;
+	 static       int _thumbnail_height;
     };
 
   }
 
+
   typedef boost::shared_ptr< mrv::gui::media > media;
 }
+
 
 #endif // mrv_gui_media_h
