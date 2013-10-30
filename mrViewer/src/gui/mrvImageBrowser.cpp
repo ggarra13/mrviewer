@@ -265,8 +265,8 @@ namespace mrv {
 		 img->name().c_str(),
 		 img->width(),
 		 img->height(),
-		 img->first_frame(),
-		 img->last_frame()
+		 img->start_frame(),
+		 img->end_frame()
 		 );
       }
     copy_label( info );
@@ -1468,9 +1468,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   view()->send( buf );
 
 	   buf = "CurrentImage \"";
-	   buf += m->image()->directory();
-	   buf += "/";
-	   buf += m->image()->name();
+	   buf += m->image()->fileroot();
 	   buf += "\"";
 	   view()->send( buf );
 	}
@@ -2013,11 +2011,7 @@ void ImageBrowser::load( const stringArray& files,
     if ( timeline()->edl() )
       {
 	mrv::media m = reel->images[sel];
-	assert( m );
-
-	CMedia* img = m->image();
-
-	int64_t pos = timeline()->location( img );
+	int64_t pos = m->position();
 	seek( pos );
       }
   }
@@ -2045,14 +2039,11 @@ void ImageBrowser::load( const stringArray& files,
 
     value(sel);
     change_image();
+
     if ( timeline()->edl() )
       {
 	mrv::media m = reel->images[sel];
-	assert( m );
-
-	CMedia* img = m->image();
-
-	int64_t pos = timeline()->location( img );
+	int64_t pos = m->position() + m->image()->duration() - 1;
 	seek( pos );
       }
   }
@@ -2103,9 +2094,7 @@ void ImageBrowser::load( const stringArray& files,
 	    mrv::media m = current_image();
 	    if ( timeline()->edl() && m )
 	      {
-		CMedia* img = m->image();
-
-		int64_t s = timeline()->location( img );
+		int64_t s = m->position();
 		seek( s );
 	      }
 	  }
@@ -2398,6 +2387,11 @@ void ImageBrowser::load( const stringArray& files,
   {
      boost::int64_t f = tframe;
 
+     char buf[256];
+     sprintf( buf, "seek %" PRId64, f );
+     view()->send(buf);
+
+
      uiMain->uiFrame->value( double(tframe) );
      uiMain->uiFrame->redraw();
 
@@ -2486,7 +2480,7 @@ void ImageBrowser::load( const stringArray& files,
 	if ( timeline()->edl() )
 	  {
 	    f = tframe;
-	    f -= timeline()->location( img );
+	    f -= fg->position();
 	    f += img->first_frame();
 	  }
 
@@ -2567,6 +2561,8 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::set_edl()
   {
      mrv::Reel reel = current_reel();
+     if (!reel) return;
+
      reel->edl = true;
      timeline()->edl( true );
      timeline()->redraw();
@@ -2645,13 +2641,13 @@ void ImageBrowser::load( const stringArray& files,
 	if (! m ) return;
 
 	CMedia* img = m->image();
-	frame = timeline()->offset( img ) + img->frame() - img->first_frame();
+	frame = m->position() + img->frame() - img->first_frame();
 
 	m = reel->images.back();
 	if (! m ) return;
 
 	img = m->image();
-	last  = timeline()->offset( img ) + img->duration();
+	last  = m->position() + img->duration();
 
       }
 

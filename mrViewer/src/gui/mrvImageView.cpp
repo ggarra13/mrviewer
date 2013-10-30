@@ -3551,7 +3551,7 @@ void ImageView::foreground( mrv::media fg )
       {
 	 
 	 // Per session gamma: requested by Willa
-	 //	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
+	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
 	 refresh_fstop();
 	 
@@ -3885,9 +3885,6 @@ void ImageView::seek( const int64_t f )
 {
 
 
-   char buf[256];
-   sprintf( buf, "seek %" PRId64, f );
-   send(buf);
   
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
@@ -3976,13 +3973,13 @@ void ImageView::first_frame()
 
   if ( timeline()->edl() )
     {
-      f = timeline()->location(img);
-      if ( uiMain->uiFrame->value() == f )
-	{
+       f = fg->position();
+       if ( int64_t( uiMain->uiFrame->value() ) == f )
+       {
 	  browser()->previous_image();
 	  last_frame();
 	  return;
-	}
+       }
     }
 
   int64_t t = int64_t( timeline()->minimum() );
@@ -4005,8 +4002,8 @@ void ImageView::last_frame()
   if ( timeline()->edl() )
     {
       f -= img->first_frame();
-      f += timeline()->location(img);
-      if ( uiMain->uiFrame->value() == f )
+      f += fg->position();
+      if ( int64_t( uiMain->uiFrame->value() ) == f )
 	{
 	  browser()->next_image();
 	  return;
@@ -4135,9 +4132,15 @@ void ImageView::play( const CMedia::Playback dir )
    {
       send("playfwd");
    }
-   else
+   else if ( dir == CMedia::kBackwards )
    {
       send("playback");
+   }
+   else
+   {
+      LOG_ERROR( "Not a valid playback mode" );
+      mr::ExceptionHandler::ShowStack();
+      return;
    }
 
 
