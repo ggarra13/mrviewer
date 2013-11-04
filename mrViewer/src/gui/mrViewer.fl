@@ -163,13 +163,12 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {open
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {442 282 405 350} resizable
+        xywh {445 305 405 350} resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
 o->child_of( main->uiMain );} visible
@@ -213,7 +212,7 @@ v->new_reel(name);}
             }
             {fltk::Button} {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->remove_reel();} selected
+              callback {v->remove_reel();}
               tooltip {Delete current reel}
               xywh {52 0 26 26} box UP_BOX
               extra_code {o->image( reel_delete_24 );}
@@ -566,12 +565,13 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
-    Function {make_window()} {open private
+  class PreferencesUI {open
+  } {
+    Function {make_window()} {open selected private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {480 286 640 475} hide resizable
+        xywh {483 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -622,7 +622,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label {UI Elements}
+              label {UI Elements} open
               xywh {23 154 355 96} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
@@ -664,6 +664,11 @@ If you try to open several mrViewers with different images, all these images wil
                 label {Color Area}
                 tooltip {When selected, mrViewer will start with the color area window already open.}
                 xywh {120 66 25 25} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsEDLEdit {
+                label {EDL Edit}
+                tooltip {When selected, mrViewer will start with the histogram already open.}
+                xywh {240 8 25 25} align 8 labelsize 11
               }
             }
             {fltk::Group} {} {

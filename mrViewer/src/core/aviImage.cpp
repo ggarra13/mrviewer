@@ -2388,12 +2388,11 @@ void aviImage::do_seek()
        if ( has_video() && !got_video )
        {
 	  status = decode_video( _seek_frame );
-	  if ( status != kDecodeOK )
+
+	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
 	     IMG_ERROR( "Decode video error seek frame " 
 			<< _seek_frame 
 			<< " status: " << status );
-
-	  find_image( _seek_frame );
        }
        
        if ( has_subtitle() )

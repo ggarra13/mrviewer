@@ -18,7 +18,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#define DEBUG_COMMANDS
+// #define DEBUG_COMMANDS
 // #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 
 #include <boost/bind.hpp>
@@ -348,7 +348,9 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("Reel") )
    {
       std::string name;
-      is >> name;
+      std::getline( is, name, '"' ); // skip first quote
+      std::getline( is, name, '"' );
+
       r = browser()->reel( name.c_str() );
       if (!r) {
 	 r = browser()->new_reel( name.c_str() );
@@ -390,7 +392,8 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("CurrentReel") )
    {
       std::string name;
-      is >> name;
+      std::getline( is, name, '"' ); // skip first quote
+      std::getline( is, name, '"' );
 
       mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
@@ -417,12 +420,12 @@ bool Parser::parse( const std::string& s )
 	 if ( j == idx )
 	 {
 	    m = r->images[j];
-	    std::cerr << "Remove image " << m << std::endl;
 	    break;
 	 }
       }
 
       browser()->remove( idx );
+      edl_group()->redraw();
 
       ok = true;
    }
@@ -437,6 +440,7 @@ bool Parser::parse( const std::string& s )
 
       r = browser()->current_reel();
 
+
       if ( r )
       {
 	 int j;
@@ -444,11 +448,12 @@ bool Parser::parse( const std::string& s )
 
 	 if ( ! m )
 	 {
-	    for ( j = 0; j != e; ++j )
+ 	    for ( j = 0; j != e; ++j )
 	    {
-	       if ( r->images[j]->image()->fileroot() == imgname )
+	       mrv::media fg = r->images[j];
+	       if ( fg->image()->fileroot() == imgname )
 	       {
-		  m = r->images[j];
+		  m = fg;
 		  break;
 	       }
 	    }
@@ -456,8 +461,6 @@ bool Parser::parse( const std::string& s )
 
 	 if ( m )
 	 {
-	    std::cerr << "INSERT IMAGE AT " << idx << " "
-		      << m->image()->fileroot() << std::endl;
 	    
 	    for ( j = 0; j != e; ++j )
 	    {
@@ -466,6 +469,8 @@ bool Parser::parse( const std::string& s )
 		  browser()->insert( idx, m );
 		  browser()->change_image( idx );
 		  browser()->redraw();
+		  edl_group()->refresh();
+		  edl_group()->redraw();
 		  ok = true;
 		  break;
 	       }
@@ -476,6 +481,8 @@ bool Parser::parse( const std::string& s )
 	       browser()->insert( e, m );
 	       browser()->change_image( e );
 	       browser()->redraw();
+	       edl_group()->refresh();
+	       edl_group()->redraw();
 	       ok = true;
 	    }
 
@@ -501,9 +508,11 @@ bool Parser::parse( const std::string& s )
 	 mrv::MediaList::iterator e = r->images.end();
 	 for ( ; j != e; ++j )
 	 {
-	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
+	    mrv::media fg = *j;
+	    if ( fg && fg->image()->fileroot() == imgname )
 	    {
 	       found = true;
+	       m = fg;
 	    }
 	 }
       
@@ -526,21 +535,30 @@ bool Parser::parse( const std::string& s )
       std::getline( is, imgname, '"' ); // skip first quote
       std::getline( is, imgname, '"' );
 
+      boost::int64_t first, last;
+      is >> first;
+      is >> last;
+ 
       if ( r )
       {
-	 std::cerr << "CUrrent IMage " << imgname << std::endl;
 	 mrv::MediaList::iterator j = r->images.begin();
 	 mrv::MediaList::iterator e = r->images.end();
 	 int idx = 0;
 	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
-	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
+	    if ( !(*j) ) continue;
+
+	    CMedia* img = (*j)->image();
+	    if ( img && img->fileroot() == imgname )
 	    {
-	       std::cerr << "FOUND " << imgname << " at idx " 
-			 << idx << std::endl;
+	       img->first_frame( first );
+	       img->last_frame( last );
 	       browser()->change_image( idx );
+	       edl_group()->refresh();
+	       edl_group()->redraw();
 	       browser()->redraw();
+	       m = *j;
 	       found = true;
 	       break;
 	    }
@@ -548,10 +566,12 @@ bool Parser::parse( const std::string& s )
 
 	 if (! found )
 	 {
-	    stringArray files;
-	    files.push_back( imgname );
-	   
+	    LoadList files;
+	    files.push_back( LoadInfo( imgname, first, last ) );
+
 	    browser()->load( files, false );
+	    edl_group()->refresh();
+	    edl_group()->redraw();
 	    browser()->redraw();
 	 }
       }
@@ -571,29 +591,21 @@ bool Parser::parse( const std::string& s )
 	 mrv::MediaList::iterator j = r->images.begin();
 	 mrv::MediaList::iterator e = r->images.end();
 	 int idx = 0;
-	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
-	    if ( (*j)->image() && (*j)->image()->fileroot() == imgname )
+	    if ( !(*j) ) continue;
+	    CMedia* img = (*j)->image();
+	    if ( img && img->fileroot() == imgname )
 	    {
 	       ui->uiView->background( (*j) );
-	       found = true;
+	       ok = true;
 	       break;
 	    }
 	 }
 
-	 if (! found )
-	 {
-	    stringArray files;
-	    files.push_back( imgname );
-	   
-	    browser()->load( files, false );
-	 }
       }
 
       ui->uiView->redraw();
-
-      ok = true;
    }
    else if ( cmd == N_("sync_image") )
    {
@@ -602,8 +614,9 @@ bool Parser::parse( const std::string& s )
       for (size_t i = 0; i < num; ++i )
       {
 	 r = browser()->reel( unsigned(i) );
-	 cmd = N_("Reel ");
+	 cmd = N_("Reel \"");
 	 cmd += r->name;
+	 cmd += "\"";
 	 deliver( cmd );
 
 	 mrv::MediaList::iterator j = r->images.begin();
@@ -635,8 +648,9 @@ bool Parser::parse( const std::string& s )
       r = browser()->current_reel();
       if (r)
       {
-	 cmd = N_("CurrentReel ");
+	 cmd = N_("CurrentReel \"");
 	 cmd += r->name;
+	 cmd += "\"";
 	 deliver( cmd );
       }
       if ( r->edl )
@@ -645,16 +659,21 @@ bool Parser::parse( const std::string& s )
 	 deliver( cmd );
       }
 
-      mrv::media img = ui->uiView->foreground();
-      if ( img )
+      mrv::media m = ui->uiView->foreground();
+      if ( m )
       {
 	 cmd = N_("CurrentImage \"");
-	 cmd += img->image()->fileroot();
-	 cmd += "\"";
-	 deliver( cmd );
+
+	 CMedia* img = m->image();
+	 cmd += img->fileroot();
 
 	 char buf[128];
-	 boost::int64_t frame = img->image()->frame();
+	 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+		  img->last_frame() );
+	 cmd += buf;
+	 deliver( cmd );
+
+	 boost::int64_t frame = m->image()->frame();
 	 sprintf( buf, N_("seek %") PRId64, frame );
 	 deliver( buf );
       }
@@ -716,8 +735,6 @@ bool Parser::parse( const std::string& s )
    {
       boost::int64_t f;
       is >> f;
-
-      std::cerr << "received: seek " << f << std::endl;
 
       ui->uiView->seek( f );
 

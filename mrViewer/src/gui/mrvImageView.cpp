@@ -224,8 +224,10 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( !fg ) return;
 
+  mrv::CMedia* img = fg->image();
+
   char buf[1024];
-  sprintf( buf, "CurrentBGImage \"%s\"", fg->image()->filename() );
+  sprintf( buf, "CurrentBGImage \"%s\"", img->fileroot() );
   view->send( buf );
 
   view->background( fg );
@@ -3518,6 +3520,8 @@ void ImageView::foreground( mrv::media fg )
   mrv::media old = foreground();
   if ( old == fg ) return;
 
+
+
   if ( old && playback() != kStopped )
     {
        old->image()->stop();
@@ -3977,7 +3981,6 @@ void ImageView::first_frame()
        if ( int64_t( uiMain->uiFrame->value() ) == f )
        {
 	  browser()->previous_image();
-	  last_frame();
 	  return;
        }
     }
@@ -4139,7 +4142,6 @@ void ImageView::play( const CMedia::Playback dir )
    else
    {
       LOG_ERROR( "Not a valid playback mode" );
-      mr::ExceptionHandler::ShowStack();
       return;
    }
 
