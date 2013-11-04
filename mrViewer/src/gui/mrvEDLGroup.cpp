@@ -17,7 +17,7 @@
 namespace mrv {
 
 static int kTrackHeight = 68;
-
+static int kXOffset = 64;
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
 fltk::Group(x,y,w,h),
@@ -203,10 +203,13 @@ int EDLGroup::handle( int event )
 
 	       mrv::media_track* track = (mrv::media_track*) child(idx);
 	       mrv::media m = track->media_at( p );
+
 	       if ( m )
 	       {
-		  _drag = ImageBrowser::new_item( m );
+   		  _drag = ImageBrowser::new_item( m );
 		  int j = track->index_for( m );
+		  assert( j != -1 );
+
 		  browser()->reel( idx );
 		  browser()->change_image( j );
 		  browser()->redraw();
@@ -217,7 +220,7 @@ int EDLGroup::handle( int event )
 	    for ( int i = 0; i < children(); ++i )
 	    {
 	       fltk::Widget* c = this->child(i);
-	       if (fltk::event_x() < c->x()) continue;
+	       if (fltk::event_x() < c->x() - kXOffset) continue;
 	       if (fltk::event_x() >= c->x()+c->w()) continue;
 	       if (fltk::event_y() < c->y() - y() ) continue;
 	       if (fltk::event_y() >= c->y() - y() +c->h()) continue;
@@ -225,7 +228,6 @@ int EDLGroup::handle( int event )
 	       if ( c->send( event ) ) return 1;
 	    }
 	    return 0;
-	    // return fltk::Group::handle( event );
 	    break;
 	 }
       case fltk::ENTER:
@@ -242,20 +244,22 @@ int EDLGroup::handle( int event )
 	
 	    if ( key == fltk::DeleteKey )
 	    {
-	       size_t i = 0;
-	       size_t e = children();
+	       browser()->remove_current();
+	       // size_t i = 0;
+	       // size_t e = children();
 
-	       for ( ; i != e; ++i )
-	       {
-		  mrv::media_track* o = (mrv::media_track*)child(i);
-		  mrv::Element* elem = o->selected();
-		  if ( elem )
-		  {
-		     mrv::media m = elem->element();
-		     browser()->remove( m );
-		     return 1;
-		  }
-	       }
+	       // for ( ; i != e; ++i )
+	       // {
+	       // 	  mrv::media_track* o = (mrv::media_track*)child(i);
+	       // 	  mrv::Element* elem = o->selected();
+	       // 	  if ( elem )
+	       // 	  {
+	       // 	     mrv::media m = elem->element();
+	       // 	     browser()->reel( o->reel() );
+	       // 	     browser()->remove( m );
+	       // 	     return 1;
+	       // 	  }
+	       // }
 	       return 0;
 	    }
 
@@ -323,6 +327,7 @@ int EDLGroup::handle( int event )
 	    if ( idx >= children() ) {
 	       delete _drag;
 	       _drag = NULL;
+	       redraw();
 	       return 1;
 	    }
 
@@ -358,6 +363,7 @@ int EDLGroup::handle( int event )
 	    {
 	       t2->insert( p, m );
 	       t1->remove( m );
+	       t2->refresh();
 	    }
 
 	    delete _drag;
@@ -469,10 +475,12 @@ void EDLGroup::zoom( double z )
 
 void EDLGroup::refresh()
 {
-   for ( size_t i = 0; i < children(); ++i )
+   size_t e = children();
+   for ( size_t i = 0; i < e; ++i )
    {
       mrv::media_track* o = (mrv::media_track*) child(i);
       o->refresh();
+      o->redraw();
    }
 }
 

@@ -46,6 +46,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvPreferences.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvHotkey.h"
+#include "mrvEDLWindowUI.h"
 
 // Widgets
 #include "mrvColorAreaUI.h"
@@ -294,6 +295,9 @@ namespace mrv {
 
     ui.get( "reel_list", tmp, 0 );
     uiPrefs->uiPrefsReelList->value(tmp);
+
+    ui.get( "edl_edit", tmp, 0 );
+    uiPrefs->uiPrefsEDLEdit->value(tmp);
 
     ui.get( "image_info", tmp, 0 );
     uiPrefs->uiPrefsImageInfo->value(tmp);
@@ -729,6 +733,11 @@ namespace mrv {
     // Windows
     //
 
+    if ( uiPrefs->uiPrefsEDLEdit->value() )
+      main->uiEDLWindow->uiMain->show();
+    else
+      main->uiEDLWindow->uiMain->hide();
+
     if ( uiPrefs->uiPrefsReelList->value() )
       main->uiReelWindow->uiMain->show();
     else
@@ -927,6 +936,7 @@ namespace mrv {
     ui.set( "pixel_toolbar", (int) uiPrefs->uiPrefsPixelToolbar->value() );
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
+    ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "image_info", (int) uiPrefs->uiPrefsImageInfo->value() );
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
