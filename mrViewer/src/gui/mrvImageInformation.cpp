@@ -351,9 +351,9 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     if ( img->first_frame() != img->last_frame() )
       {
 	 add_int( _("First Frame"), img->first_frame(), true,
-		  (fltk::Callback*)change_first_frame_cb, 1, 100 );
+		  (fltk::Callback*)change_first_frame_cb, 1, 50 );
 	 add_int( _("Last Frame"), img->last_frame(), true,
-		  (fltk::Callback*)change_last_frame_cb, 2, 100 );
+		  (fltk::Callback*)change_last_frame_cb, 2, 55 );
       }
 
     add_int64( _("Frame Start"), img->start_frame() );
@@ -1005,10 +1005,10 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  slider->minimum( minV );
 	  unsigned maxS = maxV;
 
-	  if ( content > 100 && maxV < 100 ) maxS = 1000;
-	  else if ( content > 1000 && maxV < 1000 ) maxS = 10000;
-	  else if ( content > 10000 && maxV < 10000 ) maxS = 100000;
-	  else if ( content > 100000 && maxV < 100000 ) maxS = 1000000;
+	  if ( content > 100000 && maxV <= 100000 ) maxS = 1000000;
+	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
+	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
+	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
 	  slider->maximum( maxS );
 
 	  slider->value( content );
@@ -1160,10 +1160,10 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  slider->minimum( minV );
 
 	  unsigned maxS = maxV;
-	  if ( content > 100 && maxV < 100 ) maxS = 1000;
-	  else if ( content > 1000 && maxV < 1000 ) maxS = 10000;
-	  else if ( content > 10000 && maxV < 10000 ) maxS = 100000;
-	  else if ( content > 100000 && maxV < 100000 ) maxS = 1000000;
+	  if ( content > 100000 && maxV <= 100000 ) maxS = 1000000;
+	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
+	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
+	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
 	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );
