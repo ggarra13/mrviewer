@@ -37,6 +37,7 @@
 #include <GL/gl.h>
 
 #include <boost/filesystem.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <fltk/visual.h>
 #include <fltk/events.h>
@@ -602,7 +603,7 @@ void ImageView::send( std::string m )
 
    if ( i != e )
    {
-      (*i)->write( m );  //<- this line writes all clients
+      (*i)->write( m, "" );  //<- this line writes all clients
    }
 }
 

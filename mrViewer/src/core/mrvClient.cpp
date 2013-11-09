@@ -10,6 +10,7 @@
 
 // #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 
+#include <boost/lexical_cast.hpp>
 #include <boost/asio/deadline_timer.hpp>
 #include <boost/asio/io_service.hpp>
 #include <boost/asio/ip/tcp.hpp>
@@ -196,7 +197,7 @@ void client::handle_connect(const boost::system::error_code& ec,
       ui->uiConnection->uiServerGroup->deactivate();
       ui->uiConnection->uiConnect->label("Disconnect");
 
-      write( N_("sync_image") );
+      write( N_("sync_image"), "" );
 
       // Start the input actor.
       start_read();
@@ -248,11 +249,13 @@ void client::handle_read(const boost::system::error_code& ec)
 	     {
 		if ( parse( line ) )
 		{
-		   write( N_("OK") );
+		   std::string id = boost::lexical_cast<std::string>(socket_.remote_endpoint() );
+		   write( N_("OK"), id );
 		}
 		else
-		{
-		   write( N_("Not OK") );
+		{ 
+		   std::string id = boost::lexical_cast<std::string>(socket_.remote_endpoint() );
+		   write( N_("Not OK"), id );
 		}
 	     }
 	  }

@@ -23,6 +23,7 @@
 
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -85,7 +86,7 @@ Parser::~Parser()
    ui = NULL;
 }
 
-void Parser::write( std::string s )
+void Parser::write( std::string s, std::string id )
 {
    if ( !connected || !ui || !ui->uiView ) return;
 
@@ -95,6 +96,10 @@ void Parser::write( std::string s )
 
    for ( ; i != e; ++i )
    {
+      std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
+      if ( p == id ) {
+	 continue;
+      }
       LOG_CONN( "deliver:" << s );
       (*i)->deliver( s );
    }
@@ -870,8 +875,11 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 		  // send message to all clients
 		  // We need to do this to update multiple clients.
 		  // Note that the original client that sent the
-		  // message will get the message back before the OK.
-		  // write( msg );  
+		  // message will be skipped as it is IDed.
+
+		  std::string id;
+		  id = boost::lexical_cast<std::string>(socket().remote_endpoint() );
+		  write( msg, id );  
 		  deliver( "OK" );
 	       }
 	       else
@@ -1086,7 +1094,6 @@ void server::handle_accept(tcp_session_ptr session,
    if (!ec)
    {
       session->start();
-
    }
    
    start_accept();

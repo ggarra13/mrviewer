@@ -36,7 +36,7 @@ class Parser
      ~Parser();
      
      bool parse( const std::string& m );
-     void write( std::string s );
+     void write( std::string s, const std::string id );
 
      mrv::ImageBrowser* browser() const;
      mrv::EDLGroup*     edl_group() const;
