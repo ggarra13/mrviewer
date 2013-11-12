@@ -180,6 +180,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  step  = -1;
 		  view->playback( ImageView::kBackwards );
 		  img->frame( frame );
+		  img->audio_frame( frame );
 		  img->playback( CMedia::kBackwards );
 		  status = kEndChangeDirection;
 	       }
@@ -248,6 +249,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  step = 1;
 		  view->playback( ImageView::kForwards );
 		  img->frame( frame );
+		  img->audio_frame( frame );
 		  img->playback( CMedia::kForwards );
 		  status = kEndChangeDirection;
 	       }
@@ -360,27 +362,17 @@ void audio_thread( PlaybackData* data )
 
       img->wait_audio();
 
+
       CMedia::DecodeStatus status = img->decode_audio( frame );
+
       switch( status )
       {
 	 case CMedia::kDecodeError:
 	    frame += step;
-	    img->audio_frame( frame );
 	    continue;
 	 case CMedia::kDecodeMissingFrame:
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
-	    if ( img->has_picture() )
-	    {
-	       boost::int64_t f = img->frame();
-	       if ( f <= frame ) {
-		  frame += step;
-	       }
-	       else frame = f;
-	    }
-	    else
-	       frame += step;
-	    img->audio_frame( frame );
 	    continue;
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
@@ -418,7 +410,6 @@ void audio_thread( PlaybackData* data )
       }
 
       img->find_audio(frame);
-      img->audio_frame( frame );
       frame += step;
    }
 

@@ -76,7 +76,7 @@ namespace
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
-//#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -1724,6 +1724,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 	   
+
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
@@ -1747,7 +1748,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
-	   
+	  
 	   
 #ifdef DEBUG_DECODE
 	   fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
@@ -1813,7 +1814,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( pkt.stream_index == audio_stream_index() )
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-	
+
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame

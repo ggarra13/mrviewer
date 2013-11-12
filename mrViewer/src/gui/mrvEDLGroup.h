@@ -11,6 +11,7 @@ class Timeline;
 class Element;
 class ViewerUI;
 class ImageBrowser;
+class ImageView;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
@@ -69,6 +70,7 @@ class EDLGroup : public fltk::Group
      mrv::ViewerUI* main() { return uiMain; }
 
      mrv::ImageBrowser* browser() const;
+     mrv::ImageView* view() const;
 
      virtual int  handle( int event );
      virtual void draw();

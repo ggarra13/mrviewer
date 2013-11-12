@@ -31,7 +31,7 @@ namespace mrv {
 	image_size( 720, 480 );
 	allocate_pixels(_frameStart);
 	_pixel_ratio = 0.9f;
-	_fps = 30.0f;
+	_fps = 29.976f;
 	NTSC_color_bars();
 	break;
       case kPAL:
@@ -56,12 +56,12 @@ namespace mrv {
 	image_size( 1920, 1080 );
 	allocate_pixels(_frameStart);
 	_pixel_ratio = 1.0;
-	_fps = 30.0f;
+	_fps = 29.976f;
 	NTSC_HDTV_color_bars();
 	break;
       }
 
-    _frameEnd = _frame_end = int64_t( _fps * 3 );
+    _frameEnd = _frame_end = int64_t( (_fps * 3) + 0.5f );
   }
 
   void ColorBarsImage::smpte_color_bars( 

@@ -12,6 +12,7 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvImageView.h"
 #include "mrvEDLWindowUI.h"
 
 namespace mrv {
@@ -35,6 +36,11 @@ EDLGroup::~EDLGroup()
 ImageBrowser* EDLGroup::browser() const
 { 
    return uiMain->uiReelWindow->uiBrowser; 
+}
+
+ImageView* EDLGroup::view() const
+{ 
+   return uiMain->uiView; 
 }
 
 // Add a media track and return its index
@@ -275,17 +281,26 @@ int EDLGroup::handle( int event )
 	       {
 
 		  mrv::media_track* o = (mrv::media_track*)child(i);
-		  mrv::Element* elem = o->selected();
-		  if ( elem && key != 'a')
+		  mrv::Reel r = browser()->reel_at( i );
+		  mrv::MediaList::iterator i = r->images.begin();
+		  mrv::MediaList::iterator e = r->images.end();
+
+		  mrv::media fg = view()->foreground();
+
+		  for ( ; i != e; ++i )
 		  {
-		     mrv::media m = elem->element();
-		     int64_t tmi = m->position();
-		     int64_t tma = m->position() + m->image()->duration();
-		     if ( tmi < tmin ) tmin = tmi;
-		     if ( tma > tmax ) tmax = tma;
-		     break;
+		     mrv::media m = *i;
+		     if (m == fg && key != 'a')
+		     {
+			int64_t tmi = m->position();
+			int64_t tma = m->position() + m->image()->duration();
+			if ( tmi < tmin ) tmin = tmi;
+			if ( tma > tmax ) tmax = tma;
+			break;
+		     }
 		  }
-		  else
+
+		  if ( i == e )
 		  {
 		     int64_t tmi = o->minimum();
 		     int64_t tma = o->maximum();
