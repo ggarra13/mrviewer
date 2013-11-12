@@ -1109,6 +1109,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( visible() ) relayout();
 
 
+    edl_group()->refresh();
+    edl_group()->redraw();
+
     const CMedia* img = m->image();
 
     if ( dynamic_cast< const stubImage* >( img ) ||
@@ -1155,6 +1158,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
       add_audio( m );
 
     adjust_timeline();
+
 
     return m;
   }
@@ -1448,6 +1452,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   uiMain->uiMain->copy_label( bufs );
 
 	   view()->foreground( m );
+
+	   uiMain->uiEDLWindow->uiEDLGroup->redraw();
 
 	   if ( timeline()->edl() )
 	   {
