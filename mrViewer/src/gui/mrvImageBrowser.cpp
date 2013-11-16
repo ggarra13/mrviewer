@@ -1457,14 +1457,15 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
 	   if ( timeline()->edl() )
 	   {
-	      if ( sub_idx < int(m->image()->number_of_subtitle_streams()) )
+	      if ( sub_idx != -1 &&
+		   sub_idx < int(m->image()->number_of_subtitle_streams()) )
 		 m->image()->subtitle_stream( sub_idx );
 	      
 	      if ( audio_idx != -1 &&
 		   audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
 	   }
-	  
+
 	   adjust_timeline();
 	   
 
@@ -1594,7 +1595,7 @@ int ImageBrowser::value() const
    * Open new image, sequence or movie file(s) from a load list.
    * 
    */
-void ImageBrowser::load( const mrv::LoadList& files,
+void ImageBrowser::load( mrv::LoadList& files,
 			 bool progressBar )
 {
     //
@@ -1629,13 +1630,13 @@ void ImageBrowser::load( const mrv::LoadList& files,
     	fltk::check();
       }
 
-    mrv::LoadList::const_iterator i = files.begin();
-    mrv::LoadList::const_iterator e = files.end();
+    mrv::LoadList::iterator i = files.begin();
+    mrv::LoadList::iterator e = files.end();
 
     char buf[1024];
     for ( ; i != e; ++i )
       {
-	const mrv::LoadInfo& load = *i;
+	mrv::LoadInfo& load = *i;
 
 
 	if ( w )
@@ -1670,6 +1671,36 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	     {
 		pal_hdtv_color_bars_cb(NULL, this);
 	     }
+	     else if ( load.filename == "Checkered" )
+	     {
+		checkered_cb(NULL, this);
+	     }
+	     else if ( load.filename == "Linear Gradient" )
+	     {
+		linear_gradient_cb(NULL, this);
+	     }
+	     else if ( load.filename == "Luminance Gradient" )
+	     {
+		luminance_gradient_cb(NULL, this);
+	     }
+	     else if ( load.filename == "Gamma 1.4 Chart" )
+	     {
+		gamma_chart_14_cb(NULL, this);
+	     }
+	     else if ( load.filename == "Gamma 1.8 Chart" )
+	     {
+		gamma_chart_18_cb(NULL, this);
+	     }
+	     else if ( load.filename == "Gamma 2.2 Chart" )
+	     {
+		gamma_chart_22_cb(NULL, this);
+	     }
+	     else if ( load.filename == "Gamma 2.4 Chart" )
+	     {
+		gamma_chart_24_cb(NULL, this);
+	     }
+	     // @todo: slate image cannot be created since it needs info
+	     //        from other image.
 	     else
 	     {
 
@@ -1681,7 +1712,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
 			      << N_("'") );
 		}
 	     }
-	     if ( load.audio != "" ) 
+	     if ( fg && load.audio != "" ) 
 	     {
 		fg->image()->audio_file( load.audio.c_str() );
 	     }
@@ -1762,6 +1793,11 @@ void ImageBrowser::load( const mrv::LoadList& files,
      new_reel( reelname.c_str() );
 
      load( sequences );
+
+     mrv::Reel reel = current_reel();
+
+     if ( reel->images.empty() ) return;
+
 
      if ( edl )
      {
@@ -2477,6 +2513,14 @@ void ImageBrowser::load( const stringArray& files,
 	CMedia* img = fg->image();
 	img->abort( true );
 	img->seek( f );
+
+	mrv::media bg = view()->background();
+	if ( bg )
+	{
+	   img = bg->image();
+	   img->abort( true );
+	   img->seek( f );
+	}
       }
 
 
@@ -2656,7 +2700,8 @@ void ImageBrowser::load( const stringArray& files,
 
 	CMedia* img = m->image();
 
-	frame = m->position() + img->frame() - img->first_frame();
+	// frame = m->position() + img->frame() - img->first_frame();
+	frame = m->position() + img->frame();
 
 	m = reel->images.back();
 	if (! m ) return;

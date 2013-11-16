@@ -2527,7 +2527,7 @@ int ImageView::keyDown(unsigned int rawkey)
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
       fps( FPS * 2 );
-      if ( img->playback() == CMedia::kBackwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_backwards();
@@ -2543,7 +2543,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS / 2 );
 
-      if ( img->playback() == CMedia::kBackwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_backwards();
@@ -2551,6 +2551,8 @@ int ImageView::keyDown(unsigned int rawkey)
   }
   else if ( kPlayBack.match( rawkey ) ) 
     {
+
+       std::cerr << "PLAY BACK KEY " << std::endl;
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
 
@@ -2559,7 +2561,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() == CMedia::kBackwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_backwards();
@@ -2575,7 +2577,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS * 2 );
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -2591,7 +2593,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS / 2 );
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -2607,7 +2609,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();

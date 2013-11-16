@@ -324,6 +324,9 @@ namespace mrv {
 	break;
       }
 
+    _frameStart = _frame_start = 1;
+    _frameEnd = _frame_end = int64_t( _fps * 3 + 0.5 );
+
     return true;
   }
 

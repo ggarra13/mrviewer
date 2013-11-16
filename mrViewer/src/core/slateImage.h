@@ -30,7 +30,11 @@ namespace mrv {
     virtual const char* const format() const { return "Slate"; }
 
     virtual bool has_changed() { return false; }
-    bool fetch( const boost::int64_t frame );
+    virtual bool fetch( const boost::int64_t frame );
+
+    virtual bool initialize();
+    virtual bool release();
+
 
   protected:
     void draw_text( double x, double y, const char* text );

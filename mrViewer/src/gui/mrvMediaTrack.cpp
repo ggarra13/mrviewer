@@ -630,7 +630,7 @@ void media_track::draw()
  
       fltk::Rectangle r(rx+dx, y(), dw, h() );
  
-      if ( main()->uiView->foreground() == fg )
+      if ( browser()->current_image() == fg )
       {
 	 fltk::setcolor( fltk::DARK_YELLOW );
       }

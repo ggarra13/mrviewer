@@ -34,7 +34,11 @@ namespace mrv {
     _gamma = 1.0f;
     _internal = true;
 
-    _fileroot = strdup( src->fileroot() );
+
+    std::string name = "Slate ";
+    name += src->fileroot();
+
+    _fileroot = strdup( name.c_str() );
 
     _w = src->width();
     _h = src->height();
@@ -44,8 +48,8 @@ namespace mrv {
     _fend   = src->last_frame();
     _ctime = time(NULL);
 
-    _frameStart = 1;
-    _frameEnd   = 60;
+    _frameStart = _frame_start = 1;
+    _frameEnd   = _frame_end = 60;
 
     image_size( _w, _h );
     allocate_pixels( _fstart );
@@ -53,6 +57,18 @@ namespace mrv {
     default_layers();
   }
 
+
+bool slateImage::initialize()
+{ 
+   MagickWandGenesis();
+   return true;
+}
+
+bool slateImage::release()
+{
+   MagickWandTerminus();
+   return true;
+}
 
   void slateImage::draw_text( double x, double y, const char* text )
   { 
@@ -149,7 +165,6 @@ namespace mrv {
   bool slateImage::fetch( const boost::int64_t frame )
   {
     MagickBooleanType status;
-    MagickWandGenesis();
 
     wand = NewMagickWand();
     if ( wand == NULL )
@@ -325,8 +340,6 @@ namespace mrv {
 
 
     DestroyMagickWand( wand );
-
-    MagickWandTerminus();
 
 //     thumbnail_create();
 

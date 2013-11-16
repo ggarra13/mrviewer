@@ -134,6 +134,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       next = timeline->image_at( f );
 
 
+
 	       if ( next )
 	       {
 		  f = timeline->global_to_local( f );
