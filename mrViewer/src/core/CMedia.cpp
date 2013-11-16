@@ -1095,10 +1095,15 @@ void CMedia::play(const CMedia::Playback dir,
   assert( uiMain != NULL );
   assert( _threads.size() == 0 );
 
+  if ( _frame < first_frame() ) _frame = first_frame();
+  if ( _frame > last_frame() )  _frame = last_frame();
+
   _audio_frame = _frame;
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _dts = _frame;
+
+
   _audio_clock = av_gettime() / 1000000.0;
   _video_clock = av_gettime() / 1000000.0;
 
@@ -1233,7 +1238,10 @@ std::string CMedia::name() const
  */
 std::string CMedia::directory() const
 {
-  fs::path file = fs::path( fileroot() );
+   std::string name = fileroot();
+   if ( name.substr(0, 6) == "Slate " )
+      name = name.substr(6, name.size() );
+  fs::path file = fs::path( name );
   file = fs::absolute( file.branch_path() );
   std::string path = fs::canonical( file ).string();
   return path;
