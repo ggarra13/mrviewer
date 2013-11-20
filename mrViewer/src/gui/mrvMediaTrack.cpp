@@ -64,7 +64,7 @@ void media_track::add( mrv::media m, boost::int64_t frame )
    m->position( frame );
 
    mrv::media o = reel->images[ reel->images.size()-1 ];
-   timeline()->maximum( frame + o->image()->duration() );
+   timeline()->maximum( frame + o->image()->duration() - 1 );
 
    timeline()->redraw();
    parent()->redraw();
@@ -228,7 +228,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    for (size_t i = idx+1; i < e; ++i )
    {
       mrv::media& fg = reel->images[i-1];
-      boost::int64_t end = fg->position() + fg->image()->duration();
+      boost::int64_t end = fg->position() + fg->image()->duration() - 1;
       reel->images[i]->position( end );
    }
 
@@ -242,7 +242,7 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    {
       boost::int64_t start = reel->images[i+1]->position();
       mrv::media& o = reel->images[i];
-      boost::int64_t ee = o->position() + o->image()->duration();
+      boost::int64_t ee = o->position() + o->image()->duration() - 1;
       boost::int64_t ss = o->position();
       
       // Shift indexes of position
@@ -308,7 +308,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    {
       boost::int64_t start = reel->images[i+1]->position();
       mrv::media& o = reel->images[i];
-      boost::int64_t ee = o->position() + o->image()->duration();
+      boost::int64_t ee = o->position() + o->image()->duration() - 1;
       boost::int64_t ss = o->position();
       
       // Shift indexes of position
@@ -625,7 +625,7 @@ void media_track::draw()
       int64_t pos = fg->position();
 
       int dx = t->slider_position( pos, ww );
-      int dw = t->slider_position( pos+fg->image()->duration(), ww );
+      int dw = t->slider_position( pos+fg->image()->duration()-1, ww );
       dw -= dx;
  
       fltk::Rectangle r(rx+dx, y(), dw, h() );

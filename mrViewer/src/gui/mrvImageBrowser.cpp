@@ -2707,7 +2707,7 @@ void ImageBrowser::load( const stringArray& files,
 	if (! m ) return;
 
 	img  = m->image();
-	last = m->position() + img->duration();
+	last = m->position() + img->duration() - 1;
 
       }
 
