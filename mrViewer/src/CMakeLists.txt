@@ -184,6 +184,7 @@ SET( SOURCES
   gui/mrvMainWindow.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp
+  gui/mrvReel.cpp
   gui/mrvTimecode.cpp
   gui/mrvTimeline.cpp
   gui/mrvVectorscope.cpp

@@ -440,31 +440,7 @@ Timeline::~Timeline()
     mrv::Reel reel = browser()->current_reel();
     if (!reel) return mrv::media();
 
-    mrv::MediaList::const_iterator i = reel->images.begin();
-    mrv::MediaList::const_iterator e = reel->images.end();
-
-    double mn = minimum();
-    double mx = maximum();
-    if ( mn > mx ) 
-    {
-       double t = mx;
-       mx = mn; mn = t;
-    }
-
-    if ( f < mn ) return mrv::media();
-    if ( f > mx ) return mrv::media();
-
-    int64_t  t = 1;
-    unsigned r = 0;
-    for ( ; i != e; ++i, ++r )
-      {
-	CMedia* img = (*i)->image();
-	t += img->duration();
- 	if ( t > f ) break;
-      }
-    if ( r >= reel->images.size() ) return mrv::media();
-
-    return reel->images[r];
+    return reel->media_at( f );
   }
 
   CMedia* Timeline::image_at( const int64_t f ) const

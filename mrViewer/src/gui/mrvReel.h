@@ -25,6 +25,8 @@ namespace mrv
        Reel_t( const char* n ) : name( n ), edl(false) {}
        ~Reel_t() {}
 
+       mrv::media media_at( const boost::int64_t f ) const;
+
        bool         edl;
        std::string  name;
        MediaList    images;
