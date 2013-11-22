@@ -1372,6 +1372,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	 }
 
 	value(0);
+
+	view()->foreground( reel->images.front() );
       }
 
     if ( reel->edl )
