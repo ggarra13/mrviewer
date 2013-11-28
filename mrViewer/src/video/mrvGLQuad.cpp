@@ -727,6 +727,7 @@ namespace mrv {
 
     _uvMax.u = _uvMax.v = 1.0f;
 
+
     //
     // Use power of two textures if card does not support arbitrary resolutions
     //
@@ -827,7 +828,7 @@ namespace mrv {
 	_shader->setTextureUnit( "lut", 3 );
 
 	_shader->setUniform( "gain",  _view->gain() );
-	_shader->setUniform( "gamma", 1.0f/_view->gamma() );
+	_shader->setUniform( "gamma", 1.0f/_gamma );
 
 	_shader->setUniform( "channel", _view->channel_type() );
 

@@ -26,8 +26,10 @@ using namespace std;
 #include "core/mrvThread.h"
 
 #include "gui/mrvIO.h"
+#include "gui/mrvReel.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvImageBrowser.h"
 #include "mrViewer.h"
 
 #include "mrvPlayback.h"
@@ -43,7 +45,7 @@ namespace
 
 
 #if 1
-#  define DEBUG_DECODE
+#  define DEBU_DECODE
 #  define DEBUG_VIDEO
 #  define DEBUG_AUDIO
 #endif
@@ -92,7 +94,9 @@ namespace mrv {
 EndStatus handle_loop( boost::int64_t& frame,
 		       int&     step,
 		       CMedia* img, 
+		       bool    fg,
 		       mrv::ViewerUI* uiMain,
+		       const mrv::Reel  reel,
 		       const mrv::Timeline* timeline,
 		       const mrv::CMedia::DecodeStatus end )
 {
@@ -100,8 +104,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
    EndStatus status = kEndIgnore;
    CMedia* next = NULL;
-   
-   boost::int64_t offset = timeline->offset( img );
    
    boost::int64_t last = ( int64_t ) timeline->maximum();
    boost::int64_t first = ( int64_t ) timeline->minimum();
@@ -121,31 +123,34 @@ EndStatus handle_loop( boost::int64_t& frame,
       case CMedia::kDecodeLoopEnd:
 	 {
 
-	    if ( timeline->edl() )
+	    if ( reel->edl )
 	    {
 	       boost::int64_t f = frame;
 
 	       CMedia::Mutex& m = img->video_mutex();
 	       SCOPED_LOCK( m );
 
+
 	       f -= img->first_frame();
-	       f += timeline->location(img);
+	       f += reel->location(img);
 
-	       next = timeline->image_at( f );
-
+	       if ( f <= timeline->maximum() )
+	       {
+		  next = reel->image_at( f );
+	       }
 
 
 	       if ( next )
 	       {
-		  f = timeline->global_to_local( f );
+		  f = reel->global_to_local( f );
 	       }
 	       else
 	       {
 		  if ( loop == ImageView::kLooping )
 		  {
 		     f = boost::int64_t(timeline->minimum());
-		     next = timeline->image_at( f );
-		     f = timeline->global_to_local( f );
+		     next = reel->image_at( f );
+		     f = reel->global_to_local( f );
 		  }
 		  else
 		  {
@@ -162,7 +167,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  SCOPED_LOCK( m2 );
 		  img->playback( CMedia::kStopped );
 		  next->seek( f );
-		  next->play( CMedia::kForwards, uiMain );
+		  next->play( CMedia::kForwards, uiMain, fg );
 		  status = kEndNextImage;
 		  break;
 	       }
@@ -195,7 +200,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	 }
       case CMedia::kDecodeLoopStart:
 	 {
-	    if ( timeline->edl() )
+	    if ( reel->edl )
 	    {
 	       boost::int64_t f = frame;
 
@@ -203,18 +208,21 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       SCOPED_LOCK( m );
 
 	       f -= img->first_frame();
-	       f += timeline->location(img);
+	       f += reel->location(img);
 
-	       next = timeline->image_at( f );
+	       if ( f >= timeline->minimum() )
+	       {
+		  next = reel->image_at( f );
+	       }
 
-	       f = timeline->global_to_local( f );
+	       f = reel->global_to_local( f );
 	       if ( !next )
 	       {
 		  if ( loop == ImageView::kLooping )
 		  {
 		     f = boost::int64_t( timeline->maximum() );
-		     next = timeline->image_at( f );
-		     f = timeline->global_to_local( f );
+		     next = reel->image_at( f );
+		     f = reel->global_to_local( f );
 		  }
 		  else
 		  {
@@ -231,7 +239,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 		  img->playback( CMedia::kStopped );
 		  next->seek( f );
-		  next->play( CMedia::kBackwards, uiMain );
+		  next->play( CMedia::kBackwards, uiMain, fg );
 		  status = kEndNextImage;
 		  break;
 	       }
@@ -279,7 +287,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 
 CMedia::DecodeStatus check_loop( int64_t& frame,
-				 CMedia* img, 
+				 CMedia* img,
+				 mrv::Reel reel,
 				 mrv::Timeline* timeline )
 {
    boost::int64_t last = boost::int64_t( timeline->maximum() );
@@ -290,16 +299,16 @@ CMedia::DecodeStatus check_loop( int64_t& frame,
    CMedia::Mutex& m = img->video_mutex();
    SCOPED_LOCK( m );
 
-   if ( timeline->edl() )
+   if ( reel->edl )
    {
-      boost::int64_t s = timeline->location(img);
+      boost::int64_t s = reel->location(img);
       boost::int64_t e = s + img->duration() - 1;
 
       if ( e < last )  last = e;
       if ( s > first ) first = s;
 
-      last = timeline->global_to_local( last );
-      first = timeline->global_to_local( first );
+      last = reel->global_to_local( last );
+      first = reel->global_to_local( first );
    }
    else
    {
@@ -334,6 +343,7 @@ void audio_thread( PlaybackData* data )
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
+   bool fg = data->fg;
 
    // delete the data (we don't need it anymore)
    delete data;
@@ -345,12 +355,18 @@ void audio_thread( PlaybackData* data )
 
 
    mrv::ImageView*      view = uiMain->uiView;
-   mrv::Timeline*   timeline = uiMain->uiTimeline;
-   assert( timeline != NULL );
+   mrv::Timeline*      timeline = uiMain->uiTimeline;
+   mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
+
+   int idx = fg ? view->fg_reel() : view->bg_reel();
+   if ( idx < 0 ) return;
+
+   mrv::Reel   reel = browser->reel_at( idx );
+   if (!reel) return;
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER AUDIO THREAD " << img->name() << " stopped? " << img->stopped()
+   cerr << "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
 
@@ -400,14 +416,16 @@ void audio_thread( PlaybackData* data )
 
 
 
-      if ( !img->has_picture() && timeline->edl() )
+      if ( !img->has_picture() && reel->edl )
       { 
-	 int64_t f = frame + timeline->location(img) - img->first_frame();
+	 int64_t f = frame + reel->location(img) - img->first_frame();
 	 if ( f > timeline->maximum() )
 	    f = int64_t( timeline->maximum() );
 	 if ( f < timeline->minimum() )
 	    f = int64_t( timeline->minimum() );
-	 timeline->value( double( f ) );
+
+	 if ( fg )
+	    timeline->value( double( f ) );
       }
 
       img->find_audio(frame);
@@ -415,7 +433,7 @@ void audio_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT AUDIO THREAD " << img->name() << " stopped? " 
+   cerr << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 
 	<< img->stopped()  
 	<< " frame " << img->audio_frame() << endl;
 #endif
@@ -485,7 +503,7 @@ void subtitle_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT SUBTITLE THREAD " << img->name() 
+    cerr << "EXIT  SUBTITLE THREAD " << img->name() 
 	 << " stopped? " << img->stopped() << endl;
 #endif
 
@@ -503,15 +521,25 @@ void video_thread( PlaybackData* data )
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
+   bool fg = data->fg;
 
-   mrv::Timeline*   timeline = uiMain->uiTimeline;
-   assert( timeline != NULL );
+   mrv::ImageView*      view = uiMain->uiView;
+   mrv::Timeline*      timeline = uiMain->uiTimeline;
+   mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
+
+   int idx = fg ? view->fg_reel() : view->bg_reel();
+   if ( idx < 0 ) {
+      LOG_ERROR( "REEL INDEX IS NEGATIVE FOR FG " << fg );
+      return;
+   }
+   mrv::Reel   reel = browser->reel_at( idx );
+   if (!reel) return;
 
    int64_t frame        = img->frame();
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
+   cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
 
@@ -563,8 +591,8 @@ void video_thread( PlaybackData* data )
 	       if (! img->aborted() )
 	       {
 	       
-		  EndStatus end = handle_loop( frame, step, img, uiMain, 
-					       timeline, status );
+		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
+					       reel, timeline, status );
 
 	       }
 
@@ -624,16 +652,19 @@ void video_thread( PlaybackData* data )
 
       img->find_image( frame );
 
-      if ( timeline->edl() )
+      if ( reel->edl )
       {
 	 assert( img != NULL );
-	 int64_t f = frame + timeline->location(img) - img->first_frame();
-
-	 assert( f <= timeline->maximum() );
-	 assert( f >= timeline->minimum() );
+	 int64_t f = frame + reel->location(img) - img->first_frame();
 
 
-	 timeline->value( double( f ) );
+	 if ( fg )
+	 {
+	    assert( f <= timeline->maximum() );
+	    assert( f >= timeline->minimum() );
+
+	    timeline->value( double( f ) );
+	 }
       }
 
       frame += step;
@@ -641,8 +672,8 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT VIDEO THREAD " << img->name() << " stopped? "
-	<< img->stopped()
+   cerr << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
+	<< img->name() << " stopped? " << img->stopped()
 	<< " at " << frame << "  img->frame: " << img->frame() << endl;
 #endif
 
@@ -663,8 +694,19 @@ void decode_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   mrv::Timeline*   timeline = uiMain->uiTimeline;
+   bool fg = data->fg;
+
+   mrv::ImageView*      view = uiMain->uiView;
+   mrv::Timeline*      timeline = uiMain->uiTimeline;
+   mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
    assert( timeline != NULL );
+
+   int idx = fg ? view->fg_reel() : view->bg_reel();
+   if ( idx < 0 ) return;
+
+   mrv::Reel   reel = browser->reel_at( idx );
+   if (!reel) return;
+
 
    int step = (int) img->playback();
 
@@ -672,8 +714,8 @@ void decode_thread( PlaybackData* data )
    int64_t frame = img->dts();
 
 #ifdef DEBUG_THREADS
-   cerr << "ENTER DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame "
-	<< frame << " step " << step << endl;
+   cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame 
+	<< " step " << step << endl;
 #endif
 
    // delete the data (we don't need it anymore)
@@ -700,7 +742,7 @@ void decode_thread( PlaybackData* data )
       
 
       CMedia* next = NULL;
-      CMedia::DecodeStatus status = check_loop( frame, img, timeline );
+      CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
 	 // Lock thread until loop status is resolved on all threads
@@ -714,8 +756,8 @@ void decode_thread( PlaybackData* data )
 	 {
 	    // Do the looping, taking into account ui state
 	    // and return new frame and step.
-	    EndStatus end = handle_loop( frame, step, img, 
-					 uiMain, timeline, status );
+	    EndStatus end = handle_loop( frame, step, img, fg,
+					 uiMain, reel, timeline, status );
 	 }
 
 	 if ( img->stopped() ) break;
@@ -746,7 +788,7 @@ void decode_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
+   cerr << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
 	<< img->frame() << "  dts: " << img->dts() << endl;
 #endif
 

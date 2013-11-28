@@ -141,11 +141,14 @@ namespace mrv {
 #define LOG_INFO(x)    mrvLOG_INFO( kModule, x << std::endl )
 #define LOG_CONN(x)    mrvCONN_INFO( kModule, x << std::endl )
 
+#ifdef DEBUG
 #define DBG(x) do { \
     mrv::io::info << _("mrViewer DBG : ") << x << " at "            \
 		  << __FUNCTION__ << ", " << __LINE__ << std::endl; \
   } while(0)
-
+#else
+#define DBG(x)
+#endif
 
 
 #endif 

@@ -625,7 +625,7 @@ void media_track::draw()
       int64_t pos = fg->position();
 
       int dx = t->slider_position( pos, ww );
-      int dw = t->slider_position( pos+fg->image()->duration()-1, ww );
+      int dw = t->slider_position( pos+fg->image()->duration(), ww );
       dw -= dx;
  
       fltk::Rectangle r(rx+dx, y(), dw, h() );

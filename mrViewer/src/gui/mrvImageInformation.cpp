@@ -359,6 +359,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_int64( _("Frame Start"), img->start_frame() );
     add_int64( _("Frame End"), img->end_frame() );
 
+    add_float( _("FPS"), img->fps() );
+
     ++group;
     add_int( _("Width"), img->width() );
     add_int( _("Height"), img->height() );

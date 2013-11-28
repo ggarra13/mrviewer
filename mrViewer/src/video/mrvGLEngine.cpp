@@ -1052,6 +1052,8 @@ void GLEngine::draw_images( ImageList& images )
 	}
       
       if ( i+1 == e ) wipe_area();
+
+      quad->gamma( img->gamma() );
       quad->draw( texWidth, texHeight );
       
       glEnable( GL_BLEND );

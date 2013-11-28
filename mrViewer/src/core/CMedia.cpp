@@ -373,9 +373,9 @@ void CMedia::allocate_pixels_stereo( const boost::int64_t& frame,
   SCOPED_LOCK( _mutex );
   _hires.reset( new image_type( frame, width(), height(), 
 				channels, format, pixel_type ) );
-  _stereo[0].reset( new image_type( frame, width(), height(), 
+  _stereo[0].reset( new image_type( frame, width(), height(),
 				    channels, format, pixel_type ) );
-  _stereo[1].reset( new image_type( frame, width(), height(), 
+  _stereo[1].reset( new image_type( frame, width(), height(),
 				    channels, format, pixel_type ) );
 }
 
@@ -1081,7 +1081,8 @@ void CMedia::thread_exit()
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir, 
-		  mrv::ViewerUI* const uiMain)
+		  mrv::ViewerUI* const uiMain,
+		  bool fg )
 {
 
   if ( dir == _playback && !_threads.empty() ) return;
@@ -1117,7 +1118,7 @@ void CMedia::play(const CMedia::Playback dir,
   //    IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
-  PlaybackData* data = new PlaybackData( uiMain, this );
+  PlaybackData* data = new PlaybackData( fg, uiMain, this );
   assert( data != NULL );
   assert( data->uiMain != NULL );
   assert( data->image != NULL );
