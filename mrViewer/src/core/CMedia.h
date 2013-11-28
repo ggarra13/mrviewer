@@ -544,7 +544,9 @@ namespace mrv {
     inline time_t mtime() const { return _mtime; }
 
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir,  mrv::ViewerUI* const uiMain);
+       virtual void play( const Playback dir,
+			  mrv::ViewerUI* const uiMain,
+			  bool fg );
 
        void abort(bool t) { _aborted = t; }
        bool aborted() { return _aborted; }

@@ -555,7 +555,7 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
    
    mrv::image_type_ptr rgba( new image_type( frame, w, h, 
 					     3 + 1*has_alpha(),
-					     format,
+					     format, 
 					     image_type::kFloat ) );
    
    

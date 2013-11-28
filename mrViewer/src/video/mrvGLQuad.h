@@ -30,6 +30,9 @@ namespace mrv {
     GLQuad( const ImageView* view );
     ~GLQuad();
 
+       float gamma() const { return _gamma; }
+       void gamma( const float f ) { _gamma = f; }
+
     void bind( const image_type_ptr& pic );
 
     void draw( const unsigned dw, const unsigned dh ) const;
@@ -89,6 +92,7 @@ namespace mrv {
     GLLut3d*     _lut;
     const CMedia*   _image;
     
+       float        _gamma;
     bool         _blend;
     GLenum       _blend_mode;
     unsigned     _num_textures;

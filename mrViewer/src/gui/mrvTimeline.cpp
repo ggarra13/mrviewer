@@ -375,18 +375,7 @@ Timeline::~Timeline()
     mrv::Reel reel = browser()->current_reel();
     if (!reel) return 0;
 
-    mrv::MediaList::const_iterator i = reel->images.begin();
-    mrv::MediaList::const_iterator e = reel->images.end();
-
-    uint64_t t = 0;
-    for ( ; i != e && (*i)->image() != img; ++i )
-      {
-	CMedia* timg = (*i)->image();
-	assert( timg != NULL );
-
-	t += timg->duration();
-      }
-    return t;
+    return reel->offset( img );
   }
 
   /** 
@@ -458,30 +447,10 @@ Timeline::~Timeline()
    */
 int64_t Timeline::global_to_local( const int64_t frame ) const
   {
-
     mrv::Reel reel = browser()->current_reel();
     if (!reel) return 0;
 
-    mrv::MediaList::const_iterator i = reel->images.begin();
-    mrv::MediaList::const_iterator e = reel->images.end();
-
-    int64_t r = 0;
-    uint64_t t = 0;
-    for ( ; i != e; ++i )
-      {
-	CMedia* img = (*i)->image();
-	assert( img != NULL );
-
-	uint64_t size = img->duration();
-	if ( boost::uint64_t(frame) > t && t+size < boost::uint64_t(frame) )
-	   t += size;
-	else if ( boost::uint64_t(frame) >= t )
-	{
-	   r = frame - int64_t(t) + img->first_frame() - 1;
-	   return r;
-	}
-      }
-    return r;
+    return reel->global_to_local( frame );
   }
 
   void change_timeline_display( mrv::ViewerUI* uiMain )

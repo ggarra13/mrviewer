@@ -254,10 +254,10 @@ const char* const VideoFrame::fmts[] = {
 			 ps.a * s + pt.a * t
 			 );
 
-	    assert( p.r >= 0.f && p.r <= 1.0f );
-	    assert( p.g >= 0.f && p.g <= 1.0f );
-	    assert( p.b >= 0.f && p.b <= 1.0f );
-	    assert( p.a >= 0.f && p.a <= 1.0f );
+	    // assert( p.r >= 0.f && p.r <= 1.0f );
+	    // assert( p.g >= 0.f && p.g <= 1.0f );
+	    // assert( p.b >= 0.f && p.b <= 1.0f );
+	    // assert( p.a >= 0.f && p.a <= 1.0f );
 
 
 	    scaled->pixel( x, y, p );
@@ -304,15 +304,15 @@ const char* const VideoFrame::fmts[] = {
 	   const ImagePixel& pt = pixel(x, yt);
 
 
-	    assert( ps.r >= 0.f && ps.r <= 1.0f );
-	    assert( ps.g >= 0.f && ps.g <= 1.0f );
-	    assert( ps.b >= 0.f && ps.b <= 1.0f );
-	    assert( ps.a >= 0.f && ps.a <= 1.0f );
+	    // assert( ps.r >= 0.f && ps.r <= 1.0f );
+	    // assert( ps.g >= 0.f && ps.g <= 1.0f );
+	    // assert( ps.b >= 0.f && ps.b <= 1.0f );
+	    // assert( ps.a >= 0.f && ps.a <= 1.0f );
 
-	    assert( pt.r >= 0.f && pt.r <= 1.0f );
-	    assert( pt.g >= 0.f && pt.g <= 1.0f );
-	    assert( pt.b >= 0.f && pt.b <= 1.0f );
-	    assert( pt.a >= 0.f && pt.a <= 1.0f );
+	    // assert( pt.r >= 0.f && pt.r <= 1.0f );
+	    // assert( pt.g >= 0.f && pt.g <= 1.0f );
+	    // assert( pt.b >= 0.f && pt.b <= 1.0f );
+	    // assert( pt.a >= 0.f && pt.a <= 1.0f );
 
 	    ImagePixel p(
 			 ps.r * s + pt.r * t,
@@ -321,10 +321,10 @@ const char* const VideoFrame::fmts[] = {
 			 ps.a * s + pt.a * t
 			 );
 
-	    assert( p.r >= 0.f && p.r <= 1.0f );
-	    assert( p.g >= 0.f && p.g <= 1.0f );
-	    assert( p.b >= 0.f && p.b <= 1.0f );
-	    assert( p.a >= 0.f && p.a <= 1.0f );
+	    // assert( p.r >= 0.f && p.r <= 1.0f );
+	    // assert( p.g >= 0.f && p.g <= 1.0f );
+	    // assert( p.b >= 0.f && p.b <= 1.0f );
+	    // assert( p.a >= 0.f && p.a <= 1.0f );
 
 	    scaled->pixel( x, y, p );
 	}

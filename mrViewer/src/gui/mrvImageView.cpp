@@ -646,6 +646,8 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _volume( 1.0f ),
   _flip( kFlipNone ),
   _timeout( NULL ),
+  _fg_reel( -1 ),
+  _bg_reel( -1 ),
   _mode( kSelection ),
   _selection( mrv::Rectd(0,0) ),
   _playback( kStopped ),
@@ -1053,16 +1055,54 @@ void ImageView::timeout()
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
-  mrv::Timeline* timeline = this->timeline();
+   mrv::Timeline* timeline = this->timeline();
+   mrv::Reel reel = browser()->current_reel();
+  mrv::Reel bgreel = browser()->reel_at( _bg_reel );
+
   if ( timeline && timeline->edl() )
     {
       int64_t frame = boost::int64_t( timeline->value() );
-      mrv::media newfg = timeline->media_at( frame );
 
-      if ( newfg && newfg != foreground() ) 
+      char bufs[256];  bufs[0] = 0;
+
+      mrv::media fg, bg;
+
+      if ( reel )
       {
-  	 foreground( newfg );
+	 fg = reel->media_at( frame );
+
+	 if ( fg && fg != foreground() ) 
+	 {
+	    DBG( "CHANGE TO FG " << fg->image()->name() );
+	    foreground( fg );
+	 }
       }
+
+      if ( bgreel )
+      {
+	 bg = bgreel->media_at( frame );
+
+	 if ( bg && bg != background() ) 
+	 {
+	    background( bg );
+	 }
+      }
+
+
+      if ( fg && bg )
+      {
+	 sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
+		  fg->image()->name().c_str(),
+		  bg->image()->name().c_str() );
+	 uiMain->uiMain->copy_label( bufs );
+      }
+      else if ( fg )
+      {
+	 sprintf( bufs, "mrViewer    FG: %s", 
+		  fg->image()->name().c_str() );
+	 uiMain->uiMain->copy_label( bufs );
+      }
+
     }
 
   load_list();
@@ -2552,7 +2592,6 @@ int ImageView::keyDown(unsigned int rawkey)
   else if ( kPlayBack.match( rawkey ) ) 
     {
 
-       std::cerr << "PLAY BACK KEY " << std::endl;
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
 
@@ -2975,12 +3014,6 @@ void ImageView::refresh()
   if ( fg ) 
     {
       CMedia* img = fg->image();
-//       if ( playback() != kStopped ) 
-// 	{
-// // 	  cerr << img->filename() << " curr: " << frame() << endl;
-// // 	  frame( frame() );
-// 	  img->play( (CMedia::Playback) playback(), uiMain );
-// 	}
       img->refresh();
     }
 
@@ -2988,11 +3021,6 @@ void ImageView::refresh()
   if ( bg )
     {
       CMedia* img = bg->image();
-//       if ( playback() != kStopped ) 
-// 	{
-// // 	  frame( frame() );
-// 	  img->play();
-// 	}
       img->refresh();
     }
 }
@@ -3024,6 +3052,7 @@ void ImageView::flush_caches()
 	   && (_engine->shader_type() == DrawEngine::kNone)  )
 	{
 	  img->clear_sequence();
+	  img->fetch(frame());
 	}
     }
 }
@@ -3183,6 +3212,13 @@ void ImageView::gamma( const float f )
   if ( _gamma == f ) return;
 
   _gamma = f;
+
+  mrv::media fg = foreground();
+  if ( fg )
+  {
+     fg->image()->gamma( f );
+  }
+
 
   char buf[256];
   sprintf( buf, "Gamma %g", f );
@@ -3648,7 +3684,13 @@ void ImageView::audio_stream( unsigned int idx )
  */
 void ImageView::background( mrv::media bg )
 {
-  if ( bg == _bg ) return;
+  mrv::media old = background();
+  if ( old == bg ) return;
+
+  if ( old && playback() != kStopped )
+    {
+       old->image()->stop();
+    }
 
   delete_timeout();
 
@@ -3659,7 +3701,7 @@ void ImageView::background( mrv::media bg )
 
       img->volume( _volume );
       if ( playback() != kStopped ) 
-	img->play( (CMedia::Playback) playback(), uiMain );
+	 img->play( (CMedia::Playback) playback(), uiMain, false );
       else 
 	img->refresh();
 
@@ -3977,15 +4019,22 @@ void ImageView::first_frame()
   if (!img) return;
 
   int64_t f = img->first_frame();
+  DBG( "FIRST FRAME " << f );
 
   if ( timeline()->edl() )
     {
        f = fg->position();
+       DBG( "FG POSITION " << f );
+
        if ( int64_t( uiMain->uiFrame->value() ) == f )
        {
+	  DBG( "BROWSER PREVIOUS IMAGE " );
 	  browser()->previous_image();
 	  return;
        }
+       
+       DBG( "FRAME VALUE " << f );
+       uiMain->uiFrame->value( f );
     }
 
   int64_t t = int64_t( timeline()->minimum() );
@@ -4014,6 +4063,9 @@ void ImageView::last_frame()
 	  browser()->next_image();
 	  return;
 	}
+      
+      uiMain->uiFrame->value( f );
+
     }
 
   int64_t t = int64_t( timeline()->maximum() );
@@ -4159,13 +4211,17 @@ void ImageView::play( const CMedia::Playback dir )
   mrv::media fg = foreground();
   if ( fg )
     {
-      fg->image()->play( dir, uiMain);
+       DBG( "******* PLAY FG " << fg->image()->name() );
+       fg->image()->play( dir, uiMain, true );
     }
 
 
   mrv::media bg = background();
-  if ( bg && bg != fg ) bg->image()->play( dir, uiMain);
-
+  if ( bg && bg != fg ) 
+  {
+     DBG( "******* PLAY BG " << bg->image()->name() );
+     bg->image()->play( dir, uiMain, false);
+  }
 
 }
 
