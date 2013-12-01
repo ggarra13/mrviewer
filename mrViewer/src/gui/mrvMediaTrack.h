@@ -68,6 +68,8 @@ class media_track : public fltk::Group
 
      mrv::Timeline* timeline() const;
      
+     // void index( size_t idx ) { _reel_idx = idx; }
+
      // Move a media in track without changing its start or end frames.
      // If media overlaps other media, everything is shifted
      void shift_media( mrv::media m, boost::int64_t frame );
