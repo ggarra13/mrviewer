@@ -4313,10 +4313,11 @@ void ImageView::fps( double x )
   mrv::media bg = background();
   if ( bg ) bg->image()->play_fps( x );
 
-//   timeline()->fps( x );
-//   uiMain->uiFrame->fps( x );
-//   uiMain->uiStartFrame->fps( x );
-//   uiMain->uiEndFrame->fps( x );
+  timeline()->fps( x );
+  uiMain->uiFrame->fps( x );
+  uiMain->uiStartFrame->fps( x );
+  uiMain->uiEndFrame->fps( x );
+  
   uiMain->uiFPS->value( x );
 
 

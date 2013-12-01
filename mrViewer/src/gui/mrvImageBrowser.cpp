@@ -426,10 +426,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     _reel = (unsigned int) _reels.size() - 1;
     _reel_display->add( name.c_str() );
     _reel_display->value( _reel );
-
     uiMain->uiEDLWindow->uiEDLGroup->add_media_track( _reel );
-
-
     if ( ! _reels.empty() ) change_reel();
     return reel;
   }
