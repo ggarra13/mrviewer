@@ -44,8 +44,8 @@ namespace
 #define AV_NOSYNC_THRESHOLD 10.0
 
 
-#if 1
-#  define DEBU_DECODE
+#if 0
+#  define DEBUG_DECODE
 #  define DEBUG_VIDEO
 #  define DEBUG_AUDIO
 #endif
