@@ -3705,6 +3705,7 @@ void ImageView::background( mrv::media bg )
       else 
 	img->refresh();
 
+      img->play_fps( fps() );
       img->image_damage( img->image_damage() | CMedia::kDamageContents );      
 
       bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();

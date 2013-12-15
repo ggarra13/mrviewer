@@ -278,11 +278,6 @@ int main( const int argc, char** argv )
 
 #if defined(WIN32) || defined(WIN64)
 
-#ifdef BORLAND5
-# define __argc _argc
-# define __argv _argv
-#endif
-
 #include <windows.h>
 
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 

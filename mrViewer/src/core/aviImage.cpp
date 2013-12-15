@@ -1000,17 +1000,17 @@ void aviImage::video_stream( int x )
   _num_channels = 0;
   if ( x < 0 ) return;
 
-  PixelFormat fmt[] = { PIX_FMT_BGR24, PIX_FMT_BGR32, PIX_FMT_NONE };
+  static PixelFormat fmt[] = { PIX_FMT_BGR24, PIX_FMT_BGR32, PIX_FMT_NONE };
   PixelFormat* fmts = fmt;
 
 
   if ( supports_yuv() )
     {
-       PixelFormat fmts2[] = { PIX_FMT_BGR24, PIX_FMT_BGR32,
-			       PIX_FMT_YUV444P,
-			       PIX_FMT_YUV422P,
-			       PIX_FMT_YUV420P,
-			       PIX_FMT_NONE };
+       static PixelFormat fmts2[] = { PIX_FMT_BGR24, PIX_FMT_BGR32,
+				      PIX_FMT_YUV444P,
+				      PIX_FMT_YUV422P,
+				      PIX_FMT_YUV420P,
+				      PIX_FMT_NONE };
        fmts = fmts2;
 
 //       mask |= ( (1 << PIX_FMT_YUVA420P) | (1 << PIX_FMT_YUV444P) | 
