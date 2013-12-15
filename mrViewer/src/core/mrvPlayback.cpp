@@ -344,6 +344,7 @@ void audio_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
    bool fg = data->fg;
+   CMedia* bg = data->bg;
 
    // delete the data (we don't need it anymore)
    delete data;
@@ -522,6 +523,7 @@ void video_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
    bool fg = data->fg;
+   CMedia* bg = data->bg;
 
    mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*      timeline = uiMain->uiTimeline;
@@ -695,6 +697,7 @@ void decode_thread( PlaybackData* data )
    assert( img != NULL );
 
    bool fg = data->fg;
+   CMedia* bg = data->bg;
 
    mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*      timeline = uiMain->uiTimeline;
@@ -740,11 +743,24 @@ void decode_thread( PlaybackData* data )
 
       frame += step;
       
+      int64_t orig_frame = frame;
 
       CMedia* next = NULL;
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
+	 {
+	    CMedia::Barrier* barrier = img->bg_barrier();
+	    if ( fg )
+	    {
+	       barrier->wait();
+	    }
+	    else
+	    {
+	       barrier->notify_all();
+	    }
+	 }
+
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );

@@ -163,12 +163,13 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {} {
+  class ReelUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {445 305 405 350} resizable
+        xywh {448 328 405 350} resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
 o->child_of( main->uiMain );} visible
@@ -263,8 +264,8 @@ v->new_reel(name);}
             {fltk::Button} {} {
               label BG
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->change_background();}
-              tooltip {Set image as background}
+              callback {v->change_background();} selected
+              tooltip {Set reel images as background}
               xywh {26 0 26 26} box UP_BOX labelfont 1
             }
             {fltk::Button} {} {
@@ -565,13 +566,12 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {open
-  } {
-    Function {make_window()} {open selected private
+  class PreferencesUI {} {
+    Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {483 286 640 475} resizable visible
+        xywh {486 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open

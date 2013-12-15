@@ -38,8 +38,7 @@ extern "C" {
 #undef  __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
 
@@ -52,6 +51,7 @@ namespace fs = boost::filesystem;
 #include "mrvPlayback.h"
 #include "mrvFrameFunctors.h"
 #include "mrvThread.h"
+#include "mrvBarrier.h"
 #include "mrvI8N.h"
 #include "mrvOS.h"
 #include "mrvTimer.h"
@@ -95,6 +95,8 @@ std::string CMedia::icc_profile_float;
 
 unsigned CMedia::_audio_cache_size;
 unsigned CMedia::_video_cache_size;
+
+mrv::CMedia::Barrier* CMedia::_bg_barrier = NULL;
 
 /** 
  * Constructor
@@ -155,6 +157,8 @@ CMedia::CMedia() :
   forw_ctx( NULL ),
   _audio_engine( NULL )
 {
+   if (_bg_barrier == NULL )
+      _bg_barrier = new Barrier(1);
   audio_initialize();
   mrv::PacketQueue::initialize();
 }

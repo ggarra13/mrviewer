@@ -59,6 +59,7 @@ namespace fs = boost::filesystem;
 #  define snprintf _snprintf
 #endif
 
+
 namespace 
 {
   const char* kModule = "db";
@@ -1413,11 +1414,11 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   }
 	}
 
-	mrv::media m = reel->images[sel];
-	assert( m != NULL );
+	mrv::media m;
+	if ( sel < reel->images.size() ) m = reel->images[sel];
 
 
-	if ( m != om )
+	if ( m != om && m != NULL )
 	{
 	   DBG( "FG REEL " << _reel );
 
@@ -1438,10 +1439,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   }
 
 	   adjust_timeline();
-	}
 
-	if ( m ) 
-	{
 	   std::string buf;
 	   buf = "CurrentReel \"";
 	   buf += reel->name;
@@ -1456,8 +1454,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 		    img->last_frame() );
 	   buf += txt;
 	   view()->send( buf );
-
 	}
+
       }
   }
 
@@ -2489,17 +2487,24 @@ void ImageBrowser::load( const stringArray& files,
 	if ( reel )
 	{
 	   mrv::media bg = view()->background();
-	   img = bg->image();
-	   img->abort( true );
-	   img->stop();
+	   if ( bg )
+	   {
+	      img = bg->image();
+	      img->abort( true );
+	      img->stop();
 
-	   bg = reel->media_at( tframe );
-	   f = reel->global_to_local( tframe );
+	      bg = reel->media_at( tframe );
 
-	   img = bg->image();
-	   img->abort( true );
-	   img->stop();
-	   img->seek( f );
+	      if ( bg )
+	      {
+		 f = reel->global_to_local( tframe );
+
+		 img = bg->image();
+		 img->abort( true );
+		 img->stop();
+		 img->seek( f );
+	      }
+	   }
 	}
 
       }
