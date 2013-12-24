@@ -33,7 +33,7 @@ ENDIF( UNIX )
 # Project's subdirectories
 #
 ADD_SUBDIRECTORY( mrViewer )
-ADD_SUBDIRECTORY( tools )
+#ADD_SUBDIRECTORY( tools )
 
 IF( UNIX )
   ADD_SUBDIRECTORY( shaders )
