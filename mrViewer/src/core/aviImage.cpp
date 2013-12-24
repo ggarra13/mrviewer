@@ -76,7 +76,7 @@ namespace
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
-//#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -339,9 +339,10 @@ void aviImage::flush_video()
 
 
 /// VCR play (and cache frames if needed) sequence
-void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain)
+void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
+		     bool fg )
 {
-  CMedia::play( dir, uiMain );
+   CMedia::play( dir, uiMain, fg );
 }
 
 // Seek to the requested frame
@@ -885,6 +886,7 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 
 bool aviImage::find_image( const boost::int64_t frame )
 {
+   assert( frame >= 0 );
 
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "find_image");
@@ -1517,7 +1519,7 @@ bool aviImage::initialize()
 	{
 
 	  // Allocate an av frame
-	  _av_frame = avcodec_alloc_frame();
+	  _av_frame = av_frame_alloc();
 
 	  populate();
 
@@ -1724,6 +1726,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 	   
+
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
@@ -1747,7 +1750,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
-	   
+	  
 	   
 #ifdef DEBUG_DECODE
 	   fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
@@ -1813,7 +1816,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( pkt.stream_index == audio_stream_index() )
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-	
+
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
@@ -2355,6 +2358,8 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 void aviImage::do_seek()
 {
 
+   DBG( "seek frame " << _seek_frame );
+
   _dts = _seek_frame;
 
   bool got_video = !has_video();
@@ -2388,12 +2393,11 @@ void aviImage::do_seek()
        if ( has_video() && !got_video )
        {
 	  status = decode_video( _seek_frame );
-	  if ( status != kDecodeOK )
+
+	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
 	     IMG_ERROR( "Decode video error seek frame " 
 			<< _seek_frame 
 			<< " status: " << status );
-
-	  find_image( _seek_frame );
        }
        
        if ( has_subtitle() )
@@ -2916,7 +2920,7 @@ static AVFrame *alloc_picture(enum PixelFormat pix_fmt, int width, int height)
     uint8_t *picture_buf;
     int size;
 
-    picture = avcodec_alloc_frame();
+    picture = av_frame_alloc();
     if (!picture)
         return NULL;
     size = avpicture_get_size(pix_fmt, width, height);
@@ -2983,7 +2987,7 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img,
       {
 	 ImagePixel p = hires->pixel( x, y );
 
-	 float gamma = 1.0f/ui->uiView->gamma();
+	 float gamma = 1.0f/img->gamma();
 	 if ( gamma != 1.0f )
 	 {
 	    p.r = powf( p.r, gamma );
@@ -3444,7 +3448,7 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 			      const CMedia* img)
 {
    AVPacket pkt = {0};
-   AVFrame* frame = avcodec_alloc_frame();
+   AVFrame* frame = av_frame_alloc();
    avcodec_get_frame_defaults(frame);
    int got_packet, ret, dst_nb_samples;
    

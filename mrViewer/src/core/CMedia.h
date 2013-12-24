@@ -544,7 +544,9 @@ namespace mrv {
     inline time_t mtime() const { return _mtime; }
 
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir,  mrv::ViewerUI* const uiMain);
+       virtual void play( const Playback dir,
+			  mrv::ViewerUI* const uiMain,
+			  bool fg );
 
        void abort(bool t) { _aborted = t; }
        bool aborted() { return _aborted; }
@@ -683,6 +685,8 @@ namespace mrv {
     DecodeStatus decode_audio( boost::int64_t& frame );
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
+
+       Barrier* bg_barrier() { return _bg_barrier; }
 
     Barrier* loop_barrier()       { return _loop_barrier; }
     Mutex& decode_mutex()         { return _decode_mutex; }
@@ -917,7 +921,7 @@ namespace mrv {
 
        double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
-
+    static Barrier*  _bg_barrier;     //!< Barrier to sync bg and fg images
 
     bool    _seek_req;        //!< set internally for seeking
     boost::int64_t _seek_frame;      //!< seek frame requested

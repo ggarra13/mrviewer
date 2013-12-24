@@ -38,8 +38,7 @@ extern "C" {
 #undef  __STDC_CONSTANT_MACROS
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
-#include <boost/filesystem/path.hpp>
-#include <boost/filesystem/operations.hpp>
+#include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
 
@@ -52,6 +51,7 @@ namespace fs = boost::filesystem;
 #include "mrvPlayback.h"
 #include "mrvFrameFunctors.h"
 #include "mrvThread.h"
+#include "mrvBarrier.h"
 #include "mrvI8N.h"
 #include "mrvOS.h"
 #include "mrvTimer.h"
@@ -95,6 +95,8 @@ std::string CMedia::icc_profile_float;
 
 unsigned CMedia::_audio_cache_size;
 unsigned CMedia::_video_cache_size;
+
+mrv::CMedia::Barrier* CMedia::_bg_barrier = NULL;
 
 /** 
  * Constructor
@@ -155,6 +157,8 @@ CMedia::CMedia() :
   forw_ctx( NULL ),
   _audio_engine( NULL )
 {
+   if (_bg_barrier == NULL )
+      _bg_barrier = new Barrier(1);
   audio_initialize();
   mrv::PacketQueue::initialize();
 }
@@ -373,9 +377,9 @@ void CMedia::allocate_pixels_stereo( const boost::int64_t& frame,
   SCOPED_LOCK( _mutex );
   _hires.reset( new image_type( frame, width(), height(), 
 				channels, format, pixel_type ) );
-  _stereo[0].reset( new image_type( frame, width(), height(), 
+  _stereo[0].reset( new image_type( frame, width(), height(),
 				    channels, format, pixel_type ) );
-  _stereo[1].reset( new image_type( frame, width(), height(), 
+  _stereo[1].reset( new image_type( frame, width(), height(),
 				    channels, format, pixel_type ) );
 }
 
@@ -1081,7 +1085,8 @@ void CMedia::thread_exit()
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir, 
-		  mrv::ViewerUI* const uiMain)
+		  mrv::ViewerUI* const uiMain,
+		  bool fg )
 {
 
   if ( dir == _playback && !_threads.empty() ) return;
@@ -1095,10 +1100,15 @@ void CMedia::play(const CMedia::Playback dir,
   assert( uiMain != NULL );
   assert( _threads.size() == 0 );
 
+  if ( _frame < first_frame() ) _frame = first_frame();
+  if ( _frame > last_frame() )  _frame = last_frame();
+
   _audio_frame = _frame;
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _dts = _frame;
+
+
   _audio_clock = av_gettime() / 1000000.0;
   _video_clock = av_gettime() / 1000000.0;
 
@@ -1108,11 +1118,11 @@ void CMedia::play(const CMedia::Playback dir,
   // clear all packets
   clear_packets();
 
-  if ( ! seek_to_position( _frame ) )
-     IMG_ERROR( _("Could not seek to frame ") << _frame );
+  // if ( ! seek_to_position( _frame ) )
+  //    IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
-  PlaybackData* data = new PlaybackData( uiMain, this );
+  PlaybackData* data = new PlaybackData( fg, uiMain, this );
   assert( data != NULL );
   assert( data->uiMain != NULL );
   assert( data->image != NULL );
@@ -1233,7 +1243,10 @@ std::string CMedia::name() const
  */
 std::string CMedia::directory() const
 {
-  fs::path file = fs::path( fileroot() );
+   std::string name = fileroot();
+   if ( name.substr(0, 6) == "Slate " )
+      name = name.substr(6, name.size() );
+  fs::path file = fs::path( name );
   file = fs::absolute( file.branch_path() );
   std::string path = fs::canonical( file ).string();
   return path;

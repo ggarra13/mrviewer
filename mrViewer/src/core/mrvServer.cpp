@@ -18,11 +18,12 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-
+// #define DEBUG_COMMANDS
 // #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
+#include <boost/lexical_cast.hpp>
 #include <boost/shared_ptr.hpp>
 #include <boost/make_shared.hpp>
 #include <boost/enable_shared_from_this.hpp>
@@ -37,12 +38,14 @@
 
 #include "mrvClient.h"
 #include "mrvServer.h"
-#include "mrViewer.h"
+#include "gui/mrvEDLGroup.h"
+#include "mrvEDLWindowUI.h"
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvReel.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "mrViewer.h"
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
@@ -83,7 +86,7 @@ Parser::~Parser()
    ui = NULL;
 }
 
-void Parser::write( std::string s )
+void Parser::write( std::string s, std::string id )
 {
    if ( !connected || !ui || !ui->uiView ) return;
 
@@ -93,26 +96,46 @@ void Parser::write( std::string s )
 
    for ( ; i != e; ++i )
    {
+      std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
+      if ( p == id ) {
+	 continue;
+      }
+      LOG_CONN( "deliver:" << s );
       (*i)->deliver( s );
    }
 }
 
-bool Parser::parse( const std::string& m )
+mrv::ImageBrowser* Parser::browser() const
+{
+   return ui->uiReelWindow->uiBrowser;
+}
+
+mrv::EDLGroup* Parser::edl_group() const
+{
+   return ui->uiEDLWindow->uiEDLGroup;
+}
+
+bool Parser::parse( const std::string& s )
 {
    if ( !connected ) return false;
 
-   std::istringstream is( m );
+   std::istringstream is( s );
    std::string cmd;
    is >> cmd;
 
    if ( !ui ) return false;
 
    static mrv::Reel r;
+   static mrv::media m;
 
    bool ok = false;
 
    ParserList c = ui->uiView->_clients;
    ui->uiView->_clients.clear();
+
+#ifdef DEBUG_COMMANDS
+   DBG( "received: " << cmd );
+#endif
 
    if ( cmd == N_("GLPathShape") )
    {
@@ -162,9 +185,9 @@ bool Parser::parse( const std::string& m )
       int b;
       is >> b;
       if ( b )
-	 ui->uiReelWindow->uiBrowser->set_edl();
+	 browser()->set_edl();
       else
-	 ui->uiReelWindow->uiBrowser->clear_edl();
+	 browser()->clear_edl();
       ok = true;
    }
    else if ( cmd == N_("Looping") )
@@ -330,33 +353,158 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("Reel") )
    {
       std::string name;
-      is >> name;
-      r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
+      std::getline( is, name, '"' ); // skip first quote
+      std::getline( is, name, '"' );
+
+      r = browser()->reel( name.c_str() );
       if (!r) {
-	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
+	 r = browser()->new_reel( name.c_str() );
       }
+      ok = true;
+   }
+   else if ( cmd == N_("ShiftMediaStart") )
+   {
+      int reel;
+      is >> reel;
+
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t diff;
+      is >> diff;
+
+      edl_group()->shift_media_start( reel, imgname, diff );
+
+      ok = true;
+   }
+   else if ( cmd == N_("ShiftMediaEnd") )
+   {
+      int reel;
+      is >> reel;
+
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t diff;
+      is >> diff;
+
+      edl_group()->shift_media_end( reel, imgname, diff );
+
       ok = true;
    }
    else if ( cmd == N_("CurrentReel") )
    {
       std::string name;
-      is >> name;
+      std::getline( is, name, '"' ); // skip first quote
+      std::getline( is, name, '"' );
 
-      mrv::Reel now = ui->uiReelWindow->uiBrowser->current_reel();
+      mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
 	 r = now;
       else
-	 r = ui->uiReelWindow->uiBrowser->reel( name.c_str() );
+	 r = browser()->reel( name.c_str() );
       if (!r) {
-	 r = ui->uiReelWindow->uiBrowser->new_reel( name.c_str() );
+	 r = browser()->new_reel( name.c_str() );
       }
       ok = true;
+   }
+   else if ( cmd == N_("RemoveImage") )
+   {
+      size_t idx;
+      is >> idx;
+
+      r = browser()->current_reel();
+
+      // Store image for insert later
+      size_t e = r->images.size();
+      int j = 0;
+      for ( ; j != e; ++j )
+      {
+	 if ( j == idx )
+	 {
+	    m = r->images[j];
+	    break;
+	 }
+      }
+
+      browser()->remove( idx );
+      edl_group()->redraw();
+
+      ok = true;
+   }
+   else if ( cmd == N_("InsertImage") )
+   {
+      int idx;
+      is >> idx;
+
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      r = browser()->current_reel();
+
+
+      if ( r )
+      {
+	 int j;
+	 size_t e = r->images.size();
+
+	 if ( ! m )
+	 {
+ 	    for ( j = 0; j != e; ++j )
+	    {
+	       mrv::media fg = r->images[j];
+	       if ( fg->image()->fileroot() == imgname )
+	       {
+		  m = fg;
+		  break;
+	       }
+	    }
+	 }
+
+	 if ( m )
+	 {
+	    
+	    for ( j = 0; j != e; ++j )
+	    {
+	       if ( j == idx && m->image()->fileroot() == imgname )
+	       {
+		  browser()->insert( idx, m );
+		  browser()->change_image( idx );
+		  browser()->redraw();
+		  edl_group()->refresh();
+		  edl_group()->redraw();
+		  ok = true;
+		  break;
+	       }
+	    }
+	    
+	    if ( j == e && m->image()->fileroot() == imgname )
+	    {
+	       browser()->insert( e, m );
+	       browser()->change_image( e );
+	       browser()->redraw();
+	       edl_group()->refresh();
+	       edl_group()->redraw();
+	       ok = true;
+	    }
+
+	    m.reset();
+	 }
+      }
+
    }
    else if ( cmd == N_("Image") )
    {
       std::string imgname;
-      is >> imgname;
-      imgname = imgname.substr( 1, imgname.size() - 2 );
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t start, end;
+      is >> start;
+      is >> end;
 
       bool found = false;
       if ( r )
@@ -365,21 +513,20 @@ bool Parser::parse( const std::string& m )
 	 mrv::MediaList::iterator e = r->images.end();
 	 for ( ; j != e; ++j )
 	 {
-	    std::string fileroot = (*j)->image()->directory();
-	    fileroot += "/";
-	    fileroot += (*j)->image()->name();
-	    if ( (*j)->image() && fileroot == imgname )
+	    mrv::media fg = *j;
+	    if ( fg && fg->image()->fileroot() == imgname )
 	    {
 	       found = true;
+	       m = fg;
 	    }
 	 }
       
 	 if (!found)
 	 {
-	    stringArray files;
-	    files.push_back( imgname );
+	    LoadList files;
+	    files.push_back( LoadInfo( imgname, start, end ) );
 	   
-	    ui->uiReelWindow->uiBrowser->load( files, false );
+	    browser()->load( files, false );
 	 }
       }
 
@@ -390,9 +537,13 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("CurrentImage") )
    {
       std::string imgname;
-      is >> imgname;
-      imgname = imgname.substr( 1, imgname.size() - 2 );
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
 
+      boost::int64_t first, last;
+      is >> first;
+      is >> last;
+ 
       if ( r )
       {
 	 mrv::MediaList::iterator j = r->images.begin();
@@ -401,12 +552,18 @@ bool Parser::parse( const std::string& m )
 	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
-	    std::string fileroot = (*j)->image()->directory();
-	    fileroot += "/";
-	    fileroot += (*j)->image()->name();
-	    if ( (*j)->image() && fileroot == imgname )
+	    if ( !(*j) ) continue;
+
+	    CMedia* img = (*j)->image();
+	    if ( img && img->fileroot() == imgname )
 	    {
-	       ui->uiReelWindow->uiBrowser->change_image( idx );
+	       img->first_frame( first );
+	       img->last_frame( last );
+	       browser()->change_image( idx );
+	       edl_group()->refresh();
+	       edl_group()->redraw();
+	       browser()->redraw();
+	       m = *j;
 	       found = true;
 	       break;
 	    }
@@ -414,10 +571,13 @@ bool Parser::parse( const std::string& m )
 
 	 if (! found )
 	 {
-	    stringArray files;
-	    files.push_back( imgname );
-	   
-	    ui->uiReelWindow->uiBrowser->load( files, false );
+	    LoadList files;
+	    files.push_back( LoadInfo( imgname, first, last ) );
+
+	    browser()->load( files, false );
+	    edl_group()->refresh();
+	    edl_group()->redraw();
+	    browser()->redraw();
 	 }
       }
 
@@ -428,50 +588,40 @@ bool Parser::parse( const std::string& m )
    else if ( cmd == N_("CurrentBGImage") )
    {
       std::string imgname;
-      is >> imgname;
-      imgname = imgname.substr( 1, imgname.size() - 2 );
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
 
       if ( r )
       {
 	 mrv::MediaList::iterator j = r->images.begin();
 	 mrv::MediaList::iterator e = r->images.end();
 	 int idx = 0;
-	 bool found = false;
 	 for ( ; j != e; ++j, ++idx )
 	 {
-	    std::string fileroot = (*j)->image()->directory();
-	    fileroot += "/";
-	    fileroot += (*j)->image()->name();
-	    if ( (*j)->image() && fileroot == imgname )
+	    if ( !(*j) ) continue;
+	    CMedia* img = (*j)->image();
+	    if ( img && img->fileroot() == imgname )
 	    {
 	       ui->uiView->background( (*j) );
-	       found = true;
+	       ok = true;
 	       break;
 	    }
 	 }
 
-	 if (! found )
-	 {
-	    stringArray files;
-	    files.push_back( imgname );
-	   
-	    ui->uiReelWindow->uiBrowser->load( files, false );
-	 }
       }
 
       ui->uiView->redraw();
-
-      ok = true;
    }
    else if ( cmd == N_("sync_image") )
    {
       std::string cmd;
-      size_t num = ui->uiReelWindow->uiBrowser->number_of_reels();
+      size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
-	 mrv::Reel r = ui->uiReelWindow->uiBrowser->reel( unsigned(i) );
-	 cmd = N_("Reel ");
+	 r = browser()->reel( unsigned(i) );
+	 cmd = N_("Reel \"");
 	 cmd += r->name;
+	 cmd += "\"";
 	 deliver( cmd );
 
 	 mrv::MediaList::iterator j = r->images.begin();
@@ -482,36 +632,53 @@ bool Parser::parse( const std::string& m )
 	    cmd += (*j)->image()->directory();
 	    cmd += "/";
 	    cmd += (*j)->image()->name();
-	    cmd += "\"";
-	    deliver( cmd );
+	    cmd += "\" ";
 
 	    char buf[128];
+	    boost::int64_t start = (*j)->image()->first_frame();
+	    boost::int64_t end   = (*j)->image()->last_frame();
+
+	    sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
+		     start, end );
+	    cmd += buf;
+
+	    deliver( cmd );
+
 	    boost::int64_t frame = (*j)->image()->frame();
 	    sprintf( buf, N_("seek %") PRId64, frame );
 	    deliver( buf );
 	 }
       }
 
-      mrv::Reel r = ui->uiReelWindow->uiBrowser->current_reel();
+      r = browser()->current_reel();
       if (r)
       {
-	 cmd = N_("CurrentReel ");
+	 cmd = N_("CurrentReel \"");
 	 cmd += r->name;
+	 cmd += "\"";
+	 deliver( cmd );
+      }
+      if ( r->edl )
+      {
+	 cmd = N_("EDL 1");
 	 deliver( cmd );
       }
 
-      mrv::media img = ui->uiView->foreground();
-      if ( img )
+      mrv::media m = ui->uiView->foreground();
+      if ( m )
       {
 	 cmd = N_("CurrentImage \"");
-	 cmd += img->image()->directory();
-	 cmd += "/";
-	 cmd += img->image()->name();
-	 cmd += "\"";
-	 deliver( cmd );
+
+	 CMedia* img = m->image();
+	 cmd += img->fileroot();
 
 	 char buf[128];
-	 boost::int64_t frame = img->image()->frame();
+	 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+		  img->last_frame() );
+	 cmd += buf;
+	 deliver( cmd );
+
+	 boost::int64_t frame = m->image()->frame();
 	 sprintf( buf, N_("seek %") PRId64, frame );
 	 deliver( buf );
       }
@@ -708,13 +875,19 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 		  // send message to all clients
 		  // We need to do this to update multiple clients.
 		  // Note that the original client that sent the
-		  // message will get the message back before the OK.
-		  write( msg );  
+		  // message will be skipped as it is IDed.
+
+		  std::string id;
+		  id = boost::lexical_cast<std::string>(socket().remote_endpoint() );
+		  write( msg, id );  
 		  deliver( "OK" );
 	       }
 	       else
 	       {
-		  deliver( "Not OK" );
+		  std::string err = "Not OK for '";
+		  err += msg;
+		  err += "'";
+		  deliver( err );
 	       }
 	    }
 	 }
@@ -921,7 +1094,6 @@ void server::handle_accept(tcp_session_ptr session,
    if (!ec)
    {
       session->start();
-
    }
    
    start_accept();

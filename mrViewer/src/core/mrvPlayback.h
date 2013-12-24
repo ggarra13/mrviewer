@@ -35,23 +35,29 @@ namespace mrv {
   // Callback data that must be filled
   //
   struct PlaybackData {
-    mrv::ViewerUI*   uiMain;
-    CMedia*  image;
+       bool fg;
+       mrv::ViewerUI*   uiMain;
+       CMedia*  image;
+       CMedia*  bg;
 
-    PlaybackData( mrv::ViewerUI* const main,
-		  CMedia* const img ) :
-      uiMain( main ),
-      image( img )
-    {
-      assert( image  != NULL );
-    }
-
-    PlaybackData( const PlaybackData& b ) :
-      uiMain( b.uiMain ),
-      image( b.image )
-    {
-      assert( image != NULL );
-    }
+       PlaybackData( bool foreground, mrv::ViewerUI* const main,
+		     CMedia* const img, CMedia* background = NULL ) :
+       fg( foreground ),
+       uiMain( main ),
+       image( img ),
+       bg( background )
+       {
+	  assert( image  != NULL );
+       }
+       
+       PlaybackData( const PlaybackData& b ) :
+       fg( b.fg ),
+       uiMain( b.uiMain ),
+       image( b.image ),
+       bg( b.bg )
+       {
+	  assert( image != NULL );
+       }
 
   };
 

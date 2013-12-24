@@ -37,6 +37,7 @@
 #include <GL/gl.h>
 
 #include <boost/filesystem.hpp>
+#include <boost/lexical_cast.hpp>
 
 #include <fltk/visual.h>
 #include <fltk/events.h>
@@ -224,8 +225,10 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( !fg ) return;
 
+  mrv::CMedia* img = fg->image();
+
   char buf[1024];
-  sprintf( buf, "CurrentBGImage \"%s\"", fg->image()->filename() );
+  sprintf( buf, "CurrentBGImage \"%s\"", img->fileroot() );
   view->send( buf );
 
   view->background( fg );
@@ -395,6 +398,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     }
   else if ( idx == kEDLEdit )
   {
+     uiMain->uiReelWindow->uiBrowser->set_edl();
      uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
      uiMain->uiEDLWindow->uiMain->show();
   }
@@ -599,8 +603,7 @@ void ImageView::send( std::string m )
 
    if ( i != e )
    {
-      LOG_CONN( m );
-      (*i)->write( m );  //<- this line writes all clients
+      (*i)->write( m, "" );  //<- this line writes all clients
    }
 }
 
@@ -643,6 +646,8 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _volume( 1.0f ),
   _flip( kFlipNone ),
   _timeout( NULL ),
+  _fg_reel( -1 ),
+  _bg_reel( -1 ),
   _mode( kSelection ),
   _selection( mrv::Rectd(0,0) ),
   _playback( kStopped ),
@@ -1050,16 +1055,54 @@ void ImageView::timeout()
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
-  mrv::Timeline* timeline = this->timeline();
+   mrv::Timeline* timeline = this->timeline();
+   mrv::Reel reel = browser()->current_reel();
+  mrv::Reel bgreel = browser()->reel_at( _bg_reel );
+
   if ( timeline && timeline->edl() )
     {
       int64_t frame = boost::int64_t( timeline->value() );
-      mrv::media newfg = timeline->media_at( frame );
 
-      if ( newfg && newfg != foreground() ) 
+      char bufs[256];  bufs[0] = 0;
+
+      mrv::media fg, bg;
+
+      if ( reel )
       {
-  	 foreground( newfg );
+	 fg = reel->media_at( frame );
+
+	 if ( fg && fg != foreground() ) 
+	 {
+	    DBG( "CHANGE TO FG " << fg->image()->name() );
+	    foreground( fg );
+	 }
       }
+
+      if ( bgreel )
+      {
+	 bg = bgreel->media_at( frame );
+
+	 if ( bg && bg != background() ) 
+	 {
+	    background( bg );
+	 }
+      }
+
+
+      if ( fg && bg )
+      {
+	 sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
+		  fg->image()->name().c_str(),
+		  bg->image()->name().c_str() );
+	 uiMain->uiMain->copy_label( bufs );
+      }
+      else if ( fg )
+      {
+	 sprintf( bufs, "mrViewer    FG: %s", 
+		  fg->image()->name().c_str() );
+	 uiMain->uiMain->copy_label( bufs );
+      }
+
     }
 
   load_list();
@@ -1514,7 +1557,7 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
  * @param x fltk::event_x() coordinate
  * @param y fltk::event_y() coordinate
  */
-void ImageView::leftMouseDown(int x, int y)	
+int ImageView::leftMouseDown(int x, int y)	
 {
    lastX = x;
    lastY = y;
@@ -1531,7 +1574,7 @@ void ImageView::leftMouseDown(int x, int y)
 	 flags  = kMouseDown;
 	 flags |= kMouseMove;
 	 flags |= kMouseMiddle;
-	 return;
+	 return 1;
       }
 
       flags |= kMouseLeft;
@@ -1545,13 +1588,13 @@ void ImageView::leftMouseDown(int x, int y)
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
 
 	 mrv::media fg = foreground();
-	 if ( !fg ) return;
+	 if ( !fg ) return 0;
 
 	 CMedia* img = fg->image();
 	 CMedia::Mutex& m = img->video_mutex();
 	 SCOPED_LOCK( m );
 	 mrv::image_type_ptr pic = img->hires();
-	 if ( !pic ) return;
+	 if ( !pic ) return 0;
 
 	 double xf = x;
 	 double yf = y;
@@ -1607,6 +1650,7 @@ void ImageView::leftMouseDown(int x, int y)
 // 	  fltk::event_clicks(0);
 // 	}
       redraw();
+      return 1;
     }
 
   else if ( button == 2 )
@@ -1614,6 +1658,7 @@ void ImageView::leftMouseDown(int x, int y)
        // handle MMB moves
        flags |= kMouseMove;
        flags |= kMouseMiddle;
+       return 1;
     }
   else
     {
@@ -1770,12 +1815,16 @@ void ImageView::leftMouseDown(int x, int y)
 	  flags |= kMouseRight;
 	  flags |= kZoom;
 	}
+      return 1;
    }
 
   if ( (flags & kLeftAlt) && (flags & kMouseLeft) && (flags & kMouseMiddle) )
     {
       flags |= kZoom;
+      return 1;
     }
+
+  return 0;
 }
 
 
@@ -2130,7 +2179,8 @@ void ImageView::mouseDrag(int x,int y)
     {
       int dx = x - lastX;
       int dy = y - lastY;
-      
+
+
       if ( flags & kZoom ) 
 	{
 	  zoom( _zoom + dx*_zoom / 500.0f );
@@ -2152,6 +2202,7 @@ void ImageView::mouseDrag(int x,int y)
 	}
       else
 	{
+
 	   mrv::media fg = foreground();
 	   if ( ! fg ) return;
 
@@ -2227,6 +2278,8 @@ void ImageView::mouseDrag(int x,int y)
 	      char buf[256];
 	      sprintf( buf, "Selection %g %g %g %g", _selection.x(),
 		       _selection.y(), _selection.w(), _selection.h() );
+
+
 	      send( buf );
 
 	   }
@@ -2514,7 +2567,7 @@ int ImageView::keyDown(unsigned int rawkey)
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
       fps( FPS * 2 );
-      if ( img->playback() == CMedia::kBackwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_backwards();
@@ -2530,7 +2583,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS / 2 );
 
-      if ( img->playback() == CMedia::kBackwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_backwards();
@@ -2538,6 +2591,7 @@ int ImageView::keyDown(unsigned int rawkey)
   }
   else if ( kPlayBack.match( rawkey ) ) 
     {
+
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
 
@@ -2546,7 +2600,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() == CMedia::kBackwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_backwards();
@@ -2562,7 +2616,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS * 2 );
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -2578,7 +2632,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS / 2 );
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -2594,7 +2648,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -2853,10 +2907,11 @@ int ImageView::handle(int event)
       window()->cursor(fltk::CURSOR_DEFAULT);
       return 1;
     case fltk::PUSH:
-      leftMouseDown(fltk::event_x(), fltk::event_y());
+      return leftMouseDown(fltk::event_x(), fltk::event_y());
       break;
     case fltk::RELEASE:
       leftMouseUp(fltk::event_x(), fltk::event_y());
+      return 1;
       break;
     case fltk::MOVE:
        X = fltk::event_x();
@@ -2959,12 +3014,6 @@ void ImageView::refresh()
   if ( fg ) 
     {
       CMedia* img = fg->image();
-//       if ( playback() != kStopped ) 
-// 	{
-// // 	  cerr << img->filename() << " curr: " << frame() << endl;
-// // 	  frame( frame() );
-// 	  img->play( (CMedia::Playback) playback(), uiMain );
-// 	}
       img->refresh();
     }
 
@@ -2972,11 +3021,6 @@ void ImageView::refresh()
   if ( bg )
     {
       CMedia* img = bg->image();
-//       if ( playback() != kStopped ) 
-// 	{
-// // 	  frame( frame() );
-// 	  img->play();
-// 	}
       img->refresh();
     }
 }
@@ -3008,6 +3052,7 @@ void ImageView::flush_caches()
 	   && (_engine->shader_type() == DrawEngine::kNone)  )
 	{
 	  img->clear_sequence();
+	  img->fetch(frame());
 	}
     }
 }
@@ -3039,13 +3084,15 @@ void ImageView::channel( unsigned short c )
 { 
   _channel = c;
 
+
+  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+  
+  if ( c >= uiColorChannel->children() ) return;
+
   char buf[128];
   sprintf( buf, "Channel %d", c );
   send( buf );
 
-
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-  
   const char* lbl = uiColorChannel->child(c)->label();
   std::string channelName( lbl );
 
@@ -3165,6 +3212,13 @@ void ImageView::gamma( const float f )
   if ( _gamma == f ) return;
 
   _gamma = f;
+
+  mrv::media fg = foreground();
+  if ( fg )
+  {
+     fg->image()->gamma( f );
+  }
+
 
   char buf[256];
   sprintf( buf, "Gamma %g", f );
@@ -3505,6 +3559,8 @@ void ImageView::foreground( mrv::media fg )
   mrv::media old = foreground();
   if ( old == fg ) return;
 
+
+
   if ( old && playback() != kStopped )
     {
        old->image()->stop();
@@ -3538,7 +3594,7 @@ void ImageView::foreground( mrv::media fg )
       {
 	 
 	 // Per session gamma: requested by Willa
-	 //	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
+	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
 	 refresh_fstop();
 	 
@@ -3628,7 +3684,13 @@ void ImageView::audio_stream( unsigned int idx )
  */
 void ImageView::background( mrv::media bg )
 {
-  if ( bg == _bg ) return;
+  mrv::media old = background();
+  if ( old == bg ) return;
+
+  if ( old && playback() != kStopped )
+    {
+       old->image()->stop();
+    }
 
   delete_timeout();
 
@@ -3639,10 +3701,11 @@ void ImageView::background( mrv::media bg )
 
       img->volume( _volume );
       if ( playback() != kStopped ) 
-	img->play( (CMedia::Playback) playback(), uiMain );
+	 img->play( (CMedia::Playback) playback(), uiMain, false );
       else 
 	img->refresh();
 
+      img->play_fps( fps() );
       img->image_damage( img->image_damage() | CMedia::kDamageContents );      
 
       bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
@@ -3872,9 +3935,6 @@ void ImageView::seek( const int64_t f )
 {
 
 
-   char buf[256];
-   sprintf( buf, "seek %" PRId64, f );
-   send(buf);
   
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
@@ -3960,16 +4020,22 @@ void ImageView::first_frame()
   if (!img) return;
 
   int64_t f = img->first_frame();
+  DBG( "FIRST FRAME " << f );
 
   if ( timeline()->edl() )
     {
-      f = timeline()->location(img);
-      if ( uiMain->uiFrame->value() == f )
-	{
+       f = fg->position();
+       DBG( "FG POSITION " << f );
+
+       if ( int64_t( uiMain->uiFrame->value() ) == f )
+       {
+	  DBG( "BROWSER PREVIOUS IMAGE " );
 	  browser()->previous_image();
-	  last_frame();
 	  return;
-	}
+       }
+       
+       DBG( "FRAME VALUE " << f );
+       uiMain->uiFrame->value( f );
     }
 
   int64_t t = int64_t( timeline()->minimum() );
@@ -3992,12 +4058,15 @@ void ImageView::last_frame()
   if ( timeline()->edl() )
     {
       f -= img->first_frame();
-      f += timeline()->location(img);
-      if ( uiMain->uiFrame->value() == f )
+      f += fg->position();
+      if ( int64_t( uiMain->uiFrame->value() ) == f )
 	{
 	  browser()->next_image();
 	  return;
 	}
+      
+      uiMain->uiFrame->value( f );
+
     }
 
   int64_t t = int64_t( timeline()->maximum() );
@@ -4122,9 +4191,14 @@ void ImageView::play( const CMedia::Playback dir )
    {
       send("playfwd");
    }
-   else
+   else if ( dir == CMedia::kBackwards )
    {
       send("playback");
+   }
+   else
+   {
+      LOG_ERROR( "Not a valid playback mode" );
+      return;
    }
 
 
@@ -4138,13 +4212,17 @@ void ImageView::play( const CMedia::Playback dir )
   mrv::media fg = foreground();
   if ( fg )
     {
-      fg->image()->play( dir, uiMain);
+       DBG( "******* PLAY FG " << fg->image()->name() );
+       fg->image()->play( dir, uiMain, true );
     }
 
 
   mrv::media bg = background();
-  if ( bg && bg != fg ) bg->image()->play( dir, uiMain);
-
+  if ( bg && bg != fg ) 
+  {
+     DBG( "******* PLAY BG " << bg->image()->name() );
+     bg->image()->play( dir, uiMain, false);
+  }
 
 }
 
@@ -4236,10 +4314,11 @@ void ImageView::fps( double x )
   mrv::media bg = background();
   if ( bg ) bg->image()->play_fps( x );
 
-//   timeline()->fps( x );
-//   uiMain->uiFrame->fps( x );
-//   uiMain->uiStartFrame->fps( x );
-//   uiMain->uiEndFrame->fps( x );
+  timeline()->fps( x );
+  uiMain->uiFrame->fps( x );
+  uiMain->uiStartFrame->fps( x );
+  uiMain->uiEndFrame->fps( x );
+  
   uiMain->uiFPS->value( x );
 
 

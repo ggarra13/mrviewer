@@ -9,6 +9,9 @@ namespace mrv {
 
 class Timeline;
 class Element;
+class ViewerUI;
+class ImageBrowser;
+class ImageView;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
@@ -33,18 +36,19 @@ class EDLGroup : public fltk::Group
 
      // Return the number of audio only tracks
      size_t number_of_audio_tracks();
-
-     void current_media_track( size_t i );
-
-     mrv::media_track* current_media_track() { 
-	return (mrv::media_track*)this->child(_current_media_track); 
-     }
-
+ 
      // Return a media track at index i
      mrv::media_track* media_track( int i )
      {
+	if ( i < 0 || i >= children() ) return NULL;
 	return (mrv::media_track*)this->child(i); 
      }
+
+     bool shift_media_start( unsigned track_idx, std::string image,
+			     boost::int64_t diff );
+
+     bool shift_media_end( unsigned track_idx, std::string image,
+			     boost::int64_t diff );
 
      // Return an audio track at index i
      audio_track_ptr& audio_track( int i );
@@ -62,17 +66,26 @@ class EDLGroup : public fltk::Group
 
      void refresh();
 
+     void main(mrv::ViewerUI* m) { uiMain = m; }
+     mrv::ViewerUI* main() { return uiMain; }
+
+     mrv::ImageBrowser* browser() const;
+     mrv::ImageView* view() const;
+
      virtual int  handle( int event );
-     virtual void layout();
      virtual void draw();
+
+   protected:
+     void pan(int value);
 
    protected:
      double     _zoom;
      mrv::Element* _drag;
      int        _dragX;
      int        _dragY;
-     size_t     _current_media_track;
+     int        _dragChild;
      AudioTrack _audio_track;
+     mrv::ViewerUI* uiMain;
      mrv::Timeline* _timeline;
 };
 

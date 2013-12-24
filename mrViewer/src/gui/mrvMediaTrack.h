@@ -28,17 +28,37 @@ class media_track : public fltk::Group
 
      double frame_size() const;
 
+     void reel( size_t r ) { _reel_idx = r; redraw(); }
+     size_t reel() const  { return _reel_idx; }
+
      void zoom( double x );
 
      // Add a media at a certain frame (or append to end by default)
      void add( mrv::media m, boost::int64_t frame = AV_NOPTS_VALUE );
 
+     // Replace a media at a certain frame.
+     void insert( const boost::int64_t frame, mrv::media m );
+
+     // Return an image index for a frame or -1 if no image found
+     int index_at( const boost::int64_t frame );
+
+     // Return first image index for a media or -1 if not found
+     int index_for( const mrv::media m );
+
+     // Return first image index for a media or -1 if not found
+     int index_for( const std::string s );
+
+     // Return a media based on its index in the track
+     mrv::media media( unsigned idx );
 
      // Return a media based on its position in the track
      mrv::media media_at( const boost::int64_t frame );
 
      // Remove a media from the track.  Returns true if element was removed.
-     bool remove( const mrv::media& m );
+     bool remove( const int idx );
+
+     // Remove a media from the track.  Returns true if element was removed.
+     bool remove( const mrv::media m );
 
 
      void main( mrv::ViewerUI* m ) { _main = m; }
@@ -47,9 +67,9 @@ class media_track : public fltk::Group
      mrv::ImageBrowser* browser() const;
 
      mrv::Timeline* timeline() const;
-
-     void index( size_t r ) { _reel_idx = r; }
      
+     // void index( size_t idx ) { _reel_idx = idx; }
+
      // Move a media in track without changing its start or end frames.
      // If media overlaps other media, everything is shifted
      void shift_media( mrv::media m, boost::int64_t frame );

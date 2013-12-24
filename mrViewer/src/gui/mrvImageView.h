@@ -140,6 +140,12 @@ namespace mrv {
 
        double fps() const;
 
+       int fg_reel() const { return _fg_reel; }
+       int bg_reel() const { return _bg_reel; }
+
+       void fg_reel(int idx) { _fg_reel = idx; }
+       void bg_reel(int idx) { _bg_reel = idx; }
+
     /// Return the viewer's gamma
     float gamma() const { return _gamma; }
 
@@ -383,7 +389,7 @@ namespace mrv {
 
     void damage_contents();
 
-    void leftMouseDown(int,int);
+    int  leftMouseDown(int,int);
     void leftMouseUp(int,int);
     void mouseDrag(int,int);
     void mouseMove(int,int);
@@ -491,8 +497,12 @@ namespace mrv {
     ///////////////////
     // Foreground and background images in view
     ///////////////////
+
+
     mrv::media _fg;
+    int   _fg_reel;
     mrv::media _bg;
+    int   _bg_reel;
 
     ///////////////////
     // Rectangle selection
