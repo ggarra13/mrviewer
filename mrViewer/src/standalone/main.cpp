@@ -97,8 +97,6 @@ void load_new_files( void* s )
 	 mrv::LoadInfo info( filename, start, end );
 	 files.push_back( info );
       }
-      
-      std::cerr << "files " << files.size() << std::endl;
    }
 
    load_files( files, ui );
@@ -162,7 +160,15 @@ int main( const int argc, char** argv )
   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
 
   bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
-  if ( port != 0 ) single_instance = false;
+  if ( port != 0 ) {
+     ui->uiPrefs->uiPrefsSingleInstance->value(0);
+     single_instance = false;
+     if ( fs::exists( lockfile ) )
+     {
+	if ( ! fs::remove( lockfile ) )
+	   LOG_ERROR("Could not remove lock file");
+     }
+  }
 
   if ( fs::exists( lockfile ) && single_instance )
   {
@@ -254,8 +260,13 @@ int main( const int argc, char** argv )
 
   if(fs::exists(lockfile))
   {
-     if ( ! fs::remove( lockfile ) )
-	std::cerr << "Could not remove lockfile " << lockfile << std::endl;
+      try {
+	 if ( ! fs::remove( lockfile ) )
+	    LOG_ERROR( "Could not remove lock file!" );
+      }
+      catch( fs::filesystem_error& e )
+      {
+      }
   }
 
   // mrv::checkin_license();
@@ -266,11 +277,6 @@ int main( const int argc, char** argv )
 
 
 #if defined(WIN32) || defined(WIN64)
-
-#ifdef BORLAND5
-# define __argc _argc
-# define __argv _argv
-#endif
 
 #include <windows.h>
 
