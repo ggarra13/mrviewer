@@ -2,4 +2,4 @@
 
 ADD_SUBDIRECTORY( ctlparser )
 # ADD_SUBDIRECTORY( dvd )
-ADD_SUBDIRECTORY( filereq )
+# ADD_SUBDIRECTORY( filereq )
