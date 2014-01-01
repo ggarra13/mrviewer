@@ -211,8 +211,11 @@ int main( const int argc, char** argv )
   load_files( files, ui );
 
   if ( edl )
+  {
+     ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
      ui->uiTimeline->edl( edl );
-  
+  }
+
   
   if (host == "" && port != 0)
   {

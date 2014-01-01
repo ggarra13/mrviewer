@@ -1122,50 +1122,49 @@ void ImageView::timeout()
 
   repeat_timeout( float(delay) );
 
+  if ( timeline && timeline->visible() ) 
+  {
+     
+     int64_t frame;
+     if ( !timeline->edl() )
+     {
+	CMedia* img = fg->image();
+	
+	if ( img->has_audio() )
+	{
+	   frame = img->audio_frame();
+	}
+	else
+	{
+	   frame = img->frame();
+	}
+
+
+	timeline->value( double(frame) );
+	timeline->redraw();
+	if ( img && img->first_frame() != img->last_frame() &&
+	     this->frame() != frame )
+	{
+	   this->frame( frame );
+	}
+     }
+     else
+     {
+	frame = (int64_t) timeline->value();
+	if ( this->frame() != frame )
+	{
+	   // updating frame
+	   this->frame( frame );
+	}
+	uiMain->uiEDLWindow->uiEDLGroup->redraw();
+     }
+	  
+  }
+
   if ( should_update( fg ) ) 
     {
       update_color_info( fg );
 
-      if ( timeline && timeline->visible() ) 
-	{
-
-	  int64_t frame;
-	  if ( !timeline->edl() )
-	    {
-	      CMedia* img = fg->image();
-	      
-	      static int64_t last = AV_NOPTS_VALUE;
-
-	      // if ( img->has_audio() )
-	      // {
-	      //  	 frame = img->audio_frame();
-	      // }
-	      // else
-	      // {
-		 frame = img->frame();
-	      // }
-	      timeline->value( double(frame) );
-	      timeline->redraw();
-	      if ( img && img->first_frame() != img->last_frame() &&
-		   this->frame() != frame )
-		{
-		   this->frame( frame );
-		}
-	    }
-	  else
-	    {
-	      frame = (int64_t) timeline->value();
-	      if ( this->frame() != frame )
-		{
-		  // updating frame
-		  this->frame( frame );
-		}
-	      uiMain->uiEDLWindow->uiEDLGroup->redraw();
-	    }
-	  
-	  uiMain->uiFrame->value( frame );
-	  uiMain->uiFrame->redraw();
-	}
 
       redraw();
     }
