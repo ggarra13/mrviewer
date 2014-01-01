@@ -1545,7 +1545,6 @@ int ImageBrowser::value() const
     {
        if ( reel == this->reel( i ) )
        {
-	  reel->edl = true;
 	  mrv::media_track* track = edl_group()->media_track(i);
 	  if ( m ) track->add( m );
        }
@@ -2033,6 +2032,9 @@ void ImageBrowser::load( const stringArray& files,
     }
 
     if ( sel == 0 ) return;
+
+    if ( sel >= reel->images.size() )
+       sel = 0;
 
     change_image( sel );
 

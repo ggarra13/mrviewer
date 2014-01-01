@@ -417,7 +417,7 @@ void audio_thread( PlaybackData* data )
 
 
 
-      if ( !img->has_picture() && reel->edl )
+      if ( img->has_audio() && reel->edl )
       { 
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 	 if ( f > timeline->maximum() )
@@ -426,7 +426,9 @@ void audio_thread( PlaybackData* data )
 	    f = int64_t( timeline->minimum() );
 
 	 if ( fg )
+	 {
 	    timeline->value( double( f ) );
+	 }
       }
 
       img->find_audio(frame);
@@ -490,6 +492,7 @@ void subtitle_thread( PlaybackData* data )
 	    break;
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
+	     std::cerr << "decode loop " << std::endl;
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
 	    barrier->wait();
@@ -654,7 +657,7 @@ void video_thread( PlaybackData* data )
 
       img->find_image( frame );
 
-      if ( reel->edl )
+      if ( !img->has_audio() && reel->edl )
       {
 	 assert( img != NULL );
 	 int64_t f = frame + reel->location(img) - img->first_frame();
@@ -749,17 +752,17 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-	 {
-	    CMedia::Barrier* barrier = img->bg_barrier();
-	    if ( fg )
-	    {
-	       barrier->wait();
-	    }
-	    else
-	    {
-	       barrier->notify_all();
-	    }
-	 }
+	 // {
+	 //    CMedia::Barrier* barrier = img->bg_barrier();
+	 //    if ( fg )
+	 //    {
+	 //       barrier->wait();
+	 //    }
+	 //    else
+	 //    {
+	 //       barrier->notify_all();
+	 //    }
+	 // }
 
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();

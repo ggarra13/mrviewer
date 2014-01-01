@@ -3449,7 +3449,7 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
 {
    AVPacket pkt = {0};
    AVFrame* frame = av_frame_alloc();
-   avcodec_get_frame_defaults(frame);
+   av_frame_unref(frame);
    int got_packet, ret, dst_nb_samples;
    
    
@@ -3559,7 +3559,7 @@ static void write_audio_frame(AVFormatContext *oc, AVStream *st,
    }
     
     
-   avcodec_free_frame( &frame );
+   av_frame_free( &frame );
 
 }
 
