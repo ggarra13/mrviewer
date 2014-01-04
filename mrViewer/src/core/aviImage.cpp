@@ -741,6 +741,9 @@ void aviImage::limit_video_store(const boost::int64_t frame)
       first = frame - max_video_frames();
       last  = frame;
       if ( _dts < first ) first = _dts;
+      if ( first < first_frame() ) first = last_frame() - abs(first);
+      std::cerr << "DTS " << _dts << "  FRAME " << frame
+		<< "  FIRST " << first << std::endl;
       break;
     case kForwards:
       first = frame;
@@ -965,7 +968,7 @@ bool aviImage::find_image( const boost::int64_t frame )
     _video_clock = av_gettime() / 1000000.0;
 
     // Limit (clean) the video store as we play it
-    limit_video_store( frame );
+    limit_subtitle_store( frame );
 
   }  // release lock
 

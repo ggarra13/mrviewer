@@ -67,7 +67,7 @@ namespace {
 
 // #define DEBUG_SEEK
 // #define DEBUG_PACKETS
-#define DEBUG_VIDEO_PACKETS
+// #define DEBUG_VIDEO_PACKETS
 // #define DEBUG_STORES
 
 // #define DEBUG_DECODE
