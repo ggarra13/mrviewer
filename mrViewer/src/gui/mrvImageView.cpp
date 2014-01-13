@@ -1129,8 +1129,16 @@ void ImageView::timeout()
      if ( !timeline->edl() )
      {
 	CMedia* img = fg->image();
-	
-	if ( img->has_audio() )
+
+	int64_t duration = 0;
+
+	if ( img->has_video() )
+	{
+	   double length = img->video_info(0).duration;
+	   duration = boost::int64_t( length / img->fps() );
+	}
+
+	if ( img->has_audio() && duration <= 2 )
 	{
 	   frame = img->audio_frame();
 	}
@@ -4177,6 +4185,7 @@ void ImageView::playback( const ImageView::Playback b )
  */
 void ImageView::play_forwards() 
 { 
+   stop();
   play( CMedia::kForwards );
 }
 
@@ -4231,6 +4240,7 @@ void ImageView::play( const CMedia::Playback dir )
  */
 void ImageView::play_backwards() 
 { 
+   stop();
   play( CMedia::kBackwards );
 }
 

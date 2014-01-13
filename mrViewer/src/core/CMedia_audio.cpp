@@ -1675,6 +1675,28 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_preroll() )
 	{
+#if 0
+	   bool ok = in_audio_store( frame );
+	   if ( ok ) {
+	      return kDecodeOK;
+	   }
+
+	   // this is needed here to restore frames in storage
+	   AVPacket& pkt = _audio_packets.front();
+
+	   if ( !_audio.empty() )
+	   {
+	      audio_cache_t::const_iterator iter = _audio.begin();
+	      if ( (*iter)->frame() >= frame )
+	      {
+		 got_audio = handle_audio_packet_seek( frame, false );
+		 continue;
+	      }
+	   }
+	   return got_audio;
+
+#else
+
 	  AVPacket& pkt = _audio_packets.front();
 	  bool ok = in_audio_store( frame );
 	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
@@ -1690,6 +1712,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	  _audio_buf_used = 0;
 	  got_audio = handle_audio_packet_seek( pktframe, false );
 	  return got_audio;
+
+#endif
 	}
       else
 	{
