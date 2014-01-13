@@ -186,7 +186,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  step  = -1;
 		  view->playback( ImageView::kBackwards );
 		  img->frame( frame );
-		  img->audio_frame( frame );
 		  img->playback( CMedia::kBackwards );
 		  status = kEndChangeDirection;
 	       }
@@ -258,7 +257,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  step = 1;
 		  view->playback( ImageView::kForwards );
 		  img->frame( frame );
-		  img->audio_frame( frame );
 		  img->playback( CMedia::kForwards );
 		  status = kEndChangeDirection;
 	       }
@@ -383,14 +381,32 @@ void audio_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
+
+      if ( frame > img->last_frame() )
+	 status = CMedia::kDecodeLoopEnd;
+      if ( frame < img->first_frame() )
+	 status = CMedia::kDecodeLoopStart;
+
       switch( status )
       {
 	 case CMedia::kDecodeError:
 	    frame += step;
+	    img->audio_frame( frame );
 	    continue;
 	 case CMedia::kDecodeMissingFrame:
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
+	    if ( img->has_picture() )
+	    {
+	       boost::int64_t f = img->frame();
+	       if ( f <= frame ) {
+		  frame += step;
+	       }
+	       else frame = f;
+	    }
+	    else
+	       frame += step;
+	    img->audio_frame( frame );
 	    continue;
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
@@ -424,12 +440,8 @@ void audio_thread( PlaybackData* data )
 	    f = int64_t( timeline->maximum() );
 	 if ( f < timeline->minimum() )
 	    f = int64_t( timeline->minimum() );
-
-	 if ( fg )
-	 {
 	    timeline->value( double( f ) );
 	 }
-      }
 
       img->find_audio(frame);
       frame += step;
@@ -492,7 +504,6 @@ void subtitle_thread( PlaybackData* data )
 	    break;
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
-	     std::cerr << "decode loop " << std::endl;
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
 	    barrier->wait();
@@ -640,7 +651,7 @@ void video_thread( PlaybackData* data )
 	 //    FFPlay still doesn't "know if this is the best guess."
 	 double sync_threshold = delay;
 	 if(absdiff < AV_NOSYNC_THRESHOLD) {
-	    double sdiff = diff;
+	    double sdiff = step * diff;
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
@@ -787,7 +798,7 @@ void decode_thread( PlaybackData* data )
  
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      while ( !img->frame( frame ) )
+      if ( !img->frame( frame ) )
       {
 	 timespec req;
 	 req.tv_sec = 0;

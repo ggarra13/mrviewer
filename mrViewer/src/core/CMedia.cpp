@@ -66,8 +66,7 @@ namespace {
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 // #define DEBUG_SEEK
-// #define DEBUG_PACKETS
-// #define DEBUG_VIDEO_PACKETS
+#define DEBUG_VIDEO_PACKETS
 // #define DEBUG_STORES
 
 // #define DEBUG_DECODE
