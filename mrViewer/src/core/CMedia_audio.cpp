@@ -1447,7 +1447,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
      close_audio();
      return false;
   }
-  
+
   return true;
 }
 
@@ -1639,6 +1639,9 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_loop_start() )
 	{
+	  bool ok = in_audio_store( frame );	   
+	  if ( ok ) return kDecodeOK;
+
 	  AVPacket& pkt = _audio_packets.front();
 	  // with loops, packet dts is really frame
 	  if ( frame <= pkt.dts )
@@ -1648,12 +1651,13 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	      return kDecodeLoopStart;
 	    }
 
-	  bool ok = in_audio_store( frame );	   
-	  if ( ok ) return kDecodeOK;
-	  return kDecodeError;
+	  return kDecodeMissingFrame;
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
+	  bool ok = in_audio_store( frame );	   
+	  if ( ok ) return kDecodeOK;
+
 	  AVPacket& pkt = _audio_packets.front();
 	  // with loops, packet dts is really frame
 	  if ( frame >= pkt.dts )
@@ -1663,9 +1667,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	       return kDecodeLoopEnd;
 	    }
 
-	  bool ok = in_audio_store( frame );	   
-	  if ( ok ) return kDecodeOK;
-	  return kDecodeError;
+	  return kDecodeMissingFrame;
 	}
       else if ( _audio_packets.is_seek()  )
 	{

@@ -186,6 +186,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  step  = -1;
 		  view->playback( ImageView::kBackwards );
 		  img->frame( frame );
+		  img->audio_frame( frame );
 		  img->playback( CMedia::kBackwards );
 		  status = kEndChangeDirection;
 	       }
@@ -257,6 +258,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  step = 1;
 		  view->playback( ImageView::kForwards );
 		  img->frame( frame );
+		  img->audio_frame( frame );
 		  img->playback( CMedia::kForwards );
 		  status = kEndChangeDirection;
 	       }
@@ -665,6 +667,7 @@ void video_thread( PlaybackData* data )
       timer.waitUntilNextFrameIsDue();
 
       img->real_fps( timer.actualFrameRate() );
+
 
       img->find_image( frame );
 
