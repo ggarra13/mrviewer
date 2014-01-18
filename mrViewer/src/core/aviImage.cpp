@@ -74,7 +74,7 @@ namespace
 //#define DEBUG_SEEK_VIDEO_PACKETS
 // #define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-// #define DEBUG_VIDEO_PACKETS
+//#define DEBUG_VIDEO_PACKETS
 //#define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
@@ -691,7 +691,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 CMedia::DecodeStatus
 aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 {
-  boost::int64_t ptsframe;
+  boost::int64_t ptsframe = frame;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status == kDecodeError )
@@ -1298,16 +1298,16 @@ void aviImage::populate()
 
       if ( has_video() )
       {
-	  length = _video_info[ _video_index ].duration;
-	}
+	 length = _video_info[ _video_index ].duration;
+      }
       
       if ( has_audio() )
-	{
-	  double d = _audio_info[ _audio_index ].duration;
-	  if ( d > length ) length = d;
-	}
+      {
+	 double d = _audio_info[ _audio_index ].duration;
+	 if ( d > length ) length = d;
+      }
 
-      duration = boost::int64_t( length * int64_t(_fps + 0.5f) );
+      duration = boost::int64_t( length * _fps + 0.5f );
     }
 
   _frameEnd = _frameStart + duration - 1;
@@ -2156,6 +2156,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_start() )
 	{
+	   bool ok = in_video_store( frame );
+	   if ( ok && frame != first_frame() ) return kDecodeOK;
+	   
 	  AVPacket& pkt = _video_packets.front();
 	  // with loops, packet dts is really frame
 	  if ( frame <= pkt.dts )
@@ -2168,6 +2171,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_end() )
 	{
+	   bool ok = in_video_store( frame );
+	   if ( ok && frame != last_frame() ) return kDecodeOK;
+
 	  AVPacket& pkt = _video_packets.front();
 	  // with loops, packet dts is really frame
 	  if ( frame >= pkt.dts )
@@ -2191,7 +2197,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	       else
 		  pktframe = frame;
 
-	      if ( pktframe == frame )
+	       if ( pktframe == frame )
 		{
 		  boost::int64_t ptsframe;
 		  decode_video_packet( ptsframe, frame, pkt );
@@ -2210,8 +2216,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 
 
 	  got_video = decode_image( frame, pkt );
-
-
 	  _video_packets.pop_front();
 	}
 
@@ -2885,19 +2889,19 @@ void aviImage::loop_at_end( const boost::int64_t frame )
    if ( has_picture() )
    {
       _video_packets.loop_at_end( frame );
-      _video_packets.cond().notify_all();
+      _video_packets.cond().notify_one();
    }
 
   if ( has_audio() )
     {
       _audio_packets.loop_at_end( frame );
-      _audio_packets.cond().notify_all();
+      _audio_packets.cond().notify_one();
     }
 
   if ( has_subtitle() )
     {
       _subtitle_packets.loop_at_end( frame );
-      _subtitle_packets.cond().notify_all();
+      _subtitle_packets.cond().notify_one();
     }
 }
 

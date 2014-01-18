@@ -1135,14 +1135,14 @@ void ImageView::timeout()
 	if ( img->has_video() )
 	{
 	   double length = img->video_info(0).duration;
-	   duration = boost::int64_t( length / img->fps() );
+	   duration = boost::int64_t( length * img->fps() + 0.5f );	   
 	}
 
-	if ( img->has_audio() && duration <= 2 )
-	{
-	   frame = img->audio_frame();
-	}
-	else
+	// if ( img->has_audio() )
+	// {
+	//    frame = img->audio_frame();
+	// }
+	// else
 	{
 	   frame = img->frame();
 	}
