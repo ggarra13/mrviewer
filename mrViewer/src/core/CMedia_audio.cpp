@@ -1691,7 +1691,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	      if ( (*iter)->frame() >= frame )
 	      {
 		 _audio_buf_used = 0;
-		 got_audio = handle_audio_packet_seek( frame, false );
+		 boost::int64_t pktframe = frame;
+		 got_audio = handle_audio_packet_seek( pktframe, false );
 		 continue;
 	      }
 	   }
