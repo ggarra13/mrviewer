@@ -459,18 +459,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
   if ( !_seek_req && playback() == kBackwards )
   {
-     if ( frame > first_frame() )
-     {
-	if ( !got_video )    _video_packets.preroll(vpts);
-	if ( !got_audio )    _audio_packets.preroll(apts);
-	if ( !got_subtitle ) _subtitle_packets.preroll(spts);
-     }
-     else
-     {
-	if ( !got_video )    _video_packets.seek_begin(vpts);
-	if ( !got_audio )    _audio_packets.seek_begin(apts);
-	if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
-     }
+     if ( !got_video )    _video_packets.preroll(vpts);
+     if ( !got_audio )    _audio_packets.preroll(apts);
+     if ( !got_subtitle ) _subtitle_packets.preroll(spts);
   }
   else
   {
@@ -763,6 +754,13 @@ void aviImage::limit_video_store(const boost::int64_t frame)
 
   if ( _images.empty() ) return;
 
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
+
   // std::cerr << frame << "  limit " << first << "-" << last << std::endl;
   // std::cerr << (*_images.begin())->frame() << " ... "
   // 	    << (*(_images.end()-1))->frame() << std::endl;
@@ -809,6 +807,13 @@ void aviImage::limit_subtitle_store(const boost::int64_t frame)
       if ( last  > last_frame() )   last = last_frame();
       break;
     }
+
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
 
   subtitle_cache_t::iterator end = _subtitles.end();
   _subtitles.erase( std::remove_if( _subtitles.begin(), end,
@@ -2132,7 +2137,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
       else if ( _video_packets.is_preroll() )
 	{
 
-#if 1
 	   bool ok = in_video_store( frame );
 	   if ( ok ) {
 	      return kDecodeOK;
@@ -2150,7 +2154,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 		 continue;
 	      }
 	   }
-#endif
 
 	   return got_video;
 	}
@@ -2859,7 +2862,7 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 
 void aviImage::loop_at_start( const boost::int64_t frame )
 {
-   _dts = last_frame();
+   // _dts = last_frame();
 
   if ( has_video() || is_sequence() )
     {
@@ -2884,7 +2887,7 @@ void aviImage::loop_at_start( const boost::int64_t frame )
 
 void aviImage::loop_at_end( const boost::int64_t frame )
 {
-   _dts = first_frame();
+   // _dts = first_frame();
 
    if ( has_picture() )
    {

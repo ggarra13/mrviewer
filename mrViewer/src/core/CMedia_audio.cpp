@@ -1627,7 +1627,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
   {
     bool ok = in_audio_store( frame );
     if ( ok ) return kDecodeOK;
-    return kDecodeMissingFrame;
+    return got_audio;
   }
 
   while ( got_audio != kDecodeOK && !_audio_packets.empty() )
@@ -1651,7 +1651,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	      return kDecodeLoopStart;
 	    }
 
-	  return kDecodeMissingFrame;
+	  return got_audio;
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
@@ -1667,7 +1667,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	       return kDecodeLoopEnd;
 	    }
 
-	  return kDecodeMissingFrame;
+	  return got_audio;
 	}
       else if ( _audio_packets.is_seek()  )
 	{
@@ -1677,7 +1677,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_preroll() )
 	{
-#if 0
 	   bool ok = in_audio_store( frame );
 	   if ( ok ) {
 	      return kDecodeOK;
@@ -1691,31 +1690,13 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	      audio_cache_t::const_iterator iter = _audio.begin();
 	      if ( (*iter)->frame() >= frame )
 	      {
+		 _audio_buf_used = 0;
 		 got_audio = handle_audio_packet_seek( frame, false );
 		 continue;
 	      }
 	   }
 	   return got_audio;
 
-#else
-
-	  AVPacket& pkt = _audio_packets.front();
-	  bool ok = in_audio_store( frame );
-	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-	  
-	  if ( ok && pktframe != frame )
-	  {
-	     got_audio = kDecodeOK;
-	     continue;
-	  }
-
-	  // when prerolling, we always start at the beginning of audio
-	  // buffer.
-	  _audio_buf_used = 0;
-	  got_audio = handle_audio_packet_seek( pktframe, false );
-	  return got_audio;
-
-#endif
 	}
       else
 	{
