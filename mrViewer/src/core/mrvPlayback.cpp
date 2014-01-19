@@ -789,7 +789,7 @@ void decode_thread( PlaybackData* data )
  
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      while ( !img->frame( frame ) )
+      if ( !img->frame( frame ) )
       {
 	 timespec req;
 	 req.tv_sec = 0;
