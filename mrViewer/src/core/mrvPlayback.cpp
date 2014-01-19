@@ -393,22 +393,10 @@ void audio_thread( PlaybackData* data )
       {
 	 case CMedia::kDecodeError:
 	    frame += step;
-	    img->audio_frame( frame );
 	    continue;
 	 case CMedia::kDecodeMissingFrame:
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
-	    if ( img->has_picture() )
-	    {
-	       boost::int64_t f = img->frame();
-	       if ( f <= frame ) {
-		  frame += step;
-	       }
-	       else frame = f;
-	    }
-	    else
-	       frame += step;
-	    img->audio_frame( frame );
 	    continue;
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
@@ -801,7 +789,7 @@ void decode_thread( PlaybackData* data )
  
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      if ( !img->frame( frame ) )
+      while ( !img->frame( frame ) )
       {
 	 timespec req;
 	 req.tv_sec = 0;
