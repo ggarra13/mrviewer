@@ -922,6 +922,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   AVCodecContext* ctx = stream->codec;
 
 
+  assert( !_audio_packets.is_seek_end( pkt ) );
   assert( !_audio_packets.is_seek( pkt ) );
   assert( !_audio_packets.is_flush( pkt ) );
   assert( !_audio_packets.is_preroll( pkt ) );
@@ -1563,7 +1564,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   boost::int64_t last = _audio_last_frame;
 
  
-  while ( !_audio_packets.empty() && !_audio_packets.is_seek() )
+  while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
       AVPacket& pkt = _audio_packets.front();
 
@@ -1581,7 +1582,8 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
       frame = get_frame( get_audio_stream(), pkt );
     }
 
-  _audio_packets.pop_front();  // pop seek/preroll end packet
+  if ( _audio_packets.is_seek_end() )
+     _audio_packets.pop_front();  // pop seek/preroll end packet
 
   if ( _audio_packets.empty() ) return got_audio;
 
@@ -1852,8 +1854,8 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 
       boost::int64_t f = get_frame( get_audio_stream(), (*iter) );
 
-      if ( _audio_packets.is_seek( *iter ) )
-	{
+      if ( _audio_packets.is_seek_end( *iter ) )
+      {
 	  if ( in_preroll )
 	    {
 	      std::cerr << "[PREROLL END: " << f << "]";
@@ -1866,9 +1868,13 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	    }
 	  else
 	    {
-	      std::cerr << "<SEEK:" << f << ">";
-	      in_seek = true;
+	       std::cerr << "+ERROR:" << f << "+";
 	    }
+      }
+      else if ( _audio_packets.is_seek( *iter ) )
+	{
+	   std::cerr << "<SEEK:" << f << ">";
+	   in_seek = true;
 	}
       else if ( _audio_packets.is_preroll( *iter ) )
 	{

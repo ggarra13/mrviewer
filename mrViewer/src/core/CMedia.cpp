@@ -1816,9 +1816,9 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_seek() || _video_packets.is_preroll() )
 	{
-	  _video_packets.pop_front();  // remove first
+	  _video_packets.pop_front();  // remove first seek
 	  assert( !_video_packets.empty() );
-	  _video_packets.pop_front();  // remove end
+	  _video_packets.pop_front();  // remove seek end
 	  assert( !_video_packets.empty() );
 	  AVPacket& pkt = _video_packets.front();
 	  if ( pkt.pts != MRV_NOPTS_VALUE )
@@ -2097,7 +2097,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 
       f = pts2frame( get_video_stream(), f );
 
-      if ( _video_packets.is_seek( *iter ) )
+      if ( _video_packets.is_seek_end( *iter ) )
 	{
 	  if ( in_preroll )
 	    {
@@ -2111,9 +2111,13 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 	    }
 	  else
 	    {
+	       std::cerr << "+ERROR:" << f << "+";
+	    }
+	}
+      else if ( _video_packets.is_seek( *iter ) )
+	{
 	      std::cerr << "<SEEK:" << f << ">";
 	      in_seek = true;
-	    }
 	}
       else if ( _video_packets.is_preroll( *iter ) )
 	{
