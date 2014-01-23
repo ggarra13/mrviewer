@@ -1993,7 +1993,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   DecodeStatus got_video = kDecodeMissingFrame;
   unsigned count = 0;
 
-  while ( !_video_packets.is_seek() && !_video_packets.empty() )
+  while ( !_video_packets.is_seek_end() && !_video_packets.empty() )
     {
       const AVPacket& pkt = _video_packets.front();
       count += 1;
@@ -2049,7 +2049,8 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
     frame = pts2frame( get_video_stream(), pkt.dts );
   }
 
-  _video_packets.pop_front();  // pop seek end packet
+  if ( _video_packets.is_seek_end() )
+     _video_packets.pop_front();  // pop seek end packet
 
   if ( count == 0 ) {
      IMG_WARNING("Empty preroll" );
@@ -2136,14 +2137,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_preroll() )
 	{
-
 	   bool ok = in_video_store( frame );
 	   if ( ok ) {
 	      return kDecodeOK;
 	   }
-
-	   // this is needed here to restore frames in storage
-	   AVPacket& pkt = _video_packets.front();
 
 	   if ( !_images.empty() )
 	   {
@@ -2174,9 +2171,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_end() )
 	{
-	   bool ok = in_video_store( frame );
-	   if ( ok && frame != last_frame() ) return kDecodeOK;
-
 	  AVPacket& pkt = _video_packets.front();
 	  // with loops, packet dts is really frame
 	  if ( frame >= pkt.dts )
@@ -2324,25 +2318,28 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 
       assert( (*iter).dts != MRV_NOPTS_VALUE );
       boost::int64_t f = pts2frame( get_subtitle_stream(), (*iter).dts );
-      if ( _subtitle_packets.is_seek( *iter ) )
+      if ( _subtitle_packets.is_seek_end( *iter ) )
 	{
 	  if ( in_preroll )
 	     {
 	       std::cerr << "[PREROLL END: " << f << "]";
 	       in_preroll = false;
 	     }
-	  else 
-	     if ( in_seek )
-	    {
-	      std::cerr << "<SEEK END:" << f << ">";
-	      in_seek = false;
-	    }
+	  else if ( in_seek )
+	  {
+	     std::cerr << "<SEEK END:" << f << ">";
+	     in_seek = false;
+	  }
 	  else
-	    {
-	      std::cerr << "<SEEK:" << f << ">";
-	      in_seek = true;
-	    }
+	  {
+	     std::cerr << "+ERROR:" << f << "+";
+	  }
 	}
+      else if ( _subtitle_packets.is_seek( *iter ) )
+      {
+	 std::cerr << "<SEEK:" << f << ">";
+	 in_seek = true;
+      }
       else if ( _subtitle_packets.is_preroll( *iter ) )
 	{
 	  std::cerr << "[PREROLL:" << f << "]";
@@ -2670,7 +2667,7 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
 
   DecodeStatus got_subtitle = kDecodeMissingFrame;
 
-  while ( !_subtitle_packets.is_seek() && !_subtitle_packets.empty() )
+  while ( !_subtitle_packets.is_seek_end() && !_subtitle_packets.empty() )
     {
       const AVPacket& pkt = _subtitle_packets.front();
       
@@ -2713,7 +2710,8 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
     frame = get_frame( get_subtitle_stream(), pkt );
   }
 
-  _subtitle_packets.pop_front();  // pop seek end packet
+  if ( _subtitle_packets.is_seek_end() )
+     _subtitle_packets.pop_front();  // pop seek end packet
 
       
 #ifdef DEBUG_PACKETS

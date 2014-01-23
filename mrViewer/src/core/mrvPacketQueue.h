@@ -247,6 +247,14 @@ namespace mrv {
       return false;
     }
 
+    bool is_seek_end()
+    {
+      Mutex::scoped_lock lk( _mutex );
+      if ( _packets.empty() ) return false;
+      if ( _packets.front().data == _seek_end.data ) return true;
+      return false;
+    }
+
     bool is_seek(const AVPacket& pkt) const
     {
       if ( pkt.data == _seek.data ) return true;
@@ -256,6 +264,12 @@ namespace mrv {
     bool is_preroll(const AVPacket& pkt) const
     {
       if ( pkt.data == _preroll.data ) return true;
+      return false;
+    }
+
+    bool is_seek_end(const AVPacket& pkt) const
+    {
+      if ( pkt.data == _seek_end.data ) return true;
       return false;
     }
 
@@ -330,7 +344,7 @@ namespace mrv {
     void seek_end(const int64_t pts)
     {
       Mutex::scoped_lock lk( _mutex );
-      _packets.push_back( _seek );
+      _packets.push_back( _seek_end );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = pts;
     }
@@ -346,6 +360,9 @@ namespace mrv {
       av_init_packet( &_preroll );
       _preroll.data  = (uint8_t*)"PREROLL";
       _preroll.size  = 0;
+      av_init_packet( &_seek_end );
+      _seek_end.data  = (uint8_t*)"SEEK END";
+      _seek_end.size  = 0;
       av_init_packet( &_loop_start );
       _loop_start.data  = (uint8_t*)"LOOP START";
       _loop_start.size  = 0;
@@ -369,6 +386,8 @@ namespace mrv {
     static AVPacket _seek;       // special packet used to mark seeks to skip
                                  // intermediate I/B/P frames
     static AVPacket _preroll;    // special packet used to mark preroll seeks
+    static AVPacket _seek_end;   // special packet used to mark seek/preroll
+                                 // endings
                                  // (used when playing backwards)
     static AVPacket _loop_end;   // special packet to mark loops in playback
     static AVPacket _loop_start; // special packet to mark loops in reverse playback
