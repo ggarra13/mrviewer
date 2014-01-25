@@ -792,17 +792,8 @@ void aviImage::limit_subtitle_store(const boost::int64_t frame)
     default:
        first = frame - (boost::int64_t)fps() * 2;
        last  = frame + (boost::int64_t)fps() * 2;
-      if ( first < first_frame() ) first = first_frame();
-      if ( last  > last_frame() )   last = last_frame();
       break;
     }
-
-  if ( first > last ) 
-  {
-     boost::int64_t tmp = last;
-     last = first;
-     first = tmp;
-  }
 
   subtitle_cache_t::iterator end = _subtitles.end();
   _subtitles.erase( std::remove_if( _subtitles.begin(), end,
