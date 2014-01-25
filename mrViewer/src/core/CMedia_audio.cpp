@@ -667,20 +667,16 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
       first = frame - max_audio_frames();
       last  = frame;
       if ( _dts < first ) first = _dts;
-      if ( first < first_frame() ) first = first_frame();
       break;
     case kForwards:
       first = frame;
       last  = frame + max_audio_frames();
       if ( _dts > last )   last = _dts;
-      if ( last > last_frame() )   last = last_frame();
       break;
     default:
       first = frame - max_audio_frames();
       last  = frame + max_audio_frames();
       if ( _dts > last )   last = _dts;
-      if ( first < first_frame() ) first = first_frame();
-      if ( last  > last_frame() )   last = last_frame();
       break;
     }
   
@@ -1444,6 +1440,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
   if ( ! _audio_engine ) return false;
   
+
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
      IMG_ERROR( _("Playback of audio frame failed") );
@@ -1646,16 +1643,21 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	  bool ok = in_audio_store( frame );	   
 	  if ( ok ) return kDecodeOK;
 
-	  AVPacket& pkt = _audio_packets.front();
-	  // with loops, packet dts is really frame
-	  if ( frame <= pkt.dts )
-	    {
+	   if ( ok && frame != first_frame() )
+	   {
+	      return kDecodeOK;
+	   }
+
+	   if ( frame == first_frame() )
+	   {
 	       flush_audio();
 	      _audio_packets.pop_front();
 	      return kDecodeLoopStart;
-	    }
-
-	  return got_audio;
+	   }
+	   else
+	   {
+	      return got_audio;
+	   }
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
@@ -1680,14 +1682,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	{
 	   bool ok = in_audio_store( frame );
 	   if ( ok ) {
-	      return kDecodeOK;
-	   }
-
-	   // this is needed here to restore frames in storage
-	   AVPacket& pkt = _audio_packets.front();
-
-	   if ( !_audio.empty() )
-	   {
 	      audio_cache_t::const_iterator iter = _audio.begin();
 	      if ( (*iter)->frame() >= frame )
 	      {
@@ -1695,14 +1689,12 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 		 got_audio = handle_audio_packet_seek( frame, false );
 		 continue;
 	      }
+	      return kDecodeOK;
 	   }
-	   else
-	   {
-	      _audio_buf_used = 0;
-	      got_audio = handle_audio_packet_seek( frame, false );
-	   }
-	   return got_audio;
 
+	   _audio_buf_used = 0;
+	   got_audio = handle_audio_packet_seek( frame, false );
+	   continue;
 	}
       else
 	{
