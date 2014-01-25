@@ -667,11 +667,13 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
       first = frame - max_audio_frames();
       last  = frame;
       if ( _dts < first ) first = _dts;
+      if ( first < first_frame() ) first = first_frame();
       break;
     case kForwards:
       first = frame;
       last  = frame + max_audio_frames();
       if ( _dts > last )   last = _dts;
+      if ( last > last_frame() )   last = last_frame();
       break;
     default:
       first = frame - max_audio_frames();
@@ -1657,9 +1659,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
-	  bool ok = in_audio_store( frame );	   
-	  if ( ok ) return kDecodeOK;
-
 	  AVPacket& pkt = _audio_packets.front();
 	  // with loops, packet dts is really frame
 	  if ( frame >= pkt.dts )
@@ -1693,10 +1692,14 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	      if ( (*iter)->frame() >= frame )
 	      {
 		 _audio_buf_used = 0;
-		 boost::int64_t pktframe = frame;
-		 got_audio = handle_audio_packet_seek( pktframe, false );
+		 got_audio = handle_audio_packet_seek( frame, false );
 		 continue;
 	      }
+	   }
+	   else
+	   {
+	      _audio_buf_used = 0;
+	      got_audio = handle_audio_packet_seek( frame, false );
 	   }
 	   return got_audio;
 
@@ -1719,9 +1722,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 
 	  boost::int64_t last_frame = pktframe;
 	  got_audio = decode_audio( last_frame, frame, pkt );
-	  if ( got_audio == kDecodeError ) {
-	     return got_audio;
-	  }
 	  _audio_packets.pop_front();
 	}
 
@@ -1833,6 +1833,17 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): "
 	    << std::endl;
 
+  if ( iter == last )
+  {
+     std::cerr << std::endl << "***EMPTY***";
+  }
+  else
+  {
+     std::cerr << pts2frame( get_video_stream(), (*iter).dts ) 
+	       << "-" << pts2frame( get_video_stream(), (*(last-1)).dts );
+  }
+
+#ifdef DEBUG_AUDIO_PACKETS_DETAIL
 
   bool in_preroll = false;
   bool in_seek = false;
@@ -1894,8 +1905,10 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	  last_frame = f;
 	}
     }
+#endif
 
   std::cerr << std::endl;
+
 }
 
 

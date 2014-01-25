@@ -286,7 +286,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 
 
-CMedia::DecodeStatus check_loop( int64_t& frame,
+CMedia::DecodeStatus check_loop( const int64_t frame,
 				 CMedia* img,
 				 mrv::Reel reel,
 				 mrv::Timeline* timeline )
@@ -397,6 +397,7 @@ void audio_thread( PlaybackData* data )
 	 case CMedia::kDecodeMissingFrame:
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
+	    frame += step;
 	    continue;
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
@@ -596,10 +597,8 @@ void video_thread( PlaybackData* data )
 	    {
 	       if (! img->aborted() )
 	       {
-	       
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
-
 	       }
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
@@ -748,8 +747,6 @@ void decode_thread( PlaybackData* data )
 
       frame += step;
       
-      int64_t orig_frame = frame;
-
       CMedia* next = NULL;
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
