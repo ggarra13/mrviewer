@@ -68,7 +68,7 @@ namespace mrv {
 
   namespace yuv
   {
-  ImagePixel to_rgb( const ImagePixel& rgb );
+  ImagePixel to_rgb( const ImagePixel& yuv256 );
   }
 
     namespace xyz 
