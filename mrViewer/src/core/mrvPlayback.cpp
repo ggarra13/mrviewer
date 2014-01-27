@@ -611,6 +611,7 @@ void video_thread( PlaybackData* data )
 
 	       }
 
+	       skip = false;
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
