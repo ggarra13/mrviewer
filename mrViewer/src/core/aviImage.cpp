@@ -906,7 +906,8 @@ bool aviImage::find_image( const boost::int64_t frame )
 	  {
 	    _hires = _images.back();
 
-	    if ( _hires->frame() != frame )
+	    if ( _hires->frame() != frame && 
+		 abs(frame - _hires->frame() ) < 10 )
 	       IMG_WARNING( N_("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
@@ -918,6 +919,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	  }
 	return false;
       }
+
 
 
     boost::int64_t distance = frame - _hires->frame();
