@@ -1710,13 +1710,15 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( has_audio() && !_acontext &&
 	     pkt.stream_index == audio_stream_index() )
 	{
-	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+
+	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt ) -
+	   _frame_offset;
 	   
 
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
-	      if ( pktframe <= frame+1 ) _audio_packets.push_back( pkt );
+	      if ( pktframe <= frame ) _audio_packets.push_back( pkt );
 	      if ( !has_video() && pktframe < dts ) dts = pktframe;
 	   }
 	   else
