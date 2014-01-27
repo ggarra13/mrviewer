@@ -553,7 +553,7 @@ void video_thread( PlaybackData* data )
    // delete the data (we don't need it anymore)
    delete data;
 
-
+   bool skip = false;
 
    mrv::Timer timer;
    double fps = img->play_fps();
@@ -561,7 +561,8 @@ void video_thread( PlaybackData* data )
 
    while ( !img->stopped() )
    {
-      img->wait_image();
+      if ( !skip )
+	 img->wait_image();
 
       // img->debug_video_packets( frame, "PLAYBACK" );
       // img->debug_video_stores( frame, "PLAYBACK" );
@@ -570,6 +571,7 @@ void video_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
       CMedia::DecodeStatus status;
+
 
       {
 	 status = img->decode_video( frame );
@@ -583,15 +585,12 @@ void video_thread( PlaybackData* data )
 	    break;
 	 case CMedia::kDecodeError:
 	    frame += step;
-	    continue;
+	    break;
 	 case CMedia::kDecodeMissingFrame:
-	    if ( failed_frame == frame ) {
-	       // Failed to find frame twice, skip this frame
-	       frame += step;
-	       continue;
-	    }
-	    failed_frame = frame;
-	    continue;
+	    frame += step;
+	    if ( img->has_audio() )
+	       frame = img->audio_frame();
+	    break;
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
@@ -599,7 +598,19 @@ void video_thread( PlaybackData* data )
 	       {
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
+
+
+		  if ( end == kEndIgnore )
+		  {
+		     skip = true;
+		     frame += step;
+		     if ( img->has_audio() )
+			frame = img->audio_frame();
+		     break;
+		  }
+
 	       }
+
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
