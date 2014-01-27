@@ -141,10 +141,14 @@ aviImage::~aviImage()
 
 
 bool aviImage::test_filename( const char* buf )
-{
-   if ( strncmp( buf, "/dev/sr", 7 ) == 0 )
-      return true;
-   return false;
+{ 
+   AVFormatContext* ctx = NULL; 
+   int error = avformat_open_input( &ctx, buf, NULL, NULL );
+   if ( ctx )
+      avformat_close_input( &ctx );
+
+   if ( error <= 0 ) return false;
+   return true;
 }
 
 
@@ -296,11 +300,14 @@ void aviImage::open_video_codec()
 
 
 
-  double image_ratio = (double) width() / (double)height();
-  if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
+  if ( width() > 0 && height() > 0 )
+  {
+     double image_ratio = (double) width() / (double)height();
+     if ( aspect_ratio <= 0.0 ) aspect_ratio = image_ratio;
 
-  if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
-  else _pixel_ratio = aspect_ratio / image_ratio;
+     if ( image_ratio == aspect_ratio ) _pixel_ratio = 1.0;
+     else _pixel_ratio = aspect_ratio / image_ratio;
+  }
 
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);
@@ -334,7 +341,7 @@ void aviImage::flush_video()
 
 
 /// VCR play (and cache frames if needed) sequence
-void aviImage::play( const Playback dir,  mrv::ViewerUI* const uiMain,
+void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
 		     bool fg )
 {
    CMedia::play( dir, uiMain, fg );
@@ -496,16 +503,16 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
      unsigned max_frames = 1;
      if ( has_video() )
      {
-  	max_frames = max_video_frames();
+	max_frames = max_video_frames();
      }
      else if ( has_audio() )
      {
-  	max_frames = max_audio_frames();
+	max_frames = max_audio_frames();
      }
      
      if ( abs(diff) > max_frames )
      {
-  	dts = _dts + int64_t(max_frames) * _playback;
+	dts = _dts + int64_t(max_frames) * _playback;
      }
   }
  
@@ -1703,15 +1710,13 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( has_audio() && !_acontext &&
 	     pkt.stream_index == audio_stream_index() )
 	{
-
-	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt ) -
-	   _frame_offset;
+	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 	   
+
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
-	      if ( pktframe <= frame )
-		 _audio_packets.push_back( pkt );
+	      if ( pktframe <= frame+1 ) _audio_packets.push_back( pkt );
 	      if ( !has_video() && pktframe < dts ) dts = pktframe;
 	   }
 	   else
@@ -1731,7 +1736,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
-	   
+	  
 	   
 #ifdef DEBUG_DECODE
 	   fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
@@ -1797,7 +1802,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if ( pkt.stream_index == audio_stream_index() )
 	{
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-	
+
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
@@ -1932,15 +1937,22 @@ bool aviImage::fetch(const boost::int64_t frame)
 
 bool aviImage::frame( const boost::int64_t f )
 {
-  //  if ( f == _dts ) return false;
 
-   if ( ( _video_packets.bytes() +  _audio_packets.bytes() + 
-   	  _subtitle_packets.bytes() > kMAX_QUEUE_SIZE ) // ||
-   	// (_audio_packets.bytes() > kMAX_AUDIOQ_SIZE)  ||
-   	// (_video_packets.size() > kMIN_FRAMES) ||
-   	// (_subtitle_packets.size() > kMIN_FRAMES) 
-	)
+   if ( ( playback() != kStopped &&
+	  ( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
+	  ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
+	  ( _video_packets.bytes() +  _audio_packets.bytes() + 
+	    _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
+	    ) ) )
     {
+       // std::cerr << "false return: " << std::endl;
+       // std::cerr << "vp: " << _video_packets.size() << std::endl;
+       // std::cerr << "ap: " << _audio_packets.size() << std::endl;
+       // std::cerr << "sum: " <<
+       // ( _video_packets.bytes() +  _audio_packets.bytes() + 
+       // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
+       // 		 << std::endl;
+
      return false;
     }
 
@@ -2372,16 +2384,17 @@ void aviImage::do_seek()
 	  if ( status != kDecodeOK )
 	     IMG_ERROR( "Decode audio error " << _seek_frame 
 			<< " status: " << status );
+	  find_audio( _seek_frame );
        }
        
        if ( has_video() && !got_video )
        {
 	  status = decode_video( _seek_frame );
-	  if ( status != kDecodeOK )
-	     IMG_ERROR( "Decode video error frame " << _seek_frame 
-			<< " status: " << status );
 
-	  find_image( _seek_frame );
+	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
+	     IMG_ERROR( "Decode video error seek frame " 
+			<< _seek_frame 
+			<< " status: " << status );
        }
        
        if ( has_subtitle() )
@@ -2395,7 +2408,8 @@ void aviImage::do_seek()
       debug_video_stores(_seek_frame, "doseek" );
 #endif
 
-
+      // Queue thumbnail for update
+      image_damage( image_damage() | kDamageThumbnail );
     }
 
 }
@@ -2420,7 +2434,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );
 
-  unsigned r,g,b,a;
+  unsigned a;
   ImagePixel yuv, rgb;
 
   const unsigned* pal = (const unsigned*)rect.pict.data[1];
@@ -2460,9 +2474,9 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	// //    }
 	
 
-	*d++ = rgb.r;
-	*d++ = rgb.g;
-	*d++ = rgb.b;
+	*d++ = uint8_t( rgb.r );
+	*d++ = uint8_t( rgb.g );
+	*d++ = uint8_t( rgb.b );
 	*d++ = a;
      }
   }
@@ -2871,7 +2885,6 @@ void aviImage::loop_at_start( const boost::int64_t frame )
 
 void aviImage::loop_at_end( const boost::int64_t frame )
 {
-   // _dts = first_frame();
 
    if ( has_picture() )
    {
@@ -2969,7 +2982,7 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img,
       {
 	 ImagePixel p = hires->pixel( x, y );
 
-	 float gamma = 1.0f/ui->uiView->gamma();
+	 float gamma = 1.0f/img->gamma();
 	 if ( gamma != 1.0f )
 	 {
 	    p.r = powf( p.r, gamma );
@@ -3403,7 +3416,7 @@ void CMedia::get_audio_frame(uint8_t*& buf, int& frame_size,
     src_nb_samples /= c->channels;
     src_nb_samples /= av_get_bytes_per_sample( aformat );
 
-    if ( frame_size > src_samples_size )
+    if ( unsigned(frame_size) > src_samples_size )
     {
        //assert( frame_size <= src_nb_samples );
        av_free(src_samples_data[0]);
