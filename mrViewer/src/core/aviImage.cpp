@@ -2162,12 +2162,12 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	   // store here.
 	   bool ok = in_video_store( frame );
 
-	   if ( ok && frame != first_frame() )
+	   if ( ok && frame > first_frame() )
 	   {
 	      return kDecodeOK;
 	   }
-	   
-	   if ( frame == first_frame() )
+
+	   if ( frame <= first_frame() )
 	   {
 	      _video_packets.pop_front();
 	      return kDecodeLoopStart;
@@ -2863,7 +2863,6 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 
 void aviImage::loop_at_start( const boost::int64_t frame )
 {
-
   if ( has_video() || is_sequence() )
     {
       _video_packets.loop_at_start( frame );
@@ -3040,14 +3039,16 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
     else
     {
 #if 1
-       if (frame_count >= img->last_frame() - img->first_frame() + 1) {
+       if (frame_count >= img->duration() ) {
         /* No more frames to compress. The codec has a latency of a few
          * frames if using B-frames, so we get the last frames by
          * passing the same picture again. */
+	  LOG_INFO("NOTHING SENT");
        } 
        else 
 #endif
        {
+	  LOG_INFO( "fill yuv picture " << picture->pts );
 	  fill_yuv_image( picture, img, ui );
        }
 
@@ -3604,11 +3605,12 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
    }
 
    fmt = oc->oformat;
+   
    fmt->audio_codec = AV_CODEC_ID_AC3;
 
    video_st = NULL;
    audio_st = NULL;
-   if (fmt->video_codec != CODEC_ID_NONE) {
+   if (img->has_picture() && fmt->video_codec != CODEC_ID_NONE) {
       video_st = add_video_stream(oc, &video_codec, fmt->video_codec, img);
    }
        
