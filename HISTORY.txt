@@ -1,23 +1,24 @@
-v2.5.6  - Fixed reverse playback (albeit still not perfect).
-v2.5.5  - Fixed crash in EDL step image on last image.
-	- Fixed timeline syncing in playback of non-edl movies.
-	- Fixed reels to not have edl as a default. 
-v2.5.4  - Fixed audio sync issues during playback of big movies.
-v2.5.3  - Fixed EDL playback for EDL timelines.
-v2.5.2  - Fixed EDL Edit Window's removal of images.
-v2.5.1  - Added EDL Edit window.
-	- Added reading of images in maya format ( name.ext.number )
-	- Fixed playback of EDL when edits are made.
-	- Fixed removal of images in reel list.
-	- Added Auto Fit Image to Preferences and MainWindow.
-	- Bug fixed remote communications a lot.
-v2.4.1  - Added Blend Modes (Traditional and Premult) for compositing.
-v2.3.10 - Fixed playback of Essa.wmv due to use of dts in loop.
-v2.3.9  - Fixed reverse playback and looping last frame.
-v2.3.8  - Fixed seek of image sequences.
-v2.3.7  - Fixed audio loading for image sequences and avi files.
-       	 Fixed movie saving with audio.
-v2.3.6  - Made window never expand beyond desktop boundaries, leaving title bar always in view.
-v2.3.5  - Added audio float and multichannel playback on windows.
-v2.3.4  - Made reverse playback a tad more memory efficient.
-v2.3.3  - Fixed reverse playback.
+v2.5.6.1 - Fixed audio playback of some movies where it could stutter.
+v2.5.6   - Fixed reverse playback (albeit still not perfect).
+v2.5.5   - Fixed crash in EDL step image on last image.
+	 - Fixed timeline syncing in playback of non-edl movies.
+	 - Fixed reels to not have edl as a default. 
+v2.5.4   - Fixed audio sync issues during playback of big movies.
+v2.5.3   - Fixed EDL playback for EDL timelines.
+v2.5.2   - Fixed EDL Edit Window's removal of images.
+v2.5.1   - Added EDL Edit window.
+	 - Added reading of images in maya format ( name.ext.number )
+	 - Fixed playback of EDL when edits are made.
+	 - Fixed removal of images in reel list.
+	 - Added Auto Fit Image to Preferences and MainWindow.
+	 - Bug fixed remote communications a lot.
+v2.4.1   - Added Blend Modes (Traditional and Premult) for compositing.
+v2.3.10  - Fixed playback of Essa.wmv due to use of dts in loop.
+v2.3.9   - Fixed reverse playback and looping last frame.
+v2.3.8   - Fixed seek of image sequences.
+v2.3.7   - Fixed audio loading for image sequences and avi files.
+       	 - Fixed movie saving with audio.
+v2.3.6   - Made window never expand beyond desktop boundaries, leaving title bar always in view.
+v2.3.5   - Added audio float and multichannel playback on windows.
+v2.3.4   - Made reverse playback a tad more memory efficient.
+v2.3.3   - Fixed reverse playback.

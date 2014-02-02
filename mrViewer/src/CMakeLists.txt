@@ -182,6 +182,7 @@ SET( SOURCES
   gui/mrvLogDisplay.cpp
   gui/mrvMediaTrack.cpp
   gui/mrvMainWindow.cpp
+  gui/mrvPopupMenu.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp
   gui/mrvReel.cpp

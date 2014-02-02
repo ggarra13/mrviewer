@@ -165,7 +165,9 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       {
 		  CMedia::Mutex& m2 = next->video_mutex();
 		  SCOPED_LOCK( m2 );
+
 		  img->playback( CMedia::kStopped );
+
 		  next->seek( f );
 		  next->play( CMedia::kForwards, uiMain, fg );
 		  status = kEndNextImage;
@@ -173,7 +175,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	    }
 
-	    if ( frame > last )
+	    if ( frame >= last )
 	    {
 	       if ( loop == ImageView::kLooping )
 	       {
@@ -236,8 +238,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       {
 		  CMedia::Mutex& m2 = next->video_mutex();
 		  SCOPED_LOCK( m2 );
-
 		  img->playback( CMedia::kStopped );
+
 		  next->seek( f );
 		  next->play( CMedia::kBackwards, uiMain, fg );
 		  status = kEndNextImage;
@@ -245,7 +247,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	    }
 
-	    if ( frame < first )
+
+	    if ( frame <= first )
 	    {
 	       if ( loop == ImageView::kLooping )
 	       {
@@ -402,6 +405,21 @@ void audio_thread( PlaybackData* data )
 	 case  CMedia::kDecodeLoopEnd:
 	 case  CMedia::kDecodeLoopStart:
 	    {
+
+	       if (! img->aborted() )
+	       {
+		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
+					       reel, timeline, status );
+	       
+		  
+		  if ( end == kEndIgnore )
+		  {
+		     frame += step;
+		     break;
+		  }
+		  
+	       }
+
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
 	       barrier->wait();
@@ -495,6 +513,7 @@ void subtitle_thread( PlaybackData* data )
 	    break;
 	  case CMedia::kDecodeLoopEnd:
 	  case CMedia::kDecodeLoopStart:
+
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
 	    barrier->wait();

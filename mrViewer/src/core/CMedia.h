@@ -721,6 +721,8 @@ namespace mrv {
     
     AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
+    void wait_for_threads();
+
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
        
@@ -794,8 +796,6 @@ namespace mrv {
 			    const char* routine = "");
 
     CMedia();
-
-    void wait_for_threads();
 
     static CMedia* get(CMedia* (*create)(),
 		       const char* name, const boost::uint8_t* datas = 0) {

@@ -37,6 +37,9 @@ decl {\#include "gui/mrvCTLBrowser.h"} {}
 
 decl {\#include "mrvFileRequester.h"} {} 
 
+decl {\#include "gui/mrvPopupMenu.h"} {public
+} 
+
 decl {\#include "gui/mrvTimecode.h"} {} 
 
 decl {\#include "gui/mrvTimeline.h"} {} 
@@ -2306,7 +2309,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {341 231 640 530} when CHANGED resizable
+        xywh {347 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2318,9 +2321,10 @@ o->main( this );}
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W open
+              label W
               tooltip {Opens different windows}
               xywh {5 5 20 20}
+              class {mrv::PopupMenu}
             } {
               {fltk::Item} {} {
                 label Reels
@@ -2394,7 +2398,7 @@ v->uiHotkey->uiMain->show();}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {30 5 90 20} color 0x53535300
             } {
               {fltk::PopupMenu} uiColorChannel {
@@ -2403,6 +2407,7 @@ v->uiHotkey->uiMain->show();}
                 callback {v->uiView->channel( o->value() );}
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
+                class {mrv::PopupMenu}
               } {}
             }
             {fltk::Group} {} {
@@ -2495,9 +2500,10 @@ Click to toggle between current and normal exposure.}
                     callback {float g = (float) atof( o->child( o->value() )->label() );
 v->uiGamma->value(g);
 v->uiGammaInput->value( g );
-v->uiView->gamma(g);}
+v->uiView->gamma(g);} open
                     tooltip {Some default gamma settings.}
                     xywh {0 0 50 19} box UP_BOX
+                    class {mrv::PopupMenu}
                   } {
                     {fltk::Item} {} {
                       label {2.2}
@@ -2535,15 +2541,16 @@ Value is:  pow( 2, 1/x );}
                 }
               }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {550 5 80 20}
             } {
               {fltk::PopupMenu} uiField {
                 label F
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );}
+                callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );} open selected
                 tooltip {Changes frame/field display}
                 xywh {0 0 20 20}
+                class {mrv::PopupMenu}
               } {
                 {fltk::Item} {} {
                   label Frame
@@ -2609,6 +2616,7 @@ o->value(8);}
                 tooltip {Image zoom setting.}
                 xywh {3 5 26 20} when CHANGED box UP_BOX buttonbox BORDER_BOX color 0x53535300 textcolor 0xababab00 buttoncolor 0x53535300 labelcolor 0xababab00 labelsize 10 textsize 10
                 extra_code {o->value(10);}
+                class {mrv::PopupMenu}
               } {
                 {fltk::Item} {} {
                   label {1/9}
@@ -2691,6 +2699,7 @@ o->label( o->child(i)->label() );} open
                         tooltip {Switch RGBA display between float, hexadecimal (0..0xff) and decimal (0..255).}
                         xywh {0 0 30 20} labelsize 9
                         extra_code {o->value(0);}
+                        class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
                           label RGBA
@@ -2740,6 +2749,7 @@ o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );} open
                         tooltip {Switch pixel color space information display for the pixel under the cursor.}
                         xywh {0 0 23 20} labelsize 9
                         extra_code {o->value(0);}
+                        class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
                           label HSV
@@ -2811,6 +2821,7 @@ According to CIE No.15.2:
 A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).}
                         xywh {0 0 15 20}
                         extra_code {o->value(0);}
+                        class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
                           label {Y (Luminance)}
@@ -2866,6 +2877,7 @@ o->label(o->child(c)->label());
 v->uiView->looping( (mrv::ImageView::Looping)c );}
                   tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )}
                   xywh {615 2 21 23} box UP_BOX
+                  class {mrv::PopupMenu}
                 } {
                   {fltk::Item} {} {
                     label {@||}
@@ -2889,6 +2901,7 @@ v->uiView->looping( (mrv::ImageView::Looping)c );}
                       callback {change_timeline_display(v);} open
                       tooltip {Switch between Frame, Seconds and Timecode display}
                       xywh {0 0 20 20} box DOWN_BOX
+                      class {mrv::PopupMenu}
                     } {
                       {fltk::Item} {} {
                         label Frames
@@ -2993,6 +3006,7 @@ v->uiView->fps( g );
 v->uiFPS->value( g );} open
                         tooltip {Some default frame rate settings.}
                         xywh {0 2 30 19} box UP_BOX labelsize 10
+                        class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
                           label Default
@@ -3019,7 +3033,7 @@ v->uiFPS->value( g );} open
                           label 24
                           }
                         {fltk::Item} {} {
-                          label {23.97} selected
+                          label {23.97}
                           }
                         {fltk::Item} {} {
                           label 15
@@ -3053,6 +3067,7 @@ o->value(24);}
                         callback {v->uiView->audio_stream( o->value() );}
                         tooltip {Select Audio Track}
                         xywh {0 0 18 19} when CHANGED box UP_BOX labelsize 10
+                        class {mrv::PopupMenu}
                       } {}
                       {fltk::Slider} uiVolume {
                         user_data this user_data_type {mrv::ViewerUI*}

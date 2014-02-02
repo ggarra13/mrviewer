@@ -756,12 +756,7 @@ void ImageView::copy_pixel() const
 
   CMedia* img = fg->image();
 
-  mrv::image_type_ptr pic;
-  {
-    CMedia::Mutex& m = img->video_mutex();
-    SCOPED_LOCK(m);
-    pic = img->hires();
-  }
+  mrv::image_type_ptr pic = img->hires();
   if ( !pic ) return;
 
 
@@ -1057,15 +1052,16 @@ void ImageView::timeout()
   //
    mrv::Timeline* timeline = this->timeline();
    mrv::Reel reel = browser()->current_reel();
-  mrv::Reel bgreel = browser()->reel_at( _bg_reel );
+   mrv::Reel bgreel = browser()->reel_at( _bg_reel );
+   mrv::media fg = foreground();
 
-  if ( timeline && timeline->edl() )
+   if ( timeline && timeline->edl() )
     {
       int64_t frame = boost::int64_t( timeline->value() );
 
       char bufs[256];  bufs[0] = 0;
 
-      mrv::media fg, bg;
+      mrv::media bg;
 
       if ( reel )
       {
@@ -1084,6 +1080,7 @@ void ImageView::timeout()
 
 	 if ( bg && bg != background() ) 
 	 {
+	    DBG( "CHANGE TO BG " << bg->image()->name() );
 	    background( bg );
 	 }
       }
@@ -1107,8 +1104,6 @@ void ImageView::timeout()
 
   load_list();
 
-
-  mrv::media fg = foreground();
 
   static double kMinDelay = 0.0001666;
 
@@ -1166,7 +1161,6 @@ void ImageView::timeout()
 	   // updating frame
 	   this->frame( frame );
 	}
-	uiMain->uiEDLWindow->uiEDLGroup->redraw();
      }
 	  
   }
@@ -1175,10 +1169,9 @@ void ImageView::timeout()
     {
       update_color_info( fg );
 
-
+      uiMain->uiEDLWindow->uiEDLGroup->redraw();
       redraw();
     }
-
 }
 
 void ImageView::redo_draw()
@@ -1289,6 +1282,7 @@ void ImageView::draw()
        if ( fg->image()->has_picture() )
 	  images.push_back( fg->image() );
     }
+
 
   if ( images.empty() ) return;
 
@@ -1600,8 +1594,6 @@ int ImageView::leftMouseDown(int x, int y)
 	 if ( !fg ) return 0;
 
 	 CMedia* img = fg->image();
-	 CMedia::Mutex& m = img->video_mutex();
-	 SCOPED_LOCK( m );
 	 mrv::image_type_ptr pic = img->hires();
 	 if ( !pic ) return 0;
 
@@ -2006,12 +1998,8 @@ void ImageView::mouseMove(int x, int y)
   if ( !fg ) return;
 
   CMedia* img = fg->image();
-  mrv::image_type_ptr pic;
-  {
-    CMedia::Mutex& m = img->video_mutex();
-    SCOPED_LOCK(m);
-    pic = img->hires();
-  }
+
+  mrv::image_type_ptr pic = img->hires();
   if ( !pic ) return;
 
   image_coordinates( pic, xf, yf );
@@ -2054,11 +2042,7 @@ void ImageView::mouseMove(int x, int y)
 	{ 
 	  float t = 1.0f - rgba.a;
 
-	  {
-	    CMedia::Mutex& m = bgr->video_mutex();
-	    SCOPED_LOCK(m);
-	    pic = bgr->hires();
-	  }
+	  pic = bgr->hires();
 	  if ( pic )
 	    {
 	      CMedia::PixelType bg = pic->pixel( xp, yp );
@@ -2217,12 +2201,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   CMedia* img = fg->image();
 
-	   mrv::image_type_ptr pic;
-	   {
-	      CMedia::Mutex& m = img->video_mutex();
-	      SCOPED_LOCK(m);
-	      pic = img->hires();
-	   }
+	   mrv::image_type_ptr pic = img->hires();
 	   if ( !pic ) return;
 
 	   unsigned int texWidth = pic->width();
@@ -3436,12 +3415,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   }
 
   CMedia* img = fg->image();
-  mrv::image_type_ptr pic;
-  {
-    CMedia::Mutex& m = img->video_mutex();
-    SCOPED_LOCK(m);
-    pic = img->hires();
-  }
+  mrv::image_type_ptr pic = img->hires();
   if (!pic) return;
 
   image_coordinates( pic, xf, yf );
