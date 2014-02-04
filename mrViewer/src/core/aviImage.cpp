@@ -3048,7 +3048,6 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
        else 
 #endif
        {
-	  LOG_INFO( "fill yuv picture " << picture->pts );
 	  fill_yuv_image( picture, img, ui );
        }
 

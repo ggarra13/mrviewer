@@ -559,7 +559,15 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     userDocs = "/tmp/";
   }
 #endif
-  configFilename = userHome + "/.fltk/filmaura/";
+  configFilename = userHome + "/.fltk";
+
+#if ( defined WIN32 || defined MINGW ) && !defined CYGWIN
+  mkdir( configFilename.c_str() );
+#else
+  mkdir( configFilename.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
+#endif
+
+  configFilename += "/filmaura/";
 
 #if ( defined WIN32 || defined MINGW ) && !defined CYGWIN
   mkdir( configFilename.c_str() );

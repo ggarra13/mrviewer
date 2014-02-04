@@ -2555,7 +2555,7 @@ int ImageView::keyDown(unsigned int rawkey)
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
       fps( FPS * 2 );
-      if ( img->playback() != CMedia::kStopped )
+      if ( img->playback() == CMedia::kBackwards )
 	 stop();
       else
 	 play_backwards();
@@ -2571,7 +2571,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS / 2 );
 
-      if ( img->playback() != CMedia::kStopped )
+      if ( img->playback() == CMedia::kBackwards )
 	 stop();
       else
 	 play_backwards();
@@ -2588,7 +2588,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() != CMedia::kStopped )
+      if ( img->playback() == CMedia::kBackwards )
 	 stop();
       else
 	 play_backwards();
@@ -2604,7 +2604,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS * 2 );
-      if ( img->playback() != CMedia::kStopped )
+      if ( img->playback() == CMedia::kForwards )
 	 stop();
       else
 	 play_forwards();
@@ -2620,7 +2620,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS / 2 );
-      if ( img->playback() != CMedia::kStopped )
+      if ( img->playback() == CMedia::kForwards )
 	 stop();
       else
 	 play_forwards();
@@ -2636,7 +2636,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() != CMedia::kStopped )
+      if ( img->playback() == CMedia::kForwards )
 	 stop();
       else
 	 play_forwards();
