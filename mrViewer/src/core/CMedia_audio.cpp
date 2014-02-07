@@ -67,6 +67,7 @@ namespace {
 #endif
 
 //#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
 // #define DEBUG_DECODE
@@ -1816,7 +1817,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 
 
 void CMedia::debug_audio_packets(const boost::int64_t frame,
-				    const char* routine)
+				 const char* routine)
 {
   if ( !has_audio() ) return;
 
@@ -1825,10 +1826,12 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 
   mrv::PacketQueue::const_iterator iter = _audio_packets.begin();
   mrv::PacketQueue::const_iterator last = _audio_packets.end();
-  std::cerr << name() << " S:" << _frame << " D:" << _dts 
+  std::cerr << name() << " I:" << _frame << " D:" << _dts 
 	    << " A:" << frame << " " << routine << " audio packets #"
 	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): "
 	    << std::endl;
+
+  AVStream* stream = get_audio_stream();
 
   if ( iter == last )
   {
@@ -1836,8 +1839,9 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
   }
   else
   {
-     std::cerr << pts2frame( get_video_stream(), (*iter).dts ) 
-	       << "-" << pts2frame( get_video_stream(), (*(last-1)).dts );
+     std::cerr << pts2frame( stream, (*iter).dts ) 
+	       << "-" << pts2frame( stream, (*(last-1)).dts )
+	       << std::endl;
   }
 
 #ifdef DEBUG_AUDIO_PACKETS_DETAIL
@@ -1856,11 +1860,11 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
       else if ( _audio_packets.is_loop_end( *iter ) ||
 		_audio_packets.is_loop_start( *iter ) )
 	{
-	   boost::int64_t f = get_frame( get_audio_stream(), (*iter) );
+	   boost::int64_t f = get_frame( stream, (*iter) );
 	   std::cerr << "L(" << f << ")"; continue;
 	}
 
-      boost::int64_t f = get_frame( get_audio_stream(), (*iter) );
+      boost::int64_t f = get_frame( stream, (*iter) );
 
       if ( _audio_packets.is_seek_end( *iter ) )
       {

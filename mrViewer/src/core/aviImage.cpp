@@ -1017,7 +1017,7 @@ void aviImage::video_stream( int x )
   _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, 
 						       codec->pix_fmt,
 						       has_alpha, NULL );
-  if ( _av_dst_pix_fmt < 0 ) _av_dst_pix_fmt = PIX_FMT_BGRA;
+
 
   _num_channels = 0;
   _layers.clear();
@@ -1039,11 +1039,11 @@ void aviImage::video_stream( int x )
     {
     case PIX_FMT_BGR24:
       _pix_fmt = VideoFrame::kBGR; break;
-    case PIX_FMT_BGR32:
+    case PIX_FMT_BGRA:
       _pix_fmt = VideoFrame::kBGRA; break;
     case PIX_FMT_RGB24:
       _pix_fmt = VideoFrame::kRGB; break;
-    case PIX_FMT_RGB32:
+    case PIX_FMT_RGBA:
       _pix_fmt = VideoFrame::kRGBA; break;
     case PIX_FMT_YUV444P:
       if ( w > 768 )
@@ -1075,6 +1075,8 @@ void aviImage::video_stream( int x )
 
       _pix_fmt = VideoFrame::kBGRA; break;
     }
+
+
 
 }
 
@@ -1573,6 +1575,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
      if (eof) {
 	if (!got_video && video_stream_index() >= 0) {
 	   av_init_packet(&pkt);
+	   pkt.dts = pkt.pts = vpts;
 	   pkt.data = NULL;
 	   pkt.size = 0;
 	   pkt.stream_index = video_stream_index();
@@ -1584,6 +1587,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	if (!got_audio && audio_stream_index() >= 0 &&
 	    stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
 	   av_init_packet(&pkt);
+	   pkt.dts = pkt.pts = apts;
 	   pkt.data = NULL;
 	   pkt.size = 0;
 	   pkt.stream_index = audio_stream_index();
@@ -1723,7 +1727,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   }
 	   else
 	   {
-	      _audio_packets.push_back( pkt );
+	      if ( pktframe <= last_frame() )
+		 _audio_packets.push_back( pkt );
 	      if ( !has_video() && pktframe > dts ) dts = pktframe;
 	   }
 	   
@@ -1764,6 +1769,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	AVStream* stream = get_audio_stream();
 	if (stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
 	   av_init_packet(&pkt);
+	   pkt.dts = pkt.pts = apts;
 	   pkt.data = NULL;
 	   pkt.size = 0;
 	   pkt.stream_index = audio_stream_index();
