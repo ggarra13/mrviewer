@@ -1818,7 +1818,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   }
 	   else
 	   {
-	      _audio_packets.push_back( pkt );
+	      if ( pktframe <= last_frame() )
+		 _audio_packets.push_back( pkt );
 	   }
 	
 	   if ( !got_audio )

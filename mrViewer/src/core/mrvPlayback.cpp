@@ -100,6 +100,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       const mrv::Timeline* timeline,
 		       const mrv::CMedia::DecodeStatus end )
 {
+
    mrv::ImageView* view = uiMain->uiView;
 
    EndStatus status = kEndIgnore;
@@ -450,7 +451,8 @@ void audio_thread( PlaybackData* data )
 	 if ( f < timeline->minimum() )
 	    f = int64_t( timeline->minimum() );
 	    timeline->value( double( f ) );
-	 }
+      }
+
 
       img->find_audio(frame);
       frame += step;
@@ -607,8 +609,6 @@ void video_thread( PlaybackData* data )
 	    break;
 	 case CMedia::kDecodeMissingFrame:
 	    frame += step;
-	    if ( img->has_audio() )
-	       frame = img->audio_frame();
 	    break;
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
