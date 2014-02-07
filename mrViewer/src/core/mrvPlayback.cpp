@@ -406,7 +406,7 @@ void audio_thread( PlaybackData* data )
 	 case  CMedia::kDecodeLoopStart:
 	    {
 
-	       if (! img->aborted() )
+	       if (! img->aborted() && !img->has_picture() )
 	       {
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
