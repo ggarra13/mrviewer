@@ -694,13 +694,18 @@ namespace mrv {
 
     virtual void clear_packets();
 
-    void debug_audio_packets(const boost::int64_t frame, const char* routine = "");
+    void debug_audio_packets(const boost::int64_t frame, 
+			     const char* routine = "",
+			     const bool detail = false);
     virtual void debug_video_packets(const boost::int64_t frame, 
-				     const char* routine = "");
+				     const char* routine = "",
+				     const bool detail = false);
     virtual void debug_video_stores(const boost::int64_t frame, 
-				    const char* routine = "") {};
+				    const char* routine = "",
+				    const bool detail = false) {};
     virtual void debug_subtitle_stores(const boost::int64_t frame, 
-				       const char* routine = "") {};
+				       const char* routine = "",
+				       const bool detail = false) {};
 
        virtual void probe_size( unsigned p ) {}
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
@@ -793,7 +798,8 @@ namespace mrv {
     void debug_stream_keyframes( const AVStream* stream );
     void debug_stream_index( const AVStream* stream );
     void debug_audio_stores(const boost::int64_t frame,
-			    const char* routine = "");
+			    const char* routine = "",
+			    const bool detail = false);
 
     CMedia();
 

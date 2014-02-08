@@ -66,7 +66,7 @@ namespace {
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 // #define DEBUG_SEEK
-#define DEBUG_VIDEO_PACKETS
+// #define DEBUG_VIDEO_PACKETS
 //#define DEBUG_STORES
 
 // #define DEBUG_DECODE
@@ -1205,9 +1205,9 @@ void CMedia::stop()
   // Notify packets, to make sure that audio thread exits any wait lock
   // This needs to be done even if no audio is playing, as user might
   // have turned off audio, but audio thread is still active.
-  _audio_packets.cond().notify_one();
-  _video_packets.cond().notify_one();
-  _subtitle_packets.cond().notify_one();
+  _audio_packets.cond().notify_all();
+  _video_packets.cond().notify_all();
+  _subtitle_packets.cond().notify_all();
 
 
   // Wait for all threads to exit
@@ -1709,19 +1709,16 @@ void CMedia::loop_at_start( const boost::int64_t frame )
    if ( has_picture() )
    {
       _video_packets.loop_at_start( frame );
-      _video_packets.cond().notify_one();
    }
 
    if ( number_of_audio_streams() > 0 )
    {
       _audio_packets.loop_at_start( frame );
-      _audio_packets.cond().notify_one();
    }
    
   if ( number_of_subtitle_streams() > 0 )
   {
      _subtitle_packets.loop_at_start( frame );
-     _subtitle_packets.cond().notify_one();
   }
 }
 
@@ -1732,19 +1729,16 @@ void CMedia::loop_at_end( const boost::int64_t frame )
    if ( has_picture() )
    {
       _video_packets.loop_at_end( frame );
-      _video_packets.cond().notify_one();
    }
 
   if ( number_of_audio_streams() > 0 )
     {
        _audio_packets.loop_at_end( frame );
-       _audio_packets.cond().notify_one();
     }
 
   if ( number_of_subtitle_streams() > 0 )
     {
        _subtitle_packets.loop_at_end( frame );
-       _subtitle_packets.cond().notify_one();
     }
 }
 
@@ -2045,7 +2039,8 @@ void CMedia::debug_stream_index( const AVStream* stream )
 
 
 void CMedia::debug_video_packets(const boost::int64_t frame, 
-				    const char* routine)
+				 const char* routine,
+				 const bool detail)
 {
   if ( !has_video() && !is_sequence() ) return;
 
@@ -2070,69 +2065,71 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 
   std::cerr << std::endl;
 
-#ifdef DEBUG_VIDEO_PACKETS
-  bool in_preroll = false;
-  bool in_seek = false;
-  for ( ; iter != last; ++iter )
-    {
-      if ( _video_packets.is_flush( *iter ) )
+
+  if ( detail )
+  {
+     bool in_preroll = false;
+     bool in_seek = false;
+     for ( ; iter != last; ++iter )
+     {
+	if ( _video_packets.is_flush( *iter ) )
 	{
-	  std::cerr << "* "; continue;
+	   std::cerr << "* "; continue;
 	}
-      else if ( _video_packets.is_loop_start( *iter ) ||
-		_video_packets.is_loop_end( *iter ) )
+	else if ( _video_packets.is_loop_start( *iter ) ||
+		  _video_packets.is_loop_end( *iter ) )
 	{
 	   std::cerr << "L" << (*iter).dts << " "; continue;
 	}
-
-      assert( (*iter).dts != MRV_NOPTS_VALUE );
-
-      boost::int64_t f;
-      if ( (*iter).pts != MRV_NOPTS_VALUE )
-	 f = (*iter).pts;
-      else
-      {
-	 f = (*iter).dts;
-      }
-
-      f = pts2frame( get_video_stream(), f );
-
-      if ( _video_packets.is_seek_end( *iter ) )
+	
+	assert( (*iter).dts != MRV_NOPTS_VALUE );
+	
+	boost::int64_t f;
+	if ( (*iter).pts != MRV_NOPTS_VALUE )
+	   f = (*iter).pts;
+	else
 	{
-	  if ( in_preroll )
-	    {
+	   f = (*iter).dts;
+	}
+	
+	f = pts2frame( get_video_stream(), f );
+	
+	if ( _video_packets.is_seek_end( *iter ) )
+	{
+	   if ( in_preroll )
+	   {
 	      std::cerr << "[PREROLL END: " << f << "]";
 	      in_preroll = false;
-	    }
-	  else if ( in_seek )
-	    {
+	   }
+	   else if ( in_seek )
+	   {
 	      std::cerr << "<SEEK END:" << f << ">";
 	      in_seek = false;
-	    }
-	  else
-	    {
-	       std::cerr << "+ERROR:" << f << "+";
-	    }
+	   }
+	   else
+	   {
+	      std::cerr << "+ERROR:" << f << "+";
+	   }
 	}
-      else if ( _video_packets.is_seek( *iter ) )
+	else if ( _video_packets.is_seek( *iter ) )
 	{
-	      std::cerr << "<SEEK:" << f << ">";
-	      in_seek = true;
+	   std::cerr << "<SEEK:" << f << ">";
+	   in_seek = true;
 	}
-      else if ( _video_packets.is_preroll( *iter ) )
+	else if ( _video_packets.is_preroll( *iter ) )
 	{
-	  std::cerr << "[PREROLL:" << f << "]";
-	  in_preroll = true;
+	   std::cerr << "[PREROLL:" << f << "]";
+	   in_preroll = true;
 	}
-      else
+	else
 	{
-	  if ( f == frame )  std::cerr << "S";
-	  if ( f == _dts )   std::cerr << "D";
-	  if ( f == _frame ) std::cerr << "F";
-	  std::cerr << f << " ";
+	   if ( f == frame )  std::cerr << "S";
+	   if ( f == _dts )   std::cerr << "D";
+	   if ( f == _frame ) std::cerr << "F";
+	   std::cerr << f << " ";
 	}
-    }
-#endif
+     }
+  }
 
   std::cerr << std::endl;
 }

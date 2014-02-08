@@ -1494,6 +1494,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
     limit_audio_store( frame );
   }
   
+
   bool ok = play_audio( result );
   _audio_pts   = int64_t( _audio_frame / _fps );
   _audio_clock = av_gettime() / 1000000.0;
@@ -1642,38 +1643,41 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
       else if ( _audio_packets.is_loop_start() )
 	{
 	  bool ok = in_audio_store( frame );	   
-	  if ( ok ) return kDecodeOK;
 
-	   if ( ok && frame != first_frame() )
-	   {
-	      return kDecodeOK;
-	   }
+	  if ( ok && frame != first_frame() )
+	  {
+	     return kDecodeOK;
+	  }
 
-	   if ( frame == first_frame() )
-	   {
-	       flush_audio();
-	      _audio_packets.pop_front();
-	      return kDecodeLoopStart;
-	   }
-	   else
-	   {
-	      return got_audio;
-	   }
+	  if ( frame <= first_frame() )
+	  {
+	     flush_audio();
+	     _audio_packets.pop_front();
+	     return kDecodeLoopStart;
+	  }
+	  else
+	  {
+	     return got_audio;
+	  }
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
-	  AVPacket& pkt = _audio_packets.front();
+	  bool ok = in_audio_store( frame );
+
+	  if ( ok && frame != last_frame() )	
+	  {
+	     return kDecodeOK;
+	  }   
+
 	  // with loops, packet dts is really frame
-	  if ( frame >= pkt.dts )
+	  if ( frame >= last_frame() )
 	    {
 	       flush_audio();
 	       _audio_packets.pop_front();
 	       return kDecodeLoopEnd;
 	    }
 
-	  bool ok = in_audio_store( frame );	   
-	  if ( ok ) return kDecodeOK;
-	  return kDecodeError;
+	  return got_audio;
 	}
       else if ( _audio_packets.is_seek()  )
 	{
@@ -1784,7 +1788,8 @@ void CMedia::do_seek()
 
 
 void CMedia::debug_audio_stores(const boost::int64_t frame, 
-				   const char* routine)
+				const char* routine,
+				const bool detail)
 {
   SCOPED_LOCK( _audio_mutex );
 
@@ -1802,22 +1807,24 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 
   std::cerr << std::endl;
 
-#ifdef DEBUG_AUDIO_STORES_DETAIL
-  for ( ; iter != last; ++iter )
-    {
-      boost::int64_t f = (*iter)->frame();
-      if ( f == frame )  std::cerr << "P";
-      if ( f == _dts )   std::cerr << "D";
-      if ( f == _frame ) std::cerr << "F";
-      std::cerr << f << " ";
-    }
-  std::cerr << std::endl;
-#endif
+  if (detail)
+  {
+     for ( ; iter != last; ++iter )
+     {
+	boost::int64_t f = (*iter)->frame();
+	if ( f == frame )  std::cerr << "P";
+	if ( f == _dts )   std::cerr << "D";
+	if ( f == _frame ) std::cerr << "F";
+	std::cerr << f << " ";
+     }
+     std::cerr << std::endl;
+  }
 }
 
 
 void CMedia::debug_audio_packets(const boost::int64_t frame,
-				 const char* routine)
+				 const char* routine,
+				 const bool detail)
 {
   if ( !has_audio() ) return;
 
@@ -1826,7 +1833,7 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 
   mrv::PacketQueue::const_iterator iter = _audio_packets.begin();
   mrv::PacketQueue::const_iterator last = _audio_packets.end();
-  std::cerr << name() << " I:" << _frame << " D:" << _dts 
+  std::cerr << name() << " F:" << _audio_frame << " D:" << _dts 
 	    << " A:" << frame << " " << routine << " audio packets #"
 	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): "
 	    << std::endl;
@@ -1839,74 +1846,85 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
   }
   else
   {
-     std::cerr << pts2frame( stream, (*iter).dts ) 
-	       << "-" << pts2frame( stream, (*(last-1)).dts )
-	       << std::endl;
+
+     std::cerr << pts2frame( stream, (*iter).dts ) << '-';
+
+     if ( _audio_packets.is_loop_end( *(last-1) ) ||
+	  _audio_packets.is_loop_start( *(last-1) ) )
+     {
+	std::cerr << (*(last-1)).dts;
+     }
+     else
+     {
+	std::cerr << pts2frame( stream, (*(last-1)).dts );
+     }
+
+     std::cerr << std::endl;
   }
 
-#ifdef DEBUG_AUDIO_PACKETS_DETAIL
+  if ( detail )
+  {
 
-  bool in_preroll = false;
-  bool in_seek = false;
+     bool in_preroll = false;
+     bool in_seek = false;
 
-  boost::int64_t last_frame = std::numeric_limits< boost::int64_t >::min();
+     boost::int64_t last_frame = std::numeric_limits< boost::int64_t >::min();
 
-  for ( ; iter != last; ++iter )
-    {
-      if ( _audio_packets.is_flush( *iter ) )
+     for ( ; iter != last; ++iter )
+     {
+	if ( _audio_packets.is_flush( *iter ) )
 	{
-	  std::cerr << "* "; continue;
+	   std::cerr << "* "; continue;
 	}
-      else if ( _audio_packets.is_loop_end( *iter ) ||
-		_audio_packets.is_loop_start( *iter ) )
+	else if ( _audio_packets.is_loop_end( *iter ) ||
+		  _audio_packets.is_loop_start( *iter ) )
 	{
-	   boost::int64_t f = get_frame( stream, (*iter) );
-	   std::cerr << "L(" << f << ")"; continue;
+	   std::cerr << "L(" << iter->dts << ")"; continue;
 	}
-
-      boost::int64_t f = get_frame( stream, (*iter) );
-
-      if ( _audio_packets.is_seek_end( *iter ) )
-      {
-	  if ( in_preroll )
-	    {
+	
+	boost::int64_t f = get_frame( stream, (*iter) );
+	
+	if ( _audio_packets.is_seek_end( *iter ) )
+	{
+	   if ( in_preroll )
+	   {
 	      std::cerr << "[PREROLL END: " << f << "]";
 	      in_preroll = false;
-	    }
-	  else if ( in_seek )
-	    {
+	   }
+	   else if ( in_seek )
+	   {
 	      std::cerr << "<SEEK END:" << f << ">";
 	      in_seek = false;
-	    }
-	  else
-	    {
-	       std::cerr << "+ERROR:" << f << "+";
-	    }
-      }
-      else if ( _audio_packets.is_seek( *iter ) )
+	   }
+	   else
+	   {
+	      std::cerr << "+ERROR:" << f << "+";
+	   }
+	}
+	else if ( _audio_packets.is_seek( *iter ) )
 	{
 	   std::cerr << "<SEEK:" << f << ">";
 	   in_seek = true;
 	}
-      else if ( _audio_packets.is_preroll( *iter ) )
+	else if ( _audio_packets.is_preroll( *iter ) )
 	{
-	  std::cerr << "[PREROLL:" << f << "]";
-	  in_preroll = true;
+	   std::cerr << "[PREROLL:" << f << "]";
+	   in_preroll = true;
 	}
-      else
+	else
 	{
-	  // Audio packets often have many packets for same frame.
-	  // keep printout simpler
-	  if ( f == last_frame ) continue;
-
-	  if ( f == frame )  std::cerr << "S";
-	  if ( f == _dts )   std::cerr << "D";
-	  if ( f == _frame ) std::cerr << "F";
-	  std::cerr << f << " ";
-	  last_frame = f;
+	   // Audio packets often have many packets for same frame.
+	   // keep printout simpler
+	   if ( f == last_frame ) continue;
+	   
+	   if ( f == frame )  std::cerr << "S";
+	   if ( f == _dts )   std::cerr << "D";
+	   if ( f == _frame ) std::cerr << "F";
+	   std::cerr << f << " ";
+	   last_frame = f;
 	}
-    }
-#endif
+     }
+  }
 
   std::cerr << std::endl;
 
