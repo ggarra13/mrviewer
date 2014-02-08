@@ -385,6 +385,8 @@ void audio_thread( PlaybackData* data )
       img->wait_audio();
 
 
+      // img->debug_audio_packets( frame, "innerloop", true );
+
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
 
@@ -597,6 +599,11 @@ void video_thread( PlaybackData* data )
       {
 	 status = img->decode_video( frame );
       }
+
+      if ( frame > img->last_frame() )
+	 status = CMedia::kDecodeLoopEnd;
+      if ( frame < img->first_frame() )
+	 status = CMedia::kDecodeLoopStart;
 
       switch( status )
       {

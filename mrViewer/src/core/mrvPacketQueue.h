@@ -323,6 +323,7 @@ namespace mrv {
       _packets.push_back( _loop_start );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = frame;
+      _cond.notify_one();
     }
 
     void loop_at_end(const int64_t frame)
@@ -330,6 +331,7 @@ namespace mrv {
       _packets.push_back( _loop_end );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = frame;
+      _cond.notify_one();
     }
 
     void seek_begin(const int64_t pts)
@@ -347,6 +349,7 @@ namespace mrv {
       _packets.push_back( _seek_end );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = pts;
+      _cond.notify_one();
     }
 
     static void initialize()

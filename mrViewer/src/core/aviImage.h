@@ -113,12 +113,15 @@ namespace mrv {
        virtual void probe_size( unsigned p );
 
     void debug_video_stores(const boost::int64_t frame, 
-			    const char* routine = "");
+			    const char* routine = "",
+			    const bool detail = false);
 
     void debug_subtitle_packets(const boost::int64_t frame, 
-				const char* routine = "");
+				const char* routine = "",
+				const bool detail = false);
     void debug_subtitle_stores(const boost::int64_t frame, 
-			       const char* routine = "");
+			       const char* routine = "",
+			       const bool detail = false);
 
   protected:
 
