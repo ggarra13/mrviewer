@@ -1494,7 +1494,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
     limit_audio_store( frame );
   }
   
-
   bool ok = play_audio( result );
   _audio_pts   = int64_t( _audio_frame / _fps );
   _audio_clock = av_gettime() / 1000000.0;
@@ -1868,6 +1867,8 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
      bool in_preroll = false;
      bool in_seek = false;
 
+     int counter = 0;
+
      boost::int64_t last_frame = std::numeric_limits< boost::int64_t >::min();
 
      for ( ; iter != last; ++iter )
@@ -1888,12 +1889,28 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	{
 	   if ( in_preroll )
 	   {
-	      std::cerr << "[PREROLL END: " << f << "]";
+	      if ( counter != 0 )
+	      {
+		 std::cerr << "[PREROLL END: " << f << "]";
+	      }
+	      else
+	      {
+		 std::cerr << "[**BAD** PREROLL: " << f << "]";
+	      }
+	      counter = 0;
 	      in_preroll = false;
 	   }
 	   else if ( in_seek )
 	   {
-	      std::cerr << "<SEEK END:" << f << ">";
+	      if ( counter != 0 )
+	      {
+		 std::cerr << "<SEEK END: " << f << ">";
+	      }
+	      else
+	      {
+		 std::cerr << "<**BAD** SEEK: " << f << ">";
+	      }
+	      counter = 0;
 	      in_seek = false;
 	   }
 	   else
@@ -1922,6 +1939,7 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	   if ( f == _frame ) std::cerr << "F";
 	   std::cerr << f << " ";
 	   last_frame = f;
+	   if ( in_preroll || in_seek ) counter++;
 	}
      }
   }

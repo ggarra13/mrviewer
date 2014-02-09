@@ -398,9 +398,11 @@ void audio_thread( PlaybackData* data )
       switch( status )
       {
 	 case CMedia::kDecodeError:
+	    LOG_ERROR("Decode Error audio frame " << frame );
 	    frame += step;
 	    continue;
 	 case CMedia::kDecodeMissingFrame:
+	    LOG_ERROR("Decode Missing audio frame " << frame );
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
 	    frame += step;
@@ -471,7 +473,7 @@ void audio_thread( PlaybackData* data )
 
 
   //
-  // Main loop used to play audio (of any image)
+  // Main loop used to decode subtitles
   //
 void subtitle_thread( PlaybackData* data )
 {
