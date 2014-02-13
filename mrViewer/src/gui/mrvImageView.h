@@ -376,6 +376,12 @@ namespace mrv {
 
        void add_shape( shape_type_ptr shape );
 
+       void ghost_previous( bool x ) { _ghost_previous = x; }
+       void ghost_next( bool x ) { _ghost_next = x; }
+
+       bool ghost_previous() const { return _ghost_previous; }
+       bool ghost_next()     const { return _ghost_next; }
+
      public:
        ParserList   _clients;
        tcp_server_ptr _server;
@@ -472,6 +478,9 @@ namespace mrv {
        double          X, Y;   //<- draw cursor coordinates
     int		lastX, lastY;  //<- last mouse coordinates
     int		       flags;  //<- flags containing current user action
+
+    bool       _ghost_previous;
+    bool       _ghost_next;
 
     //! Channel index
     unsigned short     _channel;

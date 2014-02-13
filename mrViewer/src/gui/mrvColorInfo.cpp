@@ -216,13 +216,7 @@ void ColorInfo::update( const CMedia* src,
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
 
-      mrv::image_type_ptr pic;
-      {
-	CMedia* img = const_cast< CMedia* >( src );
-	CMedia::Mutex& m = img->video_mutex();
-	SCOPED_LOCK(m);
-	pic = img->hires();
-      }
+      mrv::image_type_ptr pic = src->hires();
       if (!pic) return;
 
       for ( unsigned y = ymin; y <= ymax; ++y )
@@ -248,7 +242,45 @@ void ColorInfo::update( const CMedia* src,
 	      pmean.b += rp.b;
 	      pmean.a += rp.a;
 	      
-	      CMedia::PixelType hsv = color::rgb::to_hsv( rp );
+	      CMedia::PixelType hsv;
+	      
+	      switch( uiMain->uiBColorType->value()+1 )
+	      {
+		 case color::kITU_709:
+		    hsv = color::rgb::to_ITU709( rp );
+		    break;
+		 case color::kITU_601:
+		    hsv = color::rgb::to_ITU601( rp );
+		    break;
+		 case color::kYDbDr:
+		    hsv = color::rgb::to_YDbDr( rp );
+		    break;
+		 case color::kYIQ:
+		    hsv = color::rgb::to_yiq( rp );
+		    break;
+		 case color::kYUV:
+		    hsv = color::rgb::to_yuv( rp );
+		    break;
+		 case color::kCIE_Luv:
+		    hsv = color::rgb::to_luv( rp );
+		    break;
+		 case color::kCIE_Lab:
+		    hsv = color::rgb::to_lab( rp );
+		    break;
+		 case color::kCIE_xyY:
+		    hsv = color::rgb::to_xyY( rp );
+		    break;
+		 case color::kCIE_XYZ:
+		    hsv = color::rgb::to_xyz( rp );
+		    break;
+		 case color::kHSL:
+		    hsv = color::rgb::to_hsl( rp );
+		    break;
+		 default:
+		 case color::kHSV:
+		    hsv = color::rgb::to_hsv( rp );
+		    break;
+	      }
 
 	      hsv.a = calculate_brightness( rp, brightness_type );
 
@@ -347,14 +379,69 @@ void ColorInfo::update( const CMedia* src,
 	   << kA
 	   << float_printf(pmean.a) << std::endl
 	   << std::endl
-	   << "@b;\t"
-	   << kH
-	   << N_("H") << "\t"
-	   << kS
-	   << N_("S") << "\t"
-	   << kV
-	   << N_("V") << "\t"
-	   << kL;
+	   << "@b;\t";
+
+      switch( uiMain->uiBColorType->value()+1 )
+      {
+	 case color::kITU_709:
+	    text << kH << N_("7") << "\t"
+		 << kS << N_("0") << "\t"
+		 << kL << N_("9");
+	    break;
+	 case color::kITU_601:
+	    text << kH << N_("6") << "\t"
+		 << kS << N_("0") << "\t"
+		 << kL << N_("1");
+	    break;
+	 case color::kYIQ:
+	    text << kH << N_("Y") << "\t"
+		 << kS << N_("I") << "\t"
+		 << kL << N_("Q");
+	    break;
+	 case color::kYDbDr:
+	    text << kH << N_("Y") << "\t"
+		 << kS << N_("Db") << "\t"
+		 << kL << N_("Dr");
+	    break;
+	 case color::kYUV:
+	    text << kH << N_("Y") << "\t"
+		 << kS << N_("U") << "\t"
+		 << kL << N_("V");
+	    break;
+	 case color::kCIE_Luv:
+	    text << kH << N_("L") << "\t"
+		 << kS << N_("u") << "\t"
+		 << kL << N_("v");
+	    break;
+	 case color::kCIE_Lab:
+	    text << kH << N_("L") << "\t"
+		 << kS << N_("a") << "\t"
+		 << kL << N_("b");
+	    break;
+	 case color::kCIE_xyY:
+	    text << kH << N_("x") << "\t"
+		 << kS << N_("y") << "\t"
+		 << kL << N_("Y");
+	    break;
+	 case color::kCIE_XYZ:
+	    text << kH << N_("X") << "\t"
+		 << kS << N_("Y") << "\t"
+		 << kL << N_("Z");
+	    break;
+	 case color::kHSL:
+	    text << kH << N_("H") << "\t"
+		 << kS << N_("S") << "\t"
+		 << kL << N_("L");
+	    break;
+	 case color::kHSV:
+	 default:
+	    text << kH << N_("H") << "\t"
+		 << kS << N_("S") << "\t"
+		 << kV << N_("V");
+	    break;
+      }
+
+      text << "\t" << kL;
 
       switch( brightness_type )
 	{

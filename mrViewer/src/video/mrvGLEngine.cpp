@@ -1083,13 +1083,10 @@ void GLEngine::draw_images( ImageList& images )
 
 
 
-void GLEngine::draw_annotation( const std::vector< mrv::shape_type_ptr >& 
-				shapes )
+void GLEngine::draw_annotation( const GLShapeList& shapes )
 {
    glMatrixMode (GL_MODELVIEW);
    glLoadIdentity();
-   
-
 
    double pr = 1.0;
    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
@@ -1125,7 +1122,32 @@ void GLEngine::draw_annotation( const std::vector< mrv::shape_type_ptr >&
 
    for ( ; i != e; ++i )
    {
-      (*i)->draw();
+
+      if ( _view->ghost_previous() )
+      {
+	 if ( (*i)->frame == _view->frame() - 1 )
+	 {
+	    float a = (*i)->a;
+	    (*i)->a *= 0.25f;
+	    (*i)->draw();
+	    (*i)->a = a;
+	 }
+      }
+
+      if ( _view->ghost_next() )
+      {
+	 if ( (*i)->frame == _view->frame() + 1 )
+	 {
+	    float a = (*i)->a;
+	    (*i)->a *= 0.25f;
+	    (*i)->draw();
+	    (*i)->a = a;
+	 }
+      }
+
+      if ( (*i)->frame == MRV_NOPTS_VALUE ||
+	   (*i)->frame == _view->frame() )
+	 (*i)->draw();
    }
 
    glDisable(GL_BLEND);
@@ -1480,7 +1502,7 @@ void GLEngine::resize_background()
 }
 
 GLEngine::GLEngine(const mrv::ImageView* v) :
-  DrawEngine( v )
+DrawEngine( v )
 {
   initialize();
 }

@@ -384,9 +384,6 @@ void audio_thread( PlaybackData* data )
 
       img->wait_audio();
 
-
-      // img->debug_audio_packets( frame, "innerloop", true );
-
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
 

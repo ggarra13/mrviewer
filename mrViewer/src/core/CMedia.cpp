@@ -2053,14 +2053,37 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 	    << " " << routine << " video packets #" 
 	    << _video_packets.size() << " (bytes:" << _video_packets.bytes() << "): ";
 
+  AVStream* stream = get_video_stream();
+
   if ( iter == last )
   {
      std::cerr << std::endl << "***EMPTY***";
   }
   else
   {
-     std::cerr << pts2frame( get_video_stream(), (*iter).dts ) 
-	       << "-" << pts2frame( get_video_stream(), (*(last-1)).dts );
+     if ( _video_packets.is_loop_end( *(last-1) ) ||
+	  _video_packets.is_loop_start( *(last-1) ) )
+     {
+	std::cerr << (*iter).dts;
+     }
+     else
+     {
+	std::cerr << pts2frame( stream, (*iter).dts );
+     }
+
+     std::cerr << '-';
+
+     if ( _video_packets.is_loop_end( *(last-1) ) ||
+	  _video_packets.is_loop_start( *(last-1) ) )
+     {
+	std::cerr << (*(last-1)).dts;
+     }
+     else
+     {
+	std::cerr << pts2frame( stream, (*(last-1)).dts );
+     }
+
+     std::cerr << std::endl;
   }
 
   std::cerr << std::endl;
