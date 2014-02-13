@@ -636,6 +636,8 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   posX( 4 ),
   posY( 22 ),
   flags( 0 ),
+  _ghost_previous( true ),
+  _ghost_next( true ),
   _channel( 0 ),
   _old_channel( 0 ),
   _channelType( kRGB ),
@@ -1624,6 +1626,14 @@ int ImageView::leftMouseDown(int x, int y)
 	 s->b = b / 255.0f;
 	 s->a = 1.0f;
 	 s->pen_size = uiMain->uiPaint->uiPenSize->value();
+	 if ( uiMain->uiPaint->uiAllFrames->value() )
+	 {
+	    s->frame = MRV_NOPTS_VALUE;
+	 }
+	 else
+	 {
+	    s->frame = frame();
+	 }
 
 	 yf  = H - yf;
 	 yf -= H/2;
@@ -1866,8 +1876,8 @@ void ImageView::leftMouseUp( int x, int y )
 	std::string buf;
 	buf = "GLPathShape ";
 	char tmp[128];
-	sprintf( tmp, "%f %f %f %f %f ", s->r, s->g, s->b, s->a,
-		 s->pen_size );
+	sprintf( tmp, "%f %f %f %f %f %" PRId64, s->r, s->g, s->b, s->a,
+		 s->pen_size, s->frame );
 	buf += tmp;
 	GLPathShape::PointList::const_iterator i = s->pts.begin();
 	GLPathShape::PointList::const_iterator e = s->pts.end();
@@ -1892,7 +1902,7 @@ void ImageView::leftMouseUp( int x, int y )
 	std::string buf;
 	buf = "GLErasePathShape ";
 	char tmp[128];
-	sprintf( tmp, "%f ", s->pen_size );
+	sprintf( tmp, "%f %" PRId64, s->pen_size, s->frame );
 	buf += tmp;
 	GLPathShape::PointList::const_iterator i = s->pts.begin();
 	GLPathShape::PointList::const_iterator e = s->pts.end();

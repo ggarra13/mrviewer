@@ -145,7 +145,8 @@ bool Parser::parse( const std::string& s )
       std::getline( is, points );
       is.str( points );
       is.clear();
-      is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size;
+      is >> shape->r >> shape->g >> shape->b >> shape->a >> shape->pen_size
+	 >> shape->frame;
       while ( is >> xy.x >> xy.y )
       {
 	 shape->pts.push_back( xy );
@@ -162,7 +163,7 @@ bool Parser::parse( const std::string& s )
       std::getline( is, points );
       is.str( points );
       is.clear();
-      is >> shape->pen_size;
+      is >> shape->pen_size >> shape->frame;
       while ( is >> xy.x >> xy.y )
       {
 	 shape->pts.push_back( xy );

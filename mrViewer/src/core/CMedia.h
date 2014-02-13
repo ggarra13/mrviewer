@@ -889,7 +889,7 @@ namespace mrv {
     virtual void flush_video() {};
     void flush_audio();
 
-       void dump_metadata( AVDictionary* m );
+       void dump_metadata( AVDictionary* m, const std::string prefix = "" );
 
        // Auxiliary function to handle decoding audio in messy new api.
        int decode_audio3(AVCodecContext* avctx, int16_t* samples,

@@ -42,17 +42,26 @@ inline std::ostream& operator<<( std::ostream& o, const Point& p )
 class GLShape
 {
    public:
-     GLShape() : r(0.0), g(1.0), b(0.0), a(1.0), pen_size(5) {};
+     GLShape() : r(0.0), g(1.0), b(0.0), a(1.0), pen_size(5),
+		 frame( MRV_NOPTS_VALUE )
+     {
+     };
+
      ~GLShape() {};
+
      virtual void draw() = 0;
+
      void color( float ri, float gi, float bi, float ai = 1.0 ) {
 	r = ri;
 	g = gi;
 	b = bi;
 	a = ai;
      }
+
+   public:
      float r, g, b, a;
      float pen_size;
+     boost::int64_t frame;
 };
 
 class GLPathShape : public GLShape

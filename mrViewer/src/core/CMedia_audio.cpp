@@ -584,14 +584,16 @@ void CMedia::populate_audio()
 
 }
 
-void CMedia::dump_metadata( AVDictionary *m )
+void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
 {
    if(!m) return;
 
    AVDictionaryEntry* tag = NULL;
    
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
-      _iptc.insert( std::make_pair( tag->key, tag->value ) ); 
+      std::string name = prefix;
+      name += tag->key;
+      _iptc.insert( std::make_pair( name.c_str(), tag->value ) ); 
    }
 }
 
@@ -1676,6 +1678,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	       return kDecodeLoopEnd;
 	    }
 
+	  _audio_packets.pop_front();
 	  return got_audio;
 	}
       else if ( _audio_packets.is_seek()  )
@@ -1834,8 +1837,7 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
   mrv::PacketQueue::const_iterator last = _audio_packets.end();
   std::cerr << name() << " F:" << _audio_frame << " D:" << _dts 
 	    << " A:" << frame << " " << routine << " audio packets #"
-	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): "
-	    << std::endl;
+	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): ";
 
   AVStream* stream = get_audio_stream();
 
@@ -1846,7 +1848,17 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
   else
   {
 
-     std::cerr << pts2frame( stream, (*iter).dts ) << '-';
+     if ( _audio_packets.is_loop_end( *(last-1) ) ||
+	  _audio_packets.is_loop_start( *(last-1) ) )
+     {
+	std::cerr << (*iter).dts;
+     }
+     else
+     {
+	std::cerr << pts2frame( stream, (*iter).dts );
+     }
+
+     std::cerr << '-';
 
      if ( _audio_packets.is_loop_end( *(last-1) ) ||
 	  _audio_packets.is_loop_start( *(last-1) ) )
@@ -1877,10 +1889,13 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	{
 	   std::cerr << "* "; continue;
 	}
-	else if ( _audio_packets.is_loop_end( *iter ) ||
-		  _audio_packets.is_loop_start( *iter ) )
+	else if ( _audio_packets.is_loop_end( *iter ) )
 	{
-	   std::cerr << "L(" << iter->dts << ")"; continue;
+	   std::cerr << "Le(" << iter->dts << ")"; continue;
+	}
+	else if ( _audio_packets.is_loop_start( *iter ) )
+	{
+	   std::cerr << "Ls(" << iter->dts << ")"; continue;
 	}
 	
 	boost::int64_t f = get_frame( stream, (*iter) );

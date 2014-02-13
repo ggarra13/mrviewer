@@ -1431,22 +1431,6 @@ void aviImage::populate()
   // Miscellaneous information
   //
 
-  AVDictionary* m = _context->metadata;
-  if ( has_audio() )
-  {
-     
-     AVStream* stream = get_audio_stream();
-     if ( stream->metadata ) m = stream->metadata;
-  }
-  else if ( has_video() )
-  {
-     
-     AVStream* stream = get_video_stream();
-     if ( stream->metadata ) m = stream->metadata;
-  }
-  
-  
-  
   dump_metadata( _context->metadata );
 
   
@@ -1476,6 +1460,17 @@ void aviImage::populate()
   }
  
    
+  if ( has_audio() )
+  {
+     AVStream* stream = get_audio_stream();
+     if ( stream->metadata ) dump_metadata( stream->metadata, "Audio " );
+  }
+  
+  if ( has_video() )
+  {
+     AVStream* stream = get_video_stream();
+     if ( stream->metadata ) dump_metadata( stream->metadata, "Video " );
+  }
 
 }
 
@@ -1727,7 +1722,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   if ( playback() == kBackwards )
 	   {
 	      // Only add packet if it comes before seek frame
-	      if ( pktframe <= frame ) _audio_packets.push_back( pkt );
+	      if ( pktframe <= frame )
+		 _audio_packets.push_back( pkt );
 	      if ( !has_video() && pktframe < dts ) dts = pktframe;
 	   }
 	   else

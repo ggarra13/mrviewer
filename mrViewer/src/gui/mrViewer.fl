@@ -2099,10 +2099,10 @@ o->child_of( main->uiMain );} modal
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {810 336 110 425} horizontal hide resizable
+        xywh {420 174 110 425} horizontal hide resizable
       } {
         {fltk::Group} {} {open
-          xywh {10 9 90 201}
+          xywh {0 9 105 371}
         } {
           {fltk::Button} uiSelection {
             user_data m user_data_type {mrv::ViewerUI*}
@@ -2111,7 +2111,7 @@ o->value(1);
 uiDraw->value(0);
 uiErase->value(0);}
             tooltip {Area Select Tool}
-            xywh {2 0 43 35}
+            xywh {12 0 43 35}
             image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm}
             extra_code {o->value(1);
 o->image( select_pic );}
@@ -2123,7 +2123,7 @@ o->value(1);
 uiSelection->value(0);
 uiErase->value(0);}
             tooltip {Freehand Drawing Tool}
-            xywh {50 0 40 35}
+            xywh {60 0 40 35}
             image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/draw.xpm}
             extra_code {o->image( draw );}
           }
@@ -2134,45 +2134,49 @@ o->value(1);
 uiSelection->value(0);
 uiDraw->value(0);}
             tooltip {Eraser Tool}
-            xywh {50 41 40 35}
+            xywh {60 41 40 35}
             image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
             extra_code {o->image( erase );}
           }
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
             tooltip {Selects the size of brush.}
-            xywh {5 91 85 30} align 1 minimum 1 maximum 10 step 1 value 5
+            xywh {15 91 85 30} align 1 minimum 1 maximum 10 step 1 value 5
           }
-          {fltk::Button} uiUndoDraw {
-            user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->undo_draw();
+          {fltk::Group} {} {open
+            xywh {16 326 79 35} vertical
+          } {
+            {fltk::Button} uiUndoDraw {
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {v->uiView->undo_draw();
 
 if ( !v->uiView->has_undo() )
  o->deactivate();}
-            tooltip {Undo Last Shape Drawn}
-            xywh {5 166 34 35}
-            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
-            extra_code {o->image( undo );
+              tooltip {Undo Last Shape Drawn}
+              xywh {0 0 34 35}
+              image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
+              extra_code {o->image( undo );
 if ( !m->uiView->has_undo() )
  o->deactivate();
 else
  o->activate();}
-          }
-          {fltk::Button} uiRedoDraw {
-            user_data m user_data_type {mrv::ViewerUI*}
-            callback {v->uiView->redo_draw();
+            }
+            {fltk::Button} uiRedoDraw {
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {v->uiView->redo_draw();
 if ( !v->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
-            tooltip {Redo Previous Shape Drawn}
-            xywh {50 166 34 35}
-            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/redo.xpm}
-            extra_code {o->image( redo );
+              tooltip {Redo Previous Shape Drawn}
+              xywh {45 0 34 35}
+              image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/redo.xpm}
+              extra_code {o->image( redo );
 if ( !m->uiView->has_redo() )
    o->deactivate();
 else
    o->activate();}
+            }
           }
           {fltk::Button} uiPenColor {
             label {Pen Color}
@@ -2182,7 +2186,39 @@ if (!fltk::color_chooser("Pick Draw Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();}
             tooltip {Selects the background color of areas outside the current image.}
-            xywh {60 136 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
+            xywh {70 136 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
+          }
+          {fltk::Group} {} {
+            label Frames open
+            xywh {8 181 95 55} box UP_BOX
+          } {
+            {fltk::RadioButton} uiAllFrames {
+              label All
+              xywh {10 5 25 25} value 1
+            }
+            {fltk::RadioButton} uiCurrentFrame {
+              label Current
+              xywh {10 25 25 25}
+            }
+          }
+          {fltk::Group} {} {
+            label Ghosting open
+            xywh {8 251 95 60} box UP_BOX
+          } {
+            {fltk::CheckButton} {} {
+              label Previous
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {v->uiView->ghost_previous( o->value() );
+v->uiView->redraw();}
+              xywh {10 5 25 25} value 1
+            }
+            {fltk::CheckButton} {} {
+              label Next
+              user_data m user_data_type {mrv::ViewerUI*}
+              callback {v->uiView->ghost_next( o->value() );
+v->uiView->redraw();}
+              xywh {10 25 25 25} value 1
+            }
           }
         }
       }
@@ -2309,10 +2345,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {347 231 640 530} when CHANGED resizable
+        xywh {353 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2547,7 +2583,7 @@ Value is:  pow( 2, 1/x );}
               {fltk::PopupMenu} uiField {
                 label F
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );} open selected
+                callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );} open
                 tooltip {Changes frame/field display}
                 xywh {0 0 20 20}
                 class {mrv::PopupMenu}
@@ -2587,7 +2623,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {
+          {fltk::Group} uiPixelBar {open
             xywh {0 455 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
@@ -2687,7 +2723,7 @@ o->value(8);}
                   {fltk::Group} {} {open
                     xywh {0 0 520 28}
                   } {
-                    {fltk::Group} {} {open
+                    {fltk::Group} {} {
                       xywh {0 3 230 20}
                     } {
                       {fltk::PopupMenu} uiAColorType {
@@ -2745,7 +2781,8 @@ o->label( o->child(i)->label() );} open
                         user_data uiView user_data_type {mrv::ImageView*}
                         callback {int i = o->value();
 if ( i < 0 ) return;
-o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );} open
+o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
+v->update_color_info();} open
                         tooltip {Switch pixel color space information display for the pixel under the cursor.}
                         xywh {0 0 23 20} labelsize 9
                         extra_code {o->value(0);}
@@ -2851,7 +2888,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {open
+          {fltk::Group} uiBottomBar {
             xywh {0 478 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -2988,7 +3025,7 @@ v->uiView->seek( f );}
                         xywh {183 2 30 18} labelcolor 0x98a8a800
                       }
                     }
-                    {fltk::Group} {} {open
+                    {fltk::Group} {} {
                       xywh {220 0 65 21}
                     } {
                       {fltk::PopupMenu} fpsDefaults {
@@ -3058,7 +3095,7 @@ o->value(24);}
                         class {fltk::ValueInput}
                       }
                     }
-                    {fltk::Group} {} {open
+                    {fltk::Group} {} {
                       xywh {287 2 73 19}
                     } {
                       {fltk::PopupMenu} uiAudioTracks {
@@ -3077,7 +3114,7 @@ o->value(24);}
                       }
                     }
                   }
-                  {fltk::Group} {} {open
+                  {fltk::Group} {} {
                     xywh {455 0 180 24}
                   } {
                     {fltk::Input} uiStartFrame {

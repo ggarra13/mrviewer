@@ -71,8 +71,7 @@ namespace mrv {
 
     virtual void draw_cursor( const double x, const double y );
 
-    virtual void draw_annotation( const std::vector< mrv::shape_type_ptr >& 
-				  shapes );
+       virtual void draw_annotation( const GLShapeList& shapes );
 
     virtual void resize_background();
 
