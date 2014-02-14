@@ -273,22 +273,22 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
   if ( !fg ) return;
 
   view->stop();
-  float gamma = view->gamma();
-  view->gamma( 1.0 );
-  float zoom = view->zoom();
-  view->zoom( 1.0 );
-  view->redraw();
+  // float gamma = view->gamma();
+  // view->gamma( 1.0 );
+  // float zoom = view->zoom();
+  // view->zoom( 1.0 );
+  // view->redraw();
   fltk::check();
 
   mrv::CMedia* img = fg->image();
   if ( !img ) return;
 
 
-  unsigned vw = view->w();
-  unsigned vh = view->h();
+  unsigned w = view->w();
+  unsigned h = view->h();
 
-  unsigned w = img->width();
-  unsigned h = img->height();
+  //unsigned w = img->width();
+  //unsigned h = img->height();
 
   mrv::image_type_ptr hires( new mrv::image_type( img->frame(),
 						  w, h, 4,
@@ -302,15 +302,17 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
 
   glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 
-  double x = (vw-w)/2;
-  if ( vw < w ) x = 0;  
+  int x = 0;
+  int y = 0;
 
-  double y = (vh-h)/2;
-  if ( vh < h ) y = 0;
+  // double x = (vw-w)/2;
+  // if ( vw < w ) x = 0;  
 
-  view->fit_image();
+  // double y = (vh-h)/2;
+  // if ( vh < h ) y = 0;
 
-  glReadPixels( int(x), int(y), w, h, GL_RGBA, GL_FLOAT, data );
+
+  glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
 
   // Flip image vertically
   for ( unsigned x = 0; x < w; ++x )
@@ -338,8 +340,9 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
 
   // Return all to normal
   img->hires( old );
-  view->zoom( zoom );
-  view->gamma( gamma );
+
+  // view->zoom( zoom );
+  // view->gamma( gamma );
   view->redraw();
 
 }
