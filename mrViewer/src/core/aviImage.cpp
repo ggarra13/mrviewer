@@ -2409,8 +2409,8 @@ void aviImage::do_seek()
        {
 	  status = decode_audio( _seek_frame );
 	  if ( status != kDecodeOK )
-	     IMG_ERROR( "Decode audio error " << _seek_frame 
-			<< " status: " << status );
+	     IMG_ERROR( "Decode audio error: " << status 
+			<< " for frame " << _seek_frame );
 	  find_audio( _seek_frame );
        }
        
