@@ -33,8 +33,8 @@ namespace mrv
       };
 
   public:
-    Timecode( int x, int y, int w, int h, char* l = 0 );
-    Timecode( int w, int h, char* l = 0 );
+    Timecode( int x, int y, int w, int h, const char* l = 0 );
+    Timecode( int w, int h, const char* l = 0 );
 
     Display display()          { return _display; }
     void display( Display b );
