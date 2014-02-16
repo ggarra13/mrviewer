@@ -87,6 +87,32 @@ class GLErasePathShape : public GLPathShape
      virtual void draw();
 };
 
+class GLTextShape : public GLShape
+{
+   public:
+     GLTextShape() : _font("Helvetica"), _fontsize(8), _charset(0), 
+                     GLShape() {};
+     ~GLTextShape() {};
+
+     void text( std::string t ) { _text = t; }
+     std::string text() const   { return _text; }
+
+     void font( std::string f ) { _font = f; }
+     std::string font() const   { return _font; }
+
+     void size( unsigned f ) { _fontsize = f; }
+     unsigned size() const   { return _fontsize; }
+
+     void init();
+     virtual void draw();
+
+   protected:
+     Point p;
+     std::string _font, _text;
+     int      _fontsize;
+     unsigned _charset;   //!< display list for characters
+};
+
 
 typedef boost::shared_ptr< GLShape > shape_type_ptr;
 typedef std::vector< shape_type_ptr > GLShapeList;
