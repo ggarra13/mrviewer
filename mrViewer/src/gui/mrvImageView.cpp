@@ -2066,6 +2066,13 @@ void ImageView::mouseMove(int x, int y)
 	}
     }
 
+  //
+  // To represent pixel properly, we need to do gain/gamma/lut 
+  //
+  float one_gamma = 1.0f / _gamma;
+  rgba.r = pow(rgba.r * _gain, one_gamma);
+  rgba.g = pow(rgba.g * _gain, one_gamma);
+  rgba.b = pow(rgba.b * _gain, one_gamma);
 
   switch( uiMain->uiAColorType->value() )
     {
@@ -2089,13 +2096,11 @@ void ImageView::mouseMove(int x, int y)
       break;
     }
 
+
   //
-  // To represent pixel properly, we need to do gain/gamma/lut 
+  // Show this pixel as 8-bit fltk color box
   //
-  float one_gamma = 1.0f / _gamma;
-  rgba.r = pow(rgba.r * _gain, one_gamma);
-  rgba.g = pow(rgba.g * _gain, one_gamma);
-  rgba.b = pow(rgba.b * _gain, one_gamma);
+
   if ( rgba.r > 1.0f ) rgba.r = 1.0f;
   else if ( rgba.r < 0.0f ) rgba.r = 0.0f;
   if ( rgba.g > 1.0f ) rgba.g = 1.0f;
@@ -2103,9 +2108,6 @@ void ImageView::mouseMove(int x, int y)
   if ( rgba.b > 1.0f ) rgba.b = 1.0f;
   else if ( rgba.b < 0.0f ) rgba.b = 0.0f;
 
-  //
-  // Show this pixel as 8-bit fltk color box
-  //
   uchar col[3];
   col[0] = uchar(rgba.r * 255.f);
   col[1] = uchar(rgba.g * 255.f);
@@ -2375,21 +2377,25 @@ int ImageView::keyDown(unsigned int rawkey)
    else if ( kExposureMore.match( rawkey ) )
    {
       exposure_change( 0.5f );
+      mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
    }
    else if ( kExposureLess.match( rawkey ) )
     {
       exposure_change( -0.5f );
+      mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
    else if ( kGammaMore.match( rawkey ) )
     {
       gamma( gamma() + 0.1f );
+      mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
    else if ( kGammaLess.match( rawkey ) )
     {
       gamma( gamma() - 0.1f );
+      mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
    else if ( rawkey == fltk::LeftAltKey ) 

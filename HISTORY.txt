@@ -1,5 +1,6 @@
 v2.5.6.4 - Bug fixed OpenGL snapshot of stills.  Now it is What You See Is 
 	   What You Get.
+	   Made RGBA values represent what is seen (applying gamma and gain).
 v2.5.6.3 - Bug fixed drag and drop to support movie files with numbers in them.
 v2.5.6.2 - Fixed RGBA movie playback where colors would be reversed.
 	 - Fixed audio hanging up on EDL playback.
