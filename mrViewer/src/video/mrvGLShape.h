@@ -92,7 +92,9 @@ class GLTextShape : public GLShape
    public:
      GLTextShape() : _font("Helvetica"), _fontsize(8), _charset(0), 
                      GLShape() {};
-     ~GLTextShape() {};
+     ~GLTextShape();
+
+     void position( int x, int y ) { p.x = x; p.y = y; }
 
      void text( std::string t ) { _text = t; }
      std::string text() const   { return _text; }
@@ -108,7 +110,7 @@ class GLTextShape : public GLShape
 
    protected:
      Point p;
-     std::string _font, _text;
+     std::string _font, _text, _encoding;
      int      _fontsize;
      unsigned _charset;   //!< display list for characters
 };
