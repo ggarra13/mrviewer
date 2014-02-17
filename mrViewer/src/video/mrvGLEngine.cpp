@@ -1491,6 +1491,9 @@ void GLEngine::release()
 
   GLLut3d::clear();
 
+  if ( sCharset )
+     glDeleteLists( sCharset, 255 );
+
   if (_rgba)  delete _rgba;
   if (_YByRy) delete _YByRy;
   if (_YCbCr) delete _YCbCr;

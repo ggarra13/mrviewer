@@ -175,8 +175,11 @@ void GLTextShape::init()
 
     // Load XFont to user's specs
     char font_name[256];
-    sprintf( font_name, N_("-*-%s-*-r-normal--%d-0-0-0-c-0-iso8859-1"),
-	     _font.c_str(), _fontsize );
+
+    sprintf( font_name, "-*-%s-medium-r-normal--%d-*-*-*-*-*-iso8859-1", _font.c_str(), _fontsize );
+
+    // sprintf( font_name, N_("-*-%s-*-o-normal--%d-100-75-75-m-60-iso8859-1"),
+    //          _font.c_str(), _fontsize );
     XFontStruct* hfont = XLoadQueryFont( gdc, font_name );
     if (!hfont) {
        LOG_ERROR( _("Could not open ") << _font << _(" of size ") << _fontsize);
@@ -192,12 +195,33 @@ void GLTextShape::init()
 #endif
 }
 
+GLTextShape::~GLTextShape()
+{
+   glDeleteLists( _charset, 255 );
+}
+
 void GLTextShape::draw()
 {
   if ( !_charset )
   {
      init();
+
+     if ( ! _charset ) return;
   }
+
+  //Turn on Color Buffer and Depth Buffer
+  glColorMask(true, true, true, true);
+
+  // So compositing works properly
+  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+  //Only write to the Stencil Buffer where 1 is not set
+  glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+
+  //Keep the content of the Stencil Buffer
+  glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+
+  glColor4f( r, g, b, a );
 
   glLoadIdentity();
   glRasterPos2s( p.x, p.y );

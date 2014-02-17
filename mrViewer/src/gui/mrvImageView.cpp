@@ -273,12 +273,6 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
   if ( !fg ) return;
 
   view->stop();
-  // float gamma = view->gamma();
-  // view->gamma( 1.0 );
-  // float zoom = view->zoom();
-  // view->zoom( 1.0 );
-  // view->redraw();
-  fltk::check();
 
   mrv::CMedia* img = fg->image();
   if ( !img ) return;
@@ -341,8 +335,6 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
   // Return all to normal
   img->hires( old );
 
-  // view->zoom( zoom );
-  // view->gamma( gamma );
   view->redraw();
 
 }
@@ -1384,6 +1376,16 @@ void ImageView::draw()
 
     }
 
+  if ( _shapes.empty() )
+  {
+     GLTextShape* s = new GLTextShape();
+     s->font( "Courier" );
+     s->size( 24 );
+     s->position( 40, 40 );
+     s->text("Prueba");
+     add_shape( mrv::shape_type_ptr(s) );
+  }
+
   _engine->draw_annotation( _shapes );
 
   if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
@@ -1745,34 +1747,34 @@ int ImageView::leftMouseDown(int x, int y)
 	    const stubImage* img = dynamic_cast< const stubImage* >( image() );
 	    if ( img )
 	    {
-	       menu.add( _("Image/Clone"), kCloneImage.hotkey(), 
+	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
 			(fltk::Callback*)clone_image_cb, browser());
-	       menu.add( _("Image/Clone All Channels"), 0, 
-			(fltk::Callback*)clone_all_cb, 
+	       menu.add( _("Image/Clone All Channels"), 0,
+			(fltk::Callback*)clone_all_cb,
 			browser(), fltk::MENU_DIVIDER);
 	    }
 	    else
 	    {
-	       menu.add( _("Image/Clone"), kCloneImage.hotkey(), 
+	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
 			(fltk::Callback*)clone_image_cb, browser(),
 			fltk::MENU_DIVIDER);
 	    }
-	    
-	    menu.add( _("Image/Attach CTL Rendering Transform"), 
-		      kCTLScript.hotkey(), 
-		      (fltk::Callback*)attach_ctl_script_cb, 
+
+	    menu.add( _("Image/Attach CTL Rendering Transform"),
+		      kCTLScript.hotkey(),
+		      (fltk::Callback*)attach_ctl_script_cb,
 		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Attach ICC Color Profile"), 
-		      kIccProfile.hotkey(), 
-		      (fltk::Callback*)attach_color_profile_cb, 
+	    menu.add( _("Image/Attach ICC Color Profile"),
+		      kIccProfile.hotkey(),
+		      (fltk::Callback*)attach_color_profile_cb,
 		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(), 
-		      (fltk::Callback*)set_as_background_cb, 
+	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
+		      (fltk::Callback*)set_as_background_cb,
 		      (void*)this);
-	    menu.add( _("Image/Toggle Background"), 
-		      kToggleBG.hotkey(), 
+	    menu.add( _("Image/Toggle Background"),
+		      kToggleBG.hotkey(),
 		      (fltk::Callback*)toggle_background_cb, (void*)this);
-	    
+
 	    Image_ptr image = fg->image();
 
 	    size_t num = image->number_of_subtitle_streams();
@@ -1805,23 +1807,23 @@ int ImageView::leftMouseDown(int x, int y)
 	     		 (fltk::Callback*)detach_audio_cb, this );
 	    }
 
-	    menu.add( _("Pixel/Copy RGBA Values to Clipboard"), 
-		      kCopyRGBAValues.hotkey(), 
+	    menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
+		      kCopyRGBAValues.hotkey(),
 		      (fltk::Callback*)copy_pixel_rgba_cb, (void*)this);
 	 }
 
 
 
-	  menu.add( _("Monitor/Attach CTL Display Transform"), 
-		    kMonitorCTLScript.hotkey(), 
-		   (fltk::Callback*)monitor_ctl_script_cb, 
+	  menu.add( _("Monitor/Attach CTL Display Transform"),
+		    kMonitorCTLScript.hotkey(),
+		   (fltk::Callback*)monitor_ctl_script_cb,
 		   NULL);
-	  menu.add( _("Monitor/Attach ICC Color Profile"), 
-		    kMonitorIccProfile.hotkey(), 
-		    (fltk::Callback*)monitor_icc_profile_cb, 
+	  menu.add( _("Monitor/Attach ICC Color Profile"),
+		    kMonitorIccProfile.hotkey(),
+		    (fltk::Callback*)monitor_icc_profile_cb,
 		    this, fltk::MENU_DIVIDER);
 
-	  menu.popup( fltk::Rectangle( fltk::event_x(), 
+	  menu.popup( fltk::Rectangle( fltk::event_x(),
 				       fltk::event_y(), 80, 1) );
 	}
       else
