@@ -48,6 +48,7 @@
 
 #include <fltk/Color.h>
 #include <fltk/Cursor.h>
+#include <fltk/Font.h>
 #include <fltk/Output.h>
 #include <fltk/Choice.h>
 #include <fltk/ValueOutput.h>
@@ -91,6 +92,7 @@
 #include "gui/mrvTimeline.h"
 #include "gui/mrvHotkey.h"
 #include "mrvEDLWindowUI.h"
+#include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvImageView.h"
 
 
@@ -457,7 +459,7 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
   const char* fmt = o->label();
 
   sscanf( fmt, "%f", &mask );
-  
+
   char buf[128];
   sprintf( buf, "Mask %f", mask );
   view->send( buf );
@@ -479,7 +481,7 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 
    mrv::media fg = view->foreground();
    if ( !fg ) return;
-  
+
    int i = (int)p->value() - 1;
    fg->image()->subtitle_stream(i);
 
@@ -588,6 +590,12 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 
 }
 
+void ImageView::text_mode()
+{
+   _mode = kText;
+   fltk::DoubleBufferWindow* w = mrv::make_window();
+   w->show();
+}
 
 
 void ImageView::send( std::string m )
@@ -975,23 +983,23 @@ bool ImageView::should_update( mrv::media& fg )
 
 void ImageView::load_list()
 {
- 
+
    mrv::LoadList files;
-     
+
    {
       fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
 			      "mrViewer.lock" );
       int pid = 1;
       lock.get( "pid", pid, 1 );
-      
-      
+
+
       char* filename;
       char* audio;
       int start, end;
-      
-      
+
+
       int groups = lock.groups();
-      
+
       for ( int i = 0; i < groups; ++i )
       {
 	 const char* group = lock.group( i );
@@ -1007,7 +1015,7 @@ void ImageView::load_list()
       }
    }
 
-   
+
    if ( ! files.empty() )
    {
       mrv::ImageBrowser* image_list = uiMain->uiReelWindow->uiBrowser;
@@ -1376,19 +1384,21 @@ void ImageView::draw()
 
     }
 
-  if ( _shapes.empty() )
+  if (! _shapes.empty() )
   {
-     GLTextShape* s = new GLTextShape();
-     s->font( "Courier" );
-     s->size( 24 );
-     s->position( 40, 40 );
-     s->text("Prueba");
-     add_shape( mrv::shape_type_ptr(s) );
+     GLTextShape* s = dynamic_cast< GLTextShape* >( _shapes.back().get() );
+     if ( s && _mode == kText )
+     {
+        int offset = 0;
+        if ( uiMain->uiTopBar->visible() ) offset = uiMain->uiTopBar->h();
+        s->position( fltk::event_x(), h() - fltk::event_y() + offset );
+     }
   }
 
   _engine->draw_annotation( _shapes );
 
-  if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
+  if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ||
+                                  _mode == kText ) )
   {
      mrv::media fg = foreground();
      if ( !fg ) return;
@@ -1593,7 +1603,7 @@ int ImageView::leftMouseDown(int x, int y)
       {
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
       }
-      else if ( _mode == kDraw || _mode == kErase )
+      else if ( _mode == kDraw || _mode == kErase || _mode == kText )
       {
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
 
@@ -1622,6 +1632,21 @@ int ImageView::leftMouseDown(int x, int y)
 	 {
 	    s = new GLErasePathShape;
 	 }
+         else if ( _mode == kText )
+         {
+            GLTextShape* t = new GLTextShape;
+
+            fltk::Font** fonts;
+            int n = fltk::list_fonts( fonts );
+            if ( n )
+            {
+               t->font( fonts[0] );
+            }
+            t->size( 24 );
+            t->text("Prueba");
+
+            s = t;
+         }
 
 	 uchar r, g, b;
 	 fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
@@ -1908,6 +1933,32 @@ void ImageView::leftMouseUp( int x, int y )
 	buf = "GLErasePathShape ";
 	char tmp[128];
 	sprintf( tmp, "%f %" PRId64, s->pen_size, s->frame );
+	buf += tmp;
+	GLPathShape::PointList::const_iterator i = s->pts.begin();
+	GLPathShape::PointList::const_iterator e = s->pts.end();
+	for ( ; i != e; ++i )
+	{
+	   sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+	   buf += tmp;
+	}
+	send( buf );
+     }
+  }
+  else if ( _mode == kText )
+  {
+     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+     GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+     if ( s == NULL )
+     {
+	LOG_ERROR( _("Not a GLErasePathShape pointer") );
+     }
+     else
+     {
+	std::string buf;
+	buf = "GLTextShape ";
+	char tmp[512];
+	sprintf( tmp, "%s %d %f %" PRId64, s->font()->name(),
+                 s->size(), s->pen_size, s->frame );
 	buf += tmp;
 	GLPathShape::PointList::const_iterator i = s->pts.begin();
 	GLPathShape::PointList::const_iterator e = s->pts.end();

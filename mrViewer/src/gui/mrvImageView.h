@@ -59,6 +59,7 @@ namespace mrv {
     kSelection = 1 << 0,
     kDraw      = 1 << 1,
     kErase     = 1 << 2,
+    kText      = 1 << 3,
     };
 
     enum Looping {
@@ -362,6 +363,7 @@ namespace mrv {
        float wipe_amount() const { return _wipe; }
 
 
+       void text_mode();
        void selection_mode() { _mode = kSelection; }
        void draw_mode()      { _mode = kDraw; }
        void erase_mode()     { _mode = kErase; }

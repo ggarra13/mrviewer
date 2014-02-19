@@ -87,20 +87,20 @@ class GLErasePathShape : public GLPathShape
      virtual void draw();
 };
 
-class GLTextShape : public GLShape
+class GLTextShape : public GLPathShape
 {
    public:
-     GLTextShape() : _font("Helvetica"), _fontsize(8), _charset(0), 
-                     GLShape() {};
+     GLTextShape() : _font(NULL), _fontsize(8), _charset(0), 
+                     GLPathShape() {};
      ~GLTextShape();
 
-     void position( int x, int y ) { p.x = x; p.y = y; }
+     void position( int x, int y ) { pts[0].x = x; pts[0].y = y; }
 
      void text( std::string t ) { _text = t; }
      std::string text() const   { return _text; }
 
-     void font( std::string f ) { _font = f; }
-     std::string font() const   { return _font; }
+     void font( fltk::Font* f ) { _font = f; }
+     fltk::Font* font() const   { return _font; }
 
      void size( unsigned f ) { _fontsize = f; }
      unsigned size() const   { return _fontsize; }
@@ -109,8 +109,8 @@ class GLTextShape : public GLShape
      virtual void draw();
 
    protected:
-     Point p;
-     std::string _font, _text, _encoding;
+     fltk::Font* _font;
+     std::string _text, _encoding;
      int      _fontsize;
      unsigned _charset;   //!< display list for characters
 };

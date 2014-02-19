@@ -2094,12 +2094,13 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {420 174 110 425} horizontal hide resizable
+        xywh {426 220 110 425} horizontal resizable visible
       } {
         {fltk::Group} {} {open
           xywh {0 9 105 371}
@@ -2109,7 +2110,8 @@ o->child_of( main->uiMain );} modal
             callback {v->uiView->selection_mode();
 o->value(1);
 uiDraw->value(0);
-uiErase->value(0);}
+uiErase->value(0);
+uiText->value(0);}
             tooltip {Area Select Tool}
             xywh {12 0 43 35}
             image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm}
@@ -2121,7 +2123,8 @@ o->image( select_pic );}
             callback {v->uiView->draw_mode();
 o->value(1);
 uiSelection->value(0);
-uiErase->value(0);}
+uiErase->value(0);
+uiText->value(0);}
             tooltip {Freehand Drawing Tool}
             xywh {60 0 40 35}
             image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/draw.xpm}
@@ -2132,11 +2135,23 @@ uiErase->value(0);}
             callback {v->uiView->erase_mode();
 o->value(1);
 uiSelection->value(0);
-uiDraw->value(0);}
+uiDraw->value(0);
+uiText->value(0);}
             tooltip {Eraser Tool}
             xywh {60 41 40 35}
             image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
             extra_code {o->image( erase );}
+          }
+          {fltk::Button} uiText {
+            label T
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {o->value(1);
+v->uiView->text_mode();
+uiSelection->value(0);
+uiDraw->value(0);
+uiErase->value(0);} selected
+            tooltip {Text Tool}
+            xywh {10 41 45 35} align 32 labelfont 8 labelsize 24
           }
           {fltk::ValueSlider} uiPenSize {
             label {Pen Size}
@@ -2337,7 +2352,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2614,7 +2629,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::Group} uiViewGroup {open
+          {fltk::Group} uiViewGroup {
             xywh {0 25 640 430} resizable
           } {
             {fltk::Group} uiView {
@@ -2623,7 +2638,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {open
+          {fltk::Group} uiPixelBar {
             xywh {0 455 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
