@@ -174,6 +174,7 @@ SET( SOURCES
   gui/mrvEDLGroup.cpp
   gui/mrvFileRequester.cpp
   gui/mrvFLTKHandler.cpp
+  gui/mrvFontsWindowUI.cpp
   gui/mrvHistogram.cpp
   gui/mrvImageView.cpp
   gui/mrvImageBrowser.cpp
