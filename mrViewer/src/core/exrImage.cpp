@@ -408,7 +408,7 @@ bool exrImage::channels_order_multi(
       const std::string layerName = i.name();
       const Imf::Channel* ch = channels.findChannel( i.name() );
       if ( !ch ) continue;
-    
+
       std::string ext = layerName;
       std::string root = "";
       size_t pos = layerName.rfind( N_(".") );
@@ -417,12 +417,12 @@ bool exrImage::channels_order_multi(
 	 root = ext.substr( 0, pos );
 	 ext = ext.substr( pos+1, ext.size() );
       }
-      
+
       std::transform( root.begin(), root.end(), root.begin(),
 		      (int(*)(int)) toupper);
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
-      
+
 
       if ( (root == "RIGHT") || ( root == "" && !_has_right_eye ) )
       {
@@ -473,7 +473,7 @@ bool exrImage::channels_order_multi(
    offsets[1] = 1;
    offsets[2] = 2;
    offsets[3] = 3;
-      
+
    if ( numChannels >= 3 && has_alpha() )
    {
       format = VideoFrame::kRGBA;
@@ -489,22 +489,20 @@ bool exrImage::channels_order_multi(
       format = VideoFrame::kRGB;
       numChannels = 3;
    }
-   
+
    allocate_pixels( frame, unsigned(numChannels), format,
 		    pixel_type_conversion( imfPixelType ) );
-   
-   static size_t xs[4], ys[4];      
+
+   static size_t xs[4], ys[4];
    for ( unsigned j = 0; j < numChannels; ++j )
    {
       xs[j] = _hires->pixel_size() * numChannels;
       ys[j] = xs[j] * dw;
    }
-   
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
    memset( pixels, 0, _hires->data_size() );
-   
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -517,14 +515,13 @@ bool exrImage::channels_order_multi(
    {
       size_t k = order[idx];
       if ( k == -1 ) continue;
-   
 
       const std::string& layerName = channelList[k];
 
       ch = channels.findChannel( layerName.c_str() );
-      
+
       if ( !ch ) continue;
-      
+
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
       
       fb.insert( layerName.c_str(), 

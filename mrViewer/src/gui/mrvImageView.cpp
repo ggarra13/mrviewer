@@ -1322,7 +1322,7 @@ void ImageView::draw()
     {
       uchar r, g,  b;
       fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
-      _engine->color( r, g, b );
+      _engine->color( r, g, b, 255 );
       _engine->draw_rectangle( _selection );
     }
 
@@ -2334,10 +2334,11 @@ void ImageView::mouseDrag(int x,int y)
 
 	   }
 
-           if ( _shapes.empty() ) return;
 
            if ( _mode == kDraw || _mode == kErase )
 	   {
+              if ( _shapes.empty() ) return;
+
 	      mrv::shape_type_ptr o = _shapes.back();
 	      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
 	      if ( s == NULL )
@@ -2355,6 +2356,8 @@ void ImageView::mouseDrag(int x,int y)
 	   }
            else if ( _mode == kText )
            {
+              if ( _shapes.empty() ) return;
+
 	      mrv::shape_type_ptr o = _shapes.back();
 	      GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
 	      if ( s == NULL )
