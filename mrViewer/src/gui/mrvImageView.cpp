@@ -592,9 +592,9 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 
 void ImageView::text_mode()
 {
-   _mode = kText;
    fltk::DoubleBufferWindow* w = mrv::make_window();
    w->show();
+   _mode = kText;
 }
 
 
@@ -1366,7 +1366,7 @@ void ImageView::draw()
 	      _engine->draw_safe_area( 1.0f, aspect/2.35f, "2.35" );
 	      _engine->draw_safe_area( 1.0f, aspect/1.85f, "1.85" );
 	      _engine->draw_safe_area( 1.0f, aspect/1.66f, "1.66" );
-	      
+
 	      // Draw hdtv too
 	      _engine->color( 1.0f, 0.0f, 1.0f );
 	      _engine->draw_safe_area( 1.0f, aspect/1.77f, _("hdtv") );
@@ -1384,21 +1384,10 @@ void ImageView::draw()
 
     }
 
-  if (! _shapes.empty() )
-  {
-     GLTextShape* s = dynamic_cast< GLTextShape* >( _shapes.back().get() );
-     if ( s && _mode == kText )
-     {
-        int offset = 0;
-        if ( uiMain->uiTopBar->visible() ) offset = uiMain->uiTopBar->h();
-        s->position( fltk::event_x(), h() - fltk::event_y() + offset );
-     }
-  }
 
   _engine->draw_annotation( _shapes );
 
-  if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ||
-                                  _mode == kText ) )
+  if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
   {
      mrv::media fg = foreground();
      if ( !fg ) return;
@@ -1634,18 +1623,22 @@ int ImageView::leftMouseDown(int x, int y)
 	 }
          else if ( _mode == kText )
          {
-            GLTextShape* t = new GLTextShape;
-
-            fltk::Font** fonts;
-            int n = fltk::list_fonts( fonts );
-            if ( n )
+            if ( mrv::font_text != "" )
             {
-               t->font( fonts[0] );
-            }
-            t->size( 24 );
-            t->text("Prueba");
+               GLTextShape* t = new GLTextShape;
 
-            s = t;
+               t->font( mrv::font_current );
+               t->size( mrv::font_size );
+               t->text( mrv::font_text );
+
+               mrv::font_text = "";
+               s = t;
+            }
+            else
+            {
+               return 1;
+            }
+
          }
 
 	 uchar r, g, b;
@@ -1890,12 +1883,14 @@ void ImageView::leftMouseUp( int x, int y )
   else
     flags &= ~kMouseRight;
 
+  if ( _shapes.empty() ) return;
+
   //
   // Send the shapes over the network
-  // 
+  //
   if ( _mode == kDraw )
   {
-     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+     mrv::shape_type_ptr o = _shapes.back();
      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
      if ( s == NULL )
      {
@@ -1906,7 +1901,7 @@ void ImageView::leftMouseUp( int x, int y )
 	std::string buf;
 	buf = "GLPathShape ";
 	char tmp[128];
-	sprintf( tmp, "%f %f %f %f %f %" PRId64, s->r, s->g, s->b, s->a,
+	sprintf( tmp, "%f %f %f %f %f %" PRId64 " ", s->r, s->g, s->b, s->a,
 		 s->pen_size, s->frame );
 	buf += tmp;
 	GLPathShape::PointList::const_iterator i = s->pts.begin();
@@ -1921,7 +1916,7 @@ void ImageView::leftMouseUp( int x, int y )
   }
   else if ( _mode == kErase )
   {
-     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+     mrv::shape_type_ptr o =  _shapes.back();
      GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
      if ( s == NULL )
      {
@@ -1932,7 +1927,7 @@ void ImageView::leftMouseUp( int x, int y )
 	std::string buf;
 	buf = "GLErasePathShape ";
 	char tmp[128];
-	sprintf( tmp, "%f %" PRId64, s->pen_size, s->frame );
+	sprintf( tmp, "%f %" PRId64 " ", s->pen_size, s->frame );
 	buf += tmp;
 	GLPathShape::PointList::const_iterator i = s->pts.begin();
 	GLPathShape::PointList::const_iterator e = s->pts.end();
@@ -1946,28 +1941,27 @@ void ImageView::leftMouseUp( int x, int y )
   }
   else if ( _mode == kText )
   {
-     mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+     mrv::shape_type_ptr o = _shapes.back();
      GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
      if ( s == NULL )
      {
-	LOG_ERROR( _("Not a GLErasePathShape pointer") );
+	LOG_ERROR( _("Not a GLTextShape pointer in mouseRelease") );
      }
      else
      {
 	std::string buf;
 	buf = "GLTextShape ";
+
+        fltk::Font* f = s->font();
+        if (!f) return;
+
 	char tmp[512];
-	sprintf( tmp, "%s %d %f %" PRId64, s->font()->name(),
-                 s->size(), s->pen_size, s->frame );
+	sprintf( tmp, "\"%s\" ^%s^ %d %" PRId64 " ", s->font()->name(),
+                 s->text().c_str(), s->size(), s->frame );
 	buf += tmp;
-	GLPathShape::PointList::const_iterator i = s->pts.begin();
-	GLPathShape::PointList::const_iterator e = s->pts.end();
-	for ( ; i != e; ++i )
-	{
-	   sprintf( tmp, "%f %f ", (*i).x, (*i).y );
-	   buf += tmp;
-	}
-	send( buf );
+        sprintf( tmp, "%f %f\n", s->pts[0].x, s->pts[0].y );
+	buf += tmp;
+        send( buf );
      }
   }
 
@@ -2339,9 +2333,12 @@ void ImageView::mouseDrag(int x,int y)
 	      send( buf );
 
 	   }
-	   else if ( _mode == kDraw || _mode == kErase )
+
+           if ( _shapes.empty() ) return;
+
+           if ( _mode == kDraw || _mode == kErase )
 	   {
-	      mrv::shape_type_ptr o =  _shapes[ _shapes.size()-1 ];
+	      mrv::shape_type_ptr o = _shapes.back();
 	      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
 	      if ( s == NULL )
 	      {
@@ -2356,6 +2353,22 @@ void ImageView::mouseDrag(int x,int y)
 		 s->pts.push_back( p );
 	      }
 	   }
+           else if ( _mode == kText )
+           {
+	      mrv::shape_type_ptr o = _shapes.back();
+	      GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+	      if ( s == NULL )
+	      {
+		 LOG_ERROR( _("Not a GLTextShape pointer in position") );
+	      }
+	      else
+	      {
+		 yn  = H - yn;
+		 yn -= H/2;
+		 xn -= W/2;
+		 s->position( xn, yn );
+	      }
+           }
 	   assert( _selection.x() >= 0.0 && _selection.x() <= 1.0);
 	   assert( _selection.y() >= 0.0 && _selection.y() <= 1.0);
 	   assert( _selection.w() >= 0.0 && _selection.w() <= 1.0);

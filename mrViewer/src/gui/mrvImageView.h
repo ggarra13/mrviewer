@@ -376,6 +376,8 @@ namespace mrv {
 
        void send( std::string msg );
 
+       GLShapeList  shapes() { return _shapes; }
+
        void add_shape( shape_type_ptr shape );
 
        void ghost_previous( bool x ) { _ghost_previous = x; }

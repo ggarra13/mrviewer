@@ -35,6 +35,7 @@
 #include <boost/asio/streambuf.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
+#include <fltk/Font.h>
 
 #include "mrvClient.h"
 #include "mrvServer.h"
@@ -169,6 +170,62 @@ bool Parser::parse( const std::string& s )
 	 shape->pts.push_back( xy );
       }
       ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
+      ui->uiView->redraw();
+      ok = true;
+   }
+   else if ( cmd == N_("GLTextShape") )
+   {
+      Point xy;
+      std::string font, text;
+      static string old_text;
+      static string old_font;
+      unsigned font_size;
+      std::getline( is, font, '"' ); // skip first quote
+      std::getline( is, font, '"' );
+      std::getline( is, text, '^' ); // skip first quote
+      std::getline( is, text, '^' );
+
+      GLTextShape* shape;
+      mrv::ImageView* view = ui->uiView;
+      if ( font == old_font && text == old_text && !view->shapes().empty() )
+      {
+         shape = dynamic_cast< GLTextShape* >( view->shapes().back().get() );
+         if ( shape == NULL ) {
+            LOG_ERROR( "Not a GLTextShape as last shape" );
+            return false;
+         }
+      }
+      else
+      {
+         shape = new GLTextShape;
+      }
+
+      shape->text( text );
+
+      fltk::Font** fonts;
+      int i;
+      unsigned num = fltk::list_fonts(fonts);
+      for ( i = 0; i < num; ++i )
+      {
+         if ( font == fonts[i]->name() ) break;
+      }
+      if ( i >= num ) i = 0;
+
+
+      shape->font( fonts[i] );
+      is >> font_size >> shape->frame;
+      is >> xy.x >> xy.y;
+      shape->size( font_size );
+      shape->pts.clear();
+      shape->pts.push_back( xy );
+
+      if ( font != old_font || text != old_text )
+      {
+         ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
+         old_text = text;
+         old_font = font;
+      }
+
       ui->uiView->redraw();
       ok = true;
    }
