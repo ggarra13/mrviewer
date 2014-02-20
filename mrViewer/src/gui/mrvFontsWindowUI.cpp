@@ -19,6 +19,15 @@ class FontDisplay : public fltk::Input {
 };
 
 
+namespace mrv {
+
+fltk::Font* font_current = NULL;
+unsigned    font_size = 16;
+std::string font_text;
+
+}
+
+
 fltk::DoubleBufferWindow *uiMain=(fltk::DoubleBufferWindow *)0;
 fltk::ValueSlider* uiFontSize = NULL;
 FontDisplay *uiText=(FontDisplay *)0;
@@ -37,10 +46,11 @@ void FontDisplay::draw() {
   draw_box();
   fltk::push_clip(2,2,w()-4,h()-4);
   const char* saved_encoding = fltk::get_encoding();
-  // fltk::set_encoding(encoding);
+  fltk::set_encoding(encoding);
   fltk::setfont(font, size);
   id_box->label(fltk::Font::current_name());
   id_box->redraw();
+
   fltk::setcolor(fltk::BLACK);
 
 
@@ -48,24 +58,26 @@ void FontDisplay::draw() {
 
   fltk::set_encoding(saved_encoding);
   fltk::pop_clip();
+
+  fltk::Input::draw();
 }
 
-
-namespace mrv {
-
-static fltk::Font* font_current;
-static unsigned    font_size = 16;
-
-}
 
 
 static fltk::Font** fonts;
+
+void new_text( fltk::Widget* w, void* data )
+{
+   mrv::font_text = uiText->text();
+}
 
 void new_font( fltk::Widget* w, void* data )
 {
    fltk::Choice* c = (fltk::Choice*) w;
    int i = c->value();
+   if ( i < 0 ) i = 0;
 
+   mrv::font_text = uiText->text();
    mrv::font_current = fonts[i];
    uiText->font = fonts[i];
    uiText->redraw();
@@ -74,7 +86,7 @@ void new_font( fltk::Widget* w, void* data )
 void new_size( fltk::Widget* w, void* data )
 {
    fltk::ValueSlider* s = (fltk::ValueSlider*) w;
-   font_size = s->value();
+   mrv::font_size = s->value();
    uiText->size = s->value();
    uiText->redraw();
 }
@@ -102,8 +114,10 @@ fltk::DoubleBufferWindow* make_window() {
         int numfonts = fltk::list_fonts(fonts);
         for (int i = 0; i < numfonts; ++i)
             o->add(fonts[i]->name());
-        uiText->font = fonts[numfonts-1];
-        uiText->text( "Test" );
+        mrv::font_current = uiText->font = fonts[numfonts-1];
+        mrv::font_text = "Type something here";
+        uiText->text( mrv::font_text.c_str() );
+        uiText->callback( new_text );
         o->callback( new_font );
       }
        {fltk::ValueSlider* o = uiFontSize = new fltk::ValueSlider(70, 270, 325, 25, "Font Size");

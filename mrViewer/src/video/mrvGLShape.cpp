@@ -171,8 +171,6 @@ void GLTextShape::draw()
 
   glColor4f( r, g, b, a );
 
-  glLoadIdentity();
-
   if ( font() )
      fltk::glsetfont(font(), size() );
   fltk::gldrawtext(text().c_str(), pts[0].x, pts[0].y);
