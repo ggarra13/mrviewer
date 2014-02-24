@@ -53,10 +53,7 @@ const char* const kModule = "main";
 
 
 void load_files( mrv::LoadList& files, mrv::ViewerUI* ui )
-{
-   mrv::LoadList::iterator i = files.begin();
-   mrv::LoadList::iterator e = files.end();
-   
+{   
    //
    // Window must be shown after images have been loaded.
    // 
@@ -269,6 +266,7 @@ int main( const int argc, char** argv )
       }
       catch( fs::filesystem_error& e )
       {
+	 LOG_ERROR( "Filesystem error: " << e.what() );
       }
   }
 
@@ -286,17 +284,17 @@ int main( const int argc, char** argv )
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		     LPSTR lpCmdLine, int nCmdShow )
 {
- 
-  //  AllocConsole();
-  // // freopen("conin$", "r", stdin);
-  //  freopen("conout$", "w", stdout);
-  //  freopen("conout$", "w", stderr);
-
-  int rc = main( __argc, __argv );
-  
-  // fclose(stdin);
-  // fclose(stdout);
-  // fclose(stderr);
+   
+   // AllocConsole();
+   // freopen("conin$", "r", stdin);
+   // freopen("conout$", "w", stdout);
+   // freopen("conout$", "w", stderr);
+   
+   int rc = main( __argc, __argv );
+   
+   // fclose(stdin);
+   // fclose(stdout);
+   // fclose(stderr);
 
   return rc; 
 }

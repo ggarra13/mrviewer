@@ -4,6 +4,7 @@
 #include <iostream>
 
 #include "fltk/Browser.h"
+#include "fltk/Input.h"
 #include "fltk/Font.h"
 #include "fltk/draw.h"
 
@@ -11,11 +12,8 @@
 
 class FontDisplay : public fltk::Input {
    public:
-     void draw();
-   public:
-     fltk::Font* font; float size; const char* encoding;
      FontDisplay(fltk::Box* B, int X, int Y, int W, int H, const char* L = 0) :
-     fltk::Input(X,Y,W,H,L) {box(B); font = 0; size = 14.0f;}
+     fltk::Input(X,Y,W,H,L) {box(B);}
 };
 
 
@@ -38,28 +36,8 @@ void encoding_cb(fltk::Widget *, long) {
   int i = encobj->value();
   if (i < 0)
      return;
-  uiText->encoding = encobj->child(i)->label();
+  // uiText->encoding = encobj->child(i)->label();
   uiText->redraw();
-}
-
-void FontDisplay::draw() {
-  draw_box();
-  fltk::push_clip(2,2,w()-4,h()-4);
-  const char* saved_encoding = fltk::get_encoding();
-  fltk::set_encoding(encoding);
-  fltk::setfont(font, size);
-  id_box->label(fltk::Font::current_name());
-  id_box->redraw();
-
-  fltk::setcolor(fltk::BLACK);
-
-
-  fltk::drawtext( text(), strlen(text()), 3, 3+(size+leading()) );
-
-  fltk::set_encoding(saved_encoding);
-  fltk::pop_clip();
-
-  fltk::Input::draw();
 }
 
 
@@ -79,7 +57,7 @@ void new_font( fltk::Widget* w, void* data )
 
    mrv::font_text = uiText->text();
    mrv::font_current = fonts[i];
-   uiText->font = fonts[i];
+   uiText->textfont( fonts[i] );
    uiText->redraw();
 }
 
@@ -87,7 +65,7 @@ void new_size( fltk::Widget* w, void* data )
 {
    fltk::ValueSlider* s = (fltk::ValueSlider*) w;
    mrv::font_size = s->value();
-   uiText->size = s->value();
+   uiText->textsize( s->value() );
    uiText->redraw();
 }
 
@@ -95,32 +73,27 @@ namespace mrv {
 
 fltk::DoubleBufferWindow* make_window() {
   fltk::DoubleBufferWindow* w;
-   {fltk::DoubleBufferWindow* o = uiMain = new fltk::DoubleBufferWindow(405, 445);
+   {fltk::DoubleBufferWindow* o = uiMain = new fltk::DoubleBufferWindow(405, 240);
     w = o;
     o->type(241);
     o->shortcut(0xff1b);
     o->begin();
-     {fltk::Group* o = new fltk::Group(0, 5, 405, 300);
+     {fltk::Group* o = new fltk::Group(5, 5, 405, 235);
       o->begin();
 
-      id_box = new fltk::Widget(10, 172, 530, 15);
-      id_box->box(fltk::ENGRAVED_BOX);
-      id_box->labelsize(10);
-      id_box->labelfont(fltk::COURIER);
-      id_box->set_flag(fltk::ALIGN_INSIDE|fltk::ALIGN_CLIP|fltk::ALIGN_LEFT);
-   
-      uiText = new FontDisplay(fltk::ENGRAVED_BOX, 0, 0, 400, 195);
-       {fltk::Choice* o = new fltk::Choice(40, 225, 360, 25, "Font");
+      uiText = new FontDisplay(fltk::ENGRAVED_BOX, 0, 0, 400, 100);
+       {fltk::Choice* o = new fltk::Choice(40, 120, 360, 25, "Font");
         int numfonts = fltk::list_fonts(fonts);
         for (int i = 0; i < numfonts; ++i)
             o->add(fonts[i]->name());
-        mrv::font_current = uiText->font = fonts[numfonts-1];
+        mrv::font_current = fonts[numfonts-1];
+        uiText->textfont( mrv::font_current );
         mrv::font_text = "Type something here";
         uiText->text( mrv::font_text.c_str() );
         uiText->callback( new_text );
         o->callback( new_font );
       }
-       {fltk::ValueSlider* o = uiFontSize = new fltk::ValueSlider(70, 270, 325, 25, "Font Size");
+       {fltk::ValueSlider* o = uiFontSize = new fltk::ValueSlider(70, 160, 325, 25, "Font Size");
         o->minimum(8);
         o->maximum(100);
         o->step(1);
@@ -128,9 +101,6 @@ fltk::DoubleBufferWindow* make_window() {
         o->align(fltk::ALIGN_LEFT);
         o->callback( new_size );
       }
-       encobj = new fltk::Browser(300, 210, 100, 170);
-       encobj->when(fltk::WHEN_CHANGED);
-       encobj->callback(encoding_cb, 1);
        o->end();
        fltk::Group::current()->resizable(o);
     }

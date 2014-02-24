@@ -203,7 +203,7 @@ bool Parser::parse( const std::string& s )
       shape->text( text );
 
       fltk::Font** fonts;
-      int i;
+      unsigned i;
       unsigned num = fltk::list_fonts(fonts);
       for ( i = 0; i < num; ++i )
       {

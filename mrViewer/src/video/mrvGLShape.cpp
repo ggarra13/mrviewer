@@ -10,6 +10,7 @@
 
 
 #if defined(WIN32) || defined(WIN64)
+#  include <fltk/win32.h>
 #  include <GL/wglew.h>
 #elif defined(LINUX)
 #  include <GL/glxew.h>
@@ -19,6 +20,7 @@
 // #include <GL/gl.h>
 
 #include <fltk/gl.h>
+#include <fltk/Font.h>
 
 #include <fltk/draw.h>
 
@@ -44,7 +46,7 @@ namespace fltk {
 
 namespace mrv {
 
-void GLPathShape::draw()
+void GLPathShape::draw( float z )
 {
    //Turn on Color Buffer and Depth Buffer
    glColorMask(true, true, true, true);
@@ -65,6 +67,7 @@ void GLPathShape::draw()
    glLineWidth( pen_size );
    glEnable( GL_LINE_SMOOTH );
 
+
    PointList::const_iterator i = pts.begin();
    PointList::const_iterator e = pts.end();
 
@@ -81,42 +84,28 @@ void GLPathShape::draw()
       glEnd();
    }
 
-   glPointSize( pen_size );
-   glEnable( GL_POINT_SMOOTH );
-   glBegin( GL_POINTS );
+   glDisable( GL_BLEND );
 
-   i = pts.begin();
-   for ( ; i != e; ++i )
+   if ( pts.size() == 1 || a >= 0.95f )
    {
-      const mrv::Point& p = *i;
-      glVertex2d( p.x, p.y );
+      glPointSize( pen_size );
+      glEnable( GL_POINT_SMOOTH );
+      glBegin( GL_POINTS );
+
+      i = pts.begin();
+      for ( ; i != e; ++i )
+      {
+         const mrv::Point& p = *i;
+         glVertex2d( p.x, p.y );
+      }
+
+      glEnd();
    }
-
-   glEnd();
-
 }
 
 
-void GLPathShape::send( mrv::ImageView* v )
-{
-   std::string str = "GLPathShape ";
-   	 
-   PointList::iterator i = pts.begin();
-   PointList::iterator e = pts.end();
 
-   std::ostringstream stream;
-   for ( ; i != e; ++i )
-   {
-      stream << (*i) << " ";
-   }
-   stream << std::endl;
-   
-   str += stream.str();
-
-   v->send( str );
-}
-
-void GLErasePathShape::draw()
+void GLErasePathShape::draw( float z )
 {
    glColorMask(false, false, false, false);
 
@@ -142,38 +131,109 @@ void GLErasePathShape::draw()
 
 void GLTextShape::init()
 {
+  unsigned numChars = 256;
+
+#ifdef _WIN32
+    // HDC   hDC = fltk::getDC();
+
+  HDC hDC = wglGetCurrentDC();
+
+    // HGLRC hRC = wglGetCurrentContext();
+    // if (hRC == NULL ) hRC = wglCreateContext( hDC );
+
+    LOGFONT     lf;
+    memset(&lf,0,sizeof(LOGFONT));
+    lf.lfHeight               =   size() * _zoom;
+    lf.lfWeight               =   FW_NORMAL ;
+    lf.lfCharSet              =   ANSI_CHARSET ;
+    lf.lfOutPrecision         =   OUT_RASTER_PRECIS ;
+    lf.lfClipPrecision        =   CLIP_DEFAULT_PRECIS ;
+    lf.lfQuality              =   DRAFT_QUALITY ;
+    lf.lfPitchAndFamily       =   FF_DONTCARE|DEFAULT_PITCH;
+    lstrcpy (lf.lfFaceName, font()->name() ) ;
+
+
+    HFONT    fid = CreateFontIndirect(&lf);
+    HFONT oldFid = (HFONT)SelectObject(hDC, fid);
+
+    // wglMakeCurrent( hDC, hRC );
+
+    _charset = glGenLists( numChars );
+
+
+    bool succeeded = FALSE;
+    const int MAX_TRIES = 5;
+    for(int i=0; i<MAX_TRIES && !succeeded; ++i)
+    {
+       succeeded = wglUseFontBitmaps(hDC, 0, numChars-1, _charset ) != FALSE;
+    }
+
+    if (!succeeded)
+    {
+       fprintf( stderr, "wglUseFontBitmap error\n" );
+    }
+
+    // BOOL ok = wglUseFontBitmaps(hDC, 0, numChars-1, _charset);
+    // if ( ok == FALSE )
+    // {
+    //    fprintf( stderr, "wglUseFontBitmap error\n" );
+    // }
+
+    SelectObject(hDC, oldFid);
+#endif
 }
 
 GLTextShape::~GLTextShape()
 {
 }
 
-void GLTextShape::draw()
+void GLTextShape::draw( float z )
 {
-  // if ( !_charset )
-  // {
-  //    init();
 
-  //    if ( ! _charset ) return;
-  // }
+#ifdef _WIN32
+   if ( !_charset || z != _zoom )
+   {
+      if ( _charset )
+	 glDeleteLists( _charset, 256 );
+      _zoom = z;
+      init();
+   }
+#endif
 
-  //Turn on Color Buffer and Depth Buffer
-  glColorMask(true, true, true, true);
+   //Turn on Color Buffer and Depth Buffer
+   glColorMask(true, true, true, true);
 
-  // So compositing works properly
-  glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+   //Only write to the Stencil Buffer where 1 is not set
+   glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+   //Keep the content of the Stencil Buffer
+   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-  //Only write to the Stencil Buffer where 1 is not set
-  glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+   glDisable( GL_DEPTH_TEST );
+   glDisable( GL_DITHER );
+   glDisable( GL_LIGHTING );
+   glBegin( GL_BLEND );
 
-  //Keep the content of the Stencil Buffer
-  glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+   glColor4f( r, g, b, a );
 
-  glColor4f( r, g, b, a );
 
-  if ( font() )
-     fltk::glsetfont(font(), size() );
-  fltk::gldrawtext(text().c_str(), pts[0].x, pts[0].y);
+#ifdef _WIN32
+   // glRasterPos2d( pts[0].x, pts[0].y );
+
+   glRasterPos2i(0,0);
+   glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x*z), GLfloat(pts[0].y*z), NULL );
+
+   glListBase(_charset);
+   glCallLists( text().size(), GL_UNSIGNED_BYTE, text().c_str() );
+#else
+   if ( font() )
+      fltk::glsetfont(font(), size()*z );
+
+   glRasterPos2i(0,0);
+   glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x*z), GLfloat(pts[0].y*z), NULL );
+
+   fltk::gldrawtext(text().c_str());
+#endif
+
 }
 
 

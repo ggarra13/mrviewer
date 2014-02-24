@@ -273,7 +273,7 @@ bool exrImage::channels_order(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() ); // Needed for BY and RY pics
+   // memset( pixels, 0, _hires->data_size() ); // Needed for BY and RY pics
    
 
    // Then, prepare frame buffer for them
@@ -502,7 +502,7 @@ bool exrImage::channels_order_multi(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() );
+   // memset( pixels, 0, _hires->data_size() );
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *

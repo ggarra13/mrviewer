@@ -10,7 +10,7 @@ extern fltk::DoubleBufferWindow* uiMain;
 #include <fltk/ValueSlider.h>
 
 namespace fltk {
-class Font;
+struct Font;
 }
 
 namespace mrv  {
