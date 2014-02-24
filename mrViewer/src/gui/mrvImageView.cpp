@@ -1384,8 +1384,8 @@ void ImageView::draw()
 
     }
 
-
   _engine->draw_annotation( _shapes );
+
 
   if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
   {
@@ -1455,7 +1455,7 @@ void ImageView::draw()
   if ( _hud & kHudResolution )
     {
       sprintf( buf, "%d x %d", img->width(), img->height() );
-       draw_text( r, g, b, 5, y, buf );
+      draw_text( r, g, b, 5, y, buf );
       y -= yi;
     }
 
@@ -1509,15 +1509,15 @@ void ImageView::draw()
 	}
   
       if ( img->real_fps() > 0 )
-	{
-	   sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
-	   hud << buf;
+      {
+         sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
+         hud << buf;
 
-	   sprintf( buf, _("FPS: %.2f" ), img->real_fps() );
+         sprintf( buf, _("FPS: %.2f" ), img->real_fps() );
 
-	   if ( !hud.str().empty() ) hud << " ";
-	   hud << buf;
-	}
+         if ( !hud.str().empty() ) hud << " ";
+         hud << buf;
+      }
 
     }
 
@@ -1532,7 +1532,7 @@ void ImageView::draw()
   if ( !hud.str().empty() )
     {
        draw_text( r, g, b, 5, y, hud.str().c_str() );
-      y -= yi;
+       y -= yi;
     }
 
   if ( _hud & kHudIPTC )

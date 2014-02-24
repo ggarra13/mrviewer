@@ -282,19 +282,19 @@ namespace mrv {
     fltk::Preferences ui( base, "ui" );
 
     ui.get( "topbar", tmp, 1 );
-    uiPrefs->uiPrefsTopbar->value(tmp);
+    uiPrefs->uiPrefsTopbar->value( bool(tmp) );
 
     ui.get( "single_instance", tmp, 1 );
-    uiPrefs->uiPrefsSingleInstance->value( tmp );
+    uiPrefs->uiPrefsSingleInstance->value( bool(tmp) );
 
     ui.get( "pixel_toolbar", tmp, 1 );
-    uiPrefs->uiPrefsPixelToolbar->value(tmp);
+    uiPrefs->uiPrefsPixelToolbar->value( bool(tmp) );
 
     ui.get( "timeline_toolbar", tmp, 1 );
-    uiPrefs->uiPrefsTimeline->value(tmp);
+    uiPrefs->uiPrefsTimeline->value( bool(tmp) );
 
     ui.get( "reel_list", tmp, 0 );
-    uiPrefs->uiPrefsReelList->value(tmp);
+    uiPrefs->uiPrefsReelList->value( bool(tmp) );
 
     ui.get( "edl_edit", tmp, 0 );
     uiPrefs->uiPrefsEDLEdit->value(tmp);
