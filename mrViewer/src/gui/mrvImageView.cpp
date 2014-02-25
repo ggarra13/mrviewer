@@ -1142,12 +1142,12 @@ void ImageView::timeout()
 	// static bool use_audio_frame = false;
 	// if ( use_audio_frame )
 	// {
-	//    frame = img->audio_frame();
+        // frame = img->audio_frame();
 	// }
 	// else
-	{
-	   frame = img->frame();
-	}
+	// {
+        frame = img->frame();
+	// }
 
 
 	timeline->value( double(frame) );
@@ -1898,20 +1898,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-	std::string buf;
-	buf = "GLPathShape ";
-	char tmp[128];
-	sprintf( tmp, "%f %f %f %f %f %" PRId64 " ", s->r, s->g, s->b, s->a,
-		 s->pen_size, s->frame );
-	buf += tmp;
-	GLPathShape::PointList::const_iterator i = s->pts.begin();
-	GLPathShape::PointList::const_iterator e = s->pts.end();
-	for ( ; i != e; ++i )
-	{
-	   sprintf( tmp, "%f %f ", (*i).x, (*i).y );
-	   buf += tmp;
-	}
-	send( buf );
+        s->send( this );
      }
   }
   else if ( _mode == kErase )
@@ -1924,19 +1911,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-	std::string buf;
-	buf = "GLErasePathShape ";
-	char tmp[128];
-	sprintf( tmp, "%f %" PRId64 " ", s->pen_size, s->frame );
-	buf += tmp;
-	GLPathShape::PointList::const_iterator i = s->pts.begin();
-	GLPathShape::PointList::const_iterator e = s->pts.end();
-	for ( ; i != e; ++i )
-	{
-	   sprintf( tmp, "%f %f ", (*i).x, (*i).y );
-	   buf += tmp;
-	}
-	send( buf );
+        s->send( this );
      }
   }
   else if ( _mode == kText )
@@ -1949,19 +1924,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-	std::string buf;
-	buf = "GLTextShape ";
-
-        fltk::Font* f = s->font();
-        if (!f) return;
-
-	char tmp[512];
-	sprintf( tmp, "\"%s\" ^%s^ %d %" PRId64 " ", s->font()->name(),
-                 s->text().c_str(), s->size(), s->frame );
-	buf += tmp;
-        sprintf( tmp, "%f %f\n", s->pts[0].x, s->pts[0].y );
-	buf += tmp;
-        send( buf );
+        s->send( this );
      }
   }
 

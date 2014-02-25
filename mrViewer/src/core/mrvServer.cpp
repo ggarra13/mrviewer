@@ -106,6 +106,11 @@ void Parser::write( std::string s, std::string id )
    }
 }
 
+mrv::ImageView* Parser::view() const
+{
+   return ui->uiView;
+}
+
 mrv::ImageBrowser* Parser::browser() const
 {
    return ui->uiReelWindow->uiBrowser;
@@ -706,6 +711,16 @@ bool Parser::parse( const std::string& s )
 	    sprintf( buf, N_("seek %") PRId64, frame );
 	    deliver( buf );
 	 }
+
+         {
+            const mrv::GLShapeList& shapes = view()->shapes();
+            mrv::GLShapeList::const_iterator i = shapes.begin();
+            mrv::GLShapeList::const_iterator e = shapes.end();
+            for ( ; i != e; ++i )
+            {
+               (*i)->send( view() );
+            }
+         }
       }
 
       r = browser()->current_reel();

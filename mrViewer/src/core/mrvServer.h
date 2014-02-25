@@ -24,6 +24,7 @@ using boost::asio::ip::tcp;
 
 class ViewerUI;
 class Parser;
+class ImageView;
 class ImageBrowser;
 class EDLGroup;
 
@@ -38,6 +39,7 @@ class Parser
      bool parse( const std::string& m );
      void write( std::string s, const std::string id );
 
+     mrv::ImageView* view() const;
      mrv::ImageBrowser* browser() const;
      mrv::EDLGroup*     edl_group() const;
 

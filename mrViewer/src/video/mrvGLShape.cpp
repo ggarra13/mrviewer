@@ -1,6 +1,9 @@
 
 
 
+#define __STDC_FORMAT_MACROS
+#include <inttypes.h>  // for PRId64
+
 #if defined(WIN32) || defined(WIN64)
 #  include <winsock2.h>  // to avoid winsock issues
 #  include <windows.h>
@@ -45,6 +48,23 @@ namespace fltk {
 
 
 namespace mrv {
+
+void GLPathShape::send( mrv::ImageView* v ) const
+{
+   std::string buf = "GLPathShape ";
+   char tmp[256];
+   sprintf( tmp, "%f %f %f %f %f %" PRId64 " ", r, g, b, a,
+            pen_size, frame );
+   buf += tmp;
+   GLPathShape::PointList::const_iterator i = pts.begin();
+   GLPathShape::PointList::const_iterator e = pts.end();
+   for ( ; i != e; ++i )
+   {
+      sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+      buf += tmp;
+   }
+   v->send( buf );
+}
 
 void GLPathShape::draw( float z )
 {
@@ -103,7 +123,23 @@ void GLPathShape::draw( float z )
    }
 }
 
+void GLErasePathShape::send( mrv::ImageView* v ) const
+{
+   std::string buf = "GLErasePathShape ";
+   char tmp[128];
+   sprintf( tmp, "%f %" PRId64 " ", pen_size, frame );
 
+   buf += tmp;
+   GLPathShape::PointList::const_iterator i = pts.begin();
+   GLPathShape::PointList::const_iterator e = pts.end();
+   for ( ; i != e; ++i )
+   {
+      sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+      buf += tmp;
+   }
+
+   v->send( buf );
+}
 
 void GLErasePathShape::draw( float z )
 {
@@ -185,6 +221,23 @@ void GLTextShape::init()
 
 GLTextShape::~GLTextShape()
 {
+}
+
+void GLTextShape::send( mrv::ImageView* v ) const
+{
+   std::string buf = "GLTextShape ";
+
+   fltk::Font* f = font();
+   if (!f) return;
+
+   char tmp[512];
+   sprintf( tmp, "\"%s\" ^%s^ %d %" PRId64 " ", font()->name(),
+            text().c_str(), size(), frame );
+   buf += tmp;
+   sprintf( tmp, "%f %f\n", pts[0].x, pts[0].y );
+   buf += tmp;
+
+   v->send( buf );
 }
 
 void GLTextShape::draw( float z )
