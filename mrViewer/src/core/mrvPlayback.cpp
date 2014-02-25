@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -364,7 +364,7 @@ void audio_thread( PlaybackData* data )
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
 
-   int idx = fg ? view->fg_reel() : view->bg_reel();
+  int idx = fg ? view->fg_reel() : view->bg_reel();
    if ( idx < 0 ) return;
 
    mrv::Reel   reel = browser->reel_at( idx );
@@ -395,11 +395,11 @@ void audio_thread( PlaybackData* data )
       switch( status )
       {
 	 case CMedia::kDecodeError:
-	    LOG_ERROR("Decode Error audio frame " << frame );
+	    LOG_ERROR( _("Decode Error audio frame ") << frame );
 	    frame += step;
 	    continue;
 	 case CMedia::kDecodeMissingFrame:
-	    LOG_ERROR("Decode Missing audio frame " << frame );
+	    LOG_ERROR( _("Decode Missing audio frame ") << frame );
 	    timer.setDesiredFrameRate( img->play_fps() );
 	    timer.waitUntilNextFrameIsDue();
 	    frame += step;
@@ -412,14 +412,13 @@ void audio_thread( PlaybackData* data )
 	       {
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
-	       
-		  
+
 		  if ( end == kEndIgnore )
 		  {
 		     frame += step;
 		     break;
 		  }
-		  
+
 	       }
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
@@ -453,7 +452,6 @@ void audio_thread( PlaybackData* data )
 	    f = int64_t( timeline->minimum() );
 	    timeline->value( double( f ) );
       }
-
 
       img->find_audio(frame);
       frame += step;
@@ -609,12 +607,9 @@ void video_thread( PlaybackData* data )
 	 // case CMedia::DecodeDone:
 	 //    continue;
 	 case CMedia::kDecodeBufferFull:
-	    break;
 	 case CMedia::kDecodeError:
-	    frame += step;
-	    break;
+            break;
 	 case CMedia::kDecodeMissingFrame:
-	    frame += step;
 	    break;
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
