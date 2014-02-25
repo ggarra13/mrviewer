@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-#define DEBUG_THREADS
+// #define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -592,7 +592,6 @@ void video_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status;
 
-
       {
 	 status = img->decode_video( frame );
       }
@@ -608,9 +607,8 @@ void video_thread( PlaybackData* data )
 	 //    continue;
 	 case CMedia::kDecodeBufferFull:
 	 case CMedia::kDecodeError:
-            break;
 	 case CMedia::kDecodeMissingFrame:
-	    break;
+            break;
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
@@ -645,12 +643,11 @@ void video_thread( PlaybackData* data )
       fps = img->play_fps();
 
       double delay = 1.0 / fps;
-	
 
       double diff = 0.0;
 
       // // Calculate video-audio difference
-      if ( img->has_audio() )
+      if ( img->has_audio() && status == CMedia::kDecodeOK )
       {
 	 //double video_clock = img->video_pts();
 	 //double audio_clock = img->audio_pts();
@@ -681,6 +678,7 @@ void video_thread( PlaybackData* data )
 	    }
 	 }
       }
+
 
       timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
