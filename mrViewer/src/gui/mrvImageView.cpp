@@ -592,9 +592,23 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 
 void ImageView::text_mode()
 {
-   fltk::DoubleBufferWindow* w = mrv::make_window();
-   w->show();
-   _mode = kText;
+   bool ok = mrv::make_window();
+   if ( ok )
+   {
+      _mode = kText;
+      uiMain->uiPaint->uiErase->value(false);
+      uiMain->uiPaint->uiDraw->value(false);
+      uiMain->uiPaint->uiText->value(true);
+      uiMain->uiPaint->uiSelection->value(false);
+   }
+   else
+   {
+      _mode = kSelection;
+      uiMain->uiPaint->uiErase->value(false);
+      uiMain->uiPaint->uiDraw->value(false);
+      uiMain->uiPaint->uiText->value(false);
+      uiMain->uiPaint->uiSelection->value(true);
+   }
 }
 
 

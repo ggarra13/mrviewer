@@ -19,6 +19,6 @@ extern fltk::Font* font_current;
 extern unsigned    font_size;
 extern std::string font_text;
 
-fltk::DoubleBufferWindow* make_window();
+bool make_window();
 }
 #endif

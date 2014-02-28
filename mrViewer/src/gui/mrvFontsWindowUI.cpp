@@ -3,6 +3,8 @@
 #include <string.h>
 #include <iostream>
 
+#include "fltk/Window.h"
+#include "fltk/Button.h"
 #include "fltk/Browser.h"
 #include "fltk/Input.h"
 #include "fltk/Font.h"
@@ -69,11 +71,20 @@ void new_size( fltk::Widget* w, void* data )
    uiText->redraw();
 }
 
+static void cb_Accept(fltk::Button*, fltk::Window* v) {
+  v->make_exec_return(true);
+}
+
+static void cb_Cancel(fltk::Button*, fltk::Window* v) {
+  v->make_exec_return(false);
+}
+
+
 namespace mrv {
 
-fltk::DoubleBufferWindow* make_window() {
+bool make_window() {
   fltk::DoubleBufferWindow* w;
-   {fltk::DoubleBufferWindow* o = uiMain = new fltk::DoubleBufferWindow(405, 240);
+   {fltk::DoubleBufferWindow* o = uiMain = new fltk::DoubleBufferWindow(405, 260);
     w = o;
     o->type(241);
     o->shortcut(0xff1b);
@@ -88,7 +99,7 @@ fltk::DoubleBufferWindow* make_window() {
             o->add(fonts[i]->name());
         mrv::font_current = fonts[numfonts-1];
         uiText->textfont( mrv::font_current );
-        mrv::font_text = "Type something here";
+        mrv::font_text = "Type here";
         uiText->text( mrv::font_text.c_str() );
         uiText->callback( new_text );
         o->callback( new_font );
@@ -102,12 +113,26 @@ fltk::DoubleBufferWindow* make_window() {
         o->callback( new_size );
       }
        o->end();
+
+       {fltk::Group* g = new fltk::Group( 0, 200, 405, 55 );
+          g->begin();
+          {fltk::Button* o = new fltk::Button( 270, 5, 50, 25, "OK" );
+             o->callback((fltk::Callback*)cb_Accept, (void*)(w));
+          }
+          {fltk::Button* o = new fltk::Button( 325, 5, 50, 25, "Cancel" );
+             o->callback((fltk::Callback*)cb_Cancel, (void*)(w));
+          }
+          g->end();
+       }
+
        fltk::Group::current()->resizable(o);
     }
+     
     o->end();
     o->set_modal();
   }
-  return  w;
+
+   return w->exec();
 }
 
 } // namespace mrv
