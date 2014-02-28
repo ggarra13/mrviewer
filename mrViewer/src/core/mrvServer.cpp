@@ -219,7 +219,8 @@ bool Parser::parse( const std::string& s )
 
 
       shape->font( fonts[i] );
-      is >> font_size >> shape->frame;
+      is >> font_size >> shape->r >> shape->g >> shape->b >> shape->a
+         >> shape->frame;
       is >> xy.x >> xy.y;
       shape->size( font_size );
       shape->pts.clear();
@@ -493,7 +494,7 @@ bool Parser::parse( const std::string& s )
 	 }
       }
 
-      browser()->remove( idx );
+      browser()->remove( unsigned(idx) );
       edl_group()->redraw();
 
       ok = true;
@@ -544,11 +545,11 @@ bool Parser::parse( const std::string& s )
 		  break;
 	       }
 	    }
-	    
+	   
 	    if ( j == e && m->image()->fileroot() == imgname )
 	    {
-	       browser()->insert( e, m );
-	       browser()->change_image( e );
+	       browser()->insert( unsigned(e), m );
+	       browser()->change_image( unsigned(e) );
 	       browser()->redraw();
 	       edl_group()->refresh();
 	       edl_group()->redraw();

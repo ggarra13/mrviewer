@@ -135,13 +135,13 @@ namespace mrv {
       fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
 
       // Copy to thumbnail and gamma it
-      double gamma = 1.0 / _image->gamma();
+      float gamma = 1.0f / _image->gamma();
       for (unsigned int y = 0; y < h; ++y )
 	{
 	  for (unsigned int x = 0; x < w; ++x )
 	    {
 	      CMedia::PixelType fp = pic->pixel( x, y );
-	      if ( gamma != 1.0f )
+	      if ( gamma != 1.0 )
 	      {
 		 fp.r = Imath::Math<float>::pow( fp.r, gamma );
 		 fp.g = Imath::Math<float>::pow( fp.g, gamma );

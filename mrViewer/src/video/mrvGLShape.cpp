@@ -218,8 +218,8 @@ std::string GLTextShape::send() const
    if (!f) return "";
 
    char tmp[512];
-   sprintf( tmp, "\"%s\" ^%s^ %d %" PRId64, font()->name(),
-            text().c_str(), size(), frame );
+   sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, font()->name(),
+            text().c_str(), size(), r, g, b, a, frame );
    buf += tmp;
    sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
    buf += tmp;
@@ -270,6 +270,8 @@ void GLTextShape::draw( float z )
 
    glRasterPos2i(0,0);
    glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x*z), GLfloat(pts[0].y*z), NULL );
+
+   glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
    fltk::gldrawtext(text().c_str());
 #endif

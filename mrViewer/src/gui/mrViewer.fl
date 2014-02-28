@@ -2100,7 +2100,7 @@ o->child_of( main->uiMain );} modal
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {426 266 155 395} horizontal resizable visible
+        xywh {435 335 155 395} horizontal resizable visible
       } {
         {fltk::Group} {} {open
           xywh {0 9 149 376}
@@ -2114,7 +2114,7 @@ uiErase->value(0);
 uiText->value(0);}
             tooltip {Area Select Tool}
             xywh {29 15 43 35}
-            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm}
+            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm} value 1
             extra_code {o->value(1);
 o->image( select_pic );}
           }
@@ -2146,10 +2146,7 @@ uiText->value(0);}
             label T
             user_data m user_data_type {mrv::ViewerUI*}
             callback {o->value(1);
-v->uiView->text_mode();
-uiSelection->value(0);
-uiDraw->value(0);
-uiErase->value(0);}
+v->uiView->text_mode();} selected
             tooltip {Text Tool}
             xywh {28 55 45 35} align 32 labelfont 8 labelsize 24
           }
@@ -2182,7 +2179,7 @@ else
 if ( !v->uiView->has_redo() )
    o->deactivate();
 else
-   o->activate();} selected
+   o->activate();}
               tooltip {Redo Previous Shape Drawn}
               xywh {45 2 34 35}
               image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/redo.xpm}
@@ -2210,12 +2207,12 @@ o->redraw();}
             {fltk::RadioButton} uiAllFrames {
               label All
               tooltip {Draw shape in all frames}
-              xywh {10 5 25 25} value 1
+              xywh {10 5 25 25}
             }
             {fltk::RadioButton} uiCurrentFrame {
               label Current
               tooltip {Draw shape in curent frame only}
-              xywh {10 25 25 25}
+              xywh {10 25 25 25} value 1
             }
           }
           {fltk::Group} {} {
