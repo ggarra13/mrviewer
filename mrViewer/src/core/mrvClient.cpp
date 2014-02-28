@@ -234,9 +234,10 @@ void client::handle_read(const boost::system::error_code& ec)
        std::string line;
        std::istream is(&input_buffer_);
        is.exceptions( std::ifstream::failbit | std::ifstream::badbit | 
-		      std::ifstream::eofbit );
+        	      std::ifstream::eofbit );
+
        try {
-	  while ( std::getline(is, line) )
+	  if ( std::getline(is, line) )
 	  {
     	     if ( line == N_("OK") || line == N_("") )
 	     {
@@ -260,9 +261,9 @@ void client::handle_read(const boost::system::error_code& ec)
 	     }
 	  }
        } 
-       catch ( std::ios_base::failure e )
+       catch ( const std::ios_base::failure& e )
        {
-	  // std::cerr << "getline failure" << std::endl;
+          LOG_ERROR( "Parse failure " << e.what() );
        }
        
        start_read();

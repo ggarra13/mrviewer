@@ -1,3 +1,10 @@
+v2.5.7.0 - Added Text support to OpenGL grease pencil drawing.
+	 - Fixed communications protocol which could lead to missing commands.
+	 - Made EXR reader a tad faster by reading attributes only once.
+	 - Fixed mp4's of mp3 where a single frame is shown all during one song.
+	 - Fixed recognition of some formats like mp3.
+	 - Fixed a crash on remote connections when no image was loaded.
+	 - Fixed a bug that was not using the full paths to the file.
 v2.5.6.4 - Bug fixed OpenGL snapshot of stills.  Now it is What You See Is 
 	   What You Get.
 	   Made RGBA values represent what is seen (applying gamma and gain).

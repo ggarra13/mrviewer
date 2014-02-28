@@ -49,7 +49,7 @@ class GLShape
 
      ~GLShape() {};
 
-     virtual void send( mrv::ImageView* v ) const = 0;
+     virtual std::string send() const = 0;
      virtual void draw( float z ) = 0;
 
      void color( float ri, float gi, float bi, float ai = 1.0 ) {
@@ -72,7 +72,7 @@ class GLPathShape : public GLShape
      GLPathShape() : GLShape()  {};
      ~GLPathShape() {};
      virtual void draw( float z );
-     virtual void send( mrv::ImageView* v ) const;
+     virtual std::string send() const;
 
      typedef std::vector< Point > PointList;
      PointList pts;
@@ -85,7 +85,7 @@ class GLErasePathShape : public GLPathShape
      GLErasePathShape() : GLPathShape()  {};
      ~GLErasePathShape() {};
      virtual void draw( float z );
-     virtual void send( mrv::ImageView* v ) const;
+     virtual std::string send() const;
 };
 
 class GLTextShape : public GLPathShape
@@ -108,7 +108,7 @@ class GLTextShape : public GLPathShape
 
      void init();
      virtual void draw( float z );
-     virtual void send( mrv::ImageView* v ) const;
+     virtual std::string send() const;
 
    protected:
      fltk::Font* _font;

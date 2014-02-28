@@ -576,7 +576,15 @@ void CMedia::filename( const char* n )
 
   SCOPED_LOCK( _mutex);
 
-  _fileroot = strdup( n );
+  std::string name = n;
+  if ( name.substr(0, 6) == "Slate " )
+      name = name.substr(6, name.size() );
+
+  fs::path file = fs::path( name );
+  file = fs::absolute( file );
+  std::string path = fs::canonical( file ).string();
+
+  _fileroot = strdup( path.c_str() );
 
   if ( _filename ) 
     {

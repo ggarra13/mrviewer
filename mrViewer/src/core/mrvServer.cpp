@@ -91,7 +91,6 @@ void Parser::write( std::string s, std::string id )
 {
    if ( !connected || !ui || !ui->uiView ) return;
 
-
    ParserList::const_iterator i = ui->uiView->_clients.begin();
    ParserList::const_iterator e = ui->uiView->_clients.end();
 
@@ -101,7 +100,6 @@ void Parser::write( std::string s, std::string id )
       if ( p == id ) {
 	 continue;
       }
-      LOG_CONN( "deliver:" << s );
       (*i)->deliver( s );
    }
 }
@@ -123,21 +121,23 @@ mrv::EDLGroup* Parser::edl_group() const
 
 bool Parser::parse( const std::string& s )
 {
-   if ( !connected ) return false;
+   if ( !connected || !ui || !view() ) return false;
+
 
    std::istringstream is( s );
    std::string cmd;
    is >> cmd;
-
-   if ( !ui ) return false;
 
    static mrv::Reel r;
    static mrv::media m;
 
    bool ok = false;
 
-   ParserList c = ui->uiView->_clients;
-   ui->uiView->_clients.clear();
+   mrv::ImageView* v = view();
+
+   ParserList c = v->_clients;
+   v->_clients.clear();
+
 
 #ifdef DEBUG_COMMANDS
    DBG( "received: " << cmd );
@@ -157,8 +157,8 @@ bool Parser::parse( const std::string& s )
       {
 	 shape->pts.push_back( xy );
       }
-      ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
-      ui->uiView->redraw();
+      v->add_shape( mrv::shape_type_ptr(shape) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("GLErasePathShape") )
@@ -166,6 +166,7 @@ bool Parser::parse( const std::string& s )
       Point xy;
       std::string points;
       GLErasePathShape* shape = new GLErasePathShape;
+      is.clear();
       std::getline( is, points );
       is.str( points );
       is.clear();
@@ -174,8 +175,8 @@ bool Parser::parse( const std::string& s )
       {
 	 shape->pts.push_back( xy );
       }
-      ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
-      ui->uiView->redraw();
+      v->add_shape( mrv::shape_type_ptr(shape) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("GLTextShape") )
@@ -226,12 +227,12 @@ bool Parser::parse( const std::string& s )
 
       if ( font != old_font || text != old_text )
       {
-         ui->uiView->add_shape( mrv::shape_type_ptr(shape) );
+         v->add_shape( mrv::shape_type_ptr(shape) );
          old_text = text;
          old_font = font;
       }
 
-      ui->uiView->redraw();
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("FPS") )
@@ -239,7 +240,7 @@ bool Parser::parse( const std::string& s )
       double fps;
       is >> fps;
 
-      ui->uiView->fps( fps );
+      v->fps( fps );
 
       ok = true;
    }
@@ -258,7 +259,7 @@ bool Parser::parse( const std::string& s )
       int i;
       is >> i;
 
-      ui->uiView->looping( (ImageView::Looping)i );
+      v->looping( (ImageView::Looping)i );
       ok = true;
    }
    else if ( cmd == N_("Selection") )
@@ -266,34 +267,34 @@ bool Parser::parse( const std::string& s )
       
       double x, y, w, h;
       is >> x >> y >> w >> h;
-      ui->uiView->selection( mrv::Rectd( x, y, w, h ) );
-      ui->uiView->redraw();
+      v->selection( mrv::Rectd( x, y, w, h ) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("UndoDraw") )
    {
-      ui->uiView->undo_draw();
+      v->undo_draw();
       ok = true;
    }
    else if ( cmd == N_("RedoDraw") )
    {
-      ui->uiView->redo_draw();
+      v->redo_draw();
       ok = true;
    }
    else if ( cmd == N_("Zoom") )
    {
       float z;
       is >> z;
-      ui->uiView->zoom( z );
+      v->zoom( z );
       ok = true;
    }
    else if ( cmd == N_("Offset") )
    {
       float x, y;
       is >> x >> y;
-      ui->uiView->offset_x( x );
-      ui->uiView->offset_y( y );
-      ui->uiView->redraw();
+      v->offset_x( x );
+      v->offset_y( y );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Channel") )
@@ -301,83 +302,83 @@ bool Parser::parse( const std::string& s )
       unsigned ch;
       is >> ch;
       
-      if ( ui->uiView->foreground() )
-	 ui->uiView->channel( ch );
-      ui->uiView->redraw();
+      if ( v->foreground() )
+	 v->channel( ch );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("FieldDisplay") )
    {
       int field;
       is >> field;
-      ui->uiView->field( (mrv::ImageView::FieldDisplay) field );
-      ui->uiView->redraw();
+      v->field( (mrv::ImageView::FieldDisplay) field );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Normalize") )
    {
       int b;
       is >> b;
-      ui->uiView->normalize( ( b != 0 ) );
+      v->normalize( ( b != 0 ) );
       ui->uiNormalize->state( (b != 0 ) );
-      ui->uiView->redraw();
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("WipeVertical") )
    {
       float b;
       is >> b;
-      ui->uiView->wipe_direction( ImageView::kWipeVertical );
-      ui->uiView->wipe_amount( b );
-      ui->uiView->redraw();
+      v->wipe_direction( ImageView::kWipeVertical );
+      v->wipe_amount( b );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("WipeHorizontal") )
    {
       float b;
       is >> b;
-      ui->uiView->wipe_direction( ImageView::kWipeHorizontal );
-      ui->uiView->wipe_amount( b );
-      ui->uiView->redraw();
+      v->wipe_direction( ImageView::kWipeHorizontal );
+      v->wipe_amount( b );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("NoWipe") )
    {
-      ui->uiView->wipe_direction( ImageView::kNoWipe );
-      ui->uiView->wipe_amount( 0.0f );
-      ui->uiView->redraw();
+      v->wipe_direction( ImageView::kNoWipe );
+      v->wipe_amount( 0.0f );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Gain") )
    {
       float f;
       is >> f;
-      ui->uiView->gain( f );
-      ui->uiView->redraw();
+      v->gain( f );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Gamma") )
    {
       float f;
       is >> f;
-      ui->uiView->gamma( f );
-      ui->uiView->redraw();
+      v->gamma( f );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Mask") )
    {
       float b;
       is >> b;
-      ui->uiView->masking( b );
-      ui->uiView->redraw();
+      v->masking( b );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("SafeAreas") )
    {
       int b;
       is >> b;
-      ui->uiView->safe_areas( (b != 0) );
-      ui->uiView->redraw();
+      v->safe_areas( (b != 0) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("UseLUT") )
@@ -385,8 +386,8 @@ bool Parser::parse( const std::string& s )
       int b;
       is >> b;
       ui->uiLUT->state( (b != 0) );
-      ui->uiView->use_lut( (b != 0) );
-      ui->uiView->redraw();
+      v->use_lut( (b != 0) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("AudioVolume") )
@@ -394,23 +395,23 @@ bool Parser::parse( const std::string& s )
       float t;
       is >> t;
 
-      ui->uiView->volume( t );
+      v->volume( t );
       ok = true;
    }
    else if ( cmd == N_("ShowBG") )
    {
       int b;
       is >> b;
-      ui->uiView->show_background( ( b != 0 ) );
-      ui->uiView->redraw();
+      v->show_background( ( b != 0 ) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("ShowPixelRatio") )
    {
       int b;
       is >> b;
-      ui->uiView->show_pixel_ratio( (b != 0) );
-      ui->uiView->redraw();
+      v->show_pixel_ratio( (b != 0) );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Reel") )
@@ -593,7 +594,7 @@ bool Parser::parse( const std::string& s )
 	 }
       }
 
-      ui->uiView->redraw();
+      v->redraw();
 
       ok = true;
    }
@@ -644,7 +645,7 @@ bool Parser::parse( const std::string& s )
 	 }
       }
 
-      ui->uiView->redraw();
+      v->redraw();
 
       ok = true;
    }
@@ -665,7 +666,7 @@ bool Parser::parse( const std::string& s )
 	    CMedia* img = (*j)->image();
 	    if ( img && img->fileroot() == imgname )
 	    {
-	       ui->uiView->background( (*j) );
+	       v->background( (*j) );
 	       ok = true;
 	       break;
 	    }
@@ -673,7 +674,7 @@ bool Parser::parse( const std::string& s )
 
       }
 
-      ui->uiView->redraw();
+      v->redraw();
    }
    else if ( cmd == N_("sync_image") )
    {
@@ -689,7 +690,7 @@ bool Parser::parse( const std::string& s )
 
 	 mrv::MediaList::iterator j = r->images.begin();
 	 mrv::MediaList::iterator e = r->images.end();
-	 for ( ; j != e; ++j )
+ 	 for ( ; j != e; ++j )
 	 {
 	    cmd = N_("Image \"");
 	    cmd += (*j)->image()->directory();
@@ -711,17 +712,9 @@ bool Parser::parse( const std::string& s )
 	    sprintf( buf, N_("seek %") PRId64, frame );
 	    deliver( buf );
 	 }
-
-         {
-            const mrv::GLShapeList& shapes = view()->shapes();
-            mrv::GLShapeList::const_iterator i = shapes.begin();
-            mrv::GLShapeList::const_iterator e = shapes.end();
-            for ( ; i != e; ++i )
-            {
-               (*i)->send( view() );
-            }
-         }
       }
+
+      if ( num == 0 ) return false;
 
       r = browser()->current_reel();
       if (r)
@@ -737,7 +730,7 @@ bool Parser::parse( const std::string& s )
 	 deliver( cmd );
       }
 
-      mrv::media m = ui->uiView->foreground();
+      mrv::media m = v->foreground();
       if ( m )
       {
 	 cmd = N_("CurrentImage \"");
@@ -757,38 +750,49 @@ bool Parser::parse( const std::string& s )
       }
 
       char buf[256];
-      sprintf(buf, N_("Gain %g"), ui->uiView->gain() );
+      sprintf(buf, N_("Gain %g"), v->gain() );
       deliver( buf );
 
-      sprintf(buf, N_("Gamma %g"), ui->uiView->gamma() );
+      sprintf(buf, N_("Gamma %g"), v->gamma() );
       deliver( buf );
 
-      sprintf(buf, N_("Channel %d"), ui->uiView->channel() );
+      sprintf(buf, N_("Channel %d"), v->channel() );
       deliver( buf );
       
-      sprintf(buf, N_("UseLUT %d"), (int)ui->uiView->use_lut() );
+      sprintf(buf, N_("UseLUT %d"), (int)v->use_lut() );
       deliver( buf );
 
-      sprintf(buf, N_("SafeAreas %d"), (int)ui->uiView->safe_areas() );
+      sprintf(buf, N_("SafeAreas %d"), (int)v->safe_areas() );
       deliver( buf );
  
       sprintf(buf, N_("ShowPixelRatio %d"), 
-	      (int)ui->uiView->show_pixel_ratio() );
+	      (int)v->show_pixel_ratio() );
       deliver( buf );
 
-      sprintf(buf, N_("Normalize %d"), (int)ui->uiView->normalize() );
+      sprintf(buf, N_("Normalize %d"), (int)v->normalize() );
       deliver( buf );
 
-      sprintf(buf, N_("Mask %g"), ui->uiView->masking() );
+      sprintf(buf, N_("Mask %g"), v->masking() );
       deliver( buf );
 
-      sprintf( buf, N_("FPS %g"), ui->uiView->fps() );
+      sprintf( buf, N_("FPS %g"), v->fps() );
       deliver( buf );
 
-      sprintf( buf, N_("Looping %d"), (int)ui->uiView->looping() );
+      sprintf( buf, N_("Looping %d"), (int)v->looping() );
       deliver( buf );
 
-      ui->uiView->redraw();
+      {
+         const mrv::GLShapeList& shapes = view()->shapes();
+         mrv::GLShapeList::const_iterator i = shapes.begin();
+         mrv::GLShapeList::const_iterator e = shapes.end();
+         for ( ; i != e; ++i )
+         {
+            std::string s = (*i)->send();
+            deliver( s );
+         }
+      }
+
+      view()->redraw();
 
       ok = true;
    }
@@ -796,17 +800,17 @@ bool Parser::parse( const std::string& s )
    {
       boost::int64_t f;
       is >> f;
-      ui->uiView->stop();
+      v->stop();
       ok = true;
    }
    else if ( cmd == N_("playfwd") )
    {
-      ui->uiView->play_forwards();
+      v->play_forwards();
       ok = true;
    }
    else if ( cmd == N_("playback") )
    {
-      ui->uiView->play_backwards();
+      v->play_backwards();
       ok = true;
    }
    else if ( cmd == N_("seek") )
@@ -814,12 +818,12 @@ bool Parser::parse( const std::string& s )
       boost::int64_t f;
       is >> f;
 
-      ui->uiView->seek( f );
+      v->seek( f );
 
       ok = true;
    }
 
-   ui->uiView->_clients = c;
+   v->_clients = c;
    return ok;
 }
 
@@ -935,11 +939,9 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
       // Extract the newline-delimited message from the buffer.
       std::string msg;
       std::istream is(&input_buffer_);
-      is.exceptions( std::ifstream::eofbit );
-      
       
       try {
-	 while ( std::getline(is, msg) )
+	 if ( std::getline(is, msg) )
 	 {
 	    if ( msg != "" && msg != "OK" && msg != "Not OK")
 	    {
@@ -965,8 +967,9 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 	    }
 	 }
       } 
-      catch ( std::ios_base::failure e )
+      catch ( std::ios_base::failure& e )
       {
+         LOG_ERROR( "Failure in getline " << e.what() );
       }
       
       
@@ -1187,8 +1190,10 @@ void server::create(mrv::ViewerUI* ui)
 
 void server::remove( mrv::ViewerUI* ui )
 {
-   ParserList::iterator i = ui->uiView->_clients.begin();
-   ParserList::iterator e = ui->uiView->_clients.end();
+   mrv::ImageView* v = ui->uiView;
+
+   ParserList::iterator i = v->_clients.begin();
+   ParserList::iterator e = v->_clients.end();
 
    for ( ; i != e; ++i )
    {
@@ -1198,8 +1203,8 @@ void server::remove( mrv::ViewerUI* ui )
    ui->uiConnection->uiCreate->label("Create");
    ui->uiConnection->uiClientGroup->activate();
 
-   ui->uiView->_clients.clear();
-   ui->uiView->_server.reset();
+   v->_clients.clear();
+   v->_server.reset();
 }
 
 
