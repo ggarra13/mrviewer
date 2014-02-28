@@ -1162,7 +1162,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   {
     std::string file( filename );
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
     // Handle cygwin properly
     if ( strncmp( filename, "/cygdrive/", 10 ) == 0 )
       {
@@ -1731,7 +1731,7 @@ void ImageBrowser::load( mrv::LoadList& files,
 	    if ( reel->edl || 
 		 img->first_frame() != img->last_frame() )
 	    {
-	       img->seek( img->first_frame() );
+	       view()->seek( img->first_frame() );
 	       view()->play_forwards();
 	    }
 	  }

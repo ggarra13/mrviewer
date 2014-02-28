@@ -2100,10 +2100,10 @@ o->child_of( main->uiMain );} modal
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {423 243 156 399} horizontal resizable visible
+        xywh {426 266 155 395} horizontal resizable visible
       } {
         {fltk::Group} {} {open
-          xywh {0 9 149 348}
+          xywh {0 9 149 376}
         } {
           {fltk::Button} uiSelection {
             user_data m user_data_type {mrv::ViewerUI*}
@@ -2159,7 +2159,7 @@ uiErase->value(0);}
             xywh {32 106 85 30} align 1 minimum 1 maximum 10 step 1 value 5
           }
           {fltk::Group} {} {open
-            xywh {33 341 79 35} vertical
+            xywh {30 336 82 40}
           } {
             {fltk::Button} uiUndoDraw {
               user_data m user_data_type {mrv::ViewerUI*}
@@ -2168,7 +2168,7 @@ uiErase->value(0);}
 if ( !v->uiView->has_undo() )
  o->deactivate();}
               tooltip {Undo Last Shape Drawn}
-              xywh {0 0 34 35}
+              xywh {5 2 34 35}
               image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
               extra_code {o->image( undo );
 if ( !m->uiView->has_undo() )
@@ -2184,7 +2184,7 @@ if ( !v->uiView->has_redo() )
 else
    o->activate();} selected
               tooltip {Redo Previous Shape Drawn}
-              xywh {45 0 34 35}
+              xywh {45 2 34 35}
               image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/redo.xpm}
               extra_code {o->image( redo );
 if ( !m->uiView->has_redo() )

@@ -152,11 +152,11 @@ namespace mrv {
 		  loc += 2;
 		}
 
-	      mrvALERT("Image sequence \"" << quoted << "\" not found.");
+	      LOG_ERROR("Image sequence \"" << quoted << "\" not found.");
 	    }
 	  else
 	    {
-	      mrvALERT("Image \"" << name << "\" not found.");
+	      LOG_ERROR("Image \"" << name << "\" not found.");
 	    }
 	  return NULL;
 	}

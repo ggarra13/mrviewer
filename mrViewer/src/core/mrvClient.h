@@ -27,17 +27,19 @@ class client : public Parser
 	    mrv::ViewerUI* v); 
 
      void start(tcp::resolver::iterator endpoint_iter);
+
      virtual void stop();
+     virtual void deliver( std::string m );
+
      bool stopped() { return stopped_; }
      void start_connect(tcp::resolver::iterator endpoint_iter);
      void handle_connect(const boost::system::error_code& ec,
 			 tcp::resolver::iterator endpoint_iter);
      void start_read();
-     void handle_read( const boost::system::error_code& ec);
+     void handle_read( const boost::system::error_code& ec );
      void start_write( const std::string& s );
-     void handle_write( const boost::system::error_code& ec);
+     void handle_write( const boost::system::error_code& ec );
      void check_deadline();
-     void deliver( std::string m );
 
      static void create( mrv::ViewerUI* main );
      static void remove( mrv::ViewerUI* main );

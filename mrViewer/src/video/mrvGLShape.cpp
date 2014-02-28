@@ -49,21 +49,21 @@ namespace fltk {
 
 namespace mrv {
 
-void GLPathShape::send( mrv::ImageView* v ) const
+std::string GLPathShape::send() const
 {
    std::string buf = "GLPathShape ";
    char tmp[256];
-   sprintf( tmp, "%f %f %f %f %f %" PRId64 " ", r, g, b, a,
+   sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
             pen_size, frame );
    buf += tmp;
    GLPathShape::PointList::const_iterator i = pts.begin();
    GLPathShape::PointList::const_iterator e = pts.end();
    for ( ; i != e; ++i )
    {
-      sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+      sprintf( tmp, " %g %g", (*i).x, (*i).y );
       buf += tmp;
    }
-   v->send( buf );
+   return buf;
 }
 
 void GLPathShape::draw( float z )
@@ -123,22 +123,22 @@ void GLPathShape::draw( float z )
    }
 }
 
-void GLErasePathShape::send( mrv::ImageView* v ) const
+std::string GLErasePathShape::send() const
 {
    std::string buf = "GLErasePathShape ";
    char tmp[128];
-   sprintf( tmp, "%f %" PRId64 " ", pen_size, frame );
+   sprintf( tmp, "%g %" PRId64, pen_size, frame );
 
    buf += tmp;
    GLPathShape::PointList::const_iterator i = pts.begin();
    GLPathShape::PointList::const_iterator e = pts.end();
    for ( ; i != e; ++i )
    {
-      sprintf( tmp, "%f %f ", (*i).x, (*i).y );
+      sprintf( tmp, " %g %g", (*i).x, (*i).y );
       buf += tmp;
    }
 
-   v->send( buf );
+   return buf;
 }
 
 void GLErasePathShape::draw( float z )
@@ -170,52 +170,39 @@ void GLTextShape::init()
   unsigned numChars = 256;
 
 #ifdef _WIN32
-    // HDC   hDC = fltk::getDC();
+  // HDC   hDC = fltk::getDC();
 
   HDC hDC = wglGetCurrentDC();
 
-    // HGLRC hRC = wglGetCurrentContext();
-    // if (hRC == NULL ) hRC = wglCreateContext( hDC );
 
-    LOGFONT     lf;
-    memset(&lf,0,sizeof(LOGFONT));
-    lf.lfHeight               =   size() * _zoom;
-    lf.lfWeight               =   FW_NORMAL ;
-    lf.lfCharSet              =   ANSI_CHARSET ;
-    lf.lfOutPrecision         =   OUT_RASTER_PRECIS ;
-    lf.lfClipPrecision        =   CLIP_DEFAULT_PRECIS ;
-    lf.lfQuality              =   DRAFT_QUALITY ;
-    lf.lfPitchAndFamily       =   FF_DONTCARE|DEFAULT_PITCH;
-    lstrcpy (lf.lfFaceName, font()->name() ) ;
+  LOGFONT     lf;
+  memset(&lf,0,sizeof(LOGFONT));
+  lf.lfHeight               =   size() * _zoom;
+  lf.lfWeight               =   FW_NORMAL ;
+  lf.lfCharSet              =   ANSI_CHARSET ;
+  lf.lfOutPrecision         =   OUT_RASTER_PRECIS ;
+  lf.lfClipPrecision        =   CLIP_DEFAULT_PRECIS ;
+  lf.lfQuality              =   DRAFT_QUALITY ;
+  lf.lfPitchAndFamily       =   FF_DONTCARE|DEFAULT_PITCH;
+  lstrcpy (lf.lfFaceName, font()->name() ) ;
 
 
-    HFONT    fid = CreateFontIndirect(&lf);
-    HFONT oldFid = (HFONT)SelectObject(hDC, fid);
+  HFONT    fid = CreateFontIndirect(&lf);
+  HFONT oldFid = (HFONT)SelectObject(hDC, fid);
 
-    // wglMakeCurrent( hDC, hRC );
+  // wglMakeCurrent( hDC, hRC );
 
-    _charset = glGenLists( numChars );
+  _charset = glGenLists( numChars );
 
 
-    bool succeeded = FALSE;
-    const int MAX_TRIES = 5;
-    for(int i=0; i<MAX_TRIES && !succeeded; ++i)
-    {
-       succeeded = wglUseFontBitmaps(hDC, 0, numChars-1, _charset ) != FALSE;
-    }
+  bool succeeded = FALSE;
+  const int MAX_TRIES = 5;
+  for(int i=0; i<MAX_TRIES && !succeeded; ++i)
+  {
+     succeeded = wglUseFontBitmaps(hDC, 0, numChars-1, _charset ) != FALSE;
+  }
 
-    if (!succeeded)
-    {
-       fprintf( stderr, "wglUseFontBitmap error\n" );
-    }
-
-    // BOOL ok = wglUseFontBitmaps(hDC, 0, numChars-1, _charset);
-    // if ( ok == FALSE )
-    // {
-    //    fprintf( stderr, "wglUseFontBitmap error\n" );
-    // }
-
-    SelectObject(hDC, oldFid);
+  SelectObject(hDC, oldFid);
 #endif
 }
 
@@ -223,21 +210,21 @@ GLTextShape::~GLTextShape()
 {
 }
 
-void GLTextShape::send( mrv::ImageView* v ) const
+std::string GLTextShape::send() const
 {
    std::string buf = "GLTextShape ";
 
    fltk::Font* f = font();
-   if (!f) return;
+   if (!f) return "";
 
    char tmp[512];
-   sprintf( tmp, "\"%s\" ^%s^ %d %" PRId64 " ", font()->name(),
+   sprintf( tmp, "\"%s\" ^%s^ %d %" PRId64, font()->name(),
             text().c_str(), size(), frame );
    buf += tmp;
-   sprintf( tmp, "%f %f\n", pts[0].x, pts[0].y );
+   sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
    buf += tmp;
 
-   v->send( buf );
+   return buf;
 }
 
 void GLTextShape::draw( float z )

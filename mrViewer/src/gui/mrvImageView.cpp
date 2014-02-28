@@ -1898,7 +1898,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-        s->send( this );
+        send( s->send() );
      }
   }
   else if ( _mode == kErase )
@@ -1911,7 +1911,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-        s->send( this );
+        send( s->send() );
      }
   }
   else if ( _mode == kText )
@@ -1924,7 +1924,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-        s->send( this );
+        send( s->send() );
      }
   }
 
