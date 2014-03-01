@@ -134,7 +134,6 @@ bool exrImage::channels_order(
 			      Imf::FrameBuffer& fb
 			      )
 {
-  
    const Box2i& dataWindow = h.dataWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
@@ -156,7 +155,10 @@ bool exrImage::channels_order(
       const Imf::Channel* ch = channels.findChannel( 
 						    layerName.c_str()
 						     );
-      if ( !ch ) continue;
+      if ( !ch ) {
+         LOG_ERROR( "Channel " << layerName << " not found" );
+         continue;
+      }
 
 
       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
@@ -233,6 +235,7 @@ bool exrImage::channels_order(
       offsets[2]  = 2;
       offsets[3]  = 3;
       
+
       if ( numChannels >= 3 && has_alpha() )
       {
 	 format = VideoFrame::kRGBA;
@@ -253,7 +256,7 @@ bool exrImage::channels_order(
    {
       for ( unsigned i = 0; i < numChannels; ++i )
 	 xs[i] = _hires->pixel_size();
-      
+
       unsigned int dw2 = dw / 2;
       ys[0] = xs[0] * dw;
       ys[1] = xs[0] * dw2;
@@ -262,14 +265,12 @@ bool exrImage::channels_order(
    }
    else
    {
-      
       for ( unsigned i = 0; i < numChannels; ++i )
       {
 	 xs[i] = _hires->pixel_size() * numChannels;
 	 ys[i] = xs[i] * dw;
       }
    }
-   
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
@@ -295,8 +296,10 @@ bool exrImage::channels_order(
 
       ch = channels.findChannel( layerName.c_str() );
       
-      if ( !ch ) continue;
-      
+      if ( !ch ) {
+         LOG_ERROR( "Channel " << layerName << " not found" );
+         continue;
+      }
       
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
       
@@ -317,7 +320,6 @@ bool exrImage::channels_order_multi(
 				    Imf::FrameBuffer& fb
 				    )
 {
-  
    const Box2i& dataWindow = h.dataWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
@@ -325,7 +327,7 @@ bool exrImage::channels_order_multi(
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
-   size_t order[4];
+   int order[4];
    order[0] = order[1] = order[2] = order[3] = -1;
 
    Imf::ChannelList::ConstIterator sr, er, sl, el;
@@ -343,25 +345,29 @@ bool exrImage::channels_order_multi(
    for ( i = s; i != e; ++i )
    {
       const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( 
-						    i.name()
-						     );
-      if ( !ch ) continue;
+      const Imf::Channel* ch = channels.findChannel( layerName );
+      if ( !ch ) {
+         LOG_ERROR( "Channel " << layerName << " not found" );
+         continue;
+      }
 
       channelList.push_back( layerName );
    }
 
    for ( i = s; i != e; ++i, ++idx )
    {
-      
+      const std::string layerName = i.name();
       const Imf::Channel* ch = channels.findChannel( 
-						    i.name()
+						    layerName
 						     );
-      if ( !ch ) continue;
-	 
+      if ( !ch ) {
+         LOG_ERROR( "Channel " << layerName << " not found" );
+         continue;
+      }
+
       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
       
-      std::string ext = i.name();
+      std::string ext = layerName;
       std::string root = "";
       size_t pos = ext.rfind( N_(".") );
       if ( pos != string::npos )
@@ -387,7 +393,7 @@ bool exrImage::channels_order_multi(
 	    }
 	 }
 	 else
-	 {	
+	 {
 	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
 				    ext == N_("RY") || ext == N_("Y") ) )
 	    {
@@ -400,15 +406,20 @@ bool exrImage::channels_order_multi(
 				    ext == N_("ALPHA") ) ) order[3] = idx;
 	 }
       }
-   
    }
+
+   // We have the left eye in order[0] or order[1]
+   assert( order[0] != -1 || order[1] != -1 );
 
    idx = 0;
    for ( i = s; i != e; ++i, ++idx )
    {
-      const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( i.name() );
-      if ( !ch ) continue;
+      const std::string& layerName = i.name();
+      const Imf::Channel* ch = channels.findChannel( layerName );
+      if ( !ch ) {
+         LOG_ERROR( "Missing channel " << layerName );
+         continue;
+      }
 
       std::string ext = layerName;
       std::string root = "";
@@ -454,6 +465,8 @@ bool exrImage::channels_order_multi(
 
    }
 
+   // order[0-1] should be set by now.
+
    size_t numChannels = channelList.size();
 
    if ( numChannels > 4 )
@@ -491,6 +504,7 @@ bool exrImage::channels_order_multi(
       numChannels = 3;
    }
 
+
    allocate_pixels( frame, unsigned(numChannels), format,
 		    pixel_type_conversion( imfPixelType ) );
 
@@ -503,30 +517,34 @@ bool exrImage::channels_order_multi(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   if ( _has_yca )
-      memset( pixels, 0, _hires->data_size() );  // needed for RY BY images
+   memset( pixels, 0, _hires->data_size() );  // needed for RY BY images
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 		 _hires->channels() );
 
+
    boost::uint8_t* base = pixels + start;
+
 
    Imf::Channel* ch = NULL;
    for ( idx = 0; idx < numChannels; ++idx )
    {
-      size_t k = order[idx];
+      int k = order[idx];
       if ( k == -1 ) continue;
 
       const std::string& layerName = channelList[k];
 
-      ch = channels.findChannel( layerName.c_str() );
+      ch = channels.findChannel( layerName );
 
-      if ( !ch ) continue;
+      if ( !ch ) {
+         LOG_ERROR( "Channel " << layerName << " not found" );
+         continue;
+      }
 
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
-      
-      fb.insert( layerName.c_str(), 
+
+      fb.insert( layerName.c_str(),
 		 Slice( imfPixelType, buf, xs[idx], ys[idx],
 			ch->xSampling, ch->ySampling) );
    }
@@ -677,12 +695,9 @@ bool exrImage::find_channels( const Imf::Header& h,
       _has_right_eye = true;
    }
 
+   _layers.clear();
    if ( _layers.empty() )
    {
-
-      _layers.clear();
-
-
       _num_channels = 0;
       _gamma = 2.2f;
 
@@ -743,7 +758,8 @@ bool exrImage::find_channels( const Imf::Header& h,
       // Deal with single channels first, like Tag, Z Depth, etc.
       for ( ; i != e; ++i )
       {
-	 std::string name( i.name() );
+         const std::string& layerName = i.name();
+	 std::string name( layerName );
 	 // Make names all uppercase, to avoid confusion
 	 std::transform(name.begin(), name.end(), name.begin(), 
 			(int(*)(int)) toupper);
@@ -762,7 +778,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	 if ( name.find( N_(".") ) != string::npos ) continue;
 	 
 	 
-	 _layers.push_back( i.name() );
+	 _layers.push_back( layerName );
 	 ++_num_channels;
 	 
       }
