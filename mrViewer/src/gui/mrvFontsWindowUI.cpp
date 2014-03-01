@@ -22,7 +22,7 @@ class FontDisplay : public fltk::Input {
 namespace mrv {
 
 fltk::Font* font_current = NULL;
-unsigned    font_size = 16;
+unsigned    font_size = 32;
 std::string font_text;
 
 }
@@ -101,6 +101,7 @@ bool make_window() {
         uiText->textfont( mrv::font_current );
         mrv::font_text = "Type here";
         uiText->text( mrv::font_text.c_str() );
+        uiText->textsize( mrv::font_size );
         uiText->callback( new_text );
         o->callback( new_font );
       }
@@ -108,7 +109,7 @@ bool make_window() {
         o->minimum(8);
         o->maximum(100);
         o->step(1);
-        o->value(16);
+        o->value(32);
         o->align(fltk::ALIGN_LEFT);
         o->callback( new_size );
       }
