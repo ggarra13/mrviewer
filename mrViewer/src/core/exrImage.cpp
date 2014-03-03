@@ -162,7 +162,7 @@ bool exrImage::channels_order(
 
 
       if ( ch->type > imfPixelType ) imfPixelType = ch->type;
-      
+
       std::string ext = layerName;
       size_t pos = layerName.rfind( N_(".") );
       if ( pos != string::npos )
@@ -172,13 +172,16 @@ bool exrImage::channels_order(
 
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
-      if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
-			      ext == N_("Y") ) ) order[0] = idx;
-      if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-			      ext == N_("RY") ) ) order[1] = idx;
-      if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-			      ext == N_("BY") ) ) order[2] = idx;
-      if ( order[3] == -1 && (ext == N_("A") || 
+      if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") ||
+			      ext == N_("Y") || ext == N_("U") ) )
+         order[0] = idx;
+      if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
+			      ext == N_("RY") || ext == N_("V") ) )
+         order[1] = idx;
+      if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
+			      ext == N_("BY") || ext == N_("W") ) )
+         order[2] = idx;
+      if ( order[3] == -1 && (ext == N_("A") ||
 			      ext == N_("ALPHA") ) ) order[3] = idx;
 
 
@@ -332,7 +335,7 @@ bool exrImage::channels_order_multi(
 
    Imf::ChannelList::ConstIterator sr, er, sl, el;
 
-   size_t idx = 0;
+   int idx = 0;
    Imf::PixelType imfPixelType = Imf::UINT;
    std::vector< std::string > channelList;
    Imf::ChannelList::ConstIterator i;
@@ -340,12 +343,11 @@ bool exrImage::channels_order_multi(
 
 
 
-   // First, gather the channels we will use in left eye
-
+   // First, gather all the channels
    for ( i = s; i != e; ++i )
    {
       const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -354,11 +356,12 @@ bool exrImage::channels_order_multi(
       channelList.push_back( layerName );
    }
 
+   // Then gather the channel we will use in left eye
    for ( i = s; i != e; ++i, ++idx )
    {
       const std::string layerName = i.name();
       const Imf::Channel* ch = channels.findChannel( 
-						    layerName
+						    layerName.c_str()
 						     );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -415,7 +418,7 @@ bool exrImage::channels_order_multi(
    for ( i = s; i != e; ++i, ++idx )
    {
       const std::string& layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Missing channel " << layerName );
          continue;
@@ -517,7 +520,7 @@ bool exrImage::channels_order_multi(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() );  // needed for RY BY images
+   memset( pixels, 0, _hires->data_size() ); // needed - not sure why?
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -535,7 +538,7 @@ bool exrImage::channels_order_multi(
 
       const std::string& layerName = channelList[k];
 
-      ch = channels.findChannel( layerName );
+      ch = channels.findChannel( layerName.c_str() );
 
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -837,10 +840,9 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
       else
       {
-	 Imf::ChannelList::ConstIterator s;
-	 Imf::ChannelList::ConstIterator e;
+         Imf::ChannelList::ConstIterator s;
+         Imf::ChannelList::ConstIterator e;
 	 channels.channelsWithPrefix( channelPrefix, s, e );
-	 
 	 channels_order( frame, s, e, channels, h, fb );
       }
    }

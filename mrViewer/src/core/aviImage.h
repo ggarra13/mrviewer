@@ -194,7 +194,7 @@ namespace mrv {
     virtual bool seek_to_position( const boost::int64_t frame );
     int video_stream_index() const;
        mrv::image_type_ptr allocate_image(const boost::int64_t& frame,
-					  const boost::int64_t& pts );
+					  const boost::int64_t& pts);
 
 
     AVStream* get_subtitle_stream() const;
@@ -221,6 +221,7 @@ namespace mrv {
     int              _video_index;
     PixelFormat      _av_dst_pix_fmt;
     VideoFrame::Format _pix_fmt;
+       VideoFrame::PixelType _ptype;
     AVFrame*         _av_frame;
     AVCodec*         _video_codec;
     SwsContext*      _convert_ctx;

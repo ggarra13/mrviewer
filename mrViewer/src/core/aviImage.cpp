@@ -148,6 +148,7 @@ bool aviImage::test_filename( const char* buf )
       avformat_close_input( &ctx );
 
    if ( error < 0 ) return false;
+
    return true;
 }
 
@@ -312,7 +313,7 @@ void aviImage::open_video_codec()
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);
 
-  if ( _video_codec == NULL || 
+  if ( _video_codec == NULL ||
        avcodec_open2( ctx, _video_codec, &info ) < 0 )
     _video_index = -1;
 
@@ -554,14 +555,15 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
 
 mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
-					      const boost::int64_t& pts )
+					      const boost::int64_t& pts
+                                             )
 { 
   return mrv::image_type_ptr( new image_type( frame,
 					      width(), 
 					      height(), 
 					      _num_channels,
 					      _pix_fmt,
-					      VideoFrame::kByte,
+					      _ptype,
 					      _av_frame->repeat_pict,
 					      pts ) );
 
@@ -579,8 +581,7 @@ void aviImage::store_image( const boost::int64_t frame,
   mrv::image_type_ptr 
   image = allocate_image( frame, boost::int64_t( pts * av_q2d( 
 							      stream->time_base
-							       )
-						 )
+                                                 ) )
 			  );
   if ( ! image )
     {
@@ -1038,37 +1039,47 @@ void aviImage::video_stream( int x )
      codec->flags |= CODEC_FLAG_EMU_EDGE;
   }
 
+  _ptype = VideoFrame::kByte;
   unsigned int w = codec->width;
 
   switch( _av_dst_pix_fmt )
     {
-    case PIX_FMT_BGR24:
-      _pix_fmt = VideoFrame::kBGR; break;
-    case PIX_FMT_BGRA:
-      _pix_fmt = VideoFrame::kBGRA; break;
-    case PIX_FMT_RGB24:
+       case AV_PIX_FMT_RGBA64BE:
+          _ptype = VideoFrame::kShort; break;
+          _pix_fmt = VideoFrame::kRGBA; break;
+       case AV_PIX_FMT_RGBA64LE:
+          _ptype = VideoFrame::kShort; break;
+          _pix_fmt = VideoFrame::kRGBA; break;
+       case AV_PIX_FMT_BGRA64BE:
+       case AV_PIX_FMT_BGRA64LE:
+          _pix_fmt = VideoFrame::kBGRA; break;
+       case AV_PIX_FMT_BGR24:
+          _pix_fmt = VideoFrame::kBGR; break;
+       case AV_PIX_FMT_BGRA:
+          _pix_fmt = VideoFrame::kBGRA; break;
+       case AV_PIX_FMT_RGB24:
       _pix_fmt = VideoFrame::kRGB; break;
-    case PIX_FMT_RGBA:
+    case AV_PIX_FMT_RGBA:
       _pix_fmt = VideoFrame::kRGBA; break;
-    case PIX_FMT_YUV444P:
+    case AV_PIX_FMT_YUV444P:
       if ( w > 768 )
 	_pix_fmt = VideoFrame::kITU_709_YCbCr444; 
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr444; 
       break;
-    case PIX_FMT_YUV422P:
+    case AV_PIX_FMT_YUV422P:
       if ( w > 768 )
 	_pix_fmt = VideoFrame::kITU_709_YCbCr422;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr422;
       break;
-    case PIX_FMT_YUV420P:
+    case AV_PIX_FMT_YUV420P:
       if ( w > 768 )
 	_pix_fmt = VideoFrame::kITU_709_YCbCr420;
       else
 	_pix_fmt = VideoFrame::kITU_601_YCbCr420;
       break;
-    case PIX_FMT_YUVA420P:
+    case AV_PIX_FMT_YUVA420P:
       if ( w > 768 )
 	_pix_fmt = VideoFrame::kITU_709_YCbCr420A;
       else
@@ -1344,8 +1355,8 @@ void aviImage::populate()
 	     {
 		IMG_ERROR("populate: Could not read frame 1 error: "
 			  << strerror(err) );
+                break;
 	     }
-	     break;
 	  }
 	  
 	  if ( has_video() && pkt.stream_index == video_stream_index() )
@@ -1355,6 +1366,7 @@ void aviImage::populate()
 	     if ( status == kDecodeOK )
 	     {
 		got_video = true;
+                store_image( _frameStart, pkt.dts );
 	     }
 	     else
 	     {
@@ -3159,7 +3171,7 @@ static AVStream* add_video_stream(AVFormatContext *oc,
     c->time_base.num = 1000;
     // c->ticks_per_frame = 1;
     c->gop_size = 12; /* emit one intra frame every twelve frames at most */
-    c->pix_fmt = PIX_FMT_YUV420P;
+    c->pix_fmt = AV_PIX_FMT_YUV420P;
     //c->max_b_frames = 0;
     //c->me_method = 5;
     // if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
