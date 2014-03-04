@@ -1,3 +1,5 @@
+v2.5.7.1 - Added memset() to exr images as changing layers could leave traces
+	   of wrong data.
 v2.5.7.0 - Added Text support to OpenGL grease pencil drawing.
 	 - Fixed communications protocol which could lead to missing commands.
 	 - Made EXR reader a tad faster by reading attributes only once.
