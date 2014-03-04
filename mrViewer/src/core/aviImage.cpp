@@ -2490,9 +2490,9 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 
 	unsigned t = pal[*s];
 	a = (t >> 24) & 0xff;
-	yuv.r = float( (t >> 16) & 0xff );
+	yuv.b = float( (t >> 16) & 0xff );
 	yuv.g = float( (t >> 8) & 0xff );
-	yuv.b = float( t & 0xff );
+	yuv.r = float( t & 0xff );
 
 	rgb = mrv::color::yuv::to_rgb( yuv );
 
@@ -2506,12 +2506,10 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	if ( rgb.b > 0xff ) rgb.b = 0xff;
 	if ( rgb.b < 0x00 ) rgb.b = 0x00;
 
-
-        // float w = (float)rgb.a / 255.0f;
-        // rgb.r = (float)rgb.r * w;
-        // rgb.g = (float)rgb.g * w;
-        // rgb.b = (float)rgb.b * w;
-
+        float w = a / 255.0f;
+        rgb.r = rgb.g * w;
+        rgb.g *= w;
+        rgb.b *= w;
 
 
 	*d++ = uint8_t( rgb.r );
