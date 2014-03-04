@@ -237,7 +237,6 @@ bool exrImage::channels_order(
       offsets[1]  = 1;
       offsets[2]  = 2;
       offsets[3]  = 3;
-      
 
       if ( numChannels >= 3 && has_alpha() )
       {
@@ -277,14 +276,11 @@ bool exrImage::channels_order(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   if ( _has_yca )
-      memset( pixels, 0, _hires->data_size() ); // Needed for BY and RY pics
-   
+   memset( pixels, 0, _hires->data_size() ); // Needed
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 		 _hires->channels() );
-
 
    boost::uint8_t* base = pixels + start;
 
@@ -335,7 +331,7 @@ bool exrImage::channels_order_multi(
 
    Imf::ChannelList::ConstIterator sr, er, sl, el;
 
-   int idx = 0;
+   unsigned idx = 0;
    Imf::PixelType imfPixelType = Imf::UINT;
    std::vector< std::string > channelList;
    Imf::ChannelList::ConstIterator i;
@@ -520,7 +516,7 @@ bool exrImage::channels_order_multi(
 
 
    boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() ); // needed - not sure why?
+   memset( pixels, 0, _hires->data_size() ); // Needed
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -618,7 +614,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	h.dataWindow() = in.dataWindowForLevel(_levelX, _levelY);
 	h.displayWindow() = h.dataWindow();
 
-	if ( _exif.empty() || _iptc.empty() )
+	if ( _exif.empty() && _iptc.empty() )
            read_header_attr( h, frame );
 
 	FrameBuffer fb;
@@ -698,7 +694,6 @@ bool exrImage::find_channels( const Imf::Header& h,
       _has_right_eye = true;
    }
 
-   _layers.clear();
    if ( _layers.empty() )
    {
       _num_channels = 0;
@@ -710,6 +705,8 @@ bool exrImage::find_channels( const Imf::Header& h,
 	   channels.findChannel( N_("B") ) )
       {
 	 has_rgb = true;
+	 rgb_layers();
+	 lumma_layers();
       }
       
       _has_yca = false;
@@ -734,11 +731,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 	    rgb_layers(); _num_channels -= 3;
 	    lumma_layers();
 	 }
-      }
-      else
-      {
-	 rgb_layers();
-	 lumma_layers();
       }
       
       if ( channels.findChannel( N_("A") ) ||
@@ -774,18 +766,17 @@ bool exrImage::find_channels( const Imf::Header& h,
 	      // international versions
 	      name == _("RED") || name == _("GREEN") || name == _("BLUE") || 
 	      name == _("ALPHA")
-	      ) 
+	      )
 	    continue; // these channels are handled in shader directly
-	 
+
 	 // Don't count layer.channel those are handled later
 	 if ( name.find( N_(".") ) != string::npos ) continue;
-	 
-	 
+
 	 _layers.push_back( layerName );
 	 ++_num_channels;
-	 
+
       }
-      
+
 
       // Deal with layers next like (Normals, Motion, etc)
       {
@@ -798,7 +789,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	 {
 	    _layers.push_back( (*i) );
 	    ++_num_channels;
-	    
+
 	    Imf::ChannelList::ConstIterator x;
 	    Imf::ChannelList::ConstIterator s;
 	    Imf::ChannelList::ConstIterator e;
@@ -811,7 +802,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 	 }
       }
    }
-      
+
    const char* channelPrefix = channel();
    if ( channelPrefix != NULL )
    {
@@ -823,18 +814,18 @@ bool exrImage::find_channels( const Imf::Header& h,
 	 root = ext.substr( 0, pos );
 	 ext = ext.substr( pos+1, ext.size() );
       }
-      
+
       std::transform( root.begin(), root.end(), root.begin(),
 		      (int(*)(int)) toupper);
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
-      
+
       if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
       {
 	 if (root == "LEFT" ) _left_red = true;
 	 else _left_red = false;
-	 
-	 Imf::ChannelList::Iterator s = channels.begin();
+
+         Imf::ChannelList::Iterator s = channels.begin();
 	 Imf::ChannelList::Iterator e = channels.end();
 	 channels_order_multi( frame, s, e, channels, h, fb );
       }
