@@ -2473,7 +2473,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   boost::uint8_t* root = (boost::uint8_t*) _subtitles.back()->data().get();
   assert( root != NULL );
 
-  unsigned a;
+  unsigned char a;
   ImagePixel yuv, rgb;
 
   const unsigned* pal = (const unsigned*)rect.pict.data[1];
@@ -2485,9 +2485,8 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   	boost::uint8_t* d = root + 4 * (x + y * imgw); 
 	assert( d != NULL );
 
-	boost::uint8_t* const s = 
-	rect.pict.data[0] + 
-	(x-dstx) + (y-dsty) * dstw;
+	boost::uint8_t* const s = rect.pict.data[0] + (x-dstx) + 
+                                  (y-dsty) * dstw;
 
 	unsigned t = pal[*s];
 	a = (t >> 24) & 0xff;
@@ -2496,6 +2495,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	yuv.b = float( t & 0xff );
 
 	rgb = mrv::color::yuv::to_rgb( yuv );
+
 
 	if ( rgb.r > 0xff ) rgb.r = 0xff;
 	if ( rgb.r < 0x00 ) rgb.r = 0x00;
@@ -2507,17 +2507,12 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 	if ( rgb.b < 0x00 ) rgb.b = 0x00;
 
 
-        // float w = rgb.a / 255.0f;
-        // rgb.r *= w;
-        // rgb.g *= w;
-        // rgb.b *= w;
+        // float w = (float)rgb.a / 255.0f;
+        // rgb.r = (float)rgb.r * w;
+        // rgb.g = (float)rgb.g * w;
+        // rgb.b = (float)rgb.b * w;
 
-	// // if ( a == 0xff )
-	// //    if ( r == 0xff && g == 0xff && b == 0xff )
-	// //    {
-	// //       r = g = b = 0x00;
-	// //    }
-	
+
 
 	*d++ = uint8_t( rgb.r );
 	*d++ = uint8_t( rgb.g );

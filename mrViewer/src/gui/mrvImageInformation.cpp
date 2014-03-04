@@ -328,8 +328,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
     add_text( _("Directory"), img->directory() );
     char buf[1024];
-    sprintf( buf, img->name().c_str(), img->frame() );
-    add_text( _("Filename"), buf );
+    add_text( _("Filename"), img->name().c_str() );
 
     ++group;
 
