@@ -1042,16 +1042,18 @@ void aviImage::video_stream( int x )
   _ptype = VideoFrame::kByte;
   unsigned int w = codec->width;
 
+
   switch( _av_dst_pix_fmt )
     {
        case AV_PIX_FMT_RGBA64BE:
-          _ptype = VideoFrame::kShort; break;
+          _ptype = VideoFrame::kShort;
           _pix_fmt = VideoFrame::kRGBA; break;
        case AV_PIX_FMT_RGBA64LE:
-          _ptype = VideoFrame::kShort; break;
+          _ptype = VideoFrame::kShort;
           _pix_fmt = VideoFrame::kRGBA; break;
        case AV_PIX_FMT_BGRA64BE:
        case AV_PIX_FMT_BGRA64LE:
+          _ptype = VideoFrame::kShort;
           _pix_fmt = VideoFrame::kBGRA; break;
        case AV_PIX_FMT_BGR24:
           _pix_fmt = VideoFrame::kBGR; break;
