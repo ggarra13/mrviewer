@@ -173,7 +173,7 @@ IF(FLTK2_DIR)
 
     # if FLTK2 was not built using CMake
     # Find fluid executable.
-    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2.exe fluid2_wdll.exe fluid2d.exe fluid2 
+    FIND_PROGRAM(FLTK2_FLUID_EXECUTABLE fluid2_wdll.exe fluid2.exe fluid2d.exe fluid2 
     			PATHS 
 			${FLTK2_DIR}/fluid 
 			${FLTK2_DIR}/bin/x${CMAKE_BUILD_ARCH}/Release

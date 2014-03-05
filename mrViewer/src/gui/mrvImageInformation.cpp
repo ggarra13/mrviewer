@@ -14,6 +14,7 @@ using namespace std;
 
 #include <algorithm>
 
+#include <fltk/events.h>
 #include <fltk/Symbol.h>
 #include <fltk/Browser.h>
 #include <fltk/Button.h>
@@ -105,6 +106,16 @@ namespace mrv
 
   }
 
+
+  int ImageInformation::handle( int event )
+  {
+     if ( event == fltk::MOUSEWHEEL )
+     {
+        fltk::e_dy = fltk::event_dy() * 8;
+     }
+
+     return ImageInfoParent::handle( event );
+  }
 
   void ImageInformation::layout()
   {

@@ -48,6 +48,7 @@ namespace mrv
 
     void refresh();
     virtual void layout();
+    virtual int handle( int event );
 
     void main( mrv::ViewerUI* m ) { uiMain = m; }
 
