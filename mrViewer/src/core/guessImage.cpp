@@ -57,8 +57,8 @@ namespace mrv {
     {
       { stubImage::test,  NULL,            stubImage::get },
       { exrImage::test,   NULL,            exrImage::get },
-      { aviImage::test,   aviImage::test_filename,  aviImage::get },
       { iffImage::test,   NULL,            iffImage::get },
+      { aviImage::test,   aviImage::test_filename,  aviImage::get },
       { mapImage::test,   NULL,            mapImage::get },
       { hdrImage::test,   NULL,            hdrImage::get },
       { NULL,             wandImage::test, wandImage::get },
