@@ -18,19 +18,26 @@
 
 <br>
 
-mrViewer comes bundled with a copy of ffmpeg, which is a command-line utility used to create movies among other things.  The current version supports OpenEXR non-tiled images but only in zip, rle and non compressed modes.
+mrViewer comes bundled with a copy of ffmpeg, which is a command-line utility used to create movies among other things.  The current version supports OpenEXR non-tiled images but only in zip, rle and non compressed modes.  You can run ffmpeg from the bin directory of the mrViewer install.
 <br>
 You can create mp4 movie files from images with the following syntax:
 <br>
-<div class="hotkey">
+<div class="console">
 ffmpeg -layer Specular -i image.%04d.exr test.mp4
-<div>
+</div>
+
+<br>
+In Windows:
+<br>
+<div class="console">
+ffmpeg.exe -layer Specular -i image.%04d.exr test.mp4
+</div>
 <br>
 If not working with a multi-layered openexr file, the command can be simplified to:
 <br>
-<div class="hotkey">
+<div class="console">
 ffmpeg -i image.%04d.exr test.mp4
-<div>
+</div>
 <br>
 
 </body>

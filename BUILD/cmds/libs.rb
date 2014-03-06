@@ -10,6 +10,13 @@ libc\.so
 )
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
+begin
+  FileUtils.rm( Dir.glob("Release/lib/*.so*") )
+rescue => e
+  puts e
+  exit 1
+end
+
 output=`ldd Release/bin/mrViewer`
 
 files = output.split("\n")
