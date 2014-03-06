@@ -345,7 +345,7 @@ bool exrImage::channels_order_multi(
    for ( i = s; i != e; ++i )
    {
       const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -358,7 +358,7 @@ bool exrImage::channels_order_multi(
    {
       const std::string layerName = i.name();
       const Imf::Channel* ch = channels.findChannel( 
-						    layerName
+						    layerName.c_str()
 						     );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -415,7 +415,7 @@ bool exrImage::channels_order_multi(
    for ( i = s; i != e; ++i, ++idx )
    {
       const std::string& layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Missing channel " << layerName );
          continue;
@@ -535,7 +535,7 @@ bool exrImage::channels_order_multi(
 
       const std::string& layerName = channelList[k];
 
-      ch = channels.findChannel( layerName );
+      ch = channels.findChannel( layerName.c_str() );
 
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
