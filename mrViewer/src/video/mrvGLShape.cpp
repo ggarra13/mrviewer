@@ -230,7 +230,7 @@ std::string GLTextShape::send() const
 void GLTextShape::draw( float z )
 {
 
-#if 0
+#ifdef _WIN32
    if ( !_charset || z != _zoom )
    {
       if ( _charset )
@@ -256,7 +256,7 @@ void GLTextShape::draw( float z )
    glColor4f( r, g, b, a );
 
 
-#if 0
+#ifdef _WIN32
    // glRasterPos2d( pts[0].x, pts[0].y );
 
    glRasterPos2i(0,0);
