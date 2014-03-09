@@ -78,13 +78,13 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
 } {
   {fltk::Window} {} {
-    label {CTL Browser}
+    label {CTL Browser} open
     xywh {444 307 395 440} horizontal hide resizable hotspot modal
   } {
-    {fltk::Group} {} {
+    {fltk::Group} {} {open
       xywh {10 25 375 405}
     } {
       {fltk::Browser} {} {
@@ -92,7 +92,8 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {s
         user_data {&ctl} user_data_type {std::string*}
         callback {int elem = o->value();
 if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
-*v = o->child(elem)->label();} open
+*v = o->child(elem)->label();
+} open selected
         xywh {0 0 375 365}
         extra_code {if ( !ctl.empty() )
 {
@@ -568,7 +569,8 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
@@ -1163,7 +1165,7 @@ The "No Baking" setting performs the color correction on the image directly inst
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths}
+            label {CTL Paths} open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
@@ -1171,12 +1173,12 @@ The "No Baking" setting performs the color correction on the image directly inst
               xywh {13 32 380 115}
             } {}
             {fltk::Browser} uiPrefsCTLScripts {
-              label {CTL scripts}
+              label {CTL scripts} open
               xywh {13 177 380 190}
             } {}
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)}
+            label {Default Output Device Transform (ODT)} open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1186,7 +1188,7 @@ The "No Baking" setting performs the color correction on the image directly inst
               {fltk::Group} uiODT_CTL {open
                 xywh {85 10 255 265} horizontal
               } {
-                {fltk::Group} {} {
+                {fltk::Group} {} {open
                   xywh {0 0 255 35}
                 } {
                   {fltk::Input} uiODT_CTL_transform {
@@ -1202,7 +1204,7 @@ v->refresh();}
                     label Pick
                     callback {std::string c = make_ctl_browser(uiODT_CTL_transform->text(), "ODT_");
 if (c.empty()) return;
-uiODT_CTL_transform->static_text(c.c_str());
+uiODT_CTL_transform->text(c.c_str());
 uiODT_CTL_transform->do_callback();}
                     xywh {200 5 55 25}
                   }
@@ -1344,7 +1346,7 @@ v->refresh();}
                   label Load
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {const char* c = open_icc_profile(uiODT_ICC_profile->text());
-uiODT_ICC_profile->static_text(c);
+uiODT_ICC_profile->text(c);
 uiODT_ICC_profile->do_callback();}
                   xywh {245 15 55 25}
                 }
@@ -1376,7 +1378,7 @@ v->refresh();}
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {std::string c = make_ctl_browser(uiCTL_8bits_load_transform->text(), "RT_");
 if (c.empty()) return;
-uiCTL_8bits_load_transform->static_text(c.c_str());
+uiCTL_8bits_load_transform->text(c.c_str());
 uiCTL_8bits_load_transform->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1398,7 +1400,7 @@ v->refresh();}
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RT_");
 if (c.empty()) return;
-uiCTL_16bits_load_transform->static_text(c.c_str());
+uiCTL_16bits_load_transform->text(c.c_str());
 uiCTL_16bits_load_transform->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1420,7 +1422,7 @@ v->refresh();}
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RT_");
 if (c.empty()) return;
-uiCTL_16bits_load_transform->static_text(c.c_str());
+uiCTL_16bits_load_transform->text(c.c_str());
 uiCTL_16bits_load_transform->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1442,7 +1444,7 @@ v->refresh();}
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {std::string c = make_ctl_browser(uiCTL_float_load_transform->text(), "RT_");
 if (c.empty()) return;
-uiCTL_float_load_transform->static_text(c.c_str());
+uiCTL_float_load_transform->text(c.c_str());
 uiCTL_float_load_transform->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1468,7 +1470,7 @@ v->refresh();}
                   label Load
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {const char* c = open_icc_profile(uiICC_8bits_profile->text());
-uiICC_8bits_profile->static_text(c);
+uiICC_8bits_profile->text(c);
 uiICC_8bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1489,7 +1491,7 @@ v->refresh();}
                   label Load
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {const char* c = open_icc_profile(uiICC_16bits_profile->text());
-uiICC_16bits_profile->static_text(c);
+uiICC_16bits_profile->text(c);
 uiICC_16bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1510,7 +1512,7 @@ v->refresh();}
                   label Load
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {const char* c = open_icc_profile(uiICC_32bits_profile->text());
-uiICC_32bits_profile->static_text(c);
+uiICC_32bits_profile->text(c);
 uiICC_32bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -1531,7 +1533,7 @@ v->refresh();}
                   label Load
                   user_data this user_data_type {mrv::PreferencesUI*}
                   callback {const char* c = open_icc_profile(uiICC_float_profile->text());
-uiICC_float_profile->static_text(c);
+uiICC_float_profile->text(c);
 uiICC_float_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
@@ -2094,13 +2096,12 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {open
-  } {
+  class PaintUI {} {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {435 335 155 395} horizontal resizable visible
+        xywh {438 358 155 395} horizontal hide resizable
       } {
         {fltk::Group} {} {open
           xywh {0 9 149 376}
@@ -2146,7 +2147,7 @@ uiText->value(0);}
             label T
             user_data m user_data_type {mrv::ViewerUI*}
             callback {o->value(1);
-v->uiView->text_mode();} selected
+v->uiView->text_mode();}
             tooltip {Text Tool}
             xywh {28 55 45 35} align 32 labelfont 8 labelsize 24
           }
@@ -2323,8 +2324,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public

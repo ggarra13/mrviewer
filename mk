@@ -27,7 +27,16 @@ export OS_32_BITS=1
 export OS_64_BITS=
 export LDFLAGS=
 export CXXFLAGS=
-arch=`uname -a`
+
+if [ $KERNEL == 'Windows' ]; then
+    arch=`wmic OS get OSArchitecture`
+    if [[ $arch == *64* ]]; then
+	CMAKE_NATIVE_ARCH=64
+	export OS_64_BITS=1
+    fi
+else
+    arch=`uname -a`
+fi
 
 if [[ $arch == *x86_64* ]]; then
     CMAKE_NATIVE_ARCH=64
@@ -42,6 +51,7 @@ fi
 
 
 export CMAKE_BUILD_ARCH=$CMAKE_NATIVE_ARCH
+
 OS=$KERNEL-$RELEASE
 
 

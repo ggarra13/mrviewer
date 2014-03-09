@@ -60,6 +60,9 @@ namespace mrv {
   //
   void PreferencesBrowser::update_ctl_tab( mrv::PreferencesUI* prefs )
   {
+
+     if ( !prefs ) return;
+
     fltk::Browser* ctlpaths = prefs->uiPrefsCTLModulePath;
     fltk::Browser* scripts  = prefs->uiPrefsCTLScripts;
     ctlpaths->clear();
@@ -113,14 +116,24 @@ namespace mrv {
 
   void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
   {
-    fltk::WizardGroup* uiWizard = prefs->uiWizard;
+     std::cerr << "prefs " << prefs << std::endl;
+     if ( prefs == NULL ) return;
 
+    fltk::WizardGroup* uiWizard = prefs->uiWizard;
+    if (uiWizard == NULL ) return;
 
     int wizard_index = absolute_item_index();
+
+    if ( wizard_index < 0 || wizard_index >= uiWizard->children() )
+       return;
+
     fltk::Widget* child = uiWizard->child( wizard_index );
     if ( !child ) return;
 
     std::string name = child->label();
+    
+    std::cerr << "SELECTED " << name << std::endl;
+
     if ( name == "CTL Paths" )
       {
 	update_ctl_tab( prefs );
