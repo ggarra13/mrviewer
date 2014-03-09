@@ -106,7 +106,6 @@ class GLTextShape : public GLPathShape
      void size( unsigned f ) { _fontsize = f; }
      unsigned size() const   { return _fontsize; }
 
-     void init();
      virtual void draw( float z );
      virtual std::string send() const;
 

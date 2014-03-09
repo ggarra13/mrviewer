@@ -62,7 +62,7 @@ FIND_LIBRARY( Half
 )
 
 
-SET(OPENEXR_LIBRARIES ${IlmImf} ${Imath} ${Iex} ${Half} )
+SET(OPENEXR_LIBRARIES ${IlmImf} ${Imath} ${Half} ${Iex}  )
 
 IF(WIN32)
   ADD_DEFINITIONS( "-DOPENEXR_DLL" )
