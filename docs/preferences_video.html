@@ -32,6 +32,11 @@ works.<br>
 
 Here you can change the default driver when the viewer starts.  By default, and for now, the only driver is OpenGL.<br>
 
+    </tr>
+
+  </tbody>
+</table>
+
       <br>
 
       <div class="menu">Stereo</div>
@@ -46,16 +51,11 @@ Here you can set the default behavior for stereo images.  Currently only Red-Cya
       <br>
 
 Here you can set the default behavior when compositing one foreground image or video over a background image or movie.  The traditional mode blends images with the following formula:<br>
-      FG*alpha + (1-alpha)*BG<br><br>
+      <b>FG*alpha + (1-alpha)*BG</b><br><br>
 The Premult option blends as if alpha is already premultiplied, like:<br>
-      FG + (1-alpha)*BG<br><br>
+      <b>FG + (1-alpha)*BG</b><br><br>
 
 where FG is the rgb channels of the foreground image, alpha is its alpha channel, and BG is the rgb channels of the background image.
-
-    </tr>
-
-  </tbody>
-</table>
 
 </body>
 </html>

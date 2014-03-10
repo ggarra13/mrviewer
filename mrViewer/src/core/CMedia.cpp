@@ -582,9 +582,17 @@ void CMedia::filename( const char* n )
 
   fs::path file = fs::path( name );
   file = fs::absolute( file );
-  std::string path = fs::canonical( file ).string();
 
-  _fileroot = strdup( path.c_str() );
+  if ( fs::exists( file ) )
+  {
+     std::string path = fs::canonical( file ).string();
+     
+     _fileroot = strdup( path.c_str() );
+  }
+  else
+  {
+     _fileroot = strdup( name.c_str() );
+  }
 
   if ( _filename ) 
     {
