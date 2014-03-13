@@ -146,7 +146,7 @@ bool aviImage::test_filename( const char* buf )
    if ( ctx )
       avformat_close_input( &ctx );
 
-   if ( error <= 0 ) return false;
+   if ( error < 0 ) return false;
 
    return true;
 }
@@ -161,6 +161,24 @@ bool aviImage::test_filename( const char* buf )
 */
 bool aviImage::test(const boost::uint8_t *data, unsigned len)
 {
+#if 1
+   uint8_t* d = new uint8_t[ len + AVPROBE_PADDING_SIZE ];
+   memset( d+len, 0, AVPROBE_PADDING_SIZE );
+   memcpy( d, data, len );
+
+   AVProbeData pd = { NULL, d, len };
+   int score_max = 0;
+   AVInputFormat* ok = av_probe_input_format2(&pd, 1, &score_max);
+
+   delete [] d;
+
+   // if ( score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
+   if ( score_max > 10 )
+      return true;
+
+   return false;
+
+#else
   if ( len < 12 ) return false;
 
   unsigned int magic = ntohl( *((unsigned int*)data) );
@@ -238,6 +256,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
     }
 
   return false;
+#endif
+
 }
 
 // Returns the current subtitle stream
@@ -1108,6 +1128,7 @@ int aviImage::video_stream_index() const
 // Analyse streams and set input values
 void aviImage::populate()
 {
+
   std::ostringstream msg;
   
   if ( _context == NULL ) return;
@@ -1248,7 +1269,6 @@ void aviImage::populate()
       return;  // no stream detected
     }
 
-
   _fps = _play_fps = calculate_fps( stream );
 
   
@@ -1342,12 +1362,17 @@ void aviImage::populate()
       // Clear the packet
       av_init_packet( &pkt );
 
+      int force_exit = 0;
       bool eof = false;
       short counter = 0;
       bool got_audio = ! has_audio();
       bool got_video = ! has_video();
       while( !got_video || !got_audio )
 	{
+           // Hack to exit loop if got_video or got_audio fails
+           force_exit += 1;
+           if ( force_exit == 10 ) break;
+
 	  int error = av_read_frame( _context, &pkt );
 	  if ( error < 0 )
 	  {
@@ -1362,17 +1387,19 @@ void aviImage::populate()
 	  
 	  if ( has_video() && pkt.stream_index == video_stream_index() )
 	  {
-	       
-	     DecodeStatus status = decode_image( _frameStart, pkt ); 
+             boost::int64_t pktframe = get_frame( get_video_stream(), pkt );
+	     DecodeStatus status = decode_image( pktframe, pkt ); 
 	     if ( status == kDecodeOK )
 	     {
 		got_video = true;
-                store_image( _frameStart, pkt.dts );
+                store_image( pktframe, pkt.dts );
 	     }
 	     else
 	     {
 		if ( !got_video )
+                {
 		   _frame_offset += 1;
+                }
 	     }
 	  }
 	  else
@@ -1523,7 +1550,6 @@ bool aviImage::initialize()
 	  _av_frame = av_frame_alloc();
 
 	  populate();
-
 	}
       else
 	{
