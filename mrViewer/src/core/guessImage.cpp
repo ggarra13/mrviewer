@@ -106,6 +106,7 @@ namespace mrv {
     bool is_seq = false;
     std::string tmp;
 
+
     const char* root = file;
     if ( mrv::fileroot( tmp, std::string(file) ) )
     {

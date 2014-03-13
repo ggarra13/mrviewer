@@ -61,6 +61,8 @@ size_t EDLGroup::add_media_track( size_t r )
 
    main()->uiEDLWindow->uiEDLChoiceOne->clear();
    main()->uiEDLWindow->uiEDLChoiceTwo->clear();
+   main()->uiEDLWindow->uiEDLChoiceOne->value(-1);
+   main()->uiEDLWindow->uiEDLChoiceTwo->value(-1);
 
    int reels = browser()->number_of_reels();
    for ( int i = 0; i < reels; ++i )
@@ -71,10 +73,13 @@ size_t EDLGroup::add_media_track( size_t r )
    }
 
    if ( e == 0 )
+   {
       main()->uiEDLWindow->uiEDLChoiceOne->value( r );
+   }
    else
+   {
       main()->uiEDLWindow->uiEDLChoiceTwo->value( r );
-      
+   }
 
    e = children() - 1;
    

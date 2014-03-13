@@ -84,7 +84,7 @@ void GLPathShape::draw( float z )
    // So compositing works properly
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-   glLineWidth( pen_size );
+   glLineWidth( pen_size * z );
    glEnable( GL_LINE_SMOOTH );
 
 
@@ -108,8 +108,8 @@ void GLPathShape::draw( float z )
 
    if ( pts.size() == 1 || a >= 0.95f )
    {
-      glPointSize( pen_size );
-      glEnable( GL_POINT_SMOOTH );
+      glPointSize( pen_size * z );
+      glDisable( GL_POINT_SMOOTH );
       glBegin( GL_POINTS );
 
       i = pts.begin();
@@ -149,7 +149,7 @@ void GLErasePathShape::draw( float z )
    glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
    glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
-   glLineWidth( pen_size );
+   glLineWidth( pen_size * z );
 
    glBegin( GL_LINE_STRIP );
 

@@ -31,8 +31,8 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {
-        label {EDL Window} selected
-        xywh {277 519 1000 230} visible
+        label {EDL Window} open
+        xywh {277 376 1000 230} hide resizable
       } {
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1000 230}
@@ -81,6 +81,7 @@ uiEDLChoiceOne->value( idx );}
               user_data main user_data_type {mrv::ViewerUI*}
               callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 fltk::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
+if ( c->value() < 0 ) return;
 
 b->reel( c->value() );
 b->save_reel();}
@@ -95,6 +96,7 @@ b->save_reel();}
 fltk::Choice* c = v->uiEDLWindow->uiEDLChoiceOne;
 
 int sel = c->value();
+if ( sel < 0 ) return;
 
 b->reel( sel );
 b->remove_reel();}
@@ -106,9 +108,15 @@ b->remove_reel();}
           {fltk::Choice} uiEDLChoiceOne {
             label {Track \#0}
             user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
-            callback {if ( v->media_track(0) )
+            callback {if ( o->value() >= 0 && v->media_track(0) )
+{
    v->media_track(0)->reel( o->value() );
-v->redraw();} open
+   v->redraw();
+}
+else
+{
+   o->value(-1);
+}} selected
             xywh {0 45 75 25} align 5
           } {}
           {fltk::Group} {} {open
@@ -127,6 +135,7 @@ uiEDLChoiceTwo->value( idx );}
               user_data main user_data_type {mrv::ViewerUI*}
               callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 fltk::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
+if ( c->value() < 0 ) return;
 
 b->reel( c->value() );
 b->save_reel();}
@@ -141,6 +150,7 @@ b->save_reel();}
 fltk::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
 
 int sel = c->value();
+if ( sel < 0 ) return;
 
 b->reel( sel );
 b->remove_reel();}
@@ -152,12 +162,17 @@ b->remove_reel();}
           {fltk::Choice} uiEDLChoiceTwo {
             label {Track \#1}
             user_data uiEDLGroup user_data_type {mrv::EDLGroup*}
-            callback {if (v->media_track(1) )
+            callback {if (o->value() >= 0 && v->media_track(1) )
 {
   v->media_track(1)->reel( o->value() );
   v->redraw();
-}} open
+}
+else
+{
+  o->value(-1);
+}}
             xywh {0 120 75 25} align 5
+            extra_code {o->value( -1 );}
           } {}
         }
       }

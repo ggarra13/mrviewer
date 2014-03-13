@@ -3730,9 +3730,10 @@ bool Flu_File_Chooser::stripPatterns( std::string s, FluStringVector* patterns )
 
 struct Sequence
 {
-  std::string root;
-  std::string number;
-  std::string ext;
+     std::string root;
+     std::string number;
+     std::string view;
+     std::string ext;
 };
 
 typedef std::vector< Sequence > Sequences;
@@ -3747,6 +3748,9 @@ struct SequenceSort
 
     if ( a.ext < b.ext ) return true;
     else if ( a.ext > b.ext ) return false;
+
+    if ( a.view < b.view ) return true;
+    else if ( a.view > b.view ) return false;
 
     size_t as = a.number.size();
     size_t bs = b.number.size();
@@ -4261,13 +4265,8 @@ void Flu_File_Chooser::cd( const char *path )
 
 		 bool is_sequence = false;
 
-		 std::string root;
-		 std::string frame;
-		 std::string ext;
-		 bool ok = mrv::split_sequence( root,
-						frame,
-						ext, 
-						name );
+		 std::string root, frame, view, ext;
+		 bool ok = mrv::split_sequence( root, frame, view, ext, name );
 
 		 if ( compact_files() )
 		 {
@@ -4278,13 +4277,12 @@ void Flu_File_Chooser::cd( const char *path )
 		    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 				    (int(*)(int)) tolower);
 		    if ( tmp == N_(".avi")  || tmp == N_(".mov")  || 
-			 tmp == N_(".divx") || tmp == N_("mp3")   ||
+			 tmp == N_(".divx") || tmp == N_(".mp3")  ||
 			 tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
 			 tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
 			 tmp == N_(".qt")   || tmp == N_(".wav")  ||
 			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
-			 tmp == N_(".wav")  ||
-			 tmp == N_(".icm") )
+			 tmp == N_(".wav")  || tmp == N_(".icm") )
 		       is_sequence = false;
 		 }
 		 else
@@ -4297,6 +4295,7 @@ void Flu_File_Chooser::cd( const char *path )
 		  {
 		    Sequence seq;
 		    seq.ext = ext;
+                    seq.view = view;
 		    seq.number = frame;
 		    seq.root = root;
 		    tmpseqs.push_back( seq );
@@ -4339,6 +4338,7 @@ void Flu_File_Chooser::cd( const char *path )
 	std::string root;
 	std::string first;
 	std::string number;
+        std::string view;
 	std::string ext;
 	int zeros = -1;
 
@@ -4356,9 +4356,9 @@ void Flu_File_Chooser::cd( const char *path )
 	      for ( ; *s == '0'; ++s )
 		++z;
 
-	      if ( (*i).root != root || (*i).ext != ext ||
-		   ( zeros != z && z != zeros-1 ) )
-		{
+	      if ( (*i).root != root || (*i).view != view ||
+                   (*i).ext != ext || ( zeros != z && z != zeros-1 ) )
+              {
 		  // New sequence
 		  if ( root != "" )
 		    {
@@ -4369,6 +4369,7 @@ void Flu_File_Chooser::cd( const char *path )
 			{
 			  seq.ext = number;
 			}
+                      seq.view = (*i).view;
 		      seqs.push_back( seq );
 		    }
 
@@ -4376,6 +4377,7 @@ void Flu_File_Chooser::cd( const char *path )
 		  root   = (*i).root;
 		  zeros  = z;
 		  number = first = (*i).number;
+                  view   = (*i).view;
 		  ext    = (*i).ext;
 
 		  seqname  = root;
@@ -4393,6 +4395,7 @@ void Flu_File_Chooser::cd( const char *path )
 #endif
 		      seqname += "d";
 		    }
+                  seqname += view;
 		  seqname += ext;
 		}
 	      else
@@ -4408,6 +4411,7 @@ void Flu_File_Chooser::cd( const char *path )
 	    Sequence seq;
 	    seq.root = seqname;
 	    seq.number = seq.ext = first;
+            seq.view = view;
 	    if ( first != number )
 	      {
 		seq.ext = number;
@@ -4430,7 +4434,9 @@ void Flu_File_Chooser::cd( const char *path )
 	  if ( entry->isize > 1 )
 	    {
 	      entry->filesize += "-";
+              entry->filesize += (*i).view;
 	      entry->filesize += (*i).ext;
+              entry->altname += (*i).view;
 	      entry->altname += "-";
 	      entry->altname += (*i).ext;
 	    }

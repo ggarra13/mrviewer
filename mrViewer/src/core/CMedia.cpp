@@ -407,7 +407,6 @@ mrv::image_type_ptr CMedia::anaglyph( bool left_view )
    }
    return hires();
 }
-				
 
 
 
@@ -420,7 +419,7 @@ void CMedia::display_window( const int xmin, const int ymin,
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
-			     const int xmax, const int ymax )
+                          const int xmax, const int ymax )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
@@ -501,7 +500,9 @@ void CMedia::sequence( const char* fileroot,
 		       const boost::int64_t start,
 		       const boost::int64_t end )
 {
+
   SCOPED_LOCK( _mutex );
+
 
   assert( fileroot != NULL );
   assert( start < end );
@@ -510,6 +511,7 @@ void CMedia::sequence( const char* fileroot,
        start == _frame_start && end == _frame_end )
     return;
 
+
   _fileroot = strdup( fileroot );
 
   std::string f = _fileroot;
@@ -517,7 +519,6 @@ void CMedia::sequence( const char* fileroot,
   {
      _is_stereo = true;
   }
-
 
   if ( _filename ) {
     free( _filename );
@@ -541,12 +542,12 @@ void CMedia::sequence( const char* fileroot,
 
   // load all pictures in new background thread 
   std::string file = fileroot;
-  std::string root, frame, ext;
-  bool ok = split_sequence( root, frame, ext, file );
+  std::string root, frame, view, ext;
+  bool ok = split_sequence( root, frame, view, ext, file );
 
   // if ( ext != "exr" )
   // {
-  //    PlaybackData* data = new PlaybackData( NULL, this );
+  //    PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
   //    _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
   // 							 data ) ) );
   // }
@@ -580,24 +581,24 @@ void CMedia::filename( const char* n )
   if ( name.substr(0, 6) == "Slate " )
       name = name.substr(6, name.size() );
 
+
   fs::path file = fs::path( name );
   file = fs::absolute( file );
 
   if ( fs::exists( file ) )
   {
      std::string path = fs::canonical( file ).string();
-     
      _fileroot = strdup( path.c_str() );
   }
   else
   {
-     _fileroot = strdup( name.c_str() );
+     _fileroot = strdup( file.c_str() );
   }
 
   if ( _filename ) 
-    {
-      free( _filename );
-      _filename = NULL;
+  {
+     free( _filename );
+     _filename = NULL;
     }
 
   _is_sequence = false;
@@ -1249,8 +1250,8 @@ void CMedia::stop()
  */
 std::string CMedia::name() const
 {
-  fs::path file = fs::path( fileroot() );
-  return file.leaf().string();
+   fs::path file = fs::path( fileroot() );
+   return file.leaf().string();
 }
 
 

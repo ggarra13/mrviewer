@@ -45,6 +45,7 @@ namespace fs = boost::filesystem;
 #include "mrvI8N.h"
 #include "mrvOS.h"
 
+typedef std::vector< std::string > StringList;
 
 namespace mrv
 {
@@ -83,6 +84,16 @@ namespace mrv
     return range_found;
   }
 
+
+void split(const std::string &s, char delim, StringList& elems) {
+    std::stringstream ss(s);
+    std::string item;
+    while (std::getline(ss, item, delim)) {
+        elems.push_back(item);
+    }
+}
+
+
   /** 
    * Given a filename of a possible sequence, split it into
    * root name, frame string, and extension
@@ -97,18 +108,56 @@ namespace mrv
   bool split_sequence(
 		      std::string& root,
 		      std::string& frame,
+                      std::string& view,
 		      std::string& ext,
 		      const std::string& file
 		      )
   {
+     std::string f = file;
+
+
+    const char* e = f.c_str();
+    const char* i = e + f.size() - 1;
+    for ( ; i >= e; --i )
+      {
+	if ( *i == '/' || *i == '\\' ) break;
+      }
+
+    int len = i - e + 1;
+    f = f.substr( len, f.size() );
+
+    StringList periods;
+    split(f, '.', periods);
+
+
+    if ( periods.size() == 4 )
+    {
+       root = periods[0];
+       frame = periods[1];
+       view = periods[2];
+       ext = periods[3];
+
+       if ( view == "l" || view == "r" ||
+            view == "L" || view == "R" ||
+            view == "left" || view == "right" ||
+            view == "Left" || view == "Right" )
+       {
+          view = ".%V";
+          f = file.substr( 0, len ) + root + "." + frame + "." + ext;
+       }
+    }
+    else
+    {
+       f = file;
+    }
 
     int idx[2];
     int count = 0;  // number of periods found (from end)
 
     int minus = 0; // number of minus signs found
 
-    const char* e = file.c_str();
-    const char* i = e + file.size() - 1;
+    e = f.c_str();
+    i = e + f.size() - 1;
     for ( ; i >= e; --i )
       {
 	if ( *i == '/' || *i == '\\' ) break;
@@ -131,14 +180,16 @@ namespace mrv
 
     if ( count == 2 && minus < 2 )
       {
-	root  = file.substr( 0, idx[1]+1 );
-	frame = file.substr( idx[1]+1, idx[0]-idx[1]-1 );
-	ext   = file.substr( idx[0], file.size()-idx[0] );
+
+	root  = f.substr( 0, idx[1]+1 );
+	frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
+	ext   = f.substr( idx[0], file.size()-idx[0] );
+
 
 	std::string tmp = ext;
 	std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 			(int(*)(int)) tolower);
-	
+
 	// If extension is one of a movie/audio file, return false
 	if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
 	     tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
@@ -158,8 +209,8 @@ namespace mrv
       }
     else
       {
-	root = file.substr( 0, idx[0]+1 );
-	ext  = file.substr( idx[0]+1, file.size() );
+	root = f.substr( 0, idx[0]+1 );
+	ext  = f.substr( idx[0]+1, file.size() );
 
 
 	bool ok = is_valid_frame_spec( ext );
@@ -217,8 +268,14 @@ namespace mrv
     mrv::split_string( tokens, fileroot, "." );
     if ( tokens.size() > 2 )
       {
+         int idx = 2;
+         if ( tokens[2] == "l" || tokens[2] == "L" ||
+              tokens[2] == "r" || tokens[2] == "R" ||
+              tokens[2] == "left" || tokens[2] == "Left" ||
+              tokens[2] == "right" || tokens[2] == "Right" )
+            idx = 3;
 
-	const std::string& range = tokens[ tokens.size()-2 ];
+	const std::string& range = tokens[ tokens.size()-idx ];
 
 	if ( mrv::matches_chars(range.c_str(), "0123456789-") )
 	  {
@@ -256,15 +313,13 @@ namespace mrv
 
 
 
-    std::string root, frame, ext;
-    if ( ! split_sequence( root, frame, ext, file.leaf().string() ) )
+    std::string root, frame, view, ext;
+    if ( ! split_sequence( root, frame, view, ext, file.leaf().string() ) )
     {
       return false; // NOT a recognized sequence
     }
 
-    std::string croot;
-    std::string cext;
-    std::string cframe;
+    std::string croot, cview, cframe, cext;
     frameStart = mrv::kMaxFrame;
     unsigned pad = 1;
 
@@ -273,8 +328,10 @@ namespace mrv
       {
 	if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
 
-	split_sequence( croot, cframe, cext, (*i).path().leaf().string() );
-	if ( cext != ext || croot != root ) continue;  // not this sequence
+	split_sequence( croot, cframe, cview, cext,
+                        (*i).path().leaf().string() );
+	if ( cext != ext || croot != root || cview != view ) 
+           continue;  // not this sequence
 
 
 	if ( cframe[0] == '0' ) pad = (unsigned) cframe.size();
@@ -287,10 +344,13 @@ namespace mrv
 
 
     sprintf( buf, "%%0%d" PRId64, pad );
-    split_sequence( root, frame, ext, fileroot );
+
+    split_sequence( root, frame, view, ext, fileroot );
+
 
     fileroot = root;
     fileroot += buf;
+    fileroot += view;
     fileroot += ext;
 
     return true;
@@ -373,8 +433,8 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
 
   bool is_valid_sequence( const char* filename )
   {
-    std::string root, frame, ext;
-    return split_sequence( root, frame, ext, filename );
+     std::string root, frame, view, ext;
+     return split_sequence( root, frame, view, ext, filename );
   }
 
   int  padded_digits( const std::string& frame )
@@ -389,27 +449,30 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
 
   bool fileroot( std::string& fileroot, const std::string& file )
   {
-    std::string root, frame, ext;
-    fs::path path = fs::path( file );
+     std::string root, frame, view, ext;
+     fs::path path = fs::path( file );
 
 
-    bool sequence = split_sequence( root, frame, ext, file );
-    if ( !sequence ) 
-    {
-      fileroot = file;
-      return false;
-    }
+     bool sequence = split_sequence( root, frame, view, ext, file );
+     if ( !sequence ) 
+     {
+        fileroot = file;
+        return false;
+     }
+
 
     int pad = padded_digits(frame);
 
     char full[1024];
     if ( pad == 0 )
     {
-      sprintf( full, "%s%%" PRId64 "%s", root.c_str(), ext.c_str() );
+       sprintf( full, "%s%%" PRId64 "%s%s", root.c_str(), view.c_str(),
+                ext.c_str() );
     }
     else
     {
-      sprintf( full, "%s%%0%d" PRId64 "%s", root.c_str(), pad, ext.c_str() );
+       sprintf( full, "%s%%0%d" PRId64 "%s%s", root.c_str(), pad, view.c_str(),
+               ext.c_str() );
     }
 
     fileroot = full;
