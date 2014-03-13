@@ -536,7 +536,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   /** 
    * Create a new image browser's fltk::Item (widget line in browser) 
    * 
-   * @param img image to create new fltk::Item for
+   * @param m media to create new fltk::Item for
    * 
    * @return fltk::Item*
    */
@@ -1196,7 +1196,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   
     view()->stop();
 
-    if ( idx < 0 || idx >= reel->images.size() ) return;
+    if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
 
     fltk::Browser::remove( idx );
 
@@ -1205,7 +1205,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     view()->fg_reel( _reel );
 
-    if ( idx < reel->images.size() )
+    if ( unsigned(idx) < reel->images.size() )
        view()->foreground( *(i + idx) );
     else
        view()->foreground( mrv::media() );
@@ -1334,13 +1334,16 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     clear();
 
     mrv::Reel reel = current_reel();
-    if ( !reel ) return;
+    if ( !reel ) {
+       change_image( -1 );
+       return;
+    }
 
     relayout();
 
     if ( reel->images.empty() )
       {
-	value(-1);
+	change_image( -1 );
       }
     else
       {
@@ -1415,7 +1418,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	}
 
 	mrv::media m;
-	if ( sel < reel->images.size() ) m = reel->images[sel];
+	if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
 
 
 	if ( m != om && m != NULL )
@@ -1508,8 +1511,9 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) uiMain->uiFrame->value( start );
 
+
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
-    if ( img == NULL ) 
+    if ( img == NULL )
     {
        LOG_ERROR("Unknown image media");
        return mrv::media();
@@ -2250,8 +2254,8 @@ void ImageBrowser::load( const stringArray& files,
     for ( ; i != e; ++i )
     {
        std::string file = *i;
-       std::string root, frame, ext;
-       bool ok = mrv::split_sequence( root, frame, ext, file );
+       std::string root, frame, view, ext;
+       bool ok = mrv::split_sequence( root, frame, view, ext, file );
 
        if ( ok && root != "" && frame != "" )
        {
@@ -2262,6 +2266,7 @@ void ImageBrowser::load( const stringArray& files,
 	     else break;
 	  }
     	  file += '@';
+          file += view;
     	  file += ext;
        }
 
@@ -2429,8 +2434,8 @@ void ImageBrowser::load( const stringArray& files,
      uiMain->uiFrame->value( double(tframe) );
      uiMain->uiFrame->redraw();
 
-    timeline()->value( tframe );
-    timeline()->redraw();
+     timeline()->value( double(tframe) );
+     timeline()->redraw();
 
     ImageView::Playback playback = view()->playback();
 

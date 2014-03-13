@@ -35,7 +35,6 @@ extern "C" {
 #include "libavutil/time.h"
 #include "libavutil/opt.h"
 #include "libswresample/swresample.h"
-
 }
 
 #include "aviImage.h"
@@ -147,7 +146,7 @@ bool aviImage::test_filename( const char* buf )
    if ( ctx )
       avformat_close_input( &ctx );
 
-   if ( error < 0 ) return false;
+   if ( error <= 0 ) return false;
 
    return true;
 }

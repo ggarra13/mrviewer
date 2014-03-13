@@ -1072,10 +1072,11 @@ void ImageView::timeout()
    mrv::Timeline* timeline = this->timeline();
    mrv::Reel reel = browser()->current_reel();
    mrv::Reel bgreel = browser()->reel_at( _bg_reel );
+
    mrv::media fg = foreground();
 
    if ( timeline && timeline->edl() )
-    {
+   {
       int64_t frame = boost::int64_t( timeline->value() );
 
       char bufs[256];  bufs[0] = 0;
@@ -1118,21 +1119,19 @@ void ImageView::timeout()
 		  fg->image()->name().c_str() );
 	 uiMain->uiMain->copy_label( bufs );
       }
+   }
 
-    }
+   load_list();
 
-  load_list();
+   static double kMinDelay = 0.0001666;
 
-
-  static double kMinDelay = 0.0001666;
-
-  double delay = 0.005;
-  if ( fg )
-    {
+   double delay = 0.005;
+   if ( fg )
+   {
       CMedia* img = fg->image();
       delay = 1.0 / (img->play_fps() * 2.0);
       if ( delay < kMinDelay ) delay = kMinDelay;
-    }
+   }
 
   repeat_timeout( float(delay) );
 
@@ -1140,7 +1139,7 @@ void ImageView::timeout()
   {
      
      int64_t frame;
-     if ( !timeline->edl() )
+     if ( !timeline->edl() && fg )
      {
 	CMedia* img = fg->image();
 

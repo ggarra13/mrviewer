@@ -30,14 +30,17 @@ namespace mrv
   struct LoadInfo
   {
     std::string filename;
+    std::string right_filename;
     std::string audio;
     boost::int64_t start;
     boost::int64_t end;
     bool    reel;
 
-    LoadInfo( const std::string& fileroot, 
-	      const boost::int64_t sf, const boost::int64_t ef ) :
+       LoadInfo( const std::string& fileroot,
+                 const boost::int64_t sf, const boost::int64_t ef, 
+                 const std::string& right = "" ) :
       filename( fileroot ),
+      right_filename( right ),
       start( sf ),
       end( ef ),
       reel( false )
@@ -54,6 +57,7 @@ namespace mrv
 
     LoadInfo( const LoadInfo& b ) :
       filename( b.filename ),
+      right_filename( b.right_filename ),
       audio( b.audio ),
       start( b.start ),
       end( b.end ),
@@ -82,6 +86,7 @@ namespace mrv
    * 
    * @param root    root name of file sequence
    * @param frame   frame part of file name
+   * @param view    left or right for stereo images.  Empty if not stereo.
    * @param ext     extension of file sequence
    * @param file    original filename, potentially part of a sequence.
    * 
@@ -89,6 +94,7 @@ namespace mrv
    */
   bool split_sequence(
 		      std::string& root, std::string& frame,
+                      std::string& view,
 		      std::string& ext, const std::string& file
 		      );
 
