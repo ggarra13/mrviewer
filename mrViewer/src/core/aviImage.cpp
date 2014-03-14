@@ -1371,7 +1371,7 @@ void aviImage::populate()
 	{
            // Hack to exit loop if got_video or got_audio fails
            force_exit += 1;
-           if ( force_exit == 10 ) break;
+           if ( force_exit == 50 ) break;
 
 	  int error = av_read_frame( _context, &pkt );
 	  if ( error < 0 )
@@ -1390,6 +1390,7 @@ void aviImage::populate()
 	     DecodeStatus status = decode_image( _frameStart, pkt ); 
 	     if ( status == kDecodeOK )
 	     {
+                std::cerr << "got video " << pkt.dts << std::endl;
 		got_video = true;
                 store_image( _frameStart, pkt.dts );
 	     }

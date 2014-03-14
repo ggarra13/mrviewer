@@ -116,7 +116,6 @@ namespace mrv {
 
   void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
   {
-     std::cerr << "prefs " << prefs << std::endl;
      if ( prefs == NULL ) return;
 
     fltk::WizardGroup* uiWizard = prefs->uiWizard;
@@ -131,8 +130,6 @@ namespace mrv {
     if ( !child ) return;
 
     std::string name = child->label();
-    
-    std::cerr << "SELECTED " << name << std::endl;
 
     if ( name == "CTL Paths" )
       {
