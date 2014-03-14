@@ -509,19 +509,28 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     _reel_display->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
 
+    fltk::Choice* c = uiMain->uiEDLWindow->uiEDLChoiceOne;
 
-    if ( uiMain->uiEDLWindow->uiEDLChoiceOne->value() == _reel )
+    int sel = c->value();
+
+    if ( sel == _reel )
     {
        edl_group()->remove_media_track( 0 );
     }
+    c->remove( _reel );
+    c->value( sel );
+    c->redraw();
 
-    if ( uiMain->uiEDLWindow->uiEDLChoiceTwo->value() == _reel )
+
+    c = uiMain->uiEDLWindow->uiEDLChoiceTwo;
+    sel = c->value();
+    if ( sel == _reel )
     {
        edl_group()->remove_media_track( 1 );
     }
-
-    uiMain->uiEDLWindow->uiEDLChoiceOne->remove( _reel );
-    uiMain->uiEDLWindow->uiEDLChoiceTwo->remove( _reel );
+    c->remove( _reel );
+    c->value( sel );
+    c->redraw();
 
     if ( _reels.empty() ) new_reel();
     if ( _reel >= (unsigned int)_reels.size() ) 

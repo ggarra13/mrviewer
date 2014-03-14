@@ -343,7 +343,7 @@ namespace mrv {
   }
 
 
-  void hdrImage::colr2color( PixelType& col, COLR clr )
+  void hdrImage::colr2color( Pixel& col, COLR clr )
   {
     double  f;
     
@@ -393,7 +393,7 @@ namespace mrv {
 	  ys = -1;
 	}
 
-      PixelType* pixels = (PixelType*)_hires->data().get();
+      Pixel* pixels = (Pixel*)_hires->data().get();
       for ( ; y != ylast; y += ys )
 	{
 	  read_colors(scanline, w, f);
@@ -410,7 +410,7 @@ namespace mrv {
 
 	  for ( ; x != xlast; x += xs )
 	    {
-	      PixelType& p = pixels[ y * w + x];
+	      Pixel& p = pixels[ y * w + x];
 	      colr2color( p, scanline[x] );
 	    }
 

@@ -27,7 +27,6 @@
 
 #include "ImathFun.h"
 
-// CMedia::PixelType rgb::to_hsv( const CMedia::PixelType& c );
 
 namespace mrv
 {
@@ -192,7 +191,7 @@ namespace mrv
       {
 	for ( unsigned x = xmin; x < xmax; x += stepX )
 	  {
-	    const CMedia::PixelType& p = pic->pixel( x, y );
+	    const CMedia::Pixel& p = pic->pixel( x, y );
 	    rgb[0] = (uchar)Imath::clamp(p.r * 255.0f, 0.f, 255.f);
 	    rgb[1] = (uchar)Imath::clamp(p.g * 255.0f, 0.f, 255.f);
 	    rgb[2] = (uchar)Imath::clamp(p.b * 255.0f, 0.f, 255.f);

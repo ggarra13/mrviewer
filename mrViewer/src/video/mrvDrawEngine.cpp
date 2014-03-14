@@ -48,7 +48,7 @@
 #include "mrViewer.h"
 #include "mrvDrawEngine.h"
 #include "mrvThread.h"
-
+#include "core/mrvSSE.h"
 
 using namespace Imath;
 using namespace std;
@@ -224,8 +224,8 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 
       int bw = xh - xl;
       int bh = yh - yl;
-      CMedia::PixelType* icc = new CMedia::PixelType[ bw * bh ];
-      CMedia::PixelType* p   = icc;
+      CMedia::Pixel* icc = new CMedia::Pixel[ bw * bh ];
+      CMedia::Pixel* p   = icc;
       for ( y = yl; y < yh; ++y )
 	{
 	  for ( x = xl; x < xh; ++x, ++p )
@@ -286,7 +286,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p.r = p.g = p.b = RGBAfunc( p.r );
 	      result->pixel( x, y, p );
 	    }
@@ -297,7 +297,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p.r = p.g = p.b = RGBAfunc( p.g );
 	      result->pixel( x, y, p );
 	    }
@@ -308,7 +308,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p.r = p.g = p.b = RGBAfunc( p.b );
 	      result->pixel( x, y, p );
 	    }
@@ -322,7 +322,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p = RGBAfunc( p );
 	      if ( d->view->show_background() )
 		{
@@ -342,7 +342,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p = RGBAfunc( p );
 	      p.r = p.a * 0.5f + p.r * 0.5f;
 	      result->pixel( x, y, p );
@@ -354,7 +354,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p = RGBAfunc( p );
 	      p.r = p.g = p.b = (p.r + p.g + p.b)/3.0f;
 	      result->pixel( x, y, p );
@@ -367,7 +367,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	{
 	  for ( x = xl; x < xh; ++x )
 	    {
-	      CMedia::PixelType p = orig->pixel(x,y);
+	      CMedia::Pixel p = orig->pixel(x,y);
 	      p = RGBAfunc( p );
 	      result->pixel( x, y, p );
 	    }
@@ -403,7 +403,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
       {
 	for ( unsigned int x = xl; x < xh; ++x )
 	  {
-	    const CMedia::PixelType& p = frame->pixel( x, y );
+	    const CMedia::Pixel& p = frame->pixel( x, y );
 
 	    if ( p.r < d->pMin ) d->pMin = p.r;
 	    if ( p.g < d->pMin ) d->pMin = p.g;
@@ -499,7 +499,7 @@ namespace mrv {
 	  {
 	    for ( x = 0; x < dw; ++x )
 	      {
-		const CMedia::PixelType& rp = pic->pixel(x,y);
+		const CMedia::Pixel& rp = pic->pixel(x,y);
 
 		if ( isnan( rp.a ) )
 		  continue;
@@ -543,7 +543,7 @@ namespace mrv {
 	  {
 	    for ( x = 0; x < dw; ++x )
 	      {
-		CMedia::PixelType rp = pic->pixel(x, y);
+		CMedia::Pixel rp = pic->pixel(x, y);
 		if ( isnan( rp.a ) )
 		  {
 		    p->pixel( x, y, rp );

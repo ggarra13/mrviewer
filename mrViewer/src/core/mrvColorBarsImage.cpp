@@ -77,23 +77,23 @@ namespace mrv {
 
     float hi    = 0.745098f;
     float lo    = 0.0f;
-    static PixelType bars[] = {
-      PixelType( hi, hi, hi ), // gray
-      PixelType( hi, hi, lo ), // yellow
-      PixelType( lo, hi, hi ), // cyan
-      PixelType( lo, hi, lo ), // green
-      PixelType( hi, lo, hi ), // magenta
-      PixelType( hi, lo, lo ), // red
-      PixelType( lo, lo, hi ), // blue
+    static Pixel bars[] = {
+      Pixel( hi, hi, hi ), // gray
+      Pixel( hi, hi, lo ), // yellow
+      Pixel( lo, hi, hi ), // cyan
+      Pixel( lo, hi, lo ), // green
+      Pixel( hi, lo, hi ), // magenta
+      Pixel( hi, lo, lo ), // red
+      Pixel( lo, lo, hi ), // blue
     };
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     // Draw top bars
     for ( unsigned int y = 0; y < bar_h; ++y )
       {
 	unsigned int offset = X + y * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 7; ++b )
 	  {
 	    for ( unsigned int c = 0; c < bar_w; ++c, ++p )
@@ -119,22 +119,22 @@ namespace mrv {
 
 
     // bottom bars
-    static PixelType bbars[] = {
-      PixelType( 0.0f, 0.12941f, 0.29804f ), // blue-cyanish
-      PixelType( 1.0f, 1.0f, 1.0f ),         // white
-      PixelType( 0.19608f, 0.0f, 0.41569f ), // blue-reddish
-      PixelType( black, black, black ),      // black
-      PixelType( superblack, superblack, superblack ), // superblack
-      PixelType( black, black, black ),      // black
+    static Pixel bbars[] = {
+      Pixel( 0.0f, 0.12941f, 0.29804f ), // blue-cyanish
+      Pixel( 1.0f, 1.0f, 1.0f ),         // white
+      Pixel( 0.19608f, 0.0f, 0.41569f ), // blue-reddish
+      Pixel( black, black, black ),      // black
+      Pixel( superblack, superblack, superblack ), // superblack
+      Pixel( black, black, black ),      // black
     };
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     // Draw bottom bars
     for ( unsigned int y = 0; y < bbar_h; ++y )
       {
 	unsigned int offset = X + ( Y + y ) * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 6; ++b )
 	  {
 	    for ( unsigned int c = 0; c < bbar_w; ++c, ++p )
@@ -145,15 +145,15 @@ namespace mrv {
       }
 
     // Draw super-black rectangle
-    static PixelType sbbars[] = {
-      PixelType( black, black, black ), // black
-      PixelType( 0.11373f, 0.11373f, 0.11373f ), // +1 black
+    static Pixel sbbars[] = {
+      Pixel( black, black, black ), // black
+      Pixel( 0.11373f, 0.11373f, 0.11373f ), // +1 black
     };
 
     for ( unsigned int y = 0; y < bbar_h; ++y )
       {
 	unsigned int offset = X + ( Y + y ) * WW + 4 * bbar_w + 40;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 2; ++b )
 	  {
 	    for ( unsigned int c = 0; c < 40; ++c, ++p )
@@ -182,23 +182,23 @@ namespace mrv {
     unsigned int bar_h = unsigned(H * pct + 0.5f);
 
     // middle bars
-    static PixelType mbars[] = {
-      PixelType( lo, lo, hi ), // blue
-      PixelType( black, black, black ), // black
-      PixelType( hi, lo, hi ), // magenta
-      PixelType( black, black, black ), // black
-      PixelType( lo, hi, hi ), // cyan
-      PixelType( black, black, black ), // black
-      PixelType( hi, hi, hi ), // gray
+    static Pixel mbars[] = {
+      Pixel( lo, lo, hi ), // blue
+      Pixel( black, black, black ), // black
+      Pixel( hi, lo, hi ), // magenta
+      Pixel( black, black, black ), // black
+      Pixel( lo, hi, hi ), // cyan
+      Pixel( black, black, black ), // black
+      Pixel( hi, hi, hi ), // gray
     };
 
     // Draw middle bars
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     unsigned int mbar_h = unsigned( H / 12 );
     for ( unsigned int y = 0; y < mbar_h; ++y )
       {
 	unsigned int offset = X + (bar_h + y) * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 7; ++b )
 	  {
 	    for ( unsigned int c = 0; c < bar_w; ++c, ++p )
@@ -228,16 +228,16 @@ namespace mrv {
     float midgray = 0.41176f;
     float drkgray = 0.16863f;
 
-    static PixelType gbars[] = {
-      PixelType( midgray, midgray, midgray ), // midgray
+    static Pixel gbars[] = {
+      Pixel( midgray, midgray, midgray ), // midgray
     };
 
     // Draw mid gray rectangles
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for ( unsigned int y = 0; y < bar_h; ++y )
       {
 	unsigned int offset = y * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for ( unsigned int x = 0; x < X; ++x, ++p )
 	  {
 	    *p = gbars[0];
@@ -257,18 +257,18 @@ namespace mrv {
 
 
     // middle bars
-    static PixelType mbars1[] = {
-      PixelType( 0, 1.0f, 1.0f ), // cyan
-      PixelType( black, 0.14648f, 0.31180f ),      // dark blue
-      PixelType( 0.75686f, 0.75686f, 0.75686f ),         // white
-      PixelType( 0, 0, 1.0f ),      // blue
+    static Pixel mbars1[] = {
+      Pixel( 0, 1.0f, 1.0f ), // cyan
+      Pixel( black, 0.14648f, 0.31180f ),      // dark blue
+      Pixel( 0.75686f, 0.75686f, 0.75686f ),         // white
+      Pixel( 0, 0, 1.0f ),      // blue
     };
 
-    static PixelType mbars2[] = {
-      PixelType( 1.0f, 1.0f, 0.0f ), // yellow
-      PixelType( 0.21184f, black, 0.42714f ),      // dark violet
-      PixelType( black, black, black ),      // black
-      PixelType( 1.0f, 0.0f, 0.0f ),      // red
+    static Pixel mbars2[] = {
+      Pixel( 1.0f, 1.0f, 0.0f ), // yellow
+      Pixel( 0.21184f, black, 0.42714f ),      // dark violet
+      Pixel( black, black, black ),      // black
+      Pixel( 1.0f, 0.0f, 0.0f ),      // red
     };
 
     // middle bars
@@ -285,7 +285,7 @@ namespace mrv {
     for ( unsigned int y = 0; y < mbar_h; ++y )
       {
 	unsigned int offset = (Y + y) * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 4; ++b )
 	  {
 	    for ( unsigned int c = 0; c < mbars_w[b]; ++c, ++p )
@@ -299,7 +299,7 @@ namespace mrv {
     for ( unsigned int y = 0; y < mbar_h; ++y )
       {
 	unsigned int offset = (Y + y) * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 4; ++b )
 	  {
 	    for ( unsigned int c = 0; c < mbars_w[b]; ++c, ++p )
@@ -312,18 +312,18 @@ namespace mrv {
     ////////////////
     // bottom bars
     ////////////////
-    static PixelType bbars[] = {
-      PixelType( drkgray, drkgray, drkgray ), // drkgray
-      PixelType( black, black, black ),      // black
-      PixelType( 1.0f, 1.0f, 1.0f ),         // white
-      PixelType( black, black, black ),      // black
-      PixelType( superblack, superblack, superblack ), // superblack
-      PixelType( black, black, black ),      // black
-      PixelType( 0.03922f, 0.03922f, 0.03922f ), // light black
-      PixelType( black, black, black ),      // black
-      PixelType( 0.0598f, 0.0598f, 0.0598f ), // super light black
-      PixelType( black, black, black ),       // black
-      PixelType( drkgray, drkgray, drkgray ), // drkgray
+    static Pixel bbars[] = {
+      Pixel( drkgray, drkgray, drkgray ), // drkgray
+      Pixel( black, black, black ),      // black
+      Pixel( 1.0f, 1.0f, 1.0f ),         // white
+      Pixel( black, black, black ),      // black
+      Pixel( superblack, superblack, superblack ), // superblack
+      Pixel( black, black, black ),      // black
+      Pixel( 0.03922f, 0.03922f, 0.03922f ), // light black
+      Pixel( black, black, black ),      // black
+      Pixel( 0.0598f, 0.0598f, 0.0598f ), // super light black
+      Pixel( black, black, black ),       // black
+      Pixel( drkgray, drkgray, drkgray ), // drkgray
     };
 
     static unsigned bbar_w[] = {
@@ -346,7 +346,7 @@ namespace mrv {
     for ( unsigned int y = 0; y < bbar_h; ++y )
       {
 	unsigned int offset = (Y + y) * WW;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 	for (unsigned int b = 0; b < 11; ++b )
 	  {
 	    for ( unsigned int c = 0; c < bbar_w[b]; ++c, ++p )

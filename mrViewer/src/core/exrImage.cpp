@@ -579,7 +579,7 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
    {
       for ( unsigned x = 0; x < w; ++x )
       {
-	 CMedia::PixelType p = _hires->pixel( x, y );
+	 CMedia::Pixel p = _hires->pixel( x, y );
 	 rgba->pixel( x, y, p );
       }
    }
@@ -1219,8 +1219,8 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
     hdr.compression() = comp;
 
-    size_t xs = sizeof(CMedia::PixelType);
-    size_t ys = sizeof(CMedia::PixelType) * dw;
+    size_t xs = sizeof(CMedia::Pixel);
+    size_t ys = sizeof(CMedia::Pixel) * dw;
 
     hdr.channels().insert( N_("R"), Channel( Imf::FLOAT, 1, 1 ) );
     hdr.channels().insert( N_("G"), Channel( Imf::FLOAT, 1, 1 ) );
@@ -1253,7 +1253,7 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
     }
     if (!pic) return false;
 
-    CMedia::PixelType* base = new CMedia::PixelType[dw*dh];
+    CMedia::Pixel* base = new CMedia::Pixel[dw*dh];
     if ( pic->pixel_type() == mrv::image_type::kFloat )
     {
        memcpy( base, pic->data().get(), 

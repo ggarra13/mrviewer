@@ -42,7 +42,7 @@ namespace mrv {
     int read_colors(COLR* scanline, int len, FILE* f);
     int oldreadcolrs(COLR* scanline, int len, FILE* fp);
 
-    void colr2color( PixelType& col, COLR clr );
+    void colr2color( Pixel& col, COLR clr );
 
   protected:
 

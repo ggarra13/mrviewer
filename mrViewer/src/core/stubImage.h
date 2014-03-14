@@ -75,7 +75,7 @@ namespace mrv {
     bool set_float_pixel( const unsigned int fb, 
 			  const unsigned int x,
 			  const unsigned int y, 
-			  const PixelType& c );
+			  const Pixel& c );
 
 
     void start_timer();

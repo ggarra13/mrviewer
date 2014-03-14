@@ -18,7 +18,6 @@
 
 #ifdef MR_SSE
 
-
 #ifdef LINUX
 #  include "ext/fvec.h" // also contains xmmintrin.h
 #else

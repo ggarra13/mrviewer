@@ -50,8 +50,8 @@ namespace mrv {
     void gamma_box( unsigned int x, unsigned int y, 
 		    unsigned int w, unsigned int h );
 
-    PixelType bg;
-    PixelType fg;
+    Pixel bg;
+    Pixel fg;
     Type type_;
   };
 

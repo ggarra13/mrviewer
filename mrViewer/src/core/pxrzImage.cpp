@@ -150,7 +150,7 @@ namespace mrv {
       }
 
     // Copy pixel values
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for (int y = 0, i = 0; y < dh; ++y)
       {
 	int offset = y * dw;
