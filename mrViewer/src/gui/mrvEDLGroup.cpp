@@ -59,26 +59,32 @@ size_t EDLGroup::add_media_track( size_t r )
 
    this->add( o );
 
-   main()->uiEDLWindow->uiEDLChoiceOne->clear();
-   main()->uiEDLWindow->uiEDLChoiceTwo->clear();
-   main()->uiEDLWindow->uiEDLChoiceOne->value(-1);
-   main()->uiEDLWindow->uiEDLChoiceTwo->value(-1);
+   fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+   fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
+
+   int one = c1->value();
+   c1->clear();
+
+   int two = c2->value();
+   c2->clear();
 
    int reels = browser()->number_of_reels();
    for ( int i = 0; i < reels; ++i )
    {
       mrv::Reel track = browser()->reel( i );
-      main()->uiEDLWindow->uiEDLChoiceOne->add( track->name.c_str() );
-      main()->uiEDLWindow->uiEDLChoiceTwo->add( track->name.c_str() );
+      c1->add( track->name.c_str() );
+      c2->add( track->name.c_str() );
    }
 
    if ( e == 0 )
    {
-      main()->uiEDLWindow->uiEDLChoiceOne->value( r );
+      c1->value( r );
+      c2->value( two );
    }
    else
    {
-      main()->uiEDLWindow->uiEDLChoiceTwo->value( r );
+      c1->value( one );
+      c2->value( r );
    }
 
    e = children() - 1;

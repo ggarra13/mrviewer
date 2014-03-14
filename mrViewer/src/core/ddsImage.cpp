@@ -229,7 +229,7 @@ namespace mrv {
     colours[1].a = 0xFF;
     colours[2].a = 0xFF;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     unsigned int dh = height();
     unsigned int dw = width();
@@ -290,7 +290,7 @@ namespace mrv {
 	    col = &colours[Select];
 
 	    if (((x + i) < dw) && ((y + j) < dh)) {
-	      CMedia::PixelType& p = pixels[ x+i + (y+j) * dw ];
+	      CMedia::Pixel& p = pixels[ x+i + (y+j) * dw ];
 	      p.r = (float) col->r / 255.0f;
 	      p.g = (float) col->g / 255.0f;
 	      p.b = (float) col->b / 255.0f;
@@ -307,10 +307,10 @@ namespace mrv {
     unsigned int x,y;
     unsigned int dh = height();
     unsigned int dw = width();
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for (y = 0; y < dh; ++y) {
       for (x = 0; x < dw; ++x) {
-	CMedia::PixelType& p = pixels[ x + y * dw ];
+	CMedia::Pixel& p = pixels[ x + y * dw ];
 	if ( p.a == 0.0f ) continue;
 
 	p.r /= p.a;
@@ -337,7 +337,7 @@ namespace mrv {
     unsigned short word;
     unsigned char* alpha;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -386,7 +386,7 @@ namespace mrv {
 		pxl[3] = word & 0x0F;
 		pxl[3] = pxl[3] | (pxl[3] << 4);
 
-		CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+		CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 		p.r = (float) pxl[0] / 255.0f;
 		p.g = (float) pxl[1] / 255.0f;
 		p.b = (float) pxl[2] / 255.0f;
@@ -418,7 +418,7 @@ namespace mrv {
     unsigned char	alphas[8], *alphamask;
     unsigned int	bits;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -461,7 +461,7 @@ namespace mrv {
 
 	    /* only put pixels out < width or height */
 	    if (((x + i) < dw) && ((y + j) < dh)) {
-	      CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+	      CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 	      p.r = ((float)col->r) / 255.0f;
 	      p.g = ((float)col->g) / 255.0f;
 	      p.b = ((float)col->b) / 255.0f;
@@ -500,7 +500,7 @@ namespace mrv {
 	  for (i = 0; i < 4; i++) {
 	    /* only put pixels out < width or height */
 	    if (((x + i) < dw) && ((y + j) < dh)) {
-	      CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+	      CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 	      p.a = (float) ( alphas[bits & 0x07] ) / 255.0f;
 	    }
 	    bits >>= 3;
@@ -513,7 +513,7 @@ namespace mrv {
 	  for (i = 0; i < 4; i++) {
 	    /* only put pixels out < width or height */
 	    if (((x + i) < dw) && ((y + j) < dh)) {
-	      CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+	      CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 	      p.a = (float) ( alphas[bits & 0x07] ) / 255.0f;
 	    }
 	    bits >>= 3;
@@ -567,7 +567,7 @@ namespace mrv {
     GetBitsFromMask(Head->dwABitMask, &AlphaL, &AlphaR);
     TempBpp = Head->dwRGBBitCount / 8;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -578,7 +578,7 @@ namespace mrv {
 	    ReadI = Temp[0] | (Temp[1] << 8) | (Temp[2] << 16) | (Temp[3] << 24);
 	    Temp += TempBpp;
 
-	    CMedia::PixelType& p = pixels[ x + y*dw ];
+	    CMedia::Pixel& p = pixels[ x + y*dw ];
 	    p.r = (float) (((ReadI & Head->dwRBitMask) >> 
 			    RedR) << RedL) / 255.0f;
 	  
@@ -618,7 +618,7 @@ namespace mrv {
     unsigned int		bitmask;
     unsigned char* Temp = src;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     unsigned int dw = width();
     unsigned int dh = height();
@@ -648,7 +648,7 @@ namespace mrv {
 	    /* only put pixels out < height */
 	    for (i = 0; i < 4; i++) {
 	      /* only put pixels out < width */
-	      CMedia::PixelType& p = pixels[ x+i + (y+k+j)*dw ];
+	      CMedia::Pixel& p = pixels[ x+i + (y+k+j)*dw ];
 	      p.r = p.g = p.b = (float) ( Colours[bitmask & 0x07] ) / 255.0f;
 	      bitmask >>= 3;
 	    }
@@ -668,7 +668,7 @@ namespace mrv {
     unsigned char		XColours[8], YColours[8];
     unsigned int		bitmask, bitmask2;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     unsigned int dw = width();
     unsigned int dh = height();
     for (y = 0; y < dh; y += 4) {
@@ -719,7 +719,7 @@ namespace mrv {
 		/* only put pixels out < width */
 		if ((x + i) < dw) {
 		  int t, tx, ty;
-		  CMedia::PixelType& p = pixels[ x+i + (y+k+j)*dw ];
+		  CMedia::Pixel& p = pixels[ x+i + (y+k+j)*dw ];
 
 		  p.g = (float) ( ty = YColours[bitmask  & 0x07] ) / 255.0f;
 		  p.r   = (float) ( tx = YColours[bitmask2 & 0x07] ) / 255.0f;
@@ -758,7 +758,7 @@ namespace mrv {
     unsigned int  bits;
     unsigned char* Temp = src;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     unsigned int dw = width();
     unsigned int dh = height();
     for (y = 0; y < dh; y += 4) {
@@ -804,7 +804,7 @@ namespace mrv {
 	    Select = (bitmask & (0x03 << k*2)) >> k*2;
 	    col = &colours[Select];
 
-	    CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+	    CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 	    p.r = (float) ( col->r ) / 255.0f;
 	    p.g = (float) ( col->g ) / 255.0f;
 	    p.b = (float) ( col->b ) / 255.0f;
@@ -840,7 +840,7 @@ namespace mrv {
 	bits = *((unsigned int*)alphamask);
 	for (j = 0; j < 2; j++) {
 	  for (i = 0; i < 4; i++) {
-	    CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+	    CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 	    if ( p.r == 0.0f )
 	      p.r = (float) ( alphas[bits & 0x07] ) / 255.0f;
 	    else
@@ -855,7 +855,7 @@ namespace mrv {
 	for (j = 2; j < 4; j++) {
 	  for (i = 0; i < 4; i++) {
 
-	    CMedia::PixelType& p = pixels[ x+i + (y+j)*dw ];
+	    CMedia::Pixel& p = pixels[ x+i + (y+j)*dw ];
 	    if ( p.r == 0.0f )
 	      p.r = (float) ( alphas[bits & 0x07] ) / 255.0f;
 	    else
@@ -876,10 +876,10 @@ namespace mrv {
     unsigned short* temp = (unsigned short*) src;
     unsigned int dw = width();
     unsigned int dh = height();
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for (y = 0; y < dh; ++y) {
       for (x = 0; x < dw; ++x) {
-	CMedia::PixelType& p = pixels[ x + y*dw ];
+	CMedia::Pixel& p = pixels[ x + y*dw ];
 	p.a = (float) ( *temp++ ) / 65535.0f;
 	p.b = (float) ( *temp++ ) / 65535.0f;
 	p.g = (float) ( *temp++ ) / 65535.0f;
@@ -897,10 +897,10 @@ namespace mrv {
     half* h = (half*) src;
     unsigned int dw = width();
     unsigned int dh = height();
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for (y = 0; y < dh; ++y) {
       for (x = 0; x < dw; ++x) {
-	CMedia::PixelType& p = pixels[ x + y*dw ];
+	CMedia::Pixel& p = pixels[ x + y*dw ];
 	switch ( CompFormat )
 	  {
 	  case PF_G32R32F:

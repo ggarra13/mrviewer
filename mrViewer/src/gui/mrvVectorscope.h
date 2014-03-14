@@ -31,8 +31,8 @@ namespace mrv
     void draw_grid( const fltk::Rectangle& r );
     void draw_pixels( const fltk::Rectangle& r );
     void draw_pixel( const fltk::Rectangle& r,
-		     const CMedia::PixelType& rgb,
-		     const CMedia::PixelType& hsv );
+		     const CMedia::Pixel& rgb,
+		     const CMedia::Pixel& hsv );
 
     int diameter_;
 

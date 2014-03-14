@@ -161,25 +161,25 @@ void ColorInfo::update( const CMedia* src,
   std::ostringstream text;
   if ( src && (selection.w() > 0 || selection.h() < 0) )
     {
-      CMedia::PixelType hmin( std::numeric_limits<float>::max(),
+      CMedia::Pixel hmin( std::numeric_limits<float>::max(),
 			      std::numeric_limits<float>::max(),
 			      std::numeric_limits<float>::max(),
 			      std::numeric_limits<float>::max() );
 
-      CMedia::PixelType pmin( std::numeric_limits<float>::max(),
+      CMedia::Pixel pmin( std::numeric_limits<float>::max(),
 			      std::numeric_limits<float>::max(),
 			      std::numeric_limits<float>::max(),
 			      std::numeric_limits<float>::max() );
-      CMedia::PixelType pmax( std::numeric_limits<float>::min(),
+      CMedia::Pixel pmax( std::numeric_limits<float>::min(),
 			      std::numeric_limits<float>::min(),
 			      std::numeric_limits<float>::min(),
 			      std::numeric_limits<float>::min() );
-      CMedia::PixelType hmax( std::numeric_limits<float>::min(),
+      CMedia::Pixel hmax( std::numeric_limits<float>::min(),
 			      std::numeric_limits<float>::min(),
 			      std::numeric_limits<float>::min(),
 			      std::numeric_limits<float>::min() );
-      CMedia::PixelType pmean( 0, 0, 0, 0 );
-      CMedia::PixelType hmean( 0, 0, 0, 0 );
+      CMedia::Pixel pmean( 0, 0, 0, 0 );
+      CMedia::Pixel hmean( 0, 0, 0, 0 );
 
 
       unsigned int W = src->width();
@@ -223,7 +223,7 @@ void ColorInfo::update( const CMedia* src,
 	{
 	  for ( unsigned x = xmin; x <= xmax; ++x, ++count )
 	    {
-	      CMedia::PixelType rp = pic->pixel( x, y );
+	      CMedia::Pixel rp = pic->pixel( x, y );
 	      if ( isnan(rp.r) || isnan(rp.g) || isnan(rp.b) ||
 		   isnan(rp.a) ) continue;
 
@@ -242,7 +242,7 @@ void ColorInfo::update( const CMedia* src,
 	      pmean.b += rp.b;
 	      pmean.a += rp.a;
 	      
-	      CMedia::PixelType hsv;
+	      CMedia::Pixel hsv;
 	      
 	      switch( uiMain->uiBColorType->value()+1 )
 	      {
@@ -358,7 +358,7 @@ void ColorInfo::update( const CMedia* src,
 	   << float_printf(pmin.b) << "\t" 
 	   << float_printf(pmin.a) << std::endl;
 
-      CMedia::PixelType r(pmax);
+      CMedia::Pixel r(pmax);
       r.r -= pmin.r;
       r.g -= pmin.g;
       r.b -= pmin.b;

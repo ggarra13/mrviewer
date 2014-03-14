@@ -219,12 +219,12 @@ namespace mrv {
     unsigned int dw = width();
     unsigned int dh = height() - 1;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     for ( unsigned y = 0; y < h; ++y )
       {
 	unsigned offset = (dh - (y + y1)) * dw + x1;
-	PixelType* p = pixels + offset;
+	Pixel* p = pixels + offset;
 
 	for ( unsigned x = 0; x < w; ++x, ++p )
 	  {
@@ -309,14 +309,14 @@ namespace mrv {
     unsigned int dh = height() - 1;
 
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     boost::uint8_t* src = data;
     if ( z )
       {
 	for ( unsigned y = 0; y < h; ++y )
 	  {
 	    unsigned offset = (dh - (y + y1)) * dw + x1;
-	    PixelType* p = pixels + offset;
+	    Pixel* p = pixels + offset;
 	    unsigned int s = y * w * bytes;
 
 	    for ( unsigned x = 0; x < w; s += bytes, ++x, ++p )
@@ -353,7 +353,7 @@ namespace mrv {
 	    for ( unsigned y = 0; y < h; ++y )
 	      {
 		unsigned offset = (dh - (y + y1)) * dw + x1;
-		PixelType* p = pixels + offset;
+		Pixel* p = pixels + offset;
 	      
 		for ( unsigned x = 0; x < w; ++x, ++src, ++p )
 		  {

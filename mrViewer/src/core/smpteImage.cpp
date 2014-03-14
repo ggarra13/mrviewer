@@ -15,7 +15,7 @@
 
 namespace 
 {
-  const char* kModule = "slate";
+  const char* kModule = "smpte";
 }
 
 namespace mrv {
@@ -39,11 +39,11 @@ namespace mrv {
 			      unsigned int W, unsigned int H )
   {
     // Draw a line of dots
-    PixelType c = bg;
+    Pixel c = bg;
     if ( Y % 2 == 0 ) c = fg;
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
-    PixelType* p = pixels + Y * width() + X+1;
+    Pixel* pixels = (Pixel*)_hires->data().get();
+    Pixel* p = pixels + Y * width() + X+1;
     for ( unsigned int x = X+1; x < X+W-1; x += 2, p += 2 )
       {
 	*p = c;
@@ -85,10 +85,10 @@ namespace mrv {
 				float bgc, float fgc )
   {
     // Fill image with background color
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for ( unsigned int y = sy; y < sy+H; ++y )
       {
-	PixelType* p = pixels + y * width() + sx;
+	Pixel* p = pixels + y * width() + sx;
 	for ( unsigned int x = 0; x < W; ++x, ++p )
 	  {
 	    p->r = p->g = p->b = bgc;
@@ -109,38 +109,38 @@ namespace mrv {
     unsigned int bx = sx + unsigned(W * 0.065573f);
     unsigned int by = sy + unsigned(H * 0.1904761904f);
 
-    bg = PixelType(fgc, bgc, bgc);
-    fg = PixelType(0.0f, bgc, bgc);
+    bg = Pixel(fgc, bgc, bgc);
+    fg = Pixel(0.0f, bgc, bgc);
     gamma_box( bx, by, bw, bh );
 
-    bg = PixelType( bgc, 0.0f, fgc );
-    fg = PixelType( bgc, fgc, 0.0f );
+    bg = Pixel( bgc, 0.0f, fgc );
+    fg = Pixel( bgc, fgc, 0.0f );
     gamma_box( bx+ibx, by+iby, ibw, ibh );
 
     // Draw box #2
     bx += bw + bs;
-    bg = PixelType( bgc, 0.0f, bgc );
-    fg = PixelType( bgc, fgc, bgc );
+    bg = Pixel( bgc, 0.0f, bgc );
+    fg = Pixel( bgc, fgc, bgc );
     gamma_box( bx, by, bw, bh );
 
-    bg = PixelType( 0.0f, bgc, fgc );
-    fg = PixelType( fgc, bgc, 0.0f );
+    bg = Pixel( 0.0f, bgc, fgc );
+    fg = Pixel( fgc, bgc, 0.0f );
     gamma_box( bx+ibx, by+iby, ibw, ibh );
 
     // Draw box #3
     bx += bw + bs;
-    bg = PixelType( bgc, bgc, 0.0f );
-    fg = PixelType( bgc, bgc, fgc );
+    bg = Pixel( bgc, bgc, 0.0f );
+    fg = Pixel( bgc, bgc, fgc );
     gamma_box( bx, by, bw, bh );
 
-    bg = PixelType( fgc, 0.0f, bgc );
-    fg = PixelType( 0.0f, fgc, bgc );
+    bg = Pixel( fgc, 0.0f, bgc );
+    fg = Pixel( 0.0f, fgc, bgc );
     gamma_box( bx+ibx, by+iby, ibw, ibh );
 
     // Draw box #4
     bx += bw + bs;
-    bg = PixelType( 0.0f, 0.0f, 0.0f );
-    fg = PixelType( fgc, fgc, fgc );
+    bg = Pixel( 0.0f, 0.0f, 0.0f );
+    fg = Pixel( fgc, fgc, fgc );
     gamma_box( bx, by, bw, bh );
   }
 
@@ -226,13 +226,13 @@ namespace mrv {
     unsigned int W = width();
     unsigned int H = height();
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for ( unsigned int x = 0; x < W; ++x )
       {
 	float val = (float) x / (float) W;
 	for ( unsigned int y = 0; y < H; ++y )
 	  {
-	    PixelType* p = pixels + y * W + x;
+	    Pixel* p = pixels + y * W + x;
 	    p->r = p->g = p->b = val;
 	    p->a = 0;
 	  }
@@ -246,14 +246,14 @@ namespace mrv {
     unsigned int W = width();
     unsigned int H = height();
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for ( unsigned int x = 0; x < W; ++x )
       {
 	float val = (float) x / (float) W;
 	val *= val;
 	for ( unsigned int y = 0; y < H; ++y )
 	  {
-	    PixelType* p = pixels + y * W + x;
+	    Pixel* p = pixels + y * W + x;
 	    p->r = p->g = p->b = val;
 	    p->a = 0;
 	  }
@@ -275,7 +275,7 @@ namespace mrv {
     unsigned int dh2 = dh * 2;
 
   
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
     for ( unsigned int x = 0; x < W; x += dw )
       {
 	for ( unsigned int y = 0; y < H; y += dh )
@@ -298,7 +298,7 @@ namespace mrv {
 	      {
 		for ( unsigned int dy = y; dy < yy; ++dy )
 		  {
-		    PixelType* p = pixels + dy * W + dx;
+		    Pixel* p = pixels + dy * W + dx;
 		    p->r = p->g = p->b = p->a = val;
 		  }
 	      }

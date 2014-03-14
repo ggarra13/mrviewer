@@ -113,6 +113,16 @@ namespace mrv {
 	p.r = Y                  + Pr * 1.402f;
 	p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
 	p.b = Y + Pb * 1.772f;
+
+	// Sanity check. Needed, as ffmpeg can return invalid values
+	if ( p.r < 0.0f )      p.r = 0.0f;
+	else if ( p.r > 1.0f ) p.r = 1.0f;
+
+	if ( p.g < 0.0f )      p.g = 0.0f;
+	else if ( p.g > 1.0f ) p.g = 1.0f;
+
+	if ( p.b < 0.0f )      p.b = 0.0f;
+	else if ( p.b > 1.0f ) p.b = 1.0f;
       }
     else if ( _format >= kITU_601_YCbCr420 )
       {

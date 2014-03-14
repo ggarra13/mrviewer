@@ -952,38 +952,40 @@ namespace mrv {
   {
     int step;
     switch( format )
-      {
-      case GL_RGBA:
-      case GL_BGRA:
-	step = 4; break;
-      case GL_RGB:
-      case GL_BGR:
-	step = 3; break;
-      case GL_LUMINANCE:
-	step = 1; break;
-      default:
-	step = 1; break;
-      }
+    {
+       case GL_RGBA:
+       case GL_BGRA:
+          step = 4; break;
+       case GL_RGB:
+       case GL_BGR:
+          step = 3; break;
+       case GL_LUMINANCE:
+          step = 1; break;
+       default:
+          step = 1; break;
+    }
 
     switch( pixel_type )
-      {
-      case GL_UNSIGNED_BYTE:
-      case GL_BYTE:
-	step *= sizeof(char); break;
-      case GL_FLOAT:
-	step *= sizeof(float); break;
-      case GL_SHORT:
-      case GL_UNSIGNED_SHORT:
-	step *= sizeof(short); break;
-      case GL_INT:
-      case GL_UNSIGNED_INT:
-	step *= sizeof(int); break;
-      case GL_HALF_FLOAT_ARB:
-	step *= sizeof(float)/2; break;
-      default:
-	LOG_ERROR("Unknown OpenGL pixel type " << pixel_type );
-	step *= sizeof(char);
-      }
+    {
+       case GL_UNSIGNED_BYTE:
+       case GL_BYTE:
+          step *= sizeof(char); break;
+       case GL_SHORT:
+       case GL_UNSIGNED_SHORT:
+          step *= sizeof(short); break;
+       case GL_INT:
+       case GL_UNSIGNED_INT:
+          step *= sizeof(int); break;
+       case GL_HALF_FLOAT_ARB:
+          step *= sizeof(float)/2; break;
+       case GL_FLOAT:
+          step *= sizeof(float); break;
+       case GL_DOUBLE:
+          step *= sizeof(double); break;
+       default:
+          LOG_ERROR("Unknown OpenGL pixel type " << pixel_type );
+          step *= sizeof(char);
+    }
 
     return step;
   }

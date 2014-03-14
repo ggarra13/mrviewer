@@ -13,9 +13,18 @@
 #include "gui/mrvReelList.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvImageInformation.h"
+#include "gui/mrvHotkey.h"
 #include "core/mrvI8N.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
+
+void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow );
+
+void open_track_cb( fltk::Widget* o, mrv::media_track* track )
+{
+   track->browser()->reel( track->reel() );
+   open_cb( o, track->browser() );
+}
 
 namespace mrv {
 
@@ -505,8 +514,17 @@ int media_track::handle( int event )
 	       double p = double(xx+t->x()) / double(ww);
 	       p = t->minimum() + p * len + 0.5f;
 
-	       select_media( int64_t(p) );
-	       return 1;
+	       if ( select_media( int64_t(p) ) )
+                  return 1;
+               else
+               {
+                  fltk::Menu menu(0,0,0,0);
+                  menu.add( _("File/Open/Movie or Sequence"), 
+                            kOpenImage.hotkey(),
+                            (fltk::Callback*)open_track_cb, this );
+                  menu.popup( fltk::Rectangle( fltk::event_x(),
+                                               fltk::event_y(), 80, 1) );
+               }
 	    }
 	    else
 	    {

@@ -369,14 +369,14 @@ namespace mrv {
 
 		    mrv::image_type_ptr buffer = img->frame_buffer( fb );
 
-		    CMedia::PixelType* pixels = (CMedia::PixelType*)buffer->data().get();
+		    CMedia::Pixel* pixels = (CMedia::Pixel*)buffer->data().get();
 		    if ( pixels == NULL ) break;
 
 		    // substract one from components to
 		    // later do iteration thru pixels with one step
 		    comps -= 1;
 
-		    CMedia::PixelType p;
+		    CMedia::Pixel p;
 		    switch( bits )
 		      {
 		      case 1:
@@ -691,10 +691,10 @@ void stubImage::thread_exit()
   void stubImage::clear_to_NANs()
   {
     mrv::image_type_ptr frame = _hires;
-    static const PixelType p( std::numeric_limits<float>::quiet_NaN(), 
-			      std::numeric_limits<float>::quiet_NaN(), 
-			      std::numeric_limits<float>::quiet_NaN(), 
-			      std::numeric_limits<float>::quiet_NaN() );
+    static const Pixel p( std::numeric_limits<float>::quiet_NaN(), 
+                          std::numeric_limits<float>::quiet_NaN(), 
+                          std::numeric_limits<float>::quiet_NaN(), 
+                          std::numeric_limits<float>::quiet_NaN() );
 
     unsigned w = width();
     unsigned h = height();
@@ -759,10 +759,10 @@ void stubImage::thread_exit()
 
     mrv::image_type_ptr frame = _hires;
 
-    static const PixelType p( std::numeric_limits<float>::quiet_NaN(), 
-			      std::numeric_limits<float>::quiet_NaN(), 
-			      std::numeric_limits<float>::quiet_NaN(), 
-			      std::numeric_limits<float>::quiet_NaN() );
+    static const Pixel p( std::numeric_limits<float>::quiet_NaN(), 
+                          std::numeric_limits<float>::quiet_NaN(), 
+                          std::numeric_limits<float>::quiet_NaN(), 
+                          std::numeric_limits<float>::quiet_NaN() );
     for ( int y = yl; y < yh; ++y )
       {
 	int offset = y * w;
@@ -938,7 +938,7 @@ void stubImage::thread_exit()
   bool stubImage::set_float_pixel( const unsigned int fb, 
 				   const unsigned int x, 
 				   const unsigned int y, 
-				   const PixelType& c )
+				   const Pixel& c )
   {
     Mutex::scoped_lock lk( _mutex );
 

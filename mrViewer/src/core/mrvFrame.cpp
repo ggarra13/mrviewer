@@ -227,16 +227,17 @@ const char* const VideoFrame::fmts[] = {
 	unsigned int xt = std::min( xs + 1, _width - 1 );
 
 	float t = x1 - xs;
-	assert( t <= 1.0f );
+	assert( t >= 0.0f && t <= 1.0f );
 
 	float s = 1.0f - t;
-	assert( s >= 0.0f );
+	assert( s >= 0.0f && s <= 1.0f );
 
 	for (unsigned int y = 0; y < _height; ++y)
 	  {
-	    const ImagePixel& ps = pixel(xs, y);
-	    const ImagePixel& pt = pixel(xt, y);
-	    
+             const ImagePixel& ps = pixel(xs, y);
+             const ImagePixel& pt = pixel(xt, y);
+
+
 	    // assert( ps.r >= 0.f && ps.r <= 1.0f );
 	    // assert( ps.g >= 0.f && ps.g <= 1.0f );
 	    // assert( ps.b >= 0.f && ps.b <= 1.0f );
@@ -294,15 +295,14 @@ const char* const VideoFrame::fmts[] = {
 	unsigned int ys = static_cast< unsigned int>( y1 );
 	unsigned int yt = std::min( ys + 1, _height - 1 );
 	float t = y1 - ys;
-	assert( t <= 1.0f );
+	assert( t >= 0.0f && t <= 1.0f );
 	float s = 1.0f - t;
-	assert( s >= 0.0f );
+	assert( s >= 0.0f && s <= 1.0f );
 
 	for (unsigned int x = 0; x < _width; ++x)
 	{
-	   const ImagePixel& ps = pixel(x, ys);
+           const ImagePixel& ps = pixel(x, ys);
 	   const ImagePixel& pt = pixel(x, yt);
-
 
 	    // assert( ps.r >= 0.f && ps.r <= 1.0f );
 	    // assert( ps.g >= 0.f && ps.g <= 1.0f );
@@ -320,6 +320,7 @@ const char* const VideoFrame::fmts[] = {
 			 ps.b * s + pt.b * t,
 			 ps.a * s + pt.a * t
 			 );
+
 
 	    // assert( p.r >= 0.f && p.r <= 1.0f );
 	    // assert( p.g >= 0.f && p.g <= 1.0f );

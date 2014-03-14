@@ -793,7 +793,7 @@ void ImageView::copy_pixel() const
   if ( x < 0 || y < 0 || x >= w || y >= h )
     return; // outside image
 
-  CMedia::PixelType rgba = pic->pixel( (int)x, (int)y );
+  CMedia::Pixel rgba = pic->pixel( (int)x, (int)y );
 
   char buf[256];
   sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
@@ -1298,7 +1298,9 @@ void ImageView::draw()
   if ( fg && fg->image() )
     {
        if ( fg->image()->has_picture() )
+       {
 	  images.push_back( fg->image() );
+       }
     }
 
 
@@ -2042,7 +2044,7 @@ void ImageView::mouseMove(int x, int y)
 
   unsigned w = pic->width();
   unsigned h = pic->height();
-  CMedia::PixelType rgba;
+  CMedia::Pixel rgba;
 
 
   bool outside = false;
@@ -2081,7 +2083,7 @@ void ImageView::mouseMove(int x, int y)
 	  pic = bgr->hires();
 	  if ( pic )
 	    {
-	      CMedia::PixelType bg = pic->pixel( xp, yp );
+	      CMedia::Pixel bg = pic->pixel( xp, yp );
 	      rgba.r += bg.r * t;
 	      rgba.g += bg.g * t;
 	      rgba.b += bg.b * t;
@@ -2153,7 +2155,7 @@ void ImageView::mouseMove(int x, int y)
 
 
 
-  CMedia::PixelType hsv;
+  CMedia::Pixel hsv;
   int cspace = uiMain->uiBColorType->value() + 1;
 
   switch( cspace )
@@ -2684,7 +2686,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS / 2 );
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -2700,7 +2702,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() == CMedia::kForwards )
+      if ( img->playback() != CMedia::kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -3987,6 +3989,8 @@ void ImageView::seek( const int64_t f )
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
   browser()->seek( f );
+
+  thumbnails();
 
   _lastFrame = f;
 

@@ -66,7 +66,7 @@ namespace mrv {
   class CMedia
   {
   public:  
-    typedef mrv::ImagePixel    PixelType;
+    typedef mrv::ImagePixel    Pixel;
     typedef  std::map< std::string, std::string > Attributes;
 
     typedef boost::recursive_mutex Mutex;
@@ -354,6 +354,8 @@ namespace mrv {
        { _hires = pic; _w = pic->width(); _h = pic->height(); refresh(); } 
 
     inline mrv::image_type_ptr anaglyph( bool left_view = true );
+
+       inline bool  is_stereo() const { return _is_stereo; }
 
     inline mrv::image_type_ptr left() const { return _stereo[0]; }
     inline mrv::image_type_ptr left()       { return _stereo[0]; }

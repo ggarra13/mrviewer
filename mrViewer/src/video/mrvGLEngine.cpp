@@ -988,6 +988,7 @@ void GLEngine::draw_images( ImageList& images )
       const Image_ptr& img = *i;
       if ( img->has_subtitle() ) ++num_quads;
       if ( img->has_picture()  ) ++num_quads;
+      if ( img->is_stereo() )    ++num_quads;
     }
 
   size_t num = _quads.size();
@@ -1039,35 +1040,50 @@ void GLEngine::draw_images( ImageList& images )
 	  quad->lut( img );
 	}
 
-      if ( img->hires() && img->image_damage() & CMedia::kDamageContents )
+      if ( img->is_stereo() )
+      {
+	   image_type_ptr pic = img->left();
+           quad->bind( pic );
+           quad->gamma( img->gamma() );
+           quad->draw( texWidth, texHeight );
+
+           glTranslated( texWidth, 0, 0 );
+	   pic = img->right();
+           quad->bind( pic );
+           quad->gamma( img->gamma() );
+           quad->draw( texWidth, texHeight );
+      }
+      else if ( img->hires() &&
+                ( img->image_damage() & CMedia::kDamageContents ||
+                  img->has_subtitle() ) )
 	{
 	   image_type_ptr pic = img->hires();
 	   if ( shader_type() == kNone && img->stopped() && 
-		pic->pixel_type() != image_type::kByte )
+	        pic->pixel_type() != image_type::kByte )
 	   {
 	      pic = display( pic, img );
 	   }
-	   
-	   quad->bind( pic );
+
+           quad->bind( pic );
 	}
-      
+
       if ( i+1 == e ) wipe_area();
 
       quad->gamma( img->gamma() );
       quad->draw( texWidth, texHeight );
-      
+
       glEnable( GL_BLEND );
 
       if ( img->has_subtitle() )
 	{
-	  image_type_ptr sub = img->subtitle();
-	  if ( sub )
-	    {
+           image_type_ptr sub = img->subtitle();
+           if ( sub )
+           {
 	      ++q;
-
+              
 	      quad->bind( sub );
 	      quad->draw( texWidth, texHeight );
-	    }
+           }
 	}
 
 

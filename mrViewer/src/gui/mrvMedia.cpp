@@ -100,12 +100,7 @@ namespace mrv {
       // Audio only clip?
 
 
-      mrv::image_type_ptr pic;
-      {
-	CMedia::Mutex& m = _image->video_mutex();
-	SCOPED_LOCK(m);
-	pic = _image->hires();
-      }
+      mrv::image_type_ptr pic = _image->hires();
       if ( !pic ) return;
 
 
@@ -140,7 +135,7 @@ namespace mrv {
 	{
 	  for (unsigned int x = 0; x < w; ++x )
 	    {
-	      CMedia::PixelType fp = pic->pixel( x, y );
+	      CMedia::Pixel fp = pic->pixel( x, y );
 	      if ( gamma != 1.0 )
 	      {
 		 fp.r = Imath::Math<float>::pow( fp.r, gamma );

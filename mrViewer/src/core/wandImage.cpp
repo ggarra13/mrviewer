@@ -213,7 +213,7 @@ namespace mrv {
      {
 	SCOPED_LOCK( _mutex );
 
-	PixelType* pixels = (PixelType*)_hires->data().get();
+	Pixel* pixels = (Pixel*)_hires->data().get();
 	MagickExportImagePixels( wand, 0, 0, dw, dh, channels, 
 				 storage, pixels );
      }
@@ -512,7 +512,7 @@ namespace mrv {
 	  {
 	    for ( unsigned x = 0; x < dw; ++x )
 	      {
-		CMedia::PixelType p = frame->pixel( x, y );
+		CMedia::Pixel p = frame->pixel( x, y );
 		MagickImportImagePixels(wand, x, y, 1, 1, channels, 
 					FloatPixel, &p );
 	      }

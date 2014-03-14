@@ -250,7 +250,7 @@ namespace mrv {
       }
 
 
-    PixelType* pixels = (PixelType*)_hires->data().get();
+    Pixel* pixels = (Pixel*)_hires->data().get();
 
     // Copy pixel values
     for (int y = 0, i = 0; y < dh; ++y)

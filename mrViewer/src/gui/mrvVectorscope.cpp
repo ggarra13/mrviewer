@@ -116,8 +116,8 @@ namespace mrv
 
 
   void Vectorscope::draw_pixel( const fltk::Rectangle& r,
-				const CMedia::PixelType& rgb,
-				const CMedia::PixelType& hsv )
+				const CMedia::Pixel& rgb,
+				const CMedia::Pixel& hsv )
   {
     fltk::setcolor( fltk::color( (unsigned char)(rgb.r * 255), 
 				 (unsigned char)(rgb.g * 255), 
@@ -175,8 +175,8 @@ namespace mrv
       {
 	for ( unsigned x = xmin; x < xmax; x += stepX )
 	  {
-	    const CMedia::PixelType& p = pic->pixel( x, y );
-	    CMedia::PixelType hsv = color::rgb::to_hsv( p );
+	    const CMedia::Pixel& p = pic->pixel( x, y );
+	    CMedia::Pixel hsv = color::rgb::to_hsv( p );
 	    draw_pixel( r, p, hsv );
 	  }
       }
