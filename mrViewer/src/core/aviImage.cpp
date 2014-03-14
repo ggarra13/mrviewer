@@ -1387,12 +1387,11 @@ void aviImage::populate()
 	  
 	  if ( has_video() && pkt.stream_index == video_stream_index() )
 	  {
-             boost::int64_t pktframe = get_frame( get_video_stream(), pkt );
-	     DecodeStatus status = decode_image( pktframe, pkt ); 
+	     DecodeStatus status = decode_image( _frameStart, pkt ); 
 	     if ( status == kDecodeOK )
 	     {
 		got_video = true;
-                store_image( pktframe, pkt.dts );
+                store_image( _frameStart, pkt.dts );
 	     }
 	     else
 	     {
