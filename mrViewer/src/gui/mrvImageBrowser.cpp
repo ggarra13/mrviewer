@@ -1366,7 +1366,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	    fltk::Browser::add( nw );
 	 }
 
-	value(0);
+	change_image(0);
 	seek( view()->frame() );
       }
 
@@ -1484,6 +1484,7 @@ int ImageBrowser::value() const
 
   void ImageBrowser::change_image(unsigned i)
   { 
+     if ( i >= children() ) return;
      value(i); 
      change_image(); 
   }

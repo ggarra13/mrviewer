@@ -300,11 +300,11 @@ namespace mrv {
       ImagePixel to_rgb( const ImagePixel& yuv )
       {
 	ImagePixel   rgb(
-			  1.164 * (yuv.r - 16) + 2.018 * (yuv.g - 128),
-			  1.164 * (yuv.r - 16) - 0.813 * (yuv.b - 128) 
-			  - 0.391 * (yuv.g - 128),
-			  1.164 * (yuv.r - 16) + 1.596 * (yuv.b - 128) 
-			  );
+			  1.164f * (yuv.r - 16) + 2.018f * (yuv.g - 128),
+			  1.164f * (yuv.r - 16) - 0.813f * (yuv.b - 128) 
+			  - 0.391f * (yuv.g - 128),
+			  1.164f * (yuv.r - 16) + 1.596f * (yuv.b - 128) 
+			 );
 	return rgb;
       }
   }

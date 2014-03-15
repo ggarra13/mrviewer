@@ -592,7 +592,7 @@ void CMedia::filename( const char* n )
   }
   else
   {
-     _fileroot = strdup( file.c_str() );
+     _fileroot = strdup( file.string().c_str() );
   }
 
   if ( _filename ) 

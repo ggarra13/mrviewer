@@ -213,6 +213,8 @@ int EDLGroup::handle( int event )
 	       _dragChild = idx;
 
 	       mrv::Timeline* t = timeline();
+               if ( !t ) return 0;
+
 	       int ww = t->w();
 	       double len = (t->maximum() - t->minimum() + 1);
 	       double p = double(_dragX) / double(ww);
@@ -221,12 +223,14 @@ int EDLGroup::handle( int event )
 	       mrv::media_track* track = (mrv::media_track*) child(idx);
 	       mrv::media m = track->media_at( p );
 
+
 	       if ( m )
 	       {
    		  _drag = ImageBrowser::new_item( m );
 		  int j = track->index_for( m );
 		  assert( j != -1 );
 
+                  view()->stop();
 		  browser()->reel( idx );
 		  browser()->change_image( j );
 		  browser()->redraw();

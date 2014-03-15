@@ -282,19 +282,19 @@ namespace mrv {
     fltk::Preferences ui( base, "ui" );
 
     ui.get( "topbar", tmp, 1 );
-    uiPrefs->uiPrefsTopbar->value( bool(tmp) );
+    uiPrefs->uiPrefsTopbar->value( (bool) tmp );
 
     ui.get( "single_instance", tmp, 1 );
-    uiPrefs->uiPrefsSingleInstance->value( bool(tmp) );
+    uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
     ui.get( "pixel_toolbar", tmp, 1 );
-    uiPrefs->uiPrefsPixelToolbar->value( bool(tmp) );
+    uiPrefs->uiPrefsPixelToolbar->value( (bool) tmp );
 
     ui.get( "timeline_toolbar", tmp, 1 );
-    uiPrefs->uiPrefsTimeline->value( bool(tmp) );
+    uiPrefs->uiPrefsTimeline->value( (bool) tmp );
 
     ui.get( "reel_list", tmp, 0 );
-    uiPrefs->uiPrefsReelList->value( bool(tmp) );
+    uiPrefs->uiPrefsReelList->value( (bool) tmp );
 
     ui.get( "edl_edit", tmp, 0 );
     uiPrefs->uiPrefsEDLEdit->value(tmp);
@@ -355,13 +355,13 @@ namespace mrv {
     uiPrefs->uiPrefsViewGamma->value( tmpF );
 
     view.get("compensate_pixel_ratio", tmp, 0 );
-    uiPrefs->uiPrefsViewPixelRatio->value( tmp );
+    uiPrefs->uiPrefsViewPixelRatio->value( (bool) tmp );
 
     view.get("lut", tmp, 0 );
-    uiPrefs->uiPrefsViewLut->value( tmp );
+    uiPrefs->uiPrefsViewLut->value( (bool) tmp );
 
     view.get("safe_areas", tmp, 0 );
-    uiPrefs->uiPrefsSafeAreas->value( tmp );
+    uiPrefs->uiPrefsSafeAreas->value( (bool) tmp );
 
     view.get("crop_area", tmp, 0 );
     uiPrefs->uiPrefsCropArea->value( tmp );
@@ -399,27 +399,27 @@ namespace mrv {
     //
     fltk::Preferences hud( view, "hud" );
     hud.get("filename", tmp, 0 );
-    uiPrefs->uiPrefsHudFilename->value( tmp );
+    uiPrefs->uiPrefsHudFilename->value( (bool) tmp );
     hud.get("directory", tmp, 0 );
-    uiPrefs->uiPrefsHudDirectory->value( tmp );
+    uiPrefs->uiPrefsHudDirectory->value( (bool) tmp );
     hud.get("fps", tmp, 0 );
-    uiPrefs->uiPrefsHudFPS->value( tmp );
+    uiPrefs->uiPrefsHudFPS->value( (bool) tmp );
     hud.get("av_difference", tmp, 0 );
-    uiPrefs->uiPrefsHudAVDifference->value( tmp );
+    uiPrefs->uiPrefsHudAVDifference->value( (bool) tmp );
     hud.get("frame", tmp, 0 );
-    uiPrefs->uiPrefsHudFrame->value( tmp );
+    uiPrefs->uiPrefsHudFrame->value( (bool) tmp );
     hud.get("timecode", tmp, 0 );
-    uiPrefs->uiPrefsHudTimecode->value( tmp );
+    uiPrefs->uiPrefsHudTimecode->value( (bool) tmp );
     hud.get("resolution", tmp, 0 );
-    uiPrefs->uiPrefsHudResolution->value( tmp );
+    uiPrefs->uiPrefsHudResolution->value( (bool) tmp );
     hud.get("frame_range", tmp, 0 );
-    uiPrefs->uiPrefsHudFrameRange->value( tmp );
+    uiPrefs->uiPrefsHudFrameRange->value( (bool) tmp );
     hud.get("iptc", tmp, 0 );
-    uiPrefs->uiPrefsHudIPTC->value( tmp );
+    uiPrefs->uiPrefsHudIPTC->value( (bool) tmp );
 
     fltk::Preferences win( view, "window" );
     win.get("fixed_position", tmp, 0 );
-    uiPrefs->uiWindowFixedPosition->value( tmp );
+    uiPrefs->uiWindowFixedPosition->value( (bool) tmp );
     win.get("x_position", tmp, 0 );
     uiPrefs->uiWindowXPosition->value( tmp );
     win.get("y_position", tmp, 0 );
@@ -427,7 +427,7 @@ namespace mrv {
 
     fltk::Preferences flu( ui, "file_requester" );
     flu.get("quick_folder_travel", tmp, 1 );
-    uiPrefs->uiPrefsFileReqFolder->value( tmp );
+    uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
 
     //
@@ -650,7 +650,7 @@ namespace mrv {
 
     fltk::Preferences loading( base, "loading" );
     loading.get( "auto_reload", tmp, 1 );
-    uiPrefs->uiPrefsAutoReload->value(tmp);
+    uiPrefs->uiPrefsAutoReload->value( (bool) tmp );
 
 
     fltk::Preferences video( base, "video" );

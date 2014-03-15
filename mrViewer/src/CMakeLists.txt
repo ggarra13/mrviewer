@@ -107,21 +107,21 @@ SET( SOURCES
   ${mrViewer_FLTK_UI_SRCS}
 
   # Image files
-  core/mrvFrame.cpp
   core/CMedia.cpp
   core/CMedia_audio.cpp
-  core/mrvColorBarsImage.cpp
+  core/mrvFrame.cpp
+  core/mrvHome.cpp
   core/guessImage.cpp
-  core/mapImage.cpp
-  core/mrayImage.cpp
   core/aviImage.cpp
   core/clonedImage.cpp
+  core/ddsImage.cpp
   core/exrImage.cpp
   core/hdrImage.cpp
   core/iffImage.cpp
+  core/mapImage.cpp
+  core/mrayImage.cpp
+  core/mrvColorBarsImage.cpp
   core/pxrzImage.cpp
-  core/ddsImage.cpp
-  core/mrvHome.cpp
   core/shmapImage.cpp
   core/slateImage.cpp
   core/smpteImage.cpp
