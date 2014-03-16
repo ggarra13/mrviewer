@@ -3983,9 +3983,6 @@ void ImageView::frame( const int64_t f )
 void ImageView::seek( const int64_t f )
 {
 
-
-  
-
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
   browser()->seek( f );

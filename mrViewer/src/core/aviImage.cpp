@@ -132,7 +132,7 @@ aviImage::~aviImage()
   if ( _convert_ctx )
      sws_freeContext( _convert_ctx );
   if ( _av_frame )
-     av_free( _av_frame );
+     av_frame_unref( _av_frame );
 
   if ( _video_index >= 0 )
     close_video_codec();
@@ -687,12 +687,18 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-	ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+	_av_frame->pts = av_frame_get_best_effort_timestamp( _av_frame );
+        ptsframe = _av_frame->pts;
 
 	if ( ptsframe == MRV_NOPTS_VALUE )
+        {
 	   ptsframe = frame;
+           LOG_WARNING( "No ptsframe in decode_video" );
+        }
 	else
+        {
 	   ptsframe = pts2frame( stream, ptsframe );
+        }
 
 	store_image( ptsframe, pkt.dts );
 
@@ -1398,6 +1404,11 @@ void aviImage::populate()
                 {
                    _frame_offset += 1;
                 }
+             }
+             else
+             {
+                _video_packets.push_back( pkt );
+                continue;
              }
 	  }
 	  else

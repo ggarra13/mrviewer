@@ -105,7 +105,6 @@ void GLPathShape::draw( float z )
       glEnd();
    }
 
-   glDisable( GL_BLEND );
 
    if ( pts.size() == 1 || a >= 0.95f )
    {
@@ -122,6 +121,8 @@ void GLPathShape::draw( float z )
 
       glEnd();
    }
+
+   glDisable( GL_BLEND );
 }
 
 std::string GLErasePathShape::send() const
