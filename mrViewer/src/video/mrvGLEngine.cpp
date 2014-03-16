@@ -1147,6 +1147,7 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
 	    (*i)->a *= 0.25f;
 	    (*i)->draw(zoomX);
 	    (*i)->a = a;
+            continue;
 	 }
       }
 
@@ -1158,12 +1159,15 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
 	    (*i)->a *= 0.25f;
 	    (*i)->draw(zoomX);
 	    (*i)->a = a;
+            continue;
 	 }
       }
 
       if ( (*i)->frame == MRV_NOPTS_VALUE ||
 	   (*i)->frame == _view->frame() )
+      {
 	 (*i)->draw(zoomX);
+      }
    }
 
    glDisable(GL_BLEND);
