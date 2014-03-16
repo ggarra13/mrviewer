@@ -4,6 +4,7 @@ v2.5.7.3 - Bug fixed two crashes in EDL window and most of its functionality.
 	 - Added support to parse commandline for left/right (stereo) images.
 	 - Bug fixed disappearing picture when opening menu in window with
 	   DVD sub.
+	 - Bug fixed movies not starting at first frame.
 v2.5.7.2 - Removed Xlib DSOs from linux distribution to make them run in other
 	   machines.
 v2.5.7.1 - Added memset() to exr images as changing layers could leave traces

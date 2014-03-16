@@ -228,6 +228,7 @@ int EDLGroup::handle( int event )
 	       {
    		  _drag = ImageBrowser::new_item( m );
 		  int j = track->index_for( m );
+                  if ( j < 0 || j >= children() ) return 0;
 		  assert( j != -1 );
 
                   view()->stop();
@@ -245,7 +246,7 @@ int EDLGroup::handle( int event )
 	       if (fltk::event_x() >= c->x()+c->w()) continue;
 	       if (fltk::event_y() < c->y() - y() ) continue;
 	       if (fltk::event_y() >= c->y() - y() +c->h()) continue;
-	       
+
 	       if ( c->send( event ) ) return 1;
 	    }
 	    return 0;

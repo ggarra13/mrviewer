@@ -76,13 +76,14 @@ void GLPathShape::draw( float z )
    //Keep the content of the Stencil Buffer
    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
-   glColor4f( r, g, b, a );
 
 
-   glBegin( GL_BLEND );
-
+   glEnable( GL_BLEND );
    // So compositing works properly
    glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
+   glColor4f( r, g, b, a );
+
 
    glLineWidth( pen_size * z );
    glEnable( GL_LINE_SMOOTH );
@@ -201,7 +202,7 @@ void GLTextShape::draw( float z )
    glDisable( GL_DEPTH_TEST );
    glDisable( GL_DITHER );
    glDisable( GL_LIGHTING );
-   glBegin( GL_BLEND );
+   glEnable( GL_BLEND );
 
    glColor4f( r, g, b, a );
 

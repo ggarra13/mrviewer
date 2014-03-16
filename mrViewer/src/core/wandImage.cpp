@@ -153,7 +153,7 @@ namespace mrv {
 
 	MagickSetIteratorIndex( wand, index );
      }
-    
+
 
      bool has_alpha = false;
      MagickBooleanType alpha = MagickGetImageAlphaChannel( wand );
