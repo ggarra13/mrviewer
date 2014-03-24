@@ -2,10 +2,13 @@
 
 #export  BOOST_ROOT="C:/mrViewer_libs/lib/boost_1_47_0"
 export BOOST_ROOT="F:/code/lib/Windows-32/boost_1_51_0"
-export OPENEXR_ROOT="C:/mrViewer_libs/lib/Deploy"
-export     CTL_ROOT="C:/mrViewer_libs/lib/Deploy"
+#export OPENEXR_ROOT="C:/mrViewer_libs/lib/Deploy"
+#export     CTL_ROOT="C:/mrViewer_libs/lib/Deploy"
+export OPENEXR_ROOT="F:/code/lib/Deploy"
+export     CTL_ROOT="F:/code/lib/Deploy"
 
-export FFMPEG_ROOT=F:/code/lib/ffmpeg-20140221-git-76dd01e-win32-shared/
+export FFMPEG_ROOT=F:/code/lib/ffmpeg-20140324-git-63dbba6-win32-shared/
+
 
 export  GLUT_ROOT_PATH="F:/code/lib/glut/"
 export   FLTK2_DIR="F:/code/lib/fltk-2.0-win32"

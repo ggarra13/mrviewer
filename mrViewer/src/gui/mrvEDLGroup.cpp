@@ -13,7 +13,12 @@
 #include "gui/mrvElement.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
+#include "gui/mrvIO.h"
 #include "mrvEDLWindowUI.h"
+
+namespace {
+const char* kModule = "edl";
+}
 
 namespace mrv {
 
@@ -30,6 +35,12 @@ _dragY( 0 )
 
 EDLGroup::~EDLGroup()
 {
+   for ( int i = 0; i < children(); ++i )
+   {
+      delete child(i);
+      remove( i );
+   }
+
    _audio_track.clear();
 }
 
@@ -44,48 +55,20 @@ ImageView* EDLGroup::view() const
 }
 
 // Add a media track and return its index
-size_t EDLGroup::add_media_track( size_t r )
+size_t EDLGroup::add_media_track( int r )
 {
    size_t e = children();
 
-   mrv::Reel reel = browser()->reel( r );
-   if (! reel ) return 0;
 
    mrv::media_track* o = new mrv::media_track(x(), y() + 70 * e,
 					      w(), kTrackHeight);
  
    o->main( timeline()->main() );
-   o->reel( r );
-
    this->add( o );
 
-   fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
-   fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
+   o->reel( r );
 
-   int one = c1->value();
-   c1->clear();
 
-   int two = c2->value();
-   c2->clear();
-
-   int reels = browser()->number_of_reels();
-   for ( int i = 0; i < reels; ++i )
-   {
-      mrv::Reel track = browser()->reel( i );
-      c1->add( track->name.c_str() );
-      c2->add( track->name.c_str() );
-   }
-
-   if ( e == 0 )
-   {
-      c1->value( r );
-      c2->value( two );
-   }
-   else
-   {
-      c1->value( one );
-      c2->value( r );
-   }
 
    e = children() - 1;
    
@@ -228,13 +211,16 @@ int EDLGroup::handle( int event )
 	       {
    		  _drag = ImageBrowser::new_item( m );
 		  int j = track->index_for( m );
-                  if ( j < 0 || j >= children() ) return 0;
-		  assert( j != -1 );
+                  if ( j < 0 ) {
+                     return 0;
+                  }
 
                   view()->stop();
-		  browser()->reel( idx );
-		  browser()->change_image( j );
-		  browser()->redraw();
+                  
+                  DBG( "Set reel to " << track->reel() );
+                  browser()->reel( track->reel() );
+                  browser()->change_image( j );
+                  browser()->redraw();
 		  return 1;
 	       }
 	    }
@@ -267,21 +253,6 @@ int EDLGroup::handle( int event )
 	    if ( key == fltk::DeleteKey )
 	    {
 	       browser()->remove_current();
-	       // size_t i = 0;
-	       // size_t e = children();
-
-	       // for ( ; i != e; ++i )
-	       // {
-	       // 	  mrv::media_track* o = (mrv::media_track*)child(i);
-	       // 	  mrv::Element* elem = o->selected();
-	       // 	  if ( elem )
-	       // 	  {
-	       // 	     mrv::media m = elem->element();
-	       // 	     browser()->reel( o->reel() );
-	       // 	     browser()->remove( m );
-	       // 	     return 1;
-	       // 	  }
-	       // }
 	       return 0;
 	    }
 
@@ -293,40 +264,54 @@ int EDLGroup::handle( int event )
 	       int64_t tmin = std::numeric_limits<int64_t>::max();
 	       int64_t tmax = std::numeric_limits<int64_t>::min();
 
+               fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+               fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
+
+               int one = c1->value();
+               int two = c2->value();
+
 	       for ( ; i != e; ++i )
 	       {
 
+                  if ( i != one && i != two ) continue;
+
 		  mrv::media_track* o = (mrv::media_track*)child(i);
 		  mrv::Reel r = browser()->reel_at( i );
-		  mrv::MediaList::iterator i = r->images.begin();
-		  mrv::MediaList::iterator e = r->images.end();
+                  if (!r) continue;
+
+		  mrv::MediaList::iterator j = r->images.begin();
+		  mrv::MediaList::iterator k = r->images.end();
 
 		  mrv::media fg = view()->foreground();
 
-		  for ( ; i != e; ++i )
-		  {
-		     mrv::media m = *i;
-		     if (m == fg && key != 'a')
-		     {
-			int64_t tmi = m->position();
-			int64_t tma = m->position() + m->image()->duration();
-			if ( tmi < tmin ) tmin = tmi;
-			if ( tma > tmax ) tmax = tma;
-			break;
-		     }
-		  }
+                  if ( key == 'f' )
+                  {
+                     for ( ; j != k; ++j )
+                     {
+                        mrv::media m = *j;
+                        if (m == fg && key == 'f')
+                        {
+                           int64_t tmi = m->position();
+                           int64_t tma = m->position() + m->image()->duration();
+                           if ( tmi < tmin ) tmin = tmi;
+                           if ( tma > tmax ) tmax = tma;
+                           break;
+                        }
+                     }
+                  }
+                  else
+                  {
 
-		  if ( i == e )
-		  {
-		     int64_t tmi = o->minimum();
-		     int64_t tma = o->maximum();
-
-		     if ( tmi == tma ) continue;
-
-		     if ( tmi < tmin ) tmin = tmi;
-		     if ( tma > tmax ) tmax = tma;
-		  }
-	       }
+                     for ( ; j != k; ++j )
+                     {
+                        mrv::media m = *j;
+                        int64_t tmi = m->position();
+                        int64_t tma = m->position() + m->image()->duration();
+                        if ( tmi < tmin ) tmin = tmi;
+                        if ( tma > tmax ) tmax = tma;
+                     }
+                  }
+               }
 
 	       mrv::Timeline* t = timeline();
 	       t->minimum( tmin );
@@ -365,6 +350,13 @@ int EDLGroup::handle( int event )
 
 	    mrv::media_track* t1 = (mrv::media_track*)child( _dragChild );
 	    mrv::media_track* t2 = (mrv::media_track*)child( idx );
+
+            if ( t2->reel() == -1 ) {
+	       delete _drag;
+	       _drag = NULL;
+	       redraw();
+               return 1;
+            }
 
 	    mrv::Timeline* t = timeline();
 	    
@@ -509,6 +501,7 @@ void EDLGroup::refresh()
    size_t e = children();
    for ( size_t i = 0; i < e; ++i )
    {
+      DBG( "REFRESH MEDIA TRACK " << i );
       mrv::media_track* o = (mrv::media_track*) child(i);
       o->refresh();
       o->redraw();

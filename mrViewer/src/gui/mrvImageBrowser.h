@@ -66,7 +66,7 @@ namespace mrv
 
     const mrv::media current_image() const;
 
-    void reel_display( fltk::Choice* c ) { _reel_display = c; }
+    void reel_choice( fltk::Choice* c ) { _reel_choice = c; }
 
     void attach_profile();
     void remove_current();
@@ -152,7 +152,7 @@ namespace mrv
 
     unsigned       _reel;
     mrv::ReelList  _reels;
-    fltk::Choice*  _reel_display;
+    fltk::Choice*  _reel_choice;
 
     mrv::Element* dragging;
     int lastX, lastY;

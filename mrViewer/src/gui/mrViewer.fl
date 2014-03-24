@@ -193,7 +193,7 @@ o->hscrollbar.color( o->buttoncolor() );}
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
             callback {v->reel(o->value());} open
             xywh {5 5 120 20} align 36 box THIN_DOWN_BOX
-            extra_code {uiBrowser->reel_display(o);}
+            extra_code {uiBrowser->reel_choice(o);}
           } {}
           {fltk::Group} uiReelOps {open
             xywh {130 3 81 26}

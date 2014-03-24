@@ -14,9 +14,14 @@
 #include "gui/mrvElement.h"
 #include "gui/mrvImageInformation.h"
 #include "gui/mrvHotkey.h"
+#include "gui/mrvIO.h"
 #include "core/mrvI8N.h"
 #include "mrViewer.h"
 #include "mrvEDLWindowUI.h"
+
+namespace {
+const char* kModule = "track";
+}
 
 void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow );
 
@@ -83,16 +88,18 @@ mrv::ImageBrowser* media_track::browser() const {
    return _main->uiReelWindow->uiBrowser;
 }
 
-int media_track::index_for( const mrv::media m )
+int media_track::index_for( const mrv::media& m )
 {
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
-   if ( !reel ) return -1;
+   if ( !reel ) {
+      return -1;
+   }
 
    size_t e = reel->images.size();
 
    for (size_t i = 0; i < e; ++i )
    {
-      mrv::media m2 = reel->images[i];
+      const mrv::media& m2 = reel->images[i];
       if ( m == m2 )
       {
 	 return i;
@@ -181,6 +188,7 @@ void media_track::insert( const boost::int64_t frame, mrv::media m )
 {  
    int idx = index_at( frame );
    if ( idx < 0 ) idx = 0;
+   if ( _reel_idx < 0 ) return;
 
    browser()->reel( _reel_idx );
    browser()->insert( idx, m );
@@ -192,6 +200,7 @@ void media_track::insert( const boost::int64_t frame, mrv::media m )
 // Remove a media from the track
 bool media_track::remove( const int idx )
 {  
+   if ( _reel_idx < 0 ) return false;
    browser()->reel( _reel_idx );
    browser()->remove( idx );
    browser()->parent()->redraw();
@@ -204,6 +213,7 @@ bool media_track::remove( const int idx )
 // Remove a media from the track
 bool media_track::remove( const mrv::media m )
 {  
+   if ( _reel_idx < 0 ) return false;
    browser()->reel( _reel_idx );
    browser()->remove( m );
    browser()->parent()->redraw();
@@ -289,7 +299,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	    main()->uiView->foreground( fg );
 
 	    char buf[1024];
-	    sprintf( buf, N_("ShiftMediaStart %") PRId64 
+	    sprintf( buf, N_("ShiftMediaStart %d") 
 		     N_(" \"%s\" %") PRId64,
 		     _reel_idx, img->fileroot(), img->first_frame() );
 	    main()->uiView->send( buf );
@@ -360,6 +370,8 @@ bool media_track::select_media( const boost::int64_t pos )
 	 ok = true;
 	 _selected = ImageBrowser::new_item( fg );
 	 focus(this);
+         if ( _reel_idx < 0 ) break;
+
 	 browser()->reel( _reel_idx );
 	 browser()->change_image( i );
 	 browser()->redraw();
@@ -407,7 +419,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    img->seek( pos );
 
 	    char buf[1024];
-	    sprintf( buf, N_( "ShiftMediaEnd %" ) PRId64 
+	    sprintf( buf, N_( "ShiftMediaEnd %d" ) 
 		     N_(" \"%s\" %" ) PRId64,
 		     _reel_idx, img->fileroot(), img->last_frame() );
 	    main()->uiView->send( buf );
@@ -435,8 +447,12 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 void media_track::refresh()
 {
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
-   if ( !reel ) return;
+   if ( !reel ) {
+      DBG( "EMPTY REEL AT INDEX " << _reel_idx );
+      return;
+   }
 
+   DBG( reel->name << " #images=" << reel->images.size() );
 
    //
    // Adjust timeline position
@@ -452,6 +468,7 @@ void media_track::refresh()
       for ( j = i, ++i; i != end; j = i, ++i )
       {
 	 int64_t frame = (*j)->position() + (*j)->image()->duration();
+         DBG( (*i)->image()->name() << " set to frame " << frame );
 	 (*i)->position( frame );
       }
    }
@@ -518,6 +535,7 @@ int media_track::handle( int event )
                   return 1;
                else
                {
+                  if ( _reel_idx < 0 ) return 1;
                   fltk::Menu menu(0,0,0,0);
                   menu.add( _("File/Open/Movie or Sequence"), 
                             kOpenImage.hotkey(),

@@ -158,7 +158,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		     next = img;
 		  }
 	       }
-	     
 
 	       assert( next != NULL );
 
@@ -176,7 +175,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	    }
 
-	    if ( frame >= last )
+	    if ( frame > last )
 	    {
 	       if ( loop == ImageView::kLooping )
 	       {
@@ -235,7 +234,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       assert( next != NULL );
 
-	       if ( next != img && next != NULL ) 
+	       if ( next != img && next != NULL )
 	       {
 		  CMedia::Mutex& m2 = next->video_mutex();
 		  SCOPED_LOCK( m2 );
@@ -249,7 +248,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	    }
 
 
-	    if ( frame <= first )
+	    if ( frame < first )
 	    {
 	       if ( loop == ImageView::kLooping )
 	       {
@@ -324,12 +323,12 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
    if ( f > last )
    {
-      img->loop_at_end( last );
+      img->loop_at_end( last+1 );
       return CMedia::kDecodeLoopEnd;
    }
    else if ( f < first )
    {
-      img->loop_at_start( first );
+      img->loop_at_start( first-1 );
       return CMedia::kDecodeLoopStart;
    }
 
@@ -379,8 +378,12 @@ void audio_thread( PlaybackData* data )
 
    while ( !img->stopped() )
    {
+
       int step = (int) img->playback();
       if ( step == 0 ) break;
+
+      assert( view->playback() == mrv::ImageView::kStopped ||
+              img->playback() == view->playback() );
 
       img->wait_audio();
 
@@ -388,9 +391,9 @@ void audio_thread( PlaybackData* data )
 
 
       if ( frame > img->last_frame() )
-	 status = CMedia::kDecodeLoopEnd;
+         status = CMedia::kDecodeLoopEnd;
       if ( frame < img->first_frame() )
-	 status = CMedia::kDecodeLoopStart;
+         status = CMedia::kDecodeLoopStart;
 
       switch( status )
       {
@@ -415,7 +418,6 @@ void audio_thread( PlaybackData* data )
 
 		  if ( end == kEndIgnore )
 		  {
-		     frame += step;
 		     break;
 		  }
 
@@ -556,7 +558,7 @@ void video_thread( PlaybackData* data )
 
    int idx = fg ? view->fg_reel() : view->bg_reel();
    if ( idx < 0 ) {
-      LOG_ERROR( "REEL INDEX IS NEGATIVE FOR FG " << fg );
+      LOG_ERROR( "REEL INDEX IS NEGATIVE FOR FG? " << fg );
       return;
    }
    mrv::Reel   reel = browser->reel_at( idx );
@@ -584,22 +586,28 @@ void video_thread( PlaybackData* data )
       if ( !skip )
 	 img->wait_image();
 
-      // img->debug_video_packets( frame, "PLAYBACK" );
+      // img->debug_video_packets( frame, "PLAYBACK", true );
       // img->debug_video_stores( frame, "PLAYBACK" );
 
       int step = (int) img->playback();
       if ( step == 0 ) break;
+      assert( view->playback() == mrv::ImageView::kStopped ||
+              img->playback() == view->playback() );
 
       CMedia::DecodeStatus status;
 
+      DBG( img->name() << "  PRE    FRAME " << frame  );
       {
 	 status = img->decode_video( frame );
       }
+      DBG( img->name() << "  STATUS FRAME " << frame  );
 
       if ( frame > img->last_frame() )
-	 status = CMedia::kDecodeLoopEnd;
+         status = CMedia::kDecodeLoopEnd;
       if ( frame < img->first_frame() )
-	 status = CMedia::kDecodeLoopStart;
+         status = CMedia::kDecodeLoopStart;
+
+      DBG( img->name() << "  STATUS " << status );
 
       switch( status )
       {
@@ -620,8 +628,7 @@ void video_thread( PlaybackData* data )
 
 		  if ( end == kEndIgnore )
 		  {
-		     skip = true;
-		     frame += step;
+                     skip = true;
 		     if ( img->has_audio() )
 			frame = img->audio_frame();
 		     break;
@@ -685,21 +692,21 @@ void video_thread( PlaybackData* data )
 
       img->real_fps( timer.actualFrameRate() );
 
-
-      img->find_image( frame );
-
+      DBG( img->name() << " FIND IMAGE   " << frame );
+      bool ok = img->find_image( frame );
+      DBG( img->name() << " FOUND IMAGE? " << ok );
       if ( !img->has_audio() && reel->edl )
       {
-	 assert( img != NULL );
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 
 
 	 if ( fg )
 	 {
+            DBG( "FRAME " << frame << " f " << f );
 	    assert( f <= timeline->maximum() );
 	    assert( f >= timeline->minimum() );
 
-	    timeline->value( double( f ) );
+	    view->frame( f );
 	 }
       }
 
@@ -747,6 +754,10 @@ void decode_thread( PlaybackData* data )
 
    int step = (int) img->playback();
 
+   DBG( "img playback=" << img->playback() 
+        << " view playback=" << view->playback() );
+   assert( view->playback() == mrv::ImageView::kStopped ||
+           img->playback() == view->playback() );
 
    int64_t frame = img->dts();
 
@@ -774,6 +785,9 @@ void decode_thread( PlaybackData* data )
 
       step = (int) img->playback();
       if ( step == 0 ) break;
+
+      assert( img->playback() == CMedia::kStopped ||
+              img->playback() == view->playback() );
 
       frame += step;
       

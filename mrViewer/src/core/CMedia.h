@@ -685,6 +685,8 @@ namespace mrv {
     virtual void do_seek();
 
     DecodeStatus decode_audio( boost::int64_t& frame );
+    DecodeStatus handle_video_seek( boost::int64_t& frame, 
+                                    const bool is_seek = true );
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
 

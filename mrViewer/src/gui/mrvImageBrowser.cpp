@@ -410,7 +410,6 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 	    char buf[32];
 	    sprintf( buf, "%d", idx );
 	    name += buf;
-	    // 	  name += itoa( idx, buf, 10 );
 	    i = _reels.begin();
 	    ++idx;
 	  }
@@ -425,11 +424,40 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     view()->send( buf );
 
     _reel = (unsigned int) _reels.size() - 1;
-    _reel_display->add( name.c_str() );
-    _reel_display->value( _reel );
-    uiMain->uiEDLWindow->uiEDLGroup->add_media_track( _reel );
-    if ( ! _reels.empty() ) change_reel();
-    return reel;
+    _reel_choice->add( name.c_str() );
+    _reel_choice->value( _reel );
+
+    edl_group()->add_media_track( _reel );
+
+   fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+   fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
+
+   int one = c1->value();
+   c1->clear();
+
+   int two = c2->value();
+   c2->clear();
+
+   size_t reels = number_of_reels();
+   for ( size_t i = 0; i < reels; ++i )
+   {
+      mrv::Reel track = this->reel( i );
+
+      c1->add( track->name.c_str() );
+      c2->add( track->name.c_str() );
+   }
+
+   if ( one == -1 && two == -1 )
+   {
+      c1->value(0);
+      if ( reels > 1 ) c2->value(1);
+   }
+
+   edl_group()->refresh();
+   edl_group()->redraw();
+
+   if ( ! _reels.empty() ) change_reel();
+   return reel;
   }
 
   /** 
@@ -506,39 +534,37 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
        view()->stop();
 
     if ( _reels.empty() ) return;
-    _reel_display->remove(_reel);
+    _reel_choice->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
 
     fltk::Choice* c = uiMain->uiEDLWindow->uiEDLChoiceOne;
 
     int sel = c->value();
 
-    if ( sel == _reel )
+    if ( sel >= 0 )
     {
-       edl_group()->remove_media_track( 0 );
+       c->remove( _reel );
+       c->value( sel );
+       c->redraw();
     }
-    c->remove( _reel );
-    c->value( sel );
-    c->redraw();
 
 
     c = uiMain->uiEDLWindow->uiEDLChoiceTwo;
     sel = c->value();
-    if ( sel == _reel )
+
+    if ( sel >= 0 )
     {
-       edl_group()->remove_media_track( 1 );
+       c->remove( _reel );
+       c->value( sel );
+       c->redraw();
     }
-    c->remove( _reel );
-    c->value( sel );
-    c->redraw();
 
     if ( _reels.empty() ) new_reel();
     if ( _reel >= (unsigned int)_reels.size() ) 
       _reel = (unsigned int)_reels.size() - 1;
-    _reel_display->value( _reel );
-    
 
-    _reel_display->redraw();
+    _reel_choice->value( _reel );
+    _reel_choice->redraw();
     change_reel();
   }
 
@@ -1340,10 +1366,12 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
    */
   void ImageBrowser::change_reel()
   {
+     DBG( "Change reel" );
     clear();
 
     mrv::Reel reel = current_reel();
     if ( !reel ) {
+       DBG( "Invalid reel" );
        change_image( -1 );
        return;
     }
@@ -1352,12 +1380,16 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     if ( reel->images.empty() )
       {
+         DBG( "NO images in reel" );
 	change_image( -1 );
       }
     else
       {
  
+         DBG( "Add images in browser" );
+
 	 mrv::MediaList::iterator i = reel->images.begin();
+         MediaList::iterator j;
 	 mrv::MediaList::iterator e = reel->images.end();
 	 for ( ; i != e; ++i )
 	 {
@@ -1365,6 +1397,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	    
 	    fltk::Browser::add( nw );
 	 }
+
+         DBG( "Make images contiguous in timeline" );
+         adjust_timeline();
 
 	change_image(0);
 	seek( view()->frame() );
@@ -1386,8 +1421,6 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     sprintf( buf, "CurrentReel \"%s\"", reel->name.c_str() );
     view()->send( buf );
 
-    edl_group()->refresh();
-    edl_group()->redraw();
   }
 
   /** 
@@ -1484,7 +1517,7 @@ int ImageBrowser::value() const
 
   void ImageBrowser::change_image(unsigned i)
   { 
-     if ( i >= children() ) return;
+     // if ( i >= children() ) return;
      value(i); 
      change_image(); 
   }
@@ -1519,7 +1552,7 @@ int ImageBrowser::value() const
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
-    if ( start != mrv::kMinFrame ) uiMain->uiFrame->value( start );
+    if ( start != mrv::kMinFrame ) frame( start );
 
 
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
@@ -1560,7 +1593,11 @@ int ImageBrowser::value() const
        if ( reel == this->reel( i ) )
        {
 	  mrv::media_track* track = edl_group()->media_track(i);
-	  if ( m ) track->add( m );
+	  if ( m )
+          {
+             track->add( m );
+             track->redraw();
+          }
        }
     }
 
@@ -1715,7 +1752,7 @@ void ImageBrowser::load( mrv::LoadList& files,
     if ( reel == oldreel && numImages > 0 )
       {
 	this->change_image( (unsigned int)reel->images.size()-1 );
-	uiMain->uiFrame->value( m->image()->first_frame() );
+	frame( m->image()->first_frame() );
       }
     else
       {
@@ -1726,11 +1763,11 @@ void ImageBrowser::load( mrv::LoadList& files,
 	  {
 	    CMedia* img = m->image();
 	    int64_t offset = timeline()->offset( img );
-	    uiMain->uiFrame->value( offset + img->first_frame() );
+	    frame( offset + img->first_frame() );
 	  }
 	else
 	  {
-	    uiMain->uiFrame->value( 1 );
+	    frame( 1 );
 	  }
       }
 
@@ -2035,6 +2072,8 @@ void ImageBrowser::load( const stringArray& files,
     mrv::Reel reel = current_reel();
     if ( reel == NULL ) return;
 
+    DBG( "reel name " << reel->name );
+
     if ( view()->playback() != ImageView::kStopped )
        view()->stop();
 
@@ -2045,19 +2084,27 @@ void ImageBrowser::load( const stringArray& files,
        sel = reel->index( fg->image() ) + 1;
     }
 
+    DBG( "image selected #" << sel << "  size: " << reel->images.size() );
+
     if ( sel == 0 ) return;
+
 
     if ( sel >= reel->images.size() )
        sel = 0;
 
     change_image( sel );
 
-    if ( timeline()->edl() )
+    if ( reel->edl )
       {
 	mrv::media m = reel->images[sel];
 	int64_t pos = m->position();
+        DBG( "seek to " << pos );
 	seek( pos );
       }
+    else
+    {
+       DBG( "******* NOT REEL" );
+    }
   }
 
 
@@ -2117,6 +2164,8 @@ void ImageBrowser::load( const stringArray& files,
     int button = fltk::event_button();
     int sel = value();
 
+    DBG( "Clicked on " << sel );
+
     if ( button == 1 )
       {
 	int clicks = fltk::event_clicks();
@@ -2134,6 +2183,8 @@ void ImageBrowser::load( const stringArray& files,
 		return ok;
 	      }
 
+            DBG( "sel " << sel << "  old_sel " << old_sel );
+
 	    if ( sel == old_sel ) return ok;
 
 	    lastX = x; lastY = y;
@@ -2143,6 +2194,7 @@ void ImageBrowser::load( const stringArray& files,
 	    if ( timeline()->edl() && m )
 	      {
 		int64_t s = m->position();
+                 DBG("seek to " << s );
 		seek( s );
 	      }
 	  }
@@ -2368,21 +2420,18 @@ void ImageBrowser::load( const stringArray& files,
     //
     // Adjust timeline position
     //
-    uiMain->uiEDLWindow->uiEDLGroup->refresh();
+    adjust_timeline();
 
     //
     // Redraw EDL window
     //
-    uiMain->uiEDLWindow->uiEDLGroup->redraw();
+    edl_group()->redraw();
 
     if ( timeline()->edl() )
       {
 	int64_t t = timeline()->offset( img );
 	f += t;
-	uiMain->uiFrame->value( f );
-	uiMain->uiFrame->redraw();
-	timeline()->value( double(f) );
-	timeline()->redraw();
+        frame( f );
       }
 
     return 1;
@@ -2441,8 +2490,8 @@ void ImageBrowser::load( const stringArray& files,
      view()->send(buf);
 
 
-     uiMain->uiFrame->value( double(tframe) );
-     uiMain->uiFrame->redraw();
+     DBG( "EDL FRAME " << tframe );
+     frame( tframe );
 
      timeline()->value( double(tframe) );
      timeline()->redraw();
@@ -2614,14 +2663,19 @@ void ImageBrowser::load( const stringArray& files,
 
 
   /** 
-   * Switch to a new frame.
-   * 
-   * @param f new frame
+   * Switch to a new frame, changing timeline value and uiFrame.
+   * This function does not check frame is in range in timeline.
+   *
+   * @param f new frame in timeline units
    */
   void ImageBrowser::frame( const int64_t f )
   {
-    uiMain->uiFrame->value( f );
-    uiMain->uiFrame->redraw();
+     DBG( "Set frame to " << f );
+     uiMain->uiFrame->value( f );
+     uiMain->uiFrame->redraw();
+
+     timeline()->value( f );
+     timeline()->redraw();
   }
 
   void ImageBrowser::clear_edl()
@@ -2635,12 +2689,11 @@ void ImageBrowser::load( const stringArray& files,
     if (!m) return;
 
     CMedia* img = m->image();
-    int64_t frame = img->frame();
+    int64_t f = img->frame();
 
     if ( !img ) return;
 
-    uiMain->uiFrame->value( frame );
-    timeline()->value( double(frame) );
+    frame( f );
 
     adjust_timeline();
 
@@ -2665,8 +2718,7 @@ void ImageBrowser::load( const stringArray& files,
     if ( !img ) return;
 
     int64_t f = img->frame() - img->first_frame() + timeline()->location( img );
-    uiMain->uiFrame->value( f );
-    timeline()->value( f );
+    frame( f );
 
     char buf[64];
     sprintf( buf, "EDL 1" );
@@ -2704,27 +2756,45 @@ void ImageBrowser::load( const stringArray& files,
 
   void ImageBrowser::adjust_timeline()
   {
-     boost::int64_t first, last, frame;
+
+     boost::int64_t first, last, f;
      
-     if ( ! timeline()->edl() ) 
+     mrv::Reel reel = current_reel();
+     if ( !reel || reel->images.empty() ) return;
+
+     mrv::MediaList::iterator i = reel->images.begin();
+     MediaList::iterator j;
+     mrv::MediaList::iterator e = reel->images.end();
+     if ( i != e )
+     {
+        (*i)->position( 1 );
+        
+        for ( j = i, ++i; i != e; j = i, ++i )
+        {
+           int64_t frame = (*j)->position() + (*j)->image()->duration();
+           DBG( (*i)->image()->name() << " set to frame " << frame );
+           (*i)->position( frame );
+        }
+     }
+
+     if ( ! reel->edl ) 
      {
 	mrv::media m = current_image();
 	if ( ! m ) return;
 	CMedia* img = m->image();
 
 	first = img->first_frame();
-	frame = img->frame();
+	f = img->frame();
 	last  = img->last_frame();
 
-	if (frame > last ) frame = last;
-	if (frame < first ) frame = first;
+	if (f > last ) f = last;
+	if (f < first ) f = first;
 
       }
     else
       {
 
-	mrv::Reel reel = current_reel();
-	if ( !reel || reel->images.empty() ) return;
+         edl_group()->redraw();
 
 	first = 1;
 
@@ -2733,8 +2803,7 @@ void ImageBrowser::load( const stringArray& files,
 
 	CMedia* img = m->image();
 
-	// frame = m->position() + img->frame() - img->first_frame();
-	frame = m->position() + img->frame();
+	f = m->position() + img->frame() - img->first_frame();
 
 	m = reel->images.back();
 	if (! m ) return;
@@ -2744,14 +2813,20 @@ void ImageBrowser::load( const stringArray& files,
 
       }
 
+     // for ( int i = 0; i < reel->images.size(); ++i )
+     // {
+     //    DBG( "Image " << i << " " << reel->images[i]->position() );
+     // }
+
+     // DBG( "first " << first << " f=" << f << " last " << last );
+
 
      timeline()->minimum( double(first) );
      timeline()->maximum( double(last) );
-     timeline()->value( frame );
      uiMain->uiStartFrame->value( first );
      uiMain->uiEndFrame->value( last );
-     uiMain->uiFrame->value( frame );
-     timeline()->redraw();
+
+     frame( f );
   }
 
 

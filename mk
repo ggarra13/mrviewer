@@ -166,9 +166,6 @@ while [ $# -gt 0 ]; do
 	32)
 	    shift
 	    CMAKE_BUILD_ARCH=32
-	    export LDFLAGS=-m32
-	    export CXXFLAGS=-m32
-	    export CFLAGS=-m32
 	    ;;
 	both)
 	    shift

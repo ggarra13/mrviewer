@@ -25,8 +25,9 @@ class EDLGroup : public fltk::Group
      EDLGroup(int x, int y, int w, int h);
      ~EDLGroup();
 
-     // Add a media track and return its index
-     size_t add_media_track( size_t reel_idx );
+     // Add a media track and return its index.
+     // index can be negative 1 to indicate a missing reel
+     size_t add_media_track( int reel_idx );
 
      // Add an audio only track and return its index
      size_t add_audio_track();

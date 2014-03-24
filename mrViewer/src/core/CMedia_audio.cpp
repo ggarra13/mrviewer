@@ -116,6 +116,9 @@ AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
  */
 void CMedia::clear_packets()
 {
+   SCOPED_LOCK( _mutex );
+   SCOPED_LOCK( _audio_mutex );
+   SCOPED_LOCK( _subtitle_mutex );
   _video_packets.clear();
   _subtitle_packets.clear();
   _audio_packets.clear();
