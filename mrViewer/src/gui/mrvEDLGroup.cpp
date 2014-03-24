@@ -270,6 +270,12 @@ int EDLGroup::handle( int event )
                int one = c1->value();
                int two = c2->value();
 
+               if ( one == -1 && two == -1 )
+               {
+                  tmin = 1;
+                  tmax = 100;
+               }
+
 	       for ( ; i != e; ++i )
 	       {
 
@@ -288,8 +294,8 @@ int EDLGroup::handle( int event )
                   {
                      for ( ; j != k; ++j )
                      {
-                        mrv::media m = *j;
-                        if (m == fg && key == 'f')
+                        const mrv::media& m = *j;
+                        if (m == fg)
                         {
                            int64_t tmi = m->position();
                            int64_t tma = m->position() + m->image()->duration();
@@ -298,13 +304,20 @@ int EDLGroup::handle( int event )
                            break;
                         }
                      }
+
+                     if ( j == k )
+                     {
+                        tmin = 1;
+                        tmax = 100;
+                     }
+
                   }
                   else
                   {
 
                      for ( ; j != k; ++j )
                      {
-                        mrv::media m = *j;
+                        const mrv::media& m = *j;
                         int64_t tmi = m->position();
                         int64_t tma = m->position() + m->image()->duration();
                         if ( tmi < tmin ) tmin = tmi;
