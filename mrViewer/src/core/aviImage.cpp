@@ -1405,8 +1405,9 @@ void aviImage::populate()
                 }
                 else
                 {
+                   decode_video_packet( pktframe, _frameStart, 
+                                        (AVPacket&)pkt );
                    _frame_offset += 1;
-                   decode_video_packet( pktframe, _frameStart, (AVPacket&)pkt );
                 }
              }
              else
