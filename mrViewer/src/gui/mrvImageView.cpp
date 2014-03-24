@@ -1089,7 +1089,8 @@ void ImageView::timeout()
 
 	 if ( fg && fg != foreground() ) 
 	 {
-	    DBG( "CHANGE TO FG " << fg->image()->name() );
+	    DBG( "CHANGE TO FG " << fg->image()->name() << " due to frame "
+                 << frame );
 	    foreground( fg );
 	 }
       }
@@ -1163,8 +1164,6 @@ void ImageView::timeout()
 	// }
 
 
-	timeline->value( double(frame) );
-	timeline->redraw();
 	if ( img && img->first_frame() != img->last_frame() &&
 	     this->frame() != frame )
 	{
@@ -3955,30 +3954,28 @@ void ImageView::resize_background()
 {
 }
 
-/// Returns current frame number in view
+/// Returns current frame number in view (uiFrame)
 int64_t ImageView::frame() const
 {
   return uiMain->uiFrame->frame();
 }
 
 /** 
- * Change view's frame number
+ * Change view's frame number in frame indicator and timeline
  * 
- * @param f new frame
+ * @param f new frame in timeline units
  */
 void ImageView::frame( const int64_t f )
 {
-  // Hmmm... this is somewhat inefficient.  Would be better to just
-  // change fg/bg position
-  browser()->frame( f );
+   browser()->frame( f );
 }
 
 
 
 /** 
- * Change view's frame number
+ * Jump to a frame in timeline, creating new thumbnails if needed.
  * 
- * @param f new frame
+ * @param f new frame in timeline units
  */
 void ImageView::seek( const int64_t f )
 {
@@ -4053,7 +4050,6 @@ void ImageView::step_frame( int64_t n )
 
   
   seek( f );
-  uiMain->uiFrame->frame(f);
 }
 
 
@@ -4227,7 +4223,7 @@ void ImageView::playback( const ImageView::Playback b )
 void ImageView::play_forwards() 
 { 
    stop();
-  play( CMedia::kForwards );
+   play( CMedia::kForwards );
 }
 
 /** 
@@ -4251,38 +4247,38 @@ void ImageView::play( const CMedia::Playback dir )
    }
 
 
-  playback( (Playback) dir );
+   playback( (Playback) dir );
 
-  delete_timeout();
+   delete_timeout();
 
-  double fps = uiMain->uiFPS->value();
-  create_timeout( 1.0/fps*2 );
+   double fps = uiMain->uiFPS->value();
+   create_timeout( 1.0/fps*2 );
 
-  mrv::media fg = foreground();
-  if ( fg )
-    {
-       DBG( "******* PLAY FG " << fg->image()->name() );
-       fg->image()->play( dir, uiMain, true );
-    }
+   mrv::media fg = foreground();
+   if ( fg )
+   {
+      DBG( "******* PLAY FG " << fg->image()->name() );
+      fg->image()->play( dir, uiMain, true );
+   }
 
 
-  mrv::media bg = background();
-  if ( bg && bg != fg ) 
-  {
-     DBG( "******* PLAY BG " << bg->image()->name() );
-     bg->image()->play( dir, uiMain, false);
-  }
+   mrv::media bg = background();
+   if ( bg && bg != fg ) 
+   {
+      DBG( "******* PLAY BG " << bg->image()->name() );
+      bg->image()->play( dir, uiMain, false);
+   }
 
 }
 
-/** 
+/**
  * Play image sequence backwards.
- * 
+ *
  */
 void ImageView::play_backwards() 
 { 
    stop();
-  play( CMedia::kBackwards );
+   play( CMedia::kBackwards );
 }
 
 
@@ -4335,6 +4331,7 @@ void ImageView::stop()
   seek( int64_t(timeline()->value()) );
  
   redraw();
+
   thumbnails();
 }
 

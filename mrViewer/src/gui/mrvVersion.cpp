@@ -29,6 +29,8 @@ extern "C" {
 #include <fltk/Monitor.h>
 #include <fltk/Browser.h>
 
+#include <OpenEXR/ImfVersion.h>
+
 #include <boost/version.hpp>
 
 #include "core/mrvOS.h"
@@ -47,7 +49,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "2.5.7.4 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "2.5.8.0 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -474,7 +476,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "(C) 2000-2006 Fabrice Bellard, et al." << endl
       << endl
-      << "ILM OpenEXR v1.7 or later" << endl
+      << "ILM OpenEXR v" << Imf::getVersion(Imf::EXR_VERSION) <<  " or later" << endl
       << "http://www.openexr.org/" << endl
       << "(C) 2005-2007 Industrial Light & Magic" << endl
       << endl

@@ -28,8 +28,8 @@ class media_track : public fltk::Group
 
      double frame_size() const;
 
-     void reel( size_t r ) { _reel_idx = r; redraw(); }
-     size_t reel() const  { return _reel_idx; }
+     void reel( int r ) { _reel_idx = r; redraw(); }
+     int reel() const  { return _reel_idx; }
 
      void zoom( double x );
 
@@ -43,7 +43,7 @@ class media_track : public fltk::Group
      int index_at( const boost::int64_t frame );
 
      // Return first image index for a media or -1 if not found
-     int index_for( const mrv::media m );
+     int index_for( const mrv::media& m );
 
      // Return first image index for a media or -1 if not found
      int index_for( const std::string s );
@@ -97,7 +97,7 @@ class media_track : public fltk::Group
 
    protected:
      mrv::ViewerUI* _main;
-     size_t     _reel_idx;
+     int        _reel_idx;
      int        _dragX;
      bool       _at_start;
      static  mrv::Element* _selected;

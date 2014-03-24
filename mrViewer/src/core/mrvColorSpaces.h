@@ -8,6 +8,7 @@
  * 
  */
 
+#include <ImfForward.h>
 #include <ImfChromaticities.h>
 #include "mrvImagePixel.h"
 
