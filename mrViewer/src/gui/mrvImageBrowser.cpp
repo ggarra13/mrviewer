@@ -441,17 +441,28 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    size_t reels = number_of_reels();
    for ( size_t i = 0; i < reels; ++i )
    {
-      mrv::Reel track = this->reel( i );
+      mrv::Reel r = this->reel( i );
 
-      c1->add( track->name.c_str() );
-      c2->add( track->name.c_str() );
+      c1->add( r->name.c_str() );
+      c2->add( r->name.c_str() );
    }
 
+   DBG( ">>>>>>>>>>>>>>> ONE " << one << "  TWO " << two << " <<<<<<<<<<<<<< ");
    if ( one == -1 && two == -1 )
    {
       c1->value(0);
       if ( reels > 1 ) c2->value(1);
    }
+   else
+   {
+      c1->value( one );
+      if ( two == -1 && reels > 1 )
+         c2->value( 1 );
+      else
+         c2->value( two );
+   }
+   c1->redraw();
+   c2->redraw();
 
    edl_group()->refresh();
    edl_group()->redraw();

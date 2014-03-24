@@ -1394,6 +1394,9 @@ void aviImage::populate()
 	  {
              if ( !got_video )
              {
+                boost::int64_t pktframe = pts2frame( get_video_stream(),
+                                                     pkt.dts );
+
                 DecodeStatus status = decode_image( _frameStart, pkt ); 
                 if ( status == kDecodeOK )
                 {
@@ -1403,6 +1406,7 @@ void aviImage::populate()
                 else
                 {
                    _frame_offset += 1;
+                   decode_video_packet( pktframe, _frameStart, (AVPacket&)pkt );
                 }
              }
              else
@@ -2099,8 +2103,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	    }
 	  else
 	    {
-	       // decode_image( pktframe, pkt );
-	       decode_video_packet( pktframe, frame, pkt );	  
+	       decode_video_packet( pktframe, frame, pkt );
 	    }
 	}
 
