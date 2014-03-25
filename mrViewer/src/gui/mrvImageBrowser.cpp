@@ -447,7 +447,6 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
       c2->add( r->name.c_str() );
    }
 
-   DBG( ">>>>>>>>>>>>>>> ONE " << one << "  TWO " << two << " <<<<<<<<<<<<<< ");
    if ( one == -1 && two == -1 )
    {
       c1->value(0);
@@ -2504,9 +2503,6 @@ void ImageBrowser::load( const stringArray& files,
      DBG( "EDL FRAME " << tframe );
      frame( tframe );
 
-     timeline()->value( double(tframe) );
-     timeline()->redraw();
-
     ImageView::Playback playback = view()->playback();
 
     if ( timeline()->edl() )
@@ -2601,6 +2597,9 @@ void ImageBrowser::load( const stringArray& files,
 	mrv::media bg = view()->background();
 	if ( bg )
 	{
+           mrv::Reel reel = reel_at( view()->bg_reel() );
+           f = reel->global_to_local( tframe );
+
 	   img = bg->image();
 	   img->abort( true );
 	   img->stop();

@@ -347,7 +347,6 @@ void audio_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
    bool fg = data->fg;
-   CMedia* bg = data->bg;
 
    // delete the data (we don't need it anymore)
    delete data;
@@ -382,8 +381,6 @@ void audio_thread( PlaybackData* data )
       int step = (int) img->playback();
       if ( step == 0 ) break;
 
-      assert( view->playback() == mrv::ImageView::kStopped ||
-              img->playback() == view->playback() );
 
       img->wait_audio();
 
@@ -415,13 +412,13 @@ void audio_thread( PlaybackData* data )
 	       {
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
-
 		  if ( end == kEndIgnore )
 		  {
 		     break;
 		  }
-
 	       }
+
+               if ( img->aborted() ) break;
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
@@ -445,14 +442,14 @@ void audio_thread( PlaybackData* data )
 
 
 
-      if ( img->has_audio() && reel->edl )
-      { 
+      if ( fg && img->has_audio() && reel->edl )
+      {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 	 if ( f > timeline->maximum() )
 	    f = int64_t( timeline->maximum() );
 	 if ( f < timeline->minimum() )
 	    f = int64_t( timeline->minimum() );
-	    timeline->value( double( f ) );
+         view->frame( f );
       }
 
       img->find_audio(frame);
@@ -550,7 +547,6 @@ void video_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
    bool fg = data->fg;
-   CMedia* bg = data->bg;
 
    mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*      timeline = uiMain->uiTimeline;
@@ -591,8 +587,7 @@ void video_thread( PlaybackData* data )
 
       int step = (int) img->playback();
       if ( step == 0 ) break;
-      assert( view->playback() == mrv::ImageView::kStopped ||
-              img->playback() == view->playback() );
+
 
       CMedia::DecodeStatus status;
 
@@ -607,7 +602,7 @@ void video_thread( PlaybackData* data )
       if ( frame < img->first_frame() )
          status = CMedia::kDecodeLoopStart;
 
-      DBG( img->name() << "  STATUS " << status );
+      DBG( img->name() << "  STATUS " << status << "  1 is ok" );
 
       switch( status )
       {
@@ -629,12 +624,15 @@ void video_thread( PlaybackData* data )
 		  if ( end == kEndIgnore )
 		  {
                      skip = true;
-		     if ( img->has_audio() )
-			frame = img->audio_frame();
+		     // if ( img->has_audio() )
+		     //    frame = img->audio_frame();
 		     break;
 		  }
 
 	       }
+
+               if ( img->aborted() )
+                  break;
 
 	       skip = false;
 
@@ -738,7 +736,6 @@ void decode_thread( PlaybackData* data )
    assert( img != NULL );
 
    bool fg = data->fg;
-   CMedia* bg = data->bg;
 
    mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*      timeline = uiMain->uiTimeline;
@@ -754,10 +751,6 @@ void decode_thread( PlaybackData* data )
 
    int step = (int) img->playback();
 
-   DBG( "img playback=" << img->playback() 
-        << " view playback=" << view->playback() );
-   assert( view->playback() == mrv::ImageView::kStopped ||
-           img->playback() == view->playback() );
 
    int64_t frame = img->dts();
 
@@ -785,9 +778,6 @@ void decode_thread( PlaybackData* data )
 
       step = (int) img->playback();
       if ( step == 0 ) break;
-
-      assert( img->playback() == CMedia::kStopped ||
-              img->playback() == view->playback() );
 
       frame += step;
       

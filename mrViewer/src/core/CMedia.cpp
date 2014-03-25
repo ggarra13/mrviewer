@@ -542,17 +542,17 @@ void CMedia::sequence( const char* fileroot,
   if ( ! initialize() )
     return;
 
-  // load all pictures in new background thread 
-  std::string file = fileroot;
-  std::string root, frame, view, ext;
-  bool ok = split_sequence( root, frame, view, ext, file );
+  // // load all pictures in new background thread 
+  // std::string file = fileroot;
+  // std::string root, frame, view, ext;
+  // bool ok = split_sequence( root, frame, view, ext, file );
 
-  // if ( ext != "exr" )
-  // {
-  //    PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
-  //    _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-  // 							 data ) ) );
-  // }
+  // // if ( ext != "exr" // )
+  // // {
+  //   PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
+  //   _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+  //                                                       data ) ) );
+  // // }
 
   
   default_icc_profile();
@@ -1678,6 +1678,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
 boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
 				   const boost::int64_t frame ) const
 {
+   DBG( "frame to pts: " << frame << " s: " << _frame_start
+        << " e: " << _frame_end );
    assert( frame >= _frame_start );
    assert( frame <= _frame_end );
    double p = (double)(frame - 1) / fps();

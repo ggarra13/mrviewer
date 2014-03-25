@@ -1869,11 +1869,13 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	   {
 	      // Only add packet if it comes before seek frame
 	      if ( pktframe <= frame ) _audio_packets.push_back( pkt );
+	     if ( pktframe < dts ) dts = pktframe;
 	   }
 	   else
 	   {
 	      if ( pktframe <= last_frame() )
 		 _audio_packets.push_back( pkt );
+              if ( pktframe > dts ) dts = pktframe;
 	   }
 	
 	   if ( !got_audio )

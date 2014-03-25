@@ -1255,12 +1255,12 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 
   bool got_audio = !has_audio();
 
-  if ( !got_audio && !_audio.empty() )
-    {
-       got_audio = in_audio_store( frame );
-    }
+  // if ( !got_audio && !_audio.empty() )
+  //   {
+  //      got_audio = in_audio_store( frame );
+  //   }
 
-  if ( got_audio ) return;
+  // if ( got_audio ) return;
 
  
 
@@ -1346,6 +1346,9 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 
       av_free_packet( &pkt );
     }
+
+  if ( dts > last_frame() ) dts = last_frame();
+  else if ( dts < first_frame() ) dts = first_frame();
 }
 
 

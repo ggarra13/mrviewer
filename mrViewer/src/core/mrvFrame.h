@@ -130,7 +130,7 @@ namespace mrv
     }
     
     void allocate();
-       
+
     self& operator=( const self& b );
 
     inline void width( const unsigned w ) { _width = w;  }

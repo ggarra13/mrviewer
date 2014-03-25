@@ -1069,58 +1069,55 @@ void ImageView::timeout()
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
+   char bufs[256];  bufs[0] = 0;
+
    mrv::Timeline* timeline = this->timeline();
    mrv::Reel reel = browser()->current_reel();
    mrv::Reel bgreel = browser()->reel_at( _bg_reel );
 
    mrv::media fg = foreground();
 
-   if ( timeline && timeline->edl() )
+   int64_t tframe = boost::int64_t( timeline->value() );
+
+   if ( reel->edl )
    {
-      int64_t frame = boost::int64_t( timeline->value() );
-
-      char bufs[256];  bufs[0] = 0;
-
-      mrv::media bg;
-
       if ( reel )
       {
-	 fg = reel->media_at( frame );
+	 fg = reel->media_at( tframe );
 
 	 if ( fg && fg != foreground() ) 
 	 {
 	    DBG( "CHANGE TO FG " << fg->image()->name() << " due to frame "
-                 << frame );
+                 << tframe );
 	    foreground( fg );
+
+            sprintf( bufs, "mrViewer    FG: %s", 
+                     fg->image()->name().c_str() );
+            uiMain->uiMain->copy_label( bufs );
 	 }
-      }
-
-      if ( bgreel )
-      {
-	 bg = bgreel->media_at( frame );
-
-	 if ( bg && bg != background() ) 
-	 {
-	    DBG( "CHANGE TO BG " << bg->image()->name() );
-	    background( bg );
-	 }
-      }
-
-
-      if ( fg && bg )
-      {
-	 sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
-		  fg->image()->name().c_str(),
-		  bg->image()->name().c_str() );
-	 uiMain->uiMain->copy_label( bufs );
-      }
-      else if ( fg )
-      {
-	 sprintf( bufs, "mrViewer    FG: %s", 
-		  fg->image()->name().c_str() );
-	 uiMain->uiMain->copy_label( bufs );
       }
    }
+
+   mrv::media bg = background();
+
+   if ( bgreel && bgreel->edl )
+   {
+      bg = bgreel->media_at( tframe );
+
+      if ( bg && bg != background() ) 
+      {
+         DBG( "CHANGE TO BG " << bg->image()->name() );
+         background( bg );
+
+         sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
+                  fg->image()->name().c_str(),
+                  bg->image()->name().c_str() );
+         uiMain->uiMain->copy_label( bufs );
+      }
+
+   }
+
+   
 
    load_list();
 
@@ -1164,22 +1161,11 @@ void ImageView::timeout()
 	// }
 
 
-	if ( img && img->first_frame() != img->last_frame() &&
-	     this->frame() != frame )
+	if ( img->first_frame() != img->last_frame() )
 	{
 	   this->frame( frame );
 	}
      }
-     else
-     {
-	frame = (int64_t) timeline->value();
-	if ( this->frame() != frame )
-	{
-	   // updating frame
-	   this->frame( frame );
-	}
-     }
-	  
   }
 
   if ( should_update( fg ) ) 
