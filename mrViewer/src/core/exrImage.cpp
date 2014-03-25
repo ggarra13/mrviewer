@@ -253,11 +253,11 @@ bool exrImage::channels_order(
    allocate_pixels( frame, unsigned(numChannels), format,
 		    pixel_type_conversion( imfPixelType ) );
    
-   static size_t xs[4], ys[4];
+   size_t xs[4], ys[4];
    if ( _has_yca )
    {
-      for ( unsigned i = 0; i < numChannels; ++i )
-	 xs[i] = _hires->pixel_size();
+      for ( unsigned j = 0; j < numChannels; ++j )
+	 xs[j] = _hires->pixel_size();
 
       unsigned int dw2 = dw / 2;
       ys[0] = xs[0] * dw;
@@ -267,22 +267,22 @@ bool exrImage::channels_order(
    }
    else
    {
-      for ( unsigned i = 0; i < numChannels; ++i )
+      for ( unsigned j = 0; j < numChannels; ++j )
       {
-	 xs[i] = _hires->pixel_size() * numChannels;
-	 ys[i] = xs[i] * dw;
+	 xs[j] = _hires->pixel_size() * numChannels;
+	 ys[j] = xs[j] * dw;
       }
    }
 
 
-   boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
+   char* pixels = (char*)_hires->data().get();
    memset( pixels, 0, _hires->data_size() ); // Needed
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
 		 _hires->channels() );
 
-   boost::uint8_t* base = pixels + start;
+   char* base = pixels + start;
 
    Imf::Channel* ch = NULL;
    idx = 0;
@@ -507,7 +507,7 @@ bool exrImage::channels_order_multi(
    allocate_pixels( frame, unsigned(numChannels), format,
 		    pixel_type_conversion( imfPixelType ) );
 
-   static size_t xs[4], ys[4];
+   size_t xs[4], ys[4];
    for ( unsigned j = 0; j < numChannels; ++j )
    {
       xs[j] = _hires->pixel_size() * numChannels;
@@ -1137,9 +1137,8 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 	_rendering_intent = kRelativeIntent;
 
-	if ( _exif.empty() || _iptc.empty() )
+	if ( _exif.empty() && _iptc.empty() )
 	   read_header_attr( h, frame );
-
 
 
 	FrameBuffer fb;
@@ -1150,7 +1149,7 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	}
 
 	in.setFrameBuffer(fb);
-	   
+
 	in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
 
