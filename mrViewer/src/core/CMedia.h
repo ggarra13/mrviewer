@@ -326,7 +326,8 @@ namespace mrv {
 
     virtual void sequence( const char* fileroot, 
 			   const boost::int64_t start, 
-			   const boost::int64_t end );
+			   const boost::int64_t end,
+                           const bool use_threads );
 
     ////////////////// Check if image has changed on disk or network
     virtual bool has_changed();
@@ -403,7 +404,8 @@ namespace mrv {
 				const boost::int64_t 
 				first = std::numeric_limits<boost::int64_t>::min(),
 				const boost::int64_t 
-				end = std::numeric_limits<boost::int64_t>::max() );
+				end = std::numeric_limits<boost::int64_t>::max(),
+                                const bool use_threads = false );
 
     ////////////////////////
     // Image information
@@ -730,6 +732,8 @@ namespace mrv {
     
     AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
+       void wait_for_load_threads();
+
     void wait_for_threads();
 
     static bool supports_yuv()         { return _supports_yuv; }
@@ -998,7 +1002,7 @@ namespace mrv {
        bool        _aborted;
 
     thread_pool_t  _threads;         //!< any threads associated with process
-
+    thread_pool_t  _load_threads;    //!< loading threads if any
 
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     

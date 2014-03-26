@@ -1557,20 +1557,33 @@ int ImageBrowser::value() const
    */
   mrv::media ImageBrowser::load_image( const char* name,
 				       const boost::int64_t start, 
-				       const boost::int64_t end )
+				       const boost::int64_t end,
+                                       const bool use_threads )
   {
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
     if ( start != mrv::kMinFrame ) frame( start );
 
+    
 
-    CMedia* img = CMedia::guess_image( name, NULL, 0, start, end );
+    CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     if ( img == NULL )
     {
-       LOG_ERROR("Unknown image media");
+       LOG_ERROR("Unknown image media format");
        return mrv::media();
     }
+
+    
+    if ( start != mrv::kMinFrame )
+      {
+	img->first_frame( start );
+      }
+
+    if ( end != mrv::kMaxFrame )
+      {
+	img->last_frame( end );
+      }
 
     {
        mrv::CMedia::Mutex& vpm = img->video_mutex();
@@ -1579,24 +1592,17 @@ int ImageBrowser::value() const
        img->fetch( img->first_frame() );
     }
 
+    
     img->default_icc_profile();
     img->default_rendering_transform();
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
-    if ( start != MRV_NOPTS_VALUE )
-      {
-	img->first_frame( start );
-      }
-
-    if ( end != MRV_NOPTS_VALUE )
-      {
-	img->last_frame( end );
-      }
 
     mrv::media m = this->add( img );
 
+    
     size_t i = 0;
     for ( i = 0; i < number_of_reels(); ++i )
     {
@@ -1611,8 +1617,6 @@ int ImageBrowser::value() const
        }
     }
 
-
-    adjust_timeline();
     return m;
   }
 
@@ -1655,7 +1659,8 @@ void ImageBrowser::load( mrv::LoadList& files,
     	fltk::check();
       }
 
-    mrv::LoadList::iterator i = files.begin();
+    mrv::LoadList::iterator s = files.begin();
+    mrv::LoadList::iterator i = s;
     mrv::LoadList::iterator e = files.end();
 
     char buf[1024];
@@ -1730,7 +1735,8 @@ void ImageBrowser::load( mrv::LoadList& files,
 	     {
 
 		fg = load_image( load.filename.c_str(), 
-				 load.start, load.end );
+				 load.start, load.end,
+                                 (i != s) );
 		if (!fg) 
 		{
 		   LOG_ERROR( _("Could not load '") << load.filename.c_str() 
@@ -1743,21 +1749,30 @@ void ImageBrowser::load( mrv::LoadList& files,
 	     }
 	  }
 
-	if ( w ) progress->step(1);
+	if ( w ) 
+        {
+           progress->step(1);
+           fltk::check();
+        }
       }
 
     if ( w )
       {
 	w->hide();
 	w->destroy();
+        delete w;
+        fltk::check();
+        
       }
 
     mrv::Reel reel = current_reel();
     if ( !reel || reel->images.empty() ) return;
+    
 
     mrv::media m = current_image();
     if (!m) return;
 
+    
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
       {
@@ -1769,7 +1784,7 @@ void ImageBrowser::load( mrv::LoadList& files,
 	// display first image for good EDL playback
 	this->change_image( 0 );
 
-	if ( !reel->edl )
+	if ( reel->edl )
 	  {
 	    CMedia* img = m->image();
 	    int64_t offset = timeline()->offset( img );
@@ -1785,17 +1800,7 @@ void ImageBrowser::load( mrv::LoadList& files,
 
     if ( uiMain->uiPrefs->uiPrefsAutoPlayback->value() )
       {
-	mrv::media m = current_image();
-	if ( m )
-	  {
-	    CMedia* img = m->image();
-	    if ( reel->edl || 
-		 img->first_frame() != img->last_frame() )
-	    {
-	       view()->seek( img->first_frame() );
-	       view()->play_forwards();
-	    }
-	  }
+         view()->play_forwards();
       }
 }
 
@@ -1817,7 +1822,7 @@ void ImageBrowser::load( mrv::LoadList& files,
      
      new_reel( reelname.c_str() );
 
-     load( sequences );
+     load( sequences, true );
 
      mrv::Reel reel = current_reel();
 

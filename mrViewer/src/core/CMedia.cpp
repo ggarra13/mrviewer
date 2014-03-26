@@ -286,6 +286,24 @@ void CMedia::clear_sequence()
  * Wait for all threads to finish and exit.  Delete them afterwards.
  * 
  */
+void CMedia::wait_for_load_threads()
+{
+  // Wait for all threads to exit
+  thread_pool_t::iterator i = _load_threads.begin();
+  thread_pool_t::iterator e = _load_threads.end();
+  for ( ;i != e; ++i )
+    {
+      (*i)->join();
+      delete *i;
+    }
+
+  _load_threads.clear();
+}
+
+/** 
+ * Wait for all threads to finish and exit.  Delete them afterwards.
+ * 
+ */
 void CMedia::wait_for_threads()
 {
   // Wait for all threads to exit
@@ -471,21 +489,36 @@ void load_sequence( PlaybackData* data )
 {
    mrv::ViewerUI* uiMain = data->uiMain;
    mrv::CMedia* img = data->image;
-   
+   bool even = data->fg;
+   int64_t start, end, skip;
+   if ( even ) {
+      start = img->first_frame();
+      end = img->last_frame();
+      skip = 2;
+   }
+   else
+   {
+      start = img->first_frame() + 1;
+      end = img->last_frame();
+      skip = 2;
+   }
    delete data;
 
+
    struct stat sbuf;
-   for ( int64_t f = img->first_frame(); f <= img->last_frame(); ++f )
+   for ( int64_t f = start; f <= end; f += skip )
    {
-      // mrv::CMedia::Mutex& vpm = img->video_mutex();
-      // SCOPED_LOCK( vpm );
+      {
+         mrv::CMedia::Mutex& vpm = img->video_mutex();
+         SCOPED_LOCK( vpm );
+         
+         int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
+         if ( result < 0 ) return;
 
-      int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
-      if ( result < 0 ) return;
+         img->fetch( f );
+         img->cache( img->hires() );
+      }
 
-
-      img->fetch( f );
-      img->cache( img->hires() );
 
     }
 
@@ -494,17 +527,17 @@ void load_sequence( PlaybackData* data )
 /** 
  * Treat image as a sequence of frames
  * 
- * @param fileroot  a fileroot in C format like crash.%d.exr
+ * @param fileroot  a fileroot in C format like image.%d.exr
  * @param start     start frame
  * @param end       end   frame
  */
 void CMedia::sequence( const char* fileroot, 
 		       const boost::int64_t start,
-		       const boost::int64_t end )
+		       const boost::int64_t end,
+                       const bool use_thread )
 {
 
   SCOPED_LOCK( _mutex );
-
 
   assert( fileroot != NULL );
   assert( start < end );
@@ -549,10 +582,17 @@ void CMedia::sequence( const char* fileroot,
 
   // // if ( ext != "exr" // )
   // // {
-  //   PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
-  //   _threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-  //                                                       data ) ) );
-  // // }
+
+  if ( use_thread )
+  {
+     PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
+     _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence,
+                                                           data ) ) );
+
+     PlaybackData* data2 = new PlaybackData( false, NULL, this, NULL );
+     _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+                                                              data2 ) ) );
+  }
 
   
   default_icc_profile();
@@ -1090,8 +1130,17 @@ void CMedia::icc_profile( const char* cfile )
  */
 void CMedia::thread_exit()
 {
-  thread_pool_t::iterator i = _threads.begin();
-  thread_pool_t::iterator e = _threads.end();
+  thread_pool_t::iterator i = _load_threads.begin();
+  thread_pool_t::iterator e = _load_threads.end();
+  for ( ; i != e; ++i )
+    {
+      delete *i;
+    }
+
+  _load_threads.clear();
+
+  i = _threads.begin();
+  e = _threads.end();
   for ( ; i != e; ++i )
     {
       delete *i;
@@ -1376,6 +1425,9 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 
   _sequence[idx] = pic;
   timestamp(idx);
+
+  image_damage( image_damage() | kDamageContents );
+
 }
 
 

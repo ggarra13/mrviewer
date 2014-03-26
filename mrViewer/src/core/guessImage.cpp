@@ -98,7 +98,8 @@ namespace mrv {
 			       const boost::uint8_t* datas,
 			       const int len,
 			       const boost::int64_t start,
-			       const boost::int64_t end )
+			       const boost::int64_t end,
+                               const bool use_threads )
   {
     int64_t lastFrame = end;
     int64_t frame = start;
@@ -173,7 +174,7 @@ namespace mrv {
       {
 	if ( is_seq )
 	{
-	  image->sequence( root, frame, lastFrame );
+           image->sequence( root, frame, lastFrame, use_threads );
 	}
 	else
 	{
@@ -183,7 +184,7 @@ namespace mrv {
 
     delete [] read_data;
 
-    if (image == NULL && strncmp( ".reel", root + strlen(root)-5, 5 ) ) 
+    if (image == NULL ) 
       {
 	LOG_ERROR(name << ": not a recognized format.");
 	return NULL;
