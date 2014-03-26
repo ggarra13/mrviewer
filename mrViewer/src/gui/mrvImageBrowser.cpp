@@ -1565,7 +1565,6 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) frame( start );
 
-    
 
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     if ( img == NULL )
@@ -1575,12 +1574,12 @@ int ImageBrowser::value() const
     }
 
     
-    if ( start != mrv::kMinFrame )
+    if ( start != mrv::kMaxFrame )
       {
 	img->first_frame( start );
       }
 
-    if ( end != mrv::kMaxFrame )
+    if ( end != mrv::kMinFrame )
       {
 	img->last_frame( end );
       }
@@ -1734,9 +1733,9 @@ void ImageBrowser::load( mrv::LoadList& files,
 	     else
 	     {
 
-		fg = load_image( load.filename.c_str(), 
-				 load.start, load.end,
-                                 (i != s) );
+                fg = load_image( load.filename.c_str(), 
+                                 load.start, load.end, (i != s) );
+
 		if (!fg) 
 		{
 		   LOG_ERROR( _("Could not load '") << load.filename.c_str() 
@@ -1762,7 +1761,6 @@ void ImageBrowser::load( mrv::LoadList& files,
 	w->destroy();
         delete w;
         fltk::check();
-        
       }
 
     mrv::Reel reel = current_reel();

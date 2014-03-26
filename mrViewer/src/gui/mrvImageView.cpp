@@ -3512,8 +3512,8 @@ void ImageView::update_layers()
   if ( !fg ) 
     {
       uiColorChannel->remove_all();
-      uiColorChannel->add("(no image)");
-      uiColorChannel->label("(no image)");
+      uiColorChannel->add( _("(no image)") );
+      uiColorChannel->label( _("(no image)") );
       uiColorChannel->value(0);
       uiColorChannel->redraw();
       return;
