@@ -1469,7 +1469,7 @@ void aviImage::populate()
   _frame = _audio_frame = _frameStart;
   _expected = _frame;
 
-  // if ( _frame_offset > 3 ) _frame_offset = 0;
+  if ( _frame_offset > 3 ) _frame_offset = 0;
 
 
   
