@@ -337,7 +337,7 @@ const char* const VideoFrame::fmts[] = {
   VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h )
   {
 
-#if 0
+#if 1
      double fx, fy;
      if ( w == 0 || width() == 0 )
 	fx = 1.0;
@@ -350,19 +350,14 @@ const char* const VideoFrame::fmts[] = {
        fy = (double)height() / (double) h;
 
     //
-    VideoFrame* scaled = new VideoFrame( _frame, 
-					 w,
-					 h,
-					 _channels,
-					 _format,
-					 _type,
-					 _repeat );
+    VideoFrame* scaled = new VideoFrame( _frame, w, h, 3, kRGB, kByte );
 
     for ( int y = 0; y < h; ++y )
     {
        for ( int x = 0; x < w; ++x )
        {
-          const Pixel& p = this->pixel( int( x*fx+.5 ), int( y*fy+.5 ) );
+          const Pixel& p = this->pixel( unsigned( x*fx+.5 ), 
+                                        unsigned( y*fy+.5 ) );
           scaled->pixel( x, y, p );
        }
     }

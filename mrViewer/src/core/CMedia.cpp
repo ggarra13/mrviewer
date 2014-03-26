@@ -580,19 +580,17 @@ void CMedia::sequence( const char* fileroot,
   // std::string root, frame, view, ext;
   // bool ok = split_sequence( root, frame, view, ext, file );
 
-  // // if ( ext != "exr" // )
-  // // {
 
-  if ( use_thread )
-  {
-     PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
-     _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence,
-                                                           data ) ) );
+  // if ( use_thread )
+  // {
+  //    PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
+  //    _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence,
+  //                                                          data ) ) );
 
-     PlaybackData* data2 = new PlaybackData( false, NULL, this, NULL );
-     _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-                                                              data2 ) ) );
-  }
+  //    PlaybackData* data2 = new PlaybackData( false, NULL, this, NULL );
+  //    _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
+  //                                                             data2 ) ) );
+  // }
 
   
   default_icc_profile();
@@ -949,12 +947,11 @@ void CMedia::default_layers()
 /** 
  * Change the image's color channel
  * 
- * @param chinput new image channel
+ * @param c new image channel
  */
-void CMedia::channel( const char* chinput )
+void CMedia::channel( const char* c )
 {
-  const char* c = chinput;
-  std::string ch( chinput );
+  std::string ch( c );
 
   if ( ch == "Color" || ch == "Red" || ch == "Green" || ch == "Blue" ||
        ch == "Alpha" || ch == "Alpha Overlay" || ch == "Lumma" )

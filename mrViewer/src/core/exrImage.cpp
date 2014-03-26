@@ -294,14 +294,14 @@ bool exrImage::channels_order(
       const std::string& layerName = channelList[k];
 
       ch = channels.findChannel( layerName.c_str() );
-      
+
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
       }
-      
+
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
-      
+
       fb.insert( layerName.c_str(), 
 		 Slice( imfPixelType, buf, xs[idx], ys[idx],
 			ch->xSampling, ch->ySampling) );
