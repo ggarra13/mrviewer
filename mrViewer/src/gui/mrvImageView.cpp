@@ -715,17 +715,20 @@ ImageView::~ImageView()
 
 fltk::Window* ImageView::fltk_main()
 { 
+   assert( uiMain->uiMain );
   return uiMain->uiMain; 
 }
 
 const fltk::Window* ImageView::fltk_main() const
 { 
+   assert( uiMain->uiMain );
   return uiMain->uiMain; 
 }
 
 
 ImageBrowser* 
 ImageView::browser() {
+   assert( uiMain->uiReelWindow );
    assert( uiMain->uiReelWindow->uiBrowser );
   return uiMain->uiReelWindow->uiBrowser;
 }
@@ -733,6 +736,7 @@ ImageView::browser() {
 
 Timeline* 
 ImageView::timeline() { 
+   assert( uiMain->uiTimeline );
   return uiMain->uiTimeline;
 }
 

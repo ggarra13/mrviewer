@@ -363,7 +363,6 @@ void audio_thread( PlaybackData* data )
 
 
   int idx = fg ? view->fg_reel() : view->bg_reel();
-   if ( idx < 0 ) return;
 
    mrv::Reel   reel = browser->reel_at( idx );
    if (!reel) return;
@@ -553,10 +552,7 @@ void video_thread( PlaybackData* data )
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
    int idx = fg ? view->fg_reel() : view->bg_reel();
-   if ( idx < 0 ) {
-      LOG_ERROR( "REEL INDEX IS NEGATIVE FOR FG? " << fg );
-      return;
-   }
+
    mrv::Reel   reel = browser->reel_at( idx );
    if (!reel) return;
 
@@ -743,7 +739,6 @@ void decode_thread( PlaybackData* data )
    assert( timeline != NULL );
 
    int idx = fg ? view->fg_reel() : view->bg_reel();
-   if ( idx < 0 ) return;
 
    mrv::Reel   reel = browser->reel_at( idx );
    if (!reel) return;
