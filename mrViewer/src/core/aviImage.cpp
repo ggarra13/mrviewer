@@ -168,6 +168,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
+
   if ( magic == 0x000001ba )
     {
       // MPEG movie
@@ -194,6 +195,11 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   else if ( strncmp( (char*)data, "FLV", 3 ) == 0 )
     {
       // FLV
+      return true;
+    }
+  else if ( strncmp( (char*)data, ".RMF", 4 ) == 0 )
+    {
+      // Real Movie
       return true;
     }
   else if ( strncmp( (char*)data, "OggS", 4 ) == 0 ) 
@@ -249,6 +255,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
    AVInputFormat* ok = av_probe_input_format2(&pd, 1, &score_max);
 
    delete [] d;
+
 
    // if ( score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
    if ( score_max > 10 )

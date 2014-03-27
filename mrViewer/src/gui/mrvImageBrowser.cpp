@@ -362,8 +362,7 @@ namespace mrv {
     }
 
     _reel = idx;
-    change_reel();
-    return _reels[ idx ];
+    change_reel();    return _reels[ idx ];
   }
 
 mrv::Reel ImageBrowser::reel_at( unsigned idx )
@@ -1048,8 +1047,13 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	db->result( result );
 
 	// It already exists in database, do not add it again
-	if ( result != "" ) return;
+	if ( result != "" ) 
+        {
+           delete [] buf;
+           return;
+        }
       }
+
 
     std::string layers;
     stringArray::const_iterator i = img->layers().begin();
@@ -1770,6 +1774,7 @@ void ImageBrowser::load( mrv::LoadList& files,
     mrv::media m = current_image();
     if (!m) return;
 
+    CMedia* img = m->image();
     
     // If loading images to old non-empty reel, display last image.
     if ( reel == oldreel && numImages > 0 )
@@ -1784,7 +1789,6 @@ void ImageBrowser::load( mrv::LoadList& files,
 
 	if ( reel->edl )
 	  {
-	    CMedia* img = m->image();
 	    int64_t offset = timeline()->offset( img );
 	    frame( offset + img->first_frame() );
 	  }
@@ -1796,7 +1800,8 @@ void ImageBrowser::load( mrv::LoadList& files,
 
     adjust_timeline();
 
-    if ( uiMain->uiPrefs->uiPrefsAutoPlayback->value() )
+    if ( uiMain->uiPrefs->uiPrefsAutoPlayback->value() &&
+         img->first_frame() != img->last_frame() )
       {
          view()->play_forwards();
       }

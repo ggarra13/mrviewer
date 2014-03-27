@@ -60,7 +60,7 @@ size_t EDLGroup::add_media_track( int r )
    size_t e = children();
 
 
-   mrv::media_track* o = new mrv::media_track(x(), y() + 70 * e,
+   mrv::media_track* o = new mrv::media_track(x(), y() + 78 * e,
 					      w(), kTrackHeight);
  
    o->main( timeline()->main() );
@@ -538,7 +538,7 @@ void EDLGroup::draw()
    //    int ww, hh;
    //    fltk::measure( e->label(), ww, hh );
    //    fltk::drawtext( e->label(), 0, 0 );
-   //    fltk::pop_matrix();
+      fltk::pop_matrix();
    }
 }
 

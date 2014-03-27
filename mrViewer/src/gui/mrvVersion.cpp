@@ -474,15 +474,15 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "libavcodec\tv" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
       << "libavformat\tv" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
-      << "(C) 2000-2006 Fabrice Bellard, et al." << endl
+      << "(C) 2000-2014 Fabrice Bellard, et al." << endl
       << endl
-      << "ILM OpenEXR v" << Imf::getVersion(Imf::EXR_VERSION) <<  " or later" << endl
+      << "ILM OpenEXR v" << OPENEXR_VERSION_STRING <<  " or later" << endl
       << "http://www.openexr.org/" << endl
-      << "(C) 2005-2007 Industrial Light & Magic" << endl
+      << "(C) 2005-2014 Industrial Light & Magic" << endl
       << endl
-      << "AMPAS CTL v1.2 or later" << endl
+      << "AMPAS CTL v1.4 or later" << endl
       << "http://www.openexr.org/" << endl
-      << "(C) 2007 AMPAS and Industrial Light & Magic" << endl
+      << "(C) 2014 AMPAS and Industrial Light & Magic" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl
