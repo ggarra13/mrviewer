@@ -1085,23 +1085,22 @@ void ImageView::timeout()
 
    int64_t tframe = boost::int64_t( timeline->value() );
 
-   if ( reel->edl )
+   if ( reel && reel->edl )
    {
-      if ( reel )
+      
+      fg = reel->media_at( tframe );
+
+      if ( fg && fg != foreground() ) 
       {
-	 fg = reel->media_at( tframe );
+         DBG( "CHANGE TO FG " << fg->image()->name() << " due to frame "
+              << tframe );
+         foreground( fg );
 
-	 if ( fg && fg != foreground() ) 
-	 {
-	    DBG( "CHANGE TO FG " << fg->image()->name() << " due to frame "
-                 << tframe );
-	    foreground( fg );
-
-            sprintf( bufs, "mrViewer    FG: %s", 
-                     fg->image()->name().c_str() );
-            uiMain->uiMain->copy_label( bufs );
-	 }
+         sprintf( bufs, "mrViewer    FG: %s", 
+                  fg->image()->name().c_str() );
+         uiMain->uiMain->copy_label( bufs );
       }
+      
    }
 
    mrv::media bg = background();

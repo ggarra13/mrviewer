@@ -267,10 +267,12 @@ void parse_command_line( const int argc, char** argv,
                      bool ok = mrv::split_sequence( root, frame, view,
                                                     ext, file );
 
+
                      if ( mrv::is_valid_movie( ext.c_str() ) )
                      {
                         opts.files.push_back( mrv::LoadInfo( file, kMinFrame,
                                                              kMaxFrame ) );
+                        opts.edl = true;
                         continue;
                      }
 
