@@ -208,7 +208,7 @@ namespace mrv {
     _num_textures( 1 ),
     _glformat( 0 ),
     _internalFormat( 0 ),
-    _pixel_type( image_type::kByte ),
+    _pixel_type( GL_BYTE ),
     _format( image_type::kLumma ),
     _width( 0 ),
     _height( 0 ),

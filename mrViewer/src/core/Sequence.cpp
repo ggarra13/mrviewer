@@ -130,6 +130,7 @@ bool is_valid_movie( const char* ext )
   {
      std::string f = file;
 
+     root = frame = view = ext = "";
 
     const char* e = f.c_str();
     const char* i = e + f.size() - 1;
@@ -147,18 +148,18 @@ bool is_valid_movie( const char* ext )
 
     if ( periods.size() == 4 )
     {
-       root = periods[0];
+       root = periods[0] + ".";
        frame = periods[1];
        view = periods[2];
-       ext = periods[3];
+       ext = "." + periods[3];
 
        if ( view == "l" || view == "r" ||
             view == "L" || view == "R" ||
             view == "left" || view == "right" ||
             view == "Left" || view == "Right" )
        {
-          view = ".%V";
-          f = file.substr( 0, len ) + root + "." + frame + "." + ext;
+          view = "%V.";
+          f = file.substr( 0, len ) + root + view + frame + ext;
        }
     }
     else
@@ -202,7 +203,10 @@ bool is_valid_movie( const char* ext )
 
 
         if ( is_valid_movie( ext.c_str() ) )
+        {
+           root = "";
            return false;
+        }
 
 	bool ok = is_valid_frame( ext );
 	if ( ok )
@@ -216,8 +220,9 @@ bool is_valid_movie( const char* ext )
       }
     else
       {
-	root = f.substr( 0, idx[0]+1 );
-	ext  = f.substr( idx[0]+1, file.size() );
+	root = f.substr( 0, idx[0] );
+	ext  = f.substr( idx[0], file.size() );
+
 
 	bool ok = is_valid_frame_spec( ext );
 	if (ok)
