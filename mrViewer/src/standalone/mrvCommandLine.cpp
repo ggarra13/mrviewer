@@ -9,6 +9,8 @@
  */
 
 #include <iostream>
+#include <algorithm>
+#include <boost/filesystem.hpp>
 
 #include "tclap/CmdLine.h"
 #include "mrvI8N.h"
@@ -21,6 +23,7 @@
 #include "mrvVersion.h"
 #include "mrvServer.h"
 
+namespace fs = boost::filesystem;
 
 namespace mrv {
 
@@ -229,6 +232,61 @@ void parse_command_line( const int argc, char** argv,
 
             if ( mrv::is_directory( fileroot.c_str() ) )
             {
+               std::string oldfile;
+               boost::int64_t frameStart = mrv::kMaxFrame;
+               boost::int64_t frameEnd = mrv::kMinFrame;
+               stringArray files;
+
+
+               {
+                  // default constructor yields path iter. end
+                  fs::directory_iterator e;
+                  for ( fs::directory_iterator i( fileroot ) ; i != e; ++i )
+                  {
+                     if ( !fs::exists( *i ) || fs::is_directory( *i ) )
+                        continue;
+
+                     std::string file = (*i).path().string();
+                     files.push_back( file );
+                  }
+               }
+
+               std::sort( files.begin(), files.end() );
+
+               {
+                  stringArray::iterator i = files.begin();
+                  stringArray::iterator e = files.end();
+
+                  std::string root, frame, view, ext;
+                  std::string oldroot;
+
+                  for ( ; i != e; ++i )
+                  {
+                     std::string file = (*i);
+
+                     bool ok = mrv::split_sequence( root, frame, view,
+                                                    ext, file );
+
+                     if ( mrv::is_valid_movie( ext.c_str() ) )
+                     {
+                        opts.files.push_back( mrv::LoadInfo( file, kMinFrame,
+                                                             kMaxFrame ) );
+                        continue;
+                     }
+
+                     if ( root != "" && frame != "" && oldroot != root )
+                     {
+                        oldroot = root;
+                        std::string fileroot;
+                        mrv::fileroot( fileroot, file );
+                        mrv::get_sequence_limits( start, end, fileroot );
+                        opts.files.push_back( mrv::LoadInfo( fileroot, start,
+                                                             end ) );
+                        opts.edl = true;
+                     }
+                  }
+               }
+               
             }
             else
             {

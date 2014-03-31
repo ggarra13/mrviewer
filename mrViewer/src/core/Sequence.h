@@ -73,7 +73,7 @@ namespace mrv
 
   /** 
    * Given a file, return root filename in %d format, and frame passed if
-   * sequence.  If not sequence, return file as is.
+   * sequence.  If not sequence fileroot, return file as is.
    *
    * @param fileroot    fileroot in %*d format or file
    * @param file        original file
@@ -123,6 +123,16 @@ bool parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
   bool get_sequence_limits( boost::int64_t& firstFrame, 
 			    boost::int64_t& lastFrame,
 			    std::string& file );
+
+  /** 
+   * Given a filename extension, return whether the extension is
+   * from a movie format.
+   * 
+   * @param ext Filename extension
+   * 
+   * @return true if a possible movie, false if not.
+   */
+   bool is_valid_movie( const char* ext );
 
   /** 
    * Given a single image filename, return whether the image is

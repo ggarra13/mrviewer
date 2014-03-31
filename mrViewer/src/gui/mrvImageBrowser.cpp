@@ -2341,9 +2341,9 @@ void ImageBrowser::load( const stringArray& files,
     {
        std::string file = *i;
        std::string root, frame, view, ext;
-       bool ok = mrv::split_sequence( root, frame, view, ext, file );
+       mrv::split_sequence( root, frame, view, ext, file );
 
-       if ( ok && root != "" && frame != "" )
+       if ( root != "" && frame != "" )
        {
     	  file = root;
     	  for ( size_t i = 0; i < frame.size(); ++i )

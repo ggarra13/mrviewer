@@ -93,13 +93,28 @@ void split(const std::string &s, char delim, StringList& elems) {
     }
 }
 
+// Given a frame extension, return true if a possible movie file.
+bool is_valid_movie( const char* ext )
+{
+   std::string tmp = ext;
+   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+                   (int(*)(int)) tolower);
+
+   if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
+        tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
+        tmp == ".qt"  || tmp == ".mp4"  || tmp == ".vob" )
+      return true;
+
+   return false;
+}
 
   /** 
    * Given a filename of a possible sequence, split it into
-   * root name, frame string, and extension
+   * root name, frame string, view, and extension
    * 
    * @param root    root name of file sequence
    * @param frame   frame part of file name (must be @ or # or %d )
+   * @param view    view of image (left or right or L and R )
    * @param ext     extension of file sequence
    * @param file    original filename, potentially part of a sequence.
    * 
@@ -186,16 +201,8 @@ void split(const std::string &s, char delim, StringList& elems) {
 	ext   = f.substr( idx[0], file.size()-idx[0] );
 
 
-	std::string tmp = ext;
-	std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-			(int(*)(int)) tolower);
-
-	// If extension is one of a movie/audio file, return false
-	if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
-	     tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
-	     tmp == ".qt"  || tmp == ".wav"  || tmp == ".vob" )
-	   return false;
-
+        if ( is_valid_movie( ext.c_str() ) )
+           return false;
 
 	bool ok = is_valid_frame( ext );
 	if ( ok )
@@ -211,7 +218,6 @@ void split(const std::string &s, char delim, StringList& elems) {
       {
 	root = f.substr( 0, idx[0]+1 );
 	ext  = f.substr( idx[0]+1, file.size() );
-
 
 	bool ok = is_valid_frame_spec( ext );
 	if (ok)
@@ -459,8 +465,8 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
      fs::path path = fs::path( file );
 
 
-     bool sequence = split_sequence( root, frame, view, ext, file );
-     if ( !sequence ) 
+     split_sequence( root, frame, view, ext, file );
+     if ( root == "" || frame == "" ) 
      {
         fileroot = file;
         return false;
