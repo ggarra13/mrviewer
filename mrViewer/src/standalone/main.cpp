@@ -51,8 +51,8 @@ const char* const kModule = "main";
 }
 
 
-
-void load_files( mrv::LoadList& files, mrv::ViewerUI* ui )
+void load_files( mrv::LoadList& files, 
+                 mrv::ViewerUI* ui )
 {   
    //
    // Window must be shown after images have been loaded.
@@ -91,7 +91,7 @@ void load_new_files( void* s )
 	 g.get( "start", start, 1 );
 	 g.get( "end", end, 50 );
 	 
-	 mrv::LoadInfo info( filename, start, end );
+	 mrv::LoadInfo info( filename, start, end, audio );
 	 files.push_back( info );
       }
    }
@@ -144,20 +144,17 @@ int main( const int argc, char** argv )
   mrv::ViewerUI* ui = new mrv::ViewerUI();
 
 
-  mrv::LoadList files;
-  bool edl = false;
 
-  std::string host;
-  unsigned port;
+  mrv::Options opts;
 
-  mrv::parse_command_line( argc, argv, ui, files, edl, host, port );
+  mrv::parse_command_line( argc, argv, ui, opts );
 
 
   std::string lockfile = mrv::homepath();
   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
 
   bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
-  if ( port != 0 ) {
+  if ( opts.port != 0 ) {
      ui->uiPrefs->uiPrefsSingleInstance->value(0);
      single_instance = false;
      if ( fs::exists( lockfile ) )
@@ -173,8 +170,8 @@ int main( const int argc, char** argv )
 	fltk::Preferences base( fltk::Preferences::USER, "filmaura",
 				"mrViewer.lock" );
 	
-	mrv::LoadList::iterator i = files.begin();
-	mrv::LoadList::iterator e = files.end();
+	mrv::LoadList::iterator i = opts.files.begin();
+	mrv::LoadList::iterator e = opts.files.end();
 	for ( int idx = 0; i != e ; ++i, ++idx )
 	{
 	   char buf[256];
@@ -205,32 +202,36 @@ int main( const int argc, char** argv )
   // mrv::open_license( argv[0] );
   // mrv::checkout_license();
 
-  load_files( files, ui );
+  load_files( opts.files, ui );
 
-  if ( edl )
+  if ( opts.edl )
   {
      ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
-     ui->uiTimeline->edl( edl );
+     ui->uiTimeline->edl( true );
   }
 
-  
-  if (host == "" && port != 0)
+  if (opts.fps > 0 )
+  {
+     ui->uiView->fps( opts.fps );
+  }
+
+  if (opts.host == "" && opts.port != 0)
   {
 
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
-     data->port = port;
+     data->port = opts.port;
      boost::thread( boost::bind( mrv::server_thread, 
      				 data ) );
   }
-  else if ( host != "" && port != 0 )
+  else if ( opts.host != "" && opts.port != 0 )
   {
      mrv::ServerData* data = new mrv::ServerData;
      data->ui = ui;
-     data->host = host;
-     data->port = port;
+     data->host = opts.host;
+     data->port = opts.port;
      char buf[128];
-     sprintf( buf, "%d", port );
+     sprintf( buf, "%d", opts.port );
      data->group = buf;
 
      boost::thread( boost::bind( mrv::client_thread, 

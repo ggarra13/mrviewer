@@ -1694,6 +1694,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
 	  << _(" for stream #") << stream_index << _(", type ") << type;
     }
 
+  s.context      = context;
   s.stream_index = stream_index;
   s.has_codec    = has_codec;
   s.codec_name   = codec_name( ctx );

@@ -78,36 +78,39 @@ namespace mrv {
 
 
 
-    //   typedef std::deque< AVPacket > PacketQueue;
-    typedef mrv::PacketQueue PacketQueue;
+       //   typedef std::deque< AVPacket > PacketQueue;
+       typedef mrv::PacketQueue PacketQueue;
 
-    struct StreamInfo
-    {
-      int          stream_index;
-      bool         has_codec;
-      std::string  codec_name;
-      std::string  fourcc;
-      double       start;
-      double       duration;
+       struct StreamInfo
+       {
+            const AVFormatContext* context;
+            int          stream_index;
+            bool         has_codec;
+            std::string  codec_name;
+            std::string  fourcc;
+            double       start;
+            double       duration;
 
-      StreamInfo() : stream_index(-1), 
-		     has_codec(false), 
-		     start(0), 
-		     duration(0) 
-      {
-      }
+            StreamInfo() : context( NULL ),
+                           stream_index(-1), 
+                           has_codec(false), 
+                           start(0), 
+                           duration(0) 
+            {
+            }
 
-      StreamInfo( const StreamInfo& b ) :
-	stream_index( b.stream_index ), 
-	has_codec( b.has_codec ),
-	codec_name( b.codec_name ),
-	fourcc( b.fourcc ),
-	start( b.start ),
-	duration( b.duration )
-      {
-      }
+            StreamInfo( const StreamInfo& b ) :
+            context( b.context ),
+            stream_index( b.stream_index ), 
+            has_codec( b.has_codec ),
+            codec_name( b.codec_name ),
+            fourcc( b.fourcc ),
+            start( b.start ),
+            duration( b.duration )
+            {
+            }
 
-    };
+       };
 
     // Video stream data
     struct VideoStream : public StreamInfo
@@ -610,6 +613,12 @@ namespace mrv {
       assert( i < _audio_info.size() );
       return _audio_info[ i ];
     }
+
+       inline const AVFormatContext* audio_context() const
+       {
+          if ( _audio_index < 0 ) return NULL;
+          return _audio_info[ _audio_index ].context;
+       }
 
     inline const std::string& audio_codec()  const 
     { 

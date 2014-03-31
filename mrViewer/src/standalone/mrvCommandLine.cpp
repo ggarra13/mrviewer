@@ -87,7 +87,7 @@ namespace mrv {
 	   << _("Examples:") << endl << endl
 	   <<	"  > " << cmd << " background.dpx texture.png" << endl
 	   <<	"  > " << cmd << " beauty.001-020.iff background.%04d.exr 1-20" << endl
-	   <<	"  > " << cmd << " beauty.mov beauty.@@.iff 1-20 beauty.avi" << endl;
+	   <<	"  > " << cmd << " beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi" << endl;
     }
   };
 
@@ -96,17 +96,15 @@ namespace mrv {
 //
 void parse_command_line( const int argc, char** argv,
 			 mrv::ViewerUI* ui, 
-			 mrv::LoadList& load,
-			 bool& edl,
-			 std::string& host,
-			 unsigned& port )
+                         mrv::Options& opts )
 {
   // Some default values
-  float gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
-  float gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
+  opts.gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
+  opts.gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
+  opts.fps   = -1.f;
   std::string db_driver = "postgresql";
-  host = "";
-  port = 0;
+  opts.host = "";
+  opts.port = 0;
 
   try {
     using namespace TCLAP;
@@ -130,12 +128,16 @@ void parse_command_line( const int argc, char** argv,
 
 
     ValueArg< float > 
+      afps("f", "fps", 
+           _("Override sequence default fps."), false, opts.fps, "float");
+
+    ValueArg< float > 
       agamma("g", "gamma", 
-	     _("Override viewer's default gamma."), false, gamma, "float");
+	     _("Override viewer's default gamma."), false, opts.gamma, "float");
 
     ValueArg< float > 
       again( "", "gain", 
-	     _("Override viewer's default gain."), false, gain, "float");
+	     _("Override viewer's default gain."), false, opts.gain, "float");
 
     ValueArg< std::string > 
       adbdriver( "", "dbd", 
@@ -145,16 +147,20 @@ void parse_command_line( const int argc, char** argv,
     ValueArg< std::string > 
     ahostname( "t", N_("host"), 
 	       _("Override viewer's default client hostname."), false, 
-	       host, "string");
+	       opts.host, "string");
 
     ValueArg< unsigned > 
     aport( N_("p"), N_("port"), 
 	     _("Set viewer's default server/client port."), false, 
-	     port, "string");
+	     opts.port, "string");
 
     UnlabeledMultiArg< std::string > 
     afiles(_("files"),
 	   _("Images, sequences or movies to display."), false, "images");
+
+    MultiArg< std::string > 
+    aaudio( N_("a"), N_("audio"), 
+            _("Set sequence default audio."), false, "audio files");
 
     cmd.add(agamma);
     cmd.add(again);
@@ -162,6 +168,8 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(ahostname);
     cmd.add(aport);
     cmd.add(aedl);
+    cmd.add(afps);
+    cmd.add(aaudio);
     cmd.add(afiles);
 
     //
@@ -173,26 +181,29 @@ void parse_command_line( const int argc, char** argv,
     //
     // Extract the options
     //
-    gamma = agamma.getValue();
-    gain  = again.getValue();
+    opts.gamma = agamma.getValue();
+    opts.gain  = again.getValue();
     db_driver = adbdriver.getValue();
-    host = ahostname.getValue();
-    port = aport.getValue();
-    edl  = aedl.getValue();
+    opts.host = ahostname.getValue();
+    opts.port = aport.getValue();
+    opts.edl  = aedl.getValue();
+    opts.fps  = afps.getValue();
 
     //
     // Parse image list to split into sequences/images and reels
     //
-    typedef  std::vector< std::string > StringList;
-    const StringList& files = afiles.getValue();
-    StringList::const_iterator i = files.begin();
-    StringList::const_iterator e = files.end();
+    const stringArray& files = afiles.getValue();
+    const stringArray& audios = aaudio.getValue();
+    stringArray::const_iterator i = files.begin();
+    stringArray::const_iterator e = files.end();
+    stringArray::const_iterator ai = audios.begin();
+    stringArray::const_iterator ae = audios.end();
     for ( ; i != e; ++i )
       {
 	const std::string& arg = *i;
 
 	// Check if string is a range.  if so, change last sequence
-	if ( !load.empty() && (load.back().reel == false) &&
+	if ( !opts.files.empty() && (opts.files.back().reel == false) &&
 	     mrv::matches_chars( arg.c_str(), "0123456789-") )
 	  {
 	    stringArray tokens;
@@ -200,29 +211,44 @@ void parse_command_line( const int argc, char** argv,
 
 
 	    // frame range
-	    load.back().start = atoi( tokens[0].c_str() );
+	    opts.files.back().start = atoi( tokens[0].c_str() );
 	    if ( tokens.size() > 1 )
-	      load.back().end = atoi( tokens[1].c_str() );
+               opts.files.back().end = atoi( tokens[1].c_str() );
 	    continue;
 	  }
 
 	size_t len = arg.size();
 	if ( len > 5 && arg.substr(len - 5, 5) == ".reel" )
 	  {
-	    load.push_back( mrv::LoadInfo(arg) );
+	    opts.files.push_back( mrv::LoadInfo(arg) );
 	  }
 	else
 	{
 	    boost::int64_t start = mrv::kMinFrame, end = mrv::kMaxFrame;
 	    std::string fileroot( arg );
 
+            if ( mrv::is_directory( fileroot.c_str() ) )
+            {
+            }
+            else
+            {
 
-	    if ( mrv::is_valid_sequence( fileroot.c_str() ) )
-	      {
-		mrv::get_sequence_limits( start, end, fileroot );
-	      }
-
-	    load.push_back( mrv::LoadInfo( fileroot, start, end ) );
+               if ( mrv::is_valid_sequence( fileroot.c_str() ) )
+               {
+                  mrv::get_sequence_limits( start, end, fileroot );
+               }
+               
+               if ( ai != ae )
+               {
+                  opts.files.push_back( mrv::LoadInfo( fileroot, start, 
+                                                       end, *ai ) );
+                  ++ai;
+               }
+               else
+               {
+                  opts.files.push_back( mrv::LoadInfo( fileroot, start, end ) );
+               }
+            }
 	  }
       }
 
@@ -242,13 +268,13 @@ void parse_command_line( const int argc, char** argv,
   
   
 
-  ui->uiView->gamma( gamma );
-  ui->uiGammaInput->value( gamma );
-  ui->uiGamma->value( gamma );
+  ui->uiView->gamma( opts.gamma );
+  ui->uiGammaInput->value( opts.gamma );
+  ui->uiGamma->value( opts.gamma );
 
-  ui->uiGainInput->value( gain );
-  ui->uiGain->value( gain );
-  ui->uiView->gain( gain );
+  ui->uiGainInput->value( opts.gain );
+  ui->uiGain->value( opts.gain );
+  ui->uiView->gain( opts.gain );
 
 }
 

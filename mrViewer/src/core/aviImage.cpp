@@ -1200,7 +1200,6 @@ void aviImage::populate()
 		 s.channels   = ctx->channels;
 		 s.frequency  = ctx->sample_rate;
 		 s.bitrate    = calculate_bitrate( ctx );
-
 		 
 		 if ( stream->metadata )
 		 {
@@ -1211,7 +1210,7 @@ void aviImage::populate()
 		 }
 		 else
 		 {
-		    s.language = "default";
+		    s.language = "und";
 		 }
 
 		 const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
@@ -1259,7 +1258,7 @@ void aviImage::populate()
        return;
     }
 
-  // Open the video and audio codecs
+  // Open these video and audio codecs
   if ( has_video() )    open_video_codec();
   if ( has_audio() )    open_audio_codec();
   if ( has_subtitle() ) open_subtitle_codec();
@@ -1467,7 +1466,7 @@ void aviImage::populate()
 	}
 
       
-      if ( has_picture() && !_acontext )
+      if ( has_picture() && audio_context() == _context )
 	 find_image( _frameStart );
     }
   
@@ -1608,6 +1607,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
   }
 
   if ( !got_audio ) {
+     assert( get_audio_stream() != NULL );
     apts = frame2pts( get_audio_stream(), frame );
   }
 
@@ -1629,7 +1629,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
   unsigned packets_added = 0;
 
   // Loop until an error or we have what we need
-  while( !got_video || (!got_audio && !_acontext) )
+  while( !got_video || (!got_audio && audio_context() == _context) )
   {
 
      if (eof) {
@@ -1644,7 +1644,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	}
 
 	AVStream* stream = get_audio_stream();
-	if (!got_audio && audio_stream_index() >= 0 &&
+	if (!got_audio && stream != NULL &&
 	    stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
 	   av_init_packet(&pkt);
 	   pkt.dts = pkt.pts = apts;
@@ -1771,10 +1771,9 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
      else
      {
 	
-	if ( has_audio() && !_acontext &&
+	if ( has_audio() &&
 	     pkt.stream_index == audio_stream_index() )
 	{
-
 	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt ) -
 	   _frame_offset;
 	   
@@ -1822,13 +1821,15 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
   } // (!got_video || !got_audio)
     
 	
-  if ( _acontext )
+  if ( audio_context() == _acontext )
   {
 
      while (!got_audio)
      {
 	AVStream* stream = get_audio_stream();
-	if (stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
+        assert( stream != NULL );
+
+	if (stream && stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
 	   av_init_packet(&pkt);
 	   pkt.dts = pkt.pts = apts;
 	   pkt.data = NULL;
@@ -1838,14 +1839,14 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	}
 
 	int error = av_read_frame( _acontext, &pkt );
-	   
+
 	if ( error < 0 )
 	{
 	   if ( error == AVERROR_EOF )
 	   {
 	      counter++;
 	      if ( counter >= _frame_offset ) {
-		 
+
 		 if ( is_seek )
 		 {
 		    if ( !got_audio ) _audio_packets.seek_end(apts);
@@ -1861,16 +1862,16 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      IMG_ERROR("fetch: Could not read frame " << frame << " error: "
 			<< strerror(err) );
 	   }
-	   
+
 	   if ( is_seek )
 	   {
 	      if ( !got_audio ) _audio_packets.seek_end(apts);
 	   }
 	}
-     
+
 	if ( pkt.stream_index == audio_stream_index() )
 	{
-	   boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+           boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 
 	   if ( playback() == kBackwards )
 	   {

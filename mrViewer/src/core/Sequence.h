@@ -38,9 +38,11 @@ namespace mrv
 
        LoadInfo( const std::string& fileroot,
                  const boost::int64_t sf, const boost::int64_t ef, 
+                 const std::string& a = "",
                  const std::string& right = "" ) :
       filename( fileroot ),
       right_filename( right ),
+      audio( a ),
       start( sf ),
       end( ef ),
       reel( false )
@@ -99,13 +101,14 @@ namespace mrv
 		      );
 
   /** 
-   * Parse a text .reel file and extract each sequence line from it
+   * Parse a text .reel file and extract each sequence line from it.
+   * Return true if all went well, false if file was not found or other error.
    * 
    * @param sequences list of sequences.  New sequences are appended in order.
    * @param edl       if sequence is an edl.
    * @param edlfile   filename of .reel file.
    */
-void parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
+bool parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
 
   /** 
    * Obtain the frame range of a sequence by scanning the directory where it
@@ -131,6 +134,16 @@ void parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
    * @return true if a possible sequence, false if not.
    */
   bool is_valid_sequence( const char* file );
+
+  /** 
+   * Given a single filename, return whether the file is
+   * a directory on disk
+   * 
+   * @param file Filename or Directory
+   * 
+   * @return true if a directory, false if not.
+   */
+  bool is_directory( const char* file );
 
 
   /** 
