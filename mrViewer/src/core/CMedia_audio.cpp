@@ -145,13 +145,9 @@ int CMedia::audio_stream_index() const
 AVStream* CMedia::get_audio_stream() const
 {
    if ( _audio_index < 0 ) return NULL;
+   assert( _audio_index < _audio_info.size() );
 
-   if ( _acontext )
-      return _acontext->streams[ audio_stream_index() ];
-   else if ( _context )
-      return _context->streams[ audio_stream_index() ];
-   else
-      return NULL;
+   return _audio_info[ _audio_index ].context->streams[ audio_stream_index() ];
 }
 
 // Opens the audio codec associated to the current stream
@@ -436,8 +432,6 @@ void CMedia::populate_audio()
       separate = false;
    }
 
-   _audio_info.clear();
-
   std::ostringstream msg;
 
   AVFormatContext* c = _context;
@@ -476,15 +470,16 @@ void CMedia::populate_audio()
 		 }
 		 else
 		 {
-		    s.language = "en";
+		    s.language = "und";
 		 }
 
 		 const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
 		 if ( fmt ) s.format = fmt; 
 		 
 		 _audio_info.push_back( s );
+
 		 if ( _audio_index < 0 && s.has_codec )
-		    _audio_index = 0;
+		    _audio_index = _audio_info.size() - 1;
 		 break;
 	      }
 	   default:
@@ -611,6 +606,8 @@ void CMedia::audio_file( const char* file )
 
    SCOPED_LOCK( _audio_mutex );
 
+   flush_audio();
+
    audio_stream( -1 );
    _audio_file.clear();
    close_audio();
@@ -620,8 +617,17 @@ void CMedia::audio_file( const char* file )
    forw_ctx = NULL;
    _audio_channels = 0;
    _audio_format = AudioEngine::kFloatLSB;
+
    if ( _acontext )
    {
+      size_t num = _audio_info.size();
+      for ( size_t i = 0; i < num; ++i )
+      {
+         if ( _audio_info[i].context == _acontext )
+            _audio_info.erase( _audio_info.begin() + i, 
+                               _audio_info.begin() + i + 1);
+      }
+
       avformat_close_input( &_acontext );
       _acontext = NULL;
    }
@@ -629,6 +635,7 @@ void CMedia::audio_file( const char* file )
    if ( file == NULL )
    {
       file = filename();
+      return;
    }
 
   AVDictionary* params = NULL;
@@ -924,6 +931,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   // Get the audio codec context
   AVCodecContext* ctx = stream->codec;
+  if ( !ctx ) return kDecodeNoStream;
 
 
   assert( !_audio_packets.is_seek_end( pkt ) );
@@ -1144,6 +1152,7 @@ void CMedia::audio_stream( int idx )
       swr_free( &forw_ctx );
       forw_ctx = NULL;
       _audio_channels = 0;
+      _audio_format = AudioEngine::kFloatLSB;
     }
 
   clear_stores();

@@ -59,7 +59,6 @@ size_t EDLGroup::add_media_track( int r )
 {
    size_t e = children();
 
-
    mrv::media_track* o = new mrv::media_track(x(), y() + 78 * e,
 					      w(), kTrackHeight);
  
@@ -68,10 +67,6 @@ size_t EDLGroup::add_media_track( int r )
 
    o->reel( r );
 
-
-
-   e = children() - 1;
-   
    return e;
 }
 

@@ -582,6 +582,8 @@ static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( !fg ) return;
 
+  view->stop();
+
   CMedia* img = fg->image();
   if ( img == NULL ) return;
 
@@ -3688,6 +3690,7 @@ void ImageView::refresh_audio_tracks() const
 
   uiMain->uiAudioTracks->clear();
   size_t numTracks = img->number_of_audio_streams();
+
   for ( size_t i = 0; i < numTracks; ++i )
     {
       char buf[80];
@@ -3705,6 +3708,9 @@ void ImageView::audio_stream( unsigned int idx )
   mrv::media fg = foreground();
   if ( ! fg ) return;
 
+  Playback p = playback();
+  stop();
+
   CMedia* img = fg->image();
 
   unsigned int numAudioTracks = uiMain->uiAudioTracks->children();
@@ -3712,6 +3718,9 @@ void ImageView::audio_stream( unsigned int idx )
     img->audio_stream( -1 );
   else
     img->audio_stream( idx );
+
+  if ( p != kStopped ) play( (CMedia::Playback) p );
+
 }
 
 

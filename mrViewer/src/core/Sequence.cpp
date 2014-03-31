@@ -357,13 +357,13 @@ void split(const std::string &s, char delim, StringList& elems) {
   }
 
 
-void parse_reel( mrv::LoadList& sequences, bool& edl,
+bool parse_reel( mrv::LoadList& sequences, bool& edl,
 		 const char* reelfile )
   {
      edl = false;
 
      FILE* f = fltk::fltk_fopen( reelfile, "r" );
-     if (!f ) return;
+     if (!f ) return false;
 
     char buf[1024];
     while ( !feof(f) )
@@ -428,6 +428,7 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
 
     fclose(f);
 
+    return true;
   }
 
 
@@ -435,6 +436,11 @@ void parse_reel( mrv::LoadList& sequences, bool& edl,
   {
      std::string root, frame, view, ext;
      return split_sequence( root, frame, view, ext, filename );
+  }
+
+  bool is_directory( const char* dir )
+  {
+     return fs::is_directory( dir );
   }
 
   int  padded_digits( const std::string& frame )

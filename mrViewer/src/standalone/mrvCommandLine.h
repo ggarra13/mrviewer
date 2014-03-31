@@ -17,16 +17,29 @@ namespace mrv {
 
   class ViewerUI;
 
+typedef std::vector< std::string > stringArray;
+
+  struct Options
+  {
+       mrv::LoadList files;
+       bool edl;
+       float gamma;
+       float gain;
+       std::string host;
+       stringArray audios;
+       unsigned port;
+       float fps;
+  };
+
   //
   // Command-line parser
   //
   void parse_command_line( const int argc, char** argv,
 			   mrv::ViewerUI* ui, 
-			   mrv::LoadList& files,
-			   bool& edl,
-			   std::string& host,
-			   unsigned& port );
+                           mrv::Options& opts);
 }
 
 
 #endif // mrvCommandLine_h
+
+

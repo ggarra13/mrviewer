@@ -1,11 +1,13 @@
 v2.5.8.0 - Bug fixed Reel/EDL window when two reels were loaded and clips could
 	   not be selected.
 	 - Bug fixed EDL Edit window to support more than two reels.
-	 - Updated all platforms to use ffmpeg 2.2.
+	 - Updated all platforms to use ffmpeg 2.2
 	 - Bug fixed some movies not starting at first frame.
 	 - Bug fixed crash when loading two or more EXRs simultaneously.
 	 - Fixed red and blue dots in preview pictures.
-	 - Added missing detection for Real Media Format.
+	 - Added proper detection of Real Media Format.
+	 - Made EDL button a toggle button to better reflect each reel's
+	   edl status.
 v2.5.7.4 - Bug fixed ghosting of lines and text in grease marker's previous
 	   or next frames.
 	 - Updated all platforms to use OpenEXR 2.1.0.

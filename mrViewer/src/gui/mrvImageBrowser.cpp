@@ -1627,7 +1627,7 @@ int ImageBrowser::value() const
    * Open new image, sequence or movie file(s) from a load list.
    * 
    */
-void ImageBrowser::load( mrv::LoadList& files,
+void ImageBrowser::load( const mrv::LoadList& files,
 			 bool progressBar )
 {
     //
@@ -1662,14 +1662,15 @@ void ImageBrowser::load( mrv::LoadList& files,
     	fltk::check();
       }
 
-    mrv::LoadList::iterator s = files.begin();
-    mrv::LoadList::iterator i = s;
-    mrv::LoadList::iterator e = files.end();
+    mrv::LoadList::const_iterator s = files.begin();
+    mrv::LoadList::const_iterator i = s;
+    mrv::LoadList::const_iterator e = files.end();
+
 
     char buf[1024];
     for ( ; i != e; ++i )
       {
-	mrv::LoadInfo& load = *i;
+         const mrv::LoadInfo& load = *i;
 
 
 	if ( w )
@@ -1749,6 +1750,7 @@ void ImageBrowser::load( mrv::LoadList& files,
 	     if ( fg && load.audio != "" ) 
 	     {
 		fg->image()->audio_file( load.audio.c_str() );
+                view()->refresh_audio_tracks();
 	     }
 	  }
 
@@ -1817,7 +1819,11 @@ void ImageBrowser::load( mrv::LoadList& files,
   {
      bool edl;
      mrv::LoadList sequences;
-     parse_reel( sequences, edl, name );
+     if ( ! parse_reel( sequences, edl, name ) )
+     {
+        LOG_ERROR( "Could not parse \"" << name << "\"." );
+        return;
+     }
 
      fs::path path( name );
      std::string reelname = path.leaf().string();
@@ -2703,6 +2709,8 @@ void ImageBrowser::load( const stringArray& files,
      timeline()->edl( false );
      timeline()->redraw();
 
+     uiMain->uiReelWindow->uiEDLButton->value(0);
+
     mrv::media m = current_image();
     if (!m) return;
 
@@ -2728,6 +2736,8 @@ void ImageBrowser::load( const stringArray& files,
      reel->edl = true;
      timeline()->edl( true );
      timeline()->redraw();
+
+     uiMain->uiReelWindow->uiEDLButton->value(1);
 
     mrv::media m = current_image();
     if (!m) return;

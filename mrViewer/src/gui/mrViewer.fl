@@ -78,10 +78,10 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
   {fltk::Window} {} {
-    label {CTL Browser} open
+    label {CTL Browser}
     xywh {444 307 395 440} horizontal hide resizable hotspot modal
   } {
     {fltk::Group} {} {open
@@ -92,8 +92,7 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
         user_data {&ctl} user_data_type {std::string*}
         callback {int elem = o->value();
 if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
-*v = o->child(elem)->label();
-} open selected
+*v = o->child(elem)->label();} open
         xywh {0 0 375 365}
         extra_code {if ( !ctl.empty() )
 {
@@ -167,15 +166,16 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {} {
+  class ReelUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {451 351 405 350} hide resizable
+        xywh {454 374 405 350} resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );} visible
       } {
         {fltk::Browser} uiBrowser {
           xywh {0 32 405 318} box UP_BOX
@@ -271,10 +271,10 @@ v->new_reel(name);}
               tooltip {Set reel images as background}
               xywh {26 0 26 26} box UP_BOX labelfont 1
             }
-            {fltk::Button} {} {
+            {fltk::Button} uiEDLButton {
               label EDL
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->toggle_edl();}
+              callback {v->toggle_edl();} selected
               tooltip {Toggle Reel in Timeline}
               xywh {52 0 26 26} box UP_BOX labelfont 1 labelsize 11
             }
@@ -569,8 +569,7 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {

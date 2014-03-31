@@ -57,12 +57,13 @@ double media_track::frame_size() const
 // Add a media at a certain frame (or append to end by default)
 void media_track::add( mrv::media m, boost::int64_t frame )
 {
+   DBG( "add " << _reel_idx << " media " << m->image()->name() );
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
-   if ( !reel ) return;
+   if ( !reel || !m ) return;
 
+   size_t e = reel->images.size();
    if ( frame == MRV_NOPTS_VALUE )
    {
-      size_t e = reel->images.size();
       if ( e < 2 )
       {
 	 frame = 1;
@@ -74,10 +75,9 @@ void media_track::add( mrv::media m, boost::int64_t frame )
 	 frame += o->image()->duration();
       }
    }
-   
    m->position( frame );
 
-   mrv::media o = reel->images[ reel->images.size()-1 ];
+   mrv::media o = reel->images[ e-1 ];
    timeline()->maximum( frame + o->image()->duration() - 1 );
 
    timeline()->redraw();
@@ -628,6 +628,8 @@ void media_track::draw()
 {
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return;
+
+   DBG( "draw track for reel " << _reel_idx );
 
    size_t e = reel->images.size();
 
