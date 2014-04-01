@@ -82,7 +82,7 @@ namespace mrv {
 
     void media::create_thumbnail()
     {
-      if ( !_image->stopped() || thumbnail_frozen() ) return;
+       if ( !_image->stopped() || thumbnail_frozen() ) return;
 
       // Make sure frame memory is not deleted
       Mutex& mutex = _image->video_mutex();
@@ -101,8 +101,11 @@ namespace mrv {
 
 
       mrv::image_type_ptr pic = _image->hires();
-      if ( !pic ) return;
-
+      if ( !pic )
+      {
+         IMG_ERROR( _("No hires image to create thumbnail") );
+         return;
+      }
 
       // Resize image to thumbnail size
       pic.reset( pic->resize( w, h ) );
@@ -114,7 +117,11 @@ namespace mrv {
       if ( _thumbnail == NULL )
 	{
 	  _thumbnail = new fltk::Image( fltk::RGB, w, h );
-	  if ( _thumbnail == NULL ) return;
+	  if ( _thumbnail == NULL )
+          {
+             IMG_ERROR( "Could not allocate thumbnail" );
+             return;
+          }
 	}
 
 

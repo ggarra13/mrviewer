@@ -135,6 +135,16 @@ bool parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
    bool is_valid_movie( const char* ext );
 
   /** 
+   * Given a filename extension, return whether the extension is
+   * from a picture format.
+   * 
+   * @param ext Filename extension
+   * 
+   * @return true if a possible picture, false if not.
+   */
+   bool is_valid_picture( const char* ext );
+
+  /** 
    * Given a single image filename, return whether the image is
    * a sequence on disk (ie. there are several images named with a
    * similar convention) 
