@@ -102,7 +102,30 @@ bool is_valid_movie( const char* ext )
 
    if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
         tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
-        tmp == ".qt"  || tmp == ".mp4"  || tmp == ".vob" )
+        tmp == ".qt"  || tmp == ".mp4"  || tmp == ".vob"  ||
+        tmp == ".rm"  || tmp == ".flv" )
+      return true;
+
+   return false;
+}
+
+
+// Given a frame extension, return true if a possible picture file.
+bool is_valid_picture( const char* ext )
+{
+   std::string tmp = ext;
+   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+                   (int(*)(int)) tolower);
+
+   if ( tmp == ".iff"  || tmp == ".pic" || tmp == ".tif" ||
+        tmp == ".tiff" || tmp == ".png" || tmp == ".jpg" ||
+        tmp == ".jpeg" || tmp == ".tga" || tmp == ".exr" ||
+        tmp == ".dpx"  || tmp == ".cin" || tmp == ".bmp" ||
+        tmp == ".bit"  || tmp == ".sxr" || tmp == ".ct"  ||
+        tmp == ".sgi"  || tmp == ".st"  || tmp == ".map" ||
+        tmp == ".nt"   || tmp == ".mt"  || tmp == ".psd" ||
+        tmp == ".rgb"  || tmp == ".rpf" || tmp == ".shmap" ||
+        tmp == ".zt" )
       return true;
 
    return false;
