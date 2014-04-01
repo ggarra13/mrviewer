@@ -31,6 +31,13 @@ typedef std::vector< std::string > stringArray;
        float fps;
   };
 
+
+  //
+  // Given a directory parse all sequences and movies from it.
+  //
+   void parse_directory( const std::string& dir,
+                         mrv::Options& opts );
+
   //
   // Command-line parser
   //

@@ -55,6 +55,8 @@ namespace fs = boost::filesystem;
 #include "mrvEDLWindowUI.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 
+#include "standalone/mrvCommandLine.h"
+
 #if defined(WIN32) || defined(WIN64)
 #  define snprintf _snprintf
 #endif
@@ -1569,6 +1571,7 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) frame( start );
 
+    std::cerr << "guess " << name << std::endl;
 
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     if ( img == NULL )
@@ -2328,6 +2331,7 @@ void ImageBrowser::load( const stringArray& files,
   {
     std::string filenames = fltk::event_text();
 
+
     stringArray files;
 #if defined(_WIN32) || defined(_WIN64)
     mrv::split_string( files, filenames, "\n" ); 
@@ -2335,31 +2339,48 @@ void ImageBrowser::load( const stringArray& files,
     mrv::split_string( files, filenames, "\r\n" ); 
 #endif
 
+    mrv::Options opts;
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();
     for ( ; i != e; ++i )
     {
        std::string file = *i;
-       std::string root, frame, view, ext;
-       mrv::split_sequence( root, frame, view, ext, file );
 
-       if ( root != "" && frame != "" )
+       if ( file.substr(0, 7) == "file://" )
+	  file = file.substr( 7, file.size() );
+
+
+       if ( mrv::is_directory( file.c_str() ) )
        {
-    	  file = root;
-    	  for ( size_t i = 0; i < frame.size(); ++i )
-	  {
-    	     if ( frame[i] == '0' ) file += '@';
-	     else break;
-	  }
-    	  file += '@';
-          file += view;
-    	  file += ext;
+          parse_directory( file, opts );
+          continue;
        }
+       else
+       {
+          std::string root, frame, view, ext;
+          mrv::split_sequence( root, frame, view, ext, file );
 
-       *i = file;
+          if ( root != "" && frame != "" )
+          {
+             file = root;
+             for ( size_t i = 0; i < frame.size(); ++i )
+             {
+                if ( frame[i] == '0' ) file += '@';
+                else break;
+             }
+             file += '@';
+             file += view;
+             file += ext;
+          }
+
+
+          opts.files.push_back( mrv::LoadInfo( file ) );
+       }
     }
 
-    load( files );
+    std::cerr << opts.files.size() << std::endl;
+    std::cerr << opts.files[0].filename << std::endl;
+    load( opts.files );
 
     last_image();
   }

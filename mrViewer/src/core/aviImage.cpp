@@ -1466,7 +1466,7 @@ void aviImage::populate()
 	}
 
       
-      if ( has_picture() && audio_context() == _context )
+      if ( has_picture() && (!has_audio() || audio_context() == _context) )
 	 find_image( _frameStart );
     }
   
