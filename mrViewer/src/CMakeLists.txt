@@ -113,6 +113,7 @@ SET( SOURCES
   core/mrvHome.cpp
   core/guessImage.cpp
   core/aviImage.cpp
+  core/aviImage_save.cpp
   core/clonedImage.cpp
   core/ddsImage.cpp
   core/exrImage.cpp

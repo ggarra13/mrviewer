@@ -52,13 +52,14 @@ const char* const kModule = "main";
 
 
 void load_files( mrv::LoadList& files, 
-                 mrv::ViewerUI* ui )
-{   
+                 mrv::ViewerUI* ui,
+                 bool stereo = false )
+{
    //
    // Window must be shown after images have been loaded.
    // 
    mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
-   image_list->load( files );
+   image_list->load( files, stereo );
 }
 
 void load_new_files( void* s )

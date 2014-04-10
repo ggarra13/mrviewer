@@ -661,8 +661,7 @@ namespace mrv {
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
 
-       void get_audio_frame( uint8_t*& samples, int& frame_size,
-			     const AVCodecContext* c ) const;
+    audio_type_ptr get_audio_frame() const;
 
     void close_audio();
 

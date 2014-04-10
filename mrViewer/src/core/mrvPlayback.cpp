@@ -381,7 +381,9 @@ void audio_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
 
+      DBG( "wait audio" );
       img->wait_audio();
+      DBG( "waited audio" );
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
