@@ -1,3 +1,5 @@
+v2.5.8.2 - Drag and Drop now supports dragging directories to load all that
+	   is found inside them.
 v2.5.8.1 - Bug fixed drag and drop of sequences as it had gotten broken.
 	 - Bug fixed preview pictures which could show wrong colors in movie
 	   files.
@@ -10,7 +12,7 @@ v2.5.8.1 - Bug fixed drag and drop of sequences as it had gotten broken.
 	 - Added -a audio flag to load sequences with audio attached.
 	 - Made added audio appear in the audio drop-down window in the
 	   interface, allowing user to toggle the audio of a movie file with
-	   the audio of music brought from outside.
+	   the audio of music or dialogue brought from outside.
 
 v2.5.8.0 - Bug fixed Reel/EDL window when two reels were loaded and clips could
 	   not be selected.

@@ -1571,12 +1571,9 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) frame( start );
 
-    std::cerr << "guess " << name << std::endl;
-
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     if ( img == NULL )
     {
-       LOG_ERROR("Unknown image media format");
        return mrv::media();
     }
 
@@ -1631,6 +1628,7 @@ int ImageBrowser::value() const
    * 
    */
 void ImageBrowser::load( const mrv::LoadList& files,
+                         bool stereo,
 			 bool progressBar )
 {
     //
@@ -2339,15 +2337,20 @@ void ImageBrowser::load( const stringArray& files,
     mrv::split_string( files, filenames, "\r\n" ); 
 #endif
 
+    std::sort( files.begin(), files.end() );
+
     mrv::Options opts;
+    boost::int64_t frameStart = kMaxFrame;
+    boost::int64_t frameEnd   = kMinFrame;
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();
+    std::string oldroot, oldview, oldext;
     for ( ; i != e; ++i )
     {
        std::string file = *i;
 
-       if ( file.substr(0, 7) == "file://" )
-	  file = file.substr( 7, file.size() );
+       if ( file.substr(0, 7) == "file://" && file.size() > 7 )
+          file = file.substr( 7, file.size() );
 
 
        if ( mrv::is_directory( file.c_str() ) )
@@ -2360,8 +2363,11 @@ void ImageBrowser::load( const stringArray& files,
           std::string root, frame, view, ext;
           mrv::split_sequence( root, frame, view, ext, file );
 
-          if ( root != "" && frame != "" )
+          if ( root != "" && frame != "" && root != oldroot && ext != oldext )
           {
+             oldroot = root;
+             oldext = ext;
+
              file = root;
              for ( size_t i = 0; i < frame.size(); ++i )
              {
@@ -2371,16 +2377,22 @@ void ImageBrowser::load( const stringArray& files,
              file += '@';
              file += view;
              file += ext;
+
+             std::string fileroot;
+             mrv::fileroot( fileroot, file );
+             mrv::get_sequence_limits( frameStart, frameEnd, fileroot );
+             opts.files.push_back( mrv::LoadInfo( fileroot, frameStart,
+                                                  frameEnd ) );
           }
-
-
-          opts.files.push_back( mrv::LoadInfo( file ) );
        }
     }
 
-    std::cerr << opts.files.size() << std::endl;
-    std::cerr << opts.files[0].filename << std::endl;
     load( opts.files );
+
+    if ( opts.files.size() > 1 )
+    {
+       set_edl();
+    }
 
     last_image();
   }

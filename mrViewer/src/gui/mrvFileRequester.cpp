@@ -39,6 +39,8 @@ namespace fs = boost::filesystem;
 
 namespace {
 
+static const char* kModule = "file";
+
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
@@ -333,6 +335,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
       
 
       CMedia* img = fg->image();
+
       
       if ( old != fg )
       {
@@ -367,6 +370,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
 	    if ( aviImage::open_movie( buf, img ) )
 	    {
+               LOG_INFO( "Open movie '" << buf << "'" );
 	       open_movie = true;
 	       ++movie_count;
 	    }
@@ -378,7 +382,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	   
 	 if (movie)
 	 {
-	    aviImage::save_movie_frame( img, uiMain );
+	    aviImage::save_movie_frame( img );
 	 }
 	 else 
 	 {
@@ -399,6 +403,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
    if ( open_movie )
    {
+      LOG_INFO( "Close movie file" );
       aviImage::close_movie();
       open_movie = false;
    }
