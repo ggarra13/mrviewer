@@ -484,7 +484,7 @@ namespace mrv {
 		ow = (dw+1) / 2;
 		break;
 	      default:
-		LOG_ERROR("wrong pixel format for yuv");
+		LOG_ERROR("Wrong pixel format for yuv");
 		break;
 	      }
 	  }

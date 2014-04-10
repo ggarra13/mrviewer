@@ -22,6 +22,7 @@ typedef std::vector< std::string > stringArray;
   struct Options
   {
        mrv::LoadList files;
+       mrv::LoadList stereo;
        bool edl;
        float gamma;
        float gain;

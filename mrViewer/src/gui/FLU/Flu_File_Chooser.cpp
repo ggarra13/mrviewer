@@ -3728,41 +3728,6 @@ bool Flu_File_Chooser::stripPatterns( std::string s, FluStringVector* patterns )
 
 
 
-struct Sequence
-{
-     std::string root;
-     std::string number;
-     std::string view;
-     std::string ext;
-};
-
-typedef std::vector< Sequence > Sequences;
-
-struct SequenceSort
-{
-  // true if a < b, else false
-  bool operator()( const Sequence& a, const Sequence& b ) const
-  {
-    if ( a.root < b.root )  return true;
-    else if ( a.root > b.root ) return false;
-
-    if ( a.ext < b.ext ) return true;
-    else if ( a.ext > b.ext ) return false;
-
-    if ( a.view < b.view ) return true;
-    else if ( a.view > b.view ) return false;
-
-    size_t as = a.number.size();
-    size_t bs = b.number.size();
-    if ( as < bs ) return true;
-    else if ( as > bs ) return false;
-
-    if ( atoi( a.number.c_str() ) < atoi( b.number.c_str() ) )
-      return true;
-    return false;
-  }
-};
-
 
 
 void Flu_File_Chooser::cd( const char *path )
@@ -4165,7 +4130,7 @@ void Flu_File_Chooser::cd( const char *path )
   typedef std::vector< std::string > Files;
   Files files;
 
-  Sequences tmpseqs;
+  mrv::Sequences tmpseqs;
 
   // read the directory
   dirent **e;
@@ -4293,12 +4258,12 @@ void Flu_File_Chooser::cd( const char *path )
 
 		 if ( is_sequence )
 		  {
-		    Sequence seq;
-		    seq.ext = ext;
-                    seq.view = view;
-		    seq.number = frame;
-		    seq.root = root;
-		    tmpseqs.push_back( seq );
+                     mrv::Sequence seq;
+                     seq.ext = ext;
+                     seq.view = view;
+                     seq.number = frame;
+                     seq.root = root;
+                     tmpseqs.push_back( seq );
 		  }
 		else
 		  {
@@ -4332,7 +4297,7 @@ void Flu_File_Chooser::cd( const char *path )
       // Then, sort sequences and collapse them into a single file entry
       //
       {
-	std::sort( tmpseqs.begin(), tmpseqs.end(), SequenceSort() );
+         std::sort( tmpseqs.begin(), tmpseqs.end(), mrv::SequenceSort() );
 
 
 	std::string root;
@@ -4343,12 +4308,12 @@ void Flu_File_Chooser::cd( const char *path )
 	int zeros = -1;
 
 	std::string seqname;
-	Sequences seqs;
+        mrv::Sequences seqs;
 
 	{
-	  Sequences::const_iterator i = tmpseqs.begin();
-	  Sequences::const_iterator e = tmpseqs.end();
-	  for ( ; i != e; ++i )
+           mrv::Sequences::const_iterator i = tmpseqs.begin();
+           mrv::Sequences::const_iterator e = tmpseqs.end();
+           for ( ; i != e; ++i )
 	    {
 
 	      const char* s = (*i).number.c_str();
@@ -4362,17 +4327,16 @@ void Flu_File_Chooser::cd( const char *path )
 		  // New sequence
 		  if ( root != "" )
 		    {
-		      Sequence seq;
-		      seq.root = seqname;
-		      seq.number = seq.ext = first;
-		      if ( first != number )
-			{
+                       mrv::Sequence seq;
+                       seq.root = seqname;
+                       seq.number = seq.ext = first;
+                       if ( first != number )
+                       {
 			  seq.ext = number;
-			}
-                      seq.view = (*i).view;
-		      seqs.push_back( seq );
+                       }
+                       seq.view = (*i).view;
+                       seqs.push_back( seq );
 		    }
-
 
 		  root   = (*i).root;
 		  zeros  = z;
@@ -4408,19 +4372,19 @@ void Flu_File_Chooser::cd( const char *path )
 
 	if ( root != "" )
 	  {
-	    Sequence seq;
-	    seq.root = seqname;
-	    seq.number = seq.ext = first;
-            seq.view = view;
-	    if ( first != number )
-	      {
+             mrv::Sequence seq;
+             seq.root = seqname;
+             seq.number = seq.ext = first;
+             seq.view = view;
+             if ( first != number )
+             {
 		seq.ext = number;
-	      }
-	    seqs.push_back( seq );
+             }
+             seqs.push_back( seq );
 	  }
-
-	Sequences::const_iterator i = seqs.begin();
-	Sequences::const_iterator e = seqs.end();
+        
+        mrv::Sequences::const_iterator i = seqs.begin();
+        mrv::Sequences::const_iterator e = seqs.end();
 	for ( ; i != e; ++i )
 	{
 	  entry = new Entry( (*i).root.c_str(), ENTRY_SEQUENCE,

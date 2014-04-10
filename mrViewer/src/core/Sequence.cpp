@@ -68,7 +68,12 @@ namespace mrv
 
   bool is_valid_frame_spec( const std::string framespec )
   {
-    const char* c = framespec.c_str();
+     const char* c;
+     if ( framespec.substr(0,1) == "." )
+        c = framespec.c_str() + 1;
+     else
+        c = framespec.c_str();
+
     if ( *c == '%' || *c == '#' || *c == '@' ) return true;
 
     bool range_found = false;
@@ -168,21 +173,20 @@ bool is_valid_picture( const char* ext )
     StringList periods;
     split(f, '.', periods);
 
-
     if ( periods.size() == 4 )
     {
-       root = periods[0] + ".";
+       root = file.substr( 0, len ) + periods[0] + ".";
        frame = periods[1];
-       view = periods[2];
+       view = "." + periods[2];
        ext = "." + periods[3];
 
-       if ( view == "l" || view == "r" ||
-            view == "L" || view == "R" ||
-            view == "left" || view == "right" ||
-            view == "Left" || view == "Right" )
+       if ( view == ".%v" || view == ".%V" || 
+            view == ".l" || view == ".r" ||
+            view == ".L" || view == ".R" ||
+            view == ".left" || view == ".right" ||
+            view == ".Left" || view == ".Right" )
        {
-          view = "%V.";
-          f = file.substr( 0, len ) + root + view + frame + ext;
+          return true;
        }
     }
     else
@@ -199,7 +203,7 @@ bool is_valid_picture( const char* ext )
     i = e + f.size() - 1;
     for ( ; i >= e; --i )
       {
-	if ( *i == '/' || *i == '\\' ) break;
+ 	if ( *i == '/' || *i == '\\' ) break;
 	if ( *i == '.' || ( count > 0 && (*i == '_' ) ) )
 	  {
 	    idx[count] = (int)( i - e );
@@ -225,11 +229,6 @@ bool is_valid_picture( const char* ext )
 	ext   = f.substr( idx[0], file.size()-idx[0] );
 
 
-        if ( is_valid_movie( ext.c_str() ) )
-        {
-           root = "";
-           return false;
-        }
 
 	bool ok = is_valid_frame( ext );
 	if ( ok )
@@ -238,14 +237,19 @@ bool is_valid_picture( const char* ext )
 	   ext.clear();
 	}
 
+        if ( is_valid_movie( ext.c_str() ) )
+        {
+           root = "";
+           return false;
+        }
+
 	ok = is_valid_frame_spec( frame );
 	return ok;
       }
     else
       {
-	root = f.substr( 0, idx[0] );
-	ext  = f.substr( idx[0], file.size() );
-
+	root = f.substr( 0, idx[0]+1 );
+	ext  = f.substr( idx[0]+1, file.size() );
 
 	bool ok = is_valid_frame_spec( ext );
 	if (ok)
@@ -254,7 +258,7 @@ bool is_valid_picture( const char* ext )
 	   ext.clear();
 	   return true;
 	}
-	
+
 	ok = is_valid_frame( ext );
 	if (ok)
 	{
