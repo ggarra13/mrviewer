@@ -23,7 +23,43 @@ namespace mrv
   extern const boost::int64_t kMinFrame;
   extern const boost::int64_t kMaxFrame;
 
-  /**
+struct Sequence
+{
+     std::string root;
+     std::string number;
+     std::string view;
+     std::string ext;
+};
+
+typedef std::vector< Sequence > Sequences;
+
+struct SequenceSort
+{
+     // true if a < b, else false
+     bool operator()( const Sequence& a, const Sequence& b ) const
+     {
+        if ( a.root < b.root )  return true;
+        else if ( a.root > b.root ) return false;
+
+        if ( a.ext < b.ext ) return true;
+        else if ( a.ext > b.ext ) return false;
+
+        if ( a.view < b.view ) return true;
+        else if ( a.view > b.view ) return false;
+
+        size_t as = a.number.size();
+        size_t bs = b.number.size();
+        if ( as < bs ) return true;
+        else if ( as > bs ) return false;
+
+        if ( atoi( a.number.c_str() ) < atoi( b.number.c_str() ) )
+           return true;
+        return false;
+     }
+};
+
+
+/**
    * Struct used to store information about stuff to load
    * 
    */
@@ -86,10 +122,10 @@ namespace mrv
    * Given a filename of a possible sequence, split it into
    * root name, frame string, and extension
    * 
-   * @param root    root name of file sequence
-   * @param frame   frame part of file name
+   * @param root    root name of file sequence (root.)
+   * @param frame   frame part of file name    (%d)
    * @param view    left or right for stereo images.  Empty if not stereo.
-   * @param ext     extension of file sequence
+   * @param ext     extension of file sequence (.ext)
    * @param file    original filename, potentially part of a sequence.
    * 
    * @return true if a sequence, false if not.

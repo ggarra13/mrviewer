@@ -91,7 +91,8 @@ namespace mrv
 		    const boost::int64_t end = -999999 );
     
 
-       void load( const LoadList& files, bool progressBar = true );
+       void load( const LoadList& files, bool stereo = false, 
+                  bool progressBar = true );
        void load( const stringArray& files, bool progressBar = true );
 
 

@@ -118,42 +118,146 @@ void parse_directory( const std::string& fileroot,
       }
    }
 
-   std::sort( files.begin(), files.end() );
-
    {
       stringArray::iterator i = files.begin();
       stringArray::iterator e = files.end();
 
       std::string root, frame, view, ext;
-      std::string oldroot;
+      Sequences tmpseqs;
 
       for ( ; i != e; ++i )
       {
-         std::string file = (*i);
+         std::string fileroot;
 
+         mrv::fileroot( fileroot, *i );
          bool ok = mrv::split_sequence( root, frame, view,
-                                        ext, file );
+                                        ext, fileroot );
+         
 
-
-         if ( mrv::is_valid_movie( ext.c_str() ) ||
-              mrv::is_valid_picture( ext.c_str() ) )
+         if ( mrv::is_valid_movie( ext.c_str() ) )
          {
-            opts.files.push_back( mrv::LoadInfo( file, kMinFrame,
+            opts.files.push_back( mrv::LoadInfo( fileroot, kMinFrame,
                                                  kMaxFrame ) );
             opts.edl = true;
             continue;
          }
-
-         if ( root != "" && frame != "" && oldroot != root )
+         else if ( ok )
          {
-            oldroot = root;
-            std::string fileroot;
-            mrv::fileroot( fileroot, file );
-            mrv::get_sequence_limits( frameStart, frameEnd, fileroot );
-            opts.files.push_back( mrv::LoadInfo( fileroot, frameStart,
-                                                 frameEnd ) );
-            opts.edl = true;
+            Sequence s;
+            s.root  = root;
+            s.number = frame;
+            s.view  = view;
+            s.ext   = ext;
+
+            tmpseqs.push_back( s );
          }
+         else
+         {
+            opts.files.push_back( mrv::LoadInfo( *i, kMaxFrame, kMinFrame ) );
+         }
+      }
+
+
+      //
+      // Then, sort sequences and collapse them into a single file entry
+      //
+      std::sort( tmpseqs.begin(), tmpseqs.end(), SequenceSort() );
+
+
+      {
+	std::string root;
+	std::string first;
+	std::string number;
+        std::string view;
+	std::string ext;
+	int zeros = -1;
+
+	std::string seqname;
+	Sequences seqs;
+
+	{
+	  Sequences::const_iterator i = tmpseqs.begin();
+	  Sequences::const_iterator e = tmpseqs.end();
+	  for ( ; i != e; ++i )
+	    {
+
+	      const char* s = (*i).number.c_str();
+	      int z = 0;
+	      for ( ; *s == '0'; ++s )
+		++z;
+
+	      if ( (*i).root != root || (*i).view != view ||
+                   (*i).ext != ext || ( zeros != z && z != zeros-1 ) )
+              {
+		  // New sequence
+		  if ( root != "" )
+		    {
+		      Sequence seq;
+		      seq.root = seqname;
+		      seq.number = seq.ext = first;
+		      if ( first != number )
+			{
+			  seq.ext = number;
+			}
+                      seq.view = (*i).view;
+		      seqs.push_back( seq );
+		    }
+
+
+		  root   = (*i).root;
+		  zeros  = z;
+		  number = first = (*i).number;
+                  view   = (*i).view;
+		  ext    = (*i).ext;
+
+		  seqname  = root;
+		  if ( z == 0 )
+		    seqname += "%d";
+		  else
+		    {
+		      seqname += "%0";
+		      char buf[19]; buf[18] = 0;
+#ifdef WIN32
+		      seqname += itoa( int((*i).number.size()), buf, 10 );
+#else
+		      sprintf( buf, "%ld", (*i).number.size() );
+		      seqname += buf;
+#endif
+		      seqname += "d";
+		    }
+                  seqname += view;
+		  seqname += ext;
+		}
+	      else
+		{
+		  zeros  = z;
+		  number = (*i).number;
+		}
+	    }
+	}
+
+	if ( root != "" )
+	  {
+	    Sequence seq;
+	    seq.root = seqname;
+            seqs.push_back( seq );
+	  }
+
+        {
+           Sequences::const_iterator i = seqs.begin();
+           Sequences::const_iterator e = seqs.end();
+
+           for ( ; i != e; ++i )
+           {
+              boost::int64_t frameStart = kMaxFrame;
+              boost::int64_t frameEnd   = kMinFrame;
+              std::string file = (*i).root;
+              get_sequence_limits( frameStart, frameEnd, file );
+              opts.files.push_back( mrv::LoadInfo( file, frameStart, 
+                                                   frameEnd ) );
+           }
+
+        }
       }
    }
 }
@@ -229,6 +333,10 @@ void parse_command_line( const int argc, char** argv,
     aaudio( N_("a"), N_("audio"), 
             _("Set sequence default audio."), false, "audio files");
 
+    MultiArg< std::string > 
+    astereo( N_("s"), N_("stereo"), 
+            _("Provide two sequences or movies for stereo."), false, "images");
+
     cmd.add(agamma);
     cmd.add(again);
     cmd.add(adbdriver);
@@ -237,6 +345,7 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
+    cmd.add(astereo);
     cmd.add(afiles);
 
     //
@@ -256,11 +365,28 @@ void parse_command_line( const int argc, char** argv,
     opts.edl  = aedl.getValue();
     opts.fps  = afps.getValue();
 
+    stringArray stereo = astereo.getValue();
+
+    if ( stereo.size() % 2 != 0 )
+    {
+       std::cerr << "--stereo flag needs to be specified a "
+       "multiple of two times." << std::endl;
+       exit(1);
+    }
+
     //
     // Parse image list to split into sequences/images and reels
     //
-    const stringArray& files = afiles.getValue();
+    stringArray files = afiles.getValue();
+    unsigned normalFiles = files.size();
+
+    for ( int i = 0; i < stereo.size(); ++i )
+    {
+       files.push_back( stereo[i] ); 
+    }
+
     const stringArray& audios = aaudio.getValue();
+
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
@@ -284,6 +410,7 @@ void parse_command_line( const int argc, char** argv,
 	    continue;
 	  }
 
+
 	size_t len = arg.size();
 	if ( len > 5 && arg.substr(len - 5, 5) == ".reel" )
 	  {
@@ -292,14 +419,14 @@ void parse_command_line( const int argc, char** argv,
 	else
 	{
 	    boost::int64_t start = mrv::kMinFrame, end = mrv::kMaxFrame;
-	    std::string fileroot( arg );
+	    std::string fileroot;
+
+            mrv::fileroot( fileroot, arg );
 
             if ( mrv::is_directory( fileroot.c_str() ) )
             {
-
                parse_directory( fileroot, opts );
-
-               
+               if ( opts.files.size() > 1 ) opts.edl = true;
             }
             else
             {
@@ -308,16 +435,34 @@ void parse_command_line( const int argc, char** argv,
                {
                   mrv::get_sequence_limits( start, end, fileroot );
                }
-               
-               if ( ai != ae )
+
+               if ( e - i <= files.size() - normalFiles )
                {
-                  opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                       end, *ai ) );
-                  ++ai;
+                  if ( ai != ae )
+                  {
+                     opts.stereo.push_back( mrv::LoadInfo( fileroot, start, 
+                                                           end, *ai ) );
+                     ++ai;
+                  }
+                  else
+                  {
+                     opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
+                                                           end ) );
+                  }
                }
                else
                {
-                  opts.files.push_back( mrv::LoadInfo( fileroot, start, end ) );
+                  if ( ai != ae )
+                  {
+                     opts.files.push_back( mrv::LoadInfo( fileroot, start, 
+                                                          end, *ai ) );
+                     ++ai;
+                  }
+                  else
+                  {
+                     opts.files.push_back( mrv::LoadInfo( fileroot, start, 
+                                                          end ) );
+                  }
                }
             }
 	  }
