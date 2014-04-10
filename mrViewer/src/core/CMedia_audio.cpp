@@ -1082,27 +1082,28 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       if ( last >= frame )  got_audio = kDecodeOK;
 
 
-
-
       assert( bytes_per_frame <= _audio_buf_used );
       _audio_buf_used -= bytes_per_frame;
-
-
 
 
       ++last;
     }
   
-// #ifdef DEBUG
-//   if ( got_audio != kDecodeOK )
-//     {
-//       IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
-// 		   << _(" last ") << last
-// 		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
-// 		   << _(" need ") 
-// 		   << audio_bytes_per_frame() );
-//     }
-// #endif
+#ifdef DEBUG
+  if ( got_audio != kDecodeOK )
+    {
+      IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
+		   << _(" last ") << last
+		   << _(" from ") << frame << _(" used: ") << _audio_buf_used
+		   << _(" need ") 
+		   << audio_bytes_per_frame() );
+    }
+  else
+  {
+     IMG_INFO( "Filled " << audio_frame << " last " << last << " from "
+               << frame );
+  }
+#endif
 
 
   if (_audio_buf_used > 0  )
@@ -1698,7 +1699,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_seek()  )
 	{
-	  clear_stores();  // audio stores MUST be cleared when seeked
+          clear_stores();  // audio stores MUST be cleared when seeked
+          _audio_buf_used = 0;
 	  got_audio = handle_audio_packet_seek( frame, true );
 	  continue;
 	}
