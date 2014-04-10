@@ -144,12 +144,12 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
              /* just for testing, we also add B frames */
              c->max_b_frames = 2;
           }
-          if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
-             /* Needed to avoid using macroblocks in which some coeffs overflow.
-              * This does not happen with normal video, it just happens here as
-              * the motion of the chroma plane does not match the luma plane. */
-             c->mb_decision = 2;
-          }
+          // if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
+          //    /* Needed to avoid using macroblocks in which some coeffs overflow.
+          //     * This does not happen with normal video, it just happens here as
+          //     * the motion of the chroma plane does not match the luma plane. */
+          //    c->mb_decision = 2;
+          // }
           break;
           
     default:
