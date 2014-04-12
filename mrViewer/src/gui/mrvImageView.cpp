@@ -781,15 +781,14 @@ void ImageView::copy_pixel() const
 
   CMedia* img = fg->image();
 
-  mrv::image_type_ptr pic = img->hires();
-  if ( !pic ) return;
-
-
   double x = double(lastX);
   double y = double(lastY);
 
   if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
     return;
+
+  mrv::image_type_ptr pic = img->hires();
+  if ( !pic ) return;
 
   image_coordinates( pic, x, y );
 
@@ -857,8 +856,13 @@ void ImageView::fit_image()
   const CMedia* img = fg->image();
   if ( img->width() <= 0 ) return;
 
+  double W = img->width();
+
+  if ( img->stereo_type() == CMedia::kStereoSideBySide )
+     W *= 2;
+
   double w = (double) fltk_main()->w();
-  double z = w / (double)img->width();
+  double z = w / (double)W;
   
   double h = (double) fltk_main()->h();
   if ( uiMain->uiTopBar->visible() )
@@ -872,7 +876,12 @@ void ImageView::fit_image()
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
-  xoffset = yoffset = 0.0;
+  if ( img->stereo_type() == CMedia::kStereoSideBySide )
+     xoffset = - W/4;
+  else
+     xoffset = 0.0;
+
+  yoffset = 0.0;
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
   send( buf );
@@ -1279,7 +1288,7 @@ void ImageView::draw()
   ImageList images;
   images.reserve(2);
 
-  if ( _showBG && bg && bg != fg && bg->image() )
+  if ( _showBG && bg && bg != fg && bg->image()  )
     {
        if ( bg->image()->has_picture() )
 	  images.push_back( bg->image() );
@@ -1292,15 +1301,16 @@ void ImageView::draw()
 	  images.push_back( fg->image() );
        }
     }
+  else
+  {
+     return;
+  }
 
 
   if ( images.empty() ) return;
 
-  // _engine->init_fbo( images );
-
   _engine->draw_images( images );
 
-  if ( !fg || fg->image() == NULL ) return;
 
 
 
@@ -2038,11 +2048,24 @@ void ImageView::mouseMove(int x, int y)
 
 
   bool outside = false;
-  if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-       xf < 0 || yf < 0 || xf >= w || yf >= h )
-    {
-      outside = true;
-    }
+
+  if ( img->stereo_type() == CMedia::kStereoSideBySide )
+  {
+
+     if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+          xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
+     {
+        outside = true;
+     }
+  }
+  else
+  {
+     if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+          xf < 0 || yf < 0 || xf >= w || yf >= h )
+     {
+        outside = true;
+     }
+  }
 
   if ( outside )
     {
@@ -2061,7 +2084,15 @@ void ImageView::mouseMove(int x, int y)
 //       float yp = yf;
 //       if ( _showPixelRatio ) yp /= img->pixel_ratio();
 
-      rgba = pic->pixel( xp, yp );
+      if ( xp > w )
+      {
+         pic = img->right();
+         rgba = pic->pixel( xp - w, yp );
+      }
+      else
+      {
+         rgba = pic->pixel( xp, yp );
+      }
 
       CMedia* bgr = _engine->background();
       if ( _showBG && bgr && rgba.a < 1.0f &&
