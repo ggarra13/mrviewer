@@ -89,6 +89,7 @@ namespace mrv {
   _levelX( 0 ),
   _levelY( 0 ),
   _has_yca( false ),
+  _use_yca( false ),
   _has_left_eye( false ),
   _has_right_eye( false ),
   _left_red( false )
@@ -190,6 +191,7 @@ bool exrImage::channels_order(
 
 
    size_t numChannels = channelList.size();
+
 
    if ( numChannels == 0 && channel() )
    {
@@ -397,7 +399,7 @@ bool exrImage::channels_order_multi(
 				    ext == N_("RY") || ext == N_("Y") ) )
 	    {
 	       order[1] = idx;
-	       if ( ext == N_("Y") ) _has_yca = false; 
+	       if ( ext == N_("Y") ) _use_yca = false; 
 	    }
 	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
 				    ext == N_("BY") ) ) order[2] = idx;
@@ -452,7 +454,7 @@ bool exrImage::channels_order_multi(
 				    ext == N_("RY") || ext == N_("Y")) )
 	    {
 	       order[1] = idx;
-	       if ( ext == N_("Y") ) _has_yca = false;
+	       if ( ext == N_("Y") ) _use_yca = false;
 	    }
 
 	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
@@ -494,7 +496,7 @@ bool exrImage::channels_order_multi(
    }
    else if ( numChannels >= 2 )
    {
-      if ( numChannels == 2 && _has_yca == false )
+      if ( numChannels == 2 && _use_yca == false )
       {
 	 order[2] = order[1];
       }
@@ -688,10 +690,10 @@ bool exrImage::find_channels( const Imf::Header& h,
    if ( layers.find( N_("left") ) != layers.end() )
       _has_left_eye = true;
 
-   if ( _is_stereo )
+   if ( _has_left_eye || _has_right_eye )
    {
-      _has_left_eye = true;
-      _has_right_eye = true;
+      _is_stereo = true;
+      _stereo_type = kNoStereo;
    }
 
    if ( _layers.empty() )
@@ -710,6 +712,7 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
       
       _has_yca = false;
+      _use_yca = false;
       if ( !has_rgb )
       {
 	 if ( channels.findChannel( N_("Y") ) )
@@ -727,7 +730,8 @@ bool exrImage::find_channels( const Imf::Header& h,
 	 
 	 if ( ! _layers.empty() ) 
 	 {
-	    _has_yca = true; 
+	    _has_yca = true;
+            _use_yca = true;
 	    rgb_layers(); _num_channels -= 3;
 	    lumma_layers();
 	 }
@@ -744,6 +748,11 @@ bool exrImage::find_channels( const Imf::Header& h,
       {
 	 _layers.push_back( "left.anaglyph" );
 	 _layers.push_back( "right.anaglyph" );
+      }
+
+      if ( _is_stereo )
+      {
+         _layers.push_back( "stereo.horizontal" );
       }
 
 
@@ -820,21 +829,62 @@ bool exrImage::find_channels( const Imf::Header& h,
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
 
-      if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
-      {
-	 if (root == "LEFT" ) _left_red = true;
-	 else _left_red = false;
 
-         Imf::ChannelList::Iterator s = channels.begin();
-	 Imf::ChannelList::Iterator e = channels.end();
-	 channels_order_multi( frame, s, e, channels, h, fb );
+      if ( root == "STEREO" )
+      {
+         free( _channel );
+         _channel = NULL;
+
+         Imf::ChannelList::ConstIterator s;
+         Imf::ChannelList::ConstIterator e;
+         std::string prefix;
+         if ( _has_left_eye ) prefix = "left";
+         if ( prefix != "" )
+         {
+            channels.channelsWithPrefix( prefix.c_str(), s, e );
+         }
+         else
+         {
+            s = channels.begin();
+            e = channels.end();
+         }
+         channels_order( frame, s, e, channels, h, fb );
+         _stereo[0] = _hires;
+
+         prefix = "";
+         if ( _has_right_eye ) prefix = "right";
+
+         if ( prefix != "" )
+         {
+            channels.channelsWithPrefix( prefix.c_str(), s, e );
+         }
+         else
+         {
+            s = channels.begin();
+            e = channels.end();
+         }
+         channels_order( frame, s, e, channels, h, fb );
+         _stereo[1] = _hires;
+         _stereo_type = kStereoSideBySide;
       }
       else
       {
-         Imf::ChannelList::ConstIterator s;
-         Imf::ChannelList::ConstIterator e;
-	 channels.channelsWithPrefix( channelPrefix, s, e );
-	 channels_order( frame, s, e, channels, h, fb );
+         if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
+         {
+            if (root == "LEFT" ) _left_red = true;
+            else _left_red = false;
+
+            Imf::ChannelList::Iterator s = channels.begin();
+            Imf::ChannelList::Iterator e = channels.end();
+            channels_order_multi( frame, s, e, channels, h, fb );
+         }
+         else
+         {
+            Imf::ChannelList::ConstIterator s;
+            Imf::ChannelList::ConstIterator e;
+            channels.channelsWithPrefix( channelPrefix, s, e );
+            channels_order( frame, s, e, channels, h, fb );
+         }
       }
    }
    else
@@ -1174,7 +1224,7 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	}
 
 
-	if ( _has_yca && !supports_yuv() )
+	if ( _use_yca && !supports_yuv() )
 	{
 	   ycc2rgba( h, frame );
 	}

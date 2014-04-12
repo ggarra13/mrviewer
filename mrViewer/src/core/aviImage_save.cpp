@@ -118,8 +118,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->channels    = img->audio_channels();
           c->time_base.num = 1;
           c->time_base.den = c->sample_rate;
-          c->block_align = 0;
-          c->delay = 0;
           if (( codec_id == AV_CODEC_ID_MP3 ) || (codec_id == AV_CODEC_ID_AC3))
              c->block_align = 0;
           break;
@@ -187,6 +185,8 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 {
     AVCodecContext* c = st->codec;
 
+    DBG( __LINE__ );
+
     /* allocate and init a re-usable frame */
     audio_frame = av_frame_alloc();
     if (!audio_frame) {
@@ -195,11 +195,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
 
 
+    DBG( __LINE__ );
    /* open it */
     if (avcodec_open2(c, codec, NULL) < 0) {
        LOG_ERROR( _("Could not open audio codec" ) );
        return false;
     }
+    DBG( __LINE__ );
     
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
@@ -252,6 +254,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
         assert( src_nb_samples > 0 );
 
+    DBG( __LINE__ );
         int ret = av_samples_alloc_array_and_samples(&dst_samples_data, 
                                                      &dst_samples_linesize,
                                                      c->channels,
@@ -263,6 +266,9 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
            return false;
         }
     
+    assert( dst_samples_data[0] != NULL );
+    assert( dst_samples_linesize != 0 );
+    DBG( __LINE__ );
         /* initialize the resampling context */
         if ((swr_init(swr_ctx)) < 0) {
            LOG_ERROR( _("Failed to initialize the resampling context") );
@@ -272,16 +278,18 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
     else
     {
+    DBG( __LINE__ );
        dst_samples_data = src_samples_data;
        max_dst_nb_samples = src_nb_samples;
+    DBG( __LINE__ );
     }
 
-    assert( dst_samples_data[0] != NULL );
-    assert( dst_samples_linesize != 0 );
     assert( max_dst_nb_samples > 0 );
+    DBG( __LINE__ );
     dst_samples_size = av_samples_get_buffer_size(NULL, c->channels, 
 						  max_dst_nb_samples,
-                                                  c->sample_fmt, 1);
+                                                  c->sample_fmt, 0);
+    DBG( __LINE__ );
                                                   // c->sample_fmt, 0);
     assert( dst_samples_size > 0 );
     assert( max_dst_nb_samples > 0 );
@@ -329,6 +337,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                                        dst_nb_samples,
                                                        c->sample_fmt, 
                                                        0);
+         assert( dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) == dst_nb_samples );
       }
 
             
@@ -641,6 +650,8 @@ audio_type_ptr CMedia::get_audio_frame() const
 
 bool aviImage::open_movie( const char* filename, const CMedia* img )
 {
+   assert( filename != NULL );
+   assert( img != NULL );
 
    samples_count = 0;
    frame_count = 0;
@@ -648,7 +659,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
    avcodec_register_all();
    av_register_all();
 
-   if ( oc != NULL ) return false;
+   oc = NULL;
 
    std::string ext = "avi";
    std::string file = filename;
@@ -679,8 +690,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
 
    fmt = oc->oformat;
 
-   if ( fmt->audio_codec == AV_CODEC_ID_MP3 )
-      fmt->audio_codec = AV_CODEC_ID_PCM_S32LE;
+   assert( fmt != NULL );
+
 
    video_st = NULL;
    audio_st = NULL;
@@ -699,7 +710,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
    if (video_st)
       if ( ! open_video(oc, video_codec, video_st, img) )
 	 return false;
-   
+
    if (audio_st)
       if ( ! open_audio_static(oc, audio_cdc, audio_st, img) )
       {
@@ -736,6 +747,7 @@ bool aviImage::save_movie_frame( const CMedia* img )
    if (!audio_st && !video_st)
       return false;
 
+   DBG( __LINE__ );
 
    // double STREAM_DURATION = (double) img->duration() / (double) img->fps();
 
@@ -749,22 +761,34 @@ bool aviImage::save_movie_frame( const CMedia* img )
     //    LOG_WARNING( ">>>>>>>>>>>>  FLUSH = ! " );
     //    flush = 1;
     // }
+
     
+   DBG( __LINE__ );
+
     /* write interleaved audio and video frames */
     if ( audio_st )
     {
+   DBG( __LINE__ );
+
        while( audio_time <= video_time) {
           if ( ! write_audio_frame(oc, audio_st, img) )
              break;
           audio_time = audio_st->pts.val * av_q2d(audio_st->time_base);
        }
+   DBG( __LINE__ );
+
     }
     
     if ( video_st ) {
+   DBG( __LINE__ );
+
        write_video_frame(oc, video_st, img);
+
+   DBG( __LINE__ );
 
        picture->pts += av_rescale_q(1, video_st->codec->time_base,
                                     video_st->time_base);
+   DBG( __LINE__ );
     }
 
 

@@ -532,7 +532,6 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
   glClearColor(r, g, b, a );
   glClear( GL_COLOR_BUFFER_BIT );
   glShadeModel( GL_FLAT );
-  
 }
 
 void GLEngine::set_blend_function( int source, int dest )
@@ -1038,20 +1037,37 @@ void GLEngine::draw_images( ImageList& images )
 	    }
 
 	  quad->lut( img );
+
+          if ( img->is_stereo() && img->stereo_type() != CMedia::kNoStereo )
+          {
+             (*(q+1))->lut( img );
+          }
 	}
 
-      if ( img->is_stereo() )
+      if ( i+1 == e ) wipe_area();
+
+      if ( img->is_stereo() && img->stereo_type() != CMedia::kNoStereo && 
+           img->left() && img->right() )
       {
 	   image_type_ptr pic = img->left();
-           quad->bind( pic );
-           quad->gamma( img->gamma() );
-           quad->draw( texWidth, texHeight );
 
-           glTranslated( texWidth, 0, 0 );
-	   pic = img->right();
-           quad->bind( pic );
-           quad->gamma( img->gamma() );
-           quad->draw( texWidth, texHeight );
+           if ( pic )
+           {
+              quad->bind( pic );
+              quad->gamma( img->gamma() );
+              quad->draw( texWidth, texHeight );
+           }
+
+           ++q;
+           quad = *q;
+
+           pic = img->right();
+           if ( pic )
+           {
+              quad->bind( pic );
+           }
+
+           glTranslated( 1, 0, 0 );
       }
       else if ( img->hires() &&
                 ( img->image_damage() & CMedia::kDamageContents ||
@@ -1067,7 +1083,6 @@ void GLEngine::draw_images( ImageList& images )
            quad->bind( pic );
 	}
 
-      if ( i+1 == e ) wipe_area();
 
       quad->gamma( img->gamma() );
       quad->draw( texWidth, texHeight );
