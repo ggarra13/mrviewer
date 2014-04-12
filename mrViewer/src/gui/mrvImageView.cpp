@@ -2551,15 +2551,28 @@ int ImageView::keyDown(unsigned int rawkey)
       fltk_main()->relayout();
       xoffset = yoffset = 0;
       char buf[128];
-      sprintf( buf, "Offset %g %g", xoffset, yoffset );
       send( buf );
       return 1;
     }
   else if ( kCenterImage.match(rawkey) )
   {
-     xoffset = yoffset = 0;
+     mrv::media fg = foreground();
+
+     if ( fg && fg->image() && 
+          fg->image()->stereo_type() == CMedia::kStereoSideBySide )
+     {
+        int w = fg->image()->width();
+        xoffset = -w/2 + 0.5f;
+     }
+     else
+     {
+        xoffset = 0;
+     }
+
+     yoffset = 0;
+
      char buf[128];
-     sprintf( buf, "Offset 0 0" );
+     sprintf( buf, "Offset %g 0", xoffset );
      send( buf );
      redraw();
      return 1;
