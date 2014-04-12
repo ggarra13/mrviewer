@@ -221,6 +221,10 @@ void ColorInfo::update( const CMedia* src,
 
       mrv::image_type_ptr right = src->right();
 
+      float gain  = uiMain->uiView->gain();
+      float gamma = uiMain->uiView->gamma();
+      float one_gamma = 1.0f / gamma;
+
       for ( unsigned y = ymin; y <= ymax; ++y )
 	{
 	  for ( unsigned x = xmin; x <= xmax; ++x, ++count )
@@ -237,6 +241,10 @@ void ColorInfo::update( const CMedia* src,
 
 	      if ( isnan(rp.r) || isnan(rp.g) || isnan(rp.b) ||
 		   isnan(rp.a) ) continue;
+
+              rp.r = pow(rp.r * gain, one_gamma);
+              rp.g = pow(rp.g * gain, one_gamma);
+              rp.b = pow(rp.b * gain, one_gamma);
 
 	      if ( rp.r < pmin.r ) pmin.r = rp.r;
 	      if ( rp.g < pmin.g ) pmin.g = rp.g;
