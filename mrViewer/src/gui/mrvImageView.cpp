@@ -2271,18 +2271,37 @@ void ImageView::mouseDrag(int x,int y)
 	   double xf = double(lastX);
 	   double yf = double(lastY);
 	   image_coordinates( pic, xf, yf );
-	   if ( xf < 0 ) xf = 0;
-	   else if ( xf > texWidth )  xf = double(texWidth);
-	   if ( yf < 0 ) yf = 0;
-	   else if ( yf > texHeight ) yf = double(texHeight);
+
+           if ( xf < 0 ) xf = 0;
+           if ( yf < 0 ) yf = 0;
+           else if ( yf > texHeight ) yf = double(texHeight);
+
+           if ( img->stereo_type() == CMedia::kStereoSideBySide )
+           {
+              if ( xf > texWidth*2 ) xf = texWidth*2;
+           }
+           else
+           {
+              if ( xf > texWidth )  xf = double(texWidth);
+           }
 
 	   double xn = double(x);
 	   double yn = double(y);
 	   image_coordinates( pic, xn, yn );
+
 	   if ( xn < 0 ) xn = 0;
-	   else if ( xn > texWidth )  xn = double(texWidth);
 	   if ( yn < 0 ) yn = 0;
 	   else if ( yn > texHeight ) yn = double(texHeight);
+
+           if ( img->stereo_type() == CMedia::kStereoSideBySide )
+           {
+              if ( xn > texWidth*2 ) xn = texWidth*2;
+           }
+           else
+           {
+              if ( xn > texWidth )  xn = double(texWidth);
+           }
+
 
 	   xf = floor(xf);
 	   yf = floor(yf);
@@ -2316,8 +2335,17 @@ void ImageView::mouseDrag(int x,int y)
 
 
 	      // store selection square
-	      if ( dx > W ) dx = W;
+              if ( img->stereo_type() == CMedia::kStereoSideBySide )
+              {
+                 if ( dx > W*2 ) dx = W*2;
+              }
+              else
+              {
+                 if ( dx > W ) dx = W;
+              }
+
 	      if ( dy > H ) dy = H;
+
 
 	      _selection = mrv::Rectd( (double)xf/(double)W, 
 				       (double)yf/(double)H, 
