@@ -238,6 +238,11 @@ namespace mrv {
       kDecodeBufferFull
     };
 
+       enum StereoType {
+       kNoStereo = 0,
+       kStereoSideBySide = 1
+       };
+
 
   public:
     /// Fetch (load) the image for a frame
@@ -360,6 +365,7 @@ namespace mrv {
     inline mrv::image_type_ptr anaglyph( bool left_view = true );
 
        inline bool  is_stereo() const { return _is_stereo; }
+       inline StereoType stereo_type() const { return _stereo_type; }
 
     inline mrv::image_type_ptr left() const { return _stereo[0]; }
     inline mrv::image_type_ptr left()       { return _stereo[0]; }
@@ -931,6 +937,7 @@ namespace mrv {
        bool   _internal;      //!< image is internal with no filename
     bool   _is_sequence;      //!< true if a sequence
     bool   _is_stereo;        //!< true if part of stereo pair of images
+    StereoType   _stereo_type;//!< Stereo type
     char*  _fileroot;         //!< root name of image sequence
     char*  _filename;         //!< generated filename of a frame
     time_t _ctime, _mtime;    //!< creation and modification time of image

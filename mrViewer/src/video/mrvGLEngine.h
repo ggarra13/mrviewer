@@ -65,6 +65,7 @@ namespace mrv {
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images );
 
+
     virtual void draw_title(const float size,
 			    const int y, const char* text );
     virtual void draw_text(const int x, const int y, const char* text );
