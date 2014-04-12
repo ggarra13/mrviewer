@@ -219,11 +219,22 @@ void ColorInfo::update( const CMedia* src,
       mrv::image_type_ptr pic = src->hires();
       if (!pic) return;
 
+      mrv::image_type_ptr right = src->right();
+
       for ( unsigned y = ymin; y <= ymax; ++y )
 	{
 	  for ( unsigned x = xmin; x <= xmax; ++x, ++count )
 	    {
-	      CMedia::Pixel rp = pic->pixel( x, y );
+               CMedia::Pixel rp;
+               if ( x > W )
+               {
+                  rp = right->pixel( x-W, y );
+               }
+               else
+               {
+                  rp = pic->pixel( x, y );
+               }
+
 	      if ( isnan(rp.r) || isnan(rp.g) || isnan(rp.b) ||
 		   isnan(rp.a) ) continue;
 
