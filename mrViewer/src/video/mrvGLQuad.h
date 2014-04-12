@@ -91,8 +91,8 @@ namespace mrv {
     GLShader*    _shader;
     GLLut3d*     _lut;
     const CMedia*   _image;
-    
-       float        _gamma;
+
+    float        _gamma;
     bool         _blend;
     GLenum       _blend_mode;
     unsigned     _num_textures;
