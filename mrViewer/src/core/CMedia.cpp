@@ -107,6 +107,7 @@ CMedia::CMedia() :
   _internal( false ),
   _is_sequence( false ),
   _is_stereo( false ),
+  _stereo_type( kNoStereo ),
   _fileroot( NULL ),
   _filename( NULL ),
   _ctime( 0 ),
@@ -173,6 +174,8 @@ CMedia::CMedia() :
 CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _w( 0 ),
   _h( 0 ),
+  _is_stereo( false ),
+  _stereo_type( kNoStereo ),
   _is_sequence( false ),
   _fileroot( NULL ),
   _filename( NULL ),
@@ -951,11 +954,13 @@ void CMedia::default_layers()
  */
 void CMedia::channel( const char* c )
 {
+   _stereo_type = kNoStereo;
+
   std::string ch( c );
 
   if ( ch == "Color" || ch == "Red" || ch == "Green" || ch == "Blue" ||
        ch == "Alpha" || ch == "Alpha Overlay" || ch == "Lumma" )
-   c = NULL;
+     c = NULL;
 
   bool to_fetch = false;
 

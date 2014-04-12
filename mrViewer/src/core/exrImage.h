@@ -94,7 +94,7 @@ namespace mrv {
      protected:
 
        int _levelX, _levelY; //<- r/mipmap levels
-       bool _has_yca, _has_left_eye, _has_right_eye, _left_red;
+       bool _has_yca, _use_yca, _has_left_eye, _has_right_eye, _left_red;
        Imf::LineOrder   _lineOrder;
        Imf::Compression _compression;
   };
