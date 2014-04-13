@@ -95,6 +95,9 @@ namespace mrv {
 
        int _levelX, _levelY; //<- r/mipmap levels
        bool _has_yca, _use_yca, _has_left_eye, _has_right_eye, _left_red;
+
+       mrv::image_type_ptr* _right; //!< For sequences, holds each float frame
+
        Imf::LineOrder   _lineOrder;
        Imf::Compression _compression;
   };
