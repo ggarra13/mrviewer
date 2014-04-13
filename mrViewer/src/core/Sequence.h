@@ -107,6 +107,11 @@ struct SequenceSort
 
   typedef std::vector< LoadInfo > LoadList;
 
+  /**
+   * Given a filename with %hex characters, return string in ascii.
+   */
+  std::string hex_to_char_filename( std::string& f );
+
   /** 
    * Given a file, return root filename in %d format, and frame passed if
    * sequence.  If not sequence fileroot, return file as is.

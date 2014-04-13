@@ -318,8 +318,13 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    if (swr_ctx) {
       /* compute destination number of samples */
+      /*
       dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
                                       c->sample_rate, c->sample_rate, AV_ROUND_UP);
+      */
+
+      dst_nb_samples = src_nb_samples;
+
       if (dst_nb_samples > max_dst_nb_samples) {
          av_free(dst_samples_data[0]);
          ret = av_samples_alloc(dst_samples_data, &dst_samples_linesize,

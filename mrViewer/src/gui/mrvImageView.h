@@ -495,6 +495,7 @@ namespace mrv {
 
     //! Flags for state of display - unneeded?, should use uiMain->uiLUT, etc.
     FieldDisplay  _field;
+    CMedia::StereoType _stereo;
     bool          _showBG, _showPixelRatio, _useLUT;
     float         _volume;
     FlipDirection _flip;

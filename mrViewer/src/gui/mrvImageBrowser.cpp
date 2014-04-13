@@ -14,6 +14,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
+#include <boost/filesystem/operations.hpp>
 #include <boost/filesystem/path.hpp>
 namespace fs = boost::filesystem;
 
@@ -2321,6 +2322,7 @@ void ImageBrowser::load( const stringArray& files,
     return ok;
   }
 
+
   /** 
    * Handle a Drag and Drop operation on this widget (or image view)
    * 
@@ -2329,11 +2331,11 @@ void ImageBrowser::load( const stringArray& files,
   {
     std::string filenames = fltk::event_text();
 
-
     stringArray files;
 #if defined(_WIN32) || defined(_WIN64)
     mrv::split_string( files, filenames, "\n" ); 
 #else
+
     mrv::split_string( files, filenames, "\r\n" ); 
 #endif
 
@@ -2347,11 +2349,10 @@ void ImageBrowser::load( const stringArray& files,
     std::string oldroot, oldview, oldext;
     for ( ; i != e; ++i )
     {
-       std::string file = *i;
+       std::string file = hex_to_char_filename( *i );
 
        if ( file.substr(0, 7) == "file://" && file.size() > 7 )
           file = file.substr( 7, file.size() );
-
 
        if ( mrv::is_directory( file.c_str() ) )
        {
@@ -2382,6 +2383,11 @@ void ImageBrowser::load( const stringArray& files,
              mrv::fileroot( fileroot, file );
              mrv::get_sequence_limits( frameStart, frameEnd, fileroot );
              opts.files.push_back( mrv::LoadInfo( fileroot, frameStart,
+                                                  frameEnd ) );
+          }
+          else
+          {
+             opts.files.push_back( mrv::LoadInfo( file, frameStart,
                                                   frameEnd ) );
           }
        }
