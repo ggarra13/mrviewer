@@ -761,11 +761,19 @@ void GLEngine::draw_mask( const float pct )
   glLoadIdentity();
 
   int dw = texWidth;
+  int xoffset = _view->offset_x();
+
+  if ( fg->image()->stereo_type() & CMedia::kStereoSideBySide )
+  {
+     xoffset += dw/2;
+     dw *= 2;
+  }
+
   int dh = texHeight;
   
   glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
-  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+  glTranslated( xoffset, _view->offset_y(), 0.0 );
 
   if ( _view->main()->uiPixelRatio->value() )
     glScaled( double(dw), dh / _view->pixel_ratio(), 1.0 );
@@ -865,6 +873,9 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
 void GLEngine::draw_safe_area( const double percentX, const double percentY,
 			       const char* name )
 {
+  mrv::media fg = _view->foreground();
+  if ( !fg ) return;
+
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
@@ -897,6 +908,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   glVertex2d(-tw, th);
 
   glEnd();
+
+  
 
   if ( name )
     {
@@ -1049,25 +1062,41 @@ void GLEngine::draw_images( ImageList& images )
       if ( img->is_stereo() && img->stereo_type() != CMedia::kNoStereo && 
            img->left() && img->right() )
       {
-	   image_type_ptr pic = img->left();
+         image_type_ptr pic;
+         if ( img->stereo_type() == CMedia::kStereoCrossed )
+         {
+            pic = img->right();
+         }
+         else
+         {
+            pic = img->left();
+         }
 
-           if ( pic )
-           {
-              quad->bind( pic );
-              quad->gamma( img->gamma() );
-              quad->draw( texWidth, texHeight );
-           }
-
+         if ( pic )
+         {
+            quad->bind( pic );
+            quad->gamma( img->gamma() );
+            quad->draw( texWidth, texHeight );
+         }
+         
            ++q;
            quad = *q;
 
-           pic = img->right();
-           if ( pic )
-           {
-              quad->bind( pic );
-           }
+         if ( img->stereo_type() == CMedia::kStereoCrossed )
+         {
+            pic = img->left();
+         }
+         else
+         {
+            pic = img->right();
+         }
 
-           glTranslated( 1, 0, 0 );
+         if ( pic )
+         {
+            quad->bind( pic );
+         }
+
+         glTranslated( 1, 0, 0 );
       }
       else if ( img->hires() &&
                 ( img->image_damage() & CMedia::kDamageContents ||
