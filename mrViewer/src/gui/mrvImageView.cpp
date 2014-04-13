@@ -661,6 +661,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _old_channel( 0 ),
   _channelType( kRGB ),
   _field( kFrameDisplay ),
+  _stereo( CMedia::kNoStereo ),
   _showBG( true ),
   _showPixelRatio( false ),
   _useLUT( false ),
@@ -858,7 +859,8 @@ void ImageView::fit_image()
 
   double W = img->width();
 
-  if ( img->stereo_type() == CMedia::kStereoSideBySide )
+
+  if ( _stereo & CMedia::kStereoSideBySide )
      W *= 2;
 
   double w = (double) fltk_main()->w();
@@ -876,7 +878,7 @@ void ImageView::fit_image()
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
-  if ( img->stereo_type() == CMedia::kStereoSideBySide )
+  if ( _stereo & CMedia::kStereoSideBySide )
      xoffset = - W/4;
   else
      xoffset = 0.0;
@@ -1296,9 +1298,11 @@ void ImageView::draw()
 
   if ( fg && fg->image() )
     {
-       if ( fg->image()->has_picture() )
+       CMedia* img = fg->image();
+       if ( img->has_picture() )
        {
-	  images.push_back( fg->image() );
+	  images.push_back( img );
+          _stereo = img->stereo_type();
        }
     }
   else
@@ -2049,7 +2053,7 @@ void ImageView::mouseMove(int x, int y)
 
   bool outside = false;
 
-  if ( img->stereo_type() == CMedia::kStereoSideBySide )
+  if ( _stereo & CMedia::kStereoSideBySide )
   {
 
      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
@@ -2276,7 +2280,7 @@ void ImageView::mouseDrag(int x,int y)
            if ( yf < 0 ) yf = 0;
            else if ( yf > texHeight ) yf = double(texHeight);
 
-           if ( img->stereo_type() == CMedia::kStereoSideBySide )
+           if ( _stereo & CMedia::kStereoSideBySide )
            {
               if ( xf > texWidth*2 ) xf = texWidth*2;
            }
@@ -2293,7 +2297,7 @@ void ImageView::mouseDrag(int x,int y)
 	   if ( yn < 0 ) yn = 0;
 	   else if ( yn > texHeight ) yn = double(texHeight);
 
-           if ( img->stereo_type() == CMedia::kStereoSideBySide )
+           if ( _stereo & CMedia::kStereoSideBySide )
            {
               if ( xn > texWidth*2 ) xn = texWidth*2;
            }
@@ -2335,7 +2339,7 @@ void ImageView::mouseDrag(int x,int y)
 
 
 	      // store selection square
-              if ( img->stereo_type() == CMedia::kStereoSideBySide )
+              if ( _stereo & CMedia::kStereoSideBySide )
               {
                  if ( dx > W*2 ) dx = W*2;
               }
@@ -2558,8 +2562,7 @@ int ImageView::keyDown(unsigned int rawkey)
   {
      mrv::media fg = foreground();
 
-     if ( fg && fg->image() && 
-          fg->image()->stereo_type() == CMedia::kStereoSideBySide )
+     if ( fg && fg->image() && _stereo & CMedia::kStereoSideBySide )
      {
         int w = fg->image()->width();
         xoffset = -w/2 + 0.5f;

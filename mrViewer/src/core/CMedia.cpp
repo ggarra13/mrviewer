@@ -140,6 +140,7 @@ CMedia::CMedia() :
   _playback( kStopped ),
   _aborted( false ),
   _sequence( NULL ),
+  _right( NULL ),
   _audio_pts( 0 ),
   _audio_clock( av_gettime() / 1000000.0 ),
   _video_pts( 0 ),
@@ -210,6 +211,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _playback( kStopped ),
   _aborted( false ),
   _sequence( NULL ),
+  _right( NULL ),
   _context(NULL),
   _acontext(NULL),
   _audio_codec(NULL),
@@ -281,6 +283,7 @@ void CMedia::clear_sequence()
   for ( boost::uint64_t i = 0; i < num; ++i )
     {
       _sequence[i].reset();
+      _right[i].reset();
     }
 
 }
@@ -345,6 +348,7 @@ CMedia::~CMedia()
 
   clear_sequence();
   delete [] _sequence;
+  delete [] _right;
 
   if ( has_audio() )
     {
@@ -401,6 +405,24 @@ void CMedia::allocate_pixels_stereo( const boost::int64_t& frame,
 				    channels, format, pixel_type ) );
   _stereo[1].reset( new image_type( frame, width(), height(),
 				    channels, format, pixel_type ) );
+}
+
+mrv::image_type_ptr CMedia::left() const
+{
+   boost::uint64_t idx = _frame - _frameStart;
+   if ( _is_sequence && _sequence[idx] )
+      return _sequence[idx];
+   else
+      return _stereo[0];
+}
+
+mrv::image_type_ptr CMedia::right() const
+{
+   boost::uint64_t idx = _frame - _frameStart;
+   if ( _is_sequence && _right[idx] )
+      return _right[idx];
+   else
+      return _stereo[1];
 }
 
 mrv::image_type_ptr CMedia::anaglyph( bool left_view ) 
@@ -571,9 +593,12 @@ void CMedia::sequence( const char* fileroot,
 
   delete [] _sequence;
   _sequence = NULL;
+  delete [] _right;
+  _right = NULL;
 
   boost::uint64_t num = _frameEnd - _frameStart + 1;
   _sequence = new mrv::image_type_ptr[ unsigned(num) ];
+  _right    = new mrv::image_type_ptr[ unsigned(num) ];
 
   if ( ! initialize() )
     return;
@@ -691,10 +716,6 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 {
   if ( !is_sequence() ) return _fileroot;
 
-  if ( _is_stereo )
-  {
-     return stereo_sequence_filename( frame, "left" );
-  }
 
   // For image sequences
   char buf[1024];
@@ -704,23 +725,6 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 }
 
 
-std::string CMedia::stereo_sequence_filename( const boost::int64_t frame,
-					      const char* view )
-{
-
-  std::string f = _fileroot;
-  size_t i = f.find( N_("%V") );
-  if ( i != std::string::npos )
-  {
-     f[i+1] = 's';
-  }
-
-  // For image sequences
-  char buf[1024];
-  sprintf( buf, f.c_str(), view, frame );
-
-  return std::string( buf );
-}
 
 
 
@@ -746,7 +750,7 @@ bool CMedia::has_changed()
 
       assert( _frame <= _frameEnd );
       assert( _frame >= _frameStart );
-      boost::uint64_t idx = _frame - _frame_start;
+      boost::uint64_t idx = _frame - _frameStart;
 
       if ( !_sequence || !_sequence[idx] ) return false;
 
@@ -1422,10 +1426,11 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
 
-  boost::int64_t idx = f - _frame_start;
+  boost::int64_t idx = f - _frameStart;
   if ( _sequence[idx] ) return;
 
   _sequence[idx] = pic;
+  if ( _stereo[1] ) _right[idx] = _stereo[1];
   timestamp(idx);
 
   image_damage( image_damage() | kDamageContents );
@@ -2018,7 +2023,10 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( _sequence && _sequence[idx] )
     {
        SCOPED_LOCK( _mutex );
-       _hires = _sequence[idx];
+       _hires = _stereo[0] = _sequence[idx];
+       if ( _right && _right[idx])
+          _stereo[1] = _right[idx];
+
        assert( _hires != NULL );
        _frame = f;
 
