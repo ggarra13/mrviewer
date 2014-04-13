@@ -753,6 +753,7 @@ bool exrImage::find_channels( const Imf::Header& h,
       if ( _is_stereo )
       {
          _layers.push_back( "stereo.horizontal" );
+         _layers.push_back( "stereo.crossed" );
       }
 
 
@@ -832,26 +833,16 @@ bool exrImage::find_channels( const Imf::Header& h,
 
       if ( root == "STEREO" )
       {
+         char* ch = strdup( _channel );
+
+         SCOPED_LOCK( _mutex );
+
          free( _channel );
          _channel = NULL;
 
          Imf::ChannelList::ConstIterator s;
          Imf::ChannelList::ConstIterator e;
          std::string prefix;
-         if ( _has_left_eye ) prefix = "left";
-         if ( prefix != "" )
-         {
-            channels.channelsWithPrefix( prefix.c_str(), s, e );
-         }
-         else
-         {
-            s = channels.begin();
-            e = channels.end();
-         }
-         channels_order( frame, s, e, channels, h, fb );
-         _stereo[0] = _hires;
-
-         prefix = "";
          if ( _has_right_eye ) prefix = "right";
 
          if ( prefix != "" )
@@ -865,7 +856,30 @@ bool exrImage::find_channels( const Imf::Header& h,
          }
          channels_order( frame, s, e, channels, h, fb );
          _stereo[1] = _hires;
-         _stereo_type = kStereoSideBySide;
+
+
+         prefix = "";
+         if ( _has_left_eye ) prefix = "left";
+         if ( prefix != "" )
+         {
+            channels.channelsWithPrefix( prefix.c_str(), s, e );
+         }
+         else
+         {
+            s = channels.begin();
+            e = channels.end();
+         }
+         channels_order( frame, s, e, channels, h, fb );
+         _stereo[0] = _hires;
+
+
+         if ( ext == "HORIZONTAL" )
+            _stereo_type = kStereoSideBySide;
+         else if ( ext == "CROSSED" )
+            _stereo_type = kStereoCrossed;
+
+         _channel = ch;
+
       }
       else
       {

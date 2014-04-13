@@ -24,6 +24,7 @@
 #include <inttypes.h>  // for PRId64 macro
 
 #include <cstdio>
+#include <cstdlib>
 #include <cstring>
 #include <iostream>
 #include <string>
@@ -134,6 +135,33 @@ bool is_valid_picture( const char* ext )
       return true;
 
    return false;
+}
+
+std::string hex_to_char_filename( std::string& f )
+{
+   std::string r;
+   int loc;
+
+   while ( ( loc = f.find('%') ) != std::string::npos )
+   {
+
+      r += f.substr(0, loc);
+
+      std::string hex = f.substr( loc+1, 2 );
+
+      int dec = strtoul( hex.c_str(), 0, 16 );
+
+      char buf[2]; buf[1] = 0;
+      sprintf( buf, "%c", dec );
+
+      r += buf;
+
+      f = f.substr( loc+3, f.size() );
+   }
+
+   r += f;
+
+   return r;
 }
 
   /** 

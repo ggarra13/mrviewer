@@ -1,3 +1,4 @@
+
 /**
  * @file   CMedia.h
  * @author 
@@ -240,7 +241,10 @@ namespace mrv {
 
        enum StereoType {
        kNoStereo = 0,
-       kStereoSideBySide = 1
+       kStereoSideBySide = 1,
+       kStereoCrossed    = 3,
+       kStereoInterlaced = 4,
+       kStereoOpenGL     = 8,
        };
 
 
@@ -367,11 +371,9 @@ namespace mrv {
        inline bool  is_stereo() const { return _is_stereo; }
        inline StereoType stereo_type() const { return _stereo_type; }
 
-    inline mrv::image_type_ptr left() const { return _stereo[0]; }
-    inline mrv::image_type_ptr left()       { return _stereo[0]; }
+    mrv::image_type_ptr left() const;
 
-    inline mrv::image_type_ptr right() const { return _stereo[1]; }
-    inline mrv::image_type_ptr right()       { return _stereo[1]; }
+    mrv::image_type_ptr right() const;
 
     ////////////////// Return the 8-bits subtitle image
     inline mrv::image_type_ptr subtitle() const { return _subtitle; }
@@ -732,9 +734,6 @@ namespace mrv {
 
     std::string sequence_filename( const boost::int64_t frame );
 
-       std::string stereo_sequence_filename( const boost::int64_t frame,
-					     const char* view = "left" );
-
     double video_clock() const { return _video_clock; }
     
     double audio_clock() const { return _audio_clock; }
@@ -1015,11 +1014,13 @@ namespace mrv {
 
     Playback       _playback;        //!< playback direction or stopped
        bool        _aborted;
-
+    
     thread_pool_t  _threads;         //!< any threads associated with process
     thread_pool_t  _load_threads;    //!< loading threads if any
 
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
+    mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
+                                    //!  right float frame
     
 
     stringArray  _layers;                //!< list of layers in file
