@@ -596,7 +596,7 @@ void CMedia::sequence( const char* fileroot,
   delete [] _right;
   _right = NULL;
 
-  boost::uint64_t num = _frameEnd - _frameStart + 1;
+  boost::uint64_t num = _frame_end - _frame_start + 1;
   _sequence = new mrv::image_type_ptr[ unsigned(num) ];
   _right    = new mrv::image_type_ptr[ unsigned(num) ];
 
@@ -958,7 +958,7 @@ void CMedia::default_layers()
  */
 void CMedia::channel( const char* c )
 {
-   _stereo_type = kNoStereo;
+   // _stereo_type = kNoStereo;
 
   std::string ch( c );
 
@@ -1426,7 +1426,7 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
 
-  boost::int64_t idx = f - _frameStart;
+  boost::int64_t idx = f - _frame_start;
   if ( _sequence[idx] ) return;
 
   _sequence[idx] = pic;
@@ -2037,32 +2037,37 @@ bool CMedia::find_image( const boost::int64_t frame )
       return true;
     }
 
-  bool should_load = true;
+  bool should_load = false;
+
+  std::string file = sequence_filename(f);
 
   if ( _filename ) 
     {
-      char* old = _filename;
-      _filename = NULL;
-      if ( strcmp( sequence_filename(f).c_str(), old ) != 0 )
+      if ( file != _filename )
+      {
 	should_load = true;
-      free( old );
+        free( _filename );
+        _filename = strdup( file.c_str() );
+      }
     }
   else
     {
-      should_load = true;
+       _filename = strdup( file.c_str() );
+       should_load = true;
     }
+
 
 
   if ( should_load )
   {
      _dts = f;
-     std::string file =  sequence_filename(f);
+     std::string file = sequence_filename(f);
      if ( fs::exists(file) )
      {
 	SCOPED_LOCK( _audio_mutex );
 	SCOPED_LOCK( _mutex );
 	SCOPED_LOCK( _subtitle_mutex );
-	fetch(f);
+	fetch( f );
 	cache( _hires );
      }
      else
