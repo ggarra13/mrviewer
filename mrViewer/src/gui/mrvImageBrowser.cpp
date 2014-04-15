@@ -900,6 +900,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if (!db) return;
 
     const CMedia* img = m->image();
+    if (!img) return;
+
+    
 
     char* login;
     std::string shot_id;
@@ -925,6 +928,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	icc_profile_id += N_("'");
       }
 
+    
     std::string rendering_transform_id = "NULL";
     if ( img->rendering_transform() )
       {
@@ -945,6 +949,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	rendering_transform_id += N_("'");
       }
 
+    
     std::string look_mod_transform_id = "NULL";
     if ( img->look_mod_transform() )
       {
@@ -990,6 +995,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( fnumber == NULL )
       fnumber = img->exif( "Aperture Value" );
 
+    
     if ( fnumber )
       {
 	stringArray tokens;
@@ -1002,7 +1008,6 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	  }
       }
 
-
     char date[256], created_at[256];
     time_t t = img->ctime();
     strftime( date, 255, "%F %H:%M:%S", localtime( &t ) );
@@ -1010,7 +1015,10 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     t = ::time(NULL);
     strftime( created_at, 256, "%F %H:%M:%S", localtime( &t ) );
 
-    std::string format = db->quote( img->format() );
+    const char* fmt  = img->format();
+    std::string format = "NULL";
+    if ( fmt )
+       format = db->quote( img->format() );
 
     // Quote thumbnail picture
     const fltk::Image* thumb = m->thumbnail();
@@ -1030,12 +1038,14 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
        H = 0;
     }
 
+    
     char* buf = new char[ thumbnail.size() + 4096 ];
 
     sprintf( buf, N_("SELECT id FROM images "
 		     "WHERE directory='%s' AND filename='%s';" ),
 	     db->quote( img->directory() ).c_str(), 
 	     db->quote( img->name() ).c_str() );
+    
     if (! db->sql( buf ) )
       {
 	LOG_ERROR( _("Could not find image table '") << img->filename() 
@@ -1059,7 +1069,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
 
     std::string layers;
-    stringArray::const_iterator i = img->layers().begin();
+     
+     stringArray::const_iterator i = img->layers().begin();
     stringArray::const_iterator s = i;
     stringArray::const_iterator e = img->layers().end();
     for ( ; i != e; ++i )
@@ -1068,6 +1079,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	layers += *i;
       }
 
+    
 
     sprintf( buf, "INSERT INTO images"
 	     "( directory, filename, frame_start, frame_end, creator, "
@@ -1118,6 +1130,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 		 << _("' to database '") << db->database()
 		 << _("'.") );
     }
+    
 
     delete [] buf;
   }

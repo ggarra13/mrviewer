@@ -140,7 +140,7 @@ bool is_valid_picture( const char* ext )
 std::string hex_to_char_filename( std::string& f )
 {
    std::string r;
-   int loc;
+   size_t loc;
 
    while ( ( loc = f.find('%') ) != std::string::npos )
    {
