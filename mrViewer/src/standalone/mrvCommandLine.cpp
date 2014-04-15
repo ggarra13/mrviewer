@@ -333,9 +333,11 @@ void parse_command_line( const int argc, char** argv,
     aaudio( N_("a"), N_("audio"), 
             _("Set sequence default audio."), false, "audio files");
 
+#ifdef USE_STEREO
     MultiArg< std::string > 
     astereo( N_("s"), N_("stereo"), 
             _("Provide two sequences or movies for stereo."), false, "images");
+#endif
 
     cmd.add(agamma);
     cmd.add(again);
@@ -345,7 +347,9 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
+#ifdef USE_STEREO
     cmd.add(astereo);
+#endif
     cmd.add(afiles);
 
     //
@@ -365,6 +369,10 @@ void parse_command_line( const int argc, char** argv,
     opts.edl  = aedl.getValue();
     opts.fps  = afps.getValue();
 
+    stringArray files = afiles.getValue();
+    unsigned normalFiles = files.size();
+
+#ifdef USE_STEREO
     stringArray stereo = astereo.getValue();
 
     if ( stereo.size() % 2 != 0 )
@@ -377,13 +385,13 @@ void parse_command_line( const int argc, char** argv,
     //
     // Parse image list to split into sequences/images and reels
     //
-    stringArray files = afiles.getValue();
-    unsigned normalFiles = files.size();
 
     for ( int i = 0; i < stereo.size(); ++i )
     {
        files.push_back( stereo[i] ); 
     }
+
+#endif
 
     const stringArray& audios = aaudio.getValue();
 
@@ -421,15 +429,16 @@ void parse_command_line( const int argc, char** argv,
 	    boost::int64_t start = mrv::kMinFrame, end = mrv::kMaxFrame;
 	    std::string fileroot;
 
-            mrv::fileroot( fileroot, arg );
 
-            if ( mrv::is_directory( fileroot.c_str() ) )
+            if ( mrv::is_directory( arg.c_str() ) )
             {
-               parse_directory( fileroot, opts );
+               parse_directory( arg, opts );
                if ( opts.files.size() > 1 ) opts.edl = true;
             }
             else
             {
+
+               mrv::fileroot( fileroot, arg );
 
                if ( mrv::is_valid_sequence( fileroot.c_str() ) )
                {
@@ -438,6 +447,7 @@ void parse_command_line( const int argc, char** argv,
 
                if ( e - i <= files.size() - normalFiles )
                {
+                  // Add audio file to last stereo fileroot
                   if ( ai != ae )
                   {
                      opts.stereo.push_back( mrv::LoadInfo( fileroot, start, 
@@ -452,6 +462,7 @@ void parse_command_line( const int argc, char** argv,
                }
                else
                {
+                  // Add audio file to last fileroot
                   if ( ai != ae )
                   {
                      opts.files.push_back( mrv::LoadInfo( fileroot, start, 

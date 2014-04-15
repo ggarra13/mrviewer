@@ -835,8 +835,6 @@ bool exrImage::find_channels( const Imf::Header& h,
       {
          char* ch = strdup( _channel );
 
-         SCOPED_LOCK( _mutex );
-
          free( _channel );
          _channel = NULL;
 
@@ -857,7 +855,6 @@ bool exrImage::find_channels( const Imf::Header& h,
          channels_order( frame, s, e, channels, h, fb );
          _stereo[1] = _hires;
 
-
          prefix = "";
          if ( _has_left_eye ) prefix = "left";
          if ( prefix != "" )
@@ -872,11 +869,12 @@ bool exrImage::find_channels( const Imf::Header& h,
          channels_order( frame, s, e, channels, h, fb );
          _stereo[0] = _hires;
 
-
          if ( ext == "HORIZONTAL" )
             _stereo_type = kStereoSideBySide;
          else if ( ext == "CROSSED" )
             _stereo_type = kStereoCrossed;
+         else
+            LOG_ERROR( _("Unknown stereo type") );
 
          _channel = ch;
 

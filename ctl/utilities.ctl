@@ -51,6 +51,18 @@
 // Data and functions that may be useful for writing CTL programs.
 //
 
+const Chromaticities sRGBChromaticities =
+{
+    {0.6400, 0.3300},
+    {0.3000, 0.6000},
+    {0.1500, 0.0600},
+    {0.3172, 0.3290}
+    // {0.6400, 0.3300, 0.2126},
+    // {0.3000, 0.6000, 0.7152},
+    // {0.1500, 0.0600, 0.0722},
+    // {0.3172, 0.3290, 1.0000}
+};
+
 const Chromaticities rec709Chromaticities =
 {
     {0.6400, 0.3300},
@@ -135,3 +147,54 @@ convertXYZtoRGB_h
     G = RGB[1];
     B = RGB[2];
 } 
+
+/// Utility -- convert sRGB value to linear
+///    http://en.wikipedia.org/wiki/SRGB
+float sRGB_to_linear(float x)
+{
+   float x_f = x;
+   float x_l = 0.0;
+   if (x_f <= 0.04045)
+      x_l = x_f/12.92;
+   else
+      x_l = pow((x_f+0.055)/1.055,2.4);
+   return x_l;
+}
+
+/// Utility -- convert linear value to sRGB
+float linear_to_sRGB (float x)
+{
+    if (x < 0.0)
+        return 0.0;
+    if (x <= 0.0031308) 
+       return (12.92 * x);
+    else
+       return (1.055 * pow (x, 1.0/2.4) - 0.055);
+}
+
+/// Utility -- convert Rec709 value to linear
+///    http://en.wikipedia.org/wiki/Rec._709
+float Rec709_to_linear (float x)
+{
+    if (x < 0.081)
+    {
+        if (x < 0.0)
+	   return 0.0;
+	else
+	   return x * (1.0/4.5);
+    }
+    else
+        return pow((x + 0.099) * (1.0/1.099), (1.0/0.45));
+}
+
+/// Utility -- convert linear value to Rec709
+float linear_to_Rec709 (float x)
+{
+    if (x < 0.018)
+        if (x < 0.0)
+           return 0.0;
+        else
+           return x * 4.5;
+    else
+        return 1.099 * pow(x, 0.45) - 0.099;
+}

@@ -1003,6 +1003,11 @@ void GLEngine::draw_images( ImageList& images )
       if ( img->is_stereo() )    ++num_quads;
     }
 
+  texWidth  = images.back()->width();
+  texHeight = images.back()->height();
+
+  if ( texWidth == 0 || texHeight == 0 ) return;
+
   size_t num = _quads.size();
   if ( num_quads > num )
     {
@@ -1010,8 +1015,6 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
-  texWidth  = images.back()->width();
-  texHeight = images.back()->height();
 
   glColor4f(1.0f,1.0f,1.0f,1.0f);
 
@@ -1079,8 +1082,8 @@ void GLEngine::draw_images( ImageList& images )
             quad->draw( texWidth, texHeight );
          }
          
-           ++q;
-           quad = *q;
+         ++q;
+         quad = *q;
 
          if ( img->stereo_type() == CMedia::kStereoCrossed )
          {
