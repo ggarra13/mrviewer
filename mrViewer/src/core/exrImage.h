@@ -59,6 +59,8 @@ namespace mrv {
 
     static bool save( const char* file, const CMedia* img );
 
+       int current_part() const { return _curpart; }
+       void current_part( unsigned x ) { _curpart = x; }
 
        int levelX() { return _levelX; }
        int levelY() { return _levelY; }
@@ -85,6 +87,7 @@ namespace mrv {
 			    );
        void ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame );
        bool fetch_mipmap( const boost::int64_t frame );
+       bool fetch_multipart( const boost::int64_t frame );
        bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
 			   boost::int64_t frame );
        void read_header_attr( const Imf::Header& h, boost::int64_t frame );
@@ -94,8 +97,11 @@ namespace mrv {
      protected:
 
        int _levelX, _levelY; //<- r/mipmap levels
+       bool _multiview;
        bool _has_yca, _use_yca, _has_left_eye, _has_right_eye, _left_red;
 
+       int _curpart;
+       int _numparts;
        mrv::image_type_ptr* _right; //!< For sequences, holds each float frame
 
        Imf::LineOrder   _lineOrder;
