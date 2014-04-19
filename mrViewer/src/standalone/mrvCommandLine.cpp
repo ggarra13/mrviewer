@@ -12,6 +12,7 @@
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
+
 #include "tclap/CmdLine.h"
 #include "mrvI8N.h"
 #include "mrvCommandLine.h"
@@ -22,6 +23,10 @@
 #include "mrViewer.h"
 #include "mrvVersion.h"
 #include "mrvServer.h"
+
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 namespace fs = boost::filesystem;
 
@@ -35,6 +40,11 @@ namespace mrv {
     {
       using namespace TCLAP;
       using namespace std;
+
+#ifdef _WIN32
+      AllocConsole();
+      freopen("conout$", "w", stderr);
+#endif
 
       std::string cmd = c.getProgramName();
       cerr << endl
@@ -91,7 +101,14 @@ namespace mrv {
 	   <<	"  > " << cmd << " background.dpx texture.png" << endl
 	   <<	"  > " << cmd << " beauty.001-020.iff background.%04d.exr 1-20" << endl
 	   <<	"  > " << cmd << " beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi" << endl;
+
+#ifdef _WIN32
+       Sleep(INFINITE);
+#endif
+
     }
+
+
   };
 
 
