@@ -69,10 +69,8 @@ static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt)
 static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AVStream *st, AVPacket *pkt)
 {
     /* rescale output packet timestamp values from codec to stream timebase */
-   pkt->pts = av_rescale_q_rnd(pkt->pts, *time_base, st->time_base, 
-                               AVRounding( AV_ROUND_NEAR_INF|AV_ROUND_PASS_MINMAX ) );
-   pkt->dts = av_rescale_q_rnd(pkt->dts, *time_base, st->time_base, 
-                               AVRounding( AV_ROUND_NEAR_INF|AV_ROUND_PASS_MINMAX ) );
+   pkt->pts = av_rescale_q(pkt->pts, *time_base, st->time_base );
+   pkt->dts = av_rescale_q(pkt->dts, *time_base, st->time_base );
    pkt->duration = av_rescale_q(pkt->duration, *time_base, st->time_base);
    pkt->stream_index = st->index;
    
@@ -116,6 +114,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->bit_rate    = 64000;
           c->sample_rate = img->audio_frequency();
           c->channels    = img->audio_channels();
+          if ( c->channels == 2 ) c->channel_layout = AV_CH_LAYOUT_STEREO;
           c->time_base.num = 1;
           c->time_base.den = c->sample_rate;
           if (( codec_id == AV_CODEC_ID_MP3 ) || (codec_id == AV_CODEC_ID_AC3))
@@ -138,8 +137,14 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->time_base.num = 1000;
           c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
           c->pix_fmt       = AV_PIX_FMT_YUV420P;
+          c->global_quality = 1;
+          c->field_order = AV_FIELD_PROGRESSIVE;
+          c->compression_level = FF_COMPRESSION_DEFAULT;
+          c->me_method     = 5;
+          c->prediction_method = FF_PRED_MEDIAN;
           if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
              /* just for testing, we also add B frames */
+             c->ticks_per_frame = 2;
              c->max_b_frames = 2;
           }
           // if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
@@ -184,6 +189,8 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
 {
     AVCodecContext* c = st->codec;
+
+   av_log_set_level(av_log_get_level()+10);
 
     DBG( __LINE__ );
 
@@ -305,7 +312,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    int got_packet, ret, dst_nb_samples;
    
    char buf[AV_ERROR_MAX_STRING_SIZE];
-   
+
    av_init_packet(&pkt);
 
    AVCodecContext* c = st->codec;
@@ -693,7 +700,16 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
       }
    }
 
+   oc->flags |= AVFMT_FLAG_NOBUFFER|AVFMT_FLAG_FLUSH_PACKETS;
+   oc->max_interleave_delta = 1;
+   oc->debug = FF_FDEBUG_TS;
+
    fmt = oc->oformat;
+
+   if ( fmt->video_codec == AV_CODEC_ID_H264 )
+   {
+      fmt->video_codec = AV_CODEC_ID_MPEG4;
+   }
 
    assert( fmt != NULL );
 
@@ -707,6 +723,12 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
       audio_st = add_stream(oc, &audio_cdc, fmt->audio_codec,
                             img );
+   }
+
+   if ( video_st == NULL && audio_st == NULL )
+   {
+      LOG_ERROR( "No audio nor video stream created" );
+      return false;
    }
 
 
@@ -752,8 +774,6 @@ bool aviImage::save_movie_frame( const CMedia* img )
    if (!audio_st && !video_st)
       return false;
 
-   DBG( __LINE__ );
-
    // double STREAM_DURATION = (double) img->duration() / (double) img->fps();
 
     /* Compute current audio and video time. */
@@ -768,35 +788,28 @@ bool aviImage::save_movie_frame( const CMedia* img )
     // }
 
     
-   DBG( __LINE__ );
 
     /* write interleaved audio and video frames */
+    if ( video_st ) {
+
+       write_video_frame(oc, video_st, img);
+
+       picture->pts += av_rescale_q(1, video_st->codec->time_base,
+                                    video_st->time_base);
+    }
+
+
     if ( audio_st )
     {
-   DBG( __LINE__ );
 
        while( audio_time <= video_time) {
           if ( ! write_audio_frame(oc, audio_st, img) )
              break;
           audio_time = audio_st->pts.val * av_q2d(audio_st->time_base);
        }
-   DBG( __LINE__ );
 
     }
     
-    if ( video_st ) {
-   DBG( __LINE__ );
-
-       write_video_frame(oc, video_st, img);
-
-   DBG( __LINE__ );
-
-       picture->pts += av_rescale_q(1, video_st->codec->time_base,
-                                    video_st->time_base);
-   DBG( __LINE__ );
-    }
-
-
    return true;
 }
 
