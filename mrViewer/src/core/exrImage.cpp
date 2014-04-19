@@ -17,8 +17,11 @@
 #include <Iex.h>
 #include <ImfVersion.h> // for MAGIC
 #include <ImfChannelList.h>
+#include <ImfPartType.h>
 #include <ImfInputFile.h>
+#include <ImfInputPart.h>
 #include <ImfTiledInputFile.h>
+#include <ImfMultiPartInputFile.h>
 #include <ImfStandardAttributes.h>
 #include <ImfOutputFile.h>
 #include <ImathMath.h> // for Math:: functions
@@ -88,11 +91,14 @@ namespace mrv {
   CMedia(),
   _levelX( 0 ),
   _levelY( 0 ),
+  _multiview( false ),
   _has_yca( false ),
   _use_yca( false ),
   _has_left_eye( false ),
   _has_right_eye( false ),
-  _left_red( false )
+  _left_red( false ),
+  _curpart( -1 ),
+  _numparts( -1 )
   {
   }
 
@@ -676,22 +682,22 @@ bool exrImage::find_channels( const Imf::Header& h,
 
    image_size( dw, dh );
 
+
    Imf::ChannelList channels = h.channels();
    stringSet layers;
    channels.layers( layers );
 
-   _has_right_eye = false;
    if ( layers.find( N_( "right" ) ) != layers.end() )
    {
       _has_right_eye = true;
    }
 
-   _has_left_eye = false;
    if ( layers.find( N_("left") ) != layers.end() )
       _has_left_eye = true;
 
    if ( _has_left_eye || _has_right_eye )
    {
+      _multiview = true;
       _is_stereo = true;
       _stereo_type = kNoStereo;
    }
@@ -738,7 +744,9 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
       
       if ( channels.findChannel( N_("A") ) ||
-	   channels.findChannel( N_("ALPHA") ) )
+	   channels.findChannel( N_("AR") ) ||
+	   channels.findChannel( N_("AG") ) ||
+	   channels.findChannel( N_("AB") ) )
       {
 	 has_alpha = true;
 	 alpha_layers();
@@ -757,8 +765,8 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
 
 
-      Imf::ChannelList::Iterator i = channels.begin();
-      Imf::ChannelList::Iterator e = channels.end();
+      Imf::ChannelList::ConstIterator i = channels.begin();
+      Imf::ChannelList::ConstIterator e = channels.end();
 
       // Deal with single channels first, like Tag, Z Depth, etc.
       for ( ; i != e; ++i )
@@ -770,13 +778,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 			(int(*)(int)) toupper);
 	 if ( name == N_("R") || name == N_("G") || name == N_("B") ||
 	      name == N_("A") || name == N_("Y") || name == N_("BY") || 
-	      name == N_("RY") ||
-	      name == N_("RED") || name == N_("GREEN") || name == N_("BLUE") || 
-	      name == N_("ALPHA") ||
-	      // international versions
-	      name == _("RED") || name == _("GREEN") || name == _("BLUE") || 
-	      name == _("ALPHA")
-	      )
+	      name == N_("RY") )
 	    continue; // these channels are handled in shader directly
 
 	 // Don't count layer.channel those are handled later
@@ -838,6 +840,14 @@ bool exrImage::find_channels( const Imf::Header& h,
          free( _channel );
          _channel = NULL;
 
+         if ( ext == "HORIZONTAL" )
+            _stereo_type = kStereoSideBySide;
+         else if ( ext == "CROSSED" )
+            _stereo_type = kStereoCrossed;
+         else
+            LOG_ERROR( _("Unknown stereo type") );
+
+
          Imf::ChannelList::ConstIterator s;
          Imf::ChannelList::ConstIterator e;
          std::string prefix;
@@ -853,6 +863,13 @@ bool exrImage::find_channels( const Imf::Header& h,
             e = channels.end();
          }
          channels_order( frame, s, e, channels, h, fb );
+
+         if ( !_multiview ) 
+         {
+            _channel = ch;
+            return true;
+         }
+
          _stereo[1] = _hires;
 
          prefix = "";
@@ -868,13 +885,6 @@ bool exrImage::find_channels( const Imf::Header& h,
          }
          channels_order( frame, s, e, channels, h, fb );
          _stereo[0] = _hires;
-
-         if ( ext == "HORIZONTAL" )
-            _stereo_type = kStereoSideBySide;
-         else if ( ext == "CROSSED" )
-            _stereo_type = kStereoCrossed;
-         else
-            LOG_ERROR( _("Unknown stereo type") );
 
          _channel = ch;
 
@@ -904,7 +914,7 @@ bool exrImage::find_channels( const Imf::Header& h,
       
       Imf::ChannelList::Iterator s = channels.begin();
       Imf::ChannelList::Iterator e = channels.end();
-      
+
       channels_order( frame, s, e, channels, h, fb );
    }
    
@@ -1166,9 +1176,104 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 }
 
+bool exrImage::fetch_multipart( const boost::int64_t frame )
+{
+   MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
+
+   int i = 0;
+   int st[2];
+   st[0] = st[1] = -1;
+   for ( ; i < _numparts; ++i )
+   {
+      InputPart in( inmaster, i );
+      Header header = in.header();
+
+      if ( header.type() != DEEPSCANLINE ) continue;
+
+      if ( _curpart < 0 ) _curpart = i;
+
+      std::string name = header.name();
+      if ( name.find( "right" ) != std::string::npos )
+      {
+         st[1] = i;
+         _is_stereo = true;
+         _stereo_type = kNoStereo;
+      }
+      if ( name.find( "left" ) != std::string::npos )
+      {
+         st[0] = i;
+         _is_stereo = true;
+         _stereo_type = kNoStereo;
+      }
+   }
+
+   if ( _curpart < 0 )
+   {
+      IMG_ERROR( _("Could not locate any part with scanline data" ) );
+      return false;
+   }
+
+   if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
+   {
+      IMG_ERROR( _("Could not find both stereo images in file") );
+      return false;
+   }
+
+
+   if ( _is_stereo )
+   {
+
+      InputPart in (inmaster, st[0] );
+      Header header = in.header();
+
+      const Box2i& displayWindow = header.displayWindow();
+      const Box2i& dataWindow = header.dataWindow();
+   
+      for ( i = 0 ; i < 2; ++i )
+      {
+         InputPart in (inmaster, st[i] );
+         Header header = in.header();
+
+         FrameBuffer fb;
+         bool ok = find_channels( header, fb, frame );
+         if (!ok) {
+            IMG_ERROR( _("Could not locate channels in header") );
+            return false;
+         }
+
+         in.setFrameBuffer(fb);
+         in.readPixels( dataWindow.min.y, dataWindow.max.y );
+
+         // Quick exit if stereo is off
+         if ( _stereo_type == kNoStereo ) break;
+
+         _stereo[i] = _hires;
+      }
+   }
+   else
+   {
+      InputPart in (inmaster, _curpart);
+      Header header = in.header();
+      const Box2i& displayWindow = header.displayWindow();
+      const Box2i& dataWindow = header.dataWindow();
+
+      FrameBuffer fb;
+      bool ok = find_channels( header, fb, frame );
+      if (!ok) {
+         IMG_ERROR( _("Could not locate channels in header") );
+         return false;
+      }
+
+      in.setFrameBuffer(fb);
+      in.readPixels( dataWindow.min.y, dataWindow.max.y );
+   }
+
+   return true;
+}
+
 /** 
-   * Fetch the current EXR image
-   * 
+ * Fetch the current EXR image
+ * 
    * 
    * @return true if success, false if not
    */
@@ -1182,6 +1287,28 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	   return fetch_mipmap( frame );
 	}
 
+        try
+        {
+           if ( _numparts < 0 )
+           {
+              MultiPartInputFile* infile = new MultiPartInputFile( 
+              sequence_filename(frame).c_str() );
+              
+              _numparts = infile->parts();
+              delete infile;
+           }
+        }
+        catch(IEX_NAMESPACE::BaseExc &e)
+        {
+           IMG_ERROR( e.what() );
+           return false;
+        }
+
+
+        if ( _numparts > 1 )
+        {
+           return fetch_multipart( frame );
+        }
 
 	InputFile in( sequence_filename(frame).c_str() );
 
