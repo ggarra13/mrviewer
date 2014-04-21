@@ -918,7 +918,7 @@ void CMedia::alpha_layers()
 void CMedia::rgb_layers()
 {
    SCOPED_LOCK( _mutex );
-  _layers.insert( _layers.begin(), "Color" );
+  _layers.push_back( "Color" );
   _layers.push_back( "Red" );
   _layers.push_back( "Green" );
   _layers.push_back( "Blue" );
@@ -927,7 +927,7 @@ void CMedia::rgb_layers()
 }
 
 /** 
- * Add r,g,b and lumincan to list of layers
+ * Add r,g,b and lumma to list of layers
  * 
  */
 void CMedia::lumma_layers()
@@ -988,9 +988,9 @@ void CMedia::channel( const char* c )
 
   if (to_fetch) 
     {
-      clear_sequence();
-      SCOPED_LOCK( _mutex );
-      fetch(_frame);
+       clear_sequence();
+       SCOPED_LOCK( _mutex );
+       fetch(_frame);
     }
   refresh();
 }

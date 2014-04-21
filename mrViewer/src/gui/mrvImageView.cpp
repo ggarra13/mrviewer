@@ -193,11 +193,13 @@ namespace
        std::string ext = channelName.substr( pos+1, channelName.size() );
        std::transform( ext.begin(), ext.end(), ext.begin(),
 		       (int(*)(int)) toupper );
-       if ( ext == N_("COLOR") ) return 'c';
+       if ( ext == N_("COLOR") || ext == N_("RGB") || ext == N_("RGBA")) 
+          return 'c';
        if ( ext == N_("R") || ext == N_("RED")   ) return 'r';
        if ( ext == N_("G") || ext == N_("GREEN") ) return 'g';
        if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
        if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
+       if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
     }
 
     oldChannel = channelName;
@@ -3219,6 +3221,10 @@ void ImageView::channel( unsigned short c )
   static std::string oldChannel;
 
   std::string ext = channelName;
+  std::string oext = oldChannel;
+
+
+
   size_t pos = ext.rfind('.');
 
   size_t pos2 = oldChannel.rfind('.');
@@ -3228,25 +3234,11 @@ void ImageView::channel( unsigned short c )
      ext = ext.substr( pos+1, ext.size() );
   }
 
-  if ( pos != pos2 && channelName.size() > oldChannel.size() )
+  if ( pos2 != std::string::npos )
   {
-     pos2 = channelName.find( oldChannel );
-     if ( pos2 == std::string::npos ) ext = ""; 
+     oext = oext.substr( pos2+1, oext.size() );
   }
-  else
-  {
-     if ( pos != pos2 )
-     {
-	pos2 = oldChannel.find( channelName );
-	if ( pos2 == std::string::npos ) ext = ""; 
-     }
-     else
-     {
-	std::string temp1 = channelName.substr( 0, pos );
-	std::string temp2 = oldChannel.substr( 0, pos2 );
-	if ( temp1 != temp2 ) ext = ""; 
-     }
-  } 
+
 
   uiColorChannel->value( c );
   uiColorChannel->label( lbl );
@@ -3278,11 +3270,38 @@ void ImageView::channel( unsigned short c )
       _channelType = kLumma;
     }
   
+  if ( pos != pos2 && channelName.size() > oldChannel.size() )
+  {
+     pos2 = channelName.find( oldChannel );
+     if ( pos2 == std::string::npos ) {
+        ext = "";
+     } 
+  }
+  else
+  {
+     if ( pos != pos2 )
+     {
+	pos2 = oldChannel.find( channelName );
+	if ( pos2 == std::string::npos ) {
+           ext = "";
+        }
+     }
+     else
+     {
+        std::string temp1 = channelName.substr( 0, pos );
+        std::string temp2 = oldChannel.substr( 0, pos2 );
+        if ( temp1 != temp2 || ( oext != "R" && oext != "G" &&
+                                 oext != "B" && oext != "A") ) {
+           ext = "";
+        }
+     }
+  }
+
   mrv::media fg = foreground();
   mrv::media bg = background();
 
-  if ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
-       ext != N_("A") )
+  if ( ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
+         ext != N_("A") ) )
   {
      if ( fg ) fg->image()->channel( lbl );
      if ( bg ) bg->image()->channel( lbl );

@@ -158,7 +158,8 @@ bool exrImage::channels_order(
    Imf::ChannelList::ConstIterator i;
    for ( i = s; i != e; ++i, ++idx )
    {
-      const std::string layerName = i.name();
+      const std::string& layerName = i.name();
+
       const Imf::Channel* ch = channels.findChannel( 
 						    layerName.c_str()
 						     );
@@ -191,13 +192,13 @@ bool exrImage::channels_order(
       if ( order[3] == -1 && (ext == N_("A") ||
 			      ext == N_("ALPHA") ) ) order[3] = idx;
 
-
       channelList.push_back( layerName );
    }
 
 
    size_t numChannels = channelList.size();
-
+   unsigned maxChannels = 4;
+   if ( _is_stereo && !_multiview ) maxChannels = 5;
 
    if ( numChannels == 0 && channel() )
    {
@@ -206,10 +207,10 @@ bool exrImage::channels_order(
 		<< channel() << "\"." );
       return false;
    }
-   else if ( numChannels > 4 && channel() )
+   else if ( numChannels > maxChannels && channel() )
    {
       mrvALERT( _("Image file \"") << filename() 
-		<< _("\" contains more than 4 channels "
+		<< _("\" contains more than ") << maxChannels << _(" channels "
 		     "named with prefix \"") 
 		<< channel() << "\"" );
       numChannels = 4;
@@ -663,17 +664,15 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
      }
   }
 
-bool exrImage::find_channels( const Imf::Header& h,
-			      Imf::FrameBuffer& fb,
-			      boost::int64_t frame )
+bool exrImage::find_layers( const Imf::Header& h )
 {
 
    const Box2i& dataWindow = h.dataWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx = dataWindow.min.x;
-   int dy = dataWindow.min.y;
+   // int dx = dataWindow.min.x;
+   // int dy = dataWindow.min.y;
 
    //       int dpw = displayWindow.max.x - displayWindow.min.x + 1;
    //       if ( dpw > dw ) dw = dpw;
@@ -702,7 +701,8 @@ bool exrImage::find_channels( const Imf::Header& h,
       _stereo_type = kNoStereo;
    }
 
-   if ( _layers.empty() )
+
+   if ( _layers.empty() || _layers.size() == _numparts*5+_numparts )
    {
       _num_channels = 0;
       _gamma = 2.2f;
@@ -815,13 +815,124 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
    }
 
+   return true;
+}
+
+bool exrImage::handle_multiview_stereo( const boost::int64_t frame,
+                                        const Imf::Header& h,
+                                        Imf::FrameBuffer& fb )
+{
+   ChannelList channels = h.channels();
+
+   char* ch = strdup( _channel );
+
+   free( _channel );
+   _channel = NULL;
+
+
+
+   Imf::ChannelList::ConstIterator s;
+   Imf::ChannelList::ConstIterator e;
+   std::string prefix;
+   if ( _has_right_eye ) prefix = "right";
+
+   // Find the iterators for a right channel prefix or all channels
+   if ( prefix != "" )
+   {
+      channels.channelsWithPrefix( prefix.c_str(), s, e );
+   }
+   else
+   {
+      s = channels.begin();
+      e = channels.end();
+   }
+   channels_order( frame, s, e, channels, h, fb );
+
+   // If 3d is because of different headers exit now
+   if ( !_multiview )
+   {
+      _channel = ch;
+      return true;
+   }
+
+   _stereo[1] = _hires;
+
+   //
+   // Repeat for left eye
+   //
+   prefix = "";
+   if ( _has_left_eye ) prefix = "left";
+   if ( prefix != "" )
+   {
+      channels.channelsWithPrefix( prefix.c_str(), s, e );
+   }
+   else
+   {
+      s = channels.begin();
+      e = channels.end();
+   }
+   channels_order( frame, s, e, channels, h, fb );
+   _stereo[0] = _hires;
+
+   _channel = ch;
+
+   return true;
+}
+
+bool exrImage::find_channels( const Imf::Header& h,
+			      Imf::FrameBuffer& fb,
+			      boost::int64_t frame )
+{
+   find_layers( h );
+
+   ChannelList channels = h.channels();
+
    const char* channelPrefix = channel();
+
+   // If channel starts with #, we are dealing with a multipart exr
+   if ( channelPrefix && channelPrefix[0] == '#' )
+   {
+      std::string part = channelPrefix;
+
+      size_t idx = part.rfind( N_(".") );
+      if ( part.size() - idx == 2 )
+      {
+         free( _channel );
+         std::string ext = part.substr(idx+1, part.size() );
+         if ( ext != "R" && ext != "G" && ext != "B" && ext != "A" )
+            _channel = strdup( ext.c_str() );
+         else
+            _channel = NULL;
+         channelPrefix = channel();
+      }
+      else
+      {
+         channelPrefix = NULL;
+         free( _channel );
+         _channel = NULL;
+      }
+
+      size_t pos = part.find( N_(" ") );
+      part = part.substr( 1, pos );
+
+      int oldpart = _curpart;
+
+      _curpart = strtoul( part.c_str(), NULL, 10 );
+
+
+      if ( oldpart != _curpart )
+         return true;
+
+   }
+
+
+
    if ( channelPrefix != NULL )
    {
       std::string ext = channelPrefix;
       std::string root = "";
       size_t pos = ext.rfind( N_(".") );
-      if ( pos != string::npos )
+      if ( pos != std::string::npos )
       {
 	 root = ext.substr( 0, pos );
 	 ext = ext.substr( pos+1, ext.size() );
@@ -835,11 +946,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
       if ( root == "STEREO" )
       {
-         char* ch = strdup( _channel );
-
-         free( _channel );
-         _channel = NULL;
-
+         // Set the stereo type based on channel name extension
          if ( ext == "HORIZONTAL" )
             _stereo_type = kStereoSideBySide;
          else if ( ext == "CROSSED" )
@@ -847,47 +954,7 @@ bool exrImage::find_channels( const Imf::Header& h,
          else
             LOG_ERROR( _("Unknown stereo type") );
 
-
-         Imf::ChannelList::ConstIterator s;
-         Imf::ChannelList::ConstIterator e;
-         std::string prefix;
-         if ( _has_right_eye ) prefix = "right";
-
-         if ( prefix != "" )
-         {
-            channels.channelsWithPrefix( prefix.c_str(), s, e );
-         }
-         else
-         {
-            s = channels.begin();
-            e = channels.end();
-         }
-         channels_order( frame, s, e, channels, h, fb );
-
-         if ( !_multiview ) 
-         {
-            _channel = ch;
-            return true;
-         }
-
-         _stereo[1] = _hires;
-
-         prefix = "";
-         if ( _has_left_eye ) prefix = "left";
-         if ( prefix != "" )
-         {
-            channels.channelsWithPrefix( prefix.c_str(), s, e );
-         }
-         else
-         {
-            s = channels.begin();
-            e = channels.end();
-         }
-         channels_order( frame, s, e, channels, h, fb );
-         _stereo[0] = _hires;
-
-         _channel = ch;
-
+         return handle_multiview_stereo(frame, h, fb);
       }
       else
       {
@@ -895,6 +962,8 @@ bool exrImage::find_channels( const Imf::Header& h,
          {
             if (root == "LEFT" ) _left_red = true;
             else _left_red = false;
+
+            // When anaglyph, call channels order multi
 
             Imf::ChannelList::Iterator s = channels.begin();
             Imf::ChannelList::Iterator e = channels.end();
@@ -906,20 +975,20 @@ bool exrImage::find_channels( const Imf::Header& h,
             Imf::ChannelList::ConstIterator e;
             channels.channelsWithPrefix( channelPrefix, s, e );
             channels_order( frame, s, e, channels, h, fb );
+            return true;
          }
       }
    }
    else
    {
-      
       Imf::ChannelList::Iterator s = channels.begin();
       Imf::ChannelList::Iterator e = channels.end();
 
       channels_order( frame, s, e, channels, h, fb );
    }
-   
-   return true;
 
+   return true;
+   
 }
 
 void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
@@ -1180,37 +1249,49 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 {
    MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
 
-   int i = 0;
-   int st[2];
-   st[0] = st[1] = -1;
-   for ( ; i < _numparts; ++i )
+   _stereo_type = kNoStereo;
+
+   if ( _layers.empty() )
    {
-      InputPart in( inmaster, i );
-      Header header = in.header();
-
-      if ( header.type() != DEEPSCANLINE ) continue;
-
-      if ( _curpart < 0 ) _curpart = i;
-
-      std::string name = header.name();
-      if ( name.find( "right" ) != std::string::npos )
+      int i = 0;
+      st[0] = st[1] = -1;
+      for ( ; i < _numparts; ++i )
       {
-         st[1] = i;
-         _is_stereo = true;
-         _stereo_type = kNoStereo;
-      }
-      if ( name.find( "left" ) != std::string::npos )
-      {
-         st[0] = i;
-         _is_stereo = true;
-         _stereo_type = kNoStereo;
-      }
-   }
+         InputPart in( inmaster, i );
+         Header header = in.header();
 
-   if ( _curpart < 0 )
-   {
-      IMG_ERROR( _("Could not locate any part with scanline data" ) );
-      return false;
+         if ( header.type() != DEEPSCANLINE ) continue;
+
+         std::string name = header.name();
+         char buf[128];
+         sprintf( buf, "#%d %s", i, name.c_str() );
+         _layers.push_back( buf );
+
+         if ( name.find( "right" ) != std::string::npos )
+         {
+            st[1] = i;
+            _is_stereo = true;
+         }
+         if ( name.find( "left" ) != std::string::npos )
+         {
+            st[0] = i;
+            _is_stereo = true;
+         }
+
+
+         Imf::ChannelList channels = header.channels();
+
+         Imf::ChannelList::ConstIterator s = channels.begin();
+         Imf::ChannelList::ConstIterator e = channels.end();
+
+         for ( ; s != e; ++s )
+         {
+            std::string layerName = buf;
+            layerName += ".";
+            layerName += s.name();
+            _layers.push_back( layerName );
+         }
+      }
    }
 
    if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
@@ -1223,22 +1304,39 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    if ( _is_stereo )
    {
 
-      InputPart in (inmaster, st[0] );
-      Header header = in.header();
-
-      const Box2i& displayWindow = header.displayWindow();
-      const Box2i& dataWindow = header.dataWindow();
-   
-      for ( i = 0 ; i < 2; ++i )
+      for ( int i = 0 ; i < 2; ++i )
       {
-         InputPart in (inmaster, st[i] );
+         int oldpart = _curpart = st[i];
+
+         InputPart in( inmaster, _curpart );
          Header header = in.header();
+
+         const Box2i& dataWindow = header.dataWindow();
 
          FrameBuffer fb;
          bool ok = find_channels( header, fb, frame );
          if (!ok) {
             IMG_ERROR( _("Could not locate channels in header") );
             return false;
+         }
+
+         if ( _curpart != oldpart )
+         {
+            InputPart in( inmaster, _curpart );
+            Header header = in.header();
+            // const Box2i& displayWindow = header.displayWindow();
+            const Box2i& dataWindow = header.dataWindow();
+
+            FrameBuffer fb;
+            bool ok = find_channels( header, fb, frame );
+            if (!ok) {
+               IMG_ERROR( _("Could not locate channels in header") );
+               return false;
+            }
+            in.setFrameBuffer(fb);
+            in.readPixels( dataWindow.min.y, dataWindow.max.y );
+
+            return true;
          }
 
          in.setFrameBuffer(fb);
@@ -1252,9 +1350,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    }
    else
    {
+      int oldpart = _curpart;
+
       InputPart in (inmaster, _curpart);
       Header header = in.header();
-      const Box2i& displayWindow = header.displayWindow();
       const Box2i& dataWindow = header.dataWindow();
 
       FrameBuffer fb;
@@ -1264,8 +1363,28 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          return false;
       }
 
-      in.setFrameBuffer(fb);
-      in.readPixels( dataWindow.min.y, dataWindow.max.y );
+      if ( _curpart != oldpart )
+      {
+         InputPart in (inmaster, _curpart);
+         Header header = in.header();
+         // const Box2i& displayWindow = header.displayWindow();
+         const Box2i& dataWindow = header.dataWindow();
+
+         FrameBuffer fb;
+         bool ok = find_channels( header, fb, frame );
+         if (!ok) {
+            IMG_ERROR( _("Could not locate channels in header") );
+            return false;
+         }
+         in.setFrameBuffer(fb);
+         in.readPixels( dataWindow.min.y, dataWindow.max.y );
+      }
+      else
+      {
+         in.setFrameBuffer(fb);
+         in.readPixels( dataWindow.min.y, dataWindow.max.y );
+      }
+
    }
 
    return true;
