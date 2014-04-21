@@ -69,6 +69,10 @@ namespace mrv {
        void levelY( const int ly ) { _levelY = ly; }
 
   protected:
+       bool find_layers( const Imf::Header& h );
+       bool handle_multiview_stereo( const boost::int64_t frame,
+                                     const Imf::Header& hdr, 
+                                     Imf::FrameBuffer& fb );
        bool channels_order( 
 			   const boost::int64_t frame,
 			   Imf::ChannelList::ConstIterator s,
@@ -100,6 +104,7 @@ namespace mrv {
        bool _multiview;
        bool _has_yca, _use_yca, _has_left_eye, _has_right_eye, _left_red;
 
+       int st[2];
        int _curpart;
        int _numparts;
        mrv::image_type_ptr* _right; //!< For sequences, holds each float frame
