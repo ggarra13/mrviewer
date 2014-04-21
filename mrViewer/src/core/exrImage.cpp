@@ -630,6 +630,9 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	bool ok = find_channels( h, fb, frame );
 	if ( !ok ) return false;
 
+	_pixel_ratio = h.pixelAspectRatio();
+	_lineOrder   = h.lineOrder();
+
 	in.setFrameBuffer(fb);
 
 
@@ -641,7 +644,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	// the same order as they are stored in the file.
 	//
 
-	if (in.header().lineOrder() == INCREASING_Y)
+	if ( _lineOrder == INCREASING_Y )
 	{
 	   for (int y = 0; y < ty; ++y)
 	      for (int x = 0; x < tx; ++x)
@@ -674,10 +677,10 @@ bool exrImage::find_layers( const Imf::Header& h )
    // int dx = dataWindow.min.x;
    // int dy = dataWindow.min.y;
 
-   //       int dpw = displayWindow.max.x - displayWindow.min.x + 1;
-   //       if ( dpw > dw ) dw = dpw;
-   //       int dph = displayWindow.max.y - displayWindow.min.y + 1;
-   //       if ( dph > dh ) dh = dpw;
+   // int dpw = displayWindow.max.x - displayWindow.min.x + 1;
+   // if ( dpw > dw ) dw = dpw;
+   // int dph = displayWindow.max.y - displayWindow.min.y + 1;
+   // if ( dph > dh ) dh = dpw;
 
    image_size( dw, dh );
 
@@ -1260,7 +1263,12 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          InputPart in( inmaster, i );
          Header header = in.header();
 
-         if ( header.type() != DEEPSCANLINE ) continue;
+         if ( header.type() != DEEPSCANLINE &&
+              header.type() != SCANLINEIMAGE &&
+              header.type() != TILEDIMAGE ) continue;
+
+         if ( _exif.empty() && _iptc.empty() )
+            read_header_attr( header, frame );
 
          std::string name = header.name();
          char buf[128];
@@ -1320,6 +1328,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
             return false;
          }
 
+
          if ( _curpart != oldpart )
          {
             InputPart in( inmaster, _curpart );
@@ -1333,6 +1342,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
                IMG_ERROR( _("Could not locate channels in header") );
                return false;
             }
+
+            _pixel_ratio = header.pixelAspectRatio();
+            _lineOrder   = header.lineOrder();
+
             in.setFrameBuffer(fb);
             in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
@@ -1354,7 +1367,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
       InputPart in (inmaster, _curpart);
       Header header = in.header();
-      const Box2i& dataWindow = header.dataWindow();
+      Box2i& dataWindow = header.dataWindow();
+      Box2i& displayWindow = header.dataWindow();
 
       FrameBuffer fb;
       bool ok = find_channels( header, fb, frame );
@@ -1368,7 +1382,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          InputPart in (inmaster, _curpart);
          Header header = in.header();
          // const Box2i& displayWindow = header.displayWindow();
-         const Box2i& dataWindow = header.dataWindow();
+         dataWindow = header.dataWindow();
+         displayWindow = header.dataWindow();
 
          FrameBuffer fb;
          bool ok = find_channels( header, fb, frame );
@@ -1385,6 +1400,18 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          in.readPixels( dataWindow.min.y, dataWindow.max.y );
       }
 
+      unsigned dw = width();
+      unsigned dh = height();
+      if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
+           dataWindow.max.x != dw || dataWindow.max.y != dh )
+         data_window( dataWindow.min.x, dataWindow.min.y,
+                      dataWindow.max.x, dataWindow.max.y );
+      
+      if ( displayWindow != dataWindow )
+      {
+         display_window( displayWindow.min.x, displayWindow.min.y,
+                         displayWindow.max.x, displayWindow.max.y );
+      }
    }
 
    return true;
@@ -1436,13 +1463,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	const Box2i& displayWindow = h.displayWindow();
 	const Box2i& dataWindow = h.dataWindow();
 
-
-	_pixel_ratio = h.pixelAspectRatio();
-	_lineOrder   = h.lineOrder();
-	_fps         = 24.0f;
-
-	_compression = h.compression(); 
-
 	_rendering_intent = kRelativeIntent;
 
 	if ( _exif.empty() && _iptc.empty() )
@@ -1455,6 +1475,11 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	   IMG_ERROR( _("Could not locate channels in header") );
 	   return false;
 	}
+
+	_pixel_ratio = h.pixelAspectRatio();
+	_lineOrder   = h.lineOrder();
+	_compression = h.compression(); 
+
 
 	in.setFrameBuffer(fb);
 
@@ -1475,8 +1500,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	
 	if ( displayWindow != dataWindow )
 	{
-	   data_window( dataWindow.min.x, dataWindow.min.y,
-			dataWindow.max.x, dataWindow.max.y );
 	   display_window( displayWindow.min.x, displayWindow.min.y,
 			   displayWindow.max.x, displayWindow.max.y );
 	}

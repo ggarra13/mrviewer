@@ -206,6 +206,10 @@ namespace mrv {
     /// Return current channel shown in viewer
     ChannelType channel_type() const { return _channelType; };
 
+    mrv::Recti display_window() const { 
+       return _fg ? _fg->image()->display_window() : mrv::Recti();
+    }
+
     /// Change viewer's current foreground image
     void foreground( mrv::media img );
 
