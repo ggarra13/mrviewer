@@ -21,6 +21,7 @@
 #ifdef WIN32
 #  include <float.h>
 #define isnan(x) _isnan(x)
+#define isfinite(x) _isfinite(x)
 #else
 #  include <math.h>
 #endif
@@ -399,21 +400,37 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
     mrv::image_type_ptr frame = img->hires();
     if ( !frame ) return;
 
+    d->pMin = std::numeric_limits< float >::max();
+    d->pMax = std::numeric_limits< float >::min();
+
     for ( unsigned int y = yl ; y < yh; ++y )
       {
 	for ( unsigned int x = xl; x < xh; ++x )
 	  {
 	    const CMedia::Pixel& p = frame->pixel( x, y );
 
-	    if ( p.r < d->pMin ) d->pMin = p.r;
-	    if ( p.g < d->pMin ) d->pMin = p.g;
-	    if ( p.b < d->pMin ) d->pMin = p.b;
+            if ( isfinite( p.r ) && p.r < 3.40282e+38 )
+            {
+               if ( p.r < d->pMin ) d->pMin = p.r;
+               if ( p.r > d->pMax ) d->pMax = p.r;
+            }
 
-	    if ( p.r > d->pMax ) d->pMax = p.r;
-	    if ( p.g > d->pMax ) d->pMax = p.g;
-	    if ( p.b > d->pMax ) d->pMax = p.b;
+            if ( isfinite( p.g ) && p.g < 3.40282e+38 )
+            {
+               if ( p.g < d->pMin ) d->pMin = p.g;
+               if ( p.g > d->pMax ) d->pMax = p.g;
+            }
+
+            if ( isfinite( p.b ) && p.b < 3.40282e+38 )
+            {
+               if ( p.b < d->pMin ) d->pMin = p.b;
+               if ( p.b > d->pMax ) d->pMax = p.b;
+            }
+
 	  }
       }
+
+    
   }
 
 
@@ -544,17 +561,12 @@ namespace mrv {
 	    for ( x = 0; x < dw; ++x )
 	      {
 		CMedia::Pixel rp = pic->pixel(x, y);
-		if ( isnan( rp.a ) )
-		  {
-		    p->pixel( x, y, rp );
-		    continue;
-		  }
 
-		if ( !isnan( rp.r ) )
+		if ( isfinite( rp.r ) )
 		  rp.r = (rp.r - vMin[0]) / vMax[0];
-		if ( !isnan( rp.g ) )
+		if ( isfinite( rp.g ) )
 		  rp.g = (rp.g - vMin[0]) / vMax[0];
-		if ( !isnan( rp.b ) )
+		if ( isfinite( rp.b ) )
 		  rp.b = (rp.b - vMin[0]) / vMax[0];
 		rp.a = (rp.a - vMin[1]) / vMax[1];
 
@@ -579,9 +591,8 @@ namespace mrv {
 
     unsigned int num = xw * yw;
 
-//     if ( num < numPixelsPerThread )
-    if ( 1 )
-      {
+   if ( num < numPixelsPerThread )
+   {
 	DisplayData display_data;
 	display_data.view   = _view;
 	display_data.orig   = pic;
@@ -709,6 +720,7 @@ namespace mrv {
 
 	pMin = data.pMin;
 	pMax = data.pMax;
+
       }
     else
       {
@@ -754,6 +766,8 @@ namespace mrv {
 
 	    delete opaque;
 	  }
+
+
 	buckets.clear();
       }
 
