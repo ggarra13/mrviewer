@@ -888,6 +888,7 @@ namespace mrv {
 	CHECK_GL( "draw_quad shader parameters" );
       }
 
+
     glBegin( GL_POLYGON );
     {
       glTexCoord2f( 0.0f, _uvMax.v );
@@ -903,7 +904,6 @@ namespace mrv {
       glVertex3d( -0.5, 0.5, 0.0 );
     }
     glEnd();
-
 
 
     if ( _shader )
