@@ -1511,22 +1511,17 @@ void ImageView::draw()
        static int64_t unshown_frames = 0;
        int64_t frame = img->frame();
 
-      if ( _lastFrame != frame )
+       if ( (playback() == kForwards && _lastFrame < frame) ||
+            (playback() == kBackwards && _lastFrame > frame ) )
 	{
 	  int64_t frame_diff = ( frame - _lastFrame );
+          int64_t absdiff = std::abs(frame_diff);
+          if ( absdiff > 1 && absdiff < 10 )
+          {
+             unshown_frames += absdiff;
+          }
 
-	  if ( playback() ) {
-	     frame_diff *= playback();
-
-	     int64_t absdiff = std::abs(frame_diff);
-	     if ( absdiff > 1 && absdiff < 10 )
-	     {
-		unshown_frames += absdiff;
-
-	     }
-	  }
 	  _lastFrame = frame;
-
 	}
   
       if ( img->real_fps() > 0 )
