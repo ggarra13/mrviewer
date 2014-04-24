@@ -21,7 +21,7 @@
 #ifdef WIN32
 #  include <float.h>
 #define isnan(x) _isnan(x)
-#define isfinite(x) _isfinite(x)
+#define isfinite(x) _finite(x)
 #else
 #  include <math.h>
 #endif
@@ -173,8 +173,8 @@ namespace {
 
 
 
-unsigned widthPerThread  = 512;
-unsigned heightPerThread = 512;
+unsigned widthPerThread  = 1024;
+unsigned heightPerThread = 32;
 unsigned numPixelsPerThread = widthPerThread * heightPerThread;
 
 

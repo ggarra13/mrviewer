@@ -1,5 +1,9 @@
-v2.5.9.0 - Added multipart EXR support for multiple passes and stereo.
+v2.5.9.0 - Added multipart EXR support for multiple parts (new pass system) 
+	   and stereo (anaglyph, horizontal and crosseyed).  
+	   Support is given for deepscanline and scanline images.
+	   Note that there is no support for deep compositing yet.
 	 - Bug fixed pixel aspect ratio in EXR images.
+	 - Bug fixed normalize in EXR images.
 
 v2.5.8.2 - Drag and Drop now supports dragging directories to load all that
 	   is found inside them.

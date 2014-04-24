@@ -245,6 +245,7 @@ namespace mrv {
        kStereoCrossed    = 3,
        kStereoInterlaced = 4,
        kStereoOpenGL     = 8,
+       kStereoAnaglyph   = 16,
        };
 
 
@@ -902,6 +903,8 @@ namespace mrv {
      */
     unsigned int store_audio( const boost::int64_t audio_frame, 
 			      const boost::uint8_t* buf, const unsigned int size );
+
+       void make_anaglyph( bool left_red = true );
 
 
        virtual bool seek_to_position( const boost::int64_t frame );
