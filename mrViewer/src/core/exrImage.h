@@ -70,9 +70,9 @@ namespace mrv {
 
   protected:
        bool find_layers( const Imf::Header& h );
-       bool handle_multiview_stereo( const boost::int64_t frame,
-                                     const Imf::Header& hdr, 
-                                     Imf::FrameBuffer& fb );
+       bool handle_side_by_side_stereo( const boost::int64_t frame,
+                                        const Imf::Header& hdr, 
+                                        Imf::FrameBuffer& fb );
        bool channels_order( 
 			   const boost::int64_t frame,
 			   Imf::ChannelList::ConstIterator s,
@@ -107,6 +107,7 @@ namespace mrv {
        int st[2];
        int _curpart;
        int _numparts;
+       unsigned _num_layers;
        mrv::image_type_ptr* _right; //!< For sequences, holds each float frame
 
        Imf::LineOrder   _lineOrder;

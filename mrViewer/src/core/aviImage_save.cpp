@@ -705,11 +705,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
    oc->debug = FF_FDEBUG_TS;
 
    fmt = oc->oformat;
-
-   if ( fmt->video_codec == AV_CODEC_ID_H264 )
-   {
-      fmt->video_codec = AV_CODEC_ID_MPEG4;
-   }
+   fmt->video_codec = AV_CODEC_ID_MPEG4;
 
    assert( fmt != NULL );
 
