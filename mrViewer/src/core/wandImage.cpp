@@ -456,6 +456,8 @@ namespace mrv {
       }
 
 
+    if ( gamma() != 1.0 )
+       must_convert = true;
 
     // Set matte (alpha)
     MagickBooleanType matte = MagickFalse;
@@ -508,11 +510,16 @@ namespace mrv {
       {
 	unsigned int dh = height();
 	unsigned int dw = width();
+        float one_gamma = 1.0f/gamma();
 	for ( unsigned y = 0; y < dh; ++y )
 	  {
 	    for ( unsigned x = 0; x < dw; ++x )
 	      {
 		CMedia::Pixel p = frame->pixel( x, y );
+
+                p.r = powf( p.r, one_gamma );
+                p.g = powf( p.g, one_gamma );
+                p.b = powf( p.b, one_gamma );
 		MagickImportImagePixels(wand, x, y, 1, 1, channels, 
 					FloatPixel, &p );
 	      }
@@ -520,7 +527,7 @@ namespace mrv {
       }
     
 
-    MagickSetImageGamma( wand, gamma() );
+    // MagickSetImageGamma( wand, gamma() );
 
 
     //
