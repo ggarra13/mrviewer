@@ -13,10 +13,15 @@ if [[ $KERNEL == CYGWIN* ]]; then
 elif [[ $KERNEL == MINGW* ]]; then
     RELEASE=${KERNEL//*-/}
     KERNEL=Windows
-    RELEASE=`cmd /c 'ver'`
-    RELEASE=${RELEASE[4]%.[0-9]*}
 else
     RELEASE=`uname -r`
+fi
+
+if [[ "$RELEASE" == "" ]]; then
+    $RELEASE=`cmd.exe /c 'ver'`
+    echo $RELEASE
+    echo "Could not determine OS version"
+    exit 1
 fi
 
 CMAKE_OPTS=${CMAKE_OPTS=""}

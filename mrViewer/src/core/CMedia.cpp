@@ -481,8 +481,6 @@ void CMedia::refresh( const mrv::Recti& r )
   // Merge the bounding box of area to update
   _damageRectangle.merge( r );
 
-  DBG( "Damage " << _frame );
-
   image_damage( image_damage() | kDamageContents );
 }
 
@@ -918,7 +916,7 @@ void CMedia::alpha_layers()
 void CMedia::rgb_layers()
 {
    SCOPED_LOCK( _mutex );
-  _layers.push_back( "Color" );
+   _layers.insert( _layers.begin(), "Color" );
   _layers.push_back( "Red" );
   _layers.push_back( "Green" );
   _layers.push_back( "Blue" );
@@ -958,7 +956,6 @@ void CMedia::default_layers()
  */
 void CMedia::channel( const char* c )
 {
-   // _stereo_type = kNoStereo;
 
   std::string ch( c );
 
@@ -2117,6 +2114,145 @@ void CMedia::default_icc_profile()
       break;
     }
 }
+
+unsigned widthPerThread  = 1024;
+unsigned heightPerThread = 20;
+unsigned numPixelsPerThread = widthPerThread * heightPerThread;
+
+
+struct AnaglyphData
+{
+     bool left_red;
+     int x, y, w, h;
+     mrv::image_type_ptr* stereo;
+     mrv::image_type_ptr hires;
+};
+
+
+void anaglyph_cb( AnaglyphData* d )
+{
+   const image_type_ptr* stereo = d->stereo;
+   image_type_ptr& hires = d->hires;
+
+   short idx1 = 0;
+   short idx2 = 1;
+   if ( !d->left_red )
+   {
+      idx2 = 0;
+      idx1 = 1;
+   }
+
+   unsigned w = d->w;
+   unsigned h = d->h;
+
+   for ( unsigned y = d->y; y < h; ++y )
+   {
+      for ( unsigned x = d->x ; x < w; ++x )
+      {
+         const CMedia::Pixel& pr = stereo[idx1]->pixel( x, y );
+         const CMedia::Pixel& pc = stereo[idx2]->pixel( x, y );
+         CMedia::Pixel p = pc;
+         p.r = pr.r;
+         hires->pixel( x, y, p );
+      }
+   }
+
+   delete d;
+
+}
+
+
+void CMedia::make_anaglyph( bool left_red )
+{
+   allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
+   
+   if ( ! _stereo[0] || ! _stereo[1] )
+   {
+      LOG_ERROR( "Stereo image missing" );
+      return;
+   }
+   
+   if ( _stereo[0] == _stereo[1] )
+   {
+      LOG_ERROR( "Stereo images are the same" );
+   }
+
+   unsigned w = width();
+   unsigned h = height();
+
+   if ( _stereo[0]->width() != w || _stereo[1]->width() != w )
+   {
+      LOG_ERROR( "Stereo images differ in width" );
+   }
+
+   if ( _stereo[0]->height() != h || _stereo[1]->height() != h )
+   {
+      LOG_ERROR( "Stereo images differ in height" );
+   }
+
+   short idx1 = 0;
+   short idx2 = 1;
+
+    if ( w*h < numPixelsPerThread )
+    {
+       AnaglyphData* data = new AnaglyphData;
+       data->left_red = left_red;
+       data->stereo = _stereo;
+       data->hires  = _hires;
+       data->x = data->y = 0;
+       data->w = w;
+       data->h = h;
+       anaglyph_cb( data );
+    }
+    else
+    {
+       unsigned int x, y;
+       thread_pool_t buckets;
+
+       unsigned int ny, nx;
+       for ( y = 0; y < h; y = ny )
+       {
+          ny   = y + heightPerThread;
+          int yh  = h < ny? h : ny;
+
+          boost::thread* thread_id;
+          for ( x = 0; x < w; x = nx )
+          {
+             nx  = x + widthPerThread;
+             int xh = w < nx? w : nx;
+
+             AnaglyphData* data = new AnaglyphData;
+             data->left_red = left_red;
+             data->hires  = _hires;
+             data->stereo = _stereo;
+             data->x = x;
+             data->y = y;
+             data->w = xh;
+             data->h = yh;
+
+             thread_id = new boost::thread( boost::bind( anaglyph_cb,
+                                                         data ) );
+
+             buckets.push_back( thread_id );
+          }
+       }
+
+
+       thread_pool_t::const_iterator i = buckets.begin();
+       thread_pool_t::const_iterator e = buckets.end();
+
+       // Make sure all threads finish before proceeding
+       for ( ; i != e; ++i )
+       {
+          (*i)->join();
+          delete *i;
+       }
+    }
+
+
+   refresh();
+}
+
 void CMedia::default_rendering_transform()
 {
   if ( rendering_transform() ) return;
