@@ -208,10 +208,6 @@ bool exrImage::channels_order(
    }
    else if ( numChannels > 4 && channel() )
    {
-      LOG_WARNING( _("Image file \"") << filename() 
-                   << _("\" contains more than 4 channels "
-                        "named with prefix \"") 
-                   << channel() << "\"" );
       numChannels = 4;
    }
 
@@ -1366,11 +1362,35 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
    if ( _is_stereo )
    {
+      const char* channelPrefix = channel();
+      if ( channelPrefix != NULL )
+      {
+         std::string ext = channelPrefix;
+         std::string root = "";
+         size_t pos = ext.rfind( N_(".") );
+         if ( pos != std::string::npos )
+         {
+            root = ext.substr( 0, pos );
+            ext = ext.substr( pos+1, ext.size() );
+         }
+
+         if ( root == "stereo" )
+         {
+            _stereo_type = kStereoSideBySide;
+         }
+         else if ( ext == "anaglyph" )
+         {
+            _stereo_type = kStereoAnaglyph;
+         }
+      }
+
+
+      if ( _curpart == -1 ) _curpart = 0;
 
       for ( int i = 0 ; i < 2; ++i )
       {
          int oldpart = _curpart;
-         if ( _curpart == -1 ) _curpart = st[i];
+         if ( _stereo_type != kNoStereo ) _curpart = st[i];
 
          InputPart in( inmaster, _curpart );
          Header header = in.header();

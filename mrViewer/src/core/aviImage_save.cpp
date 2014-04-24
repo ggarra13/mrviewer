@@ -500,18 +500,19 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img )
    unsigned w = img->width();
    unsigned h = img->height();
 
+   float one_gamma = 1.0f / img->gamma();
+
    for ( unsigned y = 0; y < h; ++y )
    {
       for ( unsigned x = 0; x < w; ++x )
       {
 	 ImagePixel p = hires->pixel( x, y );
 
-	 float gamma = 1.0f/img->gamma();
-	 if ( gamma != 1.0f )
+	 if ( one_gamma != 1.0f )
 	 {
-	    p.r = powf( p.r, gamma );
-	    p.g = powf( p.g, gamma );
-	    p.b = powf( p.b, gamma );
+	    p.r = powf( p.r, one_gamma );
+	    p.g = powf( p.g, one_gamma );
+	    p.b = powf( p.b, one_gamma );
 
 	    if (p.r < 0.0f) p.r = 0.0f;
 	    if (p.g < 0.0f) p.g = 0.0f;
