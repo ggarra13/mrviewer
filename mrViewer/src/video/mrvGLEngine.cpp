@@ -1054,7 +1054,8 @@ void GLEngine::draw_images( ImageList& images )
 
 	  quad->lut( img );
 
-          if ( img->is_stereo() && img->stereo_type() != CMedia::kNoStereo )
+          if ( img->is_stereo() && (img->stereo_type() & 
+                                    CMedia::kStereoSideBySide) )
           {
              (*(q+1))->lut( img );
           }
@@ -1062,7 +1063,8 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( i+1 == e ) wipe_area();
 
-      if ( img->is_stereo() && img->stereo_type() != CMedia::kNoStereo && 
+      if ( img->is_stereo() && (img->stereo_type() & 
+                                CMedia::kStereoSideBySide) && 
            img->left() && img->right() )
       {
          image_type_ptr pic;

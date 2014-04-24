@@ -4247,7 +4247,8 @@ void Flu_File_Chooser::cd( const char *path )
 			 tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
 			 tmp == N_(".qt")   || tmp == N_(".wav")  ||
 			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
-			 tmp == N_(".wav")  || tmp == N_(".icm") )
+			 tmp == N_(".wav")  || tmp == N_(".icm")  || 
+                         tmp == N_(".vp9") )
 		       is_sequence = false;
 		 }
 		 else
@@ -4311,11 +4312,10 @@ void Flu_File_Chooser::cd( const char *path )
         mrv::Sequences seqs;
 
 	{
-           mrv::Sequences::const_iterator i = tmpseqs.begin();
-           mrv::Sequences::const_iterator e = tmpseqs.end();
+           mrv::Sequences::iterator i = tmpseqs.begin();
+           mrv::Sequences::iterator e = tmpseqs.end();
            for ( ; i != e; ++i )
 	    {
-
 	      const char* s = (*i).number.c_str();
 	      int z = 0;
 	      for ( ; *s == '0'; ++s )
