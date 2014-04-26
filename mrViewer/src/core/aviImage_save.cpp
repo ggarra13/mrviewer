@@ -124,6 +124,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
        case AVMEDIA_TYPE_VIDEO:
 
           c->bit_rate = img->width() * img->height() * 3;
+          // c->rc_min_rate = c->bit_rate;
+          // c->rc_max_rate = c->bit_rate;
           /* Resolution must be a multiple of two. */
           c->width    = ( img->width() + 1 ) / 2 * 2;
           c->height   = ( img->height() + 1 ) / 2 * 2;
@@ -190,10 +192,6 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 {
     AVCodecContext* c = st->codec;
 
-   av_log_set_level(av_log_get_level()+10);
-
-    DBG( __LINE__ );
-
     /* allocate and init a re-usable frame */
     audio_frame = av_frame_alloc();
     if (!audio_frame) {
@@ -202,13 +200,11 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
 
 
-    DBG( __LINE__ );
    /* open it */
     if (avcodec_open2(c, codec, NULL) < 0) {
        LOG_ERROR( _("Could not open audio codec" ) );
        return false;
     }
-    DBG( __LINE__ );
     
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
@@ -261,7 +257,6 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
         assert( src_nb_samples > 0 );
 
-    DBG( __LINE__ );
         int ret = av_samples_alloc_array_and_samples(&dst_samples_data, 
                                                      &dst_samples_linesize,
                                                      c->channels,
@@ -272,10 +267,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
            LOG_ERROR( _("Could not allocate destination samples") );
            return false;
         }
-    
-    assert( dst_samples_data[0] != NULL );
-    assert( dst_samples_linesize != 0 );
-    DBG( __LINE__ );
+
         /* initialize the resampling context */
         if ((swr_init(swr_ctx)) < 0) {
            LOG_ERROR( _("Failed to initialize the resampling context") );
@@ -285,19 +277,14 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
     else
     {
-    DBG( __LINE__ );
        dst_samples_data = src_samples_data;
        max_dst_nb_samples = src_nb_samples;
-    DBG( __LINE__ );
     }
 
     assert( max_dst_nb_samples > 0 );
-    DBG( __LINE__ );
     dst_samples_size = av_samples_get_buffer_size(NULL, c->channels, 
 						  max_dst_nb_samples,
                                                   c->sample_fmt, 0);
-    DBG( __LINE__ );
-                                                  // c->sample_fmt, 0);
     assert( dst_samples_size > 0 );
     assert( max_dst_nb_samples > 0 );
 
@@ -707,6 +694,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
 
    fmt = oc->oformat;
    fmt->video_codec = AV_CODEC_ID_MPEG4;
+   // fmt->video_codec = AV_CODEC_ID_FFV1;
 
    assert( fmt != NULL );
 

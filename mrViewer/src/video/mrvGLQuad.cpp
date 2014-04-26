@@ -461,38 +461,49 @@ namespace mrv {
 	    th = powh;
 	  }
 
-	if ( i % 3 != 0 )
-	  {
-	    switch( pic->format() )
-	      {
+	if ( i % 3 != 0 && i != 4 )
+        {
+           switch( pic->format() )
+           {
 	      case image_type::kITU_601_YCbCr420:
 	      case image_type::kITU_601_YCbCr420A:
 	      case image_type::kITU_709_YCbCr420:
 	      case image_type::kITU_709_YCbCr420A:
 	      case image_type::kYByRy420:
 	      case image_type::kYByRy420A:
-		tw = (tw+1) / 2;
-		th = (th+1) / 2;
-		ow = (dw+1) / 2;
-		oh = (dh+1) / 2;
-		break;
+                 tw = (tw+1) / 2;
+                 th = (th+1) / 2;
+                 ow = (dw+1) / 2;
+                 oh = (dh+1) / 2;
+                 break;
+	      case image_type::kITU_601_YCbCr422A:
 	      case image_type::kITU_601_YCbCr422:
+	      case image_type::kITU_709_YCbCr422A:
 	      case image_type::kITU_709_YCbCr422:
 	      case image_type::kYByRy422:
 	      case image_type::kYByRy422A:
-		tw = (tw+1) / 2;
-		ow = (dw+1) / 2;
-		break;
+                 tw = (tw+1) / 2;
+                 ow = (dw+1) / 2;
+                 break;
+              case image_type::kRGB:
+              case image_type::kRGBA:
+              case image_type::kBGR:
+              case image_type::kBGRA:
+              case image_type::kITU_601_YCbCr444:
+              case image_type::kITU_601_YCbCr444A:
+              case image_type::kITU_709_YCbCr444:
+              case image_type::kITU_709_YCbCr444A:
+                 break;
 	      default:
-		LOG_ERROR("Wrong pixel format for yuv");
-		break;
-	      }
-	  }
-	  
+                 LOG_ERROR("Wrong pixel format " << pic->format() 
+                           << " for yuv");
+                 break;
+           }
+        }
 
 
 	if ( _width      != dw || 
-	     _height     != dh || 
+	     _height     != dh ||
 	     _pixel_type != pixel_type || 
 	     _channels   != channels ||
 	     _glformat       != GL_LUMINANCE ||
@@ -725,6 +736,7 @@ namespace mrv {
     unsigned dh = pic->height();
     if ( dw <= 0 || dh <= 0 ) return;
 
+    _width = _height = 0;
     _uvMax.u = _uvMax.v = 1.0f;
 
 
