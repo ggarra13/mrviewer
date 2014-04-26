@@ -4,12 +4,16 @@ v2.5.9.0 - Added multipart EXR support for multiple parts (new pass system)
 	   Note that there is no support for deep compositing yet.
 	 - Bug fixed pixel aspect ratio in EXR images.
 	 - Bug fixed normalize in EXR images.
+	 - Bug fixed saving of PNGs (among others) with gamma different 
+	   than 1.  Previously that would create a file with banding.
+	 - Display Window of EXRs is not yet supported.  All images loaded
+	   are centered upon display.
 
 v2.5.8.2 - Drag and Drop now supports dragging directories to load all that
 	   is found inside them.
 	 - Drag and Drop now supports dragging single files like mp3s.
 	 - Drag and Drop now supports files with spaces and brackets (Linux).
-	 - Color Info window now displays the gamma/gain'ed image values
+	 - Color Info window now displays the gamma/gain'ed image value
 	   instead of just the original values.
 	 - MultiView images (Stereo) now supports a side-by-side and
 	   crossed eye views.
