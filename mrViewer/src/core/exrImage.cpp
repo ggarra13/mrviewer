@@ -143,11 +143,12 @@ bool exrImage::channels_order(
 			      )
 {
    const Box2i& dataWindow = h.dataWindow();
+   const Box2i& displayWindow = h.displayWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx = dataWindow.min.x;
-   int dy = dataWindow.min.y;
+   int dx = dataWindow.min.x; // - displayWindow.min.x;
+   int dy = dataWindow.min.y; // - displayWindow.min.y;
 
    int order[4];
    order[0] = order[1] = order[2] = order[3] = -1;
@@ -324,11 +325,12 @@ bool exrImage::channels_order_multi(
 				    )
 {
    const Box2i& dataWindow = h.dataWindow();
+   const Box2i& displayWindow = h.displayWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx = dataWindow.min.x;
-   int dy = dataWindow.min.y;
+   int dx = dataWindow.min.x - displayWindow.min.x;
+   int dy = dataWindow.min.y - displayWindow.min.y;
 
    int order[4];
    order[0] = order[1] = order[2] = order[3] = -1;
@@ -666,11 +668,12 @@ bool exrImage::find_layers( const Imf::Header& h )
 {
 
    const Box2i& dataWindow = h.dataWindow();
+   const Box2i& displayWindow = h.displayWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   // int dx = dataWindow.min.x;
-   // int dy = dataWindow.min.y;
+   int dx = dataWindow.min.x - displayWindow.min.x;
+   int dy = dataWindow.min.y - displayWindow.min.y;
 
    // int dpw = displayWindow.max.x - displayWindow.min.x + 1;
    // if ( dpw > dw ) dw = dpw;
@@ -1395,6 +1398,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          InputPart in( inmaster, _curpart );
          Header header = in.header();
 
+         Box2i& displayWindow = header.displayWindow();
+         Box2i& dataWindow = header.dataWindow();
+
          FrameBuffer fb;
          bool ok = find_channels( header, fb, frame );
          if (!ok) {
@@ -1417,21 +1423,36 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
             _pixel_ratio = header.pixelAspectRatio();
             _lineOrder   = header.lineOrder();
-            // const Box2i& displayWindow = header.displayWindow();
-            const Box2i& dataWindow = header.dataWindow();
+            displayWindow = header.displayWindow();
+            dataWindow = header.dataWindow();
 
             ins.setFrameBuffer(fb);
             ins.readPixels( dataWindow.min.y, dataWindow.max.y );
+
          }
          else
          {
             _pixel_ratio = header.pixelAspectRatio();
             _lineOrder   = header.lineOrder();
-            // const Box2i& displayWindow = header.displayWindow();
-            const Box2i& dataWindow = header.dataWindow();
+            Box2i& displayWindow = header.displayWindow();
+            Box2i& dataWindow = header.dataWindow();
 
             in.setFrameBuffer(fb);
             in.readPixels( dataWindow.min.y, dataWindow.max.y );
+
+         }
+
+         unsigned dw = width();
+         unsigned dh = height();
+         if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
+              dataWindow.max.x != dw || dataWindow.max.y != dh )
+            data_window( dataWindow.min.x, dataWindow.min.y,
+                         dataWindow.max.x, dataWindow.max.y );
+
+         if ( displayWindow != dataWindow )
+         {
+            display_window( displayWindow.min.x, displayWindow.min.y,
+                            displayWindow.max.x, displayWindow.max.y );
          }
 
          // Quick exit if stereo is off
@@ -1452,7 +1473,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       InputPart in (inmaster, _curpart);
       Header header = in.header();
       Box2i& dataWindow = header.dataWindow();
-      Box2i& displayWindow = header.dataWindow();
+      Box2i& displayWindow = header.displayWindow();
 
       FrameBuffer fb;
       bool ok = find_channels( header, fb, frame );
@@ -1467,7 +1488,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          Header header = in.header();
          // const Box2i& displayWindow = header.displayWindow();
          dataWindow = header.dataWindow();
-         displayWindow = header.dataWindow();
+         displayWindow = header.displayWindow();
 
          FrameBuffer fb;
          bool ok = find_channels( header, fb, frame );
