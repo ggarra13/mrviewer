@@ -69,6 +69,15 @@ namespace mrv {
   */
   bool wandImage::test(const char* file)
   {
+     std::string f = file;
+     int pos = f.rfind( N_(".") );
+     if ( pos != std::string::npos )
+     {
+        std::string ext = f.substr( pos+1, f.size() );
+        if ( ext == "PDF" || ext == "pdf" )
+           return false;
+     }
+
     MagickBooleanType status;
     MagickWand* wand = NewMagickWand();
     status = MagickPingImage( wand, file );

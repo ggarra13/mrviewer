@@ -166,13 +166,12 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {open
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {454 374 405 350} resizable
+        xywh {457 397 405 350} resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
 o->child_of( main->uiMain );} visible
@@ -186,7 +185,7 @@ o->scrollbar.color( o->buttoncolor() );
 o->hscrollbar.color( o->buttoncolor() );}
           class {mrv::ImageBrowser}
         } {}
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {0 0 405 32} box UP_BOX
         } {
           {fltk::Choice} {} {
@@ -195,7 +194,7 @@ o->hscrollbar.color( o->buttoncolor() );}
             xywh {5 5 120 20} align 36 box THIN_DOWN_BOX
             extra_code {uiBrowser->reel_choice(o);}
           } {}
-          {fltk::Group} uiReelOps {open
+          {fltk::Group} uiReelOps {
             xywh {130 3 81 26}
           } {
             {fltk::Button} {} {
@@ -222,7 +221,7 @@ v->new_reel(name);}
               extra_code {o->image( reel_delete_24 );}
             }
           }
-          {fltk::Group} uiImageOps {open
+          {fltk::Group} uiImageOps {
             xywh {216 3 105 26}
           } {
             {fltk::Button} {} {
@@ -254,7 +253,7 @@ v->new_reel(name);}
               extra_code {o->image(file_delete_24);}
             }
           }
-          {fltk::Group} uiViewerOps {open
+          {fltk::Group} uiViewerOps {
             xywh {324 3 79 26}
           } {
             {fltk::Button} {} {
@@ -274,7 +273,7 @@ v->new_reel(name);}
             {fltk::Button} uiEDLButton {
               label EDL
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->toggle_edl();} selected
+              callback {v->toggle_edl();}
               tooltip {Toggle Reel in Timeline}
               xywh {52 0 26 26} box UP_BOX labelfont 1 labelsize 11
             }
@@ -2323,7 +2322,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2352,7 +2352,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI();} {}
@@ -2629,8 +2629,9 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::Group} uiViewGroup {
+          {fltk::PackedGroup} uiViewGroup {open selected
             xywh {0 25 640 430} resizable
+            class {fltk::Group}
           } {
             {fltk::Group} uiView {
               xywh {0 0 640 430}
