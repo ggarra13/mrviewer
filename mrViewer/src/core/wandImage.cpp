@@ -15,6 +15,11 @@ using namespace std;
 #define __STDC_FORMAT_MACROS
 #define __STDC_LIMIT_MACROS
 #include <inttypes.h>
+#include <math.h>
+#ifdef _WIN32
+# include <float.h>
+# define isfinite(x) _finite(x)
+#endif
 
 #include <algorithm>
 #include <wand/MagickWand.h>
@@ -526,9 +531,12 @@ namespace mrv {
 	      {
 		CMedia::Pixel p = frame->pixel( x, y );
 
-                p.r = powf( p.r, one_gamma );
-                p.g = powf( p.g, one_gamma );
-                p.b = powf( p.b, one_gamma );
+                if ( p.r > 0.0f && isfinite(p.r) )
+                    p.r = powf( p.r, one_gamma );
+                if ( p.g > 0.0f && isfinite(p.g) )
+                    p.g = powf( p.g, one_gamma );
+                if ( p.b > 0.0f && isfinite(p.b) )
+                    p.b = powf( p.b, one_gamma );
 		MagickImportImagePixels(wand, x, y, 1, 1, channels, 
 					FloatPixel, &p );
 	      }
