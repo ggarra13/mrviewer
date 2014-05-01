@@ -5,9 +5,13 @@
 #include <inttypes.h>
 
 #include <cstdio>
+#include <cmath>
+
+using namespace std;
 
 #ifdef _WIN32
 #define snprintf _snprintf
+#define isfinite(x) _finite(x)
 #endif
 
 extern "C" {
@@ -495,19 +499,19 @@ static void fill_yuv_image(AVFrame *pict, const CMedia* img )
       {
 	 ImagePixel p = hires->pixel( x, y );
 
-	 if ( one_gamma != 1.0f )
-	 {
-	    p.r = powf( p.r, one_gamma );
-	    p.g = powf( p.g, one_gamma );
-	    p.b = powf( p.b, one_gamma );
+         if ( p.r > 0.0f && isfinite(p.r) )
+             p.r = powf( p.r, one_gamma );
+         if ( p.g > 0.0f && isfinite(p.g) )
+             p.g = powf( p.g, one_gamma );
+         if ( p.b > 0.0f && isfinite(p.b) )
+             p.b = powf( p.b, one_gamma );
 
-	    if (p.r < 0.0f) p.r = 0.0f;
-	    if (p.g < 0.0f) p.g = 0.0f;
-	    if (p.b < 0.0f) p.b = 0.0f;
-	    if (p.r > 1.0f) p.r = 1.0f;
-	    if (p.g > 1.0f) p.g = 1.0f;
-	    if (p.b > 1.0f) p.b = 1.0f;
-	 }
+         if      (p.r < 0.0f) p.r = 0.0f;
+         else if (p.r > 1.0f) p.r = 1.0f;
+         if      (p.g < 0.0f) p.g = 0.0f;
+         else if (p.g > 1.0f) p.g = 1.0f;
+         if      (p.b < 0.0f) p.b = 0.0f;
+         else if (p.b > 1.0f) p.b = 1.0f;
 
 	 ImagePixel yuv = color::rgb::to_ITU601( p );
 
