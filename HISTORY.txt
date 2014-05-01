@@ -1,3 +1,8 @@
+v2.5.9.1 - Switching images no longer auto refits them in view when autorefit
+	   is on.  It keeps zoom level and offset so as to compare two images 
+	   at closeup. Only when window is resized autofit takes over.
+	 - ffmpeg has a new -gamma flag for EXRs to support creating movies
+	   at other gamma values (2.2).
 v2.5.9.0 - Added multipart EXR support for multiple parts (new pass system) 
 	   and stereo (anaglyph, horizontal and crosseyed).  
 	   Support is given for deepscanline and scanline images.
