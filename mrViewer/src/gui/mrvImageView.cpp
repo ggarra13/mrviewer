@@ -31,7 +31,8 @@
 
 #ifdef _WIN32
 #include <winsock2.h>
-#include <windows.h>
+#include <windows.h>)
+#define isfinite(x) _finite(x)
 #endif
 
 #include <GL/gl.h>
@@ -855,6 +856,7 @@ void ImageView::fit_image()
 {
   const mrv::media fg = foreground();
   if ( !fg ) return;
+
 
   const CMedia* img = fg->image();
   if ( img->width() <= 0 ) return;
@@ -1958,9 +1960,14 @@ std::string float_printf( float x )
 {
   if ( isnan(x) )
     {
-      static std::string empty( "        " );
+      static std::string empty( "   NAN  " );
       return empty;
     }
+  else if ( !isfinite(x) )
+  {
+      static std::string inf( "  INF.  " );
+      return inf;
+  }
   else
     {
       char buf[ 64 ];
@@ -3059,8 +3066,8 @@ int ImageView::handle(int event)
       if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
 	   fltk::event_key_state( fltk::RightShiftKey ) )
 	{
-	  float dx = (fltk::event_x() - lastX) / 10.0f;
-	  if ( std::abs(dx) > 1.0 )
+	  float dx = (fltk::event_x() - lastX) / 5.0f;
+	  if ( std::abs(dx) >= 1.0f )
 	    { 
 	      scrub( dx );
 	      lastX = fltk::event_x();
@@ -3726,8 +3733,10 @@ void ImageView::foreground( mrv::media fg )
 
 	 refresh_fstop();
 	 
-	 if ( img->width() > 160 && !fltk_main()->border() )  fit_image();
-      
+	 if ( img->width() > 160 && !fltk_main()->border() ) {
+            fit_image();
+         }
+
 	 img->image_damage( img->image_damage() | CMedia::kDamageContents );
 
 
