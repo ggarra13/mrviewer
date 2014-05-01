@@ -42,7 +42,7 @@ ffmpeg -i image.%04d.exr video.mp4
 To encode with high quality and with gamma 2.2, and framerate 24, it involves setting other options, like:
 <br>
 <div class="console">
-ffmpeg -i images.%04d.exr -vf lutrgb=r=gammaval\(0.45454545\):g=gammaval\(0.45454545\):b=gammaval\(0.45454545\) -q:v 0 -r 24 video.mp4
+ffmpeg -gamma 2.2 -i images.%04d.exr -q:v 0 -r 24 video.mp4
 </div>
 
 

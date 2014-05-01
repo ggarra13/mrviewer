@@ -10,11 +10,14 @@
 #include <string>
 #include <sstream>
 #include <limits>
-#include <cmath>  // for isnan
+#include <cmath>  // for std::isnan, std::isfinite
+
+using namespace std;
 
 #if defined(WIN32) || defined(WIN64)
-# include "float.h"  // for isnan
+# include <float.h>  // for isnan
 # define isnan(x) _isnan(x)
+# define isfinite(x) _finite(x)
 #endif
 
 #include <fltk/events.h>
@@ -239,12 +242,12 @@ void ColorInfo::update( const CMedia* src,
                   rp = pic->pixel( x, y );
                }
 
-	      if ( isnan(rp.r) || isnan(rp.g) || isnan(rp.b) ||
-		   isnan(rp.a) ) continue;
-
-              rp.r = pow(rp.r * gain, one_gamma);
-              rp.g = pow(rp.g * gain, one_gamma);
-              rp.b = pow(rp.b * gain, one_gamma);
+              if ( rp.r > 0.0f && isfinite(rp.r) )
+                  rp.r = powf(rp.r * gain, one_gamma);
+              if ( rp.g > 0.0f && isfinite(rp.g) )
+                  rp.g = powf(rp.g * gain, one_gamma);
+              if ( rp.b > 0.0f && isfinite(rp.b) )
+                  rp.b = powf(rp.b * gain, one_gamma);
 
 	      if ( rp.r < pmin.r ) pmin.r = rp.r;
 	      if ( rp.g < pmin.g ) pmin.g = rp.g;

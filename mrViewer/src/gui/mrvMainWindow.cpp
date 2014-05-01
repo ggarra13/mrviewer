@@ -17,6 +17,7 @@
 
 #include <fltk/Cursor.h>
 #include <fltk/events.h>
+#include <fltk/layout.h>
 #include <fltk/run.h>
 
 
@@ -124,8 +125,11 @@ void MainWindow::layout()
 {
    fltk::Window::layout();
 
-   if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-      uiMain->uiView->fit_image();
+   if ( layout_damage() & fltk::LAYOUT_W || layout_damage() & fltk::LAYOUT_H )
+   {
+      if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+         uiMain->uiView->fit_image();
+   }
 }
 
 } // namespace mrv
