@@ -342,7 +342,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	 old = fg;
 	 if ( open_movie )
 	 {
-	    aviImage::close_movie();
+            aviImage::close_movie(img);
 	    open_movie = false;
 	 }
 	 if ( movie )
@@ -404,7 +404,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    if ( open_movie )
    {
       LOG_INFO( "Close movie file" );
-      aviImage::close_movie();
+      aviImage::close_movie(img);
       open_movie = false;
    }
 
