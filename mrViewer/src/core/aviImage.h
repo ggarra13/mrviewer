@@ -89,7 +89,7 @@ namespace mrv {
 
        static bool open_movie( const char* filename, const CMedia* img );
        static bool save_movie_frame( const CMedia* img );
-       static bool close_movie();
+       static bool close_movie( const CMedia* img );
 
        bool save_frame( const mrv::image_type_ptr pic );
 
