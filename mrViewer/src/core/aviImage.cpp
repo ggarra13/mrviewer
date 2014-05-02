@@ -450,22 +450,22 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   bool got_video = !has_video();
   bool got_subtitle = !has_subtitle();
 
-  if ( !got_video )
-    {
-      got_video = in_video_store( frame );
-    }
+  // if ( !got_video )
+  //   {
+  //     got_video = in_video_store( frame );
+  //   }
 
-  if ( !got_audio )
-    {
-      got_audio = in_audio_store( frame );
-    }
+  // if ( !got_audio )
+  //   {
+  //     got_audio = in_audio_store( frame );
+  //   }
 
-  if ( !got_subtitle )
-    {
-      got_subtitle = in_subtitle_store( frame );
-    }
+  // if ( !got_subtitle )
+  //   {
+  //     got_subtitle = in_subtitle_store( frame );
+  //   }
 
-
+    
   boost::int64_t vpts = 0, apts = 0, spts = 0;
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
@@ -1929,20 +1929,20 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
 
-  if ( !got_audio )
-  {
-     got_audio = in_audio_store( frame );
-  }
+  // if ( !got_audio )
+  // {
+  //    got_audio = in_audio_store( frame );
+  // }
 
-  if ( !got_video )
-  {
-     got_video = in_video_store( frame );
-  }
+  // if ( !got_video )
+  // {
+  //    got_video = in_video_store( frame );
+  // }
 
-  if ( !got_subtitle )
-  {
-     got_subtitle = in_subtitle_store( frame );
-  }
+  // if ( !got_subtitle )
+  // {
+  //    got_subtitle = in_subtitle_store( frame );
+  // }
 
   if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
     {

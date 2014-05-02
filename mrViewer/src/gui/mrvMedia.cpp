@@ -145,9 +145,12 @@ namespace mrv {
 	      CMedia::Pixel fp = pic->pixel( x, y );
 	      if ( gamma != 1.0 )
 	      {
-		 fp.r = Imath::Math<float>::pow( fp.r, gamma );
-		 fp.g = Imath::Math<float>::pow( fp.g, gamma );
-		 fp.b = Imath::Math<float>::pow( fp.b, gamma );
+                  if ( fp.r > 0.f )
+                      fp.r = Imath::Math<float>::pow( fp.r, gamma );
+                  if ( fp.g > 0.f )
+                      fp.g = Imath::Math<float>::pow( fp.g, gamma );
+                  if ( fp.b > 0.f )
+                      fp.b = Imath::Math<float>::pow( fp.b, gamma );
 	      }
 
 	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
