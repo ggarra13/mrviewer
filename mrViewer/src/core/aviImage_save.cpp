@@ -119,8 +119,12 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->sample_rate = img->audio_frequency();
           c->channels    = img->audio_channels();
           if ( c->channels == 2 ) c->channel_layout = AV_CH_LAYOUT_STEREO;
+          c->time_base.den = 1000 * (double) img->fps();
+          c->time_base.num = 1000;
+          /*
           c->time_base.num = 1;
           c->time_base.den = c->sample_rate;
+          */
           if (( codec_id == AV_CODEC_ID_MP3 ) || (codec_id == AV_CODEC_ID_AC3))
              c->block_align = 0;
           break;
@@ -297,7 +301,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
 
 static bool write_audio_frame(AVFormatContext *oc, AVStream *st, 
-			      const CMedia* img)
+			      const CMedia* img, int flush)
 {
    AVPacket pkt = {0};
    int got_packet, ret, dst_nb_samples;
@@ -309,19 +313,18 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    AVCodecContext* c = st->codec;
  
 
-   const audio_type_ptr& audio = img->get_audio_frame();
+   const audio_type_ptr audio = img->get_audio_frame();
    if ( src_nb_samples == 0 ) {
       return false;
    }
 
    if (swr_ctx) {
       /* compute destination number of samples */
-      /*
-      dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
-                                      c->sample_rate, c->sample_rate, AV_ROUND_UP);
-      */
+       
+       dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
+                                       c->sample_rate, c->sample_rate, AV_ROUND_UP);
 
-      dst_nb_samples = src_nb_samples;
+      // dst_nb_samples = src_nb_samples;
 
       if (dst_nb_samples > max_dst_nb_samples) {
          av_free(dst_samples_data[0]);
@@ -387,7 +390,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       return false;
    }
 
-   ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
+   ret = avcodec_encode_audio2(c, &pkt, flush ? NULL : audio_frame,
+                               &got_packet);
    if (ret < 0)
    {
       LOG_ERROR( _("Could not encode audio frame: ") << 
@@ -640,7 +644,7 @@ audio_type_ptr CMedia::get_audio_frame() const
     if ( i == end ) {
        IMG_ERROR( _("Could not get audio frame ") << _frame );
        src_nb_samples = 0;
-       return *i;
+       return *(_audio.begin());
     }
 
     src_nb_samples = (*i)->size();
@@ -698,6 +702,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img )
 
    fmt = oc->oformat;
    fmt->video_codec = AV_CODEC_ID_MPEG4;
+   // fmt->audio_codec = AV_CODEC_ID_AC3;
+   fmt->audio_codec = AV_CODEC_ID_MP3;
    // fmt->video_codec = AV_CODEC_ID_FFV1;
 
    assert( fmt != NULL );
@@ -792,7 +798,7 @@ bool aviImage::save_movie_frame( const CMedia* img )
     {
 
        while( audio_time <= video_time) {
-          if ( ! write_audio_frame(oc, audio_st, img) )
+           if ( ! write_audio_frame(oc, audio_st, img, 0) )
              break;
           audio_time = audio_st->pts.val * av_q2d(audio_st->time_base);
        }
@@ -803,8 +809,10 @@ bool aviImage::save_movie_frame( const CMedia* img )
 }
 
 
-bool aviImage::close_movie()
+bool aviImage::close_movie( const CMedia* img )
 {
+
+    // write_audio_frame(oc, audio_st, img, 1);
 
    /* Write the trailer, if any. The trailer must be written before you
     * close the CodecContexts open when you wrote the header; otherwise

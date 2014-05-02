@@ -2124,9 +2124,12 @@ void ImageView::mouseMove(int x, int y)
   // To represent pixel properly, we need to do gain/gamma/lut 
   //
   float one_gamma = 1.0f / _gamma;
-  rgba.r = pow(rgba.r * _gain, one_gamma);
-  rgba.g = pow(rgba.g * _gain, one_gamma);
-  rgba.b = pow(rgba.b * _gain, one_gamma);
+  if ( rgba.r > 0.f )
+      rgba.r = powf(rgba.r * _gain, one_gamma);
+  if ( rgba.g > 0.f )
+      rgba.g = powf(rgba.g * _gain, one_gamma);
+  if ( rgba.b > 0.f )
+      rgba.b = powf(rgba.b * _gain, one_gamma);
 
   switch( uiMain->uiAColorType->value() )
     {
