@@ -110,7 +110,8 @@ namespace {
     //
     // RgbaGainGamma
     //
-    x = Imath::Math<float>::pow(x, *((float*)&g+1));
+    if ( x > 0.f )
+        x = Imath::Math<float>::pow(x, *((float*)&g+1));
 
     //
     // Scale and clamp
@@ -136,10 +137,14 @@ namespace {
     //
     // not sure what to do on windows/linux yet
 
-    f[0] = Imath::Math<float>::pow(f[0], *((float*)&g+1));
-    f[1] = Imath::Math<float>::pow(f[1], *((float*)&g+1));
-    f[2] = Imath::Math<float>::pow(f[2], *((float*)&g+1));
-    f[3] = Imath::Math<float>::pow(f[3], *((float*)&g+1));
+    if ( f[0] > 0.f )
+        f[0] = Imath::Math<float>::pow(f[0], *((float*)&g+1));
+    if ( f[1] > 0.f )
+        f[1] = Imath::Math<float>::pow(f[1], *((float*)&g+1));
+    if ( f[2] > 0.f )
+        f[2] = Imath::Math<float>::pow(f[2], *((float*)&g+1));
+    if ( f[3] > 0.f )
+        f[3] = Imath::Math<float>::pow(f[3], *((float*)&g+1));
 
     // Clamp
     x = select_lt( x, oo, oo, x );
