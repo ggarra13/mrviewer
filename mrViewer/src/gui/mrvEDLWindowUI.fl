@@ -31,21 +31,20 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {
-        label {EDL Window} open selected
-        xywh {243 471 1015 230} hotspot visible
+        label {EDL Window} open
+        xywh {246 494 1015 230} resizable hotspot visible
       } {
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1015 230}
         } {
-          {fltk::Group} {} {
+          {fltk::Group} {} {open
             xywh {105 5 25 25}
           } {
             {fltk::Button} {} {
               user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
               callback {const char* name = fltk::input("Reel Name", "reel" );
 if ( name == NULL ) return;
-v->new_reel(name);
-v->set_edl();}
+v->new_reel(name);}
               tooltip {Create a new reel or EDL track}
               xywh {0 0 25 25} vertical
               extra_code {o->image( reel_new_24 );}
@@ -169,7 +168,7 @@ b->remove_reel();}
 else
 {
   o->value(-1);
-}}
+}} selected
               xywh {10 125 75 25} align 5
               extra_code {o->value( -1 );}
             } {}
