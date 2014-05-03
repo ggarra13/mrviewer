@@ -357,7 +357,10 @@ namespace mrv {
   mrv::Reel ImageBrowser::reel( unsigned idx )
   {
     assert( idx < _reels.size() );
-    if ( _reel == idx ) return _reels[ idx ];
+    if ( _reel == idx ) {
+        change_reel();
+        return _reels[ idx ];
+    }
 
     if ( _reel >= 0 )
     {
@@ -365,7 +368,8 @@ namespace mrv {
     }
 
     _reel = idx;
-    change_reel();    return _reels[ idx ];
+    change_reel();
+    return _reels[ idx ];
   }
 
 mrv::Reel ImageBrowser::reel_at( unsigned idx )
@@ -608,7 +612,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( !m ) return;
 
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return;
+    if ( !reel ) return;
 
     reel->images.insert( reel->images.begin() + idx, m );
 
@@ -1257,7 +1261,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   void ImageBrowser::remove( int idx )
   {
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return;
+    if ( !reel ) return;
   
     view()->stop();
 
@@ -1297,7 +1301,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   void ImageBrowser::remove( mrv::media m )
   {
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return;
+    if ( !reel ) return;
 
     mrv::MediaList::iterator i = std::find( reel->images.begin(),
 					    reel->images.end(), m );
@@ -1345,7 +1349,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   mrv::media ImageBrowser::replace( const char* file, const char* root )
   {
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return mrv::media();
+    if ( !reel ) return mrv::media();
 
     int idx = value(); 
     if ( idx < 0 ) return mrv::media();
@@ -1396,43 +1400,45 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
    */
   void ImageBrowser::change_reel()
   {
-     DBG( "Change reel" );
-    clear();
+      DBG( "Change reel" );
+      clear();
 
-    mrv::Reel reel = current_reel();
-    if ( !reel ) {
-       DBG( "Invalid reel" );
-       change_image( -1 );
-       return;
-    }
-
-    relayout();
-
-    if ( reel->images.empty() )
-      {
-         DBG( "NO images in reel" );
-	change_image( -1 );
+      mrv::Reel reel = current_reel();
+      if ( !reel ) {
+          DBG( "Invalid reel" );
+          change_image( -1 );
+          return;
       }
-    else
-      {
- 
-         DBG( "Add images in browser" );
 
-	 mrv::MediaList::iterator i = reel->images.begin();
-         MediaList::iterator j;
-	 mrv::MediaList::iterator e = reel->images.end();
-	 for ( ; i != e; ++i )
-	 {
-	    Element* nw = new_item( *i );
-	    
-	    fltk::Browser::add( nw );
+      _reel_choice->value( _reel );
+
+      relayout();
+
+      if ( reel->images.empty() )
+      {
+          DBG( "NO images in reel" );
+          change_image( -1 );
+      }
+      else
+      {
+
+          DBG( "Add images in browser" );
+
+          mrv::MediaList::iterator i = reel->images.begin();
+          MediaList::iterator j;
+          mrv::MediaList::iterator e = reel->images.end();
+          for ( ; i != e; ++i )
+          {
+              Element* nw = new_item( *i );
+
+              fltk::Browser::add( nw );
 	 }
 
          DBG( "Make images contiguous in timeline" );
          adjust_timeline();
 
-	change_image(0);
-	seek( view()->frame() );
+         change_image(0);
+         seek( view()->frame() );
       }
 
     if ( reel->edl )
@@ -1471,7 +1477,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     else
     {
 	mrv::Reel reel = current_reel();
-	if ( reel == NULL ) return;
+	if ( !reel ) return;
 
 	assert( (unsigned)sel < reel->images.size() );
 
@@ -1559,7 +1565,7 @@ int ImageBrowser::value() const
   void ImageBrowser::last_image()
   { 
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return;
+    if ( !reel ) return;
 
     if ( reel->images.empty() ) return;
     value( (int) reel->images.size()-1 ); 
@@ -2109,7 +2115,7 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::next_image()
   {
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return;
+    if ( !reel ) return;
 
     DBG( "reel name " << reel->name );
 
@@ -2154,7 +2160,7 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::previous_image()
   {
     mrv::Reel reel = current_reel();
-    if ( reel == NULL ) return;
+    if ( !reel ) return;
 
     if ( view()->playback() != ImageView::kStopped )
        view()->stop();
@@ -2746,7 +2752,6 @@ void ImageBrowser::load( const stringArray& files,
    */
   void ImageBrowser::frame( const int64_t f )
   {
-     DBG( "Set frame to " << f );
      uiMain->uiFrame->value( f );
      uiMain->uiFrame->redraw();
 
@@ -2809,6 +2814,8 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::toggle_edl()
   {
      mrv::Reel reel = current_reel();
+     if (!reel) return;
+
      if ( reel->edl ) clear_edl();
      else set_edl();
   }
