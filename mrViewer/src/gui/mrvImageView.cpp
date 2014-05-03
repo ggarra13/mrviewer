@@ -1157,7 +1157,7 @@ void ImageView::timeout()
   {
      
      int64_t frame;
-     if ( !timeline->edl() && fg )
+     if ( !reel->edl && fg )
      {
 	CMedia* img = fg->image();
 
@@ -1188,7 +1188,7 @@ void ImageView::timeout()
      }
   }
 
-  if ( should_update( fg ) ) 
+  if ( should_update( fg ) )
     {
       update_color_info( fg );
 

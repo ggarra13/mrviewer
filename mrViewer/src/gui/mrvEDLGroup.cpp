@@ -137,6 +137,12 @@ audio_track_ptr& EDLGroup::audio_track( int i )
 // Remove a media track at index i
 void EDLGroup::remove_media_track( int i )
 {
+   if ( children() == 1 )
+   {
+       mrv::media_track* track = (mrv::media_track*) child(i);
+       mrv::Reel reel = browser()->reel_at( track->reel() );
+       reel->edl = false;
+   }
    remove( i );
 }
 
@@ -184,7 +190,7 @@ int EDLGroup::handle( int event )
 	       if ( _dragX < 8 ) _dragX = 8;
 	       if ( _dragY < 33 ) _dragY = 33;
 
-	       int idx = _dragY / kTrackHeight;
+	       int idx = int( _dragY / kTrackHeight );
 	       if ( idx < 0 || idx >= children() ) {
 		  return 0;
 	       }
@@ -201,7 +207,6 @@ int EDLGroup::handle( int event )
 	       mrv::media_track* track = (mrv::media_track*) child(idx);
 	       mrv::media m = track->media_at( p );
 
-
 	       if ( m )
 	       {
    		  _drag = ImageBrowser::new_item( m );
@@ -210,9 +215,6 @@ int EDLGroup::handle( int event )
                      return 0;
                   }
 
-                  view()->stop();
-                  
-                  DBG( "Set reel to " << track->reel() );
                   browser()->reel( track->reel() );
                   browser()->change_image( j );
                   browser()->redraw();
@@ -347,8 +349,8 @@ int EDLGroup::handle( int event )
 	    _dragX = fltk::event_x();
 	    _dragY = fltk::event_y();
 
-	    int idx = _dragY / kTrackHeight;
-	    if ( idx >= children() ) {
+	    int idx = int( _dragY / kTrackHeight );
+	    if ( idx < 0 || idx >= children() ) {
 	       delete _drag;
 	       _drag = NULL;
 	       redraw();
@@ -367,6 +369,7 @@ int EDLGroup::handle( int event )
             }
 
 	    mrv::Timeline* t = timeline();
+            if (!t) return 0;
 	    
 	    int ww = t->w();
 	    double len = (t->maximum() - t->minimum() + 1);
@@ -374,6 +377,7 @@ int EDLGroup::handle( int event )
 	    p = t->minimum() + p * len + 0.5f;
 
 
+            mrv::Reel r = browser()->current_reel();
 	    mrv::media m = _drag->element();
 	    if ( t1 == t2 )
 	    {
@@ -389,16 +393,23 @@ int EDLGroup::handle( int event )
 		  t1->remove( m );
 		  t1->refresh();
 	       }
+
+               browser()->reel( r->name.c_str() );
+               browser()->redraw();
 	    }
 	    else
 	    {
 	       t2->insert( p, m );
 	       t1->remove( m );
 	       t2->refresh();
+
+               browser()->reel( r->name.c_str() );
+               browser()->redraw();
 	    }
 
 	    delete _drag;
 	    _drag = NULL;
+            _dragChild = -1;
 	    redraw();
 	    return 1;
 	 }
