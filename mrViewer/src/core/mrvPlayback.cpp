@@ -159,8 +159,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  }
 	       }
 
-	       assert( next != NULL );
-
 	       if ( next != img && next != NULL) 
 	       {
 		  CMedia::Mutex& m2 = next->video_mutex();
@@ -231,8 +229,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		     next = img;
 		  }
 	       }
-
-	       assert( next != NULL );
 
 	       if ( next != img && next != NULL )
 	       {
@@ -590,9 +586,9 @@ void video_thread( PlaybackData* data )
       CMedia::DecodeStatus status;
 
       DBG( img->name() << "  PRE    FRAME " << frame  );
-      {
-	 status = img->decode_video( frame );
-      }
+
+      status = img->decode_video( frame );
+
       DBG( img->name() << "  STATUS FRAME " << frame  );
 
       if ( frame > img->last_frame() )

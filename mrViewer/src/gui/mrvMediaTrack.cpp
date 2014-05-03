@@ -291,7 +291,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 	    CMedia* img = m->image();
 	    img->first_frame( img->first_frame() + diff );
 	    int64_t f = img->first_frame();
-	    if ( ! main()->uiTimeline->edl() )
+	    if ( ! reel->edl )
 	    {
 	       main()->uiStartFrame->value( f );
 	    }
@@ -375,7 +375,7 @@ bool media_track::select_media( const boost::int64_t pos )
 	 browser()->reel( _reel_idx );
 	 browser()->change_image( i );
 	 browser()->redraw();
-	 if ( main()->uiTimeline->edl() )
+	 if ( reel->edl )
 	 {
 	    main()->uiTimeline->value( fg->position() );
 	 }
@@ -410,7 +410,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	      pos <= m->image()->end_frame() )
 	 {
 	    CMedia* img = m->image();
-	    if ( ! main()->uiTimeline->edl() )
+	    if ( reel->edl )
 	    {
 	       main()->uiEndFrame->value( pos );
 	    }
@@ -628,8 +628,6 @@ void media_track::draw()
 {
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return;
-
-   DBG( "draw track for reel " << _reel_idx );
 
    size_t e = reel->images.size();
 
