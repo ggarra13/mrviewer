@@ -343,6 +343,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                                        dst_nb_samples,
                                                        c->sample_fmt, 
                                                        0);
+
+         std::cerr << "dst_samples_size=" << dst_samples_size
+                   << " channels=" << c->channels
+                   << " bps=" << av_get_bytes_per_sample( c->sample_fmt )
+                   << " div=" << dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) 
+                   << " dst_nb_samples=" << dst_nb_samples
+                   << std::endl;
+
          assert( dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) == dst_nb_samples );
       }
 
@@ -644,7 +652,7 @@ audio_type_ptr CMedia::get_audio_frame() const
     if ( i == end ) {
        IMG_ERROR( _("Could not get audio frame ") << _frame );
        src_nb_samples = 0;
-       return *(_audio.begin());
+       return audio_type_ptr( new audio_type( _frame, 0, 0, NULL, 0) );
     }
 
     src_nb_samples = (*i)->size();

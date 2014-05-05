@@ -662,7 +662,7 @@ namespace mrv {
   GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
 			     const CMedia* img )
   {
-    std::string path;
+      std::string path = img->name();
     GLLut3d::Transforms transforms;
 
     unsigned int algorithm = uiPrefs->RT_algorithm->value();
@@ -761,10 +761,10 @@ namespace mrv {
     {
       LutsMap::const_iterator i = _luts.find( path );
       if ( i != _luts.end() )
-	{
-	  // this lut was already created, return it.
-	  return i->second.get();
-	}
+        {
+          // this lut was already created, return it.
+          return i->second.get();
+        }
     }
 
 
