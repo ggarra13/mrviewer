@@ -76,7 +76,7 @@ namespace mrv {
     typedef std::vector< std::string  >      TransformNames;
 
     typedef boost::shared_ptr< GLLut3d >         GLLut3d_ptr;
-    typedef std::map< std::string, GLLut3d_ptr > LutsMap;
+    typedef std::multimap< std::string, GLLut3d_ptr > LutsMap;
 
   public:
     GLLut3d( const unsigned N );

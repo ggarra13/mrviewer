@@ -350,7 +350,7 @@ int EDLGroup::handle( int event )
 	    _dragY = fltk::event_y();
 
 	    int idx = int( _dragY / kTrackHeight );
-	    if ( idx < 0 || idx >= children() ) {
+	    if ( idx < 0 || idx >= 2 ) {
 	       delete _drag;
 	       _drag = NULL;
 	       redraw();
@@ -532,6 +532,7 @@ void EDLGroup::draw()
 
    fltk::setcolor( fltk::GRAY20 );
    fltk::fillrect( x(), y(), w(), h() );
+
 
    fltk::Group::draw();
 
