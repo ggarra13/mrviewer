@@ -3,6 +3,13 @@ v2.5.9.1 - Switching images no longer auto refits them in view when autorefit
 	   at closeup. Only when window is resized autofit takes over.
 	 - ffmpeg has a new -gamma flag for EXRs to support creating movies
 	   at other gamma values (2.2).
+	 - Bug fixed EDL when more than 2 reels were created and drag happened
+	   to an invisible track.
+	 - Bug fixed EDL when one image was loaded and switched tracks would no
+	   longer play it back.
+	 - Bug fixed CTL creation when path is the same but images (primaries)
+	   are not.
+
 v2.5.9.0 - Added multipart EXR support for multiple parts (new pass system) 
 	   and stereo (anaglyph, horizontal and crosseyed).  
 	   Support is given for deepscanline and scanline images.
@@ -51,9 +58,11 @@ v2.5.8.0 - Bug fixed Reel/EDL window when two reels were loaded and clips could
 	 - Added proper detection of Real Media Format.
 	 - Made EDL button a toggle button to better reflect each reel's
 	   edl status.
+
 v2.5.7.4 - Bug fixed ghosting of lines and text in grease marker's previous
 	   or next frames.
 	 - Updated all platforms to use OpenEXR 2.1.0.
+
 v2.5.7.3 - Bug fixed two crashes in EDL window and most of its functionality.
 	 - Bug fixed a hang up in EDL window when not in EDL mode.
 	 - Internally changed PixelType to just Pixel to simplify api.
@@ -61,10 +70,13 @@ v2.5.7.3 - Bug fixed two crashes in EDL window and most of its functionality.
 	 - Bug fixed disappearing picture when opening menu in window with
 	   DVD sub.
 	 - Bug fixed movies not starting at first frame.
+
 v2.5.7.2 - Removed Xlib DSOs from linux distribution to make them run in other
 	   machines.
+
 v2.5.7.1 - Added memset() to exr images as changing layers could leave traces
 	   of wrong data.
+
 v2.5.7.0 - Added Text support to OpenGL grease pencil drawing.
 	 - Fixed communications protocol which could lead to missing commands.
 	 - Made EXR reader a tad faster by reading attributes only once.
@@ -72,35 +84,54 @@ v2.5.7.0 - Added Text support to OpenGL grease pencil drawing.
 	 - Fixed recognition of some formats like mp3.
 	 - Fixed a crash on remote connections when no image was loaded.
 	 - Fixed a bug that was not using the full paths to the file.
+
 v2.5.6.4 - Bug fixed OpenGL snapshot of stills.  Now it is What You See Is 
 	   What You Get.
 	   Made RGBA values represent what is seen (applying gamma and gain).
+
 v2.5.6.3 - Bug fixed drag and drop to support movie files with numbers in them.
+
 v2.5.6.2 - Fixed RGBA movie playback where colors would be reversed.
 	 - Fixed audio hanging up on EDL playback.
 	 - Fixed favorites folder on Windows which had gotten broken.
 	 - Made arrows in popup menus appear behind the text and in dark gray.
+
 v2.5.6.1 - Fixed audio playback of some movies where it could stutter.
+
 v2.5.6   - Fixed reverse playback (albeit still not perfect).
+
 v2.5.5   - Fixed crash in EDL step image on last image.
 	 - Fixed timeline syncing in playback of non-edl movies.
 	 - Fixed reels to not have edl as a default. 
+
 v2.5.4   - Fixed audio sync issues during playback of big movies.
+
 v2.5.3   - Fixed EDL playback for EDL timelines.
+
 v2.5.2   - Fixed EDL Edit Window's removal of images.
+
 v2.5.1   - Added EDL Edit window.
 	 - Added reading of images in maya format ( name.ext.number )
 	 - Fixed playback of EDL when edits are made.
 	 - Fixed removal of images in reel list.
 	 - Added Auto Fit Image to Preferences and MainWindow.
 	 - Bug fixed remote communications a lot.
+
 v2.4.1   - Added Blend Modes (Traditional and Premult) for compositing.
+
 v2.3.10  - Fixed playback of Essa.wmv due to use of dts in loop.
+
 v2.3.9   - Fixed reverse playback and looping last frame.
+
 v2.3.8   - Fixed seek of image sequences.
+
 v2.3.7   - Fixed audio loading for image sequences and avi files.
        	 - Fixed movie saving with audio.
+
 v2.3.6   - Made window never expand beyond desktop boundaries, leaving title bar always in view.
+
 v2.3.5   - Added audio float and multichannel playback on windows.
+
 v2.3.4   - Made reverse playback a tad more memory efficient.
+
 v2.3.3   - Fixed reverse playback.
