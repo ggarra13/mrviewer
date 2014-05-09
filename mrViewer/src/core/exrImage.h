@@ -96,7 +96,8 @@ namespace mrv {
 			   boost::int64_t frame );
        void read_header_attr( const Imf::Header& h, boost::int64_t frame );
 
-    image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
+      static image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
+      static Imf::PixelType pixel_type_to_exr( image_type::PixelType pixel_type );
 
      protected:
 

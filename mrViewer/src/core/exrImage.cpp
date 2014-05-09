@@ -86,6 +86,22 @@ namespace mrv {
       }
   }
 
+  Imf::PixelType 
+  exrImage::pixel_type_to_exr( image_type::PixelType pixel_type )
+  {
+    switch( pixel_type )
+    {
+        case image_type::kInt:
+            return Imf::UINT;
+        case image_type::kHalf:
+            return Imf::HALF;
+	case image_type::kFloat:
+            return Imf::FLOAT;
+        default:
+            LOG_ERROR("Unknown Imf::PixelType");
+            return Imf::FLOAT;
+    }
+  }
 
   exrImage::exrImage() :
   CMedia(),
@@ -1344,10 +1360,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          }
 
 
-
-         s = channels.begin();
-
-         for ( ; s != e; ++s )
+         for ( s = channels.begin(); s != e; ++s )
          {
             std::string layerName = buf;
             layerName += ".";
@@ -1686,14 +1699,17 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
     size_t xs = sizeof(CMedia::Pixel);
     size_t ys = sizeof(CMedia::Pixel) * dw;
 
-    hdr.channels().insert( N_("R"), Channel( Imf::FLOAT, 1, 1 ) );
-    hdr.channels().insert( N_("G"), Channel( Imf::FLOAT, 1, 1 ) );
-    hdr.channels().insert( N_("B"), Channel( Imf::FLOAT, 1, 1 ) );
+    image_type::PixelType t = orig->hires()->pixel_type();
+    Imf::PixelType pt = exrImage::pixel_type_to_exr( t );
+
+    hdr.channels().insert( N_("R"), Channel( pt, 1, 1 ) );
+    hdr.channels().insert( N_("G"), Channel( pt, 1, 1 ) );
+    hdr.channels().insert( N_("B"), Channel( pt, 1, 1 ) );
 
     bool has_alpha = orig->has_alpha();
     if ( has_alpha ) 
       {
-	hdr.channels().insert( N_("A"), Channel( Imf::FLOAT, 1, 1 ) );
+	hdr.channels().insert( N_("A"), Channel( pt, 1, 1 ) );
       }
 
     if ( orig->look_mod_transform() )
@@ -1735,13 +1751,13 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
     }
 
     FrameBuffer fb; 
-    fb.insert( N_("R"), Slice( Imf::FLOAT, (char*) &base->r, xs, ys ) );
-    fb.insert( N_("G"), Slice( Imf::FLOAT, (char*) &base->g, xs, ys ) );
-    fb.insert( N_("B"), Slice( Imf::FLOAT, (char*) &base->b, xs, ys ) );
+    fb.insert( N_("R"), Slice( pt, (char*) &base->r, xs, ys ) );
+    fb.insert( N_("G"), Slice( pt, (char*) &base->g, xs, ys ) );
+    fb.insert( N_("B"), Slice( pt, (char*) &base->b, xs, ys ) );
 
     if ( has_alpha )
       {
-    	fb.insert( N_("A"), Slice( Imf::FLOAT, (char*) &base->a, xs, ys ) );
+    	fb.insert( N_("A"), Slice( pt, (char*) &base->a, xs, ys ) );
       }
 
 
