@@ -52,6 +52,7 @@
 #include <ImfStringAttribute.h>
 #include <Iex.h>
 #include <CtlExc.h>
+#include <halfLimits.h>
 
 #include "core/ctlToLut.h"
 #include "core/mrvThread.h"
@@ -986,8 +987,8 @@ void GLEngine::draw_images( ImageList& images )
   float normMin = 0.0f, normMax = 1.0f;
   if ( _view->normalize() )
   {
-     minmax();
-     minmax( normMin, normMax );
+      minmax(); // calculate min-max
+      minmax( normMin, normMax ); // retrieve them
   }
 
 

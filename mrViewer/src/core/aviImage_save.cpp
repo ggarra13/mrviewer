@@ -321,10 +321,10 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    if (swr_ctx) {
       /* compute destination number of samples */
        
-       dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
-                                       c->sample_rate, c->sample_rate, AV_ROUND_UP);
+       // dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
+       //                                 c->sample_rate, c->sample_rate, AV_ROUND_UP);
 
-      // dst_nb_samples = src_nb_samples;
+      dst_nb_samples = src_nb_samples;
 
       if (dst_nb_samples > max_dst_nb_samples) {
          av_free(dst_samples_data[0]);
@@ -344,12 +344,12 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                                        c->sample_fmt, 
                                                        0);
 
-         std::cerr << "dst_samples_size=" << dst_samples_size
-                   << " channels=" << c->channels
-                   << " bps=" << av_get_bytes_per_sample( c->sample_fmt )
-                   << " div=" << dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) 
-                   << " dst_nb_samples=" << dst_nb_samples
-                   << std::endl;
+         // std::cerr << "dst_samples_size=" << dst_samples_size
+         //           << " channels=" << c->channels
+         //           << " bps=" << av_get_bytes_per_sample( c->sample_fmt )
+         //           << " div=" << dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) 
+         //           << " dst_nb_samples=" << dst_nb_samples
+         //           << std::endl;
 
          assert( dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) == dst_nb_samples );
       }

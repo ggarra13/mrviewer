@@ -2017,21 +2017,22 @@ bool CMedia::find_image( const boost::int64_t frame )
   boost::uint64_t idx = f - _frame_start;
   assert( idx <= (_frame_end - _frame_start) );
 
+
   if ( _sequence && _sequence[idx] )
     {
-       SCOPED_LOCK( _mutex );
-       _hires = _stereo[0] = _sequence[idx];
-       if ( _right && _right[idx])
-          _stereo[1] = _right[idx];
+        SCOPED_LOCK( _mutex );
+        _hires = _stereo[0] = _sequence[idx];
+        if ( _right && _right[idx])
+            _stereo[1] = _right[idx];
 
-       assert( _hires != NULL );
-       _frame = f;
+        assert( _hires != NULL );
+        _frame = f;
 
-       free(_filename);
-       _filename = NULL;
+        free(_filename);
+        _filename = NULL;
 
-      refresh();
-      return true;
+        refresh();
+        return true;
     }
 
   bool should_load = false;
@@ -2058,7 +2059,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( should_load )
   {
      _dts = f;
-     std::string file = sequence_filename(f);
+     //  std::string file = sequence_filename(f);
      if ( fs::exists(file) )
      {
 	SCOPED_LOCK( _audio_mutex );
@@ -2078,11 +2079,9 @@ bool CMedia::find_image( const boost::int64_t frame )
   }
 
   _frame = f;
-
-
+  
   refresh();
   return true;
-  // return frame( f );
 }
 
 
