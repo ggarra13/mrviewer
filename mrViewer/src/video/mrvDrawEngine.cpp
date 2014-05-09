@@ -29,9 +29,10 @@
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 
-#include "Iex.h"
-#include "ImathMath.h" // for Math:: functions
-#include "ImathFun.h"  // for clamp
+#include <Iex.h>
+#include <ImathMath.h> // for Math:: functions
+#include <ImathFun.h>  // for clamp
+#include <half.h>
 
 #ifdef WIN32
 #  include <wand/MagickWand.h>
@@ -414,19 +415,19 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	  {
 	    const CMedia::Pixel& p = frame->pixel( x, y );
 
-            if ( isfinite( p.r ) && p.r < 3.40282e+38 )
+            if ( half(p.r).isFinite() )
             {
-               if ( p.r < d->pMin ) d->pMin = p.r;
                if ( p.r > d->pMax ) d->pMax = p.r;
+               if ( p.r < d->pMin ) d->pMin = p.r;
             }
 
-            if ( isfinite( p.g ) && p.g < 3.40282e+38 )
+            if ( half(p.g).isFinite()  )
             {
                if ( p.g < d->pMin ) d->pMin = p.g;
                if ( p.g > d->pMax ) d->pMax = p.g;
             }
 
-            if ( isfinite( p.b ) && p.b < 3.40282e+38 )
+            if ( half(p.b).isFinite()  )
             {
                if ( p.b < d->pMin ) d->pMin = p.b;
                if ( p.b > d->pMax ) d->pMax = p.b;
@@ -435,7 +436,12 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
 	  }
       }
 
-    
+    if ( d->pMin == std::numeric_limits<float>::max() )
+        d->pMin = 0.0f;
+
+    if (d->pMax <= d->pMin)
+	d->pMax = d->pMin + 1;
+
   }
 
 
@@ -529,18 +535,18 @@ namespace mrv {
 		if ( rp.a < vMin[1] ) vMin[1] = rp.a;
 		if ( rp.a > vMax[1] ) vMax[1] = rp.a;
 
-		if ( !isnan(rp.r) )
+		if ( isfinite( rp.r ) && !isnan(rp.r) )
 		  {
 		    if ( rp.r < vMin[0] ) vMin[0] = rp.r;
 		    if ( rp.r > vMax[0] ) vMax[0] = rp.r;
 		  }
-		if ( !isnan(rp.g) )
+		if ( isfinite( rp.g ) && !isnan(rp.g) )
 		  {
 		    if ( rp.g < vMin[0] ) vMin[0] = rp.g;
 		    if ( rp.g > vMax[0] ) vMax[0] = rp.g;
 		  }
 
-		if ( !isnan(rp.b) )
+		if ( isfinite( rp.b ) && !isnan(rp.b) )
 		  {
 		    if ( rp.b < vMin[0] ) vMin[0] = rp.b;
 		    if ( rp.b > vMax[0] ) vMax[0] = rp.b;
@@ -707,77 +713,25 @@ namespace mrv {
   }
 
 
-    /// Find min/max values for an image, using multithreading if possible
+  /// Find min/max values for an image, using multithreading if possible
   void DrawEngine::minmax( float& pMin, float& pMax,
 			   const CMedia* img )
   {
     unsigned int xh = img->width();
     unsigned int yh = img->height();
 
+    MinMaxData data;
+    data.image  = img;
+    data.rect   = mrv::Recti( 0, 0, xh, yh );
 
-    if ( xh*yh < numPixelsPerThread )
-      {
-	MinMaxData data;
-	data.image  = img;
-	data.rect   = mrv::Recti( 0, 0, xh, yh );
+    minmax_cb( &data );
 
-	minmax_cb( &data );
-
-	pMin = data.pMin;
-	pMax = data.pMax;
-
-      }
-    else
-      {
-	unsigned int x, y;
-
-
-	unsigned int ny, nx;
-	for ( y = 0; y < yh; y = ny )
-	  {
-	    ny   = y + heightPerThread;
-	    int byh  = yh < ny? yh : ny;
-
-	    boost::thread* thread_id;
-	    for ( x = 0; x < xh; x = nx )
-	      {
-		nx  = x + widthPerThread;
-		int bxh = xh < nx? xh : nx;
-
-		MinMaxData* data = new MinMaxData;
-		data->image = img;
-		data->rect  = mrv::Recti( x, y, bxh-x, byh-y );
-
-		thread_id = new boost::thread( boost::bind( minmax_cb,
-							    data ) );
-
-		buckets.insert( std::make_pair( thread_id, data ) );
-	      }
-	  }
-
-
-	BucketList::iterator i = buckets.begin();
-	BucketList::iterator e = buckets.end();
-
-	// Make sure all threads finish before proceeding
-	for ( ; i != e; ++i )
-	  {
-	    i->first->join();
-
-	    MinMaxData*     opaque = (MinMaxData*) i->second;
-	    const MinMaxData& data = *(opaque);
-	    if ( data.pMin < pMin ) pMin = data.pMin;
-	    if ( data.pMax > pMax ) pMax = data.pMax;
-
-	    delete opaque;
-	  }
-
-
-	buckets.clear();
-      }
+    pMin = data.pMin;
+    pMax = data.pMax;
 
   }
-    
+
+
   void DrawEngine::minmax() {
     _normMin = std::numeric_limits< float >::max();
     _normMax = std::numeric_limits< float >::min();
