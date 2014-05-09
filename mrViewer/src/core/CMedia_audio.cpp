@@ -202,7 +202,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 {
    if ( _acontext == NULL ) return true;
 
-  boost::int64_t offset = boost::int64_t( (frame * AV_TIME_BASE ) / fps() );
+   boost::int64_t offset = boost::int64_t( ((frame-1) * AV_TIME_BASE ) / fps() );
 
   int flags = 0;
   flags &= ~AVSEEK_FLAG_BYTE;
@@ -1259,8 +1259,8 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   // Seek to the correct position if necessary
   if ( frame != _expected )
     {
-      seek_to_position( frame );
-      return;
+      bool ok = seek_to_position( frame );
+      if (ok) return;
     }
 
   bool got_audio = !has_audio();
@@ -1777,7 +1777,7 @@ void CMedia::do_seek()
   {
      clear_packets();
     
-     seek_to_position( _seek_frame );
+     fetch_audio( _seek_frame );
      
   }
 

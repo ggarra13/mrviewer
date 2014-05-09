@@ -640,6 +640,38 @@ void ImageView::delete_timeout()
   remove_timeout();
 }
 
+void idle_cb( void* d )
+{
+    mrv::ImageView* v = (mrv::ImageView*) d;
+
+    mrv::ImageBrowser* b = v->browser();
+    if ( !b ) return;
+
+    mrv::Reel r = b->current_reel();
+    if ( !r ) return;
+
+    unsigned e = r->images.size();
+
+    for (unsigned i = 0 ; i < e; ++i )
+    {
+        mrv::media& fg = r->images[i];
+        if (!fg || fg == v->foreground() ) continue;
+
+        CMedia* img = fg->image();
+
+        if ( img->has_picture() && !img->has_video() )
+        {
+            int64_t frame = img->frame();
+            if ( i == e-1 && frame == img->last_frame() )
+            {
+                fltk::remove_idle( idle_cb, v );
+                return;
+            }
+
+            img->find_image( frame+1 );
+        }
+    }
+}
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   fltk::GlWindow( X, Y, W, H, l ),
@@ -684,6 +716,8 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   int stereo = fltk::STEREO;
   if ( !can_do( fltk::STEREO ) ) stereo = 0;
 
+  // fltk::add_idle( idle_cb, this );
+
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
 	fltk::STENCIL_BUFFER | stereo );
 }
@@ -707,28 +741,28 @@ ImageView::~ImageView()
    ParserList::iterator e = _clients.end();
    for ( ; i != e; ++i )
    {
-      (*i)->connected = false;
+       (*i)->connected = false;
    }
 
    _clients.clear();
 
-  // make sure to stop any playback
+   // make sure to stop any playback
    stop_playback();
 
-  delete_timeout();
-  delete _engine; _engine = NULL;
+   delete_timeout();
+   delete _engine; _engine = NULL;
 }
 
 fltk::Window* ImageView::fltk_main()
 { 
    assert( uiMain->uiMain );
-  return uiMain->uiMain; 
+   return uiMain->uiMain; 
 }
 
 const fltk::Window* ImageView::fltk_main() const
 { 
    assert( uiMain->uiMain );
-  return uiMain->uiMain; 
+   return uiMain->uiMain; 
 }
 
 
@@ -736,14 +770,14 @@ ImageBrowser*
 ImageView::browser() {
    assert( uiMain->uiReelWindow );
    assert( uiMain->uiReelWindow->uiBrowser );
-  return uiMain->uiReelWindow->uiBrowser;
+   return uiMain->uiReelWindow->uiBrowser;
 }
 
 
 Timeline* 
 ImageView::timeline() { 
    assert( uiMain->uiTimeline );
-  return uiMain->uiTimeline;
+   return uiMain->uiTimeline;
 }
 
 
@@ -4147,7 +4181,7 @@ void ImageView::step_frame( int64_t n )
 	}
     }
 
-  
+
   seek( f );
 }
 
@@ -4163,21 +4197,17 @@ void ImageView::first_frame()
   if (!img) return;
 
   int64_t f = img->first_frame();
-  DBG( "FIRST FRAME " << f );
 
   if ( timeline()->edl() )
     {
        f = fg->position();
-       DBG( "FG POSITION " << f );
 
        if ( int64_t( uiMain->uiFrame->value() ) == f )
        {
-	  DBG( "BROWSER PREVIOUS IMAGE " );
 	  browser()->previous_image();
 	  return;
        }
-       
-       DBG( "FRAME VALUE " << f );
+
        uiMain->uiFrame->value( f );
     }
 
@@ -4326,7 +4356,7 @@ void ImageView::play_forwards()
 }
 
 /** 
- * Play image sequence backwards.
+ * Play image sequence forwards or backwards.
  * 
  */
 void ImageView::play( const CMedia::Playback dir ) 
@@ -4428,7 +4458,7 @@ void ImageView::stop()
 
   send( "stop" );
   seek( int64_t(timeline()->value()) );
- 
+
   redraw();
 
   thumbnails();
