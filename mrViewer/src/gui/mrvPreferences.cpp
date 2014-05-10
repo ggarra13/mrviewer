@@ -651,7 +651,8 @@ namespace mrv {
     fltk::Preferences loading( base, "loading" );
     loading.get( "auto_reload", tmp, 1 );
     uiPrefs->uiPrefsAutoReload->value( (bool) tmp );
-
+    loading.get( "drag_load_seq", tmp, 1 );
+    uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
 
     fltk::Preferences video( base, "video" );
     video.get( "blend_mode", tmp, 0 );
@@ -1026,6 +1027,7 @@ namespace mrv {
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "auto_reload", (int) uiPrefs->uiPrefsAutoReload->value() );
+    loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
 
     fltk::Preferences video( base, "video" );
     video.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );

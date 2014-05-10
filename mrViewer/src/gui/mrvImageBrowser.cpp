@@ -2354,7 +2354,6 @@ void ImageBrowser::load( const stringArray& files,
 #if defined(_WIN32) || defined(_WIN64)
     mrv::split_string( files, filenames, "\n" ); 
 #else
-
     mrv::split_string( files, filenames, "\r\n" ); 
 #endif
 
@@ -2383,7 +2382,10 @@ void ImageBrowser::load( const stringArray& files,
           std::string root, frame, view, ext;
           mrv::split_sequence( root, frame, view, ext, file );
 
-          if ( root != "" && frame != "" && root != oldroot && ext != oldext )
+          bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
+
+          if ( load_seq && 
+               root != "" && frame != "" && root != oldroot && ext != oldext )
           {
              oldroot = root;
              oldext = ext;
