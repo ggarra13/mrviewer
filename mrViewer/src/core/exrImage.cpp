@@ -98,7 +98,7 @@ namespace mrv {
 	case image_type::kFloat:
             return Imf::FLOAT;
         default:
-            LOG_ERROR("Unknown Imf::PixelType");
+            LOG_ERROR("Unknown image_type::PixelType");
             return Imf::FLOAT;
     }
   }
@@ -1696,20 +1696,18 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
     hdr.compression() = comp;
 
-    size_t xs = sizeof(CMedia::Pixel);
-    size_t ys = sizeof(CMedia::Pixel) * dw;
 
     image_type::PixelType t = orig->hires()->pixel_type();
     Imf::PixelType pt = exrImage::pixel_type_to_exr( t );
 
-    hdr.channels().insert( N_("R"), Channel( pt, 1, 1 ) );
-    hdr.channels().insert( N_("G"), Channel( pt, 1, 1 ) );
-    hdr.channels().insert( N_("B"), Channel( pt, 1, 1 ) );
+    hdr.channels().insert( N_("R"), Channel( FLOAT, 1, 1 ) );
+    hdr.channels().insert( N_("G"), Channel( FLOAT, 1, 1 ) );
+    hdr.channels().insert( N_("B"), Channel( FLOAT, 1, 1 ) );
 
     bool has_alpha = orig->has_alpha();
     if ( has_alpha ) 
       {
-	hdr.channels().insert( N_("A"), Channel( pt, 1, 1 ) );
+	hdr.channels().insert( N_("A"), Channel( FLOAT, 1, 1 ) );
       }
 
     if ( orig->look_mod_transform() )
@@ -1734,7 +1732,11 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
     if (!pic) return false;
 
     CMedia::Pixel* base = new CMedia::Pixel[dw*dh];
-    if ( pic->pixel_type() == mrv::image_type::kFloat )
+
+    size_t xs = sizeof(CMedia::Pixel);
+    size_t ys = xs * dw;
+
+    if ( pt == Imf::FLOAT )
     {
        memcpy( base, pic->data().get(), 
 	       sizeof(float) * pic->channels() * dw * dh );
@@ -1750,14 +1752,15 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
        }
     }
 
-    FrameBuffer fb; 
-    fb.insert( N_("R"), Slice( pt, (char*) &base->r, xs, ys ) );
-    fb.insert( N_("G"), Slice( pt, (char*) &base->g, xs, ys ) );
-    fb.insert( N_("B"), Slice( pt, (char*) &base->b, xs, ys ) );
+
+    FrameBuffer fb;
+    fb.insert( N_("R"), Slice( FLOAT, (char*) &base->r, xs, ys ) );
+    fb.insert( N_("G"), Slice( FLOAT, (char*) &base->g, xs, ys ) );
+    fb.insert( N_("B"), Slice( FLOAT, (char*) &base->b, xs, ys ) );
 
     if ( has_alpha )
       {
-    	fb.insert( N_("A"), Slice( pt, (char*) &base->a, xs, ys ) );
+    	fb.insert( N_("A"), Slice( FLOAT, (char*) &base->a, xs, ys ) );
       }
 
 
