@@ -171,10 +171,10 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {457 397 405 350} resizable
+        xywh {460 411 405 350} hide resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
         {fltk::Browser} uiBrowser {
           xywh {0 32 405 318} box UP_BOX
@@ -568,12 +568,13 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {486 286 640 475} hide resizable
+        xywh {489 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -581,7 +582,7 @@ o->label( o->child( o->value() )->label() );}
         } {
           {fltk::Group} {} {
             label {User Interface} open
-            xywh {8 24 412 382} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {8 24 412 382} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label {Window Behavior} open
@@ -624,7 +625,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label {UI Elements} open
+              label {UI Elements}
               xywh {23 154 355 96} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
@@ -674,7 +675,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label Timeline open
+              label Timeline
               xywh {25 272 350 70} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsTimelineDisplay {
@@ -1163,7 +1164,7 @@ The "No Baking" setting performs the color correction on the image directly inst
             }
           }
           {fltk::Group} {} {
-            label {CTL Paths} open
+            label {CTL Paths}
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
@@ -1176,7 +1177,7 @@ The "No Baking" setting performs the color correction on the image directly inst
             } {}
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)} open
+            label {Default Output Device Transform (ODT)}
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1539,8 +1540,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Loading open
+            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {25 25 333 132} box ROUNDED_BOX
@@ -1549,6 +1550,11 @@ uiICC_float_profile->do_callback();}
                 label {Auto Reload}
                 tooltip {When turned on, files are automatically reloaded if changed on disk.}
                 xywh {25 22 25 25} value 1
+              }
+              {fltk::CheckButton} uiPrefsLoadSequence {
+                label {Load Sequence on Drag&Drop} selected
+                tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
+                xywh {25 67 25 25} value 1
               }
             }
           }
@@ -1650,7 +1656,7 @@ for ( ; i != e; ++i )
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 195 434}
         } {
           {fltk::Browser} {} {
@@ -1710,7 +1716,7 @@ for ( ; i != e; ++i )
               }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {212 441 402 34}
         } {
           {fltk::Button} {} {
@@ -2322,8 +2328,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2629,7 +2634,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::PackedGroup} uiViewGroup {open selected
+          {fltk::PackedGroup} uiViewGroup {open
             xywh {0 25 640 430} resizable
             class {fltk::Group}
           } {

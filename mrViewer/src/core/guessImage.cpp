@@ -60,7 +60,7 @@ namespace mrv {
       { iffImage::test,   NULL,            iffImage::get },
       { mapImage::test,   NULL,            mapImage::get },
       { hdrImage::test,   NULL,            hdrImage::get },
-      { aviImage::test,   NULL,  aviImage::get },
+      { aviImage::test,   NULL,            aviImage::get },
       { NULL,             wandImage::test, wandImage::get },
       { ddsImage::test,   NULL,            ddsImage::get },
       { shmapImage::test, NULL,            shmapImage::get },
@@ -104,23 +104,17 @@ namespace mrv {
     int64_t lastFrame = end;
     int64_t frame = start;
 
-    bool is_seq = false;
     std::string tmp;
-
-
     const char* root = file;
-    if ( mrv::fileroot( tmp, std::string(file) ) )
+    bool is_seq = false;
+    if ( start != std::numeric_limits<boost::int64_t>::max() ||
+         end   != std::numeric_limits<boost::int64_t>::min() )
     {
-       is_seq = true; 
-       root = tmp.c_str();
-       if ( frame == std::numeric_limits<boost::int64_t>::min() )
-       {
-	  bool ok = mrv::get_sequence_limits( frame, lastFrame, tmp );
-	  if ( !ok )
-	  {
-	     mrvALERT("Sequence '" << root << "' has no frame limits" );
-	  }
-       }
+        if ( mrv::fileroot( tmp, std::string(file) ) )
+        {
+            is_seq = true;
+            root = tmp.c_str();
+        }
     }
 
     char name[1024];
