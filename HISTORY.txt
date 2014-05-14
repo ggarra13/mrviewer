@@ -1,6 +1,9 @@
 v2.5.9.1 - Switching images no longer auto refits them in view when autorefit
 	   is on.  It keeps zoom level and offset so as to compare two images 
-	   at closeup. Only when window is resized autofit takes over.
+	   at closeup. Only when window is resized or the image is loaded,
+	   autofit takes over.
+	 - Made Single Instance of viewer an alert when another instance is
+	   running.  The alert also tells user where to remove the lock file.
 	 - ffmpeg has a new -gamma flag for EXRs to support creating movies
 	   at other gamma values (2.2).
 	 - Bug fixed EDL when more than 2 reels were created and drag happened

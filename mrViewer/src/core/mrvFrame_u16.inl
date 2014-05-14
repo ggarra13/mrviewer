@@ -10,6 +10,8 @@
 
 namespace mrv {
 
+const float kConstant = 65535.0f;
+
   ImagePixel VideoFrame::pixel_u16( const unsigned int x,
 				    const unsigned int y ) const
   {
@@ -24,23 +26,23 @@ namespace mrv {
       case kLummaA:
 	{
 	  unsigned int len = _width * _height;
-	  p.a = d[len + offset] / 32767.0f;
+	  p.a = d[len + offset] / kConstant;
 	}
       case kLumma:
-	p.r = p.g = p.b = col[0] / 32767.0f; break;
+	p.r = p.g = p.b = col[0] / kConstant; break;
       case kBGRA:
-	p.a = col[3] / 32767.0f;
+	p.a = col[3] / kConstant;
       case kBGR:
-	p.r = col[2] / 32767.0f;
-	p.g = col[1] / 32767.0f;
-	p.b = col[0] / 32767.0f;
+	p.r = col[2] / kConstant;
+	p.g = col[1] / kConstant;
+	p.b = col[0] / kConstant;
 	break;
       case kRGBA:
-	p.a = col[3] / 32767.0f;
+	p.a = col[3] / kConstant;
       case kRGB:
-	p.r = col[0] / 32767.0f;
-	p.g = col[1] / 32767.0f;
-	p.b = col[2] / 32767.0f;
+	p.r = col[0] / kConstant;
+	p.g = col[1] / kConstant;
+	p.b = col[2] / kConstant;
 	break;
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
@@ -59,7 +61,7 @@ namespace mrv {
 	  unsigned int w2      = (_width  + 1) / 2;
 	  unsigned int h2      = (_height + 1) / 2;
 	  unsigned int Cblen   = w2 * h2;
-	  p.a = d[ Ylen + Cblen * 2 + offset] / 32767.0f;
+	  p.a = d[ Ylen + Cblen * 2 + offset] / kConstant;
 	}
       case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
@@ -96,7 +98,7 @@ namespace mrv {
       {
 	 p.r = float( (cb + 1) * yp );
 	 p.b = float( (cr + 1) * yp );
-	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * 32767.0f);
+	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * kConstant);
       }
     else if ( _format >= kITU_709_YCbCr420 )
       {
@@ -148,23 +150,23 @@ namespace mrv {
       case kLummaA:
 	{
 	  unsigned int len = _width * _height;
-	  d[len + offset] = boost::uint16_t( p.a * 32767.0f );
+	  d[len + offset] = boost::uint16_t( p.a * kConstant );
 	}
       case kLumma:
-	col[0] = boost::uint16_t(p.r * 32767.0f); break;
+	col[0] = boost::uint16_t(p.r * kConstant); break;
       case kBGRA:
-	col[3] = boost::uint16_t(p.a * 32767.0f);
+	col[3] = boost::uint16_t(p.a * kConstant);
       case kBGR:
-	col[2] = boost::uint16_t(p.r * 32767.0f);
-	col[1] = boost::uint16_t(p.g * 32767.0f);
-	col[0] = boost::uint16_t(p.b * 32767.0f);
+	col[2] = boost::uint16_t(p.r * kConstant);
+	col[1] = boost::uint16_t(p.g * kConstant);
+	col[0] = boost::uint16_t(p.b * kConstant);
 	break;
       case kRGBA:
-	col[3] = boost::uint16_t(p.a * 32767.0f);
+	col[3] = boost::uint16_t(p.a * kConstant);
       case kRGB:
-	col[0] = boost::uint16_t(p.r * 32767.0f);
-	col[1] = boost::uint16_t(p.g * 32767.0f);
-	col[2] = boost::uint16_t(p.b * 32767.0f);
+	col[0] = boost::uint16_t(p.r * kConstant);
+	col[1] = boost::uint16_t(p.g * kConstant);
+	col[2] = boost::uint16_t(p.b * kConstant);
 	break;
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
@@ -183,7 +185,7 @@ namespace mrv {
 	  unsigned int w2      = (_width  + 1) / 2;
 	  unsigned int h2      = (_height + 1) / 2;
 	  unsigned int Cblen2  = w2 * h2 * 2;
-	  d[ Ylen + Cblen2 + offset] = boost::uint16_t(p.a * 32767.0f);
+	  d[ Ylen + Cblen2 + offset] = boost::uint16_t(p.a * kConstant);
 	}
       case kITU_709_YCbCr420:
       case kITU_601_YCbCr420:
@@ -231,7 +233,7 @@ namespace mrv {
 	else if ( t.b > 1.0f ) t.b = 1.0f;
 
 	float Y = t.r * yw[0] + t.g * yw[1] + t.b * yw[2];
-        *yp = boost::uint16_t( Y * 32767.0f);
+        *yp = boost::uint16_t( Y * kConstant);
 	if ( *yp > 0.0f )
 	  {
 	    *cr = boost::uint16_t( 128 + 32767 * (( t.r - Y ) / Y) );

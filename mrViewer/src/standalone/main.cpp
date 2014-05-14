@@ -99,8 +99,7 @@ void load_new_files( void* s )
 
    load_files( files, ui );
 
-   std::string lockfile = mrv::homepath();
-   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+   std::string lockfile = mrv::lockfile();
    
    if(fs::exists(lockfile))
    {
@@ -151,8 +150,7 @@ int main( const int argc, char** argv )
   mrv::parse_command_line( argc, argv, ui, opts );
 
 
-  std::string lockfile = mrv::homepath();
-  lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
+  std::string lockfile = mrv::lockfile();
 
   bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
   if ( opts.port != 0 ) {
@@ -161,9 +159,12 @@ int main( const int argc, char** argv )
      if ( fs::exists( lockfile ) )
      {
 	if ( ! fs::remove( lockfile ) )
-	   LOG_ERROR("Could not remove lock file");
+	  LOG_ERROR("Could not remove lock file");
      }
   }
+
+  LOG_INFO( "lockfile " << lockfile );
+
 
   if ( fs::exists( lockfile ) && single_instance )
   {
@@ -188,7 +189,10 @@ int main( const int argc, char** argv )
 	base.flush();
      }
      
-     LOG_INFO( "Another instance of mrViewer open" );
+     mrvALERT( "Another instance of mrViewer open.\n"
+               "Remove " << lockfile << "\n"
+               "or modify Preferences->User Interface->Single Instance.");
+     fltk::check();
 
      exit(0);
   }
