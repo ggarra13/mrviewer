@@ -30,6 +30,9 @@ typedef std::vector< std::string > stringArray;
        stringArray audios;
        unsigned port;
        float fps;
+
+  Options() : edl(false), gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 )
+    {}
   };
 
 
