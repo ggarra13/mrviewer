@@ -91,6 +91,8 @@ namespace mrv {
   {
     switch( pixel_type )
     {
+        case image_type::kByte:
+        case image_type::kShort:
         case image_type::kInt:
             return Imf::UINT;
         case image_type::kHalf:
@@ -98,8 +100,8 @@ namespace mrv {
 	case image_type::kFloat:
             return Imf::FLOAT;
         default:
-            LOG_ERROR("Unknown image_type::PixelType");
-            return Imf::FLOAT;
+            LOG_ERROR("Unknown image_type::PixelType " << pixel_type);
+            return Imf::HALF;
     }
   }
 
