@@ -284,7 +284,7 @@ namespace mrv {
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
 
-    ui.get( "single_instance", tmp, 1 );
+    ui.get( "single_instance", tmp, 0 );
     uiPrefs->uiPrefsSingleInstance->value( (bool) tmp );
 
     ui.get( "pixel_toolbar", tmp, 1 );
