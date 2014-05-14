@@ -396,7 +396,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
       fltk::check();
 	
       if ( !w->visible() ) {
-	 break;
+          break;
       }
    }
 
