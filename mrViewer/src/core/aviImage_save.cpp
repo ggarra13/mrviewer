@@ -342,7 +342,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    const audio_type_ptr audio = img->get_audio_frame();
    if ( src_nb_samples == 0 ) {
-       LOG_ERROR( "**** Missing audio frame " << img->frame() );
        return false;
    }
 
