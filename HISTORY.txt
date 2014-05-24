@@ -1,3 +1,8 @@
+v2.6.0.0 - Added options to save H264 movie files in YUV420 or YUV444.
+	 - Added options to save audio in MP3 format, but there's still some
+	   "pops" in the output of most files.
+	 - Fixed searching to a point with audio not being found.  Now
+	   searching is more solid.
 v2.5.9.1 - Switching images no longer auto refits them in view when autorefit
 	   is on.  It keeps zoom level and offset so as to compare two images 
 	   at closeup. Only when window is resized or the image is loaded,
