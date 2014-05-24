@@ -258,7 +258,7 @@ namespace mrv {
 
     virtual ~CMedia();
 
-
+      
     /// Save the image under a new filename 
     bool save( const char* filename ) const;
 
@@ -719,7 +719,7 @@ namespace mrv {
 
     void debug_audio_packets(const boost::int64_t frame, 
 			     const char* routine = "",
-			     const bool detail = false);
+			     const bool detail = true);
     virtual void debug_video_packets(const boost::int64_t frame, 
 				     const char* routine = "",
 				     const bool detail = false);
@@ -740,6 +740,7 @@ namespace mrv {
     double audio_clock() const { return _audio_clock; }
     
     virtual AVStream* get_video_stream() const { return NULL; } ;
+    virtual AVStream* get_subtitle_stream() const { return NULL; } ;
 
     boost::int64_t video_pts() const { return _video_pts; }
     boost::int64_t audio_pts() const { return _audio_pts; }
@@ -749,6 +750,10 @@ namespace mrv {
        void wait_for_load_threads();
 
     void wait_for_threads();
+
+    void debug_audio_stores(const boost::int64_t frame,
+			    const char* routine = "",
+			    const bool detail = true);
 
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
@@ -765,6 +770,25 @@ namespace mrv {
 
   protected:
 
+    /** 
+     * Given a frame number, returns whether subtitle for that frame is already
+     * in packet queue.
+     * 
+     * @param frame  frame to check 
+     * 
+     * @return true or false
+     */
+    bool in_subtitle_packets( const boost::int64_t frame );
+
+    /** 
+     * Given a frame number, returns whether video for that frame is already
+     * in packet queue.
+     * 
+     * @param frame  frame to check 
+     * 
+     * @return true or false
+     */
+    bool in_video_packets( const boost::int64_t frame );
 
 
     /** 
@@ -787,7 +811,17 @@ namespace mrv {
      * 
      * @return true or false
      */
-    bool in_audio_store( const boost::int64_t frame );
+      bool in_audio_store( const boost::int64_t frame );
+
+    /** 
+     * Given a frame number, returns whether audio for that frame is already
+     * in packet queue.
+     * 
+     * @param frame  frame to check 
+     * 
+     * @return true or false
+     */
+    bool in_audio_packets( const boost::int64_t frame );
 
     /** 
      * Given an audio packet, decode it into internal buffer
@@ -819,9 +853,6 @@ namespace mrv {
 
     void debug_stream_keyframes( const AVStream* stream );
     void debug_stream_index( const AVStream* stream );
-    void debug_audio_stores(const boost::int64_t frame,
-			    const char* routine = "",
-			    const bool detail = false);
 
     CMedia();
 
@@ -920,6 +951,13 @@ namespace mrv {
 			 int* frame_size_ptr, AVPacket* avpkt);
 
   protected:
+
+       boost::int64_t queue_packets( const boost::int64_t frame,
+				     const bool is_seek,
+				     bool& got_video,
+				     bool& got_audio,
+				     bool& got_subtitle );
+
     static const char* stream_type( const AVCodecContext* );
 
     static std::string codec_tag2fourcc( unsigned int );
@@ -976,7 +1014,8 @@ namespace mrv {
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
-    boost::int64_t   _expected;    //!< expected next frame fetch
+    boost::int64_t   _expected;    //!< expected next dts fetch
+    boost::int64_t   _next;        //!< expected next frame fetch
 
     boost::int64_t   _frameStart;  //!< start frame for sequence or movie
     boost::int64_t   _frameEnd;    //!< end frame for sequence or movie

@@ -71,7 +71,7 @@ INCLUDE_DIRECTORIES(
   ./gui
   ./video
   ../../mrClasses/mrClasses
-  /usr/include/cairo
+#  /usr/include/cairo
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
   ${FLTK2_INCLUDE_DIR}
@@ -90,7 +90,7 @@ INCLUDE_DIRECTORIES(
 
 
 FLTK_WRAP_UI( mrViewer  
-#  gui/aviSave.fl
+  gui/aviSave.fl
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl  
