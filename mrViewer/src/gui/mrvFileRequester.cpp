@@ -24,6 +24,7 @@
 #include "mrvFileRequester.h"
 #include "mrvPreferences.h"
 #include "mrViewer.h"
+#include "aviSave.h"
 #include "core/aviImage.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
@@ -309,7 +310,6 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    progress->showtext(true);
    w->set_modal();
    w->end();
-   w->show();
    
    fltk::check();
    
@@ -368,15 +368,28 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	       }
 	    }
 
-	    if ( aviImage::open_movie( buf, img ) )
+            AviSaveUI* opts = new AviSaveUI;
+            if ( opts->video_bitrate == 0 &&
+                 opts->audio_bitrate == 0 )
+            {
+                delete opts;
+                delete w;
+                w = NULL;
+                break;
+            }
+
+	    if ( aviImage::open_movie( buf, img, opts ) )
 	    {
                LOG_INFO( "Open movie '" << buf << "'" );
 	       open_movie = true;
 	       ++movie_count;
 	    }
+
+            delete opts;
 	 }
       }
 
+      if ( w )  w->show();
 	
       {
 	   

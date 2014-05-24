@@ -20,6 +20,7 @@ extern "C" {
 
 namespace mrv {
 
+  class AviSaveUI;
   class ViewerUI;
 
   class aviImage : public CMedia 
@@ -87,7 +88,8 @@ namespace mrv {
       return _video_info.size(); 
     }
 
-       static bool open_movie( const char* filename, const CMedia* img );
+      static bool open_movie( const char* filename, const CMedia* img,
+                              const AviSaveUI* opts );
        static bool save_movie_frame( const CMedia* img );
        static bool close_movie( const CMedia* img );
 

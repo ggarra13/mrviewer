@@ -20,10 +20,10 @@ namespace mrv {
 				   int len )
   {
     CMedia* img = CMedia::guess_image( filename, header, len );
-    if ( !img ) return NULL;
+    if ( img == NULL ) return NULL;
 
-    // Fetch first framew
-    img->probe_size( 5000000 );
+    // Fetch first frame
+    img->probe_size( 500000 );
     img->fetch( img->first_frame() );
 
     mrv::gui::media m( img );
