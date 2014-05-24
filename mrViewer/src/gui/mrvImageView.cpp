@@ -31,7 +31,7 @@
 
 #ifdef _WIN32
 #include <winsock2.h>
-#include <windows.h>)
+#include <windows.h>
 #define isfinite(x) _finite(x)
 #endif
 
