@@ -255,15 +255,15 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
 boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
    assert( stream != NULL );
-   boost::int64_t frame;
+   boost::int64_t frame = 0;
    if ( pkt.pts != MRV_NOPTS_VALUE )
    {
       frame = pts2frame( stream, pkt.pts ); 
    }
    else
    {
-      assert( pkt.dts != MRV_NOPTS_VALUE );
-      frame = pts2frame( stream, pkt.dts );
+       if ( pkt.dts != MRV_NOPTS_VALUE )
+           frame = pts2frame( stream, pkt.dts );
    }
    return frame;
 }
@@ -1174,6 +1174,7 @@ void CMedia::play(const CMedia::Playback dir,
   if ( _frame > last_frame() )  _frame = last_frame();
 
   _audio_frame = _frame;
+  _next = std::numeric_limits< boost::int64_t >::min();
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _dts = _frame;
@@ -1265,6 +1266,8 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
+
+    if ( _playback == kStopped ) return;
 
   _playback = kStopped;
 
