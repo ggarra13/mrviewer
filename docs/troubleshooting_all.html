@@ -8,7 +8,7 @@
 <h2 style="text-align: center;">Troubleshooting</h2>
 
 <h3 style="text-align: center;">All Platforms</h3>
-<h4>Movies do not play back smoothly in reverse.</h4>
+<h4>+ Movies do not play back smoothly in reverse.</h4>
 
 Whenever I try to play back a movie in reverse, the playback is choppy.<br>
 
@@ -30,7 +30,8 @@ frames under the fps playback, you will see the playback stutter.<br>If
 your movie contains audio, you can often improve reverse playback by
 turning off the audio by going to the audio track selection button and
 selecting &lt;no audio&gt;.<br> </span>
-<h4>Opening mrViewer reports another instance is running.</h4>
+
+<h4>+ Opening mrViewer reports another instance is running.</h4>
 
 Whenever I try to open mrViewer, it fails telling me another instance is running.<br>
 
@@ -38,6 +39,15 @@ Whenever I try to open mrViewer, it fails telling me another instance is running
 
 <span style="font-weight: bold;">Answer:</span><br>
 
-<span style="font-family: monospace;">mrViewer supports a mode where only an instance of mrViewer is present so that if you try opening an image in another viewer, the image is redirected towards the first opened viewer.  This feature is set in the preferences.  This system works by creating a dummy mrViewer.lock.prefs file inside the preferences directory.  Sometimes if the viewer was not closed properly, this dummy file is left behind and will incorrectly report that another instance of mrViewer is running.  Under Linux that file is /home/@user@/.fltk/filmaura/ and under Windows, it is %APPDATA%/filmaura.  Removing the file will allow you to open a new mrViewer.<br> </span>
-</body></html>
+<span style="font-family: monospace;">mrViewer supports a mode where only an instance of mrViewer is present so that if you try opening an image in another viewer, the image is redirected towards the first opened viewer.  This feature is set in the preferences.  This system works by creating a dummy mrViewer.lock.prefs file inside the preferences directory.  Sometimes if the viewer was not closed properly, this dummy file is left behind and will incorrectly report that another instance of mrViewer is running.  Under Linux that file is /home/@user@/.fltk/filmaura/ and under Windows, it is %APPDATA%/filmaura.  Removing the file will allow you to open a new mrViewer. </span>
+<br><br>
+
+<h4>+ Saving a movie file from the gui makes audio stutter</h4>
+
+I save a movie with audio from the GUI, but the resulting movie has audio that stutters.<br>
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">Currently audio and video is saved by seeking through the file.  Unfortunately, for certain files, this makes the audio non continuous and creates gaps.  For creating movies with audio, we recommend using the bundled ffmpeg utility which is also faster.<br> </span>
 </body></html>
