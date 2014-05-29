@@ -324,7 +324,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    int movie_count = 1;
      
    bool edl = uiMain->uiTimeline->edl();
-   
+
    for ( ; frame <= last; ++frame )
    {
 
@@ -339,6 +339,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
       
       if ( old != fg )
       {
+
 	 old = fg;
 	 if ( open_movie )
 	 {
@@ -380,7 +381,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
 	    if ( aviImage::open_movie( buf, img, opts ) )
 	    {
-               LOG_INFO( "Open movie '" << buf << "'" );
+               LOG_INFO( "Open movie '" << buf << "' to save." );
 	       open_movie = true;
 	       ++movie_count;
 	    }
