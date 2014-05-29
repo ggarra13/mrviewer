@@ -1300,12 +1300,12 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   else
     {
 #if 1
-      audio_cache_t::iterator at = std::lower_bound( _audio.begin(), 
+      audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
 						     _audio.end(),
-						     f, 
+						     f,
 						     LessThanFunctor() );
 #else
-      audio_cache_t::iterator at = std::find_if( _audio.begin(), 
+      audio_cache_t::iterator at = std::find_if( _audio.begin(),
                                                  _audio.end(),
                                                  EqualFunctor(f) );
 #endif
@@ -1317,10 +1317,10 @@ CMedia::store_audio( const boost::int64_t audio_frame,
 	      at = _audio.erase(at);
 	    }
 	}
-	  
+
       _audio.insert( at, aud );
     }
-  
+
   assert( aud->size() == size );
 
   return aud->size();
@@ -1850,30 +1850,33 @@ void CMedia::do_seek()
 
   bool got_audio = !has_audio();
 
-  if ( !got_audio )
-    {
-       got_audio = in_audio_store( _seek_frame );
-    }
+  // if ( !got_audio )
+  //   {
+  //      got_audio = in_audio_store( _seek_frame );
+  //   }
 
   if ( !got_audio )
   {
-     clear_packets();
+      if ( _seek_frame != _expected )
+          clear_packets();
     
      fetch_audio( _seek_frame );
      
   }
 
+  // Seeking done, turn flag off
+  _seek_req = false;
 
   if ( stopped() )
   {
-  
-     if ( has_audio() )
+
+     if ( has_audio() && !got_audio )
      {
-	DecodeStatus status = decode_audio( _seek_frame );
-	if ( status != kDecodeOK )
-	   LOG_ERROR("Decode audio failed for seek frame " 
-		     << _seek_frame );
-	find_audio( _seek_frame );
+         DecodeStatus status = decode_audio( _seek_frame );
+         if ( status > kDecodeOK )
+             IMG_ERROR( "Decode audio error: " << status 
+			<< " for frame " << _seek_frame );
+         find_audio( _seek_frame );
      }
   }
 
