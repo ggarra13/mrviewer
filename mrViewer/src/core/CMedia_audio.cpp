@@ -829,14 +829,19 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 			  int *frame_size_ptr,
 			  AVPacket *avpkt)
 {   
-   AVFrame frame = { { 0 } };
+    AVFrame* frame;
+    if ( ! (frame = av_frame_alloc()) )
+    {
+        return AVERROR(ENOMEM);
+    }
+
    int ret, got_frame = 0;
 
-    ret = avcodec_decode_audio4(ctx, &frame, &got_frame, avpkt);
+    ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
        int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
-						  frame.nb_samples,
+						  frame->nb_samples,
 						  ctx->sample_fmt, 0);
         if (*frame_size_ptr < data_size) {
 	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
@@ -927,13 +932,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	   }
 
 	   assert( samples != NULL );
-	   assert( frame.extended_data != NULL );
-	   assert( frame.extended_data[0] != NULL );
+	   assert( frame->extended_data != NULL );
+	   assert( frame->extended_data[0] != NULL );
 
 	   int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
 				  _audio_max, 
-				  (const uint8_t **)frame.extended_data, 
-				  frame.nb_samples );
+				  (const uint8_t **)frame->extended_data, 
+				  frame->nb_samples );
 	   if ( len2 < 0 )
 	   {
 	      IMG_ERROR( "resampling failed" );
@@ -968,7 +973,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	{
 	   if ( _audio_channels > 0 )
 	   {
- 	      memcpy(samples, frame.extended_data[0], data_size);
+               memcpy(samples, frame->extended_data[0], data_size);
 	   }
 	}
 
@@ -976,6 +981,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     } else {
         *frame_size_ptr = 0;
     }
+
+    av_frame_free(&frame);
+
     return ret;
 }
 
