@@ -379,14 +379,14 @@ void audio_thread( PlaybackData* data )
 
       DBG( "wait audio" );
       img->wait_audio();
-      DBG( "waited audio" );
+      DBG( "waited audio " << frame );
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
 
       if ( frame > img->last_frame() )
          status = CMedia::kDecodeLoopEnd;
-      if ( frame < img->first_frame() )
+      else if ( frame < img->first_frame() )
          status = CMedia::kDecodeLoopStart;
 
       switch( status )
@@ -401,19 +401,18 @@ void audio_thread( PlaybackData* data )
 	    timer.waitUntilNextFrameIsDue();
 	    frame += step;
 	    continue;
-	 case  CMedia::kDecodeLoopEnd:
-	 case  CMedia::kDecodeLoopStart:
-	    {
-
-	       if (! img->aborted() && !img->has_picture() )
-	       {
-		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
-					       reel, timeline, status );
-		  if ( end == kEndIgnore )
-		  {
-		     break;
-		  }
-	       }
+          case  CMedia::kDecodeLoopEnd:
+          case  CMedia::kDecodeLoopStart:
+             {
+                 if (! img->aborted() && !img->has_picture() )
+                 {
+                     EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
+                                                  reel, timeline, status );
+                     if ( end == kEndIgnore )
+                     {
+                         break;
+                     }
+                 }
 
                if ( img->aborted() ) break;
 

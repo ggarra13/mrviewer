@@ -325,6 +325,9 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
      
    bool edl = uiMain->uiTimeline->edl();
 
+   int audio_stream = -1;
+
+
    for ( ; frame <= last; ++frame )
    {
 
@@ -335,7 +338,6 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
       
 
       CMedia* img = fg->image();
-
       
       if ( old != fg )
       {
@@ -379,6 +381,12 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
                 break;
             }
 
+            audio_stream = img->audio_stream();
+            if ( opts->audio_codec == "NONE" )
+            {
+                img->audio_stream( -1 );
+            }
+
 	    if ( aviImage::open_movie( buf, img, opts ) )
 	    {
                LOG_INFO( "Open movie '" << buf << "' to save." );
@@ -418,6 +426,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    if ( open_movie )
    {
       LOG_INFO( "Close movie file" );
+      img->audio_stream( audio_stream );
       aviImage::close_movie(img);
       open_movie = false;
    }

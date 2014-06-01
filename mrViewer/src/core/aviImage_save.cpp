@@ -102,6 +102,7 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
         pkt->duration = av_rescale_q(pkt->duration, *time_base, st->time_base);
    pkt->stream_index = st->index;
    
+
    /* Write the compressed frame to the media file. */
 #ifdef DEBUG
    log_packet(fmt_ctx, pkt);
@@ -130,7 +131,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
     st = avformat_new_stream(oc, *codec);
     if (!st) {
-        fprintf(stderr, "Could not allocate stream\n");
+        LOG_ERROR( "Could not allocate stream" );
         return NULL;
     }
     st->id = oc->nb_streams-1;
@@ -146,15 +147,11 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->bit_rate    = opts->audio_bitrate;
           c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
           c->channels    = img->audio_channels();
-          if ( c->channels == 2 ) c->channel_layout = AV_CH_LAYOUT_STEREO;
-          c->time_base.den = 1000 * (double) img->fps();
-          c->time_base.num = 1000;
-          /*
           c->time_base.num = 1;
           c->time_base.den = c->sample_rate;
-          */
+
           if (( codec_id == AV_CODEC_ID_MP3 ) || (codec_id == AV_CODEC_ID_AC3))
-             c->block_align = 0;
+              c->block_align = 0;
           break;
 
        case AVMEDIA_TYPE_VIDEO:
@@ -405,7 +402,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                                          dst_nb_samples,
                                                          c->sample_fmt, 
                                                          0);
-           DBG( " dst_samples_size: " << dst_samples_size );
 
            // std::cerr << "dst_samples_size=" << dst_samples_size
            //           << " channels=" << c->channels
@@ -468,7 +464,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       return false;
    }
 
-   DBG( "call avcodec_encode_audio2" );
    ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
    if (ret < 0)
    {
@@ -476,7 +471,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                  mrv_err2str(buf, ret) );
       return false;
    }
-   DBG( "Past avcodec_encode_audio2" );
 
    if (!got_packet) {
       return true;
@@ -807,18 +801,17 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
 
    if ( opts->audio_codec == "NONE" )
-       fmt->audio_codec = AV_CODEC_ID_NONE;    // works but s16p
+       fmt->audio_codec = AV_CODEC_ID_NONE;
    else if ( opts->audio_codec == "MP3" )
        fmt->audio_codec = AV_CODEC_ID_MP3;    // works but s16p
    else if ( opts->audio_codec == "AC3" )
        fmt->audio_codec = AV_CODEC_ID_AC3; // works out of sync
    else if ( opts->audio_codec == "AAC" )
-       fmt->audio_codec = AV_CODEC_ID_AAC; // best - crashes
+       fmt->audio_codec = AV_CODEC_ID_AAC; 
    else if ( opts->audio_codec == "VORBIS" )
-       fmt->audio_codec = AV_CODEC_ID_VORBIS; // best - crashes
+       fmt->audio_codec = AV_CODEC_ID_VORBIS; 
    else if ( opts->audio_codec == "PCM" )
        fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
-
 
 
    video_st = NULL;
@@ -894,14 +887,6 @@ bool aviImage::save_movie_frame( const CMedia* img )
 
     /* write interleaved audio and video frames */
 
-    if ( audio_st )
-    {
-       while( audio_time <= video_time) {
-           if ( ! write_audio_frame(oc, audio_st, img) )
-             break;
-	   audio_time = audio_st->pts.val * av_q2d( audio_st->time_base);
-       }
-    }
 
     if ( video_st ) {
 
@@ -911,6 +896,14 @@ bool aviImage::save_movie_frame( const CMedia* img )
                                     video_st->time_base);
     }
 
+    if ( audio_st )
+    {
+       while( audio_time <= video_time) {
+           if ( ! write_audio_frame(oc, audio_st, img) )
+             break;
+	   audio_time = audio_st->pts.val * av_q2d( audio_st->time_base);
+       }
+    }
     
    return true;
 }
@@ -956,7 +949,7 @@ bool flush_video_and_audio( const CMedia* img )
 
             if (encode) {
                 AVPacket pkt;
-                int got_packet = 0;
+                int got_packet;
                 av_init_packet(&pkt);
                 pkt.data = NULL;
                 pkt.size = 0;
@@ -968,13 +961,20 @@ bool flush_video_and_audio( const CMedia* img )
                     return false;
                 }
  
+
+
                 if (!got_packet ) {
                     stop_encoding = 1;
-                    LOG_INFO( "Stopped encoding cached " << desc << " frames" );
+                    LOG_INFO( "Stopped encoding cached " << desc << " frames"
+                              " got packet " << got_packet << " SIZE: "
+                              << pkt.size);
                     break;
                 }
 
+
                 ret = write_frame(oc, &c->time_base, s, &pkt);
+
+                av_free_packet( &pkt );
 
                 if ( ret < 0 )
                 {
