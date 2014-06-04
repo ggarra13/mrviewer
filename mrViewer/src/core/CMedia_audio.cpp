@@ -840,7 +840,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
-       int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
+        int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
 						  frame->nb_samples,
 						  ctx->sample_fmt, 0);
         if (*frame_size_ptr < data_size) {
