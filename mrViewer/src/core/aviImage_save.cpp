@@ -18,8 +18,8 @@ extern "C" {
 #include <libavutil/opt.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/timestamp.h>
+#include <libavutil/audio_fifo.h>
 #include <libavformat/avformat.h>
-#include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
 }
 
@@ -29,8 +29,6 @@ extern "C" {
 #include "core/mrvColorSpaces.h"
 #include "aviSave.h"
 
-#define mrv_err2str(buf, errnum) \
-    av_make_error_string(buf, AV_ERROR_MAX_STRING_SIZE, errnum)
 
 namespace {
 const char* kModule = "save";
@@ -42,11 +40,17 @@ const char* kModule = "save";
 
 namespace mrv {
 
+static char *const get_error_text(const int error)
+{
+    static char error_buffer[255];
+    av_strerror(error, error_buffer, sizeof(error_buffer));
+    return error_buffer;
+}
 
 int video_is_eof = 0;
 int audio_is_eof = 0;
 static AVFrame *picture = NULL;
-static AVPicture src_picture, dst_picture;
+static AVPicture dst_picture;
 static int64_t frame_count = 0, video_outbuf_size;
 
 /* just pick the highest supported samplerate */
@@ -212,6 +216,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 bool flush = false;
 AVSampleFormat aformat;
 AVFrame* audio_frame;
+static AVAudioFifo* fifo = NULL;
 static uint8_t **src_samples_data = NULL;
 static int       src_samples_linesize;
 static int       src_nb_samples;
@@ -253,7 +258,24 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
     else
     {
+        int ret;
         src_nb_samples = c->frame_size;
+   
+        audio_frame->nb_samples     = c->frame_size;
+        audio_frame->channels       = c->channels;
+        audio_frame->format         = c->sample_fmt;
+        audio_frame->sample_rate    = c->sample_rate;
+
+        /**
+         * Allocate the samples of the created frame. This call will make
+         * sure that the audio frame can hold as many samples as specified.
+         */
+        if ((ret = av_frame_get_buffer(audio_frame, 0)) < 0) {
+            LOG_ERROR( "Could not allocate output frame samples. Error: "
+                       << get_error_text( ret ) );
+            av_frame_free(&audio_frame);
+            return false;
+        }
     }
 
 
@@ -371,6 +393,13 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        return false;
    }
 
+   unsigned frame_size = c->frame_size;
+   if ( !fifo )
+   {
+       fifo = av_audio_fifo_alloc(c->sample_fmt, c->channels, 1);
+   }
+  
+
    if (swr_ctx) {
       /* compute destination number of samples */
        dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
@@ -403,23 +432,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                                          c->sample_fmt, 
                                                          0);
 
-           // std::cerr << "dst_samples_size=" << dst_samples_size
-           //           << " channels=" << c->channels
-           //           << " bps=" << av_get_bytes_per_sample( c->sample_fmt )
-           //           << " div=" << ( dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) )
-           //           << " dst_nb_samples=" << dst_nb_samples
-           //           << " src_nb_samples=" << src_nb_samples
-           //           << " src_samples_size=" << audio->size()
-           //           << std::endl;
-
-           // assert( dst_samples_size / c->channels / av_get_bytes_per_sample(c->sample_fmt ) == dst_nb_samples );
        }
 
       assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
 
       /* convert to destination format */
-      assert( src_nb_samples == dst_nb_samples );
-
       const uint8_t* data = audio->data();
       src_samples_data[0] = (uint8_t*)data;
       ret = swr_convert(swr_ctx,
@@ -428,62 +445,66 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                         src_nb_samples);
       if (ret < 0) {
          LOG_ERROR( _("Error while converting audio: ") 
-                    << mrv_err2str(buf, ret) );
+                    << get_error_text(ret) );
          return false;
+      }
+
+
+      ret = av_audio_fifo_write(fifo, (void**)dst_samples_data, dst_nb_samples);
+      if ( ret < dst_nb_samples )
+      {
+          LOG_ERROR( _("Could not write to fifo buffer") );
+          return false;
       }
 
    } else {
       dst_nb_samples = src_nb_samples;
    }
 
-   audio_frame->format = c->sample_fmt;
-   audio_frame->nb_samples = dst_nb_samples;
-   AVRational ratio = { 1, c->sample_rate };
-   audio_frame->pts = av_rescale_q( samples_count, ratio,
-                                    c->time_base );
-   c->frame_size = dst_nb_samples;
-
-   assert( dst_samples_data[0] != NULL );
-   assert( dst_samples_size != 0 );
-   assert( dst_samples_size >= dst_nb_samples );
-   assert( dst_nb_samples > 0 );
-   assert( c->channels > 0 );
-   assert( c->sample_fmt != 0 );
+   audio_frame->pts = AV_NOPTS_VALUE;
+   audio_frame->nb_samples     = c->frame_size;
+   audio_frame->channels       = c->channels;
+   audio_frame->format         = c->sample_fmt;
+   audio_frame->sample_rate    = c->sample_rate;
+   // AVRational ratio = { 1, c->sample_rate };
 
 
-   ret = avcodec_fill_audio_frame(audio_frame, c->channels, 
-                                  c->sample_fmt,
-                                  dst_samples_data[0], 
-                                  dst_samples_size, 0 );
-   samples_count += dst_nb_samples;
-
-   if (ret < 0)
+   while ( av_audio_fifo_size( fifo ) >= c->frame_size )
    {
-      LOG_ERROR( _("Could not fill audio frame. Error: ") << 
-                 mrv_err2str(buf, ret) );
-      return false;
+
+       ret = av_audio_fifo_read(fifo, (void**)audio_frame->data, 
+                                frame_size);
+       if ( ret < 0 )
+       {
+           LOG_ERROR( _("Could not read samples from fifo buffer") );
+           return false;
+       }
+
+
+
+       ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
+       if (ret < 0)
+       {
+           LOG_ERROR( _("Could not encode audio frame: ") << 
+                      get_error_text(ret) );
+           return false;
+       }
+
+       samples_count += frame_size;
+
+       if (!got_packet) {
+           return true;
+       }
+
+       ret = write_frame(oc, &c->time_base, st, &pkt);
+       if (ret < 0) {
+           LOG_ERROR( "Error while writing audio frame: " << 
+                      get_error_text(ret) );
+           return false;
+       }
+
    }
 
-   ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
-   if (ret < 0)
-   {
-      LOG_ERROR( _("Could not encode audio frame: ") << 
-                 mrv_err2str(buf, ret) );
-      return false;
-   }
-
-   if (!got_packet) {
-      return true;
-   }
-
-   
-
-   ret = write_frame(oc, &c->time_base, st, &pkt);
-   if (ret < 0) {
-      LOG_ERROR( "Error while writing audio frame: " << 
-                 mrv_err2str(buf, ret) );
-      return false;
-   }
 
    av_free_packet( &pkt );
 
@@ -551,30 +572,12 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
        return false;
     }
 
-    /* If the output format is not YUV420P, then a temporary YUV420P
-     * picture is needed too. It is then converted to the required
-     * output format. */
-    if (c->pix_fmt != AV_PIX_FMT_YUV444P && c->pix_fmt != AV_PIX_FMT_YUV420P) 
-    {
-        int ret = avpicture_alloc(&src_picture, AV_PIX_FMT_YUV444P, c->width, c->height);
-        if (ret < 0) 
-	  {
-            LOG_ERROR( "Could not allocate temporary picture: " <<
-                       ret );
-            return false;
-	  }
-    }
-
-    /* copy data and linesize picture pointers to frame */
-    *((AVPicture *)picture) = dst_picture;
-
     return true;
 }
 
 static void close_video(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(st->codec);
-    av_free(src_picture.data[0]);
     av_free(dst_picture.data[0]);
     av_frame_free(&picture);
 }
@@ -681,7 +684,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
           if (ret < 0) {
               LOG_ERROR( "Error while writing video frame: " << 
-                         mrv_err2str(buf, ret) );
+                         get_error_text(ret) );
               return false;
           }
       }
@@ -874,8 +877,6 @@ bool aviImage::save_movie_frame( const CMedia* img )
    if (!audio_st && !video_st)
       return false;
 
-   double STREAM_DURATION = (double) img->duration() / (double) img->fps();
-
     /* Compute current audio and video time. */
    audio_time = ( audio_st ? audio_st->pts.val * av_q2d( audio_st->time_base )
 		  : INFINITY );
@@ -957,7 +958,7 @@ bool flush_video_and_audio( const CMedia* img )
                 ret = encode(c, &pkt, NULL, &got_packet);
 
                 if (ret < 0) {
-                    LOG_ERROR( "Failed " << desc << " encoding" );
+                    LOG_ERROR( _("Failed ") << desc << _(" encoding") );
                     return false;
                 }
  
@@ -965,9 +966,8 @@ bool flush_video_and_audio( const CMedia* img )
 
                 if (!got_packet ) {
                     stop_encoding = 1;
-                    LOG_INFO( "Stopped encoding cached " << desc << " frames"
-                              " got packet " << got_packet << " SIZE: "
-                              << pkt.size);
+                    LOG_INFO( _("Stopped encoding cached ") << desc 
+                              << _(" frames") );
                     break;
                 }
 
@@ -978,14 +978,11 @@ bool flush_video_and_audio( const CMedia* img )
 
                 if ( ret < 0 )
                 {
-                    LOG_ERROR( "Error writing " << desc << " frame" );
+                    LOG_ERROR( _("Error writing ") << desc << _(" frame") );
                     stop_encoding = 1;
                     break;
                 }
 
-
-                if (s->codec->codec_type == AVMEDIA_TYPE_VIDEO)
-                    frame_count++;
             }
 
             if (stop_encoding)
