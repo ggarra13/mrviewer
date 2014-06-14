@@ -428,7 +428,6 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    {
       img->audio_stream( audio_stream );
       aviImage::close_movie(img);
-      LOG_INFO( "Closed movie file" );
       open_movie = false;
    }
 

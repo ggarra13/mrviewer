@@ -967,8 +967,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         *audio_size = 0;
     }
 
-    av_frame_unref(frame);
-    // av_frame_free(&frame);
+    av_frame_free(&frame);
 
     return ret;
 }
