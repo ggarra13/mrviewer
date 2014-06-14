@@ -1758,7 +1758,8 @@ int ImageView::leftMouseDown(int x, int y)
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
-	    menu.add( _("File/Save/Sequence As"), kSaveSequence.hotkey(),
+	    menu.add( _("File/Save/Movie or Sequence As"), 
+                      kSaveSequence.hotkey(),
 		      (fltk::Callback*)save_sequence_cb, this ); 
 	    menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
 		      (fltk::Callback*)save_reel_cb, this ); 

@@ -387,8 +387,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // static const AVRational base = { 1, AV_TIME_BASE };
     // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
-    boost::int64_t offset = boost::int64_t( ((frame-1) * AV_TIME_BASE ) / 
-                                            fps() );
+   boost::int64_t start = frame;
+   if ( start > 2 ) start -= 2;
+
+   boost::int64_t offset = boost::int64_t( start * AV_TIME_BASE ) / fps();
 
     int flags = 0;
     flags &= ~AVSEEK_FLAG_BYTE;
@@ -431,7 +433,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   
     if (ret < 0)
     {
-        IMG_ERROR( _("Could not seek to frame ") << frame );
+        IMG_ERROR( _("Could not seek to frame ") << frame
+                   << N_(": ") << get_error_text(ret) );
         return false;
     }
 
@@ -442,7 +445,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
   
         if (ret < 0)
         {
-            IMG_ERROR( _("Could not seek to frame ") << frame );
+            IMG_ERROR( _("Could not seek to frame ") << frame 
+                   << N_(": ") << get_error_text(ret) );
             return false;
         }
     }
@@ -624,8 +628,8 @@ void aviImage::store_image( const boost::int64_t frame,
 
   if ( _convert_ctx == NULL )
     {
-      IMG_ERROR("Could not get image conversion context");
-      return;
+        IMG_ERROR( _("Could not get image conversion context.") );
+        return;
     }
 
   sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
@@ -702,7 +706,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
      }
 
      if ( err < 0 ) {
-	return kDecodeError;
+         IMG_ERROR( "avcodec_decode_video2: " << get_error_text(err) );
+         return kDecodeError;
      }
      
      if ( err == 0 ) return kDecodeMissingFrame;
@@ -730,10 +735,10 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
     {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
-	  IMG_WARNING("Could not decode video frame " << ptsframe 
-		      << " type " << ftype << " pts: " 
-		      << (pkt.pts == MRV_NOPTS_VALUE ?
-			-1 : pkt.pts ) << " dts: " << pkt.dts
+           IMG_WARNING("Could not decode video frame " << ptsframe 
+                       << " type " << ftype << " pts: " 
+                       << (pkt.pts == AV_NOPTS_VALUE ?
+                           -1 : pkt.pts ) << " dts: " << pkt.dts
 		      << " data: " << (void*)pkt.data);
     }
   else

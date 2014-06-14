@@ -18,7 +18,7 @@ extern "C" {
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
-
+#include <libswresample/version.h>
 }
 
 #include <GL/glew.h>
@@ -49,7 +49,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "2.6.0.0 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "2.6.1.0 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -461,7 +461,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
       << "FLTK 2.0" << endl
       << "http://www.fltk.org/" << endl
-      << "(C) 2000-2006 Bill Spitzak & others" << endl
+      << "(C) 2000-2014 Bill Spitzak & others" << endl
       << endl
       << "GLEW " << glewGetString( GLEW_VERSION ) << endl
       << "http://glew.sourceforge.net/" << endl
@@ -473,6 +473,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "libavutil\tv" << AV_STRINGIFY( LIBAVUTIL_VERSION ) << endl
       << "libavcodec\tv" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
       << "libavformat\tv" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
+      << "libswresample\tv" << AV_STRINGIFY( LIBSWRESAMPLE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "(C) 2000-2014 Fabrice Bellard, et al." << endl
       << endl
@@ -491,17 +492,13 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
 #endif
       << "IccProfLib (ICC v4.2)" << endl
-      << "(C) 2003-2006 - The International Color Consortium" << endl
+      << "(C) 2003-2014 - The International Color Consortium" << endl
       << endl
       << "PostgreSQL" << endl
       << "http://www.postgresql.org" << endl
-      << "(C) 1996-2005, The PostgreSQL Global Development Group" << endl
+      << "(C) 1996-2014, The PostgreSQL Global Development Group" << endl
       << "(C) 1994 The Regents of the University of California" << endl
       << endl
-      << "InstallJammer" << endl
-      << "http://www.installjammer.com" << endl
-      << "(C) 2005-2007, Damon Courtney" << endl
-      << endl;
 
     return o.str();
   }
