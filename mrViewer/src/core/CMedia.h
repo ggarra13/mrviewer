@@ -578,6 +578,9 @@ namespace mrv {
     /// Original play rate of movie
     inline double fps() const { return _fps; }
 
+    /// Original play rate of movie
+    inline void fps( double fps ) { _fps = fps; }
+
     /// Change real play rate of movie
     inline void real_fps( double fps ) { _real_fps = fps; }
 
@@ -628,6 +631,8 @@ namespace mrv {
           if ( _audio_index < 0 ) return NULL;
           return _audio_info[ _audio_index ].context;
        }
+
+    AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
     inline const std::string& audio_codec()  const 
     { 
@@ -745,7 +750,6 @@ namespace mrv {
     boost::int64_t video_pts() const { return _video_pts; }
     boost::int64_t audio_pts() const { return _audio_pts; }
     
-    AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
        void wait_for_load_threads();
 
@@ -1099,6 +1103,9 @@ namespace mrv {
     mrv::AudioEngine*  _audio_engine;
   };
 
+
+  uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
+  char *const get_error_text(const int error);
 
   //   typedef boost::shared_ptr< CMedia > Image_ptr;
   typedef CMedia*                     Image_ptr;

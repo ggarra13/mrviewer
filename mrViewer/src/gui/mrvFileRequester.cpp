@@ -45,7 +45,7 @@ static const char* kModule = "file";
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,qt,QT,avi,AVI,divx,DIVX,wmv,WMV,vob,VOB";
+  static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,qt,QT,avi,AVI,flv,FLV,divx,DIVX,wmv,WMV,vob,VOB";
 
   static const std::string kImagePattern =
     "bmp,bit,cin,ct,dpx,exr,iff,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,png,psd,rgb,rpf,"
@@ -276,7 +276,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    bool movie = false;
 
    if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
-	ext == ".mpg" || ext == ".mpeg"  )
+	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" )
    {
       movie = true;
    }
@@ -284,6 +284,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    std::string root, fileseq = file;
    bool ok = mrv::fileroot( root, fileseq );
    if ( !ok && !movie ) return;
+
    
    mrv::Timeline* timeline = uiMain->uiTimeline;
    int64_t first = int64_t( timeline->minimum() );
@@ -402,7 +403,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	
       {
 	   
-	 if (movie)
+	 if (movie && open_movie)
 	 {
 	    aviImage::save_movie_frame( img );
 	 }
@@ -425,9 +426,9 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
    if ( open_movie )
    {
-      LOG_INFO( "Close movie file" );
       img->audio_stream( audio_stream );
       aviImage::close_movie(img);
+      LOG_INFO( "Closed movie file" );
       open_movie = false;
    }
 
