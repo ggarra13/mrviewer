@@ -221,6 +221,19 @@ namespace mrv
     }
   }
 
+  static void change_fps_cb( fltk::FloatInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    CMedia* img = dynamic_cast<CMedia*>( fg->image() );
+    if ( img )
+    {
+       img->fps( w->fvalue() );
+    }
+  }
+
   static void change_last_frame_cb( fltk::IntInput* w, void* d )
   {
     mrv::ImageView* view = (mrv::ImageView*) d;
@@ -369,7 +382,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_int64( _("Frame Start"), img->start_frame() );
     add_int64( _("Frame End"), img->end_frame() );
 
-    add_float( _("FPS"), img->fps() );
+    add_float( _("FPS"), img->fps(), true, 
+               (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
 
     ++group;
     add_int( _("Width"), img->width() );
