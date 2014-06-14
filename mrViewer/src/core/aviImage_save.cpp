@@ -151,9 +151,9 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
    
 
    /* Write the compressed frame to the media file. */
-#ifdef DEBUG
+//#ifdef DEBUG
    log_packet(fmt_ctx, pkt);
-#endif
+//#endif
    return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
@@ -445,6 +445,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        return false;
    }
 
+   std::cerr << "src_nb_samples " << src_nb_samples 
+             << " frame size " << c->frame_size << std::endl;
+
    unsigned frame_size = c->frame_size;
    if ( !fifo )
    {
@@ -502,7 +505,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
          return false;
       }
 
-#if 1
       if ( c->channels >= 6 )
       {
           if ( c->sample_fmt == AV_SAMPLE_FMT_FLTP )
@@ -521,7 +523,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
               t.do_it();
           }
       }
-#endif
 
 
       // if ( dst_nb_samples < c->frame_size )
@@ -550,6 +551,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    AVRational ratio = { 1, c->sample_rate };
 
+   unsigned num = 0;
 
    while ( av_audio_fifo_size( fifo ) >= frame_size )
    {
@@ -562,6 +564,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
            return false;
        }
 
+       ++num;
+       LOG_INFO( "AUDIO FIFO COUNT " << num );
 
        audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                         c->time_base );
@@ -763,10 +767,11 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
       picture->pts = frame_count;
       ret = avcodec_encode_video2(c, &pkt, picture, &got_packet);
       if (ret < 0) {
-         LOG_ERROR( _("Error while encoding video frame: ") << ret );
+         LOG_ERROR( _("Error while encoding video frame: ") << 
+                    get_error_text(ret) );
          return false;
       }
-       
+
       /* If size is zero, it means the image was buffered. */
       if ( got_packet )
       {
@@ -1004,6 +1009,34 @@ bool flush_video_and_audio( const CMedia* img )
     int stop_encoding = 0;
     int ret = 0;
 
+    AVCodecContext* c = audio_st->codec;
+
+    unsigned cache_size = av_audio_fifo_size( fifo );
+    AVRational ratio = { 1, c->sample_rate };
+
+    int got_packet;
+    AVPacket pkt = { 0 };
+    av_init_packet(&pkt);
+
+    // Send last packet to encode
+    if ( cache_size > 0 )
+    {
+        ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
+                                 cache_size);
+       
+        audio_frame->pts = av_rescale_q( samples_count, ratio, 
+                                         c->time_base );
+
+        ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
+        if (ret < 0)
+        {
+            LOG_ERROR( _("Could not encode audio frame: ") << 
+                       get_error_text(ret) );
+        }
+   }
+
+    av_free_packet( &pkt );
+
     AVStream* st[2];
     st[0] = audio_st;
     st[1] = video_st;
@@ -1108,6 +1141,8 @@ bool aviImage::close_movie( const CMedia* img )
 
     /* free the stream */
     avformat_free_context(oc);
+
+    LOG_INFO( "Closed movie file" );
 
     return true;
 }
