@@ -25,6 +25,7 @@ extern "C" {
 
 #include "core/aviImage.h"
 #include "gui/mrvIO.h"
+#include "core/mrvSwizzleAudio.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvColorSpaces.h"
 #include "aviSave.h"
@@ -40,18 +41,16 @@ const char* kModule = "save";
 
 namespace mrv {
 
-static char *const get_error_text(const int error)
+char *const get_error_text(const int error)
 {
     static char error_buffer[255];
     av_strerror(error, error_buffer, sizeof(error_buffer));
     return error_buffer;
 }
 
-int video_is_eof = 0;
-int audio_is_eof = 0;
 static AVFrame *picture = NULL;
 static AVPicture dst_picture;
-static int64_t frame_count = 0, video_outbuf_size;
+static boost::int64_t frame_count = 0;
 
 /* just pick the highest supported samplerate */
 static int select_sample_rate(AVCodec *codec, unsigned sample_rate)
@@ -60,18 +59,62 @@ static int select_sample_rate(AVCodec *codec, unsigned sample_rate)
     int best_samplerate = 0;
 
     if (!codec->supported_samplerates)
-        return 44100;
+        return sample_rate;
 
     p = codec->supported_samplerates;
     while (*p) {
         if ( *p == sample_rate )
-        {
-            best_samplerate = *p; break;
-        }
+            return *p;
         best_samplerate = FFMAX(*p, best_samplerate);
         p++;
     }
     return best_samplerate;
+}
+
+static AVSampleFormat select_sample_format( AVCodec* c, AVSampleFormat input )
+{
+    AVSampleFormat r;
+    if ( input == AV_SAMPLE_FMT_FLT )
+        r = AV_SAMPLE_FMT_FLTP;
+    else if ( input == AV_SAMPLE_FMT_S16 )
+        r = AV_SAMPLE_FMT_S16P;
+    else if ( input == AV_SAMPLE_FMT_U8 )
+        r = AV_SAMPLE_FMT_U8P;
+    else if ( input == AV_SAMPLE_FMT_S32 )
+        r = AV_SAMPLE_FMT_S32P;
+    else if ( input == AV_SAMPLE_FMT_DBL )
+        r = AV_SAMPLE_FMT_DBLP;
+
+    const AVSampleFormat* p = c->sample_fmts;
+    while (*p) {
+        if ( *p == r )
+            return r;
+        ++p;
+    }
+
+    return AV_SAMPLE_FMT_FLTP;
+}
+
+/* select layout with the highest channel count */
+static int select_channel_layout(const AVCodec *codec, unsigned num_channels)
+{
+    const uint64_t *p;
+    uint64_t best_ch_layout = 0;
+
+    if (!codec->channel_layouts)
+        return AV_CH_LAYOUT_STEREO;
+
+    p = codec->channel_layouts;
+    while (*p) {
+        unsigned nb_channels = av_get_channel_layout_nb_channels(*p);
+
+        if (nb_channels == num_channels) {
+            best_ch_layout   = *p;
+            break;
+        }
+        p++;
+    }
+    return best_ch_layout;
 }
 
 static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt)
@@ -114,6 +157,24 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
    return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
+
+/**************************************************************/
+/* audio output */
+
+AVSampleFormat aformat;
+AVFrame* audio_frame;
+static AVAudioFifo* fifo = NULL;
+static uint8_t **src_samples_data = NULL;
+static int       src_samples_linesize;
+static int       src_nb_samples;
+
+static int max_dst_nb_samples;
+uint8_t **dst_samples_data = NULL;
+int       dst_samples_linesize;
+boost::uint64_t samples_count = 0;
+
+struct SwrContext *swr_ctx = NULL;
+
 /* Add an output stream. */
 static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                             enum AVCodecID codec_id, const CMedia* const img,
@@ -144,17 +205,18 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     switch ((*codec)->type) {
        case AVMEDIA_TYPE_AUDIO:
           c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
-          c->sample_fmt  = (*codec)->sample_fmts ?
-                           (*codec)->sample_fmts[0] : AV_SAMPLE_FMT_FLTP;
-          if ( c->sample_fmt == AV_SAMPLE_FMT_S32P )
-              c->sample_fmt = AV_SAMPLE_FMT_S16P;
+          aformat = AudioEngine::ffmpeg_format( img->audio_format() );
+          c->sample_fmt  = select_sample_format(*codec, aformat );
           c->bit_rate    = opts->audio_bitrate;
           c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
           c->channels    = img->audio_channels();
           c->time_base.num = 1;
           c->time_base.den = c->sample_rate;
 
-          if (( codec_id == AV_CODEC_ID_MP3 ) || (codec_id == AV_CODEC_ID_AC3))
+          if((c->block_align == 1 || c->block_align == 1152 || 
+              c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
+              c->block_align = 0;
+          if(c->codec_id == AV_CODEC_ID_AC3)
               c->block_align = 0;
           break;
 
@@ -170,7 +232,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
            * of which frame timestamps are represented. For fixed-fps content,
            * timebase should be 1/framerate and timestamp increments should be
            * identical to 1. */
-          //c->time_base.den = img->fps();
+          //c->time_base.den = img->play_fps();
           //c->time_base.num = 1;
           c->time_base.den = 1000 * (double) img->fps();
           c->time_base.num = 1000;
@@ -210,25 +272,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     return st;
 }
 
-/**************************************************************/
-/* audio output */
-
-bool flush = false;
-AVSampleFormat aformat;
-AVFrame* audio_frame;
-static AVAudioFifo* fifo = NULL;
-static uint8_t **src_samples_data = NULL;
-static int       src_samples_linesize;
-static int       src_nb_samples;
-static unsigned  src_samples_size;
-
-static int max_dst_nb_samples;
-uint8_t **dst_samples_data = NULL;
-int       dst_samples_linesize;
-int       dst_samples_size;
-int       samples_count = 0;
-
-struct SwrContext *swr_ctx = NULL;
 
 static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 			      AVStream* st, const CMedia* img,
@@ -244,6 +287,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         return false;
     }
 
+    c->channel_layout = select_channel_layout( codec, c->channels );
 
    /* open it */
     if (avcodec_open2(c, codec, NULL) < 0) {
@@ -263,6 +307,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
    
         audio_frame->nb_samples     = c->frame_size;
         audio_frame->channels       = c->channels;
+        audio_frame->channel_layout = c->channel_layout;
         audio_frame->format         = c->sample_fmt;
         audio_frame->sample_rate    = c->sample_rate;
 
@@ -271,7 +316,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
          * sure that the audio frame can hold as many samples as specified.
          */
         if ((ret = av_frame_get_buffer(audio_frame, 0)) < 0) {
-            LOG_ERROR( "Could not allocate output frame samples. Error: "
+            LOG_ERROR( _("Could not allocate output frame samples. Error: ")
                        << get_error_text( ret ) );
             av_frame_free(&audio_frame);
             return false;
@@ -279,14 +324,15 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
 
 
-    aformat = AudioEngine::ffmpeg_format( img->audio_format() );
 
     int ret = av_samples_alloc_array_and_samples(&src_samples_data,
                                                  &src_samples_linesize, 
                                                  c->channels,
                                                  src_nb_samples, aformat, 0);
     if (ret < 0) {
-        LOG_ERROR("Could not allocate source samples" );
+        LOG_ERROR( _("Could not allocate source samples. Error: ")
+                   << get_error_text( ret ) );
+        av_frame_free(&audio_frame);
         return false;
     }
 
@@ -300,33 +346,42 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        swr_ctx  = swr_alloc();
        if ( swr_ctx == NULL )
        {
-	  LOG_ERROR( "Could not alloc swr_ctx" );
-	  return false;
+           LOG_ERROR( _("Could not alloc swr_ctx") );
+           av_frame_free(&audio_frame);
+           return false;
        }
 
-
-        // av_opt_set_int       (swr_ctx, "in_channel_layout", 
-        //                       av_get_default_channel_layout(c->channels), 0);
-        av_opt_set_int       (swr_ctx, "in_channel_count",   c->channels, 0);
-        av_opt_set_int       (swr_ctx, "in_sample_rate", img->audio_frequency(), 0);
-        av_opt_set_sample_fmt(swr_ctx, "in_sample_fmt",      aformat, 0);
-        // av_opt_set_int       (swr_ctx, "out_channel_layout", c->channel_layout,
-        //                       0);
-        av_opt_set_int       (swr_ctx, "out_channel_count",  c->channels,   0);
-        av_opt_set_int       (swr_ctx, "out_sample_rate",    c->sample_rate, 0);
-        av_opt_set_sample_fmt(swr_ctx, "out_sample_fmt",     c->sample_fmt, 0);
+       uint64_t in_layout = av_get_default_channel_layout(c->channels);
+       av_opt_set_int       (swr_ctx, N_("in_channel_layout"), 
+                             in_layout, 0);
+       av_opt_set_int       (swr_ctx, N_("in_channel_count"), 
+                             c->channels, 0);
+       av_opt_set_int       (swr_ctx, N_("in_sample_rate"),
+                             img->audio_frequency(), 0);
+       av_opt_set_sample_fmt(swr_ctx, N_("in_sample_fmt"),      aformat, 0);
+       av_opt_set_int       (swr_ctx, N_("out_channel_layout"), 
+                             c->channel_layout, 0);
+       av_opt_set_int       (swr_ctx, N_("out_channel_count"), c->channels, 0);
+       av_opt_set_int       (swr_ctx, N_("out_sample_rate"), c->sample_rate,
+                             0);
+       av_opt_set_sample_fmt(swr_ctx, N_("out_sample_fmt"), c->sample_fmt, 0);
 	
+       char buf[256], buf2[256];
+       av_get_channel_layout_string( buf, 256, c->channels, in_layout );
+       av_get_channel_layout_string( buf2, 256, c->channels, c->channel_layout);
 
-	LOG_INFO( "Audio conversion of " 
-                  << " channels " << c->channels << ", freq "
-		  << img->audio_frequency() << " " 
-                  << av_get_sample_fmt_name( aformat ) 
-		  << " to " << std::endl
-		  << "              channels " << c->channels 
-		  << " freq " << c->sample_rate << " "
-		  << av_get_sample_fmt_name( c->sample_fmt ) << "." );
-		   
-	
+       LOG_INFO( _( "Audio conversion of " )
+                 << buf
+                 << _(" channels ") << c->channels << _(", freq ")
+                 << img->audio_frequency() << N_(" ") 
+                 << av_get_sample_fmt_name( aformat ) 
+                 << _(" to ") << std::endl
+                 << N_("              ")
+                 << buf2
+                 << _(" channels ") << c->channels 
+                 << _(", freq ") << c->sample_rate << N_(" ")
+                 << av_get_sample_fmt_name( c->sample_fmt ) << N_(".") );
+
         // assert( src_samples_data[0] != NULL );
         // assert( src_samples_linesize > 0 );
 
@@ -342,12 +397,14 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         if ( ret < 0 )
         {
            LOG_ERROR( _("Could not allocate destination samples") );
+           av_frame_free(&audio_frame);
            return false;
         }
 
         /* initialize the resampling context */
         if ((swr_init(swr_ctx)) < 0) {
            LOG_ERROR( _("Failed to initialize the resampling context") );
+           av_frame_free(&audio_frame);
 	   return false;
         }
 
@@ -359,12 +416,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     }
 
     assert( max_dst_nb_samples > 0 );
-    dst_samples_size = av_samples_get_buffer_size(NULL, c->channels, 
-						  max_dst_nb_samples,
-                                                  c->sample_fmt, 0);
-    assert( dst_samples_size > 0 );
-    assert( max_dst_nb_samples > 0 );
-
+ 
     return true;
 }
 
@@ -402,14 +454,20 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    if (swr_ctx) {
       /* compute destination number of samples */
-       dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, c->sample_rate) + src_nb_samples,
-                                       c->sample_rate, c->sample_rate, AV_ROUND_UP);
+       unsigned src_rate = img->audio_frequency();
+       unsigned dst_rate = c->sample_rate;
 
-       assert( src_nb_samples == dst_nb_samples );
+       dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
+                                       src_nb_samples, dst_rate, src_rate,
+                                       AV_ROUND_UP);
 
-       DBG( "dst_nb_samples= " << dst_nb_samples );
+       if ( dst_nb_samples != src_nb_samples )
+       {
+           LOG_ERROR( "dst: " << dst_nb_samples 
+                      << "  src: " << src_nb_samples );
+       }
 
-       // dst_nb_samples = src_nb_samples;
+
 
        if (dst_nb_samples > max_dst_nb_samples) {
 
@@ -420,18 +478,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                   c->sample_fmt, 0);
            if (ret < 0)
            {
-               LOG_ERROR( "Cannot allocate dst samples" );
+               LOG_ERROR( _("Cannot allocate dst samples") );
                return false;
            }
 
            max_dst_nb_samples = dst_nb_samples;
-
-           dst_samples_size = av_samples_get_buffer_size(NULL, 
-                                                         c->channels,
-                                                         dst_nb_samples,
-                                                         c->sample_fmt, 
-                                                         0);
-
        }
 
       assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
@@ -439,6 +490,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       /* convert to destination format */
       const uint8_t* data = audio->data();
       src_samples_data[0] = (uint8_t*)data;
+
+
       ret = swr_convert(swr_ctx,
                         dst_samples_data, dst_nb_samples,
                         (const uint8_t **)src_samples_data, 
@@ -449,6 +502,33 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
          return false;
       }
 
+#if 1
+      if ( c->channels >= 6 )
+      {
+          if ( c->sample_fmt == AV_SAMPLE_FMT_FLTP )
+          {
+              SwizzlePlanar<float> t( (void**)dst_samples_data );
+              t.do_it();
+          }
+          else if ( c->sample_fmt == AV_SAMPLE_FMT_S32P )
+          {
+              SwizzlePlanar<int32_t> t( (void**)dst_samples_data );
+              t.do_it();
+          }
+          else if ( c->sample_fmt == AV_SAMPLE_FMT_S16P )
+          {
+              SwizzlePlanar<int16_t> t( (void**)dst_samples_data );
+              t.do_it();
+          }
+      }
+#endif
+
+
+      // if ( dst_nb_samples < c->frame_size )
+      // {
+      //     LOG_ERROR( "Destination samples " << dst_nb_samples << " < "
+      //                << c->frame_size << " ctx->frame_size" );
+      // }
 
       ret = av_audio_fifo_write(fifo, (void**)dst_samples_data, dst_nb_samples);
       if ( ret < dst_nb_samples )
@@ -462,17 +542,19 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    }
 
    audio_frame->pts = AV_NOPTS_VALUE;
-   audio_frame->nb_samples     = c->frame_size;
+   audio_frame->nb_samples     = frame_size;
    audio_frame->channels       = c->channels;
+   audio_frame->channel_layout = c->channel_layout;
    audio_frame->format         = c->sample_fmt;
    audio_frame->sample_rate    = c->sample_rate;
-   // AVRational ratio = { 1, c->sample_rate };
+
+   AVRational ratio = { 1, c->sample_rate };
 
 
-   while ( av_audio_fifo_size( fifo ) >= c->frame_size )
+   while ( av_audio_fifo_size( fifo ) >= frame_size )
    {
 
-       ret = av_audio_fifo_read(fifo, (void**)audio_frame->data, 
+       ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
                                 frame_size);
        if ( ret < 0 )
        {
@@ -481,6 +563,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        }
 
 
+       audio_frame->pts = av_rescale_q( samples_count, ratio, 
+                                        c->time_base );
 
        ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
        if (ret < 0)
@@ -490,11 +574,12 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
            return false;
        }
 
-       samples_count += frame_size;
 
        if (!got_packet) {
-           return true;
+           return false;
        }
+
+       samples_count += frame_size;
 
        ret = write_frame(oc, &c->time_base, st, &pkt);
        if (ret < 0) {
@@ -572,6 +657,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
        return false;
     }
 
+    picture->pts = 0;
+
     return true;
 }
 
@@ -597,42 +684,47 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img )
 
    for ( unsigned y = 0; y < h; ++y )
    {
-      for ( unsigned x = 0; x < w; ++x )
-      {
-	 ImagePixel p = hires->pixel( x, y );
+       unsigned y2 = y;
+       if ( c->pix_fmt == AV_PIX_FMT_YUV420P )
+       {
+           y2 /= 2;
+       }
 
-         if ( p.r > 0.0f && isfinite(p.r) )
-             p.r = powf( p.r, one_gamma );
-         if ( p.g > 0.0f && isfinite(p.g) )
-             p.g = powf( p.g, one_gamma );
-         if ( p.b > 0.0f && isfinite(p.b) )
-             p.b = powf( p.b, one_gamma );
+       unsigned yoff1 = y2 * pict->linesize[1];
+       unsigned yoff2 = y2 * pict->linesize[2];
 
-         if      (p.r < 0.0f) p.r = 0.0f;
-         else if (p.r > 1.0f) p.r = 1.0f;
-         if      (p.g < 0.0f) p.g = 0.0f;
-         else if (p.g > 1.0f) p.g = 1.0f;
-         if      (p.b < 0.0f) p.b = 0.0f;
-         else if (p.b > 1.0f) p.b = 1.0f;
+       for ( unsigned x = 0; x < w; ++x )
+       {
+           ImagePixel p = hires->pixel( x, y );
+           
+           if ( p.r > 0.0f && isfinite(p.r) )
+               p.r = powf( p.r, one_gamma );
+           if ( p.g > 0.0f && isfinite(p.g) )
+               p.g = powf( p.g, one_gamma );
+           if ( p.b > 0.0f && isfinite(p.b) )
+               p.b = powf( p.b, one_gamma );
 
-	 ImagePixel yuv = color::rgb::to_ITU601( p );
+           if      (p.r < 0.0f) p.r = 0.0f;
+           else if (p.r > 1.0f) p.r = 1.0f;
+           if      (p.g < 0.0f) p.g = 0.0f;
+           else if (p.g > 1.0f) p.g = 1.0f;
+           if      (p.b < 0.0f) p.b = 0.0f;
+           else if (p.b > 1.0f) p.b = 1.0f;
 
-	 pict->data[0][y * pict->linesize[0]   + x   ] = uint8_t(yuv.r);
+           ImagePixel yuv = color::rgb::to_ITU601( p );
 
-         unsigned x2 = x, y2 = y;
-         if ( c->pix_fmt == AV_PIX_FMT_YUV422P )
-         {
-             x2 /= 2;
-         }
-         else if ( c->pix_fmt == AV_PIX_FMT_YUV420P )
-         {
-             x2 /= 2;
-             y2 /= 2;
-         }
+           pict->data[0][y * pict->linesize[0] + x] = uint8_t(yuv.r);
 
-	 pict->data[1][y2 * pict->linesize[1] + x2 ] = uint8_t(yuv.g);
-	 pict->data[2][y2 * pict->linesize[2] + x2 ] = uint8_t(yuv.b);
-      }
+           unsigned x2 = x;
+           if ( c->pix_fmt == AV_PIX_FMT_YUV422P ||
+                c->pix_fmt == AV_PIX_FMT_YUV420P )
+           {
+               x2 /= 2;
+           }
+
+           pict->data[1][yoff1 + x2 ] = uint8_t(yuv.g);
+           pict->data[2][yoff2 + x2 ] = uint8_t(yuv.b);
+       }
    }
 
    pict->extended_data = pict->data;
@@ -687,6 +779,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
                          get_error_text(ret) );
               return false;
           }
+
       }
    }
 
@@ -704,18 +797,6 @@ AVCodec* audio_cdc, *video_codec;
 
 
 
-/* check that a given sample format is supported by the encoder */
-static int check_sample_fmt(AVCodec *codec, enum AVSampleFormat sample_fmt)
-{
-    const enum AVSampleFormat *p = codec->sample_fmts;
-
-    while (*p != AV_SAMPLE_FMT_NONE) {
-        if (*p == sample_fmt)
-            return 1;
-        p++;
-    }
-    return 0;
-}
 
 static inline
 int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
@@ -860,7 +941,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    err = avformat_write_header(oc, NULL);
    if ( err < 0 )
    {
-      LOG_ERROR( _("Error occurred when opening output file: ") << err );
+      LOG_ERROR( _("Error occurred when opening output file: ") << 
+                 get_error_text(err) );
       return false;
    }
 
@@ -880,10 +962,18 @@ bool aviImage::save_movie_frame( const CMedia* img )
     /* Compute current audio and video time. */
    audio_time = ( audio_st ? audio_st->pts.val * av_q2d( audio_st->time_base )
 		  : INFINITY );
-   video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
-		  : INFINITY );
+   // This is wrong as it does not get updated properly with h264
+   //video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
+   //     	  : INFINITY );
+   
+   video_time = ( video_st ? picture->pts * av_q2d( video_st->codec->time_base )
+   		  : INFINITY );
 
-
+   // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
+   //           << " " << video_st->time_base.num 
+   //           << "/" << video_st->time_base.den 
+   //           << " c: " << video_st->codec->time_base.num 
+   //           << "/" << video_st->codec->time_base.den << std::endl;
     
 
     /* write interleaved audio and video frames */
@@ -893,8 +983,8 @@ bool aviImage::save_movie_frame( const CMedia* img )
 
        write_video_frame(oc, video_st, img);
 
-       picture->pts += av_rescale_q(1, video_st->codec->time_base,
-                                    video_st->time_base);
+       // av_rescale_q(1, video_st->codec->time_base,
+       // video_st->time_base);
     }
 
     if ( audio_st )
