@@ -1,4 +1,5 @@
-v2.6.1.0 - Fixed audio saving in mpeg4.  H264 has audio sync issues.
+v2.6.1.0 - Fixed audio saving in mpeg4 and H264.  However, there are still
+	   cases that fail or that show pops in the audio.
 v2.6.0.0 - Added options to save H264 movie files in YUV420 or YUV444.
 	 - Added options to save audio in MP3 format, but there's still some
 	   "pops" in the output of most files and sync issues.
