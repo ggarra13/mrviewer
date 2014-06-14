@@ -498,7 +498,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "http://www.postgresql.org" << endl
       << "(C) 1996-2014, The PostgreSQL Global Development Group" << endl
       << "(C) 1994 The Regents of the University of California" << endl
-      << endl
+      << endl;
 
     return o.str();
   }
