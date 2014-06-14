@@ -295,11 +295,8 @@ namespace mrv {
 
   ImageBrowser::~ImageBrowser()
   {
-    int num = children();
-    for ( int j = 0; j < num; ++j )
-      fltk::Browser::remove( child(0) );
-
-    delete db; db = NULL;
+      clear();
+      delete db; db = NULL;
   }
 
   mrv::Timeline* ImageBrowser::timeline()
