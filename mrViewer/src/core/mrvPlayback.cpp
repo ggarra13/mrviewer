@@ -377,9 +377,7 @@ void audio_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
 
-      DBG( "wait audio" );
       img->wait_audio();
-      DBG( "waited audio " << frame );
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
 
@@ -584,18 +582,13 @@ void video_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status;
 
-      DBG( img->name() << "  PRE    FRAME " << frame  );
-
       status = img->decode_video( frame );
-
-      DBG( img->name() << "  STATUS FRAME " << frame  );
 
       if ( frame > img->last_frame() )
          status = CMedia::kDecodeLoopEnd;
       if ( frame < img->first_frame() )
          status = CMedia::kDecodeLoopStart;
 
-      DBG( img->name() << "  STATUS " << status << "  1 is ok" );
 
       switch( status )
       {
@@ -683,9 +676,8 @@ void video_thread( PlaybackData* data )
 
       img->real_fps( timer.actualFrameRate() );
 
-      DBG( img->name() << " FIND IMAGE   " << frame );
       bool ok = img->find_image( frame );
-      DBG( img->name() << " FOUND IMAGE? " << ok );
+
       if ( !img->has_audio() && reel->edl )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
@@ -693,7 +685,6 @@ void video_thread( PlaybackData* data )
 
 	 if ( fg )
 	 {
-            DBG( "FRAME " << frame << " f " << f );
 	    assert( f <= timeline->maximum() );
 	    assert( f >= timeline->minimum() );
 
