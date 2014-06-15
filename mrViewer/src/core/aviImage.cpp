@@ -1921,15 +1921,15 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
 
+
    if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
-    {
+   {
        bool ok = seek_to_position( frame );
        if ( !ok )
-	  IMG_ERROR("seek_to_position: Could not seek to frame " 
-		    << frame );
+           IMG_ERROR("seek_to_position: Could not seek to frame " 
+                     << frame );
        return ok;
-    }
-
+   }
 
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;

@@ -329,17 +329,18 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    int audio_stream = -1;
 
 
+
    for ( ; frame <= last; ++frame )
    {
 
-      uiMain->uiReelWindow->uiBrowser->seek( frame );
+       uiMain->uiReelWindow->uiBrowser->seek( frame );
 
       mrv::media fg = uiMain->uiView->foreground();
       if (!fg) break;
       
 
       CMedia* img = fg->image();
-      
+
       if ( old != fg )
       {
 
@@ -405,7 +406,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	   
 	 if (movie && open_movie)
 	 {
-	    aviImage::save_movie_frame( img );
+             aviImage::save_movie_frame( img );
 	 }
 	 else 
 	 {

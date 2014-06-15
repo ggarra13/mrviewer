@@ -1740,8 +1740,6 @@ void CMedia::populate_stream_info( StreamInfo& s,
 boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
 				   const boost::int64_t frame ) const
 {
-   DBG( "frame to pts: " << frame << " s: " << _frame_start
-        << " e: " << _frame_end );
    assert( frame >= _frame_start );
    assert( frame <= _frame_end );
    double p = (double)(frame - 1) / fps();

@@ -2576,7 +2576,6 @@ void ImageBrowser::load( const stringArray& files,
      view()->send(buf);
 
 
-     DBG( "EDL FRAME " << tframe );
      frame( tframe );
 
     ImageView::Playback playback = view()->playback();

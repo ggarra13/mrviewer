@@ -148,12 +148,12 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
     if ( pkt->duration > 0 )
         pkt->duration = av_rescale_q(pkt->duration, *time_base, st->time_base);
    pkt->stream_index = st->index;
-   
+
 
    /* Write the compressed frame to the media file. */
-//#ifdef DEBUG
+#ifdef DEBUG
    log_packet(fmt_ctx, pkt);
-//#endif
+#endif
    return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
@@ -232,8 +232,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
            * of which frame timestamps are represented. For fixed-fps content,
            * timebase should be 1/framerate and timestamp increments should be
            * identical to 1. */
-          //c->time_base.den = img->play_fps();
-          //c->time_base.num = 1;
           c->time_base.den = 1000 * (double) img->fps();
           c->time_base.num = 1000;
           c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
@@ -445,9 +443,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        return false;
    }
 
-   std::cerr << "src_nb_samples " << src_nb_samples 
-             << " frame size " << c->frame_size << std::endl;
-
    unsigned frame_size = c->frame_size;
    if ( !fifo )
    {
@@ -463,13 +458,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
                                        src_nb_samples, dst_rate, src_rate,
                                        AV_ROUND_UP);
-
-       if ( dst_nb_samples != src_nb_samples )
-       {
-           LOG_ERROR( "dst: " << dst_nb_samples 
-                      << "  src: " << src_nb_samples );
-       }
-
 
 
        if (dst_nb_samples > max_dst_nb_samples) {
@@ -525,16 +513,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       }
 
 
-      // if ( dst_nb_samples < c->frame_size )
-      // {
-      //     LOG_ERROR( "Destination samples " << dst_nb_samples << " < "
-      //                << c->frame_size << " ctx->frame_size" );
-      // }
-
       ret = av_audio_fifo_write(fifo, (void**)dst_samples_data, dst_nb_samples);
-      if ( ret < dst_nb_samples )
+      if ( ret != dst_nb_samples )
       {
-          LOG_ERROR( _("Could not write to fifo buffer") );
+          if ( ret < 0 )
+          {
+              LOG_ERROR( _("Could not write to fifo buffer. Error:")
+                         << get_error_text(ret) );
+          }
           return false;
       }
 
@@ -551,8 +537,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    AVRational ratio = { 1, c->sample_rate };
 
-   unsigned num = 0;
-
    while ( av_audio_fifo_size( fifo ) >= frame_size )
    {
 
@@ -564,8 +548,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
            return false;
        }
 
-       ++num;
-       LOG_INFO( "AUDIO FIFO COUNT " << num );
 
        audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                         c->time_base );
@@ -580,10 +562,12 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
        if (!got_packet) {
-           return false;
+           // Empty packet - do not save
+           continue;
        }
 
        samples_count += frame_size;
+
 
        ret = write_frame(oc, &c->time_base, st, &pkt);
        if (ret < 0) {
@@ -1023,7 +1007,14 @@ bool flush_video_and_audio( const CMedia* img )
     {
         ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
                                  cache_size);
-       
+        if (ret < 0)
+        {
+            LOG_ERROR( _("Could not read audio fifo: ") << 
+                       get_error_text(ret) );
+        }
+
+        c->frame_size = cache_size;
+        audio_frame->nb_samples = cache_size;
         audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                          c->time_base );
 
