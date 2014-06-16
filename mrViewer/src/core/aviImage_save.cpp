@@ -206,7 +206,10 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
        case AVMEDIA_TYPE_AUDIO:
           c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
           aformat = AudioEngine::ffmpeg_format( img->audio_format() );
-          c->sample_fmt  = select_sample_format(*codec, aformat );
+          if ( opts->audio_codec == "PCM" )
+              c->sample_fmt = AV_SAMPLE_FMT_S16;
+          else
+              c->sample_fmt = select_sample_format(*codec, aformat );
           c->bit_rate    = opts->audio_bitrate;
           c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
           c->channels    = img->audio_channels();
@@ -292,41 +295,36 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        LOG_ERROR( _("Could not open audio codec" ) );
        return false;
     }
-    
 
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
-        src_nb_samples = 10000;
-    }
-    else
-    {
-        int ret;
-        src_nb_samples = c->frame_size;
-   
-        audio_frame->nb_samples     = c->frame_size;
-        audio_frame->channels       = c->channels;
-        audio_frame->channel_layout = c->channel_layout;
-        audio_frame->format         = c->sample_fmt;
-        audio_frame->sample_rate    = c->sample_rate;
-
-        /**
-         * Allocate the samples of the created frame. This call will make
-         * sure that the audio frame can hold as many samples as specified.
-         */
-        if ((ret = av_frame_get_buffer(audio_frame, 0)) < 0) {
-            LOG_ERROR( _("Could not allocate output frame samples. Error: ")
-                       << get_error_text( ret ) );
-            av_frame_free(&audio_frame);
-            return false;
-        }
+        c->frame_size = 10000;
     }
 
+    int ret;
+    src_nb_samples = c->frame_size;
 
+    audio_frame->nb_samples     = c->frame_size;
+    audio_frame->channels       = c->channels;
+    audio_frame->channel_layout = c->channel_layout;
+    audio_frame->format         = c->sample_fmt;
+    audio_frame->sample_rate    = c->sample_rate;
 
-    int ret = av_samples_alloc_array_and_samples(&src_samples_data,
-                                                 &src_samples_linesize, 
-                                                 c->channels,
-                                                 src_nb_samples, aformat, 0);
+    /**
+     * Allocate the samples of the created frame. This call will make
+     * sure that the audio frame can hold as many samples as specified.
+     */
+    if ((ret = av_frame_get_buffer(audio_frame, 0)) < 0) {
+        LOG_ERROR( _("Could not allocate output frame samples. Error: ")
+                   << get_error_text( ret ) );
+        av_frame_free(&audio_frame);
+        return false;
+    }
+
+    ret = av_samples_alloc_array_and_samples(&src_samples_data,
+                                             &src_samples_linesize, 
+                                             c->channels,
+                                             src_nb_samples, aformat, 0);
     if (ret < 0) {
         LOG_ERROR( _("Could not allocate source samples. Error: ")
                    << get_error_text( ret ) );
@@ -443,12 +441,20 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        return false;
    }
 
+   if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
+   {
+       c->frame_size = src_nb_samples;
+   }
+
    unsigned frame_size = c->frame_size;
+
    if ( !fifo )
    {
        fifo = av_audio_fifo_alloc(c->sample_fmt, c->channels, 1);
    }
-  
+
+   const uint8_t* data = audio->data();
+   src_samples_data[0] = (uint8_t*)data;
 
    if (swr_ctx) {
       /* compute destination number of samples */
@@ -479,9 +485,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       assert( audio->size() / c->channels / av_get_bytes_per_sample(aformat) == src_nb_samples );
 
       /* convert to destination format */
-      const uint8_t* data = audio->data();
-      src_samples_data[0] = (uint8_t*)data;
-
 
       ret = swr_convert(swr_ctx,
                         dst_samples_data, dst_nb_samples,
@@ -526,6 +529,17 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    } else {
       dst_nb_samples = src_nb_samples;
+
+      ret = av_audio_fifo_write(fifo, (void**)src_samples_data, src_nb_samples);
+      if ( ret != dst_nb_samples )
+      {
+          if ( ret < 0 )
+          {
+              LOG_ERROR( _("Could not write to fifo buffer. Error:")
+                         << get_error_text(ret) );
+          }
+          return false;
+      }
    }
 
    audio_frame->pts = AV_NOPTS_VALUE;
@@ -544,7 +558,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                                 frame_size);
        if ( ret < 0 )
        {
-           LOG_ERROR( _("Could not read samples from fifo buffer") );
+           LOG_ERROR( _("Could not read samples from fifo buffer.  Error: ")
+                      << get_error_text(ret) );
            return false;
        }
 
@@ -582,7 +597,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    av_free_packet( &pkt );
 
    return true;
-   
+
 }
 
 
@@ -876,9 +891,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    if ( opts->audio_codec == "NONE" )
        fmt->audio_codec = AV_CODEC_ID_NONE;
    else if ( opts->audio_codec == "MP3" )
-       fmt->audio_codec = AV_CODEC_ID_MP3;    // works but s16p
+       fmt->audio_codec = AV_CODEC_ID_MP3; 
    else if ( opts->audio_codec == "AC3" )
-       fmt->audio_codec = AV_CODEC_ID_AC3; // works out of sync
+       fmt->audio_codec = AV_CODEC_ID_AC3;
    else if ( opts->audio_codec == "AAC" )
        fmt->audio_codec = AV_CODEC_ID_AAC; 
    else if ( opts->audio_codec == "VORBIS" )
