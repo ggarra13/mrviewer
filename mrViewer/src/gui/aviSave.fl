@@ -93,9 +93,6 @@ v->value(0);
             xywh {55 20 91 26}
           } {
             {fltk::Item} {} {
-              label NONE
-              }
-            {fltk::Item} {} {
               label AC3
               }
             {fltk::Item} {} {
@@ -105,8 +102,9 @@ v->value(0);
               label MP3
               }
             {fltk::Item} {} {
-              label PCM
+              label NONE
               }
+
           }
           {fltk::ValueInput} uiAudioBitrate {
             label Bitrate
