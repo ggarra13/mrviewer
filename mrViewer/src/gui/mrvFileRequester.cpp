@@ -330,6 +330,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
 
 
+
    for ( ; frame <= last; ++frame )
    {
 
