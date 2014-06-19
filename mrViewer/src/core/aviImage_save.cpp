@@ -163,6 +163,7 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
 
 AVSampleFormat aformat;
 AVFrame* audio_frame;
+static boost::int64_t frame_audio = 0;
 static AVAudioFifo* fifo = NULL;
 static uint8_t **src_samples_data = NULL;
 static int       src_samples_linesize;
@@ -418,11 +419,11 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
 
 static bool write_audio_frame(AVFormatContext *oc, AVStream *st, 
-			      const CMedia* img)
+			      CMedia* img)
 {
    AVPacket pkt = {0};
    int got_packet, ret, dst_nb_samples;
-   
+
    char buf[AV_ERROR_MAX_STRING_SIZE];
 
    av_init_packet(&pkt);
@@ -431,8 +432,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    AVCodecContext* c = st->codec;
 
-   const audio_type_ptr audio = img->get_audio_frame();
+   const audio_type_ptr audio = img->get_audio_frame( frame_audio );
 
+   frame_audio = audio->frame() + 1;
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
    src_nb_samples /= av_get_bytes_per_sample( aformat );
@@ -440,6 +442,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    if ( src_nb_samples == 0 ) {
        return false;
    }
+
 
    if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
    {
@@ -461,10 +464,13 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        unsigned src_rate = img->audio_frequency();
        unsigned dst_rate = c->sample_rate;
 
+#if 1
        dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
                                        src_nb_samples, dst_rate, src_rate,
                                        AV_ROUND_UP);
-
+#else
+       dst_nb_samples = src_nb_samples;
+#endif
 
        if (dst_nb_samples > max_dst_nb_samples) {
 
@@ -542,6 +548,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
       }
    }
 
+
    audio_frame->pts = AV_NOPTS_VALUE;
    audio_frame->nb_samples     = frame_size;
    audio_frame->channels       = c->channels;
@@ -605,11 +612,21 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 static void close_audio_static(AVFormatContext *oc, AVStream *st)
 {
-   avcodec_close(st->codec);
+    avcodec_close(st->codec);
+   
+    av_audio_fifo_free( fifo ); fifo = NULL;
+    swr_free( &swr_ctx );
+
     if (dst_samples_data != src_samples_data) {
         av_free(dst_samples_data[0]);
         av_free(dst_samples_data);
     }
+    src_samples_data = NULL;
+    src_samples_linesize = 0;
+    src_nb_samples = 0;
+    max_dst_nb_samples = 0;
+    dst_samples_data = NULL;
+    dst_samples_linesize = 0;
     av_frame_free(&audio_frame);
 }
 
@@ -779,7 +796,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
           av_free_packet( &pkt );
 
           if (ret < 0) {
-              LOG_ERROR( "Error while writing video frame: " << 
+              LOG_ERROR( _("Error while writing video frame: ") << 
                          get_error_text(ret) );
               return false;
           }
@@ -815,24 +832,30 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 
 /* prepare a 16 bit dummy audio frame of 'frame_size' samples and
    'nb_channels' channels */
-audio_type_ptr CMedia::get_audio_frame() const
+audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f ) const
 {
+    boost::int64_t x = f;
+    audio_cache_t::const_iterator end = _audio.end();
+    audio_cache_t::const_iterator i;
 #if 1
-    audio_cache_t::const_iterator end = _audio.end();
-    audio_cache_t::const_iterator i = std::lower_bound( _audio.begin(), end, 
-							_frame,
-							LessThanFunctor() );
+    for ( ; x ; --x )
+    {
+        i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
+        if ( i != end ) return *i;
+    }
 #else
-    audio_cache_t::const_iterator end = _audio.end();
-    audio_cache_t::const_iterator i = std::find_if( _audio.begin(), end,
-                                                    EqualFunctor(_frame) );
+    for ( ; x ; --x )
+    {
+        i = std::find_if( _audio.begin(), end, EqualFunctor(x) );
+        if ( i != end ) return *i;
+    }
 #endif
+
     if ( i == end )
     {
-        LOG_ERROR( "Missing audio frame " << _frame );
-        return audio_type_ptr( new audio_type( _frame, 0, 0, NULL, 0) );
+        LOG_ERROR( _("Missing audio frame ") << f );
+        return audio_type_ptr( new audio_type( f, 0, 0, NULL, 0) );
     }
-
 
     return *i;
 }
@@ -845,6 +868,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    assert( filename != NULL );
    assert( img != NULL );
 
+   frame_audio = img->first_frame();
    samples_count = 0;
    frame_count = 0;
 
@@ -915,8 +939,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
    if ( video_st == NULL && audio_st == NULL )
    {
-      LOG_ERROR( "No audio nor video stream created" );
-      return false;
+       LOG_ERROR( _("No audio nor video stream created") );
+       return false;
    }
 
 
@@ -955,7 +979,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 }
 
 
-bool aviImage::save_movie_frame( const CMedia* img )
+bool aviImage::save_movie_frame( CMedia* img )
 {
 
    double audio_time, video_time;
@@ -993,9 +1017,9 @@ bool aviImage::save_movie_frame( const CMedia* img )
 
     if ( audio_st )
     {
-       while( audio_time <= video_time) {
-           if ( ! write_audio_frame(oc, audio_st, img) )
-             break;
+        while( audio_time <= video_time) {
+            if ( ! write_audio_frame(oc, audio_st, img) )
+                break;
 	   audio_time = audio_st->pts.val * av_q2d( audio_st->time_base);
        }
     }
@@ -1126,7 +1150,7 @@ bool aviImage::close_movie( const CMedia* img )
 {
     if ( !flush_video_and_audio(img) )
     {
-        LOG_ERROR( "Flushing of buffers failed" );
+        LOG_ERROR( _("Flushing of buffers failed") );
     }
 
    /* Write the trailer, if any. The trailer must be written before you
