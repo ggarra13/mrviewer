@@ -13,7 +13,6 @@
 #define __STDC_LIMIT_MACROS
 #include <inttypes.h>
 
-#include "mrvPacketQueue.h"
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -36,18 +35,18 @@ extern "C" {
 
 
 
-#include <iostream>
 #include <algorithm>  // for std::min, std::abs
 #include <limits>
 
 
-#include "CMedia.h"
+#include "core/CMedia.h"
+#include "core/mrvPacketQueue.h"
 #include "gui/mrvIO.h"
 #include "core/mrvException.h"
 #include "core/mrvPlayback.h"
 #include "core/mrvFrameFunctors.h"
 #include "core/mrvThread.h"
-#include "mrvAudioEngine.h"
+#include "core/mrvAudioEngine.h"
 #include "core/mrvSwizzleAudio.h"
 #include "core/mrvI8N.h"
 #include "core/mrvOS.h"
@@ -825,6 +824,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     int ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
 
     if (ret >= 0 && got_frame) {
+
         int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
                                                    frame->nb_samples,
                                                    ctx->sample_fmt, 0);
@@ -1018,6 +1018,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
     }
 
 
+
 #ifdef DEBUG
   if ( _audio_buf_used + pkt.size >= _audio_max )
     {
@@ -1030,6 +1031,10 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   pkt_temp.data = pkt.data;
   pkt_temp.size = pkt.size;
 
+  if ( pkt.size == 0 )
+  {
+      LOG_ERROR( ">>>>>>>>>>>>>>   EMPTY PACKET <<<<<<<<<<<" );
+  }
 
 
   assert( _audio_buf != NULL );
@@ -1046,9 +1051,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
        // assert( _audio_buf_used % 16 == 0 );
        assert( audio_size > 0 );
        int ret = decode_audio3( ctx, 
-				( int16_t * )( (char*)_audio_buf + 
-					       _audio_buf_used ), 
-				&audio_size, &pkt_temp );
+                                ( int16_t * )( (char*)_audio_buf + 
+                                               _audio_buf_used ), 
+                                &audio_size, &pkt_temp );
 
       // If no samples are returned, then break now
       if ( ret <= 0 )
@@ -1064,12 +1069,13 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 	}
 
 
-      assert( ret <= pkt_temp.size );
       assert( audio_size + _audio_buf_used <= _audio_max );
 
       // Decrement the length by the number of bytes parsed
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
+
+      // if ( pkt_temp.size == 0 ) pkt_temp.data = NULL;
 
       if ( audio_size <= 0 ) break;
 
@@ -1079,6 +1085,21 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
 
   if ( pkt_temp.size == 0 ) {
+
+
+      if ( ctx->codec->capabilities & CODEC_CAP_DELAY )
+      {
+          pkt_temp.data = NULL;
+          int ret = decode_audio3( ctx, 
+                                   ( int16_t * )( (char*)_audio_buf + 
+                                              _audio_buf_used ), 
+                                   &audio_size, &pkt_temp );
+          if ( ret > 0 )
+          {
+              _audio_buf_used += audio_size;
+          }
+      }
+
       return kDecodeOK;
   }
 
@@ -1139,12 +1160,14 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 		    << " used: " << _audio_buf_used << std::endl
 		    << "  max: " << _audio_max << std::endl;
 	}
-      DBG( "Store " << last );
 #endif
 
       index += store_audio( last,
 			    (boost::uint8_t*)_audio_buf + index,
 			    bytes_per_frame );
+
+      DBG( "Store " << last );
+
 
 
       if ( last >= frame )  got_audio = kDecodeOK;
@@ -1156,14 +1179,15 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       ++last;
 
 #ifdef DEBUG
-  if ( got_audio != kDecodeOK )
-    {
-      IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
-        	   << _(" last ") << last
-        	   << _(" from ") << frame << _(" used: ") << _audio_buf_used
-        	   << _(" need ") 
-        	   << audio_bytes_per_frame() );
-    }
+      if ( got_audio != kDecodeOK )
+      {
+          IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
+                       << _(" last ") << last
+                       << _(" from ") << frame << _(" used: ") 
+                       << _audio_buf_used
+                       << _(" need ") 
+                       << audio_bytes_per_frame() );
+      }
 #endif
     }
   
@@ -1807,7 +1831,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
           {
 	      if ( pktframe == frame )
               {
-                  int64_t temp;
+                  int64_t temp = MRV_NOPTS_VALUE;
 		  decode_audio_packet( temp, frame, pkt );
 		  _audio_packets.pop_front();
 		  return kDecodeOK;
