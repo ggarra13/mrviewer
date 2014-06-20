@@ -562,7 +562,7 @@ namespace mrv {
     /// VCR play (and cache frames if needed) sequence
        virtual void play( const Playback dir,
 			  mrv::ViewerUI* const uiMain,
-			  bool fg );
+			  const bool fg );
 
        void abort(bool t) { _aborted = t; }
        bool aborted() { return _aborted; }
