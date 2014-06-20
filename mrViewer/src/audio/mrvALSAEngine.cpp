@@ -470,7 +470,7 @@ namespace mrv {
 
   bool ALSAEngine::play( const char* data, const size_t size )
   {
-    if ( !_pcm_handle) return false;
+    if ( !_pcm_handle || size == 0 ) return false;
     if ( !_enabled )   return true;
 
     int           status;
