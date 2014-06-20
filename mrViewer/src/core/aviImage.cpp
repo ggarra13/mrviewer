@@ -1883,8 +1883,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 	      }
 	      if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
 	   }
-	   
-	   
+
 #ifdef DEBUG_DECODE
 	   fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
 		    " audio pts: %07" PRId64 
@@ -2924,44 +2923,6 @@ bool aviImage::in_subtitle_store( const boost::int64_t frame )
 }
 
 
-void aviImage::loop_at_start( const boost::int64_t frame )
-{
-  if ( has_video() || is_sequence() )
-    {
-      _video_packets.loop_at_start( frame );
-    }
-
-  if ( has_audio() )
-    {
-      _audio_packets.loop_at_start( frame );
-    }
-
-  if ( has_subtitle()  )
-    {
-      _subtitle_packets.loop_at_start( frame );
-    }
-}
-
-
-
-void aviImage::loop_at_end( const boost::int64_t frame )
-{
-
-   if ( has_picture() )
-   {
-      _video_packets.loop_at_end( frame );
-   }
-
-  if ( has_audio() )
-    {
-      _audio_packets.loop_at_end( frame );
-    }
-
-  if ( has_subtitle() )
-    {
-      _subtitle_packets.loop_at_end( frame );
-    }
-}
 
 } // namespace mrv
 
