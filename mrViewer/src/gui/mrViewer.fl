@@ -166,12 +166,13 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {} {
+  class ReelUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {460 411 405 350} hide resizable
+        xywh {463 411 405 350} hide resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
 o->child_of( main->uiMain );}
@@ -185,7 +186,7 @@ o->scrollbar.color( o->buttoncolor() );
 o->hscrollbar.color( o->buttoncolor() );}
           class {mrv::ImageBrowser}
         } {}
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {0 0 405 32} box UP_BOX
         } {
           {fltk::Choice} {} {
@@ -253,7 +254,7 @@ v->new_reel(name);}
               extra_code {o->image(file_delete_24);}
             }
           }
-          {fltk::Group} uiViewerOps {
+          {fltk::Group} uiViewerOps {open
             xywh {324 3 79 26}
           } {
             {fltk::Button} {} {
@@ -263,11 +264,11 @@ v->new_reel(name);}
               tooltip {Set image CTL script}
               xywh {0 0 26 26} box UP_BOX labelfont 1
             }
-            {fltk::Button} {} {
+            {fltk::Button} uiBGButton {
               label BG
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->change_background();}
-              tooltip {Set reel images as background}
+              callback {v->change_background();} selected
+              tooltip {Set reel images as background (needs EDL).}
               xywh {26 0 26 26} box UP_BOX labelfont 1
             }
             {fltk::Button} uiEDLButton {
@@ -568,16 +569,15 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {492 286 640 475} resizable visible
+        xywh {495 286 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings open
+          label Settings
           xywh {207 24 433 416}
         } {
           {fltk::Group} {} {
@@ -1656,7 +1656,7 @@ for ( ; i != e; ++i )
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 195 434}
         } {
           {fltk::Browser} {} {
@@ -2328,8 +2328,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2378,7 +2377,7 @@ o->main( this );}
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W selected
+              label W
               tooltip {Opens different windows}
               xywh {5 5 20 20}
               class {mrv::PopupMenu}

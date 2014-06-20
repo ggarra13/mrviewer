@@ -20,6 +20,7 @@ FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
 FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 # FIND_PACKAGE( RLM         REQUIRED )    # for licensing
+FIND_PACKAGE( GLU         REQUIRED )    # for gluErrorString
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 # FIND_PACKAGE( AO )    # for ao sound lib
@@ -84,6 +85,7 @@ INCLUDE_DIRECTORIES(
   ${POSTGRESQL_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${RLM_INCLUDE_DIR}
+  ${GLU_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
   )
@@ -278,6 +280,8 @@ ELSE( AO_FOUND )
     SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
   ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 ENDIF( AO_FOUND )
+
+MESSAGE( "OPENGL LIBS=${OPENGL_LIBRARIES}" )
 
 
 SET( LIBRARIES 
