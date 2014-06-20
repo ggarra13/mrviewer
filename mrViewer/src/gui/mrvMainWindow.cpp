@@ -11,9 +11,10 @@
 #include <iostream>
 
 // Must come before fltk/x11.h
-#include "mrvMainWindow.h"
 #include "mrViewer.h"
-#include "mrvImageView.h"
+#include "gui/mrvImageView.h"
+#include "gui/mrvMainWindow.h"
+#include "gui/mrvIO.h"
 
 #include <fltk/Cursor.h>
 #include <fltk/events.h>
@@ -43,7 +44,8 @@ namespace mrv {
 
   MainWindow::~MainWindow()
   {
-    uiMain->uiView->stop();
+      DBG( "*****************************************************" );
+      uiMain->uiView->stop();
   }
 
   void MainWindow::set_icon()
