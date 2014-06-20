@@ -4434,19 +4434,13 @@ void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
 
-   mrv::media fg = foreground();
+#if 1
+   mrv::media m = foreground();
+   if ( m ) m->image()->abort(true);
 
-   if ( fg )
-   {
-      fg->image()->abort( true );
-   }
-
-   mrv::media bg = background();
-
-   if ( bg )
-   {
-      bg->image()->abort( true );
-   }
+   m = background();
+   if ( m ) m->image()->abort(true);
+#endif
 
   _playback = kStopped;
   _last_fps = 0.0;

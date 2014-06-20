@@ -96,10 +96,6 @@ namespace mrv {
        bool save_frame( const mrv::image_type_ptr pic );
 
 
-    ////////////////// Add a loop to packet lists
-    virtual void loop_at_start( const boost::int64_t frame ); 
-    virtual void loop_at_end( const boost::int64_t frame ); 
-
     virtual void flush_video();
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
