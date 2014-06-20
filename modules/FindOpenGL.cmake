@@ -119,6 +119,7 @@ ELSE (WIN32)
             /opt/graphics/OpenGL/lib
             /usr/openwin/lib
             /usr/shlib /usr/X11R6/lib
+	    /usr/lib/x86_64-linux-gnu
 	    /usr/lib
     )
 

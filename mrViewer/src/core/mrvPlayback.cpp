@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -451,9 +451,10 @@ void audio_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 
+   cerr << endl << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 
 	<< img->stopped()  
 	<< " frame " << img->audio_frame() << endl;
+   assert( img->stopped() );
 #endif
 
 } // audio_thread
@@ -522,8 +523,9 @@ void subtitle_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT  SUBTITLE THREAD " << img->name() 
+    cerr << endl << "EXIT  SUBTITLE THREAD " << img->name() 
 	 << " stopped? " << img->stopped() << endl;
+   assert( img->stopped() );
 #endif
 
   }  // subtitle_thread
@@ -697,9 +699,10 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
+   cerr << endl << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
 	<< img->name() << " stopped? " << img->stopped()
 	<< " at " << frame << "  img->frame: " << img->frame() << endl;
+   assert( img->stopped() );
 #endif
 
 }  // video_thread
@@ -823,8 +826,9 @@ void decode_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
+   cerr << endl << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
 	<< img->frame() << "  dts: " << img->dts() << endl;
+   assert( img->stopped() );
 #endif
 
 }
