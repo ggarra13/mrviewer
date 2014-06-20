@@ -58,7 +58,7 @@ namespace mrv {
     virtual bool fetch( const boost::int64_t frame );
     /// VCR play (and cache frames if needed) sequence
        virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
-			  bool fg );
+			  const bool fg );
 
     virtual boost::int64_t wait_subtitle();
 

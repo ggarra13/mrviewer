@@ -223,7 +223,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
       unsigned int bytes_per_frame = audio_bytes_per_frame();
       unsigned int audio_bytes = 0;
 
-      int eof = false;
+      bool eof = false;
       unsigned counter = 0;
       unsigned packets_added = 0;
 
@@ -253,8 +253,8 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
               if ( error == AVERROR_EOF )
               {
                   counter++;
-                  if ( counter >= _frame_offset ) {
-                 
+                  if ( counter >= _frame_offset ) 
+                  {
                       if ( is_seek || playback() == kBackwards )
                       {
                           if ( !got_audio ) _audio_packets.seek_end(apts);

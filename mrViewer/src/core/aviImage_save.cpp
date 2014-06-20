@@ -1032,40 +1032,44 @@ bool flush_video_and_audio( const CMedia* img )
     int stop_encoding = 0;
     int ret = 0;
 
-    AVCodecContext* c = audio_st->codec;
-
-    unsigned cache_size = av_audio_fifo_size( fifo );
-    AVRational ratio = { 1, c->sample_rate };
-
-    int got_packet;
-    AVPacket pkt = { 0 };
-    av_init_packet(&pkt);
-
-    // Send last packet to encode
-    if ( cache_size > 0 )
+    if ( audio_st )
     {
-        ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
+        AVCodecContext* c = audio_st->codec;
+
+        unsigned cache_size = av_audio_fifo_size( fifo );
+        AVRational ratio = { 1, c->sample_rate };
+
+        int got_packet;
+        AVPacket pkt = { 0 };
+        av_init_packet(&pkt);
+
+        // Send last packet to encode
+        if ( cache_size > 0 )
+        {
+            ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
                                  cache_size);
-        if (ret < 0)
-        {
-            LOG_ERROR( _("Could not read audio fifo: ") << 
-                       get_error_text(ret) );
+            if (ret < 0)
+            {
+                LOG_ERROR( _("Could not read audio fifo: ") << 
+                           get_error_text(ret) );
+            }
+            
+            c->frame_size = cache_size;
+            audio_frame->nb_samples = cache_size;
+            audio_frame->pts = av_rescale_q( samples_count, ratio, 
+                                             c->time_base );
+            
+            ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
+            if (ret < 0)
+            {
+                LOG_ERROR( _("Could not encode audio frame: ") << 
+                           get_error_text(ret) );
+            }
         }
 
-        c->frame_size = cache_size;
-        audio_frame->nb_samples = cache_size;
-        audio_frame->pts = av_rescale_q( samples_count, ratio, 
-                                         c->time_base );
+        av_free_packet( &pkt );
 
-        ret = avcodec_encode_audio2(c, &pkt, audio_frame, &got_packet);
-        if (ret < 0)
-        {
-            LOG_ERROR( _("Could not encode audio frame: ") << 
-                       get_error_text(ret) );
-        }
-   }
-
-    av_free_packet( &pkt );
+    }
 
     AVStream* st[2];
     st[0] = audio_st;
@@ -1073,12 +1077,12 @@ bool flush_video_and_audio( const CMedia* img )
     for ( int i = 0; i < 2; ++i ) {
         AVStream* s = st[i];
         if ( !s ) continue;
-
+            
         AVCodecContext* c = s->codec;
 
         if ( !( c->codec->capabilities & CODEC_CAP_DELAY ) )
             continue;
-
+            
         if (c->codec_type == AVMEDIA_TYPE_AUDIO && c->frame_size <= 1)
             continue;
         if (c->codec_type == AVMEDIA_TYPE_VIDEO && (oc->oformat->flags & AVFMT_RAWPICTURE) && c->codec->id == AV_CODEC_ID_RAWVIDEO)
@@ -1087,7 +1091,7 @@ bool flush_video_and_audio( const CMedia* img )
         for (;;) {
             int (*encode)(AVCodecContext*, AVPacket*, const AVFrame*, int*) = NULL;
             const char *desc;
-            
+                
             switch (s->codec->codec_type) {
                 case AVMEDIA_TYPE_AUDIO:
                     encode = avcodec_encode_audio2;
@@ -1100,22 +1104,20 @@ bool flush_video_and_audio( const CMedia* img )
                 default:
                     stop_encoding = 1;
             }
-
+                
             if (encode) {
                 AVPacket pkt;
                 int got_packet;
                 av_init_packet(&pkt);
                 pkt.data = NULL;
                 pkt.size = 0;
-                
+                    
                 ret = encode(c, &pkt, NULL, &got_packet);
-
+                    
                 if (ret < 0) {
                     LOG_ERROR( _("Failed ") << desc << _(" encoding") );
                     return false;
                 }
- 
-
 
                 if (!got_packet ) {
                     stop_encoding = 1;
@@ -1123,7 +1125,6 @@ bool flush_video_and_audio( const CMedia* img )
                               << _(" frames") );
                     break;
                 }
-
 
                 ret = write_frame(oc, &c->time_base, s, &pkt);
 
