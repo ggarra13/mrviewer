@@ -1562,7 +1562,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
 bool CMedia::find_audio( const boost::int64_t frame )
 {
-  audio_type_ptr result;
 
   if ( !has_video() && !is_sequence() ) 
     {
@@ -1570,8 +1569,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
       refresh();
     }
   
-
-  {
 
 #ifdef DEBUG_AUDIO_PACKETS
     debug_audio_packets(frame, "FIND");
@@ -1601,16 +1598,12 @@ bool CMedia::find_audio( const boost::int64_t frame )
 	return false;
       }
 
-    result = *i;
-
-
     limit_audio_store( frame );
-  }
   
-  bool ok = play_audio( result );
-  _audio_pts   = int64_t( _audio_frame / _fps );
-  _audio_clock = av_gettime() / 1000000.0;
-  return ok;
+    bool ok = play_audio( *i );
+    _audio_pts   = int64_t( _audio_frame / _fps );
+    _audio_clock = av_gettime() / 1000000.0;
+    return ok;
 }
 
 
