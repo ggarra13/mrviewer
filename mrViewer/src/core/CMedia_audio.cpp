@@ -1004,7 +1004,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   assert( !_audio_packets.is_loop_start( pkt ) );
 
   ptsframe = get_frame( stream, pkt );
-  DBG( "PTSFRAME " << ptsframe );
 
   // Make sure audio frames are continous during playback to 
   // accomodate weird sample rates not evenly divisable by frame rate
@@ -1013,7 +1012,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
         if ( ptsframe - _audio_last_frame >= 0 )
         {
             ptsframe = _audio_last_frame + 1;
-            DBG( "PTSFRAME continuous " << ptsframe );
         }
     }
 
@@ -1165,9 +1163,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       index += store_audio( last,
 			    (boost::uint8_t*)_audio_buf + index,
 			    bytes_per_frame );
-
-      DBG( "Store " << last );
-
 
 
       if ( last >= frame )  got_audio = kDecodeOK;
