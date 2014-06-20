@@ -52,6 +52,7 @@ extern "C" {
 namespace 
 {
   const char* kModule = "avi";
+  const unsigned int  kMaxCacheImages = 70;
 }
 
 
@@ -91,9 +92,6 @@ namespace
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
 #define kMIN_FRAMES 5
 
-namespace {
-  const unsigned int  kMaxCacheImages = 70;
-}
 
 namespace mrv {
 
@@ -113,7 +111,6 @@ aviImage::aviImage() :
   _compression = "";
 
   memset(&_sub, 0, sizeof(AVSubtitle));
-
 }
 
 
@@ -132,7 +129,7 @@ aviImage::~aviImage()
   if ( _convert_ctx )
      sws_freeContext( _convert_ctx );
   if ( _av_frame )
-     av_frame_unref( _av_frame );
+     av_frame_free( &_av_frame );
 
   if ( _video_index >= 0 )
     close_video_codec();
@@ -304,15 +301,14 @@ void aviImage::open_video_codec()
   static int idct = FF_IDCT_AUTO;
   static int error_concealment = 3;
 
-  ctx->codec_id        = _video_codec->id;
-  ctx->idct_algo         = FF_IDCT_AUTO;
-  ctx->workaround_bugs = workaround_bugs;
-  ctx->lowres          = lowres;
-  ctx->skip_frame= skip_frame;
-  ctx->skip_idct = skip_idct;
-  ctx->idct_algo = idct;
-  ctx->skip_loop_filter= skip_loop_filter;
-  ctx->error_concealment= error_concealment;
+  ctx->codec_id          = _video_codec->id;
+  ctx->idct_algo         = idct;
+  ctx->workaround_bugs   = workaround_bugs;
+  ctx->lowres            = lowres;
+  ctx->skip_frame        = skip_frame;
+  ctx->skip_idct         = skip_idct;
+  ctx->skip_loop_filter  = skip_loop_filter;
+  ctx->error_concealment = error_concealment;
 
   if(_video_codec->capabilities & CODEC_CAP_DR1)
      ctx->flags |= CODEC_FLAG_EMU_EDGE;
@@ -368,7 +364,7 @@ void aviImage::flush_video()
 
 /// VCR play (and cache frames if needed) sequence
 void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
-		     bool fg )
+		     const bool fg )
 {
    CMedia::play( dir, uiMain, fg );
 }
