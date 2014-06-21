@@ -1158,7 +1158,7 @@ void CMedia::thread_exit()
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir, 
 		  mrv::ViewerUI* const uiMain,
-		  const bool fg )
+		  bool fg )
 {
 
   if ( dir == _playback && !_threads.empty() ) return;
@@ -1170,7 +1170,7 @@ void CMedia::play(const CMedia::Playback dir,
   _aborted = false;
 
   assert( uiMain != NULL );
-  assert( _threads.empty() );
+  assert( _threads.size() == 0 );
 
   if ( _frame < first_frame() ) _frame = first_frame();
   if ( _frame > last_frame() )  _frame = last_frame();
@@ -1195,8 +1195,6 @@ void CMedia::play(const CMedia::Playback dir,
   _seek_req = true;
   if ( ! seek_to_position( _frame ) )
      IMG_ERROR( _("Could not seek to frame ") << _frame );
-
-  DBG( name() << " START THREADS fg: " << fg << "  +++++++++++++" );
 
   // Start threads
   PlaybackData* data = new PlaybackData( fg, uiMain, this );
@@ -1270,7 +1268,8 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
-  // if ( _playback == kStopped ) return;
+
+    if ( _playback == kStopped ) return;
 
   _playback = kStopped;
 
@@ -1299,7 +1298,6 @@ void CMedia::stop()
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
-
 
 }
 
