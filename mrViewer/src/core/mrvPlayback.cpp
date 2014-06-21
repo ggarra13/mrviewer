@@ -370,6 +370,7 @@ void audio_thread( PlaybackData* data )
    cerr << "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
+   bool skip = false;
 
    mrv::Timer timer;
 
@@ -380,13 +381,15 @@ void audio_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
 
-      DBG( "WAIT AUDIO for " << frame );
-      img->wait_audio();
+      if (!skip)
+          img->wait_audio();
       // DBG( "DECODE AUDIO FRAME " << frame );
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
       // DBG( "DECODED AUDIO FRAME " << frame );
 
+      DBG( "AUDIO frame " << frame << "  loop end? " << 
+           ( status == CMedia::kDecodeLoopEnd ) );
 
       if ( frame > img->last_frame() )
          status = CMedia::kDecodeLoopEnd;
@@ -408,6 +411,16 @@ void audio_thread( PlaybackData* data )
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
               {
+
+
+                  DBG( "BARRIER IN AUDIO " << frame );
+
+                  CMedia::Barrier* barrier = img->loop_barrier();
+                  // Wait until all threads loop and decode is restarted
+                  barrier->wait();
+
+                  DBG( "BARRIER PASSED IN AUDIO " << frame );
+
                   DBG( "DECODE AUDIO LOOP END/START " << frame );
 
                   if (! img->aborted() )
@@ -417,23 +430,13 @@ void audio_thread( PlaybackData* data )
                                                    reel, timeline, status );
                       if ( end == kEndIgnore )
                       {
+                          skip = true;
                           break;
                       }
                   }
 
                   DBG( "DECODE AUDIO LOOP END/START HAS FRAME " << frame 
                        << " img->aborted? " << img->aborted() );
-
-                  if ( img->aborted() ) break;
-
-                  DBG( "BARRIER IN AUDIO" );
-
-                  CMedia::Barrier* barrier = img->loop_barrier();
-                  // Wait until all threads loop and decode is restarted
-                  barrier->wait();
-
-                  DBG( "BARRIER PASSED IN AUDIO " << frame );
-
                   continue;
               }
           case CMedia::kDecodeOK:
@@ -486,13 +489,25 @@ void subtitle_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
+   mrv::ViewerUI*     uiMain   = data->uiMain;
+
    CMedia* img = data->image;
    assert( img != NULL );
+
+   bool fg = data->fg;
 
    // delete the data (we don't need it anymore)
    delete data;
 
 
+   mrv::ImageView*      view = uiMain->uiView;
+   mrv::Timeline*      timeline = uiMain->uiTimeline;
+   mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
+
+   int idx = fg ? view->fg_reel() : view->bg_reel();
+
+   mrv::Reel   reel = browser->reel_at( idx );
+   if (!reel) return;
 
     mrv::Timer timer;
 
@@ -530,6 +545,9 @@ void subtitle_thread( PlaybackData* data )
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
 	    barrier->wait();
+
+            EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
+                                         reel, timeline, status );
 	    continue;
 	  }
 	
@@ -599,7 +617,6 @@ void video_thread( PlaybackData* data )
       int step = (int) img->playback();
       if ( step == 0 ) break;
 
-
       CMedia::DecodeStatus status;
 
       status = img->decode_video( frame );
@@ -621,6 +638,17 @@ void video_thread( PlaybackData* data )
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
+
+	       skip = false;
+
+               DBG( "BARRIER IN VIDEO " << frame );
+
+	       CMedia::Barrier* barrier = img->loop_barrier();
+	       // Wait until all threads loop and decode is restarted
+	       barrier->wait();
+
+               DBG( "BARRIER PASSED IN VIDEO" );
+
 	       if (! img->aborted() )
 	       {
                    DBG( "VIDEO DECODE LOOP START/END1 " << frame );
@@ -628,7 +656,8 @@ void video_thread( PlaybackData* data )
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
 
-                  DBG( "VIDEO DECODE LOOP START/END2 " << frame );
+                  DBG( "VIDEO DECODE LOOP START/END2 " << frame 
+                       << " step " << step );
 
 		  if ( end == kEndIgnore )
 		  {
@@ -640,16 +669,6 @@ void video_thread( PlaybackData* data )
 
                if ( img->aborted() )
                   break;
-
-	       skip = false;
-
-               DBG( "BARRIER IN VIDEO img->aborted: " << img->aborted() );
-
-	       CMedia::Barrier* barrier = img->loop_barrier();
-	       // Wait until all threads loop and decode is restarted
-	       barrier->wait();
-
-               DBG( "BARRIER PASSED IN VIDEO" );
 
 	       continue;
 	    }
@@ -795,15 +814,7 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-  	 if ( ! img->aborted() )
-	 {
-             // Do the looping, taking into account ui state
-             //  and return new frame and step.
-             EndStatus end = handle_loop( frame, step, img, fg,
-                                          uiMain, reel, timeline, status );
-	 }
-
-          DBG( "DECODE BARRIER" );
+          DBG( "DECODE BARRIER " << frame );
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
@@ -813,7 +824,13 @@ void decode_thread( PlaybackData* data )
          DBG( "DECODE BARRIER PASSED" );
 
 	 if ( img->aborted() ) break;
-	
+
+         // Do the looping, taking into account ui state
+         //  and return new frame and step.
+         // This handle loop has to come after the barrier as decode thread
+         // goes faster than video or audio threads
+         EndStatus end = handle_loop( frame, step, img, fg,
+                                      uiMain, reel, timeline, status );
       }
       
 
