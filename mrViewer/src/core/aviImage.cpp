@@ -1920,6 +1920,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 
    if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
    {
+       clear_packets();
        bool ok = seek_to_position( frame );
        if ( !ok )
            IMG_ERROR("seek_to_position: Could not seek to frame " 
@@ -2430,8 +2431,6 @@ void aviImage::do_seek()
 
   if ( !got_audio || !got_video )
   {
-      if ( _seek_frame != _expected )
-          clear_packets();
       fetch( _seek_frame );
   }
 
