@@ -1680,16 +1680,9 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	     return kDecodeOK;
 	  }
 
-	  if ( frame < first_frame() )
-	  {
-	     flush_audio();
-	     _audio_packets.pop_front();
-	     return kDecodeLoopStart;
-	  }
-	  else
-	  {
-	     return got_audio;
-	  }
+          flush_audio();
+          _audio_packets.pop_front();
+          return kDecodeLoopStart;
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
@@ -1701,15 +1694,9 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	  }   
 
 	  // with loops, packet dts is really frame
-	  if ( frame > last_frame() )
-	    {
-	       flush_audio();
-	       _audio_packets.pop_front();
-	       return kDecodeLoopEnd;
-	    }
-
-	  _audio_packets.pop_front();
-	  return got_audio;
+          flush_audio();
+          _audio_packets.pop_front();
+          return kDecodeLoopEnd;
 	}
       else if ( _audio_packets.is_seek()  )
 	{
