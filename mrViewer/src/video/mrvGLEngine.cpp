@@ -41,6 +41,7 @@
 #  include <GL/glxew.h>
 #endif
 
+#include <GL/glu.h>
 #include <GL/glut.h>
 
 
@@ -128,8 +129,9 @@ namespace mrv {
     
     while (error != GL_NO_ERROR)
       {
-	std::cerr << where << ": Error " << error << std::endl;
-	error = glGetError();
+          LOG_ERROR( where << _(": Error ") << error << " " <<
+                     gluErrorString(error) );
+          error = glGetError();
       }
 
     exit(1);
