@@ -1004,7 +1004,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   assert( !_audio_packets.is_loop_start( pkt ) );
 
   ptsframe = get_frame( stream, pkt );
-  DBG( "PTSFRAME " << ptsframe );
 
   // Make sure audio frames are continous during playback to 
   // accomodate weird sample rates not evenly divisable by frame rate
@@ -1013,7 +1012,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
         if ( ptsframe - _audio_last_frame >= 0 )
         {
             ptsframe = _audio_last_frame + 1;
-            DBG( "PTSFRAME continuous " << ptsframe );
         }
     }
 
@@ -1030,11 +1028,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   av_init_packet(&pkt_temp);
   pkt_temp.data = pkt.data;
   pkt_temp.size = pkt.size;
-
-  if ( pkt.size == 0 )
-  {
-      LOG_ERROR( ">>>>>>>>>>>>>>   EMPTY PACKET <<<<<<<<<<<" );
-  }
 
 
   assert( _audio_buf != NULL );
@@ -1062,8 +1055,8 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 	   IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
                       << _(" frame: ") << frame );
            IMG_ERROR(  get_error_text(ret) );
-           IMG_ERROR( "DATA: " << (void*) pkt_temp.data );
-           IMG_ERROR( _("audio used: ") << _audio_buf_used 
+           IMG_ERROR( "DATA: " << (void*) pkt_temp.data
+                      << _("audio used: ") << _audio_buf_used 
                       << _(" audio max: ")  << _audio_max );
 	  return kDecodeMissingSamples;
 	}
@@ -1165,9 +1158,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
       index += store_audio( last,
 			    (boost::uint8_t*)_audio_buf + index,
 			    bytes_per_frame );
-
-      DBG( "Store " << last );
-
 
 
       if ( last >= frame )  got_audio = kDecodeOK;
@@ -1351,9 +1341,8 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   // Seek to the correct position if necessary
   if ( frame != _expected )
     {
-        clear_packets();
-        bool ok = seek_to_position( frame );
-        if (ok) return;
+      bool ok = seek_to_position( frame );
+      if (ok) return;
     }
 
   bool got_audio = !has_audio();
@@ -1366,6 +1355,14 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   // if ( got_audio ) return;
 
  
+
+  // Clear the packet
+  AVPacket pkt;
+  av_init_packet( &pkt );
+
+  unsigned int bytes_per_frame = audio_bytes_per_frame();
+  unsigned int audio_bytes = 0;
+
   bool got_video = true;
   bool got_subtitle = true;
 
@@ -1492,7 +1489,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 {
   audio_type_ptr result;
 
-  if ( !has_video() && !is_sequence() ) 
+  if ( !has_picture() ) 
     {
       _frame = frame;
       refresh();
@@ -1787,7 +1784,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 
 void CMedia::do_seek()
 {
-  _dts = _seek_frame;
 
   bool got_audio = !has_audio();
 
@@ -1798,7 +1794,11 @@ void CMedia::do_seek()
 
   if ( !got_audio )
   {
+      if ( _seek_frame != _expected )
+          clear_packets();
+
      fetch_audio( _seek_frame );
+
   }
 
   // Seeking done, turn flag off

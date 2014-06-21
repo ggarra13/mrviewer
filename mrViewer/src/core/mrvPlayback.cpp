@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -89,7 +89,8 @@ namespace mrv {
     if    ( img->has_subtitle() ) r += 1;
     return r;
   }
-  
+
+
 
 EndStatus handle_loop( boost::int64_t& frame,
 		       int&     step,
@@ -171,34 +172,32 @@ EndStatus handle_loop( boost::int64_t& frame,
                       next->seek( f );
                       next->play( CMedia::kForwards, uiMain, fg );
                   }
+
 		  status = kEndNextImage;
 		  break;
 	       }
 	    }
 
-	    if ( frame > last )
-	    {
-	       if ( loop == ImageView::kLooping )
-	       {
-		  frame = first;
-		  status = kEndLoop;
-	       }
-	       else if ( loop == ImageView::kPingPong )
-	       {
-		  frame = last;
-		  step  = -1;
-		  view->playback( ImageView::kBackwards );
-		  img->frame( frame );
-		  img->audio_frame( frame );
-		  img->playback( CMedia::kBackwards );
-		  status = kEndChangeDirection;
-	       }
-	       else
-	       {
-		  view->playback( ImageView::kStopped );
-		  img->playback( CMedia::kStopped );
-	       }
-	    }
+            if ( loop == ImageView::kLooping )
+            {
+                frame = first;
+                status = kEndLoop;
+            }
+            else if ( loop == ImageView::kPingPong )
+            {
+                frame = last;
+                step  = -1;
+                view->playback( ImageView::kBackwards );
+                img->frame( frame );
+                img->audio_frame( frame );
+                img->playback( CMedia::kBackwards );
+                status = kEndChangeDirection;
+            }
+            else
+            {
+                view->playback( ImageView::kStopped );
+                img->playback( CMedia::kStopped );
+            }
 	    break;
 	 }
       case CMedia::kDecodeLoopStart:
@@ -244,35 +243,33 @@ EndStatus handle_loop( boost::int64_t& frame,
                       next->seek( f );
                       next->play( CMedia::kBackwards, uiMain, fg );
                   }
+
 		  status = kEndNextImage;
 		  break;
 	       }
 	    }
 
 
-	    if ( frame < first )
-	    {
-	       if ( loop == ImageView::kLooping )
-	       {
-		  frame = last;
-		  status = kEndLoop;
-	       }
-	       else if ( loop == ImageView::kPingPong )
-	       {
-		  frame = first;
-		  step = 1;
-		  view->playback( ImageView::kForwards );
-		  img->frame( frame );
-		  img->audio_frame( frame );
-		  img->playback( CMedia::kForwards );
-		  status = kEndChangeDirection;
-	       }
-	       else
-	       {
-		  img->playback( CMedia::kStopped );
-		  view->playback( ImageView::kStopped );
-	       }
-	    }
+            if ( loop == ImageView::kLooping )
+            {
+                frame = last;
+                status = kEndLoop;
+            }
+            else if ( loop == ImageView::kPingPong )
+            {
+                frame = first;
+                step = 1;
+                view->playback( ImageView::kForwards );
+                img->frame( frame );
+                img->audio_frame( frame );
+                img->playback( CMedia::kForwards );
+                status = kEndChangeDirection;
+            }
+            else
+            {
+                img->playback( CMedia::kStopped );
+                view->playback( ImageView::kStopped );
+            }
 	    break;
 	 }
       default:
@@ -383,9 +380,12 @@ void audio_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
 
+      DBG( "WAIT AUDIO for " << frame );
       img->wait_audio();
+      // DBG( "DECODE AUDIO FRAME " << frame );
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
+      // DBG( "DECODED AUDIO FRAME " << frame );
 
 
       if ( frame > img->last_frame() )
@@ -407,27 +407,38 @@ void audio_thread( PlaybackData* data )
 	    continue;
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
-             {
-                 if (! img->aborted() && !img->has_picture() )
-                 {
-                     EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
-                                                  reel, timeline, status );
-                     if ( end == kEndIgnore )
-                     {
-                         break;
-                     }
-                 }
+              {
+                  DBG( "DECODE AUDIO LOOP END/START " << frame );
 
-               if ( img->aborted() ) break;
+                  if (! img->aborted() )
+                  {
+                      EndStatus end = handle_loop( frame, step, img, fg,
+                                                   uiMain, 
+                                                   reel, timeline, status );
+                      if ( end == kEndIgnore )
+                      {
+                          break;
+                      }
+                  }
 
-	       CMedia::Barrier* barrier = img->loop_barrier();
-	       // Wait until all threads loop and decode is restarted
-	       barrier->wait();
-	       continue;
-	    }
-	 case CMedia::kDecodeOK:
-	    break;
-	 default:
+                  DBG( "DECODE AUDIO LOOP END/START HAS FRAME " << frame 
+                       << " img->aborted? " << img->aborted() );
+
+                  if ( img->aborted() ) break;
+
+                  DBG( "BARRIER IN AUDIO" );
+
+                  CMedia::Barrier* barrier = img->loop_barrier();
+                  // Wait until all threads loop and decode is restarted
+                  barrier->wait();
+
+                  DBG( "BARRIER PASSED IN AUDIO " << frame );
+
+                  continue;
+              }
+          case CMedia::kDecodeOK:
+              break;
+          default:
 	    break;
       }
 
@@ -452,14 +463,16 @@ void audio_thread( PlaybackData* data )
          view->frame( f );
       }
 
+      // DBG( "PLAY AUDIO " << frame );
       img->find_audio(frame);
       frame += step;
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 
+   cerr << endl << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 
 	<< img->stopped()  
 	<< " frame " << img->audio_frame() << endl;
+   assert( img->stopped() );
 #endif
 
 } // audio_thread
@@ -528,8 +541,9 @@ void subtitle_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-    cerr << "EXIT  SUBTITLE THREAD " << img->name() 
+    cerr << endl << "EXIT  SUBTITLE THREAD " << img->name() 
 	 << " stopped? " << img->stopped() << endl;
+   assert( img->stopped() );
 #endif
 
   }  // subtitle_thread
@@ -609,15 +623,16 @@ void video_thread( PlaybackData* data )
 	    {
 	       if (! img->aborted() )
 	       {
+                   DBG( "VIDEO DECODE LOOP START/END1 " << frame );
+
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
 
+                  DBG( "VIDEO DECODE LOOP START/END2 " << frame );
 
 		  if ( end == kEndIgnore )
 		  {
                      skip = true;
-		     // if ( img->has_audio() )
-		     //    frame = img->audio_frame();
 		     break;
 		  }
 
@@ -628,9 +643,14 @@ void video_thread( PlaybackData* data )
 
 	       skip = false;
 
+               DBG( "BARRIER IN VIDEO img->aborted: " << img->aborted() );
+
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
 	       barrier->wait();
+
+               DBG( "BARRIER PASSED IN VIDEO" );
+
 	       continue;
 	    }
 	 default:
@@ -703,9 +723,10 @@ void video_thread( PlaybackData* data )
 
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
+   cerr << endl << "EXIT  " << (fg ? "FG" : "BG") << " VIDEO THREAD " 
 	<< img->name() << " stopped? " << img->stopped()
 	<< " at " << frame << "  img->frame: " << img->frame() << endl;
+   assert( img->stopped() );
 #endif
 
 }  // video_thread
@@ -774,34 +795,24 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-	 // {
-	 //    CMedia::Barrier* barrier = img->bg_barrier();
-	 //    if ( fg )
-	 //    {
-	 //       barrier->wait();
-	 //    }
-	 //    else
-	 //    {
-	 //       barrier->notify_all();
-	 //    }
-	 // }
+  	 if ( ! img->aborted() )
+	 {
+             // Do the looping, taking into account ui state
+             //  and return new frame and step.
+             EndStatus end = handle_loop( frame, step, img, fg,
+                                          uiMain, reel, timeline, status );
+	 }
 
+          DBG( "DECODE BARRIER" );
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
 	 barrier->count( thread_count );
 	 // Wait until all threads loop or exit
 	 barrier->wait();
+         DBG( "DECODE BARRIER PASSED" );
 
-	 if ( ! img->aborted() )
-	 {
-	    // Do the looping, taking into account ui state
-	    // and return new frame and step.
-	    EndStatus end = handle_loop( frame, step, img, fg,
-					 uiMain, reel, timeline, status );
-	 }
-
-	 if ( img->stopped() ) break;
+	 if ( img->aborted() ) break;
 	
       }
       
@@ -829,8 +840,9 @@ void decode_thread( PlaybackData* data )
    }
 
 #ifdef DEBUG_THREADS
-   cerr << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
+   cerr << endl << "EXIT  " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " 
 	<< img->frame() << "  dts: " << img->dts() << endl;
+   assert( img->stopped() );
 #endif
 
 }
