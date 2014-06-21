@@ -1356,17 +1356,11 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 
  
 
-  // Clear the packet
-  AVPacket pkt;
-  av_init_packet( &pkt );
-
-  unsigned int bytes_per_frame = audio_bytes_per_frame();
-  unsigned int audio_bytes = 0;
 
   bool got_video = true;
   bool got_subtitle = true;
 
-  boost::int64_t dts = queue_packets( frame, true, got_video, got_audio, 
+  boost::int64_t dts = queue_packets( frame, false, got_video, got_audio, 
                                       got_subtitle );
 
   if ( dts > last_frame() ) dts = last_frame();
