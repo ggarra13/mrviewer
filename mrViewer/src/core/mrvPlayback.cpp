@@ -166,8 +166,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 		  img->playback( CMedia::kStopped );
 
-		  next->seek( f );
-		  next->play( CMedia::kForwards, uiMain, fg );
+                  if ( next->stopped() )
+                  {
+                      next->seek( f );
+                      next->play( CMedia::kForwards, uiMain, fg );
+                  }
 		  status = kEndNextImage;
 		  break;
 	       }
@@ -236,8 +239,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  SCOPED_LOCK( m2 );
 		  img->playback( CMedia::kStopped );
 
-		  next->seek( f );
-		  next->play( CMedia::kBackwards, uiMain, fg );
+                  if ( next->stopped() )
+                  {
+                      next->seek( f );
+                      next->play( CMedia::kBackwards, uiMain, fg );
+                  }
 		  status = kEndNextImage;
 		  break;
 	       }

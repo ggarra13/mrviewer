@@ -1351,8 +1351,9 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   // Seek to the correct position if necessary
   if ( frame != _expected )
     {
-      bool ok = seek_to_position( frame );
-      if (ok) return;
+        clear_packets();
+        bool ok = seek_to_position( frame );
+        if (ok) return;
     }
 
   bool got_audio = !has_audio();
@@ -1365,89 +1366,11 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   // if ( got_audio ) return;
 
  
+  bool got_video = true;
+  bool got_subtitle = true;
 
-  // Clear the packet
-  AVPacket pkt;
-  av_init_packet( &pkt );
-
-  unsigned int bytes_per_frame = audio_bytes_per_frame();
-  unsigned int audio_bytes = 0;
-
-  unsigned counter = 0;
-  int eof = false;
-  boost::int64_t dts = _dts;
-
-  // Loop until an error or we have what we need
-  while( !got_audio )
-    {
-       if (eof) {
-	  
-	  AVStream* stream = get_audio_stream();
-	  if (!got_audio && audio_stream_index() >= 0 &&
-	      stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
-	     av_init_packet(&pkt);
-	     pkt.data = NULL;
-	     pkt.size = 0;
-	     pkt.stream_index = audio_stream_index();
-	     _audio_packets.push_back( pkt );
-	  }
-
-	  got_audio = true;
-	  eof = false;
-	  continue;
-       }
- 
-      int error = av_read_frame( _acontext, &pkt );
-      if ( error < 0 )
-      {
-	if ( error == AVERROR_EOF )
-	{
-	   av_free_packet( &pkt );
-	   counter++;
-	   if ( counter >= _frame_offset )
-	      break;
-	   IMG_ERROR( _("Could not read audio for frame ") << frame);
-	   eof = true;
-	   continue;
-	}
-      }
-
-      if ( has_audio() && pkt.stream_index == audio_stream_index() )
-  	{
-  	  assert( pkt.pts != MRV_NOPTS_VALUE );
-
-  	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
-	  if ( playback() == kBackwards )
-	  {
-	     // Only add packet if it comes before seek frame
-	     if ( pktframe <= frame )  
-		_audio_packets.push_back( pkt );
-	     if ( pktframe < dts ) dts = pktframe;
-	  }
-	  else
-	  {
-	     if ( pktframe <= last_frame() ) 
-		_audio_packets.push_back( pkt );
-
-	     if ( pktframe > dts ) dts = pktframe;
-	  }
-
-	  if ( !got_audio )
-	  {
-	     if ( pktframe > frame ) got_audio = true;
-	     else if ( pktframe == frame )
-	     {
-		audio_bytes += pkt.size;
-		if ( audio_bytes >= bytes_per_frame ) got_audio = true;
-	     }
-	  }
-
-	  continue;
-  	}
-
-      av_free_packet( &pkt );
-    }
+  boost::int64_t dts = queue_packets( frame, true, got_video, got_audio, 
+                                      got_subtitle );
 
   if ( dts > last_frame() ) dts = last_frame();
   else if ( dts < first_frame() ) dts = first_frame();
@@ -1875,11 +1798,7 @@ void CMedia::do_seek()
 
   if ( !got_audio )
   {
-      if ( _seek_frame != _expected )
-          clear_packets();
-
      fetch_audio( _seek_frame );
-
   }
 
   // Seeking done, turn flag off
