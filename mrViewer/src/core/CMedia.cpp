@@ -1375,7 +1375,6 @@ bool CMedia::frame( const boost::int64_t f )
 
   fetch_audio( _dts );
 
-  _frame = _dts;
   _expected = _dts + 1;
 
   return true;
