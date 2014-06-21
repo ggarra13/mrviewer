@@ -1680,7 +1680,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	     return kDecodeOK;
 	  }
 
-	  if ( frame <= first_frame() )
+	  if ( frame < first_frame() )
 	  {
 	     flush_audio();
 	     _audio_packets.pop_front();
@@ -1701,7 +1701,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	  }   
 
 	  // with loops, packet dts is really frame
-	  if ( frame >= last_frame() )
+	  if ( frame > last_frame() )
 	    {
 	       flush_audio();
 	       _audio_packets.pop_front();
