@@ -78,6 +78,8 @@ namespace mrv {
 
     virtual AVStream* get_video_stream() const;
 
+      virtual bool valid_video() const;
+
     virtual const video_info_t& video_info( unsigned int i ) const
     {
       assert( i < _video_info.size() );
