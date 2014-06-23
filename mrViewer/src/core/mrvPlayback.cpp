@@ -84,9 +84,9 @@ namespace mrv {
   unsigned int barrier_thread_count( const CMedia* img )
   {
     unsigned r = 1;               // 1 for decode thread
-    if    ( img->has_picture() )  r += 1;
-    if    ( img->has_audio() )    r += 1;
-    if    ( img->has_subtitle() ) r += 1;
+    if    ( img->valid_video() )    r += 1;
+    if    ( img->valid_audio() )    r += 1;
+    if    ( img->valid_subtitle() ) r += 1;
     return r;
   }
 
@@ -387,16 +387,11 @@ void audio_thread( PlaybackData* data )
       }
       // DBG( "DECODE AUDIO FRAME " << frame );
 
+
       CMedia::DecodeStatus status = img->decode_audio( frame );
       // DBG( "DECODED AUDIO FRAME " << frame );
 
-      DBG( "AUDIO frame " << frame << "  loop end? " << 
-           ( status == CMedia::kDecodeLoopEnd ) );
-
-      if ( frame > img->last_frame() )
-         status = CMedia::kDecodeLoopEnd;
-      else if ( frame < img->first_frame() )
-         status = CMedia::kDecodeLoopStart;
+      // img->debug_audio_packets( frame, "loop", true );
 
       switch( status )
       {
@@ -423,8 +418,6 @@ void audio_thread( PlaybackData* data )
 
                   DBG( "BARRIER PASSED IN AUDIO " << frame );
 
-                  DBG( "DECODE AUDIO LOOP END/START " << frame );
-
                   if (! img->aborted() )
                   {
                       EndStatus end = handle_loop( frame, step, img, fg,
@@ -437,8 +430,7 @@ void audio_thread( PlaybackData* data )
                       }
                   }
 
-                  DBG( "DECODE AUDIO LOOP END/START HAS FRAME " << frame 
-                       << " img->aborted? " << img->aborted() );
+                  DBG( "AUDIO LOOP END/START HAS FRAME " << frame );
                   continue;
               }
           case CMedia::kDecodeOK:
