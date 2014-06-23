@@ -12,7 +12,6 @@
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
-
 #include "tclap/CmdLine.h"
 #include "mrvI8N.h"
 #include "mrvCommandLine.h"
@@ -348,7 +347,7 @@ void parse_command_line( const int argc, char** argv,
 
     MultiArg< std::string > 
     aaudio( N_("a"), N_("audio"), 
-            _("Set sequence default audio."), false, "audio files");
+            _("Set each movie/sequence default audio."), false, "audio files");
 
 #ifdef USE_STEREO
     MultiArg< std::string > 

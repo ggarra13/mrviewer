@@ -1005,10 +1005,12 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
   ptsframe = get_frame( stream, pkt );
 
+
   // Make sure audio frames are continous during playback to 
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && (!_audio.empty()) )
     {
+
         if ( ptsframe - _audio_last_frame >= 0 )
         {
             ptsframe = _audio_last_frame + 1;
@@ -1191,8 +1193,6 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
        memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
      
-       // _audio_buf_used = _audio_max - index;
-       // assert( _audio_buf_used % 16 == 0 );
     }
 
   return got_audio;
@@ -1664,6 +1664,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
     return kDecodeMissingFrame;
   }
 
+
   while ( got_audio != kDecodeOK && !_audio_packets.empty() )
     {
       if ( _audio_packets.is_flush() )
@@ -1673,43 +1674,15 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_loop_start() )
 	{
-	  bool ok = in_audio_store( frame );
-
-	  if ( ok && frame != first_frame() )
-	  {
-	     return kDecodeOK;
-	  }
-
-	  if ( frame < first_frame() )
-	  {
-	     flush_audio();
-	     _audio_packets.pop_front();
-	     return kDecodeLoopStart;
-	  }
-	  else
-	  {
-	     return got_audio;
-	  }
+            flush_audio();
+            _audio_packets.pop_front();
+            return kDecodeLoopStart;
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
-	  bool ok = in_audio_store( frame );
-
-	  if ( ok && frame != last_frame() )	
-	  {
-	     return kDecodeOK;
-	  }   
-
-	  // with loops, packet dts is really frame
-	  if ( frame > last_frame() )
-	    {
-	       flush_audio();
-	       _audio_packets.pop_front();
-	       return kDecodeLoopEnd;
-	    }
-
-	  _audio_packets.pop_front();
-	  return got_audio;
+            flush_audio();
+            _audio_packets.pop_front();
+            return kDecodeLoopEnd;
 	}
       else if ( _audio_packets.is_seek()  )
 	{
@@ -1745,18 +1718,15 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
           {
 	      if ( pktframe == frame )
               {
-                  int64_t temp = MRV_NOPTS_VALUE;
-		  decode_audio_packet( temp, frame, pkt );
-		  _audio_packets.pop_front();
-		  return kDecodeOK;
+                  int64_t temp = pktframe;
+                  decode_audio_packet( temp, frame, pkt );
+                  _audio_packets.pop_front();
+                  return kDecodeOK;
               }
           }
 
 	  boost::int64_t last_frame = pktframe;
 	  got_audio = decode_audio( last_frame, frame, pkt );
-	  if ( got_audio == kDecodeError ) {
-	     return got_audio;
-	  }
 	  _audio_packets.pop_front();
 	}
 
@@ -1924,14 +1894,14 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
   else
   {
 
-     if ( _audio_packets.is_loop_end( *(last-1) ) ||
-	  _audio_packets.is_loop_start( *(last-1) ) )
+      if ( _audio_packets.is_loop_end( (*iter) ) ||
+	  _audio_packets.is_loop_start( (*iter) ) )
      {
-	std::cerr << (*iter).dts;
+         std::cerr << "L(" << (*iter).dts << ")";
      }
      else
      {
-	std::cerr << pts2frame( stream, (*iter).dts );
+	std::cerr << get_frame( stream, *iter );
      }
 
      std::cerr << '-';
@@ -1939,11 +1909,11 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
      if ( _audio_packets.is_loop_end( *(last-1) ) ||
 	  _audio_packets.is_loop_start( *(last-1) ) )
      {
-	std::cerr << (*(last-1)).dts;
+         std::cerr << "L(" << (*(last-1)).dts << ")";
      }
      else
      {
-	std::cerr << pts2frame( stream, (*(last-1)).dts );
+	std::cerr << get_frame( stream, *(last-1) );
      }
 
      std::cerr << std::endl;
@@ -2023,7 +1993,7 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 	{
 	   // Audio packets often have many packets for same frame.
 	   // keep printout simpler
-	   if ( f == last_frame ) continue;
+            // if ( f == last_frame ) continue;
 	   
 	   if ( f == frame )  std::cerr << "S";
 	   if ( f == _dts )   std::cerr << "D";
