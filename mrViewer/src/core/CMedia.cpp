@@ -1154,6 +1154,43 @@ void CMedia::thread_exit()
   _threads.clear();
 }
 
+  // If sequence or has picture return true
+bool CMedia::valid_video() const
+{
+  if ( is_sequence() || has_picture() )
+    {
+      return true;
+    }
+
+  return false;
+}
+
+
+bool CMedia::valid_audio() const
+{
+  size_t num_streams = number_of_audio_streams();
+
+  bool valid = false;
+  for ( size_t i = 0; i < num_streams; ++i )
+    {
+      if ( _audio_info[i].has_codec ) { valid = true; break; }
+    }
+
+  return valid;
+}
+
+bool CMedia::valid_subtitle() const
+{
+  size_t num_streams = number_of_subtitle_streams();
+
+  bool valid = false;
+  for ( size_t i = 0; i < num_streams; ++i )
+    {
+      if ( _subtitle_info[i].has_codec ) { valid = true; break; }
+    }
+
+  return valid;
+}
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir, 
@@ -1204,28 +1241,18 @@ void CMedia::play(const CMedia::Playback dir,
 
   PlaybackData* video_data, *audio_data, *subtitle_data;
 
-  bool     valid_video = number_of_video_streams() > 0;
-  size_t num_streams;
-
   // If there's at least one valid video stream, create video thread
-  if ( valid_video || is_sequence() || has_picture() )
+  bool valid_v = valid_video();
+  if ( valid_v )
     {
-      valid_video = true;
       video_data = new PlaybackData( *data );
       _threads.push_back( new boost::thread( boost::bind( mrv::video_thread, 
 							  video_data ) ) );
     }
 
-  bool valid_audio = false;
-  num_streams = number_of_audio_streams();
-  for ( size_t i = 0; i < num_streams; ++i )
-    {
-      if ( _audio_info[i].has_codec ) { valid_audio = true; break; }
-    }
-
-
   // If there's at least one valid audio stream, create audio thread
-  if ( valid_audio )
+  bool valid_a = valid_audio();
+  if ( valid_a )
     {
       // Audio playback thread
       audio_data = new PlaybackData( *data );
@@ -1233,16 +1260,9 @@ void CMedia::play(const CMedia::Playback dir,
 							  audio_data ) ) );
     }
 
-  bool valid_subtitle = false;
-  num_streams = number_of_subtitle_streams();
-  for ( size_t i = 0; i < num_streams; ++i )
-    {
-      if ( _subtitle_info[i].has_codec ) { valid_subtitle = true; break; }
-    }
-
-
   // If there's at least one valid subtitle stream, create subtitle thread
-  if ( valid_subtitle )
+  bool valid_s = valid_subtitle();
+  if ( valid_s )
     {
       // Subtitle playback thread
       subtitle_data = new PlaybackData( *data );
@@ -1252,16 +1272,14 @@ void CMedia::play(const CMedia::Playback dir,
 
 
   // Decoding thread
-  if ( valid_audio || valid_video || valid_subtitle )
+  if ( valid_a || valid_v || valid_s )
     {
-      _loop_barrier = new Barrier( 1 + valid_audio + valid_video + 
-				   valid_subtitle );
+      _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
       _threads.push_back( new boost::thread( boost::bind( mrv::decode_thread, 
 							  data ) ) );
     }
 
-  assert( _threads.size() <= ( 1 + valid_audio + valid_video + 
-			       valid_subtitle ) );
+  assert( _threads.size() <= ( 1 + valid_a + valid_v + valid_s ) );
 
 }
 
@@ -1813,6 +1831,7 @@ void CMedia::loop_at_end( const boost::int64_t frame )
 
   if ( number_of_audio_streams() > 0 )
     {
+       DBG( "AUDIO LOOP AT END" );
        _audio_packets.loop_at_end( frame );
     }
 

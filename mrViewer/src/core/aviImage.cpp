@@ -89,7 +89,7 @@ namespace
 #define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-#define kMIN_FRAMES 5
+#define kMIN_FRAMES 30
 
 namespace {
   const unsigned int  kMaxCacheImages = 70;
@@ -286,6 +286,20 @@ bool aviImage::has_video() const
   return ( _video_index >= 0 && _video_info[ _video_index ].has_codec );
 }
 
+
+bool aviImage::valid_video() const
+{
+  // If there's at least one valid video stream, return true
+  size_t num_streams = number_of_video_streams();
+
+  bool valid = false;
+  for ( size_t i = 0; i < num_streams; ++i )
+    {
+      if ( _video_info[i].has_codec ) { valid = true; break; }
+    }
+
+  return valid;
+}
 
 // Opens the video codec associated to the current stream
 void aviImage::open_video_codec()
@@ -1995,11 +2009,11 @@ bool aviImage::frame( const boost::int64_t f )
 {
 
    if ( ( playback() != kStopped &&
-	  ( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
-	  ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
-	  ( _video_packets.bytes() +  _audio_packets.bytes() + 
-	    _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
-	    ) ) )
+	  (( has_video() && _video_packets.size() > kMIN_FRAMES ) ||
+           ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) ||
+           ( _video_packets.bytes() +  _audio_packets.bytes() + 
+             _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
+           ) ) ) )
     {
        // std::cerr << "false return: " << std::endl;
        // std::cerr << "vp: " << _video_packets.size() << std::endl;
