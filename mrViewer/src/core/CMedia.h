@@ -30,16 +30,15 @@
 
 #include <ImfChromaticities.h>
 
-#include "mrvAlignedData.h"
-#include "mrvFrame.h"
-#include "mrvString.h"
-#include "mrvPacketQueue.h"
-#include "mrvImagePixel.h"
-#include "mrvRectangle.h"
-#include "mrvBarrier.h"
-#include "mrvAudioEngine.h"
-
-#include "mrvOS.h"
+#include "core/mrvAlignedData.h"
+#include "core/mrvFrame.h"
+#include "core/mrvString.h"
+#include "core/mrvPacketQueue.h"
+#include "core/mrvImagePixel.h"
+#include "core/mrvRectangle.h"
+#include "core/mrvBarrier.h"
+#include "core/mrvAudioEngine.h"
+#include "core/mrvOS.h"
 
 #undef min
 #undef max
@@ -59,13 +58,13 @@ struct SwrContext;
 
 namespace mrv {
 
-  class ViewerUI;
-  class AudioEngine;
+class ViewerUI;
+class AudioEngine;
 
 
 
-  class CMedia
-  {
+class CMedia
+{
   public:  
     typedef mrv::ImagePixel    Pixel;
     typedef  std::map< std::string, std::string > Attributes;
@@ -79,60 +78,60 @@ namespace mrv {
 
 
 
-       //   typedef std::deque< AVPacket > PacketQueue;
-       typedef mrv::PacketQueue PacketQueue;
+    //   typedef std::deque< AVPacket > PacketQueue;
+    typedef mrv::PacketQueue PacketQueue;
 
-       struct StreamInfo
-       {
-            const AVFormatContext* context;
-            int          stream_index;
-            bool         has_codec;
-            std::string  codec_name;
-            std::string  fourcc;
-            double       start;
-            double       duration;
+    struct StreamInfo
+    {
+        const AVFormatContext* context;
+        int          stream_index;
+        bool         has_codec;
+        std::string  codec_name;
+        std::string  fourcc;
+        double       start;
+        double       duration;
 
-            StreamInfo() : context( NULL ),
-                           stream_index(-1), 
-                           has_codec(false), 
-                           start(0), 
-                           duration(0) 
-            {
-            }
+        StreamInfo() : context( NULL ),
+                       stream_index(-1), 
+                       has_codec(false), 
+                       start(0), 
+                       duration(0) 
+        {
+        }
 
-            StreamInfo( const StreamInfo& b ) :
-            context( b.context ),
-            stream_index( b.stream_index ), 
-            has_codec( b.has_codec ),
-            codec_name( b.codec_name ),
-            fourcc( b.fourcc ),
-            start( b.start ),
-            duration( b.duration )
-            {
-            }
+        StreamInfo( const StreamInfo& b ) :
+        context( b.context ),
+        stream_index( b.stream_index ), 
+        has_codec( b.has_codec ),
+        codec_name( b.codec_name ),
+        fourcc( b.fourcc ),
+        start( b.start ),
+        duration( b.duration )
+        {
+        }
 
-       };
+    };
 
     // Video stream data
     struct VideoStream : public StreamInfo
     {
-      bool         has_b_frames;
-      double       fps;
-      std::string  pixel_format;
+        bool         has_b_frames;
+        double       fps;
+        std::string  pixel_format;
 
-      VideoStream() : StreamInfo(), 
-		      has_b_frames( false ),
-		      fps(0)
-      {
-      }
+        VideoStream() : StreamInfo(), 
+                        has_b_frames( false ),
+                        fps(0)
+        {
+        }
     
-      VideoStream( const VideoStream& b ) :
+        VideoStream( const VideoStream& b ) :
 	StreamInfo( b ),
 	has_b_frames( b.has_b_frames ),
 	fps( b.fps ),
 	pixel_format( b.pixel_format )
-      {
-      }
+        {
+        }
 
     };
     typedef VideoStream video_info_t;
@@ -141,25 +140,25 @@ namespace mrv {
     // Audio stream data
     struct AudioStream : public StreamInfo
     {
-      unsigned int channels;
-      unsigned int frequency;
-      unsigned int bitrate;
-      std::string format;
-      std::string language;
+        unsigned int channels;
+        unsigned int frequency;
+        unsigned int bitrate;
+        std::string format;
+        std::string language;
 
-      AudioStream() : StreamInfo(), channels(0), frequency(0), bitrate(0)
-      {
-      }
+        AudioStream() : StreamInfo(), channels(0), frequency(0), bitrate(0)
+        {
+        }
 
-      AudioStream( const AudioStream& b ) :
+        AudioStream( const AudioStream& b ) :
 	StreamInfo( b ),
 	channels( b.channels ),
 	frequency( b.frequency ),
 	bitrate( b.bitrate ),
 	format( b.format ),
 	language( b.language )
-      {
-      }
+        {
+        }
     };
     typedef AudioStream audio_info_t;
     typedef std::vector< audio_info_t >  audio_info_list_t;
@@ -168,19 +167,19 @@ namespace mrv {
     // Subtitle stream data
     struct SubtitleStream : public StreamInfo
     {
-      unsigned int bitrate;
-      std::string  language;
+        unsigned int bitrate;
+        std::string  language;
 
-      SubtitleStream() : StreamInfo(), bitrate(0)
-      {
-      }
+        SubtitleStream() : StreamInfo(), bitrate(0)
+        {
+        }
 
-      SubtitleStream( const SubtitleStream& b ) :
+        SubtitleStream( const SubtitleStream& b ) :
 	StreamInfo( b ),
 	bitrate( b.bitrate ),
 	language( b.language )
-      {
-      }
+        {
+        }
     };
 
     typedef SubtitleStream subtitle_info_t;
@@ -193,60 +192,60 @@ namespace mrv {
     typedef std::vector< boost::thread* > thread_pool_t;
 
     enum InterlaceType
-      {
-	kNoInterlace,
-	kTopFieldFirst,
-	kBottomFieldFirst,
-      };
+    {
+    kNoInterlace,
+    kTopFieldFirst,
+    kBottomFieldFirst,
+    };
 
     enum RenderingIntent
-      {
-	kUndefinedIntent,
-	kSaturationIntent,
-	kPerceptualIntent,
-	kAbsoluteIntent,
-	kRelativeIntent,
-      };
+    {
+    kUndefinedIntent,
+    kSaturationIntent,
+    kPerceptualIntent,
+    kAbsoluteIntent,
+    kRelativeIntent,
+    };
 
     enum Playback
-      {
-	kBackwards = -1,
-	kStopped   =  0,
-	kForwards  =  1,
-      };
+    {
+    kBackwards = -1,
+    kStopped   =  0,
+    kForwards  =  1,
+    };
 
     enum Damage {
-      kNoDamage        = 0,
-      kDamageLayers    = 1 << 1,
-      kDamageContents  = 1 << 2,
-      kDamageThumbnail = 1 << 3,
-      kDamageSubtitle  = 1 << 4,
-      kDamageData      = 1 << 5,
-      kDamageLut       = 1 << 6,
-      kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut | 
-			  kDamageThumbnail | kDamageData | kDamageSubtitle )
+    kNoDamage        = 0,
+    kDamageLayers    = 1 << 1,
+    kDamageContents  = 1 << 2,
+    kDamageThumbnail = 1 << 3,
+    kDamageSubtitle  = 1 << 4,
+    kDamageData      = 1 << 5,
+    kDamageLut       = 1 << 6,
+    kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut | 
+                        kDamageThumbnail | kDamageData | kDamageSubtitle )
     };
 
     enum DecodeStatus {
-      kDecodeMissingFrame = 0,
-      kDecodeOK,
-      kDecodeDone,
-      kDecodeError,
-      kDecodeMissingSamples,
-      kDecodeNoStream,
-      kDecodeLoopStart,
-      kDecodeLoopEnd,
-      kDecodeBufferFull
+    kDecodeMissingFrame = 0,
+    kDecodeOK,
+    kDecodeDone,
+    kDecodeError,
+    kDecodeMissingSamples,
+    kDecodeNoStream,
+    kDecodeLoopStart,
+    kDecodeLoopEnd,
+    kDecodeBufferFull
     };
 
-       enum StereoType {
-       kNoStereo = 0,
-       kStereoSideBySide = 1,
-       kStereoCrossed    = 3,
-       kStereoInterlaced = 4,
-       kStereoOpenGL     = 8,
-       kStereoAnaglyph   = 16,
-       };
+    enum StereoType {
+    kNoStereo = 0,
+    kStereoSideBySide = 1,
+    kStereoCrossed    = 3,
+    kStereoInterlaced = 4,
+    kStereoOpenGL     = 8,
+    kStereoAnaglyph   = 16,
+    };
 
 
   public:
@@ -268,9 +267,9 @@ namespace mrv {
     /////////////////// Set the image size, allocating a 4-float buffer
     void image_size( int w, int h );
 
-       /////////////// Set to true if image is internal and no filename is used
-       bool internal() const { return _internal; }
-       const void internal(bool t) { _internal = t; }
+    /////////////// Set to true if image is internal and no filename is used
+    bool internal() const { return _internal; }
+    const void internal(bool t) { _internal = t; }
 
     ///
     virtual void channel( const char* c );
@@ -358,19 +357,19 @@ namespace mrv {
 
     inline uint64_t duration() const { return _frameEnd - _frameStart + 1; }
 
-       inline void avdiff( const double x ) { _avdiff = x; }
-       inline double avdiff() const { return _avdiff; }
+    inline void avdiff( const double x ) { _avdiff = x; }
+    inline double avdiff() const { return _avdiff; }
 
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
     inline void hires( const mrv::image_type_ptr pic)
-       { _hires = pic; _w = pic->width(); _h = pic->height(); refresh(); } 
+    { _hires = pic; _w = pic->width(); _h = pic->height(); refresh(); } 
 
     inline mrv::image_type_ptr anaglyph( bool left_view = true );
 
-       inline bool  is_stereo() const { return _is_stereo; }
-       inline StereoType stereo_type() const { return _stereo_type; }
+    inline bool  is_stereo() const { return _is_stereo; }
+    inline StereoType stereo_type() const { return _stereo_type; }
 
     mrv::image_type_ptr left() const;
 
@@ -446,7 +445,7 @@ namespace mrv {
 
     /// Returns the valid compressions for this format
     virtual stringArray valid_compressions() const {
-      return stringArray();
+        return stringArray();
     }
 
     /// Returns the image line order (if any)
@@ -504,7 +503,7 @@ namespace mrv {
 
     virtual const video_info_t& video_info( unsigned int i ) const
     {
-      throw "No video stream";
+        throw "No video stream";
     }
 
     virtual void video_stream( int x ) {}
@@ -556,16 +555,35 @@ namespace mrv {
     /// Returns true if image has an alpha channel
     virtual bool  has_alpha() const { return true; }
 
+    // Return creation time of image
     inline time_t ctime() const { return _ctime; }
+
+    // Return modification time of image
     inline time_t mtime() const { return _mtime; }
 
-    /// VCR play (and cache frames if needed) sequence
-       virtual void play( const Playback dir,
-			  mrv::ViewerUI* const uiMain,
-			  const bool fg );
 
-       void abort(bool t) { _aborted = t; }
-       bool aborted() { return _aborted; }
+
+    // return true if one valid video stream or sequence is found
+    virtual bool valid_video() const;
+
+    // return true if one valid audio stream is found
+    bool valid_audio() const;
+
+    // return true if one valid subtitle stream is found
+    bool valid_subtitle() const;
+
+
+
+    /// VCR play (and cache frames if needed) sequence
+    virtual void play( const Playback dir,
+                       mrv::ViewerUI* const uiMain,
+                       const bool fg );
+
+    // Abort playback suddenly
+    void abort(bool t) { _aborted = t; }
+
+    // Is playback aborted?
+    bool aborted() { return _aborted; }
 
     /// VCR stop sequence
     virtual void stop();
@@ -600,77 +618,77 @@ namespace mrv {
 
     inline bool has_subtitle() const
     {
-      return ( _subtitle_index >= 0 && 
-	       _subtitle_info[ _subtitle_index ].has_codec );
+        return ( _subtitle_index >= 0 && 
+                 _subtitle_info[ _subtitle_index ].has_codec );
     }
 
     const subtitle_info_t& subtitle_info( unsigned int i )
     {
-      assert( i < _subtitle_info.size() );
-      return _subtitle_info[ i ];
+        assert( i < _subtitle_info.size() );
+        return _subtitle_info[ i ];
     }
 
     inline size_t number_of_subtitle_streams() const 
     { 
-      return _subtitle_info.size(); 
+        return _subtitle_info.size(); 
     }
 
     inline bool has_audio() const
     {
-      return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec );
+        return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec );
     }
 
     inline const audio_info_t& audio_info( unsigned int i ) const
     {
-      assert( i < _audio_info.size() );
-      return _audio_info[ i ];
+        assert( i < _audio_info.size() );
+        return _audio_info[ i ];
     }
 
-       inline const AVFormatContext* audio_context() const
-       {
-          if ( _audio_index < 0 ) return NULL;
-          return _audio_info[ _audio_index ].context;
-       }
+    inline const AVFormatContext* audio_context() const
+    {
+        if ( _audio_index < 0 ) return NULL;
+        return _audio_info[ _audio_index ].context;
+    }
 
     AudioEngine::AudioFormat audio_format() const { return _audio_format; }
 
     inline const std::string& audio_codec()  const 
     { 
-      return _audio_info[ _audio_index ].codec_name;
+        return _audio_info[ _audio_index ].codec_name;
     }
 
     inline unsigned audio_channels()  const
     {
-      return _audio_info[ _audio_index ].channels;
+        return _audio_info[ _audio_index ].channels;
     }
 
     inline unsigned audio_frequency() const
     {
-      return _audio_info[ _audio_index ].frequency;
+        return _audio_info[ _audio_index ].frequency;
     }
 
     inline size_t number_of_audio_streams() const 
     { 
-      return _audio_info.size(); 
+        return _audio_info.size(); 
     }
 
     virtual void subtitle_stream( int idx ) {};
 
     inline int subtitle_stream() const
     {
-      return _subtitle_index;
+        return _subtitle_index;
     }
 
     void audio_stream( int idx );
 
     inline int audio_stream() const
     {
-      return _audio_index;
+        return _audio_index;
     }
 
-       static void video_cache_size( unsigned x ) { _video_cache_size = x; }
+    static void video_cache_size( unsigned x ) { _video_cache_size = x; }
 
-       static void audio_cache_size( unsigned x ) { _audio_cache_size = x; }
+    static void audio_cache_size( unsigned x ) { _audio_cache_size = x; }
 
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
@@ -687,7 +705,7 @@ namespace mrv {
     virtual boost::int64_t wait_subtitle() { return _frameStart; }
     virtual bool find_subtitle( const boost::int64_t frame );
     virtual boost::int64_t wait_image();
-      virtual bool find_image( const boost::int64_t frame );
+    virtual bool find_image( const boost::int64_t frame );
 
 
     void thread_exit();
@@ -714,7 +732,7 @@ namespace mrv {
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
 
-       Barrier* bg_barrier() { return _bg_barrier; }
+    Barrier* bg_barrier() { return _bg_barrier; }
 
     Barrier* loop_barrier()       { return _loop_barrier; }
     Mutex& decode_mutex()         { return _decode_mutex; }
@@ -735,7 +753,7 @@ namespace mrv {
 				       const char* routine = "",
 				       const bool detail = false) {};
 
-       virtual void probe_size( unsigned p ) {}
+    virtual void probe_size( unsigned p ) {}
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
     std::string sequence_filename( const boost::int64_t frame );
@@ -751,7 +769,7 @@ namespace mrv {
     boost::int64_t audio_pts() const { return _audio_pts; }
     
 
-       void wait_for_load_threads();
+    void wait_for_load_threads();
 
     void wait_for_threads();
 
@@ -815,7 +833,7 @@ namespace mrv {
      * 
      * @return true or false
      */
-      bool in_audio_store( const boost::int64_t frame );
+    bool in_audio_store( const boost::int64_t frame );
 
     /** 
      * Given a frame number, returns whether audio for that frame is already
@@ -862,8 +880,8 @@ namespace mrv {
 
     static CMedia* get(CMedia* (*create)(),
 		       const char* name, const boost::uint8_t* datas = 0) {
-      CMedia* img = (CMedia*)create();
-      return (CMedia*) img;
+        CMedia* img = (CMedia*)create();
+        return (CMedia*) img;
     }
 
     /// Initialize format's global resources
@@ -896,7 +914,7 @@ namespace mrv {
 
 
 
-       // Extract frame from pts or dts
+    // Extract frame from pts or dts
     boost::int64_t get_frame( const AVStream* s, const AVPacket& pkt );
 
     // Convert an FFMPEG pts into a frame number
@@ -939,28 +957,28 @@ namespace mrv {
     unsigned int store_audio( const boost::int64_t audio_frame, 
 			      const boost::uint8_t* buf, const unsigned int size );
 
-       void make_anaglyph( bool left_red = true );
+    void make_anaglyph( bool left_red = true );
 
 
-       virtual bool seek_to_position( const boost::int64_t frame );
+    virtual bool seek_to_position( const boost::int64_t frame );
 
 
     virtual void flush_video() {};
     void flush_audio();
 
-       void dump_metadata( AVDictionary* m, const std::string prefix = "" );
+    void dump_metadata( AVDictionary* m, const std::string prefix = "" );
 
-       // Auxiliary function to handle decoding audio in messy new api.
-       int decode_audio3(AVCodecContext* avctx, int16_t* samples,
-			 int* frame_size_ptr, AVPacket* avpkt);
+    // Auxiliary function to handle decoding audio in messy new api.
+    int decode_audio3(AVCodecContext* avctx, int16_t* samples,
+                      int* frame_size_ptr, AVPacket* avpkt);
 
   protected:
 
-       boost::int64_t queue_packets( const boost::int64_t frame,
-				     const bool is_seek,
-				     bool& got_video,
-				     bool& got_audio,
-				     bool& got_subtitle );
+    boost::int64_t queue_packets( const boost::int64_t frame,
+                                  const bool is_seek,
+                                  bool& got_video,
+                                  bool& got_audio,
+                                  bool& got_subtitle );
 
     static const char* stream_type( const AVCodecContext* );
 
@@ -973,12 +991,12 @@ namespace mrv {
     static unsigned  _audio_max;        //!< max size of audio buf
     static bool _supports_yuv;          //!< display supports yuv
 
-       static unsigned _video_cache_size;
-       static unsigned _audio_cache_size;
+    static unsigned _video_cache_size;
+    static unsigned _audio_cache_size;
 
 
     unsigned int  _w, _h;     //!< width and height of image
-       bool   _internal;      //!< image is internal with no filename
+    bool   _internal;      //!< image is internal with no filename
     bool   _is_sequence;      //!< true if a sequence
     bool   _is_stereo;        //!< true if part of stereo pair of images
     StereoType   _stereo_type;//!< Stereo type
@@ -992,7 +1010,7 @@ namespace mrv {
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
-       double    _avdiff;      //!< Audio-Video Difference
+    double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
     static Barrier*  _bg_barrier;     //!< Barrier to sync bg and fg images
 
@@ -1028,9 +1046,9 @@ namespace mrv {
     boost::int64_t   _frame_end;
 
     boost::int64_t _audio_pts;
-       double     _audio_clock;
+    double     _audio_clock;
     boost::int64_t _video_pts;
-       double     _video_clock;
+    double     _video_clock;
 
     InterlaceType _interlaced;     //!< image is interlaced?
 
@@ -1044,8 +1062,8 @@ namespace mrv {
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
 
-       //
-       std::string _audio_file;
+    //
+    std::string _audio_file;
 
     // Image color profile for ICC
     char*     _profile;
@@ -1056,10 +1074,10 @@ namespace mrv {
     // Look Mod Transform for CTL
     char*     _look_mod_transform;
 
-       unsigned int         _frame_offset;
+    unsigned int         _frame_offset;
 
     Playback       _playback;        //!< playback direction or stopped
-       bool        _aborted;
+    bool        _aborted;
     
     thread_pool_t  _threads;         //!< any threads associated with process
     thread_pool_t  _load_threads;    //!< loading threads if any
@@ -1095,21 +1113,21 @@ namespace mrv {
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
-       unsigned  _audio_channels;
-       mrv::AudioEngine::AudioFormat _audio_format;
+    unsigned  _audio_channels;
+    mrv::AudioEngine::AudioFormat _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
-  };
+};
 
 
-  uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
-  char *const get_error_text(const int error);
+uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
+char *const get_error_text(const int error);
 
-  //   typedef boost::shared_ptr< CMedia > Image_ptr;
-  typedef CMedia*                     Image_ptr;
-  typedef std::vector< Image_ptr >       ImageList;
+//   typedef boost::shared_ptr< CMedia > Image_ptr;
+typedef CMedia*                     Image_ptr;
+typedef std::vector< Image_ptr >       ImageList;
 
 }  // namespace mrv
 

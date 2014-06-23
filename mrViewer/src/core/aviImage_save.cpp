@@ -464,13 +464,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        unsigned src_rate = img->audio_frequency();
        unsigned dst_rate = c->sample_rate;
 
-#if 1
        dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
                                        src_nb_samples, dst_rate, src_rate,
                                        AV_ROUND_UP);
-#else
-       dst_nb_samples = src_nb_samples;
-#endif
 
        if (dst_nb_samples > max_dst_nb_samples) {
 
@@ -978,17 +974,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
 }
 
-
-bool aviImage::save_movie_frame( CMedia* img )
+bool write_va_frame( CMedia* img )
 {
 
    double audio_time, video_time;
 
-   if (!audio_st && !video_st)
-      return false;
-
     /* Compute current audio and video time. */
-   audio_time = ( audio_st ? audio_st->pts.val * av_q2d( audio_st->time_base )
+   audio_time = ( audio_st ? audio_frame->pts * av_q2d( audio_st->time_base )
 		  : INFINITY );
    // This is wrong as it does not get updated properly with h264
    //video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
@@ -1020,12 +1012,24 @@ bool aviImage::save_movie_frame( CMedia* img )
         while( audio_time <= video_time) {
             if ( ! write_audio_frame(oc, audio_st, img) )
                 break;
-	   audio_time = audio_st->pts.val * av_q2d( audio_st->time_base);
+            audio_time = (double)audio_frame->pts *
+                         av_q2d( audio_st->time_base);
        }
     }
     
    return true;
 }
+
+bool aviImage::save_movie_frame( CMedia* img )
+{
+
+
+   if (!audio_st && !video_st)
+      return false;
+
+   return write_va_frame( img );
+}
+
 
 bool flush_video_and_audio( const CMedia* img )
 {
