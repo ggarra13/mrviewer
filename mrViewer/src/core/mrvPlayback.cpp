@@ -846,7 +846,8 @@ void decode_thread( PlaybackData* data )
       {
 	 frame = img->dts();
       }
-      
+
+      DBG( "DECODE THREAD frame " << frame );
 
    }
 

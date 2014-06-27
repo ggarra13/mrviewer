@@ -162,11 +162,13 @@ bool exrImage::channels_order(
 {
    const Box2i& dataWindow = h.dataWindow();
    const Box2i& displayWindow = h.displayWindow();
+   // int wi = displayWindow.max.x - displayWindow.min.x + 1;
+   // int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx = dataWindow.min.x; // - displayWindow.min.x;
-   int dy = dataWindow.min.y; // - displayWindow.min.y;
+   int dx = dataWindow.min.x;
+   int dy = dataWindow.min.y;
 
    int order[4];
    order[0] = order[1] = order[2] = order[3] = -1;
@@ -344,11 +346,13 @@ bool exrImage::channels_order_multi(
 {
    const Box2i& dataWindow = h.dataWindow();
    const Box2i& displayWindow = h.displayWindow();
+   int wi = displayWindow.max.x - displayWindow.min.x + 1;
+   int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx = dataWindow.min.x - displayWindow.min.x;
-   int dy = dataWindow.min.y - displayWindow.min.y;
+   int dx = dataWindow.min.x;
+   int dy = dataWindow.min.y;
 
    int order[4];
    order[0] = order[1] = order[2] = order[3] = -1;
@@ -687,16 +691,11 @@ bool exrImage::find_layers( const Imf::Header& h )
 
    const Box2i& dataWindow = h.dataWindow();
    const Box2i& displayWindow = h.displayWindow();
-   int dw = dataWindow.max.x - dataWindow.min.x + 1;
-   int dh = dataWindow.max.y - dataWindow.min.y + 1;
+   int dw  = dataWindow.max.x - dataWindow.min.x + 1;
+   int dh  = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx = dataWindow.min.x - displayWindow.min.x;
-   int dy = dataWindow.min.y - displayWindow.min.y;
-
-   // int dpw = displayWindow.max.x - displayWindow.min.x + 1;
-   // if ( dpw > dw ) dw = dpw;
-   // int dph = displayWindow.max.y - displayWindow.min.y + 1;
-   // if ( dph > dh ) dh = dpw;
+   int dx  = dataWindow.min.x;
+   int dy  = dataWindow.min.y;
 
    image_size( dw, dh );
 
@@ -1481,10 +1480,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
          if ( displayWindow != dataWindow )
          {
-          
             display_window( displayWindow.min.x, displayWindow.min.y,
                             displayWindow.max.x, displayWindow.max.y );
-          
          }
 
          // Quick exit if stereo is off
