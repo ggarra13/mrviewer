@@ -382,6 +382,14 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
+   else if ( cmd == N_("DisplayWindow") )
+   {
+      int b;
+      is >> b;
+      v->display_window( (b != 0) );
+      v->redraw();
+      ok = true;
+   }
    else if ( cmd == N_("UseLUT") )
    {
       int b;

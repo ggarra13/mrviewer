@@ -516,6 +516,11 @@ void safe_areas_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+void display_window_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  view->display_window( !view->display_window() );
+  view->redraw();
+}
 
 static const float kMinZoom = 0.1f;
 static const float kMaxZoom = 32.f;
@@ -697,6 +702,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _channelType( kRGB ),
   _field( kFrameDisplay ),
   _stereo( CMedia::kNoStereo ),
+  _displayWindow( true ),
   _showBG( true ),
   _showPixelRatio( false ),
   _useLUT( false ),
@@ -1351,9 +1357,8 @@ void ImageView::draw()
 
   if ( images.empty() ) return;
 
+
   _engine->draw_images( images );
-
-
 
 
   if ( _masking != 0.0f )
@@ -1787,6 +1792,9 @@ int ImageView::leftMouseDown(int x, int y)
 	    menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(), 
 		      (fltk::Callback*)safe_areas_cb, this );
 	    
+	    menu.add( _("View/Display Window"), kDisplayWindow.hotkey(), 
+		      (fltk::Callback*)display_window_cb, this );
+
 	    num = uiMain->uiPrefs->uiPrefsCropArea->children();
 	    for ( i = 0; i < num; ++i )
 	    {
@@ -2630,6 +2638,12 @@ int ImageView::keyDown(unsigned int rawkey)
   else if ( kSafeAreas.match( rawkey ) )
     {
        safe_areas( safe_areas() ^ true );
+       redraw();
+       return 1;
+    }
+  else if ( kDisplayWindow.match( rawkey ) )
+    {
+       display_window( display_window() ^ true );
        redraw();
        return 1;
     }
@@ -3969,6 +3983,15 @@ void ImageView::toggle_background()
 {
    show_background( !show_background() );
    redraw();
+}
+
+void ImageView::display_window( const bool b ) 
+{
+  _displayWindow = b;
+
+  char buf[128];
+  sprintf( buf, "DisplayWindow %d", (int)b );
+  send( buf );
 }
 
 void ImageView::safe_areas( const bool b ) 
