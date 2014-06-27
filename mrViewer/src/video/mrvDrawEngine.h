@@ -138,17 +138,20 @@ namespace mrv {
     /// Wipe area (scissor test)
     virtual void wipe_area() = 0;
 
-    
-    /// Draw a safe area rectangle
-    virtual void draw_safe_area( const double percentX, const double percentY,
+      /// Draw a safe area rectangle
+      virtual void draw_safe_area( const double percentX, const double percentY,
 				 const char* name = 0 ) = 0;
 
-    /// Draw mask area rectangles
-    virtual void draw_mask(const float pct) = 0;
+      /// Draw display area rectangle
+      virtual void draw_square_stencil(const int x, const int y, 
+                                       const int x2, const int y2) = 0;
 
-       virtual void draw_cursor( const double x, const double y ) = 0;
-       
-       virtual void draw_annotation( const GLShapeList& shapes ) = 0;
+      // Draw film mask
+      virtual void draw_mask(const float pct) = 0;
+
+      virtual void draw_cursor( const double x, const double y ) = 0;
+
+      virtual void draw_annotation( const GLShapeList& shapes ) = 0;
 
     CMedia* const background();
 
