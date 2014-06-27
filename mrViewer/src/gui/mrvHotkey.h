@@ -145,6 +145,7 @@ extern Hotkey kFullScreen;
 extern Hotkey kCenterImage;
 extern Hotkey kFitScreen;
 extern Hotkey kSafeAreas;
+extern Hotkey kDisplayWindow;
 extern Hotkey kWipe;
 extern Hotkey kFlipX;
 extern Hotkey kFlipY;
@@ -188,6 +189,7 @@ extern Hotkey kDetachAudio;
 
 extern Hotkey kCopyRGBAValues;
 extern Hotkey kCloneImage;
+
 
 struct HotkeyEntry
 {

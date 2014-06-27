@@ -89,7 +89,7 @@ namespace mrv
 		    const bool editable = false, 
 		    fltk::Callback* callback = NULL, 
 		    const float minV = 0.0f, const float maxV = 1.0f );
-    void add_rect( const char* name, mrv::Recti& content, 
+    void add_rect( const char* name, const mrv::Recti& content, 
 		   const bool editable = false, 
 		   fltk::Callback* callback = NULL );
 

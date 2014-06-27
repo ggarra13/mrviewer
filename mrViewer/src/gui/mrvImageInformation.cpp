@@ -410,16 +410,16 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
-    mrv::Recti& window = img->data_window();
+    const mrv::Recti& window = img->data_window();
     if ( window.w() > 0 )
       {
 	add_rect( _("Data Window"), window );
       }
 
-    window = img->display_window();
-    if ( window.w() > 0 )
+    const mrv::Recti& dwindow = img->display_window();
+    if ( dwindow.w() > 0 )
       {
-	add_rect( _("Display Window"), window );
+	add_rect( _("Display Window"), dwindow );
       }
 
     ++group;
@@ -1244,7 +1244,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_text( name, buf, false );
   }
 
-  void ImageInformation::add_rect( const char* name, mrv::Recti& content, 
+  void ImageInformation::add_rect( const char* name, const mrv::Recti& content, 
 				   const bool editable, fltk::Callback* callback )
   {
     fltk::Color colA = get_title_color();

@@ -288,11 +288,8 @@ class CMedia
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
     void default_layers();
 
-    const mrv::Recti& data_window() const    { return _dataWindow; }
-    const mrv::Recti& display_window() const { return _displayWindow; }
-
-    mrv::Recti& data_window()    { return _dataWindow; }
-    mrv::Recti& display_window() { return _displayWindow; }
+    const mrv::Recti& data_window() const;
+    const mrv::Recti& display_window() const;
 
     void data_window( const int xmin, const int ymin,
 		      const int xmax, const int ymax );
@@ -769,6 +766,7 @@ class CMedia
     boost::int64_t audio_pts() const { return _audio_pts; }
     
 
+    void fetch_audio( const boost::int64_t frame );
     void wait_for_load_threads();
 
     void wait_for_threads();
@@ -929,7 +927,6 @@ class CMedia
     int audio_stream_index() const;
     AVStream* get_audio_stream() const;
 
-    void fetch_audio( const boost::int64_t frame );
     void populate_audio();
 
     void populate_stream_info( StreamInfo& s, 
@@ -1054,8 +1051,8 @@ class CMedia
 
     Damage           _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
-    mrv::Recti  _dataWindow;       //!< data window of image
-    mrv::Recti  _displayWindow;    //!< display window of image
+    mrv::Recti* _dataWindow;       //!< data window of sequence
+    mrv::Recti* _displayWindow;    //!< display window of sequence
 
     // Hi-res/quality image (usually floating point)
     mrv::image_type_ptr _hires;

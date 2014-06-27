@@ -190,11 +190,14 @@ void ColorInfo::update( const CMedia* src,
 
       unsigned count = 0;
 
-      unsigned int xmin = (unsigned int)(W * selection.x());
-      unsigned int ymin = (unsigned int)(H * selection.y());
+      int x = selection.x();
+      int y = selection.y();
 
-      unsigned int xmax = xmin + (unsigned int)(W * selection.w()) - 1;
-      unsigned int ymax = ymin + (unsigned int)(H * selection.h()) - 1;
+      int xmin = (int)(W * selection.x());
+      int ymin = (int)(H * selection.y());
+
+      int xmax = xmin + (int)(W * selection.w()) - 1;
+      int ymax = ymin + (int)(H * selection.h()) - 1;
 
       if ( xmax < xmin ) {
 	 unsigned tmp = xmax;
@@ -207,6 +210,11 @@ void ColorInfo::update( const CMedia* src,
 	 ymax = ymin;
 	 ymin = ymax;
       }
+
+      if ( xmin < 0 ) xmin = 0;
+      if ( ymin < 0 ) ymin = 0;
+      if ( xmax >= W ) xmax = W-1;
+      if ( ymax >= W ) ymax = H-1;
 
       assert( xmax <= W );
       assert( ymax <= H );

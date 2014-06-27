@@ -151,7 +151,7 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
 
 
    /* Write the compressed frame to the media file. */
-#ifdef DEBUG
+#ifdef DEBUG_PACKET
    log_packet(fmt_ctx, pkt);
 #endif
    return av_interleaved_write_frame(fmt_ctx, pkt);
@@ -431,10 +431,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    pkt.data = NULL;
 
    AVCodecContext* c = st->codec;
+   const audio_type_ptr audio = img->get_audio_frame( img->audio_frame() );
 
-   const audio_type_ptr audio = img->get_audio_frame( frame_audio );
-
-   frame_audio = audio->frame() + 1;
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
    src_nb_samples /= av_get_bytes_per_sample( aformat );
@@ -553,6 +551,8 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    audio_frame->sample_rate    = c->sample_rate;
 
    AVRational ratio = { 1, c->sample_rate };
+
+   DBG( "frame_size= " << frame_size << "  audio->size()= " << audio->size() );
 
    while ( av_audio_fifo_size( fifo ) >= frame_size )
    {
@@ -834,17 +834,11 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f ) const
     audio_cache_t::const_iterator end = _audio.end();
     audio_cache_t::const_iterator i;
 #if 1
-    for ( ; x ; --x )
-    {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) return *i;
-    }
 #else
-    for ( ; x ; --x )
-    {
         i = std::find_if( _audio.begin(), end, EqualFunctor(x) );
         if ( i != end ) return *i;
-    }
 #endif
 
     if ( i == end )
@@ -1009,7 +1003,7 @@ bool write_va_frame( CMedia* img )
 
     if ( audio_st )
     {
-        while( audio_time <= video_time) {
+        while( audio_time <= video_time ) {
             if ( ! write_audio_frame(oc, audio_st, img) )
                 break;
             audio_time = (double)audio_frame->pts *

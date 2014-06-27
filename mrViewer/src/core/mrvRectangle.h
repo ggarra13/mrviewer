@@ -54,12 +54,22 @@ namespace mrv
       if ( b.h_ > h_ ) h_ = b.h_;
     }
 
+      inline bool operator==( const Rectangle< T >& b ) const
+      {
+          return ( b.x_ == x_ && b.y_ == y_ && b.w_ == w_ && b.h_ == h_ );
+      }
+
+      inline bool operator!=( const Rectangle< T >& b ) const
+      {
+          return ( b.x_ != x_ || b.y_ != y_ || b.w_ != w_ || b.h_ != h_ );
+      }
 
     inline
     friend std::ostream& operator<<( std::ostream& o, const Rectangle< T >& r )
     {
-      return o << '(' << r.x() << ", " << r.y() << '-'
-	       << r.r() << ", " << r.b() << ')';
+      return o << '(' << r.l() << ',' << r.t() << " - "
+	       << r.r() << ',' << r.b() << ") [" << r.w() << "-" << r.h()
+               << ']';
     }
 
   };
