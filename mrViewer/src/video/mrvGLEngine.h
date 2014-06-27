@@ -54,6 +54,7 @@ namespace mrv {
 
     virtual void wipe_area();
 
+      virtual void draw_square_stencil( int x, int y, int x2, int y2 );
     virtual void draw_mask(const float pct);
     
     virtual void draw_safe_area( const double percentX, 

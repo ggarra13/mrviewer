@@ -36,6 +36,7 @@ Hotkey kZoomOut( false, false, false, false, ',' );
 Hotkey kFullScreen( false, false, false, false, fltk::F11Key );
 Hotkey kFitScreen( false, false, false, false, 'f' );
 Hotkey kSafeAreas( false, false, false, false, 's' );
+Hotkey kDisplayWindow( false, false, false, false, 'd' );
 Hotkey kWipe( false, false, false, false, 'w' );
 Hotkey kFlipX( false, false, false, false, 'x' );
 Hotkey kFlipY( false, false, false, false, 'y' );
@@ -108,6 +109,7 @@ HotkeyEntry( _("Monitor CTL script"), kMonitorCTLScript ),
 HotkeyEntry( _("Center Image"), kCenterImage ),
 HotkeyEntry( _("Fit Screen"), kFitScreen),
 HotkeyEntry( _("Safe Areas"), kSafeAreas),
+HotkeyEntry( _("Display Window"), kDisplayWindow),
 HotkeyEntry( _("Wipe"), kWipe),
 HotkeyEntry( _("Flip X"), kFlipX),
 HotkeyEntry( _("Flip Y"), kFlipY),

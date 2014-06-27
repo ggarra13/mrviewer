@@ -272,10 +272,9 @@ void GLEngine::init_GLEW()
   GLenum err = glewInit();
   if (GLEW_OK != err)
     {
-      /* Problem: glewInit failed, something is seriously wrong. */
-      std::cerr << _("GLEW Initialize Error: ") 
-		<< glewGetErrorString(err) << std::endl;
-      exit(1);
+        /* Problem: glewInit failed, something is seriously wrong. */
+        LOG_ERROR( _("GLEW Initialize Error: ") << glewGetErrorString(err) );
+        exit(1);
     }
 
 // #if defined(WIN32) || defined(WIN64)
@@ -748,6 +747,48 @@ void GLEngine::draw_cursor( const double x, const double y )
    glEnd();
 }
 
+void GLEngine::draw_square_stencil( const int x, const int y, 
+                                    const int x2, const int y2)
+{
+
+  glClear( GL_STENCIL_BUFFER );
+  glColorMask(true, true, true, true);
+  glDepthMask(false);
+  glColor3f( 0.0f, 0.0f, 0.0f );
+  glEnable( GL_STENCIL_TEST );
+  glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
+  glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
+
+  glTranslated( -0.5, -0.5, 0 );
+
+  double xf1 = (double)x / (double) texWidth;
+  double yf1 = (double)(texHeight - y) / (double) texHeight;
+  double xf2 = (double)x2 / (double) texWidth;
+  double yf2 = (double)(texHeight - y2) / (double) texHeight;
+
+
+  //
+  // Draw mask
+  //
+  glBegin( GL_POLYGON );
+  {
+    glVertex3d( xf1, yf1, 0. );
+    glVertex3d( xf2, yf1, 0. );
+    glVertex3d( xf2, yf2, 0. );
+    glVertex3d( xf1, yf2, 0. );
+  }
+  glEnd();
+
+  glTranslated( 0.5, 0.5, 0 );
+
+
+  //enable color mask 
+  glColorMask(true, true, true, true);
+  // just draw where inside of the mask
+  glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
+  glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+}
+
 /** 
  * Draws the mask
  * 
@@ -759,6 +800,8 @@ void GLEngine::draw_mask( const float pct )
   if ( !fg ) return;
 
   glColor3f( 0.0f, 0.0f, 0.0f );
+
+  glDisable( GL_STENCIL_TEST );
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
@@ -778,7 +821,7 @@ void GLEngine::draw_mask( const float pct )
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
   glTranslated( xoffset, _view->offset_y(), 0.0 );
 
-  if ( _view->main()->uiPixelRatio->value() )
+  if ( _view->pixel_ratio() != 1.0f )
     glScaled( double(dw), dh / _view->pixel_ratio(), 1.0 );
   else
     glScaled( double(dw), double(dh), 1.0f );
@@ -1023,14 +1066,14 @@ void GLEngine::draw_images( ImageList& images )
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-  glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
-  glScalef( _view->zoom(), _view->zoom(), 1.0f);
-  glTranslatef( _view->offset_x(), _view->offset_y(), 0.0f );
+  glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
+  glScaled( _view->zoom(), _view->zoom(), 1.0);
+  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
   if ( _view->main()->uiPixelRatio->value() )
-    glScaled( double(texWidth), texHeight / _view->pixel_ratio(), 1.0f );
+    glScaled( double(texWidth), texHeight / _view->pixel_ratio(), 1.0 );
   else
-    glScaled( double(texWidth), double(texHeight), 1.0f );
+    glScaled( double(texWidth), double(texHeight), 1.0 );
 
 
   QuadList::iterator q = _quads.begin();
@@ -1045,6 +1088,21 @@ void GLEngine::draw_images( ImageList& images )
   for ( ; i != e; ++i, ++q )
     {
       const Image_ptr& img = *i;
+      const mrv::Recti& dpw = img->display_window();
+      const mrv::Recti& daw = img->data_window();
+
+      if ( _view->display_window() && dpw != daw && 
+           ( dpw.w() != 0 || dpw.h() != 0 || dpw.x() != 0 || dpw.y() != 0 ) )
+      {
+          draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+      }
+
+      if ( daw.x() > 0 || daw.y() > 0 )
+      {
+          glTranslated( (double) daw.x() / texWidth, 
+                        (double) -daw.y() / texHeight, 0 );
+      }
+
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
 

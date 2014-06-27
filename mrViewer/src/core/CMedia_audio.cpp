@@ -406,7 +406,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
     }
 
   _dts = dts;
-  _expected = dts + 1;
+  _expected = dts+1;
   _seek_req = false;
 
 
@@ -1178,7 +1178,7 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
                        << _(" from ") << frame << _(" used: ") 
                        << _audio_buf_used
                        << _(" need ") 
-                       << audio_bytes_per_frame() );
+                       << bytes_per_frame );
       }
 #endif
     }
@@ -1187,12 +1187,9 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
   if (_audio_buf_used > 0  )
     {
-
        //
        // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
-
        memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
-     
     }
 
   return got_audio;
@@ -1339,11 +1336,15 @@ CMedia::store_audio( const boost::int64_t audio_frame,
 void CMedia::fetch_audio( const boost::int64_t frame )
 {
   // Seek to the correct position if necessary
+
   if ( frame != _expected )
     {
-      bool ok = seek_to_position( frame );
-      if (ok) return;
+        DBG( "FRAME(" << frame << ") != EXPECTED (" << _expected << ")" );
+        bool ok = seek_to_position( frame );
+        if (ok) return;
     }
+
+  DBG( ">>>>>>>> FRAME IS EXPECTED " << _expected );
 
   bool got_audio = !has_audio();
 
@@ -1365,6 +1366,11 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 
   if ( dts > last_frame() ) dts = last_frame();
   else if ( dts < first_frame() ) dts = first_frame();
+
+  _dts = dts;
+  _expected = dts + 1;
+  DBG( "DTS " << dts << " EXPECTED " << _expected );
+
 }
 
 
@@ -1386,7 +1392,7 @@ int64_t CMedia::wait_audio()
   mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
   SCOPED_LOCK( apm );
 
-  for(;;)
+  for (;;)
     {
       if ( stopped() ) break;
 
@@ -1758,6 +1764,7 @@ void CMedia::do_seek()
 
   if ( !got_audio )
   {
+
       if ( _seek_frame != _expected )
           clear_packets();
 

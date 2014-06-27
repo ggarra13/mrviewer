@@ -134,6 +134,8 @@ CMedia::CMedia() :
   _interlaced( kNoInterlace ),
   _image_damage( kNoDamage ),
   _damageRectangle( 0, 0, 0, 0 ),
+  _dataWindow( NULL ),
+  _displayWindow( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
@@ -206,6 +208,8 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _interlaced( kNoInterlace ),
   _image_damage( kNoDamage ),
   _damageRectangle( 0, 0, 0, 0 ),
+  _dataWindow( NULL ),
+  _displayWindow( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
@@ -455,12 +459,35 @@ mrv::image_type_ptr CMedia::anaglyph( bool left_view )
 
 
 
+const mrv::Recti& CMedia::display_window() const
+{
+    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
+    if ( !_displayWindow ) return kNoRect;
+
+    boost::uint64_t idx = _frame - _frameStart;
+    return _displayWindow[idx];
+}
+
+const mrv::Recti& CMedia::data_window() const
+{
+    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
+    if ( !_dataWindow ) return kNoRect;
+
+    boost::uint64_t idx = _frame - _frameStart;
+    return _dataWindow[idx];
+}
+
+
 void CMedia::display_window( const int xmin, const int ymin,
 			     const int xmax, const int ymax )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
-  _displayWindow = mrv::Recti( xmin, ymin, xmax, ymax );
+  if ( !_displayWindow )
+      _displayWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
+  boost::uint64_t idx = _frame - _frameStart;
+  _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax, ymax );
+  DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
@@ -468,7 +495,11 @@ void CMedia::data_window( const int xmin, const int ymin,
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
-  _dataWindow = mrv::Recti( xmin, ymin, xmax, ymax );
+  if ( !_dataWindow )
+      _dataWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
+  boost::uint64_t idx = _frame - _frameStart;
+  _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax, ymax );
+  DBG( "data window frame " << _frame << " is " << _dataWindow[idx] );
 }
 
 
@@ -2079,7 +2110,7 @@ bool CMedia::find_image( const boost::int64_t frame )
 
   if ( should_load )
   {
-     _dts = f;
+     _dts = _frame = f;
      //  std::string file = sequence_filename(f);
      if ( fs::exists(file) )
      {
