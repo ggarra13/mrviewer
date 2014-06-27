@@ -922,12 +922,14 @@ void ImageView::fit_image()
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
+  const mrv::Recti& daw = img->data_window();
+  xoffset = -daw.x();
+  yoffset = daw.y();
+
   if ( _stereo & CMedia::kStereoSideBySide )
      xoffset = - W/4;
-  else
-     xoffset = 0.0;
 
-  yoffset = 0.0;
+
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
   send( buf );
