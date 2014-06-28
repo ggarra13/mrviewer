@@ -1091,8 +1091,8 @@ void GLEngine::draw_images( ImageList& images )
       const mrv::Recti& dpw = img->display_window();
       const mrv::Recti& daw = img->data_window();
 
-      if ( _view->display_window() && dpw != daw && 
-           ( dpw.w() != 0 || dpw.h() != 0 || dpw.x() != 0 || dpw.y() != 0 ) )
+
+      if ( _view->display_window() && dpw != daw )
       {
           draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
       }
