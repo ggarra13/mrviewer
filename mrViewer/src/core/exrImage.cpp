@@ -162,6 +162,7 @@ bool exrImage::channels_order(
 {
    const Box2i& dataWindow = h.dataWindow();
    const Box2i& displayWindow = h.displayWindow();
+
    // int wi = displayWindow.max.x - displayWindow.min.x + 1;
    // int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
@@ -1470,19 +1471,15 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
          }
 
-          
          unsigned dw = width();
          unsigned dh = height();
-         if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
-              dataWindow.max.x != dw || dataWindow.max.y != dh )
-            data_window( dataWindow.min.x, dataWindow.min.y,
-                         dataWindow.max.x, dataWindow.max.y );
 
-         if ( displayWindow != dataWindow )
-         {
-            display_window( displayWindow.min.x, displayWindow.min.y,
-                            displayWindow.max.x, displayWindow.max.y );
-         }
+         data_window( dataWindow.min.x, dataWindow.min.y,
+                      dataWindow.max.x, dataWindow.max.y );
+
+         display_window( displayWindow.min.x, displayWindow.min.y,
+                         displayWindow.max.x, displayWindow.max.y );
+
 
          // Quick exit if stereo is off
          if ( _stereo_type == kNoStereo ) break;
@@ -1547,16 +1544,12 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           
       unsigned dw = width();
       unsigned dh = height();
-      if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
-           dataWindow.max.x != dw || dataWindow.max.y != dh )
-         data_window( dataWindow.min.x, dataWindow.min.y,
-                      dataWindow.max.x, dataWindow.max.y );
 
-      if ( displayWindow != dataWindow )
-      {
-          display_window( displayWindow.min.x, displayWindow.min.y,
-                         displayWindow.max.x, displayWindow.max.y );
-      }
+      data_window( dataWindow.min.x, dataWindow.min.y,
+                   dataWindow.max.x, dataWindow.max.y );
+
+      display_window( displayWindow.min.x, displayWindow.min.y,
+                      displayWindow.max.x, displayWindow.max.y );
    }
 
    return true;
@@ -1639,16 +1632,11 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	   return false;
 	}
 
-	if ( dataWindow.min.x != 0 || dataWindow.min.y != 0 ||
-	     dataWindow.max.x != dw || dataWindow.max.y != dh )
-	   data_window( dataWindow.min.x, dataWindow.min.y,
-			dataWindow.max.x, dataWindow.max.y );
+        data_window( dataWindow.min.x, dataWindow.min.y,
+                     dataWindow.max.x, dataWindow.max.y );
 	
-	if ( displayWindow != dataWindow )
-	{
-	   display_window( displayWindow.min.x, displayWindow.min.y,
-			   displayWindow.max.x, displayWindow.max.y );
-	}
+        display_window( displayWindow.min.x, displayWindow.min.y,
+                        displayWindow.max.x, displayWindow.max.y );
 
 
 	if ( _use_yca && !supports_yuv() )

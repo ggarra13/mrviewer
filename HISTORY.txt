@@ -1,3 +1,9 @@
+v2.6.1.2 - Added support for OpenEXR's display window and for moving data
+	   windows.
+	 - Fixed fit image function to handle moving data window.
+v2.6.1.1 - Fixed audio pops in transcoding of movie files.  However, there's
+	   still no way to save a H264 movie with audio from a sequence of
+	    images.
 v2.6.1.0 - Fixed audio saving in mpeg4 and H264.  However, there are still
 	   cases that fail or that show pops in the audio.
 v2.6.0.0 - Added options to save H264 movie files in YUV420 or YUV444.
