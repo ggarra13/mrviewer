@@ -809,7 +809,9 @@ void GLEngine::draw_mask( const float pct )
   int dw = texWidth;
   int xoffset = _view->offset_x();
 
-  if ( fg->image()->stereo_type() & CMedia::kStereoSideBySide )
+  CMedia* img = fg->image();
+
+  if ( img->stereo_type() & CMedia::kStereoSideBySide )
   {
      xoffset += dw/2;
      dw *= 2;
@@ -1163,6 +1165,24 @@ void GLEngine::draw_images( ImageList& images )
          }
 
          glTranslated( 1, 0, 0 );
+
+         if ( _view->display_window() && dpw != daw )
+         {
+             if ( daw.x() > 0 || daw.y() > 0 )
+             {
+                 glTranslated( -1, 0, 0 );
+                 glTranslated( (double) (dpw.w()-daw.x()) / (double)texWidth,
+                               (double) daw.y() / (double) texHeight, 0 );
+             }
+             
+             draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+         }
+
+         if ( daw.x() > 0 || daw.y() > 0 )
+         {
+             glTranslated( (double) daw.x() / texWidth,
+                           (double) -daw.y() / texHeight, 0 );
+         }
       }
       else if ( img->hires() &&
                 ( img->image_damage() & CMedia::kDamageContents ||
