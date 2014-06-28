@@ -486,7 +486,7 @@ void CMedia::display_window( const int xmin, const int ymin,
   if ( !_displayWindow )
       _displayWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
   boost::uint64_t idx = _frame - _frameStart;
-  _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax, ymax );
+  _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
 }
 
@@ -498,7 +498,7 @@ void CMedia::data_window( const int xmin, const int ymin,
   if ( !_dataWindow )
       _dataWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
   boost::uint64_t idx = _frame - _frameStart;
-  _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax, ymax );
+  _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   DBG( "data window frame " << _frame << " is " << _dataWindow[idx] );
 }
 
