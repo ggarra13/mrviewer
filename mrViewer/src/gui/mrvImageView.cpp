@@ -901,11 +901,25 @@ void ImageView::fit_image()
   const CMedia* img = fg->image();
   if ( img->width() <= 0 ) return;
 
-  double W = img->width();
 
+
+  const mrv::Recti& daw = img->data_window();
+  const mrv::Recti& dpw = img->display_window();
+
+  double W;
+  double multiplier = 1.0;
+  if ( _stereo & CMedia::kStereoSideBySide && dpw != daw )
+  {
+      W = dpw.w();
+      multiplier = 2.0;
+  }
+  else
+  {
+      W = img->width();
+  }
 
   if ( _stereo & CMedia::kStereoSideBySide )
-     W *= 2;
+      W *= 2;
 
   double w = (double) fltk_main()->w();
   double z = w / (double)W;
@@ -922,13 +936,13 @@ void ImageView::fit_image()
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
-  const mrv::Recti& daw = img->data_window();
   xoffset = -daw.x();
   yoffset = daw.y();
 
   if ( _stereo & CMedia::kStereoSideBySide )
-     xoffset = - W/4;
-
+  {
+      xoffset -= W/4;
+  }
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
