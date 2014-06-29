@@ -2114,13 +2114,9 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic = img->hires();
 
-
-
   unsigned w = pic->width();
   unsigned h = pic->height();
 
-  assert( w == pic->width() &&
-          h == pic->height() );
 
   CMedia::Pixel rgba;
 
