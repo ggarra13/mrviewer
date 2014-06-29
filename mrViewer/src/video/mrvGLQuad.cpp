@@ -228,6 +228,7 @@ namespace mrv {
 
     glGenTextures( _num_textures, _texId );
 
+
     for ( unsigned i = 0; i < _num_textures; ++i )
       {
 	if ( GLEngine::maxTexUnits() > 3 )
@@ -239,6 +240,7 @@ namespace mrv {
 	glEnable( GL_TEXTURE_2D );
 	CHECK_GL( "init_textures glEnable" );
 	
+
 	glBindTexture(GL_TEXTURE_2D, _texId[i] );
 	CHECK_GL( "init_textures glBindTexture" );
 
@@ -248,9 +250,13 @@ namespace mrv {
 
   GLQuad::~GLQuad()
   {
-    if ( GLEngine::pboTextures() ) glDeleteBuffers( _num_textures, _pbo );
-
-    glDeleteTextures( _num_textures, _texId );
+      if ( GLEngine::pboTextures() )
+      {
+          glDeleteBuffers( _num_textures, _pbo );
+          CHECK_GL( "glDeleteBuffers" );
+      }
+      glDeleteTextures( _num_textures, _texId );
+      CHECK_GL( "glDeleteTextures" );
 
     // NOTE: we don't delete neither the shader nor the lut, as those
     //       are not managed by us.
@@ -287,12 +293,14 @@ namespace mrv {
 
 	      // bind pixel buffer
 	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
+              CHECK_GL( "glBindBuffer" );
 
 	      //
 	      // This avoids a potential stall.
 	      //
 	      glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
 			   tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
+              CHECK_GL( "glBufferData" );
 
 	      // Acquire a pointer to the first data item in this buffer object
 	      // by mapping it to the so-called unpack buffer target. The unpack
@@ -311,6 +319,7 @@ namespace mrv {
 	      //
 	      char* ioMem = (char*)glMapBuffer( GL_PIXEL_UNPACK_BUFFER_ARB, 
 						GL_WRITE_ONLY );
+              CHECK_GL( "glMapBuffer" );
 	      if ( !ioMem ) 
 		{
 		  LOG_ERROR("Could not map pixel buffer #" << idx );
@@ -349,7 +358,7 @@ namespace mrv {
 	      //
 	      glTexSubImage2D(GL_TEXTURE_2D, 0, rx, ry, rw, rh, format, 
 			      pixel_type, BUFFER_OFFSET(0) );
-
+              CHECK_GL( "glTexSubImage2D" );
 	      //
 	      // Unbind buffer object by binding it to zero.
 	      // This call is crucial, as doing the following computations while 
@@ -358,6 +367,7 @@ namespace mrv {
 	      // Refer to the specification to learn more about which 
 	      // GL calls act differently while a buffer is bound.
 	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+              CHECK_GL( "glBindBuffer" );
 	    }
 	  else
 #endif // TEST_NO_PBO_TEXTURES
@@ -372,6 +382,7 @@ namespace mrv {
 			       format,        // format
 			       pixel_type, 
 			       pixels );
+              CHECK_GL( "no PBO glTexSubImage2D" );
 	    }
 	CHECK_GL( "bind_texture glTexSubImage2D" );
       }
@@ -394,6 +405,7 @@ namespace mrv {
 	  {
 	    glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry, rw, 1, format,
 			     pixel_type, pixels );
+	    CHECK_GL( "bind_texture glTexSubImage2D" );
 	    glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry+off, rw, 1, format,
 			     pixel_type, pixels );
 	    CHECK_GL( "bind_texture glTexSubImage2D" );
@@ -605,10 +617,13 @@ namespace mrv {
 
     // Load & bind the texture
     if ( GLEW_ARB_multitexture )
+    {
       glActiveTexture( GL_TEXTURE0 );
+      CHECK_GL( "glActiveTexture" );
+    }
 
     glBindTexture( GL_TEXTURE_2D, _texId[0] );
-    CHECK_GL( "bind_texture glBindTexture" );
+    CHECK_GL( "!bind_texture glBindTexture" );
 
     glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
     CHECK_GL( "bind_texture glPixelStore" );
@@ -650,6 +665,7 @@ namespace mrv {
 	    // pass NULL for the image data leaves the texture image
 	    // unspecified.
 	    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+            CHECK_GL( "glBindBuffer" );
 	  }
 
 
@@ -731,7 +747,6 @@ namespace mrv {
 
   void GLQuad::bind( const image_type_ptr& pic )
   {
-    
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw <= 0 || dh <= 0 ) return;
@@ -798,6 +813,7 @@ namespace mrv {
 	    glActiveTexture(GL_TEXTURE0 + idx);
 	    glEnable(GL_TEXTURE_2D);
 	    glBindTexture(GL_TEXTURE_2D, _texId[i] );
+            CHECK_GL( "shader bind_texture glBindTexture" );
 	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	  }
       }
@@ -808,6 +824,7 @@ namespace mrv {
 
 	glEnable(GL_TEXTURE_2D);
 	glBindTexture(GL_TEXTURE_2D, _texId[0] );
+        CHECK_GL( "no shader bind_texture glBindTexture" );
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
       }
 
