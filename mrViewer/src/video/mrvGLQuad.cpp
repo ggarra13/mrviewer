@@ -736,8 +736,8 @@ namespace mrv {
 		     "Cannot use your gfx card for fast texture mapping." );
       }
 
-    _width = dw; 
-    _height = dh; 
+    _width = dw;
+    _height = dh;
     _channels = channels; 
     _pixel_type = pixel_type;
     _glformat = glformat;

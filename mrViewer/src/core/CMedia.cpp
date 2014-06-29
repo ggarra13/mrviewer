@@ -465,6 +465,8 @@ const mrv::Recti& CMedia::display_window() const
     if ( !_displayWindow ) return kNoRect;
 
     boost::uint64_t idx = _frame - _frameStart;
+    CMedia* img = const_cast< CMedia* >( this );
+    img->image_damage( img->image_damage() | kDamageData );
     return _displayWindow[idx];
 }
 
@@ -474,6 +476,8 @@ const mrv::Recti& CMedia::data_window() const
     if ( !_dataWindow ) return kNoRect;
 
     boost::uint64_t idx = _frame - _frameStart;
+    CMedia* img = const_cast< CMedia* >( this );
+    img->image_damage( img->image_damage() | kDamageData );
     return _dataWindow[idx];
 }
 
@@ -488,7 +492,7 @@ void CMedia::display_window( const int xmin, const int ymin,
   boost::uint64_t idx = _frame - _frameStart;
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
-  LOG_INFO( "display window frame " << _frame << " is " << _displayWindow[idx] );
+  DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
