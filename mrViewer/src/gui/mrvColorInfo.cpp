@@ -190,11 +190,13 @@ void ColorInfo::update( const CMedia* src,
 
       unsigned count = 0;
 
+      const mrv::Recti& daw = src->data_window();
+
       int x = selection.x();
       int y = selection.y();
 
-      int xmin = (int)(W * selection.x());
-      int ymin = (int)(H * selection.y());
+      int xmin = (int)(W * selection.x()) - daw.x();
+      int ymin = (int)(H * selection.y()) - daw.y();
 
       int xmax = xmin + (int)(W * selection.w()) - 1;
       int ymax = ymin + (int)(H * selection.h()) - 1;
