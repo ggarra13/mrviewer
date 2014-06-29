@@ -117,7 +117,9 @@ namespace mrv {
   _left_red( false ),
   _curpart( -1 ),
   _numparts( -1 ),
-  _num_layers( 0 )
+  _num_layers( 0 ),
+  _lineOrder( (Imf::LineOrder) 0 ),
+  _compression( (Imf::Compression) 0 )
   {
   }
 
@@ -652,6 +654,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 
 	_pixel_ratio = h.pixelAspectRatio();
 	_lineOrder   = h.lineOrder();
+        _compression = h.compression();
 
 	in.setFrameBuffer(fb);
 
@@ -1314,6 +1317,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
          if ( _exif.empty() && _iptc.empty() )
             read_header_attr( header, frame );
+
+	_pixel_ratio = header.pixelAspectRatio();
+	_lineOrder   = header.lineOrder();
+	_compression = header.compression(); 
 
          Imf::ChannelList channels = header.channels();
 
