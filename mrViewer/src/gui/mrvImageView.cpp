@@ -831,10 +831,11 @@ void ImageView::copy_pixel() const
   if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
     return;
 
+
+  image_coordinates( img, x, y );
+
   mrv::image_type_ptr pic = img->hires();
   if ( !pic ) return;
-
-  image_coordinates( pic, x, y );
 
   int w = pic->width();
   int h = pic->height();
@@ -860,28 +861,35 @@ void ImageView::copy_pixel() const
  * @param x   window's x position
  * @param y   window's y position
  */
-void ImageView::image_coordinates( const mrv::image_type_ptr& img, 
+void ImageView::image_coordinates( const Image_ptr img, 
 				   double& x, double& y ) const
 {
-  int ww = img->width();
-  int hh = img->height();
-  if ( _showPixelRatio ) hh = (int) (hh / pixel_ratio());
+  
+    mrv::image_type_ptr pic = img->hires();
+    if ( !pic ) return;
+    
 
-  double tw = (ww / 2.0);
-  double th = (hh / 2.0);
+    int ww = pic->width();
+    int hh = pic->height();
+    if ( _showPixelRatio ) hh = (int) (hh / pixel_ratio());
+  
+    double tw = (ww / 2.0);
+    double th = (hh / 2.0);
 
-  x -= (w() - ww) / 2.0; 
-  y += (h() - hh) / 2.0;
 
-  y = (this->h() - y - 1);
+    x -= (w() - ww) / 2.0; 
+    y += (h() - hh) / 2.0;
 
-  x -= tw; y -= th;
-  x /= _zoom; y /= _zoom;
-  x += tw; y += th;
-  x -= xoffset; y -= yoffset;
+    y = (this->h() - y - 1);
+    
+    x -= tw; y -= th;
+    x /= _zoom; y /= _zoom;
+    x += tw; y += th;
+    x -= xoffset; y -= yoffset;
 
-  y = hh - y;
-  if ( _showPixelRatio ) y *= pixel_ratio();
+
+    y = hh - y;
+    if ( _showPixelRatio ) y *= pixel_ratio();
 }
 
 
@@ -901,21 +909,21 @@ void ImageView::fit_image()
   const CMedia* img = fg->image();
   if ( img->width() <= 0 ) return;
 
+  mrv::image_type_ptr pic = img->hires();
 
 
   const mrv::Recti& daw = img->data_window();
   const mrv::Recti& dpw = img->display_window();
 
   double W;
-  double multiplier = 1.0;
   if ( _stereo & CMedia::kStereoSideBySide && dpw != daw )
   {
       W = dpw.w();
-      multiplier = 2.0;
   }
   else
   {
-      W = img->width();
+      W = dpw.w();
+      if ( W == 0 ) W = pic->width();
   }
 
   if ( _stereo & CMedia::kStereoSideBySide )
@@ -932,7 +940,7 @@ void ImageView::fit_image()
   if ( uiMain->uiBottomBar->visible() )
     h -= uiMain->uiBottomBar->h();
 
-  h /= img->height();
+  h /= pic->height();
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
@@ -1471,16 +1479,14 @@ void ImageView::draw()
      if ( !fg ) return;
 
      CMedia* img = fg->image();
-     mrv::image_type_ptr pic = img->hires();
-     if ( !pic ) return;
 
      double xf = X;
      double yf = Y;
 
-     image_coordinates( pic, xf, yf );
+     image_coordinates( img, xf, yf );
 
-     unsigned int W = pic->width();
-     unsigned int H = pic->height();
+     unsigned int W = img->width();
+     unsigned int H = img->height();
 
      yf = H - yf;
      yf -= H/2;
@@ -1673,16 +1679,14 @@ int ImageView::leftMouseDown(int x, int y)
 	 if ( !fg ) return 0;
 
 	 CMedia* img = fg->image();
-	 mrv::image_type_ptr pic = img->hires();
-	 if ( !pic ) return 0;
 
 	 double xf = x;
 	 double yf = y;
 
-	 image_coordinates( pic, xf, yf );
+	 image_coordinates( img, xf, yf );
 
-	 unsigned int W = pic->width();
-	 unsigned int H = pic->height();
+	 unsigned int W = img->width();
+	 unsigned int H = img->height();
 
 	 std::string str;
 	 GLPathShape* s;
@@ -1960,6 +1964,8 @@ void ImageView::leftMouseUp( int x, int y )
   else
     flags &= ~kMouseRight;
 
+  window()->cursor( fltk::CURSOR_CROSS );
+
   if ( _shapes.empty() ) return;
 
   //
@@ -2104,19 +2110,27 @@ void ImageView::mouseMove(int x, int y)
 
   CMedia* img = fg->image();
 
-  mrv::image_type_ptr pic = img->hires();
-  if ( !pic ) return;
+  image_coordinates( img, xf, yf );
 
-  image_coordinates( pic, xf, yf );
+  mrv::image_type_ptr pic = img->hires();
+
+
 
   unsigned w = pic->width();
   unsigned h = pic->height();
+
+  assert( w == pic->width() &&
+          h == pic->height() );
+
   CMedia::Pixel rgba;
 
+  const mrv::Recti& daw = img->data_window();
+  xf -= daw.x();
+  yf -= daw.y();
 
   bool outside = false;
 
-  if ( _stereo & CMedia::kStereoSideBySide )
+  if ( img->is_stereo() && _stereo & CMedia::kStereoSideBySide )
   {
 
      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
@@ -2153,8 +2167,8 @@ void ImageView::mouseMove(int x, int y)
 
       if ( xp > w )
       {
-         pic = img->right();
-         rgba = pic->pixel( xp - w, yp );
+          pic = img->right();
+          rgba = pic->pixel( xp - w, yp );
       }
       else
       {
@@ -2304,7 +2318,6 @@ void ImageView::mouseDrag(int x,int y)
       int dx = x - lastX;
       int dy = y - lastY;
 
-
       if ( flags & kZoom ) 
 	{
 	  zoom( _zoom + dx*_zoom / 500.0f );
@@ -2340,7 +2353,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   double xf = double(lastX);
 	   double yf = double(lastY);
-	   image_coordinates( pic, xf, yf );
+	   image_coordinates( img, xf, yf );
 
            if ( xf < 0 ) xf = 0;
            if ( yf < 0 ) yf = 0;
@@ -2357,7 +2370,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   double xn = double(x);
 	   double yn = double(y);
-	   image_coordinates( pic, xn, yn );
+	   image_coordinates( img, xn, yn );
 
 	   if ( xn < 0 ) xn = 0;
 	   if ( yn < 0 ) yn = 0;
@@ -3635,18 +3648,16 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   }
 
   CMedia* img = fg->image();
-  mrv::image_type_ptr pic = img->hires();
-  if (!pic) return;
 
-  image_coordinates( pic, xf, yf );
+  image_coordinates( img, xf, yf );
 
   zoom( z );
 
-  int w2 = pic->width()  / 2;
-  int h2 = pic->height() / 2;
+  int w2 = img->width()  / 2;
+  int h2 = img->height() / 2;
 
   xoffset = w2 - xf;
-  int   h = pic->height();
+  int   h = img->height();
   yoffset = h2 - ( h - yf - 1);
   xoffset -= (offx / _zoom);
   double ratio = 1.0f;

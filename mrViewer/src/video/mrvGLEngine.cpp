@@ -1051,8 +1051,10 @@ void GLEngine::draw_images( ImageList& images )
       if ( img->is_stereo() )    ++num_quads;
     }
 
-  texWidth  = images.back()->width();
-  texHeight = images.back()->height();
+  mrv::image_type_ptr pic = images.back()->hires();
+
+  texWidth  = pic->width();
+  texHeight = pic->height();
 
   if ( texWidth == 0 || texHeight == 0 ) return;
 
@@ -1089,7 +1091,16 @@ void GLEngine::draw_images( ImageList& images )
 
   for ( ; i != e; ++i, ++q )
     {
+
       const Image_ptr& img = *i;
+
+      mrv::image_type_ptr pic = img->hires();
+
+      texWidth  = pic->width();
+      texHeight = pic->height();
+
+      if ( texWidth == 0 || texHeight == 0 ) continue;
+
       const mrv::Recti& dpw = img->display_window();
       const mrv::Recti& daw = img->data_window();
 
