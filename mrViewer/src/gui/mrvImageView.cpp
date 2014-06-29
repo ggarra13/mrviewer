@@ -1406,10 +1406,10 @@ void ImageView::draw()
 
   if ( _selection.w() > 0 || _selection.h() > 0 )
     {
-      uchar r, g,  b;
-      fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
-      _engine->color( r, g, b, 255 );
-      _engine->draw_rectangle( _selection );
+        uchar r, g,  b;
+        fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
+        _engine->color( r, g, b, 255 );
+        _engine->draw_rectangle( _selection );
     }
 
 
@@ -2351,22 +2351,29 @@ void ImageView::mouseDrag(int x,int y)
 	   double yf = double(lastY);
 	   image_coordinates( img, xf, yf );
 
+           const mrv::Recti& daw = img->data_window();
+           const mrv::Recti& dpw = img->display_window();
+           xf -= daw.x();
+           yf -= daw.y();
+
            if ( xf < 0 ) xf = 0;
            if ( yf < 0 ) yf = 0;
            else if ( yf > texHeight ) yf = double(texHeight);
 
            if ( _stereo & CMedia::kStereoSideBySide )
            {
-              if ( xf > texWidth*2 ) xf = texWidth*2;
+               if ( xf > texWidth*2 ) xf = texWidth*2;
            }
            else
            {
-              if ( xf > texWidth )  xf = double(texWidth);
+               if ( xf > texWidth )  xf = double(texWidth);
            }
 
 	   double xn = double(x);
 	   double yn = double(y);
 	   image_coordinates( img, xn, yn );
+           xn -= daw.x();
+           yn -= daw.y();
 
 	   if ( xn < 0 ) xn = 0;
 	   if ( yn < 0 ) yn = 0;
@@ -2374,11 +2381,11 @@ void ImageView::mouseDrag(int x,int y)
 
            if ( _stereo & CMedia::kStereoSideBySide )
            {
-              if ( xn > texWidth*2 ) xn = texWidth*2;
+               if ( xn > texWidth*2 ) xn = texWidth*2;
            }
            else
            {
-              if ( xn > texWidth )  xn = double(texWidth);
+               if ( xn > texWidth )  xn = double(texWidth);
            }
 
 
@@ -2426,8 +2433,8 @@ void ImageView::mouseDrag(int x,int y)
 	      if ( dy > H ) dy = H;
 
 
-	      _selection = mrv::Rectd( (double)xf/(double)W, 
-				       (double)yf/(double)H, 
+	      _selection = mrv::Rectd( (double)(daw.x()+xf)/(double)W, 
+				       (double)(daw.y()+yf)/(double)H, 
 				       (double)dx/(double)W, 
 				       (double)dy/(double)H );
 

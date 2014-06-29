@@ -789,17 +789,10 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 
   glTranslated( -0.5, -0.5, 0 );
 
-  std::cerr << "x: " << x << " " << x2 << std::endl;
-  std::cerr << "y: " << y << " " << y2 << std::endl;
-
   double xf1 = (double)x / (double) texWidth;
   double yf1 = (double)(texHeight - y) / (double) texHeight;
   double xf2 = (double)x2 / (double) texWidth;
   double yf2 = (double)(texHeight - y2) / (double) texHeight;
-
-  std::cerr << "tw: " << texWidth << " th: " << texHeight << std::endl;
-  std::cerr << "xf: " << xf1 << " " << xf2 << std::endl;
-  std::cerr << "yf: " << yf1 << " " << yf2 << std::endl;
 
   //
   // Draw mask
@@ -1121,9 +1114,6 @@ void GLEngine::draw_images( ImageList& images )
       texWidth  = pic->width();
       texHeight = pic->height(); 
 
-      std::cerr << "p: " << texWidth << "-" << texHeight << std::endl;
-
-
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
       glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
@@ -1146,14 +1136,10 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( _view->display_window() && dpw != daw )
       {
-          std::cerr << "stencil " << dpw.l() << " " << dpw.t() << "-"
-                    << dpw.r() << " " << dpw.b() << std::endl;
-          CHECK_GL( "pre draw stencil");
           draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
-          CHECK_GL( "post draw stencil");
       }
 
-      if ( daw.x() > 0 || daw.y() > 0 )
+      if ( daw.x() != 0 || daw.y() != 0 )
       {
           glTranslated( (double) daw.x() / texWidth, 
                         (double) -daw.y() / texHeight, 0 );
@@ -1185,7 +1171,6 @@ void GLEngine::draw_images( ImageList& images )
                                 CMedia::kStereoSideBySide) && 
            img->left() && img->right() )
       {
-         image_type_ptr pic;
          if ( img->stereo_type() == CMedia::kStereoCrossed )
          {
             pic = img->right();
@@ -1223,7 +1208,7 @@ void GLEngine::draw_images( ImageList& images )
 
          if ( _view->display_window() && dpw != daw )
          {
-             if ( daw.x() > 0 || daw.y() > 0 )
+             if ( daw.x() != 0 || daw.y() != 0 )
              {
                  glTranslated( -1, 0, 0 );
                  glTranslated( (double) (dpw.w()-daw.x()) / (double)texWidth,
@@ -1233,7 +1218,7 @@ void GLEngine::draw_images( ImageList& images )
              draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
          }
 
-         if ( daw.x() > 0 || daw.y() > 0 )
+         if ( daw.x() != 0 || daw.y() != 0 )
          {
              glTranslated( (double) daw.x() / texWidth,
                            (double) -daw.y() / texHeight, 0 );
@@ -1243,9 +1228,7 @@ void GLEngine::draw_images( ImageList& images )
                 ( img->image_damage() & CMedia::kDamageContents ||
                   img->has_subtitle() ) )
 	{
-	   image_type_ptr pic = img->hires();
-           texWidth = pic->width();
-           texHeight = pic->height();
+	   pic = img->hires();
 
 	   if ( shader_type() == kNone && img->stopped() && 
 	        pic->pixel_type() != image_type::kByte )
@@ -1253,7 +1236,6 @@ void GLEngine::draw_images( ImageList& images )
 	      pic = display( pic, img );
 	   }
 
-           CHECK_GL( "prebind" );
            quad->bind( pic );
 	}
 

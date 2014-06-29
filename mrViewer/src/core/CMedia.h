@@ -419,10 +419,10 @@ class CMedia
     // Image information
     ////////////////////////
 
-    /// Return the image width 
+    /// Return the image width
     inline unsigned int  width() const  { return _w; }
 
-    /// Return the image width 
+    /// Return the image height
     inline unsigned int  height() const { return _h; }
 
     /// Return the image pixel ratio
