@@ -441,7 +441,7 @@ namespace mrv {
     float calculate_fstop( float exposure ) const;
 
     /// Given two window coordinates, return pixel coordinates
-    void image_coordinates( const mrv::image_type_ptr& img,
+    void image_coordinates( const Image_ptr img,
 			    double& x, double& y ) const;
 
     /// Clear image sequence caches
