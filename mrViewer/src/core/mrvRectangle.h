@@ -33,6 +33,11 @@ namespace mrv
     inline Rectangle( const Rectangle< T >& r ) :
       x_(r.x()), y_(r.y()), w_(r.w()), h_(r.h()) {}
 
+      inline void x( T x ) { x_ = x; }
+      inline void y( T x ) { y_ = x; }
+      inline void w( T x ) { w_ = x; }
+      inline void h( T x ) { h_ = x; }
+
     inline T x() const { return x_; }
     inline T y() const { return y_; }
 
