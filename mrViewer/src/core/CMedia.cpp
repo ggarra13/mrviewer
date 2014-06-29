@@ -487,7 +487,8 @@ void CMedia::display_window( const int xmin, const int ymin,
       _displayWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
   boost::uint64_t idx = _frame - _frameStart;
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
-  DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
+  image_damage( image_damage() | kDamageData );
+  LOG_INFO( "display window frame " << _frame << " is " << _displayWindow[idx] );
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
@@ -499,6 +500,7 @@ void CMedia::data_window( const int xmin, const int ymin,
       _dataWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
   boost::uint64_t idx = _frame - _frameStart;
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+  image_damage( image_damage() | kDamageData );
   DBG( "data window frame " << _frame << " is " << _dataWindow[idx] );
 }
 

@@ -618,6 +618,7 @@ namespace mrv {
     // Load & bind the texture
     if ( GLEW_ARB_multitexture )
     {
+        CHECK_GL( "Before glActiveTexture" );
       glActiveTexture( GL_TEXTURE0 );
       CHECK_GL( "glActiveTexture" );
     }
@@ -747,6 +748,7 @@ namespace mrv {
 
   void GLQuad::bind( const image_type_ptr& pic )
   {
+      CHECK_GL( "bind" );
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw <= 0 || dh <= 0 ) return;

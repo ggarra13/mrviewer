@@ -410,16 +410,18 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
+    
+
     const mrv::Recti& window = img->data_window();
     if ( window.w() > 0 )
       {
-	add_rect( _("Data Window"), window );
+          add_rect( _("Data Window"), window );    
       }
 
     const mrv::Recti& dwindow = img->display_window();
     if ( dwindow.w() > 0 )
       {
-	add_rect( _("Display Window"), dwindow );
+          add_rect( _("Display Window"), dwindow );
       }
 
     ++group;
@@ -441,8 +443,11 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	depth = _("Unknown bit depth"); break;
       }
 
+    
     add_text( _("Depth"), depth );
     add_int( _("Image Channels"), img->number_of_channels() );
+
+    
 
     ++group;
 
@@ -506,6 +511,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_text( _("Render Pixel Format"), format );
 
 
+    
     static const char* kRenderingIntent[] = {
       _("Undefined"),
       _("Saturation"),
@@ -514,12 +520,15 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       _("Relative"),
     };
 
+    
     add_text( _("Rendering Intent"), 
 	      kRenderingIntent[ (int) img->rendering_intent() ] );
 
+    
     add_float( _("Gamma"), img->gamma(), true, 
 	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
 
+    
     
     const Imf::Chromaticities& c = img->chromaticities(); 
     sprintf( buf, "R: %g %g    G: %g %g    B: %g %g",
@@ -529,12 +538,18 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     sprintf( buf, "W: %g %g",c.white.x, c.white.y );
     add_text( _("CIExy White Point"), buf );
 
+    
 
     add_ctl( _("Render Transform"), img->rendering_transform() );
+    
+
     add_icc( _("ICC Profile"), img->icc_profile() );
-  
+    
+
     ++group;
+    
     add_text( _("Format"), img->format() );
+    
 
     if ( !img->has_video() )
       {
@@ -549,6 +564,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     sprintf( buf, N_("%.1f %s"), memory_space, space_type );
     add_text( _("Memory"), buf );
 
+    
 
     if ( img->disk_space() >= 0 )
       {
@@ -561,13 +577,12 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 		 disk_space, space_type, pct );
 	add_text( _("Disk space"), buf );
 
-	
 	if ( !img->has_video() )
 	  {
 	    ++group;
-	    
+
 	    add_text( _("Compression"), img->compression() );
-	    
+
 	    double ratio = 100.0 - pct;
 	    sprintf( buf, _("%.2f %%"), ratio );
 	    add_text( _("Compression Ratio"), buf );
@@ -575,12 +590,19 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
       }
 
+    
     ++group;
     add_text( _("Creation Date"), img->creation_date() );
 
+    
     m_curr->relayout();
+
+    
+
     m_image->relayout();
     m_image->show();
+
+    
 
     CMedia::Attributes attrs = img->iptc();
     if ( ! attrs.empty() )
@@ -594,6 +616,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	m_curr->parent()->layout();
       }
 
+    
     attrs = img->exif();
     if ( ! attrs.empty() )
       {
@@ -602,40 +625,41 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	  {
-	     if ( i->first == "Mipmap Levels" )
-	     {
-		exrImage* exr = dynamic_cast< exrImage* >( img );
-		if ( exr )
-		{
-		   add_int( _("Mipmap Level"), exr->levelX(), true,
-			    (fltk::Callback*)change_mipmap_cb, 0, 20 );
-		   exr->levelY( exr->levelX() );
-		}
-	     }
-	     if ( i->first == "X Ripmap Levels" )
-	     {
-		exrImage* exr = dynamic_cast< exrImage* >( img );
-		if ( exr )
-		{
-		   add_int( _("X Ripmap Level"), exr->levelX(), true,
-			    (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
-		}
-	     }
-	     if ( i->first == "Y Ripmap Levels" )
-	     {
-		exrImage* exr = dynamic_cast< exrImage* >( img );
-		if ( exr )
-		{
-		   add_int( _("Y Ripmap Level"), exr->levelY(), true,
-			    (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
-		}
-	     }
+              if ( i->first == N_("Mipmap Levels") )
+              {
+                  exrImage* exr = dynamic_cast< exrImage* >( img );
+                  if ( exr )
+                  {
+                      add_int( _("Mipmap Level"), exr->levelX(), true,
+                               (fltk::Callback*)change_mipmap_cb, 0, 20 );
+                      exr->levelY( exr->levelX() );
+                  }
+              }
+              if ( i->first == "X Ripmap Levels" )
+              {
+                  exrImage* exr = dynamic_cast< exrImage* >( img );
+                  if ( exr )
+                  {
+                      add_int( _("X Ripmap Level"), exr->levelX(), true,
+                               (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
+                  }
+              }
+              if ( i->first == "Y Ripmap Levels" )
+              {
+                  exrImage* exr = dynamic_cast< exrImage* >( img );
+                  if ( exr )
+                  {
+                      add_int( _("Y Ripmap Level"), exr->levelY(), true,
+                               (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
+                  }
+              }
 	    add_text( i->first.c_str(), i->second.c_str(), false );
 	  }
 	m_curr->layout();
 	m_curr->parent()->layout();
       }
 
+    
 
     if ( num_video_streams > 0 )
       {
@@ -676,6 +700,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  }
       }
 
+    
     if ( num_audio_streams > 0 )
       {
 	for ( unsigned i = 0; i < num_audio_streams; ++i )
@@ -721,6 +746,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	m_audio->parent()->show();
       }
 
+    
     if ( num_subtitle_streams > 0 )
       {
 	for ( unsigned i = 0; i < num_subtitle_streams; ++i )
@@ -755,6 +781,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       }
 
 
+    
     relayout();
   }
 
