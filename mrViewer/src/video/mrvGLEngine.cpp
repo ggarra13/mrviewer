@@ -534,6 +534,7 @@ void GLEngine::clear_canvas( float r, float g, float b, float a )
   glClearColor(r, g, b, a );
   glClear( GL_COLOR_BUFFER_BIT );
   glShadeModel( GL_FLAT );
+  CHECK_GL( "Clear canvas" );
 }
 
 void GLEngine::set_blend_function( int source, int dest )
@@ -541,6 +542,7 @@ void GLEngine::set_blend_function( int source, int dest )
   // So compositing works properly
   // glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
   glBlendFunc( (GLenum) source, (GLenum) dest );
+  CHECK_GL( "glBlendFunc" );
 }
 
 void GLEngine::color( uchar r, uchar g, uchar b, uchar a = 255 )
@@ -566,8 +568,13 @@ bool GLEngine::init_fbo( ImageList& images )
    GLenum internalFormat = GL_RGBA32F_ARB;
    GLenum dataFormat = GL_RGBA;
    GLenum pixelType = GL_FLOAT;
-   unsigned w = images.back()->width();
-   unsigned h = images.back()->height();
+
+   Image_ptr img = images.back();
+
+   mrv::image_type_ptr pic = img->hires();
+
+   unsigned w = pic->width();
+   unsigned h = pic->height();
 
    glTexImage2D(GL_TEXTURE_2D, 
 		0, // level
@@ -577,13 +584,15 @@ bool GLEngine::init_fbo( ImageList& images )
 		dataFormat,  // texture data format
 		pixelType, // texture pixel type 
 		NULL);    // texture pixel data
-
+   CHECK_GL( "glTexImage2D" );
 
    glGenFramebuffers(1, &id);
    glBindFramebuffer(GL_FRAMEBUFFER, id);
+   CHECK_GL( "glBindFramebuffer" );
 
    glGenRenderbuffers(1, &rid);
    glBindRenderbuffer( GL_RENDERBUFFER, rid );
+   CHECK_GL( "glBindRenderbuffer" );
 
 
 
@@ -593,16 +602,20 @@ bool GLEngine::init_fbo( ImageList& images )
    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL, 
 			  w, h );
    glBindRenderbuffer( GL_RENDERBUFFER, 0 );
+   CHECK_GL( "glBindRenderbuffer" );
  
    // attach a texture to FBO color attachement point
    glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, 
     			  GL_TEXTURE_2D, textureId, 0);
+   CHECK_GL( "glFramebufferTexture2D" );
 
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, 
 			     GL_RENDERBUFFER, rid);
+   CHECK_GL( "glFramebufferRenderbuffer depth" );
 
    glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_STENCIL_ATTACHMENT, 
 			     GL_RENDERBUFFER, rid);
+   CHECK_GL( "glFramebufferRenderbuffer stencil" );
 
    GLenum status = glCheckFramebufferStatus( GL_FRAMEBUFFER );
    if ( status != GL_FRAMEBUFFER_COMPLETE )
@@ -634,18 +647,27 @@ bool GLEngine::init_fbo( ImageList& images )
 void GLEngine::end_fbo( ImageList& images )
 {
    if ( ! _fboRenderBuffer ) return;
-   
-   glBindTexture(GL_TEXTURE_2D, textureId);
-   unsigned w = images.back()->width();
-   unsigned h = images.back()->height();
-   glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
-   glBindTexture(GL_TEXTURE_2D, 0);
-	
-   glBindFramebuffer(GL_FRAMEBUFFER, 0);
-   glDeleteFramebuffers(1, &id);
-   glDeleteRenderbuffers(1, &rid);
 
-   
+   glBindTexture(GL_TEXTURE_2D, textureId);
+   CHECK_GL( "end_fbo glBindTexture" );
+
+   Image_ptr img = images.back();
+   mrv::image_type_ptr pic = img->hires();
+
+   unsigned w = pic->width();
+   unsigned h = pic->height();
+   glCopyTexSubImage2D(GL_TEXTURE_2D, 0, 0, 0, 0, 0, w, h);
+   CHECK_GL( "glCopyTexSubImage2D" );
+   glBindTexture(GL_TEXTURE_2D, 0);
+   CHECK_GL( "glBindTexture 0" );
+
+   glBindFramebuffer(GL_FRAMEBUFFER, 0);
+   CHECK_GL( "glBindFramebuffer" );
+   glDeleteFramebuffers(1, &id);
+   CHECK_GL( "glDeleteFramebuffers" );
+   glDeleteRenderbuffers(1, &rid);
+   CHECK_GL( "glDeleteRenderbuffers" );
+
 }
 
 void GLEngine::draw_title( const float size,
@@ -751,21 +773,33 @@ void GLEngine::draw_square_stencil( const int x, const int y,
                                     const int x2, const int y2)
 {
 
-  glClear( GL_STENCIL_BUFFER );
+  glClear( GL_STENCIL_BUFFER_BIT );
+  CHECK_GL( "glClear STENCIL_BUFFER" );
   glColorMask(true, true, true, true);
+  CHECK_GL( "draw_square_stencil glColorMask" );
   glDepthMask(false);
+  CHECK_GL( "draw_square_stencil glDepthMask" );
   glColor3f( 0.0f, 0.0f, 0.0f );
   glEnable( GL_STENCIL_TEST );
+  CHECK_GL( "draw_square_stencil glEnable Stencil test" );
   glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
+  CHECK_GL( "draw_square_stencil glStencilFunc" );
   glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
+  CHECK_GL( "draw_square_stencil glStencilOp" );
 
   glTranslated( -0.5, -0.5, 0 );
+
+  std::cerr << "x: " << x << " " << x2 << std::endl;
+  std::cerr << "y: " << y << " " << y2 << std::endl;
 
   double xf1 = (double)x / (double) texWidth;
   double yf1 = (double)(texHeight - y) / (double) texHeight;
   double xf2 = (double)x2 / (double) texWidth;
   double yf2 = (double)(texHeight - y2) / (double) texHeight;
 
+  std::cerr << "tw: " << texWidth << " th: " << texHeight << std::endl;
+  std::cerr << "xf: " << xf1 << " " << xf2 << std::endl;
+  std::cerr << "yf: " << yf1 << " " << yf2 << std::endl;
 
   //
   // Draw mask
@@ -993,6 +1027,8 @@ void GLEngine::translate( double x, double y )
 
 void GLEngine::draw_images( ImageList& images )
 {
+    CHECK_GL("draw_images");
+
   // Check if lut types changed since last time
   static int  RT_lut_old_algorithm = Preferences::kLutPreferCTL;
   static int ODT_lut_old_algorithm = Preferences::kLutPreferCTL;
@@ -1051,12 +1087,8 @@ void GLEngine::draw_images( ImageList& images )
       if ( img->is_stereo() )    ++num_quads;
     }
 
-  mrv::image_type_ptr pic = images.back()->hires();
 
-  texWidth  = pic->width();
-  texHeight = pic->height();
-
-  if ( texWidth == 0 || texHeight == 0 ) return;
+  CHECK_GL( "glPrealloc quads GL_BLEND" );
 
   size_t num = _quads.size();
   if ( num_quads > num )
@@ -1068,16 +1100,6 @@ void GLEngine::draw_images( ImageList& images )
 
   glColor4f(1.0f,1.0f,1.0f,1.0f);
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
-  glScaled( _view->zoom(), _view->zoom(), 1.0);
-  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
-
-  if ( _view->main()->uiPixelRatio->value() )
-    glScaled( double(texWidth), texHeight / _view->pixel_ratio(), 1.0 );
-  else
-    glScaled( double(texWidth), double(texHeight), 1.0 );
 
 
   QuadList::iterator q = _quads.begin();
@@ -1088,16 +1110,33 @@ void GLEngine::draw_images( ImageList& images )
   e = images.end();
 
   glDisable( GL_BLEND );
+  CHECK_GL( "glDisable GL_BLEND" );
 
   for ( ; i != e; ++i, ++q )
     {
 
       const Image_ptr& img = *i;
-
       mrv::image_type_ptr pic = img->hires();
 
       texWidth  = pic->width();
-      texHeight = pic->height();
+      texHeight = pic->height(); 
+
+      std::cerr << "p: " << texWidth << "-" << texHeight << std::endl;
+
+
+      glMatrixMode(GL_MODELVIEW);
+      glLoadIdentity();
+      glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
+      glScaled( _view->zoom(), _view->zoom(), 1.0);
+      glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+
+      if ( _view->main()->uiPixelRatio->value() )
+          glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
+                    1.0 );
+      else
+          glScaled( double(texWidth), double(texHeight), 1.0 );
+
+
 
       if ( texWidth == 0 || texHeight == 0 ) continue;
 
@@ -1107,7 +1146,11 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( _view->display_window() && dpw != daw )
       {
+          std::cerr << "stencil " << dpw.l() << " " << dpw.t() << "-"
+                    << dpw.r() << " " << dpw.b() << std::endl;
+          CHECK_GL( "pre draw stencil");
           draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+          CHECK_GL( "post draw stencil");
       }
 
       if ( daw.x() > 0 || daw.y() > 0 )
@@ -1116,6 +1159,7 @@ void GLEngine::draw_images( ImageList& images )
                         (double) -daw.y() / texHeight, 0 );
       }
 
+ 
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
 
@@ -1200,12 +1244,16 @@ void GLEngine::draw_images( ImageList& images )
                   img->has_subtitle() ) )
 	{
 	   image_type_ptr pic = img->hires();
+           texWidth = pic->width();
+           texHeight = pic->height();
+
 	   if ( shader_type() == kNone && img->stopped() && 
 	        pic->pixel_type() != image_type::kByte )
 	   {
 	      pic = display( pic, img );
 	   }
 
+           CHECK_GL( "prebind" );
            quad->bind( pic );
 	}
 
