@@ -1287,7 +1287,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       g->add( widget );
     }
 
-    unsigned dw = (w() - kMiddle) / 4;
+    unsigned dw = (w() - kMiddle) / 6;
     fltk::Group* g2 = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
     {
       fltk::IntInput* widget = new fltk::IntInput( 0, 0, dw, hh );
@@ -1360,6 +1360,26 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	    widget->callback( callback, img );
 	}
       g2->add( widget );
+    }
+    {
+        fltk::IntInput* widget = new fltk::IntInput( dw*4, 0, dw, hh, "W:" );
+        widget->value( content.w() );
+        widget->align(fltk::ALIGN_LEFT);
+        widget->box( fltk::FLAT_BOX );
+        widget->color( colB );
+        widget->deactivate();
+        widget->box( fltk::FLAT_BOX );
+        g2->add( widget );
+    }
+    {
+        fltk::IntInput* widget = new fltk::IntInput( dw*5, 0, dw, hh, "H:" );
+        widget->value( content.h() );
+        widget->align(fltk::ALIGN_LEFT);
+        widget->box( fltk::FLAT_BOX );
+        widget->color( colB );
+        widget->deactivate();
+        widget->box( fltk::FLAT_BOX );
+        g2->add( widget );
     }
     g->add( g2 );
     g->resizable( g2 );
