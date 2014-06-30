@@ -462,22 +462,26 @@ mrv::image_type_ptr CMedia::anaglyph( bool left_view )
 const mrv::Recti& CMedia::display_window() const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
+
+    CMedia* img = const_cast< CMedia* >( this );
+    img->image_damage( img->image_damage() | kDamageData );
+
     if ( !_displayWindow ) return kNoRect;
 
     boost::uint64_t idx = _frame - _frameStart;
-    CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData );
     return _displayWindow[idx];
 }
 
 const mrv::Recti& CMedia::data_window() const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
+
+    CMedia* img = const_cast< CMedia* >( this );
+    img->image_damage( img->image_damage() | kDamageData | kDamageContents );
+
     if ( !_dataWindow ) return kNoRect;
 
     boost::uint64_t idx = _frame - _frameStart;
-    CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData );
     return _dataWindow[idx];
 }
 
