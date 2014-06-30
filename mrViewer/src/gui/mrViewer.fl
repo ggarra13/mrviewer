@@ -166,8 +166,7 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {open
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -267,7 +266,7 @@ v->new_reel(name);}
             {fltk::Button} uiBGButton {
               label BG
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->change_background();} selected
+              callback {v->change_background();}
               tooltip {Set reel images as background (needs EDL).}
               xywh {26 0 26 26} box UP_BOX labelfont 1
             }
@@ -292,17 +291,18 @@ v->new_reel(name);}
 delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ImageInfoUI {} {
+  class ImageInfoUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Media Information} open
-        xywh {368 61 405 530} hide resizable
+        xywh {371 84 505 530} resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );} visible
       } {
-        {fltk::Group} uiInfoText {
-          xywh {2 2 403 526}
+        {fltk::Group} uiInfoText {selected
+          xywh {2 2 498 526}
           extra_code {o->main( main );}
           class {mrv::ImageInformation}
         } {}

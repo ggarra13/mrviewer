@@ -787,30 +787,29 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
   CHECK_GL( "draw_square_stencil glStencilOp" );
 
-  glTranslated( -0.5, -0.5, 0 );
 
   double xf1 = (double)x / (double) texWidth;
   double yf1 = (double)(texHeight - y) / (double) texHeight;
   double xf2 = (double)x2 / (double) texWidth;
   double yf2 = (double)(texHeight - y2) / (double) texHeight;
 
+  glTranslated( -0.5, -0.5, 0 );
+
   //
   // Draw mask
   //
   glBegin( GL_POLYGON );
   {
-    glVertex3d( xf1, yf1, 0. );
-    glVertex3d( xf2, yf1, 0. );
-    glVertex3d( xf2, yf2, 0. );
-    glVertex3d( xf1, yf2, 0. );
+      glVertex2d(xf1, yf1);
+      glVertex2d(xf2, yf1);
+      glVertex2d(xf2, yf2);
+      glVertex2d(xf1, yf2);
   }
   glEnd();
 
   glTranslated( 0.5, 0.5, 0 );
 
 
-  //enable color mask 
-  glColorMask(true, true, true, true);
   // just draw where inside of the mask
   glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
@@ -951,6 +950,16 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   mrv::media fg = _view->foreground();
   if ( !fg ) return;
 
+
+  Image_ptr img = fg->image();
+  mrv::image_type_ptr pic = img->hires();
+  texWidth = pic->width();
+  texHeight = pic->height();
+
+  const mrv::Recti& daw = img->data_window();
+  const mrv::Recti& dpw = img->display_window();
+
+  glDisable( GL_STENCIL_TEST );
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
 
@@ -963,16 +972,27 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-  double tw = texWidth  / 2.0f;
-  double th = texHeight / 2.0f;
+  double tw, th;
 
+  if ( daw.w() != 0 )
+  {
+      tw = daw.w() / 2.0;
+      th = daw.h() / 2.0;
+  }
+  else
+  {
+      tw = texWidth  / 2.0;
+      th = texHeight / 2.0;
+  }
+
+  glTranslated( daw.x() * zoomX, -daw.y() * zoomY, 0 );
   glTranslated(_view->offset_x() * zoomX + sw, 
 	       _view->offset_y() * zoomY + sh, 0);
   glTranslated(tw * zoomX, th * zoomY, 0);
 
   glScaled(zoomX * percentX, zoomY * percentY * pr, 1.0f);
 
-  
+
   glLineWidth( 1.0 );
 
   glBegin(GL_LINE_LOOP);
@@ -995,6 +1015,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
       glPopMatrix();
     }
+
+  glDisable( GL_STENCIL_TEST );
 
 }
 
