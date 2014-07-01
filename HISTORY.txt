@@ -1,10 +1,15 @@
 v2.6.2.0 - Added support for OpenEXR's display window and for moving data
-	   windows.
+	   windows.  Currently there's still a minor bug in that the size of
+	   the data window effects the positioning of the display window.
 	 - Adapted fit image function to handle moving data window.
 	 - Adapted color info for moving data window.
-	 - Added support for animated GIFs.
+	 - Added partial support for animated GIFs. As GIFs don't store
+	   the length of the animation, a length of 100 frames is used as
+	   default.
 	 - Adapted draw routines to draw in data window.
 	 - Adapted masking routines to draw in data window.
+	 - Fixed a bug that would cause a crash when the image information
+	   window would get opened for a multipart OpenEXR image.
 v2.6.1.1 - Fixed audio pops in transcoding of movie files.  However, there's
 	   still no way to save a H264 movie with audio from a sequence of
 	   images.
