@@ -788,10 +788,15 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   CHECK_GL( "draw_square_stencil glStencilOp" );
 
 
-  double xf1 = (double)x / (double) texWidth;
-  double yf1 = (double)(texHeight - y) / (double) texHeight;
-  double xf2 = (double)x2 / (double) texWidth;
-  double yf2 = (double)(texHeight - y2) / (double) texHeight;
+  double tw = (double)texWidth;
+  double th = (double)texHeight;
+
+
+  double xf1 = (double)x / tw;
+  double yf1 = (double)(th - y) / th;
+
+  double xf2 = (double)x2 / tw;
+  double yf2 = (double)(th - y2) / th;
 
   glTranslated( -0.5, -0.5, 0 );
 
@@ -808,7 +813,6 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   glEnd();
 
   glTranslated( 0.5, 0.5, 0 );
-
 
   // just draw where inside of the mask
   glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
@@ -957,7 +961,6 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   texHeight = pic->height();
 
   const mrv::Recti& daw = img->data_window();
-  const mrv::Recti& dpw = img->display_window();
 
   glDisable( GL_STENCIL_TEST );
   glMatrixMode(GL_MODELVIEW);
@@ -972,18 +975,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
   double sh = ((double)_view->h() - texHeight * zoomY) / 2;
 
-  double tw, th;
-
-  if ( daw.w() != 0 )
-  {
-      tw = daw.w() / 2.0;
-      th = daw.h() / 2.0;
-  }
-  else
-  {
-      tw = texWidth  / 2.0;
-      th = texHeight / 2.0;
-  }
+  double tw = texWidth  / 2.0;
+  double th = texHeight / 2.0;
 
   glTranslated( daw.x() * zoomX, -daw.y() * zoomY, 0 );
   glTranslated(_view->offset_x() * zoomX + sw, 
@@ -1133,8 +1126,13 @@ void GLEngine::draw_images( ImageList& images )
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
 
+      const mrv::Recti& dpw = img->display_window();
+      const mrv::Recti& daw = img->data_window();
+
       texWidth  = pic->width();
-      texHeight = pic->height(); 
+      texHeight = pic->height();
+
+      if ( texWidth == 0 || texHeight == 0 ) continue;
 
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
@@ -1147,13 +1145,6 @@ void GLEngine::draw_images( ImageList& images )
                     1.0 );
       else
           glScaled( double(texWidth), double(texHeight), 1.0 );
-
-
-
-      if ( texWidth == 0 || texHeight == 0 ) continue;
-
-      const mrv::Recti& dpw = img->display_window();
-      const mrv::Recti& daw = img->data_window();
 
 
       if ( _view->display_window() && dpw != daw )

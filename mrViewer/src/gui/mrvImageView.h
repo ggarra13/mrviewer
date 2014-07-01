@@ -444,6 +444,11 @@ namespace mrv {
     void image_coordinates( const Image_ptr img,
 			    double& x, double& y ) const;
 
+    /// Given two window coordinates, return pixel coordinates 
+    /// in the data window (which may be offset)
+    void data_window_coordinates( const Image_ptr img,
+                                  double& x, double& y ) const;
+
     /// Clear image sequence caches
     void flush_caches();
 

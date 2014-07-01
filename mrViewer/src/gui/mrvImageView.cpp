@@ -853,6 +853,17 @@ void ImageView::copy_pixel() const
   fltk::copy( buf, unsigned( strlen(buf) ), false );
 }
 
+
+void ImageView::data_window_coordinates( const Image_ptr img,
+                                         double& x, double& y ) const
+{
+    image_coordinates( img, x, y );
+
+    const mrv::Recti& daw = img->data_window();
+    x -= daw.x();
+    y -= daw.y();
+}
+
 /** 
  * Given window's x and y coordinates, return an image's
  * corresponding x and y coordinate
@@ -1483,14 +1494,20 @@ void ImageView::draw()
      double xf = X;
      double yf = Y;
 
-     image_coordinates( img, xf, yf );
+     data_window_coordinates( img, xf, yf );
 
-     unsigned int W = img->width();
-     unsigned int H = img->height();
+     mrv::image_type_ptr pic = img->hires();
+
+     unsigned int W = pic->width();
+     unsigned int H = pic->height();
 
      yf = H - yf;
      yf -= H/2;
      xf -= W/2;
+
+     const mrv::Recti& daw = img->data_window();
+     xf += daw.x();
+     yf -= daw.y();
 
      _engine->draw_cursor( xf, yf );
   }
@@ -1683,10 +1700,12 @@ int ImageView::leftMouseDown(int x, int y)
 	 double xf = x;
 	 double yf = y;
 
-	 image_coordinates( img, xf, yf );
+	 data_window_coordinates( img, xf, yf );
 
-	 unsigned int W = img->width();
-	 unsigned int H = img->height();
+         mrv::image_type_ptr pic = img->hires();
+
+	 unsigned int W = pic->width();
+	 unsigned int H = pic->height();
 
 	 std::string str;
 	 GLPathShape* s;
@@ -1739,8 +1758,8 @@ int ImageView::leftMouseDown(int x, int y)
 	 yf -= H/2;
 	 xf -= W/2;
 
-
-	 Point p( xf, yf );
+         const mrv::Recti& daw = img->data_window();
+         mrv::Point p( xf + daw.x(), yf - daw.y() );
 	 s->pts.push_back( p );
 
 
@@ -2110,7 +2129,7 @@ void ImageView::mouseMove(int x, int y)
 
   CMedia* img = fg->image();
 
-  image_coordinates( img, xf, yf );
+  data_window_coordinates( img, xf, yf );
 
   mrv::image_type_ptr pic = img->hires();
 
@@ -2119,10 +2138,6 @@ void ImageView::mouseMove(int x, int y)
 
 
   CMedia::Pixel rgba;
-
-  const mrv::Recti& daw = img->data_window();
-  xf -= daw.x();
-  yf -= daw.y();
 
   bool outside = false;
 
@@ -2349,12 +2364,9 @@ void ImageView::mouseDrag(int x,int y)
 
 	   double xf = double(lastX);
 	   double yf = double(lastY);
-	   image_coordinates( img, xf, yf );
+	   data_window_coordinates( img, xf, yf );
 
-           const mrv::Recti& daw = img->data_window();
            const mrv::Recti& dpw = img->display_window();
-           xf -= daw.x();
-           yf -= daw.y();
 
            if ( xf < 0 ) xf = 0;
            if ( yf < 0 ) yf = 0;
@@ -2371,9 +2383,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   double xn = double(x);
 	   double yn = double(y);
-	   image_coordinates( img, xn, yn );
-           xn -= daw.x();
-           yn -= daw.y();
+	   data_window_coordinates( img, xn, yn );
 
 	   if ( xn < 0 ) xn = 0;
 	   if ( yn < 0 ) yn = 0;
@@ -2418,7 +2428,7 @@ void ImageView::mouseDrag(int x,int y)
 	      unsigned dx = (unsigned) std::abs( xn - xf );
 	      unsigned dy = (unsigned) std::abs( yn - yf );
 
-
+              const mrv::Recti& daw = img->data_window();
 
 	      // store selection square
               if ( _stereo & CMedia::kStereoSideBySide )
@@ -2463,7 +2473,8 @@ void ImageView::mouseDrag(int x,int y)
 		 yn  = H - yn;
 		 yn -= H/2;
 		 xn -= W/2;
-		 mrv::Point p( xn, yn );
+                 const mrv::Recti& daw = img->data_window();
+		 mrv::Point p( xn + daw.x(), yn - daw.y() );
 		 s->pts.push_back( p );
 	      }
 	   }
