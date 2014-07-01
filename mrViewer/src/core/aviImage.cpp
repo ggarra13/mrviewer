@@ -387,7 +387,7 @@ void aviImage::flush_video()
 
 /// VCR play (and cache frames if needed) sequence
 void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
-		     bool fg )
+		     const bool fg )
 {
    CMedia::play( dir, uiMain, fg );
 }
