@@ -197,6 +197,11 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       // FLV
       return true;
     }
+  else if ( strncmp( (char*)data, "GIF89", 5 ) == 0 )
+    {
+      // FLV
+      return true;
+    }
   else if ( strncmp( (char*)data, ".RMF", 4 ) == 0 )
     {
       // Real Movie
@@ -1339,7 +1344,7 @@ void aviImage::populate()
     // with some codecs like divx.
     //
     int64_t duration;
-    if ( _context->duration != MRV_NOPTS_VALUE )
+    if ( _context->duration > 0 )
     {
         duration = int64_t( (_fps * ( double )(_context->duration) / 
                              ( double )AV_TIME_BASE ) + 0.5f );
@@ -1359,11 +1364,16 @@ void aviImage::populate()
             if ( d > length ) length = d;
         }
 
-        duration = boost::int64_t( length * _fps + 0.5f );
+        if ( length > 0 )
+            duration = boost::int64_t( length * _fps + 0.5f );
+        else
+            duration = 100;
     }
 
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
+
+    std::cerr << "s: " << _frameStart << "-" << _frameEnd << std::endl;
 
     _frame_offset = 0;
 
