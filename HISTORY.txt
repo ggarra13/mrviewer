@@ -4,6 +4,7 @@ v2.6.2.0 - Added support for OpenEXR's display window and for moving data
 	 - Adapted color info for moving data window.
 	 - Added support for animated GIFs.
 	 - Adapted draw routines to draw in data window.
+	 - Adapted masking routines to draw in data window.
 v2.6.1.1 - Fixed audio pops in transcoding of movie files.  However, there's
 	   still no way to save a H264 movie with audio from a sequence of
 	   images.
