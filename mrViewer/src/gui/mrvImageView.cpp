@@ -2654,21 +2654,25 @@ int ImageView::keyDown(unsigned int rawkey)
   else if ( kCenterImage.match(rawkey) )
   {
      mrv::media fg = foreground();
+     if ( !fg ) return 0;
 
-     if ( fg && fg->image() && _stereo & CMedia::kStereoSideBySide )
+     Image_ptr img = fg->image();
+     const mrv::Recti& daw = img->data_window();
+
+     if ( img && _stereo & CMedia::kStereoSideBySide )
      {
-        int w = fg->image()->width();
+        int w = img->width();
         xoffset = -w/2 + 0.5f;
      }
      else
      {
-        xoffset = 0;
+       xoffset = -daw.x();
      }
 
-     yoffset = 0;
+     yoffset = daw.y();
 
      char buf[128];
-     sprintf( buf, "Offset %g 0", xoffset );
+     sprintf( buf, "Offset %g %g", xoffset, yoffset );
      send( buf );
      redraw();
      return 1;
