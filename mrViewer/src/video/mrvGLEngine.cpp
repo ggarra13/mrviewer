@@ -849,7 +849,7 @@ void GLEngine::draw_mask( const float pct )
 
   int dh = texHeight;
   
-  glTranslatef( float(_view->w()/2), float(_view->h()/2), 0 );
+  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
   glTranslated( xoffset, _view->offset_y(), 0.0 );
 
@@ -861,6 +861,9 @@ void GLEngine::draw_mask( const float pct )
   double aspect = (double) texWidth / (double) texHeight;   // 1.3
   double target_aspect = 1.0 / pct;
   double amount = (0.5 - target_aspect * aspect / 2);
+
+  const mrv::Recti& daw = img->data_window();
+  glTranslated( double(daw.x())/texWidth, double(-daw.y())/texHeight, 0 );
 
   //
   // Bottom mask
