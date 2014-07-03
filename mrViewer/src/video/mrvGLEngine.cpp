@@ -799,14 +799,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   glScaled( 1.0, pr, 1.0 );
 
 
-#if 1
 
-  // mrv::media fg = _view->foreground();
-  // if ( !fg ) return;
-
-  // Image_ptr img = fg->image();
-
-  // const mrv::Recti& dpw = img->display_window();
 
   double W = (x2-x);
   double H = (y2-y);
@@ -825,7 +818,6 @@ void GLEngine::draw_square_stencil( const int x, const int y,
       glVertex2d(0, -H);
   }
   glEnd();
-#endif
 
   glPopMatrix();
 
@@ -969,40 +961,46 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
 void GLEngine::draw_safe_area( const double percentX, const double percentY,
 			       const char* name )
 {
-  mrv::media fg = _view->foreground();
-  if ( !fg ) return;
 
+    mrv::media fg = _view->foreground();
+    if (!fg) return;
 
-  Image_ptr img = fg->image();
-  mrv::image_type_ptr pic = img->hires();
-  texWidth = pic->width();
-  texHeight = pic->height();
+    Image_ptr img = fg->image();
 
-  const mrv::Recti& daw = img->data_window();
+    mrv::Recti dpw = img->display_window();
+    if ( dpw.w() == 0 || dpw.h() == 0 )
+    {
+        dpw = img->data_window();
+    }
+    
+    if ( dpw.w() == 0 )
+    {
+        dpw.w( img->width() );
+    }
+
+    if ( dpw.h() == 0 )
+    {
+        dpw.h( img->height() );
+    }
 
   glDisable( GL_STENCIL_TEST );
+
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
-
-  double zoomX = _view->zoom();
-  double zoomY = _view->zoom();
-
+  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
+  glScaled( _view->zoom(), _view->zoom(), 1.0);
+  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
   double pr = 1.0;
   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+  glScaled( 1.0, pr, 1.0 );
 
-  double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
-  double sh = ((double)_view->h() - texHeight * zoomY) / 2;
+  double tw = dpw.w() / 2.0;
+  double th = dpw.h() / 2.0;
 
-  double tw = texWidth  / 2.0;
-  double th = texHeight / 2.0;
+  glTranslated( tw, -th, 0 );
 
-  glTranslated( daw.x() * zoomX, -daw.y() * zoomY, 0 );
-  glTranslated(_view->offset_x() * zoomX + sw, 
-	       _view->offset_y() * zoomY + sh, 0);
-  glTranslated(tw * zoomX, th * zoomY, 0);
-
-  glScaled(zoomX * percentX, zoomY * percentY * pr, 1.0f);
-
+  tw *= percentX;
+  th *= percentY;
 
   glLineWidth( 1.0 );
 
