@@ -787,32 +787,47 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
   CHECK_GL( "draw_square_stencil glStencilOp" );
 
+  glPushMatrix();
 
-  double tw = (double)texWidth;
-  double th = (double)texHeight;
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
+  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
+  glScaled( _view->zoom(), _view->zoom(), 1.0);
+  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+  double pr = 1.0;
+  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+  glScaled( 1.0, pr, 1.0 );
 
 
-  double xf1 = (double)x / tw;
-  double yf1 = (double)(th - y) / th;
+#if 1
 
-  double xf2 = (double)x2 / tw;
-  double yf2 = (double)(th - y2) / th;
+  // mrv::media fg = _view->foreground();
+  // if ( !fg ) return;
 
-  glTranslated( -0.5, -0.5, 0 );
+  // Image_ptr img = fg->image();
+
+  // const mrv::Recti& dpw = img->display_window();
+
+  double W = (x2-x);
+  double H = (y2-y);
+
+  glTranslated( x, -y, 0 );
+
 
   //
   // Draw mask
   //
   glBegin( GL_POLYGON );
   {
-      glVertex2d(xf1, yf1);
-      glVertex2d(xf2, yf1);
-      glVertex2d(xf2, yf2);
-      glVertex2d(xf1, yf2);
+      glVertex2d(0, 0);
+      glVertex2d(W, 0);
+      glVertex2d(W, -H);
+      glVertex2d(0, -H);
   }
   glEnd();
+#endif
 
-  glTranslated( 0.5, 0.5, 0 );
+  glPopMatrix();
 
   // just draw where inside of the mask
   glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
@@ -1143,17 +1158,20 @@ void GLEngine::draw_images( ImageList& images )
       glScaled( _view->zoom(), _view->zoom(), 1.0);
       glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
+
+      if ( _view->display_window() && dpw != daw )
+      {
+          draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+      }
+
       if ( _view->main()->uiPixelRatio->value() )
           glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
                     1.0 );
       else
           glScaled( double(texWidth), double(texHeight), 1.0 );
 
+      glTranslated( 0.5, -0.5, 0 );
 
-      if ( _view->display_window() && dpw != daw )
-      {
-          draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
-      }
 
       if ( daw.x() != 0 || daw.y() != 0 )
       {
