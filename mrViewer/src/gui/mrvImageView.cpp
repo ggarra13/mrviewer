@@ -859,6 +859,13 @@ void ImageView::data_window_coordinates( const Image_ptr img,
 {
     image_coordinates( img, x, y );
 
+    const mrv::Recti& dpw = img->display_window();
+    unsigned W = dpw.w();
+    if ( W == 0 ) W = img->width();
+    unsigned H = dpw.h();
+    if ( H == 0 ) H = img->height();
+    x -= W/2.0; y -= H/2.0;
+
     const mrv::Recti& daw = img->data_window();
     x -= daw.x();
     y -= daw.y();
@@ -876,30 +883,31 @@ void ImageView::image_coordinates( const Image_ptr img,
 				   double& x, double& y ) const
 {
   
-    mrv::image_type_ptr pic = img->hires();
-    if ( !pic ) return;
+  const mrv::Recti& dpw = img->display_window();
 
-    int ww = pic->width();
-    int hh = pic->height();
-    if ( _showPixelRatio ) hh = (int) (hh / pixel_ratio());
-  
-    double tw = (ww / 2.0);
-    double th = (hh / 2.0);
+  double ww = dpw.w();
+  if ( ww == 0 ) ww = img->width();
+  double hh = dpw.h();
+  if ( hh == 0 ) hh = img->height();
+
+  if ( _showPixelRatio ) hh = (int) (hh / pixel_ratio());
+
+  double tw = (ww / 2.0);
+  double th = (hh / 2.0);
+
+  x -= (w() - ww) / 2.0; 
+  y += (h() - hh) / 2.0;
+
+  y = (this->h() - y - 1);
+
+  x -= tw; y -= th;
+  x /= _zoom; y /= _zoom;
+  x += tw; y += th;
+  x -= xoffset; y -= yoffset;
 
 
-    x -= (w() - ww) / 2.0; 
-    y += (h() - hh) / 2.0;
-
-    y = (this->h() - y - 1);
-    
-    x -= tw; y -= th;
-    x /= _zoom; y /= _zoom;
-    x += tw; y += th;
-    x -= xoffset; y -= yoffset;
-
-
-    y = hh - y;
-    if ( _showPixelRatio ) y *= pixel_ratio();
+  y = hh - y;
+  if ( _showPixelRatio ) y *= pixel_ratio();
 }
 
 
@@ -931,7 +939,7 @@ void ImageView::fit_image()
   double W = dpw.w();
   if ( W == 0 ) W = pic->width();
   double H = dpw.h();
-  if ( H == 0 ) H = pic->width();
+  if ( H == 0 ) H = pic->height();
 
   if ( _stereo & CMedia::kStereoSideBySide )
       W *= 2;
@@ -3666,15 +3674,26 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
   CMedia* img = fg->image();
 
+  const mrv::Recti& dpw = img->display_window();
+
+  int W = dpw.w();
+  if ( W == 0 ) W = img->width();
+
+  int H = dpw.h();
+  if ( H == 0 ) H = img->height();
+
+
+
   image_coordinates( img, xf, yf );
+
 
   zoom( z );
 
-  int w2 = img->width()  / 2;
-  int h2 = img->height() / 2;
+  int w2 = W / 2;
+  int h2 = H / 2;
 
   xoffset = w2 - xf;
-  int   h = img->height();
+  int   h = H;
   yoffset = h2 - ( h - yf - 1);
   xoffset -= (offx / _zoom);
   double ratio = 1.0f;
