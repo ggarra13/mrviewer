@@ -878,7 +878,6 @@ void ImageView::image_coordinates( const Image_ptr img,
   
     mrv::image_type_ptr pic = img->hires();
     if ( !pic ) return;
-    
 
     int ww = pic->width();
     int hh = pic->height();
@@ -918,24 +917,21 @@ void ImageView::fit_image()
 
 
   const CMedia* img = fg->image();
-  if ( img->width() <= 0 ) return;
 
   mrv::image_type_ptr pic = img->hires();
+  if ( !pic ) return;
 
-
-  const mrv::Recti& daw = img->data_window();
-  const mrv::Recti& dpw = img->display_window();
-
-  double W;
-  if ( _stereo & CMedia::kStereoSideBySide && dpw != daw )
-  {
-      W = dpw.w();
-  }
+  mrv::Recti dpw;
+  if ( display_window() )
+      dpw = img->display_window();
   else
-  {
-      W = dpw.w();
-      if ( W == 0 ) W = pic->width();
-  }
+      dpw = img->data_window();
+
+
+  double W = dpw.w();
+  if ( W == 0 ) W = pic->width();
+  double H = dpw.h();
+  if ( H == 0 ) H = pic->width();
 
   if ( _stereo & CMedia::kStereoSideBySide )
       W *= 2;
@@ -951,12 +947,12 @@ void ImageView::fit_image()
   if ( uiMain->uiBottomBar->visible() )
     h -= uiMain->uiBottomBar->h();
 
-  h /= pic->height();
+  h /= H;
   if ( _showPixelRatio ) h *= pixel_ratio();
   if ( h < z ) { z = h; }
 
-  xoffset = -daw.x();
-  yoffset = daw.y();
+  xoffset = -dpw.x()-W / 2.0;
+  yoffset = (dpw.y()+H / 2.0) / pixel_ratio();
 
   if ( _stereo & CMedia::kStereoSideBySide )
   {
@@ -1497,6 +1493,7 @@ void ImageView::draw()
      data_window_coordinates( img, xf, yf );
 
      mrv::image_type_ptr pic = img->hires();
+     if (!pic) return;
 
      unsigned int W = pic->width();
      unsigned int H = pic->height();
@@ -1703,6 +1700,7 @@ int ImageView::leftMouseDown(int x, int y)
 	 data_window_coordinates( img, xf, yf );
 
          mrv::image_type_ptr pic = img->hires();
+         if ( !pic ) return 0;
 
 	 unsigned int W = pic->width();
 	 unsigned int H = pic->height();
@@ -2132,6 +2130,7 @@ void ImageView::mouseMove(int x, int y)
   data_window_coordinates( img, xf, yf );
 
   mrv::image_type_ptr pic = img->hires();
+  if ( !pic ) return;
 
   unsigned w = pic->width();
   unsigned h = pic->height();
