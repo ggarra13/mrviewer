@@ -383,6 +383,14 @@ CMedia::~CMedia()
 }
 
 
+void CMedia::hires( const mrv::image_type_ptr pic)
+{ 
+    _hires = pic; 
+    if ( pic->width() > _w )  _w = pic->width(); 
+    if ( pic->height() > _h ) _h = pic->height(); 
+    refresh();
+}
+ 
 /** 
  * Allocate the float pixels for the image
  * 

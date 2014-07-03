@@ -360,8 +360,7 @@ class CMedia
     ////////////////// Return the hi-res image
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
-    inline void hires( const mrv::image_type_ptr pic)
-    { _hires = pic; _w = pic->width(); _h = pic->height(); refresh(); } 
+    void hires( const mrv::image_type_ptr pic);
 
     inline mrv::image_type_ptr anaglyph( bool left_view = true );
 
