@@ -920,6 +920,7 @@ namespace mrv {
       }
 
 
+
     glBegin( GL_POLYGON );
     {
       glTexCoord2f( 0.0f, _uvMax.v );
