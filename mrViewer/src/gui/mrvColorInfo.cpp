@@ -165,38 +165,41 @@ void ColorInfo::update( const CMedia* src,
   if ( src && (selection.w() > 0 || selection.h() < 0) )
     {
       CMedia::Pixel hmin( std::numeric_limits<float>::max(),
-			      std::numeric_limits<float>::max(),
-			      std::numeric_limits<float>::max(),
-			      std::numeric_limits<float>::max() );
+                          std::numeric_limits<float>::max(),
+                          std::numeric_limits<float>::max(),
+                          std::numeric_limits<float>::max() );
 
       CMedia::Pixel pmin( std::numeric_limits<float>::max(),
-			      std::numeric_limits<float>::max(),
-			      std::numeric_limits<float>::max(),
-			      std::numeric_limits<float>::max() );
+                          std::numeric_limits<float>::max(),
+                          std::numeric_limits<float>::max(),
+                          std::numeric_limits<float>::max() );
       CMedia::Pixel pmax( std::numeric_limits<float>::min(),
-			      std::numeric_limits<float>::min(),
-			      std::numeric_limits<float>::min(),
-			      std::numeric_limits<float>::min() );
+                          std::numeric_limits<float>::min(),
+                          std::numeric_limits<float>::min(),
+                          std::numeric_limits<float>::min() );
       CMedia::Pixel hmax( std::numeric_limits<float>::min(),
-			      std::numeric_limits<float>::min(),
-			      std::numeric_limits<float>::min(),
-			      std::numeric_limits<float>::min() );
+                          std::numeric_limits<float>::min(),
+                          std::numeric_limits<float>::min(),
+                          std::numeric_limits<float>::min() );
       CMedia::Pixel pmean( 0, 0, 0, 0 );
       CMedia::Pixel hmean( 0, 0, 0, 0 );
 
 
-      unsigned int W = src->width();
-      unsigned int H = src->height();
+
+      mrv::image_type_ptr pic = src->hires();
+      if (!pic) return;
 
       unsigned count = 0;
 
-      const mrv::Recti& daw = src->data_window();
+      const mrv::Recti& dpw = src->display_window();
+      unsigned W = dpw.w();
+      unsigned H = dpw.h();
 
       int x = selection.x();
       int y = selection.y();
 
-      int xmin = (int)(W * selection.x()) - daw.x();
-      int ymin = (int)(H * selection.y()) - daw.y();
+      int xmin = (int)(W * selection.x());
+      int ymin = (int)(H * selection.y());
 
       int xmax = xmin + (int)(W * selection.w()) - 1;
       int ymax = ymin + (int)(H * selection.h()) - 1;
@@ -215,24 +218,21 @@ void ColorInfo::update( const CMedia* src,
 
       if ( xmin < 0 ) xmin = 0;
       if ( ymin < 0 ) ymin = 0;
-      if ( xmax >= W ) xmax = W-1;
-      if ( ymax >= W ) ymax = H-1;
+      if ( xmax >= pic->width() ) xmax = pic->width()-1;
+      if ( ymax >= pic->height() ) ymax = pic->height()-1;
+
 
       assert( xmax <= W );
       assert( ymax <= H );
       assert( xmin <= W );
       assert( ymin <= H );
-      assert( xmax <= xmin );
-      assert( ymax <= ymin );
+      assert( xmax >= xmin );
+      assert( ymax >= ymin );
 
       
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
 
-      mrv::image_type_ptr pic = src->hires();
-      if (!pic) return;
-
-      mrv::image_type_ptr right = src->right();
 
       float gain  = uiMain->uiView->gain();
       float gamma = uiMain->uiView->gamma();
@@ -242,39 +242,31 @@ void ColorInfo::update( const CMedia* src,
 	{
 	  for ( unsigned x = xmin; x <= xmax; ++x, ++count )
 	    {
-               CMedia::Pixel rp;
-               if ( x > W )
-               {
-                  rp = right->pixel( x-W, y );
-               }
-               else
-               {
-                  rp = pic->pixel( x, y );
-               }
+               CMedia::Pixel rp = pic->pixel( x, y );
+               
+               if ( rp.r > 0.0f && isfinite(rp.r) )
+                   rp.r = powf(rp.r * gain, one_gamma);
+               if ( rp.g > 0.0f && isfinite(rp.g) )
+                   rp.g = powf(rp.g * gain, one_gamma);
+               if ( rp.b > 0.0f && isfinite(rp.b) )
+                   rp.b = powf(rp.b * gain, one_gamma);
 
-              if ( rp.r > 0.0f && isfinite(rp.r) )
-                  rp.r = powf(rp.r * gain, one_gamma);
-              if ( rp.g > 0.0f && isfinite(rp.g) )
-                  rp.g = powf(rp.g * gain, one_gamma);
-              if ( rp.b > 0.0f && isfinite(rp.b) )
-                  rp.b = powf(rp.b * gain, one_gamma);
+               if ( rp.r < pmin.r ) pmin.r = rp.r;
+               if ( rp.g < pmin.g ) pmin.g = rp.g;
+               if ( rp.b < pmin.b ) pmin.b = rp.b;
+               if ( rp.a < pmin.a ) pmin.a = rp.a;
+               
+               if ( rp.r > pmax.r ) pmax.r = rp.r;
+               if ( rp.g > pmax.g ) pmax.g = rp.g;
+               if ( rp.b > pmax.b ) pmax.b = rp.b;
+               if ( rp.a > pmax.a ) pmax.a = rp.a;
 
-	      if ( rp.r < pmin.r ) pmin.r = rp.r;
-	      if ( rp.g < pmin.g ) pmin.g = rp.g;
-	      if ( rp.b < pmin.b ) pmin.b = rp.b;
-	      if ( rp.a < pmin.a ) pmin.a = rp.a;
-
-	      if ( rp.r > pmax.r ) pmax.r = rp.r;
-	      if ( rp.g > pmax.g ) pmax.g = rp.g;
-	      if ( rp.b > pmax.b ) pmax.b = rp.b;
-	      if ( rp.a > pmax.a ) pmax.a = rp.a;
-
-	      pmean.r += rp.r;
-	      pmean.g += rp.g;
-	      pmean.b += rp.b;
-	      pmean.a += rp.a;
-	      
-	      CMedia::Pixel hsv;
+               pmean.r += rp.r;
+               pmean.g += rp.g;
+               pmean.b += rp.b;
+               pmean.a += rp.a;
+               
+               CMedia::Pixel hsv;
 	      
 	      switch( uiMain->uiBColorType->value()+1 )
 	      {

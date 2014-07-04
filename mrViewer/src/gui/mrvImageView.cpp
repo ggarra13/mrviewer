@@ -866,9 +866,12 @@ void ImageView::data_window_coordinates( const Image_ptr img,
     if ( H == 0 ) H = img->height();
     x -= W/2.0; y -= H/2.0;
 
+
     const mrv::Recti& daw = img->data_window();
     x -= daw.x();
     y -= daw.y();
+
+
 }
 
 /** 
@@ -882,32 +885,32 @@ void ImageView::data_window_coordinates( const Image_ptr img,
 void ImageView::image_coordinates( const Image_ptr img, 
 				   double& x, double& y ) const
 {
-  
-  const mrv::Recti& dpw = img->display_window();
+    const mrv::Recti& dpw = img->display_window();
 
-  double ww = dpw.w();
-  if ( ww == 0 ) ww = img->width();
-  double hh = dpw.h();
-  if ( hh == 0 ) hh = img->height();
+    double W = dpw.w();
+    if ( W == 0 ) W = img->width();
+    double H = dpw.h();
+    if ( H == 0 ) H = img->height();
 
-  if ( _showPixelRatio ) hh = (int) (hh / pixel_ratio());
+    if ( _showPixelRatio ) H = (int) (H / pixel_ratio());
 
-  double tw = (ww / 2.0);
-  double th = (hh / 2.0);
+    double tw = (W / 2.0);
+    double th = (H / 2.0);
 
-  x -= (w() - ww) / 2.0; 
-  y += (h() - hh) / 2.0;
+    x -= (w() - W) / 2.0; 
+    y += (h() - H) / 2.0;
 
-  y = (this->h() - y - 1);
+    y = (this->h() - y - 1);
 
-  x -= tw; y -= th;
-  x /= _zoom; y /= _zoom;
-  x += tw; y += th;
-  x -= xoffset; y -= yoffset;
+    x -= tw; y -= th;
+    x /= _zoom; y /= _zoom;
+    x += tw; y += th;
+    x -= xoffset; y -= yoffset;
 
 
-  y = hh - y;
-  if ( _showPixelRatio ) y *= pixel_ratio();
+    y = H - y;
+    if ( _showPixelRatio ) y *= pixel_ratio();
+
 }
 
 
@@ -930,7 +933,7 @@ void ImageView::fit_image()
   if ( !pic ) return;
 
   mrv::Recti dpw;
-  if ( display_window() )
+  if ( display_window() || _stereo & CMedia::kStereoSideBySide )
       dpw = img->display_window();
   else
       dpw = img->data_window();
@@ -961,11 +964,6 @@ void ImageView::fit_image()
 
   xoffset = -dpw.x()-W / 2.0;
   yoffset = (dpw.y()+H / 2.0) / pixel_ratio();
-
-  if ( _stereo & CMedia::kStereoSideBySide )
-  {
-      xoffset -= W/4;
-  }
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -1500,15 +1498,13 @@ void ImageView::draw()
 
      data_window_coordinates( img, xf, yf );
 
-     mrv::image_type_ptr pic = img->hires();
-     if (!pic) return;
+     const mrv::Recti& dpw = img->display_window();
 
-     unsigned int W = pic->width();
-     unsigned int H = pic->height();
+     unsigned int H = dpw.h();
+     if ( H == 0 ) H = img->height();
 
      yf = H - yf;
-     yf -= H/2;
-     xf -= W/2;
+     yf -= H;
 
      const mrv::Recti& daw = img->data_window();
      xf += daw.x();
@@ -1707,11 +1703,17 @@ int ImageView::leftMouseDown(int x, int y)
 
 	 data_window_coordinates( img, xf, yf );
 
-         mrv::image_type_ptr pic = img->hires();
-         if ( !pic ) return 0;
+         const mrv::Recti& dpw = img->display_window();
 
-	 unsigned int W = pic->width();
-	 unsigned int H = pic->height();
+         unsigned int H = dpw.h();
+         if ( H == 0 ) H = img->height();
+
+         yf = H - yf;
+         yf -= H;
+
+         const mrv::Recti& daw = img->data_window();
+         xf += daw.x();
+         yf -= daw.y();
 
 	 std::string str;
 	 GLPathShape* s;
@@ -1760,12 +1762,7 @@ int ImageView::leftMouseDown(int x, int y)
 	    s->frame = frame();
 	 }
 
-	 yf  = H - yf;
-	 yf -= H/2;
-	 xf -= W/2;
-
-         const mrv::Recti& daw = img->data_window();
-         mrv::Point p( xf + daw.x(), yf - daw.y() );
+         mrv::Point p( xf, yf );
 	 s->pts.push_back( p );
 
 
@@ -2362,128 +2359,112 @@ void ImageView::mouseDrag(int x,int y)
 	   if ( ! fg ) return;
 
 	   CMedia* img = fg->image();
-
-	   mrv::image_type_ptr pic = img->hires();
-	   if ( !pic ) return;
-
-	   unsigned int texWidth = pic->width();
-	   unsigned int texHeight = pic->height();
-
+ 
 	   double xf = double(lastX);
 	   double yf = double(lastY);
 	   data_window_coordinates( img, xf, yf );
 
-           const mrv::Recti& dpw = img->display_window();
-
-           if ( xf < 0 ) xf = 0;
-           if ( yf < 0 ) yf = 0;
-           else if ( yf > texHeight ) yf = double(texHeight);
-
-           if ( _stereo & CMedia::kStereoSideBySide )
+           mrv::Recti daw = img->data_window();
+           if ( daw.w() == 0 )
            {
-               if ( xf > texWidth*2 ) xf = texWidth*2;
+               daw.x( 0 );
+               daw.y( 0 );
+               daw.w( img->width() );
+               daw.h( img->height() );
            }
-           else
+           mrv::Recti dpw = img->display_window();
+           if ( dpw.w() == 0 )
            {
-               if ( xf > texWidth )  xf = double(texWidth);
+               dpw.x( 0 );
+               dpw.y( 0 );
+               dpw.w( img->width() );
+               dpw.h( img->height() );
            }
 
 	   double xn = double(x);
 	   double yn = double(y);
 	   data_window_coordinates( img, xn, yn );
 
-	   if ( xn < 0 ) xn = 0;
-	   if ( yn < 0 ) yn = 0;
-	   else if ( yn > texHeight ) yn = double(texHeight);
-
-           if ( _stereo & CMedia::kStereoSideBySide )
-           {
-               if ( xn > texWidth*2 ) xn = texWidth*2;
-           }
-           else
-           {
-               if ( xn > texWidth )  xn = double(texWidth);
-           }
-
+	   unsigned W = dpw.w();
+	   unsigned H = dpw.h();
 
 	   xf = floor(xf);
 	   yf = floor(yf);
 	   xn = floor(xn+0.5f);
 	   yn = floor(yn+0.5f);
 
-
-	   unsigned W = texWidth;
-	   unsigned H = texHeight;
-
 	   if ( _mode == kSelection )
 	   {
-	      if ( xn < xf ) 
-	      {
-		 double tmp = xf;
-		 xf = xn;
-		 xn = tmp;
-	      }
-	      if ( yn < yf ) 
-	      {
-		 double tmp = yf;
-		 yf = yn;
-		 yn = tmp;
-	      }
-	      assert( xf <= xn );
-	      assert( yf <= yn );
+               if ( xf < dpw.x() ) xf = dpw.x();
+               if ( yf < dpw.y() ) yf = dpw.y();
+               else if ( yf > daw.h() ) yf = double(daw.h());
+               if ( xf > daw.w() )  xf = double(daw.w());
+
+               if ( xn < dpw.x() ) xn = dpw.x();
+               if ( yn < dpw.y() ) yn = dpw.y();
+               else if ( yn > daw.h() ) yn = double(daw.h());
+               if ( xn > daw.w() )  xn = double(daw.w());
+
+
+               if ( xn < xf ) 
+               {
+                   double tmp = xf;
+                   xf = xn;
+                   xn = tmp;
+               }
+               if ( yn < yf ) 
+               {
+                   double tmp = yf;
+                   yf = yn;
+                   yn = tmp;
+               }
+               assert( xf <= xn );
+               assert( yf <= yn );
 	      
-	      unsigned dx = (unsigned) std::abs( xn - xf );
-	      unsigned dy = (unsigned) std::abs( yn - yf );
+               unsigned dx = (unsigned) std::abs( xn - xf );
+               unsigned dy = (unsigned) std::abs( yn - yf );
 
-              const mrv::Recti& daw = img->data_window();
-
-	      // store selection square
-              if ( _stereo & CMedia::kStereoSideBySide )
-              {
-                 if ( dx > W*2 ) dx = W*2;
-              }
-              else
-              {
-                 if ( dx > W ) dx = W;
-              }
-
-	      if ( dy > H ) dy = H;
+               if ( dx > W ) dx = W;
+               if ( dy > H ) dy = H;
 
 
-	      _selection = mrv::Rectd( (double)(daw.x()+xf)/(double)W, 
-				       (double)(daw.y()+yf)/(double)H, 
-				       (double)dx/(double)W, 
-				       (double)dy/(double)H );
+               _selection = mrv::Rectd( (double)(dpw.x()+xf)/(double)W, 
+                                        (double)(dpw.y()+yf)/(double)H, 
+                                        (double)dx/(double)W, 
+                                        (double)dy/(double)H );
 
-	      char buf[256];
-	      sprintf( buf, "Selection %g %g %g %g", _selection.x(),
-		       _selection.y(), _selection.w(), _selection.h() );
+               char buf[256];
+               sprintf( buf, "Selection %g %g %g %g", _selection.x(),
+                        _selection.y(), _selection.w(), _selection.h() );
 
 
-	      send( buf );
+               send( buf );
 
 	   }
 
 
            if ( _mode == kDraw || _mode == kErase )
 	   {
-              if ( _shapes.empty() ) return;
+               if ( _shapes.empty() ) return;
 
-	      mrv::shape_type_ptr o = _shapes.back();
-	      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
-	      if ( s == NULL )
-	      {
-		 LOG_ERROR( _("Not a GLPathShape pointer") );
-	      }
-	      else
-	      {
-		 yn  = H - yn;
-		 yn -= H/2;
-		 xn -= W/2;
-                 const mrv::Recti& daw = img->data_window();
-		 mrv::Point p( xn + daw.x(), yn - daw.y() );
-		 s->pts.push_back( p );
-	      }
+               mrv::shape_type_ptr o = _shapes.back();
+               GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+               if ( s == NULL )
+               {
+                   LOG_ERROR( _("Not a GLPathShape pointer") );
+               }
+               else
+               {
+
+                   yn = H - yn;
+                   yn -= H;
+
+                   xn += daw.x();
+                   yn -= daw.y();
+
+                   mrv::Point p( xn, yn );
+                   s->pts.push_back( p );
+               }
 	   }
            else if ( _mode == kText )
            {
@@ -2497,10 +2478,13 @@ void ImageView::mouseDrag(int x,int y)
 	      }
 	      else
 	      {
-		 yn  = H - yn;
-		 yn -= H/2;
-		 xn -= W/2;
-		 s->position( xn, yn );
+                   yn = H - yn;
+                   yn -= H;
+
+                   xn += daw.x();
+                   yn -= daw.y();
+
+                   s->position( xn, yn );
 	      }
            }
 	   assert( _selection.x() >= 0.0 && _selection.x() <= 1.0);
@@ -2664,19 +2648,29 @@ int ImageView::keyDown(unsigned int rawkey)
      if ( !fg ) return 0;
 
      Image_ptr img = fg->image();
-     const mrv::Recti& daw = img->data_window();
+     mrv::Recti dpw = img->display_window();
+     if ( dpw.w() == 0 || !display_window() )
+     {
+         dpw = img->data_window();
+
+         if ( dpw.w() == 0 )
+         {
+             dpw.w( img->width() );
+             dpw.h( img->height() );
+         }
+     }
 
      if ( img && _stereo & CMedia::kStereoSideBySide )
      {
-        int w = img->width();
-        xoffset = -w/2 + 0.5f;
+         int w = dpw.w();
+         xoffset = -w/2 + 0.5f;
      }
      else
      {
-       xoffset = -daw.x();
+         xoffset = -dpw.x() - dpw.w() / 2.0;
      }
 
-     yoffset = daw.y();
+     yoffset = dpw.y() + dpw.h() / 2.0;
 
      char buf[128];
      sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -3693,8 +3687,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   int h2 = H / 2;
 
   xoffset = w2 - xf;
-  int   h = H;
-  yoffset = h2 - ( h - yf - 1);
+  yoffset = h2 - ( H - yf );
   xoffset -= (offx / _zoom);
   double ratio = 1.0f;
   if ( _showPixelRatio ) ratio = img->pixel_ratio();
