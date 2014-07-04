@@ -870,8 +870,6 @@ void ImageView::data_window_coordinates( const Image_ptr img,
     const mrv::Recti& daw = img->data_window();
     x -= daw.x();
     y -= daw.y();
-
-
 }
 
 /** 
@@ -897,7 +895,7 @@ void ImageView::image_coordinates( const Image_ptr img,
     double tw = (W / 2.0);
     double th = (H / 2.0);
 
-    x -= (w() - W) / 2.0; 
+    x -= (w() - W) / 2.0;
     y += (h() - H) / 2.0;
 
     y = (this->h() - y - 1);
@@ -2132,13 +2130,19 @@ void ImageView::mouseMove(int x, int y)
 
   CMedia* img = fg->image();
 
+
   data_window_coordinates( img, xf, yf );
 
-  mrv::image_type_ptr pic = img->hires();
-  if ( !pic ) return;
 
-  unsigned w = pic->width();
-  unsigned h = pic->height();
+   mrv::image_type_ptr pic = img->left();
+   if ( !pic ) return;
+
+  mrv::Recti daw = img->data_window();
+  mrv::Recti dpw = img->display_window();
+  unsigned w = dpw.w();
+  unsigned h = dpw.h();
+  if ( dpw.w() == 0 ) w = pic->width();
+  if ( dpw.h() == 0 ) h = pic->height();
 
 
   CMedia::Pixel rgba;
@@ -2163,6 +2167,19 @@ void ImageView::mouseMove(int x, int y)
      }
   }
 
+
+  unsigned xp = (unsigned)floor(xf);
+  unsigned yp = (unsigned)floor(yf);
+
+  if ( xp > w && _stereo & CMedia::kStereoSideBySide )
+  {
+      pic = img->right();
+      xp -= w;
+  }
+
+  if ( xp >= pic->width() || yp >= pic->height() ) outside = true;
+
+
   if ( outside )
     {
       uiMain->uiCoord->text("");
@@ -2170,8 +2187,6 @@ void ImageView::mouseMove(int x, int y)
     }
   else
     {
-      unsigned xp = (unsigned)floor(xf);
-      unsigned yp = (unsigned)floor(yf);
 
       char buf[40];
       sprintf( buf, "%5d, %5d", xp, yp );
@@ -2180,15 +2195,7 @@ void ImageView::mouseMove(int x, int y)
 //       float yp = yf;
 //       if ( _showPixelRatio ) yp /= img->pixel_ratio();
 
-      if ( xp > w )
-      {
-          pic = img->right();
-          rgba = pic->pixel( xp - w, yp );
-      }
-      else
-      {
-         rgba = pic->pixel( xp, yp );
-      }
+      rgba = pic->pixel( xp, yp );
 
       CMedia* bgr = _engine->background();
       if ( _showBG && bgr && rgba.a < 1.0f &&
