@@ -789,11 +789,6 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 
   glPushMatrix();
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
-  glScaled( _view->zoom(), _view->zoom(), 1.0);
-  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
   double pr = 1.0;
   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
   glScaled( 1.0, pr, 1.0 );
@@ -907,37 +902,41 @@ void GLEngine::draw_mask( const float pct )
  */
 void GLEngine::draw_rectangle( const mrv::Rectd& r )
 {
-  double zoomX = _view->zoom();
-  double zoomY = _view->zoom();
-  double pr = 1.0;
-  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
 
-  zoomY *= pr;
+    mrv::media fg = _view->foreground();
+    if (!fg) return;
 
-  double sw = ((double)_view->w() -  texWidth * zoomX) / 2;
-  double sh = ((double)_view->h() - texHeight * zoomY) / 2;
+    Image_ptr img = fg->image();
 
-  int rw = int( r.w() * texWidth  );
-  int rh = int( r.h() * texHeight );
+    mrv::Recti daw = img->data_window();
+    mrv::Recti dpw = img->display_window();
 
-  double tx = double( r.x() * texWidth  );
-  double ty = double( texHeight - r.y() * texHeight );
+    if ( dpw.w() == 0 )
+    {
+        dpw.w( img->width() );
+    }
 
-  assert( tx <= texWidth );
-  assert( ty <= texHeight);
-  assert( rw <= texWidth );
-  assert( rh <= texHeight);
+    if ( dpw.h() == 0 )
+    {
+        dpw.h( img->height() );
+    }
 
+  glDisable( GL_STENCIL_TEST );
 
   glMatrixMode(GL_MODELVIEW);
   glLoadIdentity();
+  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
+  glScaled( _view->zoom(), _view->zoom(), 1.0);
+  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+  double pr = 1.0;
+  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+  glScaled( 1.0, pr, 1.0 );
 
+  glTranslated( dpw.w()*r.x(), -dpw.h()*r.y(), 0 );
+  glTranslated( daw.x(), -daw.y(), 0 );
 
-  glTranslated(_view->offset_x() * zoomX + sw, 
-  	       _view->offset_y() * zoomY + sh, 0);
-  glTranslated( tx * zoomX, ty * zoomY, 0);
-  
-  glScaled( zoomX, zoomY, 1.0 );
+  double rw = dpw.w() * r.w();
+  double rh = dpw.h() * r.h();
 
   glLineWidth( 1.0 );
 
@@ -1162,6 +1161,9 @@ void GLEngine::draw_images( ImageList& images )
           draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
       }
 
+
+      glPushMatrix();
+ 
       if ( _view->main()->uiPixelRatio->value() )
           glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
                     1.0 );
@@ -1236,19 +1238,26 @@ void GLEngine::draw_images( ImageList& images )
             quad->bind( pic );
          }
 
-         glTranslated( 1, 0, 0 );
+
+         glPopMatrix();
+
+         glTranslated( dpw.w(), 0, 0 );
+
+         glPushMatrix();
 
          if ( _view->display_window() && dpw != daw )
          {
-             if ( daw.x() != 0 || daw.y() != 0 )
-             {
-                 glTranslated( -1, 0, 0 );
-                 glTranslated( (double) (dpw.w()-daw.x()) / (double)texWidth,
-                               (double) daw.y() / (double) texHeight, 0 );
-             }
-             
              draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
          }
+
+         if ( _view->main()->uiPixelRatio->value() )
+             glScaled( double(texWidth), 
+                       double(texHeight) / _view->pixel_ratio(),
+                       1.0 );
+         else
+             glScaled( double(texWidth), double(texHeight), 1.0 );
+
+         glTranslated( 0.5, -0.5, 0 );
 
          if ( daw.x() != 0 || daw.y() != 0 )
          {
@@ -1274,6 +1283,8 @@ void GLEngine::draw_images( ImageList& images )
 
       quad->gamma( img->gamma() );
       quad->draw( texWidth, texHeight );
+
+      glPopMatrix();
 
       glEnable( GL_BLEND );
 
