@@ -427,7 +427,10 @@ mrv::image_type_ptr CMedia::left() const
    if ( _is_sequence && _sequence[idx] )
       return _sequence[idx];
    else
-      return _stereo[0];
+       if ( _stereo[0] )
+           return _stereo[0];
+       else
+           return _hires;
 }
 
 mrv::image_type_ptr CMedia::right() const
