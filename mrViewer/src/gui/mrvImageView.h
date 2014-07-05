@@ -368,6 +368,7 @@ namespace mrv {
        void wipe_amount(float w) { _wipe = w; }
        float wipe_amount() const { return _wipe; }
 
+      CMedia::StereoType stereo_type() const { return _stereo; }
 
        void text_mode();
        void selection_mode() { _mode = kSelection; }
