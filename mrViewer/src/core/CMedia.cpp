@@ -136,6 +136,8 @@ CMedia::CMedia() :
   _damageRectangle( 0, 0, 0, 0 ),
   _dataWindow( NULL ),
   _displayWindow( NULL ),
+  _dataWindow2( NULL ),
+  _displayWindow2( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
@@ -210,6 +212,8 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _damageRectangle( 0, 0, 0, 0 ),
   _dataWindow( NULL ),
   _displayWindow( NULL ),
+  _dataWindow2( NULL ),
+  _displayWindow2( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
@@ -483,6 +487,19 @@ const mrv::Recti& CMedia::display_window() const
     return _displayWindow[idx];
 }
 
+const mrv::Recti& CMedia::display_window2() const
+{
+    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
+
+    CMedia* img = const_cast< CMedia* >( this );
+    img->image_damage( img->image_damage() | kDamageData );
+
+    if ( !_displayWindow2 ) return kNoRect;
+
+    boost::uint64_t idx = _frame - _frameStart;
+    return _displayWindow2[idx];
+}
+
 const mrv::Recti& CMedia::data_window() const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
@@ -490,12 +507,25 @@ const mrv::Recti& CMedia::data_window() const
     CMedia* img = const_cast< CMedia* >( this );
     img->image_damage( img->image_damage() | kDamageData | kDamageContents );
 
+
     if ( !_dataWindow ) return kNoRect;
 
     boost::uint64_t idx = _frame - _frameStart;
     return _dataWindow[idx];
 }
 
+const mrv::Recti& CMedia::data_window2() const
+{
+    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
+
+    CMedia* img = const_cast< CMedia* >( this );
+    img->image_damage( img->image_damage() | kDamageData | kDamageContents );
+
+    if ( !_dataWindow2 ) return kNoRect;
+
+    boost::uint64_t idx = _frame - _frameStart;
+    return _dataWindow2[idx];
+}
 
 void CMedia::display_window( const int xmin, const int ymin,
 			     const int xmax, const int ymax )
@@ -508,6 +538,19 @@ void CMedia::display_window( const int xmin, const int ymin,
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
   DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
+}
+
+void CMedia::display_window2( const int xmin, const int ymin,
+                              const int xmax, const int ymax )
+{
+  assert( xmax >= xmin );
+  assert( ymax >= ymin );
+  if ( !_displayWindow2 )
+      _displayWindow2 = new mrv::Recti[_frameEnd - _frameStart + 1];
+  boost::uint64_t idx = _frame - _frameStart;
+  _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+  image_damage( image_damage() | kDamageData );
+  DBG( "display window2 frame " << _frame << " is " << _displayWindow2[idx] );
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
@@ -523,6 +566,19 @@ void CMedia::data_window( const int xmin, const int ymin,
   DBG( "data window frame " << _frame << " is " << _dataWindow[idx] );
 }
 
+
+void CMedia::data_window2( const int xmin, const int ymin,
+                          const int xmax, const int ymax )
+{
+  assert( xmax >= xmin );
+  assert( ymax >= ymin );
+  if ( !_dataWindow2 )
+      _dataWindow2 = new mrv::Recti[_frameEnd - _frameStart + 1];
+  boost::uint64_t idx = _frame - _frameStart;
+  _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
+  image_damage( image_damage() | kDamageData );
+  DBG( "data window2 frame " << _frame << " is " << _dataWindow2[idx] );
+}
 
 
 /** 
@@ -2194,10 +2250,11 @@ unsigned numPixelsPerThread = widthPerThread * heightPerThread;
 
 struct AnaglyphData
 {
-     bool left_red;
-     int x, y, w, h;
-     mrv::image_type_ptr* stereo;
-     mrv::image_type_ptr hires;
+    bool left_red;
+    mrv::Recti daw[2]; // data windows
+    mrv::Recti dpw[2]; // display windows
+    mrv::image_type_ptr* stereo;
+    mrv::image_type_ptr hires;
 };
 
 
@@ -2210,23 +2267,44 @@ void anaglyph_cb( AnaglyphData* d )
    short idx2 = 1;
    if ( !d->left_red )
    {
-      idx2 = 0;
       idx1 = 1;
+      idx2 = 0;
    }
 
-   unsigned w = d->w;
-   unsigned h = d->h;
+   mrv::Recti dpw = d->dpw[0];
+   dpw.merge( d->dpw[1] );
 
-   for ( unsigned y = d->y; y < h; ++y )
+   mrv::Recti daw = d->daw[0];
+   daw.merge( d->daw[1] );
+
+   daw.merge( dpw );
+
+   for ( unsigned y = daw.t(); y < daw.b(); ++y )
    {
-      for ( unsigned x = d->x ; x < w; ++x )
-      {
-         const CMedia::Pixel& pr = stereo[idx1]->pixel( x, y );
-         const CMedia::Pixel& pc = stereo[idx2]->pixel( x, y );
-         CMedia::Pixel p = pc;
-         p.r = pr.r;
-         hires->pixel( x, y, p );
-      }
+       for ( unsigned x = daw.l() ; x < daw.r(); ++x )
+       {
+           CMedia::Pixel pr, pc;
+
+           unsigned x1 = x - d->daw[idx1].l();
+           unsigned y1 = y - d->daw[idx1].t();
+
+           if ( x1 >= d->daw[idx1].w() || y1 >= d->daw[idx1].h() ) 
+               pr = CMedia::Pixel(0,0,0,0);
+           else
+               pr = stereo[idx1]->pixel( x1, y1 );
+
+
+           x1 = x - d->daw[idx2].l();
+           y1 = y - d->daw[idx2].t();
+
+           if ( x1 >= d->daw[idx2].w() || y1 >= d->daw[idx2].h() ) 
+               pc = CMedia::Pixel(0,0,0,0);
+           else
+               pc = stereo[idx2]->pixel( x1, y1 );
+           CMedia::Pixel p = pc;
+           p.r = pr.r;
+           hires->pixel( x, y, p );
+       }
    }
 
    delete d;
@@ -2236,7 +2314,6 @@ void anaglyph_cb( AnaglyphData* d )
 
 void CMedia::make_anaglyph( bool left_red )
 {
-   allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
    
    if ( ! _stereo[0] || ! _stereo[1] )
    {
@@ -2247,78 +2324,85 @@ void CMedia::make_anaglyph( bool left_red )
    if ( _stereo[0] == _stereo[1] )
    {
       LOG_ERROR( "Stereo images are the same" );
+      return;
    }
 
-   unsigned w = width();
-   unsigned h = height();
+   const mrv::Recti& dpw = display_window();
+   const mrv::Recti& daw = data_window();
 
-   if ( _stereo[0]->width() != w || _stereo[1]->width() != w )
-   {
-      LOG_ERROR( "Stereo images differ in width" );
-   }
+   unsigned w = dpw.w();
+   if ( _w == 0 ) w = width();
+   unsigned h = dpw.h();
+   if ( _h == 0 ) h = height();
 
-   if ( _stereo[0]->height() != h || _stereo[1]->height() != h )
-   {
-      LOG_ERROR( "Stereo images differ in height" );
-   }
+   _w = w;
+   _h = h;
+   allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
+
 
    short idx1 = 0;
    short idx2 = 1;
 
-    if ( w*h < numPixelsPerThread )
-    {
+    // if ( w*h < numPixelsPerThread )
+   if (1)
+   {
        AnaglyphData* data = new AnaglyphData;
        data->left_red = left_red;
        data->stereo = _stereo;
        data->hires  = _hires;
-       data->x = data->y = 0;
-       data->w = w;
-       data->h = h;
+       data->dpw[0] = display_window();
+       data->dpw[1] = display_window2();
+
+       data->daw[0] = data_window();
+       data->daw[1] = data_window2();
        anaglyph_cb( data );
+
+       find_image( _frame );
+       data_window( 0, 0, _w, _h );
     }
     else
     {
-       unsigned int x, y;
-       thread_pool_t buckets;
+       // unsigned int x, y;
+       // thread_pool_t buckets;
 
-       unsigned int ny, nx;
-       for ( y = 0; y < h; y = ny )
-       {
-          ny   = y + heightPerThread;
-          int yh  = h < ny? h : ny;
+       // unsigned int ny, nx;
+       // for ( y = daw.y(); y < h; y = ny )
+       // {
+       //    ny   = y + heightPerThread;
+       //    int yh  = h < ny? h : ny;
 
-          boost::thread* thread_id;
-          for ( x = 0; x < w; x = nx )
-          {
-             nx  = x + widthPerThread;
-             int xh = w < nx? w : nx;
+       //    boost::thread* thread_id;
+       //    for ( x = daw.x(); x < w; x = nx )
+       //    {
+       //       nx  = x + widthPerThread;
+       //       int xh = w < nx? w : nx;
 
-             AnaglyphData* data = new AnaglyphData;
-             data->left_red = left_red;
-             data->hires  = _hires;
-             data->stereo = _stereo;
-             data->x = x;
-             data->y = y;
-             data->w = xh;
-             data->h = yh;
+       //       AnaglyphData* data = new AnaglyphData;
+       //       data->left_red = left_red;
+       //       data->hires  = _hires;
+       //       data->stereo = _stereo;
+       //       data->x = x;
+       //       data->y = y;
+       //       data->w = xh;
+       //       data->h = yh;
 
-             thread_id = new boost::thread( boost::bind( anaglyph_cb,
-                                                         data ) );
+       //       thread_id = new boost::thread( boost::bind( anaglyph_cb,
+       //                                                   data ) );
 
-             buckets.push_back( thread_id );
-          }
-       }
+       //       buckets.push_back( thread_id );
+       //    }
+       // }
 
 
-       thread_pool_t::const_iterator i = buckets.begin();
-       thread_pool_t::const_iterator e = buckets.end();
+       // thread_pool_t::const_iterator i = buckets.begin();
+       // thread_pool_t::const_iterator e = buckets.end();
 
-       // Make sure all threads finish before proceeding
-       for ( ; i != e; ++i )
-       {
-          (*i)->join();
-          delete *i;
-       }
+       // // Make sure all threads finish before proceeding
+       // for ( ; i != e; ++i )
+       // {
+       //    (*i)->join();
+       //    delete *i;
+       // }
     }
 
 

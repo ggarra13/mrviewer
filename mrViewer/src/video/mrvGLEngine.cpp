@@ -124,17 +124,17 @@ namespace mrv {
   //
   void GLEngine::handle_gl_errors(const char* where)
   {
-    GLenum error = glGetError();
-    if ( error == GL_NO_ERROR ) return;
-    
-    while (error != GL_NO_ERROR)
+      GLenum error = glGetError();
+      if ( error == GL_NO_ERROR ) return;
+
+      while (error != GL_NO_ERROR)
       {
           LOG_ERROR( where << _(": Error ") << error << " " <<
                      gluErrorString(error) );
           error = glGetError();
       }
 
-    exit(1);
+      exit(1);
   }
 
 
@@ -207,7 +207,7 @@ void GLEngine::init_charset()
 #else
     // Find Window's default font
     Display* gdc = fltk::xdisplay;
-    
+
     // Load XFont to user's specs
     char font_name[256];
     sprintf( font_name, N_("-*-fixed-*-r-normal--%d-0-0-0-c-0-iso8859-1"),
@@ -233,7 +233,7 @@ void GLEngine::init_charset()
 
 /** 
  * Initialize opengl textures
- * 
+ *
  */
 void GLEngine::init_textures()
 {
@@ -263,9 +263,9 @@ void GLEngine::init_textures()
 
 }
 
-/** 
+/**
  * Initialize GLEW features
- * 
+ *
  */
 void GLEngine::init_GLEW()
 {
@@ -831,41 +831,44 @@ void GLEngine::draw_mask( const float pct )
   mrv::media fg = _view->foreground();
   if ( !fg ) return;
 
-  glColor3f( 0.0f, 0.0f, 0.0f );
 
-  glDisable( GL_STENCIL_TEST );
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
+  Image_ptr img = fg->image();
 
-  int dw = texWidth;
-  int xoffset = _view->offset_x();
+  mrv::Recti dpw2 = img->display_window2();
+  mrv::Recti dpw = img->display_window();
 
-  CMedia* img = fg->image();
+  if ( dpw.w() == 0 )
+  {
+      dpw.w( img->width() );
+  }
+
+  if ( dpw.h() == 0 )
+  {
+      dpw.h( img->height() );
+  }
 
   if ( img->stereo_type() & CMedia::kStereoSideBySide )
   {
-     xoffset += dw/2;
-     dw *= 2;
+      dpw.w( dpw.w() + dpw2.w() );
   }
 
-  int dh = texHeight;
+  glColor3f( 0.0f, 0.0f, 0.0f );
+  glDisable( GL_STENCIL_TEST );
   
+  glMatrixMode(GL_MODELVIEW);
+  glLoadIdentity();
   glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
   glScalef( _view->zoom(), _view->zoom(), 1.0f);
-  glTranslated( xoffset, _view->offset_y(), 0.0 );
+  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+  double pr = 1.0;
+  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+  glScaled( dpw.w(), dpw.h() * pr, 1.0 );
+  glTranslated( 0.5, -0.5, 0.0 );
 
-  if ( _view->pixel_ratio() != 1.0f )
-    glScaled( double(dw), dh / _view->pixel_ratio(), 1.0 );
-  else
-    glScaled( double(dw), double(dh), 1.0f );
-
-  double aspect = (double) texWidth / (double) texHeight;   // 1.3
+  double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
   double target_aspect = 1.0 / pct;
   double amount = (0.5 - target_aspect * aspect / 2);
-
-  const mrv::Recti& daw = img->data_window();
-  glTranslated( double(daw.x())/texWidth, double(-daw.y())/texHeight, 0 );
 
   //
   // Bottom mask
@@ -951,6 +954,32 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
 
 }
 
+void GLEngine::draw_safe_area_inner( const double tw, const double th,
+                                     const char* name )
+{
+  glLineWidth( 1.0 );
+
+  glBegin(GL_LINE_LOOP);
+
+  glVertex2d(-tw,-th);
+  glVertex2d(tw, -th);
+  glVertex2d(tw,  th);
+  glVertex2d(-tw, th);
+
+  glEnd();
+
+  if ( name )
+    {
+      glPushMatrix();
+      glTranslated(tw+5, th, 0);
+      glScalef( 0.1f, 0.1f, 1.0f );
+      for (const char* p = name; *p; ++p)
+        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+      glPopMatrix();
+    }
+
+}
+
 /** 
  * Draw an unfilled rectangle (for safe area display)
  * 
@@ -967,7 +996,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     Image_ptr img = fg->image();
 
     mrv::Recti dpw = img->display_window();
-    if ( dpw.w() == 0 || dpw.h() == 0 )
+    if ( dpw.w() == 0 )
     {
         dpw = img->data_window();
     }
@@ -975,12 +1004,9 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     if ( dpw.w() == 0 )
     {
         dpw.w( img->width() );
-    }
-
-    if ( dpw.h() == 0 )
-    {
         dpw.h( img->height() );
     }
+
 
   glDisable( GL_STENCIL_TEST );
 
@@ -1001,28 +1027,13 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   tw *= percentX;
   th *= percentY;
 
-  glLineWidth( 1.0 );
+  draw_safe_area_inner( tw, th, name );
 
-  glBegin(GL_LINE_LOOP);
-
-  glVertex2d(-tw,-th);
-  glVertex2d(tw, -th);
-  glVertex2d(tw,  th);
-  glVertex2d(-tw, th);
-
-  glEnd();
-
-  
-
-  if ( name )
-    {
-      glPushMatrix();
-      glTranslated(tw+5, th, 0);
-      glScalef( 0.1f, 0.1f, 1.0f );
-      for (const char* p = name; *p; ++p)
-        glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
-      glPopMatrix();
-    }
+  if ( _view->stereo_type() & CMedia::kStereoSideBySide )
+  {
+      glTranslated( dpw.w(), 0, 0 );
+      draw_safe_area_inner( tw, th, name );
+  }
 
   glDisable( GL_STENCIL_TEST );
 
@@ -1284,8 +1295,6 @@ void GLEngine::draw_images( ImageList& images )
       quad->gamma( img->gamma() );
       quad->draw( texWidth, texHeight );
 
-      glPopMatrix();
-
       glEnable( GL_BLEND );
 
       if ( img->has_subtitle() )
@@ -1294,12 +1303,13 @@ void GLEngine::draw_images( ImageList& images )
            if ( sub )
            {
 	      ++q;
-              
+
 	      quad->bind( sub );
 	      quad->draw( texWidth, texHeight );
            }
 	}
 
+      glPopMatrix();
 
       img->image_damage( img->image_damage() & 
 			 ~(CMedia::kDamageContents | CMedia::kDamageLut |

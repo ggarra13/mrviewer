@@ -103,6 +103,10 @@ namespace mrv {
     /// Auxiliary function used to check for Cg errors;
     static void handle_cg_errors();
 
+    void draw_safe_area_inner( const double tw, 
+                               const double th,
+                               const char* name = 0 );
+
     /// Allocate a number of quads
     void alloc_quads( size_t num );
 

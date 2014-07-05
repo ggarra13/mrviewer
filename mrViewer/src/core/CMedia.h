@@ -290,11 +290,17 @@ class CMedia
 
     const mrv::Recti& data_window() const;
     const mrv::Recti& display_window() const;
+    const mrv::Recti& data_window2() const;
+    const mrv::Recti& display_window2() const;
 
     void data_window( const int xmin, const int ymin,
 		      const int xmax, const int ymax );
     void display_window( const int xmin, const int ymin,
 			 const int xmax, const int ymax );
+    void data_window2( const int xmin, const int ymin,
+                       const int xmax, const int ymax );
+    void display_window2( const int xmin, const int ymin,
+                          const int xmax, const int ymax );
 
     ////////////////// Return the list of available layers in the image
     inline const stringArray& layers() const { return _layers; }
@@ -1052,6 +1058,8 @@ class CMedia
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
     mrv::Recti* _dataWindow;       //!< data window of sequence
     mrv::Recti* _displayWindow;    //!< display window of sequence
+    mrv::Recti* _dataWindow2;       //!< data window of stereo sequence
+    mrv::Recti* _displayWindow2;    //!< display window of stereo sequence
 
     // Hi-res/quality image (usually floating point)
     mrv::image_type_ptr _hires;
