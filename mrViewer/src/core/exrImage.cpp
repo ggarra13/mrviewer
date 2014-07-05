@@ -1423,76 +1423,84 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           
       for ( int i = 0 ; i < 2; ++i )
       {
-         int oldpart = _curpart;
-         if ( _stereo_type != kNoStereo ) _curpart = st[i];
+          int oldpart = _curpart;
+          if ( _stereo_type != kNoStereo ) _curpart = st[i];
 
           
-         InputPart in( inmaster, _curpart );
-         Header header = in.header();
+          InputPart in( inmaster, _curpart );
+          Header header = in.header();
 
-         Box2i displayWindow = header.displayWindow();
-         Box2i dataWindow = header.dataWindow();
+          Box2i displayWindow = header.displayWindow();
+          Box2i dataWindow = header.dataWindow();
 
-         FrameBuffer fb;
-         bool ok = find_channels( header, fb, frame );
-         if (!ok) {
-            IMG_ERROR( _("Could not locate channels in header") );
-            return false;
-         }
+          FrameBuffer fb;
+          bool ok = find_channels( header, fb, frame );
+          if (!ok) {
+              IMG_ERROR( _("Could not locate channels in header") );
+              return false;
+          }
           
 
 
-         if ( _curpart != oldpart )
-         {
-            InputPart ins( inmaster, _curpart );
-            header = ins.header();
+          if ( _curpart != oldpart )
+          {
+              InputPart ins( inmaster, _curpart );
+              header = ins.header();
 
           
-            FrameBuffer fb;
-            bool ok = find_channels( header, fb, frame );
-            if (!ok) {
-               IMG_ERROR( _("Could not locate channels in header") );
-               return false;
-            }
+              FrameBuffer fb;
+              bool ok = find_channels( header, fb, frame );
+              if (!ok) {
+                  IMG_ERROR( _("Could not locate channels in header") );
+                  return false;
+              }
 
           
-            _pixel_ratio = header.pixelAspectRatio();
-            _lineOrder   = header.lineOrder();
-            displayWindow = header.displayWindow();
-            dataWindow = header.dataWindow();
+              _pixel_ratio = header.pixelAspectRatio();
+              _lineOrder   = header.lineOrder();
+              displayWindow = header.displayWindow();
+              dataWindow = header.dataWindow();
 
-            ins.setFrameBuffer(fb);
-            ins.readPixels( dataWindow.min.y, dataWindow.max.y );
+              ins.setFrameBuffer(fb);
+              ins.readPixels( dataWindow.min.y, dataWindow.max.y );
 
-         }
-         else
-         {
+          }
+          else
+          {
           
-            _pixel_ratio = header.pixelAspectRatio();
-            _lineOrder   = header.lineOrder();
-            displayWindow = header.displayWindow();
-            dataWindow = header.dataWindow();
+              _pixel_ratio = header.pixelAspectRatio();
+              _lineOrder   = header.lineOrder();
+              displayWindow = header.displayWindow();
+              dataWindow = header.dataWindow();
 
-            in.setFrameBuffer(fb);
-            in.readPixels( dataWindow.min.y, dataWindow.max.y );
+              in.setFrameBuffer(fb);
+              in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
-         }
-
-         unsigned dw = width();
-         unsigned dh = height();
-
-         data_window( dataWindow.min.x, dataWindow.min.y,
-                      dataWindow.max.x, dataWindow.max.y );
-
-         display_window( displayWindow.min.x, displayWindow.min.y,
-                         displayWindow.max.x, displayWindow.max.y );
+          }
 
 
-         // Quick exit if stereo is off
-         if ( _stereo_type == kNoStereo ) break;
+          if ( i == 0 || _stereo_type == kNoStereo )
+          {
+              data_window( dataWindow.min.x, dataWindow.min.y,
+                           dataWindow.max.x, dataWindow.max.y );
+
+              display_window( displayWindow.min.x, displayWindow.min.y,
+                              displayWindow.max.x, displayWindow.max.y );
+          }
+          else
+          {
+              data_window2( dataWindow.min.x, dataWindow.min.y,
+                            dataWindow.max.x, dataWindow.max.y );
+
+              display_window2( displayWindow.min.x, displayWindow.min.y,
+                               displayWindow.max.x, displayWindow.max.y );
+          }
+
+          // Quick exit if stereo is off
+          if ( _stereo_type == kNoStereo ) break;
 
          
-         _stereo[i] = _hires;
+          _stereo[i] = _hires;
       }
 
       
@@ -1548,9 +1556,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          in.readPixels( dataWindow.min.y, dataWindow.max.y );
       }
 
-          
-      unsigned dw = width();
-      unsigned dh = height();
 
       data_window( dataWindow.min.x, dataWindow.min.y,
                    dataWindow.max.x, dataWindow.max.y );
