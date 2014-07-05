@@ -1428,7 +1428,25 @@ void ImageView::draw()
   if ( _safeAreas ) 
     {
       const CMedia* img = fg->image();
-      double aspect = (float) img->width() / (float) img->height();
+      const mrv::Recti& dpw = img->display_window();
+      unsigned W = dpw.w();
+      unsigned H = dpw.h();
+      if ( W == 0 )
+      {
+          mrv::image_type_ptr pic = img->hires();
+          if (!pic)
+          {
+              W = img->width();
+              H = img->height();
+          }
+          else
+          {
+              W = pic->width();
+              H = pic->height();
+          }
+      }
+
+      double aspect = (double) W / (double) H;
 
       // Safe areas may change when pixel ratio is active
       double pr = 1.0;
@@ -1441,8 +1459,8 @@ void ImageView::draw()
       if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
 	{
 	  // Assume NTSC/PAL
-	  float f = img->height() * 1.33f;
-	  f = f / img->width();
+	  float f = H * 1.33f;
+	  f = f / W;
 	  _engine->color( 1.0f, 0.0f, 0.0f );
 	  _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
 	  _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
@@ -1471,8 +1489,8 @@ void ImageView::draw()
 	  else
 	    {
 	      // Film fit for TV, Draw 4-3 safe areas
-	      float f = img->height() * 1.33f;
-	      f = f / img->width();
+	      float f = H * 1.33f;
+	      f = f / W;
 	      _engine->color( 1.0f, 0.0f, 0.0f );
 	      _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
 	      _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
@@ -2134,8 +2152,11 @@ void ImageView::mouseMove(int x, int y)
   data_window_coordinates( img, xf, yf );
 
 
-   mrv::image_type_ptr pic = img->left();
-   if ( !pic ) return;
+  mrv::image_type_ptr pic = img->hires();
+
+  if ( _stereo == CMedia::kStereoCrossed ) pic = img->right();
+
+  if ( !pic ) return;
 
   mrv::Recti daw = img->data_window();
   mrv::Recti dpw = img->display_window();
@@ -2152,19 +2173,19 @@ void ImageView::mouseMove(int x, int y)
   if ( img->is_stereo() && _stereo & CMedia::kStereoSideBySide )
   {
 
-     if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-          xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
-     {
-        outside = true;
-     }
+      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+           xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
+      {
+          outside = true;
+      }
   }
   else
   {
-     if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-          xf < 0 || yf < 0 || xf >= w || yf >= h )
-     {
-        outside = true;
-     }
+      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+           xf < 0 || yf < 0 || xf >= w || yf >= h )
+      {
+          outside = true;
+      }
   }
 
 
@@ -2173,7 +2194,8 @@ void ImageView::mouseMove(int x, int y)
 
   if ( xp > w && _stereo & CMedia::kStereoSideBySide )
   {
-      pic = img->right();
+      if ( _stereo == CMedia::kStereoCrossed ) pic = img->left();
+      else pic = img->right();
       xp -= w;
   }
 

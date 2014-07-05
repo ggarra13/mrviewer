@@ -232,7 +232,7 @@ std::string hex_to_char_filename( std::string& f )
     for ( ; i >= e; --i )
       {
  	if ( *i == '/' || *i == '\\' ) break;
-	if ( *i == '.' || ( count > 0 && (*i == '_' ) ) )
+	if ( *i == '.' || ( count > 0 && ((*i == '_' )||(*i == '-')) ) )
 	  {
 	    idx[count] = (int)( i - e );
 	    ++count;
