@@ -1373,8 +1373,6 @@ void aviImage::populate()
     _frameEnd = _frameStart + duration - 1;
     _frame_end = _frameEnd;
 
-    std::cerr << "s: " << _frameStart << "-" << _frameEnd << std::endl;
-
     _frame_offset = 0;
 
   
