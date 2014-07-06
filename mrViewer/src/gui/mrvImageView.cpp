@@ -2197,14 +2197,18 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic = img->hires();
 
-  if ( _stereo == CMedia::kStereoCrossed ) pic = img->right();
+  if ( stereo_type() == CMedia::kStereoCrossed ) pic = img->right();
 
   if ( !pic ) return;
 
   mrv::Recti daw = img->data_window();
   mrv::Recti dpw = img->display_window();
-  unsigned w = dpw.w();
-  unsigned h = dpw.h();
+  mrv::Recti dpw2 = img->display_window2();
+
+  mrv::Recti dpm = dpw;
+  dpm.merge( daw );
+  unsigned w = dpm.w();
+  unsigned h = dpm.h();
   if ( w == 0 ) w = pic->width();
   if ( h == 0 ) h = pic->height();
 
@@ -2215,9 +2219,8 @@ void ImageView::mouseMove(int x, int y)
 
   if ( img->is_stereo() && _stereo & CMedia::kStereoSideBySide )
   {
-
       if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-           xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
+           xf < 0 || yf < 0 || xf >= w+dpw2.w() || yf >= h )
       {
           outside = true;
       }
@@ -2235,7 +2238,8 @@ void ImageView::mouseMove(int x, int y)
   unsigned xp = (unsigned)floor(xf);
   unsigned yp = (unsigned)floor(yf);
 
-  if ( xp > w && _stereo & CMedia::kStereoSideBySide )
+
+  if ( xp > w && ( stereo_type() & CMedia::kStereoSideBySide ) )
   {
       if ( _stereo == CMedia::kStereoCrossed ) pic = img->left();
       else pic = img->right();
