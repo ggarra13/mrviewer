@@ -20,10 +20,11 @@
 #include "core/CMedia.h"
 #include "core/mrvThread.h"
 
-#include "mrvIO.h"
-#include "mrvHistogram.h"
+#include "gui/mrvIO.h"
+#include "gui/mrvHistogram.h"
 #include "mrViewer.h"
-#include "mrvImageView.h"
+#include "gui/mrvImageView.h"
+#include "gui/mrvColorInfo.h"
 
 #include "ImathFun.h"
 
@@ -136,12 +137,7 @@ namespace mrv
     if (!img) return;
 
 
-    mrv::image_type_ptr pic;
-    {
-      CMedia::Mutex& m = img->video_mutex();
-      SCOPED_LOCK(m);
-      pic = img->hires();
-    }
+    mrv::image_type_ptr pic = img->hires();
     if (!pic) return;
 
     // @todo: avoid recalculating on stopped image
@@ -149,8 +145,6 @@ namespace mrv
     //     if ( img == lastImg && frame == lastFrame )
     //       return;
 
-    lastImg = img;
-    lastFrame = img->frame();
 
 
     maxRed = maxGreen = maxBlue = maxLumma = 0;
@@ -159,26 +153,23 @@ namespace mrv
     memset( blue,  0, sizeof(float) * 256 );
     memset( lumma, 0, sizeof(float) * 256 );
 
-    unsigned int xmax = img->width();
-    unsigned int ymax = img->height();
-    unsigned int xmin = 0;
-    unsigned int ymin = 0;
+
+    int xmin, ymin, xmax, ymax;
+    bool right;
 
     mrv::Rectd selection = uiMain->uiView->selection();
 
-    if ( selection.w() > 0 || selection.h() > 0 )
-      {
-	xmin = (unsigned int)(xmax * selection.x());
-	ymin = (unsigned int)(ymax * selection.y());
+    ColorInfo::selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
+                                   right );
 
-	xmax = xmin + (unsigned int)(xmax  * selection.w());
-	ymax = ymin + (unsigned int)(ymax  * selection.h());
-      }
+    if ( right )
+    {
+        pic = img->right();
+        if (!pic) return;
+    }
 
-    assert( xmin <= img->width() );
-    assert( ymin <= img->height() );
-    assert( xmax <= img->width() );
-    assert( ymax <= img->height() );
+    if ( xmax >= pic->width() ) xmax = pic->width()-1;
+    if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
     unsigned int stepY = (ymax - ymin) / w();
     unsigned int stepX = (xmax - xmin) / h();
