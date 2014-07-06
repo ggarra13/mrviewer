@@ -37,6 +37,12 @@ namespace mrv
     void update();
     void update( const CMedia* img,
 		 const mrv::Rectd& selection );
+
+      static void selection_to_coord( const CMedia* img,
+                                      const mrv::Rectd& selection,
+                                      int& xmin, int& ymin, int& xmax,
+                                      int& ymax, bool& right );
+
   protected:
     fltk::Widget*    area;
     fltk::Browser*   browser;

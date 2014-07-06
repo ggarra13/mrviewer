@@ -2199,20 +2199,22 @@ void ImageView::mouseMove(int x, int y)
       xp -= w;
   }
 
-  if ( xp >= pic->width() || yp >= pic->height() ) outside = true;
+
+  if ( xp >= pic->width() || yp >= pic->height() ) {
+      outside = true;
+  }
 
 
+  char buf[40];
+  sprintf( buf, "%5d, %5d", xp, yp );
+  uiMain->uiCoord->text(buf);
+  
   if ( outside )
     {
-      uiMain->uiCoord->text("");
       rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
     }
   else
     {
-
-      char buf[40];
-      sprintf( buf, "%5d, %5d", xp, yp );
-      uiMain->uiCoord->text(buf);
 
 //       float yp = yf;
 //       if ( _showPixelRatio ) yp /= img->pixel_ratio();
@@ -2393,46 +2395,91 @@ void ImageView::mouseDrag(int x,int y)
 	   double yf = double(lastY);
 	   data_window_coordinates( img, xf, yf );
 
-           mrv::Recti daw = img->data_window();
-           if ( daw.w() == 0 )
+           mrv::Recti daw[2], dpw[2];
+
+           daw[0] = img->data_window();
+           if ( daw[0].w() == 0 )
            {
-               daw.x( 0 );
-               daw.y( 0 );
-               daw.w( img->width() );
-               daw.h( img->height() );
+               daw[0].x( 0 );
+               daw[0].y( 0 );
+               daw[0].w( img->width() );
+               daw[0].h( img->height() );
            }
-           mrv::Recti dpw = img->display_window();
-           if ( dpw.w() == 0 )
+           daw[1] = img->data_window2();
+           if ( daw[1].w() == 0 )
            {
-               dpw.x( 0 );
-               dpw.y( 0 );
-               dpw.w( img->width() );
-               dpw.h( img->height() );
+               daw[1].x( 0 );
+               daw[1].y( 0 );
+               daw[1].w( img->width() );
+               daw[1].h( img->height() );
+           }
+           dpw[0] = img->display_window();
+           if ( dpw[0].w() == 0 )
+           {
+               dpw[0].x( 0 );
+               dpw[0].y( 0 );
+               dpw[0].w( img->width() );
+               dpw[0].h( img->height() );
+           }
+           dpw[1] = img->display_window();
+           if ( dpw[1].w() == 0 )
+           {
+               dpw[1].x( 0 );
+               dpw[1].y( 0 );
+               dpw[1].w( img->width() );
+               dpw[1].h( img->height() );
            }
 
 	   double xn = double(x);
 	   double yn = double(y);
 	   data_window_coordinates( img, xn, yn );
 
-	   unsigned W = dpw.w();
-	   unsigned H = dpw.h();
+           xf += daw[0].x();
+           yf += daw[0].y();
+
+           xn += daw[0].x();
+           yn += daw[0].y();
+
+           short idx = 0;
+
+
+	   unsigned W = dpw[0].w();
+	   unsigned H = dpw[0].h();
+
+           bool right = false;
+           if ( xf > W )
+           {
+               right = true;
+               xf -= W;
+               xn -= W;
+               W = dpw[1].w();
+               H = dpw[1].h();
+               idx = 1;
+           }
+
+           xf -= daw[idx].x();
+           yf -= daw[idx].y();
+
+           xn -= daw[idx].x();
+           yn -= daw[idx].y();
 
 	   xf = floor(xf);
 	   yf = floor(yf);
 	   xn = floor(xn+0.5f);
 	   yn = floor(yn+0.5f);
 
+
 	   if ( _mode == kSelection )
 	   {
-               if ( xf < dpw.x() ) xf = dpw.x();
-               if ( yf < dpw.y() ) yf = dpw.y();
-               else if ( yf > daw.h() ) yf = double(daw.h());
-               if ( xf > daw.w() )  xf = double(daw.w());
+               if ( xf < dpw[idx].x() ) xf = dpw[idx].x();
+               if ( yf < dpw[idx].y() ) yf = dpw[idx].y();
+               else if ( yf > daw[idx].h() ) yf = double(daw[idx].h());
+               if ( xf > daw[idx].w() )  xf = double(daw[idx].w());
 
-               if ( xn < dpw.x() ) xn = dpw.x();
-               if ( yn < dpw.y() ) yn = dpw.y();
-               else if ( yn > daw.h() ) yn = double(daw.h());
-               if ( xn > daw.w() )  xn = double(daw.w());
+               if ( xn < dpw[idx].x() ) xn = dpw[idx].x();
+               if ( yn < dpw[idx].y() ) yn = dpw[idx].y();
+               else if ( yn > daw[idx].h() ) yn = double(daw[idx].h());
+               if ( xn > daw[idx].w() )  xn = double(daw[idx].w());
 
 
                if ( xn < xf ) 
@@ -2456,9 +2503,10 @@ void ImageView::mouseDrag(int x,int y)
                if ( dx > W ) dx = W;
                if ( dy > H ) dy = H;
 
-
-               _selection = mrv::Rectd( (double)(dpw.x()+xf)/(double)W, 
-                                        (double)(dpw.y()+yf)/(double)H, 
+               double xt = (dpw[idx].x() + xf + dpw[0].w() * right) / (double)W;
+               double yt = (dpw[idx].y() + yf) / (double) H;
+               _selection = mrv::Rectd( xt, 
+                                        (double)yt, 
                                         (double)dx/(double)W, 
                                         (double)dy/(double)H );
 
@@ -2488,8 +2536,8 @@ void ImageView::mouseDrag(int x,int y)
                    yn = H - yn;
                    yn -= H;
 
-                   xn += daw.x();
-                   yn -= daw.y();
+                   xn += daw[idx].x();
+                   yn -= daw[idx].y();
 
                    mrv::Point p( xn, yn );
                    s->pts.push_back( p );
@@ -2510,8 +2558,8 @@ void ImageView::mouseDrag(int x,int y)
                    yn = H - yn;
                    yn -= H;
 
-                   xn += daw.x();
-                   yn -= daw.y();
+                   xn += daw[idx].x();
+                   yn -= daw[idx].y();
 
                    s->position( xn, yn );
 	      }

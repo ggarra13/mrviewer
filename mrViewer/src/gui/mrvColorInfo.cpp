@@ -153,7 +153,61 @@ void ColorInfo::update()
   update( img, selection );
 }
 
-void ColorInfo::update( const CMedia* src,
+void ColorInfo::selection_to_coord( const CMedia* img,
+                                    const mrv::Rectd& selection,
+                                    int& xmin, int& ymin, int& xmax,
+                                    int& ymax, bool& right )
+{
+      const mrv::Recti& dpw = img->display_window();
+      unsigned W = dpw.w();
+      unsigned H = dpw.h();
+      unsigned wt = dpw.w();
+
+      xmin = (int)(W * selection.x());
+      ymin = (int)(H * selection.y());
+
+      right = false;
+      if ( xmin >= W )
+      {
+          right = true;
+          const mrv::Recti& dpw = img->display_window2();
+          W = dpw.w();
+          H = dpw.h();
+      }
+
+      if ( xmin < 0 ) xmin = 0;
+      if ( ymin < 0 ) ymin = 0;
+
+      xmax = xmin + (int)(W * selection.w()) - 1;
+      ymax = ymin + (int)(H * selection.h()) - 1;
+
+
+      if ( right )
+      {
+          xmin -= wt;
+          xmax -= wt;
+      }
+
+      if ( xmax < 0 ) xmax = 0;
+      if ( ymax < 0 ) ymax = 0;
+
+
+      if ( xmax < xmin ) {
+	 int tmp = xmax;
+	 xmax = xmin;
+	 xmin = tmp;
+      }
+
+      if ( ymax < ymin ) { 
+	 int tmp = ymax;
+	 ymax = ymin;
+	 ymin = tmp;
+      }
+
+}
+
+
+void ColorInfo::update( const CMedia* img,
 			const mrv::Rectd& selection )
 {
   if ( !visible_r() ) return;
@@ -162,7 +216,7 @@ void ColorInfo::update( const CMedia* src,
   area->copy_label( "" );
 
   std::ostringstream text;
-  if ( src && (selection.w() > 0 || selection.h() < 0) )
+  if ( img && (selection.w() > 0 || selection.h() < 0) )
     {
       CMedia::Pixel hmin( std::numeric_limits<float>::max(),
                           std::numeric_limits<float>::max(),
@@ -186,50 +240,26 @@ void ColorInfo::update( const CMedia* src,
 
 
 
-      mrv::image_type_ptr pic = src->hires();
+      mrv::image_type_ptr pic = img->hires();
       if (!pic) return;
 
       unsigned count = 0;
 
-      const mrv::Recti& dpw = src->display_window();
-      unsigned W = dpw.w();
-      unsigned H = dpw.h();
+      int xmin, ymin, xmax, ymax;
+      bool right;
 
-      int x = selection.x();
-      int y = selection.y();
+      selection_to_coord( img, selection, xmin, ymin, xmax, ymax, right );
 
-      int xmin = (int)(W * selection.x());
-      int ymin = (int)(H * selection.y());
-
-      int xmax = xmin + (int)(W * selection.w()) - 1;
-      int ymax = ymin + (int)(H * selection.h()) - 1;
-
-      if ( xmax < xmin ) {
-	 unsigned tmp = xmax;
-	 xmax = xmin;
-	 xmin = xmax;
+      if ( right )
+      {
+          pic = img->right();
+          if (!pic) return;
       }
 
-      if ( ymax < ymin ) { 
-	 unsigned tmp = ymax;
-	 ymax = ymin;
-	 ymin = ymax;
-      }
-
-      if ( xmin < 0 ) xmin = 0;
-      if ( ymin < 0 ) ymin = 0;
       if ( xmax >= pic->width() ) xmax = pic->width()-1;
       if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
 
-      assert( xmax <= W );
-      assert( ymax <= H );
-      assert( xmin <= W );
-      assert( ymin <= H );
-      assert( xmax >= xmin );
-      assert( ymax >= ymin );
-
-      
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
 
