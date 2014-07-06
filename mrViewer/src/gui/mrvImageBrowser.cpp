@@ -1521,6 +1521,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 		 m->image()->audio_stream( audio_idx );
 	   }
 
+           if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+               view()->fit_image();
+           
 	   adjust_timeline();
 
 	   std::string buf;

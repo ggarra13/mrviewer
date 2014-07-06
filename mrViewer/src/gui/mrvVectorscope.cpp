@@ -6,9 +6,10 @@
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
 
-#include "mrvIO.h"
-#include "mrvVectorscope.h"
-#include "mrvImageView.h"
+#include "gui/mrvIO.h"
+#include "gui/mrvVectorscope.h"
+#include "gui/mrvImageView.h"
+#include "gui/mrvColorInfo.h"
 #include "mrViewer.h"
 
 
@@ -137,38 +138,33 @@ namespace mrv
     if (!m) return;
 
     CMedia* img = m->image();
-    mrv::image_type_ptr pic;
-    {
-      CMedia::Mutex& m = img->video_mutex();
-      SCOPED_LOCK(m);
-      pic = img->hires();
-    }
+    mrv::image_type_ptr pic = img->hires();
     if ( !pic ) return;
 
-    unsigned int xmax = img->width();
-    unsigned int ymax = img->height();
-    unsigned int xmin = 0;
-    unsigned int ymin = 0;
 
+    int xmin, ymin, xmax, ymax;
+    bool right;
     mrv::Rectd selection = uiMain->uiView->selection();
-    if ( selection.w() > 0 || selection.h() > 0 )
-      {
-	xmin = (unsigned int)(xmax * selection.x());
-	ymin = (unsigned int)(ymax * selection.y());
 
-	xmax = xmin + (unsigned int)(xmax  * selection.w());
-	ymax = ymin + (unsigned int)(ymax  * selection.h());
-      }
+    ColorInfo::selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
+                                   right );
 
-    assert( xmin <= img->width() );
-    assert( ymin <= img->height() );
-    assert( xmax <= img->width() );
-    assert( ymax <= img->height() );
+    if ( right )
+    {
+        pic = img->right();
+        if (!pic) return;
+    }
+
+    if ( xmax >= pic->width() ) xmax = pic->width()-1;
+    if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
     unsigned stepX = (xmax - xmin) / w();
     unsigned stepY = (ymax - ymin) / h();
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
+
+    assert( xmax < pic->width() ); 
+    assert( ymax < pic->height() ); 
 
     
     for ( unsigned y = ymin; y < ymax; y += stepY )
