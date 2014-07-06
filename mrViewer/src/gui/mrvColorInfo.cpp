@@ -161,7 +161,10 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       const mrv::Recti& dpw = img->display_window();
       unsigned W = dpw.w();
       unsigned H = dpw.h();
-      unsigned wt = dpw.w();
+      if ( W == 0 ) W = img->width();
+      if ( H == 0 ) H = img->height();
+
+      unsigned wt = W;
 
       xmin = (int)(W * selection.x());
       ymin = (int)(H * selection.y());
@@ -252,7 +255,11 @@ void ColorInfo::update( const CMedia* img,
 
       if ( right )
       {
-          pic = img->right();
+          CMedia::StereoType stereo_type = uiMain->uiView->stereo_type();
+          if ( stereo_type == CMedia::kStereoCrossed )
+              pic = img->left();
+          else if ( stereo_type & CMedia::kStereoSideBySide )
+              pic = img->right();
           if (!pic) return;
       }
 
