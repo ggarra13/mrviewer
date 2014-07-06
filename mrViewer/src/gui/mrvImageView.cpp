@@ -832,18 +832,61 @@ void ImageView::copy_pixel() const
     return;
 
 
-  image_coordinates( img, x, y );
+  double xf = (double) x;
+  double yf = (double) y;
+  data_window_coordinates( img, xf, yf );
 
   mrv::image_type_ptr pic = img->hires();
+
+  if ( _stereo == CMedia::kStereoCrossed ) pic = img->right();
+
   if ( !pic ) return;
 
-  int w = pic->width();
-  int h = pic->height();
+  mrv::Recti daw = img->data_window();
+  mrv::Recti dpw = img->display_window();
+  unsigned w = dpw.w();
+  unsigned h = dpw.h();
+  if ( w == 0 ) w = pic->width();
+  if ( h == 0 ) h = pic->height();
 
-  if ( x < 0 || y < 0 || x >= w || y >= h )
-    return; // outside image
 
-  CMedia::Pixel rgba = pic->pixel( (int)x, (int)y );
+  bool outside = false;
+
+  if ( img->is_stereo() && _stereo & CMedia::kStereoSideBySide )
+  {
+      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+           xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
+      {
+          outside = true;
+      }
+  }
+  else
+  {
+      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+           xf < 0 || yf < 0 || xf >= w || yf >= h )
+      {
+          outside = true;
+      }
+  }
+
+  unsigned xp = (unsigned)floor(xf);
+  unsigned yp = (unsigned)floor(yf);
+
+  if ( xp > w && _stereo & CMedia::kStereoSideBySide )
+  {
+      if ( _stereo == CMedia::kStereoCrossed ) pic = img->left();
+      else pic = img->right();
+      xp -= w;
+  }
+
+
+  if ( xp >= pic->width() || yp >= pic->height() ) {
+      outside = true;
+  }
+
+  if ( outside ) return;
+
+  CMedia::Pixel rgba = pic->pixel( xp, yp );
 
   char buf[256];
   sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
@@ -2162,8 +2205,8 @@ void ImageView::mouseMove(int x, int y)
   mrv::Recti dpw = img->display_window();
   unsigned w = dpw.w();
   unsigned h = dpw.h();
-  if ( dpw.w() == 0 ) w = pic->width();
-  if ( dpw.h() == 0 ) h = pic->height();
+  if ( w == 0 ) w = pic->width();
+  if ( h == 0 ) h = pic->height();
 
 
   CMedia::Pixel rgba;
