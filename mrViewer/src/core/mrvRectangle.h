@@ -50,13 +50,24 @@ namespace mrv
     inline T b() const { return y_ + h_; }
     inline T r() const { return x_ + w_; }
 
-    inline void merge( const Rectangle< T >& b )
-    {
-      if ( b.x_ < x_ ) x_ = b.x_;
-      if ( b.y_ < y_ ) y_ = b.y_;
+    /*! Change x() without changing r(), by changing the width. */
+    void set_x(T v) {w_ -= v-x_; x_ = v;}
+    /*! Change y() without changing b(), by changing the height. */
+    void set_y(T v) {h_ -= v-y_; y_ = v;}
+    /*! Change r() without changing x(), by changine the width. */
+    void set_r(T v) {w_ = v-x_;}
+    /*! Change b() without changing y(), by changine the height. */
+    void set_b(T v) {h_ = v-y_;}
 
-      if ( b.w_ > w_ ) w_ = b.w_;
-      if ( b.h_ > h_ ) h_ = b.h_;
+    inline void merge( const Rectangle< T >& R )
+    {
+        if (R.w() == 0) return;
+        if ( w() == 0 ) return;
+        
+        if (R.x() < x()) set_x(R.x());
+        if (R.r() > r()) set_r(R.r());
+        if (R.y() < y()) set_y(R.y());
+        if (R.b() > b()) set_b(R.b());
     }
 
       inline bool operator==( const Rectangle< T >& b ) const

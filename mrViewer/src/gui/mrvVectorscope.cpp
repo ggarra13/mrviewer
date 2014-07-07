@@ -159,6 +159,9 @@ namespace mrv
         if (!pic) return;
     }
 
+    if ( xmin >= pic->width() ) xmin = pic->width()-1;
+    if ( ymin >= pic->height() ) ymin = pic->height()-1;
+
     if ( xmax >= pic->width() ) xmax = pic->width()-1;
     if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
