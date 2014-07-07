@@ -2235,8 +2235,8 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  unsigned xp = (unsigned)floor(xf);
-  unsigned yp = (unsigned)floor(yf);
+  int xp = (int)floor(xf);
+  int yp = (int)floor(yf);
 
 
   if ( xp > w && ( stereo_type() & CMedia::kStereoSideBySide ) )
@@ -2447,68 +2447,45 @@ void ImageView::mouseDrag(int x,int y)
            daw[0] = img->data_window();
            if ( daw[0].w() == 0 )
            {
-               daw[0].x( 0 );
-               daw[0].y( 0 );
-               daw[0].w( img->width() );
-               daw[0].h( img->height() );
+               daw[0] = mrv::Recti( 0, 0, img->width(), img->height() );
            }
            daw[1] = img->data_window2();
            if ( daw[1].w() == 0 )
            {
-               daw[1].x( 0 );
-               daw[1].y( 0 );
-               daw[1].w( img->width() );
-               daw[1].h( img->height() );
+               daw[1] = mrv::Recti( 0, 0, img->width(), img->height() );
            }
            dpw[0] = img->display_window();
            if ( dpw[0].w() == 0 )
            {
-               dpw[0].x( 0 );
-               dpw[0].y( 0 );
-               dpw[0].w( img->width() );
-               dpw[0].h( img->height() );
+               dpw[0] = mrv::Recti( 0, 0, img->width(), img->height() );
            }
            dpw[1] = img->display_window();
            if ( dpw[1].w() == 0 )
            {
-               dpw[1].x( 0 );
-               dpw[1].y( 0 );
-               dpw[1].w( img->width() );
-               dpw[1].h( img->height() );
+               dpw[1] = mrv::Recti( 0, 0, img->width(), img->height() );
            }
 
 	   double xn = double(x);
 	   double yn = double(y);
 	   data_window_coordinates( img, xn, yn );
 
-           xf += daw[0].x();
-           yf += daw[0].y();
-
-           xn += daw[0].x();
-           yn += daw[0].y();
-
            short idx = 0;
 
+	   unsigned W = dpw[idx].w();
 
-	   unsigned W = dpw[0].w();
-	   unsigned H = dpw[0].h();
 
            bool right = false;
-           if ( xf > W )
+           if ( xf > W-daw[0].x() &&
+                stereo_type() & CMedia::kStereoSideBySide )
            {
                right = true;
                xf -= W;
                xn -= W;
-               W = dpw[1].w();
-               H = dpw[1].h();
                idx = 1;
            }
 
-           xf -= daw[idx].x();
-           yf -= daw[idx].y();
-
-           xn -= daw[idx].x();
-           yn -= daw[idx].y();
+	   W = dpw[idx].w();
+	   unsigned H = dpw[idx].h();
 
 	   xf = floor(xf);
 	   yf = floor(yf);
@@ -2518,17 +2495,6 @@ void ImageView::mouseDrag(int x,int y)
 
 	   if ( _mode == kSelection )
 	   {
-               if ( xf < dpw[idx].x() ) xf = dpw[idx].x();
-               if ( yf < dpw[idx].y() ) yf = dpw[idx].y();
-               else if ( yf > daw[idx].h() ) yf = double(daw[idx].h());
-               if ( xf > daw[idx].w() )  xf = double(daw[idx].w());
-
-               if ( xn < dpw[idx].x() ) xn = dpw[idx].x();
-               if ( yn < dpw[idx].y() ) yn = dpw[idx].y();
-               else if ( yn > daw[idx].h() ) yn = double(daw[idx].h());
-               if ( xn > daw[idx].w() )  xn = double(daw[idx].w());
-
-
                if ( xn < xf ) 
                {
                    double tmp = xf;
@@ -2543,15 +2509,41 @@ void ImageView::mouseDrag(int x,int y)
                }
                assert( xf <= xn );
                assert( yf <= yn );
+
+
+               double X, XM, Y, YM;
+               if ( display_window() )
+               {
+                   X = dpw[idx].l()-daw[idx].x();
+                   XM = dpw[idx].r()-daw[idx].x();
+                   Y = dpw[idx].t()-daw[idx].y();
+                   YM = dpw[idx].b()-daw[idx].y();
+               }
+               else
+               {
+                   X = 0;
+                   XM = daw[idx].w();
+                   Y = 0;
+                   YM = daw[idx].h();
+               }
+
+               if ( xf < X ) xf = X;
+               else if ( xf > XM )  xf = XM;
+               if ( yf < Y ) yf = Y;
+               else if ( yf > YM ) yf = YM;
+
+               if ( xn < X ) xn = X;
+               else if ( xn > XM )  xn = XM;
+               if ( yn < Y ) yn = Y;
+               else if ( yn > YM ) yn = YM;
+
 	      
-               unsigned dx = (unsigned) std::abs( xn - xf );
-               unsigned dy = (unsigned) std::abs( yn - yf );
+               double dx = std::abs( xn - xf );
+               double dy = std::abs( yn - yf );
 
-               if ( dx > W ) dx = W;
-               if ( dy > H ) dy = H;
 
-               double xt = (dpw[idx].x() + xf + dpw[0].w() * right) / (double)W;
-               double yt = (dpw[idx].y() + yf) / (double) H;
+               double xt = (xf + dpw[0].w() * right) / (double)W;
+               double yt = yf / (double) H;
                _selection = mrv::Rectd( xt, 
                                         (double)yt, 
                                         (double)dx/(double)W, 
