@@ -47,7 +47,7 @@ namespace mrv
     fltk::Widget*    area;
     fltk::Browser*   browser;
     fltk::PopupMenu* uiColorB;
-    mrv::ViewerUI*   uiMain;
+    static mrv::ViewerUI*   uiMain;
   };
 
 } // namespace mrv

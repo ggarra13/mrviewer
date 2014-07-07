@@ -79,6 +79,7 @@ namespace
 
 namespace mrv
 {
+  mrv::ViewerUI* ColorInfo::uiMain = NULL;
 
   extern std::string float_printf( float x );
 
@@ -170,7 +171,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       ymin = (int)(H * selection.y());
 
       right = false;
-      if ( xmin >= W )
+      if ( xmin >= W && 
+           uiMain->uiView->stereo_type() & CMedia::kStereoSideBySide )
       {
           right = true;
           const mrv::Recti& dpw = img->display_window2();
@@ -262,6 +264,9 @@ void ColorInfo::update( const CMedia* img,
               pic = img->right();
           if (!pic) return;
       }
+
+      if ( xmin >= pic->width() ) xmin = pic->width()-1;
+      if ( ymin >= pic->height() ) ymin = pic->height()-1;
 
       if ( xmax >= pic->width() ) xmax = pic->width()-1;
       if ( ymax >= pic->height() ) ymax = pic->height()-1;
@@ -382,8 +387,8 @@ void ColorInfo::update( const CMedia* img,
       static const char* kV = "@C0xB0B00000;";
       static const char* kL = "@C0xB0B0B000;";
 
-      unsigned spanX = (xmax-xmin+1);
-      unsigned spanY = (ymax-ymin+1);
+      unsigned spanX = xmax-xmin+1;
+      unsigned spanY = ymax-ymin+1;
       unsigned numPixels = spanX * spanY;
 
       text << std::endl
