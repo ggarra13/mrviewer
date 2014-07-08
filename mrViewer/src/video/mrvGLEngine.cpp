@@ -935,11 +935,11 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
   glScaled( 1.0, pr, 1.0 );
 
-  glTranslated( dpw.w()*r.x(), -dpw.h()*r.y(), 0 );
+  glTranslated( r.x(), -r.y(), 0 );
   glTranslated( daw.x(), -daw.y(), 0 );
 
-  double rw = dpw.w() * r.w();
-  double rh = dpw.h() * r.h();
+  double rw = r.w();
+  double rh = r.h();
 
   glLineWidth( 1.0 );
 
