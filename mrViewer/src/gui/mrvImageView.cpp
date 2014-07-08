@@ -2538,16 +2538,17 @@ void ImageView::mouseDrag(int x,int y)
                else if ( yn > YM ) yn = YM;
 
 	      
-               double dx = std::abs( xn - xf );
-               double dy = std::abs( yn - yf );
+               double dx = (double) std::abs( xn - xf );
+               double dy = (double) std::abs( yn - yf );
 
 
-               double xt = (xf + dpw[0].w() * right) / (double)W;
-               double yt = yf / (double) H;
+               double xt = (xf + dpw[0].w() * right);
+               double yt = yf;
                _selection = mrv::Rectd( xt, 
                                         (double)yt, 
-                                        (double)dx/(double)W, 
-                                        (double)dy/(double)H );
+                                        (double)dx, 
+                                        (double)dy );
+
 
                char buf[256];
                sprintf( buf, "Selection %g %g %g %g", _selection.x(),

@@ -140,6 +140,10 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 				const char* title )
   {
     std::string path;
+
+    if ( !startfile )
+        startfile = getenv("ICC_PROFILES");
+
     if ( !startfile || strlen( startfile ) <= 0 )
       {
 #if defined(WIN32) || defined(WIN64)
