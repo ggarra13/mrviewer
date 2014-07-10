@@ -2277,7 +2277,7 @@ void anaglyph_cb( AnaglyphData* d )
    mrv::Recti daw = d->daw[0];
    daw.merge( d->daw[1] );
 
-   daw.merge( dpw );
+   // daw.merge( dpw );
 
    for ( unsigned y = daw.t(); y < daw.b(); ++y )
    {
@@ -2285,10 +2285,11 @@ void anaglyph_cb( AnaglyphData* d )
        {
            CMedia::Pixel pr, pc;
 
-           unsigned x1 = x - d->daw[idx1].l();
-           unsigned y1 = y - d->daw[idx1].t();
+           int x1 = x - d->daw[idx1].l();
+           int y1 = y - d->daw[idx1].t();
 
-           if ( x1 >= d->daw[idx1].w() || y1 >= d->daw[idx1].h() ) 
+           if ( x1 < 0 || y1 < 0 || x1 >= stereo[idx1]->width() ||
+                y1 >= stereo[idx1]->height() ) 
                pr = CMedia::Pixel(0,0,0,0);
            else
                pr = stereo[idx1]->pixel( x1, y1 );
@@ -2297,13 +2298,20 @@ void anaglyph_cb( AnaglyphData* d )
            x1 = x - d->daw[idx2].l();
            y1 = y - d->daw[idx2].t();
 
-           if ( x1 >= d->daw[idx2].w() || y1 >= d->daw[idx2].h() ) 
+           
+           if ( x1 < 0 || y1 < 0 || x1 >= stereo[idx2]->width() ||
+                y1 >= stereo[idx2]->height() ) 
                pc = CMedia::Pixel(0,0,0,0);
            else
                pc = stereo[idx2]->pixel( x1, y1 );
            CMedia::Pixel p = pc;
            p.r = pr.r;
-           hires->pixel( x, y, p );
+
+           x1 = x - daw.l();
+           y1 = y - daw.t();
+
+
+           hires->pixel( x1, y1, p );
        }
    }
 
@@ -2329,10 +2337,15 @@ void CMedia::make_anaglyph( bool left_red )
 
    const mrv::Recti& dpw = display_window();
    const mrv::Recti& daw = data_window();
+   const mrv::Recti& dpw2 = display_window2();
+   const mrv::Recti& daw2 = data_window2();
 
-   unsigned w = dpw.w();
+   mrv::Recti d = daw;
+   d.merge( daw2 );
+
+   unsigned w = d.w();
    if ( _w == 0 ) w = width();
-   unsigned h = dpw.h();
+   unsigned h = d.h();
    if ( _h == 0 ) h = height();
 
    _w = w;
@@ -2340,70 +2353,19 @@ void CMedia::make_anaglyph( bool left_red )
    allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
 
 
-   short idx1 = 0;
-   short idx2 = 1;
+   AnaglyphData* data = new AnaglyphData;
+   data->left_red = left_red;
+   data->stereo = _stereo;
+   data->hires  = _hires;
+   data->dpw[0] = display_window();
+   data->dpw[1] = display_window2();
 
-    // if ( w*h < numPixelsPerThread )
-   if (1)
-   {
-       AnaglyphData* data = new AnaglyphData;
-       data->left_red = left_red;
-       data->stereo = _stereo;
-       data->hires  = _hires;
-       data->dpw[0] = display_window();
-       data->dpw[1] = display_window2();
+   data->daw[0] = data_window();
+   data->daw[1] = data_window2();
+   anaglyph_cb( data );
 
-       data->daw[0] = data_window();
-       data->daw[1] = data_window2();
-       anaglyph_cb( data );
-
-       find_image( _frame );
-       data_window( 0, 0, _w, _h );
-    }
-    else
-    {
-       // unsigned int x, y;
-       // thread_pool_t buckets;
-
-       // unsigned int ny, nx;
-       // for ( y = daw.y(); y < h; y = ny )
-       // {
-       //    ny   = y + heightPerThread;
-       //    int yh  = h < ny? h : ny;
-
-       //    boost::thread* thread_id;
-       //    for ( x = daw.x(); x < w; x = nx )
-       //    {
-       //       nx  = x + widthPerThread;
-       //       int xh = w < nx? w : nx;
-
-       //       AnaglyphData* data = new AnaglyphData;
-       //       data->left_red = left_red;
-       //       data->hires  = _hires;
-       //       data->stereo = _stereo;
-       //       data->x = x;
-       //       data->y = y;
-       //       data->w = xh;
-       //       data->h = yh;
-
-       //       thread_id = new boost::thread( boost::bind( anaglyph_cb,
-       //                                                   data ) );
-
-       //       buckets.push_back( thread_id );
-       //    }
-       // }
-
-
-       // thread_pool_t::const_iterator i = buckets.begin();
-       // thread_pool_t::const_iterator e = buckets.end();
-
-       // // Make sure all threads finish before proceeding
-       // for ( ; i != e; ++i )
-       // {
-       //    (*i)->join();
-       //    delete *i;
-       // }
-    }
+   cache( _hires );
+   data_window( d.x(), d.y(), d.x()+_w-1, d.y()+_h-1 );
 
 
    refresh();
