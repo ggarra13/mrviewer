@@ -2537,7 +2537,6 @@ void ImageView::mouseDrag(int x,int y)
                if ( yn < Y ) yn = Y;
                else if ( yn > YM ) yn = YM;
 
-	      
                double dx = (double) std::abs( xn - xf );
                double dy = (double) std::abs( yn - yf );
 
