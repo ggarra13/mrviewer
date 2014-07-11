@@ -650,6 +650,15 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	h.dataWindow() = in.dataWindowForLevel(_levelX, _levelY);
 	h.displayWindow() = h.dataWindow();
 
+        const Imath::Box2i& dataWindow = h.dataWindow();
+        const Imath::Box2i& displayWindow = h.displayWindow();
+        data_window( dataWindow.min.x, dataWindow.min.y,
+                     dataWindow.max.x, dataWindow.max.y );
+
+        display_window( displayWindow.min.x, displayWindow.min.y,
+                        displayWindow.max.x, displayWindow.max.y );
+
+
 	if ( _exif.empty() && _iptc.empty() )
            read_header_attr( h, frame );
 
@@ -657,8 +666,6 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	bool ok = find_channels( h, fb, frame );
 	if ( !ok ) return false;
 
-        const Imath::Box2i& dataWindow = h.dataWindow();
-        const Imath::Box2i& displayWindow = h.displayWindow();
 
 	_pixel_ratio = h.pixelAspectRatio();
 	_lineOrder   = h.lineOrder();
@@ -688,12 +695,6 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 		 in.readTile (x, y, _levelX, _levelY);
 	}
 
-        data_window( dataWindow.min.x, dataWindow.min.y,
-                     dataWindow.max.x, dataWindow.max.y );
-
-        display_window( displayWindow.min.x, displayWindow.min.y,
-                        displayWindow.max.x, displayWindow.max.y );
-
 	return true;
      
      }
@@ -712,8 +713,6 @@ bool exrImage::find_layers( const Imf::Header& h )
    int dw  = dataWindow.max.x - dataWindow.min.x + 1;
    int dh  = dataWindow.max.y - dataWindow.min.y + 1;
    if ( dw <= 0 || dh <= 0 )  return false;
-   int dx  = dataWindow.min.x;
-   int dy  = dataWindow.min.y;
 
 
    image_size( dw, dh );
@@ -1476,6 +1475,23 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               displayWindow = header.displayWindow();
               dataWindow = header.dataWindow();
 
+              if ( i == 0 || _stereo_type == kNoStereo )
+              {
+                  data_window( dataWindow.min.x, dataWindow.min.y,
+                               dataWindow.max.x, dataWindow.max.y );
+
+                  display_window( displayWindow.min.x, displayWindow.min.y,
+                                  displayWindow.max.x, displayWindow.max.y );
+              }
+              else
+              {
+                  data_window2( dataWindow.min.x, dataWindow.min.y,
+                                dataWindow.max.x, dataWindow.max.y );
+
+                  display_window2( displayWindow.min.x, displayWindow.min.y,
+                                   displayWindow.max.x, displayWindow.max.y );
+              }
+
               ins.setFrameBuffer(fb);
               ins.readPixels( dataWindow.min.y, dataWindow.max.y );
 
@@ -1488,28 +1504,29 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               displayWindow = header.displayWindow();
               dataWindow = header.dataWindow();
 
+              if ( i == 0 || _stereo_type == kNoStereo )
+              {
+                  data_window( dataWindow.min.x, dataWindow.min.y,
+                               dataWindow.max.x, dataWindow.max.y );
+
+                  display_window( displayWindow.min.x, displayWindow.min.y,
+                                  displayWindow.max.x, displayWindow.max.y );
+              }
+              else
+              {
+                  data_window2( dataWindow.min.x, dataWindow.min.y,
+                            dataWindow.max.x, dataWindow.max.y );
+
+                  display_window2( displayWindow.min.x, displayWindow.min.y,
+                                   displayWindow.max.x, displayWindow.max.y );
+              }
+
               in.setFrameBuffer(fb);
               in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
           }
 
 
-          if ( i == 0 || _stereo_type == kNoStereo )
-          {
-              data_window( dataWindow.min.x, dataWindow.min.y,
-                           dataWindow.max.x, dataWindow.max.y );
-
-              display_window( displayWindow.min.x, displayWindow.min.y,
-                              displayWindow.max.x, displayWindow.max.y );
-          }
-          else
-          {
-              data_window2( dataWindow.min.x, dataWindow.min.y,
-                            dataWindow.max.x, dataWindow.max.y );
-
-              display_window2( displayWindow.min.x, displayWindow.min.y,
-                               displayWindow.max.x, displayWindow.max.y );
-          }
 
           // Quick exit if stereo is off
           if ( _stereo_type == kNoStereo ) break;
@@ -1535,14 +1552,19 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       Box2i& dataWindow = header.dataWindow();
       Box2i& displayWindow = header.displayWindow();
 
-          
+      data_window( dataWindow.min.x, dataWindow.min.y,
+                   dataWindow.max.x, dataWindow.max.y );
+
+      display_window( displayWindow.min.x, displayWindow.min.y,
+                      displayWindow.max.x, displayWindow.max.y );
+
       FrameBuffer fb;
       bool ok = find_channels( header, fb, frame );
       if (!ok) {
          IMG_ERROR( _("Could not locate channels in header") );
          return false;
       }
-          
+
 
       if ( _curpart != oldpart )
       {
@@ -1552,7 +1574,12 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          dataWindow = header.dataWindow();
          displayWindow = header.displayWindow();
 
-          
+         data_window( dataWindow.min.x, dataWindow.min.y,
+                      dataWindow.max.x, dataWindow.max.y );
+
+         display_window( displayWindow.min.x, displayWindow.min.y,
+                         displayWindow.max.x, displayWindow.max.y );
+
          FrameBuffer fb;
          bool ok = find_channels( header, fb, frame );
          if (!ok) {
@@ -1560,23 +1587,16 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
             return false;
          }
 
-          
          in.setFrameBuffer(fb);
          in.readPixels( dataWindow.min.y, dataWindow.max.y );
       }
       else
       {
-          
          in.setFrameBuffer(fb);
          in.readPixels( dataWindow.min.y, dataWindow.max.y );
       }
 
 
-      data_window( dataWindow.min.x, dataWindow.min.y,
-                   dataWindow.max.x, dataWindow.max.y );
-
-      display_window( displayWindow.min.x, displayWindow.min.y,
-                      displayWindow.max.x, displayWindow.max.y );
    }
 
    return true;
@@ -1603,11 +1623,11 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
         {
            if ( _numparts < 0 )
            {
-              MultiPartInputFile* infile = new MultiPartInputFile( 
-              sequence_filename(frame).c_str() );
-              
-              _numparts = infile->parts();
-              delete infile;
+               MultiPartInputFile* infile = new MultiPartInputFile( 
+               sequence_filename(frame).c_str() );
+
+               _numparts = infile->parts();
+               delete infile;
            }
         }
         catch(IEX_NAMESPACE::BaseExc &e)
@@ -1628,6 +1648,12 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	const Header& h = in.header();
 	const Box2i& displayWindow = h.displayWindow();
 	const Box2i& dataWindow = h.dataWindow();
+
+        data_window( dataWindow.min.x, dataWindow.min.y,
+                     dataWindow.max.x, dataWindow.max.y );
+
+        display_window( displayWindow.min.x, displayWindow.min.y,
+                        displayWindow.max.x, displayWindow.max.y );
 
 	_rendering_intent = kRelativeIntent;
 
@@ -1658,12 +1684,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	   IMG_ERROR( _("Data window is negative") );
 	   return false;
 	}
-
-        data_window( dataWindow.min.x, dataWindow.min.y,
-                     dataWindow.max.x, dataWindow.max.y );
-	
-        display_window( displayWindow.min.x, displayWindow.min.y,
-                        displayWindow.max.x, displayWindow.max.y );
 
 
 	if ( _use_yca && !supports_yuv() )
