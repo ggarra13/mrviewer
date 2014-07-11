@@ -101,11 +101,7 @@ namespace mrv {
 
 
       mrv::image_type_ptr pic = _image->hires();
-      if ( !pic )
-      {
-         IMG_ERROR( _("No hires image to create thumbnail") );
-         return;
-      }
+      if ( !pic ) return;
 
       // Resize image to thumbnail size
       pic.reset( pic->resize( w, h ) );
