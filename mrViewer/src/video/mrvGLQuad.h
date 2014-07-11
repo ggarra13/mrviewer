@@ -62,10 +62,7 @@ namespace mrv {
 
     void bind_texture_pixels( const image_type_ptr& pic );
 
-    void draw_pixels( const unsigned dw, const unsigned dh )        const;
     void draw_quad( const unsigned dw, const unsigned dh )          const;
-    void draw_frame( const unsigned int dw, const unsigned int dh ) const;
-    void draw_field( const unsigned int dw, const unsigned int dh ) const;
 
   protected:
     static GLenum       gl_pixel_type( const image_type::PixelType type );
