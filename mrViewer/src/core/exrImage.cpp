@@ -634,6 +634,11 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 
 	TiledInputFile in( fileName.c_str() );
 
+        unsigned numXLevels = in.numXLevels();
+        unsigned numYLevels = in.numYLevels();
+        if (_levelX > numXLevels-1 ) _levelX = numXLevels-1;
+        if (_levelY > numYLevels-1 ) _levelY = numYLevels-1;
+
 	if (!in.isValidLevel (_levelX, _levelY))
 	{
 	   THROW (Iex::InputExc, "Level (" << _levelX << ", " 
@@ -651,6 +656,9 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	FrameBuffer fb;
 	bool ok = find_channels( h, fb, frame );
 	if ( !ok ) return false;
+
+        const Imath::Box2i& dataWindow = h.dataWindow();
+        const Imath::Box2i& displayWindow = h.displayWindow();
 
 	_pixel_ratio = h.pixelAspectRatio();
 	_lineOrder   = h.lineOrder();
@@ -680,6 +688,12 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 		 in.readTile (x, y, _levelX, _levelY);
 	}
 
+        data_window( dataWindow.min.x, dataWindow.min.y,
+                     dataWindow.max.x, dataWindow.max.y );
+
+        display_window( displayWindow.min.x, displayWindow.min.y,
+                        displayWindow.max.x, displayWindow.max.y );
+
 	return true;
      
      }
@@ -700,6 +714,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    if ( dw <= 0 || dh <= 0 )  return false;
    int dx  = dataWindow.min.x;
    int dy  = dataWindow.min.y;
+
 
    image_size( dw, dh );
 
