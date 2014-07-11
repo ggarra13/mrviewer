@@ -2603,10 +2603,9 @@ void ImageView::mouseDrag(int x,int y)
                    s->position( xn, yn );
 	      }
            }
-	   assert( _selection.x() >= 0.0 && _selection.x() <= 1.0);
-	   assert( _selection.y() >= 0.0 && _selection.y() <= 1.0);
-	   assert( _selection.w() >= 0.0 && _selection.w() <= 1.0);
-	   assert( _selection.h() >= 0.0 && _selection.h() <= 1.0);
+
+	   assert( _selection.w() >= 0.0 );
+	   assert( _selection.h() >= 0.0 );
 
 	   update_color_info( fg );
 
@@ -4314,6 +4313,9 @@ void ImageView::seek( const int64_t f )
   browser()->seek( f );
 
   thumbnails();
+
+  update_color_info();
+  mouseMove( lastX, lastY );
 
   _lastFrame = f;
 
