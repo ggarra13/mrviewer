@@ -84,7 +84,7 @@
 //
 //-----------------------------------------------------------------------------
 
-#include <ImfHeader.h>
+#include <ImfCtlApplyTransforms.h>
 #include <string>
 #include <vector>
 #include <half.h>

@@ -42,7 +42,6 @@
 
 #include "core/mrvOS.h"
 
-#include <ImfCtlApplyTransforms.h>
 #include <CtlSimdInterpreter.h>
 #include <ImfStandardAttributes.h>
 #include <ImfHeader.h>
