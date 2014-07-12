@@ -10,44 +10,13 @@ BUGS:
 
 	- Stop should rebind images.
 
-	- Caching of image sequences is broken.
-
-	- Looping works wrong due to decode thread getting too ahead.
-	  This makes it not respect gui loop option until next loop.
-
-	- Audio in some videos crashes the viewer.
-
-	- 32-bits viewer on linux crashes.
-
 	- Seek repeats audio packets? (see cascade_HD - try near 
 	  chips 00::20:00) so even a-v will be 1/0, it is still wrong.
 
-	- Audio seek is wrong for ilotm.avi (try single step to see).
-
-	- Audio (packet?) sometimes is not retrieved and hangs playback when in
-	  ffplay mode. ( iceegg-Ice_Age*, New_Summoner_h264.mov ).
-
-	- FLU image preview has bad redraw and shifts image to 0,0 of
-	  file requester.
-
-	- No looping in image sequences.
-	     This needs to work like movies, as in the future
-	     we will probably not cache images in memory anymore.
-
-	     decode loop gets image(s)
-	     video thread decode is empty
 
 	- Reverse playback audio is out of sync ( spiderman.divx ), even
 	  with old caching method.
 
 	- Masking has round-off errors.  Try milkgirls with 2.10 Vistavision.
 
-	- YUV420 image of odd X or Y res is wrong 
-	  ( h9_demos.mov, New_Summoner_h264.mov ).
-	  Creates green edge.  Green edge is worse than in ffplay?
-
 	- Gamma pulldown menu makes hole in opengl window when refreshing.
-
-TODO:
-	- mrv::media and mrv::gui::media is confusing and kind of reversed.	
-
