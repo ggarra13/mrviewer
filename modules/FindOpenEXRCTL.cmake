@@ -47,6 +47,12 @@ FIND_LIBRARY( IlmImfCtl
   DOC   "OpenEXRCTL IlmImfCtl library"
 )
 
+FIND_LIBRARY( IlmImfCtlSimd
+  NAMES IlmImfCtlSimd_dll IlmImfCtlSimd_dll_d IlmImfCtlSimd IlmImfCtlSimdd libIlmImfCtlSimd 
+  PATHS ${SEARCH_DIRS}
+  DOC   "OpenEXRCTL IlmImfCtlSimd library"
+)
+
 MESSAGE( ${SEARCH_DIRS} )
 
 SET(OpenEXRCTL_LIBRARIES ${IlmImfCtl} )
