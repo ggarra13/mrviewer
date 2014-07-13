@@ -288,8 +288,8 @@ class CMedia
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
     void default_layers();
 
-    const mrv::Recti& data_window() const;
-    const mrv::Recti& display_window() const;
+    const mrv::Recti& data_window( boost::int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti& display_window( boost::int64_t f = AV_NOPTS_VALUE) const;
     const mrv::Recti& data_window2() const;
     const mrv::Recti& display_window2() const;
 

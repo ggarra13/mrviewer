@@ -59,6 +59,8 @@ namespace mrv {
     N_("Pxr24"),
     N_("B44"),
     N_("B44A"),
+    N_("DWAA"),
+    N_("DWAB"),
     0
   };
 
@@ -634,8 +636,8 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 
 	TiledInputFile in( fileName.c_str() );
 
-        unsigned numXLevels = in.numXLevels();
-        unsigned numYLevels = in.numYLevels();
+        int numXLevels = in.numXLevels();
+        int numYLevels = in.numYLevels();
         if (_levelX > numXLevels-1 ) _levelX = numXLevels-1;
         if (_levelY > numYLevels-1 ) _levelY = numYLevels-1;
 
@@ -1475,6 +1477,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               displayWindow = header.displayWindow();
               dataWindow = header.dataWindow();
 
+
               if ( i == 0 || _stereo_type == kNoStereo )
               {
                   data_window( dataWindow.min.x, dataWindow.min.y,
@@ -1491,6 +1494,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
                   display_window2( displayWindow.min.x, displayWindow.min.y,
                                    displayWindow.max.x, displayWindow.max.y );
               }
+
+
 
               ins.setFrameBuffer(fb);
               ins.readPixels( dataWindow.min.y, dataWindow.max.y );
@@ -1520,6 +1525,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
                   display_window2( displayWindow.min.x, displayWindow.min.y,
                                    displayWindow.max.x, displayWindow.max.y );
               }
+
 
               in.setFrameBuffer(fb);
               in.readPixels( dataWindow.min.y, dataWindow.max.y );
@@ -1756,13 +1762,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	hdr.insert( N_("renderingTransform"), attr );
       }
 
-    mrv::image_type_ptr pic;
-    {
-      CMedia* img = const_cast< CMedia* >( orig );
-      CMedia::Mutex& m = img->video_mutex();
-      SCOPED_LOCK(m);
-      pic = img->hires();
-    }
+    mrv::image_type_ptr pic = orig->hires();
     if (!pic) return false;
 
     CMedia::Pixel* base = new CMedia::Pixel[dw*dh];

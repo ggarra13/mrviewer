@@ -1152,8 +1152,10 @@ void GLEngine::draw_images( ImageList& images )
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
 
-      const mrv::Recti& dpw = img->display_window();
-      const mrv::Recti& daw = img->data_window();
+      boost::int64_t frame = pic->frame();
+
+      const mrv::Recti& dpw = img->display_window(frame);
+      const mrv::Recti& daw = img->data_window(frame);
 
       texWidth  = pic->width();
       texHeight = pic->height();
