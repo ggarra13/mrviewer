@@ -474,7 +474,7 @@ mrv::image_type_ptr CMedia::anaglyph( bool left_view )
 
 
 
-const mrv::Recti& CMedia::display_window() const
+const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
@@ -483,8 +483,9 @@ const mrv::Recti& CMedia::display_window() const
 
     if ( !_displayWindow ) return kNoRect;
 
-    DBG( "Get displayWindow frame " << _frame );
-    boost::uint64_t idx = _frame - _frameStart;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+
     assert( idx <= _frameEnd - _frameStart );
     return _displayWindow[idx];
 }
@@ -503,17 +504,20 @@ const mrv::Recti& CMedia::display_window2() const
     return _displayWindow2[idx];
 }
 
-const mrv::Recti& CMedia::data_window() const
+const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
     CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData | kDamageContents );
+    img->image_damage( img->image_damage() | kDamageData );
 
 
     if ( !_dataWindow ) return kNoRect;
 
-    boost::uint64_t idx = _frame - _frameStart;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+
+    DBG( "data window frame " << f << " is " << _dataWindow[idx] );
     assert( idx <= _frameEnd - _frameStart );
     return _dataWindow[idx];
 }
@@ -523,7 +527,7 @@ const mrv::Recti& CMedia::data_window2() const
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
     CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData | kDamageContents );
+    img->image_damage( img->image_damage() | kDamageData );
 
     if ( !_dataWindow2 ) return kNoRect;
 
@@ -571,7 +575,7 @@ void CMedia::data_window( const int xmin, const int ymin,
   assert( idx <= _frameEnd - _frameStart );
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
-  DBG( "data window frame " << _frame << " is " << _dataWindow[idx] );
+  DBG( "data window setframe " << _frame << " is " << _dataWindow[idx] );
 }
 
 
@@ -1569,8 +1573,6 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
   if ( _stereo[1] ) _right[idx] = _stereo[1];
   timestamp(idx);
 
-  image_damage( image_damage() | kDamageContents );
-
 }
 
 
@@ -2193,8 +2195,8 @@ bool CMedia::find_image( const boost::int64_t frame )
     }
 
 
-
   _dts = _frame = f;
+
 
   if ( should_load )
   {

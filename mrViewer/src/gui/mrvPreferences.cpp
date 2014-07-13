@@ -579,19 +579,19 @@ namespace mrv {
 	fltk::Preferences ctl( odt, "CTL" );
 	{
 	  ok = ctl.get( "transform", tmpS, "ODT_monitor", 2048 );
-	  ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_TRANSFORM", 
+	  ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM", 
 						  tmpS, ok );
 
 	  fltk::Preferences chroma( ctl, "Chromaticities" );
-	  ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_CHROMATICITIES",
+	  ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
 						   tmpC, chroma );
 
 	  
 	  ok = ctl.get( "white_luminance", tmpF, 120.0 );
-	  ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_WHITE_LUMINANCE",
+	  ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_WHITE_LUMINANCE",
 							tmpF, ok );
 	  ok = ctl.get( "surround_luminance", tmpF, tmpF * 0.1f );
-	  ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_SURROUND_LUMINANCE",
+	  ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
 							tmpF, ok );
 	}
 	fltk::Preferences icc( odt, "ICC" );
