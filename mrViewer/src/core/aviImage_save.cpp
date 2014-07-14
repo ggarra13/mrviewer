@@ -431,8 +431,10 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    pkt.data = NULL;
 
    AVCodecContext* c = st->codec;
-   const audio_type_ptr audio = img->get_audio_frame( img->audio_frame() );
 
+   const audio_type_ptr audio = img->get_audio_frame( frame_audio );
+
+   frame_audio = audio->frame() + 1;
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
    src_nb_samples /= av_get_bytes_per_sample( aformat );
@@ -834,11 +836,17 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f ) const
     audio_cache_t::const_iterator end = _audio.end();
     audio_cache_t::const_iterator i;
 #if 1
+    for ( ; x ; --x )
+    {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) return *i;
+    }
 #else
+    for ( ; x ; --x )
+    {
         i = std::find_if( _audio.begin(), end, EqualFunctor(x) );
         if ( i != end ) return *i;
+    }
 #endif
 
     if ( i == end )
