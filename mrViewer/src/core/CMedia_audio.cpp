@@ -1058,7 +1058,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
                       << _(" frame: ") << frame );
            IMG_ERROR(  get_error_text(ret) );
            IMG_ERROR( "DATA: " << (void*) pkt_temp.data
-                      << _("audio used: ") << _audio_buf_used 
+                      << _(" audio used: ") << _audio_buf_used 
                       << _(" audio max: ")  << _audio_max );
 	  return kDecodeMissingSamples;
 	}
