@@ -25,18 +25,15 @@ std::string homepath()
 {
    std::string path;
 #if defined(_WIN32) || defined(_WIN64)
-   if ( path.empty() )
-     {
-       if ( getenv("HOME") )
-	 path = getenv("HOME");
-       else if ( getenv("USERPROFILE") )
-	 path = getenv("USERPROFILE");
-       else if ( getenv("HOMEDRIVE") )
-	 {
-	   path = sgetenv("HOMEDRIVE");
-	   path += sgetenv("HOMEPATH");
-	 }
-     }
+   if ( getenv("HOME") )
+       path = getenv("HOME");
+   else if ( getenv("USERPROFILE") )
+       path = getenv("USERPROFILE");
+   else if ( getenv("HOMEDRIVE") )
+   {
+       path = sgetenv("HOMEDRIVE");
+       path += sgetenv("HOMEPATH");
+   }
 #else
    if ( getenv("HOME" ) )
       path = getenv("HOME");
