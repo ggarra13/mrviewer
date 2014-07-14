@@ -26,6 +26,9 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+#include "core/mrvHome.h"
+#include "core/mrvServer.h"
+#include "core/mrvClient.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
@@ -33,9 +36,6 @@ namespace fs = boost::filesystem;
 #include "gui/mrvIO.h"
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
-#include "core/mrvHome.h"
-#include "core/mrvServer.h"
-#include "core/mrvClient.h"
 #include "mrvColorProfile.h"
 #include "mrvException.h"
 #include "mrvLicensing.h"
@@ -69,8 +69,8 @@ void load_new_files( void* s )
    mrv::LoadList files;
 
    {
-      fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
-			      "mrViewer.lock" );
+       fltk::Preferences lock( mrv::homepath().c_str(), "filmaura",
+                               "mrViewer.lock" );
       int pid = 1;
       lock.get( "pid", pid, 1 );
       
@@ -109,7 +109,7 @@ void load_new_files( void* s )
 	 std::cerr << "Removed lock file" << std::endl;
   }
 
-   fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+   fltk::Preferences base( mrv::homepath().c_str(), "filmaura",
 			   "mrViewer.lock" );
    base.set( "pid", 1 );
    
@@ -169,7 +169,7 @@ int main( const int argc, char** argv )
   if ( fs::exists( lockfile ) && single_instance )
   {
      {
-	fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+         fltk::Preferences base( mrv::homepath().c_str(), "filmaura",
 				"mrViewer.lock" );
 	
 	mrv::LoadList::iterator i = opts.files.begin();
@@ -198,8 +198,8 @@ int main( const int argc, char** argv )
   }
 
   {
-     fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
-			     "mrViewer.lock" );
+      fltk::Preferences lock( mrv::homepath().c_str(), "filmaura",
+                              "mrViewer.lock" );
      lock.set( "pid", 1 );
      
   }
