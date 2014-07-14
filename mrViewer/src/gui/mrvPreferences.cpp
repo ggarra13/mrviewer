@@ -33,6 +33,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvAudioEngine.h"
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
+#include "core/mrvHome.h"
 #include "core/mrvOS.h"
 #include "core/CMedia.h"
 
@@ -273,7 +274,7 @@ namespace mrv {
 	EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
       }
 
-    fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+    fltk::Preferences base( homepath().c_str(), "filmaura",
 			    "mrViewer" );
 
     //
@@ -321,7 +322,7 @@ namespace mrv {
     {
        fltk::Preferences win( ui, "window" );
        
-       win.get( "auto_fit_image", tmp, 0 );
+       win.get( "auto_fit_image", tmp, 1 );
        uiPrefs->uiPrefsAutoFitImage->value( tmp );
 
        win.get( "always_on_top", tmp, 0 );
@@ -906,7 +907,7 @@ namespace mrv {
     int i;
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
 
-    fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+    fltk::Preferences base( homepath().c_str(), "filmaura",
 			    "mrViewer" );
 
     // Save ui preferences

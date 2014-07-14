@@ -59,8 +59,8 @@ namespace mrv {
     if ( !file )
       {
 	 std::string home = mrv::homepath();
-	sprintf( buf, "%s/mrViewer.log", home.c_str() );
-	file = buf;
+         sprintf( buf, "%s/mrViewer.log", home.c_str() );
+         file = buf;
       }
 
     FILE* f = NULL;
