@@ -1,3 +1,5 @@
+v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
+	   documentation for them.
 v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
 	 - Improved performance of anaglyph and its memory footprint for
 	   data windows.
@@ -7,7 +9,7 @@ v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
 	   which were no longer working properly.
 	 - Updated color and pixel info updates on seek.
 	 - Bug fixed loading of openexr images with data window not appearing
-	   in the right location the first time they were read.
+	   in the right location the first time the images were read.
 v2.6.3.1 - Fixed selection in all cases for display and data windows.
 	 - Added missing ICC_PROFILES environment variable to search for
 	   ICC/ICM color profiles.
