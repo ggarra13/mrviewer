@@ -24,40 +24,19 @@ std::string sgetenv( const char* const n )
 std::string homepath()
 {
    std::string path;
-   char filename[PATH_MAX];
-#  define FLPREFS_RESOURCE	"Software\\Microsoft\\Windows\\CurrentVersion\\Explorer\\Shell Folders"
-   size_t appDataLen = strlen("filmaura") + strlen("mrViewer") + 8;
-#if defined( _WIN32 ) || defined ( _WIN64 )
-   DWORD type, nn;
-   LONG err;
-   HKEY key;
-   err = RegOpenKey( HKEY_CURRENT_USER, FLPREFS_RESOURCE, &key );
-   if (err == ERROR_SUCCESS) {
-      nn = PATH_MAX - (DWORD) appDataLen;
-      err = RegQueryValueEx( key, "AppData", 0L, &type, (BYTE*)filename, &nn );
-      if ( ( err != ERROR_SUCCESS ) && ( type == REG_SZ ) )
-      {
-	 err = RegQueryValueEx( key, "Personal", 0L, &type, (BYTE*)filename, &nn );
-	 if ( ( err != ERROR_SUCCESS ) && ( type == REG_SZ ) )
-	    filename[0] = 0;
-      }
-      RegCloseKey(key);
-
-      path = filename;
-
-      if ( path.empty() )
-      {
-	 if ( getenv("HOME") )
-	    path = getenv("HOME");
-	 else if ( getenv("USERPROFILE") )
-	    path = getenv("USERPROFILE");
-	 else if ( getenv("HOMEDRIVE") )
+#if defined(_WIN32) || defined(_WIN64)
+   if ( path.empty() )
+     {
+       if ( getenv("HOME") )
+	 path = getenv("HOME");
+       else if ( getenv("USERPROFILE") )
+	 path = getenv("USERPROFILE");
+       else if ( getenv("HOMEDRIVE") )
 	 {
-	    path = sgetenv("HOMEDRIVE");
-	    path += sgetenv("HOMEPATH");
+	   path = sgetenv("HOMEDRIVE");
+	   path += sgetenv("HOMEPATH");
 	 }
-      }
-   }
+     }
 #else
    if ( getenv("HOME" ) )
       path = getenv("HOME");
