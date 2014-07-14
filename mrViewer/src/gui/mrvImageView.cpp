@@ -974,18 +974,32 @@ void ImageView::fit_image()
   if ( !pic ) return;
 
   mrv::Recti dpw;
-  if ( display_window() || _stereo & CMedia::kStereoSideBySide )
+  if ( display_window() )
+  {
       dpw = img->display_window();
+      if ( _stereo & CMedia::kStereoSideBySide )
+      {
+          dpw.merge( img->display_window2() );
+      }
+  }
   else
+  {
       dpw = img->data_window();
-
+      if ( _stereo & CMedia::kStereoSideBySide )
+      {
+          const mrv::Recti& dp = img->display_window();
+          mrv::Recti daw = img->data_window2();
+          daw.x( dp.w() + daw.x() );
+          dpw.merge( daw );
+      }
+  }
 
   double W = dpw.w();
   if ( W == 0 ) W = pic->width();
   double H = dpw.h();
   if ( H == 0 ) H = pic->height();
 
-  if ( _stereo & CMedia::kStereoSideBySide )
+  if ( display_window() && _stereo & CMedia::kStereoSideBySide )
       W *= 2;
 
   double w = (double) fltk_main()->w();
