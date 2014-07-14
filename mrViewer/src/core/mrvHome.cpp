@@ -4,11 +4,15 @@
 #include <fltk/filename.h>
 #include <fltk/string.h>
 
+#include <boost/filesystem.hpp>
+
 #include "mrvHome.h"
 
 #if defined(_WIN32) && !defined(_WIN64_)
 #  include <windows.h>
 #endif
+
+namespace fs = boost::filesystem;
 
 namespace mrv
 {
@@ -24,23 +28,29 @@ std::string sgetenv( const char* const n )
 std::string homepath()
 {
    std::string path;
-#if defined(_WIN32) || defined(_WIN64)
-   if ( getenv("HOME") )
-       path = getenv("HOME");
-   else if ( getenv("USERPROFILE") )
-       path = getenv("USERPROFILE");
-   else if ( getenv("HOMEDRIVE") )
+
+   char* e = NULL;
+   if ( e = getenv("HOME") )
    {
-       path = sgetenv("HOMEDRIVE");
-       path += sgetenv("HOMEPATH");
+       path = e;
+       if ( fs::is_directory( path ) )
+           return path;
    }
-#else
-   if ( getenv("HOME" ) )
-      path = getenv("HOME");
-   else
-      path = "/usr/tmp";
-#endif
-  return path;
+   else if ( e = getenv("USERPROFILE") )
+   {
+       path = e;
+       if ( fs::is_directory( path ) )
+           return path;
+   }
+   else if ( e = getenv("HOMEDRIVE") )
+   {
+       path = e;
+       path += sgetenv("HOMEPATH");
+       if ( fs::is_directory( path ) )
+           return path;
+   }
+   path = "/usr/tmp";
+   return path;
 }
 
 
