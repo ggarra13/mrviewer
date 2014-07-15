@@ -89,7 +89,7 @@ namespace
 #define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-#define kMIN_FRAMES 30
+#define kMIN_FRAMES 5
 
 namespace {
   const unsigned int  kMaxCacheImages = 70;
@@ -2014,8 +2014,8 @@ bool aviImage::frame( const boost::int64_t f )
 {
 
    if ( ( playback() != kStopped &&
-	  (( has_video() && _video_packets.size() > kMIN_FRAMES ) ||
-           ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) ||
+	  (( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
+           ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
            ( _video_packets.bytes() +  _audio_packets.bytes() + 
              _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
            ) ) ) )
