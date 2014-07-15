@@ -1700,20 +1700,22 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
       else if ( _audio_packets.is_loop_end() )
 	{
+            // This is all needed, as loop end can be called
+            // early due to few timestamps in audio track
 	  bool ok = in_audio_store( frame );
 
-	  if ( ok && frame != last_frame() )	
+	  if ( ok && frame != last_frame() )
 	  {
 	     return kDecodeOK;
-	  }   
+	  }
 
 	  // with loops, packet dts is really frame
 	  if ( frame > last_frame() )
 	    {
-            flush_audio();
-            _audio_packets.pop_front();
-            return kDecodeLoopEnd;
-	}
+                flush_audio();
+                _audio_packets.pop_front();
+                return kDecodeLoopEnd;
+            }
 
 	  _audio_packets.pop_front();
 	  return got_audio;
