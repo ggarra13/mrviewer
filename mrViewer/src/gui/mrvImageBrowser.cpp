@@ -2758,11 +2758,12 @@ void ImageBrowser::load( const stringArray& files,
    */
   void ImageBrowser::frame( const int64_t f )
   {
-     uiMain->uiFrame->value( f );
-     uiMain->uiFrame->redraw();
 
-     timeline()->value( f );
-     timeline()->redraw();
+      uiMain->uiFrame->value( f );
+      uiMain->uiFrame->redraw();
+
+      timeline()->value( f );
+      timeline()->redraw();
   }
 
   void ImageBrowser::clear_edl()

@@ -274,7 +274,7 @@ namespace mrv {
 	EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
       }
 
-    fltk::Preferences base( homepath().c_str(), "filmaura",
+    fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
 
     //
@@ -907,7 +907,7 @@ namespace mrv {
     int i;
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
 
-    fltk::Preferences base( homepath().c_str(), "filmaura",
+    fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
 
     // Save ui preferences

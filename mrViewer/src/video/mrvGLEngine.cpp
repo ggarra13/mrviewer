@@ -779,7 +779,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   CHECK_GL( "draw_square_stencil glColorMask" );
   glDepthMask(false);
   CHECK_GL( "draw_square_stencil glDepthMask" );
-  glColor3f( 0.0f, 0.0f, 0.0f );
+  glColor4f( 0.0f, 0.0f, 0.0f, 0.0f );
   glEnable( GL_STENCIL_TEST );
   CHECK_GL( "draw_square_stencil glEnable Stencil test" );
   glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
@@ -1143,10 +1143,12 @@ void GLEngine::draw_images( ImageList& images )
   i = images.begin();
   e = images.end();
 
+  Image_ptr fg = images.back();
+
   glDisable( GL_BLEND );
   CHECK_GL( "glDisable GL_BLEND" );
 
-  for ( ; i != e; ++i, ++q )
+  for ( i = images.begin() ; i != e; ++i, ++q )
     {
 
       const Image_ptr& img = *i;
@@ -1157,8 +1159,21 @@ void GLEngine::draw_images( ImageList& images )
       const mrv::Recti& dpw = img->display_window(frame);
       const mrv::Recti& daw = img->data_window(frame);
 
-      texWidth  = pic->width();
-      texHeight = pic->height();
+      if ( fg != img )
+      {
+          const mrv::Recti& dp = fg->display_window();
+          texWidth = dp.w();
+          texHeight = dp.h();
+
+          if ( texWidth == 0 )  texWidth = pic->width();
+          if ( texHeight == 0 ) texHeight = pic->height();
+      }
+      else
+      {
+          texWidth = pic->width();
+          texHeight = pic->height();
+      }
+
 
       if ( texWidth == 0 || texHeight == 0 ) continue;
 
@@ -1177,6 +1192,11 @@ void GLEngine::draw_images( ImageList& images )
 
       glPushMatrix();
  
+      if ( daw.x() != 0 || daw.y() != 0 )
+      {
+          glTranslatef( float(daw.x()), float(-daw.y()), 0 );
+      }
+
       if ( _view->main()->uiPixelRatio->value() )
           glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
                     1.0 );
@@ -1185,12 +1205,6 @@ void GLEngine::draw_images( ImageList& images )
 
       glTranslated( 0.5, -0.5, 0 );
 
-
-      if ( daw.x() != 0 || daw.y() != 0 )
-      {
-          glTranslated( (double) daw.x() / texWidth, 
-                        (double) -daw.y() / texHeight, 0 );
-      }
 
  
       GLQuad* quad = *q;
@@ -1258,9 +1272,15 @@ void GLEngine::draw_images( ImageList& images )
 
          glPushMatrix();
 
+
          if ( _view->display_window() && dpw != daw )
          {
              draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+         }
+
+         if ( daw.x() != 0 || daw.y() != 0 )
+         {
+             glTranslatef( float(daw.x()), float(-daw.y()), 0 );
          }
 
          if ( _view->main()->uiPixelRatio->value() )
@@ -1272,11 +1292,6 @@ void GLEngine::draw_images( ImageList& images )
 
          glTranslated( 0.5, -0.5, 0 );
 
-         if ( daw.x() != 0 || daw.y() != 0 )
-         {
-             glTranslated( (double) daw.x() / texWidth,
-                           (double) -daw.y() / texHeight, 0 );
-         }
       }
       else if ( img->hires() &&
                 ( img->image_damage() & CMedia::kDamageContents ||

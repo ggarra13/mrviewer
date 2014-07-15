@@ -72,6 +72,7 @@ typedef __int64 int64_t;
 #include "Flu_File_Chooser.h"
 #include "flu_file_chooser_pixmaps.h"
 
+#include "core/mrvHome.h"
 #include "core/Sequence.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
@@ -505,23 +506,12 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   caseSort = true;
 #endif
 
+  userHome = mrv::homepath();
+
   // determine the system paths for the user's home area, desktop, documents, app data, etc
 #ifdef WIN32
   userDesktop = flu_get_special_folder( CSIDL_DESKTOPDIRECTORY );
   userDocs = flu_get_special_folder( CSIDL_PERSONAL );
-
-  // get home area by stripping off to the last '/' from docs
-  userHome = userDocs;
-  {
-    for( size_t i = userHome.size()-1; i > 0; i-- )
-      {
-	if( userHome[i] == '/' )
-	  {
-	    userHome[i] = '\0';
-	    break;
-	  }
-      }
-  }
 
   // construct the user desktop path
   //userDesktop = userHome + "/" + desktopTxt;

@@ -68,8 +68,9 @@ void load_new_files( void* s )
 
    mrv::LoadList files;
 
+
    {
-       fltk::Preferences lock( mrv::homepath().c_str(), "filmaura",
+       fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
                                "mrViewer.lock" );
       int pid = 1;
       lock.get( "pid", pid, 1 );
@@ -109,7 +110,7 @@ void load_new_files( void* s )
 	 std::cerr << "Removed lock file" << std::endl;
   }
 
-   fltk::Preferences base( mrv::homepath().c_str(), "filmaura",
+   fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
 			   "mrViewer.lock" );
    base.set( "pid", 1 );
    
@@ -169,7 +170,7 @@ int main( const int argc, char** argv )
   if ( fs::exists( lockfile ) && single_instance )
   {
      {
-         fltk::Preferences base( mrv::homepath().c_str(), "filmaura",
+         fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
 				"mrViewer.lock" );
 	
 	mrv::LoadList::iterator i = opts.files.begin();
@@ -198,7 +199,7 @@ int main( const int argc, char** argv )
   }
 
   {
-      fltk::Preferences lock( mrv::homepath().c_str(), "filmaura",
+      fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
                               "mrViewer.lock" );
      lock.set( "pid", 1 );
      
