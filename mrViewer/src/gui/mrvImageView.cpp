@@ -319,12 +319,13 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
      unsigned y2 = h-1;
      for ( unsigned y = 0; y < h; ++y, --y2 )
      {
-	mrv::ImagePixel p;
-	p.r = data[   4*( x + y * w ) ];
-	p.g = data[ 1+4*( x + y * w ) ];
-	p.b = data[ 2+4*( x + y * w ) ];
-	p.a = data[ 3+4*( x + y * w ) ];
-	hires->pixel( x, y2, p );
+         unsigned xyw4 = 4 * (x + y * w);
+         mrv::ImagePixel p;
+         p.r = data[   xyw4 ];
+         p.g = data[ 1+xyw4 ];
+         p.b = data[ 2+xyw4 ];
+         p.a = data[ 3+xyw4 ];
+         hires->pixel( x, y2, p );
      }
   }
 
@@ -1313,7 +1314,7 @@ void ImageView::timeout()
 	// }
 
 
-	if ( img->first_frame() != img->last_frame() )
+	if ( this->frame() != frame )
 	{
 	   this->frame( frame );
 	}
