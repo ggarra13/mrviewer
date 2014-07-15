@@ -517,7 +517,7 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
 
-    DBG( "data window frame " << f << " is " << _dataWindow[idx] );
+    //DBG( "data window frame " << f << " is " << _dataWindow[idx] );
     assert( idx <= _frameEnd - _frameStart );
     return _dataWindow[idx];
 }
@@ -547,7 +547,7 @@ void CMedia::display_window( const int xmin, const int ymin,
   assert( idx <= _frameEnd - _frameStart );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
-  DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
+  //DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
 }
 
 void CMedia::display_window2( const int xmin, const int ymin,
@@ -575,7 +575,7 @@ void CMedia::data_window( const int xmin, const int ymin,
   assert( idx <= _frameEnd - _frameStart );
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
-  DBG( "data window setframe " << _frame << " is " << _dataWindow[idx] );
+  // DBG( "data window setframe " << _frame << " is " << _dataWindow[idx] );
 }
 
 

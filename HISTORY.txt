@@ -1,7 +1,15 @@
 v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
 	   documentation for them.
-	 - Bug fixed HOME environment variable on Windows where it was not 
-	   used.
+	 - Bug fixed an audio muting problem on some movies.  This was a 
+	   regression bug not present in v2.6.1.0.
+	 - Bug fixed preferences to always be saved in HOME/.filmaura
+	   regardless of platform.
+	   In the case of Windows, the path is %HOME%, or %USERPROFILE%, or
+	   %HOMEDRIVE%\%HOMEPATH% searched in that order.
+	 - Bug fixed drag and drop not centering the image loaded when
+	   auto refit image was off.
+	 - Bug fixed audio saving without pops, which was a regression bug
+	   from v2.6.2.0.
 v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
 	 - Improved performance of anaglyph and its memory footprint for
 	   data windows.

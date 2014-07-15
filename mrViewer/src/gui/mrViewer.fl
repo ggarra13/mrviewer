@@ -291,17 +291,16 @@ v->new_reel(name);}
 delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ImageInfoUI {open
-  } {
+  class ImageInfoUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Media Information} open
-        xywh {371 84 505 530} resizable
+        xywh {374 107 505 530} hide resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
-        {fltk::Group} uiInfoText {selected
+        {fltk::Group} uiInfoText {
           xywh {2 2 498 526}
           extra_code {o->main( main );}
           class {mrv::ImageInformation}
@@ -2328,7 +2327,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2365,10 +2365,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {353 231 640 530} when CHANGED hide resizable
+        xywh {359 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2638,7 +2638,7 @@ Value is:  pow( 2, 1/x );}
             xywh {0 25 640 430} resizable
             class {fltk::Group}
           } {
-            {fltk::Group} uiView {
+            {fltk::Group} uiView {selected
               xywh {0 0 640 430}
               extra_code {o->main(this);}
               class {mrv::ImageView}
@@ -2909,7 +2909,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {
+          {fltk::Group} uiBottomBar {open
             xywh {0 478 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -2956,7 +2956,7 @@ v->uiView->looping( (mrv::ImageView::Looping)c );}
                     {fltk::PopupMenu} uiTimecodeSwitch {
                       label {F:}
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {change_timeline_display(v);} open
+                      callback {change_timeline_display(v);}
                       tooltip {Switch between Frame, Seconds and Timecode display}
                       xywh {0 0 20 20} box DOWN_BOX
                       class {mrv::PopupMenu}
@@ -2978,10 +2978,11 @@ v->uiView->looping( (mrv::ImageView::Looping)c );}
                         }
                     }
                     {fltk::Input} uiFrame {
+                      label F
                       user_data this user_data_type {mrv::ViewerUI*}
                       callback {int64_t f = o->value();
 if ( f < v->uiTimeline->minimum() )
-   f = int64_t( uiTimeline->minimum() );
+   f = int64_t( v->uiTimeline->minimum() );
 else if ( f > v->uiTimeline->maximum() )
    f = int64_t( v->uiTimeline->maximum() );
 v->uiView->seek( f );}
@@ -3135,7 +3136,7 @@ o->value(24);}
                       }
                     }
                   }
-                  {fltk::Group} {} {
+                  {fltk::Group} {} {open
                     xywh {455 0 180 24}
                   } {
                     {fltk::Input} uiStartFrame {
