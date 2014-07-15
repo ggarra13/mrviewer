@@ -54,14 +54,17 @@ std::string homepath()
 }
 
 
+std::string prefspath()
+{
+  std::string lockfile = mrv::homepath();
+   lockfile += "/.filmaura/";
+   return lockfile;
+}
+
 std::string lockfile()
 {
   std::string lockfile = mrv::homepath();
-#if defined(_WIN32) || defined(_WIN64)
-   lockfile += "/filmaura/mrViewer.lock.prefs";
-#else   
-   lockfile += "/.fltk/filmaura/mrViewer.lock.prefs";
-#endif
+   lockfile += "/.filmaura/mrViewer.lock.prefs";
    return lockfile;
 }
 
