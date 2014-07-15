@@ -203,7 +203,7 @@ int64_t Timecode::value() const
 
 void Timecode::update()
 {
-  value( value() );
+  // value( value() );
 }
 
 void Timecode::display( Timecode::Display x )
@@ -439,19 +439,15 @@ bool Timecode::replace(int b, int e, const char* text, int ilen) {
       if (!strchr(this->text(), ascii))
         continue;
     } else
-    // This is complex to allow "0xff12" hex to be typed:
+    // This is complex to allow "00:00:01" timecode to be typed:
     if (b+n==0 && (ascii == '+' || ascii == '-') ||
 	(ascii >= '0' && ascii <= '9') ||
-	(b+n==1 && (at(0)=='0'||text[0]=='0') && (ascii=='x' || ascii == 'X')) ||
-	(b+n>1 && (at(0)=='0'||text[0]=='0') && ((at(1)=='x'||text[1]=='x')||(at(1)=='X'||text[1]=='X'))
-	 && (ascii>='A'&& ascii<='F' || ascii>='a'&& ascii<='f')) ||
 	(type()==FLOAT && ascii && strchr(".eE+-", ascii)) ||
 	((type()==NORMAL) && ascii && ascii == ':'))
       continue; // it's ok;
 
     return false;
   }
-
   return Input::replace(b,e,text,ilen);
 }
 

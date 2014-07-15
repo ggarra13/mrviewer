@@ -410,13 +410,13 @@ void audio_thread( PlaybackData* data )
               {
 
 
-                  DBG( "BARRIER IN AUDIO " << frame );
+                  DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
                   CMedia::Barrier* barrier = img->loop_barrier();
                   // Wait until all threads loop and decode is restarted
                   barrier->wait();
 
-                  DBG( "BARRIER PASSED IN AUDIO " << frame );
+                  DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
 
                   if (! img->aborted() )
                   {
@@ -430,7 +430,7 @@ void audio_thread( PlaybackData* data )
                       }
                   }
 
-                  DBG( "AUDIO LOOP END/START HAS FRAME " << frame );
+                  DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
                   continue;
               }
           case CMedia::kDecodeOK:
@@ -635,22 +635,22 @@ void video_thread( PlaybackData* data )
 
 	       skip = false;
 
-               DBG( "BARRIER IN VIDEO " << frame );
+               DBG( img->name() << " BARRIER IN VIDEO " << frame );
 
 	       CMedia::Barrier* barrier = img->loop_barrier();
 	       // Wait until all threads loop and decode is restarted
 	       barrier->wait();
 
-               DBG( "BARRIER PASSED IN VIDEO" );
+               DBG( img->name() << " BARRIER PASSED IN VIDEO" );
 
 	       if (! img->aborted() )
 	       {
-                   DBG( "VIDEO DECODE LOOP START/END1 " << frame );
+                   DBG( img->name() << " VIDEO DECODE LOOP START/END1 " << frame );
 
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
 					       reel, timeline, status );
 
-                  DBG( "VIDEO DECODE LOOP START/END2 " << frame 
+                  DBG( img->name() << " VIDEO DECODE LOOP START/END2 " << frame 
                        << " step " << step );
 
 		  if ( end == kEndIgnore )
@@ -808,14 +808,14 @@ void decode_thread( PlaybackData* data )
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-          DBG( "DECODE BARRIER " << frame );
+          DBG( img->name() << " DECODE BARRIER " << frame );
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
 	 barrier->count( thread_count );
 	 // Wait until all threads loop or exit
 	 barrier->wait();
-         DBG( "DECODE BARRIER PASSED" );
+         DBG( img->name() << " DECODE BARRIER PASSED" );
 
 	 if ( img->aborted() ) break;
 
