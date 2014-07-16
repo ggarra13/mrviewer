@@ -656,7 +656,7 @@ void idle_cb( void* d )
     mrv::Reel r = b->current_reel();
     if ( !r ) return;
 
-    unsigned e = r->images.size();
+    unsigned e = (unsigned) r->images.size();
 
     for (unsigned i = 0 ; i < e; ++i )
     {
@@ -1206,9 +1206,10 @@ void ImageView::load_list()
 	 }
 	 catch( fs::filesystem_error& e )
 	 {
+	   LOG_ERROR( "Error removing lock file: " << e.what() );
 	 }
 
-	 fltk::Preferences base( fltk::Preferences::USER, "filmaura",
+	 fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
 				 "mrViewer.lock" );
 	 base.set( "pid", 1 );
       }
@@ -1226,6 +1227,7 @@ void ImageView::timeout()
    char bufs[256];  bufs[0] = 0;
 
    mrv::Timeline* timeline = this->timeline();
+
    mrv::Reel reel = browser()->current_reel();
    mrv::Reel bgreel = browser()->reel_at( _bg_reel );
 
@@ -1290,7 +1292,7 @@ void ImageView::timeout()
   {
      
      int64_t frame;
-     if ( !reel->edl && fg )
+     if ( reel && !reel->edl && fg )
      {
 	CMedia* img = fg->image();
 
@@ -2635,7 +2637,7 @@ void ImageView::mouseDrag(int x,int y)
                    xn += daw[idx].x();
                    yn -= daw[idx].y();
 
-                   s->position( xn, yn );
+                   s->position( int(xn), int(yn) );
 	      }
            }
 

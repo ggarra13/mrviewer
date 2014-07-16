@@ -11,11 +11,12 @@ v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
 	 - Bug fixed audio saving without pops, which was a regression bug
 	   from v2.6.2.0.
 	 - Bug fixed Frame text input to allow entering a frame number.
-	 - Bug fixed timecode to allow time with periods in it.
+	 - Bug fixed timecode widget to allow time with periods in it.
 	 - Added option in preferences for Display Window. 
 	 - Auto fit image when loaded so that pictures don't show from one
 	   corner as a result of the update to image drawing routines. 
 	 - Adjusted selection to select one pixel if outside data window.
+	 - Removed crash when playback of no images before loading.
 
 v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
 	 - Improved performance of anaglyph and its memory footprint for
