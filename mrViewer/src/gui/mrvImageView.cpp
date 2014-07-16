@@ -1742,6 +1742,8 @@ int ImageView::leftMouseDown(int x, int y)
    lastX = x;
    lastY = y;
 
+   
+
   flags		|= kMouseDown;
 	
 
@@ -1765,12 +1767,15 @@ int ImageView::leftMouseDown(int x, int y)
       }
       else if ( _mode == kDraw || _mode == kErase || _mode == kText )
       {
+   
+
 	 _selection = mrv::Rectd( 0, 0, 0, 0 );
 
 	 mrv::media fg = foreground();
 	 if ( !fg ) return 0;
 
 	 CMedia* img = fg->image();
+         if (!img) return 0;
 
 	 double xf = x;
 	 double yf = y;
@@ -1819,6 +1824,8 @@ int ImageView::leftMouseDown(int x, int y)
 
          }
 
+   
+
 	 uchar r, g, b;
 	 fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
 
@@ -1847,6 +1854,8 @@ int ImageView::leftMouseDown(int x, int y)
 
       if ( _wipe_dir != kNoWipe )
       {
+   
+
 	 _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
 	 window()->cursor(fltk::CURSOR_CROSS);
       }
@@ -1856,12 +1865,16 @@ int ImageView::leftMouseDown(int x, int y)
 // 	  toggle_fullscreen();
 // 	  fltk::event_clicks(0);
 // 	}
+   
+
       redraw();
       return 1;
     }
 
   else if ( button == 2 )
     {
+   
+
        // handle MMB moves
        flags |= kMouseMove;
        flags |= kMouseMiddle;
@@ -1871,6 +1884,9 @@ int ImageView::leftMouseDown(int x, int y)
     {
       if ( (flags & kLeftAlt) == 0 )
       {
+
+   
+
 	 fltk::Menu menu(0,0,0,0);
 	 menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
 		   (fltk::Callback*)open_cb, browser() ); 
@@ -1955,6 +1971,7 @@ int ImageView::leftMouseDown(int x, int y)
 			fltk::MENU_DIVIDER);
 	    }
 
+   
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_script_cb,
@@ -1972,6 +1989,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 	    Image_ptr image = fg->image();
 
+   
 	    size_t num = image->number_of_subtitle_streams();
 	    if ( num > 0 )
 	    {
@@ -1996,6 +2014,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 	    if ( 1 )
 	    {
+   
 	       menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
 	     		 (fltk::Callback*)attach_audio_cb, this );
 	       menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
@@ -2018,6 +2037,7 @@ int ImageView::leftMouseDown(int x, int y)
 		    (fltk::Callback*)monitor_icc_profile_cb,
 		    this, fltk::MENU_DIVIDER);
 
+   
 	  menu.popup( fltk::Rectangle( fltk::event_x(),
 				       fltk::event_y(), 80, 1) );
 	}
