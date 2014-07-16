@@ -568,19 +568,20 @@ o->label( o->child( o->value() )->label() );}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window()} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {495 286 640 475} hide resizable
+        xywh {501 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
-          label Settings
+          label Settings open
           xywh {207 24 433 416}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {8 24 412 382} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -702,7 +703,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window}
+            label {View Window} open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -721,9 +722,9 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::Choice} uiPrefsCropArea {
                 label Crop
-                user_data this user_data_type {mrv::PreferencesUI*} open
+                user_data this user_data_type {mrv::PreferencesUI*} open selected
                 tooltip {Allows you to select a standard cropping area around image.}
-                xywh {15 80 155 25} align 1 labelsize 11
+                xywh {15 65 155 25} align 1 labelsize 11
               } {
                 {fltk::Item} {} {
                   label {0.00 None}
@@ -784,6 +785,11 @@ If you try to open several mrViewers with different images, all these images wil
                 user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {When mrViewer starts, the safe area display will be active by default.}
                 xywh {198 107 20 20} align 8 labelsize 11
+              }
+              {fltk::CheckButton} uiPrefsViewDisplayWindow {
+                label {Display Window}
+                tooltip {When mrViewer starts, the display window will be shown when appropiate.}
+                xywh {20 103 20 22} align 8 labelsize 11 value 1
               }
             }
             {fltk::Group} uiPrefsHud {
@@ -2327,8 +2333,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2365,10 +2370,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {359 231 640 530} when CHANGED resizable
+        xywh {362 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2638,7 +2643,7 @@ Value is:  pow( 2, 1/x );}
             xywh {0 25 640 430} resizable
             class {fltk::Group}
           } {
-            {fltk::Group} uiView {selected
+            {fltk::Group} uiView {
               xywh {0 0 640 430}
               extra_code {o->main(this);}
               class {mrv::ImageView}
