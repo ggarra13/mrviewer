@@ -66,10 +66,10 @@ Timecode::Timecode( int w, int h, const char* l ) :
 /** 
  * Set widget's value from a timecode
  * 
- * @param hours 
- * @param mins 
- * @param secs 
- * @param frames 
+ * @param hours  hours in timecode
+ * @param mins   minutes in timecode
+ * @param secs   seconds in timecode
+ * @param frames frames in timecode
  */
 void Timecode::value( const int hours, const int mins, const int secs, 
 		      const int frames )
@@ -106,8 +106,12 @@ int64_t Timecode::value() const
 	int hours = 0, mins = 0, secs = 0, msecs = 0;
 	sscanf( text(), "%02d:%02d:%02d.%03d",
 		&hours, &mins, &secs, &msecs );
-	
-	int64_t r = int64_t(msecs * _fps / 1000);
+
+        assert( msecs < 1000 );
+        assert( secs < 60 );
+        assert( mins < 60 );
+
+	int64_t r = int64_t(msecs * _fps / 1000.0);
 	r += int64_t(secs * _fps);
 	r += int64_t(mins * 60 * _fps);
 	r += int64_t(hours * 3600 * _fps);
@@ -119,6 +123,10 @@ int64_t Timecode::value() const
 	sscanf( text(), "%02d:%02d:%02d:%02d",
 		&hours, &mins, &secs, &frames );
 	
+        assert( frames < _fps + 0.5 );
+        assert( secs < 60 );
+        assert( mins < 60 );
+
 	int ifps  = int(_fps + 0.5);
 	int64_t r = frames;
 	r += int64_t(secs * ifps);
@@ -131,6 +139,10 @@ int64_t Timecode::value() const
 	int hours = 0, mins = 0, secs = 0, frames = 0;
 	sscanf( text(), "%02d:%02d:%02d:%02d",
 		&hours, &mins, &secs, &frames );
+
+        assert( frames < _fps + 0.5 );
+        assert( secs < 60 );
+        assert( mins < 60 );
 
 	// Convert current frame value to timecode based on fps
 	int ifps = int(_fps);
@@ -203,7 +215,7 @@ int64_t Timecode::value() const
 
 void Timecode::update()
 {
-  // value( value() );
+    value( value() );
 }
 
 void Timecode::display( Timecode::Display x )
@@ -239,22 +251,28 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
 	int  secs   = 0;
 	int  msecs  = 0;
 
-	// Convert current frame value to timecode based on fps
-	double frames_per_hour = 3600 * fps;
+	// Convert current frame value to time based on fps
+	double hourbase = 3600 * fps;
 	double minbase  = 60 * fps;
 	double secbase  = fps;
 	
 	int64_t x = f;
-	hours = int( x / frames_per_hour );
-	x -= int64_t(hours * frames_per_hour);
-	mins = int( x / minbase );
-	x -= int64_t(mins * minbase);
-	secs = int( x / secbase );
-	x -= int64_t(secs * secbase);
+	hours = int( double(x) / hourbase );
+	x -= int64_t( double(hours) * hourbase);
+	mins = int( double(x) / minbase );
+	x -= int64_t( double(mins) * minbase);
+	secs = int( double(x) / secbase );
+	x -= int64_t( double(secs) * secbase);
 	msecs = int(x); // frames
 	x -= msecs;
 
-	msecs = int(1000 * msecs / fps);
+	msecs = int(1000.0 * double(msecs) / fps);
+
+        if ( msecs >= 1000 ) {
+            msecs -= 1000;
+            ++secs;
+        }
+
 	
 	// If negative timecode, make hour negative only
 	hours = abs(hours); mins = abs(mins); secs = abs(secs);
