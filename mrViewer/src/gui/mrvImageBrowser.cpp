@@ -1154,10 +1154,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     if ( visible() ) relayout();
 
-    if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-    {
-        view()->fit_image();
-    }
+    view()->fit_image();
 
 
     edl_group()->refresh();

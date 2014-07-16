@@ -180,12 +180,12 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           H = dpw.h();
       }
 
-      if ( xmin < 0 ) xmin = 0;
-      if ( ymin < 0 ) ymin = 0;
 
       xmax = xmin + (int)(selection.w()) - 1;
       ymax = ymin + (int)(selection.h()) - 1;
 
+      if ( xmin < 0 ) xmin = 0;
+      if ( ymin < 0 ) ymin = 0;
 
       if ( right )
       {
