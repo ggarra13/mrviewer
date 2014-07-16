@@ -367,6 +367,9 @@ namespace mrv {
     view.get("crop_area", tmp, 0 );
     uiPrefs->uiPrefsCropArea->value( tmp );
 
+    view.get("display_window", tmp, 1 );
+    uiPrefs->uiPrefsViewDisplayWindow->value( (bool)tmp );
+
     //
     // ui/colors
     //
@@ -798,6 +801,9 @@ namespace mrv {
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
        main->uiView->toggle_pixel_ratio();
+
+    main->uiView->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
+
     main->uiLUT->value( uiPrefs->uiPrefsViewLut->value() );
     
     mrv::ImageView* view = main->uiView;
@@ -954,6 +960,8 @@ namespace mrv {
     view.set("gain", uiPrefs->uiPrefsViewGain->value() );
     view.set("gamma", uiPrefs->uiPrefsViewGamma->value() );
     view.set("compensate_pixel_ratio", uiPrefs->uiPrefsViewPixelRatio->value() );
+    view.set("display_window", uiPrefs->uiPrefsViewDisplayWindow->value() );
+
     view.set("lut", uiPrefs->uiPrefsViewLut->value() );
     view.set("safe_areas", uiPrefs->uiPrefsSafeAreas->value() );
     view.set("crop_area", uiPrefs->uiPrefsCropArea->value() );

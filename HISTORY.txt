@@ -10,6 +10,7 @@ v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
 	   auto refit image was off.
 	 - Bug fixed audio saving without pops, which was a regression bug
 	   from v2.6.2.0.
+	 - Bug fixed frame text input to allow entering a frame number.
 v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
 	 - Improved performance of anaglyph and its memory footprint for
 	   data windows.
