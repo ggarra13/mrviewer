@@ -100,11 +100,11 @@ int64_t Timecode::value() const
     case kFrames:
       return atoi( text() );
     case kSeconds:
-      return int64_t( atof( text() ) * _fps );
+      return int64_t( atof( text() ) * _fps + 0.5 );
     case kTime:
       {
 	int hours = 0, mins = 0, secs = 0, msecs = 0;
-	sscanf( text(), "%02d:%02d:%02d:%03d",
+	sscanf( text(), "%02d:%02d:%02d.%03d",
 		&hours, &mins, &secs, &msecs );
 	
 	int64_t r = int64_t(msecs * _fps / 1000);
@@ -443,7 +443,7 @@ bool Timecode::replace(int b, int e, const char* text, int ilen) {
     if (b+n==0 && (ascii == '+' || ascii == '-') ||
 	(ascii >= '0' && ascii <= '9') ||
 	(type()==FLOAT && ascii && strchr(".eE+-", ascii)) ||
-	((type()==NORMAL) && ascii && ascii == ':'))
+	((type()==NORMAL) && ascii && (ascii == ':' || ascii == '.')))
       continue; // it's ok;
 
     return false;
