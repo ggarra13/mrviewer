@@ -2084,32 +2084,24 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	   continue;
 	}
       else if ( _video_packets.is_loop_start() )
-	{
-	   // With prerolls, Loop indicator remains on before all frames
-	   // in preroll have been shown.  That's why we check video
-	   // store here.
+      {
 	   if ( frame > first_frame() )
 	   {
 	      return kDecodeOK;
 	   }
-
-	   if ( frame <= first_frame() )
+	   else
 	   {
 	      _video_packets.pop_front();
 	      return kDecodeLoopStart;
 	   }
-	   else
-	   {
-	      return got_video;
-	   }
-	}
+      }
       else if ( _video_packets.is_loop_end() )
-	{
+      {
 	  _video_packets.pop_front();
 	  return kDecodeLoopEnd;
-	}
+      }
       else
-	{
+      {
 	  AVPacket& pkt = _video_packets.front();
 
           boost::int64_t pktframe;
