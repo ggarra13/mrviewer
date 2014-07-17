@@ -159,6 +159,9 @@ namespace mrv {
     /// Set a new gain (exposure) setting
     void gain(const float f);
 
+    /// Center image in viewer's window, without changing zoom.
+    void center_image();
+
     /// Fit image in viewer's window, changing zoom.
     void fit_image();
 
