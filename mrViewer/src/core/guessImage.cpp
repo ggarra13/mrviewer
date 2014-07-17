@@ -107,8 +107,8 @@ namespace mrv {
     std::string tmp;
     const char* root = file;
     bool is_seq = false;
-    if ( start != std::numeric_limits<boost::int64_t>::max() ||
-         end   != std::numeric_limits<boost::int64_t>::min() )
+    if ( start != std::numeric_limits<boost::int64_t>::min() ||
+         end   != std::numeric_limits<boost::int64_t>::max() )
     {
         if ( mrv::fileroot( tmp, std::string(file) ) )
         {

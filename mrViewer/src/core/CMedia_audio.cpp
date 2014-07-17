@@ -1402,7 +1402,6 @@ int64_t CMedia::wait_audio()
 	  return get_frame( get_audio_stream(), pkt );
 	}
 
-
       CONDITION_WAIT( _audio_packets.cond(), apm );
     }
   return _frame;
@@ -1692,16 +1691,16 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
             flush_audio();
             _audio_packets.pop_front();
             return kDecodeLoopStart;
-	}
+          }
 	  else
 	  {
-	     return got_audio;
+              return got_audio;
 	  }
 	}
       else if ( _audio_packets.is_loop_end() )
-	{
-            // This is all needed, as loop end can be called
-            // early due to few timestamps in audio track
+      {
+          // This is all needed, as loop end can be called
+          // early due to few timestamps in audio track
 	  bool ok = in_audio_store( frame );
 
 	  if ( ok && frame != last_frame() )
@@ -1717,9 +1716,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
                 return kDecodeLoopEnd;
             }
 
-	  _audio_packets.pop_front();
 	  return got_audio;
-	}
+      }
       else if ( _audio_packets.is_seek()  )
 	{
           clear_stores();  // audio stores MUST be cleared when seeked
