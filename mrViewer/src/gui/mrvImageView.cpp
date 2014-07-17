@@ -958,6 +958,42 @@ void ImageView::image_coordinates( const Image_ptr img,
 
 
 
+void ImageView::center_image()
+{
+    mrv::media fg = foreground();
+    if ( !fg ) return;
+
+    Image_ptr img = fg->image();
+    mrv::Recti dpw = img->display_window();
+    if ( dpw.w() == 0 || !display_window() )
+    {
+        dpw = img->data_window();
+
+        if ( dpw.w() == 0 )
+        {
+            dpw.w( img->width() );
+            dpw.h( img->height() );
+        }
+    }
+
+    if ( img && _stereo & CMedia::kStereoSideBySide )
+    {
+        int w = dpw.w();
+        xoffset = -w/2 + 0.5f;
+    }
+    else
+    {
+        xoffset = -dpw.x() - dpw.w() / 2.0;
+    }
+
+    yoffset = dpw.y() + dpw.h() / 2.0;
+
+    char buf[128];
+    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+    send( buf );
+    redraw();
+}
+
 
 /** 
  * Fit the current foreground image to the view window.
@@ -2796,38 +2832,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kCenterImage.match(rawkey) )
   {
-     mrv::media fg = foreground();
-     if ( !fg ) return 0;
-
-     Image_ptr img = fg->image();
-     mrv::Recti dpw = img->display_window();
-     if ( dpw.w() == 0 || !display_window() )
-     {
-         dpw = img->data_window();
-
-         if ( dpw.w() == 0 )
-         {
-             dpw.w( img->width() );
-             dpw.h( img->height() );
-         }
-     }
-
-     if ( img && _stereo & CMedia::kStereoSideBySide )
-     {
-         int w = dpw.w();
-         xoffset = -w/2 + 0.5f;
-     }
-     else
-     {
-         xoffset = -dpw.x() - dpw.w() / 2.0;
-     }
-
-     yoffset = dpw.y() + dpw.h() / 2.0;
-
-     char buf[128];
-     sprintf( buf, "Offset %g %g", xoffset, yoffset );
-     send( buf );
-     redraw();
+      center_image();
      return 1;
   }
   else if ( kFitScreen.match( rawkey ) ) 
