@@ -1520,6 +1520,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
            if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
                view()->fit_image();
+           else
+               view()->center_image();
            
 	   adjust_timeline();
 
