@@ -1665,21 +1665,21 @@ void Flu_File_Chooser::PreviewGroup::draw()
 	for( int i = (int)chooser->previewHandlers.size()-1; i >= 0; i-- )
 	{
 	   next = chooser->previewHandlers[i];
-	  next->hide();
-	  if( !handled )
-	    {
-	      fltk::Group *p = next->parent();
+           next->hide();
+           if( !handled )
+           {
+               fltk::Group *p = next->parent();
  
-	      //fltk::Group::add( next );
-	      if( next->preview( file.c_str() ) != 0 )
-		{
+               //fltk::Group::add( next );
+               if( next->preview( file.c_str() ) != 0 )
+               {
 		   handled = next;
-		}
-	      //fltk::Group::remove( next );
+               }
+               //fltk::Group::remove( next );
 
-	      //if ( p ) p->add( handled );
+               //if ( p ) p->add( handled );
 
-	    }
+           }
 	}
     }
 
@@ -1720,6 +1720,7 @@ int Flu_File_Chooser::ImgTxtPreview::preview( const char *filename )
 
 
   fltk::SharedImage* img = fltk::SharedImage::get( filename );
+
 
   if( img )
     {
