@@ -387,20 +387,22 @@ void audio_thread( PlaybackData* data )
       }
 
       CMedia::DecodeStatus status = img->decode_audio( frame );
+
+
       /// DBG( "DECODE AUDIO FRAME " << frame << " STATUS " << status );
 
       switch( status )
       {
 	 case CMedia::kDecodeError:
-	    LOG_ERROR( _("Decode Error audio frame ") << frame );
-	    frame += step;
-	    continue;
+             LOG_ERROR( _("Decode Error audio frame ") << frame );
+             frame += step;
+             continue;
 	 case CMedia::kDecodeMissingFrame:
-	    LOG_ERROR( _("Decode Missing audio frame ") << frame );
-	    timer.setDesiredFrameRate( img->play_fps() );
-	    timer.waitUntilNextFrameIsDue();
-	    frame += step;
-	    continue;
+             LOG_ERROR( _("Decode Missing audio frame ") << frame );
+             timer.setDesiredFrameRate( img->play_fps() );
+             timer.waitUntilNextFrameIsDue();
+             frame += step;
+             continue;
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
               {
@@ -822,9 +824,8 @@ void decode_thread( PlaybackData* data )
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
       }
-      
 
- 
+
       // If we could not get a frame (buffers full, usually),
       // wait a little.
       if ( !img->frame( frame ) )
@@ -834,7 +835,7 @@ void decode_thread( PlaybackData* data )
 	 req.tv_nsec = (long)( 10 * 1e7f); // 10 ms.
 	 nanosleep( &req, NULL );
       }
-	   
+
       // After read, when playing backwards or playing audio files,
       // decode position may be several frames advanced as we buffer
       // multiple frames, so get back the dts frame from image.

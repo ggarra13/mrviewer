@@ -2085,15 +2085,8 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_start() )
       {
-	   if ( frame > first_frame() )
-	   {
-	      return kDecodeOK;
-	   }
-	   else
-	   {
-	      _video_packets.pop_front();
-	      return kDecodeLoopStart;
-	   }
+          _video_packets.pop_front();
+          return kDecodeLoopStart;
       }
       else if ( _video_packets.is_loop_end() )
       {
