@@ -322,7 +322,7 @@ namespace mrv {
     {
        fltk::Preferences win( ui, "window" );
        
-       win.get( "auto_fit_image", tmp, 1 );
+       win.get( "auto_fit_image", tmp, 0 );
        uiPrefs->uiPrefsAutoFitImage->value( tmp );
 
        win.get( "always_on_top", tmp, 0 );
