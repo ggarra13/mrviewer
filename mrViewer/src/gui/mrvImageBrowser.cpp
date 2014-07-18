@@ -2424,6 +2424,7 @@ void ImageBrowser::load( const stringArray& files,
     }
 
     last_image();
+    view()->fit_image();
   }
 
   /** 
