@@ -613,9 +613,15 @@ void video_thread( PlaybackData* data )
 
       status = img->decode_video( frame );
 
-      if ( frame > img->last_frame() )
+      boost::int64_t last = timeline->maximum();
+      if ( img->last_frame() < last ) last = img->last_frame();
+
+      boost::int64_t first = timeline->minimum();
+      if ( img->first_frame() > first ) first = img->first_frame();
+
+      if ( frame > last )
          status = CMedia::kDecodeLoopEnd;
-      if ( frame < img->first_frame() )
+      if ( frame < first )
          status = CMedia::kDecodeLoopStart;
 
 
