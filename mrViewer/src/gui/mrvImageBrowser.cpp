@@ -1512,7 +1512,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	      if ( sub_idx != -1 &&
 		   sub_idx < int(m->image()->number_of_subtitle_streams()) )
 		 m->image()->subtitle_stream( sub_idx );
-	      
+
 	      if ( audio_idx != -1 &&
 		   audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
@@ -1520,9 +1520,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
            if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
                view()->fit_image();
-           else
-               view()->center_image();
-           
+
 	   adjust_timeline();
 
 	   std::string buf;

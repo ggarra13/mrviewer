@@ -37,16 +37,15 @@ extern "C" {
 #include <libswresample/swresample.h>
 }
 
-#include "aviImage.h"
-#include "mrvImageView.h"
-#include "mrvPlayback.h"
+#include "core/mrvPlayback.h"
+#include "core/aviImage.h"
+#include "core/mrvFrameFunctors.h"
+#include "core/mrvThread.h"
+#include "core/mrvCPU.h"
+#include "core/mrvColorSpaces.h"
+#include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
-#include "mrvFrameFunctors.h"
-#include "mrvThread.h"
-#include "mrvCPU.h"
-#include "mrvColorSpaces.h"
 #include "mrViewer.h"
-#include "gui/mrvIO.h"
 
 
 namespace 
