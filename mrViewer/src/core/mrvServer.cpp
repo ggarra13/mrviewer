@@ -46,6 +46,9 @@
 #include "gui/mrvReel.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvImageBrowser.h"
+#include "gui/mrvVectorscope.h"
+#include "gui/mrvHistogram.h"
+#include "mrvColorAreaUI.h"
 #include "mrViewer.h"
 
 using boost::asio::deadline_timer;
@@ -89,7 +92,9 @@ Parser::~Parser()
 
 void Parser::write( std::string s, std::string id )
 {
-   if ( !connected || !ui || !ui->uiView ) return;
+    if ( !connected || !ui || !ui->uiView ) {
+        return;
+    }
 
    ParserList::const_iterator i = ui->uiView->_clients.begin();
    ParserList::const_iterator e = ui->uiView->_clients.end();
@@ -198,6 +203,7 @@ bool Parser::parse( const std::string& s )
          shape = dynamic_cast< GLTextShape* >( view->shapes().back().get() );
          if ( shape == NULL ) {
             LOG_ERROR( "Not a GLTextShape as last shape" );
+            v->_clients = c;
             return false;
          }
       }
@@ -723,7 +729,10 @@ bool Parser::parse( const std::string& s )
 	 }
       }
 
-      if ( num == 0 ) return false;
+      if ( num == 0 ) {
+          v->_clients = c;
+          return true;
+      }
 
       r = browser()->current_reel();
       if (r)
@@ -759,6 +768,12 @@ bool Parser::parse( const std::string& s )
       }
 
       char buf[256];
+      sprintf(buf, N_("Zoom %g"), v->zoom() );
+      deliver( buf );
+
+      sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
+      deliver( buf );
+
       sprintf(buf, N_("Gain %g"), v->gain() );
       deliver( buf );
 
@@ -831,6 +846,50 @@ bool Parser::parse( const std::string& s )
 
       ok = true;
    }
+   else if ( cmd == N_("ColorInfoWindow") )
+   {
+       int x;
+       is >> x;
+       if ( x ) 
+       {
+           ui->uiColorArea->uiMain->show();
+           ui->uiView->update_color_info();
+       }
+       else
+       {
+           ui->uiColorArea->uiMain->hide();
+       }
+
+       ok = true;
+   }
+   else if ( cmd == N_("HistogramWindow") )
+   {
+       int x;
+       is >> x;
+       if ( x ) 
+       {
+           ui->uiHistogram->uiMain->show();
+           ui->uiView->update_color_info();
+       }
+       else
+       {
+           ui->uiHistogram->uiMain->hide();
+       }
+   }
+   else if ( cmd == N_("VectorscopeWindow") )
+   {
+       int x;
+       is >> x;
+       if ( x ) 
+       {
+           ui->uiVectorscope->uiMain->show();
+           ui->uiView->update_color_info();
+       }
+       else
+       {
+           ui->uiVectorscope->uiMain->hide();
+       }
+   }
 
    v->_clients = c;
    return ok;
@@ -902,10 +961,8 @@ bool tcp_session::stopped()
 
 void tcp_session::deliver(std::string msg)
 {
-   
    output_queue_.push_back(msg + "\n");
 
-   
    // Signal that the output queue contains messages. Modifying the expiry
    // will wake the output actor, if it is waiting on the timer.
    non_empty_output_queue_.expires_at(boost::posix_time::neg_infin);  
