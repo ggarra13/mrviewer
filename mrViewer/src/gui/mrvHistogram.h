@@ -51,6 +51,7 @@ namespace mrv
 
 
     void main( mrv::ViewerUI* m ) { uiMain = m; };
+    mrv::ViewerUI* main() { return uiMain; };
 
   protected:
     void   draw_grid( const fltk::Rectangle& r );

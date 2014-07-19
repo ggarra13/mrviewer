@@ -1,6 +1,10 @@
 v2.6.3.4 - Bug fixed thumbnails on sequences in file requester.
-	 - When autofit image is off, we center the image without changing 
-	   zoom factor.
+	 - Bug fixed some remote image problems including one incorrect 
+	   log out.
+	 - Made auto fitting when loading a new image.
+	 - Added Color Info, Histogram and Vectorscope windows to the things
+	   that open remotely.  Note, however, it is currently not possible to
+	   close them from the client side.
 v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
 	   documentation for them.
 	 - Bug fixed an audio muting problem on some movies.  This was a 
