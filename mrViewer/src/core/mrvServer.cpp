@@ -105,6 +105,7 @@ void Parser::write( std::string s, std::string id )
       if ( p == id ) {
 	 continue;
       }
+      LOG_CONN( s << " sent to " << p );
       (*i)->deliver( s );
    }
 }
@@ -853,7 +854,7 @@ bool Parser::parse( const std::string& s )
        if ( x ) 
        {
            ui->uiColorArea->uiMain->show();
-           ui->uiView->update_color_info();
+           v->update_color_info();
        }
        else
        {
@@ -869,7 +870,7 @@ bool Parser::parse( const std::string& s )
        if ( x ) 
        {
            ui->uiHistogram->uiMain->show();
-           ui->uiView->update_color_info();
+           v->update_color_info();
        }
        else
        {
@@ -883,7 +884,7 @@ bool Parser::parse( const std::string& s )
        if ( x ) 
        {
            ui->uiVectorscope->uiMain->show();
-           ui->uiView->update_color_info();
+           v->update_color_info();
        }
        else
        {
@@ -892,6 +893,7 @@ bool Parser::parse( const std::string& s )
    }
 
    v->_clients = c;
+
    return ok;
 }
 
