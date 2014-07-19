@@ -390,12 +390,14 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
        // Media Info
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
+      uiMain->uiView->send( "MediaInfoWindow 1" );
   }
   else if ( idx == kColorInfo )
     {
        // Color Area
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
+      uiMain->uiView->send( "ColorInfoWindow 1" );
     }
   else if ( idx == kEDLEdit )
   {
@@ -412,10 +414,12 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
   else if ( idx == kHistogram )
     {
       uiMain->uiHistogram->uiMain->show();
+      uiMain->uiView->send( "HistogramWindow 1" );
     }
   else if ( idx == kVectorscope )
     {
       uiMain->uiVectorscope->uiMain->show();
+      uiMain->uiView->send( "VectorscopeWindow 1" );
     }
   else if ( idx == kICCProfiles )
     {
@@ -2345,17 +2349,17 @@ void ImageView::mouseMove(int x, int y)
       if ( _showBG && bgr && rgba.a < 1.0f &&
 	   bgr->width() == img->width() &&
 	   bgr->height() == img->height() )
-	{ 
-	  float t = 1.0f - rgba.a;
+	{
 
 	  pic = bgr->hires();
 	  if ( pic )
-	    {
+          {
+              float t = 1.0f - rgba.a;
 	      CMedia::Pixel bg = pic->pixel( xp, yp );
 	      rgba.r += bg.r * t;
 	      rgba.g += bg.g * t;
 	      rgba.b += bg.b * t;
-	    }
+          }
 	}
     }
 
@@ -4107,6 +4111,10 @@ void ImageView::background( mrv::media bg )
   if ( bg ) 
     {
       CMedia* img = bg->image();
+
+      char buf[1024];
+      sprintf( buf, "CurrentBGImage \"%s\"", img->fileroot() );
+      send( buf );
 
       img->volume( _volume );
       if ( playback() != kStopped ) 
