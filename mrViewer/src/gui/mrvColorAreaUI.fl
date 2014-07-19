@@ -9,12 +9,14 @@ snap 3
 decl {\#include "string"} {public
 } 
 
-decl {\#include "core/mrvI8N.h"} {selected public
+decl {\#include "core/mrvI8N.h"} {public
 } 
 
 decl {\#include "core/mrvColorSpaces.h"} {} 
 
 decl {\#include "gui/mrvColorInfo.h"} {} 
+
+decl {\#include "gui/mrvImageView.h"} {} 
 
 decl {\#include "mrViewer.h"} {} 
 
@@ -24,28 +26,40 @@ namespace mrv {open
   }
   decl {class ColorInfo;} {public
   }
-  class ColorAreaUI {} {
+  class ColorAreaUI {open
+  } {
+    decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label {Color Information} open
-        xywh {391 234 400 260} hide resizable
+        label {Color Information}
+        user_data this user_data_type {ColorAreaUI*}
+        callback {v->main()->uiView->send( "ColorInfoWindow 0" );
+o->hide();} selected
+        xywh {430 501 400 260} resizable
         extra_code {// Make the window transient
+main_ = main;
 o->size_range( 400, 260 );
-o->child_of( (fltk::Window*)main->uiMain );}
+o->child_of( (fltk::Window*)main->uiMain );} visible
       } {
-        {fltk::Browser} uiColorText {
+        {fltk::Browser} uiColorText {open
           xywh {0 0 400 260}
           extra_code {o->main( main );}
           class {mrv::ColorInfo}
         } {}
       }
     }
-    Function {ColorAreaUI(ViewerUI* m)} {} {
+    Function {ColorAreaUI(ViewerUI* m)} {open
+    } {
       code {make_window( m );} {}
     }
-    Function {~ColorAreaUI()} {} {
-      code {delete uiMain;} {}
+    Function {~ColorAreaUI()} {open
+    } {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {main()} {open return_type {mrv::ViewerUI*}
+    } {
+      code {return main_;} {}
     }
   }
 } 
