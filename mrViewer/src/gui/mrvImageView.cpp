@@ -1372,6 +1372,15 @@ void ImageView::timeout()
     }
 }
 
+void ImageView::selection( const mrv::Rectd& r )
+{
+    _selection = r;
+
+    mrv::media fg = foreground();
+    if ( fg )
+        update_color_info( fg );
+}
+
 void ImageView::redo_draw()
 {
    if ( !_undo_shapes.empty() )
