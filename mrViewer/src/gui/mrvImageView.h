@@ -360,7 +360,7 @@ namespace mrv {
 
     void timeout();
 
-       void selection( const mrv::Rectd& r ) { _selection = r; }
+      void selection( const mrv::Rectd& r );
     const mrv::Rectd& selection() { return _selection; }
 
     /// Refresh audio tracks
