@@ -386,7 +386,7 @@ void parse_command_line( const int argc, char** argv,
     opts.fps  = afps.getValue();
 
     stringArray files = afiles.getValue();
-    unsigned normalFiles = files.size();
+    size_t normalFiles = files.size();
 
 #ifdef USE_STEREO
     stringArray stereo = astereo.getValue();

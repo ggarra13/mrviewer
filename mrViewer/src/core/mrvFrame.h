@@ -258,7 +258,7 @@ namespace mrv
 
   public:
     AudioFrame( const boost::int64_t frame, 
-		const int freq, const int channels, 
+		const int freq, const short channels, 
 		const boost::uint8_t* data, const unsigned int size ) :
       _frame( frame ),
       _channels( channels ),

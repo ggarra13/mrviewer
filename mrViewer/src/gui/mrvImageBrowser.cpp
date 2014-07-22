@@ -2671,7 +2671,6 @@ void ImageBrowser::load( const stringArray& files,
 	     DBG( "seek f local1: " << f );
 
 
-	     img->abort( true );
              if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
@@ -2684,7 +2683,6 @@ void ImageBrowser::load( const stringArray& files,
 
 	     DBG( "seek f local2: " << f );
 
-	     img->abort( true );
              if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 	  }
@@ -2696,7 +2694,6 @@ void ImageBrowser::load( const stringArray& files,
 	   if ( bg )
 	   {
 	      img = bg->image();
-	      img->abort( true );
 	      if (!img->stopped()) img->stop();
 
 	      bg = reel->media_at( tframe );
@@ -2706,7 +2703,6 @@ void ImageBrowser::load( const stringArray& files,
 		 f = reel->global_to_local( tframe );
 
 		 img = bg->image();
-		 img->abort( true );
                  if ( !img->stopped() ) img->stop();
 		 img->seek( f );
 	      }
@@ -2723,7 +2719,6 @@ void ImageBrowser::load( const stringArray& files,
 	if (!fg) return;
 	
 	CMedia* img = fg->image();
-	img->abort( true );
         if ( !img->stopped() ) img->stop();
 	img->seek( f );
 
@@ -2736,7 +2731,6 @@ void ImageBrowser::load( const stringArray& files,
            f = reel->global_to_local( tframe );
 
 	   img = bg->image();
-	   img->abort( true );
            if ( !img->stopped() ) img->stop();
 	   img->seek( f );
 	}
