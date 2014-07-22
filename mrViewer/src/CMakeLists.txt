@@ -52,7 +52,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/local/lib
       /usr/lib
       )
-    ADD_DEFINITIONS( -DUSE_GETTEXT -DLINUX -msse ) 
+    ADD_DEFINITIONS( -Wconversion -DUSE_GETTEXT -DLINUX -msse ) 
     SET(OS_LIBRARIES
       asound
       ${Xpm} png X11 Xi Xft Xinerama pthread m Xext stdc++ GLEW
