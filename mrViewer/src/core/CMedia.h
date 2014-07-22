@@ -319,7 +319,7 @@ class CMedia
     inline Damage image_damage() const { return _image_damage; };
 
     ////////////////// Set the image damage (for update)
-    inline void  image_damage( boost::uint8_t x ) 
+    inline void  image_damage( int x ) 
     { _image_damage = (Damage) x; };
 
     /// Return the name of the image (sans directory)
@@ -391,7 +391,7 @@ class CMedia
 
     ///////////////// Decoding time stamp
     inline boost::int64_t   dts()                      { return _dts; }
-    inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 2; } 
+    inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; } 
 
     ///////////////// Audio frame
     inline void audio_frame( const boost::int64_t f ) { _audio_frame = f; }
@@ -901,12 +901,12 @@ class CMedia
 
     /// Allocate hires image pixels
     void allocate_pixels( const boost::int64_t& frame,
-			  const unsigned int channels = 4,
+			  const unsigned short channels = 4,
 			  const image_type::Format format = image_type::kRGBA,
 			  const image_type::PixelType pixel_type = image_type::kFloat ); 
 
     void allocate_pixels_stereo( const boost::int64_t& frame,
-				 const unsigned int channels = 4,
+				 const unsigned short channels = 4,
 				 const image_type::Format format = image_type::kRGBA,
 				 const image_type::PixelType pixel_type = image_type::kFloat );
 
