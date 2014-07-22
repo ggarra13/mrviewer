@@ -49,7 +49,7 @@ namespace mrv {
        {
 	  assert( image  != NULL );
        }
-       
+
        PlaybackData( const PlaybackData& b ) :
        fg( b.fg ),
        uiMain( b.uiMain ),
@@ -58,6 +58,10 @@ namespace mrv {
        {
 	  assert( image != NULL );
        }
+
+      ~PlaybackData()
+      {
+      }
 
   };
 
