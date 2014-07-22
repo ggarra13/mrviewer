@@ -806,6 +806,14 @@ bool Parser::parse( const std::string& s )
       sprintf( buf, N_("Looping %d"), (int)v->looping() );
       deliver( buf );
 
+      const mrv::Rectd& s = v->selection();
+      if ( s.w() != 0 )
+      {
+          sprintf( buf, N_("Selection %g %g %g %g"), s.x(), s.y(), 
+                   s.w(), s.h() );
+          deliver( buf );
+      }
+
       {
          const mrv::GLShapeList& shapes = view()->shapes();
          mrv::GLShapeList::const_iterator i = shapes.begin();
