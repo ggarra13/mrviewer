@@ -39,6 +39,7 @@ extern "C" {
 #include <boost/cstdint.hpp>
 #include <boost/bind.hpp>
 #include <boost/filesystem.hpp>
+#include <boost/exception/diagnostic_information.hpp>
 namespace fs = boost::filesystem;
 
 
@@ -129,6 +130,7 @@ CMedia::CMedia() :
   _dts( 1 ),
   _audio_frame( 1 ),
   _frame( 1 ),
+  _expected( 1 ),
   _frameStart( 1 ),
   _frameEnd( 1 ),
   _interlaced( kNoInterlace ),
@@ -146,9 +148,9 @@ CMedia::CMedia() :
   _sequence( NULL ),
   _right( NULL ),
   _audio_pts( 0 ),
-  _audio_clock( av_gettime() / 1000000.0 ),
+  _audio_clock( double( av_gettime() )/ 1000000.0 ),
   _video_pts( 0 ),
-  _video_clock( av_gettime() / 1000000.0 ),
+  _video_clock( double( av_gettime() ) / 1000000.0 ),
   _context(NULL),
   _acontext(NULL),
   _audio_codec(NULL),
@@ -203,6 +205,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _dts( 1 ),
   _audio_frame( 1 ),
   _frame( 1 ),
+  _expected( 1 ),
   _frameStart( 1 ),
   _frameEnd( 1 ),
   _frame_start( 1 ),
@@ -402,9 +405,9 @@ void CMedia::hires( const mrv::image_type_ptr pic)
  * @param hs image height in pixels
  */
 void CMedia::allocate_pixels( const boost::int64_t& frame,
-				 const unsigned int channels,
-				 const image_type::Format format,
-				 const image_type::PixelType pixel_type )
+                              const unsigned short channels,
+                              const image_type::Format format,
+                              const image_type::PixelType pixel_type )
 {
   SCOPED_LOCK( _mutex );
   _hires.reset( new image_type( frame, width(), height(), 
@@ -412,7 +415,7 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 }
 
 void CMedia::allocate_pixels_stereo( const boost::int64_t& frame,
-				     const unsigned int channels,
+				     const unsigned short channels,
 				     const image_type::Format format,
 				     const image_type::PixelType pixel_type )
 {
@@ -1340,8 +1343,8 @@ void CMedia::play(const CMedia::Playback dir,
   _dts = _frame;
 
 
-  _audio_clock = av_gettime() / 1000000.0;
-  _video_clock = av_gettime() / 1000000.0;
+  _audio_clock = double( av_gettime() ) / 1000000.0;
+  _video_clock = double( av_gettime() ) / 1000000.0;
 
   _audio_buf_used = 0;
 
@@ -1355,52 +1358,63 @@ void CMedia::play(const CMedia::Playback dir,
      IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
-  PlaybackData* data = new PlaybackData( fg, uiMain, this );
+  PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
   assert( data != NULL );
   assert( data->uiMain != NULL );
   assert( data->image != NULL );
 
   PlaybackData* video_data, *audio_data, *subtitle_data;
 
-  // If there's at least one valid video stream, create video thread
-  bool valid_v = valid_video();
-  if ( valid_v )
-    {
-      video_data = new PlaybackData( *data );
-      _threads.push_back( new boost::thread( boost::bind( mrv::video_thread, 
-							  video_data ) ) );
-    }
+  try {
+      // If there's at least one valid video stream, create video thread
+      bool valid_v = valid_video();
+      if ( valid_v )
+      {
+          video_data = new PlaybackData( *data );
+          _threads.push_back( new boost::thread(
+                              boost::bind( mrv::video_thread, 
+                                           video_data ) ) );
+      }
 
-  // If there's at least one valid audio stream, create audio thread
-  bool valid_a = valid_audio();
-  if ( valid_a )
-    {
-      // Audio playback thread
-      audio_data = new PlaybackData( *data );
-      _threads.push_back( new boost::thread( boost::bind( mrv::audio_thread,
-							  audio_data ) ) );
-    }
+      // If there's at least one valid audio stream, create audio thread
+      bool valid_a = valid_audio();
+      if ( valid_a )
+      {
+          // Audio playback thread
+          audio_data = new PlaybackData( *data );
+          _threads.push_back( new boost::thread(
+                              boost::bind( mrv::audio_thread,
+                                           audio_data ) ) );
+      }
 
-  // If there's at least one valid subtitle stream, create subtitle thread
-  bool valid_s = valid_subtitle();
-  if ( valid_s )
-    {
-      // Subtitle playback thread
-      subtitle_data = new PlaybackData( *data );
-      _threads.push_back( new boost::thread( boost::bind( mrv::subtitle_thread,
-							  subtitle_data ) ) );
-    }
+      // If there's at least one valid subtitle stream, create subtitle thread
+      bool valid_s = valid_subtitle();
+      if ( valid_s )
+      {
+          // Subtitle playback thread
+          subtitle_data = new PlaybackData( *data );
+          _threads.push_back( new boost::thread( 
+                              boost::bind( mrv::subtitle_thread,
+                                           subtitle_data ) ) );
+      }
 
 
-  // Decoding thread
-  if ( valid_a || valid_v || valid_s )
-    {
-      _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
-      _threads.push_back( new boost::thread( boost::bind( mrv::decode_thread, 
-							  data ) ) );
-    }
+      // Decoding thread
+      if ( valid_a || valid_v || valid_s )
+      {
+          _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
+          _threads.push_back( new boost::thread( 
+                              boost::bind( mrv::decode_thread, 
+                                           data ) ) );
+      }
 
-  assert( _threads.size() <= ( 1 + valid_a + valid_v + valid_s ) );
+      assert( _threads.size() <= ( 1 + valid_a + valid_v + valid_s ) );
+  }
+  catch( boost::exception& e )
+  {
+      LOG_ERROR( boost::diagnostic_information(e) );
+  }
+
 
 }
 
@@ -1408,7 +1422,7 @@ void CMedia::play(const CMedia::Playback dir,
 void CMedia::stop()
 {
 
-    if ( _playback == kStopped ) return;
+    if ( _playback == kStopped && _threads.empty() ) return;
 
   _playback = kStopped;
 
@@ -1902,7 +1916,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   assert( pts != MRV_NOPTS_VALUE );
   if (!stream) return 0;
 
-  double p = av_q2d( stream->time_base ) * pts;
+  double p = av_q2d( stream->time_base ) * double( pts );
   frame = boost::int64_t( p * fps() + 0.5 ) + 1; 
   //  _frameStart; //is wrong
   return frame;
@@ -2134,8 +2148,8 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  _video_pts = int64_t( f / _fps );
-  _video_clock = av_gettime() / 1000000.0;
+  _video_pts = int64_t( double(f) / _fps );
+  _video_clock = double(av_gettime()) / 1000000.0;
 
   // Check if we have a cached frame for this frame
   
