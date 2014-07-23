@@ -1581,11 +1581,6 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 		 m->image()->audio_stream( audio_idx );
 	   }
 
-           mrv::ImageView* v  = view();
-
-           if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-               v->fit_image();
-
 	   adjust_timeline();
 
            send_image( m );

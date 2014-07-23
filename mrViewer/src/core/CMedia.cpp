@@ -1322,7 +1322,9 @@ void CMedia::play(const CMedia::Playback dir,
 		  bool fg )
 {
 
-  if ( dir == _playback && !_threads.empty() ) return;
+    if ( dir == _playback && _threads.empty() ) {
+        return;
+    }
 
   stop();
 
@@ -1341,6 +1343,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   _dts = _frame;
 
+  DBG( name() << " Play from frame " << _dts );
 
   _audio_clock = double( av_gettime() ) / 1000000.0;
   _video_clock = double( av_gettime() ) / 1000000.0;
@@ -1428,23 +1431,29 @@ void CMedia::stop()
   //
   // Notify loop barrier, to exit any wait on a loop
   //
+  DBG( name() << " Notify all loop barrier" );
   if ( _loop_barrier ) _loop_barrier->notify_all();
 
   // Notify packets, to make sure that audio thread exits any wait lock
   // This needs to be done even if no audio is playing, as user might
   // have turned off audio, but audio thread is still active.
+  DBG( name() << " Notify all A/V/S" );
   _audio_packets.cond().notify_all();
   _video_packets.cond().notify_all();
   _subtitle_packets.cond().notify_all();
 
 
   // Wait for all threads to exit
+  DBG( name() << " Wait for threads" );
   wait_for_threads();
+  DBG( name() << " Waited for threads" );
 
 
   // Clear barrier
+  DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
 
+  DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
   clear_packets();
 
