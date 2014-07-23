@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-#define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -165,6 +165,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  CMedia::Mutex& m2 = next->video_mutex();
 		  SCOPED_LOCK( m2 );
 
+                  DBG( img->name() << " STOPPED" );
 		  img->playback( CMedia::kStopped );
 
                   if ( next->stopped() )
@@ -661,17 +662,12 @@ void video_thread( PlaybackData* data )
                    break;
                }
 
-               if ( img->stopped() )
-                  break;
-
 	       continue;
 	    }
 	 default:
 	    break;
       }
 
-      if ( img->stopped() )
-          break;
 
       fps = img->play_fps();
 
@@ -805,16 +801,15 @@ void decode_thread( PlaybackData* data )
       step = (int) img->playback();
       if ( step == 0 ) break;
 
-      frame += step;
-      
       CMedia* next = NULL;
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
       if ( status != CMedia::kDecodeOK )
       {
-          DBG( img->name() << " BARRIER IN DECODE " << frame );
 	 // Lock thread until loop status is resolved on all threads
 	 CMedia::Barrier* barrier = img->loop_barrier();
 	 int thread_count = barrier_thread_count( img );
+         DBG( img->name() << " BARRIER IN DECODE " << frame << " count "
+              << thread_count );
 	 barrier->count( thread_count );
 	 // Wait until all threads loop or exit
 	 barrier->wait();
@@ -828,6 +823,7 @@ void decode_thread( PlaybackData* data )
          // goes faster than video or audio threads
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
+         continue;
       }
 
 
@@ -849,7 +845,7 @@ void decode_thread( PlaybackData* data )
 	 frame = img->dts();
       }
 
-      DBG( "DECODE THREAD frame " << frame );
+      frame += step;
 
    }
 
