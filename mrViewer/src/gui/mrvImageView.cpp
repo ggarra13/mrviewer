@@ -2960,7 +2960,7 @@ int ImageView::keyDown(unsigned int rawkey)
       double FPS = 24;
       if ( img ) FPS = img->play_fps();
       fps( FPS * 2 );
-      if ( img->playback() == CMedia::kBackwards )
+      if ( playback() == kBackwards )
 	 stop();
       else
 	 play_backwards();
@@ -2976,7 +2976,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS / 2 );
 
-      if ( img->playback() == CMedia::kBackwards )
+      if ( playback() == kBackwards )
 	 stop();
       else
 	 play_backwards();
@@ -2993,7 +2993,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() == CMedia::kBackwards )
+      if ( playback() == kBackwards )
 	 stop();
       else
 	 play_backwards();
@@ -3009,7 +3009,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS * 2 );
-      if ( img->playback() == CMedia::kForwards )
+      if ( playback() == kForwards )
 	 stop();
       else
 	 play_forwards();
@@ -3025,7 +3025,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
 
       fps( FPS / 2 );
-      if ( img->playback() != CMedia::kStopped )
+      if ( playback() != kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -3041,7 +3041,7 @@ int ImageView::keyDown(unsigned int rawkey)
       if ( img ) FPS = img->play_fps();
       fps( FPS );
 
-      if ( img->playback() != CMedia::kStopped )
+      if ( playback() != kStopped )
 	 stop();
       else
 	 play_forwards();
@@ -3974,12 +3974,6 @@ void ImageView::foreground( mrv::media fg )
 
 
 
-  // if ( old && !old->image()->stopped() )
-  // {
-  //     old->image()->stop();
-  // }
-
-
   delete_timeout();
 
   CMedia* img = NULL;
@@ -3995,6 +3989,7 @@ void ImageView::foreground( mrv::media fg )
       uiMain->uiFPS->value( img->play_fps() );
       
       img->volume( _volume );
+
     }
 
   _fg = fg;
@@ -4014,6 +4009,9 @@ void ImageView::foreground( mrv::media fg )
 	 if ( img->width() > 160 && !fltk_main()->border() ) {
             fit_image();
          }
+
+         if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+             fit_image();
 
 	 img->image_damage( img->image_damage() | CMedia::kDamageContents );
 
@@ -4638,7 +4636,7 @@ void ImageView::play( const CMedia::Playback dir )
    delete_timeout();
 
    double fps = uiMain->uiFPS->value();
-   create_timeout( 1.0/fps*2 );
+   create_timeout( 1.0/(fps*2) );
 
    mrv::media fg = foreground();
    if ( fg )
