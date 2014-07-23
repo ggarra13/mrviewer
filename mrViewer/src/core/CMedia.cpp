@@ -1326,7 +1326,6 @@ void CMedia::play(const CMedia::Playback dir,
 
   stop();
 
-
   _playback = dir;
   _aborted = false;
 

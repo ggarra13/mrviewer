@@ -3930,7 +3930,7 @@ void ImageView::update_layers()
       if ( channelName && ( name == channelName ) )
       {
 	 v = idx;
-	 _old_channel = v;
+	 _old_channel = (unsigned short)v;
       }
 
       if ( v >= 0 )
@@ -3951,7 +3951,7 @@ void ImageView::update_layers()
 
   if ( v < uiColorChannel->children() )
     {
-      channel( v );
+        channel( (unsigned short) v );
     }
 
   uiColorChannel->redraw();
@@ -3974,10 +3974,10 @@ void ImageView::foreground( mrv::media fg )
 
 
 
-  if ( old && playback() != kStopped )
-    {
-       old->image()->stop();
-    }
+  // if ( old && !old->image()->stopped() )
+  // {
+  //     old->image()->stop();
+  // }
 
 
   delete_timeout();
