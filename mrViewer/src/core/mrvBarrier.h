@@ -29,6 +29,8 @@ namespace mrv {
 
     inline unsigned int used() { return m_threshold - m_count; }
 
+      inline unsigned int count() { return m_threshold; }
+
     void count( unsigned int c );
 
     void notify_all();
