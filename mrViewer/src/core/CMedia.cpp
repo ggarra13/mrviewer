@@ -1367,6 +1367,10 @@ void CMedia::play(const CMedia::Playback dir,
   try {
       // If there's at least one valid video stream, create video thread
       bool valid_v = valid_video();
+      // If there's at least one valid audio stream, create audio thread
+      bool valid_a = valid_audio();
+      // If there's at least one valid subtitle stream, create subtitle thread
+      bool valid_s = valid_subtitle();
       if ( valid_v )
       {
           video_data = new PlaybackData( *data );
@@ -1375,8 +1379,6 @@ void CMedia::play(const CMedia::Playback dir,
                                            video_data ) ) );
       }
 
-      // If there's at least one valid audio stream, create audio thread
-      bool valid_a = valid_audio();
       if ( valid_a )
       {
           // Audio playback thread
@@ -1386,8 +1388,6 @@ void CMedia::play(const CMedia::Playback dir,
                                            audio_data ) ) );
       }
 
-      // If there's at least one valid subtitle stream, create subtitle thread
-      bool valid_s = valid_subtitle();
       if ( valid_s )
       {
           // Subtitle playback thread
@@ -1398,7 +1398,7 @@ void CMedia::play(const CMedia::Playback dir,
       }
 
 
-      // Decoding thread
+      // If something was valid, create decode thread
       if ( valid_a || valid_v || valid_s )
       {
           _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
