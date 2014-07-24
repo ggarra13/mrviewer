@@ -936,7 +936,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
   glScaled( 1.0, pr, 1.0 );
 
   glTranslated( r.x(), -r.y(), 0 );
-  glTranslated( daw.x(), -daw.y(), 0 );
+  // glTranslated( daw.x(), -daw.y(), 0 );
 
   double rw = r.w();
   double rh = r.h();
@@ -1177,6 +1177,17 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( texWidth == 0 || texHeight == 0 ) continue;
 
+
+      if ( _view->display_window() && daw != dpw )
+      {
+          mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
+          glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
+          glLineStipple( 1, 0x00FF );
+          glEnable( GL_LINE_STIPPLE );
+          draw_rectangle( r );
+          glDisable( GL_LINE_STIPPLE );
+      }
+
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
       glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
@@ -1270,17 +1281,36 @@ void GLEngine::draw_images( ImageList& images )
 
          glTranslated( dpw.w(), 0, 0 );
 
+         const mrv::Recti& dpw2 = img->display_window2(frame);
+         const mrv::Recti& daw2 = img->data_window2(frame);
+
          glPushMatrix();
 
+         if ( _view->display_window() && daw2 != dpw2 )
+         {
+             mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
+                                        daw2.y(),
+                                        daw2.w(), daw2.h() );
+             glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
+             glLineStipple( 1, 0x00FF );
+             glEnable( GL_LINE_STIPPLE );
+             draw_rectangle( r );
+             glDisable( GL_LINE_STIPPLE );
 
-         if ( _view->display_window() && dpw != daw )
+             glPopMatrix();
+             glPushMatrix();
+         }
+
+
+
+         if ( _view->display_window() && dpw2 != daw2 )
          {
              draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
          }
 
-         if ( daw.x() != 0 || daw.y() != 0 )
+         if ( daw2.x() != 0 || daw2.y() != 0 )
          {
-             glTranslatef( float(daw.x()), float(-daw.y()), 0 );
+             glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
          }
 
          if ( _view->main()->uiPixelRatio->value() )
