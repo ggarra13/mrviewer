@@ -1178,7 +1178,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( texWidth == 0 || texHeight == 0 ) continue;
 
 
-      if ( _view->display_window() && daw != dpw )
+      if ( _view->data_window() && daw != dpw )
       {
           mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
           glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
@@ -1286,7 +1286,7 @@ void GLEngine::draw_images( ImageList& images )
 
          glPushMatrix();
 
-         if ( _view->display_window() && daw2 != dpw2 )
+         if ( _view->data_window() && daw2 != dpw2 )
          {
              mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
                                         daw2.y(),

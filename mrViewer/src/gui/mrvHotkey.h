@@ -146,6 +146,7 @@ extern Hotkey kCenterImage;
 extern Hotkey kFitScreen;
 extern Hotkey kSafeAreas;
 extern Hotkey kDisplayWindow;
+extern Hotkey kDataWindow;
 extern Hotkey kWipe;
 extern Hotkey kFlipX;
 extern Hotkey kFlipY;
