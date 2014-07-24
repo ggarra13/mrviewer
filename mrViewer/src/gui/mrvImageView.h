@@ -253,6 +253,12 @@ namespace mrv {
 
       /// Return status of safe areas
       bool display_window() const { return _displayWindow; }
+
+      /// Turn on or off data window
+      void data_window( const bool t );
+
+      /// Return status of safe areas
+      bool data_window() const { return _dataWindow; }
   
     /// Normalize value
     bool normalize() const;
@@ -511,7 +517,8 @@ namespace mrv {
     //! Flags for state of display - unneeded?, should use uiMain->uiLUT, etc.
     FieldDisplay  _field;
     CMedia::StereoType _stereo;
-      bool          _displayWindow, _showBG, _showPixelRatio, _useLUT;
+      bool          _displayWindow, _dataWindow, _showBG;
+      bool          _showPixelRatio, _useLUT;
     float         _volume;
     FlipDirection _flip;
 
