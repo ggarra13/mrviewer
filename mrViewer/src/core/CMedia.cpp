@@ -493,7 +493,7 @@ const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
     return _displayWindow[idx];
 }
 
-const mrv::Recti& CMedia::display_window2() const
+const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
@@ -502,7 +502,9 @@ const mrv::Recti& CMedia::display_window2() const
 
     if ( !_displayWindow2 ) return kNoRect;
 
-    boost::uint64_t idx = _frame - _frameStart;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+
     assert( idx <= _frameEnd - _frameStart );
     return _displayWindow2[idx];
 }
@@ -525,7 +527,7 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
     return _dataWindow[idx];
 }
 
-const mrv::Recti& CMedia::data_window2() const
+const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
 {
     static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
@@ -534,7 +536,9 @@ const mrv::Recti& CMedia::data_window2() const
 
     if ( !_dataWindow2 ) return kNoRect;
 
-    boost::uint64_t idx = _frame - _frameStart;
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+
     assert( idx <= _frameEnd - _frameStart );
     return _dataWindow2[idx];
 }
