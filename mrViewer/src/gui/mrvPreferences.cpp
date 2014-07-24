@@ -370,6 +370,9 @@ namespace mrv {
     view.get("display_window", tmp, 1 );
     uiPrefs->uiPrefsViewDisplayWindow->value( (bool)tmp );
 
+    view.get("data_window", tmp, 1 );
+    uiPrefs->uiPrefsViewDataWindow->value( (bool)tmp );
+
     //
     // ui/colors
     //
@@ -489,7 +492,6 @@ namespace mrv {
     char device[256];
     audio.get( "device", device, "default", 255 );
 
-
     AudioEngine* engine = AudioEngine::factory();
     delete engine;
 
@@ -518,7 +520,8 @@ namespace mrv {
 	  }
       }
 
-
+    audio.get( "volume", tmpF, 1.0f );
+    uiPrefs->uiPrefsAudioVolume->value( tmpF );
 
     //
     // Get environment preferences (LUTS)
@@ -798,15 +801,18 @@ namespace mrv {
     main->uiGain->value( uiPrefs->uiPrefsViewGain->value() );
     main->uiGamma->value( uiPrefs->uiPrefsViewGamma->value() );
 
+    mrv::ImageView* view = main->uiView;
+
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
-       main->uiView->toggle_pixel_ratio();
+       view->toggle_pixel_ratio();
 
-    main->uiView->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
+
+    view->display_window( uiPrefs->uiPrefsViewDisplayWindow->value() );
+    view->data_window( uiPrefs->uiPrefsViewDataWindow->value() );
 
     main->uiLUT->value( uiPrefs->uiPrefsViewLut->value() );
     
-    mrv::ImageView* view = main->uiView;
     view->use_lut( uiPrefs->uiPrefsViewLut->value() );
 
 
@@ -865,6 +871,8 @@ namespace mrv {
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
     change_timeline_display(main);
 
+    double x = uiPrefs->uiPrefsAudioVolume->value();
+    view->volume( float(x) );
 
     //
     // Handle fullscreen and presentation mode
@@ -875,6 +883,7 @@ namespace mrv {
        int y = int(uiPrefs->uiWindowYPosition->value());
        main->uiMain->position( x, y );
     }
+
 
     main->uiMain->show(0, NULL);
     fltk::check();
@@ -961,6 +970,7 @@ namespace mrv {
     view.set("gamma", uiPrefs->uiPrefsViewGamma->value() );
     view.set("compensate_pixel_ratio", uiPrefs->uiPrefsViewPixelRatio->value() );
     view.set("display_window", uiPrefs->uiPrefsViewDisplayWindow->value() );
+    view.set("data_window", uiPrefs->uiPrefsViewDataWindow->value() );
 
     view.set("lut", uiPrefs->uiPrefsViewLut->value() );
     view.set("safe_areas", uiPrefs->uiPrefsSafeAreas->value() );
@@ -1059,6 +1069,10 @@ namespace mrv {
       {
 	audio.set( "device", devices[idx].name.c_str() );
       }
+
+
+    audio.set( "volume", uiPrefs->uiPrefsAudioVolume->value() );
+
 
     fltk::Preferences lut( base, "lut" );
     i = uiPrefs->uiLUT_quality->value();

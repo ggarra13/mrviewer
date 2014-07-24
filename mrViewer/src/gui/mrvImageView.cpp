@@ -4785,6 +4785,8 @@ void ImageView::volume( float v )
 {
   _volume = v;
 
+  std::cerr << "volume " << v << std::endl;
+
   mrv::media fg = foreground();
   if ( fg ) fg->image()->volume( v );
 
@@ -4793,6 +4795,11 @@ void ImageView::volume( float v )
 
   uiMain->uiVolume->value( v );
   uiMain->uiVolume->redraw();
+
+
+  // char buf[128];
+  // sprintf( buf, "Volume %g", v );
+  // send( buf );
 
 }
 
