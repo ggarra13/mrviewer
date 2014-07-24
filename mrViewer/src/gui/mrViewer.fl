@@ -454,8 +454,7 @@ o->value(-1);}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class VectorscopeUI {open
-  } {
+  class VectorscopeUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -463,11 +462,11 @@ o->value(-1);}
         label Vectorscope
         user_data this user_data_type {VectorscopeUI*}
         callback {v->main()->uiView->send( "VectorscopeWindow 0" );
-o->hide();} open selected
-        xywh {104 363 325 240} resizable
+o->hide();} open
+        xywh {107 386 325 240} hide resizable
         extra_code {// Make the window transient
 main_ = main;
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
         {fltk::Widget} uiVectorscope {
           xywh {4 4 319 231}
@@ -487,8 +486,7 @@ o->child_of( main->uiMain );} visible
       code {return main_;} {}
     }
   }
-  class HistogramUI {open
-  } {
+  class HistogramUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(mrv::ViewerUI* main)} {open private
     } {
@@ -588,12 +586,13 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
-    Function {make_window()} {open private
+  class PreferencesUI {open
+  } {
+    Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {504 286 640 475} hide resizable
+        xywh {522 286 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -722,7 +721,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window} open
+            label {View Window}
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -732,18 +731,18 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::ValueInput} uiPrefsViewGain {
                 label Gain
                 tooltip {Sets the default gain when mrViewer starts.}
-                xywh {45 20 80 25} color 0xffffff00 labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
+                xywh {45 10 80 25} color 0xffffff00 labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
               }
               {fltk::ValueInput} uiPrefsViewGamma {
                 label Gamma
                 tooltip {Sets the default gamma when mrViewer starts.}
-                xywh {280 20 60 25} color 0xffffff00 labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
+                xywh {280 10 60 25} color 0xffffff00 labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
               }
               {fltk::Choice} uiPrefsCropArea {
                 label Crop
-                user_data this user_data_type {mrv::PreferencesUI*} open
+                user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {Allows you to select a standard cropping area around image.}
-                xywh {15 65 155 25} align 1 labelsize 11
+                xywh {15 58 155 25} align 1 labelsize 11
               } {
                 {fltk::Item} {} {
                   label {0.00 None}
@@ -808,7 +807,12 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsViewDisplayWindow {
                 label {Display Window}
                 tooltip {When mrViewer starts, the display window will be shown when appropiate.}
-                xywh {20 103 20 22} align 8 labelsize 11 value 1
+                xywh {20 88 20 22} align 8 labelsize 11 value 1
+              }
+              {fltk::CheckButton} uiPrefsViewDataWindow {
+                label {Data Window}
+                tooltip {When mrViewer starts, the data window will be shown when appropiate as a dotted line.}
+                xywh {20 108 20 22} align 8 labelsize 11 value 1
               }
             }
             {fltk::Group} uiPrefsHud {
@@ -1564,7 +1568,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading open
+            label Loading
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -1641,7 +1645,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} AudioDriver {
-              label Driver
+              label Driver open
               xywh {63 22 290 25}
             } {}
             {fltk::Browser} uiPrefsAudioDevice {
@@ -1662,9 +1666,14 @@ for ( ; i != e; ++i )
    }}
               class {fltk::Browser}
             } {}
+            {fltk::Slider} uiPrefsAudioVolume {
+              label {Audio Volume}
+              tooltip {Default audio at opening mrViewer.}
+              xywh {123 217 225 25} type TICK_ABOVE align 4 step 0.01 value 1
+            }
           }
           {fltk::Group} {} {
-            label Database
+            label Database open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} DatabaseDriver {
@@ -1680,7 +1689,7 @@ for ( ; i != e; ++i )
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 195 434}
         } {
           {fltk::Browser} {} {
@@ -1740,7 +1749,7 @@ for ( ; i != e; ++i )
               }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {212 441 402 34}
         } {
           {fltk::Button} {} {
@@ -1759,23 +1768,32 @@ mrv::Preferences prefs(v);}
           }
           {fltk::Button} {} {
             label OK
-            user_data this user_data_type {mrv::PreferencesUI*}
-            callback {v->uiMain->hide();
-v->refresh();}
+            user_data m user_data_type {mrv::ViewerUI*}
+            callback {v->uiPrefs->uiMain->hide();
+v->uiPrefs->run(v);} selected
             tooltip {Accept settings but don't save.}
             xywh {270 3 132 27}
           }
         }
       }
     }
-    Function {PreferencesUI()} {} {
-      code {make_window();} {}
+    Function {PreferencesUI(mrv::ViewerUI* m)} {open
+    } {
+      code {make_window(m);} {}
     }
     Function {~PreferencesUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {refresh()} {} {
+    Function {refresh()} {open
+    } {
       code {fltk::Window* w = fltk::Window::first();
+for ( ; w ; w = w->next() )
+   w->redraw();} {}
+    }
+    Function {run(mrv::ViewerUI* m)} {open
+    } {
+      code {mrv::Preferences::run( m );
+fltk::Window* w = fltk::Window::first();
 for ( ; w ; w = w->next() )
    w->redraw();} {}
     }
@@ -2352,7 +2370,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2384,12 +2403,12 @@ else
     Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
-  uiPrefs = new PreferencesUI();} {}
+  uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {362 231 640 530} when CHANGED hide resizable
+        xywh {365 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow}
@@ -3141,7 +3160,7 @@ o->value(24);}
                         class {fltk::ValueInput}
                       }
                     }
-                    {fltk::Group} {} {
+                    {fltk::Group} {} {open
                       xywh {287 2 73 19}
                     } {
                       {fltk::PopupMenu} uiAudioTracks {
