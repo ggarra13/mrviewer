@@ -199,6 +199,9 @@ namespace mrv {
     /// Change the audio volume [0..1]
     void volume( float v );
 
+    // Return audio volue [0..1]
+    float volume() { return _volume; }
+
     /// Change channel shown in viewer
     void channel( unsigned short c );
     unsigned short channel() const { return _channel; };

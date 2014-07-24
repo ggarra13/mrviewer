@@ -397,6 +397,14 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
+   else if ( cmd == N_("Volume") )
+   {
+      double b;
+      is >> b;
+      v->volume( b );
+      v->redraw();
+      ok = true;
+   }
    else if ( cmd == N_("DataWindow") )
    {
       int b;
@@ -796,6 +804,9 @@ bool Parser::parse( const std::string& s )
       deliver( buf );
 
       sprintf(buf, N_("SafeAreas %d"), (int)v->safe_areas() );
+      deliver( buf );
+
+      sprintf(buf, N_("Volume %g"), v->volume() );
       deliver( buf );
  
       sprintf(buf, N_("ShowPixelRatio %d"), 
