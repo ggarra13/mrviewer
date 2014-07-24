@@ -527,6 +527,12 @@ void display_window_cb( fltk::Widget* o, mrv::ImageView* view )
   view->redraw();
 }
 
+void data_window_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  view->data_window( !view->data_window() );
+  view->redraw();
+}
+
 static const float kMinZoom = 0.1f;
 static const float kMaxZoom = 32.f;
 
@@ -708,6 +714,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _field( kFrameDisplay ),
   _stereo( CMedia::kNoStereo ),
   _displayWindow( true ),
+  _dataWindow( true ),
   _showBG( true ),
   _showPixelRatio( false ),
   _useLUT( false ),
@@ -1978,6 +1985,9 @@ int ImageView::leftMouseDown(int x, int y)
 	    menu.add( _("View/Display Window"), kDisplayWindow.hotkey(), 
 		      (fltk::Callback*)display_window_cb, this );
 
+	    menu.add( _("View/Data Window"), kDataWindow.hotkey(), 
+		      (fltk::Callback*)data_window_cb, this );
+
 	    num = uiMain->uiPrefs->uiPrefsCropArea->children();
 	    for ( i = 0; i < num; ++i )
 	    {
@@ -2859,13 +2869,18 @@ int ImageView::keyDown(unsigned int rawkey)
        redraw();
        return 1;
     }
+  else if ( kDataWindow.match( rawkey ) )
+    {
+       data_window( data_window() ^ true );
+       redraw();
+       return 1;
+    }
   else if ( kDisplayWindow.match( rawkey ) )
     {
        display_window( display_window() ^ true );
        redraw();
        return 1;
-    }
-  else if ( kWipe.match( rawkey ) )
+    }  else if ( kWipe.match( rawkey ) )
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
@@ -4211,6 +4226,15 @@ void ImageView::toggle_background()
 {
    show_background( !show_background() );
    redraw();
+}
+
+void ImageView::data_window( const bool b ) 
+{
+  _dataWindow = b;
+
+  char buf[128];
+  sprintf( buf, "DataWindow %d", (int)b );
+  send( buf );
 }
 
 void ImageView::display_window( const bool b ) 

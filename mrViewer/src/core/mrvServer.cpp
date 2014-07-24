@@ -397,6 +397,14 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
+   else if ( cmd == N_("DataWindow") )
+   {
+      int b;
+      is >> b;
+      v->data_window( (b != 0) );
+      v->redraw();
+      ok = true;
+   }
    else if ( cmd == N_("UseLUT") )
    {
       int b;
