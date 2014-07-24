@@ -2627,8 +2627,8 @@ void ImageView::mouseDrag(int x,int y)
                double dy = (double) std::abs( yn - yf );
 
 
-               double xt = (xf + dpw[0].w() * right);
-               double yt = yf;
+               double xt = (xf + daw[0].x() + dpw[0].w() * right);
+               double yt = yf + daw[0].y();
                _selection = mrv::Rectd( xt, 
                                         (double)yt, 
                                         (double)dx, 
