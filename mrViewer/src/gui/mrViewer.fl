@@ -166,7 +166,8 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {} {
+  class ReelUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -592,7 +593,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {522 286 640 475} resizable visible
+        xywh {530 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1642,7 +1643,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
           }
           {fltk::Group} {} {
             label Audio open
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {8 24 412 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} AudioDriver {
               label Driver open
@@ -1667,9 +1668,19 @@ for ( ; i != e; ++i )
               class {fltk::Browser}
             } {}
             {fltk::Slider} uiPrefsAudioVolume {
-              label {Audio Volume}
+              label {Default Volume}
               tooltip {Default audio at opening mrViewer.}
-              xywh {123 217 225 25} type TICK_ABOVE align 4 step 0.01 value 1
+              xywh {123 207 27 135} type TICK_ABOVE align 1 step 0.01 value 1
+            }
+            {fltk::Button} uiPrefsAudioMute {
+              label Mute
+              user_data uiPrefsAudioVolume user_data_type {fltk::Slider*}
+              callback {o->value( !o->value() );
+if ( o->value() )
+   v->deactivate();
+else
+   v->activate();} selected
+              xywh {110 342 40 25}
             }
           }
           {fltk::Group} {} {
@@ -1770,7 +1781,7 @@ mrv::Preferences prefs(v);}
             label OK
             user_data m user_data_type {mrv::ViewerUI*}
             callback {v->uiPrefs->uiMain->hide();
-v->uiPrefs->run(v);} selected
+v->uiPrefs->run(v);}
             tooltip {Accept settings but don't save.}
             xywh {270 3 132 27}
           }
