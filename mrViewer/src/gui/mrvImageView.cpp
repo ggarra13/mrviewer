@@ -2353,49 +2353,61 @@ void ImageView::mouseMove(int x, int y)
   uiMain->uiCoord->text(buf);
   
   if ( outside )
-    {
+  {
       rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
-    }
+  }
   else
-    {
-
-//       float yp = yf;
-//       if ( _showPixelRatio ) yp /= img->pixel_ratio();
-
+  {
       rgba = pic->pixel( xp, yp );
 
+      //
+      // To represent pixel properly, we need to do gain/gamma/lut 
+      //
+      float one_gamma = 1.0f / _gamma;
+      if ( rgba.r > 0.f )
+          rgba.r = powf(rgba.r * _gain, one_gamma);
+      if ( rgba.g > 0.f )
+          rgba.g = powf(rgba.g * _gain, one_gamma);
+      if ( rgba.b > 0.f )
+          rgba.b = powf(rgba.b * _gain, one_gamma);
+
+
+      float yp = yf;
+      if ( _showPixelRatio ) yp /= img->pixel_ratio();
+
+
       CMedia* bgr = _engine->background();
-      if ( _showBG && bgr && rgba.a < 1.0f &&
-	   bgr->width() == img->width() &&
-	   bgr->height() == img->height() )
-	{
+      if ( _showBG && bgr && rgba.a < 1.0f )
+      {
 
 	  pic = bgr->hires();
 	  if ( pic )
           {
+              float px = (float) bgr->width() / (float) img->width();
+              float py = (float) bgr->height() / (float) img->height();
+              xp = (int)floor( xp * px );
+              yp = (int)floor( yp * py );
               float t = 1.0f - rgba.a;
 	      CMedia::Pixel bg = pic->pixel( xp, yp );
+
+              float one_gamma = 1.0f / bgr->gamma();
+              if ( bg.r > 0.f )
+                  bg.r = powf(bg.r * _gain, one_gamma);
+              if ( bg.g > 0.f )
+                  bg.g = powf(bg.g * _gain, one_gamma);
+              if ( bg.b > 0.f )
+                  bg.b = powf(bg.b * _gain, one_gamma);
+
 	      rgba.r += bg.r * t;
 	      rgba.g += bg.g * t;
 	      rgba.b += bg.b * t;
           }
-	}
-    }
-
-  //
-  // To represent pixel properly, we need to do gain/gamma/lut 
-  //
-  float one_gamma = 1.0f / _gamma;
-  if ( rgba.r > 0.f )
-      rgba.r = powf(rgba.r * _gain, one_gamma);
-  if ( rgba.g > 0.f )
-      rgba.g = powf(rgba.g * _gain, one_gamma);
-  if ( rgba.b > 0.f )
-      rgba.b = powf(rgba.b * _gain, one_gamma);
+      }
+  }
 
   switch( uiMain->uiAColorType->value() )
-    {
-    case kRGBA_Float:
+  {
+      case kRGBA_Float:
       uiMain->uiPixelR->text( float_printf( rgba.r ).c_str() );
       uiMain->uiPixelG->text( float_printf( rgba.g ).c_str() );
       uiMain->uiPixelB->text( float_printf( rgba.b ).c_str() );
@@ -4660,7 +4672,7 @@ void ImageView::play( const CMedia::Playback dir )
    delete_timeout();
 
    double fps = uiMain->uiFPS->value();
-   create_timeout( 1.0/(fps*2) );
+   create_timeout( 1.0/(fps*2.0) );
 
    mrv::media fg = foreground();
    if ( fg )
@@ -4785,8 +4797,6 @@ void ImageView::volume( float v )
 {
   _volume = v;
 
-  std::cerr << "volume " << v << std::endl;
-
   mrv::media fg = foreground();
   if ( fg ) fg->image()->volume( v );
 
@@ -4797,9 +4807,9 @@ void ImageView::volume( float v )
   uiMain->uiVolume->redraw();
 
 
-  // char buf[128];
-  // sprintf( buf, "Volume %g", v );
-  // send( buf );
+  char buf[128];
+  sprintf( buf, "Volume %g", v );
+  send( buf );
 
 }
 

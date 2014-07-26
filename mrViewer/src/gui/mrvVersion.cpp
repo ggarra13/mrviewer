@@ -49,7 +49,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "2.6.3.4 - Built " __DATE__ " " __TIME__;
+  static const char* kVersion = "2.6.3.5 - Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -375,7 +375,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     const char** pp = motion_str;
     while (*pp) {
       o << *pp << "\t";
-      unsigned idx = (pp - motion_str + 1);
+      size_t idx = (pp - motion_str + 1);
       switch(idx)
 	{
 	case ME_ZERO:
