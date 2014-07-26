@@ -523,6 +523,9 @@ namespace mrv {
     audio.get( "volume", tmpF, 1.0f );
     uiPrefs->uiPrefsAudioVolume->value( tmpF );
 
+    audio.get( "volume_mute", tmp, 0 );
+    uiPrefs->uiPrefsAudioMute->value( tmp );
+
     //
     // Get environment preferences (LUTS)
     //
@@ -872,6 +875,8 @@ namespace mrv {
     change_timeline_display(main);
 
     double x = uiPrefs->uiPrefsAudioVolume->value();
+    if ( uiPrefs->uiPrefsAudioMute->value() )
+        x = 0.0;
     view->volume( float(x) );
 
     //
@@ -1072,6 +1077,9 @@ namespace mrv {
 
 
     audio.set( "volume", uiPrefs->uiPrefsAudioVolume->value() );
+
+    audio.set( "volume_mute", uiPrefs->uiPrefsAudioMute->value() );
+
 
 
     fltk::Preferences lut( base, "lut" );
