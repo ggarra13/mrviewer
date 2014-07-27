@@ -21,7 +21,7 @@ class Point
      {
      }
 
-     Point( int xx, int yy ) :
+     Point( double xx, double yy ) :
      x( xx ), y( yy )
      {
      }
