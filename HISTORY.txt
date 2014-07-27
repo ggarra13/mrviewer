@@ -4,6 +4,11 @@ v2.6.3.5 - Added a starting audio volume preference to the default
 	   nothing.  This allows testing preferences much easier.
 	 - Pixel Info is now available for background images even when those
 	   background images have a different size than the foreground one.
+	 - Bug fixed file requester when clicking with rmb on a folder 
+	   which would access the folder instead of the menus.
+	 - EXR images with data windows are now saved keeping the data and
+	   display window if saved as EXR.
+	 - GUI for OpenEXR options and ImageMagick images.
 v2.6.3.4 - Bug fixed thumbnails on sequences in file requester.
 	 - Bug fixed some remote image problems including one incorrect 
 	   log out.

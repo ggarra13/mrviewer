@@ -25,6 +25,7 @@
 #include "mrvPreferences.h"
 #include "mrViewer.h"
 #include "aviSave.h"
+#include "core/mrvImageOpts.h"
 #include "core/aviImage.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
@@ -254,12 +255,18 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 void save_image_file( CMedia* image, const char* startdir )
 {
    if (!image) return;
-   
+
    const char* file = flu_save_chooser("Save Image", 
 				       kIMAGE_PATTERN.c_str(), startdir);
-    if ( !file ) return;
-    
-    image->save( file );
+   if ( !file ) return;
+
+   std::string tmp = file;
+   std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+		   (int(*)(int)) tolower);
+   std::string ext = tmp.c_str() + tmp.size() - 4;
+
+   ImageOpts* opts = ImageOpts::build( ext );
+   image->save( file, opts );
 }
 
 void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain, 
@@ -332,7 +339,10 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
    int audio_stream = -1;
 
+   ImageOpts* ipts = NULL;
 
+   if ( !movie )
+       ipts = ImageOpts::build( ext );
 
 
    for ( ; frame <= last; ++frame )
@@ -355,7 +365,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
             aviImage::close_movie(img);
 	    open_movie = false;
 	 }
-	 if ( movie )
+         if ( movie )
 	 {
 	    char buf[256];
 	    if ( edl )
@@ -417,7 +427,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	 {
 	    char buf[1024];
 	    sprintf( buf, fileroot, frame );
-	    img->save( buf );
+	    img->save( buf, ipts );
 	 }
       }
 	
@@ -429,6 +439,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
       }
    }
 
+   delete ipts;
 
    if ( open_movie )
    {
