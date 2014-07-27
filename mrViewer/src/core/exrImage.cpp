@@ -29,9 +29,10 @@
 #include <ImfIntAttribute.h>
 #include <ImfRgbaYca.h>
 
-#include "mrvThread.h"
-#include "exrImage.h"
-#include "mrvIO.h"
+#include "core/mrvThread.h"
+#include "core/exrImage.h"
+#include "core/mrvImageOpts.h"
+#include "gui/mrvIO.h"
 
 using namespace Imf;
 using namespace Imath;
@@ -95,6 +96,7 @@ namespace mrv {
     {
         case image_type::kByte:
         case image_type::kShort:
+            return Imf::NUM_PIXELTYPES;
         case image_type::kInt:
             return Imf::UINT;
         case image_type::kHalf:
@@ -1520,7 +1522,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               else
               {
                   data_window2( dataWindow.min.x, dataWindow.min.y,
-                            dataWindow.max.x, dataWindow.max.y );
+                                dataWindow.max.x, dataWindow.max.y );
 
                   display_window2( displayWindow.min.x, displayWindow.min.y,
                                    displayWindow.max.x, displayWindow.max.y );
@@ -1710,70 +1712,91 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
   }
 
 
-  bool exrImage::save( const char* file, const CMedia* orig )
-  {
-    unsigned dw = orig->width();
-    unsigned dh = orig->height();
+bool exrImage::save( const char* file, const CMedia* img, 
+                     const ImageOpts* const ipts )
+{
+    const EXROpts* const opts = (EXROpts*) ipts;
 
-    // @TODO: add the ability to save all channels and choose compression
-    //        and channel data-type (HALF)
-
-    Header hdr( dw, dh );
+    mrv::image_type_ptr pic = img->hires();
+    if (!pic) return false;
 
 
-    Imf::Compression comp = ZIP_COMPRESSION;
+    mrv::Recti dpw = img->display_window();
+    mrv::Recti daw = img->data_window();
 
-    unsigned idx = 0;
-    std::string compression = orig->compression();
-    const char** s = kCompression;
-    for ( ; *s != 0; ++s, ++idx )
-      {
-	if ( compression == *s ) {
-	  comp = (Imf::Compression) idx;
-	  break;
-	}
-      }
+    Box2i bdpw( V2i(dpw.x(), dpw.y()),
+                V2i(dpw.x() + dpw.w() - 1, dpw.y() + dpw.h() - 1) );
+    Box2i bdaw( V2i(daw.x(), daw.y()),
+                V2i(daw.x() + daw.w() - 1, daw.y() + daw.h() - 1) );
 
+
+    unsigned dw = daw.w();
+    unsigned dh = daw.h();
+
+    Header hdr( bdpw, bdaw );
+
+    int dx = daw.x();
+    int dy = daw.y();
+
+
+
+    Imf::Compression comp = opts->compression();
     hdr.compression() = comp;
 
 
-    image_type::PixelType t = orig->hires()->pixel_type();
-    Imf::PixelType pt = exrImage::pixel_type_to_exr( t );
+    Imf::PixelType pt = exrImage::pixel_type_to_exr( pic->pixel_type() );
+    Imf::PixelType save_type = opts->pixel_type();
 
-    hdr.channels().insert( N_("R"), Channel( FLOAT, 1, 1 ) );
-    hdr.channels().insert( N_("G"), Channel( FLOAT, 1, 1 ) );
-    hdr.channels().insert( N_("B"), Channel( FLOAT, 1, 1 ) );
+    hdr.channels().insert( N_("R"), Channel( save_type, 1, 1 ) );
+    hdr.channels().insert( N_("G"), Channel( save_type, 1, 1 ) );
+    hdr.channels().insert( N_("B"), Channel( save_type, 1, 1 ) );
 
-    bool has_alpha = orig->has_alpha();
+    bool has_alpha = img->has_alpha();
     if ( has_alpha ) 
       {
-	hdr.channels().insert( N_("A"), Channel( FLOAT, 1, 1 ) );
+	hdr.channels().insert( N_("A"), Channel( save_type, 1, 1 ) );
       }
 
-    if ( orig->look_mod_transform() )
+    if ( img->look_mod_transform() )
       {
-	Imf::StringAttribute attr( orig->look_mod_transform() );
+	Imf::StringAttribute attr( img->look_mod_transform() );
 	hdr.insert( N_("lookModTransform"), attr );
       }
 
-    if ( orig->rendering_transform() )
+    if ( img->rendering_transform() )
       {
-	Imf::StringAttribute attr( orig->rendering_transform() );
+	Imf::StringAttribute attr( img->rendering_transform() );
 	hdr.insert( N_("renderingTransform"), attr );
       }
 
-    mrv::image_type_ptr pic = orig->hires();
-    if (!pic) return false;
 
-    CMedia::Pixel* base = new CMedia::Pixel[dw*dh];
+    uint8_t* base = NULL;
 
-    size_t xs = sizeof(CMedia::Pixel);
-    size_t ys = xs * dw;
 
-    if ( pt == Imf::FLOAT )
+    size_t size = 1;
+    switch( save_type )
     {
-       memcpy( base, pic->data().get(), 
-	       sizeof(float) * pic->channels() * dw * dh );
+        case Imf::UINT:
+            size = sizeof(unsigned);
+            break;
+        case Imf::FLOAT:
+            size = sizeof(float);
+            break;
+        default:
+        case Imf::HALF:
+            size = sizeof(half);
+            break;
+    }
+
+
+    unsigned channels = pic->channels();
+    unsigned total_size = dw*dh*size*channels;
+    base = (uint8_t*) new uint8_t[total_size];
+
+
+    if ( pt == save_type )
+    {
+        memcpy( base, pic->data().get(), total_size );
     }
     else
     {
@@ -1781,22 +1804,60 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
        {
 	  for ( unsigned x = 0; x < dw; ++x )
     	  {
-    	    base[ x + y * dw ] = pic->pixel( x, y );
+              CMedia::Pixel p = pic->pixel( x, y );
+              unsigned yh = channels * ( x + y * dw );
+              if ( save_type == Imf::HALF )
+              {
+                  half* s = (half*) base;
+                  s[ yh ]   = p.r;
+                  s[ yh+1 ] = p.g;
+                  s[ yh+2 ] = p.b;
+                  if ( has_alpha )
+                      s[ yh+3 ] = p.a;
+              }
+              else if ( save_type == Imf::FLOAT )
+              {
+                  CMedia::Pixel* s = (CMedia::Pixel*) base;
+                  if ( has_alpha )
+                      s[ x + y * dw ] = p;
+                  else
+                  {
+                      float* s = (float*) base;
+                      s[ yh ] = p.r;
+                      s[ yh + 1 ] = p.g;
+                      s[ yh + 2 ] = p.b;
+                  }
+              }
+              else if ( save_type == Imf::UINT )
+              {
+                  unsigned* s = (unsigned*) base;
+                  s[ yh ] = p.r * 4294967295;
+                  s[ yh + 1 ] = p.g * 4294967295;
+                  s[ yh + 2 ] = p.b * 4294967295;
+                  if ( has_alpha )
+                      s[ yh + 3 ] = p.a * 4294967295;
+              }
     	  }
        }
     }
 
+    size_t xs = size * channels;
+    size_t ys = xs * dw;
+
+    int offset = xs*(-dx-dy*dw);
 
     FrameBuffer fb;
-    fb.insert( N_("R"), Slice( FLOAT, (char*) &base->r, xs, ys ) );
-    fb.insert( N_("G"), Slice( FLOAT, (char*) &base->g, xs, ys ) );
-    fb.insert( N_("B"), Slice( FLOAT, (char*) &base->b, xs, ys ) );
+    fb.insert( N_("R"), Slice( save_type, (char*) &base[offset], xs, ys ) );
+    fb.insert( N_("G"), Slice( save_type, 
+                               (char*) &base[offset+size], xs, ys ) );
+    fb.insert( N_("B"), Slice( save_type, 
+                               (char*) &base[offset+2*size], xs, ys ) );
 
     if ( has_alpha )
       {
-    	fb.insert( N_("A"), Slice( FLOAT, (char*) &base->a, xs, ys ) );
+    	fb.insert( N_("A"), Slice( save_type, 
+                                   (char*) &base[offset+3*size], xs, ys ) );
       }
-
 
     try {
       OutputFile out( file, hdr );

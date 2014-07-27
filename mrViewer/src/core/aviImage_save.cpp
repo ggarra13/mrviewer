@@ -694,9 +694,14 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img )
    CMedia* m = (CMedia*) img;
 
    image_type_ptr hires = img->hires();
+   if ( !hires )
+   {
+       LOG_ERROR( "Missing picture" );
+       return;
+   }
 
-   unsigned w = img->width();
-   unsigned h = img->height();
+   unsigned w = hires->width();
+   unsigned h = hires->height();
 
    float one_gamma = 1.0f / img->gamma();
 

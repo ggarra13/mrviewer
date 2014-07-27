@@ -2691,7 +2691,8 @@ int Flu_File_Chooser::Entry::handle( int event )
   fltk::Group *g = chooser->getEntryGroup();
   if( event == fltk::PUSH )
   {
-     if ( Flu_File_Chooser::singleButtonTravelDrawer )
+      if ( Flu_File_Chooser::singleButtonTravelDrawer && 
+           fltk::event_button() == fltk::LeftButton )
      {
 	// double-clicking a favorite cd's to it
 	if( type == ENTRY_FAVORITE )
