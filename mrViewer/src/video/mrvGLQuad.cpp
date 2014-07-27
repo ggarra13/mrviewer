@@ -685,9 +685,6 @@ GLenum GLQuad::gl_format( const image_type::Format format )
       }
 
 
-    // Mutex& m = img->video_mutex();
-    // SCOPED_LOCK( m );
-
     // Upload converted rectangle
 
 #if 0
@@ -701,12 +698,12 @@ GLenum GLQuad::gl_format( const image_type::Format format )
 			       (ry * dw + rx) * _channels * pixel_size );
 
     update_texsub( 0, rx, ry, rw, r.h(), tw, th, _glformat, _pixel_type, 
-		   _channels, pixel_size, p );
+		   short(_channels), short(pixel_size), p );
 
 #else
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get();
     update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type, 
-		   _channels, pixel_size, p );
+		   short(_channels), short(pixel_size), p );
 #endif
 
   }
@@ -808,15 +805,15 @@ GLenum GLQuad::gl_format( const image_type::Format format )
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
-	short i = _channels - 1;
-	for ( ; i >= 0 ; --i )
+          short i = short(_channels - 1);
+          for ( ; i >= 0 ; --i )
 	  {
-	    short idx = (i == 3 ? 4 : i ); 
-	    glActiveTexture(GL_TEXTURE0 + idx);
-	    glEnable(GL_TEXTURE_2D);
-	    glBindTexture(GL_TEXTURE_2D, _texId[i] );
-            CHECK_GL( "shader bind_texture glBindTexture" );
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+              short idx = (i == 3 ? (short) 4 : i ); 
+              glActiveTexture(GL_TEXTURE0 + idx);
+              glEnable(GL_TEXTURE_2D);
+              glBindTexture(GL_TEXTURE_2D, _texId[i] );
+              CHECK_GL( "shader bind_texture glBindTexture" );
+              glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	  }
       }
     else
@@ -945,12 +942,12 @@ GLenum GLQuad::gl_format( const image_type::Format format )
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
-	short i = _channels - 1;
+          short i = short( _channels - 1 );
 	for ( ; i >= 0 ; --i )
 	  {
-	    short idx = (i == 3 ? 4 : i ); 
-	    glActiveTexture(GL_TEXTURE0 + idx);
-	    glDisable( GL_TEXTURE_2D );
+              short idx = (i == 3 ? (short) 4 : i ); 
+              glActiveTexture(GL_TEXTURE0 + idx);
+              glDisable( GL_TEXTURE_2D );
 	  }
       }
     else
@@ -982,7 +979,7 @@ GLenum GLQuad::gl_format( const image_type::Format format )
   int GLQuad::calculate_gl_step( const GLenum format,
 				 const GLenum pixel_type ) const
   {
-    int step;
+    size_t step;
     switch( format )
     {
        case GL_RGBA:
@@ -1019,7 +1016,7 @@ GLenum GLQuad::gl_format( const image_type::Format format )
           step *= sizeof(char);
     }
 
-    return step;
+    return (int) step;
   }
 
 

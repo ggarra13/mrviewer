@@ -924,34 +924,38 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
         dpw.h( img->height() );
     }
 
-  glDisable( GL_STENCIL_TEST );
+    glPushMatrix();
+    glPushAttrib( GL_STENCIL_TEST );
+    glDisable( GL_STENCIL_TEST );
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
-  glScaled( _view->zoom(), _view->zoom(), 1.0);
-  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
-  double pr = 1.0;
-  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-  glScaled( 1.0, pr, 1.0 );
-
-  glTranslated( r.x(), -r.y(), 0 );
-  // glTranslated( daw.x(), -daw.y(), 0 );
-
-  double rw = r.w();
-  double rh = r.h();
-
-  glLineWidth( 1.0 );
-
-  glBegin(GL_LINE_LOOP);
-
-  glVertex2i(0,  0);
-  glVertex2i(rw, 0);
-  glVertex2i(rw, -rh);
-  glVertex2i(0,  -rh);
-
-  glEnd();
-
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+    glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
+    glScaled( _view->zoom(), _view->zoom(), 1.0);
+    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+    double pr = 1.0;
+    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+    glScaled( 1.0, pr, 1.0 );
+  
+    glTranslated( r.x(), -r.y(), 0 );
+    // glTranslated( daw.x(), -daw.y(), 0 );
+    
+    double rw = r.w();
+    double rh = r.h();
+    
+    glLineWidth( 1.0 );
+  
+    glBegin(GL_LINE_LOOP);
+    
+    glVertex2i(0,  0);
+    glVertex2i(rw, 0);
+    glVertex2i(rw, -rh);
+    glVertex2i(0,  -rh);
+    
+    glEnd();
+    
+    glPopMatrix();
+    glPopAttrib();
 }
 
 void GLEngine::draw_safe_area_inner( const double tw, const double th,
@@ -1034,8 +1038,6 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
       glTranslated( dpw.w(), 0, 0 );
       draw_safe_area_inner( tw, th, name );
   }
-
-  glDisable( GL_STENCIL_TEST );
 
 }
 
@@ -1178,15 +1180,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( texWidth == 0 || texHeight == 0 ) continue;
 
 
-      if ( _view->data_window() && daw != dpw )
-      {
-          mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
-          glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
-          glLineStipple( 1, 0x00FF );
-          glEnable( GL_LINE_STIPPLE );
-          draw_rectangle( r );
-          glDisable( GL_LINE_STIPPLE );
-      }
+
 
       glMatrixMode(GL_MODELVIEW);
       glLoadIdentity();
@@ -1195,14 +1189,27 @@ void GLEngine::draw_images( ImageList& images )
       glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
 
+
       if ( _view->display_window() && dpw != daw )
       {
           draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
       }
 
+      if ( _view->data_window() && daw != dpw )
+      {
+          mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
+          glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
+          glLineStipple( 1, 0x00FF );
+          glEnable( GL_LINE_STIPPLE );
+          draw_rectangle( r );
+          glDisable( GL_LINE_STIPPLE );
+          if ( _view->display_window() )
+              glEnable( GL_STENCIL_TEST );
+      }
 
       glPushMatrix();
- 
+
+
       if ( daw.x() != 0 || daw.y() != 0 )
       {
           glTranslatef( float(daw.x()), float(-daw.y()), 0 );
@@ -1284,7 +1291,6 @@ void GLEngine::draw_images( ImageList& images )
          const mrv::Recti& dpw2 = img->display_window2(frame);
          const mrv::Recti& daw2 = img->data_window2(frame);
 
-         glPushMatrix();
 
          if ( _view->data_window() && daw2 != dpw2 )
          {
@@ -1296,10 +1302,10 @@ void GLEngine::draw_images( ImageList& images )
              glEnable( GL_LINE_STIPPLE );
              draw_rectangle( r );
              glDisable( GL_LINE_STIPPLE );
-
-             glPopMatrix();
-             glPushMatrix();
          }
+
+         glPushMatrix();
+
 
 
 

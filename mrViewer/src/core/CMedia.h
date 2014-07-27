@@ -60,7 +60,7 @@ namespace mrv {
 
 class ViewerUI;
 class AudioEngine;
-
+class ImageOpts;
 
 
 class CMedia
@@ -258,8 +258,8 @@ class CMedia
     virtual ~CMedia();
 
       
-    /// Save the image under a new filename 
-    bool save( const char* filename ) const;
+    /// Save the image under a new filename, with options opts
+    bool save( const char* filename, const ImageOpts* const opts ) const;
 
     /// Set the image pixel ratio
     inline void  pixel_ratio( double f ) { _pixel_ratio = f; refresh(); }
@@ -425,10 +425,18 @@ class CMedia
     ////////////////////////
 
     /// Return the image width
-    inline unsigned int  width() const  { return _w; }
+    inline unsigned int  width() const  {
+        if ( !_dataWindow ) return _w;
+        boost::uint64_t f = _frame - _frameStart;
+        return _dataWindow[f].w() ? _dataWindow[f].w() : _w; 
+    }
 
     /// Return the image height
-    inline unsigned int  height() const { return _h; }
+    inline unsigned int  height() const {
+        if ( !_dataWindow ) return _h;
+        boost::uint64_t f = _frame - _frameStart;
+        return _dataWindow[f].h() ? _dataWindow[f].h() : _h; 
+    }
 
     /// Return the image pixel ratio
     inline double pixel_ratio() const    { return _pixel_ratio; }

@@ -93,6 +93,7 @@ INCLUDE_DIRECTORIES(
 
 FLTK_WRAP_UI( mrViewer  
   gui/aviSave.fl
+  gui/EXROptionsUI.fl
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
   gui/mrvColorAreaUI.fl  
@@ -153,6 +154,7 @@ SET( SOURCES
   core/mrStackTrace.cpp
   core/mrvCPU.cpp
   core/mrvColorProfile.cpp
+  core/mrvImageOpts.cpp
 
   db/mrvDatabase.cpp
   db/mrvPostgreSQL.cpp
