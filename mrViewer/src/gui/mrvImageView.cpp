@@ -990,7 +990,7 @@ void ImageView::center_image()
     if ( img && _stereo & CMedia::kStereoSideBySide )
     {
         int w = dpw.w();
-        xoffset = -w/2 + 0.5f;
+        xoffset = (float)-w/2.0f + 0.5f;
     }
     else
     {
@@ -1525,7 +1525,7 @@ void ImageView::draw()
 
 
       int dx, dy;
-      dx = int( (double) w() / (double) 2 - strlen(label)*3 );
+      dx = int( (double) w() / (double)2 - (unsigned)strlen(label)*3 );
       dy = 24;
 
       draw_text( r, g, b, dx, dy, label );
@@ -2372,23 +2372,23 @@ void ImageView::mouseMove(int x, int y)
           rgba.b = powf(rgba.b * _gain, one_gamma);
 
 
-      float yp = yf;
-      if ( _showPixelRatio ) yp /= img->pixel_ratio();
+      // double yp = yf;
+      // if ( _showPixelRatio ) yp /= img->pixel_ratio();
 
 
       CMedia* bgr = _engine->background();
       if ( _showBG && bgr && rgba.a < 1.0f )
       {
 
-	  pic = bgr->hires();
-	  if ( pic )
+          const mrv::image_type_ptr& picb = bgr->hires();
+	  if ( picb )
           {
-              float px = (float) bgr->width() / (float) img->width();
-              float py = (float) bgr->height() / (float) img->height();
+              double px = (double) picb->width() / (double) pic->width();
+              double py = (double) picb->height() / (double) pic->height();
               xp = (int)floor( xp * px );
               yp = (int)floor( yp * py );
               float t = 1.0f - rgba.a;
-	      CMedia::Pixel bg = pic->pixel( xp, yp );
+	      CMedia::Pixel bg = picb->pixel( xp, yp );
 
               float one_gamma = 1.0f / bgr->gamma();
               if ( bg.r > 0.f )
@@ -2896,7 +2896,7 @@ int ImageView::keyDown(unsigned int rawkey)
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
-	_wipe = fltk::event_x() / float( w() );
+	_wipe = (float) fltk::event_x() / float( w() );
 
 	char buf[128];
 	sprintf( buf, "WipeVertical %g", _wipe );
@@ -2907,7 +2907,7 @@ int ImageView::keyDown(unsigned int rawkey)
      else if ( _wipe_dir & kWipeVertical )
      {
 	_wipe_dir = kWipeHorizontal;
-	_wipe = (h() - fltk::event_y()) / float( h() );
+	_wipe = (float) (h() - fltk::event_y()) / float( h() );
 	char buf[128];
 	sprintf( buf, "WipeHorizontal %g", _wipe );
 	send( buf );
@@ -3159,7 +3159,7 @@ int ImageView::keyDown(unsigned int rawkey)
 
       // check if a channel shortcut
       int num = uiColorChannel->children();
-      for ( int c = 0; c < num; ++c )
+      for ( unsigned short c = 0; c < num; ++c )
 	{
 	  if ( rawkey == uiColorChannel->child(c)->shortcut() )
 	    {
@@ -3343,16 +3343,16 @@ int ImageView::handle(int event)
 	  switch( _wipe_dir )
 	  {
 	     case kWipeVertical:
-		_wipe = fltk::event_x() / (float)w();
-		sprintf( buf, "WipeVertical %g", _wipe );
-		send( buf );
-		window()->cursor(fltk::CURSOR_WE);
+                 _wipe = (float) fltk::event_x() / (float)w();
+                 sprintf( buf, "WipeVertical %g", _wipe );
+                 send( buf );
+                 window()->cursor(fltk::CURSOR_WE);
 		break;
 	     case kWipeHorizontal:
-		_wipe = (h() - fltk::event_y()) / (float)h();
-		sprintf( buf, "WipeHorizontal %g", _wipe );
-		send( buf );
-		window()->cursor(fltk::CURSOR_NS);
+                 _wipe = (float) (h() - fltk::event_y()) / (float)h();
+                 sprintf( buf, "WipeHorizontal %g", _wipe );
+                 send( buf );
+                 window()->cursor(fltk::CURSOR_NS);
 		break;
 	     default:
 		break;
@@ -3363,11 +3363,11 @@ int ImageView::handle(int event)
       if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
 	   fltk::event_key_state( fltk::RightShiftKey ) )
 	{
-	  float dx = (fltk::event_x() - lastX) / 5.0f;
-	  if ( std::abs(dx) >= 1.0f )
+            float dx = (float) (fltk::event_x() - lastX) / 5.0f;
+            if ( std::abs(dx) >= 1.0f )
 	    { 
-	      scrub( dx );
-	      lastX = fltk::event_x();
+                scrub( dx );
+                lastX = fltk::event_x();
 	    }
 	}
       else
@@ -3776,7 +3776,7 @@ float ImageView::calculate_fstop( float exposure ) const
   //  seq2: 1.4, 2.8, 5.6, 11, 22, 44, 88   -- .5 bases
 
   float e = exposure * 0.5f;
-  float v = base + int( -e );
+  float v = (float) base + int( -e );
 
   float f = Imath::Math<float>::fmod( fabs(exposure), 2.0f );
   if ( exposure >= 0 )

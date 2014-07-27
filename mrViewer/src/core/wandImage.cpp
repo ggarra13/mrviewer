@@ -74,14 +74,14 @@ namespace mrv {
   */
   bool wandImage::test(const char* file)
   {
-     std::string f = file;
-     int pos = f.rfind( N_(".") );
-     if ( pos != std::string::npos )
-     {
-        std::string ext = f.substr( pos+1, f.size() );
-        if ( ext == "PDF" || ext == "pdf" )
-           return false;
-     }
+      std::string f = file;
+      size_t pos = f.rfind( N_(".") );
+      if ( pos != std::string::npos )
+      {
+          std::string ext = f.substr( pos+1, f.size() );
+          if ( ext == "PDF" || ext == "pdf" )
+              return false;
+      }
 
     MagickBooleanType status;
     MagickWand* wand = NewMagickWand();
@@ -400,16 +400,17 @@ namespace mrv {
 
   
 
-  bool CMedia::save( const char* file ) const
-  {
-     std::string tmp = file;
-     std::transform( tmp.begin(), tmp.end(), tmp.begin(),
+bool CMedia::save( const char* file, const ImageOpts* opts ) const
+{
+    std::string tmp = file;
+    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
 		     (int(*)(int)) tolower);
-
-     if ( strncmp( tmp.c_str() + tmp.size() - 4, ".exr", 4 ) == 0 )
-      {
-	return exrImage::save( file, this );
-      }
+    
+    if ( strncmp( tmp.c_str() + tmp.size() - 4, ".exr", 4 ) == 0 ||
+         strncmp( tmp.c_str() + tmp.size() - 4, ".sxr", 4 ) == 0 )
+    {
+	return exrImage::save( file, this, opts );
+    }
 
     MagickBooleanType status;
 
@@ -419,13 +420,13 @@ namespace mrv {
     MagickWandGenesis();
     MagickWand* wand = NewMagickWand();
 
-    mrv::image_type_ptr frame = hires();
+    mrv::image_type_ptr pic = hires();
 
-    const bool  has_alpha = frame->has_alpha();
+    const bool  has_alpha = pic->has_alpha();
 
     bool must_convert = false;
     const char* channels;
-    switch ( frame->format() )
+    switch ( pic->format() )
       {
       case image_type::kRGB:
 	channels = "RGB"; break;
@@ -448,7 +449,7 @@ namespace mrv {
 
 
     StorageType storage = CharPixel;
-    switch( frame->pixel_type() )
+    switch( pic->pixel_type() )
       {
       case image_type::kShort:
 	storage = ShortPixel;
@@ -504,15 +505,15 @@ namespace mrv {
 	  }
 
 	pixels = new boost::uint8_t[ width() * height() * 
-				     frame->channels() * pixel_size ];
+				     pic->channels() * pixel_size ];
       }
     else
       {
-	pixels = (boost::uint8_t*)frame->data().get();
+	pixels = (boost::uint8_t*)pic->data().get();
       }
 
 
-    status = MagickConstituteImage( wand, width(), height(), 
+    status = MagickConstituteImage( wand, pic->width(), pic->height(), 
 				    channels, storage, pixels );
     if (status == MagickFalse)
       {
@@ -522,14 +523,14 @@ namespace mrv {
 
     if ( must_convert )
       {
-	unsigned int dh = height();
-	unsigned int dw = width();
+	unsigned int dh = pic->height();
+	unsigned int dw = pic->width();
         float one_gamma = 1.0f/gamma();
 	for ( unsigned y = 0; y < dh; ++y )
 	  {
 	    for ( unsigned x = 0; x < dw; ++x )
 	      {
-		CMedia::Pixel p = frame->pixel( x, y );
+		CMedia::Pixel p = pic->pixel( x, y );
 
                 if ( p.r > 0.0f && isfinite(p.r) )
                     p.r = powf( p.r, one_gamma );

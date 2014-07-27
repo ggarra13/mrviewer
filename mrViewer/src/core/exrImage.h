@@ -57,7 +57,8 @@ namespace mrv {
 
     virtual bool fetch( const boost::int64_t frame );
 
-    static bool save( const char* file, const CMedia* img );
+      static bool save( const char* file, const CMedia* img, 
+                        const ImageOpts* const opts );
 
        int current_part() const { return _curpart; }
        void current_part( unsigned x ) { _curpart = x; }

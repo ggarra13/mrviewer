@@ -390,8 +390,14 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_int( _("Height"), img->height() );
 
     double aspect_ratio = 0;
-    if ( img->height() > 0 )
-      aspect_ratio = ( img->width() / (double) img->height() );
+    const mrv::Recti& dpw = img->display_window();
+    if ( dpw.w() )
+    {
+        aspect_ratio = ( (double) dpw.w() / (double) dpw.h() );
+    }
+    else
+        if ( img->height() > 0 )
+            aspect_ratio = ( img->width() / (double) img->height() );
 
     const char* name = "Unknown";
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
@@ -1239,9 +1245,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
   void ImageInformation::add_time( const char* name, const double content, 
 				   const bool editable )
   {
-    boost::int64_t seconds; int ms;
-    seconds  = (boost::int64_t) content;
-    ms = int( (content - seconds) * 1000 );
+    boost::int64_t seconds = (boost::int64_t) content;
+    int ms = int( (content - seconds) * 1000 );
 
     char buf[128];
     sprintf( buf, _("% 8.0f seconds %d ms."), content, ms );
