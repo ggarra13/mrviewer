@@ -1,0 +1,87 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Button 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <iostream>} {} 
+
+decl {\#include <gui/mrvIO.h>} {public
+} 
+
+decl {\#include <core/mrvImageOpts.h>} {public
+} 
+
+decl {\#include <wand/MagickWand.h>} {public
+} 
+
+decl {\#include <string>} {public
+} 
+
+namespace mrv {open
+} {
+  class WandOptionsUI {open : {public WandOpts}
+  } {
+    decl {std::string pixel_type;} {public
+    }
+    Function {make_window()} {open
+    } {
+      {fltk::Window} uiMain {
+        label {OpenEXR Saving} open
+        xywh {629 574 300 195} resizable modal noborder visible
+      } {
+        {fltk::Group} {} {
+          label {Image Options} open
+          xywh {30 22 240 128} box UP_BOX
+        } {
+          {fltk::Choice} uiPixelType {
+            label {Pixel Format}
+            callback {pixel_type = o->child(o->value())->label();} open
+            xywh {115 69 90 25}
+          } {
+            {fltk::Item} {} {
+              label Char
+              }
+            {fltk::Item} {} {
+              label Short
+              }
+            {fltk::Item} {} {
+              label Integer
+              }
+            {fltk::Item} {} {
+              label Float
+              }
+          }
+        }
+        {fltk::Button} {} {
+          label OK
+          user_data this user_data_type {WandOptionsUI*}
+          callback {v->active(true);
+v->uiMain->make_exec_return(true);} selected
+          xywh {75 170 55 18}
+        }
+        {fltk::Button} {} {
+          label Cancel
+          user_data this user_data_type {WandOptionsUI*}
+          callback {v->active( false );
+v->uiMain->make_exec_return(false);}
+          xywh {145 170 60 18}
+        }
+      }
+    }
+    Function {convert()} {open
+    } {
+      code {if ( pixel_type == "Char" ) _pixel_type = CharPixel;
+else if ( pixel_type == "Float" ) _pixel_type = FloatPixel;
+else if ( pixel_type == "Short" ) _pixel_type = ShortPixel;
+else if ( pixel_type == "Integer" ) _pixel_type = IntegerPixel;} {}
+    }
+    Function {WandOptionsUI()} {open
+    } {
+      code {fltk::Window* w = make_window();
+if ( w->exec() ) convert();} {}
+    }
+  }
+} 
