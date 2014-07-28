@@ -49,8 +49,7 @@ static const char* kModule = "file";
   static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,qt,QT,avi,AVI,flv,FLV,divx,DIVX,wmv,WMV,vob,VOB";
 
   static const std::string kImagePattern =
-    "bmp,bit,cin,ct,dpx,exr,gif,GIF,iff,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,png,psd,rgb,rpf,"
-    "shmap,sgi,st,sxr,tga,tif,tiff,zt";
+    "bmp,bit,cin,ct,dpx,exr,gif,GIF,hdr,iff,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,png,psd,rgb,rpf,shmap,sgi,st,sxr,tga,tif,tiff,zt";
 
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
@@ -266,7 +265,9 @@ void save_image_file( CMedia* image, const char* startdir )
    std::string ext = tmp.c_str() + tmp.size() - 4;
 
    ImageOpts* opts = ImageOpts::build( ext );
-   image->save( file, opts );
+   if ( opts->active() )
+       image->save( file, opts );
+   delete opts;
 }
 
 void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain, 
@@ -342,8 +343,13 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
    ImageOpts* ipts = NULL;
 
    if ( !movie )
+   {
        ipts = ImageOpts::build( ext );
-
+       if ( ! ipts->active() ) {
+           delete ipts;
+           return;
+       }
+   }
 
    for ( ; frame <= last; ++frame )
    {

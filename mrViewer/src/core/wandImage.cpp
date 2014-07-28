@@ -24,15 +24,16 @@ using namespace std;
 #include <algorithm>
 #include <wand/MagickWand.h>
 
-#include "Sequence.h"
-#include "mrvColorProfile.h"
-#include "mrvString.h"
-#include "wandImage.h"
-#include "exrImage.h"
-#include "aviImage.h"
-#include "mrvThread.h"
-#include "mrvI8N.h"
-#include "mrvIO.h"
+#include "core/mrvImageOpts.h"
+#include "core/Sequence.h"
+#include "core/mrvColorProfile.h"
+#include "core/mrvString.h"
+#include "core/wandImage.h"
+#include "core/exrImage.h"
+#include "core/aviImage.h"
+#include "core/mrvThread.h"
+#include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 
 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
@@ -412,6 +413,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 	return exrImage::save( file, this, opts );
     }
 
+    WandOpts* o = (WandOpts*) opts;
+
     MagickBooleanType status;
 
     /*
@@ -470,6 +473,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 	break;
       }
 
+    if ( o->pixel_type() != storage )
+        must_convert = true;
 
     if ( gamma() != 1.0 )
        must_convert = true;
@@ -487,7 +492,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( must_convert )
       {
 	unsigned pixel_size = 1;
-	switch( storage )
+	switch( o->pixel_type() )
 	  {
 	  case ShortPixel:
 	    pixel_size = sizeof(short);
@@ -514,7 +519,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
 
     status = MagickConstituteImage( wand, pic->width(), pic->height(), 
-				    channels, storage, pixels );
+				    channels, o->pixel_type(), pixels );
     if (status == MagickFalse)
       {
 	if ( must_convert ) delete [] pixels;
