@@ -1,0 +1,123 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Button 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <iostream>} {} 
+
+decl {\#include <gui/mrvIO.h>} {public
+} 
+
+decl {\#include <core/mrvImageOpts.h>} {public
+} 
+
+decl {\#include <ImfCompression.h>} {public
+} 
+
+decl {\#include <ImfPixelType.h>} {public
+} 
+
+decl {\#include <string>} {public
+} 
+
+namespace mrv {open
+} {
+  class EXROptionsUI {open : {public EXROpts}
+  } {
+    decl {std::string compression;} {public
+    }
+    decl {std::string pixel_type;} {public
+    }
+    Function {make_window()} {open
+    } {
+      {fltk::Window} uiMain {
+        label {OpenEXR Saving} open
+        xywh {625 574 300 195} resizable modal noborder visible
+      } {
+        {fltk::Group} {} {
+          label {OpenEXR Options} open
+          xywh {30 22 240 128} box UP_BOX
+        } {
+          {fltk::Choice} uiCompression {
+            label Compression
+            user_data this user_data_type {EXROptionsUI*}
+            callback {compression = o->child(o->value())->label();}
+            xywh {115 23 91 26}
+          } {
+            {fltk::Item} {} {
+              label PIZ
+              }
+            {fltk::Item} {} {
+              label ZIP
+              }
+            {fltk::Item} {} {
+              label {ZIP SCANLINE}
+              }
+            {fltk::Item} {} {
+              label RLE
+              }
+            {fltk::Item} {} {
+              label PXR24
+              }
+            {fltk::Item} {} {
+              label B44
+              }
+            {fltk::Item} {} {
+              label B44A
+              }
+          }
+          {fltk::Choice} uiPixelFormat {
+            label {Pixel Format}
+            callback {pixel_type = o->child(o->value())->label();} open
+            xywh {115 69 90 25}
+          } {
+            {fltk::Item} {} {
+              label Half
+              }
+            {fltk::Item} {} {
+              label Float
+              }
+            {fltk::Item} {} {
+              label UInt
+              }
+          }
+        }
+        {fltk::Button} {} {
+          label OK
+          user_data this user_data_type {EXROptionsUI*}
+          callback {v->active( true );
+v->uiMain->make_exec_return(true);} selected
+          xywh {75 170 55 18}
+        }
+        {fltk::Button} {} {
+          label Cancel
+          user_data this user_data_type {EXROptionsUI*}
+          callback {v->active( false );
+v->uiMain->make_exec_return(false);}
+          xywh {145 170 60 18}
+        }
+      }
+    }
+    Function {convert()} {open
+    } {
+      code {if ( compression == "PIZ" ) _compression = Imf::PIZ_COMPRESSION;
+else if ( compression == "RLE" ) _compression = Imf::RLE_COMPRESSION;
+else if ( compression == "ZIP SCANLINE" ) _compression = Imf::ZIPS_COMPRESSION;
+else if ( compression == "ZIP" ) _compression = Imf::ZIP_COMPRESSION;
+else if ( compression == "PXR24" ) _compression = Imf::PXR24_COMPRESSION;
+else if ( compression == "B44" ) _compression = Imf::B44_COMPRESSION;
+else if ( compression == "B44A" ) _compression = Imf::B44A_COMPRESSION;} {}
+      code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
+else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
+else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
+    }
+    Function {EXROptionsUI()} {open
+    } {
+      code {fltk::Window* w = make_window();
+if ( w->exec() ) convert();} {}
+    }
+  }
+} 

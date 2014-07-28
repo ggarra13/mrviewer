@@ -954,8 +954,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     
     glEnd();
     
-    glPopMatrix();
     glPopAttrib();
+    glPopMatrix();
 }
 
 void GLEngine::draw_safe_area_inner( const double tw, const double th,
@@ -1163,7 +1163,7 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( fg != img )
       {
-          const mrv::Recti& dp = fg->display_window();
+          const mrv::Recti& dp = fg->display_window(frame);
           texWidth = dp.w();
           texHeight = dp.h();
 
@@ -1292,6 +1292,16 @@ void GLEngine::draw_images( ImageList& images )
          const mrv::Recti& daw2 = img->data_window2(frame);
 
 
+         glPushMatrix();
+
+
+
+
+         if ( _view->display_window() && dpw2 != daw2 )
+         {
+             draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+         }
+
          if ( _view->data_window() && daw2 != dpw2 )
          {
              mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
@@ -1302,16 +1312,7 @@ void GLEngine::draw_images( ImageList& images )
              glEnable( GL_LINE_STIPPLE );
              draw_rectangle( r );
              glDisable( GL_LINE_STIPPLE );
-         }
-
-         glPushMatrix();
-
-
-
-
-         if ( _view->display_window() && dpw2 != daw2 )
-         {
-             draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+             if ( _view->display_window() ) glEnable( GL_STENCIL_TEST );
          }
 
          if ( daw2.x() != 0 || daw2.y() != 0 )

@@ -93,6 +93,7 @@ INCLUDE_DIRECTORIES(
 
 FLTK_WRAP_UI( mrViewer  
   gui/aviSave.fl
+  gui/WandOptionsUI.fl
   gui/EXROptionsUI.fl
   gui/mrvEDLWindowUI.fl
   gui/mrvIccProfileUI.fl
