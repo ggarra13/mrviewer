@@ -85,7 +85,7 @@ namespace
 
 
 //  in ffmpeg, sizes are in bytes...
-#define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
+#define kMAX_QUEUE_SIZE (15 * 2048 * 2048)
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
 #define kMIN_FRAMES 5
