@@ -557,6 +557,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     // Store EXIF and IPTC data (if any)
     //
 
+
     /**
      * Write out image
      * 

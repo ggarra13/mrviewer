@@ -1729,9 +1729,20 @@ bool exrImage::save( const char* file, const CMedia* img,
     Box2i bdaw( V2i(daw.x(), daw.y()),
                 V2i(daw.x() + daw.w() - 1, daw.y() + daw.h() - 1) );
 
+    if ( daw.w() == 0 )
+    {
+        bdaw = Box2i( V2i(0,0), V2i( img->width()-1, img->height()-1 ) );
+    }
+    if ( dpw.w() == 0 )
+    {
+        bdpw = bdaw;
+    }
 
     unsigned dw = daw.w();
+    if ( dw == 0 ) dw = img->width();
     unsigned dh = daw.h();
+    if ( dh == 0 ) dh = img->height();
+
 
     Header hdr( bdpw, bdaw );
 
