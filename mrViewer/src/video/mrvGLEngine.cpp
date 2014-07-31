@@ -1166,6 +1166,11 @@ void GLEngine::draw_images( ImageList& images )
           const mrv::Recti& dp = fg->display_window(frame);
           texWidth = dp.w();
           texHeight = dp.h();
+          if ( dpw == dp )
+          {
+              texWidth = pic->width();
+              texHeight = pic->height();
+          }
 
           if ( texWidth == 0 )  texWidth = pic->width();
           if ( texHeight == 0 ) texHeight = pic->height();
@@ -1175,10 +1180,6 @@ void GLEngine::draw_images( ImageList& images )
           texWidth = pic->width();
           texHeight = pic->height();
       }
-
-
-      if ( texWidth == 0 || texHeight == 0 ) continue;
-
 
 
 
@@ -1462,11 +1463,11 @@ void GLEngine::wipe_area()
      return;
   else if ( _view->wipe_direction() & ImageView::kWipeVertical )
   {
-     w *= _view->wipe_amount();
+      w = (int) ( (float) w * _view->wipe_amount() );
   }
   else if ( _view->wipe_direction() & ImageView::kWipeHorizontal )
   {
-     h *= _view->wipe_amount();
+      h = (int) ( (float) h * _view->wipe_amount() );
   }
   else
   {
