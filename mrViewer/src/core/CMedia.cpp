@@ -136,6 +136,7 @@ CMedia::CMedia() :
   _interlaced( kNoInterlace ),
   _image_damage( kNoDamage ),
   _damageRectangle( 0, 0, 0, 0 ),
+  _numWindows( 0 ),
   _dataWindow( NULL ),
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
@@ -213,6 +214,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _interlaced( kNoInterlace ),
   _image_damage( kNoDamage ),
   _damageRectangle( 0, 0, 0, 0 ),
+  _numWindows( 0 ),
   _dataWindow( NULL ),
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
@@ -484,10 +486,11 @@ const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
     CMedia* img = const_cast< CMedia* >( this );
     img->image_damage( img->image_damage() | kDamageData );
 
-    if ( !_displayWindow ) return kNoRect;
+    if ( !_displayWindow || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
 
     assert( idx <= _frameEnd - _frameStart );
     return _displayWindow[idx];
@@ -500,10 +503,11 @@ const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
     CMedia* img = const_cast< CMedia* >( this );
     img->image_damage( img->image_damage() | kDamageData );
 
-    if ( !_displayWindow2 ) return kNoRect;
+    if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
 
     assert( idx <= _frameEnd - _frameStart );
     return _displayWindow2[idx];
@@ -521,6 +525,7 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
 
     //DBG( "data window frame " << f << " is " << _dataWindow[idx] );
     assert( idx <= _frameEnd - _frameStart );
@@ -538,6 +543,7 @@ const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
 
     assert( idx <= _frameEnd - _frameStart );
     return _dataWindow2[idx];
@@ -548,8 +554,9 @@ void CMedia::display_window( const int xmin, const int ymin,
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  _numWindows = _frameEnd - _frameStart + 1;
   if ( !_displayWindow )
-      _displayWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
+      _displayWindow = new mrv::Recti[_numWindows];
   boost::uint64_t idx = _frame - _frameStart;
   assert( idx <= _frameEnd - _frameStart );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -562,8 +569,9 @@ void CMedia::display_window2( const int xmin, const int ymin,
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  _numWindows = _frameEnd - _frameStart + 1;
   if ( !_displayWindow2 )
-      _displayWindow2 = new mrv::Recti[_frameEnd - _frameStart + 1];
+      _displayWindow2 = new mrv::Recti[_numWindows];
   boost::uint64_t idx = _frame - _frameStart;
   assert( idx <= _frameEnd - _frameStart );
   _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -576,8 +584,9 @@ void CMedia::data_window( const int xmin, const int ymin,
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  _numWindows = _frameEnd - _frameStart + 1;
   if ( !_dataWindow )
-      _dataWindow = new mrv::Recti[_frameEnd - _frameStart + 1];
+      _dataWindow = new mrv::Recti[_numWindows];
   boost::uint64_t idx = _frame - _frameStart;
   assert( idx <= _frameEnd - _frameStart );
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
@@ -591,8 +600,9 @@ void CMedia::data_window2( const int xmin, const int ymin,
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
+  _numWindows = _frameEnd - _frameStart + 1;
   if ( !_dataWindow2 )
-      _dataWindow2 = new mrv::Recti[_frameEnd - _frameStart + 1];
+      _dataWindow2 = new mrv::Recti[_numWindows];
   boost::uint64_t idx = _frame - _frameStart;
   assert( idx <= _frameEnd - _frameStart );
   _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
