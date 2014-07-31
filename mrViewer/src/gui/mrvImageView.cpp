@@ -232,10 +232,6 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
 
   mrv::CMedia* img = fg->image();
 
-  char buf[1024];
-  sprintf( buf, "CurrentBGImage \"%s\"", img->fileroot() );
-  view->send( buf );
-
   view->background( fg );
 }
 
@@ -4178,12 +4174,13 @@ void ImageView::background( mrv::media bg )
 
   delete_timeout();
 
+  char buf[1024];
+
   _bg = bg;
   if ( bg ) 
     {
       CMedia* img = bg->image();
 
-      char buf[1024];
       sprintf( buf, "CurrentBGImage \"%s\"", img->fileroot() );
       send( buf );
 
@@ -4202,6 +4199,11 @@ void ImageView::background( mrv::media bg )
 	  create_timeout( 0.2 );
 	}
     }
+  else
+  {
+      sprintf( buf, "CurrentBGImage \"\"" );
+      send( buf );
+  }
 
 //   _BGpixelSize = 0;
   redraw();

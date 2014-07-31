@@ -936,24 +936,23 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     double pr = 1.0;
     if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
     glScaled( 1.0, pr, 1.0 );
-  
+
     glTranslated( r.x(), -r.y(), 0 );
-    // glTranslated( daw.x(), -daw.y(), 0 );
-    
+
     double rw = r.w();
     double rh = r.h();
-    
+
     glLineWidth( 1.0 );
-  
+
     glBegin(GL_LINE_LOOP);
-    
+
     glVertex2i(0,  0);
     glVertex2i(rw, 0);
     glVertex2i(rw, -rh);
     glVertex2i(0,  -rh);
-    
+
     glEnd();
-    
+
     glPopAttrib();
     glPopMatrix();
 }
@@ -1152,6 +1151,7 @@ void GLEngine::draw_images( ImageList& images )
 
   for ( i = images.begin() ; i != e; ++i, ++q )
     {
+        texWidth = texHeight = 0;
 
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
@@ -1180,7 +1180,6 @@ void GLEngine::draw_images( ImageList& images )
           texWidth = pic->width();
           texHeight = pic->height();
       }
-
 
 
       glMatrixMode(GL_MODELVIEW);
@@ -1804,7 +1803,9 @@ void GLEngine::resize_background()
 }
 
 GLEngine::GLEngine(const mrv::ImageView* v) :
-DrawEngine( v )
+DrawEngine( v ),
+texWidth( 0 ),
+texHeight( 0 )
 {
   initialize();
 }

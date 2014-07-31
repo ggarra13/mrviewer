@@ -48,6 +48,7 @@
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvVectorscope.h"
 #include "gui/mrvHistogram.h"
+#include "gui/mrvTimeline.h"
 #include "mrvColorAreaUI.h"
 #include "mrViewer.h"
 
@@ -458,6 +459,26 @@ bool Parser::parse( const std::string& s )
       }
       ok = true;
    }
+   else if ( cmd == N_("TimelineMax") )
+   {
+       double x;
+       is >> x;
+       ui->uiTimeline->maximum( x );
+       ui->uiTimeline->redraw();
+       ui->uiEndFrame->value( x );
+       ui->uiEndFrame->redraw();
+       ok = true;
+   }
+   else if ( cmd == N_("TimelineMin") )
+   {
+       double x;
+       is >> x;
+       ui->uiTimeline->minimum( x );
+       ui->uiTimeline->redraw();
+       ui->uiStartFrame->value( x );
+       ui->uiStartFrame->redraw();
+       ok = true;
+   }
    else if ( cmd == N_("ShiftMediaStart") )
    {
       int reel;
@@ -687,25 +708,30 @@ bool Parser::parse( const std::string& s )
       std::getline( is, imgname, '"' ); // skip first quote
       std::getline( is, imgname, '"' );
 
-      if ( r )
+      if ( imgname == "" )
       {
-	 mrv::MediaList::iterator j = r->images.begin();
-	 mrv::MediaList::iterator e = r->images.end();
-	 int idx = 0;
-	 for ( ; j != e; ++j, ++idx )
-	 {
-	    if ( !(*j) ) continue;
-	    CMedia* img = (*j)->image();
-	    if ( img && img->fileroot() == imgname )
-	    {
-	       v->background( (*j) );
-	       ok = true;
-	       break;
-	    }
-	 }
-
+          v->background( mrv::media() );
       }
-
+      else
+      {
+          if ( r )
+          {
+              mrv::MediaList::iterator j = r->images.begin();
+              mrv::MediaList::iterator e = r->images.end();
+              int idx = 0;
+              for ( ; j != e; ++j, ++idx )
+              {
+                  if ( !(*j) ) continue;
+                  CMedia* img = (*j)->image();
+                  if ( img && img->fileroot() == imgname )
+                  {
+                      v->background( (*j) );
+                      ok = true;
+                      break;
+                  }
+              }
+          }
+      }
       v->redraw();
    }
    else if ( cmd == N_("sync_image") )
