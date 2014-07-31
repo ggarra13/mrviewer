@@ -15,10 +15,12 @@
 #include <fltk/Flags.h>
 
 #include "core/mrvColor.h"
+#include "core/mrvI8N.h"
 
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvImageView.h"
 #include "mrViewer.h"
 #include "gui/mrvMedia.h"
 #include "gui/mrvMediaList.h"
@@ -56,11 +58,25 @@ Timeline::~Timeline()
   void Timeline::minimum( double x )
   {
     fltk::Slider::minimum( x );
+
+    if ( uiMain )
+    {
+        char buf[1024];
+        sprintf( buf, N_("TimelineMin %g"), x );
+        uiMain->uiView->send( buf );
+    }
   }
 
   void Timeline::maximum( double x )
   {
     fltk::Slider::maximum( x );
+
+    if ( uiMain )
+    {
+        char buf[1024];
+        sprintf( buf, N_("TimelineMax %g"), x );
+        uiMain->uiView->send( buf );
+    }
   }
 
   void Timeline::edl( bool x )
@@ -303,7 +319,7 @@ Timeline::~Timeline()
 
 	// If minimum less than 0, start boxes later
 	uint64_t size = 0;
-	double frame = 1;
+	uint64_t frame = 1;
 	int rx = r.x() + (slider_size()-1)/2;
 
 	for ( ; i != e; frame += size, ++i )
@@ -315,8 +331,8 @@ Timeline::~Timeline()
 	    // skip this block if outside visible timeline span
 	     if ( frame + size < mn || frame > mx ) continue;
 
-	    int  dx = slider_position( frame,      ww );
-	    int end = slider_position( frame+size, ww );
+             int  dx = slider_position( double(frame),      ww );
+             int end = slider_position( double(frame+size), ww );
 	    
 	    Rectangle lr;
 	    lr.set( rx+dx, r.y(), end-dx, r.h() );
@@ -345,7 +361,7 @@ Timeline::~Timeline()
 	    // skip this block if outside visible timeline span
 	    if ( frame + size < mn || frame > mx ) continue;
 
-	    int dx = rx + slider_position( frame, ww );
+	    int dx = rx + slider_position( double(frame), ww );
 
 	    setcolor( BLUE );
 	    line_style( SOLID, 3 );
