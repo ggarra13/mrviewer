@@ -1064,6 +1064,8 @@ class CMedia
 
     Damage           _image_damage;     //!< flag specifying image damage
     mrv::Recti  _damageRectangle;  //!< rectangle that changed
+
+    boost::uint64_t _numWindows;   //!< number of data/display windows
     mrv::Recti* _dataWindow;       //!< data window of sequence
     mrv::Recti* _displayWindow;    //!< display window of sequence
     mrv::Recti* _dataWindow2;       //!< data window of stereo sequence
