@@ -2279,14 +2279,14 @@ void ImageView::mouseMove(int x, int y)
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
 
-  double xf = (double) x;
-  double yf = (double) y;
 
   mrv::media fg = foreground();
   if ( !fg ) return;
 
   CMedia* img = fg->image();
 
+  double xf = (double) x;
+  double yf = (double) y;
 
   data_window_coordinates( img, xf, yf );
 
@@ -2381,26 +2381,56 @@ void ImageView::mouseMove(int x, int y)
       {
 
           const mrv::image_type_ptr& picb = bgr->hires();
+          const mrv::Recti& dpwb = bgr->display_window(picb->frame());
+          const mrv::Recti& dawb = bgr->data_window(picb->frame());
+          w = dawb.w();
+          h = dawb.h();
 	  if ( picb )
           {
-              double px = (double) picb->width() / (double) pic->width();
-              double py = (double) picb->height() / (double) pic->height();
+              int dx, dy;
+              double px = 0, py = 0;
+              if ( dpw == dpwb )
+              {
+                  px = py = 1.0;
+                  dx = dawb.x();
+                  dy = dawb.y();
+              }
+              else
+              {
+                  px = (double) picb->width() / (double) pic->width();
+                  py = (double) picb->height() / (double) pic->height();
+              }
               xp = (int)floor( xp * px );
               yp = (int)floor( yp * py );
-              float t = 1.0f - rgba.a;
-	      CMedia::Pixel bg = picb->pixel( xp, yp );
 
-              float one_gamma = 1.0f / bgr->gamma();
-              if ( bg.r > 0.f )
-                  bg.r = powf(bg.r * _gain, one_gamma);
-              if ( bg.g > 0.f )
-                  bg.g = powf(bg.g * _gain, one_gamma);
-              if ( bg.b > 0.f )
-                  bg.b = powf(bg.b * _gain, one_gamma);
 
-	      rgba.r += bg.r * t;
-	      rgba.g += bg.g * t;
-	      rgba.b += bg.b * t;
+              xp -= dx;
+              yp -= dy;
+
+              outside = false;
+              if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
+                   xp < 0 || yp < 0 || xp >= w || yp >= h )
+              {
+                  outside = true;
+              }
+              else
+              {
+
+                  float t = 1.0f - rgba.a;
+                  CMedia::Pixel bg = picb->pixel( xp, yp );
+
+                  float one_gamma = 1.0f / bgr->gamma();
+                  if ( bg.r > 0.f )
+                      bg.r = powf(bg.r * _gain, one_gamma);
+                  if ( bg.g > 0.f )
+                      bg.g = powf(bg.g * _gain, one_gamma);
+                  if ( bg.b > 0.f )
+                      bg.b = powf(bg.b * _gain, one_gamma);
+
+                  rgba.r = bg.r * t;
+                  rgba.g = bg.g * t;
+                  rgba.b = bg.b * t;
+              }
           }
       }
   }
