@@ -66,7 +66,7 @@ std::string GLPathShape::send() const
    return buf;
 }
 
-void GLPathShape::draw( float z )
+void GLPathShape::draw( double z )
 {
    //Turn on Color Buffer and Depth Buffer
    glColorMask(true, true, true, true);
@@ -143,7 +143,7 @@ std::string GLErasePathShape::send() const
    return buf;
 }
 
-void GLErasePathShape::draw( float z )
+void GLErasePathShape::draw( double z )
 {
    glColorMask(false, false, false, false);
 
@@ -189,7 +189,7 @@ std::string GLTextShape::send() const
    return buf;
 }
 
-void GLTextShape::draw( float z )
+void GLTextShape::draw( double z )
 {
 
    //Turn on Color Buffer and Depth Buffer
