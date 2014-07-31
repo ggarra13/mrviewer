@@ -2374,62 +2374,69 @@ void ImageView::mouseMove(int x, int y)
 
       // double yp = yf;
       // if ( _showPixelRatio ) yp /= img->pixel_ratio();
+  }
+  
+  CMedia* bgr = _engine->background();
 
+  if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
+  {
 
-      CMedia* bgr = _engine->background();
-      if ( _showBG && bgr && rgba.a < 1.0f )
+      const mrv::image_type_ptr& picb = bgr->hires();
+      const mrv::Recti& dpwb = bgr->display_window(picb->frame());
+      const mrv::Recti& dawb = bgr->data_window(picb->frame());
+      if ( picb )
       {
-
-          const mrv::image_type_ptr& picb = bgr->hires();
-          const mrv::Recti& dpwb = bgr->display_window(picb->frame());
-          const mrv::Recti& dawb = bgr->data_window(picb->frame());
           w = dawb.w();
           h = dawb.h();
-	  if ( picb )
+          if ( w == 0 ) w = picb->width()-1;
+          if ( h == 0 ) h = picb->height()-1;
+
+          if ( dpw == dpwb && dpwb.h() != 0 )
           {
-              int dx, dy;
-              double px = 0, py = 0;
-              if ( dpw == dpwb )
-              {
-                  px = py = 1.0;
-                  dx = dawb.x();
-                  dy = dawb.y();
-              }
-              else
-              {
-                  px = (double) picb->width() / (double) pic->width();
-                  py = (double) picb->height() / (double) pic->height();
-              }
+              xf = float(x);
+              yf = float(y);
+              data_window_coordinates( bgr, xf, yf );
+              xp = (int)floor( xf );
+              yp = (int)floor( yf );
+          }
+          else
+          {
+              double px = (double) picb->width() / (double) pic->width();
+              double py = (double) picb->height() / (double) pic->height();
               xp = (int)floor( xp * px );
               yp = (int)floor( yp * py );
+              xp += daw.x();
+              yp += daw.y();
+          }
 
+          bool outside2 = false;
+          if ( xp < 0 || yp < 0 || xp >= w || yp >= h )
+          {
+              outside2 = true;
+          }
+          else
+          {
 
-              xp -= dx;
-              yp -= dy;
+              float t = 1.0f - rgba.a;
+              CMedia::Pixel bg = picb->pixel( xp, yp );
 
-              outside = false;
-              if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-                   xp < 0 || yp < 0 || xp >= w || yp >= h )
+              float one_gamma = 1.0f / bgr->gamma();
+              if ( bg.r > 0.f )
+                  bg.r = powf(bg.r * _gain, one_gamma);
+              if ( bg.g > 0.f )
+                  bg.g = powf(bg.g * _gain, one_gamma);
+              if ( bg.b > 0.f )
+                  bg.b = powf(bg.b * _gain, one_gamma);
+
+              if ( outside )
               {
-                  outside = true;
+                  rgba = bg;
               }
               else
               {
-
-                  float t = 1.0f - rgba.a;
-                  CMedia::Pixel bg = picb->pixel( xp, yp );
-
-                  float one_gamma = 1.0f / bgr->gamma();
-                  if ( bg.r > 0.f )
-                      bg.r = powf(bg.r * _gain, one_gamma);
-                  if ( bg.g > 0.f )
-                      bg.g = powf(bg.g * _gain, one_gamma);
-                  if ( bg.b > 0.f )
-                      bg.b = powf(bg.b * _gain, one_gamma);
-
-                  rgba.r = bg.r * t;
-                  rgba.g = bg.g * t;
-                  rgba.b = bg.b * t;
+                  rgba.r += bg.r * t;
+                  rgba.g += bg.g * t;
+                  rgba.b += bg.b * t;
               }
           }
       }
