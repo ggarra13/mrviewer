@@ -58,10 +58,6 @@ namespace
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
-#ifndef CodecID
-#define CodecID AVCodecID
-#endif
-
 // this plays backwards by seeking, which is slow but memory efficient
 // #define USE_SEEK_TO_PLAY_BACKWARDS  
 
