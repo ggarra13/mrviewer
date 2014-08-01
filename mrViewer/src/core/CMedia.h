@@ -426,16 +426,12 @@ class CMedia
 
     /// Return the image width
     inline unsigned int  width() const  {
-        if ( !_dataWindow ) return _w;
-        boost::uint64_t f = _frame - _frameStart;
-        return _dataWindow[f].w() ? _dataWindow[f].w() : _w; 
+        return _w;
     }
 
     /// Return the image height
     inline unsigned int  height() const {
-        if ( !_dataWindow ) return _h;
-        boost::uint64_t f = _frame - _frameStart;
-        return _dataWindow[f].h() ? _dataWindow[f].h() : _h; 
+        return _h;
     }
 
     /// Return the image pixel ratio
