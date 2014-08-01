@@ -817,12 +817,6 @@ bool Parser::parse( const std::string& s )
       sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
       deliver( buf );
 
-      sprintf(buf, N_("Gain %g"), v->gain() );
-      deliver( buf );
-
-      sprintf(buf, N_("Gamma %g"), v->gamma() );
-      deliver( buf );
-
       sprintf(buf, N_("Channel %d"), v->channel() );
       deliver( buf );
       
@@ -835,6 +829,12 @@ bool Parser::parse( const std::string& s )
       sprintf(buf, N_("Volume %g"), v->volume() );
       deliver( buf );
  
+      sprintf(buf, N_("Gain %g"), v->gain() );
+      deliver( buf );
+
+      sprintf(buf, N_("Gamma %g"), v->gamma() );
+      deliver( buf );
+
       sprintf(buf, N_("ShowPixelRatio %d"), 
 	      (int)v->show_pixel_ratio() );
       deliver( buf );

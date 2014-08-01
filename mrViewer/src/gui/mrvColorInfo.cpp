@@ -271,7 +271,6 @@ void ColorInfo::update( const CMedia* img,
       if ( xmax >= pic->width() ) xmax = pic->width()-1;
       if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
-
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
 
@@ -292,6 +291,7 @@ void ColorInfo::update( const CMedia* img,
                    rp.g = powf(rp.g * gain, one_gamma);
                if ( rp.b > 0.0f && isfinite(rp.b) )
                    rp.b = powf(rp.b * gain, one_gamma);
+
 
                if ( rp.r < pmin.r ) pmin.r = rp.r;
                if ( rp.g < pmin.g ) pmin.g = rp.g;

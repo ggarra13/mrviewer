@@ -1149,20 +1149,20 @@ void ImageBrowser::send_image( const mrv::media& m )
 
     mrv::ImageView* v = view();
 
-    std::string buf = "CurrentImage \"";
+    std::string buf = N_("CurrentImage \"");
     CMedia* img = m->image();
     buf += img->fileroot();
     char txt[256];
-    sprintf( txt, "\" %" PRId64 " %" PRId64, img->first_frame(),
+    sprintf( txt, N_("\" %" PRId64 " %" PRId64), img->first_frame(),
              img->last_frame() );
     buf += txt;
 
     v->send( buf );
 
-    sprintf( txt, "Gamma %g", view()->gamma() );
+    sprintf( txt, N_("Gamma %g"), v->gamma() );
     v->send( txt );
 
-    sprintf(txt, N_("Gain %g"), view()->gain() );
+    sprintf(txt, N_("Gain %g"), v->gain() );
     v->send( txt );
 
     sprintf(txt, N_("Channel %d"), v->channel() );
