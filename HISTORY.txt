@@ -1,14 +1,18 @@
+v2.6.4.1 - Made autofit work in EDL timeline when switching images.
 v2.6.4.0 - Added a starting audio volume preference to the default 
 	   audio preferences.
 	 - Made preferences run when the user hits ok.  Previously ok did
 	   nothing.  This allows testing preferences much easier.
 	 - Pixel Info is now available for background images even when those
 	   background images have a different size than the foreground one.
+	   Note that Color Info Selection shows only the foreground image 
+	   values.
 	 - Bug fixed file requester when clicking with rmb on a folder 
 	   which would access the folder instead of the menus.
 	 - EXR images with data windows are now saved keeping the data and
 	   display window if saved as EXR.
-	 - GUI for OpenEXR and ImageMagick image options.
+	 - GUI for OpenEXR and ImageMagick image options.  Allows selecting
+	   compression and pixel type.
 v2.6.3.4 - Bug fixed thumbnails on sequences in file requester.
 	 - Bug fixed some remote image problems including one incorrect 
 	   log out.
