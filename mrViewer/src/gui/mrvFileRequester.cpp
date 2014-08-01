@@ -362,6 +362,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
       CMedia* img = fg->image();
 
+
       if ( old != fg )
       {
 

@@ -88,18 +88,27 @@ namespace mrv {
       Mutex& mutex = _image->video_mutex();
       SCOPED_LOCK( mutex );
 
-      unsigned int dh = _image->height();
+      unsigned dw = _image->width();
+      unsigned dh = _image->height();
 
+      unsigned int w = 0;
       unsigned int h = _thumbnail_height;
+
       float yScale = (float)h / (float)dh;
       float xScale = yScale;
 
-      unsigned int w = int( _image->width() * xScale );
-      if ( w < 8 ) w = 32;
+      if ( _thumbnail )
+      {
+          // once we set thumbnail size we cannot change it
+          w = _thumbnail->width();
+      }
+      else
+      {
+          w = (int) ((float)dw * xScale);
+          if ( w < 8 ) w = 32;
+      }
 
-      // Audio only clip?
-
-
+      // Audio only clip?  Return
       mrv::image_type_ptr pic = _image->hires();
       if ( !pic ) return;
 
@@ -108,20 +117,16 @@ namespace mrv {
       w = pic->width();
       h = pic->height();
 
-
-
       if ( _thumbnail == NULL )
 	{
-	  _thumbnail = new fltk::Image( fltk::RGB, w, h );
-	  if ( _thumbnail == NULL )
-          {
-             IMG_ERROR( "Could not allocate thumbnail" );
-             return;
-          }
+            _thumbnail = new fltk::Image( fltk::RGB, w, h );
+            if ( _thumbnail == NULL )
+            {
+                IMG_ERROR( "Could not allocate thumbnail" );
+                return;
+            }
 	}
 
-
-      _thumbnail->setsize( w, h );
 
       uchar* ptr = (uchar*) _thumbnail->buffer();
       if (!ptr )

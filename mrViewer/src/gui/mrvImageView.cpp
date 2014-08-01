@@ -1289,6 +1289,8 @@ void ImageView::timeout()
               << tframe );
          foreground( fg );
 
+         fit_image();
+
          sprintf( bufs, "mrViewer    FG: %s", 
                   fg->image()->name().c_str() );
          uiMain->uiMain->copy_label( bufs );
@@ -2397,12 +2399,22 @@ void ImageView::mouseMove(int x, int y)
           }
           else
           {
-              double px = (double) picb->width() / (double) pic->width();
-              double py = (double) picb->height() / (double) pic->height();
-              xp = (int)floor( xp * px );
-              yp = (int)floor( yp * py );
+              double px, py;
+              if ( dpw.w() > 0 )
+              {
+                  px = (double) picb->width() / (double) dpw.w();
+                  py = (double) picb->height() / (double) dpw.h();
+              }
+              else
+              {
+                  px = (double) picb->width() / (double) pic->width();
+                  py = (double) picb->height() / (double) pic->height();
+              }
+
               xp += daw.x();
               yp += daw.y();
+              xp = (int)floor( xp * px );
+              yp = (int)floor( yp * py );
           }
 
           bool outside2 = false;
@@ -4535,6 +4547,7 @@ void ImageView::first_frame()
        if ( int64_t( uiMain->uiFrame->value() ) == f )
        {
 	  browser()->previous_image();
+          fit_image();
 	  return;
        }
 
@@ -4565,6 +4578,7 @@ void ImageView::last_frame()
       if ( int64_t( uiMain->uiFrame->value() ) == f )
 	{
 	  browser()->next_image();
+          fit_image();
 	  return;
 	}
       
