@@ -306,7 +306,8 @@ std::string hex_to_char_filename( std::string& f )
 			    std::string& fileroot )
   {
 
-    frameStart = frameEnd = mrv::kMinFrame;
+      frameStart = mrv::kMaxFrame; 
+      frameEnd = mrv::kMinFrame;
   
     // My encoding type
     // Create and install global locale

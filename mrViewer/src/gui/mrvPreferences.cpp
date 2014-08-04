@@ -378,8 +378,11 @@ namespace mrv {
     //
     fltk::Preferences colors( ui, "colors" );
     colors.get( "background_color", bgcolor, 0x43434300 );
+    uiPrefs->uiPrefsUIBG->color( bgcolor );
     colors.get( "text_color", textcolor, 0xababab00 );
+    uiPrefs->uiPrefsUIText->color( textcolor );
     colors.get( "selection_color", selectioncolor, 0x97a8a800 );
+    uiPrefs->uiPrefsUISelection->color( selectioncolor );
 
     //
     // ui/view/colors
@@ -391,7 +394,7 @@ namespace mrv {
       uiPrefs->uiPrefsViewBG->color( tmp );
 
       colors.get("text_overlay_color", tmp, 0xFFFF0000 );
-      uiPrefs->uiPrefsViewText->color( tmp );
+      uiPrefs->uiPrefsViewTextOverlay->color( tmp );
 
       colors.get("selection_color", tmp, 0x0000FF00 );
       uiPrefs->uiPrefsViewSelection->color( tmp );
@@ -988,7 +991,7 @@ namespace mrv {
        fltk::Preferences colors( view, "colors" );
        int tmp = uiPrefs->uiPrefsViewBG->color();
        colors.set("background_color", tmp );
-       tmp = uiPrefs->uiPrefsViewText->color();
+       tmp = uiPrefs->uiPrefsViewTextOverlay->color();
        colors.set("text_overlay_color", tmp );
        tmp = uiPrefs->uiPrefsViewSelection->color();
        colors.set("selection_color", tmp );
@@ -1022,8 +1025,11 @@ namespace mrv {
     // ui/colors prefs
     //
     fltk::Preferences colors( ui, "colors" );
+    bgcolor = uiPrefs->uiPrefsUIBG->color();
     colors.set( "background_color", bgcolor );
+    textcolor = uiPrefs->uiPrefsUIText->color();
     colors.set( "text_color", textcolor );
+    selectioncolor = uiPrefs->uiPrefsUISelection->color();
     colors.set( "selection_color", selectioncolor );
 
     fltk::Preferences flu( ui, "file_requester" );
@@ -1179,13 +1185,14 @@ namespace mrv {
 		 hotkeys[i].hotkey.text.c_str() );
 
     }
+
   }
 
 
   bool Preferences::set_theme()
   {
     // Default Style handling for changing the scheme of all widget at once
-    fltk::reset_theme();  
+    fltk::reset_theme();
 
 
     // this is ugly and fucks up all gray75 colors
@@ -1220,10 +1227,11 @@ namespace mrv {
     style = fltk::Style::find( "ValueInput" );
     if ( style )
       {
-	 style->color( bgcolor );
-	 // style->textcolor( textcolor );
+	 style->color( textcolor );
+	 style->textcolor( fltk::BLACK );
+         style->selection_color( selectioncolor );
 	 // style->buttoncolor( selectioncolor );
-	 // style->labelcolor( textcolor );
+	 style->labelcolor( textcolor );
       }
 
     // this has default_style
