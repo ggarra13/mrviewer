@@ -465,6 +465,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("wmv"),   _( "WMV Movie"), &reel );
   add_type( N_("vob"),   _( "VOB Movie"), &reel );
   add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
+  add_type( N_("flv"),   _( "Flash Movie"), &reel );
   add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
   add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
   add_type( N_("cin"),   _( "Cineon Picture"), &picture );
@@ -584,8 +585,8 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   uchar cr,cg,cb;
   fltk::split_color( color(), cr, cg, cb);
-  Color bg = fltk::color( cr/2, cg/2, cb/2);
-  Color hi = fltk::color( cr*2, cg*2, cb*2);
+  Color bg = fltk::color( uchar(cr/2), uchar(cg/2), uchar(cb/2));
+  Color hi = fltk::color( uchar(cr*2), uchar(cg*2), uchar(cb*2));
 
   quickIcons->color( bg );
 
@@ -2216,7 +2217,7 @@ Flu_File_Chooser::FileDetails::FileDetails( int x, int y, int w, int h,
 {
   uchar r,g,b;
   fltk::split_color( color(), r, g, b );
-  scrollbar.color( fltk::color(r*2,g*2,b*2) );
+  scrollbar.color( fltk::color(uchar(r*2),uchar(g*2),uchar(b*2)) );
 
   chooser = c;
   numDirs = 0;
@@ -2918,7 +2919,7 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
     {
       ext = strdup( ext+1 ); // skip the '.'
       for( unsigned int i = 0; i < strlen(ext); i++ )
-	ext[i] = tolower( ext[i] );
+          ext[i] = (char)tolower( ext[i] );
     }
 
   enum { ACTION_NEW_FOLDER = -1, ACTION_RENAME = -2, ACTION_DELETE = -3 };

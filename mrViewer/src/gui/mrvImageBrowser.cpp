@@ -1644,6 +1644,7 @@ int ImageBrowser::value() const
 
     if ( start != mrv::kMinFrame ) frame( start );
 
+
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     if ( img == NULL )
     {
@@ -1948,8 +1949,8 @@ void ImageBrowser::load( const stringArray& files,
 	  }
 	else
 	  {
-	    int64_t start = mrv::kMinFrame;
-	    int64_t end   = mrv::kMaxFrame;
+	    int64_t start = mrv::kMaxFrame;
+	    int64_t end   = mrv::kMinFrame;
 	    mrv::get_sequence_limits( start, end, file );
 	    loadlist.push_back( mrv::LoadInfo( file, start, end ) );
 	  }
@@ -1975,6 +1976,7 @@ void ImageBrowser::load( const stringArray& files,
   {
      stringArray files = mrv::open_image_file(NULL,false);
      if (files.empty()) return;
+
      load( files );
   }
 

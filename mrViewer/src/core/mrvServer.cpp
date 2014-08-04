@@ -145,6 +145,7 @@ bool Parser::parse( const std::string& s )
    ParserList c = v->_clients;
    v->_clients.clear();
 
+   LOG_CONN( "Received: " << s );
 
 #ifdef DEBUG_COMMANDS
    DBG( "received: " << cmd );
@@ -308,7 +309,7 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("Channel") )
    {
-      unsigned ch;
+      unsigned short ch;
       is >> ch;
       
       if ( v->foreground() )
@@ -400,7 +401,7 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("Volume") )
    {
-      double b;
+      float b;
       is >> b;
       v->volume( b );
       v->redraw();
@@ -465,7 +466,7 @@ bool Parser::parse( const std::string& s )
        is >> x;
        ui->uiTimeline->maximum( x );
        ui->uiTimeline->redraw();
-       ui->uiEndFrame->value( x );
+       ui->uiEndFrame->value( boost::int64_t(x) );
        ui->uiEndFrame->redraw();
        ok = true;
    }
@@ -475,7 +476,7 @@ bool Parser::parse( const std::string& s )
        is >> x;
        ui->uiTimeline->minimum( x );
        ui->uiTimeline->redraw();
-       ui->uiStartFrame->value( x );
+       ui->uiStartFrame->value( boost::int64_t(x) );
        ui->uiStartFrame->redraw();
        ok = true;
    }
