@@ -118,7 +118,7 @@ struct ServerData
 {
      std::string host;
      std::string group;
-     unsigned    port;
+     unsigned short port;
      mrv::ViewerUI* ui;
 };
 

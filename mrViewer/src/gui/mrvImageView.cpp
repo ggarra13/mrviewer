@@ -1519,7 +1519,7 @@ void ImageView::draw()
   if ( label )
     {
       uchar r, g, b;
-      fltk::split_color( uiPrefs->uiPrefsViewText->color(), r, g, b );
+      fltk::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
 
 
       int dx, dy;
