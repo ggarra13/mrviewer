@@ -415,9 +415,9 @@ class CMedia
 				const boost::uint8_t* datas = NULL,
 				const int size = 0,
 				const boost::int64_t 
-				first = std::numeric_limits<boost::int64_t>::min(),
+				first = std::numeric_limits<boost::int64_t>::max(),
 				const boost::int64_t 
-				end = std::numeric_limits<boost::int64_t>::max(),
+				end = std::numeric_limits<boost::int64_t>::min(),
                                 const bool use_threads = false );
 
     ////////////////////////

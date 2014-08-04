@@ -166,8 +166,7 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {open
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -186,7 +185,7 @@ o->scrollbar.color( o->buttoncolor() );
 o->hscrollbar.color( o->buttoncolor() );}
           class {mrv::ImageBrowser}
         } {}
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {0 0 405 32} box UP_BOX
         } {
           {fltk::Choice} {} {
@@ -593,7 +592,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {530 294 640 475} resizable visible
+        xywh {546 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -726,7 +725,7 @@ If you try to open several mrViewers with different images, all these images wil
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Defaults open
+              label Defaults
               xywh {13 32 378 135} box ROUNDED_BOX
             } {
               {fltk::ValueInput} uiPrefsViewGain {
@@ -892,11 +891,51 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label Colors
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Colors open
+            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Group} {} {open
-              xywh {13 24 378 81} box ROUNDED_BOX
+            {fltk::Group} {} {
+              label UI open
+              xywh {12 24 383 108} box ROUNDED_BOX
+            } {
+              {fltk::Button} uiPrefsUIBG {
+                label Background
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Background Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();}
+                tooltip {Selects the background of UI.}
+                xywh {141 18 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+              {fltk::Button} uiPrefsUIText {
+                label Text
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();
+v->refresh();}
+                tooltip {Selects the color of text in widgets.}
+                xywh {141 63 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+              {fltk::Button} uiPrefsUISelection {
+                label Selection
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Selection Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();
+v->refresh();} selected
+                tooltip {Selects the color of the selection rectangle in widgets.}
+                xywh {256 18 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+            }
+            {fltk::Group} {} {
+              label View
+              xywh {12 174 383 108} box ROUNDED_BOX
             } {
               {fltk::Button} uiPrefsViewBG {
                 label Background
@@ -906,9 +945,9 @@ if (!fltk::color_chooser("Pick View Background Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();}
                 tooltip {Selects the background color of areas outside the current image.}
-                xywh {131 15 25 25} align 4 box EMBOSSED_BOX labelsize 11
+                xywh {131 30 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
-              {fltk::Button} uiPrefsViewText {
+              {fltk::Button} uiPrefsViewTextOverlay {
                 label {Text Overlay}
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {uchar r, g, b;
@@ -918,7 +957,7 @@ o->color( fltk::color( r,g,b ) );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of text overlays printed over the current image.}
-                xywh {131 45 25 25} align 4 box EMBOSSED_BOX labelsize 11
+                xywh {131 60 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
               {fltk::Button} uiPrefsViewSelection {
                 label Selection
@@ -930,7 +969,7 @@ o->color( fltk::color( r,g,b ) );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of the selection rectangle over the current image.}
-                xywh {246 15 25 25} align 4 box EMBOSSED_BOX labelsize 11
+                xywh {246 30 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
               {fltk::Button} uiPrefsViewHud {
                 label HUD
@@ -941,7 +980,8 @@ if (!fltk::color_chooser("Pick HUD Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();
 v->refresh();}
-                xywh {246 45 25 25} align 4 box EMBOSSED_BOX
+                tooltip {Selects the color of HUD overlays.}
+                xywh {246 60 25 25} align 4 box EMBOSSED_BOX
               }
             }
           }
@@ -955,7 +995,7 @@ v->refresh();}
             }
           }
           {fltk::Group} Playback {
-            label Playback
+            label Playback open
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsAutoPlayback {
@@ -964,15 +1004,15 @@ v->refresh();}
               xywh {285 24 20 25} align 4
             }
             {fltk::Group} {} {
-              label Defaults
+              label Defaults open
               xywh {50 68 285 121} align 5 box ROUNDED_BOX
             } {
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {110 50 150 26}
               } {
                 {fltk::ValueInput} uiPrefsFPS {
                   label Speed
-                  xywh {0 1 75 25} labelsize 11 minimum 0.001 maximum 120 step 0.01 value 24
+                  xywh {0 1 75 25} color 0xffffff00 labelsize 11 minimum 0.001 maximum 120 step 0.01 value 24
                 }
                 {fltk::PopupMenu} {} {
                   label FPS
@@ -1679,7 +1719,7 @@ for ( ; i != e; ++i )
 if ( o->value() )
    v->deactivate();
 else
-   v->activate();} selected
+   v->activate();}
               xywh {110 342 40 25}
             }
           }
@@ -1712,7 +1752,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open

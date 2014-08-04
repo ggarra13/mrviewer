@@ -28,7 +28,7 @@ typedef std::vector< std::string > stringArray;
        float gain;
        std::string host;
        stringArray audios;
-       unsigned port;
+       unsigned short port;
        float fps;
 
   Options() : edl(false), gamma(1.0f), gain( 1.0f ), port( 0 ), fps( 0 )
