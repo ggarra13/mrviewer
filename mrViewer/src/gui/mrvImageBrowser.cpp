@@ -2021,17 +2021,25 @@ void ImageBrowser::load( const stringArray& files,
    */
   void ImageBrowser::clone_current()
   {
-    mrv::Reel reel = current_reel();
-    if (!reel) return;
-
     int sel = value();
     if ( sel < 0 ) return;
 
+    mrv::Reel reel = current_reel();
+    if (!reel) return;
+
+
     mrv::media orig = reel->images[sel];
-    clonedImage* copy = new clonedImage( orig->image() );
+    CMedia* img = orig->image();
+    if ( img == NULL ) return;
+
+    clonedImage* copy = new clonedImage( img );
 
     mrv::media clone( new mrv::gui::media(copy) );
     this->insert( sel + 1, clone );
+
+    char buf[256];
+    sprintf(buf, "CloneImage \"%s\"", img->fileroot() ); 
+    view()->send( buf );
 
     adjust_timeline();
   }
@@ -2051,13 +2059,18 @@ void ImageBrowser::load( const stringArray& files,
     if (!reel) return;
 
     mrv::media orig = reel->images[sel];
-    if (!orig || !orig->image() ) return;
+    CMedia* img = orig->image();
+    if (!orig || !img ) return;
 
     // @hmm.... this needs fixing
-    stubImage* copy = new stubImage( orig->image() );
+    stubImage* copy = new stubImage( img );
 
     mrv::media clone( new mrv::gui::media(copy) );
     this->insert( sel + 1, clone );
+
+    char buf[256];
+    sprintf(buf, "CloneImageAll \"%s\"", img->fileroot() ); 
+    view()->send( buf );
 
     adjust_timeline();
   }

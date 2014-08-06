@@ -7,7 +7,7 @@
 // Distributed under the Boost Software License, Version 1.0. (See accompanying
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
-// 
+//
 #include <algorithm>
 #include <cstdlib>
 #include <deque>
@@ -551,6 +551,33 @@ bool Parser::parse( const std::string& s )
       edl_group()->redraw();
 
       ok = true;
+   }
+   else if ( cmd == N_("CloneImage") )
+   {
+      std::string imgname;
+      std::getline( is, imgname, '"' ); // skip first quote
+      std::getline( is, imgname, '"' );
+
+      if ( r )
+      {
+	 size_t j;
+	 size_t e = r->images.size();
+
+         for ( j = 0; j != e; ++j )
+         {
+             mrv::media fg = r->images[j];
+             if ( fg->image()->fileroot() == imgname )
+                 break;
+         }
+
+         if ( j != e )
+         {
+             browser()->value( int(j) );
+             browser()->clone_current();
+
+             ok = true;
+         }
+      }
    }
    else if ( cmd == N_("InsertImage") )
    {

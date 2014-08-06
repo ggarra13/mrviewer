@@ -592,7 +592,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {546 294 640 475} resizable visible
+        xywh {570 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -600,10 +600,10 @@ o->label( o->child( o->value() )->label() );}
         } {
           {fltk::Group} {} {
             label {User Interface}
-            xywh {8 24 412 382} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 24 407 382} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Window Behavior} open
+              label {Window Behavior}
               xywh {23 25 355 100} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAlwaysOnTop {
@@ -731,12 +731,12 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::ValueInput} uiPrefsViewGain {
                 label Gain
                 tooltip {Sets the default gain when mrViewer starts.}
-                xywh {45 10 80 25} color 0xffffff00 labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
+                xywh {45 10 80 25} labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
               }
               {fltk::ValueInput} uiPrefsViewGamma {
                 label Gamma
                 tooltip {Sets the default gamma when mrViewer starts.}
-                xywh {280 10 60 25} color 0xffffff00 labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
+                xywh {280 10 60 25} labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
               }
               {fltk::Choice} uiPrefsCropArea {
                 label Crop
@@ -873,7 +873,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label Positioning open
+              label Positioning
               xywh {18 337 355 40} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiWindowFixedPosition {
@@ -882,17 +882,17 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::ValueInput} uiWindowXPosition {
                 label {X:}
-                xywh {180 5 60 25} color 0xffffff00
+                xywh {180 5 60 25}
               }
               {fltk::ValueInput} uiWindowYPosition {
                 label {Y:}
-                xywh {260 5 60 25} color 0xffffff00
+                xywh {260 5 60 25}
               }
             }
           }
           {fltk::Group} {} {
             label Colors open
-            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label UI open
@@ -928,9 +928,21 @@ fltk::split_color(o->color(),r,g,b);
 if (!fltk::color_chooser("Pick View Selection Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();
-v->refresh();} selected
+v->refresh();}
                 tooltip {Selects the color of the selection rectangle in widgets.}
                 xywh {256 18 25 25} align 4 box EMBOSSED_BOX labelsize 11
+              }
+              {fltk::Button} uiPrefsUISelectionText {
+                label {Selected Text}
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {uchar r, g, b;
+fltk::split_color(o->color(),r,g,b);
+if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
+o->color( fltk::color( r,g,b ) );
+o->redraw();
+v->refresh();}
+                tooltip {Selects the color of text in widgets.}
+                xywh {256 63 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
             }
             {fltk::Group} {} {
@@ -995,7 +1007,7 @@ v->refresh();}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
+            label Playback
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsAutoPlayback {
@@ -1012,7 +1024,7 @@ v->refresh();}
               } {
                 {fltk::ValueInput} uiPrefsFPS {
                   label Speed
-                  xywh {0 1 75 25} color 0xffffff00 labelsize 11 minimum 0.001 maximum 120 step 0.01 value 24
+                  xywh {0 1 75 25} color 0x98a8a800 selection_color 0x647f00 labelsize 11 minimum 0.001 maximum 120 step 0.01 value 24
                 }
                 {fltk::PopupMenu} {} {
                   label FPS
@@ -1075,11 +1087,11 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
           } {
             {fltk::ValueSlider} uiVideoCacheSize {
               label Video
-              xywh {110 30 265 30} align 1 hotspot minimum 15 maximum 250 step 1 value 70
+              xywh {110 30 265 30} type TICK_ABOVE align 1 minimum 15 maximum 250 step 1 value 70
             }
             {fltk::ValueSlider} uiAudioCacheSize {
               label Audio
-              xywh {110 90 265 30} align 1 hotspot minimum 15 maximum 250 step 1 value 70
+              xywh {110 90 265 30} type TICK_ABOVE align 1 minimum 15 maximum 250 step 1 value 70
             }
             {fltk::LightButton} uiVideoFPS {
               label FPS
@@ -1099,11 +1111,11 @@ else
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
+            label {3D Luts} open
             xywh {25 34 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Algorithm
+              label Algorithm open
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
               xywh {43 42 340 140} box ROUNDED_BOX
             } {
@@ -1121,7 +1133,7 @@ v->refresh();}
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
 When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
-                xywh {95 55 195 25}
+                xywh {95 28 195 25}
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1151,7 +1163,7 @@ v->refresh();}
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
-                xywh {95 107 195 25}
+                xywh {95 80 195 25}
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1168,14 +1180,14 @@ If unsure what this means, keep your display and images setting always using the
               }
             }
             {fltk::Group} {} {
-              label Quality
+              label Quality open
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
               xywh {43 267 340 75} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();}
+                callback {v->refresh();} open
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.  
 
@@ -1188,7 +1200,7 @@ It is recommended this setting is left at 64x64x64.
 
 The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
 }
-                xywh {120 40 170 25}
+                xywh {120 25 170 25}
               } {
                 {fltk::Item} {} {
                   label {No Baking}
@@ -1211,10 +1223,10 @@ The "No Baking" setting performs the color correction on the image directly inst
               {fltk::Choice} uiICC_intent {
                 label ICC
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();} open
+                callback {v->refresh();}
                 tooltip {When using luts with ICC profiles, this setting allows you to select the ICC rendering intent.   Rendering intents are mostly used for printing to film or paper to emulate or proof the output of the output device (ODT), particularly when it does not have the same gamut (color/white range) as the linear RGB/XYZ space.
 }
-                xywh {120 20 170 25}
+                xywh {120 10 170 25}
               } {
                 {fltk::Item} {} {
                   label Perceptual
@@ -1609,19 +1621,19 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading
-            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Loading open
+            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {25 25 333 132} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoReload {
-                label {Auto Reload}
+                label { Auto Reload}
                 tooltip {When turned on, files are automatically reloaded if changed on disk.}
                 xywh {25 22 25 25} value 1
               }
               {fltk::CheckButton} uiPrefsLoadSequence {
-                label {Load Sequence on Drag&Drop}
+                label { Load Sequence on Drag&Drop} selected
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
                 xywh {25 67 25 25} value 1
               }
@@ -1752,7 +1764,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2459,15 +2471,15 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {365 231 640 530} when CHANGED hide resizable
+        xywh {235 404 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow}
       } {
-        {fltk::PackedGroup} uiRegion {open
+        {fltk::PackedGroup} uiRegion {
           xywh {0 0 640 530}
         } {
-          {fltk::Group} uiTopBar {open
+          {fltk::Group} uiTopBar {
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
@@ -2548,7 +2560,7 @@ v->uiHotkey->uiMain->show();}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {30 5 90 20} color 0x53535300
             } {
               {fltk::PopupMenu} uiColorChannel {
@@ -2635,7 +2647,7 @@ Click to toggle between current and normal exposure.}
                 }
               }
             }
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {405 5 155 20} color 0x53535300
             } {
               {fltk::Group} {} {open
@@ -2691,7 +2703,7 @@ Value is:  pow( 2, 1/x );}
                 }
               }
             }
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {550 5 80 20}
             } {
               {fltk::PopupMenu} uiField {
@@ -2728,7 +2740,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::PackedGroup} uiViewGroup {open
+          {fltk::PackedGroup} uiViewGroup {
             xywh {0 25 640 430} resizable
             class {fltk::Group}
           } {
@@ -3205,7 +3217,7 @@ v->uiFPS->value( g );} open
                         user_data this user_data_type {mrv::ViewerUI*}
                         callback {v->uiView->fps( o->value() );}
                         tooltip {Allows you to adjust frame rate playback.}
-                        xywh {29 2 35 18} when CHANGED hotspot color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                        xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                         extra_code {o->textcolor( fltk::BLACK );
 o->value(24);}
                         class {fltk::ValueInput}

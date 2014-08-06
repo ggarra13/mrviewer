@@ -27,6 +27,7 @@ namespace fs = boost::filesystem;
 #include <fltk/Preferences.h>
 #include <fltk/ProgressBar.h>
 #include <fltk/Tooltip.h>
+#include <fltk/StyleSet.h>
 #include <fltk/run.h>
 
 // CORE classes
@@ -235,6 +236,8 @@ namespace
 
 namespace mrv {
 
+fltk::StyleSet*     scheme = NULL;
+fltk::StyleSet*     newscheme = NULL;
   AboutUI*          ViewerUI::uiAbout = NULL;
   LogUI*            ViewerUI::uiLog   = NULL;
   PreferencesUI*    ViewerUI::uiPrefs = NULL;
@@ -258,6 +261,7 @@ namespace mrv {
   int   Preferences::bgcolor;
   int   Preferences::textcolor;
   int   Preferences::selectioncolor;
+  int   Preferences::selectiontextcolor;
 
 
   Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
@@ -383,6 +387,8 @@ namespace mrv {
     uiPrefs->uiPrefsUIText->color( textcolor );
     colors.get( "selection_color", selectioncolor, 0x97a8a800 );
     uiPrefs->uiPrefsUISelection->color( selectioncolor );
+    colors.get( "selection_text_color", selectiontextcolor, 0x00000000 );
+    uiPrefs->uiPrefsUISelectionText->color( selectiontextcolor );
 
     //
     // ui/view/colors
@@ -734,7 +740,9 @@ namespace mrv {
     fltk::SharedImage::add_handler( mrv::fltk_handler );
 
     // Set the theme and colors for GUI
+    // scheme = new fltk::StyleSet();
     fltk::theme( &Preferences::set_theme );
+    fltk::load_theme();
   }
 
 
@@ -1031,6 +1039,8 @@ namespace mrv {
     colors.set( "text_color", textcolor );
     selectioncolor = uiPrefs->uiPrefsUISelection->color();
     colors.set( "selection_color", selectioncolor );
+    selectioncolor = uiPrefs->uiPrefsUISelectionText->color();
+    colors.set( "selection_text_color", selectiontextcolor );
 
     fltk::Preferences flu( ui, "file_requester" );
     flu.set("quick_folder_travel", 
@@ -1194,6 +1204,7 @@ namespace mrv {
     // Default Style handling for changing the scheme of all widget at once
     fltk::reset_theme();
 
+    newscheme = new fltk::StyleSet();
 
     // this is ugly and fucks up all gray75 colors
     //   fltk::set_background( bgcolor );
@@ -1210,6 +1221,7 @@ namespace mrv {
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
       }
 
     style = fltk::Style::find( "TextDisplay" );
@@ -1221,17 +1233,20 @@ namespace mrv {
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
       }
 
     // this has default_style
     style = fltk::Style::find( "ValueInput" );
     if ( style )
       {
-	 style->color( textcolor );
-	 style->textcolor( fltk::BLACK );
-         style->selection_color( selectioncolor );
+          style->color( 0x98a8a800 );
+          // style->color( textcolor );
+          style->textcolor( fltk::BLACK );
+          style->selection_color( selectioncolor );
+          style->selection_textcolor( selectiontextcolor );
 	 // style->buttoncolor( selectioncolor );
-	 style->labelcolor( textcolor );
+          style->labelcolor( textcolor );
       }
 
     // this has default_style
@@ -1240,6 +1255,7 @@ namespace mrv {
       {
 	style->color( bgcolor );
 	style->textcolor( textcolor );
+	style->selection_textcolor( selectiontextcolor );
 	style->buttoncolor( bgcolor );
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
@@ -1251,6 +1267,7 @@ namespace mrv {
       {
 	style->color( bgcolor );
 	style->textcolor( textcolor );
+	style->selection_textcolor( selectiontextcolor );
 	style->buttoncolor( bgcolor );
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
@@ -1279,6 +1296,7 @@ namespace mrv {
 	style->textsize( 10 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
       }
 
     style = fltk::Style::find( "Message" );
@@ -1291,6 +1309,7 @@ namespace mrv {
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
       }
 
     // this has default_style
@@ -1313,6 +1332,7 @@ namespace mrv {
 	style->labelsize( 12 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
       }
 
 
@@ -1358,6 +1378,7 @@ namespace mrv {
 	style->labelsize( 12 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
 	style->highlight_color( selectioncolor );
       }
 
@@ -1410,6 +1431,7 @@ namespace mrv {
     if ( style )
       {
 	style->selection_color( bgcolor );
+	style->selection_textcolor( selectiontextcolor );
 	style->color( bgcolor  );
 	style->textcolor( textcolor );
 	style->labelcolor( textcolor );
@@ -1428,8 +1450,6 @@ namespace mrv {
 	style->textsize( 8 );
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
-
-
  	style->highlight_textcolor( 0xFFFF0000 );
       }
 
@@ -1444,6 +1464,7 @@ namespace mrv {
 	style->labelsize( 14 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
+        style->selection_textcolor( selectiontextcolor );
       }
     else
       {
@@ -1473,6 +1494,9 @@ namespace mrv {
     uiPrefs->uiICC_16bits_profile->value( CMedia::icc_profile_16bits.c_str() );
     uiPrefs->uiICC_32bits_profile->value( CMedia::icc_profile_32bits.c_str() );
     uiPrefs->uiICC_float_profile->value( CMedia::icc_profile_float.c_str() );
+
+    newscheme->make_current();
+    fltk::reload_theme();
 
     return true;
   }
