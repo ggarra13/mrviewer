@@ -117,8 +117,7 @@ namespace mrv {
 	    //
 	    // lut[i] is finite and positive.
 	    //
-
-	    lut[i] = log (lut[i]);
+            lut[i] = (float) log (lut[i]);
 	  }
 	else
 	  {
@@ -126,8 +125,7 @@ namespace mrv {
 	    // lut[i] is zero, negative or not finite;
 	    // log (lut[i]) is undefined.
 	    //
-
-	    lut[i] = log (HALF_MIN);
+             lut[i] = (float) log(HALF_MIN);
 	  }
       }
 
@@ -180,8 +178,8 @@ namespace mrv {
     lutMin = MIDDLE_GRAY / (1 << NUM_STOPS);
     lutMax = MIDDLE_GRAY * (1 << NUM_STOPS);
 
-    float logLutMin = log (lutMin);
-    float logLutMax = log (lutMax);
+    float logLutMin = logf (lutMin);
+    float logLutMax = logf (lutMax);
 
     lutM = 1 / (logLutMax - logLutMin);
     lutT = -lutM * logLutMin;
@@ -191,24 +189,24 @@ namespace mrv {
     // such that R, G and B are between lutMin and lutMax.
     //
     for (size_t ib = 0; ib < _lutN; ++ib)
-      {
-	float b = float(ib / (_lutN - 1.0));
-	half B = exp ((b - lutT) / lutM);
+    {
+        float b = float(ib) / float(_lutN - 1.0);
+        half B = expf((b - lutT) / lutM);
 
 	for (size_t ig = 0; ig < _lutN; ++ig)
 	  {
-	    float g = float(ig / (_lutN - 1.0));
-	    half G = exp ((g - lutT) / lutM);
+              float g = float(ig) / float(_lutN - 1.0);
+              half G = expf ((g - lutT) / lutM);
 
 	    for (unsigned int ir = 0; ir < _lutN; ++ir)
 	      {
-		float r = float(ir / (_lutN - 1.0));
-		half R = exp ((r - lutT) / lutM);
+                  float r = float(ir) / float(_lutN - 1.0);
+                  half R = expf ((r - lutT) / lutM);
 
-		size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * 4;
-		pixelValues[i + 0] = R;
-		pixelValues[i + 1] = G;
-		pixelValues[i + 2] = B;
+                  size_t i = (ib * _lutN * _lutN + ig * _lutN + ir) * 4;
+                  pixelValues[i + 0] = R;
+                  pixelValues[i + 1] = G;
+                  pixelValues[i + 2] = B;
 	      }
 	  }
       }

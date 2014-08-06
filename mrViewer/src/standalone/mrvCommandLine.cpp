@@ -336,7 +336,7 @@ void parse_command_line( const int argc, char** argv,
 	       _("Override viewer's default client hostname."), false, 
 	       opts.host, "string");
 
-    ValueArg< unsigned > 
+    ValueArg< unsigned short > 
     aport( N_("p"), N_("port"), 
 	     _("Set viewer's default server/client port."), false, 
 	     opts.port, "string");
