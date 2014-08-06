@@ -53,6 +53,7 @@ namespace mrv {
     static int bgcolor;
     static int textcolor;
     static int selectioncolor;
+    static int selectiontextcolor;
 
     static std::string ODT_CTL_transform;
     static std::string ODT_ICC_profile;
