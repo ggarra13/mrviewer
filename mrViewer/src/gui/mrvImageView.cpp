@@ -2692,9 +2692,9 @@ void ImageView::mouseDrag(int x,int y)
                else
                {
                    X = 0;
-                   XM = daw[idx].w();
+                   XM = daw[idx].w() - 1;
                    Y = 0;
-                   YM = daw[idx].h();
+                   YM = daw[idx].h() - 1;
                }
 
                if ( xf < X ) xf = X;
@@ -2707,8 +2707,8 @@ void ImageView::mouseDrag(int x,int y)
                if ( yn < Y ) yn = Y;
                else if ( yn > YM ) yn = YM;
 
-               double dx = (double) std::abs( xn - xf );
-               double dy = (double) std::abs( yn - yf );
+               double dx = (double) std::abs( xn - xf + 1 );
+               double dy = (double) std::abs( yn - yf + 1 );
 
 
                double xt = (xf + daw[0].x() + dpw[0].w() * right);
