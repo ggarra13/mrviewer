@@ -24,6 +24,7 @@ using namespace std;
 #include <fltk/Menu.h>
 #include <fltk/PopupMenu.h>
 #include <fltk/Group.h>
+#include <fltk/Color.h>
 
 
 #include "core/mrvThread.h"
@@ -133,8 +134,11 @@ namespace mrv
 ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
   fltk::Group( x, y, w, h, l )
 {
-  area = new fltk::Widget( 0, 0, w, 50 );
-  area->align( fltk::ALIGN_CENTER | fltk::ALIGN_INSIDE );
+    dcol = new fltk::Widget( 4, 10, 32, 32 );
+
+    area = new fltk::Widget( 100, 0, w, 50 );
+    area->box( fltk::FLAT_BOX );
+    area->align( fltk::ALIGN_LEFT | fltk::ALIGN_INSIDE );
 
   int w5 = w / 5;
   static int col_widths[] = { w5, w5, w5, w5, w5, 0 };
@@ -160,6 +164,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
                                     int& ymax, bool& right )
 {
       const mrv::Recti& dpw = img->display_window();
+      const mrv::Recti& daw = img->data_window();
       unsigned W = dpw.w();
       unsigned H = dpw.h();
       if ( W == 0 ) W = img->width();
@@ -167,8 +172,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
       unsigned wt = W;
 
-      xmin = (int)(selection.x());
-      ymin = (int)(selection.y());
+      xmin = (int)(selection.x() - daw.x());
+      ymin = (int)(selection.y() - daw.y());
 
       right = false;
       if ( xmin >= W && 
@@ -264,6 +269,7 @@ void ColorInfo::update( const CMedia* img,
               pic = img->right();
           if (!pic) return;
       }
+
 
       if ( xmin >= pic->width() ) xmin = pic->width()-1;
       if ( ymin >= pic->height() ) ymin = pic->height()-1;
@@ -386,6 +392,14 @@ void ColorInfo::update( const CMedia* img,
       static const char* kS = "@C0xB0B00000;";
       static const char* kV = "@C0xB0B00000;";
       static const char* kL = "@C0xB0B0B000;";
+
+      fltk::Color col = fltk::color((uchar)(pmean.r*255), 
+                                    (uchar)(pmean.g*255), 
+                                    (uchar)(pmean.b*255));
+
+
+      dcol->color( col );
+      dcol->redraw();
 
       unsigned spanX = xmax-xmin+1;
       unsigned spanY = ymax-ymin+1;

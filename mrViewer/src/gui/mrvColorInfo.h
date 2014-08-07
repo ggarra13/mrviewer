@@ -44,6 +44,7 @@ namespace mrv
                                       int& ymax, bool& right );
 
   protected:
+    fltk::Widget*    dcol;
     fltk::Widget*    area;
     fltk::Browser*   browser;
     fltk::PopupMenu* uiColorB;

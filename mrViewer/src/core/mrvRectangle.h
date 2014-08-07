@@ -47,8 +47,8 @@ namespace mrv
     inline T t() const { return y_; }
     inline T l() const { return x_; }
 
-    inline T b() const { return y_ + h_; }
-    inline T r() const { return x_ + w_; }
+    inline T b() const { return y_ + h_ - 1; }
+    inline T r() const { return x_ + w_ - 1; }
 
     /*! Change x() without changing r(), by changing the width. */
     void set_x(T v) {w_ -= v-x_; x_ = v;}
