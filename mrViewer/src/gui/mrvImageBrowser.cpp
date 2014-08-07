@@ -444,7 +444,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    size_t reels = number_of_reels();
    for ( size_t i = 0; i < reels; ++i )
    {
-      mrv::Reel r = this->reel( i );
+       mrv::Reel r = this->reel( (unsigned int) i );
 
       c1->add( r->name.c_str() );
       c2->add( r->name.c_str() );
@@ -645,8 +645,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     time_t t = ::time( NULL );
     strftime( created_at, 256, N_("%F %H:%M:%S"), localtime( &t ) );
 
-    unsigned num_video_streams = img->number_of_video_streams();
-    for ( unsigned i = 0; i < num_video_streams; ++i )
+    size_t num_video_streams = img->number_of_video_streams();
+    for ( size_t i = 0; i < num_video_streams; ++i )
       {
 	 sprintf( buf, N_("SELECT id FROM videos "
 			  "WHERE image_id=( %s ) AND stream=%d;"),
@@ -753,8 +753,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	     db->quote( img->name() ).c_str() );
     image_id = buf;
 
-    unsigned num_audio_streams = img->number_of_audio_streams();
-    for ( unsigned i = 0; i < num_audio_streams; ++i )
+    size_t num_audio_streams = img->number_of_audio_streams();
+    for ( size_t i = 0; i < num_audio_streams; ++i )
       {
 	 sprintf( buf, N_("SELECT id FROM audios "
 			  "WHERE directory='%s' AND filename='%s'"
@@ -1384,7 +1384,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 	 view()->background( mrv::media() );
       }
 
-    int idx = i - reel->images.begin();
+    int idx = (int) (i - reel->images.begin());
     fltk::Browser::remove( idx );
 
     reel->images.erase( i );
@@ -1684,9 +1684,9 @@ int ImageBrowser::value() const
     size_t i = 0;
     for ( i = 0; i < number_of_reels(); ++i )
     {
-       if ( reel == this->reel( i ) )
-       {
-	  mrv::media_track* track = edl_group()->media_track(i);
+        if ( reel == this->reel( (unsigned int)i ) )
+        {
+           mrv::media_track* track = edl_group()->media_track((int)i);
 	  if ( m )
           {
              track->add( m );
@@ -1710,7 +1710,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     // Create a progress window
     //
     mrv::Reel oldreel = current_reel();
-    unsigned  numImages = 0;
+    size_t  numImages = 0;
     if ( oldreel ) numImages = oldreel->images.size();
 
     if ( view()->playback() != ImageView::kStopped )
@@ -1729,7 +1729,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     	w->clear_border();
     	w->begin();
     	progress = new fltk::ProgressBar( 0, 20, w->w(), w->h()-20 );
-    	progress->range( 0, files.size() );
+    	progress->range( 0, double(files.size()) );
     	progress->align( fltk::ALIGN_TOP );
     	progress->showtext(true);
     	w->end();
@@ -2196,7 +2196,7 @@ void ImageBrowser::load( const stringArray& files,
     unsigned sel = 0;
     if ( fg )
     {
-       sel = reel->index( fg->image() ) + 1;
+        sel = (int)reel->index( fg->image() ) + 1;
     }
 
     DBG( "image selected #" << sel << "  size: " << reel->images.size() );
@@ -2239,7 +2239,7 @@ void ImageBrowser::load( const stringArray& files,
     int sel = 0;
     if ( fg )
     {
-       sel = reel->index( fg->image() ) - 1;
+        sel = (int)reel->index( fg->image() ) - 1;
     }
 
     int size = (int) reel->images.size() - 1;
@@ -2658,13 +2658,13 @@ void ImageBrowser::load( const stringArray& files,
 	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 	if ( f < timeline()->minimum() )
-	  {
-	    f = int64_t(timeline()->maximum() - timeline()->minimum() - f) + 1;
-	  }
+        {
+            f = int64_t(timeline()->maximum() - timeline()->minimum()) - f + 1;
+        }
 	else if ( f > timeline()->maximum() )
-	  {
-	    f = int64_t(timeline()->minimum() + f - timeline()->maximum()) - 1;
-	  }
+        {
+	    f = int64_t(timeline()->minimum() - timeline()->maximum()) + f - 1;
+        }
 
 	
 	DBG( "seek f: " << f );
@@ -2674,7 +2674,7 @@ void ImageBrowser::load( const stringArray& files,
 	     if ( playback != ImageView::kStopped )
 	     	view()->stop();
 
-	     unsigned int i = timeline()->index( f );
+	     size_t i = timeline()->index( f );
 
 	     f = timeline()->global_to_local( f );
 
@@ -2684,7 +2684,7 @@ void ImageBrowser::load( const stringArray& files,
              if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
-	     change_image(i);
+	     change_image((int)i);
 
 	  }
 	else
@@ -2738,13 +2738,13 @@ void ImageBrowser::load( const stringArray& files,
            mrv::Reel reel = reel_at( view()->bg_reel() );
            if (!reel) return;
 
+
            f = reel->global_to_local( tframe );
 
 	   img = bg->image();
            if ( !img->stopped() ) img->stop();
 	   img->seek( f );
 	}
-
       }
 
     if ( playback != ImageView::kStopped )
@@ -2823,7 +2823,7 @@ void ImageBrowser::load( const stringArray& files,
       uiMain->uiFrame->value( f );
       uiMain->uiFrame->redraw();
 
-      timeline()->value( f );
+      timeline()->value( double(f) );
       timeline()->redraw();
   }
 

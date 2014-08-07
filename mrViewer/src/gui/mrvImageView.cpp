@@ -816,6 +816,23 @@ void ImageView::init_draw_engine()
 
 
 
+void ImageView::fg_reel(int idx) 
+{
+    _fg_reel = idx;
+
+    char buf[128];
+    sprintf( buf, "FGReel %d", idx );
+    send( buf );
+}
+
+void ImageView::bg_reel(int idx)
+{
+    _bg_reel = idx;
+
+    char buf[128];
+    sprintf( buf, "BGReel %d", idx );
+    send( buf );
+}
 
 
 /** 
@@ -4193,7 +4210,8 @@ void ImageView::background( mrv::media bg )
     {
       CMedia* img = bg->image();
 
-      sprintf( buf, "CurrentBGImage \"%s\"", img->fileroot() );
+      sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64, 
+               img->fileroot(), img->first_frame(), img->last_frame() );
       send( buf );
 
       img->volume( _volume );

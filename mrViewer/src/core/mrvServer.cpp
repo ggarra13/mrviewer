@@ -730,11 +730,28 @@ bool Parser::parse( const std::string& s )
 
       ok = true;
    }
+   else if ( cmd == N_("FGReel") )
+   {
+       int idx;
+       is >> idx;
+
+       v->fg_reel( idx );
+       ok = true;
+   }
+   else if ( cmd == N_("BGReel") )
+   {
+       int idx;
+       is >> idx;
+
+       v->bg_reel( idx );
+       ok = true;
+   }
    else if ( cmd == N_("CurrentBGImage") )
    {
       std::string imgname;
       std::getline( is, imgname, '"' ); // skip first quote
       std::getline( is, imgname, '"' );
+
 
       if ( imgname == "" )
       {
@@ -742,6 +759,11 @@ bool Parser::parse( const std::string& s )
       }
       else
       {
+
+          boost::int64_t first, last;
+          is >> first;
+          is >> last;
+
           if ( r )
           {
               mrv::MediaList::iterator j = r->images.begin();
@@ -753,6 +775,8 @@ bool Parser::parse( const std::string& s )
                   CMedia* img = (*j)->image();
                   if ( img && img->fileroot() == imgname )
                   {
+                      img->first_frame( first );
+                      img->last_frame( last );
                       v->background( (*j) );
                       ok = true;
                       break;
@@ -817,6 +841,27 @@ bool Parser::parse( const std::string& s )
       {
 	 cmd = N_("EDL 1");
 	 deliver( cmd );
+      }
+
+      {
+          mrv::media m = v->background();
+          if ( m )
+          {
+              cmd = N_("CurrentBGImage \"");
+
+              CMedia* img = m->image();
+              cmd += img->fileroot();
+
+              char buf[128];
+              sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+                       img->last_frame() );
+              cmd += buf;
+              deliver( cmd );
+
+              boost::int64_t frame = m->image()->frame();
+              sprintf( buf, N_("seek %") PRId64, frame );
+              deliver( buf );
+          }
       }
 
       mrv::media m = v->foreground();

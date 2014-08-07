@@ -129,13 +129,13 @@ size_t EDLGroup::number_of_audio_tracks()
 
 
 // Return an audio track at index i
-audio_track_ptr& EDLGroup::audio_track( int i )
+audio_track_ptr& EDLGroup::audio_track( size_t i )
 {
    return _audio_track[i];
 }
 
 // Remove a media track at index i
-void EDLGroup::remove_media_track( int i )
+void EDLGroup::remove_media_track( size_t i )
 {
    if ( children() == 1 )
    {
@@ -147,7 +147,7 @@ void EDLGroup::remove_media_track( int i )
 }
 
 // Remove an audio track at index i
-void EDLGroup::remove_audio_track( int i )
+void EDLGroup::remove_audio_track( size_t i )
 {
    _audio_track.erase( _audio_track.begin() + i );
 }
