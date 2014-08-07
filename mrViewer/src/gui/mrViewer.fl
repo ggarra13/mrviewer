@@ -592,7 +592,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {570 294 640 475} resizable visible
+        xywh {574 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -999,7 +999,7 @@ v->refresh();}
           }
           {fltk::Group} {} {
             label {File Requester}
-            xywh {8 24 410 380} align 5 hide box EMBOSSED_BOX
+            xywh {13 24 405 380} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
               label {Single Click to Travel Drawers}
@@ -1083,7 +1083,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
           }
           {fltk::Group} {} {
             label Caches
-            xywh {8 24 415 382} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {13 24 405 382} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::ValueSlider} uiVideoCacheSize {
               label Video
@@ -1111,11 +1111,11 @@ else
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open
-            xywh {25 34 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {3D Luts}
+            xywh {13 26 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Algorithm open
+              label Algorithm
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
               xywh {43 42 340 140} box ROUNDED_BOX
             } {
@@ -1180,7 +1180,7 @@ If unsure what this means, keep your display and images setting always using the
               }
             }
             {fltk::Group} {} {
-              label Quality open
+              label Quality
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
               xywh {43 267 340 75} box ROUNDED_BOX
             } {
@@ -1621,8 +1621,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading open
-            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
+            label Loading
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {25 25 333 132} box ROUNDED_BOX
@@ -1633,7 +1633,7 @@ uiICC_float_profile->do_callback();}
                 xywh {25 22 25 25} value 1
               }
               {fltk::CheckButton} uiPrefsLoadSequence {
-                label { Load Sequence on Drag&Drop} selected
+                label { Load Sequence on Drag&Drop}
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
                 xywh {25 67 25 25} value 1
               }
@@ -1694,8 +1694,8 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             }
           }
           {fltk::Group} {} {
-            label Audio open
-            xywh {8 24 412 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Audio
+            xywh {13 24 407 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} AudioDriver {
               label Driver open
@@ -1736,11 +1736,11 @@ else
             }
           }
           {fltk::Group} {} {
-            label Database open
+            label Database selected
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} DatabaseDriver {
-              label Driver open
+              label Driver
               xywh {73 32 290 25}
             } {
               {fltk::Item} {} {
@@ -1764,7 +1764,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
