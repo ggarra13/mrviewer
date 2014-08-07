@@ -1573,11 +1573,11 @@ void ImageView::draw()
       if ( aspect < 1.66 || (aspect >= 1.77 && aspect <= 1.78) )
 	{
 	  // Assume NTSC/PAL
-	  float f = H * 1.33f;
-	  f = f / W;
-	  _engine->color( 1.0f, 0.0f, 0.0f );
-	  _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
-	  _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
+            float f = float(H) * 1.33f;
+            f = f / float(W);
+            _engine->color( 1.0f, 0.0f, 0.0f );
+            _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
+            _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
 
 	  if ( aspect >= 1.77 )
 	    {
@@ -1603,8 +1603,8 @@ void ImageView::draw()
 	  else
 	    {
 	      // Film fit for TV, Draw 4-3 safe areas
-	      float f = H * 1.33f;
-	      f = f / W;
+                float f = float(H) * 1.33f;
+                f = f / float(W);
 	      _engine->color( 1.0f, 0.0f, 0.0f );
 	      _engine->draw_safe_area( f * 0.9f, 0.9f, _("tv action") );
 	      _engine->draw_safe_area( f * 0.8f, 0.8f, _("tv title") );
@@ -1889,7 +1889,7 @@ int ImageView::leftMouseDown(int x, int y)
 	 s->g = g / 255.0f;
 	 s->b = b / 255.0f;
 	 s->a = 1.0f;
-	 s->pen_size = uiMain->uiPaint->uiPenSize->value();
+	 s->pen_size = (float) uiMain->uiPaint->uiPenSize->value();
 	 if ( uiMain->uiPaint->uiAllFrames->value() )
 	 {
 	    s->frame = MRV_NOPTS_VALUE;
@@ -2566,15 +2566,15 @@ void ImageView::mouseDrag(int x,int y)
 
       if ( flags & kZoom ) 
 	{
-	  zoom( _zoom + dx*_zoom / 500.0f );
-	  lastX = x;
-	  lastY = y;
-	} 
+            zoom( _zoom + float(dx)*_zoom / 500.0f );
+            lastX = x;
+            lastY = y;
+	}
       else if ( flags & kMouseMove )
 	{
 	   window()->cursor( fltk::CURSOR_MOVE );
-	   xoffset += dx / _zoom;
-	   yoffset -= dy / _zoom;
+	   xoffset += float(dx) / _zoom;
+           yoffset -= float(dy) / _zoom;
 
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
@@ -3821,7 +3821,7 @@ float ImageView::calculate_fstop( float exposure ) const
   //  seq2: 1.4, 2.8, 5.6, 11, 22, 44, 88   -- .5 bases
 
   float e = exposure * 0.5f;
-  float v = (float) base + int( -e );
+  float v = (float) base + (float) int( -e );
 
   float f = Imath::Math<float>::fmod( fabs(exposure), 2.0f );
   if ( exposure >= 0 )
