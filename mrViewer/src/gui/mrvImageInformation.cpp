@@ -1368,7 +1368,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     }
     {
         fltk::IntInput* widget = new fltk::IntInput( dw*4, 0, dw, hh, "W:" );
-        widget->value( content.w() );
+        widget->value( content.w()+1 );
         widget->align(fltk::ALIGN_LEFT);
         widget->box( fltk::FLAT_BOX );
         widget->color( colB );
@@ -1378,7 +1378,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     }
     {
         fltk::IntInput* widget = new fltk::IntInput( dw*5, 0, dw, hh, "H:" );
-        widget->value( content.h() );
+        widget->value( content.h()+1 );
         widget->align(fltk::ALIGN_LEFT);
         widget->box( fltk::FLAT_BOX );
         widget->color( colB );
