@@ -1328,7 +1328,7 @@ ConnectionUI* ViewerUI::uiConnection = NULL;
 
 void server::create(mrv::ViewerUI* ui)
 {
-   unsigned port = (unsigned) ui->uiConnection->uiServerPort->value();
+   unsigned short port = (unsigned short) ui->uiConnection->uiServerPort->value();
    ServerData* data = new ServerData;
    data->port = port;
    data->ui = ui;
