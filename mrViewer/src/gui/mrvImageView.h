@@ -144,8 +144,8 @@ namespace mrv {
        int fg_reel() const { return _fg_reel; }
        int bg_reel() const { return _bg_reel; }
 
-       void fg_reel(int idx) { _fg_reel = idx; }
-       void bg_reel(int idx) { _bg_reel = idx; }
+      void fg_reel(int idx);
+      void bg_reel(int idx);
 
     /// Return the viewer's gamma
     float gamma() const { return _gamma; }
