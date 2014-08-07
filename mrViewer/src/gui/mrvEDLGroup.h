@@ -52,13 +52,13 @@ class EDLGroup : public fltk::Group
 			     boost::int64_t diff );
 
      // Return an audio track at index i
-     audio_track_ptr& audio_track( int i );
+     audio_track_ptr& audio_track( size_t i );
 
      // Remove a media track at index i
-     void remove_media_track( int i );
+     void remove_media_track( size_t i );
 
      // Remove an audio track at index i
-     void remove_audio_track( int i );
+     void remove_audio_track( size_t i );
 
      void timeline( mrv::Timeline* t ) { _timeline = t; }
      mrv::Timeline* timeline() const { return _timeline; }
