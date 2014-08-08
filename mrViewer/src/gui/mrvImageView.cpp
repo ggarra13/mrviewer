@@ -2717,10 +2717,7 @@ void ImageView::mouseDrag(int x,int y)
 
                double xt = (xf + daw[idx].x() + dpw[0].w() * right);
                double yt = yf + daw[idx].y();
-               _selection = mrv::Rectd( xt, 
-                                        (double)yt, 
-                                        (double)dx, 
-                                        (double)dy );
+               _selection = mrv::Rectd( xt, yt, dx, dy );
 
 
                char buf[256];
