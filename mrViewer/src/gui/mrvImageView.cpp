@@ -2645,12 +2645,13 @@ void ImageView::mouseDrag(int x,int y)
 
 
            bool right = false;
-           if ( xf > W-daw[0].x() &&
+           if ( xf > W-daw[idx].x() &&
                 stereo_type() & CMedia::kStereoSideBySide )
            {
                right = true;
                xf -= W;
                xn -= W;
+
                idx = 1;
            }
 
@@ -2659,19 +2660,21 @@ void ImageView::mouseDrag(int x,int y)
 
 	   xf = floor(xf);
 	   yf = floor(yf);
+
 	   xn = floor(xn+0.5f);
 	   yn = floor(yn+0.5f);
 
 
+
 	   if ( _mode == kSelection )
 	   {
-               if ( xn < xf ) 
+               if ( xn < xf )
                {
                    double tmp = xf;
                    xf = xn;
                    xn = tmp;
                }
-               if ( yn < yf ) 
+               if ( yn < yf )
                {
                    double tmp = yf;
                    yf = yn;
@@ -2707,12 +2710,13 @@ void ImageView::mouseDrag(int x,int y)
                if ( yn < Y ) yn = Y;
                else if ( yn > YM ) yn = YM;
 
+
                double dx = (double) std::abs( xn - xf + 1 );
                double dy = (double) std::abs( yn - yf + 1 );
 
 
-               double xt = (xf + daw[0].x() + dpw[0].w() * right);
-               double yt = yf + daw[0].y();
+               double xt = (xf + daw[idx].x() + dpw[0].w() * right);
+               double yt = yf + daw[idx].y();
                _selection = mrv::Rectd( xt, 
                                         (double)yt, 
                                         (double)dx, 

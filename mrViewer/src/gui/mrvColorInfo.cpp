@@ -172,19 +172,24 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
       unsigned wt = W;
 
-      xmin = (int)(selection.x() - daw.x());
-      ymin = (int)(selection.y() - daw.y());
 
       right = false;
       if ( xmin >= W && 
            uiMain->uiView->stereo_type() & CMedia::kStereoSideBySide )
       {
           right = true;
-          const mrv::Recti& dpw = img->display_window2();
-          W = dpw.w();
-          H = dpw.h();
+          const mrv::Recti& dpw2 = img->display_window2();
+          const mrv::Recti& daw2 = img->data_window2();
+          W = dpw2.w();
+          H = dpw2.h();
+          xmin = (int)(selection.x() - daw2.x());
+          ymin = (int)(selection.y() - daw2.y());
       }
-
+      else
+      {
+          xmin = (int)(selection.x() - daw.x());
+          ymin = (int)(selection.y() - daw.y());
+      }
 
       xmax = xmin + (int)(selection.w()) - 1;
       ymax = ymin + (int)(selection.h()) - 1;
