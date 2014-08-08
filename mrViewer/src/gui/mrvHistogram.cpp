@@ -178,16 +178,16 @@ namespace mrv
     if ( xmax >= pic->width() ) xmax = pic->width()-1;
     if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
-    unsigned int stepY = (ymax - ymin) / w();
-    unsigned int stepX = (xmax - xmin) / h();
+    unsigned int stepY = (ymax - ymin + 1) / w();
+    unsigned int stepX = (xmax - xmin + 1) / h();
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
     
 
     uchar rgb[3];
-    for ( unsigned y = ymin; y < ymax; y += stepY )
+    for ( unsigned y = ymin; y <= ymax; y += stepY )
       {
-	for ( unsigned x = xmin; x < xmax; x += stepX )
+	for ( unsigned x = xmin; x <= xmax; x += stepX )
 	  {
 	    const CMedia::Pixel& p = pic->pixel( x, y );
 	    rgb[0] = (uchar)Imath::clamp(p.r * 255.0f, 0.f, 255.f);

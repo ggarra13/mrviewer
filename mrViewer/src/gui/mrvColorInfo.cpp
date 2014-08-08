@@ -134,7 +134,7 @@ namespace mrv
 ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
   fltk::Group( x, y, w, h, l )
 {
-    dcol = new fltk::Widget( 4, 10, 32, 32 );
+    dcol = new fltk::Widget( 16, 10, 32, 32 );
 
     area = new fltk::Widget( 100, 0, w, 50 );
     area->box( fltk::FLAT_BOX );
