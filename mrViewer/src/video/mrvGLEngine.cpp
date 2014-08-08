@@ -917,12 +917,9 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     if ( dpw.w() == 0 )
     {
         dpw.w( img->width() );
-    }
-
-    if ( dpw.h() == 0 )
-    {
         dpw.h( img->height() );
     }
+
 
     glPushMatrix();
     glPushAttrib( GL_STENCIL_TEST );
@@ -1209,11 +1206,7 @@ void GLEngine::draw_images( ImageList& images )
 
       glPushMatrix();
 
-
-      if ( daw.x() != 0 || daw.y() != 0 )
-      {
-          glTranslatef( float(daw.x()), float(-daw.y()), 0 );
-      }
+      glTranslatef( float(daw.x()), float(-daw.y()), 0 );
 
       if ( _view->main()->uiPixelRatio->value() )
           glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
@@ -1305,8 +1298,7 @@ void GLEngine::draw_images( ImageList& images )
          if ( _view->data_window() && daw2 != dpw2 )
          {
              mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
-                                        daw2.y(),
-                                        daw2.w(), daw2.h() );
+                                        daw2.y(), daw2.w(), daw2.h() );
              glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
              glLineStipple( 1, 0x00FF );
              glEnable( GL_LINE_STIPPLE );
@@ -1315,10 +1307,18 @@ void GLEngine::draw_images( ImageList& images )
              if ( _view->display_window() ) glEnable( GL_STENCIL_TEST );
          }
 
-         if ( daw2.x() != 0 || daw2.y() != 0 )
+         if ( daw2.w() != 0 )
          {
-             glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
+             texWidth = daw2.w();
+             texHeight = daw2.h();
          }
+         else
+         {
+             texWidth = pic->width();
+             texHeight = pic->height();
+         }
+
+         glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
 
          if ( _view->main()->uiPixelRatio->value() )
              glScaled( double(texWidth), 
