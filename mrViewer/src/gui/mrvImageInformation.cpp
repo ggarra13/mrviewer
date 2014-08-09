@@ -434,7 +434,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         const mrv::Recti& window = img->data_window2();
         if ( window.w() > 0 )
         {
-            add_rect( _("Data Window 2"), window );    
+            add_rect( _("Data Window 2"), window );
         }
 
         const mrv::Recti& dwindow = img->display_window2();
