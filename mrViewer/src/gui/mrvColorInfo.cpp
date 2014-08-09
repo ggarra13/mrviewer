@@ -246,16 +246,19 @@ void ColorInfo::update( const CMedia* img,
 
       selection_to_coord( img, selection, xmin, ymin, xmax, ymax, right );
 
+      CMedia::StereoType stereo_type = uiMain->uiView->stereo_type();
       if ( right )
       {
-          CMedia::StereoType stereo_type = uiMain->uiView->stereo_type();
           if ( stereo_type == CMedia::kStereoCrossed )
               pic = img->left();
           else if ( stereo_type & CMedia::kStereoSideBySide )
               pic = img->right();
           if (!pic) return;
       }
-
+      else if ( stereo_type & CMedia::kStereoSideBySide )
+      {
+          pic = img->left();
+      }
 
       if ( xmin >= pic->width() ) xmin = pic->width()-1;
       if ( ymin >= pic->height() ) ymin = pic->height()-1;
