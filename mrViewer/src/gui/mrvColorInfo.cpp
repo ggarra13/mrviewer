@@ -173,17 +173,16 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       unsigned wt = W;
 
 
-      right = false;
-      if ( xmin >= W && 
+      if ( selection.x() >= W && 
            uiMain->uiView->stereo_type() & CMedia::kStereoSideBySide )
       {
-          right = true;
           const mrv::Recti& dpw2 = img->display_window2();
           const mrv::Recti& daw2 = img->data_window2();
           W = dpw2.w();
           H = dpw2.h();
           xmin = (int)(selection.x() - daw2.x());
           ymin = (int)(selection.y() - daw2.y());
+          xmin -= wt;
       }
       else
       {
@@ -197,27 +196,9 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       if ( xmin < 0 ) xmin = 0;
       if ( ymin < 0 ) ymin = 0;
 
-      if ( right )
-      {
-          xmin -= wt;
-          xmax -= wt;
-      }
-
       if ( xmax < 0 ) xmax = 0;
       if ( ymax < 0 ) ymax = 0;
 
-
-      if ( xmax < xmin ) {
-	 int tmp = xmax;
-	 xmax = xmin;
-	 xmin = tmp;
-      }
-
-      if ( ymax < ymin ) { 
-	 int tmp = ymax;
-	 ymax = ymin;
-	 ymin = tmp;
-      }
 
 }
 
@@ -281,6 +262,18 @@ void ColorInfo::update( const CMedia* img,
 
       if ( xmax >= pic->width() ) xmax = pic->width()-1;
       if ( ymax >= pic->height() ) ymax = pic->height()-1;
+
+      if ( xmax < xmin ) {
+	 int tmp = xmax;
+	 xmax = xmin;
+	 xmin = tmp;
+      }
+
+      if ( ymax < ymin ) { 
+	 int tmp = ymax;
+	 ymax = ymin;
+	 ymin = tmp;
+      }
 
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
@@ -378,15 +371,18 @@ void ColorInfo::update( const CMedia* img,
 	    }
 	}
 
-      pmean.r /= count;
-      pmean.g /= count;
-      pmean.b /= count;
-      pmean.a /= count;
 
-      hmean.r /= count;
-      hmean.g /= count;
-      hmean.b /= count;
-      hmean.a /= count;
+      float c = float(count);
+
+      pmean.r /= c;
+      pmean.g /= c;
+      pmean.b /= c;
+      pmean.a /= c;
+
+      hmean.r /= c;
+      hmean.g /= c;
+      hmean.b /= c;
+      hmean.a /= c;
 
       static const char* kR = "@C0xFF808000;";
       static const char* kG = "@C0x80FF8000;";
