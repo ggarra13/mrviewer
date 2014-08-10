@@ -26,6 +26,7 @@ namespace fltk
 namespace mrv
 {
   class CMedia;
+  class ColorWidget;
 
   class ColorInfo : public fltk::Group
   {
@@ -44,7 +45,7 @@ namespace mrv
                                       int& ymax, bool& right );
 
   protected:
-    fltk::Widget*    dcol;
+    ColorWidget*    dcol;
     fltk::Widget*    area;
     fltk::Browser*   browser;
     fltk::PopupMenu* uiColorB;
