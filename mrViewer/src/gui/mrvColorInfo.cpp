@@ -397,9 +397,18 @@ void ColorInfo::update( const CMedia* img,
       static const char* kV = "@C0xB0B00000;";
       static const char* kL = "@C0xB0B0B000;";
 
-      fltk::Color col = fltk::color((uchar)(pmean.r*255), 
-                                    (uchar)(pmean.g*255), 
-                                    (uchar)(pmean.b*255));
+
+      
+
+      fltk::Color col;
+
+
+      if ( pmean.r <= 0.001f && pmean.g <= 0.001f && pmean.b <= 0.001f )
+          col = fltk::BLACK;
+      else
+          col = fltk::color((uchar)(pmean.r*255), 
+                            (uchar)(pmean.g*255), 
+                            (uchar)(pmean.b*255));
 
 
       dcol->color( col );
