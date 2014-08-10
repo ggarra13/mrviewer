@@ -1358,22 +1358,6 @@ void ImageView::timeout()
      {
 	CMedia* img = fg->image();
 
-	// int64_t duration = 0;
-	// if ( img->has_video() )
-	// {
-	//    double length = img->video_info(0).duration;
-	//    duration = boost::int64_t( length * img->fps() + 0.5f );
-        //    std::cerr << "duration " << duration << std::endl;
-	// }
-
-
-	// static bool use_audio_frame = false;
-	// if ( use_audio_frame )
-	// {
-        // frame = img->audio_frame();
-	// }
-	// else
-	// {
 
         frame = img->frame();
 
@@ -1387,7 +1371,6 @@ void ImageView::timeout()
             if ( img->audio_frame() < frame )
                 frame = img->audio_frame();
         }
-	// }
 
 
 	if ( this->frame() != frame )
