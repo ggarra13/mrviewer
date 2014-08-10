@@ -1359,11 +1359,11 @@ void ImageView::timeout()
 	CMedia* img = fg->image();
 
 	// int64_t duration = 0;
-
 	// if ( img->has_video() )
 	// {
 	//    double length = img->video_info(0).duration;
-	//    duration = boost::int64_t( length * img->fps() + 0.5f );	   
+	//    duration = boost::int64_t( length * img->fps() + 0.5f );
+        //    std::cerr << "duration " << duration << std::endl;
 	// }
 
 
@@ -1374,7 +1374,19 @@ void ImageView::timeout()
 	// }
 	// else
 	// {
+
         frame = img->frame();
+
+        if ( playback() == kForwards )
+        {
+            if ( img->audio_frame() > frame )
+                frame = img->audio_frame();
+        }
+        else
+        {
+            if ( img->audio_frame() < frame )
+                frame = img->audio_frame();
+        }
 	// }
 
 
@@ -2673,6 +2685,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   if ( _mode == kSelection )
 	   {
+/*
                if ( !uiMain->uiColorArea->uiMain->visible() &&
                     !uiMain->uiVectorscope->uiMain->visible() &&
                     !uiMain->uiHistogram->uiMain->visible() )
@@ -2680,6 +2693,7 @@ void ImageView::mouseDrag(int x,int y)
                    _selection = mrv::Rectd( 0,0,0,0 );
                    return;
                }
+*/
 
                if ( xn < xf )
                {
@@ -2725,8 +2739,8 @@ void ImageView::mouseDrag(int x,int y)
                else if ( yn > YM ) yn = YM;
 
 
-               double dx = (double) std::abs( xn - xf + 1 );
-               double dy = (double) std::abs( yn - yf + 1 );
+               double dx = (double) std::abs( xn - xf );
+               double dy = (double) std::abs( yn - yf );
 
                double xt = (xf + daw[0].x() + dpw[0].w() * right);
                double yt = yf + daw[0].y();
