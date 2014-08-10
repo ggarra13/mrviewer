@@ -85,6 +85,7 @@ namespace mrv
   extern std::string float_printf( float x );
 
 
+
   class ColorBrowser : public mrv::Browser
   {
   public:
@@ -131,10 +132,50 @@ namespace mrv
   };
 
 
+class ColorWidget : public fltk::Widget
+{
+    fltk::Browser* color_browser_;
+
+  public:
+    ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
+    fltk::Widget( x, y, w, h, l )
+    {
+    }
+
+    int mousePush( int x, int y )
+    {
+        color_browser_->value( 4 );
+
+      fltk::Menu menu(0,0,0,0);
+
+      menu.add( _("Copy/Color"), 
+	       fltk::COMMAND + 'C', 
+	       (fltk::Callback*)copy_color_cb, (void*)color_browser_, 0);
+
+      menu.popup( fltk::Rectangle( x, y, 80, 1) );
+      return 1;
+    }
+
+    void color_browser( fltk::Browser* b ) { color_browser_ = b; }
+
+    int handle( int event )
+    {
+      switch( event )
+      {
+          case fltk::PUSH:
+              if ( fltk::event_button() == 3 )
+                  return mousePush( fltk::event_x(), fltk::event_y() );
+          default:
+            return fltk::Widget::handle( event );
+      }
+    }
+};
+
+
 ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
   fltk::Group( x, y, w, h, l )
 {
-    dcol = new fltk::Widget( 16, 10, 32, 32 );
+    dcol = new ColorWidget( 16, 10, 32, 32 );
 
     area = new fltk::Widget( 100, 0, w, 50 );
     area->box( fltk::FLAT_BOX );
@@ -146,6 +187,9 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
   browser->column_widths( col_widths );
   browser->resizable(browser);
   resizable(this);
+
+  dcol->color_browser( browser );
+
 }
 
 void ColorInfo::update()
