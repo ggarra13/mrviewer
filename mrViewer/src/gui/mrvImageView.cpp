@@ -2603,6 +2603,7 @@ void ImageView::mouseDrag(int x,int y)
       else
 	{
 
+
 	   mrv::media fg = foreground();
 	   if ( ! fg ) return;
 
@@ -2672,6 +2673,14 @@ void ImageView::mouseDrag(int x,int y)
 
 	   if ( _mode == kSelection )
 	   {
+               if ( !uiMain->uiColorArea->uiMain->visible() &&
+                    !uiMain->uiVectorscope->uiMain->visible() &&
+                    !uiMain->uiHistogram->uiMain->visible() )
+               {
+                   _selection = mrv::Rectd( 0,0,0,0 );
+                   return;
+               }
+
                if ( xn < xf )
                {
                    double tmp = xf;
