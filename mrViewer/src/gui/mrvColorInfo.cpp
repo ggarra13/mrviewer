@@ -44,6 +44,8 @@ namespace
 
   void copy_color_cb( void*, mrv::Browser* w )
   {
+      if ( w->value() < 0 || w->value() >= w->children() )
+          return;
     size_t last;
     std::string line( w->child( w->value() )->label() );
     size_t start = line.find( '\t', 0 );
