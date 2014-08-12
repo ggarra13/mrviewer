@@ -35,18 +35,21 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {625 574 300 195} resizable modal noborder visible
+        xywh {417 354 300 195} resizable modal noborder visible
       } {
         {fltk::Group} {} {
-          label {OpenEXR Options} open
-          xywh {30 22 240 128} box UP_BOX
+          label {OpenEXR Options}
+          xywh {30 22 240 138} box UP_BOX
         } {
           {fltk::Choice} uiCompression {
             label Compression
             user_data this user_data_type {EXROptionsUI*}
-            callback {compression = o->child(o->value())->label();}
+            callback {compression = o->child(o->value())->label();} open
             xywh {115 23 91 26}
           } {
+            {fltk::Item} {} {
+              label None
+              }
             {fltk::Item} {} {
               label PIZ
               }
@@ -68,10 +71,16 @@ namespace mrv {open
             {fltk::Item} {} {
               label B44A
               }
+            {fltk::Item} {} {
+              label DWAA
+              }
+            {fltk::Item} {} {
+              label DWAB
+              }
           }
           {fltk::Choice} uiPixelFormat {
             label {Pixel Format}
-            callback {pixel_type = o->child(o->value())->label();} open
+            callback {pixel_type = o->child(o->value())->label();}
             xywh {115 69 90 25}
           } {
             {fltk::Item} {} {
@@ -85,11 +94,15 @@ namespace mrv {open
               }
           }
         }
+        {fltk::ValueSlider} uiDWACompression {
+          label {DWA Compression} selected
+          xywh {160 125 90 20} align 4 minimum 1 maximum 250 step 10 value 45
+        }
         {fltk::Button} {} {
           label OK
           user_data this user_data_type {EXROptionsUI*}
           callback {v->active( true );
-v->uiMain->make_exec_return(true);} selected
+v->uiMain->make_exec_return(true);}
           xywh {75 170 55 18}
         }
         {fltk::Button} {} {
@@ -103,13 +116,8 @@ v->uiMain->make_exec_return(false);}
     }
     Function {convert()} {open
     } {
-      code {if ( compression == "PIZ" ) _compression = Imf::PIZ_COMPRESSION;
-else if ( compression == "RLE" ) _compression = Imf::RLE_COMPRESSION;
-else if ( compression == "ZIP SCANLINE" ) _compression = Imf::ZIPS_COMPRESSION;
-else if ( compression == "ZIP" ) _compression = Imf::ZIP_COMPRESSION;
-else if ( compression == "PXR24" ) _compression = Imf::PXR24_COMPRESSION;
-else if ( compression == "B44" ) _compression = Imf::B44_COMPRESSION;
-else if ( compression == "B44A" ) _compression = Imf::B44A_COMPRESSION;} {}
+      code {_compression = (Imf::Compression) uiCompression->value();
+_dwa_compression_level = (unsigned)uiDWACompression->value();} {}
       code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}

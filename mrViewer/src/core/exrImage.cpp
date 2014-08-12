@@ -1752,8 +1752,16 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
     Imf::Compression comp = opts->compression();
+    if ( comp >= NUM_COMPRESSION_METHODS )
+    {
+        LOG_WARNING( "Compression method not available.  Using PIZ." );
+        comp = Imf::PIZ_COMPRESSION;
+    }
     hdr.compression() = comp;
 
+#ifdef LINUX
+    Imf::addDwaCompressionLevel( hdr, opts->compression_level() );
+#endif
 
     Imf::PixelType pt = exrImage::pixel_type_to_exr( pic->pixel_type() );
     Imf::PixelType save_type = opts->pixel_type();
@@ -1821,16 +1829,16 @@ bool exrImage::save( const char* file, const CMedia* img,
               {
                   half* s = (half*) base;
                   s[ yh ]   = p.r;
-                  s[ yh+1 ] = p.g;
-                  s[ yh+2 ] = p.b;
+                  s[ yh + 1 ] = p.g;
+                  s[ yh + 2 ] = p.b;
                   if ( has_alpha )
-                      s[ yh+3 ] = p.a;
+                      s[ yh + 3 ] = p.a;
               }
               else if ( save_type == Imf::FLOAT )
               {
                   CMedia::Pixel* s = (CMedia::Pixel*) base;
                   if ( has_alpha )
-                      s[ x + y * dw ] = p;
+                      s[ yh + 3 ] = p;
                   else
                   {
                       float* s = (float*) base;

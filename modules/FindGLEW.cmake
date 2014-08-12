@@ -23,7 +23,7 @@ FIND_PATH( GLEW_INCLUDE_DIR GL/glew.h
 
 FIND_LIBRARY( GLEW   glew32 glew GLEW
   PATHS 
-  $ENV{GLEW_ROOT}/lib
+  $ENV{GLEW_ROOT}/lib/Release/Win${CMAKE_BUILD_ARCH}
   $ENV{GLEW_ROOT}
   /usr/local/glew/lib
   /usr/lib${CMAKE_BUILD_ARCH}
