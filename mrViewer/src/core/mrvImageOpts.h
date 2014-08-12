@@ -35,9 +35,11 @@ class EXROpts : public ImageOpts
   protected:
     Imf::Compression _compression;
     Imf::PixelType   _pixel_type;
+    unsigned         _dwa_compression_level;
   public:
     EXROpts() : _compression( Imf::ZIPS_COMPRESSION ),
-                _pixel_type( Imf::HALF )
+                _pixel_type( Imf::HALF ),
+                _dwa_compression_level( 45 )
     {
     }
 
@@ -46,6 +48,9 @@ class EXROpts : public ImageOpts
 
     Imf::PixelType pixel_type() const { return _pixel_type; }
     void pixel_type( Imf::PixelType p ) { _pixel_type = p; }
+
+    unsigned compression_level() const { return _dwa_compression_level; }
+    void compression_level( unsigned p ) { _dwa_compression_level = p; }
 
 };
 
