@@ -1361,16 +1361,16 @@ void ImageView::timeout()
 
         frame = img->frame();
 
-        if ( playback() == kForwards )
-        {
-            if ( img->audio_frame() > frame )
-                frame = img->audio_frame();
-        }
-        else
-        {
-            if ( img->audio_frame() < frame )
-                frame = img->audio_frame();
-        }
+        // if ( playback() == kForwards )
+        // {
+        //     if ( img->audio_frame() > frame )
+        //         frame = img->audio_frame();
+        // }
+        // else
+        // {
+        //     if ( img->audio_frame() < frame )
+        //         frame = img->audio_frame();
+        // }
 
 
 	if ( this->frame() != frame )
@@ -2668,15 +2668,6 @@ void ImageView::mouseDrag(int x,int y)
 
 	   if ( _mode == kSelection )
 	   {
-/*
-               if ( !uiMain->uiColorArea->uiMain->visible() &&
-                    !uiMain->uiVectorscope->uiMain->visible() &&
-                    !uiMain->uiHistogram->uiMain->visible() )
-               {
-                   _selection = mrv::Rectd( 0,0,0,0 );
-                   return;
-               }
-*/
 
                if ( xn < xf )
                {
@@ -2724,6 +2715,11 @@ void ImageView::mouseDrag(int x,int y)
 
                double dx = (double) std::abs( xn - xf );
                double dy = (double) std::abs( yn - yf );
+               if ( dx == 0.0 || dy == 0.0 )
+               {
+                   dx = 0.0;
+                   dy = 0.0;
+               }
 
                double xt = (xf + daw[0].x() + dpw[0].w() * right);
                double yt = yf + daw[0].y();
