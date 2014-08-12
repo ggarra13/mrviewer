@@ -282,7 +282,7 @@ bool exrImage::channels_order(
       }
    }
    
-   allocate_pixels( frame, unsigned(numChannels), format,
+   allocate_pixels( frame, (unsigned short)numChannels, format,
 		    pixel_type_conversion( imfPixelType ) );
    
    size_t xs[4], ys[4];
@@ -539,7 +539,7 @@ bool exrImage::channels_order_multi(
    }
 
 
-   allocate_pixels( frame, unsigned(numChannels), format,
+   allocate_pixels( frame, (unsigned short)numChannels, format,
 		    pixel_type_conversion( imfPixelType ) );
 
    size_t xs[4], ys[4];
@@ -605,7 +605,8 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
 				 image_type::kRGB );
    
    mrv::image_type_ptr rgba( new image_type( frame, w, h, 
-					     3 + 1*has_alpha(),
+					     (unsigned short) 
+                                             (3 + 1*has_alpha()),
 					     format, 
 					     image_type::kFloat ) );
    
@@ -778,7 +779,8 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 {
 	    _has_yca = true;
             _use_yca = true;
-	    rgb_layers(); _num_channels -= 3;
+	    rgb_layers(); 
+            _num_channels = (unsigned short) ( _num_channels - 3 );
 	    lumma_layers();
 	 }
       }
@@ -978,7 +980,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
       int oldpart = _curpart;
 
-      _curpart = strtoul( part.c_str(), NULL, 10 );
+      _curpart = (int) strtoul( part.c_str(), NULL, 10 );
 
 
       if ( oldpart != _curpart )
@@ -1809,7 +1811,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
     unsigned channels = pic->channels();
-    unsigned total_size = dw*dh*size*channels;
+    size_t total_size = dw*dh*size*channels;
     base = (uint8_t*) new uint8_t[total_size];
 
 
@@ -1850,11 +1852,17 @@ bool exrImage::save( const char* file, const CMedia* img,
               else if ( save_type == Imf::UINT )
               {
                   unsigned* s = (unsigned*) base;
-                  s[ yh ] = p.r * 4294967295;
-                  s[ yh + 1 ] = p.g * 4294967295;
-                  s[ yh + 2 ] = p.b * 4294967295;
+                  if ( p.r > 1.0f ) p.r = 1.0f;
+                  else if ( p.r < 0.0f ) p.r = 0.0f;
+                  if ( p.g > 1.0f ) p.g = 1.0f;
+                  else if ( p.g < 0.0f ) p.g = 0.0f;
+                  if ( p.b > 1.0f ) p.b = 1.0f;
+                  else if ( p.b < 0.0f ) p.b = 0.0f;
+                  s[ yh ] = (unsigned) (p.r * 4294967295.0f);
+                  s[ yh + 1 ] = (unsigned) (p.g * 4294967295.0f);
+                  s[ yh + 2 ] = (unsigned) ( p.b * 4294967295.0f );
                   if ( has_alpha )
-                      s[ yh + 3 ] = p.a * 4294967295;
+                      s[ yh + 3 ] = (unsigned) (p.a * 4294967295.0f);
               }
     	  }
        }
@@ -1863,7 +1871,7 @@ bool exrImage::save( const char* file, const CMedia* img,
     size_t xs = size * channels;
     size_t ys = xs * dw;
 
-    int offset = xs*(-dx-dy*dw);
+    size_t offset = xs*(-dx-dy*dw);
 
     FrameBuffer fb;
     fb.insert( N_("R"), Slice( save_type, (char*) &base[offset], xs, ys ) );
