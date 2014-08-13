@@ -36,6 +36,9 @@ IF( WIN32 )
     IF( MSVC100 )
       SET( compiler "vc10" )
     ENDIF( MSVC100 )
+    IF( MSVC120 )
+      SET( compiler "vc12" )
+    ENDIF( MSVC120 )
   ENDIF( MSVC )
 
   SET( SEARCH_PATHS 
