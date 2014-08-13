@@ -31,12 +31,16 @@ ENDIF( CTL_LIBRARY_DIR )
 
 
 FIND_PATH( CTL_INCLUDE_DIR CtlModule.h
+  "$ENV{CTL_ROOT}/include/OpenEXR"
+  "$ENV{CTL_ROOT}/include/IlmCtl"
+  "$ENV{CTL_ROOT}/include/IlmCtlSimd"
+  "$ENV{CTL_ROOT}/include/IlmCtlMath"
   "$ENV{CTL_ROOT}/include/CTL"
   "$ENV{CTL_ROOT}/include"
   /usr/local/include/CTL
   /usr/include/CTL
-  DOC   "CTL includes"
-  )
+  DOC   "CTL includes" 
+ )
 
 FIND_LIBRARY( IlmCtl
   NAMES IlmCtl_dll IlmCtl_dll_d IlmCtl IlmCtld libIlmCtl 

@@ -775,11 +775,11 @@ bool exrImage::find_layers( const Imf::Header& h )
 	    _layers.push_back( N_("BY") ); ++_num_channels;
 	 }
 	 
-	 if ( ! _layers.empty() ) 
+	 if ( ! _layers.empty() )
 	 {
 	    _has_yca = true;
             _use_yca = true;
-	    rgb_layers(); 
+	    rgb_layers();
             _num_channels = (unsigned short) ( _num_channels - 3 );
 	    lumma_layers();
 	 }
