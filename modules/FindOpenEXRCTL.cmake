@@ -34,6 +34,7 @@ FIND_PATH( OpenEXRCTL_INCLUDE_DIR ImfCtlApplyTransforms.h
   "$ENV{OpenEXRCTL_ROOT}/include/OpenEXR"
   "$ENV{OpenEXRCTL_ROOT}/include"
   "$ENV{OpenEXRCTL_ROOT}"
+  "$ENV{CTL_ROOT}/include/OpenEXR"
   "$ENV{CTL_ROOT}/include"
   "$ENV{CTL_ROOT}"
   /usr/local/include/OpenEXR
