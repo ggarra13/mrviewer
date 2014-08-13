@@ -36,7 +36,7 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   )
 
 FIND_LIBRARY( IlmImf 
-  NAMES IlmImf_dll IlmImf_dll_d IlmImf IlmImfd libIlmImf IlmImf-2_1
+  NAMES IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd libIlmImf IlmImf-2_1
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR IlmImf library"
 )
@@ -44,13 +44,13 @@ FIND_LIBRARY( IlmImf
 MESSAGE( "IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath 
-  NAMES Imath_dll Imath_dll_d Imath Imathd libImath Imath-2_1
+  NAMES Imath-2_2 Imath_dll Imath_dll_d Imath Imathd libImath Imath-2_1
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR Imath library"
 )
 
 FIND_LIBRARY( Iex
-  NAMES Iex_dll Iex_dll_d Iex Iexd libIex Iex-2_1
+  NAMES Iex-2_2 Iex_dll Iex_dll_d Iex Iexd libIex Iex-2_1
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR Iex library"
 )
@@ -100,7 +100,7 @@ ENDIF(NOT OPENEXR_FOUND)
 # This is to avoid picking IlmThread for a wrong version of IlmImf.
 #
 FIND_LIBRARY( IlmThread
-  NAMES IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread IlmThread-2_1 
+  NAMES IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread IlmThread-2_1 
   PATHS ${OPENEXR_LIBRARY_DIR}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmThread library (1.5 or later)"
