@@ -577,6 +577,14 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       }
 
 
+    if ( !img->has_video() )
+    {
+        ++group;
+
+        add_text( _("Compression"), img->compression() );
+
+    }
+
     ++group;
 
     const char* space_type = NULL;
@@ -597,17 +605,12 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 		 disk_space, space_type, pct );
 	add_text( _("Disk space"), buf );
 
-	if ( !img->has_video() )
-	  {
-	    ++group;
-
-	    add_text( _("Compression"), img->compression() );
-
-	    double ratio = 100.0 - pct;
-	    sprintf( buf, _("%.2f %%"), ratio );
-	    add_text( _("Compression Ratio"), buf );
-	  }
-
+        if ( !img->has_video() )
+        {
+            double ratio = 100.0 - pct;
+            sprintf( buf, _("%.2f %%"), ratio );
+            add_text( _("Compression Ratio"), buf );
+        }
       }
 
     
