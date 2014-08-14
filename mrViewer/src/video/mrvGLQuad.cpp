@@ -20,8 +20,8 @@
 #include "mrvGLLut3d.h"
 
 
-//#define TEST_NO_QUAD         // test not using textures
-//#define TEST_NO_PBO_TEXTURES // test not using pbo textures
+// #define TEST_NO_QUAD         // test not using textures
+// #define TEST_NO_PBO_TEXTURES // test not using pbo textures
 #define NVIDIA_PBO_BUG     // with pbo textures, my nvidia card has problems
                            // with GL_BGR formats and high resolutions
 
@@ -123,6 +123,7 @@ namespace mrv {
 
   GLenum GLQuad::gl_pixel_type( const image_type::PixelType type )
   {
+      static bool bad_format = false;
     switch( type )
       {
       case image_type::kByte:
@@ -136,32 +137,41 @@ namespace mrv {
       case image_type::kFloat:
 	return GL_FLOAT;
       default:
-	LOG_ERROR( "Unknown mrv::Frame pixel type" );
-	return GL_UNSIGNED_BYTE;
-	break;
+          if ( !bad_format )
+          {
+              bad_format = true;
+              LOG_ERROR( "Unknown mrv::Frame pixel type" );
+          }
+          return GL_UNSIGNED_BYTE;
+          break;
       }
   }
 
-GLenum GLQuad::gl_format( const image_type::Format format )
-{
+  GLenum GLQuad::gl_format( const image_type::Format format )
+  {
+      static bool bad_format = false;
     switch( format )
-    {
-        case image_type::kRGB:
-            return GL_RGB;
-        case image_type::kRGBA:
-            return GL_RGBA;
-        case image_type::kBGRA:
-            return GL_BGRA;
-        case image_type::kBGR:
-            return GL_BGR;
-        case image_type::kLumma:
-            return GL_LUMINANCE;
-        default:
-            LOG_ERROR( "Invalid mrv::Frame format: " << format );
-            return GL_LUMINANCE;
-            break;
-    }
-}
+      {
+      case image_type::kRGB:
+	return GL_RGB;
+      case image_type::kRGBA:
+	return GL_RGBA;
+      case image_type::kBGRA:
+	return GL_BGRA;
+      case image_type::kBGR:
+          return GL_BGR;
+      case image_type::kLumma:
+          return GL_LUMINANCE;
+      default:
+          if ( !bad_format )
+          {
+              bad_format = true;
+              LOG_ERROR( "Invalid mrv::Frame format: " << format );
+          }
+          return GL_LUMINANCE;
+          break;
+      }
+  }
 
   unsigned int GLQuad::calculate_pow2( unsigned int w )
   {
@@ -806,14 +816,14 @@ GLenum GLQuad::gl_format( const image_type::Format format )
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
           short i = short(_channels - 1);
-          for ( ; i >= 0 ; --i )
+	for ( ; i >= 0 ; --i )
 	  {
               short idx = (i == 3 ? (short) 4 : i ); 
-              glActiveTexture(GL_TEXTURE0 + idx);
-              glEnable(GL_TEXTURE_2D);
-              glBindTexture(GL_TEXTURE_2D, _texId[i] );
-              CHECK_GL( "shader bind_texture glBindTexture" );
-              glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+	    glActiveTexture(GL_TEXTURE0 + idx);
+	    glEnable(GL_TEXTURE_2D);
+	    glBindTexture(GL_TEXTURE_2D, _texId[i] );
+            CHECK_GL( "shader bind_texture glBindTexture" );
+	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	  }
       }
     else
@@ -946,8 +956,8 @@ GLenum GLQuad::gl_format( const image_type::Format format )
 	for ( ; i >= 0 ; --i )
 	  {
               short idx = (i == 3 ? (short) 4 : i ); 
-              glActiveTexture(GL_TEXTURE0 + idx);
-              glDisable( GL_TEXTURE_2D );
+	    glActiveTexture(GL_TEXTURE0 + idx);
+	    glDisable( GL_TEXTURE_2D );
 	  }
       }
     else
@@ -1016,13 +1026,206 @@ GLenum GLQuad::gl_format( const image_type::Format format )
           step *= sizeof(char);
     }
 
-    return (int) step;
+    return step;
+  }
+
+  void GLQuad::draw_pixels( const unsigned dw, const unsigned dh ) const
+  {
+    unsigned dh1 = dh;
+    if ( _view->main()->uiPixelRatio->value() ) 
+      dh1 = (unsigned)(dh1 / _view->pixel_ratio());
+    
+    if ( _view->field() == ImageView::kFrameDisplay || (dh % 2 != 0) )
+      draw_frame( dw, dh1 );
+    else
+      draw_field( dw, dh1 );
+  }
+
+  /** 
+   * Draw an 8-bit image onto the viewport using opengl.
+   * 
+   * @param draw   opengl draw data
+   * @param dw     image's width
+   * @param dh     image's height
+   */
+  void GLQuad::draw_frame( const unsigned dw, const unsigned dh ) const
+  {
+
+    assert( dw > 0 && dh > 0 );
+
+    ///// Draw Buffer
+    glPixelZoom( _view->zoom(), _view->zoom() );
+
+    float sw = ((float)_view->w() - dw * _view->zoom()) / 2;
+    float sh = ((float)_view->h() + dh * _view->zoom()) / 2;
+
+    double dx = (_view->offset_x() * _view->zoom() + sw);
+    double dy = (_view->offset_y() * _view->zoom() - sh);
+
+
+    int step = calculate_gl_step( _glformat, _pixel_type );
+
+    // Check zoom fraction
+    int z = (int) _view->zoom();
+    float zoom_fraction =  _view->zoom() - z;
+
+
+    unsigned H = dh - 1;
+    double yp = dy - _view->zoom();
+
+    const boost::uint8_t* base = (const boost::uint8_t*)_pixels.get();
+
+    for (unsigned int y = 0; y <= H; ++y)
+      {
+          yp += _view->zoom();
+          // if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+
+          // To avoid opengl raster clipping issues, instead of:
+          //    glRasterPos2f(dx, yp);
+          // we do:
+          glRasterPos2i(0, 0);
+          glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
+          //
+
+          unsigned int r = (H - y) * dw;
+          const boost::uint8_t* ptr = base + r * step;
+          glDrawPixels (dw,		        // width
+                        1,		        // height
+                        _glformat,	// format
+                        _pixel_type,	// type
+                        ptr );
+      }
+
+
+    if ( zoom_fraction < 1e-5 ) return;
+
+    // To avoid floating point errors, we send two lines
+    // when zoom is not an integer.
+    yp = dy - _view->zoom();
+    for (unsigned int y = 0; y <= H; ++y)
+      {
+	yp += _view->zoom();
+	//if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+
+	// To avoid opengl raster clipping issues, instead of:
+	//    glRasterPos2f(dx, yp-0.499f);
+	// we do:
+	glRasterPos2i(0, 0);
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp+0.499f), NULL );
+	//
+
+	unsigned int r = (H - y) * dw;
+	const boost::uint8_t* ptr = base + r * step;
+	glDrawPixels (dw,		        // width
+		      1,		        // height
+		      _glformat,	// format
+		      _pixel_type,	// type
+		      ptr );
+      }
+  }
+
+  /** 
+   * Draw an 8-bit image onto the viewport using opengl.
+   * 
+   * @param format      GL_RGB, GL_BGR, GL_RGBA, GL_BGRA
+   * @param pixel_type  GL_UNSIGNED_BYTE or GL_FLOAT
+   * @param dw     image's width
+   * @param dh     image's height
+   * @param data   image 8-bit data in RGBA order.
+   */
+  void GLQuad::draw_field( const unsigned int dw, const unsigned int dh ) const
+  {
+    ///// Draw Buffer
+    glPixelZoom( _view->zoom(), _view->zoom() );
+
+    double sw = ((double)_view->w() - dw * _view->zoom()) / 2;
+    double sh = ((double)_view->h() - dh * _view->zoom()) / 2;
+
+    double dx = (_view->offset_x() * _view->zoom() + sw);
+    double dy = (_view->offset_y() * _view->zoom() + sh);
+
+    int step = calculate_gl_step( _glformat, _pixel_type );
+
+    // Check zoom fraction
+    int z = (int) _view->zoom();
+    float zoom_fraction =  _view->zoom() - z;
+
+
+    mrv::ImageView::FieldDisplay field = _view->field();
+
+
+    unsigned H = dh - 1;
+    double yp = dy - _view->zoom();
+
+    const boost::uint8_t* base = (const boost::uint8_t*)_pixels.get();
+
+    for (unsigned int y = 0; y <= H; ++y)
+      {
+	yp += _view->zoom();
+	if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+
+	// To avoid opengl raster clipping issues, instead of:
+	//    glRasterPos2f(dx, yp);
+	// we do:
+	glRasterPos2i(0, 0);
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
+	//
+	unsigned int r = H - (y / 2)*2;
+	if ( field == ImageView::kTopField )
+	  {
+	    if ( r > 1 ) r -= 1;
+	  }
+
+	r *= dw;
+	const boost::uint8_t* ptr = base + r * step;
+	glDrawPixels (dw,		// width
+		      1,		// height
+		      _glformat,	// format
+		      _pixel_type,	// type
+		      ptr );
+      }
+
+    CHECK_GL("drawField");
+    if ( zoom_fraction < 1e-5 ) return;
+
+    // To avoid floating point errors, we send two lines
+    // when zoom is not an integer.
+    yp = double(dy) - _view->zoom();
+    for (unsigned int y = 0; y <= H; ++y)
+      {
+	yp += _view->zoom();
+	if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
+
+	// To avoid opengl raster clipping issues, instead of:
+	//    glRasterPos2f(dx, yp-0.499f);
+	// we do:
+	glRasterPos2i(0, 0);
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp-0.499), NULL );
+	//
+
+	unsigned int r = H - (y / 2)*2;
+	if ( field == ImageView::kTopField )
+	  {
+	    if ( r > 1 ) r -= 1;
+	  }
+	r *= dw;
+
+	const boost::uint8_t* ptr = base + r * step;
+	glDrawPixels (dw,		        // width
+		      1,		        // height
+		      _glformat,	// format
+		      _pixel_type,	// type
+		      ptr );
+      }
   }
 
 
   void GLQuad::draw( const unsigned dw, const unsigned dh ) const
   {
+    if ( _uvMax.u > 0.0f )
       draw_quad( dw, dh );
+    else
+      draw_pixels( dw, dh );
   }
 
 }

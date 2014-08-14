@@ -16,9 +16,12 @@ IF( OPENEXR_LIBRARY_DIR )
 ELSE( OPENEXR_LIBRARY_DIR )
   SET( SEARCH_DIRS 
     $ENV{OPENEXR_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release
+    $ENV{OPENEXR_ROOT}/lib/Win32/Release
     $ENV{OPENEXR_ROOT}/lib
     $ENV{OPENEXR_ROOT}/lib/Release
     $ENV{OPENEXR_ROOT}/lib/Debug
+    $ENV{OPENEXR_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release
+    $ENV{OPENEXR_ROOT}/bin/Win32/Release
     $ENV{OPENEXR_ROOT}/bin/Release
     $ENV{OPENEXR_ROOT}/bin/Debug
     /usr/local/lib${CMAKE_BUILD_ARCH}
