@@ -15,6 +15,7 @@ IF( CTL_LIBRARY_DIR )
 ELSE( CTL_LIBRARY_DIR )
   SET( SEARCH_DIRS 
     "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
+    "$ENV{CTL_ROOT}/lib/Win32/Release"
     "$ENV{CTL_ROOT}/lib/Release"
     "$ENV{CTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
@@ -22,6 +23,7 @@ ELSE( CTL_LIBRARY_DIR )
     "$ENV{CTL_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{CTL_ROOT}/bin/Release"
     "$ENV{CTL_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Debug"
+    "$ENV{CTL_ROOT}/bin/Win32/Release"
     "$ENV{CTL_ROOT}/bin/Debug"
     "$ENV{CTL_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
