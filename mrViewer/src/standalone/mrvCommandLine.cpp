@@ -40,34 +40,31 @@ namespace mrv {
       using namespace TCLAP;
       using namespace std;
 
-#ifdef _WIN32
+#if defined(_WIN32) || defined(_WIN64)
       AllocConsole();
-      freopen("conout$", "w", stderr);
+      freopen("CONIN$", "r", stdin );
+      freopen("CONOUT$", "w", stdout);
+      freopen("CONOUT$", "w", stderr);
 #endif
 
       std::string cmd = c.getProgramName();
-      cerr << endl
-	   << cmd << " " << c.getVersion();
+      fprintf( stderr, N_("\n%s %s\n\n"), cmd.c_str(), c.getVersion().c_str() );
 
       //
       // Output usage line
       //
-      cerr << endl << endl
-	   << _("Usage:")
-	   << endl << endl
-	   << "  " << cmd << " ";
+      fprintf( stderr, _("Usage:\n\n  %s "), cmd.c_str() );
 
       std::list<Arg*> args = c.getArgList();
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
 	{
-	  cerr << (*it)->shortID() << " ";
+	  fprintf(stderr, "%s ", (*it)->shortID().c_str() );
 	}
 
       //
       // Output options in shorter format than TCLAP's default
       //
-      cerr << endl << endl
-	   << _("Options:") << endl << endl;
+      fprintf( stderr, _("\n\nOptions:\n\n"));
 
       //
       // Find longest argument for formatting
@@ -84,24 +81,23 @@ namespace mrv {
       for (ArgListIterator it = args.begin(); it != args.end(); ++it)
 	{
 	  const std::string& ID = (*it)->longID();
-	  cerr << "  " << ID;
+	  fprintf( stderr, "  %s", ID.c_str() );
 
 	  for ( size_t i = ID.size(); i < len; ++i )
 	    {
-	      cerr << " ";
+	      fprintf( stderr, " " );
 	    }
-	  cerr << "   "
-	       << (*it)->getDescription() << endl;
+	  fprintf( stderr, "   %s\n", (*it)->getDescription().c_str() );
 	}
 
-      cerr << endl
-	   << _("Names cannot contain spaces in their paths.") << endl << endl
-	   << _("Examples:") << endl << endl
-	   <<	"  > " << cmd << " background.dpx texture.png" << endl
-	   <<	"  > " << cmd << " beauty.001-020.iff background.%04d.exr 1-20" << endl
-	   <<	"  > " << cmd << " beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi" << endl;
+      fprintf( stderr, "\n" );
+      fprintf( stderr, _("Names cannot contain spaces in their paths.\n\n") );
+      fprintf( stderr, _("Examples:\n\n") );
+      fprintf( stderr, "  > %s background.dpx texture.png\n", cmd.c_str() );
+      fprintf( stderr, "  > %s beauty.001-020.iff background.%04d.exr 1-20\n", cmd.c_str() );
+      fprintf( stderr, "  > %s beauty.mov -a dialogue.wav beauty.@@.iff 1-20 beauty.avi\n", cmd.c_str() );
 
-#ifdef _WIN32
+#if defined(_WIN32)||defined(_WIN64)
        Sleep(INFINITE);
 #endif
 
