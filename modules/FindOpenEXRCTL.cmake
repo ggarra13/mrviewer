@@ -15,11 +15,13 @@ IF( OpenEXRCTL_LIBRARY_DIR )
 ELSE( OpenEXRCTL_LIBRARY_DIR )
   SET( SEARCH_DIRS 
     "$ENV{OpenEXRCTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
+    "$ENV{OpenEXRCTL_ROOT}/lib/Win32/Release"
     "$ENV{OpenEXRCTL_ROOT}/lib/Release"
     "$ENV{OpenEXRCTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{OpenEXRCTL_ROOT}/lib/Debug"
     "$ENV{OpenEXRCTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
+    "$ENV{CTL_ROOT}/lib/Win32/Release"
     "$ENV{CTL_ROOT}/lib/Release"
     "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{CTL_ROOT}/lib/Debug"
