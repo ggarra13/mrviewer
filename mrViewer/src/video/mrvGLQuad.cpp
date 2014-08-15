@@ -20,7 +20,7 @@
 #include "mrvGLLut3d.h"
 
 
-// #define TEST_NO_QUAD         // test not using textures
+#define TEST_NO_QUAD         // test not using textures
 // #define TEST_NO_PBO_TEXTURES // test not using pbo textures
 #define NVIDIA_PBO_BUG     // with pbo textures, my nvidia card has problems
                            // with GL_BGR formats and high resolutions
@@ -1053,15 +1053,32 @@ namespace mrv {
 
     assert( dw > 0 && dh > 0 );
 
-    ///// Draw Buffer
-    glPixelZoom( _view->zoom(), _view->zoom() );
 
-    float sw = ((float)_view->w() - dw * _view->zoom()) / 2;
-    float sh = ((float)_view->h() + dh * _view->zoom()) / 2;
 
-    double dx = (_view->offset_x() * _view->zoom() + sw);
-    double dy = (_view->offset_y() * _view->zoom() - sh);
+    double tw = dw / 2.0;
+    double th = dh / 2.0;
 
+#if 0
+    double dx = - (_view->w() - dw ) / 2.0;
+    double dy = (_view->h() - dh) / 2.0;
+
+    dy = _view->h() - dy - 1;
+
+    dx -= tw; dy -= th;
+    dx /= _view->zoom(); dy /= _view->zoom();
+    dx += tw; dy += th;
+    dx -= _view->offset_x(); dy -= _view->offset_y();
+
+    dy = dh - dy;
+
+#else
+    float p = _view->zoom();
+    float sw = ((float)_view->w() - dw * p) / 2.0f;
+    float sh = ((float)_view->h() + dh * p) / 2.0f;
+
+    double dx = (_view->offset_x() * p );
+    double dy = (_view->offset_y() * p - sh );
+#endif
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
@@ -1072,6 +1089,9 @@ namespace mrv {
 
     unsigned H = dh - 1;
     double yp = dy - _view->zoom();
+
+    ///// Draw Buffer
+    glPixelZoom( _view->zoom(), _view->zoom() );
 
     const boost::uint8_t* base = (const boost::uint8_t*)_pixels.get();
 
@@ -1135,14 +1155,12 @@ namespace mrv {
    */
   void GLQuad::draw_field( const unsigned int dw, const unsigned int dh ) const
   {
-    ///// Draw Buffer
-    glPixelZoom( _view->zoom(), _view->zoom() );
 
-    double sw = ((double)_view->w() - dw * _view->zoom()) / 2;
-    double sh = ((double)_view->h() - dh * _view->zoom()) / 2;
+    double sw = ((double)_view->w() - dw * _view->zoom()) / 2.0f;
+    double sh = ((double)_view->h() + dh * _view->zoom()) / 2.0f;
 
     double dx = (_view->offset_x() * _view->zoom() + sw);
-    double dy = (_view->offset_y() * _view->zoom() + sh);
+    double dy = (_view->offset_y() * _view->zoom() - sh);
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
@@ -1156,6 +1174,9 @@ namespace mrv {
 
     unsigned H = dh - 1;
     double yp = dy - _view->zoom();
+
+    ///// Draw Buffer
+    glPixelZoom( _view->zoom(), _view->zoom() );
 
     const boost::uint8_t* base = (const boost::uint8_t*)_pixels.get();
 
