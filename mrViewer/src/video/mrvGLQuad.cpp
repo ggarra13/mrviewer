@@ -2,10 +2,10 @@
  * @file   mrvGLQuad.cpp
  * @author gga
  * @date   Fri Feb  8 10:14:11 2008
- * 
+ *
  * @brief  Handle and draw an OpenGL Quad with shaders
- * 
- * 
+ *
+ *
  */
 
 
@@ -140,7 +140,7 @@ namespace mrv {
           if ( !bad_format )
           {
               bad_format = true;
-              LOG_ERROR( "Unknown mrv::Frame pixel type" );
+              LOG_ERROR( "Unknown mrv::Frame pixel type: " << type );
           }
           return GL_UNSIGNED_BYTE;
           break;
@@ -989,7 +989,7 @@ namespace mrv {
   int GLQuad::calculate_gl_step( const GLenum format,
 				 const GLenum pixel_type ) const
   {
-    size_t step;
+    int step;
     switch( format )
     {
        case GL_RGBA:
@@ -1008,19 +1008,19 @@ namespace mrv {
     {
        case GL_UNSIGNED_BYTE:
        case GL_BYTE:
-          step *= sizeof(char); break;
+          step *= (int)sizeof(char); break;
        case GL_SHORT:
        case GL_UNSIGNED_SHORT:
-          step *= sizeof(short); break;
+           step *= (int)sizeof(short); break;
        case GL_INT:
        case GL_UNSIGNED_INT:
-          step *= sizeof(int); break;
+          step *= (int)sizeof(int); break;
        case GL_HALF_FLOAT_ARB:
-          step *= sizeof(float)/2; break;
+          step *= (int)sizeof(float)/2; break;
        case GL_FLOAT:
-          step *= sizeof(float); break;
+          step *= (int)sizeof(float); break;
        case GL_DOUBLE:
-          step *= sizeof(double); break;
+          step *= (int)sizeof(double); break;
        default:
           LOG_ERROR("Unknown OpenGL pixel type " << pixel_type );
           step *= sizeof(char);
@@ -1042,9 +1042,8 @@ namespace mrv {
   }
 
   /** 
-   * Draw an 8-bit image onto the viewport using opengl.
+   * Draw an 8-bit image onto the viewport using opengl's glDrawPixels.
    * 
-   * @param draw   opengl draw data
    * @param dw     image's width
    * @param dh     image's height
    */
@@ -1055,36 +1054,19 @@ namespace mrv {
 
 
 
-    double tw = dw / 2.0;
-    double th = dh / 2.0;
+    double p = _view->zoom();
 
-#if 0
-    double dx = - (_view->w() - dw ) / 2.0;
-    double dy = (_view->h() - dh) / 2.0;
-
-    dy = _view->h() - dy - 1;
-
-    dx -= tw; dy -= th;
-    dx /= _view->zoom(); dy /= _view->zoom();
-    dx += tw; dy += th;
-    dx -= _view->offset_x(); dy -= _view->offset_y();
-
-    dy = dh - dy;
-
-#else
-    float p = _view->zoom();
-    float sw = ((float)_view->w() - dw * p) / 2.0f;
-    float sh = ((float)_view->h() + dh * p) / 2.0f;
+    double sw = ((double)_view->w() - (double) dw * p) / 2.0;
+    double sh = ((double)_view->h() + (double) dh * p ) / 2.0;
 
     double dx = (_view->offset_x() * p );
     double dy = (_view->offset_y() * p - sh );
-#endif
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
     // Check zoom fraction
     int z = (int) _view->zoom();
-    float zoom_fraction =  _view->zoom() - z;
+    float zoom_fraction =  _view->zoom() - (float) z;
 
 
     unsigned H = dh - 1;
@@ -1156,17 +1138,19 @@ namespace mrv {
   void GLQuad::draw_field( const unsigned int dw, const unsigned int dh ) const
   {
 
-    double sw = ((double)_view->w() - dw * _view->zoom()) / 2.0f;
-    double sh = ((double)_view->h() + dh * _view->zoom()) / 2.0f;
+      double p = _view->zoom();
 
-    double dx = (_view->offset_x() * _view->zoom() + sw);
-    double dy = (_view->offset_y() * _view->zoom() - sh);
+      double sw = ((double)_view->w() - (double) dw * p) / 2.0f;
+      double sh = ((double)_view->h() + (double) dh * p) / 2.0f;
+
+      double dx = (_view->offset_x() * p);
+      double dy = (_view->offset_y() * p - sh);
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
     // Check zoom fraction
     int z = (int) _view->zoom();
-    float zoom_fraction =  _view->zoom() - z;
+    float zoom_fraction =  _view->zoom() - (float) z;
 
 
     mrv::ImageView::FieldDisplay field = _view->field();

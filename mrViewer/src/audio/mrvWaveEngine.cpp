@@ -467,7 +467,7 @@ static const uint32_t pi_channels_in[] =
 	    WAVEHDR& hdr = _buffer[i];
 	    memset( &hdr, 0, sizeof(WAVEHDR) );
 
-	    assert( (((unsigned long)ptr) % wavefmt.nBlockAlign) == 0 );
+	    assert( (((unsigned long)ptr) % wavefmt.Format.nBlockAlign) == 0 );
 
 	    hdr.lpData  = ptr;
 	    hdr.dwFlags = WHDR_DONE;
