@@ -2,12 +2,12 @@
 
 #export  BOOST_ROOT="C:/mrViewer_libs/lib/boost_1_47_0"
 export BOOST_ROOT="F:/code/lib/Windows-32/boost_1_51_0"
-#export OPENEXR_ROOT="C:/mrViewer_libs/lib/Deploy"
-#export     CTL_ROOT="C:/mrViewer_libs/lib/Deploy"
-#export OPENEXR_ROOT="F:/code/lib/Windows_32"
-#export     CTL_ROOT="F:/code/Deploy"
-export OPENEXR_ROOT="F:/code/lib/Deploy_ok"
-export     CTL_ROOT="F:/code/lib/Deploy_ok"
+
+export OPENEXR_ROOT="F:/code/lib/Windows_32"
+export     CTL_ROOT="F:/code/lib/Windows_32"
+
+#export OPENEXR_ROOT="F:/code/lib/Deploy_ok"
+#export     CTL_ROOT="F:/code/lib/Deploy_ok"
 
 export FFMPEG_ROOT=F:/code/lib/ffmpeg-20140512-git-5460ab7-win32-shared
 
@@ -18,5 +18,6 @@ export MAGICK_HOME="F:/code/lib/ImageMagick-6.7.4"
 export GLEW_ROOT="C:/mrViewer_libs/lib/glew-1.11.0"
 export POSTGRESQL_ROOT="C:/Program Files (x86)/PostgreSQL/9.1"
 export TCLAP_ROOT="C:/mrViewer_libs/lib/tclap-1.2.1"
-export SampleICC_ROOT="C:/mrViewer_libs/lib/SampleICC-1.6.6"
+#export SampleICC_ROOT="C:/mrViewer_libs/lib/SampleICC-1.6.6"
+export SampleICC_ROOT=F:/code/lib/SampleICC-1.6.6
 export LIBINTL_ROOT="C:/Program Files (x86)/GnuWin32/lib"
