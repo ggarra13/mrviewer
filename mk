@@ -311,9 +311,6 @@ run_cmake()
 
 
     pwd=$PWD
-    if [[ $KERNEL == Windows* ]]; then
-	pwd=`cygpath -d $PWD`
-    fi
 
     if [[ $cmake_generator == *Makefile* ]]; then
 	cmake_opts="-DCMAKE_BUILD_TYPE=$CMAKE_BUILD_TYPE"

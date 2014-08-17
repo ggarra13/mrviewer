@@ -47,7 +47,7 @@ IF( WIN32 )
     "${SampleICC_ROOT}/${compiler}/lib"
     "${SampleICC_ROOT}/lib/x${CMAKE_BUILD_ARCH}/${CMAKE_BUILD_TYPE}"
     "${SampleICC_ROOT}/lib"
-    "${SampleICC_ROOT}/IccProfLib/Release"
+    "${SampleICC_ROOT}/IccProfLib/${CMAKE_BUILD_TYPE}"
     ${SEARCH_PATHS}
     )
 ENDIF( WIN32 )
@@ -67,6 +67,7 @@ FIND_LIBRARY( SampleICC
   PATHS ${SEARCH_PATHS}
   NO_DEFAULT_PATH
 )
+
 
 SET( SampleICC_LIBRARIES ${SampleICC} )
 

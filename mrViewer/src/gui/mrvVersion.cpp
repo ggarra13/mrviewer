@@ -29,7 +29,7 @@ extern "C" {
 #include <fltk/Monitor.h>
 #include <fltk/Browser.h>
 
-#include <OpenEXR/ImfVersion.h>
+#include <ImfVersion.h>
 
 #include <boost/version.hpp>
 
