@@ -1629,23 +1629,14 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	   return fetch_mipmap( frame );
 	}
 
-        try
-        {
-           if ( _numparts < 0 )
-           {
-               MultiPartInputFile* infile = new MultiPartInputFile( 
-               sequence_filename(frame).c_str() );
+	if ( _numparts < 0 )
+	  {
+	    MultiPartInputFile* infile = 
+	      new MultiPartInputFile( sequence_filename(frame).c_str() );
 
-               _numparts = infile->parts();
-               delete infile;
-           }
-        }
-        catch(IEX_NAMESPACE::BaseExc &e)
-        {
-           IMG_ERROR( e.what() );
-           return false;
-        }
-
+	    _numparts = infile->parts();
+	    delete infile;
+	  }
 
         if ( _numparts > 1 )
         {
@@ -1653,7 +1644,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
         }
 
 	InputFile in( sequence_filename(frame).c_str() );
-
 
 	const Header& h = in.header();
 	const Box2i& displayWindow = h.displayWindow();
