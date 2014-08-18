@@ -20,7 +20,7 @@
 #include "mrvGLLut3d.h"
 
 
-#define TEST_NO_QUAD         // test not using textures
+// #define TEST_NO_QUAD         // test not using textures
 // #define TEST_NO_PBO_TEXTURES // test not using pbo textures
 #define NVIDIA_PBO_BUG     // with pbo textures, my nvidia card has problems
                            // with GL_BGR formats and high resolutions
