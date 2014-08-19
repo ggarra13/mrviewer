@@ -107,6 +107,9 @@ namespace mrv {
 
     virtual void subtitle_stream( int idx );
 
+      const char* const colorspace();
+      const char* const color_range();
+
        virtual void probe_size( unsigned p );
 
     void debug_video_stores(const boost::int64_t frame, 

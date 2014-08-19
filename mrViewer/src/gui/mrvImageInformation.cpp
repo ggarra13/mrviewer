@@ -38,7 +38,8 @@ using namespace std;
 #include "mrvImageView.h"
 #include "mrViewer.h"
 #include "CMedia.h"
-#include "exrImage.h"
+#include "core/aviImage.h"
+#include "core/exrImage.h"
 #include "mrvIO.h"
 
 #include "mrvI8N.h"
@@ -467,7 +468,12 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_text( _("Depth"), depth );
     add_int( _("Image Channels"), img->number_of_channels() );
 
-    
+    aviImage* avi = dynamic_cast< aviImage* >( img );
+    if ( avi )
+    {
+        add_text( _("Color Space"), avi->colorspace() );
+        add_text( _("Color Range"), avi->color_range() );
+    }
 
     ++group;
 
