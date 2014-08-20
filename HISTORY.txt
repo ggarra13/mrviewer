@@ -1,3 +1,10 @@
+v2.6.4.2 - Added missing ctl and shaders directory to win64 release.
+	 - Added missing rails directory to win64 release.
+	 - Added HISTORY.txt and Videos.txt to win64 release.
+	 - Added docs to win64 release.
+	 - Restored glDrawPixels opengl drawing albeit buggy but needed for
+	   old gfx cards.
+	 - Updated version from v2.6.4.0.
 v2.6.4.1 - Made autofit work in EDL timeline when switching images.
 	 - Fixed loading of a single image which would always load all images
 	   in a sequence.
