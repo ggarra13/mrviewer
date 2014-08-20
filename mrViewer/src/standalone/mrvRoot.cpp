@@ -12,6 +12,7 @@
 #include <cstdlib>
 #include <cstring>
 #include <iostream>
+#include <mrvIO.h>
 
 #if defined(WIN32) || defined(WIN64)
 #  include <io.h>      // for _access
@@ -47,6 +48,9 @@ namespace fs = boost::filesystem;
 
 
 namespace {
+
+  const char* kModule = "root";
+
   /*
    * Mechanism to handle determining *where* the exe actually lives
    */
