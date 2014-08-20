@@ -272,10 +272,14 @@ fltk::StyleSet*     newscheme = NULL;
     char  tmpS[2048];
     Imf::Chromaticities tmpC, c;
 
-    root = getenv("MRV_ROOT");
-    if ( root.empty() )
+    const char* r = getenv( "MRV_ROOT" );
+    if ( r )
       {
-	EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
+	root = r;
+	if ( root.empty() )
+	  {
+	    EXCEPTION("Environment variable MRV_ROOT not set.  Aborting");
+	  }
       }
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
