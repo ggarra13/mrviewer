@@ -35,16 +35,25 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {417 354 300 195} resizable modal noborder visible
+        xywh {402 529 300 195} resizable modal noborder visible
       } {
         {fltk::Group} {} {
-          label {OpenEXR Options}
+          label {OpenEXR Options} open
           xywh {30 22 240 138} box UP_BOX
         } {
           {fltk::Choice} uiCompression {
             label Compression
             user_data this user_data_type {EXROptionsUI*}
-            callback {compression = o->child(o->value())->label();} open
+            callback {compression = o->child(o->value())->label();
+if ( compression == "DWAA" ||
+     compression == "DWAB" )
+{
+v->uiDWACompression->activate();
+}
+else
+{
+v->uiDWACompression->deactivate();
+}} selected
             xywh {115 23 91 26}
           } {
             {fltk::Item} {} {
@@ -95,8 +104,8 @@ namespace mrv {open
           }
         }
         {fltk::ValueSlider} uiDWACompression {
-          label {DWA Compression} selected
-          xywh {160 125 90 20} align 4 minimum 1 maximum 250 step 10 value 45
+          label {DWA Compression}
+          xywh {160 125 90 20} align 4 deactivate minimum 1 maximum 250 step 10 value 45
         }
         {fltk::Button} {} {
           label OK
