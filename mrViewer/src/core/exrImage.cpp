@@ -1751,9 +1751,10 @@ bool exrImage::save( const char* file, const CMedia* img,
     }
     hdr.compression() = comp;
 
-#ifdef LINUX
-    Imf::addDwaCompressionLevel( hdr, opts->compression_level() );
-#endif
+    if ( comp == Imf::DWAA_COMPRESSION || comp == Imf::DWAB_COMPRESSION )
+    {
+        Imf::addDwaCompressionLevel( hdr, opts->compression_level() );
+    }
 
     Imf::PixelType pt = exrImage::pixel_type_to_exr( pic->pixel_type() );
     Imf::PixelType save_type = opts->pixel_type();
