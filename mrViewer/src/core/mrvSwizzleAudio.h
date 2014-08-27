@@ -12,7 +12,7 @@ struct Swizzle
      
      inline Swizzle(void* data, unsigned data_size ) :
      ptr( (T*) data ),
-     last( data_size / 8*sizeof(T) )
+     last( data_size / unsigned(8*sizeof(T)) )
      {
      }
 
