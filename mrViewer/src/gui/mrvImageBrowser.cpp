@@ -1666,7 +1666,7 @@ int ImageBrowser::value() const
        mrv::CMedia::Mutex& vpm = img->video_mutex();
        SCOPED_LOCK(vpm);
 
-       img->fetch( img->first_frame() );
+       img->find_image( img->first_frame() );
     }
 
     

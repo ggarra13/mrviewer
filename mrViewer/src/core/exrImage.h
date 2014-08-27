@@ -13,6 +13,7 @@
 
 #include <CMedia.h>
 
+#include <ImfArray.h>
 #include <ImfLineOrder.h>
 #include <ImfCompression.h>
 #include <ImfPixelType.h>
@@ -60,6 +61,8 @@ namespace mrv {
       static bool save( const char* file, const CMedia* img, 
                         const ImageOpts* const opts );
 
+      std::string type() const { return _type; }
+
        int current_part() const { return _curpart; }
        void current_part( unsigned x ) { _curpart = x; }
 
@@ -70,6 +73,24 @@ namespace mrv {
        void levelY( const int ly ) { _levelY = ly; }
 
   protected:
+      void loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
+                              int partnum,
+                              const int64_t frame,
+                              int &zsize,
+                              Imf::Header &header,
+                              Imf::Array<float*> &zbuff,
+                              Imf::Array<unsigned int> &sampleCount,
+                              bool deepComp );
+
+      void loadDeepScanlineImage (Imf::MultiPartInputFile &inmaster,
+                                  int partnum,
+                                  const int64_t frame,
+                                  int &zsize,
+                                  Imf::Header &header,
+                                  Imf::Array<float*> &zbuff,
+                                  Imf::Array<unsigned int> &sampleCount,
+                                  bool deepComp);
+
        bool find_layers( const Imf::Header& h );
        bool handle_side_by_side_stereo( const boost::int64_t frame,
                                         const Imf::Header& hdr, 
@@ -110,10 +131,17 @@ namespace mrv {
        int _curpart;
        int _numparts;
        unsigned _num_layers;
-       mrv::image_type_ptr* _right; //!< For sequences, holds each float frame
 
        Imf::LineOrder   _lineOrder;
        Imf::Compression _compression;
+
+      // Deep data
+      Imf::Array<float*>       dataZ;
+      Imf::Array<unsigned int> sampleCount;
+      std::string         _type;
+      float               farPlane;
+      bool                deepComp;
+
   };
 
 }
