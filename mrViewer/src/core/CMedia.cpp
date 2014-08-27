@@ -412,6 +412,9 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
                               const image_type::PixelType pixel_type )
 {
   SCOPED_LOCK( _mutex );
+  DBG( "allocate pixels frame: " << frame 
+       << " channels: " << channels << " format: "
+       << format << " pixel type: " << pixel_type );
   _hires.reset( new image_type( frame, width(), height(), 
 				channels, format, pixel_type ) );
 }
@@ -1894,16 +1897,16 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
   else
     {
-      s.start = stream->start_time * time;
+        s.start = ((double) stream->start_time * time);
     }
 
   if ( stream->duration == AV_NOPTS_VALUE )
     {
-      s.duration = _context->duration * time;
+        s.duration = ((double) _context->duration * time);
     }
   else
     {
-      s.duration = stream->duration * time;
+        s.duration = ((double) stream->duration * time);
     }
 }
 
