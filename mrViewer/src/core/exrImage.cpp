@@ -23,6 +23,11 @@
 #include <ImfTiledInputFile.h>
 #include <ImfMultiPartInputFile.h>
 #include <ImfStandardAttributes.h>
+#include <ImfDeepScanLineInputPart.h>
+#include <ImfDeepFrameBuffer.h>
+#include <ImfCompositeDeepScanLine.h>
+#include <ImfDeepCompositing.h>
+#include <ImfDeepTiledInputPart.h>
 #include <ImfOutputFile.h>
 #include <ImathMath.h> // for Math:: functions
 #include <ImathBox.h>  // for Box2i
@@ -39,7 +44,7 @@ using namespace Imath;
 using namespace std;
 
 
-namespace 
+namespace
 {
   const char* kModule = "exr";
 }
@@ -198,7 +203,6 @@ bool exrImage::channels_order(
       }
 
 
-      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
 
       std::string ext = layerName;
       size_t pos = layerName.rfind( N_(".") );
@@ -211,15 +215,29 @@ bool exrImage::channels_order(
 		      (int(*)(int)) toupper);
       if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") ||
 			      ext == N_("Y") || ext == N_("U") ) )
+      {
          order[0] = idx;
+         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+      }
+
       if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
 			      ext == N_("RY") || ext == N_("V") ) )
+      {
          order[1] = idx;
+         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+      }
       if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
 			      ext == N_("BY") || ext == N_("W") ) )
+      {
          order[2] = idx;
+         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+      }
       if ( order[3] == -1 && (ext == N_("A") ||
-			      ext == N_("ALPHA") ) ) order[3] = idx;
+			      ext == N_("ALPHA") ) ) 
+      {
+          order[3] = idx;
+         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+      }
 
       channelList.push_back( layerName );
    }
@@ -281,10 +299,10 @@ bool exrImage::channels_order(
 	 numChannels = 3;
       }
    }
-   
+
    allocate_pixels( frame, (unsigned short)numChannels, format,
 		    pixel_type_conversion( imfPixelType ) );
-   
+
    size_t xs[4], ys[4];
    if ( _has_yca )
    {
@@ -399,7 +417,6 @@ bool exrImage::channels_order_multi(
          continue;
       }
 
-      if ( ch->type > imfPixelType ) imfPixelType = ch->type;
       
       std::string ext = layerName;
       std::string root = "";
@@ -422,8 +439,9 @@ bool exrImage::channels_order_multi(
 	    if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
 				    ext == N_("Y") ) ) 
 	    {
-	       order[0] = idx;
-	       continue;
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[0] = idx;
+                continue;
 	    }
 	 }
 	 else
@@ -431,13 +449,20 @@ bool exrImage::channels_order_multi(
 	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
 				    ext == N_("RY") || ext == N_("Y") ) )
 	    {
-	       order[1] = idx;
-	       if ( ext == N_("Y") ) _use_yca = false; 
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[1] = idx;
+                if ( ext == N_("Y") ) _use_yca = false; 
 	    }
 	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-				    ext == N_("BY") ) ) order[2] = idx;
+				    ext == N_("BY") ) ) {
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[2] = idx;
+            }
 	    if ( order[3] == -1 && (ext == N_("A") || 
-				    ext == N_("ALPHA") ) ) order[3] = idx;
+				    ext == N_("ALPHA") ) ) {
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[3] = idx;
+            }
 	 }
       }
    }
@@ -477,8 +502,9 @@ bool exrImage::channels_order_multi(
 	    if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
 				    ext == N_("Y") ) ) 
 	    {
-	       order[0] = idx;
-	       break;
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[0] = idx;
+                break;
 	    }
 	 }
 	 else
@@ -486,14 +512,21 @@ bool exrImage::channels_order_multi(
 	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
 				    ext == N_("RY") || ext == N_("Y")) )
 	    {
-	       order[1] = idx;
-	       if ( ext == N_("Y") ) _use_yca = false;
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[1] = idx;
+                if ( ext == N_("Y") ) _use_yca = false;
 	    }
 
 	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-				    ext == N_("BY") ) ) order[2] = idx;
+				    ext == N_("BY") ) ) {
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[2] = idx;
+            }
 	    if ( order[3] == -1 && (ext == N_("A") || 
-				    ext == N_("ALPHA") ) ) order[3] = idx;
+				    ext == N_("ALPHA") ) ) {
+                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                order[3] = idx;
+            }
 	 }
       }
 
@@ -1313,6 +1346,405 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 }
 
+void
+exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
+                             int partnum,
+                             const int64_t frame,
+                             int &zsize,
+                             Imf::Header &header,
+                             Imf::Array<float*> &zbuff,
+                             Imf::Array<unsigned int> &sampleCount,
+                             bool deepComp )
+{
+    DeepTiledInputPart in (inmaster, partnum);
+    header = in.header();
+
+    Box2i &dataWindow = header.dataWindow();
+    int dw = dataWindow.max.x - dataWindow.min.x + 1;
+    int dh = dataWindow.max.y - dataWindow.min.y + 1;
+    int dx = dataWindow.min.x;
+    int dy = dataWindow.min.y;
+
+    image_size( dw, dh );
+    allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+
+    // display black right now
+    Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    memset( pixels, 0, _hires->data_size() ); // Needed
+
+    Array< half* > dataR;
+    Array< half* > dataG;
+    Array< half* > dataB;
+
+    Array< float* > zback;
+    Array< half* > alpha;
+
+    zsize = dw * dh;
+    zbuff.resizeErase (zsize);
+    zback.resizeErase (zsize);
+    alpha.resizeErase (dw * dh);
+
+    dataR.resizeErase (dw * dh);
+    dataG.resizeErase (dw * dh);
+    dataB.resizeErase (dw * dh);
+    sampleCount.resizeErase (dw * dh);
+
+    int rgbflag = 0;
+    int deepCompflag = 0;
+
+    if (header.channels().findChannel ("R"))
+    {
+        rgbflag = 1;
+    }
+    else if (header.channels().findChannel ("B"))
+    {
+        rgbflag = 1;
+    }
+    else if (header.channels().findChannel ("G"))
+    {
+        rgbflag = 1;
+    }
+
+    if (header.channels().findChannel ("Z") &&
+        header.channels().findChannel ("A") &&
+        deepComp)
+    {
+        deepCompflag = 1;
+    }
+
+    DeepFrameBuffer fb;
+
+    fb.insertSampleCountSlice (Slice (UINT,
+                                      (char *) (&sampleCount[0]
+                                                - dx- dy * dw),
+                                      sizeof (unsigned int) * 1,
+                                      sizeof (unsigned int) * dw));
+
+    fb.insert ("Z",
+               DeepSlice (FLOAT,
+                          (char *) (&zbuff[0] - dx- dy * dw),
+                          sizeof (float *) * 1,    // xStride for pointer array
+                          sizeof (float *) * dw,   // yStride for pointer array
+                          sizeof (float) * 1));    // stride for z data sample
+    fb.insert ("ZBack",
+               DeepSlice (FLOAT,
+                          (char *) (&zback[0] - dx- dy * dw),
+                          sizeof (float *) * 1,    // xStride for pointer array
+                          sizeof (float *) * dw,   // yStride for pointer array
+                          sizeof (float) * 1));    // stride for z data sample
+
+    if (rgbflag)
+    {
+        fb.insert ("R",
+                   DeepSlice (HALF,
+                              (char *) (&dataR[0] - dx- dy * dw),
+                              sizeof (half *) * 1,
+                              sizeof (half *) * dw,
+                              sizeof (half) * 1));
+
+        fb.insert ("G",
+                   DeepSlice (HALF,
+                              (char *) (&dataG[0] - dx- dy * dw),
+                              sizeof (half *) * 1,
+                              sizeof (half *) * dw,
+                              sizeof (half) * 1));
+
+        fb.insert ("B",
+                   DeepSlice (HALF,
+                              (char *) (&dataB[0] - dx- dy * dw),
+                              sizeof (half *) * 1,
+                              sizeof (half *) * dw,
+                              sizeof (half) * 1));
+
+
+    }
+
+    fb.insert ("A",
+               DeepSlice (HALF,
+                          (char *) (&alpha[0] - dx- dy * dw),
+                          sizeof (half *) * 1,    // xStride for pointer array
+                          sizeof (half *) * dw,   // yStride for pointer array
+                          sizeof (half) * 1,      // stride for z data sample
+                          1, 1,                   // xSampling, ySampling
+                          1.0));                  // fillValue
+
+    in.setFrameBuffer (fb);
+
+    int numXTiles = in.numXTiles(0);
+    int numYTiles = in.numYTiles(0);
+
+    in.readPixelSampleCounts (0, numXTiles - 1, 0, numYTiles - 1);
+
+    for (int i = 0; i < dh * dw; i++)
+    {
+        zbuff[i] = new float[sampleCount[i]];
+        zback[i] = new float[sampleCount[i]];
+        alpha[i] = new half[sampleCount[i]];
+        if (rgbflag)
+        {
+            dataR[i] = new half[sampleCount[i]];
+            dataG[i] = new half[sampleCount[i]];
+            dataB[i] = new half[sampleCount[i]];
+        }
+    }
+
+    in.readTiles (0, numXTiles - 1, 0, numYTiles - 1);
+
+    if (deepCompflag)
+    {
+        // Loop over all the pixels and comp manually
+        // @ToDo implent deep compositing for the DeepTile case
+        for (int i=0; i<zsize; ++i)
+        {
+            float a     = alpha[i][0];
+            pixels[i].r = dataR[i][0];
+            pixels[i].g = dataG[i][0];
+            pixels[i].b = dataB[i][0];
+
+            for(int s=1; s<sampleCount[i]; s++)
+            {
+                if(a>=1.f)
+                    break;
+
+                pixels[i].r += (1.f - a) * dataR[i][s];
+                pixels[i].g += (1.f - a) * dataG[i][s];
+                pixels[i].b += (1.f - a) * dataB[i][s];
+                a           += (1.f - a) * alpha[i][s];
+            }
+        }
+    }
+    else
+    {
+        for (int i = 0; i < dh * dw; i++)
+        {
+            if (sampleCount[i] > 0)
+            {
+                if (rgbflag)
+                {
+                    pixels[i].r = dataR[i][0];
+                    pixels[i].g = dataG[i][0];
+                    pixels[i].b = dataB[i][0];
+                }
+                else
+                {
+                    pixels[i].r = zbuff[i][0];
+                    pixels[i].g = alpha[i][0];
+                    pixels[i].b = zback[i][0];
+                }
+            }
+        }
+    }
+
+}
+
+void
+exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
+                                  int partnum,
+                                  const int64_t frame,
+                                  int &zsize,
+                                  Imf::Header &header,
+                                  Imf::Array<float*> &zbuff,
+                                  Imf::Array<unsigned int> &sampleCount,
+                                  bool deepComp)
+{
+    DeepScanLineInputPart in (inmaster, partnum);
+    header = in.header();
+
+    Box2i &dataWindow = header.dataWindow();
+    int dw = dataWindow.max.x - dataWindow.min.x + 1;
+    int dh = dataWindow.max.y - dataWindow.min.y + 1;
+    int dx = dataWindow.min.x;
+    int dy = dataWindow.min.y;
+
+    image_size( dw, dh );
+
+    allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+
+    // display black right now
+    Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    memset( pixels, 0, _hires->data_size() ); // Needed
+
+    Array< half* > dataR;
+    Array< half* > dataG;
+    Array< half* > dataB;
+
+    Array< float* > zback;
+    Array< half* > alpha;
+
+    zsize = dw * dh;
+    zbuff.resizeErase (zsize);
+    zback.resizeErase (zsize);
+    alpha.resizeErase (dw * dh);
+
+    dataR.resizeErase (dw * dh);
+    dataG.resizeErase (dw * dh);
+    dataB.resizeErase (dw * dh);
+    sampleCount.resizeErase (dw * dh);
+
+    int rgbflag = 0;
+    int deepCompflag = 0;
+
+    if (header.channels().findChannel ("R"))
+    {
+        rgbflag = 1;
+    }
+    else if (header.channels().findChannel ("B"))
+    {
+        rgbflag = 1;
+    }
+    else if (header.channels().findChannel ("G"))
+    {
+        rgbflag = 1;
+    }
+
+    if (header.channels().findChannel ("Z") &&
+        header.channels().findChannel ("A") &&
+        deepComp)
+    {
+        deepCompflag = 1;
+    }
+
+    DeepFrameBuffer fb;
+
+    fb.insertSampleCountSlice (Slice (UINT,
+                                      (char *) (&sampleCount[0]
+                                                - dx- dy * dw),
+                                      sizeof (unsigned int) * 1,
+                                      sizeof (unsigned int) * dw));
+
+    fb.insert ("Z",
+               DeepSlice (FLOAT,
+                          (char *) (&zbuff[0] - dx- dy * dw),
+                          sizeof (float *) * 1,    // xStride for pointer array
+                          sizeof (float *) * dw,   // yStride for pointer array
+                          sizeof (float) * 1));    // stride for z data sample
+    fb.insert ("ZBack",
+               DeepSlice (FLOAT,
+                          (char *) (&zback[0] - dx- dy * dw),
+                          sizeof (float *) * 1,    // xStride for pointer array
+                          sizeof (float *) * dw,   // yStride for pointer array
+                          sizeof (float) * 1));    // stride for z data sample
+
+    if (rgbflag)
+    {
+        fb.insert ("R",
+                   DeepSlice (HALF,
+                              (char *) (&dataR[0] - dx- dy * dw),
+                              sizeof (half *) * 1,
+                              sizeof (half *) * dw,
+                              sizeof (half) * 1));
+
+        fb.insert ("G",
+                   DeepSlice (HALF,
+                              (char *) (&dataG[0] - dx- dy * dw),
+                              sizeof (half *) * 1,
+                              sizeof (half *) * dw,
+                              sizeof (half) * 1));
+
+        fb.insert ("B",
+                   DeepSlice (HALF,
+                              (char *) (&dataB[0] - dx- dy * dw),
+                              sizeof (half *) * 1,
+                              sizeof (half *) * dw,
+                              sizeof (half) * 1));
+    }
+
+    fb.insert ("A",
+               DeepSlice (HALF,
+                          (char *) (&alpha[0] - dx- dy * dw),
+                          sizeof (half *) * 1,    // xStride for pointer array
+                          sizeof (half *) * dw,   // yStride for pointer array
+                          sizeof (half) * 1,      // stride for z data sample
+                          1, 1,                   // xSampling, ySampling
+                          1.0));                  // fillValue
+
+    in.setFrameBuffer (fb);
+
+    in.readPixelSampleCounts (dataWindow.min.y, dataWindow.max.y);
+
+    for (int i = 0; i < dh * dw; i++)
+    {
+        zbuff[i] = new float[sampleCount[i]];
+        zback[i] = new float[sampleCount[i]];
+        alpha[i] = new half[sampleCount[i]];
+        if(rgbflag)
+        {
+            dataR[i] = new half[sampleCount[i]];
+            dataG[i] = new half[sampleCount[i]];
+            dataB[i] = new half[sampleCount[i]];
+        }
+    }
+
+    in.readPixels (dataWindow.min.y, dataWindow.max.y);
+
+    if (deepCompflag)
+    {
+        //
+        //try deep compositing
+        //
+        CompositeDeepScanLine comp;
+        comp.addSource (&in);
+
+        FrameBuffer fbuffer;
+        Rgba *base = pixels - dx - dy * dw;
+        size_t xs = 1 * sizeof (Rgba);
+        size_t ys = dw * sizeof (Rgba);
+
+        fbuffer.insert ("R",
+                   Slice (HALF,
+                          (char *) &base[0].r,
+                          xs, ys,
+                          1, 1,     // xSampling, ySampling
+                          0.0));    // fillValue
+
+        fbuffer.insert ("G",
+                   Slice (HALF,
+                          (char *) &base[0].g,
+                          xs, ys,
+                          1, 1,     // xSampling, ySampling
+                          0.0));    // fillValue
+
+        fbuffer.insert ("B",
+                   Slice (HALF,
+                          (char *) &base[0].b,
+                          xs, ys,
+                          1, 1,     // xSampling, ySampling
+                          0.0));    // fillValue
+
+        fbuffer.insert ("A",
+                   Slice (HALF,
+                          (char *) &base[0].a,
+                          xs, ys,
+                          1, 1,             // xSampling, ySampling
+                          1.0));    // fillValue
+        comp.setFrameBuffer (fbuffer);
+        comp.readPixels (dataWindow.min.y, dataWindow.max.y);
+    }
+    else
+    {
+        for (int i = 0; i < dh * dw; i++)
+        {
+            if (sampleCount[i] > 0)
+            {
+                if (rgbflag)
+                {
+                    pixels[i].r = dataR[i][0];
+                    pixels[i].g = dataG[i][0];
+                    pixels[i].b = dataB[i][0];
+                }
+                else
+                {
+                    pixels[i].r = zbuff[i][0];
+                    pixels[i].g = alpha[i][0];
+                    pixels[i].b = zback[i][0];
+                }
+            }
+        }
+    }
+
+}
+
+
 bool exrImage::fetch_multipart( const boost::int64_t frame )
 {
    MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
@@ -1320,20 +1752,20 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    _stereo_type = kNoStereo;
 
    
-
    if ( _num_layers == 0 )
    {
-   
+  
       int i = 0;
       st[0] = st[1] = -1;
       for ( ; i < _numparts; ++i )
       {
-         InputPart in( inmaster, i );
-         Header header = in.header();
+         Header header = inmaster.header(i);
+         _type = header.type();
 
-         if ( header.type() != DEEPSCANLINE &&
-              header.type() != SCANLINEIMAGE &&
-              header.type() != TILEDIMAGE ) continue;
+         if ( _type != SCANLINEIMAGE &&
+              _type != TILEDIMAGE &&
+              _type != DEEPSCANLINE &&
+              _type != DEEPTILE ) continue;
 
          if ( _exif.empty() && _iptc.empty() )
             read_header_attr( header, frame );
@@ -1440,101 +1872,94 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
       if ( _curpart == -1 ) _curpart = 0;
 
-          
+
       for ( int i = 0 ; i < 2; ++i )
       {
           int oldpart = _curpart;
           if ( _stereo_type != kNoStereo ) _curpart = st[i];
 
-          
-          InputPart in( inmaster, _curpart );
-          Header header = in.header();
+
+          Header header = inmaster.header(_curpart);
 
           Box2i displayWindow = header.displayWindow();
           Box2i dataWindow = header.dataWindow();
 
-          FrameBuffer fb;
-          bool ok = find_channels( header, fb, frame );
-          if (!ok) {
-              IMG_ERROR( _("Could not locate channels in header") );
-              return false;
-          }
-          
+          _pixel_ratio = header.pixelAspectRatio();
+          _lineOrder   = header.lineOrder();
+          _type = header.type();
 
-
-          if ( _curpart != oldpart )
+          if ( i == 0 || _stereo_type == kNoStereo )
           {
-              InputPart ins( inmaster, _curpart );
-              header = ins.header();
+              data_window( dataWindow.min.x, dataWindow.min.y,
+                           dataWindow.max.x, dataWindow.max.y );
 
-          
-              FrameBuffer fb;
+              display_window( displayWindow.min.x, displayWindow.min.y,
+                              displayWindow.max.x, displayWindow.max.y );
+          }
+          else
+          {
+              data_window2( dataWindow.min.x, dataWindow.min.y,
+                            dataWindow.max.x, dataWindow.max.y );
+
+              display_window2( displayWindow.min.x, displayWindow.min.y,
+                               displayWindow.max.x, displayWindow.max.y );
+          }
+
+          int zsize = 0;
+          FrameBuffer fb;
+          // if ( _type == DEEPSCANLINE )
+          // {
+          //     find_layers( header );
+          //     loadDeepScanlineImage(inmaster,
+          //                           _curpart,
+          //                           frame,
+          //                           zsize,
+          //                           header,
+          //                           dataZ,
+          //                           sampleCount,
+          //                           deepComp);
+          //     return true;
+          // }
+          // else if ( _type == DEEPTILE )
+          // {
+          //     find_layers( header );
+          //     loadDeepTileImage(inmaster,
+          //                       _curpart,
+          //                       frame,
+          //                       zsize,
+          //                       header,
+          //                       dataZ,
+          //                       sampleCount,
+          //                       deepComp);
+          //     return true;
+          {
               bool ok = find_channels( header, fb, frame );
               if (!ok) {
                   IMG_ERROR( _("Could not locate channels in header") );
                   return false;
               }
-
-          
-              _pixel_ratio = header.pixelAspectRatio();
-              _lineOrder   = header.lineOrder();
-              displayWindow = header.displayWindow();
-              dataWindow = header.dataWindow();
-
-
-              if ( i == 0 || _stereo_type == kNoStereo )
-              {
-                  data_window( dataWindow.min.x, dataWindow.min.y,
-                               dataWindow.max.x, dataWindow.max.y );
-
-                  display_window( displayWindow.min.x, displayWindow.min.y,
-                                  displayWindow.max.x, displayWindow.max.y );
-              }
-              else
-              {
-                  data_window2( dataWindow.min.x, dataWindow.min.y,
-                                dataWindow.max.x, dataWindow.max.y );
-
-                  display_window2( displayWindow.min.x, displayWindow.min.y,
-                                   displayWindow.max.x, displayWindow.max.y );
-              }
-
-
-
-              ins.setFrameBuffer(fb);
-              ins.readPixels( dataWindow.min.y, dataWindow.max.y );
-
           }
-          else
+
+
+
+         
+
+
+          InputPart in( inmaster, _curpart );
+
+          if ( _curpart != oldpart )
           {
-          
-              _pixel_ratio = header.pixelAspectRatio();
-              _lineOrder   = header.lineOrder();
-              displayWindow = header.displayWindow();
-              dataWindow = header.dataWindow();
+              header = in.header();
 
-              if ( i == 0 || _stereo_type == kNoStereo )
-              {
-                  data_window( dataWindow.min.x, dataWindow.min.y,
-                               dataWindow.max.x, dataWindow.max.y );
-
-                  display_window( displayWindow.min.x, displayWindow.min.y,
-                                  displayWindow.max.x, displayWindow.max.y );
+              bool ok = find_channels( header, fb, frame );
+              if (!ok) {
+                  IMG_ERROR( _("Could not locate channels in header") );
+                  return false;
               }
-              else
-              {
-                  data_window2( dataWindow.min.x, dataWindow.min.y,
-                                dataWindow.max.x, dataWindow.max.y );
-
-                  display_window2( displayWindow.min.x, displayWindow.min.y,
-                                   displayWindow.max.x, displayWindow.max.y );
-              }
-
-
-              in.setFrameBuffer(fb);
-              in.readPixels( dataWindow.min.y, dataWindow.max.y );
-
           }
+
+          in.setFrameBuffer(fb);
+          in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
 
 

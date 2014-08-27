@@ -58,6 +58,12 @@ FIND_LIBRARY( Iex
   DOC   "OpenEXR Iex library"
 )
 
+FIND_LIBRARY( IexMath
+  NAMES IexMath-2_2 IexMath
+  PATHS ${SEARCH_DIRS}
+  DOC   "OpenEXR IexMath library"
+)
+
 FIND_LIBRARY( Half
   NAMES Half_dll Half_dll_d Half Halfd libHalf Half-2_1
   PATHS ${SEARCH_DIRS}
@@ -65,7 +71,7 @@ FIND_LIBRARY( Half
 )
 
 
-SET(OPENEXR_LIBRARIES ${IlmImf} ${Imath} ${Half} ${Iex}  )
+SET(OPENEXR_LIBRARIES ${IlmImf} ${Imath} ${Half} ${IexMath} ${Iex}  )
 
 IF(WIN32 OR WIN64)
   ADD_DEFINITIONS( "-DOPENEXR_DLL" )
