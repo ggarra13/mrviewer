@@ -1026,7 +1026,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 
       if ( oldpart != _curpart )
          return true;
-
    }
 
 
@@ -1364,6 +1363,7 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
                              Imf::Array<unsigned int> &sampleCount,
                              bool deepComp )
 {
+
     DeepTiledInputPart in (inmaster, partnum);
     header = in.header();
 
@@ -1373,8 +1373,13 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
     int dx = dataWindow.min.x;
     int dy = dataWindow.min.y;
 
+
     image_size( dw, dh );
-    allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+
+    if ( dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+    {
+        allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+    }
 
     // display black right now
     Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
@@ -1555,6 +1560,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
                                   Imf::Array<unsigned int> &sampleCount,
                                   bool deepComp)
 {
+
     DeepScanLineInputPart in (inmaster, partnum);
     header = in.header();
 
@@ -1564,12 +1570,16 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
     int dx = dataWindow.min.x;
     int dy = dataWindow.min.y;
 
+
     image_size( dw, dh );
 
-    allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+    if ( dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+    {
+        allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+    }
 
-    // display black right now
     Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    // display black right now
     memset( pixels, 0, _hires->data_size() ); // Needed
 
     Array< half* > dataR;
@@ -1856,7 +1866,17 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       const char* channelPrefix = channel();
       if ( channelPrefix != NULL )
       {
-          
+
+         if ( channelPrefix[0] == '#' )
+         {
+             std::string part = channelPrefix;
+
+             size_t pos = part.find( N_(" ") );
+             part = part.substr( 1, pos );
+
+             _curpart = (int) strtoul( part.c_str(), NULL, 10 );
+         }
+
          std::string ext = channelPrefix;
          std::string root = "";
          size_t pos = ext.rfind( N_(".") );
@@ -1892,6 +1912,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           Box2i displayWindow = header.displayWindow();
           Box2i dataWindow = header.dataWindow();
 
+
           _pixel_ratio = header.pixelAspectRatio();
           _lineOrder   = header.lineOrder();
           _type = header.type();
@@ -1915,31 +1936,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
           int zsize = 0;
           FrameBuffer fb;
-          // if ( _type == DEEPSCANLINE )
-          // {
-          //     find_layers( header );
-          //     loadDeepScanlineImage(inmaster,
-          //                           _curpart,
-          //                           frame,
-          //                           zsize,
-          //                           header,
-          //                           dataZ,
-          //                           sampleCount,
-          //                           deepComp);
-          //     return true;
-          // }
-          // else if ( _type == DEEPTILE )
-          // {
-          //     find_layers( header );
-          //     loadDeepTileImage(inmaster,
-          //                       _curpart,
-          //                       frame,
-          //                       zsize,
-          //                       header,
-          //                       dataZ,
-          //                       sampleCount,
-          //                       deepComp);
-          //     return true;
+
           {
               bool ok = find_channels( header, fb, frame );
               if (!ok) {
@@ -1948,10 +1945,33 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               }
           }
 
-
-
-         
-
+          if ( channel() == NULL )
+          {
+              if ( _type == DEEPSCANLINE )
+              {
+                  loadDeepScanlineImage(inmaster,
+                                        _curpart,
+                                        frame,
+                                        zsize,
+                                        header,
+                                        dataZ,
+                                        sampleCount,
+                                        true);
+                  return true;
+              }
+              else if ( _type == DEEPTILE )
+              {
+                  loadDeepTileImage(inmaster,
+                                    _curpart,
+                                    frame,
+                                    zsize,
+                                    header,
+                                    dataZ,
+                                    sampleCount,
+                                    true);
+                  return true;
+              }
+          }
 
           InputPart in( inmaster, _curpart );
 
@@ -2013,7 +2033,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       {
          InputPart in (inmaster, _curpart);
          Header header = in.header();
-         // const Box2i& displayWindow = header.displayWindow();
+
          dataWindow = header.dataWindow();
          displayWindow = header.displayWindow();
 
