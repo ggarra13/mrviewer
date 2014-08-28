@@ -203,6 +203,11 @@ bool exrImage::channels_order(
       }
 
 
+      // For Z channel
+   
+      if ( order[0] == -1 && order[1] == -1 &&
+           order[2] == -1 && order[3] == -1 &&
+           ch->type > imfPixelType ) imfPixelType = ch->type;
 
       std::string ext = layerName;
       size_t pos = layerName.rfind( N_(".") );
@@ -216,27 +221,23 @@ bool exrImage::channels_order(
       if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") ||
 			      ext == N_("Y") || ext == N_("U") ) )
       {
-         order[0] = idx;
-         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+          order[0] = idx; imfPixelType = ch->type;
       }
 
       if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
 			      ext == N_("RY") || ext == N_("V") ) )
       {
-         order[1] = idx;
-         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+         order[1] = idx; imfPixelType = ch->type;
       }
       if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
 			      ext == N_("BY") || ext == N_("W") ) )
       {
-         order[2] = idx;
-         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+         order[2] = idx; imfPixelType = ch->type;
       }
       if ( order[3] == -1 && (ext == N_("A") ||
 			      ext == N_("ALPHA") ) ) 
       {
-          order[3] = idx;
-         if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+          order[3] = idx; imfPixelType = ch->type;
       }
 
       channelList.push_back( layerName );
@@ -417,6 +418,9 @@ bool exrImage::channels_order_multi(
          continue;
       }
 
+      if ( order[0] == -1 && order[1] == -1 &&
+           order[2] == -1 && order[3] == -1 &&
+           ch->type > imfPixelType ) imfPixelType = ch->type;
       
       std::string ext = layerName;
       std::string root = "";
@@ -439,7 +443,7 @@ bool exrImage::channels_order_multi(
 	    if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
 				    ext == N_("Y") ) ) 
 	    {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[0] = idx;
                 continue;
 	    }
@@ -449,18 +453,18 @@ bool exrImage::channels_order_multi(
 	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
 				    ext == N_("RY") || ext == N_("Y") ) )
 	    {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[1] = idx;
                 if ( ext == N_("Y") ) _use_yca = false; 
 	    }
 	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
 				    ext == N_("BY") ) ) {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[2] = idx;
             }
 	    if ( order[3] == -1 && (ext == N_("A") || 
 				    ext == N_("ALPHA") ) ) {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[3] = idx;
             }
 	 }
@@ -479,6 +483,10 @@ bool exrImage::channels_order_multi(
          LOG_ERROR( "Missing channel " << layerName );
          continue;
       }
+
+      if ( order[0] == -1 && order[1] == -1 &&
+           order[2] == -1 && order[3] == -1 &&
+           ch->type > imfPixelType ) imfPixelType = ch->type;
 
       std::string ext = layerName;
       std::string root = "";
@@ -502,7 +510,7 @@ bool exrImage::channels_order_multi(
 	    if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
 				    ext == N_("Y") ) ) 
 	    {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[0] = idx;
                 break;
 	    }
@@ -512,19 +520,19 @@ bool exrImage::channels_order_multi(
 	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
 				    ext == N_("RY") || ext == N_("Y")) )
 	    {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[1] = idx;
                 if ( ext == N_("Y") ) _use_yca = false;
 	    }
 
 	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
 				    ext == N_("BY") ) ) {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[2] = idx;
             }
 	    if ( order[3] == -1 && (ext == N_("A") || 
 				    ext == N_("ALPHA") ) ) {
-                if ( ch->type > imfPixelType ) imfPixelType = ch->type;
+                imfPixelType = ch->type;
                 order[3] = idx;
             }
 	 }
@@ -1067,7 +1075,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
             if ( _multiview )
             {
-               // When anaglyph, call channels order multi
+               // When anaglyph and multiview, call channels order multi
                return channels_order_multi( frame, s, e, channels, h, fb );
             }
             else
