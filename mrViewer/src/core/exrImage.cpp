@@ -1945,6 +1945,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               }
           }
 
+#if 0
           if ( channel() == NULL )
           {
               if ( _type == DEEPSCANLINE )
@@ -1972,6 +1973,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
                   return true;
               }
           }
+#endif
 
           InputPart in( inmaster, _curpart );
 

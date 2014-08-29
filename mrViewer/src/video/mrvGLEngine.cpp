@@ -1155,8 +1155,15 @@ void GLEngine::draw_images( ImageList& images )
 
       boost::int64_t frame = pic->frame();
 
-      const mrv::Recti& dpw = img->display_window(frame);
-      const mrv::Recti& daw = img->data_window(frame);
+      mrv::Recti dpw = img->display_window(frame);
+      mrv::Recti daw = img->data_window(frame);
+
+      if ( img->stereo_type() == CMedia::kStereoCrossed )
+      {
+          dpw = img->display_window2(frame);
+          daw = img->data_window2(frame);
+      }
+
 
       if ( fg != img )
       {
@@ -1174,8 +1181,16 @@ void GLEngine::draw_images( ImageList& images )
       }
       else
       {
-          texWidth = pic->width();
-          texHeight = pic->height();
+          if ( daw.w() != 0 )
+          {
+              texWidth = daw.w();
+              texHeight = daw.h();
+          }
+          else
+          {
+              texWidth = pic->width();
+              texHeight = pic->height();
+          }
       }
 
 
@@ -1281,8 +1296,13 @@ void GLEngine::draw_images( ImageList& images )
 
          glTranslated( dpw.w(), 0, 0 );
 
-         const mrv::Recti& dpw2 = img->display_window2(frame);
-         const mrv::Recti& daw2 = img->data_window2(frame);
+         mrv::Recti dpw2 = img->display_window2(frame);
+         mrv::Recti daw2 = img->data_window2(frame);
+         if ( img->stereo_type() == CMedia::kStereoCrossed )
+         {
+             dpw2 = img->display_window(frame);
+             daw2 = img->data_window(frame);
+         }
 
 
          glPushMatrix();
