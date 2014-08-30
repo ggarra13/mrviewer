@@ -8,11 +8,11 @@ template< typename T >
 struct Swizzle
 {
      T* ptr;
-     unsigned last;
+     size_t last;
      
      inline Swizzle(void* data, unsigned data_size ) :
      ptr( (T*) data ),
-     last( data_size / unsigned(8*sizeof(T)) )
+     last( data_size / 8*sizeof(T) )
      {
      }
 
