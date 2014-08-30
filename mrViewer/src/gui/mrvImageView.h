@@ -365,8 +365,6 @@ namespace mrv {
     HudDisplay hud() const         { return _hud; }
     void hud( const HudDisplay x ) { _hud = x; }
 
-    void load_list();
-
     void timeout();
 
       void selection( const mrv::Rectd& r );
