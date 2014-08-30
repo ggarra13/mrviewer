@@ -148,8 +148,8 @@ void parse_directory( const std::string& fileroot,
 
          if ( mrv::is_valid_movie( ext.c_str() ) )
          {
-            opts.files.push_back( mrv::LoadInfo( fileroot, kMinFrame,
-                                                 kMaxFrame ) );
+            opts.files.push_back( mrv::LoadInfo( fileroot, kMaxFrame,
+                                                 kMinFrame ) );
             opts.edl = true;
             continue;
          }
@@ -438,7 +438,7 @@ void parse_command_line( const int argc, char** argv,
 	  }
 	else
 	{
-	    boost::int64_t start = mrv::kMinFrame, end = mrv::kMaxFrame;
+	    boost::int64_t start = mrv::kMaxFrame, end = mrv::kMinFrame;
 	    std::string fileroot;
 
 
