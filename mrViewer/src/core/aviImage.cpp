@@ -777,7 +777,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status == kDecodeError )
-    {
+  {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
            IMG_WARNING("Could not decode video frame " << ptsframe 
@@ -785,7 +785,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
                        << (pkt.pts == AV_NOPTS_VALUE ?
                            -1 : pkt.pts ) << " dts: " << pkt.dts
 		      << " data: " << (void*)pkt.data);
-    }
+  }
   else
   {
      if ( ptsframe < frame )
