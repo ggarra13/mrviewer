@@ -480,15 +480,36 @@ mrv::image_type_ptr CMedia::anaglyph( bool left_view )
    return hires();
 }
 
+static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
+
+
+mrv::Recti& CMedia::display_window( boost::int64_t f )
+{
+    if ( !_displayWindow || _numWindows == 0 ) return kNoRect;
+
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
+
+    assert( idx <= _frameEnd - _frameStart );
+    return _displayWindow[idx];
+}
+
+mrv::Recti& CMedia::display_window2( boost::int64_t f )
+{
+    if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
+
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
+
+    assert( idx <= _frameEnd - _frameStart );
+    return _displayWindow2[idx];
+}
 
 const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
 {
-    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
-
-    CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData );
-
     if ( !_displayWindow || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
@@ -501,11 +522,6 @@ const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
 
 const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
 {
-    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
-
-    CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData );
-
     if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
@@ -516,15 +532,10 @@ const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
     return _displayWindow2[idx];
 }
 
-const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
+
+mrv::Recti& CMedia::data_window( boost::int64_t f )
 {
-    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
-
-    CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData );
-
-
-    if ( !_dataWindow ) return kNoRect;
+    if ( !_dataWindow || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
@@ -535,13 +546,33 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
     return _dataWindow[idx];
 }
 
+const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
+{
+    if ( !_dataWindow || _numWindows == 0 ) return kNoRect;
+
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
+
+    //DBG( "data window frame " << f << " is " << _dataWindow[idx] );
+    assert( idx <= _frameEnd - _frameStart );
+    return _dataWindow[idx];
+}
+
+mrv::Recti& CMedia::data_window2( boost::int64_t f )
+{
+    if ( !_dataWindow2 || _numWindows == 0 ) return kNoRect;
+
+    if ( f == AV_NOPTS_VALUE ) f = _frame;
+    boost::uint64_t idx = f - _frameStart;
+    if ( idx >= _numWindows ) idx = _numWindows-1;
+
+    assert( idx <= _frameEnd - _frameStart );
+    return _dataWindow2[idx];
+}
+
 const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
 {
-    static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
-
-    CMedia* img = const_cast< CMedia* >( this );
-    img->image_damage( img->image_damage() | kDamageData );
-
     if ( !_dataWindow2 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
