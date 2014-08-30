@@ -68,7 +68,6 @@ void load_new_files( void* s )
 
    mrv::LoadList files;
 
-
    {
        fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
                                "mrViewer.lock" );
@@ -98,24 +97,24 @@ void load_new_files( void* s )
       }
    }
 
-   load_files( files, ui );
-
-   std::string lockfile = mrv::lockfile();
-   
-   if(fs::exists(lockfile))
+   if ( !files.empty() )
    {
-      if ( ! fs::remove( lockfile ) )
-	 std::cerr << "Could not remove lock file" << std::endl;
-      else
-	 std::cerr << "Removed lock file" << std::endl;
-  }
+       load_files( files, ui );
 
-   fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-			   "mrViewer.lock" );
-   base.set( "pid", 1 );
-   
-   fltk::repeat_timeout( 0.5, load_new_files, (void*)ui );
-   
+       std::string lockfile = mrv::lockfile();
+       
+       if(fs::exists(lockfile))
+       {
+           if ( ! fs::remove( lockfile ) )
+               LOG_ERROR( "Could not remove lock file" );
+       }
+
+       fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
+                               "mrViewer.lock" );
+       base.set( "pid", 1 );
+   }
+
+   fltk::repeat_timeout( 0.5, load_new_files, ui ); 
 }
 
 
@@ -190,10 +189,10 @@ int main( const int argc, char** argv )
 	base.flush();
      }
      
-     mrvALERT( "Another instance of mrViewer open.\n"
-               "Remove " << lockfile << "\n"
-               "or modify Preferences->User Interface->Single Instance.");
-     fltk::check();
+     // mrvALERT( "Another instance of mrViewer open.\n"
+     //           "Remove " << lockfile << "\n"
+     //           "or modify Preferences->User Interface->Single Instance.");
+     // fltk::check();
 
      exit(0);
   }
@@ -243,6 +242,9 @@ int main( const int argc, char** argv )
      boost::thread( boost::bind( mrv::client_thread, 
 				 data ) );
   }
+
+  fltk::add_timeout( 0.5, load_new_files, ui );
+
 
   int ok;
 
