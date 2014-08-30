@@ -78,8 +78,8 @@ void load_new_files( void* s )
       
       char* filename;
       char* audio;
-      int start = 1, end = 50;
-      
+      char* start;
+      char* end;
       
       int groups = lock.groups();
       
@@ -89,10 +89,13 @@ void load_new_files( void* s )
 	 fltk::Preferences g( lock, group );
 	 g.get( "filename", filename, "" );
 	 g.get( "audio", audio, "" );
-	 g.get( "start", start, 1 );
-	 g.get( "end", end, 50 );
+	 g.get( "start", start, "1" );
+	 g.get( "end", end, "50" );
+
+         boost::int64_t first = strtoll( start, NULL, 10 );
+         boost::int64_t last = strtoll( end, NULL, 10 );
 	 
-	 mrv::LoadInfo info( filename, start, end, audio );
+	 mrv::LoadInfo info( filename, first, last, audio );
 	 files.push_back( info );
       }
    }
@@ -182,8 +185,13 @@ int main( const int argc, char** argv )
 	   fltk::Preferences ui( base, buf );
 	   ui.set( "filename", (*i).filename.c_str() );
 	   ui.set( "audio", (*i).audio.c_str() );
-	   ui.set( "start", (int)(*i).start );
-	   ui.set( "end", (int)(*i).end );
+
+           sprintf( buf, "%" PRId64, (*i).start );
+           ui.set( "start", buf );
+
+           sprintf( buf, "%" PRId64, (*i).end );
+           ui.set( "end", buf );
+
 	   ui.flush();
 	}
 	base.flush();
