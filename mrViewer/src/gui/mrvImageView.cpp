@@ -1209,74 +1209,6 @@ bool ImageView::should_update( mrv::media& fg )
 }
 
 
-void ImageView::load_list()
-{
-
-   mrv::LoadList files;
-
-   {
-      fltk::Preferences lock( fltk::Preferences::USER, "filmaura",
-			      "mrViewer.lock" );
-      int pid = 1;
-      lock.get( "pid", pid, 1 );
-
-
-      char* filename;
-      char* audio;
-      int start, end;
-
-
-      int groups = lock.groups();
-
-      for ( int i = 0; i < groups; ++i )
-      {
-	 const char* group = lock.group( i );
-	 fltk::Preferences g( lock, group );
-	 g.get( "filename", filename, "" );
-	 g.get( "audio", audio, "" );
-	 g.get( "start", start, 1 );
-	 g.get( "end", end, 50 );
-
-
-	 mrv::LoadInfo info( filename, start, end );
-	 files.push_back( info );
-      }
-   }
-
-
-   if ( ! files.empty() )
-   {
-      mrv::ImageBrowser* image_list = uiMain->uiReelWindow->uiBrowser;
-      image_list->load( files );
-      refresh();
-   }
-
- 
-   bool single_instance = uiMain->uiPrefs->uiPrefsSingleInstance->value();
-
-   if ( single_instance )
-   {
-      std::string lockfile = mrv::lockfile();
-   
-      if(fs::exists(lockfile))
-      {
-	 try {
-	    if ( ! fs::remove( lockfile ) )
-	       LOG_ERROR( "Could not remove lock file!" );
-	 }
-	 catch( fs::filesystem_error& e )
-	 {
-	   LOG_ERROR( "Error removing lock file: " << e.what() );
-	 }
-
-	 fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-				 "mrViewer.lock" );
-	 base.set( "pid", 1 );
-      }
-   }
-   
-}
-
 void ImageView::timeout()
 {
 
@@ -1335,8 +1267,6 @@ void ImageView::timeout()
    }
 
    
-
-   load_list();
 
    static double kMinDelay = 0.0001666;
 
@@ -3387,7 +3317,6 @@ int ImageView::handle(int event)
 	  return 1;
     case fltk::ENTER:
       focus(this);
-      load_list();
       fltk::GlWindow::handle( event );
       window()->cursor(fltk::CURSOR_CROSS);
       return 1;
