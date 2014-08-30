@@ -473,6 +473,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, 
                                   INT64_MAX, flags );
+
+  
   
     if (ret < 0)
     {
