@@ -117,7 +117,7 @@ void load_new_files( void* s )
        base.set( "pid", 1 );
    }
 
-   fltk::repeat_timeout( 0.5, load_new_files, ui ); 
+   fltk::repeat_timeout( 1.0, load_new_files, ui ); 
 }
 
 
@@ -166,8 +166,11 @@ int main( const int argc, char** argv )
      }
   }
 
-  LOG_INFO( "lockfile " << lockfile << ". ");
-  LOG_INFO( "(Remove if mrViewer does not start)" );
+  if ( single_instance )
+  {
+      LOG_INFO( "lockfile " << lockfile << ". ");
+      LOG_INFO( "(Remove if mrViewer does not start)" );
+  }
 
 
   if ( fs::exists( lockfile ) && single_instance )
@@ -253,7 +256,7 @@ int main( const int argc, char** argv )
   }
 
   if ( single_instance )
-      fltk::add_timeout( 0.5, load_new_files, ui );
+      fltk::add_timeout( 1.0, load_new_files, ui );
 
 
   int ok;
