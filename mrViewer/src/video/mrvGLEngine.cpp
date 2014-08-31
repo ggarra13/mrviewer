@@ -1154,8 +1154,8 @@ void GLEngine::draw_images( ImageList& images )
 
       const boost::int64_t& frame = pic->frame();
 
-      mrv::Recti& dpw = img->display_window(frame);
-      mrv::Recti& daw = img->data_window(frame);
+      mrv::Recti dpw = img->display_window(frame);
+      mrv::Recti daw = img->data_window(frame);
 
       if ( img->stereo_type() == CMedia::kStereoCrossed )
       {
@@ -1295,8 +1295,8 @@ void GLEngine::draw_images( ImageList& images )
 
          glTranslated( dpw.w(), 0, 0 );
 
-         mrv::Recti& dpw2 = img->display_window2(frame);
-         mrv::Recti& daw2 = img->data_window2(frame);
+         mrv::Recti dpw2 = img->display_window2(frame);
+         mrv::Recti daw2 = img->data_window2(frame);
          if ( img->stereo_type() == CMedia::kStereoCrossed )
          {
              dpw2 = img->display_window(frame);
