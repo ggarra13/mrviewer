@@ -154,11 +154,8 @@ namespace mrv {
   */
   bool exrImage::test(const boost::uint8_t *data, unsigned)
   {
-    int magic = *((int*)data);
-
-    if ( magic != MAGIC ) return false;
-
-    return true; // (strstr((char*) data + 8, "channels") != 0);
+      if ( Imf::isImfMagic( (const char*)data ) ) return true;
+      return false;
   }
 
 
