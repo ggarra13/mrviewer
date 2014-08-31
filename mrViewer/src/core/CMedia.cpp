@@ -484,37 +484,14 @@ static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
 
 
-mrv::Recti& CMedia::display_window( boost::int64_t f )
-{
-    if ( !_displayWindow || _numWindows == 0 ) return kNoRect;
-
-    if ( f == AV_NOPTS_VALUE ) f = _frame;
-    boost::uint64_t idx = f - _frameStart;
-    if ( idx >= _numWindows ) idx = _numWindows-1;
-
-    assert( idx <= _frameEnd - _frameStart );
-    return _displayWindow[idx];
-}
-
-mrv::Recti& CMedia::display_window2( boost::int64_t f )
-{
-    if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
-
-    if ( f == AV_NOPTS_VALUE ) f = _frame;
-    boost::uint64_t idx = f - _frameStart;
-    if ( idx >= _numWindows ) idx = _numWindows-1;
-
-    assert( idx <= _frameEnd - _frameStart );
-    return _displayWindow2[idx];
-}
-
 const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
 {
     if ( !_displayWindow || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
-    boost::uint64_t idx = f - _frameStart;
+    boost::int64_t idx = f - _frameStart;
     if ( idx >= _numWindows ) idx = _numWindows-1;
+    else if ( idx < 0 ) idx = 0;
 
     assert( idx <= _frameEnd - _frameStart );
     return _displayWindow[idx];
@@ -525,25 +502,12 @@ const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
     if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
-    boost::uint64_t idx = f - _frameStart;
+    boost::int64_t idx = f - _frameStart;
     if ( idx >= _numWindows ) idx = _numWindows-1;
+    else if ( idx < 0 ) idx = 0;
 
     assert( idx <= _frameEnd - _frameStart );
     return _displayWindow2[idx];
-}
-
-
-mrv::Recti& CMedia::data_window( boost::int64_t f )
-{
-    if ( !_dataWindow || _numWindows == 0 ) return kNoRect;
-
-    if ( f == AV_NOPTS_VALUE ) f = _frame;
-    boost::uint64_t idx = f - _frameStart;
-    if ( idx >= _numWindows ) idx = _numWindows-1;
-
-    //DBG( "data window frame " << f << " is " << _dataWindow[idx] );
-    assert( idx <= _frameEnd - _frameStart );
-    return _dataWindow[idx];
 }
 
 const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
@@ -553,33 +517,20 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
     if ( idx >= _numWindows ) idx = _numWindows-1;
+    else if ( idx < 0 ) idx = 0;
 
-    //DBG( "data window frame " << f << " is " << _dataWindow[idx] );
-    assert( idx <= _frameEnd - _frameStart );
     return _dataWindow[idx];
 }
 
-mrv::Recti& CMedia::data_window2( boost::int64_t f )
+const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
 {
     if ( !_dataWindow2 || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frameStart;
     if ( idx >= _numWindows ) idx = _numWindows-1;
+    else if ( idx < 0 ) idx = 0;
 
-    assert( idx <= _frameEnd - _frameStart );
-    return _dataWindow2[idx];
-}
-
-const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
-{
-    if ( !_dataWindow2 ) return kNoRect;
-
-    if ( f == AV_NOPTS_VALUE ) f = _frame;
-    boost::uint64_t idx = f - _frameStart;
-    if ( idx >= _numWindows ) idx = _numWindows-1;
-
-    assert( idx <= _frameEnd - _frameStart );
     return _dataWindow2[idx];
 }
 
@@ -1039,34 +990,34 @@ void CMedia::image_size( int w, int h )
 
 image_type::Format CMedia::pixel_format() const
 {
-  if ( _hires )      return _hires->format();
-  else return image_type::kLumma;
+    if ( _hires )      return _hires->format();
+    else return image_type::kLumma;
 }
 
 const char* const CMedia::pixel_format_name() const
 {
-   if ( _hires ) return _hires->pixel_format();
-   else return "Lumma";
+    if ( _hires ) return _hires->pixel_format();
+    else return "Lumma";
 }
 
 image_type::PixelType CMedia::depth() const
 {
-  if ( _hires ) return _hires->pixel_type();
-  else return image_type::kByte;
+    if ( _hires ) return _hires->pixel_type();
+    else return image_type::kByte;
 }
 
 void CMedia::gamma( const float x )
 {
-  _gamma = x;
-  refresh();
+    _gamma = x;
+    refresh();
 }
 
 
 void CMedia::chromaticities( const Imf::Chromaticities& c )
 {
-  _chromaticities = c;
-  image_damage( image_damage() | kDamageData | kDamageLut );
-  refresh();
+    _chromaticities = c;
+    image_damage( image_damage() | kDamageData | kDamageLut );
+    refresh();
 }
 
 /** 
@@ -1075,12 +1026,12 @@ void CMedia::chromaticities( const Imf::Chromaticities& c )
  */
 void CMedia::alpha_layers()
 {
-   SCOPED_LOCK( _mutex );
-  _layers.push_back( "Alpha" );
-  if ( _num_channels != 0 )
-    _layers.push_back( "Alpha Overlay" );
-  ++_num_channels;
-  image_damage( image_damage() | kDamageLayers | kDamageData );
+    SCOPED_LOCK( _mutex );
+    _layers.push_back( "Alpha" );
+    if ( _num_channels != 0 )
+        _layers.push_back( "Alpha Overlay" );
+    ++_num_channels;
+    image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
 /** 
@@ -1089,13 +1040,13 @@ void CMedia::alpha_layers()
  */
 void CMedia::rgb_layers()
 {
-   SCOPED_LOCK( _mutex );
-   _layers.insert( _layers.begin(), "Color" );
-  _layers.push_back( "Red" );
-  _layers.push_back( "Green" );
-  _layers.push_back( "Blue" );
-  _num_channels += 3;
-  image_damage( image_damage() | kDamageLayers | kDamageData );
+    SCOPED_LOCK( _mutex );
+    _layers.insert( _layers.begin(), "Color" );
+    _layers.push_back( "Red" );
+    _layers.push_back( "Green" );
+    _layers.push_back( "Blue" );
+    _num_channels += 3;
+    image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
 /** 
@@ -1104,8 +1055,8 @@ void CMedia::rgb_layers()
  */
 void CMedia::lumma_layers()
 {
-  _layers.push_back( "Lumma" );
-  image_damage( image_damage() | kDamageLayers | kDamageData );
+    _layers.push_back( "Lumma" );
+    image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
 /** 
@@ -1114,12 +1065,12 @@ void CMedia::lumma_layers()
  */
 void CMedia::default_layers()
 {
-   SCOPED_LOCK( _mutex );
-  _layers.clear();
-  _num_channels = 0;
-  rgb_layers();
-  lumma_layers();
-  alpha_layers();
+    SCOPED_LOCK( _mutex );
+    _layers.clear();
+    _num_channels = 0;
+    rgb_layers();
+    lumma_layers();
+    alpha_layers();
 }
 
 
