@@ -80,6 +80,7 @@
 #include "core/mrvFrame.h"
 #include "core/mrvHome.h"
 #include "core/mrStackTrace.h"
+#include "core/exrImage.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -354,14 +355,15 @@ kMediaInfo = 1,
 kColorInfo = 2,
 kEDLEdit = 3,
 kPaintTools = 4,
-kHistogram = 5,
-kVectorscope = 6,
-kICCProfiles = 7,
-kConnections = 8,
-kPreferences = 9,
-kHotkeys = 10,
-kLogs = 11,
-kAbout = 12,
+k3dView = 5,
+kHistogram = 6,
+kVectorscope = 7,
+kICCProfiles = 8,
+kConnections = 9,
+kPreferences = 10,
+kHotkeys = 11,
+kLogs = 12,
+kAbout = 13,
 kLastWindow
 };
 
@@ -400,6 +402,45 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
      uiMain->uiReelWindow->uiBrowser->set_edl();
      uiMain->uiEDLWindow->uiMain->child_of( uiMain->uiMain );
      uiMain->uiEDLWindow->uiMain->show();
+  }
+  else if ( idx == k3dView )
+  {
+      uiMain->uiGL3dView->uiMain->show();
+      int zsize = 0;
+      static Imf::Array< float* > zbuff;
+      static Imf::Array< unsigned > sampleCount;
+      mrv::media fg = uiMain->uiView->foreground();
+      if ( fg )
+      {
+          mrv::exrImage* exr = dynamic_cast< mrv::exrImage* >( fg->image() );
+          if ( exr )
+          {
+              try
+              {
+                  float zmin, zmax;
+                  float farPlane = 1000000.0f;
+                  const mrv::Recti& daw = exr->data_window();
+                  exr->loadDeepData( zsize, zbuff, sampleCount );
+                  if ( zsize )
+                  {
+                      exr->findZBound( zmin, zmax, farPlane, zsize,
+                                       zbuff, sampleCount );
+                      uiMain->uiGL3dView->uiMain->load_data( zbuff,
+                                                             sampleCount,
+                                                             daw.w(), daw.h(), 
+                                                             zmin, zmax, 
+                                                             farPlane );
+                      uiMain->uiGL3dView->uiMain->redraw();
+                  }
+              }
+              catch( const std::exception& e )
+              {
+                  LOG_ERROR( e.what() );
+              }
+          }
+      }
+
+      uiMain->uiView->send( "GL3dView 1" );
   }
   else if ( idx == kPaintTools )
     {

@@ -72,23 +72,26 @@ namespace mrv {
        void levelX( const int lx ) { _levelX = lx; }
        void levelY( const int ly ) { _levelY = ly; }
 
+
+
+      void loadDeepData( int& zsize,
+                         Imf::Array<float*>&       zbuff,
+                         Imf::Array<unsigned int>& sampleCount );
+
+      void findZBound( float& zmin, float& zmax, float farPlane,
+                       int zsize,
+                       Imf::Array<float*>&       zbuff,
+                       Imf::Array<unsigned int>& sampleCount );
+
   protected:
-      void loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
-                              int partnum,
-                              const int64_t frame,
-                              int &zsize,
-                              Imf::Header &header,
-                              Imf::Array<float*> &zbuff,
-                              Imf::Array<unsigned int> &sampleCount,
+      void loadDeepTileImage( int &zsize,
+                              Imf::Array<float*>&       zbuff,
+                              Imf::Array<unsigned int>& sampleCount,
                               bool deepComp );
 
-      void loadDeepScanlineImage (Imf::MultiPartInputFile &inmaster,
-                                  int partnum,
-                                  const int64_t frame,
-                                  int &zsize,
-                                  Imf::Header &header,
-                                  Imf::Array<float*> &zbuff,
-                                  Imf::Array<unsigned int> &sampleCount,
+      void loadDeepScanlineImage (int &zsize,
+                                  Imf::Array<float*>&       zbuff,
+                                  Imf::Array<unsigned int>& sampleCount,
                                   bool deepComp);
 
        bool find_layers( const Imf::Header& h );
@@ -136,8 +139,6 @@ namespace mrv {
        Imf::Compression _compression;
 
       // Deep data
-      Imf::Array<float*>       dataZ;
-      Imf::Array<unsigned int> sampleCount;
       std::string         _type;
       float               farPlane;
       bool                deepComp;
