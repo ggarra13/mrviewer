@@ -58,6 +58,9 @@ decl {\#include "gui/mrvPreferences.h"} {}
 
 decl {\#include "gui/mrvLogDisplay.h"} {} 
 
+decl {\#include "gui/mrvGlWindow3d.h"} {public
+} 
+
 decl {\#include "gui/mrvHotkey.h"} {} 
 
 decl {\#include "mrvPlayback.h"} {} 
@@ -157,6 +160,8 @@ namespace mrv {open
   decl {class ICCProfileListUI;} {public
   }
   decl {class ColorAreaUI;} {public
+  }
+  decl {class GL3dViewUI;} {public
   }
   decl {class HotkeyUI;} {public
   }
@@ -454,9 +459,36 @@ o->value(-1);}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class VectorscopeUI {} {
+  class GL3dViewUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
+    } {
+      {fltk::Window} uiMain {
+        label {3d View}
+        user_data this user_data_type {GL3dViewUI*}
+        callback {v->main()->uiView->send( "Gl3dView 0" );
+o->hide();}
+        xywh {158 529 325 240} set_xy hide resizable
+        extra_code {// Make the window transient
+main_ = main;
+o->child_of( main->uiMain );}
+        class {mrv::GlWindow3d}
+      } {}
+    }
+    Function {GL3dViewUI(ViewerUI* m)} {} {
+      code {make_window( m );} {}
+    }
+    Function {~GL3dViewUI()} {} {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {main()} {return_type {mrv::ViewerUI*}
+    } {
+      code {return main_;} {}
+    }
+  }
+  class VectorscopeUI {} {
+    decl {mrv::ViewerUI* main_;} {}
+    Function {make_window(ViewerUI* main)} {private
     } {
       {fltk::Window} uiMain {
         label Vectorscope
@@ -481,7 +513,7 @@ o->child_of( main->uiMain );}
     Function {~VectorscopeUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {main()} {open return_type {mrv::ViewerUI*}
+    Function {main()} {return_type {mrv::ViewerUI*}
     } {
       code {return main_;} {}
     }
@@ -586,13 +618,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {574 294 640 475} resizable visible
+        xywh {578 294 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1736,7 +1767,7 @@ else
             }
           }
           {fltk::Group} {} {
-            label Database selected
+            label Database
             xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} DatabaseDriver {
@@ -1764,7 +1795,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2451,6 +2482,8 @@ else
     }
     decl {ImageInfoUI* uiImageInfo;} {public
     }
+    decl {GL3dViewUI* uiGL3dView;} {public
+    }
     decl {ColorAreaUI* uiColorArea;} {public
     }
     decl {HistogramUI* uiHistogram;} {public
@@ -2470,20 +2503,20 @@ else
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
+        callback {delete v;}
         xywh {235 404 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow}
       } {
-        {fltk::PackedGroup} uiRegion {
+        {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
         } {
-          {fltk::Group} uiTopBar {
+          {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W
+              label W open
               tooltip {Opens different windows}
               xywh {5 5 20 20}
               class {mrv::PopupMenu}
@@ -2514,6 +2547,11 @@ v->uiView->update_color_info();}
                 label {Paint Tools}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiPaint->uiMain->show();}
+                }
+              {fltk::Item} {} {
+                label 3dView
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiGL3dView->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label Histogram
@@ -3279,6 +3317,7 @@ v->uiTimeline->redraw();}
       code {uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
+uiGL3dView = new GL3dViewUI(this);
 uiVectorscope = new VectorscopeUI(this);
 uiHistogram = new HistogramUI(this);
 uiPaint = new PaintUI(this);
@@ -3305,12 +3344,14 @@ delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;
 delete uiHistogram; uiHistogram = NULL;
 delete uiVectorscope; uiVectorscope = NULL;
+delete uiGL3dView; uiGL3dView = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
-delete uiReelWindow; uiReelWindow = NULL;} {}
+delete uiReelWindow; uiReelWindow = NULL;} {selected
+      }
     }
   }
 } 
