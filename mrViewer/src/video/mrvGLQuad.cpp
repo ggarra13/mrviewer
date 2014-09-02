@@ -9,6 +9,22 @@
  */
 
 
+
+#if defined(WIN32) || defined(WIN64)
+#  include <winsock2.h>  // to avoid winsock issues
+#  include <windows.h>
+#  undef min
+#  undef max
+#endif
+
+#include <GL/glew.h>
+
+#if defined(WIN32) || defined(WIN64)
+#  include <GL/wglew.h>
+#elif defined(LINUX)
+#  include <GL/glxew.h>
+#endif
+
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
