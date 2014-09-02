@@ -43,6 +43,10 @@ namespace fs = boost::filesystem;
 #include "standalone/mrvRoot.h"
 #include "core/mrvCPU.h"
 
+#if defined(_MSC_VER)
+#define strtoll _strtoi64
+#endif
+
 
 using namespace std;
 
