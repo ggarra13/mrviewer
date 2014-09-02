@@ -171,11 +171,8 @@ bool exrImage::channels_order(
    const Box2i& dataWindow = h.dataWindow();
    const Box2i& displayWindow = h.displayWindow();
 
-   // int wi = displayWindow.max.x - displayWindow.min.x + 1;
-   // int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
-   if ( dw <= 0 || dh <= 0 )  return false;
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
@@ -191,9 +188,7 @@ bool exrImage::channels_order(
    {
       const std::string& layerName = i.name();
 
-      const Imf::Channel* ch = channels.findChannel( 
-						    layerName.c_str()
-						     );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -220,19 +215,18 @@ bool exrImage::channels_order(
       {
           order[0] = idx; imfPixelType = ch->type;
       }
-
-      if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
-			      ext == N_("RY") || ext == N_("V") ) )
+      else if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
+                                   ext == N_("RY") || ext == N_("V") ) )
       {
-         order[1] = idx; imfPixelType = ch->type;
+          order[1] = idx; imfPixelType = ch->type;
       }
-      if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
-			      ext == N_("BY") || ext == N_("W") ) )
+      else if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
+                                   ext == N_("BY") || ext == N_("W") ) )
       {
-         order[2] = idx; imfPixelType = ch->type;
+          order[2] = idx; imfPixelType = ch->type;
       }
-      if ( order[3] == -1 && (ext == N_("A") ||
-			      ext == N_("ALPHA") ) ) 
+      else if ( order[3] == -1 && (ext == N_("A") ||
+                                   ext == N_("ALPHA") ) ) 
       {
           order[3] = idx; imfPixelType = ch->type;
       }
@@ -264,7 +258,7 @@ bool exrImage::channels_order(
    if ( _has_yca )
    {
       unsigned size  = dw * dh;
-      unsigned size2 = dw * dh / 4;
+      unsigned size2 = size / 4;
       offsets[1]  = size;
       offsets[2]  = size + size2;
       offsets[3]  = 0;
@@ -368,12 +362,8 @@ bool exrImage::channels_order_multi(
 				    )
 {
    const Box2i& dataWindow = h.dataWindow();
-   const Box2i& displayWindow = h.displayWindow();
-   int wi = displayWindow.max.x - displayWindow.min.x + 1;
-   int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
-   if ( dw <= 0 || dh <= 0 )  return false;
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
@@ -393,7 +383,7 @@ bool exrImage::channels_order_multi(
    // First, gather all the channels
    for ( i = s; i != e; ++i )
    {
-      const std::string layerName = i.name();
+      const std::string& layerName = i.name();
       const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -406,10 +396,8 @@ bool exrImage::channels_order_multi(
    // Then gather the channel we will use in left eye
    for ( i = s; i != e; ++i, ++idx )
    {
-      const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( 
-						    layerName.c_str()
-						     );
+      const std::string& layerName = i.name();
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -445,28 +433,26 @@ bool exrImage::channels_order_multi(
                 continue;
 	    }
 	 }
-	 else
-	 {
-	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-				    ext == N_("RY") || ext == N_("Y") ) )
-	    {
-                imfPixelType = ch->type;
-                order[1] = idx;
-                if ( ext == N_("Y") ) _use_yca = false; 
-	    }
-	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-				    ext == N_("BY") ) ) {
-                imfPixelType = ch->type;
-                order[2] = idx;
-            }
-	    if ( order[3] == -1 && (ext == N_("A") || 
-				    ext == N_("ALPHA") ) ) {
-                imfPixelType = ch->type;
-                order[3] = idx;
-            }
-	 }
+	 else if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
+                                      ext == N_("RY") || ext == N_("Y") ) )
+         {
+             imfPixelType = ch->type;
+             order[1] = idx;
+             if ( ext == N_("Y") ) _use_yca = false; 
+         }
+         else if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
+                                      ext == N_("BY") ) ) {
+             imfPixelType = ch->type;
+             order[2] = idx;
+         }
+         else if ( order[3] == -1 && (ext == N_("A") || 
+                                      ext == N_("ALPHA") ) ) {
+             imfPixelType = ch->type;
+             order[3] = idx;
+         }
       }
    }
+
 
    // We have the left eye in order[0] or order[1]
    assert( order[0] != -1 || order[1] != -1 );
@@ -512,27 +498,25 @@ bool exrImage::channels_order_multi(
                 break;
 	    }
 	 }
-	 else
-	 {
-	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-				    ext == N_("RY") || ext == N_("Y")) )
-	    {
-                imfPixelType = ch->type;
-                order[1] = idx;
-                if ( ext == N_("Y") ) _use_yca = false;
-	    }
-
-	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-				    ext == N_("BY") ) ) {
-                imfPixelType = ch->type;
-                order[2] = idx;
-            }
-	    if ( order[3] == -1 && (ext == N_("A") || 
-				    ext == N_("ALPHA") ) ) {
-                imfPixelType = ch->type;
-                order[3] = idx;
-            }
-	 }
+	 else if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
+                                      ext == N_("RY") || ext == N_("Y")) )
+         {
+             imfPixelType = ch->type;
+             order[1] = idx;
+             if ( ext == N_("Y") ) _use_yca = false;
+         }
+         else if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
+                                      ext == N_("BY") ) ) 
+         {
+             imfPixelType = ch->type;
+             order[2] = idx;
+         }
+         else if ( order[3] == -1 && (ext == N_("A") || 
+                                      ext == N_("ALPHA") ) )
+         {
+             imfPixelType = ch->type;
+             order[3] = idx;
+         }
       }
 
    }
@@ -752,11 +736,8 @@ bool exrImage::find_layers( const Imf::Header& h )
 {
 
    const Box2i& dataWindow = h.dataWindow();
-   const Box2i& displayWindow = h.displayWindow();
    int dw  = dataWindow.max.x - dataWindow.min.x + 1;
    int dh  = dataWindow.max.y - dataWindow.min.y + 1;
-   if ( dw <= 0 || dh <= 0 )  return false;
-
 
    image_size( dw, dh );
 
@@ -771,7 +752,9 @@ bool exrImage::find_layers( const Imf::Header& h )
    }
 
    if ( layers.find( N_("left") ) != layers.end() )
+   {
       _has_left_eye = true;
+   }
 
    if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
    {
@@ -1785,9 +1768,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          if ( _exif.empty() && _iptc.empty() )
             read_header_attr( header, frame );
 
-	_pixel_ratio = header.pixelAspectRatio();
-	_lineOrder   = header.lineOrder();
-	_compression = header.compression(); 
+         _pixel_ratio = header.pixelAspectRatio();
+         _lineOrder   = header.lineOrder();
+         _compression = header.compression(); 
 
          Imf::ChannelList channels = header.channels();
 
@@ -1798,6 +1781,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
             ++numChannels;
 
          std::string name = header.name();
+
          size_t pos;
          while ( (pos = name.find( N_(".") )) != std::string::npos )
          {
@@ -2124,19 +2108,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	_lineOrder   = h.lineOrder();
 	_compression = h.compression(); 
 
-
 	in.setFrameBuffer(fb);
-
 	in.readPixels( dataWindow.min.y, dataWindow.max.y );
-
-
-	int dw = dataWindow.max.x - dataWindow.min.x + 1;
-	int dh = dataWindow.max.y - dataWindow.min.y + 1;
-	if ( dw <= 0 || dh <= 0 ) {
-	   IMG_ERROR( _("Data window is negative") );
-	   return false;
-	}
-
 
 	if ( _use_yca && !supports_yuv() )
 	{
