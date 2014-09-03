@@ -1159,12 +1159,14 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->stereo_type() == CMedia::kStereoCrossed )
       {
-          dpw = img->display_window2(frame);
-          daw = img->data_window2(frame);
+          mrv::Recti dpw2 = img->display_window2(frame);
+          mrv::Recti daw2 = img->data_window2(frame);
+          if ( dpw2.w() != 0 ) dpw = dpw2;
+          if ( daw2.w() != 0 ) daw = daw2;
       }
 
 
-      if ( fg != img )
+      if ( fg != img && img->stereo_type() == CMedia::kNoStereo )
       {
           const mrv::Recti& dp = fg->display_window(frame);
           texWidth = dp.w();
@@ -1200,22 +1202,24 @@ void GLEngine::draw_images( ImageList& images )
       glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
 
-
-      if ( _view->display_window() && dpw != daw )
+      if ( dpw != daw )
       {
-          draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
-      }
-
-      if ( _view->data_window() && daw != dpw )
-      {
-          mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
-          glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
-          glLineStipple( 1, 0x00FF );
-          glEnable( GL_LINE_STIPPLE );
-          draw_rectangle( r );
-          glDisable( GL_LINE_STIPPLE );
           if ( _view->display_window() )
-              glEnable( GL_STENCIL_TEST );
+          {
+              draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+          }
+
+          if ( _view->data_window()  )
+          {
+              mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
+              glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
+              glLineStipple( 1, 0x00FF );
+              glEnable( GL_LINE_STIPPLE );
+              draw_rectangle( r );
+              glDisable( GL_LINE_STIPPLE );
+              if ( _view->display_window() )
+                  glEnable( GL_STENCIL_TEST );
+          }
       }
 
       glPushMatrix();
@@ -1266,29 +1270,12 @@ void GLEngine::draw_images( ImageList& images )
             pic = img->left();
          }
 
-         if ( pic )
-         {
-            quad->bind( pic );
-            quad->gamma( img->gamma() );
-            quad->draw( texWidth, texHeight );
-         }
-         
+         quad->bind( pic );
+         quad->gamma( img->gamma() );
+         quad->draw( texWidth, texHeight );
+
          ++q;
          quad = *q;
-
-         if ( img->stereo_type() == CMedia::kStereoCrossed )
-         {
-            pic = img->left();
-         }
-         else
-         {
-            pic = img->right();
-         }
-
-         if ( pic )
-         {
-            quad->bind( pic );
-         }
 
 
          glPopMatrix();
@@ -1297,6 +1284,11 @@ void GLEngine::draw_images( ImageList& images )
 
          mrv::Recti dpw2 = img->display_window2(frame);
          mrv::Recti daw2 = img->data_window2(frame);
+
+         if ( dpw2.w() == 0 ) dpw2 = dpw;
+         if ( daw2.w() == 0 ) daw2 = daw;
+
+
          if ( img->stereo_type() == CMedia::kStereoCrossed )
          {
              dpw2 = img->display_window(frame);
@@ -1308,22 +1300,33 @@ void GLEngine::draw_images( ImageList& images )
 
 
 
-
-         if ( _view->display_window() && dpw2 != daw2 )
+         if ( dpw2 != daw2 )
          {
-             draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
+             if ( _view->display_window() )
+             {
+                 draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
+             }
+
+             if ( _view->data_window() )
+             {
+                 mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
+                                            daw2.y(), daw2.w(), daw2.h() );
+                 glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
+                 glLineStipple( 1, 0x00FF );
+                 glEnable( GL_LINE_STIPPLE );
+                 draw_rectangle( r );
+                 glDisable( GL_LINE_STIPPLE );
+                 if ( _view->display_window() ) glEnable( GL_STENCIL_TEST );
+             }
          }
 
-         if ( _view->data_window() && daw2 != dpw2 )
+         if ( img->stereo_type() == CMedia::kStereoCrossed )
          {
-             mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
-                                        daw2.y(), daw2.w(), daw2.h() );
-             glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
-             glLineStipple( 1, 0x00FF );
-             glEnable( GL_LINE_STIPPLE );
-             draw_rectangle( r );
-             glDisable( GL_LINE_STIPPLE );
-             if ( _view->display_window() ) glEnable( GL_STENCIL_TEST );
+            pic = img->left();
+         }
+         else
+         {
+            pic = img->right();
          }
 
          if ( daw2.w() != 0 )
@@ -1348,23 +1351,23 @@ void GLEngine::draw_images( ImageList& images )
 
          glTranslated( 0.5, -0.5, 0 );
 
+
       }
       else if ( img->hires() &&
                 ( img->image_damage() & CMedia::kDamageContents ||
                   img->has_subtitle() ) )
-	{
-	   pic = img->hires();
-
-	   if ( shader_type() == kNone && img->stopped() && 
-	        pic->pixel_type() != image_type::kByte )
-	   {
+      {
+          pic = img->hires();
+          
+          if ( shader_type() == kNone && img->stopped() && 
+               pic->pixel_type() != image_type::kByte )
+          {
 	      pic = display( pic, img );
-	   }
+          }
 
-           quad->bind( pic );
-	}
+      }
 
-
+      quad->bind( pic );
       quad->gamma( img->gamma() );
       quad->draw( texWidth, texHeight );
 
@@ -1376,7 +1379,7 @@ void GLEngine::draw_images( ImageList& images )
            if ( sub )
            {
 	      ++q;
-
+              quad = *q;
 	      quad->bind( sub );
 	      quad->draw( texWidth, texHeight );
            }
