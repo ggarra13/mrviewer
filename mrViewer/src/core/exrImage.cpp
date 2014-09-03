@@ -171,13 +171,8 @@ bool exrImage::channels_order(
 			      )
 {
    const Box2i& dataWindow = h.dataWindow();
-   const Box2i& displayWindow = h.displayWindow();
-
-   // int wi = displayWindow.max.x - displayWindow.min.x + 1;
-   // int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
-   if ( dw <= 0 || dh <= 0 )  return false;
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
@@ -193,9 +188,7 @@ bool exrImage::channels_order(
    {
       const std::string& layerName = i.name();
 
-      const Imf::Channel* ch = channels.findChannel( 
-						    layerName.c_str()
-						     );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -405,9 +398,7 @@ bool exrImage::channels_order_multi(
    for ( i = s; i != e; ++i, ++idx )
    {
       const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( 
-						    layerName.c_str()
-						     );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -944,6 +935,7 @@ bool exrImage::handle_side_by_side_stereo( const boost::int64_t frame,
       s = channels.begin();
       e = channels.end();
    }
+
    channels_order( frame, s, e, channels, h, fb );
    _stereo[0] = _hires;
 
@@ -1047,6 +1039,7 @@ bool exrImage::find_channels( const Imf::Header& h,
             _stereo_type = kStereoCrossed;
          else
             LOG_ERROR( _("Unknown stereo type") );
+
 
          return handle_side_by_side_stereo(frame, h, fb);
       }
@@ -2104,7 +2097,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           // Quick exit if stereo is off
           if ( _stereo_type == kNoStereo ) break;
 
-          _stereo[i] = _hires;
+          if ( st[0] != st[1] )
+              _stereo[i] = _hires;
       }
 
 
