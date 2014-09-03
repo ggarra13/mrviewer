@@ -32,6 +32,8 @@
 #include <ImathMath.h> // for Math:: functions
 #include <ImathBox.h>  // for Box2i
 #include <ImfIntAttribute.h>
+#include <ImfKeyCodeAttribute.h>
+#include <ImfTimeCodeAttribute.h>
 #include <ImfRgbaYca.h>
 
 #include "core/mrvThread.h"
@@ -171,8 +173,11 @@ bool exrImage::channels_order(
    const Box2i& dataWindow = h.dataWindow();
    const Box2i& displayWindow = h.displayWindow();
 
+   // int wi = displayWindow.max.x - displayWindow.min.x + 1;
+   // int he = displayWindow.max.y - displayWindow.min.y + 1;
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
+   if ( dw <= 0 || dh <= 0 )  return false;
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
@@ -188,7 +193,9 @@ bool exrImage::channels_order(
    {
       const std::string& layerName = i.name();
 
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
+      const Imf::Channel* ch = channels.findChannel( 
+						    layerName.c_str()
+						     );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -215,18 +222,19 @@ bool exrImage::channels_order(
       {
           order[0] = idx; imfPixelType = ch->type;
       }
-      else if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
-                                   ext == N_("RY") || ext == N_("V") ) )
+
+      if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
+			      ext == N_("RY") || ext == N_("V") ) )
       {
-          order[1] = idx; imfPixelType = ch->type;
+         order[1] = idx; imfPixelType = ch->type;
       }
-      else if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
-                                   ext == N_("BY") || ext == N_("W") ) )
+      if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
+			      ext == N_("BY") || ext == N_("W") ) )
       {
-          order[2] = idx; imfPixelType = ch->type;
+         order[2] = idx; imfPixelType = ch->type;
       }
-      else if ( order[3] == -1 && (ext == N_("A") ||
-                                   ext == N_("ALPHA") ) ) 
+      if ( order[3] == -1 && (ext == N_("A") ||
+			      ext == N_("ALPHA") ) ) 
       {
           order[3] = idx; imfPixelType = ch->type;
       }
@@ -258,7 +266,7 @@ bool exrImage::channels_order(
    if ( _has_yca )
    {
       unsigned size  = dw * dh;
-      unsigned size2 = size / 4;
+      unsigned size2 = dw * dh / 4;
       offsets[1]  = size;
       offsets[2]  = size + size2;
       offsets[3]  = 0;
@@ -383,7 +391,7 @@ bool exrImage::channels_order_multi(
    // First, gather all the channels
    for ( i = s; i != e; ++i )
    {
-      const std::string& layerName = i.name();
+      const std::string layerName = i.name();
       const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -396,8 +404,10 @@ bool exrImage::channels_order_multi(
    // Then gather the channel we will use in left eye
    for ( i = s; i != e; ++i, ++idx )
    {
-      const std::string& layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
+      const std::string layerName = i.name();
+      const Imf::Channel* ch = channels.findChannel( 
+						    layerName.c_str()
+						     );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
          continue;
@@ -433,26 +443,28 @@ bool exrImage::channels_order_multi(
                 continue;
 	    }
 	 }
-	 else if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-                                      ext == N_("RY") || ext == N_("Y") ) )
-         {
-             imfPixelType = ch->type;
-             order[1] = idx;
-             if ( ext == N_("Y") ) _use_yca = false; 
-         }
-         else if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-                                      ext == N_("BY") ) ) {
-             imfPixelType = ch->type;
-             order[2] = idx;
-         }
-         else if ( order[3] == -1 && (ext == N_("A") || 
-                                      ext == N_("ALPHA") ) ) {
-             imfPixelType = ch->type;
-             order[3] = idx;
-         }
+	 else
+	 {
+	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
+				    ext == N_("RY") || ext == N_("Y") ) )
+	    {
+                imfPixelType = ch->type;
+                order[1] = idx;
+                if ( ext == N_("Y") ) _use_yca = false; 
+	    }
+	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
+				    ext == N_("BY") ) ) {
+                imfPixelType = ch->type;
+                order[2] = idx;
+            }
+	    if ( order[3] == -1 && (ext == N_("A") || 
+				    ext == N_("ALPHA") ) ) {
+                imfPixelType = ch->type;
+                order[3] = idx;
+            }
+	 }
       }
    }
-
 
    // We have the left eye in order[0] or order[1]
    assert( order[0] != -1 || order[1] != -1 );
@@ -498,25 +510,27 @@ bool exrImage::channels_order_multi(
                 break;
 	    }
 	 }
-	 else if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-                                      ext == N_("RY") || ext == N_("Y")) )
-         {
-             imfPixelType = ch->type;
-             order[1] = idx;
-             if ( ext == N_("Y") ) _use_yca = false;
-         }
-         else if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-                                      ext == N_("BY") ) ) 
-         {
-             imfPixelType = ch->type;
-             order[2] = idx;
-         }
-         else if ( order[3] == -1 && (ext == N_("A") || 
-                                      ext == N_("ALPHA") ) )
-         {
-             imfPixelType = ch->type;
-             order[3] = idx;
-         }
+	 else
+	 {
+	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
+				    ext == N_("RY") || ext == N_("Y")) )
+	    {
+                imfPixelType = ch->type;
+                order[1] = idx;
+                if ( ext == N_("Y") ) _use_yca = false;
+	    }
+
+	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
+				    ext == N_("BY") ) ) {
+                imfPixelType = ch->type;
+                order[2] = idx;
+            }
+	    if ( order[3] == -1 && (ext == N_("A") || 
+				    ext == N_("ALPHA") ) ) {
+                imfPixelType = ch->type;
+                order[3] = idx;
+            }
+	 }
       }
 
    }
@@ -739,6 +753,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    int dw  = dataWindow.max.x - dataWindow.min.x + 1;
    int dh  = dataWindow.max.y - dataWindow.min.y + 1;
 
+
    image_size( dw, dh );
 
 
@@ -752,9 +767,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    }
 
    if ( layers.find( N_("left") ) != layers.end() )
-   {
       _has_left_eye = true;
-   }
 
    if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
    {
@@ -806,10 +819,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 }
       }
       
-      if ( channels.findChannel( N_("A") ) ||
-	   channels.findChannel( N_("AR") ) ||
-	   channels.findChannel( N_("AG") ) ||
-	   channels.findChannel( N_("AB") ) )
+      if ( channels.findChannel( N_("A") ) )
       {
 	 has_alpha = true;
 	 alpha_layers();
@@ -952,6 +962,7 @@ bool exrImage::find_channels( const Imf::Header& h,
    ChannelList channels = h.channels();
 
    char* channelPrefix = _channel;
+
 
    // If channel starts with #, we are dealing with a multipart exr
    if ( channelPrefix && channelPrefix[0] == '#' )
@@ -1112,6 +1123,16 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
       }
 
       {
+	const Imf::StringAttribute *attr =
+	  h.findTypedAttribute<Imf::StringAttribute>( N_("chromaticitiesName") );
+	if ( attr )
+	  {
+	    _exif.insert( std::make_pair( _("Chromaticities Name"),
+                                          attr->value()) );
+	  }
+      }
+
+      {
 	const Imf::V2fAttribute *attr =
 	  h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
 	if ( attr )
@@ -1245,24 +1266,72 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 
       {
-	const Imf::FloatAttribute *attr =
-	  h.findTypedAttribute<Imf::FloatAttribute>( N_("keyCode") );
+	const Imf::KeyCodeAttribute* attr =
+	  h.findTypedAttribute<Imf::KeyCodeAttribute>( N_("keyCode") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Key Code"), buf) );
+              const KeyCode& k = attr->value();
+              char buf[128];
+              sprintf( buf, N_("%d"), k.filmMfcCode() );
+              _exif.insert( std::make_pair( _("Film Manufacturer Code"), buf) );
+              sprintf( buf, N_("%d"), k.filmType() );
+              _exif.insert( std::make_pair( _("Film Type Code"), buf) );
+              sprintf( buf, N_("%d"), k.prefix() );
+              _exif.insert( std::make_pair( _("Prefix"), buf) );
+             sprintf( buf, N_("%d"), k.count() );
+              _exif.insert( std::make_pair( _("Count"), buf) );
+             sprintf( buf, N_("%d"), k.perfOffset() );
+              _exif.insert( std::make_pair( _("Perf Offset"), buf) );
+             sprintf( buf, N_("%d"), k.perfsPerFrame() );
+              _exif.insert( std::make_pair( _("Perfs per Frame"), buf) );
+             sprintf( buf, N_("%d"), k.perfsPerCount() );
+              _exif.insert( std::make_pair( _("Perfs per Count"), buf) );
 	  }
       }
 
       {
-	const Imf::FloatAttribute *attr =
-	h.findTypedAttribute<Imf::FloatAttribute>( N_("timeCode") );
+	const Imf::TimeCodeAttribute *attr =
+	h.findTypedAttribute<Imf::TimeCodeAttribute>( N_("timeCode") );
 	if ( attr )
 	  {
-	    char buf[128];
-	    sprintf( buf, N_("%f"), attr->value() );
-	    _exif.insert( std::make_pair( _("Timecode"), buf) );
+              const Imf::TimeCode& tc = attr->value();
+              char buf[128];
+              sprintf( buf, 
+                       N_("%02d:%02d:%02d:%02d"), tc.hours(),
+                       tc.minutes(), tc.seconds(), tc.frame());
+              _exif.insert( std::make_pair( _("Timecode"), buf) );
+              sprintf( buf, N_("%d"),tc.dropFrame());
+              _exif.insert( std::make_pair( _("TC Drop Frame"), buf) );
+              sprintf( buf, N_("%d"),tc.colorFrame());
+              _exif.insert( std::make_pair( _("TC Frame"), buf) );
+              sprintf( buf, N_("%d"),tc.fieldPhase());
+              _exif.insert( std::make_pair( _("TC Field/Phase"), buf) );
+              sprintf( buf, N_("%d"),tc.bgf0());
+              _exif.insert( std::make_pair( _("TC bgf0"), buf) );
+              sprintf( buf, N_("%d"),tc.bgf1());
+              _exif.insert( std::make_pair( _("TC bgf1"), buf) );
+              sprintf( buf, N_("%d"),tc.bgf2());
+              _exif.insert( std::make_pair( _("TC bgf2"), buf) );
+              sprintf( buf, N_("0x%x"), tc.userData());
+              _exif.insert( std::make_pair( _("TC User Data"), buf) );
+	  }
+      }
+
+      {
+	const Imf::StringAttribute *attr =
+	h.findTypedAttribute<Imf::StringAttribute>( N_("writer") );
+	if ( attr )
+	  {
+	    _exif.insert( std::make_pair( _("Writer"), attr->value()) );
+	  }
+      }
+
+      {
+	const Imf::StringAttribute *attr =
+	h.findTypedAttribute<Imf::StringAttribute>( N_("iccProfile") );
+	if ( attr )
+	  {
+	    _exif.insert( std::make_pair( _("ICC Profile"), attr->value()) );
 	  }
       }
 
@@ -1333,76 +1402,157 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 
 }
 
+
+void exrImage::findZBound( float& zmin, float& zmax, float farPlane,
+                           int zsize,
+                           Imf::Array<float*>&       zbuff,
+                           Imf::Array<unsigned int>& sampleCount )
+{
+    //
+    // find zmax and zmin values of deep data to set bound
+    //
+    zmax = limits<float>::min();
+    zmin = limits<float>::max();
+ 
+    unsigned maxCount = 0;
+
+    for (int k = 0; k < zsize; k++)
+    {
+        float* z = zbuff[k];
+        unsigned int count = sampleCount[k];
+
+        if (maxCount < count)
+            maxCount = count;
+
+        for (unsigned int i = 0; i < count; i++)
+        {
+            double val = double(z[i]);
+            if (val > zmax && val < farPlane)
+                zmax = float(val);
+            if (val < zmin)
+                zmin = float(val);
+        }
+    }
+
+    if ( zmax < zmin)
+    {
+        float tmp = zmax;
+        zmax = zmin;
+        zmin = tmp;
+        // cout << "z max: "<< zmax << ", z min: " << zmin << endl;
+        // _chart->bounds (zmin, zmax);
+    }
+
+}
+
+void exrImage::loadDeepData( int& zsize,
+                             Imf::Array<float*>&       zbuff,
+                             Imf::Array<unsigned int>& sampleCount )
+{
+    Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
+
+    assert( _curpart >= 0 );
+
+    const Imf::Header& header = inmaster.header(_curpart);
+
+    try {
+
+        const std::string& type = header.type();
+
+
+        if ( type == DEEPSCANLINE )
+            loadDeepScanlineImage( zsize, zbuff, sampleCount, true );
+        else if ( type == DEEPTILE )
+            loadDeepTileImage( zsize, zbuff, sampleCount, true );
+        else
+            LOG_ERROR( "Unknown deep data for part " << _curpart );
+    }
+    catch( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
+    }
+
+}
+
+
 void
-exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
-                             int partnum,
-                             const int64_t frame,
-                             int &zsize,
-                             Imf::Header &header,
-                             Imf::Array<float*> &zbuff,
-                             Imf::Array<unsigned int> &sampleCount,
+exrImage::loadDeepTileImage( int &zsize,
+                             Imf::Array<float*>&       zbuff,
+                             Imf::Array<unsigned int>& sampleCount,
                              bool deepComp )
 {
+    Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
 
-    DeepTiledInputPart in (inmaster, partnum);
-    header = in.header();
+    DeepTiledInputPart in (inmaster, _curpart);
+    const Imf::Header& header = in.header();
 
-    Box2i &dataWindow = header.dataWindow();
+    const Box2i &dataWindow = header.dataWindow();
+    const Box2i &displayWindow = header.displayWindow();
     int dw = dataWindow.max.x - dataWindow.min.x + 1;
     int dh = dataWindow.max.y - dataWindow.min.y + 1;
     int dx = dataWindow.min.x;
     int dy = dataWindow.min.y;
 
+    data_window( dataWindow.min.x, dataWindow.min.y,
+                 dataWindow.max.x, dataWindow.max.y );
 
-    image_size( dw, dh );
+    display_window( displayWindow.min.x, displayWindow.min.y,
+                    displayWindow.max.x, displayWindow.max.y );
 
-    if ( dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+
+    if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
     {
-        allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+        allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
     }
 
     // display black right now
     Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
     memset( pixels, 0, _hires->data_size() ); // Needed
 
+
     Array< half* > dataR;
     Array< half* > dataG;
     Array< half* > dataB;
-
+ 
     Array< float* > zback;
     Array< half* > alpha;
 
     zsize = dw * dh;
     zbuff.resizeErase (zsize);
     zback.resizeErase (zsize);
-    alpha.resizeErase (dw * dh);
+    alpha.resizeErase (zsize);
 
-    dataR.resizeErase (dw * dh);
-    dataG.resizeErase (dw * dh);
-    dataB.resizeErase (dw * dh);
-    sampleCount.resizeErase (dw * dh);
+    dataR.resizeErase (zsize);
+    dataG.resizeErase (zsize);
+    dataB.resizeErase (zsize);
+
+    sampleCount.resizeErase (zsize);
 
     int rgbflag = 0;
     int deepCompflag = 0;
 
-    if (header.channels().findChannel ("R"))
+    const char* channelPrefix = channel();
+    if ( channelPrefix == NULL || strcmp( channelPrefix, "Z" ) != 0 )
     {
-        rgbflag = 1;
-    }
-    else if (header.channels().findChannel ("B"))
-    {
-        rgbflag = 1;
-    }
-    else if (header.channels().findChannel ("G"))
-    {
-        rgbflag = 1;
-    }
+        if (header.channels().findChannel ("R"))
+        {
+            rgbflag = 1;
+        }
+        else if (header.channels().findChannel ("B"))
+        {
+            rgbflag = 1;
+        }
+        else if (header.channels().findChannel ("G"))
+        {
+            rgbflag = 1;
+        }
 
-    if (header.channels().findChannel ("Z") &&
-        header.channels().findChannel ("A") &&
-        deepComp)
-    {
-        deepCompflag = 1;
+        if (header.channels().findChannel ("Z") &&
+            header.channels().findChannel ("A") &&
+            deepComp)
+        {
+            deepCompflag = 1;
+        }
     }
 
     DeepFrameBuffer fb;
@@ -1468,16 +1618,17 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
 
     in.readPixelSampleCounts (0, numXTiles - 1, 0, numYTiles - 1);
 
-    for (int i = 0; i < dh * dw; i++)
+    for (int i = 0; i < zsize; i++)
     {
-        zbuff[i] = new float[sampleCount[i]];
-        zback[i] = new float[sampleCount[i]];
-        alpha[i] = new half[sampleCount[i]];
+        int num = sampleCount[i];
+        zbuff[i] = new float[num];
+        zback[i] = new float[num];
+        alpha[i] = new half[num];
         if (rgbflag)
         {
-            dataR[i] = new half[sampleCount[i]];
-            dataG[i] = new half[sampleCount[i]];
-            dataB[i] = new half[sampleCount[i]];
+            dataR[i] = new half[num];
+            dataG[i] = new half[num];
+            dataB[i] = new half[num];
         }
     }
 
@@ -1485,33 +1636,38 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
 
     if (deepCompflag)
     {
+        int count = 0;
         // Loop over all the pixels and comp manually
         // @ToDo implent deep compositing for the DeepTile case
         for (int i=0; i<zsize; ++i)
         {
-            float a     = alpha[i][0];
+            if ( sampleCount[i] == 0 ) continue;
+
+            pixels[i].a = alpha[i][0];
             pixels[i].r = dataR[i][0];
             pixels[i].g = dataG[i][0];
             pixels[i].b = dataB[i][0];
 
             for(int s=1; s<sampleCount[i]; s++)
             {
-                if(a>=1.f)
+                float a = pixels[i].a;
+                if( a>=1.f)
                     break;
 
                 pixels[i].r += (1.f - a) * dataR[i][s];
                 pixels[i].g += (1.f - a) * dataG[i][s];
                 pixels[i].b += (1.f - a) * dataB[i][s];
-                a           += (1.f - a) * alpha[i][s];
+                pixels[i].a += (1.f - a) * alpha[i][s];
             }
         }
     }
     else
     {
-        for (int i = 0; i < dh * dw; i++)
+        for (int i = 0; i < zsize; i++)
         {
             if (sampleCount[i] > 0)
             {
+                pixels[i].a = alpha[i][0];
                 if (rgbflag)
                 {
                     pixels[i].r = dataR[i][0];
@@ -1521,8 +1677,8 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
                 else
                 {
                     pixels[i].r = zbuff[i][0];
-                    pixels[i].g = alpha[i][0];
-                    pixels[i].b = zback[i][0];
+                    pixels[i].g = zbuff[i][0];
+                    pixels[i].b = zbuff[i][0];
                 }
             }
         }
@@ -1531,31 +1687,29 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile &inmaster,
 }
 
 void
-exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
-                                  int partnum,
-                                  const int64_t frame,
-                                  int &zsize,
-                                  Imf::Header &header,
-                                  Imf::Array<float*> &zbuff,
-                                  Imf::Array<unsigned int> &sampleCount,
+exrImage::loadDeepScanlineImage ( int &zsize,
+                                  Imf::Array<float*>&       zbuff,
+                                  Imf::Array<unsigned int>& sampleCount,
                                   bool deepComp)
 {
+    Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
 
-    DeepScanLineInputPart in (inmaster, partnum);
-    header = in.header();
+    DeepScanLineInputPart in (inmaster, _curpart);
+    const Imf::Header& header = in.header();
 
-    Box2i &dataWindow = header.dataWindow();
+    const Box2i &dataWindow = header.dataWindow();
     int dw = dataWindow.max.x - dataWindow.min.x + 1;
     int dh = dataWindow.max.y - dataWindow.min.y + 1;
     int dx = dataWindow.min.x;
     int dy = dataWindow.min.y;
 
 
+#ifdef USE_RGB
     image_size( dw, dh );
 
-    if ( dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
+    if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
     {
-        allocate_pixels( frame, 4, image_type::kRGBA, image_type::kHalf );
+        allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
     }
 
     Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
@@ -1565,6 +1719,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
     Array< half* > dataR;
     Array< half* > dataG;
     Array< half* > dataB;
+#endif
 
     Array< float* > zback;
     Array< half* > alpha;
@@ -1572,16 +1727,20 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
     zsize = dw * dh;
     zbuff.resizeErase (zsize);
     zback.resizeErase (zsize);
-    alpha.resizeErase (dw * dh);
+    alpha.resizeErase (zsize);
 
-    dataR.resizeErase (dw * dh);
-    dataG.resizeErase (dw * dh);
-    dataB.resizeErase (dw * dh);
-    sampleCount.resizeErase (dw * dh);
+#ifdef USE_RGB
+    dataR.resizeErase (zsize);
+    dataG.resizeErase (zsize);
+    dataB.resizeErase (zsize);
+#endif
+
+    sampleCount.resizeErase (zsize);
 
     int rgbflag = 0;
     int deepCompflag = 0;
 
+#ifdef USE_RGB
     if (header.channels().findChannel ("R"))
     {
         rgbflag = 1;
@@ -1594,6 +1753,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
     {
         rgbflag = 1;
     }
+#endif
 
     if (header.channels().findChannel ("Z") &&
         header.channels().findChannel ("A") &&
@@ -1623,6 +1783,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
                           sizeof (float *) * dw,   // yStride for pointer array
                           sizeof (float) * 1));    // stride for z data sample
 
+#ifdef USE_RGB
     if (rgbflag)
     {
         fb.insert ("R",
@@ -1646,6 +1807,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
                               sizeof (half *) * dw,
                               sizeof (half) * 1));
     }
+#endif
 
     fb.insert ("A",
                DeepSlice (HALF,
@@ -1665,16 +1827,19 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
         zbuff[i] = new float[sampleCount[i]];
         zback[i] = new float[sampleCount[i]];
         alpha[i] = new half[sampleCount[i]];
+#ifdef USE_RGB
         if(rgbflag)
         {
             dataR[i] = new half[sampleCount[i]];
             dataG[i] = new half[sampleCount[i]];
             dataB[i] = new half[sampleCount[i]];
         }
+#endif
     }
 
     in.readPixels (dataWindow.min.y, dataWindow.max.y);
 
+#ifdef USE_RGB
     if (deepCompflag)
     {
         //
@@ -1739,6 +1904,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile &inmaster,
             }
         }
     }
+#endif
 
 }
 
@@ -1758,7 +1924,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       for ( ; i < _numparts; ++i )
       {
          Header header = inmaster.header(i);
-         _type = header.type();
+         if ( ! header.hasType() )
+             _type = SCANLINEIMAGE;
+         else
+             _type = header.type();
 
          if ( _type != SCANLINEIMAGE &&
               _type != TILEDIMAGE &&
@@ -1768,9 +1937,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          if ( _exif.empty() && _iptc.empty() )
             read_header_attr( header, frame );
 
-         _pixel_ratio = header.pixelAspectRatio();
-         _lineOrder   = header.lineOrder();
-         _compression = header.compression(); 
+	_pixel_ratio = header.pixelAspectRatio();
+	_lineOrder   = header.lineOrder();
+	_compression = header.compression(); 
 
          Imf::ChannelList channels = header.channels();
 
@@ -1780,21 +1949,26 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          for ( ; s != e; ++s )
             ++numChannels;
 
-         std::string name = header.name();
+         char buf[128];
+         std::string name;
+         if ( header.hasName() ) name = header.name();
 
          size_t pos;
          while ( (pos = name.find( N_(".") )) != std::string::npos )
          {
-            std::string n = name.substr( 0, pos-1 );
-            n += "_";
-            n += name.substr( pos+1, name.size() );
-            name = n;
+             std::string n = name.substr( 0, pos-1 );
+             n += "_";
+             n += name.substr( pos+1, name.size() );
+             name = n;
          }
 
-         char buf[128];
-         sprintf( buf, "#%d %s", i, name.c_str() );
-         _layers.push_back( buf );
-         ++_num_layers;
+         if ( name != "" )
+         {
+             sprintf( buf, "#%d %s", i, name.c_str() );
+             _layers.push_back( buf );
+             ++_num_layers;
+         }
+
 
          std::string ext = name;
          if ( header.hasView() ) ext = header.view();
@@ -1819,20 +1993,25 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
             _is_stereo = true;
          }
 
-
-         for ( s = channels.begin(); s != e; ++s )
+         if ( name != "" || ext != "" )
          {
-            std::string layerName = buf;
-            layerName += ".";
-            layerName += s.name();
-            _layers.push_back( layerName );
-            ++_num_layers;
+             for ( s = channels.begin(); s != e; ++s )
+             {
+                 std::string layerName = buf;
+                 layerName += ".";
+                 layerName += s.name();
+                 _layers.push_back( layerName );
+                 ++_num_layers;
+             }
          }
-         
       }
 
    }
 
+   if ( _multiview )
+   {
+       st[0] = st[1] = 0;
+   }
    
    if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
    {
@@ -1841,7 +2020,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    }
 
 
-   
    if ( _is_stereo )
    {
       const char* channelPrefix = channel();
@@ -1867,7 +2045,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
             ext = ext.substr( pos+1, ext.size() );
          }
 
-          
          if ( root == "stereo" )
          {
             _stereo_type = kStereoSideBySide;
@@ -1887,16 +2064,13 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           int oldpart = _curpart;
           if ( _stereo_type != kNoStereo ) _curpart = st[i];
 
+          const Header& header = inmaster.header(_curpart);
 
-          Header header = inmaster.header(_curpart);
-
-          Box2i displayWindow = header.displayWindow();
-          Box2i dataWindow = header.dataWindow();
-
+          const Box2i& displayWindow = header.displayWindow();
+          const Box2i& dataWindow = header.dataWindow();
 
           _pixel_ratio = header.pixelAspectRatio();
           _lineOrder   = header.lineOrder();
-          _type = header.type();
 
           if ( i == 0 || _stereo_type == kNoStereo )
           {
@@ -1915,7 +2089,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
                                displayWindow.max.x, displayWindow.max.y );
           }
 
-          int zsize = 0;
           FrameBuffer fb;
 
           {
@@ -1926,66 +2099,19 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               }
           }
 
-#if 0
-          if ( channel() == NULL )
-          {
-              if ( _type == DEEPSCANLINE )
-              {
-                  loadDeepScanlineImage(inmaster,
-                                        _curpart,
-                                        frame,
-                                        zsize,
-                                        header,
-                                        dataZ,
-                                        sampleCount,
-                                        true);
-                  return true;
-              }
-              else if ( _type == DEEPTILE )
-              {
-                  loadDeepTileImage(inmaster,
-                                    _curpart,
-                                    frame,
-                                    zsize,
-                                    header,
-                                    dataZ,
-                                    sampleCount,
-                                    true);
-                  return true;
-              }
-          }
-#endif
-
           InputPart in( inmaster, _curpart );
-
-          if ( _curpart != oldpart )
-          {
-              header = in.header();
-
-              bool ok = find_channels( header, fb, frame );
-              if (!ok) {
-                  IMG_ERROR( _("Could not locate channels in header") );
-                  return false;
-              }
-          }
-
           in.setFrameBuffer(fb);
           in.readPixels( dataWindow.min.y, dataWindow.max.y );
-
-
 
           // Quick exit if stereo is off
           if ( _stereo_type == kNoStereo ) break;
 
-         
           _stereo[i] = _hires;
       }
 
-      
 
       if ( _stereo_type == kStereoAnaglyph )
       {
-          
          make_anaglyph( _left_red );
       }
    }
@@ -1993,10 +2119,28 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    {
       int oldpart = _curpart;
 
+      if ( _curpart < 0 ) _curpart = 0;
+
+      const Header& header = inmaster.header(_curpart);
+      if ( _type == DEEPTILE )
+      {
+          if ( ! find_layers( header ) )
+              return false;
+
+          if ( _exif.empty() && _iptc.empty() )
+              read_header_attr( header, frame );
+
+          int zsize;
+          Imf::Array< float* > zbuff;
+          Imf::Array< unsigned > sampleCount;
+          loadDeepTileImage( zsize, zbuff, sampleCount, true );
+          return true;
+      }
+
+
       InputPart in (inmaster, _curpart);
-      Header header = in.header();
-      Box2i& dataWindow = header.dataWindow();
-      Box2i& displayWindow = header.displayWindow();
+      const Box2i& dataWindow = header.dataWindow();
+      const Box2i& displayWindow = header.displayWindow();
 
       data_window( dataWindow.min.x, dataWindow.min.y,
                    dataWindow.max.x, dataWindow.max.y );
@@ -2015,10 +2159,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       if ( _curpart != oldpart )
       {
          InputPart in (inmaster, _curpart);
-         Header header = in.header();
+         const Header& header = in.header();
 
-         dataWindow = header.dataWindow();
-         displayWindow = header.displayWindow();
+         const Box2i& dataWindow = header.dataWindow();
+         const Box2i& displayWindow = header.displayWindow();
 
          data_window( dataWindow.min.x, dataWindow.min.y,
                       dataWindow.max.x, dataWindow.max.y );
@@ -2064,59 +2208,78 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	{
 	   return fetch_mipmap( frame );
 	}
+ 
+        MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
+        const Imf::Header& h = inmaster.header(0);
+        if ( h.hasType() ) _type = h.type();
 
-	if ( _numparts < 0 )
+	if ( _numparts <= 0 )
 	  {
-	    MultiPartInputFile* infile = 
-	      new MultiPartInputFile( sequence_filename(frame).c_str() );
-
-	    _numparts = infile->parts();
-	    delete infile;
+              _numparts = inmaster.parts();
 	  }
 
-        if ( _numparts > 1 )
+        if ( _numparts > 0 )
         {
-           return fetch_multipart( frame );
+            if ( !  fetch_multipart( frame ) )
+                return false;
         }
+        // else
+        // {
 
-	InputFile in( sequence_filename(frame).c_str() );
+        //     if ( _type == DEEPTILE )
+        //     {
+        //         _curpart = 0;
+        //         if ( ! find_layers( h ) )
+        //             return false;
 
-	const Header& h = in.header();
-	const Box2i& displayWindow = h.displayWindow();
-	const Box2i& dataWindow = h.dataWindow();
+        //         if ( _exif.empty() && _iptc.empty() )
+        //             read_header_attr( h, frame );
 
-        data_window( dataWindow.min.x, dataWindow.min.y,
-                     dataWindow.max.x, dataWindow.max.y );
+        //         int zsize;
+        //         Imf::Array< float* > zbuff;
+        //         Imf::Array< unsigned > sampleCount;
+        //         loadDeepTileImage( zsize, zbuff, sampleCount, true );
+        //         return true;
+        //     }
 
-        display_window( displayWindow.min.x, displayWindow.min.y,
-                        displayWindow.max.x, displayWindow.max.y );
+        //     _stereo_type = kNoStereo;
 
-	_rendering_intent = kRelativeIntent;
+        //     InputFile in( sequence_filename(frame).c_str() );
 
-	if ( _exif.empty() && _iptc.empty() )
-	   read_header_attr( h, frame );
+        //     const Header& h = in.header();
+        //     const Box2i& displayWindow = h.displayWindow();
+        //     const Box2i& dataWindow = h.dataWindow();
 
+        //     data_window( dataWindow.min.x, dataWindow.min.y,
+        //                  dataWindow.max.x, dataWindow.max.y );
 
-	FrameBuffer fb;
-	bool ok = find_channels( h, fb, frame );
-	if (!ok) {
-	   IMG_ERROR( _("Could not locate channels in header") );
-	   return false;
-	}
+        //     display_window( displayWindow.min.x, displayWindow.min.y,
+        //                     displayWindow.max.x, displayWindow.max.y );
 
-	_pixel_ratio = h.pixelAspectRatio();
-	_lineOrder   = h.lineOrder();
-	_compression = h.compression(); 
+        //     _rendering_intent = kRelativeIntent;
 
-	in.setFrameBuffer(fb);
-	in.readPixels( dataWindow.min.y, dataWindow.max.y );
+        //     if ( _exif.empty() && _iptc.empty() )
+        //         read_header_attr( h, frame );
+
+        //     FrameBuffer fb;
+        //     bool ok = find_channels( h, fb, frame );
+        //     if (!ok) {
+        //         IMG_ERROR( _("Could not locate channels in header") );
+        //         return false;
+        //     }
+
+        //     _pixel_ratio = h.pixelAspectRatio();
+        //     _lineOrder   = h.lineOrder();
+        //     _compression = h.compression(); 
+
+        //     in.setFrameBuffer(fb);
+        //     in.readPixels( dataWindow.min.y, dataWindow.max.y );
+        // }
 
 	if ( _use_yca && !supports_yuv() )
 	{
-	   ycc2rgba( h, frame );
+            ycc2rgba( h, frame );
 	}
-
-      
 
     } 
     catch( const std::exception& e )
