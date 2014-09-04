@@ -51,6 +51,7 @@
 #include <math.h>
 #endif
 
+#include <boost/thread/recursive_mutex.hpp>
 
 #include <fltk/run.h>
 #include <fltk/GlWindow.h>
@@ -67,11 +68,13 @@ const float kFPS = 1.0f / 24.0f;
 class GlWindow3d : public fltk::GlWindow
 {
 public:
+    typedef boost::recursive_mutex Mutex;
 
     GlWindow3d (int x, int y, int w, int h, const char *l = 0);
     ~GlWindow3d ();
 
-    void load_data( float* dataZ[],
+    void load_data( int zsize,
+                    float* dataZ[],
                     unsigned int sampleCount[],
                     int dx, int dy, // data window
                     float zmin, float zmax,
@@ -109,6 +112,8 @@ private:
     int         _mouseStartY;
     int         _inverted;      // for rotation
     int         _displayFactor; // for display pixel samples
+
+    Mutex       _mutex;  // mutex to avoid clearing data being drawn
 
     // TIMER CALLBACK
     // Handles rotation of the object

@@ -225,6 +225,7 @@ std::string hex_to_char_filename( std::string& f )
     int idx[2];
     int count = 0;  // number of periods found (from end)
 
+    int minus_idx = -1; // index where last - sign was found.
     int minus = 0; // number of minus signs found
 
     e = f.c_str();
@@ -232,7 +233,7 @@ std::string hex_to_char_filename( std::string& f )
     for ( ; i >= e; --i )
       {
  	if ( *i == '/' || *i == '\\' ) break;
-	if ( *i == '.' || ( count > 0 && ((*i == '_' )||(*i == '-')) ) )
+	if ( *i == '.' || ( count > 0 && (*i == '_') ) )
 	  {
 	    idx[count] = (int)( i - e );
 	    ++count;
@@ -244,8 +245,18 @@ std::string hex_to_char_filename( std::string& f )
 			    *i != 'l' && *i != '%' && *i != '-' &&
 			    *i != 'I' && (*i < '0' || *i > '9')) )
 	  break;
-        if ( count == 1 && *i == '-' ) minus++;
+        if ( count == 1 && *i == '-' ) 
+        {
+            minus_idx = (int)(i - e);
+            minus++;
+        }
       }
+
+    if ( count == 1 && minus == 1 )
+    {
+        idx[count] = minus_idx;
+        ++count;
+    }
 
     if ( count == 0 ) return false;
 
@@ -255,7 +266,6 @@ std::string hex_to_char_filename( std::string& f )
 	root  = f.substr( 0, idx[1]+1 );
 	frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = f.substr( idx[0], file.size()-idx[0] );
-
 
 
 	bool ok = is_valid_frame( ext );
