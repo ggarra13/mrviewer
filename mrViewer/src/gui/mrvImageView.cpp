@@ -406,40 +406,6 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
   else if ( idx == k3dView )
   {
       uiMain->uiGL3dView->uiMain->show();
-      int zsize = 0;
-      static Imf::Array< float* > zbuff;
-      static Imf::Array< unsigned > sampleCount;
-      mrv::media fg = uiMain->uiView->foreground();
-      if ( fg )
-      {
-          mrv::exrImage* exr = dynamic_cast< mrv::exrImage* >( fg->image() );
-          if ( exr )
-          {
-              try
-              {
-                  float zmin, zmax;
-                  float farPlane = 1000000.0f;
-                  const mrv::Recti& daw = exr->data_window();
-                  exr->loadDeepData( zsize, zbuff, sampleCount );
-                  if ( zsize )
-                  {
-                      exr->findZBound( zmin, zmax, farPlane, zsize,
-                                       zbuff, sampleCount );
-                      uiMain->uiGL3dView->uiMain->load_data( zbuff,
-                                                             sampleCount,
-                                                             daw.w(), daw.h(), 
-                                                             zmin, zmax, 
-                                                             farPlane );
-                      uiMain->uiGL3dView->uiMain->redraw();
-                  }
-              }
-              catch( const std::exception& e )
-              {
-                  LOG_ERROR( e.what() );
-              }
-          }
-      }
-
       uiMain->uiView->send( "GL3dView 1" );
   }
   else if ( idx == kPaintTools )
@@ -1190,6 +1156,51 @@ bool ImageView::should_update( mrv::media& fg )
 	  update_image_info();
 	  uiMain->uiICCProfiles->fill();
 	}
+
+      if ( uiMain->uiGL3dView->uiMain->visible() && 
+           uiMain->uiGL3dView->uiMain->shown() &&
+           (img->image_damage() & CMedia::kDamage3DData) )
+      {
+          int zsize = 0;
+          static Imf::Array< float* > zbuff;
+          static Imf::Array< unsigned > sampleCount;
+
+          size_t num = zbuff.size();
+          for ( size_t i = 0; i < num; ++i )
+          {
+              delete [] zbuff[i];
+          }
+
+
+          zbuff.resizeErase( 0 );
+          sampleCount.resizeErase( 0 );
+
+          mrv::exrImage* exr = dynamic_cast< mrv::exrImage* >( img );
+          if ( exr )
+          {
+              try
+              {
+                  float zmin, zmax;
+                  float farPlane = 1000000.0f;
+                  const mrv::Recti& daw = exr->data_window();
+                  exr->loadDeepData( zsize, zbuff, sampleCount );
+                  exr->findZBound( zmin, zmax, farPlane, zsize,
+                                   zbuff, sampleCount );
+                  uiMain->uiGL3dView->uiMain->load_data( zsize,
+                                                         zbuff,
+                                                         sampleCount,
+                                                         daw.w(), daw.h(), 
+                                                         zmin, zmax, 
+                                                         farPlane );
+                  uiMain->uiGL3dView->uiMain->redraw();
+              }
+              catch( const std::exception& e )
+              {
+                  LOG_ERROR( e.what() );
+              }
+          }
+          img->image_damage( img->image_damage() & ~CMedia::kDamage3DData );
+      }
     }
 
 
@@ -4079,8 +4090,8 @@ void ImageView::foreground( mrv::media fg )
          if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
              fit_image();
 
-	 img->image_damage( img->image_damage() | CMedia::kDamageContents );
-
+	 img->image_damage( img->image_damage() | CMedia::kDamageContents |
+                            CMedia::kDamage3DData );
 
 	 bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
 	 if ( dynamic_cast< stubImage* >( img ) || reload )
