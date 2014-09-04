@@ -1849,7 +1849,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
    {
       IMG_ERROR( _("Could not find both stereo images in file") );
-      return false;
+      if ( st[0] != -1 ) st[1] = st[0];
+      else if ( st[1] != -1 ) st[0] = st[1];
+      if ( st[0] == -1 ) return false;
    }
 
 
