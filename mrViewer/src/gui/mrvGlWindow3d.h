@@ -115,15 +115,6 @@ private:
 
     Mutex       _mutex;  // mutex to avoid clearing data being drawn
 
-    // TIMER CALLBACK
-    // Handles rotation of the object
-    //
-    static void Timer_CallBack (void *data)
-    {
-        GlWindow *glwin = (GlWindow*)data;
-        glwin->redraw();
-        fltk::repeat_timeout(kFPS, Timer_CallBack, data);
-    }
 };
 
 } // namespace mrv
