@@ -56,6 +56,7 @@ namespace mrv {
     /// Returns the image line order (if any)
     virtual const char* const line_order() const { return kLineOrder[_lineOrder]; }
 
+
     virtual bool fetch( const boost::int64_t frame );
 
       static bool save( const char* file, const CMedia* img, 

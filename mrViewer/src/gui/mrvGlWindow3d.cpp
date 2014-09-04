@@ -52,6 +52,9 @@
 
 #include <string.h>
 #include <algorithm>
+
+#include "mrvThread.h"
+
 using std::max;
 using std::min;
 using std::cout;
@@ -80,12 +83,20 @@ GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l )
 }
 
 void
-GlWindow3d::load_data( float* dataZ[],
+GlWindow3d::load_data( int zsize,
+                       float* dataZ[],
                        unsigned int sampleCount[],
                        int dx, int dy,
                        float zmin, float zmax,
                        float farPlane )
 {
+    SCOPED_LOCK( _mutex );
+    if ( zsize != dx * dy) {
+        _dataZ = NULL;
+        _sampleCount = NULL;
+        return;
+    }
+
     _dataZ = dataZ;
 
     assert( dataZ != NULL );
@@ -101,20 +112,12 @@ GlWindow3d::load_data( float* dataZ[],
     _zmin = zmin;
     _farPlane = farPlane;
 
-
-    // check zmax and zmin
-    if (zmax < zmin)
-    {
-        cerr << "z max: "<< zmax << ", z min: " << zmin << endl;
-        cerr << "z value bound error" << endl;
-        exit(1);
-    }
-
     _fitTran = -(_zmax + _zmin) / 2.0;
     _fitScale = 1.0;
 
     if (_zmax != _zmin)
         _fitScale = 1.0 / (_zmax - _zmin);
+
 }
 
 GlWindow3d::~GlWindow3d ()
@@ -272,26 +275,8 @@ GlWindow3d::draw()
     // draw the reference plane
     drawRefPlan();
 
-    // Check gl errors
-    {
-        GLenum err = glGetError();
-        if ( err != GL_NO_ERROR )
-        {
-            cerr << __LINE__ << " GLGETERROR = " << (int)err << endl;
-        }
-    }
-
     // draw the coordinate
     drawCoord();
-
-    // Check gl errors
-    {
-        GLenum err = glGetError();
-        if ( err != GL_NO_ERROR )
-        {
-            cerr << __LINE__ << " GLGETERROR = " << (int)err << endl;
-        }
-    }
 
     // scale z value
     glScalef (1.0, 1.0, _scaleZ);
@@ -312,8 +297,9 @@ GlWindow3d::draw()
 
     if ( _dataZ && _sampleCount )
     {
+        SCOPED_LOCK( _mutex );
         for (int y = 0; y < _dy; y++)
-       {
+        {
             for (int x = 0; x < _dx; x++)
             {
                 if( x % _displayFactor == 0 && y % _displayFactor == 0)
@@ -333,16 +319,6 @@ GlWindow3d::draw()
 
     glEnd();
 
-    // Check gl errors
-    {
-        GLenum err = glGetError();
-        if ( err != GL_NO_ERROR )
-        {
-            cerr << __LINE__ << " GLGETERROR = " << (int)err << endl;
-        }
-    }
-
-
     // draw the display window OutLine
     drawOutLine (_dx, _dy, -(_zmax + _zmin) / 2.0);
 
@@ -350,7 +326,7 @@ GlWindow3d::draw()
     GLenum err = glGetError();
     if ( err != GL_NO_ERROR )
     {
-        cerr << __LINE__ << " GLGETERROR = " << (int)err << endl;
+        cerr << "GLGETERROR = " << (int)err << endl;
     }
 }
 

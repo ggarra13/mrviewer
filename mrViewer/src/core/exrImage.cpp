@@ -1442,27 +1442,24 @@ void exrImage::loadDeepData( int& zsize,
                              Imf::Array<float*>&       zbuff,
                              Imf::Array<unsigned int>& sampleCount )
 {
-    Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
 
     assert( _curpart >= 0 );
 
-    const Imf::Header& header = inmaster.header(_curpart);
-
     try {
+        Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
+        const Imf::Header& h = inmaster.header( _curpart );
 
-        const std::string& type = header.type();
+        _type = SCANLINEIMAGE;
+        if ( h.hasType() ) _type = h.type();
 
-
-        if ( type == DEEPSCANLINE )
+        if ( _type == DEEPSCANLINE )
             loadDeepScanlineImage( zsize, zbuff, sampleCount, true );
-        else if ( type == DEEPTILE )
+        else if ( _type == DEEPTILE )
             loadDeepTileImage( zsize, zbuff, sampleCount, true );
-        else
-            LOG_ERROR( "Unknown deep data for part " << _curpart );
     }
     catch( const std::exception& e )
     {
-        LOG_ERROR( e.what() );
+        LOG_ERROR( "loadDeepData error: " << e.what() );
     }
 
 }
@@ -1695,56 +1692,17 @@ exrImage::loadDeepScanlineImage ( int &zsize,
     int dy = dataWindow.min.y;
 
 
-#ifdef USE_RGB
-    image_size( dw, dh );
-
-    if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
-    {
-        allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
-    }
-
-    Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
-    // display black right now
-    memset( pixels, 0, _hires->data_size() ); // Needed
-
-    Array< half* > dataR;
-    Array< half* > dataG;
-    Array< half* > dataB;
-#endif
 
     Array< float* > zback;
     Array< half* > alpha;
 
     zsize = dw * dh;
     zbuff.resizeErase (zsize);
-    zback.resizeErase (zsize);
-    alpha.resizeErase (zsize);
-
-#ifdef USE_RGB
-    dataR.resizeErase (zsize);
-    dataG.resizeErase (zsize);
-    dataB.resizeErase (zsize);
-#endif
 
     sampleCount.resizeErase (zsize);
 
     int rgbflag = 0;
     int deepCompflag = 0;
-
-#ifdef USE_RGB
-    if (header.channels().findChannel ("R"))
-    {
-        rgbflag = 1;
-    }
-    else if (header.channels().findChannel ("B"))
-    {
-        rgbflag = 1;
-    }
-    else if (header.channels().findChannel ("G"))
-    {
-        rgbflag = 1;
-    }
-#endif
 
     if (header.channels().findChannel ("Z") &&
         header.channels().findChannel ("A") &&
@@ -1767,47 +1725,6 @@ exrImage::loadDeepScanlineImage ( int &zsize,
                           sizeof (float *) * 1,    // xStride for pointer array
                           sizeof (float *) * dw,   // yStride for pointer array
                           sizeof (float) * 1));    // stride for z data sample
-    fb.insert ("ZBack",
-               DeepSlice (FLOAT,
-                          (char *) (&zback[0] - dx- dy * dw),
-                          sizeof (float *) * 1,    // xStride for pointer array
-                          sizeof (float *) * dw,   // yStride for pointer array
-                          sizeof (float) * 1));    // stride for z data sample
-
-#ifdef USE_RGB
-    if (rgbflag)
-    {
-        fb.insert ("R",
-                   DeepSlice (HALF,
-                              (char *) (&dataR[0] - dx- dy * dw),
-                              sizeof (half *) * 1,
-                              sizeof (half *) * dw,
-                              sizeof (half) * 1));
-
-        fb.insert ("G",
-                   DeepSlice (HALF,
-                              (char *) (&dataG[0] - dx- dy * dw),
-                              sizeof (half *) * 1,
-                              sizeof (half *) * dw,
-                              sizeof (half) * 1));
-
-        fb.insert ("B",
-                   DeepSlice (HALF,
-                              (char *) (&dataB[0] - dx- dy * dw),
-                              sizeof (half *) * 1,
-                              sizeof (half *) * dw,
-                              sizeof (half) * 1));
-    }
-#endif
-
-    fb.insert ("A",
-               DeepSlice (HALF,
-                          (char *) (&alpha[0] - dx- dy * dw),
-                          sizeof (half *) * 1,    // xStride for pointer array
-                          sizeof (half *) * dw,   // yStride for pointer array
-                          sizeof (half) * 1,      // stride for z data sample
-                          1, 1,                   // xSampling, ySampling
-                          1.0));                  // fillValue
 
     in.setFrameBuffer (fb);
 
@@ -1816,86 +1733,10 @@ exrImage::loadDeepScanlineImage ( int &zsize,
     for (int i = 0; i < dh * dw; i++)
     {
         zbuff[i] = new float[sampleCount[i]];
-        zback[i] = new float[sampleCount[i]];
-        alpha[i] = new half[sampleCount[i]];
-#ifdef USE_RGB
-        if(rgbflag)
-        {
-            dataR[i] = new half[sampleCount[i]];
-            dataG[i] = new half[sampleCount[i]];
-            dataB[i] = new half[sampleCount[i]];
-        }
-#endif
     }
 
     in.readPixels (dataWindow.min.y, dataWindow.max.y);
 
-#ifdef USE_RGB
-    if (deepCompflag)
-    {
-        //
-        //try deep compositing
-        //
-        CompositeDeepScanLine comp;
-        comp.addSource (&in);
-
-        FrameBuffer fbuffer;
-        Rgba *base = pixels - dx - dy * dw;
-        size_t xs = 1 * sizeof (Rgba);
-        size_t ys = dw * sizeof (Rgba);
-
-        fbuffer.insert ("R",
-                   Slice (HALF,
-                          (char *) &base[0].r,
-                          xs, ys,
-                          1, 1,     // xSampling, ySampling
-                          0.0));    // fillValue
-
-        fbuffer.insert ("G",
-                   Slice (HALF,
-                          (char *) &base[0].g,
-                          xs, ys,
-                          1, 1,     // xSampling, ySampling
-                          0.0));    // fillValue
-
-        fbuffer.insert ("B",
-                   Slice (HALF,
-                          (char *) &base[0].b,
-                          xs, ys,
-                          1, 1,     // xSampling, ySampling
-                          0.0));    // fillValue
-
-        fbuffer.insert ("A",
-                   Slice (HALF,
-                          (char *) &base[0].a,
-                          xs, ys,
-                          1, 1,             // xSampling, ySampling
-                          1.0));    // fillValue
-        comp.setFrameBuffer (fbuffer);
-        comp.readPixels (dataWindow.min.y, dataWindow.max.y);
-    }
-    else
-    {
-        for (int i = 0; i < dh * dw; i++)
-        {
-            if (sampleCount[i] > 0)
-            {
-                if (rgbflag)
-                {
-                    pixels[i].r = dataR[i][0];
-                    pixels[i].g = dataG[i][0];
-                    pixels[i].b = dataB[i][0];
-                }
-                else
-                {
-                    pixels[i].r = zbuff[i][0];
-                    pixels[i].g = alpha[i][0];
-                    pixels[i].b = zback[i][0];
-                }
-            }
-        }
-    }
-#endif
 
 }
 
@@ -1998,6 +1839,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       }
 
    }
+
 
    if ( _multiview )
    {
