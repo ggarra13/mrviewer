@@ -2,10 +2,10 @@
  * @file   mrvImageInformation.cpp
  * @author gga
  * @date   Wed Jul 11 18:47:58 2007
- * 
+ *
  * @brief  Class used to display information about an image
- * 
- * 
+ *
+ *
  */
 
 
@@ -374,16 +374,16 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
     if ( img->first_frame() != img->last_frame() )
       {
-	 add_int( _("First Frame"), img->first_frame(), true,
+          add_int( _("First Frame"), (int)img->first_frame(), true,
 		  (fltk::Callback*)change_first_frame_cb, 1, 50 );
-	 add_int( _("Last Frame"), img->last_frame(), true,
+          add_int( _("Last Frame"), (int)img->last_frame(), true,
 		  (fltk::Callback*)change_last_frame_cb, 2, 55 );
       }
 
     add_int64( _("Frame Start"), img->start_frame() );
     add_int64( _("Frame End"), img->end_frame() );
 
-    add_float( _("FPS"), img->fps(), true, 
+    add_float( _("FPS"), (float) img->fps(), true, 
                (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
 
     ++group;
@@ -613,8 +613,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
         if ( !img->has_video() )
         {
-            double ratio = 100.0 - pct;
-            sprintf( buf, _("%.2f %%"), ratio );
+            double ratio = 100.0 - double(pct);
+            sprintf( buf, _("%.2g %%"), ratio );
             add_text( _("Compression Ratio"), buf );
         }
       }
@@ -1269,7 +1269,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 				   const bool editable )
   {
     boost::int64_t seconds = (boost::int64_t) content;
-    int ms = int( (content - seconds) * 1000 );
+    int ms = (int) ((boost::int64_t(content) - seconds) * 1000);
 
     char buf[128];
     sprintf( buf, _("% 8.0f seconds %d ms."), content, ms );
