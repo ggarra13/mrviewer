@@ -222,8 +222,10 @@ class CMedia
     kDamageSubtitle  = 1 << 4,
     kDamageData      = 1 << 5,
     kDamageLut       = 1 << 6,
+    kDamage3DData    = 1 << 7,
     kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut | 
-                        kDamageThumbnail | kDamageData | kDamageSubtitle )
+                        kDamageThumbnail | kDamageData | kDamageSubtitle |
+                        kDamage3DData)
     };
 
     enum DecodeStatus {

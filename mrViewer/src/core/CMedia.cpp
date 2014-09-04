@@ -2164,6 +2164,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   boost::uint64_t idx = f - _frame_start;
   assert( idx <= (_frame_end - _frame_start) );
 
+  image_damage( image_damage() | kDamage3DData );
 
   if ( _sequence && _sequence[idx] )
     {
