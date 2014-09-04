@@ -73,8 +73,6 @@ GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l )
     _zmin( 1.0f ),
     _farPlane( 20.0f )
 {
-    fltk::add_timeout(kFPS, Timer_CallBack, (void*)this);       // 24fps timer
-
     _fitTran = -(_zmax + _zmin) / 2.0;
     _fitScale = 1.0;
 
@@ -182,7 +180,7 @@ GlWindow3d::GlInit()
     _elevation = 0;
     _azimuth = 0;
     _inverted = 0;
-    _displayFactor = 10;
+    _displayFactor = 1;
 }
 
 void
@@ -374,6 +372,7 @@ GlWindow3d::handle (int event)
 
                 _mouseStartX = x;
                 _mouseStartY = y;
+                redraw();
                 return 1;
                 break;
             }
@@ -399,8 +398,17 @@ GlWindow3d::handle (int event)
                 int y = fltk::event_y();
                 _translateX += (x - _mouseX) * 0.01;
                 _translateY += (y - _mouseY) * 0.01;
+                redraw();
                 break;
         }
+    }
+
+    if ( event == fltk::MOUSEWHEEL )
+    {
+        float delta = fltk::event_dy();
+        _zoom += delta * 2.0f;
+        redraw();
+        return 1;
     }
 
     if ( fltk::event_button() == fltk::RightButton )
@@ -413,6 +421,7 @@ GlWindow3d::handle (int event)
             int dx = x - _mouseX;
             int delta = -dx;
             _zoom += delta * 0.2;
+            redraw();
         }
     }
 

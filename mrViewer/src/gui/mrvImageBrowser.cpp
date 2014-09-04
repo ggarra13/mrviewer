@@ -649,8 +649,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     for ( size_t i = 0; i < num_video_streams; ++i )
       {
 	 sprintf( buf, N_("SELECT id FROM videos "
-			  "WHERE image_id=( %s ) AND stream=%d;"),
-		 image_id.c_str(), i+1 );
+			  "WHERE image_id=( %s ) AND stream=%" PRId64 ";"),
+                  image_id.c_str(), i+1 );
 	if (! db->sql( buf ) )
 	  {
 	    LOG_ERROR( _("Could not find video '") << img->filename() 
@@ -667,7 +667,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	    if ( result != "" ) continue;
 	  }
 
-	const CMedia::video_info_t& s = img->video_info(i);
+	const CMedia::video_info_t& s = img->video_info(unsigned(i));
 
 
 	std::string pixel_format_id = "NULL";
@@ -698,7 +698,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 			 "created_at, updated_at, "
 			 "fourcc, pixel_format_id, fps, start, duration )"
 			 " VALUES "
-			 "( ( %s ), %d, '%s', "
+			 "( ( %s ), %" PRId64 ", '%s', "
 			 "'%s', '%s', "
 			 "'%s', ( %s ), %g, %g, %g );" ),
 		 image_id.c_str(), i+1,
@@ -758,7 +758,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
       {
 	 sprintf( buf, N_("SELECT id FROM audios "
 			  "WHERE directory='%s' AND filename='%s'"
-			  " AND stream=%d;"),
+			  " AND stream=%" PRId64 ";"),
 		  db->quote( img->directory() ).c_str(), 
 		  db->quote( img->name() ).c_str(), i+1 );
 	if (! db->sql( buf ) )
@@ -777,14 +777,14 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	    if ( result != "" ) continue;
 	  }
 
-	const CMedia::audio_info_t& s = img->audio_info(i);
+	const CMedia::audio_info_t& s = img->audio_info(unsigned(i));
 	sprintf( buf, N_("INSERT INTO audios"
 			 "( directory, filename, stream, image_id, creator, "
 			 "created_at, updated_at, "
 			 "disk_space, date, shot_id, codec, fourcc, "
 			 "channels, frequency, bitrate, start, duration )"
 			 " VALUES "
-			 "('%s', '%s', %d, ( %s ), '%s', "
+			 "('%s', '%s', %" PRId64 ", ( %s ), '%s', "
 			 "'%s', '%s', "
 			 "%u, '%s', ( %s ), '%s', '%s', %u, %u,"
 			 "%u, %g, %g );" ),
