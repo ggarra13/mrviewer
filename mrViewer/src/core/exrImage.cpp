@@ -1130,6 +1130,10 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	  h.findTypedAttribute<Imf::V2fAttribute>( N_("adoptedNeutral") );
 	if ( attr )
 	  {
+              char buf[128];
+              V2f va = attr->value();
+              sprintf( buf, "%f %f", va.x, va.y );
+              _exif.insert( std::make_pair( _("Adopted Neutral"), buf ) );
 	  }
       }
 
@@ -1138,6 +1142,10 @@ void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 	  h.findTypedAttribute<Imf::IntAttribute>( N_("imageState") );
 	if ( attr )
 	  {
+              char buf[128];
+              int i = attr->value();
+              sprintf( buf, "%d", i );
+              _exif.insert( std::make_pair( _("Image State"), buf ) );
 	  }
       }
 
