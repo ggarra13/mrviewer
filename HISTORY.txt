@@ -1,3 +1,9 @@
+v2.6.5.0 - Simplified and sped up exr loader.
+	 - Fixed crash of exr loader when working with an image with a single
+	   view.
+	 - Added 3D View to evaluate deep scanline and deep tile image.
+	 - EXR loader now supports deep tile images. 
+	 - Bug fixed ILM format of image sequences ( beauty.1-24.exr )
 v2.6.4.4 - Sped up reading of image files (specially the first of a sequence).
 	 - Bug fixed OpenEXR stereo crossed not respecting dataWindows 
 	   correctly.
