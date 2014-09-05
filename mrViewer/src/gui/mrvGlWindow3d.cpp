@@ -41,7 +41,6 @@
 //----------------------------------------------------------------------------
 #include <cassert>
 
-#include "mrvGlWindow3d.h"
 
 #include <GL/gl.h>
 
@@ -54,6 +53,9 @@
 #include <algorithm>
 
 #include "mrvThread.h"
+
+#include "gui/mrvGlWindow3d.h"
+#include "gui/mrvHotkey.h"
 
 using std::max;
 using std::min;
@@ -331,6 +333,10 @@ GlWindow3d::draw()
 int
 GlWindow3d::handle (int event)
 {
+    if (event == fltk::FOCUS || event == fltk::ENTER ) {
+        return 1;
+    }
+
     if (fltk::event_button() == fltk::LeftButton )
     {
         switch (event)
@@ -429,33 +435,30 @@ GlWindow3d::handle (int event)
     _mouseY = fltk::event_y();
 
 
-    if (event == fltk::FOCUS ) {
-        return 1;
-    }
 
     if (event == fltk::KEY)
     {
-        unsigned text = fltk::event_key();
+        unsigned rawkey = fltk::event_key();
         
-        if ( text == 'a' ) //scale up
+        if ( kZDepthUp.match( rawkey ) ) //scale up
         {
             _scaleZ *= 1.2;
             redraw();
             return 1;
         }
-        if ( text == 's' ) //scale down
+        if ( kZDepthDown.match( rawkey ) ) //scale down
         {
             _scaleZ /= 1.2;
             redraw();
             return 1;
         }
-        if ( text == 'f' ) //fit
+        if ( kFitScreen.match(rawkey) ) //fit
         {
             GlInit();
             redraw();
             return 1;
         }
-        if ( text == 'd' ) //decrease pixel samples
+        if ( kDensityDown.match(rawkey) ) //decrease pixel samples
         {
             _displayFactor *= 2;
             if (_displayFactor > _dx || _displayFactor > _dy )
@@ -463,7 +466,7 @@ GlWindow3d::handle (int event)
             redraw();
             return 1;
         }
-        if ( text == 'c' ) //increase pixel samples
+        if ( kDensityUp.match(rawkey) ) //increase pixel samples
         {
             _displayFactor /= 2;
             if (_displayFactor < 1)
