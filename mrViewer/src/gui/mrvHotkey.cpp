@@ -89,6 +89,12 @@ Hotkey kGammaLess( false, false, false, false, 0, "(" );
 Hotkey kSetAsBG( false, false, false, false, 0 );
 
 
+Hotkey kZDepthUp( false, false, false, false, 's' );
+Hotkey kZDepthDown( false, false, false, false, 'a' );
+
+Hotkey kDensityUp( false, false, false, false, 'c' );
+Hotkey kDensityDown( false, false, false, false, 'd' );
+
 Hotkey kAttachAudio( false, false, false, false, 0 );
 Hotkey kDetachAudio( false, false, false, false, 0 );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
@@ -145,6 +151,10 @@ HotkeyEntry( _("Set As BG Image"), kSetAsBG),
 HotkeyEntry( _("Attach Audio File"), kAttachAudio),
 HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
 HotkeyEntry( _("Clone Image"), kCloneImage),
+HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
+HotkeyEntry( _("3dView Z Depth Down"), kZDepthDown),
+HotkeyEntry( _("3dView Density Up"), kDensityUp),
+HotkeyEntry( _("3dView Density Down"), kDensityDown),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 
