@@ -1455,6 +1455,9 @@ void exrImage::loadDeepData( int& zsize,
 
     try {
         Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
+
+        if ( ! inmaster.partComplete( _curpart ) ) return;
+
         const Imf::Header& h = inmaster.header( _curpart );
 
         _type = SCANLINEIMAGE;
@@ -1763,11 +1766,11 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       st[0] = st[1] = -1;
       for ( ; i < _numparts; ++i )
       {
-         Header header = inmaster.header(i);
-         if ( ! header.hasType() )
-             _type = SCANLINEIMAGE;
-         else
-             _type = header.type();
+          const Header& header = inmaster.header(i);
+          if ( ! header.hasType() )
+              _type = SCANLINEIMAGE;
+          else
+              _type = header.type();
 
          if ( _type != SCANLINEIMAGE &&
               _type != TILEDIMAGE &&
@@ -1777,9 +1780,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          if ( _exif.empty() && _iptc.empty() )
             read_header_attr( header, frame );
 
-	_pixel_ratio = header.pixelAspectRatio();
-	_lineOrder   = header.lineOrder();
-	_compression = header.compression(); 
+         _pixel_ratio = header.pixelAspectRatio();
+         _lineOrder   = header.lineOrder();
+         _compression = header.compression(); 
 
          Imf::ChannelList channels = header.channels();
 
@@ -1934,12 +1937,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
           FrameBuffer fb;
 
-          {
-              bool ok = find_channels( header, fb, frame );
-              if (!ok) {
-                  IMG_ERROR( _("Could not locate channels in header") );
-                  return false;
-              }
+          bool ok = find_channels( header, fb, frame );
+          if (!ok) {
+              IMG_ERROR( _("Could not locate channels in header") );
+              return false;
           }
 
           InputPart in( inmaster, _curpart );
