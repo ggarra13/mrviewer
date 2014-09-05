@@ -41,6 +41,9 @@
 //----------------------------------------------------------------------------
 #include <cassert>
 
+#ifdef _WIN32
+#include <windows.h>
+#endif
 
 #include <GL/gl.h>
 
@@ -49,6 +52,8 @@
 #include <fltk/draw.h>
 
 
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include <string.h>
 #include <algorithm>
 
@@ -333,7 +338,13 @@ GlWindow3d::draw()
 int
 GlWindow3d::handle (int event)
 {
-    if (event == fltk::FOCUS || event == fltk::ENTER ) {
+    if ( event == fltk::ENTER )
+    {
+        focus(this);
+        return 1;
+    }
+
+    if (event == fltk::FOCUS ) {
         return 1;
     }
 

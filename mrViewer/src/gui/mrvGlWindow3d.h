@@ -41,16 +41,6 @@
 //
 //----------------------------------------------------------------------------
 
-
-#include <stdio.h>
-#include <math.h>
-
-#ifdef _WIN32
-#define _USE_MATH_DEFINES
-#include <windows.h>
-#include <math.h>
-#endif
-
 #include <boost/thread/recursive_mutex.hpp>
 
 #include <fltk/run.h>
