@@ -177,6 +177,11 @@ extern Hotkey kTogglePresentation;
 
 extern Hotkey kScrub;
 
+extern Hotkey kZDepthUp;
+extern Hotkey kZDepthDown;
+
+extern Hotkey kDensityUp;
+extern Hotkey kDensityDown;
 
 extern Hotkey kExposureMore;
 extern Hotkey kExposureLess;
