@@ -91,7 +91,7 @@ namespace fltk {
 
 
 #ifdef DEBUG
-#  define CHECK_GL(x) handle_gl_errors( N_( x ) )
+#  define CHECK_GL(x) GLEngine::handle_gl_errors( N_( x ) )
 #else
 #  define CHECK_GL(x)
 #endif
