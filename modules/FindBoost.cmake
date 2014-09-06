@@ -8,7 +8,7 @@
 
 # ----------------------------------------------------------------------------
 # If you have installed Boost in a non-standard location or you have
-# just staged the boost files using bjam then you have three
+# just staged the boost files using bjam then you have thread
 # options. In the following comments, it is assumed that <Your Path>
 # points to the root directory of the include directory of Boost. e.g
 # If you have put boost in C:\development\Boost then <Your Path> is

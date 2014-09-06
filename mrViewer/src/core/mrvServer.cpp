@@ -989,6 +989,20 @@ bool Parser::parse( const std::string& s )
 
        ok = true;
    }
+   else if ( cmd == N_("GL3dView") )
+   {
+       int x;
+       is >> x;
+       if ( x )
+       {
+           ui->uiGL3dView->uiMain->show();
+       }
+       else
+       {
+           ui->uiGL3dView->uiMain->hide();
+       }
+       ok = true;
+   }
    else if ( cmd == N_("HistogramWindow") )
    {
        int x;
@@ -1002,6 +1016,7 @@ bool Parser::parse( const std::string& s )
        {
            ui->uiHistogram->uiMain->hide();
        }
+       ok = true;
    }
    else if ( cmd == N_("VectorscopeWindow") )
    {
@@ -1016,6 +1031,7 @@ bool Parser::parse( const std::string& s )
        {
            ui->uiVectorscope->uiMain->hide();
        }
+       ok = true;
    }
 
    v->_clients = c;
