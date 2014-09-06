@@ -17,8 +17,6 @@
 #include "gui/mrvIO.h"
 #include "gui/mrvMedia.h"
 
-#define IMG_WARNING(x) LOG_WARNING( _image->name() << " - " << x ) 
-#define IMG_ERROR(x)   LOG_ERROR( _image->name() << " - " << x )
 
 
 namespace 
