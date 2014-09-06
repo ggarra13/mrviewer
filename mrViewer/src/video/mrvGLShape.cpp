@@ -22,6 +22,8 @@
 #include <GL/glut.h>
 // #include <GL/gl.h>
 
+#  define CHECK_GL(x) GLEngine::handle_gl_errors( N_( x ) )
+
 #include <fltk/gl.h>
 #include <fltk/Font.h>
 
@@ -29,6 +31,7 @@
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
+#include "video/mrvGLEngine.h"
 #include "video/mrvGLShape.h"
 
 namespace {
@@ -191,12 +194,12 @@ std::string GLTextShape::send() const
 
 void GLTextShape::draw( double z )
 {
-
    //Turn on Color Buffer and Depth Buffer
    glColorMask(true, true, true, true);
 
    //Only write to the Stencil Buffer where 1 is not set
    glStencilFunc(GL_NOTEQUAL, 1, 0xFFFFFFFF);
+
    //Keep the content of the Stencil Buffer
    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 
@@ -205,18 +208,24 @@ void GLTextShape::draw( double z )
    glDisable( GL_LIGHTING );
    glEnable( GL_BLEND );
 
+   // So compositing works properly
+   glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+
    glColor4f( r, g, b, a );
 
    if ( font() )
       fltk::glsetfont(font(), size()*z );
 
+#if 0
    glRasterPos2i(0,0);
-   glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x*z), GLfloat(pts[0].y*z), NULL );
+   glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x), GLfloat(pts[0].y), NULL );
+#else
+   glRasterPos2f( GLfloat(pts[0].x), GLfloat(pts[0].y) );
+#endif
 
    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
    fltk::gldrawtext(text().c_str());
-
 }
 
 
