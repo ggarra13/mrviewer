@@ -466,7 +466,7 @@ o->value(-1);}
       {fltk::Window} uiMain {
         label {3d View}
         user_data this user_data_type {GL3dViewUI*}
-        callback {v->main()->uiView->send( "Gl3dView 0" );
+        callback {v->main()->uiView->send( "GL3dView 0" );
 o->hide();}
         xywh {158 529 325 240} set_xy hide resizable
         extra_code {// Make the window transient
