@@ -78,7 +78,7 @@ void media_track::add( mrv::media m, boost::int64_t frame )
    m->position( frame );
 
    mrv::media o = reel->images[ e-1 ];
-   timeline()->maximum( frame + o->image()->duration() - 1 );
+   timeline()->maximum( double( frame + o->image()->duration() - 1 ) );
 
    timeline()->redraw();
    parent()->redraw();
@@ -95,9 +95,9 @@ int media_track::index_for( const mrv::media& m )
       return -1;
    }
 
-   size_t e = reel->images.size();
+   unsigned e = (unsigned)reel->images.size();
 
-   for (size_t i = 0; i < e; ++i )
+   for (unsigned i = 0; i < e; ++i )
    {
       const mrv::media& m2 = reel->images[i];
       if ( m == m2 )
@@ -125,9 +125,9 @@ int media_track::index_for( const std::string s )
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return -1;
 
-   size_t e = reel->images.size();
+   unsigned e = (unsigned) reel->images.size();
 
-   for (size_t i = 0; i < e; ++i )
+   for (unsigned i = 0; i < e; ++i )
    {
       mrv::media m = reel->images[i];
       if ( m && m->image()->fileroot() == s )
@@ -144,14 +144,14 @@ int media_track::index_at( const boost::int64_t frame )
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return -1;
 
-   size_t e = reel->images.size();
+   unsigned e = (unsigned) reel->images.size();
    if ( e > 0 )
    {
       if ( frame < reel->images[0]->position() )
 	 return 0;
    }
 
-   for (size_t i = 0; i < e; ++i )
+   for (unsigned i = 0; i < e; ++i )
    {
       mrv::media m = reel->images[i];
       if ( !m ) continue;
@@ -277,35 +277,35 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
    if ( !reel ) return;
 
 
-   int idx = 0;
-   size_t e = reel->images.size();
-   for ( size_t i = 0; i < e; ++i )
+   unsigned idx = 0;
+   unsigned e = (unsigned)reel->images.size();
+   for ( unsigned i = 0; i < e; ++i )
    {
-      mrv::media fg = reel->images[i];
-      if ( fg == m )
-      {
-	 idx = i;
-	 int64_t newpos = m->position() + diff;
-	 if ( newpos < m->position() + m->image()->duration() )
-	 {
-	    CMedia* img = m->image();
-	    img->first_frame( img->first_frame() + diff );
-	    int64_t f = img->first_frame();
-	    if ( ! reel->edl )
-	    {
-	       main()->uiStartFrame->value( f );
-	    }
-	    img->seek(f);
-	    main()->uiView->foreground( fg );
+       mrv::media fg = reel->images[i];
+       if ( fg == m )
+       {
+           idx = i;
+           int64_t newpos = m->position() + diff;
+           if ( newpos < m->position() + m->image()->duration() )
+           {
+               CMedia* img = m->image();
+               img->first_frame( img->first_frame() + diff );
+               int64_t f = img->first_frame();
+               if ( ! reel->edl )
+               {
+                   main()->uiStartFrame->value( f );
+               }
+               img->seek(f);
+               main()->uiView->foreground( fg );
 
-	    char buf[1024];
-	    sprintf( buf, N_("ShiftMediaStart %d") 
-		     N_(" \"%s\" %") PRId64,
-		     _reel_idx, img->fileroot(), img->first_frame() );
-	    main()->uiView->send( buf );
-	 }
-	 break;
-      }
+               char buf[1024];
+               sprintf( buf, N_("ShiftMediaStart %d") 
+                        N_(" \"%s\" %") PRId64,
+                        _reel_idx, img->fileroot(), img->first_frame() );
+               main()->uiView->send( buf );
+           }
+           break;
+       }
    }
 
    // Shift medias that come after
@@ -344,9 +344,9 @@ bool media_track::select_media( const boost::int64_t pos )
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
    if ( !reel ) return false;
 
-   size_t e = reel->images.size();
+   unsigned e = (unsigned) reel->images.size();
 
-   for ( size_t i = 0; i < e; ++i )
+   for ( unsigned i = 0; i < e; ++i )
    {
       mrv::media fg = reel->images[i];
       if ( !fg ) continue;
@@ -377,7 +377,7 @@ bool media_track::select_media( const boost::int64_t pos )
 	 browser()->redraw();
 	 if ( reel->edl )
 	 {
-	    main()->uiTimeline->value( fg->position() );
+             main()->uiTimeline->value( double(fg->position()) );
 	 }
 	 break;
       }
@@ -497,9 +497,9 @@ int media_track::handle( int event )
 	       mrv::media fg = _selected->element();
 	       int64_t start = fg->image()->first_frame();
 	       int64_t end   = fg->image()->last_frame();
-	       t->minimum( start );
+	       t->minimum( double(start) );
 	       // main()->uiStartFrame->value( start );
-	       t->maximum( end );
+	       t->maximum( double(end) );
 	       // main()->uiEndFrame->value( end );
 	    }
 
@@ -645,7 +645,7 @@ void media_track::draw()
       fltk::setfont( textfont(), 12 );
       const char* buf = reel->name.c_str();
       fltk::measure( buf, ww, hh );
-      fltk::drawtext( buf, 4, y()+h()/2 ); 
+      fltk::drawtext( buf, 4.0f, float( y()+h()/2 ) ); 
    }
 
    mrv::Timeline* t = timeline();
@@ -660,8 +660,9 @@ void media_track::draw()
 
       int64_t pos = fg->position();
 
-      int dx = t->slider_position( pos, ww );
-      int dw = t->slider_position( pos+fg->image()->duration(), ww );
+      int dx = t->slider_position( double( pos ), ww );
+      int dw = t->slider_position( double( pos + fg->image()->duration() ),
+                                   ww );
       dw -= dx;
  
       fltk::Rectangle r(rx+dx, y(), dw, h() );
@@ -732,7 +733,8 @@ void media_track::draw()
 
 
       fltk::drawtext( buf,
-		      rx + dx + dw/2 - ww/2 + 2, y() + 2 + h()/2 );
+		      float( rx + dx + dw/2 - ww/2 + 2 ), 
+                      float( y() + 2 + h()/2 ) );
 
 
       fltk::setcolor( fltk::BLACK );
@@ -746,7 +748,8 @@ void media_track::draw()
 
 
       fltk::drawtext( buf,
-		      rx + dx + dw/2 - ww/2, y() + h()/2 );
+		      float( rx + dx + dw/2 - ww/2 ), 
+                      float( y() + h()/2 ) );
    }
 
    fltk::pop_clip();

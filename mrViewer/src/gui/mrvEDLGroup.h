@@ -27,16 +27,16 @@ class EDLGroup : public fltk::Group
 
      // Add a media track and return its index.
      // index can be negative 1 to indicate a missing reel
-     size_t add_media_track( int reel_idx );
+     unsigned add_media_track( int reel_idx );
 
      // Add an audio only track and return its index
-     size_t add_audio_track();
+     unsigned add_audio_track();
 
      // Return the number of media tracks
-     size_t number_of_media_tracks();
+     unsigned number_of_media_tracks();
 
      // Return the number of audio only tracks
-     size_t number_of_audio_tracks();
+     unsigned number_of_audio_tracks();
  
      // Return a media track at index i
      mrv::media_track* media_track( int i )
@@ -52,13 +52,13 @@ class EDLGroup : public fltk::Group
 			     boost::int64_t diff );
 
      // Return an audio track at index i
-     audio_track_ptr& audio_track( size_t i );
+     audio_track_ptr& audio_track( unsigned i );
 
      // Remove a media track at index i
-     void remove_media_track( size_t i );
+     void remove_media_track( unsigned i );
 
      // Remove an audio track at index i
-     void remove_audio_track( size_t i );
+     void remove_audio_track( unsigned i );
 
      void timeline( mrv::Timeline* t ) { _timeline = t; }
      mrv::Timeline* timeline() const { return _timeline; }

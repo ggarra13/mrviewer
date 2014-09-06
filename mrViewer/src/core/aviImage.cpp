@@ -433,7 +433,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
    boost::int64_t start = frame;
    if ( start > 2 ) start -= 2;
 
-   boost::int64_t offset = boost::int64_t( start * AV_TIME_BASE ) / fps();
+   boost::int64_t offset = boost::int64_t( start * AV_TIME_BASE / fps() );
 
     int flags = 0;
     flags &= ~AVSEEK_FLAG_BYTE;

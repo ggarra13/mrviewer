@@ -42,6 +42,8 @@ namespace mrv {
       CMedia* image()             { return _image; }
       const CMedia* image() const { return _image; }
 
+      std::string name() const { return _image->name(); }
+
       fltk::Image* thumbnail()             { return _thumbnail; }
       const fltk::Image* thumbnail() const { return _thumbnail; }
 

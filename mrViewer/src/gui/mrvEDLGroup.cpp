@@ -55,9 +55,9 @@ ImageView* EDLGroup::view() const
 }
 
 // Add a media track and return its index
-size_t EDLGroup::add_media_track( int r )
+unsigned EDLGroup::add_media_track( int r )
 {
-   size_t e = children();
+   unsigned e = children();
 
    mrv::media_track* o = new mrv::media_track(x(), y() + 78 * e,
 					      w(), kTrackHeight);
@@ -109,33 +109,33 @@ bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s,
 }
 
 // Add an audio only track and return its index
-size_t EDLGroup::add_audio_track()
+unsigned EDLGroup::add_audio_track()
 {
    // _audio_track.push_back( mrv::audio_track_ptr() );
    return _audio_track.size() - 1;
 }
 
 // Return the number of media tracks
-size_t EDLGroup::number_of_media_tracks()
+unsigned EDLGroup::number_of_media_tracks()
 {
-   return children();
+    return children();
 }
 
 // Return the number of audio only tracks
-size_t EDLGroup::number_of_audio_tracks()
+unsigned EDLGroup::number_of_audio_tracks()
 {
-   return _audio_track.size();
+    return (unsigned) _audio_track.size();
 }
 
 
 // Return an audio track at index i
-audio_track_ptr& EDLGroup::audio_track( size_t i )
+audio_track_ptr& EDLGroup::audio_track( unsigned i )
 {
    return _audio_track[i];
 }
 
 // Remove a media track at index i
-void EDLGroup::remove_media_track( size_t i )
+void EDLGroup::remove_media_track( unsigned i )
 {
    if ( children() == 1 )
    {
@@ -147,7 +147,7 @@ void EDLGroup::remove_media_track( size_t i )
 }
 
 // Remove an audio track at index i
-void EDLGroup::remove_audio_track( size_t i )
+void EDLGroup::remove_audio_track( unsigned i )
 {
    _audio_track.erase( _audio_track.begin() + i );
 }
@@ -203,9 +203,10 @@ int EDLGroup::handle( int event )
 	       double len = (t->maximum() - t->minimum() + 1);
 	       double p = double(_dragX) / double(ww);
 	       p = t->minimum() + p * len + 0.5f;
+               int64_t pt = int64_t( p );
 
 	       mrv::media_track* track = (mrv::media_track*) child(idx);
-	       mrv::media m = track->media_at( p );
+	       mrv::media m = track->media_at( pt );
 
 	       if ( m )
 	       {
@@ -255,8 +256,8 @@ int EDLGroup::handle( int event )
 
 	    if ( key == 'f' || key == 'a' )
 	    {
-	       size_t i = 0;
-	       size_t e = children();
+	       unsigned i = 0;
+	       unsigned e = children();
 
 	       int64_t tmin = std::numeric_limits<int64_t>::max();
 	       int64_t tmax = std::numeric_limits<int64_t>::min();
@@ -324,8 +325,8 @@ int EDLGroup::handle( int event )
                }
 
 	       mrv::Timeline* t = timeline();
-	       t->minimum( tmin );
-	       t->maximum( tmax );
+	       t->minimum( double(tmin) );
+	       t->maximum( double(tmax) );
 	       t->redraw();
 	       redraw();
 	       return 1;
@@ -375,21 +376,22 @@ int EDLGroup::handle( int event )
 	    double len = (t->maximum() - t->minimum() + 1);
 	    double p = double(_dragX) / double(ww);
 	    p = t->minimum() + p * len + 0.5f;
+            int64_t pt = int64_t( p );
 
 
             mrv::Reel r = browser()->current_reel();
 	    mrv::media m = _drag->element();
 	    if ( t1 == t2 )
 	    {
-	       if ( p < m->position() )
+	       if ( pt < m->position() )
 	       {
 		  t1->remove( m );
-		  t1->insert( p, m );
+		  t1->insert( pt, m );
 		  t1->refresh();
 	       }
 	       else
 	       {
-		  t1->insert( p, m );
+		  t1->insert( pt, m );
 		  t1->remove( m );
 		  t1->refresh();
 	       }
@@ -399,12 +401,12 @@ int EDLGroup::handle( int event )
 	    }
 	    else
 	    {
-	       t2->insert( p, m );
-	       t1->remove( m );
-	       t2->refresh();
+                t2->insert( pt, m );
+                t1->remove( m );
+                t2->refresh();
 
-               browser()->reel( r->name.c_str() );
-               browser()->redraw();
+                browser()->reel( r->name.c_str() );
+                browser()->redraw();
 	    }
 
 	    delete _drag;
@@ -445,12 +447,12 @@ int EDLGroup::handle( int event )
 
 	       if ( X >= w()-128 ) {
 		  pan(diff * 2);
-		  add_timeout( 0.1 );
+		  add_timeout( 0.1f );
 	       }
 	       else if ( X <= 128 )
 	       {
 		  pan(diff * -2);
-		  add_timeout( 0.1 );
+		  add_timeout( 0.1f );
 	       }
 	       
 	       _dragX = X;
@@ -477,37 +479,36 @@ int EDLGroup::handle( int event )
 void EDLGroup::zoom( double z )
 {
 
-   mrv::Timeline* t = timeline();
+    mrv::Timeline* t = timeline();
 
-   double pct = (double) fltk::event_x() / (double)w();
+    double pct = (double) fltk::event_x() / (double)w();
 
-   int64_t tmin = t->minimum();
-   int64_t tmax = t->maximum();
+    int64_t tmin = int64_t( t->minimum() );
+    int64_t tmax = int64_t( t->maximum() );
 
 
    int64_t tdiff = tmax - tmin;
-   int64_t tcur = tmin + pct * tdiff;
+   int64_t tcur = tmin + int64_t( pct * double(tdiff) );
 
 
-   tmax *= z;
-   tmin *= z;
+   tmax = int64_t( double(tmax) * z );
+   tmin = int64_t( double(tmin) * z );
 
    int64_t tlen = tmax - tmin;
 
-   tmax = tcur + ( 1.0 - pct ) * tlen;
-   tmin = tcur - tlen * pct;
+   tmax = tcur + int64_t( ( 1.0 - pct ) *  double(tlen));
+   tmin = tcur - int64_t( double(tlen) * pct );
 
 
    if ( tmin < 0.0 ) tmin = 0.0;
 
-   t->minimum( tmin );
-   t->maximum( tmax );
+   t->minimum( double(tmin) );
+   t->maximum( double(tmax) );
    t->redraw();
 
 
-   size_t i = 0;
-   size_t e = children();
-   for ( ; i != e; ++i )
+   unsigned e = children();
+   for ( unsigned i = 0; i < e; ++i )
    {
       mrv::media_track* c = (mrv::media_track*)child(i);
       c->zoom( z );
@@ -517,8 +518,8 @@ void EDLGroup::zoom( double z )
 
 void EDLGroup::refresh()
 {
-   size_t e = children();
-   for ( size_t i = 0; i < e; ++i )
+   unsigned e = children();
+   for ( unsigned i = 0; i < e; ++i )
    {
       DBG( "REFRESH MEDIA TRACK " << i );
       mrv::media_track* o = (mrv::media_track*) child(i);

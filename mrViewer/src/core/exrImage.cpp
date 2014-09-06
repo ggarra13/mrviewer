@@ -52,7 +52,6 @@ namespace
 }
 
 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 
 
@@ -732,8 +731,9 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
      }
      catch( const std::exception& e )
      {
-	LOG_ERROR( e.what() );
-	return false;
+         IMG_ERROR( e.what() );
+         _curpart = -1;
+         return false;
      }
   }
 
@@ -1470,7 +1470,7 @@ void exrImage::loadDeepData( int& zsize,
     }
     catch( const std::exception& e )
     {
-        LOG_ERROR( "loadDeepData error: " << e.what() );
+        IMG_ERROR( "loadDeepData error: " << e.what() );
     }
 
 }
@@ -1962,9 +1962,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    }
    else
    {
-      int oldpart = _curpart;
 
       if ( _curpart < 0 ) _curpart = 0;
+      int oldpart = _curpart;
 
       const Header& header = inmaster.header(_curpart);
       if ( _type == DEEPTILE )
@@ -1981,6 +1981,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           loadDeepTileImage( zsize, zbuff, sampleCount, true );
           return true;
       }
+
 
 
       InputPart in (inmaster, _curpart);
@@ -2077,7 +2078,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
     } 
     catch( const std::exception& e )
       {
-	LOG_ERROR( e.what() );
+	IMG_ERROR( e.what() );
+        _curpart = -1;
 	return false;
       }
 
