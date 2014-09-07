@@ -229,6 +229,7 @@ namespace mrv {
     _shader( NULL ),
     _lut( NULL ),
     _image( NULL ),
+    _gamma( 1.f ),
     _blend( true ),
     _blend_mode( GL_ALPHA ),
     _num_textures( 1 ),

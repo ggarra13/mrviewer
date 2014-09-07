@@ -213,7 +213,7 @@ namespace mrv {
     float orig_v= v;
     if ( v > 1.0f ) v = 1.0f;
 
-    long smixer_level = pmin + long( (pmax-pmin) * v);
+    long smixer_level = pmin + long( float(pmax-pmin) * v);
 
 
     for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i) {
@@ -473,40 +473,40 @@ namespace mrv {
     if ( !_pcm_handle || size == 0 ) return false;
     if ( !_enabled )   return true;
 
-    int           status;
+    long int           status;
 
 
-    unsigned sample_len = size / _sample_size;
+    unsigned sample_len = (unsigned)size / _sample_size;
     const char* sample_buf = data;
 
     while ( sample_len > 0 ) {
-      status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
-      if ( status < 0 ) {
-	if ( status == -EAGAIN ) {
-	  continue;
-	}
-	if ( status == -ESTRPIPE ) {
-	  /* application was suspended, wait until suspend flag clears */
-	  do {
-	    status = snd_pcm_resume(_pcm_handle);
-	  } while ( status == -EAGAIN );
-	}
-	if ( status < 0 ) {
-	  // 	fprintf( stderr, "underrun\n" );
-	  /* output buffer underrun */
-	  status = snd_pcm_prepare(_pcm_handle);
-	}
-	if ( status < 0 ) {
-	  /* Hmm, not much we can do - abort */
-	  _enabled = false;
-	  return false;
-	}
-	continue;
-      }
-      sample_buf += status * _sample_size;
-      sample_len -= status;
+        status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
+        if ( status < 0 ) {
+            if ( status == -EAGAIN ) {
+                continue;
+            }
+            if ( status == -ESTRPIPE ) {
+                /* application was suspended, wait until suspend flag clears */
+                do {
+                    status = snd_pcm_resume(_pcm_handle);
+                } while ( status == -EAGAIN );
+            }
+            if ( status < 0 ) {
+                // 	fprintf( stderr, "underrun\n" );
+                /* output buffer underrun */
+                status = snd_pcm_prepare(_pcm_handle);
+            }
+            if ( status < 0 ) {
+                /* Hmm, not much we can do - abort */
+                _enabled = false;
+                return false;
+            }
+            continue;
+        }
+        sample_buf += status * _sample_size;
+        sample_len -= (unsigned)status;
     }
-
+    
     return true;
   }
 

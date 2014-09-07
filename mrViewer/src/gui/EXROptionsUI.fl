@@ -126,7 +126,7 @@ v->uiMain->make_exec_return(false);}
     Function {convert()} {open
     } {
       code {_compression = (Imf::Compression) uiCompression->value();
-_dwa_compression_level = uiDWACompression->value();} {}
+_dwa_compression_level = (float) uiDWACompression->value();} {}
       code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
