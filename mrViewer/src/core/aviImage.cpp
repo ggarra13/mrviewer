@@ -2570,6 +2570,13 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 
 	rgb = mrv::color::yuv::to_rgb( yuv );
 
+        if ( rgb.r < 0x00 ) rgb.r = 0x00;
+        else if ( rgb.r > 0xff ) rgb.r = 0xff;
+        if ( rgb.g < 0x00 ) rgb.g = 0x00;
+        else if ( rgb.g > 0xff ) rgb.g = 0xff;
+        if ( rgb.b < 0x00 ) rgb.b = 0x00;
+        else if ( rgb.b > 0xff ) rgb.b = 0xff;
+
         float w = a / 255.0f;
         rgb.r = rgb.g * w;
         rgb.g *= w;

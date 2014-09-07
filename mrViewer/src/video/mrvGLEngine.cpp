@@ -1380,6 +1380,7 @@ void GLEngine::draw_images( ImageList& images )
            {
 	      ++q;
               quad = *q;
+              quad->gamma( 1.0f );
 	      quad->bind( sub );
 	      quad->draw( texWidth, texHeight );
            }
