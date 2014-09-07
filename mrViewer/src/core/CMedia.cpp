@@ -1770,8 +1770,6 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
     /* fake mpeg2 transport stream codec (currently not
        registered) */
      codec_name = N_("mpeg2ts");
-  } else if (enc->codec_name[0] != '\0') {
-    codec_name = enc->codec_name;
   } else {
     /* output avi tags */
     if(   isprint(enc->codec_tag&0xFF) && isprint((enc->codec_tag>>8)&0xFF)
@@ -1789,7 +1787,10 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
     codec_name = buf;
   }
   
-  return std::string( codec_name );
+  if ( codec_name )
+      return std::string( codec_name );
+  else
+      return "";
 }
 
 
