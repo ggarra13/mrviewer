@@ -686,11 +686,11 @@ void GLEngine::draw_title( const float size,
   
   glLineWidth(4.0);
 
-  float sum = 0.0f;
+  int sum = 0;
   for (const char* p = text; *p; ++p)
-    sum += glutStrokeWidth( font, *p );
+      sum += glutStrokeWidth( font, *p );
 
-  float x = ( _view->w() - sum * size ) / 2.0f;
+  float x = float( _view->w() - sum * size ) / 2.0f;
 
   float rgb[4];
   glGetFloatv( GL_CURRENT_COLOR, rgb );
@@ -726,7 +726,7 @@ void GLEngine::draw_title( const float size,
 void GLEngine::draw_text( const int x, const int y, const char* s )
 {
   glLoadIdentity();
-  glRasterPos2s( x, y );
+  glRasterPos2i( x, y );
 
   glPushAttrib(GL_LIST_BIT);
   if ( sCharset )
@@ -748,8 +748,8 @@ void GLEngine::draw_cursor( const double x, const double y )
    double zoomX = _view->zoom();
    double zoomY = _view->zoom();
 
-   double tw = texWidth  / 2.0f;
-   double th = texHeight / 2.0f;
+   double tw = double(texWidth)  / 2.0;
+   double th = double(texHeight) / 2.0;
 
    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
@@ -943,10 +943,10 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
 
     glBegin(GL_LINE_LOOP);
 
-    glVertex2i(0,  0);
-    glVertex2i(rw, 0);
-    glVertex2i(rw, -rh);
-    glVertex2i(0,  -rh);
+    glVertex2d(0.0, 0.0);
+    glVertex2d(rw,  0.0);
+    glVertex2d(rw,  -rh);
+    glVertex2d(0.0, -rh);
 
     glEnd();
 
@@ -1380,7 +1380,6 @@ void GLEngine::draw_images( ImageList& images )
            {
 	      ++q;
               quad = *q;
-              quad->gamma( 1.0f );
 	      quad->bind( sub );
 	      quad->draw( texWidth, texHeight );
            }
@@ -1411,8 +1410,8 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
    double zoomX = _view->zoom();
    double zoomY = _view->zoom();
 
-   double tw = texWidth  / 2.0f;
-   double th = texHeight / 2.0f;
+   double tw = double( texWidth  ) / 2.0;
+   double th = double( texHeight ) / 2.0;
 
    double sw = ((double)_view->w() - texWidth  * zoomX) / 2;
    double sh = ((double)_view->h() - texHeight * zoomY) / 2;
