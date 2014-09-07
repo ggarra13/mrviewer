@@ -116,9 +116,9 @@ v->value(0);
           user_data this user_data_type {AviSaveUI*}
           callback {video_codec = v->uiVideoCodec->child( v->uiVideoCodec->value() )->label();
 video_color = v->uiVideoColor->child( v->uiVideoColor->value() )->label();
-video_bitrate = v->uiVideoBitrate->value();
+video_bitrate = (unsigned)v->uiVideoBitrate->value();
 audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
-audio_bitrate = v->uiAudioBitrate->value();
+audio_bitrate = (unsigned)v->uiAudioBitrate->value();
 
 this->uiMain->make_exec_return(true);}
           xywh {75 330 55 35}

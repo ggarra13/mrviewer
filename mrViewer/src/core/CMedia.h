@@ -539,7 +539,7 @@ class CMedia
     inline InterlaceType interlaced() const { return _interlaced; }
 
     /// Returns the number of channels in the image
-    inline unsigned short number_of_channels() const { return _num_channels; }
+    inline unsigned number_of_channels() const { return _num_channels; }
 
     /// Returns the pixel format of the image
     image_type::Format pixel_format() const;
@@ -1034,7 +1034,7 @@ class CMedia
     double  _fps;             //!< movie's original play speed
 
     double          _pixel_ratio;  //!< pixel ratio of image
-    unsigned short  _num_channels; //!< number of channels
+    unsigned        _num_channels; //!< number of channels
 
     // mostly unused --- keep?
     RenderingIntent _rendering_intent;

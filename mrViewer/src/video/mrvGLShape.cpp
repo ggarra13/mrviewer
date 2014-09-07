@@ -88,7 +88,7 @@ void GLPathShape::draw( double z )
    glColor4f( r, g, b, a );
 
 
-   glLineWidth( pen_size * z );
+   glLineWidth( pen_size * float(z) );
    glEnable( GL_LINE_SMOOTH );
 
 
@@ -111,9 +111,9 @@ void GLPathShape::draw( double z )
 
    if ( pts.size() == 1 || a >= 0.95f )
    {
-      glPointSize( pen_size * z );
-      glDisable( GL_POINT_SMOOTH );
-      glBegin( GL_POINTS );
+       glPointSize( pen_size * float(z) );
+       glDisable( GL_POINT_SMOOTH );
+       glBegin( GL_POINTS );
 
       i = pts.begin();
       for ( ; i != e; ++i )
@@ -154,7 +154,7 @@ void GLErasePathShape::draw( double z )
    glStencilFunc(GL_ALWAYS, 1, 0xFFFFFFFF);
    glStencilOp(GL_REPLACE, GL_REPLACE, GL_REPLACE);
 
-   glLineWidth( pen_size * z );
+   glLineWidth( pen_size * float(z) );
 
    glBegin( GL_LINE_STRIP );
 
@@ -214,7 +214,7 @@ void GLTextShape::draw( double z )
    glColor4f( r, g, b, a );
 
    if ( font() )
-      fltk::glsetfont(font(), size()*z );
+       fltk::glsetfont(font(), size()*float(z) );
 
 #if 0
    glRasterPos2i(0,0);

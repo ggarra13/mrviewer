@@ -2604,7 +2604,7 @@ v->uiHotkey->uiMain->show();}
               {fltk::PopupMenu} uiColorChannel {
                 label Color
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( o->value() );} open
+                callback {v->uiView->channel( (unsigned short)o->value() );} open
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
                 class {mrv::PopupMenu}
