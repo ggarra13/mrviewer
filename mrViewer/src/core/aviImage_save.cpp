@@ -96,7 +96,8 @@ static AVSampleFormat select_sample_format( AVCodec* c, AVSampleFormat input )
 }
 
 /* select layout with the highest channel count */
-static int select_channel_layout(const AVCodec *codec, unsigned num_channels)
+static uint64_t select_channel_layout(const AVCodec *codec, 
+                                      unsigned num_channels)
 {
     const uint64_t *p;
     uint64_t best_ch_layout = 0;
@@ -236,7 +237,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
            * of which frame timestamps are represented. For fixed-fps content,
            * timebase should be 1/framerate and timestamp increments should be
            * identical to 1. */
-          c->time_base.den = 1000 * (double) img->fps();
+          c->time_base.den = int( 1000 * (double) img->fps() );
           c->time_base.num = 1000;
           c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
           // c->qmin = ptr->qmin;
@@ -987,13 +988,15 @@ bool write_va_frame( CMedia* img )
    double audio_time, video_time;
 
     /* Compute current audio and video time. */
-   audio_time = ( audio_st ? audio_frame->pts * av_q2d( audio_st->time_base )
+   audio_time = ( audio_st ? ( double(audio_frame->pts) *
+                               av_q2d( audio_st->time_base ) )
 		  : INFINITY );
    // This is wrong as it does not get updated properly with h264
    //video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
    //     	  : INFINITY );
    
-   video_time = ( video_st ? picture->pts * av_q2d( video_st->codec->time_base )
+   video_time = ( video_st ? ( double(picture->pts) * 
+                               av_q2d( video_st->codec->time_base ) )
    		  : INFINITY );
 
    // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
