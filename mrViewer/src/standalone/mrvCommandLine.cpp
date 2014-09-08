@@ -457,7 +457,7 @@ void parse_command_line( const int argc, char** argv,
                   mrv::get_sequence_limits( start, end, fileroot );
                }
 
-               if ( e - i <= files.size() - normalFiles )
+               if ( (size_t)(e - i) <= files.size() - normalFiles )
                {
                   // Add audio file to last stereo fileroot
                   if ( ai != ae )
