@@ -172,11 +172,11 @@ namespace mrv
         if (!pic) return;
     }
 
-    if ( xmin >= pic->width() ) xmin = pic->width()-1;
-    if ( ymin >= pic->height() ) ymin = pic->height()-1;
+    if ( xmin >= (int)pic->width() ) xmin = (int) pic->width()-1;
+    if ( ymin >= (int)pic->height() ) ymin = (int) pic->height()-1;
 
-    if ( xmax >= pic->width() ) xmax = pic->width()-1;
-    if ( ymax >= pic->height() ) ymax = pic->height()-1;
+    if ( xmax >= (int)pic->width() ) xmax = (int) pic->width()-1;
+    if ( ymax >= (int)pic->height() ) ymax =(int)  pic->height()-1;
 
     unsigned int stepY = (ymax - ymin + 1) / w();
     unsigned int stepX = (xmax - xmin + 1) / h();
