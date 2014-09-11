@@ -13,11 +13,11 @@
 
 
   
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
   
   
   
   <title>Starting mrViewer</title>
-  <link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css">
 </head>
 
 
@@ -40,17 +40,6 @@ mrViewer can be started in a variety of ways. &nbsp;<br>
 
 <br>
 
-
-
-
-By default, when installing mrViewer, you will also be given the choice
-to create an icon on your desktop. &nbsp;If you have done that, you
-can
-often just click on the mrViewer icon on the desktop.<br>
-
-
-
-
 <br>
 
 
@@ -59,8 +48,9 @@ often just click on the mrViewer icon on the desktop.<br>
 If you have no icon on your desktop, the simplest way is
 to go the place where mrViewer was installed, look for the directory
 for the appropiate platform and architecture for your machine and click
-on the mrViewer
-or mrViewer.exe application icon.<br>
+on the:
+<div class="hotkey">mrViewer.sh </div> ( Linux )
+or <div class="hotkey">mrViewer.exe</div> ( Windows ) application icon.<br>
 
 
 
@@ -78,9 +68,16 @@ variable. &nbsp;Open any shell window and then you can type in:<br>
 
 
 
-<div class="console">&gt; mrViewer [-options] [&lt;images...&gt;]<br>
+<div class="console">&gt; mrViewer [-options] [&lt;images...&gt;]
 </div>
 <br>
+<br>
+On Linux, you would do:
+
+<div class="console">&gt; mrViewer.sh [-options] [&lt;images...&gt;]
+</div>
+<br>
+
 where -options are optional mrViewer command-line options
 and&nbsp;images are optionally a list of images or sequences you
 want
@@ -90,10 +87,10 @@ to display. &nbsp;For a list of valid options, use:<br>
 
 
 
-<div class="console">&gt; mrViewer -h<br>
+<div class="console">&gt; mrViewer -h</div>
+<br>
 <br>
 
-</div>
 <br>
 On certain platforms, like Windows, mrViewer can also associate itself
 to several image and video files it knows about. In that case,
@@ -108,7 +105,7 @@ In order for this to work, mrViewer creates a dummy lock file in your
 home directory in:
 
 
-<div class="console">$HOME/.fltk/filmaura/mrViewer.lock.prefs<br></div>
+<div class="console">$HOME/.fltk/filmaura/mrViewer.lock.prefs</div>
 on linux
 </br>
 <br>
@@ -116,6 +113,8 @@ and</br>
 <div class="console">
 $USERPROFILE/filmaura/mrViewer.lock.prefs
 </div>
+
+If mrViewer crashes, that file might get left behind and prevent mrViewer from starting up.  Make sure you delete it manually in that case.
 
 </body>
 </html>

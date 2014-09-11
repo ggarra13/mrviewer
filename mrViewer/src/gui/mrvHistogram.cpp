@@ -207,10 +207,10 @@ namespace mrv
       case kLinear:
 	return (val/maxVal);
       case kSqrt:
-	return (sqrt(1+val)/maxVal);
+	return (sqrtf(1+val)/maxVal);
       case kLog:
       default:
-	return (log(1+val)/maxVal);
+	return (logf(1+val)/maxVal);
       }
   }
 
@@ -230,16 +230,16 @@ namespace mrv
     switch( _histtype )
       {
       case kLog:
-	  maxL = log( 1+maxLumma );
-	  maxR = log( 1+maxRed );
-	  maxG = log( 1+maxGreen );
-	  maxB = log( 1+maxBlue );
+	  maxL = logf( 1+maxLumma );
+	  maxR = logf( 1+maxRed );
+	  maxG = logf( 1+maxGreen );
+	  maxB = logf( 1+maxBlue );
 	  break;
       case kSqrt:
-	  maxL = sqrt( 1+maxLumma );
-	  maxR = sqrt( 1+maxRed );
-	  maxG = sqrt( 1+maxGreen );
-	  maxB = sqrt( 1+maxBlue );
+	  maxL = sqrtf( 1+maxLumma );
+	  maxR = sqrtf( 1+maxRed );
+	  maxG = sqrtf( 1+maxGreen );
+	  maxB = sqrtf( 1+maxBlue );
 	  break;
       default:
 	  maxL = maxLumma;
@@ -259,7 +259,8 @@ namespace mrv
 	  {
 	    fltk::setcolor( fltk::GRAY75 );
 	    v = histogram_scale( lumma[idx], maxL );
-	    fltk::drawline( x, H, x, H-int(HH*v) );
+            int y = int(HH*v);
+	    fltk::drawline( x, H, x, H-y );
 	  }
 
 	if ( _channel == kRed || _channel == kRGB )
@@ -273,14 +274,16 @@ namespace mrv
 	  {
 	    fltk::setcolor( fltk::GREEN );
 	    v = histogram_scale( green[idx], maxG );
-	    fltk::drawline( x, H, x, H-int(HH*v) );
+            int y = int(HH*v);
+	    fltk::drawline( x, H, x, H-y );
 	  }
 
 	if ( _channel == kBlue || _channel == kRGB )
 	  {
 	    fltk::setcolor( fltk::BLUE );
 	    v = histogram_scale( blue[idx], maxB );
-	    fltk::drawline( x, H, x, H-int(HH*v) );
+            int y = int(HH*v);
+	    fltk::drawline( x, H, x, H-y );
 	  }
       }
   }
