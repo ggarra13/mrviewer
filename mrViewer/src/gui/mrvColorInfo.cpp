@@ -332,12 +332,12 @@ void ColorInfo::update( const CMedia* img,
       float gamma = uiMain->uiView->gamma();
       float one_gamma = 1.0f / gamma;
 
-      for ( unsigned y = ymin; y <= ymax; ++y )
+      for ( int y = ymin; y <= ymax; ++y )
 	{
-	  for ( unsigned x = xmin; x <= xmax; ++x, ++count )
+	  for ( int x = xmin; x <= xmax; ++x, ++count )
 	    {
                CMedia::Pixel rp = pic->pixel( x, y );
-               
+
                if ( rp.r > 0.0f && isfinite(rp.r) )
                    rp.r = powf(rp.r * gain, one_gamma);
                if ( rp.g > 0.0f && isfinite(rp.g) )
@@ -350,7 +350,7 @@ void ColorInfo::update( const CMedia* img,
                if ( rp.g < pmin.g ) pmin.g = rp.g;
                if ( rp.b < pmin.b ) pmin.b = rp.b;
                if ( rp.a < pmin.a ) pmin.a = rp.a;
-               
+
                if ( rp.r > pmax.r ) pmax.r = rp.r;
                if ( rp.g > pmax.g ) pmax.g = rp.g;
                if ( rp.b > pmax.b ) pmax.b = rp.b;
