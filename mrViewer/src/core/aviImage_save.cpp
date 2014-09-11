@@ -147,7 +147,9 @@ static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AV
     if ( pkt->dts != AV_NOPTS_VALUE )
         pkt->dts = av_rescale_q(pkt->dts, *time_base, st->time_base );
     if ( pkt->duration > 0 )
-        pkt->duration = av_rescale_q(pkt->duration, *time_base, st->time_base);
+        pkt->duration = static_cast<unsigned>( av_rescale_q(pkt->duration, 
+                                                            *time_base, 
+                                                            st->time_base) );
    pkt->stream_index = st->index;
 
 
@@ -215,8 +217,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           c->bit_rate    = opts->audio_bitrate;
           c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
           c->channels    = img->audio_channels();
-          c->time_base.num = 1;
-          c->time_base.den = c->sample_rate;
+          c->time_base.num = st->time_base.num = 1;
+          c->time_base.den = st->time_base.den = c->sample_rate;
 
           if((c->block_align == 1 || c->block_align == 1152 || 
               c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
@@ -237,8 +239,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
            * of which frame timestamps are represented. For fixed-fps content,
            * timebase should be 1/framerate and timestamp increments should be
            * identical to 1. */
-          c->time_base.den = int( 1000 * (double) img->fps() );
-          c->time_base.num = 1000;
+          c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
+          c->time_base.num = st->time_base.num = 1000;
           c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
           // c->qmin = ptr->qmin;
           // c->qmax = ptr->qmax;
@@ -465,10 +467,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        unsigned src_rate = img->audio_frequency();
        unsigned dst_rate = c->sample_rate;
 
-       dst_nb_samples = av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
-                                       src_nb_samples, dst_rate, src_rate,
-                                       AV_ROUND_UP);
-
+       dst_nb_samples = static_cast<unsigned>( 
+       av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
+                      src_nb_samples, dst_rate, src_rate,
+                      AV_ROUND_UP) );
+       
        if (dst_nb_samples > max_dst_nb_samples) {
 
            av_free(dst_samples_data[0]);
