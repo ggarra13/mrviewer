@@ -166,7 +166,7 @@ GlWindow3d::ReshapeViewport()
 
     glMatrixMode (GL_PROJECTION);
     glLoadIdentity();
-    GLfloat ratio = w() / h();
+    GLfloat ratio = float(w()) / float(h());
     Perspective(min (max (30.0 + _zoom, 1.0), 179.0),
                 1.0 * ratio, 1.0, _farPlane);
     glTranslatef(0.0, 0.0, -8.0);
@@ -194,18 +194,18 @@ void
 drawRefPlan()
 {
     glBegin (GL_LINES);
-    glColor3f (0.6, 0.6, 0.6);
+    glColor3f (0.6f, 0.6f, 0.6f);
     for (int i = 0; i <= 10; ++i)
     {
-        glVertex3f (1.0 - 0.2 * i, 0.0, 1.0);
-        glVertex3f (1.0 - 0.2 * i, 0.0, -1.0);
-        glVertex3f (1.0, 0.0, 1.0 - 0.2 * i);
-        glVertex3f (-1.0, 0.0, 1.0 - 0.2 * i);
+        glVertex3f (1.0f - 0.2f * float(i), 0.0f, 1.0f);
+        glVertex3f (1.0f - 0.2f * float(i), 0.0f, -1.0f);
+        glVertex3f (1.0f, 0.0f, 1.0f - 0.2f * float(i));
+        glVertex3f (-1.0f, 0.0f, 1.0f - 0.2f * float(i));
     }
     glEnd();
 
     glBegin (GL_LINES);
-    glColor3f (0.3, 0.3, 0.3);
+    glColor3f (0.3f, 0.3f, 0.3f);
     glVertex3f (0.0, 0.0, 1.0);
     glVertex3f (0.0, 0.0, -1.0);
     glVertex3f (1.0, 0.0, 0.0);
@@ -217,32 +217,32 @@ void
 drawCoord()
 {
     glBegin (GL_LINES);
-    glColor3f (0.0, 0.0, 1.0);
-    glVertex3f (-1.0, 0.0, 1.0);
-    glVertex3f (-1.0, 0.0, 0.8);
+    glColor3f (0.0f, 0.0f, 1.0f);
+    glVertex3f (-1.0f, 0.0f, 1.0f);
+    glVertex3f (-1.0f, 0.0f, 0.8f);
 
-    glColor3f (1.0, 0.0, 0.0);
-    glVertex3f (-1.0, 0.0, 1.0);
-    glVertex3f (-0.8, 0.0, 1.0);
+    glColor3f (1.0f, 0.0f, 0.0f);
+    glVertex3f (-1.0f, 0.0f, 1.0f);
+    glVertex3f (-0.8f, 0.0f, 1.0f);
 
-    glColor3f (0.0, 1.0, 0.0);
-    glVertex3f (-1.0, 0.0, 1.0);
-    glVertex3f (-1.0, 0.2, 1.0);
+    glColor3f (0.0f, 1.0f, 0.0f);
+    glVertex3f (-1.0f, 0.0f, 1.0f);
+    glVertex3f (-1.0f, 0.2f, 1.0f);
     glEnd();
 
     glPointSize(6);
     glBegin (GL_POINTS);
-    glColor3f (1.0, 1.0, 0.0);
-    glVertex3f (-1.0, 0.0, 1.0);
+    glColor3f (1.0f, 1.0f, 0.0f);
+    glVertex3f (-1.0f, 0.0f, 1.0f);
 
-    glColor3f (0.0, 0.0, 1.0);
-    glVertex3f (-1.0, 0.0, 0.8);
+    glColor3f (0.0f, 0.0f, 1.0f);
+    glVertex3f (-1.0f, 0.0f, 0.8f);
 
-    glColor3f (1.0, 0.0, 0.0);
-    glVertex3f (-0.8, 0.0, 1.0);
+    glColor3f (1.0f, 0.0f, 0.0f);
+    glVertex3f (-0.8f, 0.0f, 1.0f);
 
-    glColor3f (0.0, 1.0, 0.0);
-    glVertex3f (-1.0, 0.2, 1.0);
+    glColor3f (0.0f, 1.0f, 0.0f);
+    glVertex3f (-1.0f, 0.2f, 1.0f);
     glEnd();
 }
 
@@ -250,7 +250,7 @@ void
 drawOutLine(float dx, float dy, float z)
 {
     glBegin (GL_LINE_LOOP);
-    glColor3f (0.6, 0.0, 0.6);
+    glColor3f (0.6f, 0.0f, 0.6f);
     glVertex3f (0, 0, z);
     glVertex3f (0, dy, z);
     glVertex3f (dx, dy, z);
@@ -271,11 +271,11 @@ GlWindow3d::draw()
     glClear (GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     glLoadIdentity();
 
-    glTranslatef (_translateX, 0.0, 0.0);
-    glTranslatef (0.0, -_translateY, 0.0);
+    glTranslated (_translateX, 0.0, 0.0);
+    glTranslated (0.0, -_translateY, 0.0);
 
-    glRotatef (_elevation, 1.0, 0.0, 0.0);
-    glRotatef (_azimuth, 0.0, 1.0, 0.0);
+    glRotated (_elevation, 1.0, 0.0, 0.0);
+    glRotated (_azimuth, 0.0, 1.0, 0.0);
 
     // draw the reference plane
     drawRefPlan();
@@ -284,15 +284,15 @@ GlWindow3d::draw()
     drawCoord();
 
     // scale z value
-    glScalef (1.0, 1.0, _scaleZ);
+    glScaled (1.0, 1.0, _scaleZ);
 
     // display the objects
     // move the objects to the center of display
-    glScalef (1.0 / _dx, 1.0 / _dx, 1.0 / 2.0);
-    glTranslatef (-_dx / 2.0, -_dy / 2.0, 0.0);
+    glScalef (1.0f / float(_dx), 1.0f / float(_dx), 1.0f / 2.0f);
+    glTranslatef (float(-_dx) / 2.0f, float(-_dy) / 2.0f, 0.0f);
 
-    glScalef (1.0, 1.0, _fitScale);
-    glTranslatef (0.0, 0.0, -_fitTran);
+    glScaled (1.0, 1.0, _fitScale);
+    glTranslated (0.0, 0.0, -_fitTran);
 
     // loop dataZ to draw points
     glPointSize (2);
@@ -315,7 +315,7 @@ GlWindow3d::draw()
                     for (unsigned int i = 0; i < count; i++)
                     {
                         float val = z[i];
-                        glVertex3f (float(x), _dy - float(y) -1, -val);
+                        glVertex3f (float(x), float(_dy) - float(y) -1, -val);
                     }
                 }
             }
@@ -325,7 +325,7 @@ GlWindow3d::draw()
     glEnd();
 
     // draw the display window OutLine
-    drawOutLine (_dx, _dy, -(_zmax + _zmin) / 2.0);
+    drawOutLine (float(_dx), float(_dy), -(_zmax + _zmin) / 2.0f);
 
     // Check gl errors
     GLenum err = glGetError();
@@ -422,7 +422,7 @@ GlWindow3d::handle (int event)
 
     if ( event == fltk::MOUSEWHEEL )
     {
-        float delta = fltk::event_dy();
+        float delta = (float) fltk::event_dy();
         _zoom += delta * 2.0f;
         redraw();
         return 1;
