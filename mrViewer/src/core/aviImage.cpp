@@ -433,7 +433,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
    boost::int64_t start = frame;
    if ( start > 2 ) start -= 2;
 
-   boost::int64_t offset = boost::int64_t( start * AV_TIME_BASE / fps() );
+   boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
+                                           / fps() );
 
     int flags = 0;
     flags &= ~AVSEEK_FLAG_BYTE;
@@ -624,7 +625,7 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
     return mrv::image_type_ptr( new image_type( frame,
                                                 width(), 
                                                 height(), 
-                                                _num_channels,
+                                                (unsigned short) _num_channels,
                                                 _pix_fmt,
                                                 _ptype,
                                                 _av_frame->repeat_pict,
@@ -642,9 +643,9 @@ void aviImage::store_image( const boost::int64_t frame,
 
 
   mrv::image_type_ptr 
-  image = allocate_image( frame, boost::int64_t( pts * av_q2d( 
-							      stream->time_base
-                                                 ) )
+  image = allocate_image( frame, boost::int64_t( double(pts) * 
+                                                 av_q2d( stream->time_base )
+                                                 )
 			  );
   if ( ! image )
     {
@@ -1024,7 +1025,7 @@ bool aviImage::find_image( const boost::int64_t frame )
       }
 
     _video_pts   = _hires->pts();
-    _video_clock = av_gettime() / 1000000.0;
+    _video_clock = double(av_gettime()) / 1000000.0;
 
     // Limit (clean) the video store as we play it
     limit_video_store( frame );
@@ -1577,7 +1578,6 @@ void aviImage::probe_size( unsigned p )
 { 
     if ( !_context ) return;
    _context->probesize = p; 
-   _context->max_analyze_duration = p;
 }
 
 bool aviImage::initialize()
@@ -2563,7 +2563,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
                                   (y-dsty) * dstw;
 
 	unsigned t = pal[*s];
-	a = (t >> 24) & 0xff;
+	a = static_cast<unsigned char>( (t >> 24) & 0xff );
 	yuv.b = float( (t >> 16) & 0xff );
 	yuv.g = float( (t >> 8) & 0xff );
 	yuv.r = float( t & 0xff );
@@ -2697,20 +2697,20 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
   boost::int64_t endframe;
   if ( pkt.pts != MRV_NOPTS_VALUE )
     { 
-       ptsframe = pts2frame( stream, boost::int64_t( pkt.pts + 
+        ptsframe = pts2frame( stream, boost::int64_t( double(pkt.pts) + 
 						     _sub.start_display_time /
 						     1000.0 ) );
-       endframe = pts2frame( stream, boost::int64_t( pkt.pts + 
+       endframe = pts2frame( stream, boost::int64_t( double(pkt.pts) + 
 						     _sub.end_display_time /
 						     1000.0 ) );
        repeat = endframe - ptsframe + 1;
     }
   else
     {
-      ptsframe = pts2frame( stream, boost::int64_t( pkt.dts + 
+        ptsframe = pts2frame( stream, boost::int64_t( double(pkt.dts) + 
 						    _sub.start_display_time /
 						    1000.0 ) );
-      endframe = pts2frame( stream, boost::int64_t( pkt.dts + 
+      endframe = pts2frame( stream, boost::int64_t( double(pkt.dts) + 
 						    _sub.end_display_time / 
 						    1000.0 ) );
       repeat = endframe - ptsframe + 1;
