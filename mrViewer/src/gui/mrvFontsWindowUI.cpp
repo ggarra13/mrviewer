@@ -6,16 +6,16 @@
 #include "fltk/Window.h"
 #include "fltk/Button.h"
 #include "fltk/Browser.h"
-#include "fltk/Input.h"
+#include "fltk/TextEditor.h"
 #include "fltk/Font.h"
 #include "fltk/draw.h"
 
 #include "gui/mrvFontsWindowUI.h"
 
-class FontDisplay : public fltk::Input {
+class FontDisplay : public fltk::TextEditor {
    public:
      FontDisplay(fltk::Box* B, int X, int Y, int W, int H, const char* L = 0) :
-     fltk::Input(X,Y,W,H,L) {box(B);}
+     fltk::TextEditor(X,Y,W,H,L) {box(B);}
 };
 
 

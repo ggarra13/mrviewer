@@ -518,6 +518,7 @@ class CMedia
 
     virtual size_t number_of_video_streams() const { return 0; }
 
+
     /// Sets the first frame in the sequence
     void  first_frame(boost::int64_t x);
 
