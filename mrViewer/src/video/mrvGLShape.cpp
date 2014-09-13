@@ -216,16 +216,32 @@ void GLTextShape::draw( double z )
    if ( font() )
        fltk::glsetfont(font(), size()*float(z) );
 
-#if 0
-   glRasterPos2i(0,0);
-   glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x), GLfloat(pts[0].y), NULL );
-#else
-   glRasterPos2f( GLfloat(pts[0].x), GLfloat(pts[0].y) );
-#endif
-
    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
-   fltk::gldrawtext(text().c_str());
+   std::string txt = text();
+   std::size_t pos = txt.find('\n');
+   double y = pts[0].y;
+   for ( ; pos != std::string::npos; y - size(), pos = txt.find('\n') )
+   {
+#if 0
+   glRasterPos2i(0,0);
+   glBitmap( 0, 0, 0.f, 0.f, GLfloat(pts[0].x), GLfloat(y), NULL );
+#else
+   glRasterPos2f( GLfloat(pts[0].x), GLfloat(y) );
+#endif
+   std::string t;
+   if (pos > 0 )
+       t = txt.substr( 0, pos );
+   fltk::gldrawtext(t.c_str());
+   if ( txt.size() > pos+1 )
+       txt = txt.substr( pos+1, txt.size() );
+   }
+   if ( txt.size() )
+   {
+       y -= size();
+       glRasterPos2f( GLfloat(pts[0].x), GLfloat(y) );
+       fltk::gldrawtext(txt.c_str());
+   }
 }
 
 
