@@ -270,15 +270,14 @@ void save_image_file( CMedia* image, const char* startdir )
    delete opts;
 }
 
-void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain, 
-			 const char* startdir)
+void save_sequence_file( const mrv::ViewerUI* uiMain, 
+			 const char* startdir, const bool opengl)
 {
-   if (!img) return;
-   
+
    const char* file = flu_save_chooser("Save Sequence", 
 				       kIMAGE_PATTERN.c_str(), startdir);
    if ( !file ) return;
-   
+
    
    std::string tmp = file;
    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
@@ -349,7 +348,10 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
            delete ipts;
            return;
        }
+       ipts->opengl( opengl );
    }
+
+   CMedia* img = NULL;
 
    for ( ; frame <= last; ++frame )
    {
@@ -358,10 +360,8 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
       mrv::media fg = uiMain->uiView->foreground();
       if (!fg) break;
-      
 
-      CMedia* img = fg->image();
-
+      img = fg->image();
 
       if ( old != fg )
       {
@@ -432,9 +432,58 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 	 }
 	 else 
 	 {
+             // Store old image
+             mrv::image_type_ptr old_i = img->hires();
+             if ( opengl )
+             {
+                 unsigned w = uiMain->uiView->w();
+                 unsigned h = uiMain->uiView->h();
+
+                 mrv::image_type_ptr hires( 
+                 new mrv::image_type( img->frame(),
+                                      w, h, 4,
+                                      mrv::image_type::kRGBA,
+                                      mrv::image_type::kFloat )
+                 );
+
+                 float* data = new float[ 4 * w * h ];
+
+                 glPixelStorei( GL_PACK_ALIGNMENT, 1 );
+
+                 int x = 0;
+                 int y = 0;
+
+
+                 glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
+
+                 // Flip image vertically
+                 for ( unsigned x = 0; x < w; ++x )
+                 {
+                     unsigned y2 = h-1;
+                     for ( unsigned y = 0; y < h; ++y, --y2 )
+                     {
+                         unsigned xyw4 = 4 * (x + y * w);
+                         mrv::ImagePixel p;
+                         p.r = data[   xyw4 ];
+                         p.g = data[ 1+xyw4 ];
+                         p.b = data[ 2+xyw4 ];
+                         p.a = data[ 3+xyw4 ];
+                         hires->pixel( x, y2, p );
+                     }
+                 }
+
+                 // Set new hires image from snapshot
+                 img->hires( hires );
+             }
+
 	    char buf[1024];
 	    sprintf( buf, fileroot, frame );
 	    img->save( buf, ipts );
+
+            if ( opengl )
+            {
+                img->hires( old_i );
+            }
 	 }
       }
 	
@@ -448,7 +497,7 @@ void save_sequence_file( CMedia* img, const mrv::ViewerUI* uiMain,
 
    delete ipts;
 
-   if ( open_movie )
+   if ( open_movie && img )
    {
       img->audio_stream( audio_stream );
       aviImage::close_movie(img);

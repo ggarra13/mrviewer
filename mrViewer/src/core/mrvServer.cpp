@@ -867,20 +867,65 @@ bool Parser::parse( const std::string& s )
       mrv::media m = v->foreground();
       if ( m )
       {
-	 cmd = N_("CurrentImage \"");
+          //
+          // handle all shapes in images in reels
+          //
+          size_t num = browser()->number_of_reels();
+          for ( size_t r = 0; r < num; ++r )
+          {
+              mrv::Reel reel = browser()->reel_at( unsigned(r) );
+              if ( reel->images.empty() ) continue;
 
-	 CMedia* img = m->image();
-	 cmd += img->fileroot();
+              cmd = N_("CurrentReel \"");
+              cmd += reel->name;
+              cmd += "\"";
+              deliver( cmd );
 
-	 char buf[128];
-	 sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
-		  img->last_frame() );
-	 cmd += buf;
-	 deliver( cmd );
+              size_t n = reel->images.size();
+              for ( size_t i = 0; i < n; ++i )
+              {
+                  const mrv::media& fg = reel->images[i];
+                  if (!fg) continue;
 
-	 boost::int64_t frame = m->image()->frame();
-	 sprintf( buf, N_("seek %") PRId64, frame );
-	 deliver( buf );
+                  CMedia* img = fg->image();
+
+                  const mrv::GLShapeList& shapes = img->shapes();
+                  if ( shapes.empty() ) continue;
+
+
+                  cmd = N_("CurrentImage \"");
+                  cmd += img->fileroot();
+
+                  char buf[128];
+                  sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+                           img->last_frame() );
+                  cmd += buf;
+                  deliver( cmd );
+
+                  mrv::GLShapeList::const_iterator i = shapes.begin();
+                  mrv::GLShapeList::const_iterator e = shapes.end();
+                  for ( ; i != e; ++i )
+                  {
+                      std::string s = (*i)->send();
+                      deliver( s );
+                  }
+              }
+          }
+
+          CMedia* img = m->image();
+          cmd = N_("CurrentImage \"");
+          cmd += img->fileroot();
+
+          char buf[128];
+          sprintf( buf, "\" %" PRId64 " %" PRId64, img->first_frame(),
+                   img->last_frame() );
+          cmd += buf;
+          deliver( cmd );
+
+          boost::int64_t frame = img->frame() - img->first_frame() + 1;
+          sprintf( buf, N_("seek %") PRId64, frame );
+          deliver( buf );
+
       }
 
       char buf[256];
@@ -932,16 +977,6 @@ bool Parser::parse( const std::string& s )
           deliver( buf );
       }
 
-      {
-         const mrv::GLShapeList& shapes = view()->shapes();
-         mrv::GLShapeList::const_iterator i = shapes.begin();
-         mrv::GLShapeList::const_iterator e = shapes.end();
-         for ( ; i != e; ++i )
-         {
-            std::string s = (*i)->send();
-            deliver( s );
-         }
-      }
 
       view()->redraw();
 

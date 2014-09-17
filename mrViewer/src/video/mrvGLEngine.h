@@ -101,6 +101,8 @@ namespace mrv {
 
   protected:
 
+      void draw_shape( GLShape* const shape );
+
     /// Auxiliary function used to check for Cg errors;
     static void handle_cg_errors();
 
