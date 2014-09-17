@@ -2236,12 +2236,13 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {438 358 155 395} horizontal hide resizable
+        xywh {442 374 155 395} horizontal resizable visible
       } {
         {fltk::Group} {} {open
           xywh {0 9 149 376}
@@ -2336,8 +2337,11 @@ else
             callback {uchar r, g, b;
 fltk::split_color(o->color(),r,g,b);
 if (!fltk::color_chooser("Pick Draw Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
-o->redraw();}
+if ( r == 0 && g == 0 && b == 0 )
+  o->color( fltk::BLACK );
+else
+  o->color( fltk::color( r,g,b ) );
+o->redraw();} selected
             tooltip {Selects the current pen color.}
             xywh {87 151 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
           }
@@ -2464,8 +2468,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2496,7 +2499,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI(this);} {}
@@ -3350,8 +3353,7 @@ delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
-delete uiReelWindow; uiReelWindow = NULL;} {selected
-      }
+delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
 } 

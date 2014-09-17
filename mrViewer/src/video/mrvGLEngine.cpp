@@ -1397,6 +1397,39 @@ void GLEngine::draw_images( ImageList& images )
   glDisable( GL_BLEND );
 }
 
+void GLEngine::draw_shape( GLShape* const shape )
+{
+   double zoomX = _view->zoom();
+    if ( _view->ghost_previous() )
+    {
+        if ( shape->frame == _view->frame() - 1 )
+        {
+	    float a = shape->a;
+	    shape->a *= 0.25f;
+	    shape->draw(zoomX);
+	    shape->a = a;
+            return;
+	 }
+      }
+
+      if ( _view->ghost_next() )
+      {
+	 if ( shape->frame == _view->frame() + 1 )
+	 {
+	    float a = shape->a;
+	    shape->a *= 0.25f;
+	    shape->draw(zoomX);
+	    shape->a = a;
+            return;
+	 }
+      }
+
+      if ( shape->frame == MRV_NOPTS_VALUE ||
+	   shape->frame == _view->frame() )
+      {
+	 shape->draw(zoomX);
+      }
+}
 
 
 void GLEngine::draw_annotation( const GLShapeList& shapes )
@@ -1433,41 +1466,17 @@ void GLEngine::draw_annotation( const GLShapeList& shapes )
    glEnable( GL_LINE_SMOOTH );
    glHint( GL_LINE_SMOOTH_HINT, GL_NICEST );
 
-   GLShapeList::const_reverse_iterator i = shapes.rbegin();
-   GLShapeList::const_reverse_iterator e = shapes.rend();
-
-   for ( ; i != e; ++i )
    {
+       GLShapeList::const_reverse_iterator i = shapes.rbegin();
+       GLShapeList::const_reverse_iterator e = shapes.rend();
 
-      if ( _view->ghost_previous() )
-      {
-	 if ( (*i)->frame == _view->frame() - 1 )
-	 {
-	    float a = (*i)->a;
-	    (*i)->a *= 0.25f;
-	    (*i)->draw(zoomX);
-	    (*i)->a = a;
-            continue;
-	 }
-      }
 
-      if ( _view->ghost_next() )
-      {
-	 if ( (*i)->frame == _view->frame() + 1 )
-	 {
-	    float a = (*i)->a;
-	    (*i)->a *= 0.25f;
-	    (*i)->draw(zoomX);
-	    (*i)->a = a;
-            continue;
-	 }
-      }
+       for ( ; i != e; ++i )
+       {
+           GLShape* shape = (*i).get();
+           draw_shape( shape );
+       }
 
-      if ( (*i)->frame == MRV_NOPTS_VALUE ||
-	   (*i)->frame == _view->frame() )
-      {
-	 (*i)->draw(zoomX);
-      }
    }
 
    glDisable(GL_BLEND);

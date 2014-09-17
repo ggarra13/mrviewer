@@ -479,6 +479,9 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( gamma() != 1.0 )
        must_convert = true;
 
+    if ( opts->opengl() )
+        must_convert = false;
+
     // Set matte (alpha)
     MagickBooleanType matte = MagickFalse;
     if ( has_alpha ) matte = MagickTrue;

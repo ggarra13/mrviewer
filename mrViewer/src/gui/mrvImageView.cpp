@@ -276,68 +276,13 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
 
   view->stop();
 
+
   mrv::CMedia* img = fg->image();
   if ( !img ) return;
 
-
-  unsigned w = view->w();
-  unsigned h = view->h();
-
-  //unsigned w = img->width();
-  //unsigned h = img->height();
-
-  mrv::image_type_ptr hires( new mrv::image_type( img->frame(),
-						  w, h, 4,
-						  mrv::image_type::kRGBA,
-						  mrv::image_type::kFloat
-						  )
-			     );
-
-
-  float* data = new float[ 4 * w * h ];
-
-  glPixelStorei( GL_PACK_ALIGNMENT, 1 );
-
-  int x = 0;
-  int y = 0;
-
-  // double x = (vw-w)/2;
-  // if ( vw < w ) x = 0;  
-
-  // double y = (vh-h)/2;
-  // if ( vh < h ) y = 0;
-
-
-  glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
-
-  // Flip image vertically
-  for ( unsigned x = 0; x < w; ++x )
-  {
-     unsigned y2 = h-1;
-     for ( unsigned y = 0; y < h; ++y, --y2 )
-     {
-         unsigned xyw4 = 4 * (x + y * w);
-         mrv::ImagePixel p;
-         p.r = data[   xyw4 ];
-         p.g = data[ 1+xyw4 ];
-         p.b = data[ 2+xyw4 ];
-         p.a = data[ 3+xyw4 ];
-         hires->pixel( x, y2, p );
-     }
-  }
-
-  // Store old image
-  mrv::image_type_ptr old = img->hires();
-
-  // Set new hires image from snapshot
-  img->hires( hires );
-
-  // Save image
-  view->browser()->save();
+  mrv::save_sequence_file( view->main(), NULL, true );
 
   // Return all to normal
-  img->hires( old );
-
   view->redraw();
 
 }
@@ -1382,28 +1327,38 @@ void ImageView::selection( const mrv::Rectd& r )
 
 void ImageView::redo_draw()
 {
-   if ( !_undo_shapes.empty() )
-   {
-      _shapes.push_back( _undo_shapes.back() );
-      uiMain->uiPaint->uiUndoDraw->activate();
-      _undo_shapes.pop_back();
+    mrv::media fg = foreground();
+    if (!fg) return;
 
-      send( "RedoDraw" );
+    GLShapeList& shapes = fg->image()->shapes();
+    GLShapeList& undo_shapes = fg->image()->undo_shapes();
+    if ( !undo_shapes.empty() )
+    {
+        shapes.push_back( undo_shapes.back() );
+        uiMain->uiPaint->uiUndoDraw->activate();
+        undo_shapes.pop_back();
 
-      redraw();
-   }
+        send( "RedoDraw" );
+        redraw();
+    }
 }
 
 void ImageView::undo_draw()
 {
-   if ( ! _shapes.empty() )
-   {
-      _undo_shapes.push_back( _shapes.back() );
-      uiMain->uiPaint->uiRedoDraw->activate();
-      _shapes.pop_back();
-      send( "UndoDraw" );
-      redraw();
-   }
+    mrv::media fg = foreground();
+    if (!fg) return;
+
+    GLShapeList& shapes = fg->image()->shapes();
+    GLShapeList& undo_shapes = fg->image()->undo_shapes();
+
+    if ( ! shapes.empty() )
+    {
+        undo_shapes.push_back( shapes.back() );
+        uiMain->uiPaint->uiRedoDraw->activate();
+        shapes.pop_back();
+        send( "UndoDraw" );
+        redraw();
+    }
 
 }
 
@@ -1607,15 +1562,16 @@ void ImageView::draw()
 
     }
 
-  _engine->draw_annotation( _shapes );
+  if ( !fg ) return;
+
+  CMedia* img = fg->image();
+
+  _engine->draw_annotation( img->shapes() );
 
 
   if ( !(flags & kMouseDown) && ( _mode == kDraw || _mode == kErase ) )
   {
-     mrv::media fg = foreground();
-     if ( !fg ) return;
 
-     CMedia* img = fg->image();
 
      double xf = X;
      double yf = Y;
@@ -1653,7 +1609,6 @@ void ImageView::draw()
   //
   // Draw filename
   //
-  const CMedia* img = fg->image();
 
   int y = h()-25;
   int yi = 25;
@@ -1771,13 +1726,23 @@ void ImageView::draw()
 }
 
 
+GLShapeList& ImageView::shapes()
+{
+    mrv::media fg = foreground();
+    return fg->image()->shapes();
+}
+
 void ImageView::add_shape( mrv::shape_type_ptr s )
 {
-   _shapes.push_back( s );
-   uiMain->uiPaint->uiUndoDraw->activate();
+    mrv::media fg = foreground();
+    if (!fg) {
+        LOG_ERROR( "No image to add shape to" );
+        return;
+    }
 
-   _undo_shapes.clear();
-   uiMain->uiPaint->uiRedoDraw->deactivate();
+    fg->image()->add_shape( s );
+    uiMain->uiPaint->uiUndoDraw->activate();
+    uiMain->uiPaint->uiRedoDraw->deactivate();
 }
 
 
@@ -2135,40 +2100,42 @@ void ImageView::leftMouseUp( int x, int y )
 
   window()->cursor( fltk::CURSOR_CROSS );
 
-  if ( _shapes.empty() ) return;
+  mrv::media fg = foreground();
+
+  if ( !fg || fg->image()->shapes().empty() ) return;
 
   //
   // Send the shapes over the network
   //
   if ( _mode == kDraw )
   {
-     mrv::shape_type_ptr o = _shapes.back();
-     GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
-     if ( s == NULL )
-     {
-	LOG_ERROR( _("Not a GLPathShape pointer") );
-     }
-     else
-     {
-        send( s->send() );
-     }
+      mrv::shape_type_ptr o = fg->image()->shapes().back();
+      GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
+      if ( s == NULL )
+      {
+          LOG_ERROR( _("Not a GLPathShape pointer") );
+      }
+      else
+      {
+          send( s->send() );
+      }
   }
   else if ( _mode == kErase )
   {
-     mrv::shape_type_ptr o =  _shapes.back();
-     GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
-     if ( s == NULL )
-     {
-	LOG_ERROR( _("Not a GLErasePathShape pointer") );
-     }
-     else
-     {
-        send( s->send() );
-     }
+      mrv::shape_type_ptr o = fg->image()->shapes().back();
+      GLPathShape* s = dynamic_cast< GLErasePathShape* >( o.get() );
+      if ( s == NULL )
+      {
+          LOG_ERROR( _("Not a GLErasePathShape pointer") );
+      }
+      else
+      {
+          send( s->send() );
+      }
   }
   else if ( _mode == kText )
   {
-     mrv::shape_type_ptr o = _shapes.back();
+      mrv::shape_type_ptr o = fg->image()->shapes().back();
      GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
      if ( s == NULL )
      {
@@ -2182,6 +2149,21 @@ void ImageView::leftMouseUp( int x, int y )
 
 }
 
+bool ImageView::has_redo() const
+{
+    mrv::media fg = foreground();
+    if (!fg) return false;
+
+    return ( fg->image()->undo_shapes().size() > 0 );
+}
+
+bool ImageView::has_undo() const
+{
+    mrv::media fg = foreground();
+    if (!fg) return false;
+
+    return ( fg->image()->shapes().size() > 0 );
+}
 
 /** 
  * Utility function to print a float value with 8 digits
@@ -2720,9 +2702,10 @@ void ImageView::mouseDrag(int x,int y)
 
            if ( _mode == kDraw || _mode == kErase )
 	   {
-               if ( _shapes.empty() ) return;
+               GLShapeList& shapes = fg->image()->shapes();
+               if ( shapes.empty() ) return;
 
-               mrv::shape_type_ptr o = _shapes.back();
+               mrv::shape_type_ptr o = shapes.back();
                GLPathShape* s = dynamic_cast< GLPathShape* >( o.get() );
                if ( s == NULL )
                {
@@ -2743,16 +2726,17 @@ void ImageView::mouseDrag(int x,int y)
 	   }
            else if ( _mode == kText )
            {
-              if ( _shapes.empty() ) return;
+               GLShapeList& shapes = fg->image()->shapes();
+               if ( shapes.empty() ) return;
 
-	      mrv::shape_type_ptr o = _shapes.back();
-	      GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
-	      if ( s == NULL )
-	      {
-		 LOG_ERROR( _("Not a GLTextShape pointer in position") );
-	      }
-	      else
-	      {
+               mrv::shape_type_ptr o = shapes.back();
+               GLTextShape* s = dynamic_cast< GLTextShape* >( o.get() );
+               if ( s == NULL )
+               {
+                   LOG_ERROR( _("Not a GLTextShape pointer in position") );
+               }
+               else
+               {
                    yn = H - yn;
                    yn -= H;
 
@@ -2760,7 +2744,7 @@ void ImageView::mouseDrag(int x,int y)
                    yn -= daw[idx].y();
 
                    s->position( int(xn), int(yn) );
-	      }
+               }
            }
 
 	   assert( _selection.w() >= 0.0 );

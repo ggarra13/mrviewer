@@ -14,6 +14,7 @@ class ImageOpts
 {
   protected:
     bool _active;
+    bool _opengl;
   public:
     ImageOpts()
     {
@@ -25,6 +26,10 @@ class ImageOpts
 
     bool active() const { return _active; }
     void active( bool f ) { _active = f; }
+
+    bool opengl() const { return _opengl; }
+    void opengl( bool f ) { _opengl = f; }
+
 
     static ImageOpts* build( std::string ext );
 };
