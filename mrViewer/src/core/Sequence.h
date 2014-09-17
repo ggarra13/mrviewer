@@ -14,14 +14,16 @@
 #include <string>
 #include <limits>
 
-
 #include <boost/cstdint.hpp>      // for int64_t
+
+#include "video/mrvGLShape.h"
 
 namespace mrv
 {
   
   extern const boost::int64_t kMinFrame;
   extern const boost::int64_t kMaxFrame;
+
 
 struct Sequence
 {
@@ -65,43 +67,60 @@ struct SequenceSort
    */
   struct LoadInfo
   {
-    std::string filename;
-    std::string right_filename;
-    std::string audio;
-    boost::int64_t start;
-    boost::int64_t end;
-    bool    reel;
+      std::string filename;
+      std::string right_filename;
+      std::string audio;
+      boost::int64_t start;
+      boost::int64_t end;
+      bool    reel;
+      GLShapeList shapes;
 
-       LoadInfo( const std::string& fileroot,
-                 const boost::int64_t sf, const boost::int64_t ef, 
-                 const std::string& a = "",
-                 const std::string& right = "" ) :
+      LoadInfo( const std::string& fileroot,
+                const boost::int64_t sf, const boost::int64_t ef, 
+                const std::string& a = "",
+                const std::string& right = "" ) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
       start( sf ),
       end( ef ),
       reel( false )
-    {
-    }
+      {
+      }
 
-    LoadInfo( const std::string& reel ) :
+      LoadInfo( const std::string& fileroot,
+                const boost::int64_t sf, const boost::int64_t ef, 
+                const GLShapeList& shl,
+                const std::string& a = "",
+                const std::string& right = "" ) :
+      filename( fileroot ),
+      right_filename( right ),
+      audio( a ),
+      start( sf ),
+      end( ef ),
+      reel( false ),
+      shapes( shl )
+      {
+      }
+
+      LoadInfo( const std::string& reel ) :
       filename( reel ),
       start( kMinFrame ),
       end( kMaxFrame ),
       reel( true )
-    {
-    }
+      {
+      }
 
-    LoadInfo( const LoadInfo& b ) :
+      LoadInfo( const LoadInfo& b ) :
       filename( b.filename ),
       right_filename( b.right_filename ),
       audio( b.audio ),
       start( b.start ),
       end( b.end ),
-      reel( b.reel )
-    {
-    }
+      reel( b.reel ),
+      shapes( b.shapes )
+      {
+      }
 
   };
 
@@ -149,7 +168,8 @@ struct SequenceSort
    * @param edl       if sequence is an edl.
    * @param edlfile   filename of .reel file.
    */
-bool parse_reel( LoadList& sequences, bool& edl, const char* reelfile );
+bool parse_reel( LoadList& sequences, bool& edl,
+                 const char* reelfile );
 
   /** 
    * Obtain the frame range of a sequence by scanning the directory where it
