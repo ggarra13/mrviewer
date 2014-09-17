@@ -20,6 +20,7 @@
 #include "core/mrvServer.h"
 #include "gui/mrvReelList.h"
 #include "gui/mrvMedia.h"
+#include "video/mrvGLShape.h"
 
 namespace fltk
 {
@@ -35,6 +36,7 @@ class ViewerUI;
 class Timeline;
 class EDLGroup;
 class ImageView;
+
 
 void start_button_cb(fltk::Button* o, mrv::ViewerUI* v);
 void end_button_cb(fltk::Button* o, mrv::ViewerUI* v);

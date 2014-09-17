@@ -515,12 +515,30 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 	if ( img->is_sequence() )
 	  {
 	    if ( img->has_audio() )
-	       fprintf( f, "audio: %s\n", img->audio_file().c_str() );
+                fprintf( f, "audio: %s\n", img->audio_file().c_str() );
 	  }
+
+        const GLShapeList& shapes = img->shapes();
+        if ( !shapes.empty() )
+        {
+            GLShapeList::const_iterator i = shapes.begin();
+            GLShapeList::const_iterator e = shapes.end();
+
+            for ( ; i != e; ++i )
+            {
+                GLPathShape* shape = dynamic_cast< GLPathShape* >( (*i).get() );
+                if ( !shape ) continue;
+
+                std::string cmd = shape->send();
+                fprintf( f, "%s\n", cmd.c_str() );
+            }
+        }
       }
 
     if ( reel->edl )
        fprintf( f, "EDL\n" );
+
+
 
     fclose(f);
 
@@ -1831,6 +1849,11 @@ void ImageBrowser::load( const mrv::LoadList& files,
 		fg->image()->audio_file( load.audio.c_str() );
                 view()->refresh_audio_tracks();
 	     }
+             if ( fg )
+             {
+                 GLShapeList& shapes = fg->image()->shapes();
+                 shapes = load.shapes;
+             }
 	  }
 
 	if ( w ) 
@@ -1926,6 +1949,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
      {
 	clear_edl();
      }
+
   }
 
 void ImageBrowser::load( const stringArray& files,
@@ -2013,8 +2037,7 @@ void ImageBrowser::load( const stringArray& files,
     int sel = value();
     if ( sel < 0 ) return;
 
-    mrv::media orig = reel->images[sel];
-    mrv::save_sequence_file( orig->image(), uiMain );  
+    mrv::save_sequence_file( uiMain );  
   }
 
   /** 

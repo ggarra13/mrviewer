@@ -385,15 +385,15 @@ namespace mrv {
        void draw_mode()      { _mode = kDraw; }
        void erase_mode()     { _mode = kErase; }
 
-       bool has_redo() { return (_undo_shapes.size() > 0); }
-       bool has_undo() { return (_shapes.size() > 0); }
+      bool has_redo() const;
+      bool has_undo() const;
 
        void undo_draw();
        void redo_draw();
 
        void send( std::string msg );
 
-       GLShapeList  shapes() { return _shapes; }
+      GLShapeList& shapes();
 
        void add_shape( shape_type_ptr shape );
 
@@ -546,8 +546,7 @@ namespace mrv {
     ///////////////////
     Mode _mode;
 
-    GLShapeList _undo_shapes;
-    GLShapeList _shapes;
+
     mrv::Rectd _selection;
 
     ///////////////////

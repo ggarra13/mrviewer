@@ -113,12 +113,13 @@ stringArray open_image_file( const char* startfile = NULL,
   /** 
    * Save an image under a new filename
    * 
-   * @param image      image to save (directory)
+   * @param uiMain     main widget class
    * @param startdir   start directory to save to
+   * @param opengl     use opengl snapshots
    */
-  void save_sequence_file( CMedia* image,
-			   const mrv::ViewerUI* uiMain,
-			   const char* startdir = NULL );
+  void save_sequence_file( const mrv::ViewerUI* uiMain,
+			   const char* startdir = NULL,
+                           bool opengl = false );
 
   /** 
    * Save a reel under a new filename

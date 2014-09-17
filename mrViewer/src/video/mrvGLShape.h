@@ -5,8 +5,14 @@
 #include <vector>
 #include <iostream>
 
+#include "mrvPacketQueue.h" // For MRV_NOPTS_VALUE
+
 #include <boost/shared_ptr.hpp>
 
+namespace fltk
+{
+class Font;
+}
 
 namespace mrv
 {

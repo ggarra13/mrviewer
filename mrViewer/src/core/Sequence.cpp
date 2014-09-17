@@ -31,6 +31,7 @@
 #include <limits>
 
 #include <fltk/run.h>
+#include <fltk/Font.h>
 
 using namespace std;
 
@@ -41,8 +42,10 @@ namespace fs = boost::filesystem;
 
 #define LOG_ERROR(x) std::cerr << x << std::endl
 
-#include "Sequence.h"
-#include "mrvString.h"
+#include "gui/mrvImageView.h"
+#include "video/mrvGLShape.h"
+#include "core/Sequence.h"
+#include "core/mrvString.h"
 #include "mrvI8N.h"
 #include "mrvOS.h"
 
@@ -149,7 +152,7 @@ std::string hex_to_char_filename( std::string& f )
 
       std::string hex = f.substr( loc+1, 2 );
 
-      int dec = strtoul( hex.c_str(), 0, 16 );
+      int dec = (int) strtoul( hex.c_str(), 0, 16 );
 
       char buf[2]; buf[1] = 0;
       sprintf( buf, "%c", dec );
@@ -195,7 +198,7 @@ std::string hex_to_char_filename( std::string& f )
 	if ( *i == '/' || *i == '\\' ) break;
       }
 
-    int len = i - e + 1;
+    long int len = i - e + 1;
     f = f.substr( len, f.size() );
 
     StringList periods;
@@ -435,41 +438,136 @@ std::string hex_to_char_filename( std::string& f )
 
 
 bool parse_reel( mrv::LoadList& sequences, bool& edl,
-		 const char* reelfile )
+		 const char* reelfile)
   {
      edl = false;
 
      FILE* f = fltk::fltk_fopen( reelfile, "r" );
      if (!f ) return false;
 
-    char buf[1024];
-    while ( !feof(f) )
+     char buf[16000];
+     while ( !feof(f) )
       {
-	char* c;
-	while ( (c = fgets( buf, 1023, f )) )
+          char* c;
+          while ( (c = fgets( buf, 15999, f )) )
 	  {
-	    if ( c[0] == '#' ) continue;  // comment line
-	    while ( *c != 0 && ( *c == ' ' || *c == '\t' ) ) ++c;
-	    if ( strlen(c) <= 1 ) continue; // empty line
-	    c[ strlen(c)-1 ] = 0;  // remove newline
+              if ( c[0] == '#' ) continue;  // comment line
+              while ( *c != 0 && ( *c == ' ' || *c == '\t' ) ) ++c;
+              if ( strlen(c) <= 1 ) continue; // empty line
+              c[ strlen(c)-1 ] = 0;  // remove newline
 
-	    if ( strncmp( "audio: ", c, 7 ) == 0 )
-	    {
-	       if ( !sequences.empty() )
-		  sequences.back().audio = c+7;
-	       continue;
-	    }
+              if ( strncmp( "audio: ", c, 7 ) == 0 )
+              {
+                  if ( !sequences.empty() )
+                      sequences.back().audio = c+7;
+                  continue;
+              }
 
-	    boost::int64_t start = kMinFrame;
-	    boost::int64_t end   = kMaxFrame;
+              boost::int64_t start = kMinFrame;
+              boost::int64_t end   = kMaxFrame;
+
+
+              std::string st = c;
+              std::istringstream is( st );
+              std::string cmd;
+              is >> cmd;
+
+              if ( cmd == "EDL" )
+              {
+                  edl = true;
+                  continue;
+              }
+              else if ( cmd == "GLPathShape" )
+              {
+                  Point xy;
+                  std::string points;
+                  GLPathShape* shape = new GLPathShape;
+                  std::getline( is, points );
+                  is.str( points );
+                  is.clear();
+                  is >> shape->r >> shape->g >> shape->b >> shape->a 
+                     >> shape->pen_size
+                     >> shape->frame;
+                  while ( is >> xy.x >> xy.y )
+                  {
+                      shape->pts.push_back( xy );
+                  }
+                  sequences.back().shapes.push_back( 
+                  mrv::shape_type_ptr(shape) );
+                  continue;
+              }
+              else if ( cmd == "GLErasePathShape" )
+              {
+                  Point xy;
+                  std::string points;
+                  GLErasePathShape* shape = new GLErasePathShape;
+                  is.clear();
+                  std::getline( is, points );
+                  is.str( points );
+                  is.clear();
+                  is >> shape->pen_size >> shape->frame;
+                  while ( is >> xy.x >> xy.y )
+                  {
+                      shape->pts.push_back( xy );
+                  }
+                  sequences.back().shapes.push_back( 
+                  mrv::shape_type_ptr(shape) );
+                  continue;
+              }
+              else if ( cmd == "GLTextShape" )
+              {
+                  Point xy;
+                  std::string font, text, t;
+                  unsigned font_size;
+                  std::getline( is, font, '"' ); // skip first quote
+                  std::getline( is, font, '"' );
+                  std::getline( is, text, '^' ); // skip first quote
+                  std::getline( is, text, '^' );
+                  while ( is.eof() )
+                  {
+                      c = fgets( buf, 15999, f );
+                      if (!c) break;
+                      std::string st = c;
+                      is.str( st );
+                      is.clear();
+                      std::string s;
+                      std::getline( is, s, '^' );
+                      text += "\n";
+                      text += s;
+                  }
+
+                  GLTextShape* shape;
+                  shape = new GLTextShape;
+                
+                  shape->text( text );
+
+                  fltk::Font** fonts;
+                  unsigned i;
+                  unsigned num = fltk::list_fonts(fonts);
+                  for ( i = 0; i < num; ++i )
+                  {
+                      if ( font == fonts[i]->name() ) break;
+                  }
+                  if ( i >= num ) i = 0;
+                  
+
+                  shape->font( fonts[i] );
+                  is >> font_size >> shape->r >> shape->g >> shape->b 
+                     >> shape->a
+                     >> shape->frame;
+                  is >> xy.x >> xy.y;
+                  shape->size( font_size );
+                  shape->pts.clear();
+                  shape->pts.push_back( xy );
+                  sequences.back().shapes.push_back( 
+                  mrv::shape_type_ptr(shape) );
+                  continue;
+            }
 
 	    char* root = c;
 	    char* range = NULL;
 	    char* s = c + strlen(c) - 1;
-	    if ( std::string(c) == "EDL" ) {
-	       edl = true;
-	       continue;
-	    }
+
 	    for ( ; s != c; --s )
 	      {
 
