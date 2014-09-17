@@ -1,4 +1,10 @@
 v2.6.5.1 - Fixed subtitles displaying in black only.
+	 - Made grease pencil a property of the image instead of the viewer.
+	 - Grease pencil drawings are saved and loaded to/from a reel.
+	 - Grease pencil drawings are synced over TCP/IP.
+	 - GL Snapshot now can save a sequence of frames.
+	 - Added The Color Transformation Language manual ( CtlManual.pdf )
+	   to the docs folder.
 v2.6.5.0 - Simplified and sped up exr loader.
 	 - Fixed crash of exr loader when working with an image with a single
 	   view.

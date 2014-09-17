@@ -2612,4 +2612,10 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 }
 
 
+void CMedia::add_shape( mrv::shape_type_ptr s )
+{
+   _shapes.push_back( s );
+   _undo_shapes.clear();
+}
+
 } // namespace mrv

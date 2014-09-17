@@ -40,6 +40,8 @@
 #include "core/mrvAudioEngine.h"
 #include "core/mrvOS.h"
 
+#include "video/mrvGLShape.h"
+
 #undef min
 #undef max
 
@@ -776,7 +778,14 @@ class CMedia
 
     boost::int64_t video_pts() const { return _video_pts; }
     boost::int64_t audio_pts() const { return _audio_pts; }
-    
+
+    const GLShapeList& shapes() const { return _shapes; }
+    GLShapeList& shapes() { return _shapes; }
+
+    const GLShapeList& undo_shapes() const { return _undo_shapes; }
+
+    GLShapeList& undo_shapes() { return _undo_shapes; }
+    void add_shape( shape_type_ptr s );
 
     void fetch_audio( const boost::int64_t frame );
     void wait_for_load_threads();
@@ -981,6 +990,8 @@ class CMedia
     int decode_audio3(AVCodecContext* avctx, int16_t* samples,
                       int* frame_size_ptr, AVPacket* avpkt);
 
+
+
   protected:
 
     boost::int64_t queue_packets( const boost::int64_t frame,
@@ -1110,6 +1121,10 @@ class CMedia
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
     AVFormatContext* _acontext;          //!< current audio file context
+
+    // Drawings
+    GLShapeList      _shapes;
+    GLShapeList      _undo_shapes;
 
     PacketQueue      _video_packets;
     PacketQueue      _audio_packets;
