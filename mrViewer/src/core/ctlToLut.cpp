@@ -98,7 +98,6 @@ initializeEnvHeader (Header &envHeader)
 } // namespace
 
 
-const char* kRGBChannels[] = { "R", "G", "B" };
 
 void
 ctlToLut (std::vector<std::string> transformNames,
@@ -298,7 +297,7 @@ ctlToLut (std::vector<std::string> transformNames,
 
     ImfCtl::applyTransforms (interpreter,
 			     transformNames,
-			     Box2i (V2i (0, 0), V2i (unsigned(lutSize / 4), 0)),
+			     Box2i (V2i (0, 0), V2i (unsigned(lutSize) / 4, 0)),
 			     envHeader,
 			     inHeader,
 			     inFb,

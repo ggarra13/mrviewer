@@ -2176,12 +2176,12 @@ std::string float_printf( float x )
 {
   if ( isnan(x) )
     {
-      static std::string empty( "   NAN  " );
+        static std::string empty( _("   NAN  ") );
       return empty;
     }
   else if ( !isfinite(x) )
   {
-      static std::string inf( "  INF.  " );
+      static std::string inf( _("  INF.  ") );
       return inf;
   }
   else
@@ -2337,14 +2337,18 @@ void ImageView::mouseMove(int x, int y)
       //
       // To represent pixel properly, we need to do gain/gamma/lut 
       //
+      rgba.r *= _gain;
+      rgba.g *= _gain;
+      rgba.b *= _gain;
       float one_gamma = 1.0f / _gamma;
-      if ( rgba.r > 0.f )
-          rgba.r = powf(rgba.r * _gain, one_gamma);
-      if ( rgba.g > 0.f )
-          rgba.g = powf(rgba.g * _gain, one_gamma);
-      if ( rgba.b > 0.f )
-          rgba.b = powf(rgba.b * _gain, one_gamma);
+      if ( rgba.r > 0.0001f )
+          rgba.r = powf(rgba.r, one_gamma);
+      if ( rgba.g > 0.0001f )
+          rgba.g = powf(rgba.g, one_gamma);
+      if ( rgba.b > 0.0001f )
+          rgba.b = powf(rgba.b, one_gamma);
 
+      // @todo: and the lut
 
       // double yp = yf;
       // if ( _showPixelRatio ) yp /= img->pixel_ratio();
@@ -2405,12 +2409,17 @@ void ImageView::mouseMove(int x, int y)
               CMedia::Pixel bg = picb->pixel( xp, yp );
 
               float one_gamma = 1.0f / bgr->gamma();
-              if ( bg.r > 0.f )
-                  bg.r = powf(bg.r * _gain, one_gamma);
-              if ( bg.g > 0.f )
-                  bg.g = powf(bg.g * _gain, one_gamma);
-              if ( bg.b > 0.f )
-                  bg.b = powf(bg.b * _gain, one_gamma);
+              bg.r *= _gain;
+              bg.g *= _gain;
+              bg.b *= _gain;
+              if ( bg.r > 0.0001f )
+                  bg.r = powf(bg.r, one_gamma);
+              if ( bg.g > 0.0001f )
+                  bg.g = powf(bg.g, one_gamma);
+              if ( bg.b > 0.0001f )
+                  bg.b = powf(bg.b, one_gamma);
+
+              // @todo:  and the lut
 
               if ( outside )
               {
