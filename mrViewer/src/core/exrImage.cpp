@@ -209,24 +209,25 @@ bool exrImage::channels_order(
 
       std::transform( ext.begin(), ext.end(), ext.begin(),
 		      (int(*)(int)) toupper);
-      if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") ||
-			      ext == N_("Y") || ext == N_("U") ) )
+      if ( order[0] == -1 && (ext == N_("R") ||
+			      ext == N_("Y") || ext == N_("U") ||
+                              ext == N_("X") ) )
       {
           order[0] = idx; imfPixelType = ch->type;
       }
-
-      if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") ||
-			      ext == N_("RY") || ext == N_("V") ) )
+      else if ( order[1] == -1 && (ext == N_("G")  ||
+                                   ext == N_("RY") || ext == N_("V") ||
+                                   ext == N_("Y") ) )
       {
          order[1] = idx; imfPixelType = ch->type;
       }
-      if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")||
-			      ext == N_("BY") || ext == N_("W") ) )
+      else if ( order[2] == -1 && (ext == N_("B") ||
+                                   ext == N_("BY") || ext == N_("W") ||
+                                   ext == "Z" ) )
       {
          order[2] = idx; imfPixelType = ch->type;
       }
-      if ( order[3] == -1 && (ext == N_("A") ||
-			      ext == N_("ALPHA") ) ) 
+      else if ( order[3] == -1 && ext == N_("A") ) 
       {
           order[3] = idx; imfPixelType = ch->type;
       }
@@ -961,6 +962,7 @@ bool exrImage::find_channels( const Imf::Header& h,
    {
       std::string part = channelPrefix;
 
+
       size_t idx = part.find( N_(".") );
 
       if ( idx == std::string::npos )
@@ -970,13 +972,13 @@ bool exrImage::find_channels( const Imf::Header& h,
       }
       else
       {
-         std::string root = part.substr( idx+1, part.size() );
+         std::string ext = part.substr( idx+1, part.size() );
+         std::string root = ext;
 
-         std::string ext = root;
-         idx = root.rfind( N_(".") );
+         idx = ext.rfind( N_(".") );
          if ( idx != std::string::npos )
          {
-            ext = root.substr( idx+1, part.size() );
+            ext = ext.substr( idx+1, part.size() );
          }
  
          // When extension is one of RGBA we want to read RGBA together
@@ -997,18 +999,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 
          channelPrefix = _channel;
       }
-
-
-      size_t pos = part.find( N_(" ") );
-      part = part.substr( 1, pos );
-
-      int oldpart = _curpart;
-
-      _curpart = (int) strtoul( part.c_str(), NULL, 10 );
-
-
-      if ( oldpart != _curpart )
-         return true;
    }
 
 
@@ -1759,7 +1749,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    _stereo_type = kNoStereo;
 
    
-   if ( _num_layers == 0 )
+   if ( _num_layers == 0 && _numparts > 1 )
    {
   
       int i = 0;
@@ -1894,11 +1884,14 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          if ( root == "stereo" )
          {
             _stereo_type = kStereoSideBySide;
+            // No need for stereo.crossed check here, as it
+            // will be set in find_channels().
          }
          else if ( ext == "anaglyph" )
          {
             _stereo_type = kStereoAnaglyph;
          }
+
       }
 
 
