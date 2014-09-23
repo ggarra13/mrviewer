@@ -55,7 +55,6 @@
 #include <CtlExc.h>
 #include <halfLimits.h>
 
-#include "core/ctlToLut.h"
 #include "core/mrvThread.h"
 #include "core/mrvRectangle.h"
 
