@@ -353,6 +353,7 @@ CMedia::~CMedia()
 
   image_damage(0);
 
+  free( _channel );
   free( _fileroot );
   free( _filename );
   free( _label );

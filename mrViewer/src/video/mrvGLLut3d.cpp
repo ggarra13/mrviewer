@@ -282,21 +282,21 @@ namespace mrv {
 	transformNames.push_back( (*i).name );
       }
 
-    try 
+    try
       {
-	ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
-		  channelNames );
-	_inited = true;
+          ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
+                    channelNames );
+          _inited = true;
       }
     catch( const std::exception& e )
       {
-	 LOG_ERROR( e.what() );
-	return false;
+          LOG_ERROR( e.what() );
+          return false;
       }
     catch( ... )
       {
-	LOG_ERROR( _("Unknown error returned from ctlToLut") );
-	return false;
+          LOG_ERROR( _("Unknown error returned from ctlToLut") );
+          return false;
       }
 
     return true;

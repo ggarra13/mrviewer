@@ -166,26 +166,26 @@ namespace mrv {
   GLenum GLQuad::gl_format( const image_type::Format format )
   {
       static bool bad_format = false;
-    switch( format )
+      switch( format )
       {
-      case image_type::kRGB:
-	return GL_RGB;
-      case image_type::kRGBA:
-	return GL_RGBA;
-      case image_type::kBGRA:
-	return GL_BGRA;
-      case image_type::kBGR:
-          return GL_BGR;
-      case image_type::kLumma:
-          return GL_LUMINANCE;
-      default:
-          if ( !bad_format )
-          {
-              bad_format = true;
-              LOG_ERROR( "Invalid mrv::Frame format: " << format );
-          }
-          return GL_LUMINANCE;
-          break;
+          case image_type::kRGB:
+              return GL_RGB;
+          case image_type::kRGBA:
+              return GL_RGBA;
+          case image_type::kBGRA:
+              return GL_BGRA;
+          case image_type::kBGR:
+              return GL_BGR;
+          case image_type::kLumma:
+              return GL_LUMINANCE;
+          default:
+              if ( !bad_format )
+              {
+                  bad_format = true;
+                  LOG_ERROR( "Invalid mrv::Frame format: " << format );
+              }
+              return GL_LUMINANCE;
+              break;
       }
   }
 
@@ -1100,13 +1100,13 @@ namespace mrv {
           // if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
 
           // To avoid opengl raster clipping issues, instead of:
-          //    glRasterPos2f(dx, yp);
+          //  glRasterPos2f( dx, yp );
           // we do:
           glRasterPos2i(0, 0);
           glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
           //
 
-          unsigned int r = (H - y) * dw;
+          unsigned int r = (H-y) * dw;
           const boost::uint8_t* ptr = base + r * step;
           glDrawPixels (dw,		        // width
                         1,		        // height
@@ -1120,20 +1120,20 @@ namespace mrv {
 
     // To avoid floating point errors, we send two lines
     // when zoom is not an integer.
-    yp = dy - _view->zoom();
+    yp = dy - _view->zoom() + 0.499f;
     for (unsigned int y = 0; y <= H; ++y)
       {
 	yp += _view->zoom();
 	//if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
 
 	// To avoid opengl raster clipping issues, instead of:
-	//    glRasterPos2f(dx, yp-0.499f);
+	//glRasterPos2f(dx, yp);
 	// we do:
 	glRasterPos2i(0, 0);
-	glBitmap( 0, 0, 0, 0, float(dx), float(yp+0.499f), NULL );
+	glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
 	//
 
-	unsigned int r = (H - y) * dw;
+	unsigned int r = (H-y) * dw;
 	const boost::uint8_t* ptr = base + r * step;
 	glDrawPixels (dw,		        // width
 		      1,		        // height
