@@ -532,12 +532,28 @@ void EDLGroup::draw()
 {
 
    fltk::setcolor( fltk::GRAY20 );
-   fltk::fillrect( x(), y(), w(), h() );
+   fltk::fillrect( 0, 0, w(), h() );
 
 
    fltk::Group::draw();
 
- 
+   mrv::Timeline* t = uiMain->uiTimeline;
+   int64_t frame = t->value();
+   t = timeline();
+   t->value( frame );
+   // double p = double(frame - t->minimum()) / 
+   //            double(t->maximum() - t->minimum());
+   // p *= t->w();
+
+   int p = t->slider_position( double(frame), t->w() );
+   p += t->slider_size()/2.0;
+
+
+   fltk::setcolor( fltk::YELLOW );
+   fltk::push_clip( 0, 0, w(), h() );
+   fltk::drawline( p, 0, p, h() );
+   fltk::pop_clip();
+
    if ( _drag )
    {
       fltk::push_matrix();
