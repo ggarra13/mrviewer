@@ -261,11 +261,77 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
        _damageRectangle = mrv::Recti(0, 0, _w, _h);
     }
   }
-
-  _disk_space = 0;
 }
 
+CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
+  _w( 0 ),
+  _h( 0 ),
+  _is_stereo( other->_is_stereo ),
+  _stereo_type( other->_stereo_type ),
+  _is_sequence( other->_is_sequence ),
+  _fileroot( NULL ),
+  _filename( NULL ),
+  _ctime( other->_ctime ),
+  _mtime( other->_mtime ),
+  _disk_space( 0 ),
+  _loop_barrier( NULL ),
+  _seek_req( false ),
+  _seek_frame( 1 ),
+  _channel( NULL ),
+  _label( NULL ),
+  _real_fps( 0 ),
+  _play_fps( 24.0 ),
+  _fps( other->_fps ),
+  _pixel_ratio( other->_pixel_ratio ),
+  _num_channels( other->_num_channels ),
+  _rendering_intent( other->_rendering_intent ),
+  _gamma( other->_gamma ),
+  _dts( f ),
+  _audio_frame( f ),
+  _frame( f ),
+  _expected( f ),
+  _frameStart( f ),
+  _frameEnd( other->_frameEnd ),
+  _frame_start( other->_frame_start ),
+  _frame_end( other->_frame_end ),
+  _interlaced( other->_interlaced ),
+  _image_damage( kNoDamage ),
+  _damageRectangle( 0, 0, 0, 0 ),
+  _numWindows( 0 ),
+  _dataWindow( NULL ),
+  _displayWindow( NULL ),
+  _dataWindow2( NULL ),
+  _displayWindow2( NULL ),
+  _profile( NULL ),
+  _rendering_transform( NULL ),
+  _look_mod_transform( NULL ),
+  _playback( kStopped ),
+  _aborted( false ),
+  _sequence( NULL ),
+  _right( NULL ),
+  _context(NULL),
+  _acontext(NULL),
+  _audio_codec(NULL),
+  _subtitle_index(-1),
+  _audio_index(-1),
+  _samples_per_sec( other->_samples_per_sec ),
+  _audio_buf_used( 0 ),
+  _audio_last_frame( f ),
+  _audio_channels( other->_audio_channels ),
+  _audio_buf( NULL ),
+  forw_ctx( NULL ),
+  _audio_engine( NULL )
+{
+  unsigned int W = other->width();
+  unsigned int H = other->height();
+  image_size( W, H );
 
+  _fileroot = strdup( other->fileroot() );
+  _filename = strdup( other->filename() );
+
+  fetch( f );
+  cache( hires() );
+}
 
 boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
