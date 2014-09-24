@@ -63,6 +63,8 @@ class EDLGroup : public fltk::Group
      void timeline( mrv::Timeline* t ) { _timeline = t; }
      mrv::Timeline* timeline() const { return _timeline; }
 
+    void cut( boost::int64_t frame );
+
      void zoom( double x );
 
      void refresh();

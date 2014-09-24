@@ -258,6 +258,9 @@ class CMedia
 
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
+    
+    /// Constructor used to split an image in two (cut_frame-last_frame)
+    CMedia( const CMedia* other, boost::int64_t cut_frame );
 
     virtual ~CMedia();
 
