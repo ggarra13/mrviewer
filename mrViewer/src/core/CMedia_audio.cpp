@@ -1170,17 +1170,17 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
 
       ++last;
 
-#ifdef DEBUG
-      if ( got_audio != kDecodeOK )
-      {
-          IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
-                       << _(" last ") << last
-                       << _(" from ") << frame << _(" used: ") 
-                       << _audio_buf_used
-                       << _(" need ") 
-                       << bytes_per_frame );
-      }
-#endif
+// #ifdef DEBUG
+//       if ( got_audio != kDecodeOK )
+//       {
+//           IMG_WARNING( _("Did not fill audio frame ") << audio_frame 
+//                        << _(" last ") << last
+//                        << _(" from ") << frame << _(" used: ") 
+//                        << _audio_buf_used
+//                        << _(" need ") 
+//                        << bytes_per_frame );
+//       }
+// #endif
     }
   
 
