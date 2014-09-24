@@ -7,6 +7,7 @@
 #include <fltk/Window.h>
 
 #include "mrViewer.h"
+#include "gui/mrvHotkey.h"
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvEDLGroup.h"
 #include "gui/mrvTimeline.h"
@@ -202,7 +203,7 @@ int EDLGroup::handle( int event )
 	       int ww = t->w();
 	       double len = (t->maximum() - t->minimum() + 1);
 	       double p = double(_dragX) / double(ww);
-	       p = t->minimum() + p * len + 0.5f;
+	       p = t->minimum() + p * len;
                int64_t pt = int64_t( p );
 
 	       mrv::media_track* track = (mrv::media_track*) child(idx);
@@ -253,6 +254,25 @@ int EDLGroup::handle( int event )
 	       browser()->remove_current();
 	       return 0;
 	    }
+
+            if ( kPlayFwd.match( key ) )
+            {
+
+                mrv::ImageView* v = view();
+                mrv::media fg = v->foreground();
+                if ( ! fg ) return 1;
+
+                const CMedia* img = fg->image();
+                double FPS = 24;
+                if ( img ) FPS = img->play_fps();
+                v->fps( FPS );
+
+                if ( v->playback() != ImageView::kStopped )
+                    v->stop();
+                else
+                    v->play_forwards();
+                return 1;
+            }
 
 	    if ( key == 'f' || key == 'a' )
 	    {
@@ -375,7 +395,7 @@ int EDLGroup::handle( int event )
 	    int ww = t->w();
 	    double len = (t->maximum() - t->minimum() + 1);
 	    double p = double(_dragX) / double(ww);
-	    p = t->minimum() + p * len + 0.5f;
+	    p = t->minimum() + p * len;
             int64_t pt = int64_t( p );
 
 
@@ -514,6 +534,41 @@ void EDLGroup::zoom( double z )
       c->zoom( z );
    }
 
+}
+
+void EDLGroup::cut( boost::int64_t frame )
+{
+    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+    int c = c1->value();
+    if ( c < 0 ) return;
+
+    mrv::Reel r = browser()->reel_at(c);
+    if (!r) return;
+
+    CMedia* img = r->image_at( frame );
+    if ( !img ) return;
+
+    size_t idx = r->index( frame );
+    int64_t f = r->global_to_local( frame );
+
+    if ( img->first_frame() == f || img->last_frame() == f )
+        return;
+
+
+    CMedia* right = CMedia::guess_image( img->fileroot(), NULL, 0, f,
+                                         img->last_frame() );
+    if (!right) return;
+
+    mrv::media m( new mrv::gui::media( right ) );
+
+    right->last_frame( img->last_frame() );
+    img->last_frame( f-1 );
+    right->first_frame( f );
+    right->fetch( f );
+
+    browser()->insert( idx+1, m );
+    refresh();
+    redraw();
 }
 
 void EDLGroup::refresh()

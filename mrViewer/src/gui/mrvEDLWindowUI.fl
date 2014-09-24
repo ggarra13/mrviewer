@@ -22,8 +22,7 @@ decl {\#include "gui/mrvImageBrowser.h"} {}
 
 decl {\#include "gui/mrvMainWindow.h"} {} 
 
-decl {\#include "gui/mrvImageView.h"} {selected
-} 
+decl {\#include "gui/mrvImageView.h"} {} 
 
 decl {\#include "icons/icons.c"} {} 
 
@@ -40,8 +39,8 @@ namespace mrv {open
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1015 230}
         } {
-          {fltk::Group} {} {
-            xywh {105 5 25 25}
+          {fltk::Group} {} {open
+            xywh {105 5 55 25}
           } {
             {fltk::Button} {} {
               user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
@@ -52,11 +51,19 @@ v->new_reel(name);}
               xywh {0 0 25 25} vertical
               extra_code {o->image( reel_new_24 );}
             }
+            {fltk::Button} {} {
+              user_data main user_data_type {mrv::ViewerUI*}
+              callback {v->uiEDLWindow->uiEDLGroup->cut( v->uiTimeline->value() );} selected
+              tooltip {Cut Clip at current location}
+              xywh {30 0 25 25} vertical
+              extra_code {o->image( scissors );}
+            }
           }
           {fltk::Slider} uiTimeline {
             user_data main user_data_type {mrv::ViewerUI*}
             callback {int64_t frame = (int64_t) o->value();
-v->uiView->seek( frame );}
+v->uiView->seek( frame );
+v->uiEDLWindow->uiEDLGroup->redraw();}
             xywh {95 41 920 32} type TICK_ABOVE textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 100 step 1 value 1 slider_size 20
             extra_code {o->main( main );}
             class {mrv::Timeline}
