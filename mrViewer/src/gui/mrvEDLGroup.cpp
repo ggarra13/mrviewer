@@ -113,7 +113,7 @@ bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s,
 unsigned EDLGroup::add_audio_track()
 {
    // _audio_track.push_back( mrv::audio_track_ptr() );
-   return _audio_track.size() - 1;
+    return unsigned( _audio_track.size() - 1 );
 }
 
 // Return the number of media tracks
@@ -160,11 +160,15 @@ void EDLGroup::pan( int diff )
    mrv::Timeline* t = timeline();  
  
    double amt = double(diff) / (double) t->w();
-   double avg = t->maximum() - t->minimum() + 1;
+   double tmax = t->maximum();
+   double tmin = t->minimum();
+   double avg = tmax - tmin + 1;
    amt *= avg;
    
-   t->minimum( t->minimum() - amt );
-   t->maximum( t->maximum() - amt );
+   t->minimum( tmin - amt );
+   if ( t->minimum() < 0 ) t->minimum( 0 );
+
+   t->maximum( tmax - amt );
    t->redraw();
    redraw();
    
@@ -218,7 +222,10 @@ int EDLGroup::handle( int event )
                   }
 
                   browser()->reel( track->reel() );
+                  DBG("Change  image " << j );
                   browser()->change_image( j );
+                  view()->seek( pt );
+                  DBG("Changed image " << j );
                   browser()->redraw();
 		  return 1;
 	       }
@@ -429,6 +436,8 @@ int EDLGroup::handle( int event )
                 browser()->redraw();
 	    }
 
+            timeline()->value( pt );
+            view()->seek( pt );
 	    delete _drag;
 	    _drag = NULL;
             _dragChild = -1;
@@ -566,7 +575,7 @@ void EDLGroup::cut( boost::int64_t frame )
     right->first_frame( f );
     right->fetch( f );
 
-    browser()->insert( idx+1, m );
+    browser()->insert( unsigned(idx+1), m );
     refresh();
     redraw();
 }
@@ -593,7 +602,7 @@ void EDLGroup::draw()
    fltk::Group::draw();
 
    mrv::Timeline* t = uiMain->uiTimeline;
-   int64_t frame = t->value();
+   double frame = t->value();
    t = timeline();
    t->value( frame );
    // double p = double(frame - t->minimum()) / 
@@ -601,7 +610,7 @@ void EDLGroup::draw()
    // p *= t->w();
 
    int p = t->slider_position( double(frame), t->w() );
-   p += t->slider_size()/2.0;
+   p += int( t->slider_size()/2.0 );
 
 
    fltk::setcolor( fltk::YELLOW );
