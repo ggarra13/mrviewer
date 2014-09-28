@@ -554,17 +554,17 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_float( _("Gamma"), img->gamma(), true, 
 	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
 
-    
-    
-    const Imf::Chromaticities& c = img->chromaticities(); 
-    sprintf( buf, "R: %g %g    G: %g %g    B: %g %g",
-	     c.red.x, c.red.y, c.green.x, c.green.y,
-	     c.blue.x, c.blue.y );
-    add_text( _("CIExy Chromaticities"), buf );
-    sprintf( buf, "W: %g %g",c.white.x, c.white.y );
-    add_text( _("CIExy White Point"), buf );
 
-    
+    if ( img->has_chromaticities() )
+    {
+        const Imf::Chromaticities& c = img->chromaticities(); 
+        sprintf( buf, "R: %g %g    G: %g %g    B: %g %g",
+                 c.red.x, c.red.y, c.green.x, c.green.y,
+                 c.blue.x, c.blue.y );
+        add_text( _("CIExy Chromaticities"), buf );
+        sprintf( buf, "W: %g %g",c.white.x, c.white.y );
+        add_text( _("CIExy White Point"), buf );
+    }
 
     add_ctl( _("Render Transform"), img->rendering_transform() );
     
