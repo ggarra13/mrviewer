@@ -1518,8 +1518,8 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
          DBG( "Make images contiguous in timeline" );
          adjust_timeline();
 
-         change_image(0);
-         seek( view()->frame() );
+         // change_image(0);
+         // seek( view()->frame() );
       }
 
     if ( reel->edl )
@@ -2953,7 +2953,7 @@ void ImageBrowser::load( const stringArray& files,
         for ( j = i, ++i; i != e; j = i, ++i )
         {
            int64_t frame = (*j)->position() + (*j)->image()->duration();
-           DBG( (*i)->image()->name() << " set to frame " << frame );
+           DBG( (*i)->image()->name() << " moved to frame " << frame );
            (*i)->position( frame );
         }
      }
@@ -3004,8 +3004,9 @@ void ImageBrowser::load( const stringArray& files,
 
      timeline()->minimum( double(first) );
      timeline()->maximum( double(last) );
-     uiMain->uiStartFrame->value( first );
-     uiMain->uiEndFrame->value( last );
+
+     uiMain->uiStartFrame->value( double(first) );
+     uiMain->uiEndFrame->value( double(last) );
 
      frame( f );
   }

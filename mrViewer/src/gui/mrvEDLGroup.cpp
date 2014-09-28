@@ -223,7 +223,8 @@ int EDLGroup::handle( int event )
 
                   browser()->reel( track->reel() );
                   DBG("Change  image " << j );
-                  browser()->change_image( j );
+                  // browser()->change_image( j );
+                  view()->stop();
                   view()->seek( pt );
                   DBG("Changed image " << j );
                   browser()->redraw();
@@ -259,10 +260,28 @@ int EDLGroup::handle( int event )
 	    if ( key == fltk::DeleteKey )
 	    {
 	       browser()->remove_current();
-	       return 0;
+	       return 1;
 	    }
 
-            if ( kPlayFwd.match( key ) )
+            if ( kPlayBack.match( key ) )
+            {
+
+                mrv::ImageView* v = view();
+                mrv::media fg = v->foreground();
+                if ( ! fg ) return 1;
+
+                const CMedia* img = fg->image();
+                double FPS = 24;
+                if ( img ) FPS = img->play_fps();
+                v->fps( FPS );
+
+                if ( v->playback() != ImageView::kStopped )
+                    v->stop();
+                else
+                    v->play_backwards();
+                return 1;
+            }
+            else if ( kPlayFwd.match( key ) )
             {
 
                 mrv::ImageView* v = view();
@@ -280,8 +299,17 @@ int EDLGroup::handle( int event )
                     v->play_forwards();
                 return 1;
             }
-
-	    if ( key == 'f' || key == 'a' )
+            else if ( kFrameStepFwd.match(key) )
+            {
+                view()->step_frame( 1 );
+                return 1;
+            }
+            else if ( kFrameStepBack.match(key) )
+            {
+                view()->step_frame( -1 );
+                return 1;
+            }
+	    else if ( key == 'f' || key == 'a' )
 	    {
 	       unsigned i = 0;
 	       unsigned e = children();
@@ -576,6 +604,7 @@ void EDLGroup::cut( boost::int64_t frame )
     right->fetch( f );
 
     browser()->insert( unsigned(idx+1), m );
+    browser()->value(idx+1);
     refresh();
     redraw();
 }

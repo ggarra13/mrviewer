@@ -561,6 +561,8 @@ class CMedia
     /// Returns an embedded gamma value (if any)
     inline float gamma() const { return _gamma; }
 
+    inline bool has_chromaticities() const { return _has_chromaticities; }
+
     inline const Imf::Chromaticities& chromaticities() const
     { return _chromaticities; }
 
@@ -1054,6 +1056,7 @@ class CMedia
     // mostly unused --- keep?
     RenderingIntent _rendering_intent;
     float     _gamma;
+    bool                _has_chromaticities;
     Imf::Chromaticities _chromaticities;
 
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
