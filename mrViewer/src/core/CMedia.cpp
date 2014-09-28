@@ -127,6 +127,7 @@ CMedia::CMedia() :
   _num_channels( 0 ),
   _rendering_intent( kUndefinedIntent ),
   _gamma( 1 ),
+  _has_chromaticities( false ),
   _dts( 1 ),
   _audio_frame( 1 ),
   _frame( 1 ),
@@ -203,6 +204,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _num_channels( 0 ),
   _rendering_intent( kUndefinedIntent ),
   _gamma( 1 ),
+  _has_chromaticities( false ),
   _dts( 1 ),
   _audio_frame( 1 ),
   _frame( 1 ),
@@ -286,6 +288,8 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _num_channels( other->_num_channels ),
   _rendering_intent( other->_rendering_intent ),
   _gamma( other->_gamma ),
+  _has_chromaticities( other->has_chromaticities() ),
+  _chromaticities( other->chromaticities() ),
   _dts( f ),
   _audio_frame( f ),
   _frame( f ),
@@ -1083,6 +1087,7 @@ void CMedia::gamma( const float x )
 void CMedia::chromaticities( const Imf::Chromaticities& c )
 {
     _chromaticities = c;
+    _has_chromaticities = true;
     image_damage( image_damage() | kDamageData | kDamageLut );
     refresh();
 }
