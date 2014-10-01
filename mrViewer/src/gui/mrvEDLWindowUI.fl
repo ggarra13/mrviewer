@@ -33,14 +33,14 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {
-        label {EDL Window} open
-        xywh {261 539 1015 230} resizable hotspot visible
+        label {EDL Window} open selected
+        xywh {261 539 1015 230} visible
       } {
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1015 230}
         } {
           {fltk::Group} {} {open
-            xywh {105 5 55 25}
+            xywh {105 5 85 25}
           } {
             {fltk::Button} {} {
               user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
@@ -53,10 +53,17 @@ v->new_reel(name);}
             }
             {fltk::Button} {} {
               user_data main user_data_type {mrv::ViewerUI*}
-              callback {v->uiEDLWindow->uiEDLGroup->cut( v->uiTimeline->value() );} selected
+              callback {v->uiEDLWindow->uiEDLGroup->cut( v->uiTimeline->value() );}
               tooltip {Cut Clip at current location}
               xywh {30 0 25 25} vertical
               extra_code {o->image( scissors );}
+            }
+            {fltk::Button} {} {
+              user_data main user_data_type {mrv::ViewerUI*}
+              callback {v->uiEDLWindow->uiEDLGroup->merge( v->uiTimeline->value() );}
+              tooltip {Merge two clips near current location.  Clips must be of the same movie or sequence and the left clip must end where the right clip begins.}
+              xywh {60 0 25 25} vertical
+              extra_code {o->image( merge_tool );}
             }
           }
           {fltk::Slider} uiTimeline {
