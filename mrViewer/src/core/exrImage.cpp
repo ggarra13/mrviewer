@@ -2318,6 +2318,12 @@ bool exrImage::save( const char* file, const CMedia* img,
         hdr.insert( N_("isoSpeed"), attr );
     }
 
+    {
+        Imf::Rational r( int( img->fps() * 1000 ), 1000 );
+        Imf::RationalAttribute attr( r );
+        hdr.insert( N_("framesPerSecond"), attr );
+    }
+
     it = exif.find(N_( "Film Manufacturer Code" ) ); 
     if ( it != exif.end() )
     {
@@ -2443,6 +2449,27 @@ bool exrImage::save( const char* file, const CMedia* img,
                            userdata, userdata);
         Imf::TimeCodeAttribute attr(key);
         hdr.insert( N_("timeCode"), attr );
+    }
+
+    it = exif.find(N_( "Writer" ) ); 
+    if ( it != exif.end() )
+    {
+        Imf::StringAttribute attr( it->second );
+        hdr.insert( N_("writer"), attr );
+    }
+
+    it = exif.find(N_( "ICC Profile" ) ); 
+    if ( it != exif.end() )
+    {
+        Imf::StringAttribute attr( it->second );
+        hdr.insert( N_("iccProfile"), attr );
+    }
+
+    it = exif.find(N_( "Wrap Modes" ) ); 
+    if ( it != exif.end() )
+    {
+        Imf::StringAttribute attr( it->second );
+        hdr.insert( N_("wrapmodes"), attr );
     }
 
     uint8_t* base = NULL;

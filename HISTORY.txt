@@ -5,9 +5,15 @@ v2.6.5.1 - Fixed subtitles displaying in black only.
 	 - GL Snapshot now can save a sequence of frames.
 	 - Added The Color Transformation Language manual ( CtlManual.pdf )
 	   to the docs folder.
-	 - Made exr loader a tiny bit faster.
+	 - Made exr loader a tiny bit faster when it is a multiview image.
 	 - Bug fixed a minor memory leak when quitting in color channel string.
 	 - EDL timeline now supports play and step hotkeys.
+	 - Fixed EXR loader not loading exif attributes.
+	 - Fixed EXR saver to save all known attributes of image, except tiling.
+	 - Added a Cut tool to EDL Window.  Allows cutting of clips, to later
+	   delete them or move them somewhere else.
+	 - Added Merge tool to undo the Cut tool.
+	 - Fixed name of zlib1.dll in windows32 distributions.
 v2.6.5.0 - Simplified and sped up exr loader.
 	 - Fixed crash of exr loader when working with an image with a single
 	   view.

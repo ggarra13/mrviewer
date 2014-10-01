@@ -161,16 +161,18 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL) 
 	       {
-		  CMedia::Mutex& m2 = next->video_mutex();
-		  SCOPED_LOCK( m2 );
+                   {
+                       CMedia::Mutex& m2 = next->video_mutex();
+                       SCOPED_LOCK( m2 );
+
+                       if ( next->stopped() )
+                       {
+                           next->seek( f );
+                           next->play( CMedia::kForwards, uiMain, fg );
+                       }
+                   }
 
 		  img->playback( CMedia::kStopped );
-
-                  if ( next->stopped() )
-                  {
-                      next->seek( f );
-                      next->play( CMedia::kForwards, uiMain, fg );
-                  }
 
 		  status = kEndNextImage;
 		  break;
@@ -230,15 +232,18 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL )
 	       {
-		  CMedia::Mutex& m2 = next->video_mutex();
-		  SCOPED_LOCK( m2 );
-		  img->playback( CMedia::kStopped );
+                   {
+                       CMedia::Mutex& m2 = next->video_mutex();
+                       SCOPED_LOCK( m2 );
 
-                  if ( next->stopped() )
-                  {
-                      next->seek( f );
-                      next->play( CMedia::kBackwards, uiMain, fg );
-                  }
+                       if ( next->stopped() )
+                       {
+                           next->seek( f );
+                           next->play( CMedia::kBackwards, uiMain, fg );
+                       }
+                   }
+
+		  img->playback( CMedia::kStopped );
 
 		  status = kEndNextImage;
 		  break;
@@ -677,12 +682,14 @@ void video_thread( PlaybackData* data )
       // // Calculate video-audio difference
       if ( img->has_audio() && status == CMedia::kDecodeOK )
       {
-	 //double video_clock = img->video_pts();
-	 //double audio_clock = img->audio_pts();
+	 // int64_t video_pts = img->video_pts();
+	 // int64_t audio_pts = img->audio_pts();
 
-	 double video_clock = img->video_clock();
+         double video_clock = img->video_clock();
 	 double audio_clock = img->audio_clock();
-	 diff = step * (video_clock - audio_clock);
+
+
+	 diff = step * video_clock - audio_clock;
 
 
 
