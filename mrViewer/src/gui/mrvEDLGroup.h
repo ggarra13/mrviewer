@@ -65,6 +65,8 @@ class EDLGroup : public fltk::Group
 
     void cut( boost::int64_t frame );
 
+    void merge( boost::int64_t frame );
+
      void zoom( double x );
 
      void refresh();

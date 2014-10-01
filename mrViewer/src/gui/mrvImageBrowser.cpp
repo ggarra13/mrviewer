@@ -239,10 +239,10 @@ namespace mrv {
   fltk::Item( m->image()->fileroot() ),
   _elem( m )
   {
+    CMedia* img = m->image();
     m->create_thumbnail();
     image( m->thumbnail() );
 
-    CMedia* img = m->image();
 
     char info[2048];
     if ( dynamic_cast< clonedImage* >( img ) != NULL )
@@ -2611,6 +2611,7 @@ void ImageBrowser::load( const stringArray& files,
       {
 	int64_t t = timeline()->offset( img );
 	f += t;
+        DBG( "set frame to " << f );
         frame( f );
       }
 
