@@ -902,11 +902,11 @@ bool Parser::parse( const std::string& s )
                   cmd += buf;
                   deliver( cmd );
 
-                  mrv::GLShapeList::const_iterator i = shapes.begin();
+                  mrv::GLShapeList::const_iterator k = shapes.begin();
                   mrv::GLShapeList::const_iterator e = shapes.end();
-                  for ( ; i != e; ++i )
+                  for ( ; k != e; ++k )
                   {
-                      std::string s = (*i)->send();
+                      std::string s = (*k)->send();
                       deliver( s );
                   }
               }

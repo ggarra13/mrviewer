@@ -602,9 +602,57 @@ void EDLGroup::cut( boost::int64_t frame )
     img->last_frame( f-1 );
     right->first_frame( f );
     right->fetch( f );
+    right->decode_video( f );
+    right->find_image( f );
 
     browser()->insert( unsigned(idx+1), m );
-    browser()->value(idx+1);
+    browser()->value( int(idx+1));
+
+    refresh();
+    redraw();
+}
+
+void EDLGroup::merge( boost::int64_t frame )
+{
+    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
+    int c = c1->value();
+    if ( c < 0 ) return;
+
+    mrv::Reel r = browser()->reel_at(c);
+    if (!r) return;
+
+    if ( r->images.size() < 2 ) return;
+
+    CMedia* img = r->image_at( frame );
+    size_t idx = r->index( frame );
+    int64_t f = r->global_to_local( frame );
+
+    size_t idx2 = idx;
+    if ( f < img->first_frame() + img->duration() / 2 )
+    {
+        idx -= 1;
+    }
+
+    idx2 = idx + 1;
+
+    if ( idx < 0 || idx2 >= r->images.size() ) return;
+
+    mrv::media lm( r->images[idx] );
+    if (!lm) return;
+    mrv::media rm( r->images[idx2] );
+    if (!rm ) return;
+
+    CMedia* left  = lm->image();
+    CMedia* right = rm->image();
+
+    if ( strcmp( left->fileroot(), right->fileroot() ) != 0 ) return;
+
+    if ( left->last_frame() + 1 != right->first_frame() ) return;
+
+    left->last_frame( right->last_frame() );
+
+    browser()->remove( unsigned(idx2) );
+    browser()->change_image( int(idx) );
     refresh();
     redraw();
 }

@@ -1428,7 +1428,7 @@ void CMedia::play(const CMedia::Playback dir,
   // This seek is needed to sync audio playback
   _seek_req = true;
   if ( ! seek_to_position( _frame ) )
-     IMG_ERROR( _("Could not seek to frame ") << _frame );
+      IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
   PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
@@ -2045,7 +2045,6 @@ void CMedia::loop_at_end( const boost::int64_t frame )
 
   if ( number_of_audio_streams() > 0 )
     {
-       DBG( "AUDIO LOOP AT END" );
        _audio_packets.loop_at_end( frame );
     }
 
@@ -2229,7 +2228,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  _video_pts = int64_t( double(f) / _fps );
+  _video_pts = int64_t( double(f) / _fps * 1000000.0 );
   _video_clock = double(av_gettime()) / 1000000.0;
 
   // Check if we have a cached frame for this frame

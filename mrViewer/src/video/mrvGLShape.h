@@ -11,7 +11,7 @@
 
 namespace fltk
 {
-class Font;
+struct Font;
 }
 
 namespace mrv
