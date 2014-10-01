@@ -420,6 +420,8 @@ void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {
 
+    flush_video();
+    flush_audio();
 
     // double frac = ( (double) (frame - _frameStart) / 
     // 		   (double) (_frameEnd - _frameStart) );
@@ -430,10 +432,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // static const AVRational base = { 1, AV_TIME_BASE };
     // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
-   boost::int64_t start = frame;
-   if ( start > 2 ) start -= 2;
+    // boost::int64_t start = frame;
 
-   boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
+   boost::int64_t offset = boost::int64_t( double(frame) * AV_TIME_BASE
                                            / fps() );
 
     int flags = 0;
@@ -469,11 +470,12 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     // offset = av_rescale_q(offset, base, stream->time_base);
 
-    // int ret = av_seek_frame( _context, idx, offset, AVSEEK_FLAG_BACKWARD );
+    int ret = av_seek_frame( _context, -1, offset, 
+                             AVSEEK_FLAG_BACKWARD );
 
 
-    int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, 
-                                  INT64_MAX, flags );
+    // int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, 
+    //                               INT64_MAX, flags );
 
   
   
@@ -486,9 +488,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _acontext )
     {
-        int ret = avformat_seek_file( _acontext, -1, INT64_MIN, offset, 
-                                      INT64_MAX, flags );
-  
+        int ret = av_seek_frame( _acontext, -1, offset, 
+                                 AVSEEK_FLAG_BACKWARD );
+
         if (ret < 0)
         {
             IMG_ERROR( _("Could not seek to frame ") << frame 
@@ -1024,8 +1026,8 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// 	debug_video_packets(frame);
       }
 
-    _video_pts   = _hires->pts();
-    _video_clock = double(av_gettime()) / 1000000.0;
+    _video_pts   = int64_t( _hires->pts() * 1000000.0 / _fps );
+    _video_clock = double(av_gettime_relative()) / 1000000.0;
 
     // Limit (clean) the video store as we play it
     limit_video_store( frame );
@@ -2008,6 +2010,7 @@ bool aviImage::fetch(const boost::int64_t frame)
   _expected = dts + 1;
   _next = frame + 1;
 
+
 #ifdef DEBUG_DECODE
   LOG_INFO( "------------------------------------------------------" );
   LOG_INFO( "FETCH DONE: " << _dts << "   expected: " << _expected 
@@ -2064,6 +2067,7 @@ bool aviImage::frame( const boost::int64_t f )
 
 
   bool ok = fetch(_dts);
+
 
 #ifdef DEBUG_DECODE
   LOG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: " 

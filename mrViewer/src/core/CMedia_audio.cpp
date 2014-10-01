@@ -344,8 +344,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
   int flags = 0;
   flags &= ~AVSEEK_FLAG_BYTE;
 
-  int ret = avformat_seek_file( _acontext, -1, INT64_MIN, offset, 
-   				INT64_MAX, flags );
+  int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
   if (ret < 0)
   {
       IMG_ERROR( "Could not seek to frame " << frame << ". Error: "
@@ -1532,8 +1531,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
   }
   
   bool ok = play_audio( result );
-  _audio_pts   = int64_t( _audio_frame / _fps );
-  _audio_clock = av_gettime() / 1000000.0;
+  _audio_pts   = int64_t( _audio_frame * 1000000.0 / _fps );
+  _audio_clock = av_gettime_relative() / 1000000.0;
   return ok;
 }
 
