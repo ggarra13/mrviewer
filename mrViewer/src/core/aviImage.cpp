@@ -420,9 +420,6 @@ void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {
 
-    flush_video();
-    flush_audio();
-
     // double frac = ( (double) (frame - _frameStart) / 
     // 		   (double) (_frameEnd - _frameStart) );
     // boost::int64_t offset = boost::int64_t( _context->duration * frac );
@@ -432,53 +429,20 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // static const AVRational base = { 1, AV_TIME_BASE };
     // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
-    // boost::int64_t start = frame;
 
-   boost::int64_t offset = boost::int64_t( double(frame) * AV_TIME_BASE
-                                           / fps() );
-
-    int flags = 0;
-    flags &= ~AVSEEK_FLAG_BYTE;
-
-    // AVStream* stream = NULL;
-    // int idx = -1;
-
-    // if ( has_video() )
-    // {
-    //    idx = video_stream_index();
-    //    stream = get_video_stream();
-
-    //    int64_t ts = av_rescale_q(offset, base, stream->time_base);
-    //    int i = av_index_search_timestamp( stream, ts, AVSEEK_FLAG_BACKWARD );
-    //    if ( i >= 0 ) min_ts = stream->index_entries[i].timestamp;
-    // }
-
-    // if ( has_audio() )
-    // {
-    //    AVStream* st = get_audio_stream();
-
-    //    int64_t ts = av_rescale_q(offset, base, st->time_base);
-    //    int i = av_index_search_timestamp( st, ts, AVSEEK_FLAG_BACKWARD );
-
-    //    int64_t new_ts = st->index_entries[i].timestamp;
-    //    if ( i >= 0 && new_ts < min_ts ) {
-    // 	min_ts = new_ts;
-    // 	stream = st;
-    // 	idx = audio_stream_index();
-    //    }
-    // }
-
-    // offset = av_rescale_q(offset, base, stream->time_base);
-
-    int ret = av_seek_frame( _context, -1, offset, 
-                             AVSEEK_FLAG_BACKWARD );
+    boost::int64_t offset = boost::int64_t( double(frame) * AV_TIME_BASE
+                                            / fps() );
 
 
+
+    int ret = av_seek_frame( _context, -1, offset, AVSEEK_FLAG_BACKWARD );
+
+
+    // int flags = 0;
+    // flags &= ~AVSEEK_FLAG_BYTE;
     // int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, 
     //                               INT64_MAX, flags );
 
-  
-  
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << frame
@@ -488,8 +452,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _acontext )
     {
-        int ret = av_seek_frame( _acontext, -1, offset, 
-                                 AVSEEK_FLAG_BACKWARD );
+        // int ret = avformat_seek_file( _acontext, -1, INT64_MIN, offset, 
+        //                               INT64_MAX, flags );
+
+        int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
 
         if (ret < 0)
         {
