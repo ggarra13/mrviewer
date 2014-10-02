@@ -189,7 +189,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = last;
                 step  = -1;
                 view->playback( ImageView::kBackwards );
-                img->frame( frame );
+                // img->frame( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kBackwards );
                 status = kEndChangeDirection;
@@ -261,7 +261,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = first;
                 step = 1;
                 view->playback( ImageView::kForwards );
-                img->frame( frame );
+                // img->frame( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kForwards );
                 status = kEndChangeDirection;
