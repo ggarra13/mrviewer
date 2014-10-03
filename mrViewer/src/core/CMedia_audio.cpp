@@ -1278,8 +1278,8 @@ CMedia::store_audio( const boost::int64_t audio_frame,
 
   // Get the audio info from the codec context
   if ( ctx->channels == 1 ) _audio_channels = 1;
-  int channels = _audio_channels;
-  if ( channels == 0 ) channels = ctx->channels;
+  unsigned short channels = _audio_channels;
+  if ( channels == 0 ) channels = (unsigned short) ctx->channels;
 
   int frequency = ctx->sample_rate;
 
@@ -1381,7 +1381,7 @@ void CMedia::audio_initialize()
   av_log_set_level(-99);
 
   _audio_engine = mrv::AudioEngine::factory();
-  _audio_channels = _audio_engine->channels();
+  _audio_channels = (unsigned short) _audio_engine->channels();
 }
 
 
@@ -1431,7 +1431,7 @@ bool CMedia::open_audio( const short channels,
 
   bool ok = false;
 
-  for ( short fmt = format; fmt > 0; fmt -= 2 )
+  for ( int fmt = format; fmt > 0; fmt -= 2 )
   {
      for (int ch = channels; ch > 0; ch -= 2 )
      {
@@ -1531,8 +1531,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
   }
   
   bool ok = play_audio( result );
-  _audio_pts   = int64_t( _audio_frame * 1000000.0 / _fps );
-  _audio_clock = av_gettime_relative() / 1000000.0;
+  // _audio_pts   = int64_t( _audio_frame * 1000000.0 / _fps );
+  _audio_clock = (double)av_gettime_relative() / 1000000.0;
   return ok;
 }
 

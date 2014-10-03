@@ -429,8 +429,12 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // static const AVRational base = { 1, AV_TIME_BASE };
     // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
+    // With frame and reverse playback, we often do not get the current
+    // frame.  So we search for frame - 1.
+    boost::int64_t start = frame;
+    if ( playback() == kBackwards && start > 1 ) --start;
 
-    boost::int64_t offset = boost::int64_t( double(frame) * AV_TIME_BASE
+    boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
 
 
@@ -992,7 +996,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// 	debug_video_packets(frame);
       }
 
-    _video_pts   = int64_t( _hires->pts() * 1000000.0 / _fps );
+    // _video_pts   = int64_t( _hires->pts() * 1000000.0 / _fps );
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
     // Limit (clean) the video store as we play it
@@ -2123,7 +2127,6 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
      _video_packets.pop_front();  // pop seek end packet
 
   if ( count == 0 ) {
-     IMG_WARNING("Empty preroll" );
      return kDecodeError;
   }
       
