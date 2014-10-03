@@ -1206,6 +1206,42 @@ bool ImageView::should_update( mrv::media& fg )
 }
 
 
+void preload( const mrv::Reel& reel, const mrv::media& fg,
+              const int64_t tframe )
+{
+    if ( !reel ) return;
+
+
+    int64_t f = reel->global_to_local( tframe );
+    CMedia* img = fg->image();
+
+    if ( img && img->is_sequence() )
+    {
+        if ( img->dts() < f ) img->dts( f );
+
+        if ( img->dts() >= img->last_frame() )
+        {
+            int64_t i = img->first_frame();
+            int64_t last = f;
+            for ( ; i != last; ++i )
+            {
+                if ( !img->is_cache_filled( i ) )
+                {
+                    img->dts( i-1 );
+                    break;
+                }
+            }
+        }
+        if ( img->dts() < img->last_frame() )
+        {
+            f = img->dts() + 1;
+            mrv::image_type_ptr pic = img->hires();
+            img->find_image( f );
+            img->hires( pic );
+        }
+    }
+}
+
 void ImageView::timeout()
 {
 
@@ -1243,7 +1279,6 @@ void ImageView::timeout()
       }
       
    }
-
    mrv::media bg = background();
 
    if ( bgreel && bgreel->edl )
@@ -1261,6 +1296,16 @@ void ImageView::timeout()
          uiMain->uiMain->copy_label( bufs );
       }
 
+   }
+
+
+   //
+   // If playback is stopped, try to cache forward images
+   //
+   if ( playback() == kStopped )
+   {
+       preload( reel, fg, tframe );
+       preload( bgreel, bg, tframe );
    }
 
    

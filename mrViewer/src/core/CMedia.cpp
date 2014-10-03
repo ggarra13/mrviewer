@@ -150,9 +150,9 @@ CMedia::CMedia() :
   _sequence( NULL ),
   _right( NULL ),
   _audio_pts( 0 ),
-  _audio_clock( double( av_gettime() )/ 1000000.0 ),
+  _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
   _video_pts( 0 ),
-  _video_clock( double( av_gettime() ) / 1000000.0 ),
+  _video_clock( double( av_gettime_relative() ) / 1000000.0 ),
   _context(NULL),
   _acontext(NULL),
   _audio_codec(NULL),
@@ -465,7 +465,8 @@ CMedia::~CMedia()
 
 void CMedia::hires( const mrv::image_type_ptr pic)
 { 
-    _hires = pic; 
+    _hires = pic;
+    _frame = pic->frame();
     _w = pic->width(); 
     _h = pic->height(); 
     refresh();
@@ -1416,8 +1417,8 @@ void CMedia::play(const CMedia::Playback dir,
 
   DBG( name() << " Play from frame " << _dts );
 
-  _audio_clock = double( av_gettime() ) / 1000000.0;
-  _video_clock = double( av_gettime() ) / 1000000.0;
+  _audio_clock = double( av_gettime_relative() ) / 1000000.0;
+  _video_clock = double( av_gettime_relative() ) / 1000000.0;
 
   _audio_buf_used = 0;
 
@@ -1645,7 +1646,7 @@ void CMedia::seek( const boost::int64_t f )
 /** 
  * Cache picture for sequence.
  * 
- * @param pi       picture to cache
+ * @param pic       picture to cache
  */
 void CMedia::cache( const mrv::image_type_ptr& pic )
 {
@@ -1669,6 +1670,34 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 
 }
 
+/** 
+ * Cache picture for sequence.
+ * 
+ * @param pic       picture to cache
+ */
+void CMedia::stereo_cache( const mrv::image_type_ptr& left,
+                           const mrv::image_type_ptr& right )
+{
+   assert( left != NULL && right != NULL );
+   assert( left->frame() == right->frame() );
+
+   if ( !is_sequence()) 
+      return;
+
+   SCOPED_LOCK( _mutex );
+
+  boost::int64_t f = left->frame();
+  if      ( f < _frameStart ) f = _frameStart;
+  else if ( f > _frameEnd )   f = _frameEnd;
+
+  boost::int64_t idx = f - _frame_start;
+  if ( _sequence[idx] ) return;
+
+  _sequence[idx] = left;
+  _right[idx] = right;
+  timestamp(idx);
+
+}
 
 /** 
  * Check if cache is already filled for a frame
@@ -2228,8 +2257,8 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  _video_pts = int64_t( double(f) / _fps * 1000000.0 );
-  _video_clock = double(av_gettime()) / 1000000.0;
+  // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
+  _video_clock = double(av_gettime_relative()) / 1000000.0;
 
   // Check if we have a cached frame for this frame
   
