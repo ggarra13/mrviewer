@@ -1,5 +1,8 @@
 v2.6.5.2 - Upgraded to latest ffmpeg, libx264.
-	 - Fixed swing looping in short movie files.
+	 - Fixed swing looping in short movie files which could hang the 
+	   viewer.
+	 - Made play backwards faster due to increase in seek speed.
+	 - Fixed wrong calculation of frame differences in backwards playback.
 v2.6.5.1 - Fixed subtitles displaying in black only.
 	 - Made grease pencil a property of the image instead of the viewer.
 	 - Grease pencil drawings are saved and loaded to/from a reel.

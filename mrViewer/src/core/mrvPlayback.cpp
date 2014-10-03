@@ -689,16 +689,14 @@ void video_thread( PlaybackData* data )
 	 double audio_clock = img->audio_clock();
 
 
-	 diff = step * video_clock - audio_clock;
 
-
-
-	 if ( diff > 1000.0 ) diff = 0.0;
-
-	 img->avdiff( diff );
+	 diff = step * (video_clock - audio_clock);
 
 	 double absdiff = std::abs(diff);
 
+	 if ( absdiff > 1000.0 ) diff = 0.0;
+
+	 img->avdiff( diff );
 
 	 // Skip or repeat the frame. Take delay into account
 	 //    FFPlay still doesn't "know if this is the best guess."

@@ -364,6 +364,7 @@ class CMedia
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
+    void stereo_cache( const mrv::image_type_ptr& left, const mrv::image_type_ptr& right );
 
     inline uint64_t duration() const { return _frameEnd - _frameStart + 1; }
 
@@ -1147,7 +1148,7 @@ class CMedia
     audio_cache_t    _audio;
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
-    unsigned  _audio_channels;
+    unsigned short   _audio_channels;
     mrv::AudioEngine::AudioFormat _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
 
