@@ -620,18 +620,21 @@ void video_thread( PlaybackData* data )
 
       status = img->decode_video( frame );
 
-      boost::int64_t last = (boost::int64_t) timeline->maximum();
-      last += img->first_frame() - img->start_frame();
-      if ( img->last_frame() < last ) last = img->last_frame();
+      if ( img->is_sequence() )
+      {
+          boost::int64_t last = (boost::int64_t) timeline->maximum();
+          last += img->first_frame() - img->start_frame();
+          if ( img->last_frame() < last ) last = img->last_frame();
 
-      boost::int64_t first = (boost::int64_t) timeline->minimum();
-      first += img->first_frame() - img->start_frame();
-      if ( img->first_frame() > first ) first = img->first_frame();
+          boost::int64_t first = (boost::int64_t) timeline->minimum();
+          first += img->first_frame() - img->start_frame();
+          if ( img->first_frame() > first ) first = img->first_frame();
 
-      if ( frame > last )
-          status = CMedia::kDecodeLoopEnd;
-      else if ( frame < first )
-          status = CMedia::kDecodeLoopStart;
+          if ( frame > last )
+              status = CMedia::kDecodeLoopEnd;
+          else if ( frame < first )
+              status = CMedia::kDecodeLoopStart;
+      }
 
 
       switch( status )
