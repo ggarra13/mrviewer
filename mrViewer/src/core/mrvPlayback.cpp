@@ -113,6 +113,8 @@ EndStatus handle_loop( boost::int64_t& frame,
    boost::int64_t last = ( int64_t ) timeline->maximum();
    boost::int64_t first = ( int64_t ) timeline->minimum();
 
+   last  += ( img->first_frame() - img->start_frame() );
+   first += ( img->first_frame() - img->start_frame() );
 
    if ( img->last_frame() < last )
       last = img->last_frame();
@@ -299,6 +301,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
    boost::int64_t last = boost::int64_t( timeline->maximum() );
    boost::int64_t first = boost::int64_t( timeline->minimum() );
+
+   last  += ( img->first_frame() - img->start_frame() );
+   first += ( img->first_frame() - img->start_frame() );
 
    boost::int64_t f = frame;
 
@@ -599,6 +604,7 @@ void video_thread( PlaybackData* data )
    double fps = img->play_fps();
    timer.setDesiredFrameRate( fps );
 
+
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
       if ( !skip )
@@ -614,19 +620,19 @@ void video_thread( PlaybackData* data )
 
       status = img->decode_video( frame );
 
-      if ( img->is_sequence() )
-      {
-          boost::int64_t last = (boost::int64_t) timeline->maximum();
-          if ( img->last_frame() < last ) last = img->last_frame();
+      boost::int64_t last = (boost::int64_t) timeline->maximum();
+      last += img->first_frame() - img->start_frame();
+      if ( img->last_frame() < last ) last = img->last_frame();
 
-          boost::int64_t first = (boost::int64_t) timeline->minimum();
-          if ( img->first_frame() > first ) first = img->first_frame();
+      boost::int64_t first = (boost::int64_t) timeline->minimum();
+      first += img->first_frame() - img->start_frame();
+      if ( img->first_frame() > first ) first = img->first_frame();
 
-          if ( frame > last )
-              status = CMedia::kDecodeLoopEnd;
-          else if ( frame < first )
-              status = CMedia::kDecodeLoopStart;
-      }
+      if ( frame > last )
+          status = CMedia::kDecodeLoopEnd;
+      else if ( frame < first )
+          status = CMedia::kDecodeLoopStart;
+
 
       switch( status )
       {
