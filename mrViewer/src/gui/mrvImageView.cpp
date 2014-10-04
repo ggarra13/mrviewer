@@ -1209,7 +1209,7 @@ bool ImageView::should_update( mrv::media& fg )
 void preload( const mrv::Reel& reel, const mrv::media& fg,
               const int64_t tframe )
 {
-    if ( !reel ) return;
+    if ( !reel || !fg ) return;
 
 
     int64_t f = reel->global_to_local( tframe );
