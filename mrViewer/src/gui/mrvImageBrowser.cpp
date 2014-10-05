@@ -510,8 +510,10 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     for ( ; i != e; ++i )
       {
 	const CMedia* img = (*i)->image();
-	fprintf( f, "%s %" PRId64 "-%" PRId64 "\n", img->fileroot(), 
-		 img->first_frame(), img->last_frame() );
+	fprintf( f, "\"%s\" %" PRId64 " %" PRId64 
+                 " %" PRId64 " %" PRId64 "\n", img->fileroot(), 
+		 img->first_frame(), img->last_frame(),
+                 img->start_frame(), img->end_frame() );
 	if ( img->is_sequence() )
 	  {
 	    if ( img->has_audio() )
@@ -1332,7 +1334,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
     else
       {
-	return load_image( file.c_str(), start, end );
+          return load_image( file.c_str(), start, end, start, end );
       }
   }
 
@@ -1653,6 +1655,8 @@ int ImageBrowser::value() const
    * @return new image
    */
   mrv::media ImageBrowser::load_image( const char* name,
+				       const boost::int64_t first, 
+				       const boost::int64_t last,
 				       const boost::int64_t start, 
 				       const boost::int64_t end,
                                        const bool use_threads )
@@ -1660,7 +1664,7 @@ int ImageBrowser::value() const
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
-    if ( start != mrv::kMinFrame ) frame( start );
+    if ( first != mrv::kMinFrame ) frame( first );
 
 
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
@@ -1670,14 +1674,14 @@ int ImageBrowser::value() const
     }
 
     
-    if ( start != mrv::kMaxFrame )
+    if ( first != AV_NOPTS_VALUE )
       {
-	img->first_frame( start );
+	img->first_frame( first );
       }
 
-    if ( end != mrv::kMinFrame )
+    if ( last != AV_NOPTS_VALUE )
       {
-	img->last_frame( end );
+	img->last_frame( last );
       }
 
     {
@@ -1836,7 +1840,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	     {
 
                 fg = load_image( load.filename.c_str(), 
-                                 load.start, load.end, (i != s) );
+                                 load.first, load.last, load.start,
+                                 load.end, (i != s) );
 
 		if (!fg) 
 		{
@@ -1979,7 +1984,7 @@ void ImageBrowser::load( const stringArray& files,
 	    int64_t start = mrv::kMaxFrame;
 	    int64_t end   = mrv::kMinFrame;
 	    mrv::get_sequence_limits( start, end, file );
-	    loadlist.push_back( mrv::LoadInfo( file, start, end ) );
+	    loadlist.push_back( mrv::LoadInfo( file, start, end, start, end ) );
 	  }
 
 	retname = file;
@@ -2500,11 +2505,13 @@ void ImageBrowser::load( const stringArray& files,
              mrv::fileroot( fileroot, file );
              mrv::get_sequence_limits( frameStart, frameEnd, fileroot );
              opts.files.push_back( mrv::LoadInfo( fileroot, frameStart,
+                                                  frameEnd, frameStart,
                                                   frameEnd ) );
           }
           else
           {
              opts.files.push_back( mrv::LoadInfo( file, frameStart,
+                                                  frameEnd, frameStart,
                                                   frameEnd ) );
           }
        }
@@ -2737,11 +2744,11 @@ void ImageBrowser::load( const stringArray& files,
 
 	      if ( bg )
 	      {
-		 f = reel->global_to_local( tframe );
+                  f = reel->global_to_local( tframe );
 
-		 img = bg->image();
-                 if ( !img->stopped() ) img->stop();
-		 img->seek( f );
+                  img = bg->image();
+                  if ( !img->stopped() ) img->stop();
+                  img->seek( f );
 	      }
 	   }
 	}
@@ -2765,11 +2772,13 @@ void ImageBrowser::load( const stringArray& files,
            mrv::Reel reel = reel_at( view()->bg_reel() );
            if (!reel) return;
 
-
-           f = reel->global_to_local( tframe );
+           f = tframe;
 
 	   img = bg->image();
+
            if ( !img->stopped() ) img->stop();
+
+           f += img->first_frame();
 	   img->seek( f );
 	}
       }
@@ -3006,8 +3015,8 @@ void ImageBrowser::load( const stringArray& files,
      timeline()->minimum( double(first) );
      timeline()->maximum( double(last) );
 
-     uiMain->uiStartFrame->value( double(first) );
-     uiMain->uiEndFrame->value( double(last) );
+     uiMain->uiStartFrame->value( first );
+     uiMain->uiEndFrame->value( last );
 
      frame( f );
   }
