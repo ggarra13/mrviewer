@@ -1331,7 +1331,6 @@ void aviImage::populate()
 
         _frameStart = (boost::int64_t)start; 
     }
-  
 
     _frame_start = _frame = _frameStart;
 
