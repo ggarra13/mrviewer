@@ -502,7 +502,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 		  "# mrViewer Reel \"%s\"\n"
 		  "# \n"
 		  "# Created with mrViewer\n"
-		  "#\n\n"),
+		  "#\n\nVersion 2.0\n"),
 	     reel->name.c_str() );
 
     mrv::MediaList::iterator i = reel->images.begin();
@@ -1664,7 +1664,11 @@ int ImageBrowser::value() const
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
 
-    if ( first != mrv::kMinFrame ) frame( first );
+    if ( first != mrv::kMaxFrame ) frame( first );
+
+    std::cerr << name << " " 
+              << AV_NOPTS_VALUE << " first " << first << " " << last
+              << " start " << start << " " << end << std::endl;
 
 
     CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
@@ -1674,12 +1678,12 @@ int ImageBrowser::value() const
     }
 
     
-    if ( first != AV_NOPTS_VALUE )
+    if ( first != mrv::kMaxFrame )
       {
 	img->first_frame( first );
       }
 
-    if ( last != AV_NOPTS_VALUE )
+    if ( last != mrv::kMinFrame )
       {
 	img->last_frame( last );
       }
@@ -1984,7 +1988,7 @@ void ImageBrowser::load( const stringArray& files,
 	    int64_t start = mrv::kMaxFrame;
 	    int64_t end   = mrv::kMinFrame;
 	    mrv::get_sequence_limits( start, end, file );
-	    loadlist.push_back( mrv::LoadInfo( file, start, end, start, end ) );
+	    loadlist.push_back( mrv::LoadInfo( file, start, end ) );
 	  }
 
 	retname = file;
