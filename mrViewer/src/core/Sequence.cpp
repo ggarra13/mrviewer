@@ -463,8 +463,8 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   continue;
               }
 
-              boost::int64_t start = kMinFrame;
-              boost::int64_t end   = kMaxFrame;
+              boost::int64_t first = kMinFrame;
+              boost::int64_t last  = kMaxFrame;
 
 
               std::string st = c;
@@ -564,40 +564,16 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   continue;
             }
 
-	    char* root = c;
-	    char* range = NULL;
-	    char* s = c + strlen(c) - 1;
+              is.str( st );
+              is.clear();
+              std::string root;
+              std::getline( is, root, '"' );
+              std::getline( is, root, '"' );
 
-	    for ( ; s != c; --s )
-	      {
+              boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
+              is >> first >> last >> start >> end;
 
-		if ( *s == ' ' || *s == '\t' )
-		  {
-		    range = s + 1;
-
-		    for ( ; (*s == ' ' || *s == '\t') && s != c; --s ) 
-		      *s = 0;
-		    break;
-		  }
-		else if ( *s != '-' && (*s < '0' || *s > '9') ) break;
-	      }
-
-	    if ( range && range[0] != 0 )
-	      {
-		s = range;
-		for ( ; *s != 0; ++s )
-		  {
-		    if ( *s == '-' )
-		      {
-			*s = 0;
-			start = end = atoi( range );
-			if ( *(s+1) != 0 )
-			  end   = atoi( s + 1 );
-			break;
-		      }
-		  }
-	      }
-	    sequences.push_back( LoadInfo( root, start, end ) );
+              sequences.push_back( LoadInfo( root, first, last, start, end ) );
 	  }
       }
 
