@@ -149,6 +149,7 @@ void parse_directory( const std::string& fileroot,
          if ( mrv::is_valid_movie( ext.c_str() ) )
          {
             opts.files.push_back( mrv::LoadInfo( fileroot, kMaxFrame,
+                                                 kMinFrame, kMaxFrame,
                                                  kMinFrame ) );
             opts.edl = true;
             continue;
@@ -462,14 +463,15 @@ void parse_command_line( const int argc, char** argv,
                   // Add audio file to last stereo fileroot
                   if ( ai != ae )
                   {
-                     opts.stereo.push_back( mrv::LoadInfo( fileroot, start, 
-                                                           end, *ai ) );
+                      opts.stereo.push_back( mrv::LoadInfo( fileroot, start, 
+                                                            end, start, end,
+                                                            *ai ) );
                      ++ai;
                   }
                   else
                   {
                      opts.stereo.push_back( mrv::LoadInfo( fileroot, start,
-                                                           end ) );
+                                                           end, start, end ) );
                   }
                }
                else
@@ -477,14 +479,15 @@ void parse_command_line( const int argc, char** argv,
                   // Add audio file to last fileroot
                   if ( ai != ae )
                   {
-                     opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                          end, *ai ) );
+                      opts.files.push_back( mrv::LoadInfo( fileroot, start, 
+                                                           end, start,
+                                                           end, *ai ) );
                      ++ai;
                   }
                   else
                   {
                      opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                          end ) );
+                                                          end, start, end ) );
                   }
                }
             }
