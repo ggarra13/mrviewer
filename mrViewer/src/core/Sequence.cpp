@@ -445,6 +445,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
      FILE* f = fltk::fltk_fopen( reelfile, "r" );
      if (!f ) return false;
 
+     double version = 1.0;
      char buf[16000];
      while ( !feof(f) )
       {
@@ -475,6 +476,11 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
               if ( cmd == "EDL" )
               {
                   edl = true;
+                  continue;
+              }
+              else if ( cmd == "Version" )
+              {
+                  is >> version;
                   continue;
               }
               else if ( cmd == "GLPathShape" )
@@ -564,16 +570,59 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   continue;
             }
 
-              is.str( st );
-              is.clear();
-              std::string root;
-              std::getline( is, root, '"' );
-              std::getline( is, root, '"' );
+              if ( version == 1.0 )
+              {
+                  char* root = c;
+                  char* range = NULL;
+                  char* s = c + strlen(c) - 1;
 
-              boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
-              is >> first >> last >> start >> end;
+                  for ( ; s != c; --s )
+                  {
 
-              sequences.push_back( LoadInfo( root, first, last, start, end ) );
+                      if ( *s == ' ' || *s == '\t' )
+                      {
+                          range = s + 1;
+                          for ( ; (*s == ' ' || *s == '\t') && s != c; --s ) 
+                              *s = 0;
+                          break;
+                      }
+                      else if ( *s != '-' && (*s < '0' || *s > '9') ) break;
+                  }
+
+
+                  if ( range && range[0] != 0 )
+                  {
+                      s = range;
+                      for ( ; *s != 0; ++s )
+                      {
+                          if ( *s == '-' )
+                          {
+                              *s = 0;
+                              first = last = atoi( range );
+                              if ( *(s+1) != 0 )
+                                  last = atoi( s + 1 );
+                              break;
+                          }
+                      }
+
+                      sequences.push_back( LoadInfo( root, first, last,
+                                                     first, last ) );
+                  }
+              }
+              else
+              {
+                  is.str( st );
+                  is.clear();
+                  std::string root;
+                  std::getline( is, root, '"' );
+                  std::getline( is, root, '"' );
+
+                  boost::int64_t start = AV_NOPTS_VALUE, end = AV_NOPTS_VALUE;
+                  is >> first >> last >> start >> end;
+
+                  sequences.push_back( LoadInfo( root, first, last, start, end ) );
+              }
+
 	  }
       }
 
