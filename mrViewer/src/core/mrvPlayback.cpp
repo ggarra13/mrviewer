@@ -302,8 +302,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    boost::int64_t last = boost::int64_t( timeline->maximum() );
    boost::int64_t first = boost::int64_t( timeline->minimum() );
 
-   last  += ( img->first_frame() - img->start_frame() );
-   first += ( img->first_frame() - img->start_frame() );
 
    boost::int64_t f = frame;
 
@@ -320,6 +318,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    }
    else
    {
+       last  += ( img->first_frame() - img->start_frame() );
+       first += ( img->first_frame() - img->start_frame() );
+
       if ( last > img->last_frame() )
 	 last = img->last_frame();
       else if ( img->first_frame() < first )
