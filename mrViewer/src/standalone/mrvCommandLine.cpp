@@ -480,14 +480,15 @@ void parse_command_line( const int argc, char** argv,
                   if ( ai != ae )
                   {
                       opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                           end, start,
-                                                           end, *ai ) );
+                                                           end, AV_NOPTS_VALUE,
+                                                           AV_NOPTS_VALUE, 
+                                                           *ai ) );
                      ++ai;
                   }
                   else
                   {
                      opts.files.push_back( mrv::LoadInfo( fileroot, start, 
-                                                          end, start, end ) );
+                                                          end ) );
                   }
                }
             }
