@@ -149,6 +149,7 @@ class ImageBrowser : public fltk::Browser
      void change_image();
      void adjust_timeline();
      mrv::media load_image( const char* name, 
+                            const int64_t first, const int64_t last,
                             const int64_t start, const int64_t end,
                             const bool use_thread = false );
 
