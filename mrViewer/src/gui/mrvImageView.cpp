@@ -1252,6 +1252,7 @@ void ImageView::timeout()
    char bufs[256];  bufs[0] = 0;
 
    mrv::Timeline* timeline = this->timeline();
+   if  (!timeline) return;
 
    mrv::Reel reel = browser()->current_reel();
    mrv::Reel bgreel = browser()->reel_at( _bg_reel );
@@ -1352,7 +1353,7 @@ void ImageView::timeout()
      }
   }
 
-  if ( should_update( fg ) )
+  if ( fg && should_update( fg ) )
     {
       update_color_info( fg );
 

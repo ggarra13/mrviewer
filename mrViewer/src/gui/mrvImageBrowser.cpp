@@ -1666,12 +1666,13 @@ int ImageBrowser::value() const
 
     if ( first != mrv::kMaxFrame ) frame( first );
 
-    std::cerr << name << " " 
-              << AV_NOPTS_VALUE << " first " << first << " " << last
-              << " start " << start << " " << end << std::endl;
 
+    CMedia* img;
 
-    CMedia* img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
+    if ( start != AV_NOPTS_VALUE )
+        img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
+    else
+        img = CMedia::guess_image( name, NULL, 0, first, last, use_threads );
     if ( img == NULL )
     {
        return mrv::media();
