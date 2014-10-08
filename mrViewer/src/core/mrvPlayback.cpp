@@ -148,8 +148,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next )
 	       {
-                   LOG_INFO( caller << " " << 
-                             next->name() << " global " << f << " " << frame );
                    f = reel->global_to_local( f );
 	       }
 	       else
@@ -163,7 +161,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  }
 		  else
 		  {
-                     LOG_INFO( "NEXT is " << img->name() << " " << f );
 		     next = img;
 		  }
 	       }
