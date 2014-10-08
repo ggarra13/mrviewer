@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -99,8 +99,11 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       mrv::ViewerUI* uiMain,
 		       const mrv::Reel  reel,
 		       const mrv::Timeline* timeline,
-		       const mrv::CMedia::DecodeStatus end )
+		       const mrv::CMedia::DecodeStatus end,
+                       const std::string caller = "" )
 {
+
+    LOG_INFO( img->name() << " -------------------------------- HANDLE LOOP" );
 
     CMedia::Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );
@@ -145,7 +148,9 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next )
 	       {
-		  f = reel->global_to_local( f );
+                   LOG_INFO( caller << " " << 
+                             next->name() << " global " << f << " " << frame );
+                   f = reel->global_to_local( f );
 	       }
 	       else
 	       {
@@ -154,32 +159,44 @@ EndStatus handle_loop( boost::int64_t& frame,
 		     f = boost::int64_t(timeline->minimum());
 		     next = reel->image_at( f );
 		     f = reel->global_to_local( f );
+                     LOG_INFO( "LOOP to " << next->name() << " " << f );
 		  }
 		  else
 		  {
+                     LOG_INFO( "NEXT is " << img->name() << " " << f );
 		     next = img;
 		  }
 	       }
 
 	       if ( next != img && next != NULL) 
 	       {
+                   LOG_INFO( caller << " " 
+                             << img->name() << " next " << next->name()
+                             << " seek loop end " << f );
+
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
 
                        if ( next->stopped() )
                        {
+                           LOG_INFO( caller << " " << next->name() << " play" );
                            next->seek( f );
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
                    }
 
-		  img->playback( CMedia::kStopped );
+                   LOG_INFO( caller << " " << img->name() << " stop" );
+                   img->playback( CMedia::kStopped );
 
 		  status = kEndNextImage;
 		  break;
 	       }
 	    }
+
+            LOG_INFO( caller << " " 
+                      << img->name() << " next " << ( next? next->name() : "-")
+                      << " SHOULD NOT GET HERE!!! "  );
 
             if ( loop == ImageView::kLooping )
             {
@@ -240,6 +257,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                        if ( next->stopped() )
                        {
+                           LOG_INFO( next->name() << " seek loop start " << f );
                            next->seek( f );
                            next->play( CMedia::kBackwards, uiMain, fg );
                        }
@@ -666,7 +684,8 @@ void video_thread( PlaybackData* data )
                    DBG( img->name() << " VIDEO DECODE LOOP START/END1 " << frame );
 
 		  EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
-					       reel, timeline, status );
+					       reel, timeline, status, 
+                                               "video" );
 
                   DBG( img->name() << " VIDEO DECODE LOOP START/END2 " << frame 
                        << " step " << step );
@@ -828,7 +847,7 @@ void decode_thread( PlaybackData* data )
           DBG( img->name() << " DECODE BARRIER " << thread_count
                << " for frame " << frame );
 	 barrier->count( thread_count );
-	 // Wait until all threads loop or exit
+	 // Wait until all thrdeads loop or exit
 	 barrier->wait();
          DBG( img->name() << " DECODE BARRIER PASSED" );
 
@@ -839,7 +858,8 @@ void decode_thread( PlaybackData* data )
          // This handle loop has to come after the barrier as decode thread
          // goes faster than video or audio threads
          EndStatus end = handle_loop( frame, step, img, fg,
-                                      uiMain, reel, timeline, status );
+                                      uiMain, reel, timeline, status,
+                                      "decode" );
       }
 
 
@@ -862,7 +882,8 @@ void decode_thread( PlaybackData* data )
       }
 
 
-      DBG( "DECODE THREAD frame " << frame );
+      if (!fg)
+          DBG( img->name() << " DECODE THREAD frame " << frame );
 
    }
 

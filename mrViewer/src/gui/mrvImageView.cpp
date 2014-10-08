@@ -4223,10 +4223,6 @@ void ImageView::background( mrv::media bg )
   mrv::media old = background();
   if ( old == bg ) return;
 
-  if ( old && playback() != kStopped )
-    {
-       old->image()->stop();
-    }
 
   delete_timeout();
 
@@ -4242,9 +4238,11 @@ void ImageView::background( mrv::media bg )
       send( buf );
 
       img->volume( _volume );
+#if 0
       if ( playback() != kStopped ) 
 	 img->play( (CMedia::Playback) playback(), uiMain, false );
       else 
+#endif
 	img->refresh();
 
       img->play_fps( fps() );
