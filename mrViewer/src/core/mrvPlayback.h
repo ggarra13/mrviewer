@@ -38,14 +38,12 @@ namespace mrv {
        bool fg;
        mrv::ViewerUI*   uiMain;
        CMedia*  image;
-       CMedia*  bg;
 
        PlaybackData( bool foreground, mrv::ViewerUI* const main,
-		     CMedia* const img, CMedia* background = NULL ) :
+		     CMedia* const img ) :
        fg( foreground ),
        uiMain( main ),
-       image( img ),
-       bg( background )
+       image( img )
        {
 	  assert( image  != NULL );
        }
@@ -53,8 +51,7 @@ namespace mrv {
        PlaybackData( const PlaybackData& b ) :
        fg( b.fg ),
        uiMain( b.uiMain ),
-       image( b.image ),
-       bg( b.bg )
+       image( b.image )
        {
 	  assert( image != NULL );
        }
