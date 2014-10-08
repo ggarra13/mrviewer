@@ -1476,6 +1476,22 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     return newm;
   }
 
+void ImageBrowser::set_bg()
+{
+    mrv::Reel reel = reel_at( _reel );
+    if ( !reel ) return;
+
+
+    uiMain->uiReelWindow->uiBGButton->value(1);
+}
+
+void ImageBrowser::clear_bg()
+{
+    // view()->bg_reel( -1 );
+    // view()->background( mrv::media() );
+    uiMain->uiReelWindow->uiBGButton->value(0);
+}
+
 
   /** 
    * Change image in image view display to reflect browser's change
@@ -1520,7 +1536,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
          DBG( "Make images contiguous in timeline" );
          adjust_timeline();
 
-         // change_image(0);
+         change_image(0);
          // seek( view()->frame() );
       }
 
@@ -1533,6 +1549,15 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     {
        DBG( "CLEAR EDL" );
        clear_edl();
+    }
+
+    if ( view()->bg_reel() == _reel )
+    {
+        set_bg();
+    }
+    else
+    {
+        clear_bg();
     }
 
 
@@ -1551,6 +1576,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     {
 	 view()->fg_reel( -1 );
 	 view()->bg_reel( -1 );
+         clear_bg();
 	 view()->foreground( mrv::media() );
 	 view()->background( mrv::media() );
 	 view()->redraw();
@@ -2186,16 +2212,16 @@ void ImageBrowser::load( const stringArray& files,
     if ( view()->background() == reel->images[sel] )
     {
        DBG( "BG REEL ************* " << -1 );
-       view()->bg_reel( -1 );
-       view()->background( mrv::media() );
+       clear_bg();
     }
     else
     {
        DBG( "BG REEL ************* " << _reel << "  SEL " << sel
-	    << reel->images[sel]->image()->name() );
+	    << " " << reel->images[sel]->image()->name() );
        view()->bg_reel( _reel );
        mrv::media& bg = reel->images[sel];
        view()->background( bg );
+       set_bg();
     }
   }
 
