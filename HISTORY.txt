@@ -1,3 +1,9 @@
+v2.6.5.3 - Made preloading of sequences being shown while idle.
+	 - Fixed a crash of Cut tool in EDL when the cut happened in inactive
+	   reel.
+	 - Troubleshoot playback of EDL movies in background.
+	 - Added a BG button to EDL Edit window to more easily set the
+	   background image.
 v2.6.5.2 - Upgraded to latest ffmpeg, libx264.
 	 - Fixed swing looping in short movie files which could hang the 
 	   viewer.
