@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-#define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)
@@ -102,8 +102,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       const mrv::CMedia::DecodeStatus end,
                        const std::string caller = "" )
 {
-
-    LOG_INFO( img->name() << " -------------------------------- HANDLE LOOP" );
 
     CMedia::Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );
@@ -157,7 +155,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 		     f = boost::int64_t(timeline->minimum());
 		     next = reel->image_at( f );
 		     f = reel->global_to_local( f );
-                     LOG_INFO( "LOOP to " << next->name() << " " << f );
 		  }
 		  else
 		  {
@@ -167,33 +164,23 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL) 
 	       {
-                   LOG_INFO( caller << " " 
-                             << img->name() << " next " << next->name()
-                             << " seek loop end " << f );
-
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
 
                        if ( next->stopped() )
                        {
-                           LOG_INFO( caller << " " << next->name() << " play" );
                            next->seek( f );
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
                    }
 
-                   LOG_INFO( caller << " " << img->name() << " stop" );
                    img->playback( CMedia::kStopped );
 
 		  status = kEndNextImage;
 		  break;
 	       }
 	    }
-
-            LOG_INFO( caller << " " 
-                      << img->name() << " next " << ( next? next->name() : "-")
-                      << " SHOULD NOT GET HERE!!! "  );
 
             if ( loop == ImageView::kLooping )
             {
@@ -254,7 +241,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                        if ( next->stopped() )
                        {
-                           LOG_INFO( next->name() << " seek loop start " << f );
                            next->seek( f );
                            next->play( CMedia::kBackwards, uiMain, fg );
                        }
