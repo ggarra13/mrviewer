@@ -865,8 +865,6 @@ void decode_thread( PlaybackData* data )
       }
 
 
-      if (!fg)
-          DBG( img->name() << " DECODE THREAD frame " << frame );
 
    }
 
