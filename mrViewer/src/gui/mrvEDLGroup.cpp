@@ -605,6 +605,7 @@ void EDLGroup::cut( boost::int64_t frame )
     right->decode_video( f );
     right->find_image( f );
 
+    browser()->reel( c );
     browser()->insert( unsigned(idx+1), m );
     browser()->value( int(idx+1));
 
