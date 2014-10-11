@@ -232,14 +232,14 @@ class CMedia
 
     enum DecodeStatus {
     kDecodeMissingFrame = 0,
-    kDecodeOK,
-    kDecodeDone,
-    kDecodeError,
-    kDecodeMissingSamples,
-    kDecodeNoStream,
-    kDecodeLoopStart,
-    kDecodeLoopEnd,
-    kDecodeBufferFull
+    kDecodeOK = 1,
+    kDecodeDone = 2,
+    kDecodeError = 3,
+    kDecodeMissingSamples = 4,
+    kDecodeNoStream = 5,
+    kDecodeLoopStart = 6,
+    kDecodeLoopEnd = 7,
+    kDecodeBufferFull = 8
     };
 
     enum StereoType {
