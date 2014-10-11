@@ -1534,7 +1534,7 @@ void ImageBrowser::clear_bg()
 	 }
 
          DBG( "Make images contiguous in timeline" );
-         adjust_timeline();
+         // adjust_timeline();
 
          change_image(0);
          // seek( view()->frame() );
@@ -1565,9 +1565,9 @@ void ImageBrowser::clear_bg()
 
   }
 
-  /** 
+  /**
    * Change image in image view display to reflect browser's change
-   * 
+   *
    */
   void ImageBrowser::change_image()
   {
@@ -1575,10 +1575,10 @@ void ImageBrowser::clear_bg()
     if ( sel < 0 )
     {
 	 view()->fg_reel( -1 );
-	 view()->bg_reel( -1 );
-         clear_bg();
+	 // view()->bg_reel( -1 );
+         // clear_bg();
+	 // view()->background( mrv::media() );
 	 view()->foreground( mrv::media() );
-	 view()->background( mrv::media() );
 	 view()->redraw();
       }
     else
@@ -1627,7 +1627,7 @@ void ImageBrowser::clear_bg()
 		 m->image()->audio_stream( audio_idx );
 	   }
 
-	   adjust_timeline();
+	   // adjust_timeline();
 
            send_image( m );
 	}

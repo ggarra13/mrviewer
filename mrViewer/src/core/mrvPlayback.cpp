@@ -111,16 +111,30 @@ EndStatus handle_loop( boost::int64_t& frame,
    EndStatus status = kEndIgnore;
    CMedia* next = NULL;
    
-   boost::int64_t last = ( int64_t ) timeline->maximum();
-   boost::int64_t first = ( int64_t ) timeline->minimum();
+   boost::int64_t last = boost::int64_t( timeline->maximum() );
+   boost::int64_t first = boost::int64_t( timeline->minimum() );
 
-   last  += ( img->first_frame() - img->start_frame() );
-   first += ( img->first_frame() - img->start_frame() );
+   if ( reel->edl )
+   {
+      boost::int64_t s = reel->location(img);
+      boost::int64_t e = s + img->duration() - 1;
 
-   if ( img->last_frame() < last )
-      last = img->last_frame();
-   if ( img->first_frame() > first )
-      first = img->first_frame();
+      if ( e < last )  last = e;
+      if ( s > first ) first = s;
+
+      last = reel->global_to_local( last );
+      first = reel->global_to_local( first );
+   }
+   else
+   {
+       last  += ( img->first_frame() - img->start_frame() );
+       first += ( img->first_frame() - img->start_frame() );
+       
+       if ( img->last_frame() < last )
+           last = img->last_frame();
+       if ( img->first_frame() > first )
+           first = img->first_frame();
+   }
 
 
    ImageView::Looping loop = view->looping();
@@ -192,6 +206,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = last;
                 step  = -1;
                 view->playback( ImageView::kBackwards );
+                img->seek( frame );
                 // img->frame( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kBackwards );
@@ -206,6 +221,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	 }
       case CMedia::kDecodeLoopStart:
 	 {
+
 	    if ( reel->edl )
 	    {
 	       boost::int64_t f = frame;
@@ -232,6 +248,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		     next = img;
 		  }
 	       }
+
 
 	       if ( next != img && next != NULL )
 	       {
@@ -264,7 +281,8 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = first;
                 step = 1;
                 view->playback( ImageView::kForwards );
-                // img->frame( frame );
+                //img->frame( frame );
+                img->seek( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kForwards );
                 status = kEndChangeDirection;
@@ -303,7 +321,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    boost::int64_t last = boost::int64_t( timeline->maximum() );
    boost::int64_t first = boost::int64_t( timeline->minimum() );
 
-
    boost::int64_t f = frame;
 
    if ( reel->edl )
@@ -339,6 +356,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
       return CMedia::kDecodeLoopStart;
    }
 
+
    return CMedia::kDecodeOK;
 }
 
@@ -369,7 +387,7 @@ void audio_thread( PlaybackData* data )
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
 
-  int idx = fg ? view->fg_reel() : view->bg_reel();
+   int idx = fg ? view->fg_reel() : view->bg_reel();
 
    mrv::Reel   reel = browser->reel_at( idx );
    if (!reel) return;
@@ -594,7 +612,8 @@ void video_thread( PlaybackData* data )
 
 #ifdef DEBUG_THREADS
    cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
-	<< " frame " << frame << endl;
+	<< " frame " << frame << " timeline frame " << timeline->value() 
+        << endl;
 #endif
 
    // delete the data (we don't need it anymore)
@@ -621,6 +640,10 @@ void video_thread( PlaybackData* data )
       CMedia::DecodeStatus status;
 
       status = img->decode_video( frame );
+
+      if ( !fg )
+          DBG( img->name() << " decode video frame " << frame << " status: "
+               << status );
 
       if ( img->is_sequence() )
       {
@@ -692,6 +715,7 @@ void video_thread( PlaybackData* data )
       double delay = 1.0 / fps;
 
       double diff = 0.0;
+      double bgdiff = 0.0;
 
       // // Calculate video-audio difference
       if ( img->has_audio() && status == CMedia::kDecodeOK )
@@ -701,8 +725,6 @@ void video_thread( PlaybackData* data )
 
          double video_clock = img->video_clock();
 	 double audio_clock = img->audio_clock();
-
-
 
 	 diff = step * (video_clock - audio_clock);
 
@@ -726,6 +748,31 @@ void video_thread( PlaybackData* data )
 	 }
       }
 
+      if ( !fg )
+      {
+          mrv::media  m = view->foreground();
+          mrv::media bg = view->background();
+          if ( m && bg )
+          {
+              double bg_clock = bg->image()->video_clock();
+              double fg_clock = m->image()->video_clock();
+          
+              diff = step * ( bg_clock - fg_clock );
+              double absdiff = std::abs(diff);
+              if ( absdiff > 1000.0 ) diff = 0.0;
+          
+              double sync_threshold = delay;
+              if(absdiff < AV_NOSYNC_THRESHOLD) {
+                  double sdiff = step * diff;
+              
+                  if (sdiff <= -sync_threshold) {
+                      fps = 99999999.0;
+                  } else if (sdiff >= delay*2) {
+                      fps -= sdiff;
+                  }
+              }
+          }
+      }
 
       timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
@@ -741,10 +788,7 @@ void video_thread( PlaybackData* data )
 
 	 if ( fg )
 	 {
-	    assert( f <= timeline->maximum() );
-	    assert( f >= timeline->minimum() );
-
-	    view->frame( f );
+             view->frame( f );
 	 }
       }
 
@@ -822,6 +866,7 @@ void decode_thread( PlaybackData* data )
 
       CMedia* next = NULL;
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
+
       if ( status != CMedia::kDecodeOK )
       {
 	 // Lock thread until loop status is resolved on all threads
@@ -840,6 +885,7 @@ void decode_thread( PlaybackData* data )
          //  and return new frame and step.
          // This handle loop has to come after the barrier as decode thread
          // goes faster than video or audio threads
+
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status,
                                       "decode" );
@@ -856,15 +902,15 @@ void decode_thread( PlaybackData* data )
 	 nanosleep( &req, NULL );
       }
 
+
       // After read, when playing backwards or playing audio files,
       // decode position may be several frames advanced as we buffer
       // multiple frames, so get back the dts frame from image.
-      if ( img->has_video() || img->has_audio() )
+      if ( ( img->playback() == CMedia::kForwards ) &&
+           ( img->has_video() || img->has_audio() ) )
       {
 	 frame = img->dts();
       }
-
-
 
    }
 
