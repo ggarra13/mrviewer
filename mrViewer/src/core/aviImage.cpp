@@ -431,8 +431,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
-    boost::int64_t start = frame;
-    if ( playback() == kBackwards && start > 1 ) --start;
+    boost::int64_t start = frame - 1;
+    if ( playback() == kBackwards && start > 0 ) --start;
 
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
