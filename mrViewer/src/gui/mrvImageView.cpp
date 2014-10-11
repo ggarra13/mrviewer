@@ -1148,7 +1148,7 @@ bool ImageView::should_update( mrv::media& fg )
       }
     }
 
-
+#if 1
   mrv::media bg = background();
   if ( bg && bg != fg )
     {
@@ -1189,6 +1189,7 @@ bool ImageView::should_update( mrv::media& fg )
 	    }
 	}
     }
+#endif
 
 
   if ( update && _playback != kStopped ) {
@@ -1254,7 +1255,7 @@ void ImageView::timeout()
    mrv::Timeline* timeline = this->timeline();
    if  (!timeline) return;
 
-   mrv::Reel reel = browser()->current_reel();
+   mrv::Reel reel = browser()->reel_at( _fg_reel );
    mrv::Reel bgreel = browser()->reel_at( _bg_reel );
 
    mrv::media fg = foreground();
@@ -1280,6 +1281,7 @@ void ImageView::timeout()
       }
       
    }
+
    mrv::media bg = background();
 
    if ( bgreel && bgreel->edl )
@@ -4384,7 +4386,6 @@ void ImageView::normalize( const bool normalize)
 void ImageView::damage_contents()
 {
   mrv::media fg = foreground();
-  mrv::media bg = background();
 
   if (fg)
     {
@@ -4392,6 +4393,7 @@ void ImageView::damage_contents()
       img->image_damage( img->image_damage() | CMedia::kDamageContents );
     }
 
+  mrv::media bg = background();
   if (bg)
     {
       CMedia* img = bg->image();
