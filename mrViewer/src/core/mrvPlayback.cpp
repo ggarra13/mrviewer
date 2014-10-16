@@ -906,8 +906,7 @@ void decode_thread( PlaybackData* data )
       // After read, when playing backwards or playing audio files,
       // decode position may be several frames advanced as we buffer
       // multiple frames, so get back the dts frame from image.
-      if ( ( img->playback() == CMedia::kForwards ) &&
-           ( img->has_video() || img->has_audio() ) )
+      if ( img->has_video() || img->has_audio() )
       {
 	 frame = img->dts();
       }
