@@ -636,11 +636,6 @@ void video_thread( PlaybackData* data )
 
       status = img->decode_video( frame );
 
-      if ( !fg )
-          DBG( img->name() << " decode video frame " << frame << " status: "
-               << status );
-
-      // if ( !img->has_video() )
       boost::int64_t last = boost::int64_t( timeline->maximum() );
       boost::int64_t first = boost::int64_t( timeline->minimum() );
 
@@ -683,8 +678,6 @@ void video_thread( PlaybackData* data )
 	 case CMedia::kDecodeLoopEnd:
 	 case CMedia::kDecodeLoopStart:
 	    {
-
-	       skip = false;
 
                DBG( img->name() << " BARRIER IN VIDEO " << frame );
 
@@ -749,7 +742,6 @@ void video_thread( PlaybackData* data )
 	 }
       }
 
-      if ( !fg )
       {
           mrv::media  m = view->foreground();
           mrv::media bg = view->background();
@@ -758,7 +750,11 @@ void video_thread( PlaybackData* data )
               double bg_clock = bg->image()->video_clock();
               double fg_clock = m->image()->video_clock();
           
-              diff = step * ( bg_clock - fg_clock );
+              if ( !fg )
+                  diff = step * ( bg_clock - fg_clock );
+              else
+                  diff = step * ( fg_clock - bg_clock );
+
               double absdiff = std::abs(diff);
               if ( absdiff > 1000.0 ) diff = 0.0;
           
