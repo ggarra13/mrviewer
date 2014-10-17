@@ -645,21 +645,34 @@ void video_thread( PlaybackData* data )
           DBG( img->name() << " decode video frame " << frame << " status: "
                << status );
 
-      if ( img->is_sequence() )
+      boost::int64_t last = boost::int64_t( timeline->maximum() );
+      boost::int64_t first = boost::int64_t( timeline->minimum() );
+
+      if ( reel->edl )
       {
-          boost::int64_t last = (boost::int64_t) timeline->maximum();
-          last += img->first_frame() - img->start_frame();
-          if ( img->last_frame() < last ) last = img->last_frame();
+          boost::int64_t s = reel->location(img);
+          boost::int64_t e = s + img->duration() - 1;
 
-          boost::int64_t first = (boost::int64_t) timeline->minimum();
-          first += img->first_frame() - img->start_frame();
-          if ( img->first_frame() > first ) first = img->first_frame();
+          if ( e < last )  last = e;
+          if ( s > first ) first = s;
 
-          if ( frame > last )
-              status = CMedia::kDecodeLoopEnd;
-          else if ( frame < first )
-              status = CMedia::kDecodeLoopStart;
+          last = reel->global_to_local( last );
+          first = reel->global_to_local( first );
       }
+      else
+      {
+          last  += ( img->first_frame() - img->start_frame() );
+          first += ( img->first_frame() - img->start_frame() );
+       
+          if ( img->last_frame() < last )
+              last = img->last_frame();
+          if ( img->first_frame() > first )
+              first = img->first_frame();
+      }
+      if ( frame > last )
+          status = CMedia::kDecodeLoopEnd;
+      else if ( frame < first )
+          status = CMedia::kDecodeLoopStart;
 
 
       switch( status )
