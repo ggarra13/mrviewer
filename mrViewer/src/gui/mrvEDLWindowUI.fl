@@ -33,8 +33,8 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {
-        label {EDL Window} open
-        xywh {261 539 1015 230} resizable visible
+        label {EDL Window} selected
+        xywh {261 539 1015 230} visible
       } {
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1015 230}
@@ -68,7 +68,7 @@ v->new_reel(name);}
             {fltk::Button} uiBGButton {
               label BG
               user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
-              callback {v->change_background();} selected
+              callback {v->change_background();}
               tooltip {Set selected reel images as background.}
               xywh {105 0 26 26} box UP_BOX labelfont 1
             }
