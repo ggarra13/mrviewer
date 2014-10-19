@@ -1216,7 +1216,7 @@ void preload( const mrv::Reel& reel, const mrv::media& fg,
     int64_t f = reel->global_to_local( tframe );
     CMedia* img = fg->image();
 
-    if ( img && img->is_sequence() )
+    if ( img->is_sequence() )
     {
         if ( img->dts() < f ) img->dts( f );
 
@@ -1228,7 +1228,7 @@ void preload( const mrv::Reel& reel, const mrv::media& fg,
             {
                 if ( !img->is_cache_filled( i ) )
                 {
-                    img->dts( i-1 );
+                    img->dts( i-1 );   // store idx - 1 
                     break;
                 }
             }
@@ -1237,7 +1237,7 @@ void preload( const mrv::Reel& reel, const mrv::media& fg,
         {
             f = img->dts() + 1;
             mrv::image_type_ptr pic = img->hires();
-            img->find_image( f );
+            img->find_image( f );  // this loads the frame if not present
             img->hires( pic );
         }
     }
@@ -4637,7 +4637,7 @@ void ImageView::last_frame()
   seek( f );
 }
 
-/// Change frame number to end of timeline
+/// Change frame number to start of timeline
 void ImageView::first_frame_timeline()
 {
   int64_t f = (int64_t) timeline()->minimum();
