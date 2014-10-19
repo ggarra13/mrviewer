@@ -683,11 +683,12 @@ void EDLGroup::draw()
    double frame = t->value();
    t = timeline();
    t->value( frame );
+   t->redraw();
    // double p = double(frame - t->minimum()) / 
    //            double(t->maximum() - t->minimum());
    // p *= t->w();
 
-   int p = t->slider_position( double(frame), t->w() );
+   int p = t->slider_position( frame, t->w() );
    p += int( t->slider_size()/2.0 );
 
 
