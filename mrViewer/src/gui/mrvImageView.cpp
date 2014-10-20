@@ -1923,11 +1923,6 @@ int ImageView::leftMouseDown(int x, int y)
 	 window()->cursor(fltk::CURSOR_CROSS);
       }
 
-//       if ( fltk::event_is_click() && fltk::event_clicks() > 0 )
-// 	{
-// 	  toggle_fullscreen();
-// 	  fltk::event_clicks(0);
-// 	}
    
 
       redraw();
@@ -2937,24 +2932,8 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kFullScreen.match( rawkey ) ) 
     {
-      // full screen...
-      if ( fltk_main()->border() )
-	{
-	  posX = fltk_main()->x();
-	  posY = fltk_main()->y();
-	  fltk_main()->fullscreen();
-	}
-      else
-      { 
-#ifdef LINUX
-	 fltk_main()->hide();  // @bug: window decoration is missing otherwise
-#endif
-	 resize_main_window();
-      }
-      fltk_main()->relayout();
-      xoffset = yoffset = 0;
-      char buf[128];
-      send( buf );
+      toggle_fullscreen();
+
       return 1;
     }
   else if ( kCenterImage.match(rawkey) )
@@ -3241,7 +3220,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kTogglePresentation.match( rawkey ) )
     {
-      toggle_fullscreen();
+      toggle_presentation();
       return 1;
     }
   else
@@ -3308,6 +3287,33 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
+  bool full = false;
+  // full screen...
+  if ( fltk_main()->border() )
+    {
+      full = true;
+      posX = fltk_main()->x();
+      posY = fltk_main()->y();
+      fltk_main()->fullscreen();
+    }
+  else
+    { 
+#ifdef LINUX
+      fltk_main()->hide();  // @bug: window decoration is missing otherwise
+#endif
+      resize_main_window();
+    }
+  fltk_main()->relayout();
+  
+  fit_image();
+  
+  char buf[128];
+  sprintf( buf, "FullScreen %d", full );
+  send( buf );
+}
+
+void ImageView::toggle_presentation()
+{
   fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
   fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
   fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
@@ -3315,8 +3321,11 @@ void ImageView::toggle_fullscreen()
   fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
 
+  bool presentation = false;
+
   static bool has_image_info, has_color_area, has_reel, has_edl_edit,
   has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar;
+
   if ( fltk_main()->border() )
     {
       posX = fltk_main()->x();
@@ -3333,15 +3342,26 @@ void ImageView::toggle_fullscreen()
       has_pixel_bar  = uiMain->uiPixelBar->visible();
 
       uiImageInfo->hide();
-      uiReel->hide();
       uiColorArea->hide();
-      uiAbout->hide();
+      uiReel->hide();
+      uiEDLWindow->hide();
       uiPrefs->hide();
+      uiAbout->hide();
       uiMain->uiTopBar->hide();
       uiMain->uiBottomBar->hide();
       uiMain->uiPixelBar->hide();
 
+
+      presentation = true;
+
+#ifdef WIN32
       fltk_main()->fullscreen();
+      fltk_main()->resize(0, 0, 
+                          GetSystemMetrics(SM_CXSCREEN),
+                          GetSystemMetrics(SM_CYSCREEN));
+#else
+      fltk_main()->fullscreen();
+#endif
     }
   else
     {
@@ -3370,6 +3390,10 @@ void ImageView::toggle_fullscreen()
 
   fltk::check();
   
+
+  char buf[128];
+  sprintf( buf, "PresentationMode %d", presentation );
+  send( buf );
 
   fit_image();
 }
