@@ -480,6 +480,20 @@ bool Parser::parse( const std::string& s )
        ui->uiStartFrame->redraw();
        ok = true;
    }
+   else if ( cmd == N_("FullScreen") )
+   {
+       int on;
+       is >> on;
+       ui->uiView->toggle_fullscreen();
+       ok = true;
+   }
+   else if ( cmd == N_("PresentationMode" ) )
+   {
+       int on;
+       is >> on;
+       ui->uiView->toggle_presentation();
+       ok = true;
+   }
    else if ( cmd == N_("ShiftMediaStart") )
    {
       int reel;

@@ -665,7 +665,7 @@ void video_thread( PlaybackData* data )
       {
           last  += ( img->first_frame() - img->start_frame() );
           first += ( img->first_frame() - img->start_frame() );
-       
+
           if ( img->last_frame() < last )
               last = img->last_frame();
           if ( img->first_frame() > first )
