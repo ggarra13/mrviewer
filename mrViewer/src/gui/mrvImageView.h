@@ -348,11 +348,14 @@ namespace mrv {
     // Toggle between fullscreen and normal resolution
     void toggle_fullscreen();
 
-       inline void offset_x( double x ) { xoffset = x; }
-       inline void offset_y( double y ) { yoffset = y; }
+    // Toggle between fullscreen presentation and normal resolution
+    void toggle_presentation();
 
-    inline double offset_x() const { return xoffset; }
-    inline double offset_y() const { return yoffset; }
+      inline void offset_x( double x ) { xoffset = x; }
+      inline void offset_y( double y ) { yoffset = y; }
+      
+      inline double offset_x() const { return xoffset; }
+      inline double offset_y() const { return yoffset; }
     double pixel_ratio() const;
 
     DrawEngine* const engine() const { return _engine; }
