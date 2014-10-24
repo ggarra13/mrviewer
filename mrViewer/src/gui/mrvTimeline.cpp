@@ -299,7 +299,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         if ( img->is_cache_filled( j - pos + 1 ) )
         {
             int dx = rx + slider_position( double(j), ww );
-            int dx2 = rx + slider_position( double(j-pos+2), ww );
+            int dx2 = rx + slider_position( double(j+1), ww );
             int wh = dx2-dx;
             if ( wh <= 0 ) wh = 1;
 
