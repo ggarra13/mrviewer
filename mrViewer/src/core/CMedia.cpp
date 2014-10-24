@@ -356,7 +356,7 @@ boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
  * Clears cache of frames.  @todo: refactor
  * 
  */
-void CMedia::clear_sequence()
+void CMedia::clear_cache()
 {
   if ( _sequence == NULL ) return;
 
@@ -430,7 +430,7 @@ CMedia::~CMedia()
   free( _look_mod_transform );
 
 
-  clear_sequence();
+  clear_cache();
   delete [] _sequence;
   delete [] _right;
 
@@ -1194,7 +1194,7 @@ void CMedia::channel( const char* c )
 
   if (to_fetch) 
     {
-       clear_sequence();
+       clear_cache();
        SCOPED_LOCK( _mutex );
        fetch(_frame);
     }
@@ -1273,7 +1273,7 @@ void CMedia::rendering_transform( const char* cfile )
     {
       _rendering_transform = strdup( cfile );
     }
-  clear_sequence();
+  clear_cache();
   image_damage( image_damage() | kDamageData | kDamageLut );
   refresh();
 }
@@ -1300,7 +1300,7 @@ void CMedia::look_mod_transform( const char* cfile )
   free( _look_mod_transform ); _look_mod_transform = NULL;
   if ( cfile && strlen(cfile) > 0 ) _look_mod_transform = strdup( cfile );
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_sequence();
+  clear_cache();
   refresh();
 }
 
@@ -1331,7 +1331,7 @@ void CMedia::icc_profile( const char* cfile )
       _profile = strdup( cfile );
     }
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_sequence();
+  clear_cache();
   refresh();
 }
 
