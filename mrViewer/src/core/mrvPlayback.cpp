@@ -449,7 +449,8 @@ void audio_thread( PlaybackData* data )
                   DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
 
                   // if ( img->stopped() ) continue;
-                  
+
+
                   EndStatus end = handle_loop( frame, step, img, fg,
                                                uiMain, 
                                                reel, timeline, status );
@@ -884,6 +885,7 @@ void decode_thread( PlaybackData* data )
 	 // Wait until all thrdeads loop or exit
 	 barrier->wait();
          DBG( img->name() << " DECODE BARRIER PASSED" );
+
 
          // Do the looping, taking into account ui state
          //  and return new frame and step.

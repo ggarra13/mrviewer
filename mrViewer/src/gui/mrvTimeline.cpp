@@ -276,6 +276,35 @@ Timeline::~Timeline()
     return true;
   }
 
+void Timeline::draw_cache( CMedia* img, int64_t pos, int64_t size,
+                           int64_t mn, int64_t mx, int64_t frame,
+                           const fltk::Rectangle& r )
+{
+    using namespace fltk;
+
+    int j = frame;
+    if ( mn < frame ) j = mn;
+
+    int max = frame + size;
+    if ( mx < max ) max = mx;
+
+    int rx = r.x() + (slider_size()-1)/2;
+    int ww = r.w();
+
+    setcolor( fltk::DARK_GREEN );
+    line_style( SOLID, 1 );
+    for ( ; j < max; ++j )
+    {
+        if ( img->is_cache_filled( j - pos + 1 ) )
+        {
+            int dx = rx + slider_position( double(j), ww );
+            int dx2 = rx + slider_position( double(j+1), ww );
+
+            fillrect( dx, r.y()+r.b()/2, dx2-dx, r.b()/2+1 );
+        }
+    }
+}
+
   /** 
    * Main widget drawing routine
    * 
@@ -357,9 +386,17 @@ Timeline::~Timeline()
 	  {
 	    CMedia* img = (*i)->image();
 	    size = img->duration();
+            int64_t pos = (*i)->position();
+
 
 	    // skip this block if outside visible timeline span
 	    if ( frame + size < mn || frame > mx ) continue;
+
+
+            if ( img->is_sequence() )
+            {
+                draw_cache( img, pos, size, mn, mx, frame, r );
+            }
 
 	    int dx = rx + slider_position( double(frame), ww );
 
@@ -369,6 +406,15 @@ Timeline::~Timeline()
 	    line_style( SOLID );
 	  }
       }
+    else
+    {
+        const mrv::media& m = browser()->current_image();
+        if ( m )
+        {
+            CMedia* img = m->image();
+            draw_cache( img, 1, img->duration(), mn, mx, v, r );
+        }
+    }
 
     draw( r, f2, r.y()==0 );
 
