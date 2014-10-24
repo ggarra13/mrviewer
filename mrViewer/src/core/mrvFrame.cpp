@@ -222,17 +222,17 @@ const char* const VideoFrame::fmts[] = {
 
     for (unsigned int x = 0; x < dw1; ++x)
       {
-	float x1 = x * f;
-	unsigned int xs = static_cast< unsigned int>( x1 );
-	unsigned int xt = std::min( xs + 1, _width - 1 );
+          float x1 = float(x) * f;
+          unsigned int xs = static_cast< unsigned int>( x1 );
+          unsigned int xt = std::min( xs + 1, _width - 1 );
 
-	float t = x1 - xs;
-	assert( t >= 0.0f && t <= 1.0f );
+          float t = x1 - float(xs);
+          assert( t >= 0.0f && t <= 1.0f );
 
-	float s = 1.0f - t;
-	assert( s >= 0.0f && s <= 1.0f );
+          float s = 1.0f - t;
+          assert( s >= 0.0f && s <= 1.0f );
 
-	for (unsigned int y = 0; y < _height; ++y)
+          for (unsigned int y = 0; y < _height; ++y)
 	  {
              const ImagePixel& ps = pixel(xs, y);
              const ImagePixel& pt = pixel(xt, y);
@@ -291,10 +291,10 @@ const char* const VideoFrame::fmts[] = {
 
     for (unsigned int y = 0; y < dh1; ++y)
     {
-	float y1 = y * f;
+	float y1 = float(y) * f;
 	unsigned int ys = static_cast< unsigned int>( y1 );
 	unsigned int yt = std::min( ys + 1, _height - 1 );
-	float t = y1 - ys;
+	float t = y1 - float(ys);
 	assert( t >= 0.0f && t <= 1.0f );
 	float s = 1.0f - t;
 	assert( s >= 0.0f && s <= 1.0f );

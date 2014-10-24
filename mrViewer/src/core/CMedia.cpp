@@ -167,8 +167,6 @@ CMedia::CMedia() :
   forw_ctx( NULL ),
   _audio_engine( NULL )
 {
-   if (_bg_barrier == NULL )
-      _bg_barrier = new Barrier(1);
   audio_initialize();
   mrv::PacketQueue::initialize();
 }
@@ -742,6 +740,19 @@ void load_sequence( PlaybackData* data )
 
     }
 
+}
+void CMedia::delete_bg_barrier()
+{
+    delete _bg_barrier; _bg_barrier = NULL;
+}
+
+CMedia::Barrier* CMedia::create_bg_barrier()
+{
+    if ( _bg_barrier == NULL )
+    {
+        _bg_barrier = new Barrier(2);
+    }
+    return _bg_barrier;
 }
 
 /** 
@@ -1708,7 +1719,7 @@ void CMedia::stereo_cache( const mrv::image_type_ptr& left,
  */
 bool CMedia::is_cache_filled(boost::int64_t frame) const
 {
-  if ( !_sequence ) return false;
+    if ( !_sequence ) return false;
 
   if ( frame < _frameStart ) frame = _frameStart;
   if ( frame > _frameEnd )   frame = _frameEnd;
