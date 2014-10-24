@@ -284,7 +284,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     using namespace fltk;
 
     int j = frame;
-    if ( mn < frame ) j = mn;
+    if ( mn < pos ) j = pos;
 
     int max = frame + size;
     if ( mx < max ) max = mx;
