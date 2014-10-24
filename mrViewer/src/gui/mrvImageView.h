@@ -24,6 +24,7 @@
 
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
+#include "gui/mrvReel.h"
 
 #include "video/mrvGLShape.h"
 
@@ -34,13 +35,13 @@ namespace fltk {
 
 namespace mrv {
 
-  class ViewerUI;
-  class ImageBrowser;
-  class Timeline;
-  class DrawEngine;
-  class Event;
-  class Parser;
-  class server;
+class ViewerUI;
+class ImageBrowser;
+class Timeline;
+class DrawEngine;
+class Event;
+class Parser;
+class server;
 
   class ImageView : public fltk::GlWindow
   {
@@ -478,7 +479,8 @@ namespace mrv {
     /// Refresh the fstop display
     void refresh_fstop() const;
 
-
+      void preload( const mrv::Reel& reel, const mrv::media& fg,
+                    const int64_t tframe );
 
   protected:
     mrv::ViewerUI* uiMain;

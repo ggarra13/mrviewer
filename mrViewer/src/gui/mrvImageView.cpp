@@ -965,7 +965,7 @@ void ImageView::center_image()
     yoffset = dpw.y() + dpw.h() / 2.0;
 
     char buf[128];
-    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+    sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send( buf );
     redraw();
 }
@@ -1207,39 +1207,56 @@ bool ImageView::should_update( mrv::media& fg )
 }
 
 
-void preload( const mrv::Reel& reel, const mrv::media& fg,
-              const int64_t tframe )
+void ImageView::preload( const mrv::Reel& reel, const mrv::media& fg,
+                         const int64_t tframe )
 {
     if ( !reel || !fg ) return;
-
 
     int64_t f = reel->global_to_local( tframe );
     CMedia* img = fg->image();
 
+
     if ( img->is_sequence() )
     {
-        if ( img->dts() < f ) img->dts( f );
+        int64_t first = img->first_frame();
+        int64_t last  = img->last_frame();
+        int64_t i = f;
+        bool found = false;
 
-        if ( img->dts() >= img->last_frame() )
+        // Find a frame to cache from timeline point on
+        for ( ; i != last; ++i )
         {
-            int64_t i = img->first_frame();
-            int64_t last = f;
-            for ( ; i != last; ++i )
+            if ( !img->is_cache_filled(i) )
             {
-                if ( !img->is_cache_filled( i ) )
+                found = true;
+                break;
+            }
+        }
+
+        // None found, check backwards
+        if ( !found )
+        {
+            int64_t j = first;
+            for ( ; j < f; ++j )
+            {
+                if ( !img->is_cache_filled(j) )
                 {
-                    img->dts( i-1 );   // store idx - 1 
+                    i = j; found = true;
                     break;
                 }
             }
         }
-        if ( img->dts() < img->last_frame() )
+
+        if ( found )
         {
-            f = img->dts() + 1;
+            img->dts( i );
             mrv::image_type_ptr pic = img->hires();
-            img->find_image( f );  // this loads the frame if not present
-            img->hires( pic );
+            img->find_image( i );  // this loads the frame if not present
+            img->cache( img->hires() );
+            if (pic) img->hires( pic );
+            timeline()->redraw();
         }
+
     }
 }
 
@@ -1305,13 +1322,8 @@ void ImageView::timeout()
    //
    // If playback is stopped, try to cache forward images
    //
-   if ( playback() == kStopped )
-   {
-       preload( reel, fg, tframe );
-       preload( bgreel, bg, tframe );
-   }
-
-   
+   preload( reel, fg, tframe );
+   preload( bgreel, bg, tframe );
 
    static double kMinDelay = 0.0001666;
 
