@@ -749,6 +749,8 @@ class CMedia
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
 
+    void     delete_bg_barrier();
+    Barrier* create_bg_barrier();
     Barrier* bg_barrier() { return _bg_barrier; }
 
     Barrier* loop_barrier()       { return _loop_barrier; }

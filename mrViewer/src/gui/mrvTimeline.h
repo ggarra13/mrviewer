@@ -79,6 +79,10 @@ namespace mrv
     bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
     void draw_ticks(const fltk::Rectangle& r, int min_spacing);
 
+    void draw_cache( CMedia* img, int64_t pos, int64_t size,
+                     int64_t mn, int64_t mx, int64_t frame, 
+                     const fltk::Rectangle& r );
+
     ImageBrowser* browser() const;
 
        static mrv::Timecode::Display _display;
