@@ -196,6 +196,7 @@ extern Hotkey kDetachAudio;
 extern Hotkey kCopyRGBAValues;
 extern Hotkey kCloneImage;
 
+extern Hotkey kClearCache;
 
 struct HotkeyEntry
 {

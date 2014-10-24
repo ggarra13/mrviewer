@@ -355,12 +355,12 @@ class CMedia
     virtual bool has_changed();
 
     // Clear the sequence 8-bit cache
-    void clear_sequence();
+    void clear_cache();
 
     inline bool has_sequence() const { return (_sequence != NULL); }
 
     // Returns true if cache for the frame is already filled, false if not
-    bool is_cache_filled(int64_t frame) const;
+    virtual bool is_cache_filled(int64_t frame) const;
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );

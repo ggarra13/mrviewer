@@ -215,6 +215,25 @@ namespace
 extern void clone_all_cb( fltk::Widget* o, mrv::ImageBrowser* b );
 extern void clone_image_cb( fltk::Widget* o, mrv::ImageBrowser* b );
 
+void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media m = v->foreground();
+    if ( m )
+    {
+        mrv::CMedia* img = m->image();
+        img->clear_cache();
+    }
+
+    m = v->background();
+    if ( m )
+    {
+        mrv::CMedia* img = m->image();
+        img->clear_cache();
+    }
+
+    v->timeline()->redraw();
+}
+
 void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
   b->next_image();
@@ -2040,10 +2059,14 @@ int ImageView::leftMouseDown(int x, int y)
 	    {
 	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
 			(fltk::Callback*)clone_image_cb, browser(),
-			fltk::MENU_DIVIDER);
+			fltk::MENU_DIVIDER );
 	    }
 
-   
+            menu.add( _("Image/Clear Cache"), kClearCache.hotkey(),
+                      (fltk::Callback*)clear_image_cache_cb, this,
+                      fltk::MENU_DIVIDER );
+
+
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_script_cb,
@@ -3584,7 +3607,7 @@ void ImageView::flush_caches()
       if ( img->is_sequence() && img->first_frame() != img->last_frame()
 	   && (_engine->shader_type() == DrawEngine::kNone ) ) 
 	{
-	  img->clear_sequence();
+	  img->clear_cache();
 	  img->fetch(frame());
 	}
     }
@@ -3597,7 +3620,7 @@ void ImageView::flush_caches()
 	   img->first_frame() != img->last_frame()
 	   && (_engine->shader_type() == DrawEngine::kNone)  )
 	{
-	  img->clear_sequence();
+	  img->clear_cache();
 	  img->fetch(frame());
 	}
     }
