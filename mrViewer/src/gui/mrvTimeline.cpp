@@ -276,10 +276,12 @@ Timeline::~Timeline()
     return true;
   }
 
-void Timeline::draw_cache( CMedia* img, int64_t pos, int64_t size,
-                           int64_t mn, int64_t mx, int64_t frame,
-                           const fltk::Rectangle& r )
+void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
+                               int64_t mn, int64_t mx, int64_t frame,
+                               const fltk::Rectangle& r )
 {
+    if ( _draw_cache == false ) return;
+
     using namespace fltk;
 
     int j = frame;
@@ -395,7 +397,7 @@ void Timeline::draw_cache( CMedia* img, int64_t pos, int64_t size,
 
             if ( img->is_sequence() )
             {
-                draw_cache( img, pos, size, mn, mx, frame, r );
+                draw_cacheline( img, pos, size, mn, mx, frame, r );
             }
 
 	    int dx = rx + slider_position( double(frame), ww );
@@ -412,7 +414,7 @@ void Timeline::draw_cache( CMedia* img, int64_t pos, int64_t size,
         if ( m )
         {
             CMedia* img = m->image();
-            draw_cache( img, 1, img->duration(), mn, mx, v, r );
+            draw_cacheline( img, 1, img->duration(), mn, mx, v, r );
         }
     }
 

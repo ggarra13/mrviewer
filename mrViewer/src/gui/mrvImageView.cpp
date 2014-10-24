@@ -1323,7 +1323,6 @@ void ImageView::timeout()
    // If playback is stopped, try to cache forward images
    //
    preload( reel, fg, tframe );
-   preload( bgreel, bg, tframe );
 
    static double kMinDelay = 0.0001666;
 
