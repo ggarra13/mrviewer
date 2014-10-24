@@ -100,6 +100,8 @@ Hotkey kDetachAudio( false, false, false, false, 0 );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 
+Hotkey kClearCache( false, false, false, false, 'k' );
+
 HotkeyEntry hotkeys[] = {
 HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
 HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
@@ -131,6 +133,7 @@ HotkeyEntry( _("Play Backwards 1/2 Speed"), kPlayBackHalfSpeed),
 HotkeyEntry( _("Play Forwards"), kPlayFwd),
 HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
 HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
+HotkeyEntry( _("Clear Image Cache"), kClearCache),
 HotkeyEntry( _("Stop"), kStop),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
 HotkeyEntry( _("Next Image"), kNextImage ),

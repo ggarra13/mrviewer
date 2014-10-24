@@ -416,6 +416,12 @@ void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
    CMedia::play( dir, uiMain, fg );
 }
 
+bool aviImage::is_cache_filled( int64_t frame ) const
+{
+    aviImage* t = const_cast< aviImage* >( this );
+    return t->in_video_store( frame );
+}
+
 // Seek to the requested frame
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {

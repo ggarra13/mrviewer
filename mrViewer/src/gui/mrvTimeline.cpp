@@ -272,7 +272,7 @@ Timeline::~Timeline()
     else sglyph=0; // draw our own special glyph
 
     if ( active() )
-       draw_glyph(sglyph, s); // draw slider in new position
+        draw_glyph(sglyph, s); // draw slider in new position
     return true;
   }
 
@@ -280,7 +280,6 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                                int64_t mn, int64_t mx, int64_t frame,
                                const fltk::Rectangle& r )
 {
-    if ( _draw_cache == false ) return;
 
     using namespace fltk;
 
@@ -300,9 +299,11 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         if ( img->is_cache_filled( j - pos + 1 ) )
         {
             int dx = rx + slider_position( double(j), ww );
-            int dx2 = rx + slider_position( double(j+1), ww );
+            int dx2 = rx + slider_position( double(j-pos+2), ww );
+            int wh = dx2-dx;
+            if ( wh <= 0 ) wh = 1;
 
-            fillrect( dx, r.y()+r.b()/2, dx2-dx, r.b()/2+1 );
+            fillrect( dx, r.y()+r.b()/2, wh, r.b()/2+1 );
         }
     }
 }
@@ -394,11 +395,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 	    // skip this block if outside visible timeline span
 	    if ( frame + size < mn || frame > mx ) continue;
 
-
-            if ( img->is_sequence() )
-            {
+            if ( _draw_cache )
                 draw_cacheline( img, pos, size, mn, mx, frame, r );
-            }
 
 	    int dx = rx + slider_position( double(frame), ww );
 
@@ -410,11 +408,14 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
       }
     else
     {
-        const mrv::media& m = browser()->current_image();
-        if ( m )
+        if ( _draw_cache )
         {
-            CMedia* img = m->image();
-            draw_cacheline( img, 1, img->duration(), mn, mx, v, r );
+            const mrv::media& m = browser()->current_image();
+            if ( m )
+            {
+                CMedia* img = m->image();
+                draw_cacheline( img, 1, img->duration(), mn, mx, v, r );
+            }
         }
     }
 
