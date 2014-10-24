@@ -689,7 +689,7 @@ void GLEngine::draw_title( const float size,
   for (const char* p = text; *p; ++p)
       sum += glutStrokeWidth( font, *p );
 
-  float x = float( _view->w() - sum * size ) / 2.0f;
+  float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
 
   float rgb[4];
   glGetFloatv( GL_CURRENT_COLOR, rgb );
