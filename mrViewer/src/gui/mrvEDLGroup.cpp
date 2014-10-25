@@ -464,6 +464,7 @@ int EDLGroup::handle( int event )
                 browser()->redraw();
 	    }
 
+            browser()->set_edl();
             timeline()->value( pt );
             view()->seek( pt );
 	    delete _drag;
