@@ -16,6 +16,7 @@
 
 #include "core/mrvColor.h"
 #include "core/mrvI8N.h"
+#include "core/mrvThread.h"
 
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvTimecode.h"
@@ -34,6 +35,7 @@ mrv::Timecode::Display Timeline::_display = Timecode::kFrames;
 
 Timeline::Timeline( int x, int y, int w, int h, char* l ) :
 fltk::Slider( x, y, w, h, l ),
+_draw_cache( true ),
 _edl( false ),
 _fps( 24 ),
 _display_min(1),
@@ -44,22 +46,25 @@ uiMain( NULL )
 
 Timeline::~Timeline()
 {
-   _edl = false;
-   uiMain = NULL;
+    _draw_cache = false;
+    _edl = false;
+    uiMain = NULL;
 }
 
   mrv::ImageBrowser* Timeline::browser() const
   {
      assert( uiMain != NULL );
      assert( uiMain->uiReelWindow != NULL );
-    return uiMain->uiReelWindow->uiBrowser;
+     if ( uiMain == NULL ) return NULL;
+     if ( uiMain->uiReelWindow == NULL ) return NULL;
+     return uiMain->uiReelWindow->uiBrowser;
   }
 
   void Timeline::minimum( double x )
   {
     fltk::Slider::minimum( x );
 
-    if ( uiMain )
+    if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
         sprintf( buf, N_("TimelineMin %g"), x );
@@ -71,7 +76,7 @@ Timeline::~Timeline()
   {
     fltk::Slider::maximum( x );
 
-    if ( uiMain )
+    if ( uiMain && uiMain->uiView )
     {
         char buf[1024];
         sprintf( buf, N_("TimelineMax %g"), x );
@@ -83,7 +88,7 @@ Timeline::~Timeline()
   {
     _edl = x;
 
-    if ( _edl && uiMain )
+    if ( _edl && uiMain && browser() )
       {
 	mrv::Timecode* uiFrame = uiMain->uiFrame;
 
@@ -284,7 +289,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     using namespace fltk;
 
     int j = frame;
-    if ( mn < pos ) j = pos;
+    if ( pos < j ) j = pos;
+    if ( mn > j ) j = mn;
 
     int max = frame + size;
     if ( mx < max ) max = mx;
@@ -294,6 +300,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
+
     for ( ; j < max; ++j )
     {
         if ( img->is_cache_filled( j - pos + 1 ) )
@@ -333,6 +340,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     double mn = minimum();
     double mx = maximum();
     double v  = value();
+
+    if ( !browser() ) return;
 
 
     // Draw each rectangle for each segment
@@ -388,6 +397,10 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 	for ( i = reel->images.begin(); i != e; frame += size, ++i )
 	  {
 	    CMedia* img = (*i)->image();
+
+            CMedia::Mutex& m = img->video_mutex();
+            SCOPED_LOCK( m );
+
 	    size = img->duration();
             int64_t pos = (*i)->position();
 
@@ -414,6 +427,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             if ( m )
             {
                 CMedia* img = m->image();
+                CMedia::Mutex& mtx = img->video_mutex();
+                SCOPED_LOCK( mtx );
                 draw_cacheline( img, 1, img->duration(), mn, mx, v, r );
             }
         }
