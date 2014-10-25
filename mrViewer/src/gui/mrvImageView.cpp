@@ -46,6 +46,9 @@
 #include <fltk/layout.h>
 #include <fltk/draw.h>
 #include <fltk/run.h>
+#ifdef LINUX
+#include <fltk/x11.h>
+#endif
 
 #include <fltk/Color.h>
 #include <fltk/Cursor.h>
@@ -1234,49 +1237,48 @@ void ImageView::preload( const mrv::Reel& reel, const mrv::media& fg,
     int64_t f = reel->global_to_local( tframe );
     CMedia* img = fg->image();
 
+    if ( !img->is_sequence() ) return;
 
-    if ( img->is_sequence() )
+    
+    int64_t first = img->first_frame();
+    int64_t last  = img->last_frame();
+    int64_t i = f;
+    bool found = false;
+
+    // Find a frame to cache from timeline point on
+    for ( ; i != last; ++i )
     {
-        int64_t first = img->first_frame();
-        int64_t last  = img->last_frame();
-        int64_t i = f;
-        bool found = false;
-
-        // Find a frame to cache from timeline point on
-        for ( ; i != last; ++i )
+        if ( !img->is_cache_filled(i) )
         {
-            if ( !img->is_cache_filled(i) )
+            found = true;
+            break;
+        }
+    }
+
+    // None found, check backwards
+    if ( !found )
+    {
+        int64_t j = first;
+        for ( ; j < f; ++j )
+        {
+            if ( !img->is_cache_filled(j) )
             {
-                found = true;
+                i = j; found = true;
                 break;
             }
         }
-
-        // None found, check backwards
-        if ( !found )
-        {
-            int64_t j = first;
-            for ( ; j < f; ++j )
-            {
-                if ( !img->is_cache_filled(j) )
-                {
-                    i = j; found = true;
-                    break;
-                }
-            }
-        }
-
-        if ( found )
-        {
-            img->dts( i );
-            mrv::image_type_ptr pic = img->hires();
-            img->find_image( i );  // this loads the frame if not present
-            img->cache( img->hires() );
-            if (pic) img->hires( pic );
-            timeline()->redraw();
-        }
-
     }
+
+    if ( found )
+    {
+        img->dts( i );
+        mrv::image_type_ptr pic = img->hires();
+        img->find_image( i );  // this loads the frame if not present
+        img->cache( img->hires() );
+        if (pic) img->hires( pic );
+        timeline()->redraw();
+    }
+
 }
 
 void ImageView::timeout()
@@ -3395,6 +3397,10 @@ void ImageView::toggle_presentation()
                           GetSystemMetrics(SM_CYSCREEN));
 #else
       fltk_main()->fullscreen();
+      // XWindowAttributes xwa;
+      // XGetWindowAttributes(fltk::xdisplay, DefaultRootWindow(fltk::xdisplay),
+      //                      &xwa);
+      // fltk_main()->resize(0, 0, xwa.width, xwa.height );
 #endif
     }
   else

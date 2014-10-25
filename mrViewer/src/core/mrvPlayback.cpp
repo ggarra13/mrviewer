@@ -448,8 +448,7 @@ void audio_thread( PlaybackData* data )
 
                   DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
 
-                  // if ( img->stopped() ) continue;
-
+                  if ( img->stopped() ) continue;
 
                   EndStatus end = handle_loop( frame, step, img, fg,
                                                uiMain, 
@@ -701,7 +700,7 @@ void video_thread( PlaybackData* data )
 
                DBG( img->name() << " BARRIER PASSED IN VIDEO" );
 
-               DBG( img->name() << " VIDEO DECODE LOOP START/END1 " << frame )
+               DBG( img->name() << " VIDEO DECODE LOOP START/END1 " << frame );
 
                if ( img->stopped() ) continue;
 
