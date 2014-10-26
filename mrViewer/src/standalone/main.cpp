@@ -9,7 +9,7 @@
  */
 
 
-
+#include <locale.h>
 #include <iostream>
 
 #define __STDC_FORMAT_MACROS
@@ -140,7 +140,7 @@ int main( const int argc, char** argv )
 
 //#ifdef USE_GETTEXT
 
-  setlocale (LC_MESSAGES, "");
+  setlocale (LC_ALL, "");
 
 
   bindtextdomain("mrViewer", "/usr/share/locale");
