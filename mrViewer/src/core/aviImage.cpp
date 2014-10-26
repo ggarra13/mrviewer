@@ -223,7 +223,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
     }
   else if ( strncmp( (char*)data, "GIF89", 5 ) == 0 )
     {
-      // FLV
+      // GIF89
       return true;
     }
   else if ( strncmp( (char*)data, ".RMF", 4 ) == 0 )
@@ -551,7 +551,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         {
             max_frames = max_audio_frames();
         }
-     
+
         if ( abs(diff) > max_frames )
         {
             dts = _dts + int64_t(max_frames) * _playback;
@@ -1371,7 +1371,9 @@ void aviImage::populate()
         if ( length > 0 )
             duration = boost::int64_t( length * _fps + 0.5f );
         else
-            duration = 100;
+        {
+            duration = 200; // GIF89
+        }
     }
 
     _frameEnd = _frameStart + duration - 1;
@@ -1702,7 +1704,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
             if ( is_seek )
             {
-                if ( !got_video    ) {
+                if ( !got_video ) {
                     if ( packets_added > 0 )
                         _video_packets.seek_end(vpts);
                     else
@@ -1738,7 +1740,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             {
                 packets_added++;
                 _video_packets.push_back( pkt );
-                if ( pktframe >= dts ) dts = pktframe;
+                if ( pktframe > dts ) dts = pktframe;
             }
 
             if ( !got_video && pktframe >= frame )
