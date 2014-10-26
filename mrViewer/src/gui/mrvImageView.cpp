@@ -626,39 +626,6 @@ void ImageView::delete_timeout()
   remove_timeout();
 }
 
-void idle_cb( void* d )
-{
-    mrv::ImageView* v = (mrv::ImageView*) d;
-
-    mrv::ImageBrowser* b = v->browser();
-    if ( !b ) return;
-
-    mrv::Reel r = b->current_reel();
-    if ( !r ) return;
-
-    unsigned e = (unsigned) r->images.size();
-
-    for (unsigned i = 0 ; i < e; ++i )
-    {
-        mrv::media& fg = r->images[i];
-        if (!fg || fg == v->foreground() ) continue;
-
-        CMedia* img = fg->image();
-
-        if ( img->has_picture() && !img->has_video() )
-        {
-            int64_t frame = img->frame();
-            if ( i == e-1 && frame == img->last_frame() )
-            {
-                fltk::remove_idle( idle_cb, v );
-                return;
-            }
-
-            img->find_image( frame+1 );
-        }
-    }
-}
-
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   fltk::GlWindow( X, Y, W, H, l ),
   uiMain( NULL ),
@@ -701,13 +668,12 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
-  int stereo = fltk::STEREO;
+  int stereo = 0; // fltk::STEREO;
   if ( !can_do( fltk::STEREO ) ) stereo = 0;
-
-  // fltk::add_idle( idle_cb, this );
 
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
 	fltk::STENCIL_BUFFER | stereo );
+
 }
 
 
@@ -1170,7 +1136,6 @@ bool ImageView::should_update( mrv::media& fg )
       }
     }
 
-#if 1
   mrv::media bg = background();
   if ( bg && bg != fg )
     {
@@ -1211,7 +1176,6 @@ bool ImageView::should_update( mrv::media& fg )
 	    }
 	}
     }
-#endif
 
 
   if ( update && _playback != kStopped ) {
@@ -4070,7 +4034,7 @@ void ImageView::update_layers()
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
   mrv::media fg = foreground();
-  if ( !fg ) 
+  if ( !fg )
     {
       uiColorChannel->remove_all();
       uiColorChannel->add( _("(no image)") );
