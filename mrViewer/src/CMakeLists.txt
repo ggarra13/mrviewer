@@ -216,9 +216,9 @@ SET( SOURCES
 
 
 
-IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+IF(NOT WIN32)
 
-  EXECUTE_PROCESS( COMMAND xgettext -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot 
+  EXECUTE_PROCESS( COMMAND xgettext --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     RESULT_VARIABLE ok_xgettext
     ERROR_VARIABLE  error_xgettext)
@@ -255,7 +255,7 @@ IF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ${Boost_thread_LIBRARY}
     )
 
-ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+ELSE(NOT WIN32)
   #
   # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
@@ -270,7 +270,7 @@ ELSE(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
-ENDIF(NOT WIN32 OR WIN64 OR CYGWIN OR MINGW)
+ENDIF(NOT WIN32)
 
 IF( AO_FOUND )
   ADD_DEFINITIONS( -DHAVE_LIB_AO )
@@ -443,3 +443,5 @@ ENDIF(TCLAP_FOUND)
 #  MESSAGE( STATUS "RLM include:    ${RLM_INCLUDE_DIR}" )
 #  MESSAGE( STATUS "RLM libraries:  ${RLM_LIBRARIES}" )
 #ENDIF(RLM_FOUND)
+
+

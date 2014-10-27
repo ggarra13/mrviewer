@@ -1625,9 +1625,10 @@ void ImageBrowser::clear_bg()
 	      if ( audio_idx != -1 &&
 		   audio_idx < int(m->image()->number_of_audio_streams()) )
 		 m->image()->audio_stream( audio_idx );
+
 	   }
 
-	   // adjust_timeline();
+           adjust_timeline();
 
            send_image( m );
 	}

@@ -24,6 +24,7 @@
 
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
+#include "gui/mrvReel.h"
 
 #include "video/mrvGLShape.h"
 
@@ -34,13 +35,13 @@ namespace fltk {
 
 namespace mrv {
 
-  class ViewerUI;
-  class ImageBrowser;
-  class Timeline;
-  class DrawEngine;
-  class Event;
-  class Parser;
-  class server;
+class ViewerUI;
+class ImageBrowser;
+class Timeline;
+class DrawEngine;
+class Event;
+class Parser;
+class server;
 
   class ImageView : public fltk::GlWindow
   {
@@ -348,11 +349,14 @@ namespace mrv {
     // Toggle between fullscreen and normal resolution
     void toggle_fullscreen();
 
-       inline void offset_x( double x ) { xoffset = x; }
-       inline void offset_y( double y ) { yoffset = y; }
+    // Toggle between fullscreen presentation and normal resolution
+    void toggle_presentation();
 
-    inline double offset_x() const { return xoffset; }
-    inline double offset_y() const { return yoffset; }
+      inline void offset_x( double x ) { xoffset = x; }
+      inline void offset_y( double y ) { yoffset = y; }
+      
+      inline double offset_x() const { return xoffset; }
+      inline double offset_y() const { return yoffset; }
     double pixel_ratio() const;
 
     DrawEngine* const engine() const { return _engine; }
@@ -475,7 +479,8 @@ namespace mrv {
     /// Refresh the fstop display
     void refresh_fstop() const;
 
-
+      void preload( const mrv::Reel& reel, const mrv::media& fg,
+                    const int64_t tframe );
 
   protected:
     mrv::ViewerUI* uiMain;
