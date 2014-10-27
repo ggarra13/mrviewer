@@ -9,7 +9,7 @@
  */
 
 
-
+#include <locale.h>
 #include <iostream>
 
 #define __STDC_FORMAT_MACROS
@@ -138,20 +138,19 @@ int main( const int argc, char** argv )
 #endif
   fltk::lock();   // Initialize X11 thread system
 
+//#ifdef USE_GETTEXT
+
+  setlocale (LC_ALL, "");
+
+
+  bindtextdomain("mrViewer", "/usr/share/locale");
+  textdomain("mrViewer");
+
+//#endif
+
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
 
-#ifdef USE_GETTEXT
-
-  setlocale (LC_MESSAGES, "");
-
-  std::string tmp = getenv("MRV_ROOT");
-  tmp += "/locale";
-
-  bindtextdomain("mrViewer", tmp.c_str());
-  textdomain("mrViewer");
-
-#endif
 
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();

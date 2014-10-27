@@ -3,6 +3,8 @@
 #
 CMAKE_MINIMUM_REQUIRED(VERSION 2.4.7 FATAL_ERROR)
 
+CMAKE_POLICY( SET CMP0003 NEW )
+
 #
 # Modify CMake's module path so our custom modules take precedence over
 # cmake's default ones.
