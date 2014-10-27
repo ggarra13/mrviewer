@@ -464,6 +464,7 @@ int EDLGroup::handle( int event )
                 browser()->redraw();
 	    }
 
+            browser()->set_edl();
             timeline()->value( pt );
             view()->seek( pt );
 	    delete _drag;
@@ -579,7 +580,7 @@ void EDLGroup::cut( boost::int64_t frame )
     int c = c1->value();
     if ( c < 0 ) return;
 
-    mrv::Reel r = browser()->reel_at(c);
+    const mrv::Reel& r = browser()->reel_at(c);
     if (!r) return;
 
     CMedia* img = r->image_at( frame );
@@ -600,16 +601,22 @@ void EDLGroup::cut( boost::int64_t frame )
 
     right->last_frame( img->last_frame() );
     img->last_frame( f-1 );
+    img->clear_cache();
     right->first_frame( f );
     right->fetch( f );
     right->decode_video( f );
     right->find_image( f );
+    right->clear_cache();
+
+    r->edl = true;
 
     browser()->reel( c );
     browser()->insert( unsigned(idx+1), m );
     browser()->value( int(idx+1));
 
+
     refresh();
+
     redraw();
 }
 
@@ -625,10 +632,10 @@ void EDLGroup::merge( boost::int64_t frame )
     if ( r->images.size() < 2 ) return;
 
     CMedia* img = r->image_at( frame );
-    size_t idx = r->index( frame );
+    int idx = (int) r->index( frame );
     int64_t f = r->global_to_local( frame );
 
-    size_t idx2 = idx;
+    int idx2 = idx;
     if ( f < img->first_frame() + img->duration() / 2 )
     {
         idx -= 1;
@@ -683,11 +690,12 @@ void EDLGroup::draw()
    double frame = t->value();
    t = timeline();
    t->value( frame );
+   t->redraw();
    // double p = double(frame - t->minimum()) / 
    //            double(t->maximum() - t->minimum());
    // p *= t->w();
 
-   int p = t->slider_position( double(frame), t->w() );
+   int p = t->slider_position( frame, t->w() );
    p += int( t->slider_size()/2.0 );
 
 

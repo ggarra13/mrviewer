@@ -355,12 +355,12 @@ class CMedia
     virtual bool has_changed();
 
     // Clear the sequence 8-bit cache
-    void clear_sequence();
+    void clear_cache();
 
     inline bool has_sequence() const { return (_sequence != NULL); }
 
     // Returns true if cache for the frame is already filled, false if not
-    bool is_cache_filled(int64_t frame) const;
+    virtual bool is_cache_filled(int64_t frame) const;
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
@@ -749,6 +749,8 @@ class CMedia
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
 
+    void     delete_bg_barrier();
+    Barrier* create_bg_barrier();
     Barrier* bg_barrier() { return _bg_barrier; }
 
     Barrier* loop_barrier()       { return _loop_barrier; }

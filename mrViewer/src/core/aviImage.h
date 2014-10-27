@@ -60,6 +60,8 @@ namespace mrv {
        virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
 			  const bool fg );
 
+      virtual bool is_cache_filled( int64_t frame ) const;
+
     virtual boost::int64_t wait_subtitle();
 
     virtual boost::int64_t wait_image();
