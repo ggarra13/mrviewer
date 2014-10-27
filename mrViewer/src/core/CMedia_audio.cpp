@@ -865,11 +865,11 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	      av_get_channel_layout_string( buf, 256, ctx->channels, 
 					    in_ch_layout );
 
-	      IMG_INFO("Create audio conversion from " << buf 
-		       << ", channels " << ctx->channels << ", " );
-	      IMG_INFO( "format " 
+	      IMG_INFO( _("Create audio conversion from ") << buf 
+                        << _(", channels ") << ctx->channels << N_(", ") );
+	      IMG_INFO( _("format ") 
 		       << av_get_sample_fmt_name( ctx->sample_fmt ) 
-			<< ", sample rate " << ctx->sample_rate << " to" );
+			<< _(", sample rate ") << ctx->sample_rate << _(" to") );
 
 	      uint64_t out_ch_layout = in_ch_layout;
 	      unsigned out_channels = ctx->channels;
@@ -888,9 +888,10 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 	      int in_sample_rate = ctx->sample_rate;
 	      int out_sample_rate = in_sample_rate;
 
-	      IMG_INFO( buf << ", channels " << out_channels << ", format " 
+	      IMG_INFO( buf << _(", channels ") << out_channels 
+                        << _(", format " )
 			<< av_get_sample_fmt_name( out_sample_fmt )
-			<< ", sample rate " 
+			<< _(", sample rate ")
 			<< out_sample_rate);
 	      
 
@@ -900,17 +901,17 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 					     in_sample_rate,
 					     0, NULL);
 	      if(!forw_ctx) {
-		 LOG_ERROR("Failed to alloc swresample library");
+                  LOG_ERROR( _("Failed to alloc swresample library") );
 		 return 0;
 	      }
 	      if(swr_init(forw_ctx) < 0)
 	      {
 		 char buf[256];
 		 av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
-		 LOG_ERROR( "Failed to init swresample library with " 
+		 LOG_ERROR( _("Failed to init swresample library with ") 
 			    << buf << " " 
 			    << av_get_sample_fmt_name(in_sample_fmt)
-			    << " frequency: " << in_sample_rate );
+			    << _(" frequency: ") << in_sample_rate );
 		 return 0;
 	      }
 	   }
@@ -925,7 +926,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 				  frame->nb_samples );
 	   if ( len2 < 0 )
 	   {
-	      IMG_ERROR( "resampling failed" );
+               IMG_ERROR( _("Resampling failed") );
 	      return 0;
 	   }
 

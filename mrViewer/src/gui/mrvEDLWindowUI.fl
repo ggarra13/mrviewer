@@ -68,7 +68,7 @@ v->new_reel(name);}
             {fltk::Button} uiBGButton {
               label BG
               user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
-              callback {v->change_background();} selected
+              callback {v->change_background();}
               tooltip {Set selected reel images as background.}
               xywh {105 0 26 26} box UP_BOX labelfont 1
             }
@@ -77,13 +77,14 @@ v->new_reel(name);}
             user_data main user_data_type {mrv::ViewerUI*}
             callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );
-v->uiEDLWindow->uiEDLGroup->redraw();}
-            xywh {95 41 920 32} type TICK_ABOVE textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 100 step 1 value 1 slider_size 20
-            extra_code {o->main( main );}
+v->uiEDLWindow->uiEDLGroup->redraw();} selected
+            xywh {95 41 920 32} type TICK_ABOVE textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 100 step 1 value 1 slider_size 10
+            extra_code {o->main( main );
+o->draw_cache( false );}
             class {mrv::Timeline}
           }
           {fltk::Group} uiEDLGroup {
-            xywh {95 75 920 145}
+            xywh {95 75 920 155}
             extra_code {o->timeline( uiTimeline ); o->main( main );}
             class {mrv::EDLGroup}
           } {}

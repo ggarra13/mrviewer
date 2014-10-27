@@ -29,72 +29,72 @@ namespace mrv {
       case kLummaA:
 	{
 	  unsigned int len = _width * _height;
-	  p.a = d[len + offset] / (float) limit;
+	  p.a = (float) d[len + offset] / (float) limit;
 	}
-      case kLumma:
-	p.r = p.g = p.b = col[0] / (float) limit; break;
-      case kBGRA:
-	p.a = col[3] / (float) limit;
-      case kBGR:
-	p.r = col[2] / (float) limit;
-	p.g = col[1] / (float) limit;
-	p.b = col[0] / (float) limit;
-	break;
-      case kRGBA:
-	p.a = col[3] / (float) limit;
-      case kRGB:
-	p.r = col[0] / (float) limit;
-	p.g = col[1] / (float) limit;
-	p.b = col[2] / (float) limit;
-	break;
-      case kITU_709_YCbCr444:
-      case kITU_601_YCbCr444:
-	{
-	  unsigned int len = _width * _height;
-	  yp = d[ offset ];
-	  cb = d[ len + offset ];
-	  cr = d[ len*2 + offset ];
-	  break;
-	}
-      case kITU_709_YCbCr420A:
-      case kITU_601_YCbCr420A:
-      case kYByRy420A:
-	{
-	  unsigned int Ylen    = _width * _height;
-	  unsigned int w2      = (_width  + 1) / 2;
-	  unsigned int h2      = (_height + 1) / 2;
-	  unsigned int Cblen   = w2 * h2;
-	  p.a = d[ Ylen + Cblen * 2 + offset] / (float) limit;
-	}
-      case kITU_709_YCbCr420:
-      case kITU_601_YCbCr420:
-      case kYByRy420:
-	{
-	  unsigned int Ylen    = _width * _height;
-	  unsigned int w2      = (_width  + 1) / 2;
-	  unsigned int h2      = (_height + 1) / 2;
-	  unsigned int Cblen   = w2 * h2;
-	  unsigned int offset2 = (y/2) * w2 + x / 2;
+          case kLumma:
+              p.r = p.g = p.b = float(col[0]) / (float) limit; break;
+          case kBGRA:
+              p.a = float(col[3]) / (float) limit;
+          case kBGR:
+              p.r = float(col[2]) / (float) limit;
+              p.g = float(col[1]) / (float) limit;
+              p.b = float(col[0]) / (float) limit;
+              break;
+          case kRGBA:
+              p.a = float(col[3]) / (float) limit;
+          case kRGB:
+              p.r = float(col[0]) / (float) limit;
+              p.g = float(col[1]) / (float) limit;
+              p.b = float(col[2]) / (float) limit;
+              break;
+          case kITU_709_YCbCr444:
+          case kITU_601_YCbCr444:
+              {
+                  unsigned int len = _width * _height;
+                  yp = d[ offset ];
+                  cb = d[ len + offset ];
+                  cr = d[ len*2 + offset ];
+                  break;
+              }
+          case kITU_709_YCbCr420A:
+          case kITU_601_YCbCr420A:
+          case kYByRy420A:
+              {
+                  unsigned int Ylen    = _width * _height;
+                  unsigned int w2      = (_width  + 1) / 2;
+                  unsigned int h2      = (_height + 1) / 2;
+                  unsigned int Cblen   = w2 * h2;
+                  p.a = float(d[ Ylen + Cblen * 2 + offset]) / (float) limit;
+              }
+          case kITU_709_YCbCr420:
+          case kITU_601_YCbCr420:
+          case kYByRy420:
+              {
+                  unsigned int Ylen    = _width * _height;
+                  unsigned int w2      = (_width  + 1) / 2;
+                  unsigned int h2      = (_height + 1) / 2;
+                  unsigned int Cblen   = w2 * h2;
+                  unsigned int offset2 = (y/2) * w2 + x / 2;
 
-	  yp = d[ offset ];
-	  cb = d[ Ylen + offset2 ];
-	  cr = d[ Ylen + Cblen + offset2 ];
-	  break;
-	}
-      case kITU_709_YCbCr422:
-      case kITU_601_YCbCr422:
-	{
-	  unsigned int  Ylen = _width * _height;
-	  unsigned int w2 = (_width + 1) / 2;
-	  unsigned int Cblen = w2 * _height;
-	  unsigned int offset2 = y * w2 + x / 2;
-	  yp = d[ offset ];
-	  cb = d[ Ylen + offset2 ];
-	  cr = d[ Ylen + Cblen + offset2 ];
-	  break;
-	}
-      default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+                  yp = d[ offset ];
+                  cb = d[ Ylen + offset2 ];
+                  cr = d[ Ylen + Cblen + offset2 ];
+                  break;
+              }
+          case kITU_709_YCbCr422:
+          case kITU_601_YCbCr422:
+              {
+                  unsigned int  Ylen = _width * _height;
+                  unsigned int w2 = (_width + 1) / 2;
+                  unsigned int Cblen = w2 * _height;
+                  unsigned int offset2 = y * w2 + x / 2;
+                  yp = d[ offset ];
+                  cb = d[ Ylen + offset2 ];
+                  cr = d[ Ylen + Cblen + offset2 ];
+                  break;
+              }
+          default:
+              throw std::runtime_error("Unknown mrv::Frame format");
       }
 
     if ( _format >= kYByRy420 )
@@ -159,76 +159,76 @@ namespace mrv {
     boost::uint32_t* col = d + offset * _channels;
     boost::uint32_t* yp = NULL, *cb = NULL, *cr = NULL;
     switch( _format )
-      {
-      case kLummaA:
-	{
-	  unsigned int len = _width * _height;
-	  d[len + offset] = boost::uint32_t( p.a * limit );
-	}
-      case kLumma:
-	col[0] = boost::uint32_t(p.r * limit); break;
-      case kBGRA:
-	col[3] = boost::uint32_t(p.a * limit);
-      case kBGR:
-	col[2] = boost::uint32_t(p.r * limit);
-	col[1] = boost::uint32_t(p.g * limit);
-	col[0] = boost::uint32_t(p.b * limit);
-	break;
-      case kRGBA:
-	col[3] = boost::uint32_t(p.a * limit);
-      case kRGB:
-	col[0] = boost::uint32_t(p.r * limit);
-	col[1] = boost::uint32_t(p.g * limit);
-	col[2] = boost::uint32_t(p.b * limit);
-	break;
-      case kITU_709_YCbCr444:
-      case kITU_601_YCbCr444:
-	{
-	  unsigned int len = _width * _height;
-	  yp = d + offset;
-	  cb = d + offset + len;
-	  cr = d + offset + len*2;
-	  break;
-	}
-      case kITU_709_YCbCr420A:
-      case kITU_601_YCbCr420A:
-      case kYByRy420A:
-	{
-	  unsigned int Ylen    = _width * _height;
-	  unsigned int w2      = (_width  + 1) / 2;
-	  unsigned int h2      = (_height + 1) / 2;
-	  unsigned int Cblen2  = w2 * h2 * 2;
-	  d[ Ylen + Cblen2 + offset] = boost::uint32_t(p.a * limit);
-	}
-      case kITU_709_YCbCr420:
-      case kITU_601_YCbCr420:
-      case kYByRy420:
-	{
-	  unsigned int Ylen    = _width * _height;
-	  unsigned int w2      = (_width  + 1) / 2;
-	  unsigned int h2      = (_height + 1) / 2;
-	  unsigned int Cblen   = w2 * h2;
-	  unsigned int offset2 = (y/2) * w2 + x / 2;
-
-	  yp = d + offset;
-	  cb = d + Ylen + offset2;
-	  cr = d + Ylen + Cblen + offset2;
-	  break;
-	}
-      case kITU_709_YCbCr422:
-      case kITU_601_YCbCr422:
-	{
-	  unsigned int  Ylen = _width * _height;
-	  unsigned int w2 = (_width + 1) / 2;
-	  unsigned int Cblen = w2 * _height;
-	  unsigned int offset2 = y * w2 + x / 2;
-	  yp = d + offset;
-	  cb = d + Ylen + offset2;
-	  cr = d + Ylen + Cblen + offset2;
-	  break;
-	}
-      default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+    {
+        case kLummaA:
+            {
+                unsigned int len = _width * _height;
+                d[len + offset] = uint32_t( p.a * limit );
+            }
+          case kLumma:
+              col[0] = uint32_t(p.r * limit); break;
+          case kBGRA:
+              col[3] = uint32_t(p.a * limit);
+          case kBGR:
+              col[2] = (uint32_t) (p.r * limit);
+              col[1] = (uint32_t) (p.g * limit);
+              col[0] = (uint32_t) (p.b * limit);
+              break;
+          case kRGBA:
+              col[3] = (uint32_t) (p.a * limit);
+          case kRGB:
+              col[0] = (uint32_t) (p.r * limit);
+              col[1] = (uint32_t) (p.g * limit);
+              col[2] = (uint32_t) (p.b * limit);
+              break;
+          case kITU_709_YCbCr444:
+          case kITU_601_YCbCr444:
+              {
+                  unsigned int len = _width * _height;
+                  yp = d + offset;
+                  cb = d + offset + len;
+                  cr = d + offset + len*2;
+                  break;
+              }
+          case kITU_709_YCbCr420A:
+          case kITU_601_YCbCr420A:
+          case kYByRy420A:
+              {
+                  unsigned int Ylen    = _width * _height;
+                  unsigned int w2      = (_width  + 1) / 2;
+                  unsigned int h2      = (_height + 1) / 2;
+                  unsigned int Cblen2  = w2 * h2 * 2;
+                  d[ Ylen + Cblen2 + offset] = (boost::uint32_t) (p.a * limit);
+              }
+          case kITU_709_YCbCr420:
+          case kITU_601_YCbCr420:
+          case kYByRy420:
+              {
+                  unsigned int Ylen    = _width * _height;
+                  unsigned int w2      = (_width  + 1) / 2;
+                  unsigned int h2      = (_height + 1) / 2;
+                  unsigned int Cblen   = w2 * h2;
+                  unsigned int offset2 = (y/2) * w2 + x / 2;
+                  
+                  yp = d + offset;
+                  cb = d + Ylen + offset2;
+                  cr = d + Ylen + Cblen + offset2;
+                  break;
+              }
+          case kITU_709_YCbCr422:
+          case kITU_601_YCbCr422:
+              {
+                  unsigned int  Ylen = _width * _height;
+                  unsigned int w2 = (_width + 1) / 2;
+                  unsigned int Cblen = w2 * _height;
+                  unsigned int offset2 = y * w2 + x / 2;
+                  yp = d + offset;
+                  cb = d + Ylen + offset2;
+                  cr = d + Ylen + Cblen + offset2;
+                  break;
+              }
+          default:
+              throw std::runtime_error("Unknown mrv::Frame format");
       }
 
     if ( _format >= kYByRy420 )
@@ -246,11 +246,13 @@ namespace mrv {
 	else if ( t.b > 1.0f ) t.b = 1.0f;
 
 	float Y = t.r * yw[0] + t.g * yw[1] + t.b * yw[2];
-        *yp = boost::uint32_t( Y * limit);
+        *yp = (boost::uint32_t) (Y * limit);
 	if ( *yp > 0.0f )
 	  {
-	    *cr = boost::uint32_t( limit/2 + limit * (( t.r - Y ) / Y) );
-	    *cb = boost::uint32_t( limit/2 + limit * (( t.b - Y ) / Y) );
+	    *cr = boost::uint32_t( limit/2 + limit * 
+                                   uint32_t(( t.r - Y ) / Y) );
+	    *cb = boost::uint32_t( limit/2 + limit *
+                                   uint32_t(( t.b - Y ) / Y) );
 	  }
 	else
 	  {

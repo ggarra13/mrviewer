@@ -46,6 +46,9 @@
 #include <fltk/layout.h>
 #include <fltk/draw.h>
 #include <fltk/run.h>
+#ifdef LINUX
+#include <fltk/x11.h>
+#endif
 
 #include <fltk/Color.h>
 #include <fltk/Cursor.h>
@@ -214,6 +217,25 @@ namespace
 
 extern void clone_all_cb( fltk::Widget* o, mrv::ImageBrowser* b );
 extern void clone_image_cb( fltk::Widget* o, mrv::ImageBrowser* b );
+
+void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    mrv::media m = v->foreground();
+    if ( m )
+    {
+        mrv::CMedia* img = m->image();
+        img->clear_cache();
+    }
+
+    m = v->background();
+    if ( m )
+    {
+        mrv::CMedia* img = m->image();
+        img->clear_cache();
+    }
+
+    v->timeline()->redraw();
+}
 
 void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
 {
@@ -604,39 +626,6 @@ void ImageView::delete_timeout()
   remove_timeout();
 }
 
-void idle_cb( void* d )
-{
-    mrv::ImageView* v = (mrv::ImageView*) d;
-
-    mrv::ImageBrowser* b = v->browser();
-    if ( !b ) return;
-
-    mrv::Reel r = b->current_reel();
-    if ( !r ) return;
-
-    unsigned e = (unsigned) r->images.size();
-
-    for (unsigned i = 0 ; i < e; ++i )
-    {
-        mrv::media& fg = r->images[i];
-        if (!fg || fg == v->foreground() ) continue;
-
-        CMedia* img = fg->image();
-
-        if ( img->has_picture() && !img->has_video() )
-        {
-            int64_t frame = img->frame();
-            if ( i == e-1 && frame == img->last_frame() )
-            {
-                fltk::remove_idle( idle_cb, v );
-                return;
-            }
-
-            img->find_image( frame+1 );
-        }
-    }
-}
-
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   fltk::GlWindow( X, Y, W, H, l ),
   uiMain( NULL ),
@@ -679,13 +668,12 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
-  int stereo = fltk::STEREO;
+  int stereo = 0; // fltk::STEREO;
   if ( !can_do( fltk::STEREO ) ) stereo = 0;
-
-  // fltk::add_idle( idle_cb, this );
 
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
 	fltk::STENCIL_BUFFER | stereo );
+
 }
 
 
@@ -965,7 +953,7 @@ void ImageView::center_image()
     yoffset = dpw.y() + dpw.h() / 2.0;
 
     char buf[128];
-    sprintf( buf, "Offset %g %g", xoffset, yoffset );
+    sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send( buf );
     redraw();
 }
@@ -1148,7 +1136,6 @@ bool ImageView::should_update( mrv::media& fg )
       }
     }
 
-#if 1
   mrv::media bg = background();
   if ( bg && bg != fg )
     {
@@ -1189,7 +1176,6 @@ bool ImageView::should_update( mrv::media& fg )
 	    }
 	}
     }
-#endif
 
 
   if ( update && _playback != kStopped ) {
@@ -1207,40 +1193,56 @@ bool ImageView::should_update( mrv::media& fg )
 }
 
 
-void preload( const mrv::Reel& reel, const mrv::media& fg,
-              const int64_t tframe )
+void ImageView::preload( const mrv::Reel& reel, const mrv::media& fg,
+                         const int64_t tframe )
 {
     if ( !reel || !fg ) return;
-
 
     int64_t f = reel->global_to_local( tframe );
     CMedia* img = fg->image();
 
-    if ( img && img->is_sequence() )
-    {
-        if ( img->dts() < f ) img->dts( f );
+    if ( !img->is_sequence() ) return;
 
-        if ( img->dts() >= img->last_frame() )
+    
+    int64_t first = img->first_frame();
+    int64_t last  = img->last_frame();
+    int64_t i = f;
+    bool found = false;
+
+    // Find a frame to cache from timeline point on
+    for ( ; i != last; ++i )
+    {
+        if ( !img->is_cache_filled(i) )
         {
-            int64_t i = img->first_frame();
-            int64_t last = f;
-            for ( ; i != last; ++i )
-            {
-                if ( !img->is_cache_filled( i ) )
-                {
-                    img->dts( i-1 );
-                    break;
-                }
-            }
-        }
-        if ( img->dts() < img->last_frame() )
-        {
-            f = img->dts() + 1;
-            mrv::image_type_ptr pic = img->hires();
-            img->find_image( f );
-            img->hires( pic );
+            found = true;
+            break;
         }
     }
+
+    // None found, check backwards
+    if ( !found )
+    {
+        int64_t j = first;
+        for ( ; j < f; ++j )
+        {
+            if ( !img->is_cache_filled(j) )
+            {
+                i = j; found = true;
+                break;
+            }
+        }
+    }
+
+    if ( found )
+    {
+        img->dts( i );
+        mrv::image_type_ptr pic = img->hires();
+        img->find_image( i );  // this loads the frame if not present
+        img->cache( img->hires() );
+        if (pic) img->hires( pic );
+        timeline()->redraw();
+    }
+
 }
 
 void ImageView::timeout()
@@ -1305,13 +1307,7 @@ void ImageView::timeout()
    //
    // If playback is stopped, try to cache forward images
    //
-   if ( playback() == kStopped )
-   {
-       preload( reel, fg, tframe );
-       preload( bgreel, bg, tframe );
-   }
-
-   
+   preload( reel, fg, tframe );
 
    static double kMinDelay = 0.0001666;
 
@@ -1923,11 +1919,6 @@ int ImageView::leftMouseDown(int x, int y)
 	 window()->cursor(fltk::CURSOR_CROSS);
       }
 
-//       if ( fltk::event_is_click() && fltk::event_clicks() > 0 )
-// 	{
-// 	  toggle_fullscreen();
-// 	  fltk::event_clicks(0);
-// 	}
    
 
       redraw();
@@ -2034,10 +2025,14 @@ int ImageView::leftMouseDown(int x, int y)
 	    {
 	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
 			(fltk::Callback*)clone_image_cb, browser(),
-			fltk::MENU_DIVIDER);
+			fltk::MENU_DIVIDER );
 	    }
 
-   
+            menu.add( _("Image/Clear Cache"), kClearCache.hotkey(),
+                      (fltk::Callback*)clear_image_cache_cb, this,
+                      fltk::MENU_DIVIDER );
+
+
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_script_cb,
@@ -2937,24 +2932,8 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kFullScreen.match( rawkey ) ) 
     {
-      // full screen...
-      if ( fltk_main()->border() )
-	{
-	  posX = fltk_main()->x();
-	  posY = fltk_main()->y();
-	  fltk_main()->fullscreen();
-	}
-      else
-      { 
-#ifdef LINUX
-	 fltk_main()->hide();  // @bug: window decoration is missing otherwise
-#endif
-	 resize_main_window();
-      }
-      fltk_main()->relayout();
-      xoffset = yoffset = 0;
-      char buf[128];
-      send( buf );
+      toggle_fullscreen();
+
       return 1;
     }
   else if ( kCenterImage.match(rawkey) )
@@ -3241,7 +3220,7 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kTogglePresentation.match( rawkey ) )
     {
-      toggle_fullscreen();
+      toggle_presentation();
       return 1;
     }
   else
@@ -3308,6 +3287,33 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
+  bool full = false;
+  // full screen...
+  if ( fltk_main()->border() )
+    {
+      full = true;
+      posX = fltk_main()->x();
+      posY = fltk_main()->y();
+      fltk_main()->fullscreen();
+    }
+  else
+    { 
+#ifdef LINUX
+      fltk_main()->hide();  // @bug: window decoration is missing otherwise
+#endif
+      resize_main_window();
+    }
+  fltk_main()->relayout();
+  
+  fit_image();
+  
+  char buf[128];
+  sprintf( buf, "FullScreen %d", full );
+  send( buf );
+}
+
+void ImageView::toggle_presentation()
+{
   fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
   fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
   fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
@@ -3315,8 +3321,11 @@ void ImageView::toggle_fullscreen()
   fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
 
+  bool presentation = false;
+
   static bool has_image_info, has_color_area, has_reel, has_edl_edit,
   has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar;
+
   if ( fltk_main()->border() )
     {
       posX = fltk_main()->x();
@@ -3333,15 +3342,30 @@ void ImageView::toggle_fullscreen()
       has_pixel_bar  = uiMain->uiPixelBar->visible();
 
       uiImageInfo->hide();
-      uiReel->hide();
       uiColorArea->hide();
-      uiAbout->hide();
+      uiReel->hide();
+      uiEDLWindow->hide();
       uiPrefs->hide();
+      uiAbout->hide();
       uiMain->uiTopBar->hide();
       uiMain->uiBottomBar->hide();
       uiMain->uiPixelBar->hide();
 
+
+      presentation = true;
+
+#ifdef WIN32
       fltk_main()->fullscreen();
+      fltk_main()->resize(0, 0, 
+                          GetSystemMetrics(SM_CXSCREEN),
+                          GetSystemMetrics(SM_CYSCREEN));
+#else
+      fltk_main()->fullscreen();
+      // XWindowAttributes xwa;
+      // XGetWindowAttributes(fltk::xdisplay, DefaultRootWindow(fltk::xdisplay),
+      //                      &xwa);
+      // fltk_main()->resize(0, 0, xwa.width, xwa.height );
+#endif
     }
   else
     {
@@ -3370,6 +3394,10 @@ void ImageView::toggle_fullscreen()
 
   fltk::check();
   
+
+  char buf[128];
+  sprintf( buf, "PresentationMode %d", presentation );
+  send( buf );
 
   fit_image();
 }
@@ -3549,7 +3577,7 @@ void ImageView::flush_caches()
       if ( img->is_sequence() && img->first_frame() != img->last_frame()
 	   && (_engine->shader_type() == DrawEngine::kNone ) ) 
 	{
-	  img->clear_sequence();
+	  img->clear_cache();
 	  img->fetch(frame());
 	}
     }
@@ -3562,7 +3590,7 @@ void ImageView::flush_caches()
 	   img->first_frame() != img->last_frame()
 	   && (_engine->shader_type() == DrawEngine::kNone)  )
 	{
-	  img->clear_sequence();
+	  img->clear_cache();
 	  img->fetch(frame());
 	}
     }
@@ -4006,7 +4034,7 @@ void ImageView::update_layers()
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
   mrv::media fg = foreground();
-  if ( !fg ) 
+  if ( !fg )
     {
       uiColorChannel->remove_all();
       uiColorChannel->add( _("(no image)") );
@@ -4637,7 +4665,7 @@ void ImageView::last_frame()
   seek( f );
 }
 
-/// Change frame number to end of timeline
+/// Change frame number to start of timeline
 void ImageView::first_frame_timeline()
 {
   int64_t f = (int64_t) timeline()->minimum();
