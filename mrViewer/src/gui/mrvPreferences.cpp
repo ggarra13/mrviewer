@@ -920,7 +920,7 @@ fltk::StyleSet*     newscheme = NULL;
     if ( r->value() == 1 )
       {
 	// Fullscreen mode
-	main->uiMain->fullscreen();
+	view->toggle_fullscreen();
       }
 
     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(2);
@@ -928,7 +928,7 @@ fltk::StyleSet*     newscheme = NULL;
     if ( r->value() == 1 )
       {
 	// Go to presentation mode - window must be shown first, thou.
-	view->toggle_fullscreen();
+	view->toggle_presentation();
       }
 
 

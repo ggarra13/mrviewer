@@ -167,8 +167,6 @@ CMedia::CMedia() :
   forw_ctx( NULL ),
   _audio_engine( NULL )
 {
-   if (_bg_barrier == NULL )
-      _bg_barrier = new Barrier(1);
   audio_initialize();
   mrv::PacketQueue::initialize();
 }
@@ -358,7 +356,7 @@ boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
  * Clears cache of frames.  @todo: refactor
  * 
  */
-void CMedia::clear_sequence()
+void CMedia::clear_cache()
 {
   if ( _sequence == NULL ) return;
 
@@ -432,7 +430,7 @@ CMedia::~CMedia()
   free( _look_mod_transform );
 
 
-  clear_sequence();
+  clear_cache();
   delete [] _sequence;
   delete [] _right;
 
@@ -562,7 +560,7 @@ const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::int64_t idx = f - _frameStart;
-    if ( idx >= _numWindows ) idx = _numWindows-1;
+    if ( idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     assert( idx <= _frameEnd - _frameStart );
@@ -575,7 +573,7 @@ const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::int64_t idx = f - _frameStart;
-    if ( idx >= _numWindows ) idx = _numWindows-1;
+    if ( idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
     assert( idx <= _frameEnd - _frameStart );
@@ -742,6 +740,19 @@ void load_sequence( PlaybackData* data )
 
     }
 
+}
+void CMedia::delete_bg_barrier()
+{
+    delete _bg_barrier; _bg_barrier = NULL;
+}
+
+CMedia::Barrier* CMedia::create_bg_barrier()
+{
+    if ( _bg_barrier == NULL )
+    {
+        _bg_barrier = new Barrier(2);
+    }
+    return _bg_barrier;
 }
 
 /** 
@@ -1183,7 +1194,7 @@ void CMedia::channel( const char* c )
 
   if (to_fetch) 
     {
-       clear_sequence();
+       clear_cache();
        SCOPED_LOCK( _mutex );
        fetch(_frame);
     }
@@ -1262,7 +1273,7 @@ void CMedia::rendering_transform( const char* cfile )
     {
       _rendering_transform = strdup( cfile );
     }
-  clear_sequence();
+  clear_cache();
   image_damage( image_damage() | kDamageData | kDamageLut );
   refresh();
 }
@@ -1289,7 +1300,7 @@ void CMedia::look_mod_transform( const char* cfile )
   free( _look_mod_transform ); _look_mod_transform = NULL;
   if ( cfile && strlen(cfile) > 0 ) _look_mod_transform = strdup( cfile );
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_sequence();
+  clear_cache();
   refresh();
 }
 
@@ -1320,7 +1331,7 @@ void CMedia::icc_profile( const char* cfile )
       _profile = strdup( cfile );
     }
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_sequence();
+  clear_cache();
   refresh();
 }
 
@@ -1410,7 +1421,6 @@ void CMedia::play(const CMedia::Playback dir,
   if ( _frame > last_frame() )  _frame = last_frame();
 
   _audio_frame = _frame;
-  _next = std::numeric_limits< boost::int64_t >::min();
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _dts = _frame;
@@ -1708,7 +1718,7 @@ void CMedia::stereo_cache( const mrv::image_type_ptr& left,
  */
 bool CMedia::is_cache_filled(boost::int64_t frame) const
 {
-  if ( !_sequence ) return false;
+    if ( !_sequence ) return false;
 
   if ( frame < _frameStart ) frame = _frameStart;
   if ( frame > _frameEnd )   frame = _frameEnd;
@@ -1986,11 +1996,11 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
   if ( stream->duration == AV_NOPTS_VALUE )
     {
-        s.duration = ((double) _context->duration * time);
+      s.duration = ((double) _context->duration * time);
     }
   else
     {
-        s.duration = ((double) stream->duration * time);
+      s.duration = 200;
     }
 }
 
@@ -2399,17 +2409,17 @@ void anaglyph_cb( AnaglyphData* d )
 
    // daw.merge( dpw );
 
-   for ( unsigned y = daw.t(); y < daw.b(); ++y )
+   for ( int y = daw.t(); y < daw.b(); ++y )
    {
-       for ( unsigned x = daw.l() ; x < daw.r(); ++x )
+       for ( int x = daw.l() ; x < daw.r(); ++x )
        {
            CMedia::Pixel pr, pc;
 
            int x1 = x - d->daw[idx1].l();
            int y1 = y - d->daw[idx1].t();
 
-           if ( x1 < 0 || y1 < 0 || x1 >= stereo[idx1]->width() ||
-                y1 >= stereo[idx1]->height() ) 
+           if ( x1 < 0 || y1 < 0 || x1 >= (int)stereo[idx1]->width() ||
+                y1 >= (int)stereo[idx1]->height() ) 
                pr = CMedia::Pixel(0,0,0,0);
            else
                pr = stereo[idx1]->pixel( x1, y1 );
@@ -2419,8 +2429,8 @@ void anaglyph_cb( AnaglyphData* d )
            y1 = y - d->daw[idx2].t();
 
            
-           if ( x1 < 0 || y1 < 0 || x1 >= stereo[idx2]->width() ||
-                y1 >= stereo[idx2]->height() ) 
+           if ( x1 < 0 || y1 < 0 || x1 >= (int)stereo[idx2]->width() ||
+                y1 >= (int) stereo[idx2]->height() ) 
                pc = CMedia::Pixel(0,0,0,0);
            else
                pc = stereo[idx2]->pixel( x1, y1 );

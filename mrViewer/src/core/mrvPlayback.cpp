@@ -154,6 +154,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       if ( f <= timeline->maximum() )
 	       {
 		  next = reel->image_at( f );
+                  if ( next == img ) return status;
 	       }
 
 
@@ -208,13 +209,15 @@ EndStatus handle_loop( boost::int64_t& frame,
                 // img->frame( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kBackwards );
-                view->playback( ImageView::kBackwards );
+                if (fg)
+                    view->playback( ImageView::kBackwards );
                 status = kEndChangeDirection;
             }
             else
             {
+                if (fg)
+                    view->playback( ImageView::kStopped );
                 img->playback( CMedia::kStopped );
-                view->playback( ImageView::kStopped );
             }
 	    break;
 	 }
@@ -231,7 +234,9 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       if ( f >= timeline->minimum() )
 	       {
 		  next = reel->image_at( f );
+                  if ( next == img ) return status;
 	       }
+
 
 	       f = reel->global_to_local( f );
 
@@ -284,13 +289,15 @@ EndStatus handle_loop( boost::int64_t& frame,
                 img->seek( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kForwards );
-                view->playback( ImageView::kForwards );
+                if (fg)
+                    view->playback( ImageView::kForwards );
                 status = kEndChangeDirection;
             }
             else
             {
                 img->playback( CMedia::kStopped );
-                view->playback( ImageView::kStopped );
+                if (fg)
+                    view->playback( ImageView::kStopped );
             }
 	    break;
 	 }
@@ -441,8 +448,9 @@ void audio_thread( PlaybackData* data )
                   barrier->wait();
 
                   DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
+
                   if ( img->stopped() ) continue;
-                  
+
                   EndStatus end = handle_loop( frame, step, img, fg,
                                                uiMain, 
                                                reel, timeline, status );
@@ -647,6 +655,17 @@ void video_thread( PlaybackData* data )
           if ( e < last )  last = e;
           if ( s > first ) first = s;
 
+      boost::int64_t last = boost::int64_t( timeline->maximum() );
+      boost::int64_t first = boost::int64_t( timeline->minimum() );
+
+      if ( reel->edl )
+      {
+          boost::int64_t s = reel->location(img);
+          boost::int64_t e = s + img->duration() - 1;
+
+          if ( e < last )  last = e;
+          if ( s > first ) first = s;
+
           last = reel->global_to_local( last );
           first = reel->global_to_local( first );
       }
@@ -654,12 +673,16 @@ void video_thread( PlaybackData* data )
       {
           last  += ( img->first_frame() - img->start_frame() );
           first += ( img->first_frame() - img->start_frame() );
-       
+
           if ( img->last_frame() < last )
               last = img->last_frame();
           if ( img->first_frame() > first )
               first = img->first_frame();
       }
+      if ( frame > last )
+          status = CMedia::kDecodeLoopEnd;
+      else if ( frame < first )
+          status = CMedia::kDecodeLoopStart;
 
       if ( frame > last )
           status = CMedia::kDecodeLoopEnd;
@@ -688,9 +711,9 @@ void video_thread( PlaybackData* data )
 
                DBG( img->name() << " BARRIER PASSED IN VIDEO" );
 
-	       if ( img->stopped() ) continue;
-
                DBG( img->name() << " VIDEO DECODE LOOP START/END1 " << frame );
+
+               if ( img->stopped() ) continue;
 
                EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
                                             reel, timeline, status );
@@ -876,12 +899,13 @@ void decode_thread( PlaybackData* data )
 	 barrier->wait();
          DBG( img->name() << " DECODE BARRIER PASSED" );
 
-	 if ( img->stopped() ) continue;
 
          // Do the looping, taking into account ui state
          //  and return new frame and step.
          // This handle loop has to come after the barrier as decode thread
          // goes faster than video or audio threads
+
+         if ( img->stopped() ) continue;
 
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
@@ -902,8 +926,7 @@ void decode_thread( PlaybackData* data )
       // After read, when playing backwards or playing audio files,
       // decode position may be several frames advanced as we buffer
       // multiple frames, so get back the dts frame from image.
-      if ( ( img->playback() == CMedia::kForwards ) &&
-           ( img->has_video() || img->has_audio() ) )
+      if ( img->has_video() || img->has_audio() )
       {
 	 frame = img->dts();
       }

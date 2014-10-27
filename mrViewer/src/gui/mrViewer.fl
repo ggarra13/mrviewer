@@ -2236,13 +2236,12 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {open
-  } {
+  class PaintUI {} {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
         label Paint open
-        xywh {442 374 155 395} horizontal resizable visible
+        xywh {446 374 155 395} horizontal hide resizable
       } {
         {fltk::Group} {} {open
           xywh {0 9 149 376}
@@ -2341,7 +2340,7 @@ if ( r == 0 && g == 0 && b == 0 )
   o->color( fltk::BLACK );
 else
   o->color( fltk::color( r,g,b ) );
-o->redraw();} selected
+o->redraw();}
             tooltip {Selects the current pen color.}
             xywh {87 151 25 25} align 4 box EMBOSSED_BOX color 0x9ff0000 labelsize 11
           }
@@ -2468,7 +2467,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2499,18 +2499,18 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
-        xywh {235 404 640 530} when CHANGED hide resizable
+        callback {delete v;} open
+        xywh {251 239 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2601,13 +2601,13 @@ v->uiHotkey->uiMain->show();}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {30 5 90 20} color 0x53535300
             } {
               {fltk::PopupMenu} uiColorChannel {
-                label Color
+                label {(no image)}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( (unsigned short)o->value() );} open
+                callback {v->uiView->channel( (unsigned short)o->value() );} open selected
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
                 class {mrv::PopupMenu}
@@ -3070,7 +3070,7 @@ where Yn is the white reference (usually 1).
                   callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );}
                   tooltip {Timeline.}
-                  xywh {5 3 610 21} type TICK_ABOVE resizable textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 50 step 1 value 1 slider_size 20
+                  xywh {5 3 610 21} type TICK_ABOVE resizable textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 50 step 1 value 1 slider_size 10
                   extra_code {o->main( this );}
                   class {mrv::Timeline}
                 }

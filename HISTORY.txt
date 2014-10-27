@@ -1,5 +1,17 @@
-v2.6.5.4 - Bug fixed swing playback of movie files in EDL.
-	 - Improved sync of bg and fg images/movies when playing.
+v2.6.5.5 - Added a green bar display for frame caches in the timeline for 
+	   both movies and sequences.
+	 - Bug fixed a hanging problem when exiting while playing backwards
+	   movie with audio.
+v2.6.5.4 - Bug fixed some problems with loop playback of movie files in EDL.  
+	   Still not perfect.  There are still sync problems after 
+	   several loops specially with ping-pong (swing)
+	   playback.
+	 - Bug fixed a hanging of the playback when showing individual images
+	   all in an EDL edit.
+	 - Bug fixed F11 fullscreen not centering the image on Windows.
+	 - Made fullscreen presentation (F12) support covering the taskbar on
+	   Windows.
+	 - Made fullscreen and presentation modes be passed across the network.
 
 v2.6.5.3 - Made preloading of sequences being shown while idle.
 	 - Fixed a crash of Cut tool in EDL when the cut happened in inactive
@@ -7,11 +19,13 @@ v2.6.5.3 - Made preloading of sequences being shown while idle.
 	 - Troubleshoot playback of EDL movies in background.
 	 - Added a BG button to EDL Edit window to more easily set the
 	   background image.
+
 v2.6.5.2 - Upgraded to latest ffmpeg, libx264.
 	 - Fixed swing looping in short movie files which could hang the 
 	   viewer.
 	 - Made play backwards faster due to increase in seek speed.
 	 - Fixed wrong calculation of frame differences in backwards playback.
+
 v2.6.5.1 - Fixed subtitles displaying in black only.
 	 - Made grease pencil a property of the image instead of the viewer.
 	 - Grease pencil drawings are saved and loaded to/from a reel.
@@ -28,18 +42,22 @@ v2.6.5.1 - Fixed subtitles displaying in black only.
 	   delete them or move them somewhere else.
 	 - Added Merge tool to undo the Cut tool.
 	 - Fixed name of zlib1.dll in windows32 distributions.
+
 v2.6.5.0 - Simplified and sped up exr loader.
 	 - Fixed crash of exr loader when working with an image with a single
 	   view.
 	 - Added 3D View to evaluate deep scanline and deep tile image.
 	 - EXR loader now supports deep tile images. 
 	 - Bug fixed ILM format of image sequences ( beauty.1-24.exr )
+
 v2.6.4.4 - Sped up reading of image files (specially the first of a sequence).
 	 - Bug fixed OpenEXR stereo crossed not respecting dataWindows 
 	   correctly.
 	 - Bug fixed Single Instance to load images that are fed thru another
 	   instance of viewer.
+
 v2.6.4.3 - Updated all platforms to OpenEXR 2.2.
+
 v2.6.4.2 - Added missing ctl and shaders directory to win64 release.
 	 - Added missing rails directory to win64 release.
 	 - Added HISTORY.txt and Videos.txt to win64 release.
@@ -47,6 +65,7 @@ v2.6.4.2 - Added missing ctl and shaders directory to win64 release.
 	 - Restored glDrawPixels opengl drawing albeit buggy but needed for
 	   old gfx cards.
 	 - Updated version from v2.6.4.0.
+
 v2.6.4.1 - Made autofit work in EDL timeline when switching images.
 	 - Fixed loading of a single image which would always load all images
 	   in a sequence.
@@ -56,6 +75,7 @@ v2.6.4.1 - Made autofit work in EDL timeline when switching images.
 	 - Updated to OpenEXR 2.2 on Linux.  Windows is stuck with 2.1.
 	 - Updated -h (help) command-line on windows to pop up a console with
 	   instructions.
+
 v2.6.4.0 - Added a starting audio volume preference to the default 
 	   audio preferences.
 	 - Made preferences run when the user hits ok.  Previously ok did
@@ -70,6 +90,7 @@ v2.6.4.0 - Added a starting audio volume preference to the default
 	   display window if saved as EXR.
 	 - GUI for OpenEXR and ImageMagick image options.  Allows selecting
 	   compression and pixel type.
+
 v2.6.3.4 - Bug fixed thumbnails on sequences in file requester.
 	 - Bug fixed some remote image problems including one incorrect 
 	   log out.
@@ -80,6 +101,7 @@ v2.6.3.4 - Bug fixed thumbnails on sequences in file requester.
 	   that can be opened and closed remotely.
 	 - Updated selection to refresh color info, histogram and vectorscope.
 	 - Made single images in EDL be able to play back as a sequence.
+
 v2.6.3.3 - Bug fixed some DISPLAY environment variables that did not match the
 	   documentation for them.
 	 - Bug fixed an audio muting problem on some movies.  This was a 

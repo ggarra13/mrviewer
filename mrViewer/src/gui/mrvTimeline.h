@@ -75,14 +75,22 @@ namespace mrv
 
     int64_t global_to_local( const int64_t frame ) const;
 
+      void draw_cache( const bool t ) { _draw_cache = t; }
+      bool draw_cache() const { return _draw_cache; }
+
   protected:
     bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
     void draw_ticks(const fltk::Rectangle& r, int min_spacing);
+
+    void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
+                         int64_t mn, int64_t mx, int64_t frame, 
+                         const fltk::Rectangle& r );
 
     ImageBrowser* browser() const;
 
        static mrv::Timecode::Display _display;
     bool   _edl;
+      bool _draw_cache;
     double _fps;
     double _display_min;
     double _display_max;

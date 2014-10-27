@@ -83,7 +83,7 @@ namespace mrv
     boost::int64_t              _repeat;  //!< number of frames to repeat
     unsigned int                _width;
     unsigned int                _height;
-    unsigned int                _channels; //!< number of channels of image
+    short unsigned int          _channels; //!< number of channels of image
     PixelData                   _data;   //!< video data
     time_t                      _mtime;  //!< creation time of frame
     Format                      _format; //!< rgb/yuv format
@@ -141,8 +141,8 @@ namespace mrv
 
     inline boost::int64_t repeat() const              { return _repeat; }
 
-    inline void channels( const unsigned c ) { _channels = c;  }
-    inline unsigned int channels() const     { return _channels; }
+    inline void channels( const short unsigned c ) { _channels = c;  }
+    inline short unsigned channels() const     { return _channels; }
 
     bool has_alpha() const;
 
