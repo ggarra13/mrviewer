@@ -647,16 +647,6 @@ void video_thread( PlaybackData* data )
       boost::int64_t last = boost::int64_t( timeline->maximum() );
       boost::int64_t first = boost::int64_t( timeline->minimum() );
 
-      if ( reel->edl )
-      {
-          boost::int64_t s = reel->location(img);
-          boost::int64_t e = s + img->duration() - 1;
-
-          if ( e < last )  last = e;
-          if ( s > first ) first = s;
-
-      boost::int64_t last = boost::int64_t( timeline->maximum() );
-      boost::int64_t first = boost::int64_t( timeline->minimum() );
 
       if ( reel->edl )
       {
@@ -679,10 +669,6 @@ void video_thread( PlaybackData* data )
           if ( img->first_frame() > first )
               first = img->first_frame();
       }
-      if ( frame > last )
-          status = CMedia::kDecodeLoopEnd;
-      else if ( frame < first )
-          status = CMedia::kDecodeLoopStart;
 
       if ( frame > last )
           status = CMedia::kDecodeLoopEnd;
