@@ -1733,7 +1733,9 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             {
                 packets_added++;
                 if ( pktframe <= frame )
+                {
                     _video_packets.push_back( pkt );
+                }
                 if ( pktframe < dts ) dts = pktframe;
             }
             else
@@ -2097,7 +2099,10 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	      DecodeStatus status = decode_image( pktframe, (AVPacket&)pkt );
 	      if ( status == kDecodeOK ) 
 	      {
-		 got_video = status;
+                  if ( pktframe >= frame )
+                  {
+                      got_video = status;
+                  }
 		 store_image( pktframe, pkt.dts );
 	      }
 	   }
