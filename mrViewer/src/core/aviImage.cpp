@@ -495,15 +495,15 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
 
     if ( !got_video ) {
-        vpts = frame2pts( get_video_stream(), frame );
+        vpts = frame2pts( get_video_stream(), start );
     }
 
     if ( !got_audio ) {
-        apts = frame2pts( get_audio_stream(), frame );
+        apts = frame2pts( get_audio_stream(), start );
     }
 
     if ( !got_subtitle ) {
-        spts = frame2pts( get_subtitle_stream(), frame );
+        spts = frame2pts( get_subtitle_stream(), start );
     }
 
     if ( !_seek_req && playback() == kBackwards )
@@ -521,11 +521,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
     LOG_INFO( "BEFORE SEEK:" );
-    debug_video_packets(frame);
+    debug_video_packets(start);
 #endif
 
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
-    debug_audio_packets(frame);
+    debug_audio_packets(start);
 #endif
 
 
@@ -566,7 +566,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     _dts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
 
-    _next = frame + 1;
     _expected = dts + 1;
     _seek_req = false;
 
@@ -1736,7 +1735,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 {
                     _video_packets.push_back( pkt );
                 }
-                if ( pktframe < dts ) dts = pktframe;
+                if ( pktframe < dts ) dts = pktframe + 1;
             }
             else
             {
