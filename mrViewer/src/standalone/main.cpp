@@ -140,8 +140,11 @@ int main( const int argc, char** argv )
 
 //#ifdef USE_GETTEXT
 
-  setlocale (LC_ALL, "");
-
+#ifdef WIN32
+  setlocale(LC_ALL, "");
+#else
+  setlocale(LC_MESSAGES, "");
+#endif
 
   bindtextdomain("mrViewer", "/usr/share/locale");
   textdomain("mrViewer");

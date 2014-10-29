@@ -2963,7 +2963,8 @@ int ImageView::keyDown(unsigned int rawkey)
        display_window( display_window() ^ true );
        redraw();
        return 1;
-    }  else if ( kWipe.match( rawkey ) )
+    }
+  else if ( kWipe.match( rawkey ) )
   {
      if ( _wipe_dir == kNoWipe )  {
 	_wipe_dir = kWipeVertical;
@@ -3017,7 +3018,7 @@ int ImageView::keyDown(unsigned int rawkey)
    {
       mrv::media fg = foreground();
       if ( ! fg ) return 1;
-      
+
       const CMedia* img = fg->image();
       
       double fps = 24;
@@ -3162,6 +3163,11 @@ int ImageView::keyDown(unsigned int rawkey)
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
+  else if ( kClearCache.match( rawkey ) )
+  {
+      clear_image_cache_cb( NULL, this );
+      return 1;
+  }
   else if ( kFirstFrame.match( rawkey ) ) 
     {
       if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
