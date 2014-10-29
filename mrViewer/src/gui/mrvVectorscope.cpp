@@ -128,7 +128,7 @@ namespace mrv
     fltk::translate( r.w()/2, r.h()/2 );
     fltk::rotate( -165.0f + hsv.r * 360.0f );
     fltk::scale( hsv.g * 0.375f );
-    fltk::drawline( 0, diameter_, 0, diameter_ );
+    fltk::drawline( 0, diameter_, 1, diameter_+1 );
     fltk::pop_matrix();
   }
 
@@ -165,6 +165,7 @@ namespace mrv
     if ( xmax >= pic->width() ) xmax = pic->width()-1;
     if ( ymax >= pic->height() ) ymax = pic->height()-1;
 
+
     unsigned stepX = (xmax - xmin + 1) / w();
     unsigned stepY = (ymax - ymin + 1) / h();
     if ( stepX < 1 ) stepX = 1;
@@ -173,7 +174,6 @@ namespace mrv
     assert( xmax < pic->width() ); 
     assert( ymax < pic->height() ); 
 
-    
     for ( unsigned y = ymin; y <= ymax; y += stepY )
       {
 	for ( unsigned x = xmin; x <= xmax; x += stepX )
@@ -184,7 +184,6 @@ namespace mrv
 	  }
       }
 
-//     fltk::line_style( fltk::SOLID, 1 );
   }
 
 }
