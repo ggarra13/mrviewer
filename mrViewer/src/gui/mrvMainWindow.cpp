@@ -64,7 +64,6 @@ namespace mrv {
 				 viewer16_xpm, &p, &mask, NULL) == 
          XpmSuccess )
       {
-          std::cerr << "set icon" << std::endl;
 	 this->icon((const void*)p);
       }
 #endif
