@@ -479,6 +479,8 @@ class server;
     /// Refresh the fstop display
     void refresh_fstop() const;
 
+      void preload();
+
       void preload( const mrv::Reel& reel, const mrv::media& fg,
                     const int64_t tframe );
 
@@ -527,6 +529,8 @@ class server;
       bool          _showPixelRatio, _useLUT;
     float         _volume;
     FlipDirection _flip;
+      int64_t     _preframe;
+      int64_t     _reel;
 
     ///////////////////
     // Popup menu
