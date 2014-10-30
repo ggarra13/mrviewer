@@ -657,6 +657,8 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _useLUT( false ),
   _volume( 1.0f ),
   _flip( kFlipNone ),
+  _preframe( 1),
+  _reel( 0 ),
   _timeout( NULL ),
   _fg_reel( -1 ),
   _bg_reel( -1 ),
@@ -1192,25 +1194,30 @@ bool ImageView::should_update( mrv::media& fg )
   return update;
 }
 
-
-void ImageView::preload( const mrv::Reel& reel, const mrv::media& fg,
-                         const int64_t tframe )
+void ImageView::preload()
 {
-    if ( !reel || !fg ) return;
+    mrv::Reel r = browser()->reel_at( _reel );
+    if (!r) return;
 
-    int64_t f = reel->global_to_local( tframe );
+    mrv::media fg = r->media_at( _preframe );
     CMedia* img = fg->image();
+    if (!img) return;
 
-    if ( !img->is_sequence() ) return;
+    if ( !img->is_sequence() ) {
+        _preframe += img->duration();
+        img = r->image_at( _preframe );
+        if (!img) _reel++;
+        return;
+    }
 
-    
+    int64_t f = r->global_to_local( _preframe );
     int64_t first = img->first_frame();
     int64_t last  = img->last_frame();
     int64_t i = f;
     bool found = false;
 
     // Find a frame to cache from timeline point on
-    for ( ; i != last; ++i )
+    for ( ; i <= last; ++i )
     {
         if ( !img->is_cache_filled(i) )
         {
@@ -1242,6 +1249,15 @@ void ImageView::preload( const mrv::Reel& reel, const mrv::media& fg,
         if (pic) img->hires( pic );
         timeline()->redraw();
     }
+
+    if ( !found )
+    {
+        _preframe = fg->position() + img->duration();
+
+        img = r->image_at( _preframe );
+        if (!img) _reel++;
+    }
+
 
 }
 
@@ -1305,9 +1321,10 @@ void ImageView::timeout()
 
 
    //
-   // If playback is stopped, try to cache forward images
+   // Try to cache forward images
    //
-   preload( reel, fg, tframe );
+   if ( _preframe < timeline->maximum() )
+       preload();
 
    static double kMinDelay = 0.0001666;
 
@@ -4530,6 +4547,7 @@ void ImageView::frame( const int64_t f )
  */
 void ImageView::seek( const int64_t f )
 {
+    _preframe = f;
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position

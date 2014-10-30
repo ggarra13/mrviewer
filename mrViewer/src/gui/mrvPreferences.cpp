@@ -906,9 +906,9 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     main->uiMain->show(0, NULL);
+    main->uiMain->set_icon();
     fltk::check();
 
-    main->uiMain->set_icon();
 
 #if defined(_WIN32) || defined(_WIN64)
     main->uiMain->resize( main->uiMain->w(), main->uiMain->h()-20 );
