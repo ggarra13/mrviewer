@@ -1200,13 +1200,17 @@ void ImageView::preload()
     if (!r) return;
 
     mrv::media fg = r->media_at( _preframe );
+    if ( !fg ) return;
     CMedia* img = fg->image();
     if (!img) return;
 
     if ( !img->is_sequence() ) {
         _preframe = fg->position() + img->duration();
         img = r->image_at( _preframe );
-        if (!img) _reel++;
+        if (!img) {
+            _reel++;
+            _preframe = 1;
+        }
         return;
     }
 
@@ -1255,7 +1259,10 @@ void ImageView::preload()
         _preframe = fg->position() + img->duration();
 
         img = r->image_at( _preframe );
-        if (!img) _reel++;
+        if (!img) {
+            _reel++;
+            _preframe = 1;
+        }
     }
 
 
