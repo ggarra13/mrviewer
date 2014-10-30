@@ -1204,7 +1204,7 @@ void ImageView::preload()
     if (!img) return;
 
     if ( !img->is_sequence() ) {
-        _preframe += img->duration();
+        _preframe = fg->position() + img->duration();
         img = r->image_at( _preframe );
         if (!img) _reel++;
         return;
