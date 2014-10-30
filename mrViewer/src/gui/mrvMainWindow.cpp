@@ -22,10 +22,10 @@
 #include <fltk/run.h>
 
 
-#if !WIN32
+#if !defined(_WIN32)
 #  include <fltk/x11.h>
 #  include <X11/xpm.h>
-#  include "icons/viewer.xpm"
+#  include "icons/viewer16.xpm"
 #else
 #  include <windows.h>
 #  include <fltk/win32.h>
@@ -61,9 +61,11 @@ namespace mrv {
     Pixmap p, mask;
     if ( XpmCreatePixmapFromData(fltk::xdisplay,
 				 DefaultRootWindow(fltk::xdisplay),
-				 (char**)viewer_xpm, &p, &mask, NULL) == XpmSuccess )
+				 viewer16_xpm, &p, &mask, NULL) == 
+         XpmSuccess )
       {
-	 this->icon((char*)p);
+          std::cerr << "set icon" << std::endl;
+	 this->icon((const void*)p);
       }
 #endif
 
