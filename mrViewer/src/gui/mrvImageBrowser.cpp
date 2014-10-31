@@ -1755,6 +1755,15 @@ int ImageBrowser::value() const
     return m;
   }
 
+void load_sequence( ImageBrowser::LThreadData* data )
+{
+    mrv::ImageView* view = data->view;
+    delete data;
+
+    while ( view->preload() )
+        ;;
+}
+
   /** 
    * Open new image, sequence or movie file(s) from a load list.
    * 
@@ -1881,7 +1890,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
 			      << N_("'") );
 		}
 	     }
-	     if ( fg && load.audio != "" ) 
+	     if ( fg && load.audio != "" )
 	     {
 		fg->image()->audio_file( load.audio.c_str() );
                 view()->refresh_audio_tracks();
@@ -1907,6 +1916,9 @@ void ImageBrowser::load( const mrv::LoadList& files,
         delete w;
         fltk::check();
       }
+
+
+    view()->reset_caches(); // Redo preloaded sequence caches
 
     mrv::Reel reel = current_reel();
     if ( !reel || reel->images.empty() ) return;
@@ -1947,6 +1959,14 @@ void ImageBrowser::load( const mrv::LoadList& files,
       {
          view()->play_forwards();
       }
+
+    // if ( _load_threads.empty() )
+    // {
+    //     LThreadData* data = new LThreadData( view() );
+    //     _load_threads.push_back( new boost::thread( 
+    //                              boost::bind( mrv::load_sequence,
+    //                                           data ) ) );
+    // }
 }
 
 
