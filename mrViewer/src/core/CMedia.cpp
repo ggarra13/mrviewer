@@ -946,7 +946,7 @@ bool CMedia::has_changed()
 
       assert( _frame <= _frameEnd );
       assert( _frame >= _frameStart );
-      boost::uint64_t idx = _frame - _frameStart;
+      boost::uint64_t idx = _frame - _frame_start;
 
       if ( !_sequence || !_sequence[idx] ) return false;
 
@@ -2140,9 +2140,7 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
   while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
     {
-      const AVPacket& pkt = _video_packets.front();
       count += 1;
-
 
       if ( !is_seek && playback() == kBackwards )
 	{
@@ -2202,11 +2200,12 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_seek() )
 	{
-           return handle_video_seek( frame, true );
+            handle_video_seek( frame, true );
+            continue;
 	}
       else if ( _video_packets.is_preroll() )
 	{
-	   got_video = handle_video_seek( frame, false );
+	   handle_video_seek( frame, false );
 	   continue;
 	}
       else if ( _video_packets.is_loop_start() )
@@ -2229,10 +2228,7 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
           else
              pktframe = frame;
 
-          if ( pktframe == frame )
-          {
-             _video_packets.pop_front();
-          }
+          _video_packets.pop_front();
           return kDecodeOK;
 	}
 
