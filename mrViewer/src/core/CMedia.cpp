@@ -365,8 +365,10 @@ void CMedia::clear_cache()
   boost::uint64_t num = _frame_end - _frame_start + 1;
   for ( boost::uint64_t i = 0; i < num; ++i )
     {
-      _sequence[i].reset();
-      _right[i].reset();
+        if ( _sequence[i] )
+            _sequence[i].reset();
+        if ( _right[i] )
+            _right[i].reset();
     }
 
 }
@@ -813,18 +815,6 @@ void CMedia::sequence( const char* fileroot,
   // std::string file = fileroot;
   // std::string root, frame, view, ext;
   // bool ok = split_sequence( root, frame, view, ext, file );
-
-
-  // if ( use_thread )
-  // {
-  //    PlaybackData* data = new PlaybackData( true, NULL, this, NULL );
-  //    _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence,
-  //                                                          data ) ) );
-
-  //    PlaybackData* data2 = new PlaybackData( false, NULL, this, NULL );
-  //    _load_threads.push_back( new boost::thread( boost::bind( mrv::load_sequence, 
-  //                                                             data2 ) ) );
-  // }
 
   
   default_icc_profile();
@@ -1716,12 +1706,15 @@ void CMedia::stereo_cache( const mrv::image_type_ptr& left,
  * 
  * @return true or false if cache is already filled.
  */
-bool CMedia::is_cache_filled(boost::int64_t frame) const
+bool CMedia::is_cache_filled(boost::int64_t frame)
 {
     if ( !_sequence ) return false;
 
+
   if ( frame < _frameStart ) frame = _frameStart;
   if ( frame > _frameEnd )   frame = _frameEnd;
+
+  SCOPED_LOCK( _mutex );
 
   boost::uint64_t i = frame - _frame_start;
   if ( !_sequence[i] ) return false;
@@ -2296,6 +2289,8 @@ bool CMedia::find_image( const boost::int64_t frame )
 
   bool should_load = false;
 
+  SCOPED_LOCK( _mutex );
+
   std::string file = sequence_filename(f);
 
   if ( _filename ) 
@@ -2323,7 +2318,6 @@ bool CMedia::find_image( const boost::int64_t frame )
      if ( fs::exists(file) )
      {
 	SCOPED_LOCK( _audio_mutex );
-	SCOPED_LOCK( _mutex );
 	SCOPED_LOCK( _subtitle_mutex );
 	fetch( f );
 	cache( _hires );
