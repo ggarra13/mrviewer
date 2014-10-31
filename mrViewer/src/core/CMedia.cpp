@@ -2289,23 +2289,27 @@ bool CMedia::find_image( const boost::int64_t frame )
 
   bool should_load = false;
 
-  SCOPED_LOCK( _mutex );
-
-  std::string file = sequence_filename(f);
+  std::string file;
+  {
+      SCOPED_LOCK( _mutex );
+      file = sequence_filename(f);
+  }
 
   if ( _filename ) 
     {
       if ( file != _filename )
       {
-	should_load = true;
-        free( _filename );
-        _filename = strdup( file.c_str() );
+          SCOPED_LOCK( _mutex );
+          should_load = true;
+          free( _filename );
+          _filename = strdup( file.c_str() );
       }
     }
   else
     {
-       _filename = strdup( file.c_str() );
-       should_load = true;
+        SCOPED_LOCK( _mutex );
+        _filename = strdup( file.c_str() );
+        should_load = true;
     }
 
 
@@ -2317,10 +2321,11 @@ bool CMedia::find_image( const boost::int64_t frame )
      //  std::string file = sequence_filename(f);
      if ( fs::exists(file) )
      {
-	SCOPED_LOCK( _audio_mutex );
-	SCOPED_LOCK( _subtitle_mutex );
-	fetch( f );
-	cache( _hires );
+         SCOPED_LOCK( _mutex );
+         SCOPED_LOCK( _audio_mutex );
+         SCOPED_LOCK( _subtitle_mutex );
+         fetch( f );
+         cache( _hires );
      }
      else
      {
