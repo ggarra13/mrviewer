@@ -35,6 +35,8 @@ namespace mrv {
 
     boost::mutex::scoped_lock lock(m_mutex);
 
+    if ( c == m_threshold ) return;
+
     unsigned int used = m_threshold - m_count;
     if ( used >= c ) m_count = 1;
     else             m_count = c - used;
