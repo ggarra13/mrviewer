@@ -43,6 +43,19 @@ void end_button_cb(fltk::Button* o, mrv::ViewerUI* v);
 
 class ImageBrowser : public fltk::Browser
 {
+  public:
+    typedef std::vector< boost::thread* > thread_pool_t;
+
+    struct LThreadData
+    {
+        mrv::ImageView* view;
+
+        LThreadData( mrv::ImageView* v ) :
+        view( v )
+        {
+        }
+    };
+
    public:
      ImageBrowser(int x, int y, int w, int h);
      ~ImageBrowser();
@@ -163,6 +176,8 @@ class ImageBrowser : public fltk::Browser
      mrv::EDLGroup* edl_group() const;
 
      mrv::ImageView* view() const;
+
+     thread_pool_t  _load_threads;    //!< loading threads if any
 
      unsigned       _reel;
      mrv::ReelList  _reels;
