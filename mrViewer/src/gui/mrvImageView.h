@@ -145,6 +145,8 @@ class server;
        int fg_reel() const { return _fg_reel; }
        int bg_reel() const { return _bg_reel; }
 
+      void reset_caches() { _reel = 0; }
+
       void fg_reel(int idx);
       void bg_reel(int idx);
 
@@ -407,6 +409,8 @@ class server;
        bool ghost_previous() const { return _ghost_previous; }
        bool ghost_next()     const { return _ghost_next; }
 
+      bool preload();
+
      public:
        ParserList   _clients;
        tcp_server_ptr _server;
@@ -479,7 +483,6 @@ class server;
     /// Refresh the fstop display
     void refresh_fstop() const;
 
-      void preload();
 
       void preload( const mrv::Reel& reel, const mrv::media& fg,
                     const int64_t tframe );
@@ -530,7 +533,7 @@ class server;
     float         _volume;
     FlipDirection _flip;
       int64_t     _preframe;
-      int64_t     _reel;
+      unsigned    _reel;
 
     ///////////////////
     // Popup menu

@@ -61,7 +61,7 @@ namespace mrv {
     Pixmap p, mask;
     if ( XpmCreatePixmapFromData(fltk::xdisplay,
 				 DefaultRootWindow(fltk::xdisplay),
-				 viewer16_xpm, &p, &mask, NULL) == 
+				 (char**)viewer16_xpm, &p, &mask, NULL) == 
          XpmSuccess )
       {
 	 this->icon((const void*)p);

@@ -360,7 +360,7 @@ class CMedia
     inline bool has_sequence() const { return (_sequence != NULL); }
 
     // Returns true if cache for the frame is already filled, false if not
-    virtual bool is_cache_filled(int64_t frame) const;
+    virtual bool is_cache_filled(int64_t frame);
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );

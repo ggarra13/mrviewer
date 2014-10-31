@@ -1194,15 +1194,24 @@ bool ImageView::should_update( mrv::media& fg )
   return update;
 }
 
-void ImageView::preload()
+bool ImageView::preload()
 {
     mrv::Reel r = browser()->reel_at( _reel );
-    if (!r) return;
+    if (!r) return false;
 
-    mrv::media fg = r->media_at( _preframe );
-    if ( !fg ) return;
+    mrv::media fg;
+    if ( r->edl )
+    {
+        fg = r->media_at( _preframe );
+        if ( !fg ) return false;
+    }
+    else
+    {
+        fg = foreground();
+    }
+
     CMedia* img = fg->image();
-    if (!img) return;
+    if (!img) return false;
 
     if ( !img->is_sequence() ) {
         _preframe = fg->position() + img->duration();
@@ -1211,7 +1220,9 @@ void ImageView::preload()
             _reel++;
             _preframe = 1;
         }
-        return;
+        if ( _reel >= browser()->number_of_reels() )
+            return false;
+        return true;
     }
 
     int64_t f = r->global_to_local( _preframe );
@@ -1246,11 +1257,12 @@ void ImageView::preload()
 
     if ( found )
     {
-        img->dts( i );
         mrv::image_type_ptr pic = img->hires();
         img->find_image( i );  // this loads the frame if not present
         img->cache( img->hires() );
-        if (pic) img->hires( pic );
+        if (pic) {
+            img->hires( pic );
+        }
         timeline()->redraw();
     }
 
@@ -1263,8 +1275,11 @@ void ImageView::preload()
             _reel++;
             _preframe = 1;
         }
+        if ( _reel >= browser()->number_of_reels() )
+            return false;
     }
 
+    return true; 
 
 }
 
@@ -1330,7 +1345,7 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   if ( _preframe < timeline->maximum() )
+   if ( _reel < browser()->number_of_reels() )
        preload();
 
    static double kMinDelay = 0.0001666;
@@ -3391,6 +3406,9 @@ void ImageView::toggle_presentation()
                           GetSystemMetrics(SM_CYSCREEN));
 #else
       fltk_main()->fullscreen();
+      fltk_main()->resize( 0, 0,
+                           XDisplayWidth( fltk::xdisplay, 0 ),
+                           XDisplayHeight( fltk::xdisplay, 0 ));
       // XWindowAttributes xwa;
       // XGetWindowAttributes(fltk::xdisplay, DefaultRootWindow(fltk::xdisplay),
       //                      &xwa);
