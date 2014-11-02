@@ -2754,8 +2754,6 @@ void ImageBrowser::load( const stringArray& files,
 	CMedia* img = m->image();
 	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
-        CMedia::Mutex& mtx = img->video_mutex();
-        SCOPED_LOCK( mtx );
 
 	if ( f < timeline()->minimum() )
         {
@@ -2768,8 +2766,10 @@ void ImageBrowser::load( const stringArray& files,
 
 	
 	DBG( "seek f: " << f );
+        
+        mrv::media fg = view()->foreground();
 
-	if ( m != view()->foreground() )
+	if ( m != fg && fg )
 	  {
 	     if ( playback != ImageView::kStopped )
                  view()->stop();
