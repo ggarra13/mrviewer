@@ -1045,39 +1045,8 @@ bool ImageView::should_update( mrv::media& fg )
   bool update = false;
 
 
-  bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
-
-
   if ( fg )
   {
-
-      if ( reload )
-      {
-          CMedia* img = fg->image();
-
-          mrv::Reel reel = browser()->reel_at( _fg_reel );
-          if ( reel )
-          {
-
-              size_t idx = reel->index( img );
-
-              bool video = img->has_video();
-
-              bool check = false;
-              if ( video && img->stopped() ) check = true;
-              else if ( !video )             check = true;
-
-              if ( img->has_changed() )
-              {
-                  std::cerr << "CHANGE " << img->fileroot() << std::endl;
-                  char* root = strdup( img->fileroot() );
-                  fg = browser()->replace( _fg_reel, idx, root );
-                  foreground( fg );
-                  free( root );
-              }
-          }
-      }
-
 
       CMedia* img = fg->image();
       if ( img->image_damage() & CMedia::kDamageLayers )
@@ -1152,31 +1121,6 @@ bool ImageView::should_update( mrv::media& fg )
   if ( bg )
   {
       CMedia* img = bg->image();
-
-      if ( reload && bg != fg )
-      {
-
-          mrv::Reel reel = browser()->reel_at( _bg_reel );
-          if ( reel )
-          {
-
-              size_t idx = reel->index( img );
-
-              bool video = img->has_video();
-
-              bool check = false;
-              if ( video && img->stopped() ) check = true;
-              else if ( !video )             check = true;
-
-              if ( check && img->has_changed() )
-              {
-                  char* root = strdup( img->fileroot() );
-                  bg = browser()->replace( _bg_reel, idx, root );
-                  background( bg );
-                  free( root );
-              }
-          }
-      }
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
@@ -4918,8 +4862,6 @@ void ImageView::stop()
   _real_fps = 0.0;
 
   stop_playback();
-
-  std::cerr << "imageview stop" << std::endl;
 
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
