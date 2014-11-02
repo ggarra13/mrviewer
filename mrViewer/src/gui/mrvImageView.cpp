@@ -707,16 +707,21 @@ ImageView::~ImageView()
 
    delete_timeout();
    delete _engine; _engine = NULL;
+
+   uiMain = NULL;
+
 }
 
 fltk::Window* ImageView::fltk_main()
 { 
    assert( uiMain->uiMain );
+   if ( !uiMain ) return NULL;
    return uiMain->uiMain; 
 }
 
 const fltk::Window* ImageView::fltk_main() const
 { 
+   if ( !uiMain ) return NULL;
    assert( uiMain->uiMain );
    return uiMain->uiMain; 
 }
@@ -724,6 +729,7 @@ const fltk::Window* ImageView::fltk_main() const
 
 ImageBrowser* 
 ImageView::browser() {
+   if ( !uiMain ) return NULL;
    assert( uiMain->uiReelWindow );
    assert( uiMain->uiReelWindow->uiBrowser );
    return uiMain->uiReelWindow->uiBrowser;
@@ -732,6 +738,7 @@ ImageView::browser() {
 
 Timeline* 
 ImageView::timeline() { 
+   if ( !uiMain ) return NULL;
    assert( uiMain->uiTimeline );
    return uiMain->uiTimeline;
 }
@@ -1160,7 +1167,11 @@ bool ImageView::should_update( mrv::media& fg )
 
 bool ImageView::preload()
 {
-    mrv::Reel r = browser()->reel_at( _reel );
+    if ( !browser() ) return false;
+
+    mrv::ImageBrowser* b = browser();
+
+    mrv::Reel r = b->reel_at( _reel );
     if (!r) return false;
 
     mrv::media fg;
@@ -1184,7 +1195,7 @@ bool ImageView::preload()
             _reel++;
             _preframe = 1;
         }
-        if ( _reel >= browser()->number_of_reels() )
+        if ( _reel >= b->number_of_reels() )
             return false;
         return true;
     }
@@ -1236,7 +1247,7 @@ bool ImageView::preload()
             _reel++;
             _preframe = 1;
         }
-        if ( _reel >= browser()->number_of_reels() )
+        if ( _reel >= b->number_of_reels() )
             return false;
     }
 
