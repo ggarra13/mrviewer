@@ -50,7 +50,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+#define DEBUG_THREADS
 
 
 #if defined(WIN32) || defined(WIN64)

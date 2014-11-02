@@ -114,7 +114,7 @@ class ImageBrowser : public fltk::Browser
      void load( const stringArray& files, bool progressBar = true );
 
 
-     mrv::media replace( const char* file, const char* root );
+    mrv::media replace( const size_t r, const size_t img, const char* root );
      void remove( mrv::media m );
      void remove( int idx );
 
