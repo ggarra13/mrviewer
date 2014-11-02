@@ -1044,11 +1044,16 @@ bool ImageView::should_update( mrv::media& fg )
 {
   bool update = false;
 
+  bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
 
   if ( fg )
   {
 
       CMedia* img = fg->image();
+
+      if ( reload )
+          img->has_changed();
+
       if ( img->image_damage() & CMedia::kDamageLayers )
       {
           update_layers();
@@ -1121,6 +1126,9 @@ bool ImageView::should_update( mrv::media& fg )
   if ( bg )
   {
       CMedia* img = bg->image();
+
+      if ( reload && fg != bg )
+          img->has_changed();
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
