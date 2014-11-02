@@ -1046,51 +1046,65 @@ bool ImageView::should_update( mrv::media& fg )
 
 
   bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
-  if ( reload && fg )
-    {
-      CMedia* img = fg->image();
-
-      bool video = img->has_video();
-
-      bool check = false;
-      if ( video && img->stopped() ) check = true;
-      else if ( !video )             check = true;
-
-      if ( check && img->has_changed() )
-	{
-	  char* root = strdup( img->fileroot() );
-	  fg = browser()->replace( img->filename(), root );
-	  foreground( fg );
-	  free( root );
-	}
-    }
 
 
   if ( fg )
-    {
+  {
+
+      if ( reload )
+      {
+          CMedia* img = fg->image();
+
+          mrv::Reel reel = browser()->reel_at( _fg_reel );
+          if ( reel )
+          {
+
+              size_t idx = reel->index( img );
+
+              bool video = img->has_video();
+
+              bool check = false;
+              if ( video && img->stopped() ) check = true;
+              else if ( !video )             check = true;
+
+              if ( img->has_changed() )
+              {
+                  std::cerr << "CHANGE " << img->fileroot() << std::endl;
+                  char* root = strdup( img->fileroot() );
+                  fg = browser()->replace( _fg_reel, idx, root );
+                  foreground( fg );
+                  free( root );
+              }
+          }
+          else
+          {
+              std::cerr << "NO REEL" << std::endl;
+          }
+      }
+
 
       CMedia* img = fg->image();
       if ( img->image_damage() & CMedia::kDamageLayers )
-	{
-	  update_layers();
-	}
+      {
+          update_layers();
+      }
 
       if ( img->image_damage() & CMedia::kDamageContents )
-	{
+      {
 	  update = true;
-	}
+      }
 
       if ( img->image_damage() & CMedia::kDamageThumbnail )
-	{
+      {
 	  // Redraw browser to update thumbnail
 	  browser()->redraw();
-	}
+      }
 
       if ( img->image_damage() & CMedia::kDamageData )
-	{
+      {
 	  update_image_info();
 	  uiMain->uiICCProfiles->fill();
-	}
+      }
 
       if ( uiMain->uiGL3dView->uiMain->visible() && 
            uiMain->uiGL3dView->uiMain->shown() &&
@@ -1139,45 +1153,47 @@ bool ImageView::should_update( mrv::media& fg )
     }
 
   mrv::media bg = background();
-  if ( bg && bg != fg )
-    {
+  if ( bg )
+  {
       CMedia* img = bg->image();
 
-      if ( reload && img->has_picture() )
-	{
-	  bool video = img->has_video();
+      if ( reload && bg != fg )
+      {
 
-	  bool check = false;
-	  if ( video && img->stopped() ) check = true;
-	  else if ( !video )             check = true;
+          mrv::Reel reel = browser()->reel_at( _bg_reel );
+          if ( reel )
+          {
 
-	  if ( check && img->has_changed() )
-	    {
-	      char* root = strdup( img->fileroot() );
-	      bg = browser()->replace( img->filename(), root );
-	      background( bg );
-	      free( root );
-	    }
-	}
+              size_t idx = reel->index( img );
 
+              bool video = img->has_video();
 
-      if ( bg )  // check as image may have changed
-	{
-	  CMedia* img = bg->image();
+              bool check = false;
+              if ( video && img->stopped() ) check = true;
+              else if ( !video )             check = true;
 
-	  if ( img->image_damage() & CMedia::kDamageContents )
-	    {
-	       // resize_background();
-	      update = true;
-	    }
+              if ( check && img->has_changed() )
+              {
+                  char* root = strdup( img->fileroot() );
+                  bg = browser()->replace( _bg_reel, idx, root );
+                  background( bg );
+                  free( root );
+              }
+          }
+      }
 
-	  if ( img->image_damage() & CMedia::kDamageThumbnail )
-	    {
-	      // Redraw browser to update thumbnail
-	      browser()->redraw();
-	    }
-	}
-    }
+      if ( img->image_damage() & CMedia::kDamageContents )
+      {
+          // resize_background();
+          update = true;
+      }
+
+      if ( img->image_damage() & CMedia::kDamageThumbnail )
+      {
+          // Redraw browser to update thumbnail
+          browser()->redraw();
+      }
+  }
 
 
   if ( update && _playback != kStopped ) {
@@ -4316,12 +4332,8 @@ void ImageView::background( mrv::media bg )
       send( buf );
 
       img->volume( _volume );
-#if 0
-      if ( playback() != kStopped ) 
-	 img->play( (CMedia::Playback) playback(), uiMain, false );
-      else 
-#endif
-	img->refresh();
+
+      img->refresh();
 
       img->play_fps( fps() );
       img->image_damage( img->image_damage() | CMedia::kDamageContents );      
@@ -4899,7 +4911,6 @@ void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
 
-
    mrv::media m = foreground();
    if ( m ) m->image()->stop();
 
@@ -4911,6 +4922,8 @@ void ImageView::stop()
   _real_fps = 0.0;
 
   stop_playback();
+
+  std::cerr << "imageview stop" << std::endl;
 
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);

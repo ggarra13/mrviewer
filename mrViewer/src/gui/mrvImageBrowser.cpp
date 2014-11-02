@@ -1396,6 +1396,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 	return;
       }
   
+    ImageView::Playback p = view()->playback();
     view()->stop();
 
     if ( view()->background() == m )
@@ -1418,6 +1419,10 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     sprintf( buf, "RemoveImage %d", idx );
 
     view()->send( buf );
+
+
+    view()->play( (CMedia::Playback) p );
+
     redraw();
   }
 
@@ -1426,22 +1431,23 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
   /** 
    * Replace current image with a new file.
    * 
-   * @param file new file name  ( mray.1.exr )
+   * @param r    reel index
+   * @param idx  image index in reel
    * @param root root file name ( mray.%l04d.exr )
    */
-  mrv::media ImageBrowser::replace( const char* file, const char* root )
+mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
+                                  const char* root )
   {
-    mrv::Reel reel = current_reel();
+    mrv::Reel reel = reel_at(r);
     if ( !reel ) return mrv::media();
-
-    int idx = value(); 
-    if ( idx < 0 ) return mrv::media();
 
     CMedia* newImg = CMedia::guess_image( root );
 
     // did not recognize new image, keep old
     mrv::media m = reel->images[idx];
+
     if ( newImg == NULL ) return m;
+
 
     CMedia* img = m->image();
     int64_t frame = img->frame();
@@ -1450,10 +1456,11 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     mrv::media newm( new mrv::gui::media(newImg) );
 
+    newm->position( m->position() );
 
     mrv::CMedia::Mutex& vpm = newImg->video_mutex();
     SCOPED_LOCK( vpm );
-    newImg->fetch( frame );
+    newImg->frame( frame );
     newImg->default_icc_profile();
     newImg->default_rendering_transform();
     newImg->decode_video( frame );
@@ -1464,14 +1471,17 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     this->remove( m );
 
-    if ( playback != CMedia::kStopped )
-       newImg->play( playback, uiMain, true );
 
 
     reel->images.insert( reel->images.begin() + idx, newm );
 
+    // adjust_timeline();
+
     // Make sure no alert message is printed
     mrv::alert( NULL );
+
+    if ( playback != CMedia::kStopped )
+        newImg->play( playback, uiMain, (r == view()->fg_reel()) );
 
     return newm;
   }
@@ -2758,7 +2768,7 @@ void ImageBrowser::load( const stringArray& files,
 	if ( m != view()->foreground() )
 	  {
 	     if ( playback != ImageView::kStopped )
-	     	view()->stop();
+                 view()->stop();
 
 	     size_t i = timeline()->index( f );
 
@@ -2767,7 +2777,7 @@ void ImageBrowser::load( const stringArray& files,
 	     DBG( "seek f local1: " << f );
 
 
-             if ( ! img->stopped() ) img->stop();
+             // if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
 	     change_image((int)i);
