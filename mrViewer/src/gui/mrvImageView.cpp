@@ -1076,10 +1076,6 @@ bool ImageView::should_update( mrv::media& fg )
                   free( root );
               }
           }
-          else
-          {
-              std::cerr << "NO REEL" << std::endl;
-          }
       }
 
 
