@@ -773,15 +773,12 @@ void CMedia::sequence( const char* fileroot,
   if ( ! initialize() )
     return;
 
-  // // load all pictures in new background thread 
-  // std::string file = fileroot;
-  // std::string root, frame, view, ext;
-  // bool ok = split_sequence( root, frame, view, ext, file );
+  fetch( start );
+  cache( _hires );
 
-  
   default_icc_profile();
   default_rendering_transform();
-  
+
   if ( has_audio() )
     {
       decode_audio( _frame );
@@ -2263,12 +2260,9 @@ bool CMedia::find_image( const boost::int64_t frame )
     }
 
 
-  _dts = _frame = f;
-
 
   if ( should_load )
   {
-     //  std::string file = sequence_filename(f);
      if ( fs::exists(file) )
      {
          SCOPED_LOCK( _mutex );
@@ -2286,7 +2280,6 @@ bool CMedia::find_image( const boost::int64_t frame )
 	}
      }
   }
-
   
   refresh();
   return true;
