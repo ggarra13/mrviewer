@@ -695,10 +695,10 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
 	if ( _exif.empty() && _iptc.empty() )
            read_header_attr( h, frame );
 
+
 	FrameBuffer fb;
 	bool ok = find_channels( h, fb, frame );
 	if ( !ok ) return false;
-
 
 	_pixel_ratio = h.pixelAspectRatio();
 	_lineOrder   = h.lineOrder();
@@ -1917,9 +1917,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           const Box2i& displayWindow = header.displayWindow();
           const Box2i& dataWindow = header.dataWindow();
 
-          _pixel_ratio = header.pixelAspectRatio();
-          _lineOrder   = header.lineOrder();
-
           if ( i == 0 || _stereo_type == kNoStereo )
           {
               data_window( dataWindow.min.x, dataWindow.min.y,
@@ -1946,6 +1943,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               return false;
           }
 
+          _pixel_ratio = header.pixelAspectRatio();
+          _lineOrder   = header.lineOrder();
+          _compression = header.compression();
+
           InputPart in( inmaster, _curpart );
           in.setFrameBuffer(fb);
           in.readPixels( dataWindow.min.y, dataWindow.max.y );
@@ -1970,6 +1971,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       int oldpart = _curpart;
 
       const Header& header = inmaster.header(_curpart);
+
+
+
       if ( _type == DEEPTILE )
       {
           if ( ! find_layers( header ) )
@@ -2004,11 +2008,15 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          return false;
       }
 
+      _pixel_ratio = header.pixelAspectRatio();
+      _lineOrder   = header.lineOrder();
+      _compression = header.compression();
 
       if ( _curpart != oldpart )
       {
          InputPart in (inmaster, _curpart);
          const Header& header = in.header();
+
 
          const Box2i& dataWindow = header.dataWindow();
          const Box2i& displayWindow = header.displayWindow();
@@ -2025,6 +2033,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
             IMG_ERROR( _("Could not locate channels in header") );
             return false;
          }
+
+         _pixel_ratio = header.pixelAspectRatio();
+         _lineOrder   = header.lineOrder();
+         _compression = header.compression();
 
          in.setFrameBuffer(fb);
          in.readPixels( dataWindow.min.y, dataWindow.max.y );
