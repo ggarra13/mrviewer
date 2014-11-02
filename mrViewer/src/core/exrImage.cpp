@@ -2052,6 +2052,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
      try
      {
+         _frame = frame;
 
 	if ( _levelX > 0 || _levelY > 0 )
 	{
