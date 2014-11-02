@@ -705,44 +705,6 @@ void  CMedia::last_frame(boost::int64_t x)
    _frameEnd = x;
 }
 
-void load_sequence( PlaybackData* data )
-{
-   mrv::ViewerUI* uiMain = data->uiMain;
-   mrv::CMedia* img = data->image;
-   bool even = data->fg;
-   int64_t start, end, skip;
-   if ( even ) {
-      start = img->first_frame();
-      end = img->last_frame();
-      skip = 2;
-   }
-   else
-   {
-      start = img->first_frame() + 1;
-      end = img->last_frame();
-      skip = 2;
-   }
-   delete data;
-
-
-   struct stat sbuf;
-   for ( int64_t f = start; f <= end; f += skip )
-   {
-      {
-         mrv::CMedia::Mutex& vpm = img->video_mutex();
-         SCOPED_LOCK( vpm );
-         
-         int result = stat( img->sequence_filename( f ).c_str(), &sbuf );
-         if ( result < 0 ) return;
-
-         img->fetch( f );
-         img->cache( img->hires() );
-      }
-
-
-    }
-
-}
 void CMedia::delete_bg_barrier()
 {
     delete _bg_barrier; _bg_barrier = NULL;
@@ -942,10 +904,10 @@ bool CMedia::has_changed()
 
       int result = stat( file.c_str(), &sbuf );
       if ( (result == -1) || (_frame < _frame_start) ||
-			      ( _frame > _frameEnd ) ) return false;
+			      ( _frame > _frame_end ) ) return false;
 
-      assert( _frame <= _frameEnd );
-      assert( _frame >= _frameStart );
+      assert( _frame <= _frame_end );
+      assert( _frame >= _frame_start );
       boost::uint64_t idx = _frame - _frame_start;
 
       if ( !_sequence || !_sequence[idx] ) return false;
@@ -1332,17 +1294,9 @@ void CMedia::icc_profile( const char* cfile )
  */
 void CMedia::thread_exit()
 {
-  thread_pool_t::iterator i = _load_threads.begin();
-  thread_pool_t::iterator e = _load_threads.end();
-  for ( ; i != e; ++i )
-    {
-      delete *i;
-    }
 
-  _load_threads.clear();
-
-  i = _threads.begin();
-  e = _threads.end();
+  thread_pool_t::iterator i = _threads.begin();
+  thread_pool_t::iterator e = _threads.end();
   for ( ; i != e; ++i )
     {
       delete *i;
