@@ -2784,7 +2784,8 @@ void ImageBrowser::load( const stringArray& files,
              // if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
-	     change_image((int)i);
+             if ( i < children() )
+                 change_image((int)i);
 
 	  }
 	else
