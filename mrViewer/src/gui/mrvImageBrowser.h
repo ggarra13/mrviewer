@@ -168,6 +168,8 @@ class ImageBrowser : public fltk::Browser
                             const bool use_thread = false );
 
 
+    void wait_on_threads();
+
      int mouseDrag( int x, int y );
      int mousePush( int x, int y );
      int mouseRelease( int x, int y );
