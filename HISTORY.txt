@@ -1,6 +1,6 @@
-v2.6.5.6 - Made caching work on all sequences in reels and timeline.
+v2.6.5.6 - Made caching work on all sequences in reels and timeline in EDL.
 	   Progress goes from one sequence to the next.
-	 - Bug fixed reloading of movie files when they change in disk.
+	 - Removed reloading of movie files when they change in disk.
 	   Previously the whole reel would get corrupted.
 v2.6.5.5 - Added a green bar display for frame caches in the timeline for 
 	   both movies and sequences.

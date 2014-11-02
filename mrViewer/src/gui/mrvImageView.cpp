@@ -1223,10 +1223,7 @@ bool ImageView::preload()
     {
         mrv::image_type_ptr pic = img->hires();
         img->find_image( i );  // this loads the frame if not present
-        img->cache( img->hires() );
-        if (pic) {
-            img->hires( pic );
-        }
+        img->hires( pic );
         timeline()->redraw();
     }
 
@@ -1309,8 +1306,8 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   if ( _reel < browser()->number_of_reels() )
-       preload();
+   // if ( _reel < browser()->number_of_reels() )
+   //     preload();
 
    static double kMinDelay = 0.0001666;
 
