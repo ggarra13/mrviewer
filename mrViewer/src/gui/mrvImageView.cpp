@@ -1167,7 +1167,7 @@ bool ImageView::should_update( mrv::media& fg )
 
 bool ImageView::preload()
 {
-    if ( !browser() ) return false;
+    if ( !browser() || !timeline() ) return false;
 
     mrv::ImageBrowser* b = browser();
 
@@ -1235,7 +1235,6 @@ bool ImageView::preload()
         mrv::image_type_ptr pic = img->hires();
         img->find_image( i );  // this loads the frame if not present
         img->hires( pic );
-        timeline()->redraw();
     }
 
     if ( !found )
