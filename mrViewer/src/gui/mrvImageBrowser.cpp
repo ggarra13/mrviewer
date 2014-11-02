@@ -2754,6 +2754,9 @@ void ImageBrowser::load( const stringArray& files,
 	CMedia* img = m->image();
 	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
+        CMedia::Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
+
 	if ( f < timeline()->minimum() )
         {
             f = int64_t(timeline()->maximum() - timeline()->minimum()) - f + 1;
