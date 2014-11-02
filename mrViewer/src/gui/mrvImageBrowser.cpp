@@ -297,7 +297,19 @@ namespace mrv {
   {
       clear();
       delete db; db = NULL;
+      wait_on_threads();
   }
+
+void ImageBrowser::wait_on_threads()
+{
+    thread_pool_t::iterator i = _load_threads.begin();
+    thread_pool_t::iterator e = _load_threads.end();
+    for ( ; i != e; ++i )
+    {
+        (*i)->join();
+        delete *i;
+    }
+}
 
   mrv::Timeline* ImageBrowser::timeline()
   {
