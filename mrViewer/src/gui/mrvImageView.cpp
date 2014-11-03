@@ -1235,6 +1235,7 @@ bool ImageView::preload()
         mrv::image_type_ptr pic = img->hires();
         img->find_image( i );  // this loads the frame if not present
         img->hires( pic );
+        timeline()->redraw();
     }
 
     if ( !found )
@@ -1256,6 +1257,7 @@ bool ImageView::preload()
 
 void ImageView::timeout()
 {
+
 
   //
   // If in EDL mode, we check timeline to see if frame points to
@@ -1316,8 +1318,8 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   // if ( _reel < browser()->number_of_reels() )
-   //     preload();
+   if ( _reel < browser()->number_of_reels() )
+        preload();
 
    static double kMinDelay = 0.0001666;
 
@@ -1352,7 +1354,6 @@ void ImageView::timeout()
         //     if ( img->audio_frame() < frame )
         //         frame = img->audio_frame();
         // }
-
 
 	if ( this->frame() != frame )
 	{
