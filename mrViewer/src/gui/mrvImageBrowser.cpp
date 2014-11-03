@@ -1982,13 +1982,13 @@ void ImageBrowser::load( const mrv::LoadList& files,
          view()->play_forwards();
       }
 
-    if ( _load_threads.empty() )
-    {
-        LThreadData* data = new LThreadData( view() );
-        _load_threads.push_back( new boost::thread( 
-                                 boost::bind( mrv::load_sequence,
-                                              data ) ) );
-    }
+    // if ( _load_threads.empty() )
+    // {
+    //     LThreadData* data = new LThreadData( view() );
+    //     _load_threads.push_back( new boost::thread( 
+    //                              boost::bind( mrv::load_sequence,
+    //                                           data ) ) );
+    // }
 }
 
 
