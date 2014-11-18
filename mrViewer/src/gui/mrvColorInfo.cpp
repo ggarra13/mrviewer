@@ -236,8 +236,11 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           ymin = (int)(selection.y() - daw.y());
       }
 
-      xmax = xmin + (int)(selection.w()) - 1;
-      ymax = ymin + (int)(selection.h()) - 1;
+      if ( selection.w() > 0 ) W = (int)selection.w();
+      if ( selection.h() > 0 ) H = (int)selection.h();
+
+      xmax = xmin + W - 1;
+      ymax = ymin + H - 1;
 
       if ( xmin < 0 ) xmin = 0;
       if ( ymin < 0 ) ymin = 0;

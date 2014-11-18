@@ -377,7 +377,10 @@ std::string hex_to_char_filename( std::string& f )
 		    if ( *i == range )
 		      {
 			 char buf[256];
-			 sprintf( buf, "%%0%d" PRId64, digits );
+
+                         const char* pr = PRId64;
+                         if ( digits < 4 ) pr = "d";
+			 sprintf( buf, "%%0%d%s", digits, pr );
 			 fileroot += buf;
 		      }
 		    else
@@ -423,7 +426,10 @@ std::string hex_to_char_filename( std::string& f )
       }
 
 
-    sprintf( buf, "%%0%d" PRId64, pad );
+    const char* prdigits = PRId64;
+    if ( pad < 5 ) prdigits = "d";
+
+    sprintf( buf, "%%0%d%s", pad, prdigits );
 
     split_sequence( root, frame, view, ext, fileroot );
 
@@ -667,18 +673,23 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
      }
 
 
+    const char* digits = PRId64;
     int pad = padded_digits(frame);
+    if ( pad < 5 )
+    {
+        digits = "d";
+    }
 
     char full[1024];
     if ( pad == 0 )
     {
-       sprintf( full, "%s%%" PRId64 "%s%s", root.c_str(), view.c_str(),
-                ext.c_str() );
+        sprintf( full, "%s%%%s%s%s", root.c_str(), digits, view.c_str(),
+                 ext.c_str() );
     }
     else
     {
-       sprintf( full, "%s%%0%d" PRId64 "%s%s", root.c_str(), pad, view.c_str(),
-               ext.c_str() );
+        sprintf( full, "%s%%0%d%s%s%s", root.c_str(), pad, digits, view.c_str(),
+                ext.c_str() );
     }
 
     fileroot = full;
