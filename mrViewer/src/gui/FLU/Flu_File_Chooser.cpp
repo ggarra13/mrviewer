@@ -917,7 +917,9 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   fileListWideBtn->do_callback();
 
   // if pathname does not start with "/" or "~", set the filename to it
-  if( pathname && pathname[0] != '/' && pathname[1] != ':' && pathname[0] != '~' )
+  if( pathname &&
+      ( strlen(pathname) > 1 && pathname[0] != '/' && pathname[0] != '~')
+      && ( strlen(pathname) > 2 && pathname[1] != ':' ) )
      filename.value( pathname );
 }
 
@@ -3047,26 +3049,26 @@ void Flu_File_Chooser::Entry::draw()
 
   if( details )
     {
-      if( shortDescription[0] != '\0' )
-	labeltype()->draw( shortDescription.c_str(),
-			   fltk::Rectangle( X, 0, typeW-4, h() ),
-			   fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
-      else
-	labeltype()->draw( description.c_str(),
-			   fltk::Rectangle( X, 0, typeW-4, h() ),
-			   fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
+        if( shortDescription.size() )
+            labeltype()->draw( shortDescription.c_str(),
+                               fltk::Rectangle( X, 0, typeW-4, h() ),
+                               fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
+        else
+            labeltype()->draw( description.c_str(),
+                               fltk::Rectangle( X, 0, typeW-4, h() ),
+                               fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
 
-      X += typeW;
+        X += typeW;
 
-      labeltype()->draw( filesize.c_str(),
-			 fltk::Rectangle( X, 0, sizeW-4, h() ),
-			 fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
+        labeltype()->draw( filesize.c_str(),
+                           fltk::Rectangle( X, 0, sizeW-4, h() ),
+                           fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
 
-      X += sizeW+4;
+        X += sizeW+4;
 
-      labeltype()->draw( date.c_str(),
-			 fltk::Rectangle( X, 0, dateW-4, h() ),
-			 fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
+        labeltype()->draw( date.c_str(),
+                           fltk::Rectangle( X, 0, dateW-4, h() ),
+                           fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
     }
 }
 
