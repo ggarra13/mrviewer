@@ -464,39 +464,15 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
     fltk::Preferences caches( base, "caches" );
-    caches.get( "video_fps", tmp, 1 );
-    uiPrefs->uiVideoFPS->value(tmp);
-    if ( uiPrefs->uiVideoFPS->value() )
-    {
-       uiPrefs->uiVideoCacheSize->deactivate();
-    }
-    if ( !tmp )
-    {
-       caches.get( "video", tmp, 70 );
-       uiPrefs->uiVideoCacheSize->value(tmp);
-    }
-    else
-    {
-       tmp = 0;
-    }
-    CMedia::video_cache_size( tmp );
 
-    caches.get( "audio_fps", tmp, 1 );
-    uiPrefs->uiAudioFPS->value( tmp );
-    if ( uiPrefs->uiAudioFPS->value() )
-    {
-       uiPrefs->uiAudioCacheSize->deactivate();
-    }
-    if ( !tmp )
-    {
-       caches.get( "audio", tmp, 70 );
-       uiPrefs->uiAudioCacheSize->value(tmp);
-    }
-    else
-    {
-       tmp = 0;
-    }
-    CMedia::audio_cache_size( tmp );
+    caches.get( "active", tmp, 1 );
+    uiPrefs->uiPrefsCacheActive->value( (bool) tmp );
+    CMedia::cache_active( (bool) tmp );
+
+
+    caches.get( "8bit_caches", tmp, 0 );
+    uiPrefs->ui8BitCaches->value( (bool) tmp );
+    CMedia::eight_bit_caches( (bool) tmp );
 
     //
     // audio
@@ -807,6 +783,7 @@ fltk::StyleSet*     newscheme = NULL;
     else
       main->uiBottomBar->hide();
 
+
     //
     // Widget/Viewer settings
     //
@@ -842,6 +819,19 @@ fltk::StyleSet*     newscheme = NULL;
     //
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
     uiPrefs->uiPrefsFileReqFolder->value();
+
+    // Handle caches
+    CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
+
+
+    bool old = CMedia::eight_bit_caches();
+    CMedia::eight_bit_caches( (bool) uiPrefs->ui8BitCaches->value() );
+    if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old )
+    {
+        view->clear_caches();
+    }
+
+
 
     //
     // Handle crop area (masking)
@@ -1063,10 +1053,8 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences caches( base, "caches" );
-    caches.set( "video_fps", uiPrefs->uiVideoFPS->value() );
-    caches.set( "video", uiPrefs->uiVideoCacheSize->value() );
-    caches.set( "audio_fps", uiPrefs->uiAudioFPS->value() );
-    caches.set( "audio", uiPrefs->uiAudioCacheSize->value() );
+    caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
+    caches.set( "8bit_caches", (int) uiPrefs->ui8BitCaches->value() );
 
 
     fltk::Preferences loading( base, "loading" );
