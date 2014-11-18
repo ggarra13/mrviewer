@@ -298,6 +298,7 @@ namespace mrv {
       clear();
       delete db; db = NULL;
       wait_on_threads();
+      uiMain = NULL;
   }
 
 void ImageBrowser::wait_on_threads()
@@ -313,6 +314,7 @@ void ImageBrowser::wait_on_threads()
 
   mrv::Timeline* ImageBrowser::timeline()
   {
+    if ( uiMain == NULL ) return NULL;
     assert( uiMain != NULL );
     assert( uiMain->uiTimeline != NULL );
     return uiMain->uiTimeline;
@@ -393,7 +395,8 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    */
   mrv::media ImageBrowser::current_image()
   {
-     return view()->foreground();
+      if ( !view() ) return mrv::media();
+      return view()->foreground();
   }
 
   /** 
@@ -401,7 +404,8 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    */
   const mrv::media ImageBrowser::current_image() const
   {
-     return view()->foreground();
+      if ( !view() ) return mrv::media();
+      return view()->foreground();
   }
 
   /** 
@@ -560,12 +564,14 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
 mrv::ImageView* ImageBrowser::view() const
 {
+    if ( uiMain == NULL ) return NULL;
    return uiMain->uiView;
 }
 
 
 mrv::EDLGroup* ImageBrowser::edl_group() const
 {
+    if ( uiMain == NULL ) return NULL;
    return uiMain->uiEDLWindow->uiEDLGroup;
 }
 
@@ -1615,7 +1621,7 @@ void ImageBrowser::clear_bg()
 
 	int audio_idx = -1;
 	int sub_idx = -1;
-	if ( timeline()->edl() )
+	if ( timeline() && timeline()->edl() )
 	{
 	   if ( om )
 	   {
@@ -1629,16 +1635,17 @@ void ImageBrowser::clear_bg()
 
         send_reel( reel );
 
-	if ( m != om && m != NULL )
+	if ( m != om && m )
 	{
 	   DBG( "FG REEL " << _reel );
 
 	   view()->fg_reel( _reel );
 	   view()->foreground( m );
 
-	   uiMain->uiEDLWindow->uiEDLGroup->redraw();
+           if ( edl_group() )
+               edl_group()->redraw();
 
-	   if ( timeline()->edl() )
+	   if ( timeline() && timeline()->edl() )
 	   {
 	      if ( sub_idx != -1 &&
 		   sub_idx < int(m->image()->number_of_subtitle_streams()) )
@@ -3063,13 +3070,13 @@ void ImageBrowser::load( const stringArray& files,
       }
     else
       {
+          if ( edl_group() )
+              edl_group()->redraw();
 
-         edl_group()->redraw();
+          first = 1;
 
-	first = 1;
-
-	mrv::media m = current_image();
-	if (! m ) return;
+          mrv::media m = current_image();
+          if (! m ) return;
 
 	CMedia* img = m->image();
 

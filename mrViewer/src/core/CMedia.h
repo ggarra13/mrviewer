@@ -12,6 +12,13 @@
 #ifndef CMedia_h
 #define CMedia_h
 
+#ifdef _WIN32
+#pragma warning(disable: 4251)
+#pragma warning(disable: 4275)
+#pragma warning(disable: 4800)
+#endif
+
+
 #include <ctime>
 
 #include <set>
@@ -806,6 +813,13 @@ class CMedia
 
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
+
+    static void eight_bit_caches( bool x ) { _8bit_cache = x; }
+    static bool eight_bit_caches() { return _8bit_cache; }
+
+    static void cache_active( bool x ) { _cache_active = x; }
+    static bool cache_active() { return _cache_active; }
+
        
     static std::string rendering_transform_8bits;
     static std::string rendering_transform_16bits;
@@ -1156,6 +1170,9 @@ class CMedia
 
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
+
+    static bool _8bit_cache;
+    static bool _cache_active;
 };
 
 

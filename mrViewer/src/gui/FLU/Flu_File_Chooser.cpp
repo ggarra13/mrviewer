@@ -1861,7 +1861,8 @@ void Flu_File_Chooser::filenameCB()
 
 inline bool _isProbablyAPattern( const char *s )
 {
-  return( strpbrk( s, "*;|[]?" ) != NULL );
+    // return( strpbrk( s, "*;|[]?" ) != NULL );
+  return( strpbrk( s, "*;|?" ) != NULL );
 }
 
 void Flu_File_Chooser::okCB()
@@ -2526,17 +2527,17 @@ void Flu_File_Chooser::Entry::updateSize()
     {
       // progressively strip characters off the end of the name until
       // it fits with "..." at the end
-      if( altname[0] != '\0' )
+      if( altname.size() > 0 )
 	shortname = altname;
       else
 	shortname = filename;
       size_t len = shortname.size();
       while( W > (nameW-iW) && len > 3 )
 	{
+	  shortname[len-4] = '.';
 	  shortname[len-3] = '.';
 	  shortname[len-2] = '.';
-	  shortname[len-1] = '.';
-	  shortname[len] = '\0';
+	  shortname[len-1] = '\0';
 	  len--;
 	  W = 0;
 	  fltk::measure( shortname.c_str(), W, H );
@@ -2559,10 +2560,10 @@ void Flu_File_Chooser::Entry::updateSize()
 	  size_t len = shortDescription.size();
 	  while( W > typeW-4 && len > 3 )
 	    {
+	      shortDescription[len-4] = '.';
 	      shortDescription[len-3] = '.';
 	      shortDescription[len-2] = '.';
-	      shortDescription[len-1] = '.';
-	      shortDescription[len] = '\0';
+	      shortDescription[len-1] = '\0';
 	      len--;
 	      W = 0;
 	      fltk::measure( shortDescription.c_str(), W, H );
@@ -4115,8 +4116,9 @@ void Flu_File_Chooser::cd( const char *path )
   // if the user just hit <Tab> but the filename input area is empty,
   // then use the current patterns
   if( !filenameTabCallback || currentFile != "*" )
+  {
     stripPatterns( currentFile, &userPatterns );
-
+  }
 
   typedef std::vector< std::string > Directories;
   Directories dirs;
@@ -4188,7 +4190,9 @@ void Flu_File_Chooser::cd( const char *path )
 		    {
 		      // only filter directories if someone just hit <TAB>
 		      if( !isDir || ( isDir && filenameTabCallback ) )
+                      {
 			continue;
+                      }
 		    }
 		}
 	      // filter files according to the current pattern
@@ -4209,7 +4213,9 @@ void Flu_File_Chooser::cd( const char *path )
 		    {
 		      // only filter directories if someone just hit <TAB>
 		      if( !isDir || ( isDir && filenameTabCallback ) )
-			continue;
+                      {
+                          continue;
+                      }
 		    }
 		}
 	    }
@@ -4414,66 +4420,66 @@ void Flu_File_Chooser::cd( const char *path )
 	Files::const_iterator e = files.end();
 	for ( ; i != e; ++i )
 	{
-	  entry = new Entry( (*i).c_str(), ENTRY_FILE,
-			     fileDetailsBtn->value(), this );
+            entry = new Entry( (*i).c_str(), ENTRY_FILE,
+                               fileDetailsBtn->value(), this );
 
-	  if( listMode )
-	  {
-	    filelist->add( entry );
-	  }
-	  else
-	  {
-	    filedetails->add( entry );
-	  }
-	  numFiles++;
-	  lastAddedFile = entry->filename.c_str();
+            if( listMode )
+            {
+                filelist->add( entry );
+            }
+            else
+            {
+                filedetails->add( entry );
+            }
+            numFiles++;
+            lastAddedFile = entry->filename.c_str();
 
 
-	  // get some information about the file
-	  fullpath = pathbase + *i;
-	  struct stat s;
-	  ::stat( fullpath.c_str(), &s );
+            // get some information about the file
+            fullpath = pathbase + *i;
+            struct stat s;
+            ::stat( fullpath.c_str(), &s );
 
-	  // store size as human readable and sortable integer
-	  entry->isize = s.st_size;
-	  if( isDir && entry->isize == 0 )
-	  {
-	    entry->filesize = "";
-	  }
-	  else
-	  {
-	     char buf[32];
+            // store size as human readable and sortable integer
+            entry->isize = s.st_size;
+            if( isDir && entry->isize == 0 )
+            {
+                entry->filesize = "";
+            }
+            else
+            {
+                char buf[32];
 	      
-	     if( (entry->isize >> 30) > 0 ) // gigabytes
-	     {
-		double GB = double(entry->isize)/double(1<<30);
-		sprintf( buf, "%.1f GB", GB );
-	     }
-	     else if( (entry->isize >> 20) > 0 ) // megabytes
-	     {
-		double MB = double(entry->isize)/double(1<<20);
-		sprintf( buf, "%.1f MB", MB );
-	     }
-	     else if( (entry->isize >> 10) > 0 ) // kilabytes
-	     {
-		double KB = double(entry->isize)/double(1<<10);
-		sprintf( buf, "%.1f KB", KB );
-	     }
-	     else // bytes
-	     {
-		sprintf( buf, "%d bytes", (int)entry->isize );
-	     }
-	     entry->filesize = buf;
-	     entry->updateIcon();
-	  }
+                if( (entry->isize >> 30) > 0 ) // gigabytes
+                {
+                    double GB = double(entry->isize)/double(1<<30);
+                    sprintf( buf, "%.1f GB", GB );
+                }
+                else if( (entry->isize >> 20) > 0 ) // megabytes
+                {
+                    double MB = double(entry->isize)/double(1<<20);
+                    sprintf( buf, "%.1f MB", MB );
+                }
+                else if( (entry->isize >> 10) > 0 ) // kilabytes
+                {
+                    double KB = double(entry->isize)/double(1<<10);
+                    sprintf( buf, "%.1f KB", KB );
+                }
+                else // bytes
+                {
+                    sprintf( buf, "%d bytes", (int)entry->isize );
+                }
+                entry->filesize = buf;
+                entry->updateIcon();
+            }
 
-	  // store date as human readable and sortable integer
-	  entry->date = formatDate( ctime( &s.st_mtime ) );//ctime( &s.st_mtime );
-	  entry->idate = s.st_mtime;
+            // store date as human readable and sortable integer
+            entry->date = formatDate( ctime( &s.st_mtime ) );//ctime( &s.st_mtime );
+            entry->idate = s.st_mtime;
 
-	  // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
-	  /*
-	    unsigned int p = s.st_mode;
+            // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
+            /*
+              unsigned int p = s.st_mode;
 	    entry->pU = bool(p&S_IRUSR)<<2 | bool(p&S_IWUSR)<<1 | bool(p&S_IXUSR);
 	    entry->pG = bool(p&S_IRGRP)<<2 | bool(p&S_IWGRP)<<1 | bool(p&S_IXGRP);
 	    entry->pO = bool(p&S_IROTH)<<2 | bool(p&S_IWOTH)<<1 | bool(p&S_IXOTH);

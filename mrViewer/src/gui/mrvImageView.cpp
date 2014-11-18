@@ -220,21 +220,7 @@ extern void clone_image_cb( fltk::Widget* o, mrv::ImageBrowser* b );
 
 void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
 {
-    mrv::media m = v->foreground();
-    if ( m )
-    {
-        mrv::CMedia* img = m->image();
-        img->clear_cache();
-    }
-
-    m = v->background();
-    if ( m )
-    {
-        mrv::CMedia* img = m->image();
-        img->clear_cache();
-    }
-
-    v->timeline()->redraw();
+    v->clear_caches();
 }
 
 void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
@@ -1240,6 +1226,9 @@ bool ImageView::preload()
 
     if ( !found )
     {
+        if ( CMedia::eight_bit_caches() && gamma() > 1.0 )
+            gamma( 1.0 );
+
         _preframe = fg->position() + img->duration();
 
         img = r->image_at( _preframe );
@@ -1318,8 +1307,10 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   if ( _reel < browser()->number_of_reels() )
-        preload();
+   if ( CMedia::cache_active() && ( _reel < browser()->number_of_reels() ))
+   {
+       preload();
+   }
 
    static double kMinDelay = 0.0001666;
 
@@ -1328,7 +1319,7 @@ void ImageView::timeout()
    {
       CMedia* img = fg->image();
       delay = 1.0 / (img->play_fps() * 2.0);
-      if ( delay < kMinDelay ) delay = kMinDelay;
+      // if ( delay < kMinDelay ) delay = kMinDelay;
    }
 
   repeat_timeout( float(delay) );
@@ -2039,7 +2030,7 @@ int ImageView::leftMouseDown(int x, int y)
 			fltk::MENU_DIVIDER );
 	    }
 
-            menu.add( _("Image/Clear Cache"), kClearCache.hotkey(),
+            menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
                       (fltk::Callback*)clear_image_cache_cb, this,
                       fltk::MENU_DIVIDER );
 
@@ -3584,36 +3575,92 @@ void ImageView::refresh()
     }
 }
 
+void ImageView::clear_reel_cache( size_t idx )
+{
+    mrv::ImageBrowser* b = browser();
+    if (!b) return;
+
+    mrv::Reel r = b->reel_at( idx );
+    if ( !r ) return;
+
+    if ( r->edl )
+    {
+        for ( size_t i = 0; i < r->images.size(); ++i )
+        {
+            mrv::media fg = r->images[i];
+            if ( fg )
+            {
+                CMedia* img = fg->image();
+                if ( img->is_sequence() && 
+                     img->first_frame() != img->last_frame() )
+                {
+                    img->clear_cache();
+                }
+            }
+        }
+    }
+    else
+    {
+        mrv::media fg;
+        if ( idx == _fg_reel )
+            fg = foreground();
+        else
+            fg = background();
+
+        if ( fg )
+        {
+            CMedia* img = fg->image();
+            if ( img->is_sequence() && 
+                 img->first_frame() != img->last_frame() )
+            {
+                img->clear_cache();
+            }
+        }
+    }
+
+    reset_caches();
+}
+
+void ImageView::flush_image( mrv::media fg )
+{
+    if ( fg )
+    {
+        CMedia* img = fg->image();
+        if ( img->is_sequence() && 
+             img->first_frame() != img->last_frame() &&
+             ( _engine->shader_type() == DrawEngine::kNone )  )
+        {
+            img->clear_cache();
+            img->fetch(frame());
+        }
+    }
+}
+
 /** 
  * Clear and refresh sequence
  * 
  */
+void ImageView::clear_caches()
+{
+    clear_reel_cache( _fg_reel );
+    clear_reel_cache( _bg_reel );
+
+    mrv::Timeline* t = timeline();
+    if (t) t->redraw();
+}
+
+
+/**
+ * Clear and refresh sequence
+ *
+ */
 void ImageView::flush_caches()
 {
-  mrv::media fg = foreground();
-  if ( fg )
-    {
-      CMedia* img = fg->image();
-      if ( img->is_sequence() && img->first_frame() != img->last_frame()
-	   && (_engine->shader_type() == DrawEngine::kNone ) ) 
-	{
-	  img->clear_cache();
-	  img->fetch(frame());
-	}
-    }
+    flush_image( foreground() );
+    flush_image( background() );
 
-  mrv::media bg = background();
-  if ( bg )
-    {
-      CMedia* img = bg->image();
-      if ( img->is_sequence() && 
-	   img->first_frame() != img->last_frame()
-	   && (_engine->shader_type() == DrawEngine::kNone)  )
-	{
-	  img->clear_cache();
-	  img->fetch(frame());
-	}
-    }
+    mrv::Timeline* t = timeline();
+    if (t) t->redraw();
 }
 
 /** 
