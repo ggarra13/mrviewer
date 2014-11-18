@@ -145,7 +145,6 @@ class server;
        int fg_reel() const { return _fg_reel; }
        int bg_reel() const { return _bg_reel; }
 
-      void reset_caches() { _reel = 0; }
 
       void fg_reel(int idx);
       void bg_reel(int idx);
@@ -409,6 +408,22 @@ class server;
        bool ghost_previous() const { return _ghost_previous; }
        bool ghost_next()     const { return _ghost_next; }
 
+      // Make pre-loading start from scratch
+      void reset_caches() { _reel = 0; _preframe = 1; }
+
+      /// Clear image sequence caches from reel idx
+      void clear_reel_cache( size_t idx );
+
+      /// Clear image caches regardless of anything
+      void clear_caches();
+
+      /// Clear image sequence caches from reel idx if shadertype == kNone
+      void flush_image( mrv::media fg );
+
+      /// Clear image sequence caches if shadertype == kNone
+      void flush_caches();
+
+      // Preload an image into sequence cache
       bool preload();
 
      public:
@@ -468,8 +483,6 @@ class server;
     void data_window_coordinates( const Image_ptr img,
                                   double& x, double& y ) const;
 
-    /// Clear image sequence caches
-    void flush_caches();
 
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();

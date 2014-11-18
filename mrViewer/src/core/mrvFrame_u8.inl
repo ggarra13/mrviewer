@@ -161,14 +161,14 @@ namespace mrv {
       case kLumma:
 	col[0] = boost::uint8_t(p.r * 255.0f); break;
       case kBGRA:
-	col[3] = boost::uint8_t(p.a * 255.0f);
+          col[3] = boost::uint8_t(p.a * 255.0f);
       case kBGR:
 	col[2] = boost::uint8_t(p.r * 255.0f);
 	col[1] = boost::uint8_t(p.g * 255.0f);
 	col[0] = boost::uint8_t(p.b * 255.0f);
 	break;
       case kRGBA:
-	col[3] = boost::uint8_t(p.a * 255.0f);
+          col[3] = boost::uint8_t(p.a * 255.0f);
       case kRGB:
 	col[0] = boost::uint8_t(p.r * 255.0f);
 	col[1] = boost::uint8_t(p.g * 255.0f);

@@ -194,17 +194,21 @@ namespace mrv {
 #else
      unsigned long depth = MagickGetImageDepth( wand );
 #endif
-    
+
      image_type::PixelType pixel_type = image_type::kByte;
+
+     _gamma = (float) MagickGetImageGamma( wand );
+     if (_gamma <= 0.f ) _gamma = 1.0f;
+
      StorageType storage = CharPixel;
 
-     if ( depth == 16 ) 
+     if ( !_8bit_cache && depth == 16 && _gamma == 1.0f ) 
      {
 	pixel_type = image_type::kShort;
 	storage = ShortPixel;
      }
-    
-     if ( depth >= 32 ) 
+
+     if ( !_8bit_cache && depth >= 32 && _gamma == 1.0f ) 
      {
 	pixel_type = image_type::kFloat;
 	storage = FloatPixel;
@@ -224,7 +228,7 @@ namespace mrv {
 	channels = "RGB";
 	allocate_pixels( frame, 3, image_type::kRGB, pixel_type );
      }
-    
+
      {
 	SCOPED_LOCK( _mutex );
 
@@ -232,11 +236,9 @@ namespace mrv {
 	MagickExportImagePixels( wand, 0, 0, dw, dh, channels, 
 				 storage, pixels );
      }
-  
+
      _compression = MagickGetImageCompression( wand );
 
-     _gamma = (float) MagickGetImageGamma( wand );
-     if (_gamma <= 0.f ) _gamma = 1.0f;
 
      double rx, ry, gx, gy, bx, by, wx, wy;
      MagickGetImageRedPrimary( wand, &rx, &ry );

@@ -1640,7 +1640,7 @@ exrImage::loadDeepTileImage( int &zsize,
             pixels[i].g = dataG[i][0];
             pixels[i].b = dataB[i][0];
 
-            for(int s=1; s<sampleCount[i]; s++)
+            for(unsigned s=1; s<sampleCount[i]; s++)
             {
                 float a = pixels[i].a;
                 if( a>=1.f)
@@ -2072,24 +2072,27 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	}
  
         MultiPartInputFile inmaster( sequence_filename(frame).c_str() );
-        const Imf::Header& h = inmaster.header(0);
-        if ( h.hasType() ) _type = h.type();
-
 	if ( _numparts <= 0 )
 	  {
               _numparts = inmaster.parts();
 	  }
 
+
+
         if ( _numparts > 0 )
-        {
+	  {
+	    const Imf::Header& h = inmaster.header(0);
+	    if ( h.hasType() ) _type = h.type();
+	  
             if ( !  fetch_multipart( frame ) )
                 return false;
-        }
 
-	if ( _use_yca && !supports_yuv() )
-	{
-            ycc2rgba( h, frame );
-	}
+	    if ( _use_yca && !supports_yuv() )
+	      {
+		ycc2rgba( h, frame );
+	      }
+	  }
+
 
     } 
     catch( const std::exception& e )
@@ -2456,8 +2459,10 @@ bool exrImage::save( const char* file, const CMedia* img,
             sscanf( value.c_str(), "0x%x", &userdata );
         }
 
-        Imf::TimeCode key( hours, mins, secs, frames, dropframe, colorframe,
-                           fieldphase, bgf0, bgf1, bgf2, userdata,
+        Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
+			   (bool)colorframe, (bool)fieldphase,
+			   (bool)bgf0, (bool)bgf1, (bool)bgf2,
+			   userdata,
                            userdata, userdata, userdata, userdata, userdata,
                            userdata, userdata);
         Imf::TimeCodeAttribute attr(key);

@@ -618,12 +618,13 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {578 294 640 475} hide resizable
+        xywh {282 160 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1113,32 +1114,19 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
-            label Caches
-            xywh {13 24 405 382} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Caches open
+            xywh {13 24 405 382} align 5 box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::ValueSlider} uiVideoCacheSize {
-              label Video
-              xywh {110 30 265 30} type TICK_ABOVE align 1 minimum 15 maximum 250 step 1 value 70
+            {fltk::LightButton} uiPrefsCacheActive {
+              label {Cache Active} selected
+              tooltip {Sequence images will be cached in memory.  If this setting is off, images will be loaded on demand but fluid playback may not be possible.}
+              xywh {40 25 105 32} value 1
             }
-            {fltk::ValueSlider} uiAudioCacheSize {
-              label Audio
-              xywh {110 90 265 30} type TICK_ABOVE align 1 minimum 15 maximum 250 step 1 value 70
-            }
-            {fltk::LightButton} uiVideoFPS {
-              label FPS
-              callback {if ( uiVideoCacheSize->active() )
-   uiVideoCacheSize->deactivate();
-else
-   uiVideoCacheSize->activate();}
-              xywh {30 30 75 30}
-            }
-            {fltk::LightButton} uiAudioFPS {
-              label FPS
-              callback {if ( uiAudioCacheSize->active() )
-   uiAudioCacheSize->deactivate();
-else
-   uiAudioCacheSize->activate();}
-              xywh {30 90 75 30}
+            {fltk::LightButton} ui8BitCaches {
+              label { 8 bit caches}
+              tooltip {Sequence images will be cached as 8-bit pictures, instead of being cached as the original depth of the sequence.
+This setting thus allows caching more pictures in memory.}
+              xywh {210 25 105 32}
             }
           }
           {fltk::Group} {} {
@@ -2467,8 +2455,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2499,18 +2486,18 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
-        xywh {251 239 640 530} when CHANGED resizable
+        callback {delete v;}
+        xywh {255 239 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2607,7 +2594,7 @@ v->uiHotkey->uiMain->show();}
               {fltk::PopupMenu} uiColorChannel {
                 label {(no image)}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( (unsigned short)o->value() );} open selected
+                callback {v->uiView->channel( (unsigned short)o->value() );} open
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
                 class {mrv::PopupMenu}
