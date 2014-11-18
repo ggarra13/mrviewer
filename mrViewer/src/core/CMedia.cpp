@@ -96,7 +96,11 @@ std::string CMedia::icc_profile_float;
 unsigned CMedia::_audio_cache_size;
 unsigned CMedia::_video_cache_size;
 
+bool CMedia::_cache_active = true;
+bool CMedia::_8bit_cache = false;
+
 mrv::CMedia::Barrier* CMedia::_bg_barrier = NULL;
+
 
 /** 
  * Constructor
@@ -551,6 +555,8 @@ mrv::image_type_ptr CMedia::anaglyph( bool left_view )
    }
    return hires();
 }
+
+
 
 static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
@@ -1603,7 +1609,7 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 {
    assert( pic != NULL );
 
-   if ( !is_sequence()) 
+   if ( ( !is_sequence() ) || ( !_cache_active ) ) 
       return;
 
    SCOPED_LOCK( _mutex );
@@ -1615,7 +1621,50 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
   boost::int64_t idx = f - _frame_start;
   if ( _sequence[idx] ) return;
 
-  _sequence[idx] = pic;
+
+  if ( _8bit_cache && pic->pixel_type() != image_type::kByte )
+  {
+      unsigned w = pic->width();
+      unsigned h = pic->height();
+
+      mrv::image_type_ptr np;
+      np.reset( new image_type( pic->frame(), w, h, pic->channels(),
+                                pic->format(), image_type::kByte,
+                                pic->repeat(), pic->pts() ) );
+
+      for ( unsigned y = 0; y < h; ++y )
+      {
+          for ( unsigned x = 0; x < w; ++x )
+          {
+              ImagePixel p = pic->pixel( x, y );
+
+              if ( p.r > 1.0f ) p.r = 1.0f;
+              else if ( p.r < 0.0f ) p.r = 0.f;
+
+              if ( p.g > 1.0f ) p.g = 1.0f;
+              else if ( p.g < 0.0f ) p.g = 0.f;
+
+              if ( p.b > 1.0f ) p.b = 1.0f;
+              else if ( p.b < 0.0f ) p.b = 0.f;
+
+              if ( p.a > 1.0f ) p.a = 1.0f;
+              else if ( p.a < 0.0f ) p.a = 0.f;
+
+	      p.r = powf( p.r, 1.0f / gamma() );
+	      p.g = powf( p.g, 1.0f / gamma() );
+	      p.b = powf( p.b, 1.0f / gamma() );
+
+              np->pixel( x, y, p );
+          }
+      }
+
+      _sequence[idx] = np;
+  }
+  else
+  {
+      _sequence[idx] = pic;
+  }
+
   if ( _stereo[1] ) _right[idx] = _stereo[1];
   timestamp(idx);
 
@@ -2207,6 +2256,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
+
   // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
   _video_clock = double(av_gettime_relative()) / 1000000.0;
 
@@ -2259,6 +2309,7 @@ bool CMedia::find_image( const boost::int64_t frame )
         should_load = true;
     }
 
+  _frame = f;
 
 
   if ( should_load )
@@ -2281,6 +2332,7 @@ bool CMedia::find_image( const boost::int64_t frame )
      }
   }
   
+
   refresh();
   return true;
 }
@@ -2416,9 +2468,9 @@ void CMedia::make_anaglyph( bool left_red )
    d.merge( daw2 );
 
    unsigned w = d.w();
-   if ( _w == 0 ) w = width();
+   if ( w == 0 ) w = width();
    unsigned h = d.h();
-   if ( _h == 0 ) h = height();
+   if ( h == 0 ) h = height();
 
    _w = w;
    _h = h;
