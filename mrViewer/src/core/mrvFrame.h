@@ -169,7 +169,7 @@ namespace mrv
 
     inline const PixelData& data() const { return _data; }
 
-    ImagePixel pixel( const unsigned int x, const unsigned int y );
+    ImagePixel pixel( const unsigned int x, const unsigned int y ) const;
     void pixel( const unsigned int x, const unsigned int y, 
 		const ImagePixel& p );
 
@@ -214,10 +214,10 @@ namespace mrv
       return _frame < b;
     }
 
-    VideoFrame* resize( unsigned int w, unsigned int h );
+    VideoFrame* resize( unsigned int w, unsigned int h ) const;
 
-    VideoFrame* scaleX(float t);
-    VideoFrame* scaleY(float t);
+    VideoFrame* scaleX(float t) const;
+    VideoFrame* scaleY(float t) const;
 
   private:
     VideoFrame( const VideoFrame& b ) { }
