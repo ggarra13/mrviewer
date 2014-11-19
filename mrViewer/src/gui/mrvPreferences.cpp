@@ -469,6 +469,10 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsCacheActive->value( (bool) tmp );
     CMedia::cache_active( (bool) tmp );
 
+    caches.get( "scale", tmp, 0 );
+    uiPrefs->uiPrefsCacheScale->value( tmp );
+    CMedia::cache_scale( tmp );
+
 
     caches.get( "8bit_caches", tmp, 0 );
     uiPrefs->ui8BitCaches->value( (bool) tmp );
@@ -823,10 +827,14 @@ fltk::StyleSet*     newscheme = NULL;
     // Handle caches
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
 
+    int scale = CMedia::cache_scale();
+    CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
+
 
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->ui8BitCaches->value() );
-    if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old )
+    if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
+         CMedia::cache_scale() != scale )
     {
         view->clear_caches();
     }
@@ -1054,6 +1062,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences caches( base, "caches" );
     caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
+    caches.set( "scale", (int) uiPrefs->uiPrefsCacheScale->value() );
     caches.set( "8bit_caches", (int) uiPrefs->ui8BitCaches->value() );
 
 

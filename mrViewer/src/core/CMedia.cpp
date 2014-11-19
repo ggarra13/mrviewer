@@ -98,6 +98,7 @@ unsigned CMedia::_video_cache_size;
 
 bool CMedia::_cache_active = true;
 bool CMedia::_8bit_cache = false;
+int  CMedia::_cache_scale = 0;
 
 mrv::CMedia::Barrier* CMedia::_bg_barrier = NULL;
 
@@ -1622,12 +1623,14 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
   if ( _sequence[idx] ) return;
 
 
+
+  mrv::image_type_ptr np;
+
   if ( _8bit_cache && pic->pixel_type() != image_type::kByte )
   {
       unsigned w = pic->width();
       unsigned h = pic->height();
 
-      mrv::image_type_ptr np;
       np.reset( new image_type( pic->frame(), w, h, pic->channels(),
                                 pic->format(), image_type::kByte,
                                 pic->repeat(), pic->pts() ) );
@@ -1657,12 +1660,29 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
               np->pixel( x, y, p );
           }
       }
+ 
+      if ( _cache_scale > 0 )
+      {
+          _w /= (1 << _cache_scale);
+          _h /= (1 << _cache_scale);
+          np.reset( np->resize( _w, _h ) );
+      }
 
       _sequence[idx] = np;
   }
   else
   {
-      _sequence[idx] = pic;
+      if ( _cache_scale > 0 )
+      {
+          _w /= (1 << _cache_scale);
+          _h /= (1 << _cache_scale);
+          np.reset( pic->resize( _w, _h ) );
+          _sequence[idx] = np;
+      }
+      else
+      {
+          _sequence[idx] = pic;
+      }
   }
 
   if ( _stereo[1] ) _right[idx] = _stereo[1];
