@@ -107,6 +107,13 @@ namespace mrv {
 	 float Pb = float(cb) / 255.0f - 0.5f;
 	 float Pr = float(cr) / 255.0f - 0.5f;
 
+         if ( Y < 0.0f ) Y = 0.0f;
+         else if ( Y > 1.0f ) Y = 1.0f;
+         if ( Pb < -0.5f ) Pb = -0.5;
+         else if ( Pb > 0.5f ) Pb = 0.5;
+         if ( Pr < -0.5f ) Pr = -0.5;
+         else if ( Pr > 0.5f ) Pr = 0.5;
+
 	 assert( Y >= 0.0f && Y <= 1.0f );
 	 assert( Pb >= -0.5f && Pb <= 0.5f );
 	 assert( Pr >= -0.5f && Pr <= 0.5f );
@@ -120,9 +127,16 @@ namespace mrv {
     else if ( _format >= kITU_601_YCbCr420 )
       {
 	// ITU. 601 YCbCr conversion
-	float  Y = float( short(yp) - 16  );
-	float Cb = float( short(cb) - 128 );
-	float Cr = float( short(cr) - 128 );
+	float  Y = float( yp - 16  );
+	float Cb = float( cb - 128 );
+	float Cr = float( cr - 128 );
+
+        if ( Y < 0.0f ) Y = 0.0f;
+        else if ( Y > 1.0f ) Y = 1.0f;
+        if ( Cb < -0.5f ) Cb = -0.5;
+        else if ( Cb > 0.5f ) Cb = 0.5;
+        if ( Cr < -0.5f ) Cr = -0.5;
+        else if ( Cr > 0.5f ) Cr = 0.5;
 
 	p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
 	p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;

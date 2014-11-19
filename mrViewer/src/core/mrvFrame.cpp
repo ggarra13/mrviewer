@@ -142,7 +142,8 @@ const char* const VideoFrame::fmts[] = {
     _data.reset( ptr );
   }
 
-  ImagePixel VideoFrame::pixel( const unsigned int x, const unsigned int y )
+  ImagePixel VideoFrame::pixel( const unsigned int x, 
+                                const unsigned int y ) const
   {
      if ( !_data ) {
       return ImagePixel(std::numeric_limits<float>::quiet_NaN(),
@@ -198,7 +199,7 @@ const char* const VideoFrame::fmts[] = {
       }
   }
 
-  VideoFrame* VideoFrame::scaleX(float f)
+  VideoFrame* VideoFrame::scaleX(float f) const
   {
     unsigned int dw1 = scaleInt( f, _width );
     if ( dw1 < 1 ) dw1 = 1;
@@ -234,19 +235,18 @@ const char* const VideoFrame::fmts[] = {
 
           for (unsigned int y = 0; y < _height; ++y)
 	  {
-             const ImagePixel& ps = pixel(xs, y);
-             const ImagePixel& pt = pixel(xt, y);
+              const ImagePixel& ps = pixel(xs, y);
+              const ImagePixel& pt = pixel(xt, y);
 
+	     assert( ps.r >= 0.f && ps.r <= 1.0f );
+	     assert( ps.g >= 0.f && ps.g <= 1.0f );
+	     assert( ps.b >= 0.f && ps.b <= 1.0f );
+	     assert( ps.a >= 0.f && ps.a <= 1.0f );
 
-	    // assert( ps.r >= 0.f && ps.r <= 1.0f );
-	    // assert( ps.g >= 0.f && ps.g <= 1.0f );
-	    // assert( ps.b >= 0.f && ps.b <= 1.0f );
-	    // assert( ps.a >= 0.f && ps.a <= 1.0f );
-
-	    // assert( pt.r >= 0.f && pt.r <= 1.0f );
-	    // assert( pt.g >= 0.f && pt.g <= 1.0f );
-	    // assert( pt.b >= 0.f && pt.b <= 1.0f );
-	    // assert( pt.a >= 0.f && pt.a <= 1.0f );
+             assert( pt.r >= 0.f && pt.r <= 1.0f );
+             assert( pt.g >= 0.f && pt.g <= 1.0f );
+             assert( pt.b >= 0.f && pt.b <= 1.0f );
+             assert( pt.a >= 0.f && pt.a <= 1.0f );
 
 	    ImagePixel p(
 			 ps.r * s + pt.r * t,
@@ -268,7 +268,7 @@ const char* const VideoFrame::fmts[] = {
     return scaled;
   }
 
-  VideoFrame* VideoFrame::scaleY(float f)
+  VideoFrame* VideoFrame::scaleY(float f) const
   {
     unsigned int dh1 = scaleInt( f, _height );
     if ( dh1 < 1 ) dh1 = 1;
@@ -334,10 +334,10 @@ const char* const VideoFrame::fmts[] = {
     return scaled;
   }
 
-  VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h )
+  VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h ) const
   {
 
-#if 1
+#if 0
      double fx, fy;
      if ( w == 0 || width() == 0 )
 	fx = 1.0;
@@ -377,7 +377,7 @@ const char* const VideoFrame::fmts[] = {
 
     VideoFrame* scaledX = scaleX( f );
 
-     if ( w == 0 || height() == 0 )
+     if ( h == 0 || height() == 0 )
 	f = 1.0;
      else
 	f = (double) h / (double)height();
