@@ -1526,7 +1526,7 @@ void ImageView::draw()
 
   if ( _selection.w() > 0 || _selection.h() > 0 )
     {
-        uchar r, g,  b;
+        uchar r, g, b;
         fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
         _engine->color( r, g, b, 255 );
         _engine->draw_rectangle( _selection );
@@ -1653,7 +1653,7 @@ void ImageView::draw()
 
 
   //
-  // Draw filename
+  // Draw HUD
   //
 
   int y = h()-25;
