@@ -809,6 +809,7 @@ void video_thread( PlaybackData* data )
 	 }
       }
 
+
       frame += step;
    }
 
