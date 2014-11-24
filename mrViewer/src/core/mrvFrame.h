@@ -214,6 +214,7 @@ namespace mrv
       return _frame < b;
     }
 
+    VideoFrame* quick_resize( unsigned int w, unsigned int h ) const;
     VideoFrame* resize( unsigned int w, unsigned int h ) const;
 
     VideoFrame* scaleX(float t) const;

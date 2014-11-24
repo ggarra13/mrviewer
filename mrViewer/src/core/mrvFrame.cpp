@@ -19,6 +19,7 @@
 
 namespace 
 {
+
   unsigned int
   scaleInt(float f, unsigned int i)
   {
@@ -69,6 +70,11 @@ const char* const VideoFrame::fmts[] = {
 "YByRy444A", // @todo: not done
 };
 
+/** 
+ * Return the size of a pixel in memory.
+ *
+ * @return size of pixel in memory
+ */
   unsigned short VideoFrame::pixel_size()
   {
     switch( _type )
@@ -134,6 +140,10 @@ const char* const VideoFrame::fmts[] = {
     return size * pixel_size();
   }
 
+/** 
+ * Allocate a frame aligned to 16 bytes in memory.
+ * 
+ */
   void VideoFrame::allocate()
   {
     mrv::aligned16_uint8_t* ptr = new mrv::aligned16_uint8_t[ data_size() ];
@@ -142,7 +152,15 @@ const char* const VideoFrame::fmts[] = {
     _data.reset( ptr );
   }
 
-  ImagePixel VideoFrame::pixel( const unsigned int x, 
+/** 
+ * Return pixel value of a certain coordinate
+ * 
+ * @param x valid x coordinate of video frame
+ * @param y valid y coordinate of video frame
+ * 
+ * @return Image pixel values
+ */
+  ImagePixel VideoFrame::pixel( const unsigned int x,
                                 const unsigned int y ) const
   {
      if ( !_data ) {
@@ -173,6 +191,13 @@ const char* const VideoFrame::fmts[] = {
       }
   }
 
+/** 
+ * Set the value of a pixel
+ * 
+ * @param x valid x coordinate of video frame
+ * @param y valid y coordinate of video frame
+ * @param p pixel values to set x,y with
+ */
   void VideoFrame::pixel( const unsigned int x, const unsigned int y,
 			  const ImagePixel& p )
   {
@@ -199,6 +224,13 @@ const char* const VideoFrame::fmts[] = {
       }
   }
 
+/** 
+ * Scale video frame in X
+ * 
+ * @param f scale factor
+ * 
+ * @return scaled video frame
+ */
   VideoFrame* VideoFrame::scaleX(float f) const
   {
     unsigned int dw1 = scaleInt( f, _width );
@@ -268,6 +300,13 @@ const char* const VideoFrame::fmts[] = {
     return scaled;
   }
 
+/**
+ * Scale video frame in Y using a box filter.
+ *
+ * @param f value to scale
+ *
+ * @return scaled video frame
+ */
   VideoFrame* VideoFrame::scaleY(float f) const
   {
     unsigned int dh1 = scaleInt( f, _height );
@@ -334,10 +373,16 @@ const char* const VideoFrame::fmts[] = {
     return scaled;
   }
 
-  VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h ) const
-  {
-
-#if 0
+/**
+ * Quickly resize video frame without any filtering or smoothing of any kind.
+ *
+ * @param w width of resulting video frame
+ * @param h height of resulting video frame
+ *
+ * @return resized video frame
+ */
+VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
+{
      double fx, fy;
      if ( w == 0 || width() == 0 )
 	fx = 1.0;
@@ -367,8 +412,20 @@ const char* const VideoFrame::fmts[] = {
           scaled->pixel( x, y, p );
        }
     }
+    return scaled;
+}
 
-#else
+/**
+ * Resize video frame with box filtering.
+ *
+ * @param w width of resulting video frame
+ * @param h height of resulting video frame
+ *
+ * @return resized video frame
+ */
+  VideoFrame* VideoFrame::resize( unsigned int w, unsigned int h ) const
+  {
+
     double f;
      if ( w == 0 || width() == 0 )
 	f = 1.0;
@@ -384,11 +441,15 @@ const char* const VideoFrame::fmts[] = {
 
     VideoFrame* scaled  = scaledX->scaleY( f );
     delete scaledX;
-#endif
 
     return scaled;
   }
 
+/** 
+ * Return whether picture has alpha or not.
+ * 
+ * @return true if it has alpha, false if not
+ */
   bool VideoFrame::has_alpha() const
   {
     switch( _format )
@@ -411,6 +472,13 @@ const char* const VideoFrame::fmts[] = {
       }
   }
 
+/** 
+ * Equality operator.  Copy video frame into another video frame
+ * 
+ * @param b Video Frame to copy from
+ * 
+ * @return The new video frame.
+ */
 VideoFrame::self& VideoFrame::operator=( const VideoFrame::self& b )
 {
    _frame    = b.frame();

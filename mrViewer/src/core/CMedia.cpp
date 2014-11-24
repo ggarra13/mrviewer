@@ -1628,6 +1628,7 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 
   if ( _8bit_cache && pic->pixel_type() != image_type::kByte )
   {
+
       unsigned w = pic->width();
       unsigned h = pic->height();
 
@@ -1653,9 +1654,12 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
               if ( p.a > 1.0f ) p.a = 1.0f;
               else if ( p.a < 0.0f ) p.a = 0.f;
 
-	      p.r = powf( p.r, 1.0f / gamma() );
-	      p.g = powf( p.g, 1.0f / gamma() );
-	      p.b = powf( p.b, 1.0f / gamma() );
+              if ( p.r > 0.f )
+                  p.r = powf( p.r, 1.0f / gamma() );
+              if ( p.g > 0.f )
+                  p.g = powf( p.g, 1.0f / gamma() );
+              if ( p.b > 0.f )
+                  p.b = powf( p.b, 1.0f / gamma() );
 
               np->pixel( x, y, p );
           }

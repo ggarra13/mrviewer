@@ -1439,7 +1439,8 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     view()->send( buf );
 
 
-    view()->play( (CMedia::Playback) p );
+    if ( p != ImageView::kStopped )
+        view()->play( (CMedia::Playback) p );
 
     redraw();
   }
