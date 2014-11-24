@@ -1,3 +1,10 @@
+v2.6.6.1 - Reworked the Cache Preferences to allow:
+	   * Not using any cache for streaming images directly from disk.
+	     The performance of this is extremely dependant on the images being
+	     loaded.
+	   * 8 bit caches to save RAM at the expense of baking the gamma in.
+	   * Scale to proxy images (one half, one quarter or one eighth of the
+	     original size) also to save RAM.
 v2.6.5.6 - Made caching work on all sequences in reels and timeline in EDL.
 	   Progress goes from one sequence to the next.
 	 - Removed reloading of movie files when they change in disk.
