@@ -195,11 +195,11 @@ namespace mrv {
      unsigned long depth = MagickGetImageDepth( wand );
 #endif
 
-     image_type::PixelType pixel_type = image_type::kByte;
 
      _gamma = (float) MagickGetImageGamma( wand );
      if (_gamma <= 0.f ) _gamma = 1.0f;
 
+     image_type::PixelType pixel_type = image_type::kByte;
      StorageType storage = CharPixel;
 
      if ( !_8bit_cache && depth == 16 && _gamma == 1.0f ) 

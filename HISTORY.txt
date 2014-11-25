@@ -1,3 +1,7 @@
+v2.6.6.2 - Use ffmpeg's png loader when cache is off.  The loader is really
+	   fast but requires opening of the file with the avi loader.  That
+	   means you cannot load the png sequence and then switch to the 
+	   non-cache loader.
 v2.6.6.1 - Reworked the Cache Preferences to allow:
 	   * Not using any cache for streaming images directly from disk.
 	     The performance of this is extremely dependant on the images being

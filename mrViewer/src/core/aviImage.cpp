@@ -3,7 +3,7 @@
  * @author 
  * @date   Tue Sep 26 17:54:48 2006
  * 
- * @brief  Read and play an avi file with audio.
+ * @brief  Read and play an avi/mov/wmv file with audio.
  *         We rely on using the ffmpeg library.
  * 
  */
@@ -254,11 +254,13 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	   (magic & 0xF000) == 0 ) return false;
       return true;
     }
-  // else if ( magic == 0x89504e47 )
-  // {
-  //     // PNG image
-  //     return true;
-  // }
+  else if ( magic == 0x89504e47 && !(CMedia::cache_active()) )
+  {
+       // PNG image, handled only if no cache is active
+      // This is because FFMPEG's png reader is really fast,
+      // but caching it brings fps down to 6.4.
+      return true;
+  }
   else if ( magic == 0x00000144 )
   {
      // RED ONE camera images
@@ -669,6 +671,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   SCOPED_LOCK( _mutex );
 
+
   if ( _images.empty() || _images.back()->frame() < frame )
   {
      _images.push_back( image );
@@ -679,7 +682,7 @@ void aviImage::store_image( const boost::int64_t frame,
 						    _images.end(),
 						    frame, 
 						    LessThanFunctor() );
-     
+
      // Avoid storing duplicate frames, replace old frame with this one
      if ( at != _images.end() )
      {
@@ -688,10 +691,10 @@ void aviImage::store_image( const boost::int64_t frame,
 	   at = _images.erase(at);
 	}
      }
-     
+
      _images.insert( at, image );
   }
-  
+ 
 }
 
 CMedia::DecodeStatus
@@ -1570,7 +1573,9 @@ bool aviImage::initialize()
       av_dict_set(&opts, "initial_pause", "1", 0);
 
       AVInputFormat*     format = NULL;
-      int error = avformat_open_input( &_context, filename(), 
+      // int error = avformat_open_input( &_context, filename(), 
+      //   			       format, &opts );
+      int error = avformat_open_input( &_context, fileroot(), 
 				       format, &opts );
 
 
@@ -2289,7 +2294,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  // for a fps of 30.
 	  if ( _images.size() >= max_video_frames() )
 	  {
-	     limit_video_store(frame);
+             limit_video_store(frame);
 	     return kDecodeBufferFull;
 	  }
 
