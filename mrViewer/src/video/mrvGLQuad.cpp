@@ -708,7 +708,6 @@ namespace mrv {
 
 	CHECK_GL( "bind_texture glTexImage2D" );
 
-	//init_lut3d();
       }
 
 
