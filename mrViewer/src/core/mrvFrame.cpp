@@ -404,11 +404,11 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
           Pixel p = this->pixel( unsigned( x*fx+.5 ), 
                                  unsigned( y*fy+.5 ) );
           if ( p.r > 1.0f ) p.r = 1.0f;
+          else if ( p.r < 0.0f ) p.r = 0.0f;
           if ( p.g > 1.0f ) p.g = 1.0f;
+          else if ( p.g < 0.0f ) p.g = 0.0f;
           if ( p.b > 1.0f ) p.b = 1.0f;
-          if ( p.r < 0.0f ) p.r = 0.0f;
-          if ( p.g < 0.0f ) p.g = 0.0f;
-          if ( p.b < 0.0f ) p.b = 0.0f;
+          else if ( p.b < 0.0f ) p.b = 0.0f;
           scaled->pixel( x, y, p );
        }
     }
