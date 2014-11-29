@@ -1198,6 +1198,18 @@ void GLEngine::draw_images( ImageList& images )
       glLoadIdentity();
       glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
       glScaled( _view->zoom(), _view->zoom(), 1.0);
+
+      if ( _view->flip() != ImageView::kFlipNone )
+      {
+          float x = 1.0f, y = 1.0f;
+          if ( _view->flip() & ImageView::kFlipVertical )
+              x = -1.0f;
+          if ( _view->flip() & ImageView::kFlipHorizontal )
+              y = -1.0f;
+
+          glScalef( x, y, 1.0f );
+      }
+
       glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
 
