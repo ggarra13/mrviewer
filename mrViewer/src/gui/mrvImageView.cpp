@@ -945,7 +945,10 @@ void ImageView::center_image()
         xoffset = -dpw.x() - dpw.w() / 2.0;
     }
 
-    yoffset = dpw.y() + dpw.h() / 2.0;
+    float pr = 1.0f;
+    if ( _showPixelRatio ) pr = pixel_ratio();
+
+    yoffset = ( dpw.y() + dpw.h() / 2.0 ) / pr;
 
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
@@ -1010,11 +1013,15 @@ void ImageView::fit_image()
     h -= uiMain->uiBottomBar->h();
 
   h /= H;
-  if ( _showPixelRatio ) h *= pixel_ratio();
+
+  float pr = 1.0f;
+  if ( _showPixelRatio ) pr = pixel_ratio();
+  h *= pr;
+
   if ( h < z ) { z = h; }
 
   xoffset = -dpw.x()-W / 2.0;
-  yoffset = (dpw.y()+H / 2.0) / pixel_ratio();
+  yoffset = (dpw.y()+H / 2.0) / pr;
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );

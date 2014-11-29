@@ -812,16 +812,6 @@ namespace mrv {
     glColor4f(1.0f,1.0f,1.0f,1.0f);
 
 
-    if ( _view->flip() != ImageView::kFlipNone )
-    {
-       float x = 1.0f, y = 1.0f;
-       if ( _view->flip() & ImageView::kFlipVertical )
-	  x = -1.0f;
-       if ( _view->flip() & ImageView::kFlipHorizontal )
-	  y = -1.0f;
-
-       glScalef( x, y, 1.0f );
-    }
 
 
     // If in presentation mode (fullscreen), we use a linear texture filter.
