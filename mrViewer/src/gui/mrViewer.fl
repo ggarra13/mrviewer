@@ -618,13 +618,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {290 210 640 475} resizable visible
+        xywh {294 235 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1129,7 +1128,7 @@ This setting thus allows caching more pictures in memory.}
               xywh {210 25 105 32}
             }
             {fltk::Choice} uiPrefsCacheScale {
-              label Scale selected
+              label Scale
               xywh {100 112 205 25}
             } {
               {fltk::Item} {} {
@@ -2472,7 +2471,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2503,18 +2503,18 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
-        xywh {255 239 640 530} when CHANGED hide resizable
+        callback {delete v;} open
+        xywh {287 239 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3313,6 +3313,61 @@ v->uiTimeline->redraw();}
                       xywh {110 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(50);}
                       class {mrv::Timecode}
+                    }
+                    {fltk::Button} uiStartButton {
+                      label S
+                      user_data this user_data_type {mrv::ViewerUI*}
+                      callback {double f;
+Image_ptr img = NULL;
+mrv::media fg = v->uiView->foreground();
+if ( fg )
+{
+  img = fg->image();
+}
+
+
+if ( !o->value() )
+{
+  o->value(1);
+  f = (double) v->uiFrame->value();
+}
+else
+{
+  o->value(0);
+  f = img->first_frame();
+}
+
+v->uiStartFrame->value( f );
+v->uiTimeline->minimum( f );
+v->uiTimeToolbar->redraw();
+v->uiTimeline->redraw();} selected
+                      xywh {1 4 20 20} vertical
+                    }
+                    {fltk::Button} uiEndButton {
+                      label E
+                      user_data this user_data_type {mrv::ViewerUI*}
+                      callback {double f;
+if ( !o->value() )
+{
+  o->value(1);
+  f = (double) v->uiFrame->value();
+}
+else
+{
+  o->value(0);
+  mrv::media fg = v->uiView->foreground();
+  if ( fg )
+  {
+    Image_ptr img = fg->image();
+    f = img->last_frame();
+  }
+}
+
+v->uiEndFrame->value( f );
+v->uiTimeline->maximum( f );
+v->uiTimeToolbar->redraw();
+v->uiTimeline->redraw();}
+                      xywh {91 4 20 20} vertical
                     }
                   }
                 }
