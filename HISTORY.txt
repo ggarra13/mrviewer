@@ -1,7 +1,16 @@
-v2.6.6.2 - Use ffmpeg's png loader when cache is off.  The loader is really
-	   fast but requires opening of the file with the avi loader.  That
-	   means you cannot load the png sequence and then switch to the 
-	   non-cache loader.
+v2.6.6.2 - Bug fixed center and fit image when pixel ratio was different
+	   than 1.
+	 - Bug fixed mirror X and mirror Y when different data/display 
+	   window is present.  Previously, the flipping was done within
+	   the data window.
+	 - Added back again the S and E buttons in the timeline to set
+	   the start and ending of clips or the timeline.  The E button
+	   works well, but the S button is subject to movies caches.
+	 - Use ffmpeg's png loader when cache is off.  The loader is really
+	   fast but requires opening of the file with the avi (ffmpeg) loader.
+	   That means you cannot load the png sequence and then switch to the 
+	   non-cache loader without reloading the sequence.
+
 v2.6.6.1 - Reworked the Cache Preferences to allow:
 	   * Not using any cache for streaming images directly from disk.
 	     The performance of this is extremely dependant on the images being
@@ -9,12 +18,14 @@ v2.6.6.1 - Reworked the Cache Preferences to allow:
 	   * 8 bit caches to save RAM at the expense of baking the gamma in.
 	   * Scale to proxy images (one half, one quarter or one eighth of the
 	     original size) also to save RAM.
+
 v2.6.5.6 - Made caching work on all sequences in reels and timeline in EDL.
 	   Progress goes from one sequence to the next.
 	 - Removed reloading of movie files when they change in disk.
 	   Previously the whole reel would get corrupted.
 	 - Replaced zlib1.dll in win32 distribution as it was corrupt and
 	   would cause crashes when loading some exr images.
+
 v2.6.5.5 - Added a green bar display for frame caches in the timeline for 
 	   both movies and sequences.
 	 - Bug fixed a hanging problem when exiting while playing backwards
@@ -22,6 +33,7 @@ v2.6.5.5 - Added a green bar display for frame caches in the timeline for
 	 - Bug fixed a cache problem not caching the first frame when playing 
 	   backwards.
 	 - Changed Release folder to mrViewer-v$VERSION folder.
+
 v2.6.5.4 - Bug fixed some problems with loop playback of movie files in EDL.  
 	   Still not perfect.  There are still sync problems after 
 	   several loops specially with ping-pong (swing)

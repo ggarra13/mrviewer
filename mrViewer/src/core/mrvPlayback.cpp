@@ -223,7 +223,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 	 }
       case CMedia::kDecodeLoopStart:
 	 {
-
 	    if ( reel->edl )
 	    {
 	       boost::int64_t f = frame;
@@ -234,7 +233,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       if ( f >= timeline->minimum() )
 	       {
 		  next = reel->image_at( f );
-                  if ( next == img ) return status;
 	       }
 
 
@@ -605,6 +603,9 @@ void video_thread( PlaybackData* data )
    mrv::Timeline*      timeline = uiMain->uiTimeline;
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
 
+   // delete the data (we don't need it anymore)
+   delete data;
+
    int idx = fg ? view->fg_reel() : view->bg_reel();
 
    mrv::Reel   reel = browser->reel_at( idx );
@@ -619,8 +620,6 @@ void video_thread( PlaybackData* data )
         << endl;
 #endif
 
-   // delete the data (we don't need it anymore)
-   delete data;
 
    bool skip = false;
 
@@ -845,6 +844,9 @@ void decode_thread( PlaybackData* data )
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
    assert( timeline != NULL );
 
+   // delete the data (we don't need it anymore)
+   delete data;
+
    int idx = fg ? view->fg_reel() : view->bg_reel();
 
    mrv::Reel   reel = browser->reel_at( idx );
@@ -860,9 +862,6 @@ void decode_thread( PlaybackData* data )
    cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame 
 	<< " step " << step << endl;
 #endif
-
-   // delete the data (we don't need it anymore)
-   delete data;
 
    if ( !img->has_audio() && !img->has_video() && !img->is_sequence() )
    {
