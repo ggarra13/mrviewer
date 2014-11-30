@@ -1,3 +1,9 @@
+#!/usr/bin/ruby
+# -*- coding: utf-8 -*-
+
+require 'fileutils'
+
+license = <<EOF
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -15,38 +21,39 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * @file   mrvDatabaseBrowser.h
- * @author gga
- * @date   Wed Aug 22 03:56:20 2007
- * 
- * @brief  
- * 
- * 
- */
+EOF
 
 
-#ifndef mrvDatabaseBrowser_h
-#define mrvDatabaseBrowser_h
+root = File.expand_path( File.dirname(__FILE__) )
+root += '/../mrViewer/src'
 
-#include <fltk/Browser.h>
+Dir.foreach(root) do |dir|
 
-namespace mrv {
+  dir = "#{root}/#{dir}"
 
-  class Database;
+  if File.directory?(dir) and dir !~ /^\.\.?$/
 
-  class DatabaseBrowser : public fltk::Browser
-  {
-  public:
-    DatabaseBrowser( int x, int y, int w, int h, const char* l = 0 );
-    ~DatabaseBrowser();
+    puts "Processing #{dir}..."
 
-    void update();
+    Dir.foreach(dir) do |file|
+      if file !~ /(?:\.cpp|\.h)$/
+        next
+      end
 
-  protected:
-    mrv::Database* db;
-  };
 
-} // namespace mrv
+      orig = "#{dir}/#{file}"
+      new  = "#{dir}/#{file}.new"
 
-#endif // mrvDatabaseBrowser_h
+      f = File.read(orig)
+      if f !~ /GNU/ 
+        puts "Adding license to #{orig}"
+        n = File.open(new, "w")
+        n.puts license
+        n.puts f
+      end
+
+      FileUtils.mv new, orig, :force => true
+
+    end
+  end
+end
