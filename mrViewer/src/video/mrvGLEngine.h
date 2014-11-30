@@ -118,7 +118,9 @@ namespace mrv {
     static void handle_gl_errors(const char* function);
 
   protected:
-      void set_matrix( ImageView::FlipDirection flip = ImageView::kFlipNone );
+      void set_matrix( const ImageView::FlipDirection flip = 
+                       ImageView::kFlipNone,
+                       const bool pixel_ratio = false );
 
       void draw_shape( GLShape* const shape );
 
