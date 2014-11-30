@@ -837,6 +837,50 @@ void GLEngine::draw_square_stencil( const int x, const int y,
   glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
 }
 
+inline
+void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
+                           const bool pixel_ratio )
+{  
+
+    glMatrixMode(GL_MODELVIEW);
+    glLoadIdentity();
+
+    //
+    // Translate to center of screen
+    //
+    glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
+
+    //
+    // Scale to zoom factor
+    //
+    glScaled( _view->zoom(), _view->zoom(), 1.0);
+
+    //
+    // Handle pixel ratio
+    //
+    if ( pixel_ratio )
+    {
+        double pr = 1.0;
+        if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+        glScaled( 1.0, pr, 1.0 );
+    }
+
+    if ( flip != ImageView::kFlipNone )
+    {
+        float x = 1.0f, y = 1.0f;
+        if ( flip & ImageView::kFlipVertical )   x = -1.0f;
+        if ( flip & ImageView::kFlipHorizontal ) y = -1.0f;
+
+        glScalef( x, y, 1.0f );
+    }
+
+    //
+    // Offset to user translation
+    //
+    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+
+}
+
 /** 
  * Draws the mask
  * 
@@ -872,14 +916,9 @@ void GLEngine::draw_mask( const float pct )
   glColor3f( 0.0f, 0.0f, 0.0f );
   glDisable( GL_STENCIL_TEST );
   
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
-  glScalef( _view->zoom(), _view->zoom(), 1.0f);
-  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
-  double pr = 1.0;
-  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-  glScaled( dpw.w(), dpw.h() * pr, 1.0 );
+  set_matrix( ImageView::kFlipNone, true );
+
+  glScaled( dpw.w(), dpw.h(), 1.0 );
   glTranslated( 0.5, -0.5, 0.0 );
 
   double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
@@ -941,23 +980,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    glMatrixMode(GL_MODELVIEW);
-    glLoadIdentity();
-    glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
-    glScaled( _view->zoom(), _view->zoom(), 1.0);
+    set_matrix( ImageView::kFlipNone, false );
 
-    if ( _view->flip() != ImageView::kFlipNone )
-    {
-        float x = 1.0f, y = 1.0f;
-        if ( _view->flip() & ImageView::kFlipVertical )
-            x = -1.0f;
-        if ( _view->flip() & ImageView::kFlipHorizontal )
-            y = -1.0f;
-
-        glScalef( x, y, 1.0f );
-    }
-
-    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
     double pr = 1.0;
     if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
     glScaled( 1.0, pr, 1.0 );
@@ -1224,24 +1248,7 @@ void GLEngine::draw_images( ImageList& images )
       }
 
 
-      glMatrixMode(GL_MODELVIEW);
-      glLoadIdentity();
-      glTranslated( double(_view->w())/2.0, double(_view->h())/2.0, 0.0 );
-      glScaled( _view->zoom(), _view->zoom(), 1.0);
-
-      if ( _view->flip() != ImageView::kFlipNone )
-      {
-          float x = 1.0f, y = 1.0f;
-          if ( _view->flip() & ImageView::kFlipVertical )
-              x = -1.0f;
-          if ( _view->flip() & ImageView::kFlipHorizontal )
-              y = -1.0f;
-
-          glScalef( x, y, 1.0f );
-      }
-
-      glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
-
+      set_matrix( _view->flip(), false );
 
       if ( dpw != daw )
       {
