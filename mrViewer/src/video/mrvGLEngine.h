@@ -17,7 +17,7 @@
 */
 /**
  * @file   mrvGL.h
- * @author gga
+ * @author ggas
  * @date   Sun Jul  1 11:49:49 2007
  * 
  * @brief  Auxiliary class for opengl operations
@@ -31,6 +31,7 @@
 #include <boost/shared_array.hpp>
 
 #include "core/mrvAlignedData.h"
+#include "gui/mrvImageView.h"
 #include "mrvDrawEngine.h"
 
 
@@ -117,6 +118,7 @@ namespace mrv {
     static void handle_gl_errors(const char* function);
 
   protected:
+      void set_matrix( ImageView::FlipDirection flip = ImageView::kFlipNone );
 
       void draw_shape( GLShape* const shape );
 
