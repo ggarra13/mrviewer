@@ -855,16 +855,6 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     //
     glScaled( _view->zoom(), _view->zoom(), 1.0);
 
-    //
-    // Handle pixel ratio
-    //
-    if ( pixel_ratio )
-    {
-        double pr = 1.0;
-        if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-        glScaled( 1.0, pr, 1.0 );
-    }
-
     if ( flip != ImageView::kFlipNone )
     {
         float x = 1.0f, y = 1.0f;
@@ -878,6 +868,17 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     // Offset to user translation
     //
     glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+
+    //
+    // Handle pixel ratio
+    //
+    if ( pixel_ratio )
+    {
+        double pr = 1.0;
+        if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+        glScaled( 1.0, pr, 1.0 );
+    }
+
 
 }
 
@@ -918,7 +919,9 @@ void GLEngine::draw_mask( const float pct )
   
   set_matrix( ImageView::kFlipNone, true );
 
+  glTranslated( dpw.x(), -dpw.y(), 0.0 );
   glScaled( dpw.w(), dpw.h(), 1.0 );
+
   glTranslated( 0.5, -0.5, 0.0 );
 
   double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
@@ -980,14 +983,9 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( ImageView::kFlipNone, false );
+    set_matrix( ImageView::kFlipNone, true );
 
-    double pr = 1.0;
-    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-    glScaled( 1.0, pr, 1.0 );
-
-
-    glTranslated( r.x(), r.y(), 0 );
+    glTranslated( r.x(), -r.y(), 0 );
 
     double rw = r.w();
     double rh = r.h();
@@ -1063,11 +1061,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
   glDisable( GL_STENCIL_TEST );
 
-  set_matrix( ImageView::kFlipNone, false );
-
-  double pr = 1.0;
-  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-  glScaled( 1.0, pr, 1.0 );
+  set_matrix( ImageView::kFlipNone, true );
 
   double tw = dpw.w() / 2.0;
   double th = dpw.h() / 2.0;
