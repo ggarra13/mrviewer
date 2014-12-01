@@ -987,7 +987,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     glScaled( 1.0, pr, 1.0 );
 
 
-    glTranslated( r.x(), -r.y(), 0 );
+    glTranslated( r.x(), r.y(), 0 );
 
     double rw = r.w();
     double rh = r.h();
@@ -1063,11 +1063,8 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
   glDisable( GL_STENCIL_TEST );
 
-  glMatrixMode(GL_MODELVIEW);
-  glLoadIdentity();
-  glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
-  glScaled( _view->zoom(), _view->zoom(), 1.0);
-  glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
+  set_matrix( ImageView::kFlipNone, false );
+
   double pr = 1.0;
   if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
   glScaled( 1.0, pr, 1.0 );
@@ -1075,7 +1072,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
   double tw = dpw.w() / 2.0;
   double th = dpw.h() / 2.0;
 
-  glTranslated( tw, -th, 0 );
+  glTranslated( dpw.x() + tw, -dpw.y() - th, 0 );
 
   tw *= percentX;
   th *= percentY;
