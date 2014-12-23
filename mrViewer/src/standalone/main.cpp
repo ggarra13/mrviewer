@@ -204,13 +204,14 @@ int main( const int argc, char** argv )
 
   if ( fs::exists( lockfile ) && single_instance )
   {
+      int idx;
      {
          fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
 				"mrViewer.lock" );
 	
 	mrv::LoadList::iterator i = opts.files.begin();
 	mrv::LoadList::iterator e = opts.files.end();
-	for ( int idx = 0; i != e ; ++i, ++idx )
+	for ( idx = 0; i != e ; ++i, ++idx )
 	{
 	   char buf[256];
 	   sprintf( buf, "file%d", idx );
@@ -236,10 +237,13 @@ int main( const int argc, char** argv )
 	base.flush();
      }
      
-     // mrvALERT( "Another instance of mrViewer open.\n"
-     //           "Remove " << lockfile << "\n"
-     //           "or modify Preferences->User Interface->Single Instance.");
-     // fltk::check();
+     if ( idx == 0 )
+     {
+         mrvALERT( "Another instance of mrViewer is open.\n"
+                   "Remove " << lockfile << " if mrViewer crashed\n"
+                   "or modify Preferences->User Interface->Single Instance.");
+         fltk::check();
+     }
 
      exit(0);
   }
