@@ -845,15 +845,24 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
 
+
     //
     // Translate to center of screen
     //
     glTranslated( double(_view->w())/2, double(_view->h())/2, 0 );
 
+
+
     //
     // Scale to zoom factor
     //
     glScaled( _view->zoom(), _view->zoom(), 1.0);
+
+
+    //
+    // Offset to user translation
+    //
+    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
     if ( flip != ImageView::kFlipNone )
     {
@@ -863,11 +872,6 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
 
         glScalef( x, y, 1.0f );
     }
-
-    //
-    // Offset to user translation
-    //
-    glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
     //
     // Handle pixel ratio
@@ -1241,8 +1245,21 @@ void GLEngine::draw_images( ImageList& images )
 
       set_matrix( _view->flip(), false );
 
+      float x = 0.0f, y = 0.0f;
+      if ( _view->flip() & ImageView::kFlipVertical )
+      {
+          x = -texWidth;
+      }
+      if ( _view->flip() & ImageView::kFlipHorizontal )
+      {
+          y = texHeight;
+      }
+
+      glTranslatef( x, y, 0.0f );
+
       if ( dpw != daw )
       {
+
           if ( _view->display_window() )
           {
               draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
@@ -1265,13 +1282,14 @@ void GLEngine::draw_images( ImageList& images )
 
       glTranslatef( float(daw.x()), float(-daw.y()), 0 );
 
+
       if ( _view->main()->uiPixelRatio->value() )
           glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
                     1.0 );
       else
           glScaled( double(texWidth), double(texHeight), 1.0 );
 
-      glTranslated( 0.5, -0.5, 0 );
+      glTranslated( 0.5, -0.5, 0.0 );
 
 
  
