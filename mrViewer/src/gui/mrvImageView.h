@@ -498,7 +498,8 @@ class server;
     /// Given two window coordinates, return pixel coordinates 
     /// in the data window (which may be offset)
     void data_window_coordinates( const Image_ptr img,
-                                  double& x, double& y ) const;
+                                  double& x, double& y,
+                                  const bool flipon = true ) const;
 
 
     /// Refresh only if not a hardware shader, otherwise just redraw

@@ -234,7 +234,19 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       if ( H == 0 ) H = img->height();
 
       unsigned wt = W;
+      xmin = (int) selection.x();
+      ymin = (int) selection.y();
 
+      mrv::ImageView::FlipDirection flip = uiMain->uiView->flip();
+      if ( flip & mrv::ImageView::kFlipVertical )
+      {
+          xmin = W - xmin;
+      }
+
+      if ( flip & mrv::ImageView::kFlipHorizontal )
+      {
+          ymin = H - ymin;
+      }
 
       if ( selection.x() >= W && 
            uiMain->uiView->stereo_type() & CMedia::kStereoSideBySide )
@@ -243,21 +255,23 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           const mrv::Recti& daw2 = img->data_window2();
           W = dpw2.w();
           H = dpw2.h();
-          xmin = (int)(selection.x() - daw2.x());
-          ymin = (int)(selection.y() - daw2.y());
+          xmin -= daw2.x();
+          ymin -= daw2.y();
           xmin -= wt;
       }
       else
       {
-          xmin = (int)(selection.x() - daw.x());
-          ymin = (int)(selection.y() - daw.y());
+          xmin -= daw.x();
+          ymin -= daw.y();
       }
+
 
       if ( selection.w() > 0 ) W = (int)selection.w();
       if ( selection.h() > 0 ) H = (int)selection.h();
 
       xmax = xmin + W - 1;
       ymax = ymin + H - 1;
+
 
       if ( xmin < 0 ) xmin = 0;
       if ( ymin < 0 ) ymin = 0;
