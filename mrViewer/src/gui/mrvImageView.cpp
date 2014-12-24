@@ -875,7 +875,8 @@ void ImageView::copy_pixel() const
 
 
 void ImageView::data_window_coordinates( const Image_ptr img,
-                                         double& x, double& y ) const
+                                         double& x, double& y,
+                                         const bool flipon ) const
 {
     image_coordinates( img, x, y );
 
@@ -886,6 +887,17 @@ void ImageView::data_window_coordinates( const Image_ptr img,
     if ( H == 0 ) H = img->height();
     x -= W/2.0; y -= H/2.0;
 
+    if ( flipon )
+    {
+        if ( _flip & kFlipVertical )
+        {
+            x = W - x;
+        }
+        if ( _flip & kFlipHorizontal )
+        {
+            y = H - y;
+        }
+    }
 
     const mrv::Recti& daw = img->data_window();
     x -= daw.x();
@@ -2648,7 +2660,7 @@ void ImageView::mouseDrag(int x,int y)
  
 	   double xf = double(lastX);
 	   double yf = double(lastY);
-	   data_window_coordinates( img, xf, yf );
+	   data_window_coordinates( img, xf, yf, false );
 
            mrv::Recti daw[2], dpw[2];
 
@@ -2675,7 +2687,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   double xn = double(x);
 	   double yn = double(y);
-	   data_window_coordinates( img, xn, yn );
+	   data_window_coordinates( img, xn, yn, false );
 
            short idx = 0;
 
