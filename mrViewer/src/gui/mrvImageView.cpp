@@ -1565,7 +1565,7 @@ void ImageView::draw()
         uchar r, g, b;
         fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
         _engine->color( r, g, b, 255 );
-        _engine->draw_rectangle( _selection );
+        _engine->draw_rectangle( _selection, flip() );
     }
 
 
@@ -2660,7 +2660,7 @@ void ImageView::mouseDrag(int x,int y)
  
 	   double xf = double(lastX);
 	   double yf = double(lastY);
-	   data_window_coordinates( img, xf, yf, false );
+	   data_window_coordinates( img, xf, yf, true );
 
            mrv::Recti daw[2], dpw[2];
 
@@ -2687,7 +2687,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   double xn = double(x);
 	   double yn = double(y);
-	   data_window_coordinates( img, xn, yn, false );
+	   data_window_coordinates( img, xn, yn, true );
 
            short idx = 0;
 
