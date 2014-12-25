@@ -131,7 +131,9 @@ namespace mrv {
     virtual void end_fbo( ImageList& images ) = 0;
 
     /// Draw a rectangle
-    virtual void draw_rectangle( const mrv::Rectd& r ) = 0;
+      virtual void draw_rectangle( const mrv::Rectd& r,
+                                   const mrv::ImageView::FlipDirection f =
+                                   mrv::ImageView::kFlipNone ) = 0;
 
     /// Draw some arbitrary sized text centered on screen
     virtual void draw_title(const float size,

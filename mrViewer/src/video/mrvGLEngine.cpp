@@ -965,7 +965,8 @@ void GLEngine::draw_mask( const float pct )
  * 
  * @param r rectangle to draw
  */
-void GLEngine::draw_rectangle( const mrv::Rectd& r )
+void GLEngine::draw_rectangle( const mrv::Rectd& r,
+                               const mrv::ImageView::FlipDirection flip )
 {
 
     mrv::media fg = _view->foreground();
@@ -987,9 +988,21 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r )
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
 
-    set_matrix( ImageView::kFlipNone, true );
+    set_matrix( flip, true );
 
-    glTranslated( r.x(), -r.y(), 0 );
+    float x = 0.0f, y = 0.0f;
+    if ( flip & ImageView::kFlipVertical )
+    {
+        if ( dpw.w() == 0 ) dpw.w( texWidth );
+        x = -dpw.w();
+    }
+    if ( flip & ImageView::kFlipHorizontal )
+    {
+        if ( dpw.h() == 0 ) dpw.h( texHeight );
+        y = dpw.h();
+    }
+
+    glTranslated( x + r.x(), y - r.y(), 0 );
 
     double rw = r.w();
     double rh = r.h();
@@ -1246,13 +1259,16 @@ void GLEngine::draw_images( ImageList& images )
       set_matrix( _view->flip(), false );
 
       float x = 0.0f, y = 0.0f;
+      mrv::Recti dp = fg->display_window(frame);
       if ( _view->flip() & ImageView::kFlipVertical )
       {
-          x = -texWidth;
+          if ( dp.w() == 0 ) dp.w( texWidth );
+          x = -dp.w();
       }
       if ( _view->flip() & ImageView::kFlipHorizontal )
       {
-          y = texHeight;
+          if ( dp.h() == 0 ) dp.h( texHeight );
+          y = dp.h();
       }
 
       glTranslatef( x, y, 0.0f );
@@ -1271,7 +1287,7 @@ void GLEngine::draw_images( ImageList& images )
               glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
               glLineStipple( 1, 0x00FF );
               glEnable( GL_LINE_STIPPLE );
-              draw_rectangle( r );
+              draw_rectangle( r, _view->flip() );
               glDisable( GL_LINE_STIPPLE );
               if ( _view->display_window() )
                   glEnable( GL_STENCIL_TEST );
