@@ -3038,12 +3038,14 @@ int ImageView::keyDown(unsigned int rawkey)
   else if ( kFlipX.match( rawkey ) )
   {
      _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
+     mouseMove( fltk::event_x(), fltk::event_y() );
      redraw();
      return 1;
   }
   else if ( kFlipY.match( rawkey ) )
   {
      _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
+     mouseMove( fltk::event_x(), fltk::event_y() );
      redraw();
      return 1;
   }
