@@ -237,16 +237,6 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       xmin = (int) selection.x();
       ymin = (int) selection.y();
 
-      mrv::ImageView::FlipDirection flip = uiMain->uiView->flip();
-      if ( flip & mrv::ImageView::kFlipVertical )
-      {
-          xmin = W - xmin;
-      }
-
-      if ( flip & mrv::ImageView::kFlipHorizontal )
-      {
-          ymin = H - ymin;
-      }
 
       if ( selection.x() >= W && 
            uiMain->uiView->stereo_type() & CMedia::kStereoSideBySide )

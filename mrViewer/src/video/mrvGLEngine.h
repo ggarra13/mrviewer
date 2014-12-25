@@ -68,7 +68,9 @@ namespace mrv {
        virtual void end_fbo( ImageList& images );
 
     /// Draw a rectangle
-    virtual void draw_rectangle( const mrv::Rectd& r );
+      virtual void draw_rectangle( const mrv::Rectd& r,
+                                   const mrv::ImageView::FlipDirection flip =
+                                   mrv::ImageView::kFlipNone );
 
     virtual void wipe_area();
 
