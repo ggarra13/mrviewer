@@ -472,14 +472,30 @@ void ColorInfo::update( const CMedia* img,
 
       fltk::Color col;
 
+      {
 
-      if ( pmean.r <= 0.001f && pmean.g <= 0.001f && pmean.b <= 0.001f )
-          col = fltk::BLACK;
-      else
-          col = fltk::color((uchar)(pmean.r*255), 
-                            (uchar)(pmean.g*255), 
-                            (uchar)(pmean.b*255));
+          float r = pmean.r;
+          float g = pmean.g;
+          float b = pmean.b;
 
+          if ( r < 0.f ) r = 0.0f;
+          else if ( r > 1.f ) r = 1.0f;
+          
+          if ( g < 0.f ) g = 0.0f;
+          else if ( g > 1.f ) g = 1.0f;
+          
+          if ( b < 0.f ) b = 0.0f;
+          else if ( b > 1.f ) b = 1.0f;
+          
+          if ( r <= 0.001f && g <= 0.001f && b <= 0.001f )
+              col = fltk::BLACK;
+          else
+          {
+              col = fltk::color((uchar)(r*255), 
+                                (uchar)(g*255), 
+                                (uchar)(b*255));
+          }
+      }
 
       dcol->color( col );
       dcol->redraw();
