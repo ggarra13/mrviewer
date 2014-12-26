@@ -1353,6 +1353,7 @@ void GLEngine::draw_images( ImageList& images )
 
          glPopMatrix();
 
+
          glTranslated( dpw.w(), 0, 0 );
 
          mrv::Recti dpw2 = img->display_window2(frame);
