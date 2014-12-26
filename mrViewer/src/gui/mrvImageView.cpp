@@ -813,7 +813,7 @@ void ImageView::copy_pixel() const
   double yf = (double) y;
   data_window_coordinates( img, xf, yf );
 
-  mrv::image_type_ptr pic = img->hires();
+  mrv::image_type_ptr pic = img->left();
 
   if ( _stereo == CMedia::kStereoCrossed ) pic = img->right();
 
@@ -998,7 +998,7 @@ void ImageView::fit_image()
 
   const CMedia* img = fg->image();
 
-  mrv::image_type_ptr pic = img->hires();
+  mrv::image_type_ptr pic = img->left();
   if ( !pic ) return;
 
   mrv::Recti dpw;
@@ -1049,7 +1049,10 @@ void ImageView::fit_image()
 
   if ( h < z ) { z = h; }
 
-  xoffset = -dpw.x()-W / 2.0;
+  xoffset = -dpw.x() - W / 2.0;
+  if ( _flip & kFlipVertical )
+      xoffset = 0.0f;
+
   yoffset = (dpw.y()+H / 2.0) / pr;
 
   char buf[128];
@@ -1578,7 +1581,7 @@ void ImageView::draw()
       unsigned H = dpw.h();
       if ( W == 0 )
       {
-          mrv::image_type_ptr pic = img->hires();
+          mrv::image_type_ptr pic = img->left();
           if (!pic)
           {
               W = img->width();
@@ -2346,7 +2349,7 @@ void ImageView::mouseMove(int x, int y)
   data_window_coordinates( img, xf, yf );
 
 
-  mrv::image_type_ptr pic = img->hires();
+  mrv::image_type_ptr pic = img->left();
 
   if ( stereo_type() == CMedia::kStereoCrossed ) pic = img->right();
 
