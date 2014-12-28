@@ -1388,7 +1388,7 @@ void GLEngine::draw_images( ImageList& images )
                  glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
                  glLineStipple( 1, 0x00FF );
                  glEnable( GL_LINE_STIPPLE );
-                 draw_rectangle( r );
+                 draw_rectangle( r, _view->flip() );
                  glDisable( GL_LINE_STIPPLE );
                  if ( _view->display_window() ) glEnable( GL_STENCIL_TEST );
              }
