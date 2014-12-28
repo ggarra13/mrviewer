@@ -215,7 +215,7 @@ std::string hex_to_char_filename( std::string& f )
 	if ( *i == '/' || *i == '\\' ) break;
       }
 
-    long int len = i - e + 1;
+    int64_t len = i - e + 1;
     f = f.substr( len, f.size() );
 
     StringList periods;
