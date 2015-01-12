@@ -6,6 +6,7 @@
   
   <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
 
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
   
   <title>Installation</title>
 </head>
@@ -17,11 +18,18 @@
 <h2><span style="text-decoration: underline;">Installing mrViewer</span></h2>
 
 
-Installation of mrViewer is done simply by decompressing the zip file (Windows) or the gzip tar file (Linux).  This can be done with the utilities unzip or winzip (Windows) or tar in Linux. <br>
+Installation of mrViewer can be done simply by decompressing the zip file (Windows) or the gzip tar file (Linux).  This can be done with the utilities unzip or winzip (Windows) or tar in Linux. <br>
+<br>
+Since v2.6.7, mrViewer is distributed with installers for each platform.  The Windows installer will run and create a menu item to the start menu and, optionally, create an icon in the desktop, as well as modify the PATH variable.
+The Linux installers will register an entry in the DEB or RPM databases and install in:
+<br><div class="console">
+ /usr/local/mrViewer-v${VERSION}-${PLATFORM}. 
+<br></div>
+ They are installed using the utilities dpkg (DEB) or rpm (RPM).
+<br>
+<br>
 
-Decompressing the file will show up a Release directory.
-
-The mrViewer-v{VERSION}/bin directory among all things contains the file mrViewer.exe (Windows) or mrViewer.sh (Linux).  Running this file will start the viewer.<br>
+The <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> directory among all things contains the file mrViewer.exe (Windows) or mrViewer.sh (Linux).  Running this file will start the viewer.<br>
 
 </body>
 </html>
