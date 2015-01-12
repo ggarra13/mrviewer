@@ -1,6 +1,14 @@
 
 
 
+SET( VersionMajor 2 )
+SET( VersionMinor 6 )
+SET( VersionPatch 7 )
+
+SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
+
+set(mrViewerPackageName mrViewer-${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
+
 #
 # These are the libraries we will depend on
 #
@@ -258,7 +266,7 @@ IF(NOT WIN32)
 
 ELSE(NOT WIN32)
   #
-  # Under windows, boost .h files select the appropriate boost static library
+ # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
   #
   FIND_LIBRARY( libintl_LIBRARY
@@ -322,50 +330,92 @@ SET_TARGET_PROPERTIES( mrViewer
   LINK_FLAGS "${LINK_FLAGS}"
   )
 
-#
-# DEMO VERSION
-#
-
-# IF( CMAKE_BUILD_TYPE STREQUAL "Release" )
-#   ADD_EXECUTABLE( mrViewer-demo WIN32 MACOSX_BUNDLE ${SOURCES} )
-#   TARGET_LINK_LIBRARIES( mrViewer-demo ${LIBRARIES} )
-#   SET_TARGET_PROPERTIES( mrViewer-demo
-#     PROPERTIES
-#     COMPILE_FLAGS "-DFILMAURA_DEMO" 
-#     LINK_FLAGS "${LINK_FLAGS}"
-#     )
-# ENDIF( CMAKE_BUILD_TYPE STREQUAL "Release" )
-
-
 
 ######################################################
 #
 # Installation
 #
 ######################################################
-INSTALL( TARGETS mrViewer
-  RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib
-)
-
-IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-
-
-  SET( OUTDIR 
-    "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
-  FILE( MAKE_DIRECTORY "${OUTDIR}" )
-
-
-ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 
 
-  SET( OUTDIR
-    "${LIBRARY_OUTPUT_PATH}/ImageMagick-${MAGICK_VERSION}/modules-Q32/coders" )
-  FILE( MAKE_DIRECTORY ${OUTDIR} )
+INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/ctl/ DESTINATION ctl )
+INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/shaders/ DESTINATION shaders )
+INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/docs/ DESTINATION docs )
+INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
+INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 
-ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
+
+
+IF(WIN32)
+
+  # SET the type of package to build.
+
+  # There is a bug in NSI that does not handle full unix paths properly. Make
+  # sure there is at least one SET of four (4) backlasshes.
+  SET(CPACK_NSIS_MODIFY_PATH ON)
+
+  SET(CPACK_GENERATOR ZIP NSIS)
+
+  #  SET(CMAKE_INSTALL_DEBUG_LIBRARIES true)
+  
+  include(InstallRequiredSystemLibraries)
+  
+  SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/mrViewer/src/icons/viewer.ico)
+  SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/mrViewer/src/icons/viewer.ico)
+    
+  if (CMAKE_BUILD_ARCH EQUAL 32)
+    
+    SET(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES")
+    
+  elseif (CMAKE_BUILD_ARCH EQUAL 64)
+    
+    SET(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
+    
+  endif (CMAKE_BUILD_ARCH EQUAL 32)
+
+  SET(CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
+
+ELSEIF (UNIX)
+
+    # SET the type of package to build.
+    INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ DESTINATION bin )
+
+    SET(CPACK_GENERATOR TGZ DEB RPM )
+
+    # SET the installation directory.
+    
+    SET(CPACK_SET_DESTDIR true) # Unneeded
+    SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
+
+    # SET RPM options.
+    
+    SET(CPACK_RPM_PACKAGE_NAME mrViewer)
+    SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
+    
+    # SET Debian options.
+    
+    SET(CPACK_DEBIAN_PACKAGE_NAME mrViewer)
+
+
+ENDIF(WIN32)
+
+  SET(CPACK_PACKAGE_VENDOR "Film Aura, LLC")
+  SET(CPACK_PACKAGE_VERSION_MAJOR ${VersionMajor})
+  SET(CPACK_PACKAGE_VERSION_MINOR ${VersionMinor})
+  SET(CPACK_PACKAGE_VERSION_PATCH ${VersionPatch})
+  SET(CPACK_PACKAGE_VERSION ${VERSION})
+  SET(CPACK_PACKAGE_CONTACT http://mrviewer.sourceforge.net)
+# SET(CPACK_PACKAGE_DESCRIPTION_FILE ${PROJECT_SOURCE_DIR}/README.txt)
+  SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY
+	  "mrViewer provides professional flipbook, audio and video playback.")
+
+
+SET(CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer" )
+#SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
+SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/LICENSE.txt)
+SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" )
 
 
 #
@@ -446,3 +496,4 @@ ENDIF(TCLAP_FOUND)
 #ENDIF(RLM_FOUND)
 
 
+include(CPack)
