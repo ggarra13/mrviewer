@@ -67,8 +67,9 @@ def process_ldd( output )
     rescue
     end
 
-    puts "#{loc} -> #{lib}"
-    FileUtils.ln_s(loc, "Release/lib/#{lib}" )
+    puts "#{lib} - #{loc}"
+    #FileUtils.ln_s(loc, "Release/lib/#{lib}" )
+    FileUtils.cp(loc, "Release/lib/#{lib}" )
   end
 end
 
