@@ -7,7 +7,7 @@ SET( VersionPatch 7 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
-set(mrViewerPackageName mrViewer-${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
+set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 
 #
 # These are the libraries we will depend on
@@ -344,7 +344,9 @@ INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/shaders/ DESTINATION shaders )
 INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/docs/ DESTINATION docs )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
-
+INSTALL( FILES 
+	 ${CMAKE_SOURCE_DIR}/HISTORY.txt 
+	 ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION . )
 
 
 
@@ -367,21 +369,51 @@ IF(WIN32)
     
   if (CMAKE_BUILD_ARCH EQUAL 32)
     
-    SET(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES")
+    SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES" )
     
   elseif (CMAKE_BUILD_ARCH EQUAL 64)
     
-    SET(CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64")
+    SET( CPACK_NSIS_INSTALL_ROOT "$PROGRAMFILES64" )
     
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
-  SET(CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
+  SET( CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
+  SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer" )
+  SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" )
 
 ELSEIF (UNIX)
 
     # SET the type of package to build.
     INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ DESTINATION bin )
 
+    SET(MRV_DESKTOP_DIR     /usr/share/applications/)
+    SET(MRV_PIXMAPS_DIR     /usr/share/pixmaps/)
+
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop.full
+                    ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop )
+
+    install(FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop DESTINATION /usr/share/kde4/services/ServiceMenus )
+
+    INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop 
+             DESTINATION ${MRV_DESKTOP_DIR})
+    INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.xml
+             DESTINATION ${MRV_DESKTOP_DIR})
+    INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.xpm 
+             DESTINATION ${MRV_PIXMAPS_DIR})
+
+    # try to set up the menu system
+    find_program(XDG-MIME_EXECUTABLE xdg-mime)
+    find_program(XDG-DESKTOP-MENU_EXECUTABLE xdg-desktop-menu)
+
+INSTALL(CODE "
+  execute_process(COMMAND ${XDG-MIME_EXECUTABLE} install --novendor 
+                  ${MRV_DESKTOP_DIR}/mrViewer.xml)
+  execute_process(COMMAND ${XDG-DESKTOP-MENU_EXECUTABLE} install --novendor 
+                  ${MRV_DESKTOP_DIR}/mrViewer.desktop)
+  execute_process(COMMAND ${XDG-MIME_EXECUTABLE} default 
+                  ${MRV_DESKTOP_DIR}/mrViewer.desktop application/x-ddm-item)
+  "
+)
     SET(CPACK_GENERATOR TGZ DEB RPM )
 
     # SET the installation directory.
@@ -397,6 +429,8 @@ ELSEIF (UNIX)
     # SET Debian options.
     
     SET(CPACK_DEBIAN_PACKAGE_NAME mrViewer)
+    SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ggarra13@gmail.com")
+
 
 
 ENDIF(WIN32)
@@ -405,17 +439,16 @@ ENDIF(WIN32)
   SET(CPACK_PACKAGE_VERSION_MAJOR ${VersionMajor})
   SET(CPACK_PACKAGE_VERSION_MINOR ${VersionMinor})
   SET(CPACK_PACKAGE_VERSION_PATCH ${VersionPatch})
-  SET(CPACK_PACKAGE_VERSION ${VERSION})
-  SET(CPACK_PACKAGE_CONTACT http://mrviewer.sourceforge.net)
+  SET(CPACK_PACKAGE_VERSION "${VERSION}" )
+  SET(CPACK_PACKAGE_FILE_NAME "${mrViewerPackageName}" )
+  SET(CPACK_PACKAGE_CONTACT "ggarra13@gmail.com")
 # SET(CPACK_PACKAGE_DESCRIPTION_FILE ${PROJECT_SOURCE_DIR}/README.txt)
   SET(CPACK_PACKAGE_DESCRIPTION_SUMMARY
 	  "mrViewer provides professional flipbook, audio and video playback.")
 
 
-SET(CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer" )
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
 SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/LICENSE.txt)
-SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" )
 
 
 #
