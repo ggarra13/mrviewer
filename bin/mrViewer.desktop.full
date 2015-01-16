@@ -1,0 +1,23 @@
+[Desktop Entry]
+Encoding=UTF-8
+Name=mrViewer
+Name[zh_TW]=mrViewer
+Comment[de]=mrViewer
+Comment[es]=mrViewer
+Comment[fi]=mrViewer
+Comment[fr]=mrViewer
+Comment[hu]=mrViewer
+Comment[lt]=mrViewer
+Comment[no]=mrViewer
+Comment[pt_BR]=mrViewer
+Comment[sl]=mrViewer
+Comment[sv]=mrViewer
+Comment[ro]=mrViewer
+Comment[zh_TW]=mrViewer
+Comment=Video and Flipbook player
+Exec=/usr/local/mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH}/bin/mrViewer.sh %F
+Icon=mrViewer.png
+Terminal=false
+Type=Application
+Categories=Viewers;
+StartupNotify=true
