@@ -32,7 +32,7 @@ Out main(
 	  )
 { 
   //
-  // Sample luminance and chroma, convert to RGB. 
+  // Sample RGBA texture. 
   //
   half4 c  = tex2D(fgImage, tc);
 

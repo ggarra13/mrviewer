@@ -33,7 +33,7 @@ uniform float lutT;
 void main()
 { 
   //
-  // Sample luminance and chroma, convert to RGB. 
+  // Sample RGBA texture. 
   //
   vec4 c = texture2D(fgImage, gl_TexCoord[0].st);
 
