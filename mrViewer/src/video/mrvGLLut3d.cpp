@@ -279,10 +279,15 @@ namespace mrv {
     //
     const char** channelNames;
 
+    static const char* InRGBchannels[3] = { N_("rIn"), N_("gIn"), N_("bIn") };
+    static const char* OutRGBchannels[3] = { N_("rOut"), N_("gOut"), 
+                                             N_("bOut") };
+
     static const char* RGBchannels[3] = { N_("R"), N_("G"), N_("B") };
     static const char* XYZchannels[3] = { N_("X_OCES"), N_("Y_OCES"), 
 					  N_("Z_OCES") };
 
+#if 1
     if ( flags & kXformFirst || (!(flags & kXformLast)) )
       {
 	channelNames = RGBchannels;
@@ -291,6 +296,9 @@ namespace mrv {
       {
 	channelNames = XYZchannels;
       }
+#else
+    channelNames = InRGBchannels;
+#endif
 
     TransformNames transformNames;
     Transforms::const_iterator i = start;

@@ -224,7 +224,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
   {
     if ( !image ) return;
 
-    std::string script = make_ctl_browser( startfile, "RT_" );
+    std::string script = make_ctl_browser( startfile, "RRT" );
     image->rendering_transform( script.c_str() );
   }
 
@@ -248,7 +248,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
     if ( !startfile )
       startfile = mrv::Preferences::ODT_CTL_transform.c_str();
 
-    std::string script = make_ctl_browser( startfile, "ODT_" );
+    std::string script = make_ctl_browser( startfile, "ODT" );
     if ( script.empty() ) return;
 
     // @todo: prefs

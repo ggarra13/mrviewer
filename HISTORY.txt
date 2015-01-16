@@ -1,4 +1,12 @@
-v2.6.7   Added installers for both platforms.
+v2.6.7   - Added installers for both platforms. The main benefit is
+	   for Windows where shortcuts and an icon in Desktop are created.
+v2.6.6.3 - Bug fixed pixel info display when mirror X or mirror Y are
+           in effect.
+         - Bug fixed color info, histogram and vectorscope when mirror
+           X or Y are in effect.
+         - Bug fixed data window display when mirror X or Y are in
+           effect.
+         - Bug fixed mirror X and mirror Y in stereo displays.
 v2.6.6.2 - Bug fixed center and fit image when pixel ratio was different
 	   than 1.
 	 - Bug fixed mirror X and mirror Y when different data/display 
