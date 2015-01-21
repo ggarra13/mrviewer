@@ -45,20 +45,20 @@ FIND_PATH( OpenEXRCTL_INCLUDE_DIR ImfCtlApplyTransforms.h
   )
 
 FIND_LIBRARY( IlmImfCtl
-  NAMES IlmImfCtl_dll IlmImfCtl_dll_d IlmImfCtl IlmImfCtld libIlmImfCtl 
+  NAMES IlmImfCtl_dll IlmImfCtl_dll_d IlmImfCtl IlmImfCtld 
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXRCTL IlmImfCtl library"
 )
 
-FIND_LIBRARY( IlmImfCtlSimd
-  NAMES IlmImfCtlSimd_dll IlmImfCtlSimd_dll_d IlmImfCtlSimd IlmImfCtlSimdd libIlmImfCtlSimd 
+FIND_LIBRARY( IlmCtlSimd
+  NAMES IlmCtlSimd_dll IlmCtlSimd_dll_d IlmCtlSimd IlmCtlSimdd
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXRCTL IlmImfCtlSimd library"
 )
 
 MESSAGE( ${SEARCH_DIRS} )
 
-SET(OpenEXRCTL_LIBRARIES ${IlmImfCtl} )
+SET(OpenEXRCTL_LIBRARIES ${IlmCtlSimd} ${IlmImfCtl} )
 
 
 IF(NOT OpenEXRCTL_FOUND)

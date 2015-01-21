@@ -121,8 +121,14 @@ ctlToLut (std::vector<std::string> transformNames,
 	  Header inHeader,
 	  size_t lutSize,
 	  const float pixelValues[/*lutSize*/],
+#ifdef CTL_GIT
+	  float lut[/*lutSize*/],
+	  const char* inChannels[4]
+#else
 	  half lut[/*lutSize*/],
-	  const char* inChannels[3])
+	  const char* inChannels[3]
+#endif
+)
 {
 
     //
@@ -168,7 +174,42 @@ ctlToLut (std::vector<std::string> transformNames,
 			4 * sizeof (float),		// xStride
 			0));				// yStride
 
+#ifdef CTL_GIT
+    inFb.insert (inChannels[3],
+		 Slice (Imf::FLOAT,			// type
+			(char *)(pixelValues + 3),	// base
+			4 * sizeof (float),		// xStride
+			0));
+#endif
+
     FrameBuffer outFb;
+
+#ifdef CTL_GIT
+
+    outFb.insert ("rOut",
+		  Slice (Imf::FLOAT,			// type
+			 (char *)lut,			// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
+
+    outFb.insert ("gOut",
+		  Slice (Imf::FLOAT,			// type
+			 (char *)(lut + 1),		// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
+
+    outFb.insert ("bOut",
+		  Slice (Imf::FLOAT,			// type
+			 (char *)(lut + 2),		// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
+
+    outFb.insert ("aOut",
+		  Slice (Imf::FLOAT,			// type
+			 (char *)(lut + 3),		// base
+			 4 * sizeof (float),		// xStride
+			 0));				// yStride
+#else
 
     outFb.insert ("R_display",
 		  Slice (Imf::HALF,			// type
@@ -187,6 +228,7 @@ ctlToLut (std::vector<std::string> transformNames,
 			 (char *)(lut + 2),		// base
 			 4 * sizeof (half),		// xStride
 			 0));				// yStride
+#endif
 
     //
     // Run the CTL transforms.

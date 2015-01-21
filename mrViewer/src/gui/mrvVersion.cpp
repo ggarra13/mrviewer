@@ -499,8 +499,8 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "(C) 2005-2014 Industrial Light & Magic" << endl
       << endl
       << "AMPAS CTL v1.4 or later" << endl
-      << "http://www.openexr.org/" << endl
-      << "(C) 2014 AMPAS and Industrial Light & Magic" << endl
+      << "https://github.com/ampas/CTL" << endl
+      << "(C) 2014 AMPAS" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl

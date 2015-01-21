@@ -1317,7 +1317,7 @@ v->refresh();}
                   }
                   {fltk::Button} {} {
                     label Pick
-                    callback {std::string c = make_ctl_browser(uiODT_CTL_transform->text(), "ODT_");
+                    callback {std::string c = make_ctl_browser(uiODT_CTL_transform->text(), "ODT");
 if (c.empty()) return;
 uiODT_CTL_transform->text(c.c_str());
 uiODT_CTL_transform->do_callback();}
@@ -1491,7 +1491,7 @@ v->refresh();}
                 {fltk::Button} {} {
                   label Pick
                   user_data this user_data_type {mrv::PreferencesUI*}
-                  callback {std::string c = make_ctl_browser(uiCTL_8bits_load_transform->text(), "RT_");
+                  callback {std::string c = make_ctl_browser(uiCTL_8bits_load_transform->text(), "RRT");
 if (c.empty()) return;
 uiCTL_8bits_load_transform->text(c.c_str());
 uiCTL_8bits_load_transform->do_callback();}
@@ -1513,7 +1513,7 @@ v->refresh();}
                 {fltk::Button} {} {
                   label Pick
                   user_data this user_data_type {mrv::PreferencesUI*}
-                  callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RT_");
+                  callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RRT");
 if (c.empty()) return;
 uiCTL_16bits_load_transform->text(c.c_str());
 uiCTL_16bits_load_transform->do_callback();}
@@ -1535,7 +1535,7 @@ v->refresh();}
                 {fltk::Button} {} {
                   label Pick
                   user_data this user_data_type {mrv::PreferencesUI*}
-                  callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RT_");
+                  callback {std::string c = make_ctl_browser(uiCTL_16bits_load_transform->text(), "RRT");
 if (c.empty()) return;
 uiCTL_16bits_load_transform->text(c.c_str());
 uiCTL_16bits_load_transform->do_callback();}
@@ -1557,7 +1557,7 @@ v->refresh();}
                 {fltk::Button} {} {
                   label Pick
                   user_data this user_data_type {mrv::PreferencesUI*}
-                  callback {std::string c = make_ctl_browser(uiCTL_float_load_transform->text(), "RT_");
+                  callback {std::string c = make_ctl_browser(uiCTL_float_load_transform->text(), "RRT");
 if (c.empty()) return;
 uiCTL_float_load_transform->text(c.c_str());
 uiCTL_float_load_transform->do_callback();}
