@@ -72,14 +72,17 @@ namespace mrv {
     _lutN( N ),
     _inited( false )
   {
-    glGenTextures( 1, &texId );
+      std::cerr << "create gllut3d " << this << " " << &texId << std::endl;
+      glGenTextures( 1, &texId );
   }
 
 
 
   GLLut3d::~GLLut3d()
   {
-    glDeleteTextures( 1, &texId );
+      disable();
+      std::cerr << "destroy gllut3d " << this << " " << &texId << std::endl;
+      glDeleteTextures( 1, &texId );
   }
 
 
@@ -110,9 +113,10 @@ namespace mrv {
   void GLLut3d::clear_lut()
   {
      _inited = false;
-    lut.resizeErase( lut_size() );
-    for ( size_t i = 0; i < lut_size(); ++i )
-      lut[i] = 0;
+     unsigned long num = lut_size();
+     lut.resizeErase( num );
+     for ( unsigned long i = 0; i < num; ++i )
+         lut[i] = 0;
   }
 
 
@@ -127,16 +131,17 @@ namespace mrv {
     // produced by the CTL transforms.
     //
 
-    for ( size_t i = 0; i < lut_size(); ++i )
+      size_t num = lut_size();
+      for ( size_t i = 0; i < num; ++i )
       {
-	if ( lut[i] >= HALF_MIN && lut[i] <= HALF_MAX )
+          if ( lut[i] >= HALF_MIN && lut[i] <= HALF_MAX )
 	  {
 	    //
 	    // lut[i] is finite and positive.
 	    //
             lut[i] = (float) log (lut[i]);
 	  }
-	else
+          else
 	  {
 	    //
 	    // lut[i] is zero, negative or not finite;
@@ -168,11 +173,19 @@ namespace mrv {
 
     glTexImage3D( GL_TEXTURE_3D,
 		  0,			// level
+#ifdef CTL_GIT
+                  GL_RGBA32F,
+#else
 		  GL_RGBA16F_ARB,	        // internalFormat
+#endif
 		  _lutN, _lutN, _lutN,	// width, height, depth
 		  0,			// border
 		  GL_RGBA,		// format
-		  GL_HALF_FLOAT_ARB,	// type
+#ifdef CTL_GIT
+		  GL_FLOAT,	// type
+#else
+                  GL_HALF_FLOAT_ARB,  // type
+#endif
 		  (char *) &lut[0] );
   }
 
@@ -215,7 +228,7 @@ namespace mrv {
               float g = float(ig) / float(_lutN - 1.0);
               half G = expf ((g - lutT) / lutM);
 
-	    for (unsigned int ir = 0; ir < _lutN; ++ir)
+	    for (size_t ir = 0; ir < _lutN; ++ir)
 	      {
                   float r = float(ir) / float(_lutN - 1.0);
                   half R = expf ((r - lutT) / lutM);
@@ -224,6 +237,7 @@ namespace mrv {
                   pixelValues[i + 0] = R;
                   pixelValues[i + 1] = G;
                   pixelValues[i + 2] = B;
+                  pixelValues[i + 3] = 1.0f;
 	      }
 	  }
       }
@@ -256,9 +270,10 @@ namespace mrv {
     // value is used to perform a texture lookup and the shader computes
     // e raised to the power of the result of the texture lookup.
     //
-    half* inited = lut;
 
+#ifndef CTL_GIT
     Imf::Array<half> pixelValues ( lut_size() );
+
     if ( !_inited )
       {
 	 clear_lut();
@@ -267,9 +282,12 @@ namespace mrv {
     else
       {
 	half* dst = pixelValues;
-	memcpy( dst, inited, lut_size() * sizeof(half) );
+	memcpy( dst, &lut[0], lut_size() * sizeof(half) );
       }
-
+#else
+    Imf::Array<float> pixelValues;
+    pixelValues.resizeErase( lut_size() );
+#endif
 
     //
     // Generate output pixel values by applying CTL transforms
@@ -279,26 +297,67 @@ namespace mrv {
     //
     const char** channelNames;
 
-    static const char* InRGBchannels[3] = { N_("rIn"), N_("gIn"), N_("bIn") };
-    static const char* OutRGBchannels[3] = { N_("rOut"), N_("gOut"), 
-                                             N_("bOut") };
+    static const char* InRGBAchannels[4] = { N_("rIn"), N_("gIn"), N_("bIn"),
+                                             N_("aIn") };
+    static const char* OutRGBchannels[4] = { N_("rOut"), N_("gOut"), 
+                                             N_("bOut"), N_("aOut") };
 
-    static const char* RGBchannels[3] = { N_("R"), N_("G"), N_("B") };
-    static const char* XYZchannels[3] = { N_("X_OCES"), N_("Y_OCES"), 
-					  N_("Z_OCES") };
+    static const char* RGBAchannels[4] = { N_("R"), N_("G"), N_("B"), N_("A") };
+    static const char* XYZAchannels[4] = { N_("X_OCES"), N_("Y_OCES"), 
+					  N_("Z_OCES"), N_("A") };
 
-#if 1
+#ifndef CTL_GIT
     if ( flags & kXformFirst || (!(flags & kXformLast)) )
       {
-	channelNames = RGBchannels;
+	channelNames = RGBAchannels;
       }
     else
       {
-	channelNames = XYZchannels;
+	channelNames = XYZAchannels;
       }
 #else
-    channelNames = InRGBchannels;
+    channelNames = InRGBAchannels;
 #endif
+
+
+#ifdef CTL_GIT
+    TransformNames transformNames;
+    Transforms::const_iterator i = start;
+    for ( ; i != end; ++i )
+      {
+
+          if ( !_inited )
+          {
+              clear_lut();
+              init_pixel_values( pixelValues );
+          }
+          else
+          {
+              memcpy( &pixelValues[0], &lut[0], lut_size() * sizeof(float) );
+          }
+
+          transformNames.clear();
+          transformNames.push_back( (*i).name );
+
+          try
+          {
+              ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
+                        channelNames );
+              _inited = true;
+          }
+          catch( const std::exception& e )
+          {
+              LOG_ERROR( e.what() );
+              return false;
+          }
+          catch( ... )
+          {
+              LOG_ERROR( _("Unknown error returned from ctlToLut") );
+              return false;
+          }
+      }
+
+#else
 
     TransformNames transformNames;
     Transforms::const_iterator i = start;
@@ -323,6 +382,7 @@ namespace mrv {
           LOG_ERROR( _("Unknown error returned from ctlToLut") );
           return false;
       }
+#endif
 
     return true;
   }
@@ -386,7 +446,6 @@ namespace mrv {
     // value is used to perform a texture lookup and the shader computes
     // e raised to the power of the result of the texture lookup.
     //
-    half* inited = lut;
 
     Imf::Array<float> pixelValues ( lut_size() );
     if ( !_inited )
@@ -541,7 +600,7 @@ namespace mrv {
 
 
   bool GLLut3d::calculate( 
-			  GLLut3d::GLLut3d_ptr& lut,
+			  GLLut3d::GLLut3d_ptr lut,
 			  const Transforms::const_iterator& start,
 			  const Transforms::const_iterator& end,
 			  const Imf::Header& header,
@@ -808,6 +867,7 @@ namespace mrv {
 	break;
       }
 
+
     GLLut3d_ptr lut( new GLLut3d(size) );
 
 
@@ -832,8 +892,10 @@ namespace mrv {
 	  {
 	    if ( ! lut->calculate( lut, start, i, header, 
 				   (XformFlags)flags ) )
+            {
+              LOG_ERROR( "Lut Calculate failed" );
 	      return NULL;
-
+            }
 	    start = i;
 	    flags = kXformNone;
 	  }
@@ -841,9 +903,12 @@ namespace mrv {
 
     if ( (e - start) != 0 )
       {
-	flags |= kXformLast;
-	if ( ! lut->calculate( lut, start, e, header, (XformFlags)flags ) )
-	  return NULL;
+          flags |= kXformLast;
+          if ( ! lut->calculate( lut, start, e, header, (XformFlags)flags ) )
+          {
+              LOG_ERROR( "Lut Calculate failed" );
+              return NULL;
+          }
       }
 
     lut->create_gl_texture();
@@ -855,7 +920,7 @@ namespace mrv {
 
   void GLLut3d::clear()
   {
-    _luts.clear();
+      _luts.clear();
   }
 
 } // namespace mrv

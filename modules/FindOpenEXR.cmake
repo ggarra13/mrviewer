@@ -38,8 +38,14 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
   DOC   "OpenEXR includes"
   )
 
+FIND_LIBRARY( IlmImfUtil 
+  NAMES IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
+  PATHS ${SEARCH_DIRS}
+  DOC   "OpenEXR IlmImf library"
+)
+
 FIND_LIBRARY( IlmImf 
-  NAMES IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd libIlmImf IlmImf-2_1
+  NAMES IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR IlmImf library"
 )
@@ -47,7 +53,7 @@ FIND_LIBRARY( IlmImf
 MESSAGE( "IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath 
-  NAMES Imath-2_2 Imath_dll Imath_dll_d Imath Imathd libImath Imath-2_1
+  NAMES Imath-2_2 Imath_dll Imath_dll_d Imath Imathd 
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR Imath library"
 )
@@ -65,13 +71,13 @@ FIND_LIBRARY( IexMath
 )
 
 FIND_LIBRARY( Half
-  NAMES Half_dll Half_dll_d Half Halfd libHalf Half-2_1
+  NAMES Half_dll Half_dll_d Half Halfd
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXR Half library"
 )
 
 
-SET(OPENEXR_LIBRARIES ${IlmImf} ${Imath} ${Half} ${IexMath} ${Iex}  )
+SET(OPENEXR_LIBRARIES ${IlmImfUtil} ${IlmImf} ${Imath} ${Half} ${IexMath} ${Iex}  )
 
 IF(WIN32 OR WIN64)
   ADD_DEFINITIONS( "-DOPENEXR_DLL" )
@@ -109,7 +115,7 @@ ENDIF(NOT OPENEXR_FOUND)
 # This is to avoid picking IlmThread for a wrong version of IlmImf.
 #
 FIND_LIBRARY( IlmThread
-  NAMES IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread IlmThread-2_1 
+  NAMES IlmThread-2_2 IlmThread_dll IlmThread_dll_d IlmThread IlmThreadd libIlmThread 
   PATHS ${OPENEXR_LIBRARY_DIR}
   NO_DEFAULT_PATH
   DOC   "OpenEXR IlmThread library (1.5 or later)"
