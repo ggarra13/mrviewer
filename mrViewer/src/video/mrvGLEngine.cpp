@@ -1153,7 +1153,8 @@ void GLEngine::draw_images( ImageList& images )
 
 	  if ( LUT_quality != lut_quality )
 	    {
-	      mrv::GLLut3d::clear();
+                LUT_quality = lut_quality;
+                mrv::GLLut3d::clear();
 	    }
 	}
 
@@ -1317,6 +1318,11 @@ void GLEngine::draw_images( ImageList& images )
 	  if ( img->image_damage() & CMedia::kDamageLut )
 	    {
 	      quad->clear_lut();
+              if ( img->is_stereo() && (img->stereo_type() & 
+                                        CMedia::kStereoSideBySide) )
+              {
+                  (*(q+1))->clear_lut();
+              }
 	    }
 
 	  quad->lut( img );

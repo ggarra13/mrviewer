@@ -126,7 +126,7 @@ namespace mrv {
   public:
 
     static bool calculate(
-			  GLLut3d_ptr& lut,
+			  GLLut3d_ptr lut,
 			  const Transforms::const_iterator& start,
 			  const Transforms::const_iterator& end,
 			  const Imf::Header& header,
@@ -162,7 +162,11 @@ namespace mrv {
   protected:
     GLuint texId;                          //!< The lut opengl texture index
     unsigned         _lutN;                //!< Size of lut (one axis)
+#ifdef CTL_GIT
+    Imf::Array<float> lut;                  //!< The lut data
+#else
     Imf::Array<half> lut;                  //!< The lut data
+#endif
     bool _inited;
 
     static LutsMap _luts;                   //!< The list of luts

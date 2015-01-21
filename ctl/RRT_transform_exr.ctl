@@ -82,7 +82,7 @@ const float lut[] =
 };
 
 void 
-RT_transform_exr 
+RRT_transform_exr 
     (varying half R,				// ACES RGB pixels
      varying half G,
      varying half B,
