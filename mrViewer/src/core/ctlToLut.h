@@ -114,8 +114,13 @@ ctlToLut (std::vector<std::string> transformNames,
 	  Imf::Header inHeader,
 	  size_t lutSize,
 	  const float pixelValues[/*lutSize*/],
-	  half lut[/*lutSize*/],
+#ifdef CTL_GIT
+	  float lut[/*lutSize*/],
+	  const char* inChannels[4] = kRGBChannels);
+#else
+          half  lut[/*lutSize*/],
 	  const char* inChannels[3] = kRGBChannels);
+#endif
 
 void
 ctlToLut (std::vector<std::string> transformNames,
@@ -123,7 +128,11 @@ ctlToLut (std::vector<std::string> transformNames,
 	  size_t lutSize,
 	  const half pixelValues[/*lutSize*/],
 	  half lut[/*lutSize*/],
+#ifdef CTL_GIT
+	  const char* inChannels[4] = kRGBChannels
+#else
 	  const char* inChannels[3] = kRGBChannels
+#endif
 	  );
 
 
