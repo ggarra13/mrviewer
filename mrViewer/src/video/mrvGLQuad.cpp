@@ -866,7 +866,7 @@ namespace mrv {
     bool use_lut = _view->use_lut() && _lut && GLEW_EXT_texture3D;
     if ( use_lut && _lut )
       {
-	_lut->enable();
+          _lut->enable();
       }
 
 
@@ -1004,6 +1004,10 @@ namespace mrv {
     if ( _lut && img == _image ) return;
 
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
+    if ( _lut == NULL )
+    {
+        LOG_ERROR( "Lut creation failed." );
+    }
     _image = img;
   }
 

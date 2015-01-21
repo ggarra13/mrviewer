@@ -1,8 +1,8 @@
 
-#include <iostream>
-#include <exception>
-#include <assert.h>
-#include <sstream>
+// #include <iostream>
+// #include <exception>
+// #include <cassert>
+// #include <sstream>
 
 #include <CtlSimdInterpreter.h>
 #include <CtlFunctionCall.h>
@@ -18,8 +18,6 @@
 #define N_(String) gettext_noop(String)
 #endif
 
-// #include <ImathMath.h>
-// #include <IexBaseExc.h>
 
 using namespace std;
 using namespace Ctl;

@@ -251,6 +251,8 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
     std::string script = make_ctl_browser( startfile, "ODT" );
     if ( script.empty() ) return;
 
+    mrv::Preferences::ODT_CTL_transform = script;
+
     // @todo: prefs
     //     uiCTL_display_transform->static_text( script );
     //     uiCTL_display_transform->do_callback();

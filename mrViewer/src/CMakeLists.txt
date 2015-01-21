@@ -52,6 +52,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
   ELSE(APPLE)
 
+    # ADD_DEFINITIONS( -DCTL_GIT )
 
     # Media libraries for Linux
     # FIND_PACKAGE( ALSA        REQUIRED )
@@ -61,8 +62,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/local/lib
       /usr/lib
       )
-    # -Wconversion
-    ADD_DEFINITIONS( -DUSE_GETTEXT -DLINUX -msse ) 
+    # 
+    ADD_DEFINITIONS( -Wconversion -DUSE_GETTEXT -DLINUX -msse ) 
     SET(OS_LIBRARIES
       asound
       ${Xpm} png X11 Xi Xft Xinerama pthread m Xext stdc++ GLEW
@@ -296,6 +297,7 @@ ELSE( AO_FOUND )
 ENDIF( AO_FOUND )
 
 MESSAGE( "OPENGL LIBS=${OPENGL_LIBRARIES}" )
+MESSAGE( "OPENEXR_CTL LIBS=${OpenEXRCTL_LIBRARIES}" )
 
 
 SET( LIBRARIES 
