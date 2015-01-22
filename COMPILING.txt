@@ -1,0 +1,29 @@
+Compiling mrViewer requires a number of dependencies:
+
+- Boost 1.51 or later
+- OpenEXR 2.2.0 or later
+- CTL 1.4.1 or later
+- OpenEXR_CTL 1.0.1 or later
+- FFMPEG git or 2.3 or later
+- GLUT
+- FLTK 2.0
+- ImageMagick 6.7.4 or later
+- GLEW 1.11 or later
+- Postgres 9.1 or later
+- TCLAP 1.2.1
+- SampleICC 1.6.6 or later
+- libintl-8 or later
+
+The files win32_vars and win64_vars contain definitions for compiling
+on the windows platform.
+Compiling on linux often means using a tool like apt-get to get the
+dependencies.  And those dependencies not in a repository to compile 
+them and install them locally with:
+
+$ configure && make && make install
+
+or:
+
+$ mkdir build
+$ cd build
+$ cmake .. && make && make install
