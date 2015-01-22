@@ -72,7 +72,6 @@ namespace mrv {
     _lutN( N ),
     _inited( false )
   {
-      std::cerr << "create gllut3d " << this << " " << &texId << std::endl;
       glGenTextures( 1, &texId );
   }
 
@@ -81,7 +80,6 @@ namespace mrv {
   GLLut3d::~GLLut3d()
   {
       disable();
-      std::cerr << "destroy gllut3d " << this << " " << &texId << std::endl;
       glDeleteTextures( 1, &texId );
   }
 
