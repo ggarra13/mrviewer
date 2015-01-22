@@ -913,7 +913,7 @@ namespace mrv {
 
     lut->create_gl_texture();
 
-    _luts.insert( std::make_pair( path, lut ) );
+    _luts.insert( std::make_pair<std::string, GLLut3d_ptr>( path, lut ) );
     return lut.get();
   }
 
