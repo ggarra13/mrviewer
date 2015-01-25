@@ -5,10 +5,7 @@ can have three different CTL transformations active at the same time.
 the monitor, video or film stock. &nbsp;This transform within the CTL
 naming conventions is often called the Output Device Transform (ODT).
 &nbsp;This transform is set in the main preferences window, in the CTL section. &nbsp;Most projects will require users to set the device transform only once and not change it.</p><p>mrViewer
-ships with one basic ODT pass-thru display transform called
-ODT_monitor.ctl. &nbsp;This transform should be suitable for displaying
-images on a monitor device, as the only transformation performed on the
-image is to apply the luminance and color primaries of your monitor.</p><p>An ODT that tries to emulate film will often require a more complex 2D or 3D table lookup
+ships with several basic ODTs. </p><p>An ODT that tries to emulate film will often require a more complex 2D or 3D table lookup
 to try to emulate the inverse of the Print Film Emulation Transform
 (PFET). &nbsp;The PFET is particular to each film stock and film
 developing laboratory and generating it requires careful evaluation of
@@ -18,10 +15,8 @@ short. &nbsp; This transformation is unique to each image and project
 and represents the transformation needed to take the RGB pixel values
 stored in an image to a pleasing internal CIE XYZ representation for
 the project. &nbsp;mrViewer ships with a basic Rendering Transform that
-takes scene-linear RGB images to CIE XYZ by converting through HDTV
-Rec709. &nbsp;Depending on the project, the rendering transform will
-vary. &nbsp;In the future, AMPAS will provide a Reference Rendering
-Transform for Film which may become the standard for most film
+was given by AMPAS to provide a Reference Rendering
+Transform for Film which should become the standard for most film
 productions. &nbsp;If your project requires some special film effect
 (like bleach film), a special render transform should be used.</p>A
 third transform available is the Look Modification Transform (LMT).
