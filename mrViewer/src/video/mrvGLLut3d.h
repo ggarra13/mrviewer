@@ -117,8 +117,9 @@ namespace mrv {
     void icc_cmm_error( const char* prefix,
 			const icStatusCMM& status );
 
-    // Returns byte size of lut
+    // Returns size of lut with 4 channels
     unsigned lut_size() const { return 4 * _lutN * _lutN * _lutN; }
+    unsigned lut_size2() const { return 4 + 4 * _lutN * _lutN * _lutN; }
 
     template< typename T >
     void init_pixel_values( Imf::Array< T >& pixelValues );
