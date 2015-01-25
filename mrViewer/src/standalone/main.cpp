@@ -158,7 +158,7 @@ int main( const int argc, char** argv )
 //#ifdef USE_GETTEXT
 
 #ifdef WIN32
-  setlocale(LC_ALL, "");
+  // setlocale(LC_MESSAGES, "");
 #else
   setlocale(LC_MESSAGES, "");
 #endif
@@ -346,12 +346,12 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 		     LPSTR lpCmdLine, int nCmdShow )
 {
    
-    //AllocConsole();
+   // AllocConsole();
    // freopen("conin$", "r", stdin);
-   //freopen("conout$", "w", stdout);
-   //freopen("conout$", "w", stderr);
+   // freopen("conout$", "w", stdout);
+   // freopen("conout$", "w", stderr);
    
-   int rc = main( __argc, __argv );
+  int rc = main( __argc, __argv );
    
    // fclose(stdin);
    // fclose(stdout);
