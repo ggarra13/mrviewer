@@ -1,6 +1,6 @@
 
 
-SET( VERSION "2.6.7.0" )
+SET( VERSION "2.6.8" )
 
 #
 # Project's subdirectories

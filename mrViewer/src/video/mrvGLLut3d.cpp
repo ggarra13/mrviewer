@@ -111,7 +111,7 @@ namespace mrv {
   void GLLut3d::clear_lut()
   {
      _inited = false;
-     unsigned long num = lut_size();
+     unsigned long num = lut_size2();
      lut.resizeErase( num );
      for ( unsigned long i = 0; i < num; ++i )
          lut[i] = 0;
@@ -283,8 +283,7 @@ namespace mrv {
 	memcpy( dst, &lut[0], lut_size() * sizeof(half) );
       }
 #else
-    Imf::Array<float> pixelValues;
-    pixelValues.resizeErase( lut_size() );
+    Imf::Array<float> pixelValues( lut_size2() );
 #endif
 
     //
@@ -326,11 +325,21 @@ namespace mrv {
 
           if ( !_inited )
           {
+              //
+              // Init lut table to 0
+              //
               clear_lut();
+
+              //
+              // Init table of pixel values
+              //
               init_pixel_values( pixelValues );
           }
           else
           {
+              //
+              // Copy rOut, gOut, bOut, aOut to rIn, gIn, bIn, aIn
+              //
               memcpy( &pixelValues[0], &lut[0], lut_size() * sizeof(float) );
           }
 

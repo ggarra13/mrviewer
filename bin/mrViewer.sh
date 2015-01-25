@@ -33,7 +33,7 @@ export MRV_DATABASE=assets2d_production
 #
 magick_version=6.7.4
 export LD_LIBRARY_PATH="${dir}/lib:${LD_LIBRARY_PATH}"
-export CTL_MODULE_PATH="${dir}/ctl:${dir}/ctl/odt/dcdm:${dir}/ctl/odt/hdr_pq:${dir}/ctl/odt/rgbMonitor:${dir}/ctl/odt/p3:${dir}/ctl/odt/rec2020:${dir}/ctl/odt/rec709:${dir}/ctl/rrt:${dir}/ctl/lmt:${dir}/ctl/idt:${dir}/ctl/ACESproxy:${dir}/ctl/ACEScg:${dir}/ctl/ACEScc:${CTL_MODULE_PATH}"
+export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 export MAGICK_CODER_MODULE_PATH="${dir}/lib/ImageMagick-${magick_version}/modules-Q32/coders"
 
 #
