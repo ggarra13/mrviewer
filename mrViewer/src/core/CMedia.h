@@ -838,7 +838,7 @@ class CMedia
     static bool cache_active() { return _cache_active; }
 
     static void cache_scale( int x ) { _cache_scale = x; }
-    static bool cache_scale() { return _cache_scale; }
+    static int  cache_scale() { return _cache_scale; }
 
        
     static std::string rendering_transform_8bits;
