@@ -492,15 +492,19 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "libavformat\tv" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
       << "libswresample\tv" << AV_STRINGIFY( LIBSWRESAMPLE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
-      << "(C) 2000-2014 Fabrice Bellard, et al." << endl
+      << "(C) 2000-2015 Fabrice Bellard, et al." << endl
       << endl
       << "ILM OpenEXR v" << OPENEXR_VERSION_STRING <<  " or later" << endl
       << "http://www.openexr.org/" << endl
-      << "(C) 2005-2014 Industrial Light & Magic" << endl
+      << "(C) 2005-2015 Industrial Light & Magic" << endl
+      << endl
+      << "AMPAS ACES v1.0 or later" << endl
+      << "https://github.com/ampas/aces-dev" << endl
+      << "(C) 2015 AMPAS" << endl
       << endl
       << "AMPAS CTL v1.4 or later" << endl
       << "https://github.com/ampas/CTL" << endl
-      << "(C) 2014 AMPAS" << endl
+      << "(C) 2014-2015 AMPAS" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl
@@ -509,11 +513,11 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
 #endif
       << "IccProfLib (ICC v4.2)" << endl
-      << "(C) 2003-2014 - The International Color Consortium" << endl
+      << "(C) 2003-2015 - The International Color Consortium" << endl
       << endl
       << "PostgreSQL" << endl
       << "http://www.postgresql.org" << endl
-      << "(C) 1996-2014, The PostgreSQL Global Development Group" << endl
+      << "(C) 1996-2015, The PostgreSQL Global Development Group" << endl
       << "(C) 1994 The Regents of the University of California" << endl
       << endl;
 
