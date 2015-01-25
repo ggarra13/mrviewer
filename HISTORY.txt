@@ -1,6 +1,11 @@
 
 v2.6.8   - Bug fixed lut creation on 32 and 128 sizes.  Previously, they would
 	   get created and not cached.
+	 - Adapted CTL pipeline to be compatible with ACES 1.0.  The one
+	   rendering transform and all output device transforms from ACES
+	   can be used.
+	   Note that the previous transform_RRT and ODT_monitor have been
+	   deprecated as they operate on XYZ.
 v2.6.7   - Added installers for both platforms. The main benefit is
 	   for Windows where shortcuts and an icon in Desktop are created.
 v2.6.6.3 - Bug fixed pixel info display when mirror X or mirror Y are

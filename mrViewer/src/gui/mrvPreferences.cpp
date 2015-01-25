@@ -598,7 +598,7 @@ fltk::StyleSet*     newscheme = NULL;
 
 	fltk::Preferences ctl( odt, "CTL" );
 	{
-	  ok = ctl.get( "transform", tmpS, "ODT_monitor", 2048 );
+	  ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim.a1.0.0", 2048 );
 	  ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM", 
 						  tmpS, ok );
 
@@ -643,7 +643,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  RENDER_TRANSFORM( 8bits,  "" );
 	  RENDER_TRANSFORM( 16bits, "" );
 	  RENDER_TRANSFORM( 32bits, "" );
-	  RENDER_TRANSFORM( float,  "transform_RRT" );
+	  RENDER_TRANSFORM( float,  "RRT.a1.0.0" );
 #undef RENDER_TRANSFORM
 	}
 
