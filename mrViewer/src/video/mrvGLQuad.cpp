@@ -1004,10 +1004,6 @@ namespace mrv {
     if ( _lut && img == _image ) return;
 
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
-    if ( _lut == NULL )
-    {
-        LOG_ERROR( "Lut creation failed." );
-    }
     _image = img;
   }
 

@@ -633,6 +633,17 @@ namespace mrv {
 				       const bool warn )
   {
     bool ok = false;
+    if ( img->idt_transform() )
+      {
+	std::string name = img->idt_transform();
+	Transform t( name, Transform::kCTL );
+	if ( !key.empty() ) key += " -> ";
+	key += name;
+	key += " (C)";
+	transforms.push_back( t );
+	ok = true;
+      }
+
     if ( img->look_mod_transform() )
       {
 	std::string name = img->look_mod_transform();
