@@ -36,8 +36,14 @@ namespace mrv {
   fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
 				   int len )
   {
-    CMedia* img = CMedia::guess_image( filename, header, len );
-    if ( img == NULL ) return NULL;
+      std::string ext = filename;
+      size_t start = ext.rfind( '.' );
+      if ( start != ext.size() )
+          ext = ext.substr( start + 1, ext.size() );
+      if ( ext == "ctl" || ext == "CTL" ) return NULL;
+
+      CMedia* img = CMedia::guess_image( filename, header, len );
+      if ( img == NULL ) return NULL;
 
     // Fetch first frame
     img->probe_size( 50 );

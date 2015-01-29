@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -44,6 +45,7 @@
 #include "aviSave.h"
 #include "core/mrvImageOpts.h"
 #include "core/aviImage.h"
+#include "core/mrvACES.h"
 #include "core/mrvI8N.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvImageView.h"
@@ -60,6 +62,12 @@ namespace {
 
 static const char* kModule = "file";
 
+#ifdef WIN32
+#define kSeparator ";"
+#else
+#define kSeparator ":"
+#endif
+
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
@@ -71,6 +79,8 @@ static const char* kModule = "file";
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
   static const std::string kAudioPattern = "mp3,MP3,ogg,OGG,wav,WAV";
+
+  static const std::string kCTLPattern = "ctl,CTL";
 
 
   // Actual FLTK file requester patterns
@@ -96,6 +106,8 @@ static const char* kModule = "file";
     "Audios (*.(" + kAudioPattern + "})\t" +
     kREEL_PATTERN;
 
+static const std::string kCTL_PATTERN =
+"CTL script (*.{" + kCTLPattern + "})\t";
 
 }
 
@@ -186,6 +198,42 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 
 
 
+  const char* open_ctl_script( const char* startfile,
+                               const char* title )
+  {
+      std::string path, modulepath, ext;
+
+    if ( !startfile )
+        startfile = getenv("CTL_MODULE_PATH");
+
+    if ( startfile )
+    {
+        modulepath = "CTL_MODULE_PATH=";
+        modulepath += startfile;
+        path = startfile;
+        size_t len = path.find( kSeparator );
+        path = path.substr( 0, len-1 );
+    }
+
+    const char* profile = flu_file_chooser(title, 
+					   kCTL_PATTERN.c_str(), 
+					   path.c_str());
+    if ( profile )
+    {
+        path = profile;
+        size_t len = path.rfind( '/' );
+        if ( len == 0 ) return NULL;
+
+        ext  = path.substr( len+1, path.size() );
+        path = path.substr( 0, len );
+        modulepath += kSeparator;
+        modulepath += path;
+        putenv( strdup( modulepath.c_str() ) );
+        profile = strdup( ext.c_str() );
+    }
+    return profile;
+  }
+
   /** 
    * Opens a file requester to load audio files
    * 
@@ -228,6 +276,14 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
     image->rendering_transform( script.c_str() );
   }
 
+  void attach_ctl_lmt_script( CMedia* image, const char* startfile )
+  {
+    if ( !image ) return;
+
+    std::string script = make_ctl_browser( startfile, "LMT" );
+    image->look_mod_transform( script.c_str() );
+  }
+
 
 
   void attach_ctl_script( CMedia* image )
@@ -240,6 +296,33 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 
     attach_ctl_script( image, transform );
   }
+
+  void attach_ctl_idt_script( CMedia* image, const char* startfile )
+  {
+    if ( !image ) return;
+
+    std::string script = make_ctl_browser( startfile, "IDT" );
+    image->idt_transform( script.c_str() );
+  }
+
+  void attach_ctl_idt_script( CMedia* image )
+  {
+    if ( !image ) return;
+
+    const char* transform = image->idt_transform();
+    if ( !transform )  transform = "";
+    attach_ctl_idt_script( image, transform );
+  }
+
+  void attach_ctl_lmt_script( CMedia* image )
+  {
+    if ( !image ) return;
+
+    const char* transform = image->look_mod_transform();
+    if ( !transform )  transform = "";
+    attach_ctl_lmt_script( image, transform );
+  }
+
 
 
 
@@ -269,6 +352,33 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
   }
 
 
+bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
+               const char* file )
+{
+    namespace fs = boost::filesystem;
+
+    mrv::EXROpts* o = dynamic_cast< mrv::EXROpts* >( ipts );
+    if ( o && o->ACES_metadata() )
+    {
+        std::string root, frame, view, ext;
+        mrv::split_sequence( root, frame, view, ext, file );
+
+        fs::path f = root;
+        std::string filename = f.filename().c_str();
+
+        std::string xml;
+        xml = f.parent_path().c_str();
+        xml += "/ACESclip.";
+        xml += filename;
+        xml += "xml";
+
+        LOG_INFO( "Saving XML ACES file " << xml );
+
+        save_aces_xml( img, xml.c_str() );
+    }
+    return true;
+}
+
 
 void save_image_file( CMedia* image, const char* startdir )
 {
@@ -285,7 +395,12 @@ void save_image_file( CMedia* image, const char* startdir )
 
    ImageOpts* opts = ImageOpts::build( ext );
    if ( opts->active() )
+   {
        image->save( file, opts );
+
+       save_xml( image, opts, file );
+   }
+
    delete opts;
 }
 
@@ -359,18 +474,25 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    int audio_stream = -1;
 
    ImageOpts* ipts = NULL;
+   CMedia* img = NULL;
 
    if ( !movie )
    {
+       mrv::media fg = uiMain->uiView->foreground();
+
        ipts = ImageOpts::build( ext );
-       if ( ! ipts->active() ) {
+       if ( !fg || !ipts->active() ) {
            delete ipts;
            return;
        }
        ipts->opengl( opengl );
+
+
+       img = fg->image();
+
+       save_xml( img, ipts, file );
    }
 
-   CMedia* img = NULL;
 
    for ( ; frame <= last; ++frame )
    {
@@ -513,6 +635,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
           break;
       }
    }
+
 
    delete ipts;
 

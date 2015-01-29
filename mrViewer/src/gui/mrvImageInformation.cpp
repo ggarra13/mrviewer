@@ -583,6 +583,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         add_text( _("CIExy White Point"), buf );
     }
 
+    add_ctl_idt( _("Input Device Transform"), img->idt_transform() );
+    add_ctl_lmt( _("Look Mod Transform"), img->look_mod_transform() );
     add_ctl( _("Render Transform"), img->rendering_transform() );
     
 
@@ -891,6 +893,18 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     attach_ctl_script( v->get_image() );
   }
 
+  void ImageInformation::ctl_idt_callback( fltk::Widget* t,
+                                         ImageInformation* v )
+  {
+    attach_ctl_idt_script( v->get_image() );
+  }
+
+  void ImageInformation::ctl_lmt_callback( fltk::Widget* t,
+                                         ImageInformation* v )
+  {
+    attach_ctl_lmt_script( v->get_image() );
+  }
+
   void ImageInformation::compression_cb( fltk::PopupMenu* t, ImageInformation* v )
   {
     unsigned   idx = t->value();
@@ -984,6 +998,102 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
       fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
       pick->callback( (fltk::Callback*)ctl_callback, this );
+      sg->add( pick );
+      sg->resizable(widget);
+
+      g->add( sg );
+      g->resizable( sg );
+    }
+
+    m_curr->add( g );
+  }
+
+
+
+  void ImageInformation::add_ctl_idt( const char* name,
+                                      const char* content,
+                                      const bool editable,
+                                      fltk::Callback* callback )
+  { 
+    if ( !editable )
+      return add_text( name, content );
+
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
+
+    int hh = line_height();
+    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    {
+      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+      widget->box( fltk::FLAT_BOX );
+      widget->color( colA );
+      widget->labelcolor( fltk::BLACK );
+      g->add( widget );
+    }
+
+    {
+      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+
+      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      widget->value( content );
+      widget->align(fltk::ALIGN_LEFT);
+      widget->box( fltk::FLAT_BOX );
+      widget->color( colB );
+      if ( callback )
+	widget->callback( (fltk::Callback*)ctl_idt_callback, (void*)this );
+
+      sg->add( widget );
+      
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
+      pick->callback( (fltk::Callback*)ctl_idt_callback, this );
+      sg->add( pick );
+      sg->resizable(widget);
+
+      g->add( sg );
+      g->resizable( sg );
+    }
+
+    m_curr->add( g );
+  }
+
+
+
+  void ImageInformation::add_ctl_lmt( const char* name,
+                                      const char* content,
+                                      const bool editable,
+                                      fltk::Callback* callback )
+  { 
+    if ( !editable )
+      return add_text( name, content );
+
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
+
+    int hh = line_height();
+    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    {
+      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
+      widget->box( fltk::FLAT_BOX );
+      widget->color( colA );
+      widget->labelcolor( fltk::BLACK );
+      g->add( widget );
+    }
+
+    {
+      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+
+      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      widget->value( content );
+      widget->align(fltk::ALIGN_LEFT);
+      widget->box( fltk::FLAT_BOX );
+      widget->color( colB );
+      if ( callback )
+	widget->callback( (fltk::Callback*)ctl_lmt_callback, (void*)this );
+
+      sg->add( widget );
+      
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
+      pick->callback( (fltk::Callback*)ctl_lmt_callback, this );
       sg->add( pick );
       sg->resizable(widget);
 

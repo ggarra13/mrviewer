@@ -167,6 +167,7 @@ CMedia::CMedia() :
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
+  _idt_transform( NULL ),
   _playback( kStopped ),
   _aborted( false ),
   _sequence( NULL ),
@@ -244,6 +245,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
+  _idt_transform( NULL ),
   _playback( kStopped ),
   _aborted( false ),
   _sequence( NULL ),
@@ -329,6 +331,7 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _profile( NULL ),
   _rendering_transform( NULL ),
   _look_mod_transform( NULL ),
+  _idt_transform( NULL ),
   _playback( kStopped ),
   _aborted( false ),
   _sequence( NULL ),
@@ -452,6 +455,7 @@ CMedia::~CMedia()
   free( _profile );
   free( _rendering_transform );
   free( _look_mod_transform );
+  free( _idt_transform );
 
 
   clear_cache();
@@ -1252,6 +1256,32 @@ void CMedia::rendering_transform( const char* cfile )
 }
 
 /** 
+ * Returns image IDT CTL script (or NULL if no script)
+ *
+ * @return CTL script or NULL
+ */
+const char* CMedia::idt_transform()  const
+{
+  return _idt_transform;
+}
+
+
+/** 
+ * Change the IDT transform for the image
+ * 
+ * @param cfile  CTL script name
+ */
+void CMedia::idt_transform( const char* cfile )
+{
+  free( _idt_transform ); _idt_transform = NULL;
+  if ( cfile && strlen(cfile) > 0 ) _idt_transform = strdup( cfile );
+  image_damage( image_damage() | kDamageData | kDamageLut );
+  clear_cache();
+  refresh();
+}
+
+
+/** 
  * Returns image CTL script (or NULL if no script)
  * 
  * 
@@ -1261,7 +1291,6 @@ const char* CMedia::look_mod_transform()  const
 {
   return _look_mod_transform;
 }
-
 
 /** 
  * Change the look mod transform for the image

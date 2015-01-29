@@ -525,10 +525,16 @@ class CMedia
     /// Add default icc profile for this image bit depth.
     void default_icc_profile();
 
-    /// Returns rendering transform name ( CTL script )
+    /// Returns input device transform name ( CTL script )
+    const char* idt_transform() const;
+
+    /// Assigns a new input device transform ( CTL script ) 
+    void idt_transform( const char* cfile );
+
+    /// Returns look mod transform name ( CTL script )
     const char* look_mod_transform() const;
 
-    /// Assigns a new rendering transform ( CTL script ) 
+    /// Assigns a new look mod transform ( CTL script ) 
     void look_mod_transform( const char* cfile );
 
     /// True if image represents a sequence
@@ -1140,6 +1146,9 @@ class CMedia
 
     // Look Mod Transform for CTL
     char*     _look_mod_transform;
+
+    // Input Device Transform for CTL
+    char*     _idt_transform;
 
     unsigned int         _frame_offset;
 

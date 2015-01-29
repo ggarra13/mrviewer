@@ -35,11 +35,11 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {402 529 300 195} resizable modal noborder visible
+        xywh {413 219 315 315} resizable modal noborder visible
       } {
         {fltk::Group} {} {
-          label {OpenEXR Options} open
-          xywh {30 22 240 138} box UP_BOX
+          label {OpenEXR Options}
+          xywh {31 35 252 223} box UP_BOX
         } {
           {fltk::Choice} uiCompression {
             label Compression
@@ -53,7 +53,7 @@ v->uiDWACompression->activate();
 else
 {
 v->uiDWACompression->deactivate();
-}} selected
+}}
             xywh {115 23 91 26}
           } {
             {fltk::Item} {} {
@@ -105,28 +105,34 @@ v->uiDWACompression->deactivate();
         }
         {fltk::ValueSlider} uiDWACompression {
           label {DWA Compression}
-          xywh {160 125 90 20} align 4 deactivate minimum 1 maximum 250 step 10 value 45
+          xywh {168 150 94 33} align 4 deactivate minimum 1 maximum 250 step 10 value 45
         }
         {fltk::Button} {} {
           label OK
           user_data this user_data_type {EXROptionsUI*}
           callback {v->active( true );
 v->uiMain->make_exec_return(true);}
-          xywh {75 170 55 18}
+          xywh {78 274 58 29}
         }
         {fltk::Button} {} {
           label Cancel
           user_data this user_data_type {EXROptionsUI*}
           callback {v->active( false );
 v->uiMain->make_exec_return(false);}
-          xywh {145 170 60 18}
+          xywh {152 274 63 29}
+        }
+        {fltk::LightButton} uiACESmetadata {
+          label {ACES metadata}
+          xywh {95 200 125 35}
         }
       }
     }
     Function {convert()} {open
     } {
       code {_compression = (Imf::Compression) uiCompression->value();
-_dwa_compression_level = (float) uiDWACompression->value();} {}
+_dwa_compression_level = (float) uiDWACompression->value();
+_ACESmetadata = uiACESmetadata->value();} {selected
+      }
       code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}

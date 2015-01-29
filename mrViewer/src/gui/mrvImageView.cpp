@@ -532,6 +532,21 @@ static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  attach_ctl_lmt_script( fg->image() );
+}
+
+static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  attach_ctl_idt_script( fg->image() );
+}
 
 static void monitor_icc_profile_cb( fltk::Widget* o, void* data )
 {
@@ -2074,6 +2089,14 @@ int ImageView::leftMouseDown(int x, int y)
                       fltk::MENU_DIVIDER );
 
 
+	    menu.add( _("Image/Attach CTL Input Device Transform"),
+		      kIDTScript.hotkey(),
+		      (fltk::Callback*)attach_ctl_idt_script_cb,
+		      this, fltk::MENU_DIVIDER);
+	    menu.add( _("Image/Attach CTL Look Mod Transform"),
+		      kLookModScript.hotkey(),
+		      (fltk::Callback*)attach_ctl_lmt_script_cb,
+		      this, fltk::MENU_DIVIDER);
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_script_cb,
@@ -2889,6 +2912,16 @@ int ImageView::keyDown(unsigned int rawkey)
       attach_color_profile_cb( NULL, this );
       return 1;
    }
+   else if ( kIDTScript.match( rawkey ) )
+   {
+      attach_ctl_idt_script_cb( NULL, this );
+      return 1;
+   }
+   else if ( kLookModScript.match( rawkey ) )
+   {
+      attach_ctl_lmt_script_cb( NULL, this );
+      return 1;
+   }
    else if ( kCTLScript.match( rawkey ) )
    {
       attach_ctl_script_cb( NULL, this );
@@ -3621,7 +3654,7 @@ void ImageView::clear_reel_cache( size_t idx )
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
-    mrv::Reel r = b->reel_at( idx );
+    mrv::Reel r = b->reel_at( unsigned(idx) );
     if ( !r ) return;
 
     if ( r->edl )
