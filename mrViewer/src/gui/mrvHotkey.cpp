@@ -41,6 +41,8 @@ Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
 Hotkey kSaveSnapshot( false, false, true, false, 's' );
 Hotkey kIccProfile( true, false, false, false, 'i' );
+Hotkey kIDTScript( true, false, false, true, 'i' );
+Hotkey kLookModScript( true, false, false, false, 'l' );
 Hotkey kCTLScript( true, false, false, false, 't' );
 Hotkey kMonitorCTLScript( true, false, false, false, 'm' );
 Hotkey kMonitorIccProfile( true, false, false, false, 'n' );

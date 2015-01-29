@@ -76,6 +76,8 @@ namespace mrv
     void hide_tabs();
 
     static void ctl_callback( fltk::Widget* t, ImageInformation* v );
+    static void ctl_lmt_callback( fltk::Widget* t, ImageInformation* v );
+    static void ctl_idt_callback( fltk::Widget* t, ImageInformation* v );
     static void icc_callback( fltk::Widget* t, ImageInformation* v );
     static void compression_cb( fltk::PopupMenu* t, ImageInformation* v );
     static void enum_cb( fltk::PopupMenu* w, ImageInformation* v );
@@ -95,6 +97,15 @@ namespace mrv
     void add_ctl( const char* name, const char* content, 
 		  const bool editable = true, 
 		  fltk::Callback* callback = NULL );
+
+    void add_ctl_lmt( const char* name, const char* content, 
+                      const bool editable = true, 
+                      fltk::Callback* callback = NULL );
+
+    void add_ctl_idt( const char* name, const char* content, 
+                      const bool editable = true, 
+                      fltk::Callback* callback = NULL );
+
 
     void add_text( const char* name, const char* content, 
 		   const bool editable = false, 

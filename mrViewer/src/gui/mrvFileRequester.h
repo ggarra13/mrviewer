@@ -65,6 +65,9 @@ stringArray open_image_file( const char* startfile = NULL,
   const char* open_icc_profile( const char* startfile = NULL,
 				const char* title = "Load Image's ICC Profile" );
 
+  const char* open_ctl_script( const char* startfile = NULL,
+                               const char* title = "Load CTL Script" );
+
   /** 
    * Attach an ICC/ICM color profile to a loaded image
    * 
@@ -92,7 +95,7 @@ stringArray open_image_file( const char* startfile = NULL,
 
 
   /** 
-   * Attach a CTL (Color Transform Language) script to an image for display.
+   * Attach a CTL (Color Transform Language) RT script to an image for display.
    * 
    * @param image      already loaded image
    * @param startfile  start filename (directory)
@@ -100,7 +103,23 @@ stringArray open_image_file( const char* startfile = NULL,
   void attach_ctl_script( CMedia* image, const char* ctlfile );
   void attach_ctl_script( CMedia* image );
 
+  /**
+   * Attach a CTL (Color Transform Language) LMT script to an image for display.
+   * 
+   * @param image      already loaded image
+   * @param startfile  start filename (directory)
+   */
+  void attach_ctl_lmt_script( CMedia* image, const char* ctlfile );
+  void attach_ctl_lmt_script( CMedia* image );
 
+  /**
+   * Attach a CTL (Color Transform Language) IDT script to an image for display.
+   * 
+   * @param image      already loaded image
+   * @param startfile  start filename (directory)
+   */
+  void attach_ctl_idt_script( CMedia* image, const char* ctlfile );
+  void attach_ctl_idt_script( CMedia* image );
 
   /** 
    * Opens a file requester to load audio files

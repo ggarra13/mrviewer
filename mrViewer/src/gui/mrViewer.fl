@@ -33,7 +33,8 @@ decl {\#include "gui/mrvBrowser.h"} {}
 
 decl {\#include "gui/mrvPreferencesBrowser.h"} {} 
 
-decl {\#include "gui/mrvCTLBrowser.h"} {} 
+decl {\#include "gui/mrvCTLBrowser.h"} {public
+} 
 
 decl {\#include "mrvFileRequester.h"} {} 
 
@@ -81,27 +82,30 @@ decl {\#include "fltk/ask.h"} {}
 
 decl {\#include "fltk/run.h"} {} 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
 } {
+  code {std::string orig = ctl;} {selected
+  }
   {fltk::Window} {} {
     label {CTL Browser} open
-    xywh {444 307 395 440} horizontal hide resizable hotspot modal
+    xywh {476 329 395 440} horizontal resizable hotspot modal visible
   } {
-    {fltk::Group} {} {open
+    {fltk::Group} {} {
       xywh {10 25 375 405}
     } {
-      {fltk::Browser} {} {
+      {fltk::Browser} browser {
         label {Select a CTL script}
         user_data {&ctl} user_data_type {std::string*}
         callback {int elem = o->value();
 if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
-*v = o->child(elem)->label();}
+*v = o->child(elem)->label();} open
         xywh {0 0 375 365}
-        extra_code {if ( !ctl.empty() )
+        extra_code {o->set_prefix(prefix);
+o->value(-1);
+if ( !ctl.empty() )
 {
-  o->set_prefix(prefix);
   fltk::Widget* elem = o->find( ctl.c_str() );
-  o->value(-1);
+
   for (int i = 0; i < o->children(); ++i )
   {
     if ( o->child(i) == elem ) {
@@ -111,6 +115,18 @@ if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
 }}
         class {mrv::CTLBrowser}
       } {}
+      {fltk::Button} {} {
+        label Load
+        user_data browser user_data_type {mrv::CTLBrowser*}
+        callback {const char* t = mrv::open_ctl_script(NULL, "Load CTL Script");
+if ( t )
+{
+  v->add(t);
+  v->value( v->size()-1 );
+  v->redraw();
+}}
+        xywh {35 375 85 25}
+      }
       {fltk::Button} {} {
         label Accept
         user_data w user_data_type {fltk::Window*}
@@ -125,7 +141,8 @@ if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
       }
     }
   }
-  code {if (!w->exec()) return "";
+  code {if (!w->exec())
+	return orig;
 return ctl;} {}
 } 
 
@@ -2511,10 +2528,10 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {287 239 640 530} when CHANGED resizable
+        xywh {295 239 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3340,7 +3357,7 @@ else
 v->uiStartFrame->value( f );
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();} selected
+v->uiTimeline->redraw();}
                       xywh {1 4 20 20} vertical
                     }
                     {fltk::Button} uiEndButton {

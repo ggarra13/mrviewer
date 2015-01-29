@@ -149,6 +149,8 @@ extern Hotkey kSaveImage;
 extern Hotkey kSaveSnapshot;
 extern Hotkey kSaveSequence;
 extern Hotkey kIccProfile;
+extern Hotkey kIDTScript;
+extern Hotkey kLookModScript;
 extern Hotkey kCTLScript;
 extern Hotkey kMonitorCTLScript;
 extern Hotkey kMonitorIccProfile;

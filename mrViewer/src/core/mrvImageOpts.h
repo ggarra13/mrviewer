@@ -37,7 +37,7 @@ class ImageOpts
     {
     }
 
-    ~ImageOpts()
+    virtual ~ImageOpts()
     {
     }
 
@@ -58,10 +58,12 @@ class EXROpts : public ImageOpts
     Imf::Compression _compression;
     Imf::PixelType   _pixel_type;
     float            _dwa_compression_level;
+    bool             _ACESmetadata;
   public:
     EXROpts() : _compression( Imf::ZIPS_COMPRESSION ),
                 _pixel_type( Imf::HALF ),
-                _dwa_compression_level( 45.0f )
+                _dwa_compression_level( 45.0f ),
+                _ACESmetadata( false )
     {
     }
 
@@ -73,6 +75,9 @@ class EXROpts : public ImageOpts
 
     float compression_level() const { return _dwa_compression_level; }
     void compression_level( float p ) { _dwa_compression_level = p; }
+
+    bool ACES_metadata() const { return _ACESmetadata; }
+    void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
 };
 
@@ -88,7 +93,7 @@ class WandOpts : public ImageOpts
     StorageType pixel_type() const { return _pixel_type; }
 };
 
-}
+}  // namespace mrv
 
 
 #endif
