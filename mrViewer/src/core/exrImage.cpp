@@ -54,6 +54,7 @@
 #include <ImfTimeCodeAttribute.h>
 #include <ImfRgbaYca.h>
 
+#include "core/mrvACES.h"
 #include "core/mrvThread.h"
 #include "core/exrImage.h"
 #include "core/mrvImageOpts.h"
@@ -1094,28 +1095,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
 {
  
-    {
-        const Imf::StringAttribute *attr =
-	h.findTypedAttribute<Imf::StringAttribute> ( N_("renderingTransform") );
-        if ( attr )
-	{
-            if ( rendering_transform() &&
-                 attr->value() != rendering_transform() )
-                rendering_transform( attr->value().c_str() );
-	}
-    }
-    
-    {
-	const Imf::StringAttribute *attr =
-	  h.findTypedAttribute<Imf::StringAttribute>( N_("lookModTransform") );
-	if ( attr )
-	  {
-	     if ( look_mod_transform() &&
-		  attr->value() != look_mod_transform() )
-		look_mod_transform( attr->value().c_str() );
-	  }
-      }
-
       {
 	const Imf::ChromaticitiesAttribute *attr =
 	  h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
@@ -2188,18 +2167,6 @@ bool exrImage::save( const char* file, const CMedia* img,
 	hdr.channels().insert( N_("A"), Channel( save_type, 1, 1 ) );
       }
 
-    if ( img->look_mod_transform() )
-      {
-	Imf::StringAttribute attr( img->look_mod_transform() );
-	hdr.insert( N_("lookModTransform"), attr );
-      }
-
-    if ( img->rendering_transform() )
-      {
-	Imf::StringAttribute attr( img->rendering_transform() );
-	hdr.insert( N_("renderingTransform"), attr );
-      }
-
     if ( img->has_chromaticities() )
     {
         Imf::ChromaticitiesAttribute attr( img->chromaticities() );
@@ -2613,6 +2580,7 @@ bool exrImage::save( const char* file, const CMedia* img,
       }
 
     delete [] base;
+
 
     return true;
   }
