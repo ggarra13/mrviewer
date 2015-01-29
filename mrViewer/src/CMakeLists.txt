@@ -3,7 +3,7 @@
 
 SET( VersionMajor 2 )
 SET( VersionMinor 6 )
-SET( VersionPatch 8 )
+SET( VersionPatch 9 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -31,6 +31,7 @@ FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( GLU         REQUIRED )    # for gluErrorString
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
+FIND_PACKAGE( TinyXML2    REQUIRED )
 # FIND_PACKAGE( AO )    # for ao sound lib
 
 # ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
@@ -90,6 +91,7 @@ INCLUDE_DIRECTORIES(
   ${MAGICK++_INCLUDE_DIR}
   ${OpenEXRCTL_INCLUDE_DIR}
   ${CTL_INCLUDE_DIR}
+  ${TINYXML2_INCLUDE_DIR}
   ${OPENEXR_INCLUDE_DIR}
   ${FFMPEG_INCLUDE_DIR} 
   ${POSTGRESQL_INCLUDE_DIR}
@@ -158,6 +160,7 @@ SET( SOURCES
   core/mrvString.cpp
   core/mrvTimer.cpp
   core/mrvBarrier.cpp
+  core/mrvACES.cpp
   # core/generic/mrEvent.cpp
 
   core/mrvPC1.cpp
@@ -180,6 +183,7 @@ SET( SOURCES
   gui/FLU/GridGroup.cpp
   #   #   FLU/Flu_Combo_List.cpp # unneeded
 
+  core/mrvACES.cpp
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
   gui/mrvColorOps.cpp
@@ -311,6 +315,7 @@ SET( LIBRARIES
   ${BOOST_LIBRARIES}
   ${SampleICC_LIBRARIES}
   ${FFMPEG_LIBRARIES}
+  ${TINYXML2_LIBRARIES}
   )
 
 
@@ -468,6 +473,7 @@ MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
 MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
+MESSAGE( STATUS "TinyXML2:      ${TINYXML2_FOUND} ${TINYXML2_VERSION}" )
 
 IF(GLUT_FOUND)
   MESSAGE( STATUS "GLUT INCLUDE DIR=${GLUT_INCLUDE_DIR}" )
@@ -534,6 +540,12 @@ IF(OpenEXRCTL_FOUND)
   MESSAGE( STATUS "OpenEXR CTL library:    ${OpenEXRCTL_LIBRARY_DIR}" )
   MESSAGE( STATUS "OpenEXR CTL libraries:  ${OpenEXRCTL_LIBRARIES}" )
 ENDIF(OpenEXRCTL_FOUND)
+
+IF(TINYXML2_FOUND)
+  MESSAGE( STATUS "TinyXML2 include:    ${TINYXML2_INCLUDE_DIR}" )
+  MESSAGE( STATUS "TinyXML2 library:    ${TINYXML2_LIBRARY_DIR}" )
+  MESSAGE( STATUS "TinyXML2 libraries:  ${TINYXML2_LIBRARIES}" )
+ENDIF(TINYXML2_FOUND)
 
 #IF(RLM_FOUND)
 #  MESSAGE( STATUS "RLM include:    ${RLM_INCLUDE_DIR}" )
