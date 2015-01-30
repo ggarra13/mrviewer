@@ -32,8 +32,10 @@ class ImageOpts
   protected:
     bool _active;
     bool _opengl;
+    bool _ACESmetadata;
   public:
-    ImageOpts()
+    ImageOpts() :
+    _ACESmetadata( false )
     {
     }
 
@@ -47,6 +49,8 @@ class ImageOpts
     bool opengl() const { return _opengl; }
     void opengl( bool f ) { _opengl = f; }
 
+    bool ACES_metadata() const { return _ACESmetadata; }
+    void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
     static ImageOpts* build( std::string ext );
 };
@@ -58,12 +62,10 @@ class EXROpts : public ImageOpts
     Imf::Compression _compression;
     Imf::PixelType   _pixel_type;
     float            _dwa_compression_level;
-    bool             _ACESmetadata;
   public:
     EXROpts() : _compression( Imf::ZIPS_COMPRESSION ),
                 _pixel_type( Imf::HALF ),
-                _dwa_compression_level( 45.0f ),
-                _ACESmetadata( false )
+                _dwa_compression_level( 45.0f )
     {
     }
 
@@ -76,8 +78,6 @@ class EXROpts : public ImageOpts
     float compression_level() const { return _dwa_compression_level; }
     void compression_level( float p ) { _dwa_compression_level = p; }
 
-    bool ACES_metadata() const { return _ACESmetadata; }
-    void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
 };
 

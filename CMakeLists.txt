@@ -34,6 +34,7 @@ ENDIF( UNIX )
 #
 # Project's subdirectories
 #
+ADD_SUBDIRECTORY( libACESclip )
 ADD_SUBDIRECTORY( mrViewer )
 ADD_SUBDIRECTORY( tools )
 

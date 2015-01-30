@@ -363,8 +363,7 @@ bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
 {
     namespace fs = boost::filesystem;
 
-    mrv::EXROpts* o = dynamic_cast< mrv::EXROpts* >( ipts );
-    if ( o && o->ACES_metadata() )
+    if ( ipts && ipts->ACES_metadata() )
     {
         std::string root, frame, view, ext;
         mrv::split_sequence( root, frame, view, ext, file );

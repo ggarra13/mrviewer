@@ -1,0 +1,22 @@
+For compiling, you need to have:
+
+- boost::uuid
+- tinyxml2
+
+You can google them for getting the latest.
+
+Compilation is done with cmake.  A shell wrapper utility (mk) is provided
+to build out of source and set other settings in cmake.
+
+So, to compile, you'd do:
+
+$ mk
+
+from a shell console.  In Windows, you can use mingw or cygwin, with the paths set up for the Microsoft compiler.
+The resulting files will go into BUILD/Platform-version-arch/Release/ in the bin and lib directories.
+
+Running then:
+
+$ sudo ./mk install
+
+will install the library and binaries in the CMAKE_PREFIX_PATH (/usr/local).

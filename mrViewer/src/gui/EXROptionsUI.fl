@@ -35,7 +35,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {413 219 315 315} resizable modal noborder visible
+        xywh {417 244 315 315} resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {OpenEXR Options}
@@ -122,8 +122,8 @@ v->uiMain->make_exec_return(false);}
           xywh {152 274 63 29}
         }
         {fltk::LightButton} uiACESmetadata {
-          label {ACES metadata}
-          xywh {95 200 125 35}
+          label {ACES metadata} selected
+          xywh {95 200 125 35} value 1
         }
       }
     }
@@ -131,8 +131,7 @@ v->uiMain->make_exec_return(false);}
     } {
       code {_compression = (Imf::Compression) uiCompression->value();
 _dwa_compression_level = (float) uiDWACompression->value();
-_ACESmetadata = uiACESmetadata->value();} {selected
-      }
+_ACESmetadata = uiACESmetadata->value();} {}
       code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
