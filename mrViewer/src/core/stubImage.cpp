@@ -634,10 +634,16 @@ namespace mrv {
     const char* profile = other->icc_profile();
     if ( profile )  icc_profile( profile );
 
-    const char* transform = other->look_mod_transform();
-    if ( transform )  look_mod_transform( transform );
 
-    transform = other->rendering_transform();
+    size_t num = other->number_of_lmts();
+    size_t j = 0;
+    for ( ; j < num; ++j )
+    {
+        _look_mod_transform.push_back( strdup(
+                                       other->look_mod_transform( j ) ) );
+    }
+
+    const char* transform = other->rendering_transform();
     if ( transform )  rendering_transform( transform );
 
     const char* lbl = other->label();

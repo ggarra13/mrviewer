@@ -276,12 +276,17 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
     image->rendering_transform( script.c_str() );
   }
 
-  void attach_ctl_lmt_script( CMedia* image, const char* startfile )
+void attach_ctl_lmt_script( CMedia* image, const char* startfile,
+                            const size_t idx )
   {
     if ( !image ) return;
 
+    // @todo: pass index to look mod
     std::string script = make_ctl_browser( startfile, "LMT" );
-    image->look_mod_transform( script.c_str() );
+    if ( idx >= image->number_of_lmts() )
+        image->append_look_mod_transform( script.c_str() );
+    else
+        image->look_mod_transform( idx, script.c_str() );
   }
 
 
@@ -314,14 +319,15 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
     attach_ctl_idt_script( image, transform );
   }
 
-  void attach_ctl_lmt_script( CMedia* image )
-  {
+void attach_ctl_lmt_script( CMedia* image, const size_t idx )
+{
     if ( !image ) return;
 
-    const char* transform = image->look_mod_transform();
+    // @todo: pass the index here
+    const char* transform = image->look_mod_transform(idx);
     if ( !transform )  transform = "";
-    attach_ctl_lmt_script( image, transform );
-  }
+    attach_ctl_lmt_script( image, transform, idx );
+}
 
 
 

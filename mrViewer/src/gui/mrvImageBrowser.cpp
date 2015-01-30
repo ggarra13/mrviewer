@@ -1007,23 +1007,28 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     
     std::string look_mod_transform_id = "NULL";
-    if ( img->look_mod_transform() )
+    size_t num = img->number_of_lmts();
+    if ( num )
       {
-	char buf[4096];
-	sprintf( buf, N_("INSERT INTO look_mod_transforms(name)"
-			 " VALUES "
-			 "( '%s' );"), img->look_mod_transform() ); 
-	if ( db->sql( buf ) )
-	{
-	   LOG_INFO( img->filename() << _(": added look mod transform ") << 
-		     img->look_mod_transform() << _(" to database '") 
-		     << db->database() << _("'.") );
-	}
+          for ( size_t i = 0; i < num; ++i )
+          {
+              char buf[4096];
+              sprintf( buf, N_("INSERT INTO look_mod_transforms(name)"
+                               " VALUES "
+                               "( '%s' );"), img->look_mod_transform(i) ); 
+              if ( db->sql( buf ) )
+              {
+                  LOG_INFO( img->filename()
+                            << _(": added look mod transform ") << 
+                            img->look_mod_transform(i) << _(" to database '") 
+                            << db->database() << _("'.") );
+              }
 
-	look_mod_transform_id = N_("SELECT id FROM look_mod_transforms "
-				   "WHERE name = '");
-	look_mod_transform_id += img->look_mod_transform();
-	look_mod_transform_id += N_("'");
+              look_mod_transform_id = N_("SELECT id FROM look_mod_transforms "
+                                         "WHERE name = '");
+              look_mod_transform_id += img->look_mod_transform(i);
+              look_mod_transform_id += N_("'");
+          }
       }
 
     std::string pixel_format_id = "NULL";
