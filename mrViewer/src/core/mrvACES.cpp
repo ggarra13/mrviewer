@@ -46,7 +46,7 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     
 
     pElement = doc.NewElement("UUID");
-    pElement->SetAttribute("type", UUID.c_str() );
+    pElement->SetText( UUID.c_str() );
     pRoot->InsertEndChild( pElement );
 
     pElement = doc.NewElement("ModificationTime");
@@ -116,7 +116,7 @@ bool save_aces_xml( const CMedia* img, const char* filename )
 
     if ( img->idt_transform() )
     {
-        pElement = doc.NewElement("inputTransformList");
+        pElement = doc.NewElement("InputTransformList");
         pRoot2->InsertEndChild( pElement );
         pRoot3 = pElement;
 
@@ -187,7 +187,7 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     if ( img->number_of_lmts() || img->rendering_transform() ||
          !mrv::Preferences::ODT_CTL_transform.empty() )
     {
-        pElement = doc.NewElement("previewTransformList");
+        pElement = doc.NewElement("PreviewTransformList");
         pRoot2->InsertEndChild( pElement );
         pRoot3 = pElement;
     }
