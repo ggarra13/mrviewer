@@ -30,7 +30,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {629 574 300 195} resizable modal noborder visible
+        xywh {633 574 300 195} resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Image Options} open
@@ -55,6 +55,10 @@ namespace mrv {open
               }
           }
         }
+        {fltk::LightButton} uiACESmetadata {
+          label {ACES metadata}
+          xywh {95 40 125 35} value 1
+        }
         {fltk::Button} {} {
           label OK
           user_data this user_data_type {WandOptionsUI*}
@@ -76,7 +80,8 @@ v->uiMain->make_exec_return(false);}
       code {if ( pixel_type == "Char" ) _pixel_type = CharPixel;
 else if ( pixel_type == "Float" ) _pixel_type = FloatPixel;
 else if ( pixel_type == "Short" ) _pixel_type = ShortPixel;
-else if ( pixel_type == "Integer" ) _pixel_type = IntegerPixel;} {}
+else if ( pixel_type == "Integer" ) _pixel_type = IntegerPixel;
+_ACESmetadata = uiACESmetadata->value();} {}
     }
     Function {WandOptionsUI()} {open
     } {
