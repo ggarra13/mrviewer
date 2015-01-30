@@ -537,7 +537,9 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
 
-  attach_ctl_lmt_script( fg->image() );
+  CMedia* img = fg->image();
+
+  attach_ctl_lmt_script( img, img->number_of_lmts() );
 }
 
 static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )

@@ -644,15 +644,21 @@ namespace mrv {
 	ok = true;
       }
 
-    if ( img->look_mod_transform() )
+    if ( img->number_of_lmts() )
       {
-	std::string name = img->look_mod_transform();
-	Transform t( name, Transform::kCTL );
-	if ( !key.empty() ) key += " -> ";
-	key += name;
-	key += " (C)";
-	transforms.push_back( t );
-	ok = true;
+          size_t i = 0;
+          size_t num = img->number_of_lmts();
+
+          for ( ; i < num; ++i )
+          {
+              std::string name = img->look_mod_transform(i);
+              Transform t( name, Transform::kCTL );
+              if ( !key.empty() ) key += " -> ";
+              key += name;
+              key += " (C)";
+              transforms.push_back( t );
+              ok = true;
+          }
       }
 
     if ( img->rendering_transform() )
