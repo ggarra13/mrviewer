@@ -109,8 +109,9 @@ stringArray open_image_file( const char* startfile = NULL,
    * @param image      already loaded image
    * @param startfile  start filename (directory)
    */
-  void attach_ctl_lmt_script( CMedia* image, const char* ctlfile );
-  void attach_ctl_lmt_script( CMedia* image );
+void attach_ctl_lmt_script( CMedia* image, const char* ctlfile,
+                            const size_t idx);
+void attach_ctl_lmt_script( CMedia* image, const size_t idx );
 
   /**
    * Attach a CTL (Color Transform Language) IDT script to an image for display.

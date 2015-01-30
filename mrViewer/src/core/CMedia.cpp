@@ -166,7 +166,6 @@ CMedia::CMedia() :
   _displayWindow2( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
-  _look_mod_transform( NULL ),
   _idt_transform( NULL ),
   _playback( kStopped ),
   _aborted( false ),
@@ -244,7 +243,6 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _displayWindow2( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
-  _look_mod_transform( NULL ),
   _idt_transform( NULL ),
   _playback( kStopped ),
   _aborted( false ),
@@ -330,7 +328,6 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _displayWindow2( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
-  _look_mod_transform( NULL ),
   _idt_transform( NULL ),
   _playback( kStopped ),
   _aborted( false ),
@@ -454,7 +451,15 @@ CMedia::~CMedia()
   free( _label );
   free( _profile );
   free( _rendering_transform );
-  free( _look_mod_transform );
+
+  std::vector< char* >::iterator i = _look_mod_transform.begin();
+  std::vector< char* >::iterator e = _look_mod_transform.end();
+  for ( ; i != e; ++i )
+  {
+      free( *i );
+  }
+  _look_mod_transform.clear();
+
   free( _idt_transform );
 
 
@@ -1287,9 +1292,10 @@ void CMedia::idt_transform( const char* cfile )
  * 
  * @return CTL script or NULL
  */
-const char* CMedia::look_mod_transform()  const
+const char* CMedia::look_mod_transform( const size_t idx )  const
 {
-  return _look_mod_transform;
+    if ( idx >= _look_mod_transform.size() ) return NULL;
+    return _look_mod_transform[idx];
 }
 
 /** 
@@ -1297,15 +1303,38 @@ const char* CMedia::look_mod_transform()  const
  * 
  * @param cfile  CTL script name
  */
-void CMedia::look_mod_transform( const char* cfile )
+void CMedia::append_look_mod_transform( const char* cfile )
 {
-  free( _look_mod_transform ); _look_mod_transform = NULL;
-  if ( cfile && strlen(cfile) > 0 ) _look_mod_transform = strdup( cfile );
+  if ( cfile && strlen(cfile) > 0 ) 
+      _look_mod_transform.push_back( strdup( cfile ) );
   image_damage( image_damage() | kDamageData | kDamageLut );
   clear_cache();
   refresh();
 }
 
+/** 
+ * Change the look mod transform for the image
+ * 
+ * @param cfile  CTL script name
+ */
+void CMedia::look_mod_transform( const size_t idx, const char* cfile )
+{
+    if ( idx >= _look_mod_transform.size() ) return;
+
+    if ( cfile && strlen(cfile) > 0 ) 
+    {
+        _look_mod_transform.insert( _look_mod_transform.begin() + idx,
+                                    strdup( cfile ) );
+    }
+    else
+    {
+        free( _look_mod_transform[idx] );
+        _look_mod_transform.erase( _look_mod_transform.begin() + idx );
+    }
+  image_damage( image_damage() | kDamageData | kDamageLut );
+  clear_cache();
+  refresh();
+}
 
 /** 
  * Returns image color profile information (or NULL if no profile)
