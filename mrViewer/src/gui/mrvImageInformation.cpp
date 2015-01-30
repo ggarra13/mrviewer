@@ -69,6 +69,12 @@ const char* kModule = "info";
 namespace mrv
 {
 
+struct CtlLMTData
+{
+    fltk::Widget* widget;
+    size_t idx;
+};
+
   static const fltk::Color kTitleColors[] = {
     0x608080ff,
     0x808060ff,
@@ -584,7 +590,16 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     }
 
     add_ctl_idt( _("Input Device Transform"), img->idt_transform() );
-    add_ctl_lmt( _("Look Mod Transform"), img->look_mod_transform() );
+
+    {
+        size_t count = img->number_of_lmts();
+        for ( size_t i = 0; i <= count; ++i )
+        {
+            sprintf( buf, _("LMTransform %" PRId64), i+1 );
+            add_ctl_lmt( strdup( buf ), img->look_mod_transform(i), i );
+        }
+    }
+
     add_ctl( _("Render Transform"), img->rendering_transform() );
     
 
@@ -900,9 +915,14 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
   }
 
   void ImageInformation::ctl_lmt_callback( fltk::Widget* t,
-                                         ImageInformation* v )
+                                           CtlLMTData* c )
   {
-    attach_ctl_lmt_script( v->get_image() );
+      ImageInformation* v = (ImageInformation*) c->widget;
+      size_t idx = c->idx;
+
+      // delete c;
+
+      attach_ctl_lmt_script( v->get_image(), idx );
   }
 
   void ImageInformation::compression_cb( fltk::PopupMenu* t, ImageInformation* v )
@@ -1060,6 +1080,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
   void ImageInformation::add_ctl_lmt( const char* name,
                                       const char* content,
+                                      const size_t idx,
                                       const bool editable,
                                       fltk::Callback* callback )
   { 
@@ -1087,13 +1108,19 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       widget->align(fltk::ALIGN_LEFT);
       widget->box( fltk::FLAT_BOX );
       widget->color( colB );
+
+
+      CtlLMTData* c = new CtlLMTData;
+      c->widget = this;
+      c->idx    = idx;
+
       if ( callback )
-	widget->callback( (fltk::Callback*)ctl_lmt_callback, (void*)this );
+	widget->callback( (fltk::Callback*)ctl_lmt_callback, (void*)c );
 
       sg->add( widget );
       
       fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
-      pick->callback( (fltk::Callback*)ctl_lmt_callback, this );
+      pick->callback( (fltk::Callback*)ctl_lmt_callback, c );
       sg->add( pick );
       sg->resizable(widget);
 

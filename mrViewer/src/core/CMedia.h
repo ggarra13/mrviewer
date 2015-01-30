@@ -504,7 +504,8 @@ class CMedia
     /// Returns the size in memory of image or sequence (in bytes)
     size_t memory() const;
 
-    /// Returns the creation date
+
+
     virtual std::string const creation_date() const;
 
     /// Returns image ICC color profile
@@ -531,11 +532,19 @@ class CMedia
     /// Assigns a new input device transform ( CTL script ) 
     void idt_transform( const char* cfile );
 
-    /// Returns look mod transform name ( CTL script )
-    const char* look_mod_transform() const;
+    /// Returns the number of Look Mod Transforms ( CTL scripts )
+    inline size_t number_of_lmts() const { return _look_mod_transform.size(); }
 
-    /// Assigns a new look mod transform ( CTL script ) 
-    void look_mod_transform( const char* cfile );
+    /// Returns look mod transform name ( CTL script )
+    const char* look_mod_transform( const size_t idx ) const;
+
+    /// Appends a new look mod transform ( CTL script ) 
+    /// cfile cannot be NULL.
+    void append_look_mod_transform( const char* cfile );
+
+    /// Assigns a new look mod transform to a certain index ( CTL script )
+    /// If cfile is NULL, the look mod at the index is removed.
+    void look_mod_transform( const size_t idx, const char* cfile );
 
     /// True if image represents a sequence
     bool is_sequence() const { return _is_sequence; }
@@ -1145,7 +1154,7 @@ class CMedia
     char*     _rendering_transform;
 
     // Look Mod Transform for CTL
-    char*     _look_mod_transform;
+    std::vector< char* >     _look_mod_transform;
 
     // Input Device Transform for CTL
     char*     _idt_transform;
