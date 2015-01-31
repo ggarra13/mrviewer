@@ -33,9 +33,11 @@ set_target_properties( ACESclip
 add_executable( ACESclipWriter examples/writer.cpp )
 target_link_libraries( ACESclipWriter ACESclip )
 
-install( TARGETS ACESclip ACESclipWriter
+install( TARGETS ACESclipWriter ACESclip 
   RUNTIME DESTINATION bin
-  LIBRARY DESTINATION lib )
+  LIBRARY DESTINATION lib
+  ARCHIVE DESTINATION lib 
+  )
 
 install( FILES 
   include/ACESclipWriter.h

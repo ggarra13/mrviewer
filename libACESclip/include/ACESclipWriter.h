@@ -74,9 +74,9 @@ class ACES_EXPORT ACESclipWriter
      * @param version     version of application used.
      * @param comment     some comment of usefulness
      */
-    void info( std::string application = "ACESclipLib",
-               std::string version = kLibVersion,
-               std::string comment = "" );
+    void info( const std::string application = "ACESclipLib",
+               const std::string version = kLibVersion,
+               const std::string comment = "" );
 
     /** 
      * aces:clipID section
@@ -85,16 +85,16 @@ class ACES_EXPORT ACESclipWriter
      * @param media_id  media id ( show,shot,take, for example )
      * @param clip_date date of clip as return by stat
      */
-    void clip_id( std::string clip_name,
-                  std::string media_id,
-                  time_t clip_date = time(0) );
+    void clip_id( const std::string clip_name,
+                  const std::string media_id,
+                  const time_t clip_date = time(0) );
 
     /** 
      * aces:Config section
      * 
      * @param xml_date date of xml creation
      */
-    void config( time_t xml_date = time(0) );
+    void config( const time_t xml_date = time(0) );
 
     /** 
      * Input Transform List beginnings.
