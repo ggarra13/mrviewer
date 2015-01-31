@@ -133,9 +133,9 @@ ACESclipWriter::ACESclipWriter() : id( 1 )
  * @param version     Version of the application.
  * @param comment     Some additional comment (optional)
  */
-void ACESclipWriter::info( std::string application,
-                           std::string version,
-                           std::string comment )
+void ACESclipWriter::info( const std::string application,
+                           const std::string version,
+                           const std::string comment )
 {
     root2 = doc.NewElement( "aces:Info" );
     root->InsertEndChild( root2 );
@@ -160,9 +160,9 @@ void ACESclipWriter::info( std::string application,
  * @param media_id  identification of location of clip ( shot, for example )
  * @param clip_date time of clip ( as returned from stat )
  */
-void ACESclipWriter::clip_id( std::string clip_name,
-                              std::string media_id,
-                              time_t clip_date )
+void ACESclipWriter::clip_id( const std::string clip_name,
+                              const std::string media_id,
+                              const time_t clip_date )
 {
 
     root2 = doc.NewElement( "aces:ClipID" );
@@ -188,7 +188,7 @@ void ACESclipWriter::clip_id( std::string clip_name,
  * 
  * @param xml_date time_t of date XML file was modified.
  */
-void ACESclipWriter::config( time_t xml_date )
+void ACESclipWriter::config( const time_t xml_date )
 {
     root2 = doc.NewElement( "aces:Config" );
     root->InsertEndChild( root2 );
