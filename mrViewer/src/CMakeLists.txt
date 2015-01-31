@@ -82,7 +82,7 @@ INCLUDE_DIRECTORIES(
   ./db
   ./gui
   ./video
-  ../../mrClasses/mrClasses
+  ../../libACESclip/include
 #  /usr/include/cairo
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
@@ -183,7 +183,6 @@ SET( SOURCES
   gui/FLU/GridGroup.cpp
   #   #   FLU/Flu_Combo_List.cpp # unneeded
 
-  core/mrvACES.cpp
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
   gui/mrvColorOps.cpp
@@ -285,22 +284,14 @@ ELSE(NOT WIN32)
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32)
 
-IF( AO_FOUND )
-  ADD_DEFINITIONS( -DHAVE_LIB_AO )
-  SET( SOURCES audio/mrvAOEngine.cpp ${SOURCES} )
-  SET( OS_LIBRARIES ${AO_LIBRARIES} ${OS_LIBRARIES} )
-ELSE( AO_FOUND )
-
-  IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-    SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
-    SET( SOURCES gui/resource.rc ${SOURCES} )
-  ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
-    SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
-  ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-ENDIF( AO_FOUND )
-
-MESSAGE( "OPENGL LIBS=${OPENGL_LIBRARIES}" )
-
+IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
+  SET( SOURCES gui/resource.rc ${SOURCES} )
+ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
+  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+ 
+ 
 
 SET( LIBRARIES 
   ${POSTGRESQL_LIBRARIES}
@@ -328,7 +319,7 @@ endif(COMMAND cmake_policy)
 
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
-TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} )
+TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
 
 SET_TARGET_PROPERTIES( mrViewer
   PROPERTIES

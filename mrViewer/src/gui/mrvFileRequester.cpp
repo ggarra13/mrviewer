@@ -369,10 +369,10 @@ bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
         mrv::split_sequence( root, frame, view, ext, file );
 
         fs::path f = root;
-        std::string filename = f.filename().c_str();
+        std::string filename = f.filename().string();
 
         std::string xml;
-        xml = f.parent_path().c_str();
+        xml = f.parent_path().string();
         xml += "/ACESclip.";
         xml += filename;
         xml += "xml";
