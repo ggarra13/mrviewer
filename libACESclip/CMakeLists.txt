@@ -9,7 +9,7 @@ find_package( TinyXML2 REQUIRED )
 find_package( Boost REQUIRED )
 
 include_directories( 
-  include
+  ${CMAKE_CURRENT_SOURCE_DIR}/include
   ${TINYXML2_INCLUDE_DIR}
   ${Boost_INCLUDE_DIR}
   )
