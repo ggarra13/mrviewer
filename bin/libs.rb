@@ -35,8 +35,12 @@ libz.so.1
 )
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
+version = `uname -r`
+version.chop!()
+@root = "BUILD/Linux-#{version}-64"
+
 begin
-  FileUtils.rm( Dir.glob("Release/lib/*.so*") )
+  FileUtils.rm( Dir.glob("#{@root}/Release/lib/*.so*") )
 rescue => e
   puts e
   exit 1
@@ -63,19 +67,18 @@ def process_ldd( output )
     end
 
     begin
-      FileUtils.rm("Release/lib/#{lib}")
+      FileUtils.rm("#{@root}/Release/lib/#{lib}")
     rescue
     end
 
-    puts "#{lib} - #{loc}"
-    #FileUtils.ln_s(loc, "Release/lib/#{lib}" )
-    FileUtils.cp(loc, "Release/lib/#{lib}" )
+    puts "#{loc} -> #{lib}"
+    FileUtils.ln_s(loc, "#{@root}/Release/lib/#{lib}" )
   end
 end
 
 
-output=`ldd Release/bin/mrViewer`
+output=`ldd "#{@root}/Release/bin/mrViewer"`
 process_ldd( output )
 
-output=`ldd Release/bin/ffmpeg`
+output=`ldd "#{@root}/Release/bin/ffmpeg"`
 process_ldd( output )
