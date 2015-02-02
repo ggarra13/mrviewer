@@ -538,6 +538,9 @@ class CMedia
     /// Returns look mod transform name ( CTL script )
     const char* look_mod_transform( const size_t idx ) const;
 
+    /// Clears all the look mod transforms.
+    void clear_look_mod_transform();
+
     /// Appends a new look mod transform ( CTL script ) 
     /// cfile cannot be NULL.
     void append_look_mod_transform( const char* cfile );

@@ -1,11 +1,15 @@
 
 #include <vector>
 
+#include <boost/filesystem.hpp>
+
 #include <fltk/run.h>
 
 #include "ACESclipWriter.h"
+#include "ACESclipReader.h"
 
 #include "core/CMedia.h"
+#include "core/Sequence.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvPreferences.h"
@@ -15,6 +19,55 @@ const char* kModule = "aces";
 }
 
 namespace mrv {
+
+std::string aces_xml_filename( const char* file )
+{
+    namespace fs = boost::filesystem;
+
+    std::string root, frame, view, ext;
+    mrv::split_sequence( root, frame, view, ext, file );
+
+    fs::path f = root;
+    std::string filename = f.filename().string();
+
+    std::string xml;
+    xml = f.parent_path().string();
+    xml += "/ACESclip.";
+    xml += filename;
+    xml += "xml";
+
+    return xml;
+}
+
+
+bool load_aces_xml( CMedia* img, const char* filename )
+{
+    ACES::ACESclipReader c;
+    if ( ! c.load( filename ) )
+        return false;
+
+    if ( c.IDT.status == ACES::kPreview && !c.IDT.name.empty() )
+        img->idt_transform( c.IDT.name.c_str() );
+
+    size_t num = c.LMT.size();
+    size_t i = 0;
+    img->clear_look_mod_transform();
+    for ( ; i < num; ++i )
+    {
+        if ( c.LMT[i].status != ACES::kPreview )
+            continue;
+        img->append_look_mod_transform( c.LMT[i].name.c_str() );
+    }
+
+    if ( c.RRT.status == ACES::kPreview && !c.RRT.name.empty() )
+        img->rendering_transform( c.RRT.name.c_str() );
+
+    if ( c.ODT.status == ACES::kPreview && !c.ODT.name.empty() )
+        mrv::Preferences::ODT_CTL_transform = c.ODT.name;
+
+    LOG_INFO( "Loaded ACES clip metadata file '" << filename << "'" );
+    return true;
+}
 
 bool save_aces_xml( const CMedia* img, const char* filename )
 {
@@ -32,7 +85,7 @@ bool save_aces_xml( const CMedia* img, const char* filename )
 
     sprintf( buf, "%s-%s", show, shot );
 
-    c.clip_id( img->filename(), buf);
+    c.clip_id( img->fileroot(), buf, img->mtime() );
     c.config();
 
     c.ITL_start();

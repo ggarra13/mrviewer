@@ -20,7 +20,9 @@ endif(WIN32)
 
 
 add_library( ACESclip SHARED 
-  lib/ACESclipWriter.cpp )
+  src/ACESclipWriter.cpp
+  src/ACESclipReader.cpp 
+  )
 
 set( LIBRARIES ${TINYXML2_LIBRARIES} )
 
@@ -33,13 +35,17 @@ set_target_properties( ACESclip
 add_executable( ACESclipWriter examples/writer.cpp )
 target_link_libraries( ACESclipWriter ACESclip )
 
-install( TARGETS ACESclipWriter ACESclip 
+add_executable( ACESclipReader examples/reader.cpp )
+target_link_libraries( ACESclipReader ACESclip )
+
+install( TARGETS ACESclipWriter ACESclipReader ACESclip 
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib 
   )
 
 install( FILES 
+  include/ACESclipReader.h
   include/ACESclipWriter.h
   include/ACESExport.h
   include/ACESTransform.h

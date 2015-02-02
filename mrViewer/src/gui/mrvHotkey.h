@@ -144,10 +144,12 @@ struct Hotkey
 
 extern Hotkey kOpenImage;
 extern Hotkey kOpenSingleImage;
+extern Hotkey kOpenClipXMLMetadata;
 extern Hotkey kSaveReel;
 extern Hotkey kSaveImage;
 extern Hotkey kSaveSnapshot;
 extern Hotkey kSaveSequence;
+extern Hotkey kSaveClipXMLMetadata;
 extern Hotkey kIccProfile;
 extern Hotkey kIDTScript;
 extern Hotkey kLookModScript;
