@@ -116,7 +116,7 @@ class ACES_EXPORT ACESclipWriter
      * 
      * @param it pointer to combined process list
      */
-    void ITL_end( const std::string it = "inputTransformID" );
+    void ITL_end( const std::string it = "" );
 
 
     /** 
@@ -161,7 +161,7 @@ class ACES_EXPORT ACESclipWriter
      * 
      * @param t Combined LMTs + RRT + ODT (optional)
      */
-    void PTL_end( const std::string t = "CombinedLMT_RRT_ODT" );
+    void PTL_end( const std::string t = "" );
 
 
     /** 

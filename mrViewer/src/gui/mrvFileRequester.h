@@ -122,6 +122,9 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx );
   void attach_ctl_idt_script( CMedia* image, const char* ctlfile );
   void attach_ctl_idt_script( CMedia* image );
 
+void read_clip_xml_metadata( CMedia* image );
+void save_clip_xml_metadata( const CMedia* image );
+
   /** 
    * Opens a file requester to load audio files
    * 

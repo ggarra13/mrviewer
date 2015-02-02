@@ -36,10 +36,12 @@ namespace mrv {
 // ctrl, meta, alt, shift, key
 Hotkey kOpenImage( true, false, false, false, 'o' );
 Hotkey kOpenSingleImage( true, false, true, false, 'o' );
+Hotkey kOpenClipXMLMetadata( true, false, false, false, 'x' );
 Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
 Hotkey kSaveSnapshot( false, false, true, false, 's' );
+Hotkey kSaveClipXMLMetadata( true, false, true, false, 'x' );
 Hotkey kIccProfile( true, false, false, false, 'i' );
 Hotkey kIDTScript( true, false, false, true, 'i' );
 Hotkey kLookModScript( true, false, false, false, 'l' );
@@ -124,10 +126,12 @@ Hotkey kClearCache( false, false, false, false, 'k' );
 HotkeyEntry hotkeys[] = {
 HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
 HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
+HotkeyEntry( _("Open Clip XML Metadata"), kOpenClipXMLMetadata),
 HotkeyEntry( _("Save Reel"), kSaveReel),
 HotkeyEntry( _("Save Image"), kSaveImage),
 HotkeyEntry( _("Save GL Snapshot"), kSaveSnapshot),
 HotkeyEntry( _("Save Sequence"), kSaveSequence),
+HotkeyEntry( _("Save Clip XML Metadata"), kSaveClipXMLMetadata),
 HotkeyEntry( _("Image Icc Profile"), kIccProfile ),
 HotkeyEntry( _("Image CTL script"), kCTLScript ),
 HotkeyEntry( _("Monitor Icc Profile"), kMonitorIccProfile ),
