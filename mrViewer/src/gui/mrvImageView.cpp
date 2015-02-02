@@ -2926,6 +2926,11 @@ int ImageView::keyDown(unsigned int rawkey)
       open_single_cb( this, browser() );
       return 1;
    }
+   else if ( kOpenClipXMLMetadata.match( rawkey ) )
+   {
+      open_clip_xml_metadata_cb( this, this );
+      return 1;
+   }
    else if ( kCloneImage.match( rawkey ) )
    {
       clone_image_cb( NULL, browser() );
@@ -2934,6 +2939,11 @@ int ImageView::keyDown(unsigned int rawkey)
    else if ( kSaveImage.match( rawkey ) )
    {
       browser()->save();
+      return 1;
+   }
+   else if ( kSaveClipXMLMetadata.match( rawkey ) )
+   {
+      save_clip_xml_metadata_cb( this, this );
       return 1;
    }
    else if ( kIccProfile.match( rawkey ) )
