@@ -452,14 +452,7 @@ CMedia::~CMedia()
   free( _profile );
   free( _rendering_transform );
 
-  std::vector< char* >::iterator i = _look_mod_transform.begin();
-  std::vector< char* >::iterator e = _look_mod_transform.end();
-  for ( ; i != e; ++i )
-  {
-      free( *i );
-  }
-  _look_mod_transform.clear();
-
+  clear_look_mod_transform();
   free( _idt_transform );
 
 
@@ -1296,6 +1289,19 @@ const char* CMedia::look_mod_transform( const size_t idx )  const
 {
     if ( idx >= _look_mod_transform.size() ) return NULL;
     return _look_mod_transform[idx];
+}
+
+
+void CMedia::clear_look_mod_transform()
+{
+  std::vector< char* >::iterator i = _look_mod_transform.begin();
+  std::vector< char* >::iterator e = _look_mod_transform.end();
+  for ( ; i != e; ++i )
+  {
+      free( *i );
+  }
+  _look_mod_transform.clear();
+
 }
 
 /** 

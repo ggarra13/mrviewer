@@ -101,6 +101,7 @@
 #include "core/mrvHome.h"
 #include "core/mrStackTrace.h"
 #include "core/exrImage.h"
+#include "core/mrvACES.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -276,6 +277,26 @@ void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 void open_single_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
   uiReelWindow->open_single();
+}
+
+void open_clip_xml_metadata_cb( fltk::Widget* o, 
+                                mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  mrv::CMedia* img = fg->image();
+  read_clip_xml_metadata( img );
+}
+
+void save_clip_xml_metadata_cb( fltk::Widget* o, 
+                                mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  mrv::CMedia* img = fg->image();
+  save_clip_xml_metadata( img );
 }
 
 void save_cb( fltk::Widget* o, mrv::ImageView* view )
@@ -2007,6 +2028,9 @@ int ImageView::leftMouseDown(int x, int y)
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
+             menu.add( _("File/Open/Clip XML Metadata"),
+                       kOpenClipXMLMetadata.hotkey(),
+                       (fltk::Callback*)open_clip_xml_metadata_cb, this );
 	    menu.add( _("File/Save/Movie or Sequence As"), 
                       kSaveSequence.hotkey(),
 		      (fltk::Callback*)save_sequence_cb, this ); 
@@ -2016,6 +2040,9 @@ int ImageView::leftMouseDown(int x, int y)
 		      (fltk::Callback*)save_cb, this ); 
 	    menu.add( _("File/Save/GL Snapshot As"), kSaveSnapshot.hotkey(),
 		      (fltk::Callback*)save_snap_cb, this ); 
+	    menu.add( _("File/Save/Clip XML Metadata As"),
+                      kSaveClipXMLMetadata.hotkey(),
+		      (fltk::Callback*)save_clip_xml_metadata_cb, this ); 
 	 }
 
 	 char buf[256];
