@@ -82,6 +82,8 @@ static const char* kModule = "file";
 
   static const std::string kCTLPattern = "ctl,CTL";
 
+  static const std::string kXMLPattern = "xml,XML";
+
 
   // Actual FLTK file requester patterns
   static const std::string kICC_PATTERN   = 
@@ -108,6 +110,9 @@ static const char* kModule = "file";
 
 static const std::string kCTL_PATTERN =
 "CTL script (*.{" + kCTLPattern + "})\t";
+
+static const std::string kXML_PATTERN =
+"XML Clip Metadata (*.{" + kXMLPattern + "})\t";
 
 }
 
@@ -331,6 +336,32 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx )
 
 
 
+  void read_clip_xml_metadata( CMedia* img )
+  {
+    if ( !img ) return;
+
+    std::string xml = aces_xml_filename( img->fileroot() );
+
+    const char* file = flu_file_chooser("Load XML Clip Metadata", 
+                                        kXML_PATTERN.c_str(), xml.c_str());
+    if (!file) return;
+
+    load_aces_xml( img, file );
+
+  }
+
+void save_clip_xml_metadata( const CMedia* img )
+{
+    if ( !img ) return;
+
+    std::string xml = aces_xml_filename( img->fileroot() );
+
+    const char* file = flu_file_chooser("Save XML Clip Metadata", 
+                                        kXML_PATTERN.c_str(), xml.c_str());
+    if (!file) return;
+
+    save_aces_xml( img, file );
+}
 
   void monitor_ctl_script( const unsigned index, const char* startfile )
   {
@@ -361,24 +392,9 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx )
 bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
                const char* file )
 {
-    namespace fs = boost::filesystem;
-
     if ( ipts && ipts->ACES_metadata() )
     {
-        std::string root, frame, view, ext;
-        mrv::split_sequence( root, frame, view, ext, file );
-
-        fs::path f = root;
-        std::string filename = f.filename().string();
-
-        std::string xml;
-        xml = f.parent_path().string();
-        xml += "/ACESclip.";
-        xml += filename;
-        xml += "xml";
-
-        LOG_INFO( "Saving XML ACES file " << xml );
-
+        const std::string& xml = aces_xml_filename( file );
         save_aces_xml( img, xml.c_str() );
     }
     return true;

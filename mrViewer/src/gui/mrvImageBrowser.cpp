@@ -54,6 +54,7 @@ namespace fs = boost::filesystem;
 #include "core/slateImage.h"
 #include "core/mrvLicensing.h"
 #include "core/Sequence.h"
+#include "core/mrvACES.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvThread.h"
 #include "core/mrStackTrace.h"
@@ -1949,8 +1950,12 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	     }
              if ( fg )
              {
-                 GLShapeList& shapes = fg->image()->shapes();
+                 CMedia* img = fg->image();
+                 GLShapeList& shapes = img->shapes();
                  shapes = load.shapes;
+
+                 std::string xml = aces_xml_filename( img->fileroot() );
+                 load_aces_xml( img, xml.c_str() );
              }
 	  }
 

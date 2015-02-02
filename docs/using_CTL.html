@@ -1,6 +1,7 @@
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<!DOCTYPE html PUBLIC
+ "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Using the Color Transform Language</title><meta content="Gonzalo Garramuño" name="author"></head><body><h1 style="text-align: center;">Using the Color Transform Language (CTL)</h1><p>mrViewer uses AMPAS' Color Transform Language (CTL) for doing its color corrections and table look ups.</p><p>mrViewer currently ships with some basic transforms that will internally operate on the image on CIE 1931 XYZ space. &nbsp;CIE XYZ is chosen as it represents a virtually unlimited gamut and dynamic range. </p><p>mrViewer
-can have three different CTL transformations active at the same time.
+can have multiple CTL transformations active at the same time.
 &nbsp;One transform is attached to the main view window and represents
 the monitor, video or film stock. &nbsp;This transform within the CTL
 naming conventions is often called the Output Device Transform (ODT).
@@ -18,8 +19,10 @@ the project. &nbsp;mrViewer ships with a basic Rendering Transform that
 was given by AMPAS to provide a Reference Rendering
 Transform for Film which should become the standard for most film
 productions. &nbsp;If your project requires some special film effect
-(like bleach film), a special render transform should be used.</p>A
+(like bleach film), a special render transform might need to be used.</p>A
 third transform available is the Look Modification Transform (LMT).
 &nbsp;This transformation is intended mainly for camera devices to take
 their input images and color correct them based on certain knobs as
-done on set and is particular to each camera model.<p></p></body></html>
+done on set and is particular to each camera model.  You can have an unlimited number of LMTs.<p></p>
+Finally, there's an Input Device Transform (IDT) which is a transform used to take the camera's raw data into a proper ACES workspace.  mrViewer ships with a list of input device transforms for a lot of popular film cameras.
+</body></html>
