@@ -42,6 +42,8 @@
 #  include <GL/glxew.h>
 #endif
 
+#include <fltk/Cursor.h>
+
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
 
@@ -1003,8 +1005,13 @@ namespace mrv {
   {
     if ( _lut && img == _image ) return;
 
+    _view->window()->cursor( fltk::CURSOR_WAIT );
+    fltk::check();
+
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;
+
+
   }
 
 
