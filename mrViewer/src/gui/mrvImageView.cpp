@@ -2936,10 +2936,25 @@ int ImageView::keyDown(unsigned int rawkey)
       clone_image_cb( NULL, browser() );
       return 1;
    }
+   else if ( kSaveSequence.match( rawkey ) )
+   {
+       save_sequence_cb( this, this );
+       return 1;
+   }
    else if ( kSaveImage.match( rawkey ) )
    {
       browser()->save();
       return 1;
+   }
+   else if ( kSaveReel.match( rawkey ) )
+   {
+       save_reel_cb( this, this );
+       return 1;
+   }
+   else if ( kSaveSnapshot.match( rawkey ) )
+   {
+       save_snap_cb( this, this );
+       return 1;
    }
    else if ( kSaveClipXMLMetadata.match( rawkey ) )
    {
