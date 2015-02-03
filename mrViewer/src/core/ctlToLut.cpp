@@ -55,6 +55,9 @@
 //
 //-----------------------------------------------------------------------------
 
+#include <cassert>
+#include <iostream>
+
 #include <ctlToLut.h>
 
 #include "core/mrvOS.h"
@@ -63,8 +66,6 @@
 #include <ImfStandardAttributes.h>
 #include <ImfHeader.h>
 #include <ImfFrameBuffer.h>
-#include <cassert>
-#include <iostream>
 
 #include "gui/mrvPreferences.h"
 #include "core/CMedia.h"
@@ -121,13 +122,8 @@ ctlToLut (std::vector<std::string> transformNames,
 	  Header inHeader,
 	  size_t lutSize,
 	  const float pixelValues[/*lutSize*/],
-#ifdef CTL_GIT
 	  float lut[/*lutSize*/],
 	  const char* inChannels[4]
-#else
-	  half lut[/*lutSize*/],
-	  const char* inChannels[3]
-#endif
 )
 {
 
@@ -174,17 +170,13 @@ ctlToLut (std::vector<std::string> transformNames,
 			4 * sizeof (float),		// xStride
 			0));				// yStride
 
-#ifdef CTL_GIT
     inFb.insert (inChannels[3],
 		 Slice (Imf::FLOAT,			// type
 			(char *)(pixelValues + 3),	// base
 			4 * sizeof (float),		// xStride
 			0));
-#endif
 
     FrameBuffer outFb;
-
-#ifdef CTL_GIT
 
     outFb.insert ("rOut",
 		  Slice (Imf::FLOAT,			// type
@@ -209,26 +201,6 @@ ctlToLut (std::vector<std::string> transformNames,
 			 (char *)(lut + 3),		// base
 			 4 * sizeof (float),		// xStride
 			 0));				// yStride
-#else
-
-    outFb.insert ("R_display",
-		  Slice (Imf::HALF,			// type
-			 (char *)lut,			// base
-			 4 * sizeof (half),		// xStride
-			 0));				// yStride
-
-    outFb.insert ("G_display",
-		  Slice (Imf::HALF,			// type
-			 (char *)(lut + 1),		// base
-			 4 * sizeof (half),		// xStride
-			 0));				// yStride
-
-    outFb.insert ("B_display",
-		  Slice (Imf::HALF,			// type
-			 (char *)(lut + 2),		// base
-			 4 * sizeof (half),		// xStride
-			 0));				// yStride
-#endif
 
     //
     // Run the CTL transforms.
@@ -260,108 +232,5 @@ ctlToLut (std::vector<std::string> transformNames,
 			     outFb);
 }
 
-
-
-void
-ctlToLut (std::vector<std::string> transformNames,
-	  Header inHeader,
-	  size_t lutSize,
-	  const half pixelValues[/*lutSize*/],
-	  half lut[/*lutSize*/],
-	  const char* inChannels[3])
-{
-
-    //
-    // Initialize an input and an environment header:
-    // Make sure that the headers contain information about the primaries
-    // and the white point of the image files an the display, and about
-    // the display's white luminance and surround luminance.
-    //
-
-    Header envHeader;
-    Header outHeader;
-
-    if (!hasChromaticities (inHeader))
-      {
-	addChromaticities (inHeader, Chromaticities());
-      }
-
-    initializeEnvHeader (envHeader);
-
-    //
-    // Set up input and output FrameBuffer objects for the CTL transforms.
-    //
-
-    assert (lutSize % 4 == 0);
-
-    FrameBuffer inFb;
-
-    inFb.insert (inChannels[0],
-		 Slice (Imf::HALF,			// type
-		        (char *)pixelValues,		// base
-			4 * sizeof (half),		// xStride
-			0));				// yStride
-
-    inFb.insert (inChannels[1],
-		 Slice (Imf::HALF,			// type
-			(char *)(pixelValues + 1),	// base
-			4 * sizeof (half),		// xStride
-			0));				// yStride
-
-    inFb.insert (inChannels[2],
-		 Slice (Imf::HALF,			// type
-			(char *)(pixelValues + 2),	// base
-			4 * sizeof (half),		// xStride
-			0));				// yStride
-
-    FrameBuffer outFb;
-
-    outFb.insert ("R_display",
-		  Slice (Imf::HALF,			// type
-			 (char *)lut,			// base
-			 4 * sizeof (half),		// xStride
-			 0));				// yStride
-
-    outFb.insert ("G_display",
-		  Slice (Imf::HALF,			// type
-			 (char *)(lut + 1),		// base
-			 4 * sizeof (half),		// xStride
-			 0));				// yStride
-
-    outFb.insert ("B_display",
-		  Slice (Imf::HALF,			// type
-			 (char *)(lut + 2),		// base
-			 4 * sizeof (half),		// xStride
-			 0));				// yStride
-
-    //
-    // Run the CTL transforms.
-    //
-
-    SimdInterpreter interpreter;
-
-    #ifdef CTL_MODULE_BASE_PATH
-
-	//
-	// The configuration scripts has defined a default
-	// location for CTL modules.  Include this location
-	// in the CTL module search path.
-	//
-
-	std::vector< std::string > paths = interpreter.modulePaths();
-	paths.push_back (CTL_MODULE_BASE_PATH);
-	interpreter.setModulePaths (paths);
-
-    #endif
-
-    ImfCtl::applyTransforms (interpreter,
-			     transformNames,
-			     Box2i (V2i (0, 0), V2i (unsigned(lutSize) / 4, 0)),
-			     envHeader,
-			     inHeader,
-			     inFb,
-			     outHeader,
-			     outFb);
-}
 
 

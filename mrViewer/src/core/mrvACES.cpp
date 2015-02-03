@@ -46,7 +46,9 @@ bool load_aces_xml( CMedia* img, const char* filename )
     if ( ! c.load( filename ) )
         return false;
 
-    if ( c.IDT.status == ACES::kPreview && !c.IDT.name.empty() )
+    if ( !c.link_ITL.empty() )
+        img->idt_transform( c.link_ITL.c_str() );
+    else if ( c.IDT.status == ACES::kPreview && !c.IDT.name.empty() )
         img->idt_transform( c.IDT.name.c_str() );
 
     size_t num = c.LMT.size();
