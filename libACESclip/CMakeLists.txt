@@ -32,21 +32,33 @@ set_target_properties( ACESclip
   PROPERTIES
   SOVERSION ${SOVERSION})
 
-add_executable( ACESclipWriter examples/writer.cpp )
-target_link_libraries( ACESclipWriter ACESclip )
 
-add_executable( ACESclipReader examples/reader.cpp )
-target_link_libraries( ACESclipReader ACESclip )
+set( ACESexecutables "" )
 
-install( TARGETS ACESclipWriter ACESclipReader ACESclip 
+if( NOT DEFINED LIB_ACES_CLIP_ONLY )
+  message( STATUS "LIB_ACES_CLIP_ONLY=${LIB_ACES_CLIP_ONLY}" )
+  add_executable( ACESclipWriter examples/writer.cpp )
+  target_link_libraries( ACESclipWriter ACESclip )
+
+  add_executable( ACESclipReader examples/reader.cpp )
+  target_link_libraries( ACESclipReader ACESclip )
+
+  set( ACESexecutables ACESclipWriter ACESclipReader )
+
+endif(NOT DEFINED LIB_ACES_CLIP_ONLY )
+
+install( TARGETS ${ACESexecutables} ACESclip 
   RUNTIME DESTINATION bin
   LIBRARY DESTINATION lib
   ARCHIVE DESTINATION lib 
   )
 
-install( FILES 
-  include/ACESclipReader.h
-  include/ACESclipWriter.h
-  include/ACESExport.h
-  include/ACESTransform.h
+if(NOT WIN32)
+
+  install( FILES 
+       include/ACESclipReader.h
+       include/ACESclipWriter.h
+       include/ACESExport.h
+       include/ACESTransform.h
   DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
+endif(NOT WIN32)

@@ -269,22 +269,9 @@ namespace mrv {
     // e raised to the power of the result of the texture lookup.
     //
 
-#ifndef CTL_GIT
-    Imf::Array<half> pixelValues ( lut_size() );
-
-    if ( !_inited )
-      {
-	 clear_lut();
-	 init_pixel_values( pixelValues );
-      }
-    else
-      {
-	half* dst = pixelValues;
-	memcpy( dst, &lut[0], lut_size() * sizeof(half) );
-      }
-#else
+      // @bug: CTL would crash if pixel values was set to lut_size()
+      //       We pad here 4 more bytes and that prevents the crash.
     Imf::Array<float> pixelValues( lut_size2() );
-#endif
 
     //
     // Generate output pixel values by applying CTL transforms
@@ -296,28 +283,9 @@ namespace mrv {
 
     static const char* InRGBAchannels[4] = { N_("rIn"), N_("gIn"), N_("bIn"),
                                              N_("aIn") };
-    static const char* OutRGBchannels[4] = { N_("rOut"), N_("gOut"), 
-                                             N_("bOut"), N_("aOut") };
 
-    static const char* RGBAchannels[4] = { N_("R"), N_("G"), N_("B"), N_("A") };
-    static const char* XYZAchannels[4] = { N_("X_OCES"), N_("Y_OCES"), 
-					  N_("Z_OCES"), N_("A") };
-
-#ifndef CTL_GIT
-    if ( flags & kXformFirst || (!(flags & kXformLast)) )
-      {
-	channelNames = RGBAchannels;
-      }
-    else
-      {
-	channelNames = XYZAchannels;
-      }
-#else
     channelNames = InRGBAchannels;
-#endif
 
-
-#ifdef CTL_GIT
     TransformNames transformNames;
     Transforms::const_iterator i = start;
     for ( ; i != end; ++i )
@@ -364,32 +332,6 @@ namespace mrv {
           }
       }
 
-#else
-
-    TransformNames transformNames;
-    Transforms::const_iterator i = start;
-    for ( ; i != end; ++i )
-      {
-	transformNames.push_back( (*i).name );
-      }
-
-    try
-      {
-          ctlToLut( transformNames, header, lut_size(), pixelValues, lut,
-                    channelNames );
-          _inited = true;
-      }
-    catch( const std::exception& e )
-      {
-          LOG_ERROR( e.what() );
-          return false;
-      }
-    catch( ... )
-      {
-          LOG_ERROR( _("Unknown error returned from ctlToLut") );
-          return false;
-      }
-#endif
 
     return true;
   }
