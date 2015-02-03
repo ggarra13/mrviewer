@@ -41,7 +41,7 @@ Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
 Hotkey kSaveSequence( true, false, false, true, 's' );
 Hotkey kSaveSnapshot( false, false, true, false, 's' );
-Hotkey kSaveClipXMLMetadata( true, false, true, false, 'x' );
+Hotkey kSaveClipXMLMetadata( false, false, true, false, 'x' );
 Hotkey kIccProfile( true, false, false, false, 'i' );
 Hotkey kIDTScript( true, false, false, true, 'i' );
 Hotkey kLookModScript( true, false, false, false, 'l' );
