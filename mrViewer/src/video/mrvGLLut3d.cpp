@@ -37,9 +37,11 @@
 #include <ImfVecAttribute.h>
 #include <ImfStandardAttributes.h>
 
+#include <fltk/Cursor.h>
+
 #include "IccProfile.h"
 #include "IccCmm.h"
-
+ 
 
 #include "ctlToLut.h"
 #include "mrvIO.h"

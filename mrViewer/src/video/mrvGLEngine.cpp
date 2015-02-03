@@ -1325,6 +1325,7 @@ void GLEngine::draw_images( ImageList& images )
               }
 	    }
 
+
 	  quad->lut( img );
 
           if ( img->is_stereo() && (img->stereo_type() & 
@@ -1332,6 +1333,7 @@ void GLEngine::draw_images( ImageList& images )
           {
              (*(q+1))->lut( img );
           }
+
 	}
 
       if ( i+1 == e ) wipe_area();
