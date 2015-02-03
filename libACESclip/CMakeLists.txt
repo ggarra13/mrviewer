@@ -36,7 +36,6 @@ set_target_properties( ACESclip
 set( ACESexecutables "" )
 
 if( NOT DEFINED LIB_ACES_CLIP_ONLY )
-  message( STATUS "LIB_ACES_CLIP_ONLY=${LIB_ACES_CLIP_ONLY}" )
   add_executable( ACESclipWriter examples/writer.cpp )
   target_link_libraries( ACESclipWriter ACESclip )
 
@@ -55,10 +54,13 @@ install( TARGETS ${ACESexecutables} ACESclip
 
 if(NOT WIN32)
 
-  install( FILES 
-       include/ACESclipReader.h
-       include/ACESclipWriter.h
-       include/ACESExport.h
-       include/ACESTransform.h
-  DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
+  if( NOT DEFINED LIB_ACES_CLIP_ONLY )
+    install( FILES 
+      include/ACESclipReader.h
+      include/ACESclipWriter.h
+      include/ACESExport.h
+      include/ACESTransform.h
+      DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
+  endif(NOT DEFINED LIB_ACES_CLIP_ONLY )
+
 endif(NOT WIN32)
