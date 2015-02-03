@@ -1996,6 +1996,7 @@ int ImageView::leftMouseDown(int x, int y)
 
 	 _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
 	 window()->cursor(fltk::CURSOR_CROSS);
+	 fltk::check();
       }
 
    
@@ -3579,6 +3580,7 @@ int ImageView::handle(int event)
       focus(this);
       fltk::GlWindow::handle( event );
       window()->cursor(fltk::CURSOR_CROSS);
+      fltk::cursor( fltk::CURSOR_CROSS );
       return 1;
     case fltk::LEAVE:
       fltk::GlWindow::handle( event ); 
