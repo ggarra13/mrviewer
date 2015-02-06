@@ -1,0 +1,4 @@
+ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
+
+update-mime-database /usr/share/mime
+
