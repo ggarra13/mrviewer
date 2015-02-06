@@ -1,13 +1,23 @@
 #!/bin/bash --norc
 
 
+symlink=`readlink ${0}`
+
+if [ "$symlink" != "" ]; then
+    dir="$symlink"
+    dir=${dir%/*}
+else
 # Find directory where mrViewer bash script resides
-dir=${0%/*}
+    dir=${0%/*}
+fi
 
 # If running from current directory, get full path
 if [ "$dir" == '.' ]; then
     dir=$PWD
 fi
+
+
+
 
 #
 # Platform specific directory for mrViewer
