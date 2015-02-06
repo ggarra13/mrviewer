@@ -1,6 +1,7 @@
 v2.7.0   - Added ACEScsc files as IDTs.
 	 - Made xml and ctl files never show as sequences of frames in
 	   file requester.
+	 - On Linux, now mrViewer is added to the system path thru a symlink.
 
 v2.6.9   - Bug fixed Cancel button in CTL requester.
 	 - Added a Load button to CTL requester to load CTL scripts not in

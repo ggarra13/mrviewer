@@ -385,10 +385,18 @@ ELSEIF (UNIX)
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/mrViewer.config
-                    ${CMAKE_SOURCE_DIR}/config/mrViewer.desktop )
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/Linux/mrViewer.desktop.in
+                    ${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop )
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/config/Linux/install.sh.in
+        ${PROJECT_BINARY_DIR}/config/Linux/install.sh
+        @ONLY)
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/config/Linux/uninstall.sh.in
+        ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh
+        @ONLY)
 
-    INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.desktop 
+    INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop 
              DESTINATION ${MRV_DESKTOP_DIR})
     INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.png 
              DESTINATION ${MRV_PIXMAPS_DIR})
@@ -412,6 +420,24 @@ ELSEIF (UNIX)
     SET(CPACK_DEBIAN_PACKAGE_NAME mrViewer)
     SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ggarra13@gmail.com")
 
+    configure_file(
+      ${PROJECT_SOURCE_DIR}/config/Linux/postinst.in
+      ${PROJECT_BINARY_DIR}/config/Linux/postinst
+        @ONLY)
+    configure_file(
+        ${PROJECT_SOURCE_DIR}/config/Linux/postrm.in
+        ${PROJECT_BINARY_DIR}/config/Linux/postrm
+        @ONLY)
+    set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+        ${PROJECT_BINARY_DIR}/config/Linux/postinst
+        ${PROJECT_BINARY_DIR}/config/Linux/postrm)
+
+    SET(
+        CPACK_RPM_POST_INSTALL_SCRIPT_FILE
+        ${PROJECT_BINARY_DIR}/config/Linux/install.sh)
+    SET(
+        CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
+        ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh)
 
 
 ENDIF(WIN32)
