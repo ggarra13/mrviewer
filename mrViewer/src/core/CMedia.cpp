@@ -1248,7 +1248,6 @@ void CMedia::rendering_transform( const char* cfile )
     {
       _rendering_transform = strdup( cfile );
     }
-  clear_cache();
   image_damage( image_damage() | kDamageData | kDamageLut );
   refresh();
 }
@@ -1274,7 +1273,6 @@ void CMedia::idt_transform( const char* cfile )
   free( _idt_transform ); _idt_transform = NULL;
   if ( cfile && strlen(cfile) > 0 ) _idt_transform = strdup( cfile );
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_cache();
   refresh();
 }
 
@@ -1314,7 +1312,6 @@ void CMedia::append_look_mod_transform( const char* cfile )
   if ( cfile && strlen(cfile) > 0 ) 
       _look_mod_transform.push_back( strdup( cfile ) );
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_cache();
   refresh();
 }
 
@@ -1338,7 +1335,6 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_cache();
   refresh();
 }
 
@@ -1368,7 +1364,6 @@ void CMedia::icc_profile( const char* cfile )
       _profile = strdup( cfile );
     }
   image_damage( image_damage() | kDamageData | kDamageLut );
-  clear_cache();
   refresh();
 }
 
