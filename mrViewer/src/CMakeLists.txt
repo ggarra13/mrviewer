@@ -35,7 +35,7 @@ FIND_PACKAGE( TinyXML2    REQUIRED )
 # FIND_PACKAGE( AO )    # for ao sound lib
 
 # ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
-ADD_DEFINITIONS( -DCTL_GIT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS -DNDEBUG )
+ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS -DNDEBUG )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -385,12 +385,12 @@ ELSEIF (UNIX)
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32)
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/bin/mrViewer.config
-                    ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop )
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/mrViewer.config
+                    ${CMAKE_SOURCE_DIR}/config/mrViewer.desktop )
 
-    INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop 
+    INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.desktop 
              DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.xpm 
+    INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.png 
              DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
