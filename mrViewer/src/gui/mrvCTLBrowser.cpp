@@ -80,7 +80,10 @@ void CTLBrowser::fill()
 
   Tokenizer_t tokens(str, sep);
 
-  size_t plen = _prefix.size();
+  boost::char_separator<char> sep2(",");
+  Tokenizer_t prefixes( _prefix, sep2 );
+ 
+  // size_t plen = _prefix.size();
 
   //
   // Iterate thru each path looking for .ctl files
@@ -109,8 +112,17 @@ void CTLBrowser::fill()
 	  if ( ext != ".ctl" ) continue;
 
 	  // Skip those CTL files that don't match the prefix
-	  if ( !_prefix.empty() && base.substr(0, plen) != _prefix )
-	    continue;
+          bool found = false;
+          for (Tokenizer_t::const_iterator pt = prefixes.begin(); 
+               pt != prefixes.end(); ++pt)
+          {
+              if ( !(*pt).empty() && base.substr(0, (*pt).size()) == *pt )
+              {
+                  found = true; break;
+              }
+          }
+
+          if ( !found ) continue;
 
 	  // valid CTL, add it to the browser
 	  this->add( base.c_str() );
