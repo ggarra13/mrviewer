@@ -105,10 +105,9 @@ FIND_LIBRARY( CgGL
   DOC   "CgGL library"
 )
 
-FIND_FILE( CGC_COMPILER
+FIND_PROGRAM( CGC_COMPILER
   NAME  cgc cgc.exe
   PATHS ${SEARCH_BIN_DIRS}
-  NO_DEFAULT_PATH
   DOC   "cgc compiler" )
 
 
