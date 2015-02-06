@@ -277,7 +277,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
   {
     if ( !image ) return;
 
-    std::string script = make_ctl_browser( startfile, "RRT" );
+    std::string script = make_ctl_browser( startfile, "RRT,RT" );
     image->rendering_transform( script.c_str() );
   }
 
