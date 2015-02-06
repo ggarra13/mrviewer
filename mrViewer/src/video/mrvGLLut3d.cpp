@@ -173,19 +173,11 @@ namespace mrv {
 
     glTexImage3D( GL_TEXTURE_3D,
 		  0,			// level
-#ifdef CTL_GIT
                   GL_RGBA32F,
-#else
-		  GL_RGBA16F_ARB,	        // internalFormat
-#endif
 		  _lutN, _lutN, _lutN,	// width, height, depth
 		  0,			// border
 		  GL_RGBA,		// format
-#ifdef CTL_GIT
 		  GL_FLOAT,	// type
-#else
-                  GL_HALF_FLOAT_ARB,  // type
-#endif
 		  (char *) &lut[0] );
   }
 
