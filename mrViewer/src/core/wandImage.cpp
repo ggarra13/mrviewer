@@ -288,11 +288,20 @@ namespace mrv {
 	      //
 	      // Format for exif property in imagemagick is like:
 	      //       "Exif:InteroperabilityVersion"
+	      //       "dpx:InteroperabilityVersion"
 	      //
 	      // Make that string into something prettier
 	      //
 	      std::string key;
-	      for (const char* p = property + 5; *p != '\0'; ++p)
+
+              // Skip until first ':'
+              const char* p = property;
+              for ( ; *p != ':' && *p != '\0'; ++p ) ;
+
+              if ( *p != '\0' ) ++p;
+
+
+	      for ( ; *p != '\0'; ++p )
 	      {
 		 if ( (isupper((int) ((unsigned char) *p)) != 0) &&
 		      (islower((int) ((unsigned char) *(p+1))) != 0))
