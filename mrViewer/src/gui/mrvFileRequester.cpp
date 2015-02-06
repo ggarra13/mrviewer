@@ -311,7 +311,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
   {
     if ( !image ) return;
 
-    std::string script = make_ctl_browser( startfile, "IDT" );
+    std::string script = make_ctl_browser( startfile, "ACEScsc,IDT" );
     image->idt_transform( script.c_str() );
   }
 
