@@ -2,8 +2,8 @@
 
 
 SET( VersionMajor 2 )
-SET( VersionMinor 6 )
-SET( VersionPatch 9 )
+SET( VersionMinor 7 )
+SET( VersionPatch 0 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -383,7 +383,7 @@ ELSEIF (UNIX)
     INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ DESTINATION bin )
 
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
-    SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32)
+    SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
     CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/mrViewer.config
                     ${CMAKE_SOURCE_DIR}/config/mrViewer.desktop )
