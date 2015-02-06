@@ -1011,6 +1011,10 @@ namespace mrv {
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;
 
+    _view->window()->cursor( fltk::CURSOR_DEFAULT );
+    fltk::check();
+
+
 
   }
 

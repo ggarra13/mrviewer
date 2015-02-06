@@ -383,33 +383,18 @@ ELSEIF (UNIX)
     INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ DESTINATION bin )
 
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
-    SET(MRV_PIXMAPS_DIR     /usr/share/pixmaps/)
+    SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32)
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop.full
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/bin/mrViewer.config
                     ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop )
 
-    install(FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop DESTINATION /usr/share/kde4/services/ServiceMenus )
-
     INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.desktop 
-             DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.xml
              DESTINATION ${MRV_DESKTOP_DIR})
     INSTALL (FILES ${CMAKE_SOURCE_DIR}/bin/mrViewer.xpm 
              DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
-    find_program(XDG-MIME_EXECUTABLE xdg-mime)
-    find_program(XDG-DESKTOP-MENU_EXECUTABLE xdg-desktop-menu)
 
-INSTALL(CODE "
-  execute_process(COMMAND ${XDG-MIME_EXECUTABLE} install --novendor 
-                  ${MRV_DESKTOP_DIR}/mrViewer.xml)
-  execute_process(COMMAND ${XDG-DESKTOP-MENU_EXECUTABLE} install --novendor 
-                  ${MRV_DESKTOP_DIR}/mrViewer.desktop)
-  execute_process(COMMAND ${XDG-MIME_EXECUTABLE} default 
-                  ${MRV_DESKTOP_DIR}/mrViewer.desktop application/x-ddm-item)
-  "
-)
     SET(CPACK_GENERATOR TGZ DEB RPM )
 
     # SET the installation directory.
