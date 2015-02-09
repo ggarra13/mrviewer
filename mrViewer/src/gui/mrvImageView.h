@@ -380,6 +380,7 @@ class server;
     DrawEngine* const engine() const { return _engine; }
 
     FlipDirection flip() const { return _flip; }
+    void flip( const FlipDirection f )  { _flip = f; }
 
     float masking() const { return _masking; }
     void masking( float f ) { _masking = f; }

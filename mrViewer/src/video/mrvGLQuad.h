@@ -58,6 +58,7 @@ namespace mrv {
     void lut( const CMedia* img );
     inline void clear_lut() { 
         _lut = NULL; // lut is not deleted here
+        _lut_attempt = 0;
     } 
 
        inline void minmax( float fmin, float fmax ) {
@@ -109,6 +110,7 @@ namespace mrv {
     const ImageView*   _view;
     GLShader*    _shader;
     GLLut3d*     _lut;
+      unsigned short _lut_attempt;
     const CMedia*   _image;
 
     float        _gamma;

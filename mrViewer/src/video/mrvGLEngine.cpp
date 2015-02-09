@@ -1127,6 +1127,7 @@ void GLEngine::draw_images( ImageList& images )
   static int ODT_lut_old_algorithm = Preferences::kLutPreferCTL;
   static int LUT_quality           = 2;
   static std::string ODT_ICC_old_profile;
+  static std::string ODT_CTL_old_transform;
 
   if ( _view->use_lut() )
     {
@@ -1140,6 +1141,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( ( RT_lut_algorithm != RT_lut_old_algorithm ) ||
 	   ( ODT_lut_algorithm != ODT_lut_old_algorithm ) ||
 	   ( ODT_ICC_old_profile != ODT_ICC_profile ) ||
+	   ( ODT_CTL_old_transform != mrv::Preferences::ODT_CTL_transform ) ||
 	   ( LUT_quality != lut_quality ) )
 	{
 	  RT_lut_old_algorithm = RT_lut_algorithm;
@@ -1148,6 +1150,8 @@ void GLEngine::draw_images( ImageList& images )
 	    ODT_ICC_old_profile = ODT_ICC_profile;
 	  else
 	    ODT_ICC_old_profile.clear();
+
+          ODT_CTL_old_transform = mrv::Preferences::ODT_CTL_transform;
 
 	  refresh_luts();
 

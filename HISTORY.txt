@@ -1,8 +1,17 @@
-v2.7.0   - Added ACEScsc files as IDTs.
+v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
 	 - Made xml and ctl files never show as sequences of frames in
 	   file requester.
 	 - On Linux, now mrViewer is added to the system path thru a symlink.
-
+	 - On Linux, mrViewer is added to the menus (Graphic) if run from the
+	   deb or rpm file.
+	 - Added Mirror Horizontal and Vertical to Image RMB popup menu.
+	 - Added baking CTL/ICC transforms to a 96x96x96 grid.
+	 - Removed Load button from CTL requester as it was not working right.
+	 - Resolved a quoting issue in mrViewer.sh to work with parameters
+	   with spaces.
+	 - Bug fixed parsing of hotkeys when some ctrl, alt or meta keys were
+	   combined.
+	 - Bug fixed CTL pipeline when CTL file is not found.
 v2.6.9   - Bug fixed Cancel button in CTL requester.
 	 - Added a Load button to CTL requester to load CTL scripts not in
 	   CTL_MODULE_PATH.
