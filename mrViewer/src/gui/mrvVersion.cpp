@@ -502,7 +502,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "https://github.com/ampas/aces-dev" << endl
       << "(C) 2015 AMPAS" << endl
       << endl
-      << "AMPAS CTL v1.4 or later" << endl
+      << "AMPAS CTL v2.0 or later" << endl
       << "https://github.com/ampas/CTL" << endl
       << "(C) 2014-2015 AMPAS" << endl
       << endl

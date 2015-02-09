@@ -1,4 +1,4 @@
-#!/bin/bash --norc
+#!/bin/bash --norc 
 
 
 symlink=`readlink ${0}`
@@ -46,7 +46,14 @@ export LD_LIBRARY_PATH="${dir}/lib:${LD_LIBRARY_PATH}"
 export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 export MAGICK_CODER_MODULE_PATH="${dir}/lib/ImageMagick-${magick_version}/modules-Q32/coders"
 
+params=""
+
+for param in "$@"
+do
+  params="${params} \"${param}\""
+done
+
 #
 # Start up mrViewer
 #
-"${dir}/bin/mrViewer" $*
+sh -c "${dir}/bin/mrViewer $params"

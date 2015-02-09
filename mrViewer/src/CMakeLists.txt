@@ -440,6 +440,17 @@ ELSEIF (UNIX)
         ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh)
 
 
+      # try to set up the menu system
+      # find_program(XDG-MIME_EXECUTABLE xdg-mime)
+      # find_program(XDG-DESKTOP-MENU_EXECUTABLE xdg-desktop-menu)
+
+#       INSTALL(CODE "
+#   execute_process(COMMAND ${XDG-MIME_EXECUTABLE} install --novendor ${DDM_DESKTOP_DIR}/ddm.xml)
+#   execute_process(COMMAND ${XDG-DESKTOP-MENU_EXECUTABLE} install --novendor ${DDM_DESKTOP_DIR}/ddm.desktop)
+#   execute_process(COMMAND ${XDG-MIME_EXECUTABLE} default ${DDM_DESKTOP_DIR}/ddm.desktop application/x-ddm-item)
+#   "
+# )
+
 ENDIF(WIN32)
 
   SET(CPACK_PACKAGE_VENDOR "Film Aura, LLC")

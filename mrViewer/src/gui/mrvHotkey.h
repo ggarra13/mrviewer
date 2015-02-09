@@ -83,6 +83,13 @@ struct Hotkey
 	   else
 	      return false;
 	}
+        else
+        {
+            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                 fltk::event_key_state( fltk::RightCtrlKey ) )
+                return false;
+        }
+
 	if ( shift )
 	{ 
 	   if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
@@ -91,6 +98,12 @@ struct Hotkey
 	   else
 	      return false;
 	}
+        else
+        {
+            if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+                 fltk::event_key_state( fltk::RightShiftKey ) )
+                return false;
+        }
 	if ( alt )
 	{
 	   if ( fltk::event_key_state( fltk::LeftAltKey ) ||
@@ -99,6 +112,12 @@ struct Hotkey
 	   else
 	      return false;
 	}
+        else
+        {
+            if ( fltk::event_key_state( fltk::LeftAltKey ) ||
+                 fltk::event_key_state( fltk::RightAltKey ) )
+                return false;
+        }
 	if ( meta )
 	{ 
 	   if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
@@ -107,6 +126,12 @@ struct Hotkey
 	   else
 	      return false;
 	}
+        else
+        {
+            if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
+                 fltk::event_key_state( fltk::RightMetaKey ) )
+                return false;
+        }
 	if (( rawkey != 0 ) && ( rawkey == key || 
 				 rawkey == key2 ))
 	{
