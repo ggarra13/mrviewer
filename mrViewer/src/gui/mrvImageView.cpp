@@ -544,6 +544,22 @@ static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
+static void flip_x_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    mrv::ImageView::FlipDirection dir = view->flip();
+    view->flip( (mrv::ImageView::FlipDirection)
+                ( dir ^ mrv::ImageView::kFlipVertical ) );
+    view->redraw();
+}
+
+static void flip_y_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    mrv::ImageView::FlipDirection dir = view->flip();
+    view->flip( (mrv::ImageView::FlipDirection) 
+                ( dir ^ mrv::ImageView::kFlipHorizontal ) );
+    view->redraw();
+}
+
 static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
@@ -2122,11 +2138,11 @@ int ImageView::leftMouseDown(int x, int y)
 	    menu.add( _("Image/Attach CTL Input Device Transform"),
 		      kIDTScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_idt_script_cb,
-		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Attach CTL Look Mod Transform"),
+		      this);
+	    menu.add( _("Image/Add CTL Look Mod Transform"),
 		      kLookModScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_lmt_script_cb,
-		      this, fltk::MENU_DIVIDER);
+		      this);
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
 		      (fltk::Callback*)attach_ctl_script_cb,
@@ -2134,6 +2150,14 @@ int ImageView::leftMouseDown(int x, int y)
 	    menu.add( _("Image/Attach ICC Color Profile"),
 		      kIccProfile.hotkey(),
 		      (fltk::Callback*)attach_color_profile_cb,
+		      this, fltk::MENU_DIVIDER);
+	    menu.add( _("Image/Mirror Horizontal"),
+		      kFlipX.hotkey(),
+		      (fltk::Callback*)flip_x_cb,
+		      this);
+	    menu.add( _("Image/Mirror Vertical"),
+		      kFlipY.hotkey(),
+		      (fltk::Callback*)flip_y_cb,
 		      this, fltk::MENU_DIVIDER);
 	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
 		      (fltk::Callback*)set_as_background_cb,
@@ -2962,14 +2986,14 @@ int ImageView::keyDown(unsigned int rawkey)
       save_clip_xml_metadata_cb( this, this );
       return 1;
    }
-   else if ( kIccProfile.match( rawkey ) )
-   {
-      attach_color_profile_cb( NULL, this );
-      return 1;
-   }
    else if ( kIDTScript.match( rawkey ) )
    {
       attach_ctl_idt_script_cb( NULL, this );
+      return 1;
+   }
+   else if ( kIccProfile.match( rawkey ) )
+   {
+      attach_color_profile_cb( NULL, this );
       return 1;
    }
    else if ( kLookModScript.match( rawkey ) )
@@ -3021,11 +3045,6 @@ int ImageView::keyDown(unsigned int rawkey)
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
-   else if ( rawkey == fltk::LeftAltKey ) 
-   {
-      flags |= kLeftAlt;
-      return 1;
-   }
    else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
    {
       if ( rawkey == kZoomMin.key )
@@ -3360,6 +3379,11 @@ int ImageView::keyDown(unsigned int rawkey)
       toggle_presentation();
       return 1;
     }
+   else if ( rawkey == fltk::LeftAltKey ) 
+   {
+      flags |= kLeftAlt;
+      return 1;
+   }
   else
     {
       // Check if a menu shortcut

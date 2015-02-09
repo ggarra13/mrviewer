@@ -74,7 +74,7 @@ static const char* kModule = "file";
   static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,qt,QT,avi,AVI,flv,FLV,divx,DIVX,wmv,WMV,vob,VOB";
 
   static const std::string kImagePattern =
-    "bmp,bit,cin,ct,dpx,exr,gif,GIF,hdr,iff,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,png,psd,rgb,rpf,shmap,sgi,st,sxr,tga,tif,tiff,zt";
+    "bmp,bit,cin,CIN,ct,dpx,DPX,exr,EXR,gif,GIF,hdr,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,PIC,png,PNG,psd,PSD,rgb,RGB,rpf,RPF,shmap,sgi,st,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
 
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
@@ -203,10 +203,10 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 
 
 
-  const char* open_ctl_script( const char* startfile,
-                               const char* title )
-  {
-      std::string path, modulepath, ext;
+const char* open_ctl_dir( const char* startfile,
+                          const char* title )
+{
+    std::string path, modulepath, ext;
 
     if ( !startfile )
         startfile = getenv("CTL_MODULE_PATH");
@@ -220,26 +220,20 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
         path = path.substr( 0, len-1 );
     }
 
-    const char* profile = flu_file_chooser(title, 
-					   kCTL_PATTERN.c_str(), 
-					   path.c_str());
+    const char* profile = flu_dir_chooser(title, 
+                                          path.c_str());
     if ( profile )
     {
         path = profile;
-        size_t len = path.rfind( '/' );
-        if ( len == 0 ) return NULL;
-
-        ext  = path.substr( len+1, path.size() );
-        path = path.substr( 0, len );
         modulepath += kSeparator;
         modulepath += path;
         putenv( strdup( modulepath.c_str() ) );
         profile = strdup( ext.c_str() );
     }
     return profile;
-  }
+}
 
-  /** 
+/** 
    * Opens a file requester to load audio files
    * 
    * @param startfile  start filename (directory)

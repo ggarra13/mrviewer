@@ -1,6 +1,7 @@
 #!/bin/bash
 
 ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
+cp /usr/share/applications/mrViewer-v@VERSION@.desktop $HOME/Desktop
 
 update-mime-database /usr/share/mime
 

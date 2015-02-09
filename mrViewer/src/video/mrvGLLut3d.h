@@ -86,6 +86,7 @@ namespace mrv {
 	kNoBake,
 	kLut32,
 	kLut64,
+        kLut96,
 	kLut128,
       };
 

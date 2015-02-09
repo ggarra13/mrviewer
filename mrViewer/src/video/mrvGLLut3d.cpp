@@ -821,6 +821,8 @@ namespace mrv {
 	size = 32; break;
       case kLut64:
 	size = 64; break;
+      case kLut96:
+	size = 96; break;
       case kLut128:
 	size = 128; break;
       case kNoBake:
@@ -853,7 +855,7 @@ namespace mrv {
 	    if ( ! lut->calculate( lut, start, i, header, 
 				   (XformFlags)flags ) )
             {
-              LOG_ERROR( "Lut Calculate failed" );
+              LOG_ERROR( "Lut calculate failed" );
 	      return NULL;
             }
 	    start = i;
@@ -866,7 +868,7 @@ namespace mrv {
           flags |= kXformLast;
           if ( ! lut->calculate( lut, start, e, header, (XformFlags)flags ) )
           {
-              LOG_ERROR( "Lut Calculate failed" );
+              LOG_ERROR( "Lut calculate failed" );
               return NULL;
           }
       }
