@@ -1005,6 +1005,11 @@ namespace mrv {
   {
     if ( _lut && img == _image ) return;
 
+    if ( _lut == NULL && _image )
+        ++_lut_attempt;
+
+    if ( _lut_attempt >= 2 ) return;
+
     _view->window()->cursor( fltk::CURSOR_WAIT );
     fltk::check();
 
