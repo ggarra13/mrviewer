@@ -116,10 +116,15 @@ void CTLBrowser::fill()
           for (Tokenizer_t::const_iterator pt = prefixes.begin(); 
                pt != prefixes.end(); ++pt)
           {
-              if ( !(*pt).empty() && base.substr(0, (*pt).size()) == *pt )
+              size_t num = base.size() - (*pt).size() + 1;
+              for ( size_t i = 0; i < num; ++i )
               {
-                  found = true; break;
+                  if ( !(*pt).empty() && base.substr(i, (*pt).size()) == *pt )
+                  {
+                      found = true; break;
+                  }
               }
+              if ( found ) break;
           }
 
           if ( !found ) continue;

@@ -65,8 +65,8 @@ stringArray open_image_file( const char* startfile = NULL,
   const char* open_icc_profile( const char* startfile = NULL,
 				const char* title = "Load Image's ICC Profile" );
 
-  const char* open_ctl_script( const char* startfile = NULL,
-                               const char* title = "Load CTL Script" );
+  const char* open_ctl_dir( const char* startfile = NULL,
+                            const char* title = "Append CTL Directory" );
 
   /** 
    * Attach an ICC/ICM color profile to a loaded image
