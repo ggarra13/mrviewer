@@ -2882,9 +2882,14 @@ int Flu_File_Chooser::Entry::handle( int event )
       if( (chooser->selectionType & Flu_File_Chooser::DIRECTORY) ||
 	  (chooser->selectionType & Flu_File_Chooser::STDFILE) ||
 	  type==ENTRY_FILE || type == ENTRY_SEQUENCE )
+      {
 	chooser->filename.value( filename.c_str() );
+      }
       else if( !(chooser->selectionType & Flu_File_Chooser::SAVING ) )
+      {
 	chooser->filename.value( "" );
+      }
+
       chooser->filename.position( chooser->filename.size(), 
 				  chooser->filename.size() );
 

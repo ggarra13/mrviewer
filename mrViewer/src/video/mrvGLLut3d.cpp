@@ -26,6 +26,7 @@
  */
 
 #include <fstream>
+#include <limits>
 
 #include <Iex.h>
 #include <CtlExc.h>
@@ -134,7 +135,8 @@ namespace mrv {
       size_t num = lut_size();
       for ( size_t i = 0; i < num; ++i )
       {
-          if ( lut[i] >= HALF_MIN && lut[i] <= HALF_MAX )
+          if ( lut[i] >= std::numeric_limits<float>::min()
+               && lut[i] <= std::numeric_limits<float>::max() )
 	  {
 	    //
 	    // lut[i] is finite and positive.
@@ -147,7 +149,7 @@ namespace mrv {
 	    // lut[i] is zero, negative or not finite;
 	    // log (lut[i]) is undefined.
 	    //
-             lut[i] = (float) log(HALF_MIN);
+             lut[i] = (float) log( std::numeric_limits<float>::min() );
 	  }
       }
 
@@ -173,7 +175,7 @@ namespace mrv {
 
     glTexImage3D( GL_TEXTURE_3D,
 		  0,			// level
-                  GL_RGBA32F,
+                  GL_RGBA32F,           // internal format
 		  _lutN, _lutN, _lutN,	// width, height, depth
 		  0,			// border
 		  GL_RGBA,		// format
@@ -700,7 +702,6 @@ namespace mrv {
     return false;
   }
 
-
   GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
 			     const CMedia* img )
   {
@@ -815,29 +816,31 @@ namespace mrv {
     Imf::addChromaticities( header, img->chromaticities() );
 
     unsigned size = 64;
-    switch( uiPrefs->uiLUT_quality->value() )
+    unsigned lut_type = uiPrefs->uiLUT_quality->value();
+    switch( lut_type )
       {
-      case kLut32:
-	size = 32; break;
-      case kLut64:
-	size = 64; break;
-      case kLut96:
-	size = 96; break;
-      case kLut128:
-	size = 128; break;
-      case kNoBake:
-	break;
+          case kLut32:
+              size = 32; break;
+          default:
+          case kLut64:
+              size = 64; break;
+          case kLut96:
+              size = 96; break;
+          case kLut128:
+              size = 128; break;
+          case kNoBake:
+              break;
       }
-
-
-    GLLut3d_ptr lut( new GLLut3d(size) );
-
 
     //
     // Log information about lut path
     //
     LOG_INFO( _("3D Lut for ") << img->name() << N_(":") );
     LOG_INFO( path );
+
+
+    GLLut3d_ptr lut( new GLLut3d(size) );
+
 
 
     //
