@@ -111,6 +111,7 @@ namespace mrv {
     virtual bool calculate_icc( const Transforms::const_iterator& start,
 				const Transforms::const_iterator& end,
 				const XformFlags flags );
+      
     void create_gl_texture();
 
   protected:

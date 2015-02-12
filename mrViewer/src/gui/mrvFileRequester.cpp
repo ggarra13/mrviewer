@@ -282,6 +282,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
 
     // @todo: pass index to look mod
     std::string script = make_ctl_browser( startfile, "LMT" );
+
     if ( idx >= image->number_of_lmts() )
         image->append_look_mod_transform( script.c_str() );
     else
@@ -322,7 +323,6 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx )
 {
     if ( !image ) return;
 
-    // @todo: pass the index here
     const char* transform = image->look_mod_transform(idx);
     if ( !transform )  transform = "";
     attach_ctl_lmt_script( image, transform, idx );
@@ -350,7 +350,7 @@ void save_clip_xml_metadata( const CMedia* img )
 
     std::string xml = aces_xml_filename( img->fileroot() );
 
-    const char* file = flu_file_chooser("Save XML Clip Metadata", 
+    const char* file = flu_save_chooser("Save XML Clip Metadata", 
                                         kXML_PATTERN.c_str(), xml.c_str());
     if (!file) return;
 

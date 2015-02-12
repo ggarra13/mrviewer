@@ -32,7 +32,8 @@ std::string aces_xml_filename( const char* file )
 
     std::string xml;
     xml = f.parent_path().string();
-    xml += "/ACESclip.";
+    if ( ! xml.empty() ) xml += "/";
+    xml += "ACESclip.";
     xml += filename;
     xml += "xml";
 

@@ -3,7 +3,7 @@
 
 SET( VersionMajor 2 )
 SET( VersionMinor 7 )
-SET( VersionPatch 0 )
+SET( VersionPatch 1 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -374,8 +374,8 @@ IF(WIN32)
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
   SET( CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
-  SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer" )
-  SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" )
+  SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
+  SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
 
 ELSEIF (UNIX)
 
