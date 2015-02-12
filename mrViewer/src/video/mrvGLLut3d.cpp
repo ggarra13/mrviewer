@@ -702,6 +702,14 @@ namespace mrv {
     return false;
   }
 
+void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
+{
+    std::string path;
+
+    RT_ctl_transforms( path, t, img, true );
+    ODT_ctl_transforms( path, t, img );
+}
+
   GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
 			     const CMedia* img )
   {
