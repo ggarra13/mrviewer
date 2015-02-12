@@ -183,18 +183,19 @@ XMLError ACESclipReader::ITL()
     element = root3->FirstChildElement( "aces:IDTref" );
     if ( element )
     {
+        root4 = element;
         const char* tmp = element->Attribute( "name" );
         if ( tmp ) name = tmp;
 
         tmp = element->Attribute( "status" );
         if ( tmp ) status = get_status( tmp );
-    }
 
-    element = root3->FirstChildElement( "LinkTransform" );
-    if ( element )
-    {
-        const char* tmp = element->GetText();
-        if ( tmp ) name = tmp;
+        element = root4->FirstChildElement( "LinkTransform" );
+        if ( element )
+        {
+            const char* tmp = element->GetText();
+            if ( tmp ) name = tmp;
+        }
     }
 
     IDT.name = name;
@@ -248,18 +249,19 @@ XMLError ACESclipReader::PTL()
         element = root3->FirstChildElement( "aces:RRTref" );
         if ( element )
         {
+            root4 = element;
             const char* tmp = element->Attribute( "name" );
             if ( tmp ) name = tmp;
 
             tmp = element->Attribute( "status" );
             if ( tmp ) status = get_status( tmp );
-        }
 
-        element = root3->FirstChildElement( "LinkTransform" );
-        if ( element )
-        {
-            const char* tmp = element->GetText();
-            if ( tmp ) name = tmp;
+            element = root4->FirstChildElement( "LinkTransform" );
+            if ( element )
+            {
+                const char* tmp = element->GetText();
+                if ( tmp ) name = tmp;
+            }
         }
 
         RRT.name = name;
@@ -272,18 +274,19 @@ XMLError ACESclipReader::PTL()
         element = root3->FirstChildElement( "aces:ODTref" );
         if ( element )
         {
+            root4 = element;
             const char* tmp = element->Attribute( "name" );
             if ( tmp ) name = tmp;
 
             tmp = element->Attribute( "status" );
             if ( tmp ) status = get_status( tmp );
-        }
 
-        element = root3->FirstChildElement( "LinkTransform" );
-        if ( element )
-        {
-            const char* tmp = element->GetText();
-            if ( tmp ) name = tmp;
+            element = root4->FirstChildElement( "LinkTransform" );
+            if ( element )
+            {
+                const char* tmp = element->GetText();
+                if ( tmp ) name = tmp;
+            }
         }
 
         ODT.name = name;

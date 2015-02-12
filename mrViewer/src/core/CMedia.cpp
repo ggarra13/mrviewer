@@ -1278,7 +1278,7 @@ void CMedia::idt_transform( const char* cfile )
 
 
 /** 
- * Returns image CTL script (or NULL if no script)
+ * Returns image LMT CTL script (or NULL if no script)
  * 
  * 
  * @return CTL script or NULL
@@ -1309,8 +1309,19 @@ void CMedia::clear_look_mod_transform()
  */
 void CMedia::append_look_mod_transform( const char* cfile )
 {
-  if ( cfile && strlen(cfile) > 0 ) 
-      _look_mod_transform.push_back( strdup( cfile ) );
+    
+
+    if ( cfile && strlen(cfile) > 0 ) 
+        _look_mod_transform.push_back( strdup( cfile ) );
+    else
+    {
+        
+        size_t idx = _look_mod_transform.size();
+        if ( idx == 0 ) return;
+        idx -= 1;
+        free( _look_mod_transform[idx] );
+        _look_mod_transform.erase( _look_mod_transform.begin() + idx );
+    }
   image_damage( image_damage() | kDamageData | kDamageLut );
   refresh();
 }
@@ -1324,14 +1335,13 @@ void CMedia::look_mod_transform( const size_t idx, const char* cfile )
 {
     if ( idx >= _look_mod_transform.size() ) return;
 
+    free( _look_mod_transform[idx] );
     if ( cfile && strlen(cfile) > 0 ) 
     {
-        _look_mod_transform.insert( _look_mod_transform.begin() + idx,
-                                    strdup( cfile ) );
+        _look_mod_transform[idx] = strdup( cfile );
     }
     else
     {
-        free( _look_mod_transform[idx] );
         _look_mod_transform.erase( _look_mod_transform.begin() + idx );
     }
   image_damage( image_damage() | kDamageData | kDamageLut );

@@ -54,7 +54,7 @@ namespace mrv
 {
   class ViewerUI;
   class CMedia;
-  class CtlLMTData;
+  struct CtlLMTData;
 
   class ImageInformation : public ImageInfoParent
   {

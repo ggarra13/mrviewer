@@ -1,3 +1,6 @@
+v2.7.1   - With NSIS exe installer, made Windows' icons show the version number.
+	 - Bug fixed CTL Look Modulation Transform Picker.
+
 v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
 	 - Made xml and ctl files never show as sequences of frames in
 	   file requester.
@@ -12,6 +15,13 @@ v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
 	 - Bug fixed parsing of hotkeys when some ctrl, alt or meta keys were
 	   combined.
 	 - Bug fixed CTL pipeline when CTL file is not found.
+	 - CTL's IDT, RRT, ODT keywords are allowed anywhere in the
+	   filename, not only as prefixes.
+	 - Made saving of ACESclip XML file automatically fill up the name in
+	   file requester.
+	 - NSIS installer: Win64 and Win32 create different icons 
+	   (mrViewer-64 and mrViewer-32 respectively).
+
 v2.6.9   - Bug fixed Cancel button in CTL requester.
 	 - Added a Load button to CTL requester to load CTL scripts not in
 	   CTL_MODULE_PATH.
@@ -19,6 +29,7 @@ v2.6.9   - Bug fixed Cancel button in CTL requester.
 	 - Added support for CTL Look Mod Transforms (LMTs).
 	 - Added support to ACES 1.0 Clip Metadata to store all transforms
 	   in an XML file.
+
 v2.6.8   - Bug fixed lut creation on 32 and 128 sizes.  Previously, they would
 	   get created and not cached.
 	 - Adapted CTL pipeline to be compatible with ACES 1.0.  The one
@@ -26,8 +37,10 @@ v2.6.8   - Bug fixed lut creation on 32 and 128 sizes.  Previously, they would
 	   can be used.
 	   Note that the previous transform_RRT and ODT_monitor have been
 	   deprecated as they operate on XYZ.
+
 v2.6.7   - Added installers for both platforms. The main benefit is
 	   for Windows where shortcuts and an icon in Desktop are created.
+
 v2.6.6.3 - Bug fixed pixel info display when mirror X or mirror Y are
            in effect.
          - Bug fixed color info, histogram and vectorscope when mirror
@@ -35,6 +48,7 @@ v2.6.6.3 - Bug fixed pixel info display when mirror X or mirror Y are
          - Bug fixed data window display when mirror X or Y are in
            effect.
          - Bug fixed mirror X and mirror Y in stereo displays.
+
 v2.6.6.2 - Bug fixed center and fit image when pixel ratio was different
 	   than 1.
 	 - Bug fixed mirror X and mirror Y when different data/display 
