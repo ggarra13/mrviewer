@@ -52,6 +52,8 @@
 #define isfinite(x) _finite(x)
 #endif
 
+#include "video/mrvGLLut3d.h"
+
 #include <GL/gl.h>
 
 #include <boost/filesystem.hpp>
@@ -102,6 +104,7 @@
 #include "core/mrStackTrace.h"
 #include "core/exrImage.h"
 #include "core/mrvACES.h"
+#include "core/ctlToLut.h"
 
 // GUI classes
 #include "gui/mrvColorInfo.h"
@@ -117,6 +120,7 @@
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvImageView.h"
+
 
 
 // Widgets
@@ -2496,6 +2500,34 @@ void ImageView::mouseMove(int x, int y)
       rgba = pic->pixel( xp, yp );
 
       //
+      // To represent pixel properly, we need to do the lut
+      //
+      if ( _playback == kStopped && use_lut() )
+      {
+          float out[4];
+          Imf::Header header( 1, 1, 1.0f );
+          GLLut3d::Transforms transforms;
+          GLLut3d::transform_names( transforms, img );
+
+          size_t num = transforms.size();
+          try
+          {
+              for ( size_t i = 0; i < num; ++i )
+              {
+                  GLLut3d::TransformNames t;
+                  t.push_back( transforms[i].name );
+                  ctlToLut( t, header, 3, (float*)&rgba, out );
+                  rgba.r = out[0];
+                  rgba.g = out[1];
+                  rgba.b = out[2];
+              }
+          }
+          catch (...)
+          {
+          }
+      }
+
+      //
       // To represent pixel properly, we need to do gain/gamma/lut 
       //
       rgba.r *= _gain;
@@ -2509,7 +2541,6 @@ void ImageView::mouseMove(int x, int y)
       if ( rgba.b > 0.0001f )
           rgba.b = powf(rgba.b, one_gamma);
 
-      // @todo: and the lut
 
       // double yp = yf;
       // if ( _showPixelRatio ) yp /= img->pixel_ratio();

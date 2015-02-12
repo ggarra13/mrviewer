@@ -116,6 +116,7 @@ initializeEnvHeader (Header &envHeader)
 } // namespace
 
 
+const char* kRGBChannels[] = { "rIn", "gIn", "bIn", "aIn" };
 
 void
 ctlToLut (std::vector<std::string> transformNames,
