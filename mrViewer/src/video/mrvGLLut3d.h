@@ -137,6 +137,8 @@ namespace mrv {
 			  );
     static GLLut3d* factory( const PreferencesUI* prefs, const CMedia* img );
     static void     clear();
+      static void   transform_names( Transforms& t,
+                                     const CMedia* img );
 
   protected:
     static bool     RT_ctl_transforms( std::string& key,
