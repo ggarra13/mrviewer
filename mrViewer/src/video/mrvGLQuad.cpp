@@ -182,6 +182,13 @@ namespace mrv {
       }
   }
 
+  void GLQuad::clear_lut()
+  { 
+    _lut = NULL; // lut is not deleted here
+    _image = NULL;
+    _lut_attempt = 0;
+  } 
+
   GLenum GLQuad::gl_format( const image_type::Format format )
   {
       static bool bad_format = false;
@@ -1017,7 +1024,6 @@ namespace mrv {
     _image = img;
 
     _view->window()->cursor( fltk::CURSOR_DEFAULT );
-    fltk::check();
 
 
 

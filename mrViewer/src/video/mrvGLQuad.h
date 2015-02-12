@@ -56,10 +56,8 @@ namespace mrv {
 
     inline GLLut3d* lut() const { return _lut; }
     void lut( const CMedia* img );
-    inline void clear_lut() { 
-        _lut = NULL; // lut is not deleted here
-        _lut_attempt = 0;
-    } 
+    
+    void clear_lut();
 
        inline void minmax( float fmin, float fmax ) {
 	  _normMin = fmin;

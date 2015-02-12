@@ -920,7 +920,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       ImageInformation* v = (ImageInformation*) c->widget;
       size_t idx = c->idx;
 
-      // delete c;
+      delete c;
 
       attach_ctl_lmt_script( v->get_image(), idx );
   }
