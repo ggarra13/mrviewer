@@ -412,7 +412,7 @@ ELSEIF (UNIX)
 
     # try to set up the menu system
 
-    SET(CPACK_GENERATOR DEB )
+    SET(CPACK_GENERATOR TGZ DEB RPM )
 
     # SET the installation directory.
     
