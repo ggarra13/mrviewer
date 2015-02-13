@@ -224,23 +224,26 @@ XMLError ACESclipReader::PTL()
         TransformStatus status = kPreview;
         if ( element )
         {
-            const char* tmp = element->Attribute( "name" );
-            if ( tmp ) name = tmp;
+	  root4 = element;
 
-            tmp = element->Attribute( "status" );
-            if ( tmp ) status = get_status( tmp );
-        }
+	  const char* tmp = element->Attribute( "name" );
+	  if ( tmp ) name = tmp;
 
-        XMLElement* elem = root3->FirstChildElement( "LinkTransform" );
-        if ( elem )
-        {
-            const char* tmp = elem->GetText();
-            if ( tmp ) name = tmp;
-        }
+	  tmp = element->Attribute( "status" );
+	  if ( tmp ) status = get_status( tmp );
 
-        LMT.push_back( Transform( name, status ) );
+	  XMLElement* elem = root4->FirstChildElement( "LinkTransform" );
+	  if ( elem )
+	    {
+	      const char* tmp = elem->GetText();
+	      if ( tmp ) name = tmp;
+	    }
 
-        element = element->NextSiblingElement( "aces:LMTref" );
+	  LMT.push_back( Transform( name, status ) );
+
+	  
+	  element = element->NextSiblingElement( "aces:LMTref" );
+	}
     }
 
     {
