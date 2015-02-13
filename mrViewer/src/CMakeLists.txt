@@ -386,24 +386,33 @@ ELSEIF (UNIX)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
     CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/Linux/mrViewer.desktop.in
-                    ${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop )
-    configure_file(
+                    "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" )
+    CONFIGURE_FILE(
         ${PROJECT_SOURCE_DIR}/config/Linux/install.sh.in
         ${PROJECT_BINARY_DIR}/config/Linux/install.sh
         @ONLY)
-    configure_file(
+    CONFIGURE_FILE(
         ${PROJECT_SOURCE_DIR}/config/Linux/uninstall.sh.in
         ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh
         @ONLY)
+    CONFIGURE_FILE(
+        ${PROJECT_SOURCE_DIR}/config/Linux/postinst.in
+        ${PROJECT_BINARY_DIR}/config/Linux/postinst
+        @ONLY)
+    CONFIGURE_FILE(
+        ${PROJECT_SOURCE_DIR}/config/Linux/postrm.in
+        ${PROJECT_BINARY_DIR}/config/Linux/postrm
+        @ONLY)
 
-    INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop 
+
+    INSTALL (FILES "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" 
              DESTINATION ${MRV_DESKTOP_DIR})
     INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.png 
              DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
 
-    SET(CPACK_GENERATOR TGZ DEB RPM )
+    SET(CPACK_GENERATOR DEB )
 
     # SET the installation directory.
     
@@ -420,15 +429,7 @@ ELSEIF (UNIX)
     SET(CPACK_DEBIAN_PACKAGE_NAME mrViewer)
     SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ggarra13@gmail.com")
 
-    configure_file(
-      ${PROJECT_SOURCE_DIR}/config/Linux/postinst.in
-      ${PROJECT_BINARY_DIR}/config/Linux/postinst
-        @ONLY)
-    configure_file(
-        ${PROJECT_SOURCE_DIR}/config/Linux/postrm.in
-        ${PROJECT_BINARY_DIR}/config/Linux/postrm
-        @ONLY)
-    set(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
+    SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
         ${PROJECT_BINARY_DIR}/config/Linux/postinst
         ${PROJECT_BINARY_DIR}/config/Linux/postrm)
 
@@ -439,17 +440,6 @@ ELSEIF (UNIX)
         CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
         ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh)
 
-
-      # try to set up the menu system
-      # find_program(XDG-MIME_EXECUTABLE xdg-mime)
-      # find_program(XDG-DESKTOP-MENU_EXECUTABLE xdg-desktop-menu)
-
-#       INSTALL(CODE "
-#   execute_process(COMMAND ${XDG-MIME_EXECUTABLE} install --novendor ${DDM_DESKTOP_DIR}/ddm.xml)
-#   execute_process(COMMAND ${XDG-DESKTOP-MENU_EXECUTABLE} install --novendor ${DDM_DESKTOP_DIR}/ddm.desktop)
-#   execute_process(COMMAND ${XDG-MIME_EXECUTABLE} default ${DDM_DESKTOP_DIR}/ddm.desktop application/x-ddm-item)
-#   "
-# )
 
 ENDIF(WIN32)
 
