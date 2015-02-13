@@ -49,12 +49,10 @@ bool load_aces_xml( CMedia* img, const char* filename )
 
     if ( !c.link_ITL.empty() )
       {
-	LOG_INFO( "clinkITL=" << c.link_ITL );
         img->idt_transform( c.link_ITL.c_str() );
       }
     else if ( c.IDT.status == ACES::kPreview && !c.IDT.name.empty() )
       {
-	LOG_INFO( "idt=" << c.IDT.name );
         img->idt_transform( c.IDT.name.c_str() );
       }
 
@@ -63,7 +61,6 @@ bool load_aces_xml( CMedia* img, const char* filename )
     img->clear_look_mod_transform();
     for ( ; i < num; ++i )
       {
-	LOG_INFO( "LMT " << i << " = " << c.LMT[i].name );
         if ( c.LMT[i].status != ACES::kPreview )
 	  continue;
         img->append_look_mod_transform( c.LMT[i].name.c_str() );
@@ -71,7 +68,6 @@ bool load_aces_xml( CMedia* img, const char* filename )
     
     if ( c.RRT.status == ACES::kPreview && !c.RRT.name.empty() )
       {
-	LOG_INFO( "RRT=" << c.RRT.name );
         img->rendering_transform( c.RRT.name.c_str() );
       }
 

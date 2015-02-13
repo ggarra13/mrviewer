@@ -1,9 +1,10 @@
-v2.7.1   - With NSIS exe installer, made Windows' icons show the version number.
+v2.7.1   - With NSIS exe installer, made Windows' icons show the version 
+	   number.
 	 - Bug fixed CTL Look Modulation Transform Picker.
-	 - Bug fixed libACESclip to use linkTransform instead of name when
-	   available.
-	 - Color picker now shows colors with the LUT applied.  This makes the
-	   gui (zoom) respond a tad slow.
+	 - Bug fixed libACESclip to use linkTransform instead of name
+	   when available.
+	 - Color picker now shows colors with the LUT applied.  This 
+	   makes the gui (zoom) respond a tad slower when the LUT is on.
 
 v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
 	 - Made xml and ctl files never show as sequences of frames in
