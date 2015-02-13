@@ -64,7 +64,7 @@ namespace mr
 
 ExceptionHandler::ExceptionHandler()
 {
-    // install_signal_handler();
+   install_signal_handler();
 }
 
 ExceptionHandler::~ExceptionHandler()
