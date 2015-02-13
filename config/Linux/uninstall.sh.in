@@ -1,4 +1,17 @@
-rm /usr/bin/mrViewer.sh
+#!/bin/bash
+
+if [ -e /usr/bin/mrViewer ]; then
+    rm -f /usr/bin/mrViewer
+fi
+
+if [ -e "/usr/share/applications/mrViewer-v@VERSION@.desktop" ]; then
+    rm -f "/usr/share/applications/mrViewer-v@VERSION@.desktop"
+fi
+
+dir=$(xdg-user-dir DESKTOP)
+if [ -e "$dir/mrViewer-v@VERSION@.desktop" ]; then
+    rm -f "$dir/mrViewer-v@VERSION@.desktop"
+fi
 
 update-mime-database /usr/share/mime
 

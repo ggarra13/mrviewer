@@ -1,4 +1,14 @@
+#!/bin/bash
+
+if [ -e /usr/bin/mrViewer ]; then
+    rm /usr/bin/mrViewer
+fi
+
 ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
+
+
+dir=$(xdg-user-dir DESKTOP)
+cp /usr/share/applications/mrViewer-v@VERSION@.desktop $dir
 
 update-mime-database /usr/share/mime
 
