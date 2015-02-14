@@ -1316,6 +1316,7 @@ bool ImageView::preload()
     if ( found )
     {
         mrv::image_type_ptr pic = img->hires();
+        if (!pic) return false;
         img->find_image( i );  // this loads the frame if not present
         img->hires( pic );
         timeline()->redraw();
@@ -2502,7 +2503,8 @@ void ImageView::mouseMove(int x, int y)
       //
       // To represent pixel properly, we need to do the lut
       //
-      if ( _playback == kStopped && use_lut() )
+      if ( uiMain->uiPrefs->uiPrefsLutInPixelBar->value() &&
+           _playback == kStopped && use_lut() )
       {
           float out[4];
           Imf::Header header( 1, 1, 1.0f );

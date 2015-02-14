@@ -385,8 +385,28 @@ ELSEIF (UNIX)
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
+
+
     CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/Linux/mrViewer.desktop.in
                     "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" )
+
+
+    INSTALL(FILES "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" 
+            DESTINATION ${MRV_DESKTOP_DIR})
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.png 
+            DESTINATION ${MRV_PIXMAPS_DIR})
+
+    # try to set up the menu system
+
+    SET(CPACK_GENERATOR DEB TGZ RPM )
+
+    # SET the installation directory.
+    
+    SET(CPACK_SET_DESTDIR true) # Needed
+    SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
+
+    # Configure install/uninstall scripts
+
     CONFIGURE_FILE(
         ${PROJECT_SOURCE_DIR}/config/Linux/install.sh.in
         ${PROJECT_BINARY_DIR}/config/Linux/install.sh
@@ -402,24 +422,9 @@ ELSEIF (UNIX)
     CONFIGURE_FILE(
         ${PROJECT_SOURCE_DIR}/config/Linux/postrm.in
         ${PROJECT_BINARY_DIR}/config/Linux/postrm
-        @ONLY)
+        @ONLY)  
 
-
-    INSTALL (FILES "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" 
-             DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL (FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.png 
-             DESTINATION ${MRV_PIXMAPS_DIR})
-
-    # try to set up the menu system
-
-    SET(CPACK_GENERATOR TGZ DEB RPM )
-
-    # SET the installation directory.
-    
-    SET(CPACK_SET_DESTDIR true) # Unneeded
-    SET(CPACK_INSTALL_PREFIX /usr/local/${mrViewerPackageName})
-
-    # SET RPM options.
+      # SET RPM options.
     
     SET(CPACK_RPM_PACKAGE_NAME mrViewer)
     SET(CPACK_RPM_PACKAGE_RELOCATABLE true)
