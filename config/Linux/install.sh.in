@@ -1,14 +1,17 @@
 #!/bin/bash
 
+echo "Running install script"
+
 if [ -e /usr/bin/mrViewer ]; then
-    rm /usr/bin/mrViewer
+    rm -f /usr/bin/mrViewer
 fi
 
 ln -s @CPACK_INSTALL_PREFIX@/bin/mrViewer.sh /usr/bin/mrViewer
 
 
 dir=$(xdg-user-dir DESKTOP)
-cp /usr/share/applications/mrViewer-v@VERSION@.desktop $dir
+cp -f /usr/share/applications/mrViewer-v@VERSION@.desktop ${dir}
 
+update-desktop-database
 update-mime-database /usr/share/mime
 
