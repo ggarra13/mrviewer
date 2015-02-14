@@ -1,11 +1,9 @@
 #!/bin/bash
 
+echo "Running uninstall script"
+
 if [ -e /usr/bin/mrViewer ]; then
     rm -f /usr/bin/mrViewer
-fi
-
-if [ -e "/usr/share/applications/mrViewer-v@VERSION@.desktop" ]; then
-    rm -f "/usr/share/applications/mrViewer-v@VERSION@.desktop"
 fi
 
 dir=$(xdg-user-dir DESKTOP)
