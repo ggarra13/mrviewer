@@ -1,3 +1,4 @@
+
 # data file for the FLTK User Interface Designer (FLUID)
 version 2.1000 
 images_dir header_name 
@@ -628,7 +629,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {314 294 640 475} resizable visible
+        xywh {318 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1151,13 +1152,13 @@ This setting thus allows caching more pictures in memory.}
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
-            xywh {13 26 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {3D Luts} open
+            xywh {13 26 405 378} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Algorithm
+              label Algorithm open
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
-              xywh {43 42 340 140} box ROUNDED_BOX
+              xywh {40 45 343 105} box ROUNDED_BOX
             } {
               {fltk::Choice} ODT_algorithm {
                 label ODT
@@ -1169,11 +1170,11 @@ if ( x == Preferences::kLutOnlyCTL )
     uiODT_ICC->deactivate();
 if ( x == Preferences::kLutOnlyICC )
     uiODT_CTL->deactivate();
-v->refresh();}
+v->refresh();} open
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
 When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
-                xywh {95 28 195 25}
+                xywh {95 18 195 25}
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1203,7 +1204,7 @@ v->refresh();}
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
-                xywh {95 80 195 25}
+                xywh {95 70 195 25}
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1222,7 +1223,7 @@ If unsure what this means, keep your display and images setting always using the
             {fltk::Group} {} {
               label Quality
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
-              xywh {43 267 340 75} box ROUNDED_BOX
+              xywh {43 240 340 75} box ROUNDED_BOX
             } {
               {fltk::Choice} uiLUT_quality {
                 label Resolution
@@ -1261,7 +1262,7 @@ The "No Baking" setting performs the color correction on the image directly inst
             }
             {fltk::Group} {} {
               label {Rendering Intent}
-              xywh {43 202 340 45} box ROUNDED_BOX
+              xywh {43 175 340 45} box ROUNDED_BOX
             } {
               {fltk::Choice} uiICC_intent {
                 label ICC
@@ -1286,10 +1287,15 @@ The "No Baking" setting performs the color correction on the image directly inst
                   }
               }
             }
+            {fltk::CheckButton} uiPrefsLutInPixelBar {
+              label {Show LUT in Pixel Bar} selected
+              tooltip {Normally, mrViewer will not show the color values of the LUT image but the values previous to the LUT.  With this option, the program will show the values of the baked lut at the cost of some speed.}
+              xywh {140 335 30 25}
+            }
           }
           {fltk::Group} {} {
-            label {CTL Paths} open selected
-            xywh {15 24 405 378} align 5 box EMBOSSED_BOX labelsize 14
+            label {CTL Paths} open
+            xywh {15 24 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
@@ -1795,7 +1801,7 @@ else
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 195 434}
         } {
           {fltk::Browser} {} {
@@ -1807,7 +1813,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
