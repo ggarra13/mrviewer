@@ -11,5 +11,6 @@ if [ -e "$dir/mrViewer-v@VERSION@.desktop" ]; then
     rm -f "$dir/mrViewer-v@VERSION@.desktop"
 fi
 
+update-desktop-database
 update-mime-database /usr/share/mime
 
