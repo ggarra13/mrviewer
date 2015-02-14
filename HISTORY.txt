@@ -3,9 +3,14 @@ v2.7.1   - With NSIS exe installer, made Windows' icons show the version
 	 - Bug fixed CTL Look Modulation Transform Picker.
 	 - Bug fixed libACESclip to use linkTransform instead of name
 	   when available.
-	 - Color picker now shows colors with the LUT applied.  This 
+	 - Bug fixed RPM installer not creating ln -s /usr/bin/mrViewer
+	   correctly.
+	 - Color picker now can show colors with the LUT applied.  This 
 	   makes the gui (zoom) respond a tad slower when the LUT is on.
-	 - Made DEB/RPM installer on Linux place an icon in desktop.
+	 - Added switch in Preferences to show pixel color values after LUT
+	   or not.
+	 - Made DEB/RPM installer on Linux place an icon in desktop in
+	   any language locale.
 
 v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
 	 - Made xml and ctl files never show as sequences of frames in
