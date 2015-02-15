@@ -50,6 +50,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvVersion.h"
 #include "gui/mrvIO.h"
 #include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
@@ -155,18 +156,12 @@ int main( const int argc, char** argv )
 #endif
   fltk::lock();   // Initialize X11 thread system
 
-//#ifdef USE_GETTEXT
+  setlocale(LC_ALL, "");
+  char buf[64];
+  sprintf( buf, "mrViewer", mrv::version() );
+  bindtextdomain(buf, "/usr/share/locale/");
+  textdomain(buf);
 
-#ifdef WIN32
-  // setlocale(LC_MESSAGES, "");
-#else
-  setlocale(LC_MESSAGES, "");
-#endif
-
-  bindtextdomain("mrViewer", "/usr/share/locale");
-  textdomain("mrViewer");
-
-//#endif
 
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
