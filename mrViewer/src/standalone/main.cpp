@@ -158,7 +158,7 @@ int main( const int argc, char** argv )
 
   setlocale(LC_ALL, "");
   char buf[64];
-  sprintf( buf, "mrViewer", mrv::version() );
+  sprintf( buf, "mrViewer%s", mrv::version() );
   bindtextdomain(buf, "/usr/share/locale/");
   textdomain(buf);
 
