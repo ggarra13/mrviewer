@@ -103,6 +103,8 @@ namespace mrv {
     void enable();
     void disable();
 
+      void evaluate( float rgba[3], float out[3] );
+
     virtual bool calculate_ctl( const Transforms::const_iterator& start,
 				const Transforms::const_iterator& end,
 				const Imf::Header& header,
