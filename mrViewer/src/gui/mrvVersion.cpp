@@ -66,7 +66,8 @@ namespace mrv
 
 
 
-  static const char* kVersion = "2.7.1 - Built " __DATE__ " " __TIME__;
+static const char* kVersion = "2.7.1";
+static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 
   struct FormatInfo
@@ -467,7 +468,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     unsigned int boost_minor = BOOST_VERSION / 100 % 1000;
     unsigned int boost_teeny = BOOST_VERSION % 100;
 
-    o << "mrViewer - v" << kVersion << endl
+    o << "mrViewer - v" << kVersion << " " << kBuild << endl
       << "(C) 2007 Film Aura, LLC." << endl
       << endl
       << "mrViewer depends on:" << endl
@@ -502,7 +503,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "https://github.com/ampas/aces-dev" << endl
       << "(C) 2015 AMPAS" << endl
       << endl
-      << "AMPAS CTL v2.0 or later" << endl
+      << "AMPAS CTL v1.5 or later" << endl
       << "https://github.com/ampas/CTL" << endl
       << "(C) 2014-2015 AMPAS" << endl
       << endl
