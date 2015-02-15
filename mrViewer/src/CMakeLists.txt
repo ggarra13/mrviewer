@@ -230,14 +230,10 @@ SET( SOURCES
 
 IF(NOT WIN32)
 
-  EXECUTE_PROCESS( COMMAND xgettext --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot 
+  EXECUTE_PROCESS( COMMAND xgettext --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.po 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     RESULT_VARIABLE ok_xgettext
     ERROR_VARIABLE  error_xgettext)
-
-  MESSAGE( STATUS ${ok_xgettext} )
-  MESSAGE( STATUS ${error_xgettext} )
-
 
   FIND_LIBRARY( Boost_locale_LIBRARY 
     NAMES boost_locale boost_locale_vc100_mt_1_47
@@ -343,8 +339,24 @@ INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 INSTALL( FILES 
 	 ${CMAKE_SOURCE_DIR}/HISTORY.txt 
 	 ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION . )
+SET( LANGUAGES "es" )
+FOREACH( lang ${LANGUAGES} )
+
+  FILE( MAKE_DIRECTORY "mo/${lang}" )
+  EXECUTE_PROCESS( COMMAND msgfmt 
+    -v po/${lang}.po
+    -o mo/${lang}/mrViewer-v${VERSION}.mo
+
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
+    RESULT_VARIABLE ok_msgfmt
+    ERROR_VARIABLE  error_msgfmt)
 
 
+INSTALL( FILES
+  ${CMAKE_SOURCE_DIR}/mrViewer/src/mo/${lang}/mrViewer.mo
+  DESTINATION /usr/share/locale/${lang}/LC_MESSAGES )
+
+ENDFOREACH( lang )
 
 IF(WIN32)
 
