@@ -48,6 +48,7 @@ std::string ffmpeg_motion_estimation_methods();
 
 
   const char* version();
+  const char* build_date();
 
   std::string about_message();
 
