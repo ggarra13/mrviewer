@@ -184,6 +184,21 @@ namespace mrv {
   }
 
 
+void GLLut3d::evaluate( float rgb[3], float out[3] )
+{
+    using namespace Imf;
+    rgb[0] = lutT + lutM * log( Imath::clamp( rgb[0], lutMin, lutMax ) );
+    rgb[1] = lutT + lutM * log( Imath::clamp( rgb[1], lutMin, lutMax ) );
+    rgb[2] = lutT + lutM * log( Imath::clamp( rgb[2], lutMin, lutMax ) );
+
+    unsigned x = rgb[0] * _lutN;
+    unsigned y = rgb[1] * _lutN;
+    unsigned z = rgb[2] * _lutN;
+
+    out[0] = exp( lut[x] );
+    out[1] = exp( lut[y * _lutN] );
+    out[2] = exp( lut[z * _lutN * _lutN] );
+}
 
   template< typename T >
   void GLLut3d::init_pixel_values( Imf::Array< T >& pixelValues )
