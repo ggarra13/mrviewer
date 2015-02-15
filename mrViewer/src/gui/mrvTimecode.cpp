@@ -470,14 +470,14 @@ bool Timecode::replace(int b, int e, const char* text, int ilen) {
     compose_reset(); // ignore any foreign letters...
     
     // Allow only one '.' in FLOAT inputs
-    if (type()==FLOAT && ascii=='.') {
+    if (type()==FLOAT && ( ascii=='.' || ascii==',') ) {
       if (!strchr(this->text(), ascii))
         continue;
     } else
     // This is complex to allow "00:00:01" timecode to be typed:
     if (b+n==0 && (ascii == '+' || ascii == '-') ||
 	(ascii >= '0' && ascii <= '9') ||
-	(type()==FLOAT && ascii && strchr(".eE+-", ascii)) ||
+	(type()==FLOAT && ascii && strchr(".,eE+-", ascii)) ||
 	((type()==NORMAL) && ascii && (ascii == ':' || ascii == '.')))
       continue; // it's ok;
 
