@@ -340,21 +340,24 @@ INSTALL( FILES
 	 ${CMAKE_SOURCE_DIR}/HISTORY.txt 
 	 ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION . )
 SET( LANGUAGES "es" )
+
+ADD_CUSTOM_TARGET( TARGET es ALL
+    COMMAND msgfmt -v po/es.po -o mo/es/mrViewer${VERSION}.mo
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+
+
 FOREACH( lang ${LANGUAGES} )
 
   FILE( MAKE_DIRECTORY "mo/${lang}" )
-  EXECUTE_PROCESS( COMMAND msgfmt 
-    -v po/${lang}.po
-    -o mo/${lang}/mrViewer${VERSION}.mo
 
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    RESULT_VARIABLE ok_msgfmt
-    ERROR_VARIABLE  error_msgfmt)
+  EXECUTE_PROCESS( 
+    COMMAND msgfmt -v po/${lang}.po -o mo/${lang}/mrViewer${VERSION}.mo
+    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
 
 
-INSTALL( FILES
-  ${CMAKE_SOURCE_DIR}/mrViewer/src/mo/${lang}/mrViewer${VERSION}.mo
-  DESTINATION /usr/share/locale/${lang}/LC_MESSAGES )
+  INSTALL( FILES
+    ${CMAKE_SOURCE_DIR}/mrViewer/src/mo/${lang}/mrViewer${VERSION}.mo
+    DESTINATION /usr/share/locale/${lang}/LC_MESSAGES )
 
 ENDFOREACH( lang )
 
