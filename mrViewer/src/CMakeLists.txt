@@ -345,7 +345,7 @@ FOREACH( lang ${LANGUAGES} )
   FILE( MAKE_DIRECTORY "mo/${lang}" )
   EXECUTE_PROCESS( COMMAND msgfmt 
     -v po/${lang}.po
-    -o mo/${lang}/mrViewer-v${VERSION}.mo
+    -o mo/${lang}/mrViewer${VERSION}.mo
 
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     RESULT_VARIABLE ok_msgfmt
@@ -353,7 +353,7 @@ FOREACH( lang ${LANGUAGES} )
 
 
 INSTALL( FILES
-  ${CMAKE_SOURCE_DIR}/mrViewer/src/mo/${lang}/mrViewer.mo
+  ${CMAKE_SOURCE_DIR}/mrViewer/src/mo/${lang}/mrViewer${VERSION}.mo
   DESTINATION /usr/share/locale/${lang}/LC_MESSAGES )
 
 ENDFOREACH( lang )
