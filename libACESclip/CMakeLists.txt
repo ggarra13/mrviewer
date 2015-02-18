@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-set( SOVERSION "0.2.1" )
+set( SOVERSION "0.2.2" )
 
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules )
 find_package( TinyXML2 REQUIRED )
@@ -52,15 +52,11 @@ install( TARGETS ${ACESexecutables} ACESclip
   ARCHIVE DESTINATION lib 
   )
 
-if(NOT WIN32)
-
-  if( NOT DEFINED LIB_ACES_CLIP_ONLY )
-    install( FILES 
-      include/ACESclipReader.h
-      include/ACESclipWriter.h
-      include/ACESExport.h
-      include/ACESTransform.h
-      DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
-  endif(NOT DEFINED LIB_ACES_CLIP_ONLY )
-
-endif(NOT WIN32)
+if( NOT DEFINED LIB_ACES_CLIP_ONLY )
+  install( FILES 
+    include/ACESclipReader.h
+    include/ACESclipWriter.h
+    include/ACESExport.h
+    include/ACESTransform.h
+    DESTINATION ${CMAKE_INSTALL_PREFIX}/include )
+endif(NOT DEFINED LIB_ACES_CLIP_ONLY )
