@@ -39,7 +39,7 @@ either expressed or implied, of the FreeBSD Project.
 
 namespace ACES {
 
-static const char* kLibVersion = "0.1";
+static const char* kLibVersion = "0.2.1";
 
 
 using namespace tinyxml2;
@@ -60,7 +60,6 @@ class ACES_EXPORT ACESclipWriter
 
   protected:
     std::string date_time( const time_t& t ) const;
-    void set_id();
     void set_status( TransformStatus s );
 
   public:
@@ -72,7 +71,7 @@ class ACES_EXPORT ACESclipWriter
      * 
      * @param application application used to save xml file. 
      * @param version     version of application used.
-     * @param comment     some comment of usefulness
+     * @param comment     some useful comment
      */
     void info( const std::string application = "ACESclipLib",
                const std::string version = kLibVersion,
@@ -82,8 +81,8 @@ class ACES_EXPORT ACESclipWriter
      * aces:clipID section
      * 
      * @param clip_name name of the clip (image name, for example)
-     * @param media_id  media id ( show,shot,take, for example )
-     * @param clip_date date of clip as return by stat
+     * @param media_id  media id ( show,shot,take, or reel for example )
+     * @param clip_date date of clip as returned by stat
      */
     void clip_id( const std::string clip_name,
                   const std::string media_id,
@@ -100,7 +99,7 @@ class ACES_EXPORT ACESclipWriter
      * Input Transform List beginnings.
      * 
      */
-    void ITL_start();
+    void ITL_start( TransformStatus status = kPreview );
 
     /** 
      * Add Input Device Transform (IDT) to ITL.
@@ -133,7 +132,8 @@ class ACES_EXPORT ACESclipWriter
      * @param status   status of transform (preview or applied)
      */
     void add_LMT( const std::string name, 
-                  TransformStatus status = kPreview );
+                  TransformStatus status = kPreview,
+                  const std::string link_transform = "" );
 
     /** 
      * Add a Reference Rendering Transform to PTL.  Only a single
@@ -154,7 +154,18 @@ class ACES_EXPORT ACESclipWriter
      */
 
     void add_ODT( const std::string name, 
-                  TransformStatus status = kPreview );
+                  TransformStatus status = kPreview,
+                  const std::string link_transform = "" );
+
+    /** 
+     * Add a Reference Rendering Transform and a combined ODT to PTL.
+     * Only a single call to it is accepted.
+     * 
+     * @param name    name of the transform (without .ctl extension)
+     * @param status  status of transform (preview or applied)
+     */
+    void add_RRTODT( const std::string name, 
+                     TransformStatus status = kPreview );
 
     /** 
      * Preview Transform List ending.
@@ -177,9 +188,12 @@ class ACES_EXPORT ACESclipWriter
     XMLDocument doc;
     XMLElement* element;
     XMLNode* root, *root2, *root3;
+
+    Transform cvt_to_workspace, cvt_from_workspace;
+
+
     LMTransforms LMT;
-    Transform IDT, RRT, ODT;
-    unsigned id;
+    Transform IDT, RRT, RRTODT, ODT;
 };
 
 

@@ -43,7 +43,6 @@ static const double kContainerVersion = 1.0;
 using namespace tinyxml2;
 
 
-
 /**
  * Return a date and time information in ACESclip format.
  *
@@ -61,16 +60,6 @@ std::string ACESclipWriter::date_time( const time_t& t ) const
     return buf;
 }
 
-/** 
- * Set the id of the transform and increment for next call.
- * 
- */
-void ACESclipWriter::set_id()
-{
-    char buf[10];
-    sprintf( buf, "id%d", id ); ++id;
-    element->SetAttribute( "transformID", buf );
-}
 
 /** 
  * Set status of a transform
@@ -96,7 +85,7 @@ void ACESclipWriter::set_status( TransformStatus s )
  * Constructor
  * 
  */
-ACESclipWriter::ACESclipWriter() : id( 1 )
+ACESclipWriter::ACESclipWriter()
 {
     XMLDeclaration* decl = doc.NewDeclaration( NULL );
     doc.InsertFirstChild( decl );
@@ -209,9 +198,10 @@ void ACESclipWriter::config( const time_t xml_date )
  * 
  * @param idt Name of Input Device Transform ( IDT ) (optional)
  */
-void ACESclipWriter::ITL_start()
+void ACESclipWriter::ITL_start( TransformStatus status )
 {
-    element = doc.NewElement("InputTransformList");
+    element = doc.NewElement("aces:InputTransformList");
+    set_status( status );
     root2->InsertEndChild( element );
     root3 = element;
 }
@@ -240,16 +230,19 @@ void ACESclipWriter::ITL_end( const std::string it )
         const std::string& name = IDT.name;
 
         element = doc.NewElement( "aces:IDTref" );
-        element->SetAttribute( "name", name.c_str() );
+        element->SetAttribute( "TransformID", name.c_str() );
         set_status( IDT.status );
-        set_id();
 
         root3->InsertEndChild( element );
-        XMLNode* root4 = element;
-            
-        element = doc.NewElement( "LinkTransform" );
-        element->SetText( name.c_str() );
-        root4->InsertEndChild( element );
+
+        const std::string& link = IDT.link_transform;
+        if ( ! link.empty() )
+        {
+            XMLNode* root4 = element;
+            element = doc.NewElement( "LinkTransform" );
+            element->SetText( link.c_str() );
+            root4->InsertEndChild( element );
+        }
     }
 
     if ( ! it.empty() )
@@ -270,7 +263,7 @@ void ACESclipWriter::ITL_end( const std::string it )
 void ACESclipWriter::PTL_start()
 {
 
-    element = doc.NewElement("PreviewTransformList");
+    element = doc.NewElement("aces:PreviewTransformList");
     root2->InsertEndChild( element );
     root3 = element;
 
@@ -282,9 +275,10 @@ void ACESclipWriter::PTL_start()
  * @param name    name of the LMT
  * @param status  kPreview or kApplied
  */
-void ACESclipWriter::add_LMT( const std::string name, TransformStatus status )
+void ACESclipWriter::add_LMT( const std::string name, TransformStatus status,
+                              const std::string link_transform )
 {
-    LMT.push_back( Transform( name, status ) );
+    LMT.push_back( Transform( name, link_transform, status ) );
 }
 
 
@@ -300,15 +294,25 @@ void ACESclipWriter::add_RRT( const std::string name, TransformStatus status )
     RRT.status = status;
 }
 
+void ACESclipWriter::add_RRTODT( const std::string name, 
+                                 TransformStatus status )
+{
+    RRTODT.name = name;
+    RRTODT.status = status;
+}
+
+
 /**
  * Add an Output Device Transform
  *
  * @param name    name of the ODT
  * @param status  kPreview or kApplied
  */
-void ACESclipWriter::add_ODT( const std::string name, TransformStatus status )
+void ACESclipWriter::add_ODT( const std::string name, TransformStatus status,
+                              const std::string link_transform )
 {
     ODT.name = name;
+    ODT.link_transform = link_transform;
     ODT.status = status;
 }
 
@@ -329,15 +333,19 @@ void ACESclipWriter::PTL_end( const std::string t )
         {
             const std::string& name = (*i).name;
             element = doc.NewElement( "aces:LMTref" );
-            element->SetAttribute( "name", name.c_str() );
+            element->SetAttribute( "TransformID", name.c_str() );
             set_status( (*i).status );
-            set_id();
             root3->InsertEndChild( element );
-            XMLNode* root4 = element;
 
-            element = doc.NewElement( "LinkTransform" );
-            element->SetText( name.c_str() );
-            root4->InsertEndChild( element );
+
+            const std::string& link = (*i).link_transform;
+            if ( ! link.empty() )
+            {
+                XMLNode* root4 = element;
+                element = doc.NewElement( "LinkTransform" );
+                element->SetText( link.c_str() );
+                root4->InsertEndChild( element );
+            }
         }
     }
 
@@ -346,15 +354,19 @@ void ACESclipWriter::PTL_end( const std::string t )
         ++count;
         const std::string& name = RRT.name;
         element = doc.NewElement( "aces:RRTref" );
-        element->SetAttribute( "name", name.c_str() );
+        element->SetAttribute( "TransformID", name.c_str() );
         set_status( RRT.status );
-        set_id();
         root3->InsertEndChild( element );
-        XMLNode* root4 = element;
+    }
 
-        element = doc.NewElement( "LinkTransform" );
-        element->SetText( name.c_str() );
-        root4->InsertEndChild( element );
+    if ( !RRTODT.name.empty() )
+    {
+        ++count;
+        const std::string& name = RRTODT.name;
+        element = doc.NewElement( "aces:RRTODTref" );
+        element->SetAttribute( "TransformID", name.c_str() );
+        set_status( RRTODT.status );
+        root3->InsertEndChild( element );
     }
 
 
@@ -364,15 +376,18 @@ void ACESclipWriter::PTL_end( const std::string t )
         const std::string& name = ODT.name;
 
         element = doc.NewElement( "aces:ODTref" );
-        element->SetAttribute( "name", name.c_str() );
+        element->SetAttribute( "TransformID", name.c_str() );
         set_status( ODT.status );
-        set_id();
         root3->InsertEndChild( element );
-        XMLNode* root4 = element;
 
-        element = doc.NewElement( "LinkTransform" );
-        element->SetText( name.c_str() );
-        root4->InsertEndChild( element );
+        const std::string& link = ODT.link_transform;
+        if ( ! link.empty() )
+        {
+            XMLNode* root4 = element;
+            element = doc.NewElement( "LinkTransform" );
+            element->SetText( link.c_str() );
+            root4->InsertEndChild( element );
+        }
     }
 
     if ( count > 1 && !t.empty() )

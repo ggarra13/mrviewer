@@ -74,7 +74,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
     if ( c.ODT.status == ACES::kPreview && !c.ODT.name.empty() )
         mrv::Preferences::ODT_CTL_transform = c.ODT.name;
 
-    LOG_INFO( "Loaded ACES clip metadata file '" << filename << "'" );
+    LOG_INFO( _("Loaded ACES clip metadata file '") << filename << "'" );
     return true;
 }
 
@@ -87,10 +87,10 @@ bool save_aces_xml( const CMedia* img, const char* filename )
 
     char buf[128];
     const char* show = getenv( "SHOW" );
-    if ( !show ) show = "Unknown Show";
+    if ( !show ) show = _("Unknown Show");
 
     const char* shot = getenv( "SHOT" );
-    if ( !shot ) shot = "Unknown Shot";
+    if ( !shot ) shot = _("Unknown Shot");
 
     sprintf( buf, "%s-%s", show, shot );
 
@@ -122,9 +122,9 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     c.PTL_end();
 
     if ( ! c.save( filename ) )
-        LOG_ERROR( "Could not save '" << filename << "'." );
+        LOG_ERROR( _("Could not save '") << filename << "'." );
     else
-        LOG_INFO( "Saved ACES clip metadata file '" << filename << "'" );
+        LOG_INFO( _("Saved ACES clip metadata file '") << filename << "'" );
 
 
     return true;

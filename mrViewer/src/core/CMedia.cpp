@@ -1086,9 +1086,9 @@ void CMedia::chromaticities( const Imf::Chromaticities& c )
 void CMedia::alpha_layers()
 {
     SCOPED_LOCK( _mutex );
-    _layers.push_back( "Alpha" );
+    _layers.push_back( _("Alpha") );
     if ( _num_channels != 0 )
-        _layers.push_back( "Alpha Overlay" );
+        _layers.push_back( _("Alpha Overlay") );
     ++_num_channels;
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
@@ -1100,10 +1100,10 @@ void CMedia::alpha_layers()
 void CMedia::rgb_layers()
 {
     SCOPED_LOCK( _mutex );
-    _layers.insert( _layers.begin(), "Color" );
-    _layers.push_back( "Red" );
-    _layers.push_back( "Green" );
-    _layers.push_back( "Blue" );
+    _layers.insert( _layers.begin(), _("Color") );
+    _layers.push_back( _("Red") );
+    _layers.push_back( _("Green") );
+    _layers.push_back( _("Blue") );
     _num_channels += 3;
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
@@ -1114,7 +1114,7 @@ void CMedia::rgb_layers()
  */
 void CMedia::lumma_layers()
 {
-    _layers.push_back( "Lumma" );
+    _layers.push_back( _("Lumma") );
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
@@ -1143,9 +1143,10 @@ void CMedia::channel( const char* c )
 
   std::string ch( c );
 
-  if ( ch == "Color" || ch == "Red" || ch == "Green" || ch == "Blue" ||
-       ch == "Alpha" || ch == "Alpha Overlay" || ch == "Lumma" )
-     c = NULL;
+  if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
+       ch == _("Blue")  ||
+       ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
+      c = NULL;
 
   bool to_fetch = false;
 
