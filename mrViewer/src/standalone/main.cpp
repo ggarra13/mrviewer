@@ -25,6 +25,7 @@
  * 
  */
 
+// #define ALLOC_CONSOLE
 
 #include <locale.h>
 #include <iostream>
@@ -156,10 +157,23 @@ int main( const int argc, char** argv )
 #endif
   fltk::lock();   // Initialize X11 thread system
 
+
+
   setlocale(LC_ALL, "");
-  char buf[64];
+
+  char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
-  bindtextdomain(buf, "/usr/share/locale/");
+
+  std::string locale = argv[0];
+  fs::path file = fs::path( locale );
+  file = fs::absolute( file );
+  fs::path dir = file.parent_path().branch_path();
+
+  std::string path = fs::canonical( dir ).string();
+  path += "/share/locale";
+
+
+  bindtextdomain(buf, path.c_str() );
   textdomain(buf);
 
 
@@ -337,21 +351,28 @@ int main( const int argc, char** argv )
 
 #include <windows.h>
 
+
 int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance, 
 		     LPSTR lpCmdLine, int nCmdShow )
 {
    
-   // AllocConsole();
-   // freopen("conin$", "r", stdin);
-   // freopen("conout$", "w", stdout);
-   // freopen("conout$", "w", stderr);
-   
+#ifdef ALLOC_CONSOLE
+   AllocConsole();
+   freopen("conin$", "r", stdin);
+   freopen("conout$", "w", stdout);
+   freopen("conout$", "w", stderr);
+#endif
+
   int rc = main( __argc, __argv );
    
-   // fclose(stdin);
-   // fclose(stdout);
-   // fclose(stderr);
+#ifdef ALLOC_CONSOLE
+   fclose(stdin);
+   fclose(stdout);
+   fclose(stderr);
+#endif
 
   return rc; 
 }
+
+
 #endif
