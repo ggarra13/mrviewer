@@ -3917,27 +3917,27 @@ void ImageView::channel( unsigned short c )
   uiColorChannel->redraw();
 
   _channelType = kRGB;
-  if ( channelName == "Alpha Overlay" )
+  if ( channelName == _("Alpha Overlay") )
     {
       _channelType = kAlphaOverlay;
     }
-  else if ( channelName == "Red" || ext == N_("R") )
+  else if ( channelName == _("Red") || ext == N_("R") )
     {
       _channelType = kRed;
     }
-  else if ( channelName == "Green" || ext == N_("G") )
+  else if ( channelName == _("Green") || ext == N_("G") )
     {
       _channelType = kGreen;
     }
-  else if ( channelName == "Blue"  || ext == N_("B"))
+  else if ( channelName == _("Blue")  || ext == N_("B"))
     {
       _channelType = kBlue;
     }
-  else if ( channelName == "Alpha" || ext == N_("A") )
+  else if ( channelName == _("Alpha") || ext == N_("A") )
     {
       _channelType = kAlpha;
     }
-  else if ( channelName == "Lumma" )
+  else if ( channelName == _("Lumma") )
     {
       _channelType = kLumma;
     }

@@ -49,26 +49,53 @@ int main( int argc, char** argv )
         exit(-1);
     }
 
-    ACES::ACESclipWriter c;
+    {
+        ACES::ACESclipWriter c;
 
-    c.info( "mrViewer", "v2.6.9", "Sample file" );
-    c.clip_id( "/media/Linux/image/capture.exr",
-               "POTC-ad20");
-    c.config();
+        c.info( "mrViewer", "v2.6.9", "Sample file" );
+        c.clip_id( "/media/Linux/image/capture.exr",
+                   "POTC-ad20");
+        c.config();
+        
+        c.ITL_start();
+        c.add_IDT( "IDT.Sony.F60" );
+        c.ITL_end();
 
-    c.ITL_start();
-    c.add_IDT( "IDT.Sony.F60" );
-    c.ITL_end();
+        c.PTL_start();
+        c.add_LMT( "LMT.Sat.1.0.0" );
+        c.add_LMT( "LMT.Sat.2.0.0" );
+        c.add_RRT( "RRT.a1.0.0" );
+        c.add_ODT( "ODT.RGB.Monitor", ACES::kApplied );
+        c.PTL_end();
+        
+        if ( ! c.save( argv[1] ) )
+            std::cerr << "Could not save '" << argv[1] << "'." << std::endl;
+    }
 
-    c.PTL_start();
-    c.add_LMT( "LMT.Sat.1.0.0" );
-    c.add_LMT( "LMT.Sat.2.0.0" );
-    c.add_RRT( "RRT.a1.0.0" );
-    c.add_ODT( "ODT.RGB.Monitor", ACES::kApplied );
-    c.PTL_end();
+    {
+        
+        ACES::ACESclipWriter c;
+        c.info( "Luminosity", "v5.0", "Sample file2" );
+        c.clip_id( "/media/Linux/anim/anim.%04d.tiff",
+                   "Hulk-pa34" );
+        c.config();
 
-    if ( ! c.save( argv[1] ) )
-        std::cerr << "Could not save '" << argv[1] << "'." << std::endl;
+        c.ITL_start();
+        c.add_IDT( "IDT.Cannon.E300" );
+        c.ITL_end();
+
+        c.PTL_start();
+        c.add_LMT( "LMT.Curve.1.0.0", ACES::kPreview, "mylut1d" );
+        c.add_RRTODT( "RRTODT.a1.0.0" );
+        c.PTL_end();
+
+        std::string name = argv[1];
+        name = name.substr( 0, name.size() - 4 );
+        name += ".v2.xml";
+
+        if ( ! c.save( name.c_str() ) )
+            std::cerr << "Could not save '" << argv[1] << "'." << std::endl;
+    }
 
     return 0;
 }

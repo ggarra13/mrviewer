@@ -747,6 +747,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   pixel_format_id += N_("'");
 	}
 
+        setlocale(LC_ALL, "C");
 
 	sprintf( buf, N_("INSERT INTO "
 			 "videos"
@@ -779,6 +780,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   LOG_INFO( img->filename() << _(": added video to database '") 
 		     << db->database() << _("'.") );
 	}
+
+        setlocale(LC_ALL, "");
       }
   }
 
@@ -833,6 +836,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	    if ( result != "" ) continue;
 	  }
 
+        setlocale(LC_ALL, "C");
+
 	const CMedia::audio_info_t& s = img->audio_info(unsigned(i));
 	sprintf( buf, N_("INSERT INTO audios"
 			 "( directory, filename, stream, image_id, creator, "
@@ -842,7 +847,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 			 " VALUES "
 			 "('%s', '%s', %" PRId64 ", ( %s ), '%s', "
 			 "'%s', '%s', "
-			 "%u, '%s', ( %s ), '%s', '%s', %u, %u,"
+			 "%u, '%s', ( %s ), '%s', '%s', %u, %u, "
 			 "%u, %g, %g );" ),
 		 db->quote( img->directory() ).c_str(), 
 		 db->quote( img->name() ).c_str(), i+1,
@@ -859,6 +864,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 		 s.start,
 		 s.duration
 		 );
+
 	if ( ! db->sql( buf ) )
 	  {
 	    LOG_ERROR( _("Could not add audio track #") << i+1 
@@ -871,6 +877,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	   LOG_INFO( img->filename() << _(": added audio to database '") 
 		     << db->database() << _("'.") );
 	}
+        setlocale(LC_ALL, "");
       }
   }
 
@@ -1141,7 +1148,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	layers += *i;
       }
 
-    
+    setlocale( LC_ALL, "C" );
 
     sprintf( buf, "INSERT INTO images"
 	     "( directory, filename, frame_start, frame_end, creator, "
@@ -1193,6 +1200,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 		 << _("'.") );
     }
     
+    setlocale( LC_ALL, "" );
 
     delete [] buf;
   }
