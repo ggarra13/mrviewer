@@ -2,7 +2,7 @@ v2.7.1   - With NSIS exe installer, made Windows' icons show the version
 	   number.
 	 - Bug fixed CTL Look Modulation Transform Picker.
 	 - Bug fixed libACESclip to use linkTransform instead of name
-	   when available.
+	   when available. Made reader/writer use TransformID instead of name.
 	 - Bug fixed RPM installer not creating ln -s /usr/bin/mrViewer
 	   correctly.
 	 - Color picker now can show colors with the LUT applied.  This 
@@ -13,7 +13,8 @@ v2.7.1   - With NSIS exe installer, made Windows' icons show the version
 	   any language locale.
 	 - DEB/RPM will register file associations (mime-types) to all of
 	   mrViewer's recognized files.
-	 - Added partial translation to Spanish on Linux.
+	 - Added translation to Spanish when that's the locale default.
+	 - Updated libACESclip to new format according to Jim Houston.
 
 v2.7.0   - Added ACEScsc files as IDTs to support DigitalLAD sample picture.
 	 - Made xml and ctl files never show as sequences of frames in

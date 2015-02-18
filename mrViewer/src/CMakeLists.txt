@@ -27,15 +27,15 @@ FIND_PACKAGE( FFMPEG      REQUIRED )    # for mpeg, avi, quicktime, wmv
 FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
 FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
+FIND_PACKAGE( LibIntl     REQUIRED )
 # FIND_PACKAGE( RLM         REQUIRED )    # for licensing
-FIND_PACKAGE( GLU         REQUIRED )    # for gluErrorString
+# FIND_PACKAGE( GLU         REQUIRED )    # for gluErrorString
 FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
-# FIND_PACKAGE( AO )    # for ao sound lib
 
-# ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
-ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS -DNDEBUG )
+ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
+# ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS -DNDEBUG )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -63,7 +63,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/lib
       )
     # 
-    ADD_DEFINITIONS( -Wconversion -DUSE_GETTEXT -DLINUX -msse ) 
+    ADD_DEFINITIONS( -Wconversion -DLINUX -msse ) 
     SET(OS_LIBRARIES
       asound
       ${Xpm} png X11 Xi Xft Xinerama pthread m Xext stdc++ GLEW
@@ -83,7 +83,7 @@ INCLUDE_DIRECTORIES(
   ./gui
   ./video
   ../../libACESclip/include
-#  /usr/include/cairo
+  ${LIBINTL_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
   ${FLTK2_INCLUDE_DIR}
@@ -96,7 +96,6 @@ INCLUDE_DIRECTORIES(
   ${FFMPEG_INCLUDE_DIR} 
   ${POSTGRESQL_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
-  ${RLM_INCLUDE_DIR}
   ${GLU_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
@@ -230,10 +229,12 @@ SET( SOURCES
 
 IF(NOT WIN32)
 
-  EXECUTE_PROCESS( COMMAND xgettext --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.po 
+  ADD_CUSTOM_COMMAND( OUTPUT "po/messages.po"
+    COMMAND xgettext
+    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.po
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
-    RESULT_VARIABLE ok_xgettext
-    ERROR_VARIABLE  error_xgettext)
+    )
+
 
   FIND_LIBRARY( Boost_locale_LIBRARY 
     NAMES boost_locale boost_locale_vc100_mt_1_47
@@ -265,18 +266,9 @@ IF(NOT WIN32)
 
 ELSE(NOT WIN32)
   #
- # Under windows, boost .h files select the appropriate boost static library
+  # Under windows, boost .h files select the appropriate boost static library
   # automatically to handle the correct linking.
   #
-  FIND_LIBRARY( libintl_LIBRARY
-  		NAMES libintl-8 libintl.lib libintl
-		PATHS $ENV{LIBINTL_ROOT} )
-
-
-  SET( BOOST_LIBRARIES
-       	${libintl_LIBRARY} )
-
-
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32)
 
@@ -290,6 +282,7 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
  
 
 SET( LIBRARIES 
+  ${LIBINTL_LIBRARIES}
   ${POSTGRESQL_LIBRARIES}
   ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
@@ -336,30 +329,35 @@ INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/shaders/ DESTINATION shaders )
 INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/docs/ DESTINATION docs )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
+INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 INSTALL( FILES 
 	 ${CMAKE_SOURCE_DIR}/HISTORY.txt 
 	 ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION . )
+
 SET( LANGUAGES "es" )
 
-ADD_CUSTOM_TARGET( TARGET es ALL
-    COMMAND msgfmt -v po/es.po -o mo/es/mrViewer${VERSION}.mo
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
-
-
+SET( output_files "po/messages.po" )
 FOREACH( lang ${LANGUAGES} )
+  SET( MO_FILE mrViewer${VERSION}.mo )
 
-  FILE( MAKE_DIRECTORY "mo/${lang}" )
+  SET( output_files ${output_files} ${MO_FILE} )
 
-  EXECUTE_PROCESS( 
-    COMMAND msgfmt -v po/${lang}.po -o mo/${lang}/mrViewer${VERSION}.mo
-    WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}")
+  FILE( MAKE_DIRECTORY
+   "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
-
-  INSTALL( FILES
-    ${CMAKE_SOURCE_DIR}/mrViewer/src/mo/${lang}/mrViewer${VERSION}.mo
-    DESTINATION /usr/share/locale/${lang}/LC_MESSAGES )
+  ADD_CUSTOM_COMMAND( OUTPUT "${MO_FILE}"
+    COMMAND msgfmt
+    ARGS    -v "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" -o "${MO_FILE}"
+    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po"
+    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/"
+    )
 
 ENDFOREACH( lang )
+
+ADD_CUSTOM_TARGET( 
+  "mofiles" ALL
+  DEPENDS ${output_files}
+  )
 
 IF(WIN32)
 
@@ -557,6 +555,12 @@ IF(CTL_FOUND)
   MESSAGE( STATUS "CTL library:    ${CTL_LIBRARY_DIR}" )
   MESSAGE( STATUS "CTL libraries:  ${CTL_LIBRARIES}" )
 ENDIF(CTL_FOUND)
+
+IF(LIBINTL_FOUND)
+  MESSAGE( STATUS "LibIntl include:    ${LIBINTL_INCLUDE_DIR}" )
+  MESSAGE( STATUS "LibIntl library:    ${LIBINTL_LIBRARY_DIR}" )
+  MESSAGE( STATUS "LibIntl libraries:  ${LIBINTL_LIBRARIES}" )
+ENDIF(LIBINTL_FOUND)
 
 IF(OpenEXRCTL_FOUND)
   MESSAGE( STATUS "OpenEXR CTL include:    ${OpenEXRCTL_INCLUDE_DIR}" )
