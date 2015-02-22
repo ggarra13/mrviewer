@@ -169,11 +169,12 @@ namespace mrv {
 		  loc += 2;
 		}
 
-	      LOG_ERROR("Image sequence \"" << quoted << "\" not found.");
+	      LOG_ERROR( _("Image sequence \"") << quoted 
+                         << _("\" not found.") );
 	    }
 	  else
 	    {
-	      LOG_ERROR("Image \"" << name << "\" not found.");
+                LOG_ERROR( _("Image \"") << name << _("\" not found.") );
 	    }
 	  return NULL;
 	}
@@ -204,7 +205,7 @@ namespace mrv {
           int len = strlen(name);
           if ( len > 5 && strcasecmp( ".reel", name + len - 5 ) != 0 )
           {
-              LOG_ERROR(name << ": not a recognized format.");
+              LOG_ERROR(name << _(": not a recognized format.") );
           }
           return NULL;
       }

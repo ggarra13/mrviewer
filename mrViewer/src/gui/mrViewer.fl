@@ -1,4 +1,3 @@
-
 # data file for the FLTK User Interface Designer (FLUID)
 version 2.1000 
 images_dir header_name 
@@ -629,19 +628,19 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {318 294 640 475} resizable visible
+        xywh {342 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
           xywh {207 24 433 416}
         } {
           {fltk::Group} {} {
-            label {User Interface}
+            label {User Interface} open
             xywh {13 24 407 382} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Window Behavior}
-              xywh {23 25 355 100} box ROUNDED_BOX
+              label {Window Behavior} open
+              xywh {23 32 355 100} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAlwaysOnTop {
                 label {Always on Top}
@@ -681,7 +680,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
             {fltk::Group} {} {
               label {UI Elements}
-              xywh {23 154 355 96} box ROUNDED_BOX
+              xywh {23 161 355 96} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
                 label Topbar
@@ -730,8 +729,8 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label Timeline
-              xywh {25 272 350 70} box ROUNDED_BOX
+              label Timeline selected
+              xywh {25 282 350 70} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsTimelineDisplay {
                 label Display open
@@ -1153,7 +1152,7 @@ This setting thus allows caching more pictures in memory.}
           }
           {fltk::Group} {} {
             label {3D Luts} open
-            xywh {13 26 405 378} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 26 405 378} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Algorithm open
@@ -1288,7 +1287,7 @@ The "No Baking" setting performs the color correction on the image directly inst
               }
             }
             {fltk::CheckButton} uiPrefsLutInPixelBar {
-              label {Show LUT in Pixel Bar} selected
+              label {Show LUT in Pixel Bar}
               tooltip {Normally, mrViewer will not show the color values of the LUT image but the values previous to the LUT.  With this option, the program will show the values of the baked lut at the cost of some speed.}
               xywh {140 335 30 25}
             }
