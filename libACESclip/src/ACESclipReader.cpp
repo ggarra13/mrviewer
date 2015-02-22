@@ -324,6 +324,16 @@ XMLError ACESclipReader::GradeRef()
             }
         }
     }
+
+    element = root4->FirstChildElement( "Convert_from_WorkSpace" );
+    if ( !element ) return XML_ERROR_FILE_READ_ERROR;
+
+    tmp = element->Attribute( "TransformID" );
+    if ( ! tmp ) return XML_ERROR_FILE_READ_ERROR;
+
+    convert_from = tmp;
+
+    return XML_NO_ERROR;
 }
 
 XMLError ACESclipReader::ITL()
@@ -400,7 +410,7 @@ XMLError ACESclipReader::PTL()
 	  if ( tmp ) name = tmp;
           else
           {
-            // For backwards compatibility
+              // For backwards compatibility
               tmp = element->Attribute( "name" );
               if ( tmp ) name = tmp;
           }
@@ -450,7 +460,7 @@ XMLError ACESclipReader::PTL()
             if ( tmp ) name = tmp;
             else
             {
-            // For backwards compatibility
+                // For backwards compatibility
                 tmp = element->Attribute( "name" );
                 if ( tmp ) name = tmp;
             }

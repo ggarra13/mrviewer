@@ -2156,14 +2156,14 @@ int ImageView::leftMouseDown(int x, int y)
 		      kIccProfile.hotkey(),
 		      (fltk::Callback*)attach_color_profile_cb,
 		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Mirror Horizontal"),
+	    menu.add( _("Image/Mirror/Horizontal"),
 		      kFlipX.hotkey(),
 		      (fltk::Callback*)flip_x_cb,
 		      this);
-	    menu.add( _("Image/Mirror Vertical"),
+	    menu.add( _("Image/Mirror/Vertical"),
 		      kFlipY.hotkey(),
 		      (fltk::Callback*)flip_y_cb,
-		      this, fltk::MENU_DIVIDER);
+		      this);
 	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
 		      (fltk::Callback*)set_as_background_cb,
 		      (void*)this);

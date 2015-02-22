@@ -159,7 +159,12 @@ int main( const int argc, char** argv )
 
 
 
-  setlocale(LC_ALL, "");
+  const char* loc = setlocale(LC_ALL, "");
+  if ( !loc )
+  {
+      LOG_ERROR( _("Failed to set translation.  Check LC_*, LANG environment variables.") );
+      return -1;
+  }
 
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
@@ -183,7 +188,6 @@ int main( const int argc, char** argv )
 
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();
-
 
 
   mrv::Options opts;

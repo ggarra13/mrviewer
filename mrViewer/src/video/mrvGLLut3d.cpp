@@ -721,7 +721,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
 {
     std::string path;
 
-    RT_ctl_transforms( path, t, img, true );
+    RT_ctl_transforms( path, t, img, false );
     ODT_ctl_transforms( path, t, img );
 }
 
