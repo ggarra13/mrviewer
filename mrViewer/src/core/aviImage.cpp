@@ -75,8 +75,6 @@ namespace
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
-// this plays backwards by seeking, which is slow but memory efficient
-// #define USE_SEEK_TO_PLAY_BACKWARDS  
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
@@ -1684,7 +1682,12 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 pkt.size = 0;
                 pkt.stream_index = video_stream_index();
                 packets_added++;
+
+                boost::int64_t pktframe = pts2frame( get_video_stream(),
+                                                     pkt.dts ) - _frame_offset;
                 _video_packets.push_back( pkt );
+                if (pktframe <= frame )
+                    got_video = true;
             }
 
             AVStream* stream = get_audio_stream();
@@ -1695,7 +1698,11 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 pkt.data = NULL;
                 pkt.size = 0;
                 pkt.stream_index = audio_stream_index();
+                boost::int64_t pktframe = pts2frame( get_audio_stream(),
+                                                     pkt.dts ) - _frame_offset;
                 _audio_packets.push_back( pkt );
+                if (pktframe <= frame )
+                    got_audio = true;
             }
 
             eof = false;
