@@ -35,7 +35,6 @@ FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
 
 ADD_DEFINITIONS( -DUSE_GETTEXT -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS  )
-# ADD_DEFINITIONS( -DMR_SSE -D__STDC_CONSTANT_MACROS -D_CRT_SECURE_NO_WARNINGS -DNDEBUG )
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
@@ -96,7 +95,6 @@ INCLUDE_DIRECTORIES(
   ${FFMPEG_INCLUDE_DIR} 
   ${POSTGRESQL_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
-  ${GLU_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
   )
@@ -229,9 +227,10 @@ SET( SOURCES
 
 IF(NOT WIN32)
 
-  ADD_CUSTOM_COMMAND( OUTPUT "po/messages.po"
+  ADD_CUSTOM_COMMAND( OUTPUT "po/messages.pot"
     COMMAND xgettext
-    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.po
+    ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
+    DEPENDS mrViewer
     WORKING_DIRECTORY "${CMAKE_CURRENT_SOURCE_DIR}"
     )
 
@@ -336,26 +335,31 @@ INSTALL( FILES
 
 SET( LANGUAGES "es" )
 
-SET( output_files "po/messages.po" )
-FOREACH( lang ${LANGUAGES} )
-  SET( MO_FILE mrViewer${VERSION}.mo )
 
-  SET( output_files ${output_files} ${MO_FILE} )
+SET( output_files "po/messages.pot" )
+FOREACH( lang ${LANGUAGES} )
+  SET( _moFile mrViewer${VERSION}.mo )
+
+  SET( output_files ${output_files} ${_moFile} )
 
   FILE( MAKE_DIRECTORY
    "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
-  ADD_CUSTOM_COMMAND( OUTPUT "${MO_FILE}"
-    COMMAND msgfmt
-    ARGS    -v "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" -o "${MO_FILE}"
-    DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po"
+ SET( _absFile "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" )
+ SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
+
+  ADD_CUSTOM_COMMAND( OUTPUT "${_moFile}"
+    COMMAND msgmerge --quiet --update --backup=none 
+    "${_absFile}" "${_absPotFile}"  
+    COMMAND msgfmt -v "${_absFile}" -o "${_moFile}"
+    DEPENDS ${_absFile} ${_absPotFile}
     WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/"
     )
 
 ENDFOREACH( lang )
 
 ADD_CUSTOM_TARGET( 
-  "mofiles" ALL
+  "translations" ALL
   DEPENDS ${output_files}
   )
 
@@ -494,6 +498,8 @@ MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
 MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
+MESSAGE( STATUS "CTL:           ${CTL_FOUND} ${CTL_VERSION}" )
+MESSAGE( STATUS "libintl:       ${LIBINTL_FOUND} ${LIBINTL_VERSION}" )
 MESSAGE( STATUS "TinyXML2:      ${TINYXML2_FOUND} ${TINYXML2_VERSION}" )
 
 IF(GLUT_FOUND)
