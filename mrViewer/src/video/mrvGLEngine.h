@@ -55,6 +55,8 @@ namespace mrv {
     virtual const char* name() { return "OpenGL"; }
     virtual std::string options();
 
+    virtual void evaluate( const Imath::V3f& rgb, Imath::V3f& out ); 
+
     virtual void refresh_luts();
     virtual void clear_canvas( float r, float g, float b, float a );
     virtual void set_blend_function( int source, int dest );
