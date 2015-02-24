@@ -4724,10 +4724,10 @@ void ImageView::toggle_lut()
   if ( _useLUT ) {
      damage_contents();
      _engine->refresh_luts();
-     redraw();
   }
-  update_color_info();
   smart_refresh();
+  draw();
+  update_color_info();
 }
 
 
