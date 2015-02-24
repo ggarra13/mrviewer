@@ -370,7 +370,8 @@ void ColorInfo::update( const CMedia* img,
 
                if ( uiMain->uiView->use_lut() )
                {
-                   engine->evaluate( (*(Imath::V3f*)&op), 
+                   engine->evaluate( img, 
+                                     (*(Imath::V3f*)&op), 
                                      (*(Imath::V3f*)&rp) );
                }
                else

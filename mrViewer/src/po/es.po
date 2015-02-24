@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-02-24 14:12-0300\n"
-"PO-Revision-Date: 2015-02-24 11:57-0300\n"
+"POT-Creation-Date: 2015-02-24 16:53-0300\n"
+"PO-Revision-Date: 2015-02-24 16:52-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -667,7 +667,7 @@ msgid "@||"
 msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3791
-#: gui/mrvColorInfo.cpp:543
+#: gui/mrvColorInfo.cpp:544
 msgid "A"
 msgstr ""
 
@@ -865,7 +865,7 @@ msgstr ""
 "¿Estás seguro que querés\n"
 "borrar todas las imágenes del carrete?"
 
-#: gui/mrvColorInfo.cpp:524
+#: gui/mrvColorInfo.cpp:525
 msgid "Area"
 msgstr "Area"
 
@@ -946,7 +946,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:541 gui/mrvImageView.cpp:5209
+#: gui/mrvColorInfo.cpp:542 gui/mrvImageView.cpp:5209
 msgid "B"
 msgstr "A"
 
@@ -1104,6 +1104,10 @@ msgstr "Categoría"
 #: gui/mrvHotkey.cpp:141
 msgid "Center Image"
 msgstr "Clonar la Imagen"
+
+#: standalone/main.cpp:179
+msgid "Changed locale to "
+msgstr "Cambio de localidad a "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3412
 msgid "Changes frame/field display"
@@ -1977,10 +1981,6 @@ msgstr "Fallé en inicializar biblioteca swresample con "
 msgid "Failed to initialize the resampling context"
 msgstr "Fallé al inicializar el contexto de resampleo"
 
-#: standalone/main.cpp:165
-msgid "Failed to set translation.  Check LC_*, LANG environment variables."
-msgstr ""
-
 #: gui/FLU/Flu_File_Chooser.cpp:86
 msgid "Favorites"
 msgstr "Favoritos"
@@ -2140,19 +2140,19 @@ msgstr "Paso de Cuadro Hacia Delante CPS"
 msgid "Frame Step Forwards"
 msgstr "Paso de Cuadro Hacia Delante"
 
-#: video/mrvGLEngine.cpp:664
+#: video/mrvGLEngine.cpp:668
 msgid "Framebuffer incomplete: Attachment is NOT complete."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:671
+#: video/mrvGLEngine.cpp:675
 msgid "Framebuffer incomplete: Draw buffer."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:668
+#: video/mrvGLEngine.cpp:672
 msgid "Framebuffer incomplete: No image is attached to FBO."
 msgstr ""
 
-#: video/mrvGLEngine.cpp:675
+#: video/mrvGLEngine.cpp:679
 msgid "Framebuffer incomplete: Read buffer."
 msgstr ""
 
@@ -2180,7 +2180,7 @@ msgstr "Pantalla Completa"
 msgid "Function"
 msgstr "Función"
 
-#: gui/mrvColorInfo.cpp:539
+#: gui/mrvColorInfo.cpp:540
 msgid "G"
 msgstr "V"
 
@@ -2773,11 +2773,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:1903
+#: video/mrvGLEngine.cpp:1907
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:1908
+#: video/mrvGLEngine.cpp:1912
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -2875,11 +2875,11 @@ msgstr "Imagen Map"
 msgid "Max. Texture Size:\t"
 msgstr "Max. Tamaño Textura:\t"
 
-#: gui/mrvColorInfo.cpp:545 gui/mrvColorInfo.cpp:656
+#: gui/mrvColorInfo.cpp:546 gui/mrvColorInfo.cpp:657
 msgid "Maximum"
 msgstr "Máximo"
 
-#: gui/mrvColorInfo.cpp:567 gui/mrvColorInfo.cpp:678
+#: gui/mrvColorInfo.cpp:568 gui/mrvColorInfo.cpp:679
 msgid "Mean"
 msgstr "Promedio"
 
@@ -2914,7 +2914,7 @@ msgstr "Meta"
 msgid "Microsoft Bitmap (.bmp)"
 msgstr "Bitmap de Microsoft (.bmp)"
 
-#: gui/mrvColorInfo.cpp:550 gui/mrvColorInfo.cpp:661
+#: gui/mrvColorInfo.cpp:551 gui/mrvColorInfo.cpp:662
 msgid "Minimum"
 msgstr "Mínimo"
 
@@ -3509,7 +3509,7 @@ msgstr "Cualidad"
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
-#: gui/mrvColorInfo.cpp:537
+#: gui/mrvColorInfo.cpp:538
 msgid "R"
 msgstr "R"
 
@@ -3560,7 +3560,7 @@ msgstr ""
 msgid "Random Y"
 msgstr "Al Azar en Y"
 
-#: gui/mrvColorInfo.cpp:562 gui/mrvColorInfo.cpp:673
+#: gui/mrvColorInfo.cpp:563 gui/mrvColorInfo.cpp:674
 msgid "Range"
 msgstr "Rango"
 
@@ -4001,7 +4001,7 @@ msgstr "Un Solo Click para Viajar a las Carpetas"
 msgid "Single Instance"
 msgstr "Una Sola Instancia"
 
-#: gui/FLU/Flu_File_Chooser.cpp:97 gui/mrvColorInfo.cpp:527
+#: gui/FLU/Flu_File_Chooser.cpp:97 gui/mrvColorInfo.cpp:528
 msgid "Size"
 msgstr "Tamaño"
 
@@ -4599,11 +4599,11 @@ msgstr "Modo de Redondeo desconocido"
 msgid "Unknown stereo type"
 msgstr "Tipo de stereo desconocido"
 
-#: video/mrvGLEngine.cpp:1609
+#: video/mrvGLEngine.cpp:1613
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
-#: video/mrvGLEngine.cpp:661
+#: video/mrvGLEngine.cpp:665
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
@@ -5222,11 +5222,11 @@ msgstr ""
 "Si no esta seguro que significa todo esto, mantega su display y seteo de "
 "imágenes usando siempre el mismo algorithm (CTL or ICC)."
 
-#: gui/mrvColorInfo.cpp:529
+#: gui/mrvColorInfo.cpp:530
 msgid "pixel"
 msgstr "pixel"
 
-#: gui/mrvColorInfo.cpp:529
+#: gui/mrvColorInfo.cpp:530
 msgid "pixels"
 msgstr "pixeles"
 
