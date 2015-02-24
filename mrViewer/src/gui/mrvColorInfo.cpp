@@ -220,6 +220,7 @@ void ColorInfo::update()
   CMedia* img = fg->image();
   mrv::Rectd selection = uiMain->uiView->selection();
   update( img, selection );
+  redraw();
 }
 
 void ColorInfo::selection_to_coord( const CMedia* img,
