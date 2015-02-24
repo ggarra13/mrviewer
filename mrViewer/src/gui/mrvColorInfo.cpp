@@ -54,6 +54,7 @@ using namespace std;
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvColorInfo.h"
+#include "video/mrvDrawEngine.h"
 
 
 namespace
@@ -356,11 +357,21 @@ void ColorInfo::update( const CMedia* img,
       float gamma = uiMain->uiView->gamma();
       float one_gamma = 1.0f / gamma;
 
+      mrv::DrawEngine* engine = uiMain->uiView->engine();
+
+      CMedia::Pixel rp;
+
       for ( int y = ymin; y <= ymax; ++y )
 	{
 	  for ( int x = xmin; x <= xmax; ++x, ++count )
 	    {
-               CMedia::Pixel rp = pic->pixel( x, y );
+               CMedia::Pixel op = pic->pixel( x, y );
+
+               if ( uiMain->uiView->use_lut() )
+               {
+                   engine->evaluate( (*(Imath::V3f*)&op), 
+                                     (*(Imath::V3f*)&rp) );
+               }
 
                if ( rp.r > 0.0f && isfinite(rp.r) )
                    rp.r = powf(rp.r * gain, one_gamma);
