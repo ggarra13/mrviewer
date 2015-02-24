@@ -157,14 +157,7 @@ int main( const int argc, char** argv )
 #endif
   fltk::lock();   // Initialize X11 thread system
 
-
-
   const char* loc = setlocale(LC_ALL, "");
-  if ( !loc )
-  {
-      LOG_ERROR( _("Failed to set translation.  Check LC_*, LANG environment variables.") );
-      return -1;
-  }
 
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
@@ -181,6 +174,10 @@ int main( const int argc, char** argv )
   bindtextdomain(buf, path.c_str() );
   textdomain(buf);
 
+  if ( loc )
+  {
+      LOG_INFO( _("Changed locale to ") << loc );
+  }
 
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
