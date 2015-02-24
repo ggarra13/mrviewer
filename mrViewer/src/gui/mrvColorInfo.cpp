@@ -372,6 +372,10 @@ void ColorInfo::update( const CMedia* img,
                    engine->evaluate( (*(Imath::V3f*)&op), 
                                      (*(Imath::V3f*)&rp) );
                }
+               else
+               {
+                   rp = op;
+               }
 
                if ( rp.r > 0.0f && isfinite(rp.r) )
                    rp.r = powf(rp.r * gain, one_gamma);
