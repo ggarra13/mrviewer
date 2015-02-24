@@ -2515,7 +2515,7 @@ void ImageView::mouseMove(int x, int y)
 
           Imath::V3f in( rgba.r, rgba.g, rgba.b );
           Imath::V3f out;
-          _engine->evaluate( in, out );
+          _engine->evaluate( img, in, out );
 
           rgba.r = out[0];
           rgba.g = out[1];
