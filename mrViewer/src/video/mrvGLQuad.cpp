@@ -208,7 +208,7 @@ namespace mrv {
               if ( !bad_format )
               {
                   bad_format = true;
-                  LOG_ERROR( "Invalid mrv::Frame format: " << format );
+                  LOG_ERROR( _("Invalid mrv::Frame format: ") << format );
               }
               return GL_LUMINANCE;
               break;
