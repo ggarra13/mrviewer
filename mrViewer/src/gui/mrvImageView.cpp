@@ -2510,8 +2510,7 @@ void ImageView::mouseMove(int x, int y)
       //
       // To represent pixel properly, we need to do the lut
       //
-      if ( uiMain->uiPrefs->uiPrefsLutInPixelBar->value() &&
-           _playback == kStopped && use_lut() )
+      if ( use_lut() )
       {
 
           Imath::V3f in( rgba.r, rgba.g, rgba.b );
@@ -4725,7 +4724,9 @@ void ImageView::toggle_lut()
   if ( _useLUT ) {
      damage_contents();
      _engine->refresh_luts();
+     redraw();
   }
+  update_color_info();
   smart_refresh();
 }
 
