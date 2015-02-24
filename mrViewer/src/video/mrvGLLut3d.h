@@ -36,6 +36,7 @@
 
 #include <half.h>
 #include <ImfHeader.h>
+#include <ImathVec.h>
 #include <ImfArray.h>
 
 #include "IccCmm.h"
@@ -103,7 +104,7 @@ namespace mrv {
     void enable();
     void disable();
 
-      void evaluate( float rgba[3], float out[3] );
+      void evaluate( const Imath::V3f& rgba, Imath::V3f& out ) const;
 
     virtual bool calculate_ctl( const Transforms::const_iterator& start,
 				const Transforms::const_iterator& end,
@@ -125,8 +126,7 @@ namespace mrv {
     unsigned lut_size() const { return 4 * _lutN * _lutN * _lutN; }
     unsigned lut_size2() const { return 4 + 4 * _lutN * _lutN * _lutN; }
 
-    template< typename T >
-    void init_pixel_values( Imf::Array< T >& pixelValues );
+    void init_pixel_values( Imf::Array< float >& pixelValues );
 
   public:
 

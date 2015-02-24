@@ -46,6 +46,11 @@ export LD_LIBRARY_PATH="${dir}/lib:${LD_LIBRARY_PATH}"
 export CTL_MODULE_PATH="${dir}/ctl:${CTL_MODULE_PATH}"
 export MAGICK_CODER_MODULE_PATH="${dir}/lib/ImageMagick-${magick_version}/modules-Q32/coders"
 
+# Uncomment this to always use English in mrViewer, regardless of locale
+# export LANG=C
+
+
+
 params=""
 
 for param in "$@"
