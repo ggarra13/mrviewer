@@ -29,7 +29,6 @@
 #include <limits>
 
 #include <Iex.h>
-#include <CtlExc.h>
 #include <half.h>
 #include <ImfArray.h>
 #include <ImfHeader.h>
@@ -37,6 +36,7 @@
 #include <ImfMatrixAttribute.h>
 #include <ImfVecAttribute.h>
 #include <ImfStandardAttributes.h>
+#include <CtlExc.h>
 
 #include <fltk/Cursor.h>
 
@@ -61,6 +61,105 @@ namespace
 
 
 namespace mrv {
+namespace {
+
+inline void
+indicesAndWeights (float r, int iMax, int &i, int &i1, float &u, float &u1)
+{
+    if (r >= 0)
+    {
+	if (r < iMax)
+	{
+	    //
+	    // r is finite and in the interval [0, iMax]
+	    //
+
+	    i = int (r);
+	    i1 = i + 1;
+	    u  = r - (float) i;
+	}
+	else
+	{
+	    //
+	    // r is greater than or equal to iMax
+	    //
+
+	    i = i1 = iMax;
+	    u = 1;
+	}
+    }
+    else
+    {
+	//
+	// r is either NaN or less than 0
+	//
+
+	i = i1 = 0;
+	u = 1;
+    }
+
+    u1 = 1 - u;
+}
+
+} // namespace
+
+using namespace Imath;
+
+V3f
+lookup3D
+    (const V4f table[],
+     const V3i &size,
+     const V3f &pMin,
+     const V3f &pMax,
+     const V3f &p)
+{
+    int iMax = size.x - 1;
+    float r = (clamp (p.x, pMin.x, pMax.x) - pMin.x) / (pMax.x - pMin.x) * 
+              (float) iMax;
+
+    int i, i1;
+    float u, u1;
+    indicesAndWeights (r, iMax, i, i1, u, u1);
+
+    int jMax = size.y - 1;
+    float s = (clamp (p.y, pMin.y, pMax.y) - pMin.y) / (pMax.y - pMin.y) * 
+              (float) jMax;
+
+    int j, j1;
+    float v, v1;
+    indicesAndWeights (s, jMax, j, j1, v, v1);
+
+    int kMax = size.z - 1;
+    float t = (clamp (p.z, pMin.z, pMax.z) - pMin.z) / (pMax.z - pMin.z) * 
+              (float) kMax;
+
+    int k, k1;
+    float w, w1;
+    indicesAndWeights (t, kMax, k, k1, w, w1);
+
+    const V4f &a = table[(k  * size.y + j ) * size.z + i ];
+    const V4f &b = table[(k1 * size.y + j ) * size.z + i ];
+    const V4f &c = table[(k  * size.y + j1) * size.z + i ];
+    const V4f &d = table[(k1 * size.y + j1) * size.z + i ];
+    const V4f &e = table[(k  * size.y + j ) * size.z + i1];
+    const V4f &f = table[(k1 * size.y + j ) * size.z + i1];
+    const V4f &g = table[(k  * size.y + j1) * size.z + i1];
+    const V4f &h = table[(k1 * size.y + j1) * size.z + i1];
+
+    V3f out(
+    w1 * (v1 * (u1 * a.x + u * b.x) + v * (u1 * c.x + u * d.x)) +
+    w  * (v1 * (u1 * e.x + u * f.x) + v * (u1 * g.x + u * h.x)),
+
+    w1 * (v1 * (u1 * a.y + u * b.y) + v * (u1 * c.y + u * d.y)) +
+    w  * (v1 * (u1 * e.y + u * f.y) + v * (u1 * g.y + u * h.y)),
+
+    w1 * (v1 * (u1 * a.z + u * b.z) + v * (u1 * c.z + u * d.z)) +
+    w  * (v1 * (u1 * e.z + u * f.z) + v * (u1 * g.z + u * h.z))
+    );
+
+    return out;
+}
+
 
   GLLut3d::LutsMap GLLut3d::_luts;
 
@@ -173,6 +272,7 @@ namespace mrv {
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_S, gl_clamp );
     glTexParameteri( GL_TEXTURE_3D, GL_TEXTURE_WRAP_T, gl_clamp );
 
+
     glTexImage3D( GL_TEXTURE_3D,
 		  0,			// level
                   GL_RGBA32F,           // internal format
@@ -184,24 +284,30 @@ namespace mrv {
   }
 
 
-void GLLut3d::evaluate( float rgb[3], float out[3] )
+void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 {
-    using namespace Imf;
-    rgb[0] = lutT + lutM * log( Imath::clamp( rgb[0], lutMin, lutMax ) );
-    rgb[1] = lutT + lutM * log( Imath::clamp( rgb[1], lutMin, lutMax ) );
-    rgb[2] = lutT + lutM * log( Imath::clamp( rgb[2], lutMin, lutMax ) );
+    using namespace Imath;
 
-    unsigned x = rgb[0] * _lutN;
-    unsigned y = rgb[1] * _lutN;
-    unsigned z = rgb[2] * _lutN;
 
-    out[0] = exp( lut[x] );
-    out[1] = exp( lut[y * _lutN] );
-    out[2] = exp( lut[z * _lutN * _lutN] );
+    V3f pMin( 0.0f, 0.f, 0.f );
+    // V3f pMax( lutMax, lutMax, lutMax );
+    V3f pMax( 1.f, 1.f, 1.f );
+    V3i size( _lutN, _lutN, _lutN );
+
+    out.x = lutT + lutM * log( Imath::clamp( rgb.x, lutMin, lutMax ) );
+    out.y = lutT + lutM * log( Imath::clamp( rgb.y, lutMin, lutMax ) );
+    out.z = lutT + lutM * log( Imath::clamp( rgb.z, lutMin, lutMax ) );
+
+
+    out = lookup3D( (V4f*)(&lut[0]), size, pMin, pMax, out );
+
+    out.x = exp( out.x );
+    out.y = exp( out.y );
+    out.z = exp( out.z );
+
 }
 
-  template< typename T >
-  void GLLut3d::init_pixel_values( Imf::Array< T >& pixelValues )
+  void GLLut3d::init_pixel_values( Imf::Array< float >& pixelValues )
   {
     //
     // Compute lutMin, lutMax, and scale and offset
@@ -729,17 +835,17 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
 			     const CMedia* img )
   {
       std::string path = img->name();
-    GLLut3d::Transforms transforms;
+      GLLut3d::Transforms transforms;
 
-    unsigned int algorithm = uiPrefs->RT_algorithm->value();
+      unsigned int algorithm = uiPrefs->RT_algorithm->value();
 
-    bool find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
-		     algorithm == Preferences::kLutPreferCTL );
-    bool find_icc = (algorithm == Preferences::kLutOnlyICC ||
-		     algorithm == Preferences::kLutPreferICC );
+      bool find_ctl = (algorithm == Preferences::kLutOnlyCTL ||
+                       algorithm == Preferences::kLutPreferCTL );
+      bool find_icc = (algorithm == Preferences::kLutOnlyICC ||
+                       algorithm == Preferences::kLutPreferICC );
 
-    bool found;
-    if ( find_ctl )
+      bool found;
+      if ( find_ctl )
       {
 	found = RT_ctl_transforms( path, transforms, img );
 	if ( !found && algorithm == Preferences::kLutPreferCTL )
