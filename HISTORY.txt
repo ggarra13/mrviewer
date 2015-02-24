@@ -4,6 +4,7 @@ v2.7.2   - Bug fixed a warning in running CTL with ICC preferred.
 	 - Made color picker with LUT work in real time.
 	 - Removed the preference switch to show colors in pixel toolbar.
 	 - Added showing color of LUT in Color Area Information Window.
+	 - Bug fixed a startup bug when setlocale failed.
 
 v2.7.1   - With NSIS exe installer, made Windows' icons show the version 
 	   number.

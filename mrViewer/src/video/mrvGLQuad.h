@@ -54,9 +54,11 @@ namespace mrv {
 
     void draw( const unsigned dw, const unsigned dh ) const;
 
-    inline GLLut3d* lut() const { return _lut; }
+    inline const GLLut3d* lut() const { return _lut; }
     void lut( const CMedia* img );
-    
+
+    inline const CMedia* image() const { return _image; }
+
     void clear_lut();
 
        inline void minmax( float fmin, float fmax ) {
