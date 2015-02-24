@@ -55,7 +55,7 @@ Out main(
   if (enableLut)
     {
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
-      c.rgb = exp( tex3D(lut, c.rgb).rgb ); 
+      c.rgb = exp( tex3D(lut, c.rgb).rgb );
     }
 
   //

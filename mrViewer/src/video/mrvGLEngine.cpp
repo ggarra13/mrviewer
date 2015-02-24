@@ -527,6 +527,25 @@ void GLEngine::reset_view_matrix()
   glDisable(GL_LIGHTING);
 }
 
+void GLEngine::evaluate( const Imath::V3f& rgb, Imath::V3f& out )
+{
+  QuadList::iterator q = _quads.begin();
+  QuadList::iterator e = _quads.end();
+  if ( q == e )
+  {
+      out = rgb;
+      return;
+  }
+
+  const GLLut3d* lut = (*q)->lut();
+  if ( !lut ) {
+      out = rgb;
+      return;
+  }
+
+  lut->evaluate( rgb, out );
+
+}
 void GLEngine::refresh_luts()
 {
   QuadList::iterator q = _quads.begin();
