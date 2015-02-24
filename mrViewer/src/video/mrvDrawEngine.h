@@ -112,7 +112,8 @@ namespace mrv {
     virtual std::string options() = 0;
 
       // Evaluate pixel with LUT 
-      virtual void evaluate( const Imath::V3f& rgb, Imath::V3f& out ) = 0;
+      virtual void evaluate( const CMedia* img,
+                             const Imath::V3f& rgb, Imath::V3f& out ) = 0;
 
     /// Refresh the luts
     virtual void refresh_luts() = 0;
