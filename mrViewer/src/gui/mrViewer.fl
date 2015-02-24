@@ -1286,11 +1286,6 @@ The "No Baking" setting performs the color correction on the image directly inst
                   }
               }
             }
-            {fltk::CheckButton} uiPrefsLutInPixelBar {
-              label {Show LUT in Pixel Bar}
-              tooltip {Normally, mrViewer will not show the color values of the LUT image but the values previous to the LUT.  With this option, the program will show the values of the baked lut at the cost of some speed.}
-              xywh {140 335 30 25}
-            }
           }
           {fltk::Group} {} {
             label {CTL Paths} open

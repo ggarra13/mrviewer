@@ -297,7 +297,7 @@ class server;
     bool use_lut() const { return _useLUT; }
 
     /// Set 3D LUT to on, false if not.
-    void use_lut(const bool t) { _useLUT = t; }
+    void use_lut(const bool t) {  _useLUT = t; update_color_info(); }
 
     /// True if background is active
     bool show_background() const { return _showBG; }

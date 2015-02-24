@@ -590,11 +590,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
-    {
-        lut.get( "lut_in_pixel_bar", tmp, 0 );
-        uiPrefs->uiPrefsLutInPixelBar->value( tmp );
-    }
-
+ 
     {
       fltk::Preferences odt( lut, "ODT" );
       {
@@ -1127,8 +1123,6 @@ fltk::StyleSet*     newscheme = NULL;
       {
 	lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
       }
-
-    lut.set( "lut_in_pixel_bar", uiPrefs->uiPrefsLutInPixelBar->value() );
 
     {
       fltk::Preferences odt( lut, "ODT" );
