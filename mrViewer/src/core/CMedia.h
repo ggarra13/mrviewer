@@ -63,6 +63,7 @@
 #include "core/mrvBarrier.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvOS.h"
+#include "core/mrvI8N.h"
 
 #include "video/mrvGLShape.h"
 
@@ -470,13 +471,13 @@ class CMedia
     inline double pixel_ratio() const    { return _pixel_ratio; }
 
     /// Returns the file format of the image
-    virtual const char* const format() const { return "Unknown"; };
+    virtual const char* const format() const { return _("Unknown"); };
 
     /// Set the image compression
     virtual void compression( const unsigned idx ) { };
 
     /// Returns the image compression (if any)
-    virtual const char* const compression() const { return "None"; };
+    virtual const char* const compression() const { return _("None"); };
 
     /// Returns the video's 4-letter codec identifier
     virtual const char* const fourcc() const { return ""; } 
@@ -487,7 +488,7 @@ class CMedia
     }
 
     /// Returns the image line order (if any)
-    virtual const char* const line_order() const { return "Unknown"; };
+    virtual const char* const line_order() const { return _("Unknown"); };
 
     void rendering_intent( RenderingIntent r ) { _rendering_intent = r; }
 
