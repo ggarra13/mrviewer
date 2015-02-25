@@ -2617,7 +2617,6 @@ void ImageView::mouseMove(int x, int y)
               if ( bg.b > 0.0001f )
                   bg.b = powf(bg.b, one_gamma);
 
-              // @todo:  and the lut
 
               if ( outside )
               {

@@ -223,11 +223,12 @@ SET( SOURCES
   )
 
 
+SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
 
 IF(NOT WIN32)
 
-  ADD_CUSTOM_COMMAND( OUTPUT "po/messages.pot"
+  ADD_CUSTOM_COMMAND( OUTPUT "${_absPotFile}"
     COMMAND xgettext
     ARGS --package-name=mrViewer --package-version="$VERSION" --copyright-holder="Film Aura, LLC" --msgid-bugs-address=ggarra13@gmail.com -d mrViewer -s -c++ -k_ ${SOURCES} -o po/messages.pot
     DEPENDS mrViewer
@@ -335,8 +336,8 @@ INSTALL( FILES
 
 SET( LANGUAGES "es" )
 
+SET( output_files "${_absPotFile}" )
 
-SET( output_files "po/messages.pot" )
 FOREACH( lang ${LANGUAGES} )
   SET( _moFile mrViewer${VERSION}.mo )
 
@@ -346,7 +347,6 @@ FOREACH( lang ${LANGUAGES} )
    "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
 
  SET( _absFile "${CMAKE_CURRENT_SOURCE_DIR}/po/${lang}.po" )
- SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
   ADD_CUSTOM_COMMAND( OUTPUT "${_moFile}"
     COMMAND msgmerge --quiet --update --backup=none 
