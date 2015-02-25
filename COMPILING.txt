@@ -12,7 +12,7 @@ Compiling mrViewer requires a number of dependencies:
 - Postgres 9.1 or later
 - TCLAP 1.2.1
 - SampleICC 1.6.6 or later
-- libintl-8 or later
+- libintl
 
 The files win32_vars and win64_vars contain definitions for compiling
 on the windows platform.
