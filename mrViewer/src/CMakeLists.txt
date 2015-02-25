@@ -339,7 +339,7 @@ SET( LANGUAGES "es" )
 SET( output_files "${_absPotFile}" )
 
 FOREACH( lang ${LANGUAGES} )
-  SET( _moFile mrViewer${VERSION}.mo )
+  SET( _moFile "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/mrViewer${VERSION}.mo" )
 
   SET( output_files ${output_files} ${_moFile} )
 
@@ -353,7 +353,6 @@ FOREACH( lang ${LANGUAGES} )
     "${_absFile}" "${_absPotFile}"  
     COMMAND msgfmt -v "${_absFile}" -o "${_moFile}"
     DEPENDS ${_absFile} ${_absPotFile}
-    WORKING_DIRECTORY "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/"
     )
 
 ENDFOREACH( lang )
