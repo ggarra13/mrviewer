@@ -2590,10 +2590,26 @@ void ImageView::mouseMove(int x, int y)
               float t = 1.0f - rgba.a;
               CMedia::Pixel bg = picb->pixel( xp, yp );
 
-              float one_gamma = 1.0f / bgr->gamma();
               bg.r *= _gain;
               bg.g *= _gain;
               bg.b *= _gain;
+
+              //
+              // To represent pixel properly, we need to do the lut
+              //
+              if ( use_lut() )
+              {
+
+                  Imath::V3f in( bg.r, bg.g, bg.b );
+                  Imath::V3f out;
+                  _engine->evaluate( bgr, in, out );
+
+                  bg.r = out[0];
+                  bg.g = out[1];
+                  bg.b = out[2];
+              }
+
+              float one_gamma = 1.0f / bgr->gamma();
               if ( bg.r > 0.0001f )
                   bg.r = powf(bg.r, one_gamma);
               if ( bg.g > 0.0001f )
