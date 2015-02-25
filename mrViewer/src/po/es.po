@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-02-25 14:22-0300\n"
-"PO-Revision-Date: 2015-02-24 16:52-0300\n"
+"POT-Creation-Date: 2015-02-25 15:02-0300\n"
+"PO-Revision-Date: 2015-02-25 15:05-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -271,6 +271,14 @@ msgstr "' a la secuencia '"
 #: gui/mrvImageBrowser.cpp:1200
 msgid "'."
 msgstr "'."
+
+#: gui/mrvImageInformation.cpp:753
+msgid "(NTSC Fields)"
+msgstr "(Campos NTSC)"
+
+#: gui/mrvImageInformation.cpp:752
+msgid "(PAL Fields)"
+msgstr "(Campos PAL)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3290
 #: gui/mrvImageView.cpp:4297 gui/mrvImageView.cpp:4298
@@ -3082,7 +3090,7 @@ msgstr "Texturas Non-POT:\t"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:59
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2663
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2786
-#: core/exrImage.cpp:80 core/iffImage.cpp:54
+#: core/exrImage.cpp:80 core/iffImage.cpp:54 gui/mrvImageInformation.cpp:942
 msgid "None"
 msgstr "Ninguno"
 
@@ -4558,8 +4566,8 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr ""
 
-#: video/mrvGLEngine.cpp:164 video/mrvGLEngine.cpp:167
-#: video/mrvGLEngine.cpp:170
+#: gui/mrvImageInformation.cpp:426 video/mrvGLEngine.cpp:164
+#: video/mrvGLEngine.cpp:167 video/mrvGLEngine.cpp:170
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -5319,72 +5327,3 @@ msgstr ""
 msgid "xyY CIE xyY"
 msgstr ""
 
-#, fuzzy
-#~ msgid "Image/Mirror"
-#~ msgstr "Imagen/Espejo/Vertical"
-
-#~ msgid " from "
-#~ msgstr " desde "
-
-#~ msgid " need "
-#~ msgstr " necesita "
-
-#~ msgid " ret: "
-#~ msgstr " ret: "
-
-#~ msgid " used: "
-#~ msgstr " usado: "
-
-#~ msgid "\" contains more than 4 channels named with prefix \""
-#~ msgstr "\" contiene mas de 4 canales nombrados con el prefijo \""
-
-#~ msgid "16-bits float"
-#~ msgstr "16-bits coma flotante"
-
-#~ msgid "32-bits float"
-#~ msgstr "32-bits coma flotante"
-
-#~ msgid "8-bits integer"
-#~ msgstr "8-bits entero"
-
-#~ msgid "ALPHA"
-#~ msgstr "ALFA"
-
-#~ msgid "BLUE"
-#~ msgstr "AZUL"
-
-#~ msgid "Draw"
-#~ msgstr "Dibujar"
-
-#~ msgid "Flip Stereo Images"
-#~ msgstr "Dar Vuelta Imágenes Stereo"
-
-#~ msgid "GREEN"
-#~ msgstr "VERDE"
-
-#~ msgid "Open Image"
-#~ msgstr "Abrir Imagen"
-
-#~ msgid "Pixel Type"
-#~ msgstr "Tipo de Pixel"
-
-#~ msgid "RED"
-#~ msgstr "ROJO"
-
-#~ msgid "Redo"
-#~ msgstr "ReHacer"
-
-#~ msgid "Sel"
-#~ msgstr "Sel"
-
-#~ msgid "Sequences"
-#~ msgstr "Secuencias"
-
-#~ msgid "Zoom Maximum"
-#~ msgstr "Zoom Máximo"
-
-#~ msgid "Zoom Minimum"
-#~ msgstr "Zoom Mínimo"
-
-#~ msgid "same as loaded"
-#~ msgstr "mismo como cargado"
