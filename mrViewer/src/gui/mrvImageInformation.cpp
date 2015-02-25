@@ -423,7 +423,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         if ( img->height() > 0 )
             aspect_ratio = ( img->width() / (double) img->height() );
 
-    const char* name = "Unknown";
+    const char* name = _("Unknown");
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
     for ( int i = 0; i < num; ++i )
       {
@@ -749,8 +749,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	    else if ( is_equal( s.fps, 30.0 ) )      name = "(60hz HDTV)";
 	    else if ( is_equal( s.fps, 25.0 ) )      name = "(PAL)";
 	    else if ( is_equal( s.fps, 24.0 ) )      name = "(Film)";
-	    else if ( is_equal( s.fps, 50.0 ) )      name = "(PAL Fields)";
-	    else if ( is_equal( s.fps, 59.940059 ) ) name = "(NTSC Fields)";
+	    else if ( is_equal( s.fps, 50.0 ) )      name = _("(PAL Fields)");
+	    else if ( is_equal( s.fps, 59.940059 ) ) name = _("(NTSC Fields)");
 
 	    sprintf( buf, "%g %s", s.fps, name );
 	    add_text( _("FPS"), buf );
@@ -939,7 +939,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 				  fltk::Callback* callback )
   { 
     if ( !content ) 
-      content = "None";
+        content = _("None");
 
     if ( !editable )
       return add_text( name, content );
