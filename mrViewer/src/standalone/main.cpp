@@ -65,7 +65,6 @@ namespace fs = boost::filesystem;
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
-#define strdup  _strdup
 #endif
 
 

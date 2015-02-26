@@ -235,6 +235,7 @@ extern Hotkey kGammaMore;
 extern Hotkey kGammaLess;
 
 extern Hotkey kSetAsBG;
+extern Hotkey kToggleLUT;
 
 extern Hotkey kAttachAudio;
 extern Hotkey kDetachAudio;

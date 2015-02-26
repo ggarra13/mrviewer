@@ -233,7 +233,7 @@ lookup3D
 	    //
 	    // lut[i] is finite and positive.
 	    //
-            lut[i] = (float) log (lut[i]);
+            lut[i] = (float) logf(lut[i]);
 	  }
           else
 	  {
@@ -241,7 +241,7 @@ lookup3D
 	    // lut[i] is zero, negative or not finite;
 	    // log (lut[i]) is undefined.
 	    //
-             lut[i] = (float) log( std::numeric_limits<float>::min() );
+             lut[i] = (float) logf( std::numeric_limits<float>::min() );
 	  }
       }
 
@@ -282,16 +282,16 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     using namespace Imath;
 
 
-    out.x = lutT + lutM * log( Imath::clamp( rgb.x, lutMin, lutMax ) );
-    out.y = lutT + lutM * log( Imath::clamp( rgb.y, lutMin, lutMax ) );
-    out.z = lutT + lutM * log( Imath::clamp( rgb.z, lutMin, lutMax ) );
+    out.x = lutT + lutM * logf( Imath::clamp( rgb.x, lutMin, lutMax ) );
+    out.y = lutT + lutM * logf( Imath::clamp( rgb.y, lutMin, lutMax ) );
+    out.z = lutT + lutM * logf( Imath::clamp( rgb.z, lutMin, lutMax ) );
 
 
     out = lookup3D( (V4f*)(&lut[0]), _lutN, out );
 
-    out.x = exp( out.x );
-    out.y = exp( out.y );
-    out.z = exp( out.z );
+    out.x = expf( out.x );
+    out.y = expf( out.y );
+    out.z = expf( out.z );
 
 }
 
