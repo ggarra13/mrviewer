@@ -108,6 +108,7 @@ Hotkey kGammaMore( false, false, false, false, 0, ")" );
 Hotkey kGammaLess( false, false, false, false, 0, "(" );
 
 Hotkey kSetAsBG( false, false, false, false, 0 );
+Hotkey kToggleLUT( false, false, false, false, 0 );
 
 
 Hotkey kZDepthUp( false, false, false, false, 's' );
@@ -174,6 +175,7 @@ HotkeyEntry( _("Exposure Less"), kExposureLess),
 HotkeyEntry( _("Gamma More"), kGammaMore),
 HotkeyEntry( _("Gamma Less"), kGammaLess),
 HotkeyEntry( _("Set As BG Image"), kSetAsBG),
+HotkeyEntry( _("Toggle LUT"), kToggleLUT),
 HotkeyEntry( _("Attach Audio File"), kAttachAudio),
 HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
 HotkeyEntry( _("Clone Image"), kCloneImage),
@@ -246,7 +248,7 @@ void fill_uiFunction( fltk::Browser* b )
 {
    if (!b) return;
 
-   const char* labels[] = {"Function", "Hotkey", NULL};
+   const char* labels[] = { _("Function"), _("Hotkey"), NULL};
    b->column_labels( labels );
    const int widths[] = {240, -1, 0};
    b->column_widths( widths );

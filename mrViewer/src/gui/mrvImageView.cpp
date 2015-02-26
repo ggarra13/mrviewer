@@ -1118,6 +1118,8 @@ void ImageView::fit_image()
   send( buf );
   zoom( float(z) );
 
+  mouseMove( fltk::event_x(), fltk::event_y() );
+
   redraw();
 }
 
@@ -3037,6 +3039,11 @@ int ImageView::keyDown(unsigned int rawkey)
       set_as_background_cb( NULL, this );
       return 1;
    }
+   else if ( kToggleLUT.match( rawkey ) )
+   {
+      toggle_lut();
+      return 1;
+   }
    else if ( kExposureMore.match( rawkey ) )
    {
       exposure_change( 0.5f );
@@ -4721,6 +4728,9 @@ void ImageView::toggle_lut()
      _engine->refresh_luts();
      draw();  // force a draw to refresh luts
   }
+
+  uiMain->uiLUT->value( _useLUT );
+
   smart_refresh();
   update_color_info();
 }
