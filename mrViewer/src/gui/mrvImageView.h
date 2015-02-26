@@ -450,6 +450,8 @@ class server;
 
   protected:
 
+      void pixel_processed( const CMedia* img, CMedia::Pixel& rgba );
+
     void stop_playback();
 
     void create_timeout( double t );
