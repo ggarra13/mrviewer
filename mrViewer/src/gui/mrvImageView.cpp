@@ -2407,6 +2407,41 @@ std::string dec_printf( float x )
     }
 }
 
+void ImageView::pixel_processed( const CMedia* img,
+                                   CMedia::Pixel& rgba )
+{
+      //
+      // To represent pixel properly, we need to do gain/gamma/lut 
+      //
+      rgba.r *= _gain;
+      rgba.g *= _gain;
+      rgba.b *= _gain;
+
+      //
+      // To represent pixel properly, we need to do the lut
+      //
+      if ( use_lut() )
+      {
+
+          Imath::V3f in( rgba.r, rgba.g, rgba.b );
+          Imath::V3f out;
+          _engine->evaluate( img, in, out );
+
+          rgba.r = out[0];
+          rgba.g = out[1];
+          rgba.b = out[2];
+
+      }
+
+      float one_gamma = 1.0f / _gamma;
+      if ( rgba.r > 0.0001f )
+          rgba.r = powf(rgba.r, one_gamma);
+      if ( rgba.g > 0.0001f )
+          rgba.g = powf(rgba.g, one_gamma);
+      if ( rgba.b > 0.0001f )
+          rgba.b = powf(rgba.b, one_gamma);
+
+}
 
 /** 
  * Handle a mouse release
@@ -2500,36 +2535,7 @@ void ImageView::mouseMove(int x, int y)
   {
       rgba = pic->pixel( xp, yp );
 
-      //
-      // To represent pixel properly, we need to do gain/gamma/lut 
-      //
-      rgba.r *= _gain;
-      rgba.g *= _gain;
-      rgba.b *= _gain;
-
-      //
-      // To represent pixel properly, we need to do the lut
-      //
-      if ( use_lut() )
-      {
-
-          Imath::V3f in( rgba.r, rgba.g, rgba.b );
-          Imath::V3f out;
-          _engine->evaluate( img, in, out );
-
-          rgba.r = out[0];
-          rgba.g = out[1];
-          rgba.b = out[2];
-
-      }
-
-      float one_gamma = 1.0f / _gamma;
-      if ( rgba.r > 0.0001f )
-          rgba.r = powf(rgba.r, one_gamma);
-      if ( rgba.g > 0.0001f )
-          rgba.g = powf(rgba.g, one_gamma);
-      if ( rgba.b > 0.0001f )
-          rgba.b = powf(rgba.b, one_gamma);
+      pixel_processed( img, rgba );
 
 
       // double yp = yf;
@@ -2590,33 +2596,7 @@ void ImageView::mouseMove(int x, int y)
               float t = 1.0f - rgba.a;
               CMedia::Pixel bg = picb->pixel( xp, yp );
 
-              bg.r *= _gain;
-              bg.g *= _gain;
-              bg.b *= _gain;
-
-              //
-              // To represent pixel properly, we need to do the lut
-              //
-              if ( use_lut() )
-              {
-
-                  Imath::V3f in( bg.r, bg.g, bg.b );
-                  Imath::V3f out;
-                  _engine->evaluate( bgr, in, out );
-
-                  bg.r = out[0];
-                  bg.g = out[1];
-                  bg.b = out[2];
-              }
-
-              float one_gamma = 1.0f / bgr->gamma();
-              if ( bg.r > 0.0001f )
-                  bg.r = powf(bg.r, one_gamma);
-              if ( bg.g > 0.0001f )
-                  bg.g = powf(bg.g, one_gamma);
-              if ( bg.b > 0.0001f )
-                  bg.b = powf(bg.b, one_gamma);
-
+              pixel_processed( bgr, bg );
 
               if ( outside )
               {
