@@ -104,6 +104,7 @@ namespace mrv {
     void enable();
     void disable();
 
+      // Evaluate a pixel color and return the pixel color from the active LUT
       void evaluate( const Imath::V3f& rgba, Imath::V3f& out ) const;
 
     virtual bool calculate_ctl( const Transforms::const_iterator& start,
