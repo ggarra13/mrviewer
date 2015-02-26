@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-02-26 10:36-0300\n"
-"PO-Revision-Date: 2015-02-26 06:46-0300\n"
+"POT-Creation-Date: 2015-02-26 11:48-0300\n"
+"PO-Revision-Date: 2015-02-26 12:11-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -632,7 +632,7 @@ msgstr ": agregué vídeo a la base de datos '"
 
 #: core/guessImage.cpp:208
 msgid ": not a recognized format."
-msgstr ""
+msgstr ": no es un formato reconcido."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3330
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3722
@@ -1113,7 +1113,7 @@ msgstr "Categoría"
 msgid "Center Image"
 msgstr "Clonar la Imagen"
 
-#: standalone/main.cpp:191
+#: standalone/main.cpp:193
 msgid "Changed locale to "
 msgstr "Cambio de localidad a "
 
@@ -1256,7 +1256,7 @@ msgstr "Proporción de Compresión"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3194
 msgid "Connect"
-msgstr ""
+msgstr "Conectar"
 
 #: db/mrvPostgreSQL.cpp:78
 msgid "Connected to database '"
@@ -1347,11 +1347,11 @@ msgstr "No pude encontrar tabla de imágenes '"
 
 #: gui/mrvImageBrowser.cpp:712
 msgid "Could not find video '"
-msgstr ""
+msgstr "No pude encontrar video '"
 
 #: core/aviImage.cpp:675
 msgid "Could not get image conversion context."
-msgstr ""
+msgstr "NO pude obtener contexto de conversion de imagen."
 
 #: gui/mrvDatabaseBrowser.cpp:104
 msgid "Could not get images in database: "
@@ -1395,23 +1395,23 @@ msgstr "No pude abrir el codec de audio"
 
 #: core/CMedia_audio.cpp:1485
 msgid "Could not open audio driver"
-msgstr ""
+msgstr "No pude abrir el driver de audio"
 
 #: core/aviImage_save.cpp:920
 msgid "Could not open mpeg movie"
-msgstr ""
+msgstr "No pude abrir película mpeg"
 
 #: core/aviImage_save.cpp:687
 msgid "Could not open video codec"
-msgstr ""
+msgstr "No puede abrir video codec"
 
 #: core/aviImage_save.cpp:1087
 msgid "Could not read audio fifo: "
-msgstr ""
+msgstr "No pude leer audio fifo: "
 
 #: core/aviImage_save.cpp:587
 msgid "Could not read samples from fifo buffer.  Error: "
-msgstr ""
+msgstr "No pude leer samples del fifo buffer.  Error: "
 
 #: core/mrvACES.cpp:137
 msgid "Could not save '"
@@ -1621,7 +1621,7 @@ msgstr "Campo Personalizado 9"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrvEDLWindowUI.cxx:172
 msgid "Cut Clip at current location"
-msgstr ""
+msgstr "Cortar Clip en el lugar actual"
 
 #: gui/FLU/Flu_File_Chooser.cpp:462
 msgid "DIVX Movie"
@@ -1824,11 +1824,11 @@ msgstr "Abajo"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3118
 msgid "Draw shape in all frames"
-msgstr ""
+msgstr "Dibuja figura en todos los cuadros"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3122
 msgid "Draw shape in curent frame only"
-msgstr ""
+msgstr "Dibuja la figura en el cuadro actual solamente"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2583
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2624
@@ -1975,7 +1975,7 @@ msgstr "CPS: %.2f"
 
 #: core/aviImage_save.cpp:1152
 msgid "Failed "
-msgstr ""
+msgstr "Falló "
 
 #: core/CMedia_audio.cpp:921
 msgid "Failed to alloc swresample library"
@@ -2095,7 +2095,7 @@ msgstr "Disco Floppy"
 
 #: core/aviImage_save.cpp:1188
 msgid "Flushing of buffers failed"
-msgstr ""
+msgstr "Vaciar los buffers falló"
 
 #: core/exrImage.cpp:1219
 msgid "Focus"
@@ -2150,19 +2150,19 @@ msgstr "Paso de Cuadro Hacia Delante"
 
 #: video/mrvGLEngine.cpp:668
 msgid "Framebuffer incomplete: Attachment is NOT complete."
-msgstr ""
+msgstr "Framebuffer incomplete: Atadura NO esta completa."
 
 #: video/mrvGLEngine.cpp:675
 msgid "Framebuffer incomplete: Draw buffer."
-msgstr ""
+msgstr "Framebuffer incompleto: buffer de Dibujo."
 
 #: video/mrvGLEngine.cpp:672
 msgid "Framebuffer incomplete: No image is attached to FBO."
-msgstr ""
+msgstr "Framebuffer incompleto: No hay imagen atada al FBO."
 
 #: video/mrvGLEngine.cpp:679
 msgid "Framebuffer incomplete: Read buffer."
-msgstr ""
+msgstr "Framebuffer incompleto: Buffer de lectura."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1827
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2825
@@ -2174,7 +2174,7 @@ msgstr "Cuadros"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3056
 msgid "Freehand Drawing Tool"
-msgstr ""
+msgstr "Herramienta de Dibujo a Mano Alzada"
 
 #: gui/mrvImageInformation.cpp:795
 msgid "Frequency"
@@ -2235,7 +2235,7 @@ msgstr "Más Gama"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3126
 msgid "Ghosting"
-msgstr ""
+msgstr "Fantasma"
 
 #: gui/FLU/Flu_File_Chooser.cpp:113
 msgid "Go back one directory in the history"
@@ -2562,7 +2562,7 @@ msgstr "Show insertado '"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:45
 msgid "Integer"
-msgstr ""
+msgstr "Entero"
 
 #: video/mrvGLLut3d.cpp:559
 msgid "Invalid Profile for CMM: "
@@ -3021,7 +3021,7 @@ msgstr "Nueva Carpeta"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3134
 msgid "Next"
-msgstr ""
+msgstr "Próximo"
 
 #: gui/mrvHotkey.cpp:162
 msgid "Next Image"
@@ -3192,7 +3192,7 @@ msgstr "Okay"
 
 #: gui/mrvHotkey.cpp:129
 msgid "Open Clip XML Metadata"
-msgstr ""
+msgstr "Abrir Clip XML de Metadatos"
 
 #: gui/mrvHotkey.cpp:127
 msgid "Open Movie or Sequence"
@@ -3218,7 +3218,7 @@ msgstr "Grabar Opciones"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:32
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:48
 msgid "OpenEXR Saving"
-msgstr ""
+msgstr "Grabando OpenEXR"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2585
 msgid "OpenGL"
@@ -3288,7 +3288,7 @@ msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2912
 msgid "Packets"
-msgstr ""
+msgstr "Paquetes"
 
 #: gui/mrvHotkey.cpp:203
 msgid "PageDown"
@@ -3428,7 +3428,7 @@ msgstr "Reproducción de cuadro de audio fallo"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3174
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3190
 msgid "Port"
-msgstr ""
+msgstr "Puerto"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1981
 msgid "Positioning"
@@ -3459,7 +3459,7 @@ msgstr "Código de Prefijo"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2611
 msgid "Premult"
-msgstr ""
+msgstr "Premultiplicar"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1756
 msgid "Presentation"
@@ -3613,7 +3613,7 @@ msgstr "Rojo-Cyan Anagliph"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3097
 msgid "Redo Previous Shape Drawn"
-msgstr ""
+msgstr "Rehacer la Figura Previa Dibujada"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1281
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1788
@@ -3785,7 +3785,7 @@ msgstr "Grabar"
 
 #: gui/mrvHotkey.cpp:134
 msgid "Save Clip XML Metadata"
-msgstr ""
+msgstr "Grabar Clip XML de Metadatos"
 
 #: gui/mrvHotkey.cpp:132
 msgid "Save GL Snapshot"
@@ -3835,7 +3835,7 @@ msgstr "Grabando Secuencia(s) %<PRId64> - %<PRId64>"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2151
 msgid "Scale"
-msgstr ""
+msgstr "Escala"
 
 #: gui/mrvHotkey.cpp:195
 msgid "ScrollLock"
@@ -3864,7 +3864,7 @@ msgstr "Seleccionar modo de bucle por defacto en la línea de tiempo."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2021
 msgid "Selected Text"
-msgstr ""
+msgstr "Texto Seleccionado"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2014
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2047
@@ -3924,18 +3924,20 @@ msgid ""
 "the original depth of the sequence.\n"
 "This setting thus allows caching more pictures in memory."
 msgstr ""
+"Imágenes de la secuencia serán grabadas en el cache como dibujos de 8-bits, en vez de la profundidad original de la secuencia.\n"
+"Este seteo por ello ayuda a grabar mas imágenes en memoria."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2143
 msgid ""
 "Sequence images will be cached in memory.  If this setting is off, images "
 "will be loaded on demand but fluid playback may not be possible."
-msgstr ""
+msgstr "Imágenes de la secuencia serán grabadas en memoria.  Si este seteo está apagado, las imágenes seran cargadas basado en demanda pero playback fluído no podrá ser posible."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3167
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3171
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3187
 msgid "Server"
-msgstr ""
+msgstr "Servidor"
 
 #: gui/mrvHotkey.cpp:176
 msgid "Set As BG Image"
@@ -3943,7 +3945,7 @@ msgstr "Setear como Imagen de Fondo"
 
 #: standalone/mrvCommandLine.cpp:364
 msgid "Set each movie/sequence default audio."
-msgstr ""
+msgstr "Setear el audio por defecto de cada película/secuencia"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1364
 msgid "Set image CTL script"
@@ -3991,11 +3993,11 @@ msgstr "Mostrar Archivos Ocultos"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3137
 msgid "Show next frame shapes ghosted."
-msgstr ""
+msgstr "Mostrar el fantasma de las figuras del proximo cuadro"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3132
 msgid "Show shapes of previous frame ghosted."
-msgstr ""
+msgstr "Mostrat el fantasma de las figuras del cuadro previo"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2596
 msgid "Shutter Glasses"
@@ -4089,7 +4091,7 @@ msgstr "Detener reproducción."
 
 #: core/aviImage_save.cpp:1158
 msgid "Stopped encoding cached "
-msgstr ""
+msgstr "Paré cacheo de codificación "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2901
 msgid "Streaming"
@@ -4259,7 +4261,7 @@ msgstr "Temporario"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2007
 msgid "Text"
-msgstr ""
+msgstr "Texto"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2040
 msgid "Text Overlay"
@@ -4745,7 +4747,7 @@ msgstr "Musica WAVE"
 msgid ""
 "When dragging and dropping a frame from a sequence, make mrViewerr load the "
 "full sequence.   Otherwise it loads the frame only."
-msgstr ""
+msgstr "Cuando lleve y suelte un cuadro de una secuencia, hace que mrViewer cargue toda la secuencia.  Sino carga el cuadro solamente."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1898
 msgid "When mrViewer starts, the 3D Lut will be active."
@@ -5020,11 +5022,11 @@ msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3577
 msgid "YDbDr (Analog SECAM/PAL-N)"
-msgstr ""
+msgstr "YDbDr (SECAM/PAL-N Analógico)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3578
 msgid "YIQ (Analog NTSC)"
-msgstr ""
+msgstr "YIQ (NTSC Analógico)"
 
 #: video/mrvGLEngine.cpp:184
 msgid "YUV  Support:\t"
@@ -5032,7 +5034,7 @@ msgstr "Soporte YUV:\t"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3576
 msgid "YUV (Analog PAL)"
-msgstr ""
+msgstr "YUV (PAL Analógico)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:67
 msgid "YUV420"
@@ -5071,7 +5073,7 @@ msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
 msgid "ZIP SCANLINE"
-msgstr ""
+msgstr "ZIP POR LINEAS"
 
 #: core/CMedia.cpp:1916
 msgid "audio"
