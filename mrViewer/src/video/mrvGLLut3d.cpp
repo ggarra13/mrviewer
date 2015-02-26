@@ -108,43 +108,36 @@ using namespace Imath;
 V3f
 lookup3D
     (const V4f table[],
-     const V3i &size,
-     const V3f &pMin,
-     const V3f &pMax,
+     const int size,
      const V3f &p)
 {
-    int iMax = size.x - 1;
-    float r = (clamp (p.x, pMin.x, pMax.x) - pMin.x) / (pMax.x - pMin.x) * 
-              (float) iMax;
+    int Max = size - 1;
+    float r = (clamp (p.x, 0.0f, 1.0f) ) * (float) Max;
 
     int i, i1;
     float u, u1;
-    indicesAndWeights (r, iMax, i, i1, u, u1);
+    indicesAndWeights (r, Max, i, i1, u, u1);
 
-    int jMax = size.y - 1;
-    float s = (clamp (p.y, pMin.y, pMax.y) - pMin.y) / (pMax.y - pMin.y) * 
-              (float) jMax;
+    float s = (clamp (p.y, 0.0f, 1.0f) ) * (float) Max;
 
     int j, j1;
     float v, v1;
-    indicesAndWeights (s, jMax, j, j1, v, v1);
+    indicesAndWeights (s, Max, j, j1, v, v1);
 
-    int kMax = size.z - 1;
-    float t = (clamp (p.z, pMin.z, pMax.z) - pMin.z) / (pMax.z - pMin.z) * 
-              (float) kMax;
+    float t = (clamp (p.z, 0.0f, 1.0f) ) * (float) Max;
 
     int k, k1;
     float w, w1;
-    indicesAndWeights (t, kMax, k, k1, w, w1);
+    indicesAndWeights (t, Max, k, k1, w, w1);
 
-    const V4f &a = table[(k  * size.y + j ) * size.z + i ];
-    const V4f &b = table[(k1 * size.y + j ) * size.z + i ];
-    const V4f &c = table[(k  * size.y + j1) * size.z + i ];
-    const V4f &d = table[(k1 * size.y + j1) * size.z + i ];
-    const V4f &e = table[(k  * size.y + j ) * size.z + i1];
-    const V4f &f = table[(k1 * size.y + j ) * size.z + i1];
-    const V4f &g = table[(k  * size.y + j1) * size.z + i1];
-    const V4f &h = table[(k1 * size.y + j1) * size.z + i1];
+    const V4f &a = table[(k  * size + j ) * size + i ];
+    const V4f &b = table[(k1 * size + j ) * size + i ];
+    const V4f &c = table[(k  * size + j1) * size + i ];
+    const V4f &d = table[(k1 * size + j1) * size + i ];
+    const V4f &e = table[(k  * size + j ) * size + i1];
+    const V4f &f = table[(k1 * size + j ) * size + i1];
+    const V4f &g = table[(k  * size + j1) * size + i1];
+    const V4f &h = table[(k1 * size + j1) * size + i1];
 
     V3f out(
     w1 * (v1 * (u1 * a.x + u * b.x) + v * (u1 * c.x + u * d.x)) +
@@ -289,17 +282,12 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     using namespace Imath;
 
 
-    V3f pMin( 0.0f, 0.f, 0.f );
-    // V3f pMax( lutMax, lutMax, lutMax );
-    V3f pMax( 1.f, 1.f, 1.f );
-    V3i size( _lutN, _lutN, _lutN );
-
     out.x = lutT + lutM * log( Imath::clamp( rgb.x, lutMin, lutMax ) );
     out.y = lutT + lutM * log( Imath::clamp( rgb.y, lutMin, lutMax ) );
     out.z = lutT + lutM * log( Imath::clamp( rgb.z, lutMin, lutMax ) );
 
 
-    out = lookup3D( (V4f*)(&lut[0]), size, pMin, pMax, out );
+    out = lookup3D( (V4f*)(&lut[0]), _lutN, out );
 
     out.x = exp( out.x );
     out.y = exp( out.y );
