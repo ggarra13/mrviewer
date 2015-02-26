@@ -59,6 +59,18 @@ bool load_aces_xml( CMedia* img, const char* filename )
     size_t num = c.LMT.size();
     size_t i = 0;
     img->clear_look_mod_transform();
+
+    if ( c.convert_to != "" )
+    {
+        img->append_look_mod_transform( c.convert_to.c_str() );
+    }
+
+    if ( c.convert_from != "" )
+    {
+        img->append_look_mod_transform( c.convert_from.c_str() );
+    }
+
+
     for ( ; i < num; ++i )
       {
         if ( c.LMT[i].status != ACES::kPreview )

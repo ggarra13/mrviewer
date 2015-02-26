@@ -255,10 +255,10 @@ XMLError ACESclipReader::GradeRef()
 
     convert_to = tmp;
 
-    element = root4->NextSiblingElement( "ColorDecisionList" );
-    if ( !element ) return XML_ERROR_FILE_READ_ERROR;
+    XMLNode* root5 = root4->NextSiblingElement( "ColorDecisionList" );
+    if ( !root5 ) return XML_ERROR_FILE_READ_ERROR;
 
-    element = root4->FirstChildElement( "ASC CDL" );
+    element = root5->FirstChildElement( "ASC CDL" );
     if ( !element ) return XML_ERROR_FILE_READ_ERROR;
 
     tmp = element->Attribute( "inBitDepth" );
@@ -274,11 +274,11 @@ XMLError ACESclipReader::GradeRef()
         out_bit_depth = get_bit_depth( depth );
     }
 
-    XMLNode* root5 = root4->FirstChildElement( "SOPNode" );
-    if ( root5 )
+    XMLNode* root6 = root5->FirstChildElement( "SOPNode" );
+    if ( root6 )
     {
         float out[3];
-        element = root5->FirstChildElement( "Slope" );
+        element = root6->FirstChildElement( "Slope" );
         if ( element )
         {
             const char* tmp = element->GetText();
@@ -288,7 +288,7 @@ XMLError ACESclipReader::GradeRef()
                 sops.slope( out );
             }
         }
-        element = root5->NextSiblingElement( "Offset" );
+        element = root6->NextSiblingElement( "Offset" );
         if ( element )
         {
             const char* tmp = element->GetText();
@@ -298,7 +298,7 @@ XMLError ACESclipReader::GradeRef()
                 sops.offset( out );
             }
         }
-        element = root5->NextSiblingElement( "Power" );
+        element = root6->NextSiblingElement( "Power" );
         if ( element )
         {
             const char* tmp = element->GetText();
@@ -310,10 +310,10 @@ XMLError ACESclipReader::GradeRef()
         }
     }
 
-    root5 = root4->FirstChildElement( "SatNode" );
+    root6 = root5->FirstChildElement( "SatNode" );
     if ( root5 )
     {
-        element = root5->FirstChildElement( "Saturation" );
+        element = root6->FirstChildElement( "Saturation" );
         if ( element )
         {
             const char* s = element->GetText();

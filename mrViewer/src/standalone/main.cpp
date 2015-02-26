@@ -157,7 +157,12 @@ int main( const int argc, char** argv )
 #endif
   fltk::lock();   // Initialize X11 thread system
 
-  const char* loc = setlocale(LC_ALL, "");
+  char* loc = NULL;
+  const char* tmp = setlocale(LC_ALL, "");
+  if ( tmp )
+  {
+      loc = strdup( tmp );
+  }
 
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
@@ -174,17 +179,18 @@ int main( const int argc, char** argv )
   bindtextdomain(buf, path.c_str() );
   textdomain(buf);
 
-  if ( loc )
-  {
-      LOG_INFO( _("Changed locale to ") << loc );
-  }
-
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
 
 
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();
+
+  if ( loc )
+  {
+      LOG_INFO( _("Changed locale to ") << loc );
+      free(loc);
+  }
 
 
   mrv::Options opts;
