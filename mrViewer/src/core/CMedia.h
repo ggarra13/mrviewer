@@ -63,7 +63,10 @@
 #include "core/mrvBarrier.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvOS.h"
+#include "core/mrvACES.h"
 #include "core/mrvI8N.h"
+
+#include "ACES_ASC_CDL.h"
 
 #include "video/mrvGLShape.h"
 
@@ -549,6 +552,11 @@ class CMedia
     /// Assigns a new look mod transform to a certain index ( CTL script )
     /// If cfile is NULL, the look mod at the index is removed.
     void look_mod_transform( const size_t idx, const char* cfile );
+
+    void assign_ASC_CDL( const ACES::ASC_CDL& o )
+    {
+        _sops = o;
+    }
 
     /// True if image represents a sequence
     bool is_sequence() const { return _is_sequence; }
@@ -1174,7 +1182,7 @@ class CMedia
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
                                     //!  right float frame
-    
+    ACES::ASC_CDL _sops;
 
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
