@@ -46,6 +46,7 @@
 
 #include "ctlToLut.h"
 #include "mrvIO.h"
+#include "ACES_ASC_CDL.h"
 #include "core/CMedia.h"
 #include "core/mrvColorProfile.h"
 #include "gui/mrvPreferences.h"
@@ -351,7 +352,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
   bool GLLut3d::calculate_ctl( 
 			      const Transforms::const_iterator& start,
 			      const Transforms::const_iterator& end,
-			      const Imf::Header& header,
+			      const CMedia* img,
 			      const XformFlags flags
 			       )
   {
@@ -395,6 +396,10 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     Transforms::const_iterator i = start;
     for ( ; i != end; ++i )
       {
+
+          Imf::Header header( img->width(), img->height(),
+                              float( img->pixel_ratio() ) );
+          Imf::addChromaticities( header, img->chromaticities() );
 
           if ( !_inited )
           {
@@ -657,14 +662,14 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 			  GLLut3d::GLLut3d_ptr lut,
 			  const Transforms::const_iterator& start,
 			  const Transforms::const_iterator& end,
-			  const Imf::Header& header,
+			  const CMedia* img,
 			  const GLLut3d::XformFlags flags
 			   )
   {
     switch( (*start).type )
       {
 	 case Transform::kCTL:
-	    return lut->calculate_ctl( start, end, header, flags );
+	    return lut->calculate_ctl( start, end, img, flags );
 	 case Transform::kICC:
 	    return lut->calculate_icc( start, end, flags );
 	 default:
@@ -928,9 +933,6 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     }
 
 
-    Imf::Header header( img->width(), img->height(),
-			float( img->pixel_ratio() ) );
-    Imf::addChromaticities( header, img->chromaticities() );
 
     unsigned size = 64;
     unsigned lut_type = uiPrefs->uiLUT_quality->value();
@@ -972,7 +974,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
       {
 	if ( (*i).type != (*start).type )
 	  {
-	    if ( ! lut->calculate( lut, start, i, header, 
+	    if ( ! lut->calculate( lut, start, i, img, 
 				   (XformFlags)flags ) )
             {
               LOG_ERROR( "Lut calculate failed" );
@@ -986,7 +988,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     if ( (e - start) != 0 )
       {
           flags |= kXformLast;
-          if ( ! lut->calculate( lut, start, e, header, (XformFlags)flags ) )
+          if ( ! lut->calculate( lut, start, e, img, (XformFlags)flags ) )
           {
               LOG_ERROR( "Lut calculate failed" );
               return NULL;
