@@ -403,13 +403,13 @@ ELSEIF (UNIX)
 
 
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/config/Linux/mrViewer.desktop.in
-                    "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" )
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
+                    "${CMAKE_SOURCE_DIR}/etc/mrViewer-v${VERSION}.desktop" )
 
 
-    INSTALL(FILES "${CMAKE_SOURCE_DIR}/config/mrViewer-v${VERSION}.desktop" 
+    INSTALL(FILES "${CMAKE_SOURCE_DIR}/etc/mrViewer-v${VERSION}.desktop" 
             DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/config/mrViewer.png 
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/mrViewer.png 
             DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
@@ -424,20 +424,20 @@ ELSEIF (UNIX)
     # Configure install/uninstall scripts
 
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/config/Linux/install.sh.in
-        ${PROJECT_BINARY_DIR}/config/Linux/install.sh
+        ${PROJECT_SOURCE_DIR}/etc/Linux/install.sh.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/install.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/config/Linux/uninstall.sh.in
-        ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh
+        ${PROJECT_SOURCE_DIR}/etc/Linux/uninstall.sh.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/config/Linux/postinst.in
-        ${PROJECT_BINARY_DIR}/config/Linux/postinst
+        ${PROJECT_SOURCE_DIR}/etc/Linux/postinst.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/config/Linux/postrm.in
-        ${PROJECT_BINARY_DIR}/config/Linux/postrm
+        ${PROJECT_SOURCE_DIR}/etc/Linux/postrm.in
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
         @ONLY)  
 
       # SET RPM options.
@@ -451,15 +451,15 @@ ELSEIF (UNIX)
     SET(CPACK_DEBIAN_PACKAGE_MAINTAINER "ggarra13@gmail.com")
 
     SET(CPACK_DEBIAN_PACKAGE_CONTROL_EXTRA
-        ${PROJECT_BINARY_DIR}/config/Linux/postinst
-        ${PROJECT_BINARY_DIR}/config/Linux/postrm)
+        ${PROJECT_BINARY_DIR}/etc/Linux/postinst
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm)
 
     SET(
         CPACK_RPM_POST_INSTALL_SCRIPT_FILE
-        ${PROJECT_BINARY_DIR}/config/Linux/install.sh)
+        ${PROJECT_BINARY_DIR}/etc/Linux/install.sh)
     SET(
         CPACK_RPM_POST_UNINSTALL_SCRIPT_FILE
-        ${PROJECT_BINARY_DIR}/config/Linux/uninstall.sh)
+        ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh)
 
 
 ENDIF(WIN32)
