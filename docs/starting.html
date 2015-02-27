@@ -98,9 +98,19 @@ opening a Windows Explorer window and double-clicking on a file that
 mrViewer recognizes may automatically invoke a new copy of mrViewer.
 
 <br>
+<br>
+mrViewer will start in the natural language of the OS, if there are translations available.  If you want mrViewer to open always in English, set the environment variable:
+<br>
+On Linux bash:
+<div class="console">
+export LC_ALL=C
+</div>
+Under Windows, the setting is in the System Preferences, Advanced, Environment Variables.
+
+<br>
 If mrViewer has the single instance preference set, only one mrViewer will
 get started and any other image that would go to a new viewer will get
-redirected back to the first instance.
+redirected back to the first instance. <br>
 In order for this to work, mrViewer creates a dummy lock file in your
 home directory in:
 
@@ -115,6 +125,7 @@ $USERPROFILE/filmaura/mrViewer.lock.prefs
 </div>
 
 If mrViewer crashes, that file might get left behind and prevent mrViewer from starting up.  Make sure you delete it manually in that case.
+
 
 </body>
 </html>

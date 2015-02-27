@@ -628,7 +628,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {342 294 640 475} resizable visible
+        xywh {346 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -658,8 +658,8 @@ If you try to open several mrViewers with different images, all these images wil
                 tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.}
                 xywh {23 67 20 25} align 8 labelsize 11 value 1
               }
-              {fltk::Group} uiPrefsOpenMode {
-                xywh {160 9 130 81} box EMBOSSED_BOX
+              {fltk::Group} uiPrefsOpenMode {selected
+                xywh {197 9 150 81} box EMBOSSED_BOX
               } {
                 {fltk::RadioButton} {} {
                   label Normal
@@ -729,7 +729,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label Timeline selected
+              label Timeline
               xywh {25 282 350 70} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsTimelineDisplay {
@@ -1807,7 +1807,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
