@@ -2410,8 +2410,11 @@ std::string dec_printf( float x )
 }
 
 void ImageView::pixel_processed( const CMedia* img,
-                                   CMedia::Pixel& rgba )
+                                 CMedia::Pixel& rgba )
 {
+    PixelDisplay p = (PixelDisplay) uiMain->uiAColorType->value();
+    if ( p == kRGBA_Original ) return;
+
       //
       // To represent pixel properly, we need to do gain/gamma/lut 
       //
@@ -2422,7 +2425,7 @@ void ImageView::pixel_processed( const CMedia* img,
       //
       // To represent pixel properly, we need to do the lut
       //
-      if ( use_lut() )
+      if ( use_lut() && p == kRGBA_Full )
       {
 
           Imath::V3f in( rgba.r, rgba.g, rgba.b );
@@ -2616,7 +2619,9 @@ void ImageView::mouseMove(int x, int y)
 
   switch( uiMain->uiAColorType->value() )
   {
-      case kRGBA_Float:
+      case kRGBA_Full:
+      case kRGBA_Gamma:
+      case kRGBA_Original:
       uiMain->uiPixelR->text( float_printf( rgba.r ).c_str() );
       uiMain->uiPixelG->text( float_printf( rgba.g ).c_str() );
       uiMain->uiPixelB->text( float_printf( rgba.b ).c_str() );
