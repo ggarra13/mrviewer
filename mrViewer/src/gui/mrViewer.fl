@@ -622,13 +622,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {346 294 640 475} resizable visible
+        xywh {350 294 640 475} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -658,7 +657,7 @@ If you try to open several mrViewers with different images, all these images wil
                 tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.}
                 xywh {23 67 20 25} align 8 labelsize 11 value 1
               }
-              {fltk::Group} uiPrefsOpenMode {selected
+              {fltk::Group} uiPrefsOpenMode {
                 xywh {197 9 150 81} box EMBOSSED_BOX
               } {
                 {fltk::RadioButton} {} {
@@ -2479,7 +2478,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2510,20 +2510,20 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {if (!uiPrefs)
   uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
-        xywh {295 239 640 530} when CHANGED hide resizable
+        callback {delete v;} open
+        xywh {303 239 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
-        {fltk::PackedGroup} uiRegion {
+        {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
         } {
           {fltk::Group} uiTopBar {open
@@ -2792,7 +2792,7 @@ Value is:  pow( 2, 1/x );}
               }
             }
           }
-          {fltk::PackedGroup} uiViewGroup {
+          {fltk::PackedGroup} uiViewGroup {open
             xywh {0 25 640 430} resizable
             class {fltk::Group}
           } {
@@ -2802,7 +2802,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {
+          {fltk::Group} uiPixelBar {open
             xywh {0 455 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
@@ -2902,7 +2902,7 @@ o->value(8);}
                   {fltk::Group} {} {open
                     xywh {0 0 520 28}
                   } {
-                    {fltk::Group} {} {
+                    {fltk::Group} {} {open
                       xywh {0 3 230 20}
                     } {
                       {fltk::PopupMenu} uiAColorType {
@@ -2910,14 +2910,21 @@ o->value(8);}
                         user_data uiView user_data_type {mrv::ImageView*}
                         callback {int i = o->value();
 if ( i < 0 ) return;
-o->label( o->child(i)->label() );} open
-                        tooltip {Switch RGBA display between float, hexadecimal (0..0xff) and decimal (0..255).}
-                        xywh {0 0 30 20} labelsize 9
+o->label( o->child(i)->label() );} open selected
+                        tooltip {Switch RGBA display between Full display with lut and gamma/gain applied,  Gamma/gain values without Lut and original values without any gain/gamma or lut.
+The other two options is to show the full transformed color as hexadecimal (0..0xff) and decimal (0..255).}
+                        xywh {0 0 30 19} labelsize 9
                         extra_code {o->value(0);}
                         class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
-                          label RGBA
+                          label {RGBA Full}
+                          }
+                        {fltk::Item} {} {
+                          label {RGBA Gamma}
+                          }
+                        {fltk::Item} {} {
+                          label {RGBA Original}
                           }
                         {fltk::Item} {} {
                           label Hex

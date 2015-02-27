@@ -2,7 +2,7 @@
 
 cmake_minimum_required(VERSION 2.8)
 
-set( SOVERSION "0.2.2" )
+set( SOVERSION "0.2.3" )
 
 set( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/modules )
 find_package( TinyXML2 REQUIRED )
