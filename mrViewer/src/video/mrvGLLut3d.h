@@ -109,7 +109,7 @@ namespace mrv {
 
     virtual bool calculate_ctl( const Transforms::const_iterator& start,
 				const Transforms::const_iterator& end,
-				const Imf::Header& header,
+				const CMedia* img,
 				const XformFlags flags );
 
     virtual bool calculate_icc( const Transforms::const_iterator& start,
@@ -135,7 +135,7 @@ namespace mrv {
 			  GLLut3d_ptr lut,
 			  const Transforms::const_iterator& start,
 			  const Transforms::const_iterator& end,
-			  const Imf::Header& header,
+			  const CMedia* img,
 			  const XformFlags flags
 			  );
     static GLLut3d* factory( const PreferencesUI* prefs, const CMedia* img );
