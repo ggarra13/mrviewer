@@ -431,7 +431,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	if ( aspect_ratio > kAspectRatioNames[i].ratio - fuzz &&
 	     aspect_ratio < kAspectRatioNames[i].ratio + fuzz)
 	  {
-	    name = kAspectRatioNames[i].name; break;
+              name = _( kAspectRatioNames[i].name ); break;
 	  }
       }
 
@@ -581,11 +581,11 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     if ( img->has_chromaticities() )
     {
         const Imf::Chromaticities& c = img->chromaticities(); 
-        sprintf( buf, "R: %g %g    G: %g %g    B: %g %g",
+        sprintf( buf, _("R: %g %g    G: %g %g    B: %g %g"),
                  c.red.x, c.red.y, c.green.x, c.green.y,
                  c.blue.x, c.blue.y );
         add_text( _("CIExy Chromaticities"), buf );
-        sprintf( buf, "W: %g %g",c.white.x, c.white.y );
+        sprintf( buf, _("W: %g %g"),c.white.x, c.white.y );
         add_text( _("CIExy White Point"), buf );
     }
 
@@ -970,7 +970,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
       sg->add( widget );
 
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Load" );
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Load") );
       pick->callback( (fltk::Callback*)icc_callback, (void*)this );
       sg->add( pick );
       sg->resizable(widget);
@@ -1016,7 +1016,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
       sg->add( widget );
 
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
       pick->callback( (fltk::Callback*)ctl_callback, this );
       sg->add( pick );
       sg->resizable(widget);
@@ -1064,7 +1064,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
       sg->add( widget );
       
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
       pick->callback( (fltk::Callback*)ctl_idt_callback, this );
       sg->add( pick );
       sg->resizable(widget);
@@ -1119,7 +1119,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
       sg->add( widget );
       
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, "Pick" );
+      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
       pick->callback( (fltk::Callback*)ctl_lmt_callback, c );
       sg->add( pick );
       sg->resizable(widget);
@@ -1651,7 +1651,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
     {
       fltk::Input* widget = new fltk::Input( kMiddle, 0, w()-kMiddle, 20 );
-      widget->value( content? "Yes" : "No" );
+      widget->value( content? _("Yes") : _("No") );
       widget->box( fltk::FLAT_BOX );
       widget->align(fltk::ALIGN_LEFT);
       widget->color( colB );

@@ -291,7 +291,7 @@ void fill_uiFunction( fltk::Browser* b )
 	 }
       }
 
-      std::string row( h.name );
+      std::string row( _(h.name.c_str()) );
       row += "\t" + key;
 
       b->add( row.c_str() );
