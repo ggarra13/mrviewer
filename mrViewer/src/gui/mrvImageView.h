@@ -127,7 +127,9 @@ class server;
     };
 
     enum PixelDisplay {
-      kRGBA_Float,
+      kRGBA_Full,
+      kRGBA_Gamma,
+      kRGBA_Original,
       kRGBA_Hex,
       kRGBA_Decimal
     };
