@@ -64,7 +64,8 @@ bool load_aces_xml( CMedia* img, const char* filename )
     {
         img->append_look_mod_transform( c.convert_to.c_str() );
         img->append_look_mod_transform( "SOP.v1" );
-        img->append_look_mod_transform( "Saturation.v1" );
+        if ( c.sops.saturation() != 1.0f )
+            img->append_look_mod_transform( "Saturation.v1" );
     }
 
     if ( c.convert_from != "" )
