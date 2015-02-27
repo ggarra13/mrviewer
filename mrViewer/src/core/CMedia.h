@@ -553,10 +553,12 @@ class CMedia
     /// If cfile is NULL, the look mod at the index is removed.
     void look_mod_transform( const size_t idx, const char* cfile );
 
-    void assign_ASC_CDL( const ACES::ASC_CDL& o )
+    void asc_cdl( const ACES::ASC_CDL& o )
     {
         _sops = o;
     }
+
+    const ACES::ASC_CDL& asc_cdl() const { return _sops; }
 
     /// True if image represents a sequence
     bool is_sequence() const { return _is_sequence; }
