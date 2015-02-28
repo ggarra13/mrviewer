@@ -47,7 +47,7 @@ class Image < ActiveRecord::Base
   validates_numericality_of :gamma
   validates_numericality_of :rating, :only_integer => true, :allow_nil => true
   validates_format_of       :rating,
-  :with    => %r{^(?:\d{1,2})?$}i,
+  :with    => %r{\A(?:\d{1,2})?\z}i,
   :message => "must be 1..10"
   validates_numericality_of :num_channels, :only_integer => true
   validates_numericality_of :depth, :only_integer => true
