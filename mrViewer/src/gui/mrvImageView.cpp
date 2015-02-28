@@ -196,7 +196,7 @@ namespace
   {
     for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
-	if ( strcmp( shortcuts[i].channel, channel ) == 0 )
+          if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
 	  return shortcuts[i].key;
       }
 
@@ -2412,7 +2412,7 @@ std::string dec_printf( float x )
 void ImageView::pixel_processed( const CMedia* img,
                                  CMedia::Pixel& rgba )
 {
-    PixelDisplay p = (PixelDisplay) uiMain->uiAColorType->value();
+    PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
       //
@@ -2619,27 +2619,25 @@ void ImageView::mouseMove(int x, int y)
 
   switch( uiMain->uiAColorType->value() )
   {
-      case kRGBA_Full:
-      case kRGBA_Gamma:
-      case kRGBA_Original:
-      uiMain->uiPixelR->text( float_printf( rgba.r ).c_str() );
-      uiMain->uiPixelG->text( float_printf( rgba.g ).c_str() );
-      uiMain->uiPixelB->text( float_printf( rgba.b ).c_str() );
-      uiMain->uiPixelA->text( float_printf( rgba.a ).c_str() );
-      break;
-    case kRGBA_Hex:
-      uiMain->uiPixelR->text( hex_printf( rgba.r ).c_str() );
-      uiMain->uiPixelG->text( hex_printf( rgba.g ).c_str() );
-      uiMain->uiPixelB->text( hex_printf( rgba.b ).c_str() );
-      uiMain->uiPixelA->text( hex_printf( rgba.a ).c_str() );
-      break;
-    case kRGBA_Decimal:
-      uiMain->uiPixelR->text( dec_printf( rgba.r ).c_str() );
-      uiMain->uiPixelG->text( dec_printf( rgba.g ).c_str() );
-      uiMain->uiPixelB->text( dec_printf( rgba.b ).c_str() );
-      uiMain->uiPixelA->text( dec_printf( rgba.a ).c_str() );
-      break;
-    }
+      case kRGBA_Float:
+          uiMain->uiPixelR->text( float_printf( rgba.r ).c_str() );
+          uiMain->uiPixelG->text( float_printf( rgba.g ).c_str() );
+          uiMain->uiPixelB->text( float_printf( rgba.b ).c_str() );
+          uiMain->uiPixelA->text( float_printf( rgba.a ).c_str() );
+          break;
+      case kRGBA_Hex:
+          uiMain->uiPixelR->text( hex_printf( rgba.r ).c_str() );
+          uiMain->uiPixelG->text( hex_printf( rgba.g ).c_str() );
+          uiMain->uiPixelB->text( hex_printf( rgba.b ).c_str() );
+          uiMain->uiPixelA->text( hex_printf( rgba.a ).c_str() );
+          break;
+      case kRGBA_Decimal:
+          uiMain->uiPixelR->text( dec_printf( rgba.r ).c_str() );
+          uiMain->uiPixelG->text( dec_printf( rgba.g ).c_str() );
+          uiMain->uiPixelB->text( dec_printf( rgba.b ).c_str() );
+          uiMain->uiPixelA->text( dec_printf( rgba.a ).c_str() );
+          break;
+  }
 
 
   //
@@ -4004,6 +4002,7 @@ void ImageView::gain( const float f )
   refresh_fstop();
   flush_caches();
   smart_refresh();
+  update_color_info();
 }
 
 
@@ -4034,6 +4033,7 @@ void ImageView::gamma( const float f )
 
   flush_caches();
   smart_refresh();
+  update_color_info();
 }
 
 

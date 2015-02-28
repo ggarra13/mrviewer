@@ -360,6 +360,9 @@ void ColorInfo::update( const CMedia* img,
 
       mrv::DrawEngine* engine = uiMain->uiView->engine();
 
+      ImageView::PixelValue v = (ImageView::PixelValue) 
+                                uiMain->uiPixelValue->value();
+
       CMedia::Pixel rp;
 
       for ( int y = ymin; y <= ymax; ++y )
@@ -368,7 +371,7 @@ void ColorInfo::update( const CMedia* img,
 	    {
                CMedia::Pixel op = pic->pixel( x, y );
 
-               if ( uiMain->uiView->use_lut() )
+               if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
                {
                    engine->evaluate( img, 
                                      (*(Imath::V3f*)&op), 
@@ -379,13 +382,15 @@ void ColorInfo::update( const CMedia* img,
                    rp = op;
                }
 
-               if ( rp.r > 0.0f && isfinite(rp.r) )
-                   rp.r = powf(rp.r * gain, one_gamma);
-               if ( rp.g > 0.0f && isfinite(rp.g) )
-                   rp.g = powf(rp.g * gain, one_gamma);
-               if ( rp.b > 0.0f && isfinite(rp.b) )
-                   rp.b = powf(rp.b * gain, one_gamma);
-
+               if ( v != ImageView::kRGBA_Original ) 
+               {
+                   if ( rp.r > 0.0f && isfinite(rp.r) )
+                       rp.r = powf(rp.r * gain, one_gamma);
+                   if ( rp.g > 0.0f && isfinite(rp.g) )
+                       rp.g = powf(rp.g * gain, one_gamma);
+                   if ( rp.b > 0.0f && isfinite(rp.b) )
+                       rp.b = powf(rp.b * gain, one_gamma);
+               }
 
                if ( rp.r < pmin.r ) pmin.r = rp.r;
                if ( rp.g < pmin.g ) pmin.g = rp.g;
