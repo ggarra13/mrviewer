@@ -2517,14 +2517,14 @@ else
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
-        xywh {303 239 640 530} when CHANGED resizable
+        callback {delete v;} open selected
+        xywh {310 35 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
       } {
-        {fltk::PackedGroup} uiRegion {open
-          xywh {0 0 640 530}
+        {fltk::PackedGroup} uiRegion {
+          xywh {0 0 640 530} resizable
         } {
           {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
@@ -2802,8 +2802,8 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {open
-            xywh {0 455 640 28} box FLAT_BOX color 56
+          {fltk::Group} uiPixelBar {
+            xywh {0 455 640 27} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
               xywh {2 0 634 28}
@@ -2829,8 +2829,9 @@ f = float(t - 7);
 v->uiView->zoom( f );
 o->value(8);}
                 tooltip {Image zoom setting.}
-                xywh {3 5 26 20} when CHANGED box UP_BOX buttonbox BORDER_BOX color 0x53535300 textcolor 0xababab00 buttoncolor 0x53535300 labelcolor 0xababab00 labelsize 10 textsize 10
-                extra_code {o->value(10);}
+                xywh {3 3 26 20} box UP_BOX buttonbox BORDER_BOX color 0x53535300 textcolor 0xababab00 buttoncolor 0x53535300 labelcolor 0xababab00 labelsize 10 textsize 10
+                extra_code {o->value(10);
+o->disable_glyph();}
                 class {mrv::PopupMenu}
               } {
                 {fltk::Item} {} {
@@ -2910,21 +2911,15 @@ o->value(8);}
                         user_data uiView user_data_type {mrv::ImageView*}
                         callback {int i = o->value();
 if ( i < 0 ) return;
-o->label( o->child(i)->label() );} open selected
-                        tooltip {Switch RGBA display between Full display with lut and gamma/gain applied,  Gamma/gain values without Lut and original values without any gain/gamma or lut.
-The other two options is to show the full transformed color as hexadecimal (0..0xff) and decimal (0..255).}
-                        xywh {0 0 30 19} labelsize 9
-                        extra_code {o->value(0);}
+o->label( o->child(i)->label() );}
+                        tooltip {Switch RGBA display between floating point, hexadecimal (0..0xff) and decimal (0..255).}
+                        xywh {0 1 30 20} labelsize 9
+                        extra_code {o->value(0);
+o->disable_glyph();}
                         class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
-                          label {RGBA Full}
-                          }
-                        {fltk::Item} {} {
-                          label {RGBA Gamma}
-                          }
-                        {fltk::Item} {} {
-                          label {RGBA Original}
+                          label RGBA
                           }
                         {fltk::Item} {} {
                           label Hex
@@ -2954,12 +2949,7 @@ The other two options is to show the full transformed color as hexadecimal (0..0
                       tooltip {8-bit sample of image pixel under mouse.}
                       xywh {240 4 20 20} box FLAT_BOX color 0x53535300
                     }
-                    {fltk::Group} uiPixelInvalid {
-                      label I
-                      tooltip {Some pixel values outside 0.0-1.0 range.}
-                      xywh {261 4 12 20} align 32 hide box ROUNDED_BOX labelfont 5 color 0xe5ff8600 labelcolor 0xc6717100
-                    } {}
-                    {fltk::Group} {} {open
+                    {fltk::Group} {} {
                       xywh {275 3 173 20}
                     } {
                       {fltk::PopupMenu} uiBColorType {
@@ -2968,10 +2958,11 @@ The other two options is to show the full transformed color as hexadecimal (0..0
                         callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
-v->update_color_info();} open
+v->update_color_info();}
                         tooltip {Switch pixel color space information display for the pixel under the cursor.}
                         xywh {0 0 23 20} labelsize 9
-                        extra_code {o->value(0);}
+                        extra_code {o->value(0);
+o->disable_glyph();}
                         class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
@@ -3043,7 +3034,8 @@ According to CIE No.15.2:
       L = (116 * Y ^ 1/3 - 16) / 100
 A pixel of Y = 0.18 (L = 0.5) will appear about half as bright as Y = L = 1.0 (white).}
                         xywh {0 0 15 20}
-                        extra_code {o->value(0);}
+                        extra_code {o->value(0);
+o->disable_glyph();}
                         class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
@@ -3068,6 +3060,35 @@ where Yn is the white reference (usually 1).
                         tooltip {Luminance of image pixel under mouse.}
                         xywh {15 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b2b200 textsize 10
                       }
+                    }
+                    {fltk::PopupMenu} uiPixelValue {
+                      label F
+                      user_data uiView user_data_type {mrv::ImageView*}
+                      callback {int i = o->value();
+if ( i < 0 ) return;
+char t[2];
+t[1] = 0;
+t[0] = o->child(i)->label()[0];
+o->label( strdup(t) );
+v->update_color_info();}
+                      tooltip {Type of pixel values to show:
++ Full:  pixel with gamma, gain and lut.
++ Gamma: pixel with gamma and gain but no lut.
++ Original: pixel without gamma, gain or lut.}
+                      xywh {262 3 13 20} align 48
+                      extra_code {o->value(0);
+o->disable_glyph();}
+                      class {mrv::PopupMenu}
+                    } {
+                      {fltk::Item} {} {
+                        label Full
+                        }
+                      {fltk::Item} {} {
+                        label Gamma
+                        }
+                      {fltk::Item} {} {
+                        label Original
+                        }
                     }
                   }
                 }
