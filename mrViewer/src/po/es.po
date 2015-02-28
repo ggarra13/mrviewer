@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-02-27 20:48-0300\n"
-"PO-Revision-Date: 2015-02-27 20:52-0300\n"
+"POT-Creation-Date: 2015-02-28 15:39-0300\n"
+"PO-Revision-Date: 2015-02-28 15:40-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -169,7 +169,7 @@ msgstr " está faltante."
 msgid " not found"
 msgstr " no encontrado"
 
-#: gui/mrvImageBrowser.cpp:1444
+#: gui/mrvImageBrowser.cpp:1472
 msgid " not found in reel"
 msgstr " no encontrado en el carrete"
 
@@ -186,7 +186,7 @@ msgid " to "
 msgstr " a "
 
 #: gui/mrvImageBrowser.cpp:986 gui/mrvImageBrowser.cpp:1006
-#: gui/mrvImageBrowser.cpp:1031 gui/mrvImageBrowser.cpp:1052
+#: gui/mrvImageBrowser.cpp:1030 gui/mrvImageBrowser.cpp:1047
 msgid " to database '"
 msgstr " a la base de datos '"
 
@@ -245,7 +245,7 @@ msgid "' does not exist or no directory"
 msgstr "' no existe o no es una carpeta"
 
 #: gui/mrvImageBrowser.cpp:713 gui/mrvImageBrowser.cpp:826
-#: gui/mrvImageBrowser.cpp:1121
+#: gui/mrvImageBrowser.cpp:1116
 msgid "' in database '"
 msgstr "' en la base de datos '"
 
@@ -254,8 +254,8 @@ msgid "' into show '"
 msgstr "' al show '"
 
 #: gui/mrvImageBrowser.cpp:740 gui/mrvImageBrowser.cpp:775
-#: gui/mrvImageBrowser.cpp:872 gui/mrvImageBrowser.cpp:1193
-#: gui/mrvImageBrowser.cpp:1199
+#: gui/mrvImageBrowser.cpp:872 gui/mrvImageBrowser.cpp:1188
+#: gui/mrvImageBrowser.cpp:1194 gui/mrvImageBrowser.cpp:1224
 msgid "' to database '"
 msgstr "' a la base de datos '"
 
@@ -267,8 +267,8 @@ msgstr "' a la secuencia '"
 #: gui/mrvImageBrowser.cpp:878 gui/mrvImageBrowser.cpp:901
 #: gui/mrvImageBrowser.cpp:932 gui/mrvImageBrowser.cpp:948
 #: gui/mrvImageBrowser.cpp:987 gui/mrvImageBrowser.cpp:1007
-#: gui/mrvImageBrowser.cpp:1032 gui/mrvImageBrowser.cpp:1053
-#: gui/mrvImageBrowser.cpp:1200
+#: gui/mrvImageBrowser.cpp:1031 gui/mrvImageBrowser.cpp:1048
+#: gui/mrvImageBrowser.cpp:1195
 msgid "'."
 msgstr "'."
 
@@ -610,11 +610,11 @@ msgstr ": agregué ICC "
 msgid ": added audio to database '"
 msgstr ": agregué audio a la base de datos '"
 
-#: gui/mrvImageBrowser.cpp:1030
+#: gui/mrvImageBrowser.cpp:1029
 msgid ": added look mod transform "
 msgstr ": agregué transformación de look mod "
 
-#: gui/mrvImageBrowser.cpp:1051
+#: gui/mrvImageBrowser.cpp:1046
 msgid ": added pixel format "
 msgstr ": agregué formato de pixel "
 
@@ -745,7 +745,7 @@ msgstr "Agregar"
 msgid "Add this directory to my favorites"
 msgstr "Agregar esta carpeta a mis favoritos"
 
-#: gui/mrvImageBrowser.cpp:1198
+#: gui/mrvImageBrowser.cpp:1193
 msgid "Added image '"
 msgstr "Agregué imagen '"
 
@@ -865,7 +865,7 @@ msgstr "Apertura"
 msgid "Apply: "
 msgstr "Aplicar: "
 
-#: gui/mrvImageBrowser.cpp:2269
+#: gui/mrvImageBrowser.cpp:2297
 msgid ""
 "Are you sure you want to\n"
 "remove all images from reel?"
@@ -1283,9 +1283,13 @@ msgstr "Texto de Copyright"
 msgid "Could not add audio track #"
 msgstr "No pude agregar pista de audio #"
 
-#: gui/mrvImageBrowser.cpp:1192
+#: gui/mrvImageBrowser.cpp:1187
 msgid "Could not add image '"
 msgstr "No pude agregar imagen '"
+
+#: gui/mrvImageBrowser.cpp:1222
+msgid "Could not add look_mod_image '"
+msgstr "No pude agregar look mod de imagen '"
 
 #: video/mrvGLLut3d.cpp:552
 #, c-format
@@ -1343,7 +1347,7 @@ msgstr "No pude encontrar audio '"
 msgid "Could not find both stereo images in file"
 msgstr "No pude encontrar ambas imágenes de estereo en el archivo"
 
-#: gui/mrvImageBrowser.cpp:1120
+#: gui/mrvImageBrowser.cpp:1115
 msgid "Could not find image table '"
 msgstr "No pude encontrar tabla de imágenes '"
 
@@ -1367,7 +1371,7 @@ msgstr "No pude inicializar el cmm: "
 msgid "Could not initialize draw engine"
 msgstr "No pude inicializar el motor de dibujo"
 
-#: gui/mrvImageBrowser.cpp:1950
+#: gui/mrvImageBrowser.cpp:1978
 msgid "Could not load '"
 msgstr "No pude cargar '"
 
@@ -1459,51 +1463,51 @@ msgstr "Crear conversión de audio desde "
 msgid "Create new directory"
 msgstr "Crear un directorio nuevo"
 
-#: gui/mrvImageBrowser.cpp:2549
+#: gui/mrvImageBrowser.cpp:2577
 msgid "Create/Checkered"
 msgstr "Crear/Cuadriculado"
 
-#: gui/mrvImageBrowser.cpp:2533
+#: gui/mrvImageBrowser.cpp:2561
 msgid "Create/Color Bars/PAL"
 msgstr "Crear/Barras de Color/PAL"
 
-#: gui/mrvImageBrowser.cpp:2535
+#: gui/mrvImageBrowser.cpp:2563
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Crear/Barras de Color/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:2529
+#: gui/mrvImageBrowser.cpp:2557
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Crear/Barras de Color/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:2531
+#: gui/mrvImageBrowser.cpp:2559
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Crear/Barras de Color/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:2537
+#: gui/mrvImageBrowser.cpp:2565
 msgid "Create/Gamma Chart/1.4"
 msgstr "Crear/Carta de Gama/1.4"
 
-#: gui/mrvImageBrowser.cpp:2539
+#: gui/mrvImageBrowser.cpp:2567
 msgid "Create/Gamma Chart/1.8"
 msgstr "Crear/Carta de Gama/1.8"
 
-#: gui/mrvImageBrowser.cpp:2541
+#: gui/mrvImageBrowser.cpp:2569
 msgid "Create/Gamma Chart/2.2"
 msgstr "Crear/Carta de Gama/2.2"
 
-#: gui/mrvImageBrowser.cpp:2543
+#: gui/mrvImageBrowser.cpp:2571
 msgid "Create/Gamma Chart/2.4"
 msgstr "Crear/Carta de Gama/2.4"
 
-#: gui/mrvImageBrowser.cpp:2545
+#: gui/mrvImageBrowser.cpp:2573
 msgid "Create/Gradient/Linear"
 msgstr "Crear/Graduación/Linear"
 
-#: gui/mrvImageBrowser.cpp:2547
+#: gui/mrvImageBrowser.cpp:2575
 msgid "Create/Gradient/Luminance"
 msgstr "Crear/Graduación/Luminancia"
 
-#: gui/mrvImageBrowser.cpp:2553
+#: gui/mrvImageBrowser.cpp:2581
 msgid "Create/Slate"
 msgstr "Crear/Planilla"
 
@@ -2426,7 +2430,7 @@ msgstr ""
 "Si no es seteado, mrViewer podra acelerar o evitar mostrar algunos cuadros "
 "para a asi mantener la velocidad de cada cuadro."
 
-#: gui/mrvImageBrowser.cpp:1443
+#: gui/mrvImageBrowser.cpp:1471
 msgid "Image"
 msgstr "Imagen"
 
@@ -2486,11 +2490,11 @@ msgstr "Imagen/Asignar Input Device Transform (IDT) de CTL"
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Imagen/Asignar Transformacion de Render (RRT) de CTL"
 
-#: gui/mrvImageBrowser.cpp:2514
+#: gui/mrvImageBrowser.cpp:2542
 msgid "Image/Attach CTL Script"
 msgstr "Imagen/Agregar Script de CTL"
 
-#: gui/mrvImageView.cpp:2157 gui/mrvImageBrowser.cpp:2511
+#: gui/mrvImageView.cpp:2157 gui/mrvImageBrowser.cpp:2539
 msgid "Image/Attach ICC Color Profile"
 msgstr "Imagen/Agregar Perfil ICC de Color"
 
@@ -2499,11 +2503,11 @@ msgid "Image/Clear Caches"
 msgstr "Imagen/Borrar los Caches"
 
 #: gui/mrvImageView.cpp:2127 gui/mrvImageView.cpp:2135
-#: gui/mrvImageBrowser.cpp:2493 gui/mrvImageBrowser.cpp:2503
+#: gui/mrvImageBrowser.cpp:2521 gui/mrvImageBrowser.cpp:2531
 msgid "Image/Clone"
 msgstr "Imagen/Clonar"
 
-#: gui/mrvImageView.cpp:2129 gui/mrvImageBrowser.cpp:2495
+#: gui/mrvImageView.cpp:2129 gui/mrvImageBrowser.cpp:2523
 msgid "Image/Clone All Channels"
 msgstr "Imagen/Clonar Todos los Canales"
 
@@ -2523,7 +2527,7 @@ msgstr "Imagen/Siguiente"
 msgid "Image/Previous"
 msgstr "Imagen/Previa"
 
-#: gui/mrvImageView.cpp:2169 gui/mrvImageBrowser.cpp:2519
+#: gui/mrvImageView.cpp:2169 gui/mrvImageBrowser.cpp:2547
 msgid "Image/Set as Background"
 msgstr "Imagen/Ponerla como Fondo"
 
@@ -2784,7 +2788,7 @@ msgstr "Cargué archivo de Clip Metadata de ACES '"
 msgid "Loading"
 msgstr "Cargando"
 
-#: gui/mrvImageBrowser.cpp:1881
+#: gui/mrvImageBrowser.cpp:1909
 #, c-format
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
@@ -4183,8 +4187,11 @@ msgid ""
 "The other two options is to show the full transformed color as hexadecimal "
 "(0..0xff) and decimal (0..255)."
 msgstr ""
-"Cambie el display de RGBA de uno a completo con lut y con gamma/gain applicada, Gamma, gain sin Lut y los valores originales sin gain/gamma o lut\n"
-"Las otras dos opciones es para mostrar el color completamente transformado como hexadecimal (0..0xff) y decimal (0..255)."
+"Cambie el display de RGBA de uno a completo con lut y con gamma/gain "
+"applicada, Gamma, gain sin Lut y los valores originales sin gain/gamma o "
+"lut\n"
+"Las otras dos opciones es para mostrar el color completamente transformado "
+"como hexadecimal (0..0xff) y decimal (0..255)."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3699
 msgid "Switch between Frame, Seconds and Timecode display"
