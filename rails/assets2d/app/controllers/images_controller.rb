@@ -7,7 +7,7 @@ class ImagesController < ApplicationController
                      :num_channels, :layers, :pixel_format,
                      :fstop, :gamma, 
                      :icc_profile, :render_transform, 
-                     :look_mod_transform, :rating, 
+                     :rating, 
                      :online, :backup, :description ]
     conf.actions = [ :list, :show, :search ]
   end
