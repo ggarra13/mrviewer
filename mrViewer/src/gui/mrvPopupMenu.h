@@ -37,10 +37,14 @@ namespace mrv {
 
 class FL_API PopupMenu : public fltk::PopupMenu {
 public:
-  PopupMenu(int,int,int,int,const char * =0);
+    PopupMenu(int,int,int,int,const char* =0);
+
+  void disable_glyph() { _enable_glyph = false; }
+
 protected:
   void draw();
 
+  bool _enable_glyph;
 };
 
 }
