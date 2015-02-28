@@ -1,4 +1,5 @@
-Assets::Application.routes.draw do
+Rails.application.routes.draw do
+
   resources :video_categories do as_routes end
 
   resources :video_categories
