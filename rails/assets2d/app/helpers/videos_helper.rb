@@ -1,6 +1,6 @@
 module VideosHelper
 
-  def thumbnail_column(record)
+  def thumbnail_column(record, column)
     if record.kind_of?( Image )
       img = record
     else
@@ -10,7 +10,7 @@ module VideosHelper
     image_tag( "dbimage-#{img.id}.png")
   end
     
-  def directory_column(record)
+  def directory_column(record, column)
     if record.kind_of?( Video )
       h( record.image.directory )
     else
@@ -18,7 +18,7 @@ module VideosHelper
     end
   end
     
-  def filename_column(record)
+  def filename_column(record, column)
     if record.kind_of?( Video )
       h( record.image.filename )
     else
@@ -26,15 +26,15 @@ module VideosHelper
     end
   end
     
-  def pixel_format_column(record)
+  def pixel_format_column(record, column)
     h( record.pixel_format.name )
   end
 
-  def start_column(record)
+  def start_column(record, column)
     seconds_to_time(record.start)
   end
 
-  def duration_column(record)
+  def duration_column(record, column)
     seconds_to_time(record.duration)
   end
 
