@@ -126,10 +126,14 @@ class server;
       kHudWipe          = 1 << 9,
     };
 
-    enum PixelDisplay {
+      enum PixelValue {
       kRGBA_Full,
       kRGBA_Gamma,
-      kRGBA_Original,
+      kRGBA_Original
+      };
+
+    enum PixelDisplay {
+      kRGBA_Float,
       kRGBA_Hex,
       kRGBA_Decimal
     };

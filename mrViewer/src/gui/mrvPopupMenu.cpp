@@ -88,17 +88,18 @@ void PopupMenu::draw() {
   Rectangle r1(r); box->inset(r1);
   // draw the little mark at the right:
 
-#if 1
-  box->inset(r);
-  int w1 = r.h();
-  r.move_r(-r.h());
-  r.x(r.r()); r.w(w1);
-  const Color saved_color = getcolor();
-  setcolor(fltk::GRAY35);
-  draw_glyph(ALIGN_BOTTOM, r);
-  //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
-  setcolor(saved_color);
-#endif
+  if ( _enable_glyph )
+  {
+      box->inset(r);
+      int w1 = r.h();
+      r.move_r(-r.h());
+      r.x(r.r()); r.w(w1);
+      const Color saved_color = getcolor();
+      setcolor(fltk::GRAY35);
+      draw_glyph(ALIGN_BOTTOM, r);
+      //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
+      setcolor(saved_color);
+  }
 
   draw_label(r1, flags);
 
@@ -112,12 +113,14 @@ void PopupMenu::draw() {
 // NamedStyle* PopupMenu::default_style = &mrv::style;
 
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
-  : fltk::PopupMenu(X,Y,W,H,l)
+: fltk::PopupMenu(X,Y,W,H,l),
+  _enable_glyph( true )
 {
   // set the parent style to Menu::default_style, not Widget::default_style:
   default_style->parent_ = this->style();
   style(default_style);
   align(ALIGN_CENTER);
+  
   //set_click_to_focus();
 }
 
