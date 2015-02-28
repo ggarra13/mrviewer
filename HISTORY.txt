@@ -1,4 +1,8 @@
 v2.7.3   - Made LUT pixel and color area lookups a tad faster.
+	 - Added an option in the pixel bar's RGBA toolbar to switch to
+	   RGBA Full (show pixel values with gamma/gain and lut applied),
+	   RGBA Gamma (show pixel values with gamma/gain only)
+	   RGBA Original (show pixel values unmodified by gain, gamma or lut)
 
 v2.7.2   - Bug fixed a warning in running CTL with ICC preferred.
 	 - Added ACES utilities to distribution: ctlrender, exr_dpx_exr and
