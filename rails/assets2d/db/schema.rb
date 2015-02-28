@@ -83,7 +83,6 @@ ActiveRecord::Schema.define(version: 15) do
     t.integer  "disk_space",                       default: 1048576, null: false
     t.integer  "icc_profile_id"
     t.integer  "render_transform_id"
-    t.integer  "look_mod_image_id"
     t.integer  "depth",                            default: 32,      null: false
     t.integer  "pixel_format_id"
     t.integer  "num_channels",                     default: 4,       null: false

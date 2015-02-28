@@ -1013,7 +1013,6 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	rendering_transform_id += N_("'");
       }
 
-    
     std::string look_mod_transform_id = "NULL";
     size_t num = img->number_of_lmts();
     if ( num )
@@ -1032,10 +1031,6 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
                             << db->database() << _("'.") );
               }
 
-              look_mod_transform_id = N_("SELECT id FROM look_mod_transforms "
-                                         "WHERE name = '");
-              look_mod_transform_id += img->look_mod_transform(i);
-              look_mod_transform_id += N_("'");
           }
       }
 
@@ -1150,12 +1145,13 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     setlocale( LC_NUMERIC, "C" );
 
+
     sprintf( buf, "INSERT INTO images"
 	     "( directory, filename, frame_start, frame_end, creator, "
 	     "created_at, updated_at, "
 	     "disk_space, date, shot_id, width, height, pixel_ratio, format, "
 	     "fps, codec, icc_profile_id, render_transform_id, "
-	     "look_mod_transform_id, pixel_format_id, "
+	     "pixel_format_id, "
 	     "depth, num_channels, layers,"
 	     "fstop, gamma, thumbnail, thumbnail_width, thumbnail_height )"
 	     " VALUES "
@@ -1163,7 +1159,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	     "'%s', '%s', "
 	     "%lu, '%s', ( %s ), %u, %u, %g, '%s',"
 	     " %g, '%s', ( %s ), ( %s ), "
-	     "( %s ), ( %s ), %d, %d, '%s', "
+	     "( %s ), %d, %d, '%s', "
 	     "%g, %g, '%s', %d, %d);",
 	     db->quote( img->directory() ).c_str(), 
 	     db->quote( img->name() ).c_str(),
@@ -1178,7 +1174,6 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	     img->compression(),
 	     icc_profile_id.c_str(),
 	     rendering_transform_id.c_str(),
-	     look_mod_transform_id.c_str(),
 	     pixel_format_id.c_str(),
 	     img->depth(), img->number_of_channels(),
 	     layers.c_str(),
@@ -1200,10 +1195,43 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 		 << _("'.") );
     }
     
+    std::string image_id = "NULL";
+    sprintf( buf, N_("SELECT id FROM images "
+		     "WHERE directory='%s' AND filename='%s'"),
+	     db->quote( img->directory() ).c_str(), 
+	     db->quote( img->name() ).c_str() );
+    image_id = buf;
+
+    if ( num )
+    {
+        for ( size_t i = 0; i < num; ++i )
+        {
+            look_mod_transform_id = N_("SELECT id FROM look_mod_transforms "
+                                         "WHERE name = '");
+            look_mod_transform_id += img->look_mod_transform(i);
+            look_mod_transform_id += N_("'");
+
+            sprintf( buf, "INSERT INTO look_mod_images"
+                     "( image_id, look_mod_transform_id ) "
+                     "VALUES ( ( %s ), ( %s ) )",
+                     image_id.c_str(),
+                     look_mod_transform_id.c_str() );
+
+            if (! db->sql( buf ) )
+            {
+                LOG_ERROR( _("Could not add look_mod_image '") 
+                           << img->filename() 
+                           << _("' to database '") << db->database() 
+                           << "': " << endl << db->error() );
+            }
+
+        }
+    }
+
     setlocale( LC_NUMERIC, "" );
 
     delete [] buf;
-  }
+ }
 
 void ImageBrowser::send_reel( const mrv::Reel& reel )
 {
