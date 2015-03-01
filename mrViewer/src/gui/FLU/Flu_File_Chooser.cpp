@@ -75,6 +75,7 @@ typedef __int64 int64_t;
 #include "core/mrvHome.h"
 #include "core/Sequence.h"
 #include "core/mrvI8N.h"
+#undef fprintf
 #include "gui/mrvIO.h"
 
 using namespace fltk;
@@ -510,7 +511,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   userHome = mrv::homepath();
 
   // determine the system paths for the user's home area, desktop, documents, app data, etc
-#ifdef WIN32
+#ifdef _WIN32
   userDesktop = flu_get_special_folder( CSIDL_DESKTOPDIRECTORY );
   userDocs = flu_get_special_folder( CSIDL_PERSONAL );
 
@@ -545,14 +546,13 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
 #else
   {
-    userHome = getenv("HOME");
     userDesktop = userHome + "/" + desktopTxt + "/";
     userDocs = "/tmp/";
   }
 #endif
   configFilename = userHome + "/.fltk/";
 
-#if ( defined WIN32 || defined MINGW ) && !defined CYGWIN
+#if ( defined _WIN32 || defined MINGW ) && !defined CYGWIN
   mkdir( configFilename.c_str() );
 #else
   mkdir( configFilename.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
@@ -560,7 +560,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   configFilename += "filmaura/";
 
-#if ( defined WIN32 || defined MINGW ) && !defined CYGWIN
+#if ( defined _WIN32 || defined MINGW ) && !defined CYGWIN
   mkdir( configFilename.c_str() );
 #else
   mkdir( configFilename.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH );
@@ -1342,6 +1342,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	   if( f )
 	     {
 	       for( i = 0; i < favoritesList->children(); ++i )
+                   if ( favoritesList->child(i)->label() == NULL ) continue;
 		 fprintf( f, "%s\n", favoritesList->child(i)->label() );
 	       fclose( f );
 	     }
@@ -3250,13 +3251,14 @@ void Flu_File_Chooser::addToFavoritesCB()
     }
 
   // save the favorites
-  FILE *f = fltk::fltk_fopen( configFilename.c_str(), "w" );
+  FILE *f = fltk::fltk_fopen( configFilename.c_str(), N_("w") );
   if( !f ) return;
+
 
   for( int i = 0; i < favoritesList->children(); ++i )
     {
-      if ( favoritesList->child(i)->label() == NULL ) continue;
-      fprintf( f, "%s\n", favoritesList->child(i)->label() );
+        if ( favoritesList->child(i)->label() == NULL ) continue;
+        fprintf( f, N_("%s\n"), favoritesList->child(i)->label() );
     }
   fclose( f );
 }

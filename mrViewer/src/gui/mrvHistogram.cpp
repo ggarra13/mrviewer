@@ -28,6 +28,10 @@
 #include <cmath>
 #include <limits>
 
+#ifdef _WIN32
+#define isfinite(x) _finite(x)
+#endif
+
 #include <fltk/draw.h>
 #include <fltk/events.h>
 #include <fltk/Symbol.h>
@@ -42,6 +46,8 @@
 #include "mrViewer.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvColorInfo.h"
+
+#include "video/mrvDrawEngine.h"
 
 #include "ImathFun.h"
 
@@ -200,17 +206,46 @@ namespace mrv
     if ( stepX < 1 ) stepX = 1;
     if ( stepY < 1 ) stepY = 1;
     
+    mrv::DrawEngine* engine = uiMain->uiView->engine();
+    ImageView::PixelValue v = (ImageView::PixelValue) 
+                              uiMain->uiPixelValue->value();
 
+    float gain = uiMain->uiView->gain();
+    float gamma = uiMain->uiView->gamma();
+    float one_gamma = 1.0f / gamma;
+
+    CMedia::Pixel rp;
     uchar rgb[3];
     for ( unsigned y = ymin; y <= ymax; y += stepY )
       {
 	for ( unsigned x = xmin; x <= xmax; x += stepX )
-	  {
-	    const CMedia::Pixel& p = pic->pixel( x, y );
-	    rgb[0] = (uchar)Imath::clamp(p.r * 255.0f, 0.f, 255.f);
-	    rgb[1] = (uchar)Imath::clamp(p.g * 255.0f, 0.f, 255.f);
-	    rgb[2] = (uchar)Imath::clamp(p.b * 255.0f, 0.f, 255.f);
-	    count_pixel( rgb );
+	  { 
+              CMedia::Pixel op = pic->pixel( x, y );
+
+              if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
+              {
+                  engine->evaluate( img, 
+                                    (*(Imath::V3f*)&op), 
+                                    (*(Imath::V3f*)&rp) );
+               }
+               else
+               {
+                   rp = op;
+               }
+
+              if ( v != ImageView::kRGBA_Original ) 
+              {
+                   if ( rp.r > 0.0f && isfinite(rp.r) )
+                       rp.r = powf(rp.r * gain, one_gamma);
+                   if ( rp.g > 0.0f && isfinite(rp.g) )
+                       rp.g = powf(rp.g * gain, one_gamma);
+                   if ( rp.b > 0.0f && isfinite(rp.b) )
+                       rp.b = powf(rp.b * gain, one_gamma);
+              }
+              rgb[0] = (uchar)Imath::clamp(rp.r * 255.0f, 0.f, 255.f);
+              rgb[1] = (uchar)Imath::clamp(rp.g * 255.0f, 0.f, 255.f);
+              rgb[2] = (uchar)Imath::clamp(rp.b * 255.0f, 0.f, 255.f);
+              count_pixel( rgb );
 	  }
       }
 #endif
