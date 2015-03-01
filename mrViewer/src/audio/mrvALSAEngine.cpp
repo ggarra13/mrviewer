@@ -32,7 +32,11 @@
 using namespace std;
 
 #include "audio/mrvALSAEngine.h"
-#include "mrvI8N.h"
+#include "core/mrvI8N.h"
+
+#ifdef _WIN32
+#undef fprintf
+#endif
 
 namespace mrv {
 
@@ -243,7 +247,7 @@ namespace mrv {
 #else
     int smixer_level = int(v * 31);
     char cmd[256];
-    sprintf( cmd, "amixer -q set PCM %d", smixer_level );
+    sprintf( cmd, N_("amixer -q set PCM %d"), smixer_level );
     system( cmd );
 #endif
   }
@@ -379,8 +383,10 @@ namespace mrv {
 	}
 
 	if (freq != exact_rate) {
-	  fprintf(stderr, "The rate %d Hz is not supported by your hardware.\n"
-		  "  ==> Using %d Hz instead.\n", freq, exact_rate);
+            fprintf(stderr, _("The rate %d Hz is not supported by "
+                              "your hardware.\n"
+                              "  ==> Using %d Hz instead.\n"), 
+                    freq, exact_rate);
 	}
 
 	/* calculate a period time of one half sample time */
