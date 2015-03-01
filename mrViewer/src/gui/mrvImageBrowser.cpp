@@ -76,6 +76,9 @@ namespace fs = boost::filesystem;
 
 #include "standalone/mrvCommandLine.h"
 
+#ifdef _WIN32
+#undef fprintf
+#endif
 
 
 namespace 
