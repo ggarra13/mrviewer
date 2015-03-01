@@ -1,11 +1,20 @@
 v2.7.3   - Made LUT pixel and color area lookups a tad faster.
 	 - Added an option in the pixel bar's RGBA toolbar to switch to
 	   display pixels as:
-	   * Full (show pixel values with gamma, gain and lut applied),
+	   * Full (show pixel values with gamma, gain and lut if on),
 	   * Gamma (show pixel values with gamma and gain only)
 	   * Original (show pixel values unchanged by gain, gamma or lut)
 	 - Made color area window, histogram and vectorscope react 
-	   automatically to changes in gamma, gain or lut.
+	   automatically to changes in gamma, gain or lut.  This makes
+	   all tools more interactive and more useful.
+	 - All color tools (pixel values, color area info, vectorscope
+	   and histogram) respect the pixel values setting in the main
+	   pixel toolbar.
+	 - Upgraded ImageMagick to a newer, 32 bits float HDRI version.
+	 - Bug fixed a crashing bug on Windows when Add to Favorites
+	   was pushed.
+	 - Updated all small popup menus to not draw the glyph for
+	   readability issues.
 
 v2.7.2   - Bug fixed a warning in running CTL with ICC preferred.
 	 - Added ACES utilities to distribution: ctlrender, exr_dpx_exr and
