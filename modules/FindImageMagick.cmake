@@ -44,7 +44,7 @@ FIND_PATH( MAGICK++_INCLUDE_DIR wand/magick-wand.h
   )
 
 FIND_LIBRARY( Magick 
-  NAMES MagickCore CORE_RL_magick_
+  NAMES MagickCore-6.Q32HDRI MagickCore CORE_RL_magick_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
@@ -59,7 +59,7 @@ FIND_LIBRARY( Magick
 
 
 FIND_LIBRARY( Magick++ 
-  NAMES Magick++ CORE_RL_Magick++_
+  NAMES Magick++-6.Q32HDRI Magick++ CORE_RL_Magick++_
   PATHS 
   "$ENV{MAGICK_HOME}/magick/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
@@ -76,7 +76,7 @@ MESSAGE( STATUS "MAGICK: "  "$ENV{MAGICK_HOME}/VisualMagick/lib"  )
 
 
 FIND_LIBRARY( Wand 
-  NAMES MagickWand CORE_RL_wand_
+  NAMES MagickWand-6.Q32HDRI MagickWand CORE_RL_wand_
   PATHS 
   "$ENV{MAGICK_HOME}/wand/.libs"
   "$ENV{MAGICK_HOME}/VisualMagick/bin/x${CMAKE_BUILD_ARCH}"
