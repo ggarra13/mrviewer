@@ -21,6 +21,7 @@
 #include <cstdlib>
 
 #include "mrvIO.h"
+#include "core/mrvI8N.h"
 #include "mrSocket.h"
 
 #define QLEN            6               /* size of request queue        */
@@ -33,6 +34,7 @@ const char* kModule = "sock";
 bool mr_init_socket_library()
 {
 #if defined(_WIN32) || defined(_WIN64)
+#undef fprintf
    // Initialize winsock
    WORD wVersionRequested = MAKEWORD(1,1);
    WSADATA wsaData;
@@ -44,14 +46,14 @@ bool mr_init_socket_library()
       switch( nRet )
       {
 	 case WSASYSNOTREADY:
-	    fprintf(stderr, "WSA not ready\n"); break;
+             fprintf(stderr, _("WSA not ready\n") ); break;
 	 case WSAVERNOTSUPPORTED:
-	    fprintf(stderr, "The version of Windows Sockets support requested is not provided by this particular Windows Sockets implementation.\n"); break;
+             fprintf(stderr, _("The version of Windows Sockets support requested is not provided by this particular Windows Sockets implementation.\n") ); break;
 	 case WSAEINPROGRESS:
-	    fprintf( stderr, "A blocking Windows Sockets 1.1 operation is in progress.\n");
+             fprintf( stderr, _("A blocking Windows Sockets 1.1 operation is in progress.\n") );
 	    break;
 	 case WSAEPROCLIM:
-	    fprintf(stderr,"Limit on the number of tasks supported by the Windows Sockets implementation has been reached.\n");
+             fprintf(stderr, _("Limit on the number of tasks supported by the Windows Sockets implementation has been reached.\n") );
 	    break;
       }
       fflush(stderr);
@@ -92,28 +94,28 @@ MR_SOCKET mr_new_socket_client( const char* host, const int port,
    if (port > 0)                   /* test for illegal value       */
       sad.sin_port = htons((u_short)port);
    else {                          /* print error message and exit */
-      LOG_ERROR("Bad port number " << port);
+       LOG_ERROR( _("Bad port number ") << port);
       return -1;
    }
 
    /* Convert host name to equivalent IP address and copy to sad. */
    ptrh = gethostbyname(host);
    if ( ((char *)ptrh) == NULL ) {
-      LOG_ERROR( "Invalid host: " << host);
+       LOG_ERROR( _("Invalid host: ") << host);
       return -1;
    }
    memcpy(&sad.sin_addr, ptrh->h_addr, ptrh->h_length);
 
    /* Map TCP transport protocol name to protocol number */
    if ( (ptrp = getprotobyname( protocol )) == 0) {
-      LOG_ERROR( "Cannot map \"" << protocol << "\" to protocol number");
+       LOG_ERROR( _("Cannot map \"") << protocol << _("\" to protocol number"));
       return -1;
    }
 
    /* Create a socket */
    sd = socket(PF_INET, SOCK_STREAM, ptrp->p_proto);
    if (sd < 0) {
-      LOG_ERROR( "Socket creation failed\n" );
+       LOG_ERROR( _("Socket creation failed\n") );
       return -1;
    }
 
@@ -145,26 +147,26 @@ MR_SOCKET mr_new_socket_server( const char* host, const int port,
    if (port > 0)                   /* test for illegal value       */
       sad.sin_port = htons((u_short)port);
    else {                          /* print error message and exit */
-      LOG_ERROR( "Bad port number " << port);
+       LOG_ERROR( _("Bad port number ") << port);
       return -1;
    }
 
    /* Map TCP transport protocol name to protocol number */
    if ( (ptrp = getprotobyname( protocol )) == 0) {
-      LOG_ERROR( "Cannot map \"" << protocol << "\" to protocol number");
+       LOG_ERROR( _("Cannot map \"") << protocol << _("\" to protocol number"));
       return -1;
    }
 
    /* Create a socket */
    sd = socket(PF_INET, SOCK_STREAM, ptrp->p_proto);
    if (sd < 0) {
-      LOG_ERROR( "Socket creation failed" );
+       LOG_ERROR( _("Socket creation failed") );
       return -1;
    }
 
    /* Bind a local address to the socket */
    if (bind(sd, (struct sockaddr *)&sad, sizeof(sad)) < 0) {
-      LOG_ERROR( "bind failed\n");
+       LOG_ERROR( _("bind socket failed\n") );
       closesocket(sd);
       return -1;
    }
@@ -172,7 +174,7 @@ MR_SOCKET mr_new_socket_server( const char* host, const int port,
    /* Specify size of request queue */
    if (listen(sd, QLEN) < 0) 
    {
-      LOG_ERROR("listen failed\n");
+       LOG_ERROR( _("listen to socket failed\n") );
       closesocket(sd);
       return -1;
    }

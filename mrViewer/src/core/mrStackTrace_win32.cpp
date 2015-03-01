@@ -55,6 +55,7 @@
 
 #include "mrStackTrace_win32.h"
 
+#undef fprintf
 
 #define gle (GetLastError())
 #define lenof(a) (sizeof(a) / sizeof((a)[0]))
