@@ -227,11 +227,11 @@ namespace mrv {
 	float minV = std::min( rgb.r, std::min( rgb.g, rgb.b ) ); 
 	float maxV = std::max( rgb.r, std::max( rgb.g, rgb.b ) );
 	float h,s,v;
+        float spanV = maxV - minV;
 	v = maxV;
-	s = (maxV != 0.0f) ? ((maxV-minV)/maxV) : 0.0f;
+	s = (maxV != 0.0f) ? (spanV/maxV) : 0.0f;
 	if ( s == 0 ) h = 0;
 	else {
-	  float spanV = maxV - minV;
 	  h = hue( rgb, maxV, spanV );
 	}
 	return ImagePixel( h, s, v, rgb.a );
