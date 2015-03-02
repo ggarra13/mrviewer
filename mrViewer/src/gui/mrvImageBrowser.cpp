@@ -525,6 +525,8 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 	reelname += ".reel";
       }
 
+    setlocale( LC_NUMERIC, "C" );
+
     FILE* f = fltk::fltk_fopen( reelname.c_str(), "w" );
     if (!f)
     {
@@ -577,6 +579,8 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
 
     fclose(f);
+
+    setlocale( LC_NUMERIC, "" );
 
   }
 
