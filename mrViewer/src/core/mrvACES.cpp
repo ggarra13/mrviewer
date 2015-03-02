@@ -63,9 +63,16 @@ bool load_aces_xml( CMedia* img, const char* filename )
     if ( c.convert_to != "" )
     {
         img->append_look_mod_transform( c.convert_to.c_str() );
-        img->append_look_mod_transform( "SOP.v1" );
-        if ( c.sops.saturation() != 1.0f )
-            img->append_look_mod_transform( "Saturation.v1" );
+
+        unsigned num = c.grade_refs.size();
+
+        for ( unsigned i = 0; i < num; ++i )
+        {
+            std::string name = "LMT." + c.grade_refs[i];
+            name += N_(".a1.0.0");
+            img->asc_cdl( c.sops );
+            img->append_look_mod_transform( name.c_str() );
+        }
     }
 
     if ( c.convert_from != "" )
