@@ -11,10 +11,12 @@ v2.7.3   - Made LUT pixel and color area lookups a tad faster.
 	   and histogram) respect the pixel values setting in the main
 	   pixel toolbar.
 	 - Upgraded ImageMagick to a newer, 32 bits float HDRI version.
-	 - Bug fixed a crashing bug on Windows when Add to Favorites
-	   was pushed.
 	 - Updated all small popup menus to not draw the glyph for
 	   readability issues.
+	 - Bug fixed a crashing bug on Windows when Add to Favorites
+	   was pushed.  This bug is due to a broken libintl on windows.
+	 - Bug fixed a similar crash on Windows when saving a reel.
+	 - More translated messages into Spanish.
 
 v2.7.2   - Bug fixed a warning in running CTL with ICC preferred.
 	 - Added ACES utilities to distribution: ctlrender, exr_dpx_exr and
