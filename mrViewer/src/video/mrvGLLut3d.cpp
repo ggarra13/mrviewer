@@ -36,6 +36,7 @@
 #include <ImfMatrixAttribute.h>
 #include <ImfVecAttribute.h>
 #include <ImfStandardAttributes.h>
+#include <ImfVecAttribute.h>
 #include <CtlExc.h>
 
 #include <fltk/Cursor.h>
@@ -63,6 +64,36 @@ namespace
 
 namespace mrv {
 namespace {
+
+void prepare_ACES( const CMedia* img, const std::string& name,
+                   Imf::Header& h )
+{
+    using namespace Imf;
+    using namespace Imath;
+
+    const ACES::ASC_CDL& c = img->asc_cdl();
+
+    if ( name == "LMT.SOPNode.a1.0.0" )
+    {
+        {
+            V3fAttribute attr( V3f( c.slope(0), c.slope(1), c.slope(2) ) );
+            h.insert( "slope", attr );
+        }
+        {
+            V3fAttribute attr( V3f( c.offset(0), c.offset(1), c.offset(2) ) );
+            h.insert( "offset", attr );
+        }
+        {
+            V3fAttribute attr( V3f( c.power(0), c.power(1), c.power(2) ) );
+            h.insert( "power", attr );
+        }
+    }
+    else if ( name == "LMT.SatNode.a1.0.0" )
+    {
+        FloatAttribute attr( c.saturation() );
+        h.insert( "saturation", attr );
+    }
+}
 
 inline void
 indicesAndWeights (float r, int iMax, int &i, int &i1, float &u, float &u1)
@@ -423,6 +454,8 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 
           transformNames.clear();
           transformNames.push_back( (*i).name );
+
+          prepare_ACES( img, (*i).name, header );
 
           try
           {

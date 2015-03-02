@@ -27,6 +27,9 @@ of the authors and should not be interpreted as representing official policies,
 either expressed or implied, of the FreeBSD Project.
 */
 
+#include <stdio.h>
+#include <locale.h>
+#include <xlocale.h>
 #include <iostream>
 
 #ifdef _WIN32
@@ -94,20 +97,11 @@ TransformStatus ACESclipReader::get_status( const std::string& s )
  */
 void ACESclipReader::parse_V3( const char* v3, float out[3]  )
 {
-    char* s = strdup( v3 );
-    char* t = s;
-    int idx = 0;
-    char* e = s;
-    for ( ; *e != 0 || idx == 3; ++e )
-    {
-        if ( *e == ' ') {
-            *e = 0;
-            out[idx++] = (float) strtod_l( s, &e, loc );
-            ++e;
-            s = e;
-        }
-    }
-    free( t );
+    const char* s = v3;
+    char* e;
+    out[0] = strtod_l( s, &e, loc ); s = e;
+    out[1] = strtod_l( s, &e, loc ); s = e;
+    out[2] = strtod_l( s, &e, loc );
 }
 
 /** 
@@ -120,7 +114,7 @@ ACESclipReader::ACESclipReader()
     // The following line should in theory work, but it doesn't
     // _loc = _create_locale( LC_ALL, "en-US" );
     // We instead use a full name
-    loc = _create_locale( LC_ALL, "English" );
+    loc = _create_locale( LC_ALL, "C" );
 #else
     locale_t empty;
     memset( &empty, 0, sizeof(locale_t) );
@@ -255,11 +249,13 @@ XMLError ACESclipReader::GradeRef()
 
     convert_to = tmp;
 
-    XMLNode* root5 = root4->NextSiblingElement( "ColorDecisionList" );
+    XMLNode* root5 = root4->FirstChildElement( "ColorDecisionList" );
     if ( !root5 ) return XML_ERROR_FILE_READ_ERROR;
 
-    element = root5->FirstChildElement( "ASC CDL" );
+    element = root5->FirstChildElement( "ASC_CDL" );
     if ( !element ) return XML_ERROR_FILE_READ_ERROR;
+
+    XMLNode* root6 = element;
 
     tmp = element->Attribute( "inBitDepth" );
     if ( tmp )
@@ -274,48 +270,50 @@ XMLError ACESclipReader::GradeRef()
         out_bit_depth = get_bit_depth( depth );
     }
 
-    XMLNode* root6 = root5->FirstChildElement( "SOPNode" );
-    if ( root6 )
+    XMLNode* root7 = root6->FirstChildElement( "SOPNode" );
+    if ( root7 )
     {
+        grade_refs.push_back( "SOPNode" );
         float out[3];
-        element = root6->FirstChildElement( "Slope" );
+        element = root7->FirstChildElement( "Slope" );
         if ( element )
         {
             const char* tmp = element->GetText();
             if ( tmp )
             {
                 parse_V3( tmp, out );
-                sops.slope( out );
+                sops.slope( out[0], out[1], out[2] );
             }
         }
-        element = root6->NextSiblingElement( "Offset" );
+        element = root7->FirstChildElement( "Offset" );
         if ( element )
         {
             const char* tmp = element->GetText();
             if ( tmp )
             {
                 parse_V3( tmp, out );
-                sops.offset( out );
+                sops.offset( out[0], out[1], out[2] );
             }
         }
-        element = root6->NextSiblingElement( "Power" );
+        element = root7->FirstChildElement( "Power" );
         if ( element )
         {
             const char* tmp = element->GetText();
             if ( tmp )
             {
                 parse_V3( tmp, out );
-                sops.power( out );
+                sops.power( out[0], out[1], out[2] );
             }
         }
     }
 
-    root6 = root5->FirstChildElement( "SatNode" );
-    if ( root5 )
+    root7 = root6->FirstChildElement( "SatNode" );
+    if ( root7 )
     {
-        element = root6->FirstChildElement( "Saturation" );
+        element = root7->FirstChildElement( "Saturation" );
         if ( element )
         {
+            grade_refs.push_back( "SatNode" );
             const char* s = element->GetText();
             if ( s )
             {

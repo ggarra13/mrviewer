@@ -39,6 +39,7 @@
 #include <fltk/MultiImage.h>
 
 #include "mrViewer.h"
+#include "core/mrvI8N.h"
 #include "gui/mrvPreferencesBrowser.h"
 #include "gui/FLU/flu_pixmaps.h"
 
@@ -148,7 +149,7 @@ namespace mrv {
 
     std::string name = child->label();
 
-    if ( name == "CTL Paths" )
+    if ( name == _("CTL Paths") )
       {
 	update_ctl_tab( prefs );
       }
