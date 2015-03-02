@@ -35,6 +35,11 @@
 #define gettext_noop(String) String
 #define N_(String) gettext_noop (String)
 
+#ifdef _WIN32
+#undef fprintf
+#undef sscanf
+#endif
+
 #else
 
 #define _(String) (String)

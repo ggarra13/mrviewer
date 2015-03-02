@@ -465,6 +465,8 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
   {
      edl = false;
 
+     setlocale( LC_NUMERIC, "C" );
+
      FILE* f = fltk::fltk_fopen( reelfile, "r" );
      if (!f ) return false;
 
@@ -650,6 +652,8 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
       }
 
     fclose(f);
+
+    setlocale( LC_NUMERIC, "" );
 
     return true;
   }
