@@ -73,7 +73,10 @@ void prepare_ACES( const CMedia* img, const std::string& name,
 
     const ACES::ASC_CDL& c = img->asc_cdl();
 
-    if ( name == "LMT.SOPNode.a1.0.0" )
+    std::string n = name.substr( 4, 7 );
+
+
+    if ( n == "SOPNode" )
     {
         {
             V3fAttribute attr( V3f( c.slope(0), c.slope(1), c.slope(2) ) );
@@ -88,7 +91,7 @@ void prepare_ACES( const CMedia* img, const std::string& name,
             h.insert( "power", attr );
         }
     }
-    else if ( name == "LMT.SatNode.a1.0.0" )
+    else if ( n == "SatNode" )
     {
         FloatAttribute attr( c.saturation() );
         h.insert( "saturation", attr );
