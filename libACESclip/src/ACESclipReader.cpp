@@ -29,7 +29,6 @@ either expressed or implied, of the FreeBSD Project.
 
 #include <stdio.h>
 #include <locale.h>
-#include <xlocale.h>
 #include <iostream>
 
 #ifdef _WIN32
@@ -137,25 +136,25 @@ ACESclipReader::~ACESclipReader()
  * 
  * @return XML_NO_ERROR on success, XML_ERROR_FILE_READ_ERROR on failure
  */
-XMLError ACESclipReader::header()
+ACESclipReader::ACESError ACESclipReader::header()
 {
     root = doc.FirstChildElement("aces:ACESmetadata");
-    if ( !root ) return XML_ERROR_FILE_READ_ERROR;
+    if ( !root ) return kNotAnAcesFile;
 
     element = root->FirstChildElement( "ContainerFormatVersion" );
-    if ( !element ) return XML_ERROR_PARSING_ELEMENT;
+    if ( !element ) return kErrorParsingElement;
     float version = atof( element->GetText() );
     if ( version > 1.0f )
-        return XML_ERROR_FILE_READ_ERROR;
+        return kErrorVersion;
 
-    return XML_NO_ERROR;
+    return kAllOK;
 }
 
-XMLError ACESclipReader::info()
+ACESclipReader::ACESError ACESclipReader::info()
 {
     root2 = root->FirstChildElement( "aces:Info" );
     if (!root2) 
-        return XML_ERROR_PARSING_ELEMENT;
+        return kNoAcesInfo;
 
     element = root2->FirstChildElement( "Application" );
     if ( element )
@@ -174,13 +173,13 @@ XMLError ACESclipReader::info()
         if ( tmp ) comment = tmp;
     }
 
-    return XML_NO_ERROR;
+    return kAllOK;
 }
 
-XMLError ACESclipReader::clip_id()
+ACESclipReader::ACESError ACESclipReader::clip_id()
 {
     root2 = root->FirstChildElement( "aces:ClipID" );
-    if ( !root2 ) return XML_ERROR_PARSING_ELEMENT;
+    if ( !root2 ) return kNoClipID;
 
     element = root2->FirstChildElement( "ClipName" );
     if ( element )
@@ -203,13 +202,13 @@ XMLError ACESclipReader::clip_id()
         if ( tmp ) clip_date = date_time( tmp );
     }
 
-    return XML_NO_ERROR;
+    return kAllOK;
 }
 
-XMLError ACESclipReader::config()
+ACESclipReader::ACESError ACESclipReader::config()
 {
     root2 = root->FirstChildElement( "aces:Config" );
-    if ( !root2 ) return XML_ERROR_PARSING_ELEMENT;
+    if ( !root2 ) return kNoConfig;
 
     element = root2->FirstChildElement( "ACESrelease_Version" );
     if ( element )
@@ -220,7 +219,7 @@ XMLError ACESclipReader::config()
             double version = atof( tmp );
             if ( version > 1.0 )
             {
-                return XML_ERROR_FILE_READ_ERROR;
+                return kErrorVersion;
             }
         }
     }
@@ -232,28 +231,28 @@ XMLError ACESclipReader::config()
         if ( tmp ) timestamp = tmp;
     }
 
-    return XML_NO_ERROR;
+    return kAllOK;
 }
 
-XMLError ACESclipReader::GradeRef()
+ACESclipReader::ACESError ACESclipReader::GradeRef()
 {
     element = root3->FirstChildElement( "aces:GradeRef" );
-    if ( !element ) return XML_NO_ERROR;
+    if ( !element ) return kAllOK;
 
     root4 = element;
     element = root4->FirstChildElement( "Convert_to_WorkSpace" );
-    if ( !element ) return XML_ERROR_FILE_READ_ERROR;
+    if ( !element ) return kMissingSpaceConversion;
 
     const char* tmp = element->Attribute( "TransformID" );
-    if ( ! tmp ) return XML_ERROR_FILE_READ_ERROR;
+    if ( ! tmp ) return kMissingSpaceConversion;
 
     convert_to = tmp;
 
     XMLNode* root5 = root4->FirstChildElement( "ColorDecisionList" );
-    if ( !root5 ) return XML_ERROR_FILE_READ_ERROR;
+    if ( !root5 ) return kAllOK;
 
     element = root5->FirstChildElement( "ASC_CDL" );
-    if ( !element ) return XML_ERROR_FILE_READ_ERROR;
+    if ( !element ) return kAllOK;
 
     XMLNode* root6 = element;
 
@@ -324,22 +323,22 @@ XMLError ACESclipReader::GradeRef()
     }
 
     element = root4->FirstChildElement( "Convert_from_WorkSpace" );
-    if ( !element ) return XML_ERROR_FILE_READ_ERROR;
+    if ( !element ) return kMissingSpaceConversion;
 
     tmp = element->Attribute( "TransformID" );
-    if ( ! tmp ) return XML_ERROR_FILE_READ_ERROR;
+    if ( ! tmp ) return kMissingSpaceConversion;
 
     convert_from = tmp;
 
-    return XML_NO_ERROR;
+    return kAllOK;
 }
 
-XMLError ACESclipReader::ITL()
+ACESclipReader::ACESError ACESclipReader::ITL()
 {
     root3 = root2->FirstChildElement( "aces:InputTransformList" );
     if ( !root3 ) {
         root3 = root2->FirstChildElement( "InputTransformList" );
-        if ( !root3 ) return XML_ERROR_PARSING_ELEMENT;
+        if ( !root3 ) return kNoInputTransformList;
     }
 
 
@@ -373,8 +372,8 @@ XMLError ACESclipReader::ITL()
     IDT.link_transform = link_transform;
     IDT.status = status;
 
-    XMLError err = GradeRef();
-    if ( err != XML_NO_ERROR )
+    ACESclipReader::ACESError err = GradeRef();
+    if ( err != kAllOK )
         return err;
 
 
@@ -385,15 +384,15 @@ XMLError ACESclipReader::ITL()
         if ( tmp ) link_ITL = tmp;
     }
 
-    return XML_NO_ERROR;
+    return kAllOK;
 }
 
-XMLError ACESclipReader::PTL()
+ACESclipReader::ACESError ACESclipReader::PTL()
 {
     root3 = root2->FirstChildElement( "aces:PreviewTransformList" );
     if ( !root3 ) {
         root3 = root2->FirstChildElement( "PreviewTransformList" );
-        if ( !root3 ) return XML_ERROR_PARSING_ELEMENT;
+        if ( !root3 ) return kNoPreviewTransformList;
     }
 
     element = root3->FirstChildElement( "aces:LMTref" );
@@ -426,7 +425,6 @@ XMLError ACESclipReader::PTL()
 
 	  LMT.push_back( Transform( name, link_transform, status ) );
 
-	  
 	  element = element->NextSiblingElement( "aces:LMTref" );
 	}
     }
@@ -513,7 +511,40 @@ XMLError ACESclipReader::PTL()
         if ( tmp ) link_PTL = tmp;
     }
 
-    return XML_NO_ERROR;
+    return kAllOK;
+}
+
+const char* ACESclipReader::error_name( ACESclipReader::ACESError err ) const
+{
+    switch( err )
+    {
+        case kAllOK:
+            return "ALL OK";
+        case kFileError:
+            return "File Error";
+        case kNotAnAcesFile:
+            return "Not an ACES clip file";
+        case kErrorParsingElement:
+            return "Error Parsing Element";
+        case kErrorVersion:
+            return "Not a supported version";
+        case kNoAcesInfo:
+            return "No aces:Info";
+        case kNoClipID:
+            return "No aces:clipID";
+        case kNoConfig:
+            return "No aces:Config";
+        case kMissingSpaceConversion:
+            return "Missing color space conversion";
+        case kNoInputTransformList:
+            return "No InputTransformList";
+        case kNoPreviewTransformList:
+            return "No PreviewTransformList";
+        case kLastError:
+        default:
+            return "Unknown Error";
+    };
+
 }
 
 /** 
@@ -523,30 +554,30 @@ XMLError ACESclipReader::PTL()
  * 
  * @return true on success, false on failure
  */
-bool ACESclipReader::load( const char* filename )
+ACESclipReader::ACESError ACESclipReader::load( const char* filename )
 {
-    XMLError err = doc.LoadFile( filename );
-    if ( err != XML_NO_ERROR ) return false;
+    XMLError e = doc.LoadFile( filename );
+    if ( e != XML_NO_ERROR ) return kFileError;
 
-    err = header();
-    if ( err != XML_NO_ERROR ) return false;
+    ACESError err = header();
+    if ( err != kAllOK ) return err;
 
     err = info();
-    if ( err != XML_NO_ERROR ) return false;
+    if ( err != kAllOK ) return err;
 
     err = clip_id();
-    if ( err != XML_NO_ERROR ) return false;
+    if ( err != kAllOK ) return err;
 
     err = config();
-    if ( err != XML_NO_ERROR ) return false;
+    if ( err != kAllOK ) return err;
 
     err = ITL();
-    if ( err != XML_NO_ERROR ) return false;
+    if ( err != kAllOK ) return err;
 
     err = PTL();
-    if ( err != XML_NO_ERROR ) return false;
+    if ( err != kAllOK ) return err;
 
-    return true;
+    return kAllOK;
 }
 
 
