@@ -37,6 +37,7 @@
 
 #ifdef _WIN32
 #undef fprintf
+// #undef sprintf
 #undef sscanf
 #endif
 
