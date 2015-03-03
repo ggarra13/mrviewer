@@ -144,8 +144,6 @@ struct CtlLMTData
   void ImageInformation::layout()
   {
 
-    //    cerr << "scroll " << m_all->h() << " me: " << h() << endl;
-
     if ( w()-20 != m_all->w() )
       m_all->resize( 0, 0, w()-20, m_all->h() );
     ImageInfoParent::layout();
@@ -363,6 +361,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
   {
     hide_tabs();
 
+    
+ 
     m_image->remove_all();
     m_video->remove_all();
     m_audio->remove_all();
@@ -374,6 +374,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 
     m_curr = add_browser(m_image);
 
+    
     add_text( _("Directory"), img->directory() );
     char buf[1024];
     add_text( _("Filename"), img->name().c_str() );
@@ -394,7 +395,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	add_bool( _("Sequence"), img->is_sequence() );
       }
 
-
     if ( img->first_frame() != img->last_frame() )
       {
           add_int( _("First Frame"), (int)img->first_frame(), true,
@@ -403,6 +403,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 		  (fltk::Callback*)change_last_frame_cb, 2, 55 );
       }
 
+    
     add_int64( _("Frame Start"), img->start_frame() );
     add_int64( _("Frame End"), img->end_frame() );
 
@@ -410,6 +411,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
                (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
 
     ++group;
+    
     add_int( _("Width"), img->width() );
     add_int( _("Height"), img->height() );
 
@@ -435,6 +437,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  }
       }
 
+    
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
     add_text( _("Aspect Ratio"), buf );
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
@@ -454,6 +457,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         }
     }
 
+    
     {
         const mrv::Recti& window = img->data_window2();
         if ( window.w() > 0 )
@@ -468,6 +472,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         }
     }
 
+    
     ++group;
 
     const char* depth;
@@ -487,7 +492,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	depth = _("Unknown bit depth"); break;
       }
 
-    
     add_text( _("Depth"), depth );
     add_int( _("Image Channels"), img->number_of_channels() );
 
@@ -497,6 +501,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         add_text( _("Color Space"), avi->colorspace() );
         add_text( _("Color Range"), avi->color_range() );
     }
+    
 
     ++group;
 
@@ -572,7 +577,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     
     add_text( _("Rendering Intent"), 
 	      kRenderingIntent[ (int) img->rendering_intent() ] );
-
+ 
+    
     
     add_float( _("Gamma"), img->gamma(), true, 
 	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
@@ -589,16 +595,19 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
         add_text( _("CIExy White Point"), buf );
     }
 
+    
     add_ctl_idt( _("Input Device Transform"), img->idt_transform() );
 
+    
     {
-        size_t count = img->number_of_lmts();
-        for ( size_t i = 0; i <= count; ++i )
+        unsigned count = img->number_of_lmts();
+        for ( unsigned i = 0; i <= count; ++i )
         {
-            sprintf( buf, _("LMTransform %" PRId64), i+1 );
+            sprintf( buf, _("LMTransform %d"), i+1 );
             add_ctl_lmt( strdup( buf ), img->look_mod_transform(i), i );
         }
     }
+    
 
     add_ctl( _("Render Transform"), img->rendering_transform() );
     
@@ -610,7 +619,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     
     add_text( _("Format"), img->format() );
     
-
+    
     if ( !img->has_video() )
       {
 	add_text( _("Line Order"), img->line_order() );
@@ -633,15 +642,16 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_text( _("Memory"), buf );
 
     
+    
 
     if ( img->disk_space() >= 0 )
       {
-	 long double disk_space = double( to_memory( img->disk_space(),
+	double disk_space = double( to_memory( img->disk_space(),
 						     space_type ) );
-	 long double pct   = 100.0 * ( (long double) img->disk_space() /
+	double pct   = 100.0 * ( (long double) img->disk_space() /
 				       (long double) img->memory() );
 	
-	sprintf( buf, N_("%.1Lf %s  (%.2Lf %% of memory size)"), 
+	sprintf( buf, N_("%.1f %s  (%.2f %% of memory size)"), 
 		 disk_space, space_type, pct );
 	add_text( _("Disk space"), buf );
 
@@ -652,11 +662,11 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
             add_text( _("Compression Ratio"), buf );
         }
       }
-
     
     ++group;
     add_text( _("Creation Date"), img->creation_date() );
 
+    
     
     m_curr->relayout();
 
@@ -678,7 +688,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	m_curr->layout();
 	m_curr->parent()->layout();
       }
-
     
     attrs = img->exif();
     if ( ! attrs.empty() )
@@ -722,7 +731,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	m_curr->parent()->layout();
       }
 
-    
 
     if ( num_video_streams > 0 )
       {
@@ -763,7 +771,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	  }
       }
 
-    
     if ( num_audio_streams > 0 )
       {
 	for ( unsigned i = 0; i < num_audio_streams; ++i )
@@ -809,7 +816,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	m_audio->parent()->show();
       }
 
-    
     if ( num_subtitle_streams > 0 )
       {
 	for ( unsigned i = 0; i < num_subtitle_streams; ++i )
@@ -844,7 +850,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       }
 
 
-    
     relayout();
   }
 

@@ -37,15 +37,22 @@ std::string aces_xml_filename( const char* file )
     xml += filename;
     xml += "xml";
 
+
     return xml;
 }
 
 
 bool load_aces_xml( CMedia* img, const char* filename )
 {
-    ACES::ACESclipReader c;
-    if ( ! c.load( filename ) )
+    using namespace ACES;
+
+    ACESclipReader c;
+    ACESclipReader::ACESError err = c.load(filename);
+    if ( err != ACESclipReader::kAllOK )
+    {
+        LOG_ERROR( filename << " failed. " << c.error_name( err ) );
         return false;
+    }
 
     if ( !c.link_ITL.empty() )
       {
