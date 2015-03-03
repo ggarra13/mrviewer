@@ -2517,22 +2517,23 @@ else
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open selected
-        xywh {310 35 640 530} when CHANGED resizable
+        callback {delete v;} open
+        xywh {314 60 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
       } {
-        {fltk::PackedGroup} uiRegion {
+        {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530} resizable
         } {
           {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W open
+              label W selected
               tooltip {Opens different windows}
               xywh {5 5 20 20}
+              extra_code {o->disable_glyph();}
               class {mrv::PopupMenu}
             } {
               {fltk::Item} {} {
@@ -2755,7 +2756,7 @@ Value is:  pow( 2, 1/x );}
                 }
               }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {550 5 80 20}
             } {
               {fltk::PopupMenu} uiField {
@@ -2764,6 +2765,7 @@ Value is:  pow( 2, 1/x );}
                 callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );} open
                 tooltip {Changes frame/field display}
                 xywh {0 0 20 20}
+                extra_code {o->disable_glyph();}
                 class {mrv::PopupMenu}
               } {
                 {fltk::Item} {} {
@@ -2802,7 +2804,7 @@ Value is:  pow( 2, 1/x );}
               class {mrv::ImageView}
             } {}
           }
-          {fltk::Group} uiPixelBar {
+          {fltk::Group} uiPixelBar {open
             xywh {0 455 640 27} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
@@ -2949,7 +2951,7 @@ o->disable_glyph();}
                       tooltip {8-bit sample of image pixel under mouse.}
                       xywh {240 4 20 20} box FLAT_BOX color 0x53535300
                     }
-                    {fltk::Group} {} {
+                    {fltk::Group} {} {open
                       xywh {275 3 173 20}
                     } {
                       {fltk::PopupMenu} uiBColorType {
@@ -2958,7 +2960,7 @@ o->disable_glyph();}
                         callback {int i = o->value();
 if ( i < 0 ) return;
 o->label( mrv::color::space2id( (mrv::color::Space) (i+1)) );
-v->update_color_info();}
+v->update_color_info();} open
                         tooltip {Switch pixel color space information display for the pixel under the cursor.}
                         xywh {0 0 23 20} labelsize 9
                         extra_code {o->value(0);
@@ -3118,7 +3120,7 @@ v->uiView->seek( frame );}
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {int c = o->value();
 o->label(o->child(c)->label());
-v->uiView->looping( (mrv::ImageView::Looping)c );}
+v->uiView->looping( (mrv::ImageView::Looping)c );} open
                   tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )}
                   xywh {615 2 21 23} box UP_BOX
                   class {mrv::PopupMenu}
@@ -3142,9 +3144,10 @@ v->uiView->looping( (mrv::ImageView::Looping)c );}
                     {fltk::PopupMenu} uiTimecodeSwitch {
                       label {F:}
                       user_data this user_data_type {mrv::ViewerUI*}
-                      callback {change_timeline_display(v);}
+                      callback {change_timeline_display(v);} open
                       tooltip {Switch between Frame, Seconds and Timecode display}
                       xywh {0 0 20 20} box DOWN_BOX
+                      extra_code {o->disable_glyph();}
                       class {mrv::PopupMenu}
                     } {
                       {fltk::Item} {} {
@@ -3233,7 +3236,7 @@ v->uiView->seek( f );}
                         xywh {183 2 30 18} labelcolor 0x98a8a800
                       }
                     }
-                    {fltk::Group} {} {
+                    {fltk::Group} {} {open
                       xywh {220 0 65 21}
                     } {
                       {fltk::PopupMenu} fpsDefaults {
@@ -3248,9 +3251,10 @@ else
     g = atof( o->child( o->value() )->label() );
 
 v->uiView->fps( g );
-v->uiFPS->value( g );} open
+v->uiFPS->value( g );}
                         tooltip {Some default frame rate settings.}
                         xywh {0 2 30 19} box UP_BOX labelsize 10
+                        extra_code {o->disable_glyph();}
                         class {mrv::PopupMenu}
                       } {
                         {fltk::Item} {} {
@@ -3312,6 +3316,7 @@ o->value(24);}
                         callback {v->uiView->audio_stream( o->value() );}
                         tooltip {Select Audio Track}
                         xywh {0 0 18 19} when CHANGED box UP_BOX labelsize 10
+                        extra_code {o->disable_glyph();}
                         class {mrv::PopupMenu}
                       } {}
                       {fltk::Slider} uiVolume {
