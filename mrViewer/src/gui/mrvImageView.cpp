@@ -3075,11 +3075,6 @@ int ImageView::keyDown(unsigned int rawkey)
    {
       if ( rawkey == kZoomMin.key )
       {
-	 xoffset = yoffset = 0;
-	 char buf[128];
-	 sprintf( buf, "Offset %g %g", xoffset, yoffset );
-	 send( buf );
-
 	 zoom( 1.0f );
       }
       else
