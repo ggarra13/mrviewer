@@ -697,7 +697,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	  {
-              if ( i->first == N_("Mipmap Levels") )
+              if ( i->first == _("Mipmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
@@ -707,7 +707,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
                       exr->levelY( exr->levelX() );
                   }
               }
-              if ( i->first == "X Ripmap Levels" )
+              if ( i->first == _("X Ripmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
@@ -716,7 +716,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
                                (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
                   }
               }
-              if ( i->first == "Y Ripmap Levels" )
+              if ( i->first == _("Y Ripmap Levels") )
               {
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
