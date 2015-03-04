@@ -18,11 +18,12 @@ namespace {
 const char* kModule = "aces";
 }
 
+namespace fs = boost::filesystem;
+
 namespace mrv {
 
 std::string aces_xml_filename( const char* file )
 {
-    namespace fs = boost::filesystem;
 
     std::string root, frame, view, ext;
     mrv::split_sequence( root, frame, view, ext, file );
@@ -45,6 +46,9 @@ std::string aces_xml_filename( const char* file )
 bool load_aces_xml( CMedia* img, const char* filename )
 {
     using namespace ACES;
+
+    if(! fs::exists(filename) )
+        return false;
 
     ACESclipReader c;
     ACESclipReader::ACESError err = c.load(filename);

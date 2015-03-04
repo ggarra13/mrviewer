@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-03-03 12:47-0300\n"
-"PO-Revision-Date: 2015-03-03 05:15-0300\n"
+"POT-Creation-Date: 2015-03-04 15:31-0300\n"
+"PO-Revision-Date: 2015-03-03 21:04-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -286,7 +286,7 @@ msgid "(PAL Fields)"
 msgstr "(Campos PAL)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3304
-#: gui/mrvImageView.cpp:4289 gui/mrvImageView.cpp:4290
+#: gui/mrvImageView.cpp:4284 gui/mrvImageView.cpp:4285
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -823,7 +823,7 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1089 core/CMedia.cpp:1148 gui/mrvImageView.cpp:171
-#: gui/mrvImageView.cpp:3929
+#: gui/mrvImageView.cpp:3924
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -832,7 +832,7 @@ msgid "Alpha Only"
 msgstr "Solo Alfa"
 
 #: core/CMedia.cpp:1091 core/CMedia.cpp:1148 gui/mrvImageView.cpp:172
-#: gui/mrvImageView.cpp:3913
+#: gui/mrvImageView.cpp:3908
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -964,7 +964,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5219
+#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5214
 msgid "B"
 msgstr "A"
 
@@ -1024,7 +1024,7 @@ msgstr "Modo de Mezcla"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1659
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2349
 #: core/CMedia.cpp:1106 core/CMedia.cpp:1147 gui/mrvImageView.cpp:170
-#: gui/mrvImageView.cpp:3925
+#: gui/mrvImageView.cpp:3920
 msgid "Blue"
 msgstr "Azul"
 
@@ -1438,7 +1438,7 @@ msgstr "No pude leer audio fifo: "
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr "No pude leer samples del fifo buffer.  Error: "
 
-#: core/mrvACES.cpp:154
+#: core/mrvACES.cpp:158
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
@@ -1971,7 +1971,7 @@ msgstr "Tiempo de Exposición"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3424
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3653
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3728
-#: gui/mrvImageView.cpp:5217
+#: gui/mrvImageView.cpp:5212
 msgid "F"
 msgstr "C"
 
@@ -2300,7 +2300,7 @@ msgstr "Obtuve: "
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1658
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2331
 #: core/CMedia.cpp:1105 core/CMedia.cpp:1146 gui/mrvImageView.cpp:169
-#: gui/mrvImageView.cpp:3921
+#: gui/mrvImageView.cpp:3916
 msgid "Green"
 msgstr "Verde"
 
@@ -2703,9 +2703,9 @@ msgid "L (Lightness)"
 msgstr "L (Luminosidad)"
 
 #: gui/mrvImageInformation.cpp:606
-#, fuzzy, c-format
+#, c-format
 msgid "LMTransform %d"
-msgstr "TransformaciónLM %<PRId64>"
+msgstr "TransformaciónLM %d"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3440
 msgid "LUT"
@@ -2813,7 +2813,7 @@ msgstr "Abrir Pelicula o Secuencia"
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
-#: core/mrvACES.cpp:106
+#: core/mrvACES.cpp:110
 msgid "Loaded ACES clip metadata file '"
 msgstr "Cargué archivo de Clip Metadata de ACES '"
 
@@ -2881,7 +2881,7 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1660
 #: core/CMedia.cpp:1117 core/CMedia.cpp:1148 gui/mrvImageView.cpp:173
-#: gui/mrvImageView.cpp:3933 gui/mrvImageInformation.cpp:512
+#: gui/mrvImageView.cpp:3928 gui/mrvImageInformation.cpp:512
 msgid "Lumma"
 msgstr "Luma"
 
@@ -2979,7 +2979,7 @@ msgstr "Mínimo"
 msgid "Mipmap Level"
 msgstr "Nivel de Mipmap"
 
-#: core/exrImage.cpp:1350
+#: core/exrImage.cpp:1350 gui/mrvImageInformation.cpp:700
 msgid "Mipmap Levels"
 msgstr "Niveles de Mipmap"
 
@@ -3662,7 +3662,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1657
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2313
 #: core/CMedia.cpp:1104 core/CMedia.cpp:1146 gui/mrvImageView.cpp:168
-#: gui/mrvImageView.cpp:3917
+#: gui/mrvImageView.cpp:3912
 msgid "Red"
 msgstr "Rojo"
 
@@ -3887,7 +3887,7 @@ msgstr "Grabar carrete actual.\n"
 msgid "Save preferences to disk as a default."
 msgstr "Grabar preferencias al disco por defacto."
 
-#: core/mrvACES.cpp:156
+#: core/mrvACES.cpp:160
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabe archivo de Clip Metadata de ACES '"
 
@@ -4261,7 +4261,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3078
-#: gui/mrvImageView.cpp:5218
+#: gui/mrvImageView.cpp:5213
 msgid "T"
 msgstr "T"
 
@@ -4669,11 +4669,11 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: core/mrvACES.cpp:122
+#: core/mrvACES.cpp:126
 msgid "Unknown Shot"
 msgstr "Toma Desconocida"
 
-#: core/mrvACES.cpp:119
+#: core/mrvACES.cpp:123
 msgid "Unknown Show"
 msgstr "Show Desconocido"
 
@@ -5090,7 +5090,7 @@ msgstr ""
 msgid "X Ripmap Level"
 msgstr "Nivel de Ripmap en X"
 
-#: core/exrImage.cpp:1357
+#: core/exrImage.cpp:1357 gui/mrvImageInformation.cpp:710
 msgid "X Ripmap Levels"
 msgstr "Niveles de Ripmap en X"
 
@@ -5119,7 +5119,7 @@ msgstr "Y (Luminancia de Blanco)"
 msgid "Y Ripmap Level"
 msgstr "Nivel de Ripmap en Y"
 
-#: core/exrImage.cpp:1359
+#: core/exrImage.cpp:1359 gui/mrvImageInformation.cpp:719
 msgid "Y Ripmap Levels"
 msgstr "Niveles de Ripmap en Y"
 
