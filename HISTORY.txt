@@ -6,6 +6,9 @@ v2.7.4   - Bug fixed a crashing bug in Windows 32 when displaying the
 	   output more information when it fails loading it. 
 	 - Preference window would not show the CTL_MODULE_PATH variable
 	   under the Spanish locale.
+	 - Made ACEScsc ctl scripts appear when listing LMTs.
+	 - Removed silly error of not finding the ACESclip file for files
+	   that don't have matching ACESclip files.
 
 v2.7.3   - Made LUT pixel and color area lookups a tad faster.
 	 - Added an option in the pixel bar's RGBA toolbar to switch to
