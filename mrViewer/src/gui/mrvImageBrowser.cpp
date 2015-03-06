@@ -896,6 +896,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     if ( !login ) login = (char*)"";
 
     const char* show = getenv( N_("SHOW") );
+    if (!show) show = getenv( _("SHOW") );
+
     if ( show && db )
       {
 	 sprintf( buf, N_("INSERT INTO shows(name) VALUES ('%s');"), show ); 
@@ -906,8 +908,11 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 	 }
 
 	const char* seq  = getenv( N_("SEQ") );
+	if ( !seq ) seq = getenv( _("SEQ") );
 
 	const char* shot = getenv( N_("SHOT") );
+	if ( !shot ) shot = getenv( _("SHOT") );
+
 	if ( !seq && shot )
 	  {
 	    seq_id = shot;

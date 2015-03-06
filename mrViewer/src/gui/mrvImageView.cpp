@@ -53,6 +53,7 @@
 #endif
 
 #include "video/mrvGLLut3d.h"
+#include "core/CMedia.h"
 
 #include <GL/gl.h>
 
@@ -86,7 +87,6 @@
 #include "ImathMath.h" // for Math:: functions
 
 
-#include "core/CMedia.h"
 // CORE classes
 #include "core/mrvClient.h"
 #include "core/mrvColor.h"

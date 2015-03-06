@@ -239,11 +239,15 @@ ACESclipReader::ACESError ACESclipReader::GradeRef()
     element = root3->FirstChildElement( "aces:GradeRef" );
     if ( !element ) return kAllOK;
 
+    graderef_status = kPreview;
+    const char* tmp = element->Attribute( "status" );
+    if ( tmp ) graderef_status = get_status( tmp );
+
     root4 = element;
     element = root4->FirstChildElement( "Convert_to_WorkSpace" );
     if ( !element ) return kMissingSpaceConversion;
 
-    const char* tmp = element->Attribute( "TransformID" );
+    tmp = element->Attribute( "TransformID" );
     if ( ! tmp ) return kMissingSpaceConversion;
 
     convert_to = tmp;

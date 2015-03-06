@@ -53,6 +53,7 @@
 #include <boost/thread/recursive_mutex.hpp>
 
 #include <ImfChromaticities.h>
+#include <ACESclipReader.h>
 
 #include "core/mrvAlignedData.h"
 #include "core/mrvFrame.h"
@@ -66,7 +67,6 @@
 #include "core/mrvACES.h"
 #include "core/mrvI8N.h"
 
-#include "ACES_ASC_CDL.h"
 
 #include "video/mrvGLShape.h"
 
@@ -556,6 +556,24 @@ class CMedia
     void asc_cdl( const ACES::ASC_CDL& o )
     {
         _sops = o;
+    }
+
+    void grade_refs( const ACES::ACESclipReader::GradeRefs& t )
+    {
+        size_t i = 0;
+        size_t num = t.size();
+        for ( ; i < num; ++i )
+            _grade_refs.push_back( t[i] );
+    }
+
+    size_t number_of_grade_refs() const
+    {
+        return _grade_refs.size();
+    }
+
+    const std::string& grade_ref( const unsigned i ) const
+    {
+        return _grade_refs[i];
     }
 
     const ACES::ASC_CDL& asc_cdl() const { return _sops; }
@@ -1184,7 +1202,8 @@ class CMedia
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
                                     //!  right float frame
-    ACES::ASC_CDL _sops;
+    ACES::ASC_CDL _sops;            //!< Slope,Offset,Pivot,Saturation
+    ACES::ACESclipReader::GradeRefs _grade_refs; 
 
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
