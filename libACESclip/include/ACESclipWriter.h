@@ -36,6 +36,7 @@ either expressed or implied, of the FreeBSD Project.
 
 #include "ACESExport.h"
 #include "ACESTransform.h"
+#include "ACES_ASC_CDL.h"
 
 namespace ACES {
 
@@ -94,6 +95,13 @@ class ACES_EXPORT ACESclipWriter
      * @param xml_date date of xml creation
      */
     void config( const time_t xml_date = time(0) );
+
+
+    void gradeRef_start( const std::string convert_to,
+                         const TransformStatus status = kPreview );
+    void gradeRef_SOPNode( const ASC_CDL& c );
+    void gradeRef_SatNode( const ASC_CDL& c );
+    void gradeRef_end( const std::string convert_from );
 
     /** 
      * Input Transform List beginnings.
@@ -187,9 +195,7 @@ class ACES_EXPORT ACESclipWriter
   protected:
     XMLDocument doc;
     XMLElement* element;
-    XMLNode* root, *root2, *root3;
-
-    Transform cvt_to_workspace, cvt_from_workspace;
+    XMLNode* root, *root2, *root3, *root4, *root5, *root6, *root7;
 
 
     LMTransforms LMT;
