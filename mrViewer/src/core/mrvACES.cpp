@@ -54,7 +54,7 @@ bool load_aces_xml( CMedia* img, const char* filename )
     ACESclipReader::ACESError err = c.load(filename);
     if ( err != ACESclipReader::kAllOK )
     {
-        LOG_ERROR( filename << " failed. " << c.error_name( err ) );
+        LOG_ERROR( filename << _(" failed. ") << c.error_name( err ) );
         return false;
     }
 
@@ -71,24 +71,28 @@ bool load_aces_xml( CMedia* img, const char* filename )
     size_t i = 0;
     img->clear_look_mod_transform();
 
-    if ( c.convert_to != "" )
+    if ( c.graderef_status == ACES::kPreview )
     {
-        img->append_look_mod_transform( c.convert_to.c_str() );
-
-        unsigned num = c.grade_refs.size();
-
-        for ( unsigned i = 0; i < num; ++i )
+        if ( c.convert_to != "" )
         {
-            std::string name = "LMT." + c.grade_refs[i];
-            name += N_(".a1.0.0");
-            img->asc_cdl( c.sops );
-            img->append_look_mod_transform( name.c_str() );
-        }
-    }
+            img->append_look_mod_transform( c.convert_to.c_str() );
 
-    if ( c.convert_from != "" )
-    {
-        img->append_look_mod_transform( c.convert_from.c_str() );
+            unsigned num = c.grade_refs.size();
+            img->asc_cdl( c.sops );
+            img->grade_refs( c.grade_refs );
+
+            for ( unsigned i = 0; i < num; ++i )
+            {
+                std::string name = "LMT." + c.grade_refs[i];
+                name += N_(".a1.0.0");
+                img->append_look_mod_transform( name.c_str() );
+            }
+        }
+
+        if ( c.convert_from != "" )
+        {
+            img->append_look_mod_transform( c.convert_from.c_str() );
+        }
     }
 
 
@@ -116,29 +120,69 @@ bool save_aces_xml( const CMedia* img, const char* filename )
 
     ACES::ACESclipWriter c;
 
+    setlocale( LC_NUMERIC, "C" );
+
     c.info( "mrViewer", mrv::version() );
 
     char buf[128];
-    const char* show = getenv( "SHOW" );
+    const char* show = getenv( N_("SHOW") );
+    if ( !show ) show = getenv( _("SHOW") );
     if ( !show ) show = _("Unknown Show");
 
-    const char* shot = getenv( "SHOT" );
+    const char* shot = getenv( N_("SHOT") );
+    if ( !shot ) shot = getenv( _("SHOT") );
     if ( !shot ) shot = _("Unknown Shot");
 
     sprintf( buf, "%s-%s", show, shot );
 
     c.clip_id( img->fileroot(), buf, img->mtime() );
     c.config();
-
     c.ITL_start();
+
     if ( img->idt_transform() )
         c.add_IDT( img->idt_transform() );
+
+    size_t i = 0;
+    const ACES::ASC_CDL& t = img->asc_cdl();
+    size_t num = img->number_of_lmts();
+    size_t num_graderefs = img->number_of_grade_refs();
+
+    if ( num_graderefs > 0 )
+    {
+        i = num_graderefs + 2;
+        if ( i > num )
+        {
+            LOG_ERROR( _("Missing transforms for aces:GradeRef") );
+            i = num;
+        }
+
+        c.gradeRef_start( img->look_mod_transform(0) );
+
+        for ( unsigned j = 0; j < num_graderefs; ++j )
+        {
+            const std::string& gr = img->grade_ref( j );
+            if ( gr == N_("SOPNode") )
+            {
+                c.gradeRef_SOPNode( t );
+            }
+            else if ( gr == N_("SatNode") )
+            {
+                c.gradeRef_SatNode( t );
+            }
+            else
+            {
+                LOG_ERROR( _("Unknown node in GradeRef") );
+            }
+        }
+
+        c.gradeRef_end( img->look_mod_transform(i-1) );
+
+    }
+
     c.ITL_end();
 
     c.PTL_start();
 
-    size_t i = 0;
-    size_t num = img->number_of_lmts();
     for ( ; i < num; ++i )
     {
         c.add_LMT( img->look_mod_transform(i) );
@@ -159,6 +203,8 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     else
         LOG_INFO( _("Saved ACES clip metadata file '") << filename << "'" );
 
+
+    setlocale( LC_NUMERIC, "" );
 
     return true;
 }

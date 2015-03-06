@@ -1,4 +1,6 @@
 
+import "ACESlib.Utilities.a1.0.0";
+
 /** 
  * A SOP node
  * 
@@ -28,8 +30,8 @@ void main(
     input float power[3] = { 1, 1, 1 }
 )
 {
-    rOut = pow(rIn * slope[0] + offset[0], power[0] );
-    gOut = pow(gIn * slope[1] + offset[1], power[1] );
-    bOut = pow(bIn * slope[2] + offset[2], power[2] );
+    rOut = pow(clamp(rIn * slope[0] + offset[0], 0., 1.), power[0] );
+    gOut = pow(clamp(gIn * slope[1] + offset[1], 0., 1.), power[1] );
+    bOut = pow(clamp(bIn * slope[2] + offset[2], 0., 1.), power[2] );
     aOut = aIn;
 }

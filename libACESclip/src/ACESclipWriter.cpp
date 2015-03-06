@@ -193,6 +193,76 @@ void ACESclipWriter::config( const time_t xml_date )
     root2->InsertEndChild( element );
 }
 
+
+void ACESclipWriter::gradeRef_start( const std::string convert_to,
+                                     const TransformStatus status )
+{
+    element = doc.NewElement("aces:GradeRef");
+    set_status( status );
+    root3->InsertEndChild( element );
+    root4 = element;
+
+    element = doc.NewElement("Convert_to_WorkSpace");
+    element->SetAttribute( "TransformID", convert_to.c_str() );
+    root4->InsertEndChild( element );
+    root5 = element;
+
+    element = doc.NewElement("ColorDecisionList");
+    element->SetAttribute( "id", "cdl0ID" );
+    root4->InsertEndChild( element );
+    root5 = element;
+
+    element = doc.NewElement("ASC_CDL");
+    element->SetAttribute( "id", "cc001" );
+    element->SetAttribute( "inBitDepth", "32f" );
+    element->SetAttribute( "outBitDepth", "32f" );
+    root5->InsertEndChild( element );
+    root6 = element;
+}
+
+void ACESclipWriter::gradeRef_SOPNode( const ASC_CDL& c )
+{
+    element = doc.NewElement("SOPNode");
+    root6->InsertEndChild( element );
+
+    char buf[256];
+    XMLNode* root7 = element;
+
+    element = doc.NewElement("Slope");
+    root7->InsertEndChild( element );
+    sprintf( buf, "%g %g %g", c.slope(0), c.slope(1), c.slope(2) );
+    element->SetText( buf );
+
+    element = doc.NewElement("Offset");
+    root7->InsertEndChild( element );
+    sprintf( buf, "%g %g %g", c.offset(0), c.offset(1), c.offset(2) );
+    element->SetText( buf );
+
+    element = doc.NewElement("Power");
+    root7->InsertEndChild( element );
+    sprintf( buf, "%g %g %g", c.power(0), c.power(1), c.power(2) );
+    element->SetText( buf );
+}
+
+void ACESclipWriter::gradeRef_SatNode( const ASC_CDL& c )
+{
+    element = doc.NewElement("SatNode");
+    root6->InsertEndChild( element );
+    XMLNode* root7 = element;
+
+    element = doc.NewElement("Saturation");
+    element->SetText( c.saturation() );
+    root7->InsertEndChild( element );
+}
+
+void ACESclipWriter::gradeRef_end( const std::string convert_from )
+{
+    element = doc.NewElement("Convert_from_WorkSpace");
+    element->SetAttribute( "TransformID", convert_from.c_str() );
+    root4->InsertEndChild( element );
+}
+
+
 /** 
  * Input Transform List start.
  * 
@@ -216,15 +286,7 @@ void ACESclipWriter::add_IDT( const std::string name, TransformStatus status )
 {
     IDT.name = name;
     IDT.status = status;
-}
 
-/** 
- * Input Transform List end
- * 
- * @param it Link Input Transform (optional)
- */
-void ACESclipWriter::ITL_end( const std::string it )
-{
     if ( !IDT.name.empty() ) 
     {
         const std::string& name = IDT.name;
@@ -244,6 +306,15 @@ void ACESclipWriter::ITL_end( const std::string it )
             root4->InsertEndChild( element );
         }
     }
+}
+
+/** 
+ * Input Transform List end
+ * 
+ * @param it Link Input Transform (optional)
+ */
+void ACESclipWriter::ITL_end( const std::string it )
+{
 
     if ( ! it.empty() )
     {
