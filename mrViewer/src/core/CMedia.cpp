@@ -1327,6 +1327,31 @@ void CMedia::append_look_mod_transform( const char* cfile )
   refresh();
 }
 
+// Count how many LMTs are GradeRef's components (Nodes)
+size_t  CMedia::number_of_grade_refs() const
+{
+    size_t c = 0;
+
+    LMT::const_iterator i = _look_mod_transform.begin();
+    LMT::const_iterator e = _look_mod_transform.end();
+    for ( ; i != e; ++i )
+    {
+        size_t num = strlen( *i );
+        if ( num < 4 ) continue;
+
+        for ( size_t j = 0; j < num - 4; ++j )
+        {
+            if ( strncmp( "Node", (*i) + j, 4 ) == 0 )
+            {
+                ++c;
+                break;
+            }
+        }
+    }
+
+    return c;
+}
+
 /** 
  * Change the look mod transform for the image
  * 
@@ -1406,7 +1431,6 @@ bool CMedia::valid_video() const
 
   return false;
 }
-
 
 bool CMedia::valid_audio() const
 {

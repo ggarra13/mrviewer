@@ -1,3 +1,7 @@
+v2.7.5   - Saving out a GradeRef that was turned into LMTs now works
+	   properly.  This allows loading and saving an ACES clip file 
+	   without corrupting the transforms.
+
 v2.7.4   - Bug fixed a crashing bug in Windows 32 when displaying the
 	   image information window.
 	 - Added support for GradeRef in ACES.  This is done thru a list
