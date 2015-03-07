@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-03-06 14:44-0300\n"
-"PO-Revision-Date: 2015-03-06 14:44-0300\n"
+"POT-Creation-Date: 2015-03-07 19:45-0300\n"
+"PO-Revision-Date: 2015-03-07 19:35-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2079
+#: core/CMedia.cpp:2103
 msgid ""
 "\n"
 "\n"
@@ -141,7 +141,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia.cpp:2080
+#: core/CMedia.cpp:2104
 msgid " for stream #"
 msgstr " para flujo #"
 
@@ -165,7 +165,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2440
+#: core/CMedia.cpp:2464
 msgid " is missing."
 msgstr " está faltante."
 
@@ -318,7 +318,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2080
+#: core/CMedia.cpp:2104
 msgid ", type "
 msgstr ", tipo "
 
@@ -1442,11 +1442,11 @@ msgstr "No pude leer audio fifo: "
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr "No pude leer samples del fifo buffer.  Error: "
 
-#: core/mrvACES.cpp:202
+#: core/mrvACES.cpp:207
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/CMedia.cpp:1477 core/aviImage.cpp:479 core/aviImage.cpp:493
+#: core/CMedia.cpp:1501 core/aviImage.cpp:479 core/aviImage.cpp:493
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -2817,7 +2817,7 @@ msgstr "Abrir Pelicula o Secuencia"
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
-#: core/mrvACES.cpp:114
+#: core/mrvACES.cpp:118
 msgid "Loaded ACES clip metadata file '"
 msgstr "Cargué archivo de Clip Metadata de ACES '"
 
@@ -2987,11 +2987,15 @@ msgstr "Nivel de Mipmap"
 msgid "Mipmap Levels"
 msgstr "Niveles de Mipmap"
 
+#: core/mrvACES.cpp:97
+msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
+msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
+
 #: core/aviImage_save.cpp:880
 msgid "Missing audio frame "
 msgstr "Cuadro faltante de audio "
 
-#: core/mrvACES.cpp:155
+#: core/mrvACES.cpp:159
 msgid "Missing transforms for aces:GradeRef"
 msgstr "Faltan transformaciones para aces:GradeRef"
 
@@ -3832,11 +3836,11 @@ msgstr "SEC"
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
-#: core/mrvACES.cpp:133 gui/mrvImageBrowser.cpp:914
+#: core/mrvACES.cpp:137 gui/mrvImageBrowser.cpp:914
 msgid "SHOT"
 msgstr "TOMA"
 
-#: core/mrvACES.cpp:129 gui/mrvImageBrowser.cpp:899
+#: core/mrvACES.cpp:133 gui/mrvImageBrowser.cpp:899
 msgid "SHOW"
 msgstr "SHOW"
 
@@ -3907,7 +3911,7 @@ msgstr "Grabar carrete actual.\n"
 msgid "Save preferences to disk as a default."
 msgstr "Grabar preferencias al disco por defacto."
 
-#: core/mrvACES.cpp:204
+#: core/mrvACES.cpp:209
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabe archivo de Clip Metadata de ACES '"
 
@@ -4689,11 +4693,11 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: core/mrvACES.cpp:134
+#: core/mrvACES.cpp:138
 msgid "Unknown Shot"
 msgstr "Toma Desconocida"
 
-#: core/mrvACES.cpp:130
+#: core/mrvACES.cpp:134
 msgid "Unknown Show"
 msgstr "Show Desconocido"
 
@@ -4713,7 +4717,7 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
-#: core/mrvACES.cpp:174
+#: core/mrvACES.cpp:179
 msgid "Unknown node in GradeRef"
 msgstr "Nodo desconocido en GradeRef"
 
@@ -5210,7 +5214,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1916
+#: core/CMedia.cpp:1940
 msgid "audio"
 msgstr "audio"
 
@@ -5223,7 +5227,7 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:1919
+#: core/CMedia.cpp:1943
 msgid "data"
 msgstr "datos"
 
@@ -5395,7 +5399,7 @@ msgstr "derecha"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1922
+#: core/CMedia.cpp:1946
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5407,7 +5411,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:1925 core/wandImage.cpp:407
+#: core/CMedia.cpp:1949 core/wandImage.cpp:407
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5423,7 +5427,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:1913
+#: core/CMedia.cpp:1937
 msgid "video"
 msgstr "video"
 

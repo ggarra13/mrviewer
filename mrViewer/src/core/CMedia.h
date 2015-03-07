@@ -218,7 +218,7 @@ class CMedia
 
     typedef std::deque< mrv::audio_type_ptr > audio_cache_t;
 
-
+    typedef std::vector< char* >          LMT;
     typedef std::vector< boost::thread* > thread_pool_t;
 
     enum InterlaceType
@@ -558,23 +558,7 @@ class CMedia
         _sops = o;
     }
 
-    void grade_refs( const ACES::ACESclipReader::GradeRefs& t )
-    {
-        size_t i = 0;
-        size_t num = t.size();
-        for ( ; i < num; ++i )
-            _grade_refs.push_back( t[i] );
-    }
-
-    size_t number_of_grade_refs() const
-    {
-        return _grade_refs.size();
-    }
-
-    const std::string& grade_ref( const unsigned i ) const
-    {
-        return _grade_refs[i];
-    }
+    size_t number_of_grade_refs() const;
 
     const ACES::ASC_CDL& asc_cdl() const { return _sops; }
 
@@ -1186,7 +1170,7 @@ class CMedia
     char*     _rendering_transform;
 
     // Look Mod Transform for CTL
-    std::vector< char* >     _look_mod_transform;
+    LMT   _look_mod_transform;
 
     // Input Device Transform for CTL
     char*     _idt_transform;
