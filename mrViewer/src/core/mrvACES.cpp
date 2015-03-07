@@ -73,15 +73,14 @@ bool load_aces_xml( CMedia* img, const char* filename )
 
     if ( c.graderef_status == ACES::kPreview )
     {
-        if ( c.convert_to != "" )
+        if ( c.convert_to != "" && c.convert_from != "" )
         {
             img->append_look_mod_transform( c.convert_to.c_str() );
 
-            unsigned num = c.grade_refs.size();
+            size_t num = c.grade_refs.size();
             img->asc_cdl( c.sops );
-            img->grade_refs( c.grade_refs );
 
-            for ( unsigned i = 0; i < num; ++i )
+            for ( size_t i = 0; i < num; ++i )
             {
                 std::string name = "LMT." + c.grade_refs[i];
                 name += N_(".a1.0.0");
@@ -92,6 +91,11 @@ bool load_aces_xml( CMedia* img, const char* filename )
         if ( c.convert_from != "" )
         {
             img->append_look_mod_transform( c.convert_from.c_str() );
+        }
+        else
+        {
+            LOG_ERROR( _("Missing Convert_from_WorkSpace.  "
+                         "LUT will probably look wrong.") );
         }
     }
 
@@ -117,10 +121,9 @@ bool load_aces_xml( CMedia* img, const char* filename )
 
 bool save_aces_xml( const CMedia* img, const char* filename )
 {
+    setlocale( LC_NUMERIC, "C" ); // Make floating point values be like 1.2
 
     ACES::ACESclipWriter c;
-
-    setlocale( LC_NUMERIC, "C" );
 
     c.info( "mrViewer", mrv::version() );
 
@@ -147,6 +150,10 @@ bool save_aces_xml( const CMedia* img, const char* filename )
     size_t num = img->number_of_lmts();
     size_t num_graderefs = img->number_of_grade_refs();
 
+    //
+    // GradeRefs are transformed into Look Mod Transforms.
+    // Here we extract them back again into the xml file.
+    //
     if ( num_graderefs > 0 )
     {
         i = num_graderefs + 2;
@@ -160,12 +167,12 @@ bool save_aces_xml( const CMedia* img, const char* filename )
 
         for ( unsigned j = 0; j < num_graderefs; ++j )
         {
-            const std::string& gr = img->grade_ref( j );
-            if ( gr == N_("SOPNode") )
+            const std::string& gr = img->look_mod_transform( j+1 );
+            if ( gr.substr(4, 7) == N_("SOPNode") )
             {
                 c.gradeRef_SOPNode( t );
             }
-            else if ( gr == N_("SatNode") )
+            else if ( gr.substr(4, 7) == N_("SatNode") )
             {
                 c.gradeRef_SatNode( t );
             }
@@ -204,7 +211,7 @@ bool save_aces_xml( const CMedia* img, const char* filename )
         LOG_INFO( _("Saved ACES clip metadata file '") << filename << "'" );
 
 
-    setlocale( LC_NUMERIC, "" );
+    setlocale( LC_NUMERIC, "" );  // Return floating point form to our locale
 
     return true;
 }
