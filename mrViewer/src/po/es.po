@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-03-07 19:45-0300\n"
-"PO-Revision-Date: 2015-03-07 19:35-0300\n"
+"POT-Creation-Date: 2015-03-08 12:59-0300\n"
+"PO-Revision-Date: 2015-03-08 12:36-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -87,7 +87,7 @@ msgstr ""
 msgid "  INF.  "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:1445
+#: gui/mrvImageInformation.cpp:1443
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
@@ -229,7 +229,7 @@ msgstr ""
 "\n"
 "Version 2.0\n"
 
-#: gui/mrvImageInformation.cpp:1434
+#: gui/mrvImageInformation.cpp:1432
 #, c-format
 msgid "% 8.0f seconds %d ms."
 msgstr "% 8.0f segundos %d ms."
@@ -1442,7 +1442,7 @@ msgstr "No pude leer audio fifo: "
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr "No pude leer samples del fifo buffer.  Error: "
 
-#: core/mrvACES.cpp:207
+#: core/mrvACES.cpp:210
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
@@ -2801,7 +2801,7 @@ msgstr "Modo de Listado"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2531
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2545
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2559
-#: gui/mrvImageInformation.cpp:978
+#: gui/mrvImageInformation.cpp:976
 msgid "Load"
 msgstr "Cargar"
 
@@ -2995,9 +2995,9 @@ msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
 msgid "Missing audio frame "
 msgstr "Cuadro faltante de audio "
 
-#: core/mrvACES.cpp:159
-msgid "Missing transforms for aces:GradeRef"
-msgstr "Faltan transformaciones para aces:GradeRef"
+#: core/mrvACES.cpp:162
+msgid "Missing transforms for aces:GradeRef in '"
+msgstr "Faltan transformaciones para aces:GradeRef en '"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2687
 msgid "Module"
@@ -3088,7 +3088,7 @@ msgstr "Próximo"
 msgid "Next Image"
 msgstr "Proxima Imagen"
 
-#: gui/mrvImageInformation.cpp:1659 video/mrvGLEngine.cpp:176
+#: gui/mrvImageInformation.cpp:1657 video/mrvGLEngine.cpp:176
 #: video/mrvGLEngine.cpp:177 video/mrvGLEngine.cpp:178
 #: video/mrvGLEngine.cpp:180 video/mrvGLEngine.cpp:184
 #: video/mrvGLEngine.cpp:185 video/mrvGLEngine.cpp:186
@@ -3151,7 +3151,7 @@ msgstr "Texturas Non-POT:\t"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:59
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2676
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2799
-#: core/exrImage.cpp:80 core/iffImage.cpp:54 gui/mrvImageInformation.cpp:947
+#: core/exrImage.cpp:80 core/iffImage.cpp:54 gui/mrvImageInformation.cpp:945
 msgid "None"
 msgstr "Ninguno"
 
@@ -3423,8 +3423,8 @@ msgstr "Imagen de Photoshop"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2470
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2484
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2498
-#: gui/mrvImageInformation.cpp:1024 gui/mrvImageInformation.cpp:1072
-#: gui/mrvImageInformation.cpp:1127
+#: gui/mrvImageInformation.cpp:1022 gui/mrvImageInformation.cpp:1070
+#: gui/mrvImageInformation.cpp:1125
 msgid "Pick"
 msgstr "Elegir"
 
@@ -3836,11 +3836,11 @@ msgstr "SEC"
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
-#: core/mrvACES.cpp:137 gui/mrvImageBrowser.cpp:914
+#: core/mrvACES.cpp:136 gui/mrvImageBrowser.cpp:914
 msgid "SHOT"
 msgstr "TOMA"
 
-#: core/mrvACES.cpp:133 gui/mrvImageBrowser.cpp:899
+#: core/mrvACES.cpp:132 gui/mrvImageBrowser.cpp:899
 msgid "SHOW"
 msgstr "SHOW"
 
@@ -3911,7 +3911,7 @@ msgstr "Grabar carrete actual.\n"
 msgid "Save preferences to disk as a default."
 msgstr "Grabar preferencias al disco por defacto."
 
-#: core/mrvACES.cpp:209
+#: core/mrvACES.cpp:212
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabe archivo de Clip Metadata de ACES '"
 
@@ -4693,11 +4693,11 @@ msgstr "Deshacer La Última Figura Dibujada"
 msgid "Unknown"
 msgstr "Desconocido"
 
-#: core/mrvACES.cpp:138
+#: core/mrvACES.cpp:137
 msgid "Unknown Shot"
 msgstr "Toma Desconocida"
 
-#: core/mrvACES.cpp:134
+#: core/mrvACES.cpp:133
 msgid "Unknown Show"
 msgstr "Show Desconocido"
 
@@ -4717,7 +4717,7 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
-#: core/mrvACES.cpp:179
+#: core/mrvACES.cpp:182
 msgid "Unknown node in GradeRef"
 msgstr "Nodo desconocido en GradeRef"
 
@@ -5191,7 +5191,7 @@ msgstr ""
 msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
-#: gui/mrvImageInformation.cpp:1659 video/mrvGLEngine.cpp:176
+#: gui/mrvImageInformation.cpp:1657 video/mrvGLEngine.cpp:176
 #: video/mrvGLEngine.cpp:177 video/mrvGLEngine.cpp:178
 #: video/mrvGLEngine.cpp:180 video/mrvGLEngine.cpp:184
 #: video/mrvGLEngine.cpp:185 video/mrvGLEngine.cpp:186
