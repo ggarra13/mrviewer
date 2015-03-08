@@ -159,7 +159,8 @@ bool save_aces_xml( const CMedia* img, const char* filename )
         i = num_graderefs + 2;
         if ( i > num )
         {
-            LOG_ERROR( _("Missing transforms for aces:GradeRef") );
+            LOG_ERROR( _("Missing transforms for aces:GradeRef in '") <<
+                       img->name() << "'" );
             i = num;
         }
 
@@ -167,12 +168,12 @@ bool save_aces_xml( const CMedia* img, const char* filename )
 
         for ( unsigned j = 0; j < num_graderefs; ++j )
         {
-            const std::string& gr = img->look_mod_transform( j+1 );
-            if ( gr.substr(4, 7) == N_("SOPNode") )
+            const std::string& g = img->look_mod_transform( j+1 );
+            if ( g.substr(4, 7) == N_("SOPNode") )
             {
                 c.gradeRef_SOPNode( t );
             }
-            else if ( gr.substr(4, 7) == N_("SatNode") )
+            else if ( g.substr(4, 7) == N_("SatNode") )
             {
                 c.gradeRef_SatNode( t );
             }

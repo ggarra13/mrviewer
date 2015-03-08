@@ -283,7 +283,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
     // @todo: pass index to look mod
     std::string script = make_ctl_browser( startfile, "LMT,ACEScsc" );
 
-    if ( idx >= image->number_of_lmts() )
+    if ( idx >= image->number_of_lmts() && script != "" )
         image->append_look_mod_transform( script.c_str() );
     else
         image->look_mod_transform( idx, script.c_str() );
