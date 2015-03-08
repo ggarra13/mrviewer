@@ -925,8 +925,6 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       ImageInformation* v = (ImageInformation*) c->widget;
       size_t idx = c->idx;
 
-      delete c;
-
       attach_ctl_lmt_script( v->get_image(), idx );
   }
 
@@ -1120,7 +1118,7 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       c->idx    = idx;
 
       if ( callback )
-	widget->callback( (fltk::Callback*)ctl_lmt_callback, (void*)c );
+	widget->callback( callback, (void*)c );
 
       sg->add( widget );
       

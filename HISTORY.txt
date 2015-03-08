@@ -1,6 +1,10 @@
 v2.7.5   - Saving out a GradeRef that was turned into LMTs now works
 	   properly.  This allows loading and saving an ACES clip file 
 	   without corrupting the transforms.
+	 - Fixed a bug that would remove the last LMT if you chose
+	   cancel on the last empty LMT.
+	 - Fixed a memory corruption if LMT's Choose requester was chosen
+	   twice.
 
 v2.7.4   - Bug fixed a crashing bug in Windows 32 when displaying the
 	   image information window.
