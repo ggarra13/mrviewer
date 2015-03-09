@@ -60,6 +60,7 @@ namespace mrv
   {
   public:
     ImageInformation( int x, int y, int w, int h, const char* l = NULL );
+      ~ImageInformation() { clear_callback_data(); }
 
     CMedia* get_image() { return img; };
     void set_image( CMedia* img );
@@ -73,6 +74,8 @@ namespace mrv
   protected:
     fltk::Color get_title_color();
     fltk::Color get_widget_color();
+
+      void clear_callback_data();
 
     void hide_tabs();
 
