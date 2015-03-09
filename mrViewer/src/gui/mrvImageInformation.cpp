@@ -75,6 +75,8 @@ struct CtlLMTData
     size_t idx;
 };
 
+typedef std::vector< CtlLMTData* > LMTData;
+
   static const fltk::Color kTitleColors[] = {
     0x608080ff,
     0x808060ff,
@@ -82,6 +84,9 @@ struct CtlLMTData
     0x608060ff,
     0x806080ff,
   };
+
+
+  static LMTData widget_data;
 
   static const unsigned int kSizeOfTitleColors = ( sizeof(kTitleColors) / 
 						   sizeof(fltk::Color) );
@@ -347,6 +352,20 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     refresh();
   }
 
+void ImageInformation::clear_callback_data()
+{
+
+    LMTData::iterator i = widget_data.begin();
+    LMTData::iterator e = widget_data.end();
+
+    for ( ; i != e; ++i)
+    {
+        delete *i;
+    }
+
+    widget_data.clear();
+}
+
   void ImageInformation::hide_tabs()
   {
     m_image->hide();
@@ -599,7 +618,10 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
     add_ctl_idt( _("Input Device Transform"), img->idt_transform() );
 
     
+        clear_callback_data();
+        
     {
+
         unsigned count = img->number_of_lmts();
         for ( unsigned i = 0; i <= count; ++i )
         {
@@ -1116,6 +1138,8 @@ boost::int64_t ImageInformation::to_memory( boost::int64_t value,
       CtlLMTData* c = new CtlLMTData;
       c->widget = this;
       c->idx    = idx;
+
+      widget_data.push_back( c );
 
       if ( callback )
 	widget->callback( callback, (void*)c );
