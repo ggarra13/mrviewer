@@ -910,8 +910,9 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 
 
 /** 
- * Returns whether the file has changed on disk.
- * 
+ * Returns whether the file has changed on disk and reloads it.
+ * Note:  This function will fail if the file types of the images are
+ *        different (for example, an .exr file replaced by a .dpx file ).
  * 
  * @return true if it has changed, false if not.
  */
@@ -943,22 +944,25 @@ bool CMedia::has_changed()
 
 	   fetch( _frame );
 	   cache( _hires );
-	   return false;
+	   return true;
 	}
     }
   else
-    {
+  {
       if ( !_fileroot ) return false;
 
       int result = stat( _fileroot, &sbuf );
       if ( result == -1 ) return false;
 
-      if ( _mtime != sbuf.st_mtime )
-	return true;
-
-      if ( _ctime != sbuf.st_ctime )
-	return true;
-
+      if ( ( _mtime != sbuf.st_mtime ) ||
+           ( _ctime != sbuf.st_ctime ) )
+      {
+          _mtime = sbuf.st_mtime;
+          _ctime = sbuf.st_ctime;
+          fetch( _frame );
+          cache( _hires );
+          return true;
+      }
     }
   return false;
 }
