@@ -7,6 +7,8 @@ v2.7.5   - Saving out a GradeRef that was turned into LMTs now works
 	   twice.
 	 - Fixed the gamma, gain and mask float values in the Spanish
 	   locale (changing the dot for a comma).
+	 - Bug fixed starting up with LUT active (Set in Preferences). 
+	   Previously, it would crash the program.
 
 v2.7.4   - Bug fixed a crashing bug in Windows 32 when displaying the
 	   image information window.
