@@ -1424,8 +1424,8 @@ void aviImage::populate()
         while( !got_video || !got_audio )
 	{
             // Hack to exit loop if got_video or got_audio fails
-            force_exit += 1;
-            if ( force_exit == 100 ) break;
+            ++force_exit;
+            if ( force_exit == 200 ) break;
 
             int error = av_read_frame( _context, &pkt );
             if ( error < 0 )
@@ -1445,7 +1445,6 @@ void aviImage::populate()
                 {
                     boost::int64_t pktframe = pts2frame( get_video_stream(),
                                                          pkt.dts );
-
                     DecodeStatus status = decode_image( _frameStart, pkt ); 
                     if ( status == kDecodeOK )
                     {
@@ -1454,9 +1453,8 @@ void aviImage::populate()
                     }
                     else
                     {
-                        decode_video_packet( pktframe, _frameStart, 
-                                             (AVPacket&)pkt );
                         _frame_offset += 1;
+                        continue;
                     }
                 }
                 else
