@@ -4725,8 +4725,11 @@ void ImageView::toggle_lut()
   flush_caches();
   if ( _useLUT ) {
      damage_contents();
-     _engine->refresh_luts();
-     draw();  // force a draw to refresh luts
+     if ( _engine )
+     {
+         _engine->refresh_luts();
+         draw();  // force a draw to refresh luts
+     }
   }
 
   uiMain->uiLUT->value( _useLUT );
