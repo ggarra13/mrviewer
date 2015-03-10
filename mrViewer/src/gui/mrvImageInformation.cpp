@@ -148,7 +148,6 @@ typedef std::vector< CtlLMTData* > LMTData;
 
   void ImageInformation::layout()
   {
-
     if ( w()-20 != m_all->w() )
       m_all->resize( 0, 0, w()-20, m_all->h() );
     ImageInfoParent::layout();
@@ -163,7 +162,11 @@ typedef std::vector< CtlLMTData* > LMTData;
   static const aspectName_t kAspectRatioNames[] =
     {
       { 640.0/480.0, _("Video") },
+      { 680.0/550.0, _("PAL Video") },
+      { 720.0/576.0, _("PAL Video") },
+      { 768.0/576.0, _("PAL Video") },
       { 720.0/486.0, _("NTSC Video") },
+      { 720.0/540.0, _("NTSC Video") },
       { 1.5,  _("NTSC Video") },
       { 1.37, _("35mm Academy") },
       { 1.56, _("Widescreen (HDTV + STV)") },
