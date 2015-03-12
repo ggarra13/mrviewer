@@ -628,7 +628,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {358 294 640 475} resizable visible
+        xywh {362 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1119,7 +1119,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
           }
           {fltk::Group} {} {
             label Caches open
-            xywh {13 24 405 382} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 24 405 382} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1127,7 +1127,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
               xywh {40 25 105 32} value 1
             }
             {fltk::LightButton} ui8BitCaches {
-              label { 8 bit caches} selected
+              label { 8 bit caches}
               tooltip {Sequence images will be cached as 8-bit pictures, instead of being cached as the original depth of the sequence.
 This setting thus allows caching more pictures in memory.}
               xywh {190 25 155 32}
@@ -2479,7 +2479,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2518,7 +2519,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {322 110 640 530} when CHANGED resizable
+        xywh {326 135 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -3245,13 +3246,15 @@ v->uiView->seek( f );}
                         callback {int c = o->value();
 
 double g;
-if ( c <= 0 )
-    g = v->uiView->foreground()->image()->fps();
+mrv::media fg = v->uiView->foreground();
+
+if ( c <= 0 && fg )
+    g = fg->image()->fps();
 else
     g = atof( o->child( o->value() )->label() );
 
 v->uiView->fps( g );
-v->uiFPS->value( g );}
+v->uiFPS->value( g );} open selected
                         tooltip {Some default frame rate settings.}
                         xywh {0 2 30 19} box UP_BOX labelsize 10
                         extra_code {o->disable_glyph();}
