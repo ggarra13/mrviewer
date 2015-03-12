@@ -216,6 +216,8 @@ namespace mrv {
      _gamma = (float) MagickGetImageGamma( wand );
      if (_gamma <= 0.f ) _gamma = 1.0f;
 
+     // _gamma = 1.0f / _gamma;
+
      image_type::PixelType pixel_type = image_type::kByte;
      StorageType storage = CharPixel;
 

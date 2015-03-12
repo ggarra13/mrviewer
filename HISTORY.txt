@@ -5,10 +5,16 @@ v2.7.5   - Saving out a GradeRef that was turned into LMTs now works
 	   cancel on the last empty LMT.
 	 - Fixed a memory corruption if LMT's Choose requester was chosen
 	   twice.
-	 - Fixed the gamma, gain and mask float values in the Spanish
+	 - Fixed the defaults gamma, gain and mask float values in the Spanish
 	   locale (changing the dot for a comma).
 	 - Bug fixed starting up with LUT active (Set in Preferences). 
 	   Previously, it would crash the program.
+	 - Bug fixed playback of real media clip that had more than
+	   100 frames of audio at the beginning.
+	 - Fixed a crash that would happen if you selected FPS Default
+	   when no image was loaded.
+	 - Fixed locale problems on Windows, where double and float
+	   conversions were not handled well.
 
 v2.7.4   - Bug fixed a crashing bug in Windows 32 when displaying the
 	   image information window.

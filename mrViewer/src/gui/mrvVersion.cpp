@@ -469,7 +469,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     unsigned int boost_teeny = BOOST_VERSION % 100;
 
     o << "mrViewer - v" << kVersion << " " << kBuild << endl
-      << "(C) 2007 Film Aura, LLC." << endl
+      << "(C) 2007-2015 Film Aura, LLC." << endl
       << endl
       << "mrViewer depends on:" << endl
       << endl
