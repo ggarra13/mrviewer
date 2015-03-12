@@ -4405,7 +4405,7 @@ void ImageView::foreground( mrv::media fg )
              fit_image();
 
 	 img->image_damage( img->image_damage() | CMedia::kDamageContents |
-                            CMedia::kDamage3DData );
+                            CMedia::kDamageLut | CMedia::kDamage3DData );
 
 	 bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
 	 if ( dynamic_cast< stubImage* >( img ) || reload )
@@ -4725,13 +4725,14 @@ void ImageView::toggle_lut()
 
   flush_caches();
   if ( _useLUT ) {
-     damage_contents();
      if ( _engine )
      {
          _engine->refresh_luts();
-         draw();  // force a draw to refresh luts
      }
   }
+
+
+  redraw();  // force a draw to refresh luts
 
   uiMain->uiLUT->value( _useLUT );
 
