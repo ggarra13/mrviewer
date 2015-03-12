@@ -625,10 +625,10 @@ void ImageInformation::clear_callback_data()
         
     {
 
-        unsigned count = img->number_of_lmts();
+        unsigned count = (unsigned) img->number_of_lmts();
         for ( unsigned i = 0; i <= count; ++i )
         {
-            sprintf( buf, _("LMTransform %d"), i+1 );
+            sprintf( buf, _("LMTransform %u"), i+1 );
             add_ctl_lmt( strdup( buf ), img->look_mod_transform(i), i );
         }
     }
@@ -673,8 +673,8 @@ void ImageInformation::clear_callback_data()
       {
 	double disk_space = double( to_memory( img->disk_space(),
 						     space_type ) );
-	double pct   = 100.0 * ( (long double) img->disk_space() /
-				       (long double) img->memory() );
+	double pct   = double( 100.0 * ( (long double) img->disk_space() /
+                                         (long double) img->memory() ) );
 	
 	sprintf( buf, N_("%.1f %s  (%.2f %% of memory size)"), 
 		 disk_space, space_type, pct );

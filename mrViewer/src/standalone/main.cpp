@@ -45,23 +45,24 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
+#include "mrViewer.h"
 #include "core/mrvHome.h"
 #include "core/mrvServer.h"
 #include "core/mrvClient.h"
 #include "core/mrvI8N.h"
+#include "core/mrvException.h"
+#include "core/mrvColorProfile.h"
+#include "core/mrvCPU.h"
+
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvIO.h"
-#include "mrViewer.h"
 #include "gui/mrvMainWindow.h"
-#include "mrvColorProfile.h"
-#include "mrvException.h"
-#include "mrvLicensing.h"
+
 #include "standalone/mrvCommandLine.h"
 #include "standalone/mrvRoot.h"
-#include "core/mrvCPU.h"
 
 #if defined(_MSC_VER)
 #define strtoll _strtoi64
@@ -150,20 +151,28 @@ void load_new_files( void* s )
    fltk::repeat_timeout( 1.0, load_new_files, ui ); 
 }
 
-
 int main( const int argc, char** argv ) 
 {
+  char* loc = NULL;
+
+
+  const char* tmp = setlocale(LC_ALL, "");
+#ifdef _WIN32
+  libintl_setlocale( LC_ALL, tmp );
+#endif
+
 #ifdef LINUX
   XInitThreads();
 #endif
   fltk::lock();   // Initialize X11 thread system
 
-  char* loc = NULL;
-  const char* tmp = setlocale(LC_ALL, "");
+  if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
+
   if ( tmp )
   {
       loc = strdup( tmp );
   }
+  
 
   char buf[1024];
   sprintf( buf, "mrViewer%s", mrv::version() );
@@ -180,6 +189,12 @@ int main( const int argc, char** argv )
   bindtextdomain(buf, path.c_str() );
   textdomain(buf);
 
+  if ( loc )
+  {
+      LOG_INFO( _("Changed locale to ") << loc );
+      free(loc);
+  }
+
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
 
@@ -187,11 +202,6 @@ int main( const int argc, char** argv )
   // Adjust ui based on preferences
   mrv::ViewerUI* ui = new mrv::ViewerUI();
 
-  if ( loc )
-  {
-      LOG_INFO( _("Changed locale to ") << loc );
-      free(loc);
-  }
 
 
   mrv::Options opts;
@@ -381,6 +391,5 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 
   return rc; 
 }
-
 
 #endif

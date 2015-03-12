@@ -464,10 +464,10 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
   float mask = 1.0f;
   const char* fmt = o->label();
 
-  sscanf( fmt, "%f", &mask );
+  mask = atof( fmt );
 
   char buf[128];
-  sprintf( buf, "Mask %f", mask );
+  sprintf( buf, "Mask %g", mask );
   view->send( buf );
 
   view->masking( mask );
@@ -2101,7 +2101,8 @@ int ImageView::leftMouseDown(int x, int y)
 	       item = menu.add( buf, 0, (fltk::Callback*)masking_cb, uiMain );
 	       item->type( fltk::Item::TOGGLE );
 	       float mask = -1.0f;
-	       sscanf( tmp, "%f", &mask );
+               // mask = strtod( tmp, NULL );
+               mask = atof( tmp );
 	       if ( mask == _masking ) item->set();
 	    }
 	    
@@ -2515,7 +2516,7 @@ void ImageView::mouseMove(int x, int y)
   int yp = (int)floor(yf);
 
 
-  if ( xp > w && ( stereo_type() & CMedia::kStereoSideBySide ) )
+  if ( xp > (int)w && ( stereo_type() & CMedia::kStereoSideBySide ) )
   {
       if ( _stereo == CMedia::kStereoCrossed ) pic = img->left();
       else pic = img->right();
@@ -2523,7 +2524,7 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  if ( xp >= pic->width() || yp >= pic->height() ) {
+  if ( xp >= (int)pic->width() || yp >= (int)pic->height() ) {
       outside = true;
   }
 
@@ -2591,7 +2592,7 @@ void ImageView::mouseMove(int x, int y)
           }
 
           bool outside2 = false;
-          if ( xp < 0 || yp < 0 || xp >= w || yp >= h )
+          if ( xp < 0 || yp < 0 || xp >= (int)w || yp >= (int)h )
           {
               outside2 = true;
           }

@@ -37,8 +37,8 @@
 
 #ifdef _WIN32
 #undef fprintf
+#undef setlocale
 // #undef sprintf
-#undef sscanf
 #endif
 
 #else
