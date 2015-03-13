@@ -3,7 +3,7 @@
 
 SET( VersionMajor 2 )
 SET( VersionMinor 7 )
-SET( VersionPatch 5 )
+SET( VersionPatch 6 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -336,10 +336,14 @@ INSTALL( FILES
 
 SET( LANGUAGES "es" )
 
+
 SET( output_files "${_absPotFile}" )
 
 FOREACH( lang ${LANGUAGES} )
-  SET( _moFile "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/mrViewer${VERSION}.mo" )
+
+  SET( _moDir "${CMAKE_BINARY_DIR}/../share/locale/${lang}/LC_MESSAGES/" )
+
+  SET( _moFile "${_moDir}/mrViewer${VERSION}.mo" )
 
   SET( output_files ${output_files} ${_moFile} )
 
