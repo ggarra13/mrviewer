@@ -91,12 +91,11 @@ namespace mrv {
 	  break;
 	}
       default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+          throw std::runtime_error( _("Unknown mrv::Frame format") );
       }
 
     if ( _format >= kYByRy420 )
       {
-          std::cerr << "kYByRy420" << std::endl;
 	 p.r = float( (cb + 1) * yp );
 	 p.b = float( (cr + 1) * yp );
 	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * 255.0f);
