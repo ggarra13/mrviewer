@@ -5084,11 +5084,14 @@ void ImageView::thumbnails()
   if ( playback() != kStopped &&
        playback() != kScrubbing ) return;
 
+
   mrv::media fg = foreground();
   if ( fg ) fg->create_thumbnail();
 
+
   mrv::media bg = background();
   if ( bg ) bg->create_thumbnail();
+
 
   browser()->redraw();
 }
