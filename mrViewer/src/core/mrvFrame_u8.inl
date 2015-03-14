@@ -96,33 +96,32 @@ namespace mrv {
 
     if ( _format >= kYByRy420 )
       {
+          std::cerr << "kYByRy420" << std::endl;
 	 p.r = float( (cb + 1) * yp );
 	 p.b = float( (cr + 1) * yp );
 	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * 255.0f);
       }
     else if ( _format >= kITU_709_YCbCr420 )
       {
-	// ITU. 702 YCbCr conversion
-	 float  Y = float(yp) / 255.0f;
-	 float Pb = float(cb) / 255.0f - 0.5f;
-	 float Pr = float(cr) / 255.0f - 0.5f;
+          // ITU. 709 YCbCr conversion
+          float  Y = float(yp) / 255.0f;
+          float Pb = float(cb) / 255.0f - 0.5f;
+          float Pr = float(cr) / 255.0f - 0.5f;
 
-         if ( Y < 0.0f ) Y = 0.0f;
-         else if ( Y > 1.0f ) Y = 1.0f;
-         if ( Pb < -0.5f ) Pb = -0.5;
-         else if ( Pb > 0.5f ) Pb = 0.5;
-         if ( Pr < -0.5f ) Pr = -0.5;
-         else if ( Pr > 0.5f ) Pr = 0.5;
+          if ( Y < 0.0f ) Y = 0.0f;
+          else if ( Y > 1.0f ) Y = 1.0f;
+          if ( Pb < -0.5f ) Pb = -0.5;
+          else if ( Pb > 0.5f ) Pb = 0.5;
+          if ( Pr < -0.5f ) Pr = -0.5;
+          else if ( Pr > 0.5f ) Pr = 0.5;
 
-	 assert( Y >= 0.0f && Y <= 1.0f );
-	 assert( Pb >= -0.5f && Pb <= 0.5f );
-	 assert( Pr >= -0.5f && Pr <= 0.5f );
+          assert( Y >= 0.0f && Y <= 1.0f );
+          assert( Pb >= -0.5f && Pb <= 0.5f );
+          assert( Pr >= -0.5f && Pr <= 0.5f );
 
-	 p.r = Y                  + Pr * 1.402f;
-	 p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
-	 p.b = Y + Pb * 1.772f;
-
-
+          p.r = Y                  + Pr * 1.402f;
+          p.g = Y - Pb * 0.344136f - Pr * 0.714136f;
+          p.b = Y + Pb * 1.772f;
       }
     else if ( _format >= kITU_601_YCbCr420 )
       {
@@ -130,13 +129,6 @@ namespace mrv {
 	float  Y = float( yp - 16  );
 	float Cb = float( cb - 128 );
 	float Cr = float( cr - 128 );
-
-        if ( Y < 0.0f ) Y = 0.0f;
-        else if ( Y > 1.0f ) Y = 1.0f;
-        if ( Cb < -0.5f ) Cb = -0.5;
-        else if ( Cb > 0.5f ) Cb = 0.5;
-        if ( Cr < -0.5f ) Cr = -0.5;
-        else if ( Cr > 0.5f ) Cr = 0.5;
 
 	p.r = Y * 0.00456621f                    + Cr * 0.00625893f;
 	p.g = Y * 0.00456621f - Cb * 0.00153632f - Cr * 0.00318811f;
