@@ -402,30 +402,30 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
 {
      double fx, fy;
      if ( w == 0 || width() == 0 )
+     {
 	fx = 1.0;
+     }
      else
+     {
 	fx = (double)width() / (double) w;
+     }
 
     if ( h == 0 || height() == 0 )
-       fy = 1.0;
+    {
+	fy = 1.0;
+     }
     else
        fy = (double)height() / (double) h;
 
     //
     VideoFrame* scaled = new VideoFrame( _frame, w, h, 3, kRGB, kByte );
 
-    for ( int y = 0; y < h; ++y )
+    for ( unsigned y = 0; y < h; ++y )
     {
-       for ( int x = 0; x < w; ++x )
+       for ( unsigned x = 0; x < w; ++x )
        {
           Pixel p = this->pixel( unsigned( x*fx+.5 ), 
                                  unsigned( y*fy+.5 ) );
-          if ( p.r > 1.0f ) p.r = 1.0f;
-          else if ( p.r < 0.0f ) p.r = 0.0f;
-          if ( p.g > 1.0f ) p.g = 1.0f;
-          else if ( p.g < 0.0f ) p.g = 0.0f;
-          if ( p.b > 1.0f ) p.b = 1.0f;
-          else if ( p.b < 0.0f ) p.b = 0.0f;
           scaled->pixel( x, y, p );
        }
     }
