@@ -25,6 +25,8 @@
  * 
  */
 
+#include <math.h>
+
 #include <fltk/Image.h>
 #include <ImathMath.h>   // for Imath::clamp
 #include <ImathFun.h>   // for Imath::pow
@@ -152,6 +154,7 @@ namespace mrv {
 
       fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
 
+
       // Copy to thumbnail and gamma it
       float gamma = 1.0f / _image->gamma();
       for (unsigned int y = 0; y < h; ++y )
@@ -159,13 +162,13 @@ namespace mrv {
 	  for (unsigned int x = 0; x < w; ++x )
 	    {
 	      CMedia::Pixel fp = pic->pixel( x, y );
-	      if ( gamma != 1.0 )
+	      if ( gamma != 1.0f )
 	      {
-                  if ( fp.r > 0.f )
+                  if ( std::isfinite( fp.r ) )
                       fp.r = Imath::Math<float>::pow( fp.r, gamma );
-                  if ( fp.g > 0.f )
+                  if ( std::isfinite( fp.g ) )
                       fp.g = Imath::Math<float>::pow( fp.g, gamma );
-                  if ( fp.b > 0.f )
+                  if ( std::isfinite( fp.b ) )
                       fp.b = Imath::Math<float>::pow( fp.b, gamma );
 	      }
 
