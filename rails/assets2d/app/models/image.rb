@@ -77,7 +77,6 @@ class Image < ActiveRecord::Base
       data = data[0..w*h*4-1]
     end
 
-
     img = Magick::Image.constitute( w, h, 'BGRA', data )
     img.format = 'PNG'
     img.write(file)
