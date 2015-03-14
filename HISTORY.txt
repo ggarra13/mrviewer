@@ -1,5 +1,8 @@
 v2.7.6   - Fixed LUT comparison of two images.  Previously, LUT could turn
 	   off without any warning when switching images.
+	 - Fixed fit image when image was flipped and not stereo.
+	 - Fixed creation of thumbnails of movies created with ITU 601 
+	   colors.
 
 v2.7.5   - Saving out a GradeRef that was turned into LMTs now works
 	   properly.  This allows loading and saving an ACES clip file 
