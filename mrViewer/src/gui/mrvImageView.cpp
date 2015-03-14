@@ -1108,7 +1108,7 @@ void ImageView::fit_image()
   if ( h < z ) { z = h; }
 
   xoffset = -dpw.x() - W / 2.0;
-  if ( _flip & kFlipVertical )
+  if ( (_flip & kFlipVertical) && _stereo & CMedia::kStereoSideBySide  )
       xoffset = 0.0f;
 
   yoffset = (dpw.y()+H / 2.0) / pr;
