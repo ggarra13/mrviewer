@@ -91,7 +91,7 @@ const float kConstant = 65535.0f;
 	  break;
 	}
       default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+          throw std::runtime_error( _("Unknown mrv::Frame format") );
       }
 
     if ( _format >= kYByRy420 )
@@ -215,7 +215,7 @@ const float kConstant = 65535.0f;
 	  break;
 	}
       default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+          throw std::runtime_error( _("Unknown mrv::Frame format") );
       }
 
     if ( _format >= kYByRy420 )
