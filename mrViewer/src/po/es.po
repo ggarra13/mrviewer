@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-03-14 17:52-0300\n"
-"PO-Revision-Date: 2015-03-10 11:52-0300\n"
+"POT-Creation-Date: 2015-03-14 20:36-0300\n"
+"PO-Revision-Date: 2015-03-14 20:37-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -4723,6 +4723,10 @@ msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
+#: core/mrvFrame.cpp:111 core/mrvFrame.cpp:208 core/mrvFrame.cpp:241
+msgid "Unknown mrv::Frame pixel type"
+msgstr "Formato de pixel en mrv::Frame desconocido"
+
 #: core/mrvACES.cpp:182
 msgid "Unknown node in GradeRef"
 msgstr "Nodo desconocido en GradeRef"
@@ -5384,6 +5388,10 @@ msgstr ""
 "mientras que HDTV y CTL usan puntos blancos D65.\n"
 "Si no esta seguro que significa todo esto, mantega su display y seteo de "
 "imágenes usando siempre el mismo algorithm (CTL or ICC)."
+
+#: core/mrvFrame.cpp:223
+msgid "mrv::Frame No pixel data to change"
+msgstr ""
 
 #: gui/mrvColorInfo.cpp:536
 msgid "pixel"
