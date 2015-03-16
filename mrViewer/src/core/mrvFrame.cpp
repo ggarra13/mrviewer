@@ -47,6 +47,7 @@ namespace
   float yw[3] = { 0.2126f, 0.7152f, 0.0722f };
 }
 
+#include "core/mrvI8N.h"
 #include "core/mrvAlignedData.h"
 #include "core/mrvFrame_u8.inl"
 #include "core/mrvFrame_u16.inl"
@@ -107,7 +108,7 @@ const char* const VideoFrame::fmts[] = {
       case kFloat:
 	return sizeof(float);
       default:
-	throw std::runtime_error("Unknown mrv::Frame pixel type");
+          throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
       }
   }
 
@@ -204,7 +205,7 @@ const char* const VideoFrame::fmts[] = {
       case kFloat:
 	return pixel_f32( x, y );
       default:
-	throw std::runtime_error("Unknown mrv::Frame pixel type");
+          throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
       }
   }
 
@@ -219,7 +220,7 @@ const char* const VideoFrame::fmts[] = {
 			  const ImagePixel& p )
   {
     if ( !_data ) 
-      throw std::runtime_error("mrv::Frame No pixel data to change");
+        throw std::runtime_error( _("mrv::Frame No pixel data to change") );
       
     assert( x < _width  );
     assert( y < _height );
@@ -237,7 +238,7 @@ const char* const VideoFrame::fmts[] = {
       case kFloat:
 	return pixel_f32( x, y, p );
       default:
-	throw std::runtime_error("Unknown mrv::Frame pixel type");
+          throw std::runtime_error( _("Unknown mrv::Frame pixel type") );
       }
   }
 

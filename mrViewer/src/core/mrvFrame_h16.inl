@@ -91,7 +91,7 @@ namespace mrv {
 	  break;
 	}
       default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+          throw std::runtime_error( _("Unknown mrv::Frame format") );
       }
 
     
@@ -227,7 +227,7 @@ namespace mrv {
 	  break;
 	}
       default:
-	throw std::runtime_error("Unknown mrv::Frame format");
+          throw std::runtime_error( _("Unknown mrv::Frame format") );
       }
 
     if ( _format >= kYByRy420 )
