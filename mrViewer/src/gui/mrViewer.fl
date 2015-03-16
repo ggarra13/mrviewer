@@ -628,7 +628,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {362 294 640 475} resizable visible
+        xywh {370 294 640 475} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2519,7 +2519,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {326 135 640 530} when CHANGED resizable
+        xywh {334 185 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2806,10 +2806,10 @@ Value is:  pow( 2, 1/x );}
             } {}
           }
           {fltk::Group} uiPixelBar {open
-            xywh {0 455 640 27} box FLAT_BOX color 56
+            xywh {0 455 640 28} box FLAT_BOX color 56
           } {
             {fltk::Group} {} {open
-              xywh {2 0 634 28}
+              xywh {2 0 634 25}
             } {
               {fltk::PopupMenu} uiZoom {
                 label x1
@@ -2830,7 +2830,7 @@ else
 f = float(t - 7);
 }
 v->uiView->zoom( f );
-o->value(8);}
+o->value(8);} selected
                 tooltip {Image zoom setting.}
                 xywh {3 3 26 20} box UP_BOX buttonbox BORDER_BOX color 0x53535300 textcolor 0xababab00 buttoncolor 0x53535300 labelcolor 0xababab00 labelsize 10 textsize 10
                 extra_code {o->value(10);
@@ -2892,31 +2892,31 @@ o->disable_glyph();}
                   label FIT
                   }
               }
-              {fltk::Group} {} {open
-                xywh {29 0 605 28}
+              {fltk::Group} {} {
+                xywh {29 0 605 25}
               } {
                 {fltk::Output} uiCoord {
                   label XY
                   tooltip {Image coordinate of pixel under mouse.}
                   xywh {0 3 85 20} align 36 box NO_BOX labelfont 4 color 56 textcolor 0xababab00 labelcolor 0xababab00 labelsize 10 textsize 10
                 }
-                {fltk::Group} {} {open
-                  xywh {85 0 520 28}
+                {fltk::Group} {} {
+                  xywh {85 0 520 25}
                 } {
-                  {fltk::Group} {} {open
-                    xywh {0 0 520 28}
+                  {fltk::Group} {} {
+                    xywh {0 0 520 25}
                   } {
-                    {fltk::Group} {} {open
-                      xywh {0 3 230 20}
+                    {fltk::Group} {} {
+                      xywh {0 3 230 22}
                     } {
                       {fltk::PopupMenu} uiAColorType {
                         label RGBA
                         user_data uiView user_data_type {mrv::ImageView*}
                         callback {int i = o->value();
 if ( i < 0 ) return;
-o->label( o->child(i)->label() );}
+o->label( o->child(i)->label() );} open
                         tooltip {Switch RGBA display between floating point, hexadecimal (0..0xff) and decimal (0..255).}
-                        xywh {0 1 30 20} labelsize 9
+                        xywh {0 0 30 20} labelsize 9
                         extra_code {o->value(0);
 o->disable_glyph();}
                         class {mrv::PopupMenu}
@@ -2933,27 +2933,27 @@ o->disable_glyph();}
                       }
                       {fltk::Output} uiPixelR {
                         tooltip {Red value of image pixel under mouse.}
-                        xywh {30 0 50 20} align 36 box NO_BOX color 56 textcolor 0xff6a6a00 textsize 10
+                        xywh {30 0 50 22} align 36 box NO_BOX color 56 textcolor 0xff6a6a00 textsize 10
                       }
                       {fltk::Output} uiPixelG {
                         tooltip {Green value of image pixel under mouse.}
-                        xywh {80 0 50 20} align 36 box NO_BOX color 56 textcolor 0x92ff9200 textsize 10
+                        xywh {80 0 50 22} align 36 box NO_BOX color 56 textcolor 0x92ff9200 textsize 10
                       }
                       {fltk::Output} uiPixelB {
                         tooltip {Blue value of image pixel under mouse.}
-                        xywh {130 0 50 20} align 36 box NO_BOX color 56 textcolor 0x42b5ff00 textsize 10
+                        xywh {130 0 50 22} align 36 box NO_BOX color 56 textcolor 0x42b5ff00 textsize 10
                       }
                       {fltk::Output} uiPixelA {
                         tooltip {Alpha value of image pixel under mouse.}
-                        xywh {180 0 50 20} align 36 box NO_BOX color 56 textcolor 0xcccccc00 textsize 10
+                        xywh {180 0 50 22} align 36 box NO_BOX color 56 textcolor 0xcccccc00 textsize 10
                       }
                     }
                     {fltk::Output} uiPixelView {
                       tooltip {8-bit sample of image pixel under mouse.}
-                      xywh {240 4 20 20} box FLAT_BOX color 0x53535300
+                      xywh {249 2 20 20} vertical box FLAT_BOX color 0x53535300
                     }
-                    {fltk::Group} {} {open
-                      xywh {275 3 173 20}
+                    {fltk::Group} {} {
+                      xywh {275 3 173 22}
                     } {
                       {fltk::PopupMenu} uiBColorType {
                         label HSV
@@ -3004,26 +3004,55 @@ o->disable_glyph();}
                       }
                       {fltk::Output} uiPixelH {
                         tooltip {Hue value of image pixel under mouse.}
-                        xywh {23 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
+                        xywh {23 0 50 22} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
                       }
                       {fltk::Output} uiPixelS {
                         tooltip {Saturation value of image pixel under mouse.}
-                        xywh {73 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
+                        xywh {73 0 50 22} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
                       }
                       {fltk::Output} uiPixelV {
                         tooltip {Value (Intensity) of image pixel under mouse.}
-                        xywh {123 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
+                        xywh {123 0 50 22} align 36 box NO_BOX color 56 textcolor 0xb2b20000 textsize 10
                       }
                     }
+                    {fltk::PopupMenu} uiPixelValue {
+                      label F
+                      user_data uiView user_data_type {mrv::ImageView*}
+                      callback {int i = o->value();
+if ( i < 0 ) return;
+char t[2];
+t[1] = 0;
+t[0] = o->child(i)->label()[0];
+o->label( strdup(t) );
+v->update_color_info();}
+                      tooltip {Type of pixel values to show:
++ Full:  pixel with gamma, gain and lut.
++ Gamma: pixel with gamma and gain but no lut.
++ Original: pixel without gamma, gain or lut.}
+                      xywh {234 3 13 20} align 48
+                      extra_code {o->value(0);
+o->disable_glyph();}
+                      class {mrv::PopupMenu}
+                    } {
+                      {fltk::Item} {} {
+                        label Full
+                        }
+                      {fltk::Item} {} {
+                        label Gamma
+                        }
+                      {fltk::Item} {} {
+                        label Original
+                        }
+                    }
                     {fltk::Group} {} {
-                      xywh {451 3 65 20}
+                      xywh {451 3 65 22}
                     } {
                       {fltk::PopupMenu} uiLType {
                         label Y
                         callback {int x = o->value();
 const char* lbl = o->child(x)->label();
 const char name[3] = { lbl[0], lbl[1], 0 };
-o->copy_label( name );} open
+o->copy_label( name );}
                         tooltip {Switch brightness calculation.
 
 Y (Luminance) is the pixel value according to Rec709:
@@ -3061,44 +3090,15 @@ where Yn is the white reference (usually 1).
                       }
                       {fltk::Output} uiPixelL {
                         tooltip {Luminance of image pixel under mouse.}
-                        xywh {15 0 50 20} align 36 box NO_BOX color 56 textcolor 0xb2b2b200 textsize 10
+                        xywh {15 0 50 22} align 36 box NO_BOX color 56 textcolor 0xb2b2b200 textsize 10
                       }
-                    }
-                    {fltk::PopupMenu} uiPixelValue {
-                      label F
-                      user_data uiView user_data_type {mrv::ImageView*}
-                      callback {int i = o->value();
-if ( i < 0 ) return;
-char t[2];
-t[1] = 0;
-t[0] = o->child(i)->label()[0];
-o->label( strdup(t) );
-v->update_color_info();}
-                      tooltip {Type of pixel values to show:
-+ Full:  pixel with gamma, gain and lut.
-+ Gamma: pixel with gamma and gain but no lut.
-+ Original: pixel without gamma, gain or lut.}
-                      xywh {262 3 13 20} align 48
-                      extra_code {o->value(0);
-o->disable_glyph();}
-                      class {mrv::PopupMenu}
-                    } {
-                      {fltk::Item} {} {
-                        label Full
-                        }
-                      {fltk::Item} {} {
-                        label Gamma
-                        }
-                      {fltk::Item} {} {
-                        label Original
-                        }
                     }
                   }
                 }
               }
             }
           }
-          {fltk::Group} uiBottomBar {open
+          {fltk::Group} uiBottomBar {
             xywh {0 478 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -3254,7 +3254,7 @@ else
     g = atof( o->child( o->value() )->label() );
 
 v->uiView->fps( g );
-v->uiFPS->value( g );} open selected
+v->uiFPS->value( g );} open
                         tooltip {Some default frame rate settings.}
                         xywh {0 2 30 19} box UP_BOX labelsize 10
                         extra_code {o->disable_glyph();}

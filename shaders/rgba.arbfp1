@@ -30,15 +30,15 @@
 #var half normMin :  : c[4] : 7 : 1
 #var half normSpan :  : c[5] : 8 : 1
 #var bool enableLut :  : c[6] : 9 : 1
-#var bool lutF :  :  : 10 : 0
-#var half lutMin :  : c[7] : 11 : 1
-#var half lutMax :  : c[8] : 12 : 1
-#var half lutM :  : c[9] : 13 : 1
-#var half lutT :  : c[10] : 14 : 1
+#var bool lutF :  : c[7] : 10 : 1
+#var half lutMin :  : c[8] : 11 : 1
+#var half lutMax :  : c[9] : 12 : 1
+#var half lutM :  : c[10] : 13 : 1
+#var half lutT :  : c[11] : 14 : 1
 #var float4 main.pixel : $vout.COLOR : COL : -1 : 1
-#const c[11] = 0.33333334 1 0 2
-#const c[12] = 3 4 5 6
-#const c[13] = 2.718282 0.69335938 0.5
+#const c[12] = 0.33333334 1 0 2
+#const c[13] = 3 4 5 6
+#const c[14] = 2.718282 2.71875 0.69335938 0.5
 #default gain = 1
 #default gamma = 0.44995117
 #default channel = 0
@@ -47,87 +47,149 @@
 #default normSpan = 1
 #default enableLut = 0
 #default lutF = 0
-PARAM c[14] = { program.local[0..10],
+PARAM c[15] = { program.local[0..11],
 		{ 0.33333334, 1, 0, 2 },
 		{ 3, 4, 5, 6 },
-		{ 2.718282, 0.69335938, 0.5 } };
+		{ 2.718282, 2.71875, 0.69335938, 0.5 } };
 TEMP R0;
 TEMP R1;
 TEMP R2;
+TEMP R3;
+TEMP R4;
+TEMP R5;
+TEMP R6;
+TEMP R7;
 TEX R0, fragment.texcoord[0], texture[0], 2D;
-MOV R2.xy, c[11].ywzw;
-ADD R2.y, -R2, c[2].x;
-ABS R2.y, R2;
-CMP R2.y, -R2, c[11].z, c[11];
+RCP R3.w, c[7].x;
 RCP R1.w, c[5].x;
 ADD R1.xyz, R0, -c[4].x;
 MUL R1.xyz, R1, R1.w;
-CMP R0.xyz, -c[3].x, R1, R0;
-MUL R1.xyz, R0, c[0].x;
-MIN R0.xyz, R1, c[8].x;
-MAX R0.xyz, R0, c[7].x;
-MOV R1.w, c[10].x;
+CMP R3.xyz, -c[3].x, R1, R0;
+MIN R0.xyz, R3, c[9].x;
+MAX R0.xyz, R0, c[8].x;
+MOV R1.w, c[11].x;
 LG2 R0.x, R0.x;
 LG2 R0.y, R0.y;
 LG2 R0.z, R0.z;
-MUL R0.xyz, R0, c[9].x;
-MAD R0.xyz, R0, c[13].y, R1.w;
-CMP R1.xyz, -c[6].x, R0, R1;
-TEX R0.xyz, R1, texture[3], 3D;
-POW R0.x, c[13].x, R0.x;
-POW R0.z, c[13].x, R0.z;
-POW R0.y, c[13].x, R0.y;
-CMP R0.xyz, -c[6].x, R0, R1;
+MUL R0.xyz, R0, c[10].x;
+MAD R0.xyz, R0, c[14].z, R1.w;
+MUL R1.xyz, R0, c[7].x;
+FLR R0.xyz, R1;
+ADD R4.xyz, -R0, R1;
+ADD R2.xyz, R0, c[12].y;
+MUL R7.xyz, R3.w, R2;
+MUL R2.xyz, R0, R3.w;
+TEX R1.xyz, R7, texture[3], 3D;
+ADD R2.w, -R4.x, c[12].y;
+MOV R0.x, R2;
+MOV R0.yz, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MUL R1.xyz, R4.x, R1;
+MAD R1.xyz, R2.w, R0, R1;
+MUL R5.xyz, R4.y, R1;
+TEX R1.xyz, R2, texture[3], 3D;
+MOV R0.y, R2;
+MOV R0.xz, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MUL R0.xyz, R4.x, R0;
+MAD R6.xyz, R2.w, R1, R0;
+ADD R3.w, -R4.y, c[12].y;
+MAD R5.xyz, R6, R3.w, R5;
+MOV R6.yz, R2;
+MOV R6.x, R7;
+MOV R0.z, R2;
+MOV R0.xy, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MOV R2.y, R7;
+TEX R2.xyz, R2, texture[3], 3D;
+MUL R0.xyz, R4.x, R0;
+MAD R0.xyz, R2, R2.w, R0;
+TEX R6.xyz, R6, texture[3], 3D;
+MUL R2.xyz, R4.x, R6;
+MAD R1.xyz, R2.w, R1, R2;
+MUL R0.xyz, R4.y, R0;
+MAD R0.xyz, R1, R3.w, R0;
+MUL R1.xyz, R4.z, R5;
+ADD R2.y, -R4.z, c[12];
+MAD R0.xyz, R0, R2.y, R1;
+MOV R2.x, c[7];
+MUL R1.x, R2, c[6];
+CMP R2.xyz, -R1.x, R0, R3;
+POW R0.x, c[14].y, R2.x;
+POW R0.z, c[14].y, R2.z;
+POW R0.y, c[14].y, R2.y;
+CMP R0.xyz, -R1.x, R0, R2;
+MIN R1.xyz, R0, c[9].x;
+MAX R1.xyz, R1, c[8].x;
+LG2 R1.x, R1.x;
+LG2 R1.y, R1.y;
+LG2 R1.z, R1.z;
+MUL R3.xyz, R1, c[10].x;
+ABS R2.x, c[7];
+CMP R1.x, -R2, c[12].z, c[12].y;
+MUL R1.x, R1, c[6];
+MAD R2.xyz, R3, c[14].z, R1.w;
+CMP R2.xyz, -R1.x, R2, R0;
+TEX R0.xyz, R2, texture[3], 3D;
+POW R0.x, c[14].x, R0.x;
+POW R0.z, c[14].x, R0.z;
+POW R0.y, c[14].x, R0.y;
+CMP R0.xyz, -R1.x, R0, R2;
+MUL R0.xyz, R0, c[0].x;
+MOV R2.xy, c[12].ywzw;
 ADD R1.x, -R2, c[2];
 ABS R2.x, R1;
-MOV R1, c[12];
-ADD R1.w, -R1, c[2].x;
-ABS R1.w, R1;
-ADD R1.y, -R1, c[2].x;
+MOV R1, c[13];
+ADD R2.y, -R2, c[2].x;
+ABS R2.y, R2;
 ADD R1.z, -R1, c[2].x;
+ABS R1.z, R1;
+CMP R2.y, -R2, c[12].z, c[12];
+CMP R1.z, -R1, c[12], c[12].y;
 POW R0.y, R0.y, c[1].x;
 POW R0.z, R0.z, c[1].x;
 POW R0.x, R0.x, c[1].x;
 CMP R0.xyz, -R2.x, R0, R0.x;
-CMP R2.x, -R2, c[11].z, c[11].y;
+CMP R2.x, -R2, c[12].z, c[12].y;
 ABS R2.x, R2;
-CMP R2.x, -R2, c[11].z, c[11].y;
+CMP R2.x, -R2, c[12].z, c[12].y;
 MUL R2.z, R2.x, R2.y;
 CMP R0.xyz, -R2.z, R0.y, R0;
 ADD R2.z, -R1.x, c[2].x;
 ABS R1.x, R2.y;
-CMP R2.y, -R1.x, c[11].z, c[11];
-ABS R2.z, R2;
-MUL R2.x, R2, R2.y;
-CMP R1.x, -R2.z, c[11].z, c[11].y;
-MUL R2.y, R2.x, R1.x;
-CMP R0.xyz, -R2.y, R0.z, R0;
-ABS R2.y, R1;
-ABS R1.x, R1;
-CMP R1.y, -R1.x, c[11].z, c[11];
-CMP R1.x, -R2.y, c[11].z, c[11].y;
-MUL R1.y, R2.x, R1;
-MUL R2.x, R1.y, R1;
-CMP R0.xyz, -R2.x, R0.w, R0;
-MUL R2.x, R0, c[13].z;
-ABS R1.x, R1;
-ABS R2.y, R1.z;
-CMP R1.z, -R1.x, c[11], c[11].y;
-MUL R1.y, R1, R1.z;
-CMP R1.x, -R2.y, c[11].z, c[11].y;
-MUL R1.z, R1.y, R1.x;
-CMP R0.x, -R1.z, R2, R0;
-MAD R2.x, R0.w, c[13].z, R0;
-CMP R0.x, -R1.z, R2, R0;
-ADD R1.z, R0.x, R0.y;
-ADD R1.z, R1, R0;
-ABS R1.x, R1;
-CMP R1.x, -R1, c[11].z, c[11].y;
-MUL R1.z, R1, c[11].x;
-CMP R1.w, -R1, c[11].z, c[11].y;
-MUL R1.x, R1.y, R1;
-MUL R1.x, R1, R1.w;
-CMP result.color.xyz, -R1.x, R1.z, R0;
+ABS R2.y, R2.z;
+CMP R1.x, -R1, c[12].z, c[12].y;
+CMP R2.y, -R2, c[12].z, c[12];
+MUL R1.x, R2, R1;
+MUL R2.x, R1, R2.y;
+CMP R0.xyz, -R2.x, R0.z, R0;
+ADD R2.x, -R1.y, c[2];
+ABS R1.y, R2;
+CMP R1.y, -R1, c[12].z, c[12];
+ABS R2.x, R2;
+MUL R1.x, R1, R1.y;
+CMP R2.x, -R2, c[12].z, c[12].y;
+MUL R1.y, R1.x, R2.x;
+CMP R0.xyz, -R1.y, R0.w, R0;
+ABS R1.y, R2.x;
+CMP R1.y, -R1, c[12].z, c[12];
+MUL R1.x, R1, R1.y;
+MUL R1.y, R1.x, R1.z;
+MUL R2.y, R0.x, c[14].w;
+CMP R0.x, -R1.y, R2.y, R0;
+MAD R2.x, R0.w, c[14].w, R0;
+CMP R0.x, -R1.y, R2, R0;
+ADD R1.y, R0.x, R0;
+ADD R1.y, R1, R0.z;
+MUL R2.x, R1.y, c[12];
+ABS R1.y, R1.z;
+ADD R1.w, -R1, c[2].x;
+ABS R1.z, R1.w;
+CMP R1.y, -R1, c[12].z, c[12];
+CMP R1.z, -R1, c[12], c[12].y;
+MUL R1.x, R1, R1.y;
+MUL R1.x, R1, R1.z;
+CMP result.color.xyz, -R1.x, R2.x, R0;
 MOV result.color.w, R0;
 END
-# 75 instructions, 3 R-regs
+# 132 instructions, 8 R-regs

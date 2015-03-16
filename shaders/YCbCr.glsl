@@ -66,11 +66,6 @@ void main()
     }
 
   //
-  // Apply gain 
-  //
-  c.rgb *= gain;
-
-  //
   // Apply 3D color lookup table (in log space).
   //
   if (enableLut)
@@ -78,6 +73,11 @@ void main()
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
       c.rgb = exp( texture3D(lut, c.rgb).rgb ); 
     }
+
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
 
   //
   // Apply video gamma correction.
