@@ -2416,36 +2416,37 @@ void ImageView::pixel_processed( const CMedia* img,
     PixelValue p = (PixelValue) uiMain->uiPixelValue->value();
     if ( p == kRGBA_Original ) return;
 
-      //
-      // To represent pixel properly, we need to do gain/gamma/lut 
-      //
-      rgba.r *= _gain;
-      rgba.g *= _gain;
-      rgba.b *= _gain;
 
-      //
-      // To represent pixel properly, we need to do the lut
-      //
-      if ( use_lut() && p == kRGBA_Full )
-      {
+    //
+    // To represent pixel properly, we need to do the lut
+    //
+    if ( use_lut() && p == kRGBA_Full )
+    {
 
-          Imath::V3f in( rgba.r, rgba.g, rgba.b );
-          Imath::V3f out;
-          _engine->evaluate( img, in, out );
+        Imath::V3f in( rgba.r, rgba.g, rgba.b );
+        Imath::V3f out;
+        _engine->evaluate( img, in, out );
 
-          rgba.r = out[0];
-          rgba.g = out[1];
-          rgba.b = out[2];
+        rgba.r = out[0];
+        rgba.g = out[1];
+        rgba.b = out[2];
 
-      }
+    }
 
-      float one_gamma = 1.0f / _gamma;
-      if ( rgba.r > 0.0001f )
-          rgba.r = powf(rgba.r, one_gamma);
-      if ( rgba.g > 0.0001f )
-          rgba.g = powf(rgba.g, one_gamma);
-      if ( rgba.b > 0.0001f )
-          rgba.b = powf(rgba.b, one_gamma);
+    //
+    // To represent pixel properly, we need to do lut/gain/gamma 
+    //
+    rgba.r *= _gain;
+    rgba.g *= _gain;
+    rgba.b *= _gain;
+
+    float one_gamma = 1.0f / _gamma;
+    if ( isfinite(rgba.r) )
+        rgba.r = powf(rgba.r, one_gamma);
+    if ( isfinite(rgba.g) )
+        rgba.g = powf(rgba.g, one_gamma);
+    if ( isfinite(rgba.b) )
+        rgba.b = powf(rgba.b, one_gamma);
 
 }
 
