@@ -29,13 +29,16 @@
 
 #include <fltk/Image.h>
 #include <ImathMath.h>   // for Imath::clamp
-#include <ImathFun.h>   // for Imath::pow
+// #include <ImathFun.h>   // for Imath::pow
 
 #include "core/mrvThread.h"
 #include "core/CMedia.h"
 #include "gui/mrvIO.h"
 #include "gui/mrvMedia.h"
 
+#ifdef _WIN32
+#define isfinite(x) _finite(x)
+#endif
 
 
 namespace 
@@ -164,11 +167,12 @@ namespace mrv {
 	      CMedia::Pixel fp = pic->pixel( x, y );
 	      if ( gamma != 1.0f )
 	      {
-                  if ( std::isfinite( fp.r ) )
+                  using namespace std;
+                  if ( isfinite( fp.r ) )
                       fp.r = Imath::Math<float>::pow( fp.r, gamma );
-                  if ( std::isfinite( fp.g ) )
+                  if ( isfinite( fp.g ) )
                       fp.g = Imath::Math<float>::pow( fp.g, gamma );
-                  if ( std::isfinite( fp.b ) )
+                  if ( isfinite( fp.b ) )
                       fp.b = Imath::Math<float>::pow( fp.b, gamma );
 	      }
 

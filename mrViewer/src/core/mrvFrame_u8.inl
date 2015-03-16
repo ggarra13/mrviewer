@@ -8,6 +8,7 @@
  * 
  */
 
+
 namespace mrv {
 
   ImagePixel VideoFrame::pixel_u8( const unsigned int x, 
