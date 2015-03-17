@@ -441,7 +441,7 @@ void GLEngine::initialize()
 		{
 		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YCbCr"), ext );
 		  _YCbCr = new GLShader( shaderFile );
-		      
+
 		  sprintf( shaderFile, N_("%s/%s.%s"), dir, N_("YByRy"), ext );
 		  _YByRy = new GLShader( shaderFile );
 		}

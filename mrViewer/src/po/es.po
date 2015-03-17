@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-03-16 20:03-0300\n"
+"POT-Creation-Date: 2015-03-16 20:16-0300\n"
 "PO-Revision-Date: 2015-03-14 20:37-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
@@ -523,7 +523,7 @@ msgstr "35mm Plano"
 msgid "35mm Panavision"
 msgstr "35mm Panavision"
 
-#: video/mrvGLLut3d.cpp:1005
+#: video/mrvGLLut3d.cpp:993
 msgid "3D Lut for "
 msgstr "3D Lut para "
 
@@ -875,7 +875,7 @@ msgstr "Un error ocurrió al intentar borrar '%s'."
 msgid "Aperture"
 msgstr "Apertura"
 
-#: video/mrvGLLut3d.cpp:685
+#: video/mrvGLLut3d.cpp:673
 msgid "Apply: "
 msgstr "Aplicar: "
 
@@ -1314,7 +1314,7 @@ msgstr "No pude agregar imagen '"
 msgid "Could not add look_mod_image '"
 msgstr "No pude agregar look mod de imagen '"
 
-#: video/mrvGLLut3d.cpp:600
+#: video/mrvGLLut3d.cpp:588
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
@@ -1386,7 +1386,7 @@ msgstr "NO pude obtener contexto de conversion de imagen."
 msgid "Could not get images in database: "
 msgstr "No pude obtener imágenes de la base de datos: "
 
-#: video/mrvGLLut3d.cpp:675
+#: video/mrvGLLut3d.cpp:663
 msgid "Could not init cmm: "
 msgstr "No pude inicializar el cmm: "
 
@@ -1398,7 +1398,7 @@ msgstr "No pude inicializar el motor de dibujo"
 msgid "Could not load '"
 msgstr "No pude cargar '"
 
-#: video/mrvGLLut3d.cpp:591
+#: video/mrvGLLut3d.cpp:579
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
@@ -1771,7 +1771,7 @@ msgstr "Profundidad"
 msgid "Desktop"
 msgstr "Escritorio"
 
-#: video/mrvGLLut3d.cpp:662
+#: video/mrvGLLut3d.cpp:650
 msgid ""
 "Destination color space has more than 3 channels - only first 3 will be "
 "shown."
@@ -1779,7 +1779,7 @@ msgstr ""
 "El espacio de color destinatario tiene más de 3 canales - solo los 3 "
 "primeros serán mostrados."
 
-#: video/mrvGLLut3d.cpp:668
+#: video/mrvGLLut3d.cpp:656
 msgid ""
 "Destination color space is not RGB or XYZ.  Colors may look weird displayed "
 "as RGB."
@@ -2600,7 +2600,7 @@ msgstr "Show insertado '"
 msgid "Integer"
 msgstr "Entero"
 
-#: video/mrvGLLut3d.cpp:612
+#: video/mrvGLLut3d.cpp:600
 msgid "Invalid Profile for CMM: "
 msgstr "Perfil inválido para CMM: "
 
@@ -2608,7 +2608,7 @@ msgstr "Perfil inválido para CMM: "
 msgid "Invalid database driver '"
 msgstr "Driver de base de datos inválido '"
 
-#: video/mrvGLLut3d.cpp:656
+#: video/mrvGLLut3d.cpp:644
 msgid "Invalid destination profile/image format"
 msgstr "Inválido perfil de destinacion/formato de imagen "
 
@@ -2624,7 +2624,7 @@ msgstr "Formato de mrv::Frame inválido: "
 msgid "Invalid pixel buffer coordinates "
 msgstr "Inválidas coordenadas del buffer de pixeles "
 
-#: video/mrvGLLut3d.cpp:627
+#: video/mrvGLLut3d.cpp:615
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
@@ -3100,15 +3100,15 @@ msgstr "No"
 msgid "No Baking"
 msgstr "No cocinado"
 
-#: video/mrvGLLut3d.cpp:914 video/mrvGLLut3d.cpp:959
+#: video/mrvGLLut3d.cpp:902 video/mrvGLLut3d.cpp:947
 msgid "No CTL script"
 msgstr "No existe escritura CTL"
 
-#: video/mrvGLLut3d.cpp:912 video/mrvGLLut3d.cpp:957
+#: video/mrvGLLut3d.cpp:900 video/mrvGLLut3d.cpp:945
 msgid "No CTL script or ICC profile"
 msgstr "No existe escritura CTL o perfil ICC"
 
-#: video/mrvGLLut3d.cpp:916 video/mrvGLLut3d.cpp:961
+#: video/mrvGLLut3d.cpp:904 video/mrvGLLut3d.cpp:949
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
@@ -3132,11 +3132,11 @@ msgstr "Sin memoria para cuadro de audio"
 msgid "No such framebuffer - cannot set pixel"
 msgstr "No existe tal framebuffer - no puedo setear el pixel"
 
-#: video/mrvGLLut3d.cpp:963
+#: video/mrvGLLut3d.cpp:951
 msgid "No valid ODT transform: "
 msgstr "No existe una transformación ODT válida: "
 
-#: video/mrvGLLut3d.cpp:918
+#: video/mrvGLLut3d.cpp:906
 msgid "No valid RT transform for \""
 msgstr "No existe una transformación RT válida para \""
 
@@ -3217,13 +3217,13 @@ msgstr "Bloqueo Numérico"
 msgid "ODT"
 msgstr "ODT"
 
-#: video/mrvGLLut3d.cpp:859
+#: video/mrvGLLut3d.cpp:847
 msgid "ODT Lut is set to prefer CTL script but only ICC profile found in ODT."
 msgstr ""
 "ODT Lut está seteado para perferir escrituras CTL pero solo un perfil ICC "
 "encontrado en ODT."
 
-#: video/mrvGLLut3d.cpp:835
+#: video/mrvGLLut3d.cpp:823
 msgid "ODT Lut is set to prefer ICC profile but only CTL script found in ODT."
 msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
@@ -3633,13 +3633,13 @@ msgstr "RLE"
 msgid "RT"
 msgstr "RT"
 
-#: video/mrvGLLut3d.cpp:810
+#: video/mrvGLLut3d.cpp:798
 msgid "RT Lut is set to prefer CTL but only ICC profile found in \""
 msgstr ""
 "RT Lut está seteado para preferir CTL pero solo un perfil ICC encontrado en "
 "\""
 
-#: video/mrvGLLut3d.cpp:779
+#: video/mrvGLLut3d.cpp:767
 msgid "RT Lut is set to prefer ICC profile but only CTL script found in \""
 msgstr ""
 "RT Lut está seteado para preferir un perfil de ICC pero sólo una escritura "
@@ -4719,7 +4719,7 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: video/mrvGLLut3d.cpp:488
+#: video/mrvGLLut3d.cpp:476
 msgid "Unknown error returned from ctlToLut"
 msgstr "Error desconocido retornado de ctlToLut"
 
