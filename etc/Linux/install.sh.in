@@ -19,7 +19,7 @@ cp -f /usr/share/applications/mrViewer-v@VERSION@.desktop ${dir}
 
 xdg-mime default mrViewer-v@VERSION@.desktop video/mp4 video/mpeg video/quicktime video/x-javafx video/x-flv video/x-matroska video/x-ms-wmv video/x-msvideo
 
-xdg-mime default mrViewer-v@VERSION@.desktop image/bmp image/cin image/dpx image/gif image/jpeg image/png image/tiff image/vnd.adobe.photoshop image/vnd.microsoft.icon image/x-exr image/x-iff image/x-sgi image/x-sxr image/x-tga image/x-xcf image/x-xbitmap image/x-xpixmap
+xdg-mime default mrViewer-v@VERSION@.desktop image/bmp image/cin image/dpx image/gif image/jpeg image/png image/tiff image/vnd.adobe.photoshop image/vnd.microsoft.icon image/x-exr image/x-iff image/x-sgi image/x-sxr image/x-tga image/x-xcf image/x-xbitmap image/x-xpixmap image/x-sun-raster
 
 update-desktop-database
 update-mime-database /usr/share/mime
