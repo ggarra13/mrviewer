@@ -214,7 +214,8 @@ typedef std::vector< CtlLMTData* > LMTData;
        bool ok = img->fetch( view->frame() );
        if (ok)
        {
-	  view->redraw();
+           view->fit_image();
+           view->redraw();
        }
     }
   }
@@ -232,7 +233,27 @@ typedef std::vector< CtlLMTData* > LMTData;
        bool ok = img->fetch( view->frame() );
        if (ok)
        {
-	  view->redraw();
+           view->fit_image();
+           view->redraw();
+       }
+    }
+  }
+
+  static void change_y_ripmap_cb( fltk::IntInput* w, void* d )
+  {
+    mrv::ImageView* view = (mrv::ImageView*) d;
+    mrv::media fg = view->foreground();
+    if (!fg) return;
+
+    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
+    if ( img )
+    {
+       img->levelY( w->ivalue() );
+       bool ok = img->fetch( view->frame() );
+       if (ok)
+       {
+           view->fit_image();
+           view->redraw();
        }
     }
   }
@@ -275,24 +296,6 @@ typedef std::vector< CtlLMTData* > LMTData;
     {
        img->last_frame( w->ivalue() );
        view->redraw();
-    }
-  }
-
-  static void change_y_ripmap_cb( fltk::IntInput* w, void* d )
-  {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
-    if ( img )
-    {
-       img->levelY( w->ivalue() );
-       bool ok = img->fetch( view->frame() );
-       if (ok)
-       {
-	  view->redraw();
-       }
     }
   }
 
