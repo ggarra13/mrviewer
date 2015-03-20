@@ -1764,7 +1764,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                     _video_packets.push_back( pkt );
                 }
                 // should be pktframe without +1 but it works better with it.
-                if ( pktframe < dts ) dts = pktframe; 
+                if ( pktframe < dts ) dts = pktframe + 1; 
             }
             else
             {
