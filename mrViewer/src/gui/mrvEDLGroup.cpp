@@ -619,6 +619,8 @@ void EDLGroup::cut( boost::int64_t frame )
     right->last_frame( img->last_frame() );
     img->last_frame( f-1 );
     img->clear_cache();
+
+
     right->first_frame( f );
     right->fetch( f );
     right->decode_video( f );
@@ -629,10 +631,11 @@ void EDLGroup::cut( boost::int64_t frame )
 
     browser()->reel( c );
     browser()->insert( unsigned(idx+1), m );
-    browser()->value( int(idx+1));
-
+    browser()->value( int(idx+1) );
 
     refresh();
+
+    uiMain->uiTimeline->edl(true);
 
     redraw();
 }

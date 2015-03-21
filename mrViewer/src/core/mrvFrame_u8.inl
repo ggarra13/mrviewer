@@ -8,6 +8,7 @@
  * 
  */
 
+#include <ImathFun.h>
 
 namespace mrv {
 
@@ -124,14 +125,9 @@ namespace mrv {
           p.b = Y + Pb * 1.772f;
 
           // Sanity check. Needed, as ffmpeg can return invalid values
-          if ( p.r < 0.0f )      p.r = 0.0f;
-          else if ( p.r > 1.0f ) p.r = 1.0f;
-
-          if ( p.g < 0.0f )      p.g = 0.0f;
-          else if ( p.g > 1.0f ) p.g = 1.0f;
-
-          if ( p.b < 0.0f )      p.b = 0.0f;
-          else if ( p.b > 1.0f ) p.b = 1.0f;
+          p.r = Imath::clamp( p.r, 0.0f, 1.0f );
+          p.g = Imath::clamp( p.g, 0.0f, 1.0f );
+          p.b = Imath::clamp( p.b, 0.0f, 1.0f );
       }
     else if ( _format >= kITU_601_YCbCr420 )
       {
@@ -145,14 +141,9 @@ namespace mrv {
 	p.b = Y * 0.00456621f + Cb * 0.00791071f;
 
 	// Sanity check. Needed, as ffmpeg can return invalid values
-	if ( p.r < 0.0f )      p.r = 0.0f;
-	else if ( p.r > 1.0f ) p.r = 1.0f;
-
-	if ( p.g < 0.0f )      p.g = 0.0f;
-	else if ( p.g > 1.0f ) p.g = 1.0f;
-
-	if ( p.b < 0.0f )      p.b = 0.0f;
-	else if ( p.b > 1.0f ) p.b = 1.0f;
+          p.r = Imath::clamp( p.r, 0.0f, 1.0f );
+          p.g = Imath::clamp( p.g, 0.0f, 1.0f );
+          p.b = Imath::clamp( p.b, 0.0f, 1.0f );
 
       }
 
