@@ -1390,7 +1390,9 @@ void aviImage::populate()
         }
 
         if ( length > 0 )
+        {
             duration = boost::int64_t( length * _fps + 1 );
+        }
         else
         {
             duration = 200; // GIF89
