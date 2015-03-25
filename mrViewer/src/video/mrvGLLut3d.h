@@ -125,7 +125,6 @@ namespace mrv {
 
     // Returns size of lut with 4 channels
     unsigned lut_size() const { return 4 * _lutN * _lutN * _lutN; }
-    unsigned lut_size2() const { return 4 + 4 * _lutN * _lutN * _lutN; }
 
     void init_pixel_values( Imf::Array< float >& pixelValues );
 

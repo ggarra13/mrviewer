@@ -5,9 +5,14 @@ v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
 	 - Added sun raster images to mime types under Linux.
 	 - Bug fixed streams' duration to not be always 200 seconds, but
 	   the real duration.
-	 - Streams duration are shown as frames, seconds and time.
+	 - Streams duration are shown as frames, seconds and time instead
+	   of seconds and time only.
 	 - Bug fixed openexr loader with lumma as it was trashing memory
-	   and possibly hanging the viewer.
+	   and possibly hanging the viewer. This also makes the loader a tad
+	   faster.
+	 - Made R,G,B,A,L,Z hotkeys default to main channels only.
+	   Previously they would randomly change depending on what
+	   channel was selected.
 
 v2.7.6   - Fixed LUT comparison of two images.  Previously, LUT could turn
 	   off without any warning when switching images.
