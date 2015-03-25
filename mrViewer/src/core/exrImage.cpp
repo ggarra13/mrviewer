@@ -198,6 +198,7 @@ bool exrImage::channels_order(
    order[0] = order[1] = order[2] = order[3] = -1;
 
    // First, count and store the channels
+   bool no_layer = false;
    int idx = 0;
    Imf::PixelType imfPixelType = Imf::UINT;
    std::vector< std::string > channelList;
@@ -212,18 +213,24 @@ bool exrImage::channels_order(
          continue;
       }
 
-
       // For Z channel
-   
       if ( order[0] == -1 && order[1] == -1 &&
            order[2] == -1 && order[3] == -1 &&
            ch->type > imfPixelType ) imfPixelType = ch->type;
 
       std::string ext = layerName;
-      size_t pos = layerName.rfind( N_(".") );
-      if ( pos != string::npos )
+
+      if ( no_layer == false )
       {
-	 ext = ext.substr( pos+1, ext.size() );
+          size_t pos = layerName.rfind( N_(".") );
+          if ( pos != string::npos )
+          {
+              ext = ext.substr( pos+1, ext.size() );
+          }
+          else
+          {
+              no_layer = true;
+          }
       }
 
       std::transform( ext.begin(), ext.end(), ext.begin(),
@@ -242,7 +249,7 @@ bool exrImage::channels_order(
       }
       else if ( order[2] == -1 && (ext == N_("B") ||
                                    ext == N_("BY") || ext == N_("W") ||
-                                   ext == "Z" ) )
+                                   ext == N_("Z") ) )
       {
          order[2] = idx; imfPixelType = ch->type;
       }
@@ -1023,63 +1030,64 @@ bool exrImage::find_channels( const Imf::Header& h,
 
    if ( channelPrefix != NULL )
    {
-      std::string ext = channelPrefix;
-      std::string root = "";
-      size_t pos = ext.rfind( N_(".") );
-      if ( pos != std::string::npos )
-      {
-	 root = ext.substr( 0, pos );
-	 ext = ext.substr( pos+1, ext.size() );
-      }
+       std::string prefix = channelPrefix;
+       std::string ext = channelPrefix;
+       std::string root = "";
+       size_t pos = ext.rfind( N_(".") );
+       if ( pos != std::string::npos )
+       {
+           root = ext.substr( 0, pos );
+           ext = ext.substr( pos+1, ext.size() );
+       }
 
-      std::transform( root.begin(), root.end(), root.begin(),
-		      (int(*)(int)) toupper);
-      std::transform( ext.begin(), ext.end(), ext.begin(),
-		      (int(*)(int)) toupper);
+       std::transform( root.begin(), root.end(), root.begin(),
+                       (int(*)(int)) toupper);
+       std::transform( ext.begin(), ext.end(), ext.begin(),
+                       (int(*)(int)) toupper);
 
-      _stereo_type = kNoStereo;
+       _stereo_type = kNoStereo;
 
-      if ( root == "STEREO" )
-      {
-         // Set the stereo type based on channel name extension
-         if ( ext == "HORIZONTAL" )
-            _stereo_type = kStereoSideBySide;
-         else if ( ext == "CROSSED" )
-            _stereo_type = kStereoCrossed;
-         else
-            LOG_ERROR( _("Unknown stereo type") );
+       if ( root == "STEREO" )
+       {
+           // Set the stereo type based on channel name extension
+           if ( ext == "HORIZONTAL" )
+               _stereo_type = kStereoSideBySide;
+           else if ( ext == "CROSSED" )
+               _stereo_type = kStereoCrossed;
+           else
+               LOG_ERROR( _("Unknown stereo type") );
 
 
-         return handle_side_by_side_stereo(frame, h, fb);
-      }
-      else
-      {
-         Imf::ChannelList::ConstIterator s;
-         Imf::ChannelList::ConstIterator e;
+           return handle_side_by_side_stereo(frame, h, fb);
+       }
+       else
+       {
+           Imf::ChannelList::ConstIterator s;
+           Imf::ChannelList::ConstIterator e;
 
-         if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
-         {
-            if (root == "LEFT" ) _left_red = true;
-            else _left_red = false;
+           if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
+           {
+               if (root == "LEFT" ) _left_red = true;
+               else _left_red = false;
 
-            s = channels.begin();
-            e = channels.end();
+               s = channels.begin();
+               e = channels.end();
 
-            if ( _multiview )
-            {
-               // When anaglyph and multiview, call channels order multi
-               return channels_order_multi( frame, s, e, channels, h, fb );
-            }
-            else
-            {
-               _stereo_type = kStereoAnaglyph;
+               if ( _multiview )
+               {
+                   // When anaglyph and multiview, call channels order multi
+                   return channels_order_multi( frame, s, e, channels, h, fb );
+               }
+               else
+               {
+                   _stereo_type = kStereoAnaglyph;
+                   return channels_order( frame, s, e, channels, h, fb );
+               }
+           }
+           else
+           {
+               channels.channelsWithPrefix( prefix.c_str(), s, e );
                return channels_order( frame, s, e, channels, h, fb );
-            }
-         }
-         else
-         {
-            channels.channelsWithPrefix( channelPrefix, s, e );
-            return channels_order( frame, s, e, channels, h, fb );
          }
       }
    }
