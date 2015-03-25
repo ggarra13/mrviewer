@@ -3,6 +3,11 @@ v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
 	 - Windows64 version of mrViewer was distributed with 16bits
 	   ImageMagick instead of 32 bits HDRI.
 	 - Added sun raster images to mime types under Linux.
+	 - Bug fixed streams' duration to not be always 200 seconds, but
+	   the real duration.
+	 - Streams duration are shown as frames, seconds and time.
+	 - Bug fixed openexr loader with lumma as it was trashing memory
+	   and possibly hanging the viewer.
 
 v2.7.6   - Fixed LUT comparison of two images.  Previously, LUT could turn
 	   off without any warning when switching images.
