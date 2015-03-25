@@ -2128,11 +2128,11 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
   if ( stream->duration == AV_NOPTS_VALUE )
     {
-      s.duration = ((double) _context->duration * time);
+        s.duration = ((double) _context->duration * time);
     }
   else
     {
-      s.duration = 200;
+        s.duration = ((double) stream->duration * time);
     }
 }
 

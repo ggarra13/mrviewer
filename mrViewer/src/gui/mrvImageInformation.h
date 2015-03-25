@@ -126,8 +126,8 @@ namespace mrv
 		   const bool editable = false, 
 		   fltk::Callback* callback = NULL );
 
-    void add_time( const char* name, const double content, 
-		    const bool editable = false );
+    void add_time( const char* name, const double content,
+                   const double fps, const bool editable = false );
 
     void add_enum( const char* name, const size_t content, 
 		   const char** options,
