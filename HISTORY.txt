@@ -13,6 +13,9 @@ v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
 	 - Made R,G,B,A,L,Z hotkeys default to main channels only.
 	   Previously they would randomly change depending on what
 	   channel was selected.
+	 - Made LUT not include image in lut path, so multiple images
+	   can share the same lut.  This makes it calculate less luts per
+	   invocation.
 
 v2.7.6   - Fixed LUT comparison of two images.  Previously, LUT could turn
 	   off without any warning when switching images.

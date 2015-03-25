@@ -863,7 +863,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
   GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
 			     const CMedia* img )
   {
-      std::string path = img->name();
+      std::string path; // = img->name();
       GLLut3d::Transforms transforms;
 
       unsigned int algorithm = uiPrefs->RT_algorithm->value();
