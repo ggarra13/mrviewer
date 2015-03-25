@@ -241,7 +241,9 @@ lookup3D
   void GLLut3d::clear_lut()
   {
      _inited = false;
-     unsigned long num = lut_size2();
+     // @bug: CTL would crash if pixel values was set to lut_size()
+     //       We pad here 4 more bytes and that prevents the crash.
+     unsigned long num = lut_size() + 4;
      lut.resizeErase( num );
      for ( unsigned long i = 0; i < num; ++i )
          lut[i] = 0;
@@ -409,9 +411,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     // e raised to the power of the result of the texture lookup.
     //
 
-      // @bug: CTL would crash if pixel values was set to lut_size()
-      //       We pad here 4 more bytes and that prevents the crash.
-    Imf::Array<float> pixelValues( lut_size2() );
+    Imf::Array<float> pixelValues( lut_size() );
 
     //
     // Generate output pixel values by applying CTL transforms
