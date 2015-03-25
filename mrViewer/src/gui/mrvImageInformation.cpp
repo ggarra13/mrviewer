@@ -792,8 +792,8 @@ void ImageInformation::clear_callback_data()
 	    add_text( _("FPS"), buf );
 
 	    ++group;
-	    add_time( _("Start"), s.start );
-	    add_time( _("Duration"), s.duration );
+	    add_time( _("Start"), s.start, s.fps );
+	    add_time( _("Duration"), s.duration, s.fps );
 	    m_curr->layout();
 	    m_curr->parent()->layout();
 	  }
@@ -835,8 +835,8 @@ void ImageInformation::clear_callback_data()
 	    add_text( _("Language"), s.language );
 
 	    ++group;
-	    add_time( _("Start"), s.start );
-	    add_time( _("Duration"), s.duration );
+	    add_time( _("Start"), s.start, img->fps() );
+	    add_time( _("Duration"), s.duration, img->fps() );
 
 	    m_curr->layout();
 	    m_curr->parent()->layout();
@@ -867,8 +867,8 @@ void ImageInformation::clear_callback_data()
 	    add_text( _("Language"), s.language );
 
 	    ++group;
-	    add_time( _("Start"), s.start );
-	    add_time( _("Duration"), s.duration );
+	    add_time( _("Start"), s.start, img->fps() );
+	    add_time( _("Duration"), s.duration, img->fps() );
 
 	    m_curr->layout();
 	    m_curr->parent()->layout();
@@ -1452,15 +1452,22 @@ void ImageInformation::clear_callback_data()
   }
 
 
-  void ImageInformation::add_time( const char* name, const double content, 
-				   const bool editable )
+  void ImageInformation::add_time( const char* name, const double content,
+                                   const double fps, const bool editable )
   {
     boost::int64_t seconds = (boost::int64_t) content;
     int ms = (int) ((boost::int64_t(content) - seconds) * 1000);
 
     char buf[128];
-    sprintf( buf, _("% 8.0f seconds %d ms."), content, ms );
+
+    boost::int64_t frames = ( content * fps ) + 1;
+
+    sprintf( buf, _( "Frame %" PRId64 " " ), frames );
     std::string text = buf;
+
+    sprintf( buf, _("% 8.0f seconds %d ms."), content, ms );
+    text += buf;
+
     if ( content > 60.0 )
       {
 	int64_t hours, minutes;
