@@ -1985,13 +1985,14 @@ void ImageBrowser::load( const mrv::LoadList& files,
 			      << N_("'") );
 		}
 	     }
-	     if ( fg && load.audio != "" )
-	     {
-		fg->image()->audio_file( load.audio.c_str() );
-                view()->refresh_audio_tracks();
-	     }
              if ( fg )
              {
+                 if ( load.audio != "" )
+                 {
+                     fg->image()->audio_file( load.audio.c_str() );
+                     view()->refresh_audio_tracks();
+                 }
+
                  CMedia* img = fg->image();
                  GLShapeList& shapes = img->shapes();
                  shapes = load.shapes;
@@ -2001,7 +2002,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
              }
 	  }
 
-	if ( w ) 
+	if ( w )
         {
            progress->step(1);
            fltk::check();
