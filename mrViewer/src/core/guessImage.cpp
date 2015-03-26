@@ -135,7 +135,8 @@ namespace mrv {
     }
 
     if (( strcmp( root + strlen(root) - 4, ".xml" ) == 0 ) ||
-        ( strcmp( root + strlen(root) - 4, ".XML" ) == 0 ) )
+        ( strcmp( root + strlen(root) - 4, ".XML" ) == 0 ) ||
+        ( strcmp( root + strlen(root) - 1, "~" ) == 0 ) )
         return NULL;
 
     char name[1024];
