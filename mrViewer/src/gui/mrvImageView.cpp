@@ -161,8 +161,8 @@ struct ChannelShortcuts
 
 ChannelShortcuts shortcuts[] = {
   { _("Color"), 'c'         },
-  { _("left"),  'c'         },
-  { _("right"), 'c'         },
+  { N_("left"),  'c'         },
+  { N_("right"), 'c'         },
   { _("RGBA"),  'c'         },
   { _("RGB"),   'c'         },
   { _("Red"),   'r'         },
@@ -194,25 +194,45 @@ namespace
    */
   short get_shortcut( const char* channel )
   {
+    static std::string oldChannel;
+
     for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
-	  return shortcuts[i].key;
+          {
+              oldChannel = channel;
+              return shortcuts[i].key;
+          }
       }
 
-    static std::string oldChannel;
     std::string channelName = channel;
+
+    size_t pos2 = channelName.find( "rgb" );
+    if ( pos2 != std::string::npos )
+        return 'c';
+
+    pos2 = channelName.find( "RGB" );
+    if ( pos2 != std::string::npos )
+        return 'c';
+
     size_t pos  = channelName.rfind( '.' );
-    size_t pos2;
     if ( channelName.size() > oldChannel.size() )
     {
        pos2 = channelName.find( oldChannel );
-       if ( pos2 == std::string::npos ) return 0; 
+       if ( pos2 == std::string::npos )
+       {
+           oldChannel = channelName;
+           return 0;
+       } 
     }
     else
     {
        pos2 = oldChannel.find( channelName );
-       if ( pos2 == std::string::npos ) return 0; 
+       if ( pos2 == std::string::npos ) 
+       {
+           oldChannel = channelName;
+           return 0;
+       } 
     }
 
     if ( pos != std::string::npos )
@@ -3865,6 +3885,7 @@ void ImageView::smart_refresh()
  */
 void ImageView::channel( unsigned short c )
 { 
+
   _channel = c;
 
 
@@ -3968,6 +3989,8 @@ void ImageView::channel( unsigned short c )
      if ( fg ) fg->image()->channel( lbl );
      if ( bg ) bg->image()->channel( lbl );
   }
+
+  update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
 
@@ -4270,6 +4293,80 @@ double ImageView::pixel_ratio() const
   return fg->image()->pixel_ratio();
 }
 
+int ImageView::update_shortcuts( const mrv::media& fg,
+                                 const char* channelName )
+{
+
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    uiColorChannel->remove_all();
+
+    CMedia* img = fg->image();
+    stringArray layers = img->layers();
+
+    stringArray::const_iterator i = layers.begin();
+    stringArray::const_iterator e = layers.end();
+
+
+    int v   = -1;
+    int idx = 0;
+    std::set< short > shortcuts;
+
+    std::string root;
+
+    size_t pos = 0;
+
+    if (!channelName) v = 0;
+    else
+    {
+        root = channelName;
+
+        pos = root.rfind('.');
+
+        if ( pos != std::string::npos )
+        {
+            root = root.substr( 0, pos );
+        }
+        else
+        {
+            if ( root == _("Red") || root == _("Green") ||
+                 root == _("Blue") || root == _("Alpha") ||
+                 root == _("Alpha Overlay") ||
+                 root == _("Lumma") ||
+                 root == _("Z") )
+                root = _("Color");
+        }
+    }
+
+    for ( ; i != e; ++i, ++idx )
+    {
+        const std::string& name = (*i).c_str();
+        fltk::Widget* o = uiColorChannel->add( name.c_str(),
+                                               NULL );
+
+
+        if ( name == root )
+        {
+            v = idx;
+        }
+
+        if ( v >= 0 )
+        {
+            short shortcut = get_shortcut( name.c_str() );
+            if ( shortcut && shortcuts.find( shortcut ) == 
+                 shortcuts.end())
+            { 
+                if ( shortcut == 'c' ) _old_channel = idx;
+                o->shortcut( shortcut );
+                shortcuts.insert( shortcut );
+            }
+        }
+
+    }
+
+    if ( v == -1 ) v = 0;
+
+    return v;
+}
 
 /** 
  * Update image channel/layers display
@@ -4277,78 +4374,43 @@ double ImageView::pixel_ratio() const
  */
 void ImageView::update_layers()
 {
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
-  mrv::media fg = foreground();
-  if ( !fg )
+    mrv::media fg = foreground();
+    if ( !fg )
     {
-      uiColorChannel->remove_all();
-      uiColorChannel->add( _("(no image)") );
-      uiColorChannel->label( _("(no image)") );
-      uiColorChannel->value(0);
-      uiColorChannel->redraw();
-      return;
+        uiColorChannel->remove_all();
+        uiColorChannel->add( _("(no image)") );
+        uiColorChannel->label( _("(no image)") );
+        uiColorChannel->value(0);
+        uiColorChannel->redraw();
+        return;
     }
 
-  int ch = uiColorChannel->value();
+    int ch = uiColorChannel->value();
 
-  char* channelName = NULL;
+    char* channelName = NULL;
   
 
-  if ( ch >= 0 && ch < uiColorChannel->children() )
+    if ( ch >= 0 && ch < uiColorChannel->children() )
     {
-      channelName = strdup( uiColorChannel->child(ch)->label() );
+        channelName = strdup( uiColorChannel->child(ch)->label() );
     }
 
-  uiColorChannel->remove_all();
+    int v = update_shortcuts( fg, channelName );
 
-  CMedia* img = fg->image();
-  stringArray layers = img->layers();
+    free( channelName );
 
-  stringArray::const_iterator i = layers.begin();
-  stringArray::const_iterator e = layers.end();
-
-  int v   = -1;
-  int idx = 0;
-  std::set< short > shortcuts;
-
-  if (!channelName) v = 0;
-
-  for ( ; i != e; ++i, ++idx )
-    {
-      const std::string& name = (*i).c_str();
-      fltk::Widget* o = uiColorChannel->add( name.c_str(), NULL );
-
-      if ( channelName && ( name == channelName ) )
-      {
-	 v = idx;
-	 _old_channel = (unsigned short)v;
-      }
-
-      if ( v >= 0 )
-      {
-	 short shortcut = get_shortcut( name.c_str() );
-	 if ( shortcut && shortcuts.find( shortcut ) == shortcuts.end())
-	 { 
-	    o->shortcut( shortcut );
-	    shortcuts.insert( shortcut );
-	 }
-      }
-
-    }
-
-  if ( v == -1 ) v = 0;
-
-  free( channelName );
-
-  if ( v < uiColorChannel->children() )
+    if ( v < uiColorChannel->children() )
     {
         channel( (unsigned short) v );
     }
 
-  uiColorChannel->redraw();
+    uiColorChannel->redraw();
 
-  img->image_damage( img->image_damage() & ~CMedia::kDamageLayers );
+    CMedia* img = fg->image();
+
+    img->image_damage( img->image_damage() & ~CMedia::kDamageLayers );
 
 }
 
@@ -4361,84 +4423,84 @@ void ImageView::update_layers()
 void ImageView::foreground( mrv::media fg )
 {
 
-  mrv::media old = foreground();
-  if ( old == fg ) return;
+    mrv::media old = foreground();
+    if ( old == fg ) return;
 
 
 
-  delete_timeout();
+    delete_timeout();
 
-  CMedia* img = NULL;
-  if ( fg ) 
+    CMedia* img = NULL;
+    if ( fg ) 
     {
-      img = fg->image();
+        img = fg->image();
       
-      double fps = img->fps();
-      timeline()->fps( fps );
-      uiMain->uiFrame->fps( fps );
-      uiMain->uiStartFrame->fps( fps );
-      uiMain->uiEndFrame->fps( fps );
-      uiMain->uiFPS->value( img->play_fps() );
+        double fps = img->fps();
+        timeline()->fps( fps );
+        uiMain->uiFrame->fps( fps );
+        uiMain->uiStartFrame->fps( fps );
+        uiMain->uiEndFrame->fps( fps );
+        uiMain->uiFPS->value( img->play_fps() );
       
-      img->volume( _volume );
+        img->volume( _volume );
 
     }
 
-  _fg = fg;
+    _fg = fg;
 
-  if ( fg ) 
+    if ( fg ) 
     {
-      CMedia* img = fg->image();
+        CMedia* img = fg->image();
       
-      if ( img )
-      {
+        if ( img )
+        {
 	 
-	 // Per session gamma: requested by Willa
-	 if ( img->gamma() > 0.0f ) gamma( img->gamma() );
+            // Per session gamma: requested by Willa
+            if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
-	 refresh_fstop();
+            refresh_fstop();
 	 
-	 if ( img->width() > 160 && !fltk_main()->border() ) {
-            fit_image();
-         }
+            if ( img->width() > 160 && !fltk_main()->border() ) {
+                fit_image();
+            }
 
-         if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-             fit_image();
+            if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+                fit_image();
 
-	 img->image_damage( img->image_damage() | CMedia::kDamageContents |
-                            CMedia::kDamageLut | CMedia::kDamage3DData );
+            img->image_damage( img->image_damage() | CMedia::kDamageContents |
+                               CMedia::kDamageLut | CMedia::kDamage3DData );
 
-	 bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
-	 if ( dynamic_cast< stubImage* >( img ) || reload )
-	 {
-	    create_timeout( 0.2 );
-	 }
-      }
+            bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
+            if ( dynamic_cast< stubImage* >( img ) || reload )
+            {
+                create_timeout( 0.2 );
+            }
+        }
     }
 
 
-  refresh_audio_tracks();
+    refresh_audio_tracks();
 
-  // If this is the first image loaded, resize window to fit it
-  if ( !old ) {
+    // If this is the first image loaded, resize window to fit it
+    if ( !old ) {
 
-    posX = fltk_main()->x();
-    posY = fltk_main()->y();
+        posX = fltk_main()->x();
+        posY = fltk_main()->y();
 
-    fltk::RadioButton* r = (fltk::RadioButton*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
-    if ( r->value() == 1 )
-      {
-	resize_main_window();
-      }
-  }
+        fltk::RadioButton* r = (fltk::RadioButton*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
+        if ( r->value() == 1 )
+        {
+            resize_main_window();
+        }
+    }
 
-  update_layers();
+    update_layers();
 
-  update_image_info();
-  update_color_info( fg );
+    update_image_info();
+    update_color_info( fg );
 
 
-  redraw();
+    redraw();
 }
 
 

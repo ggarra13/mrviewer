@@ -472,6 +472,8 @@ class server;
     int  keyDown(unsigned int);
     int  keyUp(unsigned int);
 
+      int update_shortcuts( const mrv::media& fg, const char* channelName );
+
        void draw_text( unsigned char r, unsigned char g, unsigned char b,
 		       double x, double y, const char* text );
 		       
