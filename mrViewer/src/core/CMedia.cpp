@@ -1104,7 +1104,7 @@ void CMedia::alpha_layers()
 void CMedia::rgb_layers()
 {
     SCOPED_LOCK( _mutex );
-    _layers.insert( _layers.begin(), _("Color") );
+    _layers.push_back( _("Color") );
     _layers.push_back( _("Red") );
     _layers.push_back( _("Green") );
     _layers.push_back( _("Blue") );
