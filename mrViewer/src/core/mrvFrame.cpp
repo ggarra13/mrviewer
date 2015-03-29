@@ -427,6 +427,7 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
        {
           Pixel p = this->pixel( unsigned( x*fx+.5 ), 
                                  unsigned( y*fy+.5 ) );
+          p.clamp();
           scaled->pixel( x, y, p );
        }
     }
