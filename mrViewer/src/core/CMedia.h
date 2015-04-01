@@ -48,8 +48,7 @@
 #include <boost/shared_ptr.hpp>
 #include <boost/shared_array.hpp>
 #include <boost/thread/thread.hpp>
-#include <boost/thread/condition.hpp>
-#include <boost/thread/barrier.hpp>
+#include <boost/thread/condition_variable.hpp>
 #include <boost/thread/recursive_mutex.hpp>
 
 #include <ImfChromaticities.h>
@@ -61,9 +60,9 @@
 #include "core/mrvPacketQueue.h"
 #include "core/mrvImagePixel.h"
 #include "core/mrvRectangle.h"
-#include "core/mrvBarrier.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvOS.h"
+#include "core/mrvBarrier.h"
 #include "core/mrvACES.h"
 #include "core/mrvI8N.h"
 
@@ -95,13 +94,13 @@ class ImageOpts;
 
 class CMedia
 {
-  public:  
+  public:
     typedef mrv::ImagePixel    Pixel;
     typedef  std::map< std::string, std::string > Attributes;
 
-    typedef boost::recursive_mutex Mutex;
-    typedef boost::condition       Condition;
-    typedef   mrv::barrier         Barrier;
+    typedef boost::recursive_mutex              Mutex;
+    typedef boost::condition_variable_any       Condition;
+    typedef mrv::barrier                        Barrier;
 
     typedef std::map< int, mrv::image_type_ptr > PixelBuffers;
     typedef std::map< std::string, int > LayerBuffers;
@@ -656,6 +655,7 @@ class CMedia
 
     // Is playback aborted?
     bool aborted() { return _aborted; }
+
 
     /// VCR stop sequence
     virtual void stop();

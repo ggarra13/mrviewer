@@ -1542,8 +1542,8 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
 
     newm->position( m->position() );
 
-    mrv::CMedia::Mutex& vpm = newImg->video_mutex();
-    SCOPED_LOCK( vpm );
+    // mrv::CMedia::Mutex& vpm = newImg->video_mutex();
+    // SCOPED_LOCK( vpm );
     newImg->frame( frame );
     newImg->default_icc_profile();
     newImg->default_rendering_transform();
@@ -1811,15 +1811,10 @@ int ImageBrowser::value() const
 	img->last_frame( last );
       }
 
-    {
-       mrv::CMedia::Mutex& vpm = img->video_mutex();
-       SCOPED_LOCK(vpm);
-
-       if ( img->has_video() || img->has_audio() )
-           img->fetch( img->first_frame() );
-       else
-           img->find_image( img->first_frame() );
-    }
+    if ( img->has_video() || img->has_audio() )
+        img->fetch( img->first_frame() );
+    else
+        img->find_image( img->first_frame() );
 
     
     img->default_icc_profile();
