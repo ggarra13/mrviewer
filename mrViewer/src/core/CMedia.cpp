@@ -69,7 +69,6 @@ namespace fs = boost::filesystem;
 #include "mrvPlayback.h"
 #include "mrvFrameFunctors.h"
 #include "mrvThread.h"
-#include "mrvBarrier.h"
 #include "mrvI8N.h"
 #include "mrvOS.h"
 #include "mrvTimer.h"
@@ -1577,7 +1576,9 @@ void CMedia::stop()
   // Notify loop barrier, to exit any wait on a loop
   //
   DBG( name() << " Notify all loop barrier" );
-  if ( _loop_barrier ) _loop_barrier->notify_all();
+  if ( _loop_barrier ) {
+      _loop_barrier->notify_all();
+  }
 
   // Notify packets, to make sure that audio thread exits any wait lock
   // This needs to be done even if no audio is playing, as user might

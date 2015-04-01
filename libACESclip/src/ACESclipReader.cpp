@@ -98,9 +98,9 @@ void ACESclipReader::parse_V3( const char* v3, float out[3]  )
 {
     const char* s = v3;
     char* e;
-    out[0] = strtod_l( s, &e, loc ); s = e;
-    out[1] = strtod_l( s, &e, loc ); s = e;
-    out[2] = strtod_l( s, &e, loc );
+    out[0] = (float) strtod_l( s, &e, loc ); s = e;
+    out[1] = (float) strtod_l( s, &e, loc ); s = e;
+    out[2] = (float) strtod_l( s, &e, loc );
 }
 
 /** 

@@ -156,7 +156,7 @@ SET( SOURCES
   # core/mrvScale.cpp
   core/mrvString.cpp
   core/mrvTimer.cpp
-  core/mrvBarrier.cpp
+  # core/mrvBarrier.cpp
   core/mrvACES.cpp
   # core/generic/mrEvent.cpp
 
