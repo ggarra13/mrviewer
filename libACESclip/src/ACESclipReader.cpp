@@ -107,7 +107,8 @@ void ACESclipReader::parse_V3( const char* v3, float out[3]  )
  * Constructor
  * 
  */
-ACESclipReader::ACESclipReader()
+ACESclipReader::ACESclipReader() :
+graderef_status( kApplied )
 {
 #ifdef _WIN32
     // The following line should in theory work, but it doesn't
@@ -119,7 +120,6 @@ ACESclipReader::ACESclipReader()
     memset( &empty, 0, sizeof(locale_t) );
     loc = newlocale( LC_ALL, "en_US.UTF-8", empty );
 #endif
-
 }
 
 ACESclipReader::~ACESclipReader()
