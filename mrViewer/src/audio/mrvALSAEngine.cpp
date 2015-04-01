@@ -84,8 +84,8 @@ namespace mrv {
 	while ( card > -1 )
 	  {
 	    char* psz_card_name = NULL;
-	    snd_ctl_t*      p_ctl;
-	    snd_pcm_info_t* pcm_info;
+	    snd_ctl_t*      p_ctl = NULL;
+	    snd_pcm_info_t* pcm_info = NULL;
 	    int pcm_device = -1;
 
 	    char psz_dev[64];
