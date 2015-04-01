@@ -33,21 +33,23 @@
 #ifdef DEBUG_MUTEX
 
 
-#define SCOPED_LOCK(x) \
-       cerr << "Lock   " << #x << " " << __FILE__ << " " << __LINE__ << endl; \
-       Mutex::scoped_lock lk_##x(x);				\
-       cerr << "Locked " << #x << " " << __FILE__ << " " << __LINE__ << endl;
+#define SCOPED_LOCK(x)                                                    \
+   std::cerr << "Lock   " << #x << " " << __FILE__ << " " << __LINE__     \
+             << std::endl;                                                \
+       Mutex::scoped_lock lk_##x(x);
 
-#define CONDITION_WAIT( cond, x )  \
-       cerr << "Wait   " << #x << " " << __FILE__ << " " << __LINE__ << endl; \
-       cond.wait(lk_##x); \
-       cerr << "Got    " << #x << " " << __FILE__ << " " << __LINE__ << endl;
+#define CONDITION_WAIT( cond, x ) if (1) {                                \
+       std::cerr << "Wait   " << #x << " " << __FILE__ << " " << __LINE__ \
+                 << std::endl;                                            \
+       cond.wait(lk_##x);                                                 \
+       std::cerr << "Got    " << #x << " " << __FILE__ << " " << __LINE__ \
+                 << std::endl; } 
 
 
 #else
 
 
-#define SCOPED_LOCK(mutex) boost::recursive_mutex::scoped_lock lk_##mutex(mutex)
+#define SCOPED_LOCK(mutex) Mutex::scoped_lock lk_##mutex(mutex)
 #define CONDITION_WAIT( cond, mutex )   cond.wait( lk_##mutex );
 
 #endif

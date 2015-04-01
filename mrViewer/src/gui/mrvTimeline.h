@@ -49,6 +49,9 @@ namespace mrv
 
   class Timeline : public fltk::Slider
   {
+    public:
+      typedef CMedia::Mutex   Mutex;
+
   public:
     enum DisplayMode
       {

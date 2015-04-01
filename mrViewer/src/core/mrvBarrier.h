@@ -15,59 +15,77 @@
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-/**
- * @file   mrvBarrier.h
- * @author gga
- * @date   Fri Feb 22 22:48:02 2008
- * 
- * @brief  
- * 
- * 
- */
-
+// Copyright (C) 2002-2003
+// David Moore, William E. Kempf
+// Copyright (C) 2007-8 Anthony Williams
+//
+// Distributed under the Boost Software License, Version 1.0. (See accompanying 
+// file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 
 #ifndef mrvBarrier_h
 #define mrvBarrier_h
 
-#include <boost/thread/detail/config.hpp>
+#include "mrvThread.h"
 
-#include <boost/thread/mutex.hpp>
-#include <boost/thread/condition.hpp>
+namespace mrv
+{
 
-namespace mrv {
-
-  class barrier
-  {
+class barrier
+{
   public:
-    barrier(unsigned int count);
-    ~barrier();
-    
-    bool wait();
+    typedef boost::mutex                   Mutex;
+    typedef boost::condition_variable  Condition;
 
-    inline unsigned int used() { return m_threshold - m_count; }
+  public:
+    barrier(unsigned int count)
+    : m_threshold(count), m_count(count), m_generation(0)
+    {
+        if (count == 0)
+            boost::throw_exception(std::invalid_argument("count cannot be zero."));
+    }
 
-      inline unsigned int count() { return m_threshold; }
+    ~barrier()
+    {
+        notify_all();
+    }
 
-    void count( unsigned int c );
+    inline unsigned threshold()  const { return m_threshold; }
+    inline unsigned generation() const { return m_generation; }
+    inline unsigned count()      const { return m_count; }
+    inline unsigned used()       const { return m_threshold - m_count; }
 
-    void notify_all();
-    
-  private:
-    boost::mutex m_mutex;
-    // disable warnings about non dll import
-// see: http://www.boost.org/more/separate_compilation.html#dlls
-#ifdef BOOST_MSVC
-#   pragma warning(push)
-#   pragma warning(disable: 4251 4231 4660 4275)
-#endif
-    boost::condition m_cond;
-#ifdef BOOST_MSVC
-#   pragma warning(pop)
-#endif
+    inline void notify_all()
+    {
+        SCOPED_LOCK( m_mutex );
+        ++m_generation;
+        m_cond.notify_all(); // sigh, all for this
+    }
+        
+    inline bool wait()
+    {
+        SCOPED_LOCK( m_mutex );
+        unsigned int gen = m_generation;
+        
+        if (--m_count == 0)
+        {
+            m_generation++;
+            m_count = m_threshold;
+            m_cond.notify_all();
+            return true;
+        }
+
+        while (gen == m_generation)
+            CONDITION_WAIT( m_cond, m_mutex )
+        return false;
+    }
+
+  protected:
+    Mutex        m_mutex;
+    Condition    m_cond;
     unsigned int m_threshold;
     unsigned int m_count;
     unsigned int m_generation;
-  };
+};
 
 }   // namespace mrv
 
