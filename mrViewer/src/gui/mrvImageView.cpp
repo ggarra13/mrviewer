@@ -2365,19 +2365,20 @@ std::string float_printf( float x )
 {
   if ( isnan(x) )
     {
-        static std::string empty( _("   NAN  ") );
-      return empty;
+        std::string empty( _("   NAN  ") );
+        return empty;
     }
   else if ( !isfinite(x) )
   {
-      static std::string inf( _("  INF.  ") );
+      std::string inf( _("  INF.  ") );
       return inf;
   }
   else
     {
       char buf[ 64 ];
       sprintf( buf, " %7.4f", x );
-      return buf + strlen(buf) - 8;
+      buf[strlen(buf)-8] = 0;
+      return buf;
     }
 }
 
