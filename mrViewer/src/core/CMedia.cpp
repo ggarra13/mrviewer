@@ -1518,6 +1518,16 @@ void CMedia::play(const CMedia::Playback dir,
       bool valid_a = valid_audio();
       // If there's at least one valid subtitle stream, create subtitle thread
       bool valid_s = valid_subtitle();
+
+      delete _loop_barrier;
+      _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
+
+      // If a single frame, queue it up for playback loop.
+      if ( !is_sequence() && !has_video() && has_picture() )
+	{
+            frame( _frame );
+	}
+
       if ( valid_v )
       {
           video_data = new PlaybackData( *data );
@@ -1548,7 +1558,6 @@ void CMedia::play(const CMedia::Playback dir,
       // If something was valid, create decode thread
       if ( valid_a || valid_v || valid_s )
       {
-          _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
           _threads.push_back( new boost::thread( 
                               boost::bind( mrv::decode_thread, 
                                            data ) ) );

@@ -249,6 +249,7 @@ namespace {
 
 namespace mrv {
 
+typedef CMedia::Mutex Mutex;
 
   Element::Element( mrv::media& m ) :
   fltk::Item( m->image()->fileroot() ),
@@ -590,7 +591,7 @@ mrv::ImageView* ImageBrowser::view() const
 
 mrv::EDLGroup* ImageBrowser::edl_group() const
 {
-    if ( uiMain == NULL ) return NULL;
+    if ( uiMain == NULL || uiMain->uiEDLWindow == NULL ) return NULL;
    return uiMain->uiEDLWindow->uiEDLGroup;
 }
 
@@ -1542,8 +1543,8 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
 
     newm->position( m->position() );
 
-    // mrv::CMedia::Mutex& vpm = newImg->video_mutex();
-    // SCOPED_LOCK( vpm );
+    mrv::CMedia::Mutex& vpm = newImg->video_mutex();
+    SCOPED_LOCK( vpm );
     newImg->frame( frame );
     newImg->default_icc_profile();
     newImg->default_rendering_transform();
@@ -2828,45 +2829,50 @@ void ImageBrowser::load( const stringArray& files,
 
      frame( tframe );
 
-    ImageView::Playback playback = view()->playback();
+     ImageView::Playback playback = view()->playback();
 
-    if ( timeline()->edl() )
-      {
-	// Check if we need to change to a new sequence based on frame
+     if ( timeline()->edl() )
+     {
+         // Check if we need to change to a new sequence based on frame
 	 mrv::media m = timeline()->media_at( tframe );
 	 if (! m ) return;
 
-	CMedia* img = m->image();
-	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
+         CMedia* img = m->image();
+         DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
+         CMedia::Mutex& mx = img->video_mutex();
+         SCOPED_LOCK( mx );
 
-	if ( f < timeline()->minimum() )
-        {
-            f = int64_t(timeline()->maximum() - timeline()->minimum()) - f + 1;
-        }
-	else if ( f > timeline()->maximum() )
-        {
-	    f = int64_t(timeline()->minimum() - timeline()->maximum()) + f - 1;
-        }
+         if ( f < timeline()->minimum() )
+         {
+             f = int64_t(timeline()->maximum() - timeline()->minimum()) - f + 1;
+         }
+         else if ( f > timeline()->maximum() )
+         {
+             f = int64_t(timeline()->minimum() - timeline()->maximum()) + f - 1;
+         }
+         
+         
+         DBG( "seek f: " << f );
+         
+         mrv::media fg = view()->foreground();
+         
+         if ( m != fg && fg )
+         {
+             CMedia::Mutex& mtx = fg->image()->video_mutex();
+             SCOPED_LOCK( mtx );
 
-	
-	DBG( "seek f: " << f );
-        
-        mrv::media fg = view()->foreground();
-
-	if ( m != fg && fg )
-	  {
 	     if ( playback != ImageView::kStopped )
                  view()->stop();
-
+             
 	     size_t i = timeline()->index( f );
-
+             
 	     f = timeline()->global_to_local( f );
-
+             
 	     DBG( "seek f local1: " << f );
 
 
-             // if ( ! img->stopped() ) img->stop();
+             //if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
              if ( i < children() )
@@ -2879,7 +2885,7 @@ void ImageBrowser::load( const stringArray& files,
 
 	     DBG( "seek f local2: " << f );
 
-             if ( ! img->stopped() ) img->stop();
+             //if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 	  }
 
@@ -2890,7 +2896,11 @@ void ImageBrowser::load( const stringArray& files,
 	   if ( bg )
 	   {
 	      img = bg->image();
-	      if (!img->stopped()) img->stop();
+
+              CMedia::Mutex& mtx = img->video_mutex();
+              SCOPED_LOCK( mtx );
+
+	      //if (!img->stopped()) img->stop();
 
 	      bg = reel->media_at( tframe );
 
@@ -2899,7 +2909,7 @@ void ImageBrowser::load( const stringArray& files,
                   f = reel->global_to_local( tframe );
 
                   img = bg->image();
-                  if ( !img->stopped() ) img->stop();
+                  //if ( !img->stopped() ) img->stop();
                   img->seek( f );
 	      }
 	   }
@@ -2915,7 +2925,10 @@ void ImageBrowser::load( const stringArray& files,
 	if (!fg) return;
 	
 	CMedia* img = fg->image();
-        if ( !img->stopped() ) img->stop();
+
+        CMedia::Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
+        //if ( !img->stopped() ) img->stop();
 	img->seek( f );
 
 	mrv::media bg = view()->background();
@@ -2928,7 +2941,7 @@ void ImageBrowser::load( const stringArray& files,
 
 	   img = bg->image();
 
-           if ( !img->stopped() ) img->stop();
+           //if ( !img->stopped() ) img->stop();
 
            f += img->first_frame();
 	   img->seek( f );
@@ -2953,6 +2966,8 @@ void ImageBrowser::load( const stringArray& files,
     if ( fg )
       {
 	CMedia* img = fg->image();
+        CMedia::Mutex& mtx = img->video_mutex();
+        SCOPED_LOCK( mtx );
 
 	if ( timeline()->edl() )
 	  {
