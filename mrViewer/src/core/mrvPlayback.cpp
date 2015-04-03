@@ -403,9 +403,6 @@ void audio_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   bool ok = barrier->wait();
 
    bool fg = data->fg;
 
@@ -471,6 +468,8 @@ void audio_thread( PlaybackData* data )
 
                   CMedia::Barrier* barrier = img->loop_barrier();
                   // Wait until all threads loop and decode is restarted
+                  assert( barrier != NULL );
+                  if ( !barrier ) return;
                   barrier->wait();
 
                   DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
@@ -480,6 +479,7 @@ void audio_thread( PlaybackData* data )
                   EndStatus end = handle_loop( frame, step, img, fg,
                                                uiMain, 
                                                reel, timeline, status );
+                  if ( end == kEndNextImage ) return;
 
                   DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
                   continue;
@@ -539,9 +539,6 @@ void subtitle_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   barrier->wait();
 
 
    bool fg = data->fg;
@@ -594,12 +591,15 @@ void subtitle_thread( PlaybackData* data )
 
 	    CMedia::Barrier* barrier = img->loop_barrier();
 	    // Wait until all threads loop and decode is restarted
+            if ( !barrier ) return;
+            assert( barrier != NULL );
 	    barrier->wait();
 
             if ( img->stopped() ) continue;
 
             EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
                                          reel, timeline, status );
+            if ( end == kEndNextImage ) return;
 	    continue;
 	  }
 	
@@ -630,16 +630,6 @@ void video_thread( PlaybackData* data )
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
-
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   bool ok = barrier->wait();
-   if ( ok )
-     LOG_INFO( img->name() << " BARRIER VIDEO START PASS gen: " 
-	       << barrier->generation() 
-	       << " count: " << barrier->count() 
-	       << " threshold: " << barrier->threshold() 
-	       << " used: " << barrier->used() );
 
 
    bool fg = data->fg;
@@ -738,19 +728,9 @@ void video_thread( PlaybackData* data )
 	    {
 
                CMedia::Barrier* barrier = img->loop_barrier();
-               // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
-               //           << barrier->generation() 
-               //           << " count: " << barrier->count() 
-               //           << " threshold: " << barrier->threshold() 
-               //           << " used: " << barrier->used() );
                // Wait until all threads loop and decode is restarted
-               bool ok = barrier->wait();
-	       if ( ok )
-		 LOG_INFO( img->name() << " BARRIER VIDEO LOCK PASS gen: " 
-			   << barrier->generation() 
-			   << " count: " << barrier->count() 
-			   << " threshold: " << barrier->threshold() 
-			   << " used: " << barrier->used() );
+               assert( barrier != NULL );
+               barrier->wait();
 
                DBG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
                     << img->stopped() );
@@ -761,6 +741,7 @@ void video_thread( PlaybackData* data )
 
                EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
                                             reel, timeline, status );
+               if ( end == kEndNextImage ) return;
 
                DBG( img->name() << " VIDEO LOOP END frame: " << frame 
                     << " step " << step );
@@ -885,16 +866,6 @@ void decode_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   bool ok = barrier->wait();
-   if ( ok )
-     LOG_INFO( img->name() << " BARRIER DECODE START gen: " 
-	       << barrier->generation() 
-	       << " count: " << barrier->count() 
-	       << " threshold: " << barrier->threshold() 
-	       << " used: " << barrier->used() );
-
 
    bool fg = data->fg;
 
@@ -923,10 +894,12 @@ void decode_thread( PlaybackData* data )
 #endif
 
 
+   /*
    if ( !img->has_audio() && !img->has_video() && !img->is_sequence() )
    {
        img->frame( frame );
    }
+   */
 
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
@@ -948,20 +921,10 @@ void decode_thread( PlaybackData* data )
       {
 
           CMedia::Barrier* barrier = img->loop_barrier();
-          // LOG_INFO( img->name() << " BARRIER DECODE WAIT      gen: " 
-          //           << barrier->generation() 
-          //           << " count: " << barrier->count() 
-          //           << " threshold: " << barrier->threshold() 
-          //           << " used: " << barrier->used() );
           // Wait until all threads loop and decode is restarted
-          bool ok = barrier->wait();
-	  if ( ok )
-	    LOG_INFO( img->name() << " BARRIER DECODE LOCK PASS gen: " 
-		      << barrier->generation() 
-		      << " count: " << barrier->count() 
-		      << " threshold: " << barrier->threshold() 
-		      << " used: " << barrier->used() );
-
+          assert( barrier != NULL );
+          if ( !barrier ) return;
+	  barrier->wait();
 
          // Do the looping, taking into account ui state
          //  and return new frame and step.
@@ -972,6 +935,7 @@ void decode_thread( PlaybackData* data )
 
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
+         if ( end == kEndNextImage ) return;
       }
 
 
