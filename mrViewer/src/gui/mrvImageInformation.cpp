@@ -1460,7 +1460,7 @@ void ImageInformation::clear_callback_data()
 
     char buf[128];
 
-    boost::int64_t frames = ( content * fps ) + 1;
+    boost::int64_t frames = boost::int64_t( content * fps ) + 1;
 
     sprintf( buf, _( "Frame %" PRId64 " " ), frames );
     std::string text = buf;
