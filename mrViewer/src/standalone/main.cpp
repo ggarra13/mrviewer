@@ -346,20 +346,26 @@ int main( const int argc, char** argv )
       ok = -1;
     }
 
-  if(fs::exists(lockfile))
+  if( fs::exists(lockfile) )
   {
       try {
 	 if ( ! fs::remove( lockfile ) )
 	    LOG_ERROR( "Could not remove lock file!" );
       }
-      catch( fs::filesystem_error& e )
+      catch( const fs::filesystem_error& e )
       {
-	 LOG_ERROR( "Filesystem error: " << e.what() );
+          LOG_ERROR( "Filesystem error: " << e.what() );
+      }
+      catch( const boost::exception& e )
+      {
+          LOG_ERROR( "Boost exception: " << boost::diagnostic_information(e) );
+      }
+      catch( ... )
+      {
+          LOG_ERROR( "Unknown error" );
       }
   }
 
-  // mrv::checkin_license();
-  // mrv::close_license();
 
   return ok;
 }
