@@ -558,6 +558,7 @@ static const float kMaxZoom = 32.f;
 
 namespace mrv {
 
+typedef boost::recursive_mutex              Mutex;
 
 static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -764,16 +765,18 @@ void ImageView::stop_playback()
 {
 
   mrv::media fg = foreground();
-  if ( fg && !fg->image()->stopped()) fg->image()->stop();
+  if ( fg ) fg->image()->stop();
 
   mrv::media bg = background();
-  if ( bg && !bg->image()->stopped()) bg->image()->stop();
+  if ( bg ) bg->image()->stop();
 
 }
 
 
 ImageView::~ImageView()
 {
+   delete_timeout();
+
    ParserList::iterator i = _clients.begin();
    ParserList::iterator e = _clients.end();
    for ( ; i != e; ++i )
@@ -786,15 +789,17 @@ ImageView::~ImageView()
    // make sure to stop any playback
    stop_playback();
 
-   delete_timeout();
+   foreground( mrv::media() );
+   background( mrv::media() );
+
    delete _engine; _engine = NULL;
 
    uiMain = NULL;
-
 }
 
 fltk::Window* ImageView::fltk_main()
 { 
+   assert( uiMain );
    assert( uiMain->uiMain );
    if ( !uiMain ) return NULL;
    return uiMain->uiMain; 
@@ -5167,12 +5172,6 @@ void ImageView::thumbnails()
 void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
-
-   mrv::media m = foreground();
-   if ( m ) m->image()->stop();
-
-   m = background();
-   if ( m ) m->image()->stop();
 
   _playback = kStopped;
   _last_fps = 0.0;

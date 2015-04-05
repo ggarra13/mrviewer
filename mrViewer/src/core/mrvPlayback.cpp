@@ -398,11 +398,11 @@ void audio_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-   assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
 
+   mrv::ViewerUI*     uiMain   = data->uiMain;
+   assert( uiMain != NULL );
 
    bool fg = data->fg;
 
@@ -425,13 +425,18 @@ void audio_thread( PlaybackData* data )
    mrv::Reel   reel = browser->reel_at( idx );
    if (!reel) return;
 
+   mrv::Timer timer;
+
+
+   CMedia::Barrier* barrier = img->loop_barrier();
+   // Wait until all threads loop and decode is restarted
+   assert( barrier != NULL );
+   barrier->wait();
+
 #ifdef DEBUG_THREADS
    cerr << "ENTER " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << endl;
 #endif
-   mrv::Timer timer;
-
-
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
@@ -534,12 +539,11 @@ void subtitle_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-
    CMedia* img = data->image;
    assert( img != NULL );
 
 
+   mrv::ViewerUI*     uiMain   = data->uiMain;
 
    bool fg = data->fg;
 
@@ -558,10 +562,15 @@ void subtitle_thread( PlaybackData* data )
 
     mrv::Timer timer;
 
+   CMedia::Barrier* barrier = img->loop_barrier();
+   // Wait until all threads loop and decode is restarted
+   assert( barrier != NULL );
+   barrier->wait();
+
+
 #ifdef DEBUG_THREADS
     cerr << "ENTER SUBTITLE THREAD " << img->name() << endl;
 #endif
-
 
     while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
       {
@@ -626,11 +635,12 @@ void video_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-   assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
 
+
+   mrv::ViewerUI*     uiMain   = data->uiMain;
+   assert( uiMain != NULL );
 
    bool fg = data->fg;
 
@@ -649,15 +659,21 @@ void video_thread( PlaybackData* data )
    int64_t frame        = img->frame();
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
+
+   mrv::Timer timer;
+   double fps = img->play_fps();
+
+   CMedia::Barrier* barrier = img->loop_barrier();
+   // Wait until all threads loop and decode is restarted
+   assert( barrier != NULL );
+   barrier->wait();
+
 #ifdef DEBUG_THREADS
    cerr << "ENTER " << (fg ? "FG" : "BG") << " VIDEO THREAD " << img->name() << " stopped? " << img->stopped()
 	<< " frame " << frame << " timeline frame " << timeline->value() 
         << endl;
 #endif
 
-
-   mrv::Timer timer;
-   double fps = img->play_fps();
    timer.setDesiredFrameRate( fps );
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
@@ -673,47 +689,6 @@ void video_thread( PlaybackData* data )
        CMedia::DecodeStatus status;
        status = img->decode_video( frame );
 
-
-#if 0
-      if ( img->is_sequence() )
-      {
-
-          boost::int64_t last = boost::int64_t( timeline->maximum() );
-          boost::int64_t first = boost::int64_t( timeline->minimum() );
-
-
-          if ( reel->edl )
-          {
-              boost::int64_t s = reel->location(img);
-              boost::int64_t e = s + img->duration() - 1;
-
-              if ( e < last )  last = e;
-              if ( s > first ) first = s;
-
-              last = reel->global_to_local( last );
-              first = reel->global_to_local( first );
-          }
-          else
-          {
-              last  += ( img->first_frame() - img->start_frame() );
-              first += ( img->first_frame() - img->start_frame() );
-
-              if ( img->last_frame() < last )
-                  last = img->last_frame();
-              if ( img->first_frame() > first )
-                  first = img->first_frame();
-          }
-
-          if ( frame > last )
-          {
-              status = CMedia::kDecodeLoopEnd;
-          }
-          else if ( frame < first )
-          {
-              status = CMedia::kDecodeLoopStart;
-          }
-      }
-#endif
 
       switch( status )
       {
@@ -826,15 +801,11 @@ void video_thread( PlaybackData* data )
 
       bool ok = img->find_image( frame );
 
-      if ( !img->has_audio() && reel->edl )
+      if ( !img->has_audio() && reel->edl && fg )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
-
-
-	 if ( fg )
-	 {
+         if ( view->playback() != ImageView::kStopped )
              view->frame( f );
-	 }
       }
 
 
@@ -859,20 +830,21 @@ void decode_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-   assert( uiMain != NULL );
-
 
    CMedia* img = data->image;
    assert( img != NULL );
 
+   mrv::ViewerUI*     uiMain   = data->uiMain;
+   assert( uiMain != NULL );
 
    bool fg = data->fg;
 
    mrv::ImageView*      view = uiMain->uiView;
    mrv::Timeline*      timeline = uiMain->uiTimeline;
    mrv::ImageBrowser*   browser = uiMain->uiReelWindow->uiBrowser;
+   assert( view     != NULL );
    assert( timeline != NULL );
+   assert( browser  != NULL );
 
    // delete the data (we don't need it anymore)
    delete data;
@@ -888,18 +860,16 @@ void decode_thread( PlaybackData* data )
 
    int64_t frame = img->dts();
 
+
+   CMedia::Barrier* barrier = img->loop_barrier();
+   // Wait until all threads loop and decode is restarted
+   assert( barrier != NULL );
+   barrier->wait();
+
 #ifdef DEBUG_THREADS
    cerr << "ENTER " << (fg ? "FG" : "BG") << " DECODE THREAD " << img->name() << " stopped? " << img->stopped() << " frame " << frame 
 	<< " step " << step << endl;
 #endif
-
-
-   /*
-   if ( !img->has_audio() && !img->has_video() && !img->is_sequence() )
-   {
-       img->frame( frame );
-   }
-   */
 
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )

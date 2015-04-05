@@ -423,8 +423,8 @@ void CMedia::wait_for_threads()
   thread_pool_t::iterator e = _threads.end();
   for ( ;i != e; ++i )
     {
-      (*i)->join();
-      delete *i;
+        (*i)->join();
+        delete *i;
     }
 
   _threads.clear();
@@ -436,6 +436,7 @@ void CMedia::wait_for_threads()
  */
 CMedia::~CMedia()
 {
+    std::cerr << "~Cmedia " << name() << std::endl;
   SCOPED_LOCK( _mutex);
   SCOPED_LOCK( _audio_mutex);
 
@@ -1467,7 +1468,7 @@ void CMedia::play(const CMedia::Playback dir,
 		  bool fg )
 {
 
-    if ( dir == _playback && _threads.empty() ) {
+    if ( dir == _playback && !_threads.empty() ) {
         return;
     }
 
@@ -1573,11 +1574,13 @@ void CMedia::play(const CMedia::Playback dir,
 
 }
 
+
 /// VCR stop sequence
 void CMedia::stop()
 {
 
     if ( _playback == kStopped && _threads.empty() ) return;
+
 
   _playback = kStopped;
 
@@ -1603,7 +1606,6 @@ void CMedia::stop()
   wait_for_threads();
   DBG( name() << " Waited for threads" );
 
-
   // Clear barrier
   DBG( name() << " Clear barrier" );
   delete _loop_barrier; _loop_barrier = NULL;
@@ -1611,6 +1613,7 @@ void CMedia::stop()
   DBG( name() << " Clear packets" );
   // Clear any audio/video/subtitle packets
   clear_packets();
+
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
