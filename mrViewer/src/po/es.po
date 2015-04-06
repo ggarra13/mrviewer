@@ -2,12 +2,12 @@
 # Copyright (C) YEAR "Film Aura, LLC"
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-05 11:27-0300\n"
+"POT-Creation-Date: 2015-04-06 20:15-0300\n"
 "PO-Revision-Date: 2015-04-03 17:02-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2120
+#: core/CMedia.cpp:2119
 msgid ""
 "\n"
 "\n"
@@ -141,7 +141,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia.cpp:2121
+#: core/CMedia.cpp:2120
 msgid " for stream #"
 msgstr " para flujo #"
 
@@ -165,7 +165,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2480
+#: core/CMedia.cpp:2479
 msgid " is missing."
 msgstr " está faltante."
 
@@ -318,7 +318,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2121
+#: core/CMedia.cpp:2120
 msgid ", type "
 msgstr ", tipo "
 
@@ -826,7 +826,7 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1093 core/CMedia.cpp:1152 gui/mrvImageView.cpp:171
+#: core/CMedia.cpp:1092 core/CMedia.cpp:1151 gui/mrvImageView.cpp:171
 #: gui/mrvImageView.cpp:3953 gui/mrvImageView.cpp:4338
 msgid "Alpha"
 msgstr "Alfa"
@@ -835,7 +835,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "Solo Alfa"
 
-#: core/CMedia.cpp:1095 core/CMedia.cpp:1152 gui/mrvImageView.cpp:172
+#: core/CMedia.cpp:1094 core/CMedia.cpp:1151 gui/mrvImageView.cpp:172
 #: gui/mrvImageView.cpp:3937 gui/mrvImageView.cpp:4339
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
@@ -1027,7 +1027,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1661
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2351
-#: core/CMedia.cpp:1110 core/CMedia.cpp:1151 gui/mrvImageView.cpp:170
+#: core/CMedia.cpp:1109 core/CMedia.cpp:1150 gui/mrvImageView.cpp:170
 #: gui/mrvImageView.cpp:3949 gui/mrvImageView.cpp:4338
 msgid "Blue"
 msgstr "Azul"
@@ -1226,7 +1226,7 @@ msgid "Codecs"
 msgstr "Codecs"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:65
-#: core/CMedia.cpp:1107 core/CMedia.cpp:1150 gui/mrvImageView.cpp:163
+#: core/CMedia.cpp:1106 core/CMedia.cpp:1149 gui/mrvImageView.cpp:163
 #: gui/mrvImageView.cpp:4342
 msgid "Color"
 msgstr ""
@@ -1447,7 +1447,7 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/CMedia.cpp:1505 core/aviImage.cpp:479 core/aviImage.cpp:493
+#: core/CMedia.cpp:1504 core/aviImage.cpp:479 core/aviImage.cpp:493
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -2309,7 +2309,7 @@ msgstr "Obtuve: "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1660
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2333
-#: core/CMedia.cpp:1109 core/CMedia.cpp:1150 gui/mrvImageView.cpp:169
+#: core/CMedia.cpp:1108 core/CMedia.cpp:1149 gui/mrvImageView.cpp:169
 #: gui/mrvImageView.cpp:3945 gui/mrvImageView.cpp:4337
 msgid "Green"
 msgstr "Verde"
@@ -2890,7 +2890,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1662
-#: core/CMedia.cpp:1121 core/CMedia.cpp:1152 gui/mrvImageView.cpp:173
+#: core/CMedia.cpp:1120 core/CMedia.cpp:1151 gui/mrvImageView.cpp:173
 #: gui/mrvImageView.cpp:3957 gui/mrvImageView.cpp:4340
 #: gui/mrvImageInformation.cpp:537
 msgid "Lumma"
@@ -3693,7 +3693,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1659
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2315
-#: core/CMedia.cpp:1108 core/CMedia.cpp:1150 gui/mrvImageView.cpp:168
+#: core/CMedia.cpp:1107 core/CMedia.cpp:1149 gui/mrvImageView.cpp:168
 #: gui/mrvImageView.cpp:3941 gui/mrvImageView.cpp:4337
 msgid "Red"
 msgstr "Rojo"
@@ -5238,7 +5238,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1957
+#: core/CMedia.cpp:1956
 msgid "audio"
 msgstr "audio"
 
@@ -5251,7 +5251,7 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:1960
+#: core/CMedia.cpp:1959
 msgid "data"
 msgstr "datos"
 
@@ -5423,7 +5423,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1963
+#: core/CMedia.cpp:1962
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5435,7 +5435,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:1966 core/wandImage.cpp:409
+#: core/CMedia.cpp:1965 core/wandImage.cpp:409
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5451,7 +5451,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:1954
+#: core/CMedia.cpp:1953
 msgid "video"
 msgstr "video"
 

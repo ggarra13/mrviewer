@@ -804,7 +804,7 @@ void video_thread( PlaybackData* data )
       if ( !img->has_audio() && reel->edl && fg )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
-         if ( view->playback() != ImageView::kStopped )
+         // if ( view->playback() != ImageView::kStopped )
              view->frame( f );
       }
 
