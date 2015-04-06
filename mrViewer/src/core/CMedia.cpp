@@ -436,7 +436,6 @@ void CMedia::wait_for_threads()
  */
 CMedia::~CMedia()
 {
-    std::cerr << "~Cmedia " << name() << std::endl;
   SCOPED_LOCK( _mutex);
   SCOPED_LOCK( _audio_mutex);
 
