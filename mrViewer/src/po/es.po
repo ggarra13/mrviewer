@@ -7,7 +7,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-06 20:15-0300\n"
+"POT-Creation-Date: 2015-04-07 16:02-0300\n"
 "PO-Revision-Date: 2015-04-03 17:02-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
@@ -290,7 +290,7 @@ msgid "(PAL Fields)"
 msgstr "(Campos PAL)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3308
-#: gui/mrvImageView.cpp:4389 gui/mrvImageView.cpp:4390
+#: gui/mrvImageView.cpp:4388 gui/mrvImageView.cpp:4389
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -827,7 +827,7 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1092 core/CMedia.cpp:1151 gui/mrvImageView.cpp:171
-#: gui/mrvImageView.cpp:3953 gui/mrvImageView.cpp:4338
+#: gui/mrvImageView.cpp:3952 gui/mrvImageView.cpp:4337
 msgid "Alpha"
 msgstr "Alfa"
 
@@ -836,7 +836,7 @@ msgid "Alpha Only"
 msgstr "Solo Alfa"
 
 #: core/CMedia.cpp:1094 core/CMedia.cpp:1151 gui/mrvImageView.cpp:172
-#: gui/mrvImageView.cpp:3937 gui/mrvImageView.cpp:4339
+#: gui/mrvImageView.cpp:3936 gui/mrvImageView.cpp:4338
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -968,7 +968,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5285
+#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5284
 msgid "B"
 msgstr "A"
 
@@ -1028,7 +1028,7 @@ msgstr "Modo de Mezcla"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1661
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2351
 #: core/CMedia.cpp:1109 core/CMedia.cpp:1150 gui/mrvImageView.cpp:170
-#: gui/mrvImageView.cpp:3949 gui/mrvImageView.cpp:4338
+#: gui/mrvImageView.cpp:3948 gui/mrvImageView.cpp:4337
 msgid "Blue"
 msgstr "Azul"
 
@@ -1227,7 +1227,7 @@ msgstr "Codecs"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:65
 #: core/CMedia.cpp:1106 core/CMedia.cpp:1149 gui/mrvImageView.cpp:163
-#: gui/mrvImageView.cpp:4342
+#: gui/mrvImageView.cpp:4341
 msgid "Color"
 msgstr ""
 
@@ -1976,7 +1976,7 @@ msgstr "Tiempo de Exposición"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3428
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3622
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3733
-#: gui/mrvImageView.cpp:5283
+#: gui/mrvImageView.cpp:5282
 msgid "F"
 msgstr "C"
 
@@ -2310,7 +2310,7 @@ msgstr "Obtuve: "
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1660
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2333
 #: core/CMedia.cpp:1108 core/CMedia.cpp:1149 gui/mrvImageView.cpp:169
-#: gui/mrvImageView.cpp:3945 gui/mrvImageView.cpp:4337
+#: gui/mrvImageView.cpp:3944 gui/mrvImageView.cpp:4336
 msgid "Green"
 msgstr "Verde"
 
@@ -2891,7 +2891,7 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1662
 #: core/CMedia.cpp:1120 core/CMedia.cpp:1151 gui/mrvImageView.cpp:173
-#: gui/mrvImageView.cpp:3957 gui/mrvImageView.cpp:4340
+#: gui/mrvImageView.cpp:3956 gui/mrvImageView.cpp:4339
 #: gui/mrvImageInformation.cpp:537
 msgid "Lumma"
 msgstr "Luma"
@@ -3204,7 +3204,7 @@ msgstr ""
 msgid "Not a GLErasePathShape pointer"
 msgstr "No es un puntero a GLErasePathShape"
 
-#: gui/mrvImageView.cpp:2310 gui/mrvImageView.cpp:2931
+#: gui/mrvImageView.cpp:2310 gui/mrvImageView.cpp:2930
 msgid "Not a GLPathShape pointer"
 msgstr "No es un puntero a GLPathShape"
 
@@ -3212,7 +3212,7 @@ msgstr "No es un puntero a GLPathShape"
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "No es un puntero a GLTextShape en mouseRelease"
 
-#: gui/mrvImageView.cpp:2955
+#: gui/mrvImageView.cpp:2954
 msgid "Not a GLTextShape pointer in position"
 msgstr "No es un puntero a GLPathShape en posición"
 
@@ -3694,7 +3694,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1659
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2315
 #: core/CMedia.cpp:1107 core/CMedia.cpp:1149 gui/mrvImageView.cpp:168
-#: gui/mrvImageView.cpp:3941 gui/mrvImageView.cpp:4337
+#: gui/mrvImageView.cpp:3940 gui/mrvImageView.cpp:4336
 msgid "Red"
 msgstr "Rojo"
 
@@ -4305,7 +4305,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3082
-#: gui/mrvImageView.cpp:5284
+#: gui/mrvImageView.cpp:5283
 msgid "T"
 msgstr "T"
 
@@ -5222,7 +5222,7 @@ msgstr "Soporte YUVA:\t"
 msgid "Yes"
 msgstr "Sí"
 
-#: gui/mrvImageView.cpp:174 gui/mrvImageView.cpp:4341
+#: gui/mrvImageView.cpp:174 gui/mrvImageView.cpp:4340
 msgid "Z"
 msgstr "Z"
 
