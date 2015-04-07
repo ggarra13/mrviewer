@@ -3100,11 +3100,19 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::frame( const int64_t f )
   {
 
-      uiMain->uiFrame->value( f );
-      uiMain->uiFrame->redraw();
+      mrv::Timecode* g = uiMain->uiFrame;
+      if ( g )
+      {
+          g->value( f );
+          g->redraw();
+      }
 
-      timeline()->value( double(f) );
-      timeline()->redraw();
+      mrv::Timeline* t = timeline();
+      if (t)
+      {
+          t->value( double(f) );
+          t->redraw();
+      }
   }
 
   void ImageBrowser::clear_edl()
