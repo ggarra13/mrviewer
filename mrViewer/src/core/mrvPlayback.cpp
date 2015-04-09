@@ -484,7 +484,6 @@ void audio_thread( PlaybackData* data )
                   EndStatus end = handle_loop( frame, step, img, fg,
                                                uiMain, 
                                                reel, timeline, status );
-                  if ( end == kEndNextImage ) return;
 
                   DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
                   continue;
@@ -608,7 +607,6 @@ void subtitle_thread( PlaybackData* data )
 
             EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
                                          reel, timeline, status );
-            if ( end == kEndNextImage ) return;
 	    continue;
 	  }
 	
@@ -716,7 +714,6 @@ void video_thread( PlaybackData* data )
 
                EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
                                             reel, timeline, status );
-               if ( end == kEndNextImage ) return;
 
                DBG( img->name() << " VIDEO LOOP END frame: " << frame 
                     << " step " << step );
@@ -905,7 +902,6 @@ void decode_thread( PlaybackData* data )
 
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
-         if ( end == kEndNextImage ) return;
       }
 
 
