@@ -1522,11 +1522,6 @@ void CMedia::play(const CMedia::Playback dir,
       delete _loop_barrier;
       _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
 
-      // If a single frame, queue it up for playback loop.
-      if ( !is_sequence() && !has_video() && has_picture() )
-	{
-            frame( _frame );
-	}
 
       if ( valid_v )
       {

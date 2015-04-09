@@ -58,14 +58,15 @@ class barrier
     {
         SCOPED_LOCK( m_mutex );
         ++m_generation;
-        m_cond.notify_all(); // sigh, all for this
+        m_count = m_threshold;
+        m_cond.notify_all();
     }
-        
+
     inline bool wait()
     {
         SCOPED_LOCK( m_mutex );
         unsigned int gen = m_generation;
-        
+
         if (--m_count == 0)
         {
             m_generation++;
