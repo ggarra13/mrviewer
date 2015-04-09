@@ -4830,7 +4830,8 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-   browser()->frame( f );
+    if ( browser() )
+        browser()->frame( f );
 }
 
 
