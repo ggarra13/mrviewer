@@ -7,14 +7,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-09 15:49-0300\n"
+"POT-Creation-Date: 2015-04-11 13:46-0300\n"
 "PO-Revision-Date: 2015-04-03 17:02-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
-"Language: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: \n"
 
 #: core/aviImage.cpp:1616
 msgid ""
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2114
+#: core/CMedia.cpp:2110
 msgid ""
 "\n"
 "\n"
@@ -141,7 +141,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia.cpp:2115
+#: core/CMedia.cpp:2111
 msgid " for stream #"
 msgstr " para flujo #"
 
@@ -165,7 +165,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2474
+#: core/CMedia.cpp:2470
 msgid " is missing."
 msgstr " está faltante."
 
@@ -318,7 +318,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2115
+#: core/CMedia.cpp:2111
 msgid ", type "
 msgstr ", tipo "
 
@@ -1447,7 +1447,7 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/CMedia.cpp:1504 core/aviImage.cpp:479 core/aviImage.cpp:493
+#: core/CMedia.cpp:1500 core/aviImage.cpp:479 core/aviImage.cpp:493
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -1696,11 +1696,11 @@ msgstr "Fecha"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/mrvPlayback.cpp:452
+#: core/mrvPlayback.cpp:454
 msgid "Decode Error audio frame "
 msgstr "Error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:456
+#: core/mrvPlayback.cpp:458
 msgid "Decode Missing audio frame "
 msgstr "Decodificación Faltante en cuadro de audio "
 
@@ -5238,7 +5238,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1951
+#: core/CMedia.cpp:1947
 msgid "audio"
 msgstr "audio"
 
@@ -5251,7 +5251,7 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:1954
+#: core/CMedia.cpp:1950
 msgid "data"
 msgstr "datos"
 
@@ -5423,7 +5423,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1957
+#: core/CMedia.cpp:1953
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5435,7 +5435,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:1960 core/wandImage.cpp:409
+#: core/CMedia.cpp:1956 core/wandImage.cpp:409
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5451,7 +5451,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:1948
+#: core/CMedia.cpp:1944
 msgid "video"
 msgstr "video"
 
