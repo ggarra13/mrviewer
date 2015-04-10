@@ -378,8 +378,9 @@ std::string hex_to_char_filename( std::string& f )
 	  {
 	    stringArray frames;
 	    mrv::split_string( frames, range, "-" );
-	    if ( frames.size() > 1 )
+	    if ( frames.size() > 1 && frames[0].size() > 0)
 	      {
+
 		unsigned digits = (unsigned) frames[0].size();
 
 		frameStart = atoi( frames[0].c_str() );
@@ -393,8 +394,7 @@ std::string hex_to_char_filename( std::string& f )
 		    fileroot += ".";
 		    if ( *i == range )
 		      {
-			 char buf[256];
-
+			 char buf[64];
                          const char* pr = PRId64;
                          if ( digits < 4 ) pr = "d";
 			 sprintf( buf, "%%0%d%s", digits, pr );
@@ -434,7 +434,8 @@ std::string hex_to_char_filename( std::string& f )
            continue;  // not this sequence
 
 
-	if ( cframe[0] == '0' ) pad = (unsigned) cframe.size();
+	if ( cframe[0] == '0' && cframe.size() > 1 )
+            pad = (unsigned) cframe.size();
 
 
 	boost::int64_t f = atoi( cframe.c_str() );
