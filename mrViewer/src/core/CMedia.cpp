@@ -1467,9 +1467,8 @@ void CMedia::play(const CMedia::Playback dir,
 		  bool fg )
 {
 
-    if ( dir == _playback && !_threads.empty() ) {
-        return;
-    }
+  if ( _playback == kStopped && _threads.size() != 0 )
+    return;
 
   stop();
 
@@ -1518,6 +1517,11 @@ void CMedia::play(const CMedia::Playback dir,
       bool valid_a = valid_audio();
       // If there's at least one valid subtitle stream, create subtitle thread
       bool valid_s = valid_subtitle();
+
+      if ( !valid_a && !has_video() && !is_sequence() )
+	{
+	  frame( _frameStart );
+	}
 
       delete _loop_barrier;
       _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );

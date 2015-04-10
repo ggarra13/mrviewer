@@ -54,6 +54,8 @@ class barrier
     inline unsigned count()      const { return m_count; }
     inline unsigned used()       const { return m_threshold - m_count; }
 
+    inline bool is_active() const { return (m_count < m_threshold); }
+
     inline void notify_all()
     {
         SCOPED_LOCK( m_mutex );

@@ -4334,7 +4334,7 @@ void Flu_File_Chooser::cd( const char *path )
                    (*i).ext != ext || ( zeros != z && z != zeros-1 ) )
               {
 		  // New sequence
-		  if ( root != "" )
+		  if ( seqname != "" )
 		    {
                        mrv::Sequence seq;
                        seq.root = seqname;
