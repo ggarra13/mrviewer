@@ -1520,7 +1520,7 @@ void CMedia::play(const CMedia::Playback dir,
 
       if ( !valid_a && !has_video() && !is_sequence() )
 	{
-	  frame( _frameStart );
+	  frame( _frame );
 	}
 
       delete _loop_barrier;
