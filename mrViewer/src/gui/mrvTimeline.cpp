@@ -320,10 +320,11 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     for ( ; j < max; ++j )
     {
-        if ( img->is_cache_filled( j - pos + 1 ) )
+        boost::uint64_t t = j - pos + 1;
+        if ( img->is_cache_filled( t ) )
         {
-            int dx = rx + slider_position( double(j), ww );
-            int dx2 = rx + slider_position( double(j+1), ww );
+            int dx = rx + slider_position( double(t), ww );
+            int dx2 = rx + slider_position( double(t+1), ww );
             int wh = dx2-dx;
             if ( wh <= 0 ) wh = 1;
 
