@@ -1519,6 +1519,13 @@ void CMedia::play(const CMedia::Playback dir,
       bool valid_a = valid_audio();
       // If there's at least one valid subtitle stream, create subtitle thread
       bool valid_s = valid_subtitle();
+
+      if ( !valid_a && !has_video() && !is_sequence() )
+	{
+	  frame( _frame );
+	}
+
+
       if ( valid_v )
       {
           video_data = new PlaybackData( *data );
