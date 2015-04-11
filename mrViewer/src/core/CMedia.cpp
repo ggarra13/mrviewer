@@ -1467,21 +1467,21 @@ void CMedia::play(const CMedia::Playback dir,
 		  bool fg )
 {
 
-  if ( _playback == kStopped && _threads.size() != 0 )
-    return;
+    // if ( _playback == kStopped && !_threads.empty() )
+    //     return;
 
-  stop();
+    stop();
 
-  _playback = dir;
-  _aborted = false;
+    _playback = dir;
+    _aborted = false;
 
-  assert( uiMain != NULL );
-  assert( _threads.size() == 0 );
+    assert( uiMain != NULL );
+    assert( _threads.size() == 0 );
 
-  if ( _frame < first_frame() ) _frame = first_frame();
-  if ( _frame > last_frame() )  _frame = last_frame();
+    if ( _frame < first_frame() ) _frame = first_frame();
+    if ( _frame > last_frame() )  _frame = last_frame();
 
-  _audio_frame = _frame;
+    _audio_frame = _frame;
   // _expected = std::numeric_limits< boost::int64_t >::min();
 
   _dts = _frame;
