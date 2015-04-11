@@ -4825,7 +4825,9 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-   browser()->frame( f );
+    mrv::ImageBrowser* b = browser();
+    if ( !b ) return; 
+    b->frame( f );
 }
 
 
@@ -4841,7 +4843,8 @@ void ImageView::seek( const int64_t f )
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
-  browser()->seek( f );
+    mrv::ImageBrowser* b = browser();
+    if ( b ) b->seek( f );
 
   thumbnails();
 
