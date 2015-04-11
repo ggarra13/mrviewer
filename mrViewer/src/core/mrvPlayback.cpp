@@ -880,11 +880,6 @@ void decode_thread( PlaybackData* data )
 	<< " step " << step << endl;
 #endif
 
-   if ( !img->has_audio() && !img->has_video() && !img->is_sequence() )
-   {
-       img->frame( frame );
-   }
-
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
