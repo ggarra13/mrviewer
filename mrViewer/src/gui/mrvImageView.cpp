@@ -1184,7 +1184,8 @@ bool ImageView::should_update( mrv::media& fg )
       if ( img->image_damage() & CMedia::kDamageThumbnail )
       {
 	  // Redraw browser to update thumbnail
-	  browser()->redraw();
+	mrv::ImageBrowser* b = browser();
+	if (b) b->redraw();
       }
 
       if ( img->image_damage() & CMedia::kDamageData )
@@ -1255,8 +1256,9 @@ bool ImageView::should_update( mrv::media& fg )
 
       if ( img->image_damage() & CMedia::kDamageThumbnail )
       {
-          // Redraw browser to update thumbnail
-          browser()->redraw();
+	// Redraw browser to update thumbnail
+	mrv::ImageBrowser* b = browser();
+	if (b) b->redraw();
       }
   }
 
@@ -1382,8 +1384,11 @@ void ImageView::timeout()
    mrv::Timeline* timeline = this->timeline();
    if  (!timeline) return;
 
-   mrv::Reel reel = browser()->reel_at( _fg_reel );
-   mrv::Reel bgreel = browser()->reel_at( _bg_reel );
+   mrv::ImageBrowser* b = browser();
+   if (!b) return;
+
+   mrv::Reel reel = b->reel_at( _fg_reel );
+   mrv::Reel bgreel = b->reel_at( _bg_reel );
 
    mrv::media fg = foreground();
 
@@ -1432,7 +1437,7 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   if ( CMedia::cache_active() && ( _reel < browser()->number_of_reels() ))
+   if ( CMedia::cache_active() && ( _reel < b->number_of_reels() ))
    {
        preload();
    }
@@ -4830,8 +4835,9 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
-    if ( browser() )
-        browser()->frame( f );
+    mrv::ImageBrowser* b = browser();
+    if ( !b ) return; 
+    b->frame( f );
 }
 
 
@@ -4847,7 +4853,8 @@ void ImageView::seek( const int64_t f )
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
-  browser()->seek( f );
+    mrv::ImageBrowser* b = browser();
+    if ( b ) b->seek( f );
 
   thumbnails();
 
