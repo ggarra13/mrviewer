@@ -853,8 +853,6 @@ void decode_thread( PlaybackData* data )
 #endif
 
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-
    while ( ( !img->stopped() && view->playback() != mrv::ImageView::kStopped ) )
    {
 
