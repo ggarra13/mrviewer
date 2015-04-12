@@ -705,7 +705,7 @@ void video_thread( PlaybackData* data )
                DBG( img->name() << " VIDEO LOOP END frame: " << frame 
                     << " step " << step );
 
-	       break;
+	       continue;
 	    }
 	 default:
 	    break;
