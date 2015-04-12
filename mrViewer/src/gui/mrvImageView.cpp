@@ -4841,7 +4841,8 @@ void ImageView::seek( const int64_t f )
 
   // Hmmm... this is somewhat inefficient.  Would be better to just
   // change fg/bg position
-  browser()->seek( f );
+    mrv::ImageBrowser* b = browser();
+    if ( b ) b->seek( f );
 
   thumbnails();
 
@@ -5167,11 +5168,7 @@ void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
 
-   mrv::media m = foreground();
-   if ( m ) m->image()->stop();
-
-   m = background();
-   if ( m ) m->image()->stop();
+  send( "stop" );
 
   _playback = kStopped;
   _last_fps = 0.0;
@@ -5182,7 +5179,7 @@ void ImageView::stop()
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
-  send( "stop" );
+
   seek( int64_t(timeline()->value()) );
 
   redraw();
