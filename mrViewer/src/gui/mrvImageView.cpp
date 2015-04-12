@@ -4873,7 +4873,7 @@ void ImageView::step_frame( int64_t n )
   assert( n != 0 );
   if ( n == 0 ) return;
 
-  stop();
+  stop_playback();
 
   int64_t start = (int64_t) timeline()->minimum();
   int64_t end   = (int64_t) timeline()->maximum();
@@ -5174,11 +5174,11 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 { 
-//   if ( playback() == kStopped ) return;
+    if ( playback() == kStopped ) return;
 
-  _playback = kStopped;
-  _last_fps = 0.0;
-  _real_fps = 0.0;
+    _playback = kStopped;
+    _last_fps = 0.0;
+    _real_fps = 0.0;
 
   stop_playback();
 
