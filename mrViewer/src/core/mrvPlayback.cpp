@@ -403,9 +403,6 @@ void audio_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   bool ok = barrier->wait();
 
    bool fg = data->fg;
 
@@ -539,9 +536,6 @@ void subtitle_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   barrier->wait();
 
 
    bool fg = data->fg;
@@ -631,15 +625,6 @@ void video_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   bool ok = barrier->wait();
-   if ( ok )
-     LOG_INFO( img->name() << " BARRIER VIDEO START PASS gen: " 
-	       << barrier->generation() 
-	       << " count: " << barrier->count() 
-	       << " threshold: " << barrier->threshold() 
-	       << " used: " << barrier->used() );
 
 
    bool fg = data->fg;
@@ -745,12 +730,6 @@ void video_thread( PlaybackData* data )
                //           << " used: " << barrier->used() );
                // Wait until all threads loop and decode is restarted
                bool ok = barrier->wait();
-	       if ( ok )
-		 LOG_INFO( img->name() << " BARRIER VIDEO LOCK PASS gen: " 
-			   << barrier->generation() 
-			   << " count: " << barrier->count() 
-			   << " threshold: " << barrier->threshold() 
-			   << " used: " << barrier->used() );
 
                DBG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
                     << img->stopped() );
@@ -885,15 +864,6 @@ void decode_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   CMedia::Barrier* barrier = img->loop_barrier();
-   // Wait until all threads loop and decode is restarted
-   bool ok = barrier->wait();
-   if ( ok )
-     LOG_INFO( img->name() << " BARRIER DECODE START gen: " 
-	       << barrier->generation() 
-	       << " count: " << barrier->count() 
-	       << " threshold: " << barrier->threshold() 
-	       << " used: " << barrier->used() );
 
 
    bool fg = data->fg;
@@ -954,13 +924,12 @@ void decode_thread( PlaybackData* data )
           //           << " threshold: " << barrier->threshold() 
           //           << " used: " << barrier->used() );
           // Wait until all threads loop and decode is restarted
-          bool ok = barrier->wait();
-	  if ( ok )
-	    LOG_INFO( img->name() << " BARRIER DECODE LOCK PASS gen: " 
-		      << barrier->generation() 
-		      << " count: " << barrier->count() 
-		      << " threshold: " << barrier->threshold() 
-		      << " used: " << barrier->used() );
+          barrier->wait();
+	  //   LOG_INFO( img->name() << " BARRIER DECODE LOCK PASS gen: " 
+	  //             << barrier->generation() 
+	  //             << " count: " << barrier->count() 
+	  //             << " threshold: " << barrier->threshold() 
+	  //             << " used: " << barrier->used() );
 
 
          // Do the looping, taking into account ui state
