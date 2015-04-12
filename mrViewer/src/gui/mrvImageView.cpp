@@ -5174,7 +5174,7 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 { 
-   if ( playback() == kStopped ) return;
+//   if ( playback() == kStopped ) return;
 
   _playback = kStopped;
   _last_fps = 0.0;
