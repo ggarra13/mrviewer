@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-01 15:32-0300\n"
-"PO-Revision-Date: 2015-03-25 13:52-0300\n"
+"POT-Creation-Date: 2015-04-11 21:02-0300\n"
+"PO-Revision-Date: 2015-04-11 20:57-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -70,14 +70,13 @@ msgstr ""
 "\n"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2407
-#, fuzzy
 msgid ""
 "\n"
 "(Environment variable:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
 "\n"
-"Variable de entorno:\n"
+"(Variable de entorno:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 
 #: gui/mrvImageView.cpp:2368
@@ -800,7 +799,6 @@ msgstr "Permite ajustar la velocidad de playback."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3407
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3418
-#, fuzzy
 msgid ""
 "Allows you to adjust gamma curve for display.\n"
 "Value is:  pow( 2, 1/x );"
@@ -970,7 +968,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5285
+#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5282
 msgid "B"
 msgstr "A"
 
@@ -1698,11 +1696,11 @@ msgstr "Fecha"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/mrvPlayback.cpp:456
+#: core/mrvPlayback.cpp:453
 msgid "Decode Error audio frame "
 msgstr "Error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:460
+#: core/mrvPlayback.cpp:457
 msgid "Decode Missing audio frame "
 msgstr "Decodificación Faltante en cuadro de audio "
 
@@ -1839,7 +1837,6 @@ msgid "Display Window 2"
 msgstr "Ventana de Display 2"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3356
-#, fuzzy
 msgid ""
 "Displays gain as film exposure and fstop.\n"
 "Click to toggle between current and normal exposure."
@@ -1979,7 +1976,7 @@ msgstr "Tiempo de Exposición"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3428
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3622
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3733
-#: gui/mrvImageView.cpp:5283
+#: gui/mrvImageView.cpp:5280
 msgid "F"
 msgstr "C"
 
@@ -2453,7 +2450,6 @@ msgid "ITU-709 (Digital HDTV YCbCr)"
 msgstr "ITU-702 (HDTV YCbCr Digital)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2144
-#, fuzzy
 msgid ""
 "If set, mrViewer will always show all frames even if frame rate is not "
 "reached.\n"
@@ -2767,7 +2763,6 @@ msgid "LeftShift"
 msgstr "Shift Izquierdo"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3655
-#, fuzzy
 msgid ""
 "Lightness is the human perceptual response to luminance Y, according to CIE "
 "No.15.2:\n"
@@ -3303,7 +3298,6 @@ msgid "OpenGL"
 msgstr "OpenGL"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2621
-#, fuzzy
 msgid ""
 "OpenGL blend compositing mode.\n"
 "Traditional:\n"
@@ -3312,9 +3306,17 @@ msgid ""
 "SC + DC x ( 1 - SA )\n"
 "where SC is source color, SA is source alpha, and DC is destination color."
 msgstr ""
-"Modo de mezcla en composición OpenGL:Tradicional:CF x AF + CD x ( 1 - AF )"
-"Premultiplicado:CF + CD x ( 1 - AF )Donde CF es el color fuente, AF es el "
-"alfa fuente, y CD es el color de destino."
+"Modo de mezcla en composición OpenGL:\n"
+"\n"
+"Tradicional:\n"
+"CF x AF + CD x ( 1 - AF )\n"
+"\n"
+"Premultiplicado:\n"
+"CF + CD x ( 1 - AF )\n"
+"\n"
+"Donde CF es el color fuente, \n"
+"AF es el alfa fuente, y \n"
+"CD es el color de destino."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3258
 msgid "Opens different windows"
@@ -4029,7 +4031,6 @@ msgid "Sequence"
 msgstr "Secuencia"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2162
-#, fuzzy
 msgid ""
 "Sequence images will be cached as 8-bit pictures, instead of being cached as "
 "the original depth of the sequence.\n"
@@ -4271,7 +4272,6 @@ msgid "Switch between Frame, Seconds and Timecode display"
 msgstr "Cambiar entre mostrar Cuadro, Segundos y Codigo de Tiempo."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3642
-#, fuzzy
 msgid ""
 "Switch brightness calculation.\n"
 "\n"
@@ -4310,7 +4310,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3082
-#: gui/mrvImageView.cpp:5284
+#: gui/mrvImageView.cpp:5281
 msgid "T"
 msgstr "T"
 
@@ -4404,7 +4404,6 @@ msgid "The Blue CIE Y coordinate of the display"
 msgstr "La coordenada Y de Azul del mostreo de CIE"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2310
-#, fuzzy
 msgid ""
 "The CIE x,y coordinates of the primaries and white point of the display\n"
 "(like Rec. ITU-R BT.709-3)\n"
@@ -4441,7 +4440,6 @@ msgid "The White CIE Y coordinate of the display"
 msgstr "La coordenada en Y del Blanco del muestreo de CIE"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2415
-#, fuzzy
 msgid ""
 "The luminance, in cd/m2, of the background that surrounds the display.\n"
 "\n"
@@ -4454,7 +4452,6 @@ msgstr ""
 "MRV_ODT_CTL_SURROUND_LUMINANCE)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2399
-#, fuzzy
 msgid ""
 "The luminance, in cd/m2, of the display.\n"
 "\n"
@@ -4467,7 +4464,6 @@ msgstr ""
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2469
-#, fuzzy
 msgid ""
 "The name of the CTL default image transform for 16-bit images (cin, tiff, "
 "etc)\n"
@@ -4478,7 +4474,6 @@ msgstr ""
 "(Variable de entorno: MRV_CTL_RT_16bits)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2483
-#, fuzzy
 msgid ""
 "The name of the CTL default image transform for 32-bit int images (openexr "
 "integers, etc)\n"
@@ -4489,7 +4484,6 @@ msgstr ""
 "(Variable de entorno: MRV_CTL_RT_32bits)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2455
-#, fuzzy
 msgid ""
 "The name of the CTL default image transform for 8 bit images (jpg, bmp, "
 "etc)\n"
@@ -4500,7 +4494,6 @@ msgstr ""
 "(Variable de entorno: MRV_CTL_RT_8bits)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2497
-#, fuzzy
 msgid ""
 "The name of the CTL default image transform for half and float images "
 "(OpenEXR, dpx, etc)\n"
@@ -4511,7 +4504,6 @@ msgstr ""
 "(Variable de entorno: MRV_CTL_RT_float)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2299
-#, fuzzy
 msgid ""
 "The name of the CTL display transform\n"
 "(Environment variable: MRV_ODT_CTL_TRANSFORM)"
@@ -4520,7 +4512,6 @@ msgstr ""
 "(Variable de entorno: MRV_ODT_CTL_TRANSFORM)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2530
-#, fuzzy
 msgid ""
 "The name of the default ICC profile for 16-bit images (cin, tiff, etc)\n"
 "(Environment variable: MRV_ICC_RT_16bits)"
@@ -4530,7 +4521,6 @@ msgstr ""
 "(Variable de entorno: MRV_ICC_RT_16bits"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2544
-#, fuzzy
 msgid ""
 "The name of the default ICC profile for 32-bit int images (openexr integers, "
 "etc)\n"
@@ -4541,7 +4531,6 @@ msgstr ""
 "(Variable de entorno: MRV_ICC_RT_32bits)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2516
-#, fuzzy
 msgid ""
 "The name of the default ICC profile for 8 bit images (jpg, bmp, etc)\n"
 "(Environment variable: MRV_ICC_RT_8bits)"
@@ -4551,7 +4540,6 @@ msgstr ""
 "(Variable de entorno: MRV_ICC_RT_8bits)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2558
-#, fuzzy
 msgid ""
 "The name of the default ICC profile for half and float images (OpenEXR, dpx, "
 "etc)\n"
@@ -4562,7 +4550,6 @@ msgstr ""
 "(Variable de entorno: MRV_ICC_RT_float)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2428
-#, fuzzy
 msgid ""
 "The name of the default ICC profile for your ODT (monitor)\n"
 "(Environment variable: MRV_ODT_ICC_PROFILE)"
@@ -4682,7 +4669,6 @@ msgid "Type"
 msgstr "Tipo"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3626
-#, fuzzy
 msgid ""
 "Type of pixel values to show:\n"
 "+ Full:  pixel with gamma, gain and lut.\n"
@@ -5038,7 +5024,6 @@ msgstr ""
 "ventanas en el escritorio."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1742
-#, fuzzy
 msgid ""
 "When selected, only a single mrViewer instance is allowed.  \n"
 "If you try to open several mrViewers with different images, all these images "
@@ -5055,7 +5040,6 @@ msgstr ""
 "en el disco."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2253
-#, fuzzy
 msgid ""
 "When using luts with ICC profiles, this setting allows you to select the ICC "
 "rendering intent.   Rendering intents are mostly used for printing to film "
@@ -5107,7 +5091,6 @@ msgid "Wipe Mode"
 msgstr "Modo de Wipe"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2229
-#, fuzzy
 msgid ""
 "With modern graphics cards, mrViewer emulates color transforms by baking "
 "them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The "
@@ -5373,7 +5356,6 @@ msgid "mrViewer supports YUVA images through shaders."
 msgstr "mrViewer soporta imágenes YUVA con shaders."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2206
-#, fuzzy
 msgid ""
 "mrViewer supports either ICC profiles or a CTL script for the render "
 "transform (RT) of your images.  This setting prioritizes choosing one over "
@@ -5405,7 +5387,6 @@ msgstr ""
 "de tus imágenes (RT).  Estos seteos prioritizan uno sobre el otro."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2190
-#, fuzzy
 msgid ""
 "mrViewer supports either ICC profiles or a CTL script for your output device "
 "transform (ODT).  This setting prioritizes choosing one over the other.\n"
