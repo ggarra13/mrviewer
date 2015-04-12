@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-11 21:37-0300\n"
-"PO-Revision-Date: 2015-04-11 20:57-0300\n"
+"POT-Creation-Date: 2015-04-12 12:08-0300\n"
+"PO-Revision-Date: 2015-04-12 12:09-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -91,6 +91,14 @@ msgstr ""
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
+
+#: core/mrvPlayback.cpp:454
+msgid " - decode Error audio frame "
+msgstr "- error de decodificacion del cuadro de audio "
+
+#: core/mrvPlayback.cpp:459
+msgid " - decode missing audio frame "
+msgstr "- decodificación faltante en cuadro de audio "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2161
 msgid " 8 bit caches"
@@ -1695,14 +1703,6 @@ msgstr "Fecha"
 #: gui/mrvHotkey.cpp:229
 msgid "Decimal"
 msgstr "Decimal"
-
-#: core/mrvPlayback.cpp:453
-msgid "Decode Error audio frame "
-msgstr "Error de decodificacion del cuadro de audio "
-
-#: core/mrvPlayback.cpp:457
-msgid "Decode Missing audio frame "
-msgstr "Decodificación Faltante en cuadro de audio "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2892
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2900
