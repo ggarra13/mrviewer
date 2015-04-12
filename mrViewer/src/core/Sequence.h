@@ -66,10 +66,10 @@ struct SequenceSort
         if ( a.view < b.view ) return true;
         else if ( a.view > b.view ) return false;
 
-        size_t as = a.number.size();
-        size_t bs = b.number.size();
-        if ( as < bs ) return true;
-        else if ( as > bs ) return false;
+        // size_t as = a.number.size();
+        // size_t bs = b.number.size();
+        // if ( as < bs ) return true;
+        // else if ( as > bs ) return false;
 
         if ( atoi( a.number.c_str() ) < atoi( b.number.c_str() ) )
            return true;
