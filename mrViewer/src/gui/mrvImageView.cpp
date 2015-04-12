@@ -5176,16 +5176,19 @@ void ImageView::stop()
 { 
    if ( playback() == kStopped ) return;
 
-  send( "stop" );
-
   _playback = kStopped;
   _last_fps = 0.0;
   _real_fps = 0.0;
 
   stop_playback();
 
-  uiMain->uiPlayForwards->value(0);
-  uiMain->uiPlayBackwards->value(0);
+  send( "stop" );
+
+  if ( uiMain->uiPlayForwards )
+      uiMain->uiPlayForwards->value(0);
+
+  if ( uiMain->uiPlayBackwards )
+      uiMain->uiPlayBackwards->value(0);
 
 
   seek( int64_t(timeline()->value()) );
