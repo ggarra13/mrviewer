@@ -461,7 +461,11 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
     _reel_choice->add( name.c_str() );
     _reel_choice->value( _reel );
 
-    edl_group()->add_media_track( _reel );
+    mrv::EDLGroup* eg = edl_group();
+    if ( eg )
+    {
+        eg->add_media_track( _reel );
+    }
 
    fltk::Choice* c1 = main()->uiEDLWindow->uiEDLChoiceOne;
    fltk::Choice* c2 = main()->uiEDLWindow->uiEDLChoiceTwo;
@@ -497,8 +501,11 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
    c1->redraw();
    c2->redraw();
 
-   edl_group()->refresh();
-   edl_group()->redraw();
+    if ( eg )
+    {
+        eg->refresh();
+        eg->redraw();
+    }
 
    if ( ! _reels.empty() ) change_reel();
    return reel;
@@ -590,7 +597,7 @@ mrv::ImageView* ImageBrowser::view() const
 
 mrv::EDLGroup* ImageBrowser::edl_group() const
 {
-    if ( uiMain == NULL ) return NULL;
+    if ( uiMain == NULL || uiMain->uiEDLWindow == NULL ) return NULL;
    return uiMain->uiEDLWindow->uiEDLGroup;
 }
 
@@ -1326,8 +1333,12 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     send_image( m );
 
 
-    edl_group()->refresh();
-    edl_group()->redraw();
+    mrv::EDLGroup* e = edl_group();
+    if ( e )
+    {
+        e->refresh();
+        e->redraw();
+    }
 
     const CMedia* img = m->image();
 
@@ -1453,8 +1464,12 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     sprintf( buf, "RemoveImage %d", idx );
     view()->send( buf );
 
-    edl_group()->refresh();
-    edl_group()->redraw();
+    mrv::EDLGroup* e = edl_group();
+    if ( e )
+    {
+        e->refresh();
+        e->redraw();
+    }
 
     redraw();
   }
@@ -1493,8 +1508,12 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     reel->images.erase( i );
 
-    edl_group()->refresh();
-    edl_group()->redraw();
+    mrv::EDLGroup* e = edl_group();
+    if ( e )
+    {
+        e->refresh();
+        e->redraw();
+    }
 
     send_reel( reel );
 
@@ -1666,14 +1685,21 @@ void ImageBrowser::clear_bg()
   void ImageBrowser::change_image()
   {
     int sel = value();
+
+    mrv::ImageView* v = view();
+
+
     if ( sel < 0 )
     {
-	 view()->fg_reel( -1 );
-	 // view()->bg_reel( -1 );
-         // clear_bg();
-	 // view()->background( mrv::media() );
-	 view()->foreground( mrv::media() );
-	 view()->redraw();
+        if ( v )
+        {
+            v->fg_reel( -1 );
+            // v->bg_reel( -1 );
+            // clear_bg();
+            // v->background( mrv::media() );
+            v->foreground( mrv::media() );
+            v->redraw();
+        }
       }
     else
     {
@@ -1682,12 +1708,14 @@ void ImageBrowser::clear_bg()
 
 	assert( (unsigned)sel < reel->images.size() );
 
-
-	mrv::media om = view()->foreground();
+	mrv::media om = v->foreground();
 
 	int audio_idx = -1;
 	int sub_idx = -1;
-	if ( timeline() && timeline()->edl() )
+
+        mrv::Timeline* t = timeline();
+
+	if ( t && t->edl() )
 	{
 	   if ( om )
 	   {
@@ -1701,17 +1729,20 @@ void ImageBrowser::clear_bg()
 
         send_reel( reel );
 
-	if ( m != om && m )
+	if ( m != om && m && v )
 	{
 	   DBG( "FG REEL " << _reel );
 
-	   view()->fg_reel( _reel );
-	   view()->foreground( m );
+	   v->fg_reel( _reel );
+	   v->foreground( m );
 
-           if ( edl_group() )
-               edl_group()->redraw();
+           mrv::EDLGroup* e = edl_group();
+           if ( e )
+           {
+               e->redraw();
+           }
 
-	   if ( timeline() && timeline()->edl() )
+	   if ( t && t->edl() )
 	   {
 	      if ( sub_idx != -1 &&
 		   sub_idx < int(m->image()->number_of_subtitle_streams()) )
@@ -1827,13 +1858,16 @@ int ImageBrowser::value() const
     mrv::media m = this->add( img );
     send_reel( reel );
     send_image( m );
-    
+
+    mrv::EDLGroup* e = edl_group();
+
+
     size_t i = 0;
     for ( i = 0; i < number_of_reels(); ++i )
     {
-        if ( reel == this->reel( (unsigned int)i ) )
+        if ( e && reel == this->reel( (unsigned int)i ) )
         {
-           mrv::media_track* track = edl_group()->media_track((int)i);
+           mrv::media_track* track = e->media_track((int)i);
 	  if ( m )
           {
              track->add( m );
@@ -2717,9 +2751,11 @@ void ImageBrowser::load( const stringArray& files,
     mrv::media m = reel->images[oldsel];
     CMedia* img = m->image();
 
+    mrv::Timeline* t = timeline();
+
     int64_t f = (int64_t) uiMain->uiFrame->value();
-    int64_t t = timeline()->offset( img );
-    f -= t;
+    int64_t g = t->offset( img );
+    f -= g;
 
     if ( y < 0 ) fltk::e_y = 0;
 
@@ -2759,12 +2795,17 @@ void ImageBrowser::load( const stringArray& files,
     //
     // Redraw EDL window
     //
-    edl_group()->redraw();
+    
+    mrv::EDLGroup* eg = edl_group();
+    if ( eg )
+    {
+        eg->redraw();
+    }
 
-    if ( timeline()->edl() )
+    if ( t && t->edl() )
       {
-	int64_t t = timeline()->offset( img );
-	f += t;
+	int64_t x = t->offset( img );
+	f += x;
         DBG( "set frame to " << f );
         frame( f );
       }
@@ -2820,7 +2861,7 @@ void ImageBrowser::load( const stringArray& files,
   {
      boost::int64_t f = tframe;
 
-     char buf[256];
+     char buf[64];
      sprintf( buf, "seek %" PRId64, f );
      view()->send(buf);
 
@@ -2829,24 +2870,26 @@ void ImageBrowser::load( const stringArray& files,
      frame( tframe );
 
     ImageView::Playback playback = view()->playback();
+    mrv::Timeline* t = timeline();
 
-    if ( timeline()->edl() )
+
+    if ( t && t->edl() )
       {
 	// Check if we need to change to a new sequence based on frame
-	 mrv::media m = timeline()->media_at( tframe );
+	 mrv::media m = t->media_at( tframe );
 	 if (! m ) return;
 
 	CMedia* img = m->image();
 	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 
-	if ( f < timeline()->minimum() )
+	if ( f < t->minimum() )
         {
-            f = int64_t(timeline()->maximum() - timeline()->minimum()) - f + 1;
+            f = int64_t(t->maximum() - t->minimum()) - f + 1;
         }
-	else if ( f > timeline()->maximum() )
+	else if ( f > t->maximum() )
         {
-	    f = int64_t(timeline()->minimum() - timeline()->maximum()) + f - 1;
+	    f = int64_t(t->minimum() - t->maximum()) + f - 1;
         }
 
 	
@@ -2859,9 +2902,8 @@ void ImageBrowser::load( const stringArray& files,
 	     if ( playback != ImageView::kStopped )
                  view()->stop();
 
-	     size_t i = timeline()->index( f );
-
-	     f = timeline()->global_to_local( f );
+	     size_t i = t->index( f );
+	     f = t->global_to_local( f );
 
 	     DBG( "seek f local1: " << f );
 
@@ -2875,7 +2917,7 @@ void ImageBrowser::load( const stringArray& files,
 	  }
 	else
 	  {
-	     f = timeline()->global_to_local( f );
+	     f = t->global_to_local( f );
 
 	     DBG( "seek f local2: " << f );
 
@@ -2954,9 +2996,9 @@ void ImageBrowser::load( const stringArray& files,
       {
 	CMedia* img = fg->image();
 
-	if ( timeline()->edl() )
+	if ( t && t->edl() )
 	  {
-	     f = timeline()->global_to_local( tframe );
+	     f = t->global_to_local( tframe );
 	  }
 
 	if ( img->has_audio() )
@@ -3011,8 +3053,12 @@ void ImageBrowser::load( const stringArray& files,
       uiMain->uiFrame->value( f );
       uiMain->uiFrame->redraw();
 
-      timeline()->value( double(f) );
-      timeline()->redraw();
+      mrv::Timeline* t = timeline();
+      if ( t )
+      {
+          t->value( double(f) );
+          t->redraw();
+      }
   }
 
   void ImageBrowser::clear_edl()
@@ -3135,9 +3181,12 @@ void ImageBrowser::load( const stringArray& files,
 
       }
     else
-      {
-          if ( edl_group() )
-              edl_group()->redraw();
+    {
+        mrv::EDLGroup* e = edl_group();
+        if ( e )
+        {
+            e->redraw();
+        }
 
           first = 1;
 
