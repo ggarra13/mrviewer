@@ -450,11 +450,13 @@ void audio_thread( PlaybackData* data )
       switch( status )
       {
 	 case CMedia::kDecodeError:
-             LOG_ERROR( _("Decode Error audio frame ") << frame );
+             LOG_ERROR( img->name() 
+                         << _(" - decode Error audio frame ") << frame );
              frame += step;
              continue;
 	 case CMedia::kDecodeMissingFrame:
-             LOG_ERROR( _("Decode Missing audio frame ") << frame );
+             LOG_ERROR( img->name() 
+                        << _(" - decode missing audio frame ") << frame );
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
@@ -669,47 +671,6 @@ void video_thread( PlaybackData* data )
        status = img->decode_video( frame );
 
 
-#if 0
-      if ( img->is_sequence() )
-      {
-
-          boost::int64_t last = boost::int64_t( timeline->maximum() );
-          boost::int64_t first = boost::int64_t( timeline->minimum() );
-
-
-          if ( reel->edl )
-          {
-              boost::int64_t s = reel->location(img);
-              boost::int64_t e = s + img->duration() - 1;
-
-              if ( e < last )  last = e;
-              if ( s > first ) first = s;
-
-              last = reel->global_to_local( last );
-              first = reel->global_to_local( first );
-          }
-          else
-          {
-              last  += ( img->first_frame() - img->start_frame() );
-              first += ( img->first_frame() - img->start_frame() );
-
-              if ( img->last_frame() < last )
-                  last = img->last_frame();
-              if ( img->first_frame() > first )
-                  first = img->first_frame();
-          }
-
-          if ( frame > last )
-          {
-              status = CMedia::kDecodeLoopEnd;
-          }
-          else if ( frame < first )
-          {
-              status = CMedia::kDecodeLoopStart;
-          }
-      }
-#endif
-
       switch( status )
       {
           // case CMedia::DecodeDone:
@@ -744,7 +705,7 @@ void video_thread( PlaybackData* data )
                DBG( img->name() << " VIDEO LOOP END frame: " << frame 
                     << " step " << step );
 
-	       continue;
+	       break;
 	    }
 	 default:
 	    break;
