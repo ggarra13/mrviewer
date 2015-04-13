@@ -551,6 +551,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
       }
 
 
+    MagickSetImageGamma( wand, gamma() );
+
     status = MagickConstituteImage( wand, pic->width(), pic->height(), 
 				    channels, o->pixel_type(), pixels );
     if (status == MagickFalse)
@@ -581,9 +583,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 	      }
 	  }
       }
-    
 
-    // MagickSetImageGamma( wand, gamma() );
 
 
     //
@@ -602,7 +602,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
 
     DestroyMagickWand( wand );
-    MagickWandTerminus();
 
     if (status == MagickFalse)
       {
