@@ -2,13 +2,13 @@
 # Copyright (C) YEAR "Film Aura, LLC"
 # This file is distributed under the same license as the PACKAGE package.
 # FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-12 20:39-0300\n"
-"PO-Revision-Date: 2015-04-12 12:09-0300\n"
+"POT-Creation-Date: 2015-04-15 19:42-0300\n"
+"PO-Revision-Date: 2015-04-14 22:20-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2108
+#: core/CMedia.cpp:2114
 msgid ""
 "\n"
 "\n"
@@ -149,7 +149,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia.cpp:2109
+#: core/CMedia.cpp:2115
 msgid " for stream #"
 msgstr " para flujo #"
 
@@ -173,7 +173,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2468
+#: core/CMedia.cpp:2474
 msgid " is missing."
 msgstr " está faltante."
 
@@ -241,6 +241,11 @@ msgstr ""
 #, c-format
 msgid "% 8.0f seconds %d ms."
 msgstr "% 8.0f segundos %d ms."
+
+#: gui/mrvTimecode.cpp:263
+#, c-format
+msgid "%.2f"
+msgstr "%.2f"
 
 #: gui/mrvImageInformation.cpp:689
 #, c-format
@@ -326,7 +331,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2109
+#: core/CMedia.cpp:2115
 msgid ", type "
 msgstr ", tipo "
 
@@ -5243,7 +5248,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1945
+#: core/CMedia.cpp:1951
 msgid "audio"
 msgstr "audio"
 
@@ -5256,7 +5261,7 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:1948
+#: core/CMedia.cpp:1954
 msgid "data"
 msgstr "datos"
 
@@ -5428,7 +5433,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1951
+#: core/CMedia.cpp:1957
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5440,7 +5445,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:1954 core/wandImage.cpp:409
+#: core/CMedia.cpp:1960 core/wandImage.cpp:409
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5456,7 +5461,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:1942
+#: core/CMedia.cpp:1948
 msgid "video"
 msgstr "video"
 
