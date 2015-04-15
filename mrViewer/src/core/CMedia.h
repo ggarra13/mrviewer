@@ -139,6 +139,13 @@ class CMedia
         {
         }
 
+        bool has_data( boost::int64_t frame ) const
+        {
+            const AVStream* stream = context->streams[stream_index];
+            double time  = av_q2d( stream->time_base );
+            return frame <= boost::int64_t( ( duration - start ) * time );
+        }
+
     };
 
     // Video stream data
@@ -703,6 +710,12 @@ class CMedia
     inline size_t number_of_subtitle_streams() const 
     { 
         return _subtitle_info.size(); 
+    }
+
+    inline bool has_audio_data() const
+    {
+        return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec
+                 && _audio_info[ _audio_index ].has_data( _frame ) );
     }
 
     inline bool has_audio() const

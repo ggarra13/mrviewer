@@ -1,3 +1,8 @@
+v2.7.8   - Fixed hangs and crashes on playback of single images in EDL.
+	 - Fixed file requester not showing negative frames correctly.
+	 - Fixed file association for jpg, png, and tiff on Linux 
+	   installers.
+
 v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
 	   saturated colors.
 	 - Windows64 version of mrViewer was distributed with 16bits

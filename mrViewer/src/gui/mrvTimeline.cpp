@@ -215,13 +215,13 @@ Timeline::~Timeline()
 	int t = slider_position(-v, w);
 	drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
 	if (n%nummod == 0) {
-	  mrv::Timecode::format( buffer, _display, boost::int64_t(v), _fps );
+	  mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _fps );
 	  char* p = buffer;
 	  setfont(textfont(), textsize());
 	  setcolor(textcolor);
 	  int wt = 0, ht;
 	  measure( p, wt, ht );
-	  drawtext(p, float(x1+dx*t-w/2),
+	  drawtext(p, float(x1+dx*t),
 		   float(y1+dy*t+getsize()-getdescent()));
 	  setcolor(linecolor);
 	}
@@ -320,10 +320,11 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     for ( ; j < max; ++j )
     {
-        if ( img->is_cache_filled( j - pos + 1 ) )
+        int64_t t = j - pos + 1;
+        if ( img->is_cache_filled( t ) )
         {
-            int dx = rx + slider_position( double(j), ww );
-            int dx2 = rx + slider_position( double(j+1), ww );
+            int dx = rx + slider_position( double(t), ww );
+            int dx2 = rx + slider_position( double(t+1), ww );
             int wh = dx2-dx;
             if ( wh <= 0 ) wh = 1;
 
