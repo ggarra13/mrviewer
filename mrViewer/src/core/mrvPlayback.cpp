@@ -500,7 +500,7 @@ void audio_thread( PlaybackData* data )
 
 
 
-      if ( fg && img->has_audio() && reel->edl )
+      if ( fg && img->has_audio_data() && reel->edl )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 	 if ( f > timeline->maximum() )
@@ -785,7 +785,7 @@ void video_thread( PlaybackData* data )
 
       bool ok = img->find_image( frame );
 
-      if ( !img->has_audio() && reel->edl )
+      if ( !img->has_audio_data() && reel->edl )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 
@@ -853,11 +853,6 @@ void decode_thread( PlaybackData* data )
 	<< " step " << step << endl;
 #endif
 
-
-   if ( !img->has_audio() && !img->has_video() && !img->is_sequence() )
-   {
-       img->frame( frame );
-   }
 
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
