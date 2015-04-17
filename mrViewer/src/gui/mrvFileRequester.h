@@ -149,7 +149,8 @@ void save_clip_xml_metadata( const CMedia* image );
    * @param startdir   start directory to save to
    */
   void save_image_file( CMedia* image,
-			const char* startdir = NULL );
+			const char* startdir = NULL,
+                        const bool aces = false );
   /** 
    * Save an image under a new filename
    * 
