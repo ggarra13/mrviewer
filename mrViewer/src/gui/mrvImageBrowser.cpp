@@ -2207,7 +2207,9 @@ void ImageBrowser::load( const stringArray& files,
     if ( sel < 0 ) return;
 
     mrv::media orig = reel->images[sel];
-    mrv::save_image_file( orig->image() );  // @todo: popup gui options
+    mrv::save_image_file( orig->image(), orig->image()->directory().c_str(),
+                          uiMain->uiLUT->value() );
+
   }
 
   /** 
