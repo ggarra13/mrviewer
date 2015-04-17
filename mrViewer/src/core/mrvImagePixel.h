@@ -116,13 +116,14 @@ namespace mrv {
 #pragma pack(pop) /* Must ensure class & union 16-B aligned */
 #endif
 
-} // namespace mrv
-
-
 inline
 std::ostream& operator<<( std::ostream& o, const mrv::ImagePixel& p )
 {
   return o << '(' << p.r << ' ' << p.g << ' ' << p.b << ' ' << p.a << ')';
 }
+
+} // namespace mrv
+
+
 
 #endif // mrvImagePixel_h

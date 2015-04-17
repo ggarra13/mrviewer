@@ -8,6 +8,9 @@ gridy 5
 snap 3
 decl {\#include <iostream>} {} 
 
+decl {\#include <core/mrvI8N.h>} {selected public
+} 
+
 decl {\#include <gui/mrvIO.h>} {public
 } 
 
@@ -26,11 +29,10 @@ namespace mrv {open
   } {
     decl {std::string pixel_type;} {public
     }
-    Function {make_window()} {open
-    } {
+    Function {make_window(bool aces)} {} {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {633 574 300 195} resizable modal noborder visible
+        xywh {68 453 300 195} hide resizable modal noborder
       } {
         {fltk::Group} {} {
           label {Image Options} open
@@ -39,7 +41,7 @@ namespace mrv {open
           {fltk::Choice} uiPixelType {
             label {Pixel Format}
             callback {pixel_type = o->child(o->value())->label();} open
-            xywh {115 69 90 25}
+            xywh {145 69 90 25}
           } {
             {fltk::Item} {} {
               label Char
@@ -57,13 +59,14 @@ namespace mrv {open
         }
         {fltk::LightButton} uiACESmetadata {
           label {ACES metadata}
-          xywh {95 40 125 35} value 1
+          xywh {95 40 125 35}
+          extra_code {o->value( aces );}
         }
         {fltk::Button} {} {
           label OK
           user_data this user_data_type {WandOptionsUI*}
           callback {v->active(true);
-v->uiMain->make_exec_return(true);} selected
+v->uiMain->make_exec_return(true);}
           xywh {75 170 55 18}
         }
         {fltk::Button} {} {
@@ -77,15 +80,15 @@ v->uiMain->make_exec_return(false);}
     }
     Function {convert()} {open
     } {
-      code {if ( pixel_type == "Char" ) _pixel_type = CharPixel;
-else if ( pixel_type == "Float" ) _pixel_type = FloatPixel;
-else if ( pixel_type == "Short" ) _pixel_type = ShortPixel;
-else if ( pixel_type == "Integer" ) _pixel_type = IntegerPixel;
+      code {if ( pixel_type == "" || pixel_type == _("Char") ) _pixel_type = CharPixel;
+else if ( pixel_type == _("Float") ) _pixel_type = FloatPixel;
+else if ( pixel_type == _("Short") ) _pixel_type = ShortPixel;
+else if ( pixel_type == _("Integer") ) _pixel_type = IntegerPixel;
 _ACESmetadata = uiACESmetadata->value();} {}
     }
-    Function {WandOptionsUI()} {open
+    Function {WandOptionsUI(bool aces=false) : WandOpts(aces)} {open
     } {
-      code {fltk::Window* w = make_window();
+      code {fltk::Window* w = make_window(aces);
 if ( w->exec() ) convert();} {}
     }
   }
