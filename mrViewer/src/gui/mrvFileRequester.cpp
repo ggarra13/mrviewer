@@ -395,7 +395,7 @@ bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
 }
 
 
-void save_image_file( CMedia* image, const char* startdir )
+void save_image_file( CMedia* image, const char* startdir, bool aces )
 {
    if (!image) return;
 
@@ -408,7 +408,7 @@ void save_image_file( CMedia* image, const char* startdir )
 		   (int(*)(int)) tolower);
    std::string ext = tmp.c_str() + tmp.size() - 4;
 
-   ImageOpts* opts = ImageOpts::build( ext );
+   ImageOpts* opts = ImageOpts::build( ext, aces );
    if ( opts->active() )
    {
        image->save( file, opts );
@@ -495,7 +495,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    {
        mrv::media fg = uiMain->uiView->foreground();
 
-       ipts = ImageOpts::build( ext );
+       bool aces = uiMain->uiLUT->value();
+       ipts = ImageOpts::build( ext, aces );
        if ( !fg || !ipts->active() ) {
            delete ipts;
            return;
