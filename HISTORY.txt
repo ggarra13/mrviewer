@@ -2,8 +2,11 @@ v2.7.8   - Fixed hangs and crashes on playback of single images in EDL.
 	 - Fixed file requester not showing negative frames correctly.
 	 - Fixed file association for jpg, png, tiff, and others on Linux 
 	   installers.
-	 - ImageMagick savers now save out gamma information without 
-	   baking it in.
+	 - Fixed ImageMagick saving.  Gamma is baked in instead of passed
+	   to image attribute.
+	 - Fixed Clone Image crash due to wrong path check.
+	 - Fixed Clone Image not cloning CTL's IDT transform.
+	 - Internal images like SMPTE color bars don't start with a RRT.
 
 v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
 	   saturated colors.
