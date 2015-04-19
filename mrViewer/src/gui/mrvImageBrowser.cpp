@@ -1600,8 +1600,11 @@ void ImageBrowser::set_bg()
 
 void ImageBrowser::clear_bg()
 {
-    // view()->bg_reel( -1 );
-    // view()->background( mrv::media() );
+    mrv::ImageView* v = view();
+    if (!v) return;
+
+    v->bg_reel( -1 );
+    v->background( mrv::media() );
     uiMain->uiReelWindow->uiBGButton->value(0);
 }
 
@@ -2974,7 +2977,7 @@ void ImageBrowser::load( const stringArray& files,
 
            if ( !img->stopped() ) img->stop();
 
-           f += img->first_frame();
+           // f += img->first_frame();
 	   img->seek( f );
 	}
       }
