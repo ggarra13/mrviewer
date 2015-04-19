@@ -3064,6 +3064,14 @@ void ImageBrowser::load( const stringArray& files,
           t->value( double(f) );
           t->redraw();
       }
+
+      mrv::EDLGroup* g = edl_group();
+      if ( g )
+      {
+          t = g->timeline();
+          t->value( double(f) );
+          t->redraw();
+      }
   }
 
   void ImageBrowser::clear_edl()

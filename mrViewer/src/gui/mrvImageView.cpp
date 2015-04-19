@@ -1372,7 +1372,6 @@ void ImageView::timeout()
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
-   char bufs[256];  bufs[0] = 0;
 
    mrv::Timeline* timeline = this->timeline();
    if  (!timeline) return;
@@ -1384,7 +1383,6 @@ void ImageView::timeout()
    mrv::Reel reel = b->reel_at( _fg_reel );
    mrv::Reel bgreel = b->reel_at( _bg_reel );
 
-   static mrv::media oldfg, oldbg;
 
    mrv::media fg = foreground();
 
@@ -1417,28 +1415,6 @@ void ImageView::timeout()
          background( bg );
       }
 
-   }
-
-
-   if ( bg && ( oldbg != bg || oldfg != fg ) )
-   {
-       sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
-                fg->image()->name().c_str(),
-                bg->image()->name().c_str() );
-       uiMain->uiMain->copy_label( bufs );
-       oldbg = bg;
-       oldfg = fg;
-   }
-   else if ( !bg && ( oldfg != fg && fg ) )
-   {
-       sprintf( bufs, "mrViewer    FG: %s", 
-                fg->image()->name().c_str() );
-       uiMain->uiMain->copy_label( bufs );
-       oldfg = fg;
-   }
-   else if ( !fg )
-   {
-       uiMain->uiMain->copy_label( "mrViewer" );
    }
 
 
@@ -4454,6 +4430,22 @@ void ImageView::foreground( mrv::media fg )
     {
         img = fg->image();
       
+        char bufs[256];  bufs[0] = 0;
+
+        mrv::media bg = background();
+        if ( bg )
+        {
+            sprintf( bufs, _("mrViewer    FG: %s   BG: %s"), 
+                     img->name().c_str(),
+                     bg->image()->name().c_str() );
+        }
+        else
+        {
+            sprintf( bufs, _("mrViewer    FG: %s"), 
+                     img->name().c_str() );
+        }
+        uiMain->uiMain->copy_label( bufs );
+
         double fps = img->fps();
         timeline()->fps( fps );
         uiMain->uiFrame->fps( fps );
@@ -4584,11 +4576,20 @@ void ImageView::background( mrv::media bg )
   delete_timeout();
 
   char buf[1024];
+  mrv::media fg = foreground();
 
   _bg = bg;
   if ( bg ) 
     {
       CMedia* img = bg->image();
+
+      if ( fg )
+      {
+          sprintf( buf, _("mrViewer    FG: %s   BG: %s"), 
+                   fg->image()->name().c_str(),
+                   img->name().c_str() );
+          uiMain->uiMain->copy_label( buf );
+      }
 
       sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64, 
                img->fileroot(), img->first_frame(), img->last_frame() );
@@ -4609,6 +4610,11 @@ void ImageView::background( mrv::media bg )
     }
   else
   {
+      if ( fg )
+      {
+          sprintf( buf, _("mrViewer    FG: %s"), fg->image()->name().c_str() );
+          uiMain->uiMain->copy_label( buf );
+      }
       sprintf( buf, "CurrentBGImage \"\"" );
       send( buf );
   }
