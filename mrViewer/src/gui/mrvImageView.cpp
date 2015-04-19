@@ -281,8 +281,6 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( !fg ) return;
 
-  mrv::CMedia* img = fg->image();
-
   view->background( fg );
 }
 
