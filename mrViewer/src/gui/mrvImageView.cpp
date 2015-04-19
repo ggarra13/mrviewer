@@ -1384,6 +1384,8 @@ void ImageView::timeout()
    mrv::Reel reel = b->reel_at( _fg_reel );
    mrv::Reel bgreel = b->reel_at( _bg_reel );
 
+   static mrv::media oldfg, oldbg;
+
    mrv::media fg = foreground();
 
    int64_t tframe = boost::int64_t( timeline->value() );
@@ -1400,10 +1402,6 @@ void ImageView::timeout()
          foreground( fg );
 
          fit_image();
-
-         sprintf( bufs, "mrViewer    FG: %s", 
-                  fg->image()->name().c_str() );
-         uiMain->uiMain->copy_label( bufs );
       }
       
    }
@@ -1416,15 +1414,31 @@ void ImageView::timeout()
 
       if ( bg && bg != background() ) 
       {
-         DBG( "CHANGE TO BG " << bg->image()->name() );
          background( bg );
-
-         sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
-                  fg->image()->name().c_str(),
-                  bg->image()->name().c_str() );
-         uiMain->uiMain->copy_label( bufs );
       }
 
+   }
+
+
+   if ( bg && ( oldbg != bg || oldfg != fg ) )
+   {
+       sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
+                fg->image()->name().c_str(),
+                bg->image()->name().c_str() );
+       uiMain->uiMain->copy_label( bufs );
+       oldbg = bg;
+       oldfg = fg;
+   }
+   else if ( !bg && ( oldfg != fg && fg ) )
+   {
+       sprintf( bufs, "mrViewer    FG: %s", 
+                fg->image()->name().c_str() );
+       uiMain->uiMain->copy_label( bufs );
+       oldfg = fg;
+   }
+   else if ( !fg )
+   {
+       uiMain->uiMain->copy_label( "mrViewer" );
    }
 
 
@@ -1476,6 +1490,7 @@ void ImageView::timeout()
 	}
      }
   }
+
 
   if ( fg && should_update( fg ) )
     {

@@ -367,8 +367,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    }
    else
    {
-       last  += ( img->first_frame() - img->start_frame() );
-       first += ( img->first_frame() - img->start_frame() );
+       boost::int64_t offset = ( img->first_frame() - img->start_frame() );
+       last  += offset;
+       first += offset;
 
       if ( last > img->last_frame() )
 	 last = img->last_frame();
