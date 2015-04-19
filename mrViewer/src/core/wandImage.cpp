@@ -223,12 +223,12 @@ namespace mrv {
 #endif
 
 
+     _gamma = 1.0f;
      // _gamma = (float) MagickGetImageGamma( wand );
-     // if (_gamma <= 0.f ) {
+     // if (_gamma <= 0.f || !isfinite(_gamma) ) {
      //     LOG_ERROR( _("Image gamma ") << _gamma << _(" invalid.  Using 1.0") );
      //     _gamma = 1.0f;
      // }
-     _gamma = 1.0f;
      // _gamma = 1.0f / _gamma;
 
      image_type::PixelType pixel_type = image_type::kByte;
@@ -446,16 +446,16 @@ const char* const pixel_type( image_type::PixelType t )
     switch( t )
     {
         case image_type::kByte:
-            return "Byte";
+            return _("Byte");
         case image_type::kShort:
-            return "Short";
+            return _("Short");
         case image_type::kInt:
-            return "Int";
+            return _("Int");
         case image_type::kFloat:
-            return "Float";
+            return _("Float");
         default:
         case image_type::kHalf:
-            return "Half";
+            return _("Half");
     }
 }
 
@@ -465,16 +465,16 @@ const char* const pixel_storage( StorageType storage )
     switch( storage )
     {
         case ShortPixel:
-            return "Short";
+            return _("Short");
         case IntegerPixel:
-            return "Int";
+            return _("Int");
         case FloatPixel:
-            return "Float";
+            return _("Float");
         case DoublePixel:
-            return "Double";
+            return _("Double");
         default:
         case CharPixel:
-            return "Byte";
+            return _("Byte");
     }
 }
 
@@ -554,15 +554,16 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
     if ( o->pixel_type() != storage )
     {
-        LOG_INFO( "Original pixel type is " 
+        LOG_INFO( _("Original pixel type is ") 
                   << pixel_storage( storage )
-                  << ".  Saving pixel type is "
-                  << pixel_storage( o->pixel_type() ) );
+                  << (".  Saving pixel type is ")
+                  << pixel_storage( o->pixel_type() )
+                  << "." );
         must_convert = true;
     }
 
-    if ( gamma() != 1.0 )
-       must_convert = true;
+    // if ( gamma() != 1.0 )
+    //    must_convert = true;
 
     if ( opts->opengl() )
         must_convert = false;
@@ -620,6 +621,18 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
       }
 
 
+
+    if ( !must_convert )
+    {
+        LOG_INFO( _("No conversion needed.  Gamma: ") << _gamma );
+        MagickSetImageGamma( wand, _gamma );
+    }
+    else
+    {
+        LOG_INFO( _("Conversion needed.  Gamma: 1.0") );
+        MagickSetImageGamma( wand, 1.0 );
+    }
+
     if ( must_convert )
       {
 	unsigned int dh = pic->height();
@@ -643,6 +656,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
 	      }
 	  }
+
+        if (status == MagickFalse)
+        {
+            delete [] pixels;
+            ThrowWandException( wand );
+        }
       }
 
 
@@ -657,10 +676,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
      */
     status = MagickWriteImage( wand, file );
 
-
     if ( must_convert ) delete [] pixels;
-
-
 
     DestroyMagickWand( wand );
 
