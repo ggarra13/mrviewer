@@ -7,8 +7,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: \n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-04-17 13:45-0300\n"
-"PO-Revision-Date: 2015-04-16 20:29-0300\n"
+"POT-Creation-Date: 2015-04-18 21:01-0300\n"
+"PO-Revision-Date: 2015-04-17 18:38-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
 "Language: \n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2114
+#: core/CMedia.cpp:2118
 msgid ""
 "\n"
 "\n"
@@ -149,7 +149,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia.cpp:2115
+#: core/CMedia.cpp:2119
 msgid " for stream #"
 msgstr " para flujo #"
 
@@ -173,7 +173,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2474
+#: core/CMedia.cpp:2478
 msgid " is missing."
 msgstr " está faltante."
 
@@ -331,7 +331,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2115
+#: core/CMedia.cpp:2119
 msgid ", type "
 msgstr ", tipo "
 
@@ -1065,6 +1065,10 @@ msgstr "Byline"
 msgid "Byline Title"
 msgstr "Título de Byline"
 
+#: core/wandImage.cpp:449 core/wandImage.cpp:477
+msgid "Byte"
+msgstr "Byte"
+
 #: gui/mrvImageInformation.cpp:618
 msgid "CIExy Chromaticities"
 msgstr "Cromaticidades CIExy"
@@ -1304,6 +1308,10 @@ msgstr "Conectado a la base de datos '"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3287
 msgid "Connections"
 msgstr "Connecciones"
+
+#: core/wandImage.cpp:632
+msgid "Conversion needed.  Gamma: 1.0"
+msgstr "Se necesita conversion.  Gama: 1,0"
 
 #: gui/mrvHotkey.cpp:180
 msgid "Copy RGBA Values"
@@ -1854,6 +1862,10 @@ msgstr ""
 msgid "Divide"
 msgstr "Dividir"
 
+#: core/wandImage.cpp:474
+msgid "Double"
+msgstr ""
+
 #: core/exrImage.cpp:1378 gui/mrvHotkey.cpp:210
 msgid "Down"
 msgstr "Abajo"
@@ -2120,6 +2132,7 @@ msgstr "Voltear en Y"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:46
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:70
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:75
+#: core/wandImage.cpp:455 core/wandImage.cpp:472
 msgid "Float"
 msgstr "Coma Flotante"
 
@@ -2352,8 +2365,9 @@ msgid "HW"
 msgstr "HW"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:74
+#: core/wandImage.cpp:458
 msgid "Half"
-msgstr ""
+msgstr "Half"
 
 #: video/mrvGLEngine.cpp:178
 msgid "Half Textures:\t"
@@ -2608,6 +2622,10 @@ msgstr "Secuencia insertada '"
 #: gui/mrvImageBrowser.cpp:911
 msgid "Inserted show '"
 msgstr "Show insertado '"
+
+#: core/wandImage.cpp:453 core/wandImage.cpp:470
+msgid "Int"
+msgstr "Entero"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:45
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:72
@@ -3135,6 +3153,10 @@ msgstr "Ningun audio o video creado"
 msgid "No codec context for audio stream."
 msgstr "Sin contexto de codec para audio."
 
+#: core/wandImage.cpp:627
+msgid "No conversion needed.  Gamma: "
+msgstr "No se necesita conversión.  Gama: "
+
 #: core/CMedia_audio.cpp:191
 msgid "No decoder found for audio stream. ID: "
 msgstr "Ningún decodificador encontrado para el flujo de audio.  ID: "
@@ -3337,6 +3359,10 @@ msgstr ""
 #: core/wandImage.cpp:394
 msgid "Original Transmission Reference"
 msgstr "Referencia de Transmisión Original"
+
+#: core/wandImage.cpp:557
+msgid "Original pixel type is "
+msgstr ""
 
 #: core/wandImage.cpp:385
 msgid "Originating Program"
@@ -4109,8 +4135,9 @@ msgstr "Mayúsculas"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:44
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:71
+#: core/wandImage.cpp:451 core/wandImage.cpp:468
 msgid "Short"
-msgstr ""
+msgstr "Corto"
 
 #: gui/FLU/Flu_File_Chooser.cpp:108
 msgid "Show Hidden Files"
@@ -5252,7 +5279,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1951
+#: core/CMedia.cpp:1955
 msgid "audio"
 msgstr "audio"
 
@@ -5265,7 +5292,7 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:1954
+#: core/CMedia.cpp:1958
 msgid "data"
 msgstr "datos"
 
@@ -5437,7 +5464,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1957
+#: core/CMedia.cpp:1961
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5449,7 +5476,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:1960 core/wandImage.cpp:422
+#: core/CMedia.cpp:1964 core/wandImage.cpp:422
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5465,7 +5492,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:1948
+#: core/CMedia.cpp:1952
 msgid "video"
 msgstr "video"
 

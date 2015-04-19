@@ -1638,7 +1638,11 @@ std::string CMedia::directory() const
       name = name.substr(6, name.size() );
   fs::path file = fs::path( name );
   file = fs::absolute( file.branch_path() );
-  std::string path = fs::canonical( file ).string();
+  std::string path;
+  if ( fs::exists( file ) )
+      path = fs::canonical( file ).string();
+  else
+      path = file.string();
   return path;
 }
 
@@ -2487,6 +2491,8 @@ void CMedia::default_icc_profile()
 {
   if ( icc_profile() ) return;
 
+  if ( internal() ) return;
+
   switch( depth() )
     {
     case image_type::kByte:
@@ -2507,7 +2513,7 @@ void CMedia::default_icc_profile()
 	icc_profile( icc_profile_float.c_str() );
       break;
     default:
-      IMG_ERROR("default_rendering_tranform - unknown bit depth");
+      IMG_ERROR("default_icc_profile - unknown bit depth");
       break;
     }
 }
@@ -2643,6 +2649,8 @@ void CMedia::make_anaglyph( bool left_red )
 void CMedia::default_rendering_transform()
 {
   if ( rendering_transform() ) return;
+
+  if ( internal() ) return;
 
   switch( depth() )
     {
