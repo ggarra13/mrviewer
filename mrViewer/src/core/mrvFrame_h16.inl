@@ -29,21 +29,21 @@ namespace mrv {
 	  p.a = d[len + offset];
 	}
       case kLumma:
-	p.r = p.g = p.b = col[0]; break;
+	p.r = p.g = p.b = col[0]; return p;
       case kBGRA:
 	p.a = col[3];
       case kBGR:
 	p.r = col[2];
 	p.g = col[1];
 	p.b = col[0];
-	break;
+	return p;
       case kRGBA:
 	p.a = col[3];
       case kRGB:
 	p.r = col[0];
 	p.g = col[1];
 	p.b = col[2];
-	break;
+	return p;
       case kITU_709_YCbCr444:
       case kITU_601_YCbCr444:
 	{
