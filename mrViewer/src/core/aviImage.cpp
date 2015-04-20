@@ -747,7 +747,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         }
 
 
-	store_image( frame, pkt.dts );
 	// store_image( ptsframe, pkt.dts );
 
 	return kDecodeOK;
@@ -791,10 +790,13 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
   }
   else
   {
-     if ( ptsframe < frame )
-     {
-     	status = kDecodeMissingFrame;
-     }
+      if ( status == kDecodeOK )
+          store_image( ptsframe, pkt.dts );
+
+     // if ( ptsframe < frame )
+     // {
+     // 	status = kDecodeMissingFrame;
+     // }
   }
 
   return status;
