@@ -706,14 +706,10 @@ void EDLGroup::draw()
 
    fltk::Group::draw();
 
-   mrv::Timeline* t = uiMain->uiTimeline;
+   mrv::Timeline* t = timeline();
+   if (!t) return;
+
    double frame = t->value();
-   t = timeline();
-   t->value( frame );
-   t->redraw();
-   // double p = double(frame - t->minimum()) / 
-   //            double(t->maximum() - t->minimum());
-   // p *= t->w();
 
    int p = t->slider_position( frame, t->w() );
    p += int( t->slider_size()/2.0 );
