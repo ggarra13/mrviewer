@@ -3064,9 +3064,16 @@ void ImageBrowser::load( const stringArray& files,
   void ImageBrowser::clear_edl()
   {
      mrv::Reel reel = current_reel();
+     if (!reel) return;
+
      reel->edl = false;
-     timeline()->edl( false );
-     timeline()->redraw();
+
+     mrv::Timeline* t = timeline();
+     if ( t )
+     {
+         t->edl( false );
+         t->redraw();
+     }
 
      uiMain->uiReelWindow->uiEDLButton->value(0);
 
@@ -3093,8 +3100,12 @@ void ImageBrowser::load( const stringArray& files,
      if (!reel) return;
 
      reel->edl = true;
-     timeline()->edl( true );
-     timeline()->redraw();
+     mrv::Timeline* t = timeline();
+     if ( t )
+     {
+         t->edl( true );
+         t->redraw();
+     }
 
      uiMain->uiReelWindow->uiEDLButton->value(1);
 
@@ -3104,7 +3115,7 @@ void ImageBrowser::load( const stringArray& files,
     CMedia* img = m->image();
     if ( !img ) return;
 
-    int64_t f = img->frame() - img->first_frame() + timeline()->location( img );
+    int64_t f = img->frame() - img->first_frame() + t->location( img );
     frame( f );
 
     char buf[64];
@@ -3212,9 +3223,14 @@ void ImageBrowser::load( const stringArray& files,
 
      // DBG( "first " << first << " f=" << f << " last " << last );
 
+     mrv::Timeline* t = timeline();
+     if ( t )
+     {
+         t->minimum( double(first) );
+         t->maximum( double(last) );
+     }
 
-     timeline()->minimum( double(first) );
-     timeline()->maximum( double(last) );
+
 
      uiMain->uiStartFrame->value( first );
      uiMain->uiEndFrame->value( last );
