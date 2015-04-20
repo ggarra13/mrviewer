@@ -258,197 +258,196 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
   switch( display )
     {
     case kFrames:
-      return sprintf( buf, "%" PRId64, f );
+        return sprintf( buf, "%" PRId64, f );
     case kSeconds:
-      return sprintf( buf, "%.2f", ((double)f / fps) );
+        return sprintf( buf, _("%.2f"), ((double)f / fps) );
     case kTime:
-      {
-	int  hours  = 0;
-	int  mins   = 0;
-	int  secs   = 0;
-	int  msecs  = 0;
+        {
+            int  hours  = 0;
+            int  mins   = 0;
+            int  secs   = 0;
+            int  msecs  = 0;
 
-	// Convert current frame value to time based on fps
-	double hourbase = 3600 * fps;
-	double minbase  = 60 * fps;
-	double secbase  = fps;
+            // Convert current frame value to time based on fps
+            double hourbase = 3600 * fps;
+            double minbase  = 60 * fps;
+            double secbase  = fps;
 	
-	int64_t x = f;
-	hours = int( double(x) / hourbase );
-	x -= int64_t( double(hours) * hourbase);
-	mins = int( double(x) / minbase );
-	x -= int64_t( double(mins) * minbase);
-	secs = int( double(x) / secbase );
-	x -= int64_t( double(secs) * secbase);
-	msecs = int(x); // frames
-	x -= msecs;
+            int64_t x = f;
+            hours = int( double(x) / hourbase );
+            x -= int64_t( double(hours) * hourbase);
+            mins = int( double(x) / minbase );
+            x -= int64_t( double(mins) * minbase);
+            secs = int( double(x) / secbase );
+            x -= int64_t( double(secs) * secbase);
+            msecs = int(x); // frames
+            x -= msecs;
 
-	msecs = int(1000.0 * double(msecs) / fps);
+            msecs = int(1000.0 * double(msecs) / fps);
 
-        if ( msecs >= 1000 ) {
-            msecs -= 1000;
-            ++secs;
+            if ( msecs >= 1000 ) {
+                msecs -= 1000;
+                ++secs;
+            }
+
+            // If negative timecode, make hour negative only
+            hours = abs(hours); mins = abs(mins); secs = abs(secs);
+            if ( msecs < 0 ) { hours = -hours; msecs = -msecs; }
+            
+            if ( withFrames )
+            {
+                return sprintf( buf, "%02d:%02d:%02d.%03d", 
+                                hours, mins, secs, msecs );
+            }
+            else
+            {
+                return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
+            }
         }
+        case kTimecodeNonDrop:
+            {
+                int ifps = int(fps + 0.5f);
+                
+                int  hours  = 0;
+                int  mins   = 0;
+                int  secs   = 0;
+                int  frames = 0;
+                
+                // Convert current frame value to timecode based on fps
+                int frames_per_hour = 3600 * ifps;
+                int minbase  = 60 * ifps;
+                int secbase  = ifps;
+	
+                int64_t x = f;
+                hours = int( x / frames_per_hour );
+                x -= int64_t(hours * frames_per_hour);
+                mins = int( x / minbase );
+                x -= int64_t(mins * minbase);
+                secs = int( x / secbase );
+                x -= int64_t(secs * secbase);
+                frames = int(x);
+                x -= frames;
+
+                // If negative timecode, make hour negative only
+                hours = abs(hours); mins = abs(mins); secs = abs(secs);
+                if ( frames < 0 ) { hours = -hours; frames = -frames; }
+	
+                if ( withFrames )
+                {
+                    return sprintf( buf, "%02d:%02d:%02d:%02d", 
+                                    hours, mins, secs, frames );
+                }
+                else
+                {
+                    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
+                }
+            }
+        case kTimecodeDropFrame:
+            {
+                int ifps = int(fps + 0.5f);
+                if ( ifps < 30 || ifps % 30 != 0 ) 
+                    return format( buf, kTimecodeNonDrop, f, fps, withFrames );
 
 	
-	// If negative timecode, make hour negative only
-	hours = abs(hours); mins = abs(mins); secs = abs(secs);
-	if ( msecs < 0 ) { hours = -hours; msecs = -msecs; }
+                int  hours  = 0;
+                int  mins   = 0;
+                int  secs   = 0;
+                int  frames = 0;
+
+                // Convert current frame value to timecode based on fps
+                int frames_per_hour = int(3600 * fps);
 	
-	if ( withFrames )
-	  {
-	    return sprintf( buf, "%02d:%02d:%02d.%03d", 
-			    hours, mins, secs, msecs );
-	  }
-	else
-	  {
-	    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
-	  }
-      }
-    case kTimecodeNonDrop:
-      {
-	int ifps = int(fps + 0.5f);
+                int64_t x = f;
+                hours = int( x / frames_per_hour );
+                x -= int64_t(hours * frames_per_hour);
 
-	int  hours  = 0;
-	int  mins   = 0;
-	int  secs   = 0;
-	int  frames = 0;
+                /* there are 1800 frames in the first minutes of every 10
+                 * minutes, and there are 1798 frames in the remaining 9 minutes
+                 * of each 10 minutes.  We multiply by ifps to also support 59.94 TC
+                 * and other multiples.
+                 */
+                int frames_per_ten_mins = ifps * (9*1798 + 1800) / 30;
+
+                mins  = int(x / frames_per_ten_mins);
+                x    -= mins * frames_per_ten_mins;
+                mins *= 10;
+
+                /* Now we have less than 10 minutes worth of frames
+                 */
+
+                // 0 min is multiple of 10 and thus 1800 frames
+                int fpm = 1800*ifps/30;
+                if ( x >= fpm )
+                {
+                    ++mins;
+                    x -= fpm;  
+
+                    // Other mins are not multiple of 10 and thus 1798 frames
+                    fpm = 1798*ifps/30;
+                    while ( x >= fpm )
+                    {
+                        ++mins;
+                        x -= fpm;
+                    }
+                }
+
+                /* now we have less than 1 minute worth of frames
+                 */
+                int tfps;
+                if ( mins % 10 == 0 )
+                {
+                    tfps = int(30 * (ifps / 30));
+                }
+                else
+                {
+                    tfps = int(28 * (ifps / 30));
+                }
+
+                if ( x >= tfps )
+                {
+                    ++secs;
+                    x -= tfps;
+
+                    tfps = int(30 * (ifps / 30));
+
+                    while ( x >= tfps ) {
+                        ++secs;
+                        x -= tfps;
+                    }
+                }
+
+                /* Now, we have the correct number of frames
+                 */
+                if ( (mins % 10 != 0) && secs == 0 )
+                {
+                    frames  = int(x);
+                    frames += int(2 * (ifps/30));
+                }
+                else
+                {
+                    frames = int(x);
+                }
 	
-	// Convert current frame value to timecode based on fps
-	int frames_per_hour = 3600 * ifps;
-	int minbase  = 60 * ifps;
-	int secbase  = ifps;
+                // If negative timecode, make hour negative only
+                hours = abs(hours); mins = abs(mins); secs = abs(secs);
+                if ( frames < 0 ) { hours = -hours; frames = -frames; }
+
+                // Sanity check
+                assert( valid_drop_frame( hours, mins, secs, frames, fps ) ); 
 	
-	int64_t x = f;
-	hours = int( x / frames_per_hour );
-	x -= int64_t(hours * frames_per_hour);
-	mins = int( x / minbase );
-	x -= int64_t(mins * minbase);
-	secs = int( x / secbase );
-	x -= int64_t(secs * secbase);
-	frames = int(x);
-	x -= frames;
-	
-	// If negative timecode, make hour negative only
-	hours = abs(hours); mins = abs(mins); secs = abs(secs);
-	if ( frames < 0 ) { hours = -hours; frames = -frames; }
-	
-	if ( withFrames )
-	  {
-	    return sprintf( buf, "%02d:%02d:%02d:%02d", 
-			    hours, mins, secs, frames );
-	  }
-	else
-	  {
-	    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
-	  }
-      }
-    case kTimecodeDropFrame:
-      {
-	int ifps = int(fps + 0.5f);
-	if ( ifps < 30 || ifps % 30 != 0 ) 
-	  return format( buf, kTimecodeNonDrop, f, fps, withFrames );
-
-	
-	int  hours  = 0;
-	int  mins   = 0;
-	int  secs   = 0;
-	int  frames = 0;
-
-	// Convert current frame value to timecode based on fps
-	int frames_per_hour = int(3600 * fps);
-	
-	int64_t x = f;
-	hours = int( x / frames_per_hour );
-	x -= int64_t(hours * frames_per_hour);
-
-	/* there are 1800 frames in the first minutes of every 10
-	 * minutes, and there are 1798 frames in the remaining 9 minutes
-	 * of each 10 minutes.  We multiply by ifps to also support 59.94 TC
-	 * and other multiples.
-	 */
-	int frames_per_ten_mins = ifps * (9*1798 + 1800) / 30;
-
-	mins  = int(x / frames_per_ten_mins);
-	x    -= mins * frames_per_ten_mins;
-	mins *= 10;
-
-	/* Now we have less than 10 minutes worth of frames
-	 */
-
-	// 0 min is multiple of 10 and thus 1800 frames
-	int fpm = 1800*ifps/30;
-	if ( x >= fpm )
-	  {
-	    ++mins;
-	    x -= fpm;  
-
-	    // Other mins are not multiple of 10 and thus 1798 frames
-	    fpm = 1798*ifps/30;
-	    while ( x >= fpm )
-	      {
-		++mins;
-		x -= fpm;
-	      }
-	  }
-
-	/* now we have less than 1 minute worth of frames
-	 */
-	int tfps;
-	if ( mins % 10 == 0 )
-	  {
-	    tfps = int(30 * (ifps / 30));
-	  }
-	else
-	  {
-	    tfps = int(28 * (ifps / 30));
-	  }
-
-	if ( x >= tfps )
-	  {
-	    ++secs;
-	    x -= tfps;
-
-	    tfps = int(30 * (ifps / 30));
-
-	    while ( x >= tfps ) {
-	      ++secs;
-	      x -= tfps;
-	    }
-	  }
-
-	/* Now, we have the correct number of frames
-	 */
-	if ( (mins % 10 != 0) && secs == 0 )
-	  {
-	    frames  = int(x);
-	    frames += int(2 * (ifps/30));
-	  }
-	else
-	  {
-	    frames = int(x);
-	  }
-	
-	// If negative timecode, make hour negative only
-	hours = abs(hours); mins = abs(mins); secs = abs(secs);
-	if ( frames < 0 ) { hours = -hours; frames = -frames; }
-
-	// Sanity check
-	assert( valid_drop_frame( hours, mins, secs, frames, fps ) ); 
-	
-	if ( withFrames )
-	  {
-	    return sprintf( buf, "%02d:%02d:%02d:%02d", 
-			    hours, mins, secs, frames );
-	  }
-	else
-	  {
-	    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
-	  }
-      }
-    default:
-      LOG_ERROR("Unknown timecode format");
-      return 0;
+                if ( withFrames )
+                {
+                    return sprintf( buf, "%02d:%02d:%02d:%02d", 
+                                    hours, mins, secs, frames );
+                }
+                else
+                {
+                    return sprintf( buf, "%02d:%02d:%02d", hours, mins, secs );
+                }
+            }
+        default:
+            LOG_ERROR("Unknown timecode format");
+            return 0;
     }
 }
 

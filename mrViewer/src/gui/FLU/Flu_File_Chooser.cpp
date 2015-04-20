@@ -598,7 +598,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   desktopBtn->highlight_color( hi );
   desktopBtn->callback( _desktopCB, this );
   {
-    fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 62, 100, 20, desktopTxt.c_str() );
+      fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 62, 100, 20, _(desktopTxt.c_str()) );
     l->labelcolor( fltk::WHITE );
     l->align( fltk::ALIGN_CENTER );
   }
@@ -610,11 +610,11 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   {
 #ifdef WIN32
     fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 142, 100, 20,
-						    myComputerTxt.c_str() );
+						    _(myComputerTxt.c_str()) );
     homeBtn->image( my_computer );
 #else
     fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 142, 100, 20,
-						    myComputerTxt.c_str() );
+						    _(myComputerTxt.c_str()) );
     homeBtn->image( home );
 #endif
     l->labelcolor( fltk::WHITE );
@@ -629,11 +629,11 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   {
 #ifdef _WIN32
     fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 222, 100, 20,
-						    myDocumentsTxt.c_str() );
+						    _(myDocumentsTxt.c_str()) );
     documentsBtn->image( &bigdocuments );
 #else
     fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 222, 100, 20,
-						    myDocumentsTxt.c_str() );
+						    _(myDocumentsTxt.c_str()) );
     documentsBtn->image( &bigtemporary );
 #endif
     l->labelcolor( fltk::WHITE );
@@ -646,7 +646,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   favoritesBtn->highlight_color( hi );
   favoritesBtn->callback( _favoritesCB, this );
   {
-    fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 302, 100, 20, favoritesTxt.c_str() );
+      fltk::InvisibleBox *l = new fltk::InvisibleBox( 5, 302, 100, 20, _(favoritesTxt.c_str()) );
     l->labelcolor( fltk::WHITE );
     l->align( fltk::ALIGN_CENTER );
   }
