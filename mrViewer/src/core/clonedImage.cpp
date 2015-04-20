@@ -123,8 +123,11 @@ namespace mrv {
                                        other->look_mod_transform( i ) ) );
     }
 
-    const char* transform = other->rendering_transform();
-    if ( transform )  rendering_transform( transform );
+    const char* transform = other->idt_transform();
+    if ( transform )  idt_transform( strdup(transform) );
+
+    transform = other->rendering_transform();
+    if ( transform )  rendering_transform( strdup(transform) );
 
     const char* lbl = other->label();
     if ( lbl )  _label = strdup( lbl );

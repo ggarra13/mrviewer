@@ -26,6 +26,7 @@
 
 namespace mrv {
 
+static const char* kModule = "imgopt";
 
 class ImageOpts
 {
@@ -34,8 +35,10 @@ class ImageOpts
     bool _opengl;
     bool _ACESmetadata;
   public:
-    ImageOpts() :
-    _ACESmetadata( false )
+    ImageOpts(bool aces) :
+    _active( true ),
+    _opengl( false ),
+    _ACESmetadata( aces )
     {
     }
 
@@ -52,7 +55,7 @@ class ImageOpts
     bool ACES_metadata() const { return _ACESmetadata; }
     void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
-    static ImageOpts* build( std::string ext );
+    static ImageOpts* build( std::string ext, bool aces );
 };
 
 
@@ -63,9 +66,10 @@ class EXROpts : public ImageOpts
     Imf::PixelType   _pixel_type;
     float            _dwa_compression_level;
   public:
-    EXROpts() : _compression( Imf::ZIPS_COMPRESSION ),
-                _pixel_type( Imf::HALF ),
-                _dwa_compression_level( 45.0f )
+    EXROpts( bool aces ) : ImageOpts( aces ),
+                           _compression( Imf::ZIPS_COMPRESSION ),
+                           _pixel_type( Imf::HALF ),
+                           _dwa_compression_level( 45.0f )
     {
     }
 
@@ -86,11 +90,13 @@ class WandOpts : public ImageOpts
   protected:
     StorageType  _pixel_type;
   public:
-    WandOpts() : _pixel_type( FloatPixel )
+    WandOpts(bool aces) : ImageOpts(aces),
+                          _pixel_type( CharPixel )
     {
     }
 
     StorageType pixel_type() const { return _pixel_type; }
+    void pixel_type( StorageType& t ) { _pixel_type = t; }
 };
 
 }  // namespace mrv

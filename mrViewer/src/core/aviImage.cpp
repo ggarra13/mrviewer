@@ -456,6 +456,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // static const AVRational base = { 1, AV_TIME_BASE };
     // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
+    if ( _context == NULL ) return false;
+
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
     boost::int64_t start = frame - 1;

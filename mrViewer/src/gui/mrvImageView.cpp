@@ -281,8 +281,6 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
   mrv::media fg = view->foreground();
   if ( !fg ) return;
 
-  mrv::CMedia* img = fg->image();
-
   view->background( fg );
 }
 
@@ -1184,8 +1182,8 @@ bool ImageView::should_update( mrv::media& fg )
       if ( img->image_damage() & CMedia::kDamageThumbnail )
       {
 	  // Redraw browser to update thumbnail
-	mrv::ImageBrowser* b = browser();
-	if (b) b->redraw();
+          mrv::ImageBrowser* b = browser();
+	  if (b) b->redraw();
       }
 
       if ( img->image_damage() & CMedia::kDamageData )
@@ -1256,9 +1254,9 @@ bool ImageView::should_update( mrv::media& fg )
 
       if ( img->image_damage() & CMedia::kDamageThumbnail )
       {
-	// Redraw browser to update thumbnail
-	mrv::ImageBrowser* b = browser();
-	if (b) b->redraw();
+          // Redraw browser to update thumbnail
+          mrv::ImageBrowser* b = browser();
+	  if (b) b->redraw();
       }
   }
 
@@ -1379,11 +1377,11 @@ void ImageView::timeout()
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
-   char bufs[256];  bufs[0] = 0;
 
    mrv::Timeline* timeline = this->timeline();
    if  (!timeline) return;
 
+   // Redraw browser to update thumbnail
    mrv::ImageBrowser* b = browser();
    if (!b) return;
 
@@ -1406,10 +1404,6 @@ void ImageView::timeout()
          foreground( fg );
 
          fit_image();
-
-         sprintf( bufs, "mrViewer    FG: %s", 
-                  fg->image()->name().c_str() );
-         uiMain->uiMain->copy_label( bufs );
       }
       
    }
@@ -1422,13 +1416,7 @@ void ImageView::timeout()
 
       if ( bg && bg != background() ) 
       {
-         DBG( "CHANGE TO BG " << bg->image()->name() );
          background( bg );
-
-         sprintf( bufs, "mrViewer    FG: %s   BG: %s", 
-                  fg->image()->name().c_str(),
-                  bg->image()->name().c_str() );
-         uiMain->uiMain->copy_label( bufs );
       }
 
    }
@@ -1482,6 +1470,7 @@ void ImageView::timeout()
 	}
      }
   }
+
 
   if ( fg && should_update( fg ) )
     {
@@ -4445,6 +4434,22 @@ void ImageView::foreground( mrv::media fg )
     {
         img = fg->image();
       
+        char bufs[256];  bufs[0] = 0;
+
+        mrv::media bg = background();
+        if ( bg )
+        {
+            sprintf( bufs, _("mrViewer    FG: %s   BG: %s"), 
+                     img->name().c_str(),
+                     bg->image()->name().c_str() );
+        }
+        else
+        {
+            sprintf( bufs, _("mrViewer    FG: %s"), 
+                     img->name().c_str() );
+        }
+        uiMain->uiMain->copy_label( bufs );
+
         double fps = img->fps();
         timeline()->fps( fps );
         uiMain->uiFrame->fps( fps );
@@ -4575,11 +4580,20 @@ void ImageView::background( mrv::media bg )
   delete_timeout();
 
   char buf[1024];
+  mrv::media fg = foreground();
 
   _bg = bg;
   if ( bg ) 
     {
       CMedia* img = bg->image();
+
+      if ( fg )
+      {
+          sprintf( buf, _("mrViewer    FG: %s   BG: %s"), 
+                   fg->image()->name().c_str(),
+                   img->name().c_str() );
+          uiMain->uiMain->copy_label( buf );
+      }
 
       sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64, 
                img->fileroot(), img->first_frame(), img->last_frame() );
@@ -4600,6 +4614,11 @@ void ImageView::background( mrv::media bg )
     }
   else
   {
+      if ( fg )
+      {
+          sprintf( buf, _("mrViewer    FG: %s"), fg->image()->name().c_str() );
+          uiMain->uiMain->copy_label( buf );
+      }
       sprintf( buf, "CurrentBGImage \"\"" );
       send( buf );
   }
@@ -4835,9 +4854,9 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
+    // Redraw browser to update thumbnail
     mrv::ImageBrowser* b = browser();
-    if ( !b ) return; 
-    b->frame( f );
+    if (b) b->frame( f );
 }
 
 
@@ -4877,7 +4896,7 @@ void ImageView::step_frame( int64_t n )
   assert( n != 0 );
   if ( n == 0 ) return;
 
-  stop();
+  stop_playback();
 
   int64_t start = (int64_t) timeline()->minimum();
   int64_t end   = (int64_t) timeline()->maximum();
@@ -5178,18 +5197,23 @@ void ImageView::thumbnails()
  */
 void ImageView::stop()
 { 
-   if ( playback() == kStopped ) return;
+    if ( playback() == kStopped ) return;
 
-  _playback = kStopped;
-  _last_fps = 0.0;
-  _real_fps = 0.0;
+    _playback = kStopped;
+    _last_fps = 0.0;
+    _real_fps = 0.0;
 
   stop_playback();
 
-  uiMain->uiPlayForwards->value(0);
-  uiMain->uiPlayBackwards->value(0);
-
   send( "stop" );
+
+  if ( uiMain->uiPlayForwards )
+      uiMain->uiPlayForwards->value(0);
+
+  if ( uiMain->uiPlayBackwards )
+      uiMain->uiPlayBackwards->value(0);
+
+
   seek( int64_t(timeline()->value()) );
 
   redraw();
