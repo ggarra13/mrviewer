@@ -367,8 +367,9 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    }
    else
    {
-       last  += ( img->first_frame() - img->start_frame() );
-       first += ( img->first_frame() - img->start_frame() );
+       boost::int64_t offset = ( img->first_frame() - img->start_frame() );
+       last  += offset;
+       first += offset;
 
       if ( last > img->last_frame() )
 	 last = img->last_frame();
@@ -400,9 +401,6 @@ void audio_thread( PlaybackData* data )
 
    CMedia* img = data->image;
    assert( img != NULL );
-
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-   assert( uiMain != NULL );
 
    bool fg = data->fg;
 
@@ -451,11 +449,13 @@ void audio_thread( PlaybackData* data )
       switch( status )
       {
 	 case CMedia::kDecodeError:
-             LOG_ERROR( _("Decode Error audio frame ") << frame );
+             LOG_ERROR( img->name() 
+                         << _(" - decode Error audio frame ") << frame );
              frame += step;
              continue;
 	 case CMedia::kDecodeMissingFrame:
-             LOG_ERROR( _("Decode Missing audio frame ") << frame );
+             LOG_ERROR( img->name() 
+                        << _(" - decode missing audio frame ") << frame );
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
@@ -501,7 +501,7 @@ void audio_thread( PlaybackData* data )
 
 
 
-      if ( fg && img->has_audio() && reel->edl )
+      if ( fg && img->has_audio_data() && reel->edl )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 	 if ( f > timeline->maximum() )
@@ -692,9 +692,7 @@ void video_thread( PlaybackData* data )
 
                CMedia::Barrier* barrier = img->loop_barrier();
                // Wait until all threads loop and decode is restarted
-               assert( barrier != NULL );
-               barrier->wait();
-
+               bool ok = barrier->wait();
 
                if ( img->stopped() ) continue;
 
@@ -786,7 +784,7 @@ void video_thread( PlaybackData* data )
 
       bool ok = img->find_image( frame );
 
-      if ( !img->has_audio() && reel->edl && fg )
+      if ( !img->has_audio_data() && reel->edl )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
          view->frame( f );
@@ -818,8 +816,6 @@ void decode_thread( PlaybackData* data )
    CMedia* img = data->image;
    assert( img != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
-   assert( uiMain != NULL );
 
    bool fg = data->fg;
 
@@ -853,7 +849,7 @@ void decode_thread( PlaybackData* data )
 #endif
 
 
-   while ( ( !img->stopped() && view->playback() != mrv::ImageView::kStopped ) )
+   while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
 
       if ( img->seek_request() )
@@ -873,9 +869,12 @@ void decode_thread( PlaybackData* data )
 
           CMedia::Barrier* barrier = img->loop_barrier();
           // Wait until all threads loop and decode is restarted
-          assert( barrier != NULL );
-          if ( !barrier ) return;
-	  barrier->wait();
+          barrier->wait();
+	  //   LOG_INFO( img->name() << " BARRIER DECODE LOCK PASS gen: " 
+	  //             << barrier->generation() 
+	  //             << " count: " << barrier->count() 
+	  //             << " threshold: " << barrier->threshold() 
+	  //             << " used: " << barrier->used() );
 
          // Do the looping, taking into account ui state
          //  and return new frame and step.

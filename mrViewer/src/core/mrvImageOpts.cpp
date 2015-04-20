@@ -22,11 +22,12 @@
 
 namespace mrv {
 
-ImageOpts* ImageOpts::build( std::string ext )
+
+ImageOpts* ImageOpts::build( std::string ext, bool aces )
 {
     if ( ext == ".exr" || ext == ".sxr" )
-        return new EXROptionsUI();
-    return new WandOptionsUI();
+        return new EXROptionsUI(aces);
+    return new WandOptionsUI(aces);
 }
 
 }
