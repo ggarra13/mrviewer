@@ -747,8 +747,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         }
 
 
-	// store_image( ptsframe, pkt.dts );
-
 	return kDecodeOK;
      }
 
@@ -2297,7 +2295,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 		  pktframe = frame;
 
                boost::int64_t ptsframe = pktframe;
-               decode_video_packet( ptsframe, frame, pkt );
+               got_video = decode_image( frame, pkt );
                _video_packets.pop_front();
                return kDecodeOK;
 	    }
