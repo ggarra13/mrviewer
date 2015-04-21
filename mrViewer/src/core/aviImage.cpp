@@ -2285,19 +2285,18 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	{
 	  AVPacket& pkt = _video_packets.front();
 
-	  bool ok = in_video_store( frame );
+          boost::int64_t pktframe;
+          if ( pkt.dts != MRV_NOPTS_VALUE )
+              pktframe = pts2frame( get_video_stream(), pkt.dts );
+          else
+              pktframe = frame;
+
+	  bool ok = in_video_store( pktframe );
 	  if ( ok )
 	    {
-	       boost::int64_t pktframe;
-	       if ( pkt.dts != MRV_NOPTS_VALUE )
-		  pktframe = pts2frame( get_video_stream(), pkt.dts );
-	       else
-		  pktframe = frame;
-
-               boost::int64_t ptsframe = pktframe;
-               got_video = decode_image( frame, pkt );
-               _video_packets.pop_front();
-               return kDecodeOK;
+                got_video = decode_video_packet( pktframe, frame, pkt );
+                _video_packets.pop_front();
+                return kDecodeOK;
 	    }
 
 	  // Limit storage of frames to only fps.  For example, 30 frames
