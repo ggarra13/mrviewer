@@ -747,8 +747,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         }
 
 
-	store_image( frame, pkt.dts );
-	// store_image( ptsframe, pkt.dts );
+        store_image( frame, pkt.dts );
+	// store_image( ptsframe, pkt.dts ); // bad
 
 	return kDecodeOK;
      }
@@ -789,13 +789,8 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
                            -1 : pkt.pts ) << " dts: " << pkt.dts
 		      << " data: " << (void*)pkt.data);
   }
-  else
-  {
-     if ( ptsframe < frame )
-     {
-     	status = kDecodeMissingFrame;
-     }
-  }
+
+  // store_image( frame, pkt.dts );
 
   return status;
 }
@@ -2285,6 +2280,19 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	{
 	  AVPacket& pkt = _video_packets.front();
 
+#if 0
+          boost::int64_t pktframe = frame;
+          if ( pkt.dts != MRV_NOPTS_VALUE )
+              pktframe = pts2frame( get_video_stream(), pkt.dts );
+
+	  bool ok = in_video_store( pktframe );
+	  if ( ok )
+	    {
+               decode_video_packet( pktframe, frame, pkt );
+               _video_packets.pop_front();
+               return kDecodeOK;
+	    }
+#else
 	  bool ok = in_video_store( frame );
 	  if ( ok )
 	    {
@@ -2299,6 +2307,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
                _video_packets.pop_front();
                return kDecodeOK;
 	    }
+#endif
 
 	  // Limit storage of frames to only fps.  For example, 30 frames
 	  // for a fps of 30.
