@@ -1,11 +1,9 @@
-<<<<<<< HEAD
-v2.7.8   - Fixed display of negative frame values in file requester.
-	 - 
-=======
 v2.7.9   - Bug fixed start frame on BG image, which would offset by 1 
 	   frame.
 	 - Added display of FG and BG images to title bar.  Previously,
 	   this would only be used when edl was on.
+	 - Improved performance of seek in video playback and scrubbing.
+	 - Improved performance of reverse playback.
 
 v2.7.8   - Fixed hangs and crashes on playback of single images in EDL.
 	 - Fixed file requester not showing negative frames correctly.
@@ -20,7 +18,6 @@ v2.7.8   - Fixed hangs and crashes on playback of single images in EDL.
 	 - Internal images like SMPTE color bars don't start with a RRT.
 	 - When saving, if LUT is active, ACES Metadata saving is turned 
 	   on. If LUT is not active, ACES Metadata is turned off.
->>>>>>> new_branch_name
 
 v2.7.7   - Clamped values of ITU 709 as it could result in overflows and
 	   saturated colors.
