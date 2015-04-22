@@ -745,8 +745,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	   ptsframe = pts2frame( stream, ptsframe );
         }
 
-	// store_image( ptsframe, pkt.dts );
-
 	return kDecodeOK;
      }
 
@@ -997,14 +995,14 @@ bool aviImage::find_image( const boost::int64_t frame )
 
 	    if ( _hires->frame() != frame && 
 		 abs(frame - _hires->frame() ) < 10 )
-	       IMG_WARNING( N_("find_image: frame ") << frame 
+	       IMG_WARNING( _("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
 	    refresh();
 	  }
 	else
 	  {
-	     IMG_ERROR( "find_image: frame " << frame << _(" not found") );
+              IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
 	  }
 	return false;
       }
