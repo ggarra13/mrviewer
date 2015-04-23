@@ -447,6 +447,8 @@ bool aviImage::is_cache_filled( int64_t frame )
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {
 
+    if ( _context == NULL ) return false;
+
     // double frac = ( (double) (frame - _frameStart) / 
     // 		   (double) (_frameEnd - _frameStart) );
     // boost::int64_t offset = boost::int64_t( _context->duration * frac );
@@ -2120,7 +2122,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       count += 1;
 
       boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-      _frame_offset;
+                                _frame_offset;
 
       if ( !is_seek && playback() == kBackwards )
 	{
@@ -2198,7 +2200,7 @@ int64_t aviImage::wait_image()
 	{
 	  const AVPacket& pkt = _video_packets.front();
 	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-	  _frame_offset;
+                                    _frame_offset;
 	  return pktframe;
 	}
 
