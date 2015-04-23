@@ -2182,8 +2182,10 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   assert( pts != MRV_NOPTS_VALUE );
   if (!stream) return 0;
 
-  double p = av_q2d( stream->time_base ) * double( pts );
-  frame = boost::int64_t( p * fps() ) + 1;
+  long double p = pts;
+  p *= av_q2d( stream->time_base );
+  p *= fps();
+  frame = boost::int64_t( p ) + 1;
   return frame;
 }
 
