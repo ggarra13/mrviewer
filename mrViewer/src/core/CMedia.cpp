@@ -1498,7 +1498,7 @@ void CMedia::play(const CMedia::Playback dir,
   clear_packets();
 
   // This seek is needed to sync audio playback
-  _seek_req = true;
+  if ( dir == kForwards ) _seek_req = true;
   if ( ! seek_to_position( _frame ) )
       IMG_ERROR( _("Could not seek to frame ") << _frame );
 
@@ -2158,8 +2158,15 @@ boost::uint64_t CMedia::frame2pts( const AVStream* stream,
 {
    assert( frame >= _frame_start );
    assert( frame <= _frame_end );
-   double p = (double)(frame - 1) / fps();
-   if ( stream ) p /= av_q2d( stream->time_base );
+   long double p = (long double)(frame - 1) / (long double) fps();
+
+   if ( stream )
+   {
+       // reverse num/den correct here
+       p /= stream->time_base.num;
+       p *= stream->time_base.den;
+   }
+
    if ( p < 0 )  return AV_NOPTS_VALUE;
    else return uint64_t(p);
 }
@@ -2183,7 +2190,9 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   if (!stream) return 0;
 
   long double p = pts;
-  p *= av_q2d( stream->time_base );
+  p *= stream->time_base.num;
+  p /= stream->time_base.den;
+  //  p *= av_q2d( stream->time_base );
   p *= fps();
   frame = boost::int64_t( p ) + 1;
   return frame;
