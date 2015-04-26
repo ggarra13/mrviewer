@@ -83,8 +83,8 @@ namespace
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-//#define DEBUG_VIDEO_PACKETS
-//#define DEBUG_VIDEO_STORES
+#define DEBUG_VIDEO_PACKETS
+#define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
@@ -553,8 +553,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #endif
 
 
-    boost::int64_t dts = frame;
-    if ( frame != _frameStart ) dts = frame+1;
+    boost::int64_t dts = frame + 1;
+    if ( _frameStart == frame ) dts = frame;
 
     dts = queue_packets( dts, true, got_video, got_audio, got_subtitle );
 
@@ -564,6 +564,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // than our image/audio cache.
     //
 
+#if 0
     if (! _seek_req )
     {
         int64_t diff = (dts - _dts) * _playback;
@@ -587,7 +588,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
                 dts = last_frame();
         }
     }
- 
+#endif
 
     _dts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
@@ -1773,7 +1774,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                     _video_packets.push_back( pkt );
                 }
                 // should be pktframe without +1 but it works better with it.
-                if ( pktframe < dts ) dts = pktframe + 1; 
+                if ( pktframe < dts ) dts = pktframe; 
             }
             else
             {
@@ -1782,7 +1783,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 if ( pktframe > dts ) dts = pktframe;
             }
 
-            if ( !got_video && pktframe >= frame )
+            if ( !got_video && pktframe > frame )
             {
                 got_video = true;
                 if ( is_seek ) {
@@ -2024,7 +2025,6 @@ bool aviImage::fetch(const boost::int64_t frame)
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected = dts + 1;
-  _next = frame + 1;
 
 
 #ifdef DEBUG_DECODE
@@ -2119,7 +2119,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
       if ( !is_seek && playback() == kBackwards )
       {
-	   if (pktframe > frame )
+          if (pktframe > frame+1 )
 	   {
 	       decode_video_packet( pktframe, frame, pkt );
 	   }
@@ -2487,6 +2487,7 @@ void aviImage::do_seek()
 {
 
   _dts = _seek_frame;
+  boost::int64_t f = _dts;
 
   bool got_video = !has_video();
   bool got_audio = !has_audio();
@@ -2496,7 +2497,8 @@ void aviImage::do_seek()
   {
       if ( _seek_frame != _expected )
           clear_packets();
-      fetch( _seek_frame );
+
+      fetch( f );
   }
 
 
@@ -2509,31 +2511,29 @@ void aviImage::do_seek()
        DecodeStatus status;
        if ( has_audio() && !got_audio )
        {
-	  status = decode_audio( _seek_frame );
+	  status = decode_audio( f );
 	  if ( status > kDecodeOK )
 	     IMG_ERROR( "Decode audio error: " << status 
 			<< " for frame " << _seek_frame );
 	  find_audio( _seek_frame );
        }
-       
+
        if ( has_video() && !got_video )
        {
-	  status = decode_video( _seek_frame );
+	  status = decode_video( f );
 
 	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
 	     IMG_ERROR( "Decode video error seek frame " 
 			<< _seek_frame 
 			<< " status: " << status );
        }
-       
+
        if ( has_subtitle() )
        {
-	  decode_subtitle( _seek_frame );
+	  decode_subtitle( f );
 	  find_subtitle( _seek_frame );
        }
-       
 
-       _next = _frame + 1;
 
 #ifdef DEBUG_VIDEO_STORES
       debug_video_stores(_seek_frame, "doseek" );
