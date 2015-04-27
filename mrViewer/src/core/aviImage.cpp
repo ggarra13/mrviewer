@@ -461,7 +461,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
     boost::int64_t start = frame - 1;
-    if ( playback() == kBackwards && start > 0 ) --start;
+    if ( playback() == kBackwards && start < 0 ) start = 0;
 
     boost::int64_t offset = boost::int64_t( (long double) start *
                                             (long double) AV_TIME_BASE
@@ -961,6 +961,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 #ifdef DEBUG_VIDEO_STORES
   debug_video_stores(frame, "find_image");
 #endif
+
 
   _frame = frame;
 
@@ -1690,7 +1691,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 _video_packets.push_back( pkt );
                 if (pktframe <= frame )
                     got_video = true;
-                if ( got_video ) _video_packets.seek_end(vpts);
+                if ( got_video && ( is_seek || playback() == kBackwards ) )
+                    _video_packets.seek_end(vpts);
             }
 
             AVStream* stream = get_audio_stream();
@@ -1706,7 +1708,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 _audio_packets.push_back( pkt );
                 if (pktframe <= frame )
                     got_audio = true;
-                if ( got_audio ) _audio_packets.seek_end(vpts);
+                if ( got_audio && (is_seek || playback() == kBackwards ) )
+                     _audio_packets.seek_end(vpts);
             }
 
             eof = false;
@@ -2088,7 +2091,7 @@ CMedia::DecodeStatus
 aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 {
 #ifdef DEBUG_VIDEO_PACKETS
-    debug_video_packets(frame, "BEFORE HSEEK");
+    debug_video_packets(frame, "BEFORE HSEEK", true);
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
@@ -2111,14 +2114,14 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
     {
       const AVPacket& pkt = _video_packets.front();
-      count += 1;
+      ++count;
 
       boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-      _frame_offset;
+                                _frame_offset; 
 
       if ( !is_seek && playback() == kBackwards )
       {
-          if (pktframe > frame+1 )
+          if (pktframe > frame )
 	   {
 	       decode_video_packet( pktframe, frame, pkt );
 	   }
@@ -2159,14 +2162,20 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   }
 
   if ( _video_packets.is_seek_end() )
+  {
      _video_packets.pop_front();  // pop seek end packet
+  }
+  else
+  {
+      LOG_ERROR( "Missing seek end in packet list" );
+  }
 
   if ( count == 0 ) {
      return kDecodeError;
   }
       
 #ifdef DEBUG_VIDEO_PACKETS
-  debug_video_packets(frame, "AFTER HSEEK");
+  debug_video_packets(frame, "AFTER HSEEK", true);
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
