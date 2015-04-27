@@ -83,8 +83,8 @@ namespace
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
-#define DEBUG_VIDEO_PACKETS
-#define DEBUG_VIDEO_STORES
+//#define DEBUG_VIDEO_PACKETS
+//#define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
@@ -564,7 +564,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // than our image/audio cache.
     //
 
-#if 0
+#if 1
     if (! _seek_req )
     {
         int64_t diff = (dts - _dts) * _playback;
@@ -738,20 +738,20 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-	_av_frame->pts = av_frame_get_best_effort_timestamp( _av_frame );
-        ptsframe = _av_frame->pts;
+         ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+         pkt.dts = pkt.pts = ptsframe;
 
-	if ( ptsframe == MRV_NOPTS_VALUE )
-        {
-	   ptsframe = frame;
-           LOG_WARNING( _("No ptsframe in decode_video") );
-        }
-	else
-        {
-	   ptsframe = pts2frame( stream, ptsframe );
-        }
+         if ( ptsframe == MRV_NOPTS_VALUE )
+         {
+             ptsframe = frame;
+             LOG_WARNING( _("No ptsframe in decode_video") );
+         }
+         else
+         {
+             ptsframe = pts2frame( stream, ptsframe );
+         }
 
-	return kDecodeOK;
+         return kDecodeOK;
      }
 
      if ( err < 0 ) {
@@ -797,10 +797,10 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
           store_image( ptsframe, pkt.dts );
       }
 
-      if ( ptsframe < frame )
-      {
-          status = kDecodeMissingFrame;
-      }
+      // if ( ptsframe < frame )
+      // {
+      //     status = kDecodeMissingFrame;
+      // }
   }
 
   return status;
@@ -2015,7 +2015,6 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 
-
   boost::int64_t dts = queue_packets( frame, false, got_video, 
 				      got_audio, got_subtitle);
 
@@ -2035,7 +2034,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 #ifdef DEBUG_VIDEO_PACKETS
-  debug_video_packets(frame, "FETCH DONE");
+  debug_video_packets(frame, "FETCH DONE", true);
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
@@ -2193,8 +2192,7 @@ int64_t aviImage::wait_image()
       if ( ! _video_packets.empty() )
 	{
 	  const AVPacket& pkt = _video_packets.front();
-	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-                                    _frame_offset;
+	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
 	  return pktframe;
 	}
 
@@ -2317,6 +2315,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 		}
 	      return kDecodeOK;
 	    }
+
 
 
 	  got_video = decode_image( frame, pkt );
