@@ -2811,7 +2811,6 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
      std::cerr << std::endl;
   }
 
-  std::cerr << std::endl;
 
 
   if ( detail )
@@ -2879,7 +2878,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
      }
   }
 
-  std::cerr << std::endl;
+  std::cerr << std::endl << std::endl;
 }
 
 
