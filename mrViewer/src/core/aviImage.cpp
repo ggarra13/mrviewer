@@ -749,6 +749,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          else
          {
              ptsframe = pts2frame( stream, ptsframe );
+             // The following is needed to avoid reverse playback
+             // being offset by one frame.
              if ( playback() == kBackwards ) ptsframe += 1;
          }
 
