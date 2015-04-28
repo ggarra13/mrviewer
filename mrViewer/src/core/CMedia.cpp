@@ -2788,7 +2788,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
      else
      {
         if ( stream )
-           std::cerr << pts2frame( stream, (*iter).dts );
+           std::cerr << pts2frame( stream, (*iter).dts ) - _frame_offset;
         else
            std::cerr << (*iter).dts;
      }
@@ -2803,7 +2803,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
      else
      {
         if ( stream )
-           std::cerr << pts2frame( stream, (*(last-1)).dts );
+           std::cerr << pts2frame( stream, (*(last-1)).dts ) - _frame_offset;
         else
            std::cerr << (*(last-1)).dts;
      }
