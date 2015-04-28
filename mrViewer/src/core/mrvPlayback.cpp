@@ -783,6 +783,7 @@ void video_thread( PlaybackData* data )
 
        img->real_fps( timer.actualFrameRate() );
 
+       if ( frame > img->last_frame() ) continue;
 
        bool ok = img->find_image( frame );
 
