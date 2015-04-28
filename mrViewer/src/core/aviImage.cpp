@@ -2224,9 +2224,9 @@ bool aviImage::in_video_store( const boost::int64_t frame )
 CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 {
 
-#ifdef DEBUG_VIDEO_PACKETS
+//#ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "decode_video", true);
-#endif
+//#endif
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
