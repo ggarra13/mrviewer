@@ -2281,12 +2281,12 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	   // store here.
 	   bool ok = in_video_store( frame );
 
-	   if ( ok && frame > first_frame() )
+	   if ( ok && frame >= first_frame() )
 	   {
 	      return kDecodeOK;
 	   }
 
-	   if ( frame <= first_frame() )
+	   if ( frame < first_frame() )
 	   {
 	      _video_packets.pop_front();
 	      return kDecodeLoopStart;
