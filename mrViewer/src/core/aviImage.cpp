@@ -796,11 +796,6 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       {
           store_image( ptsframe, pkt.dts );
       }
-
-      // if ( ptsframe < frame )
-      // {
-      //     status = kDecodeMissingFrame;
-      // }
   }
 
   return status;
@@ -961,13 +956,11 @@ bool aviImage::find_image( const boost::int64_t frame )
 #ifdef DEBUG_VIDEO_STORES
   debug_video_stores(frame, "find_image");
 #endif
-
-
-  _frame = frame;
-
   {
 
     SCOPED_LOCK( _mutex );
+
+    _frame = frame;
 
     video_cache_t::iterator end = _images.end();
     video_cache_t::iterator i;
@@ -2197,10 +2190,7 @@ int64_t aviImage::wait_image()
 
       if ( ! _video_packets.empty() )
 	{
-	  const AVPacket& pkt = _video_packets.front();
-	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-	  _frame_offset;
-	  return pktframe;
+	  return _frame;
 	}
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
@@ -2224,9 +2214,9 @@ bool aviImage::in_video_store( const boost::int64_t frame )
 CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 {
 
-//#ifdef DEBUG_VIDEO_PACKETS
+#ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "decode_video", true);
-//#endif
+#endif
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
