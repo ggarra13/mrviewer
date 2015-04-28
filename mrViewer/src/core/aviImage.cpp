@@ -749,6 +749,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          else
          {
              ptsframe = pts2frame( stream, ptsframe );
+             if ( playback() == kBackwards ) ptsframe += 1;
          }
 
          return kDecodeOK;
@@ -2217,6 +2218,8 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 #ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "decode_video", true);
 #endif
+
+    if ( frame > last_frame() ) return kDecodeLoopEnd;
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
