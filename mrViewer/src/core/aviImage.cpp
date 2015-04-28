@@ -2221,7 +2221,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
     debug_video_packets(frame, "decode_video", true);
 #endif
 
-    if ( frame > last_frame() ) return kDecodeLoopEnd;
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
