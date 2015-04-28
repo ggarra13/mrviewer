@@ -668,7 +668,6 @@ void video_thread( PlaybackData* data )
        int step = (int) img->playback();
        if ( step == 0 ) break;
 
-
        CMedia::DecodeStatus status;
        status = img->decode_video( frame );
 
@@ -920,6 +919,7 @@ void decode_thread( PlaybackData* data )
         {
             frame = img->dts();
         }
+
 
     }
 
