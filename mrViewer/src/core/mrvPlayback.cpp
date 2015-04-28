@@ -61,8 +61,8 @@ namespace
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-#undef DBG
-#define DBG(x) std::cerr << x << std::endl
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -667,6 +667,7 @@ void video_thread( PlaybackData* data )
 
        int step = (int) img->playback();
        if ( step == 0 ) break;
+
 
        CMedia::DecodeStatus status;
        status = img->decode_video( frame );
