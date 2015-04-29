@@ -101,10 +101,10 @@ namespace mrv
     unsigned int                _width;
     unsigned int                _height;
     short unsigned int          _channels; //!< number of channels of image
-    PixelData                   _data;   //!< video data
     time_t                      _mtime;  //!< creation time of frame
     Format                      _format; //!< rgb/yuv format
     PixelType                   _type;   //!< pixel type
+    PixelData                   _data;   //!< video data
 
   public:
 
