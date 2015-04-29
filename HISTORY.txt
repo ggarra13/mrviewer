@@ -4,7 +4,6 @@ v2.7.9   - Bug fixed start frame on BG image, which would offset by 1
 	   this would only be used when edl was on.
 	 - Improved performance of seek in video playback and scrubbing.
 	 - Improved performance of reverse playback.
-	 - Reverse playback is bug fixed to not show temporary frames.
 	 - Reverse playback is now frame accurate, instead of being
 	   shifted by one frame.
 
