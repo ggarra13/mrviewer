@@ -665,6 +665,10 @@ void aviImage::store_image( const boost::int64_t frame,
 
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
+#if 1
+  av_picture_copy(&output, (AVPicture *)_av_frame,
+		  _av_dst_pix_fmt, w, h );
+#else
   static const int sws_flags = 0;
   _convert_ctx = sws_getCachedContext(_convert_ctx,
 				      stream->codec->width, 
@@ -682,6 +686,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
 	    0, stream->codec->height, output.data, output.linesize);
+#endif
 
   if ( _av_frame->interlaced_frame )
     _interlaced = ( _av_frame->top_field_first ? 
@@ -2249,7 +2254,13 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_preroll() )
 	{
+	  if ( _images.size() > max_video_frames() )
+	    {
+	      return kDecodeBufferFull;
+	    }
+
 	   bool ok = in_video_store( frame );
+
 	   if ( ok ) 
 	   {
 	      video_cache_t::const_iterator iter = _images.begin();
@@ -2295,6 +2306,15 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  AVPacket& pkt = _video_packets.front();
 
 	  bool ok = in_video_store( frame );
+
+	  // Limit storage of frames to only fps.  For example, 30 frames
+	  // for a fps of 30, but take into account dts position.
+	  if ( _images.size() > fps() )
+	  {
+             limit_video_store(frame);
+	     return kDecodeBufferFull;
+	  }
+
 	  if ( ok )
 	    {
 	       boost::int64_t pktframe;
@@ -2310,14 +2330,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 		 }
                return kDecodeOK;
 	    }
-
-	  // Limit storage of frames to only fps.  For example, 30 frames
-	  // for a fps of 30, but take into account dts position.
-	  if ( _images.size() >= max_video_frames() )
-	  {
-             limit_video_store(frame);
-	     return kDecodeBufferFull;
-	  }
 
 
 	  got_video = decode_image( frame, pkt );
