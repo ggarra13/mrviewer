@@ -482,7 +482,7 @@ CMedia::~CMedia()
   if ( _acontext )
     avformat_close_input( &_acontext );
 
-  _context = NULL;
+  _context = _acontext = NULL;
 }
 
 
