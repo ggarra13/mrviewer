@@ -82,8 +82,8 @@ namespace
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
-//#define DEBUG_SEEK_SUBTITLE_PACKETS
-//#define DEBUG_VIDEO_PACKETS
+//#define DEBUG_SEEK_SUBTITLE_PACKETSx
+// #define DEBUG_VIDEO_PACKETS
 // #define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
@@ -555,7 +555,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( frame == last_frame() ) dts = frame; 
 
     dts = queue_packets( dts, true, got_video,
-			 got_audio, got_subtitle );
+                                        got_audio, got_subtitle );
 
 
     //
@@ -741,12 +741,13 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-	ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+	_av_frame->pts = av_frame_get_best_effort_timestamp( _av_frame );
+        ptsframe = _av_frame->pts;
 
 	if ( ptsframe == MRV_NOPTS_VALUE )
         {
 	   ptsframe = frame;
-           LOG_WARNING( _("No ptsframe in decode_video") );
+           LOG_WARNING( "No ptsframe in decode_video" );
         }
 	else
         {
@@ -779,7 +780,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 CMedia::DecodeStatus
 aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 {
-  boost::int64_t ptsframe;
+  boost::int64_t ptsframe = frame;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
   if ( status == kDecodeOK )
@@ -791,20 +792,27 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 	}
       else
 	{
-	  store_image( frame, pkt.dts );
+	  store_image( ptsframe, pkt.dts );
 	}
     }
   else
-    if ( status == kDecodeError )
-      {
-	char ftype = av_get_picture_type_char( _av_frame->pict_type );
-	if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
-	  IMG_WARNING("Could not decode video frame " << ptsframe 
-		      << " type " << ftype << " pts: " 
-		      << (pkt.pts == AV_NOPTS_VALUE ?
-			  -1 : pkt.pts ) << " dts: " << pkt.dts
+  if ( status == kDecodeError )
+  {
+       char ftype = av_get_picture_type_char( _av_frame->pict_type );
+       if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
+           IMG_WARNING("Could not decode video frame " << ptsframe 
+                       << " type " << ftype << " pts: " 
+                       << (pkt.pts == AV_NOPTS_VALUE ?
+                           -1 : pkt.pts ) << " dts: " << pkt.dts
 		      << " data: " << (void*)pkt.data);
-      }
+  }
+  else
+  {
+     if ( ptsframe < frame )
+     {
+     	status = kDecodeMissingFrame;
+     }
+  }
 
   return status;
 }
@@ -1004,14 +1012,14 @@ bool aviImage::find_image( const boost::int64_t frame )
 
 	    if ( _hires->frame() != frame && 
 		 abs(frame - _hires->frame() ) < 10 )
-	       IMG_WARNING( _("find_image: frame ") << frame 
+	       IMG_WARNING( N_("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
 	    refresh();
 	  }
 	else
 	  {
-              IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
+	     IMG_ERROR( "find_image: frame " << frame << _(" not found") );
 	  }
 	return false;
       }
@@ -1367,7 +1375,8 @@ void aviImage::populate()
             if ( d < start ) start = d;
 	}
 
-        _frameStart = (boost::int64_t)start;
+
+        _frameStart = (boost::int64_t)start; 
     }
 
     _frame_start = _frame = _frameStart;
@@ -1383,9 +1392,9 @@ void aviImage::populate()
     if ( _context->duration > 0 )
     {
         duration = int64_t( (_fps * ( double )(_context->duration) / 
-                             ( double )AV_TIME_BASE ) + 1 );
+                             ( double )AV_TIME_BASE ) + 0.5f );
     }
-    else
+    else 
     {
         double length = 0;
 
@@ -1401,9 +1410,7 @@ void aviImage::populate()
         }
 
         if ( length > 0 )
-        {
-            duration = boost::int64_t( length * _fps + 1 );
-        }
+            duration = boost::int64_t( length * _fps + 0.5f );
         else
         {
             duration = 200; // GIF89
@@ -1690,7 +1697,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 pkt.size = 0;
                 pkt.stream_index = video_stream_index();
                 packets_added++;
- 
+
                 boost::int64_t pktframe = pts2frame( get_video_stream(),                                                     pkt.dts ) - _frame_offset;
 
                 _video_packets.push_back( pkt );
@@ -2106,7 +2113,7 @@ CMedia::DecodeStatus
 aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 {
 #ifdef DEBUG_VIDEO_PACKETS
-    debug_video_packets(frame, "BEFORE HSEEK", true);
+  debug_video_packets(frame, "BEFORE HSEEK");
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
@@ -2176,7 +2183,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   }
       
 #ifdef DEBUG_VIDEO_PACKETS
-  debug_video_packets(frame, "AFTER HSEEK", true);
+  debug_video_packets(frame, "AFTER HSEEK");
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
@@ -2260,7 +2267,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	    }
 
 	   bool ok = in_video_store( frame );
-
 	   if ( ok ) 
 	   {
 	      video_cache_t::const_iterator iter = _images.begin();
@@ -2286,7 +2292,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	      return kDecodeOK;
 	   }
 
-	   if ( frame < first_frame() )
+	   if ( frame <= first_frame() )
 	   {
 	      _video_packets.pop_front();
 	      return kDecodeLoopStart;
@@ -2324,11 +2330,11 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 		  pktframe = frame;
 
 	       if ( pktframe == frame )
-		 {
+		{
 		   decode_video_packet( pktframe, frame, pkt );
-		   _video_packets.pop_front();
-		 }
-               return kDecodeOK;
+		  _video_packets.pop_front();
+		}
+	      return kDecodeOK;
 	    }
 
 
