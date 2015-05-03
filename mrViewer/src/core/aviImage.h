@@ -190,7 +190,7 @@ namespace mrv {
      * @param pts          video pts to store
      * 
      */
-       void store_image( const boost::int64_t frame,
+       void store_image( boost::int64_t frame,
 			 const boost::int64_t pts );
 
     /** 
