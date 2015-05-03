@@ -636,32 +636,28 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 }
 
 
-void aviImage::store_image( const boost::int64_t frame, 
+void aviImage::store_image( boost::int64_t frame, 
 			    const boost::int64_t pts )
 {
   AVStream* stream = get_video_stream();
-  unsigned int w = width();
-  unsigned int h = height();
 
+  static boost::int64_t old = std::numeric_limits<boost::int64_t>::min();
+  if ( frame == old ) ++frame;
+  old = frame;
 
-  mrv::image_type_ptr 
+  mrv::image_type_ptr
   image = allocate_image( frame, boost::int64_t( double(pts) * 
                                                  av_q2d( stream->time_base )
                                                  )
 			  );
-  if ( ! image )
-    {
-      IMG_ERROR( "No memory for video frame" );
-      IMG_ERROR( "Audios #" << _audio.size() );
-      IMG_ERROR( "Videos #" << _images.size() );
-      return;
-    }
 
 
   AVPicture output;
   boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
 
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
+  unsigned int w = width();
+  unsigned int h = height();
 
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
@@ -741,8 +737,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-	_av_frame->pts = av_frame_get_best_effort_timestamp( _av_frame );
-        ptsframe = _av_frame->pts;
+	ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
 
 	if ( ptsframe == MRV_NOPTS_VALUE )
         {
@@ -787,31 +782,23 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
     {
       if ( playback() == kBackwards )
 	{
-	  if ( frame != last_frame() ) ptsframe += 1;
-	  store_image( ptsframe, pkt.dts );
+            if ( frame != last_frame() ) ptsframe += 1;
+            store_image( ptsframe, pkt.dts );
 	}
       else
 	{
-	  store_image( ptsframe, pkt.dts );
+	    store_image( ptsframe, pkt.dts );
 	}
     }
   else
-  if ( status == kDecodeError )
   {
-       char ftype = av_get_picture_type_char( _av_frame->pict_type );
-       if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
-           IMG_WARNING("Could not decode video frame " << ptsframe 
-                       << " type " << ftype << " pts: " 
-                       << (pkt.pts == AV_NOPTS_VALUE ?
-                           -1 : pkt.pts ) << " dts: " << pkt.dts
-		      << " data: " << (void*)pkt.data);
-  }
-  else
-  {
-     if ( ptsframe < frame )
-     {
-     	status = kDecodeMissingFrame;
-     }
+      char ftype = av_get_picture_type_char( _av_frame->pict_type );
+      if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
+          IMG_WARNING("Could not decode video frame " << ptsframe 
+                      << " type " << ftype << " pts: " 
+                      << (pkt.pts == AV_NOPTS_VALUE ?
+                          -1 : pkt.pts ) << " dts: " << pkt.dts
+                      << " data: " << (void*)pkt.data);
   }
 
   return status;
