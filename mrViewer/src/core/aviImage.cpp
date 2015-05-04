@@ -787,10 +787,10 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 	}
       else
 	{
-	    store_image( ptsframe, pkt.dts );
+	    store_image( frame, pkt.dts );
 	}
     }
-  else
+  else if ( status == kDecodeError )
   {
       char ftype = av_get_picture_type_char( _av_frame->pict_type );
       if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
@@ -2304,18 +2304,17 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	  // for a fps of 30, but take into account dts position.
 	  if ( _images.size() > fps() )
 	  {
-             limit_video_store(frame);
 	     return kDecodeBufferFull;
 	  }
 
+          boost::int64_t pktframe;
+          if ( pkt.dts != MRV_NOPTS_VALUE )
+              pktframe = pts2frame( get_video_stream(), pkt.dts );
+          else
+              pktframe = frame;
+
 	  if ( ok )
 	    {
-	       boost::int64_t pktframe;
-	       if ( pkt.dts != MRV_NOPTS_VALUE )
-		  pktframe = pts2frame( get_video_stream(), pkt.dts );
-	       else
-		  pktframe = frame;
-
 	       if ( pktframe == frame )
 		{
 		   decode_video_packet( pktframe, frame, pkt );
@@ -2325,7 +2324,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
 	    }
 
 
-	  got_video = decode_image( frame, pkt );
+	  got_video = decode_image( pktframe, pkt );
 	  _video_packets.pop_front();
 	}
 
