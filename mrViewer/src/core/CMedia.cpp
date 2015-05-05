@@ -2401,10 +2401,8 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
   return got_video;
 }
 
-CMedia::DecodeStatus CMedia::decode_subtitle( boost::int64_t& frame )
+CMedia::DecodeStatus CMedia::decode_subtitle( const boost::int64_t frame )
 { 
-  if ( frame > _frameEnd )       frame = _frameEnd;
-  else if ( frame < _frameStart) frame = _frameStart;
   return kDecodeOK;
 }
 
