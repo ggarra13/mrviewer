@@ -571,9 +571,13 @@ void subtitle_thread( PlaybackData* data )
 	CMedia::DecodeStatus status = img->decode_subtitle( frame );
 
 	if ( frame > img->last_frame() )
+        {
 	   status = CMedia::kDecodeLoopEnd;
+        }
 	else if ( frame < img->first_frame() )
+        {
 	   status = CMedia::kDecodeLoopStart;
+        }
 
 	switch( status )
 	  {
@@ -667,8 +671,8 @@ void video_thread( PlaybackData* data )
        int step = (int) img->playback();
        if ( step == 0 ) break;
 
-       CMedia::DecodeStatus status;
-       status = img->decode_video( frame );
+
+       CMedia::DecodeStatus status = img->decode_video( frame );
 
 
       switch( status )
