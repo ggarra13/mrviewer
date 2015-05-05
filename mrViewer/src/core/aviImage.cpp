@@ -1510,7 +1510,7 @@ void aviImage::populate()
 
     _dts = dts;
     _frame = _audio_frame = _frameStart;
-    _expected = _frame;
+    _expected = dts + 1;
 
     if ( _frame_offset > 3 ) _frame_offset = 0;
 
@@ -2017,7 +2017,6 @@ bool aviImage::fetch(const boost::int64_t frame)
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected = dts + 1;
-  _next = frame + 1;
 
 
 #ifdef DEBUG_DECODE
@@ -2206,8 +2205,10 @@ bool aviImage::in_video_store( const boost::int64_t frame )
   return false;
 }
 
-CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
+CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 {
+
+    boost::int64_t frame = f;
 
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "decode_video");
@@ -2295,7 +2296,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& frame )
                if ( pktframe == frame )
                {
                    decode_video_packet( pktframe, frame, pkt );
-               _video_packets.pop_front();
+                   _video_packets.pop_front();
                }
                return kDecodeOK;
 	    }
@@ -2515,9 +2516,6 @@ void aviImage::do_seek()
 	  find_subtitle( _seek_frame );
        }
        
-
-       _next = _frame + 1;
-
 #ifdef DEBUG_VIDEO_STORES
       debug_video_stores(_seek_frame, "doseek" );
 #endif
@@ -2651,7 +2649,6 @@ void aviImage::store_subtitle( const boost::int64_t& frame,
      boost::uint8_t* data = (boost::uint8_t*)
      _subtitles.back()->data().get();
 
-
      // clear image
      memset( data, 0, w*h*4 );
      
@@ -2728,6 +2725,7 @@ aviImage::decode_subtitle_packet( boost::int64_t& ptsframe,
   avcodec_decode_subtitle2( stream->codec, &_sub, &got_sub, 
 			    (AVPacket*)&pkt );
   if ( got_sub == 0 ) return kDecodeError;
+
 
   // AVSubtitle has a start display time in ms. relative to pts
   // ptsframe = ptsframe + boost::int64_t( _sub.start_display_time * fps() / 
@@ -2855,9 +2853,11 @@ int64_t aviImage::wait_subtitle()
   return _frame;
 }
 
-CMedia::DecodeStatus aviImage::decode_subtitle( boost::int64_t& frame )
+CMedia::DecodeStatus aviImage::decode_subtitle( const boost::int64_t f )
 {
    if ( _subtitle_index < 0 ) return kDecodeOK;
+
+   boost::int64_t frame = f;
 
   mrv::PacketQueue::Mutex& vpm = _subtitle_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -2880,7 +2880,7 @@ CMedia::DecodeStatus aviImage::decode_subtitle( boost::int64_t& frame )
 	}
       else if ( _subtitle_packets.is_seek() )
 	{
-	  return handle_subtitle_packet_seek( frame, true );
+            return handle_subtitle_packet_seek( frame, true );
 	}
       else if ( _subtitle_packets.is_preroll() )
 	{
