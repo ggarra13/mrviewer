@@ -120,7 +120,7 @@ namespace mrv {
 
     virtual void flush_video();
     virtual DecodeStatus decode_video( boost::int64_t& frame );
-    virtual DecodeStatus decode_subtitle( boost::int64_t& frame );
+    virtual DecodeStatus decode_subtitle( const boost::int64_t frame );
 
     virtual void clear_packets();
 
