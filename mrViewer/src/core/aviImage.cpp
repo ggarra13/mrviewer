@@ -782,7 +782,14 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
   boost::int64_t ptsframe = frame;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
-  if ( status == kDecodeError )
+  if ( status == kDecodeOK )
+  {
+      // if ( ptsframe >= frame )
+      //     store_image( ptsframe, pkt.dts );
+      // else
+      //     store_image( frame, pkt.dts );
+  }
+  else if ( status == kDecodeError )
   {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
@@ -1510,7 +1517,7 @@ void aviImage::populate()
 
     _dts = dts;
     _frame = _audio_frame = _frameStart;
-    _expected = dts + 1;
+    _expected = dts;
 
     if ( _frame_offset > 3 ) _frame_offset = 0;
 
@@ -2293,7 +2300,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	       else
 		  pktframe = frame;
 
-               if ( pktframe == frame )
+               // if ( pktframe == frame )
                {
                    decode_video_packet( pktframe, frame, pkt );
                    _video_packets.pop_front();

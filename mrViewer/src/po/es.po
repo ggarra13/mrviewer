@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-05-05 16:00-0300\n"
+"POT-Creation-Date: 2015-05-06 11:28-0300\n"
 "PO-Revision-Date: 2015-04-20 18:31-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <LL@li.org>\n"
@@ -15,7 +15,7 @@ msgstr ""
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: core/aviImage.cpp:1616
+#: core/aviImage.cpp:1623
 msgid ""
 "\n"
 "\n"
@@ -25,7 +25,7 @@ msgstr ""
 "\n"
 "No pude abrir el archivo avi"
 
-#: core/CMedia_audio.cpp:592 core/aviImage.cpp:1297
+#: core/CMedia_audio.cpp:592 core/aviImage.cpp:1304
 msgid ""
 "\n"
 "\n"
@@ -45,7 +45,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:578 core/aviImage.cpp:1282
+#: core/CMedia_audio.cpp:578 core/aviImage.cpp:1289
 msgid ""
 "\n"
 "\n"
@@ -168,7 +168,7 @@ msgstr " cuadros"
 msgid " frequency: "
 msgstr " frecuencia: "
 
-#: core/aviImage.cpp:998
+#: core/aviImage.cpp:1005
 msgid " instead"
 msgstr " en remplazo"
 
@@ -176,7 +176,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1540 core/aviImage.cpp:1003
+#: core/CMedia_audio.cpp:1540 core/aviImage.cpp:1010
 msgid " not found"
 msgstr " no encontrado"
 
@@ -184,7 +184,7 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrado en el carrete"
 
-#: core/aviImage.cpp:997
+#: core/aviImage.cpp:1004
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
@@ -201,7 +201,7 @@ msgstr " a "
 msgid " to database '"
 msgstr " a la base de datos '"
 
-#: core/aviImage.cpp:1020
+#: core/aviImage.cpp:1027
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -306,7 +306,7 @@ msgstr "(Campos PAL)"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1021
+#: core/aviImage.cpp:1028
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -2659,7 +2659,7 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
-#: core/aviImage.cpp:1057
+#: core/aviImage.cpp:1064
 msgid "Invalid video stream "
 msgstr "Flujo de video inválido "
 
@@ -4769,7 +4769,7 @@ msgstr "Ventana Desconocida \""
 msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
-#: core/aviImage.cpp:1162
+#: core/aviImage.cpp:1169
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -4884,7 +4884,7 @@ msgstr "Flujo de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Flujos de Video"
 
-#: core/aviImage.cpp:1018
+#: core/aviImage.cpp:1025
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -5303,7 +5303,7 @@ msgstr "decode_audio - faltó decodificar algunos sampleos"
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:996 core/aviImage.cpp:1003
+#: core/aviImage.cpp:1003 core/aviImage.cpp:1010
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
