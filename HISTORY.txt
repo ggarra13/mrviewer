@@ -3,6 +3,8 @@ v2.8.0   - Bug fixed playback in reverse to not use so much memory.
 	   algorithm was not frame accurate.
 	 - Bug fixed playback of one sample movie (PoTC.VOB), which
 	   would start with frame frozen.
+	 - Bug fixed movies that had B frames in it and would show 
+	   incorrectly.
 
 v2.7.9   - Bug fixed start frame on BG image, which would offset by 1 
 	   frame.
