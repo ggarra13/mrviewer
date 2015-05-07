@@ -748,10 +748,17 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         }
 
 
-        if ( ptsframe >= frame )
-            store_image( ptsframe, pkt.dts );
-        else
-            store_image( frame, pkt.dts );
+	if ( playback() == kBackwards )
+	  {
+	      store_image( ptsframe+1, pkt.dts );
+	  }
+	else
+	  {
+	    if ( ptsframe >= frame )
+	      store_image( ptsframe, pkt.dts );
+	    else
+	      store_image( frame, pkt.dts );
+	  }
 
 	return kDecodeOK;
      }
