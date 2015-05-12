@@ -663,26 +663,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
-#if 0
-#else
-  static const int sws_flags = 0;
-  _convert_ctx = sws_getCachedContext(_convert_ctx,
-				      stream->codec->width, 
-				      stream->codec->height,
-				      stream->codec->pix_fmt,
-				      w, h,
-  				      _av_dst_pix_fmt, SWS_BICUBIC, 
-				      NULL, NULL, NULL);
-
-  if ( _convert_ctx == NULL )
-    {
-        IMG_ERROR( _("Could not get image conversion context.") );
-        return;
-    }
-
-  sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
-	    0, stream->codec->height, output.data, output.linesize);
-#endif
+  av_picture_copy( &output, (AVPicture*)_av_frame, _av_dst_pix_fmt, w, h );
 
   if ( _av_frame->interlaced_frame )
     _interlaced = ( _av_frame->top_field_first ? 
