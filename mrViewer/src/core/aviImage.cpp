@@ -663,6 +663,8 @@ void aviImage::store_image( const boost::int64_t frame,
 
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
+#if 0
+#else
   static const int sws_flags = 0;
   _convert_ctx = sws_getCachedContext(_convert_ctx,
 				      stream->codec->width, 
@@ -680,6 +682,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
 	    0, stream->codec->height, output.data, output.linesize);
+#endif
 
   if ( _av_frame->interlaced_frame )
     _interlaced = ( _av_frame->top_field_first ? 
@@ -1386,7 +1389,7 @@ void aviImage::populate()
     if ( _context->duration > 0 )
     {
         duration = int64_t( (_fps * ( double )(_context->duration) / 
-                             ( double )AV_TIME_BASE ) + 1 );
+                             ( double )AV_TIME_BASE ) + 0.5 );
     }
     else
     {
