@@ -2194,7 +2194,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   p /= stream->time_base.den;
   //  p *= av_q2d( stream->time_base );
   p *= fps();
-  frame = boost::int64_t( p ) + 1;
+  frame = boost::int64_t( p + 0.5 ) + 1;
   return frame;
 }
 
