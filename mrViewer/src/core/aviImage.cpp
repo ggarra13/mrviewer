@@ -75,7 +75,7 @@ namespace
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
-
+//#define ENCODE_IMAGE
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
@@ -561,6 +561,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // than our image/audio cache.
     //
 
+#if 0
     if (! _seek_req )
     {
         int64_t diff = (dts - _dts) * _playback;
@@ -584,7 +585,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
                 dts = last_frame();
         }
     }
- 
+#endif
 
     _dts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
@@ -731,7 +732,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	   ptsframe = pts2frame( stream, ptsframe );
         }
 
-
+#ifndef ENCODE_IMAGE
 	if ( playback() == kBackwards )
 	  {
 	      store_image( ptsframe+1, pkt.dts );
@@ -743,6 +744,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	    else
 	      store_image( frame, pkt.dts );
 	  }
+#endif
 
 	return kDecodeOK;
      }
@@ -759,8 +761,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
      pkt.data += err;
   }
 
-  if ( got_pict ) return kDecodeOK;
-
   return kDecodeMissingFrame;
 }
 
@@ -773,14 +773,25 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
   boost::int64_t ptsframe = frame;
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
+
+#ifdef ENCODE_IMAGE
   if ( status == kDecodeOK )
   {
-      // if ( ptsframe >= frame )
-      //     store_image( ptsframe, pkt.dts );
-      // else
-      //     store_image( frame, pkt.dts );
+        if ( playback() == kBackwards )
+        {
+            store_image( ptsframe+1, pkt.dts );
   }
-  else if ( status == kDecodeError )
+        else
+        {
+            if ( ptsframe > frame )
+                store_image( ptsframe, pkt.dts );
+            else
+                store_image( frame, pkt.dts );
+        }
+  }
+  else
+#endif
+      if ( status == kDecodeError )
   {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
@@ -791,7 +802,6 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 		      << " data: " << (void*)pkt.data);
   }
 
-  // store_image( frame, pkt.dts );
 
   return status;
 }
@@ -2282,14 +2292,15 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	{
 	  AVPacket& pkt = _video_packets.front();
 
-	  bool ok = in_video_store( frame );
-	  if ( ok )
-	    {
 	       boost::int64_t pktframe;
 	       if ( pkt.dts != MRV_NOPTS_VALUE )
 		  pktframe = pts2frame( get_video_stream(), pkt.dts );
 	       else
 		  pktframe = frame;
+
+	  bool ok = in_video_store( pktframe );
+	  if ( ok )
+	    {
 
                // if ( pktframe == frame )
                {
@@ -2308,7 +2319,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	  }
 
 
-	  got_video = decode_image( frame, pkt );
+	  got_video = decode_image( pktframe, pkt );
 	  _video_packets.pop_front();
 	}
 
