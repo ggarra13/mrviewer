@@ -2118,8 +2118,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       const AVPacket& pkt = _video_packets.front();
       count += 1;
 
-      boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-      _frame_offset;
+      boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
 
       if ( !is_seek && playback() == kBackwards )
 	{
@@ -2152,7 +2151,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   if ( count != 0 && is_seek )
   {
     const AVPacket& pkt = _video_packets.front();
-    frame = pts2frame( get_video_stream(), pkt.dts ) - _frame_offset;
+    frame = pts2frame( get_video_stream(), pkt.dts );
   }
 
   if ( _video_packets.is_seek_end() )
