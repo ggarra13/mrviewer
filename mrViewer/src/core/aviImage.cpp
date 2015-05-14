@@ -75,10 +75,11 @@ namespace
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
-//#define ENCODE_IMAGE
+#define ENCODE_IMAGE
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
+//#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
@@ -639,9 +640,6 @@ void aviImage::store_image( const boost::int64_t frame,
 			    const boost::int64_t pts )
 {
   AVStream* stream = get_video_stream();
-  unsigned int w = width();
-  unsigned int h = height();
-
 
   mrv::image_type_ptr 
   image = allocate_image( frame, boost::int64_t( double(pts) * 
@@ -659,6 +657,9 @@ void aviImage::store_image( const boost::int64_t frame,
 
   AVPicture output;
   boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
+
+  unsigned int w = width();
+  unsigned int h = height();
 
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
 
@@ -722,6 +723,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          ptsframe = _av_frame->pts =
                     av_frame_get_best_effort_timestamp( _av_frame );
 
+
 	if ( ptsframe == MRV_NOPTS_VALUE )
         {
 	   ptsframe = frame;
@@ -729,7 +731,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         }
 	else
         {
-	   ptsframe = pts2frame( stream, ptsframe );
+            ptsframe = pts2frame( stream, ptsframe );
         }
 
 #ifndef ENCODE_IMAGE
@@ -739,10 +741,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	  }
 	else
 	  {
-	    if ( ptsframe >= frame )
-	      store_image( ptsframe, pkt.dts );
-	    else
-	      store_image( frame, pkt.dts );
+              store_image( ptsframe, pkt.dts );
 	  }
 #endif
 
@@ -780,13 +779,10 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
         if ( playback() == kBackwards )
         {
             store_image( ptsframe+1, pkt.dts );
-  }
+        }
         else
         {
-            if ( ptsframe > frame )
-                store_image( ptsframe, pkt.dts );
-            else
-                store_image( frame, pkt.dts );
+            store_image( ptsframe, pkt.dts );
         }
   }
   else
@@ -1499,7 +1495,7 @@ void aviImage::populate()
                         }
                     }
 
-#ifdef DEBUG_DECODE
+#ifdef DEBUG_DECODE_AUDIO
                     fprintf( stderr, "\t[avi]POP. A f: %05" PRId64 " audio pts: %07" PRId64 
                              " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
                              pktframe, pkt.pts, pkt.dts, pktframe );
@@ -1860,7 +1856,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                     if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
                 }
 
-#ifdef DEBUG_DECODE
+#ifdef DEBUG_DECODE_AUDIO
                 fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
                          " audio pts: %07" PRId64 
                          " dts: %07" PRId64 "   as frame: %05" PRId64 "\n",
@@ -1953,7 +1949,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 }
 	   
 	   
-#ifdef DEBUG_DECODE
+#ifdef DEBUG_DECODE_AUDIO
                 fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
                          " audio pts: %07" PRId64 
                          " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
