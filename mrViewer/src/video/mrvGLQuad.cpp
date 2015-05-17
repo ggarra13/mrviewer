@@ -56,7 +56,7 @@
 
 
 // #define TEST_NO_QUAD         // test not using textures
-// #define TEST_NO_PBO_TEXTURES // test not using pbo textures
+//#define TEST_NO_PBO_TEXTURES // test not using pbo textures
 #define NVIDIA_PBO_BUG     // with pbo textures, my nvidia card has problems
                            // with GL_BGR formats and high resolutions
 
@@ -203,6 +203,9 @@ namespace mrv {
           case image_type::kBGR:
               return GL_BGR;
           case image_type::kLumma:
+              return GL_LUMINANCE;
+          case image_type::kITU_709_YCbCr410:
+          case image_type::kITU_601_YCbCr410:
               return GL_LUMINANCE;
           default:
               if ( !bad_format )
@@ -530,6 +533,15 @@ namespace mrv {
         {
            switch( pic->format() )
            {
+	      case image_type::kITU_601_YCbCr410:
+	      case image_type::kITU_601_YCbCr410A:
+	      case image_type::kITU_709_YCbCr410:
+	      case image_type::kITU_709_YCbCr410A:
+	      case image_type::kYByRy410:
+	      case image_type::kYByRy410A:
+                 ow = tw;
+                 oh = th;
+                 break;
 	      case image_type::kITU_601_YCbCr420:
 	      case image_type::kITU_601_YCbCr420A:
 	      case image_type::kITU_709_YCbCr420:
