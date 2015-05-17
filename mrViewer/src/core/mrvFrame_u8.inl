@@ -15,7 +15,7 @@ namespace mrv {
   ImagePixel VideoFrame::pixel_u8( const unsigned int x, 
 				   const unsigned int y ) const
   {
-    ImagePixel p( 0.f, 0.f, 0.f, 0.f );
+    ImagePixel p( 0.f, 0.f, 0.f, 1.f );
     unsigned offset = y * _width + x;
 
     boost::uint8_t* d = (boost::uint8_t*)_data.get();
@@ -53,6 +53,31 @@ namespace mrv {
 	  cr = d[ len*2 + offset ];
 	  break;
 	}
+      case kITU_709_YCbCr410A:
+      case kITU_601_YCbCr410A:
+      case kYByRy410A:
+	{
+	  unsigned int Ylen    = _width * _height;
+	  unsigned int w2      = _width;
+	  unsigned int h2      = _height;
+	  unsigned int Cblen   = w2 * h2;
+	  p.a = d[ Ylen + Cblen + offset] / 255.0f;
+	}
+      case kITU_709_YCbCr410:
+      case kITU_601_YCbCr410:
+      case kYByRy410:
+	{
+	  unsigned int Ylen    = _width * _height;
+	  unsigned int w2      = _width;
+	  unsigned int h2      = _height;
+	  unsigned int Cblen   = w2 * h2;
+
+
+	  yp = d[ offset ];
+	  cb = d[ Ylen + offset ];
+	  cr = d[ Ylen + Cblen + offset ];
+	  break;
+	}
       case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
@@ -76,7 +101,6 @@ namespace mrv {
 	  yp = d[ offset ];
 	  cb = d[ Ylen + offset2 ];
 	  cr = d[ Ylen + Cblen + offset2 ];
-	  p.a = 1.0f;
 	  break;
 	}
       case kITU_709_YCbCr422:
@@ -96,13 +120,13 @@ namespace mrv {
           throw std::runtime_error( _("Unknown mrv::Frame format") );
       }
 
-    if ( _format >= kYByRy420 )
+    if ( _format >= kYByRy410 )
       {
 	 p.r = float( (cb + 1) * yp );
 	 p.b = float( (cr + 1) * yp );
 	 p.g = float( (yp - p.r * yw[0] - p.b * yw[2]) / yw[1] * 255.0f);
       }
-    else if ( _format >= kITU_709_YCbCr420 )
+    else if ( _format >= kITU_709_YCbCr410 )
       {
           // ITU. 709 YCbCr conversion
           float  Y = float(yp) / 255.0f;
@@ -129,7 +153,7 @@ namespace mrv {
           p.g = Imath::clamp( p.g, 0.0f, 1.0f );
           p.b = Imath::clamp( p.b, 0.0f, 1.0f );
       }
-    else if ( _format >= kITU_601_YCbCr420 )
+    else if ( _format >= kITU_601_YCbCr410 )
       {
 	// ITU. 601 YCbCr conversion
 	float  Y = float( yp - 16  );
@@ -190,6 +214,30 @@ namespace mrv {
 	  cr = d + offset + len*2;
 	  break;
 	}
+      case kITU_709_YCbCr410A:
+      case kITU_601_YCbCr410A:
+      case kYByRy410A:
+	{
+	  unsigned int Ylen    = _width * _height;
+	  unsigned int w2      = _width;
+	  unsigned int h2      = _height;
+	  unsigned int Cblen2  = w2 * h2;
+	  d[ Ylen + Cblen2 + offset] = boost::uint8_t(p.a * 255.0f);
+	}
+      case kITU_709_YCbCr410:
+      case kITU_601_YCbCr410:
+      case kYByRy410:
+	{
+	  unsigned int Ylen    = _width * _height;
+	  unsigned int w2      = _width;
+	  unsigned int h2      = _height;
+	  unsigned int Cblen   = w2 * h2;
+
+	  yp = d + offset;
+	  cb = d + Ylen + Cblen;
+	  cr = d + Ylen + Cblen;
+	  break;
+	}
       case kITU_709_YCbCr420A:
       case kITU_601_YCbCr420A:
       case kYByRy420A:
@@ -231,7 +279,7 @@ namespace mrv {
 	throw std::runtime_error("Unknown mrv::Frame format");
       }
 
-    if ( _format >= kYByRy420 )
+    if ( _format >= kYByRy410 )
       {
 	assert( yp && cb && cr );
 

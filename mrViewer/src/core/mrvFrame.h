@@ -59,13 +59,17 @@ namespace mrv
       kRGB,
       kRGBA,
       
+      kITU_601_YCbCr410,
+      kITU_601_YCbCr410A, // @todo: not done
       kITU_601_YCbCr420,
-      kITU_601_YCbCr420A,
+      kITU_601_YCbCr420A, // @todo: not done
       kITU_601_YCbCr422,
-      kITU_601_YCbCr422A,
+      kITU_601_YCbCr422A, // @todo: not done
       kITU_601_YCbCr444,
-      kITU_601_YCbCr444A,
+      kITU_601_YCbCr444A, // @todo: not done
 
+      kITU_709_YCbCr410,
+      kITU_709_YCbCr410A, // @todo: not done
       kITU_709_YCbCr420,
       kITU_709_YCbCr420A, // @todo: not done
       kITU_709_YCbCr422,
@@ -73,6 +77,8 @@ namespace mrv
       kITU_709_YCbCr444,
       kITU_709_YCbCr444A, // @todo: not done
 
+      kYByRy410,
+      kYByRy410A, // @todo: not done
       kYByRy420,
       kYByRy420A, // @todo: not done
       kYByRy422,
