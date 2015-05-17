@@ -66,6 +66,8 @@ const char* const VideoFrame::fmts[] = {
 "RGB",
 "RGBA",
 
+"ITU_601_YCbCr410",
+"ITU_601_YCbCr410A",
 "ITU_601_YCbCr420",
 "ITU_601_YCbCr420A",
 "ITU_601_YCbCr422",
@@ -73,6 +75,8 @@ const char* const VideoFrame::fmts[] = {
 "ITU_601_YCbCr444",
 "ITU_601_YCbCr444A",
 
+"ITU_709_YCbCr410",
+"ITU_709_YCbCr410A", // @todo: not done
 "ITU_709_YCbCr420",
 "ITU_709_YCbCr420A", // @todo: not done
 "ITU_709_YCbCr422",
@@ -80,6 +84,8 @@ const char* const VideoFrame::fmts[] = {
 "ITU_709_YCbCr444",
 "ITU_709_YCbCr444A", // @todo: not done
 
+"YByRy410",
+"YByRy410A", // @todo: not done
 "YByRy420",
 "YByRy420A", // @todo: not done
 "YByRy422",
@@ -476,12 +482,15 @@ VideoFrame* VideoFrame::quick_resize( unsigned int w, unsigned int h ) const
       case kLummaA:
       case kBGRA:
       case kRGBA:
+      case kITU_601_YCbCr410A:
       case kITU_601_YCbCr420A:
       case kITU_601_YCbCr422A:
       case kITU_601_YCbCr444A:
+      case kITU_709_YCbCr410A:
       case kITU_709_YCbCr420A:
       case kITU_709_YCbCr422A:
       case kITU_709_YCbCr444A:
+      case kYByRy410A:
       case kYByRy420A:
       case kYByRy422A:
       case kYByRy444A:
