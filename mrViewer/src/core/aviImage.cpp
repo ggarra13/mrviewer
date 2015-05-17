@@ -662,12 +662,11 @@ void aviImage::store_image( const boost::int64_t frame,
   unsigned int h = height();
 
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
-
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
-  // We handle all cases directly except YUV410.
+  // We handle all cases directly except YUV410 and PAL8
   if ( stream->codec->pix_fmt != AV_PIX_FMT_YUV410P &&
-       stream->codec->pix_fmt != AV_PIX_FMT_PAL8 )
+       stream->codec->pix_fmt != AV_PIX_FMT_PAL8  )
   {
       av_picture_copy( &output, (AVPicture*)_av_frame, _av_dst_pix_fmt, w, h );
   }
@@ -1097,7 +1096,8 @@ void aviImage::video_stream( int x )
 
   if ( supports_yuv() )
     {
-       static PixelFormat fmts2[] = { PIX_FMT_BGR24, PIX_FMT_BGR32,
+       static PixelFormat fmts2[] = { PIX_FMT_RGB24, PIX_FMT_RGB32,
+				      PIX_FMT_BGR24, PIX_FMT_BGR32,
 				      PIX_FMT_YUV444P,
 				      PIX_FMT_YUV422P,
 				      PIX_FMT_YUV420P,
