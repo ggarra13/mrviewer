@@ -371,14 +371,14 @@ void aviImage::open_video_codec()
   static int error_concealment = 3;
 
   ctx->codec_id        = _video_codec->id;
-  ctx->idct_algo         = FF_IDCT_AUTO;
-  ctx->workaround_bugs = workaround_bugs;
-  ctx->lowres          = lowres;
-  ctx->skip_frame= skip_frame;
-  ctx->skip_idct = skip_idct;
-  ctx->idct_algo = idct;
-  ctx->skip_loop_filter= skip_loop_filter;
-  ctx->error_concealment= error_concealment;
+  // ctx->idct_algo         = FF_IDCT_AUTO;
+  // ctx->workaround_bugs = workaround_bugs;
+  // ctx->lowres          = lowres;
+  // ctx->skip_frame= skip_frame;
+  // ctx->skip_idct = skip_idct;
+  // ctx->idct_algo = idct;
+  // ctx->skip_loop_filter= skip_loop_filter;
+  // ctx->error_concealment= error_concealment;
 
   if(_video_codec->capabilities & CODEC_CAP_DR1)
      ctx->flags |= CODEC_FLAG_EMU_EDGE;
@@ -665,7 +665,32 @@ void aviImage::store_image( const boost::int64_t frame,
 
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
-  av_picture_copy( &output, (AVPicture*)_av_frame, _av_dst_pix_fmt, w, h );
+  // We handle all cases directly except YUV410.
+  if ( stream->codec->pix_fmt != AV_PIX_FMT_YUV410P &&
+       stream->codec->pix_fmt != AV_PIX_FMT_PAL8 )
+  {
+      av_picture_copy( &output, (AVPicture*)_av_frame, _av_dst_pix_fmt, w, h );
+  }
+  else
+  {
+      static const int sws_flags = 0;
+      _convert_ctx = sws_getCachedContext(_convert_ctx,
+                                          stream->codec->width, 
+                                          stream->codec->height,
+                                          stream->codec->pix_fmt,
+                                          w, h,
+                                          _av_dst_pix_fmt, SWS_BICUBIC, 
+                                          NULL, NULL, NULL);
+
+      if ( _convert_ctx == NULL )
+      {
+          IMG_ERROR( _("Could not get image conversion context.") );
+          return;
+      }
+
+      sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
+                0, stream->codec->height, output.data, output.linesize);
+  }
 
   if ( _av_frame->interlaced_frame )
     _interlaced = ( _av_frame->top_field_first ? 
@@ -731,7 +756,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         }
 	else
         {
-            ptsframe = pts2frame( stream, ptsframe );
+	   ptsframe = pts2frame( stream, ptsframe );
         }
 
 #ifndef ENCODE_IMAGE
@@ -741,7 +766,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	  }
 	else
 	  {
-              store_image( ptsframe, pkt.dts );
+	      store_image( ptsframe, pkt.dts );
 	  }
 #endif
 
@@ -779,7 +804,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
         if ( playback() == kBackwards )
         {
             store_image( ptsframe+1, pkt.dts );
-        }
+  }
         else
         {
             store_image( ptsframe, pkt.dts );
@@ -1111,7 +1136,7 @@ void aviImage::video_stream( int x )
        _av_dst_pix_fmt == PIX_FMT_YUVA420P) alpha_layers();
 
   if (codec->lowres) {
-     codec->flags |= CODEC_FLAG_EMU_EDGE;
+      codec->flags |= CODEC_FLAG_EMU_EDGE;
   }
 
   _ptype = VideoFrame::kByte;
@@ -1119,55 +1144,55 @@ void aviImage::video_stream( int x )
 
 
   switch( _av_dst_pix_fmt )
-    {
-       case AV_PIX_FMT_RGBA64BE:
+  {
+      case AV_PIX_FMT_RGBA64BE:
           _ptype = VideoFrame::kShort;
           _pix_fmt = VideoFrame::kRGBA; break;
-       case AV_PIX_FMT_RGBA64LE:
+      case AV_PIX_FMT_RGBA64LE:
           _ptype = VideoFrame::kShort;
           _pix_fmt = VideoFrame::kRGBA; break;
-       case AV_PIX_FMT_BGRA64BE:
-       case AV_PIX_FMT_BGRA64LE:
+      case AV_PIX_FMT_BGRA64BE:
+      case AV_PIX_FMT_BGRA64LE:
           _ptype = VideoFrame::kShort;
           _pix_fmt = VideoFrame::kBGRA; break;
-       case AV_PIX_FMT_BGR24:
+      case AV_PIX_FMT_BGR24:
           _pix_fmt = VideoFrame::kBGR; break;
-       case AV_PIX_FMT_BGRA:
+      case AV_PIX_FMT_BGRA:
           _pix_fmt = VideoFrame::kBGRA; break;
-       case AV_PIX_FMT_RGB24:
-      _pix_fmt = VideoFrame::kRGB; break;
-    case AV_PIX_FMT_RGBA:
-      _pix_fmt = VideoFrame::kRGBA; break;
-    case AV_PIX_FMT_YUV444P:
-      if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_709_YCbCr444; 
-      else
-	_pix_fmt = VideoFrame::kITU_601_YCbCr444; 
-      break;
-    case AV_PIX_FMT_YUV422P:
-      if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_709_YCbCr422;
-      else
-	_pix_fmt = VideoFrame::kITU_601_YCbCr422;
-      break;
-    case AV_PIX_FMT_YUV420P:
-      if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_709_YCbCr420;
-      else
-	_pix_fmt = VideoFrame::kITU_601_YCbCr420;
-      break;
-    case AV_PIX_FMT_YUVA420P:
-      if ( w > 768 )
-	_pix_fmt = VideoFrame::kITU_709_YCbCr420A;
-      else
-	_pix_fmt = VideoFrame::kITU_601_YCbCr420A;
-      break;
-    default:
-       IMG_ERROR( _("Unknown destination video frame format: ") 
-		  << av_get_pix_fmt_name( _av_dst_pix_fmt ) );
+      case AV_PIX_FMT_RGB24:
+          _pix_fmt = VideoFrame::kRGB; break;
+      case AV_PIX_FMT_RGBA:
+          _pix_fmt = VideoFrame::kRGBA; break;
+      case AV_PIX_FMT_YUV444P:
+          if ( w > 768 )
+              _pix_fmt = VideoFrame::kITU_709_YCbCr444; 
+          else
+              _pix_fmt = VideoFrame::kITU_601_YCbCr444; 
+          break;
+      case AV_PIX_FMT_YUV422P:
+          if ( w > 768 )
+              _pix_fmt = VideoFrame::kITU_709_YCbCr422;
+          else
+              _pix_fmt = VideoFrame::kITU_601_YCbCr422;
+          break;
+      case AV_PIX_FMT_YUV420P:
+          if ( w > 768 )
+              _pix_fmt = VideoFrame::kITU_709_YCbCr420;
+          else
+              _pix_fmt = VideoFrame::kITU_601_YCbCr420;
+          break;
+      case AV_PIX_FMT_YUVA420P:
+          if ( w > 768 )
+              _pix_fmt = VideoFrame::kITU_709_YCbCr420A;
+          else
+              _pix_fmt = VideoFrame::kITU_601_YCbCr420A;
+          break;
+      default:
+          IMG_ERROR( _("Unknown destination video frame format: ") 
+                     << av_get_pix_fmt_name( _av_dst_pix_fmt ) );
 
-      _pix_fmt = VideoFrame::kBGRA; break;
-    }
+          _pix_fmt = VideoFrame::kBGRA; break;
+  }
 
 
 
