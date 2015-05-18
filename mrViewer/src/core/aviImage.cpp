@@ -75,7 +75,6 @@ namespace
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
-#define ENCODE_IMAGE
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
@@ -119,6 +118,7 @@ const char* const kColorSpaces[] = {
     "RGB",
     "BT709",
     "Unspecified",
+    "Reserved",
     "FCC",
     "BT470BG", ///< also ITU-R BT601-6 625 / ITU-R BT1358 625 / ITU-R BT1700 625 PAL & SECAM / IEC 61966-2-4 xvYCC601
     "SMPTE170M", ///< also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC / functionally identical to above
@@ -126,15 +126,18 @@ const char* const kColorSpaces[] = {
     "YCOCG", ///< Used by Dirac / VC-2 and H.264 FRext, see ITU-T SG16
     "BT2020_NCL", ///< ITU-R BT2020 non-constant luminance system
     "BT2020_CL", ///< ITU-R BT2020 constant luminance system
+    "",
 };
 
 const char* const aviImage::colorspace()
 {
+    if ( !_av_frame ) return kColorSpaces[0];
     return kColorSpaces[av_frame_get_colorspace(_av_frame)];
 }
 
 const char* const aviImage::color_range()
 {
+    if ( !_av_frame ) return kColorRange[0];
     return kColorRange[av_frame_get_color_range(_av_frame)];
 }
 
@@ -664,9 +667,11 @@ void aviImage::store_image( const boost::int64_t frame,
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
   avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
 
+  AVPixelFormat fmt = stream->codec->pix_fmt;
+
   // We handle all cases directly except YUV410 and PAL8
-  if ( stream->codec->pix_fmt != AV_PIX_FMT_YUV410P &&
-       stream->codec->pix_fmt != AV_PIX_FMT_PAL8  )
+  if ( fmt == AV_PIX_FMT_YUV420P || fmt == AV_PIX_FMT_YUV444P ||
+       fmt == AV_PIX_FMT_RGBA || fmt == AV_PIX_FMT_BGRA )
   {
       av_picture_copy( &output, (AVPicture*)_av_frame, _av_dst_pix_fmt, w, h );
   }
@@ -758,17 +763,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	   ptsframe = pts2frame( stream, ptsframe );
         }
 
-#ifndef ENCODE_IMAGE
-	if ( playback() == kBackwards )
-	  {
-	      store_image( ptsframe+1, pkt.dts );
-	  }
-	else
-	  {
-	      store_image( ptsframe, pkt.dts );
-	  }
-#endif
-
 	return kDecodeOK;
      }
 
@@ -797,21 +791,18 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
 
-#ifdef ENCODE_IMAGE
   if ( status == kDecodeOK )
   {
-        if ( playback() == kBackwards )
-        {
-            store_image( ptsframe+1, pkt.dts );
+      if ( playback() == kBackwards )
+      {
+          store_image( ptsframe+1, pkt.dts );
+      }
+      else
+      {
+          store_image( ptsframe, pkt.dts );
+      }
   }
-        else
-        {
-            store_image( ptsframe, pkt.dts );
-        }
-  }
-  else
-#endif
-      if ( status == kDecodeError )
+  else if ( status == kDecodeError )
   {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )

@@ -119,50 +119,61 @@ const char* const VideoFrame::fmts[] = {
   }
 
 
-  size_t VideoFrame::data_size()
-  {
+size_t VideoFrame::data_size()
+{
     size_t size = 0;
 
     unsigned W2, H2, WH2;
     unsigned WH = _width * _height;
 
     switch( _format )
-      {
-      case kLumma:
-	size = WH * _channels; break;
+    {
+        case kLumma:
+            size = WH * _channels; break;
 
-      case kITU_709_YCbCr420A:
-      case kITU_601_YCbCr420A:
-      case kYByRy420A:
-	size = WH; // alpha
+        case kYByRy410A:
+        case kITU_709_YCbCr410A:
+        case kITU_601_YCbCr410A:
+            size = WH; // alpha
 
-      case kYByRy420:
-      case kITU_709_YCbCr420:
-      case kITU_601_YCbCr420:
-	size += WH;   // Y
-	W2 = (_width  + 1) / 2;
-	H2 = (_height + 1) / 2;
-	WH2 = W2 * H2;
-	size += 2 * WH2;  // U and V
-	break;
+        case kYByRy410:
+        case kITU_709_YCbCr410:
+        case kITU_601_YCbCr410:
+            size += WH;   // Y
+            size += WH;   // Cb+Cr
+            break;
 
-      case kITU_709_YCbCr422:
-      case kITU_601_YCbCr422:
-	size += WH;   // Y
-	W2 = (_width  + 1) / 2;
-	WH2 = W2 * _height;
-	size += 2 * WH2;  // U and V
-	break;
+        case kITU_709_YCbCr420A:
+        case kITU_601_YCbCr420A:
+        case kYByRy420A:
+            size = WH; // alpha
+        case kYByRy420:
+        case kITU_709_YCbCr420:
+        case kITU_601_YCbCr420:
+            size += WH;   // Y
+            W2 = (_width  + 1) / 2;
+            H2 = (_height + 1) / 2;
+            WH2 = W2 * H2;
+            size += 2 * WH2;  // U and V
+            break;
 
-      default:
-	size = WH * _channels;
-	break;
-      }
+        case kITU_709_YCbCr422:
+        case kITU_601_YCbCr422:
+            size += WH;   // Y
+            W2 = (_width  + 1) / 2;
+            WH2 = W2 * _height;
+            size += 2 * WH2;  // U and V
+            break;
+
+        default:
+            size = WH * _channels;
+            break;
+    }
 
     // multiply size by that of pixel type.  We assume all
     // channels use same pixel type.
     return size * pixel_size();
-  }
+}
 
 /** 
  * Allocate a frame aligned to 16 bytes in memory.
