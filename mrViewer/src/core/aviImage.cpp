@@ -2189,7 +2189,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
 
 
-int64_t aviImage::wait_image()
+void aviImage::wait_image()
 {
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -2200,15 +2200,12 @@ int64_t aviImage::wait_image()
 
       if ( ! _video_packets.empty() )
 	{
-	  const AVPacket& pkt = _video_packets.front();
-	  boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts ) -
-	  _frame_offset;
-	  return pktframe;
+	  return;
 	}
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  return _frame;
+  return;
 }
 
 bool aviImage::in_video_store( const boost::int64_t frame )

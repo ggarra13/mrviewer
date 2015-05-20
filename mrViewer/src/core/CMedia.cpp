@@ -2260,7 +2260,7 @@ void CMedia::preroll( const boost::int64_t f )
 }
 
 
-int64_t CMedia::wait_image()
+void CMedia::wait_image()
 {
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -2271,17 +2271,12 @@ int64_t CMedia::wait_image()
 
       if ( ! _video_packets.empty() )
 	{
-	  const AVPacket& pkt = _video_packets.front();
-
-	  if ( pkt.pts != MRV_NOPTS_VALUE )
-	     return pkt.pts;
-	  else
-	     return pkt.dts;
+            return;
 	}
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
     }
-  return _frame;
+  return;
 }
 
 
