@@ -81,7 +81,7 @@ namespace mrv {
 
     virtual boost::int64_t wait_subtitle();
 
-    virtual boost::int64_t wait_image();
+    virtual void wait_image();
 
       virtual bool find_image( const boost::int64_t frame );
 
