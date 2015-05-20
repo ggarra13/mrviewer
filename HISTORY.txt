@@ -1,3 +1,6 @@
+v2.8.1   - Improved playback of movies sometimes when pts was skipping
+	   a frame.
+
 v2.8.0   - Bug fixed playback in reverse to not use so much memory.
 	 - Retrofit previous algorithm for movie playback as new 
 	   algorithm was not frame accurate.
