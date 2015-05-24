@@ -78,7 +78,7 @@ namespace mrv
 
     _host = strdup( host );
     _port = port;
-    
+
     const char* portStr = getenv( "MRV_PORT" );
     if ( portStr ) _port = atoi( portStr );
 
