@@ -109,6 +109,7 @@ FLTK_WRAP_UI( mrViewer
   gui/mrvColorAreaUI.fl  
   gui/mrViewer.fl 
   gui/keyboard_ui.fl 
+  gui/mrvAudioOffset.fl
   )
 
 
