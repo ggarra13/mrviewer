@@ -1,5 +1,8 @@
 v2.8.1   - Improved playback of movies sometimes when pts was skipping
 	   a frame.
+	 - Minor speeding up in movie playback.
+	 - Bug fixed playback of image sequences with attached sound,
+	   which would freeze on a frame.
 
 v2.8.0   - Bug fixed playback in reverse to not use so much memory.
 	 - Retrofit previous algorithm for movie playback as new 
