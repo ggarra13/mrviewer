@@ -434,7 +434,7 @@ class CMedia
 
     ///////////////// Decoding time stamp
     inline boost::int64_t   dts()                      { return _dts; }
-    inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; } 
+    inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
 
     ///////////////// Audio frame
     inline void audio_frame( const boost::int64_t f ) { _audio_frame = f; }
