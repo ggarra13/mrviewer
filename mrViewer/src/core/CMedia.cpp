@@ -1704,10 +1704,12 @@ bool CMedia::frame( const boost::int64_t f )
   pkt.data = NULL;
   _video_packets.push_back( pkt );
 
+
   if ( has_audio() )
-      fetch_audio( _dts );
+      fetch_audio( _dts + _audio_offset );
 
   _expected = _dts + 1;
+  _expected_audio = _dts + _audio_offset + 1;
 
   return true;
 }
@@ -2244,6 +2246,7 @@ void CMedia::loop_at_start( const boost::int64_t frame )
 
 void CMedia::loop_at_end( const boost::int64_t frame )
 {
+
    if ( has_picture() )
    {
       _video_packets.loop_at_end( frame );
@@ -2251,7 +2254,7 @@ void CMedia::loop_at_end( const boost::int64_t frame )
 
   if ( number_of_audio_streams() > 0 )
     {
-       _audio_packets.loop_at_end( frame );
+       _audio_packets.loop_at_end( frame + _audio_offset );
     }
 
   if ( number_of_subtitle_streams() > 0 )
