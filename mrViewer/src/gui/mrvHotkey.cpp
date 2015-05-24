@@ -118,6 +118,7 @@ Hotkey kDensityUp( false, false, false, false, 'c' );
 Hotkey kDensityDown( false, false, false, false, 'd' );
 
 Hotkey kAttachAudio( false, false, false, false, 0 );
+Hotkey kEditAudio( false, false, false, false, 0 );
 Hotkey kDetachAudio( false, false, false, false, 0 );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
@@ -177,6 +178,7 @@ HotkeyEntry( _("Gamma Less"), kGammaLess),
 HotkeyEntry( _("Set As BG Image"), kSetAsBG),
 HotkeyEntry( _("Toggle LUT"), kToggleLUT),
 HotkeyEntry( _("Attach Audio File"), kAttachAudio),
+HotkeyEntry( _("Edit Audio Frame Offset"), kEditAudio),
 HotkeyEntry( _("Copy RGBA Values"), kCopyRGBAValues),
 HotkeyEntry( _("Clone Image"), kCloneImage),
 HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
