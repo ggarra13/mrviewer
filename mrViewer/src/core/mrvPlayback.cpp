@@ -225,6 +225,8 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = first;
+                img->seek( frame );
+                img->audio_frame( frame );
                 status = kEndLoop;
             }
             else if ( loop == ImageView::kPingPong )
@@ -303,6 +305,8 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = last;
+                img->seek( frame );
+                img->audio_frame( frame );
                 status = kEndLoop;
             }
             else if ( loop == ImageView::kPingPong )
@@ -408,7 +412,7 @@ void audio_thread( PlaybackData* data )
    // delete the data (we don't need it anymore)
    delete data;
 
-   img->audio_offset( 50 );
+   img->audio_offset( -50 );
 
    int64_t frame = img->frame() + img->audio_offset();
    
@@ -444,6 +448,7 @@ void audio_thread( PlaybackData* data )
       img->wait_audio();
 
       boost::int64_t f = frame;
+
       CMedia::DecodeStatus status = img->decode_audio( f );
 
       /// DBG( "DECODE AUDIO FRAME " << frame << " STATUS " << status );
@@ -458,6 +463,11 @@ void audio_thread( PlaybackData* data )
 	 case CMedia::kDecodeMissingFrame:
              LOG_ERROR( img->name() 
                         << _(" - decode missing audio frame ") << frame );
+             timer.setDesiredFrameRate( img->play_fps() );
+             timer.waitUntilNextFrameIsDue();
+             frame += step;
+             continue;
+          case CMedia::kDecodeNoStream:
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
