@@ -398,7 +398,8 @@ class CMedia
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr& pic );
-    void stereo_cache( const mrv::image_type_ptr& left, const mrv::image_type_ptr& right );
+    void stereo_cache( const mrv::image_type_ptr& left, 
+                       const mrv::image_type_ptr& right );
 
     inline uint64_t duration() const { return _frameEnd - _frameStart + 1; }
 
@@ -784,7 +785,7 @@ class CMedia
 
     const char* const exif( const std::string& name ) const;
 
-    boost::int64_t wait_audio( );
+    void    wait_audio();
     bool    find_audio( const boost::int64_t frame);
 
     virtual boost::int64_t wait_subtitle() { return _frameStart; }
@@ -867,6 +868,9 @@ class CMedia
     void wait_for_load_threads();
 
     void wait_for_threads();
+
+    void audio_offset( const boost::int64_t& f ) { _audio_offset = f; }
+    boost::int64_t audio_offset() const { return _audio_offset; }
 
     void debug_audio_stores(const boost::int64_t frame,
 			    const char* routine = "",
@@ -1142,9 +1146,10 @@ class CMedia
 
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
+    boost::int64_t   _audio_offset;//!< offset of additional audio
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
     boost::int64_t   _expected;    //!< expected next dts fetch
-    boost::int64_t   _next;        //!< expected next frame fetch
+    boost::int64_t   _expected_audio; //!< expected next frame fetch
 
     boost::int64_t   _frameStart;  //!< start frame for sequence or movie
     boost::int64_t   _frameEnd;    //!< end frame for sequence or movie
@@ -1173,6 +1178,9 @@ class CMedia
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
 
+    CMedia*   _left_eye;
+    CMedia*   _right_eye;
+
     //
     std::string _audio_file;
 
@@ -1188,7 +1196,7 @@ class CMedia
     // Input Device Transform for CTL
     char*     _idt_transform;
 
-    unsigned int         _frame_offset;
+    unsigned int _frame_offset;      //!< hack to get ffmpeg to behave correctly
 
     Playback       _playback;        //!< playback direction or stopped
     bool        _aborted;
