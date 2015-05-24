@@ -1,4 +1,4 @@
-require 'RMagick'
+require 'rmagick'
 
 class Image < ActiveRecord::Base
 
@@ -62,7 +62,7 @@ class Image < ActiveRecord::Base
 
 
   def create_png
-    file = "app/assets/images/dbimage-#{id}.png"
+    file = "app/assets/images/dbimage#{id}.png"
     return if File.exist?(file) and File.ctime(file) > updated_at
 
     w, h = thumbnail_width, thumbnail_height

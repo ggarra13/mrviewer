@@ -473,13 +473,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
 
     int ret = av_seek_frame( _context, -1, offset, AVSEEK_FLAG_BACKWARD );
-
-
-    // int flags = 0;
-    // flags &= ~AVSEEK_FLAG_BYTE;
-    // int ret = avformat_seek_file( _context, -1, INT64_MIN, offset, 
-    //                               INT64_MAX, flags );
-
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << frame
@@ -489,9 +482,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _acontext )
     {
-        // int ret = avformat_seek_file( _acontext, -1, INT64_MIN, offset, 
-        //                               INT64_MAX, flags );
-
         int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
 
         if (ret < 0)

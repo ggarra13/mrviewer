@@ -409,6 +409,7 @@ void audio_thread( PlaybackData* data )
    // delete the data (we don't need it anymore)
    delete data;
 
+
    int64_t frame = img->frame();
    
 
@@ -674,17 +675,17 @@ void video_thread( PlaybackData* data )
 
        CMedia::DecodeStatus status = img->decode_video( frame );
 
-
       switch( status )
       {
           // case CMedia::DecodeDone:
-	 //    continue;
-	 case CMedia::kDecodeBufferFull:
-	 case CMedia::kDecodeError:
-	 case CMedia::kDecodeMissingFrame:
-            break;
-	 case CMedia::kDecodeLoopEnd:
-	 case CMedia::kDecodeLoopStart:
+          //    continue;
+          case CMedia::kDecodeBufferFull:
+          case CMedia::kDecodeError:
+          case CMedia::kDecodeMissingFrame:
+             LOG_ERROR( "Decode of image frame returned " << status );
+             break;
+          case CMedia::kDecodeLoopEnd:
+          case CMedia::kDecodeLoopStart:
 	    {
 
                CMedia::Barrier* barrier = img->loop_barrier();

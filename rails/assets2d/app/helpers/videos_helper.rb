@@ -7,7 +7,7 @@ module VideosHelper
       img = record.image
     end
     img.create_png
-    image_tag( "dbimage-#{img.id}.png")
+    image_tag( "dbimage#{img.id}.png")
   end
     
   def directory_column(record, column)
