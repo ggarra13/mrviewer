@@ -37,6 +37,7 @@ export MRV_USER=mrviewer
 export MRV_PASSWORD=mrviewer
 export MRV_PORT=5432
 export MRV_DATABASE=assets2d_production
+export MRV_DATABASE_DRIVER=none  # postgresql
 
 #
 # Add mrViewer's lib directory first to LD_LIBRARY_PATH

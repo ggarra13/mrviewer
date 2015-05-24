@@ -151,8 +151,10 @@ CMedia::CMedia() :
   _has_chromaticities( false ),
   _dts( 1 ),
   _audio_frame( 1 ),
+  _audio_offset( 0 ),
   _frame( 1 ),
   _expected( 1 ),
+  _expected_audio( 1 ),
   _frameStart( 1 ),
   _frameEnd( 1 ),
   _interlaced( kNoInterlace ),
@@ -163,6 +165,8 @@ CMedia::CMedia() :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
+  _left_eye( NULL ),
+  _right_eye( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -226,8 +230,10 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _has_chromaticities( false ),
   _dts( 1 ),
   _audio_frame( 1 ),
+  _audio_offset( 0 ),
   _frame( 1 ),
   _expected( 1 ),
+  _expected_audio( 1 ),
   _frameStart( 1 ),
   _frameEnd( 1 ),
   _frame_start( 1 ),
@@ -240,6 +246,8 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
+  _left_eye( NULL ),
+  _right_eye( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -311,8 +319,10 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _chromaticities( other->chromaticities() ),
   _dts( f ),
   _audio_frame( f ),
+  _audio_offset( 0 ),
   _frame( f ),
   _expected( f ),
+  _expected_audio( f ),
   _frameStart( f ),
   _frameEnd( other->_frameEnd ),
   _frame_start( other->_frame_start ),
@@ -325,6 +335,8 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
+  _left_eye( NULL ),
+  _right_eye( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -1688,9 +1700,8 @@ bool CMedia::frame( const boost::int64_t f )
   AVPacket pkt;
   av_init_packet( &pkt );
   pkt.dts = pkt.pts = _dts;
-  pkt.size = 0; 
+  pkt.size = 0;
   pkt.data = NULL;
-  // pkt.destruct = av_destruct_packet; // prevent av_dup_packet()
   _video_packets.push_back( pkt );
 
   if ( has_audio() )
@@ -2343,6 +2354,7 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
+
   if ( _video_packets.empty() )
     return kDecodeMissingFrame;
 
@@ -2378,17 +2390,9 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
       }
       else
       {
-	  AVPacket& pkt = _video_packets.front();
-
-          boost::int64_t pktframe;
-          if ( pkt.dts != MRV_NOPTS_VALUE )
-             pktframe = pts2frame( get_video_stream(), pkt.dts );
-          else
-             pktframe = frame;
-
           _video_packets.pop_front();
           return kDecodeOK;
-	}
+      }
 
     }
 
@@ -2534,7 +2538,6 @@ struct AnaglyphData
 {
     bool left_red;
     mrv::Recti daw[2]; // data windows
-    mrv::Recti dpw[2]; // display windows
     mrv::image_type_ptr* stereo;
     mrv::image_type_ptr hires;
 };
@@ -2553,13 +2556,13 @@ void anaglyph_cb( AnaglyphData* d )
       idx2 = 0;
    }
 
-   mrv::Recti dpw = d->dpw[0];
-   dpw.merge( d->dpw[1] );
 
    mrv::Recti daw = d->daw[0];
    daw.merge( d->daw[1] );
 
-   // daw.merge( dpw );
+   boost::uint8_t* data = (boost::uint8_t*)hires->data().get();
+   memset( data, 0, hires->data_size() );
+
 
    for ( int y = daw.t(); y < daw.b(); ++y )
    {
@@ -2599,6 +2602,7 @@ void anaglyph_cb( AnaglyphData* d )
 
    delete d;
 
+
 }
 
 
@@ -2635,12 +2639,11 @@ void CMedia::make_anaglyph( bool left_red )
    allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
 
 
+
    AnaglyphData* data = new AnaglyphData;
    data->left_red = left_red;
    data->stereo = _stereo;
    data->hires  = _hires;
-   data->dpw[0] = display_window();
-   data->dpw[1] = display_window2();
 
    data->daw[0] = data_window();
    data->daw[1] = data_window2();
