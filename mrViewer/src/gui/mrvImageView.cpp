@@ -482,7 +482,7 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
   float mask = 1.0f;
   const char* fmt = o->label();
 
-  mask = atof( fmt );
+  mask = (float) atof( fmt );
 
   char buf[128];
   sprintf( buf, "Mask %g", mask );
@@ -2120,8 +2120,7 @@ int ImageView::leftMouseDown(int x, int y)
 	       item = menu.add( buf, 0, (fltk::Callback*)masking_cb, uiMain );
 	       item->type( fltk::Item::TOGGLE );
 	       float mask = -1.0f;
-               // mask = strtod( tmp, NULL );
-               mask = atof( tmp );
+               mask = (float) atof( tmp );
 	       if ( mask == _masking ) item->set();
 	    }
 	    
@@ -3564,9 +3563,13 @@ void ImageView::toggle_presentation()
                           GetSystemMetrics(SM_CYSCREEN));
 #else
       fltk_main()->fullscreen();
-      fltk_main()->resize( 0, 0,
-                           XDisplayWidth( fltk::xdisplay, 0 ),
-                           XDisplayHeight( fltk::xdisplay, 0 ));
+
+      const fltk::Monitor& m = fltk::Monitor::all();
+      fltk_main()->resize( 0, 0, m.w(), m.h() );
+
+      // fltk_main()->resize( 0, 0,
+      //                      XDisplayWidth( fltk::xdisplay, 0 ),
+      //                      XDisplayHeight( fltk::xdisplay, 0 ));
       // XWindowAttributes xwa;
       // XGetWindowAttributes(fltk::xdisplay, DefaultRootWindow(fltk::xdisplay),
       //                      &xwa);
@@ -4354,7 +4357,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) == 
                  shortcuts.end())
             { 
-                if ( shortcut == 'c' ) _old_channel = idx;
+                if ( shortcut == 'c' ) _old_channel = (unsigned short)idx;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }

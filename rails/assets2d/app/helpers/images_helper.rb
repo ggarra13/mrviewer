@@ -9,7 +9,7 @@ module ImagesHelper
   #
   def thumbnail_column( record, column )
     record.create_png
-    image_tag( "dbimage-#{record.id}.png" )
+    image_tag( "dbimage#{record.id}.png" )
   end
     
   

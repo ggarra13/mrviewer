@@ -684,8 +684,8 @@ namespace mrv {
     if ( GLEW_ARB_multitexture )
     {
         CHECK_GL( "Before glActiveTexture" );
-      glActiveTexture( GL_TEXTURE0 );
-      CHECK_GL( "glActiveTexture" );
+        glActiveTexture( GL_TEXTURE0 );
+        CHECK_GL( "glActiveTexture" );
     }
 
     glBindTexture( GL_TEXTURE_2D, _texId[0] );
@@ -751,25 +751,9 @@ namespace mrv {
 
     // Upload converted rectangle
 
-#if 0
-    const mrv::Recti& r = img->damage_rectangle();
-
-    unsigned int rx = r.x();
-    unsigned int ry = r.y();
-    unsigned int rw = r.w();
-
-    boost::uint8_t* p = ( (boost::uint8_t*)_pixels.get() + 
-			       (ry * dw + rx) * _channels * pixel_size );
-
-    update_texsub( 0, rx, ry, rw, r.h(), tw, th, _glformat, _pixel_type, 
-		   short(_channels), short(pixel_size), p );
-
-#else
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get();
     update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type, 
 		   short(_channels), short(pixel_size), p );
-#endif
-
   }
 
   /// Prepare a texture for opengl
@@ -846,11 +830,8 @@ namespace mrv {
 
 
   void GLQuad::draw_quad( const unsigned dw, const unsigned dh ) const
-  {  
+  {
     glColor4f(1.0f,1.0f,1.0f,1.0f);
-
-
-
 
     // If in presentation mode (fullscreen), we use a linear texture filter.
     // Otherwise, use a nearest one to clearly show pixels.
