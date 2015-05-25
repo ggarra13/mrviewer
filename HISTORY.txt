@@ -6,8 +6,9 @@ v2.8.1   - Improved playback of movies sometimes when pts was skipping
 	 - Added the option to offset the attached audio file so as to
 	   sync the audio without cutting the original clip.
 	 - Documented RMB menu options.
-	 - Turned off PostgreSQL database driver by default so as to
-	   avoid errors on startup for new users.
+	 - Turned off PostgreSQL database driver on Linux by default 
+	   so as to avoid errors on startup for new users.
+	 - Fixed crash on wrong locale.  Now it exits gracefully.
 
 v2.8.0   - Bug fixed playback in reverse to not use so much memory.
 	 - Retrofit previous algorithm for movie playback as new 
