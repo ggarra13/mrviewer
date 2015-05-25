@@ -3,6 +3,11 @@ v2.8.1   - Improved playback of movies sometimes when pts was skipping
 	 - Minor speeding up in movie playback.
 	 - Bug fixed playback of image sequences with attached sound,
 	   which would freeze on a frame.
+	 - Added the option to offset the attached audio file so as to
+	   sync the audio without cutting the original clip.
+	 - Documented RMB menu options.
+	 - Turned off PostgreSQL database driver by default so as to
+	   avoid errors on startup for new users.
 
 v2.8.0   - Bug fixed playback in reverse to not use so much memory.
 	 - Retrofit previous algorithm for movie playback as new 
@@ -354,9 +359,11 @@ v2.6.3.2 - Bug fixed anaglyph for different data windows and display windows.
 	 - Updated color and pixel info updates on seek.
 	 - Bug fixed loading of openexr images with data window not appearing
 	   in the right location the first time the images were read.
+
 v2.6.3.1 - Fixed selection in all cases for display and data windows.
 	 - Added missing ICC_PROFILES environment variable to search for
 	   ICC/ICM color profiles.
+
 v2.6.3.0 - Fixed display window for all cases and rewrote drawing routines.
 	 - Adapted safe area for display windows.
 	 - Fixed side by side stereo images.
@@ -365,6 +372,7 @@ v2.6.3.0 - Fixed display window for all cases and rewrote drawing routines.
 	 - Adapted draw/erase/text routines to new drawing routines.  
 	   Made drawing out of boundaries of images a valid behavior.
 	 - Adapted mask windows for new drawing routines.
+
 v2.6.2.0 - Added support for OpenEXR's display window and for moving data
 	   windows.  Currently there's still a minor bug in that the size of
 	   the data window effects the positioning of the display window.
@@ -377,11 +385,14 @@ v2.6.2.0 - Added support for OpenEXR's display window and for moving data
 	 - Adapted masking routines to draw in data window.
 	 - Fixed a bug that would cause a crash when the image information
 	   window would get opened for a multipart OpenEXR image.
+
 v2.6.1.1 - Fixed audio pops in transcoding of movie files.  However, there's
 	   still no way to save a H264 movie with audio from a sequence of
 	   images.
+
 v2.6.1.0 - Fixed audio saving in mpeg4 and H264.  However, there are still
 	   cases that fail or that show pops in the audio.
+
 v2.6.0.0 - Added options to save H264 movie files in YUV420 or YUV444.
 	 - Added options to save audio in MP3 format, but there's still some
 	   "pops" in the output of most files and sync issues.
@@ -389,6 +400,7 @@ v2.6.0.0 - Added options to save H264 movie files in YUV420 or YUV444.
 	   searching is more solid.
 	 - Made audio saving a non-default option due to the bugs that still
 	   plague it.
+
 v2.5.9.1 - Switching images no longer auto refits them in view when autorefit
 	   is on.  It keeps zoom level and offset so as to compare two images 
 	   at closeup. Only when window is resized or the image is loaded,
