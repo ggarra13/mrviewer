@@ -453,6 +453,8 @@ class CMedia
     virtual void loop_at_start( const boost::int64_t frame ); 
     virtual void loop_at_end( const boost::int64_t frame ); 
 
+    static const char* const decode_error( DecodeStatus err );
+
     ////////////////// Static functions
     static CMedia* guess_image( const char* name,
 				const boost::uint8_t* datas = NULL,
