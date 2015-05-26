@@ -118,6 +118,23 @@ int  CMedia::_cache_scale = 0;
 
 mrv::CMedia::Barrier* CMedia::_bg_barrier = NULL;
 
+static const char* const kDecodeStatus[] = {
+_("Decode Missing Frame"),
+_("Decode OK"),
+_("Decode Done"),
+_("Decode Error"),
+_("Decode Missing Samples"),
+_("Decode No Stream"),
+_("Decode Loop Start"),
+_("Decode Loop End"),
+_("Decode Buffer Full"),
+};
+
+
+const char* const CMedia::decode_error( DecodeStatus err )
+{
+    return _( kDecodeStatus[err] );
+}
 
 /** 
  * Constructor
