@@ -692,10 +692,10 @@ void video_thread( PlaybackData* data )
       {
           // case CMedia::DecodeDone:
           //    continue;
-          case CMedia::kDecodeBufferFull:
           case CMedia::kDecodeError:
           case CMedia::kDecodeMissingFrame:
-             LOG_ERROR( "Decode of image frame returned " << status );
+              LOG_ERROR( _("Decode of image frame ") << frame 
+                         << _(" returned ") << CMedia::decode_error( status ) );
              break;
           case CMedia::kDecodeLoopEnd:
           case CMedia::kDecodeLoopStart:
@@ -724,8 +724,9 @@ void video_thread( PlaybackData* data )
 
 	       continue;
 	    }
-	 default:
-	    break;
+          case CMedia::kDecodeBufferFull:
+          default:
+              break;
       }
 
       fps = img->play_fps();
