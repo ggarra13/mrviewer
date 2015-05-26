@@ -1135,61 +1135,61 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
  * @return status whether frame was decoded correctly or not.
  */
 CMedia::DecodeStatus 
-CMedia::decode_audio( boost::int64_t& audio_frame,
+CMedia::decode_audio( boost::int64_t& f,
 		      const boost::int64_t frame, const AVPacket& pkt )
 {
 
-  audio_frame = frame;
+    boost::int64_t audio_frame = frame;
 
-  CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
-							frame, pkt );
-  if ( got_audio != kDecodeOK ) {
-     return got_audio;
-  }
+    CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
+                                                          frame, pkt );
+    if ( got_audio != kDecodeOK ) {
+        return got_audio;
+    }
 
-  got_audio = kDecodeMissingFrame;
-
-
-  unsigned int index = 0;
-
-  SCOPED_LOCK( _audio_mutex );
-
-  boost::int64_t last = audio_frame;
-
-  unsigned int bytes_per_frame = audio_bytes_per_frame();
-  assert( bytes_per_frame != 0 );
+    got_audio = kDecodeMissingFrame;
 
 
-  // Split audio read into frame chunks
-  for (;;)
+    unsigned int index = 0;
+
+    SCOPED_LOCK( _audio_mutex );
+
+    boost::int64_t last = audio_frame;
+    
+    unsigned int bytes_per_frame = audio_bytes_per_frame();
+    assert( bytes_per_frame != 0 );
+    
+
+    // Split audio read into frame chunks
+    for (;;)
     {
 
-      if ( bytes_per_frame > _audio_buf_used ) break;
+        if ( bytes_per_frame > _audio_buf_used ) break;
 
 #ifdef DEBUG
-      if ( index + bytes_per_frame >= _audio_max )
+        if ( index + bytes_per_frame >= _audio_max )
 	{
-	  std::cerr << "frame: " << frame << std::endl
-		    << "audio frame: " << audio_frame << std::endl
-		    << "index: " << index << std::endl
-		    << "  bpf: " << bytes_per_frame << std::endl
-		    << " used: " << _audio_buf_used << std::endl
-		    << "  max: " << _audio_max << std::endl;
+            std::cerr << "frame: " << frame << std::endl
+                      << "audio frame: " << audio_frame << std::endl
+                      << "index: " << index << std::endl
+                      << "  bpf: " << bytes_per_frame << std::endl
+                      << " used: " << _audio_buf_used << std::endl
+                      << "  max: " << _audio_max << std::endl;
 	}
 #endif
 
-      index += store_audio( last,
-			    (boost::uint8_t*)_audio_buf + index,
-			    bytes_per_frame );
+        index += store_audio( last,
+                              (boost::uint8_t*)_audio_buf + index,
+                              bytes_per_frame );
 
 
-      if ( last >= frame )  got_audio = kDecodeOK;
+        if ( last >= frame )  got_audio = kDecodeOK;
 
 
-      assert( bytes_per_frame <= _audio_buf_used );
-      _audio_buf_used -= bytes_per_frame;
+        assert( bytes_per_frame <= _audio_buf_used );
+        _audio_buf_used -= bytes_per_frame;
 
-      ++last;
+        ++last;
 
 // #ifdef DEBUG
 //       if ( got_audio != kDecodeOK )
@@ -1206,14 +1206,14 @@ CMedia::decode_audio( boost::int64_t& audio_frame,
   
 
 
-  if (_audio_buf_used > 0  )
+    if (_audio_buf_used > 0  )
     {
-       //
-       // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
-       memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
+        //
+        // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
+        memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
     }
 
-  return got_audio;
+    return got_audio;
 }
 
 
