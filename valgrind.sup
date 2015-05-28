@@ -1,0 +1,32 @@
+{
+   FontConfig suppression
+   Memcheck:Addr4
+   obj:/usr/lib/x86_64-linux-gnu/libfontconfig.so.1.4.4
+   fun:FcConfigFilename
+   fun:FcConfigParseAndLoad
+   fun:FcInitLoadConfig
+   fun:FcInitLoadConfigAndFonts
+   fun:FcInit
+   fun:XftInit
+   fun:XftFontMatch
+   fun:XftFontOpen
+   fun:_ZN4fltk7setfontEPNS_4FontEf
+   fun:_ZNK4fltk6Widget13measure_labelERiS1_
+   fun:_ZN7BButton6layoutEv
+}
+{
+   Zip inflate
+   Memcheck:Cond
+   fun:inflateReset2
+   fun:inflateInit2_
+   fun:uncompress
+   fun:_ZN7Imf_2_23Zip10uncompressEPKciPc
+   fun:_ZN7Imf_2_213ZipCompressor10uncompressEPKciiRS2_
+   fun:_ZN7Imf_2_212_GLOBAL__N_117LineBufferTaskIIF7executeEv
+   fun:_ZN13IlmThread_2_210ThreadPool7addTaskEPNS_4TaskE
+   fun:_ZN7Imf_2_217ScanLineInputFile10readPixelsEii
+   fun:_ZN7Imf_2_29InputFile10readPixelsEii
+   fun:_ZN3mrv8exrImage15fetch_multipartEl
+   fun:_ZN3mrv8exrImage5fetchEl
+   fun:_ZN3mrv6CMedia10find_imageEl
+}
