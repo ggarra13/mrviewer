@@ -1,6 +1,14 @@
 v2.8.2   - Removed incorrect error when buffers were full.
 	 - Added routine to print out decode status in natural
 	   language instead of a code.
+	 - Made saving of opengl snapshot work with a single frame
+	   instead of working just with a sequence like
+	   snap.0001.exr.
+	 - Allowed saving of opengl snapshot to movie files.  This
+	   works identically to saving normal movies, but requires user
+	   to Save explicitally with the GL Snapshot option.
+	 - Bug fixed opengl snapshot saving to save the view without
+	   any additional green headroom.
 
 v2.8.1   - Improved playback of movies sometimes when pts was skipping
 	   a frame.

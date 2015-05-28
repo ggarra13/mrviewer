@@ -469,6 +469,9 @@ class CMedia
     // Image information
     ////////////////////////
 
+    inline void width( unsigned int x )  { _w = x; }
+    inline void height( unsigned int y ) { _h = y; }
+
     /// Return the image width
     inline unsigned int  width() const  {
         return _w;
