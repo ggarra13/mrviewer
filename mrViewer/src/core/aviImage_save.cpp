@@ -709,12 +709,13 @@ static void close_video(AVFormatContext *oc, AVStream *st)
 }
 
 /* prepare a yuv image */
-static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img )
+static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 {
 
    CMedia* m = (CMedia*) img;
 
    image_type_ptr hires = img->hires();
+
    if ( !hires )
    {
        LOG_ERROR( "Missing picture" );
@@ -723,6 +724,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img )
 
    unsigned w = hires->width();
    unsigned h = hires->height();
+
 
    float one_gamma = 1.0f / img->gamma();
 
@@ -734,6 +736,8 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img )
            y2 /= 2;
        }
 
+
+       unsigned yoff  = y  * pict->linesize[0];
        unsigned yoff1 = y2 * pict->linesize[1];
        unsigned yoff2 = y2 * pict->linesize[2];
 
@@ -757,7 +761,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img )
 
            ImagePixel yuv = color::rgb::to_ITU601( p );
 
-           pict->data[0][y * pict->linesize[0] + x] = uint8_t(yuv.r);
+           pict->data[0][yoff + x] = uint8_t(yuv.r);
 
            unsigned x2 = x;
            if ( c->pix_fmt == AV_PIX_FMT_YUV422P ||
@@ -1030,8 +1034,7 @@ bool write_va_frame( CMedia* img )
 
 
     if ( video_st ) {
-
-       write_video_frame(oc, video_st, img);
+        write_video_frame(oc, video_st, img);
 
        // av_rescale_q(1, video_st->codec->time_base,
        // video_st->time_base);
