@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-05-26 13:13-0300\n"
+"POT-Creation-Date: 2015-05-28 18:22-0300\n"
 "PO-Revision-Date: 2015-05-26 12:08-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -134,7 +134,7 @@ msgstr " audio usado: "
 msgid " channels "
 msgstr " canales "
 
-#: core/aviImage_save.cpp:1152
+#: core/aviImage_save.cpp:1155
 msgid " encoding"
 msgstr " codificando"
 
@@ -154,7 +154,7 @@ msgstr " para '"
 msgid " for stream #"
 msgstr " para flujo #"
 
-#: core/aviImage_save.cpp:1169
+#: core/aviImage_save.cpp:1172
 msgid " frame"
 msgstr " cuadro"
 
@@ -162,7 +162,7 @@ msgstr " cuadro"
 msgid " frame: "
 msgstr " cuadro: "
 
-#: core/aviImage_save.cpp:1159
+#: core/aviImage_save.cpp:1162
 msgid " frames"
 msgstr " cuadros"
 
@@ -1385,13 +1385,13 @@ msgstr ""
 "No pude crear carpeta '%s'. Usted no tiene permisos para realizar esta "
 "operación."
 
-#: core/aviImage_save.cpp:915
+#: core/aviImage_save.cpp:919
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 "No pude deducir el formato de salida de la extensión del archivo: usando "
 "MPEG."
 
-#: core/aviImage_save.cpp:599 core/aviImage_save.cpp:1099
+#: core/aviImage_save.cpp:599 core/aviImage_save.cpp:1102
 msgid "Could not encode audio frame: "
 msgstr "No pude codificar cuadro de audio:"
 
@@ -1439,7 +1439,7 @@ msgstr "No pude localizar el perfil ICC \""
 msgid "Could not locate channels in header"
 msgstr "No pude localizar canales en el encabezado"
 
-#: core/aviImage_save.cpp:987
+#: core/aviImage_save.cpp:991
 msgid "Could not open '"
 msgstr "No pude cargar '"
 
@@ -1459,7 +1459,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
-#: core/aviImage_save.cpp:920
+#: core/aviImage_save.cpp:924
 msgid "Could not open mpeg movie"
 msgstr "No pude abrir película mpeg"
 
@@ -1467,7 +1467,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/aviImage_save.cpp:1087
+#: core/aviImage_save.cpp:1090
 msgid "Could not read audio fifo: "
 msgstr "No pude leer audio fifo: "
 
@@ -2000,7 +2000,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-#: core/aviImage_save.cpp:996
+#: core/aviImage_save.cpp:1000
 msgid "Error occurred when opening output file: "
 msgstr "Un error ocurrió al intentar abrir el archivo de salida: "
 
@@ -2008,15 +2008,15 @@ msgstr "Un error ocurrió al intentar abrir el archivo de salida: "
 msgid "Error while converting audio: "
 msgstr "Error mientras se convertia el audio: "
 
-#: core/aviImage_save.cpp:810
+#: core/aviImage_save.cpp:814
 msgid "Error while encoding video frame: "
 msgstr "Error codificando el cuadro de video: "
 
-#: core/aviImage_save.cpp:823
+#: core/aviImage_save.cpp:827
 msgid "Error while writing video frame: "
 msgstr "Error al escribir el cuadro de video: "
 
-#: core/aviImage_save.cpp:1169
+#: core/aviImage_save.cpp:1172
 msgid "Error writing "
 msgstr "Error escribiendo "
 
@@ -2076,7 +2076,7 @@ msgstr "CPS"
 msgid "FPS: %.2f"
 msgstr "CPS: %.2f"
 
-#: core/aviImage_save.cpp:1152
+#: core/aviImage_save.cpp:1155
 msgid "Failed "
 msgstr "Falló "
 
@@ -2198,7 +2198,7 @@ msgstr "Texturas de Coma Flotante:\t"
 msgid "Floppy Disk"
 msgstr "Disco Floppy"
 
-#: core/aviImage_save.cpp:1188
+#: core/aviImage_save.cpp:1191
 msgid "Flushing of buffers failed"
 msgstr "Vaciar los buffers falló"
 
@@ -3082,7 +3082,7 @@ msgstr "Niveles de Mipmap"
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
 
-#: core/aviImage_save.cpp:880
+#: core/aviImage_save.cpp:884
 msgid "Missing audio frame "
 msgstr "Cuadro faltante de audio "
 
@@ -3203,7 +3203,7 @@ msgstr "No existe escritura CTL o perfil ICC"
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
-#: core/aviImage_save.cpp:966
+#: core/aviImage_save.cpp:970
 msgid "No audio nor video stream created"
 msgstr "Ningun audio o video creado"
 
@@ -4033,7 +4033,7 @@ msgstr "Grabar preferencias al disco por defacto."
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabe archivo de Clip Metadata de ACES '"
 
-#: gui/mrvFileRequester.cpp:468
+#: gui/mrvFileRequester.cpp:467
 #, c-format
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
 msgstr "Grabando Secuencia(s) %<PRId64> - %<PRId64>"
@@ -4304,7 +4304,7 @@ msgstr "Parar"
 msgid "Stop playback."
 msgstr "Detener reproducción."
 
-#: core/aviImage_save.cpp:1158
+#: core/aviImage_save.cpp:1161
 msgid "Stopped encoding cached "
 msgstr "Paré cacheo de codificación "
 
