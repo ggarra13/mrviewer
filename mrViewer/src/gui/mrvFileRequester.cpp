@@ -36,20 +36,20 @@
 #include <fltk/run.h>
 #include <fltk/ask.h>
 
-#include "CMedia.h"
-#include "mrvImageBrowser.h"
-#include "mrvColorProfile.h"
-#include "mrvFileRequester.h"
-#include "mrvPreferences.h"
-#include "mrViewer.h"
-#include "aviSave.h"
+#include "core/CMedia.h"
 #include "core/mrvImageOpts.h"
 #include "core/aviImage.h"
 #include "core/mrvACES.h"
 #include "core/mrvI8N.h"
+#include "core/mrvColorProfile.h"
 #include "gui/mrvIO.h"
+#include "gui/mrvImageBrowser.h"
+#include "gui/mrvFileRequester.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
+#include "mrViewer.h"
+#include "aviSave.h"
 
 #include <GL/gl.h>
 
@@ -445,7 +445,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    bool ok = mrv::fileroot( root, fileseq );
    if ( !ok && !movie ) return;
 
-   
    mrv::Timeline* timeline = uiMain->uiTimeline;
    int64_t first = int64_t( timeline->minimum() );
    int64_t last  = int64_t( timeline->maximum() );
@@ -568,6 +567,14 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                 img->audio_stream( -1 );
             }
 
+            if ( opengl )
+            {
+                unsigned w = uiMain->uiView->w();
+                unsigned h = uiMain->uiView->h();
+                img->width( w );
+                img->height( h );
+            }
+
 	    if ( aviImage::open_movie( buf, img, opts ) )
 	    {
                LOG_INFO( "Open movie '" << buf << "' to save." );
@@ -575,78 +582,91 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 	       ++movie_count;
 	    }
 
+            if ( opengl )
+            {
+                unsigned w = img->hires()->width();
+                unsigned h = img->hires()->height();
+                img->width( w );
+                img->height( h );
+            }
+
             delete opts;
-	 }
-      }
+	 } // if (movie)
+      } // old != fg
 
       if ( w )  w->show();
 	
       {
-	   
-	 if (movie && open_movie)
-	 {
-             aviImage::save_movie_frame( img );
-	 }
-	 else 
-	 {
-             // Store old image
-             mrv::image_type_ptr old_i = img->hires();
-             if ( opengl )
-             {
-                 unsigned w = uiMain->uiView->w();
-                 unsigned h = uiMain->uiView->h();
 
-                 mrv::image_type_ptr hires( 
-                 new mrv::image_type( img->frame(),
-                                      w, h, 4,
-                                      mrv::image_type::kRGBA,
-                                      mrv::image_type::kFloat )
-                 );
+          // Store old image
+          mrv::image_type_ptr old_i = img->hires();
 
-                 float* data = new float[ 4 * w * h ];
+          if ( opengl )
+          {
+              unsigned w = uiMain->uiView->w();
+              unsigned h = uiMain->uiView->h();
 
-                 glPixelStorei( GL_PACK_ALIGNMENT, 1 );
+              mrv::image_type_ptr hires( 
+              new mrv::image_type( img->frame(),
+                                   w, h, 4,
+                                   mrv::image_type::kRGBA,
+                                   mrv::image_type::kFloat )
+              );
 
-                 int x = 0;
-                 int y = 0;
+              float* data = new float[ 4 * w * h ];
+
+              glPixelStorei( GL_PACK_ALIGNMENT, 1 );
+
+              glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
+
+              // Flip image vertically
+              unsigned y2 = h-1;
+              for ( unsigned y = 0; y < h; ++y, --y2 )
+              {
+                  for ( unsigned x = 0; x < w; ++x )
+                  {
+                      unsigned xyw4 = 4 * (x + y * w);
+                      mrv::ImagePixel p;
+                      p.r = data[   xyw4 ];
+                      p.g = data[ 1+xyw4 ];
+                      p.b = data[ 2+xyw4 ];
+                      p.a = data[ 3+xyw4 ];
+                      hires->pixel( x, y2, p );
+                  }
+              }
 
 
-                 glReadPixels( x, y, w, h, GL_RGBA, GL_FLOAT, data );
+              delete [] data;
 
-                 // Flip image vertically
-                 for ( unsigned x = 0; x < w; ++x )
-                 {
-                     unsigned y2 = h-1;
-                     for ( unsigned y = 0; y < h; ++y, --y2 )
-                     {
-                         unsigned xyw4 = 4 * (x + y * w);
-                         mrv::ImagePixel p;
-                         p.r = data[   xyw4 ];
-                         p.g = data[ 1+xyw4 ];
-                         p.b = data[ 2+xyw4 ];
-                         p.a = data[ 3+xyw4 ];
-                         hires->pixel( x, y2, p );
-                     }
-                 }
+              // Set new hires image from snapshot
+              img->hires( hires );
+              img->width( hires->width() );
+              img->height( hires->height() );
+          }
 
-                 // Set new hires image from snapshot
-                 img->hires( hires );
-             }
+          if (movie && open_movie)
+          {
+              aviImage::save_movie_frame( img );
+          }
+          else 
+          {
+              char buf[1024];
+              sprintf( buf, fileroot, frame );
+              img->save( buf, ipts );
+          }
 
-	    char buf[1024];
-	    sprintf( buf, fileroot, frame );
-	    img->save( buf, ipts );
-
-            if ( opengl )
-            {
-                img->hires( old_i );
-            }
-	 }
+          if ( opengl )
+          {
+              // Restore the image from the snapshot
+              img->hires( old_i );
+              img->width( old_i->width() );
+              img->height( old_i->height() );
+          }
       }
-	
+
       progress->step(1);
       fltk::check();
-	
+
       if ( !w->visible() ) {
           break;
       }
