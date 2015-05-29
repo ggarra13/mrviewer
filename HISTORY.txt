@@ -9,6 +9,8 @@ v2.8.2   - Removed incorrect error when buffers were full.
 	   to Save explicitally with the GL Snapshot option.
 	 - Bug fixed opengl snapshot saving to save the view without
 	   any additional green headroom.
+	 - Bug fixed a crash when saving movies whose first 
+	   audio frame was 0.
 
 v2.8.1   - Improved playback of movies sometimes when pts was skipping
 	   a frame.
