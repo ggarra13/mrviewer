@@ -452,7 +452,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    AVCodecContext* c = st->codec;
 
+
    const audio_type_ptr audio = img->get_audio_frame( frame_audio );
+   if ( !audio ) return false;
 
    frame_audio = audio->frame() + 1;
    src_nb_samples = audio->size();
@@ -864,7 +866,7 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f ) const
 {
     boost::int64_t x = f;
     audio_cache_t::const_iterator end = _audio.end();
-    audio_cache_t::const_iterator i;
+    audio_cache_t::const_iterator i = end;
 #if 1
     for ( ; x ; --x )
     {
