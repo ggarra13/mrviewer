@@ -1558,6 +1558,7 @@ void ImageView::draw()
       valid(1);
     }
 
+
   mrv::PreferencesUI* uiPrefs = uiMain->uiPrefs;
 
   //
@@ -1616,7 +1617,7 @@ void ImageView::draw()
     }
   else
   {
-     return;
+      return;
   }
 
 
@@ -2264,6 +2265,7 @@ int ImageView::leftMouseDown(int x, int y)
       flags |= kZoom;
       return 1;
     }
+
 
   return 0;
 }
