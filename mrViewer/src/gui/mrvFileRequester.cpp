@@ -500,14 +500,13 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
            delete ipts;
            return;
        }
-       ipts->opengl( opengl );
+       // ipts->opengl( opengl );
 
 
        img = fg->image();
 
        save_xml( img, ipts, file );
    }
-
 
    for ( ; frame <= last; ++frame )
    {
@@ -518,6 +517,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       if (!fg) break;
 
       img = fg->image();
+
 
       if ( old != fg )
       {
@@ -597,8 +597,12 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       if ( w )  w->show();
 	
       {
+          // Force a swap buffer to actualize back buffer.
+          uiMain->uiView->draw();
+          uiMain->uiView->swap_buffers();
 
-          // Store old image
+          // Store real frame image we may replace
+          float gamma = img->gamma();
           mrv::image_type_ptr old_i = img->hires();
 
           if ( opengl )
@@ -615,53 +619,51 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
               float* data = new float[ 4 * w * h ];
 
+              // glReadBuffer( GL_BACK );
               glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 
               glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
 
               // Flip image vertically
-              unsigned y2 = h-1;
-              for ( unsigned y = 0; y < h; ++y, --y2 )
-              {
-                  for ( unsigned x = 0; x < w; ++x )
-                  {
-                      unsigned xyw4 = 4 * (x + y * w);
-                      mrv::ImagePixel p;
-                      p.r = data[   xyw4 ];
-                      p.g = data[ 1+xyw4 ];
-                      p.b = data[ 2+xyw4 ];
-                      p.a = data[ 3+xyw4 ];
-                      hires->pixel( x, y2, p );
-                  }
-              }
+              unsigned w4 = w*4;
+              size_t line = w4*sizeof(float);
+              unsigned lastline = h*w4;
+              unsigned y2 = (h-1) * w4;
 
+              float* flip = (float*) hires->data().get();
+
+              for ( unsigned y = 0; y < lastline; y += w4, y2 -= w4 )
+              {
+                  memcpy( flip + y2, data + y, line );
+              }
 
               delete [] data;
 
               // Set new hires image from snapshot
+              img->gamma( 1.0f );
               img->hires( hires );
-              img->width( hires->width() );
-              img->height( hires->height() );
-          }
+          } // opengl
 
+          //
+          // Save frame into movie or file.
+          //
           if (movie && open_movie)
           {
               aviImage::save_movie_frame( img );
           }
-          else 
+          else if ( !movie )
           {
               char buf[1024];
               sprintf( buf, fileroot, frame );
               img->save( buf, ipts );
-          }
+          } // !movie
 
           if ( opengl )
           {
               // Restore the image from the snapshot
               img->hires( old_i );
-              img->width( old_i->width() );
-              img->height( old_i->height() );
-          }
+              img->gamma( gamma );
+          } // opengl
       }
 
       progress->step(1);
