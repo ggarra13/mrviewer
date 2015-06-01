@@ -2084,7 +2084,7 @@ int ImageView::leftMouseDown(int x, int y)
 		      (fltk::Callback*)save_reel_cb, this ); 
 	    menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
 		      (fltk::Callback*)save_cb, this ); 
-	    menu.add( _("File/Save/GL Snapshot As"), kSaveSnapshot.hotkey(),
+	    menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
 		      (fltk::Callback*)save_snap_cb, this ); 
 	    menu.add( _("File/Save/Clip XML Metadata As"),
                       kSaveClipXMLMetadata.hotkey(),
