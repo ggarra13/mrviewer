@@ -660,31 +660,22 @@ void aviImage::store_image( const boost::int64_t frame,
   AVPixelFormat fmt = stream->codec->pix_fmt;
 
   // We handle all cases directly except YUV410 and PAL8
-  if ( fmt == AV_PIX_FMT_YUV420P || fmt == AV_PIX_FMT_YUV444P ||
-       fmt == AV_PIX_FMT_RGBA || fmt == AV_PIX_FMT_BGRA )
-  {
-      av_picture_copy( &output, (AVPicture*)_av_frame, _av_dst_pix_fmt, w, h );
-  }
-  else
-  {
-      static const int sws_flags = 0;
-      _convert_ctx = sws_getCachedContext(_convert_ctx,
-                                          stream->codec->width, 
-                                          stream->codec->height,
-                                          stream->codec->pix_fmt,
-                                          w, h,
-                                          _av_dst_pix_fmt, SWS_BICUBIC, 
-                                          NULL, NULL, NULL);
+  _convert_ctx = sws_getCachedContext(_convert_ctx,
+                                      stream->codec->width, 
+                                      stream->codec->height,
+                                      stream->codec->pix_fmt,
+                                      w, h,
+                                      _av_dst_pix_fmt, 0, 
+                                      NULL, NULL, NULL);
 
-      if ( _convert_ctx == NULL )
-      {
-          IMG_ERROR( _("Could not get image conversion context.") );
-          return;
-      }
-
-      sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
-                0, stream->codec->height, output.data, output.linesize);
+  if ( _convert_ctx == NULL )
+  {
+      IMG_ERROR( _("Could not get image conversion context.") );
+      return;
   }
+
+  sws_scale(_convert_ctx, _av_frame->data, _av_frame->linesize,
+            0, stream->codec->height, output.data, output.linesize);
 
   if ( _av_frame->interlaced_frame )
     _interlaced = ( _av_frame->top_field_first ? 
