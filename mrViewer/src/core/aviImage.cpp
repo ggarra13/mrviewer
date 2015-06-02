@@ -663,8 +663,7 @@ void aviImage::store_image( const boost::int64_t frame,
   _convert_ctx = sws_getCachedContext(_convert_ctx,
                                       stream->codec->width, 
                                       stream->codec->height,
-                                      stream->codec->pix_fmt,
-                                      w, h,
+                                      fmt, w, h,
                                       _av_dst_pix_fmt, 0, 
                                       NULL, NULL, NULL);
 

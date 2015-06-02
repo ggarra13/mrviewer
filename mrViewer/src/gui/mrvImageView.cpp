@@ -5251,24 +5251,24 @@ double ImageView::fps() const
  */
 void ImageView::fps( double x )
 {
-  mrv::media fg = foreground();
-  if ( fg ) fg->image()->play_fps( x );
+    if ( x <= 0 ) return;
 
-  mrv::media bg = background();
-  if ( bg ) bg->image()->play_fps( x );
+    mrv::media fg = foreground();
+    if ( fg ) fg->image()->play_fps( x );
 
-  timeline()->fps( x );
-  uiMain->uiFrame->fps( x );
-  uiMain->uiStartFrame->fps( x );
-  uiMain->uiEndFrame->fps( x );
-  
-  uiMain->uiFPS->value( x );
+    mrv::media bg = background();
+    if ( bg ) bg->image()->play_fps( x );
 
+    timeline()->fps( x );
+    uiMain->uiFrame->fps( x );
+    uiMain->uiStartFrame->fps( x );
+    uiMain->uiEndFrame->fps( x );
 
-  char buf[128];
-  sprintf( buf, "FPS %g", x );
-  send( buf );
+    uiMain->uiFPS->value( x );
 
+    char buf[128];
+    sprintf( buf, "FPS %g", x );
+    send( buf );
 }
 
 /** 
