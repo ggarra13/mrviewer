@@ -600,6 +600,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
           // Force a swap buffer to actualize back buffer.
           uiMain->uiView->draw();
           uiMain->uiView->swap_buffers();
+          uiMain->uiView->draw();
+          uiMain->uiView->swap_buffers();
 
           // Store real frame image we may replace
           float gamma = img->gamma();
