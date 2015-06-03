@@ -1,12 +1,12 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-06-02 21:10-0300\n"
+"POT-Creation-Date: 2015-06-03 10:18-0300\n"
 "PO-Revision-Date: 2015-05-26 12:08-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: Argentina\n"
 
-#: core/aviImage.cpp:1616
+#: core/aviImage.cpp:1615
 msgid ""
 "\n"
 "\n"
@@ -27,7 +27,7 @@ msgstr ""
 "\n"
 "No pude abrir el archivo avi"
 
-#: core/CMedia_audio.cpp:596 core/aviImage.cpp:1297
+#: core/CMedia_audio.cpp:595 core/aviImage.cpp:1297
 msgid ""
 "\n"
 "\n"
@@ -47,7 +47,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:582 core/aviImage.cpp:1282
+#: core/CMedia_audio.cpp:581 core/aviImage.cpp:1282
 msgid ""
 "\n"
 "\n"
@@ -93,11 +93,11 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:455
+#: core/mrvPlayback.cpp:452
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:460
+#: core/mrvPlayback.cpp:457
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -122,11 +122,16 @@ msgstr " CNM: %<PRId64> "
 msgid " at port "
 msgstr " en el puerto "
 
-#: core/CMedia_audio.cpp:1083
+#: core/CMedia_audio.cpp:1084
 msgid " audio max: "
 msgstr " max. audio: "
 
 #: core/CMedia_audio.cpp:1082
+#, fuzzy
+msgid " audio total: "
+msgstr " max. audio: "
+
+#: core/CMedia_audio.cpp:1083
 msgid " audio used: "
 msgstr " audio usado: "
 
@@ -178,7 +183,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1537 core/aviImage.cpp:1002
+#: core/CMedia_audio.cpp:1543 core/aviImage.cpp:1002
 msgid " not found"
 msgstr " no encontrado"
 
@@ -190,7 +195,7 @@ msgstr " no encontrado en el carrete"
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/mrvPlayback.cpp:692
+#: core/mrvPlayback.cpp:689
 msgid " returned "
 msgstr " retornó "
 
@@ -954,7 +959,7 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Audio conversion de "
 
-#: core/CMedia_audio.cpp:1537
+#: core/CMedia_audio.cpp:1543
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
@@ -974,7 +979,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: core/CMedia_audio.cpp:1315
+#: core/CMedia_audio.cpp:1316
 msgid "Audios #"
 msgstr "Audios #"
 
@@ -1455,7 +1460,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1481
+#: core/CMedia_audio.cpp:1488
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -1764,7 +1769,7 @@ msgstr "Decodificacion sin Flujo"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/mrvPlayback.cpp:691
+#: core/mrvPlayback.cpp:688
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
@@ -3219,7 +3224,7 @@ msgstr "No se necesita conversión.  Gama: "
 msgid "No decoder found for audio stream. ID: "
 msgstr "Ningún decodificador encontrado para el flujo de audio.  ID: "
 
-#: core/CMedia_audio.cpp:1314
+#: core/CMedia_audio.cpp:1315
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
@@ -3609,7 +3614,7 @@ msgstr "Reproducir secuencia hacia delante."
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1492
+#: core/CMedia_audio.cpp:1499
 msgid "Playback of audio frame failed"
 msgstr "Reproducción de cuadro de audio fallo"
 
@@ -5355,7 +5360,7 @@ msgstr ""
 msgid "data"
 msgstr "datos"
 
-#: core/CMedia_audio.cpp:1122
+#: core/CMedia_audio.cpp:1123
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
