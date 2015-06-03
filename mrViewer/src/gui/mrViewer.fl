@@ -2154,7 +2154,7 @@ o->child_of( main->uiMain );} modal
         xywh {487 205 635 250} hide resizable
         extra_code {o->child_of( main->uiMain );}
       } {
-        {fltk::Group} {} {open selected
+        {fltk::Group} {} {open
           xywh {5 5 630 240} resizable
         } {
           {fltk::TextDisplay} uiLogText {
@@ -2519,13 +2519,13 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {334 185 640 530} when CHANGED hide resizable
+        xywh {338 210 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
-          xywh {0 0 640 530} resizable
+          xywh {0 0 640 530}
         } {
           {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
@@ -2626,7 +2626,7 @@ v->uiHotkey->uiMain->show();}
                 class {mrv::PopupMenu}
               } {}
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {130 5 264 20} color 0x53535300
             } {
               {fltk::Group} {} {open
@@ -2641,7 +2641,7 @@ v->uiHotkey->uiMain->show();}
                   callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
                   tooltip {Gain image value.  A simple multiplier of the image pixel values.}
-                  xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.0001 maximum 1024 step 0.001 value 1
+                  xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.01 maximum 1024 step 0.001 value 1
                   extra_code {o->textsize( 12 );}
                 }
                 {fltk::Slider} uiGain {
@@ -2701,7 +2701,7 @@ Click to toggle between current and normal exposure.}
                 }
               }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {405 5 155 20} color 0x53535300
             } {
               {fltk::Group} {} {open
@@ -2716,7 +2716,7 @@ Click to toggle between current and normal exposure.}
                     callback {float g = (float) atof( o->child( o->value() )->label() );
 v->uiGamma->value(g);
 v->uiGammaInput->value( g );
-v->uiView->gamma(g);} open
+v->uiView->gamma(g);}
                     tooltip {Some default gamma settings.}
                     xywh {0 0 50 19} box UP_BOX
                     class {mrv::PopupMenu}
@@ -2740,7 +2740,7 @@ v->uiView->gamma(g);} open
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-v->uiGamma->value( (float) o->value() );}
+v->uiGamma->value( (float) o->value() );} selected
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
