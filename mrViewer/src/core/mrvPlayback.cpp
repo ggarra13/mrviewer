@@ -225,7 +225,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = first;
-                img->seek( frame );
                 img->audio_frame( frame );
                 status = kEndLoop;
             }
@@ -233,7 +232,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 frame = last;
                 step  = -1;
-                img->seek( frame );
                 // img->frame( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kBackwards );
@@ -305,7 +303,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = last;
-                img->seek( frame );
                 img->audio_frame( frame );
                 status = kEndLoop;
             }
@@ -314,7 +311,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = first;
                 step = 1;
                 //img->frame( frame );
-                img->seek( frame );
                 img->audio_frame( frame );
                 img->playback( CMedia::kForwards );
                 if (fg)
@@ -713,6 +709,7 @@ void video_thread( PlaybackData* data )
                if ( img->stopped() ) continue;
 
                DBG( img->name() << " VIDEO LOOP frame: " << frame );
+
 
                EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
                                             reel, timeline, status );
