@@ -1476,8 +1476,7 @@ void aviImage::populate()
                     }
                     else
                     {
-                        if ( pktframe <= last_frame() ) 
-                            _audio_packets.push_back( pkt );
+                        _audio_packets.push_back( pkt );
                         if ( !has_video() && pktframe > dts ) dts = pktframe;
                     }
 
@@ -1836,8 +1835,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 }
                 else
                 {
-                    if ( pktframe <= last_frame() )
-                        _audio_packets.push_back( pkt );
+                    _audio_packets.push_back( pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
 
@@ -1928,8 +1926,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 }
                 else
                 {
-                    if ( pktframe <= last_frame() )
-                        _audio_packets.push_back( pkt );
+                    _audio_packets.push_back( pkt );
                     if ( pktframe > dts ) dts = pktframe;
                 }
 	

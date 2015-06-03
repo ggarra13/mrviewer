@@ -225,7 +225,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = first;
-                img->audio_frame( frame );
                 status = kEndLoop;
             }
             else if ( loop == ImageView::kPingPong )
@@ -233,7 +232,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = last;
                 step  = -1;
                 // img->frame( frame );
-                img->audio_frame( frame );
                 img->playback( CMedia::kBackwards );
                 if (fg)
                     view->playback( ImageView::kBackwards );
@@ -303,7 +301,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = last;
-                img->audio_frame( frame );
                 status = kEndLoop;
             }
             else if ( loop == ImageView::kPingPong )
@@ -311,7 +308,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = first;
                 step = 1;
                 //img->frame( frame );
-                img->audio_frame( frame );
                 img->playback( CMedia::kForwards );
                 if (fg)
                     view->playback( ImageView::kForwards );
@@ -444,7 +440,8 @@ void audio_thread( PlaybackData* data )
       img->wait_audio();
 
 
-      CMedia::DecodeStatus status = img->decode_audio( frame );
+      boost::int64_t f = frame;
+      CMedia::DecodeStatus status = img->decode_audio( f );
 
       /// DBG( "DECODE AUDIO FRAME " << frame << " STATUS " << status );
 

@@ -340,11 +340,10 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
       }
   }
 
+  //debug_video_packets( dts, "queue_packets");
   
-  if ( dts > last_frame() ) 
-      dts = last_frame();
-  else if ( dts < first_frame() ) 
-      dts = first_frame();
+  if ( dts > last_frame() ) dts = last_frame();
+  else if ( dts < first_frame() ) dts = first_frame();
 
   return dts;
 }
@@ -362,6 +361,8 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
    boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE /
                                            fps() );
 
+  int flags = 0;
+  flags &= ~AVSEEK_FLAG_BYTE;
 
   int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
   if (ret < 0)
@@ -372,6 +373,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
   }
 
   bool got_audio   = !has_audio();
+
 
   boost::int64_t apts = 0;
 
@@ -402,7 +404,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
   // When pre-rolling, make sure new dts is not at a distance bigger
   // than our image/audio cache.
   //
-#if 0
   if ( !_seek_req )
     {
       int64_t diff = (dts - _dts) * _playback;
@@ -422,11 +423,9 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 	  dts = _dts + int64_t(max_frames) * _playback;
 	}
     }
-#endif
 
-  // _dts = dts;
+  _dts = dts;
   _expected = dts+1;
-  _expected_audio = _expected + _audio_offset;
   _seek_req = false;
 
 
@@ -709,6 +708,7 @@ void CMedia::audio_file( const char* file )
    _audio_packets.clear();
    swr_free( &forw_ctx );
    forw_ctx = NULL;
+   audio_offset( 0 );
    _audio_channels = 0;
    _audio_format = AudioEngine::kFloatLSB;
 
@@ -1079,7 +1079,8 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
                       << _(" frame: ") << frame );
            IMG_ERROR(  get_error_text(ret) );
            IMG_ERROR( "DATA: " << (void*) pkt_temp.data
-                      << _(" audio used: ") << _audio_buf_used 
+                      << _(" audio total: ") << _audio_buf_used 
+                      << _(" audio used: ") << audio_size 
                       << _(" audio max: ")  << _audio_max );
 	  return kDecodeMissingSamples;
 	}
@@ -1138,7 +1139,7 @@ CMedia::DecodeStatus
 CMedia::decode_audio( boost::int64_t& f,
 		      const boost::int64_t frame, const AVPacket& pkt )
 {
-
+    
     boost::int64_t audio_frame = frame;
 
     CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
@@ -1385,7 +1386,13 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   boost::int64_t dts = queue_packets( frame, false, got_video, got_audio, 
                                       got_subtitle );
 
-  DBG( "DTS " << dts << " EXPECTED " << _expected_audio );
+  if ( dts > last_frame() ) dts = last_frame();
+  else if ( dts < first_frame() ) dts = first_frame();
+
+  _dts = dts;
+  _expected = dts + 1;
+  DBG( "DTS " << dts << " EXPECTED " << _expected );
+
 }
 
 
@@ -1493,7 +1500,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
      close_audio();
      return false;
   }
-
 
   return true;
 }
@@ -1749,14 +1755,16 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
       else
 	{
 	  AVPacket& pkt = _audio_packets.front();
-	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
-
 	  bool ok = in_audio_store( frame );
+	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 	  if ( ok ) 
           {
-              decode_audio_packet( pktframe, frame, pkt );
-              _audio_packets.pop_front();
-              return kDecodeOK;
+	      if ( pktframe <= frame )  // Needed
+              {
+                  decode_audio_packet( pktframe, frame, pkt );
+                  _audio_packets.pop_front();
+                  return kDecodeOK;
+              }
           }
 
 	  got_audio = decode_audio( pktframe, frame, pkt );
@@ -1764,8 +1772,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& frame )
 	}
 
     }
-
-
 
 #ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DECODE END");
@@ -1790,7 +1796,6 @@ void CMedia::do_seek()
   //   {
   //      got_audio = in_audio_store( _seek_frame );
   //   }
-
 
   if ( !got_audio )
   {
