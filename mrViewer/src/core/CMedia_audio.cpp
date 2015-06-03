@@ -1065,23 +1065,27 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
        assert( _audio_buf_used + pkt_temp.size <= _audio_max );
        assert( pkt_temp.data != NULL );
        // assert( _audio_buf_used % 16 == 0 );
-       assert( audio_size > 0 );
        int ret = decode_audio3( ctx, 
                                 ( int16_t * )( (char*)_audio_buf + 
                                                _audio_buf_used ), 
                                 &audio_size, &pkt_temp );
+       assert( audio_size > 0 );
 
       // If no samples are returned, then break now
       if ( ret <= 0 )
 	{
 	   pkt_temp.size = 0;
-	   IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
-                      << _(" frame: ") << frame );
-           IMG_ERROR(  get_error_text(ret) );
-           IMG_ERROR( "DATA: " << (void*) pkt_temp.data
-                      << _(" audio total: ") << _audio_buf_used 
-                      << _(" audio used: ") << audio_size 
-                      << _(" audio max: ")  << _audio_max );
+
+           if ( ptsframe > 1 ) // needed for Essa.wmv audio replacement
+           {
+               IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
+                          << _(" frame: ") << frame );
+               IMG_ERROR(  get_error_text(ret) );
+               IMG_ERROR( "DATA: " << (void*) pkt_temp.data
+                          << _(" audio total: ") << _audio_buf_used 
+                          << _(" audio used: ") << audio_size 
+                          << _(" audio max: ")  << _audio_max );
+           }
 	  return kDecodeMissingSamples;
 	}
 
