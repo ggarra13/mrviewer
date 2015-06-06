@@ -1547,6 +1547,7 @@ void CMedia::play(const CMedia::Playback dir,
       // If there's at least one valid subtitle stream, create subtitle thread
       bool valid_s = valid_subtitle();
 
+      // When a single image with no audio is present jump to our single frame
       if ( !valid_a && !has_video() && !is_sequence() )
 	{
 	  frame( _frame );
@@ -2400,11 +2401,21 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_start() )
       {
+          // We check packet integrity as the length of packets is
+          // not accurate.
+          const AVPacket& pkt = _video_packets.front();
+          if ( pkt.pts != frame ) return kDecodeOK;
+
           _video_packets.pop_front();
           return kDecodeLoopStart;
       }
       else if ( _video_packets.is_loop_end() )
       {
+          // We check packet integrity as the length of packets is
+          // not accurate.
+          const AVPacket& pkt = _video_packets.front();
+          if ( pkt.pts != frame ) return kDecodeOK;
+
 	  _video_packets.pop_front();
 	  return kDecodeLoopEnd;
       }
