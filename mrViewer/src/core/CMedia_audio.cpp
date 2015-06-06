@@ -83,6 +83,9 @@ namespace {
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
 #endif
 
+#undef DBG
+#define DBG(x) std::cerr << x << std::endl;
+
 //#define DEBUG_AUDIO_PACKETS
 // #define DEBUG_AUDIO_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -351,7 +354,11 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 // Seek to the requested frame
 bool CMedia::seek_to_position( const boost::int64_t frame )
 {
-   if ( _acontext == NULL ) return true;
+   if ( _acontext == NULL )
+   {
+       _seek_req = false;
+       return true;
+   }
 
    boost::int64_t start = frame - 1;
    if ( start < 0 ) return true;
@@ -404,6 +411,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
   // When pre-rolling, make sure new dts is not at a distance bigger
   // than our image/audio cache.
   //
+#if 0
   if ( !_seek_req )
     {
       int64_t diff = (dts - _dts) * _playback;
@@ -423,9 +431,11 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 	  dts = _dts + int64_t(max_frames) * _playback;
 	}
     }
+#endif
 
   _dts = dts;
   _expected = dts+1;
+  _expected_audio = dts+1;
   _seek_req = false;
 
 
