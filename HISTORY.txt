@@ -1,4 +1,8 @@
 v2.8.3   - Bug fixed FPS change to prevent FPS of 0 or less.
+	 - Bug fixed playback of image sequences not showing the
+	   last frame sometimes.
+	 - Bug fixed crash in wmv movie files with wmav2 audio.
+	 - Sped up saving of GL Snapshots a tad.
 
 v2.8.2   - Removed incorrect error when buffers were full.
 	 - Added routine to print out decode status in natural
