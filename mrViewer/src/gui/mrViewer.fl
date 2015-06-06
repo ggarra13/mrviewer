@@ -2519,7 +2519,7 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {338 210 640 530} when CHANGED resizable
+        xywh {346 239 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
         class {mrv::MainWindow} visible
@@ -2740,7 +2740,7 @@ v->uiView->gamma(g);}
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-v->uiGamma->value( (float) o->value() );} selected
+v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
@@ -3098,7 +3098,7 @@ where Yn is the white reference (usually 1).
               }
             }
           }
-          {fltk::Group} uiBottomBar {
+          {fltk::Group} uiBottomBar {open
             xywh {0 478 640 49} box ENGRAVED_BOX
           } {
             {fltk::Group} uiTimeToolbar {open
@@ -3351,7 +3351,7 @@ v->uiTimeline->redraw();}
                       callback {boost::int64_t f = o->value();
 v->uiTimeline->maximum( float(f) );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();}
+v->uiTimeline->redraw();} selected
                       tooltip {Allows you to set the ending frame for timeline.}
                       xywh {110 4 70 20} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(50);}
