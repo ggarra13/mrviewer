@@ -508,6 +508,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        save_xml( img, ipts, file );
    }
 
+   float* data = NULL; // OpenGL temporary data frame
+
    for ( ; frame <= last; ++frame )
    {
 
@@ -573,6 +575,9 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                 unsigned h = uiMain->uiView->h();
                 img->width( w );
                 img->height( h );
+
+                delete [] data;
+                data = new float[ 4 * w * h ];
             }
 
 	    if ( aviImage::open_movie( buf, img, opts ) )
@@ -619,8 +624,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                                    mrv::image_type::kFloat )
               );
 
-              float* data = new float[ 4 * w * h ];
-
               // glReadBuffer( GL_BACK );
               glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 
@@ -638,8 +641,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
               {
                   memcpy( flip + y2, data + y, line );
               }
-
-              delete [] data;
 
               // Set new hires image from snapshot
               img->gamma( 1.0f );
@@ -676,6 +677,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       }
    }
 
+   delete [] data;
 
    delete ipts;
 
