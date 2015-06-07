@@ -404,7 +404,6 @@ void audio_thread( PlaybackData* data )
    // delete the data (we don't need it anymore)
    delete data;
 
-   // img->audio_offset( -50 );
 
    int64_t frame = img->frame() + img->audio_offset();
    
