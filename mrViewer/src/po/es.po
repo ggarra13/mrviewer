@@ -1,12 +1,12 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-06-06 13:51-0300\n"
+"POT-Creation-Date: 2015-06-07 20:02-0300\n"
 "PO-Revision-Date: 2015-06-03 13:18-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -93,11 +93,11 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:452
+#: core/mrvPlayback.cpp:451
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:457
+#: core/mrvPlayback.cpp:456
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -178,7 +178,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2520
+#: core/CMedia.cpp:2530
 msgid " is missing."
 msgstr " está faltante."
 
@@ -194,7 +194,7 @@ msgstr " no encontrado en el carrete"
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/mrvPlayback.cpp:689
+#: core/mrvPlayback.cpp:688
 msgid " returned "
 msgstr " retornó "
 
@@ -1768,7 +1768,7 @@ msgstr "Decodificacion sin Flujo"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/mrvPlayback.cpp:688
+#: core/mrvPlayback.cpp:687
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
