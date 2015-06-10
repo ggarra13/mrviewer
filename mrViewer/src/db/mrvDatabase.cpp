@@ -93,7 +93,7 @@ namespace mrv
     std::string driver;
     const char* var = getenv("MRV_DATABASE_DRIVER");
     if ( var ) driver = var;
-    if ( driver == "" ) driver = "None";
+    if ( driver == "" ) driver = _("None");
 
     LOG_ERROR( "MRV_DATABASE_DRIVER: " << driver );
     LOG_ERROR( "MRV_HOST: " << _host << " MRV_PORT: " << _port );
@@ -117,6 +117,9 @@ namespace mrv
     if ( var ) driver = var;
 
     if ( strcasecmp( driver.c_str(), "None" ) == 0 )
+      return NULL;
+
+    if ( strcasecmp( driver.c_str(), _("None") ) == 0 )
       return NULL;
 
     if ( strcasecmp( driver.c_str(), "PostgreSQL" ) == 0 )
