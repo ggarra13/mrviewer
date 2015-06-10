@@ -20,14 +20,14 @@ namespace mrv {open
   Function {edit_audio_cb( fltk::Widget* o, mrv::ImageView* view )} {open
   } {
     {fltk::Window} uiMainAudio {open
-      xywh {704 552 185 140} resizable modal visible
+      xywh {393 179 235 170} resizable modal visible
     } {
       {fltk::Group} {} {open
-        xywh {10 10 160 115}
+        xywh {12 12 203 139}
       } {
         {fltk::ValueInput} uiFrameOffset {
           label {Frame Offset} selected
-          xywh {45 25 70 25} align 1 minimum -1000 maximum 1000 step 1
+          xywh {63 38 70 25} align 1 minimum -1000 maximum 1000 step 1
           extra_code {mrv::media fg = view->foreground();
 if ( !fg ) return NULL;
 
@@ -41,12 +41,12 @@ o->value( img->audio_offset() );}
           user_data img user_data_type {CMedia*}
           callback {v->audio_offset( uiFrameOffset->value() );
 uiMainAudio->hide();}
-          xywh {5 70 70 25}
+          xywh {23 83 70 25}
         }
         {fltk::Button} {} {
           label Cancel
           callback {uiMainAudio->hide();}
-          xywh {80 70 75 25}
+          xywh {98 83 75 25}
         }
       }
     }
