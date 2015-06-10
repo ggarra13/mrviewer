@@ -2987,53 +2987,7 @@ void ImageBrowser::load( const stringArray& files,
     if ( view()->playback() != ImageView::kStopped )  return;
     
 
-    //
-    // If stopped, play the audio sample for the frame of both
-    // the fg and bg images.
-    //
-    mrv::media fg = view()->foreground();
-    if ( fg )
-      {
-	CMedia* img = fg->image();
 
-	if ( t && t->edl() )
-	  {
-	     f = t->global_to_local( tframe );
-	  }
-
-	if ( img->has_audio() )
-	  {
-	    img->find_audio( f );
-	  }
-	if ( img->has_video() )
-	  {
-	    img->find_image( f );
-	  }
-      }
-
-    if ( view()->bg_reel() >= 0 )
-    {
-       mrv::media bg = view()->background();
-       if ( bg )
-       {
-	  CMedia* img = bg->image();
-
-	  mrv::Reel bgreel = reel_at( view()->bg_reel() );
-          if ( !bgreel) return;
-
-	  f = bgreel->global_to_local( tframe );
-
-	  if ( img->has_audio() )
-	  {
-	     img->find_audio( f );
-	  }
-	  if ( img->has_video() )
-	  {
-	     img->find_image( f );
-	  }
-
-       }
-    }
 
     view()->redraw();
     redraw();
