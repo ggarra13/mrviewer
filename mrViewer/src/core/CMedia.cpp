@@ -60,18 +60,17 @@ extern "C" {
 namespace fs = boost::filesystem;
 
 
-#include "CMedia.h"
-
-#include "Sequence.h"
-#include "mrvColorProfile.h"
-#include "mrvIO.h"
-#include "mrvException.h"
-#include "mrvPlayback.h"
-#include "mrvFrameFunctors.h"
-#include "mrvThread.h"
-#include "mrvI8N.h"
-#include "mrvOS.h"
-#include "mrvTimer.h"
+#include "core/CMedia.h"
+#include "core/Sequence.h"
+#include "core/mrvFrameFunctors.h"
+#include "core/mrvPlayback.h"
+#include "core/mrvColorProfile.h"
+#include "core/mrvException.h"
+#include "core/mrvThread.h"
+#include "core/mrvI8N.h"
+#include "core/mrvOS.h"
+#include "core/mrvTimer.h"
+#include "gui/mrvIO.h"
 
 namespace {
 
