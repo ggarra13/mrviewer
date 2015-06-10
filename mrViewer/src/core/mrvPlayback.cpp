@@ -442,7 +442,6 @@ void audio_thread( PlaybackData* data )
       boost::int64_t f = frame;
       CMedia::DecodeStatus status = img->decode_audio( f );
 
-      /// DBG( "DECODE AUDIO FRAME " << frame << " STATUS " << status );
 
       switch( status )
       {
@@ -461,12 +460,11 @@ void audio_thread( PlaybackData* data )
           case CMedia::kDecodeNoStream:
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
-             frame += step;
+             frame = img->frame() + img->audio_offset();
              continue;
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
               {
-
 
                   DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
@@ -515,8 +513,9 @@ void audio_thread( PlaybackData* data )
       }
 
 
-      // DBG( "PLAY AUDIO " << frame );
-      img->find_audio(frame);
+      if ( !img->stopped() )
+          img->find_audio(frame);
+
       frame += step;
    }
 

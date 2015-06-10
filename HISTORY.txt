@@ -3,6 +3,11 @@ v2.8.3   - Bug fixed FPS change to prevent FPS of 0 or less.
 	   last frame sometimes.
 	 - Bug fixed crash in wmv movie files with wmav2 audio.
 	 - Sped up saving of GL Snapshots a tad.
+	 - Bug fixed audio offset to not play beyond timeline.
+	 - Bug fixed playback of audio with audio offsets in seek.
+	 - Improved performance of seeks since audio was played
+	   twice.
+	 - Bug fixed wrong shortcuts in DEB and RPM builds.
 
 v2.8.2   - Removed incorrect error when buffers were full.
 	 - Added routine to print out decode status in natural
