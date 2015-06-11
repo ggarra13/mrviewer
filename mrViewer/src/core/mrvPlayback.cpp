@@ -501,8 +501,7 @@ void audio_thread( PlaybackData* data )
       }
 
 
-
-      if ( fg && img->has_audio_data() && reel->edl )
+      if ( fg && img->has_audio() && reel->edl )
       {
           int64_t f = img->frame() + reel->location(img) - img->first_frame();
           if ( f > timeline->maximum() )
