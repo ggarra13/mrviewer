@@ -486,6 +486,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         offset = boost::int64_t( double(start + _audio_offset) * AV_TIME_BASE
                                  / fps() );
         if ( offset < 0 ) offset = 0;
+
         int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
 
         if (ret < 0)
@@ -565,32 +566,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // When pre-rolling, make sure new dts is not at a distance bigger
     // than our image/audio cache.
     //
-
-#if 0
-    if (! _seek_req )
-    {
-        int64_t diff = (dts - _dts) * _playback;
-
-        unsigned max_frames = 1;
-        if ( has_video() )
-        {
-            max_frames = max_video_frames();
-        }
-        else if ( has_audio() )
-        {
-            max_frames = max_audio_frames();
-        }
-
-        if ( abs(diff) > max_frames )
-        {
-            dts = _dts + int64_t(max_frames) * _playback;
-            if ( dts < first_frame() )
-                dts = first_frame();
-            else if ( dts > last_frame() )
-                dts = last_frame();
-        }
-    }
-#endif
 
     _dts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
@@ -1665,6 +1640,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
         {
             assert( get_audio_stream() != NULL );
             apts = frame2pts( get_audio_stream(), frame + _audio_offset );
+            if ( apts < 0 ) return 0;
         }
     }
 
@@ -1913,6 +1889,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 
    if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
    {
+       DBG( "frame " << frame << "  EXPECTED " << _expected );
        bool ok = seek_to_position( frame );
        if ( !ok )
            IMG_ERROR("seek_to_position: Could not seek to frame " 
