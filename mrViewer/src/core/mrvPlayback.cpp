@@ -61,8 +61,8 @@ namespace
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-#undef DBG
-#define DBG(x) std::cerr << x << std::endl
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -440,7 +440,7 @@ void audio_thread( PlaybackData* data )
 
 
       boost::int64_t f = frame;
-      std::cerr << "decode " << frame << std::endl;
+      DBG( "decode " << frame );
       CMedia::DecodeStatus status = img->decode_audio( f );
 
 
