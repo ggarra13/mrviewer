@@ -784,7 +784,7 @@ class CMedia
     void audio_file( const char* file = "" );
     std::string audio_file() const { return _audio_file; }
 
-    audio_type_ptr get_audio_frame( const boost::int64_t f ) const;
+    audio_type_ptr get_audio_frame( const boost::int64_t f );  // const
 
     void close_audio();
 

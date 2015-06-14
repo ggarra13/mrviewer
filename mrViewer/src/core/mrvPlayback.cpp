@@ -61,8 +61,8 @@ namespace
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-// #undef DBG
-// #define DBG(x) std::cerr << x << std::endl
+#undef DBG
+#define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -440,6 +440,7 @@ void audio_thread( PlaybackData* data )
 
 
       boost::int64_t f = frame;
+      std::cerr << "decode " << frame << std::endl;
       CMedia::DecodeStatus status = img->decode_audio( f );
 
 
@@ -460,12 +461,11 @@ void audio_thread( PlaybackData* data )
           case CMedia::kDecodeNoStream:
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
-             frame = img->frame() + img->audio_offset();
+             frame += step;
              continue;
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
               {
-
                   DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
                   CMedia::Barrier* barrier = img->loop_barrier();
@@ -476,11 +476,11 @@ void audio_thread( PlaybackData* data )
 
                   if ( img->stopped() ) continue;
 
-                  EndStatus end = handle_loop( frame, step, img, fg,
-                                               uiMain, 
+                  EndStatus end = handle_loop( frame, step, img, fg, uiMain,
                                                reel, timeline, status );
 
                   frame += img->audio_offset();
+
 
                   DBG( img->name() << " AUDIO LOOP END/START HAS FRAME " << frame );
                   continue;
@@ -513,7 +513,9 @@ void audio_thread( PlaybackData* data )
 
 
       if ( !img->stopped() )
+      {
           img->find_audio(frame);
+      }
 
       frame += step;
    }
