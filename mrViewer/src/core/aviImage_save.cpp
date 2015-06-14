@@ -56,6 +56,9 @@ const char* kModule = "save";
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl;
+
 namespace mrv {
 
 char *const get_error_text(const int error)
@@ -456,6 +459,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    const audio_type_ptr audio = img->get_audio_frame( frame_audio );
    if ( !audio ) return false;
 
+
    frame_audio = audio->frame() + 1;
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
@@ -592,6 +596,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        }
 
 
+
        audio_frame->pts = av_rescale_q( samples_count, ratio, 
                                         c->time_base );
 
@@ -608,6 +613,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
            // Empty packet - do not save
            continue;
        }
+
 
        samples_count += frame_size;
 
@@ -660,6 +666,7 @@ static AVFrame *alloc_picture(enum PixelFormat pix_fmt, int width, int height)
     if (!picture)
         return NULL;
 
+
     picture->format = pix_fmt;
     picture->width = width;
     picture->height = height;
@@ -691,6 +698,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     }
 
     
+
     /* Allocate the encoded raw frame. */
     picture = alloc_picture(c->pix_fmt, img->width(), img->height());
     if (!picture) {
@@ -713,6 +721,7 @@ static void close_video(AVFormatContext *oc, AVStream *st)
 /* prepare a yuv image */
 static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 {
+
 
    CMedia* m = (CMedia*) img;
 
@@ -862,11 +871,13 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 
 /* prepare a 16 bit dummy audio frame of 'frame_size' samples and
    'nb_channels' channels */
-audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f ) const
+audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 {
-    boost::int64_t x = f;
-    audio_cache_t::const_iterator end = _audio.end();
-    audio_cache_t::const_iterator i = end;
+    boost::int64_t x = f + audio_offset() + 1;
+    if ( x <= 0 ) x = 1;
+
+    audio_cache_t::iterator end = _audio.end();
+    audio_cache_t::iterator i = end;
 #if 1
     for ( ; x ; --x )
     {
@@ -1071,7 +1082,7 @@ bool flush_video_and_audio( const CMedia* img )
     int stop_encoding = 0;
     int ret = 0;
 
-    if ( audio_st )
+    if ( audio_st && fifo )
     {
         AVCodecContext* c = audio_st->codec;
 
@@ -1081,12 +1092,14 @@ bool flush_video_and_audio( const CMedia* img )
         int got_packet;
         AVPacket pkt = { 0 };
         av_init_packet(&pkt);
+        pkt.data = NULL;
+        pkt.size = 0;
 
         // Send last packet to encode
         if ( cache_size > 0 )
         {
             ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
-                                 cache_size);
+                                     cache_size);
             if (ret < 0)
             {
                 LOG_ERROR( _("Could not read audio fifo: ") << 
