@@ -83,14 +83,15 @@ namespace {
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
 #endif
 
-#undef DBG
-#define DBG(x) std::cerr << x << std::endl;
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl;
 
 // #define DEBUG_AUDIO_PACKETS
 // #define DEBUG_AUDIO_PACKETS_DETAIL
 // #define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
-//#define DEBUG_DECODE
+// #define DEBUG_DECODE
+// #define DEBUG_QUEUE
 // #define DEBUG_SEEK
 // #define DEBUG
 // #define DEBUG_AUDIO_SPLIT
@@ -155,9 +156,10 @@ void CMedia::clear_packets()
  */
 int CMedia::audio_stream_index() const
 {
-  assert( _audio_index >= 0 );
-  assert( unsigned(_audio_index) < _audio_info.size() );
-  return _audio_info[ _audio_index ].stream_index;
+    if ( _audio_index < 0 ) return -1;
+    assert( _audio_index >= 0 );
+    assert( unsigned(_audio_index) < _audio_info.size() );
+    return _audio_info[ _audio_index ].stream_index;
 }
 
 
@@ -225,20 +227,28 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 
     if ( audio_context() != _acontext ) return frame;
 
+#ifdef DEBUG_QUEUE
+    LOG_INFO( "BEFORE QUEUE:  D: " << _dts << " E: " << _expected_audio );
+    debug_audio_packets(frame);
+#endif
+
+
     boost::int64_t dts = frame;
 
-    boost::int64_t apts;
+    boost::int64_t apts = 0;
 
     if ( !got_audio ) {
         assert( get_audio_stream() != NULL );
-        apts = frame2pts( get_audio_stream(), frame );
-        if ( apts < 0 ) return 0;
+        apts = frame2pts( get_audio_stream(), frame + _audio_offset );
+        if ( apts < 0 ) return frame;
     }
 
-    AVPacket pkt;
+    AVPacket pkt = {0};
 
     // Clear the packet
     av_init_packet( &pkt );
+    pkt.size = 0;
+    pkt.data = NULL;
 
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     unsigned int audio_bytes = 0;
@@ -248,6 +258,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
     unsigned packets_added = 0;
 
     boost::int64_t last = last_frame() + _audio_offset;
+    if ( last < 0 ) last = 0;
 
     while (!got_audio)
     {
@@ -279,7 +290,10 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                 {
                     if ( is_seek || playback() == kBackwards )
                     {
-                        if ( !got_audio ) _audio_packets.seek_end(apts);
+                        if ( !got_audio ) 
+                        {
+                            _audio_packets.seek_end(apts);
+                        }
                     }
                     break;
                 }
@@ -295,7 +309,10 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
          
             if ( is_seek )
             {
-                if ( !got_audio ) _audio_packets.seek_end(apts);
+                if ( !got_audio )
+                {
+                    _audio_packets.seek_end(apts);
+                }
             }
          
             av_free_packet( &pkt );
@@ -329,7 +346,9 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                     if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                 }
                 if ( is_seek && got_audio )
+                {
                     _audio_packets.seek_end(apts);
+                }
             }
 	   
 	   
@@ -364,8 +383,8 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
     boost::int64_t start = frame - 1;
     if ( playback() == kBackwards && start > 0 ) --start;
 
-    boost::int64_t offset = boost::int64_t( double(start + _audio_offset) * 
-                                            AV_TIME_BASE/ fps() );
+    boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE 
+                                            / fps() );
     if ( offset < 0 ) offset = 0;
 
     int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
@@ -388,6 +407,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
     if ( !got_audio ) {
         apts = frame2pts( get_audio_stream(), start + _audio_offset );
+        if ( apts < 0 ) apts = 0;
     }
 
     if ( !_seek_req && _playback == kBackwards )
@@ -407,14 +427,14 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
 
     _dts = dts;
-    _expected = frame+1;
+    _expected_audio = frame+1;
 
 
     _seek_req = false;
 
 
 #ifdef DEBUG_SEEK
-    LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected );
+    LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected_audio );
     debug_audio_packets(frame);
 #endif
     return true;
@@ -644,7 +664,9 @@ void CMedia::populate_audio()
     }
 
 
-  _frame = _dts = _expected = _expected_audio = _frameStart;
+  _frame = _dts = _frameStart;
+
+  _expected = _expected_audio = _frame + 1;
 
 
   //
@@ -753,6 +775,7 @@ void CMedia::audio_file( const char* file )
 //
 void CMedia::limit_audio_store(const boost::int64_t frame)
 {
+
   boost::int64_t first, last;
 
   switch( playback() )
@@ -1345,15 +1368,15 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 
     bool got_audio = !has_audio();
 
-    if ( !got_audio && frame != _expected )
+    if ( !got_audio && frame != _expected_audio )
     {
-        DBG( "FRAME(" << frame << ") != EXPECTED (" << _expected << ")" );
+        DBG( "FRAME(" << frame << ") != EXPECTED (" << _expected_audio << ")" );
         bool ok = seek_to_position( frame );
-        DBG( "FRAME(" << frame << ") NEW EXPECTED (" << _expected << ")" );
+        DBG( "FRAME(" << frame << ") NEW EXPECTED (" << _expected_audio << ")" );
         if (ok) return;
     }
 
-    DBG( ">>>>>>>> FRAME " << frame << " IS EXPECTED " << _expected );
+    DBG( ">>>>>>>> FRAME " << frame << " IS EXPECTED " << _expected_audio );
 
   // if ( !got_audio && !_audio.empty() )
   //   {
@@ -1374,14 +1397,14 @@ void CMedia::fetch_audio( const boost::int64_t frame )
 
   DBG( "queue packets return " << dts );
 
-  // if ( dts > last_frame() ) dts = last_frame();
-  // else if ( dts < first_frame() ) dts = first_frame();
+  if ( dts > last_frame() ) dts = last_frame();
+  else if ( dts < first_frame() ) dts = first_frame();
 
   _dts = dts;
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
-  _expected = dts + 1;
-  DBG( "DTS " << dts << " EXPECTED " << _expected );
+  _expected_audio = dts + 1;
+  DBG( "DTS " << dts << " EXPECTED " << _expected_audio );
 
 }
 
@@ -1508,7 +1531,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
 
   {
-
 #ifdef DEBUG_AUDIO_PACKETS
     debug_audio_packets(frame, "FIND");
 #endif
@@ -1664,6 +1686,7 @@ bool CMedia::in_audio_store( const boost::int64_t frame )
 CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 { 
 
+
     boost::int64_t frame = f;
 
 #ifdef DEBUG_AUDIO_PACKETS
@@ -1717,7 +1740,9 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
           // early due to few timestamps in audio track
 	  bool ok = in_audio_store( frame );
 
-	  if ( ok && frame <= last_frame() )
+          boost::int64_t last = last_frame() - audio_offset();
+
+	  if ( ok && frame <= last )
 	  {
 	     return kDecodeOK;
 	  }
@@ -1766,6 +1791,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
               }
           }
 
+
 	  got_audio = decode_audio( pktframe, frame, pkt );
 	  _audio_packets.pop_front();
 	}
@@ -1791,19 +1817,15 @@ void CMedia::do_seek()
 
   bool got_audio = !has_audio();
 
-  // if ( !got_audio )
-  //   {
-  //      got_audio = in_audio_store( _seek_frame );
-  //   }
+
+  boost::int64_t x = _seek_frame + _audio_offset;
 
   if ( !got_audio )
   {
-
-      if ( _seek_frame != _expected )
+      if ( x != _expected_audio )
           clear_packets();
 
-     fetch_audio( _seek_frame );
-
+      fetch_audio( x );
   }
 
   // Seeking done, turn flag off
@@ -1812,12 +1834,12 @@ void CMedia::do_seek()
 
      if ( has_audio() && !got_audio )
      {
-         boost::int64_t f = _seek_frame;
+         boost::int64_t f = x;
          DecodeStatus status = decode_audio( f );
          if ( status > kDecodeOK )
              IMG_ERROR( "Decode audio error: " << status 
-			<< " for frame " << _seek_frame );
-         find_audio( _seek_frame );
+			<< " for frame " << x );
+         find_audio( x );
      }
   }
 
@@ -1921,8 +1943,8 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 
   mrv::PacketQueue::const_iterator iter = _audio_packets.begin();
   mrv::PacketQueue::const_iterator last = _audio_packets.end();
-  std::cerr << name() << " F:" << _audio_frame << " D:" << _dts 
-	    << " A:" << frame << " " << routine << " audio packets #"
+  std::cerr << name() << " F:" << frame << " D:" << _dts 
+	    << " A:" << _audio_frame << " " << routine << " audio packets #"
 	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): ";
 
   AVStream* stream = get_audio_stream();
