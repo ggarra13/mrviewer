@@ -521,9 +521,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
     if ( !got_audio ) {
-        if ( audio_context() != _context )
+        if ( _acontext )
         {
             apts = frame2pts( get_audio_stream(), start + _audio_offset );
+            if ( apts < 0 ) apts = 0;
         }
         else
         {
@@ -1634,13 +1635,13 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
         if ( _acontext )
         {
             assert( get_audio_stream() != NULL );
-            apts = frame2pts( get_audio_stream(), frame );
+            apts = frame2pts( get_audio_stream(), frame + _audio_offset );
+            if ( apts < 0 ) apts = 0;
         }
         else
         {
             assert( get_audio_stream() != NULL );
-            apts = frame2pts( get_audio_stream(), frame + _audio_offset );
-            if ( apts < 0 ) return 0;
+            apts = frame2pts( get_audio_stream(), frame );
         }
     }
 
