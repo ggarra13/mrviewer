@@ -2259,9 +2259,6 @@ void CMedia::loop_at_start( const boost::int64_t frame )
   }
 }
 
-#undef DBG
-#define DBG(x) std::cerr << x << std::endl;
-
 
 void CMedia::loop_at_end( const boost::int64_t frame )
 {
