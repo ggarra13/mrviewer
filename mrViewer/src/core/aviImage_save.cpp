@@ -490,11 +490,12 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        unsigned src_rate = img->audio_frequency();
        unsigned dst_rate = c->sample_rate;
 
+
        dst_nb_samples = static_cast<unsigned>( 
        av_rescale_rnd(swr_get_delay(swr_ctx, src_rate) + 
                       src_nb_samples, dst_rate, src_rate,
                       AV_ROUND_UP) );
-       
+
        if (dst_nb_samples > max_dst_nb_samples) {
 
            av_free(dst_samples_data[0]);
@@ -1082,7 +1083,7 @@ bool flush_video_and_audio( const CMedia* img )
     int stop_encoding = 0;
     int ret = 0;
 
-    if ( audio_st && fifo )
+    if ( audio_st )
     {
         AVCodecContext* c = audio_st->codec;
 
@@ -1158,8 +1159,8 @@ bool flush_video_and_audio( const CMedia* img )
             }
                 
             if (encode) {
-                AVPacket pkt;
-                int got_packet;
+                AVPacket pkt = {0};
+                int got_packet = 0;
                 av_init_packet(&pkt);
                 pkt.data = NULL;
                 pkt.size = 0;
