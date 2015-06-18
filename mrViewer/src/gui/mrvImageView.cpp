@@ -3427,20 +3427,36 @@ int ImageView::keyDown(unsigned int rawkey)
       toggle_presentation();
       return 1;
     }
-   else if ( rawkey == fltk::LeftAltKey ) 
-   {
+  else if ( kSetInPoint.match( rawkey ) )
+  {
+      double x = uiMain->uiFrame->value();
+      uiMain->uiStartButton->value( 1 );
+      uiMain->uiStartFrame->value( x );
+      uiMain->uiTimeline->minimum( x );
+      uiMain->uiTimeline->redraw();
+  }
+  else if ( kSetOutPoint.match( rawkey ) )
+  {
+      double x = uiMain->uiFrame->value();
+      uiMain->uiEndButton->value( 1 );
+      uiMain->uiEndFrame->value( x );
+      uiMain->uiTimeline->maximum( x );
+      uiMain->uiTimeline->redraw();
+  }
+  else if ( rawkey == fltk::LeftAltKey ) 
+  {
       flags |= kLeftAlt;
       return 1;
-   }
+  }
   else
-    {
+  {
       // Check if a menu shortcut
       fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
       // check if a channel shortcut
       int num = uiColorChannel->children();
       for ( unsigned short c = 0; c < num; ++c )
-	{
+      {
 	  if ( rawkey == uiColorChannel->child(c)->shortcut() )
 	    {
 	       if ( c == _channel ) 
@@ -3699,7 +3715,7 @@ int ImageView::handle(int event)
       if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
 	   fltk::event_key_state( fltk::RightShiftKey ) )
 	{
-            float dx = (float) (fltk::event_x() - lastX) / 5.0f;
+            float dx = (float) (fltk::event_x() - lastX) / 10.0;
             if ( std::abs(dx) >= 1.0f )
 	    { 
                 scrub( dx );

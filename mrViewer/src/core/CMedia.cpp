@@ -195,6 +195,8 @@ CMedia::CMedia() :
   _video_pts( 0 ),
   _video_clock( double( av_gettime_relative() ) / 1000000.0 ),
   _context(NULL),
+  _video_ctx( NULL ),
+  _audio_ctx( NULL ),
   _acontext(NULL),
   _audio_codec(NULL),
   _subtitle_index(-1),
@@ -271,6 +273,8 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _aborted( false ),
   _sequence( NULL ),
   _right( NULL ),
+  _video_ctx( NULL ),
+  _audio_ctx( NULL ),
   _context(NULL),
   _acontext(NULL),
   _audio_codec(NULL),
@@ -360,6 +364,8 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _aborted( false ),
   _sequence( NULL ),
   _right( NULL ),
+  _video_ctx( NULL ),
+  _audio_ctx( NULL ),
   _context(NULL),
   _acontext(NULL),
   _audio_codec(NULL),
@@ -1526,9 +1532,10 @@ void CMedia::play(const CMedia::Playback dir,
   clear_packets();
 
   // This seek is needed to sync audio playback
-  if ( dir == kForwards ) _seek_req = true;
-  if ( ! seek_to_position( _frame ) )
-      IMG_ERROR( _("Could not seek to frame ") << _frame );
+  // if ( dir == kForwards ) _seek_req = true;
+
+  // if ( ! seek_to_position( _frame ) )
+  //     IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
   PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
@@ -2234,10 +2241,10 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
 // Return the number of frames cached for jog/shuttle
 unsigned int CMedia::max_video_frames()
 {
-   if ( _video_cache_size > 0 )
-      return _video_cache_size;
+    if ( _video_cache_size > 0 )
+       return _video_cache_size;
    else
-      return unsigned( fps() );
+       return unsigned( fps()*2 );
 }
 
 
