@@ -243,6 +243,7 @@ namespace mrv {
        VideoFrame::PixelType _ptype;
     AVFrame*         _av_frame;
     AVCodec*         _video_codec;
+    AVCodecContext* _subtitle_ctx;           //!< current video context
     SwsContext*      _convert_ctx;
 
     video_info_list_t    _video_info;
