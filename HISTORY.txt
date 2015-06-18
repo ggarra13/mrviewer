@@ -1,3 +1,9 @@
+v2.8.4   - Bug fixed audio playback with offsets.
+	 - Made scrubbing more fluid due to an expanded cache and some
+	   speed optimizations.
+	 - Added In (i) and Out (o) hotkeys to quickly set the in and
+	   out points of the video(s) being played. 
+
 v2.8.3   - Bug fixed FPS change to prevent FPS of 0 or less.
 	 - Bug fixed playback of image sequences not showing the
 	   last frame sometimes.

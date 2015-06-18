@@ -460,7 +460,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    if ( !audio ) return false;
 
 
-   frame_audio = audio->frame() + 1;
+   ++frame_audio;
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
    src_nb_samples /= av_get_bytes_per_sample( aformat );
@@ -870,23 +870,28 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 
 
 
-/* prepare a 16 bit dummy audio frame of 'frame_size' samples and
+/* prepare an audio frame of 'frame_size' samples and
    'nb_channels' channels */
 audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 {
-    boost::int64_t x = f + audio_offset() + 1;
-    if ( x <= 0 ) x = 1;
+    boost::int64_t x = f + audio_offset() - 1;
+    if ( x < first_frame() )
+    {
+        unsigned size = audio_bytes_per_frame();
+        uint8_t* data = new uint8_t[ size ];
+        memset( data, 0, size );
+        return audio_type_ptr( new audio_type( x, audio_frequency(), 
+                                               audio_channels(), data, size) );
+    }
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = end;
 #if 1
-    for ( ; x ; --x )
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) return *i;
     }
 #else
-    for ( ; x ; --x )
     {
         i = std::find_if( _audio.begin(), end, EqualFunctor(x) );
         if ( i != end ) return *i;
@@ -895,8 +900,9 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 
     if ( i == end )
     {
-        LOG_ERROR( _("Missing audio frame ") << f );
-        return audio_type_ptr( new audio_type( f, 0, 0, NULL, 0) );
+        LOG_ERROR( _("Missing audio frame ") << x );
+        return audio_type_ptr( new audio_type( x, audio_frequency(), 
+                                               audio_channels(), NULL, 0) );
     }
 
     return *i;
@@ -1083,7 +1089,7 @@ bool flush_video_and_audio( const CMedia* img )
     int stop_encoding = 0;
     int ret = 0;
 
-    if ( audio_st )
+    if ( audio_st && fifo )
     {
         AVCodecContext* c = audio_st->codec;
 
