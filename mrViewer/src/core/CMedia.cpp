@@ -1532,10 +1532,10 @@ void CMedia::play(const CMedia::Playback dir,
   clear_packets();
 
   // This seek is needed to sync audio playback
-  // if ( dir == kForwards ) _seek_req = true;
+  if ( dir == kForwards ) _seek_req = true;
 
-  // if ( ! seek_to_position( _frame ) )
-  //     IMG_ERROR( _("Could not seek to frame ") << _frame );
+  if ( ! seek_to_position( _frame ) )
+      IMG_ERROR( _("Could not seek to frame ") << _frame );
 
   // Start threads
   PlaybackData* data = new PlaybackData( fg, uiMain, this );  //for decode
