@@ -125,6 +125,9 @@ Hotkey kCloneImage( false, false, false, false, 0 );
 
 Hotkey kClearCache( false, false, false, false, 'k' );
 
+Hotkey kSetInPoint( false, false, false, false, 'i' );
+Hotkey kSetOutPoint( false, false, false, false, 'o' );
+
 HotkeyEntry hotkeys[] = {
 HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
 HotkeyEntry( _("Open Single Image"), kOpenSingleImage),
@@ -185,6 +188,8 @@ HotkeyEntry( _("3dView Z Depth Up"), kZDepthUp),
 HotkeyEntry( _("3dView Z Depth Down"), kZDepthDown),
 HotkeyEntry( _("3dView Density Up"), kDensityUp),
 HotkeyEntry( _("3dView Density Down"), kDensityDown),
+HotkeyEntry( _("Set In Point"), kSetInPoint),
+HotkeyEntry( _("Set Out Point"), kSetOutPoint),
 HotkeyEntry( N_("END"), kGammaLess),
 };
 

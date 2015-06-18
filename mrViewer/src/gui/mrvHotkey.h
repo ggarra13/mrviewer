@@ -246,6 +246,9 @@ extern Hotkey kCloneImage;
 
 extern Hotkey kClearCache;
 
+extern Hotkey kSetInPoint;
+extern Hotkey kSetOutPoint;
+
 struct HotkeyEntry
 {
      HotkeyEntry( const std::string n,
