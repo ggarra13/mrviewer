@@ -1224,7 +1224,9 @@ class CMedia
 
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
+    AVCodecContext* _video_ctx;          //!< current video context
     AVFormatContext* _acontext;          //!< current audio file context
+    AVCodecContext* _audio_ctx;          //!< current video context
 
     // Drawings
     GLShapeList      _shapes;
