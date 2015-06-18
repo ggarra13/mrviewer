@@ -77,7 +77,7 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-//#define DEBUG_DECODE
+// #define DEBUG_DECODE
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
@@ -425,7 +425,7 @@ void aviImage::open_video_codec()
 
 void aviImage::close_video_codec()
 {
-    if ( _video_ctx != NULL )
+    if ( _video_ctx )
         avcodec_close( _video_ctx );
 }
 
@@ -434,9 +434,7 @@ void aviImage::close_video_codec()
 void aviImage::flush_video()
 {
     if ( _video_ctx )
-    {
 	avcodec_flush_buffers( _video_ctx );
-    }
 }
 
 
@@ -474,7 +472,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     bool got_subtitle = !has_subtitle();
 
 
-    if ( (got_video || in_video_store( frame )) &&
+    if ( playback() == kStopped &&
+         (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame ) ) )
     {
@@ -486,7 +485,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     boost::int64_t start = frame;
 
     if ( !skip ) --start;
-    if ( playback() == kBackwards && start > 0 ) --start;
+    if ( playback() == kBackwards ) --start;
 
     if ( start < _frame_start ) start = _frame_start;
 
