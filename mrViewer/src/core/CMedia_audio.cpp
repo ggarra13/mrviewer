@@ -182,26 +182,33 @@ void CMedia::open_audio_codec()
       return;
     }
 
-  AVCodecContext* ctx = stream->codec;
-  if ( ctx == NULL )
+  AVCodecContext* ictx = stream->codec;
+  if ( ictx == NULL )
   {
      IMG_ERROR( _("No codec context for audio stream.") );
       _audio_index = -1;
      return;
   }
 
-  _audio_codec = avcodec_find_decoder( ctx->codec_id );
+  _audio_codec = avcodec_find_decoder( ictx->codec_id );
   if ( _audio_codec == NULL )
   {
-     IMG_ERROR( _("No decoder found for audio stream. ID: ") 
-		<< ctx->codec_id );
+      IMG_ERROR( _("No decoder found for audio stream. ID: ") 
+                 << ictx->codec_id );
       _audio_index = -1;
      return;
   }
   
+  _audio_ctx = avcodec_alloc_context3(_audio_codec);
+  int r = avcodec_copy_context(_audio_ctx, ictx);
+  if ( r < 0 )
+  {
+      throw _("avcodec_copy_context failed for video"); 
+  }
+
   AVDictionary* opts = NULL;
 
-  if ( avcodec_open2( ctx, _audio_codec, NULL ) < 0 )
+  if ( avcodec_open2( _audio_ctx, _audio_codec, NULL ) < 0 )
   {
      IMG_ERROR( _("Could not open audio codec.") );
      _audio_index = -1;
@@ -218,6 +225,7 @@ void CMedia::open_audio_codec()
   }
 }
 
+// NO AUDIO OFFSET IN THIS FUNCTION
 boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                                       const bool is_seek,
                                       bool& got_video,
@@ -239,7 +247,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 
     if ( !got_audio ) {
         assert( get_audio_stream() != NULL );
-        apts = frame2pts( get_audio_stream(), frame + _audio_offset );
+        apts = frame2pts( get_audio_stream(), frame );
         if ( apts < 0 ) return frame;
     }
 
@@ -266,8 +274,8 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
         assert( stream != NULL );
 
         if (eof) {
-            if (!got_audio && stream != NULL &&
-                stream->codec->codec->capabilities & CODEC_CAP_DELAY) {
+            if (!got_audio && _audio_ctx &&
+                _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
                 av_init_packet(&pkt);
                 pkt.dts = pkt.pts = apts;
                 pkt.data = NULL;
@@ -407,7 +415,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
     if ( !got_audio ) {
         apts = frame2pts( get_audio_stream(), start + _audio_offset );
-        if ( apts < 0 ) apts = 0;
     }
 
     if ( !_seek_req && _playback == kBackwards )
@@ -446,9 +453,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
  */
 void CMedia::close_audio_codec()
 {
-  AVStream *stream = get_audio_stream();
-  if ( stream && stream->codec )
-    avcodec_close( stream->codec );
+    avcodec_close( _audio_ctx );
 }
 
 
@@ -503,14 +508,13 @@ unsigned int CMedia::audio_bytes_per_frame()
    if ( has_audio() )
     {
       AVStream* stream = get_audio_stream();
-      AVCodecContext* ctx = stream->codec;
       
-      unsigned int channels = ctx->channels;
+      unsigned int channels = _audio_ctx->channels;
       if (_audio_engine->channels() > 0 ) {
       	 channels = FFMIN(_audio_engine->channels(), channels);
       }
 
-      int frequency = ctx->sample_rate;
+      int frequency = _audio_ctx->sample_rate;
       AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
       unsigned bps = av_get_bytes_per_sample( fmt );
 
@@ -1020,8 +1024,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   if ( !stream ) return kDecodeNoStream;
 
   // Get the audio codec context
-  AVCodecContext* ctx = stream->codec;
-  if ( !ctx ) return kDecodeNoStream;
+  if ( !_audio_ctx ) return kDecodeNoStream;
 
 
   assert( !_audio_packets.is_seek_end( pkt ) );
@@ -1072,7 +1075,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
        assert( _audio_buf_used + pkt_temp.size <= _audio_max );
        assert( pkt_temp.data != NULL );
        // assert( _audio_buf_used % 16 == 0 );
-       int ret = decode_audio3( ctx, 
+       int ret = decode_audio3( _audio_ctx, 
                                 ( int16_t * )( (char*)_audio_buf + 
                                                _audio_buf_used ), 
                                 &audio_size, &pkt_temp );
@@ -1115,10 +1118,10 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   if ( pkt_temp.size == 0 ) {
 
 
-      if ( ctx->codec->capabilities & CODEC_CAP_DELAY )
+      if ( _audio_ctx->codec->capabilities & CODEC_CAP_DELAY )
       {
           pkt_temp.data = NULL;
-          int ret = decode_audio3( ctx, 
+          int ret = decode_audio3( _audio_ctx, 
                                    ( int16_t * )( (char*)_audio_buf + 
                                               _audio_buf_used ), 
                                    &audio_size, &pkt_temp );
@@ -1305,13 +1308,11 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   boost::int64_t f = audio_frame;
   _audio_last_frame = f;
 
-  AVCodecContext* ctx = stream->codec;
-
   // Get the audio info from the codec context
-  _audio_channels = (unsigned short)ctx->channels;
+  _audio_channels = (unsigned short)_audio_ctx->channels;
   unsigned short channels = _audio_channels;
   
-  int frequency = ctx->sample_rate;
+  int frequency = _audio_ctx->sample_rate;
 
   audio_type_ptr aud = audio_type_ptr( new audio_type( f,
 						       frequency, 
@@ -1453,9 +1454,8 @@ bool CMedia::open_audio( const short channels,
   AudioEngine::AudioFormat format = kSampleFormat;
 
   // Avoid conversion to float if unneeded
-  AVCodecContext* ctx = get_audio_stream()->codec;
-  if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-       ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+  if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+       _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
   {
      format = AudioEngine::kS16LSB;
   }
@@ -1507,6 +1507,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
   if ( ! _audio_engine ) return false;
 
+
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
       IMG_ERROR( _("Playback of audio frame ") << result->frame() 
@@ -1543,6 +1544,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     _audio_frame = frame;
 
+    if ( frame < first_frame() ) return true;
+
 #if 1
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
@@ -1555,21 +1558,22 @@ bool CMedia::find_audio( const boost::int64_t frame )
     if ( i == end )
       {
 	IMG_WARNING( _("Audio frame ") << frame << _(" not found") );
-	limit_audio_store( frame );
+	// limit_audio_store( frame );
 	return false;
       }
 
     result = *i;
 
-
-    limit_audio_store( frame );
   }
   
   bool ok = play_audio( result );
-  if ( !ok ) 
+  if ( !ok )
   {
-      IMG_ERROR( "Could not play audio frame " << frame  );
+      IMG_ERROR( _("Could not play audio frame ") << frame  );
   }
+
+
+  // limit_audio_store( frame );
 
   // _audio_pts   = int64_t( _audio_frame * 1000000.0 / _fps );
   _audio_clock = (double)av_gettime_relative() / 1000000.0;
@@ -1580,8 +1584,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
 void CMedia::flush_audio()
 {
-  if ( has_audio() )
-    avcodec_flush_buffers( get_audio_stream()->codec );
+  if ( _audio_ctx )
+    avcodec_flush_buffers( _audio_ctx );
 }
 
 
@@ -1626,6 +1630,17 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   assert( _audio_packets.is_seek() || _audio_packets.is_preroll() );
 
+  bool skip = false;
+
+  if ( is_seek && _audio_packets.is_seek() )
+  {
+      AVPacket& pkt = _audio_packets.front();
+      boost::int64_t f = pts2frame( get_audio_stream(), pkt.dts );
+      if ( in_audio_store( f ) ) skip = true;
+     _audio_packets.pop_front();  // pop seek begin packet
+  }
+  else if ( !is_seek && _audio_packets.is_preroll() )
+     _audio_packets.pop_front();
   _audio_packets.pop_front();  // pop seek/preroll begin packet
 
   DecodeStatus got_audio = kDecodeMissingFrame;
@@ -1644,8 +1659,11 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
     {
       AVPacket& pkt = _audio_packets.front();
 
-      if ( decode_audio( last, frame, pkt ) == kDecodeOK )
-          got_audio = kDecodeOK;
+      if ( ! skip )
+      {
+          if ( decode_audio( last, frame, pkt ) == kDecodeOK )
+              got_audio = kDecodeOK;
+      }
 
       _audio_packets.pop_front();
     }

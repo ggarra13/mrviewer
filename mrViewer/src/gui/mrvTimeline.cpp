@@ -331,6 +331,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             fillrect( dx, r.y()+r.b()/2, wh, r.b()/2+1 );
         }
     }
+
 }
 
   /** 
