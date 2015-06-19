@@ -266,7 +266,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
     unsigned packets_added = 0;
 
     boost::int64_t last = last_frame() + _audio_offset;
-    if ( last < 0 ) last = 0;
+    if ( last < first_frame() ) last = first_frame();
 
     while (!got_audio)
     {

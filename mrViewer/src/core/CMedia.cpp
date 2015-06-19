@@ -1531,7 +1531,7 @@ void CMedia::play(const CMedia::Playback dir,
   // clear all packets
   clear_packets();
 
-  // This seek is needed to sync audio playback
+  // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
 
   if ( ! seek_to_position( _frame ) )
