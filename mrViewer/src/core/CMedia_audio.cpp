@@ -389,6 +389,8 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
 
     boost::int64_t start = frame - 1;
+    if ( start < 0 ) return true;
+
     if ( playback() == kBackwards && start > 0 ) --start;
 
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE 
@@ -432,9 +434,9 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
 
 
-
-    _dts = dts;
-    _expected_audio = frame+1;
+    if ( !has_video() )
+        _dts = dts;
+    _expected_audio = dts+1;
 
 
     _seek_req = false;
@@ -1389,19 +1391,14 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   bool got_video = true;
   bool got_subtitle = true;
 
-  DBG( "queue packets " << frame << " is_seek " << false
-       << " got audio " << got_audio );
-  boost::int64_t dts = frame;
-
-  queue_packets( frame, false, got_video, got_audio, 
-                 got_subtitle );
-
-  DBG( "queue packets return " << dts );
+  boost::int64_t dts = queue_packets( frame, false, got_video, got_audio, 
+                                      got_subtitle );
 
   if ( dts > last_frame() ) dts = last_frame();
   else if ( dts < first_frame() ) dts = first_frame();
 
-  _dts = dts;
+  if ( !has_video() )
+      _dts = dts;
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected_audio = dts + 1;
@@ -1432,7 +1429,7 @@ void CMedia::wait_audio()
     {
       if ( stopped() ) break;
 
-      bool got_audio = in_audio_store( _frame );
+      bool got_audio = in_audio_store( _frame + _audio_offset );
       if ( ( ! _audio_packets.empty() ) || got_audio )
 	  return;
 
@@ -1544,7 +1541,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     _audio_frame = frame;
 
-    if ( frame < first_frame() ) return true;
+    // if ( frame < first_frame() ) return true;
 
 #if 1
     audio_cache_t::iterator end = _audio.end();
@@ -1721,7 +1718,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   SCOPED_LOCK( apm );
 
   if ( frame < first_frame() )
-       return kDecodeNoStream;
+      return kDecodeNoStream;
+
 
   if ( _audio_packets.empty() )
   {
