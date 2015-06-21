@@ -65,6 +65,15 @@ using namespace std;
     return false; \
   }
 
+#define ThrowWandExceptionPing( wand ) \
+  { \
+    ExceptionType severity; \
+   \
+    char* description=MagickGetException(wand,&severity); \
+    LOG_ERROR( file << ": " << severity << " " << description ); \
+    description=(char *) MagickRelinquishMemory(description); \
+    return false; \
+  }
 
 namespace 
 {
@@ -101,20 +110,17 @@ namespace mrv {
               return false;
       }
 
-    MagickBooleanType status;
+    MagickWandGenesis();
+    MagickBooleanType status = MagickFalse;
 
     MagickWand* wand = NewMagickWand();
 
     status = MagickPingImage( wand, file );
 
-    // Fix bug in ping image for PSD files
-    if (status == MagickFalse )
-    {
-        status = MagickReadImage( wand, file );
-    }
-
     DestroyMagickWand(wand);
 
+
+    MagickWandTerminus();
 
     if (status == MagickFalse )
     {
