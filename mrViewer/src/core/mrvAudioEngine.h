@@ -49,8 +49,8 @@ class ViewerUI;
       std::string name;
       std::string description;
 
-      Device( const std::string& n,
-	      const std::string& desc ) :
+      Device( const std::string n,
+	      const std::string desc ) :
 	name( n ),
 	description( desc )
       {

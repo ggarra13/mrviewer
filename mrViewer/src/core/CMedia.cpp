@@ -1697,6 +1697,7 @@ bool CMedia::frame( const boost::int64_t f )
   assert( _fileroot != NULL );
 
 
+
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 256 * 1024)
 #define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
@@ -1715,11 +1716,6 @@ bool CMedia::frame( const boost::int64_t f )
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
 
-  if ( _dts != _expected )
-    {
-      _video_packets.seek_begin(_dts);
-      _video_packets.seek_end(_dts);
-    }
 
   AVPacket pkt;
   av_init_packet( &pkt );
@@ -1728,12 +1724,11 @@ bool CMedia::frame( const boost::int64_t f )
   pkt.data = NULL;
   _video_packets.push_back( pkt );
 
-
   if ( has_audio() )
       fetch_audio( _dts + _audio_offset );
 
   _expected = _dts + 1;
-  _expected_audio = _dts + _audio_offset + 1;
+  _expected_audio = _expected + _audio_offset;
 
   return true;
 }
