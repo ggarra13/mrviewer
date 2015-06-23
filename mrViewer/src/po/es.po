@@ -1,27 +1,12 @@
-# SOME DESCRIPTIVE TITLE.
-# Copyright (C) YEAR Free Software Foundation, Inc.
-# FIRST AUTHOR <EMAIL@ADDRESS>, YEAR.
+# mrViewer
+# Copyright (C) 2015 Free Software Foundation, Inc.
+# Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
 #
-#, fuzzy
 msgid ""
 msgstr ""
-"Project-Id-Version: PACKAGE VERSION\n"
-"PO-Revision-Date: 2015-06-23 20:39-0300\n"
-"Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
-"Language-Team: LANGUAGE <LL@li.org>\n"
-"MIME-Version: 1.0\n"
-"Content-Type: text/plain; charset=CHARSET\n"
-"Content-Transfer-Encoding: 8bit\n"
-
-#~ # mrViewer
-#~ # Copyright (C) 2015 Free Software Foundation, Inc.
-#~ # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-#~ #
-#~ msgid ""
-#~ msgstr ""
-#~ "Project-Id-Version: mrViewer\n"
-#~ "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-06-23 14:53-0300\n"
+"Project-Id-Version: mrViewer\n"
+"Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
+"POT-Creation-Date: 2015-06-23 20:44-0300\n"
 "PO-Revision-Date: 2015-06-23 14:20-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -42,7 +27,7 @@ msgstr ""
 "\n"
 "No pude abrir el archivo avi"
 
-#: core/CMedia_audio.cpp:603 core/aviImage.cpp:1316
+#: core/CMedia_audio.cpp:605 core/aviImage.cpp:1316
 msgid ""
 "\n"
 "\n"
@@ -62,7 +47,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:589 core/aviImage.cpp:1301
+#: core/CMedia_audio.cpp:591 core/aviImage.cpp:1301
 msgid ""
 "\n"
 "\n"
@@ -201,7 +186,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1560 core/aviImage.cpp:1020
+#: core/CMedia_audio.cpp:1557 core/aviImage.cpp:1020
 msgid " not found"
 msgstr " no encontrado"
 
@@ -993,10 +978,7 @@ msgstr "Audio/Agregar Archivo de Audio"
 msgid "Audio/Detach Audio File"
 msgstr "Audio/Disasociar Archivo de Audio"
 
-#: gui/mrvImageView.cpp:2228
-msgid "Audio/Edit Audio Frame Offset"
-msgstr "Audio/Editar Cuadro Comienzo de Audio"
-
+#: core/CMedia_audio.cpp:1326
 msgid "Audios #"
 msgstr "Audios #"
 
