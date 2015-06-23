@@ -1432,7 +1432,7 @@ void CMedia::wait_audio()
     {
       if ( stopped() ) break;
 
-      bool got_audio = in_audio_store( _frame );
+      bool got_audio = in_audio_store( _frame + _audio_offset );
       if ( ( ! _audio_packets.empty() ) || got_audio )
 	  return;
 
