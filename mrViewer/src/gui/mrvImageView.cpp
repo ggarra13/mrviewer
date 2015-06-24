@@ -119,7 +119,7 @@
 #include "gui/mrvHotkey.h"
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvFontsWindowUI.h"
-#include "gui/mrvAudioOffset.h"
+#include "mrvAudioOffset.h"
 #include "gui/mrvImageView.h"
 
 
@@ -2225,9 +2225,9 @@ int ImageView::leftMouseDown(int x, int y)
    
 	       menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
 	     		 (fltk::Callback*)attach_audio_cb, this );
-	       menu.add( _("Audio/Edit Audio Frame Offset"),
-                         kEditAudio.hotkey(), 
-                         (fltk::Callback*)edit_audio_cb, this );
+	       // menu.add( _("Audio/Edit Audio Frame Offset"),
+               //           kEditAudio.hotkey(), 
+               //           (fltk::Callback*)edit_audio_cb, this );
 	       menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
 	     		 (fltk::Callback*)detach_audio_cb, this );
 	    }
