@@ -3,7 +3,7 @@
 
 SET( VersionMajor 2 )
 SET( VersionMinor 8 )
-SET( VersionPatch 5 )
+SET( VersionPatch 6 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
