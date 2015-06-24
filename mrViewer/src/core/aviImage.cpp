@@ -2451,7 +2451,8 @@ void aviImage::do_seek()
                boost::int64_t f = _seek_frame + _audio_offset;
                status = decode_audio( f );
                if ( status > kDecodeOK )
-                   IMG_ERROR( "Decode audio error: " << status 
+                   IMG_ERROR( "Decode audio error: " 
+                              << decode_error( status ) 
                               << " for frame " << _seek_frame );
                find_audio( _seek_frame + _audio_offset );
            }
@@ -2464,7 +2465,7 @@ void aviImage::do_seek()
 	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
 	     IMG_ERROR( "Decode video error seek frame " 
 			<< _seek_frame 
-			<< " status: " << status );
+			<< " status: " << decode_error( status ) );
        }
        
        if ( has_subtitle() )
