@@ -457,10 +457,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
    const audio_type_ptr audio = img->get_audio_frame( frame_audio );
+
    if ( !audio ) return false;
 
 
    ++frame_audio;
+
+   if ( audio->frame() == AV_NOPTS_VALUE ) return false;
+
    src_nb_samples = audio->size();
    src_nb_samples /= img->audio_channels();
    src_nb_samples /= av_get_bytes_per_sample( aformat );
@@ -875,6 +879,8 @@ int64_t get_valid_channel_layout(int64_t channel_layout, int channels)
 audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 {
     boost::int64_t x = f + audio_offset() - 1;
+
+
     if ( x < first_frame() )
     {
         unsigned size = audio_bytes_per_frame();
@@ -889,7 +895,10 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 #if 1
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
-        if ( i != end ) return *i;
+        if ( i != end ) {
+            LOG_INFO( "For frame " << x << " got audio " << (*i)->frame() );
+            return *i;
+        }
     }
 #else
     {
@@ -898,14 +907,9 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
     }
 #endif
 
-    if ( i == end )
-    {
-        LOG_ERROR( _("Missing audio frame ") << x );
-        return audio_type_ptr( new audio_type( x, audio_frequency(), 
-                                               audio_channels(), NULL, 0) );
-    }
-
-    return *i;
+    LOG_ERROR( _("Missing audio frame ") << x );
+    return audio_type_ptr( new audio_type( AV_NOPTS_VALUE, audio_frequency(), 
+                                           audio_channels(), NULL, 0) );
 }
 
 
