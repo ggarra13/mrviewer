@@ -589,5 +589,7 @@ ENDIF(TINYXML2_FOUND)
 #  MESSAGE( STATUS "RLM libraries:  ${RLM_LIBRARIES}" )
 #ENDIF(RLM_FOUND)
 
+MESSAGE( STATUS "mrViewer version: " ${VERSION} )
+
 
 include(CPack)
