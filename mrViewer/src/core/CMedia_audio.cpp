@@ -416,7 +416,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
     {
         if ( !got_audio )    _audio_packets.seek_begin(apts);
     }
-
     bool got_video = true;
     bool got_subtitle = true;
 
@@ -1836,6 +1835,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 void CMedia::do_seek()
 {
 
+    _dts = _seek_frame;
+
   bool got_audio = !has_audio();
 
 
@@ -1850,6 +1851,8 @@ void CMedia::do_seek()
   }
 
   // Seeking done, turn flag off
+  _seek_req = false;
+
   if ( stopped() )
   {
 
@@ -1865,9 +1868,6 @@ void CMedia::do_seek()
   }
 
   find_image( _seek_frame );
-
-  // Seeking done, turn flag off
-  _seek_req = false;
 
   // Queue thumbnail for update
   image_damage( image_damage() | kDamageThumbnail );
