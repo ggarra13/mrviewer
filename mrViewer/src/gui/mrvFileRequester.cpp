@@ -515,139 +515,138 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
        uiMain->uiReelWindow->uiBrowser->seek( frame );
 
-      mrv::media fg = uiMain->uiView->foreground();
-      if (!fg) break;
+       mrv::media fg = uiMain->uiView->foreground();
+       if (!fg) break;
 
-      img = fg->image();
+       img = fg->image();
 
 
-      if ( old != fg )
-      {
+       if ( old != fg )
+       {
+           old = fg;
+           if ( open_movie )
+           {
+               aviImage::close_movie(img);
+               open_movie = false;
+           }
+           if ( movie )
+           {
+               char buf[256];
+               if ( edl )
+               {
+                   sprintf( buf, "%s%d%s", root.c_str(), movie_count,
+                            ext.c_str() );
+               }
+               else
+               {
+                   sprintf( buf, "%s%s", root.c_str(), ext.c_str() );
+               }
 
-	 old = fg;
-	 if ( open_movie )
-	 {
-            aviImage::close_movie(img);
-	    open_movie = false;
-	 }
-         if ( movie )
-	 {
-	    char buf[256];
-	    if ( edl )
-	    {
-	       sprintf( buf, "%s%d%s", root.c_str(), movie_count,
-			  ext.c_str() );
-	    }
-	    else
-	    {
-	       sprintf( buf, "%s%s", root.c_str(), ext.c_str() );
-	    }
+               if ( fs::exists( buf ) )
+               {
+                   int ok = fltk::ask( "Do you want to replace '%s'",
+                                       buf );
+                   if (!ok) 
+                   {
+                       break;
+                   }
+               }
 
-	    if ( fs::exists( buf ) )
-	    {
-	       int ok = fltk::ask( "Do you want to replace '%s'",
-				   buf );
-	       if (!ok) 
-	       {
-		  break;
-	       }
-	    }
+               AviSaveUI* opts = new AviSaveUI;
+               if ( opts->video_bitrate == 0 &&
+                    opts->audio_bitrate == 0 )
+               {
+                   delete opts;
+                   delete w;
+                   w = NULL;
+                   break;
+               }
 
-            AviSaveUI* opts = new AviSaveUI;
-            if ( opts->video_bitrate == 0 &&
-                 opts->audio_bitrate == 0 )
-            {
-                delete opts;
-                delete w;
-                w = NULL;
-                break;
-            }
+               audio_stream = img->audio_stream();
+               if ( opts->audio_codec == "NONE" )
+               {
+                   img->audio_stream( -1 );
+               }
 
-            audio_stream = img->audio_stream();
-            if ( opts->audio_codec == "NONE" )
-            {
-                img->audio_stream( -1 );
-            }
+               if ( opengl )
+               {
+                   unsigned w = uiMain->uiView->w();
+                   unsigned h = uiMain->uiView->h();
+                   img->width( w );
+                   img->height( h );
 
-            if ( opengl )
-            {
-                unsigned w = uiMain->uiView->w();
-                unsigned h = uiMain->uiView->h();
-                img->width( w );
-                img->height( h );
+                   delete [] data;
+                   data = new float[ 4 * w * h ];
+               }
 
-                delete [] data;
-                data = new float[ 4 * w * h ];
-            }
+               if ( aviImage::open_movie( buf, img, opts ) )
+               {
+                   LOG_INFO( "Open movie '" << buf << "' to save." );
+                   open_movie = true;
+                   ++movie_count;
+               }
 
-	    if ( aviImage::open_movie( buf, img, opts ) )
-	    {
-               LOG_INFO( "Open movie '" << buf << "' to save." );
-	       open_movie = true;
-	       ++movie_count;
-	    }
+               if ( opengl )
+               {
+                   unsigned w = img->hires()->width();
+                   unsigned h = img->hires()->height();
+                   img->width( w );
+                   img->height( h );
+               }
 
-            if ( opengl )
-            {
-                unsigned w = img->hires()->width();
-                unsigned h = img->hires()->height();
-                img->width( w );
-                img->height( h );
-            }
+               delete opts;
+           } // if (movie)
+       } // old != fg
 
-            delete opts;
-	 } // if (movie)
-      } // old != fg
-
-      if ( w )  w->show();
+       if ( w )  w->show();
 	
-      {
-          // Force a swap buffer to actualize back buffer.
-          uiMain->uiView->draw();
-          uiMain->uiView->swap_buffers();
-          uiMain->uiView->draw();
-          uiMain->uiView->swap_buffers();
+       {
+           // Force a swap buffer to actualize back buffer.
+           uiMain->uiView->draw();
+           uiMain->uiView->swap_buffers();
+           uiMain->uiView->draw();
+           uiMain->uiView->swap_buffers();
 
-          // Store real frame image we may replace
-          float gamma = img->gamma();
-          mrv::image_type_ptr old_i = img->hires();
+           // Store real frame image we may replace
+           float gamma = img->gamma();
+           mrv::image_type_ptr old_i = img->hires();
 
-          if ( opengl )
-          {
-              unsigned w = uiMain->uiView->w();
-              unsigned h = uiMain->uiView->h();
+           if ( opengl )
+           {
+               unsigned w = uiMain->uiView->w();
+               unsigned h = uiMain->uiView->h();
 
-              mrv::image_type_ptr hires( 
-              new mrv::image_type( img->frame(),
-                                   w, h, 4,
-                                   mrv::image_type::kRGBA,
-                                   mrv::image_type::kFloat )
-              );
+               mrv::image_type_ptr hires( 
+               new mrv::image_type( img->frame(),
+                                    w, h, 4,
+                                    mrv::image_type::kRGBA,
+                                    mrv::image_type::kFloat )
+               );
 
-              // glReadBuffer( GL_BACK );
-              glPixelStorei( GL_PACK_ALIGNMENT, 1 );
+               // glReadBuffer( GL_BACK );
+               glPixelStorei( GL_PACK_ALIGNMENT, 1 );
 
-              glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
+               glReadPixels( 0, 0, w, h, GL_RGBA, GL_FLOAT, data );
 
-              // Flip image vertically
-              unsigned w4 = w*4;
-              size_t line = w4*sizeof(float);
-              unsigned lastline = h*w4;
-              unsigned y2 = (h-1) * w4;
+               // Flip image vertically
+               unsigned w4 = w*4;
+               size_t line = w4*sizeof(float);
+               unsigned lastline = h*w4;
+               unsigned y2 = (h-1) * w4;
 
-              float* flip = (float*) hires->data().get();
+               float* flip = (float*) hires->data().get();
 
-              for ( unsigned y = 0; y < lastline; y += w4, y2 -= w4 )
-              {
-                  memcpy( flip + y2, data + y, line );
-              }
+               for ( unsigned y = 0; y < lastline; y += w4, y2 -= w4 )
+               {
+                   memcpy( flip + y2, data + y, line );
+               }
 
-              // Set new hires image from snapshot
-              img->gamma( 1.0f );
-              img->hires( hires );
-          } // opengl
+               // Set new hires image from snapshot
+               img->gamma( 1.0f );
+               img->hires( hires );
+           } // opengl
 
-          //
+           //
           // Save frame into movie or file.
           //
           if (movie && open_movie)
