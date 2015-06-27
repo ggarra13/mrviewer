@@ -797,8 +797,8 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
   {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
-           IMG_WARNING("Could not decode video frame " << ptsframe 
-                       << " type " << ftype << " pts: " 
+           IMG_WARNING( _("Could not decode video frame ") << ptsframe 
+                        << _(" type ") << ftype << " pts: " 
                        << (pkt.pts == AV_NOPTS_VALUE ?
                            -1 : pkt.pts ) << " dts: " << pkt.dts
 		      << " data: " << (void*)pkt.data);
@@ -2084,7 +2084,17 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	    }
 	  else
 	    {
-	       decode_video_packet( pktframe, frame, pkt );
+                if ( skip )
+                {
+                    _video_ctx->skip_loop_filter=AVDISCARD_NONREF;
+                    _video_ctx->skip_idct= AVDISCARD_NONREF;
+                }
+                decode_video_packet( pktframe, frame, pkt );
+                if ( skip )
+                {
+                    _video_ctx->skip_loop_filter=AVDISCARD_DEFAULT;        
+                    _video_ctx->skip_idct=AVDISCARD_DEFAULT;
+                }
 	    }
 	}
 
@@ -2442,8 +2452,9 @@ void aviImage::do_seek()
            {
                status = decode_audio( _seek_frame );
                if ( status > kDecodeOK )
-                   IMG_ERROR( "Decode audio error: " << status 
-                              << " for frame " << _seek_frame );
+                   IMG_ERROR( _("Decode audio error: ")
+                              << decode_error( status )
+                              << (" for frame ") << _seek_frame );
                find_audio( _seek_frame );
            }
            else
@@ -2451,9 +2462,9 @@ void aviImage::do_seek()
                boost::int64_t f = _seek_frame + _audio_offset;
                status = decode_audio( f );
                if ( status > kDecodeOK )
-                   IMG_ERROR( "Decode audio error: " 
+                   IMG_ERROR( _("Decode audio error: ") 
                               << decode_error( status ) 
-                              << " for frame " << _seek_frame );
+                              << _(" for frame ") << _seek_frame );
                find_audio( _seek_frame + _audio_offset );
            }
        }
@@ -2463,9 +2474,9 @@ void aviImage::do_seek()
 	  status = decode_video( _seek_frame );
 
 	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
-	     IMG_ERROR( "Decode video error seek frame " 
-			<< _seek_frame 
-			<< " status: " << decode_error( status ) );
+              IMG_ERROR( _("Decode video error seek frame " )
+                         << _seek_frame 
+                         << _(" status: ") << decode_error( status ) );
        }
        
        if ( has_subtitle() )
