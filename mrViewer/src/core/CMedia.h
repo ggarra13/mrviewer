@@ -968,22 +968,20 @@ class CMedia
      * 
      * @return decode status for packet
      */
-    DecodeStatus decode_audio_packet( boost::int64_t& ptsframe, const boost::int64_t frame, 
+    DecodeStatus decode_audio_packet( boost::int64_t& ptsframe, 
+                                      const boost::int64_t frame, 
 				      const AVPacket& pkt );
 
     /** 
      * Given an audio packet, try to decode the audio into one or more
      * audio frames
      * 
-     * @param audio_frame last frame of audio decoded, as audio pkt can span
-     *                    several frames
      * @param frame       frame to decode packet for
      * @param pkt         Audio packet 
      * 
      * @return true if we get audio for current frame
      */
-    DecodeStatus decode_audio( boost::int64_t& audio_frame,
-			       const boost::int64_t frame, const AVPacket& pkt );
+    DecodeStatus decode_audio( const boost::int64_t frame, const AVPacket& pkt );
 
 
 
