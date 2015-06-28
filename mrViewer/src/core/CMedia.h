@@ -833,6 +833,17 @@ class CMedia
 
     virtual void clear_packets();
 
+    /** 
+     * Given a frame number, returns whether audio for that frame is already
+     * cached in store
+     * 
+     * @param frame  frame to check 
+     * 
+     * @return true or false
+     */
+    bool in_audio_store( const boost::int64_t frame );
+
+
     void debug_audio_packets(const boost::int64_t frame, 
 			     const char* routine = "",
 			     const bool detail = true);
@@ -939,15 +950,6 @@ class CMedia
     DecodeStatus handle_audio_packet_seek( boost::int64_t& frame, 
 					   const bool is_seek );
 
-    /** 
-     * Given a frame number, returns whether audio for that frame is already
-     * cached in store
-     * 
-     * @param frame  frame to check 
-     * 
-     * @return true or false
-     */
-    bool in_audio_store( const boost::int64_t frame );
 
     /** 
      * Given a frame number, returns whether audio for that frame is already
