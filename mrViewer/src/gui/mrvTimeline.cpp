@@ -313,7 +313,9 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     if ( mx < max ) max = mx;
 
     int rx = r.x() + (slider_size()-1)/2;
+    int r2 = r.b()/2;
     int ww = r.w();
+
 
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
@@ -328,9 +330,29 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             int wh = dx2-dx;
             if ( wh <= 0 ) wh = 1;
 
-            fillrect( dx, r.y()+r.b()/2, wh, r.b()/2+1 );
+            fillrect( dx, r.y()+r2, wh, r2+1 );
         }
+
     }
+
+    // j = frame;
+    // if ( pos < j ) j = pos;
+    // if ( mn > j ) j = mn;
+
+    // setcolor( fltk::DARK_BLUE );
+    // for ( ; j < max; ++j )
+    // {
+    //     if ( img->in_audio_store( j ) )
+    //     {
+    //         int dx = rx + slider_position( double(j), ww );
+    //         int dx2 = rx + slider_position( double(j+1), ww );
+    //         int wh = dx2-dx;
+    //         if ( wh <= 0 ) wh = 1;
+
+    //         fillrect( dx, r.y()+r2+5, wh, r2-7 );
+    //     }
+
+    // }
 
 }
 
