@@ -2273,17 +2273,7 @@ void CMedia::loop_at_end( const boost::int64_t frame )
 
   if ( number_of_audio_streams() > 0 )
     {
-        boost::int64_t f = frame + _audio_offset;
-        if ( _audio_offset > 0 )
-        {
-            bool got_video = true;
-            bool got_audio = false;
-            bool got_subtitle = true;
-            queue_packets( f, false, got_video, 
-                           got_audio, got_subtitle );
-        }
-
-       _audio_packets.loop_at_end( f );
+       _audio_packets.loop_at_end( frame );
     }
 
   if ( number_of_subtitle_streams() > 0 )
