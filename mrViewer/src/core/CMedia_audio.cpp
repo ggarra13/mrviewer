@@ -369,7 +369,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
     }
 
 
-    boost::int64_t start = frame - 1;
+    boost::int64_t start = frame - 2;
 
     if ( playback() == kBackwards ) --start;
 
@@ -1548,7 +1548,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
     limit_audio_store( frame );
   }
 
-
   bool ok = play_audio( result );
   if ( !ok )
   {
@@ -1635,7 +1634,6 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   boost::int64_t last = _audio_last_frame;
 
- 
   while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
       AVPacket& pkt = _audio_packets.front();
