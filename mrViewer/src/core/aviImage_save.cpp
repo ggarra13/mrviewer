@@ -880,7 +880,6 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 {
     boost::int64_t x = f + audio_offset() - 1;
 
-
     if ( x < first_frame() )
     {
         unsigned size = audio_bytes_per_frame();
@@ -896,7 +895,8 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
-            LOG_INFO( "For frame " << x << " got audio " << (*i)->frame() );
+            LOG_INFO( "For frame " << f << " w/off "
+                      << x << " got audio " << (*i)->frame() );
             return *i;
         }
     }
