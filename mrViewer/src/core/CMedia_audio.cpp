@@ -243,10 +243,8 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 
     boost::int64_t dts = frame;
 
-    boost::int64_t apts = 0;
-
     assert( get_audio_stream() != NULL );
-    apts = frame2pts( get_audio_stream(), frame );
+    boost::int64_t apts = frame2pts( get_audio_stream(), frame );
     if ( apts < 0 ) return frame;
 
     AVPacket pkt = {0};
