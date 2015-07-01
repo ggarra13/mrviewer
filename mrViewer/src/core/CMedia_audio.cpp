@@ -413,7 +413,6 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
 
 
-    _dts = dts;
     _expected_audio = frame+1;
 
 
@@ -763,24 +762,25 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
   boost::int64_t first, last;
 
   switch( playback() )
-    {
-    case kBackwards:
-      first = frame - max_audio_frames();
-      last  = frame;
-      if ( _dts < first ) first = _dts;
-      break;
-    case kForwards:
-        first = frame;  
-        last  = frame + max_audio_frames();
-        if ( _dts > last )   last = _dts;
-      break;
-    default:
-      first = frame - max_audio_frames();
-      last  = frame + max_audio_frames();
-      if ( _dts > last )   last = _dts;
-      break;
-    }
-  
+  {
+      case kBackwards:
+          first = frame - max_audio_frames();
+          last  = frame;
+          if ( _dts < first ) first = _dts;
+          break;
+      case kForwards:
+          first = frame - max_audio_frames();
+          last  = frame + max_audio_frames();
+          if ( _dts < first ) first = _dts;
+          if ( _dts > last )   last = _dts;
+          break;
+      default:
+          first = frame - max_audio_frames();
+          last  = frame + max_audio_frames();
+          if ( _dts > last )   last = _dts;
+          break;
+  }
+
   if ( first > last ) 
   {
      boost::int64_t tmp = last;
@@ -1216,7 +1216,7 @@ unsigned int CMedia::max_audio_frames()
    if ( _audio_cache_size > 0 )
       return _audio_cache_size;
    else
-      return unsigned( fps() );
+       return unsigned( fps()*2 );
 }
 
 

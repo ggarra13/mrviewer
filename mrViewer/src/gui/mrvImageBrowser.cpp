@@ -2016,13 +2016,15 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	     }
              if ( fg )
              {
+                 CMedia* img = fg->image();
+
                  if ( load.audio != "" )
                  {
-                     fg->image()->audio_file( load.audio.c_str() );
+                     img->audio_file( load.audio.c_str() );
+                     img->audio_offset( load.audio_offset );
                      view()->refresh_audio_tracks();
                  }
 
-                 CMedia* img = fg->image();
                  GLShapeList& shapes = img->shapes();
                  shapes = load.shapes;
 
