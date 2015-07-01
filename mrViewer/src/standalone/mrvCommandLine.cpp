@@ -29,16 +29,18 @@
 #include <algorithm>
 #include <boost/filesystem.hpp>
 
-#include "tclap/CmdLine.h"
-#include "mrvI8N.h"
-#include "mrvCommandLine.h"
-#include "mrvPreferences.h"
-#include "mrvString.h"
+#include <tclap/CmdLine.h>
+
+#include "core/mrvI8N.h"
+#include "core/mrvString.h"
+#include "core/mrvServer.h"
+#include "gui/mrvIO.h"
+#include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvVersion.h"
 #include "mrViewer.h"
-#include "mrvVersion.h"
-#include "mrvServer.h"
+#include "standalone/mrvCommandLine.h"
 
 #ifdef _WIN32
 #include <windows.h>
@@ -46,7 +48,14 @@
 
 namespace fs = boost::filesystem;
 
+namespace {
+const char* kModule = "parser";
+}
+
 namespace mrv {
+
+typedef std::vector<unsigned> UnsignedArray;
+typedef std::vector<int> IntArray;
 
   class CmdLineOutput : public TCLAP::StdOutput
   {
@@ -363,6 +372,10 @@ void parse_command_line( const int argc, char** argv,
     aaudio( N_("a"), N_("audio"), 
             _("Set each movie/sequence default audio."), false, "audio files");
 
+    MultiArg< unsigned > 
+    aoffset( N_("o"), N_("audio_offset"), 
+             _("Set added audio offset."), false, "offset");
+
 #ifdef USE_STEREO
     MultiArg< std::string > 
     astereo( N_("s"), N_("stereo"), 
@@ -377,6 +390,7 @@ void parse_command_line( const int argc, char** argv,
     cmd.add(aedl);
     cmd.add(afps);
     cmd.add(aaudio);
+    cmd.add(aoffset);
 #ifdef USE_STEREO
     cmd.add(astereo);
 #endif
@@ -424,11 +438,17 @@ void parse_command_line( const int argc, char** argv,
 #endif
 
     const stringArray& audios = aaudio.getValue();
+    const UnsignedArray& aoffsets = aoffset.getValue();
+
+    if ( audios.size() < aoffsets.size() )
+        LOG_ERROR( "Too many audio offsets for fewer audios" );
 
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
     stringArray::const_iterator ae = audios.end();
+    UnsignedArray::const_iterator oi = aoffsets.begin();
+    UnsignedArray::const_iterator oe = aoffsets.end();
     for ( ; i != e; ++i )
       {
 	const std::string& arg = *i;
@@ -480,9 +500,15 @@ void parse_command_line( const int argc, char** argv,
                   // Add audio file to last stereo fileroot
                   if ( ai != ae )
                   {
+                      unsigned offset = 0;
+                      if ( oi != oe ) {
+                          offset = *oi;
+                          ++oi;
+                      }
+
                       opts.stereo.push_back( mrv::LoadInfo( fileroot, start, 
                                                             end, start, end,
-                                                            *ai ) );
+                                                            *ai, "", offset ) );
                      ++ai;
                   }
                   else
@@ -496,10 +522,16 @@ void parse_command_line( const int argc, char** argv,
                   // Add audio file to last fileroot
                   if ( ai != ae )
                   {
+                      unsigned offset = 0;
+                      if ( oi != oe ) {
+                          offset = *oi;
+                          ++oi;
+                      }
+
                       opts.files.push_back( mrv::LoadInfo( fileroot, start, 
                                                            end, AV_NOPTS_VALUE,
                                                            AV_NOPTS_VALUE, 
-                                                           *ai ) );
+                                                           *ai, "", offset ) );
                      ++ai;
                   }
                   else

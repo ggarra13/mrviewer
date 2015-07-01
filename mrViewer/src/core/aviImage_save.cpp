@@ -895,8 +895,8 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
-            LOG_INFO( "For frame " << f << " w/off "
-                      << x << " got audio " << (*i)->frame() );
+            // LOG_INFO( "For frame " << f << " w/off "
+            //           << x << " got audio " << (*i)->frame() );
             return *i;
         }
     }
@@ -940,7 +940,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
    int err = avformat_alloc_output_context2(&oc, NULL, NULL, filename);
    if (!oc || err < 0) {
-      LOG_INFO( _("Could not deduce output format from file extension: using MPEG.") );
+       LOG_WARNING( _("Could not deduce output format from file extension: using MPEG.") );
 
       err = avformat_alloc_output_context2(&oc, NULL, "mpeg", filename);
       if ( err < 0 )

@@ -95,13 +95,15 @@ struct SequenceSort
       boost::int64_t end;
       bool    reel;
       GLShapeList shapes;
+      boost::int64_t audio_offset;
 
       LoadInfo( const std::string& fileroot,
                 const boost::int64_t sf, const boost::int64_t ef, 
                 const boost::int64_t s = AV_NOPTS_VALUE,
                 const boost::int64_t e = AV_NOPTS_VALUE,
                 const std::string& a = "",
-                const std::string& right = "" ) :
+                const std::string& right = "",
+                const unsigned aoffset = 0) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
@@ -109,7 +111,8 @@ struct SequenceSort
       last( ef ),
       start( s ),
       end( e ),
-      reel( false )
+      reel( false ),
+      audio_offset( aoffset )
       {
       }
 
@@ -119,7 +122,8 @@ struct SequenceSort
                 const boost::int64_t s = AV_NOPTS_VALUE,
                 const boost::int64_t e = AV_NOPTS_VALUE,
                 const std::string& a = "",
-                const std::string& right = "" ) :
+                const std::string& right = "",
+                const unsigned aoffset = 0 ) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
@@ -128,7 +132,8 @@ struct SequenceSort
       start( s ),
       end( e ),
       reel( false ),
-      shapes( shl )
+      shapes( shl ),
+      audio_offset( aoffset )
       {
       }
 
@@ -136,7 +141,8 @@ struct SequenceSort
       filename( reel ),
       start( kMinFrame ),
       end( kMaxFrame ),
-      reel( true )
+      reel( true ),
+      audio_offset( 0 )
       {
       }
 
@@ -149,7 +155,8 @@ struct SequenceSort
       first( b.first ),
       last( b.last ),
       reel( b.reel ),
-      shapes( b.shapes )
+      shapes( b.shapes ),
+      audio_offset( b.audio_offset )
       {
       }
 
