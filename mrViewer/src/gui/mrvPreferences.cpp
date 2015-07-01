@@ -495,6 +495,22 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->ui8BitCaches->value( (bool) tmp );
     CMedia::eight_bit_caches( (bool) tmp );
 
+
+    caches.get( "fps", tmp, 1 );
+    uiPrefs->uiPrefsCacheFPS->value( (bool) tmp );
+    if ( !tmp )
+    {
+        caches.get( "size", tmp, 60 );
+        uiPrefs->uiPrefsCacheSize->value( tmp );
+        CMedia::video_cache_size( tmp );
+        CMedia::audio_cache_size( tmp );
+    }
+    else
+    {
+        CMedia::video_cache_size( 0 );
+        CMedia::audio_cache_size( 0 );
+    }
+
     //
     // audio
     //
@@ -848,6 +864,16 @@ fltk::StyleSet*     newscheme = NULL;
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
 
+    if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
+    {
+        CMedia::audio_cache_size( uiPrefs->uiPrefsCacheSize->value() );
+        CMedia::video_cache_size( uiPrefs->uiPrefsCacheSize->value() );
+    }
+    else
+    {
+        CMedia::audio_cache_size( 0 );
+        CMedia::video_cache_size( 0 );
+    }
 
     bool old = CMedia::eight_bit_caches();
     CMedia::eight_bit_caches( (bool) uiPrefs->ui8BitCaches->value() );
@@ -1082,6 +1108,8 @@ fltk::StyleSet*     newscheme = NULL;
     caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
     caches.set( "scale", (int) uiPrefs->uiPrefsCacheScale->value() );
     caches.set( "8bit_caches", (int) uiPrefs->ui8BitCaches->value() );
+    caches.set( "fps", (int) uiPrefs->uiPrefsCacheFPS->value() );
+    caches.set( "size", (int) uiPrefs->uiPrefsCacheSize->value() );
 
 
     fltk::Preferences loading( base, "loading" );
