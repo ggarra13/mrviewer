@@ -1,5 +1,14 @@
+v2.8.7   - Made cache a trailing cache when playing forwards, to
+	   easily allow for scrubbing.
+
 v2.8.6   - Bug fix of audio caches being unlimited.
 	 - Bug fix of reverse playback with audio disappearing.
+	 - Further refinement of caches when scrubbing for smoother
+	   playback.
+	 - Audio offset works with positive values (ie. audio shifted
+	   before video ).  Movies and sequences of frames can be
+	   saved with added audio shifted.
+	 - Added command-line flag (o) to shift audio.
 
 v2.8.5   - Quick bug fix release to remove the bug of playback going
 	   too fast due to not syncing with audio on some movie files.

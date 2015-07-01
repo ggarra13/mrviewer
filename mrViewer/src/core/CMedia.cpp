@@ -108,14 +108,14 @@ std::string CMedia::icc_profile_16bits;
 std::string CMedia::icc_profile_32bits;
 std::string CMedia::icc_profile_float;
 
-unsigned CMedia::_audio_cache_size;
-unsigned CMedia::_video_cache_size;
+unsigned CMedia::_audio_cache_size = 0;
+unsigned CMedia::_video_cache_size = 0;
 
 bool CMedia::_cache_active = true;
 bool CMedia::_8bit_cache = false;
 int  CMedia::_cache_scale = 0;
 
-mrv::CMedia::Barrier* CMedia::_bg_barrier = NULL;
+CMedia::Barrier* CMedia::_bg_barrier = NULL;
 
 static const char* const kDecodeStatus[] = {
 _("Decode Missing Frame"),
@@ -1725,7 +1725,9 @@ bool CMedia::frame( const boost::int64_t f )
   _video_packets.push_back( pkt );
 
   if ( has_audio() )
+  {
       fetch_audio( _dts + _audio_offset );
+  }
 
   _dts = f;
   _expected = _dts + 1;
