@@ -143,7 +143,8 @@ struct NotInRangeFunctor
 
   bool operator()( const image_type_ptr& b ) const
   {
-     return ( b->frame() + b->repeat() < _start || b->frame() - b->repeat() > _end );
+     return ( b->frame() + b->repeat() < _start || 
+              b->frame() - b->repeat() > _end );
   }
 };
 

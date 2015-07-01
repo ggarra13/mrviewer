@@ -833,22 +833,25 @@ void aviImage::limit_video_store(const boost::int64_t frame)
   boost::int64_t first, last;
 
   switch( playback() )
-    {
-    case kBackwards:
-      first = frame - max_video_frames();
-      last  = frame;
-      if ( _dts < first ) first = _dts;
-      break;
-    case kForwards:
-      first = frame;
-      last  = frame + max_video_frames();
-      if ( _dts > last )   last = _dts;
-      break;
-    default:
-      first = frame - max_video_frames();
-      last  = frame + max_video_frames();
-      break;
-    }
+  {
+      case kBackwards:
+          first = frame - max_video_frames();
+          last  = frame;
+          if ( _dts < first ) first = _dts;
+          break;
+      case kForwards:
+          first = frame - max_video_frames();
+          last  = frame + max_video_frames();
+          if ( _dts > last )   last = _dts;
+          if ( _dts < first ) first = _dts;
+          break;
+      default:
+          first = frame - max_video_frames();
+          last  = frame + max_video_frames();
+          if ( _dts > last )   last = _dts;
+          if ( _dts < first ) first = _dts;
+          break;
+  }
 
   if ( _images.empty() ) return;
 
@@ -857,7 +860,7 @@ void aviImage::limit_video_store(const boost::int64_t frame)
 
   video_cache_t::iterator end = _images.end();
   _images.erase( std::remove_if( _images.begin(), end,
-				 NotInRangeFunctor( first, last ) ), end );
+        			 NotInRangeFunctor( first, last ) ), end );
 
 
 }
@@ -2084,16 +2087,13 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	    }
 	  else
 	    {
-                if ( skip )
+                if ( skip && pktframe < frame )
                 {
-                    _video_ctx->skip_loop_filter=AVDISCARD_NONREF;
-                    _video_ctx->skip_idct= AVDISCARD_NONREF;
+                    decode_image( pktframe, (AVPacket&)pkt );
                 }
-                decode_video_packet( pktframe, frame, pkt );
-                if ( skip )
+                else
                 {
-                    _video_ctx->skip_loop_filter=AVDISCARD_DEFAULT;        
-                    _video_ctx->skip_idct=AVDISCARD_DEFAULT;
+                    decode_video_packet( pktframe, frame, pkt );
                 }
 	    }
 	}
