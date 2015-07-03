@@ -288,7 +288,7 @@ namespace mrv
       _channels( channels ),
       _freq( freq ),
       _size( size ),
-      _data( new boost::uint8_t[size] )
+      _data( (boost::uint8_t*)new mrv::aligned16_uint8_t[size] )
     {
       memcpy( _data, data, size );
     }
