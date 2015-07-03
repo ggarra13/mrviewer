@@ -1727,6 +1727,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	}
       else if ( _audio_packets.is_loop_start() )
 	{
+          // This is all needed, as loop end can be called
+          // early due to few timestamps in audio track
 	  bool ok = in_audio_store( frame );
 
 	  if ( ok && frame >= first  )

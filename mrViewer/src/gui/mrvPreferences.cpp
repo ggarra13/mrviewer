@@ -501,12 +501,14 @@ fltk::StyleSet*     newscheme = NULL;
     if ( !tmp )
     {
         caches.get( "size", tmp, 60 );
+        uiPrefs->uiPrefsCacheSize->activate(false);
         uiPrefs->uiPrefsCacheSize->value( tmp );
         CMedia::video_cache_size( tmp );
         CMedia::audio_cache_size( tmp );
     }
     else
     {
+        uiPrefs->uiPrefsCacheSize->activate(true);
         CMedia::video_cache_size( 0 );
         CMedia::audio_cache_size( 0 );
     }
@@ -866,11 +868,13 @@ fltk::StyleSet*     newscheme = NULL;
 
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
+        uiPrefs->uiPrefsCacheSize->activate(true);
         CMedia::audio_cache_size( uiPrefs->uiPrefsCacheSize->value() );
         CMedia::video_cache_size( uiPrefs->uiPrefsCacheSize->value() );
     }
     else
     {
+        uiPrefs->uiPrefsCacheSize->activate(false);
         CMedia::audio_cache_size( 0 );
         CMedia::video_cache_size( 0 );
     }
