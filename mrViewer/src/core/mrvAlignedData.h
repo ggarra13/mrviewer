@@ -48,18 +48,30 @@ namespace mrv {
     boost::uint8_t x;
 
     inline void* operator new(size_t size)
-    {      
+    {
+#ifdef LINUX
+        void* tmp = NULL;
+        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
+        return tmp;
+#else
       return memalign( 16, size*sizeof(aligned16_uint8_t) );
+#endif
     }
 
     inline void operator delete( void* ptr )
     {
-      memalign_free( ptr );
+        memalign_free( ptr );
     }
 
     inline void* operator new[](size_t size)
-    {      
+    {
+#ifdef LINUX
+        void* tmp = NULL;
+        int err = posix_memalign( &tmp, 16, size*sizeof(aligned16_uint8_t) );
+        return tmp;
+#else
       return memalign( 16, size*sizeof(aligned16_uint8_t) );
+#endif
     }
 
     inline void operator delete[]( void* ptr )
