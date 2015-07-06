@@ -274,7 +274,7 @@ namespace mrv
     short        _channels;  //!< number of channels
     unsigned int     _freq;  //!< audio frequency
     unsigned int     _size;  //!< size of data (in bytes)
-    boost::uint8_t*  _data;  //!< audio data of size _size
+    mrv::aligned16_uint8_t*  _data;  //!< audio data of size _size
 
   public:
     typedef AudioFrame       self;
@@ -288,7 +288,7 @@ namespace mrv
       _channels( channels ),
       _freq( freq ),
       _size( size ),
-      _data( (boost::uint8_t*)new mrv::aligned16_uint8_t[size] )
+      _data( new mrv::aligned16_uint8_t[size] )
     {
       memcpy( _data, data, size );
     }
@@ -304,7 +304,9 @@ namespace mrv
     inline unsigned int frequency() const { return _freq; }
     inline short         channels() const { return _channels; }
     inline unsigned int      size() const { return _size; }
-    inline const boost::uint8_t*  data() const { return _data; }
+      inline const boost::uint8_t*  data() const { 
+          return (boost::uint8_t*) _data; 
+      }
 
     inline bool operator==( const self& b ) const
     {

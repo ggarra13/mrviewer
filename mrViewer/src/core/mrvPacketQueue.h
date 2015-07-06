@@ -337,6 +337,7 @@ namespace mrv {
 
     void loop_at_start(const int64_t frame)
     {
+      Mutex::scoped_lock lk( _mutex );
       _packets.push_back( _loop_start );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = frame;
@@ -345,6 +346,7 @@ namespace mrv {
 
     void loop_at_end(const int64_t frame)
     {
+      Mutex::scoped_lock lk( _mutex );
       _packets.push_back( _loop_end );
       AVPacket& pkt = _packets.back();
       pkt.dts = pkt.pts = frame;

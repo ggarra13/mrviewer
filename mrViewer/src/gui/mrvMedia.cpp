@@ -62,8 +62,9 @@ namespace mrv {
 
     media::~media()
     {
-       delete _image; _image = NULL;
-      // thumbnail is not deleted, as fltk will do it for us.
+        delete _image; _image = NULL;
+        //  delete _thumbnail; _thumbnail = NULL;
+        // thumbnail is not deleted, as fltk will do it for us.
     }
 
     void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
