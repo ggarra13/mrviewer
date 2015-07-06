@@ -628,11 +628,11 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {278 25 630 450} resizable visible
+        xywh {286 75 630 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
-          xywh {205 24 425 394}
+          xywh {205 24 425 399}
         } {
           {fltk::Group} {} {
             label {User Interface}
@@ -758,7 +758,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           {fltk::Group} {} {
             label {View Window}
-            xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 399 377} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -1118,7 +1118,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches
             xywh {13 22 399 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
@@ -1157,7 +1157,7 @@ This setting thus allows caching more pictures in memory.}
             {fltk::LightButton} uiPrefsCacheFPS {
               label FPS
               user_data uiPrefsCacheSize user_data_type {fltk::ValueSlider*}
-              callback {v->activate( !v->active() );} selected
+              callback {v->activate( !v->active() );}
               xywh {299 189 55 35}
             }
           }
@@ -1300,7 +1300,7 @@ The "No Baking" setting performs the color correction on the image directly inst
           }
           {fltk::Group} {} {
             label {CTL Paths}
-            xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 399 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Browser} uiPrefsCTLModulePath {
               label CTL_MODULE_PATH open
@@ -1313,7 +1313,7 @@ The "No Baking" setting performs the color correction on the image directly inst
           }
           {fltk::Group} {} {
             label {Default Output Device Transform (ODT)}
-            xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 399 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Display open
@@ -1489,7 +1489,7 @@ uiODT_ICC_profile->do_callback();}
           }
           {fltk::Group} {} {
             label {Default Rendering Transform (RT)}
-            xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 399 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
               label {Render Transforms}
@@ -1748,8 +1748,8 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             }
           }
           {fltk::Group} {} {
-            label Audio
-            xywh {13 22 401 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Audio open
+            xywh {13 22 401 367} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} AudioDriver {
               label Driver open
@@ -1776,7 +1776,7 @@ for ( ; i != e; ++i )
             {fltk::Slider} uiPrefsAudioVolume {
               label {Default Volume}
               tooltip {Default audio at opening mrViewer.}
-              xywh {123 207 27 135} type TICK_ABOVE align 1 step 0.01 value 1
+              xywh {123 207 27 107} type TICK_ABOVE align 1 step 0.01 value 1
             }
             {fltk::Button} uiPrefsAudioMute {
               label Mute
@@ -1785,8 +1785,8 @@ for ( ; i != e; ++i )
 if ( o->value() )
    v->deactivate();
 else
-   v->activate();}
-              xywh {110 342 40 25}
+   v->activate();} selected
+              xywh {110 319 40 25}
             }
           }
           {fltk::Group} {} {
@@ -1807,7 +1807,7 @@ else
           }
         }
         {fltk::Group} {} {
-          xywh {5 5 193 412}
+          xywh {5 5 195 430}
         } {
           {fltk::Browser} {} {
             label Module
@@ -1867,7 +1867,7 @@ else
           }
         }
         {fltk::Group} {} {
-          xywh {210 419 396 31}
+          xywh {210 419 402 31}
         } {
           {fltk::Button} {} {
             label Revert
@@ -2521,14 +2521,13 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
-      code {if (!uiPrefs)
-  uiPrefs = new PreferencesUI(this);} {}
+      code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
+        callback {delete v;}
         xywh {350 239 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
@@ -3445,8 +3444,8 @@ if (!uiConnection) uiConnection = new ConnectionUI( this );
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );
 
-if (!uiHotkey) uiHotkey = new HotkeyUI(this);
-if (!uiICCProfiles) uiICCProfiles = new ICCProfileListUI(this);
+uiHotkey = new HotkeyUI(this);
+uiICCProfiles = new ICCProfileListUI(this);
 uiEDLWindow = new EDLWindowUI(this);} {}
     }
     Function {ViewerUI()} {} {

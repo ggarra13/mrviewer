@@ -125,9 +125,10 @@ namespace mrv {
 		    _devices.push_back( dev );
 		  }
 
-		snd_ctl_close( p_ctl );
 	      }
 
+            if ( p_ctl )
+                snd_ctl_close( p_ctl );
 
 	    err = snd_card_next(&card);
 	    if ( err != 0 ) break;

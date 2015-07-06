@@ -2910,7 +2910,7 @@ void ImageBrowser::load( const stringArray& files,
 	     DBG( "seek f local1: " << f );
 
 
-             // if ( ! img->stopped() ) img->stop();
+             if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
              if ( i < children() )

@@ -77,7 +77,7 @@ namespace
 
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
-// #define DEBUG_DECODE
+//#define DEBUG_DECODE
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
@@ -425,7 +425,7 @@ void aviImage::open_video_codec()
 
 void aviImage::close_video_codec()
 {
-    if ( _video_ctx )
+    if ( _video_ctx && _video_index >= 0 )
         avcodec_close( _video_ctx );
 }
 
@@ -433,8 +433,10 @@ void aviImage::close_video_codec()
 // Flush video buffers
 void aviImage::flush_video()
 {
-    if ( _video_ctx )
+    if ( _video_ctx && _video_index >= 0 )
+    {
 	avcodec_flush_buffers( _video_ctx );
+    }
 }
 
 
@@ -453,6 +455,11 @@ bool aviImage::is_cache_filled( int64_t frame )
 // Seek to the requested frame
 bool aviImage::seek_to_position( const boost::int64_t frame )
 {
+
+
+#ifdef DEBUG_SEEK
+    LOG_INFO( "BEFORE SEEK:  D: " << _dts << " E: " << _expected );
+#endif
 
 
     // double frac = ( (double) (frame - _frameStart) / 
@@ -475,17 +482,18 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( playback() == kStopped &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
-         (got_subtitle || in_subtitle_store( frame ) ) )
+         (got_subtitle || in_subtitle_store( frame )) )
     {
         skip = true;
     }
 
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
-    boost::int64_t start = frame;
+    boost::int64_t start = frame - 1;
 
-    if ( !skip ) --start;
     if ( playback() == kBackwards ) --start;
+
+    if ( start < _frame_start ) start = _frame_start;
 
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
@@ -539,6 +547,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
     SCOPED_LOCK( spm );
+
 
 
     if ( !got_video ) {
@@ -645,6 +654,8 @@ void aviImage::store_image( const boost::int64_t frame,
 {
   AVStream* stream = get_video_stream();
 
+  SCOPED_LOCK( _mutex );
+
   mrv::image_type_ptr 
   image = allocate_image( frame, boost::int64_t( double(pts) * 
                                                  av_q2d( stream->time_base )
@@ -691,8 +702,6 @@ void aviImage::store_image( const boost::int64_t frame,
     _interlaced = ( _av_frame->top_field_first ? 
 		    kTopFieldFirst : kBottomFieldFirst );
 
-
-  SCOPED_LOCK( _mutex );
 
 
   if ( _images.empty() || _images.back()->frame() < frame )
@@ -744,16 +753,13 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          //            av_frame_get_best_effort_timestamp( _av_frame );
 
 
-	if ( ptsframe == MRV_NOPTS_VALUE )
-        {
-	   ptsframe = frame;
-           LOG_WARNING( _("No ptsframe in decode_video") );
-        }
-	else
-        {
-	   // ptsframe = pts2frame( stream, ptsframe );
-	   ptsframe = pts2frame( stream, pkt.dts );
-        }
+         if ( pkt.dts != AV_NOPTS_VALUE )
+             ptsframe = pts2frame( stream, pkt.dts );
+         else
+         {
+             ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+             ptsframe = pts2frame( stream, ptsframe );
+         }
 
 	return kDecodeOK;
      }
@@ -830,6 +836,8 @@ void aviImage::clear_packets()
 //
 void aviImage::limit_video_store(const boost::int64_t frame)
 {
+    SCOPED_LOCK( _mutex );
+
   boost::int64_t first, last;
 
   switch( playback() )
@@ -838,6 +846,7 @@ void aviImage::limit_video_store(const boost::int64_t frame)
           first = frame - max_video_frames();
           last  = frame;
           if ( _dts < first ) first = _dts;
+          if ( _dts > last )  last = _dts;
           break;
       case kForwards:
           first = frame - max_video_frames();
@@ -2448,9 +2457,10 @@ void aviImage::do_seek()
        DecodeStatus status;
        if ( has_audio() )
        {
+           boost::int64_t f = _seek_frame;
            if ( _acontext == NULL )
            {
-               status = decode_audio( _seek_frame );
+               status = decode_audio( f );
                if ( status > kDecodeOK )
                    IMG_ERROR( _("Decode audio error: ")
                               << decode_error( status )
@@ -2459,7 +2469,7 @@ void aviImage::do_seek()
            }
            else
            {
-               boost::int64_t f = _seek_frame + _audio_offset;
+               f += _audio_offset;
                status = decode_audio( f );
                if ( status > kDecodeOK )
                    IMG_ERROR( _("Decode audio error: ") 
