@@ -4896,18 +4896,15 @@ void ImageView::seek( const int64_t f )
 {
     _preframe = f;
 
-  // Hmmm... this is somewhat inefficient.  Would be better to just
-  // change fg/bg position
     mrv::ImageBrowser* b = browser();
     if ( b ) b->seek( f );
 
-  thumbnails();
+    thumbnails();
 
-  update_color_info();
-  mouseMove( lastX, lastY );
+    update_color_info();
+    mouseMove( lastX, lastY );
 
-  _lastFrame = f;
-
+    _lastFrame = f;
 }
 
 

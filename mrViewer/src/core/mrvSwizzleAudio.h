@@ -24,24 +24,23 @@ namespace mrv {
 template< typename T >
 struct Swizzle
 {
-     T* ptr;
-     size_t last;
-     
-     inline Swizzle(void* data, unsigned data_size ) :
-     ptr( (T*) data ),
-     last( data_size / 8*sizeof(T) )
-     {
-     }
+    T* ptr;
+    unsigned last;
 
-     inline void do_it() 
-     {
-	unsigned i;
+    inline Swizzle(void* data, unsigned data_size ) :
+    ptr( (T*) data ),
+    last( data_size )
+    {
+    }
+
+    inline void do_it() 
+    {
 	T tmp;
-	for (i = 0; i < last; i++, ptr += 6) {	
-	   tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = tmp;
-	   tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = tmp;
+	for (unsigned i = 0; i < last; i++, ptr += 6) {	
+            tmp = ptr[2]; ptr[2] = ptr[4]; ptr[4] = tmp;
+            tmp = ptr[3]; ptr[3] = ptr[5]; ptr[5] = tmp;
 	}
-     }
+    }
 };
 
 template< typename T >
