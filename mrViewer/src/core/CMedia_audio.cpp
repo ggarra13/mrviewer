@@ -217,7 +217,7 @@ void CMedia::open_audio_codec()
   {
      if ( !_audio_buf ) 
      {
-	_audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 16;
+	_audio_max = AVCODEC_MAX_AUDIO_FRAME_SIZE * 4;
 	_audio_buf = new aligned16_uint8_t[ _audio_max ];
 	assert( (((unsigned long)_audio_buf) % 16) == 0 );
 	memset( _audio_buf, 0, _audio_max );
@@ -953,7 +953,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 				  frame->nb_samples, 
 				  (const uint8_t **)frame->extended_data, 
 				  frame->nb_samples );
-	   if ( len2 < 0 )
+	   if ( len2 <= 0 )
 	   {
                IMG_ERROR( _("Resampling failed") );
 	      return 0;
@@ -1067,10 +1067,18 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
   assert( pkt_temp.size <= audio_size );
 
+  if ( _audio_buf_used + audio_size > _audio_max )
+  {
+      aligned16_uint8_t* old = _audio_buf;
+      _audio_buf = new aligned16_uint8_t[ _audio_max + audio_size ];
+      memcpy( _audio_buf, old, _audio_max );
+      delete [] old;
+      _audio_max += audio_size;
+  }
+
   while ( pkt_temp.size > 0 )
     {
        // Decode the audio into the buffer
-       assert( _audio_buf_used + pkt_temp.size <= _audio_max );
        assert( pkt_temp.data != NULL );
        // assert( _audio_buf_used % 16 == 0 );
        int ret = decode_audio3( _audio_ctx, 
@@ -1078,6 +1086,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
                                                _audio_buf_used ), 
                                 &audio_size, &pkt_temp );
        assert( audio_size > 0 );
+       assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
 
       // If no samples are returned, then break now
       if ( ret <= 0 )
@@ -1816,6 +1825,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
               {
                   decode_audio_packet( pktframe, frame, pkt );
                   _audio_packets.pop_front();
+                  flush_audio();
                   return kDecodeOK;
               }
           }
