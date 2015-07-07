@@ -2088,6 +2088,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	   {
 	       got_video = decode_image( pktframe, (AVPacket&)pkt );
 	   }
+           flush_video();
 	}
       else
 	{
@@ -2269,10 +2270,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
 	  // // Limit storage of frames to twice fps.  For example, 60 frames
 	  // // for a fps of 30.
-	  // if ( _images.size() >= max_video_frames()*2 )
-	  // {
-          //    limit_video_store(frame);
-	  // }
+	  if ( _images.size() >= max_video_frames() )
+	  {
+             limit_video_store(frame);
+	  }
 
 
 	  got_video = decode_image( pktframe, pkt );
