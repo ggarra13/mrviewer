@@ -4,6 +4,8 @@ v2.8.7   - Made cache a trailing cache when playing forwards, to
 	 - Allowed user to set cache size in Preferences.  The current
 	   range is 30 to 200 frames or FPS (twice the FPS).  Note
 	   that the requester can be overshot to store even more frames.
+	 - Fixed audio trashing memory sometimes, which could lead
+	   to a crash.
 
 v2.8.6   - Bug fix of audio caches being unlimited.
 	 - Bug fix of reverse playback with audio disappearing.
