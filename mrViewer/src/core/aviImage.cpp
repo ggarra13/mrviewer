@@ -473,6 +473,12 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _context == NULL ) return false;
 
+    if ( frame < _frame ) {
+        flush_video();
+        flush_audio();
+        flush_subtitle();
+    }
+
     bool skip = false;
     bool got_audio = !has_audio();
     bool got_video = !has_video();
