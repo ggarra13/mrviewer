@@ -1876,10 +1876,11 @@ void CMedia::do_seek()
          boost::int64_t f = x;
          DecodeStatus status = decode_audio( f );
          if ( status != kDecodeOK && status != kDecodeNoStream )
-             IMG_ERROR( "Decode audio error: " << status 
-			<< " for frame " << x );
+             IMG_ERROR( _("Decode audio error: ") 
+                        << decode_error( status ) 
+			<< _(" for frame ") << x );
          if ( status != kDecodeNoStream )
-         find_audio( x );
+             find_audio( x );
      }
   }
 
