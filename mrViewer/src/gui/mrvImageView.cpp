@@ -3222,21 +3222,12 @@ int ImageView::keyDown(unsigned int rawkey)
       double fps = 24;
       if ( img ) fps = img->play_fps();
       
-      stop();
-
-      uiMain->uiPlayForwards->value(0);
-      uiMain->uiPlayBackwards->value(0);
 
       step_frame( int64_t(-fps) );
       return 1;
    }
   else if ( kFrameStepBack.match(rawkey) ) 
   {
-     stop();
-
-     uiMain->uiPlayForwards->value(0);
-     uiMain->uiPlayBackwards->value(0);
-
      step_frame( -1 );
      return 1;
   }
@@ -3250,21 +3241,12 @@ int ImageView::keyDown(unsigned int rawkey)
      double fps = 24;
      if ( img ) fps = img->play_fps();
 
-     stop();
-
-     uiMain->uiPlayForwards->value(0);
-     uiMain->uiPlayBackwards->value(0);
 
      step_frame( int64_t(fps) );
      return 1;
   }
   else if ( kFrameStepFwd.match( rawkey ) ) 
   {
-      stop();
-
-      uiMain->uiPlayForwards->value(0);
-      uiMain->uiPlayBackwards->value(0);
-
       step_frame( 1 );
      return 1;
   }
