@@ -66,7 +66,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "2.8.7";
+  static const char* kVersion = "2.8.8";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 
