@@ -602,11 +602,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
                                         got_audio, got_subtitle );
 
 
-    //
-    // When pre-rolling, make sure new dts is not at a distance bigger
-    // than our image/audio cache.
-    //
-
     _dts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
 
