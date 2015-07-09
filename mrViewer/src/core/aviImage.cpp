@@ -495,8 +495,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     // With frame and reverse playback, we often do not get the current
     // frame.  So we search for frame - 1.
-    boost::int64_t start = frame - 1;
+    boost::int64_t start = frame;
 
+    if ( !skip ) --start;
     if ( playback() == kBackwards ) --start;
 
     if ( start < _frame_start ) start = _frame_start;
@@ -750,15 +751,17 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-         // ptsframe = _av_frame->pts =
-         //            av_frame_get_best_effort_timestamp( _av_frame );
+         ptsframe = _av_frame->pts =
+                    av_frame_get_best_effort_timestamp( _av_frame );
 
 
-         if ( pkt.dts != AV_NOPTS_VALUE )
-             ptsframe = pts2frame( stream, pkt.dts );
+	if ( ptsframe == MRV_NOPTS_VALUE )
+        {
+	   ptsframe = frame;
+           LOG_WARNING( _("No ptsframe in decode_video") );
+        }
          else
          {
-             ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
              ptsframe = pts2frame( stream, ptsframe );
          }
 
@@ -2089,7 +2092,6 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	   {
 	       got_video = decode_image( pktframe, (AVPacket&)pkt );
 	   }
-           flush_video();
 	}
       else
 	{
