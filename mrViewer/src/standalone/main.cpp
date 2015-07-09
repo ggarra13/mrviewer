@@ -42,6 +42,8 @@
 #include <fltk/run.h>
 #include <fltk/Preferences.h>
 
+#include <wand/MagickWand.h>
+
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
@@ -284,6 +286,8 @@ int main( const int argc, char** argv )
      
       }
 
+      MagickWandGenesis();
+
       // mrv::open_license( argv[0] );
       // mrv::checkout_license();
 
@@ -372,6 +376,8 @@ int main( const int argc, char** argv )
   {
       LOG_ERROR( e.what() );
   }
+
+  MagickWandTerminus();
 
   return ok;
 }

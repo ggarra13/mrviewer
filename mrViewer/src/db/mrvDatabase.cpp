@@ -116,16 +116,19 @@ namespace mrv
     const char* var = getenv("MRV_DATABASE_DRIVER");
     if ( var ) driver = var;
 
+    if ( driver.empty() )
+        return NULL;
+
     if ( strcasecmp( driver.c_str(), "None" ) == 0 )
-      return NULL;
+        return NULL;
 
     if ( strcasecmp( driver.c_str(), _("None") ) == 0 )
-      return NULL;
+        return NULL;
 
     if ( strcasecmp( driver.c_str(), "PostgreSQL" ) == 0 )
-      {
-	 return new mrv::PostgreSQL();
-      }
+    {
+        return new mrv::PostgreSQL();
+    }
 
     LOG_ERROR( _("Invalid database driver '") << driver << N_("'") );
     return NULL;

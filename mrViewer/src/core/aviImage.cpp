@@ -2579,8 +2579,8 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 // Flush subtitle buffers
 void aviImage::flush_subtitle()
 {
-  if ( _subtitle_ctx )
-    avcodec_flush_buffers( _subtitle_ctx );
+  if ( _subtitle_ctx && _subtitle_index >= 0)
+      avcodec_flush_buffers( _subtitle_ctx );
 }
 
 void aviImage::subtitle_stream( int idx )

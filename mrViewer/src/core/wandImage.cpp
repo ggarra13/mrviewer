@@ -92,7 +92,7 @@ namespace mrv {
 
   wandImage::~wandImage()
   {
-    free( _format );
+      free( _format );
   }
 
 
@@ -120,8 +120,6 @@ namespace mrv {
     DestroyMagickWand(wand);
 
 
-    MagickWandTerminus();
-
     if (status == MagickFalse )
     {
       return false;
@@ -136,13 +134,11 @@ namespace mrv {
 
   bool wandImage::initialize()
   {
-    MagickWandGenesis();
     return true;
   }
 
   bool wandImage::release()
   {
-    MagickWandTerminus();
     return true;
   }
 
@@ -151,6 +147,7 @@ namespace mrv {
   {
 
      MagickBooleanType status;
+
 
      /*
        Read an image.
@@ -505,7 +502,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     /*
       Write out an image.
     */
-    MagickWandGenesis();
     MagickWand* wand = NewMagickWand();
 
     mrv::image_type_ptr pic = hires();
