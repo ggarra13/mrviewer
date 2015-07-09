@@ -666,6 +666,7 @@ void video_thread( PlaybackData* data )
    double fps = img->play_fps();
    timer.setDesiredFrameRate( fps );
 
+
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
        img->wait_image();
