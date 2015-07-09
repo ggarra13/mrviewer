@@ -2065,13 +2065,15 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       boost::int64_t f = pts2frame( get_video_stream(), pkt.dts );
       if ( in_video_store( f ) ) skip = true;
      _video_packets.pop_front();  // pop seek begin packet
+
   }
   else if ( !is_seek && _video_packets.is_preroll() )
      _video_packets.pop_front();
   else
      IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
 
-  DecodeStatus got_video = kDecodeMissingFrame;
+
+  DecodeStatus got_video = skip ? kDecodeOK : kDecodeMissingFrame;
   unsigned count = 0;
 
 
@@ -2262,7 +2264,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	  bool ok = in_video_store( pktframe );
 	  if ( ok )
 	    {
-
                // if ( pktframe == frame )
                {
                    decode_video_packet( pktframe, frame, pkt );
@@ -2270,7 +2271,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
                }
                return kDecodeOK;
 	    }
-
+   
 	  // // Limit storage of frames to twice fps.  For example, 60 frames
 	  // // for a fps of 30.
 	  if ( _images.size() >= max_video_frames() )
