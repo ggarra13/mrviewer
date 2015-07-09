@@ -780,22 +780,22 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
 
   switch( playback() )
     {
-    case kBackwards:
-      first = frame - max_audio_frames();
-      last  = frame;
-      if ( _dts < first ) first = _dts;
-      break;
-    case kForwards:
-          first = frame - max_audio_frames();
-      last  = frame + max_audio_frames();
-          if ( _dts < first ) first = _dts;
-      if ( _dts > last )   last = _dts;
-      break;
-    default:
-      first = frame - max_audio_frames();
-      last  = frame + max_audio_frames();
-      if ( _dts > last )   last = _dts;
-      break;
+        case kBackwards:
+            first = frame - max_audio_frames();
+            last  = frame;
+            if ( _dts < first ) first = _dts;
+            break;
+        case kForwards:
+            first = frame - max_audio_frames();
+            last  = frame + max_audio_frames();
+            if ( _dts < first ) first = _dts;
+            if ( _dts > last )   last = _dts;
+            break;
+        default:
+            first = frame - max_audio_frames();
+            last  = frame + max_audio_frames();
+            if ( _dts > last )   last = _dts;
+            break;
     }
   
   if ( first > last ) 
@@ -1594,7 +1594,10 @@ bool CMedia::find_audio( const boost::int64_t frame )
 void CMedia::flush_audio()
 {
     if ( _audio_ctx && _audio_index >= 0 )
+    {
+        SCOPED_LOCK( _audio_mutex );
         avcodec_flush_buffers( _audio_ctx );
+    }
 }
 
 

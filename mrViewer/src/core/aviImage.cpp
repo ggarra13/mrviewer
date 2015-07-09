@@ -151,7 +151,8 @@ aviImage::aviImage() :
   _convert_ctx( NULL ),
   _video_images( 0 ),
   _max_images( kMaxCacheImages ),
-  _subtitle_codec( NULL )
+  _subtitle_codec( NULL ),
+  _frame_called( 0 )
 {
   _gamma = 1.0f;
   _compression = "";
@@ -435,6 +436,7 @@ void aviImage::flush_video()
 {
     if ( _video_ctx && _video_index >= 0 )
     {
+        SCOPED_LOCK( _mutex );
 	avcodec_flush_buffers( _video_ctx );
     }
 }
@@ -2007,13 +2009,14 @@ bool aviImage::fetch(const boost::int64_t frame)
 
 bool aviImage::frame( const boost::int64_t f )
 {
+    ++_frame_called;
 
    if ( ( playback() != kStopped &&
 	  (( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
            ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
            ( _video_packets.bytes() +  _audio_packets.bytes() + 
              _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
-           ) ) ) )
+           ) ) && _frame_called != 100 ) )
     {
        // std::cerr << "false return: " << std::endl;
        // std::cerr << "vp: " << _video_packets.size() << std::endl;
@@ -2022,9 +2025,11 @@ bool aviImage::frame( const boost::int64_t f )
        // ( _video_packets.bytes() +  _audio_packets.bytes() + 
        // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
        // 		 << std::endl;
-
      return false;
     }
+
+
+   _frame_called = 0;
 
   if ( f < _frameStart )    _dts = _frameStart;
   else if ( f > _frameEnd ) _dts = _frameEnd;
@@ -2068,7 +2073,12 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
   }
   else if ( !is_seek && _video_packets.is_preroll() )
-     _video_packets.pop_front();
+  {
+      AVPacket& pkt = _video_packets.front();
+      boost::int64_t f = pts2frame( get_video_stream(), pkt.dts );
+      if ( in_video_store( f ) ) skip = true;
+     _video_packets.pop_front();  // pop seek begin packet
+  }
   else
      IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
 
@@ -2080,7 +2090,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
     {
       const AVPacket& pkt = _video_packets.front();
-      count += 1;
+      ++count;
 
       boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
 
@@ -2088,11 +2098,18 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	{
 	   if (pktframe > frame )
 	   {
-	       decode_video_packet( pktframe, frame, pkt );
+	       got_video = decode_video_packet( pktframe, frame, pkt );
 	   }
 	   else
 	   {
-	       got_video = decode_image( pktframe, (AVPacket&)pkt );
+               if ( !in_video_store(pktframe) && !skip )
+               {
+                   got_video = decode_image( pktframe, (AVPacket&)pkt );
+               }
+               else
+               {
+                   got_video = decode_video_packet( pktframe, frame, pkt );
+               }
 	   }
 	}
       else
@@ -2105,11 +2122,11 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	    {
                 if ( (!in_video_store(pktframe)) && pktframe <= frame )
                 {
-                    decode_image( pktframe, (AVPacket&)pkt );
+                    got_video = decode_image( pktframe, (AVPacket&)pkt );
                 }
                 else
                 {
-                    decode_video_packet( pktframe, frame, pkt );
+                    got_video = decode_video_packet( pktframe, frame, pkt );
                 }
 	    }
 	}
@@ -2117,9 +2134,10 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       _video_packets.pop_front();
     }
 
+
   if ( _video_packets.empty() ) return kDecodeError;
 
-  if ( count != 0 && is_seek )
+  if ( count > 0 && is_seek )
   {
     const AVPacket& pkt = _video_packets.front();
     frame = pts2frame( get_video_stream(), pkt.dts );
@@ -2131,7 +2149,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   if ( count == 0 ) {
      return kDecodeError;
   }
-      
+
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "AFTER HSEEK", true);
 #endif
@@ -2180,7 +2198,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 {
 
     boost::int64_t frame = f;
-
+    
 #ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "decode_video", true);
 #endif
@@ -2201,8 +2219,8 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
     {
       if ( _video_packets.is_flush() )
 	{
-          flush_video();
-	  _video_packets.pop_front();
+            flush_video();
+            _video_packets.pop_front();
 	}
       else if ( _video_packets.is_seek() )
 	{
@@ -2213,15 +2231,16 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	   bool ok = in_video_store( frame );
 	   if ( ok ) 
 	   {
-	      video_cache_t::const_iterator iter = _images.begin();
-	      if ( (*iter)->frame() >= frame )
-	      {
-		 got_video = handle_video_packet_seek( frame, false );
-	      }
-	      return kDecodeOK;
+               SCOPED_LOCK( _mutex );
+               video_cache_t::const_iterator iter = _images.begin();
+               if ( (*iter)->frame() >= frame )
+               {
+                   got_video = handle_video_packet_seek( f, false );
+               }
+               return kDecodeOK;
 	   }
 
-	   got_video = handle_video_packet_seek( frame, false );
+	   handle_video_packet_seek( f, false );
 	   continue;
 	}
       else if ( _video_packets.is_loop_start() )
@@ -2285,6 +2304,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	}
 
     }
+
 
 
 #ifdef DEBUG_VIDEO_STORES
@@ -2578,7 +2598,10 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
 void aviImage::flush_subtitle()
 {
   if ( _subtitle_ctx && _subtitle_index >= 0)
+  {
+      SCOPED_LOCK( _subtitle_mutex );
       avcodec_flush_buffers( _subtitle_ctx );
+  }
 }
 
 void aviImage::subtitle_stream( int idx )

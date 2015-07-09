@@ -436,11 +436,12 @@ void audio_thread( PlaybackData* data )
       if ( step == 0 ) break;
 
 
+      DBG( "wait audio " << frame );
       img->wait_audio();
 
 
       boost::int64_t f = frame;
-      DBG( "decode " << frame );
+      DBG( "decode audio " << frame );
       CMedia::DecodeStatus status = img->decode_audio( f );
 
 
@@ -623,6 +624,8 @@ void subtitle_thread( PlaybackData* data )
 
   }  // subtitle_thread
 
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
 //
 // Main loop used to play video (of any image)
@@ -669,6 +672,7 @@ void video_thread( PlaybackData* data )
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
+       DBG( "wait image " << frame );
        img->wait_image();
 
        // img->debug_video_packets( frame, "PLAYBACK", true );
@@ -677,7 +681,10 @@ void video_thread( PlaybackData* data )
        int step = (int) img->playback();
        if ( step == 0 ) break;
 
+       DBG( "decode image " << frame );
        CMedia::DecodeStatus status = img->decode_video( frame );
+       DBG( "decoded image " << frame << " status " 
+            << CMedia::decode_error(status) );
 
       switch( status )
       {
@@ -788,6 +795,7 @@ void video_thread( PlaybackData* data )
               }
           }
       }
+
 
 
       timer.setDesiredFrameRate( fps );

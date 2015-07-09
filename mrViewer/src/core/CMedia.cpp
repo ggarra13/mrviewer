@@ -1700,7 +1700,7 @@ bool CMedia::frame( const boost::int64_t f )
 
 
 //  in ffmpeg, sizes are in bytes...
-#define MAX_VIDEOQ_SIZE (5 * 256 * 1024)
+#define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
 #define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
 #define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
   if ( _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
