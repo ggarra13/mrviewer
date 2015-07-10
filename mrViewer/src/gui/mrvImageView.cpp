@@ -2546,6 +2546,9 @@ void ImageView::mouseMove(int x, int y)
   {
       if ( _stereo == CMedia::kStereoCrossed ) pic = img->left();
       else pic = img->right();
+
+      if (!pic) return;
+
       xp -= w;
   }
 

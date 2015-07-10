@@ -628,7 +628,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {286 75 630 450} resizable visible
+        xywh {290 100 630 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1118,8 +1118,8 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
-            label Caches
-            xywh {13 22 399 364} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Caches open
+            xywh {13 22 399 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1133,7 +1133,8 @@ This setting thus allows caching more pictures in memory.}
               xywh {190 25 155 32}
             }
             {fltk::Choice} uiPrefsCacheScale {
-              label Scale
+              label Scale open
+              tooltip {Scale of images stored}
               xywh {100 112 205 25}
             } {
               {fltk::Item} {} {
@@ -1151,13 +1152,15 @@ This setting thus allows caching more pictures in memory.}
             }
             {fltk::ValueSlider} uiPrefsCacheSize {
               label {Cache Size}
+              tooltip {Size in frames of the video and audio cache.}
               xywh {75 192 220 30} align 1 minimum 30 maximum 200 step 1 value 60
               extra_code {o->activate(false);}
             }
             {fltk::LightButton} uiPrefsCacheFPS {
               label FPS
               user_data uiPrefsCacheSize user_data_type {fltk::ValueSlider*}
-              callback {v->activate( !v->active() );}
+              callback {v->activate( !v->active() );} selected
+              tooltip {When selected, cache is set to twice the frames per second of the movie.}
               xywh {299 189 55 35}
             }
           }
@@ -1748,8 +1751,8 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             }
           }
           {fltk::Group} {} {
-            label Audio open
-            xywh {13 22 401 367} align 5 box EMBOSSED_BOX labelsize 14
+            label Audio
+            xywh {13 22 401 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} AudioDriver {
               label Driver open
@@ -1785,7 +1788,7 @@ for ( ; i != e; ++i )
 if ( o->value() )
    v->deactivate();
 else
-   v->activate();} selected
+   v->activate();}
               xywh {110 319 40 25}
             }
           }
