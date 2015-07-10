@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -400,6 +401,8 @@ class CMedia
     void cache( const mrv::image_type_ptr& pic );
     void stereo_cache( const mrv::image_type_ptr& left, 
                        const mrv::image_type_ptr& right );
+
+    inline PacketQueue& video_packets() { return _video_packets; }
 
     inline uint64_t duration() const { return _frameEnd - _frameStart + 1; }
 
