@@ -675,6 +675,7 @@ void video_thread( PlaybackData* data )
        DBG( "wait image " << frame );
        img->wait_image();
 
+
        // img->debug_video_packets( frame, "PLAYBACK", true );
        // img->debug_video_stores( frame, "BACK" );
 
