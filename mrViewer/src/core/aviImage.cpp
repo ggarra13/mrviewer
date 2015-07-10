@@ -83,6 +83,7 @@ namespace
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
+//#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
 // #define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
@@ -474,12 +475,13 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // boost::int64_t min_ts = std::numeric_limits< boost::int64_t >::max();
 
     if ( _context == NULL ) return false;
-
-    if ( frame < _frame ) {
-        flush_video();
-        flush_audio();
-        flush_subtitle();
-    }
+    
+    // This makes avcodec_decode_video2 hang
+    // if ( frame < _frame ) {
+    //     flush_video();
+    //     flush_audio();
+    //     flush_subtitle();
+    // }
 
     bool skip = false;
     bool got_audio = !has_audio();
@@ -592,8 +594,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
-    LOG_INFO( "BEFORE SEEK:" );
-    debug_video_packets(start);
+    debug_video_packets(start, "BEFORE SEEK", true);
 #endif
 
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
@@ -625,7 +626,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #endif
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
-    debug_video_packets(frame);
+    debug_video_packets(frame, "AFTER SEEK", true);
 #endif
 
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
@@ -640,15 +641,16 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 					      const boost::int64_t& pts
 )
-{ 
-    return mrv::image_type_ptr( new image_type( frame,
-                                                width(), 
-                                                height(), 
-                                                (unsigned short) _num_channels,
-                                                _pix_fmt,
-                                                _ptype,
-                                                _av_frame->repeat_pict,
-                                                pts ) );
+{
+    image_type* buf = new image_type( frame,
+                                      width(), 
+                                      height(), 
+                                      (unsigned short) _num_channels,
+                                      _pix_fmt,
+                                      _ptype,
+                                      _av_frame->repeat_pict,
+                                      pts );
+    return mrv::image_type_ptr( buf );
 
 }
 
@@ -656,9 +658,11 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 void aviImage::store_image( const boost::int64_t frame, 
 			    const boost::int64_t pts )
 {
-  AVStream* stream = get_video_stream();
 
   SCOPED_LOCK( _mutex );
+
+  AVStream* stream = get_video_stream();
+  assert( stream != NULL );
 
   mrv::image_type_ptr 
   image = allocate_image( frame, boost::int64_t( double(pts) * 
@@ -742,7 +746,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
    AVPacket pkt = p;
 
   AVStream* stream = get_video_stream();
-
+  assert( stream != NULL );
 
   int got_pict = 0;
 
@@ -2051,7 +2055,7 @@ bool aviImage::frame( const boost::int64_t f )
 CMedia::DecodeStatus 
 aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 {
-#ifdef DEBUG_VIDEO_PACKETS
+#ifdef DEBUG_HSEEK_VIDEO_PACKETS
     debug_video_packets(frame, "BEFORE HSEEK", true);
 #endif
 
@@ -2061,6 +2065,9 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 
   Mutex& mutex = _video_packets.mutex();
   SCOPED_LOCK( mutex );
+
+  if ( _video_packets.empty() || _video_packets.is_flush() )
+      LOG_ERROR( _("Wrong packets in handle_video_packet_seek" ) );
 
   bool skip = false;
 
@@ -2077,62 +2084,65 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       AVPacket& pkt = _video_packets.front();
       boost::int64_t f = pts2frame( get_video_stream(), pkt.dts );
       if ( in_video_store( f ) ) skip = true;
-     _video_packets.pop_front();  // pop seek begin packet
+      _video_packets.pop_front();  // pop seek begin packet
   }
   else
      IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
 
 
   DecodeStatus got_video = skip ? kDecodeOK : kDecodeMissingFrame;
+  DecodeStatus status;
   unsigned count = 0;
 
 
   while ( !_video_packets.empty() && !_video_packets.is_seek_end() )
-    {
+  {
       const AVPacket& pkt = _video_packets.front();
       ++count;
 
       boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
 
       if ( !is_seek && playback() == kBackwards )
-	{
-	   if (pktframe > frame )
-	   {
-	       got_video = decode_video_packet( pktframe, frame, pkt );
-	   }
-	   else
-	   {
-               if ( !in_video_store(pktframe) && !skip )
-               {
-                   got_video = decode_image( pktframe, (AVPacket&)pkt );
-               }
-               else
-               {
-                   got_video = decode_video_packet( pktframe, frame, pkt );
-               }
-	   }
-	}
+      {
+          if (pktframe > frame )
+          {
+              decode_video_packet( pktframe, frame, pkt );
+          }
+          else
+          {
+              if ( !in_video_store(pktframe) && !skip )
+              {
+                  status = decode_image( pktframe, (AVPacket&)pkt );
+                  if ( status == kDecodeOK ) got_video = status;
+              }
+              else
+              {
+                  decode_video_packet( pktframe, frame, pkt );
+                  got_video = kDecodeOK;
+              }
+          }
+      }
       else
-	{
+      {
 	  if ( pktframe >= frame && !skip )
-	    {
-	       got_video = decode_image( pktframe, (AVPacket&)pkt );
-	    }
+          {
+              got_video = decode_image( pktframe, (AVPacket&)pkt );
+          }
 	  else
-	    {
-                if ( (!in_video_store(pktframe)) && pktframe <= frame )
-                {
-                    got_video = decode_image( pktframe, (AVPacket&)pkt );
-                }
-                else
-                {
-                    got_video = decode_video_packet( pktframe, frame, pkt );
-                }
-	    }
-	}
+          {
+              if ( (!in_video_store(pktframe)) && pktframe <= frame )
+              {
+                  got_video = decode_image( pktframe, (AVPacket&)pkt );
+              }
+              else
+              {
+                  got_video = decode_video_packet( pktframe, frame, pkt );
+              }
+          }
+      }
 
       _video_packets.pop_front();
-    }
+  }
 
 
   if ( _video_packets.empty() ) return kDecodeError;
@@ -2147,10 +2157,11 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
      _video_packets.pop_front();  // pop seek end packet
 
   if ( count == 0 ) {
-     return kDecodeError;
+      LOG_ERROR( _("Empty seek or preroll") );
+      return kDecodeError;
   }
 
-#ifdef DEBUG_VIDEO_PACKETS
+#ifdef DEBUG_HSEEK_VIDEO_PACKETS
   debug_video_packets(frame, "AFTER HSEEK", true);
 #endif
 
@@ -2169,14 +2180,10 @@ void aviImage::wait_image()
 
   for(;;)
     {
-      if ( stopped() ) break;
-
-      if ( ! _video_packets.empty() )
-	{
-	  return;
-	}
+      if ( stopped() || ! _video_packets.empty() ) break;
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
+      std::cerr << "waked condition video" << std::endl;
     }
   return;
 }
@@ -2215,12 +2222,13 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
   DecodeStatus got_video = kDecodeMissingFrame;
 
-  while ( got_video != kDecodeOK && !_video_packets.empty() )
+  while (  got_video != kDecodeOK && !_video_packets.empty()  )
     {
       if ( _video_packets.is_flush() )
 	{
             flush_video();
             _video_packets.pop_front();
+            continue;
 	}
       else if ( _video_packets.is_seek() )
 	{
@@ -2235,12 +2243,12 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
                video_cache_t::const_iterator iter = _images.begin();
                if ( (*iter)->frame() >= frame )
                {
-                   got_video = handle_video_packet_seek( f, false );
+                   got_video = handle_video_packet_seek( frame, false );
                }
                return kDecodeOK;
 	   }
 
-	   handle_video_packet_seek( f, false );
+	   got_video = handle_video_packet_seek( frame, false );
 	   continue;
 	}
       else if ( _video_packets.is_loop_start() )
@@ -2301,6 +2309,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
 	  got_video = decode_image( pktframe, pkt );
 	  _video_packets.pop_front();
+          continue;
 	}
 
     }
