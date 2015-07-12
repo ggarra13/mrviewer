@@ -642,16 +642,14 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 					      const boost::int64_t& pts
 )
 {
-    image_type* buf = new image_type( frame,
-                                      width(), 
-                                      height(), 
-                                      (unsigned short) _num_channels,
-                                      _pix_fmt,
-                                      _ptype,
-                                      _av_frame->repeat_pict,
-                                      pts );
-    return mrv::image_type_ptr( buf );
-
+    return mrv::image_type_ptr( new image_type( frame,
+                                                width(), 
+                                                height(), 
+                                                (unsigned short) _num_channels,
+                                                _pix_fmt,
+                                                _ptype,
+                                                _av_frame->repeat_pict,
+                                                pts ) );
 }
 
 
@@ -766,10 +764,10 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	   ptsframe = frame;
            LOG_WARNING( _("No ptsframe in decode_video") );
         }
-         else
-         {
-             ptsframe = pts2frame( stream, ptsframe );
-         }
+        else
+        {
+            ptsframe = pts2frame( stream, ptsframe );
+        }
 
 	return kDecodeOK;
      }
@@ -1063,7 +1061,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// 	debug_video_packets(frame);
       }
 
-    // _video_pts   = int64_t( _hires->pts() * 1000000.0 / _fps );
+    _video_pts   = int64_t( _hires->pts() * 1000000.0 / _fps );
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
     // Limit (clean) the video store as we play it
@@ -2063,8 +2061,8 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   debug_video_stores(frame, "BEFORE HSEEK");
 #endif
 
-  Mutex& mutex = _video_packets.mutex();
-  SCOPED_LOCK( mutex );
+  Mutex& vpm = _video_packets.mutex();
+  SCOPED_LOCK( vpm );
 
   if ( _video_packets.empty() || _video_packets.is_flush() )
       LOG_ERROR( _("Wrong packets in handle_video_packet_seek" ) );
@@ -2183,7 +2181,6 @@ void aviImage::wait_image()
       if ( stopped() || ! _video_packets.empty() ) break;
 
       CONDITION_WAIT( _video_packets.cond(), vpm );
-      std::cerr << "waked condition video" << std::endl;
     }
   return;
 }
