@@ -152,8 +152,7 @@ aviImage::aviImage() :
   _convert_ctx( NULL ),
   _video_images( 0 ),
   _max_images( kMaxCacheImages ),
-  _subtitle_codec( NULL ),
-  _frame_called( 0 )
+  _subtitle_codec( NULL )
 {
   _gamma = 1.0f;
   _compression = "";
@@ -2011,14 +2010,13 @@ bool aviImage::fetch(const boost::int64_t frame)
 
 bool aviImage::frame( const boost::int64_t f )
 {
-    ++_frame_called;
 
    if ( ( playback() != kStopped &&
 	  (( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
            ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
            ( _video_packets.bytes() +  _audio_packets.bytes() + 
              _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
-           ) ) && _frame_called != 100 ) )
+           ) ) ) )
     {
        // std::cerr << "false return: " << std::endl;
        // std::cerr << "vp: " << _video_packets.size() << std::endl;
@@ -2029,9 +2027,6 @@ bool aviImage::frame( const boost::int64_t f )
        // 		 << std::endl;
      return false;
     }
-
-
-   _frame_called = 0;
 
   if ( f < _frameStart )    _dts = _frameStart;
   else if ( f > _frameEnd ) _dts = _frameEnd;
