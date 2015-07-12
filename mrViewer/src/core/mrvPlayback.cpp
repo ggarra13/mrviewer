@@ -745,8 +745,6 @@ void video_thread( PlaybackData* data )
          double video_clock = img->video_clock();
 	 double audio_clock = img->audio_clock();
 
-
-
 	 diff = step * (video_clock - audio_clock);
 
 	 double absdiff = std::abs(diff);
