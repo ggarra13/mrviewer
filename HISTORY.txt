@@ -1,5 +1,7 @@
 v2.8.8   - Fixed some crashing and hanging bugs when playing
-	   backwards or scrubbing.
+	   backwards or scrubbing backwards.
+	 - Fixed loading of image magick formats on Linux.
+	 - Further refinement of reverse playback to make it faster.
 
 v2.8.7   - Made cache a trailing cache when playing forwards, to
 	   easily allow for scrubbing.
