@@ -1060,7 +1060,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	// 	debug_video_packets(frame);
       }
 
-    _video_pts   = int64_t( _hires->pts() * 1000000.0 / _fps );
+    _video_pts   = _hires->frame();
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
     // Limit (clean) the video store as we play it
