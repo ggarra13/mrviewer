@@ -1583,7 +1583,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts   = int64_t( _audio_frame * 1000000.0 / _fps );
+  _audio_pts   = _audio_frame;
   _audio_clock = (double)av_gettime_relative() / 1000000.0;
   return ok;
 }

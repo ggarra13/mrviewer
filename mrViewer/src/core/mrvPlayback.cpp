@@ -733,6 +733,8 @@ void video_thread( PlaybackData* data )
 
       double delay = 1.0 / fps;
 
+      // int64_t diff2 = 0;
+
       double diff = 0.0;
       double bgdiff = 0.0;
 
@@ -742,10 +744,13 @@ void video_thread( PlaybackData* data )
 	 // int64_t video_pts = img->video_pts();
 	 // int64_t audio_pts = img->audio_pts();
 
+         // diff2 = step * ( video_pts - audio_pts );
+
          double video_clock = img->video_clock();
 	 double audio_clock = img->audio_clock();
 
 	 diff = step * (video_clock - audio_clock);
+
 
 	 double absdiff = std::abs(diff);
 
