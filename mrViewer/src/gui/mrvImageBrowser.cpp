@@ -71,6 +71,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvImageBrowser.h"
 #include "gui/mrvElement.h"
 #include "gui/mrvEDLGroup.h"
+#include "gui/mrvHotkey.h"
 #include "mrvEDLWindowUI.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 
@@ -81,6 +82,7 @@ namespace fs = boost::filesystem;
 namespace 
 {
   const char* kModule = "db";
+
 }
 
 
@@ -88,6 +90,17 @@ using namespace std;
 
 extern void set_as_background_cb( fltk::Widget* o, mrv::ImageView* v );
 extern void toggle_background_cb( fltk::Widget* o, mrv::ImageView* v );
+
+extern void open_cb( fltk::Widget* w, mrv::ImageBrowser* b );
+extern void open_single_cb( fltk::Widget* w, mrv::ImageBrowser* b );
+extern void open_clip_xml_metadata_cb( fltk::Widget* o, 
+                                       mrv::ImageView* view );
+extern void save_cb( fltk::Widget* o, mrv::ImageView* view );
+extern void save_reel_cb( fltk::Widget* o, mrv::ImageView* view );
+extern void save_snap_cb( fltk::Widget* o, mrv::ImageView* view );
+extern void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view );
+extern void save_clip_xml_metadata_cb( fltk::Widget* o, 
+                                       mrv::ImageView* view );
 
 
 void clone_all_cb( fltk::Widget* o, mrv::ImageBrowser* b )
@@ -2544,14 +2557,36 @@ void ImageBrowser::load( const stringArray& files,
 	CMedia* img = NULL;
 	bool valid = false;
 
+        menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
+                  (fltk::Callback*)open_cb, this);
+        menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
+                  (fltk::Callback*)open_single_cb, this);
+
 	if ( sel >= 0 )
 	  {
 	    mrv::media m = reel->images[sel];
 	    img = m->image();
 
+            menu.add( _("File/Open/Clip XML Metadata"),
+                      kOpenClipXMLMetadata.hotkey(),
+                      (fltk::Callback*)open_clip_xml_metadata_cb, view() );
+	    menu.add( _("File/Save/Movie or Sequence As"), 
+                      kSaveSequence.hotkey(),
+		      (fltk::Callback*)save_sequence_cb, view() ); 
+	    menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
+		      (fltk::Callback*)save_reel_cb, view() ); 
+	    menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
+		      (fltk::Callback*)save_cb, view() ); 
+	    menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
+		      (fltk::Callback*)save_snap_cb, view() ); 
+	    menu.add( _("File/Save/Clip XML Metadata As"),
+                      kSaveClipXMLMetadata.hotkey(),
+		      (fltk::Callback*)save_clip_xml_metadata_cb, view() ); 
+
 	    valid = ( dynamic_cast< slateImage* >( img ) == NULL &&
 		      dynamic_cast< smpteImage* >( img ) == NULL &&
 		      dynamic_cast< clonedImage* >( img ) == NULL );
+
 
 	    const stubImage* stub = dynamic_cast< const stubImage* >( img );
 	    if ( stub )
