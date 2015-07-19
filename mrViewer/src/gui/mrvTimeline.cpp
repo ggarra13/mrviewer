@@ -316,6 +316,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int r2 = r.b()/2;
     int ww = r.w();
 
+    if ( max - j > 5000 ) return;
 
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
