@@ -61,8 +61,8 @@ namespace
 #define AV_SYNC_THRESHOLD 0.01
 #define AV_NOSYNC_THRESHOLD 10.0
 
-// #undef DBG
-// #define DBG(x) std::cerr << x << std::endl
+//#undef DBG
+//#define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -125,8 +125,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       const mrv::CMedia::DecodeStatus end )
 {
 
-    CMedia::Mutex& m = img->video_mutex();
-    SCOPED_LOCK( m );
+    // CMedia::Mutex& m = img->video_mutex();
+    // SCOPED_LOCK( m );
 
     mrv::ImageView* view = uiMain->uiView;
 
@@ -342,8 +342,8 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 				 mrv::Reel reel,
 				 mrv::Timeline* timeline )
 {
-   CMedia::Mutex& m = img->video_mutex();
-   SCOPED_LOCK( m );
+   // CMedia::Mutex& m = img->video_mutex();
+   // SCOPED_LOCK( m );
 
    boost::int64_t last = boost::int64_t( timeline->maximum() );
    boost::int64_t first = boost::int64_t( timeline->minimum() );
@@ -892,25 +892,25 @@ void decode_thread( PlaybackData* data )
       step = (int) img->playback();
       frame += step;
 
-
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
+
 
       if ( status != CMedia::kDecodeOK )
       {
 
           CMedia::Barrier* barrier = img->loop_barrier();
-          // LOG_INFO( img->name() << " BARRIER DECODE WAIT      gen: " 
-          //           << barrier->generation() 
-          //           << " count: " << barrier->count() 
-          //           << " threshold: " << barrier->threshold() 
-          //           << " used: " << barrier->used() );
+          DBG( img->name() << " BARRIER DECODE WAIT      gen: " 
+               << barrier->generation() 
+               << " count: " << barrier->count() 
+               << " threshold: " << barrier->threshold() 
+               << " used: " << barrier->used() );
           // Wait until all threads loop and decode is restarted
           barrier->wait();
-	  //   LOG_INFO( img->name() << " BARRIER DECODE LOCK PASS gen: " 
-	  //             << barrier->generation() 
-	  //             << " count: " << barrier->count() 
-	  //             << " threshold: " << barrier->threshold() 
-	  //             << " used: " << barrier->used() );
+	  DBG( img->name() << " BARRIER DECODE LOCK PASS gen: " 
+               << barrier->generation() 
+               << " count: " << barrier->count() 
+               << " threshold: " << barrier->threshold() 
+	               << " used: " << barrier->used() );
 
 
          // Do the looping, taking into account ui state

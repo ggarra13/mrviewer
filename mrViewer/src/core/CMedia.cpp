@@ -1714,9 +1714,6 @@ bool CMedia::frame( const boost::int64_t f )
   else if ( f > _frameEnd )  _dts = _frameEnd;
   else                       _dts = f;
 
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
-
 
   AVPacket pkt;
   av_init_packet( &pkt );
@@ -2269,6 +2266,7 @@ void CMedia::loop_at_start( const boost::int64_t frame )
 void CMedia::loop_at_end( const boost::int64_t frame )
 {
 
+
    if ( has_picture() )
    {
       _video_packets.loop_at_end( frame );
@@ -2319,8 +2317,8 @@ void CMedia::wait_image()
 CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
                                                 const bool is_seek )
 {
-  Mutex& mutex = _video_packets.mutex();
-  SCOPED_LOCK( mutex );
+  Mutex& vpm = _video_packets.mutex();
+  SCOPED_LOCK( vpm );
 
   if ( is_seek && _video_packets.is_seek() )
      _video_packets.pop_front();  // pop seek begin packet

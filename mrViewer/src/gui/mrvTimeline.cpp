@@ -312,28 +312,53 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int max = frame + size;
     if ( mx < max ) max = mx;
 
+    // If too many frames, playback suffers, so we exit here
+    if ( max - j > 5000 ) return;
+
     int rx = r.x() + (slider_size()-1)/2;
     int r2 = r.b()/2;
     int ww = r.w();
 
-    if ( max - j > 5000 ) return;
 
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
 
-    for ( ; j < max; ++j )
-    {
-        int64_t t = j - pos + 1;
-        if ( img->is_cache_filled( t ) )
-        {
-            int dx = rx + slider_position( double(j), ww );
-            int dx2 = rx + slider_position( double(j+1), ww );
-            int wh = dx2-dx;
-            if ( wh <= 0 ) wh = 1;
+    int dx;
 
-            fillrect( dx, r.y()+r2, wh, r2+1 );
+#define NO_FRAME_VALUE std::numeric_limits<int>::min()
+
+
+    while ( j < max )
+    { 
+        dx = NO_FRAME_VALUE;
+        int64_t t = j - pos + 1;
+        for ( ; j < max; ++j, ++t )
+        {
+            if ( img->is_cache_filled( t ) )
+            {
+                dx = rx + slider_position( double(j), ww );
+                break;
+            }
         }
 
+        t = j - pos + 1;
+        for ( ; j < max; ++j, ++t )
+        {
+            if ( dx != NO_FRAME_VALUE && ! img->is_cache_filled( t ) )
+            {
+                int dx2 = rx + slider_position( double(j-1), ww );
+                int wh = dx2-dx;
+                fillrect( dx, r.y()+r2, wh, r2+1 );
+                break;
+            }
+        }
+    }
+
+    if ( dx != NO_FRAME_VALUE && img->is_cache_filled( j-1)  )
+    {
+        int dx2 = rx + slider_position( double(j-1), ww );
+        int wh = dx2-dx;
+        fillrect( dx, r.y()+r2, wh, r2+1 );
     }
 
     // j = frame;
