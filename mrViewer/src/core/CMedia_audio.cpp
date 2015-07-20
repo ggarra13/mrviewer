@@ -1639,6 +1639,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   Mutex& m = _audio_packets.mutex();
   SCOPED_LOCK( m );
 
+  assert( !_audio_packets.empty() );
   assert( _audio_packets.is_seek() || _audio_packets.is_preroll() );
 
   bool skip = false;
