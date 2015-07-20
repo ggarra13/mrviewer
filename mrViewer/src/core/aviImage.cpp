@@ -475,12 +475,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     if ( _context == NULL ) return false;
     
-    // This makes avcodec_decode_video2 hang
-    // if ( frame < _frame ) {
-    //     flush_video();
-    //     flush_audio();
-    //     flush_subtitle();
-    // }
 
     bool skip = false;
     bool got_audio = !has_audio();
@@ -557,8 +551,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
     SCOPED_LOCK( spm );
-
-
 
     if ( !got_video ) {
         vpts = frame2pts( get_video_stream(), start );
@@ -1723,7 +1715,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 pkt.data = NULL;
                 pkt.size = 0;
                 pkt.stream_index = video_stream_index();
-                packets_added++;
+                ++packets_added;
 
                 boost::int64_t pktframe = pts2frame( get_video_stream(),
                                                      pkt.dts ) - _frame_offset;
@@ -1761,9 +1753,9 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 if ( counter > _frame_offset ) {
                     if ( is_seek || playback() == kBackwards )
                     {
-                        if ( !got_video    ) _video_packets.seek_end(vpts);
-                        if ( !got_audio    ) _audio_packets.seek_end(apts);
-                        if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
+                        _video_packets.seek_end(vpts);
+                        _audio_packets.seek_end(apts);
+                        _subtitle_packets.seek_end(spts);
                     }
                     break;
                 }
@@ -1807,7 +1799,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             {
                 if ( pktframe <= frame )
                 {
-                    packets_added++;
+                    ++packets_added;
                     _video_packets.push_back( pkt );
                 }
                 // should be pktframe without +1 but it works better with it.
@@ -1815,7 +1807,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             }
             else
             {
-                packets_added++;
+                ++packets_added;
                 _video_packets.push_back( pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
@@ -2059,31 +2051,25 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
 
+
   if ( _video_packets.empty() || _video_packets.is_flush() )
       LOG_ERROR( _("Wrong packets in handle_video_packet_seek" ) );
 
-  bool skip = false;
 
   if ( is_seek && _video_packets.is_seek() )
   {
-      AVPacket& pkt = _video_packets.front();
-      boost::int64_t f = pts2frame( get_video_stream(), pkt.dts );
-      if ( in_video_store( f ) ) skip = true;
      _video_packets.pop_front();  // pop seek begin packet
 
   }
   else if ( !is_seek && _video_packets.is_preroll() )
   {
-      AVPacket& pkt = _video_packets.front();
-      boost::int64_t f = pts2frame( get_video_stream(), pkt.dts );
-      if ( in_video_store( f ) ) skip = true;
       _video_packets.pop_front();  // pop seek begin packet
   }
   else
      IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
 
 
-  DecodeStatus got_video = skip ? kDecodeOK : kDecodeMissingFrame;
+  DecodeStatus got_video = kDecodeMissingFrame;
   DecodeStatus status;
   unsigned count = 0;
 
@@ -2103,7 +2089,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
           }
           else
           {
-              if ( !in_video_store(pktframe) && !skip )
+              if ( !in_video_store(pktframe) )
               {
                   status = decode_image( pktframe, (AVPacket&)pkt );
                   if ( status == kDecodeOK ) got_video = status;
@@ -2117,28 +2103,27 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       }
       else
       {
-	  if ( pktframe >= frame && !skip )
+	  if ( !in_video_store(pktframe) )
           {
-              got_video = decode_image( pktframe, (AVPacket&)pkt );
+              status = decode_image( pktframe, (AVPacket&)pkt );
           }
 	  else
           {
-              if ( (!in_video_store(pktframe)) && pktframe <= frame )
-              {
-                  got_video = decode_image( pktframe, (AVPacket&)pkt );
-              }
-              else
-              {
-                  got_video = decode_video_packet( pktframe, frame, pkt );
-              }
+              status = decode_video_packet( pktframe, frame, pkt );
           }
+
+          if ( status == kDecodeOK && pktframe >= frame )
+              got_video = status;
       }
 
       _video_packets.pop_front();
   }
 
 
-  if ( _video_packets.empty() ) return kDecodeError;
+  if ( _video_packets.empty() ) {
+      LOG_ERROR( _("Empty packets for video seek") );
+      return kDecodeError;
+  }
 
   if ( count > 0 && is_seek )
   {
@@ -2182,7 +2167,7 @@ void aviImage::wait_image()
 
 bool aviImage::in_video_store( const boost::int64_t frame )
 {
-  SCOPED_LOCK( _mutex );
+   SCOPED_LOCK( _mutex );
 
   // Check if audio is already in audio store
   // If so, no need to decode it again.  We just pop the packet and return.
