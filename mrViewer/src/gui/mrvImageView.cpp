@@ -1824,7 +1824,6 @@ void ImageView::draw()
 
   if ( (_hud & kHudAVDifference) && img->has_audio() )
     {
-       // double avdiff = img->audio_clock() - img->video_clock();
        double avdiff = img->avdiff();
        if ( !hud.str().empty() ) hud << " ";
        sprintf( buf, "% 4f", avdiff );
@@ -3818,8 +3817,7 @@ void ImageView::clear_reel_cache( size_t idx )
             if ( fg )
             {
                 CMedia* img = fg->image();
-                if ( img->is_sequence() && 
-                     img->first_frame() != img->last_frame() )
+                if ( img->first_frame() != img->last_frame() )
                 {
                     img->clear_cache();
                 }
@@ -3837,8 +3835,7 @@ void ImageView::clear_reel_cache( size_t idx )
         if ( fg )
         {
             CMedia* img = fg->image();
-            if ( img->is_sequence() && 
-                 img->first_frame() != img->last_frame() )
+            if ( img->first_frame() != img->last_frame() )
             {
                 img->clear_cache();
             }

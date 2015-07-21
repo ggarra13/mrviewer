@@ -125,8 +125,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       const mrv::CMedia::DecodeStatus end )
 {
 
-    // CMedia::Mutex& m = img->video_mutex();
-    // SCOPED_LOCK( m );
+    CMedia::Mutex& m = img->video_mutex();
+    SCOPED_LOCK( m );
 
     mrv::ImageView* view = uiMain->uiView;
 
@@ -342,8 +342,6 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 				 mrv::Reel reel,
 				 mrv::Timeline* timeline )
 {
-   // CMedia::Mutex& m = img->video_mutex();
-   // SCOPED_LOCK( m );
 
    boost::int64_t last = boost::int64_t( timeline->maximum() );
    boost::int64_t first = boost::int64_t( timeline->minimum() );
@@ -352,24 +350,30 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
 
    if ( reel->edl )
    {
-      boost::int64_t s = reel->location(img);
-      boost::int64_t e = s + img->duration() - 1;
+       CMedia::Mutex& m = img->video_mutex();
+       SCOPED_LOCK( m );
 
-      if ( e < last )  last = e;
-      if ( s > first ) first = s;
+       boost::int64_t s = reel->location(img);
+       boost::int64_t e = s + img->duration() - 1;
 
-      last = reel->global_to_local( last );
-      first = reel->global_to_local( first );
+       if ( e < last )  last = e;
+       if ( s > first ) first = s;
+
+       last = reel->global_to_local( last );
+       first = reel->global_to_local( first );
    }
    else
    {
+       CMedia::Mutex& m = img->video_mutex();
+       SCOPED_LOCK( m );
+
        last  += ( img->first_frame() - img->start_frame() );
        first += ( img->first_frame() - img->start_frame() );
 
-      if ( last > img->last_frame() )
-	 last = img->last_frame();
-      else if ( img->first_frame() > first )
-	 first = img->first_frame();
+       if ( last > img->last_frame() )
+           last = img->last_frame();
+       else if ( img->first_frame() > first )
+          first = img->first_frame();
    }
 
    if ( f > last )

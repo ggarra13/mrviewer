@@ -442,6 +442,16 @@ void aviImage::flush_video()
 }
 
 
+void aviImage::clear_cache()
+{
+    {
+        SCOPED_LOCK( _mutex );
+        _images.clear();
+    }
+
+    clear_stores();
+}
+
 /// VCR play (and cache frames if needed) sequence
 void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
 		     const bool fg )
@@ -1792,8 +1802,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
         if ( has_video() && pkt.stream_index == video_stream_index() )
         {
-            boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
-                                      - _frame_offset;
+            boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )                                      - _frame_offset; // needed
 
             if ( playback() == kBackwards )
             {
