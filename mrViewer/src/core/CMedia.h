@@ -390,7 +390,7 @@ class CMedia
     virtual bool has_changed();
 
     // Clear the sequence 8-bit cache
-    void clear_cache();
+    virtual void clear_cache();
 
     inline bool has_sequence() const { return (_sequence != NULL); }
 
