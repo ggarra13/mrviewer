@@ -1,6 +1,9 @@
 v2.8.9   - Made printout of ACES file loaded always display full path to it.
 	 - Added Open/Save menus to Image Browser (Reel List).
 	 - Improved performance of drawing green cache line.
+	 - Bug fixed a hanging bug which would happen when looping from
+	   the last frame of a video.
+	 - Made Clear Cache work on videos, too.
 
 v2.8.8   - Fixed some crashing and hanging bugs when playing
 	   backwards or scrubbing backwards.

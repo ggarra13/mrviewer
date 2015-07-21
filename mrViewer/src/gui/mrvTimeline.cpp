@@ -328,7 +328,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 #define NO_FRAME_VALUE std::numeric_limits<int>::min()
 
 
-    while ( j < max )
+    while ( j <= max )
     { 
         dx = NO_FRAME_VALUE;
         int64_t t = j - pos + 1;
@@ -342,43 +342,27 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         }
 
         t = j - pos + 1;
-        for ( ; j < max; ++j, ++t )
+        for ( ; j <= max; ++j, ++t )
         {
             if ( dx != NO_FRAME_VALUE && ! img->is_cache_filled( t ) )
             {
                 int dx2 = rx + slider_position( double(j-1), ww );
                 int wh = dx2-dx;
                 fillrect( dx, r.y()+r2, wh, r2+1 );
+                dx = NO_FRAME_VALUE;
                 break;
             }
         }
     }
 
-    if ( dx != NO_FRAME_VALUE && img->is_cache_filled( j-1)  )
+    int64_t t = j - pos;
+    if ( dx != NO_FRAME_VALUE && img->is_cache_filled( t )  )
     {
         int dx2 = rx + slider_position( double(j-1), ww );
         int wh = dx2-dx;
         fillrect( dx, r.y()+r2, wh, r2+1 );
     }
 
-    // j = frame;
-    // if ( pos < j ) j = pos;
-    // if ( mn > j ) j = mn;
-
-    // setcolor( fltk::DARK_BLUE );
-    // for ( ; j < max; ++j )
-    // {
-    //     if ( img->in_audio_store( j ) )
-    //     {
-    //         int dx = rx + slider_position( double(j), ww );
-    //         int dx2 = rx + slider_position( double(j+1), ww );
-    //         int wh = dx2-dx;
-    //         if ( wh <= 0 ) wh = 1;
-
-    //         fillrect( dx, r.y()+r2+5, wh, r2-7 );
-    //     }
-
-    // }
 
 }
 
