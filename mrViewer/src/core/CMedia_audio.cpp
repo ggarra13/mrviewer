@@ -1820,17 +1820,13 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
       else
 	{
 	  AVPacket& pkt = _audio_packets.front();
-	  bool ok = in_audio_store( frame );
 	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+	  bool ok = in_audio_store( frame );
 	  if ( ok ) 
           {
-	      if ( pktframe < frame )  // Needed
-              {
-                  decode_audio_packet( pktframe, frame, pkt );
-                  _audio_packets.pop_front();
-                  flush_audio();
-                  return kDecodeOK;
-              }
+              got_audio = decode_audio_packet( pktframe, frame, pkt );
+              _audio_packets.pop_front();
+              continue;
           }
 
 

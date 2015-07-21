@@ -1157,7 +1157,7 @@ void ImageView::fit_image()
  * 
  * @return true if view needs redrawing, false if not.
  */
-bool ImageView::should_update( mrv::media& fg )
+bool ImageView::should_update( mrv::media fg )
 {
   bool update = false;
 
@@ -3719,7 +3719,7 @@ int ImageView::handle(int event)
       if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
 	   fltk::event_key_state( fltk::RightShiftKey ) )
 	{
-            float dx = (float) (fltk::event_x() - lastX) / 10.0;
+            float dx = (float) (fltk::event_x() - lastX) / 20.0;
             if ( std::abs(dx) >= 1.0f )
 	    { 
                 scrub( dx );
