@@ -2564,66 +2564,68 @@ void ImageBrowser::load( const stringArray& files,
 
 	if ( sel >= 0 )
 	  {
-	    mrv::media m = reel->images[sel];
-	    img = m->image();
+              change_image();
 
-            menu.add( _("File/Open/Clip XML Metadata"),
+              mrv::media m = reel->images[sel];
+              img = m->image();
+
+              menu.add( _("File/Open/Clip XML Metadata"),
                       kOpenClipXMLMetadata.hotkey(),
-                      (fltk::Callback*)open_clip_xml_metadata_cb, view() );
-	    menu.add( _("File/Save/Movie or Sequence As"), 
+                        (fltk::Callback*)open_clip_xml_metadata_cb, view() );
+              menu.add( _("File/Save/Movie or Sequence As"), 
                       kSaveSequence.hotkey(),
-		      (fltk::Callback*)save_sequence_cb, view() ); 
-	    menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
-		      (fltk::Callback*)save_reel_cb, view() ); 
-	    menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
-		      (fltk::Callback*)save_cb, view() ); 
-	    menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
-		      (fltk::Callback*)save_snap_cb, view() ); 
-	    menu.add( _("File/Save/Clip XML Metadata As"),
-                      kSaveClipXMLMetadata.hotkey(),
-		      (fltk::Callback*)save_clip_xml_metadata_cb, view() ); 
+                        (fltk::Callback*)save_sequence_cb, view() ); 
+              menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
+                        (fltk::Callback*)save_reel_cb, view() ); 
+              menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
+                        (fltk::Callback*)save_cb, view() ); 
+              menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
+                        (fltk::Callback*)save_snap_cb, view() ); 
+              menu.add( _("File/Save/Clip XML Metadata As"),
+                        kSaveClipXMLMetadata.hotkey(),
+                        (fltk::Callback*)save_clip_xml_metadata_cb, view() ); 
 
-	    valid = ( dynamic_cast< slateImage* >( img ) == NULL &&
-		      dynamic_cast< smpteImage* >( img ) == NULL &&
-		      dynamic_cast< clonedImage* >( img ) == NULL );
+              valid = ( dynamic_cast< slateImage* >( img ) == NULL &&
+                        dynamic_cast< smpteImage* >( img ) == NULL &&
+                        dynamic_cast< clonedImage* >( img ) == NULL );
 
 
-	    const stubImage* stub = dynamic_cast< const stubImage* >( img );
-	    if ( stub )
+              const stubImage* stub = dynamic_cast< const stubImage* >( img );
+              if ( stub )
 	      {
-		menu.add( _("Image/Clone"), 0, 
-			 (fltk::Callback*)clone_image_cb, this);
-		menu.add( _("Image/Clone All Channels"), 0, 
-		     (fltk::Callback*)clone_all_cb, 
-		     this, fltk::MENU_DIVIDER);
+                  menu.add( _("Image/Clone"), 0, 
+                            (fltk::Callback*)clone_image_cb, this);
+                  menu.add( _("Image/Clone All Channels"), 0, 
+                            (fltk::Callback*)clone_all_cb, 
+                            this, fltk::MENU_DIVIDER);
 	      }
-	    else
+              else
 	      {
-		if ( valid )
+                  if ( valid )
 		  {
-		    menu.add( _("Image/Clone"), 0, 
-			      (fltk::Callback*)clone_image_cb, this, 
-			      fltk::MENU_DIVIDER);
+                      menu.add( _("Image/Clone"), 0, 
+                                (fltk::Callback*)clone_image_cb, this, 
+                                fltk::MENU_DIVIDER);
 		  }
 	      }
 
-	    if ( valid )
+              if ( valid )
 	      {
-		menu.add( _("Image/Attach ICC Color Profile"), 0, 
-			  (fltk::Callback*)attach_color_profile_cb, this, 
-			  fltk::MENU_DIVIDER);
-		menu.add( _("Image/Attach CTL Script"), 0, 
-			  (fltk::Callback*)attach_ctl_script_cb, this, 
-			  fltk::MENU_DIVIDER);
+                  menu.add( _("Image/Attach ICC Color Profile"), 0, 
+                            (fltk::Callback*)attach_color_profile_cb, this, 
+                            fltk::MENU_DIVIDER);
+                  menu.add( _("Image/Attach CTL Script"), 0, 
+                            (fltk::Callback*)attach_ctl_script_cb, this, 
+                            fltk::MENU_DIVIDER);
 	      }
 
-	    menu.add( _("Image/Set as Background"), 0, 
-		     (fltk::Callback*)set_as_background_cb, 
-		     (void*) view() );
+              menu.add( _("Image/Set as Background"), 0, 
+                        (fltk::Callback*)set_as_background_cb, 
+                        (void*) view() );
 
-	    if ( valid )
+              if ( valid )
 	      {
-		valid = ( dynamic_cast< stubImage*  >( img ) == NULL );
+                  valid = ( dynamic_cast< stubImage*  >( img ) == NULL );
 	      }
 	  }
 
@@ -2651,7 +2653,7 @@ void ImageBrowser::load( const stringArray& files,
 		  (fltk::Callback*)checkered_cb, this);
 
 	if (valid)
-	   menu.add( _("Create/Slate"), 0, (fltk::Callback*)slate_cb, this);
+            menu.add( _("Create/Slate"), 0, (fltk::Callback*)slate_cb, this);
 
 	menu.popup( fltk::Rectangle( x, y, 80, 1) );
 	return 1;
@@ -2661,12 +2663,12 @@ void ImageBrowser::load( const stringArray& files,
   }
 
 
-  /** 
-   * Handle a Drag and Drop operation on this widget (or image view)
-   * 
-   */
-  void ImageBrowser::handle_dnd()
-  {
+/** 
+ * Handle a Drag and Drop operation on this widget (or image view)
+ * 
+ */
+void ImageBrowser::handle_dnd()
+{
     std::string filenames = fltk::event_text();
 
     stringArray files;
