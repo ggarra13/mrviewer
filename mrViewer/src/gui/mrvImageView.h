@@ -191,7 +191,7 @@ class server;
     void fit_image();
 
     /// True if image needs updating, false if not.  fg image may change.
-    bool should_update( mrv::media& fg );
+    bool should_update( mrv::media fg );
 
     /// Change gain by changing exposure value.
     void exposure_change( float d );
