@@ -1738,6 +1738,10 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 ++packets_added;
                 _video_packets.push_back( pkt );
                 got_video = true;
+                if ( is_seek || playback() == kBackwards )
+                {
+                    _video_packets.seek_end(vpts);
+                }
             }
 
             AVStream* stream = get_audio_stream();
@@ -1749,12 +1753,14 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 pkt.stream_index = audio_stream_index();
                 _audio_packets.push_back( pkt );
                 got_audio = true;
+                if ( is_seek || playback() == kBackwards )
+                {
+                    _audio_packets.seek_end(apts);
+                }
             }
 
             if ( is_seek || playback() == kBackwards )
             {
-                _video_packets.seek_end(vpts);
-                _audio_packets.seek_end(apts);
                 _subtitle_packets.seek_end(spts);
             }
 
@@ -1769,16 +1775,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             if ( error == AVERROR_EOF )
             {
                 eof = true;
-                counter++;
-                if ( counter > _frame_offset ) {
-                    if ( is_seek || playback() == kBackwards )
-                    {
-                        _video_packets.seek_end(vpts);
-                        _audio_packets.seek_end(apts);
-                        _subtitle_packets.seek_end(spts);
-                    }
-                    break;
-                }
                 continue;
             }
             int err = _context->pb ? _context->pb->error : 0;
