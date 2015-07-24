@@ -783,13 +783,12 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	return kDecodeOK;
      }
 
-     if ( eof_found ) return kDecodeOK;
 
      if ( err < 0 ) {
          IMG_ERROR( "avcodec_decode_video2: " << get_error_text(err) );
          return kDecodeError;
      }
-     
+
      if ( err == 0 ) return kDecodeMissingFrame;
 
 
@@ -1752,7 +1751,15 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 got_audio = true;
             }
 
+            if ( is_seek || playback() == kBackwards )
+            {
+                _video_packets.seek_end(vpts);
+                _audio_packets.seek_end(apts);
+                _subtitle_packets.seek_end(spts);
+            }
+
             eof = false;
+            break;
         }
 
         int error = av_read_frame( _context, &pkt );
