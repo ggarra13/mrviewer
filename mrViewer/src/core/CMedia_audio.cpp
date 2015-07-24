@@ -846,155 +846,165 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         return AVERROR(ENOMEM);
     }
 
+    bool eof = false;
     int got_frame = 0;
-    assert( avpkt->data != NULL );
-    assert( avpkt->size != 0 );
-    int ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
+    int ret = -1;
+    if ( avpkt->data == NULL ) eof = true;
 
-    if (ret >= 0 && got_frame) {
+    while (!got_frame )
+    {
+        ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
 
-        int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
-                                                   frame->nb_samples,
-                                                   ctx->sample_fmt, 0);
-        if (*audio_size < data_size) {
-	   IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
-		      "the current frame (" 
-		      << *audio_size << " < " << data_size << ")" );
-	   return AVERROR(EINVAL);
+        if (ret >= 0 && got_frame) {
+
+            int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
+                                                       frame->nb_samples,
+                                                       ctx->sample_fmt, 0);
+            if (*audio_size < data_size) {
+                IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
+                           "the current frame (" 
+                           << *audio_size << " < " << data_size << ")" );
+                return AVERROR(EINVAL);
+            }
+
+
+            if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+                 ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
+            {
+                _audio_format = AudioEngine::kS16LSB;
+            }
+
+            AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+
+            if ( ( ctx->sample_fmt != fmt  ||
+                   unsigned(ctx->channels) > _audio_channels ) && 
+                 _audio_channels > 0 )
+            {
+                if (!forw_ctx)
+                {
+                    char buf[256];
+	      
+                    uint64_t  in_ch_layout = 
+                    get_valid_channel_layout(ctx->channel_layout, ctx->channels);
+	      
+                    if ( in_ch_layout == 0 ) 
+                        in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
+                                                                 ctx->channels);
+
+                    if ( in_ch_layout == 0 ) 
+                        in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
+                                                                 ctx->channels);
+
+                    av_get_channel_layout_string( buf, 256, ctx->channels, 
+                                                  in_ch_layout );
+
+                    IMG_INFO( _("Create audio conversion from ") << buf 
+                              << _(", channels ") << ctx->channels << N_(", ") );
+                    IMG_INFO( _("format ") 
+                              << av_get_sample_fmt_name( ctx->sample_fmt ) 
+                              << _(", sample rate ") << ctx->sample_rate << _(" to") );
+
+                    uint64_t out_ch_layout = in_ch_layout;
+                    unsigned out_channels = ctx->channels;
+
+                    if ( out_channels > _audio_channels && _audio_channels > 0 )
+                        out_channels = _audio_channels;
+                    else
+                        _audio_channels = (unsigned short) ctx->channels;
+
+
+                    av_get_channel_layout_string( buf, 256, out_channels, 
+                                                  out_ch_layout );
+
+                    AVSampleFormat  out_sample_fmt = fmt;
+                    AVSampleFormat  in_sample_fmt = ctx->sample_fmt;
+                    int in_sample_rate = ctx->sample_rate;
+                    int out_sample_rate = in_sample_rate;
+
+                    IMG_INFO( buf << _(", channels ") << out_channels 
+                              << _(", format " )
+                              << av_get_sample_fmt_name( out_sample_fmt )
+                              << _(", sample rate ")
+                              << out_sample_rate);
+	      
+
+                    forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
+                                                   out_sample_fmt,  out_sample_rate,
+                                                   in_ch_layout,  in_sample_fmt, 
+                                                   in_sample_rate,
+                                                   0, NULL);
+                    if(!forw_ctx) {
+                        LOG_ERROR( _("Failed to alloc swresample library") );
+                        return 0;
+                    }
+                    if(swr_init(forw_ctx) < 0)
+                    {
+                        char buf[256];
+                        av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
+                        LOG_ERROR( _("Failed to init swresample library with ") 
+                                   << buf << " " 
+                                   << av_get_sample_fmt_name(in_sample_fmt)
+                                   << _(" frequency: ") << in_sample_rate );
+                        return 0;
+                    }
+                }
+
+                assert( samples != NULL );
+                assert( frame->extended_data != NULL );
+                assert( frame->extended_data[0] != NULL );
+
+                int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
+                                       frame->nb_samples, 
+                                       (const uint8_t **)frame->extended_data, 
+                                       frame->nb_samples );
+                if ( len2 <= 0 )
+                {
+                    IMG_ERROR( _("Resampling failed") );
+                    return 0;
+                }
+
+
+                data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
+
+                if ( _audio_channels >= 6 )
+                {
+                    if ( fmt == AV_SAMPLE_FMT_FLT )
+                    {
+                        Swizzle<float> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_S32 )
+                    {
+                        Swizzle<int32_t> t( samples, len2 );
+                        t.do_it();
+                    }
+                    else if ( fmt == AV_SAMPLE_FMT_S16 )
+                    {
+                        Swizzle<int16_t> t( samples, len2 );
+                        t.do_it();
+                    }
+
+                }
+
+            }
+            else
+            {
+                if ( _audio_channels > 0 )
+                {
+                    memcpy(samples, frame->extended_data[0], data_size);
+                }
+            }
+
+            *audio_size = data_size;
+
+            if ( eof ) continue;
+
+        } else {
+            *audio_size = 0;
+            break;
         }
-
-
-	if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
-	     ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
-	{
-	   _audio_format = AudioEngine::kS16LSB;
-	}
-
-	AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-
-	if ( ( ctx->sample_fmt != fmt  ||
-	       unsigned(ctx->channels) > _audio_channels ) && 
-	       _audio_channels > 0 )
-	{
-	   if (!forw_ctx)
-	   {
-	      char buf[256];
-	      
-	      uint64_t  in_ch_layout = 
-              get_valid_channel_layout(ctx->channel_layout, ctx->channels);
-	      
-	      if ( in_ch_layout == 0 ) 
-		 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_STEREO,
-							  ctx->channels);
-
-	      if ( in_ch_layout == 0 ) 
-		 in_ch_layout = get_valid_channel_layout( AV_CH_LAYOUT_MONO,
-							  ctx->channels);
-
-	      av_get_channel_layout_string( buf, 256, ctx->channels, 
-					    in_ch_layout );
-
-	      IMG_INFO( _("Create audio conversion from ") << buf 
-                        << _(", channels ") << ctx->channels << N_(", ") );
-	      IMG_INFO( _("format ") 
-		       << av_get_sample_fmt_name( ctx->sample_fmt ) 
-			<< _(", sample rate ") << ctx->sample_rate << _(" to") );
-
-	      uint64_t out_ch_layout = in_ch_layout;
-	      unsigned out_channels = ctx->channels;
-
-	      if ( out_channels > _audio_channels && _audio_channels > 0 )
-                  out_channels = _audio_channels;
-	      else
-                  _audio_channels = (unsigned short) ctx->channels;
-
-
-	      av_get_channel_layout_string( buf, 256, out_channels, 
-					    out_ch_layout );
-
-	      AVSampleFormat  out_sample_fmt = fmt;
-	      AVSampleFormat  in_sample_fmt = ctx->sample_fmt;
-	      int in_sample_rate = ctx->sample_rate;
-	      int out_sample_rate = in_sample_rate;
-
-	      IMG_INFO( buf << _(", channels ") << out_channels 
-                        << _(", format " )
-			<< av_get_sample_fmt_name( out_sample_fmt )
-			<< _(", sample rate ")
-			<< out_sample_rate);
-	      
-
-	      forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
-					     out_sample_fmt,  out_sample_rate,
-					     in_ch_layout,  in_sample_fmt, 
-					     in_sample_rate,
-					     0, NULL);
-	      if(!forw_ctx) {
-                  LOG_ERROR( _("Failed to alloc swresample library") );
-		 return 0;
-	      }
-	      if(swr_init(forw_ctx) < 0)
-	      {
-		 char buf[256];
-		 av_get_channel_layout_string(buf, 256, -1, in_ch_layout);
-		 LOG_ERROR( _("Failed to init swresample library with ") 
-			    << buf << " " 
-			    << av_get_sample_fmt_name(in_sample_fmt)
-			    << _(" frequency: ") << in_sample_rate );
-		 return 0;
-	      }
-	   }
-
-	   assert( samples != NULL );
-	   assert( frame->extended_data != NULL );
-	   assert( frame->extended_data[0] != NULL );
-
-	   int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
-				  frame->nb_samples, 
-				  (const uint8_t **)frame->extended_data, 
-				  frame->nb_samples );
-	   if ( len2 <= 0 )
-	   {
-               IMG_ERROR( _("Resampling failed") );
-	      return 0;
-	   }
-
-
-	   data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
-
-	   if ( _audio_channels >= 6 )
-	   {
-	      if ( fmt == AV_SAMPLE_FMT_FLT )
-	      {
-		 Swizzle<float> t( samples, len2 );
-		 t.do_it();
-	      }
-	      else if ( fmt == AV_SAMPLE_FMT_S32 )
-	      {
-		 Swizzle<int32_t> t( samples, len2 );
-		 t.do_it();
-	      }
-	      else if ( fmt == AV_SAMPLE_FMT_S16 )
-	      {
-		 Swizzle<int16_t> t( samples, len2 );
-		 t.do_it();
-	      }
-
-	   }
-
-	}
-	else
-	{
-	   if ( _audio_channels > 0 )
-	   {
-               memcpy(samples, frame->extended_data[0], data_size);
-	   }
-	}
-
-        *audio_size = data_size;
-    } else {
-        *audio_size = 0;
     }
+
 
     av_frame_free(&frame);
 
@@ -1076,10 +1086,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       _audio_max += audio_size;
   }
 
-  while ( pkt_temp.size > 0 )
+  while ( pkt_temp.size > 0 || pkt_temp.data == NULL )
     {
        // Decode the audio into the buffer
-       assert( pkt_temp.data != NULL );
        // assert( _audio_buf_used % 16 == 0 );
        int ret = decode_audio3( _audio_ctx, 
                                 ( int16_t * )( (char*)_audio_buf + 
