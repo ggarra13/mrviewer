@@ -749,6 +749,9 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   int got_pict = 0;
 
+  bool eof_found = false;
+  bool eof = false;
+  if ( pkt.data == NULL ) eof = true;
 
   while( pkt.size > 0 || pkt.data == NULL )
   {
@@ -770,8 +773,17 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
             ptsframe = pts2frame( stream, ptsframe );
         }
 
+        if ( eof )
+        {
+            eof_found = true;
+            store_image( ptsframe, pkt.dts );
+            continue;
+        }
+
 	return kDecodeOK;
      }
+
+     if ( eof_found ) return kDecodeOK;
 
      if ( err < 0 ) {
          IMG_ERROR( "avcodec_decode_video2: " << get_error_text(err) );
@@ -1721,32 +1733,23 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
         if (eof) {
             if (!got_video && video_stream_index() >= 0) {
                 av_init_packet(&pkt);
-                pkt.dts = pkt.pts = vpts;
                 pkt.data = NULL;
                 pkt.size = 0;
                 pkt.stream_index = video_stream_index();
                 ++packets_added;
-
-                boost::int64_t pktframe = pts2frame( get_video_stream(),
-                                                     pkt.dts ) - _frame_offset;
                 _video_packets.push_back( pkt );
-                if (pktframe <= frame )
-                    got_video = true;
+                got_video = true;
             }
 
             AVStream* stream = get_audio_stream();
             if (!got_audio && audio_context() == _context && _audio_ctx &&
                 _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
                 av_init_packet(&pkt);
-                pkt.dts = pkt.pts = apts;
                 pkt.data = NULL;
                 pkt.size = 0;
                 pkt.stream_index = audio_stream_index();
-                boost::int64_t pktframe = pts2frame( get_audio_stream(),
-                                                     pkt.dts ) - _frame_offset;
                 _audio_packets.push_back( pkt );
-                if (pktframe <= frame )
-                    got_audio = true;
+                got_audio = true;
             }
 
             eof = false;
