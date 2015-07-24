@@ -457,8 +457,8 @@ void audio_thread( PlaybackData* data )
              frame += step;
              continue;
 	 case CMedia::kDecodeMissingFrame:
-             LOG_ERROR( img->name() 
-                        << _(" - decode missing audio frame ") << frame );
+             LOG_WARNING( img->name() 
+                          << _(" - decode missing audio frame ") << frame );
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
