@@ -71,7 +71,7 @@ static const char* kModule = "file";
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,qt,QT,avi,AVI,flv,FLV,divx,DIVX,wmv,WMV,vob,VOB";
+  static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,qt,QT,avi,AVI,flv,FLV,divx,DIVX,vp9,VP9,webm,WEBM,wmv,WMV,vob,VOB";
 
   static const std::string kImagePattern =
     "bmp,bit,cin,CIN,ct,dpx,DPX,exr,EXR,gif,GIF,hdr,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,mt,pic,PIC,png,PNG,psd,PSD,rgb,RGB,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
