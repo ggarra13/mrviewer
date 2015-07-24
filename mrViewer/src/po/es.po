@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-07-24 14:00-0300\n"
+"POT-Creation-Date: 2015-07-24 14:41-0300\n"
 "PO-Revision-Date: 2015-07-20 22:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -17,7 +17,7 @@ msgstr ""
 "X-Poedit-Language: Spanish\n"
 "X-Poedit-Country: Argentina\n"
 
-#: core/aviImage.cpp:1667
+#: core/aviImage.cpp:1666
 msgid ""
 "\n"
 "\n"
@@ -27,7 +27,7 @@ msgstr ""
 "\n"
 "No pude abrir el archivo avi"
 
-#: core/CMedia_audio.cpp:597 core/aviImage.cpp:1349
+#: core/CMedia_audio.cpp:597 core/aviImage.cpp:1348
 msgid ""
 "\n"
 "\n"
@@ -47,7 +47,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:583 core/aviImage.cpp:1334
+#: core/CMedia_audio.cpp:583 core/aviImage.cpp:1333
 msgid ""
 "\n"
 "\n"
@@ -158,7 +158,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:2500
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:2507
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -182,7 +182,7 @@ msgstr " cuadros"
 msgid " frequency: "
 msgstr " frecuencia: "
 
-#: core/aviImage.cpp:1048
+#: core/aviImage.cpp:1047
 msgid " instead"
 msgstr " en remplazo"
 
@@ -190,7 +190,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1578 core/aviImage.cpp:1053
+#: core/CMedia_audio.cpp:1578 core/aviImage.cpp:1052
 msgid " not found"
 msgstr " no encontrado"
 
@@ -198,7 +198,7 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrado en el carrete"
 
-#: core/aviImage.cpp:1047
+#: core/aviImage.cpp:1046
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
@@ -206,7 +206,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:2512
+#: core/aviImage.cpp:2519
 msgid " status: "
 msgstr " estatus: "
 
@@ -223,11 +223,11 @@ msgstr " a "
 msgid " to database '"
 msgstr " a la base de datos '"
 
-#: core/aviImage.cpp:829
+#: core/aviImage.cpp:828
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1070
+#: core/aviImage.cpp:1069
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -332,7 +332,7 @@ msgstr "(Campos PAL)"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1071
+#: core/aviImage.cpp:1070
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -1413,7 +1413,7 @@ msgstr ""
 "No pude crear carpeta '%s'. Usted no tiene permisos para realizar esta "
 "operación."
 
-#: core/aviImage.cpp:828
+#: core/aviImage.cpp:827
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video"
 
@@ -1800,7 +1800,7 @@ msgstr "Decodificacion sin Flujo"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1887 core/aviImage.cpp:2488 core/aviImage.cpp:2498
+#: core/CMedia_audio.cpp:1887 core/aviImage.cpp:2495 core/aviImage.cpp:2505
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -1808,7 +1808,7 @@ msgstr "Error de decodificación de audio:"
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
-#: core/aviImage.cpp:2510
+#: core/aviImage.cpp:2517
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2031,11 +2031,11 @@ msgstr "Editar Cuadro de Comienzo de Audio"
 msgid "Edit Status"
 msgstr "Editar Status"
 
-#: core/aviImage.cpp:2136
+#: core/aviImage.cpp:2143
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2150
+#: core/aviImage.cpp:2157
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -2772,7 +2772,7 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
-#: core/aviImage.cpp:1107
+#: core/aviImage.cpp:1106
 msgid "Invalid video stream "
 msgstr "Flujo de video inválido "
 
@@ -4904,7 +4904,7 @@ msgstr "Ventana Desconocida \""
 msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
-#: core/aviImage.cpp:1213
+#: core/aviImage.cpp:1212
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -5019,7 +5019,7 @@ msgstr "Flujo de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Flujos de Video"
 
-#: core/aviImage.cpp:1068
+#: core/aviImage.cpp:1067
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -5316,7 +5316,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2068
+#: core/aviImage.cpp:2075
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -5432,7 +5432,7 @@ msgstr "audio"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context falló para el audio"
 
-#: core/aviImage.cpp:944
+#: core/aviImage.cpp:943
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
@@ -5461,7 +5461,7 @@ msgstr "decode_audio - faltó decodificar algunos sampleos"
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1046 core/aviImage.cpp:1053
+#: core/aviImage.cpp:1045 core/aviImage.cpp:1052
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
