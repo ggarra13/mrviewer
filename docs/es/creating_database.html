@@ -1,0 +1,29 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Creating the Database</title><meta content="Gonzalo Garramuño" name="author"><link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css"></head>
+<body><h1 style="text-align: center;">Creating the Database</h1><p>There are two ways to create your database. &nbsp;One if using basic SQL which is specific to each database.</p><p>The
+other, more powerful way, is to use rails' migrations with the rails
+project provided with mrViewer. &nbsp;Either way, you will need to
+create an administrative user in the database which will have a
+password and have permissions to create or drop tables in the database.</p><p>This user is to be called mrviewer or you will have to adjust the file in rails/assets2d/config/database.yml.</p><p>
+Once that is done, you need to run from a window as root user:
+
+<p><div class="console"><span style="font-weight: bold;">$ apt-get install ruby1.9.1 rubygems # or whatever packet manager you use</br>
+$ gem install rails</br>
+$ gem install rake</br>
+</div>
+
+<p>
+Now, from the main rails/assets2d directory:</p><p></p>
+
+<p><div class="console"><span style="font-weight: bold;">
+<p>> rake db:schema:load</p>
+</div>
+
+That will create the database called asset2d_development.  To create the production database, use:
+
+<p><div class="console"><span style="font-weight: bold;">
+<p>> export RAILS_ENV=production  # for bash, use set for mswin console</p>
+<p>> rake db:schema:load</p>
+</div>
+
+The real database is assets2d_production and the mrViewer program will use it, but the others are offered as trials.

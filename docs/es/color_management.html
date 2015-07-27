@@ -1,0 +1,98 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+
+
+  
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+
+  
+  
+  
+  <title>Color Management</title></head>
+
+<body>
+
+
+<h2 style="text-decoration: underline;">Color Management</h2>
+<br>
+<h4>The problem</h4>
+Color is, sadly, not an exact science. &nbsp;We still lack the ability
+to measure how our eyes see. &nbsp;Therefore, every development in the
+area of imaging has resulted in a multitude of ways of doing things.
+&nbsp; So what is red on
+one monitor, won't necessarily be the same shade of red on another. The
+whole mess is further complicated by the fact that other output
+devices, like printers and such, are all different, have non-linear
+responses, and could even be achieving color in entirely different way
+from a CRT tube.
+
+ <p>The salvation lies with the
+<i>Color Management System</i>, a piece of software designed to convert
+color between representations required for various devices. Knowing
+your hardware characteristics is half-way to having a working solution.
+On the most basic level, for monitor it means knowing primaries and
+gamma. 
+
+</p>
+
+
+
+
+mrViewer supports probably the most advanced color management system in
+use today, called CTL (Color Transform Language). &nbsp;CTL was
+developed by AMPAS, the Academy of Motion Picture Arts and Sciences,
+with the help of Industrial Light and Magic (ILM).<br>
+
+<br>
+
+As the name implies, CTL is an actual&nbsp;language, similar to a
+shading language, which can be used for color transformation of images.
+&nbsp;Its feature set is similar to that of ICC, albeit it goes
+beyond
+it, to also support particular features specific to the movie
+production business. &nbsp;Being a full featured language, the
+possibilities for color correction are unlimited and since CTL scripts
+are&nbsp;just ASCII files, it becomes harder to misinterpret.<br>
+
+<br>
+
+As of January 2015, AMPAS ships ACES 1.0, which is a collection of
+CTL transforms and these are included in the mrViewer distribution.
+
+<br>
+
+
+
+Within mrViewer, two or more CTL files are processed and baked into a
+64x64x64 3D Lut which then operates on the image completely with 32-bit
+float information in real time. &nbsp; This will often give you a pretty
+accurate
+approximation of even the most complex transformations.<br>
+
+
+
+
+<br>
+
+
+
+
+In addition to CTL, mrViewer also supports ICC, which is still pretty
+common with the print industry as well as some monitor manufacturers.
+&nbsp;In the future, it is likely that ICC support will be vanished.
+<br><br>
+For understanding CTL and ACES, you should first read:<br>
+
+<li><a target="main" href="http://www.openexr.com/UsingOpenEXRandCTL.pdf">http://www.openexr.com/UsingOpenEXRandCTL.pdf</a></li>
+<li><a target="main" href="http://www.openexr.com/OpenEXRColorManagement.pdf">http://www.openexr.com/OpenEXRColorManagement.pdf</a></li>
+
+<br><br>
+<br>
+
+</body></html>
