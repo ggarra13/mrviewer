@@ -1,0 +1,63 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  <title>Connections Editor</title>
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+</head>
+
+<body>
+<h2 style="text-decoration: underline;">Connection Management</h2>
+<br>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+      <td><img style="width: 400px; height: 400px; float: left;" alt="ConnectionWindow" src="images/Connections.png"></td>
+
+      <td>
+
+      <br>
+The connections window allows you to control two or more mrViewers from a single interface, which can be useful for reviewing dailies.
+      </tr>
+  </tbody>
+</table>
+To use it, you first need to create a server at an empty port.  The default of 4333 should be fine most of the time.
+Once a server is created, the clients can connect to it at that machine name and port.  The machine name defaults to localhost which is a local connection to the local machine (two viewers running on the same machine).  If accessing two viewers from different locations you need to specify the name of the remote machine as well as the port number.
+
+You can also connect the server or the client command-line, by using:
+
+<p><div class="console">
+> mrViewer -p [port number]  #  to create a server.</div>
+</p> 
+<p><div class="console">
+> mrViewer -t [hostname] -p [port number] # to create a client.</div>
+</p>
+
+If all goes well, once created you will see in the server:
+<p>
+{conn} [server] Created server at port 4333
+</p>
+
+And the client will connect with:
+<p>
+{conn} [main] Start client at mymachine, port 4333
+</p>
+<p>
+{conn} [client] Trying 128.92.30.1:4333...
+</p>
+<p>
+{conn} [client] Connected to 128.92.30.1:4333
+</p>
+
+The client will check all images and reels from the server and mimic it as best as it can, assuming all paths are visible from both machines.
+From then on, you will see different {conn} messages every time the two instances of mrViewer acknoledge each other about a change.
+
+</body>
