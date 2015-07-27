@@ -86,7 +86,7 @@ namespace
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
 // #define DEBUG_VIDEO_STORES
-//#define DEBUG_AUDIO_PACKETS
+// #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
 //#define DEBUG_AUDIO_STORES
@@ -599,7 +599,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #endif
 
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
-    debug_audio_packets(start);
+    debug_audio_packets(start, "BEFORE SEEK", true);
 #endif
 
 
@@ -631,7 +631,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #endif
 
 #ifdef DEBUG_SEEK_AUDIO_PACKETS
-    debug_audio_packets(frame);
+    debug_audio_packets(frame, "AFTER SEEK", true);
 #endif
 
 
@@ -1968,7 +1968,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "Fetch");
+  debug_audio_packets(frame, "Fetch", true);
 #endif
 #ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "Fetch");
@@ -2003,7 +2003,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 #ifdef DEBUG_AUDIO_PACKETS
-  debug_audio_packets(frame, "FETCH DONE");
+  debug_audio_packets(frame, "FETCH DONE", true);
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
