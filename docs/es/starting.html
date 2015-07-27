@@ -1,0 +1,131 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+
+  
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+
+  
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  
+  
+  
+  <title>Starting mrViewer</title>
+</head>
+
+
+<body>
+
+
+<br>
+
+
+
+<h2><span style="font-weight: bold; text-decoration: underline;">Starting mrViewer</span></h2>
+
+
+
+
+mrViewer can be started in a variety of ways. &nbsp;<br>
+
+
+
+
+<br>
+
+<br>
+
+
+
+
+If you have no icon on your desktop, the simplest way is
+to go the place where mrViewer was installed, look for the directory
+for the appropiate platform and architecture for your machine and click
+on the:
+<div class="hotkey">mrViewer.sh </div> ( Linux )
+or <div class="hotkey">mrViewer.exe</div> ( Windows ) application icon.<br>
+
+
+
+
+<br>
+
+
+
+
+mrViewer can also be started from any command-line or shell window, as
+mrViewer may have already added its path to your standard system PATH
+variable. &nbsp;Open any shell window and then you can type in:<br>
+<br>
+
+
+
+
+<div class="console">&gt; mrViewer [-options] [&lt;images...&gt;]
+</div>
+<br>
+<br>
+On Linux, you would do:
+
+<div class="console">&gt; mrViewer.sh [-options] [&lt;images...&gt;]
+</div>
+<br>
+
+where -options are optional mrViewer command-line options
+and&nbsp;images are optionally a list of images or sequences you
+want
+to display. &nbsp;For a list of valid options, use:<br>
+<br>
+
+
+
+
+<div class="console">&gt; mrViewer -h</div>
+<br>
+<br>
+
+<br>
+On certain platforms, like Windows, mrViewer can also associate itself
+to several image and video files it knows about. In that case,
+opening a Windows Explorer window and double-clicking on a file that
+mrViewer recognizes may automatically invoke a new copy of mrViewer.
+
+<br>
+<br>
+mrViewer will start in the natural language of the OS, if there are translations available.  If you want mrViewer to open always in English, set the environment variable:
+<br>
+On Linux bash:
+<div class="console">
+export LC_ALL=C
+</div>
+Under Windows, the setting is in the System Preferences, Advanced, Environment Variables.
+
+<br>
+If mrViewer has the single instance preference set, only one mrViewer will
+get started and any other image that would go to a new viewer will get
+redirected back to the first instance. <br>
+In order for this to work, mrViewer creates a dummy lock file in your
+home directory in:
+
+
+<div class="console">$HOME/.fltk/filmaura/mrViewer.lock.prefs</div>
+on linux
+</br>
+<br>
+and</br>
+<div class="console">
+$USERPROFILE/filmaura/mrViewer.lock.prefs
+</div>
+
+If mrViewer crashes, that file might get left behind and prevent mrViewer from starting up.  Make sure you delete it manually in that case.
+
+
+</body>
+</html>

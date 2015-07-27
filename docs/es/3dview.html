@@ -1,0 +1,73 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>La Ventana del Visor 3D</title>
+
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+
+</head>
+
+
+<body>
+
+<h2 style="text-decoration: underline;">La Ventana del Visor 3D</h2>
+
+<table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
+
+  <tbody>
+
+    <tr>
+
+      <td><img style="width: 333px; height: 269px; float: left;" alt="" src="images/3DView.png" hspace="20"></td>
+
+      <td><br>
+
+Podés abrir la Ventana del Visor View haciendo cualquiera de los siguientes:<br>
+
+      <ul>
+
+        <li>Abriendo la ventana desde la barra principal, el boton
+          <div class="menu">W</div>.</li>
+
+        <li>Usando
+          <div class="menu">BMD-&gt;Ventana-&gt;Vista 3D.</div>
+
+        </li>
+
+      </ul>
+
+      </td>
+
+    </tr>
+
+  </tbody>
+</table>
+
+<br>
+
+mrViewer soporta una ventana de vista de 3D para mostrar la información de profundidad asociada al deep scanline y al deep tiled de imágenes de OpenEXR.  Esta información de profundidas es mostrada en una vista de 3D view para el fácil chequeo.
+<br>
+
+<br>
+La Vista de 3D View soporta ser trasladada usando el <div class="hotkey">BMR</div>.
+Soporta rotar alrededor del centro con el <div class="hotkey">BIR</div>.
+Y soporta hacer zoom with con la <div class="hotkey">rueda del ratón</div> o sosteniendo con el <div class="hotkey">BDR</div>.
+<br>
+<br>
+
+
+Los datos para la vista de 3D es cargada en demanda mientras la ventana está abierta.  Los datos no son almacenados por lo que no permitirá el playback de una secuencia de imágenes en tiempo real.  Para imágenes que no tienen datos de profundidad, nada se mostrará en la vista de 3D.
+<br>
+<br>
+Además de las operaciones con el ratón, la ventana soporta teclas programables.  Por defecto, <div class="hotkey">f</div> centrara la vista y reseteará todas las transformaciones.  La tecla <div class="hotkey">d</div> decrementará la densidad de los puntos (es decir, cuántos son mostrados) para una más rápida interacción.  La tecla <div class="hotkey">c</div> hará lo opuesto, subiendo la densidad de los puntos en la vista.
+La tecla <div class="hotkey">s</div> incrementará la profundidad en Z depth usando un multiplicador.  Mientras que la tecla <div class="hotkey">a</div> decrementará la profundidad en Z usando el multiplicador.
+<br>
+Si las teclas o los movimientos del ratón no funcionan es probable que la ventana haya perdido su foco.  Para arreglar esto, simplemente cliquee en la barra superior de la ventana de la vista 3d.
+<br>
+
+
+</body>
+</html>

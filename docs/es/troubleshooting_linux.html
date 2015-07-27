@@ -1,0 +1,79 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <title>Linux Troubleshooting</title>
+
+
+  <meta content="Gonzalo Garramu&ntilde;o" name="author">
+
+</head>
+<body>
+
+<h2 style="text-align: center;">Troubleshooting</h2>
+
+<h3 style="text-align: center;">Linux issues</h3>
+
+<h4>mrViewer does not start up.</h4>
+
+Whenever you try to start up image viewer, it crashes right away or it
+crashes as soon as an image is loaded.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span><br>
+
+<span style="font-family: monospace;">This can sometimes
+happen when your distro updates some kernel files that effect your
+OpenGL driver. &nbsp;Check other OpenGL programs to see if they
+exhibit similar behavior. &nbsp;If they do, recompile your linux
+graphics card driver or update it from your repository.</span>
+<h4>Some image formats load as 8-bit or 16-bit only or with
+incorrect alpha channel.</h4>
+
+Whenever I try loading an image like a tiff file, it loads only as a
+16-bit or 8-bit only file or an unpremult alpha channel even though it
+is a float file with alpha channel.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer: </span><br>
+
+<span style="font-family: monospace;">This is usually a
+problem with your ImageMagick library. mrViewer expects ImageMagick to
+have been compiled with 32-bit float channel support, but most Linux
+distributions compile it with 16-bit only. &nbsp;The mrViewer shell
+wrapper script should set your LD_LIBRARY_PATH to point to its own
+local ImageMagick library to avoid problems, but perhaps you've changed
+it or have a different setup. &nbsp;Make sure to set up your
+LD_LIBRARY_PATH to point to mrViewer's ImageMagick library or compile
+your own version of ImageMagick but with 32-bit support.</span><br>
+
+<br>
+
+<h4>Some avi or movie files do not play their audio.</h4>
+
+Sometimes, when loading some movie or avi files, the video plays, but
+there's no audio.<br>
+
+<br>
+
+<span style="font-weight: bold;">Answer:</span>
+<br>
+This often indicates the lack of an appropriate codec for playing the
+audio in the ffmpeg library. &nbsp;Open the image information window and check the audio
+track you are interested in. &nbsp;Check whether&nbsp;"Known Codec"
+says "Yes". &nbsp;If it says no, ffmpeg does not have the needed
+codec for playback. &nbsp; Check also the name of the codec and its
+fourcc id. &nbsp;Most codecs go by their name but others have become
+popular by their fourcc id (DIVX or XVID, for example).<br>
+Movie and avi files are just a format for storing a movie.
+&nbsp;However, the way the movie and audio is compressed is handled by
+what is referred as a codec (a codify - decodify routine or plugin).
+&nbsp;mrViewer ships with a library that handles almost every codec
+currently known. &nbsp;However, some of these codecs are proprietary and are patented.<br>
+In countries that accept software patents like the U.S., this requires
+the paying of license fees for distribution or for decoding them.
+</body>
+</html>
