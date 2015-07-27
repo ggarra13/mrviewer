@@ -446,6 +446,9 @@ void audio_thread( PlaybackData* data )
 
       boost::int64_t f = frame;
       DBG( "decode audio " << frame );
+
+
+
       CMedia::DecodeStatus status = img->decode_audio( f );
 
 

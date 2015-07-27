@@ -1707,7 +1707,6 @@ void Flu_File_Chooser::PreviewGroup::draw()
 
       handled->clear_visible();
 
-
     }
   
 }
@@ -2426,6 +2425,8 @@ void Flu_File_Chooser::Entry::updateIcon()
     toolTip += "\n" + detailTxt[4] +": " + filesize;
   toolTip += "\n" + detailTxt[3] + ": " + description;
   tooltip( toolTip.c_str() );
+
+  // Here's the icon setup
 
   if ( icon )
     {
