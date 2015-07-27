@@ -1655,9 +1655,6 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   if ( is_seek && _audio_packets.is_seek() )
   {
-      AVPacket& pkt = _audio_packets.front();
-      boost::int64_t f = pts2frame( get_audio_stream(), pkt.dts );
-      if ( in_audio_store( f ) ) skip = true;
      _audio_packets.pop_front();  // pop seek begin packet
   }
   else if ( !is_seek && _audio_packets.is_preroll() )
@@ -1680,10 +1677,12 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
       AVPacket& pkt = _audio_packets.front();
+      boost::int64_t f = pts2frame( get_audio_stream(), pkt.dts );
 
-      if ( ! skip )
+      if ( !in_audio_store( f ) )
       {
-          if ( decode_audio( frame, pkt ) == kDecodeOK )
+          // if ( decode_audio( frame, pkt ) == kDecodeOK )
+          if ( decode_audio( f, pkt ) == kDecodeOK )
               got_audio = kDecodeOK;
       }
       else
