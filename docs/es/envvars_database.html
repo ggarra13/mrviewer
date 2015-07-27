@@ -1,0 +1,19 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Setting Enviornment Variables for Database</title><meta content="Gonzalo Garramuño" name="author"><link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css"></head><body><h2 style="text-decoration: underline;">Setting
+up your
+environment variables</h2><p>Now, for mrViewer to be able
+to access the database, a set of environment variables need to be set.
+&nbsp;mrViewer will read these variables upon start-up and will try
+to communicate with the database. &nbsp;</p><p>Under Windows, these
+variables should be set by an administrator or by running a batch file
+that starts mrViewer. &nbsp;</p><p>Under Unix systems, mrViewer already
+ships with a startup file called 'mrViewer.sh' that sets these variables to
+their defaults. &nbsp;You should modify this bash file to fit your needs.</p><p>The default values for these
+variables are:</p><div class="list"><table border="1" cellpadding="2" cellspacing="2" width="100%">
+<tbody><tr><td>MRV_DRIVER</td><td>postgresql</td></tr><tr><td>MRV_HOST</td><td>127.0.0.1</td></tr>
+<tr><td>MRV_USER</td><td>mrviewer</td></tr>
+<tr><td>MRV_PASSWORD</td><td>mrviewer</td></tr>
+<tr><td>MRV_DATABASE</td><td>assets2d_production</td></tr>
+<tr><td>MRV_PORT</td><td>5432</td></tr>
+</tbody></table>
+</div><p></p></body></html>

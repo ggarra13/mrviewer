@@ -1,0 +1,42 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  
+  <title>Installation</title>
+</head>
+
+
+<body>
+<br>
+
+<h2><span style="text-decoration: underline;">Installing mrViewer</span></h2>
+
+
+Installation of mrViewer can be done simply by decompressing the zip file (Windows) or the gzip tar file (Linux).  This can be done with the utilities unzip or winzip (Windows) or tar in Linux. <br>
+<br><div class="console">
+ $ unzip mrViewer-v${VERSION}-Windows-32.zip 
+<br></div>
+<br>
+<br><div class="console">
+ $ tar -xf mrViewer-v${VERSION}-Linux-64.tgz
+<br></div>
+<br>
+Since v2.6.7, mrViewer is distributed with installers for each platform.  The Windows installer will run and create a menu item to the start menu and, optionally, create an icon in the desktop, as well as modify the PATH environment variable.
+The Linux installers will register an entry in the DEB or RPM databases and install in:
+<br><div class="console">
+ /usr/local/mrViewer-v${VERSION}-${PLATFORM}. 
+<br></div>
+ The utilities dpkg (DEB) or rpm (RPM) will additionally create symlinks in /usr/bin/ and install the icon in /usr/share/applications which will show in the menus (Graphics).  The icon will also be copied to the user's Desktop.
+<br>
+<br>
+
+The <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> directory among all things contains the file mrViewer.exe (Windows) or mrViewer.sh (Linux).  Running this file or any of the icons will start the viewer.<br>
+
+</body>
+</html>
