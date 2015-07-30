@@ -4,21 +4,21 @@
 
 
   
-  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
   <link rel="stylesheet" href="stylesheet.css" type="text/css">
   
-  <title>Installation</title>
+  <title>Instalación</title>
 </head>
 
 
 <body>
 <br>
 
-<h2><span style="text-decoration: underline;">Installing mrViewer</span></h2>
+<h2><span style="text-decoration: underline;">Instalando mrViewer</span></h2>
 
 
-Installation of mrViewer can be done simply by decompressing the zip file (Windows) or the gzip tar file (Linux).  This can be done with the utilities unzip or winzip (Windows) or tar in Linux. <br>
+La instalación de mrViewer puede ser hecha simplemente descomprimiendo el archivo zip (Windows) o el archivo gzip tar (Linux).  Esto puede ser hecho con las utilidades unzip o winzip (Windows) o tar en Linux. <br>
 <br><div class="console">
  $ unzip mrViewer-v${VERSION}-Windows-32.zip 
 <br></div>
@@ -27,16 +27,16 @@ Installation of mrViewer can be done simply by decompressing the zip file (Windo
  $ tar -xf mrViewer-v${VERSION}-Linux-64.tgz
 <br></div>
 <br>
-Since v2.6.7, mrViewer is distributed with installers for each platform.  The Windows installer will run and create a menu item to the start menu and, optionally, create an icon in the desktop, as well as modify the PATH environment variable.
-The Linux installers will register an entry in the DEB or RPM databases and install in:
+Since v2.6.7, mrViewer es distribuído con instaladores para cada platform.  El instalador de Windows correrá y puede crear un item de menu item en el menu de Start o, opcionalmente, crear un ícono en el Escritorio, así como modificar la variable de entorno PATH.
+Los instaladores Linux necesitan permiso de administrador.  Ellos registrarán una entrada en las bases de datos DEB or RPM respectivamente y se instalarán en:
 <br><div class="console">
  /usr/local/mrViewer-v${VERSION}-${PLATFORM}. 
 <br></div>
- The utilities dpkg (DEB) or rpm (RPM) will additionally create symlinks in /usr/bin/ and install the icon in /usr/share/applications which will show in the menus (Graphics).  The icon will also be copied to the user's Desktop.
+ Las utilidades dpkg (DEB) or rpm (RPM) adicionalmente crearán uniones simbólicas (symlinks) en /usr/bin/ e instalaran el ícono en /usr/share/applications que hará que aparezca en los menúes (Graphics).  El ícono también será copiado al Escritorio del usuario.
 <br>
 <br>
 
-The <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> directory among all things contains the file mrViewer.exe (Windows) or mrViewer.sh (Linux).  Running this file or any of the icons will start the viewer.<br>
+El directorio <div class="console">mrViewer-v${VERSION}-${PLATFORM}/bin</div> entre todas las cosas contiene el archivo mrViewer.exe (Windows) o mrViewer.sh (Linux).  Ejecutar ese archivo o cualquiera de los íconos iniciará el visor.<br>
 
 </body>
 </html>

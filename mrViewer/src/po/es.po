@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-07-26 16:04-0300\n"
+"POT-Creation-Date: 2015-07-29 13:32-0300\n"
 "PO-Revision-Date: 2015-07-20 22:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -158,7 +158,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:2503
+#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:2487
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -206,7 +206,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:2515
+#: core/aviImage.cpp:2499
 msgid " status: "
 msgstr " estatus: "
 
@@ -1443,7 +1443,7 @@ msgstr "No pude encontrar tabla de imágenes '"
 msgid "Could not find video '"
 msgstr "No pude encontrar video '"
 
-#: core/aviImage.cpp:701
+#: core/aviImage.cpp:702
 msgid "Could not get image conversion context."
 msgstr "NO pude obtener contexto de conversion de imagen."
 
@@ -1800,7 +1800,7 @@ msgstr "Decodificacion sin Flujo"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:2491 core/aviImage.cpp:2501
+#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:2475 core/aviImage.cpp:2485
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -1808,7 +1808,7 @@ msgstr "Error de decodificación de audio:"
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
-#: core/aviImage.cpp:2513
+#: core/aviImage.cpp:2497
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2031,11 +2031,11 @@ msgstr "Editar Cuadro de Comienzo de Audio"
 msgid "Edit Status"
 msgstr "Editar Status"
 
-#: core/aviImage.cpp:2139
+#: core/aviImage.cpp:2123
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2153
+#: core/aviImage.cpp:2137
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -3276,10 +3276,6 @@ msgstr "Ningún decodificador encontrado para el flujo de audio.  ID: "
 #: core/CMedia_audio.cpp:1338
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
-
-#: core/aviImage.cpp:769
-msgid "No ptsframe in decode_video"
-msgstr "No hay ptsframe en decode_video"
 
 #: core/stubImage.cpp:970
 msgid "No such framebuffer - cannot set pixel"
@@ -5316,7 +5312,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2071
+#: core/aviImage.cpp:2055
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -5707,6 +5703,9 @@ msgstr ""
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3603
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "No ptsframe in decode_video"
+#~ msgstr "No hay ptsframe en decode_video"
 
 #, fuzzy
 #~ msgid "Backwards"
