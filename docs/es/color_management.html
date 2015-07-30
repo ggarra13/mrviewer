@@ -7,73 +7,60 @@
   
   
   
-  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
 
 
   
   
   
-  <title>Color Management</title></head>
+  <title>Manejo de Color</title></head>
 
 <body>
 
 
-<h2 style="text-decoration: underline;">Color Management</h2>
+<h2 style="text-decoration: underline;">Manejo de Color</h2>
 <br>
-<h4>The problem</h4>
-Color is, sadly, not an exact science. &nbsp;We still lack the ability
-to measure how our eyes see. &nbsp;Therefore, every development in the
-area of imaging has resulted in a multitude of ways of doing things.
-&nbsp; So what is red on
-one monitor, won't necessarily be the same shade of red on another. The
-whole mess is further complicated by the fact that other output
-devices, like printers and such, are all different, have non-linear
-responses, and could even be achieving color in entirely different way
-from a CRT tube.
+<h4>El problema</h4>
+El color no es, lamentablemente, una ciencia exacta. &nbsp;Aun no podemos medir como ven nuestros ojos. &nbsp;Por ello, cada desarrollo en la 
+area de la imagen ha resultado en una multitud de formas de hacer cosas.
+&nbsp; Por lo que es rojo en un monitor, no necesariamente será del mismo tinte de rojo en otro. El desastre es más complicado por el hecho que otros periféricos de salida, como impresoras y similares, son todas distintas, tienen respuestas de color no lineales, y pueden crear el color en una forma totalmente diferente que un tubo de CRT o un LED.
 
- <p>The salvation lies with the
-<i>Color Management System</i>, a piece of software designed to convert
-color between representations required for various devices. Knowing
-your hardware characteristics is half-way to having a working solution.
-On the most basic level, for monitor it means knowing primaries and
-gamma. 
+ <p>La salvación viene con un
+<i>Systema de Manejo de Color</i>, una pieza de software diseñada para convertir
+ colores entre representaciones requeridas para varios equipos. Saber
+las características de tu hardware es la mitad de camino para tener una solutción que funcione.
+En el nivel más básico, para un monitor significa saber los colores primarios y la gama. 
 
 </p>
 
 
 
 
-mrViewer supports probably the most advanced color management system in
-use today, called CTL (Color Transform Language). &nbsp;CTL was
-developed by AMPAS, the Academy of Motion Picture Arts and Sciences,
-with the help of Industrial Light and Magic (ILM).<br>
+mrViewer supporta probablemente el sistema de manejo de color más avanzado en uso hoy en día, llamado CTL (Color Transform Language o Lenguaje de Transformación de Color). &nbsp;CTL fue
+desarollado por AMPAS, la Academia de Motion Picture Arts and Sciences,
+con la ayuda de Industrial Light and Magic (ILM).<br>
 
 <br>
 
-As the name implies, CTL is an actual&nbsp;language, similar to a
-shading language, which can be used for color transformation of images.
-&nbsp;Its feature set is similar to that of ICC, albeit it goes
-beyond
-it, to also support particular features specific to the movie
-production business. &nbsp;Being a full featured language, the
-possibilities for color correction are unlimited and since CTL scripts
-are&nbsp;just ASCII files, it becomes harder to misinterpret.<br>
+Como el nombre insinúa, CTL es en verdadero&nbsp;lenguaje, similar a
+un lenguaje de sombreado (shading language), que puede ser usado para transformación de color de las imágenes.
+&nbsp;Su set de set de características es similar a aquellas de ICC, aunque va mas allá que ello, para también soportar características particulares y especificas al negocio de producción de peliculas. &nbsp;Siendo un lenguaje completo, las
+posibilidades pare corrección de color son ilimitadas y visto que las escrituras (scripts) de CTL
+son&nbsp;solo archivos ASCII, se vuelve más difícil de desinterpretar.<br>
 
 <br>
 
-As of January 2015, AMPAS ships ACES 1.0, which is a collection of
-CTL transforms and these are included in the mrViewer distribution.
+Desde Enero 2015, AMPAS incluye ACES 1.0, que es una colección de 
+transformaciones CTL and estas están incluídas parcialmente en la distribución de mrViewer.
 
 <br>
 
 
 
-Within mrViewer, two or more CTL files are processed and baked into a
-64x64x64 3D Lut which then operates on the image completely with 32-bit
-float information in real time. &nbsp; This will often give you a pretty
-accurate
-approximation of even the most complex transformations.<br>
+Dentro de mrViewer, dos o mas archivos CTL son procesados y cocinados en un 3D Lut
+de (por defecto) 64x64x64 que luego opera en la imágen completamente con información de coma flotante de 32-bits en tiempo real. &nbsp; Esto te dará una bastante exacta aproximación de inclusive las más complejas transformaciones.
+<br>
 
 
 
@@ -83,11 +70,11 @@ approximation of even the most complex transformations.<br>
 
 
 
-In addition to CTL, mrViewer also supports ICC, which is still pretty
-common with the print industry as well as some monitor manufacturers.
-&nbsp;In the future, it is likely that ICC support will be vanished.
+Además de CTL, mrViewer también supporta ICC, que es todavía bastante
+comun con la industria de imprenta así como con algunos manufacturadores de monitores.
+&nbsp;En el future, es probable que el soporte de ICC sea sacado.
 <br><br>
-For understanding CTL and ACES, you should first read:<br>
+Para entender a CTL y ACES, usted debería primero leer:<br>
 
 <li><a target="main" href="http://www.openexr.com/UsingOpenEXRandCTL.pdf">http://www.openexr.com/UsingOpenEXRandCTL.pdf</a></li>
 <li><a target="main" href="http://www.openexr.com/OpenEXRColorManagement.pdf">http://www.openexr.com/OpenEXRColorManagement.pdf</a></li>
