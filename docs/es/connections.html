@@ -3,16 +3,16 @@
 
 
   
-  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
 
-  <title>Connections Editor</title>
+  <title>Editor de Conexiones</title>
 
   <link rel="stylesheet" href="stylesheet.css" type="text/css">
 </head>
 
 <body>
-<h2 style="text-decoration: underline;">Connection Management</h2>
+<h2 style="text-decoration: underline;">Manejo de Conexiones</h2>
 <br>
 
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
@@ -25,28 +25,28 @@
       <td>
 
       <br>
-The connections window allows you to control two or more mrViewers from a single interface, which can be useful for reviewing dailies.
+La ventana de conexiones te permite controlar dos o mas mrViewers desde una sol interface, lo cual puede ser util al pasar revista a las animaciones del día.
       </tr>
   </tbody>
 </table>
-To use it, you first need to create a server at an empty port.  The default of 4333 should be fine most of the time.
-Once a server is created, the clients can connect to it at that machine name and port.  The machine name defaults to localhost which is a local connection to the local machine (two viewers running on the same machine).  If accessing two viewers from different locations you need to specify the name of the remote machine as well as the port number.
+Para usarla, usted debe crear un servidor en un puerto libre.  El puerto por defecto 4333 debería funcionar bien la mayoría de las veces.
+Una vez que un servidor es creado, los clientes pueden conectarse a él con el nombre de la máquina y puerto.  El nombre de la máquina es por defecto "localhost" que es una conexión local a la máquina local (dos visores corriendo en la misma máquina).  Si accede a dos visores de distintas localidades usted debe especificar el nombre de la máquina remote asi como el número del puerto..
 
-You can also connect the server or the client command-line, by using:
+Puedes tambien crear el servidor o el cliente con la linea de comandos, usando:
 
 <p><div class="console">
-> mrViewer -p [port number]  #  to create a server.</div>
+> mrViewer -p [port number]  #  para crear un servidor.</div>
 </p> 
 <p><div class="console">
-> mrViewer -t [hostname] -p [port number] # to create a client.</div>
+> mrViewer -t [hostname] -p [port number] # para crear un cliente.</div>
 </p>
 
-If all goes well, once created you will see in the server:
+Si todo va bien, veras en el servidor:
 <p>
 {conn} [server] Created server at port 4333
 </p>
 
-And the client will connect with:
+Y en el cliente verás:
 <p>
 {conn} [main] Start client at mymachine, port 4333
 </p>
@@ -57,7 +57,7 @@ And the client will connect with:
 {conn} [client] Connected to 128.92.30.1:4333
 </p>
 
-The client will check all images and reels from the server and mimic it as best as it can, assuming all paths are visible from both machines.
-From then on, you will see different {conn} messages every time the two instances of mrViewer acknoledge each other about a change.
+El cliente chequeará todas las imágenes y carretes del servidor y los imitará lo mejor que pueda, asumiendo que todos los caminos son visibles desde ambas máquinas.
+Desde entonces, verás un diferente {conn} mensaje cada vez que las dos instancias de mrViewer se comuniquen sobre un cambio.
 
 </body>

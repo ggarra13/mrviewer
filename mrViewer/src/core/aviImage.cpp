@@ -540,6 +540,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
+    // Skip the seek packets when playback is stopped
     if ( skip )
     {
         boost::int64_t dts = queue_packets( frame, false, got_video,
@@ -765,8 +766,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
 	if ( ptsframe == MRV_NOPTS_VALUE )
         {
-	   ptsframe = frame;
-           LOG_WARNING( _("No ptsframe in decode_video") );
+            ptsframe = pts2frame( stream, pkt.dts );
         }
         else
         {
@@ -1738,6 +1738,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 ++packets_added;
                 _video_packets.push_back( pkt );
                 got_video = true;
+                got_subtitle = true;
                 if ( is_seek || playback() == kBackwards )
                 {
                     _video_packets.seek_end(vpts);
@@ -1786,15 +1787,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
             if ( is_seek )
             {
-                if ( !got_video ) {
-                    if ( packets_added > 0 )
-                        _video_packets.seek_end(vpts);
-                    else
-                    {
-                        _video_packets.pop_front(); // seek begin
-                        _video_packets.pop_front(); // flush
-                    }
-                }
+                if ( !got_video )    _video_packets.seek_end(vpts);
                 if ( !got_audio    ) _audio_packets.seek_end(apts);
                 if ( !got_subtitle ) _subtitle_packets.seek_end(spts);
             }
@@ -1830,17 +1823,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             if ( !got_video && pktframe >= frame )
             {
                 got_video = true;
-                if ( is_seek ) {
-                    if ( packets_added == 0 )
-                    {
-                        _video_packets.pop_front(); // remove seek begin
-                        _video_packets.pop_front(); // remove flush
-                    }
-                    else
-                    {
-                        _video_packets.seek_end(vpts);
-                    }
-                }
+                if ( is_seek ) _video_packets.seek_end(vpts);
             }
 #ifdef DEBUG_DECODE
             char ftype = av_get_picture_type_char(_av_frame->pict_type );
@@ -1858,7 +1841,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             if ( playback() == kBackwards )
             {
                 if ( pktframe <= frame )
-                    _subtitle_packets.push_back( pkt );		 }
+                    _subtitle_packets.push_back( pkt );
+            }
             else
             {
                 _subtitle_packets.push_back( pkt );
