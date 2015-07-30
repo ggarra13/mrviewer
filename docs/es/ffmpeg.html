@@ -2,8 +2,8 @@
 <html>
 <head>
 
-  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
-  <title>The FFMPEG Utility</title>
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
+  <title>La Utilidad FFMPEG</title>
 
 
   <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -13,42 +13,42 @@
 
 <body>
 
-<h2 style="text-decoration: underline;">The FFMPEG Utility</h2>
+<h2 style="text-decoration: underline;">La Utilidad FFMPEG</h2>
 
 
 <br>
 
-mrViewer comes bundled with a copy of ffmpeg, which is a command-line utility used to create movies among other things.  The current version supports OpenEXR non-tiled images but only in zip, rle, pxr24 and non compressed modes.  The EXRs should also be RGB, not Ycc.  You can run ffmpeg from the bin directory of the mrViewer install.
+mrViewer viene con una copia de ffmpeg, que es una utilidad de comandos usada para crear películas entre otras cosas.  La version actual soporta archivos OpenEXR sin azulejos (non-tiled) imágenes pero solo con zip, rle, pxr24 y modos sin compresión.  Los EXRs deberían ser también RGB, not Ycc.  Usted puede correr ffmpeg del directorio bin de la instalación de mrViewer.
 <br>
-You can create mp4 movie files from images with the following syntax:
+Usted puede crear archivos de películas mp4 desde imágenes con la siguiente sintaxis:
 <br>
 <div class="console">
 ffmpeg -layer Specular -i image.%04d.exr test.mp4
 </div>
 
 <br>
-In Windows:
+En Windows:
 <br>
 <div class="console">
 ffmpeg.exe -layer Specular -i image.%04d.exr video.mp4
 </div>
 <br>
-If not working with a multi-layered openexr file, the command can be simplified to:
+Si no trabaja con un archivo de openexr con multiples capas, el comando puede ser simplificado a:
 <br>
 <div class="console">
 ffmpeg -i image.%04d.exr video.mp4
 </div>
 <br>
-To encode with high quality and with gamma 2.2, and framerate 24, it involves setting other options, like:
+Para encodificar con alta cualidad y gama 2.2, y una velocidad de 24 cuadros por segundo, esto incluye setear otras opciones, como:
 <br>
 <div class="console">
 ffmpeg -gamma 2.2 -i images.%04d.exr -q:v 0 -r 24 video.mp4
 </div>
 <br>
-Here -q:v means video quality and -r is the frame rate.
+Aquí -q:v means video quality y -r es la velocidad de cuadros por segundo.
 <br>
 <br>
-For more information about ffmpeg refer to <a href="https://www.ffmpeg.org/ffmpeg.html"> https://www.ffmpeg.org/ffmpeg.html </a>
+Para más información acerca de ffmpeg refiérase a <a href="https://www.ffmpeg.org/ffmpeg.html"> https://www.ffmpeg.org/ffmpeg.html </a>
 
 </body>
 </html>
