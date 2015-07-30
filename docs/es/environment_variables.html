@@ -6,12 +6,12 @@
 
   
   
-  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+  <meta content="text/html; charset=UTF8" http-equiv="content-type">
 
 
   
   
-  <title>Environment Variables</title>
+  <title>Variables de Entorno</title>
 </head>
 
 
@@ -21,13 +21,13 @@
 
 
 
-<h2 style="text-decoration: underline;"><a name="Environment_Variables"></a>Environment Variables</h2>
+<h2 style="text-decoration: underline;"><a name="Environment_Variables"></a>Variables de Entorno</h2>
 
 
 
-On startup and during different operations, mrViewer reads several
-environment variables that allow you to customize its operation.
-&nbsp;Here's a list of them:<br>
+Al comenzar y durante diferentes operaciones, mrViewer lee varias
+variables de entorno que te permiten customizar su operación.
+&nbsp;Aquí hay una lista de ellas:<br>
 
 
 
@@ -51,11 +51,11 @@ environment variables that allow you to customize its operation.
 
 
 
-      <th style="text-align: center; width: 50%;"> Explanation</th>
+      <th style="text-align: center; width: 50%;"> Explicación</th>
 
 
 
-      <th style="text-align: center; width: 25%;"> Default Value</th>
+      <th style="text-align: center; width: 25%;"> Valor por Defecto</th>
 
 
 
@@ -71,14 +71,14 @@ environment variables that allow you to customize its operation.
 
 
 
-      <td style="font-family: monospace;">A string of
-colon (Unix) or semicolon (Windows) separated paths that
-mrViewer will use to find .ctl scripts.</td>
+      <td style="font-family: monospace;">Una línea de texto con caminos separados por
+dos puntos (Unix) o semicoma (Windows) donde
+mrViewer encontrará .ctl scripts.</td>
 
 
 
-      <td style="font-family: monospace;">If unset,
-mrViewer's ctl directory</td>
+      <td style="font-family: monospace;">Si no está seteado,
+el subdirectorio ctl de mrViewer</td>
 
 
 
@@ -94,14 +94,13 @@ mrViewer's ctl directory</td>
 
 
 
-      <td style="font-family: monospace;">The CTL script
-used to transform images from CIExy space for display on
-your screen</td>
+      <td style="font-family: monospace;">El script de CTL
+usado para transformar imágenes del espacio CIExy space para mostrar en tu pantalla</td>
 
 
 
       <td style="font-family: monospace;">
-transform_display_video</td>
+Ninguno.</td>
 
 
 
@@ -112,12 +111,12 @@ transform_display_video</td>
       
 
 
-      <td style="font-family: monospace;">The ICC profile attached to the monitor to simulate the output media.</td>
+      <td style="font-family: monospace;">El perfil ICC atado al monitor para simular el medio de salida.</td>
 
 
 
       <td style="font-family: monospace;">
-	None.</td>
+	Ninguno.</td>
     </tr>
 
     <tr>
@@ -128,13 +127,12 @@ transform_display_video</td>
 
 
 
-      <td style="font-family: monospace;"> Chromaticities
-of your display</td>
+      <td style="font-family: monospace;"> Cromaticidades de tu display</td>
 
 
 
       <td style="font-family: monospace;"> Rec. ITU-R
-BT.709 chromaticities</td>
+BT.709 chromaticidades</td>
 
 
 
@@ -150,13 +148,12 @@ BT.709 chromaticities</td>
 
 
 
-      <td style="font-family: monospace;"> White Luminance
-of your display</td>
+      <td style="font-family: monospace;"> Luminancia de Blanco de tu display</td>
 
 
 
       <td style="font-family: monospace;"> 120 candelas
-per square meter</td>
+por metro cuadrado</td>
 
 
 
@@ -172,13 +169,12 @@ per square meter</td>
 
 
 
-      <td style="font-family: monospace;"> Luminance of
-the surrounding environment</td>
+      <td style="font-family: monospace;"> Luminancia del
+entorno de alrededor</td>
 
 
 
-      <td style="font-family: monospace;"> 12 candelas per
-square meter</td>
+      <td style="font-family: monospace;"> 12 candelas por metro cuadrado</td>
 
 
 
@@ -193,37 +189,37 @@ square meter</td>
 
 
 
-      <td style="font-family: monospace;"> A default CTL
-script used to transform 8-bit images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de 8-bits de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguna.</td>
 
     </tr>
 
     <tr>
       <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_16bit</td>
-      <td style="font-family: monospace;"> A default CTL
-script used to transform 16-bit images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de 16-bits de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguna.</td>
     </tr>
 
     <tr>
       <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_32bit</td>
 
-      <td style="font-family: monospace;"> A default CTL
-script used to transform 32-bit images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de 32-bits de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguna.</td>
     </tr>
 
     <tr>
       <td style="font-family: monospace; font-weight: bold;">MRV_CTL_RT_float</td>
 
-      <td style="font-family: monospace;"> A default CTL
-script used to transform float and half float images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Una script CTL por defecto
+usada para transformar imágenes de coma flotante o media coma flotante de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;"> transform_RRT</td>
+      <td style="font-family: monospace;"> RRT.a1.0.0</td>
     </tr>
 
 
@@ -233,39 +229,37 @@ script used to transform float and half float images from RGB to CIExy space</td
 
       <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_8bit</td>
 
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de 8-bits de RGB al espacio CIExy</td>
 
-
-      <td style="font-family: monospace;"> A default ICC
-profile used to transform 8-bit images from RGB to CIExy space</td>
-
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguno.</td>
 
     </tr>
 
     <tr>
       <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_16bit</td>
-      <td style="font-family: monospace;"> A default ICC
-profile used to transform 16-bit images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de 16-bits de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguno.</td>
     </tr>
 
     <tr>
       <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_32bit</td>
 
-      <td style="font-family: monospace;"> A default ICC
-profile used to transform 32-bit images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de 32-bits de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguno.</td>
     </tr>
 
     <tr>
       <td style="font-family: monospace; font-weight: bold;">MRV_ICC_RT_float</td>
 
-      <td style="font-family: monospace;"> A default ICC
-profile used to transform float and half float images from RGB to CIExy space</td>
+      <td style="font-family: monospace;"> Un perfil ICC por defecto
+usado para transformar imágenes de coma flotante o media coma flotante de RGB al espacio CIExy</td>
 
-      <td style="font-family: monospace;">None.</td>
+      <td style="font-family: monospace;">Ninguno.</td>
     </tr>
 
 
@@ -287,8 +281,8 @@ profile used to transform float and half float images from RGB to CIExy space</t
 
 
 
-      <td style="font-family: monospace;"> Machine where
-mrViewer's database resides</td>
+      <td style="font-family: monospace;"> Maquina donde la base de datos de
+mrViewer reside.</td>
 
 
 
@@ -308,13 +302,13 @@ mrViewer's database resides</td>
 
 
 
-      <td style="font-family: monospace;"> TCP/IP Port
-override to use to connect to database</td>
+      <td style="font-family: monospace;"> Puerto TCP/IP Port
+para usar la conexión a la base de datos</td>
 
 
 
-      <td style="font-family: monospace;"> Uses default
-for database type</td>
+      <td style="font-family: monospace;"> Usa por defecto
+para la base de datos.</td>
 
 
 
@@ -330,8 +324,8 @@ for database type</td>
 
 
 
-      <td style="font-family: monospace;"> User used to
-login to mrViewer's database</td>
+      <td style="font-family: monospace;"> Usuario usado para
+loguearse a la base de datos de mrViewer</td>
 
 
 
@@ -351,8 +345,8 @@ login to mrViewer's database</td>
 
 
 
-      <td style="font-family: monospace;"> Password used
-to login to mrViewer's database</td>
+      <td style="font-family: monospace;"> Clave usada para loguearse
+a la base de datos de mrViewer</td>
 
 
 
@@ -372,8 +366,7 @@ to login to mrViewer's database</td>
 
 
 
-      <td style="font-family: monospace;"> Name of
-mrViewer's database</td>
+      <td style="font-family: monospace;"> Nombre de la base de datos de mrViewer</td>
 
 
 
@@ -394,12 +387,12 @@ assets2d_production</td>
 
 
 
-      <td style="font-family: monospace;">If set, any
-image viewed will be stored in the database as belonging to that show.</td>
+      <td style="font-family: monospace;">Si está seteado,
+cualquier imagen vista sera grabada en la base de datos como perteneciente a dicho show.</td>
 
 
 
-      <td style="font-family: monospace;">Undefined</td>
+      <td style="font-family: monospace;">Indefinida.</td>
 
 
 
@@ -415,13 +408,12 @@ image viewed will be stored in the database as belonging to that show.</td>
 
 
 
-      <td style="font-family: monospace;">If set, any
-image viewed will be stored in the database as belonging to that
-sequence.</td>
+      <td style="font-family: monospace;">Si está seteada,
+cualquier imagen vista sera grabada en la base de datos como perteneciente a dicha secuencia.</td>
 
 
 
-      <td style="font-family: monospace;">Undefined</td>
+      <td style="font-family: monospace;">Indefinida.</td>
 
 
 
@@ -437,12 +429,12 @@ sequence.</td>
 
 
 
-      <td style="font-family: monospace;">If set, any
-image viewed will be stored in the database as belonging to that shot.</td>
+      <td style="font-family: monospace;">Si está seteada,
+cualquier imagen vista sera grabada en la base de datos como perteneciente a dicha toma.</td>
 
 
 
-      <td style="font-family: monospace;">Undefined</td>
+      <td style="font-family: monospace;">Indefinida.</td>
 
 
 
@@ -458,14 +450,13 @@ image viewed will be stored in the database as belonging to that shot.</td>
 
 
 
-      <td style="font-family: monospace;">Directory where
-ICC and ICM profiles reside</td>
+      <td style="font-family: monospace;">Directorio donde los perfiles ICC e ICM residen.</td>
 
 
 
       <td style="font-family: monospace;">%WINDIR%/SYSTEM32/spool/drivers/color
-on Windows and
-/usr/share/color/icc on Unix</td>
+en Windows y
+/usr/share/color/icc en Unix</td>
 
 
 
@@ -481,13 +472,13 @@ on Windows and
 
 
 
-      <td style="font-family: monospace;"> Home directory
-for user where mrViewer's preferences will be stored</td>
+      <td style="font-family: monospace;"> Directorio Home para el usuario
+donde las preferencias de mrViewer serán grabadas.</td>
 
 
 
-      <td style="font-family: monospace;">$HOME on Unix
-and %HOMEDIR% on Windows</td>
+      <td style="font-family: monospace;">$HOME en Unix
+y %HOMEDIR% en Windows</td>
 
 
 
@@ -497,9 +488,9 @@ and %HOMEDIR% on Windows</td>
 
       <td><span style="font-family: monospace; font-weight: bold;">MRV_SHADER_PATH</span></td>
 
-      <td style="font-family: monospace;">Directory where mrViewer's hardware shaders reside.</td>
+      <td style="font-family: monospace;">Directorio donde los shaders de mrViewer residen.</td>
 
-      <td style="font-family: monospace;">Undefined, mrViewer uses a built-in shader.</td>
+      <td style="font-family: monospace;">Indefinido, mrViewer usa el directorio shaders/ o un shader prefijado.</td>
 
     </tr>
 
