@@ -3,7 +3,7 @@
 <head>
 
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
-  <title>Caches Preferences</title>
+  <title>Preferencia De Caches</title>
 
 
   <meta content="Gonzalo Garramu&ntilde;o" name="author">
@@ -12,12 +12,11 @@
 </head>
 <body>
 
-<h3>Caches Preferences</h3>
+<h3>Preferencia De Caches</h3>
 
 <br>
 
-The caches preferences tab allows you to modify how mrViewer's
-caches work.<br>
+La ficha de preferencia de caches te permite modificar como funcionan los caches de mrViewer.<br>
 
 <br>
 
@@ -33,7 +32,7 @@ caches work.<br>
       <div class="menu">Cache Active</div>
       <br>
 
-When this option is turned on, mrViewer will cache image sequences in memory.<br>
+Cuando esta opción esta prendida (por defecto), mrViewer grabará en el cache de memoria las secuencias de imágenes y porciones de los videos.<br>
 
       <br>
 
@@ -41,32 +40,31 @@ When this option is turned on, mrViewer will cache image sequences in memory.<br
 
       <br>
 
-With this option, mrViewer will cache images as 8-bits only (as they are displayed) instead of in half or float format when possible.
+Con esta opcion, mrViewer grabara en el cache imágenes como 8-bits only (como se ven en el display) en vez de en coma flotante o media coma flotante in half cuando es posible.
 
        <br>
       <br>
 
-      <div class="menu">Scale</div>
+      <div class="menu">Escala</div>
 
       <br>
 
-With this option, mrViewer will cache images at full (1:1), half (1:2) or quart,quarter (1:4) or one eighth (1:8) of the original resolution.
-This option is intended to save memory when the sequence is very long.
+Con esta opción, mrViewer grabará en el cache imágenes a resolución completa (1:1), mitad (1:2), un cuarto (1:4) o un octavo (1:8) de la resolución original.
+      Esta es una opcion para intentar ahorrar memoria cuando la secuencia es muy larga.
 
       <br>
 
 
       <br>
-      <div class="menu">FPS</div>
+      <div class="menu">CPS</div>
 
-With this option on, the actual size of the cache will be determined by the Frames Per Second (FPS) and the cache size will be disregarded.
-
+Con esta opción activada (por defecto), el tamaño del cache será determinado por los Cuadros Por Segundo (CPS) -2 veces el valor de CPS- y el tamaño del cache será descartado.
       <br>
 
       <br>
-      <div class="menu">Cache Size</div>
+      <div class="menu">Tamaño del Cache</div>
 
-When FPS is off, this value determines the number of maximum frames in the cache.  The cache is a backwards cache except when playing backwards and during scrubbing the cache is a two way cache.
+Cuando CPS está apagado, este valor determina el número de cuadros máximos en el cache.  El cache es para atrás excepto cuando se reproduce para atrás o se hace el fregado (scrub), el cache funciona en dos direcciones.
 
 
       <br>

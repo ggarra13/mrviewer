@@ -1,8 +1,25 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Using ICC with the Color Transform Language</title><meta content="Gonzalo Garramu�o" name="author"></head><body><h1 style="text-align: center;">Using ICC with the Color Transform Language (CTL)</h1><p>Albeit mrViewer uses AMPAS' Color Transform Language (CTL) for doing its color corrections and table look ups, mrViewer also supports ICC profiles.</p><p>mrViewer's preference section determines whether mrViewer will prefer CTL or ICC when both are used in the monitor or in an image.</p>
-One ICC transform is attached to the main view window and represents
-the monitor, video or film stock. &nbsp;
-&nbsp;This transform is set in the main preferences window, in the CTL section. &nbsp;Most projects will require users to set the device transform only once and not change it and it is recommended you use the MRV_ODT_ICC_PROFILE environment variable.</p><p>Each image can support its own ICC profile.  For that, you need to add an ICC profile with the RMB.  There's an option called Image->Attach ICC Profile, which does the obvious.<p>
-Once ICC profiles are loaded, you can examine their contents in the ICC profile window.</p><p>
-In summary, if you are new to color calibration, you should stick with CTL which offers faster feedback.</p>
+<html><head>
+<meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Using ICC with the Color Transform Language</title><meta content="Gonzalo Garramu�o" name="author"></head><body><h1 style="text-align: center;">Using ICC with the Color Transform Language (CTL)</h1><p>Aunque
+mrViewer usa AMPAS' Color Transform Language (CTL) para sus
+transformaciones de color, mrViewer también soporta perfiles ICC.</p><p>La
+sección de preferencia de mrViewer determina si el visor preferirá CTL
+or ICC cuando ambos son usados en el monitor o en la imagen.</p>&nbsp;Un
+perfil ICC es atado a la ventana de la vista principal y representa el
+monitor, video o film stock. &nbsp;&nbsp;
+Esta transformación es seteado en la ventana de preferencias
+principales, en la sección de CTL.&nbsp; La mayoría de proyectos
+requeriran que los usuarios seteen la ODT una sola vez y no la
+cambie.&nbsp; Por eso es preferible que use la variable de entorno
+MRV_ODT_ICC_PROFILE.<p>Cada
+imagen puede soportar su propio perfil ICC.&nbsp; Para ello, usted
+necesita agregar un perfil ICC con el BDR. En ese menú hay una opción
+llamada Imagen-&gt;Agregar Perfil ICC, que hace lo obvio.</p><p>
+Una vez que los perfiles ICC están cargados, puede examinar sus contenidos en la Ventana de Perfil de ICC.</p>Si
+quiere usar un ODT de CTL y un perfil en la imagen, esto es posible,
+pero el perfil de ICC debe dar de salida a una imagen en formato
+CieXYZ. <br>
+<p>
+En resumen, si usted es nuevo a la calibración de color, debería quedarse con CTL y ACES que ofrecen un futuro brillante.</p>
+
 </body></html>

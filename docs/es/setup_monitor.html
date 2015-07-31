@@ -1,121 +1,69 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Setting up your Monitor</title><meta content="Gonzalo Garramuño" name="author"><link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css"></head><body><h1 style="text-align: center;">Setting up your Monitor</h1>
-The first thing you should if you want to have a proper color
-management workflow is to properly callibrate your monitor.
-&nbsp;Accurate monitor calibration requires special equipment to
-measure your monitor's display as well as your suroundings.<br>
-However, you still obtain a decent monitor calibration if you do it
-manually following some simple steps. &nbsp;mrViewer can already help
-you with that.<br>
+<html><head><meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Configurando su Monitor</title><meta content="Gonzalo Garramuño" name="author"><link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css"></head><body><h1 style="text-align: center;">Configurando su Monitor</h1>
+La primera cosa que deberías querer para un proceso de trabajo con manejo de color correctamente hecho es calibrar tu monitor.
+&nbsp;Una calibración de monitor precisa requiere equipo especial para medir el display del monitor asi como tus alrededores.
+<br>
+Sin embargo, usted puede aún obtener una calibración de monitor decente manualmente siguiendo estos simples pasos.
+&nbsp;mrViewer puede ayudarlo con ello.<br>
 
 
 
-<h3>Geometric distortions</h3>
+<h3>Distorciones Geométricas</h3>
 
 
-<p>The first thing you should do after your monitor syncs to the new
-video mode is to adjust position and size of the image on the screen.
-You can do it either the easy way, using the monitor controls.
+<p>La primer cosa que deberías hacer despues que tu monitor sincronice al nuevo modo de video
+es ajustar la posición y tamaño de la imagen en la pantalla.
+Lo puede hacer facilmente, usando los controles del monitor.
 
 </p>
-<p>After the size and the position of the image are roughly set, you
-should check if there are any<span style="text-decoration: underline;"></span> geometric distortions and get rid of them if they are present. It's often
-impossible to eliminate geometric distortions completely over the
-entire image area on older monitors, no matter how hard you try. You fix one thing and
-the other one goes wrong.&nbsp;</p>
-<h3>Finding your monitor's gamma</h3>
+<p>Después que el tamaño y la posición de la imagen esten seteadas, debería chequear si hay alguna distorción geometrica y tratar de eliminarla si está presente.  Es frecuentemente imposible eliminar las distorsiones geometricas completamente sobre toda la imagen en monitores viejos, sin importar cuanto se lo intente.
+</p>
 
-
-
-
-
+<h3>Encontrando la Gama de tu Monitor</h3>
 
 
 <p>
-One thing that is puzzling about monitors and tv sets is that they
-operate at a different gamma. &nbsp;Basically, due to voltage
-limitations in the early days of television (and to also target your
-eye's perception more accurately), monitor's screen don't display
-images linearly. &nbsp;Instead, they apply a gamma correction to
-anything displayed on them. &nbsp;<br><br>Also, by a sheer coincidence, your eyes' perception to luminance is also
-nonlinear&nbsp;and happens to also be pretty similar to the gamma
-correction&nbsp;a monitor does, so this distortion of luminance often goes
-unnoticed. &nbsp;Also, most images meant to be displayed on a tv set or monitor already take this
-gamma into account.<br><br>
-Roughly speaking, the gamma correction of your monitor is a power function. &nbsp;<br><br>
-Different monitors have different gamma settings, so you should check
-your monitor's specs. &nbsp; As a general guideline, PC monitors often
-use a gamma value between 2.2 and 2.5 while older Mac monitors use a gamma of
-1.8. &nbsp;SGI monitors often use a gamma of 1.5.<br><br>
-Some advanced modern monitors do not operate using gamma anymore but do
-an internal sRGB color correction. &nbsp;sRGB is very similar to a 2.2
-gamma function, but its curve is tiny bit different.<br><br>
-Scanners, Film&nbsp;and other input sources, on the other
-hand, typically have linear signal response to light intensity.<br><br>
-These days modern monitors have some plug-and-play capabilities that
-may inform your OS about its gamma settings (and other values).
-&nbsp;This information is often called EDID and perhaps some tool of
-your graphics card can access this information. &nbsp; Currently,
-mrViewer does not yet try to read EDID information from your monitor
-but your graphics card may have some utility that does. &nbsp; For
-example, under Linux and with an NVidia graphics card, nvidia-settings
-can often read this information for you.</p><p>
-If you don't know your monitor's gamma, you can try to guess it by doing a simple visual test.<br><br>
-Make sure mrViewer's gamma and gain are at 1.0 and that no LUT is applied.<br><br>
-Open mrViewer and go to the <span class="menu">Reel Window.</span> &nbsp;Then, use the <span class="hotkey">RMB</span> and select <span class="menu">Create-&gt;Linear Gradient</span>.<br>
-This will create a simple linear gradient going from totally black to totally white, covering your whole screen. &nbsp;<br>If you look at the values of the pixels, you will see that they change
-gradually from 0 to 1. &nbsp;You might want to maximize your window to
-see it properly.&nbsp;<br><br><span style="font-style: italic;"></span>If your monitor uses any type
-of gamma, you will see that the gradient's midpoint is not visually at
-the center of the screen. &nbsp;This is because of your monitor's
-gamma. &nbsp;Using mrViewer's gamma slider, try to adjust it until you
-perceive the midpoint to be at the center of the screen, like 0.45, for
-example.</p>
+Una cosa que es desconcertante sobre los monitores y los tv sets es que operan en una gama diferente. &nbsp;Basicamente, debido a limitaciones de voltaje
+en los días tempranos de la televisión (y para también apuntar a la percepción del ojo más exactamente), las pantallas de los monitores no muestran las
+imagenes linearmente. &nbsp;En cambio, aplican una corrección de gama a todo lo que se muestre en ellos. &nbsp;<br><br>También, por pura coincidencia, la percepción a la luminancia de tus ojos es también no lineal&nbsp;y sucede que es muy similar a la corrección de gama&nbsp;que hace un monitor, por lo que esta distorción en luminancia pasa frecuentemente desapercibida. &nbsp;También, la mayoría de imágenes pensadasa para ser mostradas en un set de tv o un monitor ya toman esta gama en cuenta.<br><br>
+Hablando aproximadamente, la corrección de gama de tu monitor es una función de potenciación. &nbsp;<br><br>
+Diferentes monitores tienen differente seteos de gama, por lo que deberías chequear las especificaciones de tu monitor.&nbsp; Como guía general, monitores de PC frecuentemente usan un valor de gama entre 2.2 and 2.5 mientras viejos monitores de Mac monitors usan una gama de
+1.8. &nbsp;Monitores SGI frecuentan una gama de 1.5.<br><br>
+Los monitores más modernos no operan mas usando gama pero usan una corrección de color interna de sRGB.&nbsp;sRGB es muy similar a una función de 2.2 de
+gama, pero su curva es levemente diferente.<br><br>
+Scanners, Film&nbsp;y otras fuentes de input, por otro lado, tipicamente tienen una respuesta lineal de señal a la intensidad de luz.<br><br>
+Estos días los monitores modernos tienen capacidades dee plug-and-play que informan a tu sistema operativo sobre su seteo de gama (y otros valores).
+&nbsp;Esta informacíon es frecuentemente llamada EDID y tal vez alguna herramienta de tu tarjeta gráfica puede acceder a esta información. &nbsp; Actualmente,
+mrViewer no intenta aun leer información EDID de tu monitor
+pero tu tarjeta gráfica puede tener algun utilitario que si lo hace. &nbsp; Por
+ejemplo, bajo Linux y con una tarjeta gráfica de NVidia, el comando nvidia-settings puede frecuentemente leer esta información para vos.</p><p>
+Si no conoce su gama del monitor, puede intentar adivinarla haciendo un simple test visual.<br><br>
+Abra mrViewer.  Asegurese que su gama y gain están a 1.0 y que ningun LUT esta activo.<br><br>
+Vaya a la <span class="menu">Ventana de Lista de Carretes.</span> &nbsp;Luego, use el <span class="hotkey">BDR</span> y seleccione <span class="menu">Crear-&gt;Gradiente Lineal</span>.<br>
+Esto creará un simple gradiente lineal llendo desde total negro a total blanco, cubriendo toda tu pantalla. Puede que quieras maximizar tu ventana para verlo propiamente.  &nbsp;<br>Si usted ve los valores de los pixeles, verá que cambian gradualmente de 0 a 1. &nbsp;<br><br><span style="font-style: italic;"></span>Si tu monitor usa cualquier tipo de gama, verás que el punto medio del gradiente no esta visualmente en el centro de la pantalla. &nbsp;Esto es por la gama de tu monitor. &nbsp;Usando el control de gama de mrViewer, trate de ajustarlo hasta que usted perciva el punto medio en el centro de la pantallla.  Por ejemplo, ponga el valor a 0,45.</p>
 
 <p>
-The inverse value of that (ie. 1.0 / gamma setting of mrViewer) is
-roughly your monitor's gamma. &nbsp;Thus, if you had to set the slider
-to 0.45 or close-by, your monitor's gamma is probably 2.2.<br></p>
+El valor inverso del setting de gama (es decir, 1,0 / gama de mrViewer) es
+la gama de tu monitor. &nbsp;Por ello, si tuviste que setear el control
+a 0,45 o cerca del mismo, tu gama de monitor es probablemente 2.2.<br></p>
 
-<h3>Calibrating your monitor's gain and brightness</h3>
+<h3>Calibrando tu ganancia de monitor y el brillo</h3>
 
 <p>
-Now that you know your monitor's gamma, to properly calibrate it, you
-then need to use some special image called a gamma chart.
-&nbsp;mrViewer already ships with some gamma charts for some common
-monitors.<br><br>
-Reset mrViewer's gamma and gain back to 1.0.<br><br>
-From the Reel Window, do <span class="hotkey">RMB</span> and select <span class="menu">Create-&gt;Gamma Chart-&gt;2.2</span>
-(or whatever value is closer to what your monitor uses). &nbsp; This&nbsp;creates &nbsp;a
-simple gamma calibration chart for your monitor. &nbsp;Maximize the
-view so the chart covers the whole screen. &nbsp; You should then check
-that gamma chart from a distance, so that each line blends with each
-other. &nbsp;If you don't see the lines blending, you need to adjust
-your monitors' brightness and contrast appropriately.</p>
+Ahora que sabes la gama de tu monitor, para calibrarlo propiamente, necesitas un tipo de imagen especial llamado un carta de gama.
+&nbsp;mrViewer ya viene con varias charts de gama para algunos monitores comunes.<br><br>
+Resetee la gama y la ganancia de mrViewer de vuelta a 1,0.<br><br>
+De la Ventana de Lista de Carretes, presione <span class="hotkey">BDR</span> y seleccione <span class="menu">Crear-&gt;Carta de Gamma-&gt;2.2</span>
+(o cualquiera sea el valor más cercano que tu monitor utilice). &nbsp; Esto&nbsp;crea &nbsp;una simple carta de calibración de gama para tu monitor.
+ &nbsp;Presione F12 para maximizar la carta que cubra toda la pantalla.&nbsp; Deberias luego chequear la imagen desde una distancia, de tal forma que cada línea se mezcle con la otra. &nbsp;Si no ve que las lineas se mezclan, debes ajustar el brillo y el contraste del monitor apropiadamente.</p>
 
-<h3>Calibrating your monitor's colors</h3>Sadly, adjusting your monitor's color balance is much more tricky without a proper sensor.
+<h3>Calibrando los colores de tu monitor</h3>Lamentablemente, ajustar el balance de color de tu monitor es mucho más díficil sin un sensor apropiado.
 
-
-<p>The color balance controls of the monitor (such as color temperature
-or separate RGB gains) adjust relative intensities of the three phosphors,
-changing the overall color cast of the displayed image. Higher
-temperature setting corresponds to a bluer image, lower temperature -
-to a redder image. These controls are intended to match the white
-balance of the monitor to the workplace lighting conditions, i.e. make
-the white color displayed by monitor match the color of white paper
-placed next to it. It is essential for workplace lighting to be
-consistent. For best results, your workplace should use daylight-balanced light sources.
+<p>El control de balance de color balance del monitor (como su temperatura de color o separado ganancias para RGB) ajusta intensidades relativas de los tres fosforos, cambiando sobre todo el color que emite la imagen mostrada. 
+Seteos de alta temperatura corresponden a una imagen mas azulada, baja temperatura, una imagen mas rojiza. Estos controles tienen pensado igualar el balance de blanco del monitor a las condiciones de luz del lugar de trabajo. Es decir, hacer que el color blanco mostrado en el monitor iguale el color del papel blanco puesto junto a él. Es esencial que la iluminación en el lugar de trabajo sea consistente.  Para mejores resultados, tu lugar de trabajo debería usar fuentes de luz balanceadas a luz de día..
 
 </p>
-You might also wish to set overall color balance of your monitor at
-this time. Color temperature of 5400K is what the daylight is balanced
-at, so that's what you should set you monitor color control to. Other
-commonly used setting is 6500K. Some monitors default to much cooler
-color rendition (9000K and up).<br><br>If
-your workplace is next to a window, the sunlight coming from it will
-force you to change the color temperature of your monitor as the day
-goes by. &nbsp; In a perfect world, your monitor would come with its
-own sensor to the environment and adjust automatically, but sadly this
-is a technology not yet available.<br><br>If you are able to obtain
-information about the three color primaries of your monitor, you can
-feed this information to mrViewer in its preferences.</body></html>
+Puede que también desees setear el balance de color promedio de tu monitor a esta oportunidad.  Temperatura de color de 5400K es lo que la luz de día está balanceada, asi que eso es lo que debieras poner en tu control de color de tu monitor. Other
+seteo común usado es 6500K. Algunos monitores usan por defecto un rendimiento de color mucho mas alta (9000K and up).<br><br>Si
+tu lugar de trabajo está junto a una ventana, la luz del sol que venga de afuerta te obligará a cambiar la temperatura de color de tu monitor a medida que pasa el día. &nbsp; En un mundo perfecto, tu monitor vendría con su sensor del ambiente propio y ajustaría automaticamente, pero lamentablemente esa tecnología no está disponible.<br><br>Si es capaz de obtener
+información acerca de los tres colores primarios de tu monitor, puede darle esa información a mrViewer en sus preferencias.</body></html>

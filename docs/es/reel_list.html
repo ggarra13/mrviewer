@@ -3,7 +3,7 @@
 <head>
 
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
-  <title>The Reel List Window</title>
+  <title>La Ventana de Listado de Carretes</title>
 
 
   <link rel="stylesheet" href="stylesheet.css" type="text/css">
@@ -14,8 +14,7 @@
 
 <br>
 
-<h2><span style="text-decoration: underline;">Reel
-List Window</span></h2>
+<h2><span style="text-decoration: underline;">Ventana de Listado de Carretes</span></h2>
 
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
 
@@ -25,18 +24,17 @@ List Window</span></h2>
 
       <td><img style="width: 415px; height: 377px; float: left;" alt="reelList.png" src="images/reelList.png" hspace="20"></td>
 
-      <td>You can bring up the Reel List window by doing
-any of:<br>
+      <td>Puede abrir la ventana de Listado de Carretes haciendo uno de estos:<br>
 
       <ul>
 
-        <li>Opening up the window from the main toolbar's 
+        <li>Abriendo la ventana desde el botón 
           <div class="menu">W</div>
- button.</li>
+ de la barra superior principal.</li>
 
-        <li>By using
+        <li>Usando
           <div class="menu">
-RMB-&gt;Window-&gt;Reels</div>
+BDR-&gt;Ventana-&gt;Carretes</div>
         </li>
 
       </ul>
@@ -50,77 +48,57 @@ RMB-&gt;Window-&gt;Reels</div>
 
 <br>
 
-The Reel List Window allows you to see all reels loaded as well as all
-images loaded in the currently active reel.<br>
+La Ventana del Listado de Carretes te permite ver todos los carretes cargados así como las imágenes cargadas en carrete actualmente activo.<br>
 
-It also allows you to perform some additional operations on the images
-loaded.<br>
+Tambien permite que hagas algunas operaciones adicionales en las imágenes cargadas.<br>
 
 <br>
 
-A reel is basically a list of images stored under a particular name.
-&nbsp;This list of images can be reordered simply by doing drag and
-drop of the image. &nbsp;You can also quickly switch from one image
-or
-movie to another by clicking on any item on the list.<br>
+Un Carrete es basicamente una lista de imágenes grabadas bajo un nombre en particular.
+&nbsp;Esta lista de imágenes puede ser reordered simplemente haciendo drag and
+drop (arrastre y suelte) de la imagen. &nbsp;Usted puede rápidamente cambiar de una imagen o pelicula a otra cliqueando en cualquier item de la lista.<br>
 
 <br>
 
-mrViewer allows you to also load reels (.reel files) from the command
-line or by doing drag and drop. &nbsp;When loading a reel, all the
-images listed in the reel will be loaded.<br>
+mrViewer te permite cargar carretes (archivos .reel) de la linea de comando
+ o usando drag and drop (arrastre y suelte). &nbsp;Cuando se carga un carrete, todas las imagenes listadas en el carrete serán cargadas.<br>
 
 <br>
 
-The reel window also allows you to open a new image or movie, save the
-current image or frame, make a clone of the current image (useful for
-3d renders) or remove the image from the reel.<br>
+La ventana de los Carretes también te permite abrir una nueva imagen o película, grabar el cuadro o imagen actual, clonificar la imagen actual (util para renders 3d) o remover la imagen del carrete.<br>
 
-You can also attach a new CTL transform (3D Lut) to an image, make an
-image always appear as part of the background or play back the whole
-reel as an EDL.<br>
+Puedes tambien atar una nueva CTL transform (3D Lut) a una imagen, hacer que la imagen aparezca siempre como fondo y reproducir todo el listado del carrete como una sola pelicula en LDE (Lista de Decisión de Edicion).<br>
 
 <br>
 
-<h3><a name="Compositing_Images"></a>Compositing
-Images</h3>
+<h3><a name="Compositing_Images"></a>Componiendo
+Imágenes</h3>
 
-mrViewer supports some basic, non destructive A over B compositing.
-&nbsp;This compositing is for display purposes only and it is not
-intended for saving composited images.<br>
-
-<br>
-
-Within the Reel List Window, it is possible to select an image and then
-click on the <span style="font-weight: bold;">BG</span>
-button to make that image be a background image. &nbsp;Afterwards,
-you
-can then switch to a new image and the background image will be
-displayed in the background. &nbsp;The background image is always
-stretched to fit the size of the foreground image.<br>
+mrViewer supporta una basica, composición A sobre B sin destrucción de las imágenes..
+&nbsp;Esta composición es para display solamente y no pretende ser para grabar imágenes compuestas.<br>
 
 <br>
 
-The main purpose of this feature is to allow you to interactively see
-your 3d renders over a background plate. &nbsp;This works
-particularly
-well when reading a foreground image that is a file that changes on
-disk or when reading a virtual
-image, such as a mental ray render stub.
-<h3><a name="Playing_Movies_as_an_EDL_Reel"></a>Playing
-Movies as an EDL Reel</h3>
+Dentro de la Ventana de Listado de Carretes, es possible seleccionar una imagen y luego cliquear en el botón <span style="font-weight: bold;">BG</span>
+para hacer que la imagen sea una imagen de fondo. &nbsp;Seguidamente,
+usted puede cambiar a una nueva imagen y la imagen de fondo sera mostrada en el fondo (siempre y cuando la imagen de frente posea un canal de alfa). &nbsp;La imagen de fondo es siempre estirada para ajustarse al tamaño de la imagen de frente.<br>
 
-One feature of mrViewer is that it allows you to display multiple
-sequences or movies together. &nbsp;If you load several files into
-a reel, you can then toggle EDL mode on and off from the Reel List Window.<br>
+<br>
 
-The EDL mode allows you to show all movies in a reel one after the
-other, as if all of them had been edited together into a big movie file.<br>
+El propósito principal de esta característica es permitirte interactivamente ver tus renders 3d sobre un fondo. &nbsp;Esto funciona
+particularmente
+bien cuando se lee una imagen de frente que cambia su archivo en el disco o cuando se lee una imagen virtual, tal como un talón de render de mental ray.
 
-<h3>Removing Images from Reel List</h3>
+<h3><a name="Playing_Movies_as_an_EDL_Reel"></a>Reproduciendo
+Peliculas como un Carrete LDE</h3>
 
-Once you are done with some image sequence or movie file you might want to get
-rid of it.  To do so, select the image in the reel list window and press theDelete key (<div class="hotkey">Del</div>).<br>
+Una característica de mrViewer es que te permite mostrar multiple secuencias o películas juntas. &nbsp;Si usted carga varios archivos en un carrete, puede entonces elegir el modo LDE de la Ventana de Listado de Carretes.<br>
+
+El modo LDE te permite mostrar todas las peliculas en un carrete una tras otra, como si todas hubieran sido editadas en una gran pelicula. .<br>
+
+<h3>Removiendo Imágenes del Listado de Carretes</h3>
+
+Una vez que hayas terminado con alguna secuencia de imágenes o pelicula, puede que quieras deshacerte de ella.  Para hacerlo, selecciona la imagen en la ventana del listado de carretes y presione la tecla Delete (<div class="hotkey">Del</div>).<br>
 <br>
 
 <br>
