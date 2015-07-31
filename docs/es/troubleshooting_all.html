@@ -2,53 +2,33 @@
 <html><head>
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
   
-  <title>Common Troubleshooting</title><meta content="Gonzalo Garramuño" name="author"></head>
+  <title>Arreglando Problemas Comunes</title><meta content="Gonzalo Garramuño" name="author"></head>
 
 <body>
-<h2 style="text-align: center;">Troubleshooting</h2>
+<h2 style="text-align: center;">Arreglando Problemas</h2>
 
-<h3 style="text-align: center;">All Platforms</h3>
-<h4>+ Movies do not play back smoothly in reverse.</h4>
+<h3 style="text-align: center;">Todas las Platformas</h3>
+<h4>+ Videos no se reproducen en reversa en forma contínua.</h4>
 
-Whenever I try to play back a movie in reverse, the playback is choppy.<br>
-
-<br>
-
-<span style="font-weight: bold;">Answer:</span><br>
-
-<span style="font-family: monospace;">Smooth playback of movies in
-reverse is highly dependant on the speed of your computer as well as
-the resolution and&nbsp;codec used to encode the movie. &nbsp;A lot of codecs assume the
-playback is always done forwards and encode frames by taking advantage
-of frame differences.<br>Sometimes to decode even one frame it is
-needed to know up to a second of all the frames that came before it
-(and sometimes after it, too).<br>
-When playing back in reverse, it means mrViewer needs to work harder in
-decoding several back frames before the current frame is actually
-displayed. &nbsp;If your computer is not fast enough to decode those
-frames under the fps playback, you will see the playback stutter.<br>If
-your movie contains audio, you can often improve reverse playback by
-turning off the audio by going to the audio track selection button and
-selecting &lt;no audio&gt;.<br> </span>
-
-<h4>+ Opening mrViewer reports another instance is running.</h4>
-
-Whenever I try to open mrViewer, it fails telling me another instance is running.<br>
+Cuando intento reproducir una película en reversa, la reproducción es picada.<br>
 
 <br>
 
-<span style="font-weight: bold;">Answer:</span><br>
+<span style="font-weight: bold;">Respuesta:</span><br>
 
-<span style="font-family: monospace;">mrViewer supports a mode where only an instance of mrViewer is present so that if you try opening an image in another viewer, the image is redirected towards the first opened viewer.  This feature is set in the preferences.  This system works by creating a dummy mrViewer.lock.prefs file inside the preferences directory.  Sometimes if the viewer was not closed properly, this dummy file is left behind and will incorrectly report that another instance of mrViewer is running.  Under Linux that file is /home/@user@/.fltk/filmaura/ and under Windows, it is %APPDATA%/filmaura.  Removing the file will allow you to open a new mrViewer. </span>
+<span style="font-family: monospace;">Reproduccion en reversa en forma contínua es altamente dependiente en la velocidad de su computadora, asi como en la resolución y codec usado para codificar la película. &nbsp;Muchos codecs asumen que la reproducción será siempre para adelante y codifican los cuadros tomando ventaja de las diferencias de cuadro a cuadro. <br>A veces para decodificar inclusive un sólo cuadro es necesario saber hasta un segundo entero de todos los cuadros que vinieron antes de este (y a veces, los que vienen después también).<br>
+Cuando se reproduce en reversa, significa que mrViewer necesita trabajar mas duramente en decodificar varios cuadros para atrás antes que el cuadro actual se muestre. &nbsp;Si tu computadora no es lo suficientemente rápida para decodificar esos cuadros en menos tiempo que el cps reproduce, veras la reproducción tartamudear.<br>Si
+su película contiene audio, puede mejorar la reproducción en reversa apagando el audio llendo al botón de selección de pista de audio y seleccionar &lt;no audio&gt;.<br> </span>
+
+<h4>+ Abriendo mrViewer reporta otra instancia está corriendo.</h4>
+
+Cuando intento abrir mrViewer, falla diciendome que otra instancia está corriendo.<br>
+
+<br>
+
+<span style="font-weight: bold;">Respuesta:</span><br>
+
+<span style="font-family: monospace;">mrViewer soporta un modo donde solo una instancia de mrViewer está presente por lo que si usted intenta abrir la imagen en otro mrViewer, la imagen se redirecciona al mrViewer ya abierto. Esta característica es seteada en las preferencias.  Este sistema funciona creando un archivo mrViewer.lock.prefs dentro del directorio de preferencias.  A veces, si mrViewer no fue cerrado correctamente, este archivo quedará y reportará incorrectamente que otra instancia de mrViewer está corriendo.  Bajo Linux ese archivo está en /home/@user@/.fltk/filmaura/ y bajo Windows, está en %APPDATA%/filmaura.  Eliminando ese archivo falso te permitirá abrir mrViewer de vuelta. </span>
 <br><br>
 
-<h4>+ Saving a movie file from the gui makes audio stutter</h4>
-
-I save a movie with audio from the GUI, but the resulting movie has audio that stutters.<br>
-<br>
-
-<span style="font-weight: bold;">Answer:</span><br>
-
-<span style="font-family: monospace;">Currently audio and video is saved by seeking through the file.  Unfortunately, certain codecs makes seeking difficult, and this makes the audio non continuous and creates gaps.  For creating movies with audio, we recommend using the bundled ffmpeg utility which is also faster.<br>
-If you need to create movies from the interface we recommend your audio comes from a wav file instead of an mp3 or other video. </span>
 </body></html>
