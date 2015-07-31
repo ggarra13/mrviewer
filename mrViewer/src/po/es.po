@@ -7,7 +7,7 @@ msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
 "POT-Creation-Date: 2015-07-29 13:32-0300\n"
-"PO-Revision-Date: 2015-07-20 22:16-0300\n"
+"PO-Revision-Date: 2015-07-30 21:32-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
 "Language: \n"
@@ -52,10 +52,7 @@ msgid ""
 "\n"
 "\n"
 "Not a known stream type for stream #"
-msgstr ""
-"\n"
-"\n"
-"No es un tipo de flujo conocido para el flujo #"
+msgstr "\n\nNo es un tipo de pista conocido para la pista #"
 
 #: standalone/mrvCommandLine.cpp:93
 #, c-format
@@ -164,7 +161,7 @@ msgstr " para cuadro "
 
 #: core/CMedia.cpp:2155
 msgid " for stream #"
-msgstr " para flujo #"
+msgstr " para pista #"
 
 #: core/aviImage_save.cpp:1198
 msgid " frame"
@@ -639,7 +636,7 @@ msgstr ""
 
 #: core/CMedia_audio.cpp:757
 msgid ": Could not find stream info."
-msgstr ": No pude encontrar información de flujo."
+msgstr ": No pude encontrar información de pistas."
 
 #: core/CMedia_audio.cpp:749
 msgid ": Could not open filename."
@@ -960,11 +957,11 @@ msgstr "Opciones de Audio:"
 #: gui/mrvImageInformation.cpp:808
 #, c-format
 msgid "Audio Stream #%d"
-msgstr "Flujo de Audio #%d"
+msgstr "Pista de Audio #%d"
 
 #: gui/mrvImageInformation.cpp:415
 msgid "Audio Streams"
-msgstr "Flujos de Audio"
+msgstr "Pistas de Audio"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3855
 msgid "Audio Volume"
@@ -1794,7 +1791,7 @@ msgstr "Decodificacion Faltante de Samples"
 
 #: core/CMedia.cpp:126
 msgid "Decode No Stream"
-msgstr "Decodificacion sin Flujo"
+msgstr "Decodificacion sin Pista"
 
 #: core/CMedia.cpp:122
 msgid "Decode OK"
@@ -2774,7 +2771,7 @@ msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
 #: core/aviImage.cpp:1106
 msgid "Invalid video stream "
-msgstr "Flujo de video inválido "
+msgstr "Pista de video inválido "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2807
 msgid "JPEG (.jpg)"
@@ -3271,7 +3268,7 @@ msgstr "No se necesita conversión.  Gama: "
 
 #: core/CMedia_audio.cpp:196
 msgid "No decoder found for audio stream. ID: "
-msgstr "Ningún decodificador encontrado para el flujo de audio.  ID: "
+msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
 
 #: core/CMedia_audio.cpp:1338
 msgid "No memory for audio frame"
@@ -4381,7 +4378,7 @@ msgstr "Paré cacheo de codificación "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2936
 msgid "Streaming"
-msgstr "Flujo"
+msgstr "Pista"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.2.0-38-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3461
 msgid "Stretch image to compensate for image's pixel ratio."
@@ -4394,11 +4391,11 @@ msgstr "Subtítulo"
 #: gui/mrvImageInformation.cpp:853
 #, c-format
 msgid "Subtitle Stream #%d"
-msgstr "Flujo de Subtítulo #%d"
+msgstr "Pista de Subtítulo #%d"
 
 #: gui/mrvImageInformation.cpp:416
 msgid "Subtitle Streams"
-msgstr "Flujos de Subtítulo"
+msgstr "Pistas de Subtítulo"
 
 #: gui/mrvImageView.cpp:2203
 msgid "Subtitle/No Subtitle"
@@ -5009,11 +5006,11 @@ msgstr "Grabar Opciones"
 #: gui/mrvImageInformation.cpp:768
 #, c-format
 msgid "Video Stream #%d"
-msgstr "Flujo de Vídeo #%d"
+msgstr "Pista de Vídeo #%d"
 
 #: gui/mrvImageInformation.cpp:414
 msgid "Video Streams"
-msgstr "Flujos de Video"
+msgstr "Pistas de Video"
 
 #: core/aviImage.cpp:1067
 msgid "Video Sync master frame "
