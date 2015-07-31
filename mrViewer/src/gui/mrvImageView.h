@@ -140,7 +140,9 @@ class server;
 
     enum BlendMode {
       kBlendTraditional = 0,
-      kBlendPremult = 1
+      kBlendPremult = 1,
+      kBlendTraditionalNonGamma = 2,
+      kBlendPremultNonGamma = 3,
     };
 
 
