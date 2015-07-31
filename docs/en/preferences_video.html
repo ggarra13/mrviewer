@@ -55,7 +55,12 @@ Here you can set the default behavior when compositing one foreground image or v
 The Premult option blends as if alpha is already premultiplied, like:<br>
       <b>FG + (1-alpha)*BG</b><br><br>
 
-where FG is the rgb channels of the foreground image, alpha is its alpha channel, and BG is the rgb channels of the background image.
+where FG is the rgb channels of the foreground image, alpha is its alpha channel, and BG is the rgb channels of the background image.  Note that the multiplication happens AFTER gamma correction, which can leave some fringing around the edges.
+<br>
+The Traditional No Gamma method unpremults the alpha channel before gamma correction
+and premults it after it.  Then it uses the Traditional method to composite it.
 
+<br>
+The Premult No Gamma unpremults by the alpha channel before gamma correction and premults it after it. Then uses the Premult method to compose the image.
 </body>
 </html>
