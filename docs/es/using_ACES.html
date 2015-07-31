@@ -1,7 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
 <html><head>
-<meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Using the Color Transform Language</title><meta content="Gonzalo Garramu�o" name="author"></head><body><h1 style="text-align: center;">Using ACES (Clip Files)</h1><p>mrViewer is largely compatible with ACES (Academy Color Encoding System) for color correction.</p><span style="font-family: Andale Mono;">Camera RAW</span><br style="font-family: Andale Mono;">
+
+<meta content="text/html; charset=UTF8" http-equiv="content-type"><title>Using the Color Transform Language</title><meta content="Gonzalo Garramu�o" name="author"></head><body><h1 style="text-align: center;">Using ACES (Clip Files)</h1>
+<p>mrViewer es largamente compatible con ACES (Academy Color Encoding System) para la corrección de color y el manejo del mismo.</p>
+<span style="font-family: Andale Mono;">Camera RAW</span><br style="font-family: Andale Mono;">
+
 <span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; ||</span><br style="font-family: Andale Mono;">
+
 <span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
 <span style="font-family: Andale Mono;">&nbsp;&nbsp; IDT to</span><br style="font-family: Andale Mono;">
 <span style="font-family: Andale Mono;">ACES workspace</span><br style="font-family: Andale Mono;">
@@ -22,48 +27,62 @@
 <span style="font-family: Andale Mono;">&nbsp;&nbsp;&nbsp; \/</span><br style="font-family: Andale Mono;">
 <span style="font-family: Andale Mono;">ODT from OCES to Display</span><br style="font-family: Andale Mono;">
 <br>
-<p>mrViewer reads ACESClip xml files that describe the different CTL
-transforms applied to an image.&nbsp; It also contains ASC-CDL color
-corrections which are emulated as Look Mod Transforms.<br>
- </p><p>mrViewer
-can have multiple CTL transformations active at the same time.
-&nbsp;One transform is attached to the main view window and represents
-the monitor, video or film stock. &nbsp;This transform within the CTL
-naming conventions is often called the Output Device Transform (ODT).
-&nbsp;This transform is set in the main preferences window, in the CTL
-section. &nbsp;Most projects will require users to set the device
-transform only once and not change it.</p><p>mrViewer
-ships with several basic ODTs. </p><p>An
-ODT that tries to emulate film will often require a more complex 2D or
-3D table lookup
-to try to emulate the inverse of the Print Film Emulation Transform
-(PFET). &nbsp;The PFET is particular to each film stock and film
-developing laboratory and generating it requires careful evaluation of
-the film stock and developing conditions. &nbsp;For more information
-about creating the inverse PFET, you should consult your developing
-laboratory.</p><p>A
-second transform available is the Rendering Transform or&nbsp;RT for
-short. &nbsp; This transformation is unique to each image and project
-and represents the transformation needed to take the RGB pixel values
-stored in an image to a pleasing internal CIE XYZ (OCES) representation for
-the project. &nbsp;mrViewer ships with a basic Rendering Transform that
-was given by AMPAS to provide a Reference Rendering
-Transform for Film which should become the standard for most film
-productions. &nbsp;If your project requires some special film effect
-(like bleach film), a special render transform might need to be used.</p>A
-third transform available is the Look Modification Transform (LMT).
-&nbsp;This transformation is intended mainly for camera devices to take
-their input images and color correct them based on certain knobs as
-done on set and is particular to each camera model.  You can have an unlimited number of LMTs.<p></p>
-Finally, there's an Input Device Transform (IDT) which is a transform
-used to take the camera's raw data into a proper ACES workspace.
-mrViewer ships with a list of input device transforms for some popular
-film cameras.&nbsp; If not one of the cameras listed, contact your
-camera manufacturer.<br>
-<br>
-All of these transforms can be stored in an ACES Clip metadata
-file.&nbsp; mrViewer loads equivalent named ACESClip metadata files if
-they are present.&nbsp; For example, for a frame called
-nature.%04d.exr, the clip file named ACESclip.nature.xml file would be
-loaded.&nbsp; Once the clip file is loaded you can press the <span style="font-weight: bold;">LUT </span>button in the main toolbar and wait for it to cook the transform (which should take a couple of seconds).<br>
+<p>mrViewer lee archivos ACESClip xml&nbsp; que describen las
+diferentes transformaciones de CTL aplicadas a una imagen.&nbsp;
+Tambien contiene ASC-CDL correcciones de color que son emuladas como
+Look Mod Transforms.<br>
+ </p><p>mrViewer puede tener multiple
+transformaciones de CTL activas al mismo tiempo.&nbsp;
+Una transformación está atada a la vista de la ventana principal y
+representa el monitor, video o film stock.&nbsp; Esta transformación
+dentro de la convención de nombres dentro de CTL es llamada la
+Transformación de Aparato de Salida o Output Device Transform
+(ODT).&nbsp;
+Este transform se setea en las ventana principal de preferencias, en la
+sección de CTL.&nbsp; La mayoría de projectos requerirá que los
+usuarios seteen la ODT una vez y no la cambien.</p><p>mrViewer viene con varias ODTs básicas para emular los monitores comunes. </p><p>Una
+ODT que intenta emular film requerirá frecuentemente una más completa
+tabla de lut de 2D o 3D para intentar emular la inversa de la
+Transformación de Emulación de Impresión en Fílmico o Print Film
+Emulation Transform
+(PFET).&nbsp; La PFET es particular a cada film stock y laboratorio de
+revelado de film y generarla requiere una evaluación cuidadosa del film
+stock y sus condiciones de revelado.&nbsp; Para más información
+acerca de crear la inversa PFET, usted debería consultar con su
+laboratorio de revelado.</p><p>Una
+segunda transformación disponible es la Transformación de Rendering o
+Rendering Transform o RT para abreviar.&nbsp;&nbsp; Esta transformación
+es unica a cada imagen y proyecto y representa la transformación
+necesaria para llevar los valores de pixel RGB guardados en una imagen
+a una agradable representación interna de CIE XYZ (OCES) para el
+proyecto. &nbsp;mrViewer viene con una basica Rendering Transform que
+fue dada por AMPAS para proveer una Transformación de Rendering de
+Referencia o Reference Rendering
+Transform que debería convertirse en el estandar para la mayoria de las
+produciones.&nbsp; Si tu proyecto requiere algun effect especial de
+film
+(como film lavanda), una transformación de rendering especial podría
+tener que ser usada.<br>
+</p>
+<p>Una tercera transformación disponible son las Transformaciones de
+Modificación de Look o Look Modification Transform (LMT).&nbsp;
+Esta transformación esta pensada principalmente para cámaras para
+llevar su imagenes de input y corregir su color basado en ciertos
+parametros como se hace en el set y esto es particular a cada modelo de
+cámara. Usted puede tener un número ilimitado de LMTs.</p>
+<p></p>Finalmente, está una Transformación de Aparato de Entrada o
+Input Device Transform (IDT) que es una transformación usada para
+llevar los datos en crudo de la cámara a un propicio espacio de trabajo
+de ACES.
+mrViewer viene con una pequeña lista de IDTs para algunas cámaras de
+fílmico populares.&nbsp; Si su camara no está listada, contacte a su
+manufacturador de su camera.<br>
+<br>Todas estas transformaciones pueden ser almacenadas en un archivo
+de Clip de Metadata de ACES.&nbsp; mrViewer carga equivalent archivos
+de Clip de Metadata de ACES si se encuentran.&nbsp; Por ejemplo, para
+una secuencia llamada
+nature.%04d.exr, el archivo clip llamado ACESclip.nature.xml sería
+buscado y cargado si está presente.&nbsp; Una vez que el archivo de
+clip es cargado puede presionar el botón de <span style="font-weight: bold;">LUT </span>en la barra de herramientas principal y esperar que se cocine la transformación (que debería llevar unos segundos).<br>
+
 </body></html>
