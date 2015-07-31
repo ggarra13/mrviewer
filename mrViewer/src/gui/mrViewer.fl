@@ -628,7 +628,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {290 100 630 450} resizable visible
+        xywh {298 150 630 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1119,7 +1119,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
           }
           {fltk::Group} {} {
             label Caches open
-            xywh {13 22 399 364} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 399 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1159,7 +1159,7 @@ This setting thus allows caching more pictures in memory.}
             {fltk::LightButton} uiPrefsCacheFPS {
               label FPS
               user_data uiPrefsCacheSize user_data_type {fltk::ValueSlider*}
-              callback {v->activate( !v->active() );} selected
+              callback {v->activate( !v->active() );}
               tooltip {When selected, cache is set to twice the frames per second of the movie.}
               xywh {299 189 55 35}
             }
@@ -1697,7 +1697,7 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video
+            label Video open
             xywh {15 22 399 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
@@ -1739,13 +1739,19 @@ SC x SA + DC x ( 1 - SA)
 Premult:
 SC + DC x ( 1 - SA )
 where SC is source color, SA is source alpha, and DC is destination color.}
-                xywh {105 25 190 25}
+                xywh {132 25 167 25}
               } {
                 {fltk::Item} {} {
                   label Traditional
                   }
                 {fltk::Item} {} {
                   label Premult
+                  }
+                {fltk::Item} {} {
+                  label {Traditional No Gamma}
+                  }
+                {fltk::Item} {} {
+                  label {Premult No Gamma}
                   }
               }
             }
@@ -1809,7 +1815,7 @@ else
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {selected
           xywh {5 5 195 430}
         } {
           {fltk::Browser} {} {

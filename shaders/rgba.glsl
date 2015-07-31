@@ -17,6 +17,8 @@ uniform float gamma;
 uniform int   channel;
 
 // Normalization variables
+uniform bool  unpremult;
+uniform bool  premult;
 uniform bool  enableNormalization;
 uniform float normMin;
 uniform float normSpan;
@@ -53,6 +55,11 @@ void main()
       c.rgb = lutT + lutM * log( clamp(c.rgb, lutMin, lutMax) );
       c.rgb = exp( texture3D(lut, c.rgb).rgb ); 
     }
+
+  if ( unpremult && c.a != 0.0 )
+  {
+      c.rgb /= c.a;
+  }
 
   //
   // Apply gain 
@@ -92,6 +99,11 @@ void main()
     {
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
+
+  if ( premult )
+  {
+      c.rgb *= c.a;
+  }
 
   gl_FragColor = c;
 
