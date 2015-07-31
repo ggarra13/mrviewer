@@ -20,6 +20,8 @@ Out main(
 	 uniform half   gain  = 1.0,
 	 uniform half   gamma = 0.45,
 	 uniform int    channel = 0,
+	 uniform bool   unpremult = 0,
+	 uniform bool   premult = 0,
 	 uniform bool   enableNormalization = 0,
 	 uniform half   normMin = 0,
 	 uniform half   normSpan  = 1,
@@ -43,6 +45,7 @@ Out main(
     {
       c.rgb = (c.rgb - normMin) / normSpan;
     }
+
 
 
   //
@@ -89,6 +92,11 @@ Out main(
       }
     }
 
+  if ( unpremult && c.a != 0.0 )
+  {
+    c.rgb /= c.a;
+  }
+
   //
   // Apply gain 
   //
@@ -127,6 +135,12 @@ Out main(
     {
       c.rgb = (c.r + c.g + c.b) / 3;
     }
+
+
+  if ( premult )
+  {
+      c.rgb *= c.a;
+  }
 
   Out output;
   output.pixel = c;

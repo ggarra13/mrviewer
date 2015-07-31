@@ -5,6 +5,8 @@ v2.8.9   - Made printout of ACES file loaded always display full path to it.
 	   the last frame of a video.
 	 - Made Clear Cache work on videos, too.
 	 - Made .webm a valid video extension.
+	 - Made shaders work in unpremult/premult on mode to avoid edge
+	   fringing in OpenEXR images.
 
 v2.8.8   - Fixed some crashing and hanging bugs when playing
 	   backwards or scrubbing backwards.

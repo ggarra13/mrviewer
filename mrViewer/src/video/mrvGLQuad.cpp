@@ -909,6 +909,25 @@ namespace mrv {
 	    _shader->setUniform( "enableLut", 0 );
 	  }
 
+        const mrv::ViewerUI* v = _view->main();
+        if (!v) return;
+
+        switch ( v->uiPrefs->uiPrefsBlendMode->value() )
+        {
+            case ImageView::kBlendPremultNonGamma:
+                _shader->setUniform( "unpremult", 1 );
+                _shader->setUniform( "premult", 1 );
+                break;
+            case ImageView::kBlendTraditionalNonGamma:
+                _shader->setUniform( "unpremult", 1 );
+                _shader->setUniform( "premult", 1 );
+                break;
+            default:
+                _shader->setUniform( "unpremult", 0 );
+                _shader->setUniform( "premult", 0 );
+                break;
+        }
+
 	if ( _view->normalize() )
 	  {
 	    _shader->setUniform( "enableNormalization", 1 );
