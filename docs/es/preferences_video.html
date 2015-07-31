@@ -3,7 +3,7 @@
 <head>
 
   <meta content="text/html; charset=UTF8" http-equiv="content-type">
-  <title>Video Preferences</title>
+  <title>Preferencias de Video</title>
 
 
   <meta content="Gonzalo Garramu&ntilde;o" name="author">
@@ -12,10 +12,9 @@
 </head>
 <body>
 
-<h3>Video Preferences</h3>
+<h3>Preferencias de Video</h3>
 
-The Video Preferences tab allows you to configure how the video 
-works.<br>
+La ficha de Preferencias de Video te permite configurar como funciona el video.<br>
 <br>
 
 <table style="text-align: left; width: 100%;" border="1" cellpadding="2" cellspacing="2">
@@ -30,7 +29,7 @@ works.<br>
       <div class="menu">Driver</div>
       <br>
 
-Here you can change the default driver when the viewer starts.  By default, and for now, the only driver is OpenGL.<br>
+Aquí puedes cambiar el driver por defecto cuando mrViewer arranca.  Por ahora, el unico driver es OpenGL.<br>
 
     </tr>
 
@@ -43,19 +42,27 @@ Here you can change the default driver when the viewer starts.  By default, and 
 
       <br>
 
-Here you can set the default behavior for stereo images.  Currently only Red-Cyan Anaglyphs are supported.<br>
+Aquí puedes setear el comportamiento por defecto de imágenes en estereo.  Actualmente solo Red-Cyan Anaglificos son soportados.<br>
 
       <br>
-      <div class="menu">Blend Mode</div>
+      <div class="menu">Modo de Mezcla</div>
 
       <br>
 
-Here you can set the default behavior when compositing one foreground image or video over a background image or movie.  The traditional mode blends images with the following formula:<br>
-      <b>FG*alpha + (1-alpha)*BG</b><br><br>
-The Premult option blends as if alpha is already premultiplied, like:<br>
-      <b>FG + (1-alpha)*BG</b><br><br>
+Aqui puedes setear el comportamiento por defecto cuando se compone una imagen de frente sobre otro fondo o película.  El modo Tradicional mezcla imágenes con la siguiente formula:<br>
+      <b>FR*alfa + (1-alfa)*FD</b><br><br>
+La opción Premultiplicado mezcla la imagen como si el alfa ya esta premultiplicado, como:<br>
+      <b>FR + (1-alfa)*FD</b><br><br>
 
-where FG is the rgb channels of the foreground image, alpha is its alpha channel, and BG is the rgb channels of the background image.
+donde FR son los canales rgb de la imagen de frente, alfa es su canal alfa y FD son los canales rgb de la imagen de fondo.  Nótese que esta multiplicación sucede DESPUES de la correción de gama, por lo que puede dejar una leve franja brillante alrededor de los bordes.
+
+<br>
+El metodo Tradicional Sin Gamma divide (unpremult) por el canal alfa antes de la corrección de gama
+y lo premultiplica despues.  Luego usa el método tradicional para componer la imagen.
+<br>
+El metodo Premultiplicar Sin Gamma divide (unpremult) por el canal alfa antes de la corrección de gama
+y lo premultiplica despues.  Luego usa el método premultiplicado para componer la imagen.
+
 
 </body>
 </html>

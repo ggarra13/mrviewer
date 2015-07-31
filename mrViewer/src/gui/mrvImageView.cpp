@@ -1583,12 +1583,14 @@ void ImageView::draw()
 
     switch( uiPrefs->uiPrefsBlendMode->value() )
     {
-       case kBlendTraditional:
-	  _engine->set_blend_function( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-	  break;
-       case kBlendPremult:
-	  _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
-	  break;
+        case kBlendTraditional:
+        case kBlendTraditionalNonGamma:
+            _engine->set_blend_function( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
+            break;
+        case kBlendPremultNonGamma:
+        case kBlendPremult:
+            _engine->set_blend_function( GL_ONE, GL_ONE_MINUS_SRC_ALPHA );
+            break;
     }
   }
 
