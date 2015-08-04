@@ -622,13 +622,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {298 150 630 450} resizable visible
+        xywh {302 175 630 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1815,7 +1814,7 @@ else
             }
           }
         }
-        {fltk::Group} {} {selected
+        {fltk::Group} {} {
           xywh {5 5 195 430}
         } {
           {fltk::Browser} {} {
@@ -2424,14 +2423,15 @@ v->uiView->redraw();}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ConnectionUI {} {
-    Function {make_window(ViewerUI* main)} {private
+  class ConnectionUI {open
+  } {
+    Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label Connections open
-        xywh {614 257 450 400} hide resizable
+        xywh {626 332 450 400} resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );} visible
       } {
         {fltk::Group} {} {open
           xywh {0 5 445 390} vertical
@@ -2440,13 +2440,9 @@ o->child_of( main->uiMain );}
             label Server open
             xywh {15 10 400 75} align 5 box ROUNDED_BOX
           } {
-            {fltk::Widget} {} {
-              label Server
-              xywh {55 30 65 25} box FLAT_BOX
-            }
             {fltk::ValueInput} uiServerPort {
               label Port
-              xywh {155 30 70 25} step 1 value 4333
+              xywh {115 25 70 25} step 1 value 4333
             }
             {fltk::Button} uiCreate {
               label Create
@@ -2455,7 +2451,7 @@ o->child_of( main->uiMain );}
     mrv::server::create(v);
 else
     mrv::server::remove(v);}
-              xywh {235 30 100 25}
+              xywh {195 25 100 25}
             }
           }
           {fltk::Group} uiClientGroup {
@@ -2463,8 +2459,8 @@ else
             xywh {15 105 400 70} align 5 box ROUNDED_BOX
           } {
             {fltk::Input} uiClientServer {
-              label Server
-              xywh {55 18 145 30}
+              label Server selected
+              xywh {65 18 115 30}
               extra_code {o->text("localhost");}
             }
             {fltk::ValueInput} uiClientPort {
