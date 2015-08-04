@@ -1,12 +1,12 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
-<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Environment Variables for Assets</title>
+<html><head><meta content="text/html; charset=ISO-8859-1" http-equiv="content-type"><title>Variables de Entorno para Assets</title>
 <meta content="Gonzalo Garramuño" name="author">
 <link rel="stylesheet" href="file:///home/gga/code/Maya/mrLiquid/mrViewer/docs/stylesheet.css" type="text/css">
 </head><body>
-<h1 style="text-align: center;">Environment Variables for Assets</h1>
-<p>By default, when mrViewer views an image, movie or audio, it will log it in the database.  However, it is sometimes useful to attach a shot, sequence or show to the image being logged.  mrViewer relies on some useful environment variables for this.</p>
-<p>The environment variable SHOW determines the show the image belongs to.  It should be a small name, like 'hulk'.</p>
-The environment variable SHOT determines the shot the image belongs to.  It should be a 2 or 3 character string followed by a number.  Example: da023, ep123.</p>
-<p>The optional environment variable SEQ determines the sequence the image belongs to.  If not set, it is guessed from the first letters of the shot.  As with the show, it should be a small name, usually a prefix of the shot.</p>
+<h1 style="text-align: center;">Variables de Entorno para Assets</h1>
+<p>Cuando mrViewer muestra una imagen, película o audio, puede asentarlo en la base de datos.  A veces es util atar una toma, secuencia o show a la imagen que está siendo catalogada.  mrViewer depende de algunas variables de entorno útiles para ello.</p>
+<p>La variable de entorno SHOW determina a que show pertenece la imagen.  Debería ser un nombre corto como 'hulk'.</p>
+La variable de entorno SHOT determina la toma a cual la imagen pertenece. Deberia ser un texto de 2 a 3 caracteres seguido por un número.  Por ejemplo: da023, ep123.</p>
+<p>La variable de entorno opcional SEQ determina la secuencia a la que pertenece la imagen.  Si no es seteado, ésta es adivinada de las primeras letras de la toma (SHOT).  Como con el show, el valor de la misma debe ser un nombre corto, como el prefijo de la toma.</p>
 
-<p>Finally, the environment variable USER or USERNAME is used to log in the user that viewed the image for the first time.</p>
+<p>Finalmente, la variable de entorno USER o USERNAME es usada para catalogar quien vió la imagen por vez primera.</p>
