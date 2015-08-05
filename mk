@@ -157,8 +157,8 @@ cache=0
 
 
 if [[ $OS == Windows* ]]; then
-    #cmake_generator=Ninja
-    cmake_generator="NMake Makefiles"
+    cmake_generator=Ninja
+    #cmake_generator="NMake Makefiles"
 else
     cmake_generator=Ninja
 fi
@@ -280,7 +280,7 @@ run_make()
     elif [[ $cmake_generator == Visual* ]]; then
 	return
     else
-	cmd="ninja -j ${CMAKE_PROCS=1} $@"
+	cmd="ninja -j ${CMAKE_PROCS=2} $@"
     fi
     run_cmd $cmd
     status=$?
