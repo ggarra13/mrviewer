@@ -77,13 +77,11 @@ namespace mrv {
 
 bool slateImage::initialize()
 { 
-   MagickWandGenesis();
    return true;
 }
 
 bool slateImage::release()
 {
-   MagickWandTerminus();
    return true;
 }
 
@@ -115,18 +113,33 @@ bool slateImage::release()
 
     DrawSkewX( dwand, -45 );
 
-    PixelSetColor( pwand, "#d0d0d0" );
+    PixelSetColor( pwand, N_("#d0d0d0") );
     DrawSetFillColor( dwand, pwand );
 
   
     for ( x = 0; x < W+xh; x += xinc )
       {
 	DrawRectangle( dwand, x, 0, x+xh, yh );
+
+        ExceptionType type = DrawGetExceptionType( dwand );
+        if ( type != UndefinedException )
+        {
+            IMG_ERROR( DrawGetException( dwand, &type ) );
+            break;
+        }
+
       }
 
     for ( x = xh*4; x < W+xh*6; x += xinc )
       {
 	DrawRectangle( dwand, x, H-yh+1, x+xh, H );
+
+        ExceptionType type = DrawGetExceptionType( dwand );
+        if ( type != UndefinedException )
+        {
+            IMG_ERROR( DrawGetException( dwand, &type ) );
+            break;
+        }
       }
     DrawSkewX( dwand, 45 );
 
@@ -185,23 +198,24 @@ bool slateImage::release()
 
     wand = NewMagickWand();
     if ( wand == NULL )
-      EXCEPTION( "Could not create wand");
+        EXCEPTION( _("Could not create wand") );
 
     unsigned int W = width();
     unsigned int H = height();
 
     MagickSetSize(wand, W, H);
-    MagickReadImage(wand, "xc:black"); 
+    MagickReadImage(wand, N_("xc:black") ); 
 
-
-    dwand = NewDrawingWand();
-    if ( dwand == NULL )
-      EXCEPTION( "Could not create drawing wand");
-    DrawSetViewbox(dwand, 0, 0, W, H);
 
     pwand = NewPixelWand();
     if ( pwand == NULL )
-      EXCEPTION( "Could not create pixel wand");
+        EXCEPTION( _("Could not create pixel wand") );
+
+    dwand = NewDrawingWand();
+    if ( dwand == NULL )
+        EXCEPTION( _("Could not create drawing wand") );
+    DrawSetViewbox(dwand, 0, 0, W, H);
+
 
 
 
@@ -210,7 +224,7 @@ bool slateImage::release()
 
 
     DrawSetFontSize( dwand, H / 13 );
-    DrawSetFont( dwand, "Helvetica");
+    DrawSetFont( dwand, N_("Helvetica") );
 
     DrawSetTextAlignment( dwand, LeftAlign );
 
@@ -313,7 +327,8 @@ bool slateImage::release()
 
     char* user = getenv("USER");
     if ( user == NULL ) user = getenv("USERNAME");
-    draw_text( x, y, user );
+    if ( user != NULL )
+        draw_text( x, y, user );
     y += yinc;
 
     if ( _fstart != _fend )
@@ -335,10 +350,21 @@ bool slateImage::release()
     draw_text( x, y, buf );
     y += yinc;
 
+    try {
 
-    status = MagickDrawImage( wand, dwand );
-    if ( status != MagickTrue )
-      EXCEPTION( "Could not draw image" );
+        status = MagickDrawImage( wand, dwand );
+        if ( status != MagickTrue )
+            EXCEPTION( _("Could not draw image") );
+    }
+    catch ( const mrv::exception& e )
+    {
+        ExceptionType severity;
+        char* err = MagickGetException(wand, &severity);
+        if ( severity != UndefinedException )
+        {
+            LOG_ERROR( err );
+        }
+    }
 
 
     MagickExportImagePixels(wand, 0, 0, W, H, "RGBA", FloatPixel, 
@@ -347,13 +373,6 @@ bool slateImage::release()
     DestroyPixelWand( pwand );
     DestroyDrawingWand( dwand );
 
-
-    ExceptionType severity;
-    char* err = MagickGetException(wand, &severity);
-    if ( severity != UndefinedException )
-      {
-	LOG_ERROR( err );
-      }
 
 
     DestroyMagickWand( wand );
