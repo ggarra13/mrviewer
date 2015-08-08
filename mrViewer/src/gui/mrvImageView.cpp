@@ -1858,7 +1858,7 @@ void ImageView::draw()
          sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
          hud << buf;
 
-         sprintf( buf, _("FPS: %.2f" ), img->real_fps() );
+         sprintf( buf, _("FPS: %.3f" ), img->real_fps() );
 
          if ( !hud.str().empty() ) hud << " ";
          hud << buf;
