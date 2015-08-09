@@ -80,7 +80,7 @@ namespace
 //#define DEBUG_DECODE
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
-//#define DEBUG_SEEK_VIDEO_PACKETS
+// #define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
@@ -2264,7 +2264,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
           else
               pktframe = frame;
 
-	  bool ok = in_video_store( pktframe );
+	  bool ok = in_video_store( frame );  // must be frame to avoid gaps
 	  if ( ok )
 	    {
                // if ( pktframe == frame )
@@ -2275,8 +2275,8 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
                return kDecodeOK;
 	    }
    
-	  // // Limit storage of frames to twice fps.  For example, 60 frames
-	  // // for a fps of 30.
+	  // Limit storage of frames to twice fps.  For example, 60 frames
+	  // for a fps of 30.
 	  if ( _images.size() >= max_video_frames() )
 	  {
              limit_video_store(frame);
