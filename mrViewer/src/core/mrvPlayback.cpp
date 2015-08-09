@@ -150,9 +150,6 @@ EndStatus handle_loop( boost::int64_t& frame,
     }
     else
     {
-       last  += ( img->first_frame() - img->start_frame() );
-       first += ( img->first_frame() - img->start_frame() );
-
        if ( img->last_frame() < last )
            last = img->last_frame();
        if ( img->first_frame() > first )
@@ -367,13 +364,10 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
        CMedia::Mutex& m = img->video_mutex();
        SCOPED_LOCK( m );
 
-       last  += ( img->first_frame() - img->start_frame() );
-       first += ( img->first_frame() - img->start_frame() );
-
        if ( last > img->last_frame() )
            last = img->last_frame();
        else if ( img->first_frame() > first )
-          first = img->first_frame();
+           first = img->first_frame();
    }
 
    if ( f > last )
@@ -740,23 +734,22 @@ void video_thread( PlaybackData* data )
 
       double delay = 1.0 / fps;
 
-      // int64_t diff2 = 0;
-
       double diff = 0.0;
       double bgdiff = 0.0;
 
       // // Calculate video-audio difference
       if ( img->has_audio() && status == CMedia::kDecodeOK )
       {
-	 int64_t video_pts = img->video_pts();
-	 int64_t audio_pts = img->audio_pts();
+	 // int64_t video_pts = img->video_pts();
+	 // int64_t audio_pts = img->audio_pts();
 
-         diff = step * ( video_pts - audio_pts );
+         // diff = step * ( video_pts - audio_pts );
 
-         // double video_clock = img->video_clock();
-	 // double audio_clock = img->audio_clock();
 
-	 // diff = step * (video_clock - audio_clock);
+         double video_clock = img->video_clock();
+	 double audio_clock = img->audio_clock();
+
+	 diff = step * (video_clock - audio_clock);
 
 
 	 double absdiff = std::abs(diff);
@@ -778,35 +771,6 @@ void video_thread( PlaybackData* data )
 	    }
 	 }
       }
-
-      {
-          mrv::media bg = view->background();
-          if ( bg )
-          {
-              double bg_clock = bg->image()->video_clock();
-              double fg_clock = img->video_clock();
-          
-              if ( !fg )
-                  diff = step * ( bg_clock - fg_clock );
-              else
-                  diff = step * ( fg_clock - bg_clock );
-
-              double absdiff = std::abs(diff);
-              if ( absdiff > 1000.0 ) diff = 0.0;
-          
-              double sync_threshold = delay;
-              if(absdiff < AV_NOSYNC_THRESHOLD) {
-                  double sdiff = step * diff;
-              
-                  if (sdiff <= -sync_threshold) {
-                      fps = 99999999.0;
-                  } else if (sdiff >= delay*2) {
-                      fps -= sdiff;
-                  }
-              }
-          }
-      }
-
 
 
       timer.setDesiredFrameRate( fps );
