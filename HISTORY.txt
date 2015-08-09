@@ -1,6 +1,12 @@
 v2.9.0   - Moved compilation to use ninja build system on both platforms.
 	 - Fixed some documentation in Spanish and added some more info on
 	   the English docs.
+	 - Bug fixed changing FPS in the Preferences and hitting okay will
+	   no longer change FPS.  FPS set in Preferences is for starting
+	   the viewer.
+	 - Bug fixed loops starting at other frame than 1.  Previously,
+	   the looping would happen twice the frame set.  So if you had
+	   set the loop at frame 30, the loop would happen at frame 60.
 
 v2.8.9   - Made printout of ACES file loaded always display full path to it.
 	 - Added Open/Save menus to Image Browser (Reel List).

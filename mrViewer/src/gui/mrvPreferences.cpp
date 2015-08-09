@@ -827,8 +827,13 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // Widget/Viewer settings
     //
-    main->uiFPS->value( uiPrefs->uiPrefsFPS->value() );
-    main->uiFPS->do_callback();
+    mrv::ImageView* view = main->uiView;
+
+    if ( !view->foreground() )
+    {
+        main->uiFPS->value( uiPrefs->uiPrefsFPS->value() );
+        main->uiFPS->do_callback();
+    }
 
     main->uiLoopMode->value( uiPrefs->uiPrefsLoopMode->value() );
     main->uiLoopMode->do_callback();
@@ -836,7 +841,6 @@ fltk::StyleSet*     newscheme = NULL;
     main->uiGain->value( uiPrefs->uiPrefsViewGain->value() );
     main->uiGamma->value( uiPrefs->uiPrefsViewGamma->value() );
 
-    mrv::ImageView* view = main->uiView;
 
     main->uiPixelRatio->value( uiPrefs->uiPrefsViewPixelRatio->value() );
     if ( main->uiPixelRatio->value() )
