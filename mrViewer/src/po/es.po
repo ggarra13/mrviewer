@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-08-08 19:14-0300\n"
+"POT-Creation-Date: 2015-08-09 13:51-0300\n"
 "PO-Revision-Date: 2015-08-08 19:15-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -93,11 +93,11 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:459
+#: core/mrvPlayback.cpp:453
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:464
+#: core/mrvPlayback.cpp:458
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -202,7 +202,7 @@ msgstr " no encontrado en el carrete"
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/mrvPlayback.cpp:704
+#: core/mrvPlayback.cpp:698
 msgid " returned "
 msgstr " retornó "
 
@@ -1820,7 +1820,7 @@ msgstr "Decodificación OK"
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/mrvPlayback.cpp:703
+#: core/mrvPlayback.cpp:697
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
