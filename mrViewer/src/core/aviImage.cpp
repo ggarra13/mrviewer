@@ -764,7 +764,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
                     av_frame_get_best_effort_timestamp( _av_frame );
 
 
-	if ( ptsframe == MRV_NOPTS_VALUE )
+	if ( ptsframe == AV_NOPTS_VALUE )
         {
             ptsframe = pts2frame( stream, pkt.dts );
         }
