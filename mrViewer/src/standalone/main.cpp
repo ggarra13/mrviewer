@@ -158,6 +158,7 @@ int main( const int argc, char** argv )
   char* loc = NULL;
 
   const char* tmp = setlocale(LC_ALL, "");
+
 #ifdef _WIN32
   libintl_setlocale( LC_ALL, tmp );
 #endif
