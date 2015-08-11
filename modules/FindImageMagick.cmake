@@ -23,6 +23,7 @@ SET(MAGICK++_FOUND "NO" )
 FIND_PATH( MAGICK_INCLUDE_DIR magick/magick.h
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}"
+  /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
   /usr/include/ImageMagick
   )
@@ -39,6 +40,7 @@ ENDIF( MAGICK_INCLUDE_DIR )
 FIND_PATH( MAGICK++_INCLUDE_DIR wand/magick-wand.h
   "$ENV{MAGICK_HOME}/include"
   "$ENV{MAGICK_HOME}"
+  /usr/local/include/ImageMagick-6
   /usr/local/include/ImageMagick
   /usr/include/ImageMagick
   )

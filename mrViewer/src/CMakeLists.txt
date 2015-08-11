@@ -2,8 +2,8 @@
 
 
 SET( VersionMajor 2 )
-SET( VersionMinor 8 )
-SET( VersionPatch 9 )
+SET( VersionMinor 9 )
+SET( VersionPatch 0 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -65,7 +65,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ADD_DEFINITIONS( -DLINUX -msse ) 
     SET(OS_LIBRARIES
       asound
-      ${Xpm} png X11 Xi Xft Xinerama pthread m Xext stdc++ GLEW
+      ${Xpm} png X11 Xi Xft Xrender Xinerama pthread m Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264
       )
 
   ENDIF(APPLE)
