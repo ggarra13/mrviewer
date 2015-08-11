@@ -1,3 +1,6 @@
+
+
+
 # data file for the FLTK User Interface Designer (FLUID)
 version 2.1000 
 images_dir header_name 
@@ -2287,7 +2290,7 @@ uiErase->value(0);
 uiText->value(0);}
             tooltip {Area Select Tool}
             xywh {29 15 43 35}
-            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/select.xpm} value 1
+            image not_inlined {../../icons/select.xpm} value 1
             extra_code {o->value(1);
 o->image( select_pic );}
           }
@@ -2300,7 +2303,7 @@ uiErase->value(0);
 uiText->value(0);}
             tooltip {Freehand Drawing Tool}
             xywh {77 15 40 35}
-            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/draw.xpm}
+            image not_inlined {../../icons/draw.xpm}
             extra_code {o->image( draw );}
           }
           {fltk::Button} uiErase {
@@ -2312,7 +2315,7 @@ uiDraw->value(0);
 uiText->value(0);}
             tooltip {Eraser Tool}
             xywh {77 56 40 35}
-            image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/erase.xpm}
+            image not_inlined {../../icons/erase.xpm}
             extra_code {o->image( erase );}
           }
           {fltk::Button} uiText {
@@ -2339,7 +2342,7 @@ if ( !v->uiView->has_undo() )
  o->deactivate();}
               tooltip {Undo Last Shape Drawn}
               xywh {5 2 34 35}
-              image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/undo.xpm}
+              image not_inlined {../../icons/undo.xpm}
               extra_code {o->image( undo );
 if ( !m->uiView->has_undo() )
  o->deactivate();
@@ -2355,7 +2358,7 @@ else
    o->activate();}
               tooltip {Redo Previous Shape Drawn}
               xywh {45 2 34 35}
-              image not_inlined {/media/Linux/code/applications/mrViewer/mrViewer/icons/redo.xpm}
+              image not_inlined {../../icons/redo.xpm}
               extra_code {o->image( redo );
 if ( !m->uiView->has_redo() )
    o->deactivate();
