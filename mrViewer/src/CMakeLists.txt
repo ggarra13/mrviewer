@@ -65,7 +65,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     ADD_DEFINITIONS( -DLINUX -msse ) 
     SET(OS_LIBRARIES
       asound
-      ${Xpm} png X11 Xi Xft Xrender Xinerama pthread m Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264
+      ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 pthread m
       )
 
   ENDIF(APPLE)
