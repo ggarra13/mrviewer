@@ -271,7 +271,7 @@ void GLEngine::init_textures()
       glGetIntegerv(GL_MAX_TEXTURE_UNITS, &_maxTexUnits);
       CHECK_GL("init_textures get max tex units");
 
-      if ( _maxTexUnits >= 4 )  _has_yuv = true;
+      if ( _maxTexUnits >= 3 )  _has_yuv = true;
 #endif
     }
 
