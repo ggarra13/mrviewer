@@ -1,0 +1,45 @@
+#!/bin/bash
+
+if [ ! -e bin ]; then
+    echo "This file has to be run from main mrViewer directory"
+    exit
+fi
+
+function remove_mo_files
+{
+    rm -rf share/locale/*
+}
+
+function create_symlinks()
+{
+    rm -rf LICENSE.txt
+    ln -s ../../../LICENSE.txt .
+    rm -rf HISTORY.txt
+    ln -s ../../../HISTORY.txt .
+    rm -rf Videos.txt
+    ln -s ../../../Videos.txt .
+    rm -rf ctl
+    ln -s ../../../ctl .
+    rm -rf shaders
+    ln -s ../../../shaders .
+    rm -rf docs
+    ln -s ../../../docs .
+    rm -rf rails
+    ln -s ../../../rails .
+}
+
+
+cd BUILD/Windows-6.1-32/Release
+create_symlinks
+remove_mo_files
+cd -
+
+cd BUILD/Windows-6.1-64/Release
+create_symlinks
+remove_mo_files
+cd -
+
+cd BUILD/Linux-3.16.0-45-generic-64/Release
+create_symlinks
+remove_mo_files
+cd -
