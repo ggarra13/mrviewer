@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-08-13 19:30-0300\n"
+"POT-Creation-Date: 2015-08-13 19:43-0300\n"
 "PO-Revision-Date: 2015-08-08 19:15-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -158,7 +158,7 @@ msgstr " falló. "
 msgid " for '"
 msgstr " para '"
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:2488
+#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:2489
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -182,7 +182,7 @@ msgstr " cuadros"
 msgid " frequency: "
 msgstr " frecuencia: "
 
-#: core/aviImage.cpp:1047
+#: core/aviImage.cpp:1064
 msgid " instead"
 msgstr " en remplazo"
 
@@ -190,7 +190,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1578 core/aviImage.cpp:1052
+#: core/CMedia_audio.cpp:1578 core/aviImage.cpp:1068
 msgid " not found"
 msgstr " no encontrado"
 
@@ -198,7 +198,7 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrado en el carrete"
 
-#: core/aviImage.cpp:1046
+#: core/aviImage.cpp:1063
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
@@ -206,7 +206,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:2500
+#: core/aviImage.cpp:2501
 msgid " status: "
 msgstr " estatus: "
 
@@ -227,7 +227,7 @@ msgstr " a la base de datos '"
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1069
+#: core/aviImage.cpp:1042
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -332,7 +332,7 @@ msgstr "(Campos PAL)"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1070
+#: core/aviImage.cpp:1043
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -1816,7 +1816,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:2476 core/aviImage.cpp:2486
+#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:2477 core/aviImage.cpp:2487
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -1824,7 +1824,7 @@ msgstr "Error de decodificación de audio:"
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
-#: core/aviImage.cpp:2498
+#: core/aviImage.cpp:2499
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -5038,7 +5038,7 @@ msgstr "Pista de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
-#: core/aviImage.cpp:1067
+#: core/aviImage.cpp:1040
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -5480,7 +5480,7 @@ msgstr "decode_audio - faltó decodificar algunos sampleos"
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1045 core/aviImage.cpp:1052
+#: core/aviImage.cpp:1062 core/aviImage.cpp:1068
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
