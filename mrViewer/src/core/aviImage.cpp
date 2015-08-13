@@ -1028,9 +1028,26 @@ bool aviImage::find_image( const boost::int64_t frame )
     if ( i != end && *i )
       {
 	_hires = *i;
+
+        boost::int64_t distance = frame - _hires->frame();
+        if ( distance > _hires->repeat() )
+        {
+            boost::int64_t first = (*_images.begin())->frame();
+            video_cache_t::iterator end = std::max_element( _images.begin(), 
+                                                            _images.end() );
+            boost::int64_t last  = (*end)->frame();
+            boost::uint64_t diff = last - first + 1;
+            IMG_ERROR( _("Video Sync master frame ") << frame 
+                       << " != " << _hires->frame()
+                       << _(" video frame, cache ") << first << "-" << last
+                       << " (" << diff << _(") cache size: ") << _images.size()
+                       << " dts: " << _dts );
+            // 	debug_video_stores(frame);
+            // 	debug_video_packets(frame);
+        }
       }
     else
-      {
+    {
 	// Hmm... no close image was found.  If we have some images in
 	// cache, we choose the last one in it.  This avoids problems if
 	// the last frame is the one with problem.
@@ -1045,33 +1062,16 @@ bool aviImage::find_image( const boost::int64_t frame )
 	       IMG_WARNING( _("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
-	    refresh();
 	  }
 	else
 	  {
               IMG_ERROR( _("find_image: frame ") << frame << _(" not found") );
+              return false;
 	  }
-	return false;
       }
 
 
 
-    boost::int64_t distance = frame - _hires->frame();
-    if ( distance > _hires->repeat() )
-      {
-	boost::int64_t first = (*_images.begin())->frame();
-	video_cache_t::iterator end = std::max_element( _images.begin(), 
-							_images.end() );
-	boost::int64_t last  = (*end)->frame();
-	boost::uint64_t diff = last - first + 1;
-	IMG_ERROR( _("Video Sync master frame ") << frame 
-		     << " != " << _hires->frame()
-		   << _(" video frame, cache ") << first << "-" << last
-		   << " (" << diff << _(") cache size: ") << _images.size()
-		   << " dts: " << _dts );
-	// 	debug_video_stores(frame);
-	// 	debug_video_packets(frame);
-      }
 
     _video_pts   = _hires->frame();
     _video_clock = double(av_gettime_relative()) / 1000000.0;
@@ -2264,8 +2264,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
           else
               pktframe = frame;
 
-	  bool ok = in_video_store( pktframe );
-	  if ( ok )
+	  bool ok1 = in_video_store( frame );
+	  bool ok2 = in_video_store( pktframe );
+	  if ( ok1 && ok2 )
 	    {
                // if ( pktframe == frame )
                {
@@ -2277,11 +2278,11 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
    
 	  // // Limit storage of frames to twice fps.  For example, 60 frames
 	  // // for a fps of 30.
-	  if ( _images.size() >= max_video_frames() )
-	  {   // must be frame or else stutters happen in PoTC.VOB
-              limit_video_store( frame ); 
+	  // if ( _images.size() >= max_video_frames() )
+	  // {   // must be frame or else stutters happen in PoTC.VOB
+          //     limit_video_store( frame ); 
              
-	  }
+	  // }
 
 
 	  got_video = decode_image( pktframe, pkt );
