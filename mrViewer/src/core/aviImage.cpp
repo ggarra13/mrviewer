@@ -2278,8 +2278,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	  // // Limit storage of frames to twice fps.  For example, 60 frames
 	  // // for a fps of 30.
 	  if ( _images.size() >= max_video_frames() )
-	  {
-             limit_video_store( pktframe );
+	  {   // must be frame or else stutters happen in PoTC.VOB
+              limit_video_store( frame ); 
+             
 	  }
 
 
