@@ -2374,8 +2374,6 @@ void loadRealIcon(void* entry)
         e->chooser->redraw();
     }
 
-    // fltk::remove_timeout( loadRealIcon );
-    
 }
 
 
@@ -2387,7 +2385,7 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
   details( d ),
   chooser( c )
 {
-  resize( 0, 0, DEFAULT_ENTRY_WIDTH, 20 );
+  resize( 0, 0, DEFAULT_ENTRY_WIDTH, 32 );
   textsize( 12 );
 
   color( fltk::GRAY85 );
@@ -2407,9 +2405,33 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
       deactivate();
     }
 
-  updateSize();
   updateIcon();
+  updateSize();
 
+}
+
+void Flu_File_Chooser::Entry::loadRealIcon(void* entry)
+{
+    Flu_File_Chooser::Entry* e = (Flu_File_Chooser::Entry*) entry;
+    if  ( !e || !e->chooser || !e->chooser->get_current_directory() ) return;
+
+    char fmt[1024];
+    char buf[1024];
+    sprintf( fmt, "%s/%s", e->chooser->get_current_directory(),
+             e->filename.c_str() );
+    sprintf( buf, fmt, 1 );  // should be first frame
+
+    fltk::SharedImage* img = fltk::SharedImage::get( buf );
+
+    if ( img )
+    {
+        e->icon = img;
+        e->resize(e->w(), img->h()+4 );
+        e->chooser->relayout();
+        e->chooser->redraw();
+    }
+
+    fltk::remove_timeout( loadRealIcon );
 }
 
 void Flu_File_Chooser::Entry::updateIcon()
@@ -2445,10 +2467,10 @@ void Flu_File_Chooser::Entry::updateIcon()
     }
   if( tt )
     {
-      icon = tt->icon;
-      description = tt->type;
-
+        icon = tt->icon;
+        description = tt->type;
     }
+
   // if there is no icon, assign a default one
   if( !icon && type==ENTRY_FILE && 
       !(chooser->selectionType & DEACTIVATE_FILES) )
@@ -2530,12 +2552,16 @@ void Flu_File_Chooser::listModeCB( fltk::Widget* o )
 
 void Flu_File_Chooser::Entry::updateSize()
 {
+    int h = 20;
+    if ( icon ) {
+        h = icon->h() + 4;
+    }
   if( type==ENTRY_FAVORITE || chooser->fileListWideBtn->value() )
     {
-      resize( x(), y(), chooser->filelist->w()-4, 20 );
+        resize( x(), y(), chooser->filelist->w()-4, h );
     }
   else
-    resize( x(), y(), DEFAULT_ENTRY_WIDTH, 20 );
+      resize( x(), y(), DEFAULT_ENTRY_WIDTH, h );
 
   details = chooser->fileDetailsBtn->value() && ( type != ENTRY_FAVORITE );
 
@@ -2558,7 +2584,7 @@ void Flu_File_Chooser::Entry::updateSize()
   if( icon )
     {
       iW = icon->w()+2;
-      iH = icon->h();
+      iH = icon->h()+4;
     }
 
   fltk::setfont( textfont(), textsize() );
@@ -2656,8 +2682,8 @@ void Flu_File_Chooser::Entry::inputCB()
       else
 	{
 	  filename = value();
-	  updateSize();
 	  updateIcon();
+	  updateSize();
 	}
       // QUESTION: should we set the chooser filename to the modified name?
       chooser->filename.value( filename.c_str() );
@@ -3872,8 +3898,8 @@ void Flu_File_Chooser::cd( const char *path )
 	{
 	  entry = new Entry( favoritesList->child(i)->label(), ENTRY_FAVORITE,
 			     false/*fileDetailsBtn->value()*/, this );
-	  entry->updateSize();
 	  entry->updateIcon();
+	  entry->updateSize();
 	  if( listMode )
 	    {
 	      filelist->add(entry);
@@ -4001,8 +4027,8 @@ void Flu_File_Chooser::cd( const char *path )
 		}
 	      entry->icon = driveIcons[i];
 	      entry->altname = drives[i];
-	      entry->updateSize();
 	      entry->updateIcon();
+	      entry->updateSize();
 	      if( listMode )
 		{
 		  filelist->add(entry);
@@ -4029,8 +4055,8 @@ void Flu_File_Chooser::cd( const char *path )
   else if( isDesktop )
     {
       entry = new Entry( myDocumentsTxt.c_str(), ENTRY_MYDOCUMENTS, fileDetailsBtn->value(), this );
-      entry->updateSize();
       entry->updateIcon();
+      entry->updateSize();
       if( listMode )
 	{
 	  filelist->add(entry);
@@ -4040,8 +4066,8 @@ void Flu_File_Chooser::cd( const char *path )
 	  filedetails->add(entry);
 	}
       entry = new Entry( myComputerTxt.c_str(), ENTRY_MYCOMPUTER, fileDetailsBtn->value(), this );
-      entry->updateSize();
       entry->updateIcon();
+      entry->updateSize();
       if( listMode )
 	{
 	  filelist->add(entry);
@@ -4459,6 +4485,7 @@ void Flu_File_Chooser::cd( const char *path )
           }
 
 	  entry->updateIcon();
+	  entry->updateSize();
 
 	  ++numFiles;
 	  if( listMode )
@@ -4524,7 +4551,6 @@ void Flu_File_Chooser::cd( const char *path )
                     sprintf( buf, "%d bytes", (int)entry->isize );
                 }
                 entry->filesize = buf;
-                entry->updateIcon();
             }
 
             // store date as human readable and sortable integer
@@ -4544,8 +4570,7 @@ void Flu_File_Chooser::cd( const char *path )
 	  */
 
 
-	  entry->updateSize();
-	  entry->updateIcon();
+	  entry->resize( 0, 0, DEFAULT_ENTRY_WIDTH, 30 );
 
 	  // was this file specified explicitly?
 	  isCurrentFile = ( currentFile == entry->filename );
