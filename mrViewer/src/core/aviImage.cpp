@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -242,7 +243,8 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       // FLV
       return true;
     }
-  else if ( strncmp( (char*)data, "GIF89", 5 ) == 0 )
+  else if ( ( strncmp( (char*)data, "GIF89a", 6 ) == 0 ) ||
+            ( strncmp( (char*)data, "GIF87a", 6 ) == 0 ) )
     {
       // GIF89
       return true;
