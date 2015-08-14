@@ -1,5 +1,5 @@
 /*
-    mrViewer - the professional movie and flipbook playback
+    mrViewer - thume professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
@@ -50,6 +50,7 @@ namespace mrv {
 
   namespace gui {
 
+    int media::_thumbnail_width = 128;
     int media::_thumbnail_height = 64;
 
     media::media( CMedia* const img ) :
@@ -112,21 +113,16 @@ namespace mrv {
       unsigned dw = _image->width();
       unsigned dh = _image->height();
 
-      unsigned int w = 0;
+      unsigned int w = _thumbnail_width;
       unsigned int h = _thumbnail_height;
 
       float yScale = (float)h / (float)dh;
-      float xScale = yScale;
+      float xScale = (float)w / (float)dw;
 
       if ( _thumbnail )
       {
           // once we set thumbnail size we cannot change it
           w = _thumbnail->width();
-      }
-      else
-      {
-          w = (int) ((float)dw * xScale);
-          if ( w < 8 ) w = 32;
       }
 
       // Audio only clip?  Return
