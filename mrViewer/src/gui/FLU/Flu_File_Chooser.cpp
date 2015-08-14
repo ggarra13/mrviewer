@@ -68,6 +68,8 @@ typedef __int64 int64_t;
 #include "fltk/events.h"  // for timeout methods
 #include "fltk/run.h"  // for timeout methods
 
+#include <boost/thread.hpp>
+
 #include "flu_pixmaps.h"
 #include "Flu_File_Chooser.h"
 #include "flu_file_chooser_pixmaps.h"
@@ -765,19 +767,19 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   {
     fltk::Group *g2 = new fltk::Group( 401, 3, 81, 25 );
     g2->begin();
-    listMode = kWide;
+    listMode = kDetails;
     fileListBtn = new fltk::ToggleButton( 0, 0, 25, 25 );
     fileListBtn->callback( _listModeCB, this );
     fileListBtn->image( file_list_img );
     fileListBtn->tooltip( listTTxt.c_str() );
     fileListWideBtn = new fltk::ToggleButton( 29, 0, 25, 25 );
     fileListWideBtn->callback( _listModeCB, this );
-    fileListWideBtn->value(1);
     fileListWideBtn->image( file_listwide_img );
     fileListWideBtn->tooltip( wideListTTxt.c_str() );
     fileDetailsBtn = new fltk::ToggleButton( 58, 0, 25, 25 );
     fileDetailsBtn->image( fileDetails );
     fileDetailsBtn->callback( _listModeCB, this );
+    fileDetailsBtn->value(1);
     fileDetailsBtn->tooltip( detailTTxt.c_str() );
     g2->end();
   }
@@ -909,12 +911,12 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   pattern( pat );
   default_file_icon( &default_file );
-  cd( NULL ); // prime with the current directory
+  // cd( NULL ); // prime with the current directory
   clear_history();
   cd( pathname );
 
-  fileListWideBtn->redraw();
-  fileListWideBtn->do_callback();
+  fileDetailsBtn->redraw();
+  fileDetailsBtn->do_callback();
 
   // if pathname does not start with "/" or "~", set the filename to it
   if( pathname &&
@@ -2342,6 +2344,41 @@ int Flu_File_Chooser::FileDetails::handle( int event )
   return 0;
 }
 
+void loadRealIcon(void* entry)
+{
+    Flu_File_Chooser::Entry* e = (Flu_File_Chooser::Entry*) entry;
+    if  ( !e || !e->chooser || !e->chooser->get_current_directory() ) return;
+
+
+    char fmt[1024];
+    char buf[1024];
+    sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+             e->filename.c_str() );
+    sprintf( buf, fmt, 1 );  // should be first frame
+
+    std::cerr << buf << " entry: " << e 
+              << " chooser: " << e->chooser << std::endl;
+
+    fltk::SharedImage* img = fltk::SharedImage::get( buf );
+
+    std::cerr << "img: " << img << " " << img->w() << "x"
+              << img->h() << std::endl;
+
+    if ( img )
+    {
+        int w,h = img->h();
+        e->icon = img;
+        e->resize(e->w(), h+4 );
+        e->redraw();
+        e->chooser->relayout();
+        e->chooser->redraw();
+    }
+
+    // fltk::remove_timeout( loadRealIcon );
+    
+}
+
+
 Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d, 
 				Flu_File_Chooser *c )
 : fltk::Input( 0, 0, 0, 0 ),
@@ -2410,6 +2447,7 @@ void Flu_File_Chooser::Entry::updateIcon()
     {
       icon = tt->icon;
       description = tt->type;
+
     }
   // if there is no icon, assign a default one
   if( !icon && type==ENTRY_FILE && 
@@ -2453,7 +2491,8 @@ void Flu_File_Chooser::listModeCB( fltk::Widget* o )
   fileDetailsBtn->value(0);
   b->value(1);
 
-  bool listMode = !fileDetailsBtn->value() || ( currentDir ==  FAVORITES_UNIQUE_STRING );
+  bool listMode = !fileDetailsBtn->value() || 
+                  ( currentDir == FAVORITES_UNIQUE_STRING );
   if( listMode )
     {
       if ( fileListWideBtn->value() )
@@ -2580,6 +2619,7 @@ void Flu_File_Chooser::Entry::updateSize()
 
 Flu_File_Chooser::Entry::~Entry()
 {
+    std::cerr << "delete entry " << this << std::endl;
 }
 
 void Flu_File_Chooser::Entry::inputCB()
@@ -4402,18 +4442,21 @@ void Flu_File_Chooser::cd( const char *path )
 	  entry->isize = 1 + ( atoi( (*i).ext.c_str() ) -
 			       atoi( (*i).number.c_str() ) );
 	  entry->altname = (*i).root.c_str();
-	  entry->altname += " ";
-	  entry->altname += (*i).number;
-	  entry->filesize = (*i).number;
-	  if ( entry->isize > 1 )
-	    {
-	      entry->filesize += "-";
-              entry->filesize += (*i).view;
-	      entry->filesize += (*i).ext;
-              entry->altname += (*i).view;
-	      entry->altname += "-";
-	      entry->altname += (*i).ext;
-	    }
+          if ( listMode )
+          {
+              entry->altname += " ";
+              entry->altname += (*i).number;
+              entry->filesize = (*i).number;
+              if ( entry->isize > 1 )
+              {
+                  entry->filesize += "-";
+                  entry->filesize += (*i).view;
+                  entry->filesize += (*i).ext;
+                  entry->altname += (*i).view;
+                  entry->altname += "-";
+                  entry->altname += (*i).ext;
+              }
+          }
 
 	  entry->updateIcon();
 
@@ -4630,6 +4673,19 @@ void Flu_File_Chooser::cd( const char *path )
   else
     filename.position( filename.size(), filename.size() );
   filename.take_focus();
+
+  // Handle loading of icons
+  fltk::Group *g = getEntryGroup();
+  int c = g->children();
+  for ( int i = 0; i < c; ++i )
+  {
+      Entry* e = (Entry*) g->child(i);
+      if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
+      {
+          std::cerr << "load real icon for " << e->filename << std::endl;
+          loadRealIcon( e );
+      }
+  }
 
   if( listMode )
   {

@@ -77,7 +77,7 @@ void Flu_Wrap_Group::_measure( int& maxW, int& maxH ) const
       c = child(i);
       if ( !c->visible() ) continue;
       if ( c->w() > maxW ) maxW = c->w();
-      if ( c->h() > maxH ) maxH = c->h();
+      maxH += c->h();
     }
 
   maxW += _spacing[0];
@@ -118,7 +118,7 @@ void Flu_Wrap_Group::layout_grid()
 
       // will it all fit in one column?
       // If not, remove the size of the scrollbar
-      if ( Y + maxH * nchildren > lastY )
+      if ( Y + maxH > lastY )
 	{
 	  if ( scrollbar_align()&fltk::ALIGN_TOP )
 	    {
@@ -135,7 +135,7 @@ void Flu_Wrap_Group::layout_grid()
 	  c = child(i);
 	  if( !c->visible() ) continue;
 	  c->position( X, Y );
-	  Y += maxH;
+	  Y += c->h();
 	  if ( i != nchildren-1 && Y + maxH >= lastY ) 
 	    {
 	      Y = OY;
@@ -171,7 +171,7 @@ void Flu_Wrap_Group::layout_grid()
 	  if ( i != nchildren-1 && X + maxW >= lastX ) 
 	    {
 	      X = OX;
-	      Y += maxH;
+	      Y += c->h();
 	      ++rows;
 	    }
 	}
@@ -195,7 +195,7 @@ void Flu_Wrap_Group::layout_grid()
 	}
     }
 
-  int H = rows * maxH;
+  int H = maxH;
   if ( H > r.h() )
     {
       scrollbar.set_visible();
