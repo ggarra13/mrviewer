@@ -443,6 +443,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
       void draw();
 
+      static void loadRealIcon(void* entry);
+
       void updateSize();
       void updateIcon();
 
