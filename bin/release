@@ -5,6 +5,7 @@ if [ ! -e bin ]; then
     exit
 fi
 
+
 function remove_mo_files
 {
     rm -rf share/locale/*
