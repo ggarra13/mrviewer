@@ -51,6 +51,7 @@ typedef __int64 int64_t;
 
 #include <fltk/draw.h>
 #include <fltk/ask.h>
+#include <fltk/damage.h>
 #include <fltk/events.h>
 #include <fltk/Color.h>
 #include <fltk/Cursor.h>
@@ -76,6 +77,7 @@ typedef __int64 int64_t;
 
 #include "core/mrvHome.h"
 #include "core/Sequence.h"
+#include "core/mrvThread.h"
 #include "core/mrvI8N.h"
 #undef fprintf
 #include "gui/mrvIO.h"
@@ -139,7 +141,7 @@ const char *col_labels[] = {
   0
 };
 
-int col_widths[]   = {200, 70, 70, 141};
+int col_widths[]   = {300, 70, 70, 141};
 
 
 // just a string that no file could probably ever be called
@@ -186,7 +188,6 @@ int Flu_File_Chooser::numTypes = 0;
 int Flu_File_Chooser::typeArraySize = 0;
 Flu_File_Chooser::ContextHandlerVector Flu_File_Chooser::contextHandlers;
 Flu_File_Chooser::PreviewHandlerVector Flu_File_Chooser::previewHandlers;
-Flu_File_Chooser::ImgTxtPreview* Flu_File_Chooser::imgTxtPreview = 0;
 int (*Flu_File_Chooser::customSort)(const char*,const char*) = 0;
 // std::string dArrow = "  @C0xa08080@-12DnArrow";
 // std::string uArrow = "  @C0xa08080@-18UpArrow";
@@ -800,7 +801,6 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     fileGroup->begin();
     filelist = new FileList( 2, 2, fileGroup->w()-4, fileGroup->h()-4, this );
     filelist->box( fltk::FLAT_BOX );
-    filelist->color( fltk::GRAY85 );
 
     filelist->type( fltk::ScrollGroup::HORIZONTAL );
     filelist->spacing( 4, 1 );
@@ -818,7 +818,6 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
       filedetails->column_labels( col_labels );
       filedetails->column_widths( col_widths );
       filedetails->end();
-      filedetails->color( fltk::GRAY85 );
       filedetails->callback( _sortCB, this );
     }
     fileDetailsGroup->end();
@@ -827,11 +826,6 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   }
   fileGroup->end();
 
-  previewGroup = new PreviewGroup( fileGroup->w(), 0,
-				   previewTile->w()-fileGroup->w(),
-				   fileGroup->h(), this );
-  previewGroup->begin();
-  previewGroup->end();
 
   previewTile->end();
 
@@ -901,17 +895,9 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
       }
   }
 
-  if( !imgTxtPreview )
-    {
-      imgTxtPreview = new ImgTxtPreview();
-      // make the text previewer the first one
-      Flu_File_Chooser::previewHandlers.insert( previewHandlers.begin(),
-                                                imgTxtPreview );
-    }
-
   pattern( pat );
   default_file_icon( &default_file );
-  // cd( NULL ); // prime with the current directory
+  //cd( NULL ); // prime with the current directory
   clear_history();
   cd( pathname );
 
@@ -928,6 +914,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 Flu_File_Chooser::~Flu_File_Chooser()
 {
   //fltk::remove_timeout( Entry::_editCB );
+  fltk::remove_timeout( timeout );
   fltk::remove_timeout( Flu_File_Chooser::delayedCdCB );
   fltk::remove_timeout( Flu_File_Chooser::selectCB );
 
@@ -1149,8 +1136,6 @@ int Flu_File_Chooser::handle( int event )
 		      e->redraw();
 		   }
 		   // 		  lastSelected = this;
-		   // 		  if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-		   // 		    previewGroup->file = currentDir + filename;
 		   redraw();
 		}
 	      redraw();
@@ -1591,222 +1576,12 @@ Flu_File_Chooser::PreviewWidgetBase::~PreviewWidgetBase()
 {
 }
 
-Flu_File_Chooser::PreviewGroup::PreviewGroup( int x, int y, int w, int h,
-					      Flu_File_Chooser *c )
-  : fltk::Group( x, y, w, h )
-{
-  box( fltk::DOWN_BOX );
-  align( fltk::ALIGN_CENTER | fltk::ALIGN_CLIP );
-  labelfont( fltk::HELVETICA );
-  chooser = c;
-  handled = 0;
-  lastFile = "";
-}
-
-void Flu_File_Chooser::PreviewGroup::draw()
-{
-  if( !chooser->previewBtn->value() )
-    return;
-
-  labelsize( 20 );
-  if( file.size() == 0 )
-    {
-      label( "Preview" );
-      fltk::Group::draw();
-      return;
-    }
-
-  struct stat statbuf;
-
-  std::string root;
-  boost::int64_t frameStart=1, frameEnd=50;
-
-  if ( chooser->compact_files() )
-  {
-     bool ok = mrv::get_sequence_limits( frameStart,
-					 frameEnd, 
-					 file );
-     if (ok)
-     {
-	std::string root;
-	ok = mrv::fileroot( root, file );
-	char buf[1024];
-	sprintf( buf, root.c_str(), frameStart );
-	file = buf;
-     }
-     else 
-     {
-#undef stat
-	int ok = fltk::fltk_stat( file.c_str(), &statbuf );
-	if( ok )
-	{
-	   switch( errno )
-	   {
-#if !defined(WIN32) && !defined(WIN64)
-	      case ELOOP:
-		 label( _("Too many symlinks") ); break;
-#endif
-	      case ENAMETOOLONG:
-	      case ENOTDIR:
-	      case ENOENT:
-		 label( _("Bad\npath") ); break;
-	      case ENOMEM:
-		 label( _("Not\nMemory") ); break;
-	      case EACCES:
-	      default:
-		 label( _("Not\nReadable") ); break;
-	   }
-	   fltk::Group::draw();
-	   return;
-	}
-     }
-  }
-  
-  if( lastFile != file )
-     {
-	lastFile = file;
-	
-	handled = NULL;
-	PreviewWidgetBase *next;
-	for( int i = (int)chooser->previewHandlers.size()-1; i >= 0; i-- )
-	{
-	   next = chooser->previewHandlers[i];
-           next->hide();
-           if( !handled )
-           {
-               fltk::Group *p = next->parent();
- 
-               //fltk::Group::add( next );
-               if( next->preview( file.c_str() ) != 0 )
-               {
-		   handled = next;
-               }
-               //fltk::Group::remove( next );
-
-               //if ( p ) p->add( handled );
-
-           }
-	}
-    }
-
-  if( !handled )
-    {
-      labelsize( 60 );
-      label( "?" );
-      fltk::Group::draw();
-    }
-  else
-    {
-      label( "" );
-
-      handled->resize( box()->dx(), box()->dy(),
- 		       w() - box()->dw(), h()- box()->dh() );
-      handled->set_visible();
-
-      fltk::Group::add( handled );
-      fltk::Group::draw();
-      fltk::Group::remove( handled );
-
-      handled->clear_visible();
-
-    }
-  
-}
-
-void Flu_File_Chooser::ImgTxtPreview::draw()
-{
-  fltk::Group::draw();
-}
-
-// adapted from fltk::File_Chooser2.cxx : update_preview()
-int Flu_File_Chooser::ImgTxtPreview::preview( const char *filename )
-{
-  int	        w = 0, h = 0;		// Width and height of preview image
-
-
-  fltk::SharedImage* img = fltk::SharedImage::get( filename );
-
-
-  if( img )
-    {
-      img->measure(w, h);
-    }
-
-  if( !img )
-    {
-      image( NULL );
-
-      // Try reading the first 1k of data for a label...
-      FILE *f = fltk::fltk_fopen( filename, "rb" );
-      if( f )
-	{
-	  size_t bytes = fread( previewTxt, 1, sizeof(previewTxt) - 1, f );
-	  previewTxt[bytes] = '\0';
-	  fclose( f );
-	}
-      else
-	return 0;
-
-      // Scan the buffer for printable chars...
-      unsigned char *ptr;
-      for( ptr = previewTxt; *ptr && (isprint(*ptr) || isspace(*ptr));
-	   ++ptr ) 
-	{
-	}
-
-      if( *ptr || ptr == previewTxt )
-	{
-	  // Non-printable file - can't handle
-	  return 0;
-	}
-      else
-	{
-	  // Show the first 1k of text...
-	  label( (const char*)previewTxt );
-	  align( fltk::ALIGN_CLIP | fltk::ALIGN_INSIDE |
-		 fltk::ALIGN_LEFT | fltk::ALIGN_TOP );
-	  labelsize( 12 );
-	  labelfont( fltk::COURIER );
-	}
-    }
-  else if( w > 0 && h > 0 )
-    {
-      align( fltk::ALIGN_CLIP );
-      image( img );
-      const char* c = filename + strlen(filename) - 1;
-      for ( ; c > filename; --c )
-	{
-	  if ( *c == '/' || *c == '\\' || *c == ':' )
-	    {
-	      ++c; break;
-	    }
-	}
-
-      copy_label( c );
-    }
-
-  return 1;
-}
 
 void Flu_File_Chooser::previewCB()
 {
-  if( previewBtn->value() )
-    {
-      fileGroup->resize( fileGroup->x(), fileGroup->y(),
-			 previewTile->w()-200, fileGroup->h() );
-      previewGroup->resize( fileGroup->x()+previewTile->w()-200, 
-			    previewGroup->y(),
-			    previewTile->w()-fileGroup->w(), 
-			    previewGroup->h() );
-      previewGroup->show();
-    }
-  else
-    {
-      fileGroup->resize( fileGroup->x(), fileGroup->y(), 
-			 previewTile->w(), fileGroup->h() );
-      previewGroup->hide();
-    }
-  previewTile->relayout();
+    fileGroup->resize( fileGroup->x(), fileGroup->y(), 
+                       previewTile->w(), fileGroup->h() );
+    previewTile->relayout();
 
 #if 0
   previewTile->init_sizes();
@@ -2201,10 +1976,6 @@ int Flu_File_Chooser::FileList::handle( int event )
 	      chooser->filename.position( chooser->filename.size(),
 					  chooser->filename.size() );
 	      chooser->redraw();
-	      if( e->type == ENTRY_FILE || e->type == ENTRY_SEQUENCE )
-		{
-		  chooser->previewGroup->file = chooser->currentDir + e->filename;
-		}
 
 	      scroll_to( e );
 	      return 1;
@@ -2344,10 +2115,15 @@ int Flu_File_Chooser::FileDetails::handle( int event )
   return 0;
 }
 
-void loadRealIcon(void* entry)
+void Flu_File_Chooser::Entry::loadRealIcon(void* entry)
 {
     Flu_File_Chooser::Entry* e = (Flu_File_Chooser::Entry*) entry;
+
+    Mutex& m = e->mutex;
+    SCOPED_LOCK( m );
+
     if  ( !e || !e->chooser || !e->chooser->get_current_directory() ) return;
+
 
 
     char fmt[1024];
@@ -2356,13 +2132,7 @@ void loadRealIcon(void* entry)
              e->filename.c_str() );
     sprintf( buf, fmt, 1 );  // should be first frame
 
-    std::cerr << buf << " entry: " << e 
-              << " chooser: " << e->chooser << std::endl;
-
     fltk::SharedImage* img = fltk::SharedImage::get( buf );
-
-    std::cerr << "img: " << img << " " << img->w() << "x"
-              << img->h() << std::endl;
 
     if ( img )
     {
@@ -2370,12 +2140,53 @@ void loadRealIcon(void* entry)
         e->icon = img;
         e->resize(e->w(), h+4 );
         e->redraw();
+
         e->chooser->relayout();
         e->chooser->redraw();
     }
 
 }
 
+static const int kColorOne = fltk::GRAY60;
+static const int kColorTwo = fltk::GRAY50;
+
+
+void Flu_File_Chooser::Entry::set_colors() { 
+    fltk::Group* g = chooser->getEntryGroup();
+    if ( !g || selected() ) return;
+    for ( int i = 0; i < g->children(); ++i )
+    {
+        Entry* e = (Entry*) g->child(i);
+        if ( e != this ) continue;
+
+        if ( i % 2 == 0 )
+        {
+            color( kColorOne );
+        }
+        else
+        {
+            color( kColorTwo );
+        }
+        redraw();
+        return;
+    }
+
+    if ( g->children() % 2 == 0 )
+    {
+        color( kColorOne );
+    }
+    else
+    {
+        color( kColorTwo );
+    }
+    redraw();
+}
+
+void Flu_File_Chooser::Entry::clear_selected() { 
+    selected_ = false; 
+    textcolor( fltk::BLACK );
+    set_colors();
+}
 
 Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d, 
 				Flu_File_Chooser *c )
@@ -2388,7 +2199,6 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
   resize( 0, 0, DEFAULT_ENTRY_WIDTH, 32 );
   textsize( 12 );
 
-  color( fltk::GRAY85 );
   textcolor( fltk::BLACK );
   clear_selected();
 
@@ -2405,33 +2215,10 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
       deactivate();
     }
 
+
   updateIcon();
   updateSize();
 
-}
-
-void Flu_File_Chooser::Entry::loadRealIcon(void* entry)
-{
-    Flu_File_Chooser::Entry* e = (Flu_File_Chooser::Entry*) entry;
-    if  ( !e || !e->chooser || !e->chooser->get_current_directory() ) return;
-
-    char fmt[1024];
-    char buf[1024];
-    sprintf( fmt, "%s/%s", e->chooser->get_current_directory(),
-             e->filename.c_str() );
-    sprintf( buf, fmt, 1 );  // should be first frame
-
-    fltk::SharedImage* img = fltk::SharedImage::get( buf );
-
-    if ( img )
-    {
-        e->icon = img;
-        e->resize(e->w(), img->h()+4 );
-        e->chooser->relayout();
-        e->chooser->redraw();
-    }
-
-    fltk::remove_timeout( loadRealIcon );
 }
 
 void Flu_File_Chooser::Entry::updateIcon()
@@ -2574,7 +2361,7 @@ void Flu_File_Chooser::Entry::updateSize()
       typeW = cw[1];
       sizeW = cw[2];
       dateW = cw[3];
-      resize( x(), y(), chooser->filedetails->w(), 20 );
+      resize( x(), y(), chooser->filedetails->w(), h );
     }
   else
     nameW = w();
@@ -2645,7 +2432,7 @@ void Flu_File_Chooser::Entry::updateSize()
 
 Flu_File_Chooser::Entry::~Entry()
 {
-    std::cerr << "delete entry " << this << std::endl;
+    SCOPED_LOCK( mutex ); // needed to avoid race condition
 }
 
 void Flu_File_Chooser::Entry::inputCB()
@@ -2693,6 +2480,14 @@ void Flu_File_Chooser::Entry::inputCB()
   editMode = 0;
 }
 
+void Flu_File_Chooser::timeout(void* t)
+{
+    Flu_File_Chooser* c = (Flu_File_Chooser*) t;
+    fltk::check();
+    if ( c->visible() ) fltk::repeat_timeout( 0.1, timeout, t );
+    else fltk::remove_timeout( timeout );
+}
+
 fltk::Group* Flu_File_Chooser::getEntryGroup()
 {
   if ( !fileDetailsBtn->value() || currentDir == FAVORITES_UNIQUE_STRING )
@@ -2735,7 +2530,7 @@ int Flu_File_Chooser::Entry::handle( int event )
   {
      // if user enters an entry cell, color it cyan
      if (!selected()) {
-	color( fltk::CYAN );
+	color( fltk::YELLOW );
 	redraw();
      }
      return 1;
@@ -2749,8 +2544,8 @@ int Flu_File_Chooser::Entry::handle( int event )
      }
      else
      {
-	color( fltk::GRAY85 );
-	redraw();
+         set_colors();
+         redraw();
      }
      return 1;
   }
@@ -2840,11 +2635,6 @@ int Flu_File_Chooser::Entry::handle( int event )
 	    {
 	      selected() ? clear_selected() : set_selected();
 	      chooser->lastSelected = this;
-	      if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-		{
-		  chooser->previewGroup->file = chooser->currentDir + filename;
-		}
-
 	      chooser->redraw();
 	    }
 	  else if( fltk::event_state(fltk::SHIFT) )
@@ -2854,11 +2644,6 @@ int Flu_File_Chooser::Entry::handle( int event )
 		{
 		  set_selected();
 		  chooser->lastSelected = this;
-		  if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-		    {
-		    chooser->previewGroup->file = chooser->currentDir + filename;
-		    }
-
 		  chooser->redraw();
 		}
 	      else
@@ -2891,10 +2676,6 @@ int Flu_File_Chooser::Entry::handle( int event )
 			  e->redraw();
 			}
 		      chooser->lastSelected = this;
-		      if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-			{
-			chooser->previewGroup->file = chooser->currentDir + filename;
-			}
 		      chooser->redraw();
 		    }
 		}
@@ -2904,10 +2685,6 @@ int Flu_File_Chooser::Entry::handle( int event )
 	      chooser->unselect_all();
 	      set_selected();
 	      chooser->lastSelected = this;
-	      if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-		{
-		chooser->previewGroup->file = chooser->currentDir + filename;
-		}
 	      chooser->redraw();
 	    }
 
@@ -2932,10 +2709,6 @@ int Flu_File_Chooser::Entry::handle( int event )
 	  chooser->unselect_all();
 	  set_selected();
 	  chooser->lastSelected = this;
-	  if( type == ENTRY_FILE || type == ENTRY_SEQUENCE )
-	    {
-	      chooser->previewGroup->file = chooser->currentDir + filename;
-	    }
 	}
 
       redraw();
@@ -3154,12 +2927,9 @@ void Flu_File_Chooser::unselect_all()
     {
       e = ((Entry*)g->child(i));
       e->clear_selected();
-      e->color( fltk::GRAY85 );
       e->editMode = 0;
     }
   lastSelected = 0;
-  previewGroup->file = "";
-  previewGroup->redraw();
   trashBtn->deactivate();
   redraw();
 }
@@ -3170,17 +2940,14 @@ void Flu_File_Chooser::select_all()
     return;
   fltk::Group *g = getEntryGroup();
   Entry *e;
-  previewGroup->file = "";
   for( int i = 0; i < g->children(); i++ )
     {
       e = ((Entry*)g->child(i));
       e->set_selected();
       e->editMode = 0;
-      previewGroup->file = e->filename;
       filename.value( e->filename.c_str() );
     }
   lastSelected = 0;
-  previewGroup->redraw();
   trashBtn->deactivate();
   redraw();
 }
@@ -3823,8 +3590,6 @@ void Flu_File_Chooser::cd( const char *path )
     }
 
   lastSelected = 0;
-  previewGroup->file = "";
-  previewGroup->redraw();
 
   // filelist->scroll_to_beginning();
 
@@ -4150,6 +3915,7 @@ void Flu_File_Chooser::cd( const char *path )
   buildLocationCombo();
   updateLocationQJ();
 
+
 #ifdef _WIN32
   if( root )
     return;
@@ -4206,6 +3972,7 @@ void Flu_File_Chooser::cd( const char *path )
   // read the directory
   dirent **e;
   char *name;
+
 
 
   int num = fltk::filename_list( pathbase.c_str(), &e );
@@ -4579,11 +4346,6 @@ void Flu_File_Chooser::cd( const char *path )
 	      filename.value( currentFile.c_str() );
 	      entry->set_selected();
 	      lastSelected = entry;
-	      if( entry->type == ENTRY_FILE )
-		{
-		  previewGroup->file = currentDir + currentFile.c_str();
-		}
-	      previewGroup->redraw();
 
 	      filelist->scroll_to( entry );
 	      filedetails->scroll_to( entry );
@@ -4707,8 +4469,9 @@ void Flu_File_Chooser::cd( const char *path )
       Entry* e = (Entry*) g->child(i);
       if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
       {
-          std::cerr << "load real icon for " << e->filename << std::endl;
-          loadRealIcon( e );
+          boost::thread t( boost::bind( Flu_File_Chooser::Entry::loadRealIcon,
+                                        e ) );
+          fltk::add_timeout( 0.1, timeout, this );
       }
   }
 
