@@ -123,6 +123,7 @@ namespace mrv {
       {
           // once we set thumbnail size we cannot change it
           w = _thumbnail->width();
+          h = _thumbnail->height();
       }
 
       // Audio only clip?  Return

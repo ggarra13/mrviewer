@@ -35,6 +35,8 @@
 #include <fltk/Browser.h>
 #include <fltk/InputBrowser.h>
 
+#include <boost/thread/recursive_mutex.hpp>
+
 #include "FLU/flu_export.h"
 
 
@@ -329,6 +331,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   fltk::CheckButton* hiddenFiles;
   Flu_Combo_Tree*    location;
 
+  static void timeout( void* c );
+
   inline static void _backCB( fltk::Widget *w, void *arg )
     { ((Flu_File_Chooser*)arg)->backCB(); }
   void backCB();
@@ -443,7 +447,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
       void draw();
 
-      static void loadRealIcon(void* entry);
+        static void loadRealIcon(void* entry);
 
       void updateSize();
       void updateIcon();
@@ -456,13 +460,11 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 	 textcolor( fltk::WHITE );
 	 redraw();
       }
-      bool selected()       { return selected_;  }
-	 void clear_selected() { 
-	    selected_ = false; 
-	    textcolor( fltk::BLACK );
-	    color( fltk::GRAY85 ); 
-	    redraw(); 
-	 }
+        void set_colors();
+        bool selected()       { return selected_;  }
+        void clear_selected();
+
+        typedef boost::recursive_mutex Mutex;
 
 
       std::string filename, date, filesize, shortname, 
@@ -475,6 +477,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       int editMode;
       Flu_File_Chooser *chooser;
       fltk::Image *icon;
+
+        Mutex mutex;
 
       int nameW, typeW, sizeW, dateW;
       bool details;
@@ -543,16 +547,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       unsigned char previewTxt[1024];
     };
 
-  friend class PreviewGroup;
-  class PreviewGroup : public fltk::Group
-    {
-    public:
-      PreviewGroup( int x, int y, int w, int h, Flu_File_Chooser *c );
-      void draw();
-      Flu_File_Chooser *chooser;
-      std::string lastFile, file;
-      PreviewWidgetBase* handled;
-    };
 
   fltk::Group *getEntryGroup();
   fltk::Group *getEntryContainer();
@@ -581,11 +575,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
   std::string commonStr();
 
-  static ImgTxtPreview *imgTxtPreview;
-
   static int (*customSort)(const char*,const char*);
 
-  PreviewGroup *previewGroup;
   PreviewTile *previewTile;
   fltk::Group *fileGroup, *locationQuickJump;
   fltk::Image *defaultFileIcon;
