@@ -77,7 +77,7 @@ void Flu_Wrap_Group::_measure( int& maxW, int& maxH ) const
       c = child(i);
       if ( !c->visible() ) continue;
       if ( c->w() > maxW ) maxW = c->w();
-      maxH += c->h();
+      if ( c->h() > maxH ) maxH = c->h();
     }
 
   maxW += _spacing[0];
