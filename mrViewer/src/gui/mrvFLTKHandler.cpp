@@ -46,6 +46,7 @@ namespace mrv {
       CMedia* img = CMedia::guess_image( filename, header, len );
       if ( img == NULL ) return NULL;
 
+
     // Fetch first frame
     img->probe_size( 50 );
     img->fetch( img->first_frame() );
