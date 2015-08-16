@@ -2121,7 +2121,7 @@ void Flu_File_Chooser::Entry::loadRealIcon(void* entry)
     sprintf( buf, fmt, frameStart );
 
 
-    fltk::SharedImage* img = mrv::fltk_handler( buf, NULL, 0 );
+    fltk::Image* img = mrv::fltk_handler( buf, NULL, 0 );
 
     if ( img )
     {
