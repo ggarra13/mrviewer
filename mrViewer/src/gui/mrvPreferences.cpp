@@ -756,9 +756,6 @@ fltk::StyleSet*     newscheme = NULL;
 
     }
 
-    // Add FLTK image handler (for file requester icons) 
-    fltk::SharedImage::add_handler( mrv::fltk_handler );
-
     // Set the theme and colors for GUI
     // scheme = new fltk::StyleSet();
     fltk::theme( &Preferences::set_theme );
