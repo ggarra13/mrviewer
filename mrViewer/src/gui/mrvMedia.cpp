@@ -27,7 +27,7 @@
 
 #include <math.h>
 
-#include <fltk/Image.h>
+#include <fltk/SharedImage.h>
 #include <ImathMath.h>   // for Imath::clamp
 // #include <ImathFun.h>   // for Imath::pow
 
@@ -102,6 +102,27 @@ namespace mrv {
 	}
     }
 
+
+  class thumbImage : public fltk::SharedImage
+  {
+    public:
+      thumbImage();
+      
+      static fltk::SharedImage* create() { return new thumbImage; }
+
+      virtual bool fetch() { return true; }
+  };
+
+  thumbImage::thumbImage() :
+  fltk::SharedImage()
+  {
+      pixeltype_ = fltk::RGB;
+      w_ = media::_thumbnail_width;
+      h_ = media::_thumbnail_height;
+  }
+
+
+
     void media::create_thumbnail()
     {
        if ( !_image->stopped() || thumbnail_frozen() ) return;
@@ -138,7 +159,9 @@ namespace mrv {
 
       if ( _thumbnail == NULL )
 	{
-            _thumbnail = new fltk::Image( fltk::RGB, w, h );
+            _thumbnail = fltk::SharedImage::get( thumbImage::create, 
+                                                 _image->fileroot(),
+                                                 0);
             if ( _thumbnail == NULL )
             {
                 IMG_ERROR( "Could not allocate thumbnail" );

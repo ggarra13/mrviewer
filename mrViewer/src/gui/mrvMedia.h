@@ -78,6 +78,7 @@ namespace mrv {
 	 fltk::Image* _thumbnail;
 	 bool         _thumbnail_frozen;
 
+      public:
 	 static       int _thumbnail_width;
 	 static       int _thumbnail_height;
     };
