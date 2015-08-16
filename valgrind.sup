@@ -30,3 +30,8 @@
    fun:_ZN3mrv8exrImage5fetchEl
    fun:_ZN3mrv6CMedia10find_imageEl
 }
+{
+   SSE operations
+   Memcheck:Cond
+   fun:mrv::ImagePixel::clamp()
+}

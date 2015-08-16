@@ -62,7 +62,7 @@ namespace mrv {
 	  else if ( a > 1.0f ) a = 1.0f;
        }
 
-#ifdef MR_SSE
+#if defined(MR_SSE)
 
        ImagePixel( const ImagePixel& b ) : _L( b._L ) {}
        
@@ -102,6 +102,15 @@ namespace mrv {
        }; // union
 
 #else
+      ImagePixel( const ImagePixel& x ) : 
+      r( x.r ), g( x.g ), b( x.b ), a( x.a ) {}
+
+
+      ImagePixel& operator=( const ImagePixel& x ) {
+          r = x.r; g = x.g; b = x.b; a = x.a;
+	  return *this;
+       }
+
        float r, g, b, a;
 #endif
 
