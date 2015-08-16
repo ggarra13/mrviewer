@@ -64,7 +64,7 @@ namespace mrv {
     media::~media()
     {
         delete _image; _image = NULL;
-        //  delete _thumbnail; _thumbnail = NULL;
+        // delete _thumbnail; _thumbnail = NULL;
         // thumbnail is not deleted, as fltk will do it for us.
     }
 
@@ -134,6 +134,7 @@ namespace mrv {
       pic.reset( pic->quick_resize( w, h ) );
       w = pic->width();
       h = pic->height();
+
 
       if ( _thumbnail == NULL )
 	{
