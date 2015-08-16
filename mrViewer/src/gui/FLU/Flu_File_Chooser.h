@@ -119,21 +119,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
   static bool singleButtonTravelDrawer;
 
-  //! This class must be derived from to create a "preview" widget.
-  /*! Simply derive from this class and overload fltk::Group's methods to create a widget
-    able to preview whatever file type you want. Register it with Flu_File_Chooser::add_preview_handler()
-    When a file is previewed, all registered handlers are visited until the preview() virtual function
-    for one of them returns nonzero. When preview() is called, the absolute path of the file is passed in,
-    and the widget should determine whether it can preview the file and update itself accordingly. If
-    it can preview the file, it should return nonzero, else it should return zero.
-   */
-  class FLU_EXPORT PreviewWidgetBase : public fltk::Group
-    {
-    public:
-      PreviewWidgetBase();
-      virtual ~PreviewWidgetBase();
-      virtual int preview( const char *filename ) = 0;
-    };
 
   //! File entry type
   enum { 
@@ -179,9 +164,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
    */
   static void add_context_handler( int type, const char *ext, const char *name,
 				   void (*cb)(const char*,int,void*), void *cbd );
-
-  //! Add a "preview" widget (derived from class Flu_File_Chooser::PreviewWidgetBase) that will handle custom previewing of files
-  static void add_preview_handler( PreviewWidgetBase *w );
 
   //! Add descriptive information and an icon for a file type
   /*! \param extensions is a space- or comma-delimited list of file extensions, or \c NULL for directories. e.g. "zip,tgz,rar"
@@ -323,10 +305,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   typedef std::vector< ContextHandler >  ContextHandlerVector;
   static ContextHandlerVector contextHandlers;
 
-  typedef PreviewWidgetBase* pPreviewWidgetBase;
-
-  typedef std::vector< pPreviewWidgetBase > PreviewHandlerVector;
-  static PreviewHandlerVector previewHandlers;
 
   fltk::CheckButton* hiddenFiles;
   Flu_Combo_Tree*    location;
@@ -539,13 +517,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       Flu_File_Chooser *chooser;
     };
 
-  class ImgTxtPreview : public PreviewWidgetBase
-    {
-    public:
-      int preview( const char *filename );
-      virtual void draw();
-      unsigned char previewTxt[1024];
-    };
 
 
   fltk::Group *getEntryGroup();
