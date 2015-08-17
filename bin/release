@@ -33,14 +33,14 @@ function create_symlinks()
 cd BUILD/Windows-6.1-32/Release
 create_symlinks
 remove_mo_files
-cd -
+cd ../../..
 
 cd BUILD/Windows-6.1-64/Release
 create_symlinks
 remove_mo_files
-cd -
+cd ../../..
 
 cd BUILD/Linux-3.16.0-45-generic-64/Release
 create_symlinks
 remove_mo_files
-cd -
+cd ../../..
