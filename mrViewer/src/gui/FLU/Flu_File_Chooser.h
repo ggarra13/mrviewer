@@ -119,6 +119,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
   static bool singleButtonTravelDrawer;
 
+  typedef boost::recursive_mutex Mutex;
+  Mutex  mutex;
 
   //! File entry type
   enum { 
@@ -425,7 +427,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
       void draw();
 
-        static void loadRealIcon(void* entry);
+      static void loadRealIcon( Entry* entry);
 
       void updateSize();
       void updateIcon();
@@ -442,8 +444,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
         bool selected()       { return selected_;  }
         void clear_selected();
 
-        typedef boost::recursive_mutex Mutex;
-
 
       std::string filename, date, filesize, shortname, 
 	description, shortDescription, toolTip, altname;
@@ -455,8 +455,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       int editMode;
       Flu_File_Chooser *chooser;
       fltk::Image *icon;
-
-        Mutex mutex;
 
       int nameW, typeW, sizeW, dateW;
       bool details;
