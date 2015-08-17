@@ -1,4 +1,4 @@
-#!/bin/bash --norc 
+#!/bin/sh 
 
 
 symlink=`readlink ${0}`

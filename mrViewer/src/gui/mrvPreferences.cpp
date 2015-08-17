@@ -870,8 +870,8 @@ fltk::StyleSet*     newscheme = NULL;
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
         uiPrefs->uiPrefsCacheSize->activate(true);
-        CMedia::audio_cache_size( uiPrefs->uiPrefsCacheSize->value() );
-        CMedia::video_cache_size( uiPrefs->uiPrefsCacheSize->value() );
+        CMedia::audio_cache_size(unsigned(uiPrefs->uiPrefsCacheSize->value()));
+        CMedia::video_cache_size(unsigned(uiPrefs->uiPrefsCacheSize->value()));
     }
     else
     {
