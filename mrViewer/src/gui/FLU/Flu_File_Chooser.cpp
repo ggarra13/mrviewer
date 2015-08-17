@@ -70,6 +70,7 @@ typedef __int64 int64_t;
 #include "fltk/run.h"  // for timeout methods
 
 #include <boost/thread.hpp>
+#include <boost/filesystem.hpp>
 
 #include "flu_pixmaps.h"
 #include "Flu_File_Chooser.h"
@@ -756,6 +757,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   previewBtn = new fltk::ToggleButton( 372, 3, 23, 25 );
   previewBtn->image( preview_img );
+  previewBtn->value(true);
   previewBtn->callback( _previewCB, this );
   previewBtn->tooltip( previewTTxt.c_str() );
 
@@ -917,6 +919,7 @@ Flu_File_Chooser::~Flu_File_Chooser()
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
 
+  SCOPED_LOCK( mutex );
   filelist->clear();
   filedetails->clear();
 
@@ -1565,6 +1568,37 @@ Flu_File_Chooser::PreviewTile::PreviewTile( int x, int y, int w, int h, Flu_File
 
 void Flu_File_Chooser::previewCB()
 {
+    bool inFavorites = ( currentDir == FAVORITES_UNIQUE_STRING );
+    if ( inFavorites ) return;
+
+    fltk::Group *g = getEntryGroup();
+    int c = g->children();
+
+    if ( previewBtn->value() )
+    {
+        for ( int i = 0; i < c; ++i )
+        {
+            Entry* e = (Entry*) g->child(i);
+            e->set_colors();
+            if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
+            {
+                boost::thread t( boost::bind( 
+					     Flu_File_Chooser::Entry::loadRealIcon,
+					     e ) );
+                fltk::add_timeout( 0.0f, timeout, this );
+            }
+        }
+    }
+    else
+    {
+        for ( int i = 0; i < c; ++i )
+        {
+            Entry* e = (Entry*) g->child(i);
+            e->set_colors();
+            e->updateIcon();
+        }
+    }
+
     fileGroup->resize( fileGroup->x(), fileGroup->y(), 
                        previewTile->w(), fileGroup->h() );
     previewTile->relayout();
@@ -2101,13 +2135,14 @@ int Flu_File_Chooser::FileDetails::handle( int event )
   return 0;
 }
 
-void Flu_File_Chooser::Entry::loadRealIcon(void* entry)
+void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
 {
-    Mutex::scoped_lock lk_m( ((Flu_File_Chooser::Entry*) entry)->mutex );
+    Mutex::scoped_lock lk_m( e->chooser->mutex );
 
-    Flu_File_Chooser::Entry* e = (Flu_File_Chooser::Entry*) entry;
     if  ( !e || !e->chooser ) return;
 
+
+    // std::cerr << "-> load " << e << " for " << e->filename << std::endl;
 
 
     char fmt[1024];
@@ -2120,20 +2155,22 @@ void Flu_File_Chooser::Entry::loadRealIcon(void* entry)
     int64_t frameStart = atoi( e->filesize.c_str() );
     sprintf( buf, fmt, frameStart );
 
+    if ( ! boost::filesystem::exists( buf ) ) return;
 
-    fltk::Image* img = mrv::fltk_handler( buf, NULL, 0 );
+    fltk::SharedImage* img = mrv::fltk_handler( buf, NULL, 0 );
+    if ( !img )
+      {
+	LOG_ERROR( _("Could not load thumbnail for '") << buf << "'" );
+	return;
+      }
 
-    if ( img )
-    {
-        int h = img->h();
-        e->icon = img;
-        e->resize(e->w(), h+4 );
-        e->redraw();
+    int h = img->h();
+    e->icon = img;
+    e->resize(e->w(), h+4 );
+    e->redraw();
 
-        e->chooser->relayout();
-        e->chooser->redraw();
-    }
-
+    e->chooser->relayout();
+    e->chooser->redraw();
 }
 
 static const int kColorOne = fltk::GRAY60;
@@ -2199,6 +2236,8 @@ Flu_File_Chooser::Entry::Entry( const char* name, int t, bool d,
 
   updateIcon();
   updateSize();
+
+  // std::cerr << "CREATED " << this << " for " << filename << std::endl;
 
 }
 
@@ -2414,7 +2453,6 @@ void Flu_File_Chooser::Entry::updateSize()
 
 Flu_File_Chooser::Entry::~Entry()
 {
-    SCOPED_LOCK( mutex ); // needed to avoid race condition
 }
 
 void Flu_File_Chooser::Entry::inputCB()
@@ -3590,8 +3628,6 @@ void Flu_File_Chooser::cd( const char *path )
   reloadBtn->activate();
   newDirBtn->activate();
   previewBtn->activate();
-  previewBtn->value(true);
-  previewBtn->do_callback();
 
   hiddenFiles->activate();
   addFavoriteBtn->activate();
@@ -3639,6 +3675,7 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( favoritesTxt.c_str() );
       updateLocationQJ();
 
+      SCOPED_LOCK( mutex );
       filelist->clear();
       filedetails->clear();
 
@@ -3737,6 +3774,7 @@ void Flu_File_Chooser::cd( const char *path )
 
 
   int numDirs = 0, numFiles = 0;
+  SCOPED_LOCK( mutex );
   filelist->clear();
   filedetails->clear();
 
@@ -3786,6 +3824,7 @@ void Flu_File_Chooser::cd( const char *path )
 		{
 		  filedetails->add(entry);
 		}
+	      entry->set_colors();
 	    }
 	}
       if( listMode )
@@ -4440,19 +4479,7 @@ void Flu_File_Chooser::cd( const char *path )
   filename.take_focus();
 
   // Handle loading of icons
-  fltk::Group *g = getEntryGroup();
-  int c = g->children();
-  for ( int i = 0; i < c; ++i )
-  {
-      Entry* e = (Entry*) g->child(i);
-      e->set_colors();
-      if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
-      {
-	boost::thread t( boost::bind( Flu_File_Chooser::Entry::loadRealIcon,
-	                               e ) );
-	fltk::add_timeout( 0.0f, timeout, this );
-      }
-  }
+  previewCB();
 
   if( listMode )
   {
