@@ -106,20 +106,13 @@ namespace mrv {
   class thumbImage : public fltk::SharedImage
   {
     public:
-      thumbImage();
-      
+      thumbImage() {};
+
       static fltk::SharedImage* create() { return new thumbImage; }
 
       virtual bool fetch() { return true; }
   };
 
-  thumbImage::thumbImage() :
-  fltk::SharedImage()
-  {
-      pixeltype_ = fltk::RGB;
-      w_ = media::_thumbnail_width;
-      h_ = media::_thumbnail_height;
-  }
 
 
 
@@ -134,11 +127,10 @@ namespace mrv {
       unsigned dw = _image->width();
       unsigned dh = _image->height();
 
-      unsigned int w = _thumbnail_width;
       unsigned int h = _thumbnail_height;
 
       float yScale = (float)h / (float)dh;
-      float xScale = (float)w / (float)dw;
+      unsigned int w = (float)dw * (float)yScale;
 
       if ( _thumbnail )
       {
@@ -156,24 +148,25 @@ namespace mrv {
       w = pic->width();
       h = pic->height();
 
+      _thumbnail = fltk::SharedImage::get( thumbImage::create, 
+					   _image->fileroot(),
+					   0);
 
-      if ( _thumbnail == NULL )
-	{
-            _thumbnail = fltk::SharedImage::get( thumbImage::create, 
-                                                 _image->fileroot(),
-                                                 0);
-            if ( _thumbnail == NULL )
-            {
-                IMG_ERROR( "Could not allocate thumbnail" );
-                return;
-            }
-	}
+      if ( !_thumbnail )
+      {
+          IMG_ERROR( _("Could not create thumbnail picture for '")
+                       << _image->fileroot() << "'" );
+          return;
+      }
 
+      _thumbnail->setpixeltype( fltk::RGB );
+      _thumbnail->setsize( w, h );
+ 
 
       uchar* ptr = (uchar*) _thumbnail->buffer();
       if (!ptr )
 	{
-	  IMG_ERROR("Could not allocate thumbnail");
+            IMG_ERROR( _("Could not allocate thumbnail buffer") );
 	  return;
 	}
 
