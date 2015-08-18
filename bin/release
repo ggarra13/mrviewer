@@ -11,6 +11,24 @@ function remove_mo_files
     rm -rf share/locale/*
 }
 
+function create_copies()
+{
+    rm -rf LICENSE.txt
+    cp  ../../../LICENSE.txt .
+    rm -rf HISTORY.txt
+    cp ../../../HISTORY.txt .
+    rm -rf Videos.txt
+    cp ../../../Videos.txt .
+    rm -rf ctl
+    cp -r ../../../ctl .
+    rm -rf shaders
+    cp -r ../../../shaders .
+    rm -rf docs
+    cp -r ../../../docs .
+    rm -rf rails
+    cp -r ../../../rails .
+}
+
 function create_symlinks()
 {
     rm -rf LICENSE.txt
@@ -31,12 +49,12 @@ function create_symlinks()
 
 
 cd BUILD/Windows-6.1-32/Release
-create_symlinks
+create_copies
 remove_mo_files
 cd ../../..
 
 cd BUILD/Windows-6.1-64/Release
-create_symlinks
+create_copies
 remove_mo_files
 cd ../../..
 

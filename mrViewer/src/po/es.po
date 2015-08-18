@@ -1,19 +1,19 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-08-17 12:22-0300\n"
+"POT-Creation-Date: 2015-08-18 09:30-0300\n"
 "PO-Revision-Date: 2015-08-17 13:06-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
-"Language: es_AR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
+"Language: es_AR\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: core/aviImage.cpp:1668
@@ -1477,10 +1477,6 @@ msgstr "No pude inicializar el motor de dibujo"
 #: gui/mrvImageBrowser.cpp:2026
 msgid "Could not load '"
 msgstr "No pude cargar '"
-
-#: gui/FLU/Flu_File_Chooser.cpp:2163
-msgid "Could not load thumbnail for '"
-msgstr "No pude cargar dibujo de miniatura para '"
 
 #: video/mrvGLLut3d.cpp:579
 msgid "Could not locate ICC profile \""
@@ -5709,6 +5705,9 @@ msgstr ""
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-45-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3602
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid "Could not load thumbnail for '"
+#~ msgstr "No pude cargar dibujo de miniatura para '"
 
 #~ msgid ""
 #~ "Bad\n"
