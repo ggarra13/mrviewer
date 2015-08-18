@@ -1,6 +1,3 @@
-
-
-
 # data file for the FLTK User Interface Designer (FLUID)
 version 2.1000 
 images_dir header_name 
@@ -631,7 +628,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {306 200 630 450} resizable visible
+        xywh {306 200 630 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -931,7 +928,7 @@ If you try to open several mrViewers with different images, all these images wil
           }
           {fltk::Group} {} {
             label Colors open
-            xywh {15 22 399 360} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label UI open
@@ -994,7 +991,7 @@ v->refresh();}
 fltk::split_color(o->color(),r,g,b);
 if (!fltk::color_chooser("Pick View Background Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
-o->redraw();} selected
+o->redraw();}
                 tooltip {Selects the background color of areas outside the current image.}
                 xywh {163 30 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
@@ -1006,7 +1003,7 @@ fltk::split_color(o->color(),r,g,b);
 if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();
-v->refresh();} selected
+v->refresh();}
                 tooltip {Selects the color of text overlays printed over the current image.}
                 xywh {163 60 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
@@ -1018,7 +1015,7 @@ fltk::split_color(o->color(),r,g,b);
 if (!fltk::color_chooser("Pick View Selection Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();
-v->refresh();} selected
+v->refresh();}
                 tooltip {Selects the color of the selection rectangle over the current image.}
                 xywh {278 30 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
@@ -1030,7 +1027,7 @@ fltk::split_color(o->color(),r,g,b);
 if (!fltk::color_chooser("Pick HUD Color", r,g,b)) return;
 o->color( fltk::color( r,g,b ) );
 o->redraw();
-v->refresh();} selected
+v->refresh();}
                 tooltip {Selects the color of HUD overlays.}
                 xywh {278 60 25 25} align 4 box EMBOSSED_BOX
               }
@@ -2498,7 +2495,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2535,11 +2533,11 @@ else
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;}
-        xywh {350 239 640 530} when CHANGED hide resizable
+        callback {delete v;} open
+        xywh {350 231 640 530} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow}
+        class {mrv::MainWindow} visible
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3192,9 +3190,10 @@ if ( f < v->uiTimeline->minimum() )
    f = int64_t( v->uiTimeline->minimum() );
 else if ( f > v->uiTimeline->maximum() )
    f = int64_t( v->uiTimeline->maximum() );
-v->uiView->seek( f );}
+v->uiView->seek( f );} selected
                       tooltip {Current frame.}
                       xywh {20 0 70 20} color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
+                      extra_code {o->value(1);}
                       class {mrv::Timecode}
                     }
                   }
