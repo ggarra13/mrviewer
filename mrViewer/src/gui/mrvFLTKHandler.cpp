@@ -40,7 +40,8 @@ namespace mrv {
       size_t start = ext.rfind( '.' );
       if ( start != ext.size() )
           ext = ext.substr( start + 1, ext.size() );
-      if ( ext == "ctl" || ext == "CTL" || ext == "XML" || ext == "xml")
+      if ( ext == "ctl" || ext == "CTL" || ext == "XML" || ext == "xml" ||
+	   ext == "reel" || ext == "REEL" )
           return NULL;
 
       CMedia* img = CMedia::guess_image( filename, header, len );
