@@ -1734,6 +1734,7 @@ void Flu_File_Chooser::okCB()
 	  // prepend the path
 	  std::string path = currentDir + filename.value();
 	  filename.value( path.c_str() );
+          value( path.c_str() );
 	  filename.position( filename.size(), filename.size() );
 	  do_callback();
 	  hide();
@@ -2139,11 +2140,6 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
 {
     Mutex::scoped_lock lk_m( e->chooser->mutex );
 
-    if  ( !e || !e->chooser ) return;
-
-
-    // std::cerr << "-> load " << e << " for " << e->filename << std::endl;
-
 
     char fmt[1024];
     char buf[1024];
@@ -2158,11 +2154,7 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
     if ( ! boost::filesystem::exists( buf ) ) return;
 
     fltk::SharedImage* img = mrv::fltk_handler( buf, NULL, 0 );
-    if ( !img )
-      {
-	LOG_ERROR( _("Could not load thumbnail for '") << buf << "'" );
-	return;
-      }
+    if ( !img ) return;
 
     int h = img->h();
     e->icon = img;
