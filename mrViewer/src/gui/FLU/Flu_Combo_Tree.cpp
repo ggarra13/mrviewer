@@ -30,7 +30,7 @@ class FL_API ComboBrowser : public Browser {
   public:
     int handle(int);
     ComboBrowser(int x, int y, int w, int h);
-    static void browser_cb(Widget *w, void *data);
+    // static void browser_cb(Widget *w, void *data);
 };
 
 class ComboWindow : public MenuWindow {
@@ -191,7 +191,7 @@ void Flu_Combo_Tree::popup()
 
   redraw(DAMAGE_VALUE);
 
-  win->exec(0, true);
+  win->exec(NULL, true);
 
   if(type()&NONEDITABLE) throw_focus();
   else focus(m_input);
