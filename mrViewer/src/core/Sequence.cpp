@@ -129,7 +129,8 @@ bool is_valid_movie( const char* ext )
    if ( tmp == ".avi" || tmp == ".mov"  || tmp == ".divx" ||
         tmp == ".wmv" || tmp == ".mpeg" || tmp == ".mpg"  ||
         tmp == ".qt"  || tmp == ".mp4"  || tmp == ".vob"  ||
-        tmp == ".rm"  || tmp == ".flv" )
+        tmp == ".rm"  || tmp == ".flv"  || tmp == ".webm" ||
+        tmp == ".gif" )
       return true;
 
    return false;
