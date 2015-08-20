@@ -65,9 +65,9 @@ typedef __int64 int64_t;
 #include "fltk/HighlightButton.h"
 #include <fltk/LabelType.h>
 #include <fltk/ItemGroup.h>
-#include "fltk/utf.h" 
-#include "fltk/events.h"  // for timeout methods
-#include "fltk/run.h"  // for timeout methods
+#include <fltk/utf.h>
+#include <fltk/events.h>  // for timeout methods
+#include <fltk/run.h>  // for timeout methods
 
 #include <boost/thread.hpp>
 #include <boost/filesystem.hpp>
@@ -89,6 +89,8 @@ using namespace fltk;
 
 static const char* kModule = "filereq";
 
+#undef DBG
+#define DBG(x) std::cerr << __FUNCTION__ << " " << x << std::endl;
 
 // set default language strings
 std::string Flu_File_Chooser::favoritesTxt = _("Favorites");
@@ -137,10 +139,10 @@ std::string Flu_File_Chooser::renameErrTxt = _("Unable to rename '%s' to '%s'");
 bool Flu_File_Chooser::singleButtonTravelDrawer = true;
 
 const char *col_labels[] = {
-  Flu_File_Chooser::detailTxt[0].c_str(),
-  Flu_File_Chooser::detailTxt[3].c_str(),
-  Flu_File_Chooser::detailTxt[1].c_str(),
-  Flu_File_Chooser::detailTxt[2].c_str(),
+Flu_File_Chooser::detailTxt[0].c_str(),
+Flu_File_Chooser::detailTxt[3].c_str(),
+Flu_File_Chooser::detailTxt[1].c_str(),
+Flu_File_Chooser::detailTxt[2].c_str(),
   0
 };
 
@@ -454,7 +456,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   cancel.label( cancelTxt.c_str() );
   cancel.labelsize( (float)normal_size );
 
-  add_type( NULL, directoryTxt.c_str(), &folder_closed );
+  add_type( NULL, _(directoryTxt.c_str()), &folder_closed );
   add_type( N_("mov"),   _( "Quicktime Movie"), &reel );
   add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
   add_type( N_("avi"),   _( "AVI Movie"), &reel );
@@ -464,6 +466,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("wmv"),   _( "WMV Movie"), &reel );
   add_type( N_("vob"),   _( "VOB Movie"), &reel );
   add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
+  add_type( N_("webm"),  _( "WebM Movie"), &reel );
   add_type( N_("flv"),   _( "Flash Movie"), &reel );
   add_type( N_("bmp"),   _( "Bitmap Picture"), &picture );
   add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
@@ -759,7 +762,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   previewBtn->image( preview_img );
   previewBtn->value(true);
   previewBtn->callback( _previewCB, this );
-  previewBtn->tooltip( previewTTxt.c_str() );
+  previewBtn->tooltip( _(previewTTxt.c_str()) );
 
   {
     fltk::Group *g2 = new fltk::Group( 401, 3, 81, 25 );
@@ -768,16 +771,16 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     fileListBtn = new fltk::ToggleButton( 0, 0, 25, 25 );
     fileListBtn->callback( _listModeCB, this );
     fileListBtn->image( file_list_img );
-    fileListBtn->tooltip( listTTxt.c_str() );
+    fileListBtn->tooltip( _(listTTxt.c_str()) );
     fileListWideBtn = new fltk::ToggleButton( 29, 0, 25, 25 );
     fileListWideBtn->callback( _listModeCB, this );
     fileListWideBtn->image( file_listwide_img );
-    fileListWideBtn->tooltip( wideListTTxt.c_str() );
+    fileListWideBtn->tooltip( _(wideListTTxt.c_str()) );
     fileDetailsBtn = new fltk::ToggleButton( 58, 0, 25, 25 );
     fileDetailsBtn->image( fileDetails );
     fileDetailsBtn->callback( _listModeCB, this );
     fileDetailsBtn->value(1);
-    fileDetailsBtn->tooltip( detailTTxt.c_str() );
+    fileDetailsBtn->tooltip( _(detailTTxt.c_str()) );
     g2->end();
   }
 
@@ -811,6 +814,14 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
       filedetails = new FileDetails( 0, 0, fileGroup->w()-4, 
 				     fileGroup->h()-4, this );
       filedetails->box( fltk::FLAT_BOX );
+
+      // char** col = (char**)col_labels;
+      // while ( *col != 0 )
+      // {
+      //     *col = _(*col);
+      //     ++col;
+      // }
+
       filedetails->column_labels( col_labels );
       filedetails->column_widths( col_widths );
       filedetails->end();
@@ -841,7 +852,8 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     g = new fltk::Group( 0, h()-30, w(), 30 );
     g->begin();
 
-    filePattern = new Flu_Combo_Tree( 70, 0, w()-70-85-10, 25, fileTypesTxt.c_str() );
+    filePattern = new Flu_Combo_Tree( 70, 0, w()-70-85-10, 25, 
+                                      _(fileTypesTxt.c_str()) );
     filePattern->type( InputBrowser::NONEDITABLE );
     filePattern->callback( reloadCB, this );
     filePattern->minh( 200 );
@@ -1585,9 +1597,11 @@ void Flu_File_Chooser::previewCB()
                 boost::thread t( boost::bind( 
 					     Flu_File_Chooser::Entry::loadRealIcon,
 					     e ) );
-                fltk::add_timeout( 0.0f, timeout, this );
             }
         }
+
+        fltk::remove_timeout( timeout );
+        fltk::add_timeout( 0.0f, timeout, this );
     }
     else
     {
@@ -1602,11 +1616,6 @@ void Flu_File_Chooser::previewCB()
     fileGroup->resize( fileGroup->x(), fileGroup->y(), 
                        previewTile->w(), fileGroup->h() );
     previewTile->relayout();
-
-#if 0
-  previewTile->init_sizes();
-  fileDetailsGroup->parent()->init_sizes();
-#endif
 
   updateEntrySizes();
 }
@@ -1647,6 +1656,14 @@ void Flu_File_Chooser::sortCB( fltk::Widget *w )
   c->copy_label( title.c_str() );
   filelist->sort();
   filedetails->sort();
+
+  fltk::Group* g = getEntryGroup();
+  unsigned num = g->children();
+  for ( unsigned i = 0; i < num; ++i )
+  {
+      Entry* c = (Entry*)g->child(i);
+      c->set_colors();
+  }
 
 }
 
@@ -2143,7 +2160,7 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
 
     char fmt[1024];
     char buf[1024];
-    sprintf( fmt, "%s/%s", e->chooser->get_current_directory(),
+    sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
              e->filename.c_str() );
 
 
@@ -2277,13 +2294,25 @@ void Flu_File_Chooser::Entry::updateIcon()
   if( type==ENTRY_FAVORITE )
     icon = &little_favorites;
 
-  toolTip = detailTxt[0] + ": " + filename;
+  toolTip = _(detailTxt[0].c_str());
+  toolTip += ": " + filename;
 
   if( type == ENTRY_FILE )
-    toolTip += "\n" + detailTxt[1] +": " + filesize;
+  {
+      toolTip += "\n";
+      toolTip += _(detailTxt[1].c_str());
+      toolTip += ": " + filesize;
+  }
   if( type == ENTRY_SEQUENCE )
-    toolTip += "\n" + detailTxt[4] +": " + filesize;
-  toolTip += "\n" + detailTxt[3] + ": " + description;
+  {
+      toolTip += "\n";
+      toolTip += _(detailTxt[4].c_str());
+      toolTip += ": " + filesize;
+  }
+  toolTip += "\n";
+  toolTip += _(detailTxt[3].c_str()); 
+  toolTip += ": " + description;
+
   tooltip( toolTip.c_str() );
 
   // Here's the icon setup
@@ -2495,8 +2524,10 @@ void Flu_File_Chooser::Entry::inputCB()
 void Flu_File_Chooser::timeout(void* t)
 {
     Flu_File_Chooser* c = (Flu_File_Chooser*) t;
-    fltk::check();
-    if ( c->visible() ) fltk::repeat_timeout( 0.0f, timeout, t );
+    if ( fltk::modal() == c ) {
+        fltk::check();
+    }
+    if ( c->visible() ) fltk::repeat_timeout( 0.1f, timeout, t );
     else fltk::remove_timeout( timeout );
 }
 
@@ -2574,15 +2605,12 @@ int Flu_File_Chooser::Entry::handle( int event )
       if ( Flu_File_Chooser::singleButtonTravelDrawer && 
            fltk::event_button() == fltk::LeftButton )
      {
-	// double-clicking a favorite cd's to it
+	// single click a favorite cd's to it
 	if( type == ENTRY_FAVORITE )
 	{
-	   if ( fltk::event_clicks() > 1 )
-	   {
-	      fltk::event_clicks(0);
-	      chooser->delayedCd = filename;
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
-	   }
+            fltk::event_clicks(0);
+            chooser->delayedCd = filename;
+            fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
 	}
 	else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
 	{
@@ -2791,21 +2819,22 @@ int Flu_File_Chooser::popupContextMenu( Entry *entry )
   switch( type )
     {
     case ENTRY_NONE: // right click on nothing
-      entryPopup.add( contextMenuTxt[0].c_str(), (void*)ACTION_NEW_FOLDER );
+        entryPopup.add( _( contextMenuTxt[0].c_str() ), 
+                        (void*)ACTION_NEW_FOLDER );
       break;
 
     case ENTRY_DIR:
-      entryPopup.add( contextMenuTxt[1].c_str(), (void*)ACTION_RENAME );
-      entryPopup.add( contextMenuTxt[2].c_str(), (void*)ACTION_DELETE );
+        entryPopup.add( _( contextMenuTxt[1].c_str() ), (void*)ACTION_RENAME );
+        entryPopup.add( _( contextMenuTxt[2].c_str() ), (void*)ACTION_DELETE );
       break;
 
     case ENTRY_FILE:
-      entryPopup.add( contextMenuTxt[1].c_str(), (void*)ACTION_RENAME );
-      entryPopup.add( contextMenuTxt[2].c_str(), (void*)ACTION_DELETE );
+        entryPopup.add( _( contextMenuTxt[1].c_str() ), (void*)ACTION_RENAME );
+        entryPopup.add( _( contextMenuTxt[2].c_str() ), (void*)ACTION_DELETE );
       break;
 
    case ENTRY_FAVORITE:
-     entryPopup.add( contextMenuTxt[2].c_str(), (void*)ACTION_DELETE );
+       entryPopup.add( _( contextMenuTxt[2].c_str() ), (void*)ACTION_DELETE );
       break;
 
     case ENTRY_DRIVE:
