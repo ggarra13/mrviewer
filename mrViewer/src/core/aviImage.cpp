@@ -1390,7 +1390,7 @@ void aviImage::populate()
 
     _frameStart = 1;
 
-    if ( _context->start_time != MRV_NOPTS_VALUE )
+    if ( _context->start_time != AV_NOPTS_VALUE )
     {
         _frameStart = boost::int64_t( ( _fps * ( double )_context->start_time / 
                                         ( double )AV_TIME_BASE ) ) + 1;
@@ -1448,7 +1448,10 @@ void aviImage::populate()
         }
         else
         {
-            duration = 200; // GIF89
+            if ( stream->nb_frames != 0 )
+                duration = stream->nb_frames;
+            else
+                duration = 200; // GIF89
         }
     }
 
@@ -2261,7 +2264,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	  AVPacket& pkt = _video_packets.front();
 
           boost::int64_t pktframe;
-          if ( pkt.dts != MRV_NOPTS_VALUE )
+          if ( pkt.dts != AV_NOPTS_VALUE )
               pktframe = pts2frame( get_video_stream(), pkt.dts );
           else
               pktframe = frame;
@@ -2282,8 +2285,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	  // // for a fps of 30.
 	  // if ( _images.size() >= max_video_frames() )
 	  // {   // must be frame or else stutters happen in PoTC.VOB
-          //     limit_video_store( frame ); 
-             
+          //     limit_video_store( frame );
 	  // }
 
 
