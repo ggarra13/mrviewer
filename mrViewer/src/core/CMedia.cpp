@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -93,6 +94,7 @@ namespace {
 
 namespace mrv {
 
+static AVRational timeBaseQ = { 1, AV_TIME_BASE };
 
 unsigned    CMedia::_audio_max = 0;
 bool        CMedia::_supports_yuv = false;
@@ -2173,13 +2175,13 @@ void CMedia::populate_stream_info( StreamInfo& s,
         s.start = ((double) stream->start_time * time);
     }
 
-  if ( stream->duration == AV_NOPTS_VALUE )
+  if ( stream->duration != AV_NOPTS_VALUE )
     {
-        s.duration = ((double) _context->duration * time);
+        s.duration = ((double) stream->duration * time);
     }
   else
     {
-        s.duration = ((double) stream->duration * time);
+        s.duration = ((double) _context->duration * time);
     }
 }
 
