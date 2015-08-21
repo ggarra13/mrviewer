@@ -2,6 +2,8 @@ v2.9.1   - Made selection of Favorite follow preferences of a single
 	   click to make it consistent with the travelling of folders.
 	 - Made context sensitive menus in file requester respect
 	   the user's locale settings.
+	 - Fixed a hanging bug when selecting favorites from the pull
+	   down or when changing file type from the other pull down.
 
 v2.9.0   - Moved compilation to use ninja build system on both platforms.
 	 - Fixed some documentation in Spanish and added some more info on

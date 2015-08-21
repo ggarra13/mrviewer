@@ -361,7 +361,7 @@ run_clean()
     builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE/tmp
     if [ -d $builddir ]; then
 	cd $builddir
-	if [ -e Makefile ]; then
+	if [ -e ninja.build ]; then
 	    run_make clean
 	fi
 	echo "-------------------------------"
