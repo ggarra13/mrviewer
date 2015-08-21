@@ -1323,6 +1323,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	   for( i = 0; i < g->children(); )
 	     {
 	       Entry *e = ((Entry*)g->child(i));
+               if (!e) continue;
 	       if( e->selected() )
 		 {
 		   favoritesList->remove(i);
@@ -1332,14 +1333,16 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	       else
 		 i++;
 	     }
-	   
+
 	   // save the favorites
 	   FILE *f = fltk::fltk_fopen( configFilename.c_str(), "w" );
 	   if( f )
 	     {
 	       for( i = 0; i < favoritesList->children(); ++i )
+               {
                    if ( favoritesList->child(i)->label() == NULL ) continue;
-		 fprintf( f, "%s\n", favoritesList->child(i)->label() );
+                   fprintf( f, "%s\n", favoritesList->child(i)->label() );
+               }
 	       fclose( f );
 	     }
 	   cd( FAVORITES_UNIQUE_STRING );
@@ -1415,7 +1418,6 @@ void Flu_File_Chooser::trashCB( bool recycle )
 #else
 	       result = ::remove( name.c_str() );
 #endif
-
 	       // if remove fails, report an error
 	       if( result != 0 )
 		 {
