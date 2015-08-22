@@ -2250,7 +2250,7 @@ o->child_of( main->uiMain );} modal
             user_data this user_data_type {HotkeyUI*}
             callback {mrv::select_hotkey( v );} open
             xywh {20 0 415 315}
-            extra_code {mrv::fill_uiFunction( o );}
+            extra_code {mrv::fill_ui_hotkeys( o );}
           } {}
           {fltk::Button} {} {
             label Save
