@@ -251,7 +251,7 @@ struct TableText table[] = {
 };
 
 
-void fill_uiFunction( fltk::Browser* b )
+void fill_ui_hotkeys( fltk::Browser* b )
 {
    if (!b) return;
 
@@ -328,7 +328,7 @@ void select_hotkey( HotkeyUI* b )
 
    delete h;
 
-   fill_uiFunction( b->uiFunction );
+   fill_ui_hotkeys( b->uiFunction );
 }
 
 

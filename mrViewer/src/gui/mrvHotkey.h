@@ -271,7 +271,7 @@ struct TableText
 extern struct TableText table[];
 extern HotkeyEntry hotkeys[];
 
-void fill_uiFunction( fltk::Browser* o );
+void fill_ui_hotkeys( fltk::Browser* o );
 void select_hotkey( mrv::HotkeyUI* m );
 
 }
