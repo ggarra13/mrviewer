@@ -369,6 +369,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
     { ((Flu_File_Chooser*)arg)->newFolderCB(); }
   void newFolderCB();
 
+  void saveFavorites();
+
   inline static void upDirCB( fltk::Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->cd( "../" ); }
 

@@ -23,6 +23,8 @@ using namespace std;
 
 #include "FLU/Flu_Combo_Tree.h"
 
+#undef DBG
+#define DBG(x) std::cerr << __FILE__ << " " << __FUNCTION__ << " " << x << std::endl;
 
 namespace fltk {
 
