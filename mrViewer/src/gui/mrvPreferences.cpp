@@ -697,6 +697,7 @@ fltk::StyleSet*     newscheme = NULL;
     video.get( "blend_mode", tmp, 0 );
     uiPrefs->uiPrefsBlendMode->value(tmp);
 
+#if 0
     //
     // Database stuff
     //
@@ -718,6 +719,7 @@ fltk::StyleSet*     newscheme = NULL;
 	      }
 	  }
       }
+#endif
 
     //
     // Hotkeys
@@ -1216,6 +1218,7 @@ fltk::StyleSet*     newscheme = NULL;
       }
     }
 
+#if 0
     //
     // Database
     //
@@ -1227,6 +1230,7 @@ fltk::StyleSet*     newscheme = NULL;
     if ( driver ) {
        db.set( "driver", driver );
     }
+#endif
 
     //
     // Hotkeys
