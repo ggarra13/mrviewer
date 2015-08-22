@@ -669,7 +669,8 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   locationQuickJump->box( fltk::NO_BOX );
   locationQuickJump->end();
 
-  location = new Flu_Combo_Tree( 56, 15, w()-171, 22, locationTxt.c_str() );
+  location = new Flu_Combo_Tree( 56, 15, w()-171, 22,
+                                 _(locationTxt.c_str()) );
   location->minh( 200 );
   location->maxh( 500 );
   // location->pop_height( 200 );
@@ -1335,16 +1336,8 @@ void Flu_File_Chooser::trashCB( bool recycle )
 	     }
 
 	   // save the favorites
-	   FILE *f = fltk::fltk_fopen( configFilename.c_str(), "w" );
-	   if( f )
-	     {
-	       for( i = 0; i < favoritesList->children(); ++i )
-               {
-                   if ( favoritesList->child(i)->label() == NULL ) continue;
-                   fprintf( f, "%s\n", favoritesList->child(i)->label() );
-               }
-	       fclose( f );
-	     }
+           saveFavorites();
+
 	   cd( FAVORITES_UNIQUE_STRING );
 	   return;
 	 }
@@ -1352,7 +1345,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 #ifdef WIN32
        SHFILEOPSTRUCT fileop;
        memset( &fileop, 0, sizeof(SHFILEOPSTRUCT) );
-       fileop.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRMATION;
+       fileop.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRATION;
        if( recycle )
 	 fileop.fFlags |= FOF_ALLOWUNDO;
        fileop.wFunc = FO_DELETE;
@@ -1603,7 +1596,7 @@ void Flu_File_Chooser::previewCB()
         }
 
         fltk::remove_timeout( timeout );
-        fltk::add_timeout( 0.0f, timeout, this );
+        fltk::add_timeout( 0.1f, timeout, this );
     }
     else
     {
@@ -2526,11 +2519,13 @@ void Flu_File_Chooser::Entry::inputCB()
 void Flu_File_Chooser::timeout(void* t)
 {
     Flu_File_Chooser* c = (Flu_File_Chooser*) t;
-    if ( fltk::modal() == c ) {
+    fltk::Widget* w = fltk::modal();
+    if ( w == c )
+    {
         fltk::check();
+        if ( c->visible() ) fltk::repeat_timeout( 0.1f, timeout, t );
+        else fltk::remove_timeout( timeout );
     }
-    if ( c->visible() ) fltk::repeat_timeout( 0.1f, timeout, t );
-    else fltk::remove_timeout( timeout );
 }
 
 fltk::Group* Flu_File_Chooser::getEntryGroup()
@@ -3128,10 +3123,15 @@ void Flu_File_Chooser::addToFavoritesCB()
       buildLocationCombo();
     }
 
+  saveFavorites();
+
+}
+
+void Flu_File_Chooser::saveFavorites()
+{
   // save the favorites
   FILE *f = fltk::fltk_fopen( configFilename.c_str(), N_("w") );
   if( !f ) return;
-
 
   for( int i = 0; i < favoritesList->children(); ++i )
     {
