@@ -115,9 +115,11 @@ class ImageBrowser : public fltk::Browser
      void insert( unsigned idx, mrv::media m );
 
      // @todo: these should be factored to a database helper class
+#if 0
      void add_image( const mrv::media& m );
      void add_video( const mrv::media& m );
      void add_audio( const mrv::media& m );
+#endif
 
      mrv::media add( mrv::media& m );
      mrv::media add( CMedia* img );
@@ -169,8 +171,9 @@ class ImageBrowser : public fltk::Browser
      static mrv::Element* new_item(mrv::media img);
 
    protected:
+#if 0
      void db_envvars( char*& login, std::string& shot_id );
-
+#endif
 
     void send_reel( const mrv::Reel& r );
     void send_images( const mrv::Reel& r);
