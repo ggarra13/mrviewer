@@ -53,8 +53,6 @@ decl {\#include "gui/mrvVectorscope.h"} {}
 
 decl {\#include "gui/mrvImageInformation.h"} {} 
 
-decl {\#include "gui/mrvDatabaseBrowser.h"} {} 
-
 decl {\#include "gui/mrvPreferences.h"} {} 
 
 decl {\#include "gui/mrvLogDisplay.h"} {} 
@@ -136,8 +134,6 @@ return ctl;} {}
 namespace mrv {open
 } {
   decl {class Browser;} {public
-  }
-  decl {class DatabaseBrowser;} {public
   }
   decl {class Histogram;} {public
   }
@@ -1798,22 +1794,6 @@ else
               xywh {110 319 40 25}
             }
           }
-          {fltk::Group} {} {
-            label Database
-            xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
-          } {
-            {fltk::Choice} DatabaseDriver {
-              label Driver
-              xywh {73 32 290 25}
-            } {
-              {fltk::Item} {} {
-                label None
-                }
-              {fltk::Item} {} {
-                label PostgreSQL
-                }
-            }
-          }
         }
         {fltk::Group} {} {
           xywh {5 5 195 430}
@@ -1869,9 +1849,6 @@ else
               }
             {fltk::Item} {} {
               label Audio
-              }
-            {fltk::Item} {} {
-              label Database
               }
           }
         }
@@ -2208,31 +2185,6 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class DatabaseUI {} {
-    Function {make_window(ViewerUI* main)} {open
-    } {
-      {fltk::Window} uiMain {
-        label Database open
-        xywh {655 197 445 565} horizontal hide resizable
-        extra_code {o->child_of( main->uiMain );}
-      } {
-        {fltk::Group} {} {open
-          xywh {10 14 425 536} horizontal box UP_BOX
-        } {
-          {fltk::Group} uiDatabaseBrowser {
-            xywh {0 0 425 536}
-            class {mrv::DatabaseBrowser}
-          } {}
-        }
-      }
-    }
-    Function {DatabaseUI(ViewerUI* m)} {} {
-      code {make_window( m );} {}
-    }
-    Function {~DatabaseUI()} {} {
-      code {delete uiMain; uiMain = NULL;} {}
-    }
-  }
   class HotkeyUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -2520,8 +2472,6 @@ else
     decl {HistogramUI* uiHistogram;} {public
     }
     decl {VectorscopeUI* uiVectorscope;} {public
-    }
-    decl {DatabaseUI* uiDatabase;} {public
     }
     decl {PaintUI* uiPaint;} {public
     }
@@ -3443,7 +3393,6 @@ uiVectorscope = new VectorscopeUI(this);
 uiHistogram = new HistogramUI(this);
 uiPaint = new PaintUI(this);
 if (!uiLog) uiLog   = new LogUI(this);
-//uiDatabase = new DatabaseUI(this);
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 
 if (!uiConnection) uiConnection = new ConnectionUI( this );
