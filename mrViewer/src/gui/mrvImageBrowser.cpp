@@ -59,7 +59,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvThread.h"
 #include "core/mrStackTrace.h"
 
-#include "db/mrvDatabase.h"
+//#include "db/mrvDatabase.h"
 
 #include "gui/mrvIO.h"
 #include "gui/mrvTimecode.h"
@@ -324,7 +324,9 @@ namespace mrv {
   ImageBrowser::~ImageBrowser()
   {
       clear();
+#if 0
       delete db; db = NULL;
+#endif
       wait_on_threads();
       uiMain = NULL;
   }
@@ -703,6 +705,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     redraw();
   }
 
+#if 0
 
   void ImageBrowser::add_video( const mrv::media& m )
   {
@@ -901,7 +904,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
         setlocale(LC_NUMERIC, "");
       }
   }
+#endif
 
+#if 0
   void ImageBrowser::db_envvars( char*& login, std::string& shot_id )
   {
     char buf[4096];
@@ -1258,6 +1263,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     delete [] buf;
  }
+#endif
 
 void ImageBrowser::send_reel( const mrv::Reel& reel )
 {
@@ -1377,7 +1383,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 	if ( dir == kTempDirs[i] ) return m;
       }
 
-
+#if 0
     if (!db) {
       db = mrv::Database::factory();
       if ( !db )
@@ -1397,6 +1403,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( img->has_audio() )
       add_audio( m );
+#endif
 
     adjust_timeline();
 

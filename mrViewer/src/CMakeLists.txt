@@ -30,7 +30,7 @@ FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( LibIntl     REQUIRED )
 # FIND_PACKAGE( RLM         REQUIRED )    # for licensing
 # FIND_PACKAGE( GLU         REQUIRED )    # for gluErrorString
-FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
+# FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
 
@@ -93,7 +93,7 @@ INCLUDE_DIRECTORIES(
   ${CTL_INCLUDE_DIR}
   ${TINYXML2_INCLUDE_DIR}
   ${OPENEXR_INCLUDE_DIR}
-  ${POSTGRESQL_INCLUDE_DIR}
+#  ${POSTGRESQL_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
@@ -167,8 +167,8 @@ SET( SOURCES
   core/mrvColorProfile.cpp
   core/mrvImageOpts.cpp
 
-  db/mrvDatabase.cpp
-  db/mrvPostgreSQL.cpp
+ # db/mrvDatabase.cpp
+ # db/mrvPostgreSQL.cpp
   #   #db/mrvMySQL.cpp # unneeded
 
   gui/FLU/Flu_Combo_Box.cpp      # needed?
@@ -188,7 +188,7 @@ SET( SOURCES
   gui/mrvCTLBrowser.cpp
   gui/mrvCollapsableGroup.cpp
   gui/mrvColorInfo.cpp
-  gui/mrvDatabaseBrowser.cpp
+  # gui/mrvDatabaseBrowser.cpp
   gui/mrvEDLGroup.cpp
   gui/mrvFileRequester.cpp
   gui/mrvFLTKHandler.cpp
@@ -283,7 +283,7 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 
 SET( LIBRARIES 
   ${LIBINTL_LIBRARIES}
-  ${POSTGRESQL_LIBRARIES}
+#  ${POSTGRESQL_LIBRARIES}
   ${FFMPEG_LIBRARIES}
   ${GLUT_LIBRARIES}
   ${MAGICK++_LIBRARIES}
@@ -519,7 +519,7 @@ MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
 MESSAGE( STATUS "ImageMagick++: ${MAGICK++_FOUND}" )
 MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
 MESSAGE( STATUS "Boost:         ${Boost_FOUND} ${Boost_VERSION}" )
-MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
+#MESSAGE( STATUS "PostgreSQL:    ${POSTGRESQL_FOUND} ${POSTGRESQL_VERSION}" )
 MESSAGE( STATUS "TCLAP:         ${TCLAP_FOUND} ${TCLAP_VERSION}" )
 MESSAGE( STATUS "CTL:           ${CTL_FOUND} ${CTL_VERSION}" )
 MESSAGE( STATUS "libintl:       ${LIBINTL_FOUND} ${LIBINTL_VERSION}" )
@@ -570,10 +570,10 @@ IF(FFMPEG_FOUND)
   MESSAGE( STATUS "ffmpeg libraries:      ${FFMPEG_LIBRARIES}" )
 ENDIF(FFMPEG_FOUND)
 
-IF(POSTGRESQL_FOUND)
-  MESSAGE( STATUS "PostgreSQL include:    ${POSTGRESQL_INCLUDE_DIR}" )
-  MESSAGE( STATUS "PostgreSQL library:    ${POSTGRESQL_LIBRARY_DIR}" )
-ENDIF(POSTGRESQL_FOUND)
+#IF(POSTGRESQL_FOUND)
+#  MESSAGE( STATUS "PostgreSQL include:    ${POSTGRESQL_INCLUDE_DIR}" )
+#  MESSAGE( STATUS "PostgreSQL library:    ${POSTGRESQL_LIBRARY_DIR}" )
+#ENDIF(POSTGRESQL_FOUND)
 
 IF(TCLAP_FOUND)
   MESSAGE( STATUS "TCLAP include:    ${TCLAP_INCLUDE_DIR}" )
