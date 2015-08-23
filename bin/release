@@ -26,7 +26,6 @@ function create_copies()
     rm -rf docs
     cp -r ../../../docs .
     rm -rf rails
-    cp -r ../../../rails .
 }
 
 function create_symlinks()
@@ -44,7 +43,6 @@ function create_symlinks()
     rm -rf docs
     ln -s ../../../docs .
     rm -rf rails
-    ln -s ../../../rails .
 }
 
 
