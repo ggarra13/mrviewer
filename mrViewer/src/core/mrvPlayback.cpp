@@ -213,6 +213,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                    }
 
                    img->playback( CMedia::kStopped );
+                   img->clear_cache();
 
                    status = kEndNextImage;
                    return status;
@@ -288,6 +289,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                    }
 
 		  img->playback( CMedia::kStopped );
+                  img->clear_cache();
 
 		  status = kEndNextImage;
 		  return status;
@@ -327,6 +329,7 @@ EndStatus handle_loop( boost::int64_t& frame,
    if ( status == kEndStop || status == kEndNextImage )
    {
       img->playback( CMedia::kStopped );
+      img->clear_cache();
    }
 
    return status;
