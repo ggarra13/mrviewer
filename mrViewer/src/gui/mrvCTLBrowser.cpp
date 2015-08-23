@@ -94,8 +94,6 @@ void CTLBrowser::fill()
       std::string path = *it;
       if ( ! fs::exists( path ) || ! fs::is_directory( path ) ) continue;
 
-      LOG_INFO( path );
-
       fs::directory_iterator end_itr;
       for ( fs::directory_iterator itr( path ); itr != end_itr; ++itr )
 	{

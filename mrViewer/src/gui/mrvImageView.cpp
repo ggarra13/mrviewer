@@ -1350,8 +1350,7 @@ bool ImageView::preload()
         img->hires( pic );
         timeline()->redraw();
     }
-
-    if ( !found )
+    else
     {
         if ( CMedia::eight_bit_caches() && gamma() > 1.0 )
             gamma( 1.0 );
@@ -1427,7 +1426,8 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   if ( CMedia::cache_active() && ( _reel < b->number_of_reels() ))
+   if ( CMedia::cache_active() && CMedia::preload_cache() &&
+        ( _reel < b->number_of_reels() ))
    {
        preload();
    }
