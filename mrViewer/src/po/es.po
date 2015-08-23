@@ -1,13 +1,13 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-08-22 15:56-0300\n"
-"PO-Revision-Date: 2015-08-17 13:06-0300\n"
+"POT-Creation-Date: 2015-08-22 21:10-0300\n"
+"PO-Revision-Date: 2015-08-22 21:25-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
 "Language: es_AR\n"
@@ -830,6 +830,11 @@ msgstr "Todos los Archivos (*)"
 msgid "All Possible"
 msgstr "Todos los Posibles"
 
+#: gui/mrvFileRequester.cpp:143 gui/mrvFileRequester.cpp:414
+#: gui/mrvFileRequester.cpp:450
+msgid "All Recognized (*.{"
+msgstr "Todos los Reconocidos (*.{"
+
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3787
 msgid "Allows you to adjust frame rate playback."
 msgstr "Permite ajustar la velocidad de playback."
@@ -1000,6 +1005,15 @@ msgstr "Audio/Editar Cuadro Comienzo de Audio"
 #: core/CMedia_audio.cpp:1339
 msgid "Audios #"
 msgstr "Audios #"
+
+#: gui/mrvFileRequester.cpp:151 gui/mrvFileRequester.cpp:422
+#: gui/mrvFileRequester.cpp:458
+msgid "Audios (*.("
+msgstr "Audios (*.{"
+
+#: gui/mrvFileRequester.cpp:246
+msgid "Audios (*.{"
+msgstr "Audios (*.{"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2099
 msgid "Auto Playback"
@@ -1289,6 +1303,10 @@ msgstr "Área de Color"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrvColorAreaUI.cxx:20
 msgid "Color Information"
 msgstr "Información de Area de Color"
+
+#: gui/mrvFileRequester.cpp:196
+msgid "Color Profiles (*."
+msgstr "Perfiles ICC (*."
 
 #: gui/mrvImageInformation.cpp:527
 msgid "Color Range"
@@ -1959,7 +1977,7 @@ msgstr "Dividir"
 
 #: core/wandImage.cpp:477
 msgid "Double"
-msgstr ""
+msgstr "Doble"
 
 #: core/exrImage.cpp:1378 gui/mrvHotkey.cpp:217
 msgid "Down"
@@ -2699,6 +2717,11 @@ msgstr "Imagen/Ponerla como Fondo"
 msgid "Image/Toggle Background"
 msgstr "Imagen/Permutar Fondo"
 
+#: gui/mrvFileRequester.cpp:147 gui/mrvFileRequester.cpp:418
+#: gui/mrvFileRequester.cpp:454
+msgid "Images (*.{"
+msgstr "Imagenes (*.{"
+
 #: standalone/mrvCommandLine.cpp:369
 msgid "Images, sequences or movies to display."
 msgstr "Imágenes, secuencias o peliculas para mostrar."
@@ -2945,15 +2968,15 @@ msgstr "Modo de Listado"
 msgid "Load"
 msgstr "Cargar"
 
-#: gui/mrvFileRequester.cpp:152
+#: gui/mrvFileRequester.cpp:138
 msgid "Load Image"
 msgstr "Grabar Imagen"
 
-#: gui/mrvFileRequester.cpp:153
+#: gui/mrvFileRequester.cpp:139
 msgid "Load Movie or Sequence"
 msgstr "Abrir Pelicula o Secuencia"
 
-#: gui/mrvFileRequester.cpp:134
+#: gui/mrvFileRequester.cpp:120
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
@@ -3167,6 +3190,11 @@ msgstr "Métodos de Estimación de Movimiento"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:57
 msgid "Movie Saving Preferences"
 msgstr "Preferencias de Grabado de Películas"
+
+#: gui/mrvFileRequester.cpp:149 gui/mrvFileRequester.cpp:420
+#: gui/mrvFileRequester.cpp:456
+msgid "Movies (*.{"
+msgstr "Peliculas (*.{"
 
 #: gui/mrvHotkey.cpp:232
 msgid "Multiply"
@@ -3798,22 +3826,22 @@ msgstr "Rango"
 msgid "Read"
 msgstr "Leer"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1304
+#: gui/FLU/Flu_File_Chooser.cpp:1305
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1317
+#: gui/FLU/Flu_File_Chooser.cpp:1318
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1298
+#: gui/FLU/Flu_File_Chooser.cpp:1299
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1312
+#: gui/FLU/Flu_File_Chooser.cpp:1313
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
@@ -3845,6 +3873,12 @@ msgstr "Listado de Carretes"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3233
 msgid "Reels"
 msgstr "Carretes"
+
+#: gui/mrvFileRequester.cpp:116 gui/mrvFileRequester.cpp:141
+#: gui/mrvFileRequester.cpp:412 gui/mrvFileRequester.cpp:448
+#: gui/mrvFileRequester.cpp:760
+msgid "Reels (*.{"
+msgstr "Carretes (*.{"
 
 #: core/wandImage.cpp:384
 msgid "Reference Date"
@@ -4062,7 +4096,7 @@ msgstr "Grabar preferencias al disco por defecto."
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabé archivo de Clip Metadata de ACES '"
 
-#: gui/mrvFileRequester.cpp:467
+#: gui/mrvFileRequester.cpp:502
 #, c-format
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
 msgstr "Grabando Secuencia(s) %<PRId64> - %<PRId64>"
@@ -5312,6 +5346,10 @@ msgstr "Niveles de Ripmap en X"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2006
 msgid "X:"
 msgstr ""
+
+#: gui/mrvFileRequester.cpp:343 gui/mrvFileRequester.cpp:360
+msgid "XML Clip Metadata (*.{"
+msgstr "Clip XML de Metadatos (*.{"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3477
 msgid "XY"

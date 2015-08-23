@@ -66,7 +66,7 @@ typedef __int64 int64_t;
 #include <fltk/LabelType.h>
 #include <fltk/ItemGroup.h>
 #include <fltk/utf.h>
-#include <fltk/events.h>  // for timeout methods
+#include <fltk/events.h>  
 #include <fltk/run.h>  // for timeout methods
 
 #include <boost/thread.hpp>
@@ -999,7 +999,7 @@ void Flu_File_Chooser::pattern( const char *p )
       if( strcmp( next, "*" ) == 0 )
 	{
 	  addedAll = true;
-	  filePattern->add( allFilesTxt.c_str() );
+	  filePattern->add( _(allFilesTxt.c_str()) );
 	  patterns.push_back( "*" );
 	  next = strtok( NULL, "\t|;" );
 	  continue;
@@ -1066,7 +1066,7 @@ void Flu_File_Chooser::pattern( const char *p )
   // add all files
   if( !addedAll )
     {
-      filePattern->add( allFilesTxt.c_str() );
+        filePattern->add( _(allFilesTxt.c_str()) );
       patterns.push_back( "*" );
     }
 
@@ -1163,7 +1163,8 @@ int Flu_File_Chooser::handle( int event )
 void Flu_File_Chooser::newFolderCB()
 {
   // start with the name "New Folder". while the name exists, keep appending a number (1..2..etc)
-  std::string newName = defaultFolderNameTxt.c_str(), path = currentDir + newName;
+    std::string newName = _(defaultFolderNameTxt.c_str()), 
+                   path = currentDir + newName;
   int count = 1;
   int i;
   for(;;)
@@ -1185,7 +1186,7 @@ void Flu_File_Chooser::newFolderCB()
 	{
 	  char buf[16];
 	  sprintf( buf, "%d", count++ );
-	  newName = defaultFolderNameTxt.c_str() + std::string(buf);
+	  newName = _(defaultFolderNameTxt.c_str()) + std::string(buf);
 	  path = currentDir + newName;
 	}
       else
