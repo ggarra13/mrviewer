@@ -1346,7 +1346,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 #ifdef WIN32
        SHFILEOPSTRUCT fileop;
        memset( &fileop, 0, sizeof(SHFILEOPSTRUCT) );
-       fileop.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRATION;
+       fileop.fFlags = FOF_SILENT | FOF_NOERRORUI | FOF_NOCONFIRMATION;
        if( recycle )
 	 fileop.fFlags |= FOF_ALLOWUNDO;
        fileop.wFunc = FO_DELETE;
