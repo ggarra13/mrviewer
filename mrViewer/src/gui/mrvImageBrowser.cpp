@@ -79,7 +79,7 @@ namespace fs = boost::filesystem;
 
 namespace 
 {
-  const char* kModule = "db";
+  const char* kModule = "reel";
 
 }
 
@@ -1264,7 +1264,8 @@ int ImageBrowser::value() const
         img = CMedia::guess_image( name, NULL, 0, first, last, use_threads );
     if ( img == NULL )
     {
-       return mrv::media();
+        LOG_ERROR( name << ": not a recognized format." );
+        return mrv::media();
     }
 
     
