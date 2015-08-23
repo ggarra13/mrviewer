@@ -624,7 +624,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {306 200 630 450} hide resizable
+        xywh {306 200 630 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -923,7 +923,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label Colors open
+            label Colors
             xywh {15 22 399 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1114,8 +1114,8 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
-            label Caches open
-            xywh {13 22 399 364} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Caches open selected
+            xywh {13 22 399 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1126,7 +1126,12 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
               label { 8 bit caches}
               tooltip {Sequence images will be cached as 8-bit pictures, instead of being cached as the original depth of the sequence.
 This setting thus allows caching more pictures in memory.}
-              xywh {190 25 155 32}
+              xywh {117 67 155 32}
+            }
+            {fltk::LightButton} uiPrefsPreloadCache {
+              label {Preload Cache}
+              tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.}
+              xywh {212 25 165 32} value 1
             }
             {fltk::Choice} uiPrefsCacheScale {
               label Scale open
@@ -1795,7 +1800,7 @@ else
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 195 430}
         } {
           {fltk::Browser} {} {
@@ -1807,7 +1812,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -1880,15 +1885,13 @@ v->uiPrefs->run(v);}
         }
       }
     }
-    Function {PreferencesUI(mrv::ViewerUI* m)} {open
-    } {
+    Function {PreferencesUI(mrv::ViewerUI* m)} {} {
       code {make_window(m);} {}
     }
     Function {~PreferencesUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {refresh()} {open
-    } {
+    Function {refresh()} {} {
       code {fltk::Window* w = fltk::Window::first();
 for ( ; w ; w = w->next() )
    w->redraw();} {}
@@ -2447,8 +2450,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2477,17 +2479,17 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {350 231 640 530} when CHANGED resizable
+        xywh {350 231 640 530} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -3140,7 +3142,7 @@ if ( f < v->uiTimeline->minimum() )
    f = int64_t( v->uiTimeline->minimum() );
 else if ( f > v->uiTimeline->maximum() )
    f = int64_t( v->uiTimeline->maximum() );
-v->uiView->seek( f );} selected
+v->uiView->seek( f );}
                       tooltip {Current frame.}
                       xywh {20 0 70 20} color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
                       extra_code {o->value(1);}

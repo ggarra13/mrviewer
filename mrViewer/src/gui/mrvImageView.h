@@ -528,8 +528,6 @@ class server;
     void refresh_fstop() const;
 
 
-      void preload( const mrv::Reel& reel, const mrv::media& fg,
-                    const int64_t tframe );
 
   protected:
     mrv::ViewerUI* uiMain;

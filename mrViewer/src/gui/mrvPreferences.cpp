@@ -486,6 +486,10 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsCacheActive->value( (bool) tmp );
     CMedia::cache_active( (bool) tmp );
 
+    caches.get( "preload", tmp, 1 );
+    uiPrefs->uiPrefsPreloadCache->value( (bool) tmp );
+    CMedia::preload_cache( (bool) tmp );
+
     caches.get( "scale", tmp, 0 );
     uiPrefs->uiPrefsCacheScale->value( tmp );
     CMedia::cache_scale( tmp );
@@ -842,6 +846,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     // Handle caches
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
+    CMedia::preload_cache( (bool)uiPrefs->uiPrefsPreloadCache->value() );
 
     int scale = CMedia::cache_scale();
     CMedia::cache_scale( uiPrefs->uiPrefsCacheScale->value() );
@@ -1090,6 +1095,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences caches( base, "caches" );
     caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
+    caches.set( "preload", (int) uiPrefs->uiPrefsPreloadCache->value() );
     caches.set( "scale", (int) uiPrefs->uiPrefsCacheScale->value() );
     caches.set( "8bit_caches", (int) uiPrefs->ui8BitCaches->value() );
     caches.set( "fps", (int) uiPrefs->uiPrefsCacheFPS->value() );
