@@ -697,29 +697,6 @@ fltk::StyleSet*     newscheme = NULL;
     video.get( "blend_mode", tmp, 0 );
     uiPrefs->uiPrefsBlendMode->value(tmp);
 
-#if 0
-    //
-    // Database stuff
-    //
-    fltk::Preferences db( base, "db" );
-    ok  = db.get( "driver", tmpS, "postgresql", 256 );
-    env = environmentSetting( "MRV_DATABASE_DRIVER", tmpS, ok );
-    if ( env )
-      {
-	int num = uiPrefs->DatabaseDriver->children();
-	for ( int i = 0; i < num; ++i )
-	  {
-	    const char* label = uiPrefs->DatabaseDriver->child(i)->label();
-	    if ( strcasecmp( env, label ) == 0 )
-	      {
-		char buf[1024];
-		sprintf( buf, "MRV_DATABASE_DRIVER=%s", env );
-		putenv( strdup(buf) );
-		uiPrefs->DatabaseDriver->value(i); break;
-	      }
-	  }
-      }
-#endif
 
     //
     // Hotkeys
@@ -1218,19 +1195,6 @@ fltk::StyleSet*     newscheme = NULL;
       }
     }
 
-#if 0
-    //
-    // Database
-    //
-    fltk::Preferences db( base, "db" );
-    i = uiPrefs->DatabaseDriver->value();
-    const char* driver = NULL;
-    if ( i >= 0 && i < uiPrefs->DatabaseDriver->children() )
-      driver = uiPrefs->DatabaseDriver->child(i)->label();
-    if ( driver ) {
-       db.set( "driver", driver );
-    }
-#endif
 
     //
     // Hotkeys
