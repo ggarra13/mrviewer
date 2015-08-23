@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-08-22 21:40-0300\n"
+"POT-Creation-Date: 2015-08-23 07:22-0300\n"
 "PO-Revision-Date: 2015-08-22 21:25-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -611,10 +611,6 @@ msgstr ": No pude abrir el archivo."
 msgid ": Error "
 msgstr ""
 
-#: core/guessImage.cpp:209
-msgid ": not a recognized format."
-msgstr ": no es un formato reconocido."
-
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3321
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3725
 msgid "@<"
@@ -848,7 +844,7 @@ msgstr "Apertura"
 msgid "Apply: "
 msgstr "Aplicar: "
 
-#: gui/mrvImageBrowser.cpp:1771
+#: gui/mrvImageBrowser.cpp:1772
 msgid ""
 "Are you sure you want to\n"
 "remove all images from reel?"
@@ -1383,7 +1379,7 @@ msgstr "No pude inicializar el cmm: "
 msgid "Could not initialize draw engine"
 msgstr "No pude inicializar el motor de dibujo"
 
-#: gui/mrvImageBrowser.cpp:1449
+#: gui/mrvImageBrowser.cpp:1450
 msgid "Could not load '"
 msgstr "No pude cargar '"
 
@@ -1479,51 +1475,51 @@ msgstr "Crear conversión de audio desde "
 msgid "Create new directory"
 msgstr "Crear un directorio nuevo"
 
-#: gui/mrvImageBrowser.cpp:2075
+#: gui/mrvImageBrowser.cpp:2076
 msgid "Create/Checkered"
 msgstr "Crear/Cuadriculado"
 
-#: gui/mrvImageBrowser.cpp:2059
+#: gui/mrvImageBrowser.cpp:2060
 msgid "Create/Color Bars/PAL"
 msgstr "Crear/Barras de Color/PAL"
 
-#: gui/mrvImageBrowser.cpp:2061
+#: gui/mrvImageBrowser.cpp:2062
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Crear/Barras de Color/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:2055
+#: gui/mrvImageBrowser.cpp:2056
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Crear/Barras de Color/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:2057
+#: gui/mrvImageBrowser.cpp:2058
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Crear/Barras de Color/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:2063
+#: gui/mrvImageBrowser.cpp:2064
 msgid "Create/Gamma Chart/1.4"
 msgstr "Crear/Carta de Gama/1.4"
 
-#: gui/mrvImageBrowser.cpp:2065
+#: gui/mrvImageBrowser.cpp:2066
 msgid "Create/Gamma Chart/1.8"
 msgstr "Crear/Carta de Gama/1.8"
 
-#: gui/mrvImageBrowser.cpp:2067
+#: gui/mrvImageBrowser.cpp:2068
 msgid "Create/Gamma Chart/2.2"
 msgstr "Crear/Carta de Gama/2.2"
 
-#: gui/mrvImageBrowser.cpp:2069
+#: gui/mrvImageBrowser.cpp:2070
 msgid "Create/Gamma Chart/2.4"
 msgstr "Crear/Carta de Gama/2.4"
 
-#: gui/mrvImageBrowser.cpp:2071
+#: gui/mrvImageBrowser.cpp:2072
 msgid "Create/Gradient/Linear"
 msgstr "Crear/Graduación/Linear"
 
-#: gui/mrvImageBrowser.cpp:2073
+#: gui/mrvImageBrowser.cpp:2074
 msgid "Create/Gradient/Luminance"
 msgstr "Crear/Graduación/Luminancia"
 
-#: gui/mrvImageBrowser.cpp:2079
+#: gui/mrvImageBrowser.cpp:2080
 msgid "Create/Slate"
 msgstr "Crear/Planilla"
 
@@ -2080,36 +2076,36 @@ msgstr "Buscador de Archivos"
 msgid "File Types"
 msgstr "Tipos de Archivo"
 
-#: gui/mrvImageView.cpp:2078 gui/mrvImageBrowser.cpp:1995
+#: gui/mrvImageView.cpp:2078 gui/mrvImageBrowser.cpp:1996
 msgid "File/Open/Clip XML Metadata"
 msgstr "Archivo/Abrir/Clip Metadatos XML"
 
-#: gui/mrvImageView.cpp:2071 gui/mrvImageBrowser.cpp:1983
+#: gui/mrvImageView.cpp:2071 gui/mrvImageBrowser.cpp:1984
 #: gui/mrvMediaTrack.cpp:557
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivo/Abrir/Pelicula o Secuencia"
 
-#: gui/mrvImageView.cpp:2073 gui/mrvImageBrowser.cpp:1985
+#: gui/mrvImageView.cpp:2073 gui/mrvImageBrowser.cpp:1986
 msgid "File/Open/Single Image"
 msgstr "Archivo/Abrir/Solo una Imágen"
 
-#: gui/mrvImageView.cpp:2090 gui/mrvImageBrowser.cpp:2007
+#: gui/mrvImageView.cpp:2090 gui/mrvImageBrowser.cpp:2008
 msgid "File/Save/Clip XML Metadata As"
 msgstr "Archivo/Grabar/Clip Metadatos XML"
 
-#: gui/mrvImageView.cpp:2086 gui/mrvImageBrowser.cpp:2003
+#: gui/mrvImageView.cpp:2086 gui/mrvImageBrowser.cpp:2004
 msgid "File/Save/Frame As"
 msgstr "Archivo/Grabar/Cuadro Como"
 
-#: gui/mrvImageView.cpp:2088 gui/mrvImageBrowser.cpp:2005
+#: gui/mrvImageView.cpp:2088 gui/mrvImageBrowser.cpp:2006
 msgid "File/Save/GL Snapshots As"
 msgstr "Archivo/Grabar/Instantáneas de Opengl"
 
-#: gui/mrvImageView.cpp:2081 gui/mrvImageBrowser.cpp:1998
+#: gui/mrvImageView.cpp:2081 gui/mrvImageBrowser.cpp:1999
 msgid "File/Save/Movie or Sequence As"
 msgstr "Archivo/Grabar/Pelicula o Secuencia Como"
 
-#: gui/mrvImageView.cpp:2084 gui/mrvImageBrowser.cpp:2001
+#: gui/mrvImageView.cpp:2084 gui/mrvImageBrowser.cpp:2002
 msgid "File/Save/Reel As"
 msgstr "Archivo/Grabar/Carrete Como"
 
@@ -2571,11 +2567,11 @@ msgstr "Imagen/Asignar Input Device Transform (IDT) de CTL"
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Imagen/Asignar Transformacion de Render (RRT) de CTL"
 
-#: gui/mrvImageBrowser.cpp:2040
+#: gui/mrvImageBrowser.cpp:2041
 msgid "Image/Attach CTL Script"
 msgstr "Imagen/Agregar Script de CTL"
 
-#: gui/mrvImageView.cpp:2180 gui/mrvImageBrowser.cpp:2037
+#: gui/mrvImageView.cpp:2180 gui/mrvImageBrowser.cpp:2038
 msgid "Image/Attach ICC Color Profile"
 msgstr "Imagen/Agregar Perfil ICC de Color"
 
@@ -2584,11 +2580,11 @@ msgid "Image/Clear Caches"
 msgstr "Imagen/Borrar los Caches"
 
 #: gui/mrvImageView.cpp:2150 gui/mrvImageView.cpp:2158
-#: gui/mrvImageBrowser.cpp:2019 gui/mrvImageBrowser.cpp:2029
+#: gui/mrvImageBrowser.cpp:2020 gui/mrvImageBrowser.cpp:2030
 msgid "Image/Clone"
 msgstr "Imagen/Clonar"
 
-#: gui/mrvImageView.cpp:2152 gui/mrvImageBrowser.cpp:2021
+#: gui/mrvImageView.cpp:2152 gui/mrvImageBrowser.cpp:2022
 msgid "Image/Clone All Channels"
 msgstr "Imagen/Clonar Todos los Canales"
 
@@ -2608,7 +2604,7 @@ msgstr "Imagen/Siguiente"
 msgid "Image/Previous"
 msgstr "Imagen/Previa"
 
-#: gui/mrvImageView.cpp:2192 gui/mrvImageBrowser.cpp:2045
+#: gui/mrvImageView.cpp:2192 gui/mrvImageBrowser.cpp:2046
 msgid "Image/Set as Background"
 msgstr "Imagen/Ponerla como Fondo"
 
@@ -2880,7 +2876,7 @@ msgstr "Cargué archivo de Clip Metadata de ACES '"
 msgid "Loading"
 msgstr "Cargando"
 
-#: gui/mrvImageBrowser.cpp:1380
+#: gui/mrvImageBrowser.cpp:1381
 #, c-format
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
@@ -5609,6 +5605,9 @@ msgstr ""
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3557
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid ": not a recognized format."
+#~ msgstr ": no es un formato reconocido."
 
 #~ msgid " for '"
 #~ msgstr " para '"
