@@ -201,15 +201,8 @@ namespace mrv {
 
     delete [] read_data;
 
-    if (image == NULL ) 
-      {
-          int len = strlen(name);
-          if ( len > 5 && strcasecmp( ".reel", name + len - 5 ) != 0 )
-          {
-              LOG_ERROR(name << _(": not a recognized format.") );
-          }
+    if (image == NULL )
           return NULL;
-      }
 
     return dynamic_cast< CMedia* >( image );
   }
