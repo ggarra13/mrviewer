@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-08-22 21:10-0300\n"
+"POT-Creation-Date: 2015-08-22 21:40-0300\n"
 "PO-Revision-Date: 2015-08-22 21:25-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -153,10 +153,6 @@ msgstr " falló. "
 msgid " failed. "
 msgstr " falló. "
 
-#: gui/mrvImageBrowser.cpp:798 gui/mrvImageBrowser.cpp:895
-msgid " for '"
-msgstr " para '"
-
 #: core/CMedia_audio.cpp:1888 core/aviImage.cpp:2493
 msgid " for frame "
 msgstr " para cuadro "
@@ -193,7 +189,7 @@ msgstr " está faltante."
 msgid " not found"
 msgstr " no encontrado"
 
-#: gui/mrvImageBrowser.cpp:1513
+#: gui/mrvImageBrowser.cpp:929
 msgid " not found in reel"
 msgstr " no encontrada en el carrete"
 
@@ -217,11 +213,6 @@ msgstr " a "
 msgid " to "
 msgstr " a "
 
-#: gui/mrvImageBrowser.cpp:1017 gui/mrvImageBrowser.cpp:1037
-#: gui/mrvImageBrowser.cpp:1061 gui/mrvImageBrowser.cpp:1078
-msgid " to database '"
-msgstr " a la base de datos '"
-
 #: core/aviImage.cpp:830
 msgid " type "
 msgstr " tipo "
@@ -242,7 +233,7 @@ msgstr "\" no encontrada."
 msgid "\" to protocol number"
 msgstr "\" a numero de protocolo"
 
-#: gui/mrvImageBrowser.cpp:556
+#: gui/mrvImageBrowser.cpp:550
 #, c-format
 msgid ""
 "#\n"
@@ -289,34 +280,6 @@ msgstr "%d kb/s"
 #: core/Sequence.cpp:360
 msgid "' does not exist or no directory"
 msgstr "' no existe o no es una carpeta"
-
-#: gui/mrvImageBrowser.cpp:737 gui/mrvImageBrowser.cpp:850
-#: gui/mrvImageBrowser.cpp:1147
-msgid "' in database '"
-msgstr "' en la base de datos '"
-
-#: gui/mrvImageBrowser.cpp:962
-msgid "' into show '"
-msgstr "' al show '"
-
-#: gui/mrvImageBrowser.cpp:764 gui/mrvImageBrowser.cpp:799
-#: gui/mrvImageBrowser.cpp:896 gui/mrvImageBrowser.cpp:1219
-#: gui/mrvImageBrowser.cpp:1225 gui/mrvImageBrowser.cpp:1255
-msgid "' to database '"
-msgstr "' a la base de datos '"
-
-#: gui/mrvImageBrowser.cpp:978
-msgid "' to sequence '"
-msgstr "' a la secuencia '"
-
-#: gui/mrvImageBrowser.cpp:765 gui/mrvImageBrowser.cpp:805
-#: gui/mrvImageBrowser.cpp:902 gui/mrvImageBrowser.cpp:929
-#: gui/mrvImageBrowser.cpp:963 gui/mrvImageBrowser.cpp:979
-#: gui/mrvImageBrowser.cpp:1018 gui/mrvImageBrowser.cpp:1038
-#: gui/mrvImageBrowser.cpp:1062 gui/mrvImageBrowser.cpp:1079
-#: gui/mrvImageBrowser.cpp:1226
-msgid "'."
-msgstr "'."
 
 #: gui/mrvImageInformation.cpp:789
 msgid "(NTSC Fields)"
@@ -648,34 +611,6 @@ msgstr ": No pude abrir el archivo."
 msgid ": Error "
 msgstr ""
 
-#: gui/mrvImageBrowser.cpp:1016
-msgid ": added ICC "
-msgstr ": agregué ICC "
-
-#: gui/mrvImageBrowser.cpp:901
-msgid ": added audio to database '"
-msgstr ": agregué audio a la base de datos '"
-
-#: gui/mrvImageBrowser.cpp:1060
-msgid ": added look mod transform "
-msgstr ": agregué transformación de look mod "
-
-#: gui/mrvImageBrowser.cpp:1077
-msgid ": added pixel format "
-msgstr ": agregué formato de pixel "
-
-#: gui/mrvImageBrowser.cpp:763
-msgid ": added pixel format '"
-msgstr ": agregué formato de pixel '"
-
-#: gui/mrvImageBrowser.cpp:1036
-msgid ": added render transform "
-msgstr ": agregué transformación de render"
-
-#: gui/mrvImageBrowser.cpp:804
-msgid ": added video to database '"
-msgstr ": agregué vídeo a la base de datos '"
-
 #: core/guessImage.cpp:209
 msgid ": not a recognized format."
 msgstr ": no es un formato reconocido."
@@ -796,14 +731,6 @@ msgstr "Agregar"
 msgid "Add this directory to my favorites"
 msgstr "Agregar esta carpeta a mis favoritos"
 
-#: gui/mrvImageBrowser.cpp:1224
-msgid "Added image '"
-msgstr "Agregué imagen '"
-
-#: gui/mrvImageBrowser.cpp:978
-msgid "Added shot '"
-msgstr "Agregué toma '"
-
 #: core/exrImage.cpp:1133
 msgid "Adopted Neutral"
 msgstr "Neutral Adoptado"
@@ -921,7 +848,7 @@ msgstr "Apertura"
 msgid "Apply: "
 msgstr "Aplicar: "
 
-#: gui/mrvImageBrowser.cpp:2355
+#: gui/mrvImageBrowser.cpp:1771
 msgid ""
 "Are you sure you want to\n"
 "remove all images from reel?"
@@ -1262,7 +1189,7 @@ msgstr "Clonar la Imagen"
 msgid "Clone image"
 msgstr "Clonar la Imagen"
 
-#: gui/mrvImageBrowser.cpp:279
+#: gui/mrvImageBrowser.cpp:277
 #, c-format
 msgid ""
 "Cloned Image\n"
@@ -1368,26 +1295,10 @@ msgstr "Copiar/Color"
 msgid "Copyright String"
 msgstr "Texto de Copyright"
 
-#: gui/mrvImageBrowser.cpp:894
-msgid "Could not add audio track #"
-msgstr "No pude agregar pista de audio #"
-
-#: gui/mrvImageBrowser.cpp:1218
-msgid "Could not add image '"
-msgstr "No pude agregar imagen '"
-
-#: gui/mrvImageBrowser.cpp:1253
-msgid "Could not add look_mod_image '"
-msgstr "No pude agregar look mod de imagen '"
-
 #: video/mrvGLLut3d.cpp:588
 #, c-format
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
-
-#: gui/mrvImageBrowser.cpp:797
-msgid "Could not add video track #"
-msgstr "No pude agregar pista de video #"
 
 #: core/aviImage_save.cpp:369
 msgid "Could not alloc swr_ctx"
@@ -1456,21 +1367,9 @@ msgstr "No pude dibujar imagen"
 msgid "Could not encode audio frame: "
 msgstr "No pude codificar cuadro de audio:"
 
-#: gui/mrvImageBrowser.cpp:849
-msgid "Could not find audio '"
-msgstr "No pude encontrar audio '"
-
 #: core/exrImage.cpp:1865
 msgid "Could not find both stereo images in file"
 msgstr "No pude encontrar ambas imágenes de estereo en el archivo"
-
-#: gui/mrvImageBrowser.cpp:1146
-msgid "Could not find image table '"
-msgstr "No pude encontrar tabla de imágenes '"
-
-#: gui/mrvImageBrowser.cpp:736
-msgid "Could not find video '"
-msgstr "No pude encontrar video '"
 
 #: core/aviImage.cpp:704
 msgid "Could not get image conversion context."
@@ -1484,7 +1383,7 @@ msgstr "No pude inicializar el cmm: "
 msgid "Could not initialize draw engine"
 msgstr "No pude inicializar el motor de dibujo"
 
-#: gui/mrvImageBrowser.cpp:2033
+#: gui/mrvImageBrowser.cpp:1449
 msgid "Could not load '"
 msgstr "No pude cargar '"
 
@@ -1580,51 +1479,51 @@ msgstr "Crear conversión de audio desde "
 msgid "Create new directory"
 msgstr "Crear un directorio nuevo"
 
-#: gui/mrvImageBrowser.cpp:2659
+#: gui/mrvImageBrowser.cpp:2075
 msgid "Create/Checkered"
 msgstr "Crear/Cuadriculado"
 
-#: gui/mrvImageBrowser.cpp:2643
+#: gui/mrvImageBrowser.cpp:2059
 msgid "Create/Color Bars/PAL"
 msgstr "Crear/Barras de Color/PAL"
 
-#: gui/mrvImageBrowser.cpp:2645
+#: gui/mrvImageBrowser.cpp:2061
 msgid "Create/Color Bars/PAL HDTV"
 msgstr "Crear/Barras de Color/PAL HDTV"
 
-#: gui/mrvImageBrowser.cpp:2639
+#: gui/mrvImageBrowser.cpp:2055
 msgid "Create/Color Bars/SMPTE NTSC"
 msgstr "Crear/Barras de Color/SMPTE NTSC"
 
-#: gui/mrvImageBrowser.cpp:2641
+#: gui/mrvImageBrowser.cpp:2057
 msgid "Create/Color Bars/SMPTE NTSC HDTV"
 msgstr "Crear/Barras de Color/SMPTE NTSC HDTV"
 
-#: gui/mrvImageBrowser.cpp:2647
+#: gui/mrvImageBrowser.cpp:2063
 msgid "Create/Gamma Chart/1.4"
 msgstr "Crear/Carta de Gama/1.4"
 
-#: gui/mrvImageBrowser.cpp:2649
+#: gui/mrvImageBrowser.cpp:2065
 msgid "Create/Gamma Chart/1.8"
 msgstr "Crear/Carta de Gama/1.8"
 
-#: gui/mrvImageBrowser.cpp:2651
+#: gui/mrvImageBrowser.cpp:2067
 msgid "Create/Gamma Chart/2.2"
 msgstr "Crear/Carta de Gama/2.2"
 
-#: gui/mrvImageBrowser.cpp:2653
+#: gui/mrvImageBrowser.cpp:2069
 msgid "Create/Gamma Chart/2.4"
 msgstr "Crear/Carta de Gama/2.4"
 
-#: gui/mrvImageBrowser.cpp:2655
+#: gui/mrvImageBrowser.cpp:2071
 msgid "Create/Gradient/Linear"
 msgstr "Crear/Graduación/Linear"
 
-#: gui/mrvImageBrowser.cpp:2657
+#: gui/mrvImageBrowser.cpp:2073
 msgid "Create/Gradient/Luminance"
 msgstr "Crear/Graduación/Luminancia"
 
-#: gui/mrvImageBrowser.cpp:2663
+#: gui/mrvImageBrowser.cpp:2079
 msgid "Create/Slate"
 msgstr "Crear/Planilla"
 
@@ -1932,7 +1831,7 @@ msgstr "Carpeta"
 msgid "Directory '"
 msgstr "Carpeta '"
 
-#: gui/mrvImageBrowser.cpp:292
+#: gui/mrvImageBrowser.cpp:290
 #, c-format
 msgid ""
 "Directory: %s\n"
@@ -2181,36 +2080,36 @@ msgstr "Buscador de Archivos"
 msgid "File Types"
 msgstr "Tipos de Archivo"
 
-#: gui/mrvImageView.cpp:2078 gui/mrvImageBrowser.cpp:2579
+#: gui/mrvImageView.cpp:2078 gui/mrvImageBrowser.cpp:1995
 msgid "File/Open/Clip XML Metadata"
 msgstr "Archivo/Abrir/Clip Metadatos XML"
 
-#: gui/mrvImageView.cpp:2071 gui/mrvImageBrowser.cpp:2567
+#: gui/mrvImageView.cpp:2071 gui/mrvImageBrowser.cpp:1983
 #: gui/mrvMediaTrack.cpp:557
 msgid "File/Open/Movie or Sequence"
 msgstr "Archivo/Abrir/Pelicula o Secuencia"
 
-#: gui/mrvImageView.cpp:2073 gui/mrvImageBrowser.cpp:2569
+#: gui/mrvImageView.cpp:2073 gui/mrvImageBrowser.cpp:1985
 msgid "File/Open/Single Image"
 msgstr "Archivo/Abrir/Solo una Imágen"
 
-#: gui/mrvImageView.cpp:2090 gui/mrvImageBrowser.cpp:2591
+#: gui/mrvImageView.cpp:2090 gui/mrvImageBrowser.cpp:2007
 msgid "File/Save/Clip XML Metadata As"
 msgstr "Archivo/Grabar/Clip Metadatos XML"
 
-#: gui/mrvImageView.cpp:2086 gui/mrvImageBrowser.cpp:2587
+#: gui/mrvImageView.cpp:2086 gui/mrvImageBrowser.cpp:2003
 msgid "File/Save/Frame As"
 msgstr "Archivo/Grabar/Cuadro Como"
 
-#: gui/mrvImageView.cpp:2088 gui/mrvImageBrowser.cpp:2589
+#: gui/mrvImageView.cpp:2088 gui/mrvImageBrowser.cpp:2005
 msgid "File/Save/GL Snapshots As"
 msgstr "Archivo/Grabar/Instantáneas de Opengl"
 
-#: gui/mrvImageView.cpp:2081 gui/mrvImageBrowser.cpp:2582
+#: gui/mrvImageView.cpp:2081 gui/mrvImageBrowser.cpp:1998
 msgid "File/Save/Movie or Sequence As"
 msgstr "Archivo/Grabar/Pelicula o Secuencia Como"
 
-#: gui/mrvImageView.cpp:2084 gui/mrvImageBrowser.cpp:2585
+#: gui/mrvImageView.cpp:2084 gui/mrvImageBrowser.cpp:2001
 msgid "File/Save/Reel As"
 msgstr "Archivo/Grabar/Carrete Como"
 
@@ -2612,7 +2511,7 @@ msgstr ""
 "Si no es seteado, mrViewer podra acelerar o evitar mostrar algunos cuadros "
 "para a asi mantener la velocidad de cada cuadro."
 
-#: gui/mrvImageBrowser.cpp:1512
+#: gui/mrvImageBrowser.cpp:928
 msgid "Image"
 msgstr "Imagen"
 
@@ -2672,11 +2571,11 @@ msgstr "Imagen/Asignar Input Device Transform (IDT) de CTL"
 msgid "Image/Attach CTL Rendering Transform"
 msgstr "Imagen/Asignar Transformacion de Render (RRT) de CTL"
 
-#: gui/mrvImageBrowser.cpp:2624
+#: gui/mrvImageBrowser.cpp:2040
 msgid "Image/Attach CTL Script"
 msgstr "Imagen/Agregar Script de CTL"
 
-#: gui/mrvImageView.cpp:2180 gui/mrvImageBrowser.cpp:2621
+#: gui/mrvImageView.cpp:2180 gui/mrvImageBrowser.cpp:2037
 msgid "Image/Attach ICC Color Profile"
 msgstr "Imagen/Agregar Perfil ICC de Color"
 
@@ -2685,11 +2584,11 @@ msgid "Image/Clear Caches"
 msgstr "Imagen/Borrar los Caches"
 
 #: gui/mrvImageView.cpp:2150 gui/mrvImageView.cpp:2158
-#: gui/mrvImageBrowser.cpp:2603 gui/mrvImageBrowser.cpp:2613
+#: gui/mrvImageBrowser.cpp:2019 gui/mrvImageBrowser.cpp:2029
 msgid "Image/Clone"
 msgstr "Imagen/Clonar"
 
-#: gui/mrvImageView.cpp:2152 gui/mrvImageBrowser.cpp:2605
+#: gui/mrvImageView.cpp:2152 gui/mrvImageBrowser.cpp:2021
 msgid "Image/Clone All Channels"
 msgstr "Imagen/Clonar Todos los Canales"
 
@@ -2709,7 +2608,7 @@ msgstr "Imagen/Siguiente"
 msgid "Image/Previous"
 msgstr "Imagen/Previa"
 
-#: gui/mrvImageView.cpp:2192 gui/mrvImageBrowser.cpp:2629
+#: gui/mrvImageView.cpp:2192 gui/mrvImageBrowser.cpp:2045
 msgid "Image/Set as Background"
 msgstr "Imagen/Ponerla como Fondo"
 
@@ -2749,14 +2648,6 @@ msgstr "Transformación de Dispositivo de Entrada"
 #: gui/mrvHotkey.cpp:206
 msgid "Insert"
 msgstr "Insertar"
-
-#: gui/mrvImageBrowser.cpp:962
-msgid "Inserted sequence '"
-msgstr "Secuencia insertada '"
-
-#: gui/mrvImageBrowser.cpp:929
-msgid "Inserted show '"
-msgstr "Show insertado '"
 
 #: core/wandImage.cpp:456 core/wandImage.cpp:473
 msgid "Int"
@@ -2989,7 +2880,7 @@ msgstr "Cargué archivo de Clip Metadata de ACES '"
 msgid "Loading"
 msgstr "Cargando"
 
-#: gui/mrvImageBrowser.cpp:1964
+#: gui/mrvImageBrowser.cpp:1380
 #, c-format
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
@@ -4009,19 +3900,15 @@ msgstr "S"
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
-#: gui/mrvImageBrowser.cpp:933
-msgid "SEQ"
-msgstr "SEC"
-
 #: gui/FLU/Flu_File_Chooser.cpp:491
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
-#: core/mrvACES.cpp:136 gui/mrvImageBrowser.cpp:936
+#: core/mrvACES.cpp:136
 msgid "SHOT"
 msgstr "TOMA"
 
-#: core/mrvACES.cpp:132 gui/mrvImageBrowser.cpp:921
+#: core/mrvACES.cpp:132
 msgid "SHOW"
 msgstr "SHOW"
 
@@ -5722,6 +5609,84 @@ msgstr ""
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3557
 msgid "xyY CIE xyY"
 msgstr ""
+
+#~ msgid " for '"
+#~ msgstr " para '"
+
+#~ msgid " to database '"
+#~ msgstr " a la base de datos '"
+
+#~ msgid "' in database '"
+#~ msgstr "' en la base de datos '"
+
+#~ msgid "' into show '"
+#~ msgstr "' al show '"
+
+#~ msgid "' to database '"
+#~ msgstr "' a la base de datos '"
+
+#~ msgid "' to sequence '"
+#~ msgstr "' a la secuencia '"
+
+#~ msgid "'."
+#~ msgstr "'."
+
+#~ msgid ": added ICC "
+#~ msgstr ": agregué ICC "
+
+#~ msgid ": added audio to database '"
+#~ msgstr ": agregué audio a la base de datos '"
+
+#~ msgid ": added look mod transform "
+#~ msgstr ": agregué transformación de look mod "
+
+#~ msgid ": added pixel format "
+#~ msgstr ": agregué formato de pixel "
+
+#~ msgid ": added pixel format '"
+#~ msgstr ": agregué formato de pixel '"
+
+#~ msgid ": added render transform "
+#~ msgstr ": agregué transformación de render"
+
+#~ msgid ": added video to database '"
+#~ msgstr ": agregué vídeo a la base de datos '"
+
+#~ msgid "Added image '"
+#~ msgstr "Agregué imagen '"
+
+#~ msgid "Added shot '"
+#~ msgstr "Agregué toma '"
+
+#~ msgid "Could not add audio track #"
+#~ msgstr "No pude agregar pista de audio #"
+
+#~ msgid "Could not add image '"
+#~ msgstr "No pude agregar imagen '"
+
+#~ msgid "Could not add look_mod_image '"
+#~ msgstr "No pude agregar look mod de imagen '"
+
+#~ msgid "Could not add video track #"
+#~ msgstr "No pude agregar pista de video #"
+
+#~ msgid "Could not find audio '"
+#~ msgstr "No pude encontrar audio '"
+
+#~ msgid "Could not find image table '"
+#~ msgstr "No pude encontrar tabla de imágenes '"
+
+#~ msgid "Could not find video '"
+#~ msgstr "No pude encontrar video '"
+
+#~ msgid "Inserted sequence '"
+#~ msgstr "Secuencia insertada '"
+
+#~ msgid "Inserted show '"
+#~ msgstr "Show insertado '"
+
+#~ msgid "SEQ"
+#~ msgstr "SEC"
 
 #~ msgid "Connected to database '"
 #~ msgstr "Conectado a la base de datos '"
