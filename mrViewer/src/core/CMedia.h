@@ -902,6 +902,9 @@ class CMedia
     static void eight_bit_caches( bool x ) { _8bit_cache = x; }
     static bool eight_bit_caches() { return _8bit_cache; }
 
+    static void preload_cache( bool x ) { _preload_cache = x; }
+    static bool preload_cache() { return _preload_cache; }
+
     static void cache_active( bool x ) { _cache_active = x; }
     static bool cache_active() { return _cache_active; }
 
@@ -1261,6 +1264,7 @@ class CMedia
 
     static bool _8bit_cache;
     static bool _cache_active;
+    static bool _preload_cache;
     static int  _cache_scale;
 };
 
