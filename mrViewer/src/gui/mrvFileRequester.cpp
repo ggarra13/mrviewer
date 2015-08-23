@@ -86,33 +86,16 @@ static const char* kModule = "file";
 
 
   // Actual FLTK file requester patterns
-  static const std::string kICC_PATTERN   = 
-    "Color Profiles (*." + kProfilePattern + ")";
 
-  static const std::string kREEL_PATTERN = 
-    "Reels (*.{"  + kReelPattern + "})\t"
-    ;
 
-  static const std::string kAUDIO_PATTERN = 
-    "Audios (*.{" + kAudioPattern + "})\t"
-    ;
 
-  static const std::string kSAVE_IMAGE_PATTERN = 
-    "Images (*.{" + kImagePattern + "})";
+// static const std::string kSAVE_IMAGE_PATTERN = _("Images (*.{") +
+//                                                kImagePattern + "})";
 
-  static const std::string kIMAGE_PATTERN = 
-    "All Recognized (*.{" + kImagePattern + "," + kMoviePattern + "," + 
-    kReelPattern + "," + kAudioPattern + "})\t" +
-    "Images (*.{" + kImagePattern + "})\t" +
-    "Movies (*.{" + kMoviePattern + "})\t" +
-    "Audios (*.(" + kAudioPattern + "})\t" +
-    kREEL_PATTERN;
 
-static const std::string kCTL_PATTERN =
-"CTL script (*.{" + kCTLPattern + "})\t";
+// static const std::string kCTL_PATTERN = _("CTL script (*.{") + 
+//                                         kCTLPattern + "})\t";
 
-static const std::string kXML_PATTERN =
-"XML Clip Metadata (*.{" + kXMLPattern + "})\t";
 
 }
 
@@ -130,11 +113,14 @@ namespace mrv
    */
   stringArray open_reel( const char* startfile )
   {
-    stringArray filelist;
-    flu_multi_file_chooser( _("Load Reel(s)"), 
-			    kREEL_PATTERN.c_str(), startfile,
-			    filelist, false );
-    return filelist;
+      std::string kREEL_PATTERN = _( "Reels (*.{" ) +
+                                  kReelPattern + "})\t";
+      
+      stringArray filelist;
+      flu_multi_file_chooser( _("Load Reel(s)"), 
+                              kREEL_PATTERN.c_str(), startfile,
+                              filelist, false );
+      return filelist;
   }
 
 
@@ -151,6 +137,19 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 
     std::string title = _("Load Image");
     if ( compact_images ) title = _("Load Movie or Sequence");
+
+    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
+                                kReelPattern + "})\t";
+    std::string kIMAGE_PATTERN = _("All Recognized (*.{") + 
+                                 kImagePattern + "," + kMoviePattern +
+                                 "," + kReelPattern + "," +
+                                 kAudioPattern + "})\t" +
+                                 _("Images (*.{") + kImagePattern +
+                                 "})\t" +
+                                 _("Movies (*.{") + kMoviePattern +
+                                 "})\t" +
+                                 _("Audios (*.(") + kAudioPattern + 
+                                 "})\t" + kREEL_PATTERN;
 
 
     flu_multi_file_chooser( title.c_str(), 
@@ -194,6 +193,8 @@ stringArray open_image_file( const char* startfile, const bool compact_images )
 	path = startfile;
       }
 
+    std::string kICC_PATTERN   = _("Color Profiles (*." ) +
+                                 kProfilePattern + ")";
     const char* profile = flu_file_chooser(title, 
 					   kICC_PATTERN.c_str(), 
 					   path.c_str());
@@ -242,7 +243,10 @@ const char* open_ctl_dir( const char* startfile,
    */
   const char* open_audio_file( const char* startfile )
   {
-    return flu_file_chooser("Load Audio", 
+      std::string kAUDIO_PATTERN = _( "Audios (*.{" ) +
+                                   kAudioPattern + "})\t";
+
+      return flu_file_chooser("Load Audio", 
 			    kAUDIO_PATTERN.c_str(), startfile);
   }
 
@@ -336,6 +340,9 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx )
 
     std::string xml = aces_xml_filename( img->fileroot() );
 
+    std::string kXML_PATTERN = _("XML Clip Metadata (*.{") + 
+                               kXMLPattern + "})\t";
+
     const char* file = flu_file_chooser("Load XML Clip Metadata", 
                                         kXML_PATTERN.c_str(), xml.c_str());
     if (!file) return;
@@ -349,6 +356,9 @@ void save_clip_xml_metadata( const CMedia* img )
     if ( !img ) return;
 
     std::string xml = aces_xml_filename( img->fileroot() );
+
+    std::string kXML_PATTERN = _("XML Clip Metadata (*.{") + 
+                               kXMLPattern + "})\t";
 
     const char* file = flu_save_chooser("Save XML Clip Metadata", 
                                         kXML_PATTERN.c_str(), xml.c_str());
@@ -399,6 +409,19 @@ void save_image_file( CMedia* image, const char* startdir, bool aces )
 {
    if (!image) return;
 
+   std::string kREEL_PATTERN = _( "Reels (*.{" ) +
+                               kReelPattern + "})\t";
+   std::string kIMAGE_PATTERN = _("All Recognized (*.{") + 
+                                 kImagePattern + "," + kMoviePattern +
+                                "," + kReelPattern + "," +
+                                 kAudioPattern + "})\t" +
+                                _("Images (*.{") + kImagePattern +
+                                "})\t" +
+                                _("Movies (*.{") + kMoviePattern +
+                                "})\t" +
+                                _("Audios (*.(") + kAudioPattern + 
+                                "})\t" + kREEL_PATTERN;
+
    const char* file = flu_save_chooser("Save Image", 
 				       kIMAGE_PATTERN.c_str(), startdir);
    if ( !file ) return;
@@ -422,6 +445,18 @@ void save_image_file( CMedia* image, const char* startdir, bool aces )
 void save_sequence_file( const mrv::ViewerUI* uiMain, 
 			 const char* startdir, const bool opengl)
 {
+    std::string kREEL_PATTERN = _( "Reels (*.{" ) +
+                                kReelPattern + "})\t";
+   std::string kIMAGE_PATTERN = _("All Recognized (*.{") + 
+                                 kImagePattern + "," + kMoviePattern +
+                                "," + kReelPattern + "," +
+                                 kAudioPattern + "})\t" +
+                                _("Images (*.{") + kImagePattern +
+                                "})\t" +
+                                _("Movies (*.{") + kMoviePattern +
+                                "})\t" +
+                                _("Audios (*.(") + kAudioPattern + 
+                                "})\t" + kREEL_PATTERN;
 
    const char* file = flu_save_chooser("Save Sequence", 
 				       kIMAGE_PATTERN.c_str(), startdir);
@@ -722,6 +757,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    */
   const char* save_reel( const char* startdir )
   {
+      std::string kREEL_PATTERN = _( "Reels (*.{" ) +
+                                  kReelPattern + "})\t";
     return flu_save_chooser("Save Reel", 
 			    kREEL_PATTERN.c_str(), startdir);
   }
