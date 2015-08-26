@@ -244,6 +244,7 @@ extern Hotkey kDetachAudio;
 extern Hotkey kCopyRGBAValues;
 extern Hotkey kCloneImage;
 
+extern Hotkey kPreloadCache;
 extern Hotkey kClearCache;
 
 extern Hotkey kSetInPoint;
