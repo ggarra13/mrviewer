@@ -449,8 +449,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
       std::string filename, date, filesize, shortname, 
 	description, shortDescription, toolTip, altname;
-      //std::string permissions;
-      //unsigned char pU, pG, pO; // 3-bit unix style permissions
+      std::string permissions;
+      unsigned char pU, pG, pO; // 3-bit unix style permissions
       unsigned int type;
       time_t idate;
       unsigned long isize;
@@ -458,9 +458,9 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
       Flu_File_Chooser *chooser;
       fltk::Image *icon;
 
-      int nameW, typeW, sizeW, dateW;
-      bool details;
-      bool selected_;
+        int nameW, typeW, sizeW, dateW, permW;
+        bool details;
+        bool selected_;
 
       inline static void _inputCB( fltk::Widget *w, void *arg )
 	{ ((Entry*)arg)->inputCB(); }
