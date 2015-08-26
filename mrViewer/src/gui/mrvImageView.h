@@ -440,6 +440,9 @@ class server;
       /// Clear image sequence caches from reel idx
       void clear_reel_cache( size_t idx );
 
+      /// Preload image caches
+      void preload_caches();
+
       /// Clear image caches regardless of anything
       void clear_caches();
 

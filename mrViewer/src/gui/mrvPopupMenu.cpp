@@ -56,6 +56,8 @@ effect to the widget.
 #include <fltk/draw.h>
 #include <fltk/Item.h>
 
+#include <iostream>
+
 
 extern fltk::Widget* fl_did_clipping;
 

@@ -243,11 +243,12 @@ namespace
 		       (int(*)(int)) toupper );
        if ( ext == N_("COLOR") || ext == N_("RGB") || ext == N_("RGBA")) 
           return 'c';
-       if ( ext == N_("R") || ext == N_("RED")   ) return 'r';
-       if ( ext == N_("G") || ext == N_("GREEN") ) return 'g';
-       if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
-       if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
-       if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
+       else if ( ext == N_("R") || ext == N_("RED")   ) return 'r';
+       else if ( ext == N_("G") || ext == N_("GREEN") ) return 'g';
+       else if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
+       else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
+       else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
+       else return 'c';
     }
 
     oldChannel = channelName;
@@ -260,6 +261,11 @@ namespace
 
 extern void clone_all_cb( fltk::Widget* o, mrv::ImageBrowser* b );
 extern void clone_image_cb( fltk::Widget* o, mrv::ImageBrowser* b );
+
+void preload_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
+{
+    v->preload_caches();
+}
 
 void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
 {
@@ -2160,6 +2166,11 @@ int ImageView::leftMouseDown(int x, int y)
 			fltk::MENU_DIVIDER );
 	    }
 
+            item = menu.add( _("Image/Preload Caches"), kPreloadCache.hotkey(),
+                             (fltk::Callback*)preload_image_cache_cb, this );
+            item->type( fltk::Item::TOGGLE );
+            if ( CMedia::preload_cache() ) item->set();
+
             menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
                       (fltk::Callback*)clear_image_cache_cb, this,
                       fltk::MENU_DIVIDER );
@@ -3367,6 +3378,11 @@ int ImageView::keyDown(unsigned int rawkey)
       mouseMove( fltk::event_x(), fltk::event_y() );
       return 1;
     }
+  else if ( kPreloadCache.match( rawkey ) )
+  {
+      preload_image_cache_cb( NULL, this );
+      return 1;
+  }
   else if ( kClearCache.match( rawkey ) )
   {
       clear_image_cache_cb( NULL, this );
@@ -3863,6 +3879,15 @@ void ImageView::flush_image( mrv::media fg )
 }
 
 /** 
+ * Toggle Preload sequence in background
+ * 
+ */
+void ImageView::preload_caches()
+{
+    CMedia::preload_cache( !CMedia::preload_cache() );
+}
+
+/** 
  * Clear and refresh sequence
  * 
  */
@@ -4326,11 +4351,12 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
 
+
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     uiColorChannel->remove_all();
 
     CMedia* img = fg->image();
-    stringArray layers = img->layers();
+    const stringArray& layers = img->layers();
 
     stringArray::const_iterator i = layers.begin();
     stringArray::const_iterator e = layers.end();
@@ -4371,9 +4397,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         const std::string& name = (*i).c_str();
         fltk::Widget* o = uiColorChannel->add( name.c_str(),
                                                NULL );
-
-
-        if ( name == root )
+        if ( name == root || (channelName && name == channelName) )
         {
             v = idx;
         }
@@ -4383,7 +4407,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             short shortcut = get_shortcut( name.c_str() );
             if ( shortcut && shortcuts.find( shortcut ) == 
                  shortcuts.end())
-            { 
+            {
                 if ( shortcut == 'c' ) _old_channel = (unsigned short)idx;
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );

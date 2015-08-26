@@ -104,7 +104,7 @@ std::string Flu_File_Chooser::myDocumentsTxt = _("Temporary");
 std::string Flu_File_Chooser::desktopTxt = _("Desktop");
 #endif
 
-std::string Flu_File_Chooser::detailTxt[] = { _("Name"), _("Size"), _("Date"), _("Type"), _("Frames") };
+std::string Flu_File_Chooser::detailTxt[] = { _("Name"), _("Size"), _("Date"), _("Type"), _("Frames"), _("Permissions") };
 std::string Flu_File_Chooser::contextMenuTxt[3] = { _("New Folder"), _("Rename"), _("Delete") };
 std::string Flu_File_Chooser::diskTypesTxt[6] = { _("Floppy Disk"), _("Removable Disk"),
 						  _("Local Disk"), _("Compact Disk"),
@@ -143,10 +143,11 @@ Flu_File_Chooser::detailTxt[0].c_str(),
 Flu_File_Chooser::detailTxt[3].c_str(),
 Flu_File_Chooser::detailTxt[1].c_str(),
 Flu_File_Chooser::detailTxt[2].c_str(),
+Flu_File_Chooser::detailTxt[5].c_str(),
   0
 };
 
-int col_widths[]   = {300, 90, 90, 141};
+int col_widths[]   = {300, 90, 90, 141, 150};
 
 
 // just a string that no file could probably ever be called
@@ -816,12 +817,11 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				     fileGroup->h()-4, this );
       filedetails->box( fltk::FLAT_BOX );
 
-      // char** col = (char**)col_labels;
-      // while ( *col != 0 )
-      // {
-      //     *col = _(*col);
-      //     ++col;
-      // }
+      char** col = (char**)col_labels;
+      for ( ;*col != 0; ++col )
+      {
+          *col = _(*col); // translate into locale language
+      }
 
       filedetails->column_labels( col_labels );
       filedetails->column_widths( col_widths );
@@ -2308,6 +2308,9 @@ void Flu_File_Chooser::Entry::updateIcon()
   toolTip += "\n";
   toolTip += _(detailTxt[3].c_str()); 
   toolTip += ": " + description;
+  toolTip += "\n";
+  toolTip += _(detailTxt[5].c_str()); 
+  toolTip += ": " + permissions;
 
   tooltip( toolTip.c_str() );
 
@@ -2399,6 +2402,7 @@ void Flu_File_Chooser::Entry::updateSize()
       typeW = cw[1];
       sizeW = cw[2];
       dateW = cw[3];
+      permW = cw[4];
       resize( x(), y(), chooser->filedetails->w(), h );
     }
   else
@@ -2954,6 +2958,12 @@ void Flu_File_Chooser::Entry::draw()
 
         labeltype()->draw( date.c_str(),
                            fltk::Rectangle( X, 0, dateW-4, h() ),
+                           fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
+
+        X += dateW+4;
+
+        labeltype()->draw( permissions.c_str(),
+                           fltk::Rectangle( X, 0, permW-4, h() ),
                            fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
     }
 }
@@ -4365,16 +4375,23 @@ void Flu_File_Chooser::cd( const char *path )
             entry->idate = s.st_mtime;
 
             // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
-            /*
-              unsigned int p = s.st_mode;
+            
+            unsigned int p = s.st_mode;
+#ifdef _WIN32
+            entry->pU = bool(p & _S_IREAD )<<2 | bool(p & _S_IWRITE)<<1 
+                        | bool(p & _S_IEXEC );
+            entry->pG = entry->pU;
+            entry->pO = entry->pG;
+#else
 	    entry->pU = bool(p&S_IRUSR)<<2 | bool(p&S_IWUSR)<<1 | bool(p&S_IXUSR);
 	    entry->pG = bool(p&S_IRGRP)<<2 | bool(p&S_IWGRP)<<1 | bool(p&S_IXGRP);
 	    entry->pO = bool(p&S_IROTH)<<2 | bool(p&S_IWOTH)<<1 | bool(p&S_IXOTH);
-	    char* perms[8] = { "---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx" };
+#endif
+	    const char* perms[8] = 
+            { "---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx" };
 	    entry->permissions = perms[entry->pU];
 	    entry->permissions += perms[entry->pG];
 	    entry->permissions += perms[entry->pO];
-	  */
 
 
 	  entry->updateIcon();
