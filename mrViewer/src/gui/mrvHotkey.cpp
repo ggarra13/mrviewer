@@ -123,6 +123,7 @@ Hotkey kDetachAudio( false, false, false, false, 0 );
 Hotkey kCopyRGBAValues( true, false, false, false, 'c' );
 Hotkey kCloneImage( false, false, false, false, 0 );
 
+Hotkey kPreloadCache( false, false, false, false, 'p' );
 Hotkey kClearCache( false, false, false, false, 'k' );
 
 Hotkey kSetInPoint( false, false, false, false, 'i' );
@@ -161,6 +162,7 @@ HotkeyEntry( _("Play Backwards 1/2 Speed"), kPlayBackHalfSpeed),
 HotkeyEntry( _("Play Forwards"), kPlayFwd),
 HotkeyEntry( _("Play Forwards X2  Speed"), kPlayFwdTwiceSpeed),
 HotkeyEntry( _("Play Forwards 1/2 Speed"), kPlayFwdHalfSpeed),
+HotkeyEntry( _("Preload Image Cache"), kPreloadCache),
 HotkeyEntry( _("Clear Image Cache"), kClearCache),
 HotkeyEntry( _("Stop"), kStop),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
