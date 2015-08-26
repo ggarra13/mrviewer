@@ -2505,8 +2505,6 @@ bool CMedia::find_image( const boost::int64_t frame )
         should_load = true;
     }
 
-  _frame = f;
-
 
   if ( should_load )
   {
@@ -2527,7 +2525,9 @@ bool CMedia::find_image( const boost::int64_t frame )
 	}
      }
   }
-  
+
+  _frame = f;
+
 
   refresh();
   return true;

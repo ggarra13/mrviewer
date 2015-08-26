@@ -201,7 +201,8 @@ bool exrImage::channels_order(
    bool no_layer = false;
    int idx = 0;
    Imf::PixelType imfPixelType = Imf::UINT;
-   std::vector< std::string > channelList;
+   typedef std::vector< std::string > LayerList;
+   LayerList channelList;
    Imf::ChannelList::ConstIterator i;
    for ( i = s; i != e; ++i, ++idx )
    {
@@ -373,7 +374,7 @@ bool exrImage::channels_order(
 
       fb.insert( layerName.c_str(), 
 		 Slice( imfPixelType, buf, xs[idx], ys[idx],
-			ch->xSampling, ch->ySampling) );
+			ch->xSampling, ch->ySampling));
    }
 
    return true;
@@ -890,17 +891,18 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 stringSet::const_iterator e = layerSet.end();
 	 for ( ; i != e; ++i )
 	 {
-	    _layers.push_back( (*i) );
+            const std::string& name = *i;
+            _layers.push_back( name );
 	    ++_num_channels;
 
 	    Imf::ChannelList::ConstIterator x;
 	    Imf::ChannelList::ConstIterator s;
 	    Imf::ChannelList::ConstIterator e;
-	    channels.channelsWithPrefix( (*i).c_str(), s, e );
+	    channels.channelsWithPrefix( name.c_str(), s, e ); 
 	    for ( x = s; x != e; ++x )
 	    {
-	       const char* layerName = x.name();
-	       _layers.push_back( layerName );
+                const std::string& layerName = x.name();
+                _layers.push_back( layerName );
 	    }
 	 }
       }
@@ -1001,7 +1003,7 @@ bool exrImage::find_channels( const Imf::Header& h,
          std::string ext = part.substr( idx+1, part.size() );
          std::string root = ext;
 
-         idx = ext.rfind( N_(".") );
+         idx = ext.rfind( N_(",") );
          if ( idx != std::string::npos )
          {
             ext = ext.substr( idx+1, part.size() );
@@ -1026,7 +1028,6 @@ bool exrImage::find_channels( const Imf::Header& h,
          channelPrefix = _channel;
       }
    }
-
 
    if ( channelPrefix != NULL )
    {
