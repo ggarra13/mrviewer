@@ -241,10 +241,12 @@ namespace
        std::string ext = channelName.substr( pos+1, channelName.size() );
        std::transform( ext.begin(), ext.end(), ext.begin(),
 		       (int(*)(int)) toupper );
-       if ( ext == N_("COLOR") || ext == N_("RGB") || ext == N_("RGBA")) 
+       if ( ext == N_("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
           return 'c';
-       else if ( ext == N_("R") || ext == N_("RED")   ) return 'r';
-       else if ( ext == N_("G") || ext == N_("GREEN") ) return 'g';
+       else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
+                 ext == N_("RED") ) return 'r';
+       else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") || 
+                 ext == N_("GREEN") ) return 'g';
        else if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
