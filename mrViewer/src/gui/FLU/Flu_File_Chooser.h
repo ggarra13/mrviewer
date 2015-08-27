@@ -447,18 +447,18 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
         void clear_selected();
 
 
-      std::string filename, date, filesize, shortname, 
+        std::string filename, date, filesize, shortname, owner,
 	description, shortDescription, toolTip, altname;
-      std::string permissions;
-      unsigned char pU, pG, pO; // 3-bit unix style permissions
-      unsigned int type;
-      time_t idate;
-      unsigned long isize;
-      int editMode;
-      Flu_File_Chooser *chooser;
-      fltk::Image *icon;
+        std::string permissions;
+        unsigned char pU, pG, pO; // 3-bit unix style permissions
+        unsigned int type;
+        time_t idate;
+        unsigned long isize;
+        int editMode;
+        Flu_File_Chooser *chooser;
+        fltk::Image *icon;
 
-        int nameW, typeW, sizeW, dateW, permW;
+        int nameW, typeW, sizeW, dateW, ownerW, permW;
         bool details;
         bool selected_;
 
@@ -533,6 +533,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   void buildLocationCombo();
 
   void updateLocationQJ();
+
+  void statFile( Entry* e, const char* file );
 
   void addToHistory();
 

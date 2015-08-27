@@ -57,8 +57,8 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     # FIND_PACKAGE( ALSA        REQUIRED )
     FIND_LIBRARY( Xpm Xpm
       PATHS
-      /usr/lib/x86_64-linux-gnu/
       /usr/local/lib
+      /usr/lib/x86_64-linux-gnu/
       /usr/lib
       )
     # 
