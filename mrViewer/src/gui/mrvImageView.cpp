@@ -3886,6 +3886,8 @@ void ImageView::flush_image( mrv::media fg )
  */
 void ImageView::preload_caches()
 {
+    if ( !foreground() ) return;
+
     CMedia::preload_cache( !CMedia::preload_cache() );
 }
 
