@@ -46,6 +46,7 @@ using namespace std;
 #include <direct.h>
 typedef __int64 int64_t;
 #else
+#include <pwd.h>
 #include <unistd.h>
 #endif
 
@@ -104,7 +105,7 @@ std::string Flu_File_Chooser::myDocumentsTxt = _("Temporary");
 std::string Flu_File_Chooser::desktopTxt = _("Desktop");
 #endif
 
-std::string Flu_File_Chooser::detailTxt[] = { _("Name"), _("Size"), _("Date"), _("Type"), _("Frames"), _("Permissions") };
+std::string Flu_File_Chooser::detailTxt[] = { _("Name"), _("Size"), _("Date"), _("Type"), _("Frames"), _("Owner"), _("Permissions") };
 std::string Flu_File_Chooser::contextMenuTxt[3] = { _("New Folder"), _("Rename"), _("Delete") };
 std::string Flu_File_Chooser::diskTypesTxt[6] = { _("Floppy Disk"), _("Removable Disk"),
 						  _("Local Disk"), _("Compact Disk"),
@@ -144,10 +145,11 @@ Flu_File_Chooser::detailTxt[3].c_str(),
 Flu_File_Chooser::detailTxt[1].c_str(),
 Flu_File_Chooser::detailTxt[2].c_str(),
 Flu_File_Chooser::detailTxt[5].c_str(),
+Flu_File_Chooser::detailTxt[6].c_str(),
   0
 };
 
-int col_widths[]   = {300, 90, 90, 141, 150};
+int col_widths[]   = {300, 90, 90, 141, 90, 150, 0};
 
 
 // just a string that no file could probably ever be called
@@ -2310,6 +2312,9 @@ void Flu_File_Chooser::Entry::updateIcon()
   toolTip += ": " + description;
   toolTip += "\n";
   toolTip += _(detailTxt[5].c_str()); 
+  toolTip += ": " + owner;
+  toolTip += "\n";
+  toolTip += _(detailTxt[6].c_str()); 
   toolTip += ": " + permissions;
 
   tooltip( toolTip.c_str() );
@@ -2395,14 +2400,15 @@ void Flu_File_Chooser::Entry::updateSize()
 
   if( details )
     {
-      int cw[4];
-      for ( int i = 0; i < 4; ++i )
+      int cw[6];
+      for ( int i = 0; i < 6; ++i )
 	cw[i] = chooser->filedetails->header(i)->w();
       nameW = cw[0];
       typeW = cw[1];
       sizeW = cw[2];
       dateW = cw[3];
-      permW = cw[4];
+      ownerW = cw[4];
+      permW = cw[5];
       resize( x(), y(), chooser->filedetails->w(), h );
     }
   else
@@ -2959,8 +2965,13 @@ void Flu_File_Chooser::Entry::draw()
         labeltype()->draw( date.c_str(),
                            fltk::Rectangle( X, 0, dateW-4, h() ),
                            fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
-
         X += dateW+4;
+
+        labeltype()->draw( owner.c_str(),
+                           fltk::Rectangle( X, 0, ownerW-4, h() ),
+                           fltk::ALIGN_LEFT | fltk::ALIGN_CLIP );
+
+        X += ownerW+4;
 
         labeltype()->draw( permissions.c_str(),
                            fltk::Rectangle( X, 0, permW-4, h() ),
@@ -3620,7 +3631,74 @@ bool Flu_File_Chooser::stripPatterns( std::string s, FluStringVector* patterns )
 
 
 
+void Flu_File_Chooser::statFile( Entry* entry, const char* file )
+{
+    struct stat s;
+    ::stat( file, &s );
 
+    bool isDir = ( fltk::filename_isdir( file ) != 0 );
+
+    // store size as human readable and sortable integer
+    passwd* pwd = getpwuid( s.st_uid ); // this must not be freed
+    if ( pwd != NULL ) entry->owner = pwd->pw_name;
+    else entry->owner = "unknown";
+
+    entry->isize = s.st_size;
+    entry->permissions = "";
+
+    if( isDir && entry->isize == 0 )
+    {
+        entry->filesize = "";
+        entry->permissions = 'd';
+    }
+    else
+    {
+        char buf[32];
+        if( (entry->isize >> 30) > 0 ) // gigabytes
+        {
+            double GB = double(entry->isize)/double(1<<30);
+            sprintf( buf, "%.1f GB", GB );
+        }
+        else if( (entry->isize >> 20) > 0 ) // megabytes
+        {
+            double MB = double(entry->isize)/double(1<<20);
+            sprintf( buf, "%.1f MB", MB );
+        }
+        else if( (entry->isize >> 10) > 0 ) // kilabytes
+        {
+            double KB = double(entry->isize)/double(1<<10);
+            sprintf( buf, "%.1f KB", KB );
+        }
+        else // bytes
+        {
+            sprintf( buf, "%d bytes", (int)entry->isize );
+        }
+        entry->filesize = buf;
+    }
+
+    // store date as human readable and sortable integer
+    entry->date = formatDate( ctime( &s.st_mtime ) );
+    entry->idate = s.st_mtime;
+
+    // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
+    unsigned int p = s.st_mode;
+#ifdef _WIN32
+    entry->pU = bool(p & _S_IREAD )<<2 | bool(p & _S_IWRITE)<<1 
+                | bool(p & _S_IEXEC );
+    entry->pG = entry->pU;
+    entry->pO = entry->pG;
+#else
+    entry->pU = bool(p&S_IRUSR)<<2 | bool(p&S_IWUSR)<<1 | bool(p&S_IXUSR);
+    entry->pG = bool(p&S_IRGRP)<<2 | bool(p&S_IWGRP)<<1 | bool(p&S_IXGRP);
+    entry->pO = bool(p&S_IROTH)<<2 | bool(p&S_IWOTH)<<1 | bool(p&S_IXOTH);
+#endif
+    const char* perms[8] = 
+    { "---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx" };
+    entry->permissions += perms[entry->pU];
+    entry->permissions += perms[entry->pG];
+    entry->permissions += perms[entry->pO];
+
+}
 
 void Flu_File_Chooser::cd( const char *path )
 {
@@ -4191,6 +4269,9 @@ void Flu_File_Chooser::cd( const char *path )
 	      filedetails->insert( *entry, 0 );
 	    ++numDirs;
 	    lastAddedDir = entry->filename.c_str();
+
+            fullpath = pathbase + *i;
+            statFile( entry, fullpath.c_str() );
 	  }
       }
 
@@ -4336,63 +4417,7 @@ void Flu_File_Chooser::cd( const char *path )
 
             // get some information about the file
             fullpath = pathbase + *i;
-            struct stat s;
-            ::stat( fullpath.c_str(), &s );
-
-            // store size as human readable and sortable integer
-            entry->isize = s.st_size;
-            if( isDir && entry->isize == 0 )
-            {
-                entry->filesize = "";
-            }
-            else
-            {
-                char buf[32];
-                if( (entry->isize >> 30) > 0 ) // gigabytes
-                {
-                    double GB = double(entry->isize)/double(1<<30);
-                    sprintf( buf, "%.1f GB", GB );
-                }
-                else if( (entry->isize >> 20) > 0 ) // megabytes
-                {
-                    double MB = double(entry->isize)/double(1<<20);
-                    sprintf( buf, "%.1f MB", MB );
-                }
-                else if( (entry->isize >> 10) > 0 ) // kilabytes
-                {
-                    double KB = double(entry->isize)/double(1<<10);
-                    sprintf( buf, "%.1f KB", KB );
-                }
-                else // bytes
-                {
-                    sprintf( buf, "%d bytes", (int)entry->isize );
-                }
-                entry->filesize = buf;
-            }
-
-            // store date as human readable and sortable integer
-            entry->date = formatDate( ctime( &s.st_mtime ) );//ctime( &s.st_mtime );
-            entry->idate = s.st_mtime;
-
-            // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
-            
-            unsigned int p = s.st_mode;
-#ifdef _WIN32
-            entry->pU = bool(p & _S_IREAD )<<2 | bool(p & _S_IWRITE)<<1 
-                        | bool(p & _S_IEXEC );
-            entry->pG = entry->pU;
-            entry->pO = entry->pG;
-#else
-	    entry->pU = bool(p&S_IRUSR)<<2 | bool(p&S_IWUSR)<<1 | bool(p&S_IXUSR);
-	    entry->pG = bool(p&S_IRGRP)<<2 | bool(p&S_IWGRP)<<1 | bool(p&S_IXGRP);
-	    entry->pO = bool(p&S_IROTH)<<2 | bool(p&S_IWOTH)<<1 | bool(p&S_IXOTH);
-#endif
-	    const char* perms[8] = 
-            { "---", "--x", "-w-", "-wx", "r--", "r-x", "rw-", "rwx" };
-	    entry->permissions = perms[entry->pU];
-	    entry->permissions += perms[entry->pG];
-	    entry->permissions += perms[entry->pO];
-
+            statFile( entry, fullpath.c_str() );
 
 	  entry->updateIcon();
 	  entry->updateSize();
