@@ -208,6 +208,8 @@ namespace
 
     std::string channelName = channel;
 
+    //
+    // See if channel name contains RGB somewhere in its name
     size_t pos2 = channelName.find( "rgb" );
     if ( pos2 != std::string::npos )
         return 'c';
@@ -216,24 +218,24 @@ namespace
     if ( pos2 != std::string::npos )
         return 'c';
 
+    //
+    // Find last .
+    //
     size_t pos  = channelName.rfind( '.' );
+
+    //
+    // Find if channelName contains oldChannel or viceversa.
+    // If it does, do not return a shortcut.
+    //
     if ( channelName.size() > oldChannel.size() )
-    {
-       pos2 = channelName.find( oldChannel );
-       if ( pos2 == std::string::npos )
-       {
-           oldChannel = channelName;
-           return 0;
-       } 
-    }
+        pos2 = channelName.find( oldChannel );
     else
+        pos2 = oldChannel.find( channelName );
+
+    if ( pos2 == std::string::npos ) 
     {
-       pos2 = oldChannel.find( channelName );
-       if ( pos2 == std::string::npos ) 
-       {
-           oldChannel = channelName;
-           return 0;
-       } 
+        oldChannel = channelName;
+        return 0;
     }
 
     if ( pos != std::string::npos )
@@ -247,7 +249,8 @@ namespace
                  ext == N_("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") || 
                  ext == N_("GREEN") ) return 'g';
-       else if ( ext == N_("B") || ext == N_("BLUE")  ) return 'b';
+       else if ( ext == N_("B") || ext == N_("BLUE") || ext == N_("W") ) 
+           return 'b';
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
        else return 'c';
@@ -1554,16 +1557,16 @@ void ImageView::draw()
 {
   if ( !valid() ) 
     {
-      if ( ! _engine )
+        if ( ! _engine )
 	{
-	  init_draw_engine();
+            init_draw_engine();
 	}
 
-      if ( !_engine ) return;
+        if ( !_engine ) return;
 
-      _engine->reset_view_matrix();
+        _engine->reset_view_matrix();
 
-      valid(1);
+        valid(1);
     }
 
 
@@ -4369,15 +4372,18 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     int v   = -1;
     int idx = 0;
     std::set< short > shortcuts;
-
+    
     std::string root;
-
+    
     size_t pos = 0;
 
     if (!channelName) v = 0;
     else
     {
         root = channelName;
+
+        // Root name if channel name minus the last .extension. 
+        // Like sub.AO.R, root is sub.AO
 
         pos = root.rfind('.');
 
@@ -4398,9 +4404,12 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     for ( ; i != e; ++i, ++idx )
     {
-        const std::string& name = (*i).c_str();
+        const std::string& name = *i;
         fltk::Widget* o = uiColorChannel->add( name.c_str(),
                                                NULL );
+
+        // If name matches root name or name matches full channel name,
+        // store the index to the channel.
         if ( name == root || (channelName && name == channelName) )
         {
             v = idx;
@@ -4408,7 +4417,10 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         if ( v >= 0 )
         {
+            // Get a shortcut to this layer
             short shortcut = get_shortcut( name.c_str() );
+            // If we have a shortcut and it isn't in the list of shortcuts
+            // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) == 
                  shortcuts.end())
             {
@@ -4420,6 +4432,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     }
 
+    // If no channel was selected, select first channel
     if ( v == -1 ) v = 0;
 
     return v;
