@@ -20,6 +20,7 @@
 #define mrvHotkey_h
 
 #include <string>
+#include <iostream>
 #include <fltk/events.h>
 
 namespace mrv {
