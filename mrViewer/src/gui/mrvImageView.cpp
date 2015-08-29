@@ -711,12 +711,12 @@ void ImageView::send( std::string m )
 
 void ImageView::create_timeout( double t )
 {
-   add_timeout( float(t) );
+    add_timeout( float(t) );
 }
 
 void ImageView::delete_timeout()
 {
-  remove_timeout();
+    remove_timeout();
 }
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
