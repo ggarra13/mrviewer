@@ -33,13 +33,13 @@ for line in files
     next
   end
 
-  begin
-    FileUtils.rm("Release/lib/#{lib}")
-  rescue
+  if File.exist?( "/usr/lib/#{lib}" ) or
+      File.exist?( "/usr/lib/x86_64-linux-gnu/#{lib}" )
+    begin
+      puts "Removing /usr/local/lib/#{lib}"
+      FileUtils.rm("/usr/local/lib/#{lib}")
+    rescue
+    end
   end
-
-  puts "#{loc} -> #{lib}"
-  FileUtils.ln_s(loc, "Release/lib/#{lib}" )
-
 end
 
