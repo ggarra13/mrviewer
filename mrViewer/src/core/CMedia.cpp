@@ -118,8 +118,6 @@ bool CMedia::_preload_cache = true;
 bool CMedia::_8bit_cache = false;
 int  CMedia::_cache_scale = 0;
 
-CMedia::Barrier* CMedia::_bg_barrier = NULL;
-
 static const char* const kDecodeStatus[] = {
 _("Decode Missing Frame"),
 _("Decode OK"),
@@ -765,20 +763,6 @@ void  CMedia::last_frame(boost::int64_t x)
 {
    if ( x > _frame_end ) x = _frame_end;
    _frameEnd = x;
-}
-
-void CMedia::delete_bg_barrier()
-{
-    delete _bg_barrier; _bg_barrier = NULL;
-}
-
-CMedia::Barrier* CMedia::create_bg_barrier()
-{
-    if ( _bg_barrier == NULL )
-    {
-        _bg_barrier = new Barrier(2);
-    }
-    return _bg_barrier;
 }
 
 /** 
