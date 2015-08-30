@@ -966,7 +966,6 @@ void aviImage::open_subtitle_codec()
 
 void aviImage::close_subtitle_codec()
 {
-  AVStream *stream = get_subtitle_stream();
   if ( _subtitle_ctx )
     avcodec_close( _subtitle_ctx );
 }
