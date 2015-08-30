@@ -11,7 +11,7 @@ EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 release = `uname -r`.chop!
 
-Dir.chdir( "../BUILD/Linux-#{release}-64/" )
+Dir.chdir( "BUILD/Linux-#{release}-64/" )
 
 output=`ldd Release/bin/mrViewer`
 
