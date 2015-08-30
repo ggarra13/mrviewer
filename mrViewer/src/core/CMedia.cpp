@@ -182,8 +182,6 @@ CMedia::CMedia() :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
-  _left_eye( NULL ),
-  _right_eye( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -212,6 +210,7 @@ CMedia::CMedia() :
   _audio_engine( NULL )
 {
   audio_initialize();
+  _eye[0] = _eye[1] = NULL;
   mrv::PacketQueue::initialize();
 }
 
@@ -265,8 +264,6 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
-  _left_eye( NULL ),
-  _right_eye( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -289,6 +286,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   forw_ctx( NULL ),
   _audio_engine( NULL )
 {
+  _eye[0] = _eye[1] = NULL;
   unsigned int W = other->width();
   unsigned int H = other->height();
   image_size( W, H );
@@ -356,8 +354,6 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
-  _left_eye( NULL ),
-  _right_eye( NULL ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -380,6 +376,7 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   forw_ctx( NULL ),
   _audio_engine( NULL )
 {
+  _eye[0] = _eye[1] = NULL;
   unsigned int W = other->width();
   unsigned int H = other->height();
   image_size( W, H );
@@ -549,24 +546,13 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 				channels, format, pixel_type ) );
 }
 
-void CMedia::allocate_pixels_stereo( const boost::int64_t& frame,
-				     const unsigned short channels,
-				     const image_type::Format format,
-				     const image_type::PixelType pixel_type )
-{
-  SCOPED_LOCK( _mutex );
-  _hires.reset( new image_type( frame, width(), height(), 
-				channels, format, pixel_type ) );
-  _stereo[0].reset( new image_type( frame, width(), height(),
-				    channels, format, pixel_type ) );
-  _stereo[1].reset( new image_type( frame, width(), height(),
-				    channels, format, pixel_type ) );
-}
 
 mrv::image_type_ptr CMedia::left() const
 {
    boost::uint64_t idx = _frame - _frame_start;
-   if ( _is_sequence && _sequence[idx] )
+   if ( _eye[0] )
+       return _eye[0]->left();
+   else if ( _is_sequence && _sequence[idx] )
       return _sequence[idx];
    else
        if ( _stereo[0] )
@@ -578,6 +564,9 @@ mrv::image_type_ptr CMedia::left() const
 mrv::image_type_ptr CMedia::right() const
 {
    boost::uint64_t idx = _frame - _frame_start;
+   if ( _eye[1] ) {
+       return _eye[1]->left();
+   }
    if ( _is_sequence && _right[idx] )
       return _right[idx];
    else
@@ -1684,6 +1673,12 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
+  if ( _eye[1] )
+  {
+      bool l = _eye[0]->frame(f);
+      bool r = _eye[1]->frame(f);
+      return ( l && r );
+  }
 
 
 //  in ffmpeg, sizes are in bytes...

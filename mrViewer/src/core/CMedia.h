@@ -1019,10 +1019,6 @@ class CMedia
 			  const image_type::Format format = image_type::kRGBA,
 			  const image_type::PixelType pixel_type = image_type::kFloat ); 
 
-    void allocate_pixels_stereo( const boost::int64_t& frame,
-				 const unsigned short channels = 4,
-				 const image_type::Format format = image_type::kRGBA,
-				 const image_type::PixelType pixel_type = image_type::kFloat );
 
     unsigned int audio_bytes_per_frame();
 
@@ -1186,8 +1182,7 @@ class CMedia
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
 
-    CMedia*   _left_eye;
-    CMedia*   _right_eye;
+    CMedia*   _eye[2];
 
     //
     std::string _audio_file;
