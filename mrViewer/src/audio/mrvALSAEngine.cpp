@@ -237,7 +237,6 @@ namespace mrv {
 
     long smixer_level = pmin + long( float(pmax-pmin) * v);
 
-
     for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i) {
       snd_mixer_selem_channel_id_t chn = (snd_mixer_selem_channel_id_t) i;
       if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
