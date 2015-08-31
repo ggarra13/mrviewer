@@ -184,8 +184,8 @@ void parse_directory( const std::string& fileroot,
          {
             Sequence s;
             s.root  = root;
-            s.number = frame;
             s.view  = view;
+            s.number = frame;
             s.ext   = ext;
 
             tmpseqs.push_back( s );
@@ -233,12 +233,12 @@ void parse_directory( const std::string& fileroot,
 		    {
 		      Sequence seq;
 		      seq.root = seqname;
+                      seq.view = (*i).view;
 		      seq.number = seq.ext = first;
 		      if ( first != number )
 			{
 			  seq.ext = number;
 			}
-                      seq.view = (*i).view;
 		      seqs.push_back( seq );
 		    }
 
@@ -312,7 +312,6 @@ void parse_command_line( const int argc, char** argv,
   opts.gamma = (float)ui->uiPrefs->uiPrefsViewGamma->value();
   opts.gain  = (float)ui->uiPrefs->uiPrefsViewGain->value();
   opts.fps   = -1.f;
-  std::string db_driver = "postgresql";
   opts.host = "";
   opts.port = 0;
 
@@ -350,11 +349,6 @@ void parse_command_line( const int argc, char** argv,
 	     _("Override viewer's default gain."), false, opts.gain, "float");
 
     ValueArg< std::string > 
-      adbdriver( "", "dbd", 
-		 _("Override viewer's default database driver."), false, 
-		 db_driver, "string");
-
-    ValueArg< std::string > 
     ahostname( "t", N_("host"), 
 	       _("Override viewer's default client hostname."), false, 
 	       opts.host, "string");
@@ -384,7 +378,6 @@ void parse_command_line( const int argc, char** argv,
 
     cmd.add(agamma);
     cmd.add(again);
-    cmd.add(adbdriver);
     cmd.add(ahostname);
     cmd.add(aport);
     cmd.add(aedl);
@@ -407,7 +400,6 @@ void parse_command_line( const int argc, char** argv,
     //
     opts.gamma = agamma.getValue();
     opts.gain  = again.getValue();
-    db_driver = adbdriver.getValue();
     opts.host = ahostname.getValue();
     opts.port = aport.getValue();
     opts.edl  = aedl.getValue();
@@ -492,7 +484,7 @@ void parse_command_line( const int argc, char** argv,
 
                if ( mrv::is_valid_sequence( fileroot.c_str() ) )
                {
-                  mrv::get_sequence_limits( start, end, fileroot );
+                   mrv::get_sequence_limits( start, end, fileroot );
                }
 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
