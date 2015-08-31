@@ -160,18 +160,18 @@ namespace mrv {
 	{
 	  if ( is_seq )
 	    {
-	      std::string quoted( root );
+                std::string quoted( root );
 
-	      string::size_type loc = 0;
-	      while ( ( loc = quoted.find( '%', loc ) ) != string::npos )
+                string::size_type loc = 0;
+                while ( ( loc = quoted.find( '%', loc ) ) != string::npos )
 		{
-		  quoted = ( quoted.substr(0, loc) + "%" + 
-			     quoted.substr( loc, quoted.size() ) );
-		  loc += 2;
+                    quoted = ( quoted.substr(0, loc) + "%" + 
+                               quoted.substr( loc, quoted.size() ) );
+                    loc += 2;
 		}
 
-	      LOG_ERROR( _("Image sequence \"") << quoted 
-                         << _("\" not found.") );
+                LOG_ERROR( _("Image sequence \"") << quoted 
+                           << _("\" not found.") );
 	    }
 	  else
 	    {
@@ -204,7 +204,7 @@ namespace mrv {
     if (image == NULL )
           return NULL;
 
-    return dynamic_cast< CMedia* >( image );
+    return image;
   }
 
 
