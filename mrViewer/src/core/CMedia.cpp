@@ -550,7 +550,7 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 mrv::image_type_ptr CMedia::left() const
 {
    boost::uint64_t idx = _frame - _frame_start;
-   if ( _eye[0] )
+   if ( _eye[0] && _eye[0] != this )
        return _eye[0]->left();
    else if ( _is_sequence && _sequence[idx] )
       return _sequence[idx];
@@ -780,7 +780,8 @@ void CMedia::sequence( const char* fileroot,
   _fileroot = strdup( fileroot );
 
   std::string f = _fileroot;
-  if ( f.find( N_("%V") ) != std::string::npos )
+  int idx = f.find( N_("%V") );
+  if ( idx != std::string::npos )
   {
      _is_stereo = true;
   }
@@ -895,10 +896,10 @@ const char* const CMedia::filename() const
 }
 
 
+
 /** 
  * Create and return the current filename of the image for the 
  * current frame.
- * 
  * 
  * @return filename of the file for current frame
  */
@@ -906,10 +907,11 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 {
   if ( !is_sequence() ) return _fileroot;
 
+  std::string tmp = parse_view( _fileroot, true );
 
   // For image sequences
   char buf[1024];
-  sprintf( buf, _fileroot, frame );
+  sprintf( buf, tmp.c_str(), frame );
 
   return std::string( buf );
 }
@@ -1666,14 +1668,13 @@ std::string CMedia::directory() const
 
 /** 
  * Set a new frame for the image sequence
- * 
- * @param f new frame
+ *  * @param f new frame
  */
 bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( _eye[1] )
+  if ( _eye[0] && _eye[1] )
   {
       bool l = _eye[0]->frame(f);
       bool r = _eye[1]->frame(f);

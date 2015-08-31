@@ -827,6 +827,8 @@ class CMedia
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( const boost::int64_t frame );
 
+    void eye( int idx, CMedia* c ) { _eye[idx] = c; refresh(); }
+
     Barrier* loop_barrier()       { return _loop_barrier; }
     Mutex& decode_mutex()         { return _decode_mutex; }
     Mutex& video_mutex()          { return _mutex; };
@@ -1262,6 +1264,9 @@ class CMedia
 
 uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
 char *const get_error_text(const int error);
+
+// Parse a %v or %V filerooot and return the appropiate view name.
+std::string parse_view( const std::string& fileroot, bool left = true );
 
 //   typedef boost::shared_ptr< CMedia > Image_ptr;
 typedef CMedia*                     Image_ptr;

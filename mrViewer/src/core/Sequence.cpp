@@ -225,15 +225,12 @@ std::string hex_to_char_filename( std::string& f )
     if ( periods.size() == 4 )
     {
        root = file.substr( 0, len ) + periods[0] + ".";
-       frame = periods[1];
-       view = "." + periods[2];
+       view = periods[1] + ".";
+       frame = periods[2];
        ext = "." + periods[3];
 
-       if ( view == ".%v" || view == ".%V" || 
-            view == ".l" || view == ".r" ||
-            view == ".L" || view == ".R" ||
-            view == ".left" || view == ".right" ||
-            view == ".Left" || view == ".Right" )
+
+       if ( view == "%v." || view == "%V." )
        {
           return true;
        }
@@ -367,13 +364,8 @@ std::string hex_to_char_filename( std::string& f )
     if ( tokens.size() > 2 )
       {
          int idx = 2;
-         if ( tokens[2] == "l" || tokens[2] == "L" ||
-              tokens[2] == "r" || tokens[2] == "R" ||
-              tokens[2] == "left" || tokens[2] == "Left" ||
-              tokens[2] == "right" || tokens[2] == "Right" )
-            idx = 3;
 
-	const std::string& range = tokens[ tokens.size()-idx ];
+         const std::string& range = tokens[ tokens.size()-idx ];
 
 	if ( mrv::matches_chars(range.c_str(), "0123456789-") )
 	  {
@@ -429,11 +421,22 @@ std::string hex_to_char_filename( std::string& f )
       {
 	if ( !fs::exists( *i ) || fs::is_directory( *i ) ) continue;
 
-	split_sequence( croot, cframe, cview, cext,
-                        (*i).path().leaf().string() );
-	if ( cext != ext || croot != root || cview != view ) 
-           continue;  // not this sequence
+        std::string tmp = (*i).path().leaf().string();
 
+	split_sequence( croot, cframe, cview, cext, tmp );
+
+	if ( cext != ext || croot != root || cview != view )
+        {
+            if (( cext != "" ) && ( croot != "" ) && ( cview != "" )
+                && cframe.size() > 1)
+            {
+                pad = (unsigned) cframe.size();
+            }
+            else
+            {
+                continue;  // not this sequence
+            }
+        }
 
 	if ( cframe[0] == '0' && cframe.size() > 1 )
             pad = (unsigned) cframe.size();
@@ -444,7 +447,6 @@ std::string hex_to_char_filename( std::string& f )
 	if ( f > frameEnd )   frameEnd   = f;
       }
 
-
     const char* prdigits = PRId64;
     if ( pad < 5 ) prdigits = "d";
 
@@ -454,8 +456,8 @@ std::string hex_to_char_filename( std::string& f )
 
 
     fileroot = root;
-    fileroot += buf;
     fileroot += view;
+    fileroot += buf;
     fileroot += ext;
 
     return true;
@@ -706,12 +708,12 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
     char full[1024];
     if ( pad == 0 )
     {
-        sprintf( full, "%s%%%s%s%s", root.c_str(), digits, view.c_str(),
+        sprintf( full, "%s%s%%%s%s", root.c_str(), view.c_str(), digits,
                  ext.c_str() );
     }
     else
     {
-        sprintf( full, "%s%%0%d%s%s%s", root.c_str(), pad, digits, view.c_str(),
+        sprintf( full, "%s%s%%0%d%s%s", root.c_str(), view.c_str(), pad, digits,
                 ext.c_str() );
     }
 
