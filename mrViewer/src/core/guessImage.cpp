@@ -110,6 +110,72 @@ namespace mrv {
     return NULL;
   }
 
+std::string get_short_view( bool left )
+{
+    const char* pairs = getenv("MRV_STEREO_CHAR_PAIRS");
+    if ( ! pairs ) pairs = "L:R";
+
+    std::string view = pairs;
+    int idx = view.find( ':' );
+    if ( idx == std::string::npos )
+    {
+        LOG_ERROR( "MRV_STEREO_CHAR_PAIRS does not have two letters separated by colon" );
+        if ( left )
+            return "L";
+        else
+            return "R";
+    }
+    
+    if (left)
+        return view.substr( 0, idx );
+    else
+        return view.substr( idx+1, view.size() );
+}
+
+std::string get_long_view( bool left )
+{
+    const char* pairs = getenv("MRV_STEREO_NAME_PAIRS");
+    if ( ! pairs ) pairs = "left:right";
+
+    std::string view = pairs;
+    int idx = view.find( ':' );
+    if ( idx == std::string::npos )
+    {
+        LOG_ERROR( "MRV_STEREO_NAME_PAIRS does not have two names separated by colon" );
+        if ( left )
+            return "left";
+        else
+            return "right";
+    }
+
+    if ( left )
+        return view.substr( 0, idx );
+    else
+        return view.substr( idx+1, view.size() );
+}
+
+std::string parse_view( const std::string& root, bool left )
+{
+    int idx = root.find( "%V" );
+    std::string tmp = root;
+    if ( idx != std::string::npos )
+    {
+        tmp = root.substr( 0, idx );
+        tmp += get_long_view( left );
+        tmp += root.substr( idx+2, root.size() );
+    }
+    else
+    {
+        idx = root.find( "%v" );
+        if ( idx != std::string::npos )
+        {
+            tmp = root.substr( 0, idx );
+            tmp += get_short_view( left );
+            tmp += root.substr( idx+2, root.size() );
+        }
+    }
+    return tmp;
+}
 
   CMedia* CMedia::guess_image( const char* file,
 			       const boost::uint8_t* datas,
@@ -122,33 +188,58 @@ namespace mrv {
     int64_t frame = start;
 
     std::string tmp;
-    const char* root = file;
+    std::string root = file;
+
+
+    bool is_stereo = false;
     bool is_seq = false;
+
+    if ( root.find( "%V" ) != std::string::npos ||
+         root.find( "%v" ) != std::string::npos )
+    {
+        is_stereo = true;
+    }
+
     if ( start != std::numeric_limits<boost::int64_t>::max() ||
          end   != std::numeric_limits<boost::int64_t>::min() )
     {
-        if ( mrv::fileroot( tmp, std::string(file) ) )
+        if ( mrv::fileroot( tmp, root ) )
         {
             is_seq = true;
-            root = tmp.c_str();
+            root = tmp;
         }
     }
 
-    if (( strcmp( root + strlen(root) - 4, ".xml" ) == 0 ) ||
-        ( strcmp( root + strlen(root) - 4, ".XML" ) == 0 ) ||
-        ( strcmp( root + strlen(root) - 1, "~" ) == 0 ) )
+    if (( root.substr( root.size() - 4, root.size()) == ".xml" ) ||
+        ( root.substr( root.size() - 4, root.size()) == ".XML" ) ||
+        ( root.substr( root.size() - 1, root.size()) == "~" ))
         return NULL;
 
     char name[1024];
-    if ( is_seq )
-      {
-	 sprintf( name, root, frame );
-      }
-    else
-      {
-	 strncpy( name, root, 1024 );
-      }
+    if ( is_stereo )
+    {
+        tmp = parse_view( root, true );
 
+        if ( is_seq )
+        {
+            sprintf( name, tmp.c_str(), frame );
+        }
+        else
+        {
+            strncpy( name, tmp.c_str(), 1024 );
+        }
+    }
+    else
+    {
+        if ( is_seq )
+        {
+            sprintf( name, root.c_str(), frame );
+        }
+        else
+        {
+            strncpy( name, root.c_str(), 1024 );
+        }
+    }
 
     boost::uint8_t* read_data = 0;
     size_t size = len;
@@ -191,11 +282,11 @@ namespace mrv {
       {
 	if ( is_seq )
 	{
-           image->sequence( root, frame, lastFrame, use_threads );
+            image->sequence( root.c_str(), frame, lastFrame, use_threads );
 	}
 	else
 	{
-	  image->filename( name );
+            image->filename( name );
 	}
       }
 
