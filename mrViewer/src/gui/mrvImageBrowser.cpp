@@ -1255,7 +1255,6 @@ int ImageBrowser::value() const
 
     if ( first != mrv::kMaxFrame ) frame( first );
 
-
     CMedia* img;
 
     if ( start != AV_NOPTS_VALUE )
@@ -1440,7 +1439,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	     //        from other image.
 	     else
 	     {
-
                 fg = load_image( load.filename.c_str(), 
                                  load.first, load.last, load.start,
                                  load.end, (i != s) );
