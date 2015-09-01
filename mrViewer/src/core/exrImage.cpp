@@ -267,10 +267,10 @@ bool exrImage::channels_order(
 
    if ( numChannels == 0 && channel() )
    {
-      LOG_ERROR( _("Image file \"") << filename() << 
-                 _("\" has no channels named with prefix \"") 
-                 << channel() << "\"." );
-      return false;
+       LOG_ERROR( _("Image file \"") << filename() << 
+                  _("\" has no channels named with prefix \"") 
+                  << channel() << "\"." );
+       return false;
    }
    else if ( numChannels > 4 && channel() )
    {
@@ -844,16 +844,14 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 alpha_layers();
       }
       
-      if ( _has_left_eye || _has_right_eye )
+      if ( _has_left_eye && _has_right_eye )
       {
-	 _layers.push_back( "left.anaglyph" );
-	 _layers.push_back( "right.anaglyph" );
+          add_anaglyph_layers();
       }
 
       if ( _is_stereo )
       {
-         _layers.push_back( "stereo.horizontal" );
-         _layers.push_back( "stereo.crossed" );
+          add_stereo_layers();
       }
 
 
