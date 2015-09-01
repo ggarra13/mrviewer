@@ -1153,6 +1153,27 @@ void CMedia::default_layers()
     alpha_layers();
 }
 
+/** 
+ * Add image's stereo layers
+ * 
+ */
+void CMedia::add_anaglyph_layers()
+{
+    _layers.push_back( "left.anaglyph" );
+    _layers.push_back( "right.anaglyph" );
+}
+
+/** 
+ * Add image's stereo layers
+ * 
+ */
+void CMedia::add_stereo_layers()
+{
+    _layers.push_back( "left.anaglyph" );
+    _layers.push_back( "right.anaglyph" );
+    _layers.push_back( "stereo.horizontal" );
+    _layers.push_back( "stereo.crossed" );
+}
 
 /** 
  * Change the image's color channel
