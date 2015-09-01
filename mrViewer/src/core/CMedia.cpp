@@ -1863,7 +1863,6 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 
   if ( _stereo[1] ) {
       _right[idx] = _stereo[1];
-      _stereo[1].reset();
   }
   timestamp(idx);
 
