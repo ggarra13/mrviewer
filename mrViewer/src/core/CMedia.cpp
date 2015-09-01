@@ -1169,8 +1169,6 @@ void CMedia::add_anaglyph_layers()
  */
 void CMedia::add_stereo_layers()
 {
-    _layers.push_back( "left.anaglyph" );
-    _layers.push_back( "right.anaglyph" );
     _layers.push_back( "stereo.horizontal" );
     _layers.push_back( "stereo.crossed" );
 }
