@@ -110,50 +110,6 @@ namespace mrv {
     return NULL;
   }
 
-std::string get_short_view( bool left )
-{
-    const char* pairs = getenv("MRV_STEREO_CHAR_PAIRS");
-    if ( ! pairs ) pairs = "L:R";
-
-    std::string view = pairs;
-    int idx = view.find( ':' );
-    if ( idx == std::string::npos )
-    {
-        LOG_ERROR( "MRV_STEREO_CHAR_PAIRS does not have two letters separated by colon" );
-        if ( left )
-            return "L";
-        else
-            return "R";
-    }
-    
-    if (left)
-        return view.substr( 0, idx );
-    else
-        return view.substr( idx+1, view.size() );
-}
-
-std::string get_long_view( bool left )
-{
-    const char* pairs = getenv("MRV_STEREO_NAME_PAIRS");
-    if ( ! pairs ) pairs = "left:right";
-
-    std::string view = pairs;
-    int idx = view.find( ':' );
-    if ( idx == std::string::npos )
-    {
-        LOG_ERROR( "MRV_STEREO_NAME_PAIRS does not have two names separated by colon" );
-        if ( left )
-            return "left";
-        else
-            return "right";
-    }
-
-    if ( left )
-        return view.substr( 0, idx );
-    else
-        return view.substr( idx+1, view.size() );
-}
-
 std::string parse_view( const std::string& root, bool left )
 {
     int idx = root.find( "%V" );
@@ -175,6 +131,96 @@ std::string parse_view( const std::string& root, bool left )
         }
     }
     return tmp;
+}
+
+
+CMedia* guess( bool is_stereo, bool is_seq, bool left,
+               const std::string& root, const int64_t frame,
+               const boost::uint8_t* datas, const int len,
+               const boost::int64_t& lastFrame )
+{
+    std::string tmp;
+    char name[1024];
+    if ( is_stereo )
+    {
+        tmp = parse_view( root, left );
+
+        if ( is_seq )
+        {
+            sprintf( name, tmp.c_str(), frame );
+        }
+        else
+        {
+            strncpy( name, tmp.c_str(), 1024 );
+        }
+    }
+    else
+    {
+        if ( is_seq )
+        {
+            sprintf( name, root.c_str(), frame );
+        }
+        else
+        {
+            strncpy( name, root.c_str(), 1024 );
+        }
+    }
+
+    boost::uint8_t* read_data = 0;
+    size_t size = len;
+    const boost::uint8_t* test_data = datas;
+    if (!datas) {
+        size = 1024;
+        FILE* fp = fltk::fltk_fopen(name, "rb");
+        if (!fp) 
+	{
+            if ( is_seq )
+	    {
+                std::string quoted( root );
+
+                string::size_type loc = 0;
+                while ( ( loc = quoted.find( '%', loc ) ) != string::npos )
+		{
+                    quoted = ( quoted.substr(0, loc) + "%" + 
+                               quoted.substr( loc, quoted.size() ) );
+                    loc += 2;
+		}
+
+                LOG_ERROR( _("Image sequence \"") << quoted 
+                           << _("\" not found.") );
+	    }
+            else
+	    {
+                LOG_ERROR( _("Image \"") << name << _("\" not found.") );
+	    }
+            return NULL;
+	}
+        test_data = read_data = new boost::uint8_t[size + 1];
+        read_data[size] = 0; // null-terminate so strstr() works
+        size = fread(read_data, 1, size, fp);
+        fclose(fp);
+    }
+
+
+    CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
+				(unsigned int)size );
+    if ( image ) 
+    {
+        image->left_eye( left );
+
+	if ( is_seq )
+	{
+            image->sequence( root.c_str(), frame, lastFrame, false );
+	}
+	else
+	{
+            image->filename( name );
+	}
+    }
+
+    delete [] read_data;
+
+    return image;
 }
 
   CMedia* CMedia::guess_image( const char* file,
@@ -215,85 +261,24 @@ std::string parse_view( const std::string& root, bool left )
         ( root.substr( root.size() - 1, root.size()) == "~" ))
         return NULL;
 
-    char name[1024];
+    CMedia* right;
+
+    CMedia* image = guess( is_stereo, is_seq, true, root, frame, datas, len,
+                           lastFrame );
     if ( is_stereo )
     {
-        tmp = parse_view( root, true );
-
-        if ( is_seq )
+        right = guess( is_stereo, is_seq, false, root, frame,
+                       datas, len, lastFrame );
+        if ( right )
         {
-            sprintf( name, tmp.c_str(), frame );
-        }
-        else
-        {
-            strncpy( name, tmp.c_str(), 1024 );
-        }
-    }
-    else
-    {
-        if ( is_seq )
-        {
-            sprintf( name, root.c_str(), frame );
-        }
-        else
-        {
-            strncpy( name, root.c_str(), 1024 );
+            mrv::Recti dw = image->display_window();
+            if ( dw.w() == 0 )
+                image->display_window( 0, 0, image->width(), image->height() );
+            image->eye( 1, right );
+            image->is_stereo( true );
+            image->stereo_type( CMedia::kStereoSideBySide );
         }
     }
-
-    boost::uint8_t* read_data = 0;
-    size_t size = len;
-    const boost::uint8_t* test_data = datas;
-    if (!datas) {
-      size = 1024;
-      FILE* fp = fltk::fltk_fopen(name, "rb");
-      if (!fp) 
-	{
-	  if ( is_seq )
-	    {
-                std::string quoted( root );
-
-                string::size_type loc = 0;
-                while ( ( loc = quoted.find( '%', loc ) ) != string::npos )
-		{
-                    quoted = ( quoted.substr(0, loc) + "%" + 
-                               quoted.substr( loc, quoted.size() ) );
-                    loc += 2;
-		}
-
-                LOG_ERROR( _("Image sequence \"") << quoted 
-                           << _("\" not found.") );
-	    }
-	  else
-	    {
-                LOG_ERROR( _("Image \"") << name << _("\" not found.") );
-	    }
-	  return NULL;
-	}
-      test_data = read_data = new boost::uint8_t[size + 1];
-      read_data[size] = 0; // null-terminate so strstr() works
-      size = fread(read_data, 1, size, fp);
-      fclose(fp);
-    }
-
-    CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
-				(unsigned int)size );
-    if ( image ) 
-      {
-	if ( is_seq )
-	{
-            image->sequence( root.c_str(), frame, lastFrame, use_threads );
-	}
-	else
-	{
-            image->filename( name );
-	}
-      }
-
-    delete [] read_data;
-
-    if (image == NULL )
-          return NULL;
 
     return image;
   }

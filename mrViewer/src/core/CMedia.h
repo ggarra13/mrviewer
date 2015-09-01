@@ -294,8 +294,10 @@ class CMedia
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
     
-    /// Constructor used to split an image in two (cut_frame-last_frame)
+    /// Constructor used to split a video or sequence in two
+    //  (cut_frame - last_frame)
     CMedia( const CMedia* other, boost::int64_t cut_frame );
+
 
     virtual ~CMedia();
 
@@ -416,7 +418,10 @@ class CMedia
 
     inline mrv::image_type_ptr anaglyph( bool left_view = true );
 
+    inline void is_stereo( bool x ) { _is_stereo = x; }
     inline bool  is_stereo() const { return _is_stereo; }
+
+    inline void stereo_type( StereoType x ) { _stereo_type = x; }
     inline StereoType stereo_type() const { return _stereo_type; }
 
     mrv::image_type_ptr left() const;
@@ -862,6 +867,8 @@ class CMedia
     virtual void probe_size( unsigned p ) {}
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
+    void left_eye( bool left ) { _left_eye = left; }
+
     std::string sequence_filename( const boost::int64_t frame );
 
     double video_clock() const { return _video_clock; }
@@ -1184,6 +1191,7 @@ class CMedia
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
 
+    bool      _left_eye;
     CMedia*   _eye[2];
 
     //
