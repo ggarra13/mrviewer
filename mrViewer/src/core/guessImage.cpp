@@ -274,9 +274,12 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
             mrv::Recti dw = image->display_window();
             if ( dw.w() == 0 )
                 image->display_window( 0, 0, image->width(), image->height() );
+            dw = right->display_window();
+            if ( dw.w() == 0 )
+                right->display_window( 0, 0, right->width(), right->height() );
             image->eye( 1, right );
             image->is_stereo( true );
-            image->stereo_type( CMedia::kStereoSideBySide );
+            image->add_stereo_layers();
         }
     }
 
