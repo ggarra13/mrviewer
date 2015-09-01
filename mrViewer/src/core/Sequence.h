@@ -275,6 +275,10 @@ bool parse_reel( LoadList& sequences, bool& edl,
    */
   int  padded_digits( const std::string& frame );
 
+
+  std::string get_short_view( bool left );
+  std::string get_long_view( bool left );
+
 }  // namespace mrv
 
 
