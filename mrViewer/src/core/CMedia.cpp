@@ -182,6 +182,7 @@ CMedia::CMedia() :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
+  _left_eye( true ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -264,6 +265,7 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
+  _left_eye( true ),
   _profile( NULL ),
   _rendering_transform( NULL ),
   _idt_transform( NULL ),
@@ -336,13 +338,13 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _gamma( other->_gamma ),
   _has_chromaticities( other->has_chromaticities() ),
   _chromaticities( other->chromaticities() ),
-  _dts( f ),
-  _audio_frame( f ),
+  _dts( other->_dts ),
+  _audio_frame( 0 ),
   _audio_offset( 0 ),
-  _frame( f ),
-  _expected( f ),
-  _expected_audio( f ),
-  _frameStart( f ),
+  _frame( other->_frame ),
+  _expected( _frame ),
+  _expected_audio( 0 ),
+  _frameStart( other->_frameStart ),
   _frameEnd( other->_frameEnd ),
   _frame_start( other->_frame_start ),
   _frame_end( other->_frame_end ),
@@ -354,32 +356,30 @@ CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
   _displayWindow( NULL ),
   _dataWindow2( NULL ),
   _displayWindow2( NULL ),
-  _profile( NULL ),
-  _rendering_transform( NULL ),
-  _idt_transform( NULL ),
-  _playback( kStopped ),
-  _aborted( false ),
-  _sequence( NULL ),
-  _right( NULL ),
-  _video_ctx( NULL ),
-  _audio_ctx( NULL ),
-  _context(NULL),
-  _acontext(NULL),
-  _audio_codec(NULL),
-  _subtitle_index(-1),
-  _audio_index(-1),
-  _samples_per_sec( other->_samples_per_sec ),
-  _audio_buf_used( 0 ),
-  _audio_last_frame( f ),
-  _audio_channels( other->_audio_channels ),
-  _audio_buf( NULL ),
-  forw_ctx( NULL ),
-  _audio_engine( NULL )
+_left_eye( false ),
+_profile( NULL ),
+_rendering_transform( NULL ),
+_idt_transform( NULL ),
+_playback( kStopped ),
+_aborted( false ),
+_sequence( NULL ),
+_right( NULL ),
+_video_ctx( NULL ),
+_audio_ctx( NULL ),
+_context(NULL),
+_acontext(NULL),
+_audio_codec(NULL),
+_subtitle_index(-1),
+_audio_index(-1),
+_samples_per_sec( 0 ),
+_audio_buf_used( 0 ),
+_audio_last_frame( 0 ),
+_audio_channels( 0 ),
+_audio_buf( NULL ),
+forw_ctx( NULL ),
+_audio_engine( NULL )
 {
   _eye[0] = _eye[1] = NULL;
-  unsigned int W = other->width();
-  unsigned int H = other->height();
-  image_size( W, H );
 
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
@@ -620,6 +620,9 @@ const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
 
 const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
 {
+    if ( _eye[1] )
+        return _eye[1]->display_window(f);
+
     if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
@@ -645,6 +648,9 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
 
 const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
 {
+    if ( _eye[1] )
+        return _eye[1]->data_window(f);
+
     if ( !_dataWindow2 || _numWindows == 0 ) return kNoRect;
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
@@ -907,7 +913,7 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 {
   if ( !is_sequence() ) return _fileroot;
 
-  std::string tmp = parse_view( _fileroot, true );
+  std::string tmp = parse_view( _fileroot, _left_eye );
 
   // For image sequences
   char buf[1024];
@@ -1834,7 +1840,10 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
       }
   }
 
-  if ( _stereo[1] ) _right[idx] = _stereo[1];
+  if ( _stereo[1] ) {
+      _right[idx] = _stereo[1];
+      _stereo[1].reset();
+  }
   timestamp(idx);
 
 }
@@ -1842,7 +1851,8 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
 /** 
  * Cache picture for sequence.
  * 
- * @param pic       picture to cache
+ * @param left    left picture to cache
+ * @param right   right picture to cache
  */
 void CMedia::stereo_cache( const mrv::image_type_ptr& left,
                            const mrv::image_type_ptr& right )
@@ -1914,6 +1924,7 @@ const char* const CMedia::exif( const std::string& name ) const
  */
 void CMedia::flush_all()
 {
+    if ( _eye[1] )  _eye[1]->flush_all();
   if ( has_video() )
     flush_video();
   if ( has_audio() )

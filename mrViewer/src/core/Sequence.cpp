@@ -185,6 +185,50 @@ std::string hex_to_char_filename( std::string& f )
    return r;
 }
 
+std::string get_short_view( bool left )
+{
+    const char* pairs = getenv("MRV_STEREO_CHAR_PAIRS");
+    if ( ! pairs ) pairs = "L:R";
+
+    std::string view = pairs;
+    int idx = view.find( ':' );
+    if ( idx == std::string::npos )
+    {
+        LOG_ERROR( "MRV_STEREO_CHAR_PAIRS does not have two letters separated by colon" );
+        if ( left )
+            return "L";
+        else
+            return "R";
+    }
+    
+    if (left)
+        return view.substr( 0, idx );
+    else
+        return view.substr( idx+1, view.size() );
+}
+
+std::string get_long_view( bool left )
+{
+    const char* pairs = getenv("MRV_STEREO_NAME_PAIRS");
+    if ( ! pairs ) pairs = "left:right";
+
+    std::string view = pairs;
+    int idx = view.find( ':' );
+    if ( idx == std::string::npos )
+    {
+        LOG_ERROR( "MRV_STEREO_NAME_PAIRS does not have two names separated by colon" );
+        if ( left )
+            return "left";
+        else
+            return "right";
+    }
+
+    if ( left )
+        return view.substr( 0, idx );
+    else
+        return view.substr( idx+1, view.size() );
+}
+
   /** 
    * Given a filename of a possible sequence, split it into
    * root name, frame string, view, and extension
@@ -225,15 +269,21 @@ std::string hex_to_char_filename( std::string& f )
     if ( periods.size() == 4 )
     {
        root = file.substr( 0, len ) + periods[0] + ".";
-       view = periods[1] + ".";
+       view = periods[1];
        frame = periods[2];
-       ext = "." + periods[3];
+       ext = '.' + periods[3];
 
 
-       if ( view == "%v." || view == "%V." )
+       if ( view == "%v" || view == "%V" ||
+            view == get_short_view(true) ||
+            view == get_short_view(false) ||
+            view == get_long_view(true) ||
+            view == get_long_view(false) )
        {
-          return true;
+           view += '.';
+           return true;
        }
+
     }
     else
     {
