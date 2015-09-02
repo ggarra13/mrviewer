@@ -176,17 +176,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 	{
             if ( is_seq )
 	    {
-                std::string quoted( root );
-
-                string::size_type loc = 0;
-                while ( ( loc = quoted.find( '%', loc ) ) != string::npos )
-		{
-                    quoted = ( quoted.substr(0, loc) + "%" + 
-                               quoted.substr( loc, quoted.size() ) );
-                    loc += 2;
-		}
-
-                LOG_ERROR( _("Image sequence \"") << quoted 
+                LOG_ERROR( _("Image sequence \"") << root
                            << _("\" not found.") );
 	    }
             else
