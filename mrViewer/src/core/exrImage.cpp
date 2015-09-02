@@ -1044,19 +1044,9 @@ bool exrImage::find_channels( const Imf::Header& h,
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper);
 
-       _stereo_type = kNoStereo;
 
-       if ( root == "STEREO" )
+       if ( _stereo_type & kStereoSideBySide )
        {
-           // Set the stereo type based on channel name extension
-           if ( ext == "HORIZONTAL" )
-               _stereo_type = kStereoSideBySide;
-           else if ( ext == "CROSSED" )
-               _stereo_type = kStereoCrossed;
-           else
-               LOG_ERROR( _("Unknown stereo type") );
-
-
            return handle_side_by_side_stereo(frame, h, fb);
        }
        else
