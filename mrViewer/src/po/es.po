@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-09-02 09:54-0300\n"
+"POT-Creation-Date: 2015-09-02 14:18-0300\n"
 "PO-Revision-Date: 2015-08-23 08:23-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -16,7 +16,7 @@ msgstr ""
 "Content-Transfer-Encoding: 8bit\n"
 "X-Generator: Poedit 1.5.4\n"
 
-#: core/aviImage.cpp:1670
+#: core/aviImage.cpp:1682
 msgid ""
 "\n"
 "\n"
@@ -26,7 +26,7 @@ msgstr ""
 "\n"
 "No pude abrir el archivo avi"
 
-#: core/CMedia_audio.cpp:597 core/aviImage.cpp:1349
+#: core/CMedia_audio.cpp:598 core/aviImage.cpp:1360
 msgid ""
 "\n"
 "\n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2166
+#: core/CMedia.cpp:2206
 msgid ""
 "\n"
 "\n"
@@ -46,7 +46,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:583 core/aviImage.cpp:1334
+#: core/CMedia_audio.cpp:584 core/aviImage.cpp:1345
 msgid ""
 "\n"
 "\n"
@@ -121,15 +121,15 @@ msgstr " CNM: %<PRId64> "
 msgid " at port "
 msgstr " en el puerto "
 
-#: core/CMedia_audio.cpp:1113
+#: core/CMedia_audio.cpp:1114
 msgid " audio max: "
 msgstr " max. audio: "
 
-#: core/CMedia_audio.cpp:1111
+#: core/CMedia_audio.cpp:1112
 msgid " audio total: "
 msgstr " total de audio: "
 
-#: core/CMedia_audio.cpp:1112
+#: core/CMedia_audio.cpp:1113
 msgid " audio used: "
 msgstr " audio usado: "
 
@@ -145,7 +145,7 @@ msgstr " codificando"
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1532
+#: core/CMedia_audio.cpp:1533
 msgid " failed"
 msgstr " falló. "
 
@@ -153,11 +153,11 @@ msgstr " falló. "
 msgid " failed. "
 msgstr " falló. "
 
-#: core/CMedia_audio.cpp:1888 core/aviImage.cpp:2492
+#: core/CMedia_audio.cpp:1889 core/aviImage.cpp:2510
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2167
+#: core/CMedia.cpp:2207
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -165,7 +165,7 @@ msgstr " para pista #"
 msgid " frame"
 msgstr " cuadro"
 
-#: core/CMedia_audio.cpp:1108
+#: core/CMedia_audio.cpp:1109
 msgid " frame: "
 msgstr " cuadro: "
 
@@ -173,19 +173,19 @@ msgstr " cuadro: "
 msgid " frames"
 msgstr " cuadros"
 
-#: core/CMedia_audio.cpp:947
+#: core/CMedia_audio.cpp:948
 msgid " frequency: "
 msgstr " frecuencia: "
 
-#: core/aviImage.cpp:1065
+#: core/aviImage.cpp:1076
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2533
+#: core/CMedia.cpp:2577
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1578 core/aviImage.cpp:1069
+#: core/CMedia_audio.cpp:1579 core/aviImage.cpp:1080
 msgid " not found"
 msgstr " no encontrado"
 
@@ -193,7 +193,7 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrada en el carrete"
 
-#: core/aviImage.cpp:1064
+#: core/aviImage.cpp:1075
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
@@ -201,11 +201,11 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:2504
+#: core/aviImage.cpp:2522
 msgid " status: "
 msgstr " estatus: "
 
-#: core/CMedia_audio.cpp:905
+#: core/CMedia_audio.cpp:906
 msgid " to"
 msgstr " a "
 
@@ -213,11 +213,11 @@ msgstr " a "
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:830
+#: core/aviImage.cpp:836
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1043
+#: core/aviImage.cpp:1054
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -294,7 +294,7 @@ msgstr "(Campos PAL)"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1044
+#: core/aviImage.cpp:1055
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -302,11 +302,11 @@ msgstr ") tamaño de cache: "
 msgid "+0.0  f/8.0"
 msgstr "+0,0  f/8,0"
 
-#: core/CMedia_audio.cpp:902 core/CMedia_audio.cpp:924
+#: core/CMedia_audio.cpp:903 core/CMedia_audio.cpp:925
 msgid ", channels "
 msgstr ", canales "
 
-#: core/CMedia_audio.cpp:925
+#: core/CMedia_audio.cpp:926
 msgid ", format "
 msgstr ", formato "
 
@@ -314,11 +314,11 @@ msgstr ", formato "
 msgid ", freq "
 msgstr ", frecuencia "
 
-#: core/CMedia_audio.cpp:905 core/CMedia_audio.cpp:927
+#: core/CMedia_audio.cpp:906 core/CMedia_audio.cpp:928
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2167
+#: core/CMedia.cpp:2207
 msgid ", type "
 msgstr ", tipo "
 
@@ -599,11 +599,11 @@ msgstr "8bit"
 msgid "96x96x96"
 msgstr ""
 
-#: core/CMedia_audio.cpp:757
+#: core/CMedia_audio.cpp:758
 msgid ": Could not find stream info."
 msgstr ": No pude encontrar información de pistas."
 
-#: core/CMedia_audio.cpp:749
+#: core/CMedia_audio.cpp:750
 msgid ": Could not open filename."
 msgstr ": No pude abrir el archivo."
 
@@ -727,7 +727,7 @@ msgstr "Agregar"
 msgid "Add this directory to my favorites"
 msgstr "Agregar esta carpeta a mis favoritos"
 
-#: core/exrImage.cpp:1132
+#: core/exrImage.cpp:1122
 msgid "Adopted Neutral"
 msgstr "Neutral Adoptado"
 
@@ -791,7 +791,7 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1110 core/CMedia.cpp:1190 gui/mrvImageView.cpp:172
+#: core/CMedia.cpp:1117 core/CMedia.cpp:1198 gui/mrvImageView.cpp:172
 #: gui/mrvImageView.cpp:4008 gui/mrvImageView.cpp:4397
 msgid "Alpha"
 msgstr "Alfa"
@@ -800,7 +800,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "Solo Alfa"
 
-#: core/CMedia.cpp:1112 core/CMedia.cpp:1190 gui/mrvImageView.cpp:173
+#: core/CMedia.cpp:1119 core/CMedia.cpp:1198 gui/mrvImageView.cpp:173
 #: gui/mrvImageView.cpp:3992 gui/mrvImageView.cpp:4398
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
@@ -813,7 +813,7 @@ msgstr "Valor de alfa de la imagen del pixel bajo el mouse."
 msgid "Alt"
 msgstr "Alt"
 
-#: core/exrImage.cpp:1215
+#: core/exrImage.cpp:1205
 msgid "Altitude"
 msgstr "Altitud"
 
@@ -836,7 +836,7 @@ msgstr "Siempre Arriba de Otras"
 msgid "An error ocurred while trying to delete '%s'."
 msgstr "Un error ocurrió al intentar borrar '%s'."
 
-#: core/exrImage.cpp:1248
+#: core/exrImage.cpp:1238
 msgid "Aperture"
 msgstr "Apertura"
 
@@ -901,15 +901,15 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Audio conversion de "
 
-#: core/CMedia_audio.cpp:1578
+#: core/CMedia_audio.cpp:1579
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
-#: core/CMedia_audio.cpp:1107
+#: core/CMedia_audio.cpp:1108
 msgid "Audio missed for ptsframe: "
 msgstr "Audio faltante para el cuadro: "
 
-#: core/CMedia_audio.cpp:1663
+#: core/CMedia_audio.cpp:1664
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
@@ -925,7 +925,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: core/CMedia_audio.cpp:1339
+#: core/CMedia_audio.cpp:1340
 msgid "Audios #"
 msgstr "Audios #"
 
@@ -1001,7 +1001,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1667
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2376
-#: core/CMedia.cpp:1127 core/CMedia.cpp:1189 gui/mrvImageView.cpp:171
+#: core/CMedia.cpp:1134 core/CMedia.cpp:1197 gui/mrvImageView.cpp:171
 #: gui/mrvImageView.cpp:4004 gui/mrvImageView.cpp:4397
 msgid "Blue"
 msgstr "Azul"
@@ -1107,7 +1107,7 @@ msgstr "Mensaje"
 msgid "Caption Writer"
 msgstr "Escritor del Mensaje"
 
-#: core/exrImage.cpp:1171
+#: core/exrImage.cpp:1161
 msgid "Capture Date"
 msgstr "Fecha de Captura"
 
@@ -1149,7 +1149,7 @@ msgstr "Elija Tecla de Manejo"
 msgid "Chromaticities (CIE)"
 msgstr "Cromaticidades (CIE)"
 
-#: core/exrImage.cpp:1119
+#: core/exrImage.cpp:1109
 msgid "Chromaticities Name"
 msgstr "Cromaticidades (CIE)"
 
@@ -1210,7 +1210,7 @@ msgid "Codecs"
 msgstr "Codecs"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:65
-#: core/CMedia.cpp:1124 core/CMedia.cpp:1188 gui/mrvImageView.cpp:164
+#: core/CMedia.cpp:1131 core/CMedia.cpp:1196 gui/mrvImageView.cpp:164
 #: gui/mrvImageView.cpp:4401
 msgid "Color"
 msgstr ""
@@ -1244,7 +1244,7 @@ msgstr "Espacio de Color"
 msgid "Colors"
 msgstr "Colores"
 
-#: core/exrImage.cpp:1162
+#: core/exrImage.cpp:1152
 msgid "Comments"
 msgstr "Comentarios"
 
@@ -1345,7 +1345,7 @@ msgstr "No pude crear dibujo en miniatura para '"
 msgid "Could not create wand"
 msgstr "No pude crear varita"
 
-#: core/aviImage.cpp:829
+#: core/aviImage.cpp:835
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video"
 
@@ -1363,11 +1363,11 @@ msgstr "No pude dibujar imagen"
 msgid "Could not encode audio frame: "
 msgstr "No pude codificar cuadro de audio:"
 
-#: core/exrImage.cpp:1864
+#: core/exrImage.cpp:1854
 msgid "Could not find both stereo images in file"
 msgstr "No pude encontrar ambas imágenes de estereo en el archivo"
 
-#: core/aviImage.cpp:704
+#: core/aviImage.cpp:710
 msgid "Could not get image conversion context."
 msgstr "NO pude obtener contexto de conversion de imagen."
 
@@ -1387,7 +1387,7 @@ msgstr "No pude cargar '"
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: core/exrImage.cpp:1945 core/exrImage.cpp:2010 core/exrImage.cpp:2036
+#: core/exrImage.cpp:1935 core/exrImage.cpp:2000 core/exrImage.cpp:2026
 msgid "Could not locate channels in header"
 msgstr "No pude localizar canales en el encabezado"
 
@@ -1407,7 +1407,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1520
+#: core/CMedia_audio.cpp:1521
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -1419,7 +1419,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/CMedia_audio.cpp:1589
+#: core/CMedia_audio.cpp:1590
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -1435,7 +1435,7 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/CMedia.cpp:1547 core/aviImage.cpp:523 core/aviImage.cpp:538
+#: core/CMedia.cpp:1582 core/aviImage.cpp:529 core/aviImage.cpp:544
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -1443,7 +1443,7 @@ msgstr "No pude buscar al cuadro "
 msgid "Could not write to fifo buffer. Error:"
 msgstr "No pude escribir al buffer fifo. Error:"
 
-#: core/exrImage.cpp:1279
+#: core/exrImage.cpp:1269
 msgid "Count"
 msgstr "Cuenta"
 
@@ -1467,7 +1467,7 @@ msgstr "Crear nuevo carrete"
 msgid "Create a new reel or EDL track"
 msgstr "Crear nuevo carrete o pista de LDE"
 
-#: core/CMedia_audio.cpp:901
+#: core/CMedia_audio.cpp:902
 msgid "Create audio conversion from "
 msgstr "Crear conversión de audio desde "
 
@@ -1714,7 +1714,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1886 core/aviImage.cpp:2480 core/aviImage.cpp:2490
+#: core/CMedia_audio.cpp:1887 core/aviImage.cpp:2498 core/aviImage.cpp:2508
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -1722,7 +1722,7 @@ msgstr "Error de decodificación de audio:"
 msgid "Decode of image frame "
 msgstr "Decodificación de cuadro de imagen "
 
-#: core/aviImage.cpp:2502
+#: core/aviImage.cpp:2520
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -1874,7 +1874,7 @@ msgstr "Dividir"
 msgid "Double"
 msgstr "Doble"
 
-#: core/exrImage.cpp:1377 gui/mrvHotkey.cpp:219
+#: core/exrImage.cpp:1367 gui/mrvHotkey.cpp:219
 msgid "Down"
 msgstr "Abajo"
 
@@ -1944,11 +1944,11 @@ msgstr "Editar Cuadro de Comienzo de Audio"
 msgid "Edit Status"
 msgstr "Editar Status"
 
-#: core/aviImage.cpp:2127
+#: core/aviImage.cpp:2141
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2141
+#: core/aviImage.cpp:2155
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -2006,7 +2006,7 @@ msgstr "Menos Exposición"
 msgid "Exposure More"
 msgstr "Más Exposición"
 
-#: core/exrImage.cpp:1237
+#: core/exrImage.cpp:1227
 msgid "Exposure Time"
 msgstr "Tiempo de Exposición"
 
@@ -2046,11 +2046,11 @@ msgstr "CPS: %.3f"
 msgid "Failed "
 msgstr "Falló "
 
-#: core/CMedia_audio.cpp:937
+#: core/CMedia_audio.cpp:938
 msgid "Failed to alloc swresample library"
 msgstr "No pude asignar la biblioteca swresample"
 
-#: core/CMedia_audio.cpp:944
+#: core/CMedia_audio.cpp:945
 msgid "Failed to init swresample library with "
 msgstr "Fallé en inicializar biblioteca swresample con "
 
@@ -2114,11 +2114,11 @@ msgstr "Archivo/Grabar/Carrete Como"
 msgid "Filename"
 msgstr "Nombre del archivo"
 
-#: core/exrImage.cpp:1273
+#: core/exrImage.cpp:1263
 msgid "Film Manufacturer Code"
 msgstr "Código de Manufacturador del Film"
 
-#: core/exrImage.cpp:1275
+#: core/exrImage.cpp:1265
 msgid "Film Type Code"
 msgstr "Código del Tipo de Film"
 
@@ -2169,7 +2169,7 @@ msgstr "Disco Floppy"
 msgid "Flushing of buffers failed"
 msgstr "Vaciar los buffers falló"
 
-#: core/exrImage.cpp:1226
+#: core/exrImage.cpp:1216
 msgid "Focus"
 msgstr "Foco"
 
@@ -2354,7 +2354,7 @@ msgstr "Obtuve: "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1666
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2358
-#: core/CMedia.cpp:1126 core/CMedia.cpp:1188 gui/mrvImageView.cpp:170
+#: core/CMedia.cpp:1133 core/CMedia.cpp:1196 gui/mrvImageView.cpp:170
 #: gui/mrvImageView.cpp:4000 gui/mrvImageView.cpp:4396
 msgid "Green"
 msgstr "Verde"
@@ -2449,7 +2449,7 @@ msgstr "Valor de Tinte (HUE) del pixel bajo el ratón."
 msgid "ICC"
 msgstr "ICC"
 
-#: core/exrImage.cpp:1331 gui/mrvImageInformation.cpp:643
+#: core/exrImage.cpp:1321 gui/mrvImageInformation.cpp:643
 msgid "ICC Profile"
 msgstr "Perfil ICC"
 
@@ -2483,7 +2483,7 @@ msgstr "IPTC"
 msgid "IPTC Data"
 msgstr "Datos IPTC"
 
-#: core/exrImage.cpp:1260
+#: core/exrImage.cpp:1250
 msgid "ISO Speed"
 msgstr "Velocidad ISO"
 
@@ -2535,7 +2535,7 @@ msgstr "Nombre de Imagen"
 msgid "Image Options"
 msgstr "Grabar Opciones"
 
-#: core/exrImage.cpp:1144
+#: core/exrImage.cpp:1134
 msgid "Image State"
 msgstr "Estado de Imagen"
 
@@ -2682,7 +2682,7 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
-#: core/aviImage.cpp:1107
+#: core/aviImage.cpp:1118
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
@@ -2781,7 +2781,7 @@ msgstr "Lenguaje"
 msgid "Last Frame"
 msgstr "Ultimo Cuadro"
 
-#: core/exrImage.cpp:1204
+#: core/exrImage.cpp:1194
 msgid "Latitude"
 msgstr "Latitud"
 
@@ -2885,11 +2885,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:1907
+#: video/mrvGLEngine.cpp:1905
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:1912
+#: video/mrvGLEngine.cpp:1910
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -2917,7 +2917,7 @@ msgstr "Logaritmico"
 msgid "Logs"
 msgstr "Mensajes"
 
-#: core/exrImage.cpp:1193
+#: core/exrImage.cpp:1183
 msgid "Longitude"
 msgstr "Longitud"
 
@@ -2938,7 +2938,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1668
-#: core/CMedia.cpp:1138 core/CMedia.cpp:1190 gui/mrvImageView.cpp:174
+#: core/CMedia.cpp:1145 core/CMedia.cpp:1198 gui/mrvImageView.cpp:174
 #: gui/mrvImageView.cpp:4012 gui/mrvImageView.cpp:4399
 #: gui/mrvImageInformation.cpp:537
 msgid "Lumma"
@@ -3038,7 +3038,7 @@ msgstr "Mínimo"
 msgid "Mipmap Level"
 msgstr "Nivel de Mipmap"
 
-#: core/exrImage.cpp:1357 gui/mrvImageInformation.cpp:728
+#: core/exrImage.cpp:1347 gui/mrvImageInformation.cpp:728
 msgid "Mipmap Levels"
 msgstr "Niveles de Mipmap"
 
@@ -3188,7 +3188,7 @@ msgstr "No se necesita conversión.  Gama: "
 msgid "No decoder found for audio stream. ID: "
 msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
 
-#: core/CMedia_audio.cpp:1338
+#: core/CMedia_audio.cpp:1339
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
@@ -3391,7 +3391,7 @@ msgstr "Derogar la ganancia interna del visor."
 msgid "Override viewer's default gamma."
 msgstr "Derogar la gama interna del visor."
 
-#: core/exrImage.cpp:1153 gui/FLU/Flu_File_Chooser.cpp:108
+#: core/exrImage.cpp:1143 gui/FLU/Flu_File_Chooser.cpp:108
 msgid "Owner"
 msgstr "Propietario"
 
@@ -3464,15 +3464,15 @@ msgstr "Tamaño del Lapiz"
 msgid "Perceptual"
 msgstr "Perceptual"
 
-#: core/exrImage.cpp:1281
+#: core/exrImage.cpp:1271
 msgid "Perf Offset"
 msgstr "Desplazamiento Perf"
 
-#: core/exrImage.cpp:1285
+#: core/exrImage.cpp:1275
 msgid "Perfs per Count"
 msgstr "Perfs por Cuenta"
 
-#: core/exrImage.cpp:1283
+#: core/exrImage.cpp:1273
 msgid "Perfs per Frame"
 msgstr "Perfs por Cuadro"
 
@@ -3557,7 +3557,7 @@ msgstr "Reproducir secuencia hacia delante."
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1531
+#: core/CMedia_audio.cpp:1532
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -3585,7 +3585,7 @@ msgstr "Preferir ICC"
 msgid "Preferences"
 msgstr "Preferencias"
 
-#: core/exrImage.cpp:1277
+#: core/exrImage.cpp:1267
 msgid "Prefix Code"
 msgstr "Código de Prefijo"
 
@@ -3747,7 +3747,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1665
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2340
-#: core/CMedia.cpp:1125 core/CMedia.cpp:1188 gui/mrvImageView.cpp:169
+#: core/CMedia.cpp:1132 core/CMedia.cpp:1196 gui/mrvImageView.cpp:169
 #: gui/mrvImageView.cpp:3996 gui/mrvImageView.cpp:4396
 msgid "Red"
 msgstr "Rojo"
@@ -3850,7 +3850,7 @@ msgstr "Renderer:\t"
 msgid "Rendering Intent"
 msgstr "Intención de Render"
 
-#: core/CMedia_audio.cpp:962
+#: core/CMedia_audio.cpp:963
 msgid "Resampling failed"
 msgstr "Resampleo falló"
 
@@ -3895,7 +3895,7 @@ msgstr "Meta Derecho"
 msgid "RightShift"
 msgstr "Shift Derecho"
 
-#: core/exrImage.cpp:1377 core/exrImage.cpp:1380
+#: core/exrImage.cpp:1367 core/exrImage.cpp:1370
 msgid "Rounding Mode"
 msgstr "Modo de Redondeo"
 
@@ -4390,31 +4390,31 @@ msgstr "T"
 msgid "T: "
 msgstr "T: "
 
-#: core/exrImage.cpp:1303
+#: core/exrImage.cpp:1293
 msgid "TC Color Frame"
 msgstr "TC Cuadro de Color"
 
-#: core/exrImage.cpp:1301
+#: core/exrImage.cpp:1291
 msgid "TC Drop Frame"
 msgstr "TC Cuadros Perdidos"
 
-#: core/exrImage.cpp:1305
+#: core/exrImage.cpp:1295
 msgid "TC Field/Phase"
 msgstr "TC Campo/Fase"
 
-#: core/exrImage.cpp:1313
+#: core/exrImage.cpp:1303
 msgid "TC User Data"
 msgstr "TC Datos de Usario"
 
-#: core/exrImage.cpp:1307
+#: core/exrImage.cpp:1297
 msgid "TC bgf0"
 msgstr ""
 
-#: core/exrImage.cpp:1309
+#: core/exrImage.cpp:1299
 msgid "TC bgf1"
 msgstr ""
 
-#: core/exrImage.cpp:1311
+#: core/exrImage.cpp:1301
 msgid "TC bgf2"
 msgstr ""
 
@@ -4652,7 +4652,7 @@ msgid "Time"
 msgstr "Tiempo"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-46-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1990
-#: core/exrImage.cpp:1299
+#: core/exrImage.cpp:1289
 msgid "Timecode"
 msgstr "Código de Tiempo"
 
@@ -4698,7 +4698,7 @@ msgstr "Permutar Carrete en la Línea de Tiempo"
 msgid "Toggle Top Bar"
 msgstr "Permutar Barra Superior"
 
-#: core/CMedia_audio.cpp:1064
+#: core/CMedia_audio.cpp:1065
 msgid "Too much audio used:"
 msgstr "Demasiado audio usado:"
 
@@ -4764,7 +4764,7 @@ msgstr "Elementos de Interfaz de Usario (IU)"
 msgid "UInt"
 msgstr ""
 
-#: core/exrImage.cpp:1182
+#: core/exrImage.cpp:1172
 msgid "UTC Offset"
 msgstr "Desplazamiento UTC"
 
@@ -4806,7 +4806,7 @@ msgstr "Ventana Desconocida \""
 msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
-#: core/aviImage.cpp:1213
+#: core/aviImage.cpp:1224
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -4826,15 +4826,15 @@ msgstr "Nodo desconocido en GradeRef"
 msgid "Unknown render pixel format"
 msgstr "Formato de render de pixel desconocido"
 
-#: core/exrImage.cpp:1383
+#: core/exrImage.cpp:1373
 msgid "Unknown rounding mode"
 msgstr "Modo de Redondeo desconocido"
 
-#: core/exrImage.cpp:1057
+#: core/CMedia.cpp:1225
 msgid "Unknown stereo type"
 msgstr "Tipo de stereo desconocido"
 
-#: video/mrvGLEngine.cpp:1613
+#: video/mrvGLEngine.cpp:1611
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -4842,7 +4842,7 @@ msgstr "Dirección de wipe desconocida"
 msgid "Unsupported internal format"
 msgstr "Formato interno desconocido"
 
-#: core/exrImage.cpp:1380 gui/mrvHotkey.cpp:216
+#: core/exrImage.cpp:1370 gui/mrvHotkey.cpp:216
 msgid "Up"
 msgstr "Arriba"
 
@@ -4921,7 +4921,7 @@ msgstr "Pista de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
-#: core/aviImage.cpp:1041
+#: core/aviImage.cpp:1052
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -5218,11 +5218,11 @@ msgstr ""
 "su velocidad depende del tamaño de la imagen y puede solo ser usada cuando "
 "no se reproduce una película.\n"
 
-#: core/exrImage.cpp:1340
+#: core/exrImage.cpp:1330
 msgid "Wrap Modes"
 msgstr "Modo de Wrap"
 
-#: core/exrImage.cpp:1322
+#: core/exrImage.cpp:1312
 msgid "Writer"
 msgstr "Escritor"
 
@@ -5230,7 +5230,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2059
+#: core/aviImage.cpp:2073
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -5242,7 +5242,7 @@ msgstr ""
 msgid "X Ripmap Level"
 msgstr "Nivel de Ripmap en X"
 
-#: core/exrImage.cpp:1364 gui/mrvImageInformation.cpp:738
+#: core/exrImage.cpp:1354 gui/mrvImageInformation.cpp:738
 msgid "X Ripmap Levels"
 msgstr "Niveles de Ripmap en X"
 
@@ -5275,7 +5275,7 @@ msgstr "Y (Luminancia de Blanco)"
 msgid "Y Ripmap Level"
 msgstr "Nivel de Ripmap en Y"
 
-#: core/exrImage.cpp:1366 gui/mrvImageInformation.cpp:747
+#: core/exrImage.cpp:1356 gui/mrvImageInformation.cpp:747
 msgid "Y Ripmap Levels"
 msgstr "Niveles de Ripmap en Y"
 
@@ -5342,7 +5342,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:2003
+#: core/CMedia.cpp:2043
 msgid "audio"
 msgstr "audio"
 
@@ -5350,11 +5350,11 @@ msgstr "audio"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context falló para el audio"
 
-#: core/aviImage.cpp:945
+#: core/aviImage.cpp:951
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
-#: core/aviImage.cpp:377
+#: core/aviImage.cpp:380
 msgid "avcodec_copy_context failed for video"
 msgstr "avcodec_copy_context falló para el video"
 
@@ -5367,11 +5367,11 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:2006
+#: core/CMedia.cpp:2046
 msgid "data"
 msgstr "datos"
 
-#: core/CMedia_audio.cpp:1154
+#: core/CMedia_audio.cpp:1155
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
@@ -5379,7 +5379,7 @@ msgstr "decode_audio - faltó decodificar algunos sampleos"
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1063 core/aviImage.cpp:1069
+#: core/aviImage.cpp:1074 core/aviImage.cpp:1080
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
@@ -5392,7 +5392,7 @@ msgstr "coma flotante"
 msgid "float (32-bits per channel)"
 msgstr "coma flotante (32-bits por canal)"
 
-#: core/CMedia_audio.cpp:903
+#: core/CMedia_audio.cpp:904
 msgid "format "
 msgstr "formato "
 
@@ -5549,7 +5549,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:2009
+#: core/CMedia.cpp:2049
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5561,7 +5561,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2012 core/wandImage.cpp:425
+#: core/CMedia.cpp:2052 core/wandImage.cpp:425
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5577,7 +5577,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2000
+#: core/CMedia.cpp:2040
 msgid "video"
 msgstr "video"
 
