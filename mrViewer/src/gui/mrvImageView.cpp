@@ -4360,7 +4360,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
 
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-    uiColorChannel->remove_all();
+    uiColorChannel->clear();
 
     CMedia* img = fg->image();
     const stringArray& layers = img->layers();
