@@ -75,6 +75,9 @@ namespace mrv {
                                    const mrv::ImageView::FlipDirection flip =
                                    mrv::ImageView::kFlipNone );
 
+    /// Draw a rectangle
+      void draw_data_window( const mrv::Rectd& r );
+
     virtual void wipe_area();
 
       virtual void draw_square_stencil( const int x, const int y, 
