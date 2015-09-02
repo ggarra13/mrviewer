@@ -1181,12 +1181,15 @@ void CMedia::add_stereo_layers()
 void CMedia::channel( const char* c )
 {
 
-  std::string ch( c );
+    if (c)
+    {
+        std::string ch( c );
 
-  if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
-       ch == _("Blue")  ||
-       ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
-      c = NULL;
+        if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
+             ch == _("Blue")  ||
+             ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
+            c = NULL;
+    }
 
   bool to_fetch = false;
 
@@ -1213,6 +1216,8 @@ void CMedia::channel( const char* c )
        clear_cache();
        SCOPED_LOCK( _mutex );
        fetch(_frame);
+
+       if ( _eye[1] )  _eye[1]->channel( c );
     }
   refresh();
 }
@@ -1699,12 +1704,7 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( _eye[0] && _eye[1] )
-  {
-      bool l = _eye[0]->frame(f);
-      bool r = _eye[1]->frame(f);
-      return ( l && r );
-  }
+  if ( _eye[1] ) _eye[1]->frame(f);
 
 
 //  in ffmpeg, sizes are in bytes...
@@ -2461,6 +2461,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
+  if ( _eye[1] ) _eye[1]->find_image(f);
 
   // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
   _video_clock = double(av_gettime_relative()) / 1000000.0;
