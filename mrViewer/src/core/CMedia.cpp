@@ -487,6 +487,11 @@ CMedia::~CMedia()
   free( _idt_transform );
 
 
+  delete [] _dataWindow;
+  delete [] _dataWindow2;
+  delete [] _displayWindow;
+  delete [] _displayWindow2;
+
   clear_cache();
   delete [] _sequence;
   delete [] _right;
@@ -509,10 +514,14 @@ CMedia::~CMedia()
   }
 
   if ( _context )
+  {
     avformat_close_input( &_context );
+  }
 
   if ( _acontext )
     avformat_close_input( &_acontext );
+
+  delete _eye[1];
 
   _context = _acontext = NULL;
 }
@@ -550,9 +559,7 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 mrv::image_type_ptr CMedia::left() const
 {
    boost::uint64_t idx = _frame - _frame_start;
-   if ( _eye[0] && _eye[0] != this )
-       return _eye[0]->left();
-   else if ( _is_sequence && _sequence[idx] )
+   if ( _is_sequence && _sequence[idx] )
       return _sequence[idx];
    else
        if ( _stereo[0] )
@@ -840,7 +847,7 @@ void CMedia::filename( const char* n )
   if ( _fileroot && strcmp( n, _fileroot ) == 0 )
     return;
 
-  SCOPED_LOCK( _mutex);
+  SCOPED_LOCK( _mutex );
 
   std::string name = n;
   if ( name.substr(0, 6) == "Slate " )
@@ -1180,6 +1187,7 @@ void CMedia::add_stereo_layers()
  */
 void CMedia::channel( const char* c )
 {
+    if ( _eye[1] )  _eye[1]->channel( c );
 
     if (c)
     {
@@ -1189,6 +1197,33 @@ void CMedia::channel( const char* c )
              ch == _("Blue")  ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
             c = NULL;
+
+       std::string ext = ch;
+       std::string root = "";
+       size_t pos = ext.rfind( N_(".") );
+       if ( pos != std::string::npos )
+       {
+           root = ext.substr( 0, pos );
+           ext = ext.substr( pos+1, ext.size() );
+       }
+
+       std::transform( root.begin(), root.end(), root.begin(),
+                       (int(*)(int)) toupper);
+       std::transform( ext.begin(), ext.end(), ext.begin(),
+                       (int(*)(int)) toupper);
+
+       _stereo_type = kNoStereo;
+
+       if ( root == "STEREO" )
+       {
+           // Set the stereo type based on channel name extension
+           if ( ext == "HORIZONTAL" )
+               _stereo_type = kStereoSideBySide;
+           else if ( ext == "CROSSED" )
+               _stereo_type = kStereoCrossed;
+           else
+               LOG_ERROR( _("Unknown stereo type") );
+       }
     }
 
   bool to_fetch = false;
@@ -1216,8 +1251,6 @@ void CMedia::channel( const char* c )
        clear_cache();
        SCOPED_LOCK( _mutex );
        fetch(_frame);
-
-       if ( _eye[1] )  _eye[1]->channel( c );
     }
   refresh();
 }
@@ -1512,6 +1545,8 @@ void CMedia::play(const CMedia::Playback dir,
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
+    if ( _eye[1] && _stereo_type ) _eye[1]->play( dir, uiMain, fg );
+
     stop();
 
     _playback = dir;
@@ -1758,6 +1793,11 @@ void CMedia::seek( const boost::int64_t f )
   _seek_req   = true;
   _seek_frame = f;
 
+  if ( _eye[1] )
+  {
+      _eye[1]->_seek_req = true;
+      _eye[1]->_seek_frame = f;
+  }
 
   if ( stopped() )
     {
@@ -2386,6 +2426,10 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
+    if ( _eye[1] && _stereo_type ) {
+        boost::int64_t f = frame;
+        _eye[1]->decode_video(f);
+    }
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
@@ -2461,7 +2505,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  if ( _eye[1] ) _eye[1]->find_image(f);
+  if ( _eye[1] && _stereo_type ) _eye[1]->find_image(f);
 
   // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
   _video_clock = double(av_gettime_relative()) / 1000000.0;

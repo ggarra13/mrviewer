@@ -1136,6 +1136,17 @@ void GLEngine::alloc_quads( size_t num )
 }
 
 
+void GLEngine::draw_data_window( const mrv::Rectd& r )
+{
+    glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
+    glLineStipple( 1, 0x00FF );
+    glEnable( GL_LINE_STIPPLE );
+    draw_rectangle( r, _view->flip() );
+    glDisable( GL_LINE_STIPPLE );
+    if ( _view->display_window() )
+        glEnable( GL_STENCIL_TEST );
+}
+
 void GLEngine::translate( double x, double y )
 {
    glTranslated( x, y, 0 );
@@ -1286,20 +1297,24 @@ void GLEngine::draw_images( ImageList& images )
 
       set_matrix( _view->flip(), false );
 
-      float x = 0.0f, y = 0.0f;
       mrv::Recti dp = fg->display_window(frame);
-      if ( _view->flip() & ImageView::kFlipVertical )
+      int flip = _view->flip();
+      if ( flip )
       {
-          if ( dp.w() == 0 ) dp.w( texWidth );
-          x = -dp.w();
-      }
-      if ( _view->flip() & ImageView::kFlipHorizontal )
-      {
-          if ( dp.h() == 0 ) dp.h( texHeight );
-          y = dp.h();
+          float x = 0.0f, y = 0.0f;
+          if ( flip & ImageView::kFlipVertical )
+          {
+              if ( dp.w() == 0 ) dp.w( texWidth );
+              x = -dp.w();
+          }
+          if ( flip & ImageView::kFlipHorizontal )
+          {
+              if ( dp.h() == 0 ) dp.h( texHeight );
+              y = dp.h();
+          }
+          glTranslatef( x, y, 0.0f );
       }
 
-      glTranslatef( x, y, 0.0f );
 
       if ( dpw != daw )
       {
@@ -1312,13 +1327,7 @@ void GLEngine::draw_images( ImageList& images )
           if ( _view->data_window()  )
           {
               mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
-              glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
-              glLineStipple( 1, 0x00FF );
-              glEnable( GL_LINE_STIPPLE );
-              draw_rectangle( r, _view->flip() );
-              glDisable( GL_LINE_STIPPLE );
-              if ( _view->display_window() )
-                  glEnable( GL_STENCIL_TEST );
+              draw_data_window( r );
           }
       }
 
@@ -1343,22 +1352,16 @@ void GLEngine::draw_images( ImageList& images )
       if ( _view->use_lut() )
 	{
 	  if ( img->image_damage() & CMedia::kDamageLut )
-	    {
-	      quad->clear_lut();
-              if ( img->is_stereo() && (img->stereo_type() & 
-                                        CMedia::kStereoSideBySide) )
-              {
-                  (*(q+1))->clear_lut();
-              }
-	    }
-
+              quad->clear_lut();
 
 	  quad->lut( img );
 
           if ( img->is_stereo() && (img->stereo_type() & 
                                     CMedia::kStereoSideBySide) )
           {
-             (*(q+1))->lut( img );
+              if ( img->image_damage() & CMedia::kDamageLut )
+                  (*(q+1))->clear_lut();
+              (*(q+1))->lut( img );
           }
 
 	}
@@ -1420,12 +1423,7 @@ void GLEngine::draw_images( ImageList& images )
              {
                  mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
                                             daw2.y(), daw2.w(), daw2.h() );
-                 glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
-                 glLineStipple( 1, 0x00FF );
-                 glEnable( GL_LINE_STIPPLE );
-                 draw_rectangle( r, _view->flip() );
-                 glDisable( GL_LINE_STIPPLE );
-                 if ( _view->display_window() ) glEnable( GL_STENCIL_TEST );
+                 draw_data_window( r );
              }
          }
 

@@ -61,7 +61,6 @@ namespace mrv {
 
   ALSAEngine::~ALSAEngine()
   {
-    close();
     shutdown();
   }
 
@@ -147,6 +146,10 @@ namespace mrv {
 
     if ( _instances == 0 )
       {
+          if ( _mixer ) 
+              snd_mixer_close( _mixer );
+          _mixer = NULL;
+          snd_config_update_free_global();
       }
     return true;
   }
