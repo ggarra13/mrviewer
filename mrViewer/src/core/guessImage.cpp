@@ -255,7 +255,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 
     CMedia* image = guess( is_stereo, is_seq, true, root, frame, datas, len,
                            lastFrame );
-    if ( is_stereo )
+    if ( is_stereo && image )
     {
         right = guess( is_stereo, is_seq, false, root, frame,
                        datas, len, lastFrame );

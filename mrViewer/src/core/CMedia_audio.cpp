@@ -446,6 +446,7 @@ void CMedia::close_audio_codec()
     if ( _audio_ctx && _audio_index >= 0 )
     {
         avcodec_close( _audio_ctx );
+        avcodec_free_context( &_audio_ctx );
         _audio_ctx = NULL;
     }
 }

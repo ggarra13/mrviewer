@@ -86,7 +86,7 @@ namespace
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
-// #define DEBUG_VIDEO_STORES
+#define DEBUG_VIDEO_STORES
 // #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
@@ -182,6 +182,9 @@ aviImage::~aviImage()
 
   if ( _video_index >= 0 )
     close_video_codec();
+
+  av_frame_free( &_av_frame );
+
 }
 
 
@@ -429,7 +432,10 @@ void aviImage::open_video_codec()
 void aviImage::close_video_codec()
 {
     if ( _video_ctx && _video_index >= 0 )
+    {
         avcodec_close( _video_ctx );
+        avcodec_free_context( &_video_ctx );
+    }
 }
 
 
@@ -967,7 +973,10 @@ void aviImage::open_subtitle_codec()
 void aviImage::close_subtitle_codec()
 {
   if ( _subtitle_ctx )
-    avcodec_close( _subtitle_ctx );
+  {
+      avcodec_close( _subtitle_ctx );
+      avcodec_free_context( &_subtitle_ctx );
+  }
 }
 
 bool aviImage::find_subtitle( const boost::int64_t frame )
@@ -997,6 +1006,8 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 
 bool aviImage::find_image( const boost::int64_t frame )
 {
+
+    if ( _eye[1] && _stereo_type ) _eye[1]->find_image( frame );
 
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "find_image");
@@ -1635,6 +1646,7 @@ bool aviImage::initialize()
 {
   if ( _context == NULL )
     {
+
       AVDictionary *opts = NULL;
       av_dict_set(&opts, "initial_pause", "1", 0);
 
@@ -1928,6 +1940,8 @@ bool aviImage::fetch(const boost::int64_t frame)
    cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
+   if ( _eye[1] ) _eye[1]->fetch( frame );
+
    bool got_video = !has_video();
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
@@ -2185,7 +2199,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 {
 
     boost::int64_t frame = f;
-    
+
 #ifdef DEBUG_VIDEO_PACKETS
     debug_video_packets(frame, "decode_video", true);
 #endif
@@ -2355,6 +2369,8 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
      std::cerr << (*iter)->frame() << "-" 
 	       << (*(last-1))->frame() 
 	       << std::endl;
+  else
+      std::cerr << std::endl;
 
   if ( detail )
   {
@@ -2449,6 +2465,8 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 
 void aviImage::do_seek()
 {
+    if ( _eye[1] ) _eye[1]->do_seek();
+
   _dts = _seek_frame;
 
   bool got_video = !has_video();
