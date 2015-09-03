@@ -2559,7 +2559,7 @@ void ImageView::mouseMove(int x, int y)
   int yp = (int)floor(yf);
 
 
-  if ( xp > (int)w && ( stereo_type() & CMedia::kStereoSideBySide ) )
+  if ( xp >= (int)w && ( stereo_type() & CMedia::kStereoSideBySide ) )
   {
       if ( _stereo == CMedia::kStereoCrossed ) pic = img->left();
       else pic = img->right();
@@ -3985,7 +3985,7 @@ void ImageView::channel( unsigned short c )
 
 
   uiColorChannel->value( c );
-  uiColorChannel->label( lbl );
+  uiColorChannel->copy_label( lbl );
   uiColorChannel->redraw();
 
   _channelType = kRGB;
@@ -4451,7 +4451,7 @@ void ImageView::update_layers()
     {
         uiColorChannel->remove_all();
         uiColorChannel->add( _("(no image)") );
-        uiColorChannel->label( _("(no image)") );
+        uiColorChannel->copy_label( _("(no image)") );
         uiColorChannel->value(0);
         uiColorChannel->redraw();
         return;

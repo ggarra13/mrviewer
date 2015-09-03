@@ -386,14 +386,13 @@ void ImageInformation::clear_callback_data()
   {
     hide_tabs();
 
-    
  
-    m_image->remove_all();
-    m_video->remove_all();
-    m_audio->remove_all();
-    m_subtitle->remove_all();
-    m_iptc->remove_all();
-    m_exif->remove_all();
+    m_image->clear();
+    m_video->clear();
+    m_audio->clear();
+    m_subtitle->clear();
+    m_iptc->clear();
+    m_exif->clear();
 
     if ( img == NULL || !visible_r() ) return;
 
@@ -885,32 +884,34 @@ void ImageInformation::clear_callback_data()
 
   mrv::Browser* ImageInformation::add_browser( mrv::CollapsableGroup* g )
   {
-    mrv::Browser* browser = new mrv::Browser( 0, 0, w(), 400 );
-    browser->column_separator(true);
-    browser->auto_resize( true );
+      if (!g) return NULL;
 
-    int widths[] = { kMiddle, -1, 0 };
-    browser->column_widths( widths );
+      mrv::Browser* browser = new mrv::Browser( 0, 0, w(), 400 );
+      browser->column_separator(true);
+      browser->auto_resize( true );
 
-    static const char* headers[] = { _("Attribute"), _("Value"), 0 };
-    browser->column_labels( headers );
-    browser->align(fltk::ALIGN_CENTER|fltk::ALIGN_TOP);
 
-    g->add( browser );
-    if ( g->children() == 1 )
+      static const char* headers[] = { _("Attribute"), _("Value"), 0 };
+      browser->column_labels( headers );
+      int widths[] = { kMiddle, -1, 0 };
+      browser->column_widths( widths );
+      browser->align(fltk::ALIGN_CENTER|fltk::ALIGN_TOP);
+      
+      g->add( browser );
+      if ( g->children() == 1 )
       {
-	g->spacing( 0 );
+          g->spacing( 0 );
       }
-    else
+      else
       {
-	g->spacing( int(browser->labelsize() + 4) );
+          g->spacing( int(browser->labelsize() + 4) );
       }
 
-    g->show();
+      g->show();
 
-    group = row = 0; // controls line colors
+      group = row = 0; // controls line colors
 
-    return browser;
+      return browser;
   }
 
   int ImageInformation::line_height()
