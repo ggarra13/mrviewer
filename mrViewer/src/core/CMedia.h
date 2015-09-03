@@ -338,10 +338,10 @@ class CMedia
     // Add default stereo.horizontal, stereo.crossed
     void add_stereo_layers();
 
-    const mrv::Recti& data_window( boost::int64_t f = AV_NOPTS_VALUE) const;
-    const mrv::Recti& display_window( boost::int64_t f = AV_NOPTS_VALUE) const;
-    const mrv::Recti& data_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
-    const mrv::Recti& display_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti data_window( boost::int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti display_window( boost::int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti data_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
+    const mrv::Recti display_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
 
     void data_window( const int xmin, const int ymin,
 		      const int xmax, const int ymax );

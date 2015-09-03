@@ -1257,6 +1257,12 @@ void GLEngine::draw_images( ImageList& images )
       mrv::Recti dpw = img->display_window(frame);
       mrv::Recti daw = img->data_window(frame);
 
+      if ( dpw.w() == 0 ) dpw.w( pic->width() );
+      if ( dpw.h() == 0 ) dpw.h( pic->height() );
+      if ( daw.w() == 0 ) daw.w( pic->width() );
+      if ( daw.h() == 0 ) daw.h( pic->height() );
+
+
       if ( img->stereo_type() == CMedia::kStereoCrossed )
       {
           mrv::Recti dpw2 = img->display_window2(frame);
@@ -1390,7 +1396,6 @@ void GLEngine::draw_images( ImageList& images )
 
 
          glPopMatrix();
-
 
          glTranslated( dpw.w(), 0, 0 );
 

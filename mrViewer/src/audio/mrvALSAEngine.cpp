@@ -149,7 +149,6 @@ namespace mrv {
           if ( _mixer ) 
               snd_mixer_close( _mixer );
           _mixer = NULL;
-          snd_config_update_free_global();
       }
     return true;
   }
