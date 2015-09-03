@@ -78,17 +78,17 @@ namespace mrv {
     fltk::Rectangle r( w, h );
     box()->inset(r);
 
-    fltk::Button* button = new fltk::Button( r.x(), r.y(), r.w(), 20 );
-    button->align( fltk::ALIGN_LEFT|fltk::ALIGN_INSIDE|fltk::ALIGN_TOP );
-    button->labelsize( 16 );
-    button->box( fltk::NO_BOX );
+    _button = new fltk::Button( r.x(), r.y(), r.w(), 20 );
+    _button->align( fltk::ALIGN_LEFT|fltk::ALIGN_INSIDE|fltk::ALIGN_TOP );
+    _button->labelsize( 16 );
+    _button->box( fltk::NO_BOX );
 
     char buf[256];
     sprintf( buf, "  @Cb55@-22>@n %s", l );
 
-    button->copy_label( buf );
+    _button->copy_label( buf );
 
-    button->box()->inset(r);
+    _button->box()->inset(r);
 
     _contents = new fltk::PackedGroup( r.x(), r.y() + 20, r.w(), 20 );
 
@@ -98,17 +98,26 @@ namespace mrv {
   
     end();
 
-    button->callback( (fltk::Callback*)toggle_tab, this );
+    _button->callback( (fltk::Callback*)toggle_tab, this );
   }
 
   CollapsableGroup::~CollapsableGroup()
   {
+      _contents->clear();
+      delete _contents;
+      delete _button;
   }
 
   void CollapsableGroup::spacing( int x )
   {
     _contents->spacing( x );
     _contents->h( x + child(0)->h() );
+  }
+
+  void CollapsableGroup::clear()
+  {
+    _contents->clear();
+    relayout();
   }
 
   void CollapsableGroup::remove_all()

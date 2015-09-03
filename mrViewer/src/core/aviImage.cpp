@@ -86,7 +86,7 @@ namespace
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
-#define DEBUG_VIDEO_STORES
+//#define DEBUG_VIDEO_STORES
 // #define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
@@ -1007,7 +1007,8 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
-    if ( _eye[1] && _stereo_type ) _eye[1]->find_image( frame );
+    if ( _eye[1] && _stereo_type && playback() == kStopped )
+        _eye[1]->find_image( frame );
 
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "find_image");
@@ -1940,7 +1941,7 @@ bool aviImage::fetch(const boost::int64_t frame)
    cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
-   if ( _eye[1] ) _eye[1]->fetch( frame );
+   if ( playback() == kStopped && _eye[1] ) _eye[1]->fetch( frame );
 
    bool got_video = !has_video();
    bool got_audio = !has_audio();
@@ -1963,10 +1964,10 @@ bool aviImage::fetch(const boost::int64_t frame)
 #endif
 
 #ifdef DEBUG_VIDEO_PACKETS
-  debug_video_packets(frame, "Fetch");
+  debug_video_packets(frame, "Fetch", true);
 #endif
 #ifdef DEBUG_VIDEO_STORES
-  debug_video_stores(frame, "Fetch");
+  debug_video_stores(frame, "Fetch", true);
 #endif
 
 #ifdef DEBUG_AUDIO_PACKETS
