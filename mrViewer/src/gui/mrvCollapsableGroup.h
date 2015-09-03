@@ -48,6 +48,8 @@ namespace mrv {
 
     void add( fltk::Widget* w );
 
+      void clear();
+
     void remove_all();
 
     void spacing( int x );
@@ -57,6 +59,7 @@ namespace mrv {
     virtual void layout();
 
   protected:
+      fltk::Button*    _button;
     fltk::PackedGroup* _contents;
 
     static void toggle_tab( fltk::Button* w, void* data );
