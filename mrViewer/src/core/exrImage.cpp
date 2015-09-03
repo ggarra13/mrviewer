@@ -208,6 +208,7 @@ bool exrImage::channels_order(
    {
       const std::string& layerName = i.name();
 
+
       const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -1044,6 +1045,13 @@ bool exrImage::find_channels( const Imf::Header& h,
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper);
 
+       if ( root == "STEREO" )
+       {
+           if ( ext == "HORIZONTAL" )
+               _stereo_type = kStereoSideBySide;
+           else
+               _stereo_type = kStereoCrossed;
+       }
 
        if ( _stereo_type & kStereoSideBySide )
        {
@@ -1054,7 +1062,7 @@ bool exrImage::find_channels( const Imf::Header& h,
            Imf::ChannelList::ConstIterator s;
            Imf::ChannelList::ConstIterator e;
 
-           if ( ext == "ANAGLYPH" && (_has_left_eye || _has_right_eye) )
+           if ( ext == "ANAGLYPH" )
            {
                if (root == "LEFT" ) _left_red = true;
                else _left_red = false;
@@ -1770,7 +1778,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          _lineOrder   = header.lineOrder();
          _compression = header.compression(); 
 
-         Imf::ChannelList channels = header.channels();
+         const Imf::ChannelList& channels = header.channels();
 
          Imf::ChannelList::ConstIterator s = channels.begin();
          Imf::ChannelList::ConstIterator e = channels.end();
@@ -1885,9 +1893,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
          if ( root == "stereo" )
          {
-            _stereo_type = kStereoSideBySide;
-            // No need for stereo.crossed check here, as it
-            // will be set in find_channels().
+             _stereo_type = kStereoSideBySide;
+             if ( ext == "crossed" ) _stereo_type = kStereoCrossed;
          }
          else if ( ext == "anaglyph" )
          {

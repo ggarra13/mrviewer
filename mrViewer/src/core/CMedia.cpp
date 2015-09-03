@@ -612,9 +612,10 @@ static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
 
 
-const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
+const mrv::Recti CMedia::display_window( boost::int64_t f ) const
 {
-    if ( !_displayWindow || _numWindows == 0 ) return kNoRect;
+    if ( !_displayWindow || _numWindows == 0 ) 
+        return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::int64_t idx = f - _frame_start;
@@ -625,12 +626,13 @@ const mrv::Recti& CMedia::display_window( boost::int64_t f ) const
     return _displayWindow[idx];
 }
 
-const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
+const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
 {
     if ( _eye[1] )
         return _eye[1]->display_window(f);
 
-    if ( !_displayWindow2 || _numWindows == 0 ) return kNoRect;
+    if ( !_displayWindow2 || _numWindows == 0 )
+        return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::int64_t idx = f - _frame_start;
@@ -641,9 +643,10 @@ const mrv::Recti& CMedia::display_window2( boost::int64_t f ) const
     return _displayWindow2[idx];
 }
 
-const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
+const mrv::Recti CMedia::data_window( boost::int64_t f ) const
 {
-    if ( !_dataWindow || _numWindows == 0 ) return kNoRect;
+    if ( !_dataWindow || _numWindows == 0 ) 
+        return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frame_start;
@@ -653,12 +656,13 @@ const mrv::Recti& CMedia::data_window( boost::int64_t f ) const
     return _dataWindow[idx];
 }
 
-const mrv::Recti& CMedia::data_window2( boost::int64_t f ) const
+const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
 {
     if ( _eye[1] )
         return _eye[1]->data_window(f);
 
-    if ( !_dataWindow2 || _numWindows == 0 ) return kNoRect;
+    if ( !_dataWindow2 || _numWindows == 0 ) 
+        return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frame_start;
@@ -680,7 +684,7 @@ void CMedia::display_window( const int xmin, const int ymin,
   assert( idx <= _frame_end - _frame_start );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
-  //DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
+  DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
 }
 
 void CMedia::display_window2( const int xmin, const int ymin,
@@ -1739,8 +1743,7 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( _eye[1] ) _eye[1]->frame(f);
-
+  if ( playback() == kStopped && _eye[1] ) _eye[1]->frame(f);
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
@@ -1983,10 +1986,10 @@ const char* const CMedia::exif( const std::string& name ) const
 void CMedia::flush_all()
 {
     if ( _eye[1] )  _eye[1]->flush_all();
-  if ( has_video() )
-    flush_video();
-  if ( has_audio() )
-    flush_audio();
+    if ( has_video() )
+        flush_video();
+    if ( has_audio() )
+        flush_audio();
 }
 
 /// Returns the size in memory of image or sequence, based on original
@@ -2426,7 +2429,7 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
-    if ( _eye[1] && _stereo_type ) {
+    if ( playback() == kStopped && _eye[1] && _stereo_type ) {
         boost::int64_t f = frame;
         _eye[1]->decode_video(f);
     }
@@ -2505,7 +2508,8 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  if ( _eye[1] && _stereo_type ) _eye[1]->find_image(f);
+  if ( playback() == kStopped && _eye[1] && _stereo_type )
+      _eye[1]->find_image(f);
 
   // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
   _video_clock = double(av_gettime_relative()) / 1000000.0;
@@ -2698,7 +2702,10 @@ void anaglyph_cb( AnaglyphData* d )
 
 void CMedia::make_anaglyph( bool left_red )
 {
-   
+    _stereo[0] = left();
+    _stereo[1] = right();
+
+
    if ( ! _stereo[0] || ! _stereo[1] )
    {
       LOG_ERROR( "Stereo image missing" );
