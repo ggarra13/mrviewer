@@ -76,8 +76,9 @@ namespace mrv
   bool is_valid_frame( const std::string framespec )
   {
     const char* c = framespec.c_str();
+    if ( *c == '.' ) ++c;
 
-    for ( ++c; *c != 0; ++c )
+    for ( ; *c != 0; ++c )
       {
 	 if ( *c == '+' || *c == '-' || (*c >= '0' && *c <= '9') ) continue;
 
@@ -229,6 +230,30 @@ std::string get_long_view( bool left )
         return view.substr( idx+1, view.size() );
 }
 
+bool replace_view( std::string& view )
+{
+    if ( view.substr( view.size()-1, view.size() ) == "." )
+        view = view.substr( 0, view.size()-1 );
+
+
+    if ( view == "%v" ||
+         view == get_short_view(true) ||
+         view == get_short_view(false) )
+    {
+        view = "%v.";
+        return true;
+    }
+
+    if ( view == "%V" ||
+         view == get_long_view(true) ||
+         view == get_long_view(false) )
+    {
+        view = "%V.";
+        return true;
+    }
+    return false;
+}
+
   /** 
    * Given a filename of a possible sequence, split it into
    * root name, frame string, view, and extension
@@ -274,21 +299,28 @@ std::string get_long_view( bool left )
        ext = '.' + periods[3];
 
 
-       if ( view == "%v" || view == "%V" ||
-            view == get_short_view(true) ||
-            view == get_short_view(false) ||
-            view == get_long_view(true) ||
-            view == get_long_view(false) )
-       {
-           view += '.';
-           return true;
-       }
+       bool ok = replace_view( view );
+       if ( ok ) return true;
+
 
     }
-    else
-    {
-       f = file;
+    else if ( periods.size() == 3 )
+    {;
+        ext = '.' + periods[2];
+        if ( mrv::is_valid_movie( ext.c_str() ) )
+        {
+            if ( ! mrv::is_valid_frame( periods[1] ) )
+            {
+                root = file.substr( 0, len ) + periods[0] + ".";
+                view = periods[1];
+                frame = "";
+                replace_view( view );
+            }
+            return false;
+        }
     }
+
+    f = file;
 
     int idx[2];
     int count = 0;  // number of periods found (from end)

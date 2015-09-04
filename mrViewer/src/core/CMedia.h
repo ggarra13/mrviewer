@@ -873,6 +873,9 @@ class CMedia
     virtual void probe_size( unsigned p ) {}
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
+    CMedia* eye( int idx ) { return _eye[idx]; }
+
+    bool left_eye() const { return _left_eye; }
     void left_eye( bool left ) { _left_eye = left; }
 
     std::string sequence_filename( const boost::int64_t frame );
@@ -1279,8 +1282,6 @@ class CMedia
 uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
 char *const get_error_text(const int error);
 
-// Parse a %v or %V filerooot and return the appropiate view name.
-std::string parse_view( const std::string& fileroot, bool left = true );
 
 //   typedef boost::shared_ptr< CMedia > Image_ptr;
 typedef CMedia*                     Image_ptr;
