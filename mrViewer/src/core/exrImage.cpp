@@ -955,7 +955,7 @@ bool exrImage::handle_side_by_side_stereo( const boost::int64_t frame,
    //
    prefix = "";
    if ( _has_left_eye ) prefix = "left";
-   if ( prefix != "" )
+   if ( prefix.size() )
    {
       channels.channelsWithPrefix( prefix.c_str(), s, e );
    }
@@ -1752,10 +1752,10 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
 
    _stereo_type = kNoStereo;
-   st[0] = st[1] = -1;
 
    if ( _num_layers == 0 && _numparts > 1 )
    {
+       st[0] = st[1] = -1;
   
       int i = 0;
       for ( ; i < _numparts; ++i )
@@ -1812,7 +1812,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
          std::transform( ext.begin(), ext.end(), ext.begin(),
                          (int(*)(int)) toupper);
-
 
 
          if ( numChannels >= 3 && st[1] == -1 &&
@@ -2109,7 +2108,12 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 bool exrImage::save( const char* file, const CMedia* img, 
                      const ImageOpts* const ipts )
 {
-    const EXROpts* const opts = (EXROpts*) ipts;
+    const EXROpts* const opts = dynamic_cast< const EXROpts* >( ipts );
+    if (!opts)
+    {
+        LOG_ERROR( _("Options for EXR were empty") );
+        return false;
+    }
 
     mrv::image_type_ptr pic = img->hires();
     if (!pic) return false;
@@ -2138,11 +2142,11 @@ bool exrImage::save( const char* file, const CMedia* img,
     if ( dh == 0 ) dh = img->height();
 
 
+
     Header hdr( bdpw, bdaw );
 
     int dx = daw.x();
     int dy = daw.y();
-
 
 
     Imf::Compression comp = opts->compression();
@@ -2501,7 +2505,6 @@ bool exrImage::save( const char* file, const CMedia* img,
     size_t total_size = dw*dh*size*channels;
     base = (uint8_t*) new uint8_t[total_size];
 
-
     if ( pt == save_type )
     {
         memcpy( base, pic->data().get(), total_size );
@@ -2558,7 +2561,7 @@ bool exrImage::save( const char* file, const CMedia* img,
     size_t xs = size * channels;
     size_t ys = xs * dw;
 
-    size_t offset = xs*(-dx-dy*dw);
+    int offset = xs*(-dx-dy*dw);
 
     FrameBuffer fb;
     fb.insert( N_("R"), Slice( save_type, (char*) &base[offset], xs, ys ) );
@@ -2577,6 +2580,7 @@ bool exrImage::save( const char* file, const CMedia* img,
       OutputFile out( file, hdr );
       out.setFrameBuffer( fb );
       out.writePixels( dh );
+    std::cerr << __LINE__ << std::endl;
     }
     catch( std::exception& e )
       {

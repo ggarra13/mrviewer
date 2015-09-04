@@ -2134,18 +2134,22 @@ void ImageBrowser::handle_dnd()
              oldext = ext;
 
              file = root;
+             file += view;
              for ( size_t i = 0; i < frame.size(); ++i )
              {
                 if ( frame[i] == '0' ) file += '@';
                 else break;
              }
              file += '@';
-             file += view;
              file += ext;
+
+             std::cerr << "FILE: " << file << std::endl;
 
              std::string fileroot;
              mrv::fileroot( fileroot, file );
+             std::cerr << "FILEROOT1: " << fileroot << std::endl;
              mrv::get_sequence_limits( frameStart, frameEnd, fileroot );
+             std::cerr << "FILEROOT2: " << fileroot << std::endl;
              opts.files.push_back( mrv::LoadInfo( fileroot, frameStart,
                                                   frameEnd, frameStart,
                                                   frameEnd ) );
