@@ -249,6 +249,7 @@ void parse_directory( const std::string& fileroot,
                   view   = (*i).view;
 		  ext    = (*i).ext;
 
+
 		  seqname  = root;
 		  if ( z == 0 )
 		    seqname += "%d";
@@ -479,7 +480,6 @@ void parse_command_line( const int argc, char** argv,
             }
             else
             {
-
                mrv::fileroot( fileroot, arg );
 
                if ( mrv::is_valid_sequence( fileroot.c_str() ) )
