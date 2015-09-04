@@ -101,6 +101,29 @@ typedef std::vector< CtlLMTData* > LMTData;
 
   static const int kMiddle = 150;
 
+void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
+{
+    static CMedia* last = NULL;
+    CMedia* img = info->get_image();
+    if ( img->is_stereo() && img != last && img->eye(1) )
+    {
+        last = img;
+        img = img->eye(1);
+        info->set_image( img );
+        w->label( _("Right View") );
+    }
+    else
+    {
+        if ( last )
+        {
+            info->set_image( last );
+            last = NULL;
+            w->label( _("Left View") );
+        }
+    }
+    info->refresh();
+}
+
 
   ImageInformation::ImageInformation( int x, int y, int w, int h, 
 				      const char* l ) :
@@ -110,14 +133,21 @@ typedef std::vector< CtlLMTData* > LMTData;
   {
     begin();
 
+
+
     Rectangle r(w, h);
     box()->inset(r);
+
 
     m_all = new fltk::PackedGroup( r.x(), r.y(), r.w()-20, r.h() );
     m_all->set_vertical();
     m_all->spacing(10);
 
     m_all->begin();
+
+    m_button = new fltk::Button( 0, 0, w, 20, _("Left View") );
+    m_button->callback( (fltk::Callback*)change_stereo_image, this );
+    m_button->hide();
 
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
     m_iptc  = new mrv::CollapsableGroup( 0, 0, w, 200, _("IPTC")  );
@@ -193,131 +223,108 @@ typedef std::vector< CtlLMTData* > LMTData;
     n->do_callback();
   }
 
-  void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
-  {
+void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
+{
     fltk::IntInput* n = (fltk::IntInput*) data;
     n->value( (int)s->value() );
     n->do_callback();
-  }
+}
 
-  static void change_mipmap_cb( fltk::IntInput* w, void* d )
-  {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
+static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
+{
+    exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
-       img->levelX( w->ivalue() );
-       img->levelY( w->ivalue() );
-       bool ok = img->fetch( view->frame() );
-       if (ok)
-       {
-           view->fit_image();
-           view->redraw();
-       }
+        mrv::ImageView* view = info->main()->uiView;
+        img->levelX( w->ivalue() );
+        img->levelY( w->ivalue() );
+        bool ok = img->fetch( view->frame() );
+        if (ok)
+        {
+            view->fit_image();
+            view->redraw();
+        }
+    }
+}
+
+  static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+  {
+    exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
+    if ( img )
+    {
+        mrv::ImageView* view = info->main()->uiView;
+        img->levelX( w->ivalue() );
+        bool ok = img->fetch( view->frame() );
+        if (ok)
+        {
+            view->fit_image();
+            view->redraw();
+        }
     }
   }
 
-  static void change_x_ripmap_cb( fltk::IntInput* w, void* d )
+  static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
   {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
 
-    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
+    exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
-       img->levelX( w->ivalue() );
-       bool ok = img->fetch( view->frame() );
-       if (ok)
-       {
-           view->fit_image();
-           view->redraw();
-       }
+        mrv::ImageView* view = info->main()->uiView;
+        img->levelY( w->ivalue() );
+        bool ok = img->fetch( view->frame() );
+        if (ok)
+        {
+            view->fit_image();
+            view->redraw();
+        }
     }
   }
 
-  static void change_y_ripmap_cb( fltk::IntInput* w, void* d )
+  static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
   {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    exrImage* img = dynamic_cast<exrImage*>( fg->image() );
-    if ( img )
-    {
-       img->levelY( w->ivalue() );
-       bool ok = img->fetch( view->frame() );
-       if (ok)
-       {
-           view->fit_image();
-           view->redraw();
-       }
-    }
-  }
-
-  static void change_first_frame_cb( fltk::IntInput* w, void* d )
-  {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    CMedia* img = dynamic_cast<CMedia*>( fg->image() );
+    CMedia* img = info->get_image();
     if ( img )
     {
        img->first_frame( w->ivalue() );
+       mrv::ImageView* view = info->main()->uiView;
        view->redraw();
     }
   }
 
-  static void change_fps_cb( fltk::FloatInput* w, void* d )
+  static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
   {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    CMedia* img = dynamic_cast<CMedia*>( fg->image() );
-    if ( img )
-    {
-       img->fps( w->fvalue() );
-    }
+      CMedia* img = info->get_image();
+      if ( img )
+      {
+          img->fps( w->fvalue() );
+      }
   }
 
-  static void change_last_frame_cb( fltk::IntInput* w, void* d )
+  static void change_last_frame_cb( fltk::IntInput* w,
+                                     ImageInformation* info )
   {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    CMedia* img = dynamic_cast<CMedia*>( fg->image() );
+    CMedia* img = info->get_image();
     if ( img )
     {
        img->last_frame( w->ivalue() );
-       view->redraw();
+       info->main()->uiView->redraw();
     }
   }
 
-  static void change_pixel_ratio_cb( fltk::FloatInput* w, void* d )
+  static void change_pixel_ratio_cb( fltk::FloatInput* w,
+                                     ImageInformation* info )
   {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    CMedia* img = fg->image();
+    CMedia* img = info->get_image();
     img->pixel_ratio( w->fvalue() );
-    view->redraw();
+    info->main()->uiView->redraw();
   }
 
-  static void change_gamma_cb( fltk::FloatInput* w, void* d )
+  static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
   {
-    mrv::ImageView* view = (mrv::ImageView*) d;
-    mrv::media fg = view->foreground();
-    if (!fg) return;
-
-    CMedia* img = fg->image();
+    CMedia* img = info->get_image();
     img->gamma( float(w->fvalue()) );
+
+    mrv::ImageView* view = info->main()->uiView;
     view->gamma( float(w->fvalue()) );
     view->redraw();
   }
@@ -382,20 +389,9 @@ void ImageInformation::clear_callback_data()
     m_exif->hide();
   }
 
-  void ImageInformation::refresh()
-  {
-    hide_tabs();
-
- 
-    m_image->clear();
-    m_video->clear();
-    m_audio->clear();
-    m_subtitle->clear();
-    m_iptc->clear();
-    m_exif->clear();
-
-    if ( img == NULL || !visible_r() ) return;
-
+void ImageInformation::fill_data()
+{
+    
     m_curr = add_browser(m_image);
 
     
@@ -878,6 +874,30 @@ void ImageInformation::clear_callback_data()
 
 
     relayout();
+}
+
+  void ImageInformation::refresh()
+  {
+    hide_tabs();
+
+ 
+    m_image->clear();
+    m_video->clear();
+    m_audio->clear();
+    m_subtitle->clear();
+    m_iptc->clear();
+    m_exif->clear();
+
+    if ( img == NULL || !visible_r() ) return;
+
+    if ( img->is_stereo() )
+        m_button->show();
+    else
+        m_button->hide();
+
+    fill_data();
+
+
   }
 
 
@@ -1268,7 +1288,7 @@ void ImageInformation::clear_callback_data()
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
 
-	  if ( callback ) widget->callback( callback, uiMain->uiView );
+	  if ( callback ) widget->callback( callback, this );
 
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
@@ -1423,7 +1443,7 @@ void ImageInformation::clear_callback_data()
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
 
-	  if ( callback ) widget->callback( callback, uiMain->uiView );
+	  if ( callback ) widget->callback( callback, this );
 
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
@@ -1649,7 +1669,7 @@ void ImageInformation::clear_callback_data()
 	  widget->align(fltk::ALIGN_LEFT);
 	  widget->color( colB );
 
-	  if ( callback ) widget->callback( callback, uiMain->uiView );
+	  if ( callback ) widget->callback( callback, this );
 
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
