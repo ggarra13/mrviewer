@@ -477,7 +477,7 @@ void ImageInformation::fill_data()
         }
     }
 
-    
+    if ( ! img->is_stereo() )
     {
         const mrv::Recti& window = img->data_window2();
         if ( window.w() > 0 )
@@ -492,7 +492,6 @@ void ImageInformation::fill_data()
         }
     }
 
-    
     ++group;
 
     const char* depth;
