@@ -279,6 +279,9 @@ bool parse_reel( LoadList& sequences, bool& edl,
   std::string get_short_view( bool left );
   std::string get_long_view( bool left );
 
+// Parse a %v or %V filerooot and return the appropiate view name.
+std::string parse_view( const std::string& fileroot, bool left = true );
+
 }  // namespace mrv
 
 

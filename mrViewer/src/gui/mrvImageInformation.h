@@ -70,6 +70,7 @@ namespace mrv
     virtual int handle( int event );
 
     void main( mrv::ViewerUI* m ) { uiMain = m; }
+      mrv::ViewerUI* main() { return uiMain; }
 
   protected:
     fltk::Color get_title_color();
@@ -153,11 +154,12 @@ namespace mrv
 		   fltk::Callback* callback = NULL );
 
     int line_height();
-
+      void fill_data();
 
     ViewerUI*    uiMain;
     CMedia*   img;
 
+      fltk::Button*              m_button;
     mrv::CollapsableGroup*       m_image;
     mrv::CollapsableGroup*       m_video;
     mrv::CollapsableGroup*       m_audio;
