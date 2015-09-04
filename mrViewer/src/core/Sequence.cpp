@@ -73,7 +73,7 @@ namespace mrv
   const boost::int64_t kMinFrame = std::numeric_limits< boost::int64_t >::min();
   const boost::int64_t kMaxFrame = std::numeric_limits< boost::int64_t >::max();
 
-  bool is_valid_frame( const std::string framespec )
+  bool is_valid_frame( const std::string& framespec )
   {
     const char* c = framespec.c_str();
     if ( *c == '.' ) ++c;
@@ -88,7 +88,7 @@ namespace mrv
     return true;
   }
 
-  bool is_valid_frame_spec( const std::string framespec )
+  bool is_valid_frame_spec( const std::string& framespec )
   {
      const char* c;
      if ( framespec.substr(0,1) == "." )
@@ -320,6 +320,7 @@ bool replace_view( std::string& view )
         }
     }
 
+
     f = file;
 
     int idx[2];
@@ -366,7 +367,6 @@ bool replace_view( std::string& view )
 	root  = f.substr( 0, idx[1]+1 );
 	frame = f.substr( idx[1]+1, idx[0]-idx[1]-1 );
 	ext   = f.substr( idx[0], file.size()-idx[0] );
-
 
 	bool ok = is_valid_frame( ext );
 	if ( ok )
@@ -415,7 +415,6 @@ bool replace_view( std::string& view )
 			    boost::int64_t& frameEnd,
 			    std::string& fileroot )
   {
-
       frameStart = mrv::kMaxFrame; 
       frameEnd = mrv::kMinFrame;
   
@@ -498,6 +497,7 @@ bool replace_view( std::string& view )
     frameStart = mrv::kMaxFrame;
     unsigned pad = 1;
 
+
     fs::directory_iterator e; // default constructor yields path iter. end
     for ( fs::directory_iterator i( dir ) ; i != e; ++i )
       {
@@ -509,15 +509,7 @@ bool replace_view( std::string& view )
 
 	if ( cext != ext || croot != root || cview != view )
         {
-            if (( cext != "" ) && ( croot != "" ) && ( cview != "" )
-                && cframe.size() > 1)
-            {
-                pad = (unsigned) cframe.size();
-            }
-            else
-            {
-                continue;  // not this sequence
-            }
+            continue;  // not this sequence
         }
 
 	if ( cframe[0] == '0' && cframe.size() > 1 )
@@ -533,6 +525,7 @@ bool replace_view( std::string& view )
     if ( pad < 5 ) prdigits = "d";
 
     sprintf( buf, "%%0%d%s", pad, prdigits );
+
 
     split_sequence( root, frame, view, ext, fileroot );
 
