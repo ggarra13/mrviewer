@@ -148,7 +148,8 @@ namespace mrv {
   _numparts( -1 ),
   _num_layers( 0 ),
   _lineOrder( (Imf::LineOrder) 0 ),
-  _compression( (Imf::Compression) 0 )
+  _compression( (Imf::Compression) 0 ),
+  _has_stereo( false )
   {
   }
 
@@ -789,10 +790,10 @@ bool exrImage::find_layers( const Imf::Header& h )
    if ( layers.find( N_("left") ) != layers.end() )
       _has_left_eye = true;
 
-   if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
+   if ( !_has_stereo && ( _has_left_eye || _has_right_eye ) )
    {
       _multiview = true;
-      _is_stereo = true;
+      _has_stereo = true;
       _stereo_type = kNoStereo;
    }
 
@@ -850,7 +851,7 @@ bool exrImage::find_layers( const Imf::Header& h )
           add_anaglyph_layers();
       }
 
-      if ( _is_stereo )
+      if ( _has_stereo )
       {
           add_stereo_layers();
       }
@@ -1751,13 +1752,12 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
 
    _stereo_type = kNoStereo;
+   st[0] = st[1] = -1;
 
-   
    if ( _num_layers == 0 && _numparts > 1 )
    {
   
       int i = 0;
-      st[0] = st[1] = -1;
       for ( ; i < _numparts; ++i )
       {
           const Header& header = inmaster.header(i);
@@ -1820,14 +1820,14 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
          {
             st[1] = i;
             _has_right_eye = true;
-            _is_stereo = true;
+            _has_stereo = true;
          }
          if ( numChannels >= 3 && st[0] == -1 && 
               ext.find( "LEFT" ) != std::string::npos )
          {
             st[0] = i;
             _has_left_eye = true;
-            _is_stereo = true;
+            _has_stereo = true;
          }
 
          if ( name != "" || ext != "" )
@@ -1857,16 +1857,15 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
        st[0] = st[1] = 0;
    }
    
-   if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
+   if ( _has_stereo && ( st[0] == -1 || st[1] == -1 ) )
    {
-      IMG_ERROR( _("Could not find both stereo images in file") );
-      if ( st[0] != -1 ) st[1] = st[0];
-      else if ( st[1] != -1 ) st[0] = st[1];
-      if ( st[0] == -1 ) return false;
+       IMG_ERROR( _("Could not find both stereo images in file") );
+       if ( st[0] != -1 ) st[1] = st[0];
+       else if ( st[1] != -1 ) st[0] = st[1];
+       if ( st[0] == -1 ) return false;
    }
 
-
-   if ( _is_stereo )
+   if ( _has_stereo )
    {
       const char* channelPrefix = channel();
       if ( channelPrefix != NULL )
@@ -1910,7 +1909,8 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
       for ( int i = 0 ; i < 2; ++i )
       {
           int oldpart = _curpart;
-          if ( _stereo_type != kNoStereo ) _curpart = st[i];
+          if ( _stereo_type != kNoStereo && st[i] >= 0 ) _curpart = st[i];
+
 
           const Header& header = inmaster.header(_curpart);
 

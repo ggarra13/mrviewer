@@ -156,6 +156,9 @@ namespace mrv {
        Imf::LineOrder   _lineOrder;
        Imf::Compression _compression;
 
+      // Stereo in same image
+      bool _has_stereo;
+
       // Deep data
       std::string         _type;
       float               farPlane;

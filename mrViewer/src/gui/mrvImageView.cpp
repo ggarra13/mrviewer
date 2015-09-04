@@ -4449,7 +4449,7 @@ void ImageView::update_layers()
     mrv::media fg = foreground();
     if ( !fg )
     {
-        uiColorChannel->remove_all();
+        uiColorChannel->clear();
         uiColorChannel->add( _("(no image)") );
         uiColorChannel->copy_label( _("(no image)") );
         uiColorChannel->value(0);
