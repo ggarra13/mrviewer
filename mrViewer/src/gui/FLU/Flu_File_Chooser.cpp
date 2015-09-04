@@ -2158,12 +2158,32 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
 
     char fmt[1024];
     char buf[1024];
-    sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-             e->filename.c_str() );
 
 
-    // Grab first frame of sequence (if any)
-    int64_t frameStart = atoi( e->filesize.c_str() );
+
+    std::string view;
+
+    if ( e->filename.find( "%v" ) )
+        view = mrv::get_short_view(true);
+    else if ( e->filename.find( "%V" ) )
+        view = mrv::get_long_view(true);
+
+    int frameStart = atoi( e->filesize.c_str() );
+
+
+    if ( view.size() )
+    {
+        std::string tmp = mrv::parse_view( e->filename, true );
+        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+                 tmp.c_str() );
+    }
+    else
+    {
+        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+                 e->filename.c_str() );
+
+    }
+
     sprintf( buf, fmt, frameStart );
 
     if ( ! boost::filesystem::exists( buf ) ) return;
@@ -4329,6 +4349,7 @@ void Flu_File_Chooser::cd( const char *path )
 		  ext    = (*i).ext;
 
 		  seqname  = root;
+                  seqname += view;
 		  if ( z == 0 )
 		    seqname += "%d";
 		  else
@@ -4343,7 +4364,6 @@ void Flu_File_Chooser::cd( const char *path )
 #endif
 		      seqname += "d";
 		    }
-                  seqname += view;
 		  seqname += ext;
 		}
 	      else
@@ -4380,8 +4400,8 @@ void Flu_File_Chooser::cd( const char *path )
           entry->filesize = (*i).number;
           if ( entry->isize > 1 )
           {
-              entry->filesize += "-";
-              entry->filesize += (*i).view;
+              entry->filesize += " ";
+              // entry->filesize += (*i).view;
               entry->filesize += (*i).ext;
           }
         

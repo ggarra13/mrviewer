@@ -246,26 +246,39 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         }
     }
 
-    if (( root.substr( root.size() - 4, root.size()) == ".xml" ) ||
-        ( root.substr( root.size() - 4, root.size()) == ".XML" ) ||
-        ( root.substr( root.size() - 1, root.size()) == "~" ))
+    if ( (root.size() > 4 &&
+          ( root.substr( root.size() - 4, root.size()) == ".xml" ||
+            root.substr( root.size() - 4, root.size()) == ".XML" ) ) ||
+         ( root.size() > 1 && 
+           ( root.substr( root.size() - 1, root.size()) == "~" )) )
         return NULL;
 
-    CMedia* right;
+    CMedia* right = NULL;
+    CMedia* image = NULL;
 
-    CMedia* image = guess( is_stereo, is_seq, true, root, frame, datas, len,
-                           lastFrame );
-    if ( is_stereo && image )
-    {
-        right = guess( is_stereo, is_seq, false, root, frame,
-                       datas, len, lastFrame );
-        if ( right )
+    try {
+
+        image = guess( is_stereo, is_seq, true, root, frame, datas, len,
+                       lastFrame );
+        if ( is_stereo && image )
         {
-            image->eye( 1, right );
-            image->is_stereo( true );
-            image->add_stereo_layers();
-            image->add_anaglyph_layers();
+            right = guess( is_stereo, is_seq, false, root, frame,
+                           datas, len, lastFrame );
+            if ( right )
+            {
+                image->eye( 1, right );
+                image->is_stereo( true );
+                image->left_eye( true );
+                right->is_stereo( true );
+                right->left_eye( false );
+                image->add_stereo_layers();
+                image->add_anaglyph_layers();
+            }
         }
+    }
+    catch( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
     }
 
     return image;
