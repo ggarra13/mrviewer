@@ -1,3 +1,8 @@
+v2.9.3   - Bug fixed saving of OpenExr files when data window was
+	   smaller than display window.
+	 - Added support for stereo loading of two set of images
+	   or two sets of movie files.
+
 v2.9.2   - Bug fixed removing a directory from Favorites.
 	 - Removed all database functions as noone was using them and
 	   they remained under developed.  As a result of this,
