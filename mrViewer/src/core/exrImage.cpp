@@ -1956,12 +1956,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           if ( st[0] != st[1] )
               _stereo[i] = _hires;
       }
-
-
-      if ( _stereo_type == kStereoAnaglyph )
-      {
-         make_anaglyph( _left_red );
-      }
    }
    else
    {
@@ -2108,6 +2102,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 bool exrImage::save( const char* file, const CMedia* img, 
                      const ImageOpts* const ipts )
 {
+
     const EXROpts* const opts = dynamic_cast< const EXROpts* >( ipts );
     if (!opts)
     {
@@ -2580,7 +2575,6 @@ bool exrImage::save( const char* file, const CMedia* img,
       OutputFile out( file, hdr );
       out.setFrameBuffer( fb );
       out.writePixels( dh );
-    std::cerr << __LINE__ << std::endl;
     }
     catch( std::exception& e )
       {

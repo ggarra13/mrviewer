@@ -1218,15 +1218,19 @@ void CMedia::channel( const char* c )
 
        _stereo_type = kNoStereo;
 
-       if ( root == "STEREO" )
+       if ( root == _("STEREO") )
        {
            // Set the stereo type based on channel name extension
-           if ( ext == "HORIZONTAL" )
+           if ( ext == _("HORIZONTAL") )
                _stereo_type = kStereoSideBySide;
-           else if ( ext == "CROSSED" )
+           else if ( ext == _("CROSSED") )
                _stereo_type = kStereoCrossed;
            else
                LOG_ERROR( _("Unknown stereo type") );
+       }
+       else if ( ext == _("ANAGLYPH") )
+       {
+           _stereo_type = kStereoAnaglyph;
        }
     }
 
@@ -2700,58 +2704,6 @@ void anaglyph_cb( AnaglyphData* d )
 }
 
 
-void CMedia::make_anaglyph( bool left_red )
-{
-    _stereo[0] = left();
-    _stereo[1] = right();
-
-
-   if ( ! _stereo[0] || ! _stereo[1] )
-   {
-      LOG_ERROR( "Stereo image missing" );
-      return;
-   }
-   
-   if ( _stereo[0] == _stereo[1] )
-   {
-      LOG_ERROR( "Stereo images are the same" );
-      return;
-   }
-
-   const mrv::Recti& dpw = display_window();
-   const mrv::Recti& daw = data_window();
-   const mrv::Recti& dpw2 = display_window2();
-   const mrv::Recti& daw2 = data_window2();
-
-   mrv::Recti d = daw;
-   d.merge( daw2 );
-
-   unsigned w = d.w();
-   if ( w == 0 ) w = width();
-   unsigned h = d.h();
-   if ( h == 0 ) h = height();
-
-   _w = w;
-   _h = h;
-   allocate_pixels( _frame, 4, image_type::kRGBA, image_type::kHalf );
-
-
-
-   AnaglyphData* data = new AnaglyphData;
-   data->left_red = left_red;
-   data->stereo = _stereo;
-   data->hires  = _hires;
-
-   data->daw[0] = data_window();
-   data->daw[1] = data_window2();
-   anaglyph_cb( data );
-
-   cache( _hires );
-   data_window( d.x(), d.y(), d.x()+_w-1, d.y()+_h-1 );
-
-
-   refresh();
-}
 
 void CMedia::default_rendering_transform()
 {

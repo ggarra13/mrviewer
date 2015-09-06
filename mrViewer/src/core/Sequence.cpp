@@ -240,7 +240,7 @@ bool replace_view( std::string& view )
          view == get_short_view(true) ||
          view == get_short_view(false) )
     {
-        view = "%v.";
+        view = "%v";
         return true;
     }
 
@@ -248,7 +248,7 @@ bool replace_view( std::string& view )
          view == get_long_view(true) ||
          view == get_long_view(false) )
     {
-        view = "%V.";
+        view = "%V";
         return true;
     }
     return false;
@@ -298,25 +298,29 @@ bool replace_view( std::string& view )
        frame = periods[2];
        ext = '.' + periods[3];
 
-
        bool ok = replace_view( view );
-       if ( ok ) return true;
-
+       if ( view.size() ) view += ".";
+       if ( mrv::is_valid_movie( ext.c_str() ) )
+           return false;
+       else
+           return true;
 
     }
     else if ( periods.size() == 3 )
-    {;
+    {
+        root = file.substr( 0, len ) + periods[0] + ".";
+        frame = periods[1];
         ext = '.' + periods[2];
         if ( mrv::is_valid_movie( ext.c_str() ) )
         {
-            if ( ! mrv::is_valid_frame( periods[1] ) )
+            if ( ! mrv::is_valid_frame( frame ) &&
+                 ! mrv::is_valid_frame_spec( frame ) )
             {
-                root = file.substr( 0, len ) + periods[0] + ".";
                 view = periods[1];
-                frame = "";
                 replace_view( view );
+                frame = "";
+                return false;
             }
-            return false;
         }
     }
 
