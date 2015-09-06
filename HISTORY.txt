@@ -1,7 +1,20 @@
 v2.9.3   - Bug fixed saving of OpenExr files when data window was
-	   smaller than display window.
+	   smaller than display window.  Previously it would crash.
 	 - Added support for stereo loading of two set of images
-	   or two sets of movie files.
+	   or two sets of movie files with a common prefix.  The
+	   syntax is a single letter prefix or a full name:
+	   Examples:
+	   	  rootname.prefix.number.extension
+		  da20.L.0001.exr
+		  da20.R.0001.exr
+           For movies:
+		  rootname.prefix.extension
+		  da20.left.mov
+		  da20.right.mov
+
+           In the file requester, the movies will appear as:
+	      	  da20.%V.mov
+		  da20.%v.%04d.exr
 
 v2.9.2   - Bug fixed removing a directory from Favorites.
 	 - Removed all database functions as noone was using them and
