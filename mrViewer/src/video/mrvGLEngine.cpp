@@ -1339,6 +1339,7 @@ void GLEngine::draw_images( ImageList& images )
 
       glPushMatrix();
 
+
       glTranslatef( float(daw.x()), float(-daw.y()), 0 );
 
 
@@ -1374,8 +1375,7 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( i+1 == e ) wipe_area();
 
-      if ( img->is_stereo() && (img->stereo_type() & 
-                                CMedia::kStereoSideBySide) && 
+      if ( img->is_stereo() && (img->stereo_type() != CMedia::kNoStereo ) && 
            img->left() && img->right() )
       {
          if ( img->stereo_type() == CMedia::kStereoCrossed )
@@ -1387,6 +1387,9 @@ void GLEngine::draw_images( ImageList& images )
             pic = img->left();
          }
 
+         if ( img->stereo_type() == CMedia::kStereoAnaglyph )
+             glColorMask( true, false, false, false );
+
          quad->bind( pic );
          quad->gamma( img->gamma() );
          quad->draw( texWidth, texHeight );
@@ -1397,7 +1400,8 @@ void GLEngine::draw_images( ImageList& images )
 
          glPopMatrix();
 
-         glTranslated( dpw.w(), 0, 0 );
+         if ( img->stereo_type() != CMedia::kStereoAnaglyph )
+             glTranslated( dpw.w(), 0, 0 );
 
          mrv::Recti dpw2 = img->display_window2(frame);
          mrv::Recti daw2 = img->data_window2(frame);
@@ -1478,6 +1482,9 @@ void GLEngine::draw_images( ImageList& images )
           }
 
       }
+
+      if ( img->stereo_type() == CMedia::kStereoAnaglyph )
+          glColorMask( false, true, true, true );
 
       quad->bind( pic );
       quad->gamma( img->gamma() );

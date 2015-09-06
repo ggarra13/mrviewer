@@ -1,13 +1,13 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-09-04 20:35-0300\n"
-"PO-Revision-Date: 2015-08-23 08:23-0300\n"
+"POT-Creation-Date: 2015-09-05 22:32-0300\n"
+"PO-Revision-Date: 2015-09-05 22:40-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
 "Language: es_AR\n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2209
+#: core/CMedia.cpp:2213
 msgid ""
 "\n"
 "\n"
@@ -157,7 +157,7 @@ msgstr " falló. "
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2210
+#: core/CMedia.cpp:2214
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -181,7 +181,7 @@ msgstr " frecuencia: "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2581
+#: core/CMedia.cpp:2585
 msgid " is missing."
 msgstr " está faltante."
 
@@ -277,7 +277,7 @@ msgstr "%d Hz."
 msgid "%d kb/s"
 msgstr "%d kb/s"
 
-#: core/Sequence.cpp:438
+#: core/Sequence.cpp:442
 msgid "' does not exist or no directory"
 msgstr "' no existe o no es una carpeta"
 
@@ -318,7 +318,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2210
+#: core/CMedia.cpp:2214
 msgid ", type "
 msgstr ", tipo "
 
@@ -609,7 +609,7 @@ msgstr ": No pude abrir el archivo."
 
 #: video/mrvGLEngine.cpp:148
 msgid ": Error "
-msgstr ""
+msgstr ": Error"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3326
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3730
@@ -685,6 +685,10 @@ msgstr ""
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:95
 msgid "ACES metadata"
 msgstr "Metadata ACES"
+
+#: core/CMedia.cpp:1231
+msgid "ANAGLYPH"
+msgstr "ANAGLIFICO"
 
 #: gui/FLU/Flu_File_Chooser.cpp:465
 msgid "AVI Movie"
@@ -1042,6 +1046,10 @@ msgstr "Punto Blanco CIExy"
 msgid "CPU Information"
 msgstr "Información de CPU"
 
+#: core/CMedia.cpp:1226
+msgid "CROSSED"
+msgstr ""
+
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1381
 msgid "CTL"
 msgstr "CTL"
@@ -1387,7 +1395,7 @@ msgstr "No pude cargar '"
 msgid "Could not locate ICC profile \""
 msgstr "No pude localizar el perfil ICC \""
 
-#: core/exrImage.cpp:1941 core/exrImage.cpp:2006 core/exrImage.cpp:2032
+#: core/exrImage.cpp:1941 core/exrImage.cpp:2000 core/exrImage.cpp:2026
 msgid "Could not locate channels in header"
 msgstr "No pude localizar canales en el encabezado"
 
@@ -1435,7 +1443,7 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/CMedia.cpp:1586 core/aviImage.cpp:529 core/aviImage.cpp:544
+#: core/CMedia.cpp:1590 core/aviImage.cpp:529 core/aviImage.cpp:544
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -1823,7 +1831,7 @@ msgstr "Aparatos"
 msgid "Directory"
 msgstr "Carpeta"
 
-#: core/Sequence.cpp:437
+#: core/Sequence.cpp:441
 msgid "Directory '"
 msgstr "Carpeta '"
 
@@ -2371,6 +2379,10 @@ msgstr ""
 msgid "HDTV / Widescreen 16:9"
 msgstr "HDTV / Pantalla Ancha 16:9"
 
+#: core/CMedia.cpp:1224
+msgid "HORIZONTAL"
+msgstr "HORIZONTAL"
+
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3560
 msgid "HSL"
 msgstr "HSL"
@@ -2889,11 +2901,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:1910
+#: video/mrvGLEngine.cpp:1917
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:1915
+#: video/mrvGLEngine.cpp:1922
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -3363,13 +3375,13 @@ msgstr ""
 msgid "Opens different windows"
 msgstr "Abre diferentes ventanas"
 
-#: core/exrImage.cpp:2114
+#: core/exrImage.cpp:2109
 msgid "Options for EXR were empty"
-msgstr ""
+msgstr "Opciones para EXR estaban vacías"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3610
 msgid "Original"
-msgstr ""
+msgstr "Original"
 
 #: core/wandImage.cpp:397
 msgid "Original Transmission Reference"
@@ -3935,6 +3947,10 @@ msgstr "SHOW"
 #: gui/mrvImageView.cpp:181
 msgid "ST"
 msgstr "ST"
+
+#: core/CMedia.cpp:1221
+msgid "STEREO"
+msgstr "ESTEREO"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-48-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1921
 #: gui/mrvHotkey.cpp:149
@@ -4846,7 +4862,7 @@ msgstr "Modo de Redondeo desconocido"
 msgid "Unknown stereo type"
 msgstr "Tipo de stereo desconocido"
 
-#: video/mrvGLEngine.cpp:1616
+#: video/mrvGLEngine.cpp:1623
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -5354,7 +5370,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:2046
+#: core/CMedia.cpp:2050
 msgid "audio"
 msgstr "audio"
 
@@ -5379,7 +5395,7 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:2049
+#: core/CMedia.cpp:2053
 msgid "data"
 msgstr "datos"
 
@@ -5561,7 +5577,7 @@ msgstr "recv() falló"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:2052
+#: core/CMedia.cpp:2056
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5573,7 +5589,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2055 core/wandImage.cpp:425
+#: core/CMedia.cpp:2059 core/wandImage.cpp:425
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5589,7 +5605,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2043
+#: core/CMedia.cpp:2047
 msgid "video"
 msgstr "video"
 
