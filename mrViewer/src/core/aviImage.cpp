@@ -874,13 +874,11 @@ void aviImage::limit_video_store(const boost::int64_t frame)
           first = frame - max_video_frames();
           last  = frame;
           if ( _dts < first ) first = _dts;
-          if ( _dts > last )  last = _dts;
           break;
       case kForwards:
           first = frame - max_video_frames();
           last  = frame + max_video_frames();
           if ( _dts > last )   last = _dts;
-          if ( _dts < first ) first = _dts;
           break;
       default:
           first = frame - max_video_frames();
@@ -891,7 +889,6 @@ void aviImage::limit_video_store(const boost::int64_t frame)
   }
 
   if ( _images.empty() ) return;
-
 
 
 
