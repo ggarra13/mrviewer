@@ -580,31 +580,6 @@ mrv::image_type_ptr CMedia::right() const
       return _stereo[1];
 }
 
-mrv::image_type_ptr CMedia::anaglyph( bool left_view ) 
-{
-   image_type::Pixel* p = (image_type::Pixel*)hires()->data().get();
-   image_type::Pixel* l = (image_type::Pixel*)left()->data().get();
-   image_type::Pixel* r = (image_type::Pixel*)right()->data().get();
-   for (unsigned y = 0; y < height(); ++y )
-   {
-      for ( unsigned x = 0; x < width(); ++x )
-      {
-	 if ( left_view )
-	 {
-	    p[x + y*width() ].r = l[x + y*width() ].r;
-	    p[x + y*width() ].g = r[x + y*width() ].g;
-	    p[x + y*width() ].b = r[x + y*width() ].b;
-	 }
-	 else
-	 {
-	    p[x + y*width() ].r = r[x + y*width() ].r;
-	    p[x + y*width() ].g = l[x + y*width() ].g;
-	    p[x + y*width() ].b = l[x + y*width() ].b;
-	 }
-     }
-   }
-   return hires();
-}
 
 
 
@@ -1170,8 +1145,8 @@ void CMedia::default_layers()
  */
 void CMedia::add_anaglyph_layers()
 {
-    _layers.push_back( "left.anaglyph" );
-    _layers.push_back( "right.anaglyph" );
+    // _layers.push_back( _("left.anaglyph") );
+    // _layers.push_back( _("right.anaglyph") );
 }
 
 /** 
@@ -1180,8 +1155,10 @@ void CMedia::add_anaglyph_layers()
  */
 void CMedia::add_stereo_layers()
 {
-    _layers.push_back( "stereo.horizontal" );
-    _layers.push_back( "stereo.crossed" );
+    _layers.push_back( _("stereo.horizontal") );
+    _layers.push_back( _("stereo.crossed") );
+    _layers.push_back( _("left.anaglyph") );
+    _layers.push_back( _("right.anaglyph") );
 }
 
 /** 
@@ -1212,26 +1189,32 @@ void CMedia::channel( const char* c )
        }
 
        std::transform( root.begin(), root.end(), root.begin(),
-                       (int(*)(int)) toupper);
+                       (int(*)(int)) tolower);
        std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper);
+                       (int(*)(int)) tolower);
 
        _stereo_type = kNoStereo;
 
-       if ( root == _("STEREO") )
+       if ( root == _("stereo") )
        {
            // Set the stereo type based on channel name extension
-           if ( ext == _("HORIZONTAL") )
+           if ( ext == _("horizontal") )
                _stereo_type = kStereoSideBySide;
-           else if ( ext == _("CROSSED") )
+           else if ( ext == _("crossed") )
                _stereo_type = kStereoCrossed;
            else
                LOG_ERROR( _("Unknown stereo type") );
        }
-       else if ( ext == _("ANAGLYPH") )
+       else if ( ext == _("anaglyph") )
        {
-           _stereo_type = kStereoAnaglyph;
+           if ( root == _("left") )
+               _stereo_type = kStereoAnaglyph;
+           else if ( root == _("right") )
+               _stereo_type = kStereoRightAnaglyph;
+           else
+               LOG_ERROR( _("Unknown anaglyph type") );
        }
+
     }
 
   bool to_fetch = false;
@@ -2626,83 +2609,6 @@ void CMedia::default_icc_profile()
       break;
     }
 }
-
-unsigned widthPerThread  = 1024;
-unsigned heightPerThread = 20;
-unsigned numPixelsPerThread = widthPerThread * heightPerThread;
-
-
-struct AnaglyphData
-{
-    bool left_red;
-    mrv::Recti daw[2]; // data windows
-    mrv::image_type_ptr* stereo;
-    mrv::image_type_ptr hires;
-};
-
-
-void anaglyph_cb( AnaglyphData* d )
-{
-   const image_type_ptr* stereo = d->stereo;
-   image_type_ptr& hires = d->hires;
-
-   short idx1 = 0;
-   short idx2 = 1;
-   if ( !d->left_red )
-   {
-      idx1 = 1;
-      idx2 = 0;
-   }
-
-
-   mrv::Recti daw = d->daw[0];
-   daw.merge( d->daw[1] );
-
-   boost::uint8_t* data = (boost::uint8_t*)hires->data().get();
-   memset( data, 0, hires->data_size() );
-
-
-   for ( int y = daw.t(); y < daw.b(); ++y )
-   {
-       for ( int x = daw.l() ; x < daw.r(); ++x )
-       {
-           CMedia::Pixel pr, pc;
-
-           int x1 = x - d->daw[idx1].l();
-           int y1 = y - d->daw[idx1].t();
-
-           if ( x1 < 0 || y1 < 0 || x1 >= (int)stereo[idx1]->width() ||
-                y1 >= (int)stereo[idx1]->height() ) 
-               pr = CMedia::Pixel(0,0,0,0);
-           else
-               pr = stereo[idx1]->pixel( x1, y1 );
-
-
-           x1 = x - d->daw[idx2].l();
-           y1 = y - d->daw[idx2].t();
-
-           
-           if ( x1 < 0 || y1 < 0 || x1 >= (int)stereo[idx2]->width() ||
-                y1 >= (int) stereo[idx2]->height() ) 
-               pc = CMedia::Pixel(0,0,0,0);
-           else
-               pc = stereo[idx2]->pixel( x1, y1 );
-           CMedia::Pixel p = pc;
-           p.r = pr.r;
-
-           x1 = x - daw.l();
-           y1 = y - daw.t();
-
-
-           hires->pixel( x1, y1, p );
-       }
-   }
-
-   delete d;
-
-
-}
-
 
 
 void CMedia::default_rendering_transform()

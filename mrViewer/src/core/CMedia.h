@@ -284,6 +284,7 @@ class CMedia
     kStereoInterlaced = 4,
     kStereoOpenGL     = 8,
     kStereoAnaglyph   = 16,
+    kStereoRightAnaglyph = 16 + 32,
     };
 
 
@@ -421,8 +422,6 @@ class CMedia
     inline mrv::image_type_ptr hires() const { return _hires; }
     inline mrv::image_type_ptr hires()       { return _hires; }
     void hires( const mrv::image_type_ptr pic);
-
-    inline mrv::image_type_ptr anaglyph( bool left_view = true );
 
     inline void is_stereo( bool x ) { _is_stereo = x; }
     inline bool  is_stereo() const { return _is_stereo; }

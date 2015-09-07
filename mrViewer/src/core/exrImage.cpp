@@ -794,7 +794,6 @@ bool exrImage::find_layers( const Imf::Header& h )
    {
       _multiview = true;
       _has_stereo = true;
-      _stereo_type = kNoStereo;
    }
 
 
@@ -846,10 +845,10 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 alpha_layers();
       }
       
-      if ( _has_left_eye && _has_right_eye )
-      {
-          add_anaglyph_layers();
-      }
+      // if ( _has_left_eye && _has_right_eye )
+      // {
+      //     add_anaglyph_layers();
+      // }
 
       if ( _has_stereo )
       {
@@ -1031,28 +1030,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 
    if ( channelPrefix != NULL )
    {
-       std::string prefix = channelPrefix;
-       std::string ext = channelPrefix;
-       std::string root = "";
-       size_t pos = ext.rfind( N_(".") );
-       if ( pos != std::string::npos )
-       {
-           root = ext.substr( 0, pos );
-           ext = ext.substr( pos+1, ext.size() );
-       }
-
-       std::transform( root.begin(), root.end(), root.begin(),
-                       (int(*)(int)) toupper);
-       std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper);
-
-       if ( root == "STEREO" )
-       {
-           if ( ext == "HORIZONTAL" )
-               _stereo_type = kStereoSideBySide;
-           else
-               _stereo_type = kStereoCrossed;
-       }
 
        if ( _stereo_type & kStereoSideBySide )
        {
@@ -1063,9 +1040,9 @@ bool exrImage::find_channels( const Imf::Header& h,
            Imf::ChannelList::ConstIterator s;
            Imf::ChannelList::ConstIterator e;
 
-           if ( ext == "ANAGLYPH" )
+           if ( _stereo_type & kStereoAnaglyph )
            {
-               if (root == "LEFT" ) _left_red = true;
+               if ( _stereo_type != kStereoRightAnaglyph ) _left_red = true;
                else _left_red = false;
 
                s = channels.begin();
@@ -1078,13 +1055,12 @@ bool exrImage::find_channels( const Imf::Header& h,
                }
                else
                {
-                   _stereo_type = kStereoAnaglyph;
                    return channels_order( frame, s, e, channels, h, fb );
                }
            }
            else
            {
-               channels.channelsWithPrefix( prefix.c_str(), s, e );
+               channels.channelsWithPrefix( channelPrefix, s, e );
                return channels_order( frame, s, e, channels, h, fb );
          }
       }
@@ -1751,7 +1727,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 {
    MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
 
-   _stereo_type = kNoStereo;
 
    if ( _num_layers == 0 && _numparts > 1 )
    {
@@ -1815,14 +1790,14 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
 
          if ( numChannels >= 3 && st[1] == -1 &&
-              ext.find( "RIGHT" ) != std::string::npos )
+              ext.find( N_("RIGHT") ) != std::string::npos )
          {
             st[1] = i;
             _has_right_eye = true;
             _has_stereo = true;
          }
          if ( numChannels >= 3 && st[0] == -1 && 
-              ext.find( "LEFT" ) != std::string::npos )
+              ext.find( N_("LEFT") ) != std::string::npos )
          {
             st[0] = i;
             _has_left_eye = true;
@@ -1880,24 +1855,6 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
              _curpart = (int) strtoul( part.c_str(), NULL, 10 );
          }
 
-         std::string ext = channelPrefix;
-         std::string root = "";
-         size_t pos = ext.rfind( N_(".") );
-         if ( pos != std::string::npos )
-         {
-            root = ext.substr( 0, pos );
-            ext = ext.substr( pos+1, ext.size() );
-         }
-
-         if ( root == "stereo" )
-         {
-             _stereo_type = kStereoSideBySide;
-             if ( ext == "crossed" ) _stereo_type = kStereoCrossed;
-         }
-         else if ( ext == "anaglyph" )
-         {
-            _stereo_type = kStereoAnaglyph;
-         }
 
       }
 
@@ -1907,9 +1864,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 
       for ( int i = 0 ; i < 2; ++i )
       {
-          int oldpart = _curpart;
           if ( _stereo_type != kNoStereo && st[i] >= 0 ) _curpart = st[i];
-
 
           const Header& header = inmaster.header(_curpart);
 
@@ -1954,7 +1909,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           if ( _stereo_type == kNoStereo ) break;
 
           if ( st[0] != st[1] )
+          {
               _stereo[i] = _hires;
+          }
       }
    }
    else
