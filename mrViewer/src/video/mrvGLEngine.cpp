@@ -570,10 +570,11 @@ void GLEngine::refresh_luts()
  */
 void GLEngine::clear_canvas( float r, float g, float b, float a )
 {
-  glClearColor(r, g, b, a );
-  glClear( GL_COLOR_BUFFER_BIT );
-  glShadeModel( GL_FLAT );
-  CHECK_GL( "Clear canvas" );
+    glColorMask( true, true, true, true );
+    glClearColor(r, g, b, a );
+    glClear( GL_COLOR_BUFFER_BIT );
+    glShadeModel( GL_FLAT );
+    CHECK_GL( "Clear canvas" );
 }
 
 void GLEngine::set_blend_function( int source, int dest )
@@ -811,53 +812,53 @@ void GLEngine::draw_cursor( const double x, const double y )
 void GLEngine::draw_square_stencil( const int x, const int y, 
                                     const int x2, const int y2)
 {
+    glClear( GL_STENCIL_BUFFER_BIT );
+    CHECK_GL( "glClear STENCIL_BUFFER" );
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_FALSE );
+    CHECK_GL( "draw_square_stencil glColorMask" );
+    glDepthMask( GL_FALSE );
+    CHECK_GL( "draw_square_stencil glDepthMask" );
+    glColor4f( 0.0f, 0.0f, 0.0f, 0.0f );
+    glEnable( GL_STENCIL_TEST );
+    CHECK_GL( "draw_square_stencil glEnable Stencil test" );
+    glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
+    CHECK_GL( "draw_square_stencil glStencilFunc" );
+    glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
+    CHECK_GL( "draw_square_stencil glStencilOp" );
 
-  glClear( GL_STENCIL_BUFFER_BIT );
-  CHECK_GL( "glClear STENCIL_BUFFER" );
-  glColorMask(true, true, true, true);
-  CHECK_GL( "draw_square_stencil glColorMask" );
-  glDepthMask(false);
-  CHECK_GL( "draw_square_stencil glDepthMask" );
-  glColor4f( 0.0f, 0.0f, 0.0f, 0.0f );
-  glEnable( GL_STENCIL_TEST );
-  CHECK_GL( "draw_square_stencil glEnable Stencil test" );
-  glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
-  CHECK_GL( "draw_square_stencil glStencilFunc" );
-  glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
-  CHECK_GL( "draw_square_stencil glStencilOp" );
+    glPushMatrix();
 
-  glPushMatrix();
-
-  double pr = 1.0;
-  if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-  glScaled( 1.0, pr, 1.0 );
-
+    double pr = 1.0;
+    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
+    glScaled( 1.0, pr, 1.0 );
 
 
 
-  double W = (x2-x+1);
-  double H = (y2-y+1);
 
-  glTranslated( x, -y, 0 );
+    double W = (x2-x+1);
+    double H = (y2-y+1);
+
+    glTranslated( x, -y, 0 );
 
 
-  //
-  // Draw mask
-  //
-  glBegin( GL_POLYGON );
-  {
-      glVertex2d(0, 0);
-      glVertex2d(W, 0);
-      glVertex2d(W, -H);
-      glVertex2d(0, -H);
-  }
-  glEnd();
+    //
+    // Draw mask
+    //
+    glBegin( GL_POLYGON );
+    {
+        glVertex2d(0, 0);
+        glVertex2d(W, 0);
+        glVertex2d(W, -H);
+        glVertex2d(0, -H);
+    }
+    glEnd();
 
-  glPopMatrix();
+    glPopMatrix();
 
-  // just draw where inside of the mask
-  glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
-  glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    // just draw where inside of the mask
+    glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
+    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
+    glDisable(GL_BLEND);
 }
 
 inline
@@ -1138,6 +1139,7 @@ void GLEngine::alloc_quads( size_t num )
 
 void GLEngine::draw_data_window( const mrv::Rectd& r )
 {
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glColor4f( 0.5f, 0.5f, 0.5f, 0.0f );
     glLineStipple( 1, 0x00FF );
     glEnable( GL_LINE_STIPPLE );
@@ -1216,7 +1218,7 @@ void GLEngine::draw_images( ImageList& images )
       const Image_ptr& img = *i;
       if ( img->has_subtitle() ) ++num_quads;
       if ( img->has_picture()  ) ++num_quads;
-      if ( img->is_stereo() )    ++num_quads;
+      if ( img->stereo_type() != CMedia::kNoStereo )    ++num_quads;
     }
 
 
@@ -1248,7 +1250,6 @@ void GLEngine::draw_images( ImageList& images )
 
   for ( i = images.begin() ; i != e; ++i, ++q )
     {
-
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
 
@@ -1257,19 +1258,20 @@ void GLEngine::draw_images( ImageList& images )
       mrv::Recti dpw = img->display_window(frame);
       mrv::Recti daw = img->data_window(frame);
 
+
+      if ( (img->stereo_type() == CMedia::kStereoCrossed) ||
+           (img->stereo_type() == CMedia::kStereoRightAnaglyph) )
+      {
+          mrv::Recti dpw2 = img->display_window2(frame);
+          mrv::Recti daw2 = img->data_window2(frame);
+          dpw = dpw2;
+          daw = daw2;
+      }
+
       if ( dpw.w() == 0 ) dpw.w( pic->width() );
       if ( dpw.h() == 0 ) dpw.h( pic->height() );
       if ( daw.w() == 0 ) daw.w( pic->width() );
       if ( daw.h() == 0 ) daw.h( pic->height() );
-
-
-      if ( img->stereo_type() == CMedia::kStereoCrossed )
-      {
-          mrv::Recti dpw2 = img->display_window2(frame);
-          mrv::Recti daw2 = img->data_window2(frame);
-          if ( dpw2.w() != 0 ) dpw = dpw2;
-          if ( daw2.w() != 0 ) daw = daw2;
-      }
 
 
       if ( fg != img && img->stereo_type() == CMedia::kNoStereo )
@@ -1277,34 +1279,21 @@ void GLEngine::draw_images( ImageList& images )
           const mrv::Recti& dp = fg->display_window(frame);
           texWidth = dp.w();
           texHeight = dp.h();
-          if ( dpw == dp )
-          {
-              texWidth = pic->width();
-              texHeight = pic->height();
-          }
-
-          if ( texWidth == 0 )  texWidth = pic->width();
-          if ( texHeight == 0 ) texHeight = pic->height();
       }
       else
       {
-          if ( daw.w() != 0 )
-          {
-              texWidth = daw.w();
-              texHeight = daw.h();
-          }
-          else
-          {
-              texWidth = pic->width();
-              texHeight = pic->height();
-          }
+          texWidth = daw.w();
+          texHeight = daw.h();
       }
 
+      if ( texWidth == 0 )  texWidth = pic->width();
+      if ( texHeight == 0 ) texHeight = pic->height();
 
-      set_matrix( _view->flip(), false );
+      ImageView::FlipDirection flip = _view->flip();
+
+      set_matrix( flip, false );
 
       mrv::Recti dp = fg->display_window(frame);
-      int flip = _view->flip();
       if ( flip )
       {
           float x = 0.0f, y = 0.0f;
@@ -1324,7 +1313,6 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( dpw != daw )
       {
-
           if ( _view->display_window() )
           {
               draw_square_stencil( dpw.l(), dpw.t(), dpw.r(), dpw.b() );
@@ -1363,32 +1351,33 @@ void GLEngine::draw_images( ImageList& images )
 
 	  quad->lut( img );
 
-          if ( img->is_stereo() && (img->stereo_type() & 
-                                    CMedia::kStereoSideBySide) )
+          if ( img->stereo_type() != CMedia::kNoStereo )
           {
               if ( img->image_damage() & CMedia::kDamageLut )
                   (*(q+1))->clear_lut();
               (*(q+1))->lut( img );
           }
-
 	}
 
       if ( i+1 == e ) wipe_area();
 
-      if ( img->is_stereo() && (img->stereo_type() != CMedia::kNoStereo ) && 
+      if ( img->stereo_type() != CMedia::kNoStereo && 
            img->left() && img->right() )
       {
-         if ( img->stereo_type() == CMedia::kStereoCrossed )
+         if ( img->stereo_type() == CMedia::kStereoCrossed ||
+              img->stereo_type() == CMedia::kStereoRightAnaglyph )
          {
             pic = img->right();
          }
          else
          {
-            pic = img->left();
+             pic = img->left();
          }
 
-         if ( img->stereo_type() == CMedia::kStereoAnaglyph )
-             glColorMask( true, false, false, false );
+         if ( img->stereo_type() & CMedia::kStereoAnaglyph )
+             glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
+         else
+             glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
          quad->bind( pic );
          quad->gamma( img->gamma() );
@@ -1400,17 +1389,14 @@ void GLEngine::draw_images( ImageList& images )
 
          glPopMatrix();
 
-         if ( img->stereo_type() != CMedia::kStereoAnaglyph )
+         if ( ! ( img->stereo_type() & CMedia::kStereoAnaglyph ) )
              glTranslated( dpw.w(), 0, 0 );
 
          mrv::Recti dpw2 = img->display_window2(frame);
          mrv::Recti daw2 = img->data_window2(frame);
 
-         if ( dpw2.w() == 0 ) dpw2 = dpw;
-         if ( daw2.w() == 0 ) daw2 = daw;
-
-
-         if ( img->stereo_type() == CMedia::kStereoCrossed )
+         if ( img->stereo_type() == CMedia::kStereoCrossed ||
+              img->stereo_type() == CMedia::kStereoRightAnaglyph )
          {
              dpw2 = img->display_window(frame);
              daw2 = img->data_window(frame);
@@ -1420,23 +1406,30 @@ void GLEngine::draw_images( ImageList& images )
          glPushMatrix();
 
 
-
          if ( dpw2 != daw2 )
          {
-             if ( _view->display_window() )
+             if ( _view->display_window() &&
+                  ( !( img->stereo_type() & CMedia::kStereoAnaglyph ) ) )
              {
                  draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
              }
 
              if ( _view->data_window() )
              {
-                 mrv::Rectd r = mrv::Rectd( daw2.x()+dpw.w(), 
+                 
+                 double x = 0;
+
+                 if ( img->stereo_type() & CMedia::kStereoSideBySide )
+                     x = dpw.w();
+
+                 mrv::Rectd r = mrv::Rectd( daw2.x() + x, 
                                             daw2.y(), daw2.w(), daw2.h() );
                  draw_data_window( r );
              }
          }
 
-         if ( img->stereo_type() == CMedia::kStereoCrossed )
+         if ( img->stereo_type() == CMedia::kStereoCrossed ||
+              img->stereo_type() == CMedia::kStereoRightAnaglyph )
          {
             pic = img->left();
          }
@@ -1483,8 +1476,10 @@ void GLEngine::draw_images( ImageList& images )
 
       }
 
-      if ( img->stereo_type() == CMedia::kStereoAnaglyph )
-          glColorMask( false, true, true, true );
+      if ( img->stereo_type() & CMedia::kStereoAnaglyph )
+          glColorMask( GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE );
+      else
+          glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
       quad->bind( pic );
       quad->gamma( img->gamma() );
@@ -1512,6 +1507,7 @@ void GLEngine::draw_images( ImageList& images )
 
     }
 
+  glColorMask( true, true, true, true );
   glDisable( GL_SCISSOR_TEST );
   glDisable( GL_BLEND );
 }
@@ -1633,267 +1629,414 @@ void GLEngine::wipe_area()
 
 namespace {
   const char* ARBFP1Shader = 
-"!!ARBfp1.0\n"
-"# cgc version 2.0.0008, build date Nov  1 2007\n"
-"# command line args: -I/home/gga/code/applications/mrViewer-cleanup/shaders -profile arbfp1\n"
-"# source file: rgba.cg\n"
-"#vendor NVIDIA Corporation\n"
-"#version 2.0.0.8\n"
-"#profile arbfp1\n"
-"#program main\n"
-"#semantic main.fgImage : TEXUNIT0\n"
-"#semantic main.lut : TEXUNIT3\n"
-"#semantic main.gain\n"
-"#semantic main.gamma\n"
-"#semantic main.channel\n"
-"#semantic main.enableNormalization\n"
-"#semantic main.normMin\n"
-"#semantic main.normSpan\n"
-"#semantic main.enableLut\n"
-"#semantic main.lutF\n"
-"#semantic main.lutMin\n"
-"#semantic main.lutMax\n"
-"#semantic main.lutM\n"
-"#semantic main.lutT\n"
-"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
-"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
-"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
-"#var half gain :  : c[0] : 3 : 1\n"
-"#var half gamma :  : c[1] : 4 : 1\n"
-"#var int channel :  : c[2] : 5 : 1\n"
-"#var bool enableNormalization :  : c[3] : 6 : 1\n"
-"#var half normMin :  : c[4] : 7 : 1\n"
-"#var half normSpan :  : c[5] : 8 : 1\n"
-"#var bool enableLut :  : c[6] : 9 : 1\n"
-"#var bool lutF :  :  : 10 : 0\n"
-"#var half lutMin :  : c[7] : 11 : 1\n"
-"#var half lutMax :  : c[8] : 12 : 1\n"
-"#var half lutM :  : c[9] : 13 : 1\n"
-"#var half lutT :  : c[10] : 14 : 1\n"
-"#var float4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
-"#const c[11] = 0.33333334 1 0 2\n"
-"#const c[12] = 3 4 5 6\n"
-"#const c[13] = 2.7182817 0.69335938 0.5\n"
-"#default gain = 1\n"
-"#default gamma = 0.44995117\n"
-"#default channel = 0\n"
-"#default enableNormalization = 0\n"
-"#default normMin = 0\n"
-"#default normSpan = 1\n"
-"#default enableLut = 0\n"
-"#default lutF = 0\n"
-"PARAM c[14] = { program.local[0..10],\n"
-"		{ 0.33333334, 1, 0, 2 },\n"
-"		{ 3, 4, 5, 6 },\n"
-"		{ 2.7182817, 0.69335938, 0.5 } };\n"
-"TEMP R0;\n"
-"TEMP R1;\n"
-"TEMP R2;\n"
-"TEMP R3;\n"
-"TEX R1, fragment.texcoord[0], texture[0], 2D;\n"
-"RCP R0.w, c[5].x;\n"
-"ADD R0.xyz, R1, -c[4].x;\n"
-"MUL R0.xyz, R0, R0.w;\n"
-"CMP R0.xyz, -c[3].x, R0, R1;\n"
-"MUL R1.xyz, R0, c[0].x;\n"
-"MIN R0.xyz, R1, c[8].x;\n"
-"MAX R0.xyz, R0, c[7].x;\n"
-"MOV R0.w, c[10].x;\n"
-"MOV R3.zw, c[11].xyyw;\n"
-"LG2 R0.x, R0.x;\n"
-"LG2 R0.y, R0.y;\n"
-"LG2 R0.z, R0.z;\n"
-"MUL R0.xyz, R0, c[9].x;\n"
-"MAD R0.xyz, R0, c[13].y, R0.w;\n"
-"CMP R1.xyz, -c[6].x, R0, R1;\n"
-"TEX R0.xyz, R1, texture[3], 3D;\n"
-"POW R0.x, c[13].x, R0.x;\n"
-"POW R0.z, c[13].x, R0.z;\n"
-"POW R0.y, c[13].x, R0.y;\n"
-"CMP R0.xyz, -c[6].x, R0, R1;\n"
-"POW R2.w, R0.y, c[1].x;\n"
-"POW R3.x, R0.z, c[1].x;\n"
-"ADD R0.y, -R3.z, c[2].x;\n"
-"POW R2.x, R0.x, c[1].x;\n"
-"ABS R3.y, R0;\n"
-"MOV R0, c[12];\n"
-"ADD R0.x, -R0, c[2];\n"
-"ABS R0.x, R0;\n"
-"ADD R0.z, -R0, c[2].x;\n"
-"ADD R0.w, -R0, c[2].x;\n"
-"ABS R0.w, R0;\n"
-"MOV R2.y, R2.w;\n"
-"MOV R2.z, R3.x;\n"
-"CMP R1.xyz, -R3.y, R2, R2.x;\n"
-"CMP R2.z, -R3.y, c[11], c[11].y;\n"
-"ADD R2.y, -R3.w, c[2].x;\n"
-"ABS R3.y, R2;\n"
-"ABS R2.y, R2.z;\n"
-"CMP R2.z, -R3.y, c[11], c[11].y;\n"
-"CMP R2.y, -R2, c[11].z, c[11];\n"
-"MUL R3.y, R2, R2.z;\n"
-"CMP R1.xyz, -R3.y, R2.w, R1;\n"
-"ABS R2.z, R2;\n"
-"CMP R2.z, -R2, c[11], c[11].y;\n"
-"MUL R2.y, R2, R2.z;\n"
-"CMP R0.x, -R0, c[11].z, c[11].y;\n"
-"MUL R2.z, R2.y, R0.x;\n"
-"CMP R1.xyz, -R2.z, R3.x, R1;\n"
-"ADD R0.y, -R0, c[2].x;\n"
-"ABS R2.z, R0.y;\n"
-"ABS R0.x, R0;\n"
-"CMP R0.y, -R0.x, c[11].z, c[11];\n"
-"MUL R0.y, R2, R0;\n"
-"CMP R0.x, -R2.z, c[11].z, c[11].y;\n"
-"MUL R2.y, R0, R0.x;\n"
-"ABS R0.x, R0;\n"
-"CMP R0.x, -R0, c[11].z, c[11].y;\n"
-"CMP R1.xyz, -R2.y, R1.w, R1;\n"
-"ABS R0.z, R0;\n"
-"MUL R2.z, R0.y, R0.x;\n"
-"CMP R2.y, -R0.z, c[11].z, c[11];\n"
-"MUL R0.x, R2.z, R2.y;\n"
-"MUL R3.y, R2.x, c[13].z;\n"
-"CMP R0.y, -R0.x, R3, R1.x;\n"
-"MAD R0.z, R1.w, c[13], R0.y;\n"
-"CMP R0.x, -R0, R0.z, R0.y;\n"
-"MOV R0.yz, R1;\n"
-"ADD R1.x, R2, R2.w;\n"
-"ADD R1.x, R1, R3;\n"
-"ABS R1.y, R2;\n"
-"CMP R1.y, -R1, c[11].z, c[11];\n"
-"MUL R1.x, R1, c[11];\n"
-"CMP R0.w, -R0, c[11].z, c[11].y;\n"
-"MUL R1.y, R2.z, R1;\n"
-"MUL R0.w, R1.y, R0;\n"
-"CMP result.color.xyz, -R0.w, R1.x, R0;\n"
-"MOV result.color.w, R1;\n"
-"END\n"
+"!!ARBfp1.0"
+"# cgc version 3.1.0013, build date Apr 24 2012"
+"# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile arbfp1"
+"# source file: rgba.cg"
+"#vendor NVIDIA Corporation"
+"#version 3.1.0.13"
+"#profile arbfp1"
+"#program main"
+"#semantic main.fgImage : TEXUNIT0"
+"#semantic main.lut : TEXUNIT3"
+"#semantic main.gain"
+"#semantic main.gamma"
+"#semantic main.channel"
+"#semantic main.unpremult"
+"#semantic main.premult"
+"#semantic main.enableNormalization"
+"#semantic main.normMin"
+"#semantic main.normSpan"
+"#semantic main.enableLut"
+"#semantic main.lutF"
+"#semantic main.lutMin"
+"#semantic main.lutMax"
+"#semantic main.lutM"
+"#semantic main.lutT"
+"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1"
+"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1"
+"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1"
+"#var half gain :  : c[0] : 3 : 1"
+"#var half gamma :  : c[1] : 4 : 1"
+"#var int channel :  : c[2] : 5 : 1"
+"#var bool unpremult :  : c[3] : 6 : 1"
+"#var bool premult :  : c[4] : 7 : 1"
+"#var bool enableNormalization :  : c[5] : 8 : 1"
+"#var half normMin :  : c[6] : 9 : 1"
+"#var half normSpan :  : c[7] : 10 : 1"
+"#var bool enableLut :  : c[8] : 11 : 1"
+"#var bool lutF :  : c[9] : 12 : 1"
+"#var half lutMin :  : c[10] : 13 : 1"
+"#var half lutMax :  : c[11] : 14 : 1"
+"#var half lutM :  : c[12] : 15 : 1"
+"#var half lutT :  : c[13] : 16 : 1"
+"#var float4 main.pixel : $vout.COLOR : COL : -1 : 1"
+"#const c[14] = 0.33333334 1 0 2"
+"#const c[15] = 3 4 5 6"
+"#const c[16] = 2.718282 2.71875 0.69335938 0.5"
+"#default gain = 1"
+"#default gamma = 0.44995117"
+"#default channel = 0"
+"#default unpremult = 0"
+"#default premult = 0"
+"#default enableNormalization = 0"
+"#default normMin = 0"
+"#default normSpan = 1"
+"#default enableLut = 0"
+"#default lutF = 0"
+"PARAM c[17] = { program.local[0..13],"
+"                { 0.33333334, 1, 0, 2 },"
+"                { 3, 4, 5, 6 },"
+"                { 2.718282, 2.71875, 0.69335938, 0.5 } };"
+"TEMP R0;"
+"TEMP R1;"
+"TEMP R2;"
+"TEMP R3;"
+"TEMP R4;"
+"TEMP R5;"
+"TEMP R6;"
+"TEMP R7;"
+"TEX R0, fragment.texcoord[0], texture[0], 2D;"
+"RCP R3.w, c[9].x;"
+"RCP R1.w, c[7].x;"
+"ADD R1.xyz, R0, -c[6].x;"
+"MUL R1.xyz, R1, R1.w;"
+"CMP R3.xyz, -c[5].x, R1, R0;"
+"MIN R0.xyz, R3, c[11].x;"
+"MAX R0.xyz, R0, c[10].x;"
+"MOV R1.w, c[13].x;"
+"LG2 R0.x, R0.x;"
+"LG2 R0.y, R0.y;"
+"LG2 R0.z, R0.z;"
+"MUL R0.xyz, R0, c[12].x;"
+"MAD R0.xyz, R0, c[16].z, R1.w;"
+"MUL R1.xyz, R0, c[9].x;"
+"FLR R0.xyz, R1;"
+"ADD R4.xyz, -R0, R1;"
+"ADD R2.xyz, R0, c[14].y;"
+"MUL R7.xyz, R3.w, R2;"
+"MUL R2.xyz, R0, R3.w;"
+"TEX R1.xyz, R7, texture[3], 3D;"
+"ADD R2.w, -R4.x, c[14].y;"
+"MOV R0.x, R2;"
+"MOV R0.yz, R7;"
+"TEX R0.xyz, R0, texture[3], 3D;"
+"MUL R1.xyz, R4.x, R1;"
+"MAD R1.xyz, R2.w, R0, R1;"
+"MUL R5.xyz, R4.y, R1;"
+"TEX R1.xyz, R2, texture[3], 3D;"
+"MOV R0.y, R2;"
+"MOV R0.xz, R7;"
+"TEX R0.xyz, R0, texture[3], 3D;"
+"MUL R0.xyz, R4.x, R0;"
+"MAD R6.xyz, R2.w, R1, R0;"
+"ADD R3.w, -R4.y, c[14].y;"
+"MAD R5.xyz, R6, R3.w, R5;"
+"MOV R6.yz, R2;"
+"MOV R6.x, R7;"
+"MOV R0.z, R2;"
+"MOV R0.xy, R7;"
+"TEX R0.xyz, R0, texture[3], 3D;"
+"MOV R2.y, R7;"
+"TEX R2.xyz, R2, texture[3], 3D;"
+"MUL R0.xyz, R4.x, R0;"
+"MAD R0.xyz, R2, R2.w, R0;"
+"TEX R6.xyz, R6, texture[3], 3D;"
+"MUL R2.xyz, R4.x, R6;"
+"MAD R1.xyz, R2.w, R1, R2;"
+"MUL R0.xyz, R4.y, R0;"
+"MAD R0.xyz, R1, R3.w, R0;"
+"MUL R1.xyz, R4.z, R5;"
+"ADD R2.y, -R4.z, c[14];"
+"MAD R0.xyz, R0, R2.y, R1;"
+"MOV R2.x, c[9];"
+"MUL R1.x, R2, c[8];"
+"CMP R2.xyz, -R1.x, R0, R3;"
+"POW R0.x, c[16].y, R2.x;"
+"POW R0.z, c[16].y, R2.z;"
+"POW R0.y, c[16].y, R2.y;"
+"CMP R0.xyz, -R1.x, R0, R2;"
+"MIN R1.xyz, R0, c[11].x;"
+"MAX R1.xyz, R1, c[10].x;"
+"LG2 R1.x, R1.x;"
+"LG2 R1.y, R1.y;"
+"LG2 R1.z, R1.z;"
+"MUL R3.xyz, R1, c[12].x;"
+"ABS R2.x, c[9];"
+"CMP R1.x, -R2, c[14].z, c[14].y;"
+"MUL R1.x, R1, c[8];"
+"MAD R2.xyz, R3, c[16].z, R1.w;"
+"CMP R2.xyz, -R1.x, R2, R0;"
+"TEX R0.xyz, R2, texture[3], 3D;"
+"RCP R1.y, R0.w;"
+"POW R0.x, c[16].x, R0.x;"
+"POW R0.z, c[16].x, R0.z;"
+"POW R0.y, c[16].x, R0.y;"
+"CMP R0.xyz, -R1.x, R0, R2;"
+"ABS R1.x, R0.w;"
+"CMP R1.x, -R1, c[14].y, c[14].z;"
+"MUL R2.xyz, R0, R1.y;"
+"MUL R1.x, R1, c[3];"
+"CMP R0.xyz, -R1.x, R2, R0;"
+"MUL R0.xyz, R0, c[0].x;"
+"MOV R2.xy, c[14].ywzw;"
+"ADD R1.x, -R2, c[2];"
+"ABS R2.x, R1;"
+"MOV R1, c[15];"
+"ADD R2.y, -R2, c[2].x;"
+"ABS R2.y, R2;"
+"ADD R1.z, -R1, c[2].x;"
+"ABS R1.z, R1;"
+"CMP R2.y, -R2, c[14].z, c[14];"
+"CMP R1.z, -R1, c[14], c[14].y;"
+"POW R0.y, R0.y, c[1].x;"
+"POW R0.z, R0.z, c[1].x;"
+"POW R0.x, R0.x, c[1].x;"
+"CMP R0.xyz, -R2.x, R0, R0.x;"
+"CMP R2.x, -R2, c[14].z, c[14].y;"
+"ABS R2.x, R2;"
+"CMP R2.x, -R2, c[14].z, c[14].y;"
+"MUL R2.z, R2.x, R2.y;"
+"CMP R0.xyz, -R2.z, R0.y, R0;"
+"ADD R2.z, -R1.x, c[2].x;"
+"ABS R1.x, R2.y;"
+"ABS R2.y, R2.z;"
+"CMP R1.x, -R1, c[14].z, c[14].y;"
+"CMP R2.y, -R2, c[14].z, c[14];"
+"MUL R1.x, R2, R1;"
+"MUL R2.x, R1, R2.y;"
+"CMP R0.xyz, -R2.x, R0.z, R0;"
+"ADD R2.x, -R1.y, c[2];"
+"ABS R1.y, R2;"
+"CMP R1.y, -R1, c[14].z, c[14];"
+"ABS R2.x, R2;"
+"MUL R1.x, R1, R1.y;"
+"CMP R2.x, -R2, c[14].z, c[14].y;"
+"MUL R1.y, R1.x, R2.x;"
+"CMP R0.xyz, -R1.y, R0.w, R0;"
+"ABS R1.y, R2.x;"
+"CMP R1.y, -R1, c[14].z, c[14];"
+"MUL R1.x, R1, R1.y;"
+"MUL R1.y, R1.x, R1.z;"
+"MUL R2.y, R0.x, c[16].w;"
+"CMP R0.x, -R1.y, R2.y, R0;"
+"MAD R2.x, R0.w, c[16].w, R0;"
+"CMP R0.x, -R1.y, R2, R0;"
+"ADD R1.y, R0.x, R0;"
+"ADD R1.y, R1, R0.z;"
+"MUL R2.x, R1.y, c[14];"
+"ABS R1.y, R1.z;"
+"CMP R1.y, -R1, c[14].z, c[14];"
+"ADD R1.w, -R1, c[2].x;"
+"ABS R1.z, R1.w;"
+"MUL R1.x, R1, R1.y;"
+"CMP R1.z, -R1, c[14], c[14].y;"
+"MUL R1.x, R1, R1.z;"
+"CMP R0.xyz, -R1.x, R2.x, R0;"
+"MUL R1.xyz, R0, R0.w;"
+"CMP result.color.xyz, -c[4].x, R1, R0;"
+"MOV result.color.w, R0;"
+"END"
+"# 140 instructions, 8 R-regs"
 ;
 
   const char* NVShader = 
-"!!FP1.0\n"
-"# cgc version 2.0.0008, build date Nov  1 2007\n"
-"# command line args: -I/home/gga/code/applications/mrViewer-cleanup/shaders -profile fp30\n"
-"# source file: rgba.cg\n"
-"#vendor NVIDIA Corporation\n"
-"#version 2.0.0.8\n"
-"#profile fp30\n"
-"#program main\n"
-"#semantic main.fgImage : TEXUNIT0\n"
-"#semantic main.lut : TEXUNIT3\n"
-"#semantic main.gain\n"
-"#semantic main.gamma\n"
-"#semantic main.channel\n"
-"#semantic main.enableNormalization\n"
-"#semantic main.normMin\n"
-"#semantic main.normSpan\n"
-"#semantic main.enableLut\n"
-"#semantic main.lutF\n"
-"#semantic main.lutMin\n"
-"#semantic main.lutMax\n"
-"#semantic main.lutM\n"
-"#semantic main.lutT\n"
-"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
-"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
-"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
-"#var half gain :  : gain : 3 : 1\n"
-"#var half gamma :  : gamma : 4 : 1\n"
-"#var int channel :  : channel : 5 : 1\n"
-"#var bool enableNormalization :  : enableNormalization : 6 : 1\n"
-"#var half normMin :  : normMin : 7 : 1\n"
-"#var half normSpan :  : normSpan : 8 : 1\n"
-"#var bool enableLut :  : enableLut : 9 : 1\n"
-"#var bool lutF :  :  : 10 : 0\n"
-"#var half lutMin :  : lutMin : 11 : 1\n"
-"#var half lutMax :  : lutMax : 12 : 1\n"
-"#var half lutM :  : lutM : 13 : 1\n"
-"#var half lutT :  : lutT : 14 : 1\n"
-"#var half4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
-"#default gain = 1\n"
-"#default gamma = 0.44995117\n"
-"#default channel = 0\n"
-"#default enableNormalization = 0\n"
-"#default normMin = 0\n"
-"#default normSpan = 1\n"
-"#default enableLut = 0\n"
-"#default lutF = 0\n"
-"DECLARE enableNormalization = {0};\n"
-"DECLARE normMin = {0};\n"
-"DECLARE normSpan = {1};\n"
-"DECLARE gain = {1};\n"
-"DECLARE enableLut = {0};\n"
-"DECLARE lutMin;\n"
-"DECLARE lutMax;\n"
-"DECLARE lutT;\n"
-"DECLARE lutM;\n"
-"DECLARE gamma = {0.44995117};\n"
-"DECLARE channel = {0};\n"
-"TEX   H0, f[TEX0], TEX0, 2D;\n"
-"ADDH  H1.xyz, H0, -normMin.x;\n"
-"RCPH  H1.w, normSpan.x;\n"
-"MOVXC RC.x, enableNormalization;\n"
-"MULH  H0.xyz(NE.x), H1, H1.w;\n"
-"MULH  H1.xyz, H0, gain.x;\n"
-"MINH  H0.xyz, H1, lutMax.x;\n"
-"MAXH  H0.xyz, H0, lutMin.x;\n"
-"MOVXC RC.x, enableLut;\n"
-"MOVH  H1.w, lutT.x;\n"
-"LG2H  H0.x, H0.x;\n"
-"LG2H  H0.z, H0.z;\n"
-"LG2H  H0.y, H0.y;\n"
-"MULH  H0.xyz, H0, lutM.x;\n"
-"MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H1.w;\n"
-"TEX   R0.xyz, H1, TEX3, 3D;\n"
-"POWR  H0.x, {2.7182817}.x, R0.x;\n"
-"POWR  H0.y, {2.7182817}.x, R0.y;\n"
-"POWR  H0.z, {2.7182817}.x, R0.z;\n"
-"MOVH  H1.xyz(NE.x), H0;\n"
-"POWH  H1.w, H1.z, gamma.x;\n"
-"POWH  H2.x, H1.y, gamma.x;\n"
-"POWH  H0.x, H1.x, gamma.x;\n"
-"MOVH  H0.z, H1.w;\n"
-"MOVH  H0.y, H2.x;\n"
-"MOVH  H1.xyz, H0;\n"
-"MOVR  R0.x, {1};\n"
-"SEQR  H0.y, channel.x, R0.x;\n"
-"MOVXC RC.x, H0.y;\n"
-"MOVR  R0.x, {2};\n"
-"SEQR  H0.z, channel.x, R0.x;\n"
-"MOVR  R0.x, {3};\n"
-"SEQR  H2.y, channel.x, R0.x;\n"
-"MOVH  H1.xyz(NE.x), H0.x;\n"
-"SEQX  H0.y, H0, {0}.x;\n"
-"MULXC HC.x, H0.y, H0.z;\n"
-"SEQX  H0.z, H0, {0}.x;\n"
-"MOVH  H1.xyz(NE.x), H2.x;\n"
-"MULX  H0.y, H0, H0.z;\n"
-"MULXC HC.x, H0.y, H2.y;\n"
-"MOVR  R0.x, {4};\n"
-"SEQR  H0.z, channel.x, R0.x;\n"
-"SEQX  H2.y, H2, {0}.x;\n"
-"MULX  H0.y, H0, H2;\n"
-"MOVH  H1.xyz(NE.x), H1.w;\n"
-"MULXC HC.x, H0.y, H0.z;\n"
-"SEQX  H2.y, H0.z, {0}.x;\n"
-"MOVR  R0.x, {5};\n"
-"SEQR  H0.z, channel.x, R0.x;\n"
-"MOVH  H1.xyz(NE.x), H0.w;\n"
-"MULX  H0.y, H0, H2;\n"
-"MULXC HC.x, H0.y, H0.z;\n"
-"MULH  H1.x(NE), H0, {0.5};\n"
-"ADDH  H0.x, H0, H2;\n"
-"SEQX  H0.z, H0, {0}.x;\n"
-"MADH  H1.x(NE), H0.w, {0.5}, H1;\n"
-"ADDH  H0.x, H0, H1.w;\n"
-"MOVR  R0.x, {6};\n"
-"SEQR  H1.w, channel.x, R0.x;\n"
-"MULX  H0.y, H0, H0.z;\n"
-"MULXC HC.x, H0.y, H1.w;\n"
-"MULH  H1.xyz(NE.x), H0.x, {0.33333334}.x;\n"
-"MOVH  H1.w, H0;\n"
-"MOVH  o[COLH], H1;\n"
-"END\n"
+"!!FP1.0"
+"# cgc version 3.1.0013, build date Apr 24 2012"
+"# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile fp30"
+"# source file: rgba.cg"
+"#vendor NVIDIA Corporation"
+"#version 3.1.0.13"
+"#profile fp30"
+"#program main"
+"#semantic main.fgImage : TEXUNIT0"
+"#semantic main.lut : TEXUNIT3"
+"#semantic main.gain"
+"#semantic main.gamma"
+"#semantic main.channel"
+"#semantic main.unpremult"
+"#semantic main.premult"
+"#semantic main.enableNormalization"
+"#semantic main.normMin"
+"#semantic main.normSpan"
+"#semantic main.enableLut"
+"#semantic main.lutF"
+"#semantic main.lutMin"
+"#semantic main.lutMax"
+"#semantic main.lutM"
+"#semantic main.lutT"
+"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1"
+"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1"
+"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1"
+"#var half gain :  : gain : 3 : 1"
+"#var half gamma :  : gamma : 4 : 1"
+"#var int channel :  : channel : 5 : 1"
+"#var bool unpremult :  : unpremult : 6 : 1"
+"#var bool premult :  : premult : 7 : 1"
+"#var bool enableNormalization :  : enableNormalization : 8 : 1"
+"#var half normMin :  : normMin : 9 : 1"
+"#var half normSpan :  : normSpan : 10 : 1"
+"#var bool enableLut :  : enableLut : 11 : 1"
+"#var bool lutF :  : lutF : 12 : 1"
+"#var half lutMin :  : lutMin : 13 : 1"
+"#var half lutMax :  : lutMax : 14 : 1"
+"#var half lutM :  : lutM : 15 : 1"
+"#var half lutT :  : lutT : 16 : 1"
+"#var half4 main.pixel : $vout.COLOR : COL : -1 : 1"
+"#default gain = 1"
+"#default gamma = 0.44995117"
+"#default channel = 0"
+"#default unpremult = 0"
+"#default premult = 0"
+"#default enableNormalization = 0"
+"#default normMin = 0"
+"#default normSpan = 1"
+"#default enableLut = 0"
+"#default lutF = 0"
+"DECLARE enableNormalization = {0};"
+"DECLARE normMin = {0};"
+"DECLARE normSpan = {1};"
+"DECLARE enableLut = {0};"
+"DECLARE lutF = {0};"
+"DECLARE lutMax;"
+"DECLARE lutMin;"
+"DECLARE lutT;"
+"DECLARE lutM;"
+"DECLARE unpremult = {0};"
+"DECLARE gain = {1};"
+"DECLARE gamma = {0.44995117};"
+"DECLARE channel = {0};"
+"DECLARE premult = {0};"
+"TEX   H1, f[TEX0], TEX0, 2D;"
+"ADDH  H0.xyz, H1, -normMin.x;"
+"RCPH  H0.w, normSpan.x;"
+"MOVXC RC.x, enableNormalization;"
+"MULH  H1.xyz(NE.x), H0, H0.w;"
+"MINH  H0.xyz, H1, lutMax.x;"
+"MAXH  H0.xyz, H0, lutMin.x;"
+"MOVH  H2.w, lutT.x;"
+"RCPH  H3.w, lutF.x;"
+"LG2H  H0.x, H0.x;"
+"LG2H  H0.z, H0.z;"
+"LG2H  H0.y, H0.y;"
+"MULH  H0.xyz, H0, lutM.x;"
+"MADH  H0.xyz, H0, {0.69335938}.x, H2.w;"
+"MULH  H0.xyz, H0, lutF.x;"
+"FLRH  H4.xyz, H0;"
+"ADDH  H2.xyz, -H4, H0;"
+"ADDH  H0.xyz, H4, {1}.x;"
+"MULH  H0.xyw, H3.w, H0.yzzx;"
+"MULH  H7.xyz, H4, H3.w;"
+"TEX   H5.xyz, H0.wxyw, TEX3, 3D;"
+"ADDH  H3.xyz, -H2, {1}.x;"
+"MULH  H5.xyz, H2.x, H5;"
+"MOVH  H4.yz, H0.xxyw;"
+"MOVH  H4.x, H7;"
+"TEX   H4.xyz, H4, TEX3, 3D;"
+"MADH  H4.xyz, H3.x, H4, H5;"
+"MULH  H6.xyz, H2.y, H4;"
+"MOVH  H4.xy, H0.wxzw;"
+"MOVH  H4.z, H7;"
+"TEX   H4.xyz, H4, TEX3, 3D;"
+"MULH  H5.xyz, H2.x, H4;"
+"MOVH  H4.y, H0.x;"
+"MOVH  H0.xz, H0.wyyw;"
+"MOVH  H4.xz, H7;"
+"TEX   H4.xyz, H4, TEX3, 3D;"
+"MADH  H4.xyz, H4, H3.x, H5;"
+"MOVH  H0.y, H7;"
+"TEX   H0.xyz, H0, TEX3, 3D;"
+"MULH  H5.xyz, H2.x, H0;"
+"TEX   H0.xyz, H7, TEX3, 3D;"
+"MADH  H5.xyz, H3.x, H0, H5;"
+"MADH  H5.xyz, H3.y, H5, H6;"
+"MOVH  H6.x, H0.w;"
+"MOVX  H0.w, lutF.x;"
+"MULXC HC.x, H0.w, enableLut;"
+"MOVH  H6.yz, H7;"
+"TEX   H6.xyz, H6, TEX3, 3D;"
+"MULH  H6.xyz, H2.x, H6;"
+"MULH  H4.xyz, H2.y, H4;"
+"MADH  H0.xyz, H3.x, H0, H6;"
+"MOVX  H0.w, {0}.x;"
+"MADH  H0.xyz, H0, H3.y, H4;"
+"MULH  H2.xyz, H2.z, H5;"
+"MADH  H1.xyz(NE.x), H0, H3.z, H2;"
+"MOVH  H2.xyz, H1;"
+"POWH  H0.x, {2.71875}.x, H1.x;"
+"POWH  H0.y, {2.71875}.x, H1.y;"
+"POWH  H0.z, {2.71875}.x, H1.z;"
+"MOVH  H2.xyz(NE.x), H0;"
+"MINH  H0.xyz, H2, lutMax.x;"
+"MAXH  H0.xyz, H0, lutMin.x;"
+"SEQX  H0.w, lutF.x, H0;"
+"MOVH  H1.xyz, H2;"
+"MULXC HC.x, H0.w, enableLut;"
+"LG2H  H0.x, H0.x;"
+"LG2H  H0.z, H0.z;"
+"LG2H  H0.y, H0.y;"
+"MULH  H0.xyz, H0, lutM.x;"
+"MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H2.w;"
+"TEX   R0.xyz, H1, TEX3, 3D;"
+"POWR  H0.x, {2.718282}.x, R0.x;"
+"MOVR  R0.x, {1};"
+"SEQR  H0.w, channel.x, R0.x;"
+"MOVR  R0.x, {2};"
+"SEQR  H2.x, channel, R0;"
+"POWR  H0.y, {2.718282}.x, R0.y;"
+"POWR  H0.z, {2.718282}.x, R0.z;"
+"MOVH  H1.xyz(NE.x), H0;"
+"SNEH  H0.x, H1.w, {0};"
+"MULXC HC.x, H0, unpremult;"
+"RCPH  H0.y, H1.w;"
+"MULH  H1.xyz(NE.x), H1, H0.y;"
+"MULH  H0.xyz, H1, gain.x;"
+"MOVXC RC.x, H0.w;"
+"POWH  H0.x, H0.x, gamma.x;"
+"SEQX  H0.w, H0, {0}.x;"
+"POWH  H0.z, H0.z, gamma.x;"
+"POWH  H0.y, H0.y, gamma.x;"
+"MOVH  H1.xyz, H0;"
+"MOVH  H1.xyz(NE.x), H0.x;"
+"MOVH  H0.xyz, H1;"
+"MULXC HC.x, H0.w, H2;"
+"MOVH  H0.xyz(NE.x), H1.y;"
+"MOVH  H1.xyz, H0;"
+"MOVR  R0.x, {3};"
+"SEQR  H0.y, channel.x, R0.x;"
+"SEQX  H0.x, H2, {0};"
+"MULX  H0.x, H0.w, H0;"
+"MULXC HC.x, H0, H0.y;"
+"SEQX  H0.y, H0, {0}.x;"
+"MOVH  H1.xyz(NE.x), H0.z;"
+"MOVR  R0.x, {4};"
+"SEQR  H0.z, channel.x, R0.x;"
+"MULX  H0.y, H0.x, H0;"
+"MULXC HC.x, H0.y, H0.z;"
+"MOVH  H1.xyz(NE.x), H1.w;"
+"MOVR  R0.x, {5};"
+"SEQR  H2.x, channel, R0;"
+"SEQX  H0.z, H0, {0}.x;"
+"MULX  H0.w, H0.y, H0.z;"
+"MOVH  H0.x, H1;"
+"MULXC HC.x, H0.w, H2;"
+"MULH  H0.x(NE), H1, {0.5};"
+"MADH  H0.x(NE), H1.w, {0.5}, H0;"
+"ADDH  H0.y, H0.x, H1;"
+"ADDH  H1.x, H0.y, H1.z;"
+"MOVH  H0.yz, H1;"
+"MOVR  R0.x, {6};"
+"SEQX  H1.y, H2.x, {0}.x;"
+"MULX  H0.w, H0, H1.y;"
+"SEQR  H1.z, channel.x, R0.x;"
+"MULXC HC.x, H0.w, H1.z;"
+"MULH  H0.xyz(NE.x), H1.x, {0.33333334}.x;"
+"MOVXC RC.x, premult;"
+"MULH  H0.xyz(NE.x), H0, H1.w;"
+"MOVH  H0.w, H1;"
+"MOVH  o[COLH], H0;"
+"END"
+"# 128 instructions, 1 R-regs, 8 H-regs"
 ;
 
 }
