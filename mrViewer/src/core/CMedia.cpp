@@ -1536,7 +1536,7 @@ void CMedia::play(const CMedia::Playback dir,
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
-    if ( _eye[1] && _stereo_type ) _eye[1]->play( dir, uiMain, fg );
+    if ( _eye[1] ) _eye[1]->play( dir, uiMain, fg );
 
     stop();
 
