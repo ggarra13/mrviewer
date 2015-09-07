@@ -167,7 +167,7 @@ namespace mrv {
 
       /// Draw display area rectangle
       virtual void draw_square_stencil(const int x, const int y, 
-                                       const int x2, const int y2) = 0;
+                                       const int x2, const int y2 ) = 0;
 
       // Draw film mask
       virtual void draw_mask(const float pct) = 0;
