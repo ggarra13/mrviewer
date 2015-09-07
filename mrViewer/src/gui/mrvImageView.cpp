@@ -2517,7 +2517,8 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic = img->left();
 
-  if ( stereo_type() == CMedia::kStereoCrossed ) pic = img->right();
+  if ( stereo_type() == CMedia::kStereoCrossed ||
+       stereo_type() == CMedia::kStereoRightAnaglyph) pic = img->right();
 
   if ( !pic ) return;
 
@@ -2589,6 +2590,18 @@ void ImageView::mouseMove(int x, int y)
 
       pixel_processed( img, rgba );
 
+      if ( stereo_type() & CMedia::kStereoAnaglyph )
+      {
+          if ( stereo_type() == CMedia::kStereoRightAnaglyph )
+              pic = img->left();
+          else
+              pic = img->right();
+
+          float r = rgba.r;
+          rgba = pic->pixel( xp, yp );
+          pixel_processed( img, rgba );
+          rgba.r = r;
+      }
 
       // double yp = yf;
       // if ( _showPixelRatio ) yp /= img->pixel_ratio();
@@ -2603,6 +2616,7 @@ void ImageView::mouseMove(int x, int y)
       const mrv::Recti& dpwb = bgr->display_window(picb->frame());
       const mrv::Recti& dawb = bgr->data_window(picb->frame());
       if ( picb )
+
       {
           w = dawb.w();
           h = dawb.h();
