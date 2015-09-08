@@ -15,15 +15,14 @@ v2.9.3   - Bug fixed saving of OpenExr files when data window was
 
            In the file requester, the movies and sequences
 	   will appear as:
-	      	  da20.%V.mov      # for da20.left|right.mov
-		  da20.%v.%04d.exr # for da20.L|R.0001.exr
+	      	  da20.%v.mov      # for da20.L|R.mov
+		  da20.%V.%04d.exr # for da20.left|right.0001.exr
 
 	   The names of left and right and L and R can be changed
 	   with environment variables. See documentation.
 	   Currently, it is not possible to mix a movie and a
-	   sequence in stereo viewing.  It is also not yet possible
-	   to change the eye separation when viewing in anaglyph
-	   mode. Finally, a background image is available for
+	   sequence in stereo viewing.
+	   Finally, a background image is available for
 	   the left eye only.
 
 v2.9.2   - Bug fixed removing a directory from Favorites.

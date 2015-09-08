@@ -839,6 +839,9 @@ class CMedia
 
     void eye( int idx, CMedia* c ) { _eye[idx] = c; refresh(); }
 
+    float eye_separation() const { return _eye_separation; }
+    void eye_separation(float b) { _eye_separation = b; refresh(); }
+
     Barrier* loop_barrier()       { return _loop_barrier; }
     Mutex& decode_mutex()         { return _decode_mutex; }
     Mutex& video_mutex()          { return _mutex; };
@@ -1199,6 +1202,8 @@ class CMedia
 
     bool      _left_eye;
     CMedia*   _eye[2];
+
+    float     _eye_separation;
 
     //
     std::string _audio_file;

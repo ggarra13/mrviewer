@@ -291,6 +291,16 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
   }
 
+  static void eye_separation_cb( fltk::FloatInput* w, ImageInformation* info )
+  {
+      CMedia* img = info->get_image();
+      if ( img )
+      {
+          img->eye_separation( w->fvalue() );
+          info->main()->uiView->redraw();
+      }
+  }
+
   static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
   {
       CMedia* img = info->get_image();
@@ -490,6 +500,15 @@ void ImageInformation::fill_data()
         {
             add_rect( _("Display Window 2"), dwindow );
         }
+
+        if ( window.w() > 0 )
+            add_float( _("Eye Separation"), img->eye_separation(), true,
+                       (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
+    }
+    else
+    {
+        add_float( _("Eye Separation"), img->eye_separation(), true,
+                   (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
 
     ++group;
