@@ -2597,10 +2597,13 @@ void ImageView::mouseMove(int x, int y)
           else
               pic = img->right();
 
-          float r = rgba.r;
-          rgba = pic->pixel( xp, yp );
-          pixel_processed( img, rgba );
-          rgba.r = r;
+          if ( pic )
+          {
+              float r = rgba.r;
+              rgba = pic->pixel( xp, yp );
+              pixel_processed( img, rgba );
+              rgba.r = r;
+          }
       }
 
       // double yp = yf;

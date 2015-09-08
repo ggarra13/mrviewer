@@ -1265,10 +1265,8 @@ void GLEngine::draw_images( ImageList& images )
       if ( (img->stereo_type() == CMedia::kStereoCrossed) ||
            (img->stereo_type() == CMedia::kStereoRightAnaglyph) )
       {
-          mrv::Recti dpw2 = img->display_window2(frame);
-          mrv::Recti daw2 = img->data_window2(frame);
-          dpw = dpw2;
-          daw = daw2;
+          dpw = img->display_window2(frame);
+          daw = img->data_window2(frame);
       }
 
       if ( dpw.w() == 0 ) dpw.w( pic->width() );
@@ -1331,7 +1329,8 @@ void GLEngine::draw_images( ImageList& images )
       glPushMatrix();
 
 
-      glTranslatef( float(daw.x()), float(-daw.y()), 0 );
+      glTranslatef( float(daw.x() - img->eye_separation()),
+                    float(-daw.y()), 0 );
 
 
       if ( _view->main()->uiPixelRatio->value() )
@@ -1343,7 +1342,6 @@ void GLEngine::draw_images( ImageList& images )
       glTranslated( 0.5, -0.5, 0.0 );
 
 
- 
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
 
@@ -1378,7 +1376,9 @@ void GLEngine::draw_images( ImageList& images )
          }
 
          if ( img->stereo_type() & CMedia::kStereoAnaglyph )
+         {
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
+         }
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
