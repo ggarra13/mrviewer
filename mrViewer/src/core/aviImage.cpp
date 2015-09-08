@@ -442,9 +442,9 @@ void aviImage::close_video_codec()
 // Flush video buffers
 void aviImage::flush_video()
 {
+    SCOPED_LOCK( _mutex );
     if ( _video_ctx && _video_index >= 0 )
     {
-        SCOPED_LOCK( _mutex );
 	avcodec_flush_buffers( _video_ctx );
     }
 }
@@ -850,6 +850,8 @@ void aviImage::clear_packets()
 	<< " expected: " << _expected << endl;
 #endif
 
+   if ( _eye[1] ) _eye[1]->clear_packets();
+
   _video_packets.clear();
   _audio_packets.clear();
 
@@ -1004,7 +1006,7 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
-    if ( _eye[1] && _stereo_type && playback() == kStopped )
+    if ( _eye[1] && playback() == kStopped )
         _eye[1]->find_image( frame );
 
 #ifdef DEBUG_VIDEO_PACKETS
@@ -1069,9 +1071,11 @@ bool aviImage::find_image( const boost::int64_t frame )
 
 	    if ( _hires->frame() != frame && 
 		 abs(frame - _hires->frame() ) < 10 )
+            {
 	       IMG_WARNING( _("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
+            }
 	  }
 	else
 	  {
@@ -1938,7 +1942,10 @@ bool aviImage::fetch(const boost::int64_t frame)
    cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
-   if ( playback() == kStopped && _eye[1] ) _eye[1]->fetch( frame );
+   if ( playback() == kStopped && _eye[1] ) {
+       _eye[1]->stop();
+       _eye[1]->fetch( frame );
+   }
 
    bool got_video = !has_video();
    bool got_audio = !has_audio();
@@ -2199,7 +2206,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
     boost::int64_t frame = f;
 
 #ifdef DEBUG_VIDEO_PACKETS
-    debug_video_packets(frame, "decode_video", true);
+        debug_video_packets(frame, "decode_video", true);
 #endif
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
@@ -2463,7 +2470,8 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 
 void aviImage::do_seek()
 {
-    if ( _eye[1] ) _eye[1]->do_seek();
+    // No need to set seek frame here
+    if ( _eye[1] )  _eye[1]->do_seek();
 
   _dts = _seek_frame;
 
