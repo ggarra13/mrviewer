@@ -819,11 +819,11 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
  */
 void CMedia::clear_stores()
 {
+  SCOPED_LOCK( _audio_mutex );
+
 #ifdef DEBUG_DECODE
    std::cerr << ">>>>>>>>>>> clear audio stores" << std::endl;
 #endif
-
-  SCOPED_LOCK( _audio_mutex );
 
   _audio.clear();
   _audio_buf_used = 0;

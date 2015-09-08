@@ -794,6 +794,7 @@ namespace mrv {
   void GLQuad::bind( const image_type_ptr& pic )
   {
       CHECK_GL( "bind" );
+      if ( ! pic ) return;
     unsigned dw = pic->width();
     unsigned dh = pic->height();
     if ( dw <= 0 || dh <= 0 ) return;
