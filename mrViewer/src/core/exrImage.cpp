@@ -382,266 +382,6 @@ bool exrImage::channels_order(
    return true;
 }
 
-bool exrImage::channels_order_multi(
-				    const boost::int64_t frame,
-				    Imf::ChannelList::ConstIterator s,
-				    Imf::ChannelList::ConstIterator e,
-				    Imf::ChannelList& channels,
-				    const Imf::Header& h, 
-				    Imf::FrameBuffer& fb
-				    )
-{
-   const Box2i& dataWindow = h.dataWindow();
-   int dw = dataWindow.max.x - dataWindow.min.x + 1;
-   int dh = dataWindow.max.y - dataWindow.min.y + 1;
-   int dx = dataWindow.min.x;
-   int dy = dataWindow.min.y;
-
-   int order[4];
-   order[0] = order[1] = order[2] = order[3] = -1;
-
-   Imf::ChannelList::ConstIterator sr, er, sl, el;
-
-   unsigned idx = 0;
-   Imf::PixelType imfPixelType = Imf::UINT;
-   std::vector< std::string > channelList;
-   Imf::ChannelList::ConstIterator i;
-
-
-
-
-   // First, gather all the channels
-   for ( i = s; i != e; ++i )
-   {
-      const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-      if ( !ch ) {
-         LOG_ERROR( "Channel " << layerName << " not found" );
-         continue;
-      }
-
-      channelList.push_back( layerName );
-   }
-
-   // Then gather the channel we will use in left eye
-   for ( i = s; i != e; ++i, ++idx )
-   {
-      const std::string layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-      if ( !ch ) {
-         LOG_ERROR( "Channel " << layerName << " not found" );
-         continue;
-      }
-
-      if ( order[0] == -1 && order[1] == -1 &&
-           order[2] == -1 && order[3] == -1 &&
-           ch->type > imfPixelType ) imfPixelType = ch->type;
-      
-      std::string ext = layerName;
-      std::string root = "";
-      size_t pos = ext.rfind( N_(".") );
-      if ( pos != string::npos )
-      {
-	 root = ext.substr( 0, pos );
-	 ext = ext.substr( pos+1, ext.size() );
-      }
-      
-      std::transform( root.begin(), root.end(), root.begin(),
-		      (int(*)(int)) toupper);
-      std::transform( ext.begin(), ext.end(), ext.begin(),
-		      (int(*)(int)) toupper);
-      
-      if ( (root == N_("LEFT")) || ( root == "" && !_has_left_eye ) )
-      { 
-	 if ( _left_red )
-	 {
-	    if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
-				    ext == N_("Y") ) ) 
-	    {
-                imfPixelType = ch->type;
-                order[0] = idx;
-                continue;
-	    }
-	 }
-	 else
-	 {
-	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-				    ext == N_("RY") || ext == N_("Y") ) )
-	    {
-                imfPixelType = ch->type;
-                order[1] = idx;
-                if ( ext == N_("Y") ) _use_yca = false; 
-	    }
-	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-				    ext == N_("BY") ) ) {
-                imfPixelType = ch->type;
-                order[2] = idx;
-            }
-	    if ( order[3] == -1 && (ext == N_("A") || 
-				    ext == N_("ALPHA") ) ) {
-                imfPixelType = ch->type;
-                order[3] = idx;
-            }
-	 }
-      }
-   }
-
-   // We have the left eye in order[0] or order[1]
-   assert( order[0] != -1 || order[1] != -1 );
-
-   idx = 0;
-   for ( i = s; i != e; ++i, ++idx )
-   {
-      const std::string& layerName = i.name();
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-      if ( !ch ) {
-         LOG_ERROR( "Missing channel " << layerName );
-         continue;
-      }
-
-      if ( order[0] == -1 && order[1] == -1 &&
-           order[2] == -1 && order[3] == -1 &&
-           ch->type > imfPixelType ) imfPixelType = ch->type;
-
-      std::string ext = layerName;
-      std::string root = "";
-      size_t pos = layerName.rfind( N_(".") );
-      if ( pos != string::npos )
-      {
-	 root = ext.substr( 0, pos );
-	 ext = ext.substr( pos+1, ext.size() );
-      }
-
-      std::transform( root.begin(), root.end(), root.begin(),
-		      (int(*)(int)) toupper);
-      std::transform( ext.begin(), ext.end(), ext.begin(),
-		      (int(*)(int)) toupper);
-
-
-      if ( (root == "RIGHT") || ( root == "" && !_has_right_eye ) )
-      {
-	 if ( !_left_red )
-	 {
-	    if ( order[0] == -1 && (ext == N_("R") || ext == N_("RED") || 
-				    ext == N_("Y") ) ) 
-	    {
-                imfPixelType = ch->type;
-                order[0] = idx;
-                break;
-	    }
-	 }
-	 else
-	 {
-	    if ( order[1] == -1 && (ext == N_("G") || ext == N_("GREEN") || 
-				    ext == N_("RY") || ext == N_("Y")) )
-	    {
-                imfPixelType = ch->type;
-                order[1] = idx;
-                if ( ext == N_("Y") ) _use_yca = false;
-	    }
-
-	    if ( order[2] == -1 && (ext == N_("B") || ext == N_("BLUE")|| 
-				    ext == N_("BY") ) ) {
-                imfPixelType = ch->type;
-                order[2] = idx;
-            }
-	    if ( order[3] == -1 && (ext == N_("A") || 
-				    ext == N_("ALPHA") ) ) {
-                imfPixelType = ch->type;
-                order[3] = idx;
-            }
-	 }
-      }
-
-   }
-
-   // order[0-1] should be set by now.
-
-   size_t numChannels = channelList.size();
-
-   if ( numChannels > 4 )
-   {
-      numChannels = 4;
-   }
-
-
-   if ( numChannels == 1 ) {
-      order[0] = 0;
-   }
-
-
-   // Prepare format
-   image_type::Format format = VideoFrame::kLumma;
-   int offsets[4];
-   offsets[0] = 0;
-   offsets[1] = 1;
-   offsets[2] = 2;
-   offsets[3] = 3;
-
-   if ( numChannels >= 3 && has_alpha() )
-   {
-      format = VideoFrame::kRGBA;
-      numChannels = 4;
-   }
-   else if ( numChannels >= 2 )
-   {
-      if ( numChannels == 2 && _use_yca == false )
-      {
-	 order[2] = order[1];
-      }
-
-      format = VideoFrame::kRGB;
-      numChannels = 3;
-   }
-
-
-   allocate_pixels( frame, (unsigned short)numChannels, format,
-		    pixel_type_conversion( imfPixelType ) );
-
-   size_t xs[4], ys[4];
-   for ( unsigned j = 0; j < numChannels; ++j )
-   {
-      xs[j] = _hires->pixel_size() * numChannels;
-      ys[j] = xs[j] * dw;
-   }
-
-
-   boost::uint8_t* pixels = (boost::uint8_t*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() ); // Needed
-
-   // Then, prepare frame buffer for them
-   int start = ( (-dx - dy * dw) * _hires->pixel_size() *
-		 _hires->channels() );
-
-
-   boost::uint8_t* base = pixels + start;
-
-
-   Imf::Channel* ch = NULL;
-   for ( idx = 0; idx < numChannels; ++idx )
-   {
-      int k = order[idx];
-      if ( k == -1 ) continue;
-
-      const std::string& layerName = channelList[k];
-
-      ch = channels.findChannel( layerName.c_str() );
-
-      if ( !ch ) {
-         LOG_ERROR( "Channel " << layerName << " not found" );
-         continue;
-      }
-
-      char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
-
-      fb.insert( layerName.c_str(),
-		 Slice( imfPixelType, buf, xs[idx], ys[idx],
-			ch->xSampling, ch->ySampling) );
-   }
-
-
-   return true;
-}
 
 void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
 {
@@ -910,7 +650,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    return true;
 }
 
-bool exrImage::handle_side_by_side_stereo( const boost::int64_t frame,
+bool exrImage::handle_stereo( const boost::int64_t frame,
                                            const Imf::Header& h,
                                            Imf::FrameBuffer& fb )
 {
@@ -1033,7 +773,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
        if ( _stereo_type & kStereoSideBySide )
        {
-           return handle_side_by_side_stereo(frame, h, fb);
+           return handle_stereo(frame, h, fb);
        }
        else
        {
@@ -1045,25 +785,14 @@ bool exrImage::find_channels( const Imf::Header& h,
                if ( _stereo_type != kStereoRightAnaglyph ) _left_red = true;
                else _left_red = false;
 
-               s = channels.begin();
-               e = channels.end();
-
-               if ( _multiview )
-               {
-                   // When anaglyph and multiview, call channels order multi
-                   return channels_order_multi( frame, s, e, channels, h, fb );
-               }
-               else
-               {
-                   return channels_order( frame, s, e, channels, h, fb );
-               }
+               return handle_stereo(frame, h, fb);
            }
            else
            {
                channels.channelsWithPrefix( channelPrefix, s, e );
                return channels_order( frame, s, e, channels, h, fb );
-         }
-      }
+           }
+       }
    }
    else
    {

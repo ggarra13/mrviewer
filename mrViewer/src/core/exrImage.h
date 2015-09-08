@@ -113,18 +113,10 @@ namespace mrv {
                                   bool deepComp);
 
        bool find_layers( const Imf::Header& h );
-       bool handle_side_by_side_stereo( const boost::int64_t frame,
-                                        const Imf::Header& hdr, 
-                                        Imf::FrameBuffer& fb );
+       bool handle_stereo( const boost::int64_t frame,
+                           const Imf::Header& hdr, 
+                           Imf::FrameBuffer& fb );
        bool channels_order( 
-			   const boost::int64_t frame,
-			   Imf::ChannelList::ConstIterator s,
-			   Imf::ChannelList::ConstIterator e,
-			   Imf::ChannelList& channels,
-			   const Imf::Header& hdr, 
-			   Imf::FrameBuffer& fb
-			    );
-       bool channels_order_multi( 
 			   const boost::int64_t frame,
 			   Imf::ChannelList::ConstIterator s,
 			   Imf::ChannelList::ConstIterator e,
