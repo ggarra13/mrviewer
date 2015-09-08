@@ -1226,21 +1226,18 @@ void CMedia::channel( const char* c )
     }
 
   free( _channel );
+  _channel = NULL;
 
 
   if ( c )
     {
       _channel = strdup( c );
     }
-  else
-    {
-      _channel = NULL;
-    }
 
   if (to_fetch) 
     {
-       clear_cache();
        SCOPED_LOCK( _mutex );
+       clear_cache();
        fetch(_frame);
     }
   refresh();
@@ -1646,8 +1643,10 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
-
     if ( _playback == kStopped && _threads.empty() ) return;
+
+    if ( _eye[1] ) _eye[1]->stop();
+
 
 
   _playback = kStopped;
@@ -1972,7 +1971,8 @@ const char* const CMedia::exif( const std::string& name ) const
  */
 void CMedia::flush_all()
 {
-    if ( _eye[1] )  _eye[1]->flush_all();
+    if ( _eye[1] ) _eye[1]->flush_all();
+
     if ( has_video() )
         flush_video();
     if ( has_audio() )
