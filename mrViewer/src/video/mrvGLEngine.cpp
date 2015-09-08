@@ -612,6 +612,7 @@ bool GLEngine::init_fbo( ImageList& images )
    Image_ptr img = images.back();
 
    mrv::image_type_ptr pic = img->hires();
+   if (!pic) return false;
 
    unsigned w = pic->width();
    unsigned h = pic->height();
@@ -693,6 +694,7 @@ void GLEngine::end_fbo( ImageList& images )
 
    Image_ptr img = images.back();
    mrv::image_type_ptr pic = img->hires();
+   if (!pic) return;
 
    unsigned w = pic->width();
    unsigned h = pic->height();
@@ -1252,6 +1254,7 @@ void GLEngine::draw_images( ImageList& images )
     {
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
+      if (!pic) continue;
 
       const boost::int64_t& frame = pic->frame();
 
@@ -1443,11 +1446,12 @@ void GLEngine::draw_images( ImageList& images )
              texWidth = daw2.w();
              texHeight = daw2.h();
          }
-         else
+         else if ( pic )
          {
              texWidth = pic->width();
              texHeight = pic->height();
          }
+      
 
          glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
 
