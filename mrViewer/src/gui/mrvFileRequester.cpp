@@ -480,6 +480,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    bool ok = mrv::fileroot( root, fileseq );
    if ( !ok && !movie ) return;
 
+
    mrv::Timeline* timeline = uiMain->uiTimeline;
    int64_t first = int64_t( timeline->minimum() );
    int64_t last  = int64_t( timeline->maximum() );
@@ -576,6 +577,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                {
                    sprintf( buf, "%s%s", root.c_str(), ext.c_str() );
                }
+
 
                if ( fs::exists( buf ) )
                {

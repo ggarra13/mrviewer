@@ -284,7 +284,7 @@ class CMedia
     kStereoInterlaced = 4,
     kStereoOpenGL     = 8,
     kStereoAnaglyph   = 16,
-    kStereoRightAnaglyph = 16 + 32,
+    kStereoRightAnaglyph = 16 + 3,
     };
 
 

@@ -1262,19 +1262,13 @@ void GLEngine::draw_images( ImageList& images )
       mrv::Recti daw = img->data_window(frame);
 
 
-      if ( (img->stereo_type() == CMedia::kStereoCrossed) ||
-           (img->stereo_type() == CMedia::kStereoRightAnaglyph) )
+      if ( img->stereo_type() & CMedia::kStereoCrossed )
       {
           dpw = img->display_window2(frame);
           daw = img->data_window2(frame);
       }
 
-      if ( dpw.w() == 0 ) dpw.w( pic->width() );
-      if ( dpw.h() == 0 ) dpw.h( pic->height() );
-      if ( daw.w() == 0 ) daw.w( pic->width() );
-      if ( daw.h() == 0 ) daw.h( pic->height() );
-
-
+      // Handle background image size
       if ( fg != img && img->stereo_type() == CMedia::kNoStereo )
       {
           const mrv::Recti& dp = fg->display_window(frame);
@@ -1286,9 +1280,6 @@ void GLEngine::draw_images( ImageList& images )
           texWidth = daw.w();
           texHeight = daw.h();
       }
-
-      if ( texWidth == 0 )  texWidth = pic->width();
-      if ( texHeight == 0 ) texHeight = pic->height();
 
       ImageView::FlipDirection flip = _view->flip();
 
@@ -1321,7 +1312,7 @@ void GLEngine::draw_images( ImageList& images )
 
           if ( _view->data_window()  )
           {
-              mrv::Rectd r = mrv::Rectd( daw.x(), daw.y(), daw.w(), daw.h() );
+              mrv::Rectd r( daw.x(), daw.y(), daw.w(), daw.h() );
               draw_data_window( r );
           }
       }
@@ -1346,7 +1337,7 @@ void GLEngine::draw_images( ImageList& images )
       quad->minmax( normMin, normMax );
 
       if ( _view->use_lut() )
-	{
+      {
 	  if ( img->image_damage() & CMedia::kDamageLut )
               quad->clear_lut();
 
@@ -1358,17 +1349,16 @@ void GLEngine::draw_images( ImageList& images )
                   (*(q+1))->clear_lut();
               (*(q+1))->lut( img );
           }
-	}
+      }
 
       if ( i+1 == e ) wipe_area();
 
       if ( img->stereo_type() != CMedia::kNoStereo && 
            img->left() && img->right() )
       {
-         if ( img->stereo_type() == CMedia::kStereoCrossed ||
-              img->stereo_type() == CMedia::kStereoRightAnaglyph )
+         if ( img->stereo_type() & CMedia::kStereoCrossed )
          {
-            pic = img->right();
+             pic = img->right();
          }
          else
          {
@@ -1376,9 +1366,7 @@ void GLEngine::draw_images( ImageList& images )
          }
 
          if ( img->stereo_type() & CMedia::kStereoAnaglyph )
-         {
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
-         }
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
@@ -1398,8 +1386,7 @@ void GLEngine::draw_images( ImageList& images )
          mrv::Recti dpw2 = img->display_window2(frame);
          mrv::Recti daw2 = img->data_window2(frame);
 
-         if ( img->stereo_type() == CMedia::kStereoCrossed ||
-              img->stereo_type() == CMedia::kStereoRightAnaglyph )
+         if ( img->stereo_type() & CMedia::kStereoCrossed )
          {
              dpw2 = img->display_window(frame);
              daw2 = img->data_window(frame);
@@ -1425,14 +1412,12 @@ void GLEngine::draw_images( ImageList& images )
                  if ( img->stereo_type() & CMedia::kStereoSideBySide )
                      x = dpw.w();
 
-                 mrv::Rectd r = mrv::Rectd( daw2.x() + x, 
-                                            daw2.y(), daw2.w(), daw2.h() );
+                 mrv::Rectd r( daw2.x() + x, daw2.y(), daw2.w(), daw2.h() );
                  draw_data_window( r );
              }
          }
 
-         if ( img->stereo_type() == CMedia::kStereoCrossed ||
-              img->stereo_type() == CMedia::kStereoRightAnaglyph )
+         if ( img->stereo_type() & CMedia::kStereoCrossed )
          {
             pic = img->left();
          }

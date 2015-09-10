@@ -586,7 +586,6 @@ mrv::image_type_ptr CMedia::right() const
 
 
 
-static mrv::Recti kNoRect = mrv::Recti(0,0,0,0);
 
 
 
