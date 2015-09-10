@@ -1,6 +1,11 @@
+v2.9.4   - Copy pixel value now respects lut and gamma.
+
 v2.9.3   - Bug fixed saving of OpenExr files when data window was
 	   smaller than display window.  Previously it would crash.
 	 - Bug fixed a number of memory leaks.
+	 - Bug fixed fit image when in stereo side by side mode.
+	 - Bug fixed saving of files in start directory instead of
+	   directory set in file requester.
 	 - Added support for stereo loading of two set of images
 	   or two sets of movie files with a common prefix.  The
 	   syntax is a single letter prefix or a full keyword:
@@ -20,8 +25,13 @@ v2.9.3   - Bug fixed saving of OpenExr files when data window was
 
 	   The names of left and right and L and R can be changed
 	   with environment variables. See documentation.
+
+	   Current Limitations
+	   -------------------
 	   Currently, it is not possible to mix a movie and a
 	   sequence in stereo viewing.
+	   It is also not possible to view in stereo channels
+	   other than RGBA.
 	   Finally, a background image is available for
 	   the left eye only.
 

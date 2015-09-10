@@ -73,6 +73,7 @@ namespace
 
 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
+#define IMG_INFO(x) LOG_INFO( name() << " - " << x )
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
@@ -880,7 +881,8 @@ void aviImage::limit_video_store(const boost::int64_t frame)
       case kForwards:
           first = frame - max_video_frames();
           last  = frame + max_video_frames();
-          if ( _dts > last )   last = _dts;
+          if ( _dts > last )   last  = _dts;
+          // if ( _dts < first )  first = _dts;
           break;
       default:
           first = frame - max_video_frames();
@@ -1075,6 +1077,7 @@ bool aviImage::find_image( const boost::int64_t frame )
 	       IMG_WARNING( _("find_image: frame ") << frame 
 			    << _(" not found, choosing ") << _hires->frame() 
 			    << _(" instead") );
+               // debug_video_packets( frame, "find_image", false );
             }
 	  }
 	else
@@ -1939,7 +1942,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 bool aviImage::fetch(const boost::int64_t frame)
 {
 #ifdef DEBUG_DECODE
-   cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
+    if ( _eye[1] == NULL )
+        cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
    if ( playback() == kStopped && _eye[1] ) {
@@ -2052,8 +2056,9 @@ bool aviImage::frame( const boost::int64_t f )
 
 
 #ifdef DEBUG_DECODE
-  LOG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: " 
+  IMG_INFO( "------- FRAME DONE _dts: " << _dts << " _frame: " 
 	    << _frame << " _expected: "  << _expected );
+  debug_video_packets( _dts, "fetch", false );
 #endif
 
   return ok;
@@ -2370,14 +2375,23 @@ void aviImage::debug_video_stores(const boost::int64_t frame,
 	    << _images.size() << ": ";
 
 
+  bool dtail = detail;
+
   if ( iter != last )
+  {
+      video_cache_t::const_iterator end = last - 1;
+      
      std::cerr << (*iter)->frame() << "-" 
-	       << (*(last-1))->frame() 
+	       << (*end)->frame() 
 	       << std::endl;
+
+     if ( (*iter)->frame() > (*end)->frame() )
+         dtail = true;
+  }
   else
       std::cerr << std::endl;
 
-  if ( detail )
+  if ( dtail )
   {
      for ( ; iter != last; ++iter )
      {
