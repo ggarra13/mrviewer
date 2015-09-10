@@ -398,7 +398,7 @@ void Flu_File_Chooser::add_type( const char *extensions,
   types[numTypes].extensions = ext;
   types[numTypes].type = short_description;
 
-  numTypes++;
+  ++numTypes;
 }
 
 Flu_File_Chooser::FileTypeInfo*
@@ -808,9 +808,6 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
     filelist->type( fltk::ScrollGroup::HORIZONTAL );
     filelist->spacing( 4, 1 );
 
-    // filelist->begin();
-    // filelist->end();
-
     fileDetailsGroup = new fltk::Group( 2, 2, fileGroup->w()-4, 
 					fileGroup->h()-4 );
     fileDetailsGroup->begin();
@@ -1202,8 +1199,8 @@ void Flu_File_Chooser::newFolderCB()
   if( mkdir( path.c_str(), S_IRWXU | S_IRWXG | S_IROTH | S_IXOTH ) != 0 )
 #endif
     {
-      fltk::alert( createFolderErrTxt.c_str(), newName.c_str() );
-      return;
+        fltk::alert( _(createFolderErrTxt.c_str()), newName.c_str() );
+        return;
     }
 
   // create a new entry with the name of the new folder. add to either the list or the details
@@ -1224,12 +1221,16 @@ void Flu_File_Chooser::newFolderCB()
   */
 
   // @todo: verify scrollTo
-//   if( !fileDetailsBtn->value() )
-//     filelist->goto_index( filelist->children()-1 );
-//     filelist->scrollTo( entry->x(), entry->y() );
-//   else
-//     filedetails->goto_index( filelist->children()-1 );
-//    filedetails->scrollTo( entry->x(), entry->y() );
+  // if( !fileDetailsBtn->value() )
+  // {
+  //     filelist->goto_index( filelist->children()-1 );
+  //     filelist->scrollTo( entry->x(), entry->y() );
+  // }
+  // else
+  // {
+  //     filedetails->goto_index( filelist->children()-1 );
+  //     filedetails->scrollTo( entry->x(), entry->y() );
+  // }
 }
 
 void Flu_File_Chooser::recursiveScan( const char *dir, FluStringVector *files )
@@ -1748,8 +1749,8 @@ void Flu_File_Chooser::okCB()
 
 	  // prepend the path
 	  std::string path = currentDir + filename.value();
-	  filename.value( path.c_str() );
           value( path.c_str() );
+	  filename.value( path.c_str() );
 	  filename.position( filename.size(), filename.size() );
 	  do_callback();
 	  hide();
@@ -3026,7 +3027,7 @@ void Flu_File_Chooser::select_all()
       e = ((Entry*)g->child(i));
       e->set_selected();
       e->editMode = 0;
-      filename.value( e->filename.c_str() );
+      filename.value( (currentDir + e->filename).c_str() );
     }
   lastSelected = 0;
   trashBtn->deactivate();
@@ -3081,7 +3082,6 @@ int Flu_File_Chooser::count()
 
 void Flu_File_Chooser::value( const char *v )
 {
-  // cd( v );
   if( !v )
     return;
   // try to find the file and select it
@@ -4647,10 +4647,10 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
     {
        fc = new Flu_File_Chooser( filename, pattern, type, message, 
 				  compact_files );
-      if (fc && retname != "")
-      {
-	 fc->value( retname.c_str() );
-      }
+       if (fc && retname.size() )
+       {
+           fc->value( retname.c_str() );
+       }
     }
   else
     {

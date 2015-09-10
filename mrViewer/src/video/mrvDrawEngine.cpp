@@ -752,10 +752,16 @@ namespace mrv {
   void DrawEngine::minmax() {
     _normMin = std::numeric_limits< float >::max();
     _normMax = std::numeric_limits< float >::min();
-    if ( _view->foreground() )
-      minmax( _normMin, _normMax, _view->foreground()->image() );
-    if ( _view->background() ) 
-      minmax( _normMin, _normMax, _view->background()->image() );
+    {
+        const mrv::media& m = _view->foreground();
+        if ( m )
+            minmax( _normMin, _normMax, m->image() );
+    }
+    {
+        const mrv::media& m = _view->background();
+        if ( m ) 
+            minmax( _normMin, _normMax, m->image() );
+    }
   }
   
 } // namespace mrv

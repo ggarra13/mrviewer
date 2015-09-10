@@ -461,7 +461,7 @@ class server;
 
   protected:
 
-      void pixel_processed( const CMedia* img, CMedia::Pixel& rgba );
+      void pixel_processed( const CMedia* img, CMedia::Pixel& rgba ) const;
 
     void stop_playback();
 
