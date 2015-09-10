@@ -623,15 +623,21 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
       }
 
 
-
+    
     if ( !must_convert )
     {
-        LOG_INFO( _("No conversion needed.  Gamma: ") << _gamma );
+        if ( pic->frame() == first_frame() )
+        {
+            LOG_INFO( _("No conversion needed.  Gamma: ") << _gamma );
+        }
         MagickSetImageGamma( wand, _gamma );
     }
     else
     {
-        LOG_INFO( _("Conversion needed.  Gamma: 1.0") );
+        if ( pic->frame() == first_frame() )
+        {
+            LOG_INFO( _("Conversion needed.  Gamma: 1.0") );
+        }
         MagickSetImageGamma( wand, 1.0 );
     }
 
