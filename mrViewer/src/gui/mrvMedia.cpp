@@ -129,8 +129,8 @@ namespace mrv {
 
       unsigned int h = _thumbnail_height;
 
-      float yScale = (float)h / (float)dh;
-      unsigned int w = (float)dw * (float)yScale;
+      float yScale = (float)(h+1) / (float)dh;
+      unsigned int w = (float)(dw+1) * (float)yScale;
 
       if ( _thumbnail )
       {
