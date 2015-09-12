@@ -243,9 +243,9 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 
     boost::int64_t dts = frame;
 
-        assert( get_audio_stream() != NULL );
+    assert( get_audio_stream() != NULL );
     boost::int64_t apts = frame2pts( get_audio_stream(), frame );
-        if ( apts < 0 ) return frame;
+    if ( apts < 0 ) return frame;
 
     AVPacket pkt = {0};
 
@@ -1265,7 +1265,10 @@ void CMedia::audio_stream( int idx )
   if ( idx != -1 && unsigned(idx) >= number_of_audio_streams() )
     throw "Audio stream invalid";
 
+  if ( _right_eye ) _right_eye->audio_stream(idx);
+
   if ( idx == _audio_index ) return;
+
 
   mrv::PacketQueue::Mutex& am  = _audio_packets.mutex();
   SCOPED_LOCK( am );
@@ -1629,6 +1632,8 @@ void CMedia::audio_shutdown()
 /// Change audio volume
 void CMedia::volume( float v )
 {
+    if ( _right_eye ) _right_eye->volume( v );
+
   if ( !_audio_engine ) return;
   _audio_engine->volume( v );
 }

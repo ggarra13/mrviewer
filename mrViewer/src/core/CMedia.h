@@ -280,11 +280,12 @@ class CMedia
     enum StereoType {
     kNoStereo = 0,
     kStereoSideBySide = 1,
-    kStereoCrossed    = 3,
+    kStereoRight      = 2,
+    kStereoCrossed    = 1 + 2,
     kStereoInterlaced = 4,
     kStereoOpenGL     = 8,
     kStereoAnaglyph   = 16,
-    kStereoRightAnaglyph = 16 + 3,
+    kStereoRightAnaglyph = 16 + 2,
     };
 
 
@@ -333,8 +334,6 @@ class CMedia
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
     void default_layers();
 
-    // Add default left.anaglyph and right.anaglyph
-    void add_anaglyph_layers();
 
     // Add default stereo.horizontal, stereo.crossed
     void add_stereo_layers();
@@ -837,7 +836,6 @@ class CMedia
     virtual DecodeStatus decode_video( boost::int64_t& frame );
     virtual DecodeStatus decode_subtitle( const boost::int64_t frame );
 
-    void eye( int idx, CMedia* c ) { _eye[idx] = c; refresh(); }
 
     float eye_separation() const { return _eye_separation; }
     void eye_separation(float b) { _eye_separation = b; refresh(); }
@@ -875,10 +873,13 @@ class CMedia
     virtual void probe_size( unsigned p ) {}
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
-    CMedia* eye( int idx ) { return _eye[idx]; }
+    CMedia* left_eye() { return this; }
 
-    bool left_eye() const { return _left_eye; }
-    void left_eye( bool left ) { _left_eye = left; }
+    void right_eye( CMedia* c ) { _right_eye = c; refresh(); }
+    CMedia* right_eye() { return _right_eye; }
+
+    bool is_left_eye() const { return _is_left_eye; }
+    void is_left_eye( bool left ) { _is_left_eye = left; }
 
     std::string sequence_filename( const boost::int64_t frame );
 
@@ -1200,8 +1201,8 @@ class CMedia
     mrv::image_type_ptr _stereo[2]; // stereo image
     mrv::image_type_ptr _subtitle;
 
-    bool      _left_eye;
-    CMedia*   _eye[2];
+    bool      _is_left_eye;
+    CMedia*   _right_eye;
 
     float     _eye_separation;
 

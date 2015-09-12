@@ -99,16 +99,16 @@ typedef std::vector< CtlLMTData* > LMTData;
   static const unsigned int kSizeOfRowColors = ( sizeof(kRowColors) /
 						 sizeof(fltk::Color) );
 
-  static const int kMiddle = 150;
+  static const int kMiddle = 200;
 
 void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
 {
     static CMedia* last = NULL;
     CMedia* img = info->get_image();
-    if ( img->is_stereo() && img != last && img->eye(1) )
+    if ( img->is_stereo() && img != last && img->right_eye() )
     {
         last = img;
-        img = img->eye(1);
+        img = img->right_eye();
         info->set_image( img );
         w->label( _("Right View") );
     }
@@ -211,17 +211,17 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
       { 2.76, _("MGM Camera 65") },
     };
 
-  void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
-  {
+void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
+{
     m->label( m->child( m->value() )->label() );
-  }
+}
 
-  void ImageInformation::float_slider_cb( fltk::Slider* s, void* data )
-  {
+void ImageInformation::float_slider_cb( fltk::Slider* s, void* data )
+{
     fltk::FloatInput* n = (fltk::FloatInput*) data;
     n->value( s->value() );
     n->do_callback();
-  }
+}
 
 void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
 {
@@ -247,8 +247,8 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-  static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
-  {
+static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+{
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
@@ -261,10 +261,10 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
             view->redraw();
         }
     }
-  }
+}
 
-  static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
-  {
+static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+{
 
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
@@ -278,18 +278,18 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
             view->redraw();
         }
     }
-  }
+}
 
-  static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
-  {
+static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
+{
     CMedia* img = info->get_image();
     if ( img )
     {
-       img->first_frame( w->ivalue() );
-       mrv::ImageView* view = info->main()->uiView;
-       view->redraw();
+        img->first_frame( w->ivalue() );
+        mrv::ImageView* view = info->main()->uiView;
+        view->redraw();
     }
-  }
+}
 
   static void eye_separation_cb( fltk::FloatInput* w, ImageInformation* info )
   {
@@ -301,79 +301,79 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
       }
   }
 
-  static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
-  {
-      CMedia* img = info->get_image();
-      if ( img )
-      {
-          img->fps( w->fvalue() );
-      }
-  }
-
-  static void change_last_frame_cb( fltk::IntInput* w,
-                                     ImageInformation* info )
-  {
+static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
+{
     CMedia* img = info->get_image();
     if ( img )
     {
-       img->last_frame( w->ivalue() );
-       info->main()->uiView->redraw();
+        img->fps( w->fvalue() );
     }
-  }
+}
 
-  static void change_pixel_ratio_cb( fltk::FloatInput* w,
-                                     ImageInformation* info )
-  {
+static void change_last_frame_cb( fltk::IntInput* w,
+                                  ImageInformation* info )
+{
+    CMedia* img = info->get_image();
+    if ( img )
+    {
+        img->last_frame( w->ivalue() );
+        info->main()->uiView->redraw();
+    }
+}
+
+static void change_pixel_ratio_cb( fltk::FloatInput* w,
+                                   ImageInformation* info )
+{
     CMedia* img = info->get_image();
     img->pixel_ratio( w->fvalue() );
     info->main()->uiView->redraw();
-  }
+}
 
-  static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
-  {
+static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
+{
     CMedia* img = info->get_image();
     img->gamma( float(w->fvalue()) );
 
     mrv::ImageView* view = info->main()->uiView;
     view->gamma( float(w->fvalue()) );
     view->redraw();
-  }
+}
 
 boost::int64_t ImageInformation::to_memory( boost::int64_t value,
 					    const char*& extension )
-  {
-     if ( value >= 1099511627776 )
-      {
+{
+    if ( value >= 1099511627776 )
+    {
 	value /= 1099511627776;
 	extension = N_("Tb");
-      }
+    }
     else if ( value >= 1073741824 )
-      {
+    {
 	value /= 1073741824;
 	extension = N_("Gb");
-      }
+    }
     else if ( value >= 1048576 )
-      {
+    {
 	value /= 1048576;
 	extension = N_("Mb");
-      }
+    }
     else if ( value >= 1024 )
-      {
+    {
 	value /= 1024;
 	extension = N_("Kb");
-      }
+    }
     else
-      {
+    {
 	extension = N_("bytes");
-      }
+    }
     return value;
-  }
+}
 
-  void ImageInformation::set_image( CMedia* i )
-  {
+void ImageInformation::set_image( CMedia* i )
+{
     img = i;
     refresh();
-  }
+}
 
 void ImageInformation::clear_callback_data()
 {
@@ -389,15 +389,15 @@ void ImageInformation::clear_callback_data()
     widget_data.clear();
 }
 
-  void ImageInformation::hide_tabs()
-  {
+void ImageInformation::hide_tabs()
+{
     m_image->hide();
     m_video->hide();
     m_audio->hide();
     m_subtitle->hide();
     m_iptc->hide();
     m_exif->hide();
-  }
+}
 
 void ImageInformation::fill_data()
 {
@@ -473,35 +473,33 @@ void ImageInformation::fill_data()
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
+    const mrv::Recti& window = img->data_window();
+    if ( window.w() > 0 )
     {
-        const mrv::Recti& window = img->data_window();
-        if ( window.w() > 0 )
-        {
-            add_rect( _("Data Window"), window );
-        }
+        add_rect( _("Data Window"), window );
+    }
 
-       const mrv::Recti& dwindow = img->display_window();
-        if ( dwindow.w() > 0 )
-        {
-            add_rect( _("Display Window"), dwindow );
-        }
+    const mrv::Recti& dwindow = img->display_window();
+    if ( dwindow.w() > 0 )
+    {
+        add_rect( _("Display Window"), dwindow );
     }
 
     if ( ! img->is_stereo() )
     {
-        const mrv::Recti& window = img->data_window2();
-        if ( window.w() > 0 )
+        const mrv::Recti& window2 = img->data_window2();
+        if ( window != window2 )
         {
-            add_rect( _("Data Window 2"), window );
+            add_rect( _("Data Window 2"), window2 );
         }
 
-        const mrv::Recti& dwindow = img->display_window2();
-        if ( dwindow.w() > 0 )
+        const mrv::Recti& dwindow2 = img->display_window2();
+        if ( dwindow != dwindow2 )
         {
-            add_rect( _("Display Window 2"), dwindow );
+            add_rect( _("Display Window 2"), dwindow2 );
         }
 
-        if ( window.w() > 0 )
+        if ( window != window2 )
             add_float( _("Eye Separation"), img->eye_separation(), true,
                        (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
     }

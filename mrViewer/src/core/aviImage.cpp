@@ -851,7 +851,7 @@ void aviImage::clear_packets()
 	<< " expected: " << _expected << endl;
 #endif
 
-   if ( _eye[1] ) _eye[1]->clear_packets();
+   if ( _right_eye ) _right_eye->clear_packets();
 
   _video_packets.clear();
   _audio_packets.clear();
@@ -1008,8 +1008,8 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
-    if ( _eye[1] && playback() == kStopped )
-        _eye[1]->find_image( frame );
+    if ( _right_eye && playback() == kStopped )
+        _right_eye->find_image( frame );
 
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "find_image");
@@ -1357,12 +1357,12 @@ void aviImage::populate()
 
     if ( msg.str().size() > 0 )
     {
-        mrvALERT( filename() << msg.str() );
+        LOG_ERROR( filename() << msg.str() );
     }
 
     if ( _video_index < 0 && _audio_index < 0 )
     {
-        mrvALERT( filename() << _("\n\nNo audio or video stream in file") );
+        LOG_ERROR( filename() << _(" No audio or video stream in file") );
         return;
     }
 
@@ -1684,7 +1684,7 @@ bool aviImage::initialize()
       else
 	{
 	  _context = NULL;
-	  mrvALERT( filename() << _("\n\nCould not open file") );
+          LOG_ERROR( filename() << _(" Could not open file") );
 	  return false;
 	}
     }
@@ -1942,13 +1942,13 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 bool aviImage::fetch(const boost::int64_t frame)
 {
 #ifdef DEBUG_DECODE
-    if ( _eye[1] == NULL )
+    if ( _right_eye == NULL )
         cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
-   if ( playback() == kStopped && _eye[1] ) {
-       _eye[1]->stop();
-       _eye[1]->fetch( frame );
+   if ( playback() == kStopped && _right_eye ) {
+       _right_eye->stop();
+       _right_eye->fetch( frame );
    }
 
    bool got_video = !has_video();
@@ -2311,7 +2311,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
           //     limit_video_store( frame );
 	  // }
 
-
 	  got_video = decode_image( pktframe, pkt );
 	  _video_packets.pop_front();
           continue;
@@ -2485,7 +2484,7 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 void aviImage::do_seek()
 {
     // No need to set seek frame here
-    if ( _eye[1] )  _eye[1]->do_seek();
+    if ( _right_eye )  _right_eye->do_seek();
 
   _dts = _seek_frame;
 

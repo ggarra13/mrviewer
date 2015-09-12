@@ -929,16 +929,6 @@ void GLEngine::draw_mask( const float pct )
   mrv::Recti dpw2 = img->display_window2();
   mrv::Recti dpw = img->display_window();
 
-  if ( dpw.w() == 0 )
-  {
-      dpw.w( img->width() );
-  }
-
-  if ( dpw.h() == 0 )
-  {
-      dpw.h( img->height() );
-  }
-
   if ( img->stereo_type() & CMedia::kStereoSideBySide )
   {
       dpw.w( dpw.w() + dpw2.w() );
@@ -1003,12 +993,6 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     mrv::Recti daw = img->data_window();
     mrv::Recti dpw = img->display_window();
 
-    if ( dpw.w() == 0 )
-    {
-        dpw.w( img->width() );
-        dpw.h( img->height() );
-    }
-
 
     glPushMatrix();
     glPushAttrib( GL_STENCIL_TEST );
@@ -1017,16 +1001,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     set_matrix( flip, true );
 
     float x = 0.0f, y = 0.0f;
-    if ( flip & ImageView::kFlipVertical )
-    {
-        if ( dpw.w() == 0 ) dpw.w( texWidth );
-        x = -dpw.w();
-    }
-    if ( flip & ImageView::kFlipHorizontal )
-    {
-        if ( dpw.h() == 0 ) dpw.h( texHeight );
-        y = dpw.h();
-    }
+    if ( flip & ImageView::kFlipVertical )    x = -dpw.w();
+    if ( flip & ImageView::kFlipHorizontal )  y = dpw.h();
 
     glTranslated( x + r.x(), y - r.y(), 0 );
 
@@ -1090,37 +1066,27 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     Image_ptr img = fg->image();
 
     mrv::Recti dpw = img->display_window();
-    if ( dpw.w() == 0 )
+
+
+    glDisable( GL_STENCIL_TEST );
+
+    set_matrix( ImageView::kFlipNone, true );
+
+    double tw = dpw.w() / 2.0;
+    double th = dpw.h() / 2.0;
+
+    glTranslated( dpw.x() + tw, -dpw.y() - th, 0 );
+
+    tw *= percentX;
+    th *= percentY;
+
+    draw_safe_area_inner( tw, th, name );
+
+    if ( img->stereo_type() & CMedia::kStereoSideBySide )
     {
-        dpw = img->data_window();
+        glTranslated( dpw.w(), 0, 0 );
+        draw_safe_area_inner( tw, th, name );
     }
-    
-    if ( dpw.w() == 0 )
-    {
-        dpw.w( img->width() );
-        dpw.h( img->height() );
-    }
-
-
-  glDisable( GL_STENCIL_TEST );
-
-  set_matrix( ImageView::kFlipNone, true );
-
-  double tw = dpw.w() / 2.0;
-  double th = dpw.h() / 2.0;
-
-  glTranslated( dpw.x() + tw, -dpw.y() - th, 0 );
-
-  tw *= percentX;
-  th *= percentY;
-
-  draw_safe_area_inner( tw, th, name );
-
-  if ( _view->stereo_type() & CMedia::kStereoSideBySide )
-  {
-      glTranslated( dpw.w(), 0, 0 );
-      draw_safe_area_inner( tw, th, name );
-  }
 
 }
 
@@ -1256,20 +1222,22 @@ void GLEngine::draw_images( ImageList& images )
       mrv::image_type_ptr pic = img->hires();
       if (!pic) continue;
 
+      CMedia::StereoType stereo = img->stereo_type();
+
       const boost::int64_t& frame = pic->frame();
 
       mrv::Recti dpw = img->display_window(frame);
       mrv::Recti daw = img->data_window(frame);
 
 
-      if ( img->stereo_type() & CMedia::kStereoCrossed )
+      if ( stereo & CMedia::kStereoRight )
       {
           dpw = img->display_window2(frame);
           daw = img->data_window2(frame);
       }
 
       // Handle background image size
-      if ( fg != img && img->stereo_type() == CMedia::kNoStereo )
+      if ( fg != img && stereo == CMedia::kNoStereo )
       {
           const mrv::Recti& dp = fg->display_window(frame);
           texWidth = dp.w();
@@ -1289,16 +1257,8 @@ void GLEngine::draw_images( ImageList& images )
       if ( flip )
       {
           float x = 0.0f, y = 0.0f;
-          if ( flip & ImageView::kFlipVertical )
-          {
-              if ( dp.w() == 0 ) dp.w( texWidth );
-              x = -dp.w();
-          }
-          if ( flip & ImageView::kFlipHorizontal )
-          {
-              if ( dp.h() == 0 ) dp.h( texHeight );
-              y = dp.h();
-          }
+          if ( flip & ImageView::kFlipVertical )   x = -dp.w();
+          if ( flip & ImageView::kFlipHorizontal ) y = dp.h();
           glTranslatef( x, y, 0.0f );
       }
 
@@ -1343,7 +1303,7 @@ void GLEngine::draw_images( ImageList& images )
 
 	  quad->lut( img );
 
-          if ( img->stereo_type() != CMedia::kNoStereo )
+          if ( stereo != CMedia::kNoStereo )
           {
               if ( img->image_damage() & CMedia::kDamageLut )
                   (*(q+1))->clear_lut();
@@ -1353,10 +1313,10 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( i+1 == e ) wipe_area();
 
-      if ( img->stereo_type() != CMedia::kNoStereo && 
+      if ( stereo != CMedia::kNoStereo && 
            img->left() && img->right() )
       {
-         if ( img->stereo_type() & CMedia::kStereoCrossed )
+         if ( stereo & CMedia::kStereoRight )
          {
              pic = img->right();
          }
@@ -1365,10 +1325,13 @@ void GLEngine::draw_images( ImageList& images )
              pic = img->left();
          }
 
-         if ( img->stereo_type() & CMedia::kStereoAnaglyph )
+         if ( stereo & CMedia::kStereoAnaglyph )
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+
+         if ( stereo & CMedia::kStereoOpenGL )
+             glDrawBuffer( GL_LEFT );
 
          quad->bind( pic );
          quad->gamma( img->gamma() );
@@ -1380,13 +1343,14 @@ void GLEngine::draw_images( ImageList& images )
 
          glPopMatrix();
 
-         if ( ! ( img->stereo_type() & CMedia::kStereoAnaglyph ) )
+         if ( ! ( stereo & CMedia::kStereoAnaglyph ) &&
+              ! ( stereo & CMedia::kStereoOpenGL ) )
              glTranslated( dpw.w(), 0, 0 );
 
          mrv::Recti dpw2 = img->display_window2(frame);
          mrv::Recti daw2 = img->data_window2(frame);
 
-         if ( img->stereo_type() & CMedia::kStereoCrossed )
+         if ( stereo & CMedia::kStereoRight )
          {
              dpw2 = img->display_window(frame);
              daw2 = img->data_window(frame);
@@ -1399,7 +1363,7 @@ void GLEngine::draw_images( ImageList& images )
          if ( dpw2 != daw2 )
          {
              if ( _view->display_window() &&
-                  ( !( img->stereo_type() & CMedia::kStereoAnaglyph ) ) )
+                  ( !( stereo & CMedia::kStereoAnaglyph ) ) )
              {
                  draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
              }
@@ -1409,7 +1373,7 @@ void GLEngine::draw_images( ImageList& images )
                  
                  double x = 0;
 
-                 if ( img->stereo_type() & CMedia::kStereoSideBySide )
+                 if ( stereo & CMedia::kStereoSideBySide )
                      x = dpw.w();
 
                  mrv::Rectd r( daw2.x() + x, daw2.y(), daw2.w(), daw2.h() );
@@ -1417,7 +1381,7 @@ void GLEngine::draw_images( ImageList& images )
              }
          }
 
-         if ( img->stereo_type() & CMedia::kStereoCrossed )
+         if ( stereo & CMedia::kStereoRight )
          {
             pic = img->left();
          }
@@ -1465,10 +1429,13 @@ void GLEngine::draw_images( ImageList& images )
 
       }
 
-      if ( img->stereo_type() & CMedia::kStereoAnaglyph )
+      if ( stereo & CMedia::kStereoAnaglyph )
           glColorMask( GL_FALSE, GL_TRUE, GL_TRUE, GL_TRUE );
       else
           glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+
+      if ( stereo & CMedia::kStereoOpenGL )
+          glDrawBuffer( GL_RIGHT );
 
       quad->bind( pic );
       quad->gamma( img->gamma() );
