@@ -1,4 +1,8 @@
 v2.9.4   - Copy pixel value now respects lut and gamma.
+	 - Changing volume or audio track now effects both 
+	   stereo images.
+	 - Bug fixed avi saver to work with images whose
+	   resolution were not a power of two.
 
 v2.9.3   - Bug fixed saving of OpenExr files when data window was
 	   smaller than display window.  Previously it would crash.
