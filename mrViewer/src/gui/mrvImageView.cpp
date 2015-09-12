@@ -909,7 +909,7 @@ void ImageView::copy_pixel() const
 
   mrv::image_type_ptr pic = img->left();
 
-  if ( _stereo & CMedia::kStereoCrossed ) pic = img->right();
+  if ( _stereo & CMedia::kStereoRight ) pic = img->right();
 
   if ( !pic ) return;
 
@@ -943,7 +943,7 @@ void ImageView::copy_pixel() const
 
   if ( xp > w && _stereo & CMedia::kStereoSideBySide )
   {
-      if ( _stereo & CMedia::kStereoCrossed ) pic = img->left();
+      if ( _stereo & CMedia::kStereoRight ) pic = img->left();
       else pic = img->right();
       xp -= w;
   }
@@ -2534,7 +2534,7 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic = img->left();
 
-  if ( stereo_type() & CMedia::kStereoCrossed ) pic = img->right();
+  if ( stereo_type() & CMedia::kStereoRight ) pic = img->right();
 
   if ( !pic ) return;
 
@@ -2578,7 +2578,7 @@ void ImageView::mouseMove(int x, int y)
 
   if ( xp >= (int)w && ( stereo_type() & CMedia::kStereoSideBySide ) )
   {
-      if ( _stereo & CMedia::kStereoCrossed ) pic = img->left();
+      if ( _stereo & CMedia::kStereoRight ) pic = img->left();
       else pic = img->right();
 
       if (!pic) return;
@@ -4563,6 +4563,8 @@ void ImageView::foreground( mrv::media fg )
       
         img->volume( _volume );
 
+        CMedia* right = img->right_eye();
+        if ( right ) right->volume( _volume );
     }
 
     _fg = fg;
@@ -4704,6 +4706,8 @@ void ImageView::background( mrv::media bg )
       send( buf );
 
       img->volume( _volume );
+      CMedia* right = img->right_eye();
+      if ( right ) right->volume( _volume );
 
       img->refresh();
 
@@ -5372,10 +5376,18 @@ void ImageView::volume( float v )
   _volume = v;
 
   mrv::media fg = foreground();
-  if ( fg ) fg->image()->volume( v );
+  if ( fg ) 
+  {
+      CMedia* img = fg->image();
+      img->volume( v );
+  }
 
   mrv::media bg = background();
-  if ( bg ) bg->image()->volume( v );
+  if ( bg ) 
+  {
+      CMedia* img = bg->image();
+      img->volume( v );
+  }
 
   uiMain->uiVolume->value( v );
   uiMain->uiVolume->redraw();
