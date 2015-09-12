@@ -196,7 +196,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 				(unsigned int)size );
     if ( image ) 
     {
-        image->left_eye( left );
+        image->is_left_eye( left );
 
 	if ( is_seq )
 	{
@@ -266,13 +266,12 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                            datas, len, lastFrame );
             if ( right )
             {
-                image->eye( 1, right );
+                image->right_eye( right );
                 image->is_stereo( true );
-                image->left_eye( true );
+                image->is_left_eye( true );
                 right->is_stereo( true );
-                right->left_eye( false );
+                right->is_left_eye( false );
                 image->add_stereo_layers();
-                image->add_anaglyph_layers();
             }
         }
     }

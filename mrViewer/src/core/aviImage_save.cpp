@@ -210,17 +210,17 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     /* find the encoder */
     *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
-       LOG_ERROR( "Could not find encoder for '" << 
-                  avcodec_get_name(codec_id) << "'" );
+        LOG_ERROR( _("Could not find encoder for '") << 
+                   avcodec_get_name(codec_id) << "'" );
        return NULL;
     }
 
 
-    LOG_INFO( "Open encoder " << avcodec_get_name(codec_id) );
+    LOG_INFO( _("Open encoder ") << avcodec_get_name(codec_id) );
 
     st = avformat_new_stream(oc, *codec);
     if (!st) {
-        LOG_ERROR( "Could not allocate stream" );
+        LOG_ERROR( _("Could not allocate stream") );
         return NULL;
     }
     st->id = oc->nb_streams-1;
@@ -253,8 +253,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           // c->rc_min_rate = c->bit_rate;
           // c->rc_max_rate = c->bit_rate;
           /* Resolution must be a multiple of two. */
-          c->width    = ( img->width() + 1 ) / 2 * 2;
-          c->height   = ( img->height() + 1 ) / 2 * 2;
+           c->width    = (( img->width() + 1 ) / 2) * 2;
+           c->height   = (( img->height() + 1 ) / 2) * 2;
           /* timebase: This is the fundamental unit of time (in seconds) in terms
            * of which frame timestamps are represented. For fixed-fps content,
            * timebase should be 1/framerate and timestamp increments should be
@@ -308,7 +308,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     /* allocate and init a re-usable frame */
     audio_frame = av_frame_alloc();
     if (!audio_frame) {
-        LOG_ERROR( "Could not allocate audio frame");
+        LOG_ERROR( _("Could not allocate audio frame") );
         return false;
     }
 
@@ -679,7 +679,7 @@ static AVFrame *alloc_picture(enum PixelFormat pix_fmt, int width, int height)
     /* Allocate the encoded raw picture. */
     ret = avpicture_alloc(&dst_picture, pix_fmt, width, height);
     if (ret < 0) {
-       LOG_ERROR( "Could not allocate picture: " << ret );
+        LOG_ERROR( "Could not allocate picture: " << get_error_text(ret) );
        exit(1);
     }
 
@@ -705,7 +705,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     
 
     /* Allocate the encoded raw frame. */
-    picture = alloc_picture(c->pix_fmt, img->width(), img->height());
+    picture = alloc_picture(c->pix_fmt, c->width, c->height);
     if (!picture) {
        LOG_ERROR( _("Could not allocate picture") );
        return false;
@@ -738,8 +738,11 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        return;
    }
 
-   unsigned w = hires->width();
-   unsigned h = hires->height();
+   unsigned w = c->width;
+   unsigned h = c->height;
+
+   if ( img->width() < w )  w = img->width();
+   if ( img->height() < h ) h = img->height();
 
 
    float one_gamma = 1.0f / img->gamma();
