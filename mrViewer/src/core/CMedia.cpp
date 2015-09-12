@@ -141,78 +141,78 @@ const char* const CMedia::decode_error( DecodeStatus err )
  * 
  */
 CMedia::CMedia() :
-  _w( 0 ),
-  _h( 0 ),
-  _internal( false ),
-  _is_sequence( false ),
-  _is_stereo( false ),
-  _stereo_type( kNoStereo ),
-  _fileroot( NULL ),
-  _filename( NULL ),
-  _ctime( 0 ),
-  _mtime( 0 ),
-  _disk_space( 0 ),
-  _loop_barrier( NULL ),
-  _avdiff( 0.0 ),
-  _seek_req( false ),
-  _seek_frame( 1 ),
-  _channel( NULL ),
-  _label( NULL ),
-  _real_fps( 0 ),
-  _play_fps( 0 ),
-  _fps( 0 ),
-  _pixel_ratio( 1.0f ),
-  _num_channels( 0 ),
-  _rendering_intent( kUndefinedIntent ),
-  _gamma( 1 ),
-  _has_chromaticities( false ),
-  _dts( 1 ),
-  _audio_frame( 1 ),
-  _audio_offset( 0 ),
-  _frame( 1 ),
-  _expected( 1 ),
-  _expected_audio( 1 ),
-  _frameStart( 1 ),
-  _frameEnd( 1 ),
-  _interlaced( kNoInterlace ),
-  _image_damage( kNoDamage ),
-  _damageRectangle( 0, 0, 0, 0 ),
-  _numWindows( 0 ),
-  _dataWindow( NULL ),
-  _displayWindow( NULL ),
-  _dataWindow2( NULL ),
-  _displayWindow2( NULL ),
-  _eye_separation( 0.0f ),
-  _left_eye( true ),
-  _profile( NULL ),
-  _rendering_transform( NULL ),
-  _idt_transform( NULL ),
-  _playback( kStopped ),
-  _aborted( false ),
-  _sequence( NULL ),
-  _right( NULL ),
-  _audio_pts( 0 ),
-  _audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
-  _video_pts( 0 ),
-  _video_clock( double( av_gettime_relative() ) / 1000000.0 ),
-  _context(NULL),
-  _video_ctx( NULL ),
-  _audio_ctx( NULL ),
-  _acontext(NULL),
-  _audio_codec(NULL),
-  _subtitle_index(-1),
-  _audio_index(-1),
-  _samples_per_sec( 0 ),
-  _audio_buf_used( 0 ),
-  _audio_last_frame( 0 ),
-  _audio_channels( 0 ),
-  _audio_format( AudioEngine::kFloatLSB ),
-  _audio_buf( NULL ),
-  forw_ctx( NULL ),
-  _audio_engine( NULL )
+_w( 0 ),
+_h( 0 ),
+_internal( false ),
+_is_sequence( false ),
+_is_stereo( false ),
+_stereo_type( kNoStereo ),
+_fileroot( NULL ),
+_filename( NULL ),
+_ctime( 0 ),
+_mtime( 0 ),
+_disk_space( 0 ),
+_loop_barrier( NULL ),
+_avdiff( 0.0 ),
+_seek_req( false ),
+_seek_frame( 1 ),
+_channel( NULL ),
+_label( NULL ),
+_real_fps( 0 ),
+_play_fps( 0 ),
+_fps( 0 ),
+_pixel_ratio( 1.0f ),
+_num_channels( 0 ),
+_rendering_intent( kUndefinedIntent ),
+_gamma( 1 ),
+_has_chromaticities( false ),
+_dts( 1 ),
+_audio_frame( 1 ),
+_audio_offset( 0 ),
+_frame( 1 ),
+_expected( 1 ),
+_expected_audio( 1 ),
+_frameStart( 1 ),
+_frameEnd( 1 ),
+_interlaced( kNoInterlace ),
+_image_damage( kNoDamage ),
+_damageRectangle( 0, 0, 0, 0 ),
+_numWindows( 0 ),
+_dataWindow( NULL ),
+_displayWindow( NULL ),
+_dataWindow2( NULL ),
+_displayWindow2( NULL ),
+_eye_separation( 0.0f ),
+_is_left_eye( true ),
+_right_eye( NULL ),
+_profile( NULL ),
+_rendering_transform( NULL ),
+_idt_transform( NULL ),
+_playback( kStopped ),
+_aborted( false ),
+_sequence( NULL ),
+_right( NULL ),
+_audio_pts( 0 ),
+_audio_clock( double( av_gettime_relative() )/ 1000000.0 ),
+_video_pts( 0 ),
+_video_clock( double( av_gettime_relative() ) / 1000000.0 ),
+_context(NULL),
+_video_ctx( NULL ),
+_audio_ctx( NULL ),
+_acontext(NULL),
+_audio_codec(NULL),
+_subtitle_index(-1),
+_audio_index(-1),
+_samples_per_sec( 0 ),
+_audio_buf_used( 0 ),
+_audio_last_frame( 0 ),
+_audio_channels( 0 ),
+_audio_format( AudioEngine::kFloatLSB ),
+_audio_buf( NULL ),
+forw_ctx( NULL ),
+_audio_engine( NULL )
 {
   audio_initialize();
-  _eye[0] = _eye[1] = NULL;
   mrv::PacketQueue::initialize();
 }
 
@@ -225,72 +225,72 @@ CMedia::CMedia() :
  * @param wh    new image height
  */
 CMedia::CMedia( const CMedia* other, int ws, int wh ) :
-  _w( 0 ),
-  _h( 0 ),
-  _is_stereo( false ),
-  _stereo_type( kNoStereo ),
-  _is_sequence( false ),
-  _fileroot( NULL ),
-  _filename( NULL ),
-  _ctime( 0 ),
-  _mtime( 0 ),
-  _disk_space( 0 ),
-  _loop_barrier( NULL ),
-  _seek_req( false ),
-  _seek_frame( 1 ),
-  _channel( NULL ),
-  _label( NULL ),
-  _real_fps( 0 ),
-  _play_fps( 24.0 ),
-  _fps( 0 ),
-  _pixel_ratio( 1.0f ),
-  _num_channels( 0 ),
-  _rendering_intent( kUndefinedIntent ),
-  _gamma( 1 ),
-  _has_chromaticities( false ),
-  _dts( 1 ),
-  _audio_frame( 1 ),
-  _audio_offset( 0 ),
-  _frame( 1 ),
-  _expected( 1 ),
-  _expected_audio( 1 ),
-  _frameStart( 1 ),
-  _frameEnd( 1 ),
-  _frame_start( 1 ),
-  _frame_end( 1 ),
-  _interlaced( kNoInterlace ),
-  _image_damage( kNoDamage ),
-  _damageRectangle( 0, 0, 0, 0 ),
-  _numWindows( 0 ),
-  _dataWindow( NULL ),
-  _displayWindow( NULL ),
-  _dataWindow2( NULL ),
-  _displayWindow2( NULL ),
-  _eye_separation( 0.0f ),
-  _left_eye( true ),
-  _profile( NULL ),
-  _rendering_transform( NULL ),
-  _idt_transform( NULL ),
-  _playback( kStopped ),
-  _aborted( false ),
-  _sequence( NULL ),
-  _right( NULL ),
-  _video_ctx( NULL ),
-  _audio_ctx( NULL ),
-  _context(NULL),
-  _acontext(NULL),
-  _audio_codec(NULL),
-  _subtitle_index(-1),
-  _audio_index(-1),
-  _samples_per_sec( 0 ),
-  _audio_buf_used( 0 ),
-  _audio_last_frame( 0 ),
-  _audio_channels( other->_audio_channels ),
-  _audio_buf( NULL ),
-  forw_ctx( NULL ),
-  _audio_engine( NULL )
+_w( 0 ),
+_h( 0 ),
+_is_stereo( false ),
+_stereo_type( kNoStereo ),
+_is_sequence( false ),
+_fileroot( NULL ),
+_filename( NULL ),
+_ctime( 0 ),
+_mtime( 0 ),
+_disk_space( 0 ),
+_loop_barrier( NULL ),
+_seek_req( false ),
+_seek_frame( 1 ),
+_channel( NULL ),
+_label( NULL ),
+_real_fps( 0 ),
+_play_fps( 24.0 ),
+_fps( 0 ),
+_pixel_ratio( 1.0f ),
+_num_channels( 0 ),
+_rendering_intent( kUndefinedIntent ),
+_gamma( 1 ),
+_has_chromaticities( false ),
+_dts( 1 ),
+_audio_frame( 1 ),
+_audio_offset( 0 ),
+_frame( 1 ),
+_expected( 1 ),
+_expected_audio( 1 ),
+_frameStart( 1 ),
+_frameEnd( 1 ),
+_frame_start( 1 ),
+_frame_end( 1 ),
+_interlaced( kNoInterlace ),
+_image_damage( kNoDamage ),
+_damageRectangle( 0, 0, 0, 0 ),
+_numWindows( 0 ),
+_dataWindow( NULL ),
+_displayWindow( NULL ),
+_dataWindow2( NULL ),
+_displayWindow2( NULL ),
+_eye_separation( 0.0f ),
+_is_left_eye( true ),
+_right_eye( NULL ),
+_profile( NULL ),
+_rendering_transform( NULL ),
+_idt_transform( NULL ),
+_playback( kStopped ),
+_aborted( false ),
+_sequence( NULL ),
+_right( NULL ),
+_video_ctx( NULL ),
+_audio_ctx( NULL ),
+_context(NULL),
+_acontext(NULL),
+_audio_codec(NULL),
+_subtitle_index(-1),
+_audio_index(-1),
+_samples_per_sec( 0 ),
+_audio_buf_used( 0 ),
+_audio_last_frame( 0 ),
+_audio_channels( other->_audio_channels ),
+_audio_buf( NULL ),
+forw_ctx( NULL ),
+_audio_engine( NULL )
 {
-  _eye[0] = _eye[1] = NULL;
   unsigned int W = other->width();
   unsigned int H = other->height();
   image_size( W, H );
@@ -316,50 +316,51 @@ CMedia::CMedia( const CMedia* other, int ws, int wh ) :
 }
 
 CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
-  _w( 0 ),
-  _h( 0 ),
-  _is_stereo( other->_is_stereo ),
-  _stereo_type( other->_stereo_type ),
-  _is_sequence( other->_is_sequence ),
-  _fileroot( NULL ),
-  _filename( NULL ),
-  _ctime( other->_ctime ),
-  _mtime( other->_mtime ),
-  _disk_space( 0 ),
-  _loop_barrier( NULL ),
-  _seek_req( false ),
-  _seek_frame( 1 ),
-  _channel( NULL ),
-  _label( NULL ),
-  _real_fps( 0 ),
-  _play_fps( 24.0 ),
-  _fps( other->_fps ),
-  _pixel_ratio( other->_pixel_ratio ),
-  _num_channels( other->_num_channels ),
-  _rendering_intent( other->_rendering_intent ),
-  _gamma( other->_gamma ),
-  _has_chromaticities( other->has_chromaticities() ),
-  _chromaticities( other->chromaticities() ),
-  _dts( other->_dts ),
-  _audio_frame( 0 ),
-  _audio_offset( 0 ),
-  _frame( other->_frame ),
-  _expected( _frame ),
-  _expected_audio( 0 ),
-  _frameStart( other->_frameStart ),
-  _frameEnd( other->_frameEnd ),
-  _frame_start( other->_frame_start ),
-  _frame_end( other->_frame_end ),
-  _interlaced( other->_interlaced ),
-  _image_damage( kNoDamage ),
-  _damageRectangle( 0, 0, 0, 0 ),
-  _numWindows( 0 ),
-  _dataWindow( NULL ),
-  _displayWindow( NULL ),
-  _dataWindow2( NULL ),
-  _displayWindow2( NULL ),
-  _eye_separation( 0.0f ),
-_left_eye( false ),
+_w( 0 ),
+_h( 0 ),
+_is_stereo( other->_is_stereo ),
+_stereo_type( other->_stereo_type ),
+_is_sequence( other->_is_sequence ),
+_fileroot( NULL ),
+_filename( NULL ),
+_ctime( other->_ctime ),
+_mtime( other->_mtime ),
+_disk_space( 0 ),
+_loop_barrier( NULL ),
+_seek_req( false ),
+_seek_frame( 1 ),
+_channel( NULL ),
+_label( NULL ),
+_real_fps( 0 ),
+_play_fps( 24.0 ),
+_fps( other->_fps ),
+_pixel_ratio( other->_pixel_ratio ),
+_num_channels( other->_num_channels ),
+_rendering_intent( other->_rendering_intent ),
+_gamma( other->_gamma ),
+_has_chromaticities( other->has_chromaticities() ),
+_chromaticities( other->chromaticities() ),
+_dts( other->_dts ),
+_audio_frame( 0 ),
+_audio_offset( 0 ),
+_frame( other->_frame ),
+_expected( _frame ),
+_expected_audio( 0 ),
+_frameStart( other->_frameStart ),
+_frameEnd( other->_frameEnd ),
+_frame_start( other->_frame_start ),
+_frame_end( other->_frame_end ),
+_interlaced( other->_interlaced ),
+_image_damage( kNoDamage ),
+_damageRectangle( 0, 0, 0, 0 ),
+_numWindows( 0 ),
+_dataWindow( NULL ),
+_displayWindow( NULL ),
+_dataWindow2( NULL ),
+_displayWindow2( NULL ),
+_eye_separation( 0.0f ),
+_is_left_eye( false ),
+_right_eye( NULL ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
@@ -382,7 +383,6 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-  _eye[0] = _eye[1] = NULL;
 
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
@@ -524,7 +524,7 @@ CMedia::~CMedia()
   if ( _acontext )
     avformat_close_input( &_acontext );
 
-  delete _eye[1];
+  delete _right_eye;
 
   _context = _acontext = NULL;
 }
@@ -574,8 +574,8 @@ mrv::image_type_ptr CMedia::left() const
 mrv::image_type_ptr CMedia::right() const
 {
    boost::uint64_t idx = _frame - _frame_start;
-   if ( _eye[1] ) {
-       return _eye[1]->left();
+   if ( _right_eye ) {
+       return _right_eye->left();
    }
    if ( _is_sequence && _right[idx] )
       return _right[idx];
@@ -605,8 +605,8 @@ const mrv::Recti CMedia::display_window( boost::int64_t f ) const
 
 const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
 {
-    if ( _eye[1] )
-        return _eye[1]->display_window(f);
+    if ( _right_eye )
+        return _right_eye->display_window(f);
 
     if ( !_displayWindow2 || _numWindows == 0 )
         return mrv::Recti( 0, 0, width(), height() );
@@ -635,8 +635,8 @@ const mrv::Recti CMedia::data_window( boost::int64_t f ) const
 
 const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
 {
-    if ( _eye[1] )
-        return _eye[1]->data_window(f);
+    if ( _right_eye )
+        return _right_eye->data_window(f);
 
     if ( !_dataWindow2 || _numWindows == 0 ) 
         return mrv::Recti( 0, 0, width(), height() );
@@ -901,7 +901,7 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 {
   if ( !is_sequence() ) return _fileroot;
 
-  std::string tmp = parse_view( _fileroot, _left_eye );
+  std::string tmp = parse_view( _fileroot, _is_left_eye );
 
   // For image sequences
   char buf[1024];
@@ -1145,16 +1145,6 @@ void CMedia::default_layers()
  * Add image's stereo layers
  * 
  */
-void CMedia::add_anaglyph_layers()
-{
-    // _layers.push_back( _("left.anaglyph") );
-    // _layers.push_back( _("right.anaglyph") );
-}
-
-/** 
- * Add image's stereo layers
- * 
- */
 void CMedia::add_stereo_layers()
 {
     _layers.push_back( _("stereo.horizontal") );
@@ -1170,7 +1160,7 @@ void CMedia::add_stereo_layers()
  */
 void CMedia::channel( const char* c )
 {
-    if ( _eye[1] )  _eye[1]->channel( c );
+    if ( _right_eye )  _right_eye->channel( c );
 
     if (c)
     {
@@ -1535,7 +1525,7 @@ void CMedia::play(const CMedia::Playback dir,
     // if ( _playback == kStopped && !_threads.empty() )
     //     return;
 
-    if ( _eye[1] ) _eye[1]->play( dir, uiMain, fg );
+    if ( _right_eye ) _right_eye->play( dir, uiMain, fg );
 
     stop();
 
@@ -1647,7 +1637,7 @@ void CMedia::stop()
 {
     if ( _playback == kStopped && _threads.empty() ) return;
 
-    if ( _eye[1] ) _eye[1]->stop();
+    if ( _right_eye ) _right_eye->stop();
 
 
 
@@ -1731,7 +1721,7 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( playback() == kStopped && _eye[1] ) _eye[1]->frame(f);
+  if ( playback() == kStopped && _right_eye ) _right_eye->frame(f);
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
@@ -1784,10 +1774,10 @@ void CMedia::seek( const boost::int64_t f )
   _seek_req   = true;
   _seek_frame = f;
 
-  if ( _eye[1] )
+  if ( _right_eye )
   {
-      _eye[1]->_seek_req = true;
-      _eye[1]->_seek_frame = f;
+      _right_eye->_seek_req = true;
+      _right_eye->_seek_frame = f;
   }
 
   if ( stopped() )
@@ -1973,7 +1963,7 @@ const char* const CMedia::exif( const std::string& name ) const
  */
 void CMedia::flush_all()
 {
-    if ( _eye[1] ) _eye[1]->flush_all();
+    if ( _right_eye ) _right_eye->flush_all();
 
     if ( has_video() )
         flush_video();
@@ -2418,9 +2408,9 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
-    if ( playback() == kStopped && _eye[1] && _stereo_type ) {
+    if ( playback() == kStopped && _right_eye && _stereo_type ) {
         boost::int64_t f = frame;
-        _eye[1]->decode_video(f);
+        _right_eye->decode_video(f);
     }
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
@@ -2497,8 +2487,8 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  if ( playback() == kStopped && _eye[1] && _stereo_type )
-      _eye[1]->find_image(f);
+  if ( playback() == kStopped && _right_eye && _stereo_type )
+      _right_eye->find_image(f);
 
   // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
   _video_clock = double(av_gettime_relative()) / 1000000.0;
