@@ -464,29 +464,29 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
   unsigned int bitrate;
   /* for PCM codecs, compute bitrate directly */
   switch(enc->codec_id) {
-  case CODEC_ID_PCM_S32LE:
-  case CODEC_ID_PCM_S32BE:
-  case CODEC_ID_PCM_U32LE:
-  case CODEC_ID_PCM_U32BE:
+  case AV_CODEC_ID_PCM_S32LE:
+  case AV_CODEC_ID_PCM_S32BE:
+  case AV_CODEC_ID_PCM_U32LE:
+  case AV_CODEC_ID_PCM_U32BE:
     bitrate = enc->sample_rate * enc->channels * 32;
     break;
-  case CODEC_ID_PCM_S24LE:
-  case CODEC_ID_PCM_S24BE:
-  case CODEC_ID_PCM_U24LE:
-  case CODEC_ID_PCM_U24BE:
-  case CODEC_ID_PCM_S24DAUD:
+  case AV_CODEC_ID_PCM_S24LE:
+  case AV_CODEC_ID_PCM_S24BE:
+  case AV_CODEC_ID_PCM_U24LE:
+  case AV_CODEC_ID_PCM_U24BE:
+  case AV_CODEC_ID_PCM_S24DAUD:
     bitrate = enc->sample_rate * enc->channels * 24;
     break;
-  case CODEC_ID_PCM_S16LE:
-  case CODEC_ID_PCM_S16BE:
-  case CODEC_ID_PCM_U16LE:
-  case CODEC_ID_PCM_U16BE:
+  case AV_CODEC_ID_PCM_S16LE:
+  case AV_CODEC_ID_PCM_S16BE:
+  case AV_CODEC_ID_PCM_U16LE:
+  case AV_CODEC_ID_PCM_U16BE:
     bitrate = enc->sample_rate * enc->channels * 16;
     break;
-  case CODEC_ID_PCM_S8:
-  case CODEC_ID_PCM_U8:
-  case CODEC_ID_PCM_ALAW:
-  case CODEC_ID_PCM_MULAW:
+  case AV_CODEC_ID_PCM_S8:
+  case AV_CODEC_ID_PCM_U8:
+  case AV_CODEC_ID_PCM_ALAW:
+  case AV_CODEC_ID_PCM_MULAW:
     bitrate = enc->sample_rate * enc->channels * 8;
     break;
   default:

@@ -239,8 +239,8 @@ namespace mrv {
     std::string _format;
     std::string _compression;
 
-    int              _video_index;
-    PixelFormat      _av_dst_pix_fmt;
+    int                _video_index;
+    AVPixelFormat      _av_dst_pix_fmt;
     VideoFrame::Format _pix_fmt;
        VideoFrame::PixelType _ptype;
     AVFrame*         _av_frame;
