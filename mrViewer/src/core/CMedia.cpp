@@ -2090,7 +2090,7 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
 
   if (p) {
     codec_name = p->name;
-  } else if (enc->codec_id == CODEC_ID_MPEG2TS) {
+  } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
     /* fake mpeg2 transport stream codec (currently not
        registered) */
      codec_name = N_("mpeg2ts");
@@ -2243,14 +2243,14 @@ boost::uint64_t CMedia::frame2pts( const AVStream* stream,
 boost::int64_t CMedia::pts2frame( const AVStream* stream, 
 				  const boost::int64_t dts ) const
 {
-   static boost::int64_t frame = 0;
+   // static boost::int64_t frame = 0;
 
    boost::int64_t pts = dts;
 
-   if ( pts == MRV_NOPTS_VALUE ) {
-      if ( frame == _frame_end ) frame -= 1;
-      pts = frame2pts( stream, frame+1 );
-   }
+   // if ( pts == MRV_NOPTS_VALUE ) {
+   //    if ( frame == _frame_end ) frame -= 1;
+   //    pts = frame2pts( stream, frame+1 );
+   // }
 
 
   assert( pts != MRV_NOPTS_VALUE );
@@ -2261,8 +2261,8 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   p /= stream->time_base.den;
   //  p *= av_q2d( stream->time_base );
   p *= fps();
-  frame = boost::int64_t( p + 0.5 ) + 1;
-  return frame;
+  pts = boost::int64_t( p + 0.5 ) + 1;
+  return pts;
 }
 
 
