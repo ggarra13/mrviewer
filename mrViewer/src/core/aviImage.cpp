@@ -769,8 +769,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-         ptsframe = _av_frame->pts =
-                    av_frame_get_best_effort_timestamp( _av_frame );
+         ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
 
 
 	if ( ptsframe == AV_NOPTS_VALUE )
@@ -1128,35 +1127,35 @@ void aviImage::video_stream( int x )
   _num_channels = 0;
   if ( x < 0 ) return;
 
-  static PixelFormat fmt[] = { PIX_FMT_BGR24, PIX_FMT_BGR32, PIX_FMT_NONE };
-  PixelFormat* fmts = fmt;
+  static AVPixelFormat fmt[] = { AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32, AV_PIX_FMT_NONE };
+  AVPixelFormat* fmts = fmt;
 
 
   if ( supports_yuv() )
     {
-       static PixelFormat fmts2[] = { PIX_FMT_RGB24, PIX_FMT_RGB32,
-				      PIX_FMT_BGR24, PIX_FMT_BGR32,
-				      PIX_FMT_YUV444P,
-				      PIX_FMT_YUV422P,
-				      PIX_FMT_YUV420P,
-				      PIX_FMT_NONE };
+       static AVPixelFormat fmts2[] = { AV_PIX_FMT_RGB24, AV_PIX_FMT_RGB32,
+				      AV_PIX_FMT_BGR24, AV_PIX_FMT_BGR32,
+				      AV_PIX_FMT_YUV444P,
+				      AV_PIX_FMT_YUV422P,
+				      AV_PIX_FMT_YUV420P,
+				      AV_PIX_FMT_NONE };
        fmts = fmts2;
 
-//       mask |= ( (1 << PIX_FMT_YUVA420P) | (1 << PIX_FMT_YUV444P) | 
-// 		(1 << PIX_FMT_YUV422P) | (1 << PIX_FMT_YUV420P) );
+//       mask |= ( (1 << AV_PIX_FMT_YUVA420P) | (1 << AV_PIX_FMT_YUV444P) | 
+// 		(1 << AV_PIX_FMT_YUV422P) | (1 << AV_PIX_FMT_YUV420P) );
     }
 
   AVStream* stream = get_video_stream();
   AVCodecContext* ctx = stream->codec;
 
-  int has_alpha = ( ( ctx->pix_fmt == PIX_FMT_RGBA    ) |
-		    ( ctx->pix_fmt == PIX_FMT_ABGR    ) |
-		    ( ctx->pix_fmt == PIX_FMT_ARGB    ) |
-		    ( ctx->pix_fmt == PIX_FMT_RGB32   ) |
-		    ( ctx->pix_fmt == PIX_FMT_RGB32_1 ) |
-		    ( ctx->pix_fmt == PIX_FMT_PAL8    ) | 
-		    ( ctx->pix_fmt == PIX_FMT_BGR32   ) | 
-		    ( ctx->pix_fmt == PIX_FMT_BGR32_1 ) );
+  int has_alpha = ( ( ctx->pix_fmt == AV_PIX_FMT_RGBA    ) |
+		    ( ctx->pix_fmt == AV_PIX_FMT_ABGR    ) |
+		    ( ctx->pix_fmt == AV_PIX_FMT_ARGB    ) |
+		    ( ctx->pix_fmt == AV_PIX_FMT_RGB32   ) |
+		    ( ctx->pix_fmt == AV_PIX_FMT_RGB32_1 ) |
+		    ( ctx->pix_fmt == AV_PIX_FMT_PAL8    ) | 
+		    ( ctx->pix_fmt == AV_PIX_FMT_BGR32   ) | 
+		    ( ctx->pix_fmt == AV_PIX_FMT_BGR32_1 ) );
 
   _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, 
 						       ctx->pix_fmt,
@@ -1169,9 +1168,9 @@ void aviImage::video_stream( int x )
   rgb_layers();
   lumma_layers();
 
-  if ( _av_dst_pix_fmt == PIX_FMT_RGBA ||
-       _av_dst_pix_fmt == PIX_FMT_BGRA ||
-       _av_dst_pix_fmt == PIX_FMT_YUVA420P) alpha_layers();
+  if ( _av_dst_pix_fmt == AV_PIX_FMT_RGBA ||
+       _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
+       _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P) alpha_layers();
 
   if (ctx->lowres) {
       ctx->flags |= CODEC_FLAG_EMU_EDGE;
@@ -2292,13 +2291,24 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
           else
               pktframe = frame;
 
-	  bool ok1 = in_video_store( frame );
-	  bool ok2 = in_video_store( pktframe );
-	  if ( ok1 && ok2 )
+	  bool ok = in_video_store( pktframe );
+	  if ( ok )
 	    {
                // if ( pktframe == frame )
                {
+                   boost::int64_t oldpktframe = pktframe;
                    decode_video_packet( pktframe, frame, pkt );
+
+                   // Recheck we didn't decode other frame
+                   if ( pktframe != oldpktframe )
+                   {
+                       bool ok = in_video_store( pktframe );
+                       if ( !ok )
+                       {
+                           // If we did, store it.
+                           store_image( pktframe, frame );
+                       }
+                   }
                    _video_packets.pop_front();
                }
                return kDecodeOK;
