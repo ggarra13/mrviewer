@@ -499,7 +499,7 @@ void ImageInformation::fill_data()
             add_rect( _("Display Window 2"), dwindow2 );
         }
 
-        if ( window != window2 )
+        if ( img->right() )
             add_float( _("Eye Separation"), img->eye_separation(), true,
                        (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
     }

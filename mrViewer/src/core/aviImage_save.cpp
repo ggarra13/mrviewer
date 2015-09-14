@@ -662,7 +662,7 @@ static void close_audio_static(AVFormatContext *oc, AVStream *st)
     av_frame_free(&audio_frame);
 }
 
-static AVFrame *alloc_picture(enum PixelFormat pix_fmt, int width, int height)
+static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
 {
     uint8_t *frame_buf;
     int size, ret;
