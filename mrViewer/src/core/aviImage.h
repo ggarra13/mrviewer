@@ -196,13 +196,27 @@ namespace mrv {
 			 const boost::int64_t pts );
 
     /** 
+     * Decode a video packet, returning success or not.
+     * Checks cache to see if frame already exists after decoding.
+     * 
+     * @param pktframe frame of packet (calculated)
+     * @param frame    frame to use if packet lacks dts
+     * @param pkt      packet
+     * 
+     * @return DecodeOK if decoded, other if not
+     */
+    DecodeStatus decode_vpacket( boost::int64_t& pktframe,
+                                 const boost::int64_t& frame,
+                                 const AVPacket& pkt );
+
+    /** 
      * Decode a video packet, returning its frame
      * 
      * @param pktframe frame of packet (calculated)
      * @param frame    frame to use if packet lacks dts
      * @param pkt      packet
      * 
-     * @return true if image was decoded, false if not
+     * @return DecodeOK if decoded, other if not
      */
     DecodeStatus decode_video_packet( boost::int64_t& pktframe,
 				      const boost::int64_t frame,
