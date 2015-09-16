@@ -2180,14 +2180,11 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
     }
     else
     {
-        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-                 e->filename.c_str() );
-
+      sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+	       e->filename.c_str() );
     }
 
     sprintf( buf, fmt, frameStart );
-
-    if ( ! boost::filesystem::exists( buf ) ) return;
 
     fltk::SharedImage* img = mrv::fltk_handler( buf, NULL, 0 );
     if ( !img ) return;

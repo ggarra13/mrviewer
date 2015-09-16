@@ -170,7 +170,7 @@ ChannelShortcuts shortcuts[] = {
   { _("Green"), 'g'         },
   { _("Blue"),  'b'         },
   { _("Alpha"), 'a'         },
-  { _("Alpha Overlay"), 'o' },
+  { _("Alpha Overlay"), 'v' },
   { _("Lumma"), 'l' },
   { _("Z"), 'z' },
   { _("Z Depth"), 'z' },
