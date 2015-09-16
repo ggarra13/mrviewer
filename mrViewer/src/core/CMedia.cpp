@@ -1151,6 +1151,8 @@ void CMedia::add_stereo_layers()
     _layers.push_back( _("stereo.crossed") );
     _layers.push_back( _("left.anaglyph") );
     _layers.push_back( _("right.anaglyph") );
+    _layers.push_back( _("stereo.interlaced") );
+    _layers.push_back( _("stereo.interlaced flip") );
 }
 
 /** 
@@ -1194,6 +1196,10 @@ void CMedia::channel( const char* c )
                _stereo_type = kStereoSideBySide;
            else if ( ext == _("crossed") )
                _stereo_type = kStereoCrossed;
+           else if ( ext == _("interlaced") )
+               _stereo_type = kStereoInterlaced;
+           else if ( ext == _("interlaced flip") )
+               _stereo_type = kStereoInterlacedFlipped;
            else
                LOG_ERROR( _("Unknown stereo type") );
        }
