@@ -780,9 +780,11 @@ bool exrImage::find_channels( const Imf::Header& h,
            Imf::ChannelList::ConstIterator s;
            Imf::ChannelList::ConstIterator e;
 
-           if ( _stereo_type & kStereoAnaglyph )
+           if ( _stereo_type & kStereoAnaglyph ||
+                _stereo_type & kStereoInterlaced )
            {
-               if ( _stereo_type != kStereoRightAnaglyph ) _left_red = true;
+               if ( _stereo_type != kStereoRightAnaglyph &&
+                    _stereo_type != kStereoInterlacedFlipped ) _left_red = true;
                else _left_red = false;
 
                return handle_stereo(frame, h, fb);
