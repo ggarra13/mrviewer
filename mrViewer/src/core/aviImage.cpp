@@ -47,7 +47,7 @@ using namespace std;
 
 
 extern "C" {
-#include <libavutil/audioconvert.h>
+//#include <libavutil/audioconvert.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/pixdesc.h>
 #include <libavutil/time.h>
@@ -1088,12 +1088,11 @@ bool aviImage::find_image( const boost::int64_t frame )
 
 
 
+    // Limit (clean) the video store as we play it
+    limit_video_store( frame );
 
     _video_pts   = _hires->frame();
     _video_clock = double(av_gettime_relative()) / 1000000.0;
-
-    // Limit (clean) the video store as we play it
-    limit_video_store( frame );
 
   }  // release lock
 
@@ -2063,6 +2062,20 @@ bool aviImage::frame( const boost::int64_t f )
   return ok;
 }
 
+CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& pktframe,
+                                               const boost::int64_t& frame,
+                                               const AVPacket& pkt )
+{
+    boost::int64_t oldpktframe = pktframe;
+    CMedia::DecodeStatus status = decode_video_packet( pktframe, frame, pkt );
+    if ( oldpktframe != pktframe && status == kDecodeOK &&
+         !in_video_store(pktframe) )
+    {
+        store_image( pktframe, pkt.dts );
+    }
+    return status;
+}
+
 CMedia::DecodeStatus 
 aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 {
@@ -2111,7 +2124,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       {
           if (pktframe > frame )
           {
-              decode_video_packet( pktframe, frame, pkt );
+              decode_vpacket( pktframe, frame, pkt );
           }
           else
           {
@@ -2122,8 +2135,8 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
               }
               else
               {
-                  decode_video_packet( pktframe, frame, pkt );
-                  got_video = kDecodeOK;
+                
+                  got_video = decode_vpacket( pktframe, frame, pkt );
               }
           }
       }
@@ -2136,6 +2149,10 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
 	  else
           {
               status = decode_video_packet( pktframe, frame, pkt );
+              if ( status == kDecodeOK && !in_video_store(pktframe) )
+              {
+                  store_image( pktframe, pkt.dts );
+              }
           }
 
           if ( status == kDecodeOK && pktframe >= frame )
@@ -2296,19 +2313,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	    {
                // if ( pktframe == frame )
                {
-                   boost::int64_t oldpktframe = pktframe;
-                   decode_video_packet( pktframe, frame, pkt );
-
-                   // Recheck we didn't decode other frame
-                   if ( pktframe != oldpktframe )
-                   {
-                       bool ok = in_video_store( pktframe );
-                       if ( !ok )
-                       {
-                           // If we did, store it.
-                           store_image( pktframe, frame );
-                       }
-                   }
+                   decode_vpacket( pktframe, frame, pkt );
                    _video_packets.pop_front();
                }
                return kDecodeOK;
