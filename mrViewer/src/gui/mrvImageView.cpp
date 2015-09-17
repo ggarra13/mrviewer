@@ -3512,21 +3512,7 @@ int ImageView::keyDown(unsigned int rawkey)
   {
       // Check if a menu shortcut
       fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-
-      // check if a channel shortcut
-      int num = uiColorChannel->children();
-      for ( unsigned short c = 0; c < num; ++c )
-      {
-	  if ( rawkey == uiColorChannel->child(c)->shortcut() )
-	    {
-	       if ( c == _channel ) 
-	       {
-		  c = _old_channel;
-	       }
-	       channel( c );
-	       return 1;
-	    }
-	}
+      uiColorChannel->handle_shortcut();
     }
   return 0;
 }
@@ -3984,14 +3970,14 @@ void ImageView::channel( unsigned short c )
 
 
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-  
-  if ( c >= uiColorChannel->children() ) return;
+  fltk::Widget* w = uiColorChannel->get_item();
+  if (!w) return;
 
   char buf[128];
   sprintf( buf, "Channel %d", c );
   send( buf );
 
-  const char* lbl = uiColorChannel->child(c)->label();
+  const char* lbl = w->label();
   std::string channelName( lbl );
 
 
@@ -4435,11 +4421,30 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         }
     }
 
+    std::string r;
+    bool group = true;
+    fltk::Widget* o = NULL;
+    fltk::Group*  g = NULL;
+
     for ( ; i != e; ++i, ++idx )
     {
         const std::string& name = *i;
-        fltk::Widget* o = uiColorChannel->add( name.c_str(),
-                                               NULL );
+        if ( o && name.find( r ) == 0 && r != _("Alpha") )
+        {
+            if ( group )
+            {
+                uiColorChannel->remove( uiColorChannel->children()-1 );
+                g = uiColorChannel->add_group( r.c_str(), NULL );
+                group = false;
+            }
+            o = uiColorChannel->add_leaf( name.c_str(), g );
+        }
+        else
+        {
+            o = uiColorChannel->add( name.c_str() );
+            r = name;
+            group = true;
+        }
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.

@@ -75,6 +75,10 @@ namespace mrv {
                                    const mrv::ImageView::FlipDirection flip =
                                    mrv::ImageView::kFlipNone );
 
+      // Draw interlace lines in the stencil buffer starting at Y
+      void draw_interlace_stencil( const mrv::Recti& d, int Y = 0 );
+
+
     /// Draw a rectangle
       void draw_data_window( const mrv::Rectd& r );
 
