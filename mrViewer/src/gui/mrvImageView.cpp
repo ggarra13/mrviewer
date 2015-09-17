@@ -197,7 +197,6 @@ namespace
   {
     static std::string oldChannel;
 
-    std::cerr << channel << " start " << std::endl;
     for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
