@@ -197,6 +197,7 @@ namespace
   {
     static std::string oldChannel;
 
+    std::cerr << channel << " start " << std::endl;
     for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
@@ -213,6 +214,7 @@ namespace
     size_t pos2 = channelName.find( "rgb" );
     if ( pos2 != std::string::npos )
         return 'c';
+
 
     pos2 = channelName.find( "RGB" );
     if ( pos2 != std::string::npos )
@@ -232,7 +234,7 @@ namespace
     else
         pos2 = oldChannel.find( channelName );
 
-    if ( pos2 == std::string::npos ) 
+    if ( pos2 != std::string::npos ) 
     {
         oldChannel = channelName;
         return 0;
@@ -254,6 +256,14 @@ namespace
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
        else return 'c';
+    }
+    else
+    {
+        std::string ext = channel;
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) toupper );
+        if ( ext == N_("LEFT") || ext == N_("RIGHT") )
+            return 'c';
     }
 
     oldChannel = channelName;
