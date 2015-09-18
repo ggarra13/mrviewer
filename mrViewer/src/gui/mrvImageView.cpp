@@ -196,7 +196,6 @@ namespace
   short get_shortcut( const char* channel )
   {
     static std::string oldChannel;
-
     for ( unsigned int i = 0; i < sizeof(shortcuts)/sizeof(ChannelShortcuts); ++i )
       {
           if ( strcmp( _(shortcuts[i].channel), channel ) == 0 )
@@ -209,35 +208,9 @@ namespace
     std::string channelName = channel;
 
     //
-    // See if channel name contains RGB somewhere in its name
-    size_t pos2 = channelName.find( "rgb" );
-    if ( pos2 != std::string::npos )
-        return 'c';
-
-
-    pos2 = channelName.find( "RGB" );
-    if ( pos2 != std::string::npos )
-        return 'c';
-
-    //
     // Find last .
     //
     size_t pos  = channelName.rfind( '.' );
-
-    //
-    // Find if channelName contains oldChannel or viceversa.
-    // If it does, do not return a shortcut.
-    //
-    if ( channelName.size() > oldChannel.size() )
-        pos2 = channelName.find( oldChannel );
-    else
-        pos2 = oldChannel.find( channelName );
-
-    if ( pos2 != std::string::npos ) 
-    {
-        oldChannel = channelName;
-        return 0;
-    }
 
     if ( pos != std::string::npos )
     {
@@ -254,7 +227,7 @@ namespace
            return 'b';
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
-       else return 'c';
+       else return 0;
     }
     else
     {
@@ -262,6 +235,8 @@ namespace
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
         if ( ext == N_("LEFT") || ext == N_("RIGHT") )
+            return 'c';
+        if ( ext.find("RGB") != std::string::npos )
             return 'c';
     }
 
