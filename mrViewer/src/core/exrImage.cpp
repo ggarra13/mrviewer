@@ -669,7 +669,7 @@ bool exrImage::handle_stereo( const boost::int64_t frame,
    if ( _multiview && _has_right_eye ) prefix = "right";
 
    // Find the iterators for a right channel prefix or all channels
-   if ( prefix != "" )
+   if ( prefix.size() )
    {
       channels.channelsWithPrefix( prefix.c_str(), s, e );
    }
