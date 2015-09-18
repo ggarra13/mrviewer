@@ -1134,9 +1134,9 @@ void draw_interlace_stencil( const mrv::Recti& d,
     glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
     glLineWidth( 1.0 );
     glDisable( GL_BLEND );
-    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
+    glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
     glDepthMask( GL_FALSE );
-    glColor4f( 1.0f, 0.0f, 0.0f, 1.0f );
+    glColor4f( 0.0f, 0.0f, 0.0f, 1.0f );
     glBegin( GL_LINES );
     for ( ; Y < H; Y += 2 )
     {
@@ -1305,12 +1305,11 @@ void GLEngine::draw_images( ImageList& images )
 
       glPushMatrix();
 
+      if ( stereo & CMedia::kStereoInterlaced )
+          draw_interlace_stencil( dpw, (stereo != CMedia::kStereoInterlaced) );
 
       glTranslatef( float(daw.x() - img->eye_separation()),
                     float(-daw.y()), 0 );
-
-      if ( stereo & CMedia::kStereoInterlaced )
-          draw_interlace_stencil( dpw, (stereo != CMedia::kStereoInterlaced) );
 
 
       if ( _view->main()->uiPixelRatio->value() )
@@ -1434,13 +1433,13 @@ void GLEngine::draw_images( ImageList& images )
              texWidth = pic->width();
              texHeight = pic->height();
          }
-      
+
+        if ( stereo & CMedia::kStereoInterlaced )
+             draw_interlace_stencil( dpw2, 
+                                     (stereo == CMedia::kStereoInterlaced) );
 
          glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
 
-         if ( stereo & CMedia::kStereoInterlaced )
-             draw_interlace_stencil( dpw2, 
-                                     (stereo == CMedia::kStereoInterlaced) );
 
          if ( _view->main()->uiPixelRatio->value() )
              glScaled( double(texWidth), 
