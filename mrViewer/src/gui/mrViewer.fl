@@ -2485,7 +2485,7 @@ else
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} selected
+        callback {delete v;} open
         xywh {354 146 640 535} when CHANGED resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
@@ -2494,7 +2494,7 @@ o->main( this );}
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
         } {
-          {fltk::Group} uiTopBar {
+          {fltk::Group} uiTopBar {open
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
@@ -2581,13 +2581,13 @@ v->uiHotkey->uiMain->show();}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {30 5 90 20} color 0x53535300
             } {
               {fltk::PopupMenu} uiColorChannel {
                 label {(no image)}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( (unsigned short)o->value() );} open
+                callback {v->uiView->channel( o->get_item() );} open selected
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
                 class {mrv::PopupMenu}

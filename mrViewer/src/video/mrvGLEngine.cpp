@@ -570,8 +570,9 @@ void GLEngine::refresh_luts()
  */
 void GLEngine::clear_canvas( float r, float g, float b, float a )
 {
-    glColorMask( true, true, true, true );
+    glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glClearColor(r, g, b, a );
+    glClear( GL_STENCIL_BUFFER_BIT );
     glClear( GL_COLOR_BUFFER_BIT );
     glShadeModel( GL_FLAT );
     CHECK_GL( "Clear canvas" );
@@ -1341,9 +1342,8 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( i+1 == e ) wipe_area();
 
-      // if ( stereo != CMedia::kNoStereo && 
-      //      img->left() && img->right() )
-      if ( img->left() && img->right() )
+      if ( stereo != CMedia::kNoStereo && 
+           img->left() && img->right() )
       {
          if ( stereo & CMedia::kStereoRight )
          {
@@ -1395,7 +1395,8 @@ void GLEngine::draw_images( ImageList& images )
          if ( dpw2 != daw2 )
          {
              if ( _view->display_window() &&
-                  ( !( stereo & CMedia::kStereoAnaglyph ) ) )
+                  ( !( stereo & CMedia::kStereoAnaglyph ) &&
+                    ( !(stereo & CMedia::kStereoInterlaced ) ) ) )
              {
                  draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
              }
