@@ -3703,8 +3703,9 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
     // convert the permissions into UNIX style rwx-rwx-rwx (user-group-others)
     unsigned int p = s.st_mode;
 #ifdef _WIN32
-    entry->pU = bool(p & _S_IREAD )<<2 | bool(p & _S_IWRITE)<<1 
-                | bool(p & _S_IEXEC );
+    entry->pU = int( bool(p & _S_IREAD )<<2 ) |
+                int( bool(p & _S_IWRITE)<<1 ) |
+                int( bool(p & _S_IEXEC ) );
     entry->pG = entry->pU;
     entry->pO = entry->pG;
 #else
@@ -4412,7 +4413,7 @@ void Flu_File_Chooser::cd( const char *path )
           entry->filesize = (*i).number;
           if ( entry->isize > 1 )
           {
-              entry->filesize += " ";
+              entry->filesize += _(" to ");
               // entry->filesize += (*i).view;
               entry->filesize += (*i).ext;
           }

@@ -3,6 +3,7 @@
 echo "Running uninstall script"
 
 if [ -e /usr/bin/mrViewer ]; then
+    echo "Removing /usr/bin/mrViewer"
     rm -f /usr/bin/mrViewer
 fi
 
