@@ -230,7 +230,7 @@ class server;
     float volume() { return _volume; }
 
     /// Change channel shown in viewer
-      void channel( fltk::Widget* w );
+      void channel( fltk::Widget* w ); // widget is one of the menus or submenus
       void channel( unsigned short c );
       unsigned short channel() const { return _channel; };
 
