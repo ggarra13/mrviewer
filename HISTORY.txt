@@ -1,5 +1,5 @@
-v2.9.4   - RMB->Pixel->Copy pixel value now respects lut and
-	   gamma.
+v2.9.4   - RMB->Pixel->Copy Pixel Value now respects lut and
+	   gamma if active.
 	 - Changing volume or audio track now effects both 
 	   stereo images.
 	 - Bug fixed avi saver to work with images whose
@@ -13,6 +13,10 @@ v2.9.4   - RMB->Pixel->Copy pixel value now respects lut and
 	   with 'o' in changing timeline out point.
 	 - Made channel list work with submenus, for easier access
 	   and less clutter.
+	 - Added stereo interlaced to show images interlaced.  For
+	   this to work it is necessary to be in zoom 1.0 or
+	   presentation mode.
+	 - Bug fixed installation on Linux relying on symlinks.
 
 v2.9.3   - Bug fixed saving of OpenExr files when data window was
 	   smaller than display window.  Previously it would crash.
