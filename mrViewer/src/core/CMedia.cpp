@@ -2101,7 +2101,7 @@ std::string CMedia::codec_name( const AVCodecContext* enc )
 
   if (p) {
     codec_name = p->name;
-  } else if (enc->codec_id == CODEC_ID_MPEG2TS) {
+  } else if (enc->codec_id == AV_CODEC_ID_MPEG2TS) {
     /* fake mpeg2 transport stream codec (currently not
        registered) */
      codec_name = N_("mpeg2ts");

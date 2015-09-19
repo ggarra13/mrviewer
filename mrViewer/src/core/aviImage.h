@@ -239,14 +239,14 @@ namespace mrv {
     std::string _format;
     std::string _compression;
 
-    int              _video_index;
-    PixelFormat      _av_dst_pix_fmt;
-    VideoFrame::Format _pix_fmt;
-       VideoFrame::PixelType _ptype;
-    AVFrame*         _av_frame;
-    AVCodec*         _video_codec;
-    AVCodecContext* _subtitle_ctx;           //!< current video context
-    SwsContext*      _convert_ctx;
+      int              _video_index;
+      AVPixelFormat      _av_dst_pix_fmt;
+      VideoFrame::Format _pix_fmt;
+      VideoFrame::PixelType _ptype;
+      AVFrame*         _av_frame;
+      AVCodec*         _video_codec;
+      AVCodecContext* _subtitle_ctx;           //!< current video context
+      SwsContext*      _convert_ctx;
 
     video_info_list_t    _video_info;
 
