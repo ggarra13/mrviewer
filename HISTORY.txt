@@ -9,8 +9,10 @@ v2.9.4   - RMB->Pixel->Copy pixel value now respects lut and
 	 - Bug fixed gaps in cache that would appear in timeline
 	   when playing in loop.
 	 - Updated to latest ffmpeg version.
-	 - Changed 'o' overlay shortcut to 'v', to avoid clash
+	 - Changed 'o' alpha overlay shortcut to 'v', to avoid clash
 	   with 'o' in changing timeline out point.
+	 - Made channel list work with submenus, for easier access
+	   and less clutter.
 
 v2.9.3   - Bug fixed saving of OpenExr files when data window was
 	   smaller than display window.  Previously it would crash.
