@@ -230,8 +230,11 @@ class server;
     float volume() { return _volume; }
 
     /// Change channel shown in viewer
-    void channel( unsigned short c );
-    unsigned short channel() const { return _channel; };
+      void channel( fltk::Widget* w );
+      void channel( unsigned short c );
+      unsigned short channel() const { return _channel; };
+
+      const char* get_layer_label(unsigned short c);
 
     void old_channel( unsigned short c ) { _old_channel = c; };
     unsigned short old_channel() const { return _old_channel; };
@@ -579,6 +582,7 @@ class server;
     FlipDirection _flip;
       int64_t     _preframe;
       unsigned    _reel;
+      bool        _idle_callback;
 
     ///////////////////
     // Popup menu
@@ -594,8 +598,9 @@ class server;
 
 
     mrv::media _fg;
-    int   _fg_reel;
     mrv::media _bg;
+
+    int   _fg_reel;
     int   _bg_reel;
 
     ///////////////////

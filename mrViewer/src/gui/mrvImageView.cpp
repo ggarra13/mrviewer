@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -227,7 +228,7 @@ namespace
            return 'b';
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
-       else return 0;
+       else return 'c';
     }
     else
     {
@@ -736,6 +737,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
   _flip( kFlipNone ),
   _preframe( 1),
   _reel( 0 ),
+  _idle_callback( false ),
   _timeout( NULL ),
   _fg_reel( -1 ),
   _bg_reel( -1 ),
@@ -1378,7 +1380,7 @@ bool ImageView::preload()
             return false;
     }
 
-    return true; 
+    return true;
 
 }
 
@@ -1438,12 +1440,6 @@ void ImageView::timeout()
    //
    // Try to cache forward images
    //
-   if ( CMedia::cache_active() && CMedia::preload_cache() &&
-        ( _reel < b->number_of_reels() ))
-   {
-       preload();
-   }
-
    static double kMinDelay = 0.0001666;
 
    double delay = 0.005;
@@ -1550,6 +1546,11 @@ void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
    _engine->draw_text( int(x), int(y), text );  // draw text
 }
 
+void static_preload( mrv::ImageView* v )
+{
+    v->preload();
+}
+
 /** 
  * Main fltk drawing routine
  * 
@@ -1568,6 +1569,7 @@ void ImageView::draw()
         _engine->reset_view_matrix();
 
         valid(1);
+
     }
 
 
@@ -3498,21 +3500,37 @@ int ImageView::keyDown(unsigned int rawkey)
       fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
       // check if a channel shortcut
-      int num = uiColorChannel->children();
-      for ( unsigned short c = 0; c < num; ++c )
+      unsigned short num = uiColorChannel->children();
+      unsigned short idx = 0;
+      fltk::Group* g = NULL;
+      for ( unsigned short c = 0; c < num; ++c, ++idx )
       {
-	  if ( rawkey == uiColorChannel->child(c)->shortcut() )
-	    {
-	       if ( c == _channel ) 
-	       {
-		  c = _old_channel;
-	       }
-	       channel( c );
-	       return 1;
-	    }
-	}
-    }
-  return 0;
+          fltk::Widget* w = uiColorChannel->child(c);
+	  if ( rawkey == w->shortcut() )
+          {
+              channel( idx );
+              return 1;
+          }
+
+          g = NULL;
+          if ( w->is_group() )
+          {
+              g = (fltk::Group*) w;
+              unsigned numc = g->children();
+              for ( unsigned short i = 0; i < numc; ++i )
+              {
+                  ++idx;
+                  if ( rawkey == g->child(i)->shortcut() )
+                  {
+                      channel( idx );
+                      return 1;
+                  }
+              }
+          }
+
+      }
+  }
+   return 0;
 }
 
 
@@ -3705,116 +3723,133 @@ void ImageView::scrub( float dx )
  */
 int ImageView::handle(int event) 
 {
-  switch( event ) 
+    switch( event ) 
     {
-       case fltk::TIMEOUT:
-	  timeout();
-	  return 1;
-       case fltk::FOCUS:
-	  return 1;
-    case fltk::ENTER:
-      focus(this);
-      fltk::GlWindow::handle( event );
-      window()->cursor(fltk::CURSOR_CROSS);
-      fltk::cursor( fltk::CURSOR_CROSS );
-      return 1;
-    case fltk::LEAVE:
-      fltk::GlWindow::handle( event ); 
-      window()->cursor(fltk::CURSOR_DEFAULT);
-      return 1;
-    case fltk::PUSH:
-      return leftMouseDown(fltk::event_x(), fltk::event_y());
-      break;
-    case fltk::RELEASE:
-      leftMouseUp(fltk::event_x(), fltk::event_y());
-      return 1;
-      break;
-    case fltk::MOVE:
-       X = fltk::event_x();
-       Y = fltk::event_y();
+        case fltk::TIMEOUT:
+            {
+                mrv::ImageBrowser* b = browser();
+                if ( b && !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
+                     ( _reel < b->number_of_reels() ) )
+                {
+                    add_idle( (fltk::TimeoutHandler)static_preload, this );
+                    _idle_callback = true;
+                }
+                else
+                {
+                    if ( _idle_callback && _reel >= b->number_of_reels() )
+                    {
+                        fltk::remove_idle( (fltk::TimeoutHandler)static_preload, this );
+                        _idle_callback = false;
+                    }
+                }
+                timeout();
+                return 1;
+            }
+        case fltk::FOCUS:
+            return 1;
+        case fltk::ENTER:
+            focus(this);
+            fltk::GlWindow::handle( event );
+            window()->cursor(fltk::CURSOR_CROSS);
+            fltk::cursor( fltk::CURSOR_CROSS );
+            return 1;
+        case fltk::LEAVE:
+            fltk::GlWindow::handle( event ); 
+            window()->cursor(fltk::CURSOR_DEFAULT);
+            return 1;
+        case fltk::PUSH:
+            return leftMouseDown(fltk::event_x(), fltk::event_y());
+            break;
+        case fltk::RELEASE:
+            leftMouseUp(fltk::event_x(), fltk::event_y());
+            return 1;
+            break;
+        case fltk::MOVE:
+            X = fltk::event_x();
+            Y = fltk::event_y();
 
-       if ( _wipe_dir != kNoWipe )
-       {
-	  char buf[128];
-	  switch( _wipe_dir )
-	  {
-	     case kWipeVertical:
-                 _wipe = (float) fltk::event_x() / (float)w();
-                 sprintf( buf, "WipeVertical %g", _wipe );
-                 send( buf );
-                 window()->cursor(fltk::CURSOR_WE);
-		break;
-	     case kWipeHorizontal:
-                 _wipe = (float) (h() - fltk::event_y()) / (float)h();
-                 sprintf( buf, "WipeHorizontal %g", _wipe );
-                 send( buf );
-                 window()->cursor(fltk::CURSOR_NS);
-		break;
-	     default:
-		break;
-	  }
-	  redraw();
-	  return 1;
-       }
-      if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-	   fltk::event_key_state( fltk::RightShiftKey ) )
-	{
-            float dx = (float) (fltk::event_x() - lastX) / 20.0;
-            if ( std::abs(dx) >= 1.0f )
-	    { 
-                scrub( dx );
-                lastX = fltk::event_x();
-	    }
-	}
-      else
-	{
-	  mouseMove(fltk::event_x(), fltk::event_y());
-	}
+            if ( _wipe_dir != kNoWipe )
+            {
+                char buf[128];
+                switch( _wipe_dir )
+                {
+                    case kWipeVertical:
+                        _wipe = (float) fltk::event_x() / (float)w();
+                        sprintf( buf, "WipeVertical %g", _wipe );
+                        send( buf );
+                        window()->cursor(fltk::CURSOR_WE);
+                        break;
+                    case kWipeHorizontal:
+                        _wipe = (float) (h() - fltk::event_y()) / (float)h();
+                        sprintf( buf, "WipeHorizontal %g", _wipe );
+                        send( buf );
+                        window()->cursor(fltk::CURSOR_NS);
+                        break;
+                    default:
+                        break;
+                }
+                redraw();
+                return 1;
+            }
+            if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+                 fltk::event_key_state( fltk::RightShiftKey ) )
+            {
+                float dx = (float) (fltk::event_x() - lastX) / 20.0;
+                if ( std::abs(dx) >= 1.0f )
+                { 
+                    scrub( dx );
+                    lastX = fltk::event_x();
+                }
+            }
+            else
+            {
+                mouseMove(fltk::event_x(), fltk::event_y());
+            }
 
-      if ( _mode == kDraw || _mode == kErase )
-	 redraw();
+            if ( _mode == kDraw || _mode == kErase )
+                redraw();
 
-      return 1;
-      break;
-    case fltk::DRAG:
-       X = fltk::event_x();
-       Y = fltk::event_y();
-       mouseDrag( int(X), int(Y) );
-       break;
-      //     case fltk::SHORTCUT:
-    case fltk::KEY:
-      lastX = fltk::event_x();
-      lastY = fltk::event_y();
-      return keyDown(fltk::event_key());
-    case fltk::KEYUP:
-      return keyUp(fltk::event_key());
-    case fltk::MOUSEWHEEL:
-      {
-	if ( fltk::event_dy() < 0.f )
-	  {
-	    zoom_under_mouse( _zoom * 2.0f, 
-			      fltk::event_x(), fltk::event_y() );
-	  }
-	else
-	  {
-	    zoom_under_mouse( _zoom * 0.5f, 
-			      fltk::event_x(), fltk::event_y() );
-	  }
-	break;
-      }
-    case fltk::DND_ENTER:
-    case fltk::DND_LEAVE:
-    case fltk::DND_DRAG:
-    case fltk::DND_RELEASE:
-      return 1;
-    case fltk::PASTE:
-      browser()->handle_dnd();
-      return 1;
-    default:
-      return fltk::GlWindow::handle( event ); 
+            return 1;
+            break;
+        case fltk::DRAG:
+            X = fltk::event_x();
+            Y = fltk::event_y();
+            mouseDrag( int(X), int(Y) );
+            break;
+            //     case fltk::SHORTCUT:
+        case fltk::KEY:
+            lastX = fltk::event_x();
+            lastY = fltk::event_y();
+            return keyDown(fltk::event_key());
+        case fltk::KEYUP:
+            return keyUp(fltk::event_key());
+        case fltk::MOUSEWHEEL:
+            {
+                if ( fltk::event_dy() < 0.f )
+                {
+                    zoom_under_mouse( _zoom * 2.0f, 
+                                      fltk::event_x(), fltk::event_y() );
+                }
+                else
+                {
+                    zoom_under_mouse( _zoom * 0.5f, 
+                                      fltk::event_x(), fltk::event_y() );
+                }
+                break;
+            }
+        case fltk::DND_ENTER:
+        case fltk::DND_LEAVE:
+        case fltk::DND_DRAG:
+        case fltk::DND_RELEASE:
+            return 1;
+        case fltk::PASTE:
+            browser()->handle_dnd();
+            return 1;
+        default:
+            return fltk::GlWindow::handle( event ); 
     }
 
-  return 0;
+    return 0;
 }
 
 
@@ -3909,6 +3944,19 @@ void ImageView::preload_caches()
     if ( !foreground() ) return;
 
     CMedia::preload_cache( !CMedia::preload_cache() );
+    if ( !CMedia::preload_cache() )
+    {
+        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+        _idle_callback = false;
+    }
+    else
+    {
+        if (!_idle_callback) 
+        {
+            fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+            _idle_callback = true;
+        }
+    }
 }
 
 /** 
@@ -3955,6 +4003,87 @@ void ImageView::smart_refresh()
 }
 
 
+const char* ImageView::get_layer_label( unsigned short c )
+{
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    const char* lbl = NULL;
+    unsigned short idx = 0;
+    unsigned short num = uiColorChannel->children();
+    for ( unsigned short i = 0; i < num; ++i, ++idx )
+    {
+        fltk::Widget* w = uiColorChannel->child(i);
+        if ( idx == c ) 
+        {
+            lbl = w->label();
+            break;
+        }
+
+        if ( w->is_group() )
+        {
+            fltk::Group* g = (fltk::Group*) w;
+            unsigned short numc = g->children();
+            for ( unsigned short j = 0; j < numc; ++j )
+            {
+                ++idx;
+                if ( idx == c )
+                {
+                    lbl = g->child(j)->label();
+                    break;
+                }
+            }
+        }
+
+        if ( lbl ) break;
+    }
+
+    if ( !lbl && num > 0 )
+    {
+        LOG_ERROR( _("Label not found for index ") << c );
+    }
+    return lbl;
+}
+
+void ImageView::channel( fltk::Widget* o )
+{
+  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+  unsigned short num = uiColorChannel->children();
+  unsigned short idx = 0;
+  bool found = false;
+  for ( unsigned short i = 0; i < num; ++i, ++idx )
+  {
+      fltk::Widget* w = uiColorChannel->child(i);
+      if ( w == o ) {
+          found = true;
+          break;
+      }
+
+      if ( w->is_group() )
+      {
+          fltk::Group* g = (fltk::Group*) w;
+          unsigned short numc = g->children();
+          for ( unsigned short j = 0; j < numc; ++j )
+          {
+              ++idx;
+              w = g->child(j);
+              if ( w == o )
+              {
+                  found = true;
+                  break;
+              }
+          }
+      }
+      if ( found ) break;
+  }
+
+
+  if ( !found )
+  {
+      LOG_ERROR( "Widget " << o->label() << " not found" );
+      return;
+  }
+
+  channel( idx );
+}
 
 /** 
  * Change image display to a new channel (from channel list)
@@ -3964,18 +4093,36 @@ void ImageView::smart_refresh()
 void ImageView::channel( unsigned short c )
 { 
 
-  _channel = c;
-
-
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-  
-  if ( c >= uiColorChannel->children() ) return;
+  unsigned short num = uiColorChannel->children();
+  unsigned short idx = 0;
+  for ( unsigned short i = 0; i < num; ++i, ++idx )
+  {
+      fltk::Widget* w = uiColorChannel->child(i);
+      if ( w->is_group() )
+      {
+          fltk::Group* g = (fltk::Group*) w;
+          idx += g->children();
+      }
+  }
+
+  if ( c >= idx ) 
+  {
+      LOG_ERROR( _("Invalid index ") << c << _(" for channel" ) );
+      return;
+  }
+
+  if ( c == _channel ) c = _old_channel;
+
+  _channel = c;
 
   char buf[128];
   sprintf( buf, "Channel %d", c );
   send( buf );
 
-  const char* lbl = uiColorChannel->child(c)->label();
+  const char* lbl = get_layer_label( c );
+
+
   std::string channelName( lbl );
 
 
@@ -4419,11 +4566,35 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         }
     }
 
+    bool group = false;
+    std::string x;
+    fltk::Group* g = NULL;
+    fltk::Widget* o = NULL;
+
     for ( ; i != e; ++i, ++idx )
     {
+
         const std::string& name = *i;
-        fltk::Widget* o = uiColorChannel->add( name.c_str(),
-                                               NULL );
+
+        if ( o && x != _("Alpha") && name.find(x) != std::string::npos )
+        {
+            if ( group )
+            {
+                unsigned last = uiColorChannel->children()-1;
+                unsigned s = uiColorChannel->child(last)->shortcut();
+                uiColorChannel->remove( last );
+                g = uiColorChannel->add_group( x.c_str(), NULL );
+                g->shortcut( s );
+                group = false;
+            }
+            o = uiColorChannel->add_leaf( name.c_str(), g );
+        }
+        else
+        {
+            group = true;
+            x = name;
+            o = uiColorChannel->add( name.c_str(), NULL );
+        }
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
@@ -4474,24 +4645,17 @@ void ImageView::update_layers()
         return;
     }
 
-    int ch = uiColorChannel->value();
+    const char* lbl = uiColorChannel->label();
+    if ( strcmp(lbl, _("(no image)")) == 0 ) lbl = _("Color");
 
-    char* channelName = NULL;
-  
+    int v = update_shortcuts( fg, lbl );
 
-    if ( ch >= 0 && ch < uiColorChannel->children() )
+    if ( v >= 0 )
     {
-        channelName = strdup( uiColorChannel->child(ch)->label() );
-    }
-
-    int v = update_shortcuts( fg, channelName );
-
-    free( channelName );
-
-    if ( v < uiColorChannel->children() )
-    {
+        _channel = -1;
         channel( (unsigned short) v );
     }
+
 
     uiColorChannel->redraw();
 
