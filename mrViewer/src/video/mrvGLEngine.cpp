@@ -832,9 +832,11 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     glPushMatrix();
 
     double pr = 1.0;
-    if ( _view->main()->uiPixelRatio->value() ) pr /= _view->pixel_ratio();
-    glScaled( 1.0, pr, 1.0 );
-
+    if ( _view->main()->uiPixelRatio->value() )
+    {
+        pr /= _view->pixel_ratio();
+        glScaled( 1.0, pr, 1.0 );
+    }
 
 
 
@@ -1306,9 +1308,6 @@ void GLEngine::draw_images( ImageList& images )
 
       glPushMatrix();
 
-      if ( stereo & CMedia::kStereoInterlaced )
-          draw_interlace_stencil( dpw, (stereo != CMedia::kStereoInterlaced) );
-
       glTranslatef( float(daw.x() - img->eye_separation()),
                     float(-daw.y()), 0 );
 
@@ -1435,10 +1434,12 @@ void GLEngine::draw_images( ImageList& images )
              texHeight = pic->height();
          }
 
-        if ( stereo & CMedia::kStereoInterlaced )
-             draw_interlace_stencil( dpw2, 
-                                     (stereo == CMedia::kStereoInterlaced) );
-
+         if ( stereo & CMedia::kStereoInterlaced )
+         {
+             int Y = (stereo == CMedia::kStereoInterlaced);
+             draw_interlace_stencil( dpw2, Y );
+         }
+ 
          glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
 
 
