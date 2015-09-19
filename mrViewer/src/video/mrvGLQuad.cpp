@@ -457,15 +457,15 @@ namespace mrv {
 	step *= 2;
 
 	unsigned int yo = ry + rh;
-	for ( ; ry < yo; ry += 2, pixels += step )
-	  {
-	    glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry, rw, 1, format,
-			     pixel_type, pixels );
-	    CHECK_GL( "bind_texture glTexSubImage2D" );
-	    glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry+off, rw, 1, format,
-			     pixel_type, pixels );
-	    CHECK_GL( "bind_texture glTexSubImage2D" );
-	  }
+        for ( ; ry < yo; ry += 2, pixels += step )
+        {
+            glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry, rw, 1, format,
+                             pixel_type, pixels );
+            CHECK_GL( "bind_texture glTexSubImage2D" );
+            glTexSubImage2D( GL_TEXTURE_2D, 0, rx, ry+off, rw, 1, format,
+                             pixel_type, pixels );
+            CHECK_GL( "bind_texture glTexSubImage2D" );
+        }
       }
 
   }
