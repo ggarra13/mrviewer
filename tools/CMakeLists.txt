@@ -5,5 +5,5 @@ ADD_SUBDIRECTORY( ctlparser )
 # ADD_SUBDIRECTORY( dvd )
 # ADD_SUBDIRECTORY( fullscreen )
 # ADD_SUBDIRECTORY( magick )
-ADD_SUBDIRECTORY( wrap )
+# ADD_SUBDIRECTORY( wrap )
 

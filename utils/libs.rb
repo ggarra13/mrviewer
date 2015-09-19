@@ -42,7 +42,7 @@ for line in files
   end
 
   puts "#{loc} -> #{lib}"
-  FileUtils.ln_s(loc, "Release/lib/#{lib}" )
+  FileUtils.cp(loc, "Release/lib/#{lib}" )
 
 end
 
@@ -52,9 +52,9 @@ FileUtils.rm_f( "Release/ctl" )
 FileUtils.rm_f( "Release/HISTORY.txt" )
 FileUtils.rm_f( "Release/LICENSE.txt" )
 FileUtils.rm_f( "Release/Videos.txt" )
-FileUtils.ln_s( "../../../shaders", "Release/shaders" )
-FileUtils.ln_s( "../../../docs", "Release/docs" )
-FileUtils.ln_s( "../../../ctl", "Release/ctl" )
-FileUtils.ln_s( "../../../HISTORY.txt", "Release/HISTORY.txt" )
-FileUtils.ln_s( "../../../LICENSE.txt", "Release/LICENSE.txt" )
-FileUtils.ln_s( "../../../Videos.txt", "Release/Videos.txt" )
+FileUtils.cp_r( "../../shaders", "Release/shaders" )
+FileUtils.cp_r( "../../docs", "Release/docs" )
+FileUtils.cp_r( "../../ctl", "Release/ctl" )
+FileUtils.cp( "../../HISTORY.txt", "Release/HISTORY.txt" )
+FileUtils.cp( "../../LICENSE.txt", "Release/LICENSE.txt" )
+FileUtils.cp( "../../Videos.txt", "Release/Videos.txt" )
