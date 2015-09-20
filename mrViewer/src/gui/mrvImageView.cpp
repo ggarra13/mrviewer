@@ -215,16 +215,30 @@ namespace
 
     if ( pos != std::string::npos )
     {
+        size_t pos2  = oldChannel.rfind( '.' );
+        
+        std::string ext2;
+        if ( pos2 != std::string::npos )
+        {
+            ext2 = oldChannel.substr( pos2+1, channelName.size() );
+            std::transform( ext2.begin(), ext2.end(), ext2.begin(),
+                            (int(*)(int)) toupper );
+        }
+
        std::string ext = channelName.substr( pos+1, channelName.size() );
        std::transform( ext.begin(), ext.end(), ext.begin(),
 		       (int(*)(int)) toupper );
+
+       oldChannel = channelName;
+
        if ( ext == N_("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
           return 'c';
        else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
                  ext == N_("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") || 
                  ext == N_("GREEN") ) return 'g';
-       else if ( ext == N_("B") || ext == N_("BLUE") || ext == N_("W") ) 
+       else if ( ext == N_("B") || ext == N_("BLUE") || ext == N_("W") ||
+                 ((ext == N_("Z") && ext2 == "Y")) ) 
            return 'b';
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
@@ -232,6 +246,8 @@ namespace
     }
     else
     {
+        oldChannel = channelName;
+
         std::string ext = channel;
         std::transform( ext.begin(), ext.end(), ext.begin(),
                         (int(*)(int)) toupper );
@@ -241,7 +257,6 @@ namespace
             return 'c';
     }
 
-    oldChannel = channelName;
 
     return 0;
   }
