@@ -4537,12 +4537,13 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
 
+    CMedia* img = fg->image();
 
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     uiColorChannel->clear();
 
-    CMedia* img = fg->image();
     const stringArray& layers = img->layers();
+
 
     stringArray::const_iterator i = layers.begin();
     stringArray::const_iterator e = layers.end();
@@ -4590,6 +4591,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     {
 
         const std::string& name = *i;
+
 
         if ( o && x != _("Alpha") && name.find(x) != std::string::npos )
         {
