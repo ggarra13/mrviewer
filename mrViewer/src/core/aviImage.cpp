@@ -2648,8 +2648,8 @@ void aviImage::flush_subtitle()
 
 void aviImage::subtitle_stream( int idx )
 {
-  if ( idx != -1 && unsigned(idx) >= number_of_subtitle_streams() )
-    throw "Subtitle stream invalid";
+  if ( idx < -1 || unsigned(idx) >= number_of_subtitle_streams() )
+      idx = -1;
 
   if ( idx == _subtitle_index ) return;
 
