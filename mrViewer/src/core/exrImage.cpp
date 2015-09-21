@@ -518,7 +518,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    image_size( dw, dh );
 
 
-   Imf::ChannelList channels = h.channels();
+   const Imf::ChannelList& channels = h.channels();
    stringSet layers;
    channels.layers( layers );
 
@@ -537,7 +537,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    }
 
 
-   if ( _layers.empty() || _layers.size() == _num_layers )
+   if ( _layers.empty()  )
    {
       _num_channels = 0;
       _gamma = 2.2f;
@@ -585,10 +585,6 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 alpha_layers();
       }
       
-      // if ( _has_left_eye && _has_right_eye )
-      // {
-      //     add_anaglyph_layers();
-      // }
 
       if ( _has_stereo )
       {
@@ -1740,7 +1736,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    * 
    * @return true if success, false if not
    */
-  bool exrImage::fetch( const boost::int64_t frame ) 
+  bool exrImage::fetch( const boost::int64_t frame )
   {
 
      try
@@ -1765,7 +1761,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	    const Imf::Header& h = inmaster.header(0);
 	    if ( h.hasType() ) _type = h.type();
 	  
-            if ( !  fetch_multipart( frame ) )
+            if ( ! fetch_multipart( frame ) )
                 return false;
 
 	    if ( _use_yca && !supports_yuv() )
