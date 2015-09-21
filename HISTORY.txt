@@ -1,3 +1,8 @@
+v2.9.5   - Made audio track selection not throw when invalid tracks
+	   are used.  If an invalid track is used, the audio is
+	   muted ( track is -1 ).
+	 - Same thing with subtitle track.
+
 v2.9.4   - RMB->Pixel->Copy Pixel Value now respects lut and
 	   gamma if active.
 	 - Changing volume or audio track now effects both 

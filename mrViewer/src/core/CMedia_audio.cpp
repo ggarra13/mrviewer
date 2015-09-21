@@ -1262,8 +1262,8 @@ unsigned int CMedia::max_audio_frames()
 
 void CMedia::audio_stream( int idx )
 {
-  if ( idx != -1 && unsigned(idx) >= number_of_audio_streams() )
-    throw "Audio stream invalid";
+  if ( idx < -1 || unsigned(idx) >= number_of_audio_streams() )
+      idx = -1;
 
   if ( _right_eye ) _right_eye->audio_stream(idx);
 
