@@ -120,7 +120,7 @@ namespace mrv {
 			   const boost::int64_t frame,
 			   Imf::ChannelList::ConstIterator s,
 			   Imf::ChannelList::ConstIterator e,
-			   Imf::ChannelList& channels,
+			   const Imf::ChannelList& channels,
 			   const Imf::Header& hdr, 
 			   Imf::FrameBuffer& fb
 			    );
@@ -145,8 +145,10 @@ namespace mrv {
        int _numparts;
        unsigned _num_layers;
 
-       Imf::LineOrder   _lineOrder;
-       Imf::Compression _compression;
+      Imf::LineOrder   _lineOrder;
+      Imf::Compression _compression;
+
+      stringSet layers;
 
       // Stereo in same image
       bool _has_stereo;
