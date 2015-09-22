@@ -38,7 +38,6 @@
 #include <ImfInputFile.h>
 #include <ImfInputPart.h>
 #include <ImfTiledInputFile.h>
-#include <ImfMultiPartInputFile.h>
 #include <ImfStandardAttributes.h>
 #include <ImfDeepScanLineInputPart.h>
 #include <ImfDeepFrameBuffer.h>
@@ -147,6 +146,7 @@ namespace mrv {
   _curpart( -1 ),
   _numparts( -1 ),
   _num_layers( 0 ),
+  _read_attr( false ),
   _lineOrder( (Imf::LineOrder) 0 ),
   _compression( (Imf::Compression) 0 ),
   _has_stereo( false )
@@ -181,9 +181,9 @@ namespace mrv {
 
 
 bool exrImage::channels_order(
-			      const boost::int64_t frame,
-			      Imf::ChannelList::ConstIterator s,
-			      Imf::ChannelList::ConstIterator e,
+			      const boost::int64_t& frame,
+			      Imf::ChannelList::ConstIterator& s,
+			      Imf::ChannelList::ConstIterator& e,
 			      const Imf::ChannelList& channels,
 			      const Imf::Header& h, 
 			      Imf::FrameBuffer& fb
@@ -195,73 +195,71 @@ bool exrImage::channels_order(
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
-   int order[4];
-   order[0] = order[1] = order[2] = order[3] = -1;
 
    // First, count and store the channels
    bool no_layer = false;
    int idx = 0;
+   order[0] = order[1] = order[2] = order[3] = -1;
    Imf::PixelType imfPixelType = Imf::UINT;
    typedef std::vector< std::string > LayerList;
    LayerList channelList;
-   Imf::ChannelList::ConstIterator i;
-   for ( i = s; i != e; ++i, ++idx )
+   Imf::ChannelList::ConstIterator i = s;
+   for ( ; i != e; ++i, ++idx )
    {
-      const std::string& layerName = i.name();
+       const std::string& layerName = i.name();
 
+       const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
+       if ( !ch ) {
+           LOG_ERROR( "Channel " << layerName << " not found" );
+           continue;
+       }
 
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-      if ( !ch ) {
-         LOG_ERROR( "Channel " << layerName << " not found" );
-         continue;
-      }
+       // For Z channel
+       if ( order[0] == -1 && order[1] == -1 &&
+            order[2] == -1 && order[3] == -1 &&
+            ch->type > imfPixelType ) imfPixelType = ch->type;
 
-      // For Z channel
-      if ( order[0] == -1 && order[1] == -1 &&
-           order[2] == -1 && order[3] == -1 &&
-           ch->type > imfPixelType ) imfPixelType = ch->type;
+       std::string ext = layerName;
 
-      std::string ext = layerName;
+       if ( no_layer == false )
+       {
+           size_t pos = ext.rfind( N_(".") );
+           if ( pos != string::npos )
+           {
+               ext = ext.substr( pos+1, ext.size() );
+           }
+           else
+           {
+               no_layer = true;
+           }
+       }
 
-      if ( no_layer == false )
-      {
-          size_t pos = layerName.rfind( N_(".") );
-          if ( pos != string::npos )
-          {
-              ext = ext.substr( pos+1, ext.size() );
-          }
-          else
-          {
-              no_layer = true;
-          }
-      }
+       std::transform( ext.begin(), ext.end(), ext.begin(),
+                       (int(*)(int)) toupper);
+       if ( order[0] == -1 && (ext == N_("R") ||
+                               ext == N_("Y") || ext == N_("U") ||
+                               ext == N_("X") ) )
+       {
+           order[0] = idx; imfPixelType = ch->type;
+       }
+       else if ( order[1] == -1 && (ext == N_("G")  ||
+                                    ext == N_("RY") || ext == N_("V") ||
+                                    ext == N_("Y") ) )
+       {
+           order[1] = idx; imfPixelType = ch->type;
+       }
+       else if ( order[2] == -1 && (ext == N_("B") ||
+                                    ext == N_("BY") || ext == N_("W") ||
+                                    ext == N_("Z") ) )
+       {
+           order[2] = idx; imfPixelType = ch->type;
+       }
+       else if ( order[3] == -1 && ext == N_("A") ) 
+       {
+           order[3] = idx; imfPixelType = ch->type;
+       }
 
-      std::transform( ext.begin(), ext.end(), ext.begin(),
-		      (int(*)(int)) toupper);
-      if ( order[0] == -1 && (ext == N_("R") ||
-			      ext == N_("Y") || ext == N_("U") ||
-                              ext == N_("X") ) )
-      {
-          order[0] = idx; imfPixelType = ch->type;
-      }
-      else if ( order[1] == -1 && (ext == N_("G")  ||
-                                   ext == N_("RY") || ext == N_("V") ||
-                                   ext == N_("Y") ) )
-      {
-         order[1] = idx; imfPixelType = ch->type;
-      }
-      else if ( order[2] == -1 && (ext == N_("B") ||
-                                   ext == N_("BY") || ext == N_("W") ||
-                                   ext == N_("Z") ) )
-      {
-         order[2] = idx; imfPixelType = ch->type;
-      }
-      else if ( order[3] == -1 && ext == N_("A") ) 
-      {
-          order[3] = idx; imfPixelType = ch->type;
-      }
-
-      channelList.push_back( layerName );
+       channelList.push_back( layerName );
    }
 
 
@@ -356,7 +354,6 @@ bool exrImage::channels_order(
 
    char* base = pixels + start;
 
-   const Imf::Channel* ch = NULL;
    idx = 0;
    for ( i = s; i != e && idx < 4; ++i, ++idx )
    {
@@ -365,7 +362,7 @@ bool exrImage::channels_order(
 
       const std::string& layerName = channelList[k];
 
-      ch = channels.findChannel( layerName.c_str() );
+      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
 
       if ( !ch ) {
          LOG_ERROR( "Channel " << layerName << " not found" );
@@ -383,7 +380,7 @@ bool exrImage::channels_order(
 }
 
 
-void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
+void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame )
 {
    SCOPED_LOCK( _mutex );
 
@@ -424,7 +421,7 @@ void exrImage::ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame )
    * 
    * @return true if success, false if not
    */
-bool exrImage::fetch_mipmap( const boost::int64_t frame ) 
+bool exrImage::fetch_mipmap( const boost::int64_t& frame ) 
   {
 
      try {
@@ -460,7 +457,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t frame )
                         displayWindow.max.x, displayWindow.max.y );
 
 
-	if ( _exif.empty() && _iptc.empty() )
+	if ( ! _read_attr )
            read_header_attr( h, frame );
 
 
@@ -645,163 +642,165 @@ bool exrImage::find_layers( const Imf::Header& h )
    return true;
 }
 
-bool exrImage::handle_stereo( const boost::int64_t frame,
-                                           const Imf::Header& h,
-                                           Imf::FrameBuffer& fb )
+bool exrImage::handle_stereo( const boost::int64_t& frame,
+                              const Imf::Header& h,
+                              Imf::FrameBuffer& fb )
 {
     const Imf::ChannelList& channels = h.channels();
 
-   char* ch = strdup( _channel );
+    char* ch = strdup( _channel );
 
-   free( _channel );
-   _channel = NULL;
+    free( _channel );
+    _channel = NULL;
 
 
 
-   Imf::ChannelList::ConstIterator s;
-   Imf::ChannelList::ConstIterator e;
-   std::string prefix;
-   if ( _multiview && _has_right_eye ) prefix = "right";
+    Imf::ChannelList::ConstIterator s;
+    Imf::ChannelList::ConstIterator e;
+    std::string prefix;
+    if ( _multiview && _has_right_eye ) prefix = "right";
 
-   // Find the iterators for a right channel prefix or all channels
-   if ( prefix.size() )
-   {
-      channels.channelsWithPrefix( prefix.c_str(), s, e );
-   }
-   else
-   {
-      s = channels.begin();
-      e = channels.end();
-   }
-   channels_order( frame, s, e, channels, h, fb );
+    // Find the iterators for a right channel prefix or all channels
+    if ( prefix.size() )
+    {
+        channels.channelsWithPrefix( prefix.c_str(), s, e );
+    }
+    else
+    {
+        s = channels.begin();
+        e = channels.end();
+    }
+    channels_order( frame, s, e, channels, h, fb );
 
-   // If 3d is because of different headers exit now
-   if ( !_multiview )
-   {
-      _channel = ch;
-      return true;
-   }
+    // If 3d is because of different headers exit now
+    if ( !_multiview )
+    {
+        _channel = ch;
+        return true;
+    }
 
-   _stereo[1] = _hires;
+    _stereo[1] = _hires;
 
-   //
-   // Repeat for left eye
-   //
-   prefix = "";
-   if ( _has_left_eye ) prefix = "left";
-   if ( prefix.size() )
-   {
-      channels.channelsWithPrefix( prefix.c_str(), s, e );
-   }
-   else
-   {
-      s = channels.begin();
-      e = channels.end();
-   }
+    //
+    // Repeat for left eye
+    //
+    prefix = "";
+    if ( _has_left_eye ) prefix = "left";
+    if ( prefix.size() )
+    {
+        channels.channelsWithPrefix( prefix.c_str(), s, e );
+    }
+    else
+    {
+        s = channels.begin();
+        e = channels.end();
+    }
 
-   channels_order( frame, s, e, channels, h, fb );
-   _stereo[0] = _hires;
+    channels_order( frame, s, e, channels, h, fb );
+    _stereo[0] = _hires;
 
-   _channel = ch;
+    _channel = ch;
 
-   return true;
+    return true;
 }
 
 bool exrImage::find_channels( const Imf::Header& h,
 			      Imf::FrameBuffer& fb,
-			      boost::int64_t frame )
+			      const boost::int64_t& frame )
 {
-   bool ok = find_layers( h );
-   if ( !ok ) return false;
+    bool ok = find_layers( h );
+    if ( !ok ) return false;
 
-   const Imf::ChannelList& channels = h.channels();
+    const Imf::ChannelList& channels = h.channels();
 
-   char* channelPrefix = _channel;
-
-
-   // If channel starts with #, we are dealing with a multipart exr
-   if ( channelPrefix && channelPrefix[0] == '#' )
-   {
-      std::string part = channelPrefix;
+    char* channelPrefix = _channel;
 
 
-      size_t idx = part.find( N_(".") );
+    // If channel starts with #, we are dealing with a multipart exr
+    if ( channelPrefix && channelPrefix[0] == '#' )
+    {
+        std::string part = channelPrefix;
 
-      if ( idx == std::string::npos )
-      {
-         free( _channel );
-         _channel = channelPrefix = NULL;
-      }
-      else
-      {
-         std::string ext = part.substr( idx+1, part.size() );
-         std::string root = ext;
 
-         idx = ext.rfind( N_(",") );
-         if ( idx != std::string::npos )
-         {
-            ext = ext.substr( idx+1, part.size() );
-         }
+        size_t idx = part.find( N_(".") );
+
+        if ( idx == std::string::npos )
+        {
+            free( _channel );
+            _channel = channelPrefix = NULL;
+        }
+        else
+        {
+            std::string ext = part.substr( idx+1, part.size() );
+            std::string root = ext;
+
+            idx = ext.rfind( N_(",") );
+            if ( idx != std::string::npos )
+            {
+                ext = ext.substr( idx+1, part.size() );
+            }
  
-         // When extension is one of RGBA we want to read RGBA together
-         // so we remove the extension from prefix.
-         if ( ext == "R" || ext == "G" || ext == "B" || ext == "A" )
-         {
-            ext = "";
-            if ( idx == std::string::npos || idx == 1 )
-               root = "";
+            // When extension is one of RGBA we want to read RGBA together
+            // so we remove the extension from prefix.
+            if ( ext == "R" || ext == "G" || ext == "B" || ext == "A" )
+            {
+                ext = "";
+                if ( idx == std::string::npos || idx == 1 )
+                    root = "";
+                else
+                    root = root.substr( 0, idx-1 );
+            }
+
+            free( _channel );
+            _channel = NULL;
+
+            if ( root.size() ) _channel = strdup( root.c_str() );
+
+            channelPrefix = _channel;
+        }
+    }
+
+    if ( channelPrefix != NULL )
+    {
+
+        if ( _stereo_type & kStereoSideBySide )
+        {
+            return handle_stereo(frame, h, fb);
+        }
+        else
+        {
+            if ( _stereo_type & kStereoAnaglyph ||
+                 _stereo_type & kStereoInterlaced )
+            {
+                if ( _stereo_type != kStereoRightAnaglyph &&
+                     _stereo_type != kStereoInterlacedFlipped ) _left_red = true;
+                else _left_red = false;
+
+                return handle_stereo(frame, h, fb);
+            }
             else
-               root = root.substr( 0, idx-1 );
-         }
+            {
+                Imf::ChannelList::ConstIterator s;
+                Imf::ChannelList::ConstIterator e;
+                channels.channelsWithPrefix( channelPrefix, s, e );
+                return channels_order( frame, s, e, channels, h, fb );
+            }
+        }
+    }
+    else
+    {
+        Imf::ChannelList::ConstIterator s = channels.begin();
+        Imf::ChannelList::ConstIterator e = channels.end();
 
-         free( _channel );
-         _channel = NULL;
-
-         if ( root.size() ) _channel = strdup( root.c_str() );
-
-         channelPrefix = _channel;
-      }
-   }
-
-   if ( channelPrefix != NULL )
-   {
-
-       if ( _stereo_type & kStereoSideBySide )
-       {
-           return handle_stereo(frame, h, fb);
-       }
-       else
-       {
-           if ( _stereo_type & kStereoAnaglyph ||
-                _stereo_type & kStereoInterlaced )
-           {
-               if ( _stereo_type != kStereoRightAnaglyph &&
-                    _stereo_type != kStereoInterlacedFlipped ) _left_red = true;
-               else _left_red = false;
-
-               return handle_stereo(frame, h, fb);
-           }
-           else
-           {
-               Imf::ChannelList::ConstIterator s;
-               Imf::ChannelList::ConstIterator e;
-               channels.channelsWithPrefix( channelPrefix, s, e );
-               return channels_order( frame, s, e, channels, h, fb );
-           }
-       }
-   }
-   else
-   {
-      Imf::ChannelList::ConstIterator s = channels.begin();
-      Imf::ChannelList::ConstIterator e = channels.end();
-
-      return channels_order( frame, s, e, channels, h, fb );
-   }
+        return channels_order( frame, s, e, channels, h, fb );
+    }
 }
 
-void exrImage::read_header_attr( const Imf::Header& h, boost::int64_t frame )
+void exrImage::read_header_attr( const Imf::Header& h, 
+                                 const boost::int64_t& frame )
 {
- 
+    _read_attr = true;
+
       {
 	const Imf::ChromaticitiesAttribute *attr =
 	  h.findTypedAttribute<Imf::ChromaticitiesAttribute>( N_("chromaticities") );
@@ -1448,10 +1447,9 @@ exrImage::loadDeepScanlineImage ( int &zsize,
 }
 
 
-bool exrImage::fetch_multipart( const boost::int64_t frame )
+bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
+                                const boost::int64_t& frame )
 {
-   MultiPartInputFile inmaster ( sequence_filename(frame).c_str() );
-
 
    if ( _num_layers == 0 && _numparts > 1 )
    {
@@ -1471,8 +1469,9 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
               _type != DEEPSCANLINE &&
               _type != DEEPTILE ) continue;
 
-         if ( _exif.empty() && _iptc.empty() )
-            read_header_attr( header, frame );
+         if ( ! _read_attr )
+             read_header_attr( header, frame );
+
 
          _pixel_ratio = header.pixelAspectRatio();
          _lineOrder   = header.lineOrder();
@@ -1546,7 +1545,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    else if ( _numparts == 1 )
    {
        const Imf::Header& header = inmaster.header(0);
-       if ( _exif.empty() && _iptc.empty() )
+       if ( ! _read_attr )
            read_header_attr( header, frame );
    }
 
@@ -1654,7 +1653,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
           if ( ! find_layers( header ) )
               return false;
 
-          if ( _exif.empty() && _iptc.empty() )
+          if ( ! _read_attr )
               read_header_attr( header, frame );
 
           int zsize;
@@ -1759,7 +1758,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	    const Imf::Header& h = inmaster.header(0);
 	    if ( h.hasType() ) _type = h.type();
 	  
-            if ( !  fetch_multipart( frame ) )
+            if ( !  fetch_multipart( inmaster, frame ) )
                 return false;
 
 	    if ( _use_yca && !supports_yuv() )
