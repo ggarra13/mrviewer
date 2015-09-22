@@ -184,7 +184,7 @@ bool exrImage::channels_order(
 			      const boost::int64_t frame,
 			      Imf::ChannelList::ConstIterator s,
 			      Imf::ChannelList::ConstIterator e,
-			      Imf::ChannelList& channels,
+			      const Imf::ChannelList& channels,
 			      const Imf::Header& h, 
 			      Imf::FrameBuffer& fb
 			      )
@@ -356,7 +356,7 @@ bool exrImage::channels_order(
 
    char* base = pixels + start;
 
-   Imf::Channel* ch = NULL;
+   const Imf::Channel* ch = NULL;
    idx = 0;
    for ( i = s; i != e && idx < 4; ++i, ++idx )
    {
@@ -519,27 +519,28 @@ bool exrImage::find_layers( const Imf::Header& h )
 
 
    const Imf::ChannelList& channels = h.channels();
-   stringSet layers;
-   channels.layers( layers );
-
-   if ( layers.find( N_( "right" ) ) != layers.end() )
+   if ( layers.empty() )
    {
-      _has_right_eye = true;
+       channels.layers( layers );
+
+       if ( layers.find( N_( "right" ) ) != layers.end() )
+       {
+           _has_right_eye = true;
+       }
+
+       if ( layers.find( N_("left") ) != layers.end() )
+           _has_left_eye = true;
+
+       if ( !_has_stereo && ( _has_left_eye || _has_right_eye ) )
+       {
+           _multiview = true;
+           _has_stereo = true;
+       }
    }
 
-   if ( layers.find( N_("left") ) != layers.end() )
-      _has_left_eye = true;
-
-   if ( !_has_stereo && ( _has_left_eye || _has_right_eye ) )
+   // if ( _layers.empty() || _layers.size() == _num_layers )
+   if ( _num_channels == 0 )
    {
-      _multiview = true;
-      _has_stereo = true;
-   }
-
-
-   if ( _layers.empty()  )
-   {
-      _num_channels = 0;
       _gamma = 2.2f;
 
       bool has_rgb = false, has_alpha = false;
@@ -584,7 +585,6 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 has_alpha = true;
 	 alpha_layers();
       }
-      
 
       if ( _has_stereo )
       {
@@ -619,11 +619,9 @@ bool exrImage::find_layers( const Imf::Header& h )
 
       // Deal with layers next like (Normals, Motion, etc)
       {
-	 stringSet layerSet;
-	 channels.layers( layerSet );
 
-	 stringSet::const_iterator i = layerSet.begin();
-	 stringSet::const_iterator e = layerSet.end();
+	 stringSet::const_iterator i = layers.begin();
+	 stringSet::const_iterator e = layers.end();
 	 for ( ; i != e; ++i )
 	 {
             const std::string& name = *i;
@@ -638,6 +636,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 	    {
                 const std::string& layerName = x.name();
                 _layers.push_back( layerName );
+                ++_num_channels;
 	    }
 	 }
       }
@@ -650,7 +649,7 @@ bool exrImage::handle_stereo( const boost::int64_t frame,
                                            const Imf::Header& h,
                                            Imf::FrameBuffer& fb )
 {
-   ChannelList channels = h.channels();
+    const Imf::ChannelList& channels = h.channels();
 
    char* ch = strdup( _channel );
 
@@ -715,7 +714,7 @@ bool exrImage::find_channels( const Imf::Header& h,
    bool ok = find_layers( h );
    if ( !ok ) return false;
 
-   ChannelList channels = h.channels();
+   const Imf::ChannelList& channels = h.channels();
 
    char* channelPrefix = _channel;
 
@@ -773,9 +772,6 @@ bool exrImage::find_channels( const Imf::Header& h,
        }
        else
        {
-           Imf::ChannelList::ConstIterator s;
-           Imf::ChannelList::ConstIterator e;
-
            if ( _stereo_type & kStereoAnaglyph ||
                 _stereo_type & kStereoInterlaced )
            {
@@ -787,6 +783,8 @@ bool exrImage::find_channels( const Imf::Header& h,
            }
            else
            {
+               Imf::ChannelList::ConstIterator s;
+               Imf::ChannelList::ConstIterator e;
                channels.channelsWithPrefix( channelPrefix, s, e );
                return channels_order( frame, s, e, channels, h, fb );
            }
@@ -1736,7 +1734,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
    * 
    * @return true if success, false if not
    */
-  bool exrImage::fetch( const boost::int64_t frame )
+  bool exrImage::fetch( const boost::int64_t frame ) 
   {
 
      try
@@ -1761,7 +1759,7 @@ bool exrImage::fetch_multipart( const boost::int64_t frame )
 	    const Imf::Header& h = inmaster.header(0);
 	    if ( h.hasType() ) _type = h.type();
 	  
-            if ( ! fetch_multipart( frame ) )
+            if ( !  fetch_multipart( frame ) )
                 return false;
 
 	    if ( _use_yca && !supports_yuv() )
