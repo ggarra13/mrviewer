@@ -506,7 +506,6 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
 bool exrImage::find_layers( const Imf::Header& h )
 {
-
    const Box2i& dataWindow = h.dataWindow();
    int dw  = dataWindow.max.x - dataWindow.min.x + 1;
    int dh  = dataWindow.max.y - dataWindow.min.y + 1;
