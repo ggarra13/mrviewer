@@ -103,12 +103,14 @@ namespace mrv {
                        Imf::Array<unsigned int>& sampleCount );
 
   protected:
-      void loadDeepTileImage( int &zsize,
+      void loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
+                              int &zsize,
                               Imf::Array<float*>&       zbuff,
                               Imf::Array<unsigned int>& sampleCount,
                               bool deepComp );
 
-      void loadDeepScanlineImage (int &zsize,
+      void loadDeepScanlineImage (Imf::MultiPartInputFile& inmaster,
+                                  int &zsize,
                                   Imf::Array<float*>&       zbuff,
                                   Imf::Array<unsigned int>& sampleCount,
                                   bool deepComp);
