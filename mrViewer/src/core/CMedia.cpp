@@ -721,7 +721,7 @@ void CMedia::refresh( const mrv::Recti& r )
   // Merge the bounding box of area to update
   _damageRectangle.merge( r );
 
-  image_damage( image_damage() | kDamageContents );
+  image_damage( image_damage() | kDamageData | kDamageContents );
 }
 
 
