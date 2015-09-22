@@ -36,6 +36,7 @@
 #include <ImfPixelType.h>
 #include <ImfHeader.h>
 #include <ImfChannelList.h>
+#include <ImfMultiPartInputFile.h>
 #include <ImfFrameBuffer.h>
 
 
@@ -113,23 +114,25 @@ namespace mrv {
                                   bool deepComp);
 
        bool find_layers( const Imf::Header& h );
-       bool handle_stereo( const boost::int64_t frame,
+       bool handle_stereo( const boost::int64_t& frame,
                            const Imf::Header& hdr, 
                            Imf::FrameBuffer& fb );
        bool channels_order( 
-			   const boost::int64_t frame,
-			   Imf::ChannelList::ConstIterator s,
-			   Imf::ChannelList::ConstIterator e,
+			   const boost::int64_t& frame,
+			   Imf::ChannelList::ConstIterator& s,
+			   Imf::ChannelList::ConstIterator& e,
 			   const Imf::ChannelList& channels,
 			   const Imf::Header& hdr, 
 			   Imf::FrameBuffer& fb
 			    );
-       void ycc2rgba( const Imf::Header& hdr, const boost::int64_t frame );
-       bool fetch_mipmap( const boost::int64_t frame );
-       bool fetch_multipart( const boost::int64_t frame );
+       void ycc2rgba( const Imf::Header& hdr, const boost::int64_t& frame );
+       bool fetch_mipmap( const boost::int64_t& frame );
+      bool fetch_multipart( Imf::MultiPartInputFile& inmaster,
+                            const boost::int64_t& frame );
        bool find_channels( const Imf::Header& h, Imf::FrameBuffer& fb,
-			   boost::int64_t frame );
-       void read_header_attr( const Imf::Header& h, boost::int64_t frame );
+			   const boost::int64_t& frame );
+      void read_header_attr( const Imf::Header& h, 
+                             const boost::int64_t& frame );
 
       static image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
       static Imf::PixelType pixel_type_to_exr( image_type::PixelType pixel_type );
@@ -144,11 +147,14 @@ namespace mrv {
        int _curpart;
        int _numparts;
        unsigned _num_layers;
+      bool _read_attr;
 
       Imf::LineOrder   _lineOrder;
       Imf::Compression _compression;
 
       stringSet layers;
+      int order[4];
+
 
       // Stereo in same image
       bool _has_stereo;
