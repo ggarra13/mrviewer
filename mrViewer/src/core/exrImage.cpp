@@ -1159,9 +1159,9 @@ void exrImage::loadDeepData( int& zsize,
         if ( h.hasType() ) _type = h.type();
 
         if ( _type == DEEPSCANLINE )
-            loadDeepScanlineImage( zsize, zbuff, sampleCount, true );
+            loadDeepScanlineImage( inmaster, zsize, zbuff, sampleCount, true );
         else if ( _type == DEEPTILE )
-            loadDeepTileImage( zsize, zbuff, sampleCount, true );
+            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
     }
     catch( const std::exception& e )
     {
@@ -1172,12 +1172,12 @@ void exrImage::loadDeepData( int& zsize,
 
 
 void
-exrImage::loadDeepTileImage( int &zsize,
+exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
+                             int &zsize,
                              Imf::Array<float*>&       zbuff,
                              Imf::Array<unsigned int>& sampleCount,
                              bool deepComp )
 {
-    Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
 
     DeepTiledInputPart in (inmaster, _curpart);
     const Imf::Header& header = in.header();
@@ -1381,12 +1381,12 @@ exrImage::loadDeepTileImage( int &zsize,
 }
 
 void
-exrImage::loadDeepScanlineImage ( int &zsize,
+exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
+                                  int &zsize,
                                   Imf::Array<float*>&       zbuff,
                                   Imf::Array<unsigned int>& sampleCount,
                                   bool deepComp)
 {
-    Imf::MultiPartInputFile inmaster( sequence_filename(_frame).c_str() );
 
     DeepScanLineInputPart in (inmaster, _curpart);
     const Imf::Header& header = in.header();
@@ -1659,7 +1659,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
           int zsize;
           Imf::Array< float* > zbuff;
           Imf::Array< unsigned > sampleCount;
-          loadDeepTileImage( zsize, zbuff, sampleCount, true );
+          loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
           return true;
       }
 
