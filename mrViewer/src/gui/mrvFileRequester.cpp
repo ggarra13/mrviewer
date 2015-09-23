@@ -477,7 +477,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    }
 
    std::string root, fileseq = file;
-   bool ok = mrv::fileroot( root, fileseq );
+   bool ok = mrv::fileroot( root, fileseq, false );
    if ( !ok && !movie ) return;
 
 
