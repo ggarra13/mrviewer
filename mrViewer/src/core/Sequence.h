@@ -175,10 +175,12 @@ struct SequenceSort
    *
    * @param fileroot    fileroot in %*d format or file
    * @param file        original file
+   * @param change_view whether to replace views with %V or %v
    * 
    * @return true if potential sequence, false if not
    */
-  bool fileroot( std::string& fileroot, const std::string& file );
+bool fileroot( std::string& fileroot, const std::string& file,
+               const bool change_view = true );
 
   /** 
    * Given a filename of a possible sequence, split it into
@@ -189,13 +191,15 @@ struct SequenceSort
    * @param view    left or right for stereo images.  Empty if not stereo.
    * @param ext     extension of file sequence (.ext)
    * @param file    original filename, potentially part of a sequence.
-   * 
+   * @param change_view whether to change view for %V or %v. 
+   *
    * @return true if a sequence, false if not.
    */
   bool split_sequence(
 		      std::string& root, std::string& frame,
                       std::string& view,
-		      std::string& ext, const std::string& file
+		      std::string& ext, const std::string& file,
+                      const bool change_view = true
 		      );
 
   /** 
@@ -279,7 +283,7 @@ bool parse_reel( LoadList& sequences, bool& edl,
   std::string get_short_view( bool left );
   std::string get_long_view( bool left );
 
-// Parse a %v or %V filerooot and return the appropiate view name.
+// Parse a %v or %V fileroot and return the appropiate view name.
 std::string parse_view( const std::string& fileroot, bool left = true );
 
 }  // namespace mrv

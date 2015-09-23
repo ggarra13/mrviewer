@@ -31,13 +31,14 @@ namespace mrv {open
     }
     decl {std::string pixel_type;} {public
     }
-    Function {make_window(bool aces)} {} {
+    Function {make_window(bool aces)} {open
+    } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {4 451 315 315} resizable modal noborder visible
+        xywh {4 446 315 315} resizable modal noborder visible
       } {
         {fltk::Group} {} {
-          label {OpenEXR Options}
+          label {OpenEXR Options} open
           xywh {31 35 252 223} box UP_BOX
         } {
           {fltk::Choice} uiCompression {
@@ -52,8 +53,9 @@ v->uiDWACompression->activate();
 else
 {
 v->uiDWACompression->deactivate();
-}}
+}} selected
             xywh {115 23 91 26}
+            extra_code {o->value(1);}
           } {
             {fltk::Item} {} {
               label None
@@ -139,8 +141,7 @@ else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
     Function {EXROptionsUI(bool aces = false) : EXROpts(aces)} {open
     } {
       code {fltk::Window* w = make_window(aces);
-if ( w->exec() ) convert();} {selected
-      }
+if ( w->exec() ) convert();} {}
     }
   }
 } 

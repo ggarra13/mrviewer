@@ -447,7 +447,7 @@ void ImageInformation::fill_data()
 
     double aspect_ratio = 0;
     const mrv::Recti& dpw = img->display_window();
-    if ( dpw.w() )
+    if ( dpw.h() )
     {
         aspect_ratio = ( (double) dpw.w() / (double) dpw.h() );
     }
@@ -474,16 +474,14 @@ void ImageInformation::fill_data()
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
     const mrv::Recti& window = img->data_window();
-    if ( window.w() > 0 )
+    const mrv::Recti& dwindow = img->display_window();
+    if ( dwindow != window )
     {
         add_rect( _("Data Window"), window );
     }
 
-    const mrv::Recti& dwindow = img->display_window();
-    if ( dwindow.w() > 0 )
-    {
-        add_rect( _("Display Window"), dwindow );
-    }
+    add_rect( _("Display Window"), dwindow );
+
 
     if ( ! img->is_stereo() )
     {
