@@ -724,7 +724,7 @@ void CMedia::refresh( const mrv::Recti& r )
   // Merge the bounding box of area to update
   _damageRectangle.merge( r );
 
-  image_damage( image_damage() | kDamageData | kDamageContents );
+  image_damage( image_damage() | kDamageContents );
 }
 
 
@@ -1764,6 +1764,7 @@ bool CMedia::frame( const boost::int64_t f )
   _expected = _dts + 1;
   _expected_audio = _expected + _audio_offset;
 
+
   return true;
 }
 
@@ -2507,7 +2508,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   boost::uint64_t idx = f - _frame_start;
   assert( idx <= (_frame_end - _frame_start) );
 
-  image_damage( image_damage() | kDamage3DData );
+  image_damage( image_damage() | kDamageData | kDamage3DData );
 
   if ( _sequence && _sequence[idx] )
     {

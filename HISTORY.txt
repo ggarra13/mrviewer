@@ -4,6 +4,10 @@ v2.9.5   - Made audio track selection not throw when invalid tracks
 	 - Same thing with subtitle track.
 	 - Bug fixed Media Info Window not updating on frame change.
 	 - Improved performance of OpenEXR reader a tad.
+	 - Made images saved with left. or right. prefix not change 
+	   to %V. prefix automatically.
+	 - Made OpenEXR saver default to PIZ wavelet compression,
+	   instead of None.
 
 v2.9.4   - RMB->Pixel->Copy Pixel Value now respects lut and
 	   gamma if active.
