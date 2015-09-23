@@ -204,7 +204,9 @@ bool exrImage::channels_order(
    int idx = 0;
    Imf::ChannelList::ConstIterator i = s;
 
-   if ( order[0] == -1 || _channel || _old_channel != NULL )
+
+   if ( order[0] == -1 || !_channel || !_old_channel ||
+        strcmp( _channel, _old_channel ) != 0 )
    {
        order[0] = order[1] = order[2] = order[3] = -1;
        channelList.clear();
@@ -217,11 +219,6 @@ bool exrImage::channels_order(
                LOG_ERROR( "Channel " << layerName << " not found" );
                continue;
            }
-
-           // For Z channel
-           if ( order[0] == -1 && order[1] == -1 &&
-                order[2] == -1 && order[3] == -1 &&
-                ch->type > imfPixelType ) imfPixelType = ch->type;
 
            std::string ext = layerName;
 
@@ -266,6 +263,7 @@ bool exrImage::channels_order(
            channelList.push_back( layerName );
        }
 
+       free( _old_channel );
        if ( _channel )
            _old_channel = strdup( _channel );
        else
@@ -284,7 +282,9 @@ bool exrImage::channels_order(
        {
            numChannels = 4;
        }
-       else if ( numChannels == 1 ) order[0] = 0;
+       else if ( numChannels == 1 ) {
+           order[0] = 0; order[1] = order[2] = order[3] = -1;
+       }
 
        // Prepare format
        _format = VideoFrame::kLumma;
@@ -362,8 +362,7 @@ bool exrImage::channels_order(
 
    char* base = pixels + start;
 
-   idx = 0;
-   for ( i = s; i != e && idx < 4; ++i, ++idx )
+   for ( idx = 0; idx < 4; ++idx )
    {
       int k = order[idx];
       if ( k == -1 ) continue;
