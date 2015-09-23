@@ -1152,6 +1152,7 @@ class CMedia
     boost::int64_t _seek_frame;      //!< seek frame requested
 
     char*  _channel;          //!< current channel/layer being shown
+    char*  _old_channel;      //!< previously shown channel/layer
 
     char*  _label;            //!< optional label drawn superimposed
 
