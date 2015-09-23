@@ -204,8 +204,7 @@ bool exrImage::channels_order(
    int idx = 0;
    Imf::ChannelList::ConstIterator i = s;
 
-   if ( order[0] == -1 || _old_channel && _channel && 
-        strcmp( _channel, _old_channel ) != 0  )
+   if ( order[0] == -1 || _channel || _old_channel != NULL )
    {
        order[0] = order[1] = order[2] = order[3] = -1;
        channelList.clear();
@@ -288,6 +287,7 @@ bool exrImage::channels_order(
        else if ( numChannels == 1 ) order[0] = 0;
 
        // Prepare format
+       _format = VideoFrame::kLumma;
        offsets[0] = 0;
        if ( _has_yca )
        {
