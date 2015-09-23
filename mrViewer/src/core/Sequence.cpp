@@ -260,7 +260,7 @@ bool replace_view( std::string& view )
    * 
    * @param root    root name of file sequence
    * @param frame   frame part of file name (must be @ or # or %d )
-   * @param view    view of image (left or right or L and R )
+   * @param view    view of image (%v or %V from left or right or L and R )
    * @param ext     extension of file sequence
    * @param file    original filename, potentially part of a sequence.
    * 
@@ -271,7 +271,8 @@ bool replace_view( std::string& view )
 		      std::string& frame,
                       std::string& view,
 		      std::string& ext,
-		      const std::string& file
+		      const std::string& file,
+                      const bool change_view
 		      )
   {
      std::string f = file;
@@ -298,7 +299,11 @@ bool replace_view( std::string& view )
        frame = periods[2];
        ext = '.' + periods[3];
 
-       bool ok = replace_view( view );
+       if ( change_view )
+       {
+           bool ok = replace_view( view );
+       }
+
        if ( view.size() ) view += ".";
        if ( mrv::is_valid_movie( ext.c_str() ) )
            return false;
@@ -763,13 +768,14 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
   }
 
 
-  bool fileroot( std::string& fileroot, const std::string& file )
+bool fileroot( std::string& fileroot, const std::string& file,
+               const bool change_view )
   {
      std::string root, frame, view, ext;
      fs::path path = fs::path( file );
 
 
-     split_sequence( root, frame, view, ext, file );
+     split_sequence( root, frame, view, ext, file, change_view );
      if ( root == "" || frame == "" ) 
      {
         fileroot = file;
