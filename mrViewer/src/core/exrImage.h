@@ -156,6 +156,14 @@ namespace mrv {
 
       stringSet layers;
       int order[4];
+      int offsets[4];
+
+      size_t numChannels;
+      image_type::Format _format;
+
+      typedef std::vector< std::string > LayerList;
+      LayerList channelList;
+      Imf::PixelType imfPixelType;
 
 
       // Stereo in same image

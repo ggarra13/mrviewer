@@ -147,10 +147,13 @@ namespace mrv {
   _numparts( -1 ),
   _num_layers( 0 ),
   _read_attr( false ),
+  imfPixelType( Imf::UINT ),
+  _format( VideoFrame::kLumma ),
   _lineOrder( (Imf::LineOrder) 0 ),
   _compression( (Imf::Compression) 0 ),
   _has_stereo( false )
   {
+      order[0] = order[1] = order[2] = order[3] = -1;
   }
 
   exrImage::~exrImage()
@@ -199,128 +202,133 @@ bool exrImage::channels_order(
    // First, count and store the channels
    bool no_layer = false;
    int idx = 0;
-   order[0] = order[1] = order[2] = order[3] = -1;
-   Imf::PixelType imfPixelType = Imf::UINT;
-   typedef std::vector< std::string > LayerList;
-   LayerList channelList;
    Imf::ChannelList::ConstIterator i = s;
-   for ( ; i != e; ++i, ++idx )
+
+   if ( order[0] == -1 || _old_channel && _channel && 
+        strcmp( _channel, _old_channel ) != 0  )
    {
-       const std::string& layerName = i.name();
-
-       const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-       if ( !ch ) {
-           LOG_ERROR( "Channel " << layerName << " not found" );
-           continue;
-       }
-
-       // For Z channel
-       if ( order[0] == -1 && order[1] == -1 &&
-            order[2] == -1 && order[3] == -1 &&
-            ch->type > imfPixelType ) imfPixelType = ch->type;
-
-       std::string ext = layerName;
-
-       if ( no_layer == false )
+       order[0] = order[1] = order[2] = order[3] = -1;
+       channelList.clear();
+       for ( ; i != e; ++i, ++idx )
        {
-           size_t pos = ext.rfind( N_(".") );
-           if ( pos != string::npos )
-           {
-               ext = ext.substr( pos+1, ext.size() );
+           const std::string& layerName = i.name();
+
+           const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
+           if ( !ch ) {
+               LOG_ERROR( "Channel " << layerName << " not found" );
+               continue;
            }
-           else
+
+           // For Z channel
+           if ( order[0] == -1 && order[1] == -1 &&
+                order[2] == -1 && order[3] == -1 &&
+                ch->type > imfPixelType ) imfPixelType = ch->type;
+
+           std::string ext = layerName;
+
+           if ( no_layer == false )
            {
-               no_layer = true;
+               size_t pos = ext.rfind( N_(".") );
+               if ( pos != string::npos )
+               {
+                   ext = ext.substr( pos+1, ext.size() );
+               }
+               else
+               {
+                   no_layer = true;
+               }
+           }
+
+           std::transform( ext.begin(), ext.end(), ext.begin(),
+                           (int(*)(int)) toupper);
+           if ( order[0] == -1 && (ext == N_("R") ||
+                                   ext == N_("Y") || ext == N_("U") ||
+                                   ext == N_("X") ) )
+           {
+               order[0] = idx; imfPixelType = ch->type;
+           }
+           else if ( order[1] == -1 && (ext == N_("G")  ||
+                                        ext == N_("RY") || ext == N_("V") ||
+                                        ext == N_("Y") ) )
+           {
+               order[1] = idx; imfPixelType = ch->type;
+           }
+           else if ( order[2] == -1 && (ext == N_("B") ||
+                                        ext == N_("BY") || ext == N_("W") ||
+                                        ext == N_("Z") ) )
+           {
+               order[2] = idx; imfPixelType = ch->type;
+           }
+           else if ( order[3] == -1 && ext == N_("A") ) 
+           {
+               order[3] = idx; imfPixelType = ch->type;
+           }
+
+           channelList.push_back( layerName );
+       }
+
+       if ( _channel )
+           _old_channel = strdup( _channel );
+       else
+           _old_channel = NULL;
+
+       numChannels = channelList.size();
+
+       if ( numChannels == 0 && channel() )
+       {
+           LOG_ERROR( _("Image file \"") << filename() << 
+                      _("\" has no channels named with prefix \"") 
+                      << channel() << "\"." );
+           return false;
+       }
+       else if ( numChannels > 4 && channel() )
+       {
+           numChannels = 4;
+       }
+       else if ( numChannels == 1 ) order[0] = 0;
+
+       // Prepare format
+       offsets[0] = 0;
+       if ( _has_yca )
+       {
+           unsigned size  = dw * dh;
+           unsigned size2 = dw * dh / 4;
+           offsets[1]  = size;
+           offsets[2]  = size + size2;
+           offsets[3]  = 0;
+           if ( numChannels >= 3 && has_alpha() )
+           {
+               _format = VideoFrame::kYByRy420A;
+               numChannels = 4;
+               offsets[3]  = size + size2 * 2;
+           }
+           else if ( numChannels >= 1 )
+           {
+               numChannels = 3;
+               _format = VideoFrame::kYByRy420;
            }
        }
-
-       std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) toupper);
-       if ( order[0] == -1 && (ext == N_("R") ||
-                               ext == N_("Y") || ext == N_("U") ||
-                               ext == N_("X") ) )
+       else
        {
-           order[0] = idx; imfPixelType = ch->type;
+           offsets[1]  = 1;
+           offsets[2]  = 2;
+           offsets[3]  = 3;
+
+           if ( numChannels >= 3 && has_alpha() )
+           {
+               _format = VideoFrame::kRGBA;
+               numChannels = 4;
+           }
+           else if ( numChannels >= 2 )
+           {
+               _format = VideoFrame::kRGB;
+               numChannels = 3;
+           }
        }
-       else if ( order[1] == -1 && (ext == N_("G")  ||
-                                    ext == N_("RY") || ext == N_("V") ||
-                                    ext == N_("Y") ) )
-       {
-           order[1] = idx; imfPixelType = ch->type;
-       }
-       else if ( order[2] == -1 && (ext == N_("B") ||
-                                    ext == N_("BY") || ext == N_("W") ||
-                                    ext == N_("Z") ) )
-       {
-           order[2] = idx; imfPixelType = ch->type;
-       }
-       else if ( order[3] == -1 && ext == N_("A") ) 
-       {
-           order[3] = idx; imfPixelType = ch->type;
-       }
-
-       channelList.push_back( layerName );
    }
 
 
-   size_t numChannels = channelList.size();
-
-   if ( numChannels == 0 && channel() )
-   {
-       LOG_ERROR( _("Image file \"") << filename() << 
-                  _("\" has no channels named with prefix \"") 
-                  << channel() << "\"." );
-       return false;
-   }
-   else if ( numChannels > 4 && channel() )
-   {
-      numChannels = 4;
-   }
-
-   if ( numChannels == 1 ) order[0] = 0;
-   
-   // Prepare format
-   image_type::Format format = VideoFrame::kLumma;
-   int offsets[4];
-   offsets[0] = 0;
-   if ( _has_yca )
-   {
-      unsigned size  = dw * dh;
-      unsigned size2 = dw * dh / 4;
-      offsets[1]  = size;
-      offsets[2]  = size + size2;
-      offsets[3]  = 0;
-      if ( numChannels >= 3 && has_alpha() )
-      {
-	 format = VideoFrame::kYByRy420A;
-	 numChannels = 4;
-	 offsets[3]  = size + size2 * 2;
-      }
-      else if ( numChannels >= 1 )
-      {
-	 numChannels = 3;
-	 format = VideoFrame::kYByRy420;
-      }
-   }
-   else
-   {
-      offsets[1]  = 1;
-      offsets[2]  = 2;
-      offsets[3]  = 3;
-
-      if ( numChannels >= 3 && has_alpha() )
-      {
-	 format = VideoFrame::kRGBA;
-	 numChannels = 4;
-      }
-      else if ( numChannels >= 2 )
-      {
-	 format = VideoFrame::kRGB;
-	 numChannels = 3;
-      }
-   }
-
-   allocate_pixels( frame, (unsigned short)numChannels, format,
+   allocate_pixels( frame, (unsigned short)numChannels, _format,
 		    pixel_type_conversion( imfPixelType ) );
 
    size_t xs[4], ys[4];
