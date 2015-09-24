@@ -720,47 +720,49 @@ void ImageView::delete_timeout()
 }
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
-  fltk::GlWindow( X, Y, W, H, l ),
-  uiMain( NULL ),
-  _engine( NULL ),
-  _normalize( false ),
-  _safeAreas( false ),
-  _masking( 0.0f ),
-  _wipe_dir( kNoWipe ),
-  _wipe( 1.0 ),
-  _gamma( 1.0f ),
-  _gain( 1.0f ), 
-  _zoom( 1 ),
-  xoffset( 0 ),
-  yoffset( 0 ),
-  posX( 4 ),
-  posY( 22 ),
-  flags( 0 ),
-  _ghost_previous( true ),
-  _ghost_next( true ),
-  _channel( 0 ),
-  _old_channel( 0 ),
-  _channelType( kRGB ),
-  _field( kFrameDisplay ),
-  _stereo( CMedia::kNoStereo ),
-  _displayWindow( true ),
-  _dataWindow( true ),
-  _showBG( true ),
-  _showPixelRatio( false ),
-  _useLUT( false ),
-  _volume( 1.0f ),
-  _flip( kFlipNone ),
-  _preframe( 1),
-  _reel( 0 ),
-  _idle_callback( false ),
-  _timeout( NULL ),
-  _fg_reel( -1 ),
-  _bg_reel( -1 ),
-  _mode( kSelection ),
-  _selection( mrv::Rectd(0,0) ),
-  _playback( kStopped ),
-  _looping( kLooping ),
-  _lastFrame( 0 )
+fltk::GlWindow( X, Y, W, H, l ),
+uiMain( NULL ),
+_engine( NULL ),
+_normalize( false ),
+_safeAreas( false ),
+_masking( 0.0f ),
+_wipe_dir( kNoWipe ),
+_wipe( 1.0 ),
+_gamma( 1.0f ),
+_gain( 1.0f ), 
+_zoom( 1 ),
+xoffset( 0 ),
+yoffset( 0 ),
+posX( 4 ),
+posY( 22 ),
+flags( 0 ),
+_ghost_previous( true ),
+_ghost_next( true ),
+_channel( 0 ),
+_old_channel( 0 ),
+_channelType( kRGB ),
+_field( kFrameDisplay ),
+_stereo( CMedia::kNoStereo ),
+_displayWindow( true ),
+_dataWindow( true ),
+_showBG( true ),
+_showPixelRatio( false ),
+_useLUT( false ),
+_volume( 1.0f ),
+_flip( kFlipNone ),
+_preframe( 1),
+_old_fg_frame( 0 ),
+_old_bg_frame( 0 ),
+_reel( 0 ),
+_idle_callback( false ),
+_timeout( NULL ),
+_fg_reel( -1 ),
+_bg_reel( -1 ),
+_mode( kSelection ),
+_selection( mrv::Rectd(0,0) ),
+_playback( kStopped ),
+_looping( kLooping ),
+_lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
@@ -1197,8 +1199,12 @@ bool ImageView::should_update( mrv::media fg )
 
       CMedia* img = fg->image();
 
-      if ( reload )
+      if ( reload && img->frame() != _old_fg_frame )
+      {
           img->has_changed();
+          _old_fg_frame = img->frame();
+      }
+
 
       if ( img->image_damage() & CMedia::kDamageLayers )
       {
@@ -1274,8 +1280,11 @@ bool ImageView::should_update( mrv::media fg )
   {
       CMedia* img = bg->image();
 
-      if ( reload && fg != bg )
+      if ( reload && fg != bg && img->frame() != _old_bg_frame )
+      {
           img->has_changed();
+          _old_bg_frame = img->frame();
+      }
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
