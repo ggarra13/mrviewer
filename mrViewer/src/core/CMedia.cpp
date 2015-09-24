@@ -930,8 +930,10 @@ bool CMedia::has_changed()
 
   SCOPED_LOCK( _mutex );
 
-  if ( is_sequence() ) 
+  if ( is_sequence() )
     {
+      if ( !_sequence ) return false;
+
       std::string file = sequence_filename(_frame);
 
       int result = stat( file.c_str(), &sbuf );
@@ -942,9 +944,7 @@ bool CMedia::has_changed()
       assert( _frame >= _frame_start );
       boost::uint64_t idx = _frame - _frame_start;
 
-      if ( !_sequence || !_sequence[idx] ) return false;
-
-      if ( _sequence[idx]->mtime() != sbuf.st_mtime )
+      if ( !_sequence[idx] || _sequence[idx]->mtime() != sbuf.st_mtime )
 	{
 	   assert( _frame == _sequence[idx]->frame() );
 	   // update frame...
@@ -1097,7 +1097,6 @@ void CMedia::chromaticities( const Imf::Chromaticities& c )
  */
 void CMedia::alpha_layers()
 {
-    SCOPED_LOCK( _mutex );
     _layers.push_back( _("Alpha") );
     if ( _num_channels != 0 )
         _layers.push_back( _("Alpha Overlay") );
@@ -1111,7 +1110,6 @@ void CMedia::alpha_layers()
  */
 void CMedia::rgb_layers()
 {
-    SCOPED_LOCK( _mutex );
     _layers.push_back( _("Color") );
     _layers.push_back( _("Red") );
     _layers.push_back( _("Green") );
@@ -1136,7 +1134,6 @@ void CMedia::lumma_layers()
  */
 void CMedia::default_layers()
 {
-    SCOPED_LOCK( _mutex );
     _layers.clear();
     _num_channels = 0;
     rgb_layers();
@@ -1814,8 +1811,6 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
    if ( ( !is_sequence() ) || ( !_cache_active ) ) 
       return;
 
-   SCOPED_LOCK( _mutex );
-
   boost::int64_t f = pic->frame();
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
@@ -1941,8 +1936,6 @@ bool CMedia::is_cache_filled(boost::int64_t frame)
 
   if ( frame < _frameStart ) frame = _frameStart;
   if ( frame > _frameEnd )   frame = _frameEnd;
-
-  SCOPED_LOCK( _mutex );
 
   boost::uint64_t i = frame - _frame_start;
   if ( !_sequence[i] ) return false;
