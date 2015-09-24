@@ -203,13 +203,13 @@ bool exrImage::channels_order(
 
    // First, count and store the channels
    bool no_layer = false;
-   int idx = 0;
    Imf::ChannelList::ConstIterator i = s;
 
 
    order[0] = order[1] = order[2] = order[3] = -1;
    channelList.clear();
-   for ( ; i != e; ++i, ++idx )
+   channelList.reserve(5);
+   for ( ; i != e; ++i )
    {
        const std::string& layerName = i.name();
 
@@ -240,26 +240,29 @@ bool exrImage::channels_order(
                                ext == N_("Y") || ext == N_("U") ||
                                ext == N_("X") ) )
        {
-           order[0] = idx; imfPixelType = ch->type;
+           order[0] = channelList.size(); imfPixelType = ch->type;
+           channelList.push_back( layerName );
        }
        else if ( order[1] == -1 && (ext == N_("G")  ||
                                     ext == N_("RY") || ext == N_("V") ||
                                     ext == N_("Y") ) )
        {
-           order[1] = idx; imfPixelType = ch->type;
+           order[1] = channelList.size(); imfPixelType = ch->type;
+           channelList.push_back( layerName );
        }
        else if ( order[2] == -1 && (ext == N_("B") ||
                                     ext == N_("BY") || ext == N_("W") ||
                                     ext == N_("Z") ) )
        {
-           order[2] = idx; imfPixelType = ch->type;
+           order[2] = channelList.size(); imfPixelType = ch->type;
+           channelList.push_back( layerName );
        }
        else if ( order[3] == -1 && ext == N_("A") ) 
        {
-           order[3] = idx; imfPixelType = ch->type;
+           order[3] = channelList.size(); imfPixelType = ch->type;
+           channelList.push_back( layerName );
        }
 
-       channelList.push_back( layerName );
    }
 
 
@@ -354,7 +357,7 @@ bool exrImage::channels_order(
 
    char* base = pixels + start;
 
-   for ( idx = 0; idx < 4; ++idx )
+   for ( int idx = 0; idx < 4; ++idx )
    {
       int k = order[idx];
       if ( k == -1 ) continue;
@@ -424,8 +427,6 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
   {
 
      try {
-
-	SCOPED_LOCK( _mutex );
 	
 	std::string fileName = sequence_filename(frame);
 
