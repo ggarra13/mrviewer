@@ -794,10 +794,12 @@ namespace mrv {
   void GLQuad::bind( const image_type_ptr& pic )
   {
       CHECK_GL( "bind" );
-      if ( ! pic ) return;
     unsigned dw = pic->width();
     unsigned dh = pic->height();
-    if ( dw <= 0 || dh <= 0 ) return;
+    if ( ! pic || dw <= 0 || dh <= 0 ) {
+        LOG_ERROR( _("Not a picture to be bound") );
+        return;
+    }
 
     _width = _height = 0;
     _uvMax.u = _uvMax.v = 1.0f;
