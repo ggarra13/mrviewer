@@ -986,7 +986,6 @@ bool CMedia::has_changed()
  */
 void CMedia::image_size( int w, int h )
 {
-  _damageRectangle = mrv::Recti( 0, 0, w, h );
   _pixel_ratio = 1.0f;
 
 
@@ -1811,6 +1810,8 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
    if ( ( !is_sequence() ) || ( !_cache_active ) ) 
       return;
 
+//   SCOPED_LOCK( _mutex );
+
   boost::int64_t f = pic->frame();
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
@@ -1933,6 +1934,7 @@ bool CMedia::is_cache_filled(boost::int64_t frame)
 {
     if ( !_sequence ) return false;
 
+    SCOPED_LOCK( _mutex );
 
   if ( frame < _frameStart ) frame = _frameStart;
   if ( frame > _frameEnd )   frame = _frameEnd;
