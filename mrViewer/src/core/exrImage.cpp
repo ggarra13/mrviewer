@@ -96,7 +96,6 @@ namespace mrv {
     0
   };
 
-  inline 
   image_type::PixelType 
   exrImage::pixel_type_conversion( Imf::PixelType pixel_type )
   {
@@ -114,7 +113,6 @@ namespace mrv {
       }
   }
 
-  inline
   Imf::PixelType 
   exrImage::pixel_type_to_exr( image_type::PixelType pixel_type )
   {
@@ -149,13 +147,10 @@ namespace mrv {
   _numparts( -1 ),
   _num_layers( 0 ),
   _read_attr( false ),
-  imfPixelType( Imf::UINT ),
-  _format( VideoFrame::kLumma ),
   _lineOrder( (Imf::LineOrder) 0 ),
   _compression( (Imf::Compression) 0 ),
   _has_stereo( false )
   {
-      order[0] = order[1] = order[2] = order[3] = -1;
   }
 
   exrImage::~exrImage()
@@ -203,12 +198,14 @@ bool exrImage::channels_order(
 
    // First, count and store the channels
    bool no_layer = false;
-   Imf::ChannelList::ConstIterator i = s;
-
-
    order[0] = order[1] = order[2] = order[3] = -1;
-   channelList.clear();
-   channelList.reserve(5);
+   Imf::PixelType imfPixelType = Imf::UINT;
+
+   typedef std::vector< std::string > LayerList;
+   LayerList channelList;
+   channelList.reserve(4);
+
+   Imf::ChannelList::ConstIterator i = s;
    for ( ; i != e; ++i )
    {
        const std::string& layerName = i.name();
@@ -218,6 +215,11 @@ bool exrImage::channels_order(
            LOG_ERROR( "Channel " << layerName << " not found" );
            continue;
        }
+
+       // For Z channel
+       if ( order[0] == -1 && order[1] == -1 &&
+            order[2] == -1 && order[3] == -1 &&
+            ch->type > imfPixelType ) imfPixelType = ch->type;
 
        std::string ext = layerName;
 
@@ -266,7 +268,7 @@ bool exrImage::channels_order(
    }
 
 
-   numChannels = channelList.size();
+   size_t numChannels = channelList.size();
 
    if ( numChannels == 0 && channel() )
    {
@@ -277,53 +279,53 @@ bool exrImage::channels_order(
    }
    else if ( numChannels > 4 && channel() )
    {
-       numChannels = 4;
-   }
-   else if ( numChannels == 1 ) {
-       order[0] = 0; order[1] = order[2] = order[3] = -1;
+      numChannels = 4;
    }
 
+   if ( numChannels == 1 ) order[0] = 0;
+   
    // Prepare format
-   _format = VideoFrame::kLumma;
+   image_type::Format format = VideoFrame::kLumma;
+   int offsets[4];
    offsets[0] = 0;
    if ( _has_yca )
    {
-       unsigned size  = dw * dh;
-       unsigned size2 = dw * dh / 4;
-       offsets[1]  = size;
-       offsets[2]  = size + size2;
-       offsets[3]  = 0;
-       if ( numChannels >= 3 && has_alpha() )
-       {
-           _format = VideoFrame::kYByRy420A;
-           numChannels = 4;
-           offsets[3]  = size + size2 * 2;
-       }
-       else if ( numChannels >= 1 )
-       {
-           numChannels = 3;
-           _format = VideoFrame::kYByRy420;
-       }
+      unsigned size  = dw * dh;
+      unsigned size2 = dw * dh / 4;
+      offsets[1]  = size;
+      offsets[2]  = size + size2;
+      offsets[3]  = 0;
+      if ( numChannels >= 3 && has_alpha() )
+      {
+	 format = VideoFrame::kYByRy420A;
+	 numChannels = 4;
+	 offsets[3]  = size + size2 * 2;
+      }
+      else if ( numChannels >= 1 )
+      {
+	 numChannels = 3;
+	 format = VideoFrame::kYByRy420;
+      }
    }
    else
    {
-       offsets[1]  = 1;
-       offsets[2]  = 2;
-       offsets[3]  = 3;
+      offsets[1]  = 1;
+      offsets[2]  = 2;
+      offsets[3]  = 3;
 
-       if ( numChannels >= 3 && has_alpha() )
-       {
-           _format = VideoFrame::kRGBA;
-           numChannels = 4;
-       }
-       else if ( numChannels >= 2 )
-       {
-           _format = VideoFrame::kRGB;
-           numChannels = 3;
-       }
+      if ( numChannels >= 3 && has_alpha() )
+      {
+	 format = VideoFrame::kRGBA;
+	 numChannels = 4;
+      }
+      else if ( numChannels >= 2 )
+      {
+	 format = VideoFrame::kRGB;
+	 numChannels = 3;
+      }
    }
 
-   allocate_pixels( frame, (unsigned short)numChannels, _format,
+   allocate_pixels( frame, (unsigned short)numChannels, format,
 		    pixel_type_conversion( imfPixelType ) );
 
    size_t xs[4], ys[4];
@@ -357,6 +359,7 @@ bool exrImage::channels_order(
 
    char* base = pixels + start;
 
+   
    for ( int idx = 0; idx < 4; ++idx )
    {
       int k = order[idx];
@@ -427,6 +430,8 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
   {
 
      try {
+
+	SCOPED_LOCK( _mutex );
 	
 	std::string fileName = sequence_filename(frame);
 
@@ -1825,7 +1830,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
     Imf::Compression comp = opts->compression();
-    if ( comp >= Imf::NUM_COMPRESSION_METHODS )
+    if ( comp >= NUM_COMPRESSION_METHODS )
     {
         LOG_WARNING( "Compression method not available.  Using PIZ." );
         comp = Imf::PIZ_COMPRESSION;
