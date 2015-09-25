@@ -216,10 +216,6 @@ bool exrImage::channels_order(
            continue;
        }
 
-       // For Z channel
-       if ( order[0] == -1 && order[1] == -1 &&
-            order[2] == -1 && order[3] == -1 &&
-            ch->type > imfPixelType ) imfPixelType = ch->type;
 
        std::string ext = layerName;
 
@@ -281,9 +277,10 @@ bool exrImage::channels_order(
    {
       numChannels = 4;
    }
+   else if ( numChannels == 1 ) {
+       order[0] = 0; order[1] = order[2] = order[3] = -1;
+   }
 
-   if ( numChannels == 1 ) order[0] = 0;
-   
    // Prepare format
    image_type::Format format = VideoFrame::kLumma;
    int offsets[4];
