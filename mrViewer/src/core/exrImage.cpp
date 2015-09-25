@@ -205,17 +205,13 @@ bool exrImage::channels_order(
    LayerList channelList;
    channelList.reserve(4);
 
+   int sampling[4][2];
+
    Imf::ChannelList::ConstIterator i = s;
    for ( ; i != e; ++i )
    {
        const std::string& layerName = i.name();
-
-       const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-       if ( !ch ) {
-           LOG_ERROR( "Channel " << layerName << " not found" );
-           continue;
-       }
-
+       const Imf::Channel& ch = i.channel();
 
        std::string ext = layerName;
 
@@ -236,28 +232,32 @@ bool exrImage::channels_order(
                        (int(*)(int)) toupper);
        if ( order[0] == -1 && (ext == N_("R") ||
                                ext == N_("Y") || ext == N_("U") ||
-                               ext == N_("X") ) )
+                               ext == N_("X") || ext == N_("Z")) )
        {
-           order[0] = channelList.size(); imfPixelType = ch->type;
+           order[0] = channelList.size(); imfPixelType = ch.type;
+           sampling[0][0] = ch.xSampling; sampling[0][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[1] == -1 && (ext == N_("G")  ||
                                     ext == N_("RY") || ext == N_("V") ||
                                     ext == N_("Y") ) )
        {
-           order[1] = channelList.size(); imfPixelType = ch->type;
+           order[1] = channelList.size(); imfPixelType = ch.type;
+           sampling[1][0] = ch.xSampling; sampling[1][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[2] == -1 && (ext == N_("B") ||
                                     ext == N_("BY") || ext == N_("W") ||
                                     ext == N_("Z") ) )
        {
-           order[2] = channelList.size(); imfPixelType = ch->type;
+           order[2] = channelList.size(); imfPixelType = ch.type;
+           sampling[2][0] = ch.xSampling; sampling[2][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[3] == -1 && ext == N_("A") ) 
        {
-           order[3] = channelList.size(); imfPixelType = ch->type;
+           order[3] = channelList.size(); imfPixelType = ch.type;
+           sampling[3][0] = ch.xSampling; sampling[3][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
 
@@ -276,9 +276,6 @@ bool exrImage::channels_order(
    else if ( numChannels > 4 && channel() )
    {
       numChannels = 4;
-   }
-   else if ( numChannels == 1 ) {
-       order[0] = 0; order[1] = order[2] = order[3] = -1;
    }
 
    // Prepare format
@@ -364,18 +361,11 @@ bool exrImage::channels_order(
 
       const std::string& layerName = channelList[k];
 
-      const Imf::Channel* ch = channels.findChannel( layerName.c_str() );
-
-      if ( !ch ) {
-         LOG_ERROR( "Channel " << layerName << " not found" );
-         continue;
-      }
-
       char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
 
       fb.insert( layerName.c_str(), 
 		 Slice( imfPixelType, buf, xs[idx], ys[idx],
-			ch->xSampling, ch->ySampling));
+			sampling[k][0], sampling[k][1]));
    }
 
    return true;
