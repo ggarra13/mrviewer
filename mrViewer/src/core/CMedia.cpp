@@ -2836,4 +2836,11 @@ void CMedia::add_shape( mrv::shape_type_ptr s )
    _undo_shapes.clear();
 }
 
+char *const get_error_text(const int error)
+{
+    static char error_buffer[255];
+    av_strerror(error, error_buffer, sizeof(error_buffer));
+    return error_buffer;
+}
+
 } // namespace mrv
