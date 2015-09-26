@@ -96,26 +96,26 @@ namespace mrv {
     0
   };
 
-  image_type::PixelType 
-  exrImage::pixel_type_conversion( Imf::PixelType pixel_type )
-  {
+inline image_type::PixelType 
+exrImage::pixel_type_conversion( Imf::PixelType pixel_type )
+{
     switch( pixel_type )
-      {
-      case Imf::UINT:
-	return image_type::kInt;
-      case Imf::HALF:
-	return image_type::kHalf;
-      case Imf::FLOAT:
+    {
+        case Imf::UINT:
+            return image_type::kInt;
+        case Imf::HALF:
+            return image_type::kHalf;
+        case Imf::FLOAT:
 	return image_type::kFloat;
-      default:
+        default:
 	LOG_ERROR("Unknown Imf::PixelType");
 	return image_type::kFloat;
-      }
-  }
+    }
+}
 
-  Imf::PixelType 
-  exrImage::pixel_type_to_exr( image_type::PixelType pixel_type )
-  {
+inline  Imf::PixelType 
+exrImage::pixel_type_to_exr( image_type::PixelType pixel_type )
+{
     switch( pixel_type )
     {
         case image_type::kByte:
@@ -133,7 +133,7 @@ namespace mrv {
     }
   }
 
-  exrImage::exrImage() :
+exrImage::exrImage() :
   CMedia(),
   _levelX( 0 ),
   _levelY( 0 ),
@@ -151,6 +151,7 @@ namespace mrv {
   _compression( (Imf::Compression) 0 ),
   _has_stereo( false )
   {
+      Imf::setGlobalThreadCount( 4 );
   }
 
   exrImage::~exrImage()
@@ -189,6 +190,7 @@ bool exrImage::channels_order(
 			      Imf::FrameBuffer& fb
 			      )
 {
+   const Box2i& displayWindow = h.displayWindow();
    const Box2i& dataWindow = h.dataWindow();
    int dw = dataWindow.max.x - dataWindow.min.x + 1;
    int dh = dataWindow.max.y - dataWindow.min.y + 1;
@@ -199,6 +201,7 @@ bool exrImage::channels_order(
    // First, count and store the channels
    bool no_layer = false;
    order[0] = order[1] = order[2] = order[3] = -1;
+
    Imf::PixelType imfPixelType = Imf::UINT;
 
    typedef std::vector< std::string > LayerList;
@@ -207,8 +210,7 @@ bool exrImage::channels_order(
 
    int sampling[4][2];
 
-   Imf::ChannelList::ConstIterator i = s;
-   for ( ; i != e; ++i )
+   for (Imf::ChannelList::ConstIterator i = s; i != e; ++i )
    {
        const std::string& layerName = i.name();
        const Imf::Channel& ch = i.channel();
@@ -218,7 +220,7 @@ bool exrImage::channels_order(
        if ( no_layer == false )
        {
            size_t pos = ext.rfind( N_(".") );
-           if ( pos != string::npos )
+           if ( pos != std::string::npos )
            {
                ext = ext.substr( pos+1, ext.size() );
            }
@@ -234,30 +236,30 @@ bool exrImage::channels_order(
                                ext == N_("Y") || ext == N_("U") ||
                                ext == N_("X") || ext == N_("Z")) )
        {
-           order[0] = channelList.size(); imfPixelType = ch.type;
-           sampling[0][0] = ch.xSampling; sampling[0][1] = ch.ySampling;
+           int k = order[0] = channelList.size(); imfPixelType = ch.type;
+           sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[1] == -1 && (ext == N_("G")  ||
                                     ext == N_("RY") || ext == N_("V") ||
                                     ext == N_("Y") ) )
        {
-           order[1] = channelList.size(); imfPixelType = ch.type;
-           sampling[1][0] = ch.xSampling; sampling[1][1] = ch.ySampling;
+           int k = order[1] = channelList.size(); imfPixelType = ch.type;
+           sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[2] == -1 && (ext == N_("B") ||
                                     ext == N_("BY") || ext == N_("W") ||
                                     ext == N_("Z") ) )
        {
-           order[2] = channelList.size(); imfPixelType = ch.type;
-           sampling[2][0] = ch.xSampling; sampling[2][1] = ch.ySampling;
+           int k = order[2] = channelList.size(); imfPixelType = ch.type;
+           sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[3] == -1 && ext == N_("A") ) 
        {
-           order[3] = channelList.size(); imfPixelType = ch.type;
-           sampling[3][0] = ch.xSampling; sampling[3][1] = ch.ySampling;
+           int k = order[3] = channelList.size(); imfPixelType = ch.type;
+           sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
 
@@ -266,34 +268,38 @@ bool exrImage::channels_order(
 
    size_t numChannels = channelList.size();
 
-   if ( numChannels == 0 && channel() )
+   if ( numChannels == 0 )
    {
-       LOG_ERROR( _("Image file \"") << filename() << 
-                  _("\" has no channels named with prefix \"") 
-                  << channel() << "\"." );
+       if ( channel() )
+           LOG_ERROR( _("Image file \"") << filename() << 
+                      _("\" has no channels named with prefix \"") 
+                      << channel() << "\"." );
+       else
+           LOG_ERROR( _("Image file \"") << filename() << 
+                      _("\" has no channels.") );
        return false;
    }
-   else if ( numChannels > 4 && channel() )
+   else if ( numChannels == 1 )
    {
-      numChannels = 4;
+       order[0] = 0; order[1] = order[2] = order[3] = -1;
    }
 
    // Prepare format
    image_type::Format format = VideoFrame::kLumma;
    int offsets[4];
-   offsets[0] = 0;
+   offsets[order[0]] = 0;
    if ( _has_yca )
    {
       unsigned size  = dw * dh;
       unsigned size2 = dw * dh / 4;
-      offsets[1]  = size;
-      offsets[2]  = size + size2;
-      offsets[3]  = 0;
+      if ( order[1] != -1 ) offsets[order[1]]  = size;
+      if ( order[2] != -1 ) offsets[order[2]]  = size + size2;
+      if ( order[3] != -1 ) offsets[order[3]]  = 0;
       if ( numChannels >= 3 && has_alpha() )
       {
 	 format = VideoFrame::kYByRy420A;
 	 numChannels = 4;
-	 offsets[3]  = size + size2 * 2;
+	 offsets[order[3]]  = size + size2 * 2;
       }
       else if ( numChannels >= 1 )
       {
@@ -303,9 +309,9 @@ bool exrImage::channels_order(
    }
    else
    {
-      offsets[1]  = 1;
-      offsets[2]  = 2;
-      offsets[3]  = 3;
+      if ( order[1] != -1 ) offsets[order[1]]  = 1;
+      if ( order[2] != -1 ) offsets[order[2]]  = 2;
+      if ( order[3] != -1 ) offsets[order[3]]  = 3;
 
       if ( numChannels >= 3 && has_alpha() )
       {
@@ -325,27 +331,31 @@ bool exrImage::channels_order(
    size_t xs[4], ys[4];
    if ( _has_yca )
    {
-      for ( unsigned j = 0; j < numChannels; ++j )
-	 xs[j] = _hires->pixel_size();
+      size_t t = _hires->pixel_size();
 
-      unsigned int dw2 = dw / 2;
-      ys[0] = xs[0] * dw;
-      ys[1] = xs[0] * dw2;
-      ys[2] = xs[0] * dw2;
-      ys[3] = xs[0] * dw;
+      for ( unsigned j = 0; j < numChannels; ++j )
+	 xs[order[j]] = t;
+
+      size_t dw2 = dw / 2;
+      ys[order[0]] = t * dw;
+      ys[order[1]] = t * dw2;
+      ys[order[2]] = t * dw2;
+      ys[order[3]] = t * dw;
    }
    else
    {
-      for ( unsigned j = 0; j < numChannels; ++j )
-      {
-	 xs[j] = _hires->pixel_size() * numChannels;
-	 ys[j] = xs[j] * dw;
-      }
+       unsigned pixels = _hires->pixel_size() * numChannels;
+
+       for ( unsigned j = 0; j < numChannels; ++j )
+       {
+           xs[j] = pixels;
+           ys[j] = pixels * dw;
+       }
    }
 
-
    char* pixels = (char*)_hires->data().get();
-   memset( pixels, 0, _hires->data_size() ); // Needed
+   if ( displayWindow != dataWindow )
+       memset( pixels, 0, _hires->data_size() ); // Needed
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -359,12 +369,17 @@ bool exrImage::channels_order(
       int k = order[idx];
       if ( k == -1 ) continue;
 
-      const std::string& layerName = channelList[k];
+      char* buf = base + offsets[k] * _hires->pixel_size();
 
-      char* buf = (char*)base + offsets[idx] * _hires->pixel_size();
+      // std::cerr << idx << ") " << k << " " << channelList[k]
+      //           << " off:" << offsets[k] << " xs,ys " 
+      //           << xs[k] << " " << ys[k] 
+      //           << " sampling " << sampling[k][0]
+      //           << " " << sampling[k][1]
+      //           << std::endl;
 
-      fb.insert( layerName.c_str(), 
-		 Slice( imfPixelType, buf, xs[idx], ys[idx],
+      fb.insert( channelList[k], 
+		 Slice( imfPixelType, buf, xs[k], ys[k],
 			sampling[k][0], sampling[k][1]));
    }
 
@@ -619,7 +634,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 	    Imf::ChannelList::ConstIterator x;
 	    Imf::ChannelList::ConstIterator s;
 	    Imf::ChannelList::ConstIterator e;
-	    channels.channelsWithPrefix( name.c_str(), s, e ); 
+	    channels.channelsInLayer( name, s, e ); 
 	    for ( x = s; x != e; ++x )
 	    {
                 const std::string& layerName = x.name();
@@ -654,7 +669,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // Find the iterators for a right channel prefix or all channels
     if ( prefix.size() )
     {
-        channels.channelsWithPrefix( prefix.c_str(), s, e );
+        channels.channelsWithPrefix( prefix, s, e );
     }
     else
     {
@@ -679,7 +694,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     if ( _has_left_eye ) prefix = "left";
     if ( prefix.size() )
     {
-        channels.channelsWithPrefix( prefix.c_str(), s, e );
+        channels.channelsWithPrefix( prefix, s, e );
     }
     else
     {
@@ -1489,7 +1504,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
              name = n;
          }
 
-         if ( name != "" )
+         if ( !name.empty() )
          {
              sprintf( buf, "#%d %s", i, name.c_str() );
              _layers.push_back( buf );
@@ -1519,7 +1534,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             _has_stereo = true;
          }
 
-         if ( name != "" || ext != "" )
+         if ( !name.empty() || !ext.empty() )
          {
              for ( s = channels.begin(); s != e; ++s )
              {
@@ -1536,6 +1551,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
    else if ( _numparts == 1 )
    {
        const Imf::Header& header = inmaster.header(0);
+       if ( header.hasType() ) _type = header.type();
+
        if ( ! _read_attr )
            read_header_attr( header, frame );
    }
@@ -1746,15 +1763,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
         if ( _numparts > 0 )
 	  {
-	    const Imf::Header& h = inmaster.header(0);
-	    if ( h.hasType() ) _type = h.type();
 	  
             if ( !  fetch_multipart( inmaster, frame ) )
                 return false;
 
 	    if ( _use_yca && !supports_yuv() )
 	      {
-		ycc2rgba( h, frame );
+                  const Imf::Header& h = inmaster.header(0);
+                  ycc2rgba( h, frame );
 	      }
 	  }
 
