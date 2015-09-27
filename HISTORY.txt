@@ -7,6 +7,7 @@ v2.9.5   - Made audio track selection not throw when invalid tracks
 	   to %V. prefix automatically.
 	 - Made OpenEXR saver default to PIZ wavelet compression,
 	   instead of None.
+	 - Improved OpenEXR loader by a factor of 2.
 
 v2.9.4   - RMB->Pixel->Copy Pixel Value now respects lut and
 	   gamma if active.
