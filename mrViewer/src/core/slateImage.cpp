@@ -362,7 +362,7 @@ bool slateImage::release()
         char* err = MagickGetException(wand, &severity);
         if ( severity != UndefinedException )
         {
-            LOG_ERROR( err );
+            LOG_ERROR( e.what() << " " << err );
         }
     }
 
