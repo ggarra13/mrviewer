@@ -482,6 +482,7 @@ CMedia::~CMedia()
 
   image_damage(0);
 
+  free( _old_channel );
   free( _channel );
   free( _fileroot );
   free( _filename );
@@ -1167,6 +1168,7 @@ void CMedia::channel( const char* c )
     {
         std::string ch( c );
 
+
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
              ch == _("Blue")  ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
@@ -1216,27 +1218,47 @@ void CMedia::channel( const char* c )
 
   bool to_fetch = false;
 
-  if ( _channel != c )
-    {
-      if ( _channel == NULL || c == NULL )  to_fetch = true;
-      else if (strcmp( c, _channel ) != 0 ) to_fetch = true;
-    }
+  std::string ch1;
+  if (c) ch1 = c;
+
+
+  if ( _channel == NULL || c == NULL )  to_fetch = true;
+  else
+  {
+      std::string ch2 = _channel;
+
+      size_t pos = ch1.rfind( '.' );
+      if ( pos != std::string::npos )
+      {
+          ch1 = ch1.substr( 0, pos );
+      }
+
+      pos = ch2.rfind( '.' );
+      if ( pos != std::string::npos )
+      {
+          ch2 = ch2.substr( 0, pos );
+      }
+
+      if ( ch1 != ch2 ) to_fetch = true;
+  }
 
   free( _channel );
   _channel = NULL;
 
 
-  if ( c )
-    {
-      _channel = strdup( c );
-    }
+  // Store channel without r,g,b extension
+  if ( !ch1.empty() )
+  {
+      _channel = strdup( ch1.c_str() );
+  }
+
 
   if (to_fetch) 
-    {
-       SCOPED_LOCK( _mutex );
-       clear_cache();
-       fetch(_frame);
-    }
+  {
+      SCOPED_LOCK( _mutex );
+      clear_cache();
+      fetch(_frame);
+  }
   refresh();
 }
 
