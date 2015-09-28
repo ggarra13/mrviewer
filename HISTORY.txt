@@ -1,3 +1,9 @@
+v2.9.6   - Made channel selection work with toggles more intuitively.
+	   Going to N.x with a 'r' hotkey and then pressing 'r' 
+	   again will bring you back to "N", not "Color" as before.
+	 - Fixed Unshown Frames (UF:) in Hud Display to correctly
+	   count unshown frames.
+
 v2.9.5   - Made audio track selection not throw when invalid tracks
 	   are used.  If an invalid track is used, the audio is
 	   muted ( track is -1 ).
