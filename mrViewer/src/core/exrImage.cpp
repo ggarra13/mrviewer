@@ -213,6 +213,7 @@ bool exrImage::channels_order(
    for (Imf::ChannelList::ConstIterator i = s; i != e; ++i )
    {
        const std::string& layerName = i.name();
+
        const Imf::Channel& ch = i.channel();
 
        std::string ext = layerName;
@@ -259,6 +260,12 @@ bool exrImage::channels_order(
        else if ( order[3] == -1 && ext == N_("A") ) 
        {
            int k = order[3] = channelList.size(); imfPixelType = ch.type;
+           sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
+           channelList.push_back( layerName );
+       }
+       else if ( order[0] == -1 )
+       {
+           int k = order[0] = channelList.size(); imfPixelType = ch.type;
            sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
@@ -723,17 +730,17 @@ bool exrImage::find_channels( const Imf::Header& h,
 
 
     // If channel starts with #, we are dealing with a multipart exr
+    std::string part;
+
     if ( channelPrefix && channelPrefix[0] == '#' )
     {
-        std::string part = channelPrefix;
+        part = channelPrefix;
 
-
-        size_t idx = part.find( N_(".") );
+        size_t idx = part.find( '.' );
 
         if ( idx == std::string::npos )
         {
-            free( _channel );
-            _channel = channelPrefix = NULL;
+            channelPrefix = NULL;
         }
         else
         {
@@ -797,7 +804,6 @@ bool exrImage::find_channels( const Imf::Header& h,
     {
         Imf::ChannelList::ConstIterator s = channels.begin();
         Imf::ChannelList::ConstIterator e = channels.end();
-
         return channels_order( frame, s, e, channels, h, fb );
     }
 }
@@ -1573,22 +1579,23 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    if ( _has_stereo )
    {
-      const char* channelPrefix = channel();
-      if ( channelPrefix != NULL )
-      {
+       const char* channelPrefix = channel();
+       if ( channelPrefix != NULL )
+       {
+           if ( channelPrefix[0] == '#' )
+           {
+               std::string part = channelPrefix;
 
-         if ( channelPrefix[0] == '#' )
-         {
-             std::string part = channelPrefix;
+               size_t pos = part.find( ' ' );
+               part = part.substr( 1, pos );
 
-             size_t pos = part.find( N_(" ") );
-             part = part.substr( 1, pos );
-
-             _curpart = (int) strtoul( part.c_str(), NULL, 10 );
-         }
-
-
-      }
+               _curpart = (int) strtoul( part.c_str(), NULL, 10 );
+           }
+       }
+       else
+       {
+           _curpart = 0;
+       }
 
 
       if ( _curpart == -1 ) _curpart = 0;
