@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -1881,9 +1880,9 @@ void ImageView::draw()
        if ( (playback() == kForwards && _lastFrame < frame) ||
             (playback() == kBackwards && _lastFrame > frame ) )
 	{
-	  int64_t frame_diff = ( frame - _lastFrame );
+	  int64_t frame_diff = frame - _lastFrame - 1;
           int64_t absdiff = std::abs(frame_diff);
-          if ( absdiff > 1 && absdiff < 10 )
+          if ( absdiff > 0 && absdiff < 10 )
           {
              unshown_frames += absdiff;
           }
@@ -1891,14 +1890,12 @@ void ImageView::draw()
 	  _lastFrame = frame;
 	}
   
-      if ( img->real_fps() > 0 )
+      if ( img->real_fps() > 0.0 )
       {
          sprintf( buf, _(" UF: %" PRId64 " "), unshown_frames );
          hud << buf;
 
          sprintf( buf, _("FPS: %.3f" ), img->real_fps() );
-
-         if ( !hud.str().empty() ) hud << " ";
          hud << buf;
       }
 
@@ -3551,7 +3548,6 @@ int ImageView::keyDown(unsigned int rawkey)
                   }
               }
           }
-
       }
   }
    return 0;
@@ -4046,11 +4042,13 @@ const char* ImageView::get_layer_label( unsigned short c )
         {
             fltk::Group* g = (fltk::Group*) w;
             unsigned short numc = g->children();
+            unsigned short gidx = idx;
             for ( unsigned short j = 0; j < numc; ++j )
             {
                 ++idx;
                 if ( idx == c )
                 {
+                    _old_channel = gidx;
                     lbl = g->child(j)->label();
                     break;
                 }
@@ -4136,7 +4134,9 @@ void ImageView::channel( unsigned short c )
       return;
   }
 
-  if ( c == _channel ) c = _old_channel;
+  if ( c == _channel ) {
+      c = _old_channel;
+  }
 
   _channel = c;
 
@@ -4146,9 +4146,7 @@ void ImageView::channel( unsigned short c )
 
   const char* lbl = get_layer_label( c );
 
-
   std::string channelName( lbl );
-
 
   static std::string oldChannel;
 
@@ -4158,7 +4156,6 @@ void ImageView::channel( unsigned short c )
 
 
   size_t pos = ext.rfind('.');
-
   size_t pos2 = oldChannel.rfind('.');
 
   if ( pos != std::string::npos )
@@ -4176,20 +4173,26 @@ void ImageView::channel( unsigned short c )
   uiColorChannel->copy_label( lbl );
   uiColorChannel->redraw();
 
+  std::transform( ext.begin(), ext.end(), ext.begin(),
+                  (int(*)(int))toupper );
+
   _channelType = kRGB;
   if ( channelName == _("Alpha Overlay") )
     {
       _channelType = kAlphaOverlay;
     }
-  else if ( channelName == _("Red") || ext == N_("R") )
+  else if ( channelName == _("Red") || ext == N_("R") || ext == N_("X") ||
+            ext == N_("U") || ext == N_("S") )
     {
       _channelType = kRed;
     }
-  else if ( channelName == _("Green") || ext == N_("G") )
+  else if ( channelName == _("Green") || ext == N_("G") || ext == N_("Y") ||
+            ext == N_("V") || ext == N_("T") )
     {
       _channelType = kGreen;
     }
-  else if ( channelName == _("Blue")  || ext == N_("B"))
+  else if ( channelName == _("Blue")  || ext == N_("B") || ext == N_("Z") ||
+            ext == N_("W") )
     {
       _channelType = kBlue;
     }
@@ -4201,6 +4204,8 @@ void ImageView::channel( unsigned short c )
     {
       _channelType = kLumma;
     }
+
+#if 1
   
   if ( pos != pos2 && channelName.size() > oldChannel.size() )
   {
@@ -4228,6 +4233,7 @@ void ImageView::channel( unsigned short c )
         }
      }
   }
+#endif
 
   mrv::media fg = foreground();
   mrv::media bg = background();
@@ -4235,8 +4241,8 @@ void ImageView::channel( unsigned short c )
   if ( ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
          ext != N_("A") ) )
   {
-     if ( fg ) fg->image()->channel( lbl );
-     if ( bg ) bg->image()->channel( lbl );
+      if ( fg ) fg->image()->channel( lbl );
+      if ( bg ) bg->image()->channel( lbl );
   }
 
   update_shortcuts( fg, channelName.c_str() );
@@ -4638,7 +4644,10 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) == 
                  shortcuts.end())
             {
-                if ( shortcut == 'c' ) _old_channel = (unsigned short)idx;
+                if ( shortcut == 'c' ) 
+                {
+                    _old_channel = (unsigned short)idx;
+                }
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
