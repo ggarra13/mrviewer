@@ -9,6 +9,8 @@ v2.9.6   - Made channel selection work with toggles more intuitively.
 	   with an addition of one to it each time.
 	 - Fixed a random crash that would happen when LUT was 
 	   activated and the sequence was still being loaded.
+	 - Fixed color picker not showing the right colors on
+	   stereo images once cache was cleared.
 
 v2.9.5   - Improved OpenEXR loader by a factor of 2.
 	 - Made OpenEXR saver default to PIZ wavelet compression,
