@@ -1225,6 +1225,7 @@ void aviImage::video_stream( int x )
           break;
       default:
           IMG_ERROR( _("Unknown destination video frame format: ") 
+                     << _av_dst_pix_fmt << " " 
                      << av_get_pix_fmt_name( _av_dst_pix_fmt ) );
 
           _pix_fmt = VideoFrame::kBGRA; break;
@@ -2290,7 +2291,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	   }
 	   else
 	   {
-	      return got_video;
+	      return kDecodeOK;
 	   }
 	}
       else if ( _video_packets.is_loop_end() )
@@ -2313,10 +2314,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	    {
                // if ( pktframe == frame )
                {
-                   decode_vpacket( pktframe, frame, pkt );
+                   got_video = decode_vpacket( pktframe, frame, pkt );
                    _video_packets.pop_front();
                }
-               return kDecodeOK;
+               continue;
 	    }
    
 	  // // Limit storage of frames to twice fps.  For example, 60 frames
@@ -2325,6 +2326,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	  // {   // must be frame or else stutters happen in PoTC.VOB
           //     limit_video_store( frame );
 	  // }
+
 
 	  got_video = decode_image( pktframe, pkt );
 	  _video_packets.pop_front();
