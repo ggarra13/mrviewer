@@ -264,7 +264,7 @@ bool exrImage::channels_order(
            channelList.push_back( layerName );
        }
        else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
-                 order[3] == -1 && no_layer )
+                 order[3] == -1 && (no_layer || ext.size() > 1) )
        {
            int k = order[0] = channelList.size(); imfPixelType = ch.type;
            sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
@@ -539,9 +539,7 @@ bool exrImage::find_layers( const Imf::Header& h )
        channels.layers( layers );
 
        if ( layers.find( N_( "right" ) ) != layers.end() )
-       {
            _has_right_eye = true;
-       }
 
        if ( layers.find( N_("left") ) != layers.end() )
            _has_left_eye = true;
@@ -681,7 +679,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // Find the iterators for a right channel prefix or all channels
     if ( prefix.size() )
     {
-        channels.channelsWithPrefix( prefix, s, e );
+        channels.channelsInLayer( prefix, s, e );
     }
     else
     {
@@ -706,7 +704,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     if ( _has_left_eye ) prefix = "left";
     if ( prefix.size() )
     {
-        channels.channelsWithPrefix( prefix, s, e );
+        channels.channelsInLayer( prefix, s, e );
     }
     else
     {

@@ -4205,8 +4205,7 @@ void ImageView::channel( unsigned short c )
       _channelType = kLumma;
     }
 
-#if 1
-  
+
   if ( pos != pos2 && channelName.size() > oldChannel.size() )
   {
      pos2 = channelName.find( oldChannel );
@@ -4233,7 +4232,6 @@ void ImageView::channel( unsigned short c )
         }
      }
   }
-#endif
 
   mrv::media fg = foreground();
   mrv::media bg = background();
@@ -4608,7 +4606,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         const std::string& name = *i;
 
 
-        if ( o && x != _("Alpha") && name.find(x) != std::string::npos )
+        if ( o && x != _("Alpha") && name.find(x) == 0 )
         {
             if ( group )
             {

@@ -430,6 +430,9 @@ void CMedia::clear_cache()
             _right[i].reset();
     }
 
+  _stereo[0].reset();
+  _stereo[1].reset();
+
 }
 
 /** 
@@ -1174,8 +1177,10 @@ void CMedia::channel( const char* c )
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
              ch == _("Blue")  ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
+        {
             c = NULL;
-
+            ch = "";
+        }
        ext = ch;
        std::string root = "";
        size_t pos = ext.rfind( N_(".") );
@@ -1220,6 +1225,9 @@ void CMedia::channel( const char* c )
 
   bool to_fetch = false;
 
+  // std::cerr << "channel " << (_channel ? _channel : "NULL" )
+  //           << " c " << ( c ? c : "NULL" ) << std::endl;
+
   if ( _channel != c )
   {
       if ( _channel == NULL || c == NULL )  to_fetch = true;
@@ -1238,7 +1246,9 @@ void CMedia::channel( const char* c )
           pos = ch2.rfind( '.' );
           if ( pos != std::string::npos )
           {
+              ext = ch2.substr( pos+1, ch.size() );
               ch2 = ch2.substr( 0, pos );
+              if ( ext == "Z" || ext.size() > 1 ) ch2 += "." + ext;
           }
 
           if ( ch != ch2 ) to_fetch = true;
@@ -1254,6 +1264,8 @@ void CMedia::channel( const char* c )
       _channel = strdup( ch.c_str() );
   }
 
+  // std::cerr << "to fetch " << to_fetch << " channel " 
+  //           << ( _channel ? _channel : "NULL" ) << std::endl;
 
   if (to_fetch) 
   {
