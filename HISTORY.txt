@@ -1,19 +1,25 @@
 v2.9.6   - Made channel selection work with toggles more intuitively.
 	   Going to N.x with a 'r' hotkey and then pressing 'r' 
 	   again will bring you back to "N", not "Color" as before.
+	 - Made channel selection smarter to avoid reloads when
+	   not needed.  Only switching full layers or parts will
+	   cause reloads.
 	 - Fixed Unshown Frames (UF:) in Hud Display to correctly
-	   count unshown frames.
+	   count unshown frames.  Previously it would count them
+	   with an addition of one to it each time.
+	 - Fixed a random crash that would happen when LUT was 
+	   activated and the sequence was still being loaded.
 
-v2.9.5   - Made audio track selection not throw when invalid tracks
+v2.9.5   - Improved OpenEXR loader by a factor of 2.
+	 - Made OpenEXR saver default to PIZ wavelet compression,
+	   instead of None.
+	 - Made audio track selection not throw when invalid tracks
 	   are used.  If an invalid track is used, the audio is
 	   muted ( track is -1 ).
 	 - Same thing with subtitle track.
 	 - Bug fixed Media Info Window not updating on frame change.
 	 - Made images saved with left. or right. prefix not change 
 	   to %V. prefix automatically.
-	 - Made OpenEXR saver default to PIZ wavelet compression,
-	   instead of None.
-	 - Improved OpenEXR loader by a factor of 2.
 
 v2.9.4   - RMB->Pixel->Copy Pixel Value now respects lut and
 	   gamma if active.

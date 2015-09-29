@@ -263,7 +263,8 @@ bool exrImage::channels_order(
            sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
            channelList.push_back( layerName );
        }
-       else if ( order[0] == -1 )
+       else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
+                 order[3] == -1 && no_layer )
        {
            int k = order[0] = channelList.size(); imfPixelType = ch.type;
            sampling[k][0] = ch.xSampling; sampling[k][1] = ch.ySampling;
@@ -341,13 +342,16 @@ bool exrImage::channels_order(
       size_t t = _hires->pixel_size();
 
       for ( unsigned j = 0; j < numChannels; ++j )
-	 xs[order[j]] = t;
+      {
+           if ( order[j] == -1 ) continue;
+           xs[order[j]] = t;
+      }
 
       size_t dw2 = dw / 2;
-      ys[order[0]] = t * dw;
-      ys[order[1]] = t * dw2;
-      ys[order[2]] = t * dw2;
-      ys[order[3]] = t * dw;
+      if ( order[0] != -1 ) ys[order[0]] = t * dw;
+      if ( order[1] != -1 ) ys[order[1]] = t * dw2;
+      if ( order[2] != -1 ) ys[order[2]] = t * dw2;
+      if ( order[3] != -1 ) ys[order[3]] = t * dw;
    }
    else
    {
@@ -355,8 +359,9 @@ bool exrImage::channels_order(
 
        for ( unsigned j = 0; j < numChannels; ++j )
        {
-           xs[j] = pixels;
-           ys[j] = pixels * dw;
+           if ( order[j] == -1 ) continue;
+           xs[order[j]] = pixels;
+           ys[order[j]] = pixels * dw;
        }
    }
 
@@ -730,11 +735,10 @@ bool exrImage::find_channels( const Imf::Header& h,
 
 
     // If channel starts with #, we are dealing with a multipart exr
-    std::string part;
 
     if ( channelPrefix && channelPrefix[0] == '#' )
     {
-        part = channelPrefix;
+        std::string part = channelPrefix;
 
         size_t idx = part.find( '.' );
 
