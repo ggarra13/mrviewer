@@ -1033,7 +1033,15 @@ namespace mrv {
     if ( _lut_attempt >= 2 ) return;
 
     _view->window()->cursor( fltk::CURSOR_WAIT );
-    fltk::check();
+
+    {
+        typedef CMedia::Mutex Mutex;
+        CMedia* image = const_cast<CMedia*>( img );
+        CMedia::Mutex& m = image->video_mutex();
+        SCOPED_LOCK( m );
+
+        fltk::check();
+    }
 
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;

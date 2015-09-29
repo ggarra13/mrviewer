@@ -1164,17 +1164,19 @@ void CMedia::channel( const char* c )
 {
     if ( _right_eye )  _right_eye->channel( c );
 
+    std::string ch;
+    std::string ext;
+
     if (c)
     {
-        std::string ch( c );
-
+        ch = c;
 
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
              ch == _("Blue")  ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
             c = NULL;
 
-       std::string ext = ch;
+       ext = ch;
        std::string root = "";
        size_t pos = ext.rfind( N_(".") );
        if ( pos != std::string::npos )
@@ -1218,38 +1220,38 @@ void CMedia::channel( const char* c )
 
   bool to_fetch = false;
 
-  std::string ch1;
-  if (c) ch1 = c;
-
-
-  if ( _channel == NULL || c == NULL )  to_fetch = true;
-  else
+  if ( _channel != c )
   {
-      std::string ch2 = _channel;
-
-      size_t pos = ch1.rfind( '.' );
-      if ( pos != std::string::npos )
+      if ( _channel == NULL || c == NULL )  to_fetch = true;
+      else
       {
-          ch1 = ch1.substr( 0, pos );
-      }
+          std::string ch2 = _channel;
+          
+          size_t pos = ch.rfind( '.' );
+          if ( pos != std::string::npos )
+          {
+              ext = ch.substr( pos+1, ch.size() );
+              ch = ch.substr( 0, pos );
+              if ( ext == "Z" || ext.size() > 1 ) ch += "." + ext;
+          }
 
-      pos = ch2.rfind( '.' );
-      if ( pos != std::string::npos )
-      {
-          ch2 = ch2.substr( 0, pos );
-      }
+          pos = ch2.rfind( '.' );
+          if ( pos != std::string::npos )
+          {
+              ch2 = ch2.substr( 0, pos );
+          }
 
-      if ( ch1 != ch2 ) to_fetch = true;
+          if ( ch != ch2 ) to_fetch = true;
+      }
   }
 
   free( _channel );
   _channel = NULL;
 
-
   // Store channel without r,g,b extension
-  if ( !ch1.empty() )
+  if ( !ch.empty() )
   {
-      _channel = strdup( ch1.c_str() );
+      _channel = strdup( ch.c_str() );
   }
 
 
