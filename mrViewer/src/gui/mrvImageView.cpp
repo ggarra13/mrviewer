@@ -219,7 +219,7 @@ namespace
         std::string ext2;
         if ( pos2 != std::string::npos )
         {
-            ext2 = oldChannel.substr( pos2+1, channelName.size() );
+            ext2 = oldChannel.substr( pos2+1, oldChannel.size() );
             std::transform( ext2.begin(), ext2.end(), ext2.begin(),
                             (int(*)(int)) toupper );
         }
@@ -241,7 +241,7 @@ namespace
            return 'b';
        else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
-       else return 'c';
+       else return 0;
     }
     else
     {
@@ -4028,11 +4028,12 @@ const char* ImageView::get_layer_label( unsigned short c )
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     const char* lbl = NULL;
     unsigned short idx = 0;
+    _old_channel = 0;
     unsigned short num = uiColorChannel->children();
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
         fltk::Widget* w = uiColorChannel->child(i);
-        if ( idx == c ) 
+        if ( idx == c )
         {
             lbl = w->label();
             break;
@@ -4134,7 +4135,7 @@ void ImageView::channel( unsigned short c )
       return;
   }
 
-  if ( c == _channel ) {
+  if ( c == _channel && _old_channel < c ) {
       c = _old_channel;
   }
 
@@ -4642,10 +4643,6 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) == 
                  shortcuts.end())
             {
-                if ( shortcut == 'c' ) 
-                {
-                    _old_channel = (unsigned short)idx;
-                }
                 o->shortcut( shortcut );
                 shortcuts.insert( shortcut );
             }
