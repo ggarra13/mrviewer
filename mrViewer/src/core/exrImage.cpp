@@ -287,15 +287,11 @@ bool exrImage::channels_order(
                       _("\" has no channels.") );
        return false;
    }
-   else if ( numChannels == 1 )
-   {
-       order[0] = 0; order[1] = order[2] = order[3] = -1;
-   }
 
    // Prepare format
    image_type::Format format = VideoFrame::kLumma;
    int offsets[4];
-   offsets[order[0]] = 0;
+   if (order[0] != -1 ) offsets[order[0]] = 0;
    if ( _has_yca )
    {
       unsigned size  = dw * dh;
@@ -366,8 +362,7 @@ bool exrImage::channels_order(
    }
 
    char* pixels = (char*)_hires->data().get();
-   if ( displayWindow != dataWindow )
-       memset( pixels, 0, _hires->data_size() ); // Needed
+   memset( pixels, 0, _hires->data_size() ); // Needed for lumma pics (Fog.exr)
 
    // Then, prepare frame buffer for them
    int start = ( (-dx - dy * dw) * _hires->pixel_size() *
@@ -797,7 +792,13 @@ bool exrImage::find_channels( const Imf::Header& h,
             {
                 Imf::ChannelList::ConstIterator s;
                 Imf::ChannelList::ConstIterator e;
-                channels.channelsWithPrefix( channelPrefix, s, e );
+                std::string prefix = channelPrefix;
+                size_t pos = prefix.rfind( '.' );
+                std::string ext = prefix.substr( pos+1, prefix.size() );
+                if ( ext == "A" || ext == "R" || ext == "G" ||
+                     ext == "B" ) prefix = prefix.substr(0, pos);
+
+                channels.channelsWithPrefix( prefix, s, e );
                 return channels_order( frame, s, e, channels, h, fb );
             }
         }
