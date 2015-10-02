@@ -206,7 +206,7 @@ bool exrImage::channels_order(
 
    typedef std::vector< std::string > LayerList;
    LayerList channelList;
-   channelList.reserve(4);
+   channelList.reserve(5); // R,G,B,A,Z
 
    int sampling[4][2];
 
@@ -674,7 +674,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // Find the iterators for a right channel prefix or all channels
     if ( prefix.size() )
     {
-        std::cerr << "right prefix" << std::endl;
         channels.channelsInLayer( prefix, s, e );
     }
     else
@@ -682,7 +681,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         s = channels.begin();
         e = channels.end();
     }
-    std::cerr << "channels order1 " << std::endl;
     channels_order( frame, s, e, channels, h, fb );
 
     // If 3d is because of different headers exit now
@@ -709,7 +707,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         e = channels.end();
     }
 
-    std::cerr << "channels order2 " << std::endl;
     channels_order( frame, s, e, channels, h, fb );
     _stereo[0] = _hires;
 
@@ -752,10 +749,18 @@ bool exrImage::find_channels( const Imf::Header& h,
             {
                 ext = ext.substr( idx+1, part.size() );
             }
+
+            if ( ext == "z" ) ext = "B";  // so it gets removed later
+
+            std::transform( ext.begin(), ext.end(), ext.begin(),
+                            (int(*)(int)) toupper );
  
-            // When extension is one of RGBA we want to read RGBA together
-            // so we remove the extension from prefix.
-            if ( ext == "R" || ext == "G" || ext == "B" || ext == "A" )
+            // When extension is one of RGBA, XYZ or UVW we want to 
+            // read all channels together so we remove the extension
+            // from prefix.
+            if ( ext == "R" || ext == "G" || ext == "B" || ext == "A" ||
+                 ext == "X" || ext == "Y" || ext == "U" ||
+                 ext == "V" || ext == "W" )
             {
                 ext = "";
                 if ( idx == std::string::npos || idx == 1 )
@@ -778,7 +783,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 
         if ( _stereo_type & kStereoSideBySide )
         {
-            std::cerr << "call handle stereo side X side" << std::endl;
             return handle_stereo(frame, h, fb);
         }
         else
@@ -792,7 +796,6 @@ bool exrImage::find_channels( const Imf::Header& h,
                 else
                     _left_red = false;
 
-                std::cerr << "call handle stereo anaglyph" << std::endl;
                 return handle_stereo(frame, h, fb);
             }
             else
@@ -802,8 +805,17 @@ bool exrImage::find_channels( const Imf::Header& h,
                 std::string prefix = channelPrefix;
                 size_t pos = prefix.rfind( '.' );
                 std::string ext = prefix.substr( pos+1, prefix.size() );
+
+                if ( ext == "z" ) prefix = prefix.substr(0, pos);
+
+                std::transform( ext.begin(), ext.end(), ext.begin(),
+                                (int(*)(int)) toupper );
+
+                // If extension is one of a group, load all channels
                 if ( ext == "A" || ext == "R" || ext == "G" ||
-                     ext == "B" ) prefix = prefix.substr(0, pos);
+                     ext == "B" || ext == "X" || ext == "Y" ||
+                     ext == "U" || ext == "V" ||
+                     ext == "W" ) prefix = prefix.substr(0, pos);
 
                 channels.channelsWithPrefix( prefix, s, e );
                 return channels_order( frame, s, e, channels, h, fb );
