@@ -479,7 +479,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
       << "FLTK 2.0" << endl
       << "http://www.fltk.org/" << endl
-      << "(C) 2000-2014 Bill Spitzak & others" << endl
+      << "(C) 2000-2015 Bill Spitzak & others" << endl
       << endl
       << "GLEW " << glewGetString( GLEW_VERSION ) << endl
       << "http://glew.sourceforge.net/" << endl

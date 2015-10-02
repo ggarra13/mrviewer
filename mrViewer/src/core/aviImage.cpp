@@ -281,13 +281,6 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	   (magic & 0xF000) == 0 ) return false;
       return true;
     }
-  else if ( magic == 0x89504e47 && !(CMedia::cache_active()) )
-  {
-       // PNG image, handled only if no cache is active
-      // This is because FFMPEG's png reader is really fast,
-      // but caching it brings fps down to 6.4.
-      return true;
-  }
   else if ( magic == 0x00000144 )
   {
      // RED ONE camera images
