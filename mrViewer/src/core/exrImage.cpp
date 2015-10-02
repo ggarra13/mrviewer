@@ -674,6 +674,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // Find the iterators for a right channel prefix or all channels
     if ( prefix.size() )
     {
+        std::cerr << "right prefix" << std::endl;
         channels.channelsInLayer( prefix, s, e );
     }
     else
@@ -681,6 +682,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         s = channels.begin();
         e = channels.end();
     }
+    std::cerr << "channels order1 " << std::endl;
     channels_order( frame, s, e, channels, h, fb );
 
     // If 3d is because of different headers exit now
@@ -707,6 +709,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         e = channels.end();
     }
 
+    std::cerr << "channels order2 " << std::endl;
     channels_order( frame, s, e, channels, h, fb );
     _stereo[0] = _hires;
 
@@ -775,6 +778,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
         if ( _stereo_type & kStereoSideBySide )
         {
+            std::cerr << "call handle stereo side X side" << std::endl;
             return handle_stereo(frame, h, fb);
         }
         else
@@ -783,9 +787,12 @@ bool exrImage::find_channels( const Imf::Header& h,
                  _stereo_type & kStereoInterlaced )
             {
                 if ( _stereo_type != kStereoRightAnaglyph &&
-                     _stereo_type != kStereoInterlacedFlipped ) _left_red = true;
-                else _left_red = false;
+                     _stereo_type != kStereoInterlacedFlipped ) 
+                    _left_red = true;
+                else
+                    _left_red = false;
 
+                std::cerr << "call handle stereo anaglyph" << std::endl;
                 return handle_stereo(frame, h, fb);
             }
             else
@@ -1647,8 +1654,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
           in.setFrameBuffer(fb);
           in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
-          // Quick exit if stereo is off
-          if ( _stereo_type == kNoStereo ) break;
+          // Quick exit if stereo is off or multiview
+          if ( _stereo_type == kNoStereo || _multiview ) break;
 
           if ( st[0] != st[1] )
           {
