@@ -4028,7 +4028,7 @@ const char* ImageView::get_layer_label( unsigned short c )
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     const char* lbl = NULL;
     unsigned short idx = 0;
-    _old_channel = 0;
+    _old_channel = 0; 
     unsigned short num = uiColorChannel->children();
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
@@ -4036,6 +4036,13 @@ const char* ImageView::get_layer_label( unsigned short c )
         if ( idx == c )
         {
             lbl = w->label();
+            // Store old channel only for Color and Layered channels
+            if ( strcmp( lbl, _("Red") ) != 0 &&
+                 strcmp( lbl, _("Green") ) != 0 &&
+                 strcmp( lbl, _("Blue") ) != 0 &&
+                 strcmp( lbl, _("Alpha") ) != 0 &&
+                 strcmp( lbl, _("Alpha Overlay") ) != 0 )
+                _old_channel = _channel;
             break;
         }
 
@@ -4053,6 +4060,7 @@ const char* ImageView::get_layer_label( unsigned short c )
                     lbl = g->child(j)->label();
                     break;
                 }
+                
             }
         }
 
@@ -4135,9 +4143,13 @@ void ImageView::channel( unsigned short c )
       return;
   }
 
-  if ( c == _channel && _old_channel < c ) {
+  // If user selected the same channel again, toggle it with
+  // other channel (diffuse.r goes to diffuse, for example)
+  if ( c == _channel ) {
       c = _old_channel;
   }
+
+  const char* lbl = get_layer_label( c );
 
   _channel = c;
 
@@ -4145,7 +4157,6 @@ void ImageView::channel( unsigned short c )
   sprintf( buf, "Channel %d", c );
   send( buf );
 
-  const char* lbl = get_layer_label( c );
 
   std::string channelName( lbl );
 
@@ -4157,7 +4168,7 @@ void ImageView::channel( unsigned short c )
 
 
   size_t pos = ext.rfind('.');
-  size_t pos2 = oldChannel.rfind('.');
+  size_t pos2 = oext.rfind('.');
 
   if ( pos != std::string::npos )
   {
@@ -4682,7 +4693,6 @@ void ImageView::update_layers()
 
     if ( v >= 0 )
     {
-        _channel = -1;
         channel( (unsigned short) v );
     }
 
