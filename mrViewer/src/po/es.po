@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-10-02 19:16-0300\n"
+"POT-Creation-Date: 2015-10-03 10:51-0300\n"
 "PO-Revision-Date: 2015-09-11 16:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -689,7 +689,7 @@ msgid "AC3"
 msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:51
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:96
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:93
 msgid "ACES metadata"
 msgstr "Metadata ACES"
 
@@ -967,11 +967,11 @@ msgstr "B"
 msgid "B Frames"
 msgstr "Cuadros B"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:65
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:66
 msgid "B44"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:66
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:67
 msgid "B44A"
 msgstr ""
 
@@ -1088,7 +1088,7 @@ msgstr "Caches"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:109
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:57
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:93
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:100
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:82
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2869
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/keyboard_ui.cxx:80
@@ -1671,15 +1671,19 @@ msgstr "Película DIVX"
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:82
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:84
 msgid "DWA Compression"
 msgstr "Compresión DWA"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:67
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:91
+msgid "DWA/DWB compression"
+msgstr "Compresión DWA/DWB"
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:68
 msgid "DWAA"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:68
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:69
 msgid "DWAB"
 msgstr ""
 
@@ -1954,6 +1958,10 @@ msgstr "EXIF"
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:58
+msgid "EXR compression algorithm."
+msgstr "Algoritmo de compresión de EXR"
+
 #: gui/mrvImageInformation.cpp:204
 msgid "Early 35mm"
 msgstr "35mm Temprano"
@@ -2178,7 +2186,7 @@ msgstr "Voltear en Y"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:46
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:70
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:76
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:78
 #: core/wandImage.cpp:458 core/wandImage.cpp:475
 msgid "Float"
 msgstr "Coma Flotante"
@@ -2416,7 +2424,7 @@ msgstr "Sobreimpreso"
 msgid "HW"
 msgstr "HW"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:75
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:77
 #: core/wandImage.cpp:461
 msgid "Half"
 msgstr "Half"
@@ -3252,7 +3260,7 @@ msgstr "Codigo de Tiempo Sin Derrochar Cuadros"
 msgid "Non-POT Textures:\t"
 msgstr "Texturas Non-POT:\t"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:59
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:60
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2813
 #: core/exrImage.cpp:79 core/iffImage.cpp:54 gui/mrvImageInformation.cpp:1008
 msgid "None"
@@ -3325,7 +3333,7 @@ msgstr "Música OGG"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:106
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:54
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:90
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:97
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2746
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrvAudioOffset.cxx:44
 msgid "OK"
@@ -3455,7 +3463,7 @@ msgstr "Vídeo PAL"
 msgid "PBO Textures:\t"
 msgstr "Texturas PBO:\t"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:60
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:61
 msgid "PIZ"
 msgstr ""
 
@@ -3463,7 +3471,7 @@ msgstr ""
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:64
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:65
 msgid "PXR24"
 msgstr ""
 
@@ -3550,10 +3558,14 @@ msgid "Ping Pong"
 msgstr "Ping Pong"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:40
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:72
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:73
 #: gui/mrvImageInformation.cpp:788
 msgid "Pixel Format"
 msgstr "Formato de Pixel"
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:75
+msgid "Pixel Format to save image.   Usually Half."
+msgstr "Formato de Pixel para grabar la imagen.  Usualmente Half."
 
 #: gui/mrvImageInformation.cpp:473
 msgid "Pixel Ratio"
@@ -3743,7 +3755,7 @@ msgstr "Imagen RGB"
 msgid "RGBA"
 msgstr "RGBA"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:63
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:64
 #: core/exrImage.cpp:80 core/iffImage.cpp:55
 msgid "RLE"
 msgstr "RLE"
@@ -4046,6 +4058,10 @@ msgstr "Grabar preferencias al disco por defecto."
 #: core/mrvACES.cpp:212
 msgid "Saved ACES clip metadata file '"
 msgstr "Grabé archivo de Clip Metadata de ACES '"
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:94
+msgid "Saves out ACES clip metadata (CTL transforms) into an ACESclip file."
+msgstr "Graba un archivo ACES de metadata (transformaciones CTL)."
 
 #: gui/mrvFileRequester.cpp:503
 #, c-format
@@ -4816,7 +4832,7 @@ msgstr "IU"
 msgid "UI Elements"
 msgstr "Elementos de Interfaz de Usario (IU)"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:77
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:79
 msgid "UInt"
 msgstr ""
 
@@ -5394,11 +5410,11 @@ msgstr "Z"
 msgid "Z Depth"
 msgstr "Profundidad Z"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:61
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
 msgid "ZIP"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:63
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
