@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-10-03 10:51-0300\n"
+"POT-Creation-Date: 2015-10-03 14:55-0300\n"
 "PO-Revision-Date: 2015-09-11 16:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -211,7 +211,7 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:392 gui/FLU/Flu_File_Chooser.cpp:4416
+#: core/aviImage_save.cpp:392 gui/FLU/Flu_File_Chooser.cpp:4422
 msgid " to "
 msgstr " a "
 
@@ -760,8 +760,8 @@ msgstr "Todos los Archivos (*)"
 msgid "All Possible"
 msgstr "Todos los Posibles"
 
-#: gui/mrvFileRequester.cpp:143 gui/mrvFileRequester.cpp:414
-#: gui/mrvFileRequester.cpp:450
+#: gui/mrvFileRequester.cpp:144 gui/mrvFileRequester.cpp:415
+#: gui/mrvFileRequester.cpp:451
 msgid "All Recognized (*.{"
 msgstr "Todos los Reconocidos (*.{"
 
@@ -938,12 +938,12 @@ msgstr "Audio/Editar Cuadro Comienzo de Audio"
 msgid "Audios #"
 msgstr "Audios #"
 
-#: gui/mrvFileRequester.cpp:151 gui/mrvFileRequester.cpp:422
-#: gui/mrvFileRequester.cpp:458
+#: gui/mrvFileRequester.cpp:152 gui/mrvFileRequester.cpp:423
+#: gui/mrvFileRequester.cpp:459
 msgid "Audios (*.("
 msgstr "Audios (*.{"
 
-#: gui/mrvFileRequester.cpp:246
+#: gui/mrvFileRequester.cpp:247
 msgid "Audios (*.{"
 msgstr "Audios (*.{"
 
@@ -1129,7 +1129,7 @@ msgstr "Categoría"
 msgid "Center Image"
 msgstr "Clonar la Imagen"
 
-#: standalone/main.cpp:199
+#: standalone/main.cpp:205
 msgid "Changed locale to "
 msgstr "Cambio de localidad a "
 
@@ -1237,7 +1237,7 @@ msgstr "Área de Color"
 msgid "Color Information"
 msgstr "Información de Area de Color"
 
-#: gui/mrvFileRequester.cpp:196
+#: gui/mrvFileRequester.cpp:197
 msgid "Color Profiles (*."
 msgstr "Perfiles ICC (*."
 
@@ -1334,7 +1334,7 @@ msgstr "No pude asignar samples de fuente.  Error:"
 msgid "Could not allocate stream"
 msgstr "No pude alojar pista"
 
-#: gui/mrvMedia.cpp:169
+#: gui/mrvMedia.cpp:174
 msgid "Could not allocate thumbnail buffer"
 msgstr "No pude reservar buffer de dibujo de miniatura"
 
@@ -1355,7 +1355,7 @@ msgstr "No pude crear barita de dibujo"
 msgid "Could not create pixel wand"
 msgstr "No pude crear barita de pixel"
 
-#: gui/mrvMedia.cpp:157
+#: gui/mrvMedia.cpp:162
 msgid "Could not create thumbnail picture for '"
 msgstr "No pude crear dibujo en miniatura para '"
 
@@ -2651,8 +2651,8 @@ msgstr "Imagen/Ponerla como Fondo"
 msgid "Image/Toggle Background"
 msgstr "Imagen/Permutar Fondo"
 
-#: gui/mrvFileRequester.cpp:147 gui/mrvFileRequester.cpp:418
-#: gui/mrvFileRequester.cpp:454
+#: gui/mrvFileRequester.cpp:148 gui/mrvFileRequester.cpp:419
+#: gui/mrvFileRequester.cpp:455
 msgid "Images (*.{"
 msgstr "Imagenes (*.{"
 
@@ -2906,15 +2906,15 @@ msgstr "Modo de Listado"
 msgid "Load"
 msgstr "Cargar"
 
-#: gui/mrvFileRequester.cpp:138
+#: gui/mrvFileRequester.cpp:139
 msgid "Load Image"
 msgstr "Grabar Imagen"
 
-#: gui/mrvFileRequester.cpp:139
+#: gui/mrvFileRequester.cpp:140
 msgid "Load Movie or Sequence"
 msgstr "Abrir Pelicula o Secuencia"
 
-#: gui/mrvFileRequester.cpp:120
+#: gui/mrvFileRequester.cpp:121
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
@@ -3129,8 +3129,8 @@ msgstr "Métodos de Estimación de Movimiento"
 msgid "Movie Saving Preferences"
 msgstr "Preferencias de Grabado de Películas"
 
-#: gui/mrvFileRequester.cpp:149 gui/mrvFileRequester.cpp:420
-#: gui/mrvFileRequester.cpp:456
+#: gui/mrvFileRequester.cpp:150 gui/mrvFileRequester.cpp:421
+#: gui/mrvFileRequester.cpp:457
 msgid "Movies (*.{"
 msgstr "Peliculas (*.{"
 
@@ -3837,9 +3837,9 @@ msgstr "Listado de Carretes"
 msgid "Reels"
 msgstr "Carretes"
 
-#: gui/mrvFileRequester.cpp:116 gui/mrvFileRequester.cpp:141
-#: gui/mrvFileRequester.cpp:412 gui/mrvFileRequester.cpp:448
-#: gui/mrvFileRequester.cpp:762
+#: gui/mrvFileRequester.cpp:117 gui/mrvFileRequester.cpp:142
+#: gui/mrvFileRequester.cpp:413 gui/mrvFileRequester.cpp:449
+#: gui/mrvFileRequester.cpp:792
 msgid "Reels (*.{"
 msgstr "Carretes (*.{"
 
@@ -4063,7 +4063,7 @@ msgstr "Grabé archivo de Clip Metadata de ACES '"
 msgid "Saves out ACES clip metadata (CTL transforms) into an ACESclip file."
 msgstr "Graba un archivo ACES de metadata (transformaciones CTL)."
 
-#: gui/mrvFileRequester.cpp:503
+#: gui/mrvFileRequester.cpp:506
 #, c-format
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
 msgstr "Grabando Secuencia(s) %<PRId64> - %<PRId64>"
@@ -5326,7 +5326,7 @@ msgstr "Niveles de Ripmap en X"
 msgid "X:"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:343 gui/mrvFileRequester.cpp:360
+#: gui/mrvFileRequester.cpp:344 gui/mrvFileRequester.cpp:361
 msgid "XML Clip Metadata (*.{"
 msgstr "Clip XML de Metadatos (*.{"
 

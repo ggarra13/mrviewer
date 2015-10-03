@@ -11,6 +11,7 @@ v2.9.6   - Made channel selection work with toggles more intuitively.
 	   activated and the sequence was still being loaded.
 	 - Fixed color picker not showing the right colors on
 	   stereo images once cache was cleared.
+	 - Fixed a memory leak of thumbnail pictures.
 
 v2.9.5   - Improved OpenEXR loader by a factor of 2.
 	 - Made OpenEXR saver default to PIZ wavelet compression,
