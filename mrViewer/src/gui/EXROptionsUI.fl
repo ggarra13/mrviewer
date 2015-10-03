@@ -35,7 +35,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {4 446 315 315} resizable modal noborder visible
+        xywh {4 446 315 315} hide resizable modal noborder
       } {
         {fltk::Group} {} {
           label {OpenEXR Options} open
@@ -53,7 +53,8 @@ v->uiDWACompression->activate();
 else
 {
 v->uiDWACompression->deactivate();
-}} selected
+}} open selected
+            tooltip {EXR compression algorithm.}
             xywh {115 23 91 26}
             extra_code {o->value(1);}
           } {
@@ -91,6 +92,7 @@ v->uiDWACompression->deactivate();
           {fltk::Choice} uiPixelFormat {
             label {Pixel Format}
             callback {pixel_type = o->child(o->value())->label();}
+            tooltip {Pixel Format to save image.   Usually Half.}
             xywh {115 69 90 25}
           } {
             {fltk::Item} {} {
@@ -106,7 +108,14 @@ v->uiDWACompression->deactivate();
         }
         {fltk::ValueSlider} uiDWACompression {
           label {DWA Compression}
+          tooltip {DWA/DWB compression}
           xywh {168 150 94 33} align 4 deactivate minimum 1 maximum 250 step 10 value 45
+        }
+        {fltk::LightButton} uiACESmetadata {
+          label {ACES metadata}
+          tooltip {Saves out ACES clip metadata (CTL transforms) into an ACESclip file.}
+          xywh {95 200 125 35}
+          extra_code {o->value( aces );}
         }
         {fltk::Button} {} {
           label OK
@@ -122,15 +131,9 @@ v->uiMain->make_exec_return(true);}
 v->uiMain->make_exec_return(false);}
           xywh {152 274 63 29}
         }
-        {fltk::LightButton} uiACESmetadata {
-          label {ACES metadata}
-          xywh {95 200 125 35}
-          extra_code {o->value( aces );}
-        }
       }
     }
-    Function {convert()} {open
-    } {
+    Function {convert()} {} {
       code {_compression = (Imf::Compression) uiCompression->value();
 _dwa_compression_level = (float) uiDWACompression->value();
 _ACESmetadata = uiACESmetadata->value();} {}
