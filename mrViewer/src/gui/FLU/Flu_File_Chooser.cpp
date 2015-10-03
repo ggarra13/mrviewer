@@ -2152,6 +2152,8 @@ int Flu_File_Chooser::FileDetails::handle( int event )
   return 0;
 }
 
+namespace fs = boost::filesystem;
+
 void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
 {
     Mutex::scoped_lock lk_m( e->chooser->mutex );
@@ -2185,6 +2187,10 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
     }
 
     sprintf( buf, fmt, frameStart );
+
+
+    if ( ! fs::exists( buf ) ) return;
+
 
     fltk::SharedImage* img = mrv::fltk_handler( buf, NULL, 0 );
     if ( !img ) return;
