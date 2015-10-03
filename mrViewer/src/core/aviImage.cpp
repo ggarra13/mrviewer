@@ -2284,7 +2284,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	   }
 	   else
 	   {
-	      return kDecodeOK;
+               return got_video;
 	   }
 	}
       else if ( _video_packets.is_loop_end() )
@@ -2307,10 +2307,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	    {
                // if ( pktframe == frame )
                {
-                   got_video = decode_vpacket( pktframe, frame, pkt );
+                   decode_vpacket( pktframe, frame, pkt );
                    _video_packets.pop_front();
                }
-               continue;
+               return kDecodeOK;
 	    }
    
 	  // // Limit storage of frames to twice fps.  For example, 60 frames
