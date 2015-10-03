@@ -2,8 +2,8 @@ v2.9.6   - Made channel selection work with toggles more intuitively.
 	   Going to N.x with a 'r' hotkey and then pressing 'r' 
 	   again will bring you back to "N", not "Color" as before.
 	 - Made channel selection smarter to avoid reloads when
-	   not needed.  Only switching full layers or parts will
-	   cause reloads.
+	   not needed.  Only switching full layers or multiparts
+	   will cause reloads.
 	 - Fixed Unshown Frames (UF:) in Hud Display to correctly
 	   count unshown frames.  Previously it would count them
 	   with an addition of one to it each time.
