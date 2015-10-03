@@ -44,6 +44,7 @@
 
 #include <wand/MagickWand.h>
 
+#include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
@@ -162,6 +163,11 @@ int main( const int argc, char** argv )
 #ifdef _WIN32
   libintl_setlocale( LC_ALL, tmp );
 #endif
+
+  // Create and install global locale
+  std::locale::global(boost::locale::generator().generate(""));
+  // Make boost.filesystem use it
+  boost::filesystem::path::imbue(std::locale());
 
 #ifdef LINUX
   XInitThreads();
