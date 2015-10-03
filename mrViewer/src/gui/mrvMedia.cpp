@@ -64,8 +64,12 @@ namespace mrv {
     media::~media()
     {
         delete _image; _image = NULL;
-        // delete _thumbnail; _thumbnail = NULL;
-        // thumbnail is not deleted, as fltk will do it for us.
+        if ( _thumbnail )
+        {
+            // thumbnail is not deleted, as fltk will do it for us.
+            ((fltk::SharedImage*)_thumbnail)->remove();
+            _thumbnail = NULL;
+        }
     }
 
     void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
@@ -148,6 +152,7 @@ namespace mrv {
       w = pic->width();
       h = pic->height();
 
+
       _thumbnail = fltk::SharedImage::get( thumbImage::create, 
 					   _image->fileroot(),
 					   0);
@@ -167,7 +172,7 @@ namespace mrv {
       if (!ptr )
 	{
             IMG_ERROR( _("Could not allocate thumbnail buffer") );
-	  return;
+            return;
 	}
 
       fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
