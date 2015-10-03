@@ -4054,7 +4054,7 @@ const char* ImageView::get_layer_label( unsigned short c )
             for ( unsigned short j = 0; j < numc; ++j )
             {
                 ++idx;
-                if ( idx == c )
+                if ( idx == c && numc > 1 )
                 {
                     _old_channel = gidx;
                     lbl = g->child(j)->label();
