@@ -49,6 +49,7 @@
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvProgressReport.h"
 #include "mrViewer.h"
 #include "aviSave.h"
 
@@ -491,30 +492,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       root = root.substr( 0, root.size() - 4 );
    }
 
-   fltk::ProgressBar* progress = NULL;
    fltk::Window* main = (fltk::Window*)uiMain->uiMain;
-   fltk::Window* w = new fltk::Window( main->x(), main->y() + main->h()/2, 
-				       main->w(), 120 );
-   w->child_of(main);
-   w->begin();
-   fltk::Output* elapsed = new fltk::Output( 120, 80, 150, 20, "Elapsed" );
-   fltk::Output* remain = new fltk::Output( 350, 80, 150, 20, "Remaining" );
-   progress = new fltk::ProgressBar( 0, 20, w->w(), 40 );
-   progress->range( 0, double(last - first + 1) );
-   progress->align( fltk::ALIGN_TOP );
-   char title[1024];
-   sprintf( title, _("Saving Sequence(s) %" PRId64 " - %" PRId64 ),
-	    first, last );
-   progress->label( title );
-   progress->showtext(true);
-   w->resizable(progress);
-   w->set_modal();
-   w->end();
-   
-   mrv::Timer timer;
-   timer.setDesiredFrameRate( 120.0 );
-
-   fltk::check();
+   mrv::ProgressReport* w = new mrv::ProgressReport( main, first, last );
    
    int64_t dts = first;
    int64_t frame = first;
@@ -713,34 +692,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
           } // opengl
       }
 
-      progress->step(1);
-      timer.waitUntilNextFrameIsDue();
-      double now = timer.timeSinceLastFrame();
-      time += now;
-      int hour = floor( time / 3600.0 );
-      int min = int(floor( time / 60.0 )) % 60;
-      int sec = int(floor(time)) % 60;
-
-      char buf[120];
-      sprintf( buf, "%02d:%02d:%02d", hour, min, sec );
-
-      elapsed->value( buf );
-
-      double r = time / (double)frame;
-      r *= (last-frame);
-
-      hour = floor( r / 3600.0 );
-      min = int(floor( r / 60.0 )) % 60;
-      sec = int(floor( r )) % 60;
-
-      sprintf( buf, "%02d:%02d:%02d", hour, min, sec );
-      remain->value( buf );
-
-      fltk::check();
-
-      if ( !w->visible() ) {
-          break;
-      }
+       if ( ! w->tick() ) break;
    }
 
    delete [] data;
@@ -754,11 +706,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       open_movie = false;
    }
 
-   if ( w )
-   {
-      w->hide();
-      w->destroy();
-   }
+   delete w;
 }
 
 
