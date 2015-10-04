@@ -204,6 +204,7 @@ SET( SOURCES
   gui/mrvPopupMenu.cpp
   gui/mrvPreferences.cpp
   gui/mrvPreferencesBrowser.cpp
+  gui/mrvProgressReport.cpp
   gui/mrvReel.cpp
   gui/mrvTimecode.cpp
   gui/mrvTimeline.cpp
