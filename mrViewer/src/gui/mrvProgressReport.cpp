@@ -84,7 +84,6 @@ bool ProgressReport::tick()
     progress->step(1);
 
     timer.waitUntilNextFrameIsDue();
-    ++_frame;
     double now = timer.timeSinceLastFrame();
     _time += now;
 
@@ -99,6 +98,7 @@ bool ProgressReport::tick()
     double r = _time / (double)_frame;
     r *= (_end - _frame);
 
+
     to_hour_min_sec( r, hour, min, sec );
 
     sprintf( buf, "%02d:%02d:%02d", hour, min, sec );
@@ -108,6 +108,7 @@ bool ProgressReport::tick()
     fps->value( buf );
 
     fltk::check();
+    ++_frame;
 
     if ( !w->visible() ) return false;
     return true;
