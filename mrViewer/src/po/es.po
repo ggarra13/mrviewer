@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-10-03 14:55-0300\n"
+"POT-Creation-Date: 2015-10-04 08:17-0300\n"
 "PO-Revision-Date: 2015-09-11 16:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -760,8 +760,8 @@ msgstr "Todos los Archivos (*)"
 msgid "All Possible"
 msgstr "Todos los Posibles"
 
-#: gui/mrvFileRequester.cpp:144 gui/mrvFileRequester.cpp:415
-#: gui/mrvFileRequester.cpp:451
+#: gui/mrvFileRequester.cpp:145 gui/mrvFileRequester.cpp:416
+#: gui/mrvFileRequester.cpp:452
 msgid "All Recognized (*.{"
 msgstr "Todos los Reconocidos (*.{"
 
@@ -938,12 +938,12 @@ msgstr "Audio/Editar Cuadro Comienzo de Audio"
 msgid "Audios #"
 msgstr "Audios #"
 
-#: gui/mrvFileRequester.cpp:152 gui/mrvFileRequester.cpp:423
-#: gui/mrvFileRequester.cpp:459
+#: gui/mrvFileRequester.cpp:153 gui/mrvFileRequester.cpp:424
+#: gui/mrvFileRequester.cpp:460
 msgid "Audios (*.("
 msgstr "Audios (*.{"
 
-#: gui/mrvFileRequester.cpp:247
+#: gui/mrvFileRequester.cpp:248
 msgid "Audios (*.{"
 msgstr "Audios (*.{"
 
@@ -1237,7 +1237,7 @@ msgstr "Área de Color"
 msgid "Color Information"
 msgstr "Información de Area de Color"
 
-#: gui/mrvFileRequester.cpp:197
+#: gui/mrvFileRequester.cpp:198
 msgid "Color Profiles (*."
 msgstr "Perfiles ICC (*."
 
@@ -1974,6 +1974,10 @@ msgstr "Editar Cuadro de Comienzo de Audio"
 msgid "Edit Status"
 msgstr "Editar Status"
 
+#: gui/mrvProgressReport.cpp:45
+msgid "Elapsed"
+msgstr "Transcurrido"
+
 #: core/aviImage.cpp:2161
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
@@ -2068,6 +2072,7 @@ msgstr "Encajar"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2195
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3764
 #: gui/mrvImageInformation.cpp:440 gui/mrvImageInformation.cpp:801
+#: gui/mrvProgressReport.cpp:47
 msgid "FPS"
 msgstr "CPS"
 
@@ -2651,8 +2656,8 @@ msgstr "Imagen/Ponerla como Fondo"
 msgid "Image/Toggle Background"
 msgstr "Imagen/Permutar Fondo"
 
-#: gui/mrvFileRequester.cpp:148 gui/mrvFileRequester.cpp:419
-#: gui/mrvFileRequester.cpp:455
+#: gui/mrvFileRequester.cpp:149 gui/mrvFileRequester.cpp:420
+#: gui/mrvFileRequester.cpp:456
 msgid "Images (*.{"
 msgstr "Imagenes (*.{"
 
@@ -2906,15 +2911,15 @@ msgstr "Modo de Listado"
 msgid "Load"
 msgstr "Cargar"
 
-#: gui/mrvFileRequester.cpp:139
+#: gui/mrvFileRequester.cpp:140
 msgid "Load Image"
 msgstr "Grabar Imagen"
 
-#: gui/mrvFileRequester.cpp:140
+#: gui/mrvFileRequester.cpp:141
 msgid "Load Movie or Sequence"
 msgstr "Abrir Pelicula o Secuencia"
 
-#: gui/mrvFileRequester.cpp:121
+#: gui/mrvFileRequester.cpp:122
 msgid "Load Reel(s)"
 msgstr "Abrir Carrete(s)"
 
@@ -3129,8 +3134,8 @@ msgstr "Métodos de Estimación de Movimiento"
 msgid "Movie Saving Preferences"
 msgstr "Preferencias de Grabado de Películas"
 
-#: gui/mrvFileRequester.cpp:150 gui/mrvFileRequester.cpp:421
-#: gui/mrvFileRequester.cpp:457
+#: gui/mrvFileRequester.cpp:151 gui/mrvFileRequester.cpp:422
+#: gui/mrvFileRequester.cpp:458
 msgid "Movies (*.{"
 msgstr "Peliculas (*.{"
 
@@ -3837,9 +3842,9 @@ msgstr "Listado de Carretes"
 msgid "Reels"
 msgstr "Carretes"
 
-#: gui/mrvFileRequester.cpp:117 gui/mrvFileRequester.cpp:142
-#: gui/mrvFileRequester.cpp:413 gui/mrvFileRequester.cpp:449
-#: gui/mrvFileRequester.cpp:792
+#: gui/mrvFileRequester.cpp:118 gui/mrvFileRequester.cpp:143
+#: gui/mrvFileRequester.cpp:414 gui/mrvFileRequester.cpp:450
+#: gui/mrvFileRequester.cpp:740
 msgid "Reels (*.{"
 msgstr "Carretes (*.{"
 
@@ -3876,6 +3881,10 @@ msgstr "Fecha de Salida"
 #: core/wandImage.cpp:381
 msgid "Release Time"
 msgstr "Hora de Salida"
+
+#: gui/mrvProgressReport.cpp:46
+msgid "Remaining"
+msgstr "Faltante"
 
 #: gui/FLU/Flu_File_Chooser.cpp:110
 msgid "Removable Disk"
@@ -4063,7 +4072,7 @@ msgstr "Grabé archivo de Clip Metadata de ACES '"
 msgid "Saves out ACES clip metadata (CTL transforms) into an ACESclip file."
 msgstr "Graba un archivo ACES de metadata (transformaciones CTL)."
 
-#: gui/mrvFileRequester.cpp:506
+#: gui/mrvProgressReport.cpp:52
 #, c-format
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
 msgstr "Grabando Secuencia(s) %<PRId64> - %<PRId64>"
@@ -5326,7 +5335,7 @@ msgstr "Niveles de Ripmap en X"
 msgid "X:"
 msgstr ""
 
-#: gui/mrvFileRequester.cpp:344 gui/mrvFileRequester.cpp:361
+#: gui/mrvFileRequester.cpp:345 gui/mrvFileRequester.cpp:362
 msgid "XML Clip Metadata (*.{"
 msgstr "Clip XML de Metadatos (*.{"
 
