@@ -3,7 +3,7 @@ v2.9.6   - Made channel selection work with toggles more intuitively.
 	   again will bring you back to "N", not "Color" as before.
 	 - Made channel selection smarter to avoid reloads when
 	   not needed.  Only switching full layers or multiparts
-	   will cause reloads.
+	   will cause reloads now.
 	 - Fixed Unshown Frames (UF:) in Hud Display to correctly
 	   count unshown frames.  Previously it would count them
 	   with an addition of one to it each time.
@@ -12,6 +12,10 @@ v2.9.6   - Made channel selection work with toggles more intuitively.
 	 - Fixed color picker not showing the right colors on
 	   stereo images once cache was cleared.
 	 - Fixed a memory leak of thumbnail pictures.
+	 - Added an elapsed and remaining timings to saving
+	   a sequence or a movie.
+	 - Bug fixed Saving of OpenGL Snapshots for a sequence of
+	   images.  Previously it would crash.
 
 v2.9.5   - Improved OpenEXR loader by a factor of 2.
 	 - Made OpenEXR saver default to PIZ wavelet compression,

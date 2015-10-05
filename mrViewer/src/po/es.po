@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-10-04 08:17-0300\n"
+"POT-Creation-Date: 2015-10-05 15:48-0300\n"
 "PO-Revision-Date: 2015-09-11 16:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -296,8 +296,8 @@ msgid "(PAL Fields)"
 msgstr "(Campos PAL)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3286
-#: gui/mrvImageView.cpp:4682 gui/mrvImageView.cpp:4683
-#: gui/mrvImageView.cpp:4690
+#: gui/mrvImageView.cpp:4683 gui/mrvImageView.cpp:4684
+#: gui/mrvImageView.cpp:4691
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -959,7 +959,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5617
+#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5618
 msgid "B"
 msgstr "B"
 
@@ -1221,7 +1221,7 @@ msgstr "Codecs"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:65
 #: core/CMedia.cpp:1116 core/CMedia.cpp:1177 gui/mrvImageView.cpp:164
-#: gui/mrvImageView.cpp:4606 gui/mrvImageView.cpp:4690
+#: gui/mrvImageView.cpp:4606 gui/mrvImageView.cpp:4691
 msgid "Color"
 msgstr ""
 
@@ -1974,7 +1974,7 @@ msgstr "Editar Cuadro de Comienzo de Audio"
 msgid "Edit Status"
 msgstr "Editar Status"
 
-#: gui/mrvProgressReport.cpp:45
+#: gui/mrvProgressReport.cpp:55
 msgid "Elapsed"
 msgstr "Transcurrido"
 
@@ -2051,7 +2051,7 @@ msgstr "Separación de las Vistas"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3406
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3600
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3711
-#: gui/mrvImageView.cpp:5615
+#: gui/mrvImageView.cpp:5616
 msgid "F"
 msgstr "C"
 
@@ -2072,7 +2072,7 @@ msgstr "Encajar"
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2195
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3764
 #: gui/mrvImageInformation.cpp:440 gui/mrvImageInformation.cpp:801
-#: gui/mrvProgressReport.cpp:47
+#: gui/mrvProgressReport.cpp:61
 msgid "FPS"
 msgstr "CPS"
 
@@ -3844,7 +3844,7 @@ msgstr "Carretes"
 
 #: gui/mrvFileRequester.cpp:118 gui/mrvFileRequester.cpp:143
 #: gui/mrvFileRequester.cpp:414 gui/mrvFileRequester.cpp:450
-#: gui/mrvFileRequester.cpp:740
+#: gui/mrvFileRequester.cpp:731
 msgid "Reels (*.{"
 msgstr "Carretes (*.{"
 
@@ -3882,7 +3882,7 @@ msgstr "Fecha de Salida"
 msgid "Release Time"
 msgstr "Hora de Salida"
 
-#: gui/mrvProgressReport.cpp:46
+#: gui/mrvProgressReport.cpp:58
 msgid "Remaining"
 msgstr "Faltante"
 
@@ -4072,7 +4072,7 @@ msgstr "Grabé archivo de Clip Metadata de ACES '"
 msgid "Saves out ACES clip metadata (CTL transforms) into an ACESclip file."
 msgstr "Graba un archivo ACES de metadata (transformaciones CTL)."
 
-#: gui/mrvProgressReport.cpp:52
+#: gui/mrvProgressReport.cpp:51
 #, c-format
 msgid "Saving Sequence(s) %<PRId64> - %<PRId64>"
 msgstr "Grabando Secuencia(s) %<PRId64> - %<PRId64>"
@@ -4463,7 +4463,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-50-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3064
-#: gui/mrvImageView.cpp:5616
+#: gui/mrvImageView.cpp:5617
 msgid "T"
 msgstr "T"
 
@@ -5559,12 +5559,12 @@ msgstr "Imagen de profundidad Z de mental ray"
 msgid "mrViewer"
 msgstr "mrViewer"
 
-#: gui/mrvImageView.cpp:4740 gui/mrvImageView.cpp:4915
+#: gui/mrvImageView.cpp:4741 gui/mrvImageView.cpp:4916
 #, c-format
 msgid "mrViewer    FG: %s"
 msgstr "mrViewer    FRENTE: %s"
 
-#: gui/mrvImageView.cpp:4734 gui/mrvImageView.cpp:4886
+#: gui/mrvImageView.cpp:4735 gui/mrvImageView.cpp:4887
 #, c-format
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"
