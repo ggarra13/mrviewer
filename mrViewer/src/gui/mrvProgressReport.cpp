@@ -42,9 +42,8 @@ _end( end )
                           main->w(), 120 );
     w->child_of(main);
     w->begin();
-    elapsed = new fltk::Output( 120, 80, 150, 20, _("Elapsed") );
-    remain = new fltk::Output( 350, 80, 150, 20, _("Remaining") );
-    fps = new fltk::Output( 560, 80, 60, 20, _("FPS") );
+    fltk::Group* g = new fltk::Group( 0, 0, w->w(), 120 );
+    g->begin();
     progress = new fltk::ProgressBar( 0, 20, w->w(), 40 );
     progress->range( 0, double( end - start + 1) );
     progress->align( fltk::ALIGN_TOP );
@@ -53,7 +52,17 @@ _end( end )
              start, end );
     progress->copy_label( title );
     progress->showtext(true);
-    w->resizable(progress);
+    elapsed = new fltk::Output( 120, 80, 120, 20, _("Elapsed") );
+    elapsed->labelsize( 16 );
+    elapsed->set_output(); // needed so no selection appears
+    remain = new fltk::Output( 380, 80, 120, 20, _("Remaining") );
+    remain->labelsize( 16 );
+    remain->set_output(); // needed so no selection appears
+    fps = new fltk::Output( 550, 80, 60, 20, _("FPS") );
+    fps->labelsize( 16 );
+    fps->set_output(); // needed so no selection appears
+    g->end();
+    w->resizable(w);
     w->set_modal();
     w->end();
 
@@ -92,7 +101,7 @@ bool ProgressReport::tick()
     to_hour_min_sec( _time, hour, min, sec );
 
     char buf[120];
-    sprintf( buf, "%02d:%02d:%02d", hour, min, sec );
+    sprintf( buf, " %02d:%02d:%02d", hour, min, sec );
     elapsed->value( buf );
 
     double r = _time / (double)_frame;
@@ -101,10 +110,10 @@ bool ProgressReport::tick()
 
     to_hour_min_sec( r, hour, min, sec );
 
-    sprintf( buf, "%02d:%02d:%02d", hour, min, sec );
+    sprintf( buf, " %02d:%02d:%02d", hour, min, sec );
     remain->value( buf );
 
-    sprintf( buf, "%3.2f", timer.actualFrameRate() );
+    sprintf( buf, " %3.2f", timer.actualFrameRate() );
     fps->value( buf );
 
     fltk::check();
