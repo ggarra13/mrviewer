@@ -533,6 +533,14 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    float* data = NULL; // OpenGL temporary data frame
 
+   if ( opengl )
+   {
+       unsigned w = uiMain->uiView->w();
+       unsigned h = uiMain->uiView->h();
+       delete [] data;
+       data = new float[ 4 * w * h ];
+   }
+
    for ( ; frame <= last; ++frame )
    {
 
@@ -592,30 +600,12 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                    img->audio_stream( -1 );
                }
 
-               if ( opengl )
-               {
-                   unsigned w = uiMain->uiView->w();
-                   unsigned h = uiMain->uiView->h();
-                   img->width( w );
-                   img->height( h );
-
-                   delete [] data;
-                   data = new float[ 4 * w * h ];
-               }
 
                if ( aviImage::open_movie( buf, img, opts ) )
                {
                    LOG_INFO( "Open movie '" << buf << "' to save." );
                    open_movie = true;
                    ++movie_count;
-               }
-
-               if ( opengl )
-               {
-                   unsigned w = img->hires()->width();
-                   unsigned h = img->hires()->height();
-                   img->width( w );
-                   img->height( h );
                }
 
                delete opts;
@@ -630,6 +620,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
            uiMain->uiView->swap_buffers();
            uiMain->uiView->draw();
            uiMain->uiView->swap_buffers();
+
 
            // Store real frame image we may replace
            float gamma = img->gamma();

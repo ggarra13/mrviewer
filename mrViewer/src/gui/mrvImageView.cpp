@@ -257,7 +257,7 @@ namespace
     }
 
 
-    return 0;
+    return 'c';
   }
 
 
@@ -4028,7 +4028,7 @@ const char* ImageView::get_layer_label( unsigned short c )
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     const char* lbl = NULL;
     unsigned short idx = 0;
-    _old_channel = 0; 
+    _old_channel = 0;
     unsigned short num = uiColorChannel->children();
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
@@ -4054,9 +4054,9 @@ const char* ImageView::get_layer_label( unsigned short c )
             for ( unsigned short j = 0; j < numc; ++j )
             {
                 ++idx;
-                if ( idx == c && numc > 1 )
+                if ( idx == c )
                 {
-                    _old_channel = gidx;
+                    if ( numc > 1 ) _old_channel = gidx;
                     lbl = g->child(j)->label();
                     break;
                 }
@@ -4649,6 +4649,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         {
             // Get a shortcut to this layer
             short shortcut = get_shortcut( name.c_str() );
+            // std::cerr << name << " shortcut " << (char)shortcut << std::endl;
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) == 
