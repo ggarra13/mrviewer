@@ -23,6 +23,7 @@
 #include <fltk/Output.h>
 #include <fltk/ProgressBar.h>
 #include <fltk/Window.h>
+#include <fltk/Box.h>
 #include <fltk/run.h>
 #include <fltk/ask.h>
 
@@ -38,13 +39,15 @@ _time( 0 ),
 _frame( start ),
 _end( end )
 {
-    w = new fltk::Window( main->x(), main->y() + main->h()/2, 
-                          main->w(), 120 );
+    w = new fltk::Window( main->x() + main->w() / 2 - 320, 
+                          main->y() + main->h()/2, 
+                          640, 120 );
+    w->size_range( 640, 120 );
     w->child_of(main);
     w->begin();
     fltk::Group* g = new fltk::Group( 0, 0, w->w(), 120 );
     g->begin();
-    progress = new fltk::ProgressBar( 0, 20, w->w(), 40 );
+    progress = new fltk::ProgressBar( 0, 20, g->w(), 40 );
     progress->range( 0, double( end - start + 1) );
     progress->align( fltk::ALIGN_TOP );
     char title[1024];
@@ -54,12 +57,15 @@ _end( end )
     progress->showtext(true);
     elapsed = new fltk::Output( 120, 80, 120, 20, _("Elapsed") );
     elapsed->labelsize( 16 );
+    elapsed->box( new fltk::FlatBox("") );
     elapsed->set_output(); // needed so no selection appears
-    remain = new fltk::Output( 380, 80, 120, 20, _("Remaining") );
+    remain = new fltk::Output( 350, 80, 120, 20, _("Remaining") );
     remain->labelsize( 16 );
+    remain->box( new fltk::FlatBox("") );
     remain->set_output(); // needed so no selection appears
     fps = new fltk::Output( 550, 80, 60, 20, _("FPS") );
     fps->labelsize( 16 );
+    fps->box( new fltk::FlatBox("") );
     fps->set_output(); // needed so no selection appears
     g->end();
     w->resizable(w);
