@@ -80,8 +80,8 @@ Options:
 
   -q         quiet build (default)
   -v         verbose build
-  -j N       number of cpus to use (default: ${CMAKE_PROCS=1})
-  -G <name>  use a different cmake generator (default: Unix Makefiles)
+  -j N       number of cpus to use (default: ${CMAKE_PROCS=2})
+  -G <name>  use a different cmake generator (default: Ninja)
 
   debug|release|reldebug|small
   debug    - build a debug build
