@@ -4150,6 +4150,7 @@ void ImageView::channel( unsigned short c )
   }
 
   const char* lbl = get_layer_label( c );
+  if ( !lbl ) return;
 
   _channel = c;
 
