@@ -299,6 +299,8 @@ int main( const int argc, char** argv )
       // mrv::checkout_license();
 
       load_files( opts.files, ui );
+      if ( opts.stereo.size() > 1 )
+          load_files( opts.stereo, ui, true );
 
       if ( opts.edl )
       {

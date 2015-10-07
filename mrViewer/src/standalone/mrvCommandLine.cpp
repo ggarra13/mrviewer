@@ -52,6 +52,8 @@ namespace {
 const char* kModule = "parser";
 }
 
+#define USE_STEREO
+
 namespace mrv {
 
 typedef std::vector<unsigned> UnsignedArray;
