@@ -1867,6 +1867,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 void CMedia::do_seek()
 {
 
+    if ( _right_eye ) _right_eye->do_seek();
+
   bool got_audio = !has_audio();
 
 

@@ -1341,12 +1341,16 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( i+1 == e ) wipe_area();
 
+      float g = img->gamma();
+
       if ( stereo != CMedia::kNoStereo && 
            img->left() && img->right() )
       {
          if ( stereo & CMedia::kStereoRight )
          {
              pic = img->right();
+             CMedia* right = img->right_eye();
+             if ( right ) g = right->gamma();
          }
          else
          {
@@ -1362,7 +1366,7 @@ void GLEngine::draw_images( ImageList& images )
              glDrawBuffer( GL_LEFT );
 
          quad->bind( pic );
-         quad->gamma( img->gamma() );
+         quad->gamma( g );
          quad->draw( texWidth, texHeight );
 
          ++q;
@@ -1413,6 +1417,7 @@ void GLEngine::draw_images( ImageList& images )
              }
          }
 
+         g = img->gamma();
 
          if ( stereo & CMedia::kStereoRight )
          {
@@ -1421,6 +1426,8 @@ void GLEngine::draw_images( ImageList& images )
          else
          {
             pic = img->right();
+            CMedia* right = img->right_eye();
+            if ( right ) g = right->gamma();
          }
 
          if ( daw2.w() != 0 )
@@ -1477,7 +1484,7 @@ void GLEngine::draw_images( ImageList& images )
           glDrawBuffer( GL_RIGHT );
 
       quad->bind( pic );
-      quad->gamma( img->gamma() );
+      quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
       glEnable( GL_BLEND );
