@@ -1,0 +1,43 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+    <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+    <title>Stereo Support</title>
+  <link rel="stylesheet" href="stylesheet.css" type="text/css">
+  </head>
+  
+  <body>
+	mrViewer supports stereo images, sequences and movie files.  Stereo OpenEXR images (.sxr) are supported natively.  For others, to load a stereo sequence, you can rely on them being named with left/right or L/R prefix. <br>
+So for example, you'd have on disk:<br>
+<br>
+<br>
+<div class="console">
+dc56.left.0001-0100.exr<br>
+dc56.right.0001-0100.exr
+</div>
+<br>
+or:
+<br>
+<div class="console">
+pod.L.mov<br>
+pod.R.mov
+</div>
+<br>
+<br>
+The keywords left-right can be controlled by the environment variable <div class="hotkey">MRV_STEREO_NAME_PAIRS</div>.  The L/R characters can be controlled by the environment variable <div class="hotkey">MRV_STEREO_CHAR_PAIRS</div>.  To refer to this files in the command line you'd use the <div class="hotkey">%v</div> (for L/R) or <div class="hotkey">%V</div> (for left/right) standings.
+<br><br>
+<div class="console">
+mrViewer pod.%v.mov dc56.%V.@@@@.exr
+</div> 
+<br><br> The files will appear in this same way in the file requester when you try to load them.
+<br><br>
+In addition to the above, mrViewer allows loading two sequences or one sequence and one movie file command-line for stereo playback.  For that, it is needed to specify both with the -s shortcut.  For example:
+<br><br>
+<div class="console">
+mrViewer -s ba25.left.mov -s ba25.%04d.png
+</div> 
+<br>
+<br>
+The first image specified is taken to be the left eye, while the second invocation is taken to be the right eye.
+<br>
+  </body>
+</html>
