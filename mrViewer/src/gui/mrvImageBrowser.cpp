@@ -1235,6 +1235,73 @@ int ImageBrowser::value() const
   }
 
   /** 
+   * Load a stereo (right) image.
+   * 
+   * @param name name of image
+   * @param start first frame to load
+   * @param end   last frame to load
+   * 
+   * @return new image
+   */
+void ImageBrowser::load_stereo( mrv::media& fg,
+                                const char* name,
+                                const boost::int64_t first, 
+                                const boost::int64_t last,
+                                const boost::int64_t start, 
+                                const boost::int64_t end )
+{
+    CMedia* img;
+
+    if ( start != AV_NOPTS_VALUE )
+        img = CMedia::guess_image( name, NULL, 0, start, end, false );
+    else
+        img = CMedia::guess_image( name, NULL, 0, first, last, false );
+    if ( img == NULL )
+    {
+        LOG_ERROR( name << ": not a recognized format." );
+        return;
+    }
+
+    
+    if ( first != mrv::kMaxFrame )
+      {
+	img->first_frame( first );
+      }
+
+    if ( last != mrv::kMinFrame )
+      {
+	img->last_frame( last );
+      }
+
+    if ( img->has_video() || img->has_audio() )
+        img->fetch( img->first_frame() );
+    else
+        img->find_image( img->first_frame() );
+
+    
+    img->default_icc_profile();
+    img->default_rendering_transform();
+
+    PreferencesUI* prefs = ViewerUI::uiPrefs;
+    img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
+
+    if ( fg )
+    {
+        CMedia* m = fg->image();
+        m->right_eye( img );  // Set image as right image of fg
+        m->is_stereo( true );
+        m->is_left_eye( true );
+        img->is_stereo( true );
+        img->is_left_eye( false );
+        m->add_stereo_layers();
+    }
+    else
+    {
+        LOG_ERROR( _("No left image to attach a stereo image pair") );
+    }
+  }
+
+  /** 
    * Load an image
    * 
    * @param name name of image
@@ -1368,9 +1435,10 @@ void ImageBrowser::load( const mrv::LoadList& files,
     mrv::LoadList::const_iterator i = s;
     mrv::LoadList::const_iterator e = files.end();
 
-
+    mrv::media fg;
+    int idx = 1;
     char buf[1024];
-    for ( ; i != e; ++i )
+    for ( ; i != e; ++i, ++idx )
       {
          const mrv::LoadInfo& load = *i;
 
@@ -1389,7 +1457,6 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	  }
 	else
 	  {
-	     mrv::media fg;
 
 	     if ( load.filename == "SMPTE NTSC Color Bars" )
 	     {
@@ -1439,15 +1506,27 @@ void ImageBrowser::load( const mrv::LoadList& files,
 	     //        from other image.
 	     else
 	     {
-                fg = load_image( load.filename.c_str(), 
-                                 load.first, load.last, load.start,
-                                 load.end, (i != s) );
-
-		if (!fg) 
-		{
-		   LOG_ERROR( _("Could not load '") << load.filename.c_str() 
-			      << N_("'") );
-		}
+                 if ( stereo && ( idx % 2 == 0 ) )
+                 {
+                     load_stereo( fg,
+                                  load.filename.c_str(), 
+                                  load.first, load.last,
+                                  load.start,
+                                  load.end );
+                 }
+                 else
+                 {
+                     fg = load_image( load.filename.c_str(), 
+                                      load.first, load.last, load.start,
+                                      load.end, (i != s) );
+                     
+                     if (!fg) 
+                     {
+                         LOG_ERROR( _("Could not load '") 
+                                    << load.filename.c_str() 
+                                    << N_("'") );
+                     }
+                 }
 	     }
              if ( fg )
              {
@@ -2143,13 +2222,9 @@ void ImageBrowser::handle_dnd()
              file += '@';
              file += ext;
 
-             std::cerr << "FILE: " << file << std::endl;
-
              std::string fileroot;
              mrv::fileroot( fileroot, file );
-             std::cerr << "FILEROOT1: " << fileroot << std::endl;
              mrv::get_sequence_limits( frameStart, frameEnd, fileroot );
-             std::cerr << "FILEROOT2: " << fileroot << std::endl;
              opts.files.push_back( mrv::LoadInfo( fileroot, frameStart,
                                                   frameEnd, frameStart,
                                                   frameEnd ) );
