@@ -179,13 +179,17 @@ class ImageBrowser : public fltk::Browser
     void send_images( const mrv::Reel& r);
     void send_image( const mrv::media& m );
 
-     void change_reel();
-     void change_image();
-     void adjust_timeline();
-     mrv::media load_image( const char* name, 
-                            const int64_t first, const int64_t last,
-                            const int64_t start, const int64_t end,
-                            const bool use_thread = false );
+    void change_reel();
+    void change_image();
+    void adjust_timeline();
+    void load_stereo( mrv::media& fg,
+                      const char* name, 
+                      const int64_t first, const int64_t last,
+                      const int64_t start, const int64_t end );
+    mrv::media load_image( const char* name, 
+                           const int64_t first, const int64_t last,
+                           const int64_t start, const int64_t end,
+                           const bool use_thread = false );
 
 
     void wait_on_threads();

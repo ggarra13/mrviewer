@@ -1156,6 +1156,7 @@ void CMedia::add_stereo_layers()
     _layers.push_back( _("right.anaglyph") );
     _layers.push_back( _("stereo.interlaced") );
     _layers.push_back( _("stereo.interlaced flip") );
+    image_damage( image_damage() | kDamageLayers );
 }
 
 /** 
