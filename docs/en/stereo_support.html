@@ -23,7 +23,15 @@ pod.R.mov
 </div>
 <br>
 <br>
-The keywords left-right can be controlled by the environment variable <div class="hotkey">MRV_STEREO_NAME_PAIRS</div>.  The L/R characters can be controlled by the environment variable <div class="hotkey">MRV_STEREO_CHAR_PAIRS</div>.  To refer to this files in the command line you'd use the <div class="hotkey">%v</div> (for L/R) or <div class="hotkey">%V</div> (for left/right) standings.
+The keywords left-right can be controlled by the environment variable <div class="hotkey">MRV_STEREO_NAME_PAIRS</div>.  The L/R characters can be controlled by the environment variable <div class="hotkey">MRV_STEREO_CHAR_PAIRS</div>.  
+Example:
+<br><br>
+<div class="console">
+export MRV_STEREO_NAME_PAIRS=izquierda:derecha<br>
+export MRV_STEREO_CHAR_PAIRS=I:D
+</div> 
+<br><br>
+To refer to these files in the command line you'd use the <div class="hotkey">%v</div> (for L/R) or <div class="hotkey">%V</div> (for left/right) stand-ins.
 <br><br>
 <div class="console">
 mrViewer pod.%v.mov dc56.%V.@@@@.exr

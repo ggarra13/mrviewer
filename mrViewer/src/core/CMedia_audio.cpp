@@ -1835,6 +1835,10 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	{
 	  AVPacket& pkt = _audio_packets.front();
 	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+
+#if 0
+          // This does not work as decode_audio_packet may decode more
+          // than one frame of audio (see Essa.wmv)
 	  bool ok = in_audio_store( frame );
 	  if ( ok ) 
           {
@@ -1842,7 +1846,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
               _audio_packets.pop_front();
               continue;
           }
-
+#endif
 
 	  got_audio = decode_audio( frame, pkt );
 	  _audio_packets.pop_front();

@@ -40,13 +40,27 @@ size_t Reel_t::index( const CMedia* const img ) const
     mrv::MediaList::const_iterator e = images.end();
 
     size_t r = 0;
-    for ( ; i != e; ++i, ++r )
-      {
-	 if ( (*i)->image() == img )
-	 {
-	    return r;
-	 }
-      }
+
+    if ( img->is_stereo() && ! img->is_left_eye() )
+    {
+        for ( ; i != e; ++i, ++r )
+        {
+            if ( (*i)->image()->right_eye() == img )
+            {
+                return r;
+            }
+        }
+    }
+    else
+    {
+        for ( ; i != e; ++i, ++r )
+        {
+            if ( (*i)->image() == img )
+            {
+                return r;
+            }
+        }
+    }
     return 0;
 }
 
@@ -144,10 +158,23 @@ boost::int64_t Reel_t::global_to_local( const boost::int64_t f ) const
 
 boost::int64_t Reel_t::offset( const CMedia* const img ) const
 {
+
     mrv::MediaList::const_iterator i = images.begin();
     mrv::MediaList::const_iterator e = images.end();
-
     uint64_t t = 0;
+
+    if ( img->is_stereo() && ! img->is_left_eye() )
+    {
+        for ( ; i != e && (*i)->image()->right_eye() != img; ++i )
+        {
+            CMedia* timg = (*i)->image()->right_eye();
+            assert( timg != NULL );
+
+            t += timg->duration();
+        }
+        return t;
+    }
+
     for ( ; i != e && (*i)->image() != img; ++i )
       {
 	CMedia* timg = (*i)->image();
