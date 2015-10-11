@@ -60,6 +60,7 @@
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 
+#include <fltk/utf.h>
 #include <fltk/visual.h>
 #include <fltk/events.h>
 #include <fltk/damage.h>
@@ -1561,8 +1562,10 @@ void ImageView::undo_draw()
 }
 
 void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
-			   double x, double y, const char* text )
+			   double x, double y, const char* t )
 {
+    char text[256];
+    utf8toa( t, strlen(t), text, 256 );
    _engine->color( (uchar)0, (uchar)0, (uchar)0 );
    _engine->draw_text( int(x+1), int(y-1), text ); // draw shadow
    _engine->color( r, g, b );
