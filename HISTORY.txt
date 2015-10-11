@@ -1,3 +1,16 @@
+v2.9.7   - Allowed command-line loading of stereo images/movies
+	   without any prefix.  The syntax is using the -s keyword:
+
+	   	   mrViewer -s leftimage.1.exr -s rightimage.1.exr
+
+         - Updated media information's value and sliders to trigger
+	   an update of the slider if the value is typed in.
+	 - Added license and configuration information of ffmpeg
+	   to the About window.
+	 - Reverted an audio optimization which would create problems
+	   in audio playback when loops happened early.
+	 - Bug fixed adjusting of EDL when stereo was on.
+
 v2.9.6   - Made channel selection work with toggles more intuitively.
 	   Going to N.x with a 'r' hotkey and then pressing 'r' 
 	   again will bring you back to "N", not "Color" as before.

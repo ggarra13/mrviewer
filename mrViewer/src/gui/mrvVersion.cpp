@@ -493,8 +493,9 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "libavformat\tv" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
       << "libswresample\tv" << AV_STRINGIFY( LIBSWRESAMPLE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
+      << "License: " << avcodec_license() << endl
       << "(C) 2000-2015 Fabrice Bellard, et al." << endl
-      << endl
+      << "Configuration: " << avcodec_configuration() << endl << endl
       << "ILM OpenEXR v" << OPENEXR_VERSION_STRING <<  " or later" << endl
       << "http://www.openexr.org/" << endl
       << "(C) 2005-2015 Industrial Light & Magic" << endl

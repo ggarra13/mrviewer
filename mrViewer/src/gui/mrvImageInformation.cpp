@@ -216,6 +216,22 @@ void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
     m->label( m->child( m->value() )->label() );
 }
 
+// Update int slider from int input
+static void update_int_slider( fltk::IntInput* w )
+{
+    fltk::Group* g = w->parent();
+    fltk::Slider* s = (fltk::Slider*)g->child(1);
+    s->value( w->ivalue() );
+}
+
+// Update float slider from float input
+static void update_float_slider( fltk::FloatInput* w )
+{
+    fltk::Group* g = w->parent();
+    fltk::Slider* s = (fltk::Slider*)g->child(1);
+    s->value( w->fvalue() );
+}
+
 void ImageInformation::float_slider_cb( fltk::Slider* s, void* data )
 {
     fltk::FloatInput* n = (fltk::FloatInput*) data;
@@ -238,6 +254,7 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
         mrv::ImageView* view = info->main()->uiView;
         img->levelX( w->ivalue() );
         img->levelY( w->ivalue() );
+        update_int_slider( w );
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
@@ -254,6 +271,7 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
     {
         mrv::ImageView* view = info->main()->uiView;
         img->levelX( w->ivalue() );
+        update_int_slider( w );
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
@@ -265,12 +283,12 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
 
 static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
 {
-
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
         img->levelY( w->ivalue() );
+        update_int_slider( w );
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
@@ -286,6 +304,7 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
     if ( img )
     {
         img->first_frame( w->ivalue() );
+        update_float_slider( w );
         mrv::ImageView* view = info->main()->uiView;
         view->redraw();
     }
@@ -297,6 +316,7 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
       if ( img )
       {
           img->eye_separation( w->fvalue() );
+          update_float_slider( w );
           info->main()->uiView->redraw();
       }
   }
@@ -307,6 +327,7 @@ static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
     if ( img )
     {
         img->fps( w->fvalue() );
+        update_float_slider( w );
     }
 }
 
@@ -318,6 +339,7 @@ static void change_last_frame_cb( fltk::IntInput* w,
     {
         img->last_frame( w->ivalue() );
         info->main()->uiView->redraw();
+        update_float_slider( w );
     }
 }
 
@@ -327,12 +349,14 @@ static void change_pixel_ratio_cb( fltk::FloatInput* w,
     CMedia* img = info->get_image();
     img->pixel_ratio( w->fvalue() );
     info->main()->uiView->redraw();
+    update_float_slider( w );
 }
 
 static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     img->gamma( float(w->fvalue()) );
+    update_float_slider( w );
 
     mrv::ImageView* view = info->main()->uiView;
     view->gamma( float(w->fvalue()) );
@@ -1687,10 +1711,10 @@ void ImageInformation::fill_data()
 
 	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
 	  slider->type(fltk::Slider::TICK_ABOVE);
+	  slider->step( 0.01 );
 	  slider->minimum( minV );
 	  slider->maximum( maxV );
 	  slider->value( content );
-	  slider->step( 0.01 );
 	  slider->linesize(1);
 	  // slider->slider_size(10);
 	  slider->when( fltk::WHEN_CHANGED );
