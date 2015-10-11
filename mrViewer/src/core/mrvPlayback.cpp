@@ -120,7 +120,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       CMedia* img, 
 		       bool    fg,
 		       mrv::ViewerUI* uiMain,
-		       const mrv::Reel  reel,
+		       const mrv::Reel&  reel,
 		       const mrv::Timeline* timeline,
 		       const mrv::CMedia::DecodeStatus end )
 {
@@ -339,8 +339,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 CMedia::DecodeStatus check_loop( const int64_t frame,
 				 CMedia* img,
-				 mrv::Reel reel,
-				 mrv::Timeline* timeline )
+				 const mrv::Reel& reel,
+				 const mrv::Timeline* timeline )
 {
 
    boost::int64_t last = boost::int64_t( timeline->maximum() );
@@ -464,6 +464,7 @@ void audio_thread( PlaybackData* data )
              frame += step;
              continue;
           case CMedia::kDecodeNoStream:
+              DBG( "Decode No stream" );
              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
@@ -506,7 +507,7 @@ void audio_thread( PlaybackData* data )
       }
 
 
-      if ( fg && img->has_audio() && reel->edl )
+      if ( fg && img->has_audio() && reel->edl && img->is_left_eye() )
       {
           int64_t f = img->frame() + reel->location(img) - img->first_frame();
           if ( f > timeline->maximum() )
@@ -784,7 +785,7 @@ void video_thread( PlaybackData* data )
 
       bool ok = img->find_image( frame );
 
-      if ( !img->has_audio_data() && reel->edl )
+      if ( !img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 

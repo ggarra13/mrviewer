@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html><head>
+    <meta content="text/html; charset=UTF-8" http-equiv="content-type">
+
+    <link rel="stylesheet" href="stylesheet.css" type="text/css">
+    <title>Soporte de Estéreo</title>
+  </head>
+  
+  <body>
+	mrViewer soporta imágenes en estéreo, secuencias y películas.  Imágenes estéreo de OpenEXR (.sxr) son soportadas nativamente.  Para otras, para cargar una secuencia en estéreo, puedes depender de que estén nombradas con un prefijo left/right (izquierda/derecha) o L/R. <br>
+Asi, por ejemplo, tendrías en el disco:<br>
+<br>
+<br>
+<div class="console">
+dc56.left.0001-0100.exr<br>
+dc56.right.0001-0100.exr
+</div>
+<br>
+o bien:
+<br>
+<div class="console">
+pod.L.mov<br>
+pod.R.mov
+</div>
+<br>
+<br>
+Las denominaciones de left-right puede ser controlada con la variable de entorno <div class="hotkey">MRV_STEREO_NAME_PAIRS</div>.  Las letras L/R pueden ser controladas por la variable de entorno <div class="hotkey">MRV_STEREO_CHAR_PAIRS</div>.  Ejemplo:
+<br><br>
+<div class="console">
+export MRV_STEREO_NAME_PAIRS=izquierda:derecha<br>
+export MRV_STEREO_CHAR_PAIRS=I:D
+</div> 
+<br><br>
+
+Para referirte a ambos archivos en la línea de comando, usarías la clave <div class="hotkey">%v</div> (para L/R) o <div class="hotkey">%V</div> (para left/right).
+<br><br>
+<div class="console">
+mrViewer pod.%v.mov dc56.%V.@@@@.exr
+</div> 
+<br><br> Los archivos apareceran de esta misma forma en el buscador de archivos de mrViewer cuando trates de cargarlos desde la GUI.
+<br><br>
+Ademas de lo mencionado antes, mrViewer permite cargar dos secuencias o una secuencia y una película desde la línea de comando para playback en estéreo. Para ello, necesitas especificar ambos con el atajo -s.  Por ejemplo:
+<br><br>
+<div class="console">
+mrViewer -s ba25.left.mov -s ba25.%04d.png
+</div> 
+<br>
+<br>
+La primer imagen especificada se toma para el ojo izquierdo, mientras que la segunda invocación se toma como perteneciente al ojo derecho.
+<br>
+  </body>
+</html>
