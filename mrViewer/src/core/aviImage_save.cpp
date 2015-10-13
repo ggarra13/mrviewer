@@ -156,22 +156,15 @@ static void log_packet(const AVFormatContext *fmt_ctx, const AVPacket *pkt)
 static int write_frame(AVFormatContext *fmt_ctx, const AVRational *time_base, AVStream *st, AVPacket *pkt)
 {
     /* rescale output packet timestamp values from codec to stream timebase */
-    if ( pkt->pts != AV_NOPTS_VALUE )
-        pkt->pts = av_rescale_q(pkt->pts, *time_base, st->time_base );
-    if ( pkt->dts != AV_NOPTS_VALUE )
-        pkt->dts = av_rescale_q(pkt->dts, *time_base, st->time_base );
-    if ( pkt->duration > 0 )
-        pkt->duration = static_cast<unsigned>( av_rescale_q(pkt->duration, 
-                                                            *time_base, 
-                                                            st->time_base) );
-   pkt->stream_index = st->index;
+    av_packet_rescale_ts(pkt, *time_base, st->time_base);
+    pkt->stream_index = st->index;
 
 
-   /* Write the compressed frame to the media file. */
+    /* Write the compressed frame to the media file. */
 #ifdef DEBUG_PACKET
-   log_packet(fmt_ctx, pkt);
+    log_packet(fmt_ctx, pkt);
 #endif
-   return av_interleaved_write_frame(fmt_ctx, pkt);
+    return av_interleaved_write_frame(fmt_ctx, pkt);
 }
 
 
@@ -809,6 +802,9 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
       pkt.stream_index  = st->index;
       pkt.data          = dst_picture.data[0];
       pkt.size          = sizeof(AVPicture);
+
+      pkt.pts = pkt.dts = frame->pts;
+      av_packet_rescale_ts(&pkt, c->time_base, st->time_base);
 
       ret = av_interleaved_write_frame(oc, &pkt);
    } else {

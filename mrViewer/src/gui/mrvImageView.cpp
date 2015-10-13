@@ -323,6 +323,12 @@ void open_clip_xml_metadata_cb( fltk::Widget* o,
   read_clip_xml_metadata( img );
 }
 
+void open_stereo_cb( fltk::Widget* o, 
+                     mrv::ImageBrowser* uiReelWindow )
+{
+    uiReelWindow->open_stereo();
+}
+
 void save_clip_xml_metadata_cb( fltk::Widget* o, 
                                 mrv::ImageView* view )
 {
@@ -2113,6 +2119,9 @@ int ImageView::leftMouseDown(int x, int y)
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
+             menu.add( _("File/Open/Stereo Sequence or Movie"),
+                       kOpenStereoImage.hotkey(),
+                       (fltk::Callback*)open_stereo_cb, browser() );
              menu.add( _("File/Open/Clip XML Metadata"),
                        kOpenClipXMLMetadata.hotkey(),
                        (fltk::Callback*)open_clip_xml_metadata_cb, this );
@@ -4129,6 +4138,8 @@ void ImageView::channel( unsigned short c )
 
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
+  if ( num == 0 ) return; // Audio only - no channels
+
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
   {

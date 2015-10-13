@@ -263,7 +263,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         if ( is_stereo && image )
         {
             right = guess( is_stereo, is_seq, false, root, frame,
-                           datas, len, lastFrame );
+                           NULL, 0, lastFrame );
             if ( right )
             {
                 image->right_eye( right );
