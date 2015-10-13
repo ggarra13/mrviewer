@@ -120,10 +120,12 @@ EndStatus handle_loop( boost::int64_t& frame,
 		       CMedia* img, 
 		       bool    fg,
 		       mrv::ViewerUI* uiMain,
-		       const mrv::Reel&  reel,
+		       const mrv::Reel  reel,
 		       const mrv::Timeline* timeline,
 		       const mrv::CMedia::DecodeStatus end )
 {
+
+    if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
 
     CMedia::Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );
@@ -223,6 +225,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = first;
+                if ( img->right_eye() ) img->right_eye()->seek( frame );
                 status = kEndLoop;
             }
             else if ( loop == ImageView::kPingPong )
@@ -300,6 +303,7 @@ EndStatus handle_loop( boost::int64_t& frame,
             if ( loop == ImageView::kLooping )
             {
                 frame = last;
+                if ( img->right_eye() ) img->right_eye()->seek( frame );
                 status = kEndLoop;
             }
             else if ( loop == ImageView::kPingPong )
@@ -339,7 +343,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 CMedia::DecodeStatus check_loop( const int64_t frame,
 				 CMedia* img,
-				 const mrv::Reel& reel,
+				 const mrv::Reel reel,
 				 const mrv::Timeline* timeline )
 {
 

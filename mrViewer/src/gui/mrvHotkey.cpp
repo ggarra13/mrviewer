@@ -36,6 +36,7 @@ namespace mrv {
 // ctrl, meta, alt, shift, key
 Hotkey kOpenImage( true, false, false, false, 'o' );
 Hotkey kOpenSingleImage( true, false, true, false, 'o' );
+Hotkey kOpenStereoImage( false, false, true, false, 'o' );
 Hotkey kOpenClipXMLMetadata( true, false, false, false, 'x' );
 Hotkey kSaveReel( true, false, false, false, 'r' );
 Hotkey kSaveImage( true, false, false, false, 's' );
