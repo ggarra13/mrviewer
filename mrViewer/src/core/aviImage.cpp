@@ -494,7 +494,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     bool got_subtitle = !has_subtitle();
 
 
-    if ( playback() == kStopped &&
+    if ( playback() == kStopped && frame < _dts &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -542,6 +542,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
+#if 1
     // Skip the seek packets when playback is stopped
     if ( skip )
     {
@@ -552,6 +553,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         _seek_req = false;
         return true;
     }
+#endif
 
     
     boost::int64_t vpts = 0, apts = 0, spts = 0;
@@ -812,14 +814,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 
   if ( status == kDecodeOK )
   {
-      if ( playback() == kBackwards )
-      {
-          store_image( ptsframe+1, pkt.dts );
-      }
-      else
-      {
-          store_image( ptsframe, pkt.dts );
-      }
+      store_image( ptsframe, pkt.dts );
   }
   else if ( status == kDecodeError )
   {
@@ -2060,10 +2055,9 @@ CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& pktframe,
                                                const boost::int64_t& frame,
                                                const AVPacket& pkt )
 {
-    boost::int64_t oldpktframe = pktframe;
+    //boost::int64_t oldpktframe = pktframe;
     CMedia::DecodeStatus status = decode_video_packet( pktframe, frame, pkt );
-    if ( oldpktframe != pktframe && status == kDecodeOK &&
-         !in_video_store(pktframe) )
+    if ( status == kDecodeOK && !in_video_store(pktframe) )
     {
         store_image( pktframe, pkt.dts );
     }
@@ -2112,27 +2106,32 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
       const AVPacket& pkt = _video_packets.front();
       ++count;
 
-      boost::int64_t pktframe = pts2frame( get_video_stream(), pkt.dts );
+      boost::int64_t pktframe;
+      if ( pkt.dts != AV_NOPTS_VALUE )
+          pktframe = pts2frame( get_video_stream(), pkt.dts );
+      else
+          pktframe = frame;
 
       if ( !is_seek && playback() == kBackwards )
       {
-          if (pktframe > frame )
+          // std::cerr << "pkt " << pktframe << " frame " << frame << std::endl;
+          if (pktframe >= frame )
           {
-              decode_vpacket( pktframe, frame, pkt );
+              status = decode_vpacket( pktframe, frame, pkt );
           }
           else
           {
               if ( !in_video_store(pktframe) )
               {
                   status = decode_image( pktframe, (AVPacket&)pkt );
-                  if ( status == kDecodeOK ) got_video = status;
               }
               else
               {
-                
-                  got_video = decode_vpacket( pktframe, frame, pkt );
+                  status = decode_vpacket( pktframe, frame, pkt );
               }
           }
+
+          if ( status == kDecodeOK )  got_video = status;
       }
       else
       {
