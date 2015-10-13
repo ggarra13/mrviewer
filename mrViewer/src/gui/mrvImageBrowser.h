@@ -80,6 +80,7 @@ class ImageBrowser : public fltk::Browser
      void clone_all_current();
      void clone_current();
      void open();
+     void open_stereo();
      void open_single();
      void save();
      void save_sequence();
@@ -130,7 +131,8 @@ class ImageBrowser : public fltk::Browser
 
      void load( const LoadList& files, bool stereo = false, 
                 bool progressBar = true );
-     void load( const stringArray& files, bool progressBar = true );
+    void load( const stringArray& files, bool stereo = false,
+               bool progressBar = true );
 
 
     mrv::media replace( const size_t r, const size_t img, const char* root );
