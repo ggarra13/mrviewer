@@ -170,6 +170,7 @@ struct Hotkey
 
 extern Hotkey kOpenImage;
 extern Hotkey kOpenSingleImage;
+extern Hotkey kOpenStereoImage;
 extern Hotkey kOpenClipXMLMetadata;
 extern Hotkey kSaveReel;
 extern Hotkey kSaveImage;

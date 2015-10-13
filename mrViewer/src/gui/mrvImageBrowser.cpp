@@ -1393,6 +1393,7 @@ void load_sequence( ImageBrowser::LThreadData* data )
 
   /** 
    * Open new image, sequence or movie file(s) from a load list.
+   * If stereo is on, every two files are treated as stereo pairs.
    * 
    */
 void ImageBrowser::load( const mrv::LoadList& files,
@@ -1655,6 +1656,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
   }
 
 void ImageBrowser::load( const stringArray& files,
+                         const bool stereo,
 			 const bool progress )
   {
     stringArray::const_iterator i = files.begin();
@@ -1687,7 +1689,7 @@ void ImageBrowser::load( const stringArray& files,
 	retname = file;
       }
 
-    load( loadlist, progress );
+    load( loadlist, stereo, progress );
   }
 
   /** 
@@ -1699,6 +1701,52 @@ void ImageBrowser::load( const stringArray& files,
      stringArray files = mrv::open_image_file(NULL,true);
      if (files.empty()) return;
      load( files );
+  }
+
+  void ImageBrowser::open_stereo()
+  {
+     stringArray files = mrv::open_image_file(NULL,true);
+     if (files.empty()) return;
+
+     stringArray::const_iterator i = files.begin();
+     stringArray::const_iterator e = files.end();
+     
+     if (files.size() > 1 )
+     {
+         LOG_ERROR( _("You can load only a single stereo image to combine with current one.") );
+         return;
+     }
+
+     mrv::LoadList loadlist;
+
+     std::string file = files[0];
+
+     if ( file.substr(0, 7) == "file://" )
+         file = file.substr( 7, file.size() );
+
+     if ( file == "" ) return;
+
+     size_t len = file.size();
+     if ( len > 5 && file.substr( len - 5, 5 ) == ".reel" )
+     {
+         LOG_ERROR( _("You cannot load a reel as a stereo image.") );
+         return;
+     }
+     else
+     {
+         int64_t start = mrv::kMaxFrame;
+         int64_t end   = mrv::kMinFrame;
+         mrv::get_sequence_limits( start, end, file );
+         loadlist.push_back( mrv::LoadInfo( file, start, end ) );
+     }
+
+     mrv::media fg = view()->foreground();
+     if (!fg) return;
+
+     load_stereo( fg,
+                  loadlist[0].filename.c_str(), 
+                  loadlist[0].first, loadlist[0].last,
+                  loadlist[0].start, loadlist[0].end );
   }
 
   void ImageBrowser::open_single()
