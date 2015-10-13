@@ -494,7 +494,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     bool got_subtitle = !has_subtitle();
 
 
-    if ( playback() == kStopped && frame < _expected &&
+    if ( playback() == kStopped && frame < _frame &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
