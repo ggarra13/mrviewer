@@ -493,8 +493,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     bool got_video = !has_video();
     bool got_subtitle = !has_subtitle();
 
+    int flag = AVSEEK_FLAG_BACKWARD;
 
-    if ( playback() == kStopped && frame < _frame &&
+    if ( playback() == kStopped &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -517,7 +518,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( offset < 0 ) offset = 0;
 
 
-    int ret = av_seek_frame( _context, -1, offset, AVSEEK_FLAG_BACKWARD );
+    int ret = av_seek_frame( _context, -1, offset, flag );
     if (ret < 0)
     {
         IMG_ERROR( _("Could not seek to frame ") << frame
@@ -531,7 +532,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
                                  / fps() );
         if ( offset < 0 ) offset = 0;
 
-        int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
+        int ret = av_seek_frame( _acontext, -1, offset, flag );
 
         if (ret < 0)
         {
@@ -542,18 +543,16 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
-#if 1
-    // Skip the seek packets when playback is stopped
+    // Skip the seek packets when playback is stopped}
     if ( skip )
     {
-        boost::int64_t dts = queue_packets( frame, false, got_video,
+        boost::int64_t dts = queue_packets( frame+1, false, got_video,
                                             got_audio, got_subtitle );
-        _dts = dts;
-        _expected = _dts + 1;
+        _dts = dts-1;
+        _expected = _dts;
         _seek_req = false;
         return true;
     }
-#endif
 
     
     boost::int64_t vpts = 0, apts = 0, spts = 0;
@@ -1978,7 +1977,6 @@ bool aviImage::fetch(const boost::int64_t frame)
 				      got_audio, got_subtitle);
 
 
-
   _dts = dts;
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
@@ -2141,11 +2139,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
           }
 	  else
           {
-              status = decode_video_packet( pktframe, frame, pkt );
-              if ( status == kDecodeOK && !in_video_store(pktframe) )
-              {
-                  store_image( pktframe, pkt.dts );
-              }
+              status = decode_vpacket( pktframe, frame, pkt );
           }
 
           if ( status == kDecodeOK && pktframe >= frame )

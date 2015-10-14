@@ -10,10 +10,11 @@ v2.9.7   - Allowed command-line loading of stereo images/movies
 	 - Reverted an audio optimization which would create problems
 	   in audio playback when loops happened early and audio
 	   packets decoded into multiple frames.
-	 - Reverted an optimization video which was creating problems
+	 - Reverted a video optimization which was creating problems
 	   in reverse playback.
 	 - Improved video playback when scrubbing which was skipping
-	   some frames incorrectly.
+	   some frames incorrectly.  This removes most warnings
+	   of missing frames.
 	 - Bug fixed adjusting of EDL when stereo was on.
 	 - Made music only tracks not report an invalid index for
 	   channel selection.
