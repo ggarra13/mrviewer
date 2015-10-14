@@ -361,9 +361,10 @@ run_clean()
     builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE/tmp
     if [ -d $builddir ]; then
 	cd $builddir
-	if [ -e ninja.build ]; then
-	    run_make clean
-	fi
+	rm -rf $builddir/*
+	# if [ -e ninja.build ]; then
+	#     run_make clean
+	# fi
 	echo "-------------------------------"
 	echo "Cleaned $builddir"
 	echo "-------------------------------"
