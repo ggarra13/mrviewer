@@ -763,7 +763,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 				      &pkt );
 
      if ( got_pict ) {
-         ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+         ptsframe = _av_frame->pts = 
+                    av_frame_get_best_effort_timestamp( _av_frame );
 
 
 	if ( ptsframe == AV_NOPTS_VALUE )
@@ -1078,7 +1079,7 @@ bool aviImage::find_image( const boost::int64_t frame )
     // Limit (clean) the video store as we play it
     limit_video_store( frame );
 
-    _video_pts   = _hires->frame();
+    _video_pts   = frame / fps();
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
   }  // release lock
