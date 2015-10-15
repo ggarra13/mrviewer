@@ -31,6 +31,10 @@
 
 #include <iostream>
 
+extern "C" {
+#include <libavutil/time.h>
+}
+
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/shared_array.hpp>
@@ -104,14 +108,106 @@ namespace mrv {
   };
 
 
-  unsigned int barrier_thread_count( const CMedia* img )
-  {
+static double get_clock(Clock *c)
+{
+    // if (*c->queue_serial != c->serial)
+    //     return NAN;
+    // if (c->paused) {
+    //     return c->pts;
+    // } else {
+        double time = av_gettime_relative() / 1000000.0;
+        return c->pts_drift + time - (time - c->last_updated) * (1.0 - c->speed);
+    // }
+}
+
+void set_clock_at(Clock *c, double pts, int serial, double time)
+{
+    c->pts = pts;
+    c->last_updated = time;
+    c->pts_drift = c->pts - time;
+    c->serial = serial;
+}
+
+static void set_clock(Clock *c, double pts, int serial)
+{
+    double time = av_gettime_relative() / 1000000.0;
+    set_clock_at(c, pts, serial, time);
+}
+
+
+
+static void set_clock_speed(Clock *c, double speed)
+{
+    set_clock(c, get_clock(c), c->serial);
+    c->speed = speed;
+}
+
+static void init_clock(Clock *c, int *queue_serial)
+{
+    c->speed = 1.0;
+    c->paused = 0;
+    c->queue_serial = queue_serial;
+    set_clock(c, NAN, -1);
+}
+
+
+void sync_clock_to_slave(Clock *c, Clock *slave)
+{
+    double clock = get_clock(c);
+    double slave_clock = get_clock(slave);
+    if (!isnan(slave_clock) && (isnan(clock) || fabs(clock - slave_clock) > AV_NOSYNC_THRESHOLD))
+        set_clock(c, slave_clock, slave->serial);
+}
+
+void update_video_pts(CMedia* is, double pts, int64_t pos, int serial) {
+    /* update current video pts */
+    set_clock(&is->vidclk, pts, serial);
+    sync_clock_to_slave(&is->extclk, &is->vidclk);
+}
+
+static int get_master_sync_type(CMedia* img) {
+    if (img->av_sync_type == CMedia::AV_SYNC_VIDEO_MASTER) {
+        if (img->has_picture())
+            return CMedia::AV_SYNC_VIDEO_MASTER;
+        else
+            return CMedia::AV_SYNC_AUDIO_MASTER;
+    } else if (img->av_sync_type ==  CMedia::AV_SYNC_AUDIO_MASTER) {
+        if (img->has_audio())
+            return  CMedia::AV_SYNC_AUDIO_MASTER;
+        else
+            return  CMedia::AV_SYNC_EXTERNAL_CLOCK;
+    } else {
+        return  CMedia::AV_SYNC_EXTERNAL_CLOCK;
+    }
+}
+
+static double get_master_clock(CMedia* img)
+{
+    double val;
+
+    switch (get_master_sync_type(img)) {
+        case CMedia::AV_SYNC_VIDEO_MASTER:
+            val = get_clock(&img->vidclk);
+            break;
+        case CMedia::AV_SYNC_AUDIO_MASTER:
+            val = get_clock(&img->audclk);
+            break;
+        default:
+            val = get_clock(&img->extclk);
+            break;
+    }
+    return val;
+}
+
+
+unsigned int barrier_thread_count( const CMedia* img )
+{
     unsigned r = 1;               // 1 for decode thread
     if    ( img->valid_video() )    r += 1;
     if    ( img->valid_audio() )    r += 1;
     if    ( img->valid_subtitle() ) r += 1;
     return r;
-  }
+}
 
 
 
@@ -432,6 +528,12 @@ void audio_thread( PlaybackData* data )
 #endif
    mrv::Timer timer;
 
+
+   init_clock(&img->vidclk, NULL);
+   init_clock(&img->audclk, NULL);
+   init_clock(&img->extclk, NULL);
+   img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
+   set_clock(&img->extclk, get_clock(&img->extclk), false);
 
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
@@ -759,6 +861,9 @@ void video_thread( PlaybackData* data )
 
 	 diff = step * (video_clock - audio_clock);
 
+         //  std::cerr << "get_master_clock " << get_master_clock(img) << std::endl << "get_clock(img->vidclk) " << get_clock(&img->vidclk) << std::endl;;
+
+         // diff = get_clock(&img->vidclk) - get_master_clock(img);
 
 	 double absdiff = std::abs(diff);
 
