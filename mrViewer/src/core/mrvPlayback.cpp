@@ -856,14 +856,14 @@ void video_thread( PlaybackData* data )
          // diff = step * ( video_pts - audio_pts );
 
 
-         double video_clock = img->video_clock();
-	 double audio_clock = img->audio_clock();
+         // double video_clock = img->video_clock();
+	 // double audio_clock = img->audio_clock();
 
-	 diff = step * (video_clock - audio_clock);
+	 // diff = step * (video_clock - audio_clock);
 
          //  std::cerr << "get_master_clock " << get_master_clock(img) << std::endl << "get_clock(img->vidclk) " << get_clock(&img->vidclk) << std::endl;;
 
-         // diff = get_clock(&img->vidclk) - get_master_clock(img);
+          diff = step * ( get_clock(&img->vidclk) - get_master_clock(img) );
 
 	 double absdiff = std::abs(diff);
 
