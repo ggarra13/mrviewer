@@ -130,6 +130,8 @@ AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #endif
 
 
+void set_clock_at(Clock *c, double pts, int serial, double time);
+void sync_clock_to_slave(Clock *c, Clock *slave);
 
 /** 
  * Clear (audio) packets
@@ -998,6 +1000,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
             *audio_size = data_size;
 
+
+            frame->pts = ( frame->pts == AV_NOPTS_VALUE ) ? NAN : frame->pts * av_q2d( get_audio_stream()->time_base ); 
+            if ( !isnan(frame->pts) )
+                _audio_clock = frame->pts + (double) frame->nb_samples / frame->sample_rate;
+            else
+                _audio_clock = NAN;
+
             if ( eof ) continue;
 
         } else {
@@ -1131,6 +1140,10 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       _audio_buf_used += audio_size;
     }
 
+  if (!isnan(_audio_clock)) {
+      set_clock_at(&audclk, _audio_clock - ((double) _audio_buf_used / (double)audio_bytes_per_frame() ), false, av_gettime_relative() / 1000000.0);
+      sync_clock_to_slave(&extclk, &audclk);
+  }
 
   if ( pkt_temp.size == 0 ) {
 
