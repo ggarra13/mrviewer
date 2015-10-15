@@ -841,11 +841,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 			  int* audio_size,
 			  AVPacket *avpkt)
 {   
-    AVFrame* frame;
-    if ( ! (frame = av_frame_alloc()) )
-    {
-        return AVERROR(ENOMEM);
-    }
 
     bool eof = false;
     int got_frame = 0;
@@ -854,12 +849,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
     while (!got_frame )
     {
-        ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
+        ret = avcodec_decode_audio4(ctx, _a_frame, &got_frame, avpkt);
 
         if (ret >= 0 && got_frame) {
 
             int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
-                                                       frame->nb_samples,
+                                                       _a_frame->nb_samples,
                                                        ctx->sample_fmt, 0);
             if (*audio_size < data_size) {
                 IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
@@ -951,13 +946,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 }
 
                 assert( samples != NULL );
-                assert( frame->extended_data != NULL );
-                assert( frame->extended_data[0] != NULL );
+                assert( _a_frame->extended_data != NULL );
+                assert( _a_frame->extended_data[0] != NULL );
 
                 int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
-                                       frame->nb_samples, 
-                                       (const uint8_t **)frame->extended_data, 
-                                       frame->nb_samples );
+                                       _a_frame->nb_samples, 
+                                       (const uint8_t **)_a_frame->extended_data, 
+                                       _a_frame->nb_samples );
                 if ( len2 <= 0 )
                 {
                     IMG_ERROR( _("Resampling failed") );
@@ -992,7 +987,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             {
                 if ( _audio_channels > 0 )
                 {
-                    memcpy(samples, frame->extended_data[0], data_size);
+                    memcpy(samples, _a_frame->extended_data[0], data_size);
                 }
             }
 
@@ -1006,8 +1001,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         }
     }
 
-
-    av_frame_free(&frame);
 
     return ret;
 }
@@ -1596,7 +1589,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts   = _audio_frame;
+  _audio_pts   = (double)frame / fps();
   _audio_clock = (double)av_gettime_relative() / 1000000.0;
   return ok;
 }

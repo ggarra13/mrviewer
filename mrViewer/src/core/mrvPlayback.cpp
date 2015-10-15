@@ -748,14 +748,10 @@ void video_thread( PlaybackData* data )
       // // Calculate video-audio difference
       if ( img->has_audio() && status == CMedia::kDecodeOK )
       {
-	 // int64_t video_pts = img->video_pts();
-	 // int64_t audio_pts = img->audio_pts();
-
-         // diff = step * ( video_pts - audio_pts );
 
 
-         double video_clock = img->video_clock();
-	 double audio_clock = img->audio_clock();
+          double video_clock = img->video_pts() + img->video_clock();
+          double audio_clock = img->audio_pts() + img->audio_clock();
 
 	 diff = step * (video_clock - audio_clock);
 
@@ -774,7 +770,7 @@ void video_thread( PlaybackData* data )
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
-	    } else if (sdiff >= delay*2) {
+	    } else if (sdiff > 0.0) {
 	       fps -= sdiff;
 	    }
 	 }
