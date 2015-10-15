@@ -1083,7 +1083,6 @@ bool aviImage::find_image( const boost::int64_t frame )
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
     double pts = _av_frame->pts * av_q2d(get_video_stream()->time_base);
-    std::cerr << "pts " << pts << std::endl;
     update_video_pts(this, pts, av_frame_get_pkt_pos(this->_av_frame), false);
 
   }  // release lock
