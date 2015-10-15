@@ -213,8 +213,9 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-  audio_initialize();
-  mrv::PacketQueue::initialize();
+    _a_frame = av_frame_alloc();
+    audio_initialize();
+    mrv::PacketQueue::initialize();
 }
 
 
@@ -293,6 +294,7 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
+    _a_frame = av_frame_alloc();
   unsigned int W = other->width();
   unsigned int H = other->height();
   image_size( W, H );
@@ -387,6 +389,7 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
 
+    _a_frame = av_frame_alloc();
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
 
@@ -497,6 +500,7 @@ CMedia::~CMedia()
   free( _idt_transform );
 
 
+
   delete [] _dataWindow;
   delete [] _dataWindow2;
   delete [] _displayWindow;
@@ -515,6 +519,7 @@ CMedia::~CMedia()
       close_audio_codec();
     }
 
+  av_frame_free(&_a_frame);
   audio_shutdown();
 
   if ( forw_ctx )

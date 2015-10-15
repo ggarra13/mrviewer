@@ -892,8 +892,8 @@ class CMedia
     virtual AVStream* get_video_stream() const { return NULL; } ;
     virtual AVStream* get_subtitle_stream() const { return NULL; } ;
 
-    boost::int64_t video_pts() const { return _video_pts; }
-    boost::int64_t audio_pts() const { return _audio_pts; }
+    double video_pts() const { return _video_pts; }
+    double audio_pts() const { return _audio_pts; }
 
     const GLShapeList& shapes() const { return _shapes; }
     GLShapeList& shapes() { return _shapes; }
@@ -1145,6 +1145,8 @@ class CMedia
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
+    AVFrame*   _a_frame;
+
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
     static Barrier*  _bg_barrier;     //!< Barrier to sync bg and fg images
@@ -1183,9 +1185,9 @@ class CMedia
     boost::int64_t   _frame_start;
     boost::int64_t   _frame_end;
 
-    boost::int64_t _audio_pts;
+    double     _audio_pts;
     double     _audio_clock;
-    boost::int64_t _video_pts;
+    double     _video_pts;
     double     _video_clock;
 
     InterlaceType _interlaced;     //!< image is interlaced?
