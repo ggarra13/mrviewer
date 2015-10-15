@@ -324,8 +324,8 @@ bool replace_view( std::string& view )
                 view = periods[1];
                 replace_view( view );
                 frame = "";
-                return false;
             }
+            return false;
         }
     }
 
