@@ -74,6 +74,15 @@
 #undef min
 #undef max
 
+typedef struct Clock {
+    double pts;           /* clock base */
+    double pts_drift;     /* clock base minus time at which we updated the clock */
+    double last_updated;
+    double speed;
+    int serial;           /* clock is based on a packet with this serial */
+    int paused;
+    int *queue_serial;    /* pointer to the current packet queue serial, used for obsolete clock detection */
+} Clock;
 struct AVFormatContext;
 struct AVFrame;
 struct AVCodec;
@@ -93,6 +102,7 @@ class ViewerUI;
 class AudioEngine;
 class ImageOpts;
 
+void update_video_pts(CMedia* is, double pts, int64_t pos, int serial);
 
 class CMedia
 {
@@ -108,6 +118,12 @@ class CMedia
     typedef std::map< std::string, int > LayerBuffers;
 
 
+
+    enum AV_SYNC_TYPE {
+    AV_SYNC_AUDIO_MASTER, /* default choice */
+    AV_SYNC_VIDEO_MASTER,
+    AV_SYNC_EXTERNAL_CLOCK, /* synchronize to an external clock */
+    };
 
     //   typedef std::deque< AVPacket > PacketQueue;
     typedef mrv::PacketQueue PacketQueue;
@@ -941,6 +957,12 @@ class CMedia
     static std::string icc_profile_32bits;
     static std::string icc_profile_float;
 
+  public:
+    AV_SYNC_TYPE av_sync_type;
+    Clock audclk;
+    Clock vidclk;
+    Clock extclk;
+
   protected:
 
     /** 
@@ -1173,6 +1195,8 @@ class CMedia
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _audio_offset;//!< offset of additional audio
+    int _audio_hw_buf_size;
+
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
     boost::int64_t   _expected;    //!< expected next dts fetch
     boost::int64_t   _expected_audio; //!< expected next frame fetch
@@ -1182,6 +1206,7 @@ class CMedia
 
     boost::int64_t   _frame_start;
     boost::int64_t   _frame_end;
+
 
     boost::int64_t _audio_pts;
     double     _audio_clock;
@@ -1274,6 +1299,7 @@ class CMedia
 
     mrv::AudioEngine::AudioFormat _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)
+
 
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
