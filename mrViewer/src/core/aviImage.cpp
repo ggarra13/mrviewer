@@ -80,7 +80,7 @@ namespace
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
-//#define DEBUG_DECODE_AUDIO
+// #define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
@@ -1081,6 +1081,9 @@ bool aviImage::find_image( const boost::int64_t frame )
 
     _video_pts   = frame / fps();
     _video_clock = double(av_gettime_relative()) / 1000000.0;
+
+    double pts = _av_frame->pts * av_q2d(get_video_stream()->time_base);
+    update_video_pts(this, pts, av_frame_get_pkt_pos(this->_av_frame), false);
 
   }  // release lock
 
