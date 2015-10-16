@@ -1296,6 +1296,10 @@ class CMedia
     unsigned         _audio_buf_used;    //!< amount used of reading cache
     boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
     unsigned short   _audio_channels;
+    AVFrame*         _aframe;   //!< audio ffmpeg frame
+    boost::int64_t   next_pts;
+    AVRational       next_pts_tb;
+    int64_t          audio_callback_time;
 
     mrv::AudioEngine::AudioFormat _audio_format;
     mrv::aligned16_uint8_t*  _audio_buf; //!< temporary audio reading cache (aligned16)

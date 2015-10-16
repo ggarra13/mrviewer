@@ -15,6 +15,7 @@ v2.9.7   - Allowed command-line loading of stereo images/movies
 	 - Improved video playback when scrubbing which was skipping
 	   some frames incorrectly.  This change should remove all
 	   warnings of missing video frames.
+	 - Improved audio sync after seeks and in normal mode.
 	 - Bug fixed adjusting of EDL when stereo was on.
 	 - Made music only tracks not report an invalid index for
 	   channel selection.
