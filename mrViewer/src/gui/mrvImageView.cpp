@@ -1886,10 +1886,16 @@ void ImageView::draw()
        static int64_t unshown_frames = 0;
        int64_t frame = img->frame();
 
-       if ( (playback() == kForwards && _lastFrame < frame) ||
-            (playback() == kBackwards && _lastFrame > frame ) )
+       Playback p = playback();
+
+       if ( (p == kForwards && _lastFrame < frame) ||
+            (p == kBackwards && _lastFrame > frame ) )
 	{
-	  int64_t frame_diff = frame - _lastFrame - 1;
+	  int64_t frame_diff = frame - _lastFrame;
+
+          if ( p == kForwards ) --frame_diff;
+          else ++frame_diff;
+
           int64_t absdiff = std::abs(frame_diff);
           if ( absdiff > 0 && absdiff < 10 )
           {

@@ -858,24 +858,21 @@ void video_thread( PlaybackData* data )
       if ( img->has_audio() && status == CMedia::kDecodeOK )
       {
 
+          double video_clock, master_clock;
 
-
-         // double video_clock = img->video_clock();
-	 // double audio_clock = img->audio_clock();
-
-	 // diff = step * (video_clock - audio_clock);
-
-         //  std::cerr << "get_master_clock " << get_master_clock(img) << std::endl << "get_clock(img->vidclk) " << get_clock(&img->vidclk) << std::endl;;
-
-          diff = step * ( get_clock(&img->vidclk) - get_master_clock(img) );
-
-          if ( diff > 1.0 )
+          if ( step < 0 )
           {
-              std::cerr << "DIFF: " << diff << std::endl;
-              std::cerr << "VC: " << get_clock(&img->vidclk) << " - " 
-                        << "MC: " << get_master_clock(img) << std::endl;
-
+              video_clock = img->video_clock();
+              master_clock = img->audio_clock();
           }
+          else
+          {
+              video_clock = get_clock(&img->vidclk);
+              master_clock = get_master_clock(img);
+          }
+
+          diff = step * ( video_clock - master_clock );
+
           double absdiff = std::abs(diff);
 
           if ( absdiff > 1000.0 ) diff = 0.0;
