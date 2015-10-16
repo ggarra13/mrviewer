@@ -20,6 +20,7 @@ v2.9.7   - Allowed command-line loading of stereo images/movies
 	 - Made music only tracks not report an invalid index for
 	   channel selection.
 	 - Removed stereo interlaced as it was not working properly.
+	 - Bug fixed unshown frames counter when playing backwards.
 
 v2.9.6   - Made channel selection work with toggles more intuitively.
 	   Going to N.x with a 'r' hotkey and then pressing 'r' 
