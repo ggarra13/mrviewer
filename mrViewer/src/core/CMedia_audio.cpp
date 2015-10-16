@@ -32,8 +32,10 @@
 
 
 
-#if defined(WIN32) || defined(WIN64)
+#ifdef _WIN32
+#  include <float.h>
 #  include <direct.h>
+#  define isnan  _isnan
 #  define getcwd _getcwd
 #else
 #  include <unistd.h>
@@ -239,7 +241,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
 
 #ifdef DEBUG_QUEUE
     LOG_INFO( "BEFORE QUEUE:  D: " << _dts << " E: " << _expected_audio );
-    debug_audio_packets(frame);
+    debug_audio_packets(frame, "queue", true);
 #endif
 
 
@@ -843,10 +845,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 			  int* audio_size,
 			  AVPacket *avpkt)
 {   
-    AVFrame* frame;
-    if ( ! (frame = av_frame_alloc()) )
+    if ( ! _aframe ) 
     {
-        return AVERROR(ENOMEM);
+        if ( ! (_aframe = av_frame_alloc()) )
+        {
+            return AVERROR(ENOMEM);
+        }
     }
 
     bool eof = false;
@@ -856,12 +860,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
     while (!got_frame )
     {
-        ret = avcodec_decode_audio4(ctx, frame, &got_frame, avpkt);
+        ret = avcodec_decode_audio4(ctx, _aframe, &got_frame, avpkt);
 
         if (ret >= 0 && got_frame) {
 
             int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
-                                                       frame->nb_samples,
+                                                       _aframe->nb_samples,
                                                        ctx->sample_fmt, 0);
             if (*audio_size < data_size) {
                 IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
@@ -870,6 +874,19 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 return AVERROR(EINVAL);
             }
 
+            AVRational tb = (AVRational){1, _aframe->sample_rate};
+            if (_aframe->pts != AV_NOPTS_VALUE)
+                _aframe->pts = av_rescale_q(_aframe->pts, ctx->time_base, tb);
+            else if ( _aframe->pkt_pts != AV_NOPTS_VALUE )
+                _aframe->pts = av_rescale_q(_aframe->pkt_pts, 
+                                            av_codec_get_pkt_timebase(ctx), tb);
+            else if (next_pts != AV_NOPTS_VALUE)
+                _aframe->pts = av_rescale_q(next_pts, next_pts_tb, tb);
+
+            if (_aframe->pts != AV_NOPTS_VALUE) {
+                next_pts = _aframe->pts + _aframe->nb_samples;
+                next_pts_tb = tb;
+            }
 
             if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
                  ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
@@ -953,13 +970,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 }
 
                 assert( samples != NULL );
-                assert( frame->extended_data != NULL );
-                assert( frame->extended_data[0] != NULL );
+                assert( _aframe->extended_data != NULL );
+                assert( _aframe->extended_data[0] != NULL );
 
                 int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
-                                       frame->nb_samples, 
-                                       (const uint8_t **)frame->extended_data, 
-                                       frame->nb_samples );
+                                       _aframe->nb_samples, 
+                                       (const uint8_t **)_aframe->extended_data, 
+                                       _aframe->nb_samples );
                 if ( len2 <= 0 )
                 {
                     IMG_ERROR( _("Resampling failed") );
@@ -994,18 +1011,13 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             {
                 if ( _audio_channels > 0 )
                 {
-                    memcpy(samples, frame->extended_data[0], data_size);
+                    memcpy(samples, _aframe->extended_data[0], data_size);
                 }
             }
 
             *audio_size = data_size;
 
 
-            frame->pts = ( frame->pts == AV_NOPTS_VALUE ) ? NAN : frame->pts * av_q2d( get_audio_stream()->time_base ); 
-            if ( !isnan(frame->pts) )
-                _audio_clock = frame->pts + (double) frame->nb_samples / frame->sample_rate;
-            else
-                _audio_clock = NAN;
 
             if ( eof ) continue;
 
@@ -1016,7 +1028,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
     }
 
 
-    av_frame_free(&frame);
 
     return ret;
 }
@@ -1059,8 +1070,8 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && (!_audio.empty()) )
     {
-
-        if ( ptsframe - _audio_last_frame >= 0 )
+        int64_t tmp = ptsframe - _audio_last_frame;
+        if ( tmp >= 0 && tmp <= 10 )
         {
             ptsframe = _audio_last_frame + 1;
         }
@@ -1140,9 +1151,15 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       _audio_buf_used += audio_size;
     }
 
+  double pts = ( _aframe->pts == AV_NOPTS_VALUE ) ? NAN : _aframe->pts * av_q2d( get_audio_stream()->time_base ); 
+  if ( !isnan(pts) )
+      _audio_clock = pts + (double) _aframe->nb_samples / _aframe->sample_rate;
+  else
+      _audio_clock = NAN;
+
   if (!isnan(_audio_clock)) {
-      set_clock_at(&audclk, _audio_clock - ((double) _audio_buf_used / (double)audio_bytes_per_frame() ), false, av_gettime_relative() / 1000000.0);
-      sync_clock_to_slave(&extclk, &audclk);
+      set_clock_at(&audclk, _audio_clock, false,
+                   audio_callback_time / 1000000.0);
   }
 
   if ( pkt_temp.size == 0 ) {
@@ -1177,7 +1194,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
  * @param frame         frame we expect 
  * @param pkt           audio packet
  * 
- * @return status whether frame was decoded correctly or not.
+ * @return status whether frame was reached and decoded correctly or not.
  */
 CMedia::DecodeStatus 
 CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
@@ -1190,6 +1207,8 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
                                                           frame, pkt );
     if ( got_audio != kDecodeOK ) {
+        IMG_ERROR( "decode_audio_packet failed with " <<
+                   get_error_text( got_audio ) );
         return got_audio;
     }
 
@@ -1465,11 +1484,11 @@ void CMedia::wait_audio()
 
   for (;;)
     {
-      if ( stopped() ) break;
+        if ( stopped() || ! _audio_packets.empty() ) break;
 
-      bool got_audio = in_audio_store( _frame + _audio_offset );
-      if ( ( ! _audio_packets.empty() ) || got_audio )
-	  return;
+      // bool got_audio = in_audio_store( _frame + _audio_offset );
+      // if ( ( ! _audio_packets.empty() ) || got_audio )
+      //     return;
 
       CONDITION_WAIT( _audio_packets.cond(), apm );
     }
@@ -1610,7 +1629,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
   limit_audio_store( frame );
 
   _audio_pts   = _audio_frame;
-  _audio_clock = (double)av_gettime_relative() / 1000000.0;
   return ok;
 }
 
@@ -1622,6 +1640,8 @@ void CMedia::flush_audio()
     {
         SCOPED_LOCK( _audio_mutex );
         avcodec_flush_buffers( _audio_ctx );
+        next_pts = get_audio_stream()->start_time;
+        next_pts_tb = get_audio_stream()->time_base;
     }
 }
 
@@ -1666,6 +1686,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   Mutex& m = _audio_packets.mutex();
   SCOPED_LOCK( m );
+
 
   assert( !_audio_packets.empty() );
   assert( _audio_packets.is_seek() || _audio_packets.is_preroll() );
@@ -1750,6 +1771,7 @@ bool CMedia::in_audio_store( const boost::int64_t frame )
 CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 { 
 
+    audio_callback_time = av_gettime_relative();
 
     boost::int64_t frame = f;
 
