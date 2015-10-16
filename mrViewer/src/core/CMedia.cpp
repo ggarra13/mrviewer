@@ -208,6 +208,7 @@ _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( 0 ),
+_aframe(NULL),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
@@ -290,6 +291,7 @@ _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( other->_audio_channels ),
+_aframe( NULL ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
@@ -384,6 +386,7 @@ _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( 0 ),
+_aframe( NULL ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
@@ -519,7 +522,8 @@ CMedia::~CMedia()
       close_audio_codec();
     }
 
-  av_frame_free(&_a_frame);
+  av_frame_free(&_aframe);
+
   audio_shutdown();
 
   if ( forw_ctx )
@@ -1665,6 +1669,7 @@ void CMedia::play(const CMedia::Playback dir,
                               boost::bind( mrv::decode_thread, 
                                            data ) ) );
       }
+
 
       assert( _threads.size() <= ( 1 + valid_a + valid_v + valid_s ) );
   }
