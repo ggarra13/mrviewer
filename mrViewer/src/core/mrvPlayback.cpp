@@ -31,6 +31,15 @@
 
 #include <iostream>
 
+extern "C" {
+#include <libavutil/time.h>
+}
+
+#ifdef _WIN32
+# include <float.h>
+# define isnan _isnan
+#endif
+
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/shared_array.hpp>
@@ -104,14 +113,106 @@ namespace mrv {
   };
 
 
-  unsigned int barrier_thread_count( const CMedia* img )
-  {
+static double get_clock(Clock *c)
+{
+    // if (*c->queue_serial != c->serial)
+    //     return NAN;
+    // if (c->paused) {
+    //     return c->pts;
+    // } else {
+    double time = av_gettime_relative() / 1000000.0;
+    return c->pts_drift + time - (time - c->last_updated) * (1.0 - c->speed);
+    // }
+}
+
+void set_clock_at(Clock *c, double pts, int serial, double time)
+{
+    c->pts = pts;
+    c->last_updated = time;
+    c->pts_drift = c->pts - time;
+    c->serial = serial;
+}
+
+static void set_clock(Clock *c, double pts, int serial)
+{
+    double time = av_gettime_relative() / 1000000.0;
+    set_clock_at(c, pts, serial, time);
+}
+
+
+
+static void set_clock_speed(Clock *c, double speed)
+{
+    set_clock(c, get_clock(c), c->serial);
+    c->speed = speed;
+}
+
+static void init_clock(Clock *c, int *queue_serial)
+{
+    c->speed = 1.0;
+    c->paused = 0;
+    c->queue_serial = queue_serial;
+    set_clock(c, NAN, -1);
+}
+
+
+void sync_clock_to_slave(Clock *c, Clock *slave)
+{
+    double clock = get_clock(c);
+    double slave_clock = get_clock(slave);
+    if (!isnan(slave_clock) && (isnan(clock) || fabs(clock - slave_clock) > AV_NOSYNC_THRESHOLD))
+        set_clock(c, slave_clock, slave->serial);
+}
+
+void update_video_pts(CMedia* is, double pts, int64_t pos, int serial) {
+    /* update current video pts */
+    set_clock(&is->vidclk, pts, serial);
+    sync_clock_to_slave(&is->extclk, &is->vidclk);
+}
+
+static int get_master_sync_type(CMedia* img) {
+    if (img->av_sync_type == CMedia::AV_SYNC_VIDEO_MASTER) {
+        if (img->has_picture())
+            return CMedia::AV_SYNC_VIDEO_MASTER;
+        else
+            return CMedia::AV_SYNC_AUDIO_MASTER;
+    } else if (img->av_sync_type ==  CMedia::AV_SYNC_AUDIO_MASTER) {
+        if (img->has_audio())
+            return  CMedia::AV_SYNC_AUDIO_MASTER;
+        else
+            return  CMedia::AV_SYNC_EXTERNAL_CLOCK;
+    } else {
+        return  CMedia::AV_SYNC_EXTERNAL_CLOCK;
+    }
+}
+
+static double get_master_clock(CMedia* img)
+{
+    double val;
+
+    switch (get_master_sync_type(img)) {
+        case CMedia::AV_SYNC_VIDEO_MASTER:
+            val = get_clock(&img->vidclk);
+            break;
+        case CMedia::AV_SYNC_AUDIO_MASTER:
+            val = get_clock(&img->audclk);
+            break;
+        default:
+            val = get_clock(&img->extclk);
+            break;
+    }
+    return val;
+}
+
+
+unsigned int barrier_thread_count( const CMedia* img )
+{
     unsigned r = 1;               // 1 for decode thread
     if    ( img->valid_video() )    r += 1;
     if    ( img->valid_audio() )    r += 1;
     if    ( img->valid_subtitle() ) r += 1;
     return r;
-  }
+}
 
 
 
@@ -433,6 +534,13 @@ void audio_thread( PlaybackData* data )
    mrv::Timer timer;
 
 
+   init_clock(&img->vidclk, NULL);
+   init_clock(&img->audclk, NULL);
+   init_clock(&img->extclk, NULL);
+   img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
+   //img->av_sync_type = CMedia::AV_SYNC_AUDIO_MASTER;
+   set_clock(&img->extclk, get_clock(&img->extclk), false);
+
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
@@ -448,10 +556,12 @@ void audio_thread( PlaybackData* data )
       boost::int64_t f = frame;
       DBG( "decode audio " << frame );
 
+      //img->debug_audio_packets( frame, "play", false );
 
 
       CMedia::DecodeStatus status = img->decode_audio( f );
 
+      DBG( "Decode returned " << status );
 
       switch( status )
       {
@@ -463,13 +573,12 @@ void audio_thread( PlaybackData* data )
 	 case CMedia::kDecodeMissingFrame:
              LOG_WARNING( img->name() 
                           << _(" - decode missing audio frame ") << frame );
-             timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
              continue;
           case CMedia::kDecodeNoStream:
               DBG( "Decode No stream" );
-             timer.setDesiredFrameRate( img->play_fps() );
+              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
              continue;
@@ -750,28 +859,39 @@ void video_thread( PlaybackData* data )
       {
 
 
-          double video_clock = img->video_pts() + img->video_clock();
-          double audio_clock = img->audio_pts() + img->audio_clock();
 
-	 diff = step * (video_clock - audio_clock);
+         // double video_clock = img->video_clock();
+	 // double audio_clock = img->audio_clock();
 
+	 // diff = step * (video_clock - audio_clock);
 
-	 double absdiff = std::abs(diff);
+         //  std::cerr << "get_master_clock " << get_master_clock(img) << std::endl << "get_clock(img->vidclk) " << get_clock(&img->vidclk) << std::endl;;
 
-	 if ( absdiff > 1000.0 ) diff = 0.0;
+          diff = step * ( get_clock(&img->vidclk) - get_master_clock(img) );
 
-	 img->avdiff( diff );
+          if ( diff > 1.0 )
+          {
+              std::cerr << "DIFF: " << diff << std::endl;
+              std::cerr << "VC: " << get_clock(&img->vidclk) << " - " 
+                        << "MC: " << get_master_clock(img) << std::endl;
+
+          }
+          double absdiff = std::abs(diff);
+
+          if ( absdiff > 1000.0 ) diff = 0.0;
+
+          img->avdiff( diff );
 
 	 // Skip or repeat the frame. Take delay into account
 	 //    FFPlay still doesn't "know if this is the best guess."
-	 double sync_threshold = delay;
 	 if(absdiff < AV_NOSYNC_THRESHOLD) {
 	    double sdiff = step * diff;
+            double sync_threshold = delay;
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
-	    } else if (sdiff > 0.0) {
-	       fps -= sdiff;
+	    } else if (sdiff >= sync_threshold) {
+                fps -= sdiff;      // make fps slower
 	    }
 	 }
       }
