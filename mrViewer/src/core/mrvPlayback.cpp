@@ -35,6 +35,11 @@ extern "C" {
 #include <libavutil/time.h>
 }
 
+#ifdef _WIN32
+# include <float.h>
+# define isnan _isnan
+#endif
+
 #include <boost/bind.hpp>
 #include <boost/thread/thread.hpp>
 #include <boost/shared_array.hpp>
@@ -115,8 +120,8 @@ static double get_clock(Clock *c)
     // if (c->paused) {
     //     return c->pts;
     // } else {
-        double time = av_gettime_relative() / 1000000.0;
-        return c->pts_drift + time - (time - c->last_updated) * (1.0 - c->speed);
+    double time = av_gettime_relative() / 1000000.0;
+    return c->pts_drift + time - (time - c->last_updated) * (1.0 - c->speed);
     // }
 }
 
@@ -533,6 +538,7 @@ void audio_thread( PlaybackData* data )
    init_clock(&img->audclk, NULL);
    init_clock(&img->extclk, NULL);
    img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
+   //img->av_sync_type = CMedia::AV_SYNC_AUDIO_MASTER;
    set_clock(&img->extclk, get_clock(&img->extclk), false);
 
 
@@ -550,10 +556,12 @@ void audio_thread( PlaybackData* data )
       boost::int64_t f = frame;
       DBG( "decode audio " << frame );
 
+      //img->debug_audio_packets( frame, "play", false );
 
 
       CMedia::DecodeStatus status = img->decode_audio( f );
 
+      DBG( "Decode returned " << status );
 
       switch( status )
       {
@@ -565,13 +573,12 @@ void audio_thread( PlaybackData* data )
 	 case CMedia::kDecodeMissingFrame:
              LOG_WARNING( img->name() 
                           << _(" - decode missing audio frame ") << frame );
-             timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
              continue;
           case CMedia::kDecodeNoStream:
               DBG( "Decode No stream" );
-             timer.setDesiredFrameRate( img->play_fps() );
+              timer.setDesiredFrameRate( img->play_fps() );
              timer.waitUntilNextFrameIsDue();
              frame += step;
              continue;
@@ -865,22 +872,29 @@ void video_thread( PlaybackData* data )
 
           diff = step * ( get_clock(&img->vidclk) - get_master_clock(img) );
 
-	 double absdiff = std::abs(diff);
+          if ( diff > 1.0 )
+          {
+              std::cerr << "DIFF: " << diff << std::endl;
+              std::cerr << "VC: " << get_clock(&img->vidclk) << " - " 
+                        << "MC: " << get_master_clock(img) << std::endl;
 
-	 if ( absdiff > 1000.0 ) diff = 0.0;
+          }
+          double absdiff = std::abs(diff);
 
-	 img->avdiff( diff );
+          if ( absdiff > 1000.0 ) diff = 0.0;
+
+          img->avdiff( diff );
 
 	 // Skip or repeat the frame. Take delay into account
 	 //    FFPlay still doesn't "know if this is the best guess."
-	 double sync_threshold = delay;
 	 if(absdiff < AV_NOSYNC_THRESHOLD) {
 	    double sdiff = step * diff;
+            double sync_threshold = delay;
 
 	    if (sdiff <= -sync_threshold) {
-	       fps = 99999999.0;
-	    } else if (sdiff >= delay*2) {
-	       fps -= sdiff;
+                fps = 99999999.0;  // skip frame
+	    } else if (sdiff >= sync_threshold) {
+                fps -= sdiff;      // make fps slower
 	    }
 	 }
       }
