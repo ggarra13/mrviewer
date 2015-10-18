@@ -1209,7 +1209,7 @@ class CMedia
     boost::int64_t   _frame_start;
     boost::int64_t   _frame_end;
 
-    boost::int64_t _audio_pts;
+    double     _audio_pts;
     double     _audio_clock;
     double     _video_pts;
     double     _video_clock;
