@@ -669,7 +669,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   mrv::image_type_ptr 
   image = allocate_image( frame, boost::int64_t( double(pts) * 
-                                                 av_q2d( stream->time_base )
+                                                 av_q2d( _video_ctx->time_base )
                                                  )
 			  );
   if ( ! image )
@@ -1082,8 +1082,9 @@ bool aviImage::find_image( const boost::int64_t frame )
     _video_pts   = frame / fps();
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
-    double pts = _av_frame->pts * av_q2d(get_video_stream()->time_base);
-    update_video_pts(this, pts, av_frame_get_pkt_pos(this->_av_frame), false);
+    double pts = _av_frame->pts * av_q2d( _video_ctx->framerate );
+
+    update_video_pts(this, pts, 0, 0);
 
   }  // release lock
 
