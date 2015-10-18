@@ -258,11 +258,12 @@ bool replace_view( std::string& view )
    * Given a filename of a possible sequence, split it into
    * root name, frame string, view, and extension
    * 
-   * @param root    root name of file sequence
-   * @param frame   frame part of file name (must be @ or # or %d )
-   * @param view    view of image (%v or %V from left or right or L and R )
-   * @param ext     extension of file sequence
-   * @param file    original filename, potentially part of a sequence.
+   * @param root        root name of file sequence
+   * @param frame       frame part of file (must be @ or # or %d or a number)
+   * @param view        view of image (%v or %V from left or right or L and R )
+   * @param ext         extension of file sequence
+   * @param file        original filename, potentially part of a sequence.
+   * @param change_view change view to %v or %V if left/right or L/R is found.
    * 
    * @return true if a sequence, false if not.
    */
@@ -306,10 +307,17 @@ bool replace_view( std::string& view )
 
        if ( view.size() ) view += ".";
        if ( mrv::is_valid_movie( ext.c_str() ) )
+       {
+           root += view + frame + ext;
+           view = "";
+           frame = "";
+           ext = "";
            return false;
+       }
        else
+       {
            return true;
-
+       }
     }
     else if ( periods.size() == 3 )
     {
