@@ -434,7 +434,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    AVPacket pkt = {0};
    int got_packet, ret, dst_nb_samples;
 
-   char buf[AV_ERROR_MAX_STRING_SIZE];
 
    av_init_packet(&pkt);
    pkt.size = 0;
@@ -651,8 +650,7 @@ static void close_audio_static(AVFormatContext *oc, AVStream *st)
 
 static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
 {
-    uint8_t *frame_buf;
-    int size, ret;
+    int ret;
 
     picture = av_frame_alloc();
     if (!picture)
@@ -808,8 +806,6 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
       ret = av_interleaved_write_frame(oc, &pkt);
    } else {
-
-       char buf[AV_ERROR_MAX_STRING_SIZE];
 
       AVPacket pkt = { 0 };
       av_init_packet(&pkt);
