@@ -113,7 +113,7 @@ namespace mrv {
   };
 
 
-static double get_clock(Clock *c)
+double get_clock(Clock *c)
 {
     // if (*c->queue_serial != c->serial)
     //     return NAN;

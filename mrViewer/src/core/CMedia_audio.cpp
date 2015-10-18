@@ -133,6 +133,7 @@ AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 
 
 void set_clock_at(Clock *c, double pts, int serial, double time);
+double get_clock(Clock* c);
 void sync_clock_to_slave(Clock *c, Clock *slave);
 
 /** 
@@ -874,19 +875,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 return AVERROR(EINVAL);
             }
 
-            AVRational tb = (AVRational){1, _aframe->sample_rate};
-            if (_aframe->pts != AV_NOPTS_VALUE)
-                _aframe->pts = av_rescale_q(_aframe->pts, ctx->time_base, tb);
-            else if ( _aframe->pkt_pts != AV_NOPTS_VALUE )
-                _aframe->pts = av_rescale_q(_aframe->pkt_pts, 
-                                            av_codec_get_pkt_timebase(ctx), tb);
-            else if (next_pts != AV_NOPTS_VALUE)
-                _aframe->pts = av_rescale_q(next_pts, next_pts_tb, tb);
-
-            if (_aframe->pts != AV_NOPTS_VALUE) {
-                next_pts = _aframe->pts + _aframe->nb_samples;
-                next_pts_tb = tb;
-            }
 
             if ( ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
                  ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
@@ -1149,17 +1137,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 
       _audio_buf_used += audio_size;
     }
-
-  double pts = ( _aframe->pts == AV_NOPTS_VALUE ) ? NAN : _aframe->pts * av_q2d( get_audio_stream()->time_base ); 
-  if ( !isnan(pts) )
-      _audio_clock = pts + (double) _aframe->nb_samples / _aframe->sample_rate;
-  else
-      _audio_clock = NAN;
-
-  if (!isnan(_audio_clock)) {
-      set_clock_at(&audclk, _audio_clock, false,
-                   audio_callback_time / 1000000.0);
-  }
 
   if ( pkt_temp.size == 0 ) {
 
@@ -1627,7 +1604,14 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts   = _audio_frame;
+  _audio_pts = frame;
+  _audio_clock = (double) frame / fps();
+
+  set_clock_at(&audclk, _audio_clock, 0, audio_callback_time / 1000000.0 );
+  // sync_clock_to_slave( &audclk, &extclk );
+
+  // std::cerr << "AC: " << get_clock(&audclk) << " EC: " << get_clock(&extclk)
+  //           << " VC: " << get_clock(&vidclk) << std::endl;
   return ok;
 }
 
