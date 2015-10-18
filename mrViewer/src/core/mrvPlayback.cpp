@@ -170,7 +170,7 @@ void update_video_pts(CMedia* is, double pts, int64_t pos, int serial) {
     sync_clock_to_slave(&is->extclk, &is->vidclk);
 }
 
-static int get_master_sync_type(CMedia* img) {
+inline int get_master_sync_type(CMedia* img) {
     if (img->av_sync_type == CMedia::AV_SYNC_VIDEO_MASTER) {
         if (img->has_picture())
             return CMedia::AV_SYNC_VIDEO_MASTER;
@@ -186,7 +186,7 @@ static int get_master_sync_type(CMedia* img) {
     }
 }
 
-static double get_master_clock(CMedia* img)
+inline double get_master_clock(CMedia* img)
 {
     double val;
 
@@ -871,6 +871,7 @@ void video_thread( PlaybackData* data )
               master_clock = get_master_clock(img);
           }
 
+
           diff = step * ( video_clock - master_clock );
 
           double absdiff = std::abs(diff);
@@ -887,7 +888,7 @@ void video_thread( PlaybackData* data )
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
-	    } else if (sdiff >= sync_threshold) {
+	    } else if (sdiff >= sync_threshold*2) {
                 fps -= sdiff;      // make fps slower
 	    }
 	 }
