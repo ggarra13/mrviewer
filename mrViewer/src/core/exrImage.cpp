@@ -1599,107 +1599,101 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
        if ( st[0] == -1 ) return false;
    }
 
+   const char* channelPrefix = channel();
+   if ( channelPrefix != NULL )
+   {
+       if ( channelPrefix[0] == '#' )
+       {
+           std::string part = channelPrefix;
+
+           size_t pos = part.find( ' ' );
+           part = part.substr( 1, pos );
+
+           _curpart = (int) strtoul( part.c_str(), NULL, 10 );
+       }
+   }
+   else
+   {
+       _curpart = 0;
+   }
+
    if ( _has_stereo )
    {
-       const char* channelPrefix = channel();
-       if ( channelPrefix != NULL )
+
+       for ( int i = 0 ; i < 2; ++i )
        {
-           if ( channelPrefix[0] == '#' )
+           if ( _stereo_type != kNoStereo && st[i] >= 0 ) _curpart = st[i];
+
+           const Header& header = inmaster.header(_curpart);
+
+           const Box2i& displayWindow = header.displayWindow();
+           const Box2i& dataWindow = header.dataWindow();
+
+           if ( i == 0 || _stereo_type == kNoStereo )
            {
-               std::string part = channelPrefix;
-
-               size_t pos = part.find( ' ' );
-               part = part.substr( 1, pos );
-
-               _curpart = (int) strtoul( part.c_str(), NULL, 10 );
-           }
-       }
-       else
-       {
-           _curpart = 0;
-       }
-
-
-      if ( _curpart == -1 ) _curpart = 0;
-
-
-      for ( int i = 0 ; i < 2; ++i )
-      {
-          if ( _stereo_type != kNoStereo && st[i] >= 0 ) _curpart = st[i];
-
-          const Header& header = inmaster.header(_curpart);
-
-          const Box2i& displayWindow = header.displayWindow();
-          const Box2i& dataWindow = header.dataWindow();
-
-          if ( i == 0 || _stereo_type == kNoStereo )
-          {
-              data_window( dataWindow.min.x, dataWindow.min.y,
-                           dataWindow.max.x, dataWindow.max.y );
-
-              display_window( displayWindow.min.x, displayWindow.min.y,
-                              displayWindow.max.x, displayWindow.max.y );
-          }
-          else
-          {
-              data_window2( dataWindow.min.x, dataWindow.min.y,
+               data_window( dataWindow.min.x, dataWindow.min.y,
                             dataWindow.max.x, dataWindow.max.y );
 
-              display_window2( displayWindow.min.x, displayWindow.min.y,
+               display_window( displayWindow.min.x, displayWindow.min.y,
                                displayWindow.max.x, displayWindow.max.y );
-          }
+           }
+           else
+           {
+               data_window2( dataWindow.min.x, dataWindow.min.y,
+                             dataWindow.max.x, dataWindow.max.y );
+
+               display_window2( displayWindow.min.x, displayWindow.min.y,
+                                displayWindow.max.x, displayWindow.max.y );
+           }
 
 
-          FrameBuffer fb;
+           FrameBuffer fb;
 
-          bool ok = find_channels( header, fb, frame );
-          if (!ok) {
-              IMG_ERROR( _("Could not locate channels in header") );
-              return false;
-          }
+           bool ok = find_channels( header, fb, frame );
+           if (!ok) {
+               IMG_ERROR( _("Could not locate channels in header") );
+               return false;
+           }
 
-          _pixel_ratio = header.pixelAspectRatio();
-          _lineOrder   = header.lineOrder();
-          _compression = header.compression();
+           _pixel_ratio = header.pixelAspectRatio();
+           _lineOrder   = header.lineOrder();
+           _compression = header.compression();
 
-          InputPart in( inmaster, _curpart );
-          in.setFrameBuffer(fb);
-          in.readPixels( dataWindow.min.y, dataWindow.max.y );
+           InputPart in( inmaster, _curpart );
+           in.setFrameBuffer(fb);
+           in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
-          // Quick exit if stereo is off or multiview
-          if ( _stereo_type == kNoStereo || _multiview ) break;
+           // Quick exit if stereo is off or multiview
+           if ( _stereo_type == kNoStereo || _multiview ) break;
 
-          if ( st[0] != st[1] )
-          {
-              _stereo[i] = _hires;
-          }
-      }
+           if ( st[0] != st[1] )
+           {
+               _stereo[i] = _hires;
+           }
+       }
    }
    else
    {
 
-      if ( _curpart < 0 ) _curpart = 0;
-      int oldpart = _curpart;
+       int oldpart = _curpart;
 
-      const Header& header = inmaster.header(_curpart);
-
+       const Header& header = inmaster.header(_curpart);
 
 
-      if ( _type == DEEPTILE )
-      {
-          if ( ! find_layers( header ) )
-              return false;
+       if ( _type == DEEPTILE )
+       {
+           if ( ! find_layers( header ) )
+               return false;
 
-          if ( ! _read_attr )
-              read_header_attr( header, frame );
+           if ( ! _read_attr )
+               read_header_attr( header, frame );
 
-          int zsize;
-          Imf::Array< float* > zbuff;
-          Imf::Array< unsigned > sampleCount;
-          loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
-          return true;
-      }
-
+           int zsize;
+           Imf::Array< float* > zbuff;
+           Imf::Array< unsigned > sampleCount;
+           loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
+           return true;
+       }
 
 
       InputPart in (inmaster, _curpart);
