@@ -961,6 +961,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 assert( _aframe->extended_data != NULL );
                 assert( _aframe->extended_data[0] != NULL );
 
+
                 int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
                                        _aframe->nb_samples, 
                                        (const uint8_t **)_aframe->extended_data, 
