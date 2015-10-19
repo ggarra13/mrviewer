@@ -3,6 +3,8 @@ v2.9.8   - Bug fixed OpenEXR reader for multipart image files that
 	   the first part only.
 	 - The new audio sync was failing on VOBs.  Changed it to
 	   make it work.
+	 - The win32 release was crashing on file requester due
+	   to wrong ffmpeg libraries.  Fixed.
 
 v2.9.7   - Allowed command-line loading of stereo images/movies
 	   without any prefix.  The syntax is using the -s keyword:
