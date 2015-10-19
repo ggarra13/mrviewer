@@ -537,8 +537,8 @@ void audio_thread( PlaybackData* data )
    init_clock(&img->vidclk, NULL);
    init_clock(&img->audclk, NULL);
    init_clock(&img->extclk, NULL);
-   img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
-   //img->av_sync_type = CMedia::AV_SYNC_AUDIO_MASTER;
+   //img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
+   img->av_sync_type = CMedia::AV_SYNC_AUDIO_MASTER;
    set_clock(&img->extclk, get_clock(&img->extclk), false);
 
 
@@ -871,6 +871,14 @@ void video_thread( PlaybackData* data )
               master_clock = get_master_clock(img);
           }
 
+#if 0
+          std::cerr  << " VC: " << video_clock 
+                     << " MC: " << master_clock
+                     << " AC: " << get_clock(&img->audclk)
+                     << " EC: " << get_clock(&img->extclk)
+                     << std::endl;
+#endif
+
 
           diff = step * ( video_clock - master_clock );
 
@@ -888,8 +896,8 @@ void video_thread( PlaybackData* data )
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
-	    } else if (sdiff >= sync_threshold*2) {
-                fps -= sdiff;      // make fps slower
+	    } else if (sdiff >= sync_threshold) {
+                fps -= sdiff*2.0;      // make fps slower
 	    }
 	 }
       }
