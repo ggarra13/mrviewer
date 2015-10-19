@@ -1079,12 +1079,10 @@ bool aviImage::find_image( const boost::int64_t frame )
     // Limit (clean) the video store as we play it
     limit_video_store( frame );
 
-    _video_pts   = frame / fps();
+    _video_pts   = frame  / av_q2d( get_video_stream()->avg_frame_rate );
     _video_clock = double(av_gettime_relative()) / 1000000.0;
 
-    double pts = _av_frame->pts * av_q2d( _video_ctx->framerate );
-
-    update_video_pts(this, pts, 0, 0);
+    update_video_pts(this, _video_pts, 0, 0);
 
   }  // release lock
 
