@@ -2180,14 +2180,15 @@ double CMedia::calculate_fps( const AVStream* stream )
   double fps;
 
   assert( stream != NULL );
+  const AVRational& rate = av_stream_get_r_frame_rate( stream );
 
   if ( stream->avg_frame_rate.den && stream->avg_frame_rate.num )
   {
       fps = av_q2d( stream->avg_frame_rate );
   }
-  else if ( stream->r_frame_rate.den && stream->r_frame_rate.num > 1  )
+  else if ( rate.den > 0 && rate.num > 1  )
     {
-      fps = av_q2d( stream->r_frame_rate );
+      fps = av_q2d( rate );
     }
   else
     {

@@ -1605,14 +1605,12 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = frame;
-  _audio_clock = (double) frame / fps();
+  _audio_pts = frame / av_q2d( get_audio_stream()->avg_frame_rate );
+  _audio_clock = double(av_gettime_relative()) / 1000000.0;
 
-  set_clock_at(&audclk, _audio_clock, 0, audio_callback_time / 1000000.0 );
-  // sync_clock_to_slave( &audclk, &extclk );
+  set_clock_at(&audclk, _audio_clock, 0, _audio_clock );
+  sync_clock_to_slave( &audclk, &extclk );
 
-  // std::cerr << "AC: " << get_clock(&audclk) << " EC: " << get_clock(&extclk)
-  //           << " VC: " << get_clock(&vidclk) << std::endl;
   return ok;
 }
 
