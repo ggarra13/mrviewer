@@ -47,6 +47,9 @@ namespace mrv {
     GLQuad( const ImageView* view );
     ~GLQuad();
 
+      void mask( unsigned int m ) { _mask = m; }
+      void mask_value( unsigned int m ) { _mask_value = m; }
+
        float gamma() const { return _gamma; }
        void gamma( const float f ) { _gamma = f; }
 
@@ -125,6 +128,8 @@ namespace mrv {
     GLenum       _pixel_type;
 
     image_type::Format _format; 
+      unsigned int _mask;
+      unsigned int _mask_value;
     unsigned int _width;
     unsigned int _height;
     unsigned int _channels;

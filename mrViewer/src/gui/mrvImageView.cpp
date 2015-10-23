@@ -1093,7 +1093,7 @@ void ImageView::center_image()
         xoffset = -dpw.x() - dpw.w() / 2.0;
     }
 
-    float pr = 1.0f;
+    double pr = 1.0;
     if ( _showPixelRatio ) pr = pixel_ratio();
 
     yoffset = ( dpw.y() + dpw.h() / 2.0 ) / pr;
@@ -1163,7 +1163,7 @@ void ImageView::fit_image()
 
   h /= H;
 
-  float pr = 1.0f;
+  double pr = 1.0;
   if ( _showPixelRatio ) pr = pixel_ratio();
   h *= pr;
 
@@ -1571,7 +1571,7 @@ void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
 			   double x, double y, const char* t )
 {
     char text[256];
-    utf8toa( t, strlen(t), text, 256 );
+    utf8toa( t, (unsigned)strlen(t), text, 255 );
    _engine->color( (uchar)0, (uchar)0, (uchar)0 );
    _engine->draw_text( int(x+1), int(y-1), text ); // draw shadow
    _engine->color( r, g, b );
@@ -3514,18 +3514,18 @@ int ImageView::keyDown(unsigned int rawkey)
     }
   else if ( kSetInPoint.match( rawkey ) )
   {
-      double x = uiMain->uiFrame->value();
+      int64_t x = uiMain->uiFrame->value();
       uiMain->uiStartButton->value( 1 );
       uiMain->uiStartFrame->value( x );
-      uiMain->uiTimeline->minimum( x );
+      uiMain->uiTimeline->minimum( (double)x );
       uiMain->uiTimeline->redraw();
   }
   else if ( kSetOutPoint.match( rawkey ) )
   {
-      double x = uiMain->uiFrame->value();
+      int64_t x = uiMain->uiFrame->value();
       uiMain->uiEndButton->value( 1 );
       uiMain->uiEndFrame->value( x );
-      uiMain->uiTimeline->maximum( x );
+      uiMain->uiTimeline->maximum( (double)x );
       uiMain->uiTimeline->redraw();
   }
   else if ( rawkey == fltk::LeftAltKey ) 
@@ -3739,7 +3739,7 @@ void ImageView::toggle_presentation()
  * 
  * @param dx > 0 scrub forwards, < 0 scrub backwards
  */
-void ImageView::scrub( float dx )
+void ImageView::scrub( double dx )
 {
   stop();
 
@@ -3832,7 +3832,7 @@ int ImageView::handle(int event)
             if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
                  fltk::event_key_state( fltk::RightShiftKey ) )
             {
-                float dx = (float) (fltk::event_x() - lastX) / 20.0;
+                double dx = (fltk::event_x() - lastX) / 20.0;
                 if ( std::abs(dx) >= 1.0f )
                 { 
                     scrub( dx );
