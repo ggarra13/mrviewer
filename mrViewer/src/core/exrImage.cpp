@@ -790,8 +790,7 @@ bool exrImage::find_channels( const Imf::Header& h,
             if ( _stereo_type & kStereoAnaglyph ||
                  _stereo_type & kStereoInterlaced )
             {
-                if ( _stereo_type != kStereoRightAnaglyph &&
-                     _stereo_type != kStereoInterlacedFlipped ) 
+                if ( _stereo_type != kStereoRightAnaglyph ) 
                     _left_red = true;
                 else
                     _left_red = false;
