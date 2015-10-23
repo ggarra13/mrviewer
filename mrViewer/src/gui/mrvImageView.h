@@ -343,7 +343,7 @@ class server;
     void play_backwards();
 
     /// Scrub sequence
-    void scrub( float dy );
+    void scrub( double dy );
 
     /// Stop
     void stop();

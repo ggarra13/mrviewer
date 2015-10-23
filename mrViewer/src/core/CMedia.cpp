@@ -1161,6 +1161,9 @@ void CMedia::add_stereo_layers()
 {
     _layers.push_back( _("stereo.horizontal") );
     _layers.push_back( _("stereo.crossed") );
+    _layers.push_back( _("stereo.interlaced") );
+    _layers.push_back( _("stereo.interlaced columns") );
+    _layers.push_back( _("stereo.checkerboard") );
     _layers.push_back( _("left.anaglyph") );
     _layers.push_back( _("right.anaglyph") );
     image_damage( image_damage() | kDamageLayers );
@@ -1214,8 +1217,10 @@ void CMedia::channel( const char* c )
                _stereo_type = kStereoCrossed;
            else if ( ext == _("interlaced") )
                _stereo_type = kStereoInterlaced;
-           else if ( ext == _("interlaced flip") )
-               _stereo_type = kStereoInterlacedFlipped;
+           else if ( ext == _("interlaced columns") )
+               _stereo_type = kStereoInterlacedColumns;
+           else if ( ext == _("checkerboard") )
+               _stereo_type = kStereoCheckerboard;
            else
                LOG_ERROR( _("Unknown stereo type") );
        }
