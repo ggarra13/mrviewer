@@ -1125,31 +1125,6 @@ void GLEngine::translate( double x, double y )
    glTranslated( x, y, 0 );
 }
 
-void draw_interlace_stencil( const mrv::Recti& d,
-                             int Y = 0 )
-{
-    int X = d.x();
-    unsigned W = d.w();
-    unsigned H = d.h();
-    glClear( GL_STENCIL_BUFFER_BIT );
-    glEnable( GL_STENCIL_TEST );
-    glStencilFunc( GL_ALWAYS, 0x1, 0xffffffff );
-    glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
-    glLineWidth( 1.0 );
-    glDisable( GL_BLEND );
-    glColorMask( GL_FALSE, GL_FALSE, GL_FALSE, GL_FALSE );
-    glDepthMask( GL_FALSE );
-    glColor4f( 0.0f, 0.0f, 0.0f, 1.0f );
-    glBegin( GL_LINES );
-    for ( ; Y < H; Y += 2 )
-    {
-        glVertex2i( X, -Y );
-        glVertex2i( W, -Y );
-    }
-    glEnd();
-    glStencilFunc(GL_EQUAL, 0x1, 0xffffffff);
-    glStencilOp(GL_KEEP, GL_KEEP, GL_KEEP);
-}
 
 void GLEngine::draw_images( ImageList& images )
 {
@@ -1343,6 +1318,8 @@ void GLEngine::draw_images( ImageList& images )
 
       float g = img->gamma();
 
+      int mask = 0;
+
       if ( stereo != CMedia::kNoStereo && 
            img->left() && img->right() )
       {
@@ -1364,6 +1341,22 @@ void GLEngine::draw_images( ImageList& images )
 
          if ( stereo & CMedia::kStereoOpenGL )
              glDrawBuffer( GL_LEFT );
+
+
+         quad->mask( 0 );
+         quad->mask_value( 10 );
+         if ( stereo & CMedia::kStereoInterlaced )
+         {
+             if ( stereo == CMedia::kStereoInterlaced )
+                 mask = 1;
+             else if ( stereo == CMedia::kStereoInterlacedColumns )
+                 mask = 2;
+             else if ( stereo == CMedia::kStereoCheckerboard )
+                 mask = 3;
+             quad->mask( mask );  // odd even rows
+             quad->mask_value( 1 );
+             glEnable( GL_BLEND );
+         }
 
          quad->bind( pic );
          quad->gamma( g );
@@ -1441,11 +1434,6 @@ void GLEngine::draw_images( ImageList& images )
              texHeight = pic->height();
          }
 
-         if ( stereo & CMedia::kStereoInterlaced )
-         {
-             int Y = (stereo == CMedia::kStereoInterlaced);
-             draw_interlace_stencil( dpw2, Y );
-         }
  
          glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
 
@@ -1482,6 +1470,15 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( stereo & CMedia::kStereoOpenGL )
           glDrawBuffer( GL_RIGHT );
+
+      quad->mask( 0 );
+      quad->mask_value( 10 );
+      if ( stereo & CMedia::kStereoInterlaced )
+      {
+          quad->mask( mask );  // odd even rows
+          quad->mask_value( 0 );
+          glEnable( GL_BLEND );
+      }
 
       quad->bind( pic );
       quad->gamma( g );
