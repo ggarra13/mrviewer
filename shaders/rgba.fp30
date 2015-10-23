@@ -8,6 +8,10 @@
 #program main
 #semantic main.fgImage : TEXUNIT0
 #semantic main.lut : TEXUNIT3
+#semantic main.mask
+#semantic main.mask_value
+#semantic main.height
+#semantic main.width
 #semantic main.gain
 #semantic main.gamma
 #semantic main.channel
@@ -25,21 +29,29 @@
 #var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
 #var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1
 #var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1
-#var half gain :  : gain : 3 : 1
-#var half gamma :  : gamma : 4 : 1
-#var int channel :  : channel : 5 : 1
-#var bool unpremult :  : unpremult : 6 : 1
-#var bool premult :  : premult : 7 : 1
-#var bool enableNormalization :  : enableNormalization : 8 : 1
-#var half normMin :  : normMin : 9 : 1
-#var half normSpan :  : normSpan : 10 : 1
-#var bool enableLut :  : enableLut : 11 : 1
-#var bool lutF :  : lutF : 12 : 1
-#var half lutMin :  : lutMin : 13 : 1
-#var half lutMax :  : lutMax : 14 : 1
-#var half lutM :  : lutM : 15 : 1
-#var half lutT :  : lutT : 16 : 1
+#var int mask :  : mask : 3 : 1
+#var int mask_value :  : mask_value : 4 : 1
+#var int height :  : height : 5 : 1
+#var int width :  : width : 6 : 1
+#var half gain :  : gain : 7 : 1
+#var half gamma :  : gamma : 8 : 1
+#var int channel :  : channel : 9 : 1
+#var bool unpremult :  : unpremult : 10 : 1
+#var bool premult :  : premult : 11 : 1
+#var bool enableNormalization :  : enableNormalization : 12 : 1
+#var half normMin :  : normMin : 13 : 1
+#var half normSpan :  : normSpan : 14 : 1
+#var bool enableLut :  : enableLut : 15 : 1
+#var bool lutF :  : lutF : 16 : 1
+#var half lutMin :  : lutMin : 17 : 1
+#var half lutMax :  : lutMax : 18 : 1
+#var half lutM :  : lutM : 19 : 1
+#var half lutT :  : lutT : 20 : 1
 #var half4 main.pixel : $vout.COLOR : COL : -1 : 1
+#default mask = 0
+#default mask_value = 0
+#default height = 256
+#default width = 256
 #default gain = 1
 #default gamma = 0.44995117
 #default channel = 0
@@ -63,9 +75,15 @@ DECLARE unpremult = {0};
 DECLARE gain = {1};
 DECLARE gamma = {0.44995117};
 DECLARE channel = {0};
+DECLARE mask = {0};
+DECLARE height = {256};
+DECLARE width = {256};
+DECLARE mask_value = {0};
 DECLARE premult = {0};
 TEX   H1, f[TEX0], TEX0, 2D;
 ADDH  H0.xyz, H1, -normMin.x;
+MULR  R1.x, f[TEX0], width;
+MULR  R1.y, f[TEX0], height.x;
 RCPH  H0.w, normSpan.x;
 MOVXC RC.x, enableNormalization;
 MULH  H1.xyz(NE.x), H0, H0.w;
@@ -73,6 +91,7 @@ MINH  H0.xyz, H1, lutMax.x;
 MAXH  H0.xyz, H0, lutMin.x;
 MOVH  H2.w, lutT.x;
 RCPH  H3.w, lutF.x;
+MOVR  R0.w, {3}.x;
 LG2H  H0.x, H0.x;
 LG2H  H0.z, H0.z;
 LG2H  H0.y, H0.y;
@@ -136,18 +155,18 @@ MULH  H0.xyz, H0, lutM.x;
 MADH  H1.xyz(NE.x), H0, {0.69335938}.x, H2.w;
 TEX   R0.xyz, H1, TEX3, 3D;
 POWR  H0.x, {2.718282}.x, R0.x;
-MOVR  R0.x, {1};
-SEQR  H0.w, channel.x, R0.x;
-MOVR  R0.x, {2};
-SEQR  H2.x, channel, R0;
 POWR  H0.y, {2.718282}.x, R0.y;
 POWR  H0.z, {2.718282}.x, R0.z;
 MOVH  H1.xyz(NE.x), H0;
+MOVR  R0.x, {1};
+MOVR  R0.y, {2}.x;
 SNEH  H0.x, H1.w, {0};
+SEQR  H2.x, channel, R0.y;
 MULXC HC.x, H0, unpremult;
 RCPH  H0.y, H1.w;
 MULH  H1.xyz(NE.x), H1, H0.y;
 MULH  H0.xyz, H1, gain.x;
+SEQR  H0.w, channel.x, R0.x;
 MOVXC RC.x, H0.w;
 POWH  H0.x, H0.x, gamma.x;
 SEQX  H0.w, H0, {0}.x;
@@ -159,20 +178,19 @@ MOVH  H0.xyz, H1;
 MULXC HC.x, H0.w, H2;
 MOVH  H0.xyz(NE.x), H1.y;
 MOVH  H1.xyz, H0;
-MOVR  R0.x, {3};
-SEQR  H0.y, channel.x, R0.x;
 SEQX  H0.x, H2, {0};
 MULX  H0.x, H0.w, H0;
+SEQR  H0.y, channel.x, R0.w;
 MULXC HC.x, H0, H0.y;
 SEQX  H0.y, H0, {0}.x;
 MOVH  H1.xyz(NE.x), H0.z;
-MOVR  R0.x, {4};
-SEQR  H0.z, channel.x, R0.x;
+MOVR  R0.z, {4}.x;
+SEQR  H0.z, channel.x, R0;
 MULX  H0.y, H0.x, H0;
 MULXC HC.x, H0.y, H0.z;
 MOVH  H1.xyz(NE.x), H1.w;
-MOVR  R0.x, {5};
-SEQR  H2.x, channel, R0;
+MOVR  R0.z, {5}.x;
+SEQR  H2.x, channel, R0.z;
 SEQX  H0.z, H0, {0}.x;
 MULX  H0.w, H0.y, H0.z;
 MOVH  H0.x, H1;
@@ -182,15 +200,78 @@ MADH  H0.x(NE), H1.w, {0.5}, H0;
 ADDH  H0.y, H0.x, H1;
 ADDH  H1.x, H0.y, H1.z;
 MOVH  H0.yz, H1;
-MOVR  R0.x, {6};
 SEQX  H1.y, H2.x, {0}.x;
 MULX  H0.w, H0, H1.y;
-SEQR  H1.z, channel.x, R0.x;
+MOVR  R0.z, {6}.x;
+SEQR  H1.z, channel.x, R0;
 MULXC HC.x, H0.w, H1.z;
+SLTR  H1.z, R1.x, {0}.x;
+SEQR  H0.w, mask.x, R0.x;
 MULH  H0.xyz(NE.x), H1.x, {0.33333334}.x;
+MULR  R0.z, R1.x, {0.5}.x;
+SEQR  H1.y, mask.x, R0;
+SEQX  H1.x, H0.w, {0};
+MULX  H2.y, H1.x, H1;
+FRCR  R0.x, |R0.z|;
+MULR  R0.y, R0.x, {2}.x;
+SEQX  H1.z, H1, {0}.x;
+MULXC HC.x, H2.y, H1.z;
+MOVR  R0.x, -R0.y;
+MOVR  R0.x(NE), R0.y;
+FLRR  R0.y, |R0.x|;
+MOVRC RC.x, R0;
+MOVR  R0.z, R0.y;
+SEQX  H1.y, H1, {0}.x;
+MULX  H1.x, H1, H1.y;
+MULR  R0.x, R1.y, {0.5};
+FRCR  R0.x, |R0|;
+SLTR  H1.z, R1.y, {0}.x;
+MOVR  R0.z(LT.x), -R0.y;
+MULR  R0.x, R0, {2};
+SEQX  H1.z, H1, {0}.x;
+MOVR  R0.y, -R0.x;
+MULXC HC.x, H0.w, H1.z;
+MOVR  R0.y(NE.x), R0.x;
+FLRR  R1.z, |R0.y|;
+MOVRC RC.x, R0.y;
+MOVR  R0.x, R1.z;
+MOVR  R0.x(LT), -R1.z;
+MOVXC RC.x, H0.w;
+MOVR  R0.x(EQ), {0};
+MOVXC RC.x, H2.y;
+MOVR  R0.x(NE), R0.z;
+FLRR  R0.y, R1;
+FLRR  R0.z, R1.x;
+SLTR  H1.z, R0, -R0.y;
+ADDR  R1.x, R0.z, R0.y;
+SEQX  H2.x, H1.z, {0};
+SEQR  H1.z, mask.x, R0.w;
+MULX  H1.x, H1, H1.z;
+MULR  R1.x, R1, {0.5};
+FRCR  R1.x, |R1|;
+MULR  R1.x, R1, {2};
+MOVH  H1.z, H1.w;
+MOVR  R0.y, -R1.x;
+MULXC HC.x, H1, H2;
+MOVR  R0.y(NE.x), R1.x;
+MOVXC RC.x, H1;
+SLTR  R0.x(NE), R0.y, {1};
+SEQH  H1.y, H1.w, {0}.x;
+MULXC HC.x, H0.w, H1.y;
+MOVH  H1.z(NE.x), {1}.x;
+SEQH  H0.w, H1.z, {0}.x;
+MOVH  H1.y, H1.z;
+MULXC HC.x, H2.y, H0.w;
+MOVH  H1.y(NE.x), {1}.x;
+SEQH  H0.w, H1.y, {0}.x;
+MULXC HC.x, H1, H0.w;
+MOVH  H1.y(NE.x), {1}.x;
+MOVH  H0.w, H1.y;
+SEQRC HC.x, R0, mask_value;
+MOVH  H0(NE.x), {0}.x;
+MOVH  o[COLH].xyz, H0;
 MOVXC RC.x, premult;
-MULH  H0.xyz(NE.x), H0, H1.w;
-MOVH  H0.w, H1;
-MOVH  o[COLH], H0;
+MULH  o[COLH].xyz(NE.x), H0, H0.w;
+MOVH  o[COLH].w, H0;
 END
-# 128 instructions, 1 R-regs, 8 H-regs
+# 193 instructions, 2 R-regs, 8 H-regs
