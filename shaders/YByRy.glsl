@@ -3,7 +3,7 @@
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  * 
- * @brief    simple rgba texture with 3D lut shader
+ * @brief    simple YByRy texture with 3D lut shader
  * 
  */
 
@@ -13,6 +13,12 @@ uniform sampler2D YImage;
 uniform sampler2D UImage;
 uniform sampler2D VImage;
 uniform sampler3D lut;
+
+// Interlaced/Checkerboard controls
+uniform int mask;
+uniform int mask_value;
+uniform int height;
+uniform int width;
 
 // Standard controls
 uniform float gain;
@@ -107,6 +113,30 @@ void main()
     {
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
+
+
+  int x = 0;
+  if ( mask == 1 )  // even odd rows
+  {
+      x = mod( gl_TexCoord[0].t * height, 2 );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+  else if ( mask == 2 )  // even-odd columns
+  {
+      x = mod( gl_TexCoord[0].s * width, 2 );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+  else if ( mask == 3 ) // checkerboard
+  {
+      x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2 ) < 1;
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+
+  if ( x == mask_value )
+  {
+      c.rgba = 0.0f;
+  }
+
 
   gl_FragColor = c;
 } 
