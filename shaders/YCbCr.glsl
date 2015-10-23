@@ -3,7 +3,7 @@
  * @author gga
  * @date   Thu Jul  5 22:50:08 2007
  * 
- * @brief    simple rgba texture with 3D lut shader
+ * @brief    simple YCbCr texture with 3D lut shader
  * 
  */
 
@@ -13,6 +13,12 @@ uniform sampler2D YImage;
 uniform sampler2D UImage;
 uniform sampler2D VImage;
 uniform sampler3D lut;
+
+// Interlaced/Checkerboard controls
+uniform int mask;
+uniform int mask_value;
+uniform int height;
+uniform int width;
 
 // Standard controls
 uniform float gain;
