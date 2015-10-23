@@ -19,6 +19,10 @@ Out main(
 	 uniform sampler2D UImage: TEXUNIT1, 
 	 uniform sampler2D VImage: TEXUNIT2, 
 	 uniform sampler3D lut   : TEXUNIT3,
+	 uniform int    mask = 0,
+	 uniform int    mask_value = 0,
+         uniform int    height = 256,
+         uniform int    width  = 256,
 	 uniform half   gain  = 1.0,
 	 uniform half   gamma = 1.0,
 	 uniform int     channel = 0,
@@ -155,6 +159,28 @@ Out main(
     {
       c.rgb = (c.r + c.g + c.b) / 3;
     }
+
+  int x = 0;
+  if ( mask == 1 )  // even odd rows
+  {
+      x = fmod( tc.y * height, 2 );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+  else if ( mask == 2 ) // even odd columns
+  {
+      x = fmod( tc.x * width, 2 );
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+  else if ( mask == 3 ) // checkerboard
+  {
+      x = fmod( floor( tc.x * width ) + floor( tc.y * height ), 2 ) < 1;
+      if ( c.a == 0.0 ) c.a = 1.0;
+  }
+
+  if ( x == mask_value )
+  {
+      c.rgba = 0.0f;
+  }
 
   Out output;
   output.pixel = c;

@@ -893,10 +893,10 @@ namespace mrv {
 
 	_shader->setTextureUnit( "lut", 3 );
 
-        _shader->setUniform( "mask", (float) _mask );
-        _shader->setUniform( "mask_value", (float) _mask_value );
-        _shader->setUniform( "height", (float) _height );
-        _shader->setUniform( "width", (float) _width );
+        _shader->setUniform( "mask", (int) _mask );
+        _shader->setUniform( "mask_value", (int) _mask_value );
+        _shader->setUniform( "height", (int) _height );
+        _shader->setUniform( "width", (int) _width );
 
 	_shader->setUniform( "gain",  _view->gain() );
 	_shader->setUniform( "gamma", 1.0f/_gamma );
