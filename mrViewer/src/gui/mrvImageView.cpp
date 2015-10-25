@@ -2627,6 +2627,19 @@ void ImageView::mouseMove(int x, int y)
   }
   else
   {
+      if ( stereo_type() == CMedia::kStereoInterlaced )
+      {
+          if ( yp % 2 == 1 ) pic = img->right();
+      }
+      else if ( stereo_type() == CMedia::kStereoInterlacedColumns )
+      {
+          if ( xp % 2 == 1 ) pic = img->right();
+      }
+      else if ( stereo_type() == CMedia::kStereoCheckerboard )
+      {
+          if ( (xp + yp) % 2 == 0 ) pic = img->right();
+      }
+
       rgba = pic->pixel( xp, yp );
 
       pixel_processed( img, rgba );
