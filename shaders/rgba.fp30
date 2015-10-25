@@ -237,7 +237,7 @@ MOVRC RC.x, R0.y;
 MOVR  R0.x, R1.z;
 MOVR  R0.x(LT), -R1.z;
 MOVXC RC.x, H0.w;
-MOVR  R0.x(EQ), {0};
+MOVR  R0.x(EQ), {1000};
 MOVXC RC.x, H2.y;
 MOVR  R0.x(NE), R0.z;
 FLRR  R0.y, R1;
