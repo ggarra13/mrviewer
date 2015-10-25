@@ -251,6 +251,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           xmin -= daw2.x();
           ymin -= daw2.y();
           xmin -= wt;
+          right = true;
       }
       else
       {
@@ -315,7 +316,7 @@ void ColorInfo::update( const CMedia* img,
       unsigned count = 0;
 
       int xmin, ymin, xmax, ymax;
-      bool right;
+      bool right = false;
 
       selection_to_coord( img, selection, xmin, ymin, xmax, ymax, right );
 
@@ -369,8 +370,25 @@ void ColorInfo::update( const CMedia* img,
       for ( int y = ymin; y <= ymax; ++y )
 	{
 	  for ( int x = xmin; x <= xmax; ++x, ++count )
-	    {
-               CMedia::Pixel op = pic->pixel( x, y );
+          {
+
+              if ( stereo_type == CMedia::kStereoInterlaced )
+              {
+                  if ( y % 2 == 1 ) pic = img->right();
+                  else pic = img->left();
+              }
+              else if ( stereo_type == CMedia::kStereoInterlacedColumns )
+              {
+                  if ( x % 2 == 1 ) pic = img->right();
+                  else pic = img->left();
+              }
+              else if ( stereo_type == CMedia::kStereoCheckerboard )
+              {
+                  if ( (x + y) % 2 == 0 ) pic = img->right();
+                  else pic = img->left();
+              }
+
+              CMedia::Pixel op = pic->pixel( x, y );
 
                if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
                {
