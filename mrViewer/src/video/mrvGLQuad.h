@@ -122,6 +122,7 @@ namespace mrv {
     unsigned     _num_textures;
     GLuint       _pbo[4];
     GLuint       _texId[4];
+    GLuint       _render_mask_tex;
 
     GLenum       _glformat;
     GLenum       _internalFormat;
