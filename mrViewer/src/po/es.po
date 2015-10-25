@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-10-25 15:16-0300\n"
+"POT-Creation-Date: 2015-10-25 15:26-0300\n"
 "PO-Revision-Date: 2015-09-11 16:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -659,7 +659,7 @@ msgid "@||"
 msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-51-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3800
-#: gui/mrvColorInfo.cpp:550
+#: gui/mrvColorInfo.cpp:568
 msgid "A"
 msgstr ""
 
@@ -861,7 +861,7 @@ msgstr ""
 "¿Estás seguro que querés\n"
 "borrar todas las imágenes del carrete?"
 
-#: gui/mrvColorInfo.cpp:531
+#: gui/mrvColorInfo.cpp:549
 msgid "Area"
 msgstr "Area"
 
@@ -959,7 +959,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:548 gui/mrvImageView.cpp:5652
+#: gui/mrvColorInfo.cpp:566 gui/mrvImageView.cpp:5652
 msgid "B"
 msgstr "B"
 
@@ -2317,7 +2317,7 @@ msgstr "Pantalla Completa"
 msgid "Function"
 msgstr "Función"
 
-#: gui/mrvColorInfo.cpp:546
+#: gui/mrvColorInfo.cpp:564
 msgid "G"
 msgstr "V"
 
@@ -3044,11 +3044,11 @@ msgstr "Imagen Map"
 msgid "Max. Texture Size:\t"
 msgstr "Max. Tamaño Textura:\t"
 
-#: gui/mrvColorInfo.cpp:552 gui/mrvColorInfo.cpp:663
+#: gui/mrvColorInfo.cpp:570 gui/mrvColorInfo.cpp:681
 msgid "Maximum"
 msgstr "Máximo"
 
-#: gui/mrvColorInfo.cpp:574 gui/mrvColorInfo.cpp:685
+#: gui/mrvColorInfo.cpp:592 gui/mrvColorInfo.cpp:703
 msgid "Mean"
 msgstr "Promedio"
 
@@ -3086,7 +3086,7 @@ msgstr "Meta"
 msgid "Microsoft Bitmap (.bmp)"
 msgstr "Bitmap de Microsoft (.bmp)"
 
-#: gui/mrvColorInfo.cpp:557 gui/mrvColorInfo.cpp:668
+#: gui/mrvColorInfo.cpp:575 gui/mrvColorInfo.cpp:686
 msgid "Minimum"
 msgstr "Mínimo"
 
@@ -3737,7 +3737,7 @@ msgstr "Cualidad"
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
-#: gui/mrvColorInfo.cpp:544
+#: gui/mrvColorInfo.cpp:562
 msgid "R"
 msgstr "R"
 
@@ -3793,7 +3793,7 @@ msgstr ""
 msgid "Random Y"
 msgstr "Al Azar en Y"
 
-#: gui/mrvColorInfo.cpp:569 gui/mrvColorInfo.cpp:680
+#: gui/mrvColorInfo.cpp:587 gui/mrvColorInfo.cpp:698
 msgid "Range"
 msgstr "Rango"
 
@@ -4284,7 +4284,7 @@ msgstr "Un Solo Click para Viajar a las Carpetas"
 msgid "Single Instance"
 msgstr "Una Sola Instancia"
 
-#: gui/FLU/Flu_File_Chooser.cpp:108 gui/mrvColorInfo.cpp:534
+#: gui/FLU/Flu_File_Chooser.cpp:108 gui/mrvColorInfo.cpp:552
 msgid "Size"
 msgstr "Tamaño"
 
@@ -5666,11 +5666,11 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame No hay datos de pixel a cambiar"
 
-#: gui/mrvColorInfo.cpp:536
+#: gui/mrvColorInfo.cpp:554
 msgid "pixel"
 msgstr "pixel"
 
-#: gui/mrvColorInfo.cpp:536
+#: gui/mrvColorInfo.cpp:554
 msgid "pixels"
 msgstr "pixeles"
 
