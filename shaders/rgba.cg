@@ -151,7 +151,7 @@ Out main(
     }
 
 #ifndef USE_EVEN_TEXTURE
-  int x = 0;
+  int x = 1000;
   if ( mask == 1 )  // even odd rows
   {
       x = fmod( tc.y * height, 2 );
