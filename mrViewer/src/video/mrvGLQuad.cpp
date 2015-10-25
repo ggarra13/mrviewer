@@ -268,6 +268,8 @@ namespace mrv {
     _format( image_type::kLumma ),
     _width( 0 ),
     _height( 0 ),
+    _mask( 0 ),
+    _mask_value( 0 ),
     _channels( 0 ),
     _normMin( 0.f ),
     _normMax( 1.f )
