@@ -895,7 +895,7 @@ class CMedia
     CMedia* left_eye() { return this; }
 
     void right_eye( CMedia* c ) { _right_eye = c; refresh(); }
-    CMedia* right_eye() { return _right_eye; }
+    CMedia* right_eye() const { return _right_eye; }
 
     bool is_left_eye() const { return _is_left_eye; }
     void is_left_eye( bool left ) { _is_left_eye = left; }

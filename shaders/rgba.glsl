@@ -106,7 +106,7 @@ void main()
       c.rgb = vec3( (c.r + c.g + c.b) / 3.0 );
     }
 
-  int x = -1;
+  int x = 1000;
   if ( mask == 1 )  // even odd rows
   {
       x = mod( gl_TexCoord[0].t * height, 2 );

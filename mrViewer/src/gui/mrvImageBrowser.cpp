@@ -569,6 +569,13 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
                 fprintf( f, "audio: %s\n", img->audio_file().c_str() );
 	  }
 
+        const CMedia* const right = img->right_eye();
+
+        if ( img->is_stereo() && right )
+        {
+            fprintf( f, "stereo: %s\n", right->fileroot() );
+        }
+
         const GLShapeList& shapes = img->shapes();
         if ( !shapes.empty() )
         {
@@ -1527,6 +1534,17 @@ void ImageBrowser::load( const mrv::LoadList& files,
                                     << load.filename.c_str() 
                                     << N_("'") );
                      }
+                     else
+                     {
+                         if ( load.right_filename.size() )
+                         {
+                             load_stereo( fg,
+                                          load.right_filename.c_str(), 
+                                          load.first, load.last,
+                                          load.start,
+                                          load.end );
+                         }
+                     }
                  }
 	     }
              if ( fg )
@@ -1637,7 +1655,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
      
      new_reel( reelname.c_str() );
 
-     load( sequences, true );
+     load( sequences, false, true );
 
      mrv::Reel reel = current_reel();
 

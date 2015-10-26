@@ -486,7 +486,8 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class VectorscopeUI {} {
+  class VectorscopeUI {selected
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {private
     } {
@@ -618,12 +619,13 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
-        label Preferences
-        xywh {306 200 630 450} hide resizable
+        label Preferences open
+        xywh {306 200 630 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1113,7 +1115,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches
             xywh {13 22 399 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
@@ -1710,21 +1712,12 @@ uiICC_float_profile->do_callback();}
             }
             {fltk::Group} {} {
               label Stereo open
-              xywh {48 97 318 65} deactivate box ROUNDED_BOX
+              xywh {48 97 318 65} box ROUNDED_BOX
             } {
-              {fltk::Choice} {} {
-                label Type open
-                xywh {80 25 175 25}
-              } {
-                {fltk::Item} {} {
-                  label {Red-Cyan Anaglyph}
-                  }
-                {fltk::Item} {} {
-                  label Pattern
-                  }
-                {fltk::Item} {} {
-                  label {Shutter Glasses}
-                  }
+              {fltk::LightButton} uiPrefsStereoRightEyeInverted {
+                label {Right Eye Inverted}
+                tooltip {This option controls stereo viewing of interlaced and checkerboard.}
+                xywh {57 15 212 35}
               }
             }
             {fltk::Group} {} {open
@@ -2449,8 +2442,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2479,17 +2471,17 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;} open
-        xywh {354 146 640 535} when CHANGED resizable
+        xywh {354 146 640 535} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
-        class {mrv::MainWindow} visible
+        class {mrv::MainWindow}
       } {
         {fltk::PackedGroup} uiRegion {open
           xywh {0 0 640 530}
@@ -2587,7 +2579,7 @@ v->uiHotkey->uiMain->show();}
               {fltk::PopupMenu} uiColorChannel {
                 label {(no image)}
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiView->channel( o->get_item() );} open selected
+                callback {v->uiView->channel( o->get_item() );} open
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
                 class {mrv::PopupMenu}
