@@ -585,6 +585,15 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   continue;
               }
 
+              if ( strncmp( "stereo: ", c, 8 ) == 0 )
+              {
+                  if ( !sequences.empty() )
+                  {
+                      sequences.back().right_filename = c+8;
+                  }
+                  continue;
+              }
+
               boost::int64_t first = kMinFrame;
               boost::int64_t last  = kMaxFrame;
 
@@ -689,7 +698,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                   sequences.back().shapes.push_back( 
                   mrv::shape_type_ptr(shape) );
                   continue;
-            }
+              }
 
               if ( version == 1.0 )
               {
