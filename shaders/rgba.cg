@@ -17,20 +17,12 @@ struct Out
 
 Out main( 
 	 float2 tc: TEXCOORD0, 
-#ifdef USE_EVEN_TEXTURE
-	 float2 tc2: TEXCOORD1, 
-#endif
 	 uniform sampler2D fgImage: TEXUNIT0, 
-#ifdef USE_EVEN_TEXTURE
-	 uniform sampler2D maskImage: TEXUNIT1,
-#endif
 	 uniform sampler3D lut:     TEXUNIT3,
-#ifndef USE_EVEN_TEXTURE
 	 uniform int    mask = 0,
 	 uniform int    mask_value = 0,
          uniform int    height = 256,
          uniform int    width  = 256,
-#endif
 	 uniform half   gain  = 1.0,
 	 uniform half   gamma = 0.45,
 	 uniform int    channel = 0,
@@ -147,10 +139,9 @@ Out main(
     }
   else if ( channel == 6 )
     {
-      c.rgb = (c.r + c.g + c.b) / 3;
+      c.rgb = (c.r + c.g + c.b) / 3.0;
     }
 
-#ifndef USE_EVEN_TEXTURE
   int x = 1000;
   if ( mask == 1 )  // even odd rows
   {
@@ -172,10 +163,6 @@ Out main(
   {
       c.rgba = 0.0f;
   }
-#else
-  float m = tex2D( maskImage, tc2 ).x;
-  c.rgba *= m;
-#endif
 
   if ( premult )
   {
