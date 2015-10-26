@@ -1354,7 +1354,10 @@ void GLEngine::draw_images( ImageList& images )
              else if ( stereo == CMedia::kStereoCheckerboard )
                  mask = 3;
              quad->mask( mask );  // odd even rows
-             quad->mask_value( 1 );
+             if ( _view->main()->uiPrefs->uiPrefsStereoRightEyeInverted->value() )
+                 quad->mask_value( 0 );
+             else
+                 quad->mask_value( 1 );
              glEnable( GL_BLEND );
          }
 
@@ -1475,8 +1478,11 @@ void GLEngine::draw_images( ImageList& images )
       quad->mask_value( 10 );
       if ( stereo & CMedia::kStereoInterlaced )
       {
-          quad->mask( mask );  // odd even rows
-          quad->mask_value( 0 );
+          quad->mask( mask );  // odd even rowsws
+          if ( _view->main()->uiPrefs->uiPrefsStereoRightEyeInverted->value() )
+              quad->mask_value( 1 );
+          else
+              quad->mask_value( 0 );
           glEnable( GL_BLEND );
       }
 
