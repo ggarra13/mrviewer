@@ -416,9 +416,9 @@ void parse_command_line( const int argc, char** argv,
 
     if ( stereo.size() % 2 != 0 )
     {
-       std::cerr << "--stereo flag needs to be specified a "
-       "multiple of two times." << std::endl;
-       exit(1);
+        std::cerr << _("--stereo flag needs to be specified a "
+                       "multiple of two times.") << std::endl;
+        exit(1);
     }
 
     //
