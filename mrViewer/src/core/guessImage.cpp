@@ -134,6 +134,22 @@ std::string parse_view( const std::string& root, bool left )
 }
 
 
+void verify_stereo_resolution( const CMedia* const image,
+                               const CMedia* const right )
+{
+    if ( right->height() != image->height() ||
+         right->width() != image->width() )
+    {
+        LOG_WARNING( "\"" << right->name() << "\"" 
+                     << _( " has different resolution than " )
+                     << "\"" << image->name() << "\"" );
+        LOG_WARNING( right->width() << "x" << right->height() 
+                     << _(" vs. ")
+                     << image->width() << "x" << image->height() );
+        LOG_WARNING( _("3D Stereo will most likely not work properly") );
+    }
+}
+
 CMedia* guess( bool is_stereo, bool is_seq, bool left,
                const std::string& root, const int64_t frame,
                const boost::uint8_t* datas, const int len,
@@ -266,6 +282,8 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                            NULL, 0, lastFrame );
             if ( right )
             {
+                verify_stereo_resolution( image, right );
+
                 image->right_eye( right );
                 image->is_stereo( true );
                 image->is_left_eye( true );
