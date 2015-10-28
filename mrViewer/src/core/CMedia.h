@@ -1317,6 +1317,8 @@ class CMedia
 };
 
 
+void verify_stereo_resolution( const CMedia* const image,
+                               const CMedia* const right );
 uint64_t get_valid_channel_layout(uint64_t channel_layout, int channels);
 char *const get_error_text(const int error);
 

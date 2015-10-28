@@ -698,6 +698,8 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
 
     fltk::Preferences video( base, "video" );
+    video.get( "stereo_right_eye_inverted", tmp, 0 );
+    uiPrefs->uiPrefsStereoRightEyeInverted->value(tmp);
     video.get( "blend_mode", tmp, 0 );
     uiPrefs->uiPrefsBlendMode->value(tmp);
 
@@ -1107,6 +1109,8 @@ fltk::StyleSet*     newscheme = NULL;
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
 
     fltk::Preferences video( base, "video" );
+    video.set( "stereo_right_eye_inverted", 
+               (int) uiPrefs->uiPrefsStereoRightEyeInverted->value() );
     video.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
 
 
