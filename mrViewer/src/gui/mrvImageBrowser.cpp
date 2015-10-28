@@ -1298,6 +1298,9 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         m->right_eye( img );  // Set image as right image of fg
         m->is_stereo( true );
         m->is_left_eye( true );
+
+        verify_stereo_resolution( img, m );
+
         img->is_stereo( true );
         img->is_left_eye( false );
         m->add_stereo_layers();
