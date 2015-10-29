@@ -495,7 +495,7 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
     bitrate = enc->sample_rate * enc->channels * 8;
     break;
   default:
-    bitrate = enc->bit_rate;
+    bitrate = (unsigned int) enc->bit_rate;
     break;
   }
   return bitrate;

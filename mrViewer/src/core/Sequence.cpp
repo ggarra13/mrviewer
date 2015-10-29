@@ -254,6 +254,11 @@ bool replace_view( std::string& view )
     return false;
 }
 
+bool is_valid_view( std::string view )
+{
+    return replace_view( view );
+}
+
   /** 
    * Given a filename of a possible sequence, split it into
    * root name, frame string, view, and extension
@@ -327,12 +332,12 @@ bool replace_view( std::string& view )
         if ( mrv::is_valid_movie( ext.c_str() ) )
         {
             if ( ! mrv::is_valid_frame( frame ) &&
-                 ! mrv::is_valid_frame_spec( frame ) )
+                 ! mrv::is_valid_frame_spec( frame ) &&
+                 mrv::is_valid_view( periods[1] ) )
             {
                 view = periods[1];
                 replace_view( view );
             }
-            frame = "";
             return false;
         }
     }
@@ -522,7 +527,8 @@ bool replace_view( std::string& view )
 
         std::string tmp = (*i).path().leaf().string();
 
-	split_sequence( croot, cframe, cview, cext, tmp );
+	if ( ! split_sequence( croot, cframe, cview, cext, tmp ) )
+            continue;
 
 	if ( cext != ext || croot != root || cview != view )
         {
@@ -544,7 +550,8 @@ bool replace_view( std::string& view )
     sprintf( buf, "%%0%d%s", pad, prdigits );
 
 
-    split_sequence( root, frame, view, ext, fileroot );
+    if ( ! split_sequence( root, frame, view, ext, fileroot ) )
+        return false;
 
 
     fileroot = root;
