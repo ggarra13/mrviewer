@@ -38,17 +38,17 @@ mrViewer pod.%v.mov dc56.%V.@@@@.exr
 </div> 
 <br><br> The files will appear in this same way in the file requester when you try to load them.
 <br><br>
-In addition to the above, mrViewer allows loading two sequences or one sequence and one movie file command-line for stereo playback.  For that, it is needed to specify both with the -s shortcut.  For example:
+In addition to the above, mrViewer allows loading two sequences or one sequence and one movie file command-line for stereo playback.  For that, it is needed to specify both with the -s shortcut (--stereo).  For example:
 <br><br>
 <div class="console">
-mrViewer -s ba25.left.mov -s ba25.%04d.png
+mrViewer -s ba25-fg.mov -s ba25-fg.%04d.png
 </div> 
-<br>
 <br>
 The first image specified is taken to be the left eye, while the second invocation is taken to be the right eye.  If you wish to later change this, you can turn on <div class="menu">Preferences->Video->Right Eye Inverted.</div>
 <br>
+<br>Note that the --stereo option does not play well with images that already have the left/right prefix in their names.<br> <br>
 <br>
-The Types of Stereo Supported are:
+The Types of Stereo Supported are Passive Stereo:
 <br>
 <table>
 <tr><td>
