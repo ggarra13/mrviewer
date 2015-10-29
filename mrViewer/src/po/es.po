@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-10-29 11:09-0300\n"
+"POT-Creation-Date: 2015-10-29 12:40-0300\n"
 "PO-Revision-Date: 2015-10-27 16:38-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -179,8 +179,9 @@ msgstr " cuadros"
 msgid " frequency: "
 msgstr " frecuencia: "
 
-#: core/guessImage.cpp:144
-msgid " has different resolution than "
+#: core/guessImage.cpp:145
+#, fuzzy
+msgid " has different display window than "
 msgstr "  tiene diferente resolución que "
 
 #: core/aviImage.cpp:1073
@@ -227,7 +228,7 @@ msgstr " tipo "
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
-#: core/guessImage.cpp:147
+#: core/guessImage.cpp:148
 msgid " vs. "
 msgstr ""
 
@@ -239,7 +240,7 @@ msgstr "\" no tiene canales con el prefijo \""
 msgid "\" has no channels."
 msgstr " no tiene canales."
 
-#: core/guessImage.cpp:196 core/guessImage.cpp:200
+#: core/guessImage.cpp:197 core/guessImage.cpp:201
 msgid "\" not found."
 msgstr "\" no encontrada."
 
@@ -551,7 +552,7 @@ msgstr "3D Lut para "
 msgid "3D Luts"
 msgstr "3D Luts"
 
-#: core/guessImage.cpp:149
+#: core/guessImage.cpp:150
 msgid "3D Stereo will most likely not work properly"
 msgstr "Estéreo 3D probablemente no funcione apropiadamente"
 
@@ -2571,7 +2572,7 @@ msgstr ""
 msgid "Image"
 msgstr "Imagen"
 
-#: core/guessImage.cpp:200
+#: core/guessImage.cpp:201
 msgid "Image \""
 msgstr "Imagen \""
 
@@ -2607,7 +2608,7 @@ msgstr "Coordenada de la imagen del pixel bajo el ratón."
 msgid "Image file \""
 msgstr "Archivo de imagen \""
 
-#: core/guessImage.cpp:195
+#: core/guessImage.cpp:196
 msgid "Image sequence \""
 msgstr "Secuencia de Imagen \""
 
