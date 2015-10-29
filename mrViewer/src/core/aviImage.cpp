@@ -667,19 +667,26 @@ void aviImage::store_image( const boost::int64_t frame,
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
 
-  mrv::image_type_ptr 
-  image = allocate_image( frame, boost::int64_t( double(pts) * 
-                                                 av_q2d( _video_ctx->time_base )
-                                                 )
-			  );
+  mrv::image_type_ptr image;
+  try {
+
+      image = allocate_image( frame, boost::int64_t( double(pts) * 
+                                                     av_q2d( _video_ctx->time_base )
+                              )
+      );
+  } catch ( const std::exception& e )
+  {
+      LOG_ERROR( "Problem allocating image " << e.what() );
+  }
+
+
   if ( ! image )
-    {
+  {
       IMG_ERROR( "No memory for video frame" );
       IMG_ERROR( "Audios #" << _audio.size() );
       IMG_ERROR( "Videos #" << _images.size() );
       return;
-    }
-
+  }
 
   AVPicture output;
   boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
