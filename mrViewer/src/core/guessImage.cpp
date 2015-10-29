@@ -134,20 +134,46 @@ std::string parse_view( const std::string& root, bool left )
 }
 
 
-void verify_stereo_resolution( const CMedia* const image,
+void verify_stereo_resolution( const CMedia* const left,
                                const CMedia* const right )
 {
+    const mrv::Recti& dpw1 = left->display_window();
     const mrv::Recti& dpw2 = right->display_window();
-    const mrv::Recti& dpw1 = image->display_window();
     if ( dpw1 != dpw2 )
     {
         LOG_WARNING( "\"" << right->name() << "\"" 
                      << _( " has different display window than " )
-                     << "\"" << image->name() << "\"" );
+                     << "\"" << left->name() << "\"" );
         LOG_WARNING( dpw1
                      << _(" vs. ")
                      << dpw2 );
-        LOG_WARNING( _("3D Stereo will most likely not work properly") );
+        LOG_WARNING( _("3D Stereo will most likely not work properly.") );
+    }
+
+    if ( right->fps() != left->fps() )
+    {
+        LOG_WARNING( _("Images in stereo have different velocities (fps)." ) );
+
+        double d1 = ( left->last_frame() - left->first_frame() + 1) /
+                    left->fps();
+
+        double d2 = ( right->last_frame() - right->first_frame() + 1) /
+                    right->fps();
+
+        if ( d1 != d2 )
+        {
+            LOG_WARNING( _("Images in stereo have different lengths.  "
+                           "They will not loop properly." ) );
+        }
+    }
+    else
+    {
+        if ( right->last_frame() - right->first_frame() + 1 !=
+             left->last_frame() - left->first_frame() + 1 )
+        {
+            LOG_WARNING( _("Images in stereo have different frame lengths.  "
+                           "They will not loop properly." ) );
+        }
     }
 }
 
@@ -290,6 +316,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 image->is_left_eye( true );
                 right->is_stereo( true );
                 right->is_left_eye( false );
+
                 image->add_stereo_layers();
             }
         }

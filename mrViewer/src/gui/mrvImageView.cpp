@@ -977,10 +977,10 @@ void ImageView::copy_pixel() const
       if ( pic && xp >= 0 && xp < pic->width() &&
            yp >= 0 && yp < pic->height() )
       {
-              float r = rgba.r;
-              rgba = pic->pixel( xp, yp );
-              pixel_processed( img, rgba );
-              rgba.r = r;
+          float r = rgba.r;
+          rgba = pic->pixel( xp, yp );
+          pixel_processed( img, rgba );
+          rgba.r = r;
       }
   }
 
@@ -2622,25 +2622,32 @@ void ImageView::mouseMove(int x, int y)
   sprintf( buf, "%5d, %5d", xp, yp );
   uiMain->uiCoord->text(buf);
   
+  if ( stereo_type() == CMedia::kStereoInterlaced )
+  {
+      if ( yp % 2 == 1 ) pic = img->right();
+  }
+  else if ( stereo_type() == CMedia::kStereoInterlacedColumns )
+  {
+      if ( xp % 2 == 1 ) pic = img->right();
+  }
+  else if ( stereo_type() == CMedia::kStereoCheckerboard )
+  {
+      if ( (xp + yp) % 2 == 0 ) pic = img->right();
+  }
+
+  if ( xp >= pic->width() || yp >= pic->height() )
+  {
+      pic = img->left();
+      if ( xp >= pic->width() || yp >= pic->height() )
+          outside = true;
+  }
+
   if ( outside )
   {
       rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
   }
   else
   {
-      if ( stereo_type() == CMedia::kStereoInterlaced )
-      {
-          if ( yp % 2 == 1 ) pic = img->right();
-      }
-      else if ( stereo_type() == CMedia::kStereoInterlacedColumns )
-      {
-          if ( xp % 2 == 1 ) pic = img->right();
-      }
-      else if ( stereo_type() == CMedia::kStereoCheckerboard )
-      {
-          if ( (xp + yp) % 2 == 0 ) pic = img->right();
-      }
-
       rgba = pic->pixel( xp, yp );
 
       pixel_processed( img, rgba );
