@@ -388,6 +388,9 @@ void ColorInfo::update( const CMedia* img,
                   else pic = img->left();
               }
 
+              if ( x >= pic->width() || y >= pic->height() )
+                  continue;
+
               CMedia::Pixel op = pic->pixel( x, y );
 
                if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
