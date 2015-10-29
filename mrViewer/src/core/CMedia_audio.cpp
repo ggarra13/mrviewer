@@ -811,6 +811,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
      first = tmp;
   }
 
+
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
 				NotInRangeFunctor( first, last ) ), end );
@@ -885,8 +886,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
 
             if ( ( ctx->sample_fmt != fmt  ||
-                   unsigned(ctx->channels) > _audio_channels ) && 
-                 _audio_channels > 0 )
+                   unsigned(ctx->channels) != _audio_channels ) )
             {
                 if (!forw_ctx)
                 {
@@ -945,6 +945,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                         LOG_ERROR( _("Failed to alloc swresample library") );
                         return 0;
                     }
+
                     if(swr_init(forw_ctx) < 0)
                     {
                         char buf[256];
@@ -1496,10 +1497,10 @@ bool CMedia::open_audio( const short channels,
   unsigned bps = av_get_bytes_per_sample( fmt ) * 8;
 
   bool ok = false;
-
+  int ch = channels;
   for ( int fmt = format; fmt > 0; fmt -= 2 )
   {
-     for (int ch = channels; ch > 0; ch -= 2 )
+     for ( ; ch > 0; ch -= 2 )
      {
 	ok = _audio_engine->open( ch, nSamplesPerSec,
 				  (AudioEngine::AudioFormat)fmt, bps );
@@ -1510,10 +1511,10 @@ bool CMedia::open_audio( const short channels,
 
   _audio_format = _audio_engine->format();
 
-  if ( channels == 1 )
-     _audio_channels = 1;
+  if ( ch <= 0 )
+      _audio_channels = 1;
   else
-      _audio_channels = (unsigned short) _audio_engine->channels();
+      _audio_channels = (unsigned short) ch;
   
 
   return ok;
@@ -1534,7 +1535,10 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 	  _audio_index = -1;
 	  return false;
 	}
+      _audio_channels = result->channels();
+      _samples_per_sec = nSamplesPerSec;
     }
+
 
   if ( ! _audio_engine ) return false;
 
@@ -1554,7 +1558,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 {
   audio_type_ptr result;
 
-  if ( !has_picture() ) 
+  if ( !has_picture() )
     {
       _frame = frame;
       refresh();
@@ -1575,7 +1579,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
     _audio_frame = frame;
 
-    if ( frame < first_frame() ) return true;
+    if ( frame < first_frame() )
+        return true;
 
 #if 1
     audio_cache_t::iterator end = _audio.end();
@@ -1608,7 +1613,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
   _audio_pts = frame / av_q2d( get_audio_stream()->avg_frame_rate );
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
 
-  set_clock_at(&audclk, _audio_clock, 0, _audio_clock );
+  set_clock_at(&audclk, _audio_clock, 0, audio_callback_time );
   sync_clock_to_slave( &audclk, &extclk );
 
   return ok;
