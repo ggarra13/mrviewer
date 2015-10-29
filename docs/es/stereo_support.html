@@ -39,14 +39,39 @@ mrViewer pod.%v.mov dc56.%V.@@@@.exr
 </div> 
 <br><br> Los archivos apareceran de esta misma forma en el buscador de archivos de mrViewer cuando trates de cargarlos desde la GUI.
 <br><br>
-Ademas de lo mencionado antes, mrViewer permite cargar dos secuencias o una secuencia y una película desde la línea de comando para playback en estéreo. Para ello, necesitas especificar ambos con el atajo -s.  Por ejemplo:
+Ademas de lo mencionado antes, mrViewer permite cargar dos secuencias o una secuencia y una película desde la línea de comando para playback en estéreo. Para ello, necesitas especificar ambos con el atajo -s (--stereo).  Por ejemplo:
 <br><br>
 <div class="console">
-mrViewer -s ba25.left.mov -s ba25.%04d.png
+mrViewer -s ba25-fg.mov -s ba25.%04d.png
 </div> 
 <br>
 <br>
-La primer imagen especificada se toma para el ojo izquierdo, mientras que la segunda invocación se toma como perteneciente al ojo derecho.
+La primer imagen especificada se toma para el ojo izquierdo, mientras que la segunda invocación se toma como perteneciente al ojo derecho. <br>Nótese que esto puede ser luego cambiado con el menu de <div class="menu">Preferencias->Video->Ojo Derecho Invertido.</div>
+<br>Fíjese que la opción --stereo no interactúa bien con imágenes que ya tienen el prefijo de left/right en sus nombres.<br> <br>
+<br>
+<br>
+Los tipos de Estéreo Soportados son Estéreo Pasivos:
+<br>
+<table>
+<tr><td>
+- Rojo-Cian Anaglificos</td>
+</tr>
+<tr><td>
+- Lado a Lado Horizontal</td>
+</tr>
+<tr><td>
+- Cruzado Horizontal</td>
+</tr>
+<tr><td>
+- Renglones Interlaceados</td>
+</tr>
+<tr><td>
+- Columnas Interlaceadas</td>
+</tr>
+<tr><td>
+- Cuadriculado</td>
+</tr>
+</table>
 <br>
   </body>
 </html>
