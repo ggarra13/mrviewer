@@ -80,7 +80,7 @@ namespace
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
-// #define DEBUG_DECODE_AUDIO
+//#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
 //#define DEBUG_SEEK_AUDIO_PACKETS
@@ -1526,7 +1526,7 @@ void aviImage::populate()
                 if ( has_audio() && pkt.stream_index == audio_stream_index() )
                 {
                     boost::int64_t pktframe = get_frame( get_audio_stream(), 
-                                                         pkt );
+                                                         pkt ) - _frame_offset;
                     if ( playback() == kBackwards )
                     {
                         // Only add packet if it comes before seek frame
@@ -1546,7 +1546,8 @@ void aviImage::populate()
                         else if ( pktframe == _frameStart )
                         {
                             audio_bytes += pkt.size;
-                            if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+                            if ( audio_bytes >= bytes_per_frame )
+                                got_audio = true;
                         }
                     }
 
@@ -1871,7 +1872,9 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             if ( has_audio() && audio_context() == _context &&
                  pkt.stream_index == audio_stream_index() )
             {
-                boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
+                boost::int64_t pktframe = pts2frame( get_audio_stream(), 
+                                                     pkt.dts )
+                                          - _frame_offset;
 
                 if ( playback() == kBackwards )
                 {
@@ -2489,21 +2492,21 @@ void aviImage::debug_subtitle_packets(const boost::int64_t frame,
 
 void aviImage::do_seek()
 {
-    // No need to set seek frame here
+    // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-  _dts = _seek_frame;
+    _dts = _seek_frame;
 
-  bool got_video = !has_video();
-  bool got_audio = !has_audio();
+    bool got_video = !has_video();
+    bool got_audio = !has_audio();
 
 
-  if ( !got_audio || !got_video )
-  {
-      if ( _seek_frame != _expected )
-          clear_packets();
-      fetch( _seek_frame );
-  }
+    if ( !got_audio || !got_video )
+    {
+        if ( _seek_frame != _expected )
+            clear_packets();
+        fetch( _seek_frame );
+    }
 
 
   // Seeking done, turn flag off
@@ -2520,10 +2523,15 @@ void aviImage::do_seek()
            {
                status = decode_audio( f );
                if ( status > kDecodeOK )
+               {
                    IMG_ERROR( _("Decode audio error: ")
                               << decode_error( status )
                               << (" for frame ") << _seek_frame );
-               find_audio( _seek_frame );
+               }
+               else
+               {
+                   find_audio( _seek_frame );
+               }
            }
            else
            {

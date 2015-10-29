@@ -1086,7 +1086,7 @@ void ImageView::center_image()
     if ( img && _stereo & CMedia::kStereoSideBySide )
     {
         int w = dpw.w();
-        xoffset = (float)-w/2.0f + 0.5f;
+        xoffset = -w/2.0 + 0.5;
     }
     else
     {
@@ -1097,6 +1097,7 @@ void ImageView::center_image()
     if ( _showPixelRatio ) pr = pixel_ratio();
 
     yoffset = ( dpw.y() + dpw.h() / 2.0 ) / pr;
+
 
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
@@ -1171,7 +1172,7 @@ void ImageView::fit_image()
 
   xoffset = -dpw.x() - W / 2.0;
   if ( (_flip & kFlipVertical) && _stereo & CMedia::kStereoSideBySide  )
-      xoffset = 0.0f;
+      xoffset = 0.0;
 
   yoffset = (dpw.y()+H / 2.0) / pr;
 
@@ -2858,8 +2859,8 @@ void ImageView::mouseDrag(int x,int y)
       else if ( flags & kMouseMove )
 	{
 	   window()->cursor( fltk::CURSOR_MOVE );
-	   xoffset += float(dx) / _zoom;
-           yoffset -= float(dy) / _zoom;
+	   xoffset += double(dx) / _zoom;
+           yoffset -= double(dy) / _zoom;
 
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
