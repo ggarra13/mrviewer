@@ -96,7 +96,25 @@ namespace mrv
      else
         c = framespec.c_str();
 
-    if ( *c == '%' || *c == '#' || *c == '@' ) return true;
+     if ( *c == '%' )
+     {
+         for ( ++c; *c != 0; ++c )
+         {
+             if (( *c >= '0' && *c <= '9' ) || *c == 'd' || *c == 'l' )
+                 continue;
+             return false;
+         }
+         return true;
+     }
+     else if ( *c == '#' || *c == '@' )
+     {
+         char t = *c;
+         for ( ++c; *c != 0; ++c )
+         {
+             if ( *c != t ) return false;
+         }
+         return true;
+     }
 
     bool range_found = false;
     for ( ++c; *c != 0; ++c )
@@ -333,11 +351,16 @@ bool is_valid_view( std::string view )
         {
             if ( ! mrv::is_valid_frame( frame ) &&
                  ! mrv::is_valid_frame_spec( frame ) &&
-                 mrv::is_valid_view( periods[1] ) )
+                 mrv::is_valid_view( frame ) )
             {
                 view = periods[1];
                 replace_view( view );
+                frame = "";
             }
+            // root += view;
+            // root += frame;
+            // root += ext;
+            // frame = ext = view = "";
             return false;
         }
     }
