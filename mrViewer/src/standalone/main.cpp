@@ -25,7 +25,7 @@
  * 
  */
 
-//#define ALLOC_CONSOLE
+// #define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
@@ -156,7 +156,7 @@ void load_new_files( void* s )
 
 int main( const int argc, char** argv ) 
 {
-  char* loc = NULL;
+  char* loc = "unknown";
 
   const char* tmp = setlocale(LC_ALL, "");
 
