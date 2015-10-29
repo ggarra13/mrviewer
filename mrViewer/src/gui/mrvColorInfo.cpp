@@ -389,7 +389,10 @@ void ColorInfo::update( const CMedia* img,
               }
 
               if ( x >= pic->width() || y >= pic->height() )
+              {
+                  --count;
                   continue;
+              }
 
               CMedia::Pixel op = pic->pixel( x, y );
 
