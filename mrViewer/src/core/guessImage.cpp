@@ -137,15 +137,16 @@ std::string parse_view( const std::string& root, bool left )
 void verify_stereo_resolution( const CMedia* const image,
                                const CMedia* const right )
 {
-    if ( right->height() != image->height() ||
-         right->width() != image->width() )
+    const mrv::Recti& dpw2 = right->display_window();
+    const mrv::Recti& dpw1 = image->display_window();
+    if ( dpw1 != dpw2 )
     {
         LOG_WARNING( "\"" << right->name() << "\"" 
-                     << _( " has different resolution than " )
+                     << _( " has different display window than " )
                      << "\"" << image->name() << "\"" );
-        LOG_WARNING( right->width() << "x" << right->height() 
+        LOG_WARNING( dpw1
                      << _(" vs. ")
-                     << image->width() << "x" << image->height() );
+                     << dpw2 );
         LOG_WARNING( _("3D Stereo will most likely not work properly") );
     }
 }
