@@ -354,13 +354,13 @@ bool is_valid_view( std::string view )
                  mrv::is_valid_view( frame ) )
             {
                 view = periods[1];
-                replace_view( view );
+                if ( change_view ) replace_view( view );
                 frame = "";
             }
-            // root += view;
-            // root += frame;
-            // root += ext;
-            // frame = ext = view = "";
+            root += view;
+            root += frame;
+            root += ext;
+            frame = ext = view = "";
             return false;
         }
     }
@@ -550,8 +550,8 @@ bool is_valid_view( std::string view )
 
         std::string tmp = (*i).path().leaf().string();
 
-	if ( ! split_sequence( croot, cframe, cview, cext, tmp ) )
-            continue;
+        // Do not continue on false return of split_sequence
+	split_sequence( croot, cframe, cview, cext, tmp );
 
 	if ( cext != ext || croot != root || cview != view )
         {
@@ -560,7 +560,6 @@ bool is_valid_view( std::string view )
 
 	if ( cframe[0] == '0' && cframe.size() > 1 )
             pad = (unsigned) cframe.size();
-
 
 	boost::int64_t f = atoi( cframe.c_str() );
 	if ( f < frameStart ) frameStart = f;
