@@ -772,7 +772,7 @@ _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
-  int stereo = 0; // fltk::STEREO;
+  int stereo = fltk::STEREO;
   if ( !can_do( fltk::STEREO ) ) stereo = 0;
 
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
