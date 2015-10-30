@@ -2612,7 +2612,6 @@ void ImageBrowser::handle_dnd()
    */
   void ImageBrowser::frame( const int64_t f )
   {
-
       uiMain->uiFrame->value( f );
       uiMain->uiFrame->redraw();
 
