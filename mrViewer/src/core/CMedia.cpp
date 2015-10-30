@@ -756,12 +756,14 @@ void  CMedia::first_frame(boost::int64_t x)
 {
    if ( x < _frame_start ) x = _frame_start;
    _frameStart = x;
+   if ( _frame < _frameStart ) _frame = _frameStart;
 }
 
 void  CMedia::last_frame(boost::int64_t x)
 {
    if ( x > _frame_end ) x = _frame_end;
    _frameEnd = x;
+   if ( _frame > _frameEnd ) _frame = _frameEnd;
 }
 
 /** 
@@ -1187,7 +1189,7 @@ void CMedia::channel( const char* c )
 
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
              ch == _("Blue")  ||
-             ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") )
+             ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") ) 
         {
             c = NULL;
             ch = "";
