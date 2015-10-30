@@ -319,9 +319,9 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int r2 = r.b()/2;
     int ww = r.w();
 
-
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
+
 
     int dx;
 
@@ -453,7 +453,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             SCOPED_LOCK( m );
 
 	    size = img->duration();
-            int64_t pos = (*i)->position();
+            int64_t pos = (*i)->position() - img->first_frame();
 
 
 	    // skip this block if outside visible timeline span
