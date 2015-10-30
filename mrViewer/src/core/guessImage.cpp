@@ -141,9 +141,9 @@ void verify_stereo_resolution( const CMedia* const left,
     const mrv::Recti& dpw2 = right->display_window();
     if ( dpw1 != dpw2 )
     {
-        LOG_WARNING( "\"" << right->name() << "\"" 
+        LOG_WARNING( "\"" << left->name() << "\"" 
                      << _( " has different display window than " )
-                     << "\"" << left->name() << "\"" );
+                     << "\"" << right->name() << "\"" );
         LOG_WARNING( dpw1
                      << _(" vs. ")
                      << dpw2 );
