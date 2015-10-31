@@ -148,8 +148,7 @@ exrImage::exrImage() :
   _num_layers( 0 ),
   _read_attr( false ),
   _lineOrder( (Imf::LineOrder) 0 ),
-  _compression( (Imf::Compression) 0 ),
-  _has_stereo( false )
+  _compression( (Imf::Compression) 0 )
   {
       Imf::setGlobalThreadCount( 4 );
   }
@@ -539,10 +538,10 @@ bool exrImage::find_layers( const Imf::Header& h )
        if ( layers.find( N_("left") ) != layers.end() )
            _has_left_eye = true;
 
-       if ( !_has_stereo && ( _has_left_eye || _has_right_eye ) )
+       if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
        {
            _multiview = true;
-           _has_stereo = true;
+           _is_stereo = true;
        }
    }
 
@@ -594,7 +593,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 alpha_layers();
       }
 
-      if ( _has_stereo )
+      if ( _is_stereo )
       {
           add_stereo_layers();
       }
@@ -1551,14 +1550,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          {
             st[1] = i;
             _has_right_eye = true;
-            _has_stereo = true;
+            _is_stereo = true;
          }
          if ( numChannels >= 3 && st[0] == -1 && 
               ext.find( N_("LEFT") ) != std::string::npos )
          {
             st[0] = i;
             _has_left_eye = true;
-            _has_stereo = true;
+            _is_stereo = true;
          }
 
          if ( !name.empty() || !ext.empty() )
@@ -1590,7 +1589,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
        st[0] = st[1] = 0;
    }
    
-   if ( _has_stereo && ( st[0] == -1 || st[1] == -1 ) )
+   if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
    {
        IMG_ERROR( _("Could not find both stereo images in file") );
        if ( st[0] != -1 ) st[1] = st[0];
@@ -1616,7 +1615,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
        _curpart = 0;
    }
 
-   if ( _has_stereo )
+   if ( _is_stereo )
    {
 
        for ( int i = 0 ; i < 2; ++i )
