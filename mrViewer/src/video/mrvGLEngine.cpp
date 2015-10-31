@@ -1212,7 +1212,6 @@ void GLEngine::draw_images( ImageList& images )
 
   assert( q != _quads.end() );
 
-  i = images.begin();
   e = images.end();
 
   Image_ptr fg = images.back();
@@ -1220,11 +1219,12 @@ void GLEngine::draw_images( ImageList& images )
   glDisable( GL_BLEND );
   CHECK_GL( "glDisable GL_BLEND" );
 
-  for ( i = images.begin() ; i != e; ++i, ++q )
+  for ( i = images.begin(); i != e; ++i, ++q )
     {
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
       if (!pic) continue;
+
 
       CMedia::StereoType stereo = img->stereo_type();
 
@@ -1342,7 +1342,6 @@ void GLEngine::draw_images( ImageList& images )
          if ( stereo & CMedia::kStereoOpenGL )
              glDrawBuffer( GL_LEFT );
 
-
          quad->mask( 0 );
          quad->mask_value( 10 );
 
@@ -1357,9 +1356,7 @@ void GLEngine::draw_images( ImageList& images )
          glPopMatrix();
 
 
-         if ( ! ( stereo & CMedia::kStereoAnaglyph ) &&
-              ! ( stereo & CMedia::kStereoOpenGL ) &&
-              ! ( stereo & CMedia::kStereoInterlaced) )
+         if ( stereo & CMedia::kStereoSideBySide )
              glTranslated( dpw.w(), 0, 0 );
 
 
