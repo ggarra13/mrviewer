@@ -1651,8 +1651,9 @@ void ImageView::draw()
 
   if ( _showBG && bg && bg != fg && bg->image()  )
     {
-       if ( bg->image()->has_picture() )
-	  images.push_back( bg->image() );
+       CMedia* img = bg->image();
+       if ( img->has_picture() )
+	  images.push_back( img );
     }
 
   if ( fg && fg->image() )
@@ -2625,19 +2626,25 @@ void ImageView::mouseMove(int x, int y)
   if ( stereo_type() == CMedia::kStereoInterlaced )
   {
       if ( yp % 2 == 1 ) pic = img->right();
+      if ( !pic ) return;
   }
   else if ( stereo_type() == CMedia::kStereoInterlacedColumns )
   {
       if ( xp % 2 == 1 ) pic = img->right();
+      if ( !pic ) return;
   }
   else if ( stereo_type() == CMedia::kStereoCheckerboard )
   {
       if ( (xp + yp) % 2 == 0 ) pic = img->right();
+      if ( !pic ) return;
   }
+
 
   if ( xp >= pic->width() || yp >= pic->height() )
   {
       pic = img->left();
+      if ( !pic ) return;
+
       if ( xp >= pic->width() || yp >= pic->height() )
           outside = true;
   }

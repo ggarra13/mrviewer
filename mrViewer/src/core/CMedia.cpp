@@ -1210,35 +1210,37 @@ void CMedia::channel( const char* c )
 
        _stereo_type = kNoStereo;
 
-       if ( root == _("stereo") )
+       if ( is_stereo() )
        {
-           // Set the stereo type based on channel name extension
-           if ( ext == _("horizontal") )
-               _stereo_type = kStereoSideBySide;
-           else if ( ext == _("crossed") )
-               _stereo_type = kStereoCrossed;
-           else if ( ext == _("interlaced") )
-               _stereo_type = kStereoInterlaced;
-           else if ( ext == _("interlaced columns") )
-               _stereo_type = kStereoInterlacedColumns;
-           else if ( ext == _("checkerboard") )
-               _stereo_type = kStereoCheckerboard;
-           else
-               LOG_ERROR( _("Unknown stereo type") );
+           if ( root == _("stereo") )
+           {
+               // Set the stereo type based on channel name extension
+               if ( ext == _("horizontal") )
+                   _stereo_type = kStereoSideBySide;
+               else if ( ext == _("crossed") )
+                   _stereo_type = kStereoCrossed;
+               else if ( ext == _("interlaced") )
+                   _stereo_type = kStereoInterlaced;
+               else if ( ext == _("interlaced columns") )
+                   _stereo_type = kStereoInterlacedColumns;
+               else if ( ext == _("checkerboard") )
+                   _stereo_type = kStereoCheckerboard;
+               else
+                   LOG_ERROR( _("Unknown stereo type") );
+           }
+           else if ( ext == _("anaglyph") )
+           {
+               if ( root == _("left") )
+                   _stereo_type = kStereoAnaglyph;
+               else if ( root == _("right") )
+                   _stereo_type = kStereoRightAnaglyph;
+               else
+                   LOG_ERROR( _("Unknown anaglyph type") );
+           }
        }
-       else if ( ext == _("anaglyph") )
-       {
-           if ( root == _("left") )
-               _stereo_type = kStereoAnaglyph;
-           else if ( root == _("right") )
-               _stereo_type = kStereoRightAnaglyph;
-           else
-               LOG_ERROR( _("Unknown anaglyph type") );
-       }
-
     }
 
-  bool to_fetch = false;
+    bool to_fetch = false;
 
   // std::cerr << "channel " << (_channel ? _channel : "NULL" )
   //           << " c " << ( c ? c : "NULL" ) << std::endl;
