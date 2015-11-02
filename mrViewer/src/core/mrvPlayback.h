@@ -52,11 +52,11 @@ namespace mrv {
   // Callback data that must be filled
   //
   struct PlaybackData {
-       bool fg;
+       bool fg;;
        mrv::ViewerUI*   uiMain;
        CMedia*  image;
 
-       PlaybackData( bool foreground, mrv::ViewerUI* const main,
+      PlaybackData( bool foreground, mrv::ViewerUI* const main,
 		     CMedia* const img ) :
        fg( foreground ),
        uiMain( main ),
