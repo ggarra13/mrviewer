@@ -151,6 +151,7 @@ exrImage::exrImage() :
   _compression( (Imf::Compression) 0 )
   {
       Imf::setGlobalThreadCount( 4 );
+      st[0] = st[1] = -1;
   }
 
   exrImage::~exrImage()
@@ -464,10 +465,10 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
         const Imath::Box2i& dataWindow = h.dataWindow();
         const Imath::Box2i& displayWindow = h.displayWindow();
         data_window( dataWindow.min.x, dataWindow.min.y,
-                     dataWindow.max.x, dataWindow.max.y );
+                     dataWindow.max.x, dataWindow.max.y, frame );
 
         display_window( displayWindow.min.x, displayWindow.min.y,
-                        displayWindow.max.x, displayWindow.max.y );
+                        displayWindow.max.x, displayWindow.max.y, frame );
 
 
 	if ( ! _read_attr )
@@ -1222,9 +1223,9 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     int dy = dataWindow.min.y;
 
     data_window( dataWindow.min.x, dataWindow.min.y,
-                 dataWindow.max.x, dataWindow.max.y );
+                 dataWindow.max.x, dataWindow.max.y, _frame );
     display_window( displayWindow.min.x, displayWindow.min.y,
-                    displayWindow.max.x, displayWindow.max.y );
+                    displayWindow.max.x, displayWindow.max.y, _frame );
 
     if ( !_hires || dw*dh*sizeof(Imf::Rgba) != _hires->data_size() )
     {
@@ -1584,12 +1585,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
    }
 
 
-   if ( _multiview )
-   {
-       st[0] = st[1] = 0;
-   }
+   // if ( _multiview )
+   // {
+   //     st[0] = st[1] = 0;
+   // }
    
-   if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
+   if ( _is_stereo && _multiview && ( st[0] == -1 || st[1] == -1 ) )
    {
        IMG_ERROR( _("Could not find both stereo images in file") );
        if ( st[0] != -1 ) st[1] = st[0];
@@ -1630,18 +1631,20 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            if ( i == 0 || _stereo_type == kNoStereo )
            {
                data_window( dataWindow.min.x, dataWindow.min.y,
-                            dataWindow.max.x, dataWindow.max.y );
+                            dataWindow.max.x, dataWindow.max.y, frame );
 
                display_window( displayWindow.min.x, displayWindow.min.y,
-                               displayWindow.max.x, displayWindow.max.y );
+                               displayWindow.max.x, displayWindow.max.y,
+                               frame );
            }
            else
            {
                data_window2( dataWindow.min.x, dataWindow.min.y,
-                             dataWindow.max.x, dataWindow.max.y );
+                             dataWindow.max.x, dataWindow.max.y, frame );
 
                display_window2( displayWindow.min.x, displayWindow.min.y,
-                                displayWindow.max.x, displayWindow.max.y );
+                                displayWindow.max.x, displayWindow.max.y,
+                                frame );
            }
 
 
@@ -1699,10 +1702,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
       const Box2i& displayWindow = header.displayWindow();
 
       data_window( dataWindow.min.x, dataWindow.min.y,
-                   dataWindow.max.x, dataWindow.max.y );
+                   dataWindow.max.x, dataWindow.max.y, frame );
 
       display_window( displayWindow.min.x, displayWindow.min.y,
-                      displayWindow.max.x, displayWindow.max.y );
+                      displayWindow.max.x, displayWindow.max.y, frame );
 
       FrameBuffer fb;
       bool ok = find_channels( header, fb, frame );
@@ -1725,10 +1728,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          const Box2i& displayWindow = header.displayWindow();
 
          data_window( dataWindow.min.x, dataWindow.min.y,
-                      dataWindow.max.x, dataWindow.max.y );
+                      dataWindow.max.x, dataWindow.max.y, frame );
 
          display_window( displayWindow.min.x, displayWindow.min.y,
-                         displayWindow.max.x, displayWindow.max.y );
+                         displayWindow.max.x, displayWindow.max.y, frame );
 
          FrameBuffer fb;
          bool ok = find_channels( header, fb, frame );
@@ -1767,7 +1770,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
      try
      {
-         _frame = frame;
 
 	if ( _levelX > 0 || _levelY > 0 )
 	{

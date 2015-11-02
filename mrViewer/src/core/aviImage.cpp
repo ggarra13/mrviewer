@@ -1941,8 +1941,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 bool aviImage::fetch(const boost::int64_t frame)
 {
 #ifdef DEBUG_DECODE
-    if ( _right_eye == NULL )
-        cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
+    cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
    if ( playback() == kStopped && _right_eye ) {
