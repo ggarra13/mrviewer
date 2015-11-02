@@ -64,8 +64,8 @@ namespace mrv
     inline T t() const { return y_; }
     inline T l() const { return x_; }
 
-    inline T b() const { return y_ + h_ - 1; }
-    inline T r() const { return x_ + w_ - 1; }
+    inline T r() const { return x_ + w_; }
+    inline T b() const { return y_ + h_; }
 
     /*! Change x() without changing r(), by changing the width. */
     void set_x(T v) {w_ -= v-x_; x_ = v;}
@@ -79,8 +79,8 @@ namespace mrv
     inline void merge( const Rectangle< T >& R )
     {
         if (R.w() == 0) return;
-        if ( w() == 0 ) return;
-        
+        if (w() == 0) { *this = R; return; }
+
         if (R.x() < x()) set_x(R.x());
         if (R.r() > r()) set_r(R.r());
         if (R.y() < y()) set_y(R.y());

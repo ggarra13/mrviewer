@@ -790,7 +790,7 @@ void video_thread( PlaybackData* data )
 
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
-       DBG( "wait image " << frame );
+       DBG( img->name() << " wait image " << frame );
        img->wait_image();
 
 
@@ -800,9 +800,9 @@ void video_thread( PlaybackData* data )
        int step = (int) img->playback();
        if ( step == 0 ) break;
 
-       DBG( "decode image " << frame );
+       DBG( img->name() << " decode image " << frame );
        CMedia::DecodeStatus status = img->decode_video( frame );
-       DBG( "decoded image " << frame << " status " 
+       DBG( img->name() << " decoded image " << frame << " status " 
             << CMedia::decode_error(status) );
 
       switch( status )
@@ -817,6 +817,8 @@ void video_thread( PlaybackData* data )
           case CMedia::kDecodeLoopEnd:
           case CMedia::kDecodeLoopStart:
 	    {
+               DBG( img->name() << " BARRIER PASSED IN VIDEO" );
+
                CMedia::Barrier* barrier = img->loop_barrier();
                // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
                //           << barrier->generation() 
@@ -909,6 +911,7 @@ void video_thread( PlaybackData* data )
       img->real_fps( timer.actualFrameRate() );
 
 
+      DBG( img->name() << " find image " << frame );
       bool ok = img->find_image( frame );
 
       if ( !img->has_audio_data() && reel->edl && img->is_left_eye() )
@@ -916,7 +919,7 @@ void video_thread( PlaybackData* data )
 	 int64_t f = frame + reel->location(img) - img->first_frame();
 
 
-	 if ( fg )
+	 if ( fg && img->is_left_eye() )
 	 {
              view->frame( f );
 	 }
