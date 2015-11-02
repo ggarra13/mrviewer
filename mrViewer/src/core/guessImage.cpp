@@ -314,7 +314,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
                 image->right_eye( right );
                 image->is_stereo( true );
                 image->is_left_eye( true );
-                right->is_stereo( true );
+                // right->is_stereo( true );
                 right->is_left_eye( false );
 
                 image->add_stereo_layers();

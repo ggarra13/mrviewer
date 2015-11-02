@@ -363,13 +363,17 @@ class CMedia
     const mrv::Recti display_window2(boost::int64_t f = AV_NOPTS_VALUE) const;
 
     void data_window( const int xmin, const int ymin,
-		      const int xmax, const int ymax );
+		      const int xmax, const int ymax,
+                      const boost::int64_t& frame );
     void display_window( const int xmin, const int ymin,
-			 const int xmax, const int ymax );
+			 const int xmax, const int ymax,
+                         const boost::int64_t& frame );
     void data_window2( const int xmin, const int ymin,
-                       const int xmax, const int ymax );
+                       const int xmax, const int ymax,
+                       const boost::int64_t& frame );
     void display_window2( const int xmin, const int ymin,
-                          const int xmax, const int ymax );
+                          const int xmax, const int ymax,
+                          const boost::int64_t& frame );
 
     ////////////////// Return the list of available layers in the image
     inline const stringArray& layers() const { return _layers; }

@@ -110,17 +110,14 @@ void main()
   if ( mask == 1 )  // even odd rows
   {
       x = mod( gl_TexCoord[0].t * height, 2 );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
   else if ( mask == 2 )  // even-odd columns
   {
       x = mod( gl_TexCoord[0].s * width, 2 );
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
   else if ( mask == 3 ) // checkerboard
   {
       x = mod( floor( gl_TexCoord[0].s * width ) + floor( gl_TexCoord[0].t * height ), 2 ) < 1;
-      if ( c.a == 0.0 ) c.a = 1.0;
   }
 
 
