@@ -666,14 +666,15 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
 }
 
 void CMedia::display_window( const int xmin, const int ymin,
-			     const int xmax, const int ymax )
+			     const int xmax, const int ymax,
+                             const boost::int64_t& frame )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_displayWindow )
       _displayWindow = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = _frame - _frame_start;
+  boost::uint64_t idx = frame - _frame_start;
   assert( idx <= _frame_end - _frame_start );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
@@ -681,14 +682,15 @@ void CMedia::display_window( const int xmin, const int ymin,
 }
 
 void CMedia::display_window2( const int xmin, const int ymin,
-                              const int xmax, const int ymax )
+                              const int xmax, const int ymax,
+                              const boost::int64_t& frame )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_displayWindow2 )
       _displayWindow2 = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = _frame - _frame_start;
+  boost::uint64_t idx = frame - _frame_start;
   assert( idx <= _frame_end - _frame_start );
   _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
@@ -696,14 +698,15 @@ void CMedia::display_window2( const int xmin, const int ymin,
 }
 
 void CMedia::data_window( const int xmin, const int ymin,
-                          const int xmax, const int ymax )
+                          const int xmax, const int ymax,
+                          const boost::int64_t& frame )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_dataWindow )
       _dataWindow = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = _frame - _frame_start;
+  boost::uint64_t idx = frame - _frame_start;
   assert( idx <= _frame_end - _frame_start );
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
@@ -712,14 +715,15 @@ void CMedia::data_window( const int xmin, const int ymin,
 
 
 void CMedia::data_window2( const int xmin, const int ymin,
-                          const int xmax, const int ymax )
+                           const int xmax, const int ymax,
+                           const boost::int64_t& frame )
 {
   assert( xmax >= xmin );
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_dataWindow2 )
       _dataWindow2 = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = _frame - _frame_start;
+  boost::uint64_t idx = frame - _frame_start;
   assert( idx <= _frame_end - _frame_start );
   _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
@@ -736,7 +740,6 @@ void CMedia::refresh( const mrv::Recti& r )
 {
   // Merge the bounding box of area to update
   _damageRectangle.merge( r );
-
   image_damage( image_damage() | kDamageContents );
 }
 
@@ -921,9 +924,13 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
 
   std::string tmp = parse_view( _fileroot, _is_left_eye );
 
+  boost::int64_t f = frame;
+  if ( f > _frame_end ) f = _frame_end;
+  else if ( f < _frame_start ) f = _frame_start;
+
   // For image sequences
   char buf[1024];
-  sprintf( buf, tmp.c_str(), frame );
+  sprintf( buf, tmp.c_str(), f );
 
   return std::string( buf );
 }
@@ -1195,7 +1202,7 @@ void CMedia::channel( const char* c )
             ch = "";
         }
        ext = ch;
-       std::string root = "";
+       std::string root;
        size_t pos = ext.rfind( N_(".") );
        if ( pos != std::string::npos )
        {
@@ -1245,33 +1252,36 @@ void CMedia::channel( const char* c )
   // std::cerr << "channel " << (_channel ? _channel : "NULL" )
   //           << " c " << ( c ? c : "NULL" ) << std::endl;
 
-  if ( _channel != c )
-  {
-      if ( _channel == NULL || c == NULL )  to_fetch = true;
-      else
-      {
-          std::string ch2 = _channel;
-          
-          size_t pos = ch.rfind( '.' );
-          if ( pos != std::string::npos )
-          {
-              ext = ch.substr( pos+1, ch.size() );
-              ch = ch.substr( 0, pos );
-              if ( ext == "Z" || ext.size() > 1 ) ch += "." + ext;
-          }
+    if ( _channel != c )
+    {
+        if ( _channel == NULL && _stereo_type != kNoStereo ) to_fetch = false;
+        else if ( _channel == NULL || c == NULL )  to_fetch = true;
+        else
+        {
+            std::string ch2 = _channel;
+
+            size_t pos = ch.rfind( '.' );
+            if ( pos != std::string::npos )
+            {
+                ext = ch.substr( pos+1, ch.size() );
+                ch = ch.substr( 0, pos );
+                if ( ch != _("stereo") &&
+                     ( ext == "Z" || ext.size() > 1 ) ) ch += "." + ext;
+            }
 
           pos = ch2.rfind( '.' );
           if ( pos != std::string::npos )
           {
               ext = ch2.substr( pos+1, ch.size() );
               ch2 = ch2.substr( 0, pos );
-              if ( ext == "Z" || ext.size() > 1 ) ch2 += "." + ext;
+              if ( ch2 != _("stereo") &&
+                   ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
           }
 
           if ( ch != ch2 ) to_fetch = true;
-      }
-  }
-
+        }
+    }
+    
   free( _channel );
   _channel = NULL;
 

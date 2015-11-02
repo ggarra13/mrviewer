@@ -1356,13 +1356,13 @@ bool ImageView::preload()
             return false;
         return true;
     }
-
+        
     int64_t f = r->global_to_local( _preframe );
     int64_t first = img->first_frame();
     int64_t last  = img->last_frame();
     int64_t i = f;
     bool found = false;
-
+        
     // Find a frame to cache from timeline point on
     for ( ; i <= last; ++i )
     {
@@ -1372,7 +1372,7 @@ bool ImageView::preload()
             break;
         }
     }
-
+        
     // None found, check backwards
     if ( !found )
     {
@@ -1410,6 +1410,7 @@ bool ImageView::preload()
         if ( _reel >= b->number_of_reels() )
             return false;
     }
+    
 
     return true;
 
