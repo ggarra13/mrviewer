@@ -1265,8 +1265,7 @@ void CMedia::channel( const char* c )
             {
                 ext = ch.substr( pos+1, ch.size() );
                 ch = ch.substr( 0, pos );
-                if ( ch != _("stereo") &&
-                     ( ext == "Z" || ext.size() > 1 ) ) ch += "." + ext;
+                if ( ( ext == "Z" || ext.size() > 1 ) ) ch += "." + ext;
             }
 
           pos = ch2.rfind( '.' );
@@ -1274,8 +1273,7 @@ void CMedia::channel( const char* c )
           {
               ext = ch2.substr( pos+1, ch.size() );
               ch2 = ch2.substr( 0, pos );
-              if ( ch2 != _("stereo") &&
-                   ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
+              if ( ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
           }
 
           if ( ch != ch2 ) to_fetch = true;
