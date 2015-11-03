@@ -1,5 +1,10 @@
 v3.0.0   - Bug fixed alpha in shaders for stereo display.  Previously
 	   a border would surround images.
+	 - Bug fixed main Rectangle class.  Previously it could not
+	   merge properly.
+	 - Made display_window and data_window functions take a frame.
+	   This avoids sporadic flashes when loading images.
+	 - Made stereo modes not reload the caches.
 
 v2.9.9   - Added stereo interlaced, interlaced columns and 
 	   checkerboard.
