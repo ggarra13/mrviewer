@@ -160,6 +160,10 @@ Out main(
   {
       c.rgba = 0.0;
   }
+  else
+  {
+      if (c.a == 0.0 ) c.a = 1.0;
+  }
 
   if ( premult )
   {
