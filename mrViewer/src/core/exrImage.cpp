@@ -1545,7 +1545,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          std::transform( ext.begin(), ext.end(), ext.begin(),
                          (int(*)(int)) toupper);
 
-
          if ( numChannels >= 3 && st[1] == -1 &&
               ext.find( N_("RIGHT") ) != std::string::npos )
          {
@@ -1582,13 +1581,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
        if ( ! _read_attr )
            read_header_attr( header, frame );
+
+       if ( _multiview )
+       {
+           st[0] = st[1] = 0;
+       }
    }
 
 
-   // if ( _multiview )
-   // {
-   //     st[0] = st[1] = 0;
-   // }
    
    if ( _is_stereo && _multiview && ( st[0] == -1 || st[1] == -1 ) )
    {

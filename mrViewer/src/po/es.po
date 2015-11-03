@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2015-11-02 18:57-0300\n"
+"POT-Creation-Date: 2015-11-03 13:53-0300\n"
 "PO-Revision-Date: 2015-10-29 13:46-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2258
+#: core/CMedia.cpp:2256
 msgid ""
 "\n"
 "\n"
@@ -159,7 +159,7 @@ msgstr " para el canal "
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2259
+#: core/CMedia.cpp:2257
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -187,7 +187,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2630
+#: core/CMedia.cpp:2628
 msgid " is missing."
 msgstr " está faltante."
 
@@ -333,7 +333,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2259
+#: core/CMedia.cpp:2257
 msgid ", type "
 msgstr ", tipo "
 
@@ -1473,7 +1473,7 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: core/CMedia.cpp:1630 core/aviImage.cpp:524 core/aviImage.cpp:539
+#: core/CMedia.cpp:1628 core/aviImage.cpp:524 core/aviImage.cpp:539
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -2975,11 +2975,11 @@ msgstr "Cargando"
 msgid "Loading \"%s\""
 msgstr "Cargando \"%s\""
 
-#: video/mrvGLEngine.cpp:2222
+#: video/mrvGLEngine.cpp:2233
 msgid "Loading built-in NV3.0 rgba shader"
 msgstr "Cargando interno shader NV3.0 rgba"
 
-#: video/mrvGLEngine.cpp:2227
+#: video/mrvGLEngine.cpp:2238
 msgid "Loading built-in arbfp1 rgba shader"
 msgstr "Cargando interno shader rgba arbfp1"
 
@@ -4958,7 +4958,7 @@ msgstr "Modo de Redondeo desconocido"
 msgid "Unknown stereo type"
 msgstr "Tipo de stereo desconocido"
 
-#: video/mrvGLEngine.cpp:1612
+#: video/mrvGLEngine.cpp:1630
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
@@ -5478,7 +5478,7 @@ msgstr "ZIP POR LINEAS"
 msgid "anaglyph"
 msgstr "anaglífico"
 
-#: core/CMedia.cpp:2094
+#: core/CMedia.cpp:2092
 msgid "audio"
 msgstr "audio"
 
@@ -5511,7 +5511,7 @@ msgstr "cuadriculado"
 msgid "crossed"
 msgstr "cruzado"
 
-#: core/CMedia.cpp:2097
+#: core/CMedia.cpp:2095
 msgid "data"
 msgstr "datos"
 
@@ -5721,7 +5721,7 @@ msgstr "derecha.anaglífico"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1222 core/CMedia.cpp:1268 core/CMedia.cpp:1277
+#: core/CMedia.cpp:1222
 msgid "stereo"
 msgstr "estéreo"
 
@@ -5745,7 +5745,7 @@ msgstr "estéreo.entrelaceado"
 msgid "stereo.interlaced columns"
 msgstr "estéreo.columnas entrelaceado"
 
-#: core/CMedia.cpp:2100
+#: core/CMedia.cpp:2098
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5757,7 +5757,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2103 core/wandImage.cpp:425
+#: core/CMedia.cpp:2101 core/wandImage.cpp:425
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5773,7 +5773,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2091
+#: core/CMedia.cpp:2089
 msgid "video"
 msgstr "video"
 
