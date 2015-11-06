@@ -4,7 +4,12 @@ v3.0.0   - Bug fixed alpha in shaders for stereo display.  Previously
 	   merge properly.
 	 - Made display_window and data_window functions take a frame.
 	   This avoids sporadic flashes when loading images.
-	 - Made stereo modes not reload the caches.
+	 - Avoided recaching on stereo modes when images have been 
+	   loaded.
+	 - Made EDL cuts more seamless.
+	 - Avoided a crash when in anaglyph mode and the sources had
+	   different size.
+	 - Avoided a crash when in stereo mode after crossed stereo.
 
 v2.9.9   - Added stereo interlaced, interlaced columns and 
 	   checkerboard.

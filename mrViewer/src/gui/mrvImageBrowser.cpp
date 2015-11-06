@@ -1281,10 +1281,13 @@ void ImageBrowser::load_stereo( mrv::media& fg,
       }
 
     if ( img->has_video() || img->has_audio() )
+    {
         img->fetch( img->first_frame() );
+    }
     else
+    {
         img->find_image( img->first_frame() );
-
+    }
     
     img->default_icc_profile();
     img->default_rendering_transform();
@@ -1356,10 +1359,13 @@ void ImageBrowser::load_stereo( mrv::media& fg,
       }
 
     if ( img->has_video() || img->has_audio() )
+    {
         img->fetch( img->first_frame() );
+    }
     else
+    {
         img->find_image( img->first_frame() );
-
+    }
     
     img->default_icc_profile();
     img->default_rendering_transform();
