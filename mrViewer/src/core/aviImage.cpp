@@ -170,7 +170,7 @@ aviImage::~aviImage()
   if ( !stopped() )
     stop();
 
-  image_damage(0);
+  image_damage(kNoDamage);
 
   _video_packets.clear();
 

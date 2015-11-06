@@ -156,7 +156,7 @@ void load_new_files( void* s )
 
 int main( const int argc, char** argv ) 
 {
-  char* loc = "unknown";
+    char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
 

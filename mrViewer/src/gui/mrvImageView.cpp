@@ -974,8 +974,7 @@ void ImageView::copy_pixel() const
       else
           pic = img->right();
 
-      if ( pic && xp >= 0 && xp < pic->width() &&
-           yp >= 0 && yp < pic->height() )
+      if ( pic && xp < pic->width() && yp < pic->height() )
       {
           float r = rgba.r;
           rgba = pic->pixel( xp, yp );
@@ -2615,15 +2614,8 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  if ( xp >= (int)pic->width() || yp >= (int)pic->height() ) {
-      outside = true;
-  }
 
 
-  char buf[40];
-  sprintf( buf, "%5d, %5d", xp, yp );
-  uiMain->uiCoord->text(buf);
-  
   if ( stereo_type() == CMedia::kStereoInterlaced )
   {
       if ( yp % 2 == 1 ) pic = img->right();
@@ -2641,15 +2633,19 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  if ( xp >= pic->width() || yp >= pic->height() )
+  if ( xp < 0 || xp >= pic->width() || yp < 0 || yp >= pic->height() )
   {
       pic = img->left();
       if ( !pic ) return;
 
-      if ( xp >= pic->width() || yp >= pic->height() )
+      if ( xp < 0 || xp >= pic->width() || yp < 0 || yp >= pic->height() )
           outside = true;
   }
 
+  char buf[40];
+  sprintf( buf, "%5d, %5d", xp, yp );
+  uiMain->uiCoord->text(buf);
+  
   if ( outside )
   {
       rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
@@ -2669,10 +2665,22 @@ void ImageView::mouseMove(int x, int y)
 
           if ( pic )
           {
-              float r = rgba.r;
-              rgba = pic->pixel( xp, yp );
-              pixel_processed( img, rgba );
-              rgba.r = r;
+
+              if ( xp < 0 || xp >= pic->width() || yp < 0 ||
+                   yp >= pic->height() )
+                  outside = true;
+
+              if (!outside)
+              {
+                  float r = rgba.r;
+                  rgba = pic->pixel( xp, yp );
+                  pixel_processed( img, rgba );
+                  rgba.r = r;
+              }
+              else
+              {
+                  rgba.g = rgba.b = 0.0f;
+              }
           }
       }
 

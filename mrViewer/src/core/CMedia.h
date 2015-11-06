@@ -1172,8 +1172,6 @@ class CMedia
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
-    AVFrame*   _a_frame;
-
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
     static Barrier*  _bg_barrier;     //!< Barrier to sync bg and fg images
@@ -1261,7 +1259,6 @@ class CMedia
     bool        _aborted;
     
     thread_pool_t  _threads;         //!< any threads associated with process
-    thread_pool_t  _load_threads;    //!< loading threads if any
 
     mrv::image_type_ptr* _sequence; //!< For sequences, holds each float frame
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
