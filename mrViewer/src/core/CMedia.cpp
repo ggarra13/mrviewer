@@ -611,10 +611,11 @@ const mrv::Recti CMedia::display_window( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::int64_t idx = f - _frame_start;
+
     if ( idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
-    assert( idx <= _frame_end - _frame_start );
+    assert( idx < _numWindows );
     return _displayWindow[idx];
 }
 
@@ -628,10 +629,11 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::int64_t idx = f - _frame_start;
+
     if ( idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
-    assert( idx <= _frame_end - _frame_start );
+    assert( idx < _numWindows );
     return _displayWindow2[idx];
 }
 
@@ -642,6 +644,7 @@ const mrv::Recti CMedia::data_window( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frame_start;
+
     if ( idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
@@ -658,6 +661,7 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     boost::uint64_t idx = f - _frame_start;
+
     if ( idx >= _numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
@@ -674,7 +678,10 @@ void CMedia::display_window( const int xmin, const int ymin,
   if ( !_displayWindow )
       _displayWindow = new mrv::Recti[_numWindows];
   boost::uint64_t idx = frame - _frame_start;
-  assert( idx <= _frame_end - _frame_start );
+
+  if ( idx >= _numWindows || idx < 0 ) return;
+
+  assert( idx < _numWindows );
   _displayWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
   DBG( "display window frame " << _frame << " is " << _displayWindow[idx] );
@@ -690,7 +697,10 @@ void CMedia::display_window2( const int xmin, const int ymin,
   if ( !_displayWindow2 )
       _displayWindow2 = new mrv::Recti[_numWindows];
   boost::uint64_t idx = frame - _frame_start;
-  assert( idx <= _frame_end - _frame_start );
+
+  if ( idx >= _numWindows || idx < 0 ) return;
+
+  assert( idx < _numWindows );
   _displayWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
   DBG( "display window2 frame " << _frame << " is " << _displayWindow2[idx] );
@@ -706,7 +716,11 @@ void CMedia::data_window( const int xmin, const int ymin,
   if ( !_dataWindow )
       _dataWindow = new mrv::Recti[_numWindows];
   boost::uint64_t idx = frame - _frame_start;
-  assert( idx <= _frame_end - _frame_start );
+
+  if ( idx >= _numWindows || idx < 0 ) return;
+
+  assert( idx < _numWindows );
+
   _dataWindow[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
   // DBG( "data window setframe " << _frame << " is " << _dataWindow[idx] );
@@ -723,7 +737,10 @@ void CMedia::data_window2( const int xmin, const int ymin,
   if ( !_dataWindow2 )
       _dataWindow2 = new mrv::Recti[_numWindows];
   boost::uint64_t idx = frame - _frame_start;
-  assert( idx <= _frame_end - _frame_start );
+
+  if ( idx >= _numWindows || idx < 0 ) return;
+
+  assert( idx < _numWindows );
   _dataWindow2[idx] = mrv::Recti( xmin, ymin, xmax-xmin+1, ymax-ymin+1 );
   image_damage( image_damage() | kDamageData );
   DBG( "data window2 frame " << _frame << " is " << _dataWindow2[idx] );
@@ -2568,7 +2585,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   // Check if we have a cached frame for this frame
   
   boost::uint64_t idx = f - _frame_start;
-  assert( idx <= (_frame_end - _frame_start) );
+  assert( idx < _numWindows );
 
   image_damage( image_damage() | kDamageData | kDamage3DData );
 
