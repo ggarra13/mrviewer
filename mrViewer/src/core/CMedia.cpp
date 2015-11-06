@@ -214,7 +214,7 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    _a_frame = av_frame_alloc();
+    _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
 }
@@ -296,7 +296,7 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    _a_frame = av_frame_alloc();
+    _aframe = av_frame_alloc();
   unsigned int W = other->width();
   unsigned int H = other->height();
   image_size( W, H );
@@ -392,7 +392,7 @@ forw_ctx( NULL ),
 _audio_engine( NULL )
 {
 
-    _a_frame = av_frame_alloc();
+    _aframe = av_frame_alloc();
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
 
@@ -442,21 +442,9 @@ void CMedia::clear_cache()
 }
 
 /** 
- * Wait for all threads to finish and exit.  Delete them afterwards.
- * 
  */
 void CMedia::wait_for_load_threads()
 {
-  // Wait for all threads to exit
-  thread_pool_t::iterator i = _load_threads.begin();
-  thread_pool_t::iterator e = _load_threads.end();
-  for ( ;i != e; ++i )
-    {
-      (*i)->join();
-      delete *i;
-    }
-
-  _load_threads.clear();
 }
 
 /** 
@@ -483,25 +471,27 @@ void CMedia::wait_for_threads()
  */
 CMedia::~CMedia()
 {
-  SCOPED_LOCK( _mutex);
-  SCOPED_LOCK( _audio_mutex);
+  SCOPED_LOCK( _mutex );
+  SCOPED_LOCK( _audio_mutex );
+
 
   if ( !stopped() )
     stop();
 
-  image_damage(0);
+  if ( _right_eye ) _right_eye->stop();
+  delete _right_eye;
+  _right_eye = NULL;
+
+  image_damage( kNoDamage );
 
   free( _old_channel );
   free( _channel );
-  free( _fileroot );
-  free( _filename );
   free( _label );
   free( _profile );
   free( _rendering_transform );
 
   clear_look_mod_transform();
   free( _idt_transform );
-
 
 
   delete [] _dataWindow;
@@ -520,9 +510,14 @@ CMedia::~CMedia()
       delete [] _audio_buf; _audio_buf = NULL;
 
       close_audio_codec();
+
     }
 
+  if ( _aframe )
+      av_frame_unref(_aframe);
+
   av_frame_free(&_aframe);
+
 
   audio_shutdown();
 
@@ -532,15 +527,19 @@ CMedia::~CMedia()
      forw_ctx = NULL;
   }
 
+  free( _fileroot );
+  free( _filename );
+
+
   if ( _context )
   {
     avformat_close_input( &_context );
   }
 
   if ( _acontext )
+  {
     avformat_close_input( &_acontext );
-
-  delete _right_eye;
+  }
 
   _context = _acontext = NULL;
 }
@@ -1254,12 +1253,16 @@ void CMedia::channel( const char* c )
 
     if ( _channel != c )
     {
-        if ( _channel == NULL && _stereo_type != kNoStereo ) to_fetch = false;
+        std::string ch2;
+        if ( _channel ) ch2 = _channel;
+
+        if ( (_channel == NULL || 
+              ch2.find(_("stereo")) != std::string::npos ||
+              ch2.find(_("anaglyph")) != std::string::npos ) &&
+             _stereo_type != kNoStereo ) to_fetch = false;
         else if ( _channel == NULL || c == NULL )  to_fetch = true;
         else
         {
-            std::string ch2 = _channel;
-
             size_t pos = ch.rfind( '.' );
             if ( pos != std::string::npos )
             {
@@ -1417,8 +1420,8 @@ const char* CMedia::look_mod_transform( const size_t idx )  const
 
 void CMedia::clear_look_mod_transform()
 {
-  std::vector< char* >::iterator i = _look_mod_transform.begin();
-  std::vector< char* >::iterator e = _look_mod_transform.end();
+  LMT::iterator i = _look_mod_transform.begin();
+  LMT::iterator e = _look_mod_transform.end();
   for ( ; i != e; ++i )
   {
       free( *i );
@@ -1702,6 +1705,7 @@ void CMedia::play(const CMedia::Playback dir,
 /// VCR stop sequence
 void CMedia::stop()
 {
+
     if ( _playback == kStopped && _threads.empty() ) return;
 
     if ( _right_eye ) _right_eye->stop();
