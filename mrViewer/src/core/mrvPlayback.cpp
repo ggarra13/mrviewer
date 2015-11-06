@@ -116,9 +116,8 @@ namespace mrv {
 double get_clock(Clock *c)
 {
     // if (*c->queue_serial != c->serial)
-    //     return NAN;
-    // if (c->paused) {
-    //     return c->pts;
+    // {
+    //   return NAN;
     // } else {
     double time = av_gettime_relative() / 1000000.0;
     return c->pts_drift + time - (time - c->last_updated) * (1.0 - c->speed);
@@ -161,7 +160,7 @@ void sync_clock_to_slave(Clock *c, Clock *slave)
     double clock = get_clock(c);
     double slave_clock = get_clock(slave);
     if (!isnan(slave_clock) && (isnan(clock) || fabs(clock - slave_clock) > AV_NOSYNC_THRESHOLD))
-        set_clock(c, slave_clock, slave->serial);
+        set_clock(c, slave_clock, -1);
 }
 
 void update_video_pts(CMedia* is, double pts, int64_t pos, int serial) {
@@ -217,13 +216,14 @@ unsigned int barrier_thread_count( const CMedia* img )
 
 
 EndStatus handle_loop( boost::int64_t& frame,
-		       int&     step,
-		       CMedia* img, 
-		       bool    fg,
-		       mrv::ViewerUI* uiMain,
-		       const mrv::Reel  reel,
-		       const mrv::Timeline* timeline,
-		       const mrv::CMedia::DecodeStatus end )
+                       int&     step,
+                       CMedia* img, 
+                       bool    fg,
+                       mrv::ViewerUI* uiMain,
+                       const mrv::Reel  reel,
+                       const mrv::Timeline* timeline,
+                       const mrv::CMedia::DecodeStatus end, 
+                       const bool video = false )
 {
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
@@ -304,6 +304,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL) 
 	       {
+                   if ( video )
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
@@ -313,10 +314,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                            next->seek( f );
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
-                   }
 
-                   img->playback( CMedia::kStopped );
-                   if ( img->has_video() ) img->clear_cache();
+                       img->playback( CMedia::kStopped );
+                       if ( img->has_video() ) img->clear_cache();
+                   }
 
                    status = kEndNextImage;
                    return status;
@@ -381,19 +382,20 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL )
 	       {
+                   if ( video )
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
 
-                       if ( next->stopped() )
+                       if ( video && next->stopped() )
                        {
                            next->seek( f );
                            next->play( CMedia::kBackwards, uiMain, fg );
                        }
-                   }
 
-		  img->playback( CMedia::kStopped );
-                  if ( img->has_video() ) img->clear_cache();
+                       img->playback( CMedia::kStopped );
+                       if ( img->has_video() ) img->clear_cache();
+                   }
 
 		  status = kEndNextImage;
 		  return status;
@@ -596,7 +598,8 @@ void audio_thread( PlaybackData* data )
                   if ( img->stopped() ) continue;
 
                   EndStatus end = handle_loop( frame, step, img, fg, uiMain,
-                                               reel, timeline, status );
+                                               reel, timeline, status,
+                                               !img->has_picture() );
 
                   frame += img->audio_offset();
 
@@ -811,7 +814,7 @@ void video_thread( PlaybackData* data )
           //    continue;
           case CMedia::kDecodeError:
           case CMedia::kDecodeMissingFrame:
-              LOG_ERROR( _("Decode of image frame ") << frame 
+              LOG_ERROR( img->name() << _(" - Decode of image frame ") << frame 
                          << _(" returned ") << CMedia::decode_error( status ) );
              break;
           case CMedia::kDecodeLoopEnd:
@@ -837,7 +840,7 @@ void video_thread( PlaybackData* data )
 
 
                EndStatus end = handle_loop( frame, step, img, fg, uiMain, 
-                                            reel, timeline, status );
+                                            reel, timeline, status, true );
 
                DBG( img->name() << " VIDEO LOOP END frame: " << frame 
                     << " step " << step );
@@ -917,12 +920,13 @@ void video_thread( PlaybackData* data )
       if ( !img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
-
-
-	 if ( fg && img->is_left_eye() )
-	 {
-             view->frame( f );
-	 }
+         if ( frame <= img->last_frame() )
+         {
+             if ( fg && img->is_left_eye() )
+             {
+                 view->frame( f );
+             }
+         }
       }
 
 

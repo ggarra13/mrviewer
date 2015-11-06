@@ -1,294 +1,294 @@
-"!!ARBfp1.0\n"
-"# cgc version 3.1.0013, build date Apr 24 2012\n"
-"# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile arbfp1\n"
-"# source file: rgba.cg\n"
-"#vendor NVIDIA Corporation\n"
-"#version 3.1.0.13\n"
-"#profile arbfp1\n"
-"#program main\n"
-"#semantic main.fgImage : TEXUNIT0\n"
-"#semantic main.lut : TEXUNIT3\n"
-"#semantic main.mask\n"
-"#semantic main.mask_value\n"
-"#semantic main.height\n"
-"#semantic main.width\n"
-"#semantic main.gain\n"
-"#semantic main.gamma\n"
-"#semantic main.channel\n"
-"#semantic main.unpremult\n"
-"#semantic main.premult\n"
-"#semantic main.enableNormalization\n"
-"#semantic main.normMin\n"
-"#semantic main.normSpan\n"
-"#semantic main.enableLut\n"
-"#semantic main.lutF\n"
-"#semantic main.lutMin\n"
-"#semantic main.lutMax\n"
-"#semantic main.lutM\n"
-"#semantic main.lutT\n"
-"#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1\n"
-"#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1\n"
-"#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1\n"
-"#var int mask :  : c[0] : 3 : 1\n"
-"#var int mask_value :  : c[1] : 4 : 1\n"
-"#var int height :  : c[2] : 5 : 1\n"
-"#var int width :  : c[3] : 6 : 1\n"
-"#var half gain :  : c[4] : 7 : 1\n"
-"#var half gamma :  : c[5] : 8 : 1\n"
-"#var int channel :  : c[6] : 9 : 1\n"
-"#var bool unpremult :  : c[7] : 10 : 1\n"
-"#var bool premult :  : c[8] : 11 : 1\n"
-"#var bool enableNormalization :  : c[9] : 12 : 1\n"
-"#var half normMin :  : c[10] : 13 : 1\n"
-"#var half normSpan :  : c[11] : 14 : 1\n"
-"#var bool enableLut :  : c[12] : 15 : 1\n"
-"#var bool lutF :  : c[13] : 16 : 1\n"
-"#var half lutMin :  : c[14] : 17 : 1\n"
-"#var half lutMax :  : c[15] : 18 : 1\n"
-"#var half lutM :  : c[16] : 19 : 1\n"
-"#var half lutT :  : c[17] : 20 : 1\n"
-"#var float4 main.pixel : $vout.COLOR : COL : -1 : 1\n"
-"#const c[18] = 0.5 0.33333334 1 0\n"
-"#const c[19] = 2 3 1000 4\n"
-"#const c[20] = 5 6 2.718282 2.71875\n"
-"#const c[21] = 0.69335938\n"
-"#default mask = 0\n"
-"#default mask_value = 0\n"
-"#default height = 256\n"
-"#default width = 256\n"
-"#default gain = 1\n"
-"#default gamma = 0.44995117\n"
-"#default channel = 0\n"
-"#default unpremult = 0\n"
-"#default premult = 0\n"
-"#default enableNormalization = 0\n"
-"#default normMin = 0\n"
-"#default normSpan = 1\n"
-"#default enableLut = 0\n"
-"#default lutF = 0\n"
-"PARAM c[22] = { program.local[0..17],\n"
-"		{ 0.5, 0.33333334, 1, 0 },\n"
-"		{ 2, 3, 1000, 4 },\n"
-"		{ 5, 6, 2.718282, 2.71875 },\n"
-"		{ 0.69335938 } };\n"
-"TEMP R0;\n"
-"TEMP R1;\n"
-"TEMP R2;\n"
-"TEMP R3;\n"
-"TEMP R4;\n"
-"TEMP R5;\n"
-"TEMP R6;\n"
-"TEMP R7;\n"
-"TEX R0, fragment.texcoord[0], texture[0], 2D;\n"
-"RCP R3.w, c[13].x;\n"
-"RCP R1.w, c[11].x;\n"
-"ADD R1.xyz, R0, -c[10].x;\n"
-"MUL R1.xyz, R1, R1.w;\n"
-"CMP R3.xyz, -c[9].x, R1, R0;\n"
-"MIN R0.xyz, R3, c[15].x;\n"
-"MAX R0.xyz, R0, c[14].x;\n"
-"MOV R1.w, c[17].x;\n"
-"LG2 R0.x, R0.x;\n"
-"LG2 R0.y, R0.y;\n"
-"LG2 R0.z, R0.z;\n"
-"MUL R0.xyz, R0, c[16].x;\n"
-"MAD R0.xyz, R0, c[21].x, R1.w;\n"
-"MUL R1.xyz, R0, c[13].x;\n"
-"FLR R0.xyz, R1;\n"
-"ADD R4.xyz, -R0, R1;\n"
-"ADD R2.xyz, R0, c[18].z;\n"
-"MUL R7.xyz, R3.w, R2;\n"
-"MUL R2.xyz, R0, R3.w;\n"
-"TEX R1.xyz, R7, texture[3], 3D;\n"
-"ADD R2.w, -R4.x, c[18].z;\n"
-"ADD R3.w, -R4.y, c[18].z;\n"
-"MUL R1.xyz, R4.x, R1;\n"
-"MOV R0.x, R2;\n"
-"MOV R0.yz, R7;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"MAD R1.xyz, R2.w, R0, R1;\n"
-"MUL R5.xyz, R4.y, R1;\n"
-"TEX R1.xyz, R2, texture[3], 3D;\n"
-"MOV R0.y, R2;\n"
-"MOV R0.xz, R7;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"MUL R0.xyz, R4.x, R0;\n"
-"MAD R6.xyz, R2.w, R1, R0;\n"
-"MAD R5.xyz, R6, R3.w, R5;\n"
-"MOV R6.yz, R2;\n"
-"MOV R6.x, R7;\n"
-"MOV R0.z, R2;\n"
-"MOV R0.xy, R7;\n"
-"TEX R0.xyz, R0, texture[3], 3D;\n"
-"MOV R2.y, R7;\n"
-"MUL R0.xyz, R4.x, R0;\n"
-"TEX R2.xyz, R2, texture[3], 3D;\n"
-"MAD R0.xyz, R2, R2.w, R0;\n"
-"TEX R6.xyz, R6, texture[3], 3D;\n"
-"MUL R2.xyz, R4.x, R6;\n"
-"MAD R1.xyz, R2.w, R1, R2;\n"
-"MUL R0.xyz, R4.y, R0;\n"
-"MAD R0.xyz, R1, R3.w, R0;\n"
-"MUL R1.xyz, R4.z, R5;\n"
-"ADD R2.y, -R4.z, c[18].z;\n"
-"MAD R0.xyz, R0, R2.y, R1;\n"
-"MOV R2.x, c[13];\n"
-"MUL R1.x, R2, c[12];\n"
-"CMP R2.xyz, -R1.x, R0, R3;\n"
-"POW R0.x, c[20].w, R2.x;\n"
-"POW R0.z, c[20].w, R2.z;\n"
-"POW R0.y, c[20].w, R2.y;\n"
-"CMP R0.xyz, -R1.x, R0, R2;\n"
-"MIN R1.xyz, R0, c[15].x;\n"
-"MAX R1.xyz, R1, c[14].x;\n"
-"LG2 R1.x, R1.x;\n"
-"LG2 R1.y, R1.y;\n"
-"LG2 R1.z, R1.z;\n"
-"MUL R3.xyz, R1, c[16].x;\n"
-"ABS R2.x, c[13];\n"
-"CMP R1.x, -R2, c[18].w, c[18].z;\n"
-"MAD R2.xyz, R3, c[21].x, R1.w;\n"
-"MUL R1.x, R1, c[12];\n"
-"CMP R2.xyz, -R1.x, R2, R0;\n"
-"TEX R0.xyz, R2, texture[3], 3D;\n"
-"RCP R1.y, R0.w;\n"
-"MOV R1.z, c[18];\n"
-"POW R0.x, c[20].z, R0.x;\n"
-"POW R0.z, c[20].z, R0.z;\n"
-"POW R0.y, c[20].z, R0.y;\n"
-"CMP R0.xyz, -R1.x, R0, R2;\n"
-"ABS R1.x, R0.w;\n"
-"CMP R1.x, -R1, c[18].z, c[18].w;\n"
-"MUL R2.xyz, R0, R1.y;\n"
-"MUL R1.x, R1, c[7];\n"
-"CMP R0.xyz, -R1.x, R2, R0;\n"
-"MUL R0.xyz, R0, c[4].x;\n"
-"MOV R2.xyz, c[19].xyww;\n"
-"ADD R1.x, -R1.z, c[6];\n"
-"ADD R1.y, -R2.x, c[6].x;\n"
-"ABS R1.y, R1;\n"
-"ADD R2.x, -R2, c[0];\n"
-"ADD R1.z, -R1, c[0].x;\n"
-"ABS R1.z, R1;\n"
-"ABS R1.x, R1;\n"
-"CMP R1.y, -R1, c[18].w, c[18].z;\n"
-"ADD R2.z, -R2, c[6].x;\n"
-"ABS R2.x, R2;\n"
-"POW R0.y, R0.y, c[5].x;\n"
-"POW R0.z, R0.z, c[5].x;\n"
-"POW R0.x, R0.x, c[5].x;\n"
-"CMP R0.xyz, -R1.x, R0, R0.x;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"ABS R1.x, R1;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"MUL R1.w, R1.x, R1.y;\n"
-"CMP R0.xyz, -R1.w, R0.y, R0;\n"
-"ADD R1.w, -R2.y, c[6].x;\n"
-"ADD R2.y, -R2, c[0].x;\n"
-"ABS R3.y, R2;\n"
-"CMP R2.y, -R2.x, c[18].w, c[18].z;\n"
-"CMP R3.w, -R3.y, c[18], c[18].z;\n"
-"MUL R3.y, fragment.texcoord[0], c[2].x;\n"
-"ABS R1.y, R1;\n"
-"CMP R1.y, -R1, c[18].w, c[18].z;\n"
-"ABS R1.w, R1;\n"
-"MUL R1.x, R1, R1.y;\n"
-"CMP R1.w, -R1, c[18], c[18].z;\n"
-"MUL R1.y, R1.x, R1.w;\n"
-"CMP R0.xyz, -R1.y, R0.z, R0;\n"
-"ABS R1.y, R1.w;\n"
-"ABS R1.w, R2.z;\n"
-"CMP R1.y, -R1, c[18].w, c[18].z;\n"
-"MUL R2.z, R1.x, R1.y;\n"
-"CMP R1.w, -R1, c[18], c[18].z;\n"
-"MUL R1.x, R2.z, R1.w;\n"
-"CMP R0.xyz, -R1.x, R0.w, R0;\n"
-"MOV R1.xy, c[20];\n"
-"ADD R2.w, -R1.x, c[6].x;\n"
-"ABS R1.x, R1.w;\n"
-"ABS R1.w, R2;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"CMP R2.x, -R1.z, c[18].w, c[18].z;\n"
-"FLR R4.y, R3;\n"
-"MUL R3.x, R0, c[18];\n"
-"CMP R1.w, -R1, c[18], c[18].z;\n"
-"MUL R1.x, R2.z, R1;\n"
-"MUL R2.z, R1.x, R1.w;\n"
-"CMP R0.x, -R2.z, R3, R0;\n"
-"MAD R2.w, R0, c[18].x, R0.x;\n"
-"CMP R0.x, -R2.z, R2.w, R0;\n"
-"ADD R2.z, R0.x, R0.y;\n"
-"ADD R2.z, R2, R0;\n"
-"ABS R3.x, R2.y;\n"
-"ABS R2.w, R2.x;\n"
-"CMP R2.w, -R2, c[18], c[18].z;\n"
-"CMP R3.x, -R3, c[18].w, c[18].z;\n"
-"MUL R3.z, R2.w, R3.x;\n"
-"MUL R3.x, fragment.texcoord[0], c[3];\n"
-"FLR R4.x, R3;\n"
-"ADD R4.z, R4.x, R4.y;\n"
-"MUL R3.z, R3, R3.w;\n"
-"SLT R3.w, R4.x, -R4.y;\n"
-"MUL R4.z, R4, c[18].x;\n"
-"ABS R4.x, R4.z;\n"
-"ABS R3.w, R3;\n"
-"FRC R4.x, R4;\n"
-"CMP R3.w, -R3, c[18], c[18].z;\n"
-"MUL R2.y, R2.w, R2;\n"
-"MUL R4.x, R4, c[19];\n"
-"MUL R3.w, R3.z, R3;\n"
-"CMP R3.w, -R3, R4.x, -R4.x;\n"
-"SLT R4.x, R3, c[18].w;\n"
-"ABS R2.w, R4.x;\n"
-"SLT R4.x, R3.y, c[18].w;\n"
-"CMP R2.w, -R2, c[18], c[18].z;\n"
-"ABS R4.x, R4;\n"
-"MUL R2.w, R2.y, R2;\n"
-"CMP R4.x, -R4, c[18].w, c[18].z;\n"
-"MUL R4.y, R3, c[18].x;\n"
-"MUL R3.y, R2.x, R4.x;\n"
-"MUL R2.x, R3, c[18];\n"
-"ABS R4.x, R4.y;\n"
-"FRC R3.x, R4;\n"
-"ABS R2.x, R2;\n"
-"MUL R3.x, R3, c[19];\n"
-"CMP R3.x, -R3.y, R3, -R3;\n"
-"ABS R3.y, R3.x;\n"
-"FRC R2.x, R2;\n"
-"MUL R2.x, R2, c[19];\n"
-"CMP R2.x, -R2.w, R2, -R2;\n"
-"SLT R2.w, R3.x, c[18];\n"
-"FLR R3.y, R3;\n"
-"CMP R3.x, -R2.w, -R3.y, R3.y;\n"
-"ABS R2.w, R2.x;\n"
-"CMP R3.x, -R1.z, c[19].z, R3;\n"
-"SLT R1.z, R2.x, c[18].w;\n"
-"FLR R2.w, R2;\n"
-"CMP R1.z, -R1, -R2.w, R2.w;\n"
-"CMP R2.x, -R2.y, R1.z, R3;\n"
-"SLT R1.z, R3.w, c[18];\n"
-"CMP R1.z, -R3, R1, R2.x;\n"
-"ADD R2.x, -R1.y, c[6];\n"
-"ABS R1.y, R1.w;\n"
-"CMP R1.y, -R1, c[18].w, c[18].z;\n"
-"ABS R1.w, R2.x;\n"
-"MUL R1.x, R1, R1.y;\n"
-"CMP R1.w, -R1, c[18], c[18].z;\n"
-"MUL R1.x, R1, R1.w;\n"
-"MUL R2.z, R2, c[18].y;\n"
-"CMP R0.xyz, -R1.x, R2.z, R0;\n"
-"ADD R1.x, R1.z, -c[1];\n"
-"ABS R1.x, R1;\n"
-"CMP R0, -R1.x, R0, c[18].w;\n"
-"ABS R1.y, R0.w;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"ABS R1.x, R1;\n"
-"CMP R1.y, -R1, c[18].w, c[18].z;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"MUL R1.x, R1, R1.y;\n"
-"CMP R0.w, -R1.x, c[18].z, R0;\n"
-"MUL R1.xyz, R0, R0.w;\n"
-"CMP result.color.xyz, -c[8].x, R1, R0;\n"
-"MOV result.color.w, R0;\n"
-"END\n"
-"# 211 instructions, 8 R-regs\n"
+!!ARBfp1.0
+# cgc version 3.1.0013, build date Apr 24 2012
+# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile arbfp1
+# source file: rgba.cg
+#vendor NVIDIA Corporation
+#version 3.1.0.13
+#profile arbfp1
+#program main
+#semantic main.fgImage : TEXUNIT0
+#semantic main.lut : TEXUNIT3
+#semantic main.mask
+#semantic main.mask_value
+#semantic main.height
+#semantic main.width
+#semantic main.gain
+#semantic main.gamma
+#semantic main.channel
+#semantic main.unpremult
+#semantic main.premult
+#semantic main.enableNormalization
+#semantic main.normMin
+#semantic main.normSpan
+#semantic main.enableLut
+#semantic main.lutF
+#semantic main.lutMin
+#semantic main.lutMax
+#semantic main.lutM
+#semantic main.lutT
+#var float2 tc : $vin.TEXCOORD0 : TEX0 : 0 : 1
+#var sampler2D fgImage : TEXUNIT0 : texunit 0 : 1 : 1
+#var sampler3D lut : TEXUNIT3 : texunit 3 : 2 : 1
+#var int mask :  : c[0] : 3 : 1
+#var int mask_value :  : c[1] : 4 : 1
+#var int height :  : c[2] : 5 : 1
+#var int width :  : c[3] : 6 : 1
+#var half gain :  : c[4] : 7 : 1
+#var half gamma :  : c[5] : 8 : 1
+#var int channel :  : c[6] : 9 : 1
+#var bool unpremult :  : c[7] : 10 : 1
+#var bool premult :  : c[8] : 11 : 1
+#var bool enableNormalization :  : c[9] : 12 : 1
+#var half normMin :  : c[10] : 13 : 1
+#var half normSpan :  : c[11] : 14 : 1
+#var bool enableLut :  : c[12] : 15 : 1
+#var bool lutF :  : c[13] : 16 : 1
+#var half lutMin :  : c[14] : 17 : 1
+#var half lutMax :  : c[15] : 18 : 1
+#var half lutM :  : c[16] : 19 : 1
+#var half lutT :  : c[17] : 20 : 1
+#var float4 main.pixel : $vout.COLOR : COL : -1 : 1
+#const c[18] = 0.5 0.33333334 1 0
+#const c[19] = 2 3 1000 4
+#const c[20] = 5 6 2.718282 2.71875
+#const c[21] = 0.69335938
+#default mask = 0
+#default mask_value = 0
+#default height = 256
+#default width = 256
+#default gain = 1
+#default gamma = 0.44995117
+#default channel = 0
+#default unpremult = 0
+#default premult = 0
+#default enableNormalization = 0
+#default normMin = 0
+#default normSpan = 1
+#default enableLut = 0
+#default lutF = 0
+PARAM c[22] = { program.local[0..17],
+		{ 0.5, 0.33333334, 1, 0 },
+		{ 2, 3, 1000, 4 },
+		{ 5, 6, 2.718282, 2.71875 },
+		{ 0.69335938 } };
+TEMP R0;
+TEMP R1;
+TEMP R2;
+TEMP R3;
+TEMP R4;
+TEMP R5;
+TEMP R6;
+TEMP R7;
+TEX R0, fragment.texcoord[0], texture[0], 2D;
+RCP R3.w, c[13].x;
+RCP R1.w, c[11].x;
+ADD R1.xyz, R0, -c[10].x;
+MUL R1.xyz, R1, R1.w;
+CMP R3.xyz, -c[9].x, R1, R0;
+MIN R0.xyz, R3, c[15].x;
+MAX R0.xyz, R0, c[14].x;
+MOV R1.w, c[17].x;
+LG2 R0.x, R0.x;
+LG2 R0.y, R0.y;
+LG2 R0.z, R0.z;
+MUL R0.xyz, R0, c[16].x;
+MAD R0.xyz, R0, c[21].x, R1.w;
+MUL R1.xyz, R0, c[13].x;
+FLR R0.xyz, R1;
+ADD R4.xyz, -R0, R1;
+ADD R2.xyz, R0, c[18].z;
+MUL R7.xyz, R3.w, R2;
+MUL R2.xyz, R0, R3.w;
+TEX R1.xyz, R7, texture[3], 3D;
+ADD R2.w, -R4.x, c[18].z;
+ADD R3.w, -R4.y, c[18].z;
+MUL R1.xyz, R4.x, R1;
+MOV R0.x, R2;
+MOV R0.yz, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MAD R1.xyz, R2.w, R0, R1;
+MUL R5.xyz, R4.y, R1;
+TEX R1.xyz, R2, texture[3], 3D;
+MOV R0.y, R2;
+MOV R0.xz, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MUL R0.xyz, R4.x, R0;
+MAD R6.xyz, R2.w, R1, R0;
+MAD R5.xyz, R6, R3.w, R5;
+MOV R6.yz, R2;
+MOV R6.x, R7;
+MOV R0.z, R2;
+MOV R0.xy, R7;
+TEX R0.xyz, R0, texture[3], 3D;
+MOV R2.y, R7;
+MUL R0.xyz, R4.x, R0;
+TEX R2.xyz, R2, texture[3], 3D;
+MAD R0.xyz, R2, R2.w, R0;
+TEX R6.xyz, R6, texture[3], 3D;
+MUL R2.xyz, R4.x, R6;
+MAD R1.xyz, R2.w, R1, R2;
+MUL R0.xyz, R4.y, R0;
+MAD R0.xyz, R1, R3.w, R0;
+MUL R1.xyz, R4.z, R5;
+ADD R2.y, -R4.z, c[18].z;
+MAD R0.xyz, R0, R2.y, R1;
+MOV R2.x, c[13];
+MUL R1.x, R2, c[12];
+CMP R2.xyz, -R1.x, R0, R3;
+POW R0.x, c[20].w, R2.x;
+POW R0.z, c[20].w, R2.z;
+POW R0.y, c[20].w, R2.y;
+CMP R0.xyz, -R1.x, R0, R2;
+MIN R1.xyz, R0, c[15].x;
+MAX R1.xyz, R1, c[14].x;
+LG2 R1.x, R1.x;
+LG2 R1.y, R1.y;
+LG2 R1.z, R1.z;
+MUL R3.xyz, R1, c[16].x;
+ABS R2.x, c[13];
+CMP R1.x, -R2, c[18].w, c[18].z;
+MAD R2.xyz, R3, c[21].x, R1.w;
+MUL R1.x, R1, c[12];
+CMP R2.xyz, -R1.x, R2, R0;
+TEX R0.xyz, R2, texture[3], 3D;
+RCP R1.y, R0.w;
+MOV R1.z, c[18];
+POW R0.x, c[20].z, R0.x;
+POW R0.z, c[20].z, R0.z;
+POW R0.y, c[20].z, R0.y;
+CMP R0.xyz, -R1.x, R0, R2;
+ABS R1.x, R0.w;
+CMP R1.x, -R1, c[18].z, c[18].w;
+MUL R2.xyz, R0, R1.y;
+MUL R1.x, R1, c[7];
+CMP R0.xyz, -R1.x, R2, R0;
+MUL R0.xyz, R0, c[4].x;
+MOV R2.xyz, c[19].xyww;
+ADD R1.x, -R1.z, c[6];
+ADD R1.y, -R2.x, c[6].x;
+ABS R1.y, R1;
+ADD R2.x, -R2, c[0];
+ADD R1.z, -R1, c[0].x;
+ABS R1.z, R1;
+ABS R1.x, R1;
+CMP R1.y, -R1, c[18].w, c[18].z;
+ADD R2.z, -R2, c[6].x;
+ABS R2.x, R2;
+POW R0.y, R0.y, c[5].x;
+POW R0.z, R0.z, c[5].x;
+POW R0.x, R0.x, c[5].x;
+CMP R0.xyz, -R1.x, R0, R0.x;
+CMP R1.x, -R1, c[18].w, c[18].z;
+ABS R1.x, R1;
+CMP R1.x, -R1, c[18].w, c[18].z;
+MUL R1.w, R1.x, R1.y;
+CMP R0.xyz, -R1.w, R0.y, R0;
+ADD R1.w, -R2.y, c[6].x;
+ADD R2.y, -R2, c[0].x;
+ABS R3.y, R2;
+CMP R2.y, -R2.x, c[18].w, c[18].z;
+CMP R3.w, -R3.y, c[18], c[18].z;
+MUL R3.y, fragment.texcoord[0], c[2].x;
+ABS R1.y, R1;
+CMP R1.y, -R1, c[18].w, c[18].z;
+ABS R1.w, R1;
+MUL R1.x, R1, R1.y;
+CMP R1.w, -R1, c[18], c[18].z;
+MUL R1.y, R1.x, R1.w;
+CMP R0.xyz, -R1.y, R0.z, R0;
+ABS R1.y, R1.w;
+ABS R1.w, R2.z;
+CMP R1.y, -R1, c[18].w, c[18].z;
+MUL R2.z, R1.x, R1.y;
+CMP R1.w, -R1, c[18], c[18].z;
+MUL R1.x, R2.z, R1.w;
+CMP R0.xyz, -R1.x, R0.w, R0;
+MOV R1.xy, c[20];
+ADD R2.w, -R1.x, c[6].x;
+ABS R1.x, R1.w;
+ABS R1.w, R2;
+CMP R1.x, -R1, c[18].w, c[18].z;
+CMP R2.x, -R1.z, c[18].w, c[18].z;
+FLR R4.y, R3;
+MUL R3.x, R0, c[18];
+CMP R1.w, -R1, c[18], c[18].z;
+MUL R1.x, R2.z, R1;
+MUL R2.z, R1.x, R1.w;
+CMP R0.x, -R2.z, R3, R0;
+MAD R2.w, R0, c[18].x, R0.x;
+CMP R0.x, -R2.z, R2.w, R0;
+ADD R2.z, R0.x, R0.y;
+ADD R2.z, R2, R0;
+ABS R3.x, R2.y;
+ABS R2.w, R2.x;
+CMP R2.w, -R2, c[18], c[18].z;
+CMP R3.x, -R3, c[18].w, c[18].z;
+MUL R3.z, R2.w, R3.x;
+MUL R3.x, fragment.texcoord[0], c[3];
+FLR R4.x, R3;
+ADD R4.z, R4.x, R4.y;
+MUL R3.z, R3, R3.w;
+SLT R3.w, R4.x, -R4.y;
+MUL R4.z, R4, c[18].x;
+ABS R4.x, R4.z;
+ABS R3.w, R3;
+FRC R4.x, R4;
+CMP R3.w, -R3, c[18], c[18].z;
+MUL R2.y, R2.w, R2;
+MUL R4.x, R4, c[19];
+MUL R3.w, R3.z, R3;
+CMP R3.w, -R3, R4.x, -R4.x;
+SLT R4.x, R3, c[18].w;
+ABS R2.w, R4.x;
+SLT R4.x, R3.y, c[18].w;
+CMP R2.w, -R2, c[18], c[18].z;
+ABS R4.x, R4;
+MUL R2.w, R2.y, R2;
+CMP R4.x, -R4, c[18].w, c[18].z;
+MUL R4.y, R3, c[18].x;
+MUL R3.y, R2.x, R4.x;
+MUL R2.x, R3, c[18];
+ABS R4.x, R4.y;
+FRC R3.x, R4;
+ABS R2.x, R2;
+MUL R3.x, R3, c[19];
+CMP R3.x, -R3.y, R3, -R3;
+ABS R3.y, R3.x;
+FRC R2.x, R2;
+MUL R2.x, R2, c[19];
+CMP R2.x, -R2.w, R2, -R2;
+SLT R2.w, R3.x, c[18];
+FLR R3.y, R3;
+CMP R3.x, -R2.w, -R3.y, R3.y;
+ABS R2.w, R2.x;
+CMP R3.x, -R1.z, c[19].z, R3;
+SLT R1.z, R2.x, c[18].w;
+FLR R2.w, R2;
+CMP R1.z, -R1, -R2.w, R2.w;
+CMP R2.x, -R2.y, R1.z, R3;
+SLT R1.z, R3.w, c[18];
+CMP R1.z, -R3, R1, R2.x;
+ADD R2.x, -R1.y, c[6];
+ABS R1.y, R1.w;
+CMP R1.y, -R1, c[18].w, c[18].z;
+ABS R1.w, R2.x;
+MUL R1.x, R1, R1.y;
+CMP R1.w, -R1, c[18], c[18].z;
+MUL R1.x, R1, R1.w;
+MUL R2.z, R2, c[18].y;
+CMP R0.xyz, -R1.x, R2.z, R0;
+ADD R1.x, R1.z, -c[1];
+ABS R1.x, R1;
+CMP R0, -R1.x, R0, c[18].w;
+ABS R1.y, R0.w;
+CMP R1.x, -R1, c[18].w, c[18].z;
+ABS R1.x, R1;
+CMP R1.y, -R1, c[18].w, c[18].z;
+CMP R1.x, -R1, c[18].w, c[18].z;
+MUL R1.x, R1, R1.y;
+CMP R0.w, -R1.x, c[18].z, R0;
+MUL R1.xyz, R0, R0.w;
+CMP result.color.xyz, -c[8].x, R1, R0;
+MOV result.color.w, R0;
+END
+# 211 instructions, 8 R-regs
