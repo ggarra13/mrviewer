@@ -1273,11 +1273,14 @@ void CMedia::channel( const char* c )
         std::string ch2;
         if ( _channel ) ch2 = _channel;
 
+#if 0
         if ( (_channel == NULL || 
               ch2.find(_("stereo")) != std::string::npos ||
               ch2.find(_("anaglyph")) != std::string::npos ) &&
              _stereo_type != kNoStereo ) to_fetch = false;
-        else if ( _channel == NULL || c == NULL )  to_fetch = true;
+        else
+#endif
+            if ( _channel == NULL || c == NULL )  to_fetch = true;
         else
         {
             size_t pos = ch.rfind( '.' );

@@ -1639,6 +1639,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
            else
            {
+               std::cerr << "frame " << frame 
+                         << " set datawindow2 displaywindow2" << std::endl;
                data_window2( dataWindow.min.x, dataWindow.min.y,
                              dataWindow.max.x, dataWindow.max.y, frame );
 
