@@ -13,6 +13,10 @@ v3.0.0   - Bug fixed alpha in shaders for stereo display.  Previously
 	   stereo crossed.
 	 - Avoided a crash when sequences were of different length
 	   than the other stereo movie or sequence.
+	 - Bug fixed a bug introduced in v2.9.6 when multiview channels
+	   were displayed in stereo.
+	 - Bug fixed a bug introduced in v2.9.8 when multipart stereo
+	   images were loaded.
 
 v2.9.9   - Added stereo interlaced, interlaced columns and 
 	   checkerboard.
