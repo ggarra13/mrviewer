@@ -1639,8 +1639,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
            else
            {
-               std::cerr << "frame " << frame 
-                         << " set datawindow2 displaywindow2" << std::endl;
                data_window2( dataWindow.min.x, dataWindow.min.y,
                              dataWindow.max.x, dataWindow.max.y, frame );
 
@@ -1667,7 +1665,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            in.readPixels( dataWindow.min.y, dataWindow.max.y );
 
            // Quick exit if stereo is off or multiview
-           if ( _stereo_type == kNoStereo || _multiview ) break;
+           if ( _stereo_type == kNoStereo ) break;
 
            if ( st[0] != st[1] )
            {
