@@ -261,7 +261,7 @@ fltk::StyleSet*     newscheme = NULL;
   ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
   HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
-
+  bool                Preferences::native_file_chooser;
   std::string         Preferences::ODT_CTL_transform;
   std::string         Preferences::ODT_ICC_profile;
   Imf::Chromaticities Preferences::ODT_CTL_chromaticities;
@@ -696,6 +696,8 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsAutoReload->value( (bool) tmp );
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
+    loading.get( "native_file_chooser", tmp, 0 );
+    uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
     fltk::Preferences video( base, "video" );
     video.get( "stereo_right_eye_inverted", tmp, 0 );
@@ -845,6 +847,8 @@ fltk::StyleSet*     newscheme = NULL;
     //
     Flu_File_Chooser::singleButtonTravelDrawer = (bool)
     uiPrefs->uiPrefsFileReqFolder->value();
+
+    native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
     // Handle caches
     CMedia::cache_active( (bool)uiPrefs->uiPrefsCacheActive->value() );
@@ -1107,6 +1111,7 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences loading( base, "loading" );
     loading.set( "auto_reload", (int) uiPrefs->uiPrefsAutoReload->value() );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
+    loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
 
     fltk::Preferences video( base, "video" );
     video.set( "stereo_right_eye_inverted", 
