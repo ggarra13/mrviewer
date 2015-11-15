@@ -66,7 +66,6 @@ namespace fs = boost::filesystem;
 #include "mrvI8N.h"
 #include "mrvOS.h"
 
-typedef std::vector< std::string > StringList;
 
 namespace mrv
 {

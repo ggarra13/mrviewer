@@ -131,7 +131,8 @@ class ImageBrowser : public fltk::Browser
 
      void load( const LoadList& files, bool stereo = false, 
                 bool progressBar = true );
-    void load( const stringArray& files, bool stereo = false,
+    void load( const stringArray& files, const bool seqs = true,
+               bool stereo = false,
                bool progressBar = true );
 
 
