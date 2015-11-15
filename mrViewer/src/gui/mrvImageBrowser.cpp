@@ -1683,6 +1683,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
   }
 
 void ImageBrowser::load( const stringArray& files,
+                         const bool seqs,
                          const bool stereo,
 			 const bool progress )
   {
@@ -1709,8 +1710,16 @@ void ImageBrowser::load( const stringArray& files,
 	  {
 	    int64_t start = mrv::kMaxFrame;
 	    int64_t end   = mrv::kMinFrame;
-	    mrv::get_sequence_limits( start, end, file );
-	    loadlist.push_back( mrv::LoadInfo( file, start, end ) );
+
+            std::string fileroot = file;
+            bool load_seq = uiMain->uiPrefs->uiPrefsLoadSequence->value();
+            if ( load_seq && seqs )
+            {
+                mrv::fileroot( fileroot, file );
+            }
+
+	    mrv::get_sequence_limits( start, end, fileroot );
+	    loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
 	  }
 
 	retname = file;
@@ -1781,7 +1790,7 @@ void ImageBrowser::load( const stringArray& files,
      stringArray files = mrv::open_image_file(NULL,false);
      if (files.empty()) return;
 
-     load( files );
+     load( files, false );
   }
 
   /** 
