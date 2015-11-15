@@ -164,6 +164,9 @@ struct SequenceSort
 
   typedef std::vector< LoadInfo > LoadList;
 
+typedef std::vector< std::string > StringList;
+void split(const std::string &s, char delim, StringList& elems);
+
   /**
    * Given a filename with %hex characters, return string in ascii.
    */

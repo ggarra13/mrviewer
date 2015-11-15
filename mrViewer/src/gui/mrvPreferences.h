@@ -67,6 +67,7 @@ namespace mrv {
     static bool set_theme();
 
   public:
+      static bool native_file_chooser;
     static int bgcolor;
     static int textcolor;
     static int selectioncolor;
