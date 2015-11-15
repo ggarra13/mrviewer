@@ -1184,6 +1184,14 @@ void CMedia::default_layers()
  */
 void CMedia::add_stereo_layers()
 {
+    // Make sure we don't add stereo layers twice.  This can happen
+    // if user has a multiview image and loads a second stereo image.
+    stringArray::const_reverse_iterator i = _layers.rbegin();
+    stringArray::const_reverse_iterator e = _layers.rend();
+    for ( ; i != e; ++i )
+    {
+        if ( *i == _("right.anaglyph") ) return;
+    }
     _layers.push_back( _("stereo.horizontal") );
     _layers.push_back( _("stereo.crossed") );
     _layers.push_back( _("stereo.interlaced") );
