@@ -1254,7 +1254,7 @@ fltk::StyleSet*     newscheme = NULL;
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->buttoncolor( bgcolor );
-	style->labelsize( 10 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
@@ -1266,7 +1266,7 @@ fltk::StyleSet*     newscheme = NULL;
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->buttoncolor( bgcolor );
-	style->labelsize( 10 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
@@ -1293,7 +1293,7 @@ fltk::StyleSet*     newscheme = NULL;
 	style->textcolor( textcolor );
 	style->selection_textcolor( selectiontextcolor );
 	style->buttoncolor( bgcolor );
-	style->labelsize( 10 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
 
@@ -1305,7 +1305,7 @@ fltk::StyleSet*     newscheme = NULL;
 	style->textcolor( textcolor );
 	style->selection_textcolor( selectiontextcolor );
 	style->buttoncolor( bgcolor );
-	style->labelsize( 10 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
 
@@ -1317,8 +1317,8 @@ fltk::StyleSet*     newscheme = NULL;
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->buttoncolor( bgcolor );
-	style->textsize( 10 );
-	style->labelsize( 10 );
+	style->textsize( 12 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
 
@@ -1341,8 +1341,8 @@ fltk::StyleSet*     newscheme = NULL;
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->buttoncolor( bgcolor );
-	style->textsize( 10 );
-	style->labelsize( 10 );
+	style->textsize( 12 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
@@ -1353,7 +1353,7 @@ fltk::StyleSet*     newscheme = NULL;
     style = fltk::InvisibleBox::default_style;
     if ( style )
       {
-	style->labelsize( 10 );
+	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
 
