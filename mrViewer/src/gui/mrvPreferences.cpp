@@ -1371,17 +1371,22 @@ fltk::StyleSet*     newscheme = NULL;
 	style->selection_textcolor( selectiontextcolor );
       }
 
+
+    // Make CheckButton draw as a radio button
+
     style = fltk::Style::find( "CheckButton" );
     if ( style )
       {
 	style->color( bgcolor );
-	style->textcolor( textcolor );
+	style->textcolor( fltk::YELLOW );
 	style->buttoncolor( bgcolor );
 	style->textsize( 12 );
 	style->labelsize( 12 );
+        const fltk::Symbol* s = fltk::Symbol::find( "radio" );
+        style->glyph_ = (fltk::Symbol*)s;
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
+	style->selection_textcolor( fltk::YELLOW   );
       }
 
     style = fltk::Style::find( "RadioButton" );
