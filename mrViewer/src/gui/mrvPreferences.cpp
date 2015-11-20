@@ -1322,18 +1322,18 @@ fltk::StyleSet*     newscheme = NULL;
 	style->labelcolor( textcolor );
       }
 
-
     style = fltk::Style::find( "Choice" );
     if ( style )
-      {
+    {
 	style->color( bgcolor );
+        style->alt_color( bgcolor );
 	style->textcolor( textcolor );
 	style->buttoncolor( bgcolor );
 	style->textsize( 10 );
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
-      }
+    }
 
     style = fltk::Style::find( "Message" );
     if ( style )
@@ -1371,6 +1371,32 @@ fltk::StyleSet*     newscheme = NULL;
 	style->selection_textcolor( selectiontextcolor );
       }
 
+    style = fltk::Style::find( "CheckButton" );
+    if ( style )
+      {
+	style->color( bgcolor );
+	style->textcolor( textcolor );
+	style->buttoncolor( bgcolor );
+	style->textsize( 12 );
+	style->labelsize( 12 );
+	style->labelcolor( textcolor );
+	style->selection_color( selectioncolor );
+	style->selection_textcolor( selectiontextcolor );
+      }
+
+    style = fltk::Style::find( "RadioButton" );
+    if ( style )
+      {
+          style->color( fltk::GRAY20 );
+          style->textcolor( fltk::YELLOW );
+          style->buttoncolor( bgcolor );
+          style->textsize( 12 );
+          style->labelsize( 12 );
+          style->labelcolor( textcolor );
+          style->selection_color( fltk::YELLOW );
+          style->selection_textcolor( fltk::YELLOW );
+      }
+
 
     // this has default_style
     style = fltk::Style::find("Tooltip");
@@ -1390,7 +1416,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     fltk::FrameBox* box;
     box = (fltk::FrameBox*) fltk::Symbol::find( "down_" );
-    if ( box ) box->data(  "2HHOOAA" );
+    if ( box ) box->data(  "2HHOODD" );
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "up" );
     if ( box ) box->data(  "AAOOHH" );
@@ -1401,7 +1427,6 @@ fltk::StyleSet*     newscheme = NULL;
     // This is for slider lines
     box = (fltk::FrameBox*) fltk::Symbol::find( "thin_down" );
     if ( box ) box->data(  "OOLL" );
-
 
     // this has default_style
     style = fltk::Style::find( "PopupMenu" );
@@ -1506,7 +1531,6 @@ fltk::StyleSet*     newscheme = NULL;
       {
 	LOG_ERROR( "fltk's widget style not found" );
       }
-
 
     // Set ui window settings
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
