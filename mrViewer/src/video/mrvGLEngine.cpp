@@ -1496,17 +1496,19 @@ void GLEngine::draw_images( ImageList& images )
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
-      glEnable( GL_BLEND );
 
       if ( img->has_subtitle() )
 	{
-           image_type_ptr sub = img->subtitle();
-           if ( sub )
-           {
-	      ++q;
-              quad = *q;
-	      quad->bind( sub );
-	      quad->draw( texWidth, texHeight );
+            image_type_ptr sub = img->subtitle();
+            if ( sub )
+            {
+                glEnable( GL_BLEND );
+                ++q;
+                quad = *q;
+                quad->mask( 0 );
+                quad->mask_value( 10 );
+                quad->bind( sub );
+                quad->draw( texWidth, texHeight );
            }
 	}
 
