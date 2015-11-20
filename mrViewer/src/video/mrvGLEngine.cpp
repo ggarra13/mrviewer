@@ -1341,8 +1341,10 @@ void GLEngine::draw_images( ImageList& images )
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
+#if USE_STEREO
          if ( stereo & CMedia::kStereoOpenGL )
              glDrawBuffer( GL_LEFT );
+#endif
 
          quad->mask( 0 );
          quad->mask_value( 10 );
@@ -1452,7 +1454,7 @@ void GLEngine::draw_images( ImageList& images )
 
       }
       else if ( img->hires() &&
-                ( img->image_damage() & CMedia::kDamageContents ||
+                ( ( img->image_damage() & CMedia::kDamageContents ) ||
                   img->has_subtitle() ) )
       {
           pic = img->hires();
@@ -1470,8 +1472,10 @@ void GLEngine::draw_images( ImageList& images )
       else
           glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
+#if USE_STEREO
       if ( stereo & CMedia::kStereoOpenGL )
           glDrawBuffer( GL_RIGHT );
+#endif
 
       quad->mask( 0 );
       quad->mask_value( 10 );
@@ -1503,11 +1507,13 @@ void GLEngine::draw_images( ImageList& images )
             if ( sub )
             {
                 glEnable( GL_BLEND );
+                glDisable( GL_SCISSOR_TEST );
                 ++q;
                 quad = *q;
                 quad->mask( 0 );
-                quad->mask_value( 10 );
+                quad->mask_value( -10 );
                 quad->bind( sub );
+                quad->gamma( 1.0 );
                 quad->draw( texWidth, texHeight );
            }
 	}
@@ -1520,7 +1526,7 @@ void GLEngine::draw_images( ImageList& images )
 
     }
 
-  glColorMask( true, true, true, true );
+  glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
   glDisable( GL_SCISSOR_TEST );
   glDisable( GL_BLEND );
 }
