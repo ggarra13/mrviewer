@@ -198,7 +198,7 @@ Timeline::~Timeline()
       int sm = n%smallmod ? 3 : 0;
       if (v >= A && v <= B) {
 	int t = slider_position(v, w);
-	drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
+        drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
 	if (n%nummod == 0) {
 	  mrv::Timecode::format( buffer, _display, boost::int64_t(v), _fps );
 	  char* p = buffer;
@@ -213,7 +213,7 @@ Timeline::~Timeline()
       }
       if (v && -v >= A && -v <= B) {
 	int t = slider_position(-v, w);
-	drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
+        drawline(x1+dx*t+dy*sm, y1+dy*t+dx*sm, x2+dx*t, y2+dy*t);
 	if (n%nummod == 0) {
 	  mrv::Timecode::format( buffer, _display, boost::int64_t(-v), _fps );
 	  char* p = buffer;
