@@ -631,7 +631,7 @@ o->label( o->child( o->value() )->label() );}
           xywh {218 24 452 399}
         } {
           {fltk::Group} {} {
-            label {User Interface} open
+            label {User Interface}
             xywh {13 22 427 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -753,8 +753,8 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window} open
-            xywh {15 22 425 377} align 5 box EMBOSSED_BOX labelsize 14
+            label {View Window}
+            xywh {15 22 425 377} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Defaults open
@@ -851,17 +851,17 @@ If you try to open several mrViewers with different images, all these images wil
               label HUD
               user_data this user_data_type {mrv::PreferencesUI*} open
               tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.}
-              xywh {15 187 392 122} box UP_BOX
+              xywh {15 187 397 122} box UP_BOX
             } {
               {fltk::CheckButton} uiPrefsHudFilename {
                 label Filename
-                user_data this user_data_type {mrv::PreferencesUI*} selected
-                xywh {142 87 20 20} align 8 box UP_BOX
+                user_data this user_data_type {mrv::PreferencesUI*}
+                xywh {152 87 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudDirectory {
                 label Directory
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {142 61 20 20} align 8 box UP_BOX
+                xywh {152 61 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudFrame {
                 label Frame
@@ -876,7 +876,7 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsHudResolution {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {142 10 20 20} align 8 box UP_BOX
+                xywh {152 10 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudFPS {
                 label FPS
@@ -886,12 +886,12 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsHudIPTC {
                 label {IPTC Data}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {262 11 20 20} align 8 box UP_BOX
+                xywh {272 11 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudAVDifference {
                 label {VA Difference}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {142 35 20 20} align 8 box UP_BOX
+                xywh {152 35 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudTimecode {
                 label Timecode
@@ -901,7 +901,7 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsHudWipeMode {
                 label {Wipe Mode}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {263 36 20 20} align 8 box UP_BOX
+                xywh {273 36 20 20} align 8 box UP_BOX
               }
             }
             {fltk::Group} {} {
@@ -1030,7 +1030,7 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label {File Requester} open
+            label {File Requester}
             xywh {13 22 425 361} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
@@ -1044,30 +1044,25 @@ v->refresh();}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
+            label Playback
             xywh {15 22 425 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::CheckButton} uiPrefsAutoPlayback {
-              label {Auto Playback}
-              tooltip {Start Playback when opening files.}
-              xywh {217 24 20 25} align 8 box UP_BOX
-            }
             {fltk::Group} {} {
-              label Defaults
-              xywh {50 68 285 121} align 5 box ROUNDED_BOX
+              label Defaults open
+              xywh {50 69 285 136} align 5 box ROUNDED_BOX
             } {
-              {fltk::Group} {} {open
-                xywh {110 50 150 26}
+              {fltk::Group} {} {
+                xywh {110 49 152 26}
               } {
                 {fltk::ValueInput} uiPrefsFPS {
                   label Speed
-                  xywh {0 1 75 25} color 0x98a8a800 selection_color 0x647f00 labelsize 11 minimum 0.001 maximum 120 step 0.01 value 24
+                  xywh {0 1 75 25} color 0x98a8a800 selection_color 0x647f00 minimum 0.001 maximum 120 step 0.01 value 24
                 }
                 {fltk::PopupMenu} {} {
                   label FPS
                   callback {float g = (float) atof( o->child( o->value() )->label() );
 uiPrefsFPS->value( g );}
-                  xywh {75 0 75 25} labelsize 11
+                  xywh {77 1 75 25}
                 } {
                   {fltk::Item} {} {
                     label {59.94}
@@ -1098,7 +1093,7 @@ uiPrefsFPS->value( g );}
               {fltk::Choice} uiPrefsLoopMode {
                 label {Looping Mode}
                 tooltip {Select default looping mode in timeline.}
-                xywh {110 81 90 25} labelsize 11
+                xywh {110 80 90 25}
               } {
                 {fltk::Item} {} {
                   label Stop
@@ -1110,16 +1105,15 @@ uiPrefsFPS->value( g );}
                   label {Ping Pong}
                   }
               }
-            }
-            {fltk::CheckButton} uiPrefsPlayAllFrames {
-              label {Play All Frames}
-              tooltip {If set, mrViewer will always show all frames even if frame rate is not reached.
-If not set, mrViewer may speed up or skip showing some frames in order to keep the frame rate.}
-              xywh {230 84 20 25} align 4 box UP_BOX labelsize 11
+              {fltk::CheckButton} uiPrefsAutoPlayback {
+                label {Auto Playback}
+                tooltip {Start Playback when opening files.}
+                xywh {167 20 20 25} align 4 box UP_BOX
+              }
             }
           }
           {fltk::Group} {} {
-            label Caches open
+            label Caches selected
             xywh {13 22 425 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
@@ -1700,7 +1694,7 @@ uiICC_float_profile->do_callback();}
                 xywh {20 22 25 25} box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsLoadSequence {
-                label { Load Sequence on Drag&Drop}
+                label { Load Sequence on Drag&&Drop}
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
                 xywh {20 54 25 25} box UP_BOX value 1
               }
@@ -1804,7 +1798,7 @@ else
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -1816,7 +1810,7 @@ else
           } {
             {fltk::ItemGroup} {} {
               label {User Interface} open
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
