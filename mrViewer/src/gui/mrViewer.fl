@@ -635,24 +635,24 @@ o->label( o->child( o->value() )->label() );}
             xywh {13 22 427 364} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label {Window Behavior}
+              label {Window Behavior} open
               xywh {9 32 410 100} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAlwaysOnTop {
                 label {Always on Top}
                 tooltip {When selected, mrViewer's window will always show up on top of other windows on the desktop.}
-                xywh {24 14 19 25} align 8 box UP_BOX labelsize 11 value 1
+                xywh {24 14 19 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsSingleInstance {
                 label {Single Instance}
                 tooltip {When selected, only a single mrViewer instance is allowed.  
 If you try to open several mrViewers with different images, all these images will be sent to the already open mrViewer.}
-                xywh {24 40 20 25} align 8 box UP_BOX labelsize 11 value 1
+                xywh {24 40 20 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsAutoFitImage {
                 label {Auto Refit Image}
                 tooltip {When selected, mrViewer will apply a fit image operation on each video played.  This effectly means the video will be resized automatically based on the size of the window.}
-                xywh {24 67 20 25} align 8 box UP_BOX labelsize 11 value 1
+                xywh {24 67 20 25} align 8 box UP_BOX value 1
               }
               {fltk::Group} uiPrefsOpenMode {open
                 xywh {197 9 150 81} box UP_BOX
@@ -660,76 +660,76 @@ If you try to open several mrViewers with different images, all these images wil
                 {fltk::RadioButton} {} {
                   label Normal
                   tooltip {When selected, mrViewer will resize its window to the first image.}
-                  xywh {15 6 19 20} align 8 box ROUND_UP_BOX labelsize 11 value 1
+                  xywh {15 6 19 20} align 8 box ROUND_UP_BOX value 1
                 }
                 {fltk::RadioButton} {} {
                   label Fullscreen
                   tooltip {When selected, mrViewer will start in full screen mode.}
-                  xywh {15 31 19 20} align 8 box ROUND_UP_BOX labelsize 11
+                  xywh {15 31 19 20} align 8 box ROUND_UP_BOX
                 }
                 {fltk::RadioButton} {} {
                   label Presentation
                   tooltip {When selected, mrViewer will start in presentation mode.}
-                  xywh {15 56 19 20} align 8 box ROUND_UP_BOX labelsize 11
+                  xywh {15 56 19 20} align 8 box ROUND_UP_BOX
                 }
               }
             }
             {fltk::Group} {} {
-              label {UI Elements}
+              label {UI Elements} open
               xywh {9 161 410 98} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
                 label Topbar
                 tooltip {When selected, mrViewer will start with its channel, gain, gamma toolbar visible. }
-                xywh {5 5 25 25} align 8 box UP_BOX labelsize 11 value 1
+                xywh {5 5 25 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsPixelToolbar {
                 label {Pixel Toolbar}
                 tooltip {When selected, mrViewer will start with the pixel toolbar shown.}
-                xywh {5 36 25 25} align 8 box UP_BOX labelsize 11 value 1
+                xywh {5 36 25 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsTimeline {
                 label Timeline
                 tooltip {When selected, mrViewer will start with the timeline shown.}
-                xywh {5 66 25 25} align 8 box UP_BOX labelsize 11 value 1
+                xywh {5 66 25 25} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsReelList {
                 label {Reel List}
                 tooltip {When selected, mrViewer will start with the reel list already open.}
-                xywh {140 5 25 25} align 8 box UP_BOX labelsize 11
+                xywh {140 5 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHistogram {
                 label Histogram
                 tooltip {When selected, mrViewer will start with the histogram already open.}
-                xywh {275 36 25 25} align 8 box UP_BOX labelsize 11
+                xywh {275 36 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsVectorscope {
                 label Vectorscope
                 tooltip {When selected, mrViewer will start with the vectorscope already open.}
-                xywh {275 66 25 25} align 8 box UP_BOX labelsize 11
+                xywh {275 66 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsImageInfo {
                 label {Media Info}
                 tooltip {When selected, mrViewer will start with the media information window already open.}
-                xywh {140 36 25 25} align 8 box UP_BOX labelsize 11
+                xywh {140 36 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsColorArea {
                 label {Color Area}
                 tooltip {When selected, mrViewer will start with the color area window already open.}
-                xywh {140 66 25 25} align 8 box UP_BOX labelsize 11
+                xywh {140 66 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsEDLEdit {
                 label {EDL Edit}
                 tooltip {When selected, mrViewer will start with the histogram already open.}
-                xywh {275 8 25 25} align 8 box UP_BOX labelsize 11
+                xywh {275 8 25 25} align 8 box UP_BOX
               }
             }
             {fltk::Group} {} {
-              label Timeline
+              label Timeline open
               xywh {9 282 410 70} box ROUNDED_BOX
             } {
               {fltk::Choice} uiPrefsTimelineDisplay {
-                label Display open
+                label Display
                 tooltip {How to display timeline by default.}
                 xywh {105 25 190 25}
                 extra_code {o->value(0);}
@@ -753,28 +753,28 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window}
-            xywh {15 22 425 377} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {View Window} open
+            xywh {15 22 425 377} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Defaults
-              xywh {13 32 378 135} box ROUNDED_BOX
+              label Defaults open
+              xywh {13 32 394 135} box ROUNDED_BOX
             } {
               {fltk::ValueInput} uiPrefsViewGain {
                 label Gain
                 tooltip {Sets the default gain when mrViewer starts.}
-                xywh {90 10 80 25} labelsize 11 minimum 0.001 maximum 64 step 0.01 value 1
+                xywh {90 10 80 25} minimum 0.001 maximum 64 step 0.01 value 1
               }
               {fltk::ValueInput} uiPrefsViewGamma {
                 label Gamma
                 tooltip {Sets the default gamma when mrViewer starts.}
-                xywh {280 10 60 25} labelsize 11 minimum 0.01 maximum 4 step 0.01 value 1
+                xywh {280 10 60 25} minimum 0.01 maximum 4 step 0.01 value 1
               }
               {fltk::Choice} uiPrefsCropArea {
                 label Crop
                 user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {Allows you to select a standard cropping area around image.}
-                xywh {15 58 155 25} align 1 labelsize 11
+                xywh {15 58 155 25} align 1
               } {
                 {fltk::Item} {} {
                   label {0.00 None}
@@ -822,90 +822,90 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsViewPixelRatio {
                 label {Compensate Pixel Ratio}
                 tooltip {When mrViewer starts, the pixel aspect ratio compensation will be active by default.}
-                xywh {198 55 20 22} align 8 box UP_BOX labelsize 11
+                xywh {198 55 20 22} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsViewLut {
                 label {Lut Active}
                 user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {When mrViewer starts, the 3D Lut will be active.}
-                xywh {198 80 20 22} align 8 box UP_BOX labelsize 11
+                xywh {198 80 20 22} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsSafeAreas {
                 label {Safe Areas}
                 user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {When mrViewer starts, the safe area display will be active by default.}
-                xywh {198 107 20 20} align 8 box UP_BOX labelsize 11
+                xywh {198 107 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsViewDisplayWindow {
                 label {Display Window}
                 tooltip {When mrViewer starts, the display window will be shown when appropiate.}
-                xywh {20 88 20 22} align 8 box UP_BOX labelsize 11 value 1
+                xywh {20 88 20 22} align 8 box UP_BOX value 1
               }
               {fltk::CheckButton} uiPrefsViewDataWindow {
                 label {Data Window}
                 tooltip {When mrViewer starts, the data window will be shown when appropiate as a dotted line.}
-                xywh {20 108 20 22} align 8 box UP_BOX labelsize 11 value 1
+                xywh {20 108 20 22} align 8 box UP_BOX value 1
               }
             }
             {fltk::Group} uiPrefsHud {
               label HUD
-              user_data this user_data_type {mrv::PreferencesUI*}
+              user_data this user_data_type {mrv::PreferencesUI*} open
               tooltip {This area specifies which elements should be shown as a HUD overlay on the view screen.}
-              xywh {15 187 373 122} box UP_BOX
+              xywh {15 187 392 122} box UP_BOX
             } {
               {fltk::CheckButton} uiPrefsHudFilename {
                 label Filename
-                user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {119 37 20 20} align 8 box UP_BOX labelsize 11
+                user_data this user_data_type {mrv::PreferencesUI*} selected
+                xywh {142 87 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudDirectory {
                 label Directory
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {119 10 20 20} align 8 box UP_BOX labelsize 11
+                xywh {142 61 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudFrame {
                 label Frame
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {16 35 20 20} align 8 box UP_BOX labelsize 11
+                xywh {16 35 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudFrameRange {
                 label {Frame Range}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {15 62 20 20} align 8 box UP_BOX labelsize 11
+                xywh {15 62 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudResolution {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {234 10 20 20} align 8 box UP_BOX labelsize 11
+                xywh {142 10 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudFPS {
                 label FPS
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {16 10 20 20} align 8 box UP_BOX labelsize 11
+                xywh {16 10 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudIPTC {
                 label {IPTC Data}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {234 37 20 20} align 8 box UP_BOX labelsize 11
+                xywh {262 11 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudAVDifference {
                 label {VA Difference}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {119 62 20 20} align 8 box UP_BOX labelsize 11
+                xywh {142 35 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudTimecode {
                 label Timecode
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {15 87 20 20} align 8 box UP_BOX labelsize 11
+                xywh {15 87 20 20} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsHudWipeMode {
                 label {Wipe Mode}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                xywh {235 62 20 20} align 8 box UP_BOX labelsize 11
+                xywh {263 36 20 20} align 8 box UP_BOX
               }
             }
             {fltk::Group} {} {
-              label Positioning
+              label Positioning open
               xywh {18 324 355 40} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiWindowFixedPosition {
@@ -1120,7 +1120,7 @@ If not set, mrViewer may speed up or skip showing some frames in order to keep t
           }
           {fltk::Group} {} {
             label Caches open
-            xywh {13 22 425 364} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 425 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::LightButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1134,7 +1134,7 @@ This setting thus allows caching more pictures in memory.}
               xywh {39 62 155 32}
             }
             {fltk::LightButton} uiPrefsPreloadCache {
-              label {Preload Cache} selected
+              label {Preload Cache}
               tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.}
               xywh {212 25 165 32}
             }
