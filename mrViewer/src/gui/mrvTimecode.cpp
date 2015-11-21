@@ -274,11 +274,11 @@ int Timecode::format( char* buf, const mrv::Timecode::Display display,
             double secbase  = fps;
 	
             int64_t x = f;
-            hours = int( double(x) / hourbase );
+            hours = int( double(x+0.5) / hourbase );
             x -= int64_t( double(hours) * hourbase);
-            mins = int( double(x) / minbase );
+            mins = int( double(x+0.5) / minbase );
             x -= int64_t( double(mins) * minbase);
-            secs = int( double(x) / secbase );
+            secs = int( double(x+0.5) / secbase );
             x -= int64_t( double(secs) * secbase);
             msecs = int(x); // frames
             x -= msecs;
