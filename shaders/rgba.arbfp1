@@ -280,15 +280,8 @@ CMP R0.xyz, -R1.x, R2.z, R0;
 ADD R1.x, R1.z, -c[1];
 ABS R1.x, R1;
 CMP R0, -R1.x, R0, c[18].w;
-ABS R1.y, R0.w;
-CMP R1.x, -R1, c[18].w, c[18].z;
-ABS R1.x, R1;
-CMP R1.y, -R1, c[18].w, c[18].z;
-CMP R1.x, -R1, c[18].w, c[18].z;
-MUL R1.x, R1, R1.y;
-CMP R0.w, -R1.x, c[18].z, R0;
 MUL R1.xyz, R0, R0.w;
 CMP result.color.xyz, -c[8].x, R1, R0;
 MOV result.color.w, R0;
 END
-# 211 instructions, 8 R-regs
+# 204 instructions, 8 R-regs

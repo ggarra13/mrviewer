@@ -171,10 +171,9 @@ Timeline::~Timeline()
     
     if ( _display != Timecode::kFrames ) 
       {
-	mul = _fps;
+          mul = _fps * 3;
       }
 
-    // if ( _display != Timecode::kFrames ) nummod = int(_fps);
     int powincr = 10000;
 
     double derivative = (B-A)*min_spacing/w;
