@@ -171,7 +171,7 @@ Timeline::~Timeline()
     
     if ( _display != Timecode::kFrames ) 
       {
-          mul = _fps * 3;
+          nummod = _fps;
       }
 
     int powincr = 10000;
