@@ -1341,7 +1341,7 @@ void GLEngine::draw_images( ImageList& images )
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
-#if USE_STEREO
+#ifdef USE_STEREO
          if ( stereo & CMedia::kStereoOpenGL )
              glDrawBuffer( GL_LEFT );
 #endif
@@ -1361,9 +1361,9 @@ void GLEngine::draw_images( ImageList& images )
                  quad->mask_value( 0 );
              else
                  quad->mask_value( 1 );
-             glDisable( GL_BLEND );
          }
 
+         glDisable( GL_BLEND );
          quad->bind( pic );
          quad->gamma( g );
          quad->draw( texWidth, texHeight );
@@ -1472,7 +1472,7 @@ void GLEngine::draw_images( ImageList& images )
       else
           glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
-#if USE_STEREO
+#ifdef USE_STEREO
       if ( stereo & CMedia::kStereoOpenGL )
           glDrawBuffer( GL_RIGHT );
 #endif
@@ -1930,18 +1930,11 @@ const char* ARBFP1Shader =
 "ADD R1.x, R1.z, -c[1];\n"
 "ABS R1.x, R1;\n"
 "CMP R0, -R1.x, R0, c[18].w;\n"
-"ABS R1.y, R0.w;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"ABS R1.x, R1;\n"
-"CMP R1.y, -R1, c[18].w, c[18].z;\n"
-"CMP R1.x, -R1, c[18].w, c[18].z;\n"
-"MUL R1.x, R1, R1.y;\n"
-"CMP R0.w, -R1.x, c[18].z, R0;\n"
 "MUL R1.xyz, R0, R0.w;\n"
 "CMP result.color.xyz, -c[8].x, R1, R0;\n"
 "MOV result.color.w, R0;\n"
 "END\n"
-"# 211 instructions, 8 R-regs\n" 
+"# 204 instructions, 8 R-regs\n"
 ;
 
   const char* NVShader =
@@ -2168,10 +2161,10 @@ const char* ARBFP1Shader =
 "FLRR  R0.y, |R0.x|;\n"
 "MOVRC RC.x, R0;\n"
 "MOVR  R0.z, R0.y;\n"
-"SEQX  H1.y, H1, {0}.x;\n"
 "MULR  R0.x, R1.y, {0.5};\n"
 "FRCR  R0.x, |R0|;\n"
 "SLTR  H2.x, R1.y, {0};\n"
+"SEQX  H1.y, H1, {0}.x;\n"
 "MOVR  R0.z(LT.x), -R0.y;\n"
 "MULR  R0.x, R0, {2};\n"
 "SEQX  H2.x, H2, {0};\n"
@@ -2193,30 +2186,24 @@ const char* ARBFP1Shader =
 "MULR  R1.x, R1, {0.5};\n"
 "FRCR  R1.x, |R1|;\n"
 "MULR  R1.x, R1, {2};\n"
-"MULX  H1.x, H1, H1.y;\n"
-"SEQR  H1.z, mask.x, R0.w;\n"
-"MULX  H1.x, H1, H1.z;\n"
-"SEQX  H0.w, H0, {0}.x;\n"
-"MULXC HC.x, H1, H0.w;\n"
 "MOVR  R0.y, -R1.x;\n"
+"SEQX  H0.w, H0, {0}.x;\n"
+"SEQR  H1.z, mask.x, R0.w;\n"
+"MULX  H1.x, H1, H1.y;\n"
+"MULX  H1.x, H1, H1.z;\n"
+"MULXC HC.x, H1, H0.w;\n"
 "MOVR  R0.y(NE.x), R1.x;\n"
 "MOVXC RC.x, H1;\n"
 "SLTR  R0.x(NE), R0.y, {1};\n"
-"SEQR  H1.x, R0, mask_value;\n"
-"MOVXC RC.x, H1;\n"
 "MOVH  H0.w, H1;\n"
+"SEQRC HC.x, R0, mask_value;\n"
 "MOVH  H0(NE.x), {0}.x;\n"
-"MOVH  H1.y, H0.w;\n"
-"SEQH  H0.w, H0, {0}.x;\n"
-"SEQX  H1.x, H1, {0};\n"
-"MULXC HC.x, H1, H0.w;\n"
-"MOVH  H1.y(NE.x), {1}.x;\n"
 "MOVH  o[COLH].xyz, H0;\n"
 "MOVXC RC.x, premult;\n"
-"MULH  o[COLH].xyz(NE.x), H0, H1.y;\n"
-"MOVH  o[COLH].w, H1.y;\n"
+"MULH  o[COLH].xyz(NE.x), H0, H0.w;\n"
+"MOVH  o[COLH].w, H0;\n"
 "END\n"
-"# 188 instructions, 2 R-regs, 8 H-regs\n"
+"# 182 instructions, 2 R-regs, 8 H-regs\n"
 ;
 
 }
