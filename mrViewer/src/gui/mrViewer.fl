@@ -731,7 +731,7 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::Choice} uiPrefsTimelineDisplay {
                 label Display
                 tooltip {How to display timeline by default.}
-                xywh {105 25 190 25}
+                xywh {105 25 190 25} box THIN_DOWN_BOX
                 extra_code {o->value(0);}
               } {
                 {fltk::Item} {} {
@@ -774,7 +774,7 @@ If you try to open several mrViewers with different images, all these images wil
                 label Crop
                 user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {Allows you to select a standard cropping area around image.}
-                xywh {15 58 155 25} align 1
+                xywh {15 58 155 25} align 1 box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {0.00 None}
@@ -1030,7 +1030,7 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label {File Requester}
+            label {File Requester} open
             xywh {13 22 425 361} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
@@ -1044,7 +1044,7 @@ v->refresh();}
             }
           }
           {fltk::Group} Playback {
-            label Playback open
+            label Playback
             xywh {15 22 425 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1091,9 +1091,9 @@ uiPrefsFPS->value( g );}
                 }
               }
               {fltk::Choice} uiPrefsLoopMode {
-                label {Looping Mode}
+                label {Looping Mode} open
                 tooltip {Select default looping mode in timeline.}
-                xywh {110 80 90 25}
+                xywh {110 80 90 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label Stop
@@ -1113,8 +1113,8 @@ uiPrefsFPS->value( g );}
             }
           }
           {fltk::Group} {} {
-            label Caches open
-            xywh {13 22 425 364} align 5 box EMBOSSED_BOX labelsize 14
+            label Caches
+            xywh {13 22 425 364} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::CheckButton} uiPrefsCacheActive {
               label {Cache Active}
@@ -1128,14 +1128,14 @@ This setting thus allows caching more pictures in memory for float and half pict
               xywh {39 69 20 25} align 8 box UP_BOX
             }
             {fltk::CheckButton} uiPrefsPreloadCache {
-              label {Preload Cache} selected
+              label {Preload Cache}
               tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.  Note however, that this may make the GUI less responsive.}
               xywh {239 29 20 25} align 8 box UP_BOX
             }
             {fltk::Choice} uiPrefsCacheScale {
               label Scale
               tooltip {Scale of images stored.  Smaller scale allows more images to be stored at the expense of pixelization.}
-              xywh {74 114 120 25}
+              xywh {74 114 120 25} box THIN_DOWN_BOX
             } {
               {fltk::Item} {} {
                 label {1:1}
@@ -1169,7 +1169,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts}
+            label {3D Luts} open
             xywh {13 25 425 358} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1191,7 +1191,7 @@ v->refresh();} open
                 tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT).  This setting prioritizes choosing one over the other.
 When mixing a CTL ODT script with an ICC profile in an image as rendering transform (RT), it is necessary that the CTL ODT reads data in XYZ_OCES space (ICC v4 relative colorimetric).  Also, note that ICC uses D50 white points while HDTV and CTL use D65 white points.
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).}
-                xywh {95 18 195 25}
+                xywh {95 18 195 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1216,12 +1216,12 @@ if ( x == Preferences::kLutOnlyCTL )
     uiRT_ICC->deactivate();
 if ( x == Preferences::kLutOnlyICC )
     uiRT_CTL->deactivate();
-v->refresh();}
+v->refresh();} open
                 tooltip {mrViewer supports either ICC profiles or a CTL script for the render transform (RT) of your images.  This setting prioritizes choosing one over the other. 
 When mixing a CTL RT script with an ICC profile for your output device transform (ODT) like your monitor profile, it is necessary that the CTL RT script passes data in XYZ_OCES space (ICC v4 relative colorimetric).
 If unsure what this means, keep your display and images setting always using the same algorithm (CTL or ICC).
 }
-                xywh {95 70 195 25}
+                xywh {95 70 195 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {Prefer CTL}
@@ -1245,7 +1245,7 @@ If unsure what this means, keep your display and images setting always using the
               {fltk::Choice} uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();} open
+                callback {v->refresh();}
                 tooltip {With modern graphics cards, mrViewer emulates color transforms by baking them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The bigger the lut, the longer it takes to calculate but the more accurate it is.
 Note that large 3D Luts can use quite a lot of memory.  
 
@@ -1258,7 +1258,7 @@ It is recommended this setting is left at 64x64x64.
 
 The "No Baking" setting performs the color correction on the image directly instead of in a 3D lut.  It is a non real-time operation whose speed depends on the image size and can only be done when not playing a movie.
 }
-                xywh {120 25 170 25}
+                xywh {120 25 170 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label {No Baking}
@@ -1284,10 +1284,10 @@ The "No Baking" setting performs the color correction on the image directly inst
               {fltk::Choice} uiICC_intent {
                 label ICC
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {v->refresh();}
+                callback {v->refresh();} open
                 tooltip {When using luts with ICC profiles, this setting allows you to select the ICC rendering intent.   Rendering intents are mostly used for printing to film or paper to emulate or proof the output of the output device (ODT), particularly when it does not have the same gamut (color/white range) as the linear RGB/XYZ space.
 }
-                xywh {120 10 170 25}
+                xywh {120 10 170 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label Perceptual
@@ -1319,14 +1319,14 @@ The "No Baking" setting performs the color correction on the image directly inst
             } {}
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)}
+            label {Default Output Device Transform (ODT)} open
             xywh {15 22 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Display open
+              label Display
               xywh {13 22 370 345} box ROUNDED_BOX
             } {
-              {fltk::Group} uiODT_CTL {open
+              {fltk::Group} uiODT_CTL {
                 xywh {85 10 255 265} horizontal
               } {
                 {fltk::Group} {} {open
@@ -1495,7 +1495,7 @@ uiODT_ICC_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label {Default Rendering Transform (RT)}
+            label {Default Rendering Transform (RT)} open
             xywh {15 22 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
@@ -1701,12 +1701,12 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video
-            xywh {15 22 425 361} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Video open
+            xywh {15 22 425 361} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
-              label Driver
-              xywh {78 37 290 25}
+              label Driver open
+              xywh {78 37 290 25} box THIN_DOWN_BOX
             } {
               {fltk::Item} {} {
                 label OpenGL
@@ -1727,14 +1727,14 @@ uiICC_float_profile->do_callback();}
             } {
               {fltk::Choice} uiPrefsBlendMode {
                 label {Blend Mode}
-                user_data uiMain user_data_type {ViewerUI*} open
+                user_data uiMain user_data_type {ViewerUI*} selected
                 tooltip {OpenGL blend compositing mode.
 Traditional:
 SC x SA + DC x ( 1 - SA)
 Premult:
 SC + DC x ( 1 - SA )
 where SC is source color, SA is source alpha, and DC is destination color.}
-                xywh {132 25 167 25}
+                xywh {132 25 167 25} box THIN_DOWN_BOX
               } {
                 {fltk::Item} {} {
                   label Traditional
@@ -1757,7 +1757,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
           } {
             {fltk::Choice} AudioDriver {
               label Driver open
-              xywh {63 22 316 25}
+              xywh {63 22 316 25} box THIN_DOWN_BOX
             } {}
             {fltk::Browser} uiPrefsAudioDevice {
               label Devices open
@@ -1798,7 +1798,7 @@ else
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -1855,7 +1855,7 @@ else
               }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {223 419 427 31}
         } {
           {fltk::Button} {} {
