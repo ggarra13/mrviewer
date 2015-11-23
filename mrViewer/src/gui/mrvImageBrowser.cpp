@@ -1734,15 +1734,15 @@ void ImageBrowser::load( const stringArray& files,
    */
   void ImageBrowser::open()
   {
-     stringArray files = mrv::open_image_file(NULL,true);
-     if (files.empty()) return;
-     load( files );
+      stringArray files = mrv::open_image_file(NULL,true, uiMain);
+      if (files.empty()) return;
+      load( files );
   }
 
   void ImageBrowser::open_stereo()
   {
-     stringArray files = mrv::open_image_file(NULL,true);
-     if (files.empty()) return;
+      stringArray files = mrv::open_image_file(NULL,true, uiMain);
+      if (files.empty()) return;
 
      stringArray::const_iterator i = files.begin();
      stringArray::const_iterator e = files.end();
@@ -1787,7 +1787,7 @@ void ImageBrowser::load( const stringArray& files,
 
   void ImageBrowser::open_single()
   {
-     stringArray files = mrv::open_image_file(NULL,false);
+      stringArray files = mrv::open_image_file(NULL,false, uiMain);
      if (files.empty()) return;
 
      load( files, false );

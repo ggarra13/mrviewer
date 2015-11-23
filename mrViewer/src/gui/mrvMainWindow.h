@@ -25,8 +25,8 @@
  * 
  */
 
-#ifndef mainWindow_h
-#define mainWindow_h
+#ifndef mrvMainWindow_h
+#define mrvMainWindow_h
 
 
 #include <fltk/Window.h>
@@ -75,7 +75,7 @@ namespace mrv {
 } // namespace mrv
 
 
-#endif  // mainWindow_h
+#endif  // mrvMainWindow_h
 
 
 

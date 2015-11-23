@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   MainWindow.cpp
+ * @file   mrvMainWindow.cpp
  * @author gga
  * @date   Wed Jul  4 23:17:46 2007
  * 

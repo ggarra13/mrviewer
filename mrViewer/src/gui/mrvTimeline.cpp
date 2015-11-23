@@ -167,7 +167,7 @@ Timeline::~Timeline()
     double mul = 1; // how far apart tick marks are
     double div = 1;
     int smallmod = 5; // how many tick marks apart "larger" ones are
-    int nummod = 10; // how many tick marks apart numbers are
+    int nummod = 15; // how many tick marks apart numbers are
     
     if ( _display != Timecode::kFrames ) 
       {
