@@ -1,1 +1,17 @@
-uninstall.sh.in
+#!/bin/bash
+
+echo "Running uninstall script"
+
+if [ -e /usr/bin/mrViewer ]; then
+    echo "Removing /usr/bin/mrViewer"
+    rm -f /usr/bin/mrViewer
+fi
+
+dir=$(xdg-user-dir DESKTOP)
+if [ -e "$dir/mrViewer-v@VERSION@.desktop" ]; then
+    rm -f "$dir/mrViewer-v@VERSION@.desktop"
+fi
+
+update-desktop-database
+update-mime-database /usr/share/mime
+

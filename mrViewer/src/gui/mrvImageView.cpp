@@ -1198,18 +1198,12 @@ bool ImageView::should_update( mrv::media fg )
 {
   bool update = false;
 
-  bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
 
   if ( fg )
   {
 
       CMedia* img = fg->image();
 
-      if ( reload && img->frame() != _old_fg_frame )
-      {
-          img->has_changed();
-          _old_fg_frame = img->frame();
-      }
 
 
       if ( img->image_damage() & CMedia::kDamageLayers )
@@ -1286,11 +1280,6 @@ bool ImageView::should_update( mrv::media fg )
   {
       CMedia* img = bg->image();
 
-      if ( reload && fg != bg && img->frame() != _old_bg_frame )
-      {
-          img->has_changed();
-          _old_bg_frame = img->frame();
-      }
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
@@ -4838,8 +4827,7 @@ void ImageView::foreground( mrv::media fg )
             img->image_damage( img->image_damage() | CMedia::kDamageContents |
                                CMedia::kDamageLut | CMedia::kDamage3DData );
 
-            bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
-            if ( dynamic_cast< stubImage* >( img ) || reload )
+            if ( dynamic_cast< stubImage* >( img )  )
             {
                 create_timeout( 0.2 );
             }
@@ -4961,8 +4949,7 @@ void ImageView::background( mrv::media bg )
       img->play_fps( fps() );
       img->image_damage( img->image_damage() | CMedia::kDamageContents );      
 
-      bool reload = (bool) uiMain->uiPrefs->uiPrefsAutoReload->value();
-      if ( dynamic_cast< stubImage* >( img ) || reload )
+      if ( dynamic_cast< stubImage* >( img ) )
 	{
 	  create_timeout( 0.2 );
 	}
