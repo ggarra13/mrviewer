@@ -1,12 +1,13 @@
+
 v3.0.1   - Allowed loading and saving files with the Windows' native
 	   file browser.
 	 - Made Preferences a tad more eye friendly by replacing all
 	   checkbuttons with raised/pushed checkbuttons.
 	 - Made Preferences more eye friendly by rearranging the size
 	   of buttons and options.
-	 - Made timeline text a big bigger and more spaced.
-	 - Bug fixed rgba shader to not set alpha to 1.  This  
-	   prevented subtitles from showing up properly.
+	 - Made timeline text a bit bigger and more spaced.
+	 - Bug fixed rgba shader to not force alpha to 1 when alpha is 0.
+	   This prevented subtitles from showing up properly.
 
 v3.0.0   - Bug fixed alpha in shaders for stereo display.  Previously
 	   a border would surround images.
