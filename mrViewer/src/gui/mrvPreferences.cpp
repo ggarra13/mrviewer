@@ -496,7 +496,7 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     caches.get( "8bit_caches", tmp, 0 );
-    uiPrefs->ui8BitCaches->value( (bool) tmp );
+    uiPrefs->uiPrefs8BitCaches->value( (bool) tmp );
     CMedia::eight_bit_caches( (bool) tmp );
 
 
@@ -871,7 +871,7 @@ fltk::StyleSet*     newscheme = NULL;
     }
 
     bool old = CMedia::eight_bit_caches();
-    CMedia::eight_bit_caches( (bool) uiPrefs->ui8BitCaches->value() );
+    CMedia::eight_bit_caches( (bool) uiPrefs->uiPrefs8BitCaches->value() );
     if ( !CMedia::cache_active() || CMedia::eight_bit_caches() != old ||
          CMedia::cache_scale() != scale )
     {
@@ -1103,7 +1103,7 @@ fltk::StyleSet*     newscheme = NULL;
     caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
     caches.set( "preload", (int) uiPrefs->uiPrefsPreloadCache->value() );
     caches.set( "scale", (int) uiPrefs->uiPrefsCacheScale->value() );
-    caches.set( "8bit_caches", (int) uiPrefs->ui8BitCaches->value() );
+    caches.set( "8bit_caches", (int) uiPrefs->uiPrefs8BitCaches->value() );
     caches.set( "fps", (int) uiPrefs->uiPrefsCacheFPS->value() );
     caches.set( "size", (int) uiPrefs->uiPrefsCacheSize->value() );
 
