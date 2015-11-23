@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -25,7 +26,7 @@
  * 
  */
 
-#define ALLOC_CONSOLE
+// #define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
