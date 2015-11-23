@@ -974,7 +974,7 @@ void ImageInformation::fill_data()
 
   int ImageInformation::line_height()
   {
-    return 20;
+    return 24;
   }
 
   fltk::Color ImageInformation::get_title_color()
