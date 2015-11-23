@@ -1424,7 +1424,7 @@ fltk::StyleSet*     newscheme = NULL;
     if ( box ) box->data(  "2HHOODD" );
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "up" );
-    if ( box ) box->data(  "AAOOHH" );
+    if ( box ) box->data(  "CCOOHH" );
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "engraved" );
     if ( box ) box->data(  "2HHOOOOOOHH" );
