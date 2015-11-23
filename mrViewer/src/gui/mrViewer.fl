@@ -624,7 +624,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {246 123 670 450} resizable visible
+        xywh {608 92 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1169,7 +1169,7 @@ This setting thus allows caching more pictures in memory for float and half pict
             }
           }
           {fltk::Group} {} {
-            label {3D Luts} open
+            label {3D Luts}
             xywh {13 25 425 358} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -1319,15 +1319,15 @@ The "No Baking" setting performs the color correction on the image directly inst
             } {}
           }
           {fltk::Group} {} {
-            label {Default Output Device Transform (ODT)} open
-            xywh {15 22 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            label {Default Output Device Transform (ODT)}
+            xywh {15 22 425 367} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Display
+              label Display open
               xywh {13 22 370 345} box ROUNDED_BOX
             } {
               {fltk::Group} uiODT_CTL {
-                xywh {85 10 255 265} horizontal
+                xywh {104 10 255 265} horizontal
               } {
                 {fltk::Group} {} {open
                   xywh {0 0 255 35}
@@ -1339,7 +1339,7 @@ The "No Baking" setting performs the color correction on the image directly inst
 v->refresh();}
                     tooltip {The name of the CTL display transform
 (Environment variable: MRV_ODT_CTL_TRANSFORM)}
-                    xywh {15 5 185 25} labelsize 11
+                    xywh {15 5 185 25} box THIN_DOWN_BOX labelsize 11
                   }
                   {fltk::Button} {} {
                     label Pick
@@ -1481,7 +1481,7 @@ MRV_ODT_CTL_SURROUND_LUMINANCE)}
 v->refresh();}
                   tooltip {The name of the default ICC profile for your ODT (monitor)
 (Environment variable: MRV_ODT_ICC_PROFILE)}
-                  xywh {55 15 190 25} align 132 labelsize 11
+                  xywh {55 15 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Load
@@ -1496,13 +1496,13 @@ uiODT_ICC_profile->do_callback();}
           }
           {fltk::Group} {} {
             label {Default Rendering Transform (RT)} open
-            xywh {15 22 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            xywh {15 22 425 367} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
-              label {Render Transforms}
-              xywh {15 32 375 155} box ROUNDED_BOX
+              label {Render Transforms} selected
+              xywh {15 24 375 155} box ROUNDED_BOX
             } {
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 15 255 30}
               } {
                 {fltk::Input} uiCTL_8bits_load_transform {
@@ -1512,7 +1512,7 @@ uiODT_ICC_profile->do_callback();}
 v->refresh();}
                   tooltip {The name of the CTL default image transform for 8 bit images (jpg, bmp, etc)
 (Environment variable: MRV_CTL_RT_8bits)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Pick
@@ -1534,7 +1534,7 @@ uiCTL_8bits_load_transform->do_callback();}
 v->refresh();}
                   tooltip {The name of the CTL default image transform for 16-bit images (cin, tiff, etc)
 (Environment variable: MRV_CTL_RT_16bits)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Pick
@@ -1546,7 +1546,7 @@ uiCTL_16bits_load_transform->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 75 255 30}
               } {
                 {fltk::Input} uiCTL_32bits_load_transform {
@@ -1556,7 +1556,7 @@ uiCTL_16bits_load_transform->do_callback();}
 v->refresh();}
                   tooltip {The name of the CTL default image transform for 32-bit int images (openexr integers, etc)
 (Environment variable: MRV_CTL_RT_32bits)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Pick
@@ -1568,7 +1568,7 @@ uiCTL_16bits_load_transform->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 105 255 30}
               } {
                 {fltk::Input} uiCTL_float_load_transform {
@@ -1578,7 +1578,7 @@ uiCTL_16bits_load_transform->do_callback();}
 v->refresh();}
                   tooltip {The name of the CTL default image transform for half and float images (OpenEXR, dpx, etc)
 (Environment variable: MRV_CTL_RT_float)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Pick
@@ -1592,10 +1592,10 @@ uiCTL_float_load_transform->do_callback();}
               }
             }
             {fltk::Group} uiRT_ICC {
-              label {ICC Profiles}
-              xywh {15 212 375 155} box ROUNDED_BOX
+              label {ICC Profiles} selected
+              xywh {15 204 375 155} box ROUNDED_BOX
             } {
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 15 255 30}
               } {
                 {fltk::Input} uiICC_8bits_profile {
@@ -1605,7 +1605,7 @@ uiCTL_float_load_transform->do_callback();}
 v->refresh();}
                   tooltip {The name of the default ICC profile for 8 bit images (jpg, bmp, etc)
 (Environment variable: MRV_ICC_RT_8bits)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Load
@@ -1616,7 +1616,7 @@ uiICC_8bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 45 255 30}
               } {
                 {fltk::Input} uiICC_16bits_profile {
@@ -1626,7 +1626,7 @@ uiICC_8bits_profile->do_callback();}
 v->refresh();}
                   tooltip {The name of the default ICC profile for 16-bit images (cin, tiff, etc)
 (Environment variable: MRV_ICC_RT_16bits)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Load
@@ -1637,7 +1637,7 @@ uiICC_16bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 75 255 30}
               } {
                 {fltk::Input} uiICC_32bits_profile {
@@ -1647,7 +1647,7 @@ uiICC_16bits_profile->do_callback();}
 v->refresh();}
                   tooltip {The name of the default ICC profile for 32-bit int images (openexr integers, etc)
 (Environment variable: MRV_ICC_RT_32bits)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Load
@@ -1658,7 +1658,7 @@ uiICC_32bits_profile->do_callback();}
                   xywh {190 0 55 25}
                 }
               }
-              {fltk::Group} {} {
+              {fltk::Group} {} {open
                 xywh {100 105 255 30}
               } {
                 {fltk::Input} uiICC_float_profile {
@@ -1668,7 +1668,7 @@ uiICC_32bits_profile->do_callback();}
 v->refresh();}
                   tooltip {The name of the default ICC profile for half and float images (OpenEXR, dpx, etc)
 (Environment variable: MRV_ICC_RT_float)}
-                  xywh {0 0 190 25} align 132 labelsize 11
+                  xywh {0 0 190 25} align 132 box THIN_DOWN_BOX labelsize 11
                 }
                 {fltk::Button} {} {
                   label Load
@@ -1701,8 +1701,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Video open
-            xywh {15 22 425 361} align 5 box EMBOSSED_BOX labelsize 14
+            label Video
+            xywh {15 22 425 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} VideoDriver {
               label Driver open
@@ -1727,7 +1727,7 @@ uiICC_float_profile->do_callback();}
             } {
               {fltk::Choice} uiPrefsBlendMode {
                 label {Blend Mode}
-                user_data uiMain user_data_type {ViewerUI*} selected
+                user_data uiMain user_data_type {ViewerUI*}
                 tooltip {OpenGL blend compositing mode.
 Traditional:
 SC x SA + DC x ( 1 - SA)
