@@ -692,8 +692,6 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences loading( base, "loading" );
-    loading.get( "auto_reload", tmp, 1 );
-    uiPrefs->uiPrefsAutoReload->value( (bool) tmp );
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
     loading.get( "native_file_chooser", tmp, 0 );
@@ -1109,7 +1107,6 @@ fltk::StyleSet*     newscheme = NULL;
 
 
     fltk::Preferences loading( base, "loading" );
-    loading.set( "auto_reload", (int) uiPrefs->uiPrefsAutoReload->value() );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
 

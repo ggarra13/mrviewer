@@ -8,6 +8,8 @@ v3.0.1   - Allowed loading and saving files with the Windows' native
 	 - Made timeline text a bit bigger and more spaced.
 	 - Bug fixed rgba shader to not force alpha to 1 when alpha is 0.
 	   This prevented subtitles from showing up properly.
+	 - Removed the option to reload files when changed on disk as
+	   it would create half images and errors.
 
 v3.0.0   - Bug fixed alpha in shaders for stereo display.  Previously
 	   a border would surround images.

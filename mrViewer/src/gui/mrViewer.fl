@@ -1030,7 +1030,7 @@ v->refresh();}
             }
           }
           {fltk::Group} {} {
-            label {File Requester} open
+            label {File Requester}
             xywh {13 22 425 361} align 5 hide box EMBOSSED_BOX
           } {
             {fltk::CheckButton} uiPrefsFileReqFolder {
@@ -1320,7 +1320,7 @@ The "No Baking" setting performs the color correction on the image directly inst
           }
           {fltk::Group} {} {
             label {Default Output Device Transform (ODT)}
-            xywh {15 22 425 367} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 22 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Display open
@@ -1495,11 +1495,11 @@ uiODT_ICC_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label {Default Rendering Transform (RT)} open
-            xywh {15 22 425 367} align 5 box EMBOSSED_BOX labelsize 14
+            label {Default Rendering Transform (RT)}
+            xywh {15 22 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} uiRT_CTL {
-              label {Render Transforms} selected
+              label {Render Transforms}
               xywh {15 24 375 155} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
@@ -1592,7 +1592,7 @@ uiCTL_float_load_transform->do_callback();}
               }
             }
             {fltk::Group} uiRT_ICC {
-              label {ICC Profiles} selected
+              label {ICC Profiles}
               xywh {15 204 375 155} box ROUNDED_BOX
             } {
               {fltk::Group} {} {open
@@ -1682,21 +1682,16 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading
-            xywh {15 22 425 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Loading open
+            xywh {15 22 425 360} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
-              xywh {13 25 400 104} box ROUNDED_BOX
+              xywh {13 45 400 104} box ROUNDED_BOX
             } {
-              {fltk::CheckButton} uiPrefsAutoReload {
-                label { Auto Reload}
-                tooltip {When turned on, files are automatically reloaded if changed on disk.}
-                xywh {20 22 25 25} box UP_BOX value 1
-              }
               {fltk::CheckButton} uiPrefsLoadSequence {
-                label { Load Sequence on Drag&&Drop}
+                label { Load Sequence on Drag&&Drop} selected
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
-                xywh {20 54 25 25} box UP_BOX value 1
+                xywh {20 44 25 25} box UP_BOX value 1
               }
             }
           }
