@@ -34,7 +34,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {EDL Window} open
-        xywh {261 539 1015 230} resizable visible
+        xywh {261 531 1015 230} resizable visible
       } {
         {fltk::Group} uiEDLRedraw {open
           xywh {0 0 1015 230}
@@ -77,8 +77,8 @@ v->new_reel(name);}
             user_data main user_data_type {mrv::ViewerUI*}
             callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );
-v->uiEDLWindow->uiEDLGroup->redraw();} selected
-            xywh {95 41 920 32} type TICK_ABOVE textfont 1 textcolor 0x2020200 textsize 9 minimum 1 maximum 100 step 1 value 1 slider_size 10
+v->uiEDLWindow->uiEDLGroup->redraw();}
+            xywh {95 41 920 32} type TICK_ABOVE textfont 1 textcolor 0x2020200 textsize 12 minimum 1 maximum 100 step 1 value 1 slider_size 10
             extra_code {o->main( main );
 o->draw_cache( false );}
             class {mrv::Timeline}
@@ -89,7 +89,7 @@ o->draw_cache( false );}
             class {mrv::EDLGroup}
           } {}
           {fltk::Group} {} {open
-            xywh {5 70 95 150}
+            xywh {5 70 95 157}
           } {
             {fltk::Group} {} {open
               xywh {10 5 85 30}
@@ -143,10 +143,10 @@ else
 {
    o->value(-1);
 }}
-              xywh {10 50 75 25} align 5
+              xywh {10 48 75 25} align 5
             } {}
             {fltk::Group} {} {open
-              xywh {10 85 85 30}
+              xywh {10 83 85 32}
             } {
               {fltk::Button} {} {
                 user_data {main->uiReelWindow->uiBrowser} user_data_type {mrv::ImageBrowser*}
@@ -154,7 +154,7 @@ else
 int idx = uiEDLChoiceTwo->children()-1;
 uiEDLChoiceTwo->value( idx );}
                 tooltip {Open a new reel}
-                xywh {0 5 25 25} vertical
+                xywh {0 0 25 25} vertical
                 extra_code {o->image( reel_24 );}
               }
               {fltk::Button} {} {
@@ -167,7 +167,7 @@ b->reel( c->value() );
 b->save_reel();}
                 tooltip {Save current reel
 }
-                xywh {25 5 25 25} vertical
+                xywh {25 0 25 25} vertical
                 extra_code {o->image( reel_save_24 );}
               }
               {fltk::Button} {} {
@@ -181,7 +181,7 @@ if ( sel < 0 ) return;
 b->reel( sel );
 b->remove_reel();}
                 tooltip {Delete current reel}
-                xywh {50 5 25 25} vertical
+                xywh {50 0 25 25} vertical
                 extra_code {o->image( reel_delete_24 );}
               }
             }
@@ -196,7 +196,7 @@ b->remove_reel();}
 else
 {
   o->value(-1);
-}}
+}} selected
               xywh {10 125 75 25} align 5
               extra_code {o->value( -1 );}
             } {}
