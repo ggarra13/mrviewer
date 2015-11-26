@@ -2833,7 +2833,7 @@ aviImage::handle_subtitle_packet_seek( boost::int64_t& frame,
     {
       const AVPacket& pkt = _subtitle_packets.front();
       
-      boost::int64_t repeat;
+      boost::int64_t repeat = 0;
       boost::int64_t pktframe = get_frame( get_subtitle_stream(), pkt );
 
 
