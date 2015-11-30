@@ -329,6 +329,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = first;
                 if ( img->right_eye() ) img->right_eye()->seek( frame );
                 status = kEndLoop;
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
             }
             else if ( loop == ImageView::kPingPong )
             {
@@ -339,6 +343,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                 if (fg)
                     view->playback( ImageView::kBackwards );
                 status = kEndChangeDirection;
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
             }
             else
             {
@@ -408,6 +416,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = last;
                 if ( img->right_eye() ) img->right_eye()->seek( frame );
                 status = kEndLoop;
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
             }
             else if ( loop == ImageView::kPingPong )
             {
@@ -418,6 +430,10 @@ EndStatus handle_loop( boost::int64_t& frame,
                 if (fg)
                     view->playback( ImageView::kForwards );
                 status = kEndChangeDirection;
+                init_clock(&img->vidclk, NULL);
+                init_clock(&img->audclk, NULL);
+                init_clock(&img->extclk, NULL);
+                set_clock(&img->extclk, get_clock(&img->extclk), false);
             }
             else
             {
@@ -536,11 +552,11 @@ void audio_thread( PlaybackData* data )
    mrv::Timer timer;
 
 
+   //img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
+   img->av_sync_type = CMedia::AV_SYNC_AUDIO_MASTER;
    init_clock(&img->vidclk, NULL);
    init_clock(&img->audclk, NULL);
    init_clock(&img->extclk, NULL);
-   //img->av_sync_type = CMedia::AV_SYNC_EXTERNAL_CLOCK;
-   img->av_sync_type = CMedia::AV_SYNC_AUDIO_MASTER;
    set_clock(&img->extclk, get_clock(&img->extclk), false);
 
 
@@ -626,12 +642,12 @@ void audio_thread( PlaybackData* data )
 
       if ( fg && img->has_audio() && reel->edl && img->is_left_eye() )
       {
-          int64_t f = img->frame() + reel->location(img) - img->first_frame();
+          int64_t f = frame + reel->location(img) - img->first_frame();
           if ( f > timeline->maximum() )
               f = int64_t( timeline->maximum() );
           if ( f < timeline->minimum() )
               f = int64_t( timeline->minimum() );
-         view->frame( f );
+          view->frame( f );
       }
 
 
