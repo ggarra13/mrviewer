@@ -2587,8 +2587,9 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( playback() == kStopped && _right_eye && _stereo_type )
       _right_eye->find_image(f);
 
-  // _video_pts = int64_t( double(f) / _fps * 1000000.0 );
+  _video_pts   = f / _fps;
   _video_clock = double(av_gettime_relative()) / 1000000.0;
+  update_video_pts(this, _video_pts, 0, 0);
 
   // Check if we have a cached frame for this frame
   
@@ -2661,6 +2662,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   }
 
   _frame = f;
+
 
 
   refresh();
