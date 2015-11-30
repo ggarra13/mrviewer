@@ -157,6 +157,9 @@ void load_new_files( void* s )
 
 int main( const int argc, char** argv ) 
 {
+    // Avoid repetition in ffmpeg's logs
+    av_log_set_flags(AV_LOG_SKIP_REPEATED);
+
     char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
@@ -209,6 +212,7 @@ int main( const int argc, char** argv )
 
       // Try to set MRV_ROOT if not set already
       mrv::set_root_path( argc, argv );
+
 
 
       // Adjust ui based on preferences
