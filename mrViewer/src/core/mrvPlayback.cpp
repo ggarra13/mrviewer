@@ -934,15 +934,12 @@ void video_thread( PlaybackData* data )
       DBG( img->name() << " find image " << frame );
       bool ok = img->find_image( frame );
 
-      if ( !img->has_audio_data() && reel->edl && img->is_left_eye() )
+      if ( fg && !img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
 	 int64_t f = frame + reel->location(img) - img->first_frame();
          if ( frame <= img->last_frame() )
          {
-             if ( fg && img->is_left_eye() )
-             {
-                 view->frame( f );
-             }
+             view->frame( f );
          }
       }
 
