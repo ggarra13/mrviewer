@@ -1,3 +1,7 @@
+v3.0.2   - Bug fixed a problem when playing audio files that would
+	   sometimes play them way too fast.
+	 - Bug fixed playback of sequences with audio and videos when
+	   looping that would loose sync and report NANs.
 
 v3.0.1   - Allowed loading and saving files with the Windows' native
 	   file browser.

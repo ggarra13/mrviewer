@@ -622,7 +622,8 @@ void CMedia::populate_audio()
 
 
 
-  // _fps = _play_fps = calculate_fps( stream );
+  if ( ( !has_video() && !is_sequence() ) || _fps == 0.0 )
+      _fps = _play_fps = calculate_fps( stream );
 
 
 #ifdef DEBUG_STREAM_INDICES

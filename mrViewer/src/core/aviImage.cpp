@@ -1038,6 +1038,8 @@ bool aviImage::find_image( const boost::int64_t frame )
 	_hires = *i;
 
         boost::int64_t distance = frame - _hires->frame();
+
+
         if ( distance > _hires->repeat() )
         {
             boost::int64_t first = (*_images.begin())->frame();
@@ -2211,8 +2213,7 @@ bool aviImage::in_video_store( const boost::int64_t frame )
 {
    SCOPED_LOCK( _mutex );
 
-  // Check if audio is already in audio store
-  // If so, no need to decode it again.  We just pop the packet and return.
+  // Check if video is already in video store
   video_cache_t::iterator end = _images.end();
   video_cache_t::iterator i = std::find_if( _images.begin(), end,
 					    EqualFunctor(frame) );
@@ -2240,6 +2241,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
   }
 
   DecodeStatus got_video = kDecodeMissingFrame;
+
 
   while (  got_video != kDecodeOK && !_video_packets.empty()  )
     {
@@ -2303,9 +2305,13 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
           boost::int64_t pktframe;
           if ( pkt.dts != AV_NOPTS_VALUE )
+          {
               pktframe = pts2frame( get_video_stream(), pkt.dts );
+          }
           else
+          {
               pktframe = frame;
+          }
 
 	  bool ok = in_video_store( pktframe );
 	  if ( ok )
