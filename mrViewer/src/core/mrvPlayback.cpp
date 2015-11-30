@@ -640,7 +640,7 @@ void audio_thread( PlaybackData* data )
       }
 
 
-      if ( fg && img->has_audio() && reel->edl && img->is_left_eye() )
+      if ( fg && img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
           int64_t f = frame + reel->location(img) - img->first_frame();
           if ( f > timeline->maximum() )
