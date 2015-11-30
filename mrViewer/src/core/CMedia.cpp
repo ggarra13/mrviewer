@@ -2232,7 +2232,7 @@ double CMedia::calculate_fps( const AVStream* stream )
   {
       fps = av_q2d( stream->avg_frame_rate );
   }
-  else if ( rate.den > 0 && rate.num > 1  )
+  else if ( rate.den && rate.num )
     {
       fps = av_q2d( rate );
     }

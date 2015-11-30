@@ -157,11 +157,10 @@ class CMedia
         {
         }
 
-        bool has_data( boost::int64_t frame ) const
+        bool has_data( const boost::int64_t& frame, const double& fps ) const
         {
-            const AVStream* stream = context->streams[stream_index];
-            double time  = av_q2d( stream->time_base );
-            return frame <= boost::int64_t( ( duration - start ) * time );
+            int64_t last = boost::int64_t( ( duration + start ) * fps );
+            return frame <= last;
         }
 
     };
@@ -756,7 +755,7 @@ class CMedia
     inline bool has_audio_data() const
     {
         return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec
-                 && _audio_info[ _audio_index ].has_data( _frame ) );
+                 && _audio_info[ _audio_index ].has_data( _frame, _fps ) );
     }
 
     inline bool has_audio() const
