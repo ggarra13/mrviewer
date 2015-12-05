@@ -132,9 +132,6 @@ AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
 #endif
 
 
-void set_clock_at(Clock *c, double pts, int serial, double time);
-double get_clock(Clock* c);
-void sync_clock_to_slave(Clock *c, Clock *slave);
 
 /** 
  * Clear (audio) packets
@@ -319,7 +316,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                 if ( !got_audio ) _audio_packets.seek_end(apts);
             }
          
-            av_free_packet( &pkt );
+            av_packet_unref( &pkt );
          
             break;
         }
@@ -363,7 +360,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
             continue;
         }
 
-        av_free_packet( &pkt );
+        av_packet_unref( &pkt );
     }
 
     if ( dts > last_frame() ) dts = last_frame();
@@ -518,7 +515,7 @@ unsigned int CMedia::audio_bytes_per_frame()
       AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
       unsigned bps = av_get_bytes_per_sample( fmt );
 
-      ret = (unsigned int)( (double) frequency / _fps ) * channels * bps;
+      ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
     }
    return ret;
 }
@@ -623,7 +620,7 @@ void CMedia::populate_audio()
 
 
   if ( ( !has_video() && !is_sequence() ) || _fps == 0.0 )
-      _fps = _play_fps = calculate_fps( stream );
+      _orig_fps = _fps = _play_fps = calculate_fps( stream );
 
 
 #ifdef DEBUG_STREAM_INDICES
@@ -1611,11 +1608,12 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = frame / av_q2d( get_audio_stream()->avg_frame_rate );
+  _audio_pts = frame / _orig_fps; //av_q2d( get_audio_stream()->avg_frame_rate );
+
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
 
   // set_clock_at(&audclk, _audio_clock, 0, audio_callback_time );
-  set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
+  set_clock_at(&audclk, _audio_pts, 0, 0 );
   sync_clock_to_slave( &audclk, &extclk );
 
   return ok;

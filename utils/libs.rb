@@ -14,7 +14,15 @@ EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 release = `uname -r`.chop!
 
-Dir.chdir( "BUILD/Linux-#{release}-64/" )
+build = "BUILD/Linux-#{release}-64/"
+
+Dir.chdir( build )
+
+home=ENV['HOME']+"/bin/mrViewer" 
+FileUtils.rm_f( home )
+FileUtils.ln_s( ENV['PWD']+'/'+build+"/Release/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer" )
+FileUtils.rm_f( home + '-dbg' )
+FileUtils.ln_s( ENV['PWD']+'/'+build+"/Debug/bin/mrViewer.sh", ENV['HOME']+"/bin/mrViewer-dbg" )
 
 output=`ldd Release/bin/mrViewer`
 
