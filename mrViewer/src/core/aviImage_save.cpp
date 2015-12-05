@@ -36,6 +36,7 @@ extern "C" {
 #include <libavutil/mathematics.h>
 #include <libavutil/timestamp.h>
 #include <libavutil/audio_fifo.h>
+#include <libavutil/imgutils.h>
 #include <libavformat/avformat.h>
 #include <libswresample/swresample.h>
 }
@@ -63,7 +64,6 @@ namespace mrv {
 
 
 static AVFrame *picture = NULL;
-static AVPicture dst_picture;
 static boost::int64_t frame_count = 0;
 
 /* just pick the highest supported samplerate */
@@ -436,8 +436,6 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
    av_init_packet(&pkt);
-   pkt.size = 0;
-   pkt.data = NULL;
 
    AVCodecContext* c = st->codec;
 
@@ -619,7 +617,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    }
 
 
-   av_free_packet( &pkt );
+   av_packet_unref( &pkt );
 
    return true;
 
@@ -661,15 +659,15 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     picture->width = width;
     picture->height = height;
 
-    /* Allocate the encoded raw picture. */
-    ret = avpicture_alloc(&dst_picture, pix_fmt, width, height);
-    if (ret < 0) {
-        LOG_ERROR( "Could not allocate picture: " << get_error_text(ret) );
-       exit(1);
+    /* the image can be allocated by any means and av_image_alloc() is
+     * just the most convenient way if av_malloc() is to be used */
+    ret = av_image_alloc(picture->data, picture->linesize, width, height,
+                         pix_fmt, 32);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not allocate raw picture buffer") );
+        return NULL;
     }
-
-    /* copy data and linesize picture pointers to frame */
-    *((AVPicture *)picture) = dst_picture;
 
     return picture;
 }
@@ -704,7 +702,6 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 static void close_video(AVFormatContext *oc, AVStream *st)
 {
     avcodec_close(st->codec);
-    av_free(dst_picture.data[0]);
     av_frame_free(&picture);
 }
 
@@ -791,50 +788,33 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
    fill_yuv_image( c, picture, img );
 
-   if (oc->oformat->flags & AVFMT_RAWPICTURE ) {
-      /* Raw video case - directly store the frame in the packet */
-      AVPacket pkt;
-      av_init_packet(&pkt);
+   AVPacket pkt = { 0 };
+   av_init_packet(&pkt);
 
-      pkt.flags        |= AV_PKT_FLAG_KEY;
-      pkt.stream_index  = st->index;
-      pkt.data          = dst_picture.data[0];
-      pkt.size          = sizeof(AVPicture);
+   int got_packet = 0;
 
-      pkt.pts = pkt.dts = frame->pts;
-      av_packet_rescale_ts(&pkt, c->time_base, st->time_base);
+   /* encode the image */
+   picture->pts = frame_count;
+   ret = avcodec_encode_video2(c, &pkt, picture, &got_packet);
+   if (ret < 0) {
+       LOG_ERROR( _("Error while encoding video frame: ") << 
+                  get_error_text(ret) );
+       return false;
+   }
 
-      ret = av_interleaved_write_frame(oc, &pkt);
-   } else {
+   /* If size is zero, it means the image was buffered. */
+   if ( got_packet )
+   {
+       ret = write_frame( oc, &c->time_base, st, &pkt );
 
-      AVPacket pkt = { 0 };
-      av_init_packet(&pkt);
+       av_packet_unref( &pkt );
 
-      int got_packet = 0;
+       if (ret < 0) {
+           LOG_ERROR( _("Error while writing video frame: ") << 
+                      get_error_text(ret) );
+           return false;
+       }
 
-      /* encode the image */
-      picture->pts = frame_count;
-      ret = avcodec_encode_video2(c, &pkt, picture, &got_packet);
-      if (ret < 0) {
-         LOG_ERROR( _("Error while encoding video frame: ") << 
-                    get_error_text(ret) );
-         return false;
-      }
-
-      /* If size is zero, it means the image was buffered. */
-      if ( got_packet )
-      {
-          ret = write_frame( oc, &c->time_base, st, &pkt );
-
-          av_free_packet( &pkt );
-
-          if (ret < 0) {
-              LOG_ERROR( _("Error while writing video frame: ") << 
-                         get_error_text(ret) );
-              return false;
-          }
-
-      }
    }
 
    frame_count++;
@@ -1092,8 +1072,6 @@ bool flush_video_and_audio( const CMedia* img )
         int got_packet;
         AVPacket pkt = { 0 };
         av_init_packet(&pkt);
-        pkt.data = NULL;
-        pkt.size = 0;
 
         // Send last packet to encode
         if ( cache_size > 0 )
@@ -1119,7 +1097,7 @@ bool flush_video_and_audio( const CMedia* img )
             }
         }
 
-        av_free_packet( &pkt );
+        av_packet_unref( &pkt );
 
     }
 
@@ -1161,8 +1139,6 @@ bool flush_video_and_audio( const CMedia* img )
                 AVPacket pkt = {0};
                 int got_packet = 0;
                 av_init_packet(&pkt);
-                pkt.data = NULL;
-                pkt.size = 0;
                     
                 ret = encode(c, &pkt, NULL, &got_packet);
                     
@@ -1180,7 +1156,7 @@ bool flush_video_and_audio( const CMedia* img )
 
                 ret = write_frame(oc, &c->time_base, s, &pkt);
 
-                av_free_packet( &pkt );
+                av_packet_unref( &pkt );
 
                 if ( ret < 0 )
                 {
