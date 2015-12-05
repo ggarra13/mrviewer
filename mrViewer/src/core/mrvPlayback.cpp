@@ -808,6 +808,7 @@ void video_thread( PlaybackData* data )
    timer.setDesiredFrameRate( fps );
 
 
+
    while ( !img->stopped() && view->playback() != mrv::ImageView::kStopped )
    {
        DBG( img->name() << " wait image " << frame );

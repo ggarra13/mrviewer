@@ -1185,7 +1185,8 @@ class CMedia
 
     double  _real_fps;        //!< actual play rate of movie
     double  _play_fps;        //!< current desired play speed
-    double  _fps;             //!< movie's original play speed
+    double  _fps;             //!< movie's original play speed (set by user)
+    double  _orig_fps;        //!< movie's original play speed
 
     double          _pixel_ratio;  //!< pixel ratio of image
     unsigned        _num_channels; //!< number of channels
