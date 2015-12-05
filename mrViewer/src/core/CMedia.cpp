@@ -141,6 +141,7 @@ const char* const CMedia::decode_error( DecodeStatus err )
  * 
  */
 CMedia::CMedia() :
+av_sync_type( CMedia::AV_SYNC_AUDIO_MASTER ),
 _w( 0 ),
 _h( 0 ),
 _internal( false ),
@@ -162,6 +163,7 @@ _label( NULL ),
 _real_fps( 0 ),
 _play_fps( 0 ),
 _fps( 0 ),
+_orig_fps( 0 ),
 _pixel_ratio( 1.0f ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
@@ -228,6 +230,7 @@ _audio_engine( NULL )
  * @param wh    new image height
  */
 CMedia::CMedia( const CMedia* other, int ws, int wh ) :
+av_sync_type( other->av_sync_type ),
 _w( 0 ),
 _h( 0 ),
 _is_stereo( false ),
@@ -247,6 +250,7 @@ _label( NULL ),
 _real_fps( 0 ),
 _play_fps( 24.0 ),
 _fps( 0 ),
+_orig_fps( 0 ),
 _pixel_ratio( 1.0f ),
 _num_channels( 0 ),
 _rendering_intent( kUndefinedIntent ),
@@ -322,6 +326,7 @@ _audio_engine( NULL )
 }
 
 CMedia::CMedia( const CMedia* other, boost::int64_t f ) :
+av_sync_type( other->av_sync_type ),
 _w( 0 ),
 _h( 0 ),
 _is_stereo( other->_is_stereo ),
@@ -341,6 +346,7 @@ _label( NULL ),
 _real_fps( 0 ),
 _play_fps( 24.0 ),
 _fps( other->_fps ),
+_orig_fps( other->_orig_fps ),
 _pixel_ratio( other->_pixel_ratio ),
 _num_channels( other->_num_channels ),
 _rendering_intent( other->_rendering_intent ),
@@ -515,9 +521,6 @@ CMedia::~CMedia()
 
   if ( _aframe )
       av_frame_unref(_aframe);
-
-  av_frame_free(&_aframe);
-
 
   audio_shutdown();
 
@@ -1031,62 +1034,62 @@ void CMedia::image_size( int w, int h )
   if ( w == 720 && h == 486 )
     {
       _pixel_ratio = 0.9f;    // 4:3 NTSC
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( w == 640 && h == 480 )
     {
       _pixel_ratio = 1.0f;    // 4:3 NTSC
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( w == 720 && h == 480 )
     {
       _pixel_ratio = 0.88888f;    // 4:3 NTSC
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( w == 512 && h == 486 )
     {
       _pixel_ratio = 1.265f;  // 4:3 Targa 486
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( w == 512 && h == 482 )
     {
       _pixel_ratio = 1.255f;  // 4:3 Targa NTSC
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( w == 512 && h == 576 )
     {
       _pixel_ratio = 1.5f;    // 4:3 Targa PAL
-      if ( _fps == 0 ) _fps = _play_fps = 25;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
     }
   else if ( w == 646 && h == 485 )
     {
       _pixel_ratio = 1.001f;  // 4:3 NTSC
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( w == 720 && h == 576 )
     {
       _pixel_ratio = 1.066f;  // 4:3 PAL
-      if ( _fps == 0 ) _fps = _play_fps = 25;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
     }
   else if ( w == 780 && h == 576 )
     {
       _pixel_ratio = 0.984f;  // 4:3 PAL
-      if ( _fps == 0 ) _fps = _play_fps = 25;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 25;
     }
   else if ( w == 1280 && h == 1024 )
     {
       _pixel_ratio = 1.066f; // HDTV full
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( (float)w/(float)h == 1.56 )
     {
       _pixel_ratio = 0.9f;   // HTDV/SD compromise
-      if ( _fps == 0 ) _fps = _play_fps = 29.97;
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
 
   if ( _fps == 0 )
     {
-      _fps = _play_fps = 24; 
+      _orig_fps =_fps = _play_fps = 24; 
     }
 
   _w = w;
@@ -1642,10 +1645,15 @@ void CMedia::play(const CMedia::Playback dir,
   _audio_clock = double( av_gettime_relative() ) / 1000000.0;
   _video_clock = double( av_gettime_relative() ) / 1000000.0;
 
+  _video_pts = _audio_pts = _frame  / _orig_fps;
+  update_video_pts(this, _video_pts, 0, 0);
+  set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
+  sync_clock_to_slave( &audclk, &extclk );
+
   _audio_buf_used = 0;
 
 
-  // clear all packets
+  // clear all packets and caches
   clear_packets();
   clear_stores();
 
@@ -2356,8 +2364,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
   long double p = pts;
   p *= stream->time_base.num;
   p /= stream->time_base.den;
-  //  p *= av_q2d( stream->time_base );
-  p *= fps();
+  p *= _orig_fps;
   pts = boost::int64_t( p + 0.5 ) + 1;
   return pts;
 }
@@ -2587,7 +2594,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( playback() == kStopped && _right_eye && _stereo_type )
       _right_eye->find_image(f);
 
-  _video_pts   = f / _fps;
+  _video_pts   = f / _orig_fps;
   _video_clock = double(av_gettime_relative()) / 1000000.0;
   update_video_pts(this, _video_pts, 0, 0);
 

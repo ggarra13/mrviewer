@@ -50,6 +50,7 @@ extern "C" {
 //#include <libavutil/audioconvert.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/pixdesc.h>
+#include <libavutil/imgutils.h>
 #include <libavutil/time.h>
 #include <libavutil/opt.h>
 #include <libswresample/swresample.h>
@@ -688,14 +689,16 @@ void aviImage::store_image( const boost::int64_t frame,
       return;
   }
 
-  AVPicture output;
+  AVFrame output;
   boost::uint8_t* ptr = (boost::uint8_t*)image->data().get();
 
   unsigned int w = width();
   unsigned int h = height();
 
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
-  avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
+  // avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
+  av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
+                        w, h, 4);
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
 
@@ -1386,7 +1389,7 @@ void aviImage::populate()
         return;  // no stream detected
     }
 
-    _fps = _play_fps = calculate_fps( stream );
+    _orig_fps = _fps = _play_fps = calculate_fps( stream );
 
   
 
@@ -1483,7 +1486,7 @@ void aviImage::populate()
     {
 
         // Loop until we get first frame
-        AVPacket pkt;
+        AVPacket pkt = {0};
         // Clear the packet
         av_init_packet( &pkt );
 
@@ -1568,7 +1571,7 @@ void aviImage::populate()
                     continue;
                 }
 
-            av_free_packet( &pkt );
+            av_packet_unref( &pkt );
 	}
 
       
@@ -1733,7 +1736,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     }
 
 
-    AVPacket pkt;
+    AVPacket pkt = {0};
 
     // Clear the packet
     av_init_packet( &pkt );
@@ -1752,8 +1755,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
         if (eof) {
             if (!got_video && video_stream_index() >= 0) {
                 av_init_packet(&pkt);
-                pkt.data = NULL;
-                pkt.size = 0;
                 pkt.stream_index = video_stream_index();
                 ++packets_added;
                 _video_packets.push_back( pkt );
@@ -1769,8 +1770,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             if (!got_audio && audio_context() == _context && _audio_ctx &&
                 _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
                 av_init_packet(&pkt);
-                pkt.data = NULL;
-                pkt.size = 0;
                 pkt.stream_index = audio_stream_index();
                 _audio_packets.push_back( pkt );
                 got_audio = true;
@@ -1813,7 +1812,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             }
 
 
-            av_free_packet( &pkt );
+            av_packet_unref( &pkt );
 
             break;
         }
@@ -1919,7 +1918,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             }
         }
      
-        av_free_packet( &pkt );
+        av_packet_unref( &pkt );
 
 
     } // (!got_video || !got_audio)
@@ -2606,7 +2605,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   unsigned char a;
   ImagePixel yuv, rgb;
 
-  const unsigned* pal = (const unsigned*)rect.pict.data[1];
+  const unsigned* pal = (const unsigned*)rect.data[1];
 
   for ( int x = dstx; x < dstx + dstw; ++x )
   {
@@ -2615,7 +2614,7 @@ void aviImage::subtitle_rect_to_image( const AVSubtitleRect& rect )
   	boost::uint8_t* d = root + 4 * (x + y * imgw); 
 	assert( d != NULL );
 
-	boost::uint8_t* const s = rect.pict.data[0] + (x-dstx) + 
+	boost::uint8_t* const s = rect.data[0] + (x-dstx) + 
                                   (y-dsty) * dstw;
 
 	unsigned t = pal[*s];
