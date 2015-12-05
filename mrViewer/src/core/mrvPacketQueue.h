@@ -120,25 +120,18 @@ namespace mrv {
       Mutex::scoped_lock lk( _mutex );
       // assert( pkt.dts != MRV_NOPTS_VALUE );
 
-      AVPacket* dup;
 
-      if ( ! (dup = av_packet_clone(&pkt)) )
-      {
-	 std::cerr << "Could not duplicate packet - not added" << std::endl;
-	 return;
-      }
-
-      _packets.push_back( *dup );
-      _bytes += dup->size;
+      _packets.push_back( pkt );
+      _bytes += pkt.size;
 
       _cond.notify_one();
 
 #ifdef DEBUG_PACKET_QUEUE
-      std::cerr << "PUSH BACK " << dup->stream_index 
-		<< " PTS: " << dup->pts
-		<< " DTS: " << dup->dts
-		<< " DATA: " << (void*)dup->data
-		<< " SIZE: " << dup->size
+      std::cerr << "PUSH BACK " << pkt.stream_index 
+		<< " PTS: " << pkt.pts
+		<< " DTS: " << pkt.dts
+		<< " DATA: " << (void*)pkt.data
+		<< " SIZE: " << pkt.size
 #if 0
 		<< " AT: " << &(_packets.back()) 
 		<< " TOTAL " << _bytes
