@@ -698,7 +698,7 @@ void aviImage::store_image( const boost::int64_t frame,
   // Fill the fields of AVPicture output based on _av_dst_pix_fmt
   // avpicture_fill( &output, ptr, _av_dst_pix_fmt, w, h );
   av_image_fill_arrays( output.data, output.linesize, ptr, _av_dst_pix_fmt,
-                        w, h, 4);
+                        w, h, 1);
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
 
