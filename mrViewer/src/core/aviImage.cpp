@@ -802,7 +802,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          return kDecodeError;
      }
 
-     if ( err == 0 ) return kDecodeMissingFrame;
+     if ( err == 0 ) return kDecodeLoopEnd;
 
 
      pkt.size -= err;
