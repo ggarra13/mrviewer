@@ -1429,7 +1429,6 @@ void ImageView::timeout()
 
    if ( reel && reel->edl )
    {
-      
       fg = reel->media_at( tframe );
 
       if ( fg && fg != foreground() ) 
@@ -1470,45 +1469,42 @@ void ImageView::timeout()
       // if ( delay < kMinDelay ) delay = kMinDelay;
    }
 
-  repeat_timeout( float(delay) );
-
   if ( timeline && timeline->visible() ) 
   {
      
-     int64_t frame;
-     if ( reel && !reel->edl && fg )
-     {
-	CMedia* img = fg->image();
+      if ( reel && !reel->edl && fg )
+      {
+          CMedia* img = fg->image();
+          int64_t frame = img->frame();
 
+          if ( playback() == kForwards )
+          {
+              if ( img->audio_frame() > frame+5 )
+                  frame = img->audio_frame();
+          }
+          // else
+          // {
+          //     if ( img->audio_frame() < frame )
+          //         frame = img->audio_frame();
+          // }
 
-        frame = img->frame();
-
-        if ( playback() == kForwards )
-        {
-            if ( img->audio_frame() > frame+5 )
-                frame = img->audio_frame();
-        }
-        // else
-        // {
-        //     if ( img->audio_frame() < frame )
-        //         frame = img->audio_frame();
-        // }
-
-	if ( this->frame() != frame )
-	{
-	   this->frame( frame );
-	}
-     }
+          if ( this->frame() != frame )
+          {
+              this->frame( frame );
+          }
+      }
   }
 
 
   if ( fg && should_update( fg ) )
-    {
+  {
       update_color_info( fg );
 
       uiMain->uiEDLWindow->uiEDLGroup->redraw();
       redraw();
-    }
+  }
+
+  repeat_timeout( float(delay) );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -4766,9 +4762,6 @@ void ImageView::foreground( mrv::media fg )
     if ( old == fg ) return;
 
 
-
-    delete_timeout();
-
     CMedia* img = NULL;
     if ( fg ) 
     {
@@ -4917,8 +4910,6 @@ void ImageView::background( mrv::media bg )
   mrv::media old = background();
   if ( old == bg ) return;
 
-
-  delete_timeout();
 
   char buf[1024];
   mrv::media fg = foreground();
