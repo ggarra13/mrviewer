@@ -1483,11 +1483,11 @@ void ImageView::timeout()
 
         frame = img->frame();
 
-        // if ( playback() == kForwards )
-        // {
-        //     if ( img->audio_frame() > frame )
-        //         frame = img->audio_frame();
-        // }
+        if ( playback() == kForwards )
+        {
+            if ( img->audio_frame() > frame+5 )
+                frame = img->audio_frame();
+        }
         // else
         // {
         //     if ( img->audio_frame() < frame )
