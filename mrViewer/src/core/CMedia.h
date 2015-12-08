@@ -1135,6 +1135,8 @@ class CMedia
 
   protected:
 
+    void fill_rectangle( uint8_t* buf, int xh, int yh, int xl, int yl );
+
     boost::int64_t queue_packets( const boost::int64_t frame,
                                   const bool is_seek,
                                   bool& got_video,
