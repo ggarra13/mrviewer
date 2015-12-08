@@ -275,11 +275,13 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       return true;
     }
   else if ( strncmp( (char*)data, "ID3", 3 ) == 0 ||
-	    (magic & 0xFFE00000) == 0xFFE00000 )
+	    (magic & 0xFFE00000) == 0xFFE00000 ||
+            (magic == 0x00000000) )
     {
       // MP3
-      if ( (magic & 0xF000) == 0xF000 ||
-	   (magic & 0xF000) == 0 ) return false;
+        if ( (magic != 0x00000000) &&
+             ((magic & 0xF000) == 0xF000 ||
+              (magic & 0xF000) == 0 ) ) return false;
       return true;
     }
   else if ( magic == 0x00000144 )
@@ -1586,8 +1588,20 @@ void aviImage::populate()
 
     if ( _frame_offset > 3 ) _frame_offset = 0;
 
+  if ( !has_video() )
+    {
+        if ( !_hires )
+        {
+            _w = 1024;
+            _h = 800;
+            allocate_pixels( _frameStart, 3, image_type::kRGB,
+                             image_type::kByte );
+        }
+        _hires->frame( _frameStart );
+        uint8_t* ptr = (uint8_t*) _hires->data().get();
+        memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
+    }
 
-  
     //
     // Format
     //

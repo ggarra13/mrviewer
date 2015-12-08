@@ -579,7 +579,6 @@ void audio_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status = img->decode_audio( f );
 
-      DBG( "Decode returned " << status );
 
       switch( status )
       {
@@ -616,7 +615,8 @@ void audio_thread( PlaybackData* data )
 
                   EndStatus end = handle_loop( frame, step, img, fg, uiMain,
                                                reel, timeline, status,
-                                               !img->has_picture() );
+                                               !( img->is_sequence() ||
+                                                  img->has_video() ) );
 
                   frame += img->audio_offset();
 
