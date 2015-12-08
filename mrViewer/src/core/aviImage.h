@@ -93,7 +93,7 @@ namespace mrv {
 
     virtual bool has_video() const;
 
-    virtual bool has_picture() const { return has_video(); }
+    // virtual bool has_picture() const { return has_video(); }
 
     virtual void video_stream( int x );
 
