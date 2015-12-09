@@ -572,7 +572,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    DBG( "frame_size= " << frame_size << "  audio->size()= " << audio->size() );
 
-   while ( av_audio_fifo_size( fifo ) >= frame_size )
+   while ( av_audio_fifo_size( fifo ) >= (int)frame_size )
    {
 
        ret = av_audio_fifo_read(fifo, (void**)audio_frame->extended_data, 
