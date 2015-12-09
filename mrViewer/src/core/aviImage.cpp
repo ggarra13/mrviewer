@@ -217,6 +217,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
   if ( len < 12 ) return false;
 
+
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
 
@@ -311,13 +312,12 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 
    AVProbeData pd = { NULL, d, len };
    int score_max = 0;
-   AVInputFormat* ok = av_probe_input_format2(&pd, 1, &score_max);
+   AVInputFormat* ctx = av_probe_input_format3(&pd, 1, &score_max);
 
    delete [] d;
 
-
-   // if ( score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
-   if ( score_max > 10 )
+   // if ( ctx && score_max >= AVPROBE_SCORE_MAX / 4 + 1 )
+   if ( ctx && score_max > 10 )
       return true;
 
   return false;
@@ -1781,12 +1781,17 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             }
 
             AVStream* stream = get_audio_stream();
-            if (!got_audio && audio_context() == _context && _audio_ctx &&
-                _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
-                av_init_packet(&pkt);
-                pkt.stream_index = audio_stream_index();
-                _audio_packets.push_back( pkt );
+            if (!got_audio )
+            {
+                if (audio_context() == _context && _audio_ctx &&
+                    _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
+                    av_init_packet(&pkt);
+                    pkt.stream_index = audio_stream_index();
+                    _audio_packets.push_back( pkt );
+                }
+
                 got_audio = true;
+
                 if ( is_seek || playback() == kBackwards )
                 {
                     _audio_packets.seek_end(apts);
