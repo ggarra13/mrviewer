@@ -1358,18 +1358,19 @@ CMedia::store_audio( const boost::int64_t audio_frame,
     }
   else
     {
+        audio_cache_t::iterator end = _audio.end();
+
 #if 1
-      audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
-						     _audio.end(),
-						     f,
-						     LessThanFunctor() );
+        audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
+                                                       end,
+                                                       f,
+                                                       LessThanFunctor() );
 #else
-      audio_cache_t::iterator at = std::find_if( _audio.begin(),
-                                                 _audio.end(),
+      audio_cache_t::iterator at = std::find_if( _audio.begin(), end,
                                                  EqualFunctor(f) );
 #endif
       // Avoid storing duplicate frames, replace old frame with this one
-      if ( at != _audio.end() )
+      if ( at != end )
 	{
 	  if ( (*at)->frame() == f )
 	    {
@@ -1627,7 +1628,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
         for (size_t ch = 0; ch < channels; ch++)
         {
             i = i_start + ch;
-            y1 = 0 + ch * h + ( h / 2 );
+            y1 = ch * h + ( h / 2 );
             for (int x = 0; x < _w; ++x )
             {
                 y = (data[i] * h2) >> 15;
@@ -1641,8 +1642,8 @@ bool CMedia::find_audio( const boost::int64_t frame )
                                x, ys, 1, y);
                 i += channels;
             }
-
         }
+
       _frame = frame;
       refresh();
     }
