@@ -1057,7 +1057,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   // accomodate weird sample rates not evenly divisable by frame rate
   if ( _audio_buf_used != 0 && (!_audio.empty()) )
     {
-        int64_t tmp = ptsframe - _audio_last_frame;
+        int64_t tmp = std::abs(ptsframe - _audio_last_frame);
         if ( tmp >= 0 && tmp <= 10 )
         {
             ptsframe = _audio_last_frame + 1;
@@ -1611,7 +1611,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   }
   
-  if ( !has_video() )
+  if ( !has_video() && !is_sequence() )
     {
         _hires->frame( frame );
         uint8_t* ptr = (uint8_t*) _hires->data().get();
@@ -2013,7 +2013,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 	if ( f == frame )  std::cerr << "P";
 	if ( f == _dts )   std::cerr << "D";
 	if ( f == _frame ) std::cerr << "F";
-	std::cerr << f << " ";
+	std::cerr << f << " (" << (void*)(*iter)->data() << ") ";
      }
      std::cerr << std::endl;
   }
