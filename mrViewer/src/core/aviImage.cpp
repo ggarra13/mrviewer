@@ -1020,6 +1020,8 @@ bool aviImage::find_image( const boost::int64_t frame )
 
   _frame = frame;
 
+  if ( !has_video() ) return true;
+
   {
 
     SCOPED_LOCK( _mutex );
@@ -2070,6 +2072,16 @@ bool aviImage::frame( const boost::int64_t f )
 
 
   bool ok = fetch(_dts);
+  
+  if ( !has_video() )
+  {
+      AVPacket pkt;
+      av_init_packet( &pkt );
+      pkt.dts = pkt.pts = _dts;
+      pkt.size = 0;
+      pkt.data = NULL;
+      _video_packets.push_back( pkt );
+  }
 
 
 #ifdef DEBUG_DECODE
@@ -2243,6 +2255,69 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 {
 
     boost::int64_t frame = f;
+
+    if ( !has_video() )
+    {
+        SCOPED_LOCK( _mutex );
+
+        if (! _video_packets.empty() )
+            _video_packets.pop_front();
+
+        if ( frame > _frameEnd ) return kDecodeLoopEnd;
+        else if ( frame < _frameStart ) return kDecodeLoopStart;
+
+        _hires->frame( frame );
+        uint8_t* ptr = (uint8_t*) _hires->data().get();
+        memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
+
+        audio_type_ptr result;
+
+        {
+            SCOPED_LOCK( _audio_mutex );
+
+            audio_cache_t::iterator end = _audio.end();
+            audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end, 
+                                                           frame, 
+                                                           LessThanFunctor() );
+            if ( it == end )
+            {
+                return kDecodeMissingFrame;
+            }
+
+            result = *it;
+        }
+
+        size_t size = result->size();
+        size_t channels = result->channels();
+        int16_t* data = (int16_t*)result->data();
+
+        size_t h = _h / channels;
+        size_t h2 = (h * 9) / 20;
+        int y1, y, ys, i;
+        int i_start = 0;
+        for (size_t ch = 0; ch < channels; ch++)
+        {
+            i = i_start + ch;
+            y1 = ch * h + ( h / 2 );
+            for (int x = 0; x < _w; ++x )
+            {
+                y = (data[i] * h2) >> 15;
+                if (y < 0) {
+                    y = -y;
+                    ys = y1 - y;
+                } else {
+                    ys = y1;
+                }
+                fill_rectangle(ptr,
+                               x, ys, 1, y);
+                i += channels;
+            }
+        }
+
+      _frame = frame;
+      refresh();
+      return kDecodeOK;
+    }
 
 #ifdef DEBUG_VIDEO_PACKETS
         debug_video_packets(frame, "decode_video", true);
@@ -2575,7 +2650,7 @@ void aviImage::do_seek()
            }
        }
        
-       if ( has_video() )
+       // if ( has_video() )
        {
 	  status = decode_video( _seek_frame );
 
