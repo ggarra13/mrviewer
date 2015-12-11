@@ -1573,8 +1573,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
 {
   audio_type_ptr result;
 
-  
-
 
   {
 #ifdef DEBUG_AUDIO_PACKETS
@@ -1610,43 +1608,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
     result = *i;
 
   }
-  
-  if ( !has_video() && !is_sequence() )
-    {
-        _hires->frame( frame );
-        uint8_t* ptr = (uint8_t*) _hires->data().get();
-        memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
-
-        size_t size = result->size();
-        size_t channels = result->channels();
-        int16_t* data = (int16_t*)result->data();
-
-        size_t h = _h / channels;
-        size_t h2 = (h * 9) / 20;
-        int y1, y, ys, i;
-        int i_start = 0;
-        for (size_t ch = 0; ch < channels; ch++)
-        {
-            i = i_start + ch;
-            y1 = ch * h + ( h / 2 );
-            for (int x = 0; x < _w; ++x )
-            {
-                y = (data[i] * h2) >> 15;
-                if (y < 0) {
-                    y = -y;
-                    ys = y1 - y;
-                } else {
-                    ys = y1;
-                }
-                fill_rectangle(ptr,
-                               x, ys, 1, y);
-                i += channels;
-            }
-        }
-
-      _frame = frame;
-      refresh();
-    }
 
   bool ok = play_audio( result );
   if ( !ok )
