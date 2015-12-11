@@ -1688,7 +1688,7 @@ void CMedia::play(const CMedia::Playback dir,
       delete _loop_barrier;
       _loop_barrier = new Barrier( 1 + valid_a + valid_v + valid_s );
 
-      if ( valid_v )
+      if ( valid_v || valid_a )
       {
           video_data = new PlaybackData( *data );
           _threads.push_back( new boost::thread(
@@ -2810,7 +2810,6 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
 				 const char* routine,
 				 const bool detail)
 {
-  if ( !has_video() && !is_sequence() ) return;
 
   mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
