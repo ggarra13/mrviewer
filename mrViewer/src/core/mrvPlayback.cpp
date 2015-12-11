@@ -762,8 +762,8 @@ void subtitle_thread( PlaybackData* data )
 
   }  // subtitle_thread
 
-// #undef DBG
-// #define DBG(x) std::cerr << x << std::endl
+//#undef DBG
+//#define DBG(x) std::cerr << x << std::endl
 
 //
 // Main loop used to play video (of any image)
@@ -815,16 +815,15 @@ void video_thread( PlaybackData* data )
        img->wait_image();
 
 
-       // img->debug_video_packets( frame, "PLAYBACK", true );
        // img->debug_video_stores( frame, "BACK" );
 
        int step = (int) img->playback();
        if ( step == 0 ) break;
 
-       DBG( img->name() << " decode image " << frame );
+       //DBG( img->name() << " decode image " << frame );
        CMedia::DecodeStatus status = img->decode_video( frame );
-       DBG( img->name() << " decoded image " << frame << " status " 
-            << CMedia::decode_error(status) );
+       // DBG( img->name() << " decoded image " << frame << " status " 
+       //      << CMedia::decode_error(status) );
 
       switch( status )
       {
@@ -838,7 +837,7 @@ void video_thread( PlaybackData* data )
           case CMedia::kDecodeLoopEnd:
           case CMedia::kDecodeLoopStart:
 	    {
-               DBG( img->name() << " BARRIER PASSED IN VIDEO" );
+                DBG( img->name() << " BARRIER WAIT IN VIDEO frame " << frame );
 
                CMedia::Barrier* barrier = img->loop_barrier();
                // LOG_INFO( img->name() << " BARRIER VIDEO WAIT      gen: " 
@@ -850,7 +849,7 @@ void video_thread( PlaybackData* data )
                bool ok = barrier->wait();
 
                DBG( img->name() << " BARRIER PASSED IN VIDEO stopped? "
-                    << img->stopped() );
+                    << img->stopped() << " frame: " << frame );
 
                if ( img->stopped() ) continue;
 

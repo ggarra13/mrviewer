@@ -1020,7 +1020,14 @@ bool aviImage::find_image( const boost::int64_t frame )
 
   _frame = frame;
 
-  if ( !has_video() ) return true;
+  if ( !has_video() ) 
+  {
+      _video_pts   = frame  / _fps;
+      _video_clock = double(av_gettime_relative()) / 1000000.0;
+
+      update_video_pts(this, _video_pts, 0, 0);
+      return true;
+  }
 
   {
 
@@ -1567,6 +1574,14 @@ void aviImage::populate()
                         }
                     }
 
+                    if ( !has_video() )
+                    {
+                        AVPacket pkt;
+                        av_init_packet( &pkt );
+                        pkt.dts = pkt.pts = _dts;
+                        _video_packets.push_back( pkt );
+                    }
+
 #ifdef DEBUG_DECODE_AUDIO
                     fprintf( stderr, "\t[avi]POP. A f: %05" PRId64 " audio pts: %07" PRId64 
                              " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
@@ -1926,8 +1941,23 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                         audio_bytes += pkt.size;
                         if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                     }
-                    if ( is_seek && got_audio ) _audio_packets.seek_end(apts);
+                    if ( got_audio && !has_video() )
+                    {
+                        for (int64_t t = frame; t <= pktframe; ++t )
+                        {
+                            AVPacket pkt;
+                            av_init_packet( &pkt );
+                            pkt.dts = pkt.pts = frame;
+                            _video_packets.push_back( pkt );
+                        }
+                    }
+
+                    if ( is_seek && got_audio ) {
+                        if ( !has_video() ) _video_packets.seek_end(vpts);
+                        _audio_packets.seek_end(apts);
+                    }
                 }
+
 
 #ifdef DEBUG_DECODE_AUDIO
                 fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
@@ -2073,15 +2103,6 @@ bool aviImage::frame( const boost::int64_t f )
 
   bool ok = fetch(_dts);
   
-  if ( !has_video() )
-  {
-      AVPacket pkt;
-      av_init_packet( &pkt );
-      pkt.dts = pkt.pts = _dts;
-      pkt.size = 0;
-      pkt.data = NULL;
-      _video_packets.push_back( pkt );
-  }
 
 
 #ifdef DEBUG_DECODE
