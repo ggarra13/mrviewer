@@ -210,12 +210,15 @@ _samples_per_sec( 0 ),
 _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( 0 ),
-_aframe(NULL),
+_aframe( NULL ),
+next_pts( 0 ),
+audio_callback_time( 0 ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
+    next_pts_tb = (AVRational) { 1, 30 };
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
@@ -296,6 +299,7 @@ _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( other->_audio_channels ),
 _aframe( NULL ),
+_audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
