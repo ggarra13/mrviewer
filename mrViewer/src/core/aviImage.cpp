@@ -47,7 +47,6 @@ using namespace std;
 
 
 extern "C" {
-//#include <libavutil/audioconvert.h>
 #include <libavutil/mathematics.h>
 #include <libavutil/pixdesc.h>
 #include <libavutil/imgutils.h>
@@ -1613,6 +1612,7 @@ void aviImage::populate()
             _h = 800;
             allocate_pixels( _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
+            rgb_layers();
         }
         _hires->frame( _frameStart );
         uint8_t* ptr = (uint8_t*) _hires->data().get();
@@ -2329,8 +2329,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
                 } else {
                     ys = y1;
                 }
-                fill_rectangle(ptr,
-                               x, ys, 1, y);
+                fill_rectangle(ptr, x, ys, 1, y);
                 i += channels;
             }
         }
