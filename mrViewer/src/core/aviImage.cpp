@@ -148,6 +148,9 @@ const char* const aviImage::color_range()
 aviImage::aviImage() :
   CMedia(),
   _video_index(-1),
+  _av_dst_pix_fmt( AV_PIX_FMT_RGB24 ),
+  _pix_fmt( VideoFrame::kRGB ),
+  _ptype( VideoFrame::kHalf ),
   _av_frame( NULL ),
   _video_codec( NULL ),
   _subtitle_ctx( NULL ),
@@ -1923,7 +1926,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 if ( playback() == kBackwards )
                 {
                     // Only add packet if it comes before seek frame
-                    if ( pktframe <= frame )
+                    //if ( pktframe <= frame )
                         _audio_packets.push_back( pkt );
                     if ( !has_video() && pktframe < dts ) dts = pktframe;
                 }
