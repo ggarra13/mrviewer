@@ -1214,6 +1214,7 @@ void CMedia::channel( const char* c )
 {
     if ( _right_eye )  _right_eye->channel( c );
 
+
     std::string ch;
     std::string ext;
 
