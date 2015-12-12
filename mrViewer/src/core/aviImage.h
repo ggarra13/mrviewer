@@ -271,12 +271,7 @@ namespace mrv {
 
     AVCodec*         _subtitle_codec;
     subtitle_cache_t _subtitles;
-    unsigned int     _subtitle_didx;
-    unsigned int     _subtitle_sidx;
-      unsigned short _frame_called;  //<- number of times frame() was called
     AVSubtitle       _sub;
-    
-
   };
 
 } // namespace mrv
