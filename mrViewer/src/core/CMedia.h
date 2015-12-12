@@ -74,7 +74,17 @@
 #undef min
 #undef max
 
-typedef struct Clock {
+struct Clock {
+    Clock() : pts( 0 ),
+              pts_drift( 0 ),
+              last_updated( 0 ),
+              speed(1),
+              serial(0),
+              paused(0),
+              queue_serial( NULL )
+    {
+    }
+
     double pts;           /* clock base */
     double pts_drift;     /* clock base minus time at which we updated the clock */
     double last_updated;
@@ -82,7 +92,7 @@ typedef struct Clock {
     int serial;           /* clock is based on a packet with this serial */
     int paused;
     int *queue_serial;    /* pointer to the current packet queue serial, used for obsolete clock detection */
-} Clock;
+};
 struct AVFormatContext;
 struct AVFrame;
 struct AVCodec;
