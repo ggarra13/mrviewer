@@ -4187,9 +4187,12 @@ void ImageView::channel( unsigned short c )
 
   // If user selected the same channel again, toggle it with
   // other channel (diffuse.r goes to diffuse, for example)
-  if ( c == _channel ) {
+  static mrv::media m;
+  if ( c == _channel && m == foreground() ) {
       c = _old_channel;
   }
+
+  m = foreground();
 
   const char* lbl = get_layer_label( c );
   if ( !lbl ) return;
