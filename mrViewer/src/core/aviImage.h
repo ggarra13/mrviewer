@@ -223,6 +223,7 @@ namespace mrv {
 				      const AVPacket& pkt
 				      );
 
+    DecodeStatus audio_video_display( const boost::int64_t& frame );
     void limit_video_store( const boost::int64_t frame );
     void limit_subtitle_store( const boost::int64_t frame );
 
