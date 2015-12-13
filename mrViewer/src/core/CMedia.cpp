@@ -1729,7 +1729,7 @@ void CMedia::play(const CMedia::Playback dir,
       }
 
 
-      assert( _threads.size() <= ( 1 + valid_a + valid_v + valid_s ) );
+      assert( _threads.size() <= ( 1 + 2 * ( valid_a || valid_v ) + valid_s ) );
   }
   catch( boost::exception& e )
   {
