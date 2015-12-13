@@ -1003,6 +1003,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             {
                 if ( _audio_channels > 0 )
                 {
+                    std::cerr << "audio channels " << _audio_channels 
+                              << "  data size " << data_size << std::endl;
                     memcpy(samples, _aframe->extended_data[0], data_size);
                 }
             }
@@ -1517,7 +1519,6 @@ bool CMedia::open_audio( const short channels,
       _audio_channels = 1;
   else
       _audio_channels = (unsigned short) ch;
-  
 
   return ok;
 }
