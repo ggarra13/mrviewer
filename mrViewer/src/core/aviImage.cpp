@@ -1502,6 +1502,8 @@ void aviImage::populate()
         AVPacket pkt = {0};
         // Clear the packet
         av_init_packet( &pkt );
+        pkt.size = 0;
+        pkt.data = NULL;
 
         int force_exit = 0;
         bool eof = false;
@@ -1580,6 +1582,8 @@ void aviImage::populate()
                     {
                         AVPacket pkt;
                         av_init_packet( &pkt );
+                        pkt.size = 0;
+                        pkt.data = NULL;
                         pkt.dts = pkt.pts = _dts;
                         _video_packets.push_back( pkt );
                     }
@@ -1774,6 +1778,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
     // Clear the packet
     av_init_packet( &pkt );
+    pkt.size = 0;
+    pkt.data = NULL;
 
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     unsigned int audio_bytes = 0;
@@ -1789,6 +1795,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
         if (eof) {
             if (!got_video && video_stream_index() >= 0) {
                 av_init_packet(&pkt);
+                pkt.size = 0;
+                pkt.data = NULL;
                 pkt.stream_index = video_stream_index();
                 ++packets_added;
                 _video_packets.push_back( pkt );
@@ -1806,6 +1814,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 if (audio_context() == _context && _audio_ctx &&
                     _audio_ctx->codec->capabilities & CODEC_CAP_DELAY) {
                     av_init_packet(&pkt);
+                    pkt.size = 0;
+                    pkt.data = NULL;
                     pkt.stream_index = audio_stream_index();
                     _audio_packets.push_back( pkt );
                 }
@@ -1950,6 +1960,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                         {
                             AVPacket pkt;
                             av_init_packet( &pkt );
+                            pkt.size = 0;
+                            pkt.data = NULL;
                             pkt.dts = pkt.pts = frame;
                             _video_packets.push_back( pkt );
                         }
