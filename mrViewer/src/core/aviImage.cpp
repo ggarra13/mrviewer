@@ -80,6 +80,7 @@ namespace
 //#define DEBUG_STREAM_INDICES
 //#define DEBUG_STREAM_KEYFRAMES
 //#define DEBUG_DECODE
+//#define DEBUG_DECODE_POP_AUDIO
 //#define DEBUG_DECODE_AUDIO
 //#define DEBUG_SEEK
 //#define DEBUG_SEEK_VIDEO_PACKETS
@@ -551,7 +552,9 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // Skip the seek packets when playback is stopped}
     if ( skip )
     {
-        boost::int64_t dts = queue_packets( frame+1, false, got_video,
+        boost::int64_t f = frame + 1;
+        if ( f > _frame_end ) f = _frame_end;
+        boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
         _dts = dts-1;
         _expected = _dts;
@@ -1588,7 +1591,7 @@ void aviImage::populate()
                         _video_packets.push_back( pkt );
                     }
 
-#ifdef DEBUG_DECODE_AUDIO
+#ifdef DEBUG_DECODE_POP_AUDIO
                     fprintf( stderr, "\t[avi]POP. A f: %05" PRId64 " audio pts: %07" PRId64 
                              " dts: %07" PRId64 " as frame: %05" PRId64 "\n",
                              pktframe, pkt.pts, pkt.dts, pktframe );
@@ -1615,8 +1618,8 @@ void aviImage::populate()
     {
         if ( !_hires )
         {
-            _w = 1024;
-            _h = 800;
+            _w = 640;
+            _h = 480;
             allocate_pixels( _frameStart, 3, image_type::kRGB,
                              image_type::kByte );
             rgb_layers();
@@ -2280,11 +2283,77 @@ bool aviImage::in_video_store( const boost::int64_t frame )
    SCOPED_LOCK( _mutex );
 
   // Check if video is already in video store
-  video_cache_t::iterator end = _images.end();
-  video_cache_t::iterator i = std::find_if( _images.begin(), end,
-					    EqualFunctor(frame) );
-  if ( i != end ) return true;
-  return false;
+   video_cache_t::iterator end = _images.end();
+   video_cache_t::iterator i = std::find_if( _images.begin(), end,
+                                             EqualFunctor(frame) );
+   if ( i != end ) return true;
+   return false;
+}
+
+CMedia::DecodeStatus
+aviImage::audio_video_display( const boost::int64_t& frame )
+{
+
+    SCOPED_LOCK( _mutex );
+
+    if (! _video_packets.empty() )
+        _video_packets.pop_front();
+
+    if ( frame > _frameEnd ) return kDecodeLoopEnd;
+    else if ( frame < _frameStart ) return kDecodeLoopStart;
+
+
+    audio_type_ptr result;
+
+    {
+        SCOPED_LOCK( _audio_mutex );
+
+        audio_cache_t::iterator end = _audio.end();
+        audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end, 
+                                                       frame, 
+                                                       LessThanFunctor() );
+        if ( it == end )
+        {
+            return kDecodeMissingFrame;
+        }
+
+        result = *it;
+    }
+
+    _hires->frame( frame );
+    uint8_t* ptr = (uint8_t*) _hires->data().get();
+    memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
+
+    size_t size = result->size();
+    size_t channels = result->channels();
+    int16_t* data = (int16_t*)result->data();
+
+    size_t h = _h / channels;
+    size_t h2 = (h * 9) / 20;
+    int y1, y, ys, i;
+    int i_start = 0;
+    for (size_t ch = 0; ch < channels; ch++)
+    {
+        i = i_start + ch;
+        y1 = ch * h + ( h / 2 );
+        for (int x = 0; x < _w; ++x )
+        {
+            y = (data[i] * h2) >> 15;
+            if (y < 0) {
+                y = -y;
+                ys = y1 - y;
+            } else {
+                ys = y1;
+            }
+            fill_rectangle(ptr, x, ys, 1, y);
+            i += channels;
+        }
+    }
+
+    _frame = frame;
+    refresh();
+    return kDecodeOK;
+
 }
 
 CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
@@ -2294,64 +2363,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
     if ( !has_video() )
     {
-        SCOPED_LOCK( _mutex );
-
-        if (! _video_packets.empty() )
-            _video_packets.pop_front();
-
-        if ( frame > _frameEnd ) return kDecodeLoopEnd;
-        else if ( frame < _frameStart ) return kDecodeLoopStart;
-
-        _hires->frame( frame );
-        uint8_t* ptr = (uint8_t*) _hires->data().get();
-        memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
-
-        audio_type_ptr result;
-
-        {
-            SCOPED_LOCK( _audio_mutex );
-
-            audio_cache_t::iterator end = _audio.end();
-            audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end, 
-                                                           frame, 
-                                                           LessThanFunctor() );
-            if ( it == end )
-            {
-                return kDecodeMissingFrame;
-            }
-
-            result = *it;
-        }
-
-        size_t size = result->size();
-        size_t channels = result->channels();
-        int16_t* data = (int16_t*)result->data();
-
-        size_t h = _h / channels;
-        size_t h2 = (h * 9) / 20;
-        int y1, y, ys, i;
-        int i_start = 0;
-        for (size_t ch = 0; ch < channels; ch++)
-        {
-            i = i_start + ch;
-            y1 = ch * h + ( h / 2 );
-            for (int x = 0; x < _w; ++x )
-            {
-                y = (data[i] * h2) >> 15;
-                if (y < 0) {
-                    y = -y;
-                    ys = y1 - y;
-                } else {
-                    ys = y1;
-                }
-                fill_rectangle(ptr, x, ys, 1, y);
-                i += channels;
-            }
-        }
-
-      _frame = frame;
-      refresh();
-      return kDecodeOK;
+        return audio_video_display(frame);
     }
 
 #ifdef DEBUG_VIDEO_PACKETS
