@@ -501,23 +501,21 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
 
 unsigned int CMedia::audio_bytes_per_frame()
 {
-   unsigned int ret = 0;
-   if ( has_audio() )
-    {
-      AVStream* stream = get_audio_stream();
-      
-      unsigned int channels = _audio_ctx->channels;
-      if (_audio_engine->channels() > 0 ) {
-      	 channels = FFMIN(_audio_engine->channels(), channels);
-      }
+    unsigned int ret = 0;
+    if ( !has_audio() ) return ret;
 
-      int frequency = _audio_ctx->sample_rate;
-      AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
-      unsigned bps = av_get_bytes_per_sample( fmt );
-
-      ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
+    int channels = _audio_ctx->channels;
+    if (_audio_engine->channels() > 0 && channels > 0 ) {
+        channels = FFMIN(_audio_engine->channels(), channels);
     }
-   return ret;
+
+    int frequency = _audio_ctx->sample_rate;
+    AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+    unsigned bps = av_get_bytes_per_sample( fmt );
+
+
+    ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
+    return ret;
 }
 
 // Analyse streams and set input values
@@ -1127,6 +1125,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       assert( audio_size + _audio_buf_used <= _audio_max );
 
       // Decrement the length by the number of bytes parsed
+      assert0( pkt_temp.size >= ret );
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
 
@@ -1245,12 +1244,14 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
   
 
 
+#if 1
     if (_audio_buf_used > 0  )
     {
         //
         // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
         memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
     }
+#endif
 
     return got_audio;
 }
@@ -1259,10 +1260,10 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
 // Return the number of frames cached for jog/shuttle
 unsigned int CMedia::max_audio_frames()
 {
-   if ( _audio_cache_size > 0 )
-      return _audio_cache_size;
-   else
-       return unsigned( fps()*2 );
+    if ( _audio_cache_size > 0 )
+        return _audio_cache_size;
+    else
+        return unsigned( fps()*2 );
 }
 
 
@@ -1555,12 +1556,12 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
 void CMedia::fill_rectangle( uint8_t* buf, int xl, int yl, int w, int h )
 {
-    int ym = yl+h;
-    int xm = xl+w;
-    for ( int y = yl; y < ym; ++y )
+    int yh = yl+h;
+    int xh = xl+w;
+    for ( int y = yl; y < yh; ++y )
     {
         uint8_t* d = &buf[3*(y*_w+xl)];
-        for ( int x = xl; x < xm; ++x )
+        for ( int x = xl; x < xh; ++x )
         {
             *d++ = 255;
             *d++ = 255;
