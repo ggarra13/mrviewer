@@ -1851,6 +1851,9 @@ bool CMedia::frame( const boost::int64_t f )
   AVPacket pkt;
   av_init_packet( &pkt );
   pkt.dts = pkt.pts = _dts;
+  pkt.size = 0;
+  pkt.data = NULL;
+
   _video_packets.push_back( pkt );
 
   if ( has_audio() )
