@@ -508,6 +508,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     if (_audio_engine->channels() > 0 && channels > 0 ) {
         channels = FFMIN(_audio_engine->channels(), channels);
     }
+    if ( channels <= 0 ) return ret;
 
     int frequency = _audio_ctx->sample_rate;
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
@@ -800,12 +801,14 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             break;
     }
   
+#if 0
   if ( first > last ) 
   {
      boost::int64_t tmp = last;
      last = first;
      first = tmp;
   }
+#endif
 
 
   audio_cache_t::iterator end = _audio.end();
@@ -862,6 +865,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
 
         if (ret >= 0 && got_frame) {
 
+            assert( _aframe->nb_samples > 0 );
+            assert( ctx->channels > 0 );
             int data_size = av_samples_get_buffer_size(NULL, ctx->channels,
                                                        _aframe->nb_samples,
                                                        ctx->sample_fmt, 0);
@@ -955,6 +960,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 }
 
                 assert( samples != NULL );
+                assert( _aframe->nb_samples > 0 );
                 assert( _aframe->extended_data != NULL );
                 assert( _aframe->extended_data[0] != NULL );
 
@@ -1002,10 +1008,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             }
 
             *audio_size = data_size;
-
-
-
-            if ( eof ) continue;
 
         } else {
             *audio_size = 0;
