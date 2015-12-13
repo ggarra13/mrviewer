@@ -132,9 +132,11 @@ namespace mrv {
       inline void push_back( AVPacket& pkt )
       {
           Mutex::scoped_lock lk( _mutex );
-          // assert( pkt.dts != MRV_NOPTS_VALUE );
+
+          assert0( pkt.size >= 0 );
 
           _packets.push_back( pkt );
+
           _bytes += pkt.size;
 
           _cond.notify_one();
@@ -164,34 +166,34 @@ namespace mrv {
 
       inline const AVPacket& front() const
       {
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.front();
       }
 
       inline AVPacket& front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.front();
       }
 
       inline const AVPacket& back() const
       {
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.back();
       }
 
       inline AVPacket& back()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
           return _packets.back();
       }
 
       inline void pop_front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert( ! _packets.empty() );
+          assert0( ! _packets.empty() );
 
           AVPacket& pkt = _packets.front();
 
