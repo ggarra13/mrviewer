@@ -1,7 +1,8 @@
 v3.0.3   - Made increasing fps in media info window not reduce the 
 	   number of frames played (bug).
-	 - Added a waveform display to audio playback, similar to
-	   the one in ffplay.
+	 - Added a waveform display to audio only playback, similar 
+	   to the one in ffplay.
+	 - Bug fixed some uses of AVPackets.
 
 v3.0.2   - Bug fixed a problem when playing audio files that would
 	   sometimes play them way too fast.

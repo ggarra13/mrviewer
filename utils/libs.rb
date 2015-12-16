@@ -66,3 +66,6 @@ FileUtils.cp_r( "../../ctl", "Release/" )
 FileUtils.cp( "../../HISTORY.txt", "Release/" )
 FileUtils.cp( "../../LICENSE.txt", "Release/" )
 FileUtils.cp( "../../Videos.txt", "Release/" )
+
+`find . -name '*fuse*' -exec rm {} \\;`
+

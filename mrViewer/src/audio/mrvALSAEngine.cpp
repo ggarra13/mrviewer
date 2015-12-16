@@ -148,6 +148,7 @@ namespace mrv {
       {
           if ( _mixer ) 
               snd_mixer_close( _mixer );
+
           _mixer = NULL;
       }
     return true;
@@ -270,226 +271,230 @@ namespace mrv {
       {
 	/* Open the audio device */
 	/* Name of device should depend on # channels in spec */
-	status = snd_pcm_open(&_pcm_handle, device().c_str(), 
-			      SND_PCM_STREAM_PLAYBACK, 0);
+          _pcm_handle = NULL;
+          status = snd_pcm_open(&_pcm_handle, device().c_str(), 
+                                SND_PCM_STREAM_PLAYBACK, 0);
 
-	if ( status < 0 || _pcm_handle == NULL ) {
-	  sprintf( buf, "Couldn't open audio device: %s", snd_strerror(status));
-	  THROW(buf);
-	}
-
-	//   if ( alsa_set_hw_params( d ) < 0 )
-	//     return NULL;
-
-	//   if ( alsa_set_sw_params( d ) < 0 )
-	//     return NULL;
+          if ( status < 0 || _pcm_handle == NULL ) {
+              sprintf( buf, "Couldn't open audio device: %s", 
+                       snd_strerror(status));
+              THROW(buf);
+          }
 
 
-	/* Figure out what the hardware is capable of */
-	snd_pcm_hw_params_t *hwparams;
-	snd_pcm_access_mask_t *access;
+          /* Figure out what the hardware is capable of */
+          snd_pcm_hw_params_t *hwparams = NULL;
 
-	// Allocate a hardware parameters object
-	snd_pcm_hw_params_alloca(&hwparams);
-
- 
-	snd_pcm_access_mask_alloca(&access);
-
-	//   snd_pcm_access_mask_t *access;
-	//   snd_pcm_access_mask_alloca(&access);
-
-	// Fill it with default values
-	status = snd_pcm_hw_params_any(_pcm_handle, hwparams);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't get hardware config: %s", snd_strerror(status));
-	  THROW(buf);
-	}
+          // Allocate a hardware parameters object
+          snd_pcm_hw_params_alloca(&hwparams);
 
 
-	/* create a null access mask */
-	snd_pcm_access_mask_none(access);
+          // Fill it with default values
+          status = snd_pcm_hw_params_any(_pcm_handle, hwparams);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't get hardware config: %s", 
+                       snd_strerror(status));
+              THROW(buf);
+          }
 
-	/* Interleaved mode */
-	snd_pcm_access_mask_set(access, SND_PCM_ACCESS_RW_INTERLEAVED);
+          snd_pcm_access_mask_t *access = NULL;
 
-	/* commit the access value to params structure */
-	status = snd_pcm_hw_params_set_access_mask(_pcm_handle, hwparams, access);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set access mask: %s", snd_strerror(status));
-	  THROW( buf );
-	}
-
-	/* Try for a closest match on audio format */
-	status = -1;
-	for ( ; test_format > 0; --test_format) {
-	  switch ( test_format ) {
-	  case kU8:
-	    _pcm_format = SND_PCM_FORMAT_U8;
-	    break;
-	  case kS16LSB:
-	    _pcm_format = SND_PCM_FORMAT_S16_LE;
-	    break;
-	  case kS16MSB:
-	    _pcm_format = SND_PCM_FORMAT_S16_BE;
-	    break;
-	  case kS32LSB:
-	    _pcm_format = SND_PCM_FORMAT_U32_LE;
-	    break;
-	  case kFloatLSB:
-	    _pcm_format = SND_PCM_FORMAT_FLOAT_LE;
-	    break;
-	  case kFloatMSB:
-	    _pcm_format = SND_PCM_FORMAT_FLOAT_BE;
-	    break;
-	  default:
-	    _pcm_format = (snd_pcm_format_t) 0;
-	    break;
-	  }
-	  if ( _pcm_format != 0 ) {
-	    /* set the sample bitformat */
-	    status = snd_pcm_hw_params_set_format(_pcm_handle, hwparams, _pcm_format);
-	    if ( status >= 0 ) break;
-	  }
-	}
-	if ( status < 0 ) {
-	  THROW( "Couldn't find any hardware audio formats");
-	}
-
-	_audio_format = (mrv::AudioEngine::AudioFormat) (int)(test_format + 1);
+          snd_pcm_access_mask_alloca(&access);
 
 
-	/* Set the number of channels */
-	unsigned int ch = channels;
-	status = snd_pcm_hw_params_set_channels(_pcm_handle, hwparams, ch);
-	if ( status < 0 ) {
-	  status = snd_pcm_hw_params_get_channels(hwparams, &ch);
-	  if ( (status <= 0) || (status > 2) ) {
-	    THROW( "Couldn't set/get audio channels");
-	  }
-	  snd_pcm_hw_params_set_channels(_pcm_handle, hwparams, ch);
-	  if ( status < 0 ) {
-	    THROW("Couldn't set audio channels");
-	  }
-	}
+          /* create a null access mask */
+          snd_pcm_access_mask_none(access);
 
-	_channels = ch;
-	_sample_size = bits * ch / 8;
+          /* Interleaved mode */
+          snd_pcm_access_mask_set(access, SND_PCM_ACCESS_RW_INTERLEAVED);
 
-	/* Set the audio rate */
-	unsigned int exact_rate = freq;
-	status = snd_pcm_hw_params_set_rate_near(_pcm_handle, hwparams, 
-						 &exact_rate, NULL);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set audio frequency: %s", snd_strerror(status));
-	  THROW(buf);
-	}
+          /* commit the access value to params structure */
+          status = snd_pcm_hw_params_set_access_mask(_pcm_handle, hwparams,
+                                                     access);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't set access mask: %s", 
+                       snd_strerror(status));
+              THROW( buf );
+          }
 
-	if (freq != exact_rate) {
-            fprintf(stderr, _("The rate %d Hz is not supported by "
-                              "your hardware.\n"
-                              "  ==> Using %d Hz instead.\n"), 
-                    freq, exact_rate);
-	}
+          /* Try for a closest match on audio format */
+          status = -1;
+          for ( ; test_format > 0; --test_format) {
+              switch ( test_format ) {
+                  case kU8:
+                      _pcm_format = SND_PCM_FORMAT_U8;
+                      break;
+                  case kS16LSB:
+                      _pcm_format = SND_PCM_FORMAT_S16_LE;
+                      break;
+                  case kS16MSB:
+                      _pcm_format = SND_PCM_FORMAT_S16_BE;
+                      break;
+                  case kS32LSB:
+                      _pcm_format = SND_PCM_FORMAT_U32_LE;
+                      break;
+                  case kS32MSB:
+                      _pcm_format = SND_PCM_FORMAT_U32_BE;
+                      break;
+                  case kFloatLSB:
+                      _pcm_format = SND_PCM_FORMAT_FLOAT_LE;
+                      break;
+                  case kFloatMSB:
+                      _pcm_format = SND_PCM_FORMAT_FLOAT_BE;
+                      break;
+                  default:
+                      _pcm_format = (snd_pcm_format_t) 0;
+                      break;
+              }
+              if ( _pcm_format != 0 ) {
+                  /* set the sample bitformat */
+                  status = snd_pcm_hw_params_set_format(_pcm_handle, hwparams,
+                                                        _pcm_format);
+                  if ( status >= 0 ) break;
+              }
+          }
+          if ( status < 0 ) {
+              THROW( "Couldn't find any hardware audio formats");
+          }
 
-	/* calculate a period time of one half sample time */
-	unsigned int period_time = 1000000 * AO_ALSA_SAMPLE_XFER / exact_rate;
+          _audio_format = (mrv::AudioEngine::AudioFormat) (int)(test_format + 1);
 
-	/* set the time per hardware sample transfer */
-	status = snd_pcm_hw_params_set_period_time_near(_pcm_handle,
-							hwparams, &period_time,
-							0);
-	if ( status < 0 )
+
+          /* Set the number of channels */
+          unsigned int ch = channels;
+          status = snd_pcm_hw_params_set_channels(_pcm_handle, hwparams, ch);
+          if ( status < 0 ) {
+              status = snd_pcm_hw_params_get_channels(hwparams, &ch);
+              if ( (status <= 0) || (status > 2) ) {
+                  THROW( "Couldn't set/get audio channels");
+              }
+              snd_pcm_hw_params_set_channels(_pcm_handle, hwparams, ch);
+              if ( status < 0 ) {
+                  THROW("Couldn't set audio channels");
+              }
+          }
+
+          _channels = ch;
+          _sample_size = bits * ch / 8;
+
+          /* Set the audio rate */
+          unsigned int exact_rate = freq;
+          status = snd_pcm_hw_params_set_rate_near(_pcm_handle, hwparams, 
+                                                   &exact_rate, NULL);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't set audio frequency: %s", snd_strerror(status));
+              THROW(buf);
+          }
+
+          if (freq != exact_rate) {
+              fprintf(stderr, _("The rate %d Hz is not supported by "
+                                "your hardware.\n"
+                                "  ==> Using %d Hz instead.\n"), 
+                      freq, exact_rate);
+          }
+
+          /* calculate a period time of one half sample time */
+          unsigned int period_time = 1000000 * AO_ALSA_SAMPLE_XFER / exact_rate;
+
+          /* set the time per hardware sample transfer */
+          status = snd_pcm_hw_params_set_period_time_near(_pcm_handle,
+                                                          hwparams,
+                                                          &period_time,
+                                                          0);
+          if ( status < 0 )
 	  {
-	    THROW("hw_params_set_period_time_near");
+              THROW("hw_params_set_period_time_near");
 	  }
   
-	unsigned int buffer_time = AO_ALSA_BUFFER_TIME;
-	status = snd_pcm_hw_params_set_buffer_time_near(_pcm_handle,
-							hwparams, &buffer_time,
-							0);
-	if ( status < 0 )
+          unsigned int buffer_time = AO_ALSA_BUFFER_TIME;
+          status = snd_pcm_hw_params_set_buffer_time_near(_pcm_handle,
+                                                          hwparams,
+                                                          &buffer_time,
+                                                          0);
+          if ( status < 0 )
 	  {
-	    THROW("hw_params_set_buffer_time_near");
+              THROW("hw_params_set_buffer_time_near");
 	  }
 
-	/* "set" the hardware with the desired parameters */
-	status = snd_pcm_hw_params(_pcm_handle, hwparams);
-	if ( status < 0 ) {
-	  sprintf(buf, "Couldn't set hardware audio parameters: %s", 
-		  snd_strerror(status));
-	  THROW(buf);
-	}
+          /* "set" the hardware with the desired parameters */
+          status = snd_pcm_hw_params(_pcm_handle, hwparams);
+          if ( status < 0 ) {
+              sprintf(buf, "Couldn't set hardware audio parameters: %s", 
+                      snd_strerror(status));
+              THROW(buf);
+          }
 
-	snd_pcm_uframes_t period_size;
-	status = snd_pcm_hw_params_get_period_size(hwparams, &period_size, 0);
-	if ( status < 0 ) {
-	  sprintf(buf, "Couldn't get period size: %s", snd_strerror(status));
-	  THROW(buf);
-	}
+          snd_pcm_uframes_t period_size;
+          status = snd_pcm_hw_params_get_period_size(hwparams, &period_size, 0);
+          if ( status < 0 ) {
+              sprintf(buf, "Couldn't get period size: %s",
+                      snd_strerror(status));
+              THROW(buf);
+          }
 
-	/* This is useful for debugging... */
-	//   { 
-	//     snd_pcm_sframes_t bufsize; int fragments;
-	//     bufsize = snd_pcm_hw_params_get_period_size(hwparams);
-	//     fragments = snd_pcm_hw_params_get_periods(hwparams);
+          /* This is useful for debugging... */
+          //   { 
+          //     snd_pcm_sframes_t bufsize; int fragments;
+          //     bufsize = snd_pcm_hw_params_get_period_size(hwparams);
+          //     fragments = snd_pcm_hw_params_get_periods(hwparams);
     
-	//     fprintf(stderr, "ALSA: bufsize = %ld, fragments = %d\n", bufsize, fragments);
-	//   }
+          //     fprintf(stderr, "ALSA: bufsize = %ld, fragments = %d\n", bufsize, fragments);
+          //   }
 
 
-	/* Set the software parameters */
-	snd_pcm_sw_params_t *swparams;
-	snd_pcm_sw_params_alloca(&swparams);
-	status = snd_pcm_sw_params_current(_pcm_handle, swparams);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't get software config: %s",
-		   snd_strerror(status));
-	  THROW(buf);
-	}
+          /* Set the software parameters */
+          snd_pcm_sw_params_t *swparams = NULL;
+          snd_pcm_sw_params_alloca(&swparams);
+          status = snd_pcm_sw_params_current(_pcm_handle, swparams);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't get software config: %s",
+                       snd_strerror(status));
+              THROW(buf);
+          }
 
-	/* allow transfers to start when there are four periods */
-	status = snd_pcm_sw_params_set_start_threshold(_pcm_handle, swparams, 
-						       0);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set start threshold: %s", 
-		   snd_strerror(status));
-	  THROW(buf);
-	}
+          /* allow transfers to start when there are four periods */
+          status = snd_pcm_sw_params_set_start_threshold(_pcm_handle, swparams, 
+                                                         0);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't set start threshold: %s", 
+                       snd_strerror(status));
+              THROW(buf);
+          }
 
-	status = snd_pcm_sw_params_set_avail_min(_pcm_handle, swparams, 
-						 period_size);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set avail min: %s", snd_strerror(status));
-	  THROW(buf);
-	}
+          status = snd_pcm_sw_params_set_avail_min(_pcm_handle, swparams, 
+                                                   period_size);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't set avail min: %s", snd_strerror(status));
+              THROW(buf);
+          }
 
-	/* do not align transfers */
+          /* do not align transfers */
 
-	/* commit the params structure to ALSA */
-	status = snd_pcm_sw_params(_pcm_handle, swparams);
-	if ( status < 0 ) {
-	  sprintf( buf, "Couldn't set software audio parameters: %s", 
-		   snd_strerror(status));
-	  THROW(buf);
-	}
+          /* commit the params structure to ALSA */
+          status = snd_pcm_sw_params(_pcm_handle, swparams);
+          if ( status < 0 ) {
+              sprintf( buf, "Couldn't set software audio parameters: %s", 
+                       snd_strerror(status));
+              THROW(buf);
+          }
 
 
-	// All okay, enable device
-	_enabled = true;
 
-	/* Switch to blocking mode for playback 
-	   snd_pcm_nonblock(_pcm_handle, 0);
-	*/
+          // All okay, enable device
+          _enabled = true;
 
-	/* We're ready to rock and roll. :-) */
-	return true;
+          /* Switch to blocking mode for playback */
+          snd_pcm_nonblock(_pcm_handle, 0);
+
+          /* We're ready to rock and roll. :-) */
+          return true;
       }
     catch( const AudioEngine::exception& e )
-      {
+    {
 	close();
 	_enabled = false;
 	throw(e);
-      }
+    }
   }
 
 
