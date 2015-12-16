@@ -218,7 +218,9 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    next_pts_tb = (AVRational) { 1, 30 };
+    next_pts_tb.num = 1;
+    next_pts_tb.den = 30;
+
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
