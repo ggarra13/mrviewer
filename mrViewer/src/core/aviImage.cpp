@@ -1,7 +1,7 @@
 
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -549,7 +549,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
-    // Skip the seek packets when playback is stopped}
+    // Skip the seek packets when playback is stopped
     if ( skip )
     {
         boost::int64_t f = frame + 1;
@@ -631,11 +631,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 #endif
 
 #ifdef DEBUG_VIDEO_STORES
-    debug_video_stores(frame);
+    debug_video_stores(frame, "AFTER SEEK");
 #endif
 
 #ifdef DEBUG_AUDIO_STORES
-    debug_audio_stores(frame);
+    debug_audio_stores(frame, "AFTER SEEK");
 #endif
 
 #ifdef DEBUG_SEEK_VIDEO_PACKETS
@@ -1788,7 +1788,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     unsigned int audio_bytes = 0;
 
     int eof = false;
-    unsigned counter = 0;
     unsigned packets_added = 0;
 
     // Loop until an error or we have what we need
@@ -1965,7 +1964,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                             av_init_packet( &pkt );
                             pkt.size = 0;
                             pkt.data = NULL;
-                            pkt.dts = pkt.pts = frame;
+                            pkt.dts = pkt.pts = t;
                             _video_packets.push_back( pkt );
                         }
                     }
@@ -2290,6 +2289,12 @@ bool aviImage::in_video_store( const boost::int64_t frame )
    return false;
 }
 
+
+//
+// This routine is a simplified copy of the one in ffplay,
+// which is (c) 2003 Fabrice Bellard
+//
+
 CMedia::DecodeStatus
 aviImage::audio_video_display( const boost::int64_t& frame )
 {
@@ -2324,31 +2329,62 @@ aviImage::audio_video_display( const boost::int64_t& frame )
     uint8_t* ptr = (uint8_t*) _hires->data().get();
     memset( ptr, 0, 3*_w*_h*sizeof(uint8_t));
 
-    size_t size = result->size();
-    size_t channels = result->channels();
-    int16_t* data = (int16_t*)result->data();
+    int channels = result->channels();
 
     size_t h = _h / channels;
     size_t h2 = (h * 9) / 20;
     int y1, y, ys, i;
     int i_start = 0;
-    for (size_t ch = 0; ch < channels; ch++)
+
+    if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLTP ||
+         _audio_ctx->sample_fmt == AV_SAMPLE_FMT_FLT )
     {
-        i = i_start + ch;
-        y1 = ch * h + ( h / 2 );
-        for (int x = 0; x < _w; ++x )
+        float* data = (float*)result->data();
+
+        for (int ch = 0; ch < channels; ch++)
         {
-            y = (data[i] * h2) >> 15;
-            if (y < 0) {
-                y = -y;
-                ys = y1 - y;
-            } else {
-                ys = y1;
+            i = i_start + ch;
+            y1 = ch * h + ( h / 2 );
+            for (int x = 0; x < _w; ++x )
+            {
+                y = (int(data[i] * 32767 * h2)) >> 15;
+                if (y < 0) {
+                    y = -y;
+                    ys = y1 - y;
+                } else {
+                    ys = y1;
+                }
+                fill_rectangle(ptr, x, ys, 1, y);
+                i += channels;
             }
-            fill_rectangle(ptr, x, ys, 1, y);
-            i += channels;
         }
     }
+    else if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
+              _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16  )
+    {
+        int16_t* data = (int16_t*)result->data();
+
+        for (int ch = 0; ch < channels; ch++)
+        {
+            i = i_start + ch;
+            y1 = ch * h + ( h / 2 );
+            for (int x = 0; x < _w; ++x )
+            {
+                y = (data[i] * h2) >> 15;
+                if (y < 0) {
+                    y = -y;
+                    ys = y1 - y;
+                } else {
+                    ys = y1;
+                }
+                fill_rectangle(ptr, x, ys, 1, y);
+                i += channels;
+            }
+        }
+    }
+
+
+
 
     _frame = frame;
     refresh();
@@ -2697,7 +2733,7 @@ void aviImage::do_seek()
            }
        }
        
-       // if ( has_video() )
+       if ( has_video() || has_audio() )
        {
 	  status = decode_video( _seek_frame );
 

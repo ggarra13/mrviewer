@@ -303,7 +303,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
        {
            idx = i;
            int64_t newpos = m->position() + diff;
-           if ( newpos < (int64_t) m->position() + m->image()->duration() )
+           if ( newpos < (int64_t) ( m->position() + m->image()->duration() ) )
            {
                CMedia* img = m->image();
                img->first_frame( img->first_frame() + diff );
