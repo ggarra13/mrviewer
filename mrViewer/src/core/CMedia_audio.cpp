@@ -975,7 +975,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                     return 0;
                 }
 
-
+                // Just to be safe, we recalc data_size
                 data_size = len2 * _audio_channels * av_get_bytes_per_sample( fmt );
 
                 if ( _audio_channels >= 6 )
@@ -1003,8 +1003,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             {
                 if ( _audio_channels > 0 )
                 {
-                    std::cerr << "audio channels " << _audio_channels 
-                              << "  data size " << data_size << std::endl;
                     memcpy(samples, _aframe->extended_data[0], data_size);
                 }
             }
@@ -1136,7 +1134,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       // if ( pkt_temp.size == 0 ) pkt_temp.data = NULL;
 
       if ( audio_size <= 0 ) break;
-
 
       _audio_buf_used += audio_size;
     }
@@ -1371,20 +1368,21 @@ CMedia::store_audio( const boost::int64_t audio_frame,
                                                        f,
                                                        LessThanFunctor() );
 #else
-      audio_cache_t::iterator at = std::find_if( _audio.begin(), end,
-                                                 EqualFunctor(f) );
+        audio_cache_t::iterator at = std::find_if( _audio.begin(), end,
+                                                   EqualFunctor(f) );
 #endif
-      // Avoid storing duplicate frames, replace old frame with this one
-      if ( at != end )
+        // Avoid storing duplicate frames, replace old frame with this one
+        if ( at != end )
 	{
-	  if ( (*at)->frame() == f )
+            if ( (*at)->frame() == f )
 	    {
-	      at = _audio.erase(at);
+                at = _audio.erase(at);
 	    }
 	}
 
-      _audio.insert( at, aud );
+        _audio.insert( at, aud );
     }
+
 
   assert( aud->size() == size );
 
@@ -1544,7 +1542,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 
 
   if ( ! _audio_engine ) return false;
-
 
   if ( ! _audio_engine->play( (char*)result->data(), result->size() ) )
   {
@@ -1734,7 +1731,10 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
       _audio_packets.pop_front();
     }
 
-  if ( _audio_packets.empty() ) return kDecodeError;
+  if ( _audio_packets.empty() ) {
+      IMG_ERROR( _("Audio packets empty in end of seek") );
+      return kDecodeError;
+  }
 
   if ( is_seek )
     {
@@ -1886,6 +1886,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 
 	  got_audio = decode_audio( frame, pkt );
 	  _audio_packets.pop_front();
+          continue;
 	}
 
     }
