@@ -90,7 +90,7 @@ namespace mrv {
           return _mutex;
       }
 
-      inline unsigned int bytes() const
+      inline uint64_t bytes() const
       {
           return _bytes;
       }
@@ -133,7 +133,7 @@ namespace mrv {
       {
           Mutex::scoped_lock lk( _mutex );
 
-          assert0( pkt.size >= 0 );
+          assert( pkt.size >= 0 );
 
           _packets.push_back( pkt );
 
@@ -166,34 +166,34 @@ namespace mrv {
 
       inline const AVPacket& front() const
       {
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
           return _packets.front();
       }
 
       inline AVPacket& front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
           return _packets.front();
       }
 
       inline const AVPacket& back() const
       {
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
           return _packets.back();
       }
 
       inline AVPacket& back()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
           return _packets.back();
       }
 
       inline void pop_front()
       {
           Mutex::scoped_lock lk( _mutex );
-          assert0( ! _packets.empty() );
+          assert( ! _packets.empty() );
 
           AVPacket& pkt = _packets.front();
 
@@ -216,8 +216,8 @@ namespace mrv {
               // if ( pkt.size > _bytes )
               //     _bytes = 0;
               // else
-              assert0( pkt.size >= 0 );
-              assert0( _bytes >= pkt.size );
+              assert( pkt.size >= 0 );
+              assert( _bytes >= pkt.size );
               _bytes -= pkt.size;
 
               av_packet_unref( &pkt );
