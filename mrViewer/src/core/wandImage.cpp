@@ -165,12 +165,23 @@ namespace mrv {
      rgb_layers();
      lumma_layers();
 
+     bool has_alpha = false;
+     status = MagickGetImageAlphaChannel( wand );
+     if ( status == MagickTrue )
+     {
+         has_alpha = true;
+         alpha_layers();
+     }
+
+     size_t index = 0;
      size_t numLayers = MagickGetNumberImages( wand );
      if ( numLayers > 1 )
      {
 	const char* channelName = channel();
+        if ( channelName ) has_alpha = false;
 
-	size_t index = 0;
+        std::string layer;
+
 	for ( size_t i = 1; i < numLayers; ++i )
 	{
 
@@ -187,25 +198,31 @@ namespace mrv {
 	      strcpy( layername, label );
 	   }
 
+           std::string ly = layername;
 	   _layers.push_back( layername );
+	   _layers.push_back( ly + ".R" );
+	   _layers.push_back( ly + ".G" );
+	   _layers.push_back( ly + ".B" );
 	   ++_num_channels;
 
 	   if ( channelName && strcmp( layername, channelName ) == 0 )
 	   {
 	      index = i;
-	   } 
+              layer = layername;
+	   }
+
+           status = MagickGetImageAlphaChannel( wand );
+           if ( status == MagickTrue )
+           {
+               has_alpha = true;
+               ly += ".A";
+               _layers.push_back( ly );
+           }
 	}
 
 	MagickSetIteratorIndex( wand, index );
-     }
 
 
-     bool has_alpha = false;
-     MagickBooleanType alpha = MagickGetImageAlphaChannel( wand );
-     if ( alpha == MagickTrue )
-     {
-	has_alpha = true;
-	alpha_layers();
      }
 
      /*
@@ -225,6 +242,14 @@ namespace mrv {
      unsigned long depth = MagickGetImageDepth( wand );
 #endif
 
+     PixelWand* bgcolor = NewPixelWand();
+     if ( bgcolor == NULL )
+     {
+         IMG_ERROR( _("Could not get background color." ));
+         return false;
+     }
+
+     status = MagickGetImageBackgroundColor( wand, bgcolor );
 
      _gamma = 1.0f;
      // _gamma = (float) MagickGetImageGamma( wand );

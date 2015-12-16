@@ -425,7 +425,8 @@ void parse_command_line( const int argc, char** argv,
     // Parse image list to split into sequences/images and reels
     //
 
-    for ( int i = 0; i < stereo.size(); ++i )
+    size_t num = stereo.size();
+    for ( size_t i = 0; i < num; ++i )
     {
        files.push_back( stereo[i] ); 
     }

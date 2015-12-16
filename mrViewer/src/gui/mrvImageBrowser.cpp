@@ -2535,7 +2535,7 @@ void ImageBrowser::handle_dnd()
              if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
-             if ( i < children() )
+             if ( (int) i < children() )
                  change_image((int)i);
 
 	  }
