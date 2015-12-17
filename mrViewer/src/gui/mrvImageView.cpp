@@ -1495,7 +1495,6 @@ void ImageView::timeout()
       }
   }
 
-
   if ( fg && should_update( fg ) )
   {
       update_color_info( fg );
@@ -4615,7 +4614,6 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     const stringArray& layers = img->layers();
 
-
     stringArray::const_iterator i = layers.begin();
     stringArray::const_iterator e = layers.end();
 
@@ -4662,7 +4660,6 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     {
 
         const std::string& name = *i;
-
 
         if ( o && x != _("Alpha") && name.find(x) == 0 )
         {
