@@ -1307,6 +1307,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img->is_stereo( true );
         img->is_left_eye( false );
         m->add_stereo_layers();
+        view()->update_layers();
     }
     else
     {
