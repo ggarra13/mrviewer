@@ -1,3 +1,8 @@
+v3.0.4   - Made PSD and TIFF reader read alpha channels correctly and
+	   support R,G,B,A in layers.
+	 - Bug fixed background image compositing which had gotten
+	   broken in the stereo transition.
+
 v3.0.3   - Made increasing fps in media info window not reduce the 
 	   number of frames played (bug).
 	 - Added a waveform display to audio only playback, similar 

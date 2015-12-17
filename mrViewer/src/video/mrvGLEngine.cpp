@@ -1214,7 +1214,8 @@ void GLEngine::draw_images( ImageList& images )
 
   e = images.end();
 
-  Image_ptr fg = images.back();
+  const Image_ptr& fg = images.back();
+  const Image_ptr& bg = images.front();
 
   glDisable( GL_BLEND );
   CHECK_GL( "glDisable GL_BLEND" );
@@ -1341,7 +1342,7 @@ void GLEngine::draw_images( ImageList& images )
          else
              glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
-#ifdef USE_STEREO
+#ifdef USE_STEREO_GL
          if ( stereo & CMedia::kStereoOpenGL )
              glDrawBuffer( GL_LEFT );
 #endif
@@ -1472,7 +1473,7 @@ void GLEngine::draw_images( ImageList& images )
       else
           glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
 
-#ifdef USE_STEREO
+#ifdef USE_STEREO_GL
       if ( stereo & CMedia::kStereoOpenGL )
           glDrawBuffer( GL_RIGHT );
 #endif
@@ -1495,6 +1496,8 @@ void GLEngine::draw_images( ImageList& images )
           glEnable( GL_BLEND );
       }
 
+      if ( fg == img && bg != fg &&
+           _view->show_background() ) glEnable( GL_BLEND );
 
       quad->bind( pic );
       quad->gamma( g );
