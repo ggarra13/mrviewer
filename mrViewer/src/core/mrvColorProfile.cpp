@@ -33,8 +33,9 @@
 #include "IccUtil.h"
 
 
-#include "mrvColorProfile.h"
-#include "mrvIO.h"
+#include "core/mrvColorProfile.h"
+#include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 
 namespace {
   const char* kModule = "cprof";
@@ -93,7 +94,9 @@ namespace mrv
   /** 
    * Add and read a profile filename, storing its data
    * 
-   * @param file 
+   * @param file filename of profile (or keyword to look it under)
+   * @param size size of profile data
+   * @param data profile data
    */
   void colorProfile::add( const char* file, const size_t size,
 			  const char* data )
@@ -112,7 +115,8 @@ namespace mrv
 				     (icUInt32Number)size );
     if (!d) 
       {
-	LOG_ERROR("Could not open ICC profile embedded in \"" << file << "\".");
+          LOG_ERROR( _("Could not open ICC profile embedded in \"")
+                     << file << "\".");
 	return;
       }
 
@@ -132,8 +136,8 @@ namespace mrv
     CIccProfile* d = OpenIccProfile( file );
     if (!d) 
       {
-	LOG_ERROR("Could not open ICC profile \"" << file << "\".");
-	return;
+          LOG_ERROR( _("Could not open ICC profile \"") << file << "\"." );
+          return;
       }
 
     profiles.insert( std::make_pair( file, d ) );
@@ -143,22 +147,17 @@ namespace mrv
   /** 
    * Get the profile data for a given file name
    * 
-   * @param data profile data (output)
-   * @param size profile size (output)
-   * @param file input filename
+   * @param file input filename to look up profile under
    */
   CIccProfile* colorProfile::get( const char* file )
   {
     if ( file == NULL ) return NULL;
     ProfileData::iterator i = profiles.find( file );
-    if ( i == profiles.end() ) return NULL;
-
-    CIccProfile* d = OpenIccProfile( file );
-    if (!d)
-      {
-	LOG_ERROR("Could not open ICC profile \"" << file << "\".");
-	return NULL;
-      }
+    if ( i == profiles.end() ) {
+        LOG_ERROR( _("Could not get profile \"") << file << "\"." );
+        return NULL;
+    }
+    CIccProfile* d = (CIccProfile*)i->second;
     return d;
   }
 
