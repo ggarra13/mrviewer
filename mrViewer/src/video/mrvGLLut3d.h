@@ -97,6 +97,7 @@ namespace mrv {
     typedef boost::shared_ptr< GLLut3d >         GLLut3d_ptr;
     typedef std::multimap< std::string, GLLut3d_ptr > LutsMap;
 
+
   public:
     GLLut3d( const unsigned N );
     virtual ~GLLut3d();

@@ -562,8 +562,8 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     // to the pixel values. 
     //
 
-    // We create cmm on the heap and never release it as it destroys
-    // the icc profile otherwise.
+    // We leak some memory here but it is needed so profiles don't
+    // get deleted by CIccCmm.
     CIccCmm* cmm = new CIccCmm( icSigUnknownData, 
                                 icSigUnknownData,
 //         		 (flags & kXformLast) ? icSigRgbData : icSigXYZData, 
