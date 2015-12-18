@@ -561,10 +561,13 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     // Generate output pixel values by applying CMM ICC transforms
     // to the pixel values. 
     //
-    CIccCmm cmm( icSigUnknownData, 
-		 icSigUnknownData,
-// 		 (flags & kXformLast) ? icSigRgbData : icSigXYZData, 
-		 (flags & kXformFirst) );
+
+    // We create cmm on the heap and never release it as it destroys
+    // the icc profile otherwise.
+    CIccCmm* cmm = new CIccCmm( icSigUnknownData, 
+                                icSigUnknownData,
+//         		 (flags & kXformLast) ? icSigRgbData : icSigXYZData, 
+                                (flags & kXformFirst) );
 
 
     icStatusCMM status;
@@ -581,7 +584,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 	      return false;
 	    }
 
-	  status = cmm.AddXform( pIcc, (*i).intent );
+	  status = cmm->AddXform( pIcc, (*i).intent );
 	  if ( status != icCmmStatOk )
 	    {
 	      char err[1024];
@@ -594,14 +597,14 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     }
 
 
-    status = cmm.Begin();
+    status = cmm->Begin();
     if ( status != icCmmStatOk ) 
       {
 	icc_cmm_error( _("Invalid Profile for CMM: "), status );
 	return false;
       }
 
-    unsigned src_space = cmm.GetSourceSpace();
+    unsigned src_space = cmm->GetSourceSpace();
     
     if ( !((src_space==icSigRgbData)  ||
 	   (src_space==icSigGrayData) ||
@@ -617,7 +620,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     }
 
     bool convert = false;
-    unsigned dst_space = cmm.GetDestSpace();
+    unsigned dst_space = cmm->GetDestSpace();
     unsigned channels  = 3;
     switch( dst_space )
       {
@@ -657,7 +660,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
 		      "Colors may look weird displayed as RGB.") );
     }
 
-    status = cmm.Begin();
+    status = cmm->Begin();
     if ( status != icCmmStatOk )
     {
        icc_cmm_error(  _("Could not init cmm: "), status );
@@ -668,7 +671,7 @@ void GLLut3d::evaluate( const Imath::V3f& rgb, Imath::V3f& out ) const
     for (size_t i = 0; i < lut_size()/4; ++i) 
       {
 	 size_t j = i*4;
-	 status = cmm.Apply( p, &(pixelValues[j]) );
+	 status = cmm->Apply( p, &(pixelValues[j]) );
 	 if ( status != icCmmStatOk) {
 	    icc_cmm_error( _("Apply: ") , status );
 	    return false;
