@@ -173,6 +173,15 @@ namespace mrv {
          alpha_layers();
      }
 
+     size_t profileSize;
+     unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
+     if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
+     if ( profileSize > 0 )
+     {
+	_profile = strdup( fileroot() );
+	mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
+     }
+
      size_t index = 0;
      size_t numLayers = MagickGetNumberImages( wand );
      if ( numLayers > 1 )
@@ -232,24 +241,39 @@ namespace mrv {
      size_t dh = MagickGetImageHeight( wand );
 
 
-     // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
-     // pixels, for some weird reason.
-
 #if 1
      Image* img = GetImageFromMagickWand( wand );
      size_t depth = img->depth;
+
+     // Get the layer display window and data window.
+     data_window( img->page.x, img->page.y, img->page.x + dw,
+                  img->page.y + dh, frame );
+
+     display_window( img->page.x, img->page.y, 
+                     img->page.x + img->page.width,
+                     img->page.y + img->page.height, frame );
+
 #else
+     // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
+     // pixels, for some weird reason.
+
      unsigned long depth = MagickGetImageDepth( wand );
 #endif
 
-     PixelWand* bgcolor = NewPixelWand();
-     if ( bgcolor == NULL )
-     {
-         IMG_ERROR( _("Could not get background color." ));
-         return false;
-     }
+     // PixelWand* bgcolor = NewPixelWand();
+     // if ( bgcolor == NULL )
+     // {
+     //     IMG_ERROR( _("Could not get background color." ));
+     //     return false;
+     // }
 
-     status = MagickGetImageBackgroundColor( wand, bgcolor );
+     // status = MagickGetImageBackgroundColor( wand, bgcolor );
+     // if ( status == MagickFalse )
+     // {
+     //     LOG_ERROR( _( "Could not get background color" ) );
+     // }
+
+
 
      _gamma = 1.0f;
      // _gamma = (float) MagickGetImageGamma( wand );
@@ -357,14 +381,6 @@ namespace mrv {
 	}
      }
 
-     size_t profileSize;
-     unsigned char* tmp = MagickGetImageProfile( wand, "icc", &profileSize );
-     if ( !tmp )    tmp = MagickGetImageProfile( wand, "icm", &profileSize );
-     if ( profileSize > 0 )
-     {
-	_profile = strdup( fileroot() );
-	mrv::colorProfile::add( _profile, profileSize, (char*)tmp );
-     }
 
      _rendering_intent = (CMedia::RenderingIntent) 
      MagickGetImageRenderingIntent( wand );
