@@ -1208,7 +1208,6 @@ void CMedia::add_stereo_layers()
     _layers.push_back( _("stereo.checkerboard") );
     _layers.push_back( _("left.anaglyph") );
     _layers.push_back( _("right.anaglyph") );
-    std::cerr << "added stereo" << std::endl;
     image_damage( image_damage() | kDamageLayers );
 }
 

@@ -1,3 +1,7 @@
+v3.0.5   - Made PSD, XCF and TIFF reader read the position and bounding
+	   box of layers correctly.
+	 - Made ICC Profiles not crash on embeded profiles.
+
 v3.0.4   - Made PSD and TIFF reader read alpha channels correctly and
 	   support R,G,B,A in layers.
 	 - Bug fixed background image compositing which had gotten
