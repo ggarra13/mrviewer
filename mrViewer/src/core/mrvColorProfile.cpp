@@ -82,12 +82,13 @@ namespace mrv
    */
   void   colorProfile::clear()
   {
-    ProfileData::iterator i = profiles.begin();
-    ProfileData::iterator e = profiles.end();
-    for ( ; i != e; ++i )
-      {
-	delete i->second;
-      }
+      // Profiles are deleted as part of Cmm
+    // ProfileData::iterator i = profiles.begin();
+    // ProfileData::iterator e = profiles.end();
+    // for ( ; i != e; ++i )
+    //   {
+    //     delete i->second;
+    //   }
     profiles.clear();
   }
 
