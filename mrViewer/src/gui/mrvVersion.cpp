@@ -517,10 +517,6 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << "IccProfLib (ICC v4.2)" << endl
       << "(C) 2003-2015 - The International Color Consortium" << endl
       << endl
-      << "PostgreSQL" << endl
-      << "http://www.postgresql.org" << endl
-      << "(C) 1996-2015, The PostgreSQL Global Development Group" << endl
-      << "(C) 1994 The Regents of the University of California" << endl
       << endl;
 
     return o.str();

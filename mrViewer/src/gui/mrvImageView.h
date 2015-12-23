@@ -234,7 +234,7 @@ class server;
       void channel( unsigned short c );
       unsigned short channel() const { return _channel; };
 
-      const char* get_layer_label(unsigned short c);
+      char* get_layer_label(unsigned short c);
 
     void old_channel( unsigned short c ) { _old_channel = c; };
     unsigned short old_channel() const { return _old_channel; };

@@ -136,6 +136,9 @@ namespace mrv {
       void read_header_attr( const Imf::Header& h, 
                              const boost::int64_t& frame );
 
+      /// Returns true if image has an alpha channel
+      virtual bool  has_alpha() const { return _has_alpha; }
+
       static image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
       static Imf::PixelType pixel_type_to_exr( image_type::PixelType pixel_type );
 
@@ -143,7 +146,8 @@ namespace mrv {
 
        int _levelX, _levelY; //<- r/mipmap levels
        bool _multiview;
-       bool _has_yca, _use_yca, _has_left_eye, _has_right_eye, _left_red;
+      bool _has_alpha, _has_yca, _use_yca;
+      bool _has_left_eye, _has_right_eye, _left_red;
 
        int st[2];
        int _curpart;
