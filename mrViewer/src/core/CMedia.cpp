@@ -1224,7 +1224,7 @@ void CMedia::channel( const char* c )
     std::string ch;
     std::string ext;
 
-    if (c)
+    if (c )
     {
         ch = c;
 
