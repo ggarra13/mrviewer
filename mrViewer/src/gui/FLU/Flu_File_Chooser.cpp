@@ -2191,8 +2191,15 @@ void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
 
     if ( ! fs::exists( buf ) ) return;
 
+    fltk::SharedImage* img;
+    try {
+        img = mrv::fltk_handler( buf, NULL, 0 );
+    } catch( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
+        return;
+    }
 
-    fltk::SharedImage* img = mrv::fltk_handler( buf, NULL, 0 );
     if ( !img ) return;
 
     int h = img->h();

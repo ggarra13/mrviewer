@@ -57,6 +57,7 @@
 #include "core/mrvThread.h"
 #include "core/exrImage.h"
 #include "core/mrvImageOpts.h"
+#include "gui/mrvProgressReport.h"
 #include "gui/mrvIO.h"
 
 using namespace Imf;
@@ -138,6 +139,7 @@ exrImage::exrImage() :
   _levelX( 0 ),
   _levelY( 0 ),
   _multiview( false ),
+  _has_alpha( true ),
   _has_yca( false ),
   _use_yca( false ),
   _has_left_eye( false ),
@@ -233,6 +235,8 @@ bool exrImage::channels_order(
 
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper);
+
+
        if ( order[0] == -1 && (ext == N_("R") ||
                                ext == N_("Y") || ext == N_("U") ||
                                ext == N_("X") || ext == N_("Z")) )
@@ -333,6 +337,7 @@ bool exrImage::channels_order(
 		    pixel_type_conversion( imfPixelType ) );
 
    size_t xs[4], ys[4];
+
    if ( _has_yca )
    {
       size_t t = _hires->pixel_size();
@@ -343,7 +348,7 @@ bool exrImage::channels_order(
            xs[order[j]] = t;
       }
 
-      size_t dw2 = dw / 2;
+      size_t dw2 = dw / 2;;
       if ( order[0] != -1 ) ys[order[0]] = t * dw;
       if ( order[1] != -1 ) ys[order[1]] = t * dw2;
       if ( order[2] != -1 ) ys[order[2]] = t * dw2;
@@ -353,7 +358,7 @@ bool exrImage::channels_order(
    {
        unsigned pixels = _hires->pixel_size() * numChannels;
 
-       for ( unsigned j = 0; j < numChannels; ++j )
+       for ( unsigned j = 0; j < 4; ++j )
        {
            if ( order[j] == -1 ) continue;
            xs[order[j]] = pixels;
@@ -384,6 +389,7 @@ bool exrImage::channels_order(
       //           << " sampling " << sampling[k][0]
       //           << " " << sampling[k][1]
       //           << std::endl;
+
 
       fb.insert( channelList[k], 
 		 Slice( imfPixelType, buf, xs[k], ys[k],
@@ -551,7 +557,8 @@ bool exrImage::find_layers( const Imf::Header& h )
    {
       _gamma = 2.2f;
 
-      bool has_rgb = false, has_alpha = false;
+      bool has_rgb = false;
+      _has_alpha = false;
       if ( channels.findChannel( N_("R") ) ||
 	   channels.findChannel( N_("G") ) ||
 	   channels.findChannel( N_("B") ) )
@@ -578,7 +585,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 	    _layers.push_back( N_("BY") ); ++_num_channels;
 	 }
 	 
-	 if ( ! _layers.empty() )
+	 if ( _num_channels != 0 )
 	 {
 	    _has_yca = true;
             _use_yca = true;
@@ -590,7 +597,7 @@ bool exrImage::find_layers( const Imf::Header& h )
       
       if ( channels.findChannel( N_("A") ) )
       {
-	 has_alpha = true;
+	 _has_alpha = true;
 	 alpha_layers();
       }
 
@@ -817,6 +824,11 @@ bool exrImage::find_channels( const Imf::Header& h,
                      ext == "W" ) prefix = prefix.substr(0, pos);
 
                 channels.channelsWithPrefix( prefix, s, e );
+                if ( s == e )
+                {
+                    s = channels.begin();
+                    e = channels.end();
+                }
                 return channels_order( frame, s, e, channels, h, fb );
             }
         }
@@ -1522,14 +1534,16 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          std::string name;
          if ( header.hasName() ) name = header.name();
 
+#ifdef CHANGE_PERIODS_TO_UNDERSCORES
          size_t pos;
          while ( (pos = name.find( N_(".") )) != std::string::npos )
          {
-             std::string n = name.substr( 0, pos-1 );
-             n += "_";
+             std::string n = name.substr( 0, pos );
+             n += '_';
              n += name.substr( pos+1, name.size() );
              name = n;
          }
+#endif
 
          if ( !name.empty() )
          {
@@ -1565,7 +1579,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
              for ( s = channels.begin(); s != e; ++s )
              {
                  std::string layerName = buf;
-                 layerName += ".";
+                 layerName += '.';
                  layerName += s.name();
                  _layers.push_back( layerName );
                  ++_num_layers;
@@ -1660,9 +1674,17 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            _lineOrder   = header.lineOrder();
            _compression = header.compression();
 
-           InputPart in( inmaster, _curpart );
-           in.setFrameBuffer(fb);
-           in.readPixels( dataWindow.min.y, dataWindow.max.y );
+           try
+           {
+               InputPart in( inmaster, _curpart );
+               in.setFrameBuffer(fb);
+               in.readPixels( dataWindow.min.y, dataWindow.max.y );
+           }
+           catch( const std::exception& e )
+           {
+               LOG_ERROR( e.what() );
+               return false;
+           }
 
            // Quick exit if stereo is off or multiview
            if ( _stereo_type == kNoStereo ) break;
@@ -1744,13 +1766,29 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          _lineOrder   = header.lineOrder();
          _compression = header.compression();
 
-         in.setFrameBuffer(fb);
-         in.readPixels( dataWindow.min.y, dataWindow.max.y );
+         try
+         {
+             in.setFrameBuffer(fb);
+             in.readPixels( dataWindow.min.y, dataWindow.max.y );
+         }
+         catch( const std::exception& e )
+         {
+             LOG_ERROR( e.what() );
+             return false;
+         }
       }
       else
       {
-         in.setFrameBuffer(fb);
-         in.readPixels( dataWindow.min.y, dataWindow.max.y );
+         try
+         {
+             in.setFrameBuffer(fb);
+             in.readPixels( dataWindow.min.y, dataWindow.max.y );
+         }
+         catch( const std::exception& e )
+         {
+             LOG_ERROR( e.what() );
+             return false;
+         }
       }
 
 
@@ -1809,6 +1847,314 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     return true;
   }
 
+#if 0
+        if ( img->has_chromaticities() )
+        {
+            Imf::ChromaticitiesAttribute attr( img->chromaticities() );
+            hdr.insert( N_("Chromaticities"), attr );
+        }
+
+
+        const CMedia::Attributes& exif = img->exif();
+
+        CMedia::Attributes::const_iterator it = 
+        exif.find(N_( "Chromaticities Name" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("Chromaticities Name"), attr );
+        }
+
+        it = exif.find(N_( "Adopted Neutral" ) ); 
+        if ( it != exif.end() )
+        {
+            std::string value( it->second );
+            Imath::V2f v;
+            sscanf( value.c_str(), "%g %g", &v.x, &v.y );
+            Imf::V2fAttribute attr( v );
+            hdr.insert( N_("adoptedNeutral"), attr );
+        }
+
+        it = exif.find(N_( "Image State" ) ); 
+        if ( it != exif.end() )
+        {
+            std::string value( it->second );
+            int v;
+            sscanf( value.c_str(), "%d", &v );
+            Imf::IntAttribute attr( v );
+            hdr.insert( N_("imageState"), attr );
+        }
+
+        it = exif.find(N_( "Owner" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("owner"), attr );
+        }
+
+        it = exif.find(N_( "Comments" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("comments"), attr );
+        }
+
+        it = exif.find(N_( "Capture Date" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("capDate"), attr );
+        }
+
+        it = exif.find(N_( "UTC Offset") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("utcOffset"), attr );
+        }
+
+        it = exif.find(N_( "Longitude") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("longitude"), attr );
+        }
+
+        it = exif.find(N_( "Latitude") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("latitude"), attr );
+        }
+
+
+        it = exif.find(N_( "Altitude") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("altitude"), attr );
+        }
+
+
+        it = exif.find(N_( "Focus") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("focus"), attr );
+        }
+
+
+        it = exif.find(N_( "Exposure Time") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("expTime"), attr );
+        }
+
+        it = exif.find(N_( "Aperture") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("aperture"), attr );
+        }
+
+        it = exif.find(N_( "ISO Speed") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("isoSpeed"), attr );
+        }
+
+        it = exif.find(N_( "ISO Speed") ); 
+        if ( it != exif.end() )
+        {
+            const std::string& value( it->second );
+            float v;
+            sscanf( value.c_str(), "%g", &v );
+            Imf::FloatAttribute attr( v );
+            hdr.insert( N_("isoSpeed"), attr );
+        }
+
+        {
+            Imf::Rational r( int( img->fps() * 1000 ), 1000 );
+            Imf::RationalAttribute attr( r );
+            hdr.insert( N_("framesPerSecond"), attr );
+        }
+
+        it = exif.find(N_( "Film Manufacturer Code" ) ); 
+        if ( it != exif.end() )
+        {
+            int fmfc = 0, ftc = 0, pc = 0, count = 0, poff = 0, ppf = 0, ppc = 0;
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &fmfc );
+            }
+
+            it = exif.find(N_( "Film Type Code" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &ftc );
+            }
+
+            it = exif.find(N_( "Prefix Code" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &pc );
+            }
+
+            it = exif.find(N_( "Count" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &count );
+            }
+
+            it = exif.find(N_( "Perf Offset" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &poff );
+            }
+
+            it = exif.find(N_( "Perfs per Frame" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &ppf );
+            }
+
+            it = exif.find(N_( "Perfs per Count" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &ppc );
+            }
+
+            Imf::KeyCode key( fmfc, ftc, pc, count, poff, ppf, ppc );
+            Imf::KeyCodeAttribute attr(key);
+            hdr.insert( N_("keyCode"), attr );
+        }
+
+
+        it = exif.find(N_( "Timecode" ) ); 
+        if ( it != exif.end() )
+        {
+            int hours = 0, mins = 0, secs = 0, frames = 0, dropframe = 0, 
+           colorframe = 0, fieldphase = 0;
+            int bgf0 = 0, bgf1 = 0, bgf2 = 0, userdata = 0;
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d:%d:%d:%d", 
+                        &hours, &mins, &secs, &frames );
+            }
+
+            it = exif.find(N_( "TC Drop Frame" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &dropframe );
+            }
+
+            it = exif.find(N_( "TC Color Frame" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &colorframe );
+            }
+
+            it = exif.find(N_( "TC Field/Phase" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &fieldphase );
+            }
+
+            it = exif.find(N_( "TC bgf0" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &bgf0 );
+            }
+
+
+            it = exif.find(N_( "TC bgf1" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &bgf1 );
+            }
+
+            it = exif.find(N_( "TC bgf2" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "%d", &bgf2 );
+            }
+
+            it = exif.find(N_( "TC User Data" ) ); 
+            if ( it != exif.end() )
+            {
+                const std::string& value( it->second );
+                sscanf( value.c_str(), "0x%x", &userdata );
+            }
+
+            Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
+                               (bool)colorframe, (bool)fieldphase,
+                               (bool)bgf0, (bool)bgf1, (bool)bgf2,
+                               userdata,
+                               userdata, userdata, userdata, userdata, userdata,
+                               userdata, userdata);
+            Imf::TimeCodeAttribute attr(key);
+            hdr.insert( N_("timeCode"), attr );
+        }
+
+        it = exif.find(N_( "Writer" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("writer"), attr );
+        }
+
+        it = exif.find(N_( "ICC Profile" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("iccProfile"), attr );
+        }
+
+        it = exif.find(N_( "Wrap Modes" ) ); 
+        if ( it != exif.end() )
+        {
+            Imf::StringAttribute attr( it->second );
+            hdr.insert( N_("wrapmodes"), attr );
+        }
+#endif
 
 bool exrImage::save( const char* file, const CMedia* img, 
                      const ImageOpts* const ipts )
@@ -1821,481 +2167,526 @@ bool exrImage::save( const char* file, const CMedia* img,
         return false;
     }
 
-    mrv::image_type_ptr pic = img->hires();
-    if (!pic) return false;
+    const char* orig = img->channel();
+    std::string old_channel;
+    if ( orig ) old_channel = orig;
 
 
-    mrv::Recti dpw = img->display_window();
-    mrv::Recti daw = img->data_window();
-
-    Box2i bdpw( V2i(dpw.x(), dpw.y()),
-                V2i(dpw.x() + dpw.w() - 1, dpw.y() + dpw.h() - 1) );
-    Box2i bdaw( V2i(daw.x(), daw.y()),
-                V2i(daw.x() + daw.w() - 1, daw.y() + daw.h() - 1) );
-
-    if ( daw.w() == 0 )
-    {
-        bdaw = Box2i( V2i(0,0), V2i( img->width()-1, img->height()-1 ) );
-    }
-    if ( dpw.w() == 0 )
-    {
-        bdpw = bdaw;
-    }
-
-    unsigned dw = daw.w();
-    if ( dw == 0 ) dw = img->width();
-    unsigned dh = daw.h();
-    if ( dh == 0 ) dh = img->height();
+    CMedia* p = const_cast< CMedia* >( img );
 
 
+    typedef std::vector< Imf::Header > HeaderList;
+    HeaderList headers;
 
-    Header hdr( bdpw, bdaw );
+    typedef std::vector< Imf::FrameBuffer > FrameBufferList;
+    FrameBufferList fbs;
 
-    int dx = daw.x();
-    int dy = daw.y();
+    typedef std::vector< uint8_t* > Buffers;
+    Buffers bufs;
 
+    typedef std::set< std::string > PartNames;
+    PartNames names;
 
-    Imf::Compression comp = opts->compression();
-    if ( comp >= NUM_COMPRESSION_METHODS )
-    {
-        LOG_WARNING( "Compression method not available.  Using PIZ." );
-        comp = Imf::PIZ_COMPRESSION;
-    }
-    hdr.compression() = comp;
-
-    if ( comp == Imf::DWAA_COMPRESSION || comp == Imf::DWAB_COMPRESSION )
-    {
-        Imf::addDwaCompressionLevel( hdr, opts->compression_level() );
-    }
-
-    Imf::PixelType pt = exrImage::pixel_type_to_exr( pic->pixel_type() );
+    bool use_numeral = false;
     Imf::PixelType save_type = opts->pixel_type();
 
-    hdr.channels().insert( N_("R"), Channel( save_type, 1, 1 ) );
-    hdr.channels().insert( N_("G"), Channel( save_type, 1, 1 ) );
-    hdr.channels().insert( N_("B"), Channel( save_type, 1, 1 ) );
-
-    bool has_alpha = img->has_alpha();
-    if ( has_alpha ) 
-      {
-	hdr.channels().insert( N_("A"), Channel( save_type, 1, 1 ) );
-      }
-
-    if ( img->has_chromaticities() )
+    if ( 1 ) // ( opts->all_layers )
     {
-        Imf::ChromaticitiesAttribute attr( img->chromaticities() );
-        hdr.insert( N_("Chromaticities"), attr );
-    }
 
-
-    const CMedia::Attributes& exif = img->exif();
-
-    CMedia::Attributes::const_iterator it = 
-    exif.find(N_( "Chromaticities Name" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("Chromaticities Name"), attr );
-    }
-
-    it = exif.find(N_( "Adopted Neutral" ) ); 
-    if ( it != exif.end() )
-    {
-        std::string value( it->second );
-        Imath::V2f v;
-        sscanf( value.c_str(), "%g %g", &v.x, &v.y );
-        Imf::V2fAttribute attr( v );
-        hdr.insert( N_("adoptedNeutral"), attr );
-    }
-
-    it = exif.find(N_( "Image State" ) ); 
-    if ( it != exif.end() )
-    {
-        std::string value( it->second );
-        int v;
-        sscanf( value.c_str(), "%d", &v );
-        Imf::IntAttribute attr( v );
-        hdr.insert( N_("imageState"), attr );
-    }
-
-    it = exif.find(N_( "Owner" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("owner"), attr );
-    }
-
-    it = exif.find(N_( "Comments" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("comments"), attr );
-    }
-
-    it = exif.find(N_( "Capture Date" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("capDate"), attr );
-    }
-
-    it = exif.find(N_( "UTC Offset") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("utcOffset"), attr );
-    }
-
-    it = exif.find(N_( "Longitude") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("longitude"), attr );
-    }
-
-    it = exif.find(N_( "Latitude") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("latitude"), attr );
-    }
-
-
-    it = exif.find(N_( "Altitude") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("altitude"), attr );
-    }
-
-
-    it = exif.find(N_( "Focus") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("focus"), attr );
-    }
-
-
-    it = exif.find(N_( "Exposure Time") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("expTime"), attr );
-    }
-
-    it = exif.find(N_( "Aperture") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("aperture"), attr );
-    }
-
-    it = exif.find(N_( "ISO Speed") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("isoSpeed"), attr );
-    }
-
-    it = exif.find(N_( "ISO Speed") ); 
-    if ( it != exif.end() )
-    {
-        const std::string& value( it->second );
-        float v;
-        sscanf( value.c_str(), "%g", &v );
-        Imf::FloatAttribute attr( v );
-        hdr.insert( N_("isoSpeed"), attr );
-    }
-
-    {
-        Imf::Rational r( int( img->fps() * 1000 ), 1000 );
-        Imf::RationalAttribute attr( r );
-        hdr.insert( N_("framesPerSecond"), attr );
-    }
-
-    it = exif.find(N_( "Film Manufacturer Code" ) ); 
-    if ( it != exif.end() )
-    {
-        int fmfc = 0, ftc = 0, pc = 0, count = 0, poff = 0, ppf = 0, ppc = 0;
         {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &fmfc );
+            stringArray::const_iterator i = img->layers().begin();
+            stringArray::const_iterator e = img->layers().end();
+
+            std::string x = _("ZVCF!@");
+            for ( ; i != e; ++i )
+            {
+                const std::string& name = *i;
+
+                if ( name.find( _("stereo") ) != std::string::npos ||
+                     name.find( _("anaglyph") ) != std::string::npos ) continue;
+
+                if ( name.find(x) == 0 )
+                {
+                    std::string root = name;
+                    size_t pos = root.rfind( '.' );
+                    std::string suffix;
+                    if ( pos != std::string::npos ) 
+                    {
+                        suffix = root.substr( pos+1, root.size() );
+                        root = root.substr( 0, pos );
+                        if ( suffix.size() == 1 )
+                        {
+                            std::transform( suffix.begin(), suffix.end(),
+                                            suffix.begin(), 
+                                            (int(*)(int)) toupper );
+                        }
+                    }
+
+                    Header& hdr = headers.back();
+
+                    if ( !suffix.empty() )
+                    {
+                        hdr.channels().insert( root + '.' + suffix,
+                                               Channel( save_type,1,1 ) );
+                    }
+                    else
+                    {
+                        hdr.channels().insert( root,
+                                               Channel( save_type,1,1 ) );
+                    }
+                }
+                else
+                {
+                    x = name;
+
+                    if ( x == _("Lumma") || x == _("Alpha Overlay") ||
+                         x == _("Red") || x == _("Green") ||
+                         x == _("Blue") || x == _("Alpha") )
+                    {
+                        x = _("Color");
+                        continue;
+                    }
+
+
+                    std::string root = x;
+                    size_t pos = root.find( ' ' );
+
+                    if ( root[0] == '#' &&
+                         pos != std::string::npos )
+                    {
+                        use_numeral = true;
+                        root = root.substr( pos+1, root.size() );
+
+                        size_t pos2 = root.rfind( '.' );
+                        if ( pos2 != std::string::npos )
+                        {
+                            root = root.substr( 0, pos2 );
+                        }
+                    }
+
+                    Header hdr; //( bdpw, bdaw );
+                    //hdr.setVersion( 1 );
+                    hdr.setType( SCANLINEIMAGE );
+
+                    // Avoid repeated names
+                    while ( names.find( root ) != names.end() )
+                    {
+                        root += "_2";
+                    }
+
+                    hdr.setName( root );
+                    names.insert( root );
+
+                    if ( x == N_("Z") )
+                    {
+                        hdr.channels().insert( x,
+                                               Channel( save_type,1,1 ) );
+                    }
+                    if ( x == _("Color") )
+                    {
+                        hdr.channels().insert( N_("R"),
+                                               Channel( save_type, 1, 1 ) );
+                        hdr.channels().insert( N_("G"),
+                                               Channel( save_type, 1, 1 ) );
+                        hdr.channels().insert( N_("B"),
+                                               Channel( save_type, 1, 1 ) );
+                        if ( img->has_alpha() )
+                            hdr.channels().insert( N_("A"),
+                                                   Channel( save_type, 1, 1 ) );
+                    }
+
+                    Imf::Compression comp = opts->compression();
+                    if ( comp >= NUM_COMPRESSION_METHODS )
+                    {
+                        LOG_WARNING( "Compression method not available. "
+                                     "Using PIZ." );
+                        comp = Imf::PIZ_COMPRESSION;
+                    }
+                    hdr.compression() = comp;
+
+                    if ( comp == Imf::DWAA_COMPRESSION || 
+                         comp == Imf::DWAB_COMPRESSION )
+                    {
+                        Imf::addDwaCompressionLevel( hdr, 
+                                                     opts->compression_level() );
+                    }
+
+                    headers.push_back( hdr );
+                    FrameBuffer fb;
+                    fbs.push_back( fb );
+                }
+            }
         }
-
-        it = exif.find(N_( "Film Type Code" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &ftc );
-        }
-
-        it = exif.find(N_( "Prefix Code" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &pc );
-        }
-
-        it = exif.find(N_( "Count" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &count );
-        }
-
-        it = exif.find(N_( "Perf Offset" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &poff );
-        }
-
-        it = exif.find(N_( "Perfs per Frame" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &ppf );
-        }
-
-        it = exif.find(N_( "Perfs per Count" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &ppc );
-        }
-
-        Imf::KeyCode key( fmfc, ftc, pc, count, poff, ppf, ppc );
-        Imf::KeyCodeAttribute attr(key);
-        hdr.insert( N_("keyCode"), attr );
-    }
-
-
-    it = exif.find(N_( "Timecode" ) ); 
-    if ( it != exif.end() )
-    {
-        int hours = 0, mins = 0, secs = 0, frames = 0, dropframe = 0, 
-                    colorframe = 0, fieldphase = 0;
-        int bgf0 = 0, bgf1 = 0, bgf2 = 0, userdata = 0;
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d:%d:%d:%d", 
-                    &hours, &mins, &secs, &frames );
-        }
-
-        it = exif.find(N_( "TC Drop Frame" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &dropframe );
-        }
-
-        it = exif.find(N_( "TC Color Frame" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &colorframe );
-        }
-
-        it = exif.find(N_( "TC Field/Phase" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &fieldphase );
-        }
-
-        it = exif.find(N_( "TC bgf0" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &bgf0 );
-        }
-
-
-        it = exif.find(N_( "TC bgf1" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &bgf1 );
-        }
-
-        it = exif.find(N_( "TC bgf2" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "%d", &bgf2 );
-        }
-
-        it = exif.find(N_( "TC User Data" ) ); 
-        if ( it != exif.end() )
-        {
-            const std::string& value( it->second );
-            sscanf( value.c_str(), "0x%x", &userdata );
-        }
-
-        Imf::TimeCode key( hours, mins, secs, frames, (bool)dropframe, 
-			   (bool)colorframe, (bool)fieldphase,
-			   (bool)bgf0, (bool)bgf1, (bool)bgf2,
-			   userdata,
-                           userdata, userdata, userdata, userdata, userdata,
-                           userdata, userdata);
-        Imf::TimeCodeAttribute attr(key);
-        hdr.insert( N_("timeCode"), attr );
-    }
-
-    it = exif.find(N_( "Writer" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("writer"), attr );
-    }
-
-    it = exif.find(N_( "ICC Profile" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("iccProfile"), attr );
-    }
-
-    it = exif.find(N_( "Wrap Modes" ) ); 
-    if ( it != exif.end() )
-    {
-        Imf::StringAttribute attr( it->second );
-        hdr.insert( N_("wrapmodes"), attr );
-    }
-
-    uint8_t* base = NULL;
-
-
-    size_t size = 1;
-    switch( save_type )
-    {
-        case Imf::UINT:
-            size = sizeof(unsigned);
-            break;
-        case Imf::FLOAT:
-            size = sizeof(float);
-            break;
-        default:
-        case Imf::HALF:
-            size = sizeof(half);
-            break;
-    }
-
-
-    unsigned channels = pic->channels();
-    size_t total_size = dw*dh*size*channels;
-    base = (uint8_t*) new uint8_t[total_size];
-
-    if ( pt == save_type )
-    {
-        memcpy( base, pic->data().get(), total_size );
     }
     else
     {
-       for ( unsigned y = 0; y < dh; ++y )
-       {
-	  for ( unsigned x = 0; x < dw; ++x )
-    	  {
-              CMedia::Pixel p = pic->pixel( x, y );
-              unsigned yh = channels * ( x + y * dw );
-              if ( save_type == Imf::HALF )
-              {
-                  half* s = (half*) base;
-                  s[ yh ]   = p.r;
-                  s[ yh + 1 ] = p.g;
-                  s[ yh + 2 ] = p.b;
-                  if ( has_alpha )
-                      s[ yh + 3 ] = p.a;
-              }
-              else if ( save_type == Imf::FLOAT )
-              {
-                  CMedia::Pixel* s = (CMedia::Pixel*) base;
-                  if ( has_alpha )
-                      s[ yh + 3 ] = p;
-                  else
-                  {
-                      float* s = (float*) base;
-                      s[ yh ] = p.r;
-                      s[ yh + 1 ] = p.g;
-                      s[ yh + 2 ] = p.b;
-                  }
-              }
-              else if ( save_type == Imf::UINT )
-              {
-                  unsigned* s = (unsigned*) base;
-                  if ( p.r > 1.0f ) p.r = 1.0f;
-                  else if ( p.r < 0.0f ) p.r = 0.0f;
-                  if ( p.g > 1.0f ) p.g = 1.0f;
-                  else if ( p.g < 0.0f ) p.g = 0.0f;
-                  if ( p.b > 1.0f ) p.b = 1.0f;
-                  else if ( p.b < 0.0f ) p.b = 0.0f;
-                  s[ yh ] = (unsigned) (p.r * 4294967295.0f);
-                  s[ yh + 1 ] = (unsigned) (p.g * 4294967295.0f);
-                  s[ yh + 2 ] = (unsigned) ( p.b * 4294967295.0f );
-                  if ( has_alpha )
-                      s[ yh + 3 ] = (unsigned) (p.a * 4294967295.0f);
-              }
-    	  }
-       }
+        // @todo: handle single layer
     }
 
-    size_t xs = size * channels;
-    size_t ys = xs * dw;
 
-    int offset = xs*(-dx-dy*dw);
+    unsigned part = 0;
+    unsigned numParts = fbs.size();
 
-    FrameBuffer fb;
-    fb.insert( N_("R"), Slice( save_type, (char*) &base[offset], xs, ys ) );
-    fb.insert( N_("G"), Slice( save_type, 
-                               (char*) &base[offset+size], xs, ys ) );
-    fb.insert( N_("B"), Slice( save_type, 
-                               (char*) &base[offset+2*size], xs, ys ) );
+    // View window must be same for all layers
+    mrv::Recti dpw;
 
-    if ( has_alpha )
-      {
-    	fb.insert( N_("A"), Slice( save_type, 
-                                   (char*) &base[offset+3*size], xs, ys ) );
-      }
+    for ( ; part < numParts; ++part )
+    {
+        Header& h = headers[part];
+        FrameBuffer& fb = fbs[part];
+
+        typedef std::set< std::string > Layers;
+        Layers layers;
+
+        h.channels().layers( layers );
+
+        if ( layers.size() == 0 )
+        { 
+            if ( h.name() == "Z" )
+            {
+                layers.insert( "Z" );
+            }
+            else if ( h.name() == _("Color") )
+            {
+                h.setName("");
+                layers.insert( _("Color") );
+            }
+        }
+
+        std::cerr << "part " << part << " header name " << h.name()
+                  << " layers " << layers.size() << std::endl;
+
+        Layers::const_iterator it = layers.begin();
+        Layers::const_iterator et = layers.end();
+        for ( ; it != et; ++it )
+        {
+            const std::string& name = *it;
+
+            p->channel( name.c_str() );
+
+            const mrv::Recti& dpy = img->display_window();
+            const mrv::Recti& daw = img->data_window();
+
+            if ( dpw.h() == 0 )
+                dpw = dpy;
+
+
+            Box2i bdpw( V2i(dpw.x(), dpw.y()),
+                        V2i(dpw.x() + dpw.w() - 1,
+                            dpw.y() + dpw.h() - 1) );
+            Box2i bdaw( V2i(daw.x(), daw.y()),
+                        V2i(daw.x() + daw.w() - 1,
+                            daw.y() + daw.h() - 1) );
+
+            h.displayWindow() = bdpw;
+            h.dataWindow() = bdaw;
+
+            // const Box2i& dpw = h.displayWindow();
+            // const Box2i& daw = h.dataWindow();
+            // int dx = daw.min.x;
+            // int dy = daw.min.y;
+
+            std::cerr << *it << " " << daw << std::endl;
+
+            int dx = daw.x();
+            int dy = daw.y();
+
+            mrv::image_type_ptr pic = img->hires();
+            if (!pic) return false;
+
+            std::cerr << *it << " pic " << pic->width()
+                      << " " << pic->height() << std::endl;
+
+
+            std::string prefix = *it;
+
+            ChannelList::ConstIterator ci;
+            ChannelList::ConstIterator ce;
+            h.channels().channelsInLayer( *it, ci, ce );
+            ChannelList::ConstIterator cs = ci;
+
+            bool use_rgb = false;
+            if ( prefix == _("Color") ) use_rgb = true;
+            bool use_alpha = false;
+            if ( use_rgb && img->has_alpha() ) use_alpha = true;
+            bool use_z = false;
+            if ( prefix == "Z" ) {
+                use_z = true;
+                prefix.clear();
+            }
+            bool use_xyz = false;
+            bool use_st = false;
+            bool use_uv = false;
+            bool use_w = false;
+
+            std::cerr << "Header '" << h.name() 
+                      << "' channels in layer " << *it << std::endl;
+            for ( ; ci != ce; ++ci )
+            {
+                const std::string& name = ci.name();
+                std::cerr << "\t" << name << std::endl;
+                size_t pos = name.rfind( '.' );
+                if ( pos == std::string::npos )
+                {
+                    use_rgb = true;
+                    use_alpha = img->has_alpha();
+                }
+                else
+                {
+                    std::string ext = name.substr( pos+1, name.size() );
+
+                    std::transform( ext.begin(), ext.end(), ext.begin(),
+                                    (int(*)(int)) toupper );
+
+                    if ( ext == N_("R") || ext == N_("G") || ext == N_("B") )
+                        use_rgb = true;
+                    if ( ext == N_("A") ) use_alpha = true;
+                    if ( ext == N_("X") || ext == N_("Y") ) use_xyz = true;
+                    if ( ext == N_("Z") ) use_z = true;
+                    if ( ext == N_("S") || ext == N_("T") ) use_st = true;
+                    if ( ext == N_("U") || ext == N_("V") ) use_uv = true;
+                    if ( ext == N_("W") ) use_w = true;
+                }
+            }
+
+            std::cerr << "part #" << part << std::endl;
+            std::cerr << "prefix " << prefix << std::endl;
+            std::cerr << "use_rgb: " << use_rgb << std::endl;
+            std::cerr << "use_xyz: " << use_xyz << std::endl;
+            std::cerr << "use_alpha: " << use_alpha << std::endl;
+            std::cerr << "use_st: " << use_st << std::endl;
+            std::cerr << "use_uv: " << use_uv << std::endl;
+            std::cerr << "use_w: " << use_w << std::endl;
+            std::cerr << "use_z: " << use_z << std::endl;
+
+            uint8_t* base = NULL;
+            size_t size = 1;
+            switch( save_type )
+            {
+                case Imf::UINT:
+                    size = sizeof(unsigned);
+                    break;
+                case Imf::FLOAT:
+                    size = sizeof(float);
+                    break;
+                default:
+                case Imf::HALF:
+                    size = sizeof(half);
+                    break;
+            }
+
+            Imf::PixelType pt = pixel_type_to_exr( pic->pixel_type() );
+            unsigned channels = pic->channels();
+            unsigned dw = pic->width();
+            unsigned dh = pic->height();
+            size_t total_size = dw*dh*size*channels;
+            base = (uint8_t*) new uint8_t[total_size];
+            bufs.push_back( base );
+            std::cerr << "base: " << (void*) base << std::endl;
+
+            if ( pt == save_type )
+            {
+                std::cerr << ">>>>>>>>> memcpy channels " 
+                          << channels << " total size: " 
+                          << total_size << std::endl;
+                memcpy( base, pic->data().get(), total_size );
+            }
+            else
+            {
+                for ( unsigned y = 0; y < dh; ++y )
+                {
+                    for ( unsigned x = 0; x < dw; ++x )
+                    {
+                        CMedia::Pixel p = pic->pixel( x, y );
+                        unsigned yh = channels * ( x + y * dw );
+                        if ( save_type == Imf::HALF )
+                        {
+                            half* s = (half*) base;
+                            s[ yh ]   = p.r;
+                            s[ yh + 1 ] = p.g;
+                            s[ yh + 2 ] = p.b;
+                            if ( use_alpha )
+                                s[ yh + 3 ] = p.a;
+                        }
+                        else if ( save_type == Imf::FLOAT )
+                        {
+                            CMedia::Pixel* s = (CMedia::Pixel*) base;
+                            if ( use_alpha )
+                                s[ yh + 3 ] = p;
+                            else
+                            {
+                                float* s = (float*) base;
+                                s[ yh ] = p.r;
+                                s[ yh + 1 ] = p.g;
+                                s[ yh + 2 ] = p.b;
+                            }
+                        }
+                        else if ( save_type == Imf::UINT )
+                        {
+                            unsigned* s = (unsigned*) base;
+                            if ( p.r > 1.0f ) p.r = 1.0f;
+                            else if ( p.r < 0.0f ) p.r = 0.0f;
+                            if ( p.g > 1.0f ) p.g = 1.0f;
+                            else if ( p.g < 0.0f ) p.g = 0.0f;
+                            if ( p.b > 1.0f ) p.b = 1.0f;
+                            else if ( p.b < 0.0f ) p.b = 0.0f;
+                            s[ yh ] = (unsigned) (p.r * 4294967295.0f);
+                            s[ yh + 1 ] = (unsigned) (p.g * 4294967295.0f);
+                            s[ yh + 2 ] = (unsigned) ( p.b * 4294967295.0f );
+                            if ( use_alpha )
+                                s[ yh + 3 ] = (unsigned) (p.a * 4294967295.0f);
+                        }
+                    }
+                }
+            }
+
+            size_t xs = size * channels;
+            size_t ys = xs * dw;
+
+            int offset = xs*(-dx-dy*dw);
+            if ( prefix == _("Color") ) prefix.clear();
+            else if ( prefix.size() ) prefix += '.';
+
+            if ( use_rgb )
+            {
+                fb.insert( prefix + N_("R"), Slice( save_type,
+                                                    (char*) &base[offset], 
+                                                    xs, ys ) );
+                fb.insert( prefix + N_("G"), Slice( save_type, 
+                                                    (char*) &base[offset+size],
+                                                    xs, ys ) );
+                fb.insert( prefix + N_("B"), Slice( save_type, 
+                                                    (char*) &base[offset+2*size], 
+                                                    xs, ys ) );
+
+            }
+            else if ( use_xyz )
+            {
+                fb.insert( prefix + N_("X"), Slice( save_type, (char*) &base[offset], 
+                                           xs, ys ) );
+                fb.insert( prefix + N_("Y"), Slice( save_type, 
+                                           (char*) &base[offset+size],
+                                           xs, ys ) );
+                if ( use_z )
+                    fb.insert( prefix + N_("Z"), 
+                               Slice( save_type, 
+                                      (char*) &base[offset+2*size], 
+                                      xs, ys ) );
+            }
+            else if ( use_st )
+            {
+                fb.insert( prefix + N_("S"), Slice( save_type, (char*) &base[offset], 
+                                           xs, ys ) );
+                fb.insert( prefix + N_("T"), Slice( save_type, 
+                                           (char*) &base[offset+size],
+                                           xs, ys ) );
+            } 
+            else if ( use_uv )
+            {
+                fb.insert( prefix + N_("U"), Slice( save_type, (char*) &base[offset], 
+                                           xs, ys ) );
+                fb.insert( prefix + N_("V"), Slice( save_type, 
+                                           (char*) &base[offset+size],
+                                           xs, ys ) );
+                if ( use_w )
+                    fb.insert( prefix + N_("W"), 
+                                      Slice( save_type, 
+                                             (char*) &base[offset+2*size], 
+                                             xs, ys ) );
+            }
+            else if ( use_z && !use_xyz )
+            {
+                fb.insert( prefix + N_("Z"), 
+                           Slice( save_type, (char*) &base[offset], 
+                                  xs, ys ) );
+            }
+            else
+            {
+                short i = 0;
+                for ( ci = cs; ci != ce; ++ci, ++i )
+                {
+                    const std::string& name = ci.name();
+                    size_t pos = name.rfind( '.' );
+                    std::string suffix = name;
+                    if ( pos != std::string::npos )
+                    {
+                        suffix = name.substr( pos+1, name.size() );
+                    }
+                    fb.insert( prefix + suffix, 
+                               Slice( save_type, 
+                                      (char*) &base[offset+size*i], 
+                                      xs, ys ) );
+                }
+            }
+
+            if ( use_alpha )
+            {
+                fb.insert( prefix + N_("A"), 
+                           Slice( save_type, 
+                                  (char*) &base[offset+3*size],
+                                  xs, ys ) );
+
+                if ( use_z )
+                {
+                    std::string channel = prefix + N_("Z");
+                    p->channel( channel.c_str() );
+                    pic = img->hires();
+
+                    total_size = dw*dh*size;
+                    base = (uint8_t*) new uint8_t[total_size];
+                    bufs.push_back( base );
+
+                    memcpy( base, pic->data().get(), total_size );
+
+                    xs = size;
+                    ys = xs * dw;
+
+                    offset = xs*(-dx-dy*dw);
+
+                    fb.insert( channel, Slice( save_type, 
+                                               (char*) &base[offset], 
+                                               xs, ys ) );
+
+                }
+            }
+
+
+
+        }
+    }
 
     try {
-      OutputFile out( file, hdr );
-      out.setFrameBuffer( fb );
-      out.writePixels( dh );
+        MultiPartOutputFile multi( file, &(headers[0]), 
+                                   headers.size() );
+        assert0( headers.size() == numParts );
+        for ( size_t part = 0; part < numParts; ++part )
+        {
+            OutputPart out( multi, part );
+            const Header& h = multi.header(part);
+            const Box2i& daw = h.dataWindow();
+            out.setFrameBuffer( fbs[part] );
+            out.writePixels( daw.max.y - daw.min.y + 1 );
+        }
     }
     catch( std::exception& e )
-      {
-	LOG_ERROR( e.what() );
-      }
+    {
+        LOG_ERROR( e.what() );
+        return false;
+    }
 
-    delete [] base;
+    Buffers::iterator i = bufs.begin();
+    Buffers::iterator e = bufs.end();
+    for ( ; i != e; ++i )
+    {
+        delete [] *i;
+    }
+    bufs.clear();
+    headers.clear();
+    fbs.clear();
 
+    p->channel( old_channel.c_str() );
 
     return true;
-  }
+}
 
 } // namespace mrv
