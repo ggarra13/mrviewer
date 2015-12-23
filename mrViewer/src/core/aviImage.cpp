@@ -2314,11 +2314,10 @@ aviImage::audio_video_display( const boost::int64_t& frame )
         SCOPED_LOCK( _audio_mutex );
 
         audio_cache_t::iterator end = _audio.end();
-        audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end, 
-                                                       frame, 
+        audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end,
+                                                       frame,
                                                        LessThanFunctor() );
-        if ( it == end )
-        {
+        if ( it == end ) {
             return kDecodeMissingFrame;
         }
 
@@ -2399,7 +2398,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
     if ( !has_video() )
     {
-        return audio_video_display(frame);
+        if ( playback() == kBackwards )
+            return audio_video_display(_audio_frame);
+        else
+            return audio_video_display(frame);
     }
 
 #ifdef DEBUG_VIDEO_PACKETS

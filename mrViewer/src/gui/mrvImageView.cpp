@@ -231,16 +231,16 @@ namespace
 
        oldChannel = channelName;
 
-       if ( ext == N_("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
+       if ( ext == _("COLOR") || ext == N_("RGB") || ext == N_("RGBA"))
           return 'c';
        else if ( ext == N_("X") || ext == N_("U") || ext == N_("R") ||
-                 ext == N_("RED") ) return 'r';
+                 ext == _("RED") ) return 'r';
        else if ( ext == N_("Y") || ext == N_("V") || ext == N_("G") || 
-                 ext == N_("GREEN") ) return 'g';
-       else if ( ext == N_("B") || ext == N_("BLUE") || ext == N_("W") ||
+                 ext == _("GREEN") ) return 'g';
+       else if ( ext == N_("B") || ext == _("BLUE") || ext == N_("W") ||
                  ((ext == N_("Z") && ext2 == "Y")) ) 
            return 'b';
-       else if ( ext == N_("A") || ext == N_("ALPHA") ) return 'a';
+       else if ( ext == N_("A") || ext == _("ALPHA") ) return 'a';
        else if ( ext == N_("Z") || ext == N_("Z DEPTH") ) return 'z';
        else return 0;
     }
@@ -4061,20 +4061,20 @@ void ImageView::smart_refresh()
   redraw();
 }
 
-
-const char* ImageView::get_layer_label( unsigned short c )
+char* ImageView::get_layer_label( unsigned short c )
 {
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
-    const char* lbl = NULL;
+    char* lbl = NULL;
     unsigned short idx = 0;
     _old_channel = 0;
+    std::string layername;
     unsigned short num = uiColorChannel->children();
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
         fltk::Widget* w = uiColorChannel->child(i);
         if ( idx == c )
         {
-            lbl = w->label();
+            lbl = strdup( w->label() );
             // Store old channel only for Color and Layered channels
             if ( strcmp( lbl, _("Red") ) != 0 &&
                  strcmp( lbl, _("Green") ) != 0 &&
@@ -4090,13 +4090,16 @@ const char* ImageView::get_layer_label( unsigned short c )
             fltk::Group* g = (fltk::Group*) w;
             unsigned short numc = g->children();
             unsigned short gidx = idx;
+            layername = w->label();
             for ( unsigned short j = 0; j < numc; ++j )
             {
                 ++idx;
                 if ( idx == c )
                 {
                     if ( numc > 1 ) _old_channel = gidx;
-                    lbl = g->child(j)->label();
+                    if ( !layername.empty() ) layername += '.';
+                    layername += g->child(j)->label();
+                    lbl = strdup( layername.c_str() );
                     break;
                 }
                 
@@ -4193,7 +4196,7 @@ void ImageView::channel( unsigned short c )
 
   m = foreground();
 
-  const char* lbl = get_layer_label( c );
+  char* lbl = get_layer_label( c );
   if ( !lbl ) return;
 
   _channel = c;
@@ -4225,9 +4228,15 @@ void ImageView::channel( unsigned short c )
      oext = oext.substr( pos2+1, oext.size() );
   }
 
+  std::string x = lbl;
+  size_t loc = x.find( '.' );
+  if ( x[0] == '#' && loc != std::string::npos )
+  {
+      x = x.substr( loc+1, x.size() );
+  }
 
   uiColorChannel->value( c );
-  uiColorChannel->copy_label( lbl );
+  uiColorChannel->copy_label( x.c_str() );
   uiColorChannel->redraw();
 
   std::transform( ext.begin(), ext.end(), ext.begin(),
@@ -4303,6 +4312,7 @@ void ImageView::channel( unsigned short c )
   update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
+  free( lbl );
 
   smart_refresh();
 }
@@ -4665,6 +4675,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         {
             if ( group )
             {
+                // Copy shortcut to group and replace leaf with group
                 unsigned last = uiColorChannel->children()-1;
                 unsigned s = uiColorChannel->child(last)->shortcut();
                 uiColorChannel->remove( last );
@@ -4672,27 +4683,36 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                 g->shortcut( s );
                 group = false;
             }
-            o = uiColorChannel->add_leaf( name.c_str(), g );
+
+            // Now add current leaf, but without # prefix and period
+            std::string y = name.substr( x.size()+1, name.size() );
+
+            o = uiColorChannel->add_leaf( y.c_str(), g );
         }
         else
         {
+            // A new group, we add it here as empty group
             group = true;
             x = name;
+
             o = uiColorChannel->add( name.c_str(), NULL );
         }
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-        if ( name == root || (channelName && name == channelName) )
+        if ( x == root || (channelName && name == channelName) )
         {
             v = idx;
         }
 
+
+
         if ( v >= 0 )
         {
+            // std::cerr << name << " shortcut " << (char)shortcut << std::endl;
             // Get a shortcut to this layer
             short shortcut = get_shortcut( name.c_str() );
-            // std::cerr << name << " shortcut " << (char)shortcut << std::endl;
+
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
             if ( shortcut && shortcuts.find( shortcut ) == 
