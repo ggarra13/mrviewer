@@ -538,6 +538,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    image_size( dw, dh );
 
 
+
    const Imf::ChannelList& channels = h.channels();
    if ( layers.empty() )
    {
@@ -1539,6 +1540,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          std::string name;
          if ( header.hasName() ) name = header.name();
 
+         // If layer name is empty it is the one with "Color".  We set it
+         // as default.
+         if ( name.empty() )
+         {
+             _curpart = i;
+         }
+
+
 #ifdef CHANGE_PERIODS_TO_UNDERSCORES
          size_t pos;
          while ( (pos = name.find( N_(".") )) != std::string::npos )
@@ -1550,6 +1559,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          }
 #endif
 
+         buf[0] = 0;
          if ( !name.empty() )
          {
              sprintf( buf, "#%d %s", i, name.c_str() );
@@ -1632,7 +1642,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
    }
    else
    {
-       _curpart = 0;
+       if ( _curpart == -1 ) _curpart = 0;
    }
 
    if ( _is_stereo )
@@ -1723,7 +1733,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
            return true;
        }
-
 
       InputPart in (inmaster, _curpart);
       const Box2i& dataWindow = header.dataWindow();
@@ -2215,6 +2224,11 @@ bool exrImage::save( const char* file, const CMedia* img,
                 if ( name.find(x) == 0 )
                 {
                     std::string root = name;
+                    if ( root[0] == '#' )
+                    {
+                        root = root.substr( x.size()+1, root.size() );
+                    }
+                    std::cerr << root << " matches " << x << std::endl;
                     size_t pos = root.rfind( '.' );
                     std::string suffix;
                     if ( pos != std::string::npos ) 
@@ -2396,10 +2410,6 @@ bool exrImage::save( const char* file, const CMedia* img,
             h.displayWindow() = bdpw;
             h.dataWindow() = bdaw;
 
-            // const Box2i& dpw = h.displayWindow();
-            // const Box2i& daw = h.dataWindow();
-            // int dx = daw.min.x;
-            // int dy = daw.min.y;
 
             std::cerr << *it << " " << daw << std::endl;
 
@@ -2409,8 +2419,6 @@ bool exrImage::save( const char* file, const CMedia* img,
             mrv::image_type_ptr pic = img->hires();
             if (!pic) return false;
 
-            std::cerr << *it << " pic " << pic->width()
-                      << " " << pic->height() << std::endl;
 
 
             std::string prefix = *it;
@@ -2423,7 +2431,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             bool use_rgb = false;
             if ( prefix == _("Color") ) use_rgb = true;
             bool use_alpha = false;
-            // if ( use_rgb && img->has_alpha() ) use_alpha = true;
+            if ( use_rgb && img->has_alpha() ) use_alpha = true;
             bool use_z = false;
             if ( prefix == "Z" ) {
                 use_z = true;
@@ -2444,7 +2452,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                 if ( pos == std::string::npos )
                 {
                     use_rgb = true;
-                    // use_alpha = img->has_alpha();
+                    use_alpha = img->has_alpha();
                 }
                 else
                 {
