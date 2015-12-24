@@ -188,7 +188,7 @@ namespace mrv
 
     size_t data_size();
 
-    inline void data(const PixelData& d) { _data = d; }
+    // inline void data(const PixelData& d) { _data = d; }
 
     inline const PixelData& data() const { return _data; }
 
