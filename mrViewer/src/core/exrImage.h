@@ -139,6 +139,7 @@ namespace mrv {
       /// Returns true if image has an alpha channel
       virtual bool  has_alpha() const { return _has_alpha; }
 
+      static void add_attributes( const CMedia* img, Imf::Header& hdr );
       static image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
       static Imf::PixelType pixel_type_to_exr( image_type::PixelType pixel_type );
 

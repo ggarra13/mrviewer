@@ -175,11 +175,6 @@ ChannelShortcuts shortcuts[] = {
   { _("Lumma"), 'l' },
   { _("Z"), 'z' },
   { _("Z Depth"), 'z' },
-  { _("N"), 'n' },
-  { _("Normals"), 'n' },
-  { _("Tag"), 't' },
-  { _("UV"), 'u' },
-  { _("ST"), 'u' },
 };
 
 
@@ -257,8 +252,7 @@ namespace
             return 'c';
     }
 
-
-    return 'c';
+    return 0;
   }
 
 
@@ -4066,7 +4060,6 @@ char* ImageView::get_layer_label( unsigned short c )
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     char* lbl = NULL;
     unsigned short idx = 0;
-    _old_channel = 0;
     std::string layername;
     unsigned short num = uiColorChannel->children();
     for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -4075,13 +4068,9 @@ char* ImageView::get_layer_label( unsigned short c )
         if ( idx == c )
         {
             lbl = strdup( w->label() );
-            // Store old channel only for Color and Layered channels
-            if ( strcmp( lbl, _("Red") ) != 0 &&
-                 strcmp( lbl, _("Green") ) != 0 &&
-                 strcmp( lbl, _("Blue") ) != 0 &&
-                 strcmp( lbl, _("Alpha") ) != 0 &&
-                 strcmp( lbl, _("Alpha Overlay") ) != 0 )
-                _old_channel = _channel;
+            if ( w->is_group() ||
+                 strcmp( lbl, _("Color") ) == 0 )
+                _old_channel = idx;
             break;
         }
 
@@ -4096,7 +4085,6 @@ char* ImageView::get_layer_label( unsigned short c )
                 ++idx;
                 if ( idx == c )
                 {
-                    if ( numc > 1 ) _old_channel = gidx;
                     if ( !layername.empty() ) layername += '.';
                     layername += g->child(j)->label();
                     lbl = strdup( layername.c_str() );
@@ -4192,6 +4180,14 @@ void ImageView::channel( unsigned short c )
   static mrv::media m;
   if ( c == _channel && m == foreground() ) {
       c = _old_channel;
+      _old_channel = _channel;
+  }
+  else
+  {
+      if ( m != foreground() )
+      {
+          _old_channel = c;
+      }
   }
 
   m = foreground();
@@ -4644,7 +4640,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         // Root name if channel name minus the last .extension. 
         // Like sub.AO.R, root is sub.AO
 
-        pos = root.rfind('.');
+        pos = root.find('.');
 
         if ( pos != std::string::npos )
         {
@@ -4700,18 +4696,18 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
+
         if ( x == root || (channelName && name == channelName) )
         {
             v = idx;
         }
 
 
+        // Get a shortcut to this layer
+        short shortcut = get_shortcut( name.c_str() );
 
         if ( v >= 0 )
         {
-            // std::cerr << name << " shortcut " << (char)shortcut << std::endl;
-            // Get a shortcut to this layer
-            short shortcut = get_shortcut( name.c_str() );
 
             // If we have a shortcut and it isn't in the list of shortcuts
             // yet, add it to interface and shortcut list.
