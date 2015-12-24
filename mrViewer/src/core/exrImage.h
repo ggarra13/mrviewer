@@ -43,6 +43,8 @@
 
 namespace mrv {
 
+  typedef std::vector< uint8_t* > Buffers;
+
   class exrImage : public CMedia 
   {
     exrImage();
@@ -139,6 +141,11 @@ namespace mrv {
       /// Returns true if image has an alpha channel
       virtual bool  has_alpha() const { return _has_alpha; }
 
+      static void copy_pixel_data( mrv::image_type_ptr pic,
+                                   Imf::PixelType save_type,
+                                   uint8_t* base,
+                                   size_t total_size,
+                                   bool use_alpha);
       static void add_attributes( const CMedia* img, Imf::Header& hdr );
       static image_type::PixelType pixel_type_conversion( Imf::PixelType pixel_type );
       static Imf::PixelType pixel_type_to_exr( image_type::PixelType pixel_type );
@@ -152,6 +159,7 @@ namespace mrv {
 
        int st[2];
        int _curpart;
+      int _clear_part;
        int _numparts;
        unsigned _num_layers;
       bool _read_attr;

@@ -67,6 +67,7 @@ using namespace std;
 
 #define USE_HASH
 #define USE_ALPHA
+#define CHANGE_PERIODS_TO_UNDERSCORES
 
 namespace
 {
@@ -78,6 +79,7 @@ namespace
 
 
 namespace mrv {
+
 
   const char* exrImage::kCompression[] = {
     _("None"),
@@ -149,6 +151,7 @@ exrImage::exrImage() :
   _has_right_eye( false ),
   _left_red( false ),
   _curpart( -1 ),
+  _clear_part( 0 ),
   _numparts( -1 ),
   _num_layers( 0 ),
   _read_attr( false ),
@@ -1491,8 +1494,7 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
         zbuff[i] = new float[sampleCount[i]];
     }
 
-    if ( in.isComplete() )
-        in.readPixels (dataWindow.min.y, dataWindow.max.y);
+    in.readPixels (dataWindow.min.y, dataWindow.max.y);
 
 
 }
@@ -1544,10 +1546,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          // as default.
          if ( name.empty() )
          {
-             _curpart = i;
+             _curpart = _clear_part = i;
          }
 
-
+         //
+         // For simplicity sake, we don't accept periods in header name
+         //
 #ifdef CHANGE_PERIODS_TO_UNDERSCORES
          size_t pos;
          while ( (pos = name.find( N_(".") )) != std::string::npos )
@@ -1594,7 +1598,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
              for ( s = channels.begin(); s != e; ++s )
              {
                  std::string layerName = buf;
-                 layerName += '.';
+                 if ( !layerName.empty() ) layerName += '.';
                  layerName += s.name();
                  _layers.push_back( layerName );
                  ++_num_layers;
@@ -1639,10 +1643,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
            _curpart = (int) strtoul( part.c_str(), NULL, 10 );
        }
+       else
+       {
+           _curpart = _clear_part;
+       }
    }
    else
    {
-       if ( _curpart == -1 ) _curpart = 0;
+       _curpart = _clear_part;
    }
 
    if ( _is_stereo )
@@ -1693,8 +1701,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            {
                InputPart in( inmaster, _curpart );
                in.setFrameBuffer(fb);
-               if ( in.isComplete() )
-                   in.readPixels( dataWindow.min.y, dataWindow.max.y );
+               in.readPixels( dataWindow.min.y, dataWindow.max.y );
            }
            catch( const std::exception& e )
            {
@@ -1733,6 +1740,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            loadDeepTileImage( inmaster, zsize, zbuff, sampleCount, true );
            return true;
        }
+
 
       InputPart in (inmaster, _curpart);
       const Box2i& dataWindow = header.dataWindow();
@@ -1784,8 +1792,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          try
          {
              in.setFrameBuffer(fb);
-             if ( in.isComplete() )
-                 in.readPixels( dataWindow.min.y, dataWindow.max.y );
+             in.readPixels( dataWindow.min.y, dataWindow.max.y );
          }
          catch( const std::exception& e )
          {
@@ -1798,8 +1805,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          try
          {
              in.setFrameBuffer(fb);
-             if ( in.isComplete() )
-                 in.readPixels( dataWindow.min.y, dataWindow.max.y );
+             in.readPixels( dataWindow.min.y, dataWindow.max.y );
          }
          catch( const std::exception& e )
          {
@@ -2173,6 +2179,77 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         }
 #endif
 
+
+void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
+                                Imf::PixelType save_type,
+                                uint8_t* base,
+                                size_t total_size,
+                                bool use_alpha
+)
+{
+    Imf::PixelType pt = pixel_type_to_exr( pic->pixel_type() );
+    unsigned dh = pic->height();
+    unsigned dw = pic->width();
+    unsigned channels = pic->channels();
+
+    if ( pt == save_type )
+    {
+        std::cerr << "\t>>>>> memcpy total size: " << total_size << std::endl;
+        memcpy( base, pic->data().get(), total_size );
+    }
+    else
+    {
+        for ( unsigned y = 0; y < dh; ++y )
+        {
+            for ( unsigned x = 0; x < dw; ++x )
+            {
+                CMedia::Pixel p = pic->pixel( x, y );
+                unsigned yh = channels * ( x + y * dw );
+                if ( save_type == Imf::HALF )
+                {
+                    half* s = (half*) base;
+                    s[ yh ]   = p.r;
+                    if ( channels == 1 ) continue;
+                    s[ yh + 1 ] = p.g;
+                    s[ yh + 2 ] = p.b;
+                    if ( use_alpha )
+                        s[ yh + 3 ] = p.a;
+                }
+                else if ( save_type == Imf::FLOAT )
+                {
+                    CMedia::Pixel* s = (CMedia::Pixel*) base;
+                    if ( use_alpha )
+                        s[ yh + 3 ] = p;
+                    else
+                    {
+                        float* s = (float*) base;
+                        s[ yh ] = p.r;
+                        if ( channels == 1 ) continue;
+                        s[ yh + 1 ] = p.g;
+                        s[ yh + 2 ] = p.b;
+                    }
+                }
+                else if ( save_type == Imf::UINT )
+                {
+                    unsigned* s = (unsigned*) base;
+                    if ( p.r > 1.0f ) p.r = 1.0f;
+                    else if ( p.r < 0.0f ) p.r = 0.0f;
+                    s[ yh ] = (unsigned) (p.r * 4294967295.0f);
+                    if ( channels == 1 ) continue;
+                    if ( p.g > 1.0f ) p.g = 1.0f;
+                    else if ( p.g < 0.0f ) p.g = 0.0f;
+                    if ( p.b > 1.0f ) p.b = 1.0f;
+                    else if ( p.b < 0.0f ) p.b = 0.0f;
+                    s[ yh + 1 ] = (unsigned) (p.g * 4294967295.0f);
+                    s[ yh + 2 ] = (unsigned) ( p.b * 4294967295.0f );
+                    if ( use_alpha )
+                        s[ yh + 3 ] = (unsigned) (p.a * 4294967295.0f);
+                }
+            }
+        }
+    }
+}
+
 bool exrImage::save( const char* file, const CMedia* img, 
                      const ImageOpts* const ipts )
 {
@@ -2198,13 +2275,18 @@ bool exrImage::save( const char* file, const CMedia* img,
     typedef std::vector< Imf::FrameBuffer > FrameBufferList;
     FrameBufferList fbs;
 
-    typedef std::vector< uint8_t* > Buffers;
     Buffers bufs;
 
     typedef std::set< std::string > PartNames;
     PartNames names;
 
+    //typedef std::set< std::string > Layers;
+    typedef std::vector< std::string >   LayerList;
+    LayerList layers;
+
     Imf::PixelType save_type = opts->pixel_type();
+
+    bool use_numeral = false;
 
     if ( 1 ) // ( opts->all_layers )
     {
@@ -2224,11 +2306,14 @@ bool exrImage::save( const char* file, const CMedia* img,
                 if ( name.find(x) == 0 )
                 {
                     std::string root = name;
+                    std::cerr << "FOUND " << root << " with " << x << std::endl;
+
                     if ( root[0] == '#' )
                     {
-                        root = root.substr( x.size()+1, root.size() );
+                        use_numeral = true;
+                        root = name.substr( x.size()+1, name.size() );
                     }
-                    std::cerr << root << " matches " << x << std::endl;
+
                     size_t pos = root.rfind( '.' );
                     std::string suffix;
                     if ( pos != std::string::npos ) 
@@ -2272,25 +2357,19 @@ bool exrImage::save( const char* file, const CMedia* img,
                     }
 
 
+
                     std::string root = x;
 
-
-#ifdef USE_HASH
-                    size_t pos = root.find( ' ' );
-
-                    if ( root[0] == '#' &&
-                         pos != std::string::npos )
+                    if ( root[0] == '#' )
                     {
-                        root = root.substr( pos+1, root.size() );
-
-                        size_t pos2 = root.rfind( '.' );
-                        if ( pos2 != std::string::npos )
-                        {
-                            root = root.substr( 0, pos2 );
-                        }
+                        size_t pos = root.find( ' ' );
+                        if ( pos != std::string::npos )
+                            root = root.substr( pos+1, root.size() );
                     }
-#endif
+
+
                     if ( root == _("Color") ) root = "";
+
 
                     Header hdr;
                     hdr.setVersion( 1 );
@@ -2339,6 +2418,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                                                      opts->compression_level() );
                     }
 
+                    layers.push_back( name );
                     headers.push_back( hdr );
                     FrameBuffer fb;
                     fbs.push_back( fb );
@@ -2354,329 +2434,258 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     unsigned part = 0;
     unsigned numParts = fbs.size();
+    const mrv::Recti& dpw = img->display_window();
 
     for ( ; part < numParts; ++part )
     {
         Header& h = headers[part];
         FrameBuffer& fb = fbs[part];
 
-        typedef std::set< std::string > Layers;
-        Layers layers;
+        const std::string& layer = layers[part];
 
-        h.channels().layers( layers );
+        p->channel( layer.c_str() );
+        const char* ch = p->channel();
+        if ( ( layer == _("Color") && ch != NULL ) ||
+             ( ch && layer != ch ) )
+            LOG_ERROR( "Failed setting layer to " << layer );
 
-        if ( layers.size() == 0 )
-        { 
-            if ( h.name() == "Z" )
-            {
-                layers.insert( "Z" );
-            }
-            else if ( h.name().empty() )
-            {
-                layers.insert( _("Color") );
-            }
-        }
+        std::cerr << "Changed to layer " 
+                  << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
 
-        std::cerr << "part " << part << " header name " << h.name()
-                  << " layers " << layers.size() << std::endl;
+        const mrv::Recti& daw = img->data_window();
 
-        const mrv::Recti& dpw = img->display_window();
 
-        Layers::const_iterator it = layers.begin();
-        Layers::const_iterator et = layers.end();
+        Box2i bdpw( V2i(dpw.x(), dpw.y()),
+                    V2i(dpw.x() + dpw.w() - 1,
+                        dpw.y() + dpw.h() - 1) );
+        Box2i bdaw( V2i(daw.x(), daw.y()),
+                    V2i(daw.x() + daw.w() - 1,
+                        daw.y() + daw.h() - 1) );
 
-        if ( it == et )
+        h.displayWindow() = bdpw;
+        h.dataWindow() = bdaw;
+
+
+        int dx = daw.x();
+        int dy = daw.y();
+
+        mrv::image_type_ptr pic = img->hires();
+        if (!pic) return false;
+
+        std::string prefix = layer;
+
+        std::cerr << "PREFIX: " << prefix << std::endl;
+
+        if ( prefix[0] == '#' )
         {
-            LOG_ERROR( "+++++++++++ MISSING LAYERS FOR " << h.name() );
-            continue;
-        }
-
-        for ( ; it != et; ++it )
-        {
-            const std::string& name = *it;
-
-            p->channel( name.c_str() );
-
-            const mrv::Recti& daw = img->data_window();
-
-
-            Box2i bdpw( V2i(dpw.x(), dpw.y()),
-                        V2i(dpw.x() + dpw.w() - 1,
-                            dpw.y() + dpw.h() - 1) );
-            Box2i bdaw( V2i(daw.x(), daw.y()),
-                        V2i(daw.x() + daw.w() - 1,
-                            daw.y() + daw.h() - 1) );
-
-            h.displayWindow() = bdpw;
-            h.dataWindow() = bdaw;
-
-
-            std::cerr << *it << " " << daw << std::endl;
-
-            int dx = daw.x();
-            int dy = daw.y();
-
-            mrv::image_type_ptr pic = img->hires();
-            if (!pic) return false;
-
-
-
-            std::string prefix = *it;
-
-            ChannelList::ConstIterator ci;
-            ChannelList::ConstIterator ce;
-            h.channels().channelsInLayer( *it, ci, ce );
-            ChannelList::ConstIterator cs = ci;
-
-            bool use_rgb = false;
-            if ( prefix == _("Color") ) use_rgb = true;
-            bool use_alpha = false;
-            if ( use_rgb && img->has_alpha() ) use_alpha = true;
-            bool use_z = false;
-            if ( prefix == "Z" ) {
-                use_z = true;
+            size_t pos = prefix.find( '.' );
+            if ( pos != std::string::npos )
+                prefix = prefix.substr( pos+1, prefix.size() );
+            else
                 prefix.clear();
-            }
-            bool use_xyz = false;
-            bool use_st = false;
-            bool use_uv = false;
-            bool use_w = false;
+        }
 
-            std::cerr << "Header '" << h.name() 
-                      << "' channels in layer " << *it << std::endl;
-            for ( ; ci != ce; ++ci )
+
+        ChannelList::ConstIterator ci = h.channels().begin();
+        ChannelList::ConstIterator ce = h.channels().end();
+        ChannelList::ConstIterator cs = ci;
+
+        bool use_rgb = false;
+        if ( prefix == _("Color") ) {
+            use_rgb = true;
+            prefix.clear();
+        }
+        bool use_alpha = false;
+        if ( use_rgb && img->has_alpha() ) use_alpha = true;
+        bool use_z = false;
+        bool use_xyz = false;
+        bool use_st = false;
+        bool use_uv = false;
+        bool use_w = false;
+
+        
+        int idx = 0;
+        for ( ; ci != ce; ++ci, ++idx )
+        {
+            const std::string& name = ci.name();
+            std::cerr << "\tCONTENT: " << name << std::endl;
+            std::string ext = name;
+            size_t pos = name.rfind( '.' );
+            if ( pos != std::string::npos )
             {
-                const std::string& name = ci.name();
-                std::cerr << "\t" << name << std::endl;
-                size_t pos = name.rfind( '.' );
-                if ( pos == std::string::npos )
+                ext = name.substr( pos+1, name.size() );
+            }
+
+            std::transform( ext.begin(), ext.end(), ext.begin(),
+                            (int(*)(int)) toupper );
+
+            if ( ext == N_("R") || ext == N_("G") || ext == N_("B") )
+                use_rgb = true;
+            if ( ext == N_("A") ) use_alpha = true;
+            if ( ext == N_("X") || ext == N_("Y") ) use_xyz = true;
+            if ( ext == N_("Z") ) use_z = true;
+            if ( ext == N_("S") || ext == N_("T") ) use_st = true;
+            if ( ext == N_("U") || ext == N_("V") ) use_uv = true;
+            if ( ext == N_("W") ) use_w = true;
+        }
+
+
+        size_t size = 1;
+        switch( save_type )
+        {
+            case Imf::UINT:
+                size = sizeof(unsigned);
+                break;
+            case Imf::FLOAT:
+                size = sizeof(float);
+                break;
+            default:
+            case Imf::HALF:
+                size = sizeof(half);
+                break;
+        }
+
+        std::cerr << "part: " << part << std::endl
+                  << "layer: " << layer << std::endl
+                  << "prefix: " << prefix << std::endl
+                  << "use_rgb: " << use_rgb << std::endl
+                  << "use_alpha: " << use_alpha << std::endl
+                  << "use_xyz: " << use_xyz << std::endl
+                  << "use_z: " << use_z << std::endl
+                  << "use_st: " << use_st << std::endl
+                  << "use_uv: " << use_uv << std::endl
+                  << "use_w: " << use_w << std::endl;
+
+        unsigned channels = pic->channels();
+        unsigned dw = pic->width();
+        unsigned dh = pic->height();
+        size_t total_size = dw*dh*size*channels;
+
+        uint8_t* base = (uint8_t*) new uint8_t[total_size];
+        bufs.push_back( base );
+
+        copy_pixel_data( pic, save_type, base, total_size, use_alpha );
+
+        size_t xs = size * channels;
+        size_t ys = xs * dw;
+
+        int offset = xs*(-dx-dy*dw);
+        if ( prefix == _("Color") ) prefix.clear();
+        else if ( !prefix.empty() ) prefix += '.';
+
+        if ( use_rgb )
+        {
+            fb.insert( prefix + N_("R"), Slice( save_type,
+                                                (char*) &base[offset], 
+                                                xs, ys ) );
+            fb.insert( prefix + N_("G"), Slice( save_type, 
+                                                (char*) &base[offset+size],
+                                                xs, ys ) );
+            fb.insert( prefix + N_("B"), Slice( save_type, 
+                                                (char*) &base[offset+2*size], 
+                                                xs, ys ) );
+
+        }
+        // else if ( use_xyz )
+        // {
+        //     fb.insert( prefix + N_("X"), Slice( save_type, (char*) &base[offset], 
+        //                                         xs, ys ) );
+        //     fb.insert( prefix + N_("Y"), Slice( save_type, 
+        //                                         (char*) &base[offset+size],
+        //                                         xs, ys ) );
+        //     if ( use_z )
+        //         fb.insert( prefix + N_("Z"), 
+        //                    Slice( save_type, 
+        //                           (char*) &base[offset+2*size], 
+        //                           xs, ys ) );
+        // }
+        // else if ( use_st )
+        // {
+        //     fb.insert( prefix + N_("S"), Slice( save_type, (char*) &base[offset], 
+        //                                         xs, ys ) );
+        //     fb.insert( prefix + N_("T"), Slice( save_type, 
+        //                                         (char*) &base[offset+size],
+        //                                         xs, ys ) );
+        // } 
+        // else if ( use_uv )
+        // {
+        //     std::cerr << ">>>> INSERT " << prefix << "U" << std::endl;
+        //     fb.insert( prefix + N_("U"), Slice( save_type, (char*) &base[offset], 
+        //                                         xs, ys ) );
+        //     fb.insert( prefix + N_("V"), Slice( save_type, 
+        //                                         (char*) &base[offset+size],
+        //                                         xs, ys ) );
+        //     if ( use_w )
+        //         fb.insert( prefix + N_("W"), 
+        //                    Slice( save_type, 
+        //                           (char*) &base[offset+2*size], 
+        //                           xs, ys ) );
+        // }
+        else if ( use_z && !use_xyz )
+        {
+            fb.insert( N_("Z"), 
+                       Slice( save_type, (char*) &base[offset], 
+                              xs, ys ) );
+        }
+        else
+        {
+            int idx = 0;
+            for ( ci = cs; ci != ce; ++ci, ++idx )
+            {
+                std::string suffix = ci.name();
+                if ( !use_numeral )
                 {
-                    use_rgb = true;
-                    use_alpha = img->has_alpha();
-                }
-                else
-                {
-                    std::string ext = name.substr( pos+1, name.size() );
-
-                    std::transform( ext.begin(), ext.end(), ext.begin(),
-                                    (int(*)(int)) toupper );
-
-                    if ( ext == N_("R") || ext == N_("G") || ext == N_("B") )
-                        use_rgb = true;
-                    if ( ext == N_("A") ) use_alpha = true;
-                    if ( ext == N_("X") || ext == N_("Y") ) use_xyz = true;
-                    if ( ext == N_("Z") ) use_z = true;
-                    if ( ext == N_("S") || ext == N_("T") ) use_st = true;
-                    if ( ext == N_("U") || ext == N_("V") ) use_uv = true;
-                    if ( ext == N_("W") ) use_w = true;
-                }
-            }
-
-            std::cerr << "part #" << part << std::endl;
-            std::cerr << "prefix " << prefix << std::endl;
-            std::cerr << "use_rgb: " << use_rgb << std::endl;
-            std::cerr << "use_xyz: " << use_xyz << std::endl;
-            std::cerr << "use_alpha: " << use_alpha << std::endl;
-            std::cerr << "use_st: " << use_st << std::endl;
-            std::cerr << "use_uv: " << use_uv << std::endl;
-            std::cerr << "use_w: " << use_w << std::endl;
-            std::cerr << "use_z: " << use_z << std::endl;
-
-            uint8_t* base = NULL;
-            size_t size = 1;
-            switch( save_type )
-            {
-                case Imf::UINT:
-                    size = sizeof(unsigned);
-                    break;
-                case Imf::FLOAT:
-                    size = sizeof(float);
-                    break;
-                default:
-                case Imf::HALF:
-                    size = sizeof(half);
-                    break;
-            }
-
-            Imf::PixelType pt = pixel_type_to_exr( pic->pixel_type() );
-            unsigned channels = pic->channels();
-            unsigned dw = pic->width();
-            unsigned dh = pic->height();
-            size_t total_size = dw*dh*size*channels;
-            base = (uint8_t*) new uint8_t[total_size];
-            bufs.push_back( base );
-            std::cerr << "base: " << (void*) base << std::endl;
-
-            if ( pt == save_type )
-            {
-                std::cerr << ">>>>>>>>> memcpy channels " 
-                          << channels << " total size: " 
-                          << total_size << std::endl;
-                memcpy( base, pic->data().get(), total_size );
-            }
-            else
-            {
-                for ( unsigned y = 0; y < dh; ++y )
-                {
-                    for ( unsigned x = 0; x < dw; ++x )
-                    {
-                        CMedia::Pixel p = pic->pixel( x, y );
-                        unsigned yh = channels * ( x + y * dw );
-                        if ( save_type == Imf::HALF )
-                        {
-                            half* s = (half*) base;
-                            s[ yh ]   = p.r;
-                            s[ yh + 1 ] = p.g;
-                            s[ yh + 2 ] = p.b;
-                            if ( use_alpha )
-                                s[ yh + 3 ] = p.a;
-                        }
-                        else if ( save_type == Imf::FLOAT )
-                        {
-                            CMedia::Pixel* s = (CMedia::Pixel*) base;
-                            if ( use_alpha )
-                                s[ yh + 3 ] = p;
-                            else
-                            {
-                                float* s = (float*) base;
-                                s[ yh ] = p.r;
-                                s[ yh + 1 ] = p.g;
-                                s[ yh + 2 ] = p.b;
-                            }
-                        }
-                        else if ( save_type == Imf::UINT )
-                        {
-                            unsigned* s = (unsigned*) base;
-                            if ( p.r > 1.0f ) p.r = 1.0f;
-                            else if ( p.r < 0.0f ) p.r = 0.0f;
-                            if ( p.g > 1.0f ) p.g = 1.0f;
-                            else if ( p.g < 0.0f ) p.g = 0.0f;
-                            if ( p.b > 1.0f ) p.b = 1.0f;
-                            else if ( p.b < 0.0f ) p.b = 0.0f;
-                            s[ yh ] = (unsigned) (p.r * 4294967295.0f);
-                            s[ yh + 1 ] = (unsigned) (p.g * 4294967295.0f);
-                            s[ yh + 2 ] = (unsigned) ( p.b * 4294967295.0f );
-                            if ( use_alpha )
-                                s[ yh + 3 ] = (unsigned) (p.a * 4294967295.0f);
-                        }
-                    }
-                }
-            }
-
-            size_t xs = size * channels;
-            size_t ys = xs * dw;
-
-            int offset = xs*(-dx-dy*dw);
-            if ( prefix == _("Color") ) prefix.clear();
-            else if ( prefix.size() ) prefix += '.';
-
-            if ( use_rgb )
-            {
-                fb.insert( prefix + N_("R"), Slice( save_type,
-                                                    (char*) &base[offset], 
-                                                    xs, ys ) );
-                fb.insert( prefix + N_("G"), Slice( save_type, 
-                                                    (char*) &base[offset+size],
-                                                    xs, ys ) );
-                fb.insert( prefix + N_("B"), Slice( save_type, 
-                                                    (char*) &base[offset+2*size], 
-                                                    xs, ys ) );
-
-            }
-            else if ( use_xyz )
-            {
-                fb.insert( prefix + N_("X"), Slice( save_type, (char*) &base[offset], 
-                                           xs, ys ) );
-                fb.insert( prefix + N_("Y"), Slice( save_type, 
-                                           (char*) &base[offset+size],
-                                           xs, ys ) );
-                if ( use_z )
-                    fb.insert( prefix + N_("Z"), 
-                               Slice( save_type, 
-                                      (char*) &base[offset+2*size], 
-                                      xs, ys ) );
-            }
-            else if ( use_st )
-            {
-                fb.insert( prefix + N_("S"), Slice( save_type, (char*) &base[offset], 
-                                           xs, ys ) );
-                fb.insert( prefix + N_("T"), Slice( save_type, 
-                                           (char*) &base[offset+size],
-                                           xs, ys ) );
-            } 
-            else if ( use_uv )
-            {
-                fb.insert( prefix + N_("U"), Slice( save_type, (char*) &base[offset], 
-                                           xs, ys ) );
-                fb.insert( prefix + N_("V"), Slice( save_type, 
-                                           (char*) &base[offset+size],
-                                           xs, ys ) );
-                if ( use_w )
-                    fb.insert( prefix + N_("W"), 
-                                      Slice( save_type, 
-                                             (char*) &base[offset+2*size], 
-                                             xs, ys ) );
-            }
-            else if ( use_z && !use_xyz )
-            {
-                fb.insert( prefix + N_("Z"), 
-                           Slice( save_type, (char*) &base[offset], 
-                                  xs, ys ) );
-            }
-            else
-            {
-                short i = 0;
-                for ( ci = cs; ci != ce; ++ci, ++i )
-                {
-                    const std::string& name = ci.name();
-                    size_t pos = name.rfind( '.' );
-                    std::string suffix = name;
+                    size_t pos = suffix.rfind('.');
                     if ( pos != std::string::npos )
                     {
-                        suffix = name.substr( pos+1, name.size() );
+                        suffix = suffix.substr(pos+1, suffix.size());
                     }
-                    fb.insert( prefix + suffix, 
-                               Slice( save_type, 
-                                      (char*) &base[offset+size*i], 
-                                      xs, ys ) );
                 }
-            }
-
-            if ( use_alpha )
-            {
-                fb.insert( prefix + N_("A"), 
+                fb.insert( prefix + suffix, 
                            Slice( save_type, 
-                                  (char*) &base[offset+3*size],
+                                  (char*) &base[offset+size*idx], 
                                   xs, ys ) );
-
-                if ( use_z )
-                {
-                    std::string channel = prefix + N_("Z");
-                    p->channel( channel.c_str() );
-                    pic = img->hires();
-
-                    total_size = dw*dh*size;
-                    base = (uint8_t*) new uint8_t[total_size];
-                    bufs.push_back( base );
-
-                    memcpy( base, pic->data().get(), total_size );
-
-                    xs = size;
-                    ys = xs * dw;
-
-                    offset = xs*(-dx-dy*dw);
-
-                    fb.insert( channel, Slice( save_type, 
-                                               (char*) &base[offset], 
-                                               xs, ys ) );
-
-                }
             }
+        }
 
+        if ( use_alpha )
+        {
+            fb.insert( prefix + N_("A"), 
+                       Slice( save_type, 
+                              (char*) &base[offset+3*size],
+                              xs, ys ) );
 
+            if ( use_z )
+            {
+                std::string channel = layer + '.' + N_("Z");
+                p->channel( channel.c_str() );
+                pic = img->hires();
+
+                unsigned channels = pic->channels();
+                unsigned dw = pic->width();
+                unsigned dh = pic->height();
+                size_t total_size = dw*dh*size*channels;
+
+                uint8_t* base = (uint8_t*) new uint8_t[total_size];
+                bufs.push_back( base );
+                copy_pixel_data( pic, save_type, base, total_size, false );
+
+                xs = size;
+                ys = xs * dw;
+
+                offset = xs*(-dx-dy*dw);
+
+                fb.insert( prefix + N_("Z"), Slice( save_type, 
+                                                    (char*) &base[offset], 
+                                                    xs, ys ) );
+            }
 
         }
+
+
+
     }
+
 
     try {
         MultiPartOutputFile multi( file, &(headers[0]), 
