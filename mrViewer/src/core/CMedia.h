@@ -438,9 +438,9 @@ class CMedia
     virtual bool is_cache_filled(int64_t frame);
 
     // Store a frame in sequence cache
-    void cache( const mrv::image_type_ptr& pic );
-    void stereo_cache( const mrv::image_type_ptr& left, 
-                       const mrv::image_type_ptr& right );
+    void cache( const mrv::image_type_ptr pic );
+    void stereo_cache( const mrv::image_type_ptr left, 
+                       const mrv::image_type_ptr right );
 
     inline PacketQueue& video_packets() { return _video_packets; }
 
@@ -1191,7 +1191,6 @@ class CMedia
     boost::int64_t _seek_frame;      //!< seek frame requested
 
     char*  _channel;          //!< current channel/layer being shown
-    char*  _old_channel;      //!< previously shown channel/layer
 
     char*  _label;            //!< optional label drawn superimposed
 
