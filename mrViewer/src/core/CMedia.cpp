@@ -158,7 +158,6 @@ _avdiff( 0.0 ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _channel( NULL ),
-_old_channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
 _play_fps( 0 ),
@@ -250,7 +249,6 @@ _loop_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _channel( NULL ),
-_old_channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
 _play_fps( 24.0 ),
@@ -347,7 +345,6 @@ _loop_barrier( NULL ),
 _seek_req( false ),
 _seek_frame( 1 ),
 _channel( NULL ),
-_old_channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
 _play_fps( 24.0 ),
@@ -491,12 +488,12 @@ CMedia::~CMedia()
     stop();
 
   if ( _right_eye ) _right_eye->stop();
+
   delete _right_eye;
   _right_eye = NULL;
 
   image_damage( kNoDamage );
 
-  free( _old_channel );
   free( _channel );
   free( _label );
   free( _profile );
@@ -535,6 +532,7 @@ CMedia::~CMedia()
      swr_free( &forw_ctx );
      forw_ctx = NULL;
   }
+
 
   free( _fileroot );
   free( _filename );
@@ -1910,7 +1908,7 @@ void CMedia::seek( const boost::int64_t f )
  * 
  * @param pic       picture to cache
  */
-void CMedia::cache( const mrv::image_type_ptr& pic )
+void CMedia::cache( const mrv::image_type_ptr pic )
 {
    assert( pic != NULL );
 
@@ -2006,8 +2004,8 @@ void CMedia::cache( const mrv::image_type_ptr& pic )
  * @param left    left picture to cache
  * @param right   right picture to cache
  */
-void CMedia::stereo_cache( const mrv::image_type_ptr& left,
-                           const mrv::image_type_ptr& right )
+void CMedia::stereo_cache( const mrv::image_type_ptr left,
+                           const mrv::image_type_ptr right )
 {
    assert( left != NULL && right != NULL );
    assert( left->frame() == right->frame() );
