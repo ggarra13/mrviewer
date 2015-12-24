@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -64,6 +65,8 @@ using namespace Imf;
 using namespace Imath;
 using namespace std;
 
+#define USE_HASH
+#define USE_ALPHA
 
 namespace
 {
@@ -139,7 +142,7 @@ exrImage::exrImage() :
   _levelX( 0 ),
   _levelY( 0 ),
   _multiview( false ),
-  _has_alpha( true ),
+  _has_alpha( false ),
   _has_yca( false ),
   _use_yca( false ),
   _has_left_eye( false ),
@@ -342,7 +345,7 @@ bool exrImage::channels_order(
    {
       size_t t = _hires->pixel_size();
 
-      for ( unsigned j = 0; j < numChannels; ++j )
+      for ( unsigned j = 0; j < 4; ++j )
       {
            if ( order[j] == -1 ) continue;
            xs[order[j]] = t;
@@ -360,9 +363,10 @@ bool exrImage::channels_order(
 
        for ( unsigned j = 0; j < 4; ++j )
        {
-           if ( order[j] == -1 ) continue;
-           xs[order[j]] = pixels;
-           ys[order[j]] = pixels * dw;
+           int k = order[j];
+           if ( k == -1 ) continue;
+           xs[k] = pixels;
+           ys[k] = pixels * dw;
        }
    }
 
@@ -1486,7 +1490,8 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
         zbuff[i] = new float[sampleCount[i]];
     }
 
-    in.readPixels (dataWindow.min.y, dataWindow.max.y);
+    if ( in.isComplete() )
+        in.readPixels (dataWindow.min.y, dataWindow.max.y);
 
 
 }
@@ -1678,7 +1683,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            {
                InputPart in( inmaster, _curpart );
                in.setFrameBuffer(fb);
-               in.readPixels( dataWindow.min.y, dataWindow.max.y );
+               if ( in.isComplete() )
+                   in.readPixels( dataWindow.min.y, dataWindow.max.y );
            }
            catch( const std::exception& e )
            {
@@ -1769,7 +1775,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          try
          {
              in.setFrameBuffer(fb);
-             in.readPixels( dataWindow.min.y, dataWindow.max.y );
+             if ( in.isComplete() )
+                 in.readPixels( dataWindow.min.y, dataWindow.max.y );
          }
          catch( const std::exception& e )
          {
@@ -1782,7 +1789,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          try
          {
              in.setFrameBuffer(fb);
-             in.readPixels( dataWindow.min.y, dataWindow.max.y );
+             if ( in.isComplete() )
+                 in.readPixels( dataWindow.min.y, dataWindow.max.y );
          }
          catch( const std::exception& e )
          {
@@ -2187,7 +2195,6 @@ bool exrImage::save( const char* file, const CMedia* img,
     typedef std::set< std::string > PartNames;
     PartNames names;
 
-    bool use_numeral = false;
     Imf::PixelType save_type = opts->pixel_type();
 
     if ( 1 ) // ( opts->all_layers )
@@ -2226,11 +2233,14 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                     if ( !suffix.empty() )
                     {
+                        std::cerr << "channel " << root << '#' << suffix
+                                  << std::endl;
                         hdr.channels().insert( root + '.' + suffix,
                                                Channel( save_type,1,1 ) );
                     }
                     else
                     {
+                        std::cerr << "channel " << root << " empty" << std::endl;
                         hdr.channels().insert( root,
                                                Channel( save_type,1,1 ) );
                     }
@@ -2249,12 +2259,14 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
                     std::string root = x;
+
+
+#ifdef USE_HASH
                     size_t pos = root.find( ' ' );
 
                     if ( root[0] == '#' &&
                          pos != std::string::npos )
                     {
-                        use_numeral = true;
                         root = root.substr( pos+1, root.size() );
 
                         size_t pos2 = root.rfind( '.' );
@@ -2263,19 +2275,19 @@ bool exrImage::save( const char* file, const CMedia* img,
                             root = root.substr( 0, pos2 );
                         }
                     }
+#endif
+                    if ( root == _("Color") ) root = "";
 
-                    Header hdr; //( bdpw, bdaw );
-                    //hdr.setVersion( 1 );
+                    Header hdr;
+                    hdr.setVersion( 1 );
                     hdr.setType( SCANLINEIMAGE );
 
                     // Avoid repeated names
                     while ( names.find( root ) != names.end() )
-                    {
                         root += "_2";
-                    }
+                    names.insert( root );
 
                     hdr.setName( root );
-                    names.insert( root );
 
                     if ( x == N_("Z") )
                     {
@@ -2290,9 +2302,11 @@ bool exrImage::save( const char* file, const CMedia* img,
                                                Channel( save_type, 1, 1 ) );
                         hdr.channels().insert( N_("B"),
                                                Channel( save_type, 1, 1 ) );
+#ifdef USE_ALPHA
                         if ( img->has_alpha() )
                             hdr.channels().insert( N_("A"),
                                                    Channel( save_type, 1, 1 ) );
+#endif
                     }
 
                     Imf::Compression comp = opts->compression();
@@ -2327,9 +2341,6 @@ bool exrImage::save( const char* file, const CMedia* img,
     unsigned part = 0;
     unsigned numParts = fbs.size();
 
-    // View window must be same for all layers
-    mrv::Recti dpw;
-
     for ( ; part < numParts; ++part )
     {
         Header& h = headers[part];
@@ -2346,9 +2357,8 @@ bool exrImage::save( const char* file, const CMedia* img,
             {
                 layers.insert( "Z" );
             }
-            else if ( h.name() == _("Color") )
+            else if ( h.name().empty() )
             {
-                h.setName("");
                 layers.insert( _("Color") );
             }
         }
@@ -2356,19 +2366,24 @@ bool exrImage::save( const char* file, const CMedia* img,
         std::cerr << "part " << part << " header name " << h.name()
                   << " layers " << layers.size() << std::endl;
 
+        const mrv::Recti& dpw = img->display_window();
+
         Layers::const_iterator it = layers.begin();
         Layers::const_iterator et = layers.end();
+
+        if ( it == et )
+        {
+            LOG_ERROR( "+++++++++++ MISSING LAYERS FOR " << h.name() );
+            continue;
+        }
+
         for ( ; it != et; ++it )
         {
             const std::string& name = *it;
 
             p->channel( name.c_str() );
 
-            const mrv::Recti& dpy = img->display_window();
             const mrv::Recti& daw = img->data_window();
-
-            if ( dpw.h() == 0 )
-                dpw = dpy;
 
 
             Box2i bdpw( V2i(dpw.x(), dpw.y()),
@@ -2408,7 +2423,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             bool use_rgb = false;
             if ( prefix == _("Color") ) use_rgb = true;
             bool use_alpha = false;
-            if ( use_rgb && img->has_alpha() ) use_alpha = true;
+            // if ( use_rgb && img->has_alpha() ) use_alpha = true;
             bool use_z = false;
             if ( prefix == "Z" ) {
                 use_z = true;
@@ -2429,7 +2444,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                 if ( pos == std::string::npos )
                 {
                     use_rgb = true;
-                    use_alpha = img->has_alpha();
+                    // use_alpha = img->has_alpha();
                 }
                 else
                 {
@@ -2681,8 +2696,8 @@ bool exrImage::save( const char* file, const CMedia* img,
         delete [] *i;
     }
     bufs.clear();
-    headers.clear();
     fbs.clear();
+    headers.clear();
 
     p->channel( old_channel.c_str() );
 
