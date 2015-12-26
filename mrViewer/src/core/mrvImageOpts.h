@@ -26,7 +26,6 @@
 
 namespace mrv {
 
-static const char* kModule = "imgopt";
 
 class ImageOpts
 {

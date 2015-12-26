@@ -789,7 +789,6 @@ bool exrImage::find_channels( const Imf::Header& h,
 
             if ( root.size() ) _channel = strdup( root.c_str() );
 
-            std::cerr << "ZZZZZZZZZZ channelPrefix " << _channel << std::endl;
             channelPrefix = _channel;
         }
     }
@@ -835,16 +834,8 @@ bool exrImage::find_channels( const Imf::Header& h,
                 channels.channelsWithPrefix( prefix, s, e );
                 if ( s == e )
                 {
-                    std::cerr << "PREFIX " << prefix << " FAILED IN HEADER "
-                              << h.name() << std::endl;
                     s = channels.begin();
                     e = channels.end();
-                    Imf::ChannelList::ConstIterator i = s;
-                    for ( ; i != e; ++i )
-                    {
-                        std::cerr << "\tchannel " << i.name() << std::endl;
-                    }
-                    
                 }
                 return channels_order( frame, s, e, channels, h, fb );
             }
@@ -1879,7 +1870,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     return true;
   }
 
-#if 0
+
+void save_attributes( const CMedia* img, Header& hdr )
+{
+
         if ( img->has_chromaticities() )
         {
             Imf::ChromaticitiesAttribute attr( img->chromaticities() );
@@ -2186,7 +2180,13 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             Imf::StringAttribute attr( it->second );
             hdr.insert( N_("wrapmodes"), attr );
         }
-#endif
+}
+
+
+typedef std::vector< Imf::Header > HeaderList;
+typedef std::vector< Imf::FrameBuffer > FrameBufferList;
+typedef std::set< std::string > PartNames;
+typedef std::vector< std::string >   LayerList;
 
 
 void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
@@ -2203,7 +2203,6 @@ void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
 
     if ( pt == save_type )
     {
-        std::cerr << "\t>>>>> memcpy total size: " << total_size << std::endl;
         memcpy( base, pic->data().get(), total_size );
     }
     else
@@ -2259,6 +2258,69 @@ void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
     }
 }
 
+void add_layer( HeaderList& headers, FrameBufferList& fbs, 
+                PartNames& names, LayerList& layers, 
+                Imf::PixelType save_type,
+                const CMedia* img, const EXROpts* opts,
+                std::string& root, const std::string& layer,
+                const std::string& x )
+{
+    Header hdr;
+    hdr.setVersion( 1 );
+    hdr.setType( SCANLINEIMAGE );
+
+    // Avoid repeated names
+    while ( names.find( root ) != names.end() )
+        root += "_2";
+    names.insert( root );
+
+    hdr.setName( root );
+
+    if ( x == N_("Z") )
+    {
+        hdr.channels().insert( x,
+                               Channel( save_type,1,1 ) );
+    }
+    if ( x == _("Color") )
+    {
+        hdr.channels().insert( N_("R"),
+                               Channel( save_type, 1, 1 ) );
+        hdr.channels().insert( N_("G"),
+                               Channel( save_type, 1, 1 ) );
+        hdr.channels().insert( N_("B"),
+                               Channel( save_type, 1, 1 ) );
+
+        if ( img->has_alpha() )
+            hdr.channels().insert( N_("A"),
+                                   Channel( save_type, 1, 1 ) );
+
+    }
+
+    Imf::Compression comp = opts->compression();
+    if ( comp >= NUM_COMPRESSION_METHODS )
+    {
+        LOG_WARNING( "Compression method not available. "
+                     "Using PIZ." );
+        comp = Imf::PIZ_COMPRESSION;
+    }
+    hdr.compression() = comp;
+
+    if ( comp == Imf::DWAA_COMPRESSION || 
+         comp == Imf::DWAB_COMPRESSION )
+    {
+        Imf::addDwaCompressionLevel( hdr, 
+                                     opts->compression_level() );
+    }
+
+    if ( headers.size() == 0 )
+        save_attributes( img, hdr );
+
+    layers.push_back( layer );
+    headers.push_back( hdr );
+    FrameBuffer fb;
+    fbs.push_back( fb );
+}
+
 bool exrImage::save( const char* file, const CMedia* img, 
                      const ImageOpts* const ipts )
 {
@@ -2278,31 +2340,26 @@ bool exrImage::save( const char* file, const CMedia* img,
     CMedia* p = const_cast< CMedia* >( img );
 
 
-    typedef std::vector< Imf::Header > HeaderList;
     HeaderList headers;
 
-    typedef std::vector< Imf::FrameBuffer > FrameBufferList;
     FrameBufferList fbs;
 
     Buffers bufs;
 
-    typedef std::set< std::string > PartNames;
     PartNames names;
 
-    //typedef std::set< std::string > Layers;
-    typedef std::vector< std::string >   LayerList;
     LayerList layers;
 
     Imf::PixelType save_type = opts->pixel_type();
 
-    if ( 1 ) // ( opts->all_layers )
+    if ( 0 ) // ( opts->all_layers )
     {
 
         {
             stringArray::const_iterator i = img->layers().begin();
             stringArray::const_iterator e = img->layers().end();
 
-            std::string x = _("ZVCF!@");
+            std::string x = N_("ZVCF!@");
             for ( ; i != e; ++i )
             {
                 const std::string& name = *i;
@@ -2313,7 +2370,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                 if ( name.find(x) == 0 )
                 {
                     std::string root = name;
-                    std::cerr << "FOUND " << root << " with " << x << std::endl;
+                    // std::cerr << "FOUND " << root << " with " << x << std::endl;
 
                     if ( root[0] == '#' )
                     {
@@ -2338,14 +2395,14 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                     if ( !suffix.empty() )
                     {
-                        std::cerr << "channel " << root << '#' << suffix
-                                  << std::endl;
+                        // std::cerr << "channel " << root << '#' << suffix
+                        //           << std::endl;
                         hdr.channels().insert( root + '.' + suffix,
                                                Channel( save_type,1,1 ) );
                     }
                     else
                     {
-                        std::cerr << "channel " << root << " empty" << std::endl;
+                        // std::cerr << "channel " << root << " empty" << std::endl;
                         hdr.channels().insert( root,
                                                Channel( save_type,1,1 ) );
                     }
@@ -2376,58 +2433,9 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                     if ( root == _("Color") ) root = "";
 
+                    add_layer( headers, fbs, names, layers,
+                               save_type, img, opts, root, name, x );
 
-                    Header hdr;
-                    hdr.setVersion( 1 );
-                    hdr.setType( SCANLINEIMAGE );
-
-                    // Avoid repeated names
-                    while ( names.find( root ) != names.end() )
-                        root += "_2";
-                    names.insert( root );
-
-                    hdr.setName( root );
-
-                    if ( x == N_("Z") )
-                    {
-                        hdr.channels().insert( x,
-                                               Channel( save_type,1,1 ) );
-                    }
-                    if ( x == _("Color") )
-                    {
-                        hdr.channels().insert( N_("R"),
-                                               Channel( save_type, 1, 1 ) );
-                        hdr.channels().insert( N_("G"),
-                                               Channel( save_type, 1, 1 ) );
-                        hdr.channels().insert( N_("B"),
-                                               Channel( save_type, 1, 1 ) );
-#ifdef USE_ALPHA
-                        if ( img->has_alpha() )
-                            hdr.channels().insert( N_("A"),
-                                                   Channel( save_type, 1, 1 ) );
-#endif
-                    }
-
-                    Imf::Compression comp = opts->compression();
-                    if ( comp >= NUM_COMPRESSION_METHODS )
-                    {
-                        LOG_WARNING( "Compression method not available. "
-                                     "Using PIZ." );
-                        comp = Imf::PIZ_COMPRESSION;
-                    }
-                    hdr.compression() = comp;
-
-                    if ( comp == Imf::DWAA_COMPRESSION || 
-                         comp == Imf::DWAB_COMPRESSION )
-                    {
-                        Imf::addDwaCompressionLevel( hdr, 
-                                                     opts->compression_level() );
-                    }
-
-                    layers.push_back( name );
-                    headers.push_back( hdr );
-                    FrameBuffer fb;
-                    fbs.push_back( fb );
                 }
             }
         }
@@ -2435,6 +2443,15 @@ bool exrImage::save( const char* file, const CMedia* img,
     else
     {
         // @todo: handle single layer
+        const char* layer = img->channel();
+        std::string root, x;
+        if ( layer ) root = layer;
+
+        if ( root.find( "Z" ) != std::string::npos ) x = "Z";
+        else x = _("Color");
+
+        add_layer( headers, fbs, names, layers,
+                   save_type, img, opts, root, layer, x );
     }
 
 
@@ -2455,8 +2472,8 @@ bool exrImage::save( const char* file, const CMedia* img,
              ( ch && layer != ch ) )
             LOG_ERROR( "Failed setting layer to " << layer );
 
-        std::cerr << "Changed to layer " 
-                  << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
+        // std::cerr << "Changed to layer " 
+        //           << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
 
         const mrv::Recti& daw = img->data_window();
 
@@ -2541,7 +2558,6 @@ bool exrImage::save( const char* file, const CMedia* img,
             std::transform( ext.begin(), ext.end(), ext.begin(),
                             (int(*)(int)) toupper);
 
-            std::cerr << "PROCESS " << ext << std::endl;
 
             if ( order[0] == -1 && (ext == N_("R") ||
                                     ext == N_("Y") || ext == N_("U") ||
@@ -2585,7 +2601,6 @@ bool exrImage::save( const char* file, const CMedia* img,
             if ( k == -1 ) continue;
 
             const std::string& name = ci.name();
-            std::cerr << "Name " << name << " order " << k << std::endl;
 
             if ( idx == 4 ) {
                 std::string c;
@@ -2594,19 +2609,18 @@ bool exrImage::save( const char* file, const CMedia* img,
                 else
                     c = ci.name();
 
-                std::cerr << "Set channel to " << c << std::endl;
                 p->channel( c.c_str() );
 
-                const char* ch = p->channel();
-                if ( ch && c != ch )
-                    LOG_ERROR( "Failed setting layer to " << c 
-                               << " returned " << ch );
 
                 pic = img->hires();
 
                 channels = pic->channels();
-
-                std::cerr << "Z Channel has channels " << channels << std::endl;
+                if ( channels != 1 )
+                {
+                    const char* ch = p->channel();
+                    LOG_ERROR( "Failed setting layer to " << c 
+                               << " returned " << ch );
+                }
 
                 dw = pic->width();
                 dh = pic->height();
