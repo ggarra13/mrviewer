@@ -948,12 +948,12 @@ void Flu_File_Chooser::hideCB()
 
 void Flu_File_Chooser::cancelCB()
 {
-  filename.value("");
-  filename.position( filename.size(), filename.size() );
-  unselect_all();
-  do_callback();
-  hide();
-  lastSelected = NULL;
+    filename.value("");
+    filename.position( filename.size(), filename.size() );
+    unselect_all();
+    do_callback();
+    hide();
+    lastSelected = NULL;
 }
 
 void Flu_File_Chooser::do_callback()
