@@ -2346,7 +2346,7 @@ aviImage::audio_video_display( const boost::int64_t& frame )
             y1 = ch * h + ( h / 2 );
             for (int x = 0; x < _w; ++x )
             {
-                y = (int(data[i] * 32767 * h2)) >> 15;
+                y = (int(data[i] * 16384 * h2)) >> 15;
                 if (y < 0) {
                     y = -y;
                     ys = y1 - y;
