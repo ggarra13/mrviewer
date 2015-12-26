@@ -4,7 +4,8 @@ v3.0.5   - Made PSD, XCF and TIFF reader read the position and bounding
 	 - Made OpenEXR saver optionally save all layers into OpenEXR
 	   v2 parts model.  This makes images with multiple layers be
 	   extremely efficient.
-	 - Bug fixed audio display leaving the window and crashing.
+	 - Bug fixed audio display leaving the window and crashing
+	   when playing float audio.
 
 v3.0.4   - Made PSD and TIFF reader read alpha channels correctly and
 	   support R,G,B,A in layers.
