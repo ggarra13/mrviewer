@@ -1281,8 +1281,8 @@ void CMedia::channel( const char* c )
 
     bool to_fetch = false;
 
-  // std::cerr << "channel " << (_channel ? _channel : "NULL" )
-  //           << " c " << ( c ? c : "NULL" ) << std::endl;
+    std::cerr << "channel " << (_channel ? _channel : "NULL" )
+              << " c " << ( c ? c : "NULL" ) << std::endl;
 
     if ( _channel != c )
     {
@@ -1325,8 +1325,8 @@ void CMedia::channel( const char* c )
       _channel = strdup( ch.c_str() );
   }
 
-  // std::cerr << "to fetch " << to_fetch << " channel " 
-  //           << ( _channel ? _channel : "NULL" ) << std::endl;
+  std::cerr << "to fetch " << to_fetch << " channel " 
+            << ( _channel ? _channel : "NULL" ) << std::endl;
 
   if (to_fetch) 
   {

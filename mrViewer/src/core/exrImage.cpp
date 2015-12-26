@@ -228,7 +228,7 @@ bool exrImage::channels_order(
 
        if ( no_layer == false )
        {
-           size_t pos = ext.rfind( N_(".") );
+           size_t pos = ext.rfind( '.' );
            if ( pos != std::string::npos )
            {
                ext = ext.substr( pos+1, ext.size() );
@@ -789,6 +789,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
             if ( root.size() ) _channel = strdup( root.c_str() );
 
+            std::cerr << "ZZZZZZZZZZ channelPrefix " << _channel << std::endl;
             channelPrefix = _channel;
         }
     }
@@ -834,8 +835,16 @@ bool exrImage::find_channels( const Imf::Header& h,
                 channels.channelsWithPrefix( prefix, s, e );
                 if ( s == e )
                 {
+                    std::cerr << "PREFIX " << prefix << " FAILED IN HEADER "
+                              << h.name() << std::endl;
                     s = channels.begin();
                     e = channels.end();
+                    Imf::ChannelList::ConstIterator i = s;
+                    for ( ; i != e; ++i )
+                    {
+                        std::cerr << "\tchannel " << i.name() << std::endl;
+                    }
+                    
                 }
                 return channels_order( frame, s, e, channels, h, fb );
             }
@@ -2286,8 +2295,6 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     Imf::PixelType save_type = opts->pixel_type();
 
-    bool use_numeral = false;
-
     if ( 1 ) // ( opts->all_layers )
     {
 
@@ -2310,7 +2317,6 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                     if ( root[0] == '#' )
                     {
-                        use_numeral = true;
                         root = name.substr( x.size()+1, name.size() );
                     }
 
@@ -2472,63 +2478,9 @@ bool exrImage::save( const char* file, const CMedia* img,
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
 
-        std::string prefix = layer;
-
-        std::cerr << "PREFIX: " << prefix << std::endl;
-
-        if ( prefix[0] == '#' )
-        {
-            size_t pos = prefix.find( '.' );
-            if ( pos != std::string::npos )
-                prefix = prefix.substr( pos+1, prefix.size() );
-            else
-                prefix.clear();
-        }
-
-
         ChannelList::ConstIterator ci = h.channels().begin();
         ChannelList::ConstIterator ce = h.channels().end();
         ChannelList::ConstIterator cs = ci;
-
-        bool use_rgb = false;
-        if ( prefix == _("Color") ) {
-            use_rgb = true;
-            prefix.clear();
-        }
-        bool use_alpha = false;
-        if ( use_rgb && img->has_alpha() ) use_alpha = true;
-        bool use_z = false;
-        bool use_xyz = false;
-        bool use_st = false;
-        bool use_uv = false;
-        bool use_w = false;
-
-        
-        int idx = 0;
-        for ( ; ci != ce; ++ci, ++idx )
-        {
-            const std::string& name = ci.name();
-            std::cerr << "\tCONTENT: " << name << std::endl;
-            std::string ext = name;
-            size_t pos = name.rfind( '.' );
-            if ( pos != std::string::npos )
-            {
-                ext = name.substr( pos+1, name.size() );
-            }
-
-            std::transform( ext.begin(), ext.end(), ext.begin(),
-                            (int(*)(int)) toupper );
-
-            if ( ext == N_("R") || ext == N_("G") || ext == N_("B") )
-                use_rgb = true;
-            if ( ext == N_("A") ) use_alpha = true;
-            if ( ext == N_("X") || ext == N_("Y") ) use_xyz = true;
-            if ( ext == N_("Z") ) use_z = true;
-            if ( ext == N_("S") || ext == N_("T") ) use_st = true;
-            if ( ext == N_("U") || ext == N_("V") ) use_uv = true;
-            if ( ext == N_("W") ) use_w = true;
-        }
-
 
         size_t size = 1;
         switch( save_type )
@@ -2545,17 +2497,6 @@ bool exrImage::save( const char* file, const CMedia* img,
                 break;
         }
 
-        std::cerr << "part: " << part << std::endl
-                  << "layer: " << layer << std::endl
-                  << "prefix: " << prefix << std::endl
-                  << "use_rgb: " << use_rgb << std::endl
-                  << "use_alpha: " << use_alpha << std::endl
-                  << "use_xyz: " << use_xyz << std::endl
-                  << "use_z: " << use_z << std::endl
-                  << "use_st: " << use_st << std::endl
-                  << "use_uv: " << use_uv << std::endl
-                  << "use_w: " << use_w << std::endl;
-
         unsigned channels = pic->channels();
         unsigned dw = pic->width();
         unsigned dh = pic->height();
@@ -2564,123 +2505,132 @@ bool exrImage::save( const char* file, const CMedia* img,
         uint8_t* base = (uint8_t*) new uint8_t[total_size];
         bufs.push_back( base );
 
+        bool use_alpha = false;
+        if ( channels == 4 ) use_alpha = true;
         copy_pixel_data( pic, save_type, base, total_size, use_alpha );
 
         size_t xs = size * channels;
         size_t ys = xs * dw;
 
         int offset = xs*(-dx-dy*dw);
-        if ( prefix == _("Color") ) prefix.clear();
-        else if ( !prefix.empty() ) prefix += '.';
 
-        if ( use_rgb )
-        {
-            fb.insert( prefix + N_("R"), Slice( save_type,
-                                                (char*) &base[offset], 
-                                                xs, ys ) );
-            fb.insert( prefix + N_("G"), Slice( save_type, 
-                                                (char*) &base[offset+size],
-                                                xs, ys ) );
-            fb.insert( prefix + N_("B"), Slice( save_type, 
-                                                (char*) &base[offset+2*size], 
-                                                xs, ys ) );
+        int order[5]; // RGBAZ
+        order[0] = order[1] = order[2] = order[3] = order[4] = -1;
 
-        }
-        // else if ( use_xyz )
-        // {
-        //     fb.insert( prefix + N_("X"), Slice( save_type, (char*) &base[offset], 
-        //                                         xs, ys ) );
-        //     fb.insert( prefix + N_("Y"), Slice( save_type, 
-        //                                         (char*) &base[offset+size],
-        //                                         xs, ys ) );
-        //     if ( use_z )
-        //         fb.insert( prefix + N_("Z"), 
-        //                    Slice( save_type, 
-        //                           (char*) &base[offset+2*size], 
-        //                           xs, ys ) );
-        // }
-        // else if ( use_st )
-        // {
-        //     fb.insert( prefix + N_("S"), Slice( save_type, (char*) &base[offset], 
-        //                                         xs, ys ) );
-        //     fb.insert( prefix + N_("T"), Slice( save_type, 
-        //                                         (char*) &base[offset+size],
-        //                                         xs, ys ) );
-        // } 
-        // else if ( use_uv )
-        // {
-        //     std::cerr << ">>>> INSERT " << prefix << "U" << std::endl;
-        //     fb.insert( prefix + N_("U"), Slice( save_type, (char*) &base[offset], 
-        //                                         xs, ys ) );
-        //     fb.insert( prefix + N_("V"), Slice( save_type, 
-        //                                         (char*) &base[offset+size],
-        //                                         xs, ys ) );
-        //     if ( use_w )
-        //         fb.insert( prefix + N_("W"), 
-        //                    Slice( save_type, 
-        //                           (char*) &base[offset+2*size], 
-        //                           xs, ys ) );
-        // }
-        else if ( use_z && !use_xyz )
+        bool no_layer = false;
+
+        for ( int idx = 0; ci != ce; ++ci, ++idx )
         {
-            fb.insert( N_("Z"), 
-                       Slice( save_type, (char*) &base[offset], 
-                              xs, ys ) );
-        }
-        else
-        {
-            int idx = 0;
-            for ( ci = cs; ci != ce; ++ci, ++idx )
+            const std::string& name = ci.name();
+
+            std::string ext = name;
+
+            if ( no_layer == false )
             {
-                std::string suffix = ci.name();
-                if ( !use_numeral )
+                size_t pos = ext.rfind( '.' );
+                if ( pos != std::string::npos )
                 {
-                    size_t pos = suffix.rfind('.');
-                    if ( pos != std::string::npos )
-                    {
-                        suffix = suffix.substr(pos+1, suffix.size());
-                    }
+                    ext = ext.substr( pos+1, ext.size() );
                 }
-                fb.insert( prefix + suffix, 
-                           Slice( save_type, 
-                                  (char*) &base[offset+size*idx], 
-                                  xs, ys ) );
+                else
+                {
+                    no_layer = true;
+                }
+            }
+
+            std::transform( ext.begin(), ext.end(), ext.begin(),
+                            (int(*)(int)) toupper);
+
+            std::cerr << "PROCESS " << ext << std::endl;
+
+            if ( order[0] == -1 && (ext == N_("R") ||
+                                    ext == N_("Y") || ext == N_("U") ||
+                                    ext == N_("X") || ext == N_("Z")) )
+            {
+                order[0] = idx;
+            }
+            else if ( order[1] == -1 && (ext == N_("G")  ||
+                                         ext == N_("RY") || ext == N_("V") ||
+                                         ext == N_("Y") ) )
+            {
+                order[1] = idx;
+            }
+            else if ( order[2] == -1 && (ext == N_("B") ||
+                                         ext == N_("BY") || ext == N_("W") ||
+                                         ext == N_("Z") ) )
+            {
+                order[2] = idx;
+            }
+            else if ( order[3] == -1 && ext == N_("A") ) 
+            {
+                order[3] = idx;
+            }
+            else if ( order[4] == -1 && ext == N_("Z") ) 
+            {
+                order[4] = idx;
+            }
+            else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
+                      order[3] == -1 && order[4] == -1 &&
+                      (no_layer || ext.size() > 1) )
+            {
+                order[0] = idx;
             }
         }
 
-        if ( use_alpha )
-        {
-            fb.insert( prefix + N_("A"), 
-                       Slice( save_type, 
-                              (char*) &base[offset+3*size],
-                              xs, ys ) );
 
-            if ( use_z )
-            {
-                std::string channel = layer + '.' + N_("Z");
-                p->channel( channel.c_str() );
+        int idx = 0;
+        for ( ci = cs; ci != ce; ++ci, ++idx )
+        {
+            int k = order[idx];
+            if ( k == -1 ) continue;
+
+            const std::string& name = ci.name();
+            std::cerr << "Name " << name << " order " << k << std::endl;
+
+            if ( idx == 4 ) {
+                std::string c;
+                if ( layer[0] == '#' )
+                    c = layer + '.' + ci.name(); 
+                else
+                    c = ci.name();
+
+                std::cerr << "Set channel to " << c << std::endl;
+                p->channel( c.c_str() );
+
+                const char* ch = p->channel();
+                if ( ch && c != ch )
+                    LOG_ERROR( "Failed setting layer to " << c 
+                               << " returned " << ch );
+
                 pic = img->hires();
 
-                unsigned channels = pic->channels();
-                unsigned dw = pic->width();
-                unsigned dh = pic->height();
-                size_t total_size = dw*dh*size*channels;
+                channels = pic->channels();
 
-                uint8_t* base = (uint8_t*) new uint8_t[total_size];
+                std::cerr << "Z Channel has channels " << channels << std::endl;
+
+                dw = pic->width();
+                dh = pic->height();
+                total_size = dw*dh*size*channels;
+
+                base = (uint8_t*) new uint8_t[total_size];
                 bufs.push_back( base );
+
                 copy_pixel_data( pic, save_type, base, total_size, false );
 
-                xs = size;
+                xs = size * channels;
                 ys = xs * dw;
 
                 offset = xs*(-dx-dy*dw);
-
-                fb.insert( prefix + N_("Z"), Slice( save_type, 
-                                                    (char*) &base[offset], 
-                                                    xs, ys ) );
+                k = 0;
             }
 
+            fb.insert( name, 
+                       Slice( save_type, 
+                              (char*) &base[offset+size*k], 
+                              xs, ys ) );
+
         }
+
 
 
 
