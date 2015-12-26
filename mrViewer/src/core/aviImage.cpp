@@ -2330,7 +2330,9 @@ aviImage::audio_video_display( const boost::int64_t& frame )
 
     int channels = result->channels();
 
+    /* total height for one channel */
     size_t h = _h / channels;
+    /* graph height / 2 */
     size_t h2 = (h * 9) / 20;
     int y1, y, ys, i;
     int i_start = 0;
@@ -2340,13 +2342,13 @@ aviImage::audio_video_display( const boost::int64_t& frame )
     {
         float* data = (float*)result->data();
 
-        for (int ch = 0; ch < channels; ch++)
+        for (int ch = 0; ch < channels; ++ch)
         {
             i = i_start + ch;
             y1 = ch * h + ( h / 2 );
             for (int x = 0; x < _w; ++x )
             {
-                y = (int(data[i] * 16384 * h2)) >> 15;
+                y = (int(data[i] * 24576 * h2)) >> 15;
                 if (y < 0) {
                     y = -y;
                     ys = y1 - y;
