@@ -33,11 +33,13 @@ class ImageOpts
     bool _active;
     bool _opengl;
     bool _ACESmetadata;
+    bool _all_layers;
   public:
     ImageOpts(bool aces) :
     _active( true ),
     _opengl( false ),
-    _ACESmetadata( aces )
+    _ACESmetadata( aces ),
+    _all_layers( false )
     {
     }
 
@@ -50,6 +52,9 @@ class ImageOpts
 
     bool opengl() const { return _opengl; }
     void opengl( bool f ) { _opengl = f; }
+
+    bool all_layers() const { return _all_layers; }
+    void all_layers( bool f ) { _all_layers = f; }
 
     bool ACES_metadata() const { return _ACESmetadata; }
     void ACES_metadata( bool p ) { _ACESmetadata = p; }
