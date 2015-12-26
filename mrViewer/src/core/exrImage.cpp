@@ -2352,100 +2352,98 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     Imf::PixelType save_type = opts->pixel_type();
 
-    if ( 0 ) // ( opts->all_layers )
+    if ( opts->all_layers() )
     {
 
+        stringArray::const_iterator i = img->layers().begin();
+        stringArray::const_iterator e = img->layers().end();
+
+        std::string x = N_("ZVCF!@");
+        for ( ; i != e; ++i )
         {
-            stringArray::const_iterator i = img->layers().begin();
-            stringArray::const_iterator e = img->layers().end();
+            const std::string& name = *i;
 
-            std::string x = N_("ZVCF!@");
-            for ( ; i != e; ++i )
+            if ( name.find( _("stereo") ) != std::string::npos ||
+                 name.find( _("anaglyph") ) != std::string::npos ) continue;
+
+            if ( name.find(x) == 0 )
             {
-                const std::string& name = *i;
+                std::string root = name;
+                // std::cerr << "FOUND " << root << " with " << x << std::endl;
 
-                if ( name.find( _("stereo") ) != std::string::npos ||
-                     name.find( _("anaglyph") ) != std::string::npos ) continue;
-
-                if ( name.find(x) == 0 )
+                if ( root[0] == '#' )
                 {
-                    std::string root = name;
-                    // std::cerr << "FOUND " << root << " with " << x << std::endl;
+                    root = name.substr( x.size()+1, name.size() );
+                }
 
-                    if ( root[0] == '#' )
+                size_t pos = root.rfind( '.' );
+                std::string suffix;
+                if ( pos != std::string::npos ) 
+                {
+                    suffix = root.substr( pos+1, root.size() );
+                    root = root.substr( 0, pos );
+                    if ( suffix.size() == 1 )
                     {
-                        root = name.substr( x.size()+1, name.size() );
+                        std::transform( suffix.begin(), suffix.end(),
+                                        suffix.begin(), 
+                                        (int(*)(int)) toupper );
                     }
+                }
 
-                    size_t pos = root.rfind( '.' );
-                    std::string suffix;
-                    if ( pos != std::string::npos ) 
-                    {
-                        suffix = root.substr( pos+1, root.size() );
-                        root = root.substr( 0, pos );
-                        if ( suffix.size() == 1 )
-                        {
-                            std::transform( suffix.begin(), suffix.end(),
-                                            suffix.begin(), 
-                                            (int(*)(int)) toupper );
-                        }
-                    }
+                Header& hdr = headers.back();
 
-                    Header& hdr = headers.back();
-
-                    if ( !suffix.empty() )
-                    {
-                        // std::cerr << "channel " << root << '#' << suffix
-                        //           << std::endl;
-                        hdr.channels().insert( root + '.' + suffix,
-                                               Channel( save_type,1,1 ) );
-                    }
-                    else
-                    {
-                        // std::cerr << "channel " << root << " empty" << std::endl;
-                        hdr.channels().insert( root,
-                                               Channel( save_type,1,1 ) );
-                    }
+                if ( !suffix.empty() )
+                {
+                    // std::cerr << "channel " << root << '#' << suffix
+                    //           << std::endl;
+                    hdr.channels().insert( root + '.' + suffix,
+                                           Channel( save_type,1,1 ) );
                 }
                 else
                 {
-                    x = name;
-
-                    if ( x == _("Lumma") || x == _("Alpha Overlay") ||
-                         x == _("Red") || x == _("Green") ||
-                         x == _("Blue") || x == _("Alpha") )
-                    {
-                        x = _("Color");
-                        continue;
-                    }
-
-
-
-                    std::string root = x;
-
-                    if ( root[0] == '#' )
-                    {
-                        size_t pos = root.find( ' ' );
-                        if ( pos != std::string::npos )
-                            root = root.substr( pos+1, root.size() );
-                    }
-
-
-                    if ( root == _("Color") ) root = "";
-
-                    add_layer( headers, fbs, names, layers,
-                               save_type, img, opts, root, name, x );
-
+                    // std::cerr << "channel " << root << " empty" << std::endl;
+                    hdr.channels().insert( root,
+                                           Channel( save_type,1,1 ) );
                 }
+            }
+            else
+            {
+                x = name;
+
+                if ( x == _("Lumma") || x == _("Alpha Overlay") ||
+                     x == _("Red") || x == _("Green") ||
+                     x == _("Blue") || x == _("Alpha") )
+                {
+                    x = _("Color");
+                    continue;
+                }
+
+
+
+                std::string root = x;
+
+                if ( root[0] == '#' )
+                {
+                    size_t pos = root.find( ' ' );
+                    if ( pos != std::string::npos )
+                        root = root.substr( pos+1, root.size() );
+                }
+
+
+                if ( root == _("Color") ) root = "";
+
+                add_layer( headers, fbs, names, layers,
+                           save_type, img, opts, root, name, x );
+
             }
         }
     }
     else
     {
-        // @todo: handle single layer
         const char* layer = img->channel();
         std::string root, x;
         if ( layer ) root = layer;
+        else layer = "";
 
         if ( root.find( "Z" ) != std::string::npos ) x = "Z";
         else x = _("Color");

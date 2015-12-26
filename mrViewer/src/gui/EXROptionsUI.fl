@@ -7,6 +7,7 @@ gridx 5
 gridy 5 
 snap 3
 decl {\#include <iostream>} {} 
+
 decl {\#include <fltk/run.h>} {} 
 
 decl {\#include <gui/mrvIO.h>} {public
@@ -32,14 +33,15 @@ namespace mrv {open
     }
     decl {std::string pixel_type;} {public
     }
-    Function {make_window(bool aces)} {} {
+    Function {make_window(bool aces)} {open
+    } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
-        xywh {4 446 315 315} hide resizable modal noborder
+        xywh {228 149 465 445} resizable modal noborder visible
       } {
         {fltk::Group} {} {
-          label {OpenEXR Options} open
-          xywh {31 35 252 223} box UP_BOX
+          label {OpenEXR Options}
+          xywh {46 48 372 315} box UP_BOX
         } {
           {fltk::Choice} uiCompression {
             label Compression
@@ -53,9 +55,9 @@ v->uiDWACompression->activate();
 else
 {
 v->uiDWACompression->deactivate();
-}} open
+}}
             tooltip {EXR compression algorithm.}
-            xywh {115 23 91 26}
+            xywh {138 30 91 26} align 1
             extra_code {o->value(1);}
           } {
             {fltk::Item} {} {
@@ -93,7 +95,7 @@ v->uiDWACompression->deactivate();
             label {Pixel Format}
             callback {pixel_type = o->child(o->value())->label();}
             tooltip {Pixel Format to save image.   Usually Half.}
-            xywh {115 69 90 25}
+            xywh {138 86 90 25} align 1
           } {
             {fltk::Item} {} {
               label Half
@@ -109,27 +111,31 @@ v->uiDWACompression->deactivate();
         {fltk::ValueSlider} uiDWACompression {
           label {DWA Compression}
           tooltip {DWA/DWB compression}
-          xywh {168 150 94 33} align 4 deactivate minimum 1 maximum 250 step 10 value 45
+          xywh {215 181 138 34} align 4 deactivate minimum 1 maximum 250 step 10 value 45
         }
         {fltk::LightButton} uiACESmetadata {
           label {ACES metadata}
           tooltip {Saves out ACES clip metadata (CTL transforms) into an ACESclip file.}
-          xywh {95 200 125 35}
+          xywh {140 282 185 38}
           extra_code {o->value( aces );}
+        }
+        {fltk::LightButton} uiAllLayers {
+          label {All Layers}
+          xywh {139 236 186 34}
         }
         {fltk::Button} {} {
           label OK
           user_data this user_data_type {EXROptionsUI*}
           callback {v->active( true );
 v->uiMain->make_exec_return(true);}
-          xywh {78 274 58 29}
+          xywh {115 386 86 41}
         }
         {fltk::Button} {} {
           label Cancel
           user_data this user_data_type {EXROptionsUI*}
           callback {v->active( false );
 v->uiMain->make_exec_return(false);}
-          xywh {152 274 63 29}
+          xywh {224 386 93 41}
         }
       }
     }
@@ -137,7 +143,9 @@ v->uiMain->make_exec_return(false);}
     } {
       code {_compression = (Imf::Compression) uiCompression->value();
 _dwa_compression_level = (float) uiDWACompression->value();
-_ACESmetadata = uiACESmetadata->value();} {}
+_ACESmetadata = uiACESmetadata->value();
+_all_layers = uiAllLayers->value();} {selected
+      }
       code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
 else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
 else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
@@ -149,8 +157,7 @@ if ( w->exec() ) {
 	w->hide();
 	fltk::check();
 	convert();
-}} {selected
-      }
+}} {}
     }
   }
 } 
