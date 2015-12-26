@@ -577,7 +577,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   sortMethod = SORT_NAME;
 
   lastSelected = NULL;
-  filename.labelsize( 12 );
+  filename.labelsize( 14 );
   filename.when( fltk::WHEN_ENTER_KEY_ALWAYS );
   filename.callback( _filenameCB, this );
   filename.value( "" );
@@ -1491,6 +1491,7 @@ Flu_File_Chooser::FileInput::FileInput( int x, int y, int w, int h,
 {
   color( fltk::GRAY75 );
   textcolor( fltk::BLACK );
+  textsize( 16 );
 }
 
 Flu_File_Chooser::FileInput::~FileInput()
