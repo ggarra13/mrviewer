@@ -1,4 +1,6 @@
 
+- cancel does not cancel the first time around.  The cancelCB is called later.
+  Not sure why.
 
 - scroll_to in filedetails is not doing anything -- browser issue?  not 
   understanding it.  display(index) works ok, but does not  move scrollbar.
