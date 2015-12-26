@@ -1304,20 +1304,20 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
 
     DeepFrameBuffer fb;
 
-    fb.insertSampleCountSlice (Slice (UINT,
+    fb.insertSampleCountSlice (Slice (Imf::UINT,
                                       (char *) (&sampleCount[0]
                                                 - dx- dy * dw),
                                       sizeof (unsigned int) * 1,
                                       sizeof (unsigned int) * dw));
 
     fb.insert ("Z",
-               DeepSlice (FLOAT,
+               DeepSlice (Imf::FLOAT,
                           (char *) (&zbuff[0] - dx- dy * dw),
                           sizeof (float *) * 1,    // xStride for pointer array
                           sizeof (float *) * dw,   // yStride for pointer array
                           sizeof (float) * 1));    // stride for z data sample
     fb.insert ("ZBack",
-               DeepSlice (FLOAT,
+               DeepSlice (Imf::FLOAT,
                           (char *) (&zback[0] - dx- dy * dw),
                           sizeof (float *) * 1,    // xStride for pointer array
                           sizeof (float *) * dw,   // yStride for pointer array
@@ -1326,21 +1326,21 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     if (rgbflag)
     {
         fb.insert ("R",
-                   DeepSlice (HALF,
+                   DeepSlice (Imf::HALF,
                               (char *) (&dataR[0] - dx- dy * dw),
                               sizeof (half *) * 1,
                               sizeof (half *) * dw,
                               sizeof (half) * 1));
 
         fb.insert ("G",
-                   DeepSlice (HALF,
+                   DeepSlice (Imf::HALF,
                               (char *) (&dataG[0] - dx- dy * dw),
                               sizeof (half *) * 1,
                               sizeof (half *) * dw,
                               sizeof (half) * 1));
 
         fb.insert ("B",
-                   DeepSlice (HALF,
+                   DeepSlice (Imf::HALF,
                               (char *) (&dataB[0] - dx- dy * dw),
                               sizeof (half *) * 1,
                               sizeof (half *) * dw,
@@ -1350,7 +1350,7 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
     }
 
     fb.insert ("A",
-               DeepSlice (HALF,
+               DeepSlice (Imf::HALF,
                           (char *) (&alpha[0] - dx- dy * dw),
                           sizeof (half *) * 1,    // xStride for pointer array
                           sizeof (half *) * dw,   // yStride for pointer array
@@ -1472,14 +1472,14 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 
     DeepFrameBuffer fb;
 
-    fb.insertSampleCountSlice (Slice (UINT,
+    fb.insertSampleCountSlice (Slice (Imf::UINT,
                                       (char *) (&sampleCount[0]
                                                 - dx- dy * dw),
                                       sizeof (unsigned int) * 1,
                                       sizeof (unsigned int) * dw));
 
     fb.insert ("Z",
-               DeepSlice (FLOAT,
+               DeepSlice (Imf::FLOAT,
                           (char *) (&zbuff[0] - dx- dy * dw),
                           sizeof (float *) * 1,    // xStride for pointer array
                           sizeof (float *) * dw,   // yStride for pointer array
