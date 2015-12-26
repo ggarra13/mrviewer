@@ -649,8 +649,11 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    std::string root, fileseq = file;
    bool ok = mrv::fileroot( root, fileseq, false );
-   if ( !ok && !movie ) return;
-
+   if ( !ok && !movie ) {
+       mrvALERT( _("Could not save sequence or movie, "
+                   "only single frame specified") );
+       return;
+   }
 
    mrv::Timeline* timeline = uiMain->uiTimeline;
    int64_t first = int64_t( timeline->minimum() );
