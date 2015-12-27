@@ -81,7 +81,7 @@ static const char* kModule = "file";
 
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
-  static const std::string kAudioPattern = "mp3,MP3,ogg,OGG,wav,WAV";
+  static const std::string kAudioPattern = "m4a,mp3,MP3,ogg,OGG,wav,WAV";
 
   static const std::string kCTLPattern = "ctl,CTL";
 
