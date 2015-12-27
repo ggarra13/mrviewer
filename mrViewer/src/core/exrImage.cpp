@@ -350,11 +350,10 @@ bool exrImage::channels_order(
 
       for ( unsigned j = 0; j < 4; ++j )
       {
-           if ( order[j] == -1 ) continue;
-           xs[order[j]] = t;
+           xs[j] = t;
       }
 
-      size_t dw2 = dw / 2;;
+      size_t dw2 = dw / 2;
       if ( order[0] != -1 ) ys[order[0]] = t * dw;
       if ( order[1] != -1 ) ys[order[1]] = t * dw2;
       if ( order[2] != -1 ) ys[order[2]] = t * dw2;
@@ -390,12 +389,12 @@ bool exrImage::channels_order(
 
       char* buf = base + offsets[k] * _hires->pixel_size();
 
-      // std::cerr << idx << ") " << k << " " << channelList[k]
-      //           << " off:" << offsets[k] << " xs,ys " 
-      //           << xs[k] << " " << ys[k] 
-      //           << " sampling " << sampling[k][0]
-      //           << " " << sampling[k][1]
-      //           << std::endl;
+      std::cerr << idx << ") " << k << " " << channelList[k]
+                << " off:" << offsets[k] << " xs,ys " 
+                << xs[k] << " " << ys[k] 
+                << " sampling " << sampling[k][0]
+                << " " << sampling[k][1]
+                << std::endl;
 
 
       fb.insert( channelList[k], 
@@ -818,7 +817,9 @@ bool exrImage::find_channels( const Imf::Header& h,
                 Imf::ChannelList::ConstIterator e;
                 std::string prefix = channelPrefix;
                 size_t pos = prefix.rfind( '.' );
-                std::string ext = prefix.substr( pos+1, prefix.size() );
+                std::string ext = prefix;
+                if ( pos != std::string::npos )
+                    ext = prefix.substr( pos+1, prefix.size() );
 
                 if ( ext == "z" ) prefix = prefix.substr(0, pos);
 
@@ -830,6 +831,7 @@ bool exrImage::find_channels( const Imf::Header& h,
                      ext == "B" || ext == "X" || ext == "Y" ||
                      ext == "U" || ext == "V" ||
                      ext == "W" ) prefix = prefix.substr(0, pos);
+
 
                 channels.channelsWithPrefix( prefix, s, e );
                 if ( s == e )
@@ -2193,8 +2195,7 @@ void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
                                 Imf::PixelType save_type,
                                 uint8_t* base,
                                 size_t total_size,
-                                bool use_alpha
-)
+                                bool use_alpha )
 {
     Imf::PixelType pt = pixel_type_to_exr( pic->pixel_type() );
     unsigned dh = pic->height();
@@ -2203,6 +2204,9 @@ void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
 
     if ( pt == save_type )
     {
+        std::cerr << "memcpy " << (void*)base << " channels: " << channels 
+                  << " total_size " << total_size
+                  << std::endl;
         memcpy( base, pic->data().get(), total_size );
     }
     else
@@ -2281,7 +2285,16 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
         hdr.channels().insert( x,
                                Channel( save_type,1,1 ) );
     }
-    if ( x == _("Color") )
+    else if ( x == _("YBYRY") )
+    {
+        hdr.channels().insert( N_("Y"),
+                               Channel( save_type, 1, 1 ) );
+        hdr.channels().insert( N_("BY"),
+                               Channel( save_type, 2, 2 ) );
+        hdr.channels().insert( N_("RY"),
+                               Channel( save_type, 2, 2 ) );
+    }
+    else if ( x == _("Color") )
     {
         hdr.channels().insert( N_("R"),
                                Channel( save_type, 1, 1 ) );
@@ -2351,6 +2364,8 @@ bool exrImage::save( const char* file, const CMedia* img,
     LayerList layers;
 
     Imf::PixelType save_type = opts->pixel_type();
+
+
 
     if ( opts->all_layers() )
     {
@@ -2445,9 +2460,17 @@ bool exrImage::save( const char* file, const CMedia* img,
         if ( layer ) root = layer;
         else layer = "";
 
-        if ( root.find( "Z" ) != std::string::npos ) x = "Z";
-        else x = _("Color");
+        mrv::image_type_ptr pic = img->hires();
 
+        if ( root.find( "Z" ) != std::string::npos ) x = "Z";
+        else 
+        {
+            image_type::Format pf = pic->format();
+            if ( pf >= image_type::kYByRy420 )
+                x = N_("YBYRY" );
+            else
+                x = _("Color");
+        }
         add_layer( headers, fbs, names, layers,
                    save_type, img, opts, root, layer, x );
     }
@@ -2470,8 +2493,8 @@ bool exrImage::save( const char* file, const CMedia* img,
              ( ch && layer != ch ) )
             LOG_ERROR( "Failed setting layer to " << layer );
 
-        // std::cerr << "Changed to layer " 
-        //           << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
+        std::cerr << "Changed to layer " 
+                  << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
 
         const mrv::Recti& daw = img->data_window();
 
@@ -2493,11 +2516,18 @@ bool exrImage::save( const char* file, const CMedia* img,
         mrv::image_type_ptr pic = img->hires();
         if (!pic) return false;
 
-        ChannelList::ConstIterator ci = h.channels().begin();
-        ChannelList::ConstIterator ce = h.channels().end();
-        ChannelList::ConstIterator cs = ci;
+        unsigned dw = pic->width();
+        unsigned dh = pic->height();
 
-        size_t size = 1;
+        int sampling[4][2];
+        for ( int i = 0; i < 4; ++i )
+        {
+            sampling[i][0] = 1; sampling[i][1] = 1;
+        }
+        int offsets[4];
+        offsets[0] = 0;
+
+        size_t size;
         switch( save_type )
         {
             case Imf::UINT:
@@ -2512,27 +2542,108 @@ bool exrImage::save( const char* file, const CMedia* img,
                 break;
         }
 
+        std::cerr << "pixel format " << pic->pixel_format() << std::endl;
+
+        image_type::Format pf = pic->format();
+
+        bool has_yca = false;
+        switch( pf )
+        {
+            case image_type::kLumma:
+                break;
+            case image_type::kITU_601_YCbCr410:
+            case image_type::kITU_601_YCbCr410A:
+            case image_type::kITU_709_YCbCr410:
+            case image_type::kITU_709_YCbCr410A:
+            case image_type::kYByRy410:
+            case image_type::kYByRy410A:
+                has_yca = true;
+                offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+                break;
+            case image_type::kITU_601_YCbCr420:
+            case image_type::kITU_601_YCbCr420A:
+            case image_type::kITU_709_YCbCr420:
+            case image_type::kITU_709_YCbCr420A:
+            case image_type::kYByRy420:
+            case image_type::kYByRy420A:
+                {
+                    has_yca = true;
+                    unsigned int Ylen    = dw * dh;
+                    unsigned int w2      = (dw + 1) / 2;
+                    unsigned int h2      = (dh + 1) / 2;
+                    unsigned int Cblen   = w2 * h2;
+                    offsets[1] = Ylen;
+                    sampling[1][0] = sampling[1][1] = 2;
+                    offsets[2] = Ylen + Cblen;
+                    sampling[2][0] = sampling[2][1] = 2;
+                    break;
+                }
+            case image_type::kITU_709_YCbCr422:
+            case image_type::kITU_601_YCbCr422:
+            case image_type::kITU_709_YCbCr422A:
+            case image_type::kITU_601_YCbCr422A:
+            case image_type::kYByRy422:
+            case image_type::kYByRy422A:
+                {
+                    has_yca = true;
+                    unsigned int  Ylen = dw * dh;
+                    unsigned int w2 = (dw + 1) / 2;
+                    unsigned int Cblen = w2 * dh;
+                    offsets[1] = Ylen;
+                    offsets[2] = Ylen + Cblen;
+                    offsets[3] = Ylen + Cblen * 2;
+                    break;
+                }
+            case image_type::kITU_709_YCbCr444:
+            case image_type::kITU_601_YCbCr444:
+            case image_type::kITU_709_YCbCr444A:
+            case image_type::kITU_601_YCbCr444A:
+            case image_type::kYByRy444:
+            case image_type::kYByRy444A:
+                {
+                    has_yca = true;
+                    unsigned int  Ylen = dw * dh;
+                    offsets[1] = Ylen;
+                    offsets[2] = Ylen * 2;
+                    offsets[3] = Ylen * 3;
+                    break;
+                }
+            case image_type::kBGR:
+            case image_type::kBGRA:
+            case image_type::kRGB:
+            case image_type::kRGBA:
+            default:
+                offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+                break;
+        }
+
+
+        std::cerr << "has_yca? " << has_yca << std::endl;
+
         unsigned channels = pic->channels();
-        unsigned dw = pic->width();
-        unsigned dh = pic->height();
         size_t total_size = dw*dh*size*channels;
 
         uint8_t* base = (uint8_t*) new uint8_t[total_size];
         bufs.push_back( base );
 
+
         bool use_alpha = false;
         if ( channels == 4 ) use_alpha = true;
+
         copy_pixel_data( pic, save_type, base, total_size, use_alpha );
 
-        size_t xs = size * channels;
-        size_t ys = xs * dw;
 
-        int offset = xs*(-dx-dy*dw);
+        size_t t = size;
 
         int order[5]; // RGBAZ
         order[0] = order[1] = order[2] = order[3] = order[4] = -1;
 
+
         bool no_layer = false;
+
+        ChannelList::ConstIterator ci = h.channels().begin();
+        ChannelList::ConstIterator ce = h.channels().end();
+        ChannelList::ConstIterator cs = ci;
 
         for ( int idx = 0; ci != ce; ++ci, ++idx )
         {
@@ -2592,6 +2703,52 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
 
 
+
+        size_t xs[4], ys[4];
+
+        if ( has_yca )
+        {
+            size_t t = size;
+
+            for ( unsigned j = 0; j < 4; ++j )
+            {
+                xs[j] = t;
+            }
+
+            size_t dw2 = dw / 2;
+#if 0
+            if ( order[0] != -1 ) ys[order[0]] = t * dw;
+            if ( order[1] != -1 ) ys[order[1]] = t * dw2;
+            if ( order[2] != -1 ) ys[order[2]] = t * dw2;
+            if ( order[3] != -1 ) ys[order[3]] = t * dw;
+#else
+            if ( order[0] != -1 ) ys[0] = t * dw;
+            if ( order[1] != -1 ) ys[1] = t * dw2;
+            if ( order[2] != -1 ) ys[2] = t * dw2;
+            if ( order[3] != -1 ) ys[3] = t * dw;
+#endif
+        }
+        else
+        {
+            unsigned pixels = size * channels;
+
+            for ( unsigned j = 0; j < 4; ++j )
+            {
+                int k = order[j];
+                if ( k == -1 ) continue;
+                xs[k] = pixels;
+                ys[k] = pixels * dw;
+            }
+        }
+
+
+
+
+
+
+        int start = (-dx - dy * dw) * size * channels;
+        base += start;
+
         int idx = 0;
         for ( ci = cs; ci != ce; ++ci, ++idx )
         {
@@ -2600,6 +2757,14 @@ bool exrImage::save( const char* file, const CMedia* img,
 
             const std::string& name = ci.name();
 
+            std::cerr << name << " has order " << k
+                      << " offset " << offsets[k] 
+                      << " xs " << xs[k] << " ys " 
+                      << ys[k] << std::endl;
+
+            //
+            // When idx == 4, we are dealing with RGBAZ, so get Z channel
+            //
             if ( idx == 4 ) {
                 std::string c;
                 if ( layer[0] == '#' )
@@ -2629,17 +2794,19 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 copy_pixel_data( pic, save_type, base, total_size, false );
 
-                xs = size * channels;
-                ys = xs * dw;
+                int start = (-dx - dy * dw) * size;
+                base += start;
 
-                offset = xs*(-dx-dy*dw);
                 k = 0;
+                xs[0] = size;
+                ys[0] = size * dw;
             }
 
+
+            char* buf =  (char*) base + offsets[k] * size;
             fb.insert( name, 
-                       Slice( save_type, 
-                              (char*) &base[offset+size*k], 
-                              xs, ys ) );
+                       Slice( save_type, buf, xs[k], ys[k],
+                              sampling[k][0], sampling[k][1] ) );
 
         }
 
