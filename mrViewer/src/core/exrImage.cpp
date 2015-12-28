@@ -1168,7 +1168,8 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::RationalAttribute>("framesPerSecond");
 	if ( attr )
 	  {
-	    _fps = (double) attr->value();
+              Imf::Rational r = attr->value();
+              _fps = (double) r.n / (double) r.d;
 	  }
 
 	if ( _play_fps <= 0 ) _play_fps = _fps;
