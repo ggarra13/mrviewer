@@ -994,9 +994,9 @@ void ImageView::data_window_coordinates( const Image_ptr img,
 
     const mrv::Recti& dpw = img->display_window();
     unsigned W = dpw.w();
-    if ( W == 0 ) W = img->width();
     unsigned H = dpw.h();
-    if ( H == 0 ) H = img->height();
+
+
     x -= W/2.0; y -= H/2.0;
 
     if ( flipon )
@@ -1014,6 +1014,17 @@ void ImageView::data_window_coordinates( const Image_ptr img,
     const mrv::Recti& daw = img->data_window();
     x -= daw.x();
     y -= daw.y();
+
+    //
+    // If image is smaller than display window, we are dealing
+    // with a RY or BY image.  We divide the window coordinates by 2.
+    //
+    mrv::image_type_ptr pic = img->hires();
+    if ( pic )
+    {
+        if ( pic->width() < W ) x /= 2;
+        if ( pic->height() < H ) y /= 2;
+    }
 }
 
 /** 
@@ -1030,9 +1041,7 @@ void ImageView::image_coordinates( const Image_ptr img,
     const mrv::Recti& dpw = img->display_window();
 
     double W = dpw.w();
-    if ( W == 0 ) W = img->width();
     double H = dpw.h();
-    if ( H == 0 ) H = img->height();
 
     if ( _showPixelRatio ) H = (int) (H / pixel_ratio());
 
@@ -4567,12 +4576,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   const mrv::Recti& dpw = img->display_window();
 
   int W = dpw.w();
-  if ( W == 0 ) W = img->width();
-
   int H = dpw.h();
-  if ( H == 0 ) H = img->height();
-
-
 
   image_coordinates( img, xf, yf );
 
