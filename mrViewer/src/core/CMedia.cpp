@@ -570,13 +570,19 @@ void CMedia::hires( const mrv::image_type_ptr pic)
 void CMedia::allocate_pixels( const boost::int64_t& frame,
                               const unsigned short channels,
                               const image_type::Format format,
-                              const image_type::PixelType pixel_type )
+                              const image_type::PixelType pixel_type,
+                              unsigned w, unsigned h)
 {
   SCOPED_LOCK( _mutex );
-  DBG( "allocate pixels frame: " << frame 
+
+  if ( w == 0 )
+  {
+      w = width(); h = height();
+  }
+  DBG( "allocate pixels " << w << " " << h << " frame: " << frame 
        << " channels: " << channels << " format: "
        << format << " pixel type: " << pixel_type );
-  _hires.reset( new image_type( frame, width(), height(), 
+  _hires.reset( new image_type( frame, w, h, 
 				channels, format, pixel_type ) );
 }
 
