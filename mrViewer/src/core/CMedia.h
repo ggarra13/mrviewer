@@ -1076,7 +1076,8 @@ class CMedia
     void allocate_pixels( const boost::int64_t& frame,
 			  const unsigned short channels = 4,
 			  const image_type::Format format = image_type::kRGBA,
-			  const image_type::PixelType pixel_type = image_type::kFloat ); 
+			  const image_type::PixelType pixel_type = image_type::kFloat,
+                          unsigned w = 0, unsigned h = 0); 
 
 
     unsigned int audio_bytes_per_frame();
