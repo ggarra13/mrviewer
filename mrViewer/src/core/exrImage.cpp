@@ -222,6 +222,7 @@ bool exrImage::channels_order(
    {
        const std::string& layerName = i.name();
 
+
        const Imf::Channel& ch = i.channel();
 
        std::string ext = layerName;
@@ -298,24 +299,45 @@ bool exrImage::channels_order(
        return false;
    }
 
+
    // Prepare format
    image_type::Format format = VideoFrame::kLumma;
    int offsets[4];
    if (order[0] != -1 ) offsets[order[0]] = 0;
+
+   unsigned sx = 1, sy = 1;
+
    if ( _has_yca )
    {
       unsigned size  = dw * dh;
       unsigned size2 = dw * dh / 4;
-      if ( order[1] != -1 ) offsets[order[1]]  = size;
-      if ( order[2] != -1 ) offsets[order[2]]  = size + size2;
-      if ( order[3] != -1 ) offsets[order[3]]  = 0;
+
+      unsigned off = 0;
+      sx = 0;
+      unsigned short idx = 0;
+      for ( int i = 0; i < 4; ++i )
+      {
+          int k = order[i];
+          if ( k == -1 ) continue;
+
+          if ( idx == 0 ) off = 0;
+          else if ( idx == 1 ) off = size;
+          else if ( idx == 2 ) off = size + size2;
+          else if ( idx == 3 ) off = size + size2 * 2;
+          if ( sx == 0 ) {
+              sx = sampling[k][0];
+              sy = sampling[k][1];
+          }
+          offsets[k] = off;
+          ++idx;
+      }
       if ( numChannels >= 3 && has_alpha() )
       {
 	 format = VideoFrame::kYByRy420A;
 	 numChannels = 4;
 	 offsets[order[3]]  = size + size2 * 2;
       }
-      else if ( numChannels >= 1 )
+      else if ( numChannels >= 2 )
       {
 	 numChannels = 3;
 	 format = VideoFrame::kYByRy420;
@@ -340,7 +362,7 @@ bool exrImage::channels_order(
    }
 
    allocate_pixels( frame, (unsigned short)numChannels, format,
-		    pixel_type_conversion( imfPixelType ) );
+		    pixel_type_conversion( imfPixelType ), dw / sx, dh / sy );
 
    size_t xs[4], ys[4];
 
@@ -389,17 +411,18 @@ bool exrImage::channels_order(
 
       char* buf = base + offsets[k] * _hires->pixel_size();
 
-      std::cerr << idx << ") " << k << " " << channelList[k]
-                << " off:" << offsets[k] << " xs,ys " 
-                << xs[k] << " " << ys[k] 
-                << " sampling " << sampling[k][0]
-                << " " << sampling[k][1]
-                << std::endl;
+      // std::cerr << idx << ") " << k << " " << channelList[k]
+      //           << " off:" << offsets[k] << " xs,ys " 
+      //           << xs[k] << "," << ys[k] 
+      //           << " sampling " << sampling[k][0]
+      //           << " " << sampling[k][1]
+      //           << " buf " << (void*) buf
+      //           << std::endl;
 
 
       fb.insert( channelList[k], 
-		 Slice( imfPixelType, buf, xs[k], ys[k],
-			sampling[k][0], sampling[k][1]));
+        	 Slice( imfPixelType, buf, xs[k], ys[k],
+        		sampling[k][0], sampling[k][1]));
    }
 
    return true;
@@ -2204,9 +2227,6 @@ void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
 
     if ( pt == save_type )
     {
-        std::cerr << "memcpy " << (void*)base << " channels: " << channels 
-                  << " total_size " << total_size
-                  << std::endl;
         memcpy( base, pic->data().get(), total_size );
     }
     else
@@ -2493,8 +2513,8 @@ bool exrImage::save( const char* file, const CMedia* img,
              ( ch && layer != ch ) )
             LOG_ERROR( "Failed setting layer to " << layer );
 
-        std::cerr << "Changed to layer " 
-                  << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
+        // std::cerr << "Changed to layer " 
+        //           << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
 
         const mrv::Recti& daw = img->data_window();
 
@@ -2542,7 +2562,6 @@ bool exrImage::save( const char* file, const CMedia* img,
                 break;
         }
 
-        std::cerr << "pixel format " << pic->pixel_format() << std::endl;
 
         image_type::Format pf = pic->format();
 
@@ -2618,7 +2637,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
 
 
-        std::cerr << "has_yca? " << has_yca << std::endl;
 
         unsigned channels = pic->channels();
         size_t total_size = dw*dh*size*channels;
@@ -2757,10 +2775,10 @@ bool exrImage::save( const char* file, const CMedia* img,
 
             const std::string& name = ci.name();
 
-            std::cerr << name << " has order " << k
-                      << " offset " << offsets[k] 
-                      << " xs " << xs[k] << " ys " 
-                      << ys[k] << std::endl;
+            // std::cerr << name << " has order " << k
+            //           << " offset " << offsets[k] 
+            //           << " xs " << xs[k] << " ys " 
+            //           << ys[k] << std::endl;
 
             //
             // When idx == 4, we are dealing with RGBAZ, so get Z channel
