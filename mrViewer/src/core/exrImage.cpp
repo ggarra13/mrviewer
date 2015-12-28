@@ -2394,6 +2394,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         stringArray::const_iterator i = img->layers().begin();
         stringArray::const_iterator e = img->layers().end();
 
+        bool has_y = false;
         std::string x = N_("ZVCF!@");
         for ( ; i != e; ++i )
         {
@@ -2448,13 +2449,19 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 if ( x == _("Lumma") || x == _("Alpha Overlay") ||
                      x == _("Red") || x == _("Green") ||
-                     x == _("Blue") || x == _("Alpha") )
+                     x == _("Blue") || x == _("Alpha") ||
+                     x == N_("RY") || x == N_("BY") )
                 {
-                    x = _("Color");
                     continue;
                 }
 
+                if ( x == _("Color") && has_y ) continue;
 
+                if ( x == N_("Y") ) 
+                { 
+                    has_y = true;
+                    x = "YBYRY";
+                }
 
                 std::string root = x;
 
@@ -2466,7 +2473,8 @@ bool exrImage::save( const char* file, const CMedia* img,
                 }
 
 
-                if ( root == _("Color") ) root = "";
+                if ( root == _("Color") ||
+                     root == N_("YBYRY") ) root = "";
 
                 add_layer( headers, fbs, names, layers,
                            save_type, img, opts, root, name, x );
@@ -2508,7 +2516,15 @@ bool exrImage::save( const char* file, const CMedia* img,
 
         const std::string& layer = layers[part];
 
-        p->channel( layer.c_str() );
+        if ( layer == "Y" )
+        {
+            p->channel( NULL );
+        }
+        else
+        {
+            p->channel( layer.c_str() );
+        }
+
         const char* ch = p->channel();
         if ( ( layer == _("Color") && ch != NULL ) ||
              ( ch && layer != ch ) )
@@ -2540,10 +2556,10 @@ bool exrImage::save( const char* file, const CMedia* img,
         unsigned dw = pic->width();
         unsigned dh = pic->height();
 
-        int sampling[4][2];
+        int xsampling[4], ysampling[4];
         for ( int i = 0; i < 4; ++i )
         {
-            sampling[i][0] = 1; sampling[i][1] = 1;
+            xsampling[i] = ysampling[i] = 1;
         }
         int offsets[4];
         offsets[0] = 0;
@@ -2563,28 +2579,54 @@ bool exrImage::save( const char* file, const CMedia* img,
                 break;
         }
 
-
         image_type::Format pf = pic->format();
+        unsigned channels = pic->channels();
 
+        size_t total_size = 0;
         bool has_yca = false;
         switch( pf )
         {
             case image_type::kLumma:
+                total_size = dw*dh*size;
                 break;
             case image_type::kITU_601_YCbCr410:
-            case image_type::kITU_601_YCbCr410A:
             case image_type::kITU_709_YCbCr410:
-            case image_type::kITU_709_YCbCr410A:
             case image_type::kYByRy410:
+                {
+                    //@todo:
+                    has_yca = true;
+                    total_size = dw*dh*size*4;
+                    offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+                    break;
+                }
+            case image_type::kITU_601_YCbCr410A:
+            case image_type::kITU_709_YCbCr410A:
             case image_type::kYByRy410A:
-                has_yca = true;
-                offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
-                break;
+                {
+                    //@todo:
+                    has_yca = true;
+                    total_size = dw*dh*size*4;
+                    offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+                    break;
+                }
             case image_type::kITU_601_YCbCr420:
-            case image_type::kITU_601_YCbCr420A:
             case image_type::kITU_709_YCbCr420:
-            case image_type::kITU_709_YCbCr420A:
             case image_type::kYByRy420:
+                {
+                    has_yca = true;
+                    unsigned int Ylen    = dw * dh;
+                    unsigned int w2      = (dw + 1) / 2;
+                    unsigned int h2      = (dh + 1) / 2;
+                    unsigned int Cblen   = w2 * h2;
+                    offsets[1] = Ylen;
+                    offsets[2] = Ylen + Cblen;
+                    xsampling[1] = ysampling[1] = 2;
+                    xsampling[2] = ysampling[2] = 2;
+                    total_size = size * (Ylen + Cblen*2);
+                    break;
+                }
+            case image_type::kITU_601_YCbCr420A:
+            case image_type::kITU_709_YCbCr420A:
             case image_type::kYByRy420A:
                 {
                     has_yca = true;
@@ -2593,16 +2635,28 @@ bool exrImage::save( const char* file, const CMedia* img,
                     unsigned int h2      = (dh + 1) / 2;
                     unsigned int Cblen   = w2 * h2;
                     offsets[1] = Ylen;
-                    sampling[1][0] = sampling[1][1] = 2;
                     offsets[2] = Ylen + Cblen;
-                    sampling[2][0] = sampling[2][1] = 2;
+                    offsets[3] = Ylen + Cblen*2;
+                    xsampling[1] = ysampling[1] = 2;
+                    xsampling[2] = ysampling[2] = 2;
+                    total_size = size * (Ylen*2 + Cblen*2);
                     break;
                 }
             case image_type::kITU_709_YCbCr422:
             case image_type::kITU_601_YCbCr422:
+            case image_type::kYByRy422:
+                {
+                    has_yca = true;
+                    unsigned int  Ylen = dw * dh;
+                    unsigned int w2 = (dw + 1) / 2;
+                    unsigned int Cblen = w2 * dh;
+                    offsets[1] = Ylen;
+                    offsets[2] = Ylen + Cblen;
+                    total_size = size * (Ylen + Cblen*2);
+                    break;
+                }
             case image_type::kITU_709_YCbCr422A:
             case image_type::kITU_601_YCbCr422A:
-            case image_type::kYByRy422:
             case image_type::kYByRy422A:
                 {
                     has_yca = true;
@@ -2612,6 +2666,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                     offsets[1] = Ylen;
                     offsets[2] = Ylen + Cblen;
                     offsets[3] = Ylen + Cblen * 2;
+                    total_size = size * (Ylen*2 + Cblen*2);
                     break;
                 }
             case image_type::kITU_709_YCbCr444:
@@ -2626,6 +2681,7 @@ bool exrImage::save( const char* file, const CMedia* img,
                     offsets[1] = Ylen;
                     offsets[2] = Ylen * 2;
                     offsets[3] = Ylen * 3;
+                    total_size = size * Ylen * 4;
                     break;
                 }
             case image_type::kBGR:
@@ -2634,13 +2690,13 @@ bool exrImage::save( const char* file, const CMedia* img,
             case image_type::kRGBA:
             default:
                 offsets[1] = 1; offsets[2] = 2; offsets[3] = 3;
+                total_size = dw*dh*size*channels;
                 break;
         }
 
 
 
-        unsigned channels = pic->channels();
-        size_t total_size = dw*dh*size*channels;
+
 
         uint8_t* base = (uint8_t*) new uint8_t[total_size];
         bufs.push_back( base );
@@ -2779,7 +2835,8 @@ bool exrImage::save( const char* file, const CMedia* img,
             // std::cerr << name << " has order " << k
             //           << " offset " << offsets[k] 
             //           << " xs " << xs[k] << " ys " 
-            //           << ys[k] << std::endl;
+            //           << ys[k] << " sampling " 
+            //           << xsampling[k] << ", " << ysampling[k] << std::endl;
 
             //
             // When idx == 4, we are dealing with RGBAZ, so get Z channel
@@ -2792,7 +2849,6 @@ bool exrImage::save( const char* file, const CMedia* img,
                     c = ci.name();
 
                 p->channel( c.c_str() );
-
 
                 pic = img->hires();
 
@@ -2825,7 +2881,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             char* buf =  (char*) base + offsets[k] * size;
             fb.insert( name, 
                        Slice( save_type, buf, xs[k], ys[k],
-                              sampling[k][0], sampling[k][1] ) );
+                              xsampling[k], ysampling[k] ) );
 
         }
 
