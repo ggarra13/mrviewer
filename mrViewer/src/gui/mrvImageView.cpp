@@ -1480,12 +1480,6 @@ void ImageView::timeout()
           CMedia* img = fg->image();
           int64_t frame = img->frame();
 
-          // if ( playback() == kForwards )
-          // {
-          //     if ( img->has_audio_data() && img->audio_frame() > frame+5 )
-          //         frame = img->audio_frame();
-          // }
-
           if ( this->frame() != frame )
           {
               this->frame( frame );
