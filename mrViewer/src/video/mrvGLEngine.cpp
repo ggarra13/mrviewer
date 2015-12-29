@@ -1366,7 +1366,10 @@ void GLEngine::draw_images( ImageList& images )
          }
 
          glDisable( GL_BLEND );
-         quad->bind( pic );
+         if ( img->image_damage() & CMedia::kDamageContents )
+         {
+             quad->bind( pic );
+         }
          quad->gamma( g );
          quad->draw( texWidth, texHeight );
 
@@ -1498,7 +1501,11 @@ void GLEngine::draw_images( ImageList& images )
       if ( fg == img && bg != fg &&
            _view->show_background() ) glEnable( GL_BLEND );
 
-      quad->bind( pic );
+      if ( img->image_damage() & CMedia::kDamageContents )
+      {
+          quad->bind( pic );
+      }
+
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
