@@ -1,4 +1,7 @@
 v3.0.6   - Made OpenEXR saver work with YByRy images.
+	 - Bug fixed loading of YByRy images to display By or Ry layers.
+	 - Improved OpenEXR loader to recognize multi part stereo images as
+	   saved by the saver.
 
 v3.0.5   - Made PSD, XCF and TIFF reader read the position and bounding
 	   box of layers correctly.
