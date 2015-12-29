@@ -1227,6 +1227,7 @@ void GLEngine::draw_images( ImageList& images )
       if (!pic) continue;
 
 
+
       CMedia::StereoType stereo = img->stereo_type();
 
       const boost::int64_t& frame = pic->frame();
@@ -1454,9 +1455,7 @@ void GLEngine::draw_images( ImageList& images )
 
 
       }
-      else if ( img->hires() &&
-                ( ( img->image_damage() & CMedia::kDamageContents ) ||
-                  img->has_subtitle() ) )
+      else if ( img->hires() || img->has_subtitle() )
       {
           pic = img->hires();
           
