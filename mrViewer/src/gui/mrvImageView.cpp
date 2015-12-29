@@ -1216,6 +1216,7 @@ bool ImageView::should_update( mrv::media fg )
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
+          redraw();
 	  update = true;
       }
 
@@ -1287,6 +1288,7 @@ bool ImageView::should_update( mrv::media fg )
       if ( img->image_damage() & CMedia::kDamageContents )
       {
           // resize_background();
+          redraw();
           update = true;
       }
 
@@ -1490,9 +1492,7 @@ void ImageView::timeout()
   if ( fg && should_update( fg ) )
   {
       update_color_info( fg );
-
       uiMain->uiEDLWindow->uiEDLGroup->redraw();
-      redraw();
   }
 
   repeat_timeout( float(delay) );
