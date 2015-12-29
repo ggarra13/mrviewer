@@ -928,7 +928,7 @@ void ImageInformation::fill_data()
 
     if ( img == NULL || !visible_r() ) return;
 
-    if ( img->is_stereo() )
+    if ( img->is_stereo() && img->right_eye() )
         m_button->show();
     else
         m_button->hide();
