@@ -558,7 +558,7 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     _frame = pic->frame();
     _w = pic->width(); 
     _h = pic->height(); 
-    refresh();
+    // refresh();
 }
  
 /** 
@@ -582,6 +582,8 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
   DBG( "allocate pixels " << w << " " << h << " frame: " << frame 
        << " channels: " << channels << " format: "
        << format << " pixel type: " << pixel_type );
+
+  image_damage( image_damage() & ~kDamageContents );
   _hires.reset( new image_type( frame, w, h, 
 				channels, format, pixel_type ) );
 }
@@ -2681,8 +2683,6 @@ bool CMedia::find_image( const boost::int64_t frame )
   }
 
   _frame = f;
-
-
 
   refresh();
   return true;
