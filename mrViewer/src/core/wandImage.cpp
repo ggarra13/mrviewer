@@ -246,12 +246,12 @@ namespace mrv {
      size_t depth = img->depth;
 
      // Get the layer display window and data window.
-     data_window( img->page.x, img->page.y, img->page.x + dw,
-                  img->page.y + dh, frame );
+     data_window( img->page.x, img->page.y, img->page.x + dw - 1,
+                  img->page.y + dh - 1, frame );
 
      display_window( img->page.x, img->page.y, 
-                     img->page.x + img->page.width,
-                     img->page.y + img->page.height, frame );
+                     img->page.x + img->page.width - 1,
+                     img->page.y + img->page.height - 1, frame );
 
 #else
      // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
@@ -297,7 +297,6 @@ namespace mrv {
 	pixel_type = image_type::kFloat;
 	storage = FloatPixel;
      }
-
 
      image_size( unsigned(dw), unsigned(dh) );
 
