@@ -162,8 +162,13 @@ namespace mrv {
      _layers.clear();
      _num_channels = 0;
 
-     rgb_layers();
-     lumma_layers();
+     ColorspaceType colorspace = MagickGetImageColorspace( wand );
+     if ( colorspace == RGBColorspace ||
+          colorspace == sRGBColorspace )
+     {
+         rgb_layers();
+         lumma_layers();
+     }
 
      bool has_alpha = false;
      status = MagickGetImageAlphaChannel( wand );
@@ -187,46 +192,75 @@ namespace mrv {
      if ( numLayers > 1 )
      {
 	const char* channelName = channel();
-        if ( channelName ) has_alpha = false;
 
+        has_alpha = false;
         std::string layer;
 
-	for ( size_t i = 1; i < numLayers; ++i )
+	for ( size_t i = 0; i < numLayers; ++i )
 	{
+            bool with_alpha = false;
 
-	   char layername[256];
+            char layername[256];
 
-	   MagickSetIteratorIndex( wand, i );
-	   const char* label = MagickGetImageProperty( wand, "label" );
-	   if ( label == NULL )
-	   {
-	      sprintf( layername, _("Layer %" PRId64 ), i+1 );
-	   }
-	   else
-	   {
-	      strcpy( layername, label );
-	   }
+            MagickSetIteratorIndex( wand, i );
+            const char* label = MagickGetImageProperty( wand, "label" );
+            if ( label == NULL )
+            {
+                sprintf( layername, _("Layer %" PRId64 ), i+1 );
+            }
+            else
+            {
+                strcpy( layername, label );
+            }
+            
+            ColorspaceType colorspace = MagickGetImageColorspace( wand );
+            
+            std::string ly = layername;
+            
+            _layers.push_back( layername );
+           switch( colorspace )
+           {
+               case sRGBColorspace:
+               case RGBColorspace:
+                   _layers.push_back( ly + ".R" );
+                   _layers.push_back( ly + ".G" );
+                   _layers.push_back( ly + ".B" );
+                   break;
+               case CMYKColorspace:
+                   _layers.push_back( ly + ".C" );
+                   _layers.push_back( ly + ".M" );
+                   _layers.push_back( ly + ".Y" );
+                   _layers.push_back( ly + ".K" );
+                   break;
+               case Rec601LumaColorspace:
+               case Rec709LumaColorspace:
+               case GRAYColorspace:
+                   if ( ( ly.find("Z") != std::string::npos ) ||
+                        ( ly.find("depth") != std::string::npos ) )
+                       _layers.push_back( ly + ".Z" );
+                   else
+                       _layers.push_back( ly + ".Y" );
+               default:
+                   break;
+           }
 
-           std::string ly = layername;
-	   _layers.push_back( layername );
-	   _layers.push_back( ly + ".R" );
-	   _layers.push_back( ly + ".G" );
-	   _layers.push_back( ly + ".B" );
+           status = MagickGetImageAlphaChannel( wand );
+           if ( status == MagickTrue )
+           {
+               with_alpha = true;
+               ly += ".A";
+               _layers.push_back( ly );
+           }
+
 	   ++_num_channels;
 
 	   if ( channelName && strcmp( layername, channelName ) == 0 )
 	   {
 	      index = i;
               layer = layername;
+              has_alpha = with_alpha;
 	   }
 
-           status = MagickGetImageAlphaChannel( wand );
-           if ( status == MagickTrue )
-           {
-               has_alpha = true;
-               ly += ".A";
-               _layers.push_back( ly );
-           }
 	}
 
 	MagickSetIteratorIndex( wand, index );
@@ -305,6 +339,12 @@ namespace mrv {
      {
 	channels = "RGBA";
 	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type );
+        status = MagickSetImageAlphaChannel( wand, 
+                                             ActivateAlphaChannel );
+        if ( status == MagickFalse )
+        {
+            ThrowWandException( wand );
+        }
      }
      else
      {
@@ -522,17 +562,17 @@ const char* const pixel_storage( StorageType storage )
 }
 
 
-
 bool CMedia::save( const char* file, const ImageOpts* opts ) const
 {
-    std::string tmp = file;
-    std::transform( tmp.begin(), tmp.end(), tmp.begin(),
-		     (int(*)(int)) tolower);
-    
-    if ( strncmp( tmp.c_str() + tmp.size() - 4, ".exr", 4 ) == 0 ||
-         strncmp( tmp.c_str() + tmp.size() - 4, ".sxr", 4 ) == 0 )
+    if ( dynamic_cast< const EXROpts* >( opts ) != NULL )
     {
 	return exrImage::save( file, this, opts );
+    }
+
+    if ( dynamic_cast< const WandOpts* >( opts ) == NULL )
+    {
+        LOG_ERROR( _("Unknown image format to save") );
+        return false;
     }
 
     WandOpts* o = (WandOpts*) opts;
@@ -544,175 +584,289 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     */
     MagickWand* wand = NewMagickWand();
 
-    mrv::image_type_ptr pic = hires();
+    CMedia* p = const_cast< CMedia* >( this );
 
-    const bool  has_alpha = pic->has_alpha();
+    const char* old_channel = channel();
 
-    bool must_convert = false;
-    const char* channels;
-    switch ( pic->format() )
-      {
-      case image_type::kRGB:
-          channels = N_("RGB"); break;
-      case image_type::kRGBA:
-          channels = N_("RGBA"); break;
-      case image_type::kBGRA:
-          channels = N_("BGRA"); break;
-      case image_type::kBGR:
-          channels = N_("BGR"); break;
-      case image_type::kLumma:
-          channels = N_("I"); break;
-      case image_type::kLummaA:
-          channels = N_("IA"); break;
-      default:
-	must_convert = true;
-	channels = N_("RGB");
-	if ( has_alpha ) channels = N_("RGBA");
-	break;
-      }
-
-
-    StorageType storage = CharPixel;
-    switch( pic->pixel_type() )
-      {
-      case image_type::kShort:
-	storage = ShortPixel;
-	break;
-      case image_type::kInt:
-	storage = IntegerPixel;
-	break;
-      case image_type::kFloat:
-	storage = FloatPixel;
-	break;
-      case image_type::kHalf:
-	storage = ShortPixel;
-	must_convert = true;
-	break;
-      case image_type::kByte:
-      default:
-	storage = CharPixel;
-	break;
-      }
-
-    if ( o->pixel_type() != storage )
+    stringArray::const_iterator i;
+    stringArray::const_iterator e;
+    if ( opts->all_layers() )
     {
-        LOG_INFO( _("Original pixel type is ") 
-                  << pixel_storage( storage )
-                  << (".  Saving pixel type is ")
-                  << pixel_storage( o->pixel_type() )
-                  << "." );
-        must_convert = true;
+        i = p->layers().begin();
+        e = p->layers().end();
+    }
+    else
+    {
+        i = p->layers().begin();
+        e = p->layers().end();
+        for ( ; i != e; ++i )
+        {
+            if ( ( old_channel && *i == old_channel ) || *i == _("Color") )
+            {
+                e = i+1;
+                break;
+            }
+        }
+        if ( i == e )
+        {
+            i = p->layers().begin();
+            e = i+1;
+        }
     }
 
-    // if ( gamma() != 1.0 )
-    //    must_convert = true;
+    std::string root = "ZXVCW#!";
 
-    if ( opts->opengl() )
-        must_convert = false;
-
-    // Set matte (alpha)
-    MagickBooleanType matte = MagickFalse;
-    if ( has_alpha ) matte = MagickTrue;
-    MagickSetImageMatte( wand, matte );
-
-    /**
-     * Load image onto wand
-     * 
-     */
-    boost::uint8_t* pixels = NULL;
-    if ( must_convert )
+    for ( ; i != e; ++i )
     {
-	unsigned pixel_size = 1;
-	switch( o->pixel_type() )
+        std::string x = *i;
+        // std::cerr << "layer " << x << std::endl;
+
+        if ( x == _("Lumma") || x == _("Alpha Overlay") ||
+             x == _("Red") || x == _("Green") ||
+             x == _("Blue") || x == _("Alpha") ||
+             x == N_("RY") || x == N_("BY") ||
+             x.find( _("anaglyph") ) != std::string::npos ||
+             x.find( _("stereo") ) != std::string::npos )
         {
-            case ShortPixel:
-                pixel_size = sizeof(short);
-                break;
-            case IntegerPixel:
-                pixel_size = sizeof(int);
-                break;
-            case FloatPixel:
-                pixel_size = sizeof(float);
-                break;
-            case DoublePixel:
-                pixel_size = sizeof(double);
-                break;
+            continue;
+        }
+
+        std::string ext = x;
+        
+        size_t pos = ext.rfind( '.' );
+        if ( pos != std::string::npos )
+        {
+            ext = ext.substr( pos+1, ext.size() );
+        }
+
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) toupper);
+
+        if ( x.find(root) == 0 && root != "Z" ) continue;
+
+        root = x;
+
+        if ( x == _("Color") ) x = "";
+
+        p->channel( x.c_str() );
+
+        mrv::image_type_ptr pic = hires();
+
+        mrv::Recti daw = data_window();
+        mrv::Recti dpw = display_window();
+
+
+        image_type::Format format = pic->format();
+        // std::cerr << "pic has format " << pic->pixel_format() << std::endl;
+
+        bool  has_alpha = pic->has_alpha();
+
+
+        bool must_convert = false;
+        const char* channels;
+        switch ( format )
+        {
+            case image_type::kRGB:
+                channels = N_("RGB"); break;
+            case image_type::kRGBA:
+                channels = N_("RGBA"); break;
+            case image_type::kBGRA:
+                channels = N_("BGRA"); break;
+            case image_type::kBGR:
+                channels = N_("BGR"); break;
+            case image_type::kLumma:
+                channels = N_("I"); break;
+            case image_type::kLummaA:
+                channels = N_("IA"); break;
             default:
-            case CharPixel:
-                pixel_size = sizeof(char);
+                must_convert = true;
+                channels = N_("RGB");
+                if ( has_alpha ) channels = N_("RGBA");
                 break;
-	  }
-
-        unsigned data_size = width()*height()*pic->channels()*pixel_size;
-	pixels = new boost::uint8_t[ data_size ];
-        memset( pixels, 0, data_size );
-      }
-    else
-      {
-	pixels = (boost::uint8_t*)pic->data().get();
-      }
-
-
-
-    status = MagickConstituteImage( wand, pic->width(), pic->height(), 
-				    channels, o->pixel_type(), pixels );
-    if (status == MagickFalse)
-      {
-	if ( must_convert ) delete [] pixels;
-	ThrowWandException( wand );
-      }
-
-
-    
-    if ( !must_convert )
-    {
-        if ( pic->frame() == first_frame() )
-        {
-            LOG_INFO( _("No conversion needed.  Gamma: ") << _gamma );
         }
-        MagickSetImageGamma( wand, _gamma );
-    }
-    else
-    {
-        if ( pic->frame() == first_frame() )
+
+        // std::cerr << "imagemagick channels " << channels 
+        //           << " pic->channels " << pic->channels() << " alpha? "
+        //           << has_alpha << std::endl;
+
+        StorageType storage = CharPixel;
+        switch( pic->pixel_type() )
         {
-            LOG_INFO( _("Conversion needed.  Gamma: 1.0") );
+            case image_type::kShort:
+                storage = ShortPixel;
+                break;
+            case image_type::kInt:
+                storage = IntegerPixel;
+                break;
+            case image_type::kFloat:
+                storage = FloatPixel;
+                break;
+            case image_type::kHalf:
+                storage = ShortPixel;
+                must_convert = true;
+                break;
+            case image_type::kByte:
+            default:
+                storage = CharPixel;
+                break;
         }
-        MagickSetImageGamma( wand, 1.0 );
-    }
 
-    if ( must_convert )
-      {
-	unsigned int dh = pic->height();
-	unsigned int dw = pic->width();
-        float one_gamma = 1.0f/_gamma;
-	for ( unsigned y = 0; y < dh; ++y )
-	  {
-	    for ( unsigned x = 0; x < dw; ++x )
-	      {
-		ImagePixel p = pic->pixel( x, y );
+        if ( o->pixel_type() != storage )
+        {
+            LOG_INFO( _("Original pixel type is ") 
+                      << pixel_storage( storage )
+                      << (".  Saving pixel type is ")
+                      << pixel_storage( o->pixel_type() )
+                      << "." );
+            must_convert = true;
+        }
 
-                if ( p.r > 0.f && isfinite(p.r) )
-                    p.r = pow( p.r, one_gamma );
-                if ( p.g > 0.f && isfinite(p.g) )
-                    p.g = pow( p.g, one_gamma );
-                if ( p.b > 0.f && isfinite(p.b) )
-                    p.b = pow( p.b, one_gamma );
+        // if ( gamma() != 1.0 )
+        //    must_convert = true;
 
-		status = MagickImportImagePixels(wand, x, y, 1, 1, channels, 
-                                                 FloatPixel, &p[0] );
+        if ( opts->opengl() )
+            must_convert = false;
 
-	      }
-	  }
+        // Set matte (alpha)
+        // MagickBooleanType matte = MagickFalse;
+        // if ( has_alpha ) matte = MagickTrue;
+        // MagickSetImageMatte( wand, matte );
 
+
+        /**
+         * Load image onto wand
+         * 
+         */
+        boost::uint8_t* pixels = NULL;
+        if ( must_convert )
+        {
+            unsigned pixel_size = 1;
+            switch( o->pixel_type() )
+            {
+                case ShortPixel:
+                    pixel_size = sizeof(short);
+                    break;
+                case IntegerPixel:
+                    pixel_size = sizeof(int);
+                    break;
+                case FloatPixel:
+                    pixel_size = sizeof(float);
+                    break;
+                case DoublePixel:
+                    pixel_size = sizeof(double);
+                    break;
+                default:
+                case CharPixel:
+                    pixel_size = sizeof(char);
+                    break;
+            }
+
+            unsigned data_size = width()*height()*pic->channels()*pixel_size;
+            pixels = new boost::uint8_t[ data_size ];
+            memset( pixels, 0, data_size );
+        }
+        else
+        {
+            pixels = (boost::uint8_t*)pic->data().get();
+        }
+
+        unsigned dw = pic->width();
+        unsigned dh = pic->height();
+        MagickWand* w = NewMagickWand();
+        status = MagickConstituteImage( w, dw, dh, channels, 
+                                        o->pixel_type(), pixels );
         if (status == MagickFalse)
         {
-            delete [] pixels;
+            if ( must_convert ) delete [] pixels;
             ThrowWandException( wand );
         }
-      }
+
+        if ( !must_convert )
+        {
+            if ( pic->frame() == first_frame() )
+            {
+                LOG_INFO( _("No conversion needed.  Gamma: ") << _gamma );
+            }
+            MagickSetImageGamma( wand, _gamma );
+        }
+        else
+        {
+            if ( pic->frame() == first_frame() )
+            {
+                LOG_INFO( _("Conversion needed.  Gamma: 1.0") );
+            }
+            MagickSetImageGamma( wand, 1.0 );
+        }
+
+        if ( must_convert )
+        {
+            float one_gamma = 1.0f/_gamma;
+            for ( unsigned y = 0; y < dh; ++y )
+            {
+                for ( unsigned x = 0; x < dw; ++x )
+                {
+                    ImagePixel p = pic->pixel( x, y );
+
+                    if ( p.r > 0.f && isfinite(p.r) )
+                        p.r = pow( p.r, one_gamma );
+                    if ( p.g > 0.f && isfinite(p.g) )
+                        p.g = pow( p.g, one_gamma );
+                    if ( p.b > 0.f && isfinite(p.b) )
+                        p.b = pow( p.b, one_gamma );
+
+                    status = MagickImportImagePixels(w, x, y, 1, 1, channels, 
+                                                     FloatPixel, &p[0] );
+
+                }
+            }
 
 
+            if (status == MagickFalse)
+            {
+                delete [] pixels;
+                ThrowWandException( wand );
+            }
+        }
+ 
+        if ( has_alpha )
+        {
+            status = MagickSetImageAlphaChannel( w, 
+                                                 ActivateAlphaChannel );
+            if ( status == MagickFalse )
+            {
+                ThrowWandException( wand );
+            }
+        }
+
+        MagickSetLastIterator( wand );
+        MagickSetImageCompression( wand, LZWCompression );
+        std::string label = x;
+        pos = label.find('#');
+        if ( pos == 0 )
+        {
+            pos = label.find( ' ' );
+            if ( pos != std::string::npos )
+            {
+                label = label.substr( pos+1, label.size() );
+            }
+        }
+        // std::cerr << "label: " << label << std::endl;
+        MagickSetImageProperty( w, "label", label.c_str() );
+
+#if 1
+        Image* img = GetImageFromMagickWand( w );
+        img->page.x = daw.x();
+        img->page.y = daw.y();
+        img->page.width = daw.w();
+        img->page.height = daw.h();
+#endif
+
+        MagickAddImage( wand, w );
+
+
+        DestroyMagickWand( w );
+        // if ( must_convert ) delete [] pixels; // okay?
+    }
 
     //
     // Store EXIF and IPTC data (if any)
@@ -722,9 +876,17 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
      * Write out image
      * 
      */
-    status = MagickWriteImage( wand, file );
+    // size_t numLayers = MagickGetNumberImages( wand );
+    // for ( unsigned i = 0; i < numLayers; ++i )
+    // {
+    //     char buf[256];
+    //     sprintf( buf, "%s.%d.tif", file, i );
+    //     MagickSetIteratorIndex( wand, i );
+    //     MagickWriteImage( wand, buf );
+    // }
 
-    if ( must_convert ) delete [] pixels;
+    status = MagickWriteImages( wand, file, MagickTrue );
+
 
     DestroyMagickWand( wand );
 
@@ -733,6 +895,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 	ThrowWandException( wand );
       }
 
+    p->channel( old_channel );
 
     return true;
   }

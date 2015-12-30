@@ -8,7 +8,7 @@ gridy 5
 snap 3
 decl {\#include <iostream>} {} 
 
-decl {\#include <core/mrvI8N.h>} {selected public
+decl {\#include <core/mrvI8N.h>} {public
 } 
 
 decl {\#include <gui/mrvIO.h>} {public
@@ -29,19 +29,20 @@ namespace mrv {open
   } {
     decl {std::string pixel_type;} {public
     }
-    Function {make_window(bool aces)} {} {
+    Function {make_window(bool aces)} {open
+    } {
       {fltk::Window} uiMain {
-        label {OpenEXR Saving} open
-        xywh {68 453 300 195} hide resizable modal noborder
+        label {ImageMagick Saving} open
+        xywh {193 251 340 295} resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Image Options} open
-          xywh {30 22 240 128} box UP_BOX
+          xywh {34 33 272 193} box UP_BOX
         } {
           {fltk::Choice} uiPixelType {
             label {Pixel Format}
             callback {pixel_type = o->child(o->value())->label();} open
-            xywh {145 69 90 25}
+            xywh {151 137 90 25}
           } {
             {fltk::Item} {} {
               label Char
@@ -56,10 +57,14 @@ namespace mrv {open
               label Float
               }
           }
+          {fltk::LightButton} uiAllLayers {
+            label {All Layers}
+            xywh {76 77 150 35}
+          }
         }
         {fltk::LightButton} uiACESmetadata {
           label {ACES metadata}
-          xywh {95 40 125 35}
+          xywh {107 60 153 35}
           extra_code {o->value( aces );}
         }
         {fltk::Button} {} {
@@ -67,14 +72,14 @@ namespace mrv {open
           user_data this user_data_type {WandOptionsUI*}
           callback {v->active(true);
 v->uiMain->make_exec_return(true);}
-          xywh {75 170 55 18}
+          xywh {85 257 62 27}
         }
         {fltk::Button} {} {
           label Cancel
           user_data this user_data_type {WandOptionsUI*}
           callback {v->active( false );
 v->uiMain->make_exec_return(false);}
-          xywh {145 170 60 18}
+          xywh {164 257 68 27}
         }
       }
     }
@@ -84,7 +89,9 @@ v->uiMain->make_exec_return(false);}
 else if ( pixel_type == _("Float") ) _pixel_type = FloatPixel;
 else if ( pixel_type == _("Short") ) _pixel_type = ShortPixel;
 else if ( pixel_type == _("Integer") ) _pixel_type = IntegerPixel;
-_ACESmetadata = uiACESmetadata->value();} {}
+_ACESmetadata = uiACESmetadata->value();
+_all_layers = uiAllLayers->value();} {selected
+      }
     }
     Function {WandOptionsUI(bool aces=false) : WandOpts(aces)} {open
     } {
