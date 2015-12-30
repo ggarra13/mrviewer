@@ -516,8 +516,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( !skip ) --start;
     if ( playback() == kBackwards ) --start;
 
-    if ( start < _frame_start ) start = _frame_start;
-
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
 
