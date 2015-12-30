@@ -82,6 +82,9 @@ namespace {
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
 #define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl;
+
 // #define DEBUG_SEEK
 // #define DEBUG_VIDEO_PACKETS
 //#define DEBUG_STORES
@@ -251,7 +254,7 @@ _seek_frame( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
-_play_fps( 24.0 ),
+_play_fps( 0.0 ),
 _fps( 0 ),
 _orig_fps( 0 ),
 _pixel_ratio( 1.0f ),
@@ -347,7 +350,7 @@ _seek_frame( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
-_play_fps( 24.0 ),
+_play_fps( other->_play_fps ),
 _fps( other->_fps ),
 _orig_fps( other->_orig_fps ),
 _pixel_ratio( other->_pixel_ratio ),
@@ -558,7 +561,7 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     _frame = pic->frame();
     _w = pic->width(); 
     _h = pic->height(); 
-    // refresh();
+    refresh();
 }
  
 /** 
@@ -1230,12 +1233,12 @@ void CMedia::channel( const char* c )
     std::string ch;
     std::string ext;
 
-    if (c )
+    if (c)
     {
         ch = c;
 
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
-             ch == _("Blue")  ||
+             ch == _("Blue")  || ch == "" ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") ) 
         {
             c = NULL;
@@ -1341,8 +1344,8 @@ void CMedia::channel( const char* c )
       SCOPED_LOCK( _mutex );
       clear_cache();
       fetch(_frame);
+      refresh();
   }
-  refresh();
 }
 
 
