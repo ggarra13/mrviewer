@@ -2664,15 +2664,11 @@ bool exrImage::save( const char* file, const CMedia* img,
             case image_type::kLumma:
                 offsets[3] = total_size = dw*dh*size;
                 offsets[1] = offsets[2] = 0;
-                xsampling[1] = ysampling[1] = 2;
-                xsampling[2] = ysampling[2] = 2;
                 break;
             case image_type::kLummaA:
                 offsets[3] = dw*dh*size;
                 offsets[1] = offsets[2] = 0;
                 total_size = offsets[3]*2;
-                xsampling[1] = ysampling[1] = 2;
-                xsampling[2] = ysampling[2] = 2;
                 break;
             // case image_type::kITU_601_YCbCr410:
             // case image_type::kITU_709_YCbCr410:
