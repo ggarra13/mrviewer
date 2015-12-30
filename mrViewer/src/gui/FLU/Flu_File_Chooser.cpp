@@ -497,6 +497,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("tga"),   _( "Targa Picture"), &picture );
   add_type( N_("tif"),   _( "TIFF Picture"), &picture );
   add_type( N_("tiff"),  _( "TIFF Picture"), &picture );
+  add_type( N_("xcf"),   _( "GIMP Picture"), &picture );
   add_type( N_("zt"),    _( "mental ray Z Depth Picture"), &picture );
   add_type( N_("mp3"),   _( "MP3 music"), &music );
   add_type( N_("ogg"),   _( "OGG music"), &music );

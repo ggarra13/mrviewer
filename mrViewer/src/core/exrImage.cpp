@@ -1926,7 +1926,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
     return true;
   }
 
-
+static
 void save_attributes( const CMedia* img, Header& hdr )
 {
 
@@ -2313,6 +2313,7 @@ void exrImage::copy_pixel_data( mrv::image_type_ptr pic,
     }
 }
 
+static
 void add_layer( HeaderList& headers, FrameBufferList& fbs, 
                 PartNames& names, LayerList& layers, 
                 Imf::PixelType save_type,
