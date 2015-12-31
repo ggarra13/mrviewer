@@ -5,6 +5,9 @@ v3.0.6   - Made OpenEXR saver work with YByRy images.
 	 - Removed black frames when loading a sequence for the first time
 	   (before the cache).
 	 - Bug fixed OpenEXR saver when the source was a movie file.
+	 - Added all layers saving to image magick saver.  This works with
+	   TIFFs mostly, albeit somewhat buggy (positions of layers are
+	   not kept).
 
 v3.0.5   - Made PSD, XCF and TIFF reader read the position and bounding
 	   box of layers correctly.

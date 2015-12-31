@@ -1432,16 +1432,8 @@ void GLEngine::draw_images( ImageList& images )
             if ( right ) g = right->gamma();
          }
 
-         if ( daw2.w() != 0 )
-         {
-             texWidth = daw2.w();
-             texHeight = daw2.h();
-         }
-         else if ( pic )
-         {
-             texWidth = pic->width();
-             texHeight = pic->height();
-         }
+         texWidth = daw2.w();
+         texHeight = daw2.h();
 
  
          glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
