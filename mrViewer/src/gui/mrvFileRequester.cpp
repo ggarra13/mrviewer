@@ -651,7 +651,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    bool ok = mrv::fileroot( root, fileseq, false );
    if ( !ok && !movie ) {
        mrvALERT( _("Could not save sequence or movie, "
-                   "only single frame specified") );
+                   "only single frame specified.  Use %%d syntax") );
        return;
    }
 

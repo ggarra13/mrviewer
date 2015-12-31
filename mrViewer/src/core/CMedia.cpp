@@ -1247,7 +1247,7 @@ void CMedia::channel( const char* c )
        ext = ch;
        std::string root;
        size_t pos = ext.rfind( N_(".") );
-       if ( pos != std::string::npos )
+       if ( pos != std::string::npos && pos != ext.size() )
        {
            root = ext.substr( 0, pos );
            ext = ext.substr( pos+1, ext.size() );
@@ -1308,22 +1308,22 @@ void CMedia::channel( const char* c )
         else
         {
             size_t pos = ch.rfind( '.' );
-            if ( pos != std::string::npos )
+            if ( pos != std::string::npos && pos != ch.size() )
             {
                 ext = ch.substr( pos+1, ch.size() );
                 ch = ch.substr( 0, pos );
                 if ( ( ext == "Z" || ext.size() > 1 ) ) ch += "." + ext;
             }
 
-          pos = ch2.rfind( '.' );
-          if ( pos != std::string::npos )
-          {
-              ext = ch2.substr( pos+1, ch.size() );
-              ch2 = ch2.substr( 0, pos );
-              if ( ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
-          }
+            pos = ch2.rfind( '.' );
+            if ( pos != std::string::npos && pos != ch2.size() )
+            {
+                ext = ch2.substr( pos+1, ch2.size() );
+                ch2 = ch2.substr( 0, pos );
+                if ( ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
+            }
 
-          if ( ch != ch2 ) to_fetch = true;
+            if ( ch != ch2 ) to_fetch = true;
         }
     }
     
