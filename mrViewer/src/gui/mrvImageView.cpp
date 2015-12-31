@@ -208,12 +208,12 @@ namespace
     //
     size_t pos  = channelName.rfind( '.' );
 
-    if ( pos != std::string::npos )
+    if ( pos != std::string::npos && pos != channelName.size() )
     {
         size_t pos2  = oldChannel.rfind( '.' );
         
         std::string ext2;
-        if ( pos2 != std::string::npos )
+        if ( pos2 != std::string::npos && pos2 != oldChannel.size() )
         {
             ext2 = oldChannel.substr( pos2+1, oldChannel.size() );
             std::transform( ext2.begin(), ext2.end(), ext2.begin(),
@@ -4212,19 +4212,19 @@ void ImageView::channel( unsigned short c )
   size_t pos = ext.rfind('.');
   size_t pos2 = oext.rfind('.');
 
-  if ( pos != std::string::npos )
+  if ( pos != std::string::npos && pos != ext.size() )
   {
      ext = ext.substr( pos+1, ext.size() );
   }
 
-  if ( pos2 != std::string::npos )
+  if ( pos2 != std::string::npos && pos2 != oext.size() )
   {
      oext = oext.substr( pos2+1, oext.size() );
   }
 
   std::string x = lbl;
   size_t loc = x.find( '.' );
-  if ( x[0] == '#' && loc != std::string::npos )
+  if ( x[0] == '#' && loc != std::string::npos && loc != x.size() )
   {
       x = x.substr( loc+1, x.size() );
   }
@@ -4674,7 +4674,10 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             }
 
             // Now add current leaf, but without # prefix and period
-            std::string y = name.substr( x.size()+1, name.size() );
+            std::string y = name;
+
+            if ( x.size() != name.size() )
+                y = name.substr( x.size()+1, name.size() );
 
             o = uiColorChannel->add_leaf( y.c_str(), g );
         }

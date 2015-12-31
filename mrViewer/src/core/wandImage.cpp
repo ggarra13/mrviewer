@@ -102,8 +102,8 @@ namespace mrv {
   bool wandImage::test(const char* file)
   {
       std::string f = file;
-      size_t pos = f.rfind( N_(".") );
-      if ( pos != std::string::npos )
+      size_t pos = f.rfind( '.' );
+      if ( pos != std::string::npos && pos != f.size() )
       {
           std::string ext = f.substr( pos+1, f.size() );
           if ( ext == "PDF" || ext == "pdf" )
@@ -116,13 +116,17 @@ namespace mrv {
     MagickWand* wand = NewMagickWand();
 
     status = MagickPingImage( wand, file );
+    if (status == MagickFalse )
+    {
+        ThrowWandExceptionPing( wand );
+    }
 
     DestroyMagickWand(wand);
 
 
     if (status == MagickFalse )
     {
-      return false;
+        return false;
     }
 
     return true;
@@ -210,14 +214,25 @@ namespace mrv {
             }
             else
             {
-                strcpy( layername, label );
+                std::string ly = label;
+
+                size_t pos;
+                while ( (pos = ly.find( '.' )) != std::string::npos )
+                {
+                    std::string n = ly.substr( 0, pos );
+                    n += '_';
+                    if ( pos != ly.size() )
+                        n += ly.substr( pos+1, ly.size() );
+                    ly = n;
+                }
+                strcpy( layername, ly.c_str() );
             }
             
             ColorspaceType colorspace = MagickGetImageColorspace( wand );
             
             std::string ly = layername;
             
-            _layers.push_back( layername );
+            _layers.push_back( ly );
            switch( colorspace )
            {
                case sRGBColorspace:
@@ -561,6 +576,17 @@ const char* const pixel_storage( StorageType storage )
     }
 }
 
+typedef std::vector< uint8_t* > Buffers;
+
+void destroyPixels( Buffers& bufs )
+{
+    Buffers::iterator i = bufs.begin();
+    Buffers::iterator e = bufs.end();
+    for ( ; i != e; ++i )
+    {
+        delete [] *i;
+    }
+}
 
 bool CMedia::save( const char* file, const ImageOpts* opts ) const
 {
@@ -614,6 +640,9 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
     }
 
+
+    Buffers bufs;
+
     std::string root = "ZXVCW#!";
 
     for ( ; i != e; ++i )
@@ -634,7 +663,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         std::string ext = x;
         
         size_t pos = ext.rfind( '.' );
-        if ( pos != std::string::npos )
+        if ( pos != std::string::npos && pos != ext.size() )
         {
             ext = ext.substr( pos+1, ext.size() );
         }
@@ -653,7 +682,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         mrv::image_type_ptr pic = hires();
 
         mrv::Recti daw = data_window();
-        mrv::Recti dpw = display_window();
 
 
         image_type::Format format = pic->format();
@@ -763,7 +791,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
             unsigned data_size = width()*height()*pic->channels()*pixel_size;
             pixels = new boost::uint8_t[ data_size ];
-            memset( pixels, 0, data_size );
+            bufs.push_back( pixels );
         }
         else
         {
@@ -777,7 +805,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                                         o->pixel_type(), pixels );
         if (status == MagickFalse)
         {
-            if ( must_convert ) delete [] pixels;
+            destroyPixels(bufs);
             ThrowWandException( wand );
         }
 
@@ -823,7 +851,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
             if (status == MagickFalse)
             {
-                delete [] pixels;
+                destroyPixels(bufs);
                 ThrowWandException( wand );
             }
         }
@@ -839,13 +867,14 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
 
         MagickSetLastIterator( wand );
-        MagickSetImageCompression( wand, LZWCompression );
+        MagickSetImageCompression( wand, ZipCompression );
+        MagickSetImageCompression( w, ZipCompression );
         std::string label = x;
         pos = label.find('#');
         if ( pos == 0 )
         {
             pos = label.find( ' ' );
-            if ( pos != std::string::npos )
+            if ( pos != std::string::npos && pos != label.size() )
             {
                 label = label.substr( pos+1, label.size() );
             }
@@ -864,8 +893,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         MagickAddImage( wand, w );
 
 
+        // destroyPixels(bufs); // okay?
         DestroyMagickWand( w );
-        // if ( must_convert ) delete [] pixels; // okay?
     }
 
     //
@@ -886,7 +915,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     // }
 
     status = MagickWriteImages( wand, file, MagickTrue );
-
+    if ( status == MagickFalse )
+        ThrowWandException( wand );
 
     DestroyMagickWand( wand );
 
