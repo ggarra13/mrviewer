@@ -1601,11 +1601,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          //
 #ifdef CHANGE_PERIODS_TO_UNDERSCORES
          size_t pos;
-         while ( (pos = name.find( N_(".") )) != std::string::npos )
+         while ( (pos = name.find( '.' )) != std::string::npos )
          {
              std::string n = name.substr( 0, pos );
              n += '_';
-             n += name.substr( pos+1, name.size() );
+             if ( pos != name.size() )
+                 n += name.substr( pos+1, name.size() );
              name = n;
          }
 #endif
@@ -2470,14 +2471,14 @@ bool exrImage::save( const char* file, const CMedia* img,
                 std::string root = name;
                 // std::cerr << "FOUND " << root << " with " << x << std::endl;
 
-                if ( root[0] == '#' )
+                if ( root[0] == '#' && x.size() < name.size() )
                 {
                     root = name.substr( x.size()+1, name.size() );
                 }
 
                 size_t pos = root.rfind( '.' );
                 std::string suffix;
-                if ( pos != std::string::npos ) 
+                if ( pos != std::string::npos && pos != root.size() ) 
                 {
                     suffix = root.substr( pos+1, root.size() );
                     root = root.substr( 0, pos );
@@ -2583,6 +2584,8 @@ bool exrImage::save( const char* file, const CMedia* img,
 
     unsigned part = 0;
     unsigned numParts = fbs.size();
+
+    p->channel( NULL );
     const mrv::Recti& dpw = img->display_window();
 
     for ( ; part < numParts; ++part )
@@ -2604,7 +2607,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         const char* ch = p->channel();
         if ( ( layer == _("Color") && ch != NULL ) ||
              ( ch && layer != ch ) )
-            LOG_ERROR( "Failed setting layer to " << layer );
+            LOG_ERROR( _("Failed setting layer to ") << layer );
 
         // std::cerr << "Changed to layer " 
         //           << ( p->channel() ? p->channel() : "NULL" ) << std::endl;
