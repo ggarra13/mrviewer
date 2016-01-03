@@ -1,6 +1,6 @@
 # data file for the FLTK User Interface Designer (FLUID)
 version 2.1000 
-images_dir header_name 
+images_dir fltk::Button 
 header_name {.h} 
 code_name {.cxx} 
 gridx 5 
@@ -624,7 +624,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {608 92 670 450} resizable visible
+        xywh {473 66 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1683,13 +1683,13 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Loading open
-            xywh {15 22 425 360} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 22 425 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {13 45 400 104} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsLoadSequence {
-                label { Load Sequence on Drag&&Drop} selected
+                label { Load Sequence on Drag&&Drop}
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
                 xywh {20 44 25 25} box UP_BOX value 1
               }
@@ -1792,8 +1792,82 @@ else
               }
             }
           }
+          {fltk::Group} {} {
+            label OpenEXR open
+            xywh {13 23 427 367} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Loading
+              xywh {44 33 325 130} box ROUNDED_BOX labelsize 15
+            } {
+              {fltk::ValueInput} uiPrefsOpenEXRThreadCount {
+                label {Thread Count}
+                xywh {155 22 51 28} minimum 1 maximum 16 step 1 value 4
+              }
+              {fltk::ValueInput} uiPrefsOpenEXRGamma {
+                label Gamma
+                xywh {160 82 51 28} minimum 0.1 maximum 16 step 0.1 value 2.2
+              }
+            }
+            {fltk::Group} {} {
+              label Saving open
+              xywh {44 203 330 130} box ROUNDED_BOX labelsize 15
+            } {
+              {fltk::Choice} uiPrefsOpenEXRCompression {
+                label Compression
+                user_data this user_data_type {mrv::PreferencesUI*}
+                callback {std::string compression = o->child(o->value())->label();
+if ( compression == "DWAA" ||
+     compression == "DWAB" )
+{
+v->uiPrefsOpenEXRDWACompression->activate();
+}
+else
+{
+v->uiPrefsOpenEXRDWACompression->deactivate();
+}}
+                xywh {100 20 180 25}
+              } {
+                {fltk::Item} {} {
+                  label None
+                  }
+                {fltk::Item} {} {
+                  label RLE
+                  }
+                {fltk::Item} {} {
+                  label {ZIP SCANLINE}
+                  }
+                {fltk::Item} {} {
+                  label ZIP
+                  }
+                {fltk::Item} {} {
+                  label PIZ
+                  }
+                {fltk::Item} {} {
+                  label PXR24
+                  }
+                {fltk::Item} {} {
+                  label B44
+                  }
+                {fltk::Item} {} {
+                  label B44A
+                  }
+                {fltk::Item} {} {
+                  label DWAA
+                  }
+                {fltk::Item} {} {
+                  label DWAB
+                  }
+              }
+              {fltk::ValueSlider} uiPrefsOpenEXRDWACompression {
+                label {DWA Compression}
+                tooltip {DWA/DWB compression}
+                xywh {130 61 138 34} align 4 deactivate minimum 1 maximum 250 step 10 value 45
+              }
+            }
+          }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -1804,8 +1878,8 @@ else
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface} open
-              vertical value 1
+              label {User Interface} selected
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -1826,7 +1900,7 @@ else
               label Caches
               }
             {fltk::ItemGroup} {} {
-              label {3D Luts} open
+              label {3D Luts}
               vertical
             } {
               {fltk::Item} {} {
@@ -1847,6 +1921,9 @@ else
               }
             {fltk::Item} {} {
               label Audio
+              }
+            {fltk::Item} {} {
+              label OpenEXR
               }
           }
         }

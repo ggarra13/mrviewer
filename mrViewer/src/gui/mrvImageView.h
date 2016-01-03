@@ -322,6 +322,10 @@ class server;
     void update_color_info( const mrv::media& fg ) const;
     void update_color_info() const;
 
+      // Channel navigation (for hotkeys)
+      bool next_channel();
+      bool previous_channel();
+
     /// Set Playback looping mode
     void  looping( Looping x );
 

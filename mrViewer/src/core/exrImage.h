@@ -182,6 +182,10 @@ namespace mrv {
       float               farPlane;
       bool                deepComp;
 
+    public:
+      static float _default_gamma;
+      static Imf::Compression _default_compression;
+      static float _default_dwa_compression;
   };
 
 }
