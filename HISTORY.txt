@@ -1,3 +1,11 @@
+v3.0.7   - Added OpenEXR preference defaults.  These include:  number of
+	   threads to use when loading files, compression algorithm to
+	   use when saving files and DWA compression value for DWA/DWB
+	   compression.
+	 - Added hotkeys for travelling the channels and layers.  By 
+	   default the next channel hotkey is } and the previous one
+	   is {.
+
 v3.0.6   - Made OpenEXR saver work with YByRy images.
 	 - Bug fixed loading of YByRy images to display By or Ry layers.
 	 - Improved OpenEXR loader to recognize multi part stereo images as
