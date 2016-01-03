@@ -89,6 +89,7 @@ Hotkey kStop( false, false, false, false, fltk::ReturnKey, "", fltk::Keypad5 );
 Hotkey kPreviousImage( false, false, false, false, fltk::PageUpKey );
 Hotkey kNextImage( false, false, false, false, fltk::PageDownKey );
 
+
 Hotkey kFirstFrame( false, false, false, false, fltk::HomeKey );
 Hotkey kLastFrame( false, false, false, false, fltk::EndKey );
 Hotkey kToggleBG( false, false, false, false, fltk::TabKey );
@@ -102,7 +103,8 @@ Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 Hotkey kScrub( false, false, false, false, fltk::LeftShiftKey, "",
 	       fltk::RightShiftKey );
 
-
+Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
+Hotkey kNextChannel( false, false, false, false, 0, "}" );
 Hotkey kExposureMore( false, false, false, false, 0, "]" );
 Hotkey kExposureLess( false, false, false, false, 0, "[" );
 Hotkey kGammaMore( false, false, false, false, 0, ")" );
@@ -168,6 +170,8 @@ HotkeyEntry( _("Clear Image Cache"), kClearCache),
 HotkeyEntry( _("Stop"), kStop),
 HotkeyEntry( _("Previous Image"), kPreviousImage ),
 HotkeyEntry( _("Next Image"), kNextImage ),
+HotkeyEntry( _("Previous Channel"), kPreviousChannel ),
+HotkeyEntry( _("Next Channel"), kNextChannel ),
 HotkeyEntry( _("First Frame"), kFirstFrame ),
 HotkeyEntry( _("Last Frame"), kLastFrame ),
 HotkeyEntry( _("Toggle Background"), kToggleBG ),

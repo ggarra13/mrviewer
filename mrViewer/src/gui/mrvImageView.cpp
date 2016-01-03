@@ -281,6 +281,16 @@ void previous_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
   b->previous_image();
 }
 
+void next_channel_cb( fltk::Widget* o, mrv::ImageView* b )
+{
+  b->next_channel();
+}
+
+void previous_channel_cb( fltk::Widget* o, mrv::ImageView* b )
+{
+  b->previous_channel();
+}
+
 
 void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -845,6 +855,52 @@ ImageView::timeline() {
 
 
 
+
+bool ImageView::previous_channel()
+{
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    unsigned short num = uiColorChannel->children();
+    if ( num == 0 ) return false; // Audio only - no channels
+
+    int c = channel();
+    if ( c > 0 )
+    {
+        channel( c - 1 );
+        return true;
+    }
+
+    return false;
+}
+
+bool ImageView::next_channel()
+{
+    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    // check if a channel shortcut
+    unsigned short num = uiColorChannel->children();
+    if ( num == 0 ) return false; // Audio only - no channels
+
+    unsigned short idx = 0;
+    fltk::Group* g = NULL;
+    for ( unsigned short c = 0; c < num; ++c, ++idx )
+        {
+            fltk::Widget* w = uiColorChannel->child(c);
+            if ( w->is_group() )
+            {
+                g = (fltk::Group*) w;
+                unsigned numc = g->children();
+                idx += numc;
+            }
+        }
+
+    int c = channel();
+    if ( c < idx-1 )
+    {
+        channel( c + 1 );
+        return true;
+    }
+
+    return false;
+}
 
 /** 
  * Initialize OpenGL context, textures, and get opengl features for
@@ -1604,6 +1660,7 @@ void ImageView::draw()
 
     _engine->clear_canvas( r, g, b, a );
 
+
     switch( uiPrefs->uiPrefsBlendMode->value() )
     {
         case kBlendTraditional:
@@ -1641,15 +1698,11 @@ void ImageView::draw()
           _stereo = img->stereo_type();
        }
     }
-  else
-  {
-      return;
-  }
 
 
   if ( images.empty() ) return;
 
-
+  
   _engine->draw_images( images );
 
 
@@ -3080,508 +3133,520 @@ void ImageView::mouseDrag(int x,int y)
 int ImageView::keyDown(unsigned int rawkey)
 {
 
-   if ( kOpenImage.match( rawkey ) )
-   {
-      open_cb( this, browser() );
-      return 1;
-   }
-   else if ( kOpenSingleImage.match( rawkey ) )
-   {
-      open_single_cb( this, browser() );
-      return 1;
-   }
-   else if ( kOpenClipXMLMetadata.match( rawkey ) )
-   {
-      open_clip_xml_metadata_cb( this, this );
-      return 1;
-   }
-   else if ( kCloneImage.match( rawkey ) )
-   {
-      clone_image_cb( NULL, browser() );
-      return 1;
-   }
-   else if ( kSaveSequence.match( rawkey ) )
-   {
-       save_sequence_cb( this, this );
-       return 1;
-   }
-   else if ( kSaveImage.match( rawkey ) )
-   {
-      browser()->save();
-      return 1;
-   }
-   else if ( kSaveReel.match( rawkey ) )
-   {
-       save_reel_cb( this, this );
-       return 1;
-   }
-   else if ( kSaveSnapshot.match( rawkey ) )
-   {
-       save_snap_cb( this, this );
-       return 1;
-   }
-   else if ( kSaveClipXMLMetadata.match( rawkey ) )
-   {
-      save_clip_xml_metadata_cb( this, this );
-      return 1;
-   }
-   else if ( kIDTScript.match( rawkey ) )
-   {
-      attach_ctl_idt_script_cb( NULL, this );
-      return 1;
-   }
-   else if ( kIccProfile.match( rawkey ) )
-   {
-      attach_color_profile_cb( NULL, this );
-      return 1;
-   }
-   else if ( kLookModScript.match( rawkey ) )
-   {
-      attach_ctl_lmt_script_cb( NULL, this );
-      return 1;
-   }
-   else if ( kCTLScript.match( rawkey ) )
-   {
-      attach_ctl_script_cb( NULL, this );
-      return 1;
-   }
-   else if ( kMonitorCTLScript.match( rawkey ) )
-   {
-      monitor_ctl_script_cb( NULL, NULL );
-      return 1;
-   }
-   else if ( kMonitorIccProfile.match( rawkey ) )
-   {
-      monitor_icc_profile_cb( NULL, NULL );
-      return 1;
-   }
-   else if ( kSetAsBG.match( rawkey ) )
-   {
-      set_as_background_cb( NULL, this );
-      return 1;
-   }
-   else if ( kToggleLUT.match( rawkey ) )
-   {
-      toggle_lut();
-      return 1;
-   }
-   else if ( kExposureMore.match( rawkey ) )
-   {
-      exposure_change( 0.5f );
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
-   }
-   else if ( kExposureLess.match( rawkey ) )
+    if ( kOpenImage.match( rawkey ) )
     {
-      exposure_change( -0.5f );
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        open_cb( this, browser() );
+        return 1;
     }
-   else if ( kGammaMore.match( rawkey ) )
+    else if ( kOpenSingleImage.match( rawkey ) )
     {
-      gamma( gamma() + 0.1f );
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        open_single_cb( this, browser() );
+        return 1;
     }
-   else if ( kGammaLess.match( rawkey ) )
+    else if ( kOpenClipXMLMetadata.match( rawkey ) )
     {
-      gamma( gamma() - 0.1f );
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        open_clip_xml_metadata_cb( this, this );
+        return 1;
     }
-   else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
-   {
-      if ( rawkey == kZoomMin.key )
-      {
-	 zoom( 1.0f );
-      }
-      else
-      {
-	 float z = (float) (rawkey - kZoomMin.key);
-	 if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-	      fltk::event_key_state( fltk::RightCtrlKey ) )
-	    z = 1.0f / z;
-	 zoom_under_mouse( z, fltk::event_x(), fltk::event_y() );
-      }
-      return 1;
-   }
-  else if ( kZoomIn.match( rawkey ) )
+    else if ( kCloneImage.match( rawkey ) )
     {
-      zoom_under_mouse( _zoom * 2.0f, 
-			fltk::event_x(), fltk::event_y() );
-      return 1;
+        clone_image_cb( NULL, browser() );
+        return 1;
     }
-  else if ( kZoomOut.match( rawkey ) )
+    else if ( kSaveSequence.match( rawkey ) )
     {
-      zoom_under_mouse( _zoom * 0.5f, 
-			fltk::event_x(), fltk::event_y() );
-      return 1;
+        save_sequence_cb( this, this );
+        return 1;
     }
-  else if ( kFullScreen.match( rawkey ) ) 
+    else if ( kSaveImage.match( rawkey ) )
     {
-      toggle_fullscreen();
+        browser()->save();
+        return 1;
+    }
+    else if ( kSaveReel.match( rawkey ) )
+    {
+        save_reel_cb( this, this );
+        return 1;
+    }
+    else if ( kSaveSnapshot.match( rawkey ) )
+    {
+        save_snap_cb( this, this );
+        return 1;
+    }
+    else if ( kSaveClipXMLMetadata.match( rawkey ) )
+    {
+        save_clip_xml_metadata_cb( this, this );
+        return 1;
+    }
+    else if ( kIDTScript.match( rawkey ) )
+    {
+        attach_ctl_idt_script_cb( NULL, this );
+        return 1;
+    }
+    else if ( kIccProfile.match( rawkey ) )
+    {
+        attach_color_profile_cb( NULL, this );
+        return 1;
+    }
+    else if ( kLookModScript.match( rawkey ) )
+    {
+        attach_ctl_lmt_script_cb( NULL, this );
+        return 1;
+    }
+    else if ( kCTLScript.match( rawkey ) )
+    {
+        attach_ctl_script_cb( NULL, this );
+        return 1;
+    }
+    else if ( kMonitorCTLScript.match( rawkey ) )
+    {
+        monitor_ctl_script_cb( NULL, NULL );
+        return 1;
+    }
+    else if ( kMonitorIccProfile.match( rawkey ) )
+    {
+        monitor_icc_profile_cb( NULL, NULL );
+        return 1;
+    }
+    else if ( kSetAsBG.match( rawkey ) )
+    {
+        set_as_background_cb( NULL, this );
+        return 1;
+    }
+    else if ( kToggleLUT.match( rawkey ) )
+    {
+        toggle_lut();
+        return 1;
+    }
+    else if ( kPreviousChannel.match( rawkey ) ) 
+    {
+        previous_channel_cb(this, this);
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kNextChannel.match( rawkey ) ) 
+    {
+        next_channel_cb(this, this);
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kExposureMore.match( rawkey ) )
+    {
+        exposure_change( 0.5f );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kExposureLess.match( rawkey ) )
+    {
+        exposure_change( -0.5f );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kGammaMore.match( rawkey ) )
+    {
+        gamma( gamma() + 0.1f );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kGammaLess.match( rawkey ) )
+    {
+        gamma( gamma() - 0.1f );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
+    {
+        if ( rawkey == kZoomMin.key )
+        {
+            zoom( 1.0f );
+        }
+        else
+        {
+            float z = (float) (rawkey - kZoomMin.key);
+            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                 fltk::event_key_state( fltk::RightCtrlKey ) )
+                z = 1.0f / z;
+            zoom_under_mouse( z, fltk::event_x(), fltk::event_y() );
+        }
+        return 1;
+    }
+    else if ( kZoomIn.match( rawkey ) )
+    {
+        zoom_under_mouse( _zoom * 2.0f, 
+                          fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kZoomOut.match( rawkey ) )
+    {
+        zoom_under_mouse( _zoom * 0.5f, 
+                          fltk::event_x(), fltk::event_y() );
+        return 1;
+    }
+    else if ( kFullScreen.match( rawkey ) ) 
+    {
+        toggle_fullscreen();
 
-      return 1;
+        return 1;
     }
-  else if ( kCenterImage.match(rawkey) )
-  {
-      center_image();
-     return 1;
-  }
-  else if ( kFitScreen.match( rawkey ) ) 
+    else if ( kCenterImage.match(rawkey) )
     {
-      fit_image();
-      return 1;
+        center_image();
+        return 1;
     }
-  else if ( kSafeAreas.match( rawkey ) )
+    else if ( kFitScreen.match( rawkey ) ) 
     {
-       safe_areas( safe_areas() ^ true );
-       redraw();
-       return 1;
+        fit_image();
+        return 1;
     }
-  else if ( kDataWindow.match( rawkey ) )
+    else if ( kSafeAreas.match( rawkey ) )
     {
-       data_window( data_window() ^ true );
-       redraw();
-       return 1;
+        safe_areas( safe_areas() ^ true );
+        redraw();
+        return 1;
     }
-  else if ( kDisplayWindow.match( rawkey ) )
+    else if ( kDataWindow.match( rawkey ) )
     {
-       display_window( display_window() ^ true );
-       redraw();
-       return 1;
+        data_window( data_window() ^ true );
+        redraw();
+        return 1;
     }
-  else if ( kWipe.match( rawkey ) )
-  {
-     if ( _wipe_dir == kNoWipe )  {
-	_wipe_dir = kWipeVertical;
-	_wipe = (float) fltk::event_x() / float( w() );
+    else if ( kDisplayWindow.match( rawkey ) )
+    {
+        display_window( display_window() ^ true );
+        redraw();
+        return 1;
+    }
+    else if ( kWipe.match( rawkey ) )
+    {
+        if ( _wipe_dir == kNoWipe )  {
+            _wipe_dir = kWipeVertical;
+            _wipe = (float) fltk::event_x() / float( w() );
 
-	char buf[128];
-	sprintf( buf, "WipeVertical %g", _wipe );
-	send( buf );
+            char buf[128];
+            sprintf( buf, "WipeVertical %g", _wipe );
+            send( buf );
 
-	window()->cursor(fltk::CURSOR_WE);
-     }
-     else if ( _wipe_dir & kWipeVertical )
-     {
-	_wipe_dir = kWipeHorizontal;
-	_wipe = (float) (h() - fltk::event_y()) / float( h() );
-	char buf[128];
-	sprintf( buf, "WipeHorizontal %g", _wipe );
-	send( buf );
-	window()->cursor(fltk::CURSOR_NS);
-     }
-     else if ( _wipe_dir & kWipeHorizontal ) {
-	_wipe_dir = kNoWipe;
-	_wipe = 0.0f;
-	char buf[128];
-	sprintf( buf, "NoWipe" );
-	send( buf );
-	window()->cursor(fltk::CURSOR_CROSS);
-     }
+            window()->cursor(fltk::CURSOR_WE);
+        }
+        else if ( _wipe_dir & kWipeVertical )
+        {
+            _wipe_dir = kWipeHorizontal;
+            _wipe = (float) (h() - fltk::event_y()) / float( h() );
+            char buf[128];
+            sprintf( buf, "WipeHorizontal %g", _wipe );
+            send( buf );
+            window()->cursor(fltk::CURSOR_NS);
+        }
+        else if ( _wipe_dir & kWipeHorizontal ) {
+            _wipe_dir = kNoWipe;
+            _wipe = 0.0f;
+            char buf[128];
+            sprintf( buf, "NoWipe" );
+            send( buf );
+            window()->cursor(fltk::CURSOR_CROSS);
+        }
 
-     redraw();
-     return 1;
-  }
-  else if ( kFlipX.match( rawkey ) )
-  {
-     _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
-     mouseMove( fltk::event_x(), fltk::event_y() );
-     redraw();
-     return 1;
-  }
-  else if ( kFlipY.match( rawkey ) )
-  {
-     _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
-     mouseMove( fltk::event_x(), fltk::event_y() );
-     redraw();
-     return 1;
-  }
-  else if ( kAttachAudio.match(rawkey) ) 
-  {
-     attach_audio_cb( NULL, this );
-     return 1;
-  }
-  else if ( kFrameStepFPSBack.match(rawkey) ) 
-   {
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        redraw();
+        return 1;
+    }
+    else if ( kFlipX.match( rawkey ) )
+    {
+        _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        redraw();
+        return 1;
+    }
+    else if ( kFlipY.match( rawkey ) )
+    {
+        _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        redraw();
+        return 1;
+    }
+    else if ( kAttachAudio.match(rawkey) ) 
+    {
+        attach_audio_cb( NULL, this );
+        return 1;
+    }
+    else if ( kFrameStepFPSBack.match(rawkey) ) 
+    {
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
+        const CMedia* img = fg->image();
       
-      double fps = 24;
-      if ( img ) fps = img->play_fps();
+        double fps = 24;
+        if ( img ) fps = img->play_fps();
       
 
-      step_frame( int64_t(-fps) );
-      return 1;
-   }
-  else if ( kFrameStepBack.match(rawkey) ) 
-  {
-     step_frame( -1 );
-     return 1;
-  }
-  else if ( kFrameStepFPSFwd.match(rawkey) ) 
-  {
-     mrv::media fg = foreground();
-     if ( ! fg ) return 1;
+        step_frame( int64_t(-fps) );
+        return 1;
+    }
+    else if ( kFrameStepBack.match(rawkey) ) 
+    {
+        step_frame( -1 );
+        return 1;
+    }
+    else if ( kFrameStepFPSFwd.match(rawkey) ) 
+    {
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 	  
-     const CMedia* img = fg->image();
+        const CMedia* img = fg->image();
      
-     double fps = 24;
-     if ( img ) fps = img->play_fps();
+        double fps = 24;
+        if ( img ) fps = img->play_fps();
 
 
-     step_frame( int64_t(fps) );
-     return 1;
-  }
-  else if ( kFrameStepFwd.match( rawkey ) ) 
-  {
-      step_frame( 1 );
-     return 1;
-  }
-  else if ( kPlayBackTwiceSpeed.match( rawkey ) )
-  {
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        step_frame( int64_t(fps) );
+        return 1;
+    }
+    else if ( kFrameStepFwd.match( rawkey ) ) 
+    {
+        step_frame( 1 );
+        return 1;
+    }
+    else if ( kPlayBackTwiceSpeed.match( rawkey ) )
+    {
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
-      double FPS = 24;
-      if ( img ) FPS = img->play_fps();
-      fps( FPS * 2 );
-      if ( playback() == kBackwards )
-	 stop();
-      else
-	 play_backwards();
-      return 1;
-  }
-  else if ( kPlayBackHalfSpeed.match( rawkey ) )
-  {
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        const CMedia* img = fg->image();
+        double FPS = 24;
+        if ( img ) FPS = img->play_fps();
+        fps( FPS * 2 );
+        if ( playback() == kBackwards )
+            stop();
+        else
+            play_backwards();
+        return 1;
+    }
+    else if ( kPlayBackHalfSpeed.match( rawkey ) )
+    {
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
-      double FPS = 24;
-      if ( img ) FPS = img->play_fps();
-      fps( FPS / 2 );
+        const CMedia* img = fg->image();
+        double FPS = 24;
+        if ( img ) FPS = img->play_fps();
+        fps( FPS / 2 );
 
-      if ( playback() == kBackwards )
-	 stop();
-      else
-	 play_backwards();
-      return 1;
-  }
-  else if ( kPlayBack.match( rawkey ) ) 
+        if ( playback() == kBackwards )
+            stop();
+        else
+            play_backwards();
+        return 1;
+    }
+    else if ( kPlayBack.match( rawkey ) ) 
     {
 
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
-      double FPS = 24;
-      if ( img ) FPS = img->play_fps();
-      fps( FPS );
+        const CMedia* img = fg->image();
+        double FPS = 24;
+        if ( img ) FPS = img->play_fps();
+        fps( FPS );
 
-      if ( playback() == kBackwards )
-	 stop();
-      else
-	 play_backwards();
-      return 1;
+        if ( playback() == kBackwards )
+            stop();
+        else
+            play_backwards();
+        return 1;
     }
-  else if ( kPlayFwdTwiceSpeed.match( rawkey ) ) 
+    else if ( kPlayFwdTwiceSpeed.match( rawkey ) ) 
     {
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
-      double FPS = 24;
-      if ( img ) FPS = img->play_fps();
+        const CMedia* img = fg->image();
+        double FPS = 24;
+        if ( img ) FPS = img->play_fps();
 
-      fps( FPS * 2 );
-      if ( playback() == kForwards )
-	 stop();
-      else
-	 play_forwards();
-      return 1;
+        fps( FPS * 2 );
+        if ( playback() == kForwards )
+            stop();
+        else
+            play_forwards();
+        return 1;
     }
-  else if ( kPlayFwdHalfSpeed.match( rawkey ) ) 
+    else if ( kPlayFwdHalfSpeed.match( rawkey ) ) 
     {
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
-      double FPS = 24;
-      if ( img ) FPS = img->play_fps();
+        const CMedia* img = fg->image();
+        double FPS = 24;
+        if ( img ) FPS = img->play_fps();
 
-      fps( FPS / 2 );
-      if ( playback() != kStopped )
-	 stop();
-      else
-	 play_forwards();
-      return 1;
+        fps( FPS / 2 );
+        if ( playback() != kStopped )
+            stop();
+        else
+            play_forwards();
+        return 1;
     }
-  else if ( kPlayFwd.match( rawkey ) ) 
+    else if ( kPlayFwd.match( rawkey ) ) 
     {
-      mrv::media fg = foreground();
-      if ( ! fg ) return 1;
+        mrv::media fg = foreground();
+        if ( ! fg ) return 1;
 
-      const CMedia* img = fg->image();
-      double FPS = 24;
-      if ( img ) FPS = img->play_fps();
-      fps( FPS );
+        const CMedia* img = fg->image();
+        double FPS = 24;
+        if ( img ) FPS = img->play_fps();
+        fps( FPS );
 
-      if ( playback() != kStopped )
-	 stop();
-      else
-	 play_forwards();
-      return 1;
+        if ( playback() != kStopped )
+            stop();
+        else
+            play_forwards();
+        return 1;
     }
-  else if ( kStop.match( rawkey ) ) 
+    else if ( kStop.match( rawkey ) ) 
     {
-      stop();
-      return 1;
+        stop();
+        return 1;
     }
-  else if ( kPreviousImage.match( rawkey ) ) 
+    else if ( kPreviousImage.match( rawkey ) ) 
     {
-      previous_image_cb(this, browser());
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        previous_image_cb(this, browser());
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
     }
-  else if ( kNextImage.match( rawkey ) ) 
+    else if ( kNextImage.match( rawkey ) ) 
     {
-      next_image_cb(this, browser());
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        next_image_cb(this, browser());
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
     }
-  else if ( kPreloadCache.match( rawkey ) )
-  {
-      preload_image_cache_cb( NULL, this );
-      return 1;
-  }
-  else if ( kClearCache.match( rawkey ) )
-  {
-      clear_image_cache_cb( NULL, this );
-      return 1;
-  }
-  else if ( kFirstFrame.match( rawkey ) ) 
+    else if ( kPreloadCache.match( rawkey ) )
     {
-      if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
-	   fltk::event_key_state( fltk::RightCtrlKey ) )
-	first_frame_timeline();
-      else
-	first_frame();
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        preload_image_cache_cb( NULL, this );
+        return 1;
     }
-  else if ( kLastFrame.match( rawkey ) ) 
+    else if ( kClearCache.match( rawkey ) )
     {
-      if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
-	   fltk::event_key_state( fltk::RightCtrlKey ) )
-	last_frame_timeline();
-      else
-	last_frame();
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        clear_image_cache_cb( NULL, this );
+        return 1;
     }
-  else if ( kToggleBG.match( rawkey ) ) 
+    else if ( kFirstFrame.match( rawkey ) ) 
     {
-      toggle_background();
-      mouseMove( fltk::event_x(), fltk::event_y() );
-      return 1;
+        if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
+             fltk::event_key_state( fltk::RightCtrlKey ) )
+            first_frame_timeline();
+        else
+            first_frame();
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
     }
-  else if ( kToggleTopBar.match( rawkey ) )
+    else if ( kLastFrame.match( rawkey ) ) 
     {
-      if ( uiMain->uiTopBar->visible() ) uiMain->uiTopBar->hide();
-      else uiMain->uiTopBar->show();
-      uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
-				  fltk::LAYOUT_DAMAGE |
-				  fltk::LAYOUT_CHILD );
-      uiMain->uiRegion->redraw();
-      return 1;
+        if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
+             fltk::event_key_state( fltk::RightCtrlKey ) )
+            last_frame_timeline();
+        else
+            last_frame();
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
     }
-  else if ( kTogglePixelBar.match( rawkey ) )
+    else if ( kToggleBG.match( rawkey ) ) 
     {
-      if ( uiMain->uiPixelBar->visible() ) uiMain->uiPixelBar->hide();
-      else uiMain->uiPixelBar->show();
-      uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
-				  fltk::LAYOUT_DAMAGE |
-				  fltk::LAYOUT_CHILD );
-      uiMain->uiRegion->redraw();
-      return 1;
+        toggle_background();
+        mouseMove( fltk::event_x(), fltk::event_y() );
+        return 1;
     }
-  else if ( kToggleTimeline.match( rawkey ) )
+    else if ( kToggleTopBar.match( rawkey ) )
     {
-      if ( uiMain->uiBottomBar->visible() ) uiMain->uiBottomBar->hide();
-      else uiMain->uiBottomBar->show();
-      uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
-				  fltk::LAYOUT_DAMAGE |
-				  fltk::LAYOUT_CHILD );
-      uiMain->uiRegion->redraw();
-      return 1;
+        if ( uiMain->uiTopBar->visible() ) uiMain->uiTopBar->hide();
+        else uiMain->uiTopBar->show();
+        uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
+                                    fltk::LAYOUT_DAMAGE |
+                                    fltk::LAYOUT_CHILD );
+        uiMain->uiRegion->redraw();
+        return 1;
     }
-  else if ( kTogglePresentation.match( rawkey ) )
+    else if ( kTogglePixelBar.match( rawkey ) )
     {
-      toggle_presentation();
-      return 1;
+        if ( uiMain->uiPixelBar->visible() ) uiMain->uiPixelBar->hide();
+        else uiMain->uiPixelBar->show();
+        uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
+                                    fltk::LAYOUT_DAMAGE |
+                                    fltk::LAYOUT_CHILD );
+        uiMain->uiRegion->redraw();
+        return 1;
     }
-  else if ( kSetInPoint.match( rawkey ) )
-  {
-      int64_t x = uiMain->uiFrame->value();
-      uiMain->uiStartButton->value( 1 );
-      uiMain->uiStartFrame->value( x );
-      uiMain->uiTimeline->minimum( (double)x );
-      uiMain->uiTimeline->redraw();
-  }
-  else if ( kSetOutPoint.match( rawkey ) )
-  {
-      int64_t x = uiMain->uiFrame->value();
-      uiMain->uiEndButton->value( 1 );
-      uiMain->uiEndFrame->value( x );
-      uiMain->uiTimeline->maximum( (double)x );
-      uiMain->uiTimeline->redraw();
-  }
-  else if ( rawkey == fltk::LeftAltKey ) 
-  {
-      flags |= kLeftAlt;
-      return 1;
-  }
-  else
-  {
-      // Check if a menu shortcut
-      fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    else if ( kToggleTimeline.match( rawkey ) )
+    {
+        if ( uiMain->uiBottomBar->visible() ) uiMain->uiBottomBar->hide();
+        else uiMain->uiBottomBar->show();
+        uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
+                                    fltk::LAYOUT_DAMAGE |
+                                    fltk::LAYOUT_CHILD );
+        uiMain->uiRegion->redraw();
+        return 1;
+    }
+    else if ( kTogglePresentation.match( rawkey ) )
+    {
+        toggle_presentation();
+        return 1;
+    }
+    else if ( kSetInPoint.match( rawkey ) )
+    {
+        int64_t x = uiMain->uiFrame->value();
+        uiMain->uiStartButton->value( 1 );
+        uiMain->uiStartFrame->value( x );
+        uiMain->uiTimeline->minimum( (double)x );
+        uiMain->uiTimeline->redraw();
+    }
+    else if ( kSetOutPoint.match( rawkey ) )
+    {
+        int64_t x = uiMain->uiFrame->value();
+        uiMain->uiEndButton->value( 1 );
+        uiMain->uiEndFrame->value( x );
+        uiMain->uiTimeline->maximum( (double)x );
+        uiMain->uiTimeline->redraw();
+    }
+    else if ( rawkey == fltk::LeftAltKey ) 
+    {
+        flags |= kLeftAlt;
+        return 1;
+    }
+    else
+    {
+        // Check if a menu shortcut
+        fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
 
-      // check if a channel shortcut
-      unsigned short num = uiColorChannel->children();
-      unsigned short idx = 0;
-      fltk::Group* g = NULL;
-      for ( unsigned short c = 0; c < num; ++c, ++idx )
-      {
-          fltk::Widget* w = uiColorChannel->child(c);
-	  if ( rawkey == w->shortcut() )
-          {
-              channel( idx );
-              return 1;
-          }
+        // check if a channel shortcut
+        unsigned short num = uiColorChannel->children();
+        unsigned short idx = 0;
+        fltk::Group* g = NULL;
+        for ( unsigned short c = 0; c < num; ++c, ++idx )
+        {
+            fltk::Widget* w = uiColorChannel->child(c);
+            if ( rawkey == w->shortcut() )
+            {
+                channel( idx );
+                return 1;
+            }
 
-          g = NULL;
-          if ( w->is_group() )
-          {
-              g = (fltk::Group*) w;
-              unsigned numc = g->children();
-              for ( unsigned short i = 0; i < numc; ++i )
-              {
-                  ++idx;
-                  if ( rawkey == g->child(i)->shortcut() )
-                  {
-                      channel( idx );
-                      return 1;
-                  }
-              }
-          }
-      }
-  }
-   return 0;
+            g = NULL;
+            if ( w->is_group() )
+            {
+                g = (fltk::Group*) w;
+                unsigned numc = g->children();
+                for ( unsigned short i = 0; i < numc; ++i )
+                {
+                    ++idx;
+                    if ( rawkey == g->child(i)->shortcut() )
+                    {
+                        channel( idx );
+                        return 1;
+                    }
+                }
+            }
+        }
+    }
+    return 0;
 }
 
 

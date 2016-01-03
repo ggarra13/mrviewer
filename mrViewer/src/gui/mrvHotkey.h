@@ -140,8 +140,8 @@ struct Hotkey
 	}
 	else
 	{
-	   if ( text != "" && text == fltk::event_text() ) ok = true;
-	   else ok = false;
+            if ( (!text.empty()) && text == fltk::event_text() ) ok = true;
+            else ok = false;
 	}
 
 	return ok;
@@ -213,6 +213,9 @@ extern Hotkey kStop;
 
 extern Hotkey kPreviousImage;
 extern Hotkey kNextImage;
+
+extern Hotkey kPreviousChannel;
+extern Hotkey kNextChannel;
 
 extern Hotkey kFirstFrame;
 extern Hotkey kLastFrame;
