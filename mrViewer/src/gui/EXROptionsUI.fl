@@ -10,7 +10,12 @@ decl {\#include <iostream>} {}
 
 decl {\#include <fltk/run.h>} {} 
 
+decl {\#include <gui/mrvPreferences.h>} {public
+} 
 decl {\#include <gui/mrvIO.h>} {public
+} 
+
+decl {\#include <core/exrImage.h>} {public
 } 
 
 decl {\#include <core/mrvImageOpts.h>} {public
@@ -58,22 +63,22 @@ v->uiDWACompression->deactivate();
 }}
             tooltip {EXR compression algorithm.}
             xywh {138 30 91 26} align 1
-            extra_code {o->value(1);}
+            extra_code {o->value(exrImage::_default_compression);}
           } {
             {fltk::Item} {} {
               label None
               }
             {fltk::Item} {} {
-              label PIZ
-              }
-            {fltk::Item} {} {
-              label ZIP
+              label RLE
               }
             {fltk::Item} {} {
               label {ZIP SCANLINE}
               }
             {fltk::Item} {} {
-              label RLE
+              label ZIP
+              }
+            {fltk::Item} {} {
+              label PIZ
               }
             {fltk::Item} {} {
               label PXR24

@@ -80,6 +80,9 @@ namespace
 
 namespace mrv {
 
+float exrImage::_default_gamma = 2.2f;
+Imf::Compression exrImage::_default_compression = Imf::PIZ_COMPRESSION;
+float exrImage::_default_dwa_compression = 45.0f;
 
   const char* exrImage::kCompression[] = {
     _("None"),
@@ -606,7 +609,7 @@ bool exrImage::find_layers( const Imf::Header& h )
    // if ( _layers.empty() || _layers.size() == _num_layers )
    if ( _num_channels == 0 )
    {
-      _gamma = 2.2f;
+      _gamma = _default_gamma;
 
       bool has_rgb = false;
       _has_alpha = false;
