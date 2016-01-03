@@ -197,12 +197,10 @@ namespace mrv {
      {
 	const char* channelName = channel();
 
-        has_alpha = false;
         std::string layer;
 
 	for ( size_t i = 0; i < numLayers; ++i )
 	{
-            bool with_alpha = false;
 
             char layername[256];
 
@@ -262,7 +260,6 @@ namespace mrv {
            status = MagickGetImageAlphaChannel( wand );
            if ( status == MagickTrue )
            {
-               with_alpha = true;
                ly += ".A";
                _layers.push_back( ly );
            }
@@ -273,15 +270,17 @@ namespace mrv {
 	   {
 	      index = i;
               layer = layername;
-              has_alpha = with_alpha;
 	   }
 
 	}
-
-	MagickSetIteratorIndex( wand, index );
-
-
      }
+
+     MagickSetIteratorIndex( wand, index );
+
+     has_alpha = false;
+     status = MagickGetImageAlphaChannel( wand );
+     if ( status == MagickTrue )
+         has_alpha = true;
 
      /*
        Copy pixels from magick to class
@@ -290,7 +289,6 @@ namespace mrv {
      size_t dh = MagickGetImageHeight( wand );
 
 
-#if 1
      Image* img = GetImageFromMagickWand( wand );
      size_t depth = img->depth;
 
@@ -302,12 +300,6 @@ namespace mrv {
                      img->page.x + img->page.width - 1,
                      img->page.y + img->page.height - 1, frame );
 
-#else
-     // This depth call in ImageMagick is pretty slow.  Seems to be scanning all
-     // pixels, for some weird reason.
-
-     unsigned long depth = MagickGetImageDepth( wand );
-#endif
 
      // PixelWand* bgcolor = NewPixelWand();
      // if ( bgcolor == NULL )
@@ -354,12 +346,6 @@ namespace mrv {
      {
 	channels = "RGBA";
 	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type );
-        status = MagickSetImageAlphaChannel( wand, 
-                                             ActivateAlphaChannel );
-        if ( status == MagickFalse )
-        {
-            ThrowWandException( wand );
-        }
      }
      else
      {
@@ -372,7 +358,7 @@ namespace mrv {
 
 	Pixel* pixels = (Pixel*)_hires->data().get();
 	MagickExportImagePixels( wand, 0, 0, dw, dh, channels, 
-				 storage, pixels );
+				 storage, pixels ); 
      }
 
      _compression = MagickGetImageCompression( wand );
@@ -755,6 +741,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         if ( opts->opengl() )
             must_convert = false;
 
+       
+
         // Set matte (alpha)
         // MagickBooleanType matte = MagickFalse;
         // if ( has_alpha ) matte = MagickTrue;
@@ -867,11 +855,10 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
 
         MagickSetLastIterator( wand );
-        MagickSetImageCompression( wand, ZipCompression );
-        MagickSetImageCompression( w, ZipCompression );
+        MagickSetImageCompression( wand, LZWCompression );
+        MagickSetImageCompression( w, LZWCompression );
         std::string label = x;
-        pos = label.find('#');
-        if ( pos == 0 )
+        if ( label[0] == '#' )
         {
             pos = label.find( ' ' );
             if ( pos != std::string::npos && pos != label.size() )
@@ -879,7 +866,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 label = label.substr( pos+1, label.size() );
             }
         }
-        // std::cerr << "label: " << label << std::endl;
+        if ( label == "" ) label = "Color";
         MagickSetImageProperty( w, "label", label.c_str() );
 
 #if 1
@@ -902,7 +889,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     //
 
     /**
-     * Write out image
+     * Write out image layer(s)
      * 
      */
     // size_t numLayers = MagickGetNumberImages( wand );

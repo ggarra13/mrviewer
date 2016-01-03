@@ -47,7 +47,11 @@ namespace fs = boost::filesystem;
 #include <fltk/StyleSet.h>
 #include <fltk/run.h>
 
+// OpenEXR threadcount
+#include <OpenEXR/ImfThreading.h>
+
 // CORE classes
+#include "core/exrImage.h"
 #include "core/mrvAudioEngine.h"
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
@@ -558,6 +562,25 @@ fltk::StyleSet*     newscheme = NULL;
     audio.get( "volume_mute", tmp, 0 );
     uiPrefs->uiPrefsAudioMute->value( tmp );
 
+    // OpenEXR
+    fltk::Preferences openexr( base, "openexr" );
+    openexr.get( "thread_count", tmp, 4 );
+    uiPrefs->uiPrefsOpenEXRThreadCount->value( tmp );
+
+    openexr.get( "gamma", tmpF, 2.2f );
+    exrImage::_default_gamma = tmpF;
+    uiPrefs->uiPrefsOpenEXRGamma->value( tmpF );
+
+    openexr.get( "compression", tmp, 4 );   // PIZ default
+    exrImage::_default_compression = (Imf::Compression) tmp;
+    uiPrefs->uiPrefsOpenEXRCompression->value( tmp );
+
+    openexr.get( "dwa_compression", tmpF, 45.0f );
+    exrImage::_default_dwa_compression = tmpF;
+    uiPrefs->uiPrefsOpenEXRDWACompression->value( tmpF );
+
+
+
     //
     // Get environment preferences (LUTS)
     //
@@ -966,6 +989,17 @@ fltk::StyleSet*     newscheme = NULL;
 	view->toggle_presentation();
       }
 
+    int num = main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
+    Imf::setGlobalThreadCount( num );
+
+    float tmpF = main->uiPrefs->uiPrefsOpenEXRGamma->value();
+    exrImage::_default_gamma = tmpF;
+
+    num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
+    exrImage::_default_compression = (Imf::Compression) num;
+
+    tmpF = main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
+    exrImage::_default_dwa_compression = tmpF;
 
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
@@ -1207,6 +1241,13 @@ fltk::StyleSet*     newscheme = NULL;
       }
     }
 
+    fltk::Preferences openexr( base, "openexr" );
+    openexr.set( "thread_count", (int) uiPrefs->uiPrefsOpenEXRThreadCount->value() );
+    openexr.set( "gamma", uiPrefs->uiPrefsOpenEXRGamma->value() );
+    openexr.set( "compression", 
+                 (int) uiPrefs->uiPrefsOpenEXRCompression->value() );
+    openexr.set( "dwa_compression", 
+                 uiPrefs->uiPrefsOpenEXRDWACompression->value() );
 
     //
     // Hotkeys
