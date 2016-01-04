@@ -1793,19 +1793,22 @@ else
             }
           }
           {fltk::Group} {} {
-            label OpenEXR open
+            label OpenEXR selected
+            tooltip {Options controlling the OpenEXR reader/writer}
             xywh {13 23 427 367} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Loading
+              label Loading open
               xywh {44 33 325 130} box ROUNDED_BOX labelsize 15
             } {
               {fltk::ValueInput} uiPrefsOpenEXRThreadCount {
                 label {Thread Count}
+                tooltip {Use multiple threads when loading a frame.}
                 xywh {155 22 51 28} minimum 1 maximum 16 step 1 value 4
               }
               {fltk::ValueInput} uiPrefsOpenEXRGamma {
                 label Gamma
+                tooltip {Gamma to use when loading an exr.}
                 xywh {160 82 51 28} minimum 0.1 maximum 16 step 0.1 value 2.2
               }
             }
@@ -1826,6 +1829,7 @@ else
 {
 v->uiPrefsOpenEXRDWACompression->deactivate();
 }}
+                tooltip {Compression to use when saving an exr.}
                 xywh {100 20 180 25}
               } {
                 {fltk::Item} {} {
@@ -1861,13 +1865,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
               {fltk::ValueSlider} uiPrefsOpenEXRDWACompression {
                 label {DWA Compression}
-                tooltip {DWA/DWB compression}
+                tooltip {DWA/DWB compression to use when saving an exr with that compression scheme.}
                 xywh {130 61 138 34} align 4 deactivate minimum 1 maximum 250 step 10 value 45
               }
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -1878,8 +1882,8 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             class {mrv::PreferencesBrowser}
           } {
             {fltk::ItemGroup} {} {
-              label {User Interface} selected
-              value 1
+              label {User Interface}
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
