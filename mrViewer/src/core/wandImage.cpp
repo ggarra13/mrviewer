@@ -115,10 +115,17 @@ namespace mrv {
 
     MagickWand* wand = NewMagickWand();
 
-    status = MagickPingImage( wand, file );
-    if (status == MagickFalse )
+    try
     {
-        ThrowWandExceptionPing( wand );
+        status = MagickPingImage( wand, file );
+        if (status == MagickFalse )
+        {
+            ThrowWandExceptionPing( wand );
+        }
+    }
+    catch( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
     }
 
     DestroyMagickWand(wand);
@@ -590,6 +597,19 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     WandOpts* o = (WandOpts*) opts;
 
     MagickBooleanType status;
+    std::string filename = file;
+
+    CompressionType compression = RLECompression;
+    std::transform( filename.begin(), filename.end(), filename.begin(),
+                    (int(*)(int)) tolower );
+
+    if ( filename.rfind( ".tif" ) != std::string::npos )
+        compression = LZWCompression;
+    else if ( filename.rfind( ".psd" ) != std::string::npos )
+        compression = NoCompression;
+    else
+        compression = RLECompression;
+
 
     /*
       Write out an image.
@@ -855,8 +875,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
 
         MagickSetLastIterator( wand );
-        MagickSetImageCompression( wand, LZWCompression );
-        MagickSetImageCompression( w, LZWCompression );
+        MagickSetImageCompression( wand, compression );
+        MagickSetImageCompression( w, compression );
         std::string label = x;
         if ( label[0] == '#' )
         {
@@ -866,10 +886,19 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 label = label.substr( pos+1, label.size() );
             }
         }
-        if ( label == "" ) label = "Color";
-        MagickSetImageProperty( w, "label", label.c_str() );
+        if ( label == "" )
+        {
+            MagickSetImageProperty( w, "label", NULL );
+            // This is the Color channel, Add it as first channel
+            MagickSetFirstIterator( wand ); 
+        }
+        else
+        {
+            MagickSetImageProperty( w, "label", label.c_str() );
+        }
 
 #if 1
+
         Image* img = GetImageFromMagickWand( w );
         img->page.x = daw.x();
         img->page.y = daw.y();
@@ -892,15 +921,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
      * Write out image layer(s)
      * 
      */
-    // size_t numLayers = MagickGetNumberImages( wand );
-    // for ( unsigned i = 0; i < numLayers; ++i )
-    // {
-    //     char buf[256];
-    //     sprintf( buf, "%s.%d.tif", file, i );
-    //     MagickSetIteratorIndex( wand, i );
-    //     MagickWriteImage( wand, buf );
-    // }
-
     status = MagickWriteImages( wand, file, MagickTrue );
     if ( status == MagickFalse )
         ThrowWandException( wand );
