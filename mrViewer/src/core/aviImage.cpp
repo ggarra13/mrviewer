@@ -516,11 +516,12 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( !skip ) --start;
     if ( playback() == kBackwards ) --start;
 
+    if ( start < _frame_start ) start = _frame_start;
+
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
 
     if ( offset < 0 ) offset = 0;
-
 
     int ret = av_seek_frame( _context, -1, offset, flag );
     if (ret < 0)
@@ -1942,7 +1943,11 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 }
                 else
                 {
-                    _audio_packets.push_back( pkt );
+                    // ffmpeg @bug:  audio seeks in long mp3s while playing can
+                    // result in ffmpeg going backwards too far.
+                    // This pktframe >= frame-10 is to avoid that.
+                    if ( has_video() || pktframe >= frame-10 )
+                        _audio_packets.push_back( pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
 
