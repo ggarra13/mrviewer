@@ -4267,8 +4267,6 @@ void ImageView::channel( unsigned short c )
 
   std::string channelName( lbl );
 
-  std::cerr << channelName << std::endl;
-
   static std::string oldChannel;
 
   std::string ext = channelName;
