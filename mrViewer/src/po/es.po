@@ -1,12 +1,12 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-01-07 09:29-0300\n"
+"POT-Creation-Date: 2016-01-07 13:25-0300\n"
 "PO-Revision-Date: 2016-01-02 18:44-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2311
+#: core/CMedia.cpp:2320
 msgid ""
 "\n"
 "\n"
@@ -155,7 +155,7 @@ msgstr " para el canal "
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2312
+#: core/CMedia.cpp:2321
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -183,7 +183,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2683
+#: core/CMedia.cpp:2691
 msgid " is missing."
 msgstr " está faltante."
 
@@ -329,7 +329,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2312
+#: core/CMedia.cpp:2321
 msgid ", type "
 msgstr ", tipo "
 
@@ -1534,7 +1534,7 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:1681 core/aviImage.cpp:529 core/aviImage.cpp:544
+#: core/CMedia.cpp:1690 core/aviImage.cpp:529 core/aviImage.cpp:544
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -5604,12 +5604,12 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1281 core/CMedia.cpp:1306 core/exrImage.cpp:2473
+#: core/CMedia.cpp:1281 core/CMedia.cpp:1307 core/exrImage.cpp:2473
 #: core/wandImage.cpp:663
 msgid "anaglyph"
 msgstr "anaglífico"
 
-#: core/CMedia.cpp:2147
+#: core/CMedia.cpp:2156
 msgid "audio"
 msgstr "audio"
 
@@ -5642,7 +5642,7 @@ msgstr "cuadriculado"
 msgid "crossed"
 msgstr "cruzado"
 
-#: core/CMedia.cpp:2150
+#: core/CMedia.cpp:2159
 msgid "data"
 msgstr "datos"
 
@@ -5852,7 +5852,7 @@ msgstr "derecha.anaglífico"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1265 core/CMedia.cpp:1305 core/exrImage.cpp:2472
+#: core/CMedia.cpp:1265 core/CMedia.cpp:1306 core/exrImage.cpp:2472
 #: core/wandImage.cpp:664
 msgid "stereo"
 msgstr "estéreo"
@@ -5877,7 +5877,7 @@ msgstr "estéreo.entrelaceado"
 msgid "stereo.interlaced columns"
 msgstr "estéreo.columnas entrelaceado"
 
-#: core/CMedia.cpp:2153
+#: core/CMedia.cpp:2162
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -5889,7 +5889,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2156 core/wandImage.cpp:513 standalone/main.cpp:163
+#: core/CMedia.cpp:2165 core/wandImage.cpp:513 standalone/main.cpp:163
 msgid "unknown"
 msgstr "desconocido"
 
@@ -5905,7 +5905,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2144
+#: core/CMedia.cpp:2153
 msgid "video"
 msgstr "video"
 

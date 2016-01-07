@@ -829,7 +829,7 @@ void CMedia::sequence( const char* fileroot,
   _fileroot = strdup( fileroot );
 
   std::string f = _fileroot;
-  int idx = f.find( N_("%V") );
+  size_t idx = f.find( N_("%V") );
   if ( idx != std::string::npos )
   {
      _is_stereo = true;
@@ -1301,13 +1301,17 @@ void CMedia::channel( const char* c )
         std::string ch2;
         if ( _channel ) ch2 = _channel;
 
+        // If stereo not set, don't fetch anything.
         if ( ((_channel == NULL && _right_eye ) || 
               ch2.find(_("stereo")) != std::string::npos ||
               ch2.find(_("anaglyph")) != std::string::npos ) &&
              _stereo_type != kNoStereo ) to_fetch = false;
+        // If we switch from or to main Color options, fetch.
         else if ( _channel == NULL || c == NULL )  to_fetch = true;
         else
         {
+            // No easy case.  Check the root names to see if one of them
+            // contains the other
             size_t pos = ch.rfind( '.' );
             if ( pos != std::string::npos && pos != ch.size() )
             {
@@ -1324,7 +1328,12 @@ void CMedia::channel( const char* c )
                 if ( ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
             }
 
-            if ( ch != ch2 ) to_fetch = true;
+            // We add a dummy dot so we make sure to match a group of channels
+            ch  += '.';
+            ch2 += '.';
+
+            if ( ch2.find(ch) != 0 &&
+                 ch.find(ch2) != 0 ) to_fetch = true;
         }
     }
     
@@ -2367,8 +2376,7 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
 				  const boost::int64_t dts ) const
 {
    // static boost::int64_t frame = 0;
-
-   boost::int64_t pts = dts;
+    
 
    // if ( pts == MRV_NOPTS_VALUE ) {
    //    if ( frame == _frame_end ) frame -= 1;
@@ -2376,14 +2384,14 @@ boost::int64_t CMedia::pts2frame( const AVStream* stream,
    // }
 
 
-  assert( pts != MRV_NOPTS_VALUE );
+  assert( dts != AV_NOPTS_VALUE );
   if (!stream) return 0;
 
-  long double p = pts;
+  long double p = (long double) dts;
   p *= stream->time_base.num;
   p /= stream->time_base.den;
   p *= _orig_fps;
-  pts = boost::int64_t( p + 0.5 ) + 1;
+  boost::int64_t pts = boost::int64_t( p + 0.5 ) + 1;
   return pts;
 }
 
