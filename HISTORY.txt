@@ -5,6 +5,10 @@ v3.0.7   - Added OpenEXR preference defaults.  These include:  number of
 	 - Added hotkeys for travelling the channels and layers.  By 
 	   default the next channel hotkey is } and the previous one
 	   is {.
+	 - Improved OpenEXR loader to use less memory on RGB only images
+	   and layers.  Previously, they were stored as RGBA.
+	 - Bug fixed OpenEXR loader loading the wrong channels when image
+	   was a multipart image.
 
 v3.0.6   - Made OpenEXR saver work with YByRy images.
 	 - Bug fixed loading of YByRy images to display By or Ry layers.
