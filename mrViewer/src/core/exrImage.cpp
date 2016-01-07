@@ -278,6 +278,7 @@ bool exrImage::channels_order(
            int k = order[3] = channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
+           _has_alpha = true;
        }
        else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
                  order[3] == -1 && (no_layer || ext.size() > 1) )
@@ -747,6 +748,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // If 3d is because of different headers exit now
     if ( !_multiview )
     {
+        std::cerr << "!multiview " << ch << std::endl;
         _channel = ch;
         return true;
     }
@@ -785,13 +787,15 @@ bool exrImage::find_channels( const Imf::Header& h,
 
     const Imf::ChannelList& channels = h.channels();
 
-    char* channelPrefix = _channel;
+    char* channelPrefix = NULL;
+    if ( _channel ) channelPrefix = strdup( _channel );
 
 
     // If channel starts with #, we are dealing with a multipart exr
 
     if ( channelPrefix && channelPrefix[0] == '#' )
     {
+        _has_alpha = false;
         std::string part = channelPrefix;
 
         size_t idx = part.find( '.' );
@@ -805,10 +809,10 @@ bool exrImage::find_channels( const Imf::Header& h,
             std::string ext = part.substr( idx+1, part.size() );
             std::string root = ext;
 
-            idx = ext.rfind( N_(",") );
+            idx = ext.rfind( '.' );
             if ( idx != std::string::npos )
             {
-                ext = ext.substr( idx+1, part.size() );
+                ext = ext.substr( idx+1, ext.size() );
             }
 
             if ( ext == "z" ) ext = "B";  // so it gets removed later
@@ -816,6 +820,7 @@ bool exrImage::find_channels( const Imf::Header& h,
             std::transform( ext.begin(), ext.end(), ext.begin(),
                             (int(*)(int)) toupper );
  
+
             // When extension is one of RGBA, XYZ or UVW we want to 
             // read all channels together so we remove the extension
             // from prefix.
@@ -827,15 +832,10 @@ bool exrImage::find_channels( const Imf::Header& h,
                 if ( idx == std::string::npos || idx == 1 )
                     root = "";
                 else
-                    root = root.substr( 0, idx-1 );
+                    root = root.substr( 0, idx );
             }
 
-            free( _channel );
-            _channel = NULL;
-
-            if ( root.size() ) _channel = strdup( root.c_str() );
-
-            channelPrefix = _channel;
+            if ( !root.empty() ) channelPrefix = strdup( root.c_str() );
         }
     }
 
@@ -873,12 +873,12 @@ bool exrImage::find_channels( const Imf::Header& h,
                 std::transform( ext.begin(), ext.end(), ext.begin(),
                                 (int(*)(int)) toupper );
 
+
                 // If extension is one of a group, load all channels
                 if ( ext == "A" || ext == "R" || ext == "G" ||
                      ext == "B" || ext == "X" || ext == "Y" ||
                      ext == "U" || ext == "V" ||
                      ext == "W" ) prefix = prefix.substr(0, pos);
-
 
                 channels.channelsWithPrefix( prefix, s, e );
                 if ( s == e )
@@ -886,6 +886,10 @@ bool exrImage::find_channels( const Imf::Header& h,
                     s = channels.begin();
                     e = channels.end();
                 }
+
+                free( channelPrefix );
+                channelPrefix = NULL;
+
                 return channels_order( frame, s, e, channels, h, fb );
             }
         }
