@@ -281,14 +281,14 @@ void previous_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
   b->previous_image();
 }
 
-void next_channel_cb( fltk::Widget* o, mrv::ImageView* b )
+void next_channel_cb( fltk::Widget* o, mrv::ImageView* v )
 {
-  b->next_channel();
+  v->next_channel();
 }
 
-void previous_channel_cb( fltk::Widget* o, mrv::ImageView* b )
+void previous_channel_cb( fltk::Widget* o, mrv::ImageView* v )
 {
-  b->previous_channel();
+  v->previous_channel();
 }
 
 
