@@ -253,7 +253,7 @@ bool exrImage::channels_order(
                                ext == N_("Y") || ext == N_("U") ||
                                ext == N_("X") || ext == N_("Z")) )
        {
-           int k = order[0] = channelList.size(); imfPixelType = ch.type;
+           int k = order[0] = (int)channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
@@ -261,7 +261,7 @@ bool exrImage::channels_order(
                                     ext == N_("RY") || ext == N_("V") ||
                                     ext == N_("Y") ) )
        {
-           int k = order[1] = channelList.size(); imfPixelType = ch.type;
+           int k = order[1] = (int)channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
@@ -269,13 +269,13 @@ bool exrImage::channels_order(
                                     ext == N_("BY") || ext == N_("W") ||
                                     ext == N_("Z") ) )
        {
-           int k = order[2] = channelList.size(); imfPixelType = ch.type;
+           int k = order[2] = (int)channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
        else if ( order[3] == -1 && ext == N_("A") ) 
        {
-           int k = order[3] = channelList.size(); imfPixelType = ch.type;
+           int k = order[3] = (int)channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
            _has_alpha = true;
@@ -283,7 +283,7 @@ bool exrImage::channels_order(
        else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
                  order[3] == -1 && (no_layer || ext.size() > 1) )
        {
-           int k = order[0] = channelList.size(); imfPixelType = ch.type;
+           int k = order[0] = (int) channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
@@ -389,7 +389,7 @@ bool exrImage::channels_order(
    }
    else
    {
-       unsigned pixels = _hires->pixel_size() * numChannels;
+       unsigned pixels = (unsigned) (_hires->pixel_size() * numChannels);
 
        for ( unsigned j = 0; j < 4; ++j )
        {
@@ -2589,7 +2589,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
 
     unsigned part = 0;
-    unsigned numParts = fbs.size();
+    unsigned numParts = (unsigned)fbs.size();
 
     p->channel( NULL );
     const mrv::Recti& dpw = img->display_window();
@@ -2646,7 +2646,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         {
             xsampling[i] = ysampling[i] = 1;
         }
-        int offsets[5];
+        unsigned offsets[5];
         offsets[0] = offsets[4] = 0;
 
         size_t size;
@@ -2672,11 +2672,11 @@ bool exrImage::save( const char* file, const CMedia* img,
         switch( pf )
         {
             case image_type::kLumma:
-                offsets[3] = total_size = dw*dh*size;
+                offsets[3] = total_size = (unsigned)dw*dh*size;
                 offsets[1] = offsets[2] = 0;
                 break;
             case image_type::kLummaA:
-                offsets[3] = dw*dh*size;
+                offsets[3] = (unsigned)dw*dh*size;
                 offsets[1] = offsets[2] = 0;
                 total_size = offsets[3]*2;
                 break;
@@ -2905,7 +2905,7 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
         else
         {
-            unsigned pixels = size * channels;
+            unsigned pixels = (unsigned)size * channels;
 
             for ( unsigned j = 0; j < 5; ++j )
             {
@@ -2966,7 +2966,7 @@ bool exrImage::save( const char* file, const CMedia* img,
 
                 copy_pixel_data( pic, save_type, base, total_size, false );
 
-                int start = (-dx - dy * dw) * size;
+                int start = (int)( (-dx - dy * dw) * size );
                 base += start;
 
                 k = 4;
@@ -2991,8 +2991,7 @@ bool exrImage::save( const char* file, const CMedia* img,
     try {
         MultiPartOutputFile multi( file, &(headers[0]), 
                                    headers.size() );
-        assert( headers.size() == numParts );
-        for ( size_t part = 0; part < numParts; ++part )
+        for ( unsigned part = 0; part < numParts; ++part )
         {
             OutputPart out( multi, part );
             const Header& h = multi.header(part);

@@ -1,17 +1,23 @@
-v3.0.7   - Added OpenEXR preference defaults.  These include:  number of
-	   threads to use when loading files, compression algorithm to
-	   use when saving files and DWA compression value for DWA/DWB
-	   compression.
-	 - Added hotkeys for travelling the channels and layers.  By 
-	   default the next channel hotkey is } and the previous one
-	   is {.
+v3.0.7   - Bug fixed OpenEXR loader loading the wrong channels in
+	   animation when image was a multipart image.  This could
+	   happen if you selected the Color channel and then selected an
+	   R, G or B channel from another layer.  The image(s) would not
+	   get updated.
+	 - Added OpenEXR preference defaults.  These include:  number of
+	   threads to use when loading files (4 by default),
+	   compression algorithm to use when saving files (PIZ by default)
+	   and DWA compression value (45 by default) for 
+	   DWA/DWB compression.
+	 - Added hotkeys for travelling the channels.  By default the 
+	   next channel hotkey is } and the previous one is {.
 	 - Improved OpenEXR loader to use less memory on RGB only images
-	   and layers.  Previously, they were stored as RGBA, with an
-	   empty alpha mask.
-	 - Bug fixed OpenEXR loader loading the wrong channels in
-	   animation when image was a multipart image.
+	   and layers.  Previously, they were stored in memory as RGBA,
+	   with an empty alpha mask.
 	 - Bug fixed OpenEXR's multiview images when in stereo mode.  Only
 	   left stereo was used.  This bug was introduced in v3.0.6.
+	 - Bug fixed the caching of multipart images.  Previously,
+	   switching from, say, diffuse.diffuse.R to diffuse
+	   would trigger the clearing of the cache.  Now the cache is kept.
 
 v3.0.6   - Made OpenEXR saver work with YByRy images.
 	 - Bug fixed loading of YByRy images to display By or Ry layers.
