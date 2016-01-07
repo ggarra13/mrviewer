@@ -4267,6 +4267,8 @@ void ImageView::channel( unsigned short c )
 
   std::string channelName( lbl );
 
+  std::cerr << channelName << std::endl;
+
   static std::string oldChannel;
 
   std::string ext = channelName;
@@ -4344,7 +4346,7 @@ void ImageView::channel( unsigned short c )
      {
 	pos2 = oldChannel.find( channelName );
 	if ( pos2 == std::string::npos ) {
-           ext = "";
+           oext = "";
         }
      }
      else
@@ -4361,8 +4363,8 @@ void ImageView::channel( unsigned short c )
   mrv::media fg = foreground();
   mrv::media bg = background();
 
-  if ( ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
-         ext != N_("A") ) )
+  // if ( ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
+  //        ext != N_("A") ) )
   {
       if ( fg ) fg->image()->channel( lbl );
       if ( bg ) bg->image()->channel( lbl );
