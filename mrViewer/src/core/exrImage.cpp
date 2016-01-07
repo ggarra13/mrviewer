@@ -721,10 +721,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
 {
     const Imf::ChannelList& channels = h.channels();
 
-    char* ch = strdup( _channel );
-
-    free( _channel );
-    _channel = NULL;
 
 
 
@@ -748,8 +744,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // If 3d is because of different headers exit now
     if ( !_multiview )
     {
-        std::cerr << "!multiview " << ch << std::endl;
-        _channel = ch;
         return true;
     }
 
@@ -773,7 +767,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     channels_order( frame, s, e, channels, h, fb );
     _stereo[0] = _hires;
 
-    _channel = ch;
 
     return true;
 }
