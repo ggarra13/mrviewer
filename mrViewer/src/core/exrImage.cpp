@@ -721,9 +721,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
 {
     const Imf::ChannelList& channels = h.channels();
 
-
-
-
     Imf::ChannelList::ConstIterator s;
     Imf::ChannelList::ConstIterator e;
     std::string prefix;
@@ -752,7 +749,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     //
     // Repeat for left eye
     //
-    prefix = "";
+    prefix.clear();
     if ( _has_left_eye ) prefix = _has_left_eye;
     if ( !prefix.empty() )
     {
@@ -795,6 +792,7 @@ bool exrImage::find_channels( const Imf::Header& h,
 
         if ( idx == std::string::npos )
         {
+            free( channelPrefix );
             channelPrefix = NULL;
         }
         else
@@ -828,7 +826,11 @@ bool exrImage::find_channels( const Imf::Header& h,
                     root = root.substr( 0, idx );
             }
 
-            if ( !root.empty() ) channelPrefix = strdup( root.c_str() );
+            if ( !root.empty() ) 
+            {
+                free( channelPrefix );
+                channelPrefix = strdup( root.c_str() );
+            }
         }
     }
 
@@ -837,6 +839,8 @@ bool exrImage::find_channels( const Imf::Header& h,
 
         if ( _stereo_type & kStereoSideBySide )
         {
+            free( channelPrefix );
+            channelPrefix = NULL;
             return handle_stereo(frame, h, fb);
         }
         else
@@ -849,6 +853,8 @@ bool exrImage::find_channels( const Imf::Header& h,
                 else
                     _left_red = false;
 
+                free( channelPrefix );
+                channelPrefix = NULL;
                 return handle_stereo(frame, h, fb);
             }
             else
