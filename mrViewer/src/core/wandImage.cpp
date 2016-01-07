@@ -683,6 +683,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( x == _("Color") ) x = "";
 
+
         p->channel( x.c_str() );
 
         mrv::image_type_ptr pic = hires();
@@ -691,7 +692,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
 
         image_type::Format format = pic->format();
-        // std::cerr << "pic has format " << pic->pixel_format() << std::endl;
 
         bool  has_alpha = pic->has_alpha();
 
