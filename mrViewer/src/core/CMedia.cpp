@@ -1287,6 +1287,7 @@ void CMedia::channel( const char* c )
                else
                    LOG_ERROR( _("Unknown anaglyph type") );
            }
+           refresh();
        }
     }
 
