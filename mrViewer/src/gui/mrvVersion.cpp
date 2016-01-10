@@ -28,6 +28,9 @@
 #ifdef LINUX
 #include <sys/types.h>
 #include <sys/sysinfo.h>
+#include <stdlib.h>
+#include <stdio.h>
+#include <string.h>
 #endif
 
 #include <string>
@@ -42,6 +45,7 @@ extern "C" {
 #include <libavformat/avformat.h>
 #include <libswresample/version.h>
 }
+
 
 #include <GL/glew.h>
 #include <wand/magick-wand.h>
@@ -64,6 +68,10 @@ extern "C" {
 #include "video/mrvDrawEngine.h"
 #include "mrViewer.h"
 
+#ifdef _WIN32
+#include <windows.h>
+#include <psapi.h>
+#endif
 
 
 namespace mrv
@@ -535,8 +543,10 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
 #ifdef _WIN32
 void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& virtualMemUsed,
+                          uint64_t& virtualMemUsedByMe,
                           uint64_t& totalPhysMem,
-                          uint64_t& physMemUsed)
+                          uint64_t& physMemUsed,
+                          uint64_t& physMemUsedByMe)
 {
     MEMORYSTATUSEX memInfo;
     memInfo.dwLength = sizeof(MEMORYSTATUSEX);
@@ -549,14 +559,66 @@ void  memory_information( uint64_t& totalVirtualMem,
     physMemUsed = totalPhysMem - memInfo.ullAvailPhys;
     totalPhysMem /= (1024*1024);
     physMemUsed /= (1024*1024);
+
+    PROCESS_MEMORY_COUNTERS_EX pmc;
+    GetProcessMemoryInfo(GetCurrentProcess(),
+                         (PPROCESS_MEMORY_COUNTERS) &pmc, sizeof(pmc));
+    virtualMemUsedByMe = pmc.PrivateUsage;
+    virtualMemUsedByMe /= (1024*1024);
+    physMemUsedByMe = pmc.WorkingSetSize;
+    physMemUsedByMe /= (1024*1024);
 }
 #endif
 
-#ifdef LINUX
+#ifdef LINUX 
+
+static int parseLine(char* line){
+    int i = strlen(line);
+    while (*line < '0' || *line > '9') line++;
+    line[i-3] = '\0';
+    i = atoi(line);
+    return i;
+}
+    
+
+static int getValue(){ //Note: this value is in KB!
+    FILE* file = fopen("/proc/self/status", "r");
+    int result = -1;
+    char line[128];
+    
+    
+    while (fgets(line, 128, file) != NULL){
+        if (strncmp(line, "VmSize:", 7) == 0){
+            result = parseLine(line);
+            break;
+        }
+    }
+    fclose(file);
+    return result;
+}
+
+int getValue2(){ //Note: this value is in KB!
+    FILE* file = fopen("/proc/self/status", "r");
+    int result = -1;
+    char line[128];
+    
+
+    while (fgets(line, 128, file) != NULL){
+        if (strncmp(line, "VmRSS:", 6) == 0){
+            result = parseLine(line);
+            break;
+        }
+    }
+    fclose(file);
+    return result;
+}
+
 void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& virtualMemUsed,
+                          uint64_t& virtualMemUsedByMe,
                           uint64_t& totalPhysMem,
-                          uint64_t& physMemUsed)
+                          uint64_t& physMemUsed,
+                          uint64_t& physMemUsedByMe)
 {
 
     struct sysinfo memInfo;
@@ -585,6 +647,12 @@ void  memory_information( uint64_t& totalVirtualMem,
     //Multiply in next statement to avoid int overflow on right hand side...
     physMemUsed *= memInfo.mem_unit;
     physMemUsed /= (1024*1024);
+
+    virtualMemUsedByMe = getValue();
+    virtualMemUsedByMe /= 1024;
+
+    physMemUsedByMe = getValue2();
+    physMemUsedByMe /= 1024;
 
 }  // memory_information
 #endif // LINUX
