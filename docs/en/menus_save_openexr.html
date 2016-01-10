@@ -1,0 +1,59 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+<head>
+
+
+
+  
+  
+  <meta content="text/html; charset=ISO-8859-1" http-equiv="content-type">
+
+
+  
+  
+  <title>mrViewer</title>
+</head>
+
+
+<body>
+
+<br>
+
+
+
+<h2><a name="The_File_Save_OpenEXR"></a><span style="text-decoration: underline;">The File Save OpenEXR Options</span></h2>
+
+
+
+
+
+<br>
+
+
+
+<img alt="file_save_openexr.png" src="images/File_Save_OpenEXR.png" hspace="20">
+
+<br>
+<br>
+The File Save OpenEXR options allows you to select options of how mrViewer saves the OpenEXR image(s).  The window appears whenever you save a file with extension .exr.
+<br>
+<br>
+The Requester allows you to select the compression algorithm.  The lossless compression algorithns are: None, RLE, ZIP, ZIP Scanline, PIZ Wavelet.  The lossy compression algorithms are B44, B44A DWAA and DWAB.
+<br>
+<br>
+For the DWAA/DWAB algorithms, it is possible to select the quality/ratio of the compression.  That is the slider below the compression options.
+<br>
+<br>
+Besides the compression algorithm, you can also select the pixel depth, which can be unsigned integer, half float or full float.  For most cases Half will be enough.
+<br>
+<br>
+OpenEXR supports multiple layers and selecting saving all layers will allow you to save all layers of the image loaded.  mrViewer saves an OpenEXR v2.0 multipart file for speed.
+<br>
+<br>
+Finally, you can choose to save the ACESclip Metadata (all CTL transforms) into a similarly named file to your OpenExr file.  This file will be read in automatically once you load the OpenEXR file or sequence.
+<br>
+<br>
+
+
+</body>
+</html>
