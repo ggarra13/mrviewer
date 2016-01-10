@@ -828,7 +828,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( must_convert )
         {
-            double one_gamma = 1.0 / _gamma;
+            float one_gamma = 1.0f / _gamma;
             for ( unsigned y = 0; y < dh; ++y )
             {
                 for ( unsigned x = 0; x < dw; ++x )
