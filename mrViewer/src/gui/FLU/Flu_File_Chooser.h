@@ -429,7 +429,6 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
 
       void draw();
 
-      static void loadRealIcon( Entry* entry);
 
       void updateSize();
       void updateIcon();
