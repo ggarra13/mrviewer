@@ -1328,9 +1328,6 @@ void CMedia::channel( const char* c )
                 if ( ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
             }
 
-            // We add a dummy dot so we make sure to match a group of channels
-            ch  += '.';
-            ch2 += '.';
 
             if ( ch2.find(ch) != 0 &&
                  ch.find(ch2) != 0 ) to_fetch = true;

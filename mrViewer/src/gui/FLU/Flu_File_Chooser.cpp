@@ -334,6 +334,66 @@ static int flu_filename_match(const char *s, const char *p,
   }
 }
 
+static void loadRealIcon( Flu_File_Chooser::Entry* e)
+{
+    namespace fs = boost::filesystem;
+    typedef boost::recursive_mutex Mutex;
+    Mutex::scoped_lock lk_m( e->chooser->mutex );
+
+
+    char fmt[1024];
+    char buf[1024];
+
+
+
+    std::string view;
+
+    if ( e->filename.find( "%v" ) )
+        view = mrv::get_short_view(true);
+    else if ( e->filename.find( "%V" ) )
+        view = mrv::get_long_view(true);
+
+    int frameStart = atoi( e->filesize.c_str() );
+
+
+    if ( view.size() )
+    {
+        std::string tmp = mrv::parse_view( e->filename, true );
+        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+                 tmp.c_str() );
+    }
+    else
+    {
+      sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
+	       e->filename.c_str() );
+    }
+
+    sprintf( buf, fmt, frameStart );
+
+
+
+    if ( ! fs::exists( buf ) ) return;
+
+    fltk::SharedImage* img;
+    try {
+        img = mrv::fltk_handler( buf, NULL, 0 );
+    } catch( const std::exception& e )
+    {
+        LOG_ERROR( e.what() );
+        return;
+    }
+
+    if ( !img ) return;
+
+    int h = img->h();
+    e->icon = img;
+    e->resize(e->w(), h+4 );
+    // e->redraw();
+
+    // e->chooser->relayout();
+    // e->chooser->redraw();
+}
+
 void Flu_File_Chooser::add_context_handler( int type, const char *ext,
 					      const char *name,
 					      void (*cb)(const char*,int,void*), void *cbd )
@@ -497,7 +557,6 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("tga"),   _( "Targa Picture"), &picture );
   add_type( N_("tif"),   _( "TIFF Picture"), &picture );
   add_type( N_("tiff"),  _( "TIFF Picture"), &picture );
-  add_type( N_("xcf"),   _( "GIMP Picture"), &picture );
   add_type( N_("zt"),    _( "mental ray Z Depth Picture"), &picture );
   add_type( N_("mp3"),   _( "MP3 music"), &music );
   add_type( N_("ogg"),   _( "OGG music"), &music );
@@ -1595,9 +1654,7 @@ void Flu_File_Chooser::previewCB()
             e->set_colors();
             if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
             {
-                boost::thread t( boost::bind( 
-					     Flu_File_Chooser::Entry::loadRealIcon,
-					     e ) );
+                boost::thread t( boost::bind( loadRealIcon, e ) );
             }
         }
 
@@ -1614,11 +1671,11 @@ void Flu_File_Chooser::previewCB()
         }
     }
 
-    fileGroup->resize( fileGroup->x(), fileGroup->y(), 
-                       previewTile->w(), fileGroup->h() );
-    previewTile->relayout();
+    // fileGroup->resize( fileGroup->x(), fileGroup->y(), 
+    //                    previewTile->w(), fileGroup->h() );
+    // previewTile->relayout();
 
-  updateEntrySizes();
+    updateEntrySizes();
 }
 
 void Flu_File_Chooser::sortCB( fltk::Widget *w )
@@ -2154,64 +2211,6 @@ int Flu_File_Chooser::FileDetails::handle( int event )
   return 0;
 }
 
-namespace fs = boost::filesystem;
-
-void Flu_File_Chooser::Entry::loadRealIcon( Flu_File_Chooser::Entry* e)
-{
-    Mutex::scoped_lock lk_m( e->chooser->mutex );
-
-
-    char fmt[1024];
-    char buf[1024];
-
-
-
-    std::string view;
-
-    if ( e->filename.find( "%v" ) )
-        view = mrv::get_short_view(true);
-    else if ( e->filename.find( "%V" ) )
-        view = mrv::get_long_view(true);
-
-    int frameStart = atoi( e->filesize.c_str() );
-
-
-    if ( view.size() )
-    {
-        std::string tmp = mrv::parse_view( e->filename, true );
-        sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-                 tmp.c_str() );
-    }
-    else
-    {
-      sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-	       e->filename.c_str() );
-    }
-
-    sprintf( buf, fmt, frameStart );
-
-
-    if ( ! fs::exists( buf ) ) return;
-
-    fltk::SharedImage* img;
-    try {
-        img = mrv::fltk_handler( buf, NULL, 0 );
-    } catch( const std::exception& e )
-    {
-        LOG_ERROR( e.what() );
-        return;
-    }
-
-    if ( !img ) return;
-
-    int h = img->h();
-    e->icon = img;
-    e->resize(e->w(), h+4 );
-    e->redraw();
-
-    e->chooser->relayout();
-    e->chooser->redraw();
-}
 
 static const int kColorOne = fltk::GRAY60;
 static const int kColorTwo = fltk::GRAY50;
@@ -2236,8 +2235,6 @@ void Flu_File_Chooser::Entry::set_colors() {
         redraw();
         return;
     }
-
-    redraw();
 }
 
 void Flu_File_Chooser::Entry::clear_selected() { 
@@ -2387,7 +2384,7 @@ void Flu_File_Chooser::listModeCB( fltk::Widget* o )
 	filelist->set_horizontal();
       else
 	filelist->set_vertical();
-      filelist->scroll_to_beginning();
+      // filelist->scroll_to_beginning();
 
       while( filedetails->children() )
 	filelist->add( filedetails->child(0) );
@@ -2624,19 +2621,18 @@ int Flu_File_Chooser::Entry::handle( int event )
      // if user leaves an entry cell, color it gray or blue
      if (selected()) {
 	color( fltk::DARK_BLUE );
-	redraw();
      }
      else
      {
          set_colors();
-         redraw();
      }
+     redraw();
      return 1;
   }
 
   if ( event == fltk::MOVE )
   {
-     return 1;
+      return 1;
   }
 
 

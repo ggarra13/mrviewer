@@ -1,3 +1,7 @@
+v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
+	   It is now possible to take an openexr multi part file and turn
+	   it into a Photoshop file.
+
 v3.0.7   - Bug fixed OpenEXR loader loading the wrong channels in
 	   animation when image was a multipart image.  This could
 	   happen if you selected the Color channel and then selected an

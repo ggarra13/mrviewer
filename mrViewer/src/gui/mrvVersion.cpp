@@ -25,6 +25,11 @@
  * 
  */
 
+#ifdef LINUX
+#include <sys/types.h>
+#include <sys/sysinfo.h>
+#endif
+
 #include <string>
 #include <sstream>
 #include <iostream>
@@ -66,7 +71,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "3.0.7";
+  static const char* kVersion = "3.0.8";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 
@@ -522,12 +527,67 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
     return o.str();
   }
 
-
   std::string cpu_information()
   {
     return GetCpuCaps(&gCpuCaps);
   }
 
+#ifdef _WIN32
+void  memory_information( uint64_t& totalVirtualMem,
+                          uint64_t& virtualMemUsed,
+                          uint64_t& totalPhysMem,
+                          uint64_t& physMemUsed)
+{
+    MEMORYSTATUSEX memInfo;
+    memInfo.dwLength = sizeof(MEMORYSTATUSEX);
+    GlobalMemoryStatusEx(&memInfo);
+    totalVirtualMem = memInfo.ullTotalPageFile;
+    virtualMemUsed = totalVirtualMem - memInfo.ullAvailPageFile;
+    totalVirtualMem /= (1024*1024);
+    virtualMemUsed /= (1024*1024);
+    totalPhysMem = memInfo.ullTotalPhys;
+    physMemUsed = totalPhysMem - memInfo.ullAvailPhys;
+    totalPhysMem /= (1024*1024);
+    physMemUsed /= (1024*1024);
+}
+#endif
+
+#ifdef LINUX
+void  memory_information( uint64_t& totalVirtualMem,
+                          uint64_t& virtualMemUsed,
+                          uint64_t& totalPhysMem,
+                          uint64_t& physMemUsed)
+{
+
+    struct sysinfo memInfo;
+    sysinfo (&memInfo);
+
+    totalVirtualMem = memInfo.totalram;
+    // Add other values in next statement to avoid int overflow
+    // on right hand side...
+    totalVirtualMem += memInfo.totalswap;
+    totalVirtualMem *= memInfo.mem_unit;
+    totalVirtualMem /= (1024*1024);
+
+    virtualMemUsed = memInfo.totalram - memInfo.freeram;
+    // Add other values in next statement to avoid int overflow on
+    // right hand side...
+    virtualMemUsed += memInfo.totalswap - memInfo.freeswap;
+    virtualMemUsed *= memInfo.mem_unit;
+    virtualMemUsed /= (1024*1024);
+
+    totalPhysMem = memInfo.totalram;
+    //Multiply in next statement to avoid int overflow on right hand side...
+    totalPhysMem *= memInfo.mem_unit;
+    totalPhysMem /= (1024*1024);
+
+    physMemUsed = memInfo.totalram - memInfo.freeram;
+    //Multiply in next statement to avoid int overflow on right hand side...
+    physMemUsed *= memInfo.mem_unit;
+    physMemUsed /= (1024*1024);
+
+}  // memory_information
+#endif // LINUX
 
   std::string gpu_information( mrv::ViewerUI* uiMain )
   {
