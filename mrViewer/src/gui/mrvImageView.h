@@ -124,6 +124,7 @@ class server;
       kHudAVDifference  = 1 << 7,
       kHudTimecode      = 1 << 8,
       kHudWipe          = 1 << 9,
+      kHudMemoryUse     = 1 << 10,
     };
 
       enum PixelValue {
