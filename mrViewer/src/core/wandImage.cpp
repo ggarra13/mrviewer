@@ -352,12 +352,12 @@ namespace mrv {
      if ( has_alpha )
      {
 	channels = "RGBA";
-	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type );
+	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type, dw, dh );
      }
      else
      {
 	channels = "RGB";
-	allocate_pixels( frame, 3, image_type::kRGB, pixel_type );
+	allocate_pixels( frame, 3, image_type::kRGB, pixel_type, dw, dh );
      }
 
      {
@@ -606,7 +606,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( filename.rfind( ".tif" ) != std::string::npos )
         compression = LZWCompression;
     else if ( filename.rfind( ".psd" ) != std::string::npos )
-        compression = NoCompression;
+        compression = RLECompression;
     else
         compression = RLECompression;
 
@@ -620,17 +620,10 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
     const char* old_channel = channel();
 
-    stringArray::const_iterator i;
-    stringArray::const_iterator e;
-    if ( opts->all_layers() )
+    stringArray::const_iterator i = p->layers().begin();
+    stringArray::const_iterator e = p->layers().end();
+    if ( !opts->all_layers() )
     {
-        i = p->layers().begin();
-        e = p->layers().end();
-    }
-    else
-    {
-        i = p->layers().begin();
-        e = p->layers().end();
         for ( ; i != e; ++i )
         {
             if ( ( old_channel && *i == old_channel ) || *i == _("Color") )
@@ -667,7 +660,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
 
         std::string ext = x;
-        
+
         size_t pos = ext.rfind( '.' );
         if ( pos != std::string::npos && pos != ext.size() )
         {
@@ -722,7 +715,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         // std::cerr << "imagemagick channels " << channels 
         //           << " pic->channels " << pic->channels() << " alpha? "
         //           << has_alpha << std::endl;
-
         StorageType storage = CharPixel;
         switch( pic->pixel_type() )
         {
@@ -749,7 +741,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         {
             LOG_INFO( _("Original pixel type is ") 
                       << pixel_storage( storage )
-                      << (".  Saving pixel type is ")
+                      << _(".  Saving pixel type is ")
                       << pixel_storage( o->pixel_type() )
                       << "." );
             must_convert = true;
@@ -763,40 +755,35 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
        
 
-        // Set matte (alpha)
-        // MagickBooleanType matte = MagickFalse;
-        // if ( has_alpha ) matte = MagickTrue;
-        // MagickSetImageMatte( wand, matte );
-
 
         /**
          * Load image onto wand
          * 
          */
         boost::uint8_t* pixels = NULL;
+        unsigned pixel_size;
+        switch( o->pixel_type() )
+        {
+            case ShortPixel:
+                pixel_size = sizeof(short);
+                break;
+            case IntegerPixel:
+                pixel_size = sizeof(int);
+                break;
+            case FloatPixel:
+                pixel_size = sizeof(float);
+                break;
+            case DoublePixel:
+                pixel_size = sizeof(double);
+                break;
+            default:
+            case CharPixel:
+                pixel_size = sizeof(char);
+                break;
+        }
+
         if ( must_convert )
         {
-            unsigned pixel_size = 1;
-            switch( o->pixel_type() )
-            {
-                case ShortPixel:
-                    pixel_size = sizeof(short);
-                    break;
-                case IntegerPixel:
-                    pixel_size = sizeof(int);
-                    break;
-                case FloatPixel:
-                    pixel_size = sizeof(float);
-                    break;
-                case DoublePixel:
-                    pixel_size = sizeof(double);
-                    break;
-                default:
-                case CharPixel:
-                    pixel_size = sizeof(char);
-                    break;
-            }
-
             unsigned data_size = width()*height()*pic->channels()*pixel_size;
             pixels = new boost::uint8_t[ data_size ];
             bufs.push_back( pixels );
@@ -809,6 +796,11 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         unsigned dw = pic->width();
         unsigned dh = pic->height();
         MagickWand* w = NewMagickWand();
+
+        // Set matte (alpha)
+        MagickBooleanType matte = (MagickBooleanType)has_alpha;
+        MagickSetImageMatte( w, matte );
+
         status = MagickConstituteImage( w, dw, dh, channels, 
                                         o->pixel_type(), pixels );
         if (status == MagickFalse)
@@ -836,7 +828,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( must_convert )
         {
-            float one_gamma = 1.0f/_gamma;
+            double one_gamma = 1.0 / _gamma;
             for ( unsigned y = 0; y < dh; ++y )
             {
                 for ( unsigned x = 0; x < dw; ++x )
@@ -852,6 +844,10 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
                     status = MagickImportImagePixels(w, x, y, 1, 1, channels, 
                                                      FloatPixel, &p[0] );
+                    if (status == MagickFalse)
+                    {
+                        ThrowWandException( wand );
+                    }
 
                 }
             }
@@ -897,19 +893,18 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             MagickSetImageProperty( w, "label", label.c_str() );
         }
 
-#if 1
+        MagickSetImageDepth( w, pixel_size*8 );
 
+        // Handle OpenEXR/PSD layer offsets
         Image* img = GetImageFromMagickWand( w );
         img->page.x = daw.x();
         img->page.y = daw.y();
         img->page.width = daw.w();
         img->page.height = daw.h();
-#endif
 
         MagickAddImage( wand, w );
 
 
-        // destroyPixels(bufs); // okay?
         DestroyMagickWand( w );
     }
 
@@ -925,6 +920,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( status == MagickFalse )
         ThrowWandException( wand );
 
+    destroyPixels(bufs);
     DestroyMagickWand( wand );
 
     if (status == MagickFalse)
