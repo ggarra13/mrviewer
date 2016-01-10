@@ -455,6 +455,8 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsHudResolution->value( (bool) tmp );
     hud.get("frame_range", tmp, 0 );
     uiPrefs->uiPrefsHudFrameRange->value( (bool) tmp );
+    hud.get("memory", tmp, 0 );
+    uiPrefs->uiPrefsHudMemory->value( (bool) tmp );
     hud.get("iptc", tmp, 0 );
     uiPrefs->uiPrefsHudIPTC->value( (bool) tmp );
 
@@ -938,6 +940,9 @@ fltk::StyleSet*     newscheme = NULL;
     if ( uiPrefs->uiPrefsHudFrameRange->value() )
       hud |= mrv::ImageView::kHudFrameRange;
 
+    if ( uiPrefs->uiPrefsHudMemory->value() )
+      hud |= mrv::ImageView::kHudMemoryUse;
+
     if ( uiPrefs->uiPrefsHudIPTC->value() )
       hud |= mrv::ImageView::kHudIPTC;
 
@@ -1093,6 +1098,7 @@ fltk::StyleSet*     newscheme = NULL;
     hud.set("frame", uiPrefs->uiPrefsHudFrame->value() );
     hud.set("resolution", uiPrefs->uiPrefsHudResolution->value() );
     hud.set("frame_range", uiPrefs->uiPrefsHudFrameRange->value() );
+    hud.set("memory", uiPrefs->uiPrefsHudMemory->value() );
     hud.set("iptc", uiPrefs->uiPrefsHudIPTC->value() );
 
     {

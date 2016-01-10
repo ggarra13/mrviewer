@@ -624,7 +624,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {473 66 670 450} resizable visible
+        xywh {238 39 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -753,7 +753,7 @@ If you try to open several mrViewers with different images, all these images wil
             }
           }
           {fltk::Group} {} {
-            label {View Window}
+            label {View Window} open
             xywh {15 22 425 377} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
@@ -902,6 +902,11 @@ If you try to open several mrViewers with different images, all these images wil
                 label {Wipe Mode}
                 user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {273 36 20 20} align 8 box UP_BOX
+              }
+              {fltk::CheckButton} uiPrefsHudMemory {
+                label Memory
+                user_data this user_data_type {mrv::PreferencesUI*} selected
+                xywh {273 62 20 20} align 8 box UP_BOX
               }
             }
             {fltk::Group} {} {
@@ -1793,9 +1798,9 @@ else
             }
           }
           {fltk::Group} {} {
-            label OpenEXR selected
+            label OpenEXR
             tooltip {Options controlling the OpenEXR reader/writer}
-            xywh {13 23 427 367} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 23 427 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Loading open

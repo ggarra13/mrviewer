@@ -121,6 +121,7 @@
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvAudioOffset.h"
+#include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 
 
@@ -1876,7 +1877,7 @@ void ImageView::draw()
   if ( !hud.str().empty() )
     {
        draw_text( r, g, b, 5, y, hud.str().c_str() );
-      y -= yi; hud.str("");
+       y -= yi; hud.str("");
     }
 
 
@@ -1945,6 +1946,14 @@ void ImageView::draw()
          hud << buf;
       }
 
+
+      if ( !hud.str().empty() )
+      {
+          draw_text( r, g, b, 5, y, hud.str().c_str() );
+          hud.str("");
+          y -= yi;
+      }
+
     }
 
   if ( _hud & kHudWipe )
@@ -1958,8 +1967,27 @@ void ImageView::draw()
   if ( !hud.str().empty() )
     {
        draw_text( r, g, b, 5, y, hud.str().c_str() );
+       hud.str("");
        y -= yi;
     }
+
+  if ( _hud & kHudMemoryUse )
+  {
+      char buf[128];
+      uint64_t totalVirtualMem;
+      uint64_t virtualMemUsed;
+      uint64_t totalPhysMem;
+      uint64_t physMemUsed;
+      memory_information( totalVirtualMem, virtualMemUsed, 
+                          totalPhysMem, physMemUsed );
+
+      sprintf( buf, _("PMem: %" PRId64 "/%" PRId64 
+                      " MB  VMem: %" PRId64 "/%" PRId64 " MB"),
+               physMemUsed, totalPhysMem, virtualMemUsed, totalVirtualMem );
+
+      draw_text( r, g, b, 5, y, buf );
+      y -= yi;
+  }
 
   if ( _hud & kHudIPTC )
     {
