@@ -871,7 +871,7 @@ void video_thread( PlaybackData* data )
 
       fps = img->play_fps();
 
-      double delay = 1.0 / fps;
+      const double delay = 1.0 / fps;
 
       double diff = 0.0;
       double bgdiff = 0.0;
@@ -914,12 +914,12 @@ void video_thread( PlaybackData* data )
 	 //    FFPlay still doesn't "know if this is the best guess."
 	 if(absdiff < AV_NOSYNC_THRESHOLD) {
 	    double sdiff = step * diff;
-            double sync_threshold = delay;
+            double sync_threshold = delay / 2.f;
 
 	    if (sdiff <= -sync_threshold) {
 	       fps = 99999999.0;
 	    } else if (sdiff >= sync_threshold) {
-                fps -= sdiff*2.0;      // make fps slower
+                fps -= delay*2.0;      // make fps slower
 	    }
 	 }
       }
