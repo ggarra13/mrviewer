@@ -1976,14 +1976,17 @@ void ImageView::draw()
       char buf[128];
       uint64_t totalVirtualMem;
       uint64_t virtualMemUsed;
+      uint64_t virtualMemUsedByMe;
       uint64_t totalPhysMem;
       uint64_t physMemUsed;
-      memory_information( totalVirtualMem, virtualMemUsed, 
-                          totalPhysMem, physMemUsed );
+      uint64_t physMemUsedByMe;
+      memory_information( totalVirtualMem, virtualMemUsed, virtualMemUsedByMe, 
+                          totalPhysMem, physMemUsed, physMemUsedByMe );
 
       sprintf( buf, _("PMem: %" PRId64 "/%" PRId64 
                       " MB  VMem: %" PRId64 "/%" PRId64 " MB"),
-               physMemUsed, totalPhysMem, virtualMemUsed, totalVirtualMem );
+               physMemUsedByMe, totalPhysMem,
+               virtualMemUsedByMe, totalVirtualMem );
 
       draw_text( r, g, b, 5, y, buf );
       y -= yi;
