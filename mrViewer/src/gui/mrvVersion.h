@@ -55,8 +55,10 @@ std::string ffmpeg_motion_estimation_methods();
 
 void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& virtualMemUsed,
+                          uint64_t& virtualMemUsedByMe,
                           uint64_t& totalPhysMem,
-                          uint64_t& physMemUsed);
+                          uint64_t& physMemUsed,
+                          uint64_t& physMemUsedByMe);
 
   std::string cpu_information();
   std::string gpu_information( mrv::ViewerUI* uiMain );
