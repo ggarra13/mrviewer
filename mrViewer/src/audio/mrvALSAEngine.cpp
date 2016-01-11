@@ -54,6 +54,7 @@ namespace mrv {
 
   ALSAEngine::ALSAEngine() :
     AudioEngine(),
+    _sample_size(1),
     _pcm_handle(0)
   {
     initialize();

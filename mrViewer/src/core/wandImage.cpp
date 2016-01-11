@@ -607,8 +607,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         compression = LZWCompression;
     else if ( filename.rfind( ".psd" ) != std::string::npos )
         compression = RLECompression;
-    else
-        compression = RLECompression;
 
 
     /*
@@ -740,7 +738,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         if ( o->pixel_type() != storage )
         {
             LOG_INFO( _("Original pixel type is ") 
-                      << pixel_storage( storage )
+                      << pic->pixel_depth()
                       << _(".  Saving pixel type is ")
                       << pixel_storage( o->pixel_type() )
                       << "." );
@@ -784,12 +782,14 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( must_convert )
         {
+            // Memory is kept until we save the image
             unsigned data_size = width()*height()*pic->channels()*pixel_size;
             pixels = new boost::uint8_t[ data_size ];
             bufs.push_back( pixels );
         }
         else
         {
+            // Memory is handled by the mrv::image_ptr pic class
             pixels = (boost::uint8_t*)pic->data().get();
         }
 
@@ -798,8 +798,13 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         MagickWand* w = NewMagickWand();
 
         // Set matte (alpha)
-        MagickBooleanType matte = (MagickBooleanType)has_alpha;
-        MagickSetImageMatte( w, matte );
+        // MagickBooleanType matte = (MagickBooleanType)has_alpha;
+        MagickSetImageMatte( w, MagickFalse );
+
+        ColorspaceType colorspace = sRGBColorspace;
+        MagickSetImageColorspace( wand, colorspace );
+
+        LOG_INFO( "Alpha? " << has_alpha << " Channels " << channels );
 
         status = MagickConstituteImage( w, dw, dh, channels, 
                                         o->pixel_type(), pixels );
