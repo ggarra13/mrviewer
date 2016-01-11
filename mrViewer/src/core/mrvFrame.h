@@ -48,6 +48,7 @@ namespace mrv
   {
   public:
        static const char* const fmts[];
+       static const char* const ptype[];
 
     //! Channel formats
     enum Format {
@@ -173,6 +174,7 @@ namespace mrv
     inline Format    format()     const { return _format; }
 
     inline const char* const pixel_format() const { return fmts[_format]; } 
+    inline const char* const pixel_depth() const { return ptype[_type]; } 
 
     inline void      pixel_type( PixelType t ) { _type = t; }
     inline PixelType pixel_type() const        { return _type; }
