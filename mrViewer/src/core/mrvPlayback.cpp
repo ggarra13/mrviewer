@@ -630,7 +630,7 @@ void audio_thread( PlaybackData* data )
 	    break;
       }
 
-      if ( ! img->has_audio() )
+      if ( ! img->has_audio() && img->has_picture() )
       {
 	 // if audio was turned off, follow video.
 	 // audio can be turned off due to user changing channels
