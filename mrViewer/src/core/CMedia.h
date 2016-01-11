@@ -1212,7 +1212,6 @@ class CMedia
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _audio_offset;//!< offset of additional audio
-    int _audio_hw_buf_size;
 
     boost::int64_t   _frame;       //!< presentation time stamp (current video)
     boost::int64_t   _expected;    //!< expected next dts fetch
