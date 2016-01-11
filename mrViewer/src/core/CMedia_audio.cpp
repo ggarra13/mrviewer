@@ -1536,8 +1536,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 	  _audio_index = -1;
 	  return false;
 	}
-      _audio_channels = result->channels();
-      _samples_per_sec = nSamplesPerSec;
+      // _audio_channels = result->channels();
     }
 
 

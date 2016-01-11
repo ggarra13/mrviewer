@@ -58,6 +58,15 @@ namespace
 
 namespace mrv {
 
+const char* const VideoFrame::ptype[] = {
+"Byte",
+"Short",
+"Int",
+"Half",
+"Float",
+"Double",
+};
+
 const char* const VideoFrame::fmts[] = {
 "Lumma",
 "LummaA",
