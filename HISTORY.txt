@@ -3,6 +3,9 @@ v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
 	   it into a Photoshop file.
 	 - Consolidated Favorites paths preferences to be stored under
 	   $HOME/.filmaura instead of $HOME/.fltk/filmaura.
+	 - Added Memory Display to HUD.  It displays physical used memory
+	   over total physical memory and virtual used memory over total
+	   virtual memory.
 
 v3.0.7   - Bug fixed OpenEXR loader loading the wrong channels in
 	   animation when image was a multipart image.  This could
