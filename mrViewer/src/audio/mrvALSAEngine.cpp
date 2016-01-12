@@ -506,6 +506,7 @@ static const char* kModule = "alsa";
         status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
         if ( status < 0 ) {
             if ( status == -EAGAIN ) {
+                LOG_WARNING( snd_strerror( status ) );
                 continue;
             }
             if ( status == -ESTRPIPE ) {
@@ -516,11 +517,14 @@ static const char* kModule = "alsa";
             }
             if ( status == -EPIPE ) {
                 /* output buffer underrun */
-                LOG_WARNING( "Audio underrun" );
+                LOG_WARNING( snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
+                if ( status < 0 )
+                    LOG_ERROR( "snd_pcm_prepare failed" );
             }
             if ( status == -EBADFD )
             {
+                LOG_ERROR( snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     LOG_ERROR( "snd_pcm_prepare failed" );
