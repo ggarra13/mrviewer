@@ -908,22 +908,25 @@ void video_thread( PlaybackData* data )
 
           if ( absdiff > 1000.0 ) diff = 0.0;
 
-          img->avdiff( diff );
+          if (! isnan(diff) ) 
+          {
 
-	 // Skip or repeat the frame. Take delay into account
-	 //    FFPlay still doesn't "know if this is the best guess."
-	 if(absdiff < AV_NOSYNC_THRESHOLD) {
-	    double sdiff = step * diff;
-            double sync_threshold = delay / 2.f;
-
-	    if (sdiff <= -sync_threshold) {
-	       fps = 99999999.0;
-	    } else if (sdiff >= sync_threshold) {
-                fps -= delay*2.0;      // make fps slower
-	    }
-	 }
+              img->avdiff( diff );
+          
+              // Skip or repeat the frame. Take delay into account
+              //    FFPlay still doesn't "know if this is the best guess."
+              if(absdiff < AV_NOSYNC_THRESHOLD) {
+                  double sdiff = step * diff;
+                  double sync_threshold = delay / 2.f;
+            
+                  if (sdiff <= -sync_threshold) {
+                      fps = 99999999.0;
+                  } else if (sdiff >= sync_threshold) {
+                      fps -= delay*2.0;      // make fps slower
+                  }
+              }
+          }
       }
-
 
       timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();

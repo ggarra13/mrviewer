@@ -85,14 +85,14 @@ namespace {
 #define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
 #endif
 
-// #undef DBG
-// #define DBG(x) std::cerr << x << std::endl;
+//#undef DBG
+//#define DBG(x) std::cerr << x << std::endl;
 
-// #define DEBUG_AUDIO_PACKETS
+//#define DEBUG_AUDIO_PACKETS
 // #define DEBUG_AUDIO_PACKETS_DETAIL
-// #define DEBUG_AUDIO_STORES
+//#define DEBUG_AUDIO_STORES
 // #define DEBUG_AUDIO_STORES_DETAIL
-// #define DEBUG_DECODE
+//#define DEBUG_DECODE
 // #define DEBUG_QUEUE
 // #define DEBUG_SEEK
 // #define DEBUG
@@ -1704,7 +1704,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   assert( _audio_buf_used == 0 );
 
   {
-    AVPacket& pkt = _audio_packets.front();
+    const AVPacket& pkt = _audio_packets.front();
     _audio_last_frame = get_frame( get_audio_stream(), pkt );
   }
 
@@ -1713,18 +1713,27 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
  
   while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
-      AVPacket& pkt = _audio_packets.front();
+      const AVPacket& pkt = _audio_packets.front();
       boost::int64_t f = pts2frame( get_audio_stream(), pkt.dts );
+
+
+      DecodeStatus status;
 
       if ( !in_audio_store( f ) )
       {
-          // if ( decode_audio( frame, pkt ) == kDecodeOK )
-          if ( decode_audio( f, pkt ) == kDecodeOK )
+          // if ( (status = decode_audio( frame, pkt )) == kDecodeOK )
+          if ( (status = decode_audio( f, pkt )) == kDecodeOK )
               got_audio = kDecodeOK;
+          else
+              LOG_WARNING( _( "Audio decode_audio failed for frame " ) 
+                           << f );
       }
       else
       {
-          decode_audio_packet( last, frame, pkt );
+          status = decode_audio_packet( last, frame, pkt );
+          if ( status != kDecodeOK )
+              LOG_WARNING( _( "Audio decode_audio_packet failed for frame " )
+                           << frame );
       }
 
       _audio_packets.pop_front();
@@ -1735,24 +1744,26 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
       return kDecodeError;
   }
 
+
   if ( is_seek )
     {
-      AVPacket& pkt = _audio_packets.front();
+      const AVPacket& pkt = _audio_packets.front();
       frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
     }
 
   if ( _audio_packets.is_seek_end() )
      _audio_packets.pop_front();  // pop seek/preroll end packet
 
-  if ( _audio_packets.empty() ) return got_audio;
-
 #ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DOSEEK END");
 #endif
 
-#ifdef DEBUG_AUDIO_STORES
+//#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DOSEEK END");
-#endif
+//#endif
+
+  if ( _audio_packets.empty() ) return got_audio;
+
 
   return kDecodeOK;
 }

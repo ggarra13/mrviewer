@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-01-12 15:39-0300\n"
+"POT-Creation-Date: 2016-01-12 17:43-0300\n"
 "PO-Revision-Date: 2016-01-02 18:44-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -151,7 +151,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1936 core/aviImage.cpp:2738
+#: core/CMedia_audio.cpp:1947 core/aviImage.cpp:2738
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -943,6 +943,15 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
+#: core/CMedia_audio.cpp:1728
+#, fuzzy
+msgid "Audio decode_audio failed for frame "
+msgstr "No pude decodificar cuadro de video "
+
+#: core/CMedia_audio.cpp:1735
+msgid "Audio decode_audio_packet failed for frame "
+msgstr ""
+
 #: core/CMedia_audio.cpp:1604
 msgid "Audio frame "
 msgstr "Cuadro de audio "
@@ -955,7 +964,7 @@ msgstr "Audio faltante para el cuadro: "
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1734
+#: core/CMedia_audio.cpp:1743
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -1829,7 +1838,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1934 core/aviImage.cpp:2722 core/aviImage.cpp:2736
+#: core/CMedia_audio.cpp:1945 core/aviImage.cpp:2722 core/aviImage.cpp:2736
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
