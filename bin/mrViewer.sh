@@ -51,6 +51,8 @@ export MAGICK_CODER_MODULE_PATH="${dir}/lib/ImageMagick-${magick_version}/module
 # export LANG=C
 
 
+# This is to avoid underruns in audio
+PULSE_LATENCY_MSEC=60
 
 params=""
 
