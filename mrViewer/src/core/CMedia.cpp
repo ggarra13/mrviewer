@@ -2291,8 +2291,6 @@ double CMedia::calculate_fps( const AVStream* stream )
       fps = 30.0f;  // workaround for some buggy streams
     }
 
-  LOG_INFO( " fps: " << fps );
-
   return fps;
 }
 
