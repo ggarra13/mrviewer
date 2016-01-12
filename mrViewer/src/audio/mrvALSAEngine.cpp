@@ -33,6 +33,7 @@ using namespace std;
 
 #include "audio/mrvALSAEngine.h"
 #include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 
 #ifdef _WIN32
 #undef fprintf
@@ -40,6 +41,7 @@ using namespace std;
 
 namespace mrv {
 
+static const char* kModule = "alsa";
 
 #define AO_ALSA_BUFFER_TIME 500000
 /* number of samples between interrupts
@@ -263,7 +265,6 @@ namespace mrv {
 			 const unsigned bits )
   {
     int                  status;
-    snd_pcm_format_t     pcmformat;
     unsigned int         test_format = (unsigned int) format;
     char buf[256];
 
@@ -298,22 +299,12 @@ namespace mrv {
               THROW(buf);
           }
 
-          snd_pcm_access_mask_t *access = NULL;
-
-          snd_pcm_access_mask_alloca(&access);
-
-
-          /* create a null access mask */
-          snd_pcm_access_mask_none(access);
 
           /* Interleaved mode */
-          snd_pcm_access_mask_set(access, SND_PCM_ACCESS_RW_INTERLEAVED);
-
-          /* commit the access value to params structure */
-          status = snd_pcm_hw_params_set_access_mask(_pcm_handle, hwparams,
-                                                     access);
+          status = snd_pcm_hw_params_set_access(_pcm_handle, hwparams, 
+                                                SND_PCM_ACCESS_RW_INTERLEAVED);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't set access mask: %s", 
+              sprintf( buf, "Couldn't set access: %s", 
                        snd_strerror(status));
               THROW( buf );
           }
@@ -417,13 +408,6 @@ namespace mrv {
               THROW("hw_params_set_buffer_time_near");
 	  }
 
-          /* "set" the hardware with the desired parameters */
-          status = snd_pcm_hw_params(_pcm_handle, hwparams);
-          if ( status < 0 ) {
-              sprintf(buf, "Couldn't set hardware audio parameters: %s", 
-                      snd_strerror(status));
-              THROW(buf);
-          }
 
           snd_pcm_uframes_t period_size;
           status = snd_pcm_hw_params_get_period_size(hwparams, &period_size, 0);
@@ -432,6 +416,16 @@ namespace mrv {
                       snd_strerror(status));
               THROW(buf);
           }
+
+          /* "set" the hardware with the desired parameters */
+          status = snd_pcm_hw_params(_pcm_handle, hwparams);
+          if ( status < 0 ) {
+              sprintf(buf, "Couldn't set hardware audio parameters: %s", 
+                      snd_strerror(status));
+              THROW(buf);
+          }
+
+          //snd_pcm_hw_params_free( hwparams );
 
           /* This is useful for debugging... */
           //   { 
@@ -484,8 +478,6 @@ namespace mrv {
           // All okay, enable device
           _enabled = true;
 
-          /* Switch to blocking mode for playback */
-          snd_pcm_nonblock(_pcm_handle, 0);
 
           /* We're ready to rock and roll. :-) */
           return true;
@@ -501,10 +493,10 @@ namespace mrv {
 
   bool ALSAEngine::play( const char* data, const size_t size )
   {
-    if ( !_pcm_handle || size == 0 ) return false;
+    if ( !_pcm_handle || size == 0 || data == NULL ) return false;
     if ( !_enabled )   return true;
 
-    long int           status;
+    long int           status = 0;
 
 
     unsigned sample_len = (unsigned)size / _sample_size;
@@ -522,11 +514,17 @@ namespace mrv {
                     status = snd_pcm_resume(_pcm_handle);
                 } while ( status == -EAGAIN );
             }
-            if ( status < 0 ) {
-                // 	fprintf( stderr, "underrun\n" );
+            if ( status == -EPIPE ) {
                 /* output buffer underrun */
+                LOG_WARNING( "Audio underrun" );
                 status = snd_pcm_prepare(_pcm_handle);
             }
+            if ( status == -EBADFD )
+            {
+                status = snd_pcm_prepare(_pcm_handle);
+                if ( status < 0 )
+                    LOG_ERROR( "snd_pcm_prepare failed" );
+            } 
             if ( status < 0 ) {
                 /* Hmm, not much we can do - abort */
                 _enabled = false;
