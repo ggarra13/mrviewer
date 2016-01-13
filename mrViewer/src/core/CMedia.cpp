@@ -419,14 +419,14 @@ _audio_engine( NULL )
 boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
 {
    assert( stream != NULL );
-   boost::int64_t frame = 0;
-   if ( pkt.pts != MRV_NOPTS_VALUE )
+   boost::int64_t frame = AV_NOPTS_VALUE;
+   if ( pkt.pts != AV_NOPTS_VALUE )
    {
       frame = pts2frame( stream, pkt.pts ); 
    }
    else
    {
-       if ( pkt.dts != MRV_NOPTS_VALUE )
+       if ( pkt.dts != AV_NOPTS_VALUE )
            frame = pts2frame( stream, pkt.dts );
    }
    return frame;
@@ -1307,7 +1307,7 @@ void CMedia::channel( const char* c )
 
     if ( _channel != c )
     {
-        std::string ch2;
+        std::string ch2, ext2;
         if ( _channel ) ch2 = _channel;
 
         // If stereo not set, don't fetch anything.
@@ -1332,13 +1332,13 @@ void CMedia::channel( const char* c )
             pos = ch2.rfind( '.' );
             if ( pos != std::string::npos && pos != ch2.size() )
             {
-                ext = ch2.substr( pos+1, ch2.size() );
+                ext2 = ch2.substr( pos+1, ch2.size() );
                 ch2 = ch2.substr( 0, pos );
-                if ( ( ext == "Z" || ext.size() > 1 ) ) ch2 += "." + ext;
+                if ( ( ext2 == "Z" || ext2.size() > 1 ) ) ch2 += "." + ext2;
             }
 
 
-            if ( ch2.find(ch) != 0 &&
+            if ( ch2.find(ch) != 0 || ext == "Z" || ext2 == "Z" ||
                  ch.find(ch2) != 0 ) to_fetch = true;
         }
     }
@@ -1384,11 +1384,12 @@ void CMedia::timestamp()
  * 
  * @param idx index of cached image in sequence list
  */
-void CMedia::timestamp(const boost::uint64_t idx )
+void CMedia::timestamp(const boost::uint64_t idx,
+                       mrv::image_type_ptr*& seq )
 {
-  if ( !_sequence ) return;
+  if ( !seq ) return;
 
-  mrv::image_type_ptr pic = _sequence[idx];
+  mrv::image_type_ptr pic = seq[idx];
 
   struct stat sbuf;
   int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
@@ -1935,8 +1936,8 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 {
 
   boost::int64_t f = pic->frame();
-  if      ( f < _frameStart ) f = _frameStart;
-  else if ( f > _frameEnd )   f = _frameEnd;
+  if      ( f < _frame_start ) f = _frame_start;
+  else if ( f > _frame_end )   f = _frame_end;
 
   boost::int64_t idx = f - _frame_start;
   if ( seq[idx] ) return;
@@ -2007,7 +2008,7 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 
   _w = w; _h = h;
 
-  timestamp(idx);
+  timestamp(idx, seq);
 }
 
 /** 
@@ -2028,7 +2029,7 @@ void CMedia::cache( const mrv::image_type_ptr pic )
 
 
   if ( _stereo[1] ) {
-      assert( stereo[1]->frame() == pic->frame() );
+      assert( _stereo[1]->frame() == pic->frame() );
 
       update_cache_pic( _right, _stereo[1] );
 
@@ -2050,13 +2051,13 @@ bool CMedia::is_cache_filled(boost::int64_t frame)
 
     SCOPED_LOCK( _mutex );
 
-  if ( frame < _frame_start ) frame = _frame_start;
-  if ( frame > _frame_end )   frame = _frame_end;
+    if ( frame < _frame_start ) return false;
+    else if ( frame > _frame_end )  return false;
 
-  boost::uint64_t i = frame - _frame_start;
-  if ( !_sequence[i] ) return false;
+    boost::uint64_t i = frame - _frame_start;
+    if ( !_sequence[i] ) return false;
 
-  return true;
+    return true;
 }
 
 
@@ -2340,11 +2341,9 @@ void CMedia::populate_stream_info( StreamInfo& s,
 
 
 // Convert an FFMPEG pts into a frame number
-boost::uint64_t CMedia::frame2pts( const AVStream* stream, 
-				   const boost::int64_t frame ) const
+boost::int64_t CMedia::frame2pts( const AVStream* stream, 
+                                  const boost::int64_t frame ) const
 {
-   assert( frame >= _frame_start );
-   assert( frame <= _frame_end );
    long double p = (long double)(frame - 1) / (long double) fps();
 
    if ( stream )
@@ -2354,8 +2353,7 @@ boost::uint64_t CMedia::frame2pts( const AVStream* stream,
        p *= stream->time_base.den;
    }
 
-   if ( p < 0 )  return AV_NOPTS_VALUE;
-   else return uint64_t(p);
+   return int64_t(p);
 }
 
 

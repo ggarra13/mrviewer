@@ -785,10 +785,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
 	if ( ptsframe == AV_NOPTS_VALUE )
         {
-            if ( pkt.dts != AV_NOPTS_VALUE )
-                ptsframe = pts2frame( stream, pkt.dts );
-            else
-                ptsframe = 1;
+            ptsframe = get_frame( stream, pkt );
+            if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
         }
         else
         {

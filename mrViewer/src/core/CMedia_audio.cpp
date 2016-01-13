@@ -1439,7 +1439,6 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   else if ( dts < first ) dts = first;
 
   _dts = dts;
-  assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected_audio = dts + 1;
   DBG( "DTS " << dts << " EXPECTED " << _expected_audio );
@@ -1706,14 +1705,16 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   assert( _audio_buf_used == 0 );
 
+  if ( !_audio_packets.empty() )
   {
-    const AVPacket& pkt = _audio_packets.front();
-    _audio_last_frame = get_frame( get_audio_stream(), pkt );
+      const AVPacket& pkt = _audio_packets.front();
+      _audio_last_frame = get_frame( get_audio_stream(), pkt );
   }
+
 
   boost::int64_t last = _audio_last_frame;
 
- 
+
   while ( !_audio_packets.empty() && !_audio_packets.is_seek_end() )
     {
       const AVPacket& pkt = _audio_packets.front();
