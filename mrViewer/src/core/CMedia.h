@@ -439,8 +439,6 @@ class CMedia
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
-    void stereo_cache( const mrv::image_type_ptr left, 
-                       const mrv::image_type_ptr right );
 
     inline PacketQueue& video_packets() { return _video_packets; }
 
@@ -1012,6 +1010,18 @@ class CMedia
     DecodeStatus handle_audio_packet_seek( boost::int64_t& frame, 
 					   const bool is_seek );
 
+
+    
+    /** 
+     * Given a picture, scale it and convert it to 8 bits if user
+     * preferences set it so.
+     * 
+     * @param seq  sequence cache ( _sequence or _right ).
+     * @param pic  picture to update 
+     * 
+     */
+    void update_cache_pic( mrv::image_type_ptr*& seq,
+                           const mrv::image_type_ptr pic );
 
     /** 
      * Given a frame number, returns whether audio for that frame is already
