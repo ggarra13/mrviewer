@@ -599,10 +599,9 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 
 mrv::image_type_ptr CMedia::left() const
 {
-    boost::int64_t f = _frame;
-    if ( f < _frame_start ) f = _frame_start;
-    else if ( f > _frame_end ) f = _frame_end;
-   boost::uint64_t idx = f - _frame_start;
+    assert( _frame >= _frame_start );
+    assert( _frame <= _frame_end );
+   boost::uint64_t idx = _frame - _frame_start;
    if ( _is_sequence && _sequence[idx] )
       return _sequence[idx];
    else
@@ -614,10 +613,9 @@ mrv::image_type_ptr CMedia::left() const
 
 mrv::image_type_ptr CMedia::right() const
 {
-    boost::int64_t f = _frame;
-    if ( f < _frame_start ) f = _frame_start;
-    else if ( f > _frame_end ) f = _frame_end;
-   boost::uint64_t idx = f - _frame_start;
+    assert( _frame >= _frame_start );
+    assert( _frame <= _frame_end );
+    boost::uint64_t idx = _frame - _frame_start;
    if ( _right_eye ) {
        return _right_eye->left();
    }
@@ -1932,37 +1930,24 @@ void CMedia::seek( const boost::int64_t f )
 }
 
 
-/** 
- * Cache picture for sequence.
- * 
- * @param pic       picture to cache
- */
-void CMedia::cache( const mrv::image_type_ptr pic )
+void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
+                               const mrv::image_type_ptr pic )
 {
-   assert( pic != NULL );
-
-   if ( ( !is_sequence() ) || ( !_cache_active ) ) 
-      return;
-
-   SCOPED_LOCK( _mutex );
 
   boost::int64_t f = pic->frame();
   if      ( f < _frameStart ) f = _frameStart;
   else if ( f > _frameEnd )   f = _frameEnd;
 
   boost::int64_t idx = f - _frame_start;
-  if ( _sequence[idx] ) return;
-
-
+  if ( seq[idx] ) return;
 
   mrv::image_type_ptr np;
 
+  unsigned w = pic->width();
+  unsigned h = pic->height();
+
   if ( _8bit_cache && pic->pixel_type() != image_type::kByte )
   {
-
-      unsigned w = pic->width();
-      unsigned h = pic->height();
-
       np.reset( new image_type( pic->frame(), w, h, pic->channels(),
                                 pic->format(), image_type::kByte,
                                 pic->repeat(), pic->pts() ) );
@@ -1998,64 +1983,59 @@ void CMedia::cache( const mrv::image_type_ptr pic )
  
       if ( _cache_scale > 0 )
       {
-          _w /= (1 << _cache_scale);
-          _h /= (1 << _cache_scale);
-          np.reset( np->resize( _w, _h ) );
+          w /= (1 << _cache_scale);
+          h /= (1 << _cache_scale);
+          np.reset( np->resize( w, h ) );
       }
 
-      _sequence[idx] = np;
+      seq[idx] = np;
   }
   else
   {
       if ( _cache_scale > 0 )
       {
-          _w /= (1 << _cache_scale);
-          _h /= (1 << _cache_scale);
-          np.reset( pic->resize( _w, _h ) );
-          _sequence[idx] = np;
+          w /= (1 << _cache_scale);
+          h /= (1 << _cache_scale);
+          np.reset( pic->resize( w, h ) );
+          seq[idx] = np;
       }
       else
       {
-          _sequence[idx] = pic;
+          seq[idx] = pic;
       }
   }
 
-  if ( _stereo[1] ) {
-      _right[idx] = _stereo[1];
-  }
-  timestamp(idx);
+  _w = w; _h = h;
 
+  timestamp(idx);
 }
 
 /** 
  * Cache picture for sequence.
  * 
- * @param left    left picture to cache
- * @param right   right picture to cache
+ * @param pic       picture to cache
  */
-void CMedia::stereo_cache( const mrv::image_type_ptr left,
-                           const mrv::image_type_ptr right )
+void CMedia::cache( const mrv::image_type_ptr pic )
 {
-   assert( left != NULL && right != NULL );
-   assert( left->frame() == right->frame() );
+   assert( pic != NULL );
 
-   if ( !is_sequence()) 
+   if ( ( !is_sequence() ) || ( !_cache_active ) ) 
       return;
 
    SCOPED_LOCK( _mutex );
 
-  boost::int64_t f = left->frame();
-  if      ( f < _frameStart ) f = _frameStart;
-  else if ( f > _frameEnd )   f = _frameEnd;
+  update_cache_pic( _sequence, pic );
 
-  boost::int64_t idx = f - _frame_start;
-  if ( _sequence[idx] ) return;
 
-  _sequence[idx] = left;
-  _right[idx] = right;
-  timestamp(idx);
+  if ( _stereo[1] ) {
+      assert( stereo[1]->frame() == pic->frame() );
+
+      update_cache_pic( _right, _stereo[1] );
+
+  }
 
 }
+
 
 /** 
  * Check if cache is already filled for a frame
