@@ -381,6 +381,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
 
     boost::int64_t start = frame - 1;
     if ( playback() == kBackwards && start > 0 ) --start;
+    if ( start < _frame_start ) start = _frame_start;
 
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE 
                                             / fps() );
@@ -502,7 +503,7 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
 unsigned int CMedia::audio_bytes_per_frame()
 {
     unsigned int ret = 0;
-    if ( !has_audio() ) return ret;
+    if ( !has_audio_data() ) return ret;
 
     int channels = _audio_ctx->channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
@@ -514,7 +515,7 @@ unsigned int CMedia::audio_bytes_per_frame()
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
     unsigned bps = av_get_bytes_per_sample( fmt );
 
-
+    if ( _orig_fps <= 0.0f ) _orig_fps = _fps;
     ret = (unsigned int)( (double) frequency / _orig_fps ) * channels * bps;
     return ret;
 }
@@ -1725,14 +1726,14 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
           if ( (status = decode_audio( f, pkt )) == kDecodeOK )
               got_audio = kDecodeOK;
           else
-              LOG_WARNING( _( "Audio decode_audio failed for frame " ) 
+              LOG_WARNING( _( "decode_audio failed for frame " ) 
                            << f );
       }
       else
       {
           status = decode_audio_packet( last, frame, pkt );
           if ( status != kDecodeOK )
-              LOG_WARNING( _( "Audio decode_audio_packet failed for frame " )
+              LOG_WARNING( _( "decode_audio_packet failed for frame " )
                            << frame );
       }
 
@@ -1758,9 +1759,9 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
   debug_audio_packets(frame, "DOSEEK END");
 #endif
 
-//#ifdef DEBUG_AUDIO_STORES
+#ifdef DEBUG_AUDIO_STORES
   debug_audio_stores(frame, "DOSEEK END");
-//#endif
+#endif
 
   if ( _audio_packets.empty() ) return got_audio;
 
