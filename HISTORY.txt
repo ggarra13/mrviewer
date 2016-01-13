@@ -1,14 +1,27 @@
 v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
 	   It is now possible to take an openexr multi part file and turn
-	   it into a Photoshop file.
+	   it into a Photoshop file.  Note that this needs more testing
+	   and feedback.
 	 - Consolidated Favorites paths preferences to be stored under
-	   $HOME/.filmaura instead of $HOME/.fltk/filmaura.
+	   $HOME/.filmaura instead of $HOME/.fltk/filmaura.  You should
+	   move your favorite list accordingly.
 	 - Added Memory Display to HUD.  It displays physical used memory
 	   over total physical memory and virtual used memory over total
 	   virtual memory.
 	 - Fixed a bunch of bugs related to out of bounds memory accesses
 	   and undefined variables.  This makes viewer less prone to
-	   hanging.
+	   hanging or crashing.
+	 - Extended 8-bit caching and scaling to stereo caches.
+	 - Added support to Adobe's DNG format thru the ufraw-batch
+	   standalone utility.  You need to install it manually in a
+	   place mrViewer can reach (somewhere in your PATH). On Linux,
+	   this just means downloading it with your packet manager, like:
+
+	   $ sudo apt-get install ufraw-batch
+
+	 - Bug fixed audio garbling on Linux once an underrun occurred.
+	 - Bug fixed cache line to not show images cached past the video
+	   length.
 
 v3.0.7   - Bug fixed OpenEXR loader loading the wrong channels in
 	   animation when image was a multipart image.  This could
