@@ -855,8 +855,8 @@ class CMedia
     bool seek_request()         { return _seek_req; }
 
     // Convert a frame into stream's pts
-    boost::uint64_t frame2pts( const AVStream* stream,
-			       const boost::int64_t frame ) const;
+    boost::int64_t frame2pts( const AVStream* stream,
+                              const boost::int64_t frame ) const;
 
     virtual void do_seek();
 
@@ -1077,7 +1077,8 @@ class CMedia
     virtual bool release() { return true; };
 
     /// Get and store the timestamp for a frame in sequence
-    void timestamp( boost::uint64_t idx );
+    void timestamp( boost::uint64_t idx,
+                    mrv::image_type_ptr*& seq );
 
     /// Get time stamp of file on disk
     void timestamp();
