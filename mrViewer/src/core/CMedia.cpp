@@ -257,7 +257,7 @@ _seek_frame( 1 ),
 _channel( NULL ),
 _label( NULL ),
 _real_fps( 0 ),
-_play_fps( 0.0 ),
+_play_fps( 0 ),
 _fps( 0 ),
 _orig_fps( 0 ),
 _pixel_ratio( 1.0f ),
@@ -599,7 +599,10 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 
 mrv::image_type_ptr CMedia::left() const
 {
-   boost::uint64_t idx = _frame - _frame_start;
+    boost::int64_t f = _frame;
+    if ( f < _frame_start ) f = _frame_start;
+    else if ( f > _frame_end ) f = _frame_end;
+   boost::uint64_t idx = f - _frame_start;
    if ( _is_sequence && _sequence[idx] )
       return _sequence[idx];
    else
@@ -611,7 +614,10 @@ mrv::image_type_ptr CMedia::left() const
 
 mrv::image_type_ptr CMedia::right() const
 {
-   boost::uint64_t idx = _frame - _frame_start;
+    boost::int64_t f = _frame;
+    if ( f < _frame_start ) f = _frame_start;
+    else if ( f > _frame_end ) f = _frame_end;
+   boost::uint64_t idx = f - _frame_start;
    if ( _right_eye ) {
        return _right_eye->left();
    }
@@ -2064,8 +2070,8 @@ bool CMedia::is_cache_filled(boost::int64_t frame)
 
     SCOPED_LOCK( _mutex );
 
-  if ( frame < _frameStart ) frame = _frameStart;
-  if ( frame > _frameEnd )   frame = _frameEnd;
+  if ( frame < _frame_start ) frame = _frame_start;
+  if ( frame > _frame_end )   frame = _frame_end;
 
   boost::uint64_t i = frame - _frame_start;
   if ( !_sequence[i] ) return false;
