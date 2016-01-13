@@ -523,7 +523,7 @@ static const char* kModule = "alsa";
             }
             if ( status == -EPIPE ) {
                 /* output buffer underrun */
-                LOG_WARNING( _("Buffer underrun: ") << snd_strerror( status ) );
+                DBG( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     LOG_ERROR( "snd_pcm_prepare failed" );
