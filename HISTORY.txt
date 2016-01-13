@@ -6,6 +6,9 @@ v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
 	 - Added Memory Display to HUD.  It displays physical used memory
 	   over total physical memory and virtual used memory over total
 	   virtual memory.
+	 - Fixed a bunch of bugs related to out of bounds memory accesses
+	   and undefined variables.  This makes viewer less prone to
+	   hanging.
 
 v3.0.7   - Bug fixed OpenEXR loader loading the wrong channels in
 	   animation when image was a multipart image.  This could
