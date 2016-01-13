@@ -257,6 +257,8 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
     pkt.data = NULL;
 
     unsigned int bytes_per_frame = audio_bytes_per_frame();
+    assert( bytes_per_frame != 0 );
+
     unsigned int audio_bytes = 0;
 
     bool eof = false;
@@ -503,7 +505,7 @@ unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
 unsigned int CMedia::audio_bytes_per_frame()
 {
     unsigned int ret = 0;
-    if ( !has_audio_data() ) return ret;
+    if ( !has_audio() ) return ret;
 
     int channels = _audio_ctx->channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
