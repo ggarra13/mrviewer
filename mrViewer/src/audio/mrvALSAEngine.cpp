@@ -346,7 +346,7 @@ static const char* kModule = "alsa";
               }
           }
           if ( status < 0 ) {
-              THROW( "Couldn't find any hardware audio formats");
+              THROW( _("Couldn't find any hardware audio formats") );
           }
 
           _audio_format = (mrv::AudioEngine::AudioFormat) (int)(test_format + 1);
@@ -358,11 +358,12 @@ static const char* kModule = "alsa";
           if ( status < 0 ) {
               status = snd_pcm_hw_params_get_channels(hwparams, &ch);
               if ( (status <= 0) || (status > 2) ) {
-                  THROW( "Couldn't set/get audio channels");
+                  THROW( _("Couldn't set/get audio channels") );
               }
-              snd_pcm_hw_params_set_channels(_pcm_handle, hwparams, ch);
+              status = snd_pcm_hw_params_set_channels(_pcm_handle, 
+                                                      hwparams, ch);
               if ( status < 0 ) {
-                  THROW("Couldn't set audio channels");
+                  THROW( _("Couldn't set audio channels") );
               }
           }
 
@@ -374,15 +375,16 @@ static const char* kModule = "alsa";
           status = snd_pcm_hw_params_set_rate_near(_pcm_handle, hwparams, 
                                                    &exact_rate, NULL);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't set audio frequency: %s", snd_strerror(status));
+              sprintf( buf, _("Couldn't set audio frequency: %s"), 
+                       snd_strerror(status));
               THROW(buf);
           }
 
           if (freq != exact_rate) {
-              fprintf(stderr, _("The rate %d Hz is not supported by "
-                                "your hardware.\n"
-                                "  ==> Using %d Hz instead.\n"), 
-                      freq, exact_rate);
+              LOG_WARNING( _("The rate ") << freq 
+                           << _(" Hz is not supported by your hardware.") 
+                           << std::endl
+                           << _("  ==> Using ") << exact_rate << _(" Hz instead.") );
           }
 
           /* calculate a period time of one half sample time */
@@ -395,7 +397,9 @@ static const char* kModule = "alsa";
                                                           0);
           if ( status < 0 )
 	  {
-              THROW("hw_params_set_period_time_near");
+              sprintf(buf, _("Couldn't get hw_params_set_period_time_near: %s"),
+                      snd_strerror(status));
+              THROW( buf );
 	  }
   
           unsigned int buffer_time = AO_ALSA_BUFFER_TIME;
@@ -405,14 +409,16 @@ static const char* kModule = "alsa";
                                                           0);
           if ( status < 0 )
 	  {
-              THROW("hw_params_set_buffer_time_near");
+              sprintf(buf, _("Couldn't set buffer time near: %s"),
+                      snd_strerror(status));
+              THROW( buf );
 	  }
 
 
           snd_pcm_uframes_t period_size;
           status = snd_pcm_hw_params_get_period_size(hwparams, &period_size, 0);
           if ( status < 0 ) {
-              sprintf(buf, "Couldn't get period size: %s",
+              sprintf(buf, _("Couldn't get period size: %s"),
                       snd_strerror(status));
               THROW(buf);
           }
@@ -506,7 +512,7 @@ static const char* kModule = "alsa";
         status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
         if ( status < 0 ) {
             if ( status == -EAGAIN ) {
-                LOG_WARNING( snd_strerror( status ) );
+                LOG_WARNING( "EAGAIN: " << snd_strerror( status ) );
                 continue;
             }
             if ( status == -ESTRPIPE ) {
@@ -517,14 +523,14 @@ static const char* kModule = "alsa";
             }
             if ( status == -EPIPE ) {
                 /* output buffer underrun */
-                LOG_WARNING( snd_strerror( status ) );
+                LOG_WARNING( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     LOG_ERROR( "snd_pcm_prepare failed" );
             }
             if ( status == -EBADFD )
             {
-                LOG_ERROR( snd_strerror( status ) );
+                LOG_ERROR( "EBADFD: " << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
                     LOG_ERROR( "snd_pcm_prepare failed" );
