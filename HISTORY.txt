@@ -1,3 +1,8 @@
+v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
+	   main Color layer appears.  Previously, Photoshop would
+	   swallow it without a warning.
+	 - Moved to ImageMagick 6.9.3-0 which solves most PSD issues.
+
 v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
 	   It is now possible to take an openexr multi part file and turn
 	   it into a Photoshop file.  Note that this needs more testing
