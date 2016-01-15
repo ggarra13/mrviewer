@@ -914,7 +914,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         if ( label == "" )
         {
-            MagickSetImageProperty( w, "label", NULL );
+            MagickSetImageProperty( w, "label", "Composite" );
             // This is the composite channel, add it as first channel.
             // This is needed to have Photoshop distinguish it and set
             // its canvas.
