@@ -1337,7 +1337,6 @@ void CMedia::channel( const char* c )
                 if ( ( ext2 == "Z" || ext2.size() > 1 ) ) ch2 += "." + ext2;
             }
 
-
             if ( ch2.find(ch) != 0 || ext == "Z" || ext2 == "Z" ||
                  ch.find(ch2) != 0 ) to_fetch = true;
         }
