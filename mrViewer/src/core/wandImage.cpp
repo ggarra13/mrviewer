@@ -199,14 +199,14 @@ namespace mrv {
      }
 
      size_t index = 0;
-     size_t numLayers = MagickGetNumberImages( wand );
+     unsigned numLayers = (unsigned) MagickGetNumberImages( wand );
      if ( numLayers > 1 )
      {
 	const char* channelName = channel();
 
         std::string layer;
 
-	for ( size_t i = 0; i < numLayers; ++i )
+	for ( unsigned i = 0; i < numLayers; ++i )
 	{
 
             char layername[256];
@@ -215,7 +215,7 @@ namespace mrv {
             const char* label = MagickGetImageProperty( wand, "label" );
             if ( label == NULL )
             {
-                sprintf( layername, _("Layer %" PRId64 ), i+1 );
+                sprintf( layername, _( "Layer %d" ), i+1 );
             }
             else
             {
@@ -304,8 +304,9 @@ namespace mrv {
                   img->page.y + dh - 1, frame );
 
      display_window( img->page.x, img->page.y, 
-                     img->page.x + img->page.width - 1,
-                     img->page.y + img->page.height - 1, frame );
+                     img->page.x + dw - 1,
+                     img->page.y + dh - 1, frame );
+
 
 
      // PixelWand* bgcolor = NewPixelWand();
@@ -606,7 +607,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( filename.rfind( ".tif" ) != std::string::npos )
         compression = LZWCompression;
     else if ( filename.rfind( ".psd" ) != std::string::npos )
-        compression = RLECompression;
+        compression = ZipCompression;
 
 
     /*
@@ -798,11 +799,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         MagickWand* w = NewMagickWand();
 
         // Set matte (alpha)
-        // MagickBooleanType matte = (MagickBooleanType)has_alpha;
-        MagickSetImageMatte( w, MagickFalse );
+        MagickBooleanType matte = (MagickBooleanType)has_alpha;
+        MagickSetImageMatte( w, matte );
 
         ColorspaceType colorspace = sRGBColorspace;
         MagickSetImageColorspace( wand, colorspace );
+
 
         LOG_INFO( "Alpha? " << has_alpha << " Channels " << channels );
 
@@ -887,11 +889,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 label = label.substr( pos+1, label.size() );
             }
         }
+
         if ( label == "" )
         {
             MagickSetImageProperty( w, "label", NULL );
-            // This is the Color channel, Add it as first channel
-            MagickSetFirstIterator( wand ); 
+            // // This is the Color channel, Add it as first channel
+            // MagickSetFirstIterator( wand ); 
         }
         else
         {
@@ -909,6 +912,15 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
         MagickAddImage( wand, w );
 
+        if ( label == "" )
+        {
+            MagickSetImageProperty( w, "label", NULL );
+            // This is the composite channel, add it as first channel.
+            // This is needed to have Photoshop distinguish it and set
+            // its canvas.
+            MagickSetFirstIterator( wand );
+            MagickAddImage( wand, w );
+        }
 
         DestroyMagickWand( w );
     }
