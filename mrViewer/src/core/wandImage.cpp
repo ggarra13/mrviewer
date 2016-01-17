@@ -273,6 +273,14 @@ namespace mrv {
 
 	   ++_num_channels;
 
+           if ( i == 0 )
+           {
+               size_t dw = MagickGetImageWidth( wand );
+               size_t dh = MagickGetImageHeight( wand );
+
+               display_window( 0, 0, (int)dw, (int)dh, frame );
+           }
+
 	   if ( channelName && strcmp( layername, channelName ) == 0 )
 	   {
 	      index = i;
@@ -295,42 +303,17 @@ namespace mrv {
      size_t dw = MagickGetImageWidth( wand );
      size_t dh = MagickGetImageHeight( wand );
 
+     size_t depth = MagickGetImageDepth( wand );
 
      Image* img = GetImageFromMagickWand( wand );
-     size_t depth = img->depth;
 
-     // Get the layer display window and data window.
-     data_window( img->page.x, img->page.y, img->page.x + dw - 1,
-                  img->page.y + dh - 1, frame );
+     // Get the layer data window
 
-     display_window( img->page.x, img->page.y, 
-                     img->page.x + dw - 1,
-                     img->page.y + dh - 1, frame );
-
-
-
-     // PixelWand* bgcolor = NewPixelWand();
-     // if ( bgcolor == NULL )
-     // {
-     //     IMG_ERROR( _("Could not get background color." ));
-     //     return false;
-     // }
-
-     // status = MagickGetImageBackgroundColor( wand, bgcolor );
-     // if ( status == MagickFalse )
-     // {
-     //     LOG_ERROR( _( "Could not get background color" ) );
-     // }
-
-
+     data_window( (int)img->page.x, (int) img->page.y, 
+                  (int)(img->page.x + dw - 1),
+                  (int)(img->page.y + dh - 1), frame );
 
      _gamma = 1.0f;
-     // _gamma = (float) MagickGetImageGamma( wand );
-     // if (_gamma <= 0.f || !isfinite(_gamma) ) {
-     //     LOG_ERROR( _("Image gamma ") << _gamma << _(" invalid.  Using 1.0") );
-     //     _gamma = 1.0f;
-     // }
-     // _gamma = 1.0f / _gamma;
 
      image_type::PixelType pixel_type = image_type::kByte;
      StorageType storage = CharPixel;
@@ -353,12 +336,14 @@ namespace mrv {
      if ( has_alpha )
      {
 	channels = "RGBA";
-	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type, dw, dh );
+	allocate_pixels( frame, 4, image_type::kRGBA, pixel_type, 
+                         unsigned(dw), unsigned(dh) );
      }
      else
      {
 	channels = "RGB";
-	allocate_pixels( frame, 3, image_type::kRGB, pixel_type, dw, dh );
+	allocate_pixels( frame, 3, image_type::kRGB, pixel_type, 
+                         unsigned(dw), unsigned(dh) );
      }
 
      {
@@ -572,7 +557,7 @@ const char* const pixel_storage( StorageType storage )
 
 typedef std::vector< uint8_t* > Buffers;
 
-void destroyPixels( Buffers& bufs )
+static void destroyPixels( Buffers& bufs )
 {
     Buffers::iterator i = bufs.begin();
     Buffers::iterator e = bufs.end();
@@ -607,7 +592,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( filename.rfind( ".tif" ) != std::string::npos )
         compression = LZWCompression;
     else if ( filename.rfind( ".psd" ) != std::string::npos )
-        compression = ZipCompression;
+        compression = RLECompression;
 
 
     /*
@@ -620,6 +605,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     const char* old_channel = channel();
 
     stringArray::const_iterator i = p->layers().begin();
+    stringArray::const_iterator s = i;
     stringArray::const_iterator e = p->layers().end();
     if ( !opts->all_layers() )
     {
@@ -642,6 +628,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     Buffers bufs;
 
     std::string root = "ZXVCW#!";
+    mrv::Recti dpw = display_window();
 
     for ( ; i != e; ++i )
     {
@@ -790,20 +777,19 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
         else
         {
-            // Memory is handled by the mrv::image_ptr pic class
+            // Memory is handled by the mrv::image_ptr pic class.  No
+            // need to delete it here.
             pixels = (boost::uint8_t*)pic->data().get();
         }
 
         unsigned dw = pic->width();
         unsigned dh = pic->height();
+
         MagickWand* w = NewMagickWand();
 
-        // Set matte (alpha)
-        MagickBooleanType matte = (MagickBooleanType)has_alpha;
-        MagickSetImageMatte( w, matte );
 
         ColorspaceType colorspace = sRGBColorspace;
-        MagickSetImageColorspace( wand, colorspace );
+        MagickSetImageColorspace( w, colorspace );
 
 
         LOG_INFO( "Alpha? " << has_alpha << " Channels " << channels );
@@ -822,7 +808,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             {
                 LOG_INFO( _("No conversion needed.  Gamma: ") << _gamma );
             }
-            MagickSetImageGamma( wand, _gamma );
+            MagickSetImageGamma( w, _gamma );
         }
         else
         {
@@ -830,7 +816,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             {
                 LOG_INFO( _("Conversion needed.  Gamma: 1.0") );
             }
-            MagickSetImageGamma( wand, 1.0 );
+            MagickSetImageGamma( w, 1.0 );
         }
 
         if ( must_convert )
@@ -849,10 +835,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                     if ( p.b > 0.f && isfinite(p.b) )
                         p.b = pow( p.b, one_gamma );
 
-                    status = MagickImportImagePixels(w, x, y, 1, 1, channels, 
+                    status = MagickImportImagePixels(w, x, y,
+                                                     1, 1, channels,
                                                      FloatPixel, &p[0] );
                     if (status == MagickFalse)
                     {
+                        destroyPixels(bufs);
                         ThrowWandException( wand );
                     }
 
@@ -866,20 +854,15 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
                 ThrowWandException( wand );
             }
         }
- 
-        if ( has_alpha )
-        {
-            status = MagickSetImageAlphaChannel( w, 
-                                                 ActivateAlphaChannel );
-            if ( status == MagickFalse )
-            {
-                ThrowWandException( wand );
-            }
-        }
+
 
         MagickSetLastIterator( wand );
-        MagickSetImageCompression( wand, compression );
-        MagickSetImageCompression( w, compression );
+
+
+        MagickSetImageDepth( w, pixel_size*8 );
+
+
+
         std::string label = x;
         if ( label[0] == '#' )
         {
@@ -890,44 +873,149 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             }
         }
 
-        if ( label == "" )
-        {
-            MagickSetImageProperty( w, "label", NULL );
-            // // This is the Color channel, Add it as first channel
-            // MagickSetFirstIterator( wand ); 
-        }
-        else
-        {
+        if ( !label.empty() )
             MagickSetImageProperty( w, "label", label.c_str() );
-        }
+        else
+            MagickSetImageProperty( w, "label", NULL );
 
-        MagickSetImageDepth( w, pixel_size*8 );
-
-        // Handle OpenEXR/PSD layer offsets
         Image* img = GetImageFromMagickWand( w );
+
+        img->x_resolution = img->y_resolution = 72;  // so GIMP doesn't bark
+
         img->page.x = daw.x();
         img->page.y = daw.y();
         img->page.width = daw.w();
         img->page.height = daw.h();
 
+        // We set the compression albeit ImageMagick seems not to
+        // compress the files.
+        MagickSetImageCompression( w, compression );
         MagickAddImage( wand, w );
+        MagickSetImageCompression( wand, compression );
+
+        DestroyMagickWand( w );
+
 
         if ( label == "" )
         {
-            MagickSetImageProperty( w, "label", "Composite" );
+
+            w = NewMagickWand();
+
+            MagickSetImageColorspace( w, colorspace );
+            unsigned width = dpw.w();
+            unsigned height = dpw.h();
+
+            unsigned data_size = width*height*3;
+            pixels = new boost::uint8_t[ data_size ];
+            memset( pixels, 0, data_size );
+            bufs.push_back( pixels );
+
+            status = MagickConstituteImage( w, width, height, "RGB", 
+                                            CharPixel, pixels );
+            if (status == MagickFalse)
+            {
+                DestroyMagickWand( w );
+                destroyPixels(bufs);
+                ThrowWandException( wand );
+            }
+
+
+            float one_gamma = 1.0f / _gamma;
+            for ( unsigned y = 0; y < dh; ++y )
+            {
+                for ( unsigned x = 0; x < dw; ++x )
+                {
+                    ImagePixel p = pic->pixel( x, y );
+
+                    if ( p.r > 0.f && isfinite(p.r) )
+                        p.r = pow( p.r, one_gamma );
+                    if ( p.g > 0.f && isfinite(p.g) )
+                        p.g = pow( p.g, one_gamma );
+                    if ( p.b > 0.f && isfinite(p.b) )
+                        p.b = pow( p.b, one_gamma );
+
+                    status = MagickImportImagePixels(w, daw.x()+x, daw.y()+y,
+                                                     1, 1, "RGB",
+                                                     FloatPixel, &p[0] );
+                    if (status == MagickFalse)
+                    {
+                        DestroyMagickWand( w );
+                        destroyPixels(bufs);
+                        ThrowWandException( wand );
+                    }
+                }
+            }
+
+
+            status = MagickSetImageGamma( w, 1.0 );
+            if (status == MagickFalse)
+            {
+                DestroyMagickWand( w );
+                destroyPixels(bufs);
+                ThrowWandException( wand );
+            }
+
+            status = MagickSetImageProperty( w, "label", "Composite" );
+            if (status == MagickFalse)
+            {
+                DestroyMagickWand( w );
+                destroyPixels(bufs);
+                ThrowWandException( wand );
+            }
+
+            status = MagickSetImageCompression( w, compression );
+            if (status == MagickFalse)
+            {
+                DestroyMagickWand( w );
+                destroyPixels(bufs);
+                ThrowWandException( wand );
+            }
+
+            status = MagickSetImageDepth( w, 8 );
+            if (status == MagickFalse)
+            {
+                DestroyMagickWand( w );
+                destroyPixels(bufs);
+                ThrowWandException( wand );
+            }
+
+            Image* img = GetImageFromMagickWand( w );
+            img->x_resolution = img->y_resolution = 72;  // so GIMP doesn't bark
+
             // This is the composite channel, add it as first channel.
             // This is needed to have Photoshop distinguish it and set
             // its canvas.
             MagickSetFirstIterator( wand );
             MagickAddImage( wand, w );
+
+            DestroyMagickWand( w );
         }
 
-        DestroyMagickWand( w );
     }
 
     //
     // Store EXIF and IPTC data (if any)
     //
+    {
+        Attributes::const_iterator i = _exif.begin();
+        Attributes::const_iterator e = _exif.end();
+        for ( ; i != e; ++i )
+        {
+            MagickSetImageProperty( wand, i->first.c_str(), i->second.c_str() );
+        }
+    }
+
+    {
+        Attributes::const_iterator i = _iptc.begin();
+        Attributes::const_iterator e = _iptc.end();
+        for ( ; i != e; ++i )
+        {
+            MagickSetImageProperty( wand, i->first.c_str(), i->second.c_str() );
+        }
+
+        // CIccProfile* p = mrv::colorProfile::get( file.c_str() );
+        // MagickSetImageProfile( wand, "icc", profile, len );
+    }
 
     /**
      * Write out image layer(s)
