@@ -76,6 +76,8 @@ struct Hotkey
      bool match( unsigned rawkey )
      {
 	bool ok = false;
+        if ( (!text.empty()) && text == fltk::event_text() ) return true;
+
 	if ( ctrl )
 	{
 	   if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
@@ -133,15 +135,11 @@ struct Hotkey
                  fltk::event_key_state( fltk::RightMetaKey ) )
                 return false;
         }
+
 	if (( rawkey != 0 ) && ( rawkey == key || 
 				 rawkey == key2 ))
 	{
 	   ok = true;
-	}
-	else
-	{
-            if ( (!text.empty()) && text == fltk::event_text() ) ok = true;
-            else ok = false;
 	}
 
 	return ok;
