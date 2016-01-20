@@ -386,7 +386,7 @@ int main( const int argc, char** argv )
       }
 
   }
-  catch ( const std::runtime_error& e )
+  catch ( const std::exception& e )
   {
       LOG_ERROR( e.what() );
   }
