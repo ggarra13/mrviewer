@@ -591,9 +591,8 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
        << format << " pixel type: " << pixel_type );
 
   image_damage( image_damage() & ~kDamageContents );
-
-  _hires.reset( new image_type( frame, w, h, 
-				channels, format, pixel_type ) );
+  _hires.reset(  new image_type( frame, w, h, 
+                                 channels, format, pixel_type ) );
 }
 
 
@@ -1315,8 +1314,6 @@ void CMedia::channel( const char* c )
               ch2.find(_("stereo")) != std::string::npos ||
               ch2.find(_("anaglyph")) != std::string::npos ) &&
              _stereo_type != kNoStereo ) to_fetch = false;
-        // If we switch from or to main Color options, fetch.
-        else if ( _channel == NULL || c == NULL )  to_fetch = true;
         else
         {
             // No easy case.  Check the root names to see if one of them
@@ -1338,7 +1335,8 @@ void CMedia::channel( const char* c )
             }
 
             if ( ch2.find(ch) != 0 || ext == "Z" || ext2 == "Z" ||
-                 ch.find(ch2) != 0 ) to_fetch = true;
+                 ch.find(ch2) != 0 || _channel == NULL || c == NULL)
+                to_fetch = true;
         }
     }
     

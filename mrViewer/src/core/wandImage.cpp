@@ -233,6 +233,7 @@ namespace mrv {
                 strcpy( layername, ly.c_str() );
             }
             
+
             ColorspaceType colorspace = MagickGetImageColorspace( wand );
             
             std::string ly = layername;
@@ -267,8 +268,7 @@ namespace mrv {
            status = MagickGetImageAlphaChannel( wand );
            if ( status == MagickTrue )
            {
-               ly += ".A";
-               _layers.push_back( ly );
+               _layers.push_back( ly + ".A" );
            }
 
 	   ++_num_channels;
@@ -280,6 +280,7 @@ namespace mrv {
 
                display_window( 0, 0, (int)dw, (int)dh, frame );
            }
+
 
 	   if ( channelName && strcmp( layername, channelName ) == 0 )
 	   {
@@ -297,6 +298,7 @@ namespace mrv {
      if ( status == MagickTrue )
          has_alpha = true;
 
+
      /*
        Copy pixels from magick to class
      */
@@ -309,9 +311,9 @@ namespace mrv {
 
      // Get the layer data window
 
-     data_window( (int)img->page.x, (int) img->page.y, 
-                  (int)(img->page.x + dw - 1),
-                  (int)(img->page.y + dh - 1), frame );
+     data_window( img->page.x, img->page.y, 
+                  (img->page.x + dw - 1),
+                  (img->page.y + dh - 1), frame );
 
      _gamma = 1.0f;
 
@@ -585,15 +587,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     MagickBooleanType status;
     std::string filename = file;
 
-    CompressionType compression = RLECompression;
-    std::transform( filename.begin(), filename.end(), filename.begin(),
-                    (int(*)(int)) tolower );
-
-    if ( filename.rfind( ".tif" ) != std::string::npos )
-        compression = LZWCompression;
-    else if ( filename.rfind( ".psd" ) != std::string::npos )
-        compression = RLECompression;
-
 
     /*
       Write out an image.
@@ -603,6 +596,8 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     CMedia* p = const_cast< CMedia* >( this );
 
     const char* old_channel = channel();
+
+    bool has_composite = false;
 
     stringArray::const_iterator i = p->layers().begin();
     stringArray::const_iterator s = i;
@@ -624,6 +619,21 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         }
     }
 
+    CompressionType compression = RLECompression;
+    std::transform( filename.begin(), filename.end(), filename.begin(),
+                    (int(*)(int)) tolower );
+
+
+    if ( filename.rfind( ".tif" ) != std::string::npos )
+    {
+        has_composite = true;
+        compression = LZWCompression;
+    }
+    else if ( filename.rfind( ".psd" ) != std::string::npos )
+    {
+        has_composite = true;
+        compression = RLECompression;
+    }
 
     Buffers bufs;
 
@@ -848,11 +858,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
             }
 
 
-            if (status == MagickFalse)
-            {
-                destroyPixels(bufs);
-                ThrowWandException( wand );
-            }
         }
 
 
@@ -860,7 +865,10 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
 
 
         MagickSetImageDepth( w, pixel_size*8 );
-
+        if ( has_alpha )
+        {
+            MagickSetImageAlphaChannel( w, ActivateAlphaChannel );
+        }
 
 
         std::string label = x;
@@ -896,7 +904,7 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         DestroyMagickWand( w );
 
 
-        if ( label == "" )
+        if ( label == "" && has_composite )
         {
 
             w = NewMagickWand();

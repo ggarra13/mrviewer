@@ -174,7 +174,9 @@ ChannelShortcuts shortcuts[] = {
   { _("Alpha"), 'a'         },
   { _("Alpha Overlay"), 'v' },
   { _("Lumma"), 'l' },
-  { _("Z"), 'z' },
+  { N_("N"), 'n' },
+  { _("Normals"), 'n' },
+  { N_("Z"), 'z' },
   { _("Z Depth"), 'z' },
 };
 
@@ -4246,11 +4248,11 @@ void ImageView::channel( fltk::Widget* o )
  * @param c index of channel
  */
 void ImageView::channel( unsigned short c )
-{ 
-
+{
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
   if ( num == 0 ) return; // Audio only - no channels
+
 
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -4288,6 +4290,8 @@ void ImageView::channel( unsigned short c )
 
   char* lbl = get_layer_label( c );
   if ( !lbl ) return;
+
+
 
   _channel = c;
 
@@ -4392,17 +4396,20 @@ void ImageView::channel( unsigned short c )
   mrv::media fg = foreground();
   mrv::media bg = background();
 
-  // if ( ( ext != N_("R") && ext != N_("G") && ext != N_("B") &&
-  //        ext != N_("A") ) )
   {
       if ( fg ) fg->image()->channel( lbl );
       if ( bg ) bg->image()->channel( lbl );
   }
 
+
   update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
   free( lbl );
+
+  // When changing channels, the cache may get thrown away.  Reflect that
+  // in the timeline.
+  timeline()->redraw();
 
   smart_refresh();
 }
@@ -4788,17 +4795,15 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
-
-        if ( x == root || (channelName && name == channelName) )
+        if ( v == -1 && ( x == root || (channelName && name == channelName) ) )
         {
             v = idx;
         }
 
-
         // Get a shortcut to this layer
         short shortcut = get_shortcut( name.c_str() );
 
-        if ( v >= 0 )
+        if ( v >= 0 || shortcut == 'n' || shortcut == 'z' )
         {
 
             // If we have a shortcut and it isn't in the list of shortcuts

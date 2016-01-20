@@ -34,6 +34,7 @@
 #include <fltk/file_chooser.h>
 #include <fltk/ProgressBar.h>
 #include <fltk/Output.h>
+#include <fltk/Cursor.h>
 #include <fltk/run.h>
 #include <fltk/ask.h>
 
@@ -680,6 +681,9 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
      
    bool edl = uiMain->uiTimeline->edl();
 
+   fltk::cursor( fltk::CURSOR_WAIT );
+   fltk::check();
+
    int audio_stream = -1;
 
    ImageOpts* ipts = NULL;
@@ -886,6 +890,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       open_movie = false;
    }
 
+   fltk::cursor( fltk::CURSOR_ARROW );
    delete w;
 }
 
