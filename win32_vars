@@ -1,15 +1,14 @@
 #!/bin/bash
 
-export BOOST_ROOT="F:/code/lib/Windows_32/boost_1_51_0"
+#export BOOST_ROOT="F:/code/lib/Windows_32/boost_1_51_0"
+export BOOST_ROOT=F:/code/lib/Windows_32/boost_1_59_0
 
 export OPENEXR_ROOT="F:/code/lib/Windows_32"
 export     CTL_ROOT="F:/code/lib/Windows_32"
 export TINYXML2_ROOT="F:/code/lib/Windows_32"
 
 
-#export FFMPEG_ROOT=F:/code/lib/ffmpeg-20150913-git-d13a2df-win32-shared
-#export FFMPEG_ROOT=F:/code/lib/ffmpeg-20151015-git-0418541-win32-shared/
-export FFMPEG_ROOT=F:/code/lib/ffmpeg-20151205-git-a16243a-win32-shared/
+export FFMPEG_ROOT=F:/code/lib/ffmpeg-20160116-git-d7c75a5-win32-shared
 
 
 export  GLUT_ROOT_PATH="F:/code/lib/glut/"

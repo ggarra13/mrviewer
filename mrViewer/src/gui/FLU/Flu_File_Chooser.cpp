@@ -340,6 +340,7 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
     typedef boost::recursive_mutex Mutex;
     Mutex::scoped_lock lk_m( e->chooser->mutex );
 
+    if ( e->chooser->quick_exit ) return;
 
     char fmt[1024];
     char buf[1024];
@@ -495,6 +496,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 				    const char *title,
 				    const bool compact )
   : fltk::DoubleBufferWindow( 600, 480, title ),
+    quick_exit( false ),
     filename( 70, 0, w()-70-85-10, 25, "" ),
     ok( w()-90, 0, 85, 25 ),
     cancel( w()-90, 0, 85, 25 ),
@@ -983,6 +985,7 @@ Flu_File_Chooser::~Flu_File_Chooser()
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
 
+  quick_exit = true;
   SCOPED_LOCK( mutex );
   filelist->clear();
   filedetails->clear();
@@ -1524,7 +1527,7 @@ void Flu_File_Chooser::updateLocationQJ()
 
 void Flu_File_Chooser::favoritesCB()
 {
-  cd( FAVORITES_UNIQUE_STRING );
+    cd( FAVORITES_UNIQUE_STRING );
 }
 
 void Flu_File_Chooser::myComputerCB()
@@ -1640,6 +1643,7 @@ void Flu_File_Chooser::previewCB()
 
     if ( previewBtn->value() )
     {
+        quick_exit = false;
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
@@ -3811,6 +3815,7 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( favoritesTxt.c_str() );
       updateLocationQJ();
 
+      quick_exit = true;
       SCOPED_LOCK( mutex );
       filelist->clear();
       filedetails->clear();
@@ -3910,6 +3915,7 @@ void Flu_File_Chooser::cd( const char *path )
 
 
   int numDirs = 0, numFiles = 0;
+  quick_exit = true;
   SCOPED_LOCK( mutex );
   filelist->clear();
   filedetails->clear();
