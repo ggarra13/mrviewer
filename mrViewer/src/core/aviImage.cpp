@@ -782,16 +782,23 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          ptsframe = _av_frame->pts = 
                     av_frame_get_best_effort_timestamp( _av_frame );
 
+         if ( ptsframe == AV_NOPTS_VALUE )
+         {
+             if ( _av_frame->pkt_pts != AV_NOPTS_VALUE )
+                 ptsframe = _av_frame->pkt_pts;
+             else if ( _av_frame->pkt_dts != AV_NOPTS_VALUE )
+                 ptsframe = _av_frame->pkt_dts;
+         }
 
-	if ( ptsframe == AV_NOPTS_VALUE )
-        {
-            ptsframe = get_frame( stream, pkt );
-            if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
-        }
-        else
-        {
-            ptsframe = pts2frame( stream, ptsframe );
-        }
+         if ( ptsframe == AV_NOPTS_VALUE )
+         {
+             ptsframe = get_frame( stream, pkt );
+             if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
+         }
+         else
+         {
+             ptsframe = pts2frame( stream, ptsframe );
+         }
 
         if ( eof )
         {
