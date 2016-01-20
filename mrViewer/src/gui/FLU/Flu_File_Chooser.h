@@ -122,6 +122,8 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   typedef boost::recursive_mutex Mutex;
   Mutex  mutex;
 
+  bool quick_exit;
+
   //! File entry type
   enum { 
     ENTRY_NONE = 1,         /*!< An empty (or non-existant) entry */

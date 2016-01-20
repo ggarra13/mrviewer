@@ -120,7 +120,7 @@ namespace mrv {
     void create_gl_texture();
 
   protected:
-    void clear_lut();
+      void clear_lut();
     void icc_cmm_error( const char* prefix,
 			const icStatusCMM& status );
 
