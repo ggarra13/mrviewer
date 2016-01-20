@@ -14,7 +14,7 @@ set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_
 #
 
 # For window management
-FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
+# FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
@@ -44,6 +44,9 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
     )
 
    SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF -NODEFAULTLIB:LIBC -NODEFAULTLIB:LIBCPMTD -NODEFAULTLIB:LIBCPMT -NODEFAULTLIB:LIBCMT -NODEFAULTLIB:LIBCMTD" )
+
+   #SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF" )
+
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   IF(APPLE)
     # Media libraries for Apple

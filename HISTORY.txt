@@ -2,7 +2,19 @@ v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
 	   main Color layer appears.  Previously, Photoshop would
 	   swallow it without a warning.
 	 - Canvas is now set up properly in the PSD saver.
-	 - Moved to ImageMagick 6.9.3-0 which solves most PSD issues.
+	 - Moved to ImageMagick 6.9.3-0 which improves PSD/TIFF saver
+	   a tad.
+	 - Tested under Krita and GIMP and all works well.  Photoshop
+	   CS 2015 (Trial) shows white areas outside data window when
+	   it is smaller than the display window.  Not sure why.
+	 - Bug fixed channel selection in PSD files.  Previously,
+	   switching from main Color channel to an R,G, or B channel
+	   in another layer, would not update properly.
+	 - Bug fixed a crash in file requester when
+	   icons were being created and user selected the favorites 
+	   button or changed directories.  Now the running icon 
+	   finishes and then the list of favorites or other directory
+	   appears.
 
 v3.0.8   - Bug fixed ImageMagick saver to work with PSD multilayer files.
 	   It is now possible to take an openexr multi part file and turn

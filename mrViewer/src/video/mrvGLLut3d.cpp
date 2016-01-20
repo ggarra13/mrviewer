@@ -1036,7 +1036,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
 
     lut->create_gl_texture();
 
-    _luts.insert( std::make_pair<std::string, GLLut3d_ptr>( path, lut ) );
+    _luts.insert( std::make_pair( path, lut ) );
     return lut.get();
   }
 
