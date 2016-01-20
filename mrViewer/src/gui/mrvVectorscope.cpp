@@ -20,10 +20,6 @@
 #include <fltk/draw.h>
 #include <fltk/Symbol.h>
 
-#ifdef _WIN32
-#define isfinite(x) _finite(x)
-#endif
-
 #include "core/mrvThread.h"
 #include "core/mrvColorSpaces.h"
 
@@ -35,6 +31,10 @@
 #include "mrViewer.h"
 
 
+
+#ifdef _WIN32
+#define isfinite(x) _finite(x)
+#endif
 
 namespace mrv
 {
