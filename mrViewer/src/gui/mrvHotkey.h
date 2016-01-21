@@ -141,6 +141,10 @@ struct Hotkey
 	{
 	   ok = true;
 	}
+        else
+        {
+            ok = false;
+        }
 
 	return ok;
      }
