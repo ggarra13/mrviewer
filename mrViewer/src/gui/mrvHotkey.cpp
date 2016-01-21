@@ -100,7 +100,7 @@ Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
 Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
 Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 
-Hotkey kScrub( false, false, false, false, fltk::LeftShiftKey, "",
+Hotkey kScrub( false, false, false, true, fltk::LeftShiftKey, "",
 	       fltk::RightShiftKey );
 
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
@@ -131,6 +131,84 @@ Hotkey kClearCache( false, false, false, false, 'k' );
 
 Hotkey kSetInPoint( false, false, false, false, 'i' );
 Hotkey kSetOutPoint( false, false, false, false, 'o' );
+
+bool Hotkey::match( unsigned rawkey )
+{
+    bool ok = false;
+    if ( (!text.empty()) && text == fltk::event_text() ) return true;
+    
+    if ( ctrl )
+	{
+            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                 fltk::event_key_state( fltk::RightCtrlKey ) )
+                ok = true;
+            else
+                return false;
+	}
+        else
+        {
+            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
+                 fltk::event_key_state( fltk::RightCtrlKey ) )
+                return false;
+        }
+    
+    if ( shift )
+    { 
+        if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+             fltk::event_key_state( fltk::RightShiftKey ) )
+            ok = true;
+        else
+            return false;
+    }
+    else
+    {
+        if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
+             fltk::event_key_state( fltk::RightShiftKey ) )
+            return false;
+    }
+    if ( alt )
+    {
+        if ( fltk::event_key_state( fltk::LeftAltKey ) ||
+             fltk::event_key_state( fltk::RightAltKey ) )
+            ok = true;
+        else
+            return false;
+    }
+    else
+    {
+        if ( fltk::event_key_state( fltk::LeftAltKey ) ||
+             fltk::event_key_state( fltk::RightAltKey ) )
+            return false;
+    }
+    if ( meta )
+    { 
+        if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
+		fltk::event_key_state( fltk::RightMetaKey ) )
+            ok = true;
+        else
+            return false;
+    }
+    else
+    {
+        if ( fltk::event_key_state( fltk::LeftMetaKey ) ||
+             fltk::event_key_state( fltk::RightMetaKey ) )
+            return false;
+    }
+    
+    if ( rawkey != 0 )
+    {
+        if  ( rawkey == key || rawkey == key2 )
+        {
+            ok = true;
+        }
+        else
+        {
+            ok = false;
+        }
+    }
+    return ok;
+}
+
 
 HotkeyEntry hotkeys[] = {
 HotkeyEntry( _("Open Movie or Sequence"), kOpenImage),
