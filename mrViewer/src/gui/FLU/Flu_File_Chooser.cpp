@@ -975,6 +975,14 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
      filename.value( pathname );
 }
 
+void Flu_File_Chooser::clear_lists()
+{
+    quick_exit = true;
+    SCOPED_LOCK( mutex );
+    filelist->clear();
+    filedetails->clear();
+}
+
 Flu_File_Chooser::~Flu_File_Chooser()
 {
   //fltk::remove_timeout( Entry::_editCB );
@@ -985,10 +993,7 @@ Flu_File_Chooser::~Flu_File_Chooser()
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
 
-  quick_exit = true;
-  SCOPED_LOCK( mutex );
-  filelist->clear();
-  filedetails->clear();
+  clear_lists();
 
   clear_history();
   unselect_all();
@@ -3730,6 +3735,7 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 
 }
 
+
 void Flu_File_Chooser::cd( const char *path )
 {
   Entry *entry;
@@ -3817,10 +3823,7 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( favoritesTxt.c_str() );
       updateLocationQJ();
 
-      quick_exit = true;
-      SCOPED_LOCK( mutex );
-      filelist->clear();
-      filedetails->clear();
+      clear_lists();
 
       for( int i = 0; i < favoritesList->children(); ++i )
 	{
@@ -3917,10 +3920,8 @@ void Flu_File_Chooser::cd( const char *path )
 
 
   int numDirs = 0, numFiles = 0;
-  quick_exit = true;
-  SCOPED_LOCK( mutex );
-  filelist->clear();
-  filedetails->clear();
+
+  clear_lists();
 
   cleanupPath( currentDir );
 
