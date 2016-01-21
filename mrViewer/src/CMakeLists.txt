@@ -28,9 +28,6 @@ FIND_PACKAGE( Gettext     REQUIRED )    # for translations
 FIND_PACKAGE( TCLAP       REQUIRED )    # for command-line parsing
 FIND_PACKAGE( GLEW        REQUIRED )    # for opengl features
 FIND_PACKAGE( LibIntl     REQUIRED )
-# FIND_PACKAGE( RLM         REQUIRED )    # for licensing
-# FIND_PACKAGE( GLU         REQUIRED )    # for gluErrorString
-# FIND_PACKAGE( PostgreSQL  REQUIRED )    # for postgresql database
 FIND_PACKAGE( SampleICC   REQUIRED )    # for ICC loading/processing
 FIND_PACKAGE( TinyXML2    REQUIRED )
 
@@ -48,6 +45,7 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
    #SET( LINK_FLAGS "${LINK_FLAGS} -OPT:NOREF" )
 
 ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
   IF(APPLE)
     # Media libraries for Apple
     ADD_DEFINITIONS( -DOSX )
@@ -96,7 +94,6 @@ INCLUDE_DIRECTORIES(
   ${CTL_INCLUDE_DIR}
   ${TINYXML2_INCLUDE_DIR}
   ${OPENEXR_INCLUDE_DIR}
-#  ${POSTGRESQL_INCLUDE_DIR}
   ${TCLAP_INCLUDE_DIR}
   ${GLEW_INCLUDE_DIR}
   ${SampleICC_INCLUDE_DIR}
@@ -114,6 +111,7 @@ FLTK_WRAP_UI( mrViewer
   gui/keyboard_ui.fl 
   gui/mrvAudioOffset.fl
   )
+
 
 
 # For windows, this is a non-MFC application
