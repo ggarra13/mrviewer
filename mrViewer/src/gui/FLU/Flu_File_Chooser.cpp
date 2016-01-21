@@ -1659,6 +1659,8 @@ void Flu_File_Chooser::previewCB()
     }
     else
     {
+        quick_exit = true;
+        SCOPED_LOCK( mutex );
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
