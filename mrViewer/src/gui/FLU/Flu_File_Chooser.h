@@ -228,6 +228,9 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   inline const char* get_current_directory() const
     { return currentDir.c_str(); }
 
+  //! Clear the filelist and filedetails of all widgets
+  void clear_lists();
+
   //! Override of Fl_Double_Window::handle()
   int handle( int event );
 
