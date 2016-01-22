@@ -758,6 +758,10 @@ fltk::StyleSet*     newscheme = NULL;
        keys.get( (hotkeys[i].name + " key").c_str(), 
 		 tmp, (int)hotkeys[i].hotkey.key );
        hotkeys[i].hotkey.key = unsigned(tmp);
+
+       keys.get( (hotkeys[i].name + " key2").c_str(), 
+		 tmp, (int)hotkeys[i].hotkey.key2 );
+       hotkeys[i].hotkey.key2 = unsigned(tmp);
        
        keys.get( (hotkeys[i].name + " text").c_str(), 
 		 tmpS, 
@@ -1271,6 +1275,8 @@ fltk::StyleSet*     newscheme = NULL;
 		 hotkeys[i].hotkey.shift );
        keys.set( (hotkeys[i].name + " key").c_str(), 
 		 (int)hotkeys[i].hotkey.key );
+       keys.set( (hotkeys[i].name + " key2").c_str(), 
+		 (int)hotkeys[i].hotkey.key2 );
        keys.set( (hotkeys[i].name + " text").c_str(), 
 		 hotkeys[i].hotkey.text.c_str() );
 
