@@ -857,10 +857,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
         }
     }
 
-    bool eof = false;
     int got_frame = 0;
     int ret = -1;
-    if ( avpkt->data == NULL ) eof = true;
 
     while (!got_frame )
     {
@@ -1017,7 +1015,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             break;
         }
     }
-
 
     return ret;
 }
@@ -1179,8 +1176,6 @@ CMedia::DecodeStatus
 CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
 {
     
-    SCOPED_LOCK( _audio_mutex );
-
     boost::int64_t audio_frame = frame;
 
     CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
@@ -1225,8 +1220,7 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
                               bytes_per_frame );
 
 
-        if ( last >= frame )  got_audio = kDecodeOK;
-
+        if ( last >= frame ) got_audio = kDecodeOK;
 
         assert( bytes_per_frame <= _audio_buf_used );
         _audio_buf_used -= bytes_per_frame;
@@ -1248,14 +1242,12 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
   
 
 
-#if 1
     if (_audio_buf_used > 0  )
     {
         //
         // NOTE: audio buffer must remain 16 bits aligned for ffmpeg.
         memmove( _audio_buf, _audio_buf + index, _audio_buf_used );
     }
-#endif
 
     return got_audio;
 }
@@ -1734,7 +1726,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
       }
       else
       {
-          status = decode_audio_packet( last, frame, pkt );
+          status = decode_audio_packet( last, f, pkt ); //frame
           if ( status != kDecodeOK )
               LOG_WARNING( _( "decode_audio_packet failed for frame " )
                            << frame );
