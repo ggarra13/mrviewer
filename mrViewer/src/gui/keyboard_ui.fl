@@ -15,8 +15,7 @@ decl {\#include <fltk/events.h>} {}
 decl {\#include "mrvHotkey.h"} {public
 } 
 
-decl {\#include "core/mrvI8N.h"} {selected
-} 
+decl {\#include "core/mrvI8N.h"} {} 
 
 decl {\#include <fltk/Item.h>} {} 
 
@@ -32,7 +31,7 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Choose Hotkey} open
-        xywh {655 631 360 130} resizable
+        xywh {514 231 360 130} resizable
         extra_code {o->shortcut(0);} modal visible
       } {
         {fltk::Input} uiKey {
@@ -41,19 +40,19 @@ namespace mrv {open
         }
         {fltk::CheckButton} uiShift {
           label Shift
-          xywh {20 38 20 25}
+          xywh {40 38 20 25}
         }
         {fltk::CheckButton} uiCtrl {
-          label Ctrl
-          xywh {75 39 25 25}
+          label Ctrl selected
+          xywh {135 39 25 25}
         }
         {fltk::CheckButton} uiAlt {
           label Alt
-          xywh {125 40 25 25}
+          xywh {40 70 25 25}
         }
         {fltk::CheckButton} uiMeta {
-          label Meta
-          xywh {170 40 25 25}
+          label Meta selected
+          xywh {135 70 25 25}
         }
         {fltk::Button} {} {
           label Okay
