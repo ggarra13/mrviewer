@@ -1,3 +1,7 @@
+v3.1.0   - Fixed export PULSE_LATENCY_MSEC on Linux to avoid underruns.
+	 - Made cursor turn to wait cursor while saving image, as
+	   saving multipage TIFFs/PSDs or OpenEXRs can take a while.
+
 v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
 	   main Color layer appears.  Previously, Photoshop would
 	   swallow it without a warning.
