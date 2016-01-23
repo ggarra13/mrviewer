@@ -35,6 +35,7 @@
 #include <fltk/ProgressBar.h>
 #include <fltk/Output.h>
 #include <fltk/Cursor.h>
+#include <fltk/events.h>
 #include <fltk/run.h>
 #include <fltk/ask.h>
 
@@ -582,7 +583,15 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
    ImageOpts* opts = ImageOpts::build( ext, aces );
    if ( opts->active() )
    {
+       main->uiView->toggle_wait();
+       main->uiView->handle( fltk::ENTER );
+       fltk::check();
+
        image->save( file, opts );
+
+       main->uiView->toggle_wait();
+       main->uiView->handle( fltk::ENTER );
+       fltk::check();
 
        save_xml( image, opts, file );
    }
@@ -681,8 +690,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
      
    bool edl = uiMain->uiTimeline->edl();
 
-   fltk::cursor( fltk::CURSOR_WAIT );
-   fltk::check();
 
    int audio_stream = -1;
 
@@ -890,7 +897,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
       open_movie = false;
    }
 
-   fltk::cursor( fltk::CURSOR_ARROW );
+
    delete w;
 }
 
