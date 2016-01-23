@@ -386,6 +386,8 @@ class server;
     // Toggle between fullscreen presentation and normal resolution
     void toggle_presentation();
 
+      void toggle_wait() { _wait ^= 1; }
+
       inline void offset_x( double x ) { xoffset = x; }
       inline void offset_y( double y ) { yoffset = y; }
       
@@ -544,7 +546,7 @@ class server;
     mrv::ViewerUI* uiMain;
     mrv::DrawEngine*    _engine;
 
-
+      bool         _wait;
     bool         _normalize;   //<- normalize pixel values
     bool         _safeAreas;   //<- safe view/title area is active
     HudDisplay   _hud;         //<- hud display

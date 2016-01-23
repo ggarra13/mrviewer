@@ -736,6 +736,7 @@ ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 fltk::GlWindow( X, Y, W, H, l ),
 uiMain( NULL ),
 _engine( NULL ),
+_wait( false ),
 _normalize( false ),
 _safeAreas( false ),
 _masking( 0.0f ),
@@ -3898,13 +3899,21 @@ int ImageView::handle(int event)
             return 1;
         case fltk::ENTER:
             focus(this);
+            if ( _wait )
+            {
+                window()->cursor( fltk::CURSOR_WAIT );
+                fltk::cursor( fltk::CURSOR_WAIT );
+            }
+            else
+            {
+                window()->cursor(fltk::CURSOR_CROSS);
+                fltk::cursor( fltk::CURSOR_CROSS );
+            }
             fltk::GlWindow::handle( event );
-            window()->cursor(fltk::CURSOR_CROSS);
-            fltk::cursor( fltk::CURSOR_CROSS );
             return 1;
         case fltk::LEAVE:
-            fltk::GlWindow::handle( event ); 
             window()->cursor(fltk::CURSOR_DEFAULT);
+            fltk::GlWindow::handle( event );
             return 1;
         case fltk::PUSH:
             return leftMouseDown(fltk::event_x(), fltk::event_y());
