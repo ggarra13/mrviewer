@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-01-23 19:08-0300\n"
+"POT-Creation-Date: 2016-01-25 06:34-0300\n"
 "PO-Revision-Date: 2016-01-12 21:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -1468,6 +1468,11 @@ msgstr "No pude inicializar el motor de dibujo"
 #: gui/mrvImageBrowser.cpp:1543
 msgid "Could not load '"
 msgstr "No pude cargar '"
+
+#: core/shmapImage.cpp:128
+#, fuzzy
+msgid "Could not load shadow map image"
+msgstr "No pude dibujar imagen"
 
 #: video/mrvGLLut3d.cpp:582
 msgid "Could not locate ICC profile \""
@@ -4015,7 +4020,7 @@ msgstr "Carretes"
 
 #: gui/mrvFileRequester.cpp:122 gui/mrvFileRequester.cpp:166
 #: gui/mrvFileRequester.cpp:558 gui/mrvFileRequester.cpp:605
-#: gui/mrvFileRequester.cpp:938
+#: gui/mrvFileRequester.cpp:934
 msgid "Reels (*.{"
 msgstr "Carretes (*.{"
 
@@ -4210,7 +4215,7 @@ msgstr "Grabar Imagen"
 msgid "Save Options"
 msgstr "Grabar Opciones"
 
-#: gui/mrvHotkey.cpp:217 gui/mrvFileRequester.cpp:942
+#: gui/mrvHotkey.cpp:217 gui/mrvFileRequester.cpp:938
 msgid "Save Reel"
 msgstr "Grabar Carrete"
 
