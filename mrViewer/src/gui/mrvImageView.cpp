@@ -3949,8 +3949,7 @@ int ImageView::handle(int event)
                 redraw();
                 return 1;
             }
-            if ( fltk::event_key_state( fltk::LeftShiftKey ) ||
-                 fltk::event_key_state( fltk::RightShiftKey ) )
+            if ( kScrub.match( fltk::event_key() ) )
             {
                 double dx = (fltk::event_x() - lastX) / 20.0;
                 if ( std::abs(dx) >= 1.0f )

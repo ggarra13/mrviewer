@@ -31,28 +31,28 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Choose Hotkey} open
-        xywh {514 231 360 130} resizable
+        xywh {346 247 360 140} resizable
         extra_code {o->shortcut(0);} modal visible
       } {
         {fltk::Input} uiKey {
           label Key
-          xywh {45 5 140 25}
+          xywh {60 5 140 27}
         }
         {fltk::CheckButton} uiShift {
           label Shift
-          xywh {40 38 20 25}
+          xywh {65 68 20 27}
         }
         {fltk::CheckButton} uiCtrl {
-          label Ctrl selected
-          xywh {135 39 25 25}
+          label Ctrl
+          xywh {160 69 25 27} horizontal
         }
         {fltk::CheckButton} uiAlt {
           label Alt
-          xywh {40 70 25 25}
+          xywh {65 103 25 27} horizontal
         }
         {fltk::CheckButton} uiMeta {
-          label Meta selected
-          xywh {135 70 25 25}
+          label Meta
+          xywh {160 103 25 27} horizontal
         }
         {fltk::Button} {} {
           label Okay
@@ -85,23 +85,45 @@ if ( v->uiKey->text() )
   v->hk.text = v->uiKey->text();
 }
 
+if ( v->uiKey2->text() )
+{
+  std::string text = v->uiKey2->text();
+
+  unsigned key = 0;
+  for (int i = 0; i < 45; i++)
+     if (text == table[i].text) {key = table[i].n; break;}
+
+  if ( key == 0 )
+  {
+	char buffer[128];
+  	for( int i = fltk::F1Key; i <= fltk::F12Key; ++i )
+  	{
+		sprintf(buffer, "F%d", i - fltk::F0Key);
+     		if ( text == buffer ) { key = i; break; }
+  	}
+  }
+
+  if ( key > 0 ) v->hk.key2 = key;
+  else v->hk.key2 = v->uiKey->text()[0];
+}
+
 v->uiMain->hide();}
-          xywh {250 86 51 24}
+          xywh {225 92 55 26}
         }
         {fltk::Button} {} {
           label Cancel
           user_data this user_data_type {ChooseHotkey*}
           callback {v->hk = v->backup;
-v->uiMain->hide();}
-          xywh {305 86 50 24}
+v->uiMain->hide();} selected
+          xywh {285 92 70 26}
         }
         {fltk::PopupMenu} uiSpecialKey {
           label Special
           user_data uiKey user_data_type {fltk::Input*}
           callback {int idx = o->value();
 const char* text = o->child(idx)->label();
-uiKey->text( text );} open
-          xywh {195 5 65 25}
+uiKey->text( text );}
+          xywh {210 5 65 27}
           extra_code {for (int i = 0; i < 45; i++)
 {
    uiSpecialKey->add( table[i].text );
@@ -111,6 +133,28 @@ for (int i = 1; i < 13; i++)
 {
    sprintf( buf, "F%d", i );
    uiSpecialKey->add(buf);
+}}
+        } {}
+        {fltk::Input} uiKey2 {
+          label Key2
+          xywh {60 38 140 27}
+        }
+        {fltk::PopupMenu} uiSpecialKey2 {
+          label Special
+          user_data uiKey2 user_data_type {fltk::Input*}
+          callback {int idx = o->value();
+const char* text = o->child(idx)->label();
+uiKey2->text( text );} open
+          xywh {210 38 65 27}
+          extra_code {for (int i = 0; i < 45; i++)
+{
+   uiSpecialKey2->add( table[i].text );
+}
+char buf[128];
+for (int i = 1; i < 13; i++)
+{
+   sprintf( buf, "F%d", i );
+   uiSpecialKey2->add(buf);
 }}
         } {}
       }
@@ -152,7 +196,30 @@ if (!k) {
 if (k == 0 )
    uiKey->text( hk.text.c_str() );
 else
-   uiKey->text( keyname );} {}
+   uiKey->text( keyname );
+   
+k = hk.key2;
+if (!k) {
+      keyname = "0";
+   } else if (k <= 7) {
+      sprintf(buffer, "(mouse button %d)", k);
+   } else if (k < 256 && k != 32) {
+      sprintf(buffer, "%c", k);
+   } else if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
+      sprintf(buffer, "F%d", k - fltk::F0Key);
+   } else {
+      sprintf(buffer, "0x%04x", k);
+      for (int i = 0; i < 45; i++)
+      {
+	 if (table[i].n == k) {
+	 	keyname = table[i].text; 
+	 	break;
+	 }
+	}
+   }
+
+if (k != 0 )
+   uiKey2->text( keyname );} {}
     }
     Function {~ChooseHotkey()} {open
     } {
