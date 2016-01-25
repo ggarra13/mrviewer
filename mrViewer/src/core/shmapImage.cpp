@@ -41,10 +41,12 @@
 #include "shmapImage.h"
 #include "byteSwap.h"
 
+#include "gui/mrvIO.h"
 
 
 namespace {
 
+static const char* kModule = "shmap";
 
   //! Struct used for header of a mray shadow map file
   struct shadowHeader
@@ -123,7 +125,7 @@ namespace mrv {
     if ( sum != 1 )
       {
 	fclose(f);
-	cerr << "Could not load shadow map image" << endl;
+	LOG_ERROR( _( "Could not load shadow map image" ) );
 	return false;
       }
 
