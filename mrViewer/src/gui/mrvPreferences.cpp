@@ -288,6 +288,7 @@ fltk::StyleSet*     newscheme = NULL;
   Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
   {
     bool ok;
+    int version;
     int tmp;
     float tmpF;
     char  tmpS[2048];
@@ -305,6 +306,8 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
+
+    base.get( "version", version, 1 );
 
     //
     // Get ui preferences
@@ -735,6 +738,10 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences keys( base, "hotkeys" );
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
+        // If version 1 of preferences, do not set scrub
+        if ( version == 1 && hotkeys[i].name == "Scrub" )
+            continue;
+
        keys.get( (hotkeys[i].name + " ctrl").c_str(), 
 		 tmp, (int)hotkeys[i].hotkey.ctrl );
        if ( tmp ) hotkeys[i].hotkey.ctrl = true;
@@ -1022,6 +1029,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
+    base.set( "version", 2 );
 
     // Save ui preferences
     fltk::Preferences ui( base, "ui" );
