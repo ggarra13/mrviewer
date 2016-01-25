@@ -905,7 +905,7 @@ If you try to open several mrViewers with different images, all these images wil
               }
               {fltk::CheckButton} uiPrefsHudMemory {
                 label Memory
-                user_data this user_data_type {mrv::PreferencesUI*} selected
+                user_data this user_data_type {mrv::PreferencesUI*}
                 xywh {273 62 20 20} align 8 box UP_BOX
               }
             }
@@ -2529,7 +2529,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2558,13 +2559,13 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {private
+    Function {make_window()} {open private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
-        callback {delete v;} open
+        callback {delete v;}
         xywh {354 146 640 535} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
 o->main( this );}
@@ -3478,12 +3479,17 @@ if (!uiAbout) uiAbout = new AboutUI(this); // should be static
 
 if (!uiConnection) uiConnection = new ConnectionUI( this );
 
+uiHotkey = new HotkeyUI(this);
+uiICCProfiles = new ICCProfileListUI(this);
+uiEDLWindow = new EDLWindowUI(this);
+
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );
 
-uiHotkey = new HotkeyUI(this);
-uiICCProfiles = new ICCProfileListUI(this);
-uiEDLWindow = new EDLWindowUI(this);} {}
+//uiHotkey = new HotkeyUI(this);
+//uiICCProfiles = new ICCProfileListUI(this);
+//uiEDLWindow = new EDLWindowUI(this);} {selected
+      }
     }
     Function {ViewerUI()} {} {
       code {uiMain = make_window();} {}
