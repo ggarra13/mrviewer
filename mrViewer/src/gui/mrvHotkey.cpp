@@ -101,7 +101,7 @@ Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
 Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 
 Hotkey kScrub( false, false, false, true, fltk::LeftShiftKey, "",
-	       fltk::RightShiftKey );
+               fltk::RightShiftKey );
 
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
 Hotkey kNextChannel( false, false, false, false, 0, "}" );
@@ -137,6 +137,7 @@ bool Hotkey::match( unsigned rawkey )
     bool ok = false;
     if ( (!text.empty()) && text == fltk::event_text() ) return true;
     
+
     if ( ctrl )
 	{
             if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
