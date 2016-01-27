@@ -4,6 +4,8 @@ v3.1.0   - Fixed export PULSE_LATENCY_MSEC on Linux to avoid underruns.
 	   (Linux only).
 	 - Made Scrubbing hotkey take effect. Previously, the use of
 	   shift dragging was locked.
+	 - Added acesImageContainerFlag set to 1 to exr files saved 
+	   with ACES clip metadata sidecar with them.
 
 v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
 	   main Color layer appears.  Previously, Photoshop would

@@ -583,12 +583,14 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
    ImageOpts* opts = ImageOpts::build( ext, aces );
    if ( opts->active() )
    {
+       // Set icon back to WAIT
        main->uiView->toggle_wait();
        main->uiView->handle( fltk::ENTER );
        fltk::check();
 
        image->save( file, opts );
 
+       // Change icon back to ARROW/CROSSHAIR
        main->uiView->toggle_wait();
        main->uiView->handle( fltk::ENTER );
        fltk::check();

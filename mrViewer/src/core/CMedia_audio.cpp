@@ -1720,9 +1720,9 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
           // if ( (status = decode_audio( frame, pkt )) == kDecodeOK )
           if ( (status = decode_audio( f, pkt )) == kDecodeOK )
               got_audio = kDecodeOK;
-          else
-              LOG_WARNING( _( "decode_audio failed for frame " ) 
-                           << f );
+          // else
+          //     LOG_WARNING( _( "decode_audio failed for frame " ) 
+          //                  << f );
       }
       else
       {
