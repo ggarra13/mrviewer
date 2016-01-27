@@ -35,11 +35,11 @@ class ImageOpts
     bool _ACESmetadata;
     bool _all_layers;
   public:
-    ImageOpts(bool aces) :
+    ImageOpts(bool aces, bool all_layers) :
     _active( true ),
     _opengl( false ),
     _ACESmetadata( aces ),
-    _all_layers( false )
+    _all_layers( all_layers )
     {
     }
 
@@ -59,7 +59,7 @@ class ImageOpts
     bool ACES_metadata() const { return _ACESmetadata; }
     void ACES_metadata( bool p ) { _ACESmetadata = p; }
 
-    static ImageOpts* build( std::string ext, bool aces );
+    static ImageOpts* build( std::string ext );
 };
 
 
@@ -70,10 +70,11 @@ class EXROpts : public ImageOpts
     Imf::PixelType   _pixel_type;
     float            _dwa_compression_level;
   public:
-    EXROpts( bool aces ) : ImageOpts( aces ),
-                           _compression( Imf::ZIPS_COMPRESSION ),
-                           _pixel_type( Imf::HALF ),
-                           _dwa_compression_level( 45.0f )
+    EXROpts( bool aces, bool all_layers ) : 
+    ImageOpts( aces, all_layers ),
+    _compression( Imf::ZIPS_COMPRESSION ),
+    _pixel_type( Imf::HALF ),
+    _dwa_compression_level( 45.0f )
     {
     }
 
@@ -94,8 +95,9 @@ class WandOpts : public ImageOpts
   protected:
     StorageType  _pixel_type;
   public:
-    WandOpts(bool aces) : ImageOpts(aces),
-                          _pixel_type( CharPixel )
+    WandOpts(bool aces, bool all_layers) :
+    ImageOpts(aces, all_layers),
+    _pixel_type( CharPixel )
     {
     }
 

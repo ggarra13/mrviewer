@@ -29,7 +29,7 @@ namespace mrv {open
   } {
     decl {std::string pixel_type;} {public
     }
-    Function {make_window(bool aces)} {open
+    Function {make_window(bool aces, bool all_layers)} {open
     } {
       {fltk::Window} uiMain {
         label {ImageMagick Saving} open
@@ -41,7 +41,7 @@ namespace mrv {open
         } {
           {fltk::Choice} uiPixelType {
             label {Pixel Format}
-            callback {pixel_type = o->child(o->value())->label();} open
+            callback {pixel_type = o->child(o->value())->label();}
             xywh {151 137 90 25}
           } {
             {fltk::Item} {} {
@@ -59,13 +59,14 @@ namespace mrv {open
           }
           {fltk::LightButton} uiAllLayers {
             label {All Layers}
-            xywh {76 77 150 35}
+            xywh {61 82 155 35}
+            extra_code {o->value( all_layers );}
           }
-        }
-        {fltk::LightButton} uiACESmetadata {
-          label {ACES metadata}
-          xywh {107 60 153 35}
-          extra_code {o->value( aces );}
+          {fltk::LightButton} uiACESmetadata {
+            label {ACES metadata}
+            xywh {61 27 155 35}
+            extra_code {o->value( aces );}
+          }
         }
         {fltk::Button} {} {
           label OK
@@ -90,12 +91,11 @@ else if ( pixel_type == _("Float") ) _pixel_type = FloatPixel;
 else if ( pixel_type == _("Short") ) _pixel_type = ShortPixel;
 else if ( pixel_type == _("Integer") ) _pixel_type = IntegerPixel;
 _ACESmetadata = uiACESmetadata->value();
-_all_layers = uiAllLayers->value();} {selected
-      }
+_all_layers = uiAllLayers->value();} {}
     }
-    Function {WandOptionsUI(bool aces=false) : WandOpts(aces)} {open
+    Function {WandOptionsUI(bool aces, bool all_layers) : WandOpts(aces, all_layers)} {selected
     } {
-      code {fltk::Window* w = make_window(aces);
+      code {fltk::Window* w = make_window(aces, all_layers);
 if ( w->exec() ) convert();} {}
     }
   }

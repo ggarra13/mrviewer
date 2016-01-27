@@ -551,6 +551,7 @@ bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
 
 
 void save_image_file( CMedia* image, const char* startdir, bool aces, 
+                      bool all_layers,
                       const mrv::ViewerUI* main )
 {
    if (!image) return;
@@ -580,7 +581,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
 		   (int(*)(int)) tolower);
    std::string ext = tmp.c_str() + tmp.size() - 4;
 
-   ImageOpts* opts = ImageOpts::build( ext, aces );
+   ImageOpts* opts = ImageOpts::build( ext );
    if ( opts->active() )
    {
        // Set icon back to WAIT
@@ -702,8 +703,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    {
        mrv::media fg = uiMain->uiView->foreground();
 
-       bool aces = uiMain->uiLUT->value();
-       ipts = ImageOpts::build( ext, aces );
+       ipts = ImageOpts::build( ext );
        if ( !fg || !ipts->active() ) {
            delete ipts;
            return;
