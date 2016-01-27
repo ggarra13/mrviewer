@@ -159,7 +159,8 @@ exrImage::exrImage() :
   _num_layers( 0 ),
   _read_attr( false ),
   _lineOrder( (Imf::LineOrder) 0 ),
-  _compression( (Imf::Compression) 0 )
+  _compression( (Imf::Compression) 0 ),
+  _aces( false )
   {
       Imf::setGlobalThreadCount( 4 );
       st[0] = st[1] = -1;
@@ -905,6 +906,15 @@ void exrImage::read_header_attr( const Imf::Header& h,
                                  const boost::int64_t& frame )
 {
     _read_attr = true;
+
+      {
+	const Imf::IntAttribute *attr =
+	  h.findTypedAttribute<Imf::IntAttribute>( N_("acesImageContainerFlag") );
+	if ( attr )
+	  {
+              _aces = (bool)attr->value()
+	  }
+      }
 
       {
 	const Imf::ChromaticitiesAttribute *attr =
@@ -1934,14 +1944,20 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
   }
 
 static
-void save_attributes( const CMedia* img, Header& hdr )
+void save_attributes( const CMedia* img, Header& hdr,
+                      const EXROpts* opts )
 {
+    if ( opts->ACES_metadata() )
+    {
+        Imf::IntAttribute attr = 1;
+        hdr.insert( N_("acesImageContainerFlag"), attr );
+    }
 
-        if ( img->has_chromaticities() )
-        {
-            Imf::ChromaticitiesAttribute attr( img->chromaticities() );
-            hdr.insert( N_("Chromaticities"), attr );
-        }
+    if ( img->has_chromaticities() )
+    {
+        Imf::ChromaticitiesAttribute attr( img->chromaticities() );
+        hdr.insert( N_("Chromaticities"), attr );
+    }
 
 
         const CMedia::Attributes& exif = img->exif();
@@ -2396,7 +2412,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     }
 
     if ( headers.size() == 0 )
-        save_attributes( img, hdr );
+        save_attributes( img, hdr, opts );
 
     layers.push_back( layer );
     headers.push_back( hdr );
