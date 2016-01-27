@@ -168,6 +168,7 @@ void save_clip_xml_metadata( const CMedia* image,
   void save_image_file( CMedia* image,
 			const char* startdir = NULL,
                         const bool aces = false, 
+                        const bool all_layers = false,
                         const mrv::ViewerUI* main = NULL  );
   /** 
    * Save an image under a new filename

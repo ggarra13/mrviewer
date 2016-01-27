@@ -946,6 +946,12 @@ class CMedia
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
 
+    static bool aces_metadata()         { return _aces_metadata; }
+    static void aces_metadata( bool x ) { _aces_metadata = x; }
+
+    static bool all_layers()         { return _all_layers; }
+    static void all_layers( bool x ) { _all_layers = x; }
+
     static void eight_bit_caches( bool x ) { _8bit_cache = x; }
     static bool eight_bit_caches() { return _8bit_cache; }
 
@@ -1333,6 +1339,8 @@ class CMedia
     SwrContext* forw_ctx;
     mrv::AudioEngine*  _audio_engine;
 
+    static bool _aces_metadata;
+    static bool _all_layers;
     static bool _8bit_cache;
     static bool _cache_active;
     static bool _preload_cache;
