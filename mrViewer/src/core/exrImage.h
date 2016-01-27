@@ -152,27 +152,30 @@ namespace mrv {
 
      protected:
 
-       int _levelX, _levelY; //<- r/mipmap levels
-       bool _multiview;
+      int _levelX, _levelY; //<- r/mipmap levels
+      bool _multiview;
       bool _has_alpha, _has_yca, _use_yca;
       bool _left_red;
 
       char* _has_left_eye;
       char* _has_right_eye;
 
-       int st[2];
-       int _curpart;
+      int st[2];
+      int _curpart;
       int _clear_part;
-       int _numparts;
-       unsigned _num_layers;
+      int _numparts;
+      unsigned _num_layers;
       bool _read_attr;
 
       Imf::LineOrder   _lineOrder;
       Imf::Compression _compression;
 
+      // ACES clip metadata present?
+      bool _aces;
+
+      // Info for reading layers
       stringSet layers;
       int order[4];
-
 
       // Stereo in same image
       bool _has_stereo;
