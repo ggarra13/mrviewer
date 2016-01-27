@@ -116,6 +116,8 @@ std::string CMedia::icc_profile_float;
 unsigned CMedia::_audio_cache_size = 0;
 unsigned CMedia::_video_cache_size = 0;
 
+bool CMedia::_aces_metadata = false;
+bool CMedia::_all_layers = false;
 bool CMedia::_cache_active = true;
 bool CMedia::_preload_cache = true;
 bool CMedia::_8bit_cache = false;

@@ -567,6 +567,14 @@ fltk::StyleSet*     newscheme = NULL;
     audio.get( "volume_mute", tmp, 0 );
     uiPrefs->uiPrefsAudioMute->value( tmp );
 
+    // Images
+    fltk::Preferences images( base, "images" );
+    images.get( "all_layers", tmp, 0 );
+    uiPrefs->uiPrefsAllLayers->value( tmp );
+
+    images.get( "aces_metadata", tmp, 0 );
+    uiPrefs->uiPrefsACESClipMetadata->value( tmp );
+
     // OpenEXR
     fltk::Preferences openexr( base, "openexr" );
     openexr.get( "thread_count", tmp, 4 );
@@ -1017,6 +1025,13 @@ fltk::StyleSet*     newscheme = NULL;
     tmpF = main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
     exrImage::_default_dwa_compression = tmpF;
 
+    bool b = (bool)main->uiPrefs->uiPrefsAllLayers->value();
+    CMedia::all_layers( b );
+
+    b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
+    CMedia::aces_metadata( b );
+
+
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
   }
@@ -1259,6 +1274,13 @@ fltk::StyleSet*     newscheme = NULL;
       }
     }
 
+    // Images
+    fltk::Preferences images( base, "images" );
+    images.set( "all_layers", (int) uiPrefs->uiPrefsAllLayers->value() );
+    images.set( "aces_metadata", 
+                (int) uiPrefs->uiPrefsACESClipMetadata->value());
+
+    // OpenEXR
     fltk::Preferences openexr( base, "openexr" );
     openexr.set( "thread_count", (int) uiPrefs->uiPrefsOpenEXRThreadCount->value() );
     openexr.set( "gamma", uiPrefs->uiPrefsOpenEXRGamma->value() );

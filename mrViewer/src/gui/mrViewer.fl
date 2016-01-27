@@ -624,11 +624,11 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {238 39 670 450} resizable visible
+        xywh {610 36 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
-          xywh {218 24 452 399}
+          xywh {218 24 452 400}
         } {
           {fltk::Group} {} {
             label {User Interface}
@@ -1798,12 +1798,33 @@ else
             }
           }
           {fltk::Group} {} {
-            label OpenEXR
+            label Images open
+            tooltip {Options controlling the OpenEXR reader/writer}
+            xywh {12 24 427 367} align 5 box EMBOSSED_BOX labelsize 14
+          } {
+            {fltk::Group} {} {
+              label Saving open
+              xywh {54 78 330 130} box ROUNDED_BOX labelsize 15
+            } {
+              {fltk::LightButton} uiPrefsACESClipMetadata {
+                label {ACES Clip Metadata} selected
+                tooltip {Whether to save ACES clip metadata in a sidecar.}
+                xywh {60 20 210 30}
+              }
+              {fltk::LightButton} uiPrefsAllLayers {
+                label {All Layers}
+                tooltip {Whether to save all layers in image file if there are several.}
+                xywh {60 70 210 30}
+              }
+            }
+          }
+          {fltk::Group} {} {
+            label OpenEXR open
             tooltip {Options controlling the OpenEXR reader/writer}
             xywh {13 23 427 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
-              label Loading open
+              label Loading
               xywh {44 33 325 130} box ROUNDED_BOX labelsize 15
             } {
               {fltk::ValueInput} uiPrefsOpenEXRThreadCount {
@@ -1876,7 +1897,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
@@ -1888,7 +1909,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -1930,6 +1951,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
               }
             {fltk::Item} {} {
               label Audio
+              }
+            {fltk::Item} {} {
+              label Images
               }
             {fltk::Item} {} {
               label OpenEXR
@@ -3488,8 +3512,7 @@ mrv::Preferences prefs( uiPrefs );
 
 //uiHotkey = new HotkeyUI(this);
 //uiICCProfiles = new ICCProfileListUI(this);
-//uiEDLWindow = new EDLWindowUI(this);} {selected
-      }
+//uiEDLWindow = new EDLWindowUI(this);} {}
     }
     Function {ViewerUI()} {} {
       code {uiMain = make_window();} {}
