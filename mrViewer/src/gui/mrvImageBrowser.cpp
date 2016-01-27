@@ -1808,7 +1808,9 @@ void ImageBrowser::load( const stringArray& files,
     if ( sel < 0 ) return;
 
     mrv::media orig = reel->images[sel];
-    mrv::save_image_file( orig->image(), NULL, false, main() ); 
+    mrv::save_image_file( orig->image(), NULL, 
+                          CMedia::aces_metadata(), 
+                          CMedia::all_layers(), main() ); 
   }
 
   /** 
