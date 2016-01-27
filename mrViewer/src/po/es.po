@@ -1,19 +1,19 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-01-25 11:12-0300\n"
+"POT-Creation-Date: 2016-01-27 18:42-0300\n"
 "PO-Revision-Date: 2016-01-12 21:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
+"Language: es_AR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_AR\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: core/CMedia_audio.cpp:602
@@ -790,7 +790,7 @@ msgid "All Possible"
 msgstr "Todos los Posibles"
 
 #: gui/mrvFileRequester.cpp:168 gui/mrvFileRequester.cpp:560
-#: gui/mrvFileRequester.cpp:607
+#: gui/mrvFileRequester.cpp:609
 msgid "All Recognized (*.{"
 msgstr "Todos los Reconocidos (*.{"
 
@@ -827,7 +827,7 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1163 core/CMedia.cpp:1250 core/exrImage.cpp:2521
+#: core/CMedia.cpp:1163 core/CMedia.cpp:1250 core/exrImage.cpp:2527
 #: core/wandImage.cpp:650 gui/mrvImageView.cpp:174 gui/mrvImageView.cpp:4367
 #: gui/mrvImageView.cpp:4756 gui/mrvImageView.cpp:4774
 msgid "Alpha"
@@ -837,7 +837,7 @@ msgstr "Alfa"
 msgid "Alpha Only"
 msgstr "Solo Alfa"
 
-#: core/CMedia.cpp:1165 core/CMedia.cpp:1250 core/exrImage.cpp:2519
+#: core/CMedia.cpp:1165 core/CMedia.cpp:1250 core/exrImage.cpp:2525
 #: core/wandImage.cpp:648 gui/mrvImageView.cpp:175 gui/mrvImageView.cpp:4348
 #: gui/mrvImageView.cpp:4757
 msgid "Alpha Overlay"
@@ -976,7 +976,7 @@ msgid "Audios #"
 msgstr "Audios #"
 
 #: gui/mrvFileRequester.cpp:176 gui/mrvFileRequester.cpp:568
-#: gui/mrvFileRequester.cpp:615
+#: gui/mrvFileRequester.cpp:617
 msgid "Audios (*.("
 msgstr "Audios (*.{"
 
@@ -1053,7 +1053,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1683
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2416
-#: core/CMedia.cpp:1179 core/CMedia.cpp:1249 core/exrImage.cpp:2521
+#: core/CMedia.cpp:1179 core/CMedia.cpp:1249 core/exrImage.cpp:2527
 #: core/wandImage.cpp:650 gui/mrvImageView.cpp:173 gui/mrvImageView.cpp:4362
 #: gui/mrvImageView.cpp:4756
 msgid "Blue"
@@ -1267,9 +1267,9 @@ msgid "Codecs"
 msgstr "Codecs"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:65
-#: core/CMedia.cpp:1176 core/CMedia.cpp:1248 core/exrImage.cpp:2364
-#: core/exrImage.cpp:2523 core/exrImage.cpp:2530 core/exrImage.cpp:2542
-#: core/exrImage.cpp:2547 core/exrImage.cpp:2583 core/exrImage.cpp:2614
+#: core/CMedia.cpp:1176 core/CMedia.cpp:1248 core/exrImage.cpp:2370
+#: core/exrImage.cpp:2529 core/exrImage.cpp:2536 core/exrImage.cpp:2548
+#: core/exrImage.cpp:2553 core/exrImage.cpp:2589 core/exrImage.cpp:2620
 #: core/wandImage.cpp:609 core/wandImage.cpp:673 gui/mrvImageView.cpp:166
 #: gui/mrvImageView.cpp:4176 gui/mrvImageView.cpp:4760
 #: gui/mrvImageView.cpp:4855
@@ -1533,7 +1533,7 @@ msgstr "No pude leer samples del fifo buffer.  Error: "
 msgid "Could not save '"
 msgstr "No pude grabar '"
 
-#: gui/mrvFileRequester.cpp:663
+#: gui/mrvFileRequester.cpp:665
 #, c-format
 msgid ""
 "Could not save sequence or movie, only single frame specified.  Use %%d "
@@ -2176,7 +2176,7 @@ msgstr "CPS: %.3f"
 msgid "Failed "
 msgstr "Falló "
 
-#: core/exrImage.cpp:2616
+#: core/exrImage.cpp:2622
 msgid "Failed setting layer to "
 msgstr "Falló setear la capa a "
 
@@ -2501,7 +2501,7 @@ msgstr "Obtuve: "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1682
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2398
-#: core/CMedia.cpp:1178 core/CMedia.cpp:1248 core/exrImage.cpp:2520
+#: core/CMedia.cpp:1178 core/CMedia.cpp:1248 core/exrImage.cpp:2526
 #: core/wandImage.cpp:649 gui/mrvImageView.cpp:172 gui/mrvImageView.cpp:4357
 #: gui/mrvImageView.cpp:4755
 msgid "Green"
@@ -2778,7 +2778,7 @@ msgid "ImageMagick Saving"
 msgstr "Grabando ImageMagick "
 
 #: gui/mrvFileRequester.cpp:172 gui/mrvFileRequester.cpp:564
-#: gui/mrvFileRequester.cpp:611
+#: gui/mrvFileRequester.cpp:613
 msgid "Images (*.{"
 msgstr "Imagenes (*.{"
 
@@ -3142,7 +3142,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1684
-#: core/CMedia.cpp:1190 core/CMedia.cpp:1250 core/exrImage.cpp:2519
+#: core/CMedia.cpp:1190 core/CMedia.cpp:1250 core/exrImage.cpp:2525
 #: core/wandImage.cpp:648 gui/mrvImageView.cpp:176 gui/mrvImageView.cpp:4371
 #: gui/mrvImageView.cpp:4758 gui/mrvImageInformation.cpp:570
 msgid "Lumma"
@@ -3288,7 +3288,7 @@ msgid "Movie Saving Preferences"
 msgstr "Preferencias de Grabado de Películas"
 
 #: gui/mrvFileRequester.cpp:174 gui/mrvFileRequester.cpp:566
-#: gui/mrvFileRequester.cpp:613
+#: gui/mrvFileRequester.cpp:615
 msgid "Movies (*.{"
 msgstr "Peliculas (*.{"
 
@@ -3594,7 +3594,7 @@ msgstr "Abre diferentes ventanas"
 msgid "Options controlling the OpenEXR reader/writer"
 msgstr "Opciones controlando el lector/escritor de OpenEXR"
 
-#: core/exrImage.cpp:2414
+#: core/exrImage.cpp:2420
 msgid "Options for EXR were empty"
 msgstr "Opciones para EXR estaban vacías"
 
@@ -3998,7 +3998,7 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1681
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-59-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2380
-#: core/CMedia.cpp:1177 core/CMedia.cpp:1248 core/exrImage.cpp:2520
+#: core/CMedia.cpp:1177 core/CMedia.cpp:1248 core/exrImage.cpp:2526
 #: core/wandImage.cpp:649 gui/mrvImageView.cpp:171 gui/mrvImageView.cpp:4352
 #: gui/mrvImageView.cpp:4755
 msgid "Red"
@@ -4022,8 +4022,8 @@ msgid "Reels"
 msgstr "Carretes"
 
 #: gui/mrvFileRequester.cpp:122 gui/mrvFileRequester.cpp:166
-#: gui/mrvFileRequester.cpp:558 gui/mrvFileRequester.cpp:605
-#: gui/mrvFileRequester.cpp:934
+#: gui/mrvFileRequester.cpp:558 gui/mrvFileRequester.cpp:607
+#: gui/mrvFileRequester.cpp:936
 msgid "Reels (*.{"
 msgstr "Carretes (*.{"
 
@@ -4218,11 +4218,11 @@ msgstr "Grabar Imagen"
 msgid "Save Options"
 msgstr "Grabar Opciones"
 
-#: gui/mrvHotkey.cpp:218 gui/mrvFileRequester.cpp:938
+#: gui/mrvHotkey.cpp:218 gui/mrvFileRequester.cpp:940
 msgid "Save Reel"
 msgstr "Grabar Carrete"
 
-#: gui/mrvHotkey.cpp:221 gui/mrvFileRequester.cpp:618
+#: gui/mrvHotkey.cpp:221 gui/mrvFileRequester.cpp:620
 msgid "Save Sequence"
 msgstr "Grabar Secuencia"
 
@@ -5556,7 +5556,7 @@ msgstr "Y' (Luma)"
 msgid "Y:"
 msgstr ""
 
-#: core/exrImage.cpp:2355
+#: core/exrImage.cpp:2361
 msgid "YBYRY"
 msgstr ""
 
@@ -5625,7 +5625,7 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: core/CMedia.cpp:1289 core/CMedia.cpp:1315 core/exrImage.cpp:2473
+#: core/CMedia.cpp:1289 core/CMedia.cpp:1315 core/exrImage.cpp:2479
 #: core/wandImage.cpp:652
 msgid "anaglyph"
 msgstr "anaglífico"
@@ -5877,7 +5877,7 @@ msgstr "derecha.anaglífico"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1273 core/CMedia.cpp:1314 core/exrImage.cpp:2472
+#: core/CMedia.cpp:1273 core/CMedia.cpp:1314 core/exrImage.cpp:2478
 #: core/wandImage.cpp:653
 msgid "stereo"
 msgstr "estéreo"
