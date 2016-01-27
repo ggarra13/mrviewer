@@ -912,7 +912,7 @@ void exrImage::read_header_attr( const Imf::Header& h,
 	  h.findTypedAttribute<Imf::IntAttribute>( N_("acesImageContainerFlag") );
 	if ( attr )
 	  {
-              _aces = (bool)attr->value()
+              _aces = (bool)attr->value();
 	  }
       }
 
