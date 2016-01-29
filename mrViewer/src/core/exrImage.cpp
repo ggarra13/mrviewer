@@ -2488,7 +2488,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             if ( name.find( _("stereo") ) != std::string::npos ||
                  name.find( _("anaglyph") ) != std::string::npos ) continue;
 
-            if ( name.find(x) == 0 )
+            if ( name.find(x + '.') == 0 )
             {
                 std::string root = name;
                 // std::cerr << "FOUND " << root << " with " << x << std::endl;
@@ -2900,7 +2900,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         }
 
 
-
         size_t xs[5], ys[5];
 
         if ( has_yca )
@@ -2943,6 +2942,7 @@ bool exrImage::save( const char* file, const CMedia* img,
             if ( k == -1 ) continue;
 
             const std::string& name = ci.name();
+
 
             // std::cerr << "SAVE " << idx << ") " << name << " has order " << k
             //           << " offset " << offsets[k] 
