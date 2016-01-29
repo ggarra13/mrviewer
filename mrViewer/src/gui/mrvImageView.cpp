@@ -4409,7 +4409,7 @@ void ImageView::channel( unsigned short c )
       if ( bg ) bg->image()->channel( lbl );
   }
 
-
+  update_image_info();
   update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
@@ -4771,7 +4771,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
         const std::string& name = *i;
 
-        if ( o && x != _("Alpha") && name.find(x) == 0 )
+        if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
             if ( group )
             {
@@ -4787,7 +4787,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             // Now add current leaf, but without # prefix and period
             std::string y = name;
 
-            if ( x.size() != name.size() )
+            if ( x.size() != name.size() && x.size() < name.size() )
                 y = name.substr( x.size()+1, name.size() );
 
             o = uiColorChannel->add_leaf( y.c_str(), g );

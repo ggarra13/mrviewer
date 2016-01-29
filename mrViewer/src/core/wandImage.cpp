@@ -232,12 +232,11 @@ namespace mrv {
                 }
                 strcpy( layername, ly.c_str() );
             }
-            
 
             ColorspaceType colorspace = MagickGetImageColorspace( wand );
-            
+
             std::string ly = layername;
-            
+
             _layers.push_back( ly );
            switch( colorspace )
            {
@@ -278,7 +277,7 @@ namespace mrv {
                size_t dw = MagickGetImageWidth( wand );
                size_t dh = MagickGetImageHeight( wand );
 
-               display_window( 0, 0, (int)dw, (int)dh, frame );
+               display_window( 0, 0, (int)dw-1, (int)dh-1, frame );
            }
 
 
