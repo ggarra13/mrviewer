@@ -8,6 +8,8 @@ v3.1.0   - Fixed export PULSE_LATENCY_MSEC on Linux to avoid underruns.
 	 - Bug fixed data/display window on PSD files being offset by
 	   1 pixel.
 	 - Updated media information window on channel change.
+	 - Bug fixed a crash on exr saving with channels with same
+	   prefix.
 
 v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
 	   main Color layer appears.  Previously, Photoshop would
