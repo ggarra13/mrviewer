@@ -67,7 +67,14 @@ namespace
   const char* kModule = "play";
 }
 
-#define AV_SYNC_THRESHOLD 0.01
+/* no AV sync correction is done if below the minimum AV sync threshold */
+#define AV_SYNC_THRESHOLD_MIN 0.04
+/* AV sync correction is done if above the maximum AV sync threshold */
+#define AV_SYNC_THRESHOLD_MAX 0.1
+/* If a frame duration is longer than this, it will not be duplicated to compensate AV sync */
+#define AV_SYNC_FRAMEDUP_THRESHOLD 0.1
+
+/* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
 //#undef DBG
@@ -151,7 +158,7 @@ static void init_clock(Clock *c, int *queue_serial)
     c->speed = 1.0;
     c->paused = 0;
     c->queue_serial = queue_serial;
-    set_clock(c, NAN, -1);
+    set_clock(c, 0, -1);
 }
 
 
@@ -871,7 +878,7 @@ void video_thread( PlaybackData* data )
 
       fps = img->play_fps();
 
-      const double delay = 1.0 / fps;
+      double delay = 1.0 / fps;
 
       double diff = 0.0;
       double bgdiff = 0.0;
@@ -912,23 +919,33 @@ void video_thread( PlaybackData* data )
           {
 
               img->avdiff( diff );
-          
+
               // Skip or repeat the frame. Take delay into account
               //    FFPlay still doesn't "know if this is the best guess."
               if(absdiff < AV_NOSYNC_THRESHOLD) {
                   double sdiff = step * diff;
-                  double sync_threshold = delay / 2.f;
-            
-                  if (sdiff <= -sync_threshold) {
-                      fps = 99999999.0;  // skip frame
-                  } else if (sdiff >= sync_threshold) {
-                      fps -= ( absdiff * fps );      // make fps slower
+                  double sync_threshold = FFMAX(AV_SYNC_THRESHOLD_MIN, 
+                                                FFMIN(AV_SYNC_THRESHOLD_MAX,
+                                                      delay));
+
+                  if (sdiff <= -sync_threshold)
+                  {
+                      delay = FFMAX(0, delay + sdiff);  // make fps faster
+                  }
+                  else if (sdiff >= sync_threshold &&
+                           delay > AV_SYNC_FRAMEDUP_THRESHOLD)
+                  {
+                      delay += sdiff;      // make fps slower
+                  }
+                  else if (sdiff >= sync_threshold) {
+                      delay *= 2;      // make fps repeat frame
                   }
               }
           }
       }
 
-      timer.setDesiredFrameRate( fps );
+      timer.setDesiredSecondsPerFrame( delay );
+      //timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
 
       img->real_fps( timer.actualFrameRate() );
