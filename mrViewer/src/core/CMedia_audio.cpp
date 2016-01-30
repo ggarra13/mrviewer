@@ -1616,8 +1616,9 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
 
-  // set_clock_at(&audclk, _audio_clock, 0, audio_callback_time );
-  set_clock_at(&audclk, _audio_pts, 0, audio_callback_time / 1000000.0 );
+  // set_clock_at(&audclk, _audio_pts, 0, audio_callback_time );
+  // set_clock_at(&audclk, _audio_pts, 0, audio_callback_time / 1000000.0 );
+  set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
   sync_clock_to_slave( &extclk, &audclk );
 
   return ok;
