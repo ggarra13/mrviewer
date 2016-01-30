@@ -11,8 +11,8 @@ v3.1.0   - Fixed "export PULSE_LATENCY_MSEC" on Linux to avoid audio
 	   prefix.
 	 - Updated ffmpeg.exe and other utilities to use latest
 	   libraries (avcodec-57.dll, etc).
-	 - Reworked the video-audio sync a little.  It is a tad
-	   better on Windows.
+	 - Reworked the video-audio sync a little.  It is much
+	   better on Windows now.
 
 v3.0.9   - Tested PSD saver with Photoshop 2015 and added changes so
 	   main Color layer appears.  Previously, Photoshop would
