@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-01-30 08:58-0300\n"
+"POT-Creation-Date: 2016-01-30 13:51-0300\n"
 "PO-Revision-Date: 2016-01-12 21:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -82,15 +82,15 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:834
+#: core/mrvPlayback.cpp:838
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:587
+#: core/mrvPlayback.cpp:591
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:592
+#: core/mrvPlayback.cpp:596
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -151,7 +151,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1943 core/aviImage.cpp:2746
+#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:2746
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -199,7 +199,7 @@ msgstr " no encontrada en el carrete"
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/mrvPlayback.cpp:835
+#: core/mrvPlayback.cpp:839
 msgid " returned "
 msgstr " retornó "
 
@@ -956,11 +956,11 @@ msgstr "Cuadro de audio "
 msgid "Audio missed for ptsframe: "
 msgstr "Audio faltante para el cuadro: "
 
-#: core/CMedia_audio.cpp:1694
+#: core/CMedia_audio.cpp:1695
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1739
+#: core/CMedia_audio.cpp:1740
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -1840,7 +1840,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1941 core/aviImage.cpp:2730 core/aviImage.cpp:2744
+#: core/CMedia_audio.cpp:1942 core/aviImage.cpp:2730 core/aviImage.cpp:2744
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -5691,7 +5691,7 @@ msgstr "datos"
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
-#: core/CMedia_audio.cpp:1731
+#: core/CMedia_audio.cpp:1732
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
