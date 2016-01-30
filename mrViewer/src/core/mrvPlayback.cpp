@@ -922,7 +922,7 @@ void video_thread( PlaybackData* data )
                   if (sdiff <= -sync_threshold) {
                       fps = 99999999.0;  // skip frame
                   } else if (sdiff >= sync_threshold) {
-                      fps -= absdiff;      // make fps slower
+                      fps -= ( absdiff * fps );      // make fps slower
                   }
               }
           }
