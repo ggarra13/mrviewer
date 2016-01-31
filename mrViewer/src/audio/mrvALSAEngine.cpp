@@ -43,7 +43,7 @@ namespace mrv {
 
 static const char* kModule = "alsa";
 
-#define AO_ALSA_BUFFER_TIME 500000
+#define AO_ALSA_BUFFER_TIME 5000
 /* number of samples between interrupts
  * supplying a period_time to ao overrides the use of this  */
 #define AO_ALSA_SAMPLE_XFER 256
