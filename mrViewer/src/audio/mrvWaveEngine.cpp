@@ -46,7 +46,7 @@ namespace
 
 namespace mrv {
 
-#define kNUM_BUFFERS 5  // should be 2, was 32
+#define kNUM_BUFFERS 3  // should be 2, was 5, previous was 32
 
 #define THROW(x) throw( exception(x) )
 

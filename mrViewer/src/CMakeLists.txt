@@ -14,7 +14,7 @@ set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_
 #
 
 # For window management
-# FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
+FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
@@ -35,7 +35,8 @@ ADD_DEFINITIONS( -DMAGICKCORE_QUANTUM_DEPTH=32 -DMAGICKCORE_HDRI_ENABLE=1 -DUSE_
 
 
 IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 ) 
+#  ADD_DEFINITIONS( -DFREEGLUT_STATIC -DFREEGLUT_LIB_PRAGMAS -DWIN32 -D_WIN32_WINNT=0x0501 )
+     ADD_DEFINITIONS( -DFREEGLUT_STATIC -DWIN32 -D_WIN32_WINNT=0x0501 ) 
   SET(OS_LIBRARIES
     Winmm ws2_32 Psapi ${GLEW_LIBRARIES}
     )
@@ -304,10 +305,15 @@ SET( LIBRARIES
 #
 # RELEASE VERSION
 #
-if(COMMAND cmake_policy)
-  cmake_policy(SET CMP0003 OLD)
-endif(COMMAND cmake_policy)
-
+if(WIN32)
+	if(COMMAND cmake_policy)
+   		   cmake_policy(SET CMP0003 OLD)  # Needed for freeglut
+	endif(COMMAND cmake_policy)
+else(WIN32)
+	if(COMMAND cmake_policy)
+   		   cmake_policy(SET CMP0003 NEW)
+	endif(COMMAND cmake_policy)
+endif(WIN32)
 
 ADD_EXECUTABLE( mrViewer WIN32 ${SOURCES} )
 TARGET_LINK_LIBRARIES( mrViewer ${LIBRARIES} ACESclip )
