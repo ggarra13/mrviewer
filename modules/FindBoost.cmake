@@ -77,7 +77,6 @@ ELSE(BOOST_DIR_SEARCH)
   SET( BOOST_DIR_SEARCH
     /usr/local/include
     /usr/include
-    /media/Linux/code/lib/
     )
 ENDIF(BOOST_DIR_SEARCH)
 
@@ -97,6 +96,7 @@ SET(SUFFIX_FOR_PATH
  boost_1_58_0
  boost_1_57_0
  boost_1_56_0
+ boost_1_55_0
  boost_1_50_0
  boost_1_49_0
  boost_1_48_0
@@ -183,6 +183,7 @@ IF(Boost_INCLUDE_DIR)
   ENDIF(Boost_LIBRARY_DIR AND EXISTS "${Boost_LIBRARY_DIR}")
 ENDIF(Boost_INCLUDE_DIR)
 
+MESSAGE( ">>> BOOST INCLUDE DIR: " ${Boost_INCLUDE_DIR} )
 MESSAGE( ">>> BOOST LIBRARY DIR: " ${Boost_LIBRARY_DIR} )
 
 IF(NOT Boost_FOUND)
