@@ -1,3 +1,5 @@
+v3.1.1   - Relaxed the minimum zoom factor to 1/64.  This allows
+	   displaying 16K images properly if the card allows it.
 v3.1.0   - Fixed "export PULSE_LATENCY_MSEC" on Linux to avoid audio
 	   underruns, which would lead to garbled audio.
 	 - Made Scrubbing hotkey take effect. Previously, the use of
