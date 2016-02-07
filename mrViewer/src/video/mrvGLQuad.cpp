@@ -55,7 +55,7 @@
 #include "mrvGLLut3d.h"
 
 
-// #define TEST_NO_QUAD         // test not using textures
+//#define TEST_NO_QUAD         // test not using textures
 //#define TEST_NO_PBO_TEXTURES // test not using pbo textures
 #define NVIDIA_PBO_BUG     // with pbo textures, my nvidia card has problems
                            // with GL_BGR formats and high resolutions
@@ -1130,12 +1130,14 @@ namespace mrv {
 
 
     double p = _view->zoom();
+    assert( p > 0.0 );
 
     double sw = ((double)_view->w() - (double) dw * p) / 2.0;
     double sh = ((double)_view->h() + (double) dh * p ) / 2.0;
 
     double dx = (_view->offset_x() * p );
     double dy = (_view->offset_y() * p - sh );
+
 
     int step = calculate_gl_step( _glformat, _pixel_type );
 
@@ -1158,7 +1160,7 @@ namespace mrv {
           // if ( yp < -_view->zoom() || yp >= _view->h() ) continue;
 
           // To avoid opengl raster clipping issues, instead of:
-          //  glRasterPos2f( dx, yp );
+          // glRasterPos2f( dx, yp );
           // we do:
           glRasterPos2i(0, 0);
           glBitmap( 0, 0, 0, 0, float(dx), float(yp), NULL );
@@ -1302,10 +1304,10 @@ namespace mrv {
 
   void GLQuad::draw( const unsigned dw, const unsigned dh ) const
   {
-    if ( _uvMax.u > 0.0f )
-      draw_quad( dw, dh );
-    else
-      draw_pixels( dw, dh );
+      if ( _uvMax.u > 0.0f )
+          draw_quad( dw, dh );
+      else
+          draw_pixels( dw, dh );
   }
 
 }
