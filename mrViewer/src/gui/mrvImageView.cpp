@@ -574,7 +574,7 @@ void data_window_cb( fltk::Widget* o, mrv::ImageView* view )
   view->redraw();
 }
 
-static const float kMinZoom = 0.1f;
+static const float kMinZoom = 0.05f;
 static const float kMaxZoom = 32.f;
 
 
