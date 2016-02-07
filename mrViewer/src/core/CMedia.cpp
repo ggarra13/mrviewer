@@ -2612,7 +2612,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   // Check if we have a cached frame for this frame
   
   boost::uint64_t idx = f - _frame_start;
-  assert( idx < _numWindows );
+  assert( idx < _numWindows || !_sequence );
 
   image_damage( image_damage() | kDamageData | kDamage3DData );
 
