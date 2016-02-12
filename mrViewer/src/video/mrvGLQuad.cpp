@@ -776,11 +776,16 @@ namespace mrv {
 	 _channels != channels ||
 	 _glformat != glformat )
       {
-	// @todo
-	// LOG_WARNING( /* img->name() << */ ": bigger than " 
-	// 	     << GLEngine::maxTexWidth() << " x "
-	// 	     << GLEngine::maxTexHeight() << ".  "
-	// 	     "Cannot use your gfx card for fast texture mapping." );
+          static bool warn = false;
+
+          if ( !warn )
+          {
+              warn = true;
+              LOG_WARNING( "Image bigger than " 
+                           << GLEngine::maxTexWidth() << " x "
+                           << GLEngine::maxTexHeight() << ".  "
+                           "Will use scanline drawing which is buggy." );
+          }
       }
 
     _width = dw;
@@ -1132,11 +1137,14 @@ namespace mrv {
     double p = _view->zoom();
     assert( p > 0.0 );
 
-    double sw = ((double)_view->w() - (double) dw * p) / 2.0;
-    double sh = ((double)_view->h() + (double) dh * p ) / 2.0;
+#if 0
+    double sh = ((double)_view->h() + (double) dh*p ) / 2.0;
+    double dy = (_view->offset_y() * p - sh );
+#else
+    double dy = ((_view->offset_y() - dh) * p );
+#endif
 
     double dx = (_view->offset_x() * p );
-    double dy = (_view->offset_y() * p - sh );
 
 
     int step = calculate_gl_step( _glformat, _pixel_type );

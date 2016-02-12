@@ -307,6 +307,24 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        return false;
     }
 
+    const CMedia::Attributes& attrs = img->iptc();
+    CMedia::Attributes::const_iterator i = attrs.begin();
+    CMedia::Attributes::const_iterator e = attrs.end();
+
+    //
+    // Save Audio Attributes
+    //
+    for ( ; i != e; ++i )
+    {
+        if ( i->first.find( "Audio " ) == 0 )
+        {
+            std::string key = i->first;
+            std::string val = i->second;
+            key = key.substr( 6, key.size() );
+            av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
+        }
+    }
+
     if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
         c->frame_size = 10000;
@@ -685,7 +703,38 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
        return false;
     }
 
-    
+    const CMedia::Attributes& attrs = img->iptc();
+    CMedia::Attributes::const_iterator i = attrs.begin();
+    CMedia::Attributes::const_iterator e = attrs.end();
+
+    //
+    // Save Main Attributes
+    //
+    for ( ; i != e; ++i )
+    {
+        if (( i->first.find( "Video " ) == 0 ) || 
+            ( i->first.find( "Audio " ) == 0 ) ) continue;
+
+        std::string key = i->first;
+        std::string val = i->second;
+        key = key.substr( 6, key.size() );
+        av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
+    }
+
+    //
+    // Save Video Attributes
+    //
+    for ( ; i != e; ++i )
+    {
+        if ( i->first.find( "Video " ) == 0 )
+        {
+            std::string key = i->first;
+            std::string val = i->second;
+            key = key.substr( 6, key.size() );
+            av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
+        }
+    }
+
 
     /* Allocate the encoded raw frame. */
     picture = alloc_picture(c->pix_fmt, c->width, c->height);
