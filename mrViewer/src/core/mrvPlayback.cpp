@@ -236,7 +236,6 @@ EndStatus handle_loop( boost::int64_t& frame,
 
     if ( !img || !timeline || !reel || !uiMain ) return kEndIgnore;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
 
     CMedia::Mutex& m = img->video_mutex();
     SCOPED_LOCK( m );
@@ -250,45 +249,36 @@ EndStatus handle_loop( boost::int64_t& frame,
     boost::int64_t last = boost::int64_t( timeline->maximum() );
     boost::int64_t first = boost::int64_t( timeline->minimum() );
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
     if ( reel->edl )
     {
-    DBG( __FUNCTION__ << " " << __LINE__ );
       boost::int64_t s = reel->location(img);
       boost::int64_t e = s + img->duration() - 1;
 
       if ( e < last )  last = e;
       if ( s > first ) first = s;
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
       last = reel->global_to_local( last );
-    DBG( __FUNCTION__ << " " << __LINE__ );
       first = reel->global_to_local( first );
     }
     else
     {
-    DBG( __FUNCTION__ << " " << __LINE__ );
        if ( img->last_frame() < last )
            last = img->last_frame();
        if ( img->first_frame() > first )
            first = img->first_frame();
     }
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
 
    ImageView::Looping loop = view->looping();
 
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
    switch( end )
    {
       case CMedia::kDecodeLoopEnd:
 	 {
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
 	    if ( reel->edl )
 	    {
-    DBG( __FUNCTION__ << " " << __LINE__ );
 	       boost::int64_t f = frame;
 
 	       f -= img->first_frame();
@@ -303,17 +293,14 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next )
 	       {
-    DBG( __FUNCTION__ << " " << __LINE__ );
                    f = reel->global_to_local( f );
 	       }
 	       else
 	       {
 		  if ( loop == ImageView::kLooping )
 		  {
-    DBG( __FUNCTION__ << " " << __LINE__ );
 		     f = boost::int64_t(timeline->minimum());
                      next = reel->image_at( f );
-    DBG( __FUNCTION__ << " " << __LINE__ );
 		     f = reel->global_to_local( f );
 		  }
 		  else
@@ -329,15 +316,12 @@ EndStatus handle_loop( boost::int64_t& frame,
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
                        if ( next->stopped() )
                        {
-    DBG( __FUNCTION__ << " " << __LINE__ );
                            next->seek( f );
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
 
-    DBG( __FUNCTION__ << " " << __LINE__ );
                        img->playback( CMedia::kStopped );
                        if ( img->has_video() ) img->clear_cache();
                    }
@@ -352,7 +336,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 frame = first;
                 if ( img->right_eye() ) img->right_eye()->seek( frame );
                 status = kEndLoop;
-    DBG( __FUNCTION__ << " " << __LINE__ );
                 init_clock(&img->vidclk, NULL);
                 init_clock(&img->audclk, NULL);
                 init_clock(&img->extclk, NULL);
@@ -367,7 +350,6 @@ EndStatus handle_loop( boost::int64_t& frame,
                 if (fg)
                     view->playback( ImageView::kBackwards );
                 status = kEndChangeDirection;
-    DBG( __FUNCTION__ << " " << __LINE__ );
                 init_clock(&img->vidclk, NULL);
                 init_clock(&img->audclk, NULL);
                 init_clock(&img->extclk, NULL);
@@ -375,7 +357,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             }
             else
             {
-    DBG( __FUNCTION__ << " " << __LINE__ );
                 if (fg)
                     view->playback( ImageView::kStopped );
                 img->playback( CMedia::kStopped );
