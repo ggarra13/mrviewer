@@ -2463,12 +2463,8 @@ void Flu_File_Chooser::Entry::updateSize()
     nameW = w();
 
   // how big is the icon?
-  int iW = 0, iH = 0;
-  if( icon )
-    {
-      iW = icon->w()+2;
-      iH = icon->h()+4;
-    }
+  int iW = 0;
+  if( icon ) iW = icon->w()+2;
 
   fltk::setfont( textfont(), textsize() );
 
