@@ -295,6 +295,16 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
 	return false;
      return true;
   } 
+  else if ( magic == 0x060E2B34 )
+  {
+      unsigned int tag = ntohl( *((unsigned int*)data+1) );
+      if ( tag != 0x02050101 ) return false;
+
+      tag = ntohl( *((unsigned int*)data+2) );
+      if ( tag != 0x0D010201 ) return false;
+
+      return true;
+  }
   else
     {
       // Check for Quicktime
