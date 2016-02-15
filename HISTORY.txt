@@ -1,3 +1,9 @@
+v3.1.2   - Made file requester leave headroom for icons on images and
+	   movies.  This avoids the resizing of the scrollbar each
+	   time a movie icon is created.
+	 - Made name of movie or sequence not overlap type, but use
+	   ..., like batman-vs-superm...
+
 v3.1.1   - Relaxed the minimum zoom factor to 1/64 or less.  This allows
 	   displaying 16K images properly if the card allows it.
 	 - Transcoding movie files now keeps video and audio metadata,

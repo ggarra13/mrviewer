@@ -342,6 +342,7 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     if ( e->chooser->quick_exit ) return;
 
+
     char fmt[1024];
     char buf[1024];
 
@@ -375,6 +376,7 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     if ( ! fs::exists( buf ) ) return;
 
+
     fltk::SharedImage* img;
     try {
         img = mrv::fltk_handler( buf, NULL, 0 );
@@ -389,7 +391,8 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
     int h = img->h();
     e->icon = img;
     e->resize(e->w(), h+4 );
-    // e->redraw();
+    e->updateSize();
+    e->redraw();
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -1650,6 +1653,8 @@ void Flu_File_Chooser::previewCB()
     if ( previewBtn->value() )
     {
         quick_exit = false;
+
+
         for ( int i = 0; i < c; ++i )
         {
             Entry* e = (Entry*) g->child(i);
@@ -1673,6 +1678,7 @@ void Flu_File_Chooser::previewCB()
             e->set_colors();
             e->updateIcon();
         }
+
     }
 
     // fileGroup->resize( fileGroup->x(), fileGroup->y(), 
@@ -2421,7 +2427,15 @@ void Flu_File_Chooser::Entry::updateSize()
 {
     int h = 20;
     if ( icon ) {
-        h = icon->h() + 4;
+        if ( chooser->previewBtn->value() &&
+             ( icon == &reel || icon == &picture ) )
+        {
+            h = 68;
+        }
+        else
+        {
+            h = icon->h() + 4;
+        }
     }
   if( type==ENTRY_FAVORITE || chooser->fileListWideBtn->value() )
     {
