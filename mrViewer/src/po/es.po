@@ -1,12 +1,12 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-02-13 12:23-0300\n"
+"POT-Creation-Date: 2016-02-14 19:27-0300\n"
 "PO-Revision-Date: 2016-01-12 21:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:588 core/aviImage.cpp:1374
+#: core/CMedia_audio.cpp:588 core/aviImage.cpp:1384
 msgid ""
 "\n"
 "\n"
@@ -94,7 +94,7 @@ msgstr "- error de decodificacion del cuadro de audio "
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
-#: core/aviImage.cpp:1737
+#: core/aviImage.cpp:1747
 msgid " Could not open file"
 msgstr " No pude abrir el archivo avi"
 
@@ -102,7 +102,7 @@ msgstr " No pude abrir el archivo avi"
 msgid " Load Sequence on Drag&&Drop"
 msgstr " Cargar secuencia en Drag&&Drop"
 
-#: core/aviImage.cpp:1389
+#: core/aviImage.cpp:1399
 msgid " No audio or video stream in file"
 msgstr " No hay audio o video en el archivo"
 
@@ -151,7 +151,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1943 core/aviImage.cpp:2746
+#: core/CMedia_audio.cpp:1943 core/aviImage.cpp:2756
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -179,7 +179,7 @@ msgstr " frecuencia: "
 msgid " has different display window than "
 msgstr "  tiene diferente ventana de vista que "
 
-#: core/aviImage.cpp:1101
+#: core/aviImage.cpp:1111
 msgid " instead"
 msgstr " en remplazo"
 
@@ -187,7 +187,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1598 core/aviImage.cpp:1107
+#: core/CMedia_audio.cpp:1598 core/aviImage.cpp:1117
 msgid " not found"
 msgstr " no encontrado"
 
@@ -195,7 +195,7 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrada en el carrete"
 
-#: core/aviImage.cpp:1100
+#: core/aviImage.cpp:1110
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
@@ -203,7 +203,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:2758
+#: core/aviImage.cpp:2768
 msgid " status: "
 msgstr " estatus: "
 
@@ -211,15 +211,15 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:403 gui/FLU/Flu_File_Chooser.cpp:4428
+#: core/aviImage_save.cpp:403 gui/FLU/Flu_File_Chooser.cpp:4430
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:848
+#: core/aviImage.cpp:858
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1078
+#: core/aviImage.cpp:1088
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -305,7 +305,7 @@ msgstr "(Campos PAL)"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1079
+#: core/aviImage.cpp:1089
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -1041,7 +1041,7 @@ msgstr "Fondo"
 msgid "Bad port number "
 msgstr "Mal numero de puerto"
 
-#: gui/FLU/Flu_File_Chooser.cpp:536
+#: gui/FLU/Flu_File_Chooser.cpp:537
 msgid "Bitmap Picture"
 msgstr "Imagen Bitmap"
 
@@ -1219,7 +1219,7 @@ msgstr "Cromaticidades (CIE)"
 msgid "Cinemascope"
 msgstr "Cinemascope"
 
-#: gui/FLU/Flu_File_Chooser.cpp:538
+#: gui/FLU/Flu_File_Chooser.cpp:539
 msgid "Cineon Picture"
 msgstr "Imagen Cineon"
 
@@ -1428,7 +1428,7 @@ msgstr "No pude crear dibujo en miniatura para '"
 msgid "Could not create wand"
 msgstr "No pude crear varita"
 
-#: core/aviImage.cpp:847
+#: core/aviImage.cpp:857
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video "
 
@@ -1454,7 +1454,7 @@ msgstr "No pude encontrar ambas imágenes de estereo en el archivo"
 msgid "Could not find encoder for '"
 msgstr "No pude encontrar codificador para '"
 
-#: core/aviImage.cpp:721
+#: core/aviImage.cpp:731
 msgid "Could not get image conversion context."
 msgstr "No pude obtener contexto de conversion de imagen."
 
@@ -1547,7 +1547,7 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:1696 core/aviImage.cpp:529 core/aviImage.cpp:544
+#: core/CMedia.cpp:1696 core/aviImage.cpp:539 core/aviImage.cpp:554
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -1757,7 +1757,7 @@ msgstr "Cortar Clip en el lugar actual"
 msgid "DIVX Movie"
 msgstr "Película DIVX"
 
-#: gui/FLU/Flu_File_Chooser.cpp:540
+#: gui/FLU/Flu_File_Chooser.cpp:541
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
@@ -1840,11 +1840,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1941 core/aviImage.cpp:2730 core/aviImage.cpp:2744
+#: core/CMedia_audio.cpp:1941 core/aviImage.cpp:2740 core/aviImage.cpp:2754
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:2756
+#: core/aviImage.cpp:2766
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2050,7 +2050,7 @@ msgstr "Ventana de LDE"
 msgid "EXIF"
 msgstr "EXIF"
 
-#: gui/FLU/Flu_File_Chooser.cpp:541
+#: gui/FLU/Flu_File_Chooser.cpp:542
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
@@ -2074,11 +2074,11 @@ msgstr "Editar Status"
 msgid "Elapsed"
 msgstr "Transcurrido"
 
-#: core/aviImage.cpp:2247
+#: core/aviImage.cpp:2257
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2261
+#: core/aviImage.cpp:2271
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -2281,7 +2281,7 @@ msgstr "Posición Fija"
 msgid "Fixture Identifier"
 msgstr "Identificador de Parte Integral"
 
-#: gui/FLU/Flu_File_Chooser.cpp:535
+#: gui/FLU/Flu_File_Chooser.cpp:536
 msgid "Flash Movie"
 msgstr "Pelicula Flash"
 
@@ -2421,7 +2421,7 @@ msgstr "Función"
 msgid "G"
 msgstr "V"
 
-#: gui/FLU/Flu_File_Chooser.cpp:547
+#: gui/FLU/Flu_File_Chooser.cpp:548
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
@@ -2620,7 +2620,7 @@ msgstr "Inspector de Perfiles ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/FLU/Flu_File_Chooser.cpp:543
+#: gui/FLU/Flu_File_Chooser.cpp:544
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
@@ -2875,7 +2875,7 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
-#: core/aviImage.cpp:1146
+#: core/aviImage.cpp:1156
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
@@ -2883,7 +2883,7 @@ msgstr "Pista de video inválido "
 msgid "JPEG (.jpg)"
 msgstr "JPEG (.jpg)"
 
-#: gui/FLU/Flu_File_Chooser.cpp:544 gui/FLU/Flu_File_Chooser.cpp:545
+#: gui/FLU/Flu_File_Chooser.cpp:545 gui/FLU/Flu_File_Chooser.cpp:546
 msgid "JPEG Picture"
 msgstr "Imagen JPEG"
 
@@ -3174,11 +3174,11 @@ msgstr "MGM Camara 65"
 msgid "MP3"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:563
+#: gui/FLU/Flu_File_Chooser.cpp:564
 msgid "MP3 music"
 msgstr "Música MP3"
 
-#: gui/FLU/Flu_File_Chooser.cpp:533
+#: gui/FLU/Flu_File_Chooser.cpp:534
 msgid "MP4 Movie"
 msgstr "Película MP4"
 
@@ -3190,11 +3190,16 @@ msgstr "Película MPEG"
 msgid "MPEG4"
 msgstr ""
 
+#: gui/FLU/Flu_File_Chooser.cpp:531
+#, fuzzy
+msgid "MXF Movie"
+msgstr "Película MP4"
+
 #: gui/mrvImageInformation.cpp:152
 msgid "Main"
 msgstr "Principal"
 
-#: gui/FLU/Flu_File_Chooser.cpp:546
+#: gui/FLU/Flu_File_Chooser.cpp:547
 msgid "Map Picture"
 msgstr "Imagen Map"
 
@@ -3500,7 +3505,7 @@ msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
 "fue encontrada en ODT."
 
-#: gui/FLU/Flu_File_Chooser.cpp:564
+#: gui/FLU/Flu_File_Chooser.cpp:565
 msgid "OGG music"
 msgstr "Música OGG"
 
@@ -3664,7 +3669,7 @@ msgstr ""
 msgid "PMem: %<PRId64>/%<PRId64> MB  VMem: %<PRId64>/%<PRId64> MB"
 msgstr "PMem: %<PRId64>/%<PRId64> MB  VMem: %<PRId64>/%<PRId64> MB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:551
+#: gui/FLU/Flu_File_Chooser.cpp:552
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
@@ -3733,7 +3738,7 @@ msgstr "Perfs por Cuadro"
 msgid "Permissions"
 msgstr "Permisos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:552
+#: gui/FLU/Flu_File_Chooser.cpp:553
 msgid "Photoshop Picture"
 msgstr "Imagen de Photoshop"
 
@@ -3942,7 +3947,7 @@ msgstr "ROJO"
 msgid "RGB"
 msgstr "RGB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:553
+#: gui/FLU/Flu_File_Chooser.cpp:554
 msgid "RGB Picture"
 msgstr "Imagen RGB"
 
@@ -3987,22 +3992,22 @@ msgstr "Rango"
 msgid "Read"
 msgstr "Leer"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1368
+#: gui/FLU/Flu_File_Chooser.cpp:1369
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1381
+#: gui/FLU/Flu_File_Chooser.cpp:1382
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1362
+#: gui/FLU/Flu_File_Chooser.cpp:1363
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1376
+#: gui/FLU/Flu_File_Chooser.cpp:1377
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
@@ -4134,7 +4139,7 @@ msgstr "Revertir"
 msgid "Revert settings to last saved preferences."
 msgstr "Revertir seteos a la la ultima preferencias grabadas."
 
-#: gui/FLU/Flu_File_Chooser.cpp:554
+#: gui/FLU/Flu_File_Chooser.cpp:555
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
@@ -4179,7 +4184,7 @@ msgstr "S"
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
-#: gui/FLU/Flu_File_Chooser.cpp:556
+#: gui/FLU/Flu_File_Chooser.cpp:557
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
@@ -4476,7 +4481,7 @@ msgstr "Creación de enchufe falló\n"
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
-#: gui/FLU/Flu_File_Chooser.cpp:550
+#: gui/FLU/Flu_File_Chooser.cpp:551
 msgid "Softimage Picture"
 msgstr "Imagen Softimage"
 
@@ -4530,7 +4535,7 @@ msgstr "Estadísticas"
 msgid "Stereo"
 msgstr "Estéreo"
 
-#: gui/FLU/Flu_File_Chooser.cpp:558
+#: gui/FLU/Flu_File_Chooser.cpp:559
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
@@ -4684,8 +4689,8 @@ msgstr ""
 msgid "TIFF (.tif)"
 msgstr "TIFF (.tif)"
 
-#: gui/FLU/Flu_File_Chooser.cpp:542 gui/FLU/Flu_File_Chooser.cpp:560
-#: gui/FLU/Flu_File_Chooser.cpp:561
+#: gui/FLU/Flu_File_Chooser.cpp:543 gui/FLU/Flu_File_Chooser.cpp:561
+#: gui/FLU/Flu_File_Chooser.cpp:562
 msgid "TIFF Picture"
 msgstr "Imagen TIFF"
 
@@ -4701,7 +4706,7 @@ msgstr "Tags"
 msgid "Targa (.tga)"
 msgstr "Targa (.tga)"
 
-#: gui/FLU/Flu_File_Chooser.cpp:559
+#: gui/FLU/Flu_File_Chooser.cpp:560
 msgid "Targa Picture"
 msgstr "Imagen Targa"
 
@@ -5077,7 +5082,7 @@ msgstr "Tipo de anaglífico desconocido"
 msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
-#: core/aviImage.cpp:1252
+#: core/aviImage.cpp:1262
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -5157,7 +5162,7 @@ msgstr "V-A: "
 msgid "VA Difference"
 msgstr "Diferencia V-A"
 
-#: gui/FLU/Flu_File_Chooser.cpp:532
+#: gui/FLU/Flu_File_Chooser.cpp:533
 msgid "VOB Movie"
 msgstr "Pelicula VOB"
 
@@ -5204,7 +5209,7 @@ msgstr "Pista de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
-#: core/aviImage.cpp:1076
+#: core/aviImage.cpp:1086
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -5248,7 +5253,7 @@ msgstr "W"
 msgid "W: %g %g"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:531
+#: gui/FLU/Flu_File_Chooser.cpp:532
 msgid "WMV Movie"
 msgstr "Película WMV"
 
@@ -5257,11 +5262,11 @@ msgstr "Película WMV"
 msgid "WSA not ready\n"
 msgstr "WSA no esta listo\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:565
+#: gui/FLU/Flu_File_Chooser.cpp:566
 msgid "Wave music"
 msgstr "Musica WAVE"
 
-#: gui/FLU/Flu_File_Chooser.cpp:534
+#: gui/FLU/Flu_File_Chooser.cpp:535
 msgid "WebM Movie"
 msgstr "Película WebM"
 
@@ -5519,7 +5524,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2174
+#: core/aviImage.cpp:2184
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -5658,11 +5663,11 @@ msgstr "audio"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context falló para el audio"
 
-#: core/aviImage.cpp:963
+#: core/aviImage.cpp:973
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
-#: core/aviImage.cpp:380
+#: core/aviImage.cpp:390
 msgid "avcodec_copy_context failed for video"
 msgstr "avcodec_copy_context falló para el video"
 
@@ -5699,7 +5704,7 @@ msgstr "decode_audio_packet falló para cuadro "
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1099 core/aviImage.cpp:1107
+#: core/aviImage.cpp:1109 core/aviImage.cpp:1117
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
@@ -5753,31 +5758,31 @@ msgstr "izquierda.anaglífico"
 msgid "listen to socket failed\n"
 msgstr "Escuchar al enchufe falló\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:537
+#: gui/FLU/Flu_File_Chooser.cpp:538
 msgid "mental ray Bit Picture"
 msgstr "Imagen de mental ray de 1 Bit"
 
-#: gui/FLU/Flu_File_Chooser.cpp:539
+#: gui/FLU/Flu_File_Chooser.cpp:540
 msgid "mental ray Contour Picture"
 msgstr "Imagen de Contornos de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:549
+#: gui/FLU/Flu_File_Chooser.cpp:550
 msgid "mental ray Motion Picture"
 msgstr "Imagen de Movimiento de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:548
+#: gui/FLU/Flu_File_Chooser.cpp:549
 msgid "mental ray Normal Picture"
 msgstr "Imagen de Normales de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:557
+#: gui/FLU/Flu_File_Chooser.cpp:558
 msgid "mental ray Scalar Picture"
 msgstr "Imagen de coma flotante de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:555
+#: gui/FLU/Flu_File_Chooser.cpp:556
 msgid "mental ray Shadow Map"
 msgstr "Imagen de sombras de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:562
+#: gui/FLU/Flu_File_Chooser.cpp:563
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de profundidad Z de mental ray"
 
