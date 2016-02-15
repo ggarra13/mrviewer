@@ -528,6 +528,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("divx"),  _( "DIVX Movie"), &reel );
   add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
   add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
+  add_type( N_("mxf"),   _( "MXF Movie"), &reel );
   add_type( N_("wmv"),   _( "WMV Movie"), &reel );
   add_type( N_("vob"),   _( "VOB Movie"), &reel );
   add_type( N_("mp4"),   _( "MP4 Movie"), &reel );
@@ -4256,6 +4257,7 @@ void Flu_File_Chooser::cd( const char *path )
 			 tmp == N_(".divx") || tmp == N_(".mp3")  ||
 			 tmp == N_(".wmv")  || tmp == N_(".mpeg") ||
 			 tmp == N_(".mpg")  || tmp == N_(".mp4")  ||
+			 tmp == N_(".mxf")  || 
 			 tmp == N_(".qt")   || tmp == N_(".wav")  ||
 			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
 			 tmp == N_(".wav")  || tmp == N_(".icm")  ||
