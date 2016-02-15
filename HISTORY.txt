@@ -1,10 +1,13 @@
-v3.1.1   - Relaxed the minimum zoom factor to 1/64.  This allows
+v3.1.1   - Relaxed the minimum zoom factor to 1/64 or less.  This allows
 	   displaying 16K images properly if the card allows it.
 	 - Transcoding movie files now keeps video and audio metadata,
 	   like timecode string.
+	 - Fixed a crash in EDL editing which would happen when modifying
+	   the lengths of the clips.
 	 - Images bigger than gfx card texture size will print a warning
-	   and be drawn with a buggy scanline algorithm which does	
-	   not support gamma or gain changes.
+	   and be drawn as before with a buggy scanline algorithm which 
+	   does not support gamma or gain changes.
+	 - Added support for reading MXF and Avid DNxHD in mov container.
 
 v3.1.0   - Fixed "export PULSE_LATENCY_MSEC" on Linux to avoid audio
 	   underruns, which would lead to garbled audio.
