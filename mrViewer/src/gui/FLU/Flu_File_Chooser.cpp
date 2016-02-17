@@ -390,7 +390,7 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     int h = img->h();
     e->icon = img;
-    e->updateSize();
+    //e->updateSize();
 
     // e->chooser->relayout();
     // e->chooser->redraw();
