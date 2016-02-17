@@ -257,12 +257,24 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           // c->qcompress = ptr->qcompress;
           // c->max_qdiff = ptr->max_qdiff;
 
-          if ( opts->video_color == "YUV420" )
-              c->pix_fmt = AV_PIX_FMT_YUV420P;
-          if ( opts->video_color == "YUV422" )
-              c->pix_fmt = AV_PIX_FMT_YUV422P;
-          else if ( opts->video_color == "YUV444" )
-              c->pix_fmt = AV_PIX_FMT_YUV444P;
+          if ( c->codec_id == AV_CODEC_ID_PRORES )
+          {
+              if ( opts->video_color == "YUV420" )
+                  c->pix_fmt = AV_PIX_FMT_YUV420P10LE;
+              else if ( opts->video_color == "YUV422" )
+                  c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
+              else if ( opts->video_color == "YUV444" )
+                  c->pix_fmt = AV_PIX_FMT_YUV444P10LE;
+          }
+          else
+          {
+              if ( opts->video_color == "YUV420" )
+                  c->pix_fmt = AV_PIX_FMT_YUV420P;
+              if ( opts->video_color == "YUV422" )
+                  c->pix_fmt = AV_PIX_FMT_YUV422P;
+              else if ( opts->video_color == "YUV444" )
+                  c->pix_fmt = AV_PIX_FMT_YUV444P;
+          }
           if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
              /* just for testing, we also add B frames */
              c->max_b_frames = 2;
@@ -980,6 +992,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_HEVC;
    else if ( opts->video_codec == "MPEG4" )
        fmt->video_codec = AV_CODEC_ID_MPEG4;
+   else if ( opts->video_codec == "ProRes" )
+       fmt->video_codec = AV_CODEC_ID_PRORES;
 
 
    if ( opts->audio_codec == "NONE" )
