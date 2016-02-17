@@ -49,7 +49,7 @@ namespace mrv {open
               label YUV422
               }
             {fltk::Item} {} {
-              label YUV444 selected
+              label YUV444
               }
           }
           {fltk::Choice} uiVideoCodec {
@@ -62,14 +62,14 @@ item->activate();
 item = v->child(2);
 item->activate();
 }
-else
+else if ( o->value() == 1 )
 {
 fltk::Widget* item = v->child(1);
 item->deactivate();
 item = v->child(2);
-item->deactivate();
+item = v->child(2);
 v->value(0);
-}}
+}} selected
             xywh {55 10 91 26}
           } {
             {fltk::Item} {} {
@@ -104,7 +104,6 @@ v->value(0);
             {fltk::Item} {} {
               label NONE
               }
-
           }
           {fltk::ValueInput} uiAudioBitrate {
             label Bitrate
