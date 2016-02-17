@@ -390,9 +390,7 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     int h = img->h();
     e->icon = img;
-    e->resize(e->w(), h+4 );
     e->updateSize();
-    e->redraw();
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -543,6 +541,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("ct"),    _( "mental ray Contour Picture"), &picture );
   add_type( N_("dpx"),   _( "DPX Picture"), &picture );
   add_type( N_("exr"),   _( "EXR Picture"), &picture );
+  add_type( N_("hdr"),   _( "HDRI Picture"), &picture );
   add_type( N_("tif"),   _( "TIFF Picture"), &picture );
   add_type( N_("iff"),   _( "IFF Picture"), &picture );
   add_type( N_("jpg"),   _( "JPEG Picture"), &picture );
@@ -2425,24 +2424,27 @@ void Flu_File_Chooser::listModeCB( fltk::Widget* o )
 
 void Flu_File_Chooser::Entry::updateSize()
 {
-    int h = 20;
+    int H = 20;
     if ( icon ) {
         if ( chooser->previewBtn->value() &&
              ( icon == &reel || icon == &picture ) )
         {
-            h = 68;
+            H = 68;
         }
         else
         {
-            h = icon->h() + 4;
+            H = icon->h() + 4;
         }
     }
   if( type==ENTRY_FAVORITE || chooser->fileListWideBtn->value() )
     {
-        resize( x(), y(), chooser->filelist->w()-4, h );
+        resize( x(), y(), chooser->filelist->w()-4, H );
     }
   else
-      resize( x(), y(), DEFAULT_ENTRY_WIDTH, h );
+  {
+      if ( h() != H )
+          resize( x(), y(), DEFAULT_ENTRY_WIDTH, H );
+  }
 
   details = chooser->fileDetailsBtn->value() && ( type != ENTRY_FAVORITE );
 
@@ -2457,7 +2459,7 @@ void Flu_File_Chooser::Entry::updateSize()
       dateW = cw[3];
       ownerW = cw[4];
       permW = cw[5];
-      resize( x(), y(), chooser->filedetails->w(), h );
+      resize( x(), y(), chooser->filedetails->w(), H );
     }
   else
     nameW = w();
@@ -2469,7 +2471,7 @@ void Flu_File_Chooser::Entry::updateSize()
   fltk::setfont( textfont(), textsize() );
 
   // measure the name and see if we need a truncated version
-  int W = 0, H = 0;
+  int W = 0; H = 0;
   fltk::measure( filename.c_str(), W, H );
   if( W > nameW-iW )
     {
@@ -2601,6 +2603,7 @@ fltk::Group* Flu_File_Chooser::getEntryContainer()
 
 int Flu_File_Chooser::Entry::handle( int event )
 {
+
   if( editMode )
     {
       // if user hits 'Escape' while in edit mode,
@@ -2831,6 +2834,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 
   return fltk::Widget::handle(event);
 }
+
 
 void Flu_File_Chooser::Entry::editCB()
 {

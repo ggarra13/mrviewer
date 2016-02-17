@@ -39,7 +39,8 @@ namespace mrv {open
     }
     decl {std::string pixel_type;} {public
     }
-    Function {make_window(bool aces, bool all_layers)} {} {
+    Function {make_window(bool aces, bool all_layers)} {open
+    } {
       {fltk::Window} uiMain {
         label {OpenEXR Saving} open
         xywh {228 149 465 445} resizable modal noborder visible
