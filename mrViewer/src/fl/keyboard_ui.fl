@@ -1,0 +1,204 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <cstdio>} {private local
+} 
+
+decl {\#include <iostream>} {private local
+} 
+
+decl {\#include <fltk/events.h>} {private local
+} 
+
+decl {\#include <fltk/Item.h>} {private local
+} 
+
+decl {\#include "core/mrvI8N.h"} {private local
+} 
+
+decl {\#include "gui/mrvHotkey.h"} {public local
+} 
+
+class ChooseHotkey {open
+} {
+  decl {mrv::Hotkey hk;} {public local
+  }
+  decl {mrv::Hotkey backup;} {public local
+  }
+  Function {make_window()} {open
+  } {
+    Fl_Window uiMain {
+      xywh {811 189 340 175} type Double visible
+    } {
+      Fl_Group {} {open
+        xywh {80 5 200 25}
+      } {
+        Fl_Input uiKey {
+          label Key
+          xywh {80 5 115 25}
+        }
+        Fl_Menu_Button uiSpecialKey {
+          label Special open
+          xywh {205 5 75 25}
+        } {}
+      }
+      Fl_Check_Button uiShift {
+        label Shift
+        xywh {80 65 67 30} down_box DOWN_BOX
+      }
+      Fl_Check_Button uiCtrl {
+        label Ctrl
+        xywh {152 65 75 30} down_box DOWN_BOX
+      }
+      Fl_Check_Button uiAlt {
+        label Alt
+        xywh {82 95 75 30} down_box DOWN_BOX
+      }
+      Fl_Check_Button uiMeta {
+        label Meta
+        xywh {152 95 75 30} down_box DOWN_BOX
+      }
+      Fl_Group {} {
+        xywh {80 20 200 40}
+      } {
+        Fl_Input uiKey2 {
+          label Key2
+          xywh {80 35 115 25}
+        }
+        Fl_Menu_Button uiSpecialKey2 {
+          label Special open
+          xywh {205 35 75 25}
+        } {}
+      }
+      Fl_Button {} {
+        label OK
+        user_data this user_data_type {ChooseHotkey*}
+        callback {v->hk.ctrl  = v->uiCtrl->value();
+v->hk.alt   = v->uiAlt->value();
+v->hk.meta  = v->uiMeta->value();
+v->hk.shift = v->uiShift->value();
+
+if ( v->uiKey->text() )
+{
+  std::string text = v->uiKey->text();
+
+  unsigned key = 0;
+  for (int i = 0; i < 45; i++)
+     if (text == table[i].text) {key = table[i].n; break;}
+
+  if ( key == 0 )
+  {
+	char buffer[128];
+  	for( int i = fltk::F1Key; i <= fltk::F12Key; ++i )
+  	{
+		sprintf(buffer, "F%d", i - fltk::F0Key);
+     		if ( text == buffer ) { key = i; break; }
+  	}
+  }
+
+  if ( key > 0 ) v->hk.key = key;
+  else v->hk.key = v->uiKey->text()[0];
+  v->hk.text = v->uiKey->text();
+}
+
+if ( v->uiKey2->text() )
+{
+  std::string text = v->uiKey2->text();
+
+  unsigned key = 0;
+  for (int i = 0; i < 45; i++)
+     if (text == table[i].text) {key = table[i].n; break;}
+
+  if ( key == 0 )
+  {
+	char buffer[128];
+  	for( int i = fltk::F1Key; i <= fltk::F12Key; ++i )
+  	{
+		sprintf(buffer, "F%d", i - fltk::F0Key);
+     		if ( text == buffer ) { key = i; break; }
+  	}
+  }
+
+  if ( key > 0 ) v->hk.key2 = key;
+  else v->hk.key2 = v->uiKey->text()[0];
+}
+
+v->uiMain->hide();}
+        xywh {90 135 80 30}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {ChooseHotkey*}
+        callback {v->hk = v->backup;
+v->uiMain->hide();}
+        xywh {180 135 80 30}
+      }
+    }
+  }
+  Function {ChooseHotkey( const mrv::Hotkey& h )} {} {
+    code {backup = h;
+hk = h;} {}
+  }
+  Function {fill()} {} {
+    code {uiCtrl->value( hk.ctrl );
+uiMeta->value( hk.meta );
+uiAlt->value( hk.alt );
+uiShift->value( hk.shift );
+
+char buffer[100];
+const char *keyname = buffer;
+unsigned k = hk.key;
+if (!k) {
+      keyname = "0";
+   } else if (k <= 7) {
+      sprintf(buffer, "(mouse button %d)", k);
+   } else if (k < 256 && k != 32) {
+      sprintf(buffer, "%c", k);
+   } else if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
+      sprintf(buffer, "F%d", k - fltk::F0Key);
+   } else {
+      sprintf(buffer, "0x%04x", k);
+      for (int i = 0; i < 45; i++)
+      {
+	 if (table[i].n == k) {
+	 	keyname = table[i].text; 
+	 	break;
+	 }
+	}
+   }
+
+if (k == 0 )
+   uiKey->text( hk.text.c_str() );
+else
+   uiKey->text( keyname );
+   
+k = hk.key2;
+if (!k) {
+      keyname = "0";
+   } else if (k <= 7) {
+      sprintf(buffer, "(mouse button %d)", k);
+   } else if (k < 256 && k != 32) {
+      sprintf(buffer, "%c", k);
+   } else if (k >= fltk::F0Key && k <= fltk::LastFunctionKey) {
+      sprintf(buffer, "F%d", k - fltk::F0Key);
+   } else {
+      sprintf(buffer, "0x%04x", k);
+      for (int i = 0; i < 45; i++)
+      {
+	 if (table[i].n == k) {
+	 	keyname = table[i].text; 
+	 	break;
+	 }
+	}
+   }
+
+if (k != 0 )
+   uiKey2->text( keyname );} {}
+  }
+  Function {~ChooseHotkey()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {selected
+    }
+  }
+} 
