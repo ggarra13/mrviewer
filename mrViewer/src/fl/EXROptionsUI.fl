@@ -1,0 +1,163 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
+header_name {.h} 
+code_name {.cxx}
+decl {\#include <iostream>} {private local
+} 
+
+decl {\#include <string>} {public local
+} 
+
+decl {\#include <fltk/run.h>} {private local
+} 
+
+decl {\#include <gui/mrvPreferences.h>} {public local
+} 
+
+decl {\#include <gui/mrvDoubleWindow.h>} {public local
+} 
+
+decl {\#include <gui/mrvIO.h>} {public local
+} 
+
+decl {\#include <core/exrImage.h>} {public local
+} 
+
+decl {\#include <core/mrvImageOpts.h>} {public local
+} 
+
+decl {\#include <ImfCompression.h>} {public local
+} 
+
+decl {\#include <ImfPixelType.h>} {public local
+} 
+
+class EXROptionsUI {open : {public mrv::EXROpts}
+} {
+  decl {std::string compression;} {public local
+  }
+  decl {std::string pixel_type;} {public local
+  }
+  Function {make_window(bool aces, bool all_layers)} {open
+  } {
+    Fl_Window uiMain {open
+      xywh {983 23 295 435} type Double
+      class mrvDoubleWindow visible
+    } {
+      Fl_Group {} {
+        label {OpenEXR Options} open
+        xywh {25 30 255 325} box UP_BOX
+      } {
+        Fl_Choice uiCompression {
+          label Compression open
+          xywh {70 65 150 30} down_box BORDER_BOX align 1
+        } {
+          MenuItem {} {
+            label None
+            xywh {0 0 36 21}
+          }
+          MenuItem {} {
+            label RLE
+            xywh {10 10 36 21}
+          }
+          MenuItem {} {
+            label {ZIP SCANLINE}
+            xywh {20 20 36 21}
+          }
+          MenuItem {} {
+            label ZIP
+            xywh {30 30 36 21}
+          }
+          MenuItem {} {
+            label PIZ
+            xywh {40 40 36 21}
+          }
+          MenuItem {} {
+            label PXR24
+            xywh {50 50 36 21}
+          }
+          MenuItem {} {
+            label B44
+            xywh {60 60 36 21}
+          }
+          MenuItem {} {
+            label B44A
+            xywh {70 70 36 21}
+          }
+          MenuItem {} {
+            label DWAA
+            xywh {80 80 36 21}
+          }
+          MenuItem {} {
+            label DWAB
+            xywh {90 90 36 21}
+          }
+        }
+        Fl_Choice uiPixelFormat {
+          label {Pixel Format} open
+          xywh {70 120 150 30} down_box BORDER_BOX align 1
+        } {
+          MenuItem {} {
+            label Half
+            xywh {60 60 36 21}
+          }
+          MenuItem {} {
+            label Float
+            xywh {70 70 36 21}
+          }
+          MenuItem {} {
+            label UInt
+            xywh {80 80 36 21}
+          }
+        }
+        Fl_Value_Slider uiDWACompression {
+          label {DWA Compression}
+          tooltip {DWAA/DWAB compression} xywh {170 164 85 36} type Horizontal align 4 minimum 1 maximum 250 step 10 value 45 slider_size 1 textsize 14 deactivate
+          code0 {o->value( mrv::exrImage::_default_dwa_compression );}
+        }
+        Fl_Light_Button uiAllLayers {
+          label {All Layers}
+          xywh {70 215 150 35}
+          code0 {o->value( all_layers );}
+        }
+        Fl_Light_Button uiACESmetadata {
+          label {ACES metadata}
+          xywh {70 275 150 35}
+          code0 {o->value(aces);}
+        }
+      }
+      Fl_Button {} {
+        label OK
+        user_data this user_data_type {EXROptionsUI*}
+        callback {v->active( true );
+v->uiMain->make_exec_return(true);}
+        xywh {55 380 75 30}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {EXROptionsUI*}
+        callback {v->active( false );
+v->uiMain->make_exec_return(false);}
+        xywh {150 380 75 30}
+      }
+    }
+  }
+  Function {convert()} {} {
+    code {_compression = (Imf::Compression) uiCompression->value();
+_dwa_compression_level = (float) uiDWACompression->value();
+_ACESmetadata = uiACESmetadata->value();
+_all_layers = uiAllLayers->value();} {}
+    code {if ( pixel_type == "Half" ) _pixel_type = Imf::HALF;
+else if ( pixel_type == "Float" ) _pixel_type = Imf::FLOAT;
+else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
+  }
+  Function {EXROptionsUI( bool aces = false, bool all_layers = false ) : EXROpts( aces, all_layers )} {open selected
+  } {
+    code {mrvDoubleWindow* w = make_window(aces, all_layers);
+if ( w->exec() ) {
+	w->hide();
+	fltk::check();
+	convert();
+}} {}
+  }
+} 
