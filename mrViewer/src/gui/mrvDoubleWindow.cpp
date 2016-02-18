@@ -14,5 +14,6 @@ Fl_Double_Window( w, h, l )
 
 bool mrvDoubleWindow::exec() 
 { 
+    set_modal();
     show(); return _exec;
 };
