@@ -8,7 +8,7 @@ decl {\#include <iostream>} {private local
 decl {\#include <string>} {public local
 } 
 
-decl {\#include <fltk/run.h>} {private local
+decl {\#include <FL/Fl.H>} {private local
 } 
 
 decl {\#include <gui/mrvPreferences.h>} {public local
@@ -156,7 +156,7 @@ else if ( pixel_type == "UInt" ) _pixel_type = Imf::UINT;} {}
     code {mrvDoubleWindow* w = make_window(aces, all_layers);
 if ( w->exec() ) {
 	w->hide();
-	fltk::check();
+	Fl::check();
 	convert();
 }} {}
   }

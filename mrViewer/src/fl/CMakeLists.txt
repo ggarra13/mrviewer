@@ -92,7 +92,7 @@ INCLUDE_DIRECTORIES(
   ${LIBINTL_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
-  ${FLTK2_INCLUDE_DIR}
+  ${FLTK_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK_INCLUDE_DIR}
   ${OpenEXRCTL_INCLUDE_DIR}
@@ -107,14 +107,14 @@ INCLUDE_DIRECTORIES(
 
 FLTK_WRAP_UI( mrViewer  
   aviSave.fl
-  # gui/WandOptionsUI.fl
+  WandOptionsUI.fl
   EXROptionsUI.fl
   mrvEDLWindowUI.fl
-  # gui/mrvIccProfileUI.fl
+  mrvIccProfileUI.fl
   mrvColorAreaUI.fl 
   mrViewer.fl 
   # gui/keyboard_ui.fl 
-  # gui/mrvAudioOffset.fl
+  mrvAudioOffset.fl
   )
 
 
@@ -216,6 +216,7 @@ SET( SOURCES
  #  gui/mrvTimeline.cpp
  #  gui/mrvVectorscope.cpp
  #  gui/mrvVersion.cpp
+ ../gui/mrvDoubleWindow.cpp
 
  #  video/mrvDrawEngine.cpp
  #  video/mrvGLEngine.cpp
@@ -290,7 +291,7 @@ SET( LIBRARIES
   ${CTL_LIBRARIES}
   ${OPENEXR_LIBRARIES}
   ${OS_LIBRARIES}
-  ${FLTK2_LIBRARIES}
+  ${FLTK_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
   ${SampleICC_LIBRARIES}
@@ -340,7 +341,7 @@ MESSAGE( STATUS "Summary for mrViewer:" )
 MESSAGE( STATUS 
   "-------------------------------------------------------------" )
 
-MESSAGE( STATUS "FLTK2:         ${FLTK2_FOUND} ${FLTK2_VERSION}" )
+MESSAGE( STATUS "FLTK:          ${FLTK_FOUND} ${FLTK_VERSION}" )
 MESSAGE( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
 MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
 MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )

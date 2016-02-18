@@ -21,6 +21,7 @@ lines.each { |x|
   x.sub!(/\{fltk::Button\}/, 'Fl_Button' )
   x.sub!(/\{fltk::CheckButton\}/, 'Fl_Check_Button' )
   x.sub!(/\{fltk::RadioButton\}/, 'Fl_Radio_Button' )
+  x.sub!(/\{fltk::ValueSlider\}/, 'Fl_Value_Slider' )
   x.sub!(/vertical\s+/, '' )
 }
 
