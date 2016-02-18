@@ -81,6 +81,7 @@ ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
 # List directories for -I options.
 #
 INCLUDE_DIRECTORIES(
+  .
   ..
   ../core
   ../db
