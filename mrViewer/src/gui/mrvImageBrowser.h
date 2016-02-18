@@ -31,7 +31,7 @@
 #include <vector>
 #include <string>
 
-#include "fltk/Browser.h"
+#include "FL/Fl_Browser.H"
 
 #include "core/Sequence.h"
 #include "core/mrvServer.h"
@@ -39,26 +39,26 @@
 #include "gui/mrvMedia.h"
 #include "video/mrvGLShape.h"
 
-namespace fltk
-{
-  class Choice;
-  class Button;
-}
+
+
+class Fl_Choice;
+class Fl_Button;
+
+
+class ViewerUI;
+class EDLGroup;
 
 namespace mrv
 {
-  class Database;
 class Element;
-class ViewerUI;
 class Timeline;
-class EDLGroup;
 class ImageView;
 
 
-void start_button_cb(fltk::Button* o, mrv::ViewerUI* v);
-void end_button_cb(fltk::Button* o, mrv::ViewerUI* v);
+void start_button_cb(Fl_Button* o, mrv::ViewerUI* v);
+void end_button_cb(Fl_Button* o, mrv::ViewerUI* v);
 
-class ImageBrowser : public fltk::Browser
+class ImageBrowser : public Fl_Browser
 {
   public:
     typedef std::vector< boost::thread* > thread_pool_t;
@@ -99,7 +99,7 @@ class ImageBrowser : public fltk::Browser
 
      const mrv::media current_image() const;
 
-     void reel_choice( fltk::Choice* c ) { _reel_choice = c; }
+     void reel_choice( Fl_Choice* c ) { _reel_choice = c; }
 
      void attach_profile();
 
@@ -210,14 +210,12 @@ class ImageBrowser : public fltk::Browser
 
      unsigned       _reel;
      mrv::ReelList  _reels;
-     fltk::Choice*  _reel_choice;
+     Fl_Choice*  _reel_choice;
 
      mrv::Element* dragging;
      int lastX, lastY;
 
-     mrv::ViewerUI* uiMain;
-
-     mrv::Database* db;
+     ViewerUI* uiMain;
 };
 
 } // namespace mrv

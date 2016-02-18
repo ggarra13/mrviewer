@@ -127,16 +127,16 @@ SET( SOURCES
   ${mrViewer_FLTK_UI_SRCS}
 
  #  # Image files
- #  core/CMedia.cpp
- #  core/CMedia_audio.cpp
- #  core/mrvFrame.cpp
+ ../core/CMedia.cpp
+ ../core/CMedia_audio.cpp
+ ../core/mrvFrame.cpp
  #  core/mrvHome.cpp
- #  core/guessImage.cpp
+ ../core/guessImage.cpp
  #  core/aviImage.cpp
  #  core/aviImage_save.cpp
  #  core/clonedImage.cpp
  #  core/ddsImage.cpp
- #  core/exrImage.cpp
+ ../core/exrImage.cpp
  #  core/hdrImage.cpp
  #  core/iffImage.cpp
  #  core/mapImage.cpp
@@ -150,21 +150,20 @@ SET( SOURCES
  #  core/wandImage.cpp
  #  # core/magickImage.cpp
 
- #  core/mrSocket.cpp
- #  core/mrvClient.cpp
- #  core/mrvServer.cpp
- #  core/mrvAudioEngine.cpp
- #  core/mrvColor.cpp
- #  core/mrvColorSpaces.cpp
- #  core/ctlToLut.cpp
- #  core/mrvLicensing.cpp
- #  core/mrvPacketQueue.cpp
- #  core/mrvPlayback.cpp
+ ../core/mrSocket.cpp
+ # ../core/mrvClient.cpp
+ # ../core/mrvServer.cpp
+ ../core/mrvAudioEngine.cpp
+ ../core/mrvColor.cpp
+ ../core/mrvColorSpaces.cpp
+ ../core/ctlToLut.cpp
+ #  # core/mrvLicensing.cpp
+ ../core/mrvPacketQueue.cpp
+ ../core/mrvPlayback.cpp
  #  # core/mrvScale.cpp
- #  core/mrvString.cpp
- #  core/mrvTimer.cpp
- #  core/mrvACES.cpp
- #  # core/generic/mrEvent.cpp
+ ../core/mrvString.cpp
+ ../core/mrvTimer.cpp
+ ../core/mrvACES.cpp
 
  #  core/mrvPC1.cpp
  #  core/Sequence.cpp
@@ -201,7 +200,7 @@ SET( SOURCES
  #  gui/mrvFontsWindowUI.cpp
  #  gui/mrvHistogram.cpp
  #  gui/mrvImageView.cpp
- #  gui/mrvImageBrowser.cpp
+ # ../gui/mrvImageBrowser.cpp
  #  gui/mrvImageInformation.cpp
  #  gui/mrvIO.cpp
  #  gui/mrvLogDisplay.cpp
@@ -211,7 +210,7 @@ SET( SOURCES
  #  gui/mrvPreferences.cpp
  #  gui/mrvPreferencesBrowser.cpp
  #  gui/mrvProgressReport.cpp
- #  gui/mrvReel.cpp
+ ../gui/mrvReel.cpp
  #  gui/mrvTimecode.cpp
  #  gui/mrvTimeline.cpp
  #  gui/mrvVectorscope.cpp
