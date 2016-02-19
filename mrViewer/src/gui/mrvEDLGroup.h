@@ -18,21 +18,22 @@
 #ifndef mrvEDLGroup_h
 #define mrvEDLGroup_h
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Browser.H>
 
 #include "mrvMediaTrack.h"
+
+class ViewerUI;
 
 namespace mrv {
 
 class Timeline;
 class Element;
-class ViewerUI;
 class ImageBrowser;
 class ImageView;
 class audio_track;
 typedef audio_track* audio_track_ptr;
 
-class EDLGroup : public fltk::Group
+class EDLGroup : public Fl_Group
 {
    public:
      typedef std::vector< audio_track_ptr >  AudioTrack;
@@ -88,8 +89,8 @@ class EDLGroup : public fltk::Group
 
      void refresh();
 
-     void main(mrv::ViewerUI* m) { uiMain = m; }
-     mrv::ViewerUI* main() { return uiMain; }
+     void main(ViewerUI* m) { uiMain = m; }
+     ViewerUI* main() { return uiMain; }
 
      mrv::ImageBrowser* browser() const;
      mrv::ImageView* view() const;
@@ -107,7 +108,7 @@ class EDLGroup : public fltk::Group
      int        _dragY;
      int        _dragChild;
      AudioTrack _audio_track;
-     mrv::ViewerUI* uiMain;
+     ViewerUI* uiMain;
      mrv::Timeline* _timeline;
 };
 

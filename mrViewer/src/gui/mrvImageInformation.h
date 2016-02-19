@@ -39,20 +39,19 @@
 #include "gui/mrvCollapsableGroup.h"
 
 
-namespace fltk
-{
-  class PackedGroup;
-  class ItemGroup;
-  class PopupMenu;
-}
+// namespace fltk
+// {
+//   class PackedGroup;
+//   class ItemGroup;
+//   class PopupMenu;
+// }
 
 
-#define ImageInfoParent fltk::ScrollGroup
-
+#define ImageInfoParent Fl_Scroll_Group
+class ViewerUI;
 
 namespace mrv
 {
-  class ViewerUI;
   class CMedia;
   struct CtlLMTData;
 

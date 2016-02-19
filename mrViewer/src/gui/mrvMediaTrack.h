@@ -19,7 +19,7 @@
 #define mrvMediaTrack_h
 
 #include <boost/cstdint.hpp>
-#include <fltk/Group.h>
+#include <FL/Fl_Group.H>
 
 extern "C" {
 #include <libavformat/avformat.h>
@@ -30,14 +30,15 @@ extern "C" {
 #include "mrvMedia.h"
 #include "mrvMediaList.h"
 
+class ViewerUI;
+
 namespace mrv {
 
-class ViewerUI;
 class ImageBrowser;
 class Timeline;
 class Element;
 
-class media_track : public fltk::Group
+class media_track : public Fl_Group
 {
    public:
      media_track(int x, int y, int w, int h);

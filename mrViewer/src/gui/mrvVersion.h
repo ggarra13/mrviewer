@@ -30,19 +30,16 @@
 
 #include <string>
 
-namespace fltk
-{
-class Browser;
-}
+class Fl_Browser;
+class ViewerUI;
 
 namespace mrv
 {
-  class ViewerUI;
 
-void ffmpeg_formats( fltk::Browser& b );
-void ffmpeg_video_codecs( fltk::Browser& b );
-void ffmpeg_audio_codecs( fltk::Browser& b  );
-void ffmpeg_subtitle_codecs( fltk::Browser& b);
+void ffmpeg_formats( Fl_Browser& b );
+void ffmpeg_video_codecs( Fl_Browser& b );
+void ffmpeg_audio_codecs( Fl_Browser& b  );
+void ffmpeg_subtitle_codecs( Fl_Browser& b);
 std::string ffmpeg_protocols();
 std::string ffmpeg_motion_estimation_methods();
 

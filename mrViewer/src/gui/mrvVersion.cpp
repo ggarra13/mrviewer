@@ -51,9 +51,9 @@ extern "C" {
 #include <wand/magick-wand.h>
 
 
-#include <fltk/visual.h>
-#include <fltk/Monitor.h>
-#include <fltk/Browser.h>
+//#include <fltk/visual.h>
+//#include <fltk/Monitor.h>
+#include <FL/Fl_Browser.H>
 
 #include <ImfVersion.h>
 
@@ -128,7 +128,7 @@ namespace mrv
     return kVersion;
   }
 
-void ffmpeg_formats( fltk::Browser& browser )
+void ffmpeg_formats( Fl_Browser& browser )
   {
     using namespace std;
 
@@ -278,7 +278,7 @@ void ffmpeg_formats( fltk::Browser& browser )
 
   }
 
-static void ffmpeg_codecs(fltk::Browser& browser, int type)
+static void ffmpeg_codecs(Fl_Browser& browser, int type)
   {
     using namespace std;
 
@@ -348,17 +348,17 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
   }
 
 
-  void ffmpeg_audio_codecs(fltk::Browser& browser )
+  void ffmpeg_audio_codecs(Fl_Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
   }
 
-  void ffmpeg_video_codecs(fltk::Browser& browser )
+  void ffmpeg_video_codecs(Fl_Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
   }
 
-  void ffmpeg_subtitle_codecs(fltk::Browser& browser )
+  void ffmpeg_subtitle_codecs(Fl_Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
   }
@@ -657,14 +657,17 @@ void  memory_information( uint64_t& totalVirtualMem,
 }  // memory_information
 #endif // LINUX
 
-  std::string gpu_information( mrv::ViewerUI* uiMain )
+  std::string gpu_information( ViewerUI* uiMain )
   {
     using std::endl;
     std::ostringstream o;
 
+#if 0
+    // @todo: fltk1.3
     const fltk::Monitor* monitors;
     int num_monitors = fltk::Monitor::list(&monitors);
     o << "Monitors:\t" << num_monitors << endl;
+#endif
 
     mrv::DrawEngine* engine = uiMain->uiView->engine();
     if ( engine )
@@ -677,7 +680,7 @@ void  memory_information( uint64_t& totalVirtualMem,
       }
 
     o << "HW Stereo:\t" 
-      << ( uiMain->uiView->can_do( fltk::STEREO ) ? "Yes" : "No" )
+      << ( uiMain->uiView->can_do( FL_STEREO ) ? "Yes" : "No" )
       << endl
       << "HW Overlay:\t" 
       << ( uiMain->uiView->can_do_overlay() ? "Yes" : "No" )

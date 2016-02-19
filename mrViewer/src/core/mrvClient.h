@@ -33,15 +33,15 @@
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
-namespace mrv {
-
 class ViewerUI;
+
+namespace mrv {
 
 class client : public Parser
 {
    public:
      client(boost::asio::io_service& io_service,
-	    mrv::ViewerUI* v); 
+	    ViewerUI* v); 
 
      void start(tcp::resolver::iterator endpoint_iter);
 
@@ -58,8 +58,8 @@ class client : public Parser
      void handle_write( const boost::system::error_code& ec );
      void check_deadline();
 
-     static void create( mrv::ViewerUI* main );
-     static void remove( mrv::ViewerUI* main );
+     static void create( ViewerUI* main );
+     static void remove( ViewerUI* main );
 
 private:
   bool stopped_;

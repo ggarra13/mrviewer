@@ -199,7 +199,7 @@ SET( SOURCES
  #  gui/mrvFLTKHandler.cpp
  #  gui/mrvFontsWindowUI.cpp
  #  gui/mrvHistogram.cpp
- #  gui/mrvImageView.cpp
+ ../gui/mrvImageView.cpp
  # ../gui/mrvImageBrowser.cpp
  #  gui/mrvImageInformation.cpp
  ../gui/mrvIO.cpp
@@ -210,7 +210,7 @@ SET( SOURCES
  #  gui/mrvPreferences.cpp
  #  gui/mrvPreferencesBrowser.cpp
  #  gui/mrvProgressReport.cpp
- # ../gui/mrvReel.cpp
+ ../gui/mrvReel.cpp
  #  gui/mrvTimecode.cpp
  #  gui/mrvTimeline.cpp
  #  gui/mrvVectorscope.cpp
