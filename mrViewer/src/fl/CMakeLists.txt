@@ -106,7 +106,7 @@ INCLUDE_DIRECTORIES(
 
 
 FLTK_WRAP_UI( mrViewer  
-  # aviSave.fl
+  aviSave.fl
   # WandOptionsUI.fl
   # EXROptionsUI.fl
   # mrvEDLWindowUI.fl
@@ -130,7 +130,7 @@ SET( SOURCES
  ../core/CMedia.cpp
  ../core/CMedia_audio.cpp
  ../core/mrvFrame.cpp
- #  core/mrvHome.cpp
+ ../core/mrvHome.cpp
  ../core/guessImage.cpp
  #  core/aviImage.cpp
  #  core/aviImage_save.cpp

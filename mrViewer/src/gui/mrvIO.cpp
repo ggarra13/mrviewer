@@ -28,6 +28,8 @@
 #include <cstdlib> // for free/malloc
 #include <cstring> // for strcpy
 
+#include <FL/fl_ask.H>
+
 #include "gui/mrvLogDisplay.h"
 #include "mrViewer.h" // for uiLog
 #include "mrvIO.h"
@@ -48,7 +50,7 @@ namespace mrv {
     _alert = (char*) malloc( strlen(str) + 1 );
     strcpy( _alert, str );
 
-    fltk::alert( _alert );
+    fl_alert( "%s", _alert );
   }
 
   const char* alert()
