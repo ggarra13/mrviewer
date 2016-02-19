@@ -29,17 +29,17 @@
 
 #include <vector>
 
-#include <fltk/Slider.h>
+#include <FL/Fl_Slider.H>
 
 #include "gui/mrvTimecode.h"
 #include "gui/mrvMedia.h"
 
 
 class CMedia;
+class ViewerUI;
 
 namespace mrv
 {
-  class ViewerUI;
   class ImageBrowser;
 
   namespace gui {
@@ -47,7 +47,7 @@ namespace mrv
   }
 
 
-  class Timeline : public fltk::Slider
+  class Timeline : public Fl_Slider
   {
     public:
       typedef CMedia::Mutex   Mutex;
@@ -74,9 +74,9 @@ namespace mrv
     double fps() const { return _fps; }
     void fps( double x ) { _fps = x; }
 
-    double maximum() const { return fltk::Slider::maximum(); }
+    double maximum() const { return Fl_Slider::maximum(); }
     void maximum( double x );
-    double minimum() const { return fltk::Slider::minimum(); }
+    double minimum() const { return Fl_Slider::minimum(); }
     void minimum( double x );
 
 

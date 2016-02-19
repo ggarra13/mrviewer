@@ -35,10 +35,10 @@ extern "C" {
 #include "CMedia.h"
 
 
-namespace mrv {
+class AviSaveUI;
+class ViewerUI;
 
-  class AviSaveUI;
-  class ViewerUI;
+namespace mrv {
 
   class aviImage : public CMedia 
   {
@@ -74,7 +74,7 @@ namespace mrv {
     virtual void preroll( const boost::int64_t frame );
     virtual bool fetch( const boost::int64_t frame );
     /// VCR play (and cache frames if needed) sequence
-       virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
+       virtual void play( const Playback dir, ViewerUI* const uiMain,
 			  const bool fg );
 
       virtual void clear_cache();

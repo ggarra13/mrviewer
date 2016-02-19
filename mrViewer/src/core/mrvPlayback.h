@@ -35,12 +35,10 @@
 
 class CMedia;
 struct Clock;
+class ViewerUI;
 
 
 namespace mrv {
-
-  class ViewerUI;
-
 
 void set_clock_at(Clock *c, double pts, int serial, double time);
 double get_clock(Clock* c);
@@ -59,11 +57,11 @@ void sync_clock_to_slave(Clock *c, Clock *slave);
   //
   struct PlaybackData {
        bool fg;;
-       mrv::ViewerUI*   uiMain;
+       ViewerUI*   uiMain;
        CMedia*  image;
 
-      PlaybackData( bool foreground, mrv::ViewerUI* const main,
-		     CMedia* const img ) :
+      PlaybackData( bool foreground, ViewerUI* const main,
+                    CMedia* const img ) :
        fg( foreground ),
        uiMain( main ),
        image( img )

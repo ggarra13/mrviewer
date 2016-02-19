@@ -34,10 +34,10 @@ extern "C" {
 #include <vector>
 #include <string>
 
+class ViewerUI;
+
 
 namespace mrv {
-
-class ViewerUI;
 
   class AudioEngine
   {

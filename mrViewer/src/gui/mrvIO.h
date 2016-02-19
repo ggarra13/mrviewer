@@ -33,7 +33,7 @@
 #include <iomanip>
 #include <sstream>
 
-#include <fltk/ask.h>
+#include <FL/fl_ask.H>
 #include <boost/thread/recursive_mutex.hpp>
 
 #include "mrvI8N.h"

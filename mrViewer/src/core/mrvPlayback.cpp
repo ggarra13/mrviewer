@@ -227,7 +227,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        int&     step,
                        CMedia* img, 
                        bool    fg,
-                       mrv::ViewerUI* uiMain,
+                       ViewerUI* uiMain,
                        const mrv::Reel  reel,
                        const mrv::Timeline* timeline,
                        const mrv::CMedia::DecodeStatus end, 
@@ -524,7 +524,7 @@ void audio_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
+   ViewerUI*     uiMain   = data->uiMain;
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
@@ -684,7 +684,7 @@ void subtitle_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
+   ViewerUI*     uiMain   = data->uiMain;
 
    CMedia* img = data->image;
    assert( img != NULL );
@@ -779,7 +779,7 @@ void video_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
+   ViewerUI*     uiMain   = data->uiMain;
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
@@ -985,7 +985,7 @@ void decode_thread( PlaybackData* data )
 {
    assert( data != NULL );
 
-   mrv::ViewerUI*     uiMain   = data->uiMain;
+   ViewerUI*     uiMain   = data->uiMain;
    assert( uiMain != NULL );
 
 

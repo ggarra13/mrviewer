@@ -34,12 +34,13 @@
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
 
+class ViewerUI;
+
 namespace mrv {
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
-class ViewerUI;
 class Parser;
 class ImageView;
 class ImageBrowser;
@@ -50,7 +51,7 @@ typedef std::vector< Parser* > ParserList;
 class Parser
 {
    public:
-     Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
+     Parser( boost::asio::io_service& io_service, ViewerUI* v );
      ~Parser();
      
      bool parse( const std::string& m );
@@ -66,7 +67,7 @@ class Parser
    public:
      bool connected;
      tcp::socket socket_;
-     mrv::ViewerUI* ui;
+     ViewerUI* ui;
 };
 
 
@@ -75,7 +76,7 @@ class tcp_session : public boost::enable_shared_from_this< tcp_session >,
 {
    public:
      tcp_session(boost::asio::io_service& io_service,
-		 mrv::ViewerUI* const v);
+		 ViewerUI* const v);
      ~tcp_session();
 
      tcp::socket& socket();
@@ -111,7 +112,7 @@ class server
 public:
      server(boost::asio::io_service& io_service,
 	    const tcp::endpoint& listen_endpoint,
-	    mrv::ViewerUI* v);
+	    ViewerUI* v);
 
      ~server();
 
@@ -120,13 +121,13 @@ public:
      void handle_accept(tcp_session_ptr session,
 			const boost::system::error_code& ec);
 
-     static void create(mrv::ViewerUI* ui);
-     static void remove(mrv::ViewerUI* ui);
+     static void create(ViewerUI* ui);
+     static void remove(ViewerUI* ui);
 
 private:
   boost::asio::io_service& io_service_;
   tcp::acceptor acceptor_;
-  mrv::ViewerUI* ui_;
+  ViewerUI* ui_;
 };
 
 typedef boost::shared_ptr<server> tcp_server_ptr;
@@ -136,7 +137,7 @@ struct ServerData
      std::string host;
      std::string group;
      unsigned short port;
-     mrv::ViewerUI* ui;
+     ViewerUI* ui;
 };
 
 void server_thread( const ServerData* s );

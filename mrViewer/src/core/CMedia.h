@@ -106,11 +106,12 @@ struct SwrContext;
 
 
 
+class ViewerUI;
+
 namespace mrv {
 
-class ViewerUI;
-class AudioEngine;
 class ImageOpts;
+class AudioEngine;
 
 void update_video_pts(CMedia* is, double pts, int64_t pos, int serial);
 
@@ -702,7 +703,7 @@ class CMedia
 
     /// VCR play (and cache frames if needed) sequence
     virtual void play( const Playback dir,
-                       mrv::ViewerUI* const uiMain,
+                       ViewerUI* const uiMain,
                        const bool fg );
 
     // Abort playback suddenly

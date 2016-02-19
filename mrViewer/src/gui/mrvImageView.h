@@ -49,10 +49,10 @@ namespace fltk {
   class Menu;
 }
 
+class ViewerUI;
 
 namespace mrv {
 
-class ViewerUI;
 class ImageBrowser;
 class Timeline;
 class DrawEngine;
@@ -357,13 +357,13 @@ class server;
     void audio_stream( unsigned int idx );
 
     /// Attaches main window class to this viewer
-    void main( mrv::ViewerUI* b ) { uiMain = b; }
+    void main( ViewerUI* b ) { uiMain = b; }
 
     /// Returns the main window class associated to this view
-    mrv::ViewerUI* main() { return uiMain; }
+    ViewerUI* main() { return uiMain; }
 
     /// Returns the main window class associated to this view
-    const mrv::ViewerUI* main() const { return uiMain; }
+    const ViewerUI* main() const { return uiMain; }
 
     /// Auxiliary function to return viewer's main fltk window
     fltk::Window* fltk_main();
@@ -543,7 +543,7 @@ class server;
 
 
   protected:
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
     mrv::DrawEngine*    _engine;
 
       bool         _wait;

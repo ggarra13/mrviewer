@@ -2420,7 +2420,7 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
     fbs.push_back( fb );
 }
 
-bool exrImage::save( const char* file, const CMedia* img, 
+bool exrImage::save( const char* file, const mrv::CMedia* img, 
                      const ImageOpts* const ipts )
 {
 

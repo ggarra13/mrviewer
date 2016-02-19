@@ -471,7 +471,7 @@ void aviImage::clear_cache()
 }
 
 /// VCR play (and cache frames if needed) sequence
-void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
+void aviImage::play( const Playback dir, ViewerUI* const uiMain,
 		     const bool fg )
 {
    CMedia::play( dir, uiMain, fg );

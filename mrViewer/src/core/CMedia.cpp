@@ -1647,7 +1647,7 @@ bool CMedia::valid_subtitle() const
 
 /// VCR play (and record if needed) sequence
 void CMedia::play(const CMedia::Playback dir, 
-		  mrv::ViewerUI* const uiMain,
+		  ViewerUI* const uiMain,
 		  bool fg )
 {
 
