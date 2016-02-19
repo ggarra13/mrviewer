@@ -27,7 +27,7 @@
 
 #include <iostream>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 
 // Image types
@@ -214,7 +214,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
     const boost::uint8_t* test_data = datas;
     if (!datas) {
         size = 1024;
-        FILE* fp = fltk::fltk_fopen(name, "rb");
+        FILE* fp = fl_fopen(name, "rb");
         if (!fp) 
 	{
             if ( is_seq )

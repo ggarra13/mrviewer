@@ -41,7 +41,7 @@
 #  include <cmath>        // for isnan(), isinf()
 #endif
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "mrvIO.h"
 #include "pxrzImage.h"
@@ -122,7 +122,7 @@ namespace mrv {
   {
     int dw, dh;
 
-    FILE* f = fltk::fltk_fopen( filename(), "rb" );
+    FILE* f = fl_fopen( filename(), "rb" );
     if ( !f )
     {
        LOG_ERROR( "Could not open shadow map image." );

@@ -47,8 +47,8 @@
 #include <string>
 #include <limits>
 
-#include <fltk/run.h>
-#include <fltk/Font.h>
+#include <FL/Fl.H>
+// #include <FL/Fl_Font.H>
 
 using namespace std;
 
@@ -591,7 +591,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
      setlocale( LC_NUMERIC, "C" );
 
-     FILE* f = fltk::fltk_fopen( reelfile, "r" );
+     FILE* f = fl_fopen( reelfile, "r" );
      if (!f ) return false;
 
      double version = 1.0;
@@ -705,17 +705,17 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
                 
                   shape->text( text );
 
-                  fltk::Font** fonts;
+                  // @todo: fltk1.3
                   unsigned i;
-                  unsigned num = fltk::list_fonts(fonts);
+                  unsigned num = Fl::set_fonts( "-*" );
                   for ( i = 0; i < num; ++i )
                   {
-                      if ( font == fonts[i]->name() ) break;
+                      int t;
+                      if ( font == Fl::get_font_name((Fl_Font)i,&t)) break;
                   }
                   if ( i >= num ) i = 0;
-                  
+                      shape->font( (Fl_Font)i );
 
-                  shape->font( fonts[i] );
                   is >> font_size >> shape->r >> shape->g >> shape->b 
                      >> shape->a
                      >> shape->frame;

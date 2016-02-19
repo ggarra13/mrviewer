@@ -35,7 +35,7 @@
 #include <limits>
 #include <algorithm>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 #include <boost/bind.hpp>
 
 #include "stubImage.h"
@@ -732,7 +732,7 @@ void stubImage::thread_exit()
 
   void stubImage::parse_stub()
   {
-    FILE* f = fltk::fltk_fopen( filename(), N_("rb") );
+    FILE* f = fl_fopen( filename(), N_("rb") );
     char data[129];
     size_t num = fread(data, sizeof(char), 129, f);
     if ( num != 128 ) {

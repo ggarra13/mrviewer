@@ -31,7 +31,7 @@
 #include <iostream>
 #include <algorithm>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "ImathMath.h" // for Math:: functions
 #include "hdrImage.h"
@@ -388,7 +388,7 @@ namespace mrv {
 
     try {
 
-       FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+       FILE* f = fl_fopen( sequence_filename(frame).c_str(), "rb" );
        if ( f == NULL ) EXCEPTION("could not open file");
 
       read_header(f);

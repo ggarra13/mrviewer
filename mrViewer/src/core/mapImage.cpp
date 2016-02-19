@@ -39,7 +39,7 @@
 #  include <netinet/in.h>  // for htonl, etc.
 #endif
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "byteSwap.h"
 #include "mrvThread.h"
@@ -157,7 +157,7 @@ namespace mrv {
 
     _stub = is_stub();
 
-    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+    FILE* f = fl_fopen( sequence_filename(frame).c_str(), "rb" );
     mapHeader header;
 
     size_t ok = fread( &header, sizeof(header), 1, f );

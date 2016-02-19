@@ -26,10 +26,7 @@
 
 #include <boost/shared_ptr.hpp>
 
-namespace fltk
-{
-struct Font;
-}
+typedef int Fl_Font;
 
 namespace mrv
 {
@@ -114,7 +111,7 @@ class GLErasePathShape : public GLPathShape
 class GLTextShape : public GLPathShape
 {
    public:
-     GLTextShape() : _font(NULL), _zoom(0), _fontsize(8), _charset(0), 
+     GLTextShape() : _font(0), _zoom(0), _fontsize(8), _charset(0), 
                      GLPathShape() {};
      ~GLTextShape();
 
@@ -123,8 +120,8 @@ class GLTextShape : public GLPathShape
      void text( std::string t ) { _text = t; }
      std::string text() const   { return _text; }
 
-     void font( fltk::Font* f ) { _font = f; }
-     fltk::Font* font() const   { return _font; }
+     void font( Fl_Font f ) { _font = f; }
+     Fl_Font font() const   { return _font; }
 
      void size( unsigned f ) { _fontsize = f; }
      unsigned size() const   { return _fontsize; }
@@ -133,7 +130,7 @@ class GLTextShape : public GLPathShape
      virtual std::string send() const;
 
    protected:
-     fltk::Font* _font;
+     Fl_Font _font;
      std::string _text, _encoding;
      float    _zoom;
      int      _fontsize;

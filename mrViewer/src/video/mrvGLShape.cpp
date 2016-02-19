@@ -41,10 +41,8 @@
 
 #  define CHECK_GL(x) GLEngine::handle_gl_errors( N_( x ) )
 
-#include <fltk/gl.h>
-#include <fltk/Font.h>
-
-#include <fltk/draw.h>
+#include <FL/gl.h>
+#include <FL/Fl.H>
 
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -196,11 +194,13 @@ std::string GLTextShape::send() const
 {
    std::string buf = "GLTextShape ";
 
-   fltk::Font* f = font();
+   Fl_Font f = font();
    if (!f) return "";
 
+   int t;
    char tmp[512];
-   sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, font()->name(),
+   sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, 
+            Fl::get_font_name(font(), &t),
             text().c_str(), size(), r, g, b, a, frame );
    buf += tmp;
    sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
@@ -231,7 +231,7 @@ void GLTextShape::draw( double z )
    glColor4f( r, g, b, a );
 
    if ( font() )
-       fltk::glsetfont(font(), size()*float(z) );
+       gl_font(font(), size()*float(z) );
 
    glTexEnvi(GL_TEXTURE_ENV, GL_TEXTURE_ENV_MODE, GL_MODULATE);
 
@@ -249,14 +249,14 @@ void GLTextShape::draw( double z )
        std::string t;
        if (pos > 0 )
            t = txt.substr( 0, pos );
-       fltk::gldrawtext(t.c_str());
+       gl_draw(t.c_str());
        if ( txt.size() > pos+1 )
            txt = txt.substr( pos+1, txt.size() );
    }
    if ( txt.size() )
    {
        glRasterPos2d( pts[0].x, GLfloat(y) );
-       fltk::gldrawtext(txt.c_str());
+       gl_draw(txt.c_str());
    }
 }
 

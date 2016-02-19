@@ -35,7 +35,7 @@
 #include <netinet/in.h>
 #endif
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "iffImage.h"
 #include "byteSwap.h"
@@ -472,7 +472,7 @@ namespace mrv {
 
     SCOPED_LOCK( _mutex );
 
-    FILE* f = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+    FILE* f = fl_fopen( sequence_filename(frame).c_str(), "rb" );
     if (!f) return false;
 
     iffHeader header;

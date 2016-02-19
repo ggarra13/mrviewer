@@ -58,7 +58,7 @@ void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& physMemUsedByMe);
 
   std::string cpu_information();
-  std::string gpu_information( mrv::ViewerUI* uiMain );
+  std::string gpu_information( ViewerUI* uiMain );
 
 } // namespace mrv
 

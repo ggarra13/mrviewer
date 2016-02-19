@@ -132,23 +132,22 @@ SET( SOURCES
  ../core/mrvFrame.cpp
  ../core/mrvHome.cpp
  ../core/guessImage.cpp
- #  core/aviImage.cpp
- #  core/aviImage_save.cpp
- #  core/clonedImage.cpp
- #  core/ddsImage.cpp
+ ../core/aviImage.cpp
+ ../core/aviImage_save.cpp
+ ../core/clonedImage.cpp
+ ../core/ddsImage.cpp
  ../core/exrImage.cpp
- #  core/hdrImage.cpp
- #  core/iffImage.cpp
- #  core/mapImage.cpp
- #  core/mrayImage.cpp
+ ../core/hdrImage.cpp
+ ../core/iffImage.cpp
+ ../core/mapImage.cpp
+ ../core/mrayImage.cpp
  #  core/mrvColorBarsImage.cpp
- #  core/pxrzImage.cpp
- #  core/shmapImage.cpp
+ ../core/pxrzImage.cpp
+ ../core/shmapImage.cpp
  #  core/slateImage.cpp
  #  core/smpteImage.cpp
- #  core/stubImage.cpp
- #  core/wandImage.cpp
- #  # core/magickImage.cpp
+ ../core/stubImage.cpp
+ ../core/wandImage.cpp
 
  ../core/mrSocket.cpp
  # ../core/mrvClient.cpp
@@ -168,8 +167,8 @@ SET( SOURCES
  #  core/mrvPC1.cpp
  ../core/Sequence.cpp
  #  core/mrStackTrace.cpp
- #  core/mrvCPU.cpp
- #  core/mrvColorProfile.cpp
+ ../core/mrvCPU.cpp
+ ../core/mrvColorProfile.cpp
  #  core/mrvImageOpts.cpp
 
  # # db/mrvDatabase.cpp
@@ -199,7 +198,7 @@ SET( SOURCES
  #  gui/mrvFLTKHandler.cpp
  #  gui/mrvFontsWindowUI.cpp
  #  gui/mrvHistogram.cpp
- ../gui/mrvImageView.cpp
+ # ../gui/mrvImageView.cpp
  # ../gui/mrvImageBrowser.cpp
  #  gui/mrvImageInformation.cpp
  ../gui/mrvIO.cpp
@@ -207,14 +206,14 @@ SET( SOURCES
  #  gui/mrvMediaTrack.cpp
  #  gui/mrvMainWindow.cpp
  #  gui/mrvPopupMenu.cpp
- #  gui/mrvPreferences.cpp
+ # ../gui/mrvPreferences.cpp
  #  gui/mrvPreferencesBrowser.cpp
- #  gui/mrvProgressReport.cpp
+ ../gui/mrvProgressReport.cpp
  ../gui/mrvReel.cpp
  #  gui/mrvTimecode.cpp
  #  gui/mrvTimeline.cpp
  #  gui/mrvVectorscope.cpp
- #  gui/mrvVersion.cpp
+ ../gui/mrvVersion.cpp
  ../gui/mrvDoubleWindow.cpp
 
  #  video/mrvDrawEngine.cpp
@@ -222,7 +221,7 @@ SET( SOURCES
  #  video/mrvGLShader.cpp
  #  video/mrvGLQuad.cpp
  #  video/mrvGLLut3d.cpp
- #  video/mrvGLShape.cpp
+ ../video/mrvGLShape.cpp
 
  #  standalone/mrvRoot.cpp
  #  standalone/mrvCommandLine.cpp

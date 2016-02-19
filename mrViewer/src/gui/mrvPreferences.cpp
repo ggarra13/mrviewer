@@ -35,17 +35,15 @@
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
-#include <fltk/Style.h>
-#include <fltk/InputBrowser.h>
-#include <fltk/Box.h>
-#include <fltk/InvisibleBox.h>
-#include <fltk/Browser.h>
-#include <fltk/Button.h>
-#include <fltk/Preferences.h>
-#include <fltk/ProgressBar.h>
-#include <fltk/Tooltip.h>
-#include <fltk/StyleSet.h>
-#include <fltk/run.h>
+//#include <FL/Fl_Input_Browser.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Browser.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Preferences.H>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Tooltip.H>
+#include <FL/Fl_StyleSet.H>
+#include <FL/Fl.H>
 
 // OpenEXR threadcount
 #include <OpenEXR/ImfThreading.h>
@@ -75,7 +73,7 @@ namespace fs = boost::filesystem;
 #include "mrvColorAreaUI.h"
 #include "mrViewer.h"
 
-extern fltk::NamedStyle* group_style;
+//extern fltk::NamedStyle* group_style;
 
 namespace 
 {
@@ -238,7 +236,7 @@ namespace
   Imf::Chromaticities chromaticities(
 				     const char* variable,
 				     const Imf::Chromaticities& defaultValue, 
-				     fltk::Preferences& chroma
+				     Fl_Preferences& chroma
 				     )
   {
     Imf::Chromaticities tmpC;
@@ -255,15 +253,16 @@ namespace
 }
 
 
+AboutUI*          ViewerUI::uiAbout = NULL;
+LogUI*            ViewerUI::uiLog   = NULL;
+PreferencesUI*    ViewerUI::uiPrefs = NULL;
+ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
+HotkeyUI*         ViewerUI::uiHotkey = NULL;
+
 namespace mrv {
 
 fltk::StyleSet*     scheme = NULL;
 fltk::StyleSet*     newscheme = NULL;
-  AboutUI*          ViewerUI::uiAbout = NULL;
-  LogUI*            ViewerUI::uiLog   = NULL;
-  PreferencesUI*    ViewerUI::uiPrefs = NULL;
-  ICCProfileListUI* ViewerUI::uiICCProfiles = NULL;
-  HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
   bool                Preferences::native_file_chooser;
   std::string         Preferences::ODT_CTL_transform;

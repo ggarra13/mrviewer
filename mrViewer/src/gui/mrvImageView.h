@@ -33,7 +33,7 @@
 #include <boost/shared_array.hpp>
 
 
-#include <fltk/GlWindow.h>  // this should be just Window
+#include <FL/Fl_Gl_Window.H>  // this should be just Window
 
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
@@ -60,7 +60,7 @@ class Event;
 class Parser;
 class server;
 
-  class ImageView : public fltk::GlWindow
+class ImageView : public Fl_Gl_Window
   {
   public:
     enum Actions {
@@ -231,7 +231,7 @@ class server;
     float volume() { return _volume; }
 
     /// Change channel shown in viewer
-      void channel( fltk::Widget* w ); // widget is one of the menus or submenus
+      void channel( Fl_Widget* w ); // widget is one of the menus or submenus
       void channel( unsigned short c );
       unsigned short channel() const { return _channel; };
 
@@ -366,10 +366,10 @@ class server;
     const ViewerUI* main() const { return uiMain; }
 
     /// Auxiliary function to return viewer's main fltk window
-    fltk::Window* fltk_main();
+    Fl_Window* fltk_main();
 
     /// Auxiliary function to return viewer's main fltk window
-    const fltk::Window* fltk_main() const;
+    const Fl_Window* fltk_main() const;
 
     /// Auxiliary function to return reel list's browser for this view
     ImageBrowser* browser();
