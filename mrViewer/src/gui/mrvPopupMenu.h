@@ -31,11 +31,11 @@
 #ifndef fltk_MyPopupMenu_h
 #define fltk_MyPopupMenu_h
 
-#include "fltk/PopupMenu.h"
+#include "FL/Fl_Menu_Button.H"
 
 namespace mrv {
 
-class FL_API PopupMenu : public fltk::PopupMenu {
+class PopupMenu : public Fl_Menu_Button {
 public:
     PopupMenu(int,int,int,int,const char* =0);
 

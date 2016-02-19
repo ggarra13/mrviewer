@@ -30,10 +30,11 @@
 
 #include <ImfChromaticities.h>
 
+class ViewerUI;
+class PreferencesUI;
+
 namespace mrv {
 
-  class ViewerUI;
-  class PreferencesUI;
 
   class Preferences 
   {
@@ -58,7 +59,7 @@ namespace mrv {
     Preferences( PreferencesUI* ui );
     ~Preferences();
 
-    static void run( mrv::ViewerUI* main );
+    static void run( ViewerUI* main );
     static void save();
 
     static std::string temporaryDirectory() { return tempDir; }

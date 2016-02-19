@@ -285,7 +285,7 @@ fltk::StyleSet*     newscheme = NULL;
   int   Preferences::selectiontextcolor;
 
 
-  Preferences::Preferences( mrv::PreferencesUI* uiPrefs )
+  Preferences::Preferences( PreferencesUI* uiPrefs )
   {
     bool ok;
     int version;
@@ -792,9 +792,9 @@ fltk::StyleSet*     newscheme = NULL;
   }
 
 
-  void Preferences::run( mrv::ViewerUI* main )
+  void Preferences::run( ViewerUI* main )
   {
-    mrv::PreferencesUI* uiPrefs = main->uiPrefs;
+    PreferencesUI* uiPrefs = main->uiPrefs;
 
 
     //
@@ -1040,7 +1040,7 @@ fltk::StyleSet*     newscheme = NULL;
   void Preferences::save()
   {
     int i;
-    mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
+    PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
 
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
@@ -1618,7 +1618,7 @@ fltk::StyleSet*     newscheme = NULL;
       }
 
     // Set ui window settings
-    mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
+    PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
     uiPrefs->uiODT_CTL_transform->value( ODT_CTL_transform.c_str() );
     uiPrefs->uiODT_CTL_chromaticities_red_x->value( ODT_CTL_chromaticities.red.x );
     uiPrefs->uiODT_CTL_chromaticities_red_y->value( ODT_CTL_chromaticities.red.y );

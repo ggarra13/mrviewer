@@ -28,11 +28,11 @@
 #ifndef mrvLogDisplay_h
 #define mrvLogDisplay_h
 
-#include <fltk/TextDisplay.h>
+#include <FL/Fl_Text_Display.H>
 
 namespace mrv {
 
-  class LogDisplay : public fltk::TextDisplay
+  class LogDisplay : public Fl_Text_Display
   {
   public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
@@ -44,6 +44,8 @@ namespace mrv {
     void info( const char* x );
     void warning( const char* x );
     void error( const char* x );
+
+      Fl_Text_Buffer* stylebuffer_;
   };
 
 }

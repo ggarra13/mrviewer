@@ -29,8 +29,8 @@
 #include <cstring>
 #include <cstdlib>
 
-#include <fltk/TextBuffer.h>
-#include <fltk/run.h>
+#include <FL/fl_utf8.h>
+#include <FL/Fl_Text_Buffer.H>
 
 #include "core/mrvHome.h"
 #include "gui/mrvLogDisplay.h"
@@ -38,23 +38,20 @@
 namespace mrv {
   
   // Style table
-  fltk::TextDisplay::StyleTableEntry kLogStyles[] = {
+  Fl_Text_Display::Style_Table_Entry kLogStyles[] = {
     // FONT COLOR      FONT FACE   SIZE   ATTR
     // --------------- ----------- ----- ------
-    {  fltk::BLACK,  fltk::COURIER, 14,   0 }, // A - Info
-    {  fltk::DARK_YELLOW, fltk::COURIER, 14,   0 }, // B - Warning
-    {  fltk::RED,    fltk::COURIER, 14,   0 }, // C - Error
+    {  FL_BLACK,  FL_COURIER, 14,   0 }, // A - Info
+    {  FL_DARK_YELLOW, FL_COURIER, 14,   0 }, // B - Warning
+    {  FL_RED,    FL_COURIER, 14,   0 }, // C - Error
   };
 
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
-    fltk::TextDisplay( x, y, w, h, l )
+  Fl_Text_Display( x, y, w, h, l )
   {
-    color( fltk::GRAY75 );
+    color( FL_GRAY );
 
-    if ( !stylebuffer_ )
-      {
-	stylebuffer_ = new fltk::TextBuffer();
-      }
+    stylebuffer_ = new Fl_Text_Buffer();
 
     highlight_data(stylebuffer_, kLogStyles, 3, 'A', 0, 0);
   }
@@ -66,8 +63,8 @@ namespace mrv {
 
   void LogDisplay::clear()
   {
-    buffer_->text("");
-    stylebuffer_->text("");
+      buffer()->text("");
+      stylebuffer_->text("");
   }
 
   void LogDisplay::save( const char* file )
@@ -84,10 +81,10 @@ namespace mrv {
 
     try {
       
-       f = fltk::fltk_fopen( file, "w" );
+       f = fl_fopen( file, "w" );
 
       if ( !f ) throw;
-      if ( fputs( buffer_->text(), f ) < 0 ) throw;
+      if ( fputs( buffer()->text(), f ) < 0 ) throw;
 
       info( "Saved log as \"" );
       info( file );
@@ -104,25 +101,25 @@ namespace mrv {
   
   void LogDisplay::info( const char* x )
   {
-    buffer_->append( x );
+      buffer()->append( x );
 
-    size_t t = strlen(x);
-    while( t-- )
-      stylebuffer_->append( "A" );
+      size_t t = strlen(x);
+      while( t-- )
+          stylebuffer_->append( "A" );
   }
 
   void LogDisplay::warning( const char* x )
   {
-    buffer_->append( x );
+      buffer()->append( x );
 
-    size_t t = strlen(x);
-    while( t-- )
-      stylebuffer_->append( "B" );
+      size_t t = strlen(x);
+      while( t-- )
+          stylebuffer_->append( "B" );
   }
 
   void LogDisplay::error( const char* x )
   {
-    buffer_->append( x );
+      buffer()->append( x );
 
     size_t t = strlen(x);
     while( t-- )

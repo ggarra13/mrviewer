@@ -30,12 +30,12 @@
 
 #include <string>
 
-#include <fltk/Browser.h>
+#include <FL/Fl_Browser.H>
 
 
 namespace mrv {
 
-  class CTLBrowser : public fltk::Browser
+  class CTLBrowser : public Fl_Browser
   {
   public:
     CTLBrowser(int x, int y, int w, int h, const char* l = 0);
