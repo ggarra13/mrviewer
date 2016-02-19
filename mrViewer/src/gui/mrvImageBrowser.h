@@ -43,8 +43,6 @@
 
 class Fl_Choice;
 class Fl_Button;
-
-
 class ViewerUI;
 class EDLGroup;
 
@@ -55,8 +53,8 @@ class Timeline;
 class ImageView;
 
 
-void start_button_cb(Fl_Button* o, mrv::ViewerUI* v);
-void end_button_cb(Fl_Button* o, mrv::ViewerUI* v);
+void start_button_cb(Fl_Button* o, ViewerUI* v);
+void end_button_cb(Fl_Button* o, ViewerUI* v);
 
 class ImageBrowser : public Fl_Browser
 {
@@ -167,8 +165,8 @@ class ImageBrowser : public Fl_Browser
      virtual void draw();
      virtual int handle( int event );
 
-     void main( mrv::ViewerUI* m ) { uiMain = m; }
-     mrv::ViewerUI* main() { return uiMain; }
+     void main( ViewerUI*& m ) { uiMain = m; }
+     ViewerUI* main() { return uiMain; }
 
    public:
      static mrv::Element* new_item(mrv::media img);
