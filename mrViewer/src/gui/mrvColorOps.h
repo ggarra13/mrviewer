@@ -25,10 +25,10 @@
  * 
  */
 
-#include <fltk/Color.h>
+#include <FL/Fl.H>
 
 namespace mrv {
 
-  fltk::Color darker(  fltk::Color c, uchar v = 0x20 );
-  fltk::Color lighter( fltk::Color c, uchar v = 0x20 );
+  Fl_Color darker( Fl_Color c, uchar v = 0x20 );
+  Fl_Color lighter( Fl_Color c, uchar v = 0x20 );
 }

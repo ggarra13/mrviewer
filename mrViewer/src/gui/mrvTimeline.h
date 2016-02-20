@@ -31,6 +31,7 @@
 
 #include <FL/Fl_Slider.H>
 
+#include "core/mrvRectangle.h"
 #include "gui/mrvTimecode.h"
 #include "gui/mrvMedia.h"
 
@@ -99,12 +100,12 @@ namespace mrv
       bool draw_cache() const { return _draw_cache; }
 
   protected:
-    bool draw(const fltk::Rectangle& sr, fltk::Flags flags, bool slot);
-    void draw_ticks(const fltk::Rectangle& r, int min_spacing);
+      bool draw(const mrv::Recti& sr, int flags, bool slot);
+      void draw_ticks(const mrv::Recti& r, int min_spacing);
 
     void draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                          int64_t mn, int64_t mx, int64_t frame, 
-                         const fltk::Rectangle& r );
+                         const mrv::Recti& r );
 
     ImageBrowser* browser() const;
 

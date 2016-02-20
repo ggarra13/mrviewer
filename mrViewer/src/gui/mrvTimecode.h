@@ -29,7 +29,7 @@
 #ifndef mrvTimecode_h
 #define mrvTimecode_h
 
-#include <fltk/ValueInput.h>
+#include <FL/Fl_Value_Input.H>
 
 #include "mrvInteger.h"
 
@@ -37,7 +37,7 @@
 namespace mrv
 {
 
-  class Timecode : public fltk::FloatInput
+  class Timecode : public Fl_Value_Input
   {
   public:
     enum Display

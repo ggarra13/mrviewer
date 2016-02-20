@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -25,28 +26,30 @@
  * 
  */
 
+#include <FL/Fl.H>
 
 #include "gui/mrvColorOps.h"
 
 namespace mrv {
 
-  fltk::Color darker( fltk::Color c, uchar v )
+  Fl_Color darker( Fl_Color c, uchar v )
   {
     uchar r,g,b;
-    fltk::split_color( c, r, g, b );
+    Fl::get_color( c, r, g, b );
     if (r > v ) r -= v;
     else r = 0;
     if (g > v ) g -= v;
     else g = 0;
     if (b > v ) b -= v;
     else b = 0;
-    return fltk::color( r, g, b );
+    Fl::set_color( c, r, g, b );
+    return c;
   }
 
-  fltk::Color lighter( fltk::Color c, uchar v )
+  Fl_Color lighter( Fl_Color c, uchar v )
   {
     uchar r,g,b;
-    fltk::split_color( c, r, g, b );
+    Fl::get_color( c, r, g, b );
 
     if ( 0xff - r > v ) r += v;
     else r = 0xff;
@@ -55,7 +58,8 @@ namespace mrv {
     if ( 0xff - b > v ) b += v;
     else b = 0xff;
 
-    return fltk::color( r, g, b );
+    Fl::set_color( c, r, g, b );
+    return c;
   }
 
 }

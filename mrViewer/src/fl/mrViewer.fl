@@ -107,7 +107,7 @@ decl {\#include "FL/Fl_Color_Chooser.H"} {private local
 decl {\#include "FL/fl_ask.H"} {private local
 } 
 
-decl {\#include "FL/Fl.H"} {private local
+decl {\#include "FL/Fl.H"} {selected public global
 } 
 
 decl {\#include "namespace.h"} {public global
@@ -118,8 +118,8 @@ Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_ty
   code {std::string orig = ctl;} {}
   Fl_Window {} {
     label {CTL Browser} open
-    xywh {484 321 395 440} type Double resizable hotspot
-    class mrvDoubleWindow modal visible
+    xywh {484 321 395 440} type Double hide resizable hotspot
+    class mrvDoubleWindow modal
   } {
     Fl_Group {} {open
       xywh {10 25 375 405}
@@ -155,7 +155,7 @@ if ( !ctl.empty() )
       Fl_Button {} {
         label Cancel
         user_data w user_data_type {mrvDoubleWindow*}
-        callback {v->make_exec_return(false);} selected
+        callback {v->make_exec_return(false);}
         xywh {300 400 80 25}
       }
     }
@@ -1894,15 +1894,15 @@ v->uiPrefs->run(v);}
     code {delete uiMain; uiMain = NULL;} {}
   }
   Function {refresh()} {} {
-    code {fltk::Window* w = fltk::Window::first();
-for ( ; w ; w = w->next() )
+    code {Fl_Window* w = first_window();
+for ( ; w ; w = next_window(w) )
    w->redraw();} {}
   }
   Function {run(ViewerUI* m)} {open
   } {
     code {mrv::Preferences::run( m );
-fltk::Window* w = fltk::Window::first();
-for ( ; w ; w = w->next() )
+Fl_Window* w = first_window();
+for ( ; w ; w = next_window(w) )
    w->redraw();} {}
   }
 } 
@@ -2331,14 +2331,16 @@ else
         }
         Fl_Button uiPenColor {
           label {Pen Color}
-          callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick Draw Color", r,g,b)) return;
+          callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick Draw Color", r,g,b,3)) return;
+set_color(c,r,g,b);
 if ( r == 0 && g == 0 && b == 0 )
-  o->color( fltk::BLACK );
+   o->color( FL_BLACK );
 else
-  o->color( fltk::color( r,g,b ) );
-o->redraw();}
+   o->color( c );
+o->redraw();
+v->refresh();}
           tooltip {Selects the current pen color.} xywh {87 160 25 25} box EMBOSSED_BOX color 167706624 labelsize 11 align 4
         }
         Fl_Group {} {
@@ -3308,7 +3310,7 @@ v->uiFPS->value( g );} open
                       user_data this user_data_type {ViewerUI*}
                       callback {v->uiView->fps( o->value() );}
                       tooltip {Allows you to adjust frame rate playback.} xywh {344 513 35 18} color -1733777408 selection_color 0
-                      code0 {o->textcolor( fltk::BLACK );
+                      code0 {o->textcolor( FL_BLACK );
 o->value(24);}
                       class Fl_Value_Input
                     }

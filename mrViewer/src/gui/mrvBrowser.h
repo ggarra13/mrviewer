@@ -67,12 +67,12 @@ protected:
 			   const Fl_Widget* item,
 			   const Fl_Widget* child );
 
-  void change_cursor( Fl_Cursor* cursor );
+  void change_cursor( Fl_Cursor cursor );
   int which_col_near_mouse();
 
 protected:
   Fl_Color  _column_separator_color;	// color of column separator lines 
-  Fl_Cursor* _last_cursor;	// saved cursor state info
+  Fl_Cursor _last_cursor;	// saved cursor state info
   int       _dragcol;		// col# user is currently dragging
   bool      _column_separator;	// flag to enable drawing column separators
   bool      _dragging;	// true if user dragging a column

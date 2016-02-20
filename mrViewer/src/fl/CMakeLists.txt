@@ -141,16 +141,16 @@ SET( SOURCES
  ../core/iffImage.cpp
  ../core/mapImage.cpp
  ../core/mrayImage.cpp
- #  core/mrvColorBarsImage.cpp
+ ../core/mrvColorBarsImage.cpp
  ../core/pxrzImage.cpp
  ../core/shmapImage.cpp
- #  core/slateImage.cpp
- #  core/smpteImage.cpp
+ ../core/slateImage.cpp
+ ../core/smpteImage.cpp
  ../core/stubImage.cpp
  ../core/wandImage.cpp
 
  ../core/mrSocket.cpp
- # ../core/mrvClient.cpp
+ ../core/mrvClient.cpp
  ../core/mrvServer.cpp
  ../core/mrvAudioEngine.cpp
  ../core/mrvColor.cpp
@@ -181,20 +181,20 @@ SET( SOURCES
  #  gui/FLU/GridGroup.cpp
  #  #   #   FLU/Flu_Combo_List.cpp # unneeded
 
- #  gui/mrvGlWindow3d.cpp
+ ../gui/mrvGlWindow3d.cpp
  ../gui/mrvHotkey.cpp
- #  gui/mrvColorOps.cpp
+ ../gui/mrvColorOps.cpp
  ../gui/mrvMedia.cpp
- #  gui/mrvBrowser.cpp
- #  gui/mrvCTLBrowser.cpp
+ ../gui/mrvBrowser.cpp
+ # gui/mrvCTLBrowser.cpp
  ../gui/mrvCollapsableGroup.cpp
- #  gui/mrvColorInfo.cpp
+ ../gui/mrvColorInfo.cpp
  #  # gui/mrvDatabaseBrowser.cpp
- #  gui/mrvEDLGroup.cpp
+ ../gui/mrvEDLGroup.cpp
  #  gui/mrvFileRequester.cpp
  #  gui/mrvFLTKHandler.cpp
  ../gui/mrvFontsWindowUI.cpp
- #  gui/mrvHistogram.cpp
+ ../gui/mrvHistogram.cpp
  # ../gui/mrvImageView.cpp
  # ../gui/mrvImageBrowser.cpp
  #  gui/mrvImageInformation.cpp

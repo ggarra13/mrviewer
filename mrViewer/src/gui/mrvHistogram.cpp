@@ -32,7 +32,7 @@
 #define isfinite(x) _finite(x)
 #endif
 
-#include <FL/fl_draw.h>
+#include <FL/fl_draw.H>
 #include <FL/Enumerations.H>
 
 #include "GL/glew.h"
@@ -66,9 +66,7 @@ namespace mrv
     lastFrame( std::numeric_limits< int64_t >::min() )
   {
     color( FL_BLACK );
-    buttoncolor( FL_BLACK );
-
-    add_timeout(0.016f);
+    // buttoncolor( FL_BLACK );  // @todo: fltk1.3
   }
 
 
@@ -87,11 +85,10 @@ void Histogram::draw_grid(const mrv::Recti& r)
 
   void Histogram::draw()
   {
-    fltk::Rectangle r( w(), h() );
-    draw_box(r);
+      mrv::Recti r( w(), h() );
+      draw_box(); // @todo:: fltk1.3
 
-    // draw_grid(r);
-    draw_pixels(r);
+      draw_pixels(r);
   }
 
 
@@ -308,17 +305,17 @@ void Histogram::draw_pixels( const mrv::Recti& r )
 	idx = int( ((float) i / (float) W) * 255 );
 	if ( _channel == kLumma )
 	  {
-              fl_color( fltk::GRAY );
+              fl_color( FL_GRAY );
               v = histogram_scale( lumma[idx], maxL );
               int y = int(HH*v);
-              fl_drawline( x, H, x, H-y );
+              fl_line( x, H, x, H-y );
 	  }
 
 	if ( _channel == kRed || _channel == kRGB )
 	  {
 	    fl_color( FL_RED );
 	    v = histogram_scale( red[idx], maxR );
-	    fl_drawline( x, H, x, H-int(HH*v) );
+	    fl_line( x, H, x, H-int(HH*v) );
 	  }
 
 	if ( _channel == kGreen || _channel == kRGB )
@@ -326,7 +323,7 @@ void Histogram::draw_pixels( const mrv::Recti& r )
 	    fl_color( FL_GREEN );
 	    v = histogram_scale( green[idx], maxG );
             int y = int(HH*v);
-	    fl_drawline( x, H, x, H-y );
+	    fl_line( x, H, x, H-y );
 	  }
 
 	if ( _channel == kBlue || _channel == kRGB )
@@ -334,7 +331,7 @@ void Histogram::draw_pixels( const mrv::Recti& r )
 	    fl_color( FL_BLUE );
 	    v = histogram_scale( blue[idx], maxB );
             int y = int(HH*v);
-	    fl_drawline( x, H, x, H-y );
+	    fl_line( x, H, x, H-y );
 	  }
       }
   }

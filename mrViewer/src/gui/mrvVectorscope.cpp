@@ -59,8 +59,8 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     fl_push_matrix();
     fl_translate( r.w()/2 - W, r.h()/2 - H );
-    fl_drawline( W, 0, W, diameter_ );
-    fl_drawline( 0, H, diameter_, H );
+    fl_line( W, 0, W, diameter_ );
+    fl_line( 0, H, diameter_, H );
     fl_pop_matrix();
 
     int W2 = r.w() / 2;
@@ -72,7 +72,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_push_matrix();
         fl_translate( W2, H2 );
 	fl_rotate(angle);
-	fl_drawline( 0, 4, 0, R2 );
+	fl_line( 0, 4, 0, R2 );
 	fl_pop_matrix();
       }
 
@@ -105,10 +105,10 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_rotate(angle);
 	fl_translate( 0, int(W * 0.75f) );
 
-        fl_drawline( -RW, -RH, RW, -RH ); 
-	fl_drawline( RW, -RH, RW, RH ); 
-	fl_drawline( -RW,  RH, RW, RH ); 
-	fl_drawline( -RW,  RH, -RW, -RH );
+        fl_line( -RW, -RH, RW, -RH ); 
+	fl_line( RW, -RH, RW, RH ); 
+	fl_line( -RW,  RH, RW, RH ); 
+	fl_line( -RW,  RH, -RW, -RH );
 
 	fl_translate( 0, int(W * 0.15f) );
 
@@ -150,7 +150,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     fl_translate( r.w()/2, r.h()/2 );
     fl_rotate( -165.0f + hsv.r * 360.0f );
     fl_scale( hsv.g * 0.375f );
-    fl_drawline( 0, diameter_, 1, diameter_+1 );
+    fl_line( 0, diameter_, 1, diameter_+1 );
     fl_pop_matrix();
   }
 

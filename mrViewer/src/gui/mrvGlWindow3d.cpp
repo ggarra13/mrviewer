@@ -356,23 +356,23 @@ GlWindow3d::draw()
 int
 GlWindow3d::handle (int event)
 {
-    if ( event == fltk::ENTER )
+    if ( event == FL_ENTER )
     {
         focus(this);
         return 1;
     }
 
-    if (event == fltk::FOCUS ) {
+    if (event == FL_FOCUS ) {
         return 1;
     }
 
-    if (fltk::event_button() == fltk::LeftButton )
+    if (Fl::event_button() == FL_LEFT_MOUSE )
     {
         switch (event)
         {
-            case fltk::PUSH:
-                _mouseStartX = fltk::event_x();
-                _mouseStartY = fltk::event_y();
+            case FL_PUSH:
+                _mouseStartX = Fl::event_x();
+                _mouseStartY = Fl::event_y();
 
                 if (fabs(_elevation) > 90.0)
                 {
@@ -384,11 +384,11 @@ GlWindow3d::handle (int event)
                 }
                 return 1;
                 break;
-            case fltk::DRAG:
-            case fltk::RELEASE:
+            case FL_DRAG:
+            case FL_RELEASE:
             {
-                int x = fltk::event_x();
-                int y = fltk::event_y();
+                int x = Fl::event_x();
+                int y = Fl::event_y();
 
                 if (_inverted)
                 {
@@ -416,21 +416,21 @@ GlWindow3d::handle (int event)
         }
     }
 
-    if ( fltk::event_button() == fltk::MiddleButton )
+    if ( Fl::event_button() == FL_MIDDLE_MOUSE )
     {
         switch (event)
         {
-            case fltk::PUSH:
-                fltk::cursor (fltk::CURSOR_MOVE);
+            case FL_PUSH:
+                cursor( FL_CURSOR_MOVE );
                 return 1;
                 break;
-            case fltk::RELEASE:
-                fltk::cursor (fltk::CURSOR_DEFAULT);
+            case FL_RELEASE:
+                cursor( FL_CURSOR_DEFAULT );
                 return 1;
                 break;
-            case fltk::DRAG:
-                int x = fltk::event_x();
-                int y = fltk::event_y();
+            case FL_DRAG:
+                int x = Fl::event_x();
+                int y = Fl::event_y();
                 _translateX += (x - _mouseX) * 0.01;
                 _translateY += (y - _mouseY) * 0.01;
                 redraw();
@@ -438,21 +438,21 @@ GlWindow3d::handle (int event)
         }
     }
 
-    if ( event == fltk::MOUSEWHEEL )
+    if ( event == FL_MOUSEWHEEL )
     {
-        float delta = (float) fltk::event_dy();
+        float delta = (float) Fl::event_dy();
         _zoom += delta * 2.0f;
         redraw();
         return 1;
     }
 
-    if ( fltk::event_button() == fltk::RightButton )
+    if ( Fl::event_button() == FL_RIGHT_MOUSE )
     {
-        if ( event == fltk::PUSH ) return 1;
+        if ( event == FL_PUSH ) return 1;
 
-        if ( event == fltk::DRAG )
+        if ( event == FL_DRAG )
         {
-            int x = fltk::event_x();
+            int x = Fl::event_x();
             int dx = x - _mouseX;
             int delta = -dx;
             _zoom += delta * 0.2;
@@ -460,14 +460,14 @@ GlWindow3d::handle (int event)
         }
     }
 
-    _mouseX = fltk::event_x();
-    _mouseY = fltk::event_y();
+    _mouseX = Fl::event_x();
+    _mouseY = Fl::event_y();
 
 
 
-    if (event == fltk::KEY)
+    if (event == FL_KEYDOWN )
     {
-        unsigned rawkey = fltk::event_key();
+        unsigned rawkey = Fl::event_key();
         
         if ( kZDepthUp.match( rawkey ) ) //scale up
         {
@@ -505,7 +505,7 @@ GlWindow3d::handle (int event)
         }
     }
 
-    return fltk::GlWindow::handle( event );
+    return Fl_Gl_Window::handle( event );
 }
 
 } // namespace mrv

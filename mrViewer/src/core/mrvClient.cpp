@@ -358,7 +358,7 @@ void client::create(ViewerUI* ui)
    data->port = port;
    char buf[128];
    sprintf( buf, "%d", port );
-   data->host = ui->uiConnection->uiClientServer->text();
+   data->host = ui->uiConnection->uiClientServer->value();
    data->group = buf;
    data->ui = ui;
 

@@ -15,6 +15,7 @@
 
     You should have received a copy of the GNU General Public License
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
 */
 /**
  * @file   mrvColorInfo.cpp
@@ -38,11 +39,13 @@ using namespace std;
 # define isfinite(x) _finite(x)
 #endif
 
-#include <fltk/events.h>
-#include <fltk/Menu.h>
-#include <fltk/PopupMenu.h>
-#include <fltk/Group.h>
-#include <fltk/Color.h>
+#include <FL/Enumerations.H>
+#include <FL/Fl_Menu.H>
+// #include <fltk/PopupMenu.h> // @todo: fltk1.3
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl.H>
+//#include <fltk/Color.h>
 
 
 #include "core/mrvThread.h"
@@ -93,13 +96,14 @@ namespace
       }
 
     // Copy text to both the clipboard and to X's XA_PRIMARY
-    fltk::copy( copy.c_str(), unsigned( copy.size() ), true );
-    fltk::copy( copy.c_str(), unsigned( copy.size() ), false );
+    Fl::copy( copy.c_str(), unsigned( copy.size() ), 1 );
+    Fl::copy( copy.c_str(), unsigned( copy.size() ), 0 );
   }
+
 
 }
 
-ViewerUI* ColorInfo::uiMain = NULL;
+ViewerUI* mrv::ColorInfo::uiMain = NULL;
 
 namespace mrv
 {
@@ -120,13 +124,16 @@ namespace mrv
     {
       if ( value() < 0 ) return 0;
 
-      fltk::Menu menu(0,0,0,0);
+      // @todo: fltk1.3
+#if 0
+      Fl_Menu menu(0,0,0,0);
 
       menu.add( _("Copy/Color"), 
 	       fltk::COMMAND + 'C', 
 	       (fltk::Callback*)copy_color_cb, (void*)this, 0);
 
       menu.popup( fltk::Rectangle( x, y, 80, 1) );
+#endif
       return 1;
     }
 
@@ -134,11 +141,11 @@ namespace mrv
     {
       switch( event )
 	{
-	case fltk::PUSH:
-	  if ( fltk::event_button() == 3 )
-	    return mousePush( fltk::event_x(), fltk::event_y() );
+	case FL_PUSH:
+	  if ( Fl::event_button() == 3 )
+	    return mousePush( Fl::event_x(), Fl::event_y() );
 	default:
-	  int ok = fltk::Browser::handle( event );
+	  int ok = Fl_Browser::handle( event );
 	  
 	  int line = value();
 	  if (( line < 1 || line > 10 ) ||
@@ -154,13 +161,13 @@ namespace mrv
   };
 
 
-class ColorWidget : public fltk::Widget
+class ColorWidget : public Fl_Group
 {
-    fltk::Browser* color_browser_;
+    Fl_Browser* color_browser_;
 
   public:
     ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
-    fltk::Widget( x, y, w, h, l )
+    Fl_Group( x, y, w, h, l )
     {
     }
 
@@ -168,6 +175,8 @@ class ColorWidget : public fltk::Widget
     {
         color_browser_->value( 4 );
 
+        // @todo: fltk1.3
+#if 0
       fltk::Menu menu(0,0,0,0);
 
       menu.add( _("Copy/Color"), 
@@ -175,33 +184,37 @@ class ColorWidget : public fltk::Widget
 	       (fltk::Callback*)copy_color_cb, (void*)color_browser_, 0);
 
       menu.popup( fltk::Rectangle( x, y, 80, 1) );
+#endif
+
       return 1;
     }
 
-    void color_browser( fltk::Browser* b ) { color_browser_ = b; }
+    void color_browser( Fl_Browser* b ) { color_browser_ = b; }
 
     int handle( int event )
     {
       switch( event )
       {
-          case fltk::PUSH:
-              if ( fltk::event_button() == 3 )
-                  return mousePush( fltk::event_x(), fltk::event_y() );
+          case FL_PUSH:
+              if ( Fl::event_button() == 3 )
+                  return mousePush( Fl::event_x(), Fl::event_y() );
+          case FL_ENTER:
+              return 1;
           default:
-            return fltk::Widget::handle( event );
+              return 0;
       }
     }
 };
 
 
 ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
-  fltk::Group( x, y, w, h, l )
+  Fl_Group( x, y, w, h, l )
 {
     dcol = new ColorWidget( 16, 10, 32, 32 );
 
-    area = new fltk::Widget( 100, 0, w, 50 );
-    area->box( fltk::FLAT_BOX );
-    area->align( fltk::ALIGN_LEFT | fltk::ALIGN_INSIDE );
+    area = new Fl_Box( 100, 0, w, 50 );
+    area->box( FL_FLAT_BOX );
+    area->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
 
   int w5 = w / 5;
   static int col_widths[] = { w5, w5, w5, w5, w5, 0 };
@@ -518,7 +531,7 @@ void ColorInfo::update( const CMedia* img,
 
       
 
-      fltk::Color col;
+      Fl_Color col;
 
       {
 
@@ -536,12 +549,10 @@ void ColorInfo::update( const CMedia* img,
           else if ( b > 1.f ) b = 1.0f;
           
           if ( r <= 0.001f && g <= 0.001f && b <= 0.001f )
-              col = fltk::BLACK;
+              col = FL_BLACK;
           else
           {
-              col = fltk::color((uchar)(r*255), 
-                                (uchar)(g*255), 
-                                (uchar)(b*255));
+              Fl::set_color(col, (uchar)(r*255), (uchar)(g*255), (uchar)(b*255));
           }
       }
 
@@ -725,8 +736,11 @@ void ColorInfo::update( const CMedia* img,
   area->redraw_label();
   for ( ; i != e; ++i )
     {
-      fltk::Widget* w = browser->add( (*i).c_str() );
-      w->align( fltk::ALIGN_CENTER );
+        browser->add( (*i).c_str() );
+#if 0  // @todo: fltk1.3
+        Fl_Widget* w = browser->item();
+        w->align( FL_ALIGN_CENTER );
+#endif
     }
 }
 

@@ -51,6 +51,7 @@ namespace mrv
 
     void main( ViewerUI* m ) { uiMain = m; }
 
+
     void update();
     void update( const CMedia* img,
 		 const mrv::Rectd& selection );
