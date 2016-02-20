@@ -63,11 +63,12 @@
 #endif
 
 #include <GL/gl.h>
+#include <FL/Enumerations.H>
+#include <FL/gl.h>
 
-#include <fltk/Cursor.h>
-#include <fltk/events.h>
-#include <fltk/draw.h>
-
+//#include <fltk/Cursor.h>
+//#include <fltk/events.h>
+//#include <fltk/draw.h>
 
 #define _USE_MATH_DEFINES
 #include <math.h>
@@ -88,7 +89,7 @@ using std::cerr;
 namespace mrv {
 
 GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l ) 
-  : fltk::GlWindow (x,y,w,h,l),
+  : Fl_Gl_Window (x,y,w,h,l),
     _dataZ( NULL ),
     _sampleCount( NULL ),
     _dx( 100 ),

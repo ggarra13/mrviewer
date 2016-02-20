@@ -114,7 +114,7 @@ namespace mrv {
 // message sending.
 //
 client::client(boost::asio::io_service& io_service,
-	       mrv::ViewerUI* v) :
+	       ViewerUI* v) :
 stopped_(false),
 deadline_(io_service),
 Parser( io_service, v )
@@ -351,7 +351,7 @@ void client::check_deadline()
 }
 
 
-void client::create(mrv::ViewerUI* ui)
+void client::create(ViewerUI* ui)
 {
    unsigned short port = (unsigned short) ui->uiConnection->uiClientPort->value();
    ServerData* data = new ServerData;
@@ -366,7 +366,7 @@ void client::create(mrv::ViewerUI* ui)
 				 data ) );
 }
 
-void client::remove( mrv::ViewerUI* ui )
+void client::remove( ViewerUI* ui )
 {
    ParserList::iterator i = ui->uiView->_clients.begin();
    ParserList::iterator e = ui->uiView->_clients.end();

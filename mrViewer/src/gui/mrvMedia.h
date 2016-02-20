@@ -27,16 +27,13 @@
 #ifndef mrv_gui_media_h
 #define mrv_gui_media_h
 
-#include <fltk/PixelType.h>
-#include <fltk/Image.h>
+//#include <fltk/PixelType.h>
+#include <FL/Fl_Image.H>
 
 #include <boost/shared_ptr.hpp>
 
 #include "core/CMedia.h"
 
-namespace fltk {
-  class Image;
-}
 
 
 namespace mrv {
@@ -61,8 +58,8 @@ namespace mrv {
 
       std::string name() const { return _image->name(); }
 
-      fltk::Image* thumbnail()             { return _thumbnail; }
-      const fltk::Image* thumbnail() const { return _thumbnail; }
+      Fl_Image* thumbnail()             { return _thumbnail; }
+      const Fl_Image* thumbnail() const { return _thumbnail; }
 
       bool thumbnail_frozen() const    { return _thumbnail_frozen; }
       void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
@@ -70,12 +67,12 @@ namespace mrv {
       void create_thumbnail();
 
     protected:
-      void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-			    uchar r, uchar g, uchar b );
+        void thumbnail_pixel( uchar*& ptr, /* PixelType pixeltype,*/
+                              uchar r, uchar g, uchar b );
 
 	 boost::int64_t  _pos;
 	 CMedia*   _image;
-	 fltk::Image* _thumbnail;
+	 Fl_Image* _thumbnail;
 	 bool         _thumbnail_frozen;
 
       public:

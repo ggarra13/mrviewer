@@ -19,20 +19,18 @@
 
 #ifndef mrvFontsWindowUI_h
 #define mrvFontsWindowUI_h
-#include <fltk/DoubleBufferWindow.h>
-extern fltk::DoubleBufferWindow* uiMain;
-#include <fltk/Group.h>
-#include <fltk/Input.h>
-#include <fltk/Choice.h>
-#include <fltk/ValueSlider.h>
 
-namespace fltk {
-struct Font;
-}
+#include <gui/mrvDoubleWindow.h>
+extern mrvDoubleWindow* uiMain;
+#include <FL/Fl_Group.H>
+#include <FL/Fl_Input.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Value_Slider.H>
+
 
 namespace mrv  {
 
-extern fltk::Font* font_current;
+extern Fl_Font  font_current;
 extern unsigned    font_size;
 extern std::string font_text;
 

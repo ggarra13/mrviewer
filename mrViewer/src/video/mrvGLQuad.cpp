@@ -924,7 +924,7 @@ namespace mrv {
 	    _shader->setUniform( "enableLut", 0 );
 	  }
 
-        const mrv::ViewerUI* v = _view->main();
+        const ViewerUI* v = _view->main();
         if (!v) return;
 
         switch ( v->uiPrefs->uiPrefsBlendMode->value() )
@@ -1044,7 +1044,7 @@ namespace mrv {
 
     if ( _lut_attempt >= 2 ) return;
 
-    _view->window()->cursor( fltk::CURSOR_WAIT );
+    _view->window()->cursor( FL_CURSOR_WAIT );
 
     {
         typedef CMedia::Mutex Mutex;
@@ -1052,13 +1052,13 @@ namespace mrv {
         CMedia::Mutex& m = image->video_mutex();
         SCOPED_LOCK( m );
 
-        fltk::check();
+        Fl::check();
     }
 
     _lut   = mrv::GLLut3d::factory( _view->main()->uiPrefs, img );
     _image = img;
 
-    _view->window()->cursor( fltk::CURSOR_DEFAULT );
+    _view->window()->cursor( FL_CURSOR_DEFAULT );
 
 
 

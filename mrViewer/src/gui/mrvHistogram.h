@@ -27,15 +27,16 @@
 #ifndef mrvHistogram_h
 #define mrvHistogram_h
 
-#include <fltk/Widget.h>
+#include <FL/Fl_Widget.H>
+#include "core/mrvRectangle.h"
 
 class CMedia;
+class ViewerUI;
 
 namespace mrv
 {
-  class ViewerUI;
 
-  class Histogram : public fltk::Widget
+  class Histogram : public Fl_Widget
   {
   public:
     enum Type
@@ -67,12 +68,12 @@ namespace mrv
 //     virtual int handle( int event );
 
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; };
-    mrv::ViewerUI* main() { return uiMain; };
+    void main( ViewerUI* m ) { uiMain = m; };
+    ViewerUI* main() { return uiMain; };
 
   protected:
-    void   draw_grid( const fltk::Rectangle& r );
-    void draw_pixels( const fltk::Rectangle& r );
+      void   draw_grid( const mrv::Recti& r );
+      void draw_pixels( const mrv::Recti& r );
 
     void count_pixels();
 
@@ -101,7 +102,7 @@ namespace mrv
     CMedia* lastImg;
     int64_t    lastFrame;
 
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
 
   };
 

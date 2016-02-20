@@ -71,6 +71,8 @@
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
 
+ConnectionUI* ViewerUI::uiConnection = NULL;
+
 //----------------------------------------------------------------------
 
 namespace {
@@ -83,7 +85,7 @@ const char* const kModule = "server";
 namespace mrv {
 
 
-Parser::Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v ) :
+Parser::Parser( boost::asio::io_service& io_service, ViewerUI* v ) :
 connected( false ),
 socket_( io_service ),
 ui( v )
@@ -346,7 +348,7 @@ bool Parser::parse( const std::string& s )
       int b;
       is >> b;
       v->normalize( ( b != 0 ) );
-      ui->uiNormalize->state( (b != 0 ) );
+      ui->uiNormalize->value( (b != 0 ) );
       v->redraw();
       ok = true;
    }
@@ -435,7 +437,7 @@ bool Parser::parse( const std::string& s )
    {
       int b;
       is >> b;
-      ui->uiLUT->state( (b != 0) );
+      ui->uiLUT->value( (b != 0) );
       v->use_lut( (b != 0) );
       v->redraw();
       ok = true;
@@ -1111,7 +1113,7 @@ bool Parser::parse( const std::string& s )
 
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
-			 mrv::ViewerUI* const v) :
+			 ViewerUI* const v) :
 input_deadline_(io_service),
 non_empty_output_queue_(io_service),
 output_deadline_(io_service),
@@ -1403,7 +1405,7 @@ void tcp_session::check_deadline(deadline_timer* deadline)
 
 server::server(boost::asio::io_service& io_service,
 	       const tcp::endpoint& endpoint,
-	       mrv::ViewerUI* v)
+	       ViewerUI* v)
 : io_service_(io_service),
   acceptor_(io_service),
   ui_( v )
@@ -1450,9 +1452,8 @@ void server::handle_accept(tcp_session_ptr session,
    start_accept();
 }
 
-ConnectionUI* ViewerUI::uiConnection = NULL;
 
-void server::create(mrv::ViewerUI* ui)
+void server::create(ViewerUI* ui)
 {
    unsigned short port = (unsigned short) ui->uiConnection->uiServerPort->value();
    ServerData* data = new ServerData;
@@ -1463,7 +1464,7 @@ void server::create(mrv::ViewerUI* ui)
 				 data ) );
 }
 
-void server::remove( mrv::ViewerUI* ui )
+void server::remove( ViewerUI* ui )
 {
    mrv::ImageView* v = ui->uiView;
 

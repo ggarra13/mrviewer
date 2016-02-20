@@ -27,7 +27,7 @@
 
 #include <math.h>
 
-#include <fltk/SharedImage.h>
+#include <FL/Fl_Shared_Image.H>
 #include <ImathMath.h>   // for Imath::clamp
 // #include <ImathFun.h>   // for Imath::pow
 
@@ -67,52 +67,24 @@ namespace mrv {
         if ( _thumbnail )
         {
             // thumbnail is not deleted, as fltk will do it for us.
-            ((fltk::SharedImage*)_thumbnail)->remove();
+            ((Fl_Shared_Image*)_thumbnail)->release();
             _thumbnail = NULL;
         }
     }
 
-    void media::thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
+  void media::thumbnail_pixel( uchar*& ptr, /* fltk::PixelType pixeltype, */
 				 uchar r, uchar g, uchar b )
     {
-      switch( pixeltype )
-	{
-	case fltk::ARGB32:
-	  {
-	    *ptr++ = b; *ptr++ = g; *ptr++ = r;
-	    *ptr++ = 0xff;
-	    break;
-	  }
-	case fltk::RGB:
-	  {
-	    *ptr++ = r; *ptr++ = g; *ptr++ = b;
-	    break;
-	  }
-	case fltk::RGB32:
-	  {
-	    *ptr++ = 0xff; *ptr++ = r; *ptr++ = g; *ptr++ = b;
-	    break;
-	  }
-	case fltk::RGBx:
-	case fltk::RGBA:
-	  {
-	    *ptr++ = r; *ptr++ = g; *ptr++ = b; *ptr++ = 0xff;
-	    break;
-	  }
-	default:
-	  {
-	    IMG_ERROR("unknown pixel type for thumbnail");
-	  }
-	}
+        *ptr++ = r; *ptr++ = g; *ptr++ = b;
     }
 
 
-  class thumbImage : public fltk::SharedImage
+  class thumbImage : public Fl_Shared_Image
   {
     public:
       thumbImage() {};
 
-      static fltk::SharedImage* create() { return new thumbImage; }
+      static Fl_Shared_Image* create() { return new thumbImage; }
 
       virtual bool fetch() { return true; }
   };
@@ -139,8 +111,8 @@ namespace mrv {
       if ( _thumbnail )
       {
           // once we set thumbnail size we cannot change it
-          w = _thumbnail->width();
-          h = _thumbnail->height();
+          w = _thumbnail->w();
+          h = _thumbnail->h();
       }
 
       // Audio only clip?  Return
@@ -152,10 +124,8 @@ namespace mrv {
       w = pic->width();
       h = pic->height();
 
-
-      _thumbnail = fltk::SharedImage::get( thumbImage::create, 
-					   _image->fileroot(),
-					   0);
+      // Fl_Shared_Image::add_handler( thumbImage::create );
+      _thumbnail = Fl_Shared_Image::get( _image->fileroot(), w, h );
 
       if ( !_thumbnail )
       {
@@ -164,6 +134,8 @@ namespace mrv {
           return;
       }
 
+#if 0
+      // @todo: fltk1.3
       _thumbnail->setpixeltype( fltk::RGB );
       _thumbnail->setsize( w, h );
  
@@ -199,17 +171,17 @@ namespace mrv {
 	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
 	      uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
 	      uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-	      thumbnail_pixel( ptr, pixeltype, r, g, b );
+	      thumbnail_pixel( ptr, r, g, b );
 	    }
 	}
 
       _thumbnail->buffer_changed();
+#endif
 
       _image->image_damage( _image->image_damage() & 
 			    ~CMedia::kDamageThumbnail );
     }
 
-
   } // namespace gui
 
-} // namemspace mrv
+} // namespace mrv

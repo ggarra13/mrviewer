@@ -31,10 +31,9 @@
 
 #include "gui/mrvBrowser.h"
 
+class PreferencesUI;
 
 namespace mrv {
-
-  class PreferencesUI;
 
   class PreferencesBrowser : public mrv::Browser
   {

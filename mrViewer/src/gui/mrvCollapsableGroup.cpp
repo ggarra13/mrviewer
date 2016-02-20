@@ -32,20 +32,20 @@
 #include <iostream>
 using namespace std;
 
-#include <fltk/Button.h>
-#include <fltk/PackedGroup.h>
-#include <fltk/Box.h>
-#include <fltk/Window.h>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Pack.H>
+#include <FL/Fl_Window.H>
 
+#include "core/mrvRectangle.h"
 
 #include "mrvCollapsableGroup.h"
 
 namespace mrv {
 
-  void CollapsableGroup::toggle_tab( fltk::Button* w, void* data )
+  void CollapsableGroup::toggle_tab( Fl_Button* w, void* data )
   {
     mrv::CollapsableGroup* g = (mrv::CollapsableGroup*) data;
-    fltk::PackedGroup* contents = g->contents();
+    Fl_Pack* contents = g->contents();
     char* label = strdup( w->label() );
     using namespace std;
     if ( contents->visible() )
@@ -59,7 +59,7 @@ namespace mrv {
 	contents->show();
       }
     w->copy_label( label );
-    w->relayout();
+    w->redraw();
     w->window()->redraw();
 //     g->parent()->redraw();
 
@@ -69,28 +69,31 @@ namespace mrv {
   CollapsableGroup::CollapsableGroup( const int x, const int y, 
 				      const int w, const int h, 
 				      const char* l ) :
-    fltk::Group( x, y, w, h )
+  Fl_Group( x, y, w, h )
   {
-    box( fltk::ROUNDED_BOX );
+    box( FL_ROUNDED_BOX );
 
     begin();
 
-    fltk::Rectangle r( w, h );
-    box()->inset(r);
+    // @todo: fltk1.3
+    // fltk::Rectangle r( w, h );
+    mrv::Recti r( w, h );
+    // box()->inset(r);
 
-    _button = new fltk::Button( r.x(), r.y(), r.w(), 20 );
-    _button->align( fltk::ALIGN_LEFT|fltk::ALIGN_INSIDE|fltk::ALIGN_TOP );
+    _button = new Fl_Button( r.x(), r.y(), r.w(), 20 );
+    _button->align( FL_ALIGN_LEFT| FL_ALIGN_INSIDE | FL_ALIGN_TOP );
     _button->labelsize( 16 );
-    _button->box( fltk::NO_BOX );
+    _button->box( FL_NO_BOX );
 
     char buf[256];
     sprintf( buf, "  @Cb55@-22>@n %s", l );
 
     _button->copy_label( buf );
 
-    _button->box()->inset(r);
+    // @todo: fltk1.3
+    // _button->box()->inset(r);
 
-    _contents = new fltk::PackedGroup( r.x(), r.y() + 20, r.w(), 20 );
+    _contents = new Fl_Pack( r.x(), r.y() + 20, r.w(), 20 );
 
 //     resizable( _contents );  // this breaks stuff
 
@@ -98,7 +101,7 @@ namespace mrv {
   
     end();
 
-    _button->callback( (fltk::Callback*)toggle_tab, this );
+    _button->callback( (Fl_Callback*)toggle_tab, this );
   }
 
   CollapsableGroup::~CollapsableGroup()
@@ -111,40 +114,42 @@ namespace mrv {
   void CollapsableGroup::spacing( int x )
   {
     _contents->spacing( x );
-    _contents->h( x + child(0)->h() );
+    _contents->resize( 0, 0, _contents->w(), x + child(0)->h() );
   }
 
   void CollapsableGroup::clear()
   {
     _contents->clear();
-    relayout();
+    redraw();
   }
 
   void CollapsableGroup::remove_all()
   {
-    _contents->remove_all();
-    relayout();
+    _contents->clear();
+    redraw();
   }
 
-  void CollapsableGroup::layout()
+  void CollapsableGroup::draw()
   {
-    Group::layout();
+    // Group::layout();
 
-    fltk::Rectangle r( w(), h() );
-    box()->inset(r);
+    // fltk::Rectangle r( w(), h() );
+    // box()->inset(r);
 
     int H = 2;
     if ( _contents->visible() ) H += _contents->h() + 12;
 
-    h( H + child(0)->h() );
+    resize( 0, 0, w(), H + child(0)->h() );
 
     init_sizes();
+
+    Fl_Group::draw();
   }
 
-  void CollapsableGroup::add( fltk::Widget* w )
+  void CollapsableGroup::add( Fl_Widget* w )
   {
     _contents->add( w );
-    _contents->relayout();
+    _contents->redraw();
   }
 
 

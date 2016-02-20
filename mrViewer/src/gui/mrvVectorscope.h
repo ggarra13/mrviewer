@@ -27,33 +27,33 @@
 #ifndef mrvVectorscope_h
 #define mrvVectorscope_h
 
-#include <fltk/Widget.h>
+#include <FL/Fl_Widget.H>
 
 #include "CMedia.h"
 
+class ViewerUI;
+
 namespace mrv
 {
-  class ViewerUI;
-
-  class Vectorscope : public fltk::Widget
+  class Vectorscope : public Fl_Widget
   {
   public:
     Vectorscope( int x, int y, int w, int h, const char* l = 0 );
 
     virtual void draw();
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
+    void main( ViewerUI* m ) { uiMain = m; }
 
   protected:
-    void draw_grid( const fltk::Rectangle& r );
-    void draw_pixels( const fltk::Rectangle& r );
-    void draw_pixel( const fltk::Rectangle& r,
-		     const CMedia::Pixel& rgb,
-		     const CMedia::Pixel& hsv );
+      void draw_grid( const mrv::Recti& r );
+      void draw_pixels( const mrv::Recti& r );
+      void draw_pixel( const mrv::Recti& r,
+                       const CMedia::Pixel& rgb,
+                       const CMedia::Pixel& hsv );
 
     int diameter_;
 
-    mrv::ViewerUI* uiMain;
+    ViewerUI* uiMain;
   };
 
 }  // namespace mrv

@@ -151,22 +151,19 @@ SET( SOURCES
 
  ../core/mrSocket.cpp
  # ../core/mrvClient.cpp
- # ../core/mrvServer.cpp
+ ../core/mrvServer.cpp
  ../core/mrvAudioEngine.cpp
  ../core/mrvColor.cpp
  ../core/mrvColorSpaces.cpp
  ../core/ctlToLut.cpp
- #  # core/mrvLicensing.cpp
  ../core/mrvPacketQueue.cpp
  ../core/mrvPlayback.cpp
- #  # core/mrvScale.cpp
  ../core/mrvString.cpp
  ../core/mrvTimer.cpp
  ../core/mrvACES.cpp
 
- #  core/mrvPC1.cpp
  ../core/Sequence.cpp
- #  core/mrStackTrace.cpp
+ ../core/mrStackTrace.cpp
  ../core/mrvCPU.cpp
  ../core/mrvColorProfile.cpp
  ../core/mrvImageOpts.cpp
@@ -187,16 +184,16 @@ SET( SOURCES
  #  gui/mrvGlWindow3d.cpp
  ../gui/mrvHotkey.cpp
  #  gui/mrvColorOps.cpp
- #  gui/mrvMedia.cpp
+ ../gui/mrvMedia.cpp
  #  gui/mrvBrowser.cpp
  #  gui/mrvCTLBrowser.cpp
- #  gui/mrvCollapsableGroup.cpp
+ ../gui/mrvCollapsableGroup.cpp
  #  gui/mrvColorInfo.cpp
  #  # gui/mrvDatabaseBrowser.cpp
  #  gui/mrvEDLGroup.cpp
  #  gui/mrvFileRequester.cpp
  #  gui/mrvFLTKHandler.cpp
- #  gui/mrvFontsWindowUI.cpp
+ ../gui/mrvFontsWindowUI.cpp
  #  gui/mrvHistogram.cpp
  # ../gui/mrvImageView.cpp
  # ../gui/mrvImageBrowser.cpp
@@ -204,7 +201,7 @@ SET( SOURCES
  ../gui/mrvIO.cpp
  ../gui/mrvLogDisplay.cpp
  #  gui/mrvMediaTrack.cpp
- #  gui/mrvMainWindow.cpp
+ ../gui/mrvMainWindow.cpp
  #  gui/mrvPopupMenu.cpp
  ../gui/mrvPreferences.cpp
  #  gui/mrvPreferencesBrowser.cpp
@@ -216,11 +213,11 @@ SET( SOURCES
  ../gui/mrvVersion.cpp
  ../gui/mrvDoubleWindow.cpp
 
- #  video/mrvDrawEngine.cpp
- #  video/mrvGLEngine.cpp
- #  video/mrvGLShader.cpp
- #  video/mrvGLQuad.cpp
- #  video/mrvGLLut3d.cpp
+ ../video/mrvDrawEngine.cpp
+ ../video/mrvGLEngine.cpp
+ ../video/mrvGLShader.cpp
+ ../video/mrvGLQuad.cpp
+ ../video/mrvGLLut3d.cpp
  ../video/mrvGLShape.cpp
 
  #  standalone/mrvRoot.cpp

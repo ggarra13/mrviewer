@@ -45,13 +45,13 @@
 
 
 class CIccProfile;
+class PreferencesUI;
 
 
 namespace mrv {
 
 
   class CMedia;
-  class PreferencesUI;
 
   class GLLut3d
   {

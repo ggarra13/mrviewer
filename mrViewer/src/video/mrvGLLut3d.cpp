@@ -863,7 +863,7 @@ void GLLut3d::transform_names( GLLut3d::Transforms& t, const CMedia* img )
     ODT_ctl_transforms( path, t, img );
 }
 
-  GLLut3d* GLLut3d::factory( const mrv::PreferencesUI* uiPrefs, 
+  GLLut3d* GLLut3d::factory( const PreferencesUI* uiPrefs, 
 			     const CMedia* img )
   {
       std::string path; 

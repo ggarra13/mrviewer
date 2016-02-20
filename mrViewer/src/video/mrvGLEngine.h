@@ -27,7 +27,7 @@
 
 #include <vector>
 
-#include <fltk/gl.h>
+#include <FL/gl.h>
 #include <boost/shared_array.hpp>
 
 #include "core/mrvAlignedData.h"

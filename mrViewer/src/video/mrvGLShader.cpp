@@ -28,7 +28,7 @@
 #include <iostream>
 #include <Iex.h>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "core/mrvI8N.h"
 #include "mrvGLShader.h"
@@ -136,9 +136,9 @@ namespace mrv {
 
   void GLShader::load( const char* filename )
   {
-     FILE* f = fltk::fltk_fopen( filename, "rb" );
-    if (!f)
-      {
+     FILE* f = fl_fopen( filename, "rb" );
+     if (!f)
+     {
 	THROW_ERRNO ("Can't load shader file '" << filename <<
 		     "' (%T)");
       }

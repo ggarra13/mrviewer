@@ -44,7 +44,8 @@ namespace mrv {
     
     void main( ViewerUI* m ) { uiMain = m; };
 
-       virtual void layout();
+      // @todo: fltk1.3
+      // virtual void layout();
     
     virtual int handle( int event );
     

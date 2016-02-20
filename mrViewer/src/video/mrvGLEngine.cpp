@@ -94,15 +94,13 @@ namespace
 }
 
 
-namespace fltk {
 
 #ifdef WIN32
-  extern HINSTANCE	xdisplay;
+extern HINSTANCE fl_display;
 #else
-  extern Display*	xdisplay;
+extern Display*	 fl_display;
 #endif
 
-}
 
 
 
@@ -195,7 +193,7 @@ void GLEngine::init_charset()
   int fontsize = 16;
 
 #ifdef WIN32
-    HDC   hDC = fltk::getDC();
+    HDC   hDC = Fl::getDC();
     HGLRC hRC = wglGetCurrentContext();
     if (hRC == NULL ) hRC = wglCreateContext( hDC );
 
@@ -222,7 +220,7 @@ void GLEngine::init_charset()
     SelectObject(hDC, oldFid);
 #else
     // Find Window's default font
-    Display* gdc = fltk::xdisplay;
+    Display* gdc = fl_display;
 
     // Load XFont to user's specs
     char font_name[256];
@@ -1139,10 +1137,10 @@ void GLEngine::draw_images( ImageList& images )
 
   if ( _view->use_lut() )
     {
-      mrv::PreferencesUI* uiPrefs = _view->main()->uiPrefs;
+      PreferencesUI* uiPrefs = _view->main()->uiPrefs;
       int RT_lut_algorithm = uiPrefs->RT_algorithm->value();
       int ODT_lut_algorithm = uiPrefs->ODT_algorithm->value();
-      const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->text();
+      const char* ODT_ICC_profile = uiPrefs->uiODT_ICC_profile->value();
       int lut_quality = uiPrefs->uiLUT_quality->value();
 
       // Check if there was a change effecting lut.

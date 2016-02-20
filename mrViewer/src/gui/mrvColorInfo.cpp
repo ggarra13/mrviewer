@@ -99,9 +99,10 @@ namespace
 
 }
 
+ViewerUI* ColorInfo::uiMain = NULL;
+
 namespace mrv
 {
-  mrv::ViewerUI* ColorInfo::uiMain = NULL;
 
   extern std::string float_printf( float x );
 

@@ -30,23 +30,21 @@
 #define mrvCollapsableGroup_h
 
 
-#include <fltk/PackedGroup.h>
+#include <FL/Fl_Pack.H>
 
-namespace fltk {
-  class Button;
-}
+class Fl_Button;
 
 
 namespace mrv {
 
-  class CollapsableGroup : public fltk::Group
+  class CollapsableGroup : public Fl_Group
   {
   public:
     CollapsableGroup( const int x, const int y, const int w, 
 		      const int h, const char* l = 0 );
     ~CollapsableGroup();
 
-    void add( fltk::Widget* w );
+    void add( Fl_Widget* w );
 
       void clear();
 
@@ -54,15 +52,18 @@ namespace mrv {
 
     void spacing( int x );
 
-    fltk::PackedGroup* contents() { return _contents; }
+    Fl_Pack* contents() { return _contents; }
 
-    virtual void layout();
+      virtual void draw();
+
+      // @todo: fltk1.3
+      // virtual void layout();
 
   protected:
-      fltk::Button*    _button;
-    fltk::PackedGroup* _contents;
+      Fl_Button*    _button;
+      Fl_Pack*    _contents;
 
-    static void toggle_tab( fltk::Button* w, void* data );
+    static void toggle_tab( Fl_Button* w, void* data );
   };
 
 

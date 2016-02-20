@@ -32,9 +32,8 @@
 #define isfinite(x) _finite(x)
 #endif
 
-#include <fltk/draw.h>
-#include <fltk/events.h>
-#include <fltk/Symbol.h>
+#include <FL/fl_draw.h>
+#include <FL/Enumerations.H>
 
 #include "GL/glew.h"
 
@@ -56,7 +55,7 @@ namespace mrv
 {
 
   Histogram::Histogram( int x, int y, int w, int h, const char* l ) :
-    fltk::Widget( x, y, w, h, l ),
+    Fl_Widget( x, y, w, h, l ),
     _channel( kRGB ),
     _histtype( kLog ),
     maxLumma( 0 ),
@@ -66,15 +65,15 @@ namespace mrv
     lastImg( NULL ),
     lastFrame( std::numeric_limits< int64_t >::min() )
   {
-    color( fltk::BLACK );
-    buttoncolor( fltk::BLACK );
+    color( FL_BLACK );
+    buttoncolor( FL_BLACK );
 
     add_timeout(0.016f);
   }
 
 
-  void Histogram::draw_grid(const fltk::Rectangle& r)
-  {
+void Histogram::draw_grid(const mrv::Recti& r)
+{
 //     fltk::setcolor( fltk::GRAY75 );
 
 //     int X = r.x() + 2;
@@ -84,7 +83,7 @@ namespace mrv
 //     fltk::drawtext( "R", 1, X, H+H2 );
 //     fltk::drawtext( "G", 1, X, H*2+H2 );
 //     fltk::drawtext( "B", 1, X, H*3+H2 );
-  }
+}
 
   void Histogram::draw()
   {
@@ -266,7 +265,7 @@ namespace mrv
       }
   }
 
-  void Histogram::draw_pixels( const fltk::Rectangle& r )
+void Histogram::draw_pixels( const mrv::Recti& r )
   {
     count_pixels();
 
@@ -309,33 +308,33 @@ namespace mrv
 	idx = int( ((float) i / (float) W) * 255 );
 	if ( _channel == kLumma )
 	  {
-	    fltk::setcolor( fltk::GRAY75 );
-	    v = histogram_scale( lumma[idx], maxL );
-            int y = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
+              fl_color( fltk::GRAY );
+              v = histogram_scale( lumma[idx], maxL );
+              int y = int(HH*v);
+              fl_drawline( x, H, x, H-y );
 	  }
 
 	if ( _channel == kRed || _channel == kRGB )
 	  {
-	    fltk::setcolor( fltk::RED );
+	    fl_color( FL_RED );
 	    v = histogram_scale( red[idx], maxR );
-	    fltk::drawline( x, H, x, H-int(HH*v) );
+	    fl_drawline( x, H, x, H-int(HH*v) );
 	  }
 
 	if ( _channel == kGreen || _channel == kRGB )
 	  {
-	    fltk::setcolor( fltk::GREEN );
+	    fl_color( FL_GREEN );
 	    v = histogram_scale( green[idx], maxG );
             int y = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
+	    fl_drawline( x, H, x, H-y );
 	  }
 
 	if ( _channel == kBlue || _channel == kRGB )
 	  {
-	    fltk::setcolor( fltk::BLUE );
+	    fl_color( FL_BLUE );
 	    v = histogram_scale( blue[idx], maxB );
             int y = int(HH*v);
-	    fltk::drawline( x, H, x, H-y );
+	    fl_drawline( x, H, x, H-y );
 	  }
       }
   }
