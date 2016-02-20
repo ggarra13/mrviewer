@@ -79,13 +79,13 @@ v->hk.alt   = v->uiAlt->value();
 v->hk.meta  = v->uiMeta->value();
 v->hk.shift = v->uiShift->value();
 
-if ( v->uiKey->text() )
+if ( v->uiKey->value() )
 {
-  std::string text = v->uiKey->text();
+  std::string text = v->uiKey->value();
 
   unsigned key = 0;
   for (int i = 0; i < 45; i++)
-     if (text == table[i].text) {key = table[i].n; break;}
+     if (text == mrv::table[i].text) {key = mrv::table[i].n; break;}
 
   if ( key == 0 )
   {
@@ -98,17 +98,17 @@ if ( v->uiKey->text() )
   }
 
   if ( key > 0 ) v->hk.key = key;
-  else v->hk.key = v->uiKey->text()[0];
-  v->hk.text = v->uiKey->text();
+  else v->hk.key = v->uiKey->value()[0];
+  v->hk.text = v->uiKey->value();
 }
 
-if ( v->uiKey2->text() )
+if ( v->uiKey2->value() )
 {
-  std::string text = v->uiKey2->text();
+  std::string text = v->uiKey2->value();
 
   unsigned key = 0;
   for (int i = 0; i < 45; i++)
-     if (text == table[i].text) {key = table[i].n; break;}
+     if (text == mrv::table[i].text) {key = mrv::table[i].n; break;}
 
   if ( key == 0 )
   {
@@ -121,7 +121,7 @@ if ( v->uiKey2->text() )
   }
 
   if ( key > 0 ) v->hk.key2 = key;
-  else v->hk.key2 = v->uiKey->text()[0];
+  else v->hk.key2 = v->uiKey->value()[0];
 }
 
 v->uiMain->hide();}
@@ -161,17 +161,17 @@ if (!k) {
       sprintf(buffer, "0x%04x", k);
       for (int i = 0; i < 45; i++)
       {
-	 if (table[i].n == k) {
-	 	keyname = table[i].text; 
+	 if (mrv::table[i].n == k) {
+	 	keyname = mrv::table[i].text; 
 	 	break;
 	 }
 	}
    }
 
 if (k == 0 )
-   uiKey->text( hk.text.c_str() );
+   uiKey->value( hk.text.c_str() );
 else
-   uiKey->text( keyname );
+   uiKey->value( keyname );
    
 k = hk.key2;
 if (!k) {
@@ -186,15 +186,15 @@ if (!k) {
       sprintf(buffer, "0x%04x", k);
       for (int i = 0; i < 45; i++)
       {
-	 if (table[i].n == k) {
-	 	keyname = table[i].text; 
+	 if (mrv::table[i].n == k) {
+	 	keyname = mrv::table[i].text; 
 	 	break;
 	 }
 	}
    }
 
 if (k != 0 )
-   uiKey2->text( keyname );} {}
+   uiKey2->value( keyname );} {}
   }
   Function {~ChooseHotkey()} {open
   } {

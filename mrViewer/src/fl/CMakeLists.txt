@@ -113,7 +113,7 @@ FLTK_WRAP_UI( mrViewer
   mrvIccProfileUI.fl
   mrvColorAreaUI.fl 
   # mrViewer.fl 
-  # gui/keyboard_ui.fl 
+  keyboard_ui.fl 
   mrvAudioOffset.fl
   )
 
@@ -185,7 +185,7 @@ SET( SOURCES
  #  #   #   FLU/Flu_Combo_List.cpp # unneeded
 
  #  gui/mrvGlWindow3d.cpp
- #  gui/mrvHotkey.cpp
+ ../gui/mrvHotkey.cpp
  #  gui/mrvColorOps.cpp
  #  gui/mrvMedia.cpp
  #  gui/mrvBrowser.cpp

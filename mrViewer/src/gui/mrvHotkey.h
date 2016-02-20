@@ -21,17 +21,11 @@
 
 #include <string>
 #include <iostream>
-#include <fltk/events.h>
+#include <FL/Enumerations.H>
+#include <FL/Fl.H>
 
-namespace mrv {
 class HotkeyUI;
-}
-
-namespace fltk {
-
-class Browser;
-
-}
+class Fl_Browser;
 
 
 namespace mrv {
@@ -79,10 +73,10 @@ struct Hotkey
      unsigned hotkey()
      {
 	unsigned r = 0;
-	if ( ctrl ) r += fltk::CTRL;
-	if ( shift ) r += fltk::SHIFT;
-	if ( meta ) r += fltk::META;
-	if ( alt ) r += fltk::ALT;
+	if ( ctrl ) r += FL_CTRL;
+	if ( shift ) r += FL_SHIFT;
+	if ( meta ) r += FL_META;
+	if ( alt ) r += FL_ALT;
 	r += key;
 	return r;
      }
@@ -206,8 +200,8 @@ struct TableText
 extern struct TableText table[];
 extern HotkeyEntry hotkeys[];
 
-void fill_ui_hotkeys( fltk::Browser* o );
-void select_hotkey( mrv::HotkeyUI* m );
+void fill_ui_hotkeys( Fl_Browser* o );
+void select_hotkey( HotkeyUI* m );
 
 }
 
