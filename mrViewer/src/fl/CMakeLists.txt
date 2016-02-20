@@ -219,9 +219,9 @@ SET( SOURCES
  ../video/mrvGLLut3d.cpp
  ../video/mrvGLShape.cpp
 
- #  standalone/mrvRoot.cpp
- #  standalone/mrvCommandLine.cpp
-    ../standalone/main.cpp
+ ../standalone/mrvRoot.cpp
+ ../standalone/mrvCommandLine.cpp
+ ../standalone/main.cpp
   )
 
 

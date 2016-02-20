@@ -308,7 +308,7 @@ void parse_directory( const std::string& fileroot,
 // Command-line parser
 //
 void parse_command_line( const int argc, char** argv,
-			 mrv::ViewerUI* ui, 
+			 ViewerUI* ui, 
                          mrv::Options& opts )
 {
   // Some default values
