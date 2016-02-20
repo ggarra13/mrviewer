@@ -257,7 +257,7 @@ int EDLGroup::handle( int event )
 	       if (Fl::event_y() < c->y() - y() ) continue;
 	       if (Fl::event_y() >= c->y() - y() +c->h()) continue;
 
-	       if ( c->send( event ) ) return 1;
+	       if ( c->handle( event ) ) return 1;
 	    }
 	    return 0;
 	    break;
@@ -524,12 +524,14 @@ int EDLGroup::handle( int event )
 
 	       if ( X >= w()-128 ) {
 		  pan(diff * 2);
-		  add_timeout( 0.1f );
+                  // @todo: fltk1.3
+		  // add_timeout( 0.1f );
 	       }
 	       else if ( X <= 128 )
 	       {
 		  pan(diff * -2);
-		  add_timeout( 0.1f );
+                  // @todo: fltk1.3
+		  // add_timeout( 0.1f );
 	       }
 	       
 	       _dragX = X;
@@ -711,9 +713,13 @@ void EDLGroup::draw()
    mrv::Timeline* t = timeline();
    if (!t) return;
 
+   double A = t->minimum();
+   double B = t->maximum();
    double frame = t->value();
 
-   int p = t->slider_position( frame, t->w() );
+   // @todo: fltk1.3
+   // int p = t->slider_position( frame, t->w() );
+   int p = (frame - A) / B - A;
    p += int( t->slider_size()/2.0 );
 
 

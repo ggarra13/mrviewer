@@ -21,7 +21,7 @@
  * @date   Fri Oct 13 07:58:06 2006
  * 
  * @brief  an fltk input widget to display its internal value as either
- *         frames (normal fltk::ValueInput) or as timecode.
+ *         frames (normal Fl_Value_Input) or as timecode.
  * 
  * 
  */
@@ -35,12 +35,12 @@
 #include <iostream>
 using namespace std;
 
-#include <fltk/events.h>
-#include <fltk/damage.h>
-#include <fltk/draw.h>
-#include <fltk/Symbol.h>
-#include <fltk/LabelType.h>
-#include <fltk/Rectangle.h>
+// #include <fltk/events.h>
+// #include <fltk/damage.h>
+// #include <fltk/draw.h>
+// #include <fltk/Symbol.h>
+// #include <fltk/LabelType.h>
+// #include <fltk/Rectangle.h>
 
 #include "mrvMath.h"  // for std::abs in some platforms
 #include "gui/mrvTimecode.h"
@@ -56,7 +56,7 @@ namespace mrv
 {
 
 Timecode::Timecode( int x, int y, int w, int h, const char* l ) :
-  fltk::FloatInput( x, y, w, h, l ),
+  Fl_Value_Input( x, y, w, h, l ),
   _display( mrv::Timecode::kFrames ),
   _fps( 24.f ),
   _frame( 1 ),
@@ -64,12 +64,12 @@ Timecode::Timecode( int x, int y, int w, int h, const char* l ) :
   _maximum( 50 ),
   _step( 1 )
 {
-  textcolor( fltk::BLACK );
+  textcolor( FL_BLACK );
 }
 
 
 Timecode::Timecode( int w, int h, const char* l ) :
-  fltk::FloatInput( 0, 0, w, h, l ),
+  Fl_Value_Input( 0, 0, w, h, l ),
   _display( mrv::Timecode::kFrames ),
   _fps( 24.f ),
   _frame( 1 ),
@@ -77,7 +77,7 @@ Timecode::Timecode( int w, int h, const char* l ) :
   _maximum( 50 ),
   _step( 1 )
 {
-  textcolor( fltk::BLACK );
+  textcolor( FL_BLACK );
 }
 
 /** 
@@ -242,9 +242,9 @@ void Timecode::display( Timecode::Display x )
 
 
   if ( _display == kFrames || _display == kSeconds ) 
-    type( FLOAT );
+    type( FL_FLOAT_INPUT );
   else 
-    type( NORMAL );
+    type( FL_INT_INPUT );
 
   value( v );
   redraw();
@@ -457,32 +457,31 @@ void Timecode::value( const int64_t x )
 
   char buf[100];
   int n = format( buf, _display, x, _fps, true );
-  Input::text(buf, n);
+  input.value(buf, n);
 }
 
 
 bool Timecode::replace(int b, int e, const char* text, int ilen) {
-  using namespace fltk;
 
   for (int n = 0; n < ilen; n++) {
     char ascii = text[n];
-    compose_reset(); // ignore any foreign letters...
+    // compose_reset(); // ignore any foreign letters...
     
     // Allow only one '.' in FLOAT inputs
-    if (type()==FLOAT && ( ascii=='.' || ascii==',') ) {
-      if (!strchr(this->text(), ascii))
+    if (type()==FL_FLOAT_INPUT && ( ascii=='.' || ascii==',') ) {
+     if (!strchr(this->text(), ascii))
         continue;
     } else
     // This is complex to allow "00:00:01" timecode to be typed:
     if (b+n==0 && (ascii == '+' || ascii == '-') ||
 	(ascii >= '0' && ascii <= '9') ||
-	(type()==FLOAT && ascii && strchr(".,eE+-", ascii)) ||
-	((type()==NORMAL) && ascii && (ascii == ':' || ascii == '.')))
+	(type()==FL_FLOAT_INPUT && ascii && strchr(".,eE+-", ascii)) ||
+	((type()==FL_INT_INPUT) && ascii && (ascii == ':' || ascii == '.')))
       continue; // it's ok;
 
     return false;
   }
-  return Input::replace(b,e,text,ilen);
+  return input.replace(b,e,text,ilen);
 }
 
 

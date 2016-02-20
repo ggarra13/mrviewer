@@ -177,7 +177,7 @@ SET( SOURCES
  #  gui/FLU/flu_file_chooser_pixmaps.cpp  
  #  gui/FLU/Flu_Wrap_Group.cpp 
  #  gui/FLU/Flu_File_Chooser.cpp  
- #  gui/FLU/flu_pixmaps.cpp               
+ ../gui/FLU/flu_pixmaps.cpp               
  #  gui/FLU/GridGroup.cpp
  #  #   #   FLU/Flu_Combo_List.cpp # unneeded
 
@@ -189,7 +189,6 @@ SET( SOURCES
  # gui/mrvCTLBrowser.cpp
  ../gui/mrvCollapsableGroup.cpp
  ../gui/mrvColorInfo.cpp
- #  # gui/mrvDatabaseBrowser.cpp
  ../gui/mrvEDLGroup.cpp
  #  gui/mrvFileRequester.cpp
  #  gui/mrvFLTKHandler.cpp
@@ -202,14 +201,14 @@ SET( SOURCES
  ../gui/mrvLogDisplay.cpp
  #  gui/mrvMediaTrack.cpp
  ../gui/mrvMainWindow.cpp
- #  gui/mrvPopupMenu.cpp
+ ../gui/mrvPopupMenu.cpp
  ../gui/mrvPreferences.cpp
- #  gui/mrvPreferencesBrowser.cpp
+ ../gui/mrvPreferencesBrowser.cpp
  ../gui/mrvProgressReport.cpp
  ../gui/mrvReel.cpp
- #  gui/mrvTimecode.cpp
- #  gui/mrvTimeline.cpp
- #  gui/mrvVectorscope.cpp
+ ../gui/mrvTimecode.cpp
+ # ../gui/mrvTimeline.cpp
+ ../gui/mrvVectorscope.cpp
  ../gui/mrvVersion.cpp
  ../gui/mrvDoubleWindow.cpp
 
@@ -222,7 +221,7 @@ SET( SOURCES
 
  #  standalone/mrvRoot.cpp
  #  standalone/mrvCommandLine.cpp
- #  standalone/main.cpp
+    ../standalone/main.cpp
   )
 
 

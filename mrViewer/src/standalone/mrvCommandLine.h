@@ -30,9 +30,9 @@
 
 #include "Sequence.h"
 
-namespace mrv {
+class ViewerUI;
 
-  class ViewerUI;
+namespace mrv {
 
 typedef std::vector< std::string > stringArray;
 
@@ -63,7 +63,7 @@ typedef std::vector< std::string > stringArray;
   // Command-line parser
   //
   void parse_command_line( const int argc, char** argv,
-			   mrv::ViewerUI* ui, 
+			   ViewerUI* ui, 
                            mrv::Options& opts);
 }
 

@@ -50,20 +50,16 @@ effect to the widget.
 */
 
 #include <mrvPopupMenu.h>
-#include <fltk/events.h>
-#include <fltk/damage.h>
-#include <fltk/Box.h>
-#include <fltk/draw.h>
-#include <fltk/Item.h>
+#include <FL/Enumerations.H>
+#include <FL/fl_draw.H>
+#include <FL/Fl_Menu_Item.H>
 
 #include <iostream>
 
 
-extern fltk::Widget* fl_did_clipping;
+extern Fl_Widget* fl_did_clipping;
 
 namespace mrv {
-
-using namespace fltk;
 
 static mrv::PopupMenu* pushed;
 
@@ -74,6 +70,9 @@ static mrv::PopupMenu* pushed;
   subclass and replace draw() with your own function.
 */
 void PopupMenu::draw() {
+    Fl_Menu_Button::draw();
+
+#if 0
   if (type()&7) { // draw nothing for the popup types
     fl_did_clipping = this;
     return;
@@ -108,6 +107,8 @@ void PopupMenu::draw() {
 
 
   box->draw_symbol_overlay(r);
+#endif
+
 }
 
 
@@ -116,13 +117,14 @@ void PopupMenu::draw() {
 // NamedStyle* PopupMenu::default_style = &mrv::style;
 
 PopupMenu::PopupMenu(int X,int Y,int W,int H,const char *l)
-: fltk::PopupMenu(X,Y,W,H,l),
+: Fl_Menu_Button(X,Y,W,H,l),
   _enable_glyph( true )
 {
-  // set the parent style to Menu::default_style, not Widget::default_style:
-  default_style->parent_ = this->style();
-  style(default_style);
-  align(ALIGN_CENTER);
+    // set the parent style to Menu::default_style, not Widget::default_style:
+    // @todo: fltk1.3
+    // default_style->parent_ = this->style();
+    // style(default_style);
+    align(FL_ALIGN_CENTER);
   
   //set_click_to_focus();
 }

@@ -40,10 +40,11 @@ namespace mrv
 {
 
   Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
-    fltk::Widget( x, y, w, h, l )
+    Fl_Widget( x, y, w, h, l )
   {
-    color( fltk::BLACK );
-    buttoncolor( fltk::BLACK );
+      color( FL_BLACK );
+      // @todo: fltk1.3
+      // buttoncolor( FL_BLACK );
   }
 
 
@@ -53,7 +54,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     int W = diameter_/2;
     int H = diameter_/2;
 
-    Fl::setcolor( fltk::GRAY75 );
+    fl_color( FL_GRAY );
 
     mrv::Recti r2( diameter_, diameter_ );
 
@@ -78,8 +79,8 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
     fl_push_matrix();
     fl_translate( r.w()/2 - W, r.h()/2 - H );
-    fl_addchord( r2, 0, 360 );
-    fl_strokepath();
+    fl_arc( r2.x(), r2.y(), r2.w(), r2.h(), 0, 360 );
+    // fl_strokepath();
     fl_pop_matrix();
 
 
@@ -112,7 +113,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
 	fl_translate( 0, int(W * 0.15f) );
 
-	fl_drawtext(names[i], 1, 0, 0);
+	fl_draw(names[i], 1, 0, 0);
 
 	fl_pop_matrix();
 
@@ -125,7 +126,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
   void Vectorscope::draw()
   {
     mrv::Recti r( w(), h() );
-    draw_box(r);
+    draw_box();
 
     diameter_ = h();
     if ( w() < diameter_ ) diameter_ = w();
@@ -138,24 +139,24 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 
 
 
-  void Vectorscope::draw_pixel( const fltk::Rectangle& r,
-				const CMedia::Pixel& rgb,
-				const CMedia::Pixel& hsv )
-  {
-      fl_color( (unsigned char)(rgb.r * 255), 
-                (unsigned char)(rgb.g * 255), 
-                (unsigned char)(rgb.b * 255) );
-    
+void Vectorscope::draw_pixel( const mrv::Recti& r,
+                              const CMedia::Pixel& rgb,
+                              const CMedia::Pixel& hsv )
+{
+    fl_color( (unsigned char)(rgb.r * 255), 
+              (unsigned char)(rgb.g * 255), 
+              (unsigned char)(rgb.b * 255) );
+      
     fl_push_matrix();
     fl_translate( r.w()/2, r.h()/2 );
     fl_rotate( -165.0f + hsv.r * 360.0f );
     fl_scale( hsv.g * 0.375f );
     fl_line( 0, diameter_, 1, diameter_+1 );
     fl_pop_matrix();
-  }
+}
 
-  void Vectorscope::draw_pixels( const fltk::Rectangle& r )
-  {
+void Vectorscope::draw_pixels( const mrv::Recti& r )
+{
     mrv::media m = uiMain->uiView->foreground();
     if (!m) return;
 
@@ -238,6 +239,6 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	  }
       }
 
-  }
+}  // draw_pixels
 
 }

@@ -85,6 +85,8 @@ namespace mrv
   protected:
     void update();
 
+      const char* text() const { return input.value(); }
+
     static bool valid_drop_frame( int hours, int mins, int secs, int frames,
 				  double fps );
 

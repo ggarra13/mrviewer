@@ -42,10 +42,10 @@ namespace mrv {
 			const char* lbl = 0 );
     ~PreferencesBrowser();
 
-    void update( mrv::PreferencesUI* prefs );
+    void update( PreferencesUI* prefs );
 
   protected:
-    void update_ctl_tab( mrv::PreferencesUI* prefs );
+    void update_ctl_tab( PreferencesUI* prefs );
   };
 
 }

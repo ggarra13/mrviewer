@@ -39,9 +39,9 @@
 #include <X11/Xlib.h>
 #endif
 
-#include <fltk/ask.h>
-#include <fltk/run.h>
-#include <fltk/Preferences.h>
+#include <FL/fl_ask.H>
+#include <FL/Fl.H>
+#include <FL/Fl_Preferences.H>
 
 #include <wand/MagickWand.h>
 
@@ -81,7 +81,7 @@ const char* const kModule = "main";
 
 
 void load_files( mrv::LoadList& files, 
-                 mrv::ViewerUI* ui,
+                 ViewerUI* ui,
                  bool stereo = false )
 {
    //
@@ -93,12 +93,12 @@ void load_files( mrv::LoadList& files,
 
 void load_new_files( void* s )
 {
-   mrv::ViewerUI* ui = (mrv::ViewerUI*) s;
+    ViewerUI* ui = (ViewerUI*) s;
 
    mrv::LoadList files;
 
    {
-       fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
+      Fl_Preferences lock( mrv::prefspath().c_str(), "filmaura",
                                "mrViewer.lock" );
       int pid = 1;
       lock.get( "pid", pid, 1 );
@@ -117,7 +117,7 @@ void load_new_files( void* s )
       for ( int i = 0; i < groups; ++i )
       {
 	 const char* group = lock.group( i );
-	 fltk::Preferences g( lock, group );
+	 Fl_Preferences g( lock, group );
 	 g.get( "filename", filename, "" );
 	 g.get( "audio", audio, "" );
 	 g.get( "first", firstS, "1" );
@@ -147,12 +147,12 @@ void load_new_files( void* s )
                LOG_ERROR( "Could not remove lock file" );
        }
 
-       fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-                               "mrViewer.lock" );
+       Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                            "mrViewer.lock" );
        base.set( "pid", 1 );
    }
 
-   fltk::repeat_timeout( 1.0, load_new_files, ui ); 
+   Fl::repeat_timeout( 1.0, load_new_files, ui ); 
 }
 
 int main( const int argc, char** argv ) 
@@ -176,7 +176,7 @@ int main( const int argc, char** argv )
 #ifdef LINUX
   XInitThreads();
 #endif
-  fltk::lock();   // Initialize X11 thread system
+  Fl::lock();   // Initialize X11 thread system
 
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
@@ -216,7 +216,7 @@ int main( const int argc, char** argv )
 
 
       // Adjust ui based on preferences
-      mrv::ViewerUI* ui = new mrv::ViewerUI();
+      ViewerUI* ui = new ViewerUI();
 
 
 
@@ -249,8 +249,8 @@ int main( const int argc, char** argv )
       {
           int idx;
           {
-              fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-                                      "mrViewer.lock" );
+              Fl_Preferences base( mrv::prefspath().c_str(), "filmaura",
+                                   "mrViewer.lock" );
 	
               mrv::LoadList::iterator i = opts.files.begin();
               mrv::LoadList::iterator e = opts.files.end();
@@ -259,7 +259,7 @@ int main( const int argc, char** argv )
                   char buf[256];
                   sprintf( buf, "file%d", idx );
 	
-                  fltk::Preferences ui( base, buf );
+                  Fl_Preferences ui( base, buf );
                   ui.set( "filename", (*i).filename.c_str() );
                   ui.set( "audio", (*i).audio.c_str() );
 
@@ -285,14 +285,14 @@ int main( const int argc, char** argv )
               mrvALERT( "Another instance of mrViewer is open.\n"
                         "Remove " << lockfile << " if mrViewer crashed\n"
                         "or modify Preferences->User Interface->Single Instance.");
-              fltk::check();
+              Fl::check();
           }
 
           exit(0);
       }
 
       {
-          fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
+          Fl_Preferences lock( mrv::prefspath().c_str(), "filmaura",
                                   "mrViewer.lock" );
           lock.set( "pid", 1 );
      
@@ -342,12 +342,12 @@ int main( const int argc, char** argv )
       }
 
       if ( single_instance )
-          fltk::add_timeout( 1.0, load_new_files, ui );
+          Fl::add_timeout( 1.0, load_new_files, ui );
 
 
 
       try {
-          ok = fltk::run();
+          ok = Fl::run();
       }
       catch( const std::exception& e )
       {

@@ -247,7 +247,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     the moving slider, and the "slot". The slot only drawn if \a slot
     is true. You should already have drawn the background of the slider.
   */
-bool Timeline::draw(const mrv::Recti& sr, fltk::Flags flags, bool slot)
+bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
   {
     // for back compatability, use type flag to set slider size:
     if (type()&16/*FILL*/) slider_size(0);
@@ -283,9 +283,9 @@ bool Timeline::draw(const mrv::Recti& sr, fltk::Flags flags, bool slot)
       sl.w(r.w()-2*dx);
       sl.y(r.y()+(r.h()-slot_size_+1)/2);
       sl.h(slot_size_);
-      fl_color(BLACK);
-      fl_rect( box_dx(THIN_DOWN_BOX), box_dy(THIN_DOWN_BOX),
-               box_dw(THIN_DOWN_BOX), box_dh(THIN_DOWN_BOX) );
+      fl_color( FL_BLACK );
+      fl_rect( Fl::box_dx(THIN_DOWN_BOX), Fl::box_dy(THIN_DOWN_BOX),
+               Fl::box_dw(THIN_DOWN_BOX), Fl::box_dh(THIN_DOWN_BOX) );
       // THIN_DOWN_BOX->draw(sl);
     }
 
@@ -330,8 +330,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int r2 = r.b()/2;
     int ww = r.w();
 
-    setcolor( fltk::DARK_GREEN );
-    line_style( SOLID, 1 );
+    fl_color( FL_DARK_GREEN );
+    fl_line_style( SOLID, 1 );
 
 
     int dx;
@@ -595,10 +595,10 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
     return reel->global_to_local( frame );
   }
 
-  void change_timeline_display( mrv::ViewerUI* uiMain )
+  void change_timeline_display( ViewerUI* uiMain )
   {
     int i = uiMain->uiTimecodeSwitch->value();
-    const char* label = uiMain->uiTimecodeSwitch->child(i)->label();
+    const char* label = uiMain->uiTimecodeSwitch->child(i)->value();
 
     char buf[3]; buf[1] = ':'; buf[2] = 0;
     buf[0] = label[0];

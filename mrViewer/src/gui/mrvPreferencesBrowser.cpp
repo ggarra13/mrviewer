@@ -34,9 +34,8 @@
 #include <boost/filesystem/convenience.hpp>
 #include <boost/filesystem/operations.hpp>
 
-#include <fltk/WizardGroup.h>
-#include <fltk/xpmImage.h>
-#include <fltk/MultiImage.h>
+#include <FL/Fl_Wizard.H>
+#include <FL/Fl_XPM_Image.H>
 
 #include "mrViewer.h"
 #include "core/mrvI8N.h"
@@ -48,14 +47,18 @@ namespace fs = boost::filesystem;
 typedef boost::tokenizer< boost::char_separator<char> > Tokenizer_t;
 
 namespace {
-  fltk::xpmImage book_closed(book_xpm);
-  fltk::xpmImage book_open(question_book_xpm);
-  fltk::xpmImage folder_filled(filled_folder_xpm);
-  fltk::xpmImage folder_closed(folder_closed_xpm);
-  fltk::MultiImage folder( folder_closed, 
-			   fltk::OPENED, folder_filled );
-  fltk::MultiImage book( book_closed, 
-			 fltk::SELECTED, book_open );
+  Fl_Pixmap book_closed(book_xpm);
+  Fl_Pixmap book_open(question_book_xpm);
+  Fl_Pixmap folder_filled(filled_folder_xpm);
+  Fl_Pixmap folder_closed(folder_closed_xpm);
+
+/* @todo: fltk1.3 */
+  // fltk::MultiImage folder( folder_closed, 
+  //       		   fltk::OPENED, folder_filled );
+  // fltk::MultiImage book( book_closed, 
+  //       		 fltk::SELECTED, book_open ); 
+  Fl_Pixmap folder( folder_closed_xpm );
+  Fl_Pixmap book( book_xpm );
 }
 
 namespace mrv {
@@ -65,8 +68,9 @@ namespace mrv {
 					  const char* lbl ) :
     mrv::Browser( x, y, w, h, lbl )
   {
-    leaf_symbol( &book );
-    group_symbol( &folder );
+      // @todo: fltk1.3
+    // leaf_symbol( &book );
+    // group_symbol( &folder );
   }
 
   PreferencesBrowser::~PreferencesBrowser()
@@ -76,13 +80,13 @@ namespace mrv {
   //
   // Routine to update the main CTL group (paths and ctl scripts)
   //
-  void PreferencesBrowser::update_ctl_tab( mrv::PreferencesUI* prefs )
+  void PreferencesBrowser::update_ctl_tab( PreferencesUI* prefs )
   {
 
      if ( !prefs ) return;
 
-    fltk::Browser* ctlpaths = prefs->uiPrefsCTLModulePath;
-    fltk::Browser* scripts  = prefs->uiPrefsCTLScripts;
+    Fl_Browser* ctlpaths = prefs->uiPrefsCTLModulePath;
+    Fl_Browser* scripts  = prefs->uiPrefsCTLScripts;
     ctlpaths->clear();
     scripts->clear();
 
@@ -132,19 +136,19 @@ namespace mrv {
 
   }
 
-  void PreferencesBrowser::update( mrv::PreferencesUI* prefs )
+  void PreferencesBrowser::update( PreferencesUI* prefs )
   {
      if ( prefs == NULL ) return;
 
-    fltk::WizardGroup* uiWizard = prefs->uiWizard;
-    if (uiWizard == NULL ) return;
+     Fl_Wizard* uiWizard = prefs->uiWizard;
+     if (uiWizard == NULL ) return;
 
     int wizard_index = absolute_item_index();
 
     if ( wizard_index < 0 || wizard_index >= uiWizard->children() )
        return;
 
-    fltk::Widget* child = uiWizard->child( wizard_index );
+    Fl_Widget* child = uiWizard->child( wizard_index );
     if ( !child ) return;
 
     std::string name = child->label();
