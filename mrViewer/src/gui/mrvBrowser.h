@@ -28,14 +28,15 @@
 #ifndef mrvBrowser_h
 #define mrvBrowser_h
 
-#include <fltk/Browser.h>
-#include <fltk/Color.h>
+#include <FL/Fl_Browser.H>
+// #include <FL/Fl_Cursor.H>
+// #include <FL/Fl_Color.H>
 
 
 namespace mrv
 {
 
-class Browser : public fltk::Browser
+class Browser : public Fl_Browser
 {
 public:
   Browser( int x, int y, int w, int h, const char* l = 0 );
@@ -47,8 +48,8 @@ public:
   bool column_separator() const    { return _column_separator; }
   void column_separator(bool t) { _column_separator = t; }
 
-  void column_separator_color( fltk::Color c ) { _column_separator_color = c; }
-  fltk::Color column_separator_color() const { 
+  void column_separator_color( Fl_Color c ) { _column_separator_color = c; }
+  Fl_Color column_separator_color() const { 
     return _column_separator_color; 
   }
 
@@ -61,17 +62,17 @@ public:
 
 protected:
 
-  int absolute_item_index( const fltk::Group* g );
+  int absolute_item_index( const Fl_Group* g );
   int absolute_item_index( bool& found, 
-			   const fltk::Widget* item,
-			   const fltk::Widget* child );
+			   const Fl_Widget* item,
+			   const Fl_Widget* child );
 
-  void change_cursor( fltk::Cursor* cursor );
+  void change_cursor( Fl_Cursor* cursor );
   int which_col_near_mouse();
 
 protected:
-  fltk::Color  _column_separator_color;	// color of column separator lines 
-  fltk::Cursor* _last_cursor;	// saved cursor state info
+  Fl_Color  _column_separator_color;	// color of column separator lines 
+  Fl_Cursor* _last_cursor;	// saved cursor state info
   int       _dragcol;		// col# user is currently dragging
   bool      _column_separator;	// flag to enable drawing column separators
   bool      _dragging;	// true if user dragging a column

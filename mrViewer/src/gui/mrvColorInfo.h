@@ -32,12 +32,11 @@
 #include <core/mrvRectangle.h>
 #include <gui/mrvBrowser.h>
 
-namespace fltk 
-{
-  class Widget;
-  class Browser;
-  class PopupMenu;
-}
+
+class Fl_Widget;
+class Fl_Browser;
+//@todo:
+//class PopupMenu;
 
 
 namespace mrv
@@ -45,12 +44,12 @@ namespace mrv
   class CMedia;
   class ColorWidget;
 
-  class ColorInfo : public fltk::Group
+  class ColorInfo : public Fl_Group
   {
   public:
     ColorInfo( int x, int y, int w, int h, const char* l = 0 );
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
+    void main( ViewerUI* m ) { uiMain = m; }
 
     void update();
     void update( const CMedia* img,
@@ -63,10 +62,11 @@ namespace mrv
 
   protected:
     ColorWidget*    dcol;
-    fltk::Widget*    area;
-    fltk::Browser*   browser;
-    fltk::PopupMenu* uiColorB;
-    static mrv::ViewerUI*   uiMain;
+    Fl_Widget*    area;
+    Fl_Browser*   browser;
+      // @todo: fltk1.3
+      //fltk::PopupMenu* uiColorB;
+    static ViewerUI*   uiMain;
   };
 
 } // namespace mrv

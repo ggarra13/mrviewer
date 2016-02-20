@@ -107,11 +107,11 @@ INCLUDE_DIRECTORIES(
 
 FLTK_WRAP_UI( mrViewer  
   aviSave.fl
-  # WandOptionsUI.fl
+  WandOptionsUI.fl
   EXROptionsUI.fl
   mrvEDLWindowUI.fl
   mrvIccProfileUI.fl
-  # mrvColorAreaUI.fl 
+  mrvColorAreaUI.fl 
   # mrViewer.fl 
   # gui/keyboard_ui.fl 
   mrvAudioOffset.fl
@@ -169,7 +169,7 @@ SET( SOURCES
  #  core/mrStackTrace.cpp
  ../core/mrvCPU.cpp
  ../core/mrvColorProfile.cpp
- #  core/mrvImageOpts.cpp
+ ../core/mrvImageOpts.cpp
 
  # # db/mrvDatabase.cpp
  # # db/mrvPostgreSQL.cpp

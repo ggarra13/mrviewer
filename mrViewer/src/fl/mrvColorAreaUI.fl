@@ -1,0 +1,60 @@
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
+header_name header_name 
+code_name {.cxx}
+decl {\#include "string"} {public local
+} 
+
+decl {\#include "core/mrvI8N.h"} {public local
+} 
+
+decl {\#include "core/mrvColorSpaces.h"} {private local
+} 
+
+decl {\#include "gui/mrvColorInfo.h"} {private local
+} 
+
+decl {\#include "gui/mrvImageView.h"} {private local
+} 
+
+decl {\#include "mrViewer.h"} {public global
+} 
+
+class ColorAreaUI {open
+} {
+  decl {ViewerUI* main_;} {private local
+  }
+  Function {make_window(ViewerUI* main)} {open private
+  } {
+    code {Fl_Group::current( (Fl_Group*)main->uiMain );} {selected
+    }
+    Fl_Window uiMain {
+      label {Color Information}
+      user_data this user_data_type {ColorAreaUI*}
+      callback {v->main()->uiView->send( "ColorInfoWindow 0" );
+o->hide();}
+      xywh {430 501 400 260} type Double resizable
+      code0 {// Make the window transient
+main_ = main;
+o->size_range( 400, 260 );} visible
+    } {
+      Fl_Browser uiColorText {
+        xywh {0 0 400 260}
+        code0 {o->main( main );}
+        class {mrv::ColorInfo}
+      }
+    }
+  }
+  Function {ColorAreaUI(ViewerUI* m)} {open
+  } {
+    code {make_window( m );} {}
+  }
+  Function {~ColorAreaUI()} {open
+  } {
+    code {delete uiMain; uiMain = NULL;} {}
+  }
+  Function {main()} {open return_type {ViewerUI*}
+  } {
+    code {return main_;} {}
+  }
+} 

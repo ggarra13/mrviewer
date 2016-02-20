@@ -2,6 +2,7 @@
 
 namespace mrv {
 class Browser;
+class ColorInfo;
 class Histogram;
 class ImageBrowser;
 class ImageInformation;

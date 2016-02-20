@@ -785,8 +785,6 @@ namespace mrv {
 
     // Set the theme and colors for GUI
     // scheme = new fltk::StyleSet();
-    fltk::theme( &Preferences::set_theme );
-    fltk::load_theme();
   }
 
 
@@ -987,7 +985,7 @@ namespace mrv {
 
     main->uiMain->show(0, NULL);
     main->uiMain->set_icon();
-    fltk::check();
+    Fl::check();
 
 
 #if defined(_WIN32) || defined(_WIN64)
