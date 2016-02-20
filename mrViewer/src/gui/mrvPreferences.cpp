@@ -41,8 +41,9 @@ namespace fs = boost::filesystem;
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Preferences.H>
 #include <FL/Fl_Progress.H>
+#include <FL/Fl_Radio_Button.H>
 #include <FL/Fl_Tooltip.H>
-#include <FL/Fl_StyleSet.H>
+// #include <FL/Fl_StyleSet.H>
 #include <FL/Fl.H>
 
 // OpenEXR threadcount
@@ -261,8 +262,6 @@ HotkeyUI*         ViewerUI::uiHotkey = NULL;
 
 namespace mrv {
 
-fltk::StyleSet*     scheme = NULL;
-fltk::StyleSet*     newscheme = NULL;
 
   bool                Preferences::native_file_chooser;
   std::string         Preferences::ODT_CTL_transform;
@@ -303,7 +302,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
-    fltk::Preferences base( prefspath().c_str(), "filmaura",
+    Fl_Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
 
     base.get( "version", version, 1 );
@@ -311,7 +310,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // Get ui preferences
     //
-    fltk::Preferences ui( base, "ui" );
+    Fl_Preferences ui( base, "ui" );
 
     ui.get( "topbar", tmp, 1 );
     uiPrefs->uiPrefsTopbar->value( (bool) tmp );
@@ -351,7 +350,7 @@ fltk::StyleSet*     newscheme = NULL;
     // ui/window preferences
     //
     {
-       fltk::Preferences win( ui, "window" );
+       Fl_Preferences win( ui, "window" );
        
        win.get( "auto_fit_image", tmp, 0 );
        uiPrefs->uiPrefsAutoFitImage->value( tmp );
@@ -362,13 +361,13 @@ fltk::StyleSet*     newscheme = NULL;
        win.get( "open_mode", tmp, 0 ); 
 
        {
-	  fltk::RadioButton* r;
-	  for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
-	  {
-	     r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child( i );
-	     r->value(0);
+           Fl_Radio_Button* r;
+           for ( int i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i )
+           {
+               r = (Fl_Radio_Button*) uiPrefs->uiPrefsOpenMode->child( i );
+               r->value(0);
 	  }
-	  r = (fltk::RadioButton*)uiPrefs->uiPrefsOpenMode->child( tmp );
+	  r = (Fl_Radio_Button*)uiPrefs->uiPrefsOpenMode->child( tmp );
 	  r->value(1);
        }
     }
@@ -378,7 +377,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // ui/view
     //
-    fltk::Preferences view( ui, "view" );
+    Fl_Preferences view( ui, "view" );
 
     view.get("gain", tmpF, 1.0f );
     uiPrefs->uiPrefsViewGain->value( tmpF );
@@ -407,7 +406,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // ui/colors
     //
-    fltk::Preferences colors( ui, "colors" );
+    Fl_Preferences colors( ui, "colors" );
     colors.get( "background_color", bgcolor, 0x43434300 );
     uiPrefs->uiPrefsUIBG->color( bgcolor );
     colors.get( "text_color", textcolor, 0xababab00 );
@@ -421,7 +420,7 @@ fltk::StyleSet*     newscheme = NULL;
     // ui/view/colors
     //
     {
-      fltk::Preferences colors( view, "colors" );
+      Fl_Preferences colors( view, "colors" );
 
       colors.get("background_color", tmp, 0x20202000 );
       uiPrefs->uiPrefsViewBG->color( tmp );
@@ -440,7 +439,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // ui/view/hud
     //
-    fltk::Preferences hud( view, "hud" );
+    Fl_Preferences hud( view, "hud" );
     hud.get("filename", tmp, 0 );
     uiPrefs->uiPrefsHudFilename->value( (bool) tmp );
     hud.get("directory", tmp, 0 );
@@ -462,7 +461,7 @@ fltk::StyleSet*     newscheme = NULL;
     hud.get("iptc", tmp, 0 );
     uiPrefs->uiPrefsHudIPTC->value( (bool) tmp );
 
-    fltk::Preferences win( view, "window" );
+    Fl_Preferences win( view, "window" );
     win.get("fixed_position", tmp, 0 );
     uiPrefs->uiWindowFixedPosition->value( (bool) tmp );
     win.get("x_position", tmp, 0 );
@@ -470,7 +469,7 @@ fltk::StyleSet*     newscheme = NULL;
     win.get("y_position", tmp, 0 );
     uiPrefs->uiWindowYPosition->value( tmp );
 
-    fltk::Preferences flu( ui, "file_requester" );
+    Fl_Preferences flu( ui, "file_requester" );
     flu.get("quick_folder_travel", tmp, 1 );
     uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
     Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
@@ -478,7 +477,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // playback x
     //
-    fltk::Preferences playback( base, "playback" );
+    Fl_Preferences playback( base, "playback" );
     playback.get( "auto_playback", tmp, 0 );
     uiPrefs->uiPrefsAutoPlayback->value(tmp);
 
@@ -488,7 +487,7 @@ fltk::StyleSet*     newscheme = NULL;
     playback.get( "loop_mode", tmp, 1 );
     uiPrefs->uiPrefsLoopMode->value(tmp);
 
-    fltk::Preferences caches( base, "caches" );
+    Fl_Preferences caches( base, "caches" );
 
     caches.get( "active", tmp, 1 );
     uiPrefs->uiPrefsCacheActive->value( (bool) tmp );
@@ -513,14 +512,14 @@ fltk::StyleSet*     newscheme = NULL;
     if ( !tmp )
     {
         caches.get( "size", tmp, 60 );
-        uiPrefs->uiPrefsCacheSize->activate(false);
+        uiPrefs->uiPrefsCacheSize->set_active();
         uiPrefs->uiPrefsCacheSize->value( tmp );
         CMedia::video_cache_size( tmp );
         CMedia::audio_cache_size( tmp );
     }
     else
     {
-        uiPrefs->uiPrefsCacheSize->activate(true);
+        uiPrefs->uiPrefsCacheSize->clear_active();
         CMedia::video_cache_size( 0 );
         CMedia::audio_cache_size( 0 );
     }
@@ -528,7 +527,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // audio
     //
-    fltk::Preferences audio( base, "audio" );
+    Fl_Preferences audio( base, "audio" );
     char device[256];
     audio.get( "device", device, "default", 255 );
 
@@ -567,7 +566,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsAudioMute->value( tmp );
 
     // Images
-    fltk::Preferences images( base, "images" );
+    Fl_Preferences images( base, "images" );
     images.get( "all_layers", tmp, 0 );
     uiPrefs->uiPrefsAllLayers->value( tmp );
 
@@ -575,7 +574,7 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiPrefsACESClipMetadata->value( tmp );
 
     // OpenEXR
-    fltk::Preferences openexr( base, "openexr" );
+    Fl_Preferences openexr( base, "openexr" );
     openexr.get( "thread_count", tmp, 4 );
     uiPrefs->uiPrefsOpenEXRThreadCount->value( tmp );
 
@@ -634,13 +633,13 @@ fltk::StyleSet*     newscheme = NULL;
       }
 
 
-    fltk::Preferences lut( base, "lut" );
+    Fl_Preferences lut( base, "lut" );
     lut.get("quality", tmpS, "64x64x64", 2047 );
     uiPrefs->uiLUT_quality->value(2);
-    int num = uiPrefs->uiLUT_quality->children();
-    for ( int i = 0; i < num; ++i )
+    int num = uiPrefs->uiLUT_quality->size();
+    for ( int i = 1; i <= num; ++i )
       {
-	const char* label = uiPrefs->uiLUT_quality->child(i)->label();
+	const char* label = uiPrefs->uiLUT_quality->text(i);
 	if ( strcmp( label, tmpS ) == 0 )
 	  {
 	    uiPrefs->uiLUT_quality->value(i); break;
@@ -649,18 +648,18 @@ fltk::StyleSet*     newscheme = NULL;
 
  
     {
-      fltk::Preferences odt( lut, "ODT" );
+      Fl_Preferences odt( lut, "ODT" );
       {
 	odt.get( "algorithm", tmp, 0 );
 	uiPrefs->ODT_algorithm->value(tmp);
 
-	fltk::Preferences ctl( odt, "CTL" );
+	Fl_Preferences ctl( odt, "CTL" );
 	{
 	  ok = ctl.get( "transform", tmpS, "ODT.Academy.RGBmonitor_D60sim_100nits_dim.a1.0.0", 2048 );
 	  ODT_CTL_transform = environmentSetting( "MRV_ODT_CTL_DISPLAY_TRANSFORM", 
 						  tmpS, ok );
 
-	  fltk::Preferences chroma( ctl, "Chromaticities" );
+	  Fl_Preferences chroma( ctl, "Chromaticities" );
 	  ODT_CTL_chromaticities = chromaticities( "MRV_ODT_CTL_DISPLAY_CHROMATICITIES",
 						   tmpC, chroma );
 
@@ -672,7 +671,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  ODT_CTL_white_luminance = environmentSetting( "MRV_ODT_CTL_DISPLAY_SURROUND_LUMINANCE",
 							tmpF, ok );
 	}
-	fltk::Preferences icc( odt, "ICC" );
+	Fl_Preferences icc( odt, "ICC" );
 	{
 	  ok = icc.get( "profile", tmpS, "", 2048 );
 	  ODT_ICC_profile = environmentSetting( "MRV_ODT_ICC_PROFILE", 
@@ -687,12 +686,12 @@ fltk::StyleSet*     newscheme = NULL;
       //
 
 
-      fltk::Preferences rt( lut, "RT" );
+      Fl_Preferences rt( lut, "RT" );
       {
 	rt.get( "algorithm", tmp, 0 );
 	uiPrefs->RT_algorithm->value(tmp);
 
-	fltk::Preferences ctl( rt, "CTL" );
+	Fl_Preferences ctl( rt, "CTL" );
 	{
 #define RENDER_TRANSFORM(x, d)						\
 	  ok = ctl.get( #x, tmpS, d, 2048 );				\
@@ -705,7 +704,7 @@ fltk::StyleSet*     newscheme = NULL;
 #undef RENDER_TRANSFORM
 	}
 
-	fltk::Preferences icc( rt, "ICC" );
+	Fl_Preferences icc( rt, "ICC" );
 	{
 #define ICC_PROFILE(x, d)						\
 	  ok = icc.get( #x, tmpS, d, 2048 );				\
@@ -726,13 +725,13 @@ fltk::StyleSet*     newscheme = NULL;
 
 
 
-    fltk::Preferences loading( base, "loading" );
+    Fl_Preferences loading( base, "loading" );
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
     loading.get( "native_file_chooser", tmp, 0 );
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
-    fltk::Preferences video( base, "video" );
+    Fl_Preferences video( base, "video" );
     video.get( "stereo_right_eye_inverted", tmp, 0 );
     uiPrefs->uiPrefsStereoRightEyeInverted->value(tmp);
     video.get( "blend_mode", tmp, 0 );
@@ -742,7 +741,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // Hotkeys
     //
-    fltk::Preferences keys( base, "hotkeys" );
+    Fl_Preferences keys( base, "hotkeys" );
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
         // If version 1 of preferences, do not set scrub
@@ -900,13 +899,13 @@ fltk::StyleSet*     newscheme = NULL;
 
     if ( uiPrefs->uiPrefsCacheFPS->value() == 0 )
     {
-        uiPrefs->uiPrefsCacheSize->activate(true);
+        uiPrefs->uiPrefsCacheSize->set_active();
         CMedia::audio_cache_size(unsigned(uiPrefs->uiPrefsCacheSize->value()));
         CMedia::video_cache_size(unsigned(uiPrefs->uiPrefsCacheSize->value()));
     }
     else
     {
-        uiPrefs->uiPrefsCacheSize->activate(false);
+        uiPrefs->uiPrefsCacheSize->clear_active();
         CMedia::audio_cache_size( 0 );
         CMedia::video_cache_size( 0 );
     }
@@ -928,7 +927,7 @@ fltk::StyleSet*     newscheme = NULL;
     if ( crop > 0 )
       {
 	float mask = 1.0f;
-	const char* fmt = uiPrefs->uiPrefsCropArea->child(crop)->label();
+	const char* fmt = uiPrefs->uiPrefsCropArea->text(crop);
 	sscanf( fmt, "%f", &mask );
 	view->masking( mask ); 
       }
@@ -995,8 +994,8 @@ fltk::StyleSet*     newscheme = NULL;
     main->uiMain->resize( main->uiMain->w(), main->uiMain->h()-20 );
 #endif
 
-    fltk::RadioButton* r;
-    r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(1);
+    Fl_Radio_Button* r;
+    r = (Fl_Radio_Button*) uiPrefs->uiPrefsOpenMode->child(1);
 
     if ( r->value() == 1 )
       {
@@ -1004,7 +1003,7 @@ fltk::StyleSet*     newscheme = NULL;
 	view->toggle_fullscreen();
       }
 
-    r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(2);
+    r = (Fl_Radio_Button*) uiPrefs->uiPrefsOpenMode->child(2);
 
     if ( r->value() == 1 )
       {
@@ -1039,25 +1038,25 @@ fltk::StyleSet*     newscheme = NULL;
   void Preferences::save()
   {
     int i;
-    PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
+    PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
 
-    fltk::Preferences base( prefspath().c_str(), "filmaura",
-			    "mrViewer" );
+    Fl_Preferences base( prefspath().c_str(), "filmaura",
+                         "mrViewer" );
     base.set( "version", 2 );
 
     // Save ui preferences
-    fltk::Preferences ui( base, "ui" );
+    Fl_Preferences ui( base, "ui" );
 
     //
     // window options
     //
     {
-       fltk::Preferences win( ui, "window" );
+       Fl_Preferences win( ui, "window" );
        win.set( "auto_fit_image", (int) uiPrefs->uiPrefsAutoFitImage->value() );
        win.set( "always_on_top", (int) uiPrefs->uiPrefsAlwaysOnTop->value() );
        int tmp = 0;
        for ( i = 0; i < uiPrefs->uiPrefsOpenMode->children(); ++i ) {
-	  fltk::RadioButton* r = (fltk::RadioButton*) uiPrefs->uiPrefsOpenMode->child(i);
+	  Fl_Radio_Button* r = (Fl_Radio_Button*) uiPrefs->uiPrefsOpenMode->child(i);
 	  if ( r->value() ) {
 	     tmp = i; break;
 	  }
@@ -1085,7 +1084,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // ui/view prefs
     //
-    fltk::Preferences view( ui, "view" );
+    Fl_Preferences view( ui, "view" );
     view.set("gain", uiPrefs->uiPrefsViewGain->value() );
     view.set("gamma", uiPrefs->uiPrefsViewGamma->value() );
     view.set("compensate_pixel_ratio", uiPrefs->uiPrefsViewPixelRatio->value() );
@@ -1100,7 +1099,7 @@ fltk::StyleSet*     newscheme = NULL;
     // view/colors prefs
     //
     {
-       fltk::Preferences colors( view, "colors" );
+       Fl_Preferences colors( view, "colors" );
        int tmp = uiPrefs->uiPrefsViewBG->color();
        colors.set("background_color", tmp );
        tmp = uiPrefs->uiPrefsViewTextOverlay->color();
@@ -1115,7 +1114,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // view/hud prefs
     //
-    fltk::Preferences hud( view, "hud" );
+    Fl_Preferences hud( view, "hud" );
     hud.set("filename", uiPrefs->uiPrefsHudFilename->value() );
     hud.set("directory", uiPrefs->uiPrefsHudDirectory->value() );
     hud.set("fps", uiPrefs->uiPrefsHudFPS->value() );
@@ -1128,7 +1127,7 @@ fltk::StyleSet*     newscheme = NULL;
     hud.set("iptc", uiPrefs->uiPrefsHudIPTC->value() );
 
     {
-       fltk::Preferences win( view, "window" );
+       Fl_Preferences win( view, "window" );
        win.set("fixed_position", uiPrefs->uiWindowFixedPosition->value() );
        win.set("x_position", uiPrefs->uiWindowXPosition->value() );
        win.set("y_position", uiPrefs->uiWindowYPosition->value() );
@@ -1137,7 +1136,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // ui/colors prefs
     //
-    fltk::Preferences colors( ui, "colors" );
+    Fl_Preferences colors( ui, "colors" );
     bgcolor = uiPrefs->uiPrefsUIBG->color();
     colors.set( "background_color", bgcolor );
     textcolor = uiPrefs->uiPrefsUIText->color();
@@ -1147,7 +1146,7 @@ fltk::StyleSet*     newscheme = NULL;
     selectioncolor = uiPrefs->uiPrefsUISelectionText->color();
     colors.set( "selection_text_color", selectiontextcolor );
 
-    fltk::Preferences flu( ui, "file_requester" );
+    Fl_Preferences flu( ui, "file_requester" );
     flu.set("quick_folder_travel", 
 	    uiPrefs->uiPrefsFileReqFolder->value());
     
@@ -1157,13 +1156,13 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // playback prefs
     //
-    fltk::Preferences playback( base, "playback" );
+    Fl_Preferences playback( base, "playback" );
     playback.set( "auto_playback", (int) uiPrefs->uiPrefsAutoPlayback->value() );
     playback.set( "fps", uiPrefs->uiPrefsFPS->value() );
     playback.set( "loop_mode", uiPrefs->uiPrefsLoopMode->value() );
 
 
-    fltk::Preferences caches( base, "caches" );
+    Fl_Preferences caches( base, "caches" );
     caches.set( "active", (int) uiPrefs->uiPrefsCacheActive->value() );
     caches.set( "preload", (int) uiPrefs->uiPrefsPreloadCache->value() );
     caches.set( "scale", (int) uiPrefs->uiPrefsCacheScale->value() );
@@ -1172,11 +1171,11 @@ fltk::StyleSet*     newscheme = NULL;
     caches.set( "size", (int) uiPrefs->uiPrefsCacheSize->value() );
 
 
-    fltk::Preferences loading( base, "loading" );
+    Fl_Preferences loading( base, "loading" );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
 
-    fltk::Preferences video( base, "video" );
+    Fl_Preferences video( base, "video" );
     video.set( "stereo_right_eye_inverted", 
                (int) uiPrefs->uiPrefsStereoRightEyeInverted->value() );
     video.set( "blend_mode", (int) uiPrefs->uiPrefsBlendMode->value() );
@@ -1185,7 +1184,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // Audio prefs
     //
-    fltk::Preferences audio( base, "audio" );
+    Fl_Preferences audio( base, "audio" );
     unsigned int idx = uiPrefs->uiPrefsAudioDevice->value();
 
     const AudioEngine::DeviceList& devices = AudioEngine::devices();
@@ -1207,22 +1206,22 @@ fltk::StyleSet*     newscheme = NULL;
 
 
 
-    fltk::Preferences lut( base, "lut" );
+    Fl_Preferences lut( base, "lut" );
     i = uiPrefs->uiLUT_quality->value();
-    if ( i >= 0 && i < uiPrefs->uiLUT_quality->children() )
+    if ( i >= 1 && i <= uiPrefs->uiLUT_quality->size() )
       {
-	lut.set("quality", uiPrefs->uiLUT_quality->child(i)->label() );
+	lut.set("quality", uiPrefs->uiLUT_quality->text(i) );
       }
 
     {
-      fltk::Preferences odt( lut, "ODT" );
+      Fl_Preferences odt( lut, "ODT" );
       {
 	odt.set( "algorithm", uiPrefs->ODT_algorithm->value() );
-	fltk::Preferences ctl( odt, "CTL" );
+	Fl_Preferences ctl( odt, "CTL" );
 	{
-	  ctl.set( "transform", uiPrefs->uiODT_CTL_transform->text() );
+	  ctl.set( "transform", uiPrefs->uiODT_CTL_transform->value() );
 
-	  fltk::Preferences chroma( ctl, "Chromaticities" );
+	  Fl_Preferences chroma( ctl, "Chromaticities" );
 	  chroma.set( "red_x", 
 		      uiPrefs->uiODT_CTL_chromaticities_red_x->value() );
 	  chroma.set( "red_y",  
@@ -1245,42 +1244,42 @@ fltk::StyleSet*     newscheme = NULL;
 	  ctl.set( "surround_luminance", 
 		   uiPrefs->uiODT_CTL_surround_luminance->value() );
 	}
-	fltk::Preferences icc( odt, "ICC" );
+	Fl_Preferences icc( odt, "ICC" );
 	{
-	  icc.set( "profile",   uiPrefs->uiODT_ICC_profile->text() );
+	  icc.set( "profile",   uiPrefs->uiODT_ICC_profile->value() );
 	}
       }
 
-      fltk::Preferences  rt( lut, "RT" );
+      Fl_Preferences  rt( lut, "RT" );
       {
 	rt.set( "algorithm", uiPrefs->RT_algorithm->value() );
 	
-	fltk::Preferences ctl( rt, "CTL" );
+	Fl_Preferences ctl( rt, "CTL" );
 	{
-	  ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->text() );
-	  ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->text() );
-	  ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->text() );
-	  ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->text() );
+	  ctl.set( "8bits",  uiPrefs->uiCTL_8bits_load_transform->value() );
+	  ctl.set( "16bits", uiPrefs->uiCTL_16bits_load_transform->value() );
+	  ctl.set( "32bits", uiPrefs->uiCTL_32bits_load_transform->value() );
+	  ctl.set( "float",  uiPrefs->uiCTL_float_load_transform->value() );
 	}
 
-	fltk::Preferences icc( rt, "ICC" );
+	Fl_Preferences icc( rt, "ICC" );
 	{
-	  icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->text() );
-	  icc.set( "16bits", uiPrefs->uiICC_16bits_profile->text() );
-	  icc.set( "32bits", uiPrefs->uiICC_32bits_profile->text() );
-	  icc.set( "float",  uiPrefs->uiICC_float_profile->text() );
+	  icc.set( "8bits",  uiPrefs->uiICC_8bits_profile->value() );
+	  icc.set( "16bits", uiPrefs->uiICC_16bits_profile->value() );
+	  icc.set( "32bits", uiPrefs->uiICC_32bits_profile->value() );
+	  icc.set( "float",  uiPrefs->uiICC_float_profile->value() );
 	}
       }
     }
 
     // Images
-    fltk::Preferences images( base, "images" );
+    Fl_Preferences images( base, "images" );
     images.set( "all_layers", (int) uiPrefs->uiPrefsAllLayers->value() );
     images.set( "aces_metadata", 
                 (int) uiPrefs->uiPrefsACESClipMetadata->value());
 
     // OpenEXR
-    fltk::Preferences openexr( base, "openexr" );
+    Fl_Preferences openexr( base, "openexr" );
     openexr.set( "thread_count", (int) uiPrefs->uiPrefsOpenEXRThreadCount->value() );
     openexr.set( "gamma", uiPrefs->uiPrefsOpenEXRGamma->value() );
     openexr.set( "compression", 
@@ -1291,7 +1290,7 @@ fltk::StyleSet*     newscheme = NULL;
     //
     // Hotkeys
     //
-    fltk::Preferences keys( base, "hotkeys" );
+    Fl_Preferences keys( base, "hotkeys" );
     for ( int i = 0; hotkeys[i].name != "END"; ++i )
     {
        keys.set( (hotkeys[i].name + " ctrl").c_str(), 
@@ -1316,305 +1315,13 @@ fltk::StyleSet*     newscheme = NULL;
 
   bool Preferences::set_theme()
   {
-    // Default Style handling for changing the scheme of all widget at once
-    fltk::reset_theme();
-
-    newscheme = new fltk::StyleSet();
 
     // this is ugly and fucks up all gray75 colors
     //   fltk::set_background( bgcolor );
 
     // this has default_style
-    fltk::Style* style;
-
-    style = fltk::Style::find( "Browser" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-      }
-
-    style = fltk::Style::find( "TextDisplay" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-      }
-
-    // this has default_style
-    style = fltk::Style::find( "ValueInput" );
-    if ( style )
-      {
-          style->color( 0x98a8a800 );
-          // style->color( textcolor );
-          style->textcolor( fltk::BLACK );
-          style->selection_color( selectioncolor );
-          style->selection_textcolor( selectiontextcolor );
-	 // style->buttoncolor( selectioncolor );
-          style->labelcolor( textcolor );
-      }
-
-    // this has default_style
-    style = fltk::Style::find( "InputBrowser" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->selection_textcolor( selectiontextcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-      }
-
-    // this has default_style
-    style = fltk::Style::find( "Item" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->selection_textcolor( selectiontextcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-      }
-
-    // this has default_style
-    // style = fltk::Style::find( "Group" );
-    style = group_style;
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->textsize( 12 );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-      }
-
-    style = fltk::Style::find( "Choice" );
-    if ( style )
-    {
-	style->color( bgcolor );
-        style->alt_color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->textsize( 10 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-    }
-
-    style = fltk::Style::find( "Message" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->textsize( 12 );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-      }
-
-    // this has default_style
-    // style = fltk::Style::find( "InvisibleBox" );
-    style = fltk::InvisibleBox::default_style;
-    if ( style )
-      {
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-      }
-
-    // this has default_styl
-    style = fltk::Style::find( "Button" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->textsize( 12 );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-      }
 
 
-    // Make CheckButton draw as a radio button
-
-    style = fltk::Style::find( "CheckButton" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( fltk::YELLOW );
-	style->buttoncolor( bgcolor );
-	style->textsize( 12 );
-	style->labelsize( 12 );
-        const fltk::Symbol* s = fltk::Symbol::find( "radio" );
-        style->glyph_ = (fltk::Symbol*)s;
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( fltk::YELLOW   );
-      }
-
-    style = fltk::Style::find( "RadioButton" );
-    if ( style )
-      {
-          style->color( fltk::GRAY20 );
-          style->textcolor( fltk::YELLOW );
-          style->buttoncolor( bgcolor );
-          style->textsize( 12 );
-          style->labelsize( 12 );
-          style->labelcolor( textcolor );
-          style->selection_color( fltk::YELLOW );
-          style->selection_textcolor( fltk::YELLOW );
-      }
-
-
-    // this has default_style
-    style = fltk::Style::find("Tooltip");
-    if ( style )
-      {
-	//       style->color( fltk::YELLOW );
-	style->textcolor( fltk::BLACK );
-	//       style->buttoncolor( bgcolor );
-	//       style->textsize( 10 );
-	//       style->labelsize( 10 );
-	//       style->labelcolor( textcolor );
-      }
-
-
-    //
-    // This changes up/down buttons to draw a tad darker
-    //
-    fltk::FrameBox* box;
-    box = (fltk::FrameBox*) fltk::Symbol::find( "down_" );
-    if ( box ) box->data(  "2HHOODD" );
-
-    box = (fltk::FrameBox*) fltk::Symbol::find( "up" );
-    if ( box ) box->data(  "CCOOHH" );
-
-    box = (fltk::FrameBox*) fltk::Symbol::find( "engraved" );
-    if ( box ) box->data(  "2HHOOOOOOHH" );
-
-    // This is for slider lines
-    box = (fltk::FrameBox*) fltk::Symbol::find( "thin_down" );
-    if ( box ) box->data(  "OOLL" );
-
-    // this has default_style
-    style = fltk::Style::find( "PopupMenu" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
- 	style->buttoncolor( bgcolor );
-	style->textsize( 12 );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-	style->highlight_color( selectioncolor );
-      }
-
-    // this has default_style (not used)
-    style = fltk::Style::find( "Input" );
-    if ( style )
-      {
-// 	style->color( mrv::lighter( bgcolor, 0x20 ) );
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->labelcolor( textcolor );
-	style->textsize( 10 );
-	style->labelsize( 10 );
-      }
-
-    style = fltk::Style::find( "Output" );
-    if ( style )
-      {
-// 	style->color( mrv::lighter( bgcolor, 0x20 ) );
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->labelcolor( textcolor );
-	style->textsize( 10 );
-	style->labelsize( 10 );
-      }
-
-    // this has default_style
-    style = fltk::Style::find( "Window" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 10 );
-	style->labelcolor( textcolor );
-      }
-
-    // this has default_style
-    style = fltk::Style::find( "Scrollbar" );
-    if ( style )
-      {
-	style->color( mrv::darker( bgcolor, 0x20 ) );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 10 );
-	style->labelcolor( textcolor );
-      }
-
-    style = fltk::Style::find( "ProgressBar" );
-    if ( style )
-      {
-	style->selection_color( bgcolor );
-	style->selection_textcolor( selectiontextcolor );
-	style->color( bgcolor  );
-	style->textcolor( textcolor );
-	style->labelcolor( textcolor );
-	style->buttoncolor( bgcolor );
-
-	style->labelsize( 10 );
-      }
-
-    // this has default_style
-    style = fltk::Style::find( "Slider" );
-    if ( style )
-      {
-	style->color( mrv::lighter( bgcolor ) );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->textsize( 8 );
-	style->labelsize( 10 );
-	style->labelcolor( textcolor );
- 	style->highlight_textcolor( 0xFFFF0000 );
-      }
-
-    // this has default_style
-    style = fltk::Widget::default_style;
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->textsize( 14 );
-	style->labelsize( 14 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-        style->selection_textcolor( selectiontextcolor );
-      }
-    else
-      {
-	LOG_ERROR( "fltk's widget style not found" );
-      }
 
     // Set ui window settings
     PreferencesUI* uiPrefs = ViewerUI::uiPrefs;
@@ -1639,8 +1346,6 @@ fltk::StyleSet*     newscheme = NULL;
     uiPrefs->uiICC_32bits_profile->value( CMedia::icc_profile_32bits.c_str() );
     uiPrefs->uiICC_float_profile->value( CMedia::icc_profile_float.c_str() );
 
-    newscheme->make_current();
-    fltk::reload_theme();
 
     return true;
   }

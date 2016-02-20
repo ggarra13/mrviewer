@@ -108,9 +108,9 @@ INCLUDE_DIRECTORIES(
 FLTK_WRAP_UI( mrViewer  
   aviSave.fl
   # WandOptionsUI.fl
-  # EXROptionsUI.fl
-  # mrvEDLWindowUI.fl
-  # mrvIccProfileUI.fl
+  EXROptionsUI.fl
+  mrvEDLWindowUI.fl
+  mrvIccProfileUI.fl
   # mrvColorAreaUI.fl 
   # mrViewer.fl 
   # gui/keyboard_ui.fl 
@@ -206,7 +206,7 @@ SET( SOURCES
  #  gui/mrvMediaTrack.cpp
  #  gui/mrvMainWindow.cpp
  #  gui/mrvPopupMenu.cpp
- # ../gui/mrvPreferences.cpp
+ ../gui/mrvPreferences.cpp
  #  gui/mrvPreferencesBrowser.cpp
  ../gui/mrvProgressReport.cpp
  ../gui/mrvReel.cpp
@@ -274,7 +274,7 @@ IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
   SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
   SET( SOURCES gui/resource.rc ${SOURCES} )
 ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
-  # SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+  SET( SOURCES ../audio/mrvALSAEngine.cpp ${SOURCES} )
 ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
  
  

@@ -36,7 +36,7 @@
 #include <limits>
 #include <algorithm>
 
-#include <fltk/run.h>
+#include <FL/Fl.H>
 
 #include "mrThread.h"
 #include "stubImage.h"
@@ -549,7 +549,7 @@ namespace mrv {
 
   void rmanImage::parse_stub()
   {
-     FILE* f = fltk::fltk_fopen( filename(), "rb" );
+     FILE* f = fl_fopen( filename(), "rb" );
      if (!f) {
 	LOG_ERROR("Could not open '" << filename() << "'" );
 	return;

@@ -52,7 +52,6 @@
 #include <boost/asio/streambuf.hpp>
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
-#include <fltk/Font.h>
 
 #include "mrvClient.h"
 #include "mrvServer.h"
@@ -234,17 +233,17 @@ bool Parser::parse( const std::string& s )
 
       shape->text( text );
 
-      fltk::Font** fonts;
+      // @todo: fltk1.3
       unsigned i;
-      unsigned num = fltk::list_fonts(fonts);
+      unsigned num = Fl::set_fonts( "-*" );
       for ( i = 0; i < num; ++i )
       {
-         if ( font == fonts[i]->name() ) break;
+          int t;
+          if ( font == Fl::get_font_name((Fl_Font)i,&t)) break;
       }
       if ( i >= num ) i = 0;
-
-
-      shape->font( fonts[i] );
+      shape->font( (Fl_Font)i );
+    
       is >> font_size >> shape->r >> shape->g >> shape->b >> shape->a
          >> shape->frame;
       is >> xy.x >> xy.y;

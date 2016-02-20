@@ -18,8 +18,8 @@
 
 #include <stdlib.h>
 
-#include <fltk/filename.h>
-#include <fltk/string.h>
+#include <FL/filename.H>
+// #include <fltk/string.h>
 
 #include <boost/filesystem.hpp>
 
@@ -80,9 +80,9 @@ std::string prefspath()
 
 std::string lockfile()
 {
-  std::string lockfile = mrv::homepath();
-   lockfile += "/.filmaura/mrViewer.lock.prefs";
-   return lockfile;
+    std::string lockfile = mrv::homepath();
+    lockfile += "/.filmaura/mrViewer.lock.prefs";
+    return lockfile;
 }
 
 

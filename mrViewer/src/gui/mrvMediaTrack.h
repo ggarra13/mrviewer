@@ -79,8 +79,8 @@ class media_track : public Fl_Group
      bool remove( const mrv::media m );
 
 
-     void main( mrv::ViewerUI* m ) { _main = m; }
-     mrv::ViewerUI* main() const { return _main; }
+     void main( ViewerUI* m ) { _main = m; }
+     ViewerUI* main() const { return _main; }
 
      mrv::ImageBrowser* browser() const;
 
@@ -114,7 +114,7 @@ class media_track : public Fl_Group
      virtual void draw();
 
    protected:
-     mrv::ViewerUI* _main;
+     ViewerUI* _main;
      int        _reel_idx;
      int        _dragX;
      bool       _at_start;

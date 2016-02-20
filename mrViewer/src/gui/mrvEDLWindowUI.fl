@@ -74,7 +74,7 @@ v->new_reel(name);}
             }
           }
           {fltk::Slider} uiTimeline {
-            user_data main user_data_type {mrv::ViewerUI*}
+            user_data main user_data_type {ViewerUI*}
             callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );
 v->uiEDLWindow->uiEDLGroup->redraw();}
@@ -104,7 +104,7 @@ uiEDLChoiceOne->value( idx );}
                 extra_code {o->image( reel_24 );}
               }
               {fltk::Button} {} {
-                user_data main user_data_type {mrv::ViewerUI*}
+                user_data main user_data_type {ViewerUI*}
                 callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 fltk::Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
 if ( c->value() < 0 ) return;
