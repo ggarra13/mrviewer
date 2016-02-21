@@ -74,11 +74,14 @@ decl {\#include "mrvEDLWindowUI.h"} {}
 
 decl {\#include "icons/icons.c"} {} 
 
-decl {\#include "fltk/ColorChooser.h"} {} 
+decl {\#include "FL/Fl_Color_Chooser.H"} {} 
 
-decl {\#include "fltk/ask.h"} {} 
+decl {\#include "FL/fl_ask.H"} {} 
 
-decl {\#include "fltk/run.h"} {} 
+decl {\#include "FL/Fl.H"} {} 
+
+decl {#include "namespace.h"} {public
+}
 
 Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
@@ -101,7 +104,7 @@ if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
 o->value(-1);
 if ( !ctl.empty() )
 {
-  fltk::Widget* elem = o->find( ctl.c_str() );
+  Fl_Widget* elem = o->find( ctl.c_str() );
 
   for (int i = 0; i < o->children(); ++i )
   {
@@ -114,13 +117,13 @@ if ( !ctl.empty() )
       } {}
       Fl_Button {} {
         label Accept
-        user_data w user_data_type {fltk::Window*}
+        user_data w user_data_type {Fl_Window*}
         callback {v->make_exec_return(true);}
         xywh {195 375 85 25}
       }
       Fl_Button {} {
         label Cancel
-        user_data w user_data_type {fltk::Window*}
+        user_data w user_data_type {Fl_Window*}
         callback {v->make_exec_return(false);}
         xywh {290 375 80 25}
       }
@@ -131,44 +134,6 @@ if ( !ctl.empty() )
 return ctl;} {}
 } 
 
-  decl {class Browser;} {public
-  }
-  decl {class Histogram;} {public
-  }
-  decl {class ImageBrowser;} {public
-  }
-  decl {class ImageInformation;} {public
-  }
-  decl {class ImageView;} {public
-  }
-  decl {class LogDisplay;} {public
-  }
-  decl {class MainWindow;} {public
-  }
-  decl {class PreferencesBrowser;} {public
-  }
-  decl {class Timecode;} {public
-  }
-  decl {class Timeline;} {public
-  }
-  decl {class Vectorscope;} {public
-  }
-  decl {class ViewerUI;} {public
-  }
-  decl {class ICCProfileListUI;} {public
-  }
-  decl {class ColorAreaUI;} {public
-  }
-  decl {class GL3dViewUI;} {public
-  }
-  decl {class HotkeyUI;} {public
-  }
-  decl {class PaintUI;} {public
-  }
-  decl {class ConnectionUI;} {public
-  }
-  decl {class EDLWindowUI;} {public
-  }
   class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -191,7 +156,7 @@ o->hscrollbar.color( o->buttoncolor() );}
         Fl_Group {} {
           xywh {0 0 405 32} box UP_BOX
         } {
-          {fltk::Choice} {} {
+          Fl_Choice {} {
             user_data uiBrowser user_data_type {mrv::ImageBrowser*}
             callback {v->reel(o->value());} open
             xywh {5 5 120 20} align 36 box THIN_DOWN_BOX
@@ -202,7 +167,7 @@ o->hscrollbar.color( o->buttoncolor() );}
           } {
             Fl_Button {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {const char* name = fltk::input("Reel Name", "reel" );
+              callback {const char* name = fl_input("Reel Name", "reel" );
 if ( name == NULL ) return;
 v->new_reel(name);}
               tooltip {Create a new reel}
@@ -326,8 +291,8 @@ o->child_of( main->uiMain );}
         extra_code {// Make the window transient
 o->child_of( main->uiMain );} modal
       } {
-        {fltk::TabGroup} {} {
-          user_data main user_data_type {mrv::ViewerUI*}
+        Fl_Tabs {} {
+          user_data main user_data_type {ViewerUI*}
           callback {v->uiAbout->uiGPUInfo->clear();
 v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
           xywh {4 4 441 391}
@@ -336,7 +301,7 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
             label mrViewer open
             xywh {0 20 440 371}
           } {
-            {fltk::TextDisplay} {} {
+            Fl_TextDisplay {} {
               xywh {15 15 415 345} textsize 14
               extra_code {o->text( mrv::about_message().c_str() );}
             }
@@ -345,7 +310,7 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
             label HW open
             xywh {0 20 440 371} hide
           } {
-            {fltk::TextDisplay} uiCPUInfo {
+            Fl_TextDisplay uiCPUInfo {
               label {CPU Information}
               xywh {15 30 415 96} align 1 textsize 14
               extra_code {o->text( mrv::cpu_information().c_str() );}
@@ -458,7 +423,7 @@ o->value(-1);}
     }
   }
   class GL3dViewUI {} {
-    decl {mrv::ViewerUI* main_;} {}
+    decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
       Fl_Window uiMain {
@@ -479,13 +444,13 @@ o->child_of( main->uiMain );}
     Function {~GL3dViewUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {main()} {return_type {mrv::ViewerUI*}
+    Function {main()} {return_type {ViewerUI*}
     } {
       code {return main_;} {}
     }
   }
   class VectorscopeUI {} {
-    decl {mrv::ViewerUI* main_;} {}
+    decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {private
     } {
       Fl_Window uiMain {
@@ -498,7 +463,7 @@ o->hide();} open
 main_ = main;
 o->child_of( main->uiMain );}
       } {
-        {fltk::Widget} uiVectorscope {
+        {Fl_Widget} uiVectorscope {
           xywh {4 4 319 231}
           extra_code {o->main( main );}
           class {mrv::Vectorscope}
@@ -511,14 +476,14 @@ o->child_of( main->uiMain );}
     Function {~VectorscopeUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {main()} {return_type {mrv::ViewerUI*}
+    Function {main()} {return_type {ViewerUI*}
     } {
       code {return main_;} {}
     }
   }
   class HistogramUI {} {
-    decl {mrv::ViewerUI* main_;} {}
-    Function {make_window(mrv::ViewerUI* main)} {open private
+    decl {ViewerUI* main_;} {}
+    Function {make_window(ViewerUI* main)} {open private
     } {
       Fl_Window uiMain {
         label Histogram
@@ -534,7 +499,7 @@ o->size_range(325, 80);}
         Fl_Pack {} {open
           xywh {3 5 321 230}
         } {
-          {fltk::Widget} uiHistogram {
+          Fl_Widget uiHistogram {
             xywh {1 0 319 190} resizable
             extra_code {o->main( main );}
             class {mrv::Histogram}
@@ -545,7 +510,7 @@ o->size_range(325, 80);}
             Fl_Group {} {open
               xywh {0 5 160 25}
             } {
-              {fltk::InvisibleBox} {} {
+              Fl_Box {} {
                 label Channel
                 xywh {0 0 65 25} align 32
               }
@@ -577,7 +542,7 @@ o->label( o->child( c )->label() );}
             Fl_Group {} {open
               xywh {164 5 146 25}
             } {
-              {fltk::InvisibleBox} {} {
+              Fl_Box {} {
                 label Type
                 xywh {1 0 49 25} align 32
               }
@@ -611,20 +576,20 @@ o->label( o->child( o->value() )->label() );}
     Function {~HistogramUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
     }
-    Function {main()} {open return_type {mrv::ViewerUI*}
+    Function {main()} {open return_type {ViewerUI*}
     } {
       code {return main_;} {}
     }
   }
   class PreferencesUI {open
   } {
-    Function {make_window(mrv::ViewerUI* m)} {open private
+    Function {make_window(ViewerUI* m)} {open private
     } {
       Fl_Window uiMain {
         label Preferences open
         xywh {610 36 670 450} resizable visible
       } {
-        {fltk::WizardGroup} uiWizard {
+        Fl_Wizard uiWizard {
           label Settings open
           xywh {218 24 452 400}
         } {
@@ -726,7 +691,7 @@ If you try to open several mrViewers with different images, all these images wil
               label Timeline open
               xywh {9 282 410 70} box ROUNDED_BOX
             } {
-              {fltk::Choice} uiPrefsTimelineDisplay {
+              Fl_Choice uiPrefsTimelineDisplay {
                 label Display
                 tooltip {How to display timeline by default.}
                 xywh {105 25 190 25} box THIN_DOWN_BOX
@@ -758,17 +723,17 @@ If you try to open several mrViewers with different images, all these images wil
               label Defaults open
               xywh {13 32 394 135} box ROUNDED_BOX
             } {
-              {fltk::ValueInput} uiPrefsViewGain {
+              Fl_Value_Input uiPrefsViewGain {
                 label Gain
                 tooltip {Sets the default gain when mrViewer starts.}
                 xywh {90 10 80 25} minimum 0.001 maximum 64 step 0.01 value 1
               }
-              {fltk::ValueInput} uiPrefsViewGamma {
+              Fl_Value_Input uiPrefsViewGamma {
                 label Gamma
                 tooltip {Sets the default gamma when mrViewer starts.}
                 xywh {280 10 60 25} minimum 0.01 maximum 4 step 0.01 value 1
               }
-              {fltk::Choice} uiPrefsCropArea {
+              Fl_Choice uiPrefsCropArea {
                 label Crop
                 user_data this user_data_type {mrv::PreferencesUI*}
                 tooltip {Allows you to select a standard cropping area around image.}
@@ -915,11 +880,11 @@ If you try to open several mrViewers with different images, all these images wil
                 label {Fixed Position}
                 xywh {20 10 100 20} box UP_BOX
               }
-              {fltk::ValueInput} uiWindowXPosition {
+              Fl_Value_Input uiWindowXPosition {
                 label {X:}
                 xywh {180 5 60 25}
               }
-              {fltk::ValueInput} uiWindowYPosition {
+              Fl_Value_Input uiWindowYPosition {
                 label {Y:}
                 xywh {260 5 60 25}
               }
@@ -935,10 +900,11 @@ If you try to open several mrViewers with different images, all these images wil
             } {
               Fl_Button uiPrefsUIBG {
                 label Background
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Background Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Background Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();}
                 tooltip {Selects the background of UI.}
                 xywh {141 18 25 25} align 4 box EMBOSSED_BOX labelsize 11
@@ -946,10 +912,11 @@ o->redraw();}
               Fl_Button uiPrefsUIText {
                 label Text
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Text Overlay Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of text in widgets.}
@@ -958,10 +925,11 @@ v->refresh();}
               Fl_Button uiPrefsUISelection {
                 label Selection
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Selection Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Selection Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of the selection rectangle in widgets.}
@@ -970,12 +938,14 @@ v->refresh();}
               Fl_Button uiPrefsUISelectionText {
                 label {Selected Text}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Text Overlay Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();
-v->refresh();}
+v->refresh();
+}
                 tooltip {Selects the color of text in widgets.}
                 xywh {256 63 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
@@ -986,21 +956,24 @@ v->refresh();}
             } {
               Fl_Button uiPrefsViewBG {
                 label Background
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Background Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
-o->redraw();}
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Text Background Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
+o->redraw();
+v->refresh();}
                 tooltip {Selects the background color of areas outside the current image.}
                 xywh {163 30 25 25} align 4 box EMBOSSED_BOX labelsize 11
               }
               Fl_Button uiPrefsViewTextOverlay {
                 label {Text Overlay}
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Text Overlay Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Text Overlay Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of text overlays printed over the current image.}
@@ -1009,10 +982,11 @@ v->refresh();}
               Fl_Button uiPrefsViewSelection {
                 label Selection
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick View Selection Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick View Selection Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of the selection rectangle over the current image.}
@@ -1021,10 +995,11 @@ v->refresh();}
               Fl_Button uiPrefsViewHud {
                 label HUD
                 user_data this user_data_type {mrv::PreferencesUI*}
-                callback {uchar r, g, b;
-fltk::split_color(o->color(),r,g,b);
-if (!fltk::color_chooser("Pick HUD Color", r,g,b)) return;
-o->color( fltk::color( r,g,b ) );
+                callback {uchar r, g, b; Fl_Color c = o->color();
+get_color(c,r,g,b);
+if (!fl_color_chooser("Pick HUD Color", r,g,b,3)) return;
+set_color(c,r,g,b);
+o->color( c );
 o->redraw();
 v->refresh();}
                 tooltip {Selects the color of HUD overlays.}
@@ -1057,7 +1032,7 @@ v->refresh();}
               Fl_Group {} {
                 xywh {110 49 152 26}
               } {
-                {fltk::ValueInput} uiPrefsFPS {
+                Fl_Value_Input uiPrefsFPS {
                   label Speed
                   xywh {0 1 75 25} color 0x98a8a800 selection_color 0x647f00 minimum 0.001 maximum 120 step 0.01 value 24
                 }
@@ -1093,7 +1068,7 @@ uiPrefsFPS->value( g );}
                     }
                 }
               }
-              {fltk::Choice} uiPrefsLoopMode {
+              Fl_Choice uiPrefsLoopMode {
                 label {Looping Mode} open
                 tooltip {Select default looping mode in timeline.}
                 xywh {110 80 90 25} box THIN_DOWN_BOX
@@ -1135,7 +1110,7 @@ This setting thus allows caching more pictures in memory for float and half pict
               tooltip {When this option is on and a sequence is loaded, the frames of the cache will begin loading in the background.  Note however, that this may make the GUI less responsive.}
               xywh {239 29 20 25} align 8 box UP_BOX
             }
-            {fltk::Choice} uiPrefsCacheScale {
+            Fl_Choice uiPrefsCacheScale {
               label Scale
               tooltip {Scale of images stored.  Smaller scale allows more images to be stored at the expense of pixelization.}
               xywh {74 114 120 25} box THIN_DOWN_BOX
@@ -1157,7 +1132,7 @@ This setting thus allows caching more pictures in memory for float and half pict
               label {Cache Size}
               xywh {39 189 336 45} box ROUNDED_BOX
             } {
-              {fltk::ValueSlider} uiPrefsCacheSize {
+              Fl_Value_Slider uiPrefsCacheSize {
                 tooltip {Size in frames of the video and audio cache.}
                 xywh {14 11 246 27} align 1 minimum 30 maximum 200 step 1 value 60
                 extra_code {o->activate(false);}
@@ -1180,7 +1155,7 @@ This setting thus allows caching more pictures in memory for float and half pict
               tooltip {mrViewer supports either ICC profiles or a CTL script for your output device transform (ODT) and for your rendering transform of your images (RT).  These settings prioritizes choosing one over the other.}
               xywh {40 45 343 105} box ROUNDED_BOX
             } {
-              {fltk::Choice} ODT_algorithm {
+              Fl_Choice ODT_algorithm {
                 label ODT
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {Preferences::LutAlgorithm x = (Preferences::LutAlgorithm) o->value();
@@ -1209,7 +1184,7 @@ If unsure what this means, keep your display and images setting always using the
                   label {Always ICC}
                   }
               }
-              {fltk::Choice} RT_algorithm {
+              Fl_Choice RT_algorithm {
                 label RT
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {Preferences::LutAlgorithm x = (Preferences::LutAlgorithm) o->value();
@@ -1245,7 +1220,7 @@ If unsure what this means, keep your display and images setting always using the
               tooltip {mrViewer supports CTL scripts and ICC profiles baked into 3D Luts.  These settings control the quality of the 3D Lut.}
               xywh {43 240 340 75} box ROUNDED_BOX
             } {
-              {fltk::Choice} uiLUT_quality {
+              Fl_Choice uiLUT_quality {
                 label Resolution
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {v->refresh();}
@@ -1284,7 +1259,7 @@ The "No Baking" setting performs the color correction on the image directly inst
               label {Rendering Intent}
               xywh {43 175 340 45} box ROUNDED_BOX
             } {
-              {fltk::Choice} uiICC_intent {
+              Fl_Choice uiICC_intent {
                 label ICC
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {v->refresh();} open
@@ -1361,11 +1336,11 @@ uiODT_CTL_transform->do_callback();}
 (Environment variable: MRV_ODT_CTL_CHROMATICITIES)}
                   xywh {5 35 250 155} align 132 box ENGRAVED_BOX
                 } {
-                  {fltk::InvisibleBox} {} {
+                  Fl_Box {} {
                     label X
                     xywh {100 8 25 25}
                   }
-                  {fltk::InvisibleBox} {} {
+                  Fl_Box {} {
                     label Y
                     xywh {175 8 25 25}
                   }
@@ -1373,12 +1348,12 @@ uiODT_CTL_transform->do_callback();}
                     label Red
                     xywh {45 23 190 35} align 4 labelsize 11
                   } {
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_red_x {
+                    Fl_Value_Input uiODT_CTL_chromaticities_red_x {
                       callback {mrv::Preferences::ODT_CTL_chromaticities.red.x = (float) o->value();}
                       tooltip {The Red CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.64
                     }
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_red_y {
+                    Fl_Value_Input uiODT_CTL_chromaticities_red_y {
                       callback {mrv::Preferences::ODT_CTL_chromaticities.red.y = (float) o->value();}
                       tooltip {The Red CIE Y coordinate of the display}
                       xywh {105 10 85 25} step 0.0001 value 0.33
@@ -1388,12 +1363,12 @@ uiODT_CTL_transform->do_callback();}
                     label Green
                     xywh {45 53 190 35} align 4 labelsize 11
                   } {
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_green_x {
+                    Fl_Value_Input uiODT_CTL_chromaticities_green_x {
                       callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();}
                       tooltip {The Green CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.3
                     }
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_green_y {
+                    Fl_Value_Input uiODT_CTL_chromaticities_green_y {
                       callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();}
                       tooltip {The Green CIE Y coordinate of the display}
                       xywh {105 10 85 25} step 0.0001 value 0.6
@@ -1403,14 +1378,14 @@ uiODT_CTL_transform->do_callback();}
                     label Blue
                     xywh {45 83 190 35} align 4 labelsize 11
                   } {
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_blue_x {
+                    Fl_Value_Input uiODT_CTL_chromaticities_blue_x {
                       user_data this user_data_type {mrv::PreferencesUI*}
                       callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value(); 
 v->refresh();}
                       tooltip {The Blue CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.15
                     }
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_blue_y {
+                    Fl_Value_Input uiODT_CTL_chromaticities_blue_y {
                       user_data this user_data_type {mrv::PreferencesUI*}
                       callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();
 v->refresh();}
@@ -1422,14 +1397,14 @@ v->refresh();}
                     label White
                     xywh {45 113 190 35} align 4 labelsize 11
                   } {
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_white_x {
+                    Fl_Value_Input uiODT_CTL_chromaticities_white_x {
                       user_data this user_data_type {mrv::PreferencesUI*}
                       callback {mrv::Preferences::ODT_CTL_chromaticities.green.x = (float) o->value();
 v->refresh();}
                       tooltip {The White CIE X coordinate of the display}
                       xywh {10 10 85 25} step 0.0001 value 0.3127
                     }
-                    {fltk::ValueInput} uiODT_CTL_chromaticities_white_y {
+                    Fl_Value_Input uiODT_CTL_chromaticities_white_y {
                       user_data this user_data_type {mrv::PreferencesUI*}
                       callback {mrv::Preferences::ODT_CTL_chromaticities.white.y = (float) o->value();
 v->refresh();}
@@ -1442,7 +1417,7 @@ v->refresh();}
                   label {White Luminance}
                   xywh {115 200 130 35} align 132 labelsize 11
                 } {
-                  {fltk::ValueInput} uiODT_CTL_white_luminance {
+                  Fl_Value_Input uiODT_CTL_white_luminance {
                     label {cd/m2}
                     user_data this user_data_type {mrv::PreferencesUI*}
                     callback {mrv::Preferences::ODT_CTL_white_luminance = (float) o->value();
@@ -1461,7 +1436,7 @@ CTL_DISPLAY_WHITE_LUMINANCE)}
 CTL_DISPLAY_WHITE_LUMINANCE)}
                   xywh {125 230 120 35} align 132 labelsize 11
                 } {
-                  {fltk::ValueInput} uiODT_CTL_surround_luminance {
+                  Fl_Value_Input uiODT_CTL_surround_luminance {
                     label {cd/m2}
                     user_data this user_data_type {mrv::PreferencesUI*}
                     callback {mrv::Preferences::ODT_CTL_surround_luminance = (float) o->value();
@@ -1702,7 +1677,7 @@ uiICC_float_profile->do_callback();}
             label Video
             xywh {15 22 425 361} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Choice} VideoDriver {
+            Fl_Choice VideoDriver {
               label Driver open
               xywh {78 37 290 25} box THIN_DOWN_BOX
             } {
@@ -1723,7 +1698,7 @@ uiICC_float_profile->do_callback();}
             Fl_Group {} {open
               xywh {43 272 325 65} box ROUNDED_BOX
             } {
-              {fltk::Choice} uiPrefsBlendMode {
+              Fl_Choice uiPrefsBlendMode {
                 label {Blend Mode}
                 user_data uiMain user_data_type {ViewerUI*}
                 tooltip {OpenGL blend compositing mode.
@@ -1753,7 +1728,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             label Audio
             xywh {13 22 427 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Choice} AudioDriver {
+            Fl_Choice AudioDriver {
               label Driver open
               xywh {63 22 316 25} box THIN_DOWN_BOX
             } {}
@@ -1825,12 +1800,12 @@ else
               label Loading
               xywh {44 33 325 130} box ROUNDED_BOX labelsize 15
             } {
-              {fltk::ValueInput} uiPrefsOpenEXRThreadCount {
+              Fl_Value_Input uiPrefsOpenEXRThreadCount {
                 label {Thread Count}
                 tooltip {Use multiple threads when loading a frame.}
                 xywh {155 22 51 28} minimum 1 maximum 16 step 1 value 4
               }
-              {fltk::ValueInput} uiPrefsOpenEXRGamma {
+              Fl_Value_Input uiPrefsOpenEXRGamma {
                 label Gamma
                 tooltip {Gamma to use when loading an exr.}
                 xywh {160 82 51 28} minimum 0.1 maximum 16 step 0.1 value 2.2
@@ -1840,7 +1815,7 @@ else
               label Saving open
               xywh {44 203 330 130} box ROUNDED_BOX labelsize 15
             } {
-              {fltk::Choice} uiPrefsOpenEXRCompression {
+              Fl_Choice uiPrefsOpenEXRCompression {
                 label Compression
                 user_data this user_data_type {mrv::PreferencesUI*}
                 callback {std::string compression = o->child(o->value())->label();
@@ -1887,7 +1862,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
                   label DWAB
                   }
               }
-              {fltk::ValueSlider} uiPrefsOpenEXRDWACompression {
+              Fl_Value_Slider uiPrefsOpenEXRDWACompression {
                 label {DWA Compression}
                 tooltip {DWA/DWB compression to use when saving an exr with that compression scheme.}
                 xywh {130 61 138 34} align 4 deactivate minimum 1 maximum 250 step 10 value 45
@@ -1977,7 +1952,7 @@ mrv::Preferences prefs(v);}
           }
           Fl_Button {} {
             label OK
-            user_data m user_data_type {mrv::ViewerUI*}
+            user_data m user_data_type {ViewerUI*}
             callback {v->uiPrefs->uiMain->hide();
 v->uiPrefs->run(v);}
             tooltip {Accept settings but don't save.}
@@ -1986,7 +1961,7 @@ v->uiPrefs->run(v);}
         }
       }
     }
-    Function {PreferencesUI(mrv::ViewerUI* m)} {} {
+    Function {PreferencesUI(ViewerUI* m)} {} {
       code {make_window(m);} {}
     }
     Function {~PreferencesUI()} {} {
@@ -1997,7 +1972,7 @@ v->uiPrefs->run(v);}
 for ( ; w ; w = w->next() )
    w->redraw();} {}
     }
-    Function {run(mrv::ViewerUI* m)} {open
+    Function {run(ViewerUI* m)} {open
     } {
       code {mrv::Preferences::run( m );
 fltk::Window* w = fltk::Window::first();
@@ -2020,7 +1995,7 @@ o->child_of( main->uiMain );} modal
           Fl_Group {} {
             xywh {16 16 275 45} box ENGRAVED_BOX
           } {
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label Format
               xywh {10 10 75 25} box FLAT_BOX
             }
@@ -2048,7 +2023,7 @@ o->child_of( main->uiMain );} modal
           Fl_Group {} {
             xywh {16 71 275 45} box ENGRAVED_BOX
           } {
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label Compression
               xywh {25 10 90 25} box FLAT_BOX
             }
@@ -2060,7 +2035,7 @@ o->child_of( main->uiMain );} modal
           Fl_Group {} {
             xywh {16 126 275 45} box ENGRAVED_BOX
           } {
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label {Render Intent}
               xywh {5 10 110 25} box FLAT_BOX
             }
@@ -2085,7 +2060,7 @@ o->child_of( main->uiMain );} modal
           Fl_Group {} {
             xywh {16 181 275 45} box ENGRAVED_BOX
           } {
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label Channels
               xywh {15 10 100 25} box FLAT_BOX
             }
@@ -2110,7 +2085,7 @@ o->child_of( main->uiMain );} modal
           Fl_Group {} {
             xywh {16 236 275 45} box ENGRAVED_BOX
           } {
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label Frames
               xywh {15 10 100 25} box FLAT_BOX
             }
@@ -2203,11 +2178,11 @@ o->child_of( main->uiMain );} modal
               label Bitrate
               xywh {65 40 95 25}
             }
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label {KB.}
               xywh {165 10 30 25} box FLAT_BOX
             }
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label {kb/s}
               xywh {165 40 30 25} box FLAT_BOX
             }
@@ -2224,11 +2199,11 @@ o->child_of( main->uiMain );} modal
               label Bitrate
               xywh {65 70 95 25}
             }
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label {KB.}
               xywh {165 40 30 25} box FLAT_BOX
             }
-            {fltk::InvisibleBox} {} {
+            Fl_Box {} {
               label {kb/s}
               xywh {165 70 30 25} box FLAT_BOX
             }
@@ -2335,7 +2310,7 @@ o->child_of( main->uiMain );} modal
           xywh {0 9 149 376}
         } {
           Fl_Button uiSelection {
-            user_data m user_data_type {mrv::ViewerUI*}
+            user_data m user_data_type {ViewerUI*}
             callback {v->uiView->selection_mode();
 o->value(1);
 uiDraw->value(0);
@@ -2348,7 +2323,7 @@ uiText->value(0);}
 o->image( select_pic );}
           }
           Fl_Button uiDraw {
-            user_data m user_data_type {mrv::ViewerUI*}
+            user_data m user_data_type {ViewerUI*}
             callback {v->uiView->draw_mode();
 o->value(1);
 uiSelection->value(0);
@@ -2360,7 +2335,7 @@ uiText->value(0);}
             extra_code {o->image( draw );}
           }
           Fl_Button uiErase {
-            user_data m user_data_type {mrv::ViewerUI*}
+            user_data m user_data_type {ViewerUI*}
             callback {v->uiView->erase_mode();
 o->value(1);
 uiSelection->value(0);
@@ -2373,13 +2348,13 @@ uiText->value(0);}
           }
           Fl_Button uiText {
             label T
-            user_data m user_data_type {mrv::ViewerUI*}
+            user_data m user_data_type {ViewerUI*}
             callback {o->value(1);
 v->uiView->text_mode();}
             tooltip {Text Tool}
             xywh {28 55 45 35} align 32 labelfont 8 labelsize 24
           }
-          {fltk::ValueSlider} uiPenSize {
+          Fl_Value_Slider uiPenSize {
             label {Pen Size}
             tooltip {Selects the size of brush.}
             xywh {32 106 85 30} align 1 minimum 1 maximum 10 step 1 value 5
@@ -2388,7 +2363,7 @@ v->uiView->text_mode();}
             xywh {30 336 82 40}
           } {
             Fl_Button uiUndoDraw {
-              user_data m user_data_type {mrv::ViewerUI*}
+              user_data m user_data_type {ViewerUI*}
               callback {v->uiView->undo_draw();
 
 if ( !v->uiView->has_undo() )
@@ -2403,7 +2378,7 @@ else
  o->activate();}
             }
             Fl_Button uiRedoDraw {
-              user_data m user_data_type {mrv::ViewerUI*}
+              user_data m user_data_type {ViewerUI*}
               callback {v->uiView->redo_draw();
 if ( !v->uiView->has_redo() )
    o->deactivate();
@@ -2453,7 +2428,7 @@ o->redraw();}
           } {
             Fl_Check_Button {} {
               label Previous
-              user_data m user_data_type {mrv::ViewerUI*}
+              user_data m user_data_type {ViewerUI*}
               callback {v->uiView->ghost_previous( o->value() );
 v->uiView->redraw();}
               tooltip {Show shapes of previous frame ghosted.}
@@ -2461,7 +2436,7 @@ v->uiView->redraw();}
             }
             Fl_Check_Button {} {
               label Next
-              user_data m user_data_type {mrv::ViewerUI*}
+              user_data m user_data_type {ViewerUI*}
               callback {v->uiView->ghost_next( o->value() );
 v->uiView->redraw();}
               tooltip {Show next frame shapes ghosted.}
@@ -2496,13 +2471,13 @@ o->child_of( main->uiMain );}
             label Server open
             xywh {15 10 400 75} align 5 box ROUNDED_BOX
           } {
-            {fltk::ValueInput} uiServerPort {
+            Fl_Value_Input uiServerPort {
               label Port
               xywh {115 25 70 25} step 1 value 4333
             }
             Fl_Button uiCreate {
               label Create
-              user_data main user_data_type {mrv::ViewerUI*}
+              user_data main user_data_type {ViewerUI*}
               callback {if ( strcmp( o->label(), "Create" ) == 0 )
     mrv::server::create(v);
 else
@@ -2519,13 +2494,13 @@ else
               xywh {65 18 115 30}
               extra_code {o->text("localhost");}
             }
-            {fltk::ValueInput} uiClientPort {
+            Fl_Value_Input uiClientPort {
               label Port
               xywh {235 20 70 25} step 1 value 4333
             }
             Fl_Button uiConnect {
               label Connect
-              user_data main user_data_type {mrv::ViewerUI*}
+              user_data main user_data_type {ViewerUI*}
               callback {if ( strcmp( o->label(), "Connect" ) == 0 )
    mrv::client::create(v);
 else
@@ -2586,7 +2561,7 @@ else
       code {uiPrefs = new PreferencesUI(this);} {}
       Fl_Window uiMain {
         label mrViewer
-        user_data this user_data_type {mrv::ViewerUI*}
+        user_data this user_data_type {ViewerUI*}
         callback {delete v;}
         xywh {354 146 640 535} when CHANGED hide resizable
         extra_code {o->size_range(640, 550);
@@ -2608,78 +2583,78 @@ o->main( this );}
             } {
               MenuItem {} {
                 label Reels
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiReelWindow->uiMain->show();}
                 }
               MenuItem {} {
                 label {Media Info}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiImageInfo->uiMain->show();
 v->uiView->update_image_info();}
                 }
               MenuItem {} {
                 label {Color Info}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
 v->uiView->update_color_info();}
                 }
               MenuItem {} {
                 label {EDL Edit}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiEDLWindow->uiMain->show();}
                 }
               MenuItem {} {
                 label {Paint Tools}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiPaint->uiMain->show();}
                 }
               MenuItem {} {
                 label 3dView
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiGL3dView->uiMain->show();}
                 }
               MenuItem {} {
                 label Histogram
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiHistogram->uiMain->show();}
                 }
               MenuItem {} {
                 label Vectorscope
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiVectorscope->uiMain->show();}
                 }
               MenuItem {} {
                 label {ICC Profiles}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiICCProfiles->fill();
 v->uiICCProfiles->uiMain->show();}
                 }
               MenuItem {} {
                 label Connections
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiConnection->uiMain->child_of( v->uiMain );
 v->uiConnection->uiMain->show();}
                 }
               MenuItem {} {
                 label Preferences
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiPrefs->uiMain->child_of( v->uiMain );
 v->uiPrefs->uiMain->show();}
                 }
               MenuItem {} {
                 label Hotkeys
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiHotkey->uiMain->child_of( v->uiMain );
 v->uiHotkey->uiMain->show();}
                 }
               MenuItem {} {
                 label Logs
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiLog->uiMain->show();}
                 }
               MenuItem {} {
                 label About
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
@@ -2688,7 +2663,7 @@ v->uiHotkey->uiMain->show();}
             } {
               Fl_Menu_Button uiColorChannel {
                 label {(no image)}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiView->channel( o->get_item() );} open
                 tooltip {Allows you to select different image channels or layers.}
                 xywh {0 0 90 19} type normal
@@ -2701,12 +2676,12 @@ v->uiHotkey->uiMain->show();}
               Fl_Group {} {open
                 xywh {0 0 264 20}
               } {
-                {fltk::InvisibleBox} {} {
+                Fl_Box {} {
                   label Gain
                   xywh {0 0 28 17} align 32
                 }
-                {fltk::ValueInput} uiGainInput {
-                  user_data this user_data_type {mrv::ViewerUI*}
+                Fl_Value_Input uiGainInput {
+                  user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->gain( (float) o->value() );
 v->uiGain->value( (float) o->value() );}
                   tooltip {Gain image value.  A simple multiplier of the image pixel values.}
@@ -2714,7 +2689,7 @@ v->uiGain->value( (float) o->value() );}
                   extra_code {o->textsize( 12 );}
                 }
                 {fltk::Slider} uiGain {
-                  user_data this user_data_type {mrv::ViewerUI*}
+                  user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->gain( (float) o->value() );
 v->uiGainInput->value( (float) o->value() );}
                   tooltip {Allows you to adjust the gain or exposure of the image.}
@@ -2725,14 +2700,14 @@ v->uiGainInput->value( (float) o->value() );}
                 } {
                   Fl_Button {} {
                     label {@<}
-                    user_data this user_data_type {mrv::ViewerUI*}
+                    user_data this user_data_type {ViewerUI*}
                     callback {v->uiView->exposure_change(-0.5f);}
                     tooltip {Decrease exposure by 0.5.}
                     xywh {0 0 16 19}
                   }
                   Fl_Button uiFstop {
                     label {+0.0  f/8.0}
-                    user_data this user_data_type {mrv::ViewerUI*}
+                    user_data this user_data_type {ViewerUI*}
                     callback {static float old_gain = 1.0f;
 float gain = v->uiView->gain();
 if ( gain == 1.0f )
@@ -2755,7 +2730,7 @@ Click to toggle between current and normal exposure.}
                   }
                   Fl_Button {} {
                     label {@>}
-                    user_data this user_data_type {mrv::ViewerUI*}
+                    user_data this user_data_type {ViewerUI*}
                     callback {v->uiView->exposure_change(0.5f);}
                     tooltip {Increase exposure by 0.5.}
                     xywh {79 0 16 19}
@@ -2763,7 +2738,7 @@ Click to toggle between current and normal exposure.}
                 }
                 Fl_Button uiNormalize {
                   label Norm
-                  user_data this user_data_type {mrv::ViewerUI*}
+                  user_data this user_data_type {ViewerUI*}
                   callback {v->uiView->toggle_normalize();}
                   tooltip {Normalize pixel values to remain in [0,1] range.}
                   xywh {233 0 30 19} type TOGGLE
@@ -2781,7 +2756,7 @@ Click to toggle between current and normal exposure.}
                 } {
                   Fl_Menu_Button gammaDefaults {
                     label Gamma
-                    user_data this user_data_type {mrv::ViewerUI*}
+                    user_data this user_data_type {ViewerUI*}
                     callback {float g = (float) atof( o->child( o->value() )->label() );
 v->uiGamma->value(g);
 v->uiGammaInput->value( g );
@@ -2806,8 +2781,8 @@ v->uiView->gamma(g);}
                       label {0.45}
                       }
                   }
-                  {fltk::ValueInput} uiGammaInput {
-                    user_data this user_data_type {mrv::ViewerUI*}
+                  Fl_Value_Input uiGammaInput {
+                    user_data this user_data_type {ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
 v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
@@ -2816,7 +2791,7 @@ Value is:  pow( 2, 1/x );}
                     extra_code {o->textsize(12);}
                   }
                   {fltk::Slider} uiGamma {
-                    user_data this user_data_type {mrv::ViewerUI*}
+                    user_data this user_data_type {ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
 v->uiGammaInput->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
@@ -2831,7 +2806,7 @@ Value is:  pow( 2, 1/x );}
             } {
               Fl_Menu_Button uiField {
                 label F
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiView->field( (mrv::ImageView::FieldDisplay) o->value() );} open
                 tooltip {Changes frame/field display}
                 xywh {0 0 20 20}
@@ -2850,14 +2825,14 @@ Value is:  pow( 2, 1/x );}
               }
               Fl_Button uiPixelRatio {
                 label {1:1}
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiView->toggle_pixel_ratio();}
                 tooltip {Stretch image to compensate for image's pixel ratio.}
                 xywh {20 0 30 20} type TOGGLE shortcut 0x40070
               }
               Fl_Button uiLUT {
                 label LUT
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {v->uiView->toggle_lut();}
                 tooltip {Activate viewer's 3D Lut.}
                 xywh {50 0 30 20} type TOGGLE shortcut 0x74
@@ -2882,7 +2857,7 @@ Value is:  pow( 2, 1/x );}
             } {
               Fl_Menu_Button uiZoom {
                 label x1
-                user_data this user_data_type {mrv::ViewerUI*}
+                user_data this user_data_type {ViewerUI*}
                 callback {int t = o->value();
 float f;
 if ( t < 8 )
@@ -3177,7 +3152,7 @@ where Yn is the white reference (usually 1).
                 xywh {0 0 640 49}
               } {
                 {fltk::Slider} uiTimeline {
-                  user_data this user_data_type {mrv::ViewerUI*}
+                  user_data this user_data_type {ViewerUI*}
                   callback {int64_t frame = (int64_t) o->value();
 v->uiView->seek( frame );}
                   tooltip {Timeline.}
@@ -3187,7 +3162,7 @@ v->uiView->seek( frame );}
                 }
                 Fl_Menu_Button uiLoopMode {
                   label {@b;L}
-                  user_data this user_data_type {mrv::ViewerUI*}
+                  user_data this user_data_type {ViewerUI*}
                   callback {int c = o->value();
 o->label(o->child(c)->label());
 v->uiView->looping( (mrv::ImageView::Looping)c );} open
@@ -3213,7 +3188,7 @@ v->uiView->looping( (mrv::ImageView::Looping)c );} open
                   } {
                     Fl_Menu_Button uiTimecodeSwitch {
                       label {F:}
-                      user_data this user_data_type {mrv::ViewerUI*}
+                      user_data this user_data_type {ViewerUI*}
                       callback {change_timeline_display(v);} open
                       tooltip {Switch between Frame, Seconds and Timecode display}
                       xywh {0 0 20 20} box DOWN_BOX
@@ -3238,7 +3213,7 @@ v->uiView->looping( (mrv::ImageView::Looping)c );} open
                     }
                     {fltk::Input} uiFrame {
                       label F
-                      user_data this user_data_type {mrv::ViewerUI*}
+                      user_data this user_data_type {ViewerUI*}
                       callback {int64_t f = o->value();
 if ( f < v->uiTimeline->minimum() )
    f = int64_t( v->uiTimeline->minimum() );
@@ -3259,49 +3234,49 @@ v->uiView->seek( f );}
                     } {
                       Fl_Button {} {
                         label {@|<}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->first_frame();}
                         tooltip {Go to the beginning of the sequence.}
                         xywh {3 2 30 18} labelcolor 0x98a8a800
                       }
                       Fl_Button uiPlayBackwards {
                         label {@<}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->play_backwards();}
                         tooltip {Play sequence backwards.}
                         xywh {33 2 30 18} labelcolor 0x98a8a800
                       }
                       Fl_Button {} {
                         label {@<|}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->step_frame(-1);}
                         tooltip {Go back one frame.}
                         xywh {63 2 30 18} labelcolor 0x98a8a800
                       }
                       Fl_Button {} {
                         label {@||}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->stop();}
                         tooltip {Stop playback.}
                         xywh {93 2 30 18} labelcolor 0x98a8a800
                       }
                       Fl_Button {} {
                         label {@|>}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->step_frame(1);}
                         tooltip {Advance one frame.}
                         xywh {123 2 30 18} labelcolor 0x98a8a800
                       }
                       Fl_Button uiPlayForwards {
                         label {@>}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->play_forwards();}
                         tooltip {Play sequence forward.}
                         xywh {153 2 30 18} labelcolor 0x98a8a800
                       }
                       Fl_Button {} {
                         label {@>|}
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->last_frame();}
                         tooltip {Go to the end of the sequence.}
                         xywh {183 2 30 18} labelcolor 0x98a8a800
@@ -3312,7 +3287,7 @@ v->uiView->seek( f );}
                     } {
                       Fl_Menu_Button fpsDefaults {
                         label FPS
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {int c = o->value();
 
 double g;
@@ -3371,7 +3346,7 @@ v->uiFPS->value( g );} open
                           }
                       }
                       {fltk::Input} uiFPS {
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->fps( o->value() );}
                         tooltip {Allows you to adjust frame rate playback.}
                         xywh {29 2 35 18} when CHANGED color 0x98a8a800 selection_color 0xe8e8d800 labelcolor 0xababab00
@@ -3385,7 +3360,7 @@ o->value(24);}
                     } {
                       Fl_Menu_Button uiAudioTracks {
                         label A
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->audio_stream( o->value() );}
                         tooltip {Select Audio Track}
                         xywh {0 0 18 19} when CHANGED box UP_BOX labelsize 10
@@ -3393,7 +3368,7 @@ o->value(24);}
                         class {mrv::PopupMenu}
                       } {}
                       {fltk::Slider} uiVolume {
-                        user_data this user_data_type {mrv::ViewerUI*}
+                        user_data this user_data_type {ViewerUI*}
                         callback {v->uiView->volume((float) o->value() );}
                         tooltip {Audio Volume}
                         xywh {18 2 55 15} type TICK_ABOVE align 4 step 0.01 value 1
@@ -3405,7 +3380,7 @@ o->value(24);}
                   } {
                     {fltk::Input} uiStartFrame {
                       label S
-                      user_data this user_data_type {mrv::ViewerUI*}
+                      user_data this user_data_type {ViewerUI*}
                       callback {double f = (double) o->value();
 v->uiTimeline->minimum( f );
 v->uiTimeToolbar->redraw();
@@ -3417,7 +3392,7 @@ v->uiTimeline->redraw();}
                     }
                     {fltk::Input} uiEndFrame {
                       label E
-                      user_data this user_data_type {mrv::ViewerUI*}
+                      user_data this user_data_type {ViewerUI*}
                       callback {boost::int64_t f = o->value();
 v->uiTimeline->maximum( float(f) );
 v->uiTimeToolbar->redraw();
@@ -3429,7 +3404,7 @@ v->uiTimeline->redraw();}
                     }
                     Fl_Button uiStartButton {
                       label S
-                      user_data this user_data_type {mrv::ViewerUI*}
+                      user_data this user_data_type {ViewerUI*}
                       callback {double f;
 Image_ptr img = NULL;
 mrv::media fg = v->uiView->foreground();
@@ -3458,7 +3433,7 @@ v->uiTimeline->redraw();}
                     }
                     Fl_Button uiEndButton {
                       label E
-                      user_data this user_data_type {mrv::ViewerUI*}
+                      user_data this user_data_type {ViewerUI*}
                       callback {double f;
 if ( !o->value() )
 {
@@ -3531,4 +3506,4 @@ delete uiMain; uiMain = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
- 
+} 
