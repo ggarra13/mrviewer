@@ -29,6 +29,7 @@
 
 // #include <FL/Fl_Cursor.H>
 #include <FL/Enumerations.H>
+#include <FL/Fl_Box.H>
 #include <FL/fl_draw.H>
 
 #include "mrvBrowser.h"
@@ -38,13 +39,32 @@ namespace mrv
 {
 
   Browser::Browser( int x, int y, int w, int h, const char* l ) :
-  Fl_Table( x, y, w, h, l ),
+  Fl_Tree( x, y, w, h, l ),
   _column_separator_color( FL_BLACK ),
   _last_cursor( FL_CURSOR_DEFAULT ),
   _column_separator( true ),
   _dragging ( false ),
   _auto_resize( false )
 {
+}
+
+void Browser::add( Fl_Group* g )
+{
+    Fl_Tree_Item* i = Fl_Tree::add( g->child(0)->label(), NULL );
+    if ( i )
+    {
+        i->widget( g );
+    }
+}
+
+void Browser::value( int x )
+{
+    //@todo: fltk1.3
+}
+
+int Browser::value()
+{
+    return absolute_item_index();
 }
 
 // CHANGE CURSOR
@@ -92,11 +112,27 @@ int Browser::which_col_near_mouse() {
   return(-1);
 }
 
+void Browser::column_labels( const char** labels )
+{
+    int i = 0;
+    const char* lbl;
+    Fl_Group* g = new Fl_Group( 0, 0, w(), 20 );
+
+    for ( ; lbl; ++i )
+    {
+        lbl = labels[i];
+        Fl_Box* b = new Fl_Box(0, 0, _column_widths[i], 20 );
+        b->copy_label( lbl );
+        g->add( b );
+    }
+    add( g );
+}
+
 // MANAGE EVENTS TO HANDLE COLUMN RESIZING
 int Browser::handle(int e)
 {
   // Not showing column separators? Use default Fl_Browser::handle() logic
-  if ( ! column_separator() ) return(Fl_Browser::handle(e));
+  if ( ! column_separator() ) return(Fl_Tree::handle(e));
   // Handle column resizing
   int ret = 0;
   switch ( e ) {
@@ -153,7 +189,7 @@ int Browser::handle(int e)
       }
   } // switch
   if ( _dragging ) return(1);	// dragging? don't pass event to Fl_Browser
-  return(Fl_Browser::handle(e) ? 1 : ret);
+  return(Fl_Tree::handle(e) ? 1 : ret);
 }
 
 void Browser::layout() 
@@ -226,7 +262,7 @@ void Browser::draw() {
   // DRAW BROWSER
   layout();
 
-  Fl_Browser::draw();
+  Fl_Tree::draw();
   if (!column_widths()) return;
 
   if (!column_separator() ) return;
@@ -252,67 +288,62 @@ void Browser::draw() {
   }
 }
 
-  int Browser::absolute_item_index( const Fl_Group* g )
-  {
-    int idx = 1;
-    int num = g->children();
-    for (int i = 1; i <= num; ++i)
-      {
-	Fl_Widget* c = g->child(i);
-	if ( c->as_group() )
-	  idx += absolute_item_index( (Fl_Group*) c );
-	else
-	  ++idx;
-      }
-    return idx;
-  }
+  // int Browser::absolute_item_index( const Fl_Group* g )
+  // {
+  //   int idx = 1;
+  //   int num = g->children();
+  //   for (int i = 1; i <= num; ++i)
+  //     {
+  //       Fl_Widget* c = g->child(i);
+  //       if ( c->as_group() )
+  //         idx += absolute_item_index( (Fl_Group*) c );
+  //       else
+  //         ++idx;
+  //     }
+  //   return idx;
+  // }
 
-  int Browser::absolute_item_index( bool& found,
-				    const Fl_Widget* item,
-				    const Fl_Widget* w )
-  {
+  // int Browser::absolute_item_index( bool& found,
+  //       			    const Fl_Widget* item,
+  //       			    const Fl_Widget* w )
+  // {
 
-    if ( w == item  ) {
-      found = true;
-      return 0;
-    }
+  //   if ( w == item  ) {
+  //     found = true;
+  //     return 0;
+  //   }
 
-    Fl_Widget* wc = const_cast< Fl_Widget* >( w );
-    if ( !wc->as_group() ) return 1;
+  //   Fl_Widget* wc = const_cast< Fl_Widget* >( w );
+  //   if ( !wc->as_group() ) return 1;
 
-    int idx = 1;
-    Fl_Group* g = (Fl_Group*) w;
-    int num = g->children();
+  //   int idx = 1;
+  //   Fl_Group* g = (Fl_Group*) w;
+  //   int num = g->children();
     
-    for ( int i = 1; i <= num; ++i )
-      {
-	Fl_Widget* c = g->child(i);
-	idx += absolute_item_index( found, item, c );
-	if ( found ) break;
-      }
+  //   for ( int i = 1; i <= num; ++i )
+  //     {
+  //       Fl_Widget* c = g->child(i);
+  //       idx += absolute_item_index( found, item, c );
+  //       if ( found ) break;
+  //     }
 
-    return idx;
-  }
+  //   return idx;
+  // }
 
   int Browser::absolute_item_index()
   {
-    int main_idx = value();
-    if ( main_idx < 0 ) return main_idx;
+      Fl_Tree_Item* i = first_selected_item();
+      if ( i == NULL ) return -1;
 
-    int idx = 0;
-    for (int i = 1; i < main_idx; ++i)
-      {
-	Fl_Widget* c = child(i);
-
-	if ( c->as_group() )
-	  idx += absolute_item_index( (Fl_Group*)c );
-	else
-	  ++idx;
+      int idx = 0;
+      bool found = false;
+      for ( Fl_Tree_Item *item = first(); item; item = next(item), ++idx ) {
+          if ( i == item ) { found = true; break; }
+          for ( int j = 0; j < item->children(); ++j, ++idx )
+          {
+              if ( i == item->child(j) ) { found = true; break; }
+          }
       }
-
-    Fl_Widget* sel = child( value() );
-    bool found = false;
-    idx += absolute_item_index( found, sel, child(main_idx) );
 
     return idx;
   }

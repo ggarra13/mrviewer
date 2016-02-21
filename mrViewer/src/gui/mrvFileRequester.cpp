@@ -31,13 +31,11 @@
 
 #include <inttypes.h>
 
-#include <fltk/file_chooser.h>
-#include <fltk/ProgressBar.h>
-#include <fltk/Output.h>
-#include <fltk/Cursor.h>
-#include <fltk/events.h>
-#include <fltk/run.h>
-#include <fltk/ask.h>
+#include <FL/Fl_Progress.H>
+#include <FL/Fl_Output.H>
+#include <FL/Enumerations.H>
+#include <FL/Fl.H>
+#include <FL/fl_ask.H>
 
 #include "core/CMedia.h"
 #include "core/mrvImageOpts.h"
@@ -586,15 +584,15 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
    {
        // Set icon back to WAIT
        main->uiView->toggle_wait();
-       main->uiView->handle( fltk::ENTER );
-       fltk::check();
+       main->uiView->handle( FL_ENTER );
+       Fl::check();
 
        image->save( file, opts );
 
        // Change icon back to ARROW/CROSSHAIR
        main->uiView->toggle_wait();
-       main->uiView->handle( fltk::ENTER );
-       fltk::check();
+       main->uiView->handle( FL_ENTER );
+       Fl::check();
 
        save_xml( image, opts, file );
    }
@@ -677,7 +675,7 @@ void save_sequence_file( const ViewerUI* uiMain,
       root = root.substr( 0, root.size() - 4 );
    }
 
-   fltk::Window* main = (fltk::Window*)uiMain->uiMain;
+   Fl_Window* main = (Fl_Window*)uiMain->uiMain;
    mrv::ProgressReport* w = new mrv::ProgressReport( main, first, last );
    
    int64_t dts = first;
@@ -761,8 +759,8 @@ void save_sequence_file( const ViewerUI* uiMain,
 
                if ( fs::exists( buf ) )
                {
-                   int ok = fltk::ask( "Do you want to replace '%s'",
-                                       buf );
+                   int ok = fl_ask( "Do you want to replace '%s'",
+                                    buf );
                    if (!ok) 
                    {
                        break;

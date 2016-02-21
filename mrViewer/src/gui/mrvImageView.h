@@ -45,10 +45,7 @@
 
 #include "video/mrvGLShape.h"
 
-namespace fltk {
-  class Menu;
-}
-
+class Fl_Menu_Button;
 class ViewerUI;
 
 namespace mrv {
@@ -596,7 +593,7 @@ class ImageView : public Fl_Gl_Window
     ///////////////////
     // Popup menu
     ///////////////////
-    fltk::Menu*  _menu;
+    Fl_Menu_Button*  _menu;
 
     // Event Timeout
     mrv::Event*  _timeout;

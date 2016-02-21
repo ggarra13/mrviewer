@@ -1,131 +1,123 @@
-# data file for the FLTK User Interface Designer (FLUID)
-version 2.1000 
-images_dir fltk::Button 
+# data file for the Fltk User Interface Designer (fluid)
+version 1.0303 
 header_name {.h} 
-code_name {.cxx} 
-gridx 5 
-gridy 5 
-snap 3
-decl {\#include <iostream>} {} 
-
-decl {\#include <gui/mrvIO.h>} {public
+code_name {.cxx}
+decl {\#include <iostream>} {public global
 } 
 
-decl {\#include <string>} {public
+decl {\#include <gui/mrvIO.h>} {private global
 } 
 
-namespace mrv {open
+decl {\#include <gui/mrvDoubleWindow.h>} {public global
+} 
+
+decl {\#include <string>} {public global
+} 
+
+class AviSaveUI {open
 } {
-  class AviSaveUI {open
+  decl {std::string video_codec;} {public local
+  }
+  decl {std::string video_color;} {public local
+  }
+  decl {int video_bitrate;} {public local
+  }
+  decl {std::string audio_codec;} {public local
+  }
+  decl {int audio_bitrate;} {public local
+  }
+  Function {make_window()} {open
   } {
-    decl {std::string video_codec;} {public
-    }
-    decl {std::string video_color;} {public
-    }
-    decl {int video_bitrate;} {public
-    }
-    decl {std::string audio_codec;} {public
-    }
-    decl {int audio_bitrate;} {public
-    }
-    Function {make_window()} {open
+    Fl_Window uiMain {
+      label {Movie Saving Preferences} open selected
+      xywh {818 155 320 505} type Double resizable
+      class mrvDoubleWindow modal visible
     } {
-      {fltk::Window} uiMain {
-        label {Movie Saving Preferences} open
-        xywh {581 381 300 380} horizontal resizable modal noborder visible
+      Fl_Group {} {
+        label {Video Options} open
+        xywh {55 40 190 145} box UP_BOX
       } {
-        {fltk::Group} {} {
-          label {Video Options} open
-          xywh {60 36 160 114} box UP_BOX
+        Fl_Choice uiVideoCodec {
+          label Codec
+          xywh {125 71 85 25} down_box BORDER_BOX
         } {
-          {fltk::Choice} uiVideoColor {
-            label Color open
-            xywh {55 41 90 25}
-          } {
-            {fltk::Item} {} {
-              label YUV420
-              }
-            {fltk::Item} {} {
-              label YUV422
-              }
-            {fltk::Item} {} {
-              label YUV444
-              }
+          MenuItem {} {
+            label H264
+            xywh {0 0 36 21}
           }
-          {fltk::Choice} uiVideoCodec {
-            label Codec
-            user_data uiVideoColor user_data_type {fltk::Choice*}
-            callback {if ( o->value() == 0)
-{
-fltk::Widget* item = v->child(1);
-item->activate();
-item = v->child(2);
-item->activate();
-}
-else if ( o->value() == 1 )
-{
-fltk::Widget* item = v->child(1);
-item->deactivate();
-item = v->child(2);
-item = v->child(2);
-v->value(0);
-}} selected
-            xywh {55 10 91 26}
-          } {
-            {fltk::Item} {} {
-              label H264
-              }
-            {fltk::Item} {} {
-              label MPEG4
-              }
-          }
-          {fltk::ValueInput} uiVideoBitrate {
-            label Bitrate
-            xywh {55 71 90 25} minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
+          MenuItem {} {
+            label MPEG4
+            xywh {10 10 36 21}
           }
         }
-        {fltk::Group} {} {
-          label {Audio Options} open
-          xywh {60 195 160 105} box UP_BOX
+        Fl_Choice uiVideoColor {
+          label Color
+          xywh {125 105 85 20} down_box BORDER_BOX
         } {
-          {fltk::Choice} uiAudioCodec {
-            label Codec open
-            xywh {55 20 91 26}
-          } {
-            {fltk::Item} {} {
-              label AC3
-              }
-            {fltk::Item} {} {
-              label AAC
-              }
-            {fltk::Item} {} {
-              label MP3
-              }
-            {fltk::Item} {} {
-              label NONE
-              }
+          MenuItem {} {
+            label YUV420
+            xywh {0 0 36 21}
           }
-          {fltk::ValueInput} uiAudioBitrate {
-            label Bitrate
-            xywh {55 50 90 25} minimum 100 maximum 4.48e+06 step 1000 value 128000
+          MenuItem {} {
+            label YUV422
+            xywh {20 20 36 21}
+          }
+          MenuItem {} {
+            label YUV444
+            xywh {10 10 36 21}
           }
         }
-        {fltk::Button} {} {
-          label OK
-          user_data this user_data_type {AviSaveUI*}
-          callback {video_codec = v->uiVideoCodec->child( v->uiVideoCodec->value() )->label();
-video_color = v->uiVideoColor->child( v->uiVideoColor->value() )->label();
+        Fl_Value_Input uiVideoBitrate {
+          label Bitrate
+          xywh {125 135 83 25} minimum 1000 maximum 1e+06 step 1000 value 100000
+        }
+      }
+      Fl_Group {} {
+        label {Audio Options} open
+        xywh {55 255 190 130} box UP_BOX
+      } {
+        Fl_Choice uiAudioCodec {
+          label Codec open
+          xywh {130 281 85 25} down_box BORDER_BOX
+        } {
+          MenuItem {} {
+            label AC3
+            xywh {15 15 36 21}
+          }
+          MenuItem {} {
+            label AAC
+            xywh {25 25 36 21}
+          }
+          MenuItem {} {
+            label MP3
+            xywh {35 35 36 21}
+          }
+          MenuItem {} {
+            label NONE
+            xywh {45 45 36 21}
+          }
+        }
+        Fl_Value_Input uiAudioBitrate {
+          label Bitrate
+          xywh {130 320 83 25} minimum 1000 maximum 1e+06 step 1000 value 128000
+        }
+      }
+      Fl_Button {} {
+        label OK
+        user_data this user_data_type {AviSaveUI*}
+        callback {video_codec = v->uiVideoCodec->text( v->uiVideoCodec->value() );
+video_color = v->uiVideoColor->text( v->uiVideoColor->value() );
 video_bitrate = (unsigned)v->uiVideoBitrate->value();
-audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
+audio_codec = v->uiAudioCodec->text( v->uiAudioCodec->value() );
 audio_bitrate = (unsigned)v->uiAudioBitrate->value();
 
 this->uiMain->make_exec_return(true);}
-          xywh {75 330 55 35}
-        }
-        {fltk::Button} {} {
-          label Cancel
-          user_data this user_data_type {AviSaveUI*}
-          callback {video_bitrate = 0;
+        xywh {70 425 75 30}
+      }
+      Fl_Button {} {
+        label Cancel
+        user_data this user_data_type {AviSaveUI*}
+        callback {video_bitrate = 0;
 video_codec = "";
 video_color = "";
 
@@ -133,14 +125,13 @@ audio_codec = "";
 audio_bitrate = 0;
 
 v->uiMain->make_exec_return(false);}
-          xywh {145 330 60 35}
-        }
+        xywh {160 425 75 30}
       }
     }
-    Function {AviSaveUI()} {open
-    } {
-      code {fltk::Window* w = make_window();
+  }
+  Function {AviSaveUI()} {open
+  } {
+    code {mrvDoubleWindow* w = make_window();
 w->exec();} {}
-    }
   }
 } 

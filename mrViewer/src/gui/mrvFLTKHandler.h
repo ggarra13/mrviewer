@@ -29,12 +29,12 @@
 #ifndef mrvFLTKHandler_h
 #define mrvFLTKHandler_h
 
-#include "fltk/SharedImage.h"
+#include "FL/Fl_Shared_Image.H"
 
 namespace mrv {
 
-  fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
-				   int len );
+  Fl_Shared_Image* fltk_handler( const char* filename, uchar* header,
+                                 int len );
 
 }
 

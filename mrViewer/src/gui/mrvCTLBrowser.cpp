@@ -51,7 +51,7 @@ namespace
 namespace mrv {
 
 CTLBrowser::CTLBrowser(int x, int y, int w, int h, const char* l) :
-  fltk::Browser( x, y, w, h, l )
+  Fl_Browser( x, y, w, h, l )
 {
 }
 
@@ -135,7 +135,7 @@ void CTLBrowser::fill()
 
 int CTLBrowser::handle( int e )
 {
-  return fltk::Browser::handle( e );
+  return Fl_Browser::handle( e );
 }
 
 

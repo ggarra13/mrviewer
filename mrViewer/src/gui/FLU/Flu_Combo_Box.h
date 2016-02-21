@@ -48,7 +48,7 @@ public:
 
   //! Set the string in the input field and the value of the popup box.
   void value( const char *v );
-
+}
   //! Set the height of the popup box
   inline void pop_height( int h )
     { popHeight = h; }
@@ -64,7 +64,7 @@ public:
   void resize( int X, int Y, int W, int H );
 
   //! Set the function that will be called when the input area is interacted with
-  inline void input_callback( void (*cb)(fltk::Widget*,void*), void* cbd = NULL )
+} inline void input_callback( void (*cb)(fltk::Widget*,void*), void* cbd = NULL )
     { _inputCB = cb; _inputCBD = cbd; }
 
   //! Publicly exposed input widget
@@ -80,7 +80,7 @@ protected:
   virtual const char* _previous() = 0;
   virtual void _hilight( int x, int y ) = 0;
 
-  void draw();
+} void draw();
 
   void selected( const char *v );
 
@@ -113,6 +113,6 @@ protected:
     };
   friend class Popup;
 
-};
+}};
 
 #endif

@@ -28,7 +28,7 @@
 #ifndef mrvBrowser_h
 #define mrvBrowser_h
 
-#include <FL/Fl_Table.H>
+#include <FL/Fl_Tree.H>
 // #include <FL/Fl_Cursor.H>
 // #include <FL/Fl_Color.H>
 
@@ -36,7 +36,7 @@
 namespace mrv
 {
 
-class Browser : public Fl_Table
+class Browser : public Fl_Tree
 {
 public:
   Browser( int x, int y, int w, int h, const char* l = 0 );
@@ -44,6 +44,17 @@ public:
   int handle( int e );
   void layout();
   void draw();
+
+    void column_labels( const char** labels );
+
+    void add( const char* text, Fl_Tree_Item* item = 0 )
+    {
+        Fl_Tree::add( text, item );
+    }
+
+    void add( Fl_Group* g );
+    void value( int x );
+    int value();
 
   bool column_separator() const    { return _column_separator; }
   void column_separator(bool t) { _column_separator = t; }
@@ -55,22 +66,29 @@ public:
 
   //
   // Returns the absolute (selected) item index by adding all children.
-  //
-  int absolute_item_index();
+    int absolute_item_index();
 
   void auto_resize( bool t ) { _auto_resize = t; }
 
+    void column_headers( const char* c ) { _column_headers = c; }
+    void column_widths( int* w ) { _column_widths = w; }
+
+    const char* column_headers() const { return _column_headers; }
+    const int* column_widths() const { return _column_widths; }
+
 protected:
 
-  int absolute_item_index( const Fl_Group* g );
-  int absolute_item_index( bool& found, 
-			   const Fl_Widget* item,
-			   const Fl_Widget* child );
+  // int absolute_item_index( const Fl_Group* g );
+  // int absolute_item_index( bool& found, 
+  //       		   const Fl_Widget* item,
+  //       		   const Fl_Widget* child );
 
   void change_cursor( Fl_Cursor cursor );
   int which_col_near_mouse();
 
 protected:
+    int*      _column_widths;
+    const char* _column_headers;
   Fl_Color  _column_separator_color;	// color of column separator lines 
   Fl_Cursor _last_cursor;	// saved cursor state info
   int       _dragcol;		// col# user is currently dragging

@@ -43,6 +43,8 @@ namespace mrv
 {
   class CMedia;
   class ColorWidget;
+  class ColorBrowser;
+
 
   class ColorInfo : public Fl_Group
   {
@@ -64,7 +66,7 @@ namespace mrv
   protected:
     ColorWidget*    dcol;
     Fl_Widget*    area;
-    Fl_Browser*   browser;
+    ColorBrowser*   browser;
       // @todo: fltk1.3
       //fltk::PopupMenu* uiColorB;
     static ViewerUI*   uiMain;

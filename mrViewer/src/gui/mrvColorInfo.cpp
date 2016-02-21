@@ -145,7 +145,7 @@ namespace mrv
 	  if ( Fl::event_button() == 3 )
 	    return mousePush( Fl::event_x(), Fl::event_y() );
 	default:
-	  int ok = Fl_Browser::handle( event );
+            int ok = mrv::Browser::handle( event );
 	  
 	  int line = value();
 	  if (( line < 1 || line > 10 ) ||
@@ -163,7 +163,7 @@ namespace mrv
 
 class ColorWidget : public Fl_Group
 {
-    Fl_Browser* color_browser_;
+    ColorBrowser* color_browser_;
 
   public:
     ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
@@ -189,7 +189,7 @@ class ColorWidget : public Fl_Group
       return 1;
     }
 
-    void color_browser( Fl_Browser* b ) { color_browser_ = b; }
+    void color_browser( ColorBrowser* b ) { color_browser_ = b; }
 
     int handle( int event )
     {

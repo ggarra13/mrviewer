@@ -33,8 +33,8 @@
 
 namespace mrv {
 
-  fltk::SharedImage* fltk_handler( const char* filename, uchar* header,
-				   int len )
+  Fl_Shared_Image* fltk_handler( const char* filename, uchar* header,
+                                 int len )
   {
       std::string ext = filename;
       size_t start = ext.rfind( '.' );
@@ -58,6 +58,6 @@ namespace mrv {
     m.create_thumbnail();
 
 
-    return (fltk::SharedImage*) m.thumbnail();
+    return (Fl_Shared_Image*) m.thumbnail();
   }
 }

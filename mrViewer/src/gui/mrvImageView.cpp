@@ -72,6 +72,7 @@
 #include <FL/Fl_Window.H>
 #include <FL/Fl_Menu.H>
 #include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Radio_Button.H>
 //#include <fltk/Monitor.h>
 #include <FL/Fl_Button.H>
 #include <FL/Fl_Preferences.H>
@@ -253,41 +254,41 @@ namespace
 
 }
 
-extern void clone_all_cb( fltk::Widget* o, mrv::ImageBrowser* b );
-extern void clone_image_cb( fltk::Widget* o, mrv::ImageBrowser* b );
+extern void clone_all_cb( Fl_Widget* o, mrv::ImageBrowser* b );
+extern void clone_image_cb( Fl_Widget* o, mrv::ImageBrowser* b );
 
-void preload_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
+void preload_image_cache_cb( Fl_Widget* o, mrv::ImageView* v )
 {
     v->preload_caches();
 }
 
-void clear_image_cache_cb( fltk::Widget* o, mrv::ImageView* v )
+void clear_image_cache_cb( Fl_Widget* o, mrv::ImageView* v )
 {
     v->clear_caches();
 }
 
-void next_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
+void next_image_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
   b->next_image();
 }
 
-void previous_image_cb( fltk::Widget* o, mrv::ImageBrowser* b )
+void previous_image_cb( Fl_Widget* o, mrv::ImageBrowser* b )
 {
   b->previous_image();
 }
 
-void next_channel_cb( fltk::Widget* o, mrv::ImageView* v )
+void next_channel_cb( Fl_Widget* o, mrv::ImageView* v )
 {
   v->next_channel();
 }
 
-void previous_channel_cb( fltk::Widget* o, mrv::ImageView* v )
+void previous_channel_cb( Fl_Widget* o, mrv::ImageView* v )
 {
   v->previous_channel();
 }
 
 
-void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
+void set_as_background_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
@@ -295,24 +296,24 @@ void set_as_background_cb( fltk::Widget* o, mrv::ImageView* view )
   view->background( fg );
 }
 
-void toggle_background_cb( fltk::Widget* o, mrv::ImageView* view )
+void toggle_background_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
   view->toggle_background();
 }
 
-void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
+void open_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
   uiReelWindow->open();
 }
 
-void open_single_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow )
+void open_single_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow )
 {
   uiReelWindow->open_single();
 }
 
-void open_clip_xml_metadata_cb( fltk::Widget* o, 
+void open_clip_xml_metadata_cb( Fl_Widget* o, 
                                 mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
@@ -322,13 +323,13 @@ void open_clip_xml_metadata_cb( fltk::Widget* o,
   read_clip_xml_metadata( img );
 }
 
-void open_stereo_cb( fltk::Widget* o, 
+void open_stereo_cb( Fl_Widget* o, 
                      mrv::ImageBrowser* uiReelWindow )
 {
     uiReelWindow->open_stereo();
 }
 
-void save_clip_xml_metadata_cb( fltk::Widget* o, 
+void save_clip_xml_metadata_cb( Fl_Widget* o, 
                                 mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
@@ -338,7 +339,7 @@ void save_clip_xml_metadata_cb( fltk::Widget* o,
   save_clip_xml_metadata( img );
 }
 
-void save_cb( fltk::Widget* o, mrv::ImageView* view )
+void save_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
@@ -346,7 +347,7 @@ void save_cb( fltk::Widget* o, mrv::ImageView* view )
   view->browser()->save();
 }
 
-void save_reel_cb( fltk::Widget* o, mrv::ImageView* view )
+void save_reel_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
@@ -354,7 +355,7 @@ void save_reel_cb( fltk::Widget* o, mrv::ImageView* view )
   view->browser()->save_reel();
 }
 
-void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
+void save_snap_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
@@ -372,7 +373,7 @@ void save_snap_cb( fltk::Widget* o, mrv::ImageView* view )
 
 }
 
-void save_sequence_cb( fltk::Widget* o, mrv::ImageView* view )
+void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   view->stop();
   view->browser()->save_sequence();
@@ -397,10 +398,10 @@ kAbout = 13,
 kLastWindow
 };
 
-void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
+void window_cb( Fl_Widget* o, const mrv::ViewerUI* uiMain )
 {
    int idx = -1;
-   fltk::Group* g = o->parent();
+   Fl_Group* g = o->parent();
    for ( int i = 0; i < g->children(); ++i )
    {
       if ( o == g->child(i) ) {
@@ -492,7 +493,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
 
 
 
-void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
+void masking_cb( Fl_Widget* o, mrv::ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
 
@@ -511,11 +512,12 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
   view->redraw();
 }
 
-void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
+void change_subtitle_cb( Fl_Widget* o, mrv::ImageView* view )
 {
-   fltk::Group* g = o->parent();
+   Fl_Group* g = o->parent();
    if ( !g ) return;
-   fltk::Menu* p = dynamic_cast< fltk::Menu* >( g );
+
+   Fl_Menu_Button* p = dynamic_cast< Fl_Menu_Button* >( g );
    if ( !p ) return;
 
    if ( !view) return;
@@ -528,7 +530,7 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 
 }
 
-void hud_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
+void hud_cb( Fl_Widget* o, mrv::ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
 
@@ -547,20 +549,20 @@ void hud_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 }
 
 
-void safe_areas_cb( fltk::Widget* o, mrv::ImageView* view )
+void safe_areas_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   view->safe_areas( !view->safe_areas() );
   view->redraw();
 }
 
 
-void display_window_cb( fltk::Widget* o, mrv::ImageView* view )
+void display_window_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   view->display_window( !view->display_window() );
   view->redraw();
 }
 
-void data_window_cb( fltk::Widget* o, mrv::ImageView* view )
+void data_window_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   view->data_window( !view->data_window() );
   view->redraw();
@@ -575,7 +577,7 @@ namespace mrv {
 
 typedef boost::recursive_mutex              Mutex;
 
-static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
+static void attach_color_profile_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
@@ -584,7 +586,7 @@ static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
-static void flip_x_cb( fltk::Widget* o, mrv::ImageView* view )
+static void flip_x_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     mrv::ImageView::FlipDirection dir = view->flip();
     view->flip( (mrv::ImageView::FlipDirection)
@@ -592,7 +594,7 @@ static void flip_x_cb( fltk::Widget* o, mrv::ImageView* view )
     view->redraw();
 }
 
-static void flip_y_cb( fltk::Widget* o, mrv::ImageView* view )
+static void flip_y_cb( Fl_Widget* o, mrv::ImageView* view )
 {
     mrv::ImageView::FlipDirection dir = view->flip();
     view->flip( (mrv::ImageView::FlipDirection) 
@@ -600,7 +602,7 @@ static void flip_y_cb( fltk::Widget* o, mrv::ImageView* view )
     view->redraw();
 }
 
-static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
+static void attach_ctl_script_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
@@ -609,7 +611,7 @@ static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
-static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+static void attach_ctl_lmt_script_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
@@ -619,7 +621,7 @@ static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_lmt_script( img, img->number_of_lmts() );
 }
 
-static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+static void attach_ctl_idt_script_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
@@ -627,18 +629,18 @@ static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_ctl_idt_script( fg->image() );
 }
 
-static void monitor_icc_profile_cb( fltk::Widget* o, void* data )
+static void monitor_icc_profile_cb( Fl_Widget* o, void* data )
 {
   monitor_icc_profile();
 }
 
 
-static void monitor_ctl_script_cb( fltk::Widget* o, void* data )
+static void monitor_ctl_script_cb( Fl_Widget* o, void* data )
 {
   monitor_ctl_script();
 }
 
-static void copy_pixel_rgba_cb( fltk::Widget* o, mrv::ImageView* view )
+static void copy_pixel_rgba_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( ! fg ) return;
@@ -647,7 +649,7 @@ static void copy_pixel_rgba_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
-static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
+static void attach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
@@ -664,7 +666,7 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
 }
 
 
-static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
+static void detach_audio_cb( Fl_Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
   if ( !fg ) return;
@@ -725,7 +727,7 @@ void ImageView::delete_timeout()
 }
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
-fltk::GlWindow( X, Y, W, H, l ),
+Fl_Gl_Window( X, Y, W, H, l ),
 uiMain( NULL ),
 _engine( NULL ),
 _wait( false ),
@@ -772,11 +774,10 @@ _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
-  int stereo = fltk::STEREO;
-  if ( !can_do( fltk::STEREO ) ) stereo = 0;
+  int stereo = FL_STEREO;
+  if ( !can_do( FL_STEREO ) ) stereo = 0;
 
-  mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
-	fltk::STENCIL_BUFFER | stereo );
+  mode( FL_RGB | FL_DOUBLE | FL_ALPHA | FL_STENCIL | stereo );
 
 }
 
@@ -817,7 +818,7 @@ ImageView::~ImageView()
    uiMain = NULL;
 }
 
-fltk::Window* ImageView::fltk_main()
+Fl_Window* ImageView::fltk_main()
 { 
    assert( uiMain );
    assert( uiMain->uiMain );
@@ -825,7 +826,7 @@ fltk::Window* ImageView::fltk_main()
    return uiMain->uiMain; 
 }
 
-const fltk::Window* ImageView::fltk_main() const
+const Fl_Window* ImageView::fltk_main() const
 { 
    if ( !uiMain ) return NULL;
    assert( uiMain->uiMain );
@@ -854,7 +855,7 @@ ImageView::timeline() {
 
 bool ImageView::previous_channel()
 {
-    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return false; // Audio only - no channels
 
@@ -870,19 +871,19 @@ bool ImageView::previous_channel()
 
 bool ImageView::next_channel()
 {
-    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
     // check if a channel shortcut
     unsigned short num = uiColorChannel->children();
     if ( num == 0 ) return false; // Audio only - no channels
 
     unsigned short idx = 0;
-    fltk::Group* g = NULL;
+    Fl_Group* g = NULL;
     for ( unsigned short c = 0; c < num; ++c, ++idx )
         {
-            fltk::Widget* w = uiColorChannel->child(c);
-            if ( w->is_group() )
+            Fl_Widget* w = uiColorChannel->child(c);
+            if ( w->as_group() )
             {
-                g = (fltk::Group*) w;
+                g = (Fl_Group*) w;
                 unsigned numc = g->children();
                 idx += numc;
             }
@@ -1033,8 +1034,8 @@ void ImageView::copy_pixel() const
   sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
 
   // Copy text to both the clipboard and to X's XA_PRIMARY
-  fltk::copy( buf, unsigned( strlen(buf) ), true );
-  fltk::copy( buf, unsigned( strlen(buf) ), false );
+  Fl::copy( buf, unsigned( strlen(buf) ), true );
+  Fl::copy( buf, unsigned( strlen(buf) ), false );
 }
 
 
@@ -1235,7 +1236,7 @@ void ImageView::fit_image()
   send( buf );
   zoom( float(z) );
 
-  mouseMove( fltk::event_x(), fltk::event_y() );
+  mouseMove( Fl::event_x(), Fl::event_y() );
 
   redraw();
 }
@@ -1355,11 +1356,11 @@ bool ImageView::should_update( mrv::media fg )
 
   if ( update && _playback != kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
-    int y = fltk::event_y();
+    int y = Fl::event_y();
     if ( uiMain->uiTopBar->visible() ) y -= uiMain->uiTopBar->h();
-    mouseMove( fltk::event_x(), y );
+    mouseMove( Fl::event_x(), y );
 #else
-    mouseMove( fltk::event_x(), fltk::event_y() );
+    mouseMove( Fl::event_x(), Fl::event_y() );
 #endif
   }
 
@@ -1644,7 +1645,7 @@ void ImageView::draw()
     if ( fltk_main()->border() ) 
     {
       uchar ur, ug, ub;
-      fltk::split_color( uiPrefs->uiPrefsViewBG->color(), ur, ug, ub );
+      Fl::split_color( uiPrefs->uiPrefsViewBG->color(), ur, ug, ub );
       r = ur / 255.0f;
       g = ur / 255.0f;
       b = ur / 255.0f;
@@ -1711,7 +1712,7 @@ void ImageView::draw()
   if ( label )
     {
       uchar r, g, b;
-      fltk::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
+      Fl::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
 
 
       int dx, dy;
@@ -1724,7 +1725,7 @@ void ImageView::draw()
   if ( _selection.w() > 0 || _selection.h() > 0 )
     {
         uchar r, g, b;
-        fltk::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
+        Fl::split_color( uiPrefs->uiPrefsViewSelection->color(), r, g, b );
         _engine->color( r, g, b, 255 );
         _engine->draw_rectangle( _selection, flip() );
     }
@@ -1845,7 +1846,7 @@ void ImageView::draw()
   hud.str().reserve( 512 );
 
   uchar r, g,  b;
-  fltk::split_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
+  Fl::split_color( uiPrefs->uiPrefsViewHud->color(), r, g, b );
   _engine->color( r, g, b );
 
 
@@ -2025,8 +2026,8 @@ void ImageView::add_shape( mrv::shape_type_ptr s )
 /** 
  * Handle a mouse press
  * 
- * @param x fltk::event_x() coordinate
- * @param y fltk::event_y() coordinate
+ * @param x Fl::event_x() coordinate
+ * @param y Fl::event_y() coordinate
  */
 int ImageView::leftMouseDown(int x, int y)	
 {
@@ -2038,10 +2039,10 @@ int ImageView::leftMouseDown(int x, int y)
   flags		|= kMouseDown;
 	
 
-  int button = fltk::event_button();
+  int button = Fl::event_button();
   if (button == 1) 
     {
-      if (fltk::event_key_state(fltk::LeftAltKey) )
+      if (Fl::event_key_state( FL_ALT_L ) )
       {
 	 // Handle ALT+LMB moves
 	 flags  = kMouseDown;
@@ -2118,7 +2119,7 @@ int ImageView::leftMouseDown(int x, int y)
    
 
 	 uchar r, g, b;
-	 fltk::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
+	 Fl::split_color( uiMain->uiPaint->uiPenColor->color(), r, g, b );
 
 	 s->r = r / 255.0f;
 	 s->g = g / 255.0f;
@@ -2148,8 +2149,8 @@ int ImageView::leftMouseDown(int x, int y)
    
 
 	 _wipe_dir = (WipeDirection) (_wipe_dir | kWipeFrozen);
-	 window()->cursor(fltk::CURSOR_CROSS);
-	 fltk::check();
+	 window()->cursor(FL_CURSOR_CROSS);
+	 Fl::check();
       }
 
    
@@ -2172,67 +2173,67 @@ int ImageView::leftMouseDown(int x, int y)
       if ( (flags & kLeftAlt) == 0 )
       {
 
-   
-
+          // @todo: fltk1.3
+#if 0
 	 fltk::Menu menu(0,0,0,0);
 	 menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
-		   (fltk::Callback*)open_cb, browser() ); 
+		   (Fl_Callback*)open_cb, browser() ); 
 	 menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
-		   (fltk::Callback*)open_single_cb, browser() );
+		   (Fl_Callback*)open_single_cb, browser() );
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
              menu.add( _("File/Open/Stereo Sequence or Movie"),
                        kOpenStereoImage.hotkey(),
-                       (fltk::Callback*)open_stereo_cb, browser() );
+                       (Fl_Callback*)open_stereo_cb, browser() );
              menu.add( _("File/Open/Clip XML Metadata"),
                        kOpenClipXMLMetadata.hotkey(),
-                       (fltk::Callback*)open_clip_xml_metadata_cb, this );
+                       (Fl_Callback*)open_clip_xml_metadata_cb, this );
 	    menu.add( _("File/Save/Movie or Sequence As"), 
                       kSaveSequence.hotkey(),
-		      (fltk::Callback*)save_sequence_cb, this ); 
+		      (Fl_Callback*)save_sequence_cb, this ); 
 	    menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
-		      (fltk::Callback*)save_reel_cb, this ); 
+		      (Fl_Callback*)save_reel_cb, this ); 
 	    menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
-		      (fltk::Callback*)save_cb, this ); 
+		      (Fl_Callback*)save_cb, this ); 
 	    menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
-		      (fltk::Callback*)save_snap_cb, this ); 
+		      (Fl_Callback*)save_snap_cb, this ); 
 	    menu.add( _("File/Save/Clip XML Metadata As"),
                       kSaveClipXMLMetadata.hotkey(),
-		      (fltk::Callback*)save_clip_xml_metadata_cb, this ); 
+		      (Fl_Callback*)save_clip_xml_metadata_cb, this ); 
 	 }
 
 	 char buf[256];
 	 const char* tmp; 
-	 fltk::Widget* item;
+	 Fl_Widget* item;
 	 int num = uiMain->uiWindows->children();
 	 int i;
 	 for ( i = 0; i < num; ++i )
 	 {
 	    tmp = uiMain->uiWindows->child(i)->label();
 	    sprintf( buf, _("Windows/%s"), tmp );
-	    menu.add( buf, 0, (fltk::Callback*)window_cb, uiMain );
+	    menu.add( buf, 0, (Fl_Callback*)window_cb, uiMain );
 	 }
 	 
 	 if ( fg && fg->image()->has_picture() )
 	 {
 
 	    menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(), 
-		      (fltk::Callback*)safe_areas_cb, this );
+		      (Fl_Callback*)safe_areas_cb, this );
 	    
 	    menu.add( _("View/Display Window"), kDisplayWindow.hotkey(), 
-		      (fltk::Callback*)display_window_cb, this );
+		      (Fl_Callback*)display_window_cb, this );
 
 	    menu.add( _("View/Data Window"), kDataWindow.hotkey(), 
-		      (fltk::Callback*)data_window_cb, this );
+		      (Fl_Callback*)data_window_cb, this );
 
 	    num = uiMain->uiPrefs->uiPrefsCropArea->children();
 	    for ( i = 0; i < num; ++i )
 	    {
 	       tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
 	       sprintf( buf, _("View/Mask/%s"), tmp );
-	       item = menu.add( buf, 0, (fltk::Callback*)masking_cb, uiMain );
-	       item->type( fltk::Item::TOGGLE );
+	       item = menu.add( buf, 0, (Fl_Callback*)masking_cb, uiMain );
+	       item->type( FL_TOGGLE_BUTTON );
 	       float mask = -1.0f;
                mask = (float) atof( tmp );
 	       if ( mask == _masking ) item->set();
@@ -2243,73 +2244,73 @@ int ImageView::leftMouseDown(int x, int y)
 	    {
 	       tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
 	       sprintf( buf, _("View/Hud/%s"), tmp );
-	       item = menu.add( buf, 0, (fltk::Callback*)hud_cb, uiMain );
-	       item->type( fltk::Item::TOGGLE );
+	       item = menu.add( buf, 0, (Fl_Callback*)hud_cb, uiMain );
+	       item->type( FL_TOGGLE_BUTTON );
 	       if ( hud() & (1 << i) ) item->set();
 	    }
 	    
       	    menu.add( _("Image/Next"), kNextImage.hotkey(), 
-		      (fltk::Callback*)next_image_cb, browser());
+		      (Fl_Callback*)next_image_cb, browser());
 	    menu.add( _("Image/Previous"), kPreviousImage.hotkey(), 
-		      (fltk::Callback*)previous_image_cb, 
+		      (Fl_Callback*)previous_image_cb, 
 		      browser(), fltk::MENU_DIVIDER);
 
 	    const stubImage* img = dynamic_cast< const stubImage* >( image() );
 	    if ( img )
 	    {
 	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
-			(fltk::Callback*)clone_image_cb, browser());
+			(Fl_Callback*)clone_image_cb, browser());
 	       menu.add( _("Image/Clone All Channels"), 0,
-			(fltk::Callback*)clone_all_cb,
+			(Fl_Callback*)clone_all_cb,
 			browser(), fltk::MENU_DIVIDER);
 	    }
 	    else
 	    {
 	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
-			(fltk::Callback*)clone_image_cb, browser(),
+			(Fl_Callback*)clone_image_cb, browser(),
 			fltk::MENU_DIVIDER );
 	    }
 
             item = menu.add( _("Image/Preload Caches"), kPreloadCache.hotkey(),
-                             (fltk::Callback*)preload_image_cache_cb, this );
-            item->type( fltk::Item::TOGGLE );
+                             (Fl_Callback*)preload_image_cache_cb, this );
+            item->type( FL_TOGGLE_BUTTON );
             if ( CMedia::preload_cache() ) item->set();
 
             menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
-                      (fltk::Callback*)clear_image_cache_cb, this,
+                      (Fl_Callback*)clear_image_cache_cb, this,
                       fltk::MENU_DIVIDER );
 
 
 	    menu.add( _("Image/Attach CTL Input Device Transform"),
 		      kIDTScript.hotkey(),
-		      (fltk::Callback*)attach_ctl_idt_script_cb,
+		      (Fl_Callback*)attach_ctl_idt_script_cb,
 		      this);
 	    menu.add( _("Image/Add CTL Look Mod Transform"),
 		      kLookModScript.hotkey(),
-		      (fltk::Callback*)attach_ctl_lmt_script_cb,
+		      (Fl_Callback*)attach_ctl_lmt_script_cb,
 		      this);
 	    menu.add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
-		      (fltk::Callback*)attach_ctl_script_cb,
+		      (Fl_Callback*)attach_ctl_script_cb,
 		      this, fltk::MENU_DIVIDER);
 	    menu.add( _("Image/Attach ICC Color Profile"),
 		      kIccProfile.hotkey(),
-		      (fltk::Callback*)attach_color_profile_cb,
+		      (Fl_Callback*)attach_color_profile_cb,
 		      this, fltk::MENU_DIVIDER);
 	    menu.add( _("Image/Mirror/Horizontal"),
 		      kFlipX.hotkey(),
-		      (fltk::Callback*)flip_x_cb,
+		      (Fl_Callback*)flip_x_cb,
 		      this);
 	    menu.add( _("Image/Mirror/Vertical"),
 		      kFlipY.hotkey(),
-		      (fltk::Callback*)flip_y_cb,
+		      (Fl_Callback*)flip_y_cb,
 		      this);
 	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
-		      (fltk::Callback*)set_as_background_cb,
+		      (Fl_Callback*)set_as_background_cb,
 		      (void*)this);
 	    menu.add( _("Image/Toggle Background"),
 		      kToggleBG.hotkey(),
-		      (fltk::Callback*)toggle_background_cb, (void*)this);
+		      (Fl_Callback*)toggle_background_cb, (void*)this);
 
 	    Image_ptr image = fg->image();
 
@@ -2318,8 +2319,8 @@ int ImageView::leftMouseDown(int x, int y)
 	    if ( num > 0 )
 	    {
 	       item = menu.add( _("Subtitle/No Subtitle"), 0,
-				(fltk::Callback*)change_subtitle_cb, this );
-	       item->type( fltk::Item::TOGGLE );
+				(Fl_Callback*)change_subtitle_cb, this );
+	       item->type( FL_TOGGLE_BUTTON );
 	       if ( image->subtitle_stream() == -1 )
 		  item->set();
 	       for ( unsigned i = 0; i < num; ++i )
@@ -2329,8 +2330,8 @@ int ImageView::leftMouseDown(int x, int y)
 			   image->subtitle_info(i).language.c_str() );
 
 		  item = menu.add( buf, 0,
-				   (fltk::Callback*)change_subtitle_cb, this );
-		  item->type( fltk::Item::TOGGLE );
+				   (Fl_Callback*)change_subtitle_cb, this );
+		  item->type( FL_TOGGLE_BUTTON );
 		  if ( image->subtitle_stream() == i )
 		     item->set();
 	       }
@@ -2340,33 +2341,35 @@ int ImageView::leftMouseDown(int x, int y)
 	    {
    
 	       menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
-	     		 (fltk::Callback*)attach_audio_cb, this );
+	     		 (Fl_Callback*)attach_audio_cb, this );
 	       menu.add( _("Audio/Edit Audio Frame Offset"),
                          kEditAudio.hotkey(), 
-                         (fltk::Callback*)edit_audio_cb, this );
+                         (Fl_Callback*)edit_audio_cb, this );
 	       menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
-	     		 (fltk::Callback*)detach_audio_cb, this );
+	     		 (Fl_Callback*)detach_audio_cb, this );
 	    }
 
 	    menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
 		      kCopyRGBAValues.hotkey(),
-		      (fltk::Callback*)copy_pixel_rgba_cb, (void*)this);
+		      (Fl_Callback*)copy_pixel_rgba_cb, (void*)this);
 	 }
 
 
 
 	  menu.add( _("Monitor/Attach CTL Display Transform"),
 		    kMonitorCTLScript.hotkey(),
-		   (fltk::Callback*)monitor_ctl_script_cb,
+		   (Fl_Callback*)monitor_ctl_script_cb,
 		   NULL);
 	  menu.add( _("Monitor/Attach ICC Color Profile"),
 		    kMonitorIccProfile.hotkey(),
-		    (fltk::Callback*)monitor_icc_profile_cb,
+		    (Fl_Callback*)monitor_icc_profile_cb,
 		    this, fltk::MENU_DIVIDER);
 
    
 	  menu.popup( fltk::Rectangle( fltk::event_x(),
 				       fltk::event_y(), 80, 1) );
+#endif
+
 	}
       else
 	{
@@ -2400,15 +2403,15 @@ void ImageView::leftMouseUp( int x, int y )
   flags &= ~kMouseMove;
   flags &= ~kZoom;
   
-  int button = fltk::event_button();
-  if (button == 1)
+  int button = Fl::event_button();
+  if (button == FL_LEFT_MOUSE)
     flags &= ~kMouseLeft;
-  else if ( button == 2 )
+  else if ( button == FL_MIDDLE_MOUSE )
     flags &= ~kMouseMiddle;
   else
     flags &= ~kMouseRight;
 
-  window()->cursor( fltk::CURSOR_CROSS );
+  window()->cursor( FL_CURSOR_CROSS );
 
   mrv::media fg = foreground();
 
@@ -2853,12 +2856,13 @@ void ImageView::mouseMove(int x, int y)
   col[1] = uchar(rgba.g * 255.f);
   col[2] = uchar(rgba.b * 255.f);
 
-  fltk::Color c( fltk::color( col[0], col[1], col[2] ) );
+  Fl_Color c;
+  fltk::set_color( c, col[0], col[1], col[2] ) );
   
   // bug in fltk color lookup? (0 != fltk::BLACK)
   if ( c == 0 )
     {
-      uiMain->uiPixelView->color( fltk::BLACK );
+      uiMain->uiPixelView->color( FL_BLACK );
     }
   else
     {
@@ -2936,7 +2940,7 @@ void ImageView::mouseDrag(int x,int y)
 	}
       else if ( flags & kMouseMove )
 	{
-	   window()->cursor( fltk::CURSOR_MOVE );
+	   window()->cursor( FL_CURSOR_MOVE );
 	   xoffset += double(dx) / _zoom;
            yoffset -= double(dy) / _zoom;
 
@@ -3247,37 +3251,37 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kPreviousChannel.match( rawkey ) ) 
     {
         previous_channel_cb(this, this);
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kNextChannel.match( rawkey ) ) 
     {
         next_channel_cb(this, this);
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kExposureMore.match( rawkey ) )
     {
         exposure_change( 0.5f );
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kExposureLess.match( rawkey ) )
     {
         exposure_change( -0.5f );
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kGammaMore.match( rawkey ) )
     {
         gamma( gamma() + 0.1f );
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kGammaLess.match( rawkey ) )
     {
         gamma( gamma() - 0.1f );
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( rawkey >= kZoomMin.key && rawkey <= kZoomMax.key ) 
@@ -3289,23 +3293,22 @@ int ImageView::keyDown(unsigned int rawkey)
         else
         {
             float z = (float) (rawkey - kZoomMin.key);
-            if ( fltk::event_key_state( fltk::LeftCtrlKey ) ||
-                 fltk::event_key_state( fltk::RightCtrlKey ) )
+            if ( Fl::event_ctrl() )
                 z = 1.0f / z;
-            zoom_under_mouse( z, fltk::event_x(), fltk::event_y() );
+            zoom_under_mouse( z, Fl::event_x(), Fl::event_y() );
         }
         return 1;
     }
     else if ( kZoomIn.match( rawkey ) )
     {
         zoom_under_mouse( _zoom * 2.0f, 
-                          fltk::event_x(), fltk::event_y() );
+                          Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kZoomOut.match( rawkey ) )
     {
         zoom_under_mouse( _zoom * 0.5f, 
-                          fltk::event_x(), fltk::event_y() );
+                          Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kFullScreen.match( rawkey ) ) 
@@ -3346,22 +3349,22 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( _wipe_dir == kNoWipe )  {
             _wipe_dir = kWipeVertical;
-            _wipe = (float) fltk::event_x() / float( w() );
+            _wipe = (float) Fl::event_x() / float( w() );
 
             char buf[128];
             sprintf( buf, "WipeVertical %g", _wipe );
             send( buf );
 
-            window()->cursor(fltk::CURSOR_WE);
+            window()->cursor( FL_CURSOR_WE );
         }
         else if ( _wipe_dir & kWipeVertical )
         {
             _wipe_dir = kWipeHorizontal;
-            _wipe = (float) (h() - fltk::event_y()) / float( h() );
+            _wipe = (float) (h() - Fl::event_y()) / float( h() );
             char buf[128];
             sprintf( buf, "WipeHorizontal %g", _wipe );
             send( buf );
-            window()->cursor(fltk::CURSOR_NS);
+            window()->cursor( FL_CURSOR_NS );
         }
         else if ( _wipe_dir & kWipeHorizontal ) {
             _wipe_dir = kNoWipe;
@@ -3369,7 +3372,7 @@ int ImageView::keyDown(unsigned int rawkey)
             char buf[128];
             sprintf( buf, "NoWipe" );
             send( buf );
-            window()->cursor(fltk::CURSOR_CROSS);
+            window()->cursor( FL_CURSOR_CROSS );
         }
 
         redraw();
@@ -3378,14 +3381,14 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kFlipX.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipVertical );
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
     else if ( kFlipY.match( rawkey ) )
     {
         _flip = (FlipDirection)( (int) _flip ^ (int)kFlipHorizontal );
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         redraw();
         return 1;
     }
@@ -3536,13 +3539,13 @@ int ImageView::keyDown(unsigned int rawkey)
     else if ( kPreviousImage.match( rawkey ) ) 
     {
         previous_image_cb(this, browser());
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kNextImage.match( rawkey ) ) 
     {
         next_image_cb(this, browser());
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kPreloadCache.match( rawkey ) )
@@ -3557,37 +3560,35 @@ int ImageView::keyDown(unsigned int rawkey)
     }
     else if ( kFirstFrame.match( rawkey ) ) 
     {
-        if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
-             fltk::event_key_state( fltk::RightCtrlKey ) )
+        if ( Fl::event_ctrl() )
             first_frame_timeline();
         else
             first_frame();
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kLastFrame.match( rawkey ) ) 
     {
-        if ( fltk::event_key_state( fltk::LeftCtrlKey )  ||
-             fltk::event_key_state( fltk::RightCtrlKey ) )
+        if ( Fl::event_ctrl() )
             last_frame_timeline();
         else
             last_frame();
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kToggleBG.match( rawkey ) ) 
     {
         toggle_background();
-        mouseMove( fltk::event_x(), fltk::event_y() );
+        mouseMove( Fl::event_x(), Fl::event_y() );
         return 1;
     }
     else if ( kToggleTopBar.match( rawkey ) )
     {
         if ( uiMain->uiTopBar->visible() ) uiMain->uiTopBar->hide();
         else uiMain->uiTopBar->show();
-        uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
-                                    fltk::LAYOUT_DAMAGE |
-                                    fltk::LAYOUT_CHILD );
+        // uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
+        //                             fltk::LAYOUT_DAMAGE |
+        //                             fltk::LAYOUT_CHILD );
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -3595,9 +3596,9 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( uiMain->uiPixelBar->visible() ) uiMain->uiPixelBar->hide();
         else uiMain->uiPixelBar->show();
-        uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
-                                    fltk::LAYOUT_DAMAGE |
-                                    fltk::LAYOUT_CHILD );
+        // uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
+        //                             fltk::LAYOUT_DAMAGE |
+        //                             fltk::LAYOUT_CHILD );
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -3605,9 +3606,9 @@ int ImageView::keyDown(unsigned int rawkey)
     {
         if ( uiMain->uiBottomBar->visible() ) uiMain->uiBottomBar->hide();
         else uiMain->uiBottomBar->show();
-        uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
-                                    fltk::LAYOUT_DAMAGE |
-                                    fltk::LAYOUT_CHILD );
+        // uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
+        //                             fltk::LAYOUT_DAMAGE |
+        //                             fltk::LAYOUT_CHILD );
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -3632,7 +3633,7 @@ int ImageView::keyDown(unsigned int rawkey)
         uiMain->uiTimeline->maximum( (double)x );
         uiMain->uiTimeline->redraw();
     }
-    else if ( rawkey == fltk::LeftAltKey ) 
+    else if ( rawkey == FL_Alt_L ) 
     {
         flags |= kLeftAlt;
         return 1;
@@ -3640,15 +3641,15 @@ int ImageView::keyDown(unsigned int rawkey)
     else
     {
         // Check if a menu shortcut
-        fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+        Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
 
         // check if a channel shortcut
         unsigned short num = uiColorChannel->children();
         unsigned short idx = 0;
-        fltk::Group* g = NULL;
+        Fl_Group* g = NULL;
         for ( unsigned short c = 0; c < num; ++c, ++idx )
         {
-            fltk::Widget* w = uiColorChannel->child(c);
+            Fl_Widget* w = uiColorChannel->child(c);
             if ( rawkey == w->shortcut() )
             {
                 channel( idx );
@@ -3656,9 +3657,9 @@ int ImageView::keyDown(unsigned int rawkey)
             }
 
             g = NULL;
-            if ( w->is_group() )
+            if ( w->as_group() )
             {
-                g = (fltk::Group*) w;
+                g = (Fl_Group*) w;
                 unsigned numc = g->children();
                 for ( unsigned short i = 0; i < numc; ++i )
                 {
@@ -3685,7 +3686,7 @@ int ImageView::keyDown(unsigned int rawkey)
  */
 int ImageView::keyUp(unsigned int key)	
 {
-  if ( key == fltk::LeftAltKey ) 
+  if ( key == FL_ALT_L ) 
     {
       if ( _playback == kScrubbing ) 
 	{
@@ -3743,12 +3744,12 @@ void ImageView::toggle_fullscreen()
 
 void ImageView::toggle_presentation()
 {
-  fltk::Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
-  fltk::Window* uiColorArea = uiMain->uiColorArea->uiMain;
-  fltk::Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
-  fltk::Window* uiReel  = uiMain->uiReelWindow->uiMain;
-  fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
-  fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
+  Fl_Window* uiImageInfo = uiMain->uiImageInfo->uiMain;
+  Fl_Window* uiColorArea = uiMain->uiColorArea->uiMain;
+  Fl_Window* uiEDLWindow = uiMain->uiEDLWindow->uiMain;
+  Fl_Window* uiReel  = uiMain->uiReelWindow->uiMain;
+  Fl_Window* uiPrefs = uiMain->uiPrefs->uiMain;
+  Fl_Window* uiAbout = uiMain->uiAbout->uiMain;
 
   bool presentation = false;
 
@@ -3791,8 +3792,11 @@ void ImageView::toggle_presentation()
 #else
       fltk_main()->fullscreen();
 
+#if 0
+      // @todo: fltk1.3
       const fltk::Monitor& m = fltk::Monitor::all();
       fltk_main()->resize( 0, 0, m.w(), m.h() );
+#endif
 
       // fltk_main()->resize( 0, 0,
       //                      XDisplayWidth( fltk::xdisplay, 0 ),
@@ -3828,7 +3832,7 @@ void ImageView::toggle_presentation()
 
   take_focus();
 
-  fltk::check();
+  Fl::check();
   
 
   char buf[128];
@@ -3867,56 +3871,58 @@ int ImageView::handle(int event)
 {
     switch( event ) 
     {
-        case fltk::TIMEOUT:
+
+        // @todo: fltk1.3
+#if 0
+        case FL_TIMEOUT:
             {
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
                      ( _reel < b->number_of_reels() ) )
                 {
-                    add_idle( (fltk::TimeoutHandler)static_preload, this );
+                    add_idle( (Fl_Timeout_Handler)static_preload, this );
                     _idle_callback = true;
                 }
                 else
                 {
                     if ( _idle_callback && _reel >= b->number_of_reels() )
                     {
-                        fltk::remove_idle( (fltk::TimeoutHandler)static_preload, this );
+                        Fl::remove_idle( (Fl_Timeout_Handler)static_preload, this );
                         _idle_callback = false;
                     }
                 }
                 timeout();
                 return 1;
             }
-        case fltk::FOCUS:
+#endif
+        case FL_FOCUS:
             return 1;
-        case fltk::ENTER:
+        case FL_ENTER:
             focus(this);
             if ( _wait )
             {
-                window()->cursor( fltk::CURSOR_WAIT );
-                fltk::cursor( fltk::CURSOR_WAIT );
+                window()->cursor( FL_CURSOR_WAIT );
             }
             else
             {
-                window()->cursor(fltk::CURSOR_CROSS);
-                fltk::cursor( fltk::CURSOR_CROSS );
+                window()->cursor( FL_CURSOR_CROSS );
             }
-            fltk::GlWindow::handle( event );
+            Fl_Gl_Window::handle( event );
             return 1;
-        case fltk::LEAVE:
-            window()->cursor(fltk::CURSOR_DEFAULT);
-            fltk::GlWindow::handle( event );
+        case FL_LEAVE:
+            window()->cursor( FL_CURSOR_DEFAULT);
+            Fl_Gl_Window::handle( event );
             return 1;
-        case fltk::PUSH:
-            return leftMouseDown(fltk::event_x(), fltk::event_y());
+        case FL_PUSH:
+            return leftMouseDown(Fl::event_x(), Fl::event_y());
             break;
-        case fltk::RELEASE:
-            leftMouseUp(fltk::event_x(), fltk::event_y());
+        case FL_RELEASE:
+            leftMouseUp(Fl::event_x(), Fl::event_y());
             return 1;
             break;
-        case fltk::MOVE:
-            X = fltk::event_x();
-            Y = fltk::event_y();
+        case FL_MOVE:
+            X = Fl::event_x();
+            Y = Fl::event_y();
 
             if ( _wipe_dir != kNoWipe )
             {
@@ -3924,16 +3930,16 @@ int ImageView::handle(int event)
                 switch( _wipe_dir )
                 {
                     case kWipeVertical:
-                        _wipe = (float) fltk::event_x() / (float)w();
+                        _wipe = (float) Fl::event_x() / (float)w();
                         sprintf( buf, "WipeVertical %g", _wipe );
                         send( buf );
-                        window()->cursor(fltk::CURSOR_WE);
+                        window()->cursor( FL_CURSOR_WE );
                         break;
                     case kWipeHorizontal:
-                        _wipe = (float) (h() - fltk::event_y()) / (float)h();
+                        _wipe = (float) (h() - Fl::event_y()) / (float)h();
                         sprintf( buf, "WipeHorizontal %g", _wipe );
                         send( buf );
-                        window()->cursor(fltk::CURSOR_NS);
+                        window()->cursor( FL_CURSOR_NS );
                         break;
                     default:
                         break;
@@ -3941,18 +3947,18 @@ int ImageView::handle(int event)
                 redraw();
                 return 1;
             }
-            if ( kScrub.match( fltk::event_key() ) )
+            if ( kScrub.match( Fl::event_key() ) )
             {
-                double dx = (fltk::event_x() - lastX) / 20.0;
+                double dx = (Fl::event_x() - lastX) / 20.0;
                 if ( std::abs(dx) >= 1.0f )
                 { 
                     scrub( dx );
-                    lastX = fltk::event_x();
+                    lastX = Fl::event_x();
                 }
             }
             else
             {
-                mouseMove(fltk::event_x(), fltk::event_y());
+                mouseMove(Fl::event_x(), Fl::event_y());
             }
 
             if ( _mode == kDraw || _mode == kErase )
@@ -3960,42 +3966,42 @@ int ImageView::handle(int event)
 
             return 1;
             break;
-        case fltk::DRAG:
-            X = fltk::event_x();
-            Y = fltk::event_y();
+        case FL_DRAG:
+            X = Fl::event_x();
+            Y = Fl::event_y();
             mouseDrag( int(X), int(Y) );
             break;
-            //     case fltk::SHORTCUT:
-        case fltk::KEY:
-            lastX = fltk::event_x();
-            lastY = fltk::event_y();
-            return keyDown(fltk::event_key());
-        case fltk::KEYUP:
-            return keyUp(fltk::event_key());
-        case fltk::MOUSEWHEEL:
+            //     case Fl::SHORTCUT:
+        case FL_KEYDOWN:
+            lastX = Fl::event_x();
+            lastY = Fl::event_y();
+            return keyDown(Fl::event_key());
+        case FL_KEYUP:
+            return keyUp(Fl::event_key());
+        case FL_MOUSEWHEEL:
             {
-                if ( fltk::event_dy() < 0.f )
+                if ( Fl::event_dy() < 0.f )
                 {
                     zoom_under_mouse( _zoom * 2.0f, 
-                                      fltk::event_x(), fltk::event_y() );
+                                      Fl::event_x(), Fl::event_y() );
                 }
                 else
                 {
                     zoom_under_mouse( _zoom * 0.5f, 
-                                      fltk::event_x(), fltk::event_y() );
+                                      Fl::event_x(), Fl::event_y() );
                 }
                 break;
             }
-        case fltk::DND_ENTER:
-        case fltk::DND_LEAVE:
-        case fltk::DND_DRAG:
-        case fltk::DND_RELEASE:
+        case FL_DND_ENTER:
+        case FL_DND_LEAVE:
+        case FL_DND_DRAG:
+        case FL_DND_RELEASE:
             return 1;
-        case fltk::PASTE:
+        case FL_PASTE:
             browser()->handle_dnd();
             return 1;
         default:
-            return fltk::GlWindow::handle( event ); 
+            return Fl_Gl_Window::handle( event ); 
     }
 
     return 0;
@@ -4095,14 +4101,14 @@ void ImageView::preload_caches()
     CMedia::preload_cache( !CMedia::preload_cache() );
     if ( !CMedia::preload_cache() )
     {
-        fltk::remove_idle( (fltk::TimeoutHandler) static_preload, this );
+        Fl::remove_idle( (Fl_Timeout_Handler) static_preload, this );
         _idle_callback = false;
     }
     else
     {
         if (!_idle_callback) 
         {
-            fltk::add_idle( (fltk::TimeoutHandler) static_preload, this );
+            Fl::add_idle( (Fl_Timeout_Handler) static_preload, this );
             _idle_callback = true;
         }
     }
@@ -4153,26 +4159,26 @@ void ImageView::smart_refresh()
 
 char* ImageView::get_layer_label( unsigned short c )
 {
-    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
     char* lbl = NULL;
     unsigned short idx = 0;
     std::string layername;
     unsigned short num = uiColorChannel->children();
     for ( unsigned short i = 0; i < num; ++i, ++idx )
     {
-        fltk::Widget* w = uiColorChannel->child(i);
+        Fl_Widget* w = uiColorChannel->child(i);
         if ( idx == c )
         {
             lbl = strdup( w->label() );
-            if ( w->is_group() ||
+            if ( w->as_group() ||
                  strcmp( lbl, _("Color") ) == 0 )
                 _old_channel = idx;
             break;
         }
 
-        if ( w->is_group() )
+        if ( w->as_group() )
         {
-            fltk::Group* g = (fltk::Group*) w;
+            Fl_Group* g = (Fl_Group*) w;
             unsigned short numc = g->children();
             unsigned short gidx = idx;
             layername = w->label();
@@ -4200,23 +4206,23 @@ char* ImageView::get_layer_label( unsigned short c )
     return lbl;
 }
 
-void ImageView::channel( fltk::Widget* o )
+void ImageView::channel( Fl_Widget* o )
 {
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+  Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
   unsigned short idx = 0;
   bool found = false;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
   {
-      fltk::Widget* w = uiColorChannel->child(i);
+      Fl_Widget* w = uiColorChannel->child(i);
       if ( w == o ) {
           found = true;
           break;
       }
 
-      if ( w->is_group() )
+      if ( w->as_group() )
       {
-          fltk::Group* g = (fltk::Group*) w;
+          Fl_Group* g = (Fl_Group*) w;
           unsigned short numc = g->children();
           for ( unsigned short j = 0; j < numc; ++j )
           {
@@ -4249,7 +4255,7 @@ void ImageView::channel( fltk::Widget* o )
  */
 void ImageView::channel( unsigned short c )
 {
-  fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+  Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
   if ( num == 0 ) return; // Audio only - no channels
 
@@ -4257,10 +4263,10 @@ void ImageView::channel( unsigned short c )
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
   {
-      fltk::Widget* w = uiColorChannel->child(i);
-      if ( w->is_group() )
+      Fl_Widget* w = uiColorChannel->child(i);
+      if ( w->as_group() )
       {
-          fltk::Group* g = (fltk::Group*) w;
+          Fl_Group* g = (Fl_Group*) w;
           idx += g->children();
       }
   }
@@ -4711,7 +4717,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     CMedia* img = fg->image();
 
-    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
     uiColorChannel->clear();
 
     const stringArray& layers = img->layers();
@@ -4755,8 +4761,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     bool group = false;
     std::string x;
-    fltk::Group* g = NULL;
-    fltk::Widget* o = NULL;
+    Fl_Group* g = NULL;
+    Fl_Widget* o = NULL;
 
     for ( ; i != e; ++i, ++idx )
     {
@@ -4830,7 +4836,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
  */
 void ImageView::update_layers()
 {
-    fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
+    Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
 
     mrv::media fg = foreground();
     if ( !fg )
@@ -4949,7 +4955,7 @@ void ImageView::foreground( mrv::media fg )
         posX = fltk_main()->x();
         posY = fltk_main()->y();
 
-        fltk::RadioButton* r = (fltk::RadioButton*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
+        Fl_Radio_Button* r = (Fl_Radio_Button*) uiMain->uiPrefs->uiPrefsOpenMode->child(0);
         if ( r->value() == 1 )
         {
             resize_main_window();
@@ -5002,7 +5008,7 @@ void ImageView::audio_stream( unsigned int idx )
 
   CMedia* img = fg->image();
 
-  unsigned int numAudioTracks = uiMain->uiAudioTracks->children();
+  unsigned int numAudioTracks = uiMain->uiAudioTracks->size();
   if ( idx >= numAudioTracks - 1 )
     img->audio_stream( -1 );
   else
@@ -5104,11 +5110,20 @@ void ImageView::resize_main_window()
   if ( uiMain->uiBottomBar->visible() )
     h += uiMain->uiBottomBar->h();
 
+/*
+  @todo: fltk1.3
+
   fltk::Monitor monitor = fltk::Monitor::all();
   int minx = monitor.work.x();
   int miny = monitor.work.y() + 8;
   int maxh = monitor.work.h() - 8;
   int maxw = monitor.work.w();
+*/
+
+  int minx = 0;
+  int miny = 0;
+  int maxh = window()->h();
+  int maxw = window()->w();
 
   bool fit = false;
 
@@ -5182,7 +5197,7 @@ bool ImageView::normalize() const
 void ImageView::normalize( const bool normalize)
 {
    _normalize = normalize;
-   uiMain->uiNormalize->state( normalize );
+   uiMain->uiNormalize->value( normalize );
 
    char buf[128];
    sprintf( buf, "Normalize %d", (int) _normalize );
@@ -5477,20 +5492,20 @@ void ImageView::update_color_info( const mrv::media& fg ) const
 {
   if ( uiMain->uiColorArea )
     {
-      fltk::Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
+      Fl_Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
       if ( uiColorWindow->visible() ) 
 	uiMain->uiColorArea->uiColorText->update();
     }
 
   if ( uiMain->uiVectorscope )
     {
-      fltk::Window*  uiVectorscope = uiMain->uiVectorscope->uiMain;
+      Fl_Window*  uiVectorscope = uiMain->uiVectorscope->uiMain;
       if ( uiVectorscope->visible() ) uiVectorscope->redraw();
     }
 
   if ( uiMain->uiHistogram )
     {
-      fltk::Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
+      Fl_Window*  uiHistogram   = uiMain->uiHistogram->uiMain;
       if ( uiHistogram->visible() ) uiHistogram->redraw();
     }
 }
@@ -5743,7 +5758,7 @@ void  ImageView::looping( Looping x )
   _looping = x;
 
   uiMain->uiLoopMode->value( x );
-  uiMain->uiLoopMode->label(uiMain->uiLoopMode->child(x)->label());
+  uiMain->uiLoopMode->label( uiMain->uiLoopMode->text(x) );
   uiMain->uiLoopMode->redraw();
 
   char buf[64];

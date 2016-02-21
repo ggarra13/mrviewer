@@ -930,7 +930,7 @@ void ImageInformation::fill_data()
       browser->column_separator(true);
       browser->auto_resize( true );
 
-#if 0
+#if 1
       static const char* headers[] = { _("Attribute"), _("Value"), 0 };
       browser->column_labels( headers );
 #else
@@ -1455,10 +1455,13 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       //p->set_horizontal();
       p->begin();
 
+      char buf[64];
+      sprintf( buf, "%d", content );
+
       if ( !editable )
 	{
 	  Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, p->w(), hh );
-	  widget->value( (int)content );
+	  widget->value( buf );
 	  widget->align( FL_ALIGN_LEFT);
 	  widget->color( colB );
 	  widget->deactivate();
@@ -1467,7 +1470,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       else 
 	{
 	  Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, 50, hh );
-	  widget->value( (int)content );
+	  widget->value( buf );
 	  widget->align( FL_ALIGN_LEFT );
 	  widget->color( colB );
 
@@ -1558,11 +1561,13 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       g->add( widget );
     }
 
+    char buf[64];
     unsigned dw = (w() - kMiddle) / 6;
     Fl_Group* g2 = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
     {
       Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, dw, hh );
-      widget->value( content.l() );
+      sprintf( buf, "%d", content.l() );
+      widget->value( buf );
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
@@ -1580,7 +1585,8 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     }
     {
       Fl_Int_Input* widget = new Fl_Int_Input( dw, 0, dw, hh );
-      widget->value( content.t() );
+      sprintf( buf, "%d", content.t() );
+      widget->value( buf );
       widget->align(FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
@@ -1598,7 +1604,8 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     }
     {
       Fl_Int_Input* widget = new Fl_Int_Input( dw*2, 0, dw, hh );
-      widget->value( content.r() );
+      sprintf( buf, "%d", content.r() );
+      widget->value( buf );
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
@@ -1616,7 +1623,8 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     }
     {
       Fl_Int_Input* widget = new Fl_Int_Input( dw*3, 0, dw, hh );
-      widget->value( content.b() );
+      sprintf( buf, "%d", content.b() );
+      widget->value( buf );
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
@@ -1634,7 +1642,8 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     }
     {
         Fl_Int_Input* widget = new Fl_Int_Input( dw*4, 0, dw, hh, "W:" );
-        widget->value( content.w() );
+        sprintf( buf, "%d", content.w() );
+        widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
@@ -1644,7 +1653,8 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     }
     {
         Fl_Int_Input* widget = new Fl_Int_Input( dw*5, 0, dw, hh, "H:" );
-        widget->value( content.h() );
+        sprintf( buf, "%d", content.h() );
+        widget->value( buf );
         widget->align(FL_ALIGN_LEFT);
         widget->box( FL_FLAT_BOX );
         widget->color( colB );
@@ -1681,10 +1691,13 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       // p->set_horizontal();
       p->begin();
 
+      char buf[64];
+      sprintf( buf, "%g", content );
+
       if ( !editable )
 	{
 	  Fl_Float_Input* widget = new Fl_Float_Input( 0, 0, p->w(), hh );
-	  widget->value( content );
+	  widget->value( buf );
 	  widget->align(FL_ALIGN_LEFT);
 	  widget->color( colB );
 	  widget->deactivate();
@@ -1693,7 +1706,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       else 
 	{
 	  Fl_Float_Input* widget = new Fl_Float_Input( 0, 0, 50, hh );
-	  widget->value( content );
+	  widget->value( buf );
 	  widget->align(FL_ALIGN_LEFT);
 	  widget->color( colB );
 
