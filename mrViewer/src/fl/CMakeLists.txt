@@ -196,7 +196,7 @@ SET( SOURCES
  ../gui/mrvHistogram.cpp
  # ../gui/mrvImageView.cpp
  # ../gui/mrvImageBrowser.cpp
- #  gui/mrvImageInformation.cpp
+ # ../gui/mrvImageInformation.cpp
  ../gui/mrvIO.cpp
  ../gui/mrvLogDisplay.cpp
  #  gui/mrvMediaTrack.cpp

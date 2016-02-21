@@ -38,7 +38,7 @@ namespace mrv
 {
 
   Browser::Browser( int x, int y, int w, int h, const char* l ) :
-  Fl_Browser( x, y, w, h, l ),
+  Fl_Table( x, y, w, h, l ),
   _column_separator_color( FL_BLACK ),
   _last_cursor( FL_CURSOR_DEFAULT ),
   _column_separator( true ),

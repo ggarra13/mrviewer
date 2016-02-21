@@ -117,7 +117,7 @@ namespace mrv
    * @return Each reel to be loaded
    */
 stringArray open_reel( const char* startfile, 
-                       const mrv::ViewerUI* main )
+                       const ViewerUI* main )
   {
       std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                   kReelPattern + "})\t";
@@ -156,7 +156,7 @@ stringArray open_reel( const char* startfile,
    * @return Each file to be opened
    */
 stringArray open_image_file( const char* startfile, const bool compact_images, 
-                             const mrv::ViewerUI* main )
+                             const ViewerUI* main )
   {
     stringArray filelist;
 
@@ -213,7 +213,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
    */
   const char* open_icc_profile( const char* startfile,
 				const char* title, 
-                                const mrv::ViewerUI* main )
+                                const ViewerUI* main )
   {
       std::string path;
       stringArray filelist;
@@ -272,7 +272,7 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
 
 const char* open_ctl_dir( const char* startfile,
                           const char* title, 
-                          const mrv::ViewerUI* main )
+                          const ViewerUI* main )
 {
     std::string path, modulepath, ext;
 
@@ -309,7 +309,7 @@ const char* open_ctl_dir( const char* startfile,
    * @return  opened audio file or null
    */
   const char* open_audio_file( const char* startfile, 
-                               const mrv::ViewerUI* main )
+                               const ViewerUI* main )
   {
       std::string kAUDIO_PATTERN = _( "Audios (*.{" ) +
                                    kAudioPattern + "})\t";
@@ -346,7 +346,7 @@ const char* open_ctl_dir( const char* startfile,
 
   void attach_icc_profile( CMedia* image,
 			   const char* startfile, 
-                           const mrv::ViewerUI* main )
+                           const ViewerUI* main )
   {
     if ( !image ) return;
 
@@ -358,7 +358,7 @@ const char* open_ctl_dir( const char* startfile,
 
 
   void attach_icc_profile( CMedia* image, 
-                           const mrv::ViewerUI* main )
+                           const ViewerUI* main )
   { 
     if (!image) return;
     attach_icc_profile( image, image->icc_profile(), main );
@@ -366,7 +366,7 @@ const char* open_ctl_dir( const char* startfile,
 
 
   void attach_ctl_script( CMedia* image, const char* startfile, 
-                          const mrv::ViewerUI* main )
+                          const ViewerUI* main )
   {
     if ( !image ) return;
 
@@ -376,7 +376,7 @@ const char* open_ctl_dir( const char* startfile,
 
 void attach_ctl_lmt_script( CMedia* image, const char* startfile,
                             const size_t idx, 
-                            const mrv::ViewerUI* main )
+                            const ViewerUI* main )
   {
     if ( !image ) return;
 
@@ -392,7 +392,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
 
 
   void attach_ctl_script( CMedia* image, 
-                           const mrv::ViewerUI* main )
+                           const ViewerUI* main )
   { 
     if (!image) return;
 
@@ -404,7 +404,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
   }
 
   void attach_ctl_idt_script( CMedia* image, const char* startfile, 
-                              const mrv::ViewerUI* main )
+                              const ViewerUI* main )
   {
     if ( !image ) return;
 
@@ -413,7 +413,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
   }
 
   void attach_ctl_idt_script( CMedia* image, 
-                              const mrv::ViewerUI* main )
+                              const ViewerUI* main )
   {
     if ( !image ) return;
 
@@ -423,7 +423,7 @@ void attach_ctl_lmt_script( CMedia* image, const char* startfile,
   }
 
 void attach_ctl_lmt_script( CMedia* image, const size_t idx, 
-                            const mrv::ViewerUI* main )
+                            const ViewerUI* main )
 {
     if ( !image ) return;
 
@@ -435,7 +435,7 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
 
 
   void read_clip_xml_metadata( CMedia* img, 
-                               const mrv::ViewerUI* main )
+                               const ViewerUI* main )
   {
     if ( !img ) return;
 
@@ -472,7 +472,7 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
   }
 
 void save_clip_xml_metadata( const CMedia* img, 
-                             const mrv::ViewerUI* main )
+                             const ViewerUI* main )
 {
     if ( !img ) return;
 
@@ -510,7 +510,7 @@ void save_clip_xml_metadata( const CMedia* img,
 }
 
   void monitor_ctl_script( const unsigned index, const char* startfile, 
-                           const mrv::ViewerUI* main )
+                           const ViewerUI* main )
   {
     if ( !startfile )
       startfile = mrv::Preferences::ODT_CTL_transform.c_str();
@@ -526,7 +526,7 @@ void save_clip_xml_metadata( const CMedia* img,
   }
 			
   void monitor_icc_profile( const unsigned index, 
-                            const mrv::ViewerUI* main )
+                            const ViewerUI* main )
   {
     const char* profile = open_icc_profile( NULL, 
 					    "Load Monitor Profile" );
@@ -539,7 +539,7 @@ void save_clip_xml_metadata( const CMedia* img,
 
 bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
                const char* file, 
-               const mrv::ViewerUI* main = NULL )
+               const ViewerUI* main = NULL )
 {
     if ( ipts && ipts->ACES_metadata() )
     {
@@ -552,7 +552,7 @@ bool save_xml( const CMedia* img, mrv::ImageOpts* ipts,
 
 void save_image_file( CMedia* image, const char* startdir, bool aces, 
                       bool all_layers,
-                      const mrv::ViewerUI* main )
+                      const ViewerUI* main )
 {
    if (!image) return;
 
@@ -602,7 +602,7 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
    delete opts;
 }
 
-void save_sequence_file( const mrv::ViewerUI* uiMain, 
+void save_sequence_file( const ViewerUI* uiMain, 
 			 const char* startdir, const bool opengl)
 {
     std::string kREEL_PATTERN = _( "Reels (*.{" ) +
@@ -911,7 +911,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    * @param startfile  start filename (directory)
    */
   void attach_audio( CMedia* image, const char* startfile, 
-                     const mrv::ViewerUI* main )
+                     const ViewerUI* main )
   {
     if ( !image ) return;
     if ( !image->is_sequence() ) return;
@@ -931,7 +931,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    * @return filename of reel to save or NULL
    */
 const char* save_reel( const char* startdir, 
-                       const mrv::ViewerUI* main )
+                       const ViewerUI* main )
 {
     std::string kREEL_PATTERN = _( "Reels (*.{" ) +
                                 kReelPattern + "})\t";

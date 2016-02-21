@@ -60,29 +60,21 @@
 #include <boost/filesystem.hpp>
 #include <boost/lexical_cast.hpp>
 
-#include <fltk/utf.h>
-#include <fltk/visual.h>
-#include <fltk/events.h>
-#include <fltk/damage.h>
-#include <fltk/layout.h>
-#include <fltk/draw.h>
-#include <fltk/run.h>
-#ifdef LINUX
-#include <fltk/x11.h>
-#endif
+#include <FL/fl_utf8.h>
+#include <FL/Enumerations.H>
+#include <FL/fl_draw.H>
+#include <FL/Fl.H>
+#include <FL/x.H>
 
-#include <fltk/Color.h>
-#include <fltk/Cursor.h>
-#include <fltk/Font.h>
-#include <fltk/Output.h>
-#include <fltk/Choice.h>
-#include <fltk/ValueOutput.h>
-#include <fltk/Window.h>
-#include <fltk/Menu.h>
-#include <fltk/PopupMenu.h>
-#include <fltk/Monitor.h>
-#include <fltk/Button.h>
-#include <fltk/Preferences.h>
+#include <FL/Fl_Output.H>
+#include <FL/Fl_Choice.H>
+#include <FL/Fl_Value_Output.H>
+#include <FL/Fl_Window.H>
+#include <FL/Fl_Menu.H>
+#include <FL/Fl_Menu_Button.H>
+//#include <fltk/Monitor.h>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Preferences.H>
 
 
 #include "ImathMath.h" // for Math:: functions
@@ -120,7 +112,6 @@
 #include "gui/mrvHotkey.h"
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvFontsWindowUI.h"
-#include "gui/mrvAudioOffset.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 
@@ -128,6 +119,7 @@
 
 // Widgets
 #include "mrViewer.h"
+#include "mrvAudioOffset.h"
 #include "mrvIccProfileUI.h"
 #include "mrvColorAreaUI.h"
 

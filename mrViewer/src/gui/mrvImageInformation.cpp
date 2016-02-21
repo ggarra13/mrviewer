@@ -31,21 +31,17 @@ using namespace std;
 
 #include <algorithm>
 
-#include <fltk/events.h>
-#include <fltk/Symbol.h>
-#include <fltk/Browser.h>
-#include <fltk/Button.h>
-#include <fltk/FloatInput.h>
-#include <fltk/IntInput.h>
+#include <FL/Enumerations.H>
+#include <FL/Fl_Browser.H>
+#include <FL/Fl_Button.H>
+#include <FL/Fl_Float_Input.H>
+#include <FL/Fl_Int_Input.H>
 
-#include <fltk/PackedGroup.h>
-#include <fltk/Slider.h>
-#include <fltk/PopupMenu.h>
-
-#include <fltk/InvisibleBox.h>
-
-#include <fltk/ItemGroup.h>
-#include <fltk/PackedGroup.h>
+#include <FL/Fl_Pack.H>
+#include <FL/Fl_Slider.H>
+#include <FL/Fl_Menu_Button.H>
+#include <FL/Fl_Box.H>
+#include <FL/Fl_Menu_Item.H>
 
 #include "mrvImageInformation.h"
 #include "mrvFileRequester.h"
@@ -71,13 +67,13 @@ namespace mrv
 
 struct CtlLMTData
 {
-    fltk::Widget* widget;
+    Fl_Widget* widget;
     size_t idx;
 };
 
 typedef std::vector< CtlLMTData* > LMTData;
 
-  static const fltk::Color kTitleColors[] = {
+  static const Fl_Color kTitleColors[] = {
     0x608080ff,
     0x808060ff,
     0x606080ff,
@@ -89,19 +85,19 @@ typedef std::vector< CtlLMTData* > LMTData;
   static LMTData widget_data;
 
   static const unsigned int kSizeOfTitleColors = ( sizeof(kTitleColors) / 
-						   sizeof(fltk::Color) );
+						   sizeof(Fl_Color) );
 
-  static const fltk::Color kRowColors[] = {
+  static const Fl_Color kRowColors[] = {
     0x202020ff,
     0x303030ff,
   };
 
   static const unsigned int kSizeOfRowColors = ( sizeof(kRowColors) /
-						 sizeof(fltk::Color) );
+						 sizeof(Fl_Color) );
 
   static const int kMiddle = 200;
 
-void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
+void change_stereo_image( Fl_Button* w, mrv::ImageInformation* info )
 {
     static CMedia* last = NULL;
     CMedia* img = info->get_image();
@@ -134,19 +130,20 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
     begin();
 
 
+    // @todo: fltk1.3
+    // Rectangle r(w, h);
+    // box()->inset(r);
 
-    Rectangle r(w, h);
-    box()->inset(r);
+    mrv::Recti r( w, h );
 
-
-    m_all = new fltk::PackedGroup( r.x(), r.y(), r.w()-20, r.h() );
-    m_all->set_vertical();
+    m_all = new Fl_Pack( r.x(), r.y(), r.w()-20, r.h() );
+    m_all->type( FL_VERTICAL );
     m_all->spacing(10);
 
     m_all->begin();
 
-    m_button = new fltk::Button( 0, 0, w, 20, _("Left View") );
-    m_button->callback( (fltk::Callback*)change_stereo_image, this );
+    m_button = new Fl_Button( 0, 0, w, 20, _("Left View") );
+    m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
@@ -168,20 +165,20 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
 
   int ImageInformation::handle( int event )
   {
-     if ( event == fltk::MOUSEWHEEL )
+     if ( event == FL_MOUSEWHEEL )
      {
-        fltk::e_dy = fltk::event_dy() * 8;
+        Fl::e_dy = Fl::event_dy() * 8;
      }
 
      return ImageInfoParent::handle( event );
   }
 
-  void ImageInformation::layout()
-  {
-    if ( w()-20 != m_all->w() )
-      m_all->resize( 0, 0, w()-20, m_all->h() );
-    ImageInfoParent::layout();
-  }
+// @todo: fltk1.3
+  // void ImageInformation::layout()
+  // {
+  //   if ( w()-20 != m_all->w() )
+  //     m_all->resize( 0, 0, w()-20, m_all->h() );
+  // }
 
   struct aspectName_t
   {
@@ -211,49 +208,53 @@ void change_stereo_image( fltk::Button* w, mrv::ImageInformation* info )
       { 2.76, _("MGM Camera 65") },
     };
 
-void ImageInformation::enum_cb( fltk::PopupMenu* m, ImageInformation* v )
+void ImageInformation::enum_cb( Fl_Menu_Button* m, ImageInformation* v )
 {
-    m->label( m->child( m->value() )->label() );
+    m->label( m->mvalue()->label() );
 }
 
 // Update int slider from int input
-static void update_int_slider( fltk::IntInput* w )
+static void update_int_slider( Fl_Int_Input* w )
 {
-    fltk::Group* g = w->parent();
-    fltk::Slider* s = (fltk::Slider*)g->child(1);
-    s->value( w->ivalue() );
+    Fl_Group* g = w->parent();
+    Fl_Slider* s = (Fl_Slider*)g->child(1);
+    s->value( atoi(w->value()) );
 }
 
 // Update float slider from float input
-static void update_float_slider( fltk::FloatInput* w )
+static void update_float_slider( Fl_Float_Input* w )
 {
-    fltk::Group* g = w->parent();
-    fltk::Slider* s = (fltk::Slider*)g->child(1);
-    s->value( w->fvalue() );
+    Fl_Group* g = w->parent();
+    Fl_Slider* s = (Fl_Slider*)g->child(1);
+    s->value( atof(w->value()) );
 }
 
-void ImageInformation::float_slider_cb( fltk::Slider* s, void* data )
+void ImageInformation::float_slider_cb( Fl_Slider* s, void* data )
 {
-    fltk::FloatInput* n = (fltk::FloatInput*) data;
-    n->value( s->value() );
+    Fl_Float_Input* n = (Fl_Float_Input*) data;
+    char buf[64];
+    sprintf( buf, "%g", s->value() );
+    n->value( buf );
     n->do_callback();
 }
 
-void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
+void ImageInformation::int_slider_cb( Fl_Slider* s, void* data )
 {
-    fltk::IntInput* n = (fltk::IntInput*) data;
-    n->value( (int)s->value() );
+    Fl_Int_Input* n = (Fl_Int_Input*) data;
+    char buf[64];
+    sprintf( buf, "%g", s->value() );
+    n->value( buf );
     n->do_callback();
 }
 
-static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_mipmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
-        img->levelX( w->ivalue() );
-        img->levelY( w->ivalue() );
+        img->levelX( atoi(w->value()) );
+        img->levelY( atoi(w->value()) );
         update_int_slider( w );
         bool ok = img->fetch( view->frame() );
         if (ok)
@@ -264,13 +265,13 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_x_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
-        img->levelX( w->ivalue() );
+        img->levelX( atoi(w->value()) );
         update_int_slider( w );
         bool ok = img->fetch( view->frame() );
         if (ok)
@@ -281,13 +282,13 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_y_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
     if ( img )
     {
         mrv::ImageView* view = info->main()->uiView;
-        img->levelY( w->ivalue() );
+        img->levelY( atoi( w->value() ) );
         update_int_slider( w );
         bool ok = img->fetch( view->frame() );
         if (ok)
@@ -298,68 +299,68 @@ static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
     }
 }
 
-static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
+static void change_first_frame_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->first_frame( w->ivalue() );
-        update_float_slider( w );
+        img->first_frame( atoi(w->value()) );
+        update_int_slider( w );
         mrv::ImageView* view = info->main()->uiView;
         view->redraw();
     }
 }
 
-  static void eye_separation_cb( fltk::FloatInput* w, ImageInformation* info )
+  static void eye_separation_cb( Fl_Float_Input* w, ImageInformation* info )
   {
       CMedia* img = info->get_image();
       if ( img )
       {
-          img->eye_separation( w->fvalue() );
+          img->eye_separation( atof(w->value()) );
           update_float_slider( w );
           info->main()->uiView->redraw();
       }
   }
 
-static void change_fps_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_fps_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->fps( w->fvalue() );
+        img->fps( atof(w->value()) );
         update_float_slider( w );
     }
 }
 
-static void change_last_frame_cb( fltk::IntInput* w,
+static void change_last_frame_cb( Fl_Int_Input* w,
                                   ImageInformation* info )
 {
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->last_frame( w->ivalue() );
+        img->last_frame( atoi(w->value()) );
         info->main()->uiView->redraw();
-        update_float_slider( w );
+        update_int_slider( w );
     }
 }
 
-static void change_pixel_ratio_cb( fltk::FloatInput* w,
+static void change_pixel_ratio_cb( Fl_Float_Input* w,
                                    ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->pixel_ratio( w->fvalue() );
+    img->pixel_ratio( atof(w->value()) );
     info->main()->uiView->redraw();
     update_float_slider( w );
 }
 
-static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
+static void change_gamma_cb( Fl_Float_Input* w, ImageInformation* info )
 {
     CMedia* img = info->get_image();
-    img->gamma( float(w->fvalue()) );
+    img->gamma( atof(w->value()) );
     update_float_slider( w );
 
     mrv::ImageView* view = info->main()->uiView;
-    view->gamma( float(w->fvalue()) );
+    view->gamma( atof(w->value()) );
     view->redraw();
 }
 
@@ -452,9 +453,9 @@ void ImageInformation::fill_data()
     if ( img->first_frame() != img->last_frame() )
       {
           add_int( _("First Frame"), (int)img->first_frame(), true,
-		  (fltk::Callback*)change_first_frame_cb, 1, 50 );
+		  (Fl_Callback*)change_first_frame_cb, 1, 50 );
           add_int( _("Last Frame"), (int)img->last_frame(), true,
-		  (fltk::Callback*)change_last_frame_cb, 2, 55 );
+		  (Fl_Callback*)change_last_frame_cb, 2, 55 );
       }
 
     
@@ -462,7 +463,7 @@ void ImageInformation::fill_data()
     add_int64( _("Frame End"), img->end_frame() );
 
     add_float( _("FPS"), (float) img->fps(), true, 
-               (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
+               (Fl_Callback*)change_fps_cb, 1.0f, 100.0f );
 
     ++group;
     
@@ -495,7 +496,7 @@ void ImageInformation::fill_data()
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
     add_text( _("Aspect Ratio"), buf );
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
-	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
+	       (Fl_Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
 
     const mrv::Recti& window = img->data_window();
     const mrv::Recti& dwindow = img->display_window();
@@ -523,12 +524,12 @@ void ImageInformation::fill_data()
 
         if ( img->right() )
             add_float( _("Eye Separation"), img->eye_separation(), true,
-                       (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
+                       (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
     else
     {
         add_float( _("Eye Separation"), img->eye_separation(), true,
-                   (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
+                   (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
 
     ++group;
@@ -639,7 +640,7 @@ void ImageInformation::fill_data()
     
     
     add_float( _("Gamma"), img->gamma(), true, 
-	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
+	       (Fl_Callback*)change_gamma_cb, 0.01f,	4.0f );
 
 
     if ( img->has_chromaticities() )
@@ -727,16 +728,8 @@ void ImageInformation::fill_data()
     ++group;
     add_text( _("Creation Date"), img->creation_date() );
 
-    
-    
-    m_curr->relayout();
-
-    
-
-    m_image->relayout();
     m_image->show();
 
-    
 
     CMedia::Attributes attrs = img->iptc();
     if ( ! attrs.empty() )
@@ -746,8 +739,6 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	   add_text( i->first.c_str(), i->second.c_str(), false );
-	m_curr->layout();
-	m_curr->parent()->layout();
       }
     
     attrs = img->exif();
@@ -764,7 +755,7 @@ void ImageInformation::fill_data()
                   if ( exr )
                   {
                       add_int( _("Mipmap Level"), exr->levelX(), true,
-                               (fltk::Callback*)change_mipmap_cb, 0, 20 );
+                               (Fl_Callback*)change_mipmap_cb, 0, 20 );
                       exr->levelY( exr->levelX() );
                   }
               }
@@ -774,7 +765,7 @@ void ImageInformation::fill_data()
                   if ( exr )
                   {
                       add_int( _("X Ripmap Level"), exr->levelX(), true,
-                               (fltk::Callback*)change_x_ripmap_cb, 0, 20 );
+                               (Fl_Callback*)change_x_ripmap_cb, 0, 20 );
                   }
               }
               if ( i->first == _("Y Ripmap Levels") )
@@ -783,13 +774,11 @@ void ImageInformation::fill_data()
                   if ( exr )
                   {
                       add_int( _("Y Ripmap Level"), exr->levelY(), true,
-                               (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
+                               (Fl_Callback*)change_y_ripmap_cb, 0, 20 );
                   }
               }
 	    add_text( i->first.c_str(), i->second.c_str(), false );
 	  }
-	m_curr->layout();
-	m_curr->parent()->layout();
       }
 
 
@@ -827,8 +816,6 @@ void ImageInformation::fill_data()
 	    ++group;
 	    add_time( _("Start"), s.start, s.fps );
 	    add_time( _("Duration"), s.duration, s.fps );
-	    m_curr->layout();
-	    m_curr->parent()->layout();
 	  }
       }
 
@@ -871,8 +858,6 @@ void ImageInformation::fill_data()
 	    add_time( _("Start"), s.start, img->fps() );
 	    add_time( _("Duration"), s.duration, img->fps() );
 
-	    m_curr->layout();
-	    m_curr->parent()->layout();
 	  }
 	m_audio->parent()->show();
       }
@@ -903,15 +888,12 @@ void ImageInformation::fill_data()
 	    add_time( _("Start"), s.start, img->fps() );
 	    add_time( _("Duration"), s.duration, img->fps() );
 
-	    m_curr->layout();
-	    m_curr->parent()->layout();
 	  }
 
 	m_subtitle->parent()->show();
       }
 
 
-    relayout();
 }
 
   void ImageInformation::refresh()
@@ -948,12 +930,17 @@ void ImageInformation::fill_data()
       browser->column_separator(true);
       browser->auto_resize( true );
 
-
+#if 0
       static const char* headers[] = { _("Attribute"), _("Value"), 0 };
       browser->column_labels( headers );
+#else
+      browser->column_char( '\t' );
+      browser->add( _( "Attribute\tValue" ) );
+#endif
+
       int widths[] = { kMiddle, -1, 0 };
       browser->column_widths( widths );
-      browser->align(fltk::ALIGN_CENTER|fltk::ALIGN_TOP);
+      browser->align( FL_ALIGN_CENTER| FL_ALIGN_TOP );
       
       g->add( browser );
       if ( g->children() == 1 )
@@ -977,36 +964,36 @@ void ImageInformation::fill_data()
     return 24;
   }
 
-  fltk::Color ImageInformation::get_title_color()
+  Fl_Color ImageInformation::get_title_color()
   {
     return kTitleColors[ group % kSizeOfTitleColors ];
   }
 
-  fltk::Color ImageInformation::get_widget_color()
+  Fl_Color ImageInformation::get_widget_color()
   {
-    fltk::Color col = kRowColors[ row % kSizeOfRowColors ];
+    Fl_Color col = kRowColors[ row % kSizeOfRowColors ];
     ++row;
     return col;
   }
 
-  void ImageInformation::icc_callback( fltk::Widget* t, ImageInformation* v )
+  void ImageInformation::icc_callback( Fl_Widget* t, ImageInformation* v )
   {
     attach_icc_profile( v->get_image() );
     v->refresh(); // @todo: move this somewhere else
   }
 
-  void ImageInformation::ctl_callback( fltk::Widget* t, ImageInformation* v )
+  void ImageInformation::ctl_callback( Fl_Widget* t, ImageInformation* v )
   {
     attach_ctl_script( v->get_image() );
   }
 
-  void ImageInformation::ctl_idt_callback( fltk::Widget* t,
+  void ImageInformation::ctl_idt_callback( Fl_Widget* t,
                                          ImageInformation* v )
   {
     attach_ctl_idt_script( v->get_image() );
   }
 
-  void ImageInformation::ctl_lmt_callback( fltk::Widget* t,
+  void ImageInformation::ctl_lmt_callback( Fl_Widget* t,
                                            CtlLMTData* c )
   {
       ImageInformation* v = (ImageInformation*) c->widget;
@@ -1015,18 +1002,18 @@ void ImageInformation::fill_data()
       attach_ctl_lmt_script( v->get_image(), idx );
   }
 
-  void ImageInformation::compression_cb( fltk::PopupMenu* t, ImageInformation* v )
-  {
+void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
+{
     unsigned   idx = t->value();
     CMedia* img = v->get_image();
     img->compression( idx );
-    t->label( t->child(idx)->label() );
-  }
+    t->label( t->mvalue()->label() );
+}
 
   void ImageInformation::add_icc( const char* name,
 				  const char* content,
 				  const bool editable,
-				  fltk::Callback* callback )
+				  Fl_Callback* callback )
   { 
     if ( !content ) 
         content = _("None");
@@ -1034,34 +1021,34 @@ void ImageInformation::fill_data()
     if ( !editable )
       return add_text( name, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
       widget->color( colA );
-      widget->labelcolor( fltk::BLACK );
+      widget->labelcolor( FL_BLACK );
       g->add( widget );
     }
 
     {
-      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+      Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
       widget->value( content );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( callback )
-	widget->callback( (fltk::Callback*)icc_callback, (void*)this );
+	widget->callback( (Fl_Callback*)icc_callback, (void*)this );
 
       sg->add( widget );
 
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Load") );
-      pick->callback( (fltk::Callback*)icc_callback, (void*)this );
+      Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Load") );
+      pick->callback( (Fl_Callback*)icc_callback, (void*)this );
       sg->add( pick );
       sg->resizable(widget);
 
@@ -1075,39 +1062,39 @@ void ImageInformation::fill_data()
   void ImageInformation::add_ctl( const char* name,
 				  const char* content,
 				  const bool editable,
-				  fltk::Callback* callback )
+				  Fl_Callback* callback )
   { 
     if ( !editable )
       return add_text( name, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
       widget->color( colA );
-      widget->labelcolor( fltk::BLACK );
+      widget->labelcolor( FL_BLACK );
       g->add( widget );
     }
 
     {
-      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+      Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
       widget->value( content );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( callback )
-	widget->callback( (fltk::Callback*)ctl_callback, (void*)this );
+	widget->callback( (Fl_Callback*)ctl_callback, (void*)this );
 
       sg->add( widget );
 
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-      pick->callback( (fltk::Callback*)ctl_callback, this );
+      Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+      pick->callback( (Fl_Callback*)ctl_callback, this );
       sg->add( pick );
       sg->resizable(widget);
 
@@ -1123,39 +1110,39 @@ void ImageInformation::fill_data()
   void ImageInformation::add_ctl_idt( const char* name,
                                       const char* content,
                                       const bool editable,
-                                      fltk::Callback* callback )
+                                      Fl_Callback* callback )
   { 
     if ( !editable )
       return add_text( name, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
       widget->color( colA );
-      widget->labelcolor( fltk::BLACK );
+      widget->labelcolor( FL_BLACK );
       g->add( widget );
     }
 
     {
-      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+      Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
       widget->value( content );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( callback )
-	widget->callback( (fltk::Callback*)ctl_idt_callback, (void*)this );
+	widget->callback( (Fl_Callback*)ctl_idt_callback, (void*)this );
 
       sg->add( widget );
       
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-      pick->callback( (fltk::Callback*)ctl_idt_callback, this );
+      Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+      pick->callback( (Fl_Callback*)ctl_idt_callback, this );
       sg->add( pick );
       sg->resizable(widget);
 
@@ -1172,31 +1159,31 @@ void ImageInformation::fill_data()
                                       const char* content,
                                       const size_t idx,
                                       const bool editable,
-                                      fltk::Callback* callback )
+                                      Fl_Callback* callback )
   { 
     if ( !editable )
       return add_text( name, content );
 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
       widget->color( colA );
-      widget->labelcolor( fltk::BLACK );
+      widget->labelcolor( FL_BLACK );
       g->add( widget );
     }
 
     {
-      fltk::Group* sg = new fltk::Group( kMiddle, 0, g->w()-kMiddle, hh );
+      Fl_Group* sg = new Fl_Group( kMiddle, 0, g->w()-kMiddle, hh );
 
-      fltk::Input* widget = new fltk::Input( 0, 0, sg->w()-50, hh );
+      Fl_Input* widget = new Fl_Input( 0, 0, sg->w()-50, hh );
       widget->value( content );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
 
 
@@ -1211,8 +1198,8 @@ void ImageInformation::fill_data()
 
       sg->add( widget );
       
-      fltk::Button* pick = new fltk::Button( sg->w()-50, 0, 50, hh, _("Pick") );
-      pick->callback( (fltk::Callback*)ctl_lmt_callback, c );
+      Fl_Button* pick = new Fl_Button( sg->w()-50, 0, 50, hh, _("Pick") );
+      pick->callback( (Fl_Callback*)ctl_lmt_callback, c );
       sg->add( pick );
       sg->resizable(widget);
 
@@ -1227,42 +1214,42 @@ void ImageInformation::fill_data()
   void ImageInformation::add_text( const char* name,
 				   const char* content,
 				   const bool editable,
-				   fltk::Callback* callback )
+				   Fl_Callback* callback )
   { 
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, 
-					       strdup( name ) );
-      widget->box( fltk::FLAT_BOX );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, 
+                                   strdup( name ) );
+      widget->box( FL_FLAT_BOX );
       widget->color( colA );
-      widget->labelcolor( fltk::BLACK );
+      widget->labelcolor( FL_BLACK );
       g->add( widget );
     }
 
     {
-       fltk::Widget* widget = NULL;
+       Fl_Widget* widget = NULL;
        if ( !editable )
        {
-	  fltk::Output* o = new fltk::Output( kMiddle, 0, w()-kMiddle, hh );
+	  Fl_Output* o = new Fl_Output( kMiddle, 0, w()-kMiddle, hh );
 	  widget = o;
 	  o->value( content );
        }
        else
        {
-	  fltk::Input* o = new fltk::Input( kMiddle, 0, w()-kMiddle, hh );
+	  Fl_Input* o = new Fl_Input( kMiddle, 0, w()-kMiddle, hh );
 	  widget = o;
 	  o->value( content );
        }
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( !editable )
 	{
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
@@ -1280,56 +1267,59 @@ void ImageInformation::fill_data()
   void ImageInformation::add_text( const char* name,
 				   const std::string& content,
 				   const bool editable,
-				   fltk::Callback* callback )
+				   Fl_Callback* callback )
   {
     add_text( name, content.c_str(), editable );
   }
 
   void ImageInformation::add_int( const char* name,
 				  const int content, const bool editable,
-				  fltk::Callback* callback, 
+				  Fl_Callback* callback, 
 				  const int minV, const int maxV )
   {
-
-     fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+      
+      Fl_Color colA = get_title_color();
+      Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
+      widget->labelcolor( FL_BLACK );
       widget->color( colA );
       g->add( widget );
     }
 
     {
-      fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-      p->box( fltk::FLAT_BOX );
-      p->set_horizontal();
+      Fl_Group* p = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+      p->box( FL_FLAT_BOX );
+      // p->set_horizontal();
       p->begin();
+
+      char buf[64];
+      sprintf( buf, "%d", content );
 
       if ( !editable )
 	{
-	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, p->w(), hh );
-	  widget->value( (int)content );
-	  widget->align(fltk::ALIGN_LEFT);
+	  Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, p->w(), hh );
+	  widget->value( buf );
+	  widget->align( FL_ALIGN_LEFT);
 	  widget->color( colB );
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
-	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
-	  widget->value( content );
-	  widget->align(fltk::ALIGN_LEFT);
+	  Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, 50, hh );
+	  widget->value( buf );
+	  widget->align( FL_ALIGN_LEFT );
 	  widget->color( colB );
 
 	  if ( callback ) widget->callback( callback, this );
 
-	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
-	  slider->type(fltk::Slider::TICK_ABOVE);
+	  Fl_Slider* slider = new Fl_Slider( 50, 0, p->w()-40, hh );
+	  slider->type( FL_HOR_NICE_SLIDER );
 	  slider->minimum( minV );
 	  unsigned maxS = maxV;
 
@@ -1341,10 +1331,10 @@ void ImageInformation::fill_data()
 
 	  slider->value( content );
 	  slider->step( 1.0 );
-	  slider->linesize(1);
+	  // slider->linesize(1);
 	  // slider->slider_size(10);
-	  slider->when( fltk::WHEN_CHANGED );
-	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
+	  slider->when( FL_WHEN_CHANGED );
+	  slider->callback( (Fl_Callback*)int_slider_cb, widget );
 
 	  p->resizable(slider);
 	}
@@ -1360,26 +1350,26 @@ void ImageInformation::fill_data()
 				   const char** options,
 				   const size_t num,
 				   const bool editable,
-				   fltk::Callback* callback 
+				   Fl_Callback* callback 
 				   )
   {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
+      widget->labelcolor( FL_BLACK );
       widget->color( colA );
       g->add( widget );
     }
 
     {
-      fltk::PopupMenu* widget = new fltk::PopupMenu( kMiddle, 0, w()-kMiddle, hh );
+      Fl_Menu_Button* widget = new Fl_Menu_Button( kMiddle, 0, w()-kMiddle, hh );
       widget->type( 0 );
-      widget->align( fltk::ALIGN_LEFT | fltk::ALIGN_INSIDE );
+      widget->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
       widget->color( colB );
       for ( size_t i = 0; i < num; ++i )
 	{
@@ -1391,7 +1381,7 @@ void ImageInformation::fill_data()
       if ( !editable )
 	{
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
@@ -1410,7 +1400,7 @@ void ImageInformation::fill_data()
 				   const std::string& content,
 				   stringArray& options,
 				   const bool editable,
-				   fltk::Callback* callback 
+				   Fl_Callback* callback 
 				   )
   {
     size_t index;
@@ -1442,49 +1432,49 @@ void ImageInformation::fill_data()
   void ImageInformation::add_int( const char* name,
 				  const unsigned int content,
 				  const bool editable,
-				  fltk::Callback* callback, 
+				  Fl_Callback* callback, 
 				  const unsigned int minV,
 				  const unsigned int maxV )
   {
-     fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+     Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
+      widget->labelcolor( FL_BLACK );
       widget->color( colA );
       g->add( widget );
     }
 
     {
-      fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-      p->box( fltk::FLAT_BOX );
-      p->set_horizontal();
+      Fl_Group* p = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+      p->box( FL_FLAT_BOX );
+      //p->set_horizontal();
       p->begin();
 
       if ( !editable )
 	{
-	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, p->w(), hh );
+	  Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, p->w(), hh );
 	  widget->value( (int)content );
-	  widget->align(fltk::ALIGN_LEFT);
+	  widget->align( FL_ALIGN_LEFT);
 	  widget->color( colB );
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
-	  fltk::IntInput* widget = new fltk::IntInput( 0, 0, 50, hh );
+	  Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, 50, hh );
 	  widget->value( (int)content );
-	  widget->align(fltk::ALIGN_LEFT);
+	  widget->align( FL_ALIGN_LEFT );
 	  widget->color( colB );
 
 	  if ( callback ) widget->callback( callback, this );
 
-	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
-	  slider->type(fltk::Slider::TICK_ABOVE);
+	  Fl_Slider* slider = new Fl_Slider( 50, 0, p->w()-40, hh );
+	  slider->type( FL_HOR_NICE_SLIDER );
 	  slider->minimum( minV );
 
 	  unsigned maxS = maxV;
@@ -1495,10 +1485,10 @@ void ImageInformation::fill_data()
 	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );
-	  slider->linesize(1);
+	  // slider->linesize(1);
 	  // slider->slider_size(10);
-	  slider->when( fltk::WHEN_CHANGED );
-	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
+	  slider->when( FL_WHEN_CHANGED );
+	  slider->callback( (Fl_Callback*)int_slider_cb, widget );
 
 	  p->resizable(slider);
 	}
@@ -1553,33 +1543,33 @@ void ImageInformation::fill_data()
   }
 
   void ImageInformation::add_rect( const char* name, const mrv::Recti& content, 
-				   const bool editable, fltk::Callback* callback )
+				   const bool editable, Fl_Callback* callback )
   {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+      Fl_Color colA = get_title_color();
+      Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
+      widget->labelcolor( FL_BLACK );
       widget->color( colA );
       g->add( widget );
     }
 
     unsigned dw = (w() - kMiddle) / 6;
-    fltk::Group* g2 = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
+    Fl_Group* g2 = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
     {
-      fltk::IntInput* widget = new fltk::IntInput( 0, 0, dw, hh );
+      Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, dw, hh );
       widget->value( content.l() );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( !editable )
 	{
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
@@ -1589,15 +1579,15 @@ void ImageInformation::fill_data()
       g2->add( widget );
     }
     {
-      fltk::IntInput* widget = new fltk::IntInput( dw, 0, dw, hh );
+      Fl_Int_Input* widget = new Fl_Int_Input( dw, 0, dw, hh );
       widget->value( content.t() );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align(FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( !editable )
 	{
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
@@ -1607,15 +1597,15 @@ void ImageInformation::fill_data()
       g2->add( widget );
     }
     {
-      fltk::IntInput* widget = new fltk::IntInput( dw*2, 0, dw, hh );
+      Fl_Int_Input* widget = new Fl_Int_Input( dw*2, 0, dw, hh );
       widget->value( content.r() );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( !editable )
 	{
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
@@ -1625,15 +1615,15 @@ void ImageInformation::fill_data()
       g2->add( widget );
     }
     {
-      fltk::IntInput* widget = new fltk::IntInput( dw*3, 0, dw, hh );
+      Fl_Int_Input* widget = new Fl_Int_Input( dw*3, 0, dw, hh );
       widget->value( content.b() );
-      widget->align(fltk::ALIGN_LEFT);
-      widget->box( fltk::FLAT_BOX );
+      widget->align( FL_ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
       widget->color( colB );
       if ( !editable )
 	{
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
@@ -1643,23 +1633,23 @@ void ImageInformation::fill_data()
       g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw*4, 0, dw, hh, "W:" );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw*4, 0, dw, hh, "W:" );
         widget->value( content.w() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         widget->deactivate();
-        widget->box( fltk::FLAT_BOX );
+        widget->box( FL_FLAT_BOX );
         g2->add( widget );
     }
     {
-        fltk::IntInput* widget = new fltk::IntInput( dw*5, 0, dw, hh, "H:" );
+        Fl_Int_Input* widget = new Fl_Int_Input( dw*5, 0, dw, hh, "H:" );
         widget->value( content.h() );
-        widget->align(fltk::ALIGN_LEFT);
-        widget->box( fltk::FLAT_BOX );
+        widget->align(FL_ALIGN_LEFT);
+        widget->box( FL_FLAT_BOX );
         widget->color( colB );
         widget->deactivate();
-        widget->box( fltk::FLAT_BOX );
+        widget->box( FL_FLAT_BOX );
         g2->add( widget );
     }
     g->add( g2 );
@@ -1669,56 +1659,56 @@ void ImageInformation::fill_data()
 
   void ImageInformation::add_float( const char* name,
 				    const float content, const bool editable,
-				    fltk::Callback* callback, 
+				    Fl_Callback* callback, 
 				    const float minV, float maxV )
   {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
+      widget->labelcolor( FL_BLACK );
       widget->color( colA );
       g->add( widget );
     }
 
     {
-      fltk::Group* p = new fltk::Group( kMiddle, 0, w()-kMiddle, hh );
-      p->box( fltk::FLAT_BOX );
-      p->set_horizontal();
+      Fl_Group* p = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+      p->box( FL_FLAT_BOX );
+      // p->set_horizontal();
       p->begin();
 
       if ( !editable )
 	{
-	  fltk::FloatInput* widget = new fltk::FloatInput( 0, 0, p->w(), hh );
+	  Fl_Float_Input* widget = new Fl_Float_Input( 0, 0, p->w(), hh );
 	  widget->value( content );
-	  widget->align(fltk::ALIGN_LEFT);
+	  widget->align(FL_ALIGN_LEFT);
 	  widget->color( colB );
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{
-	  fltk::FloatInput* widget = new fltk::FloatInput( 0, 0, 50, hh );
+	  Fl_Float_Input* widget = new Fl_Float_Input( 0, 0, 50, hh );
 	  widget->value( content );
-	  widget->align(fltk::ALIGN_LEFT);
+	  widget->align(FL_ALIGN_LEFT);
 	  widget->color( colB );
 
 	  if ( callback ) widget->callback( callback, this );
 
-	  fltk::Slider* slider = new fltk::Slider( 50, 0, p->w()-40, hh );
-	  slider->type(fltk::Slider::TICK_ABOVE);
+	  Fl_Slider* slider = new Fl_Slider( 50, 0, p->w()-40, hh );
+	  slider->type( FL_HOR_NICE_SLIDER );
 	  slider->step( 0.01 );
 	  slider->minimum( minV );
 	  slider->maximum( maxV );
 	  slider->value( content );
-	  slider->linesize(1);
+	  // slider->linesize(1);
 	  // slider->slider_size(10);
-	  slider->when( fltk::WHEN_CHANGED );
-	  slider->callback( (fltk::Callback*)float_slider_cb, widget );
+	  slider->when( FL_WHEN_CHANGED );
+	  slider->callback( (Fl_Callback*)float_slider_cb, widget );
 
 	  p->resizable(slider);
 	}
@@ -1732,32 +1722,32 @@ void ImageInformation::fill_data()
   void ImageInformation::add_bool( const char* name,
 				   const bool content,
 				   const bool editable,
-				   fltk::Callback* callback )
+				   Fl_Callback* callback )
   {
-    fltk::Color colA = get_title_color();
-    fltk::Color colB = get_widget_color();
+    Fl_Color colA = get_title_color();
+    Fl_Color colB = get_widget_color();
 
     int hh = line_height();
-    fltk::Group* g = new fltk::Group( 0, 0, w(), hh );
+    Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
 
     {
-      fltk::Widget* widget = new fltk::Widget( 0, 0, kMiddle, hh, name );
-      widget->box( fltk::FLAT_BOX );
-      widget->labelcolor( fltk::BLACK );
+      Fl_Box* widget = new Fl_Box( 0, 0, kMiddle, hh, name );
+      widget->box( FL_FLAT_BOX );
+      widget->labelcolor( FL_BLACK );
       widget->color( colA );
       g->add( widget );
     }
 
     {
-      fltk::Input* widget = new fltk::Input( kMiddle, 0, w()-kMiddle, 20 );
+      Fl_Input* widget = new Fl_Input( kMiddle, 0, w()-kMiddle, 20 );
       widget->value( content? _("Yes") : _("No") );
-      widget->box( fltk::FLAT_BOX );
-      widget->align(fltk::ALIGN_LEFT);
+      widget->box( FL_FLAT_BOX );
+      widget->align(FL_ALIGN_LEFT);
       widget->color( colB );
       if ( !editable )
 	{
 	  widget->deactivate();
-	  widget->box( fltk::FLAT_BOX );
+	  widget->box( FL_FLAT_BOX );
 	}
       else 
 	{

@@ -44,7 +44,7 @@ namespace mrv
    * @return opened reel(s)
    */
 stringArray open_reel( const char* startfile = NULL,
-                       const mrv::ViewerUI* main = NULL);
+                       const ViewerUI* main = NULL);
 
   /** 
    * Opens a file requester to load an image
@@ -55,7 +55,7 @@ stringArray open_reel( const char* startfile = NULL,
    */
 stringArray open_image_file( const char* startfile = NULL,
 			     const bool compact_files = true,
-                             const mrv::ViewerUI* main = NULL );
+                             const ViewerUI* main = NULL );
 
   /** 
    * Opens a file requester to load a color profile
@@ -66,11 +66,11 @@ stringArray open_image_file( const char* startfile = NULL,
    */
   const char* open_icc_profile( const char* startfile = NULL,
 				const char* title = "Load Image's ICC Profile",
-                                const mrv::ViewerUI* main = NULL );
+                                const ViewerUI* main = NULL );
 
   const char* open_ctl_dir( const char* startfile = NULL,
                             const char* title = "Append CTL Directory",
-                             const mrv::ViewerUI* main = NULL);
+                             const ViewerUI* main = NULL);
 
   /** 
    * Attach an ICC/ICM color profile to a loaded image
@@ -79,9 +79,9 @@ stringArray open_image_file( const char* startfile = NULL,
    * @param startfile  start filename (directory)
    */
 void attach_icc_profile( CMedia* image, const char* startfile,
-                         const mrv::ViewerUI* main = NULL );
+                         const ViewerUI* main = NULL );
   void attach_icc_profile( CMedia* image,
-                           const mrv::ViewerUI* main = NULL );
+                           const ViewerUI* main = NULL );
 
 
   /** 
@@ -91,7 +91,7 @@ void attach_icc_profile( CMedia* image, const char* startfile,
    */
   void monitor_ctl_script( const unsigned index = 0, 
 			   const char* startfile = NULL,
-                           const mrv::ViewerUI* main = NULL  );
+                           const ViewerUI* main = NULL  );
 
   /** 
    * Attach an ICC/ICM color profile to a monitor display
@@ -99,7 +99,7 @@ void attach_icc_profile( CMedia* image, const char* startfile,
    * @param index monitor index
    */
   void monitor_icc_profile( const unsigned index = 0,
-                            const mrv::ViewerUI* main = NULL );
+                            const ViewerUI* main = NULL );
 
 
   /** 
@@ -109,9 +109,9 @@ void attach_icc_profile( CMedia* image, const char* startfile,
    * @param startfile  start filename (directory)
    */
   void attach_ctl_script( CMedia* image, const char* ctlfile,
-                          const mrv::ViewerUI* main = NULL  );
+                          const ViewerUI* main = NULL  );
   void attach_ctl_script( CMedia* image,
-                          const mrv::ViewerUI* main = NULL  );
+                          const ViewerUI* main = NULL  );
 
   /**
    * Attach a CTL (Color Transform Language) LMT script to an image for display.
@@ -120,9 +120,9 @@ void attach_icc_profile( CMedia* image, const char* startfile,
    * @param startfile  start filename (directory)
    */
 void attach_ctl_lmt_script( CMedia* image, const char* ctlfile,
-                            const size_t idx, const mrv::ViewerUI* main = NULL);
+                            const size_t idx, const ViewerUI* main = NULL);
 void attach_ctl_lmt_script( CMedia* image, const size_t idx,
-                            const mrv::ViewerUI* main = NULL);
+                            const ViewerUI* main = NULL);
 
   /**
    * Attach a CTL (Color Transform Language) IDT script to an image for display.
@@ -131,14 +131,14 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
    * @param startfile  start filename (directory)
    */
   void attach_ctl_idt_script( CMedia* image, const char* ctlfile,
-                              const mrv::ViewerUI* main = NULL  );
+                              const ViewerUI* main = NULL  );
   void attach_ctl_idt_script( CMedia* image,
-                              const mrv::ViewerUI* main = NULL  );
+                              const ViewerUI* main = NULL  );
 
 void read_clip_xml_metadata( CMedia* image,
-                             const mrv::ViewerUI* main = NULL  );
+                             const ViewerUI* main = NULL  );
 void save_clip_xml_metadata( const CMedia* image,
-                             const mrv::ViewerUI* main = NULL  );
+                             const ViewerUI* main = NULL  );
 
   /** 
    * Opens a file requester to load audio files
@@ -148,7 +148,7 @@ void save_clip_xml_metadata( const CMedia* image,
    * @return  opened audio file or null
    */
   const char* open_audio_file( const char* startfile = NULL,
-                               const mrv::ViewerUI* main = NULL  );
+                               const ViewerUI* main = NULL  );
 
   /** 
    * Attach a new audio file to loaded sequence
@@ -157,7 +157,7 @@ void save_clip_xml_metadata( const CMedia* image,
    * @param startfile  start filename (directory)
    */
   void attach_audio( CMedia* image, const char* startfile, 
-                     const mrv::ViewerUI* main = NULL );
+                     const ViewerUI* main = NULL );
 
   /** 
    * Save an image under a new filename
@@ -169,7 +169,7 @@ void save_clip_xml_metadata( const CMedia* image,
 			const char* startdir = NULL,
                         const bool aces = false, 
                         const bool all_layers = false,
-                        const mrv::ViewerUI* main = NULL  );
+                        const ViewerUI* main = NULL  );
   /** 
    * Save an image under a new filename
    * 
@@ -177,7 +177,7 @@ void save_clip_xml_metadata( const CMedia* image,
    * @param startdir   start directory to save to
    * @param opengl     use opengl snapshots
    */
-  void save_sequence_file( const mrv::ViewerUI* uiMain,
+  void save_sequence_file( const ViewerUI* uiMain,
 			   const char* startdir = NULL,
                            bool opengl = false  );
 
@@ -189,7 +189,7 @@ void save_clip_xml_metadata( const CMedia* image,
    * @return reel to save or NULL
    */
 const char* save_reel( const char* startdir = NULL, 
-                       const mrv::ViewerUI* main = NULL );
+                       const ViewerUI* main = NULL );
 
 } // namespace mrv
 

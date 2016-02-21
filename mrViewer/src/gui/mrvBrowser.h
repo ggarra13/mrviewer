@@ -28,7 +28,7 @@
 #ifndef mrvBrowser_h
 #define mrvBrowser_h
 
-#include <FL/Fl_Browser.H>
+#include <FL/Fl_Table.H>
 // #include <FL/Fl_Cursor.H>
 // #include <FL/Fl_Color.H>
 
@@ -36,7 +36,7 @@
 namespace mrv
 {
 
-class Browser : public Fl_Browser
+class Browser : public Fl_Table
 {
 public:
   Browser( int x, int y, int w, int h, const char* l = 0 );

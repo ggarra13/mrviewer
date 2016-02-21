@@ -31,7 +31,7 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#include <fltk/ScrollGroup.h>
+#include <FL/Fl_Scroll.H>
 
 #include "core/mrvRectangle.h"
 #include "core/mrvString.h"
@@ -47,7 +47,7 @@
 // }
 
 
-#define ImageInfoParent Fl_Scroll_Group
+#define ImageInfoParent Fl_Scroll
 class ViewerUI;
 
 namespace mrv
@@ -65,30 +65,29 @@ namespace mrv
     void set_image( CMedia* img );
 
     void refresh();
-    virtual void layout();
     virtual int handle( int event );
 
-    void main( mrv::ViewerUI* m ) { uiMain = m; }
-      mrv::ViewerUI* main() { return uiMain; }
+    void main( ViewerUI* m ) { uiMain = m; }
+    ViewerUI* main()         { return uiMain; }
 
   protected:
-    fltk::Color get_title_color();
-    fltk::Color get_widget_color();
+    Fl_Color get_title_color();
+    Fl_Color get_widget_color();
 
       void clear_callback_data();
 
     void hide_tabs();
 
-    static void ctl_callback( fltk::Widget* t, ImageInformation* v );
-    static void ctl_lmt_callback( fltk::Widget* t, CtlLMTData* v );
-    static void ctl_idt_callback( fltk::Widget* t, ImageInformation* v );
-    static void icc_callback( fltk::Widget* t, ImageInformation* v );
-    static void compression_cb( fltk::PopupMenu* t, ImageInformation* v );
-    static void enum_cb( fltk::PopupMenu* w, ImageInformation* v );
+    static void ctl_callback( Fl_Widget* t, ImageInformation* v );
+    static void ctl_lmt_callback( Fl_Widget* t, CtlLMTData* v );
+    static void ctl_idt_callback( Fl_Widget* t, ImageInformation* v );
+    static void icc_callback( Fl_Widget* t, ImageInformation* v );
+    static void compression_cb( Fl_Menu_Button* t, ImageInformation* v );
+    static void enum_cb( Fl_Menu_Button* w, ImageInformation* v );
 
-    static void toggle_tab( fltk::Widget* w, void* data );
-    static void int_slider_cb( fltk::Slider* w, void* data );
-    static void float_slider_cb( fltk::Slider* w, void* data );
+    static void toggle_tab( Fl_Widget* w, void* data );
+    static void int_slider_cb( Fl_Slider* w, void* data );
+    static void float_slider_cb( Fl_Slider* w, void* data );
 
     int64_t to_memory( int64_t value, const char*& extension );
 
@@ -96,35 +95,35 @@ namespace mrv
 
     void add_icc( const char* name, const char* content, 
 		  const bool editable = true, 
-		  fltk::Callback* callback = NULL );
+		  Fl_Callback* callback = NULL );
 
     void add_ctl( const char* name, const char* content, 
 		  const bool editable = true, 
-		  fltk::Callback* callback = NULL );
+		  Fl_Callback* callback = NULL );
 
     void add_ctl_lmt( const char* name, const char* content, 
                       const size_t idx,
                       const bool editable = true, 
-                      fltk::Callback* callback = NULL );
+                      Fl_Callback* callback = NULL );
 
     void add_ctl_idt( const char* name, const char* content, 
                       const bool editable = true, 
-                      fltk::Callback* callback = NULL );
+                      Fl_Callback* callback = NULL );
 
 
     void add_text( const char* name, const char* content, 
 		   const bool editable = false, 
-		   fltk::Callback* callback = NULL );
+		   Fl_Callback* callback = NULL );
     void add_text( const char* name, const std::string& content, 
 		   const bool editable = false,
-		   fltk::Callback* callback = NULL );
+		   Fl_Callback* callback = NULL );
     void add_float( const char* name, const float content, 
 		    const bool editable = false, 
-		    fltk::Callback* callback = NULL, 
+		    Fl_Callback* callback = NULL, 
 		    const float minV = 0.0f, const float maxV = 1.0f );
     void add_rect( const char* name, const mrv::Recti& content, 
 		   const bool editable = false, 
-		   fltk::Callback* callback = NULL );
+		   Fl_Callback* callback = NULL );
 
     void add_time( const char* name, const double content,
                    const double fps, const bool editable = false );
@@ -132,25 +131,25 @@ namespace mrv
     void add_enum( const char* name, const size_t content, 
 		   const char** options,
 		   const size_t num, const bool editable = false,
-		   fltk::Callback* callback = NULL );
+		   Fl_Callback* callback = NULL );
 
     void add_enum( const char* name, const std::string& content, 
 		   stringArray& options, const bool editable = false,
-		   fltk::Callback* callback = NULL );
+		   Fl_Callback* callback = NULL );
 
     void add_int64( const char* name, const int64_t content );
 
     void add_int( const char* name, const int content, 
 		  const bool editable = false,
-		  fltk::Callback* callback = NULL,
+		  Fl_Callback* callback = NULL,
 		  const int minV = -9999, const int maxV = 9999 );
     void add_int( const char* name, const unsigned int content, 
 		  const bool editable = false, 
-		  fltk::Callback* callback = NULL,
+		  Fl_Callback* callback = NULL,
 		  const unsigned int minV = 0, const unsigned int maxV = 9999 );
     void add_bool( const char* name, const bool content, 
 		   const bool editable = false,
-		   fltk::Callback* callback = NULL );
+		   Fl_Callback* callback = NULL );
 
     int line_height();
       void fill_data();
@@ -158,7 +157,7 @@ namespace mrv
     ViewerUI*    uiMain;
     CMedia*   img;
 
-      fltk::Button*              m_button;
+    Fl_Button*                   m_button;
     mrv::CollapsableGroup*       m_image;
     mrv::CollapsableGroup*       m_video;
     mrv::CollapsableGroup*       m_audio;
@@ -166,10 +165,10 @@ namespace mrv
     mrv::CollapsableGroup*       m_iptc;
     mrv::CollapsableGroup*       m_exif;
 
-    fltk::PackedGroup* m_all;
-    fltk::PackedGroup* m_main;
+    Fl_Pack* m_all;
+    Fl_Pack* m_main;
     mrv::Browser*      m_curr;
-    fltk::Color        m_color;
+    Fl_Color           m_color;
     unsigned int group;
     unsigned int row;
   };
