@@ -112,7 +112,7 @@ FLTK_WRAP_UI( mrViewer
   mrvEDLWindowUI.fl
   mrvIccProfileUI.fl
   mrvColorAreaUI.fl 
-  # mrViewer.fl 
+  mrViewer.fl 
   keyboard_ui.fl 
   mrvAudioOffset.fl
   )
