@@ -105,6 +105,11 @@ GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l )
         _fitScale = 1.0 / (_zmax - _zmin);
 }
 
+GlWindow3d::GlWindow3d (int w,int h, const char *l ) :
+GlWindow3d( 0, 0, w, h, l )
+{
+}
+
 void
 GlWindow3d::load_data( int zsize,
                        float* dataZ[],
