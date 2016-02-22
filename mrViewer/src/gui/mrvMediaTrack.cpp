@@ -19,9 +19,8 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-#include <fltk/draw.h>
-#include <fltk/events.h>
-#include <fltk/Cursor.h>
+#include <FL/Enumerations.H>
+#include <FL/fl_draw.H>
 
 #include "gui/mrvMediaTrack.h"
 #include "gui/mrvImageView.h"
@@ -40,9 +39,9 @@ namespace {
 const char* kModule = "track";
 }
 
-void open_cb( fltk::Widget* o, mrv::ImageBrowser* uiReelWindow );
+void open_cb( Fl_Widget* o, mrv::ImageBrowser* uiReelWindow );
 
-void open_track_cb( fltk::Widget* o, mrv::media_track* track )
+void open_track_cb( Fl_Widget* o, mrv::media_track* track )
 {
    track->browser()->reel( track->reel() );
    open_cb( o, track->browser() );
@@ -53,7 +52,7 @@ namespace mrv {
 mrv::Element* media_track::_selected = NULL; 
 
 media_track::media_track(int x, int y, int w, int h) : 
-fltk::Group( x, y, w, h ),
+Fl_Group( x, y, w, h ),
 _zoom( 1.0 )
 {
 }
@@ -505,8 +504,8 @@ int media_track::handle( int event )
 {
    switch( event )
    {
-      case fltk::RELEASE:
-	 if ( _selected && fltk::event_key() == fltk::RightButton )
+      case FL_RELEASE:
+	 if ( _selected && Fl::event_key() == FL_RIGHT_MOUSE )
 	 {
 	    mrv::Timeline* t = main()->uiTimeline;
 	    if ( ! t->edl() )
@@ -527,15 +526,15 @@ int media_track::handle( int event )
 	 }
 	 return 1;
 	 break;
-      case fltk::PUSH:
+      case FL_PUSH:
 	 {
-	    int xx = _dragX = fltk::event_x();
-	    int yy = fltk::event_y();
+	    int xx = _dragX = Fl::event_x();
+	    int yy = Fl::event_y();
  
-	    if ( fltk::event_key() == fltk::RightButton )
+	    if ( Fl::event_key() == FL_RIGHT_MOUSE )
 	    {
-
-	       cursor( fltk::CURSOR_ARROW );
+                //@todo: fltk1.3
+                // cursor( fltk::CURSOR_DEFAULT )
 	       _playback = (CMedia::Playback) main()->uiView->playback();
 	       main()->uiView->stop();
 	       _frame = main()->uiView->frame();
@@ -553,12 +552,16 @@ int media_track::handle( int event )
                else
                {
                   if ( _reel_idx < 0 ) return 1;
-                  fltk::Menu menu(0,0,0,0);
+
+                  //@todo: fltk1.3
+#if 0
+                  Fl_Menu menu(0,0,0,0);
                   menu.add( _("File/Open/Movie or Sequence"), 
                             kOpenImage.hotkey(),
-                            (fltk::Callback*)open_track_cb, this );
-                  menu.popup( fltk::Rectangle( fltk::event_x(),
-                                               fltk::event_y(), 80, 1) );
+                            (Fl_Callback*)open_track_cb, this );
+                  menu.popup( fltk::Rectangle( Fl::event_x(),
+                                               Fl::event_y(), 80, 1) );
+#endif
                }
 	    }
 	    else
@@ -566,11 +569,10 @@ int media_track::handle( int event )
 	       return 0;
 	    }
 	 }
-    case fltk::KEY:
+    case FL_KEYDOWN:
        {
-    	  int key = fltk::event_key();
-    	  if ( key == fltk::DeleteKey ||
-    	       key == fltk::BackSpaceKey )
+    	  int key = Fl::event_key();
+    	  if ( key == FL_Delete || key == FL_BackSpace )
     	  {
 	     if ( _selected )
 		remove( _selected->element() );
@@ -578,18 +580,19 @@ int media_track::handle( int event )
     	  }
     	  break;
        }
-      case fltk::ENTER:
+      case FL_ENTER:
 	 return 1;
-      case fltk::DRAG:
+      case FL_DRAG:
 	 {
 	    if ( _selected )
 	    {
-	       cursor( fltk::CURSOR_WE );
+                //@todo: fltk1.3
+                //cursor( fltk::CURSOR_WE );
 
 	       const mrv::Reel& reel = browser()->reel_at( _reel_idx );
 	       if ( !reel ) return 0;
 
-	       int diff = (fltk::event_x() - _dragX);
+	       int diff = (Fl::event_x() - _dragX);
 
 	       mrv::MediaList::const_iterator i = reel->images.begin();
 	       mrv::MediaList::const_iterator e = reel->images.end();
@@ -611,14 +614,14 @@ int media_track::handle( int event )
 	       timeline()->redraw();
 	       redraw();
 	    }
-	    _dragX = fltk::event_x();
+	    _dragX = Fl::event_x();
 	    return 1;
 	 }
       default:
 	 break;
    }
 
-   return fltk::Group::handle( event );
+   return Fl_Group::handle( event );
 }
 
 int64_t media_track::minimum() const
@@ -647,22 +650,24 @@ void media_track::draw()
    if ( !reel ) return;
 
    size_t e = reel->images.size();
+   
+   // @todo: fltk1.3
+   // fl_load_identity();
+   fl_color( FL_GRAY );
 
-   fltk::load_identity();
-   fltk::setcolor( fltk::GRAY33 );
+   fl_push_clip( x(), y(), w(), h() );
+   fl_rectf( x(), y(), w(), h() );
 
-   fltk::push_clip( x(), y(), w(), h() );
-   fltk::fillrect( x(), y(), w(), h() );
-
-   fltk::load_identity();
+   // @todo: fltk1.3
+   // fl_load_identity();
 
    {
-      fltk::setcolor( fltk::WHITE );
+      fl_color( FL_WHITE );
       int ww, hh;
-      fltk::setfont( textfont(), 12 );
+      fl_font( labelfont(), 12 );
       const char* buf = reel->name.c_str();
-      fltk::measure( buf, ww, hh );
-      fltk::drawtext( buf, 4.0f, float( y()+h()/2 ) ); 
+      fl_measure( buf, ww, hh );
+      fl_draw( buf, 4.0f, float( y()+h()/2 ) ); 
    }
 
    mrv::Timeline* t = timeline();
@@ -677,99 +682,105 @@ void media_track::draw()
 
       int64_t pos = fg->position();
 
+      int dx = pos / ww;
+      int dw = ( pos + fg->image()->duration() ) / ww;
+      
+      //@todo: fltk1.3
+#if 0
       int dx = t->slider_position( double( pos ), ww );
       int dw = t->slider_position( double( pos + fg->image()->duration() ),
                                    ww );
+#endif
+
       dw -= dx;
  
-      fltk::Rectangle r(rx+dx, y(), dw, h() );
+      mrv::Recti r(rx+dx, y(), dw, h() );
  
       if ( browser()->current_image() == fg )
       {
-	 fltk::setcolor( fltk::DARK_YELLOW );
+          fl_color( FL_DARK_YELLOW );
       }
       else
       {
-	 fltk::setcolor( fltk::DARK_GREEN );
+	 fl_color( FL_DARK_GREEN );
       }
 
-      fltk::fillrect( r );
+      fl_rectf( r.x(), r.y(), r.w(), r.h() );
 
-      fltk::Image* thumb = fg->thumbnail();
+      Fl_Image* thumb = fg->thumbnail();
 
       if ( thumb && dw > thumb->w() )
       {
 	 thumb->draw( r.x()+2, y()+2 );
       }
 
-      fltk::setcolor( fltk::BLACK );
+      fl_color( FL_BLACK );
       if ( _selected && _selected->element() == fg )
-   	 fltk::setcolor( fltk::WHITE );
-      fltk::strokerect( r );
+   	 fl_color( FL_WHITE );
+      fl_rectf( r.x(), r.y(), r.w(), r.h() );
 
       if ( _selected && _selected->element() == fg )
       {
-   	 fltk::setcolor( fltk::BLUE );
+   	 fl_color( FL_BLUE );
 	 int yh = y() + h();
 	 if ( _at_start )
 	 {
-	    fltk::newpath();
-	    fltk::addvertex( r.x(), y() );
-	    fltk::addvertex( r.x(), yh );
-	    fltk::addvertex( r.x() + dw/2, yh );
-	    fltk::closepath();
-	    fltk::strokepath();
-
+	    fl_begin_line();
+	    fl_vertex( r.x(), y() );
+	    fl_vertex( r.x(), yh );
+	    fl_vertex( r.x() + dw/2, yh );
+	    fl_end_line();
 	 }
 	 else
 	 {
-	    fltk::newpath();
-	    fltk::addvertex( r.x()+dw, y() );
-	    fltk::addvertex( r.x()+dw, yh );
-	    fltk::addvertex( r.x()+dw/2, yh );
-	    fltk::closepath();
-	    fltk::strokepath();
+	    fl_begin_line();
+	    fl_vertex( r.x()+dw, y() );
+	    fl_vertex( r.x()+dw, yh );
+	    fl_vertex( r.x()+dw/2, yh );
+	    fl_end_line();
 	 }
       }
 
 
-      fltk::setcolor( fltk::GRAY33 );
+      fl_color( FL_GRAY );
       if ( _selected && _selected->element() == fg )
-   	 fltk::setcolor( fltk::BLACK );
+   	 fl_color( FL_BLACK );
 
       int ww, hh;
-      fltk::setfont( textfont(), 10 );
+      fl_font( labelfont(), 10 );
       std::string name = fg->image()->name();
       const char* buf = name.c_str();
-      fltk::measure( buf, ww, hh );
+      fl_measure( buf, ww, hh );
 
+#if 0
+      // @todo: fltk1.3
       fltk::Rectangle text( rx + dx + dw/2 - ww/2,
 			    y() + h()/2, ww, hh );
       r.intersect( text );
       if ( r.empty() ) continue;
+#endif
 
-
-      fltk::drawtext( buf,
+      fl_draw( buf,
 		      float( rx + dx + dw/2 - ww/2 + 2 ), 
                       float( y() + 2 + h()/2 ) );
 
 
-      fltk::setcolor( fltk::BLACK );
+      fl_color( FL_BLACK );
       if ( _selected && _selected->element() == fg )
-   	 fltk::setcolor( fltk::WHITE );
+   	 fl_color( FL_WHITE );
 
-      fltk::setfont( textfont(), 10 );
+      fl_font( labelfont(), 10 );
       name = fg->image()->name();
       buf = name.c_str();
-      fltk::measure( buf, ww, hh );
+      fl_measure( buf, ww, hh );
 
 
-      fltk::drawtext( buf,
-		      float( rx + dx + dw/2 - ww/2 ), 
-                      float( y() + h()/2 ) );
+      fl_draw( buf,
+               float( rx + dx + dw/2 - ww/2 ), 
+               float( y() + h()/2 ) );
    }
 
-   fltk::pop_clip();
+   fl_pop_clip();
 }
 
 }  // namespace mrv

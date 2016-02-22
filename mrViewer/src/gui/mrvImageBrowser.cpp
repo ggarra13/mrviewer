@@ -37,6 +37,7 @@ namespace fs = boost::filesystem;
 
 #include <FL/fl_utf8.h>
 #include <FL/fl_ask.H>
+#include <FL/fl_draw.H>
 #include <FL/Fl_Choice.H>
 #include <FL/Fl_Menu_Item.H>
 #include <FL/Fl_Menu.H>
@@ -151,10 +152,14 @@ namespace {
     using mrv::smpteImage;
 
     Fl_Window* uiMain = b->main()->uiMain;
-/*
+
+/* @todo: fltk1.3
+
     const fltk::Monitor& m = fltk::Monitor::find(uiMain->x()+uiMain->w()/2, 
 						 uiMain->y()+uiMain->h()/2);
 */
+    mrv::Recti m( 1280, 860 );
+
     smpteImage* img = new smpteImage( smpteImage::kGammaChart, m.w(), m.h() );
     img->gamma(g);
     img->fetch(1);
@@ -185,8 +190,13 @@ namespace {
     using mrv::smpteImage;
 
     Fl_Window* uiMain = b->main()->uiMain;
+    /* @todo: fltk1.3
     const Fl_Monitor& m = Fl_Monitor::find(uiMain->x()+uiMain->w()/2, 
 						 uiMain->y()+uiMain->h()/2);
+    */
+
+    mrv::Recti m( 1280, 960 );
+
     smpteImage* img = new smpteImage( smpteImage::kLinearGradient, 
 				      m.w(), m.h() );
     img->fetch(1);
@@ -200,8 +210,13 @@ namespace {
     using mrv::smpteImage;
 
     Fl_Window* uiMain = b->main()->uiMain;
-    const Fl_Monitor& m = Fl_Monitor::find(uiMain->x()+uiMain->w()/2, 
-						 uiMain->y()+uiMain->h()/2);
+
+    // @todo: fltk1.3
+    // const Fl_Monitor& m = Fl_Monitor::find(uiMain->x()+uiMain->w()/2, 
+    //     					 uiMain->y()+uiMain->h()/2);
+
+    mrv::Recti m( 1920, 960 );
+
     smpteImage* img = new smpteImage( smpteImage::kLuminanceGradient, 
 				      m.w(), m.h() );
     img->fetch(1);
@@ -261,7 +276,7 @@ namespace mrv {
 
 
   Element::Element( mrv::media& m ) :
-  Fl_Item( m->image()->fileroot() ),
+  Fl_Group( 0, 0, 120, 60, m->image()->fileroot() ),
   _elem( m )
   {
     CMedia* img = m->image();
@@ -311,7 +326,7 @@ namespace mrv {
    * @param h window's height
    */
   ImageBrowser::ImageBrowser( int x, int y, int w, int h ) :
-    Fl_Browser( x, y, w, h ),
+  mrv::Browser( x, y, w, h ),
     _reel( 0 ),
     dragging( NULL )
   {
@@ -672,7 +687,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     Element* nw = new Element( m );
 
     nw->labelsize( 30 );
-    nw->box( FL_BORDER_BOX );
+    // nw->box( FL_BORDER_BOX );
     return nw;
   }
 
@@ -693,7 +708,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     reel->images.insert( reel->images.begin() + idx, m );
 
     Element* nw = new_item( m );
-    Fl_Browser::insert( *nw, idx );
+
+    mrv::Browser::insert( *nw, idx );
 
     char buf[256];
 
@@ -781,7 +797,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     Element* nw = new_item( m );
 
-    Fl_Browser::add( nw );
+    mrv::Browser::add( nw );
 
     if ( reel->images.size() == 1 )
       {
@@ -888,7 +904,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
 
-    Fl_Browser::remove( idx );
+    mrv::Browser::remove( idx );
 
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
@@ -946,7 +962,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
 
     int idx = (int) (i - reel->images.begin());
-    Fl_Browser::remove( idx );
+    mrv::Browser::remove( idx );
 
     reel->images.erase( i );
 
@@ -1012,7 +1028,7 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
     newImg->find_image( frame );
 
     Element* nw = new_item( newm );
-    Fl_Group::replace( idx, *nw );
+    mrv::Browser::replace( idx, *nw );
 
     this->remove( m );
 
@@ -1085,7 +1101,7 @@ void ImageBrowser::clear_bg()
           {
               Element* nw = new_item( *i );
 
-              Fl_Browser::add( nw );
+              mrv::Browser::add( nw );
 	 }
 
          DBG( "Make images contiguous in timeline" );
@@ -1211,12 +1227,12 @@ void ImageBrowser::clear_bg()
 
 void ImageBrowser::value( int idx )
 {
-   Fl_Browser::value( idx );
+    mrv::Browser::value( idx );
 }
 
-int ImageBrowser::value() const
+int ImageBrowser::value()
 {
-   return Fl_Browser::value();
+    return mrv::Browser::value();
 }
 
   void ImageBrowser::change_image(unsigned i)
@@ -1433,19 +1449,20 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
     if ( files.size() > 1 && progressBar )
       {
-    	w = new Fl_Window( main->x(), main->y() + main->h()/2, 
-                           main->w(), 80 );
-    	w->child_of(main);
-    	w->clear_border();
-    	w->begin();
-    	progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
-    	progress->range( 0, double(files.size()) );
-    	progress->align( FL_ALIGN_TOP );
-    	progress->showtext(true);
-    	w->end();
+          Fl_Group::current(main);
+          w = new Fl_Window( main->x(), main->y() + main->h()/2, 
+                             main->w(), 80 );
+          w->clear_border();
+          w->begin();
+          progress = new Fl_Progress( 0, 20, w->w(), w->h()-20 );
+          progress->minimum(0);
+          progress->maximum( files.size() );
+          progress->align( FL_ALIGN_TOP );
+          // progress->showtext(true); //@todo: fltk1.3
+          w->end();
 
-    	w->show();
-    	Fl::check();
+          w->show();
+          Fl::check();
       }
 
     mrv::LoadList::const_iterator s = files.begin();
@@ -1577,15 +1594,14 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
 	if ( w )
         {
-           progress->step(1);
-           Fl::check();
+            progress->value( progress->value() + 1);
+            Fl::check();
         }
       }
 
     if ( w )
       {
 	w->hide();
-	w->destroy();
         delete w;
         Fl::check();
       }
@@ -1940,8 +1956,8 @@ void ImageBrowser::load( const stringArray& files,
     size_t num = reel->images.size();
     for ( i = 0; i < num; ++i )
       {
-	Fl_Browser::remove( 0 );
-	this->remove( reel->images[0] );
+          mrv::Browser::remove( 0 );
+          this->remove( reel->images[0] );
       }
 
     value(-1);
@@ -1987,8 +2003,8 @@ void ImageBrowser::load( const stringArray& files,
   {
     if ( ! m ) return;
 
-    Fl_Widget* ow = this->find( m->image()->filename() );
-    if (ow) ow->redraw();
+    Fl_Tree_Item* ow = this->find_item( m->image()->filename() );
+    if (ow && ow->widget() ) ow->widget()->redraw();
   }
 
 
@@ -2085,7 +2101,7 @@ void ImageBrowser::load( const stringArray& files,
   {
     int old_sel = value();
 
-    int ok = Fl_Browser::handle( FL_PUSH );
+    int ok = mrv::Browser::handle( FL_PUSH );
 
     if ( view()->playback() != ImageView::kStopped )
        view()->stop();
@@ -2144,6 +2160,8 @@ void ImageBrowser::load( const stringArray& files,
 	CMedia* img = NULL;
 	bool valid = false;
 
+#if 0
+        //@todo: fltk1.3
         menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
                   (Fl_Callback*)open_cb, this);
         menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
@@ -2243,6 +2261,9 @@ void ImageBrowser::load( const stringArray& files,
             menu.add( _("Create/Slate"), 0, (Fl_Callback*)slate_cb, this);
 
 	menu.popup();
+
+#endif
+
 	return 1;
       }
 
@@ -2256,7 +2277,7 @@ void ImageBrowser::load( const stringArray& files,
  */
 void ImageBrowser::handle_dnd()
 {
-    std::string filenames = fltk::event_text();
+    std::string filenames = Fl::event_text();
 
     stringArray files;
 #if defined(_WIN32) || defined(_WIN64)
@@ -2383,9 +2404,9 @@ void ImageBrowser::handle_dnd()
     int64_t g = t->offset( img );
     f -= g;
 
-    if ( y < 0 ) fltk::e_y = 0;
+    if ( y < 0 ) Fl::e_y = 0;
 
-    Fl_Browser::handle( fltk::PUSH );
+    mrv::Browser::handle( FL_PUSH );
 
     int sel = value();
     if ( sel < 0 || sel == oldsel )
@@ -2397,7 +2418,7 @@ void ImageBrowser::handle_dnd()
 
     Element* e = (Element*) child(oldsel);
     if ( sel > oldsel ) sel += 1;
-    Fl_Browser::insert( *e, sel );
+    mrv::Browser::insert( *e, sel );
 
     redraw();
 
@@ -2442,7 +2463,7 @@ void ImageBrowser::handle_dnd()
   /** 
    * Event handler for the image browser window
    * 
-   * @param event fltk::event enumeration
+   * @param event Fl:::event enumeration
    * 
    * @return 1 if handled, 0 if not
    */
@@ -2450,27 +2471,27 @@ void ImageBrowser::handle_dnd()
   {
     switch( event )
       {
-      case fltk::ENTER:
+      case FL_ENTER:
 	take_focus();
 	window()->show();
 	return 1;
-      case fltk::PUSH:
-	return mousePush( fltk::event_x(), fltk::event_y() );
-      case fltk::DRAG:
-	return mouseDrag( fltk::event_x(), fltk::event_y() );
-      case fltk::RELEASE:
-	return mouseRelease( fltk::event_x(), fltk::event_y() );
-      case fltk::DND_ENTER:
-      case fltk::DND_LEAVE:
-      case fltk::DND_DRAG:
-      case fltk::DND_RELEASE:
+      case FL_PUSH:
+          return mousePush( Fl::event_x(), Fl::event_y() );
+      case FL_DRAG:
+          return mouseDrag( Fl::event_x(), Fl::event_y() );
+      case FL_RELEASE:
+	return mouseRelease( Fl::event_x(), Fl::event_y() );
+      case FL_DND_ENTER:
+      case FL_DND_LEAVE:
+      case FL_DND_DRAG:
+      case FL_DND_RELEASE:
 	return 1;
-      case fltk::PASTE:
+      case FL_PASTE:
 	handle_dnd();
 	return 1;
       }
     int old_sel = value();
-    int ok = Fl_Browser::handle( event );
+    int ok = mrv::Browser::handle( event );
     if ( value() != old_sel ) {
        change_image();
     }
@@ -2820,14 +2841,14 @@ void ImageBrowser::handle_dnd()
 
   void ImageBrowser::draw()
   {
-    Fl_Browser::draw();
+    mrv::Browser::draw();
 
     if ( dragging )
       {
-	fltk::push_matrix();
-	fltk::translate( 0, lastY );
+	fl_push_matrix();
+	fl_translate( 0, lastY );
 	dragging->draw();
-	fltk::pop_matrix();
+	fl_pop_matrix();
       }
   }
 

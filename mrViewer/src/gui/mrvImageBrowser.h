@@ -35,6 +35,7 @@
 
 #include "core/Sequence.h"
 #include "core/mrvServer.h"
+#include "gui/mrvBrowser.h"
 #include "gui/mrvReelList.h"
 #include "gui/mrvMedia.h"
 #include "video/mrvGLShape.h"
@@ -56,7 +57,7 @@ class ImageView;
 void start_button_cb(Fl_Button* o, ViewerUI* v);
 void end_button_cb(Fl_Button* o, ViewerUI* v);
 
-class ImageBrowser : public Fl_Browser
+class ImageBrowser : public mrv::Browser
 {
   public:
     typedef std::vector< boost::thread* > thread_pool_t;
@@ -113,12 +114,6 @@ class ImageBrowser : public Fl_Browser
 
      void insert( unsigned idx, mrv::media m );
 
-     // @todo: these should be factored to a database helper class
-#if 0
-     void add_image( const mrv::media& m );
-     void add_video( const mrv::media& m );
-     void add_audio( const mrv::media& m );
-#endif
 
      mrv::media add( mrv::media& m );
      mrv::media add( CMedia* img );
@@ -160,7 +155,7 @@ class ImageBrowser : public Fl_Browser
      void handle_dnd();
 
      void value( int idx );
-     int value() const;
+     int value();
 
      virtual void draw();
      virtual int handle( int event );

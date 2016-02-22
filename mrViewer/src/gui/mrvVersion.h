@@ -30,16 +30,17 @@
 
 #include <string>
 
-class Fl_Browser;
 class ViewerUI;
 
 namespace mrv
 {
 
-void ffmpeg_formats( Fl_Browser& b );
-void ffmpeg_video_codecs( Fl_Browser& b );
-void ffmpeg_audio_codecs( Fl_Browser& b  );
-void ffmpeg_subtitle_codecs( Fl_Browser& b);
+class Browser;
+
+void ffmpeg_formats( mrv::Browser& b );
+void ffmpeg_video_codecs( mrv::Browser& b );
+void ffmpeg_audio_codecs( mrv::Browser& b  );
+void ffmpeg_subtitle_codecs( mrv::Browser& b);
 std::string ffmpeg_protocols();
 std::string ffmpeg_motion_estimation_methods();
 

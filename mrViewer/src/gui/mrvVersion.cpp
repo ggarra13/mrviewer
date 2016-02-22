@@ -53,7 +53,7 @@ extern "C" {
 
 //#include <fltk/visual.h>
 //#include <fltk/Monitor.h>
-#include <FL/Fl_Browser.H>
+// #include <FL/Fl_Browser.H>
 
 #include <ImfVersion.h>
 
@@ -61,6 +61,7 @@ extern "C" {
 
 #include "core/mrvOS.h"
 #include "core/mrvCPU.h"
+#include "gui/mrvBrowser.h"
 #include "gui/mrvVersion.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
@@ -128,7 +129,7 @@ namespace mrv
     return kVersion;
   }
 
-void ffmpeg_formats( Fl_Browser& browser )
+void ffmpeg_formats( mrv::Browser& browser )
   {
     using namespace std;
 
@@ -278,7 +279,7 @@ void ffmpeg_formats( Fl_Browser& browser )
 
   }
 
-static void ffmpeg_codecs(Fl_Browser& browser, int type)
+static void ffmpeg_codecs(mrv::Browser& browser, int type)
   {
     using namespace std;
 
@@ -348,17 +349,17 @@ static void ffmpeg_codecs(Fl_Browser& browser, int type)
   }
 
 
-  void ffmpeg_audio_codecs(Fl_Browser& browser )
+void ffmpeg_audio_codecs(mrv::Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
   }
 
-  void ffmpeg_video_codecs(Fl_Browser& browser )
+void ffmpeg_video_codecs(mrv::Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
   }
 
-  void ffmpeg_subtitle_codecs(Fl_Browser& browser )
+void ffmpeg_subtitle_codecs(mrv::Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
   }

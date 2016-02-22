@@ -132,8 +132,7 @@ if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
 *v = o->text(elem);}
         xywh {10 25 375 365}
         code0 {o->set_prefix(prefix);
-// @todo:  o->find( ctl.c_str() );
-}
+// @todo:  o->find( ctl.c_str() );}
         class {mrv::CTLBrowser}
       }
       Fl_Button {} {
@@ -168,10 +167,11 @@ class ReelUI {} {
       Fl_Browser uiBrowser {
         xywh {0 32 405 318} box UP_BOX
         code0 {o->main( main );
-o->scrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ) );
-o->hscrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ));
-o->scrollbar.color( o->buttoncolor() );
-o->hscrollbar.color( o->buttoncolor() );}
+// @todo: fltk1.3 previous lines are o->scrollbar.buttoncolor
+//o->scrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ) );
+//o->hscrollbar.buttoncolor( mrv::lighter( o->color(), 0x20 ));
+//o->scrollbar.color( o->buttoncolor() );
+//o->hscrollbar.color( o->buttoncolor() );}
         class {mrv::ImageBrowser}
       }
       Fl_Group {} {
@@ -312,7 +312,7 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
       } {
         Fl_Group {} {
           label mrViewer open
-          xywh {4 24 440 371}
+          xywh {4 24 440 371} hide
         } {}
         Fl_Group {} {
           label HW open
@@ -362,29 +362,33 @@ o->column_widths( col_widths );
 
 mrv::ffmpeg_formats(*o);
 o->value(-1);}
+            class {mrv::Browser}
           }
         }
         Fl_Group {} {
           label Codecs open
-          xywh {4 24 445 375} hide
+          xywh {4 24 445 375}
         } {
           Fl_Browser {} {
             label Video
             xywh {19 44 410 150}
             code0 {mrv::ffmpeg_video_codecs(*o);
 o->value(-1);}
+            class {mrv::Browser}
           }
           Fl_Browser {} {
             label Audio
             xywh {19 214 415 110}
             code0 {mrv::ffmpeg_audio_codecs(*o);
 o->value(-1);}
+            class {mrv::Browser}
           }
           Fl_Browser {} {
             label Subtitles
             xywh {19 339 415 55}
             code0 {mrv::ffmpeg_subtitle_codecs(*o);
 o->value(-1);}
+            class {mrv::Browser}
           }
         }
         Fl_Group {} {
@@ -395,6 +399,7 @@ o->value(-1);}
             xywh {19 39 415 345}
             code0 {o->add( mrv::ffmpeg_protocols().c_str() );
 o->value(-1);}
+            class {mrv::Browser}
           }
         }
         Fl_Group {} {
@@ -411,6 +416,7 @@ o->value(-1);}
 o->column_widths( col_widths );
 o->add( mrv::ffmpeg_motion_estimation_methods().c_str() );
 o->value(-1);}
+            class {mrv::Browser}
           }
         }
       }
@@ -483,27 +489,26 @@ main_ = main;
   }
 } 
 
-class HistogramUI {open
-} {
+class HistogramUI {} {
   decl {ViewerUI* main_;} {private local
   }
-  Function {make_window(ViewerUI* main)} {open private
+  Function {make_window(ViewerUI* main)} {private
   } {
     Fl_Window uiMain {
       label Histogram
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send( "HistogramWindow 0" );
 o->hide();} open
-      xywh {142 61 325 240} type Double resizable
+      xywh {142 61 325 240} type Double hide resizable
       code0 {// Make the window transient
 main_ = main;
 // o->child_of( main->uiMain );
-o->size_range(325, 80);} visible
+o->size_range(325, 80);}
     } {
       Fl_Pack {} {open
         xywh {3 0 322 235}
       } {
-        Fl_Box uiHistogram {selected
+        Fl_Box uiHistogram {
           xywh {5 3 315 199}
           class {mrv::Histogram}
         }
@@ -2241,12 +2246,13 @@ class HotkeyUI {} {
   }
 } 
 
-class PaintUI {} {
-  Function {make_window( ViewerUI* m )} {open
+class PaintUI {open
+} {
+  Function {make_window( ViewerUI* m )} {open selected
   } {
     Fl_Window uiMain {
       label Paint open
-      xywh {446 374 155 395} type Double hide resizable
+      xywh {733 95 155 395} type Double resizable visible
     } {
       Fl_Group {} {open
         xywh {0 9 149 376}
@@ -2340,7 +2346,16 @@ o->redraw();}
         Fl_Group {} {
           label Frames open
           xywh {25 205 95 55} box UP_BOX
-        } {}
+        } {
+          Fl_Round_Button uiCurrentFrame {
+            label Current
+            xywh {35 210 80 25} down_box ROUND_DOWN_BOX
+          }
+          Fl_Round_Button uiAllFrames {
+            label Current
+            xywh {35 230 80 25} down_box ROUND_DOWN_BOX
+          }
+        }
         Fl_Group {} {
           label Ghosting open
           xywh {25 275 95 60} box UP_BOX

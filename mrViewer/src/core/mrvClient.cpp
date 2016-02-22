@@ -40,9 +40,9 @@
 #include <fstream>
 #include "mrvServer.h"
 #include "mrvClient.h"
-#include "mrViewer.h"
 #include "gui/mrvIO.h"
 #include "mrvImageView.h"
+#include "mrViewer.h"
 
 using boost::asio::deadline_timer;
 using boost::asio::ip::tcp;
@@ -351,7 +351,7 @@ void client::check_deadline()
 }
 
 
-void client::create(ViewerUI* ui)
+void client::create( ViewerUI* ui)
 {
    unsigned short port = (unsigned short) ui->uiConnection->uiClientPort->value();
    ServerData* data = new ServerData;

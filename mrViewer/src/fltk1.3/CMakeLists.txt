@@ -195,11 +195,11 @@ SET( SOURCES
  ../gui/mrvFontsWindowUI.cpp
  ../gui/mrvHistogram.cpp
  ../gui/mrvImageView.cpp
- # ../gui/mrvImageBrowser.cpp
+ ../gui/mrvImageBrowser.cpp
  ../gui/mrvImageInformation.cpp
  ../gui/mrvIO.cpp
  ../gui/mrvLogDisplay.cpp
- #  gui/mrvMediaTrack.cpp
+ ../gui/mrvMediaTrack.cpp
  ../gui/mrvMainWindow.cpp
  ../gui/mrvPopupMenu.cpp
  ../gui/mrvPreferences.cpp
@@ -207,7 +207,7 @@ SET( SOURCES
  ../gui/mrvProgressReport.cpp
  ../gui/mrvReel.cpp
  ../gui/mrvTimecode.cpp
- # ../gui/mrvTimeline.cpp
+ ../gui/mrvTimeline.cpp
  ../gui/mrvVectorscope.cpp
  ../gui/mrvVersion.cpp
  ../gui/mrvDoubleWindow.cpp

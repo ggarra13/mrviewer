@@ -32,8 +32,12 @@
 #include <FL/Fl_Box.H>
 #include <FL/fl_draw.H>
 
+#include "gui/mrvIO.h"
 #include "mrvBrowser.h"
 
+namespace {
+static const char* kModule = "mrv::Browser";
+}
 
 namespace mrv
 {
@@ -46,6 +50,60 @@ namespace mrv
   _dragging ( false ),
   _auto_resize( false )
 {
+}
+
+
+void Browser::insert( Fl_Widget& w, int idx )
+{
+    Fl_Tree_Item* item = new Fl_Tree_Item( prefs() );
+    item->widget(&w);
+    Fl_Tree::insert( item, w.label(), idx );
+}
+
+void Browser::replace( int idx, Fl_Widget& w )
+{
+    Fl_Tree_Item* item = NULL;
+    int i;
+    bool found = false;
+    for ( item = first(); item; item = next(item), ++i )
+    {
+        if ( i == idx ) {
+            found = true;
+            break;
+        }
+    }
+
+    if ( !found )
+    {
+        LOG_ERROR( "Widget index not in Browser" );
+        return;
+    }
+
+    item->widget( &w );
+    redraw();
+}
+
+void Browser::remove( int idx )
+{
+    Fl_Tree_Item* item = NULL;
+    int i = 0;
+    for ( item = first(); item; item = next(item), ++i )
+    {
+        if ( i == idx ) break;
+    }
+
+    if (!item) return;
+
+    Fl_Tree::remove( item );
+}
+
+void Browser::add( Fl_Widget* g )
+{
+    Fl_Tree_Item* i = Fl_Tree::add( g->label(), NULL );
+    if ( i )
+    {
+        i->widget( g );
+    }
 }
 
 void Browser::add( Fl_Group* g )

@@ -16,22 +16,24 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <fltk/Item.h>
+#include <FL/Fl_Group.H>
 
 #include "gui/mrvMedia.h"
 
 namespace mrv {
 
-  class Element : public fltk::Item
-  {
+class Element : public Fl_Group
+{
   public:
     Element( mrv::media& );
 
-       const mrv::media& element() { return _elem; }
-       mrv::media element() const { return _elem; }
+    virtual void draw() { Fl_Group::draw(); }
 
-     public:
-       mrv::media _elem;
-  };
+    const mrv::media& element() { return _elem; }
+    mrv::media element() const { return _elem; }
+
+  public:
+    mrv::media _elem;
+};
 
 }

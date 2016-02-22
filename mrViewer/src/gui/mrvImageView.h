@@ -228,7 +228,7 @@ class ImageView : public Fl_Gl_Window
     float volume() { return _volume; }
 
     /// Change channel shown in viewer
-      void channel( Fl_Widget* w ); // widget is one of the menus or submenus
+      void channel( Fl_Menu_Item* w ); // widget is one of the menus or submenus
       void channel( unsigned short c );
       unsigned short channel() const { return _channel; };
 

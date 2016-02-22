@@ -20,7 +20,7 @@
  * @author gga
  * @date   Fri Oct 13 13:36:04 2006
  * 
- * @brief  An fltk::Widget to draw a timeline.
+ * @brief  An Fl_Widget to draw a timeline.
  * 
  * 
  */
@@ -141,25 +141,15 @@ Timeline::~Timeline()
     redraw();
   }
 
-/*! Return (1-weight)*color0 + weight*color1. \a weight is clamped
-  to the 0-1 range before use. */
-Fl_Color lerp(Fl_Color color0, Fl_Color color1, float weight) {
-  if (weight <= 0) return color0;
-  if (weight >= 1) return color1;
-  Fl_Color rgb0 = get_color_index(color0);
-  Fl_Color rgb1 = get_color_index(color1);
-  return Fl_Color(
-	(uchar)(((uchar)(rgb1>>24))*weight + ((uchar)(rgb0>>24))*(1-weight)) +
-	(uchar)(((uchar)(rgb1>>16))*weight + ((uchar)(rgb0>>16))*(1-weight)) +
-	(uchar)(((uchar)(rgb1>>8))*weight + ((uchar)(rgb0>>8))*(1-weight)));
-}
+
 
   /*! Draw tick marks. These lines cross the passed rectangle perpendicular to
     the slider direction. In the direction parallel to the slider direction
     the box should have the same size as the area the slider moves in. */
 void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
   {
-
+      // @todo: fltk1.3
+#if 0
     int x1, y1, x2, y2, dx, dy, w;
     x1 = x2 = r.x()+(slider_size()-1)/2; dx = 1;
     y1 = r.y(); y2 = r.b()-1; dy = 0;
@@ -216,7 +206,7 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
 	  setfont(textfont(), textsize());
 	  fl_color(textcolor);
 	  int wt = 0, ht;
-	  measure( p, wt, ht );
+	  fl_measure( p, wt, ht );
 	  fl_draw(p, int(x1+dx*t-wt/2), int(y1+dy*t+getsize()-getdescent()));
 	  fl_color(linecolor);
 	}
@@ -239,6 +229,8 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
     }
 
     fl_pop_clip();
+#endif
+
   }
 
   /*!
@@ -249,6 +241,9 @@ void Timeline::draw_ticks(const mrv::Recti& r, int min_spacing)
   */
 bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
   {
+//@todo: fltk1.3
+
+#if 0
     // for back compatability, use type flag to set slider size:
     if (type()&16/*FILL*/) slider_size(0);
 
@@ -307,15 +302,18 @@ bool Timeline::draw(const mrv::Recti& sr, int flags, bool slot)
     if ( active() )
         draw_glyph(sglyph, s); // draw slider in new position
     return true;
+#endif
+
   }
+
+// @todo: fltk1.3
 
 void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
                                int64_t mn, int64_t mx, int64_t frame,
                                const mrv::Recti& r )
 {
 
-    using namespace fltk;
-
+#if 0
     int j = frame;
     if ( pos < j ) j = pos;
     if ( mn > j ) j = mn;
@@ -374,6 +372,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         fillrect( dx, r.y()+r2, wh, r2+1 );
     }
 
+#endif
 
 }
 
@@ -383,8 +382,11 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
    */
   void Timeline::draw()
   {
-    using namespace fltk;
+      Fl_Slider::draw();
+      return;
 
+#if 0
+      // @todo: fltk1.3
     Flags flags = this->flags();
     Flags f2 = flags & ~FOCUSED;
     if (pushed()) f2 |= PUSHED;
@@ -397,6 +399,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
 
     Rectangle r(w(),h()); box->draw(r); box->inset(r);
+
 
     // Get number of frames
     double mn = minimum();
@@ -501,6 +504,9 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     // draw the focus indicator inside the box:
     drawstyle(style(),flags);
     box->draw_symbol_overlay(r);
+#endif
+
+
   }
 
   /** 
@@ -598,7 +604,7 @@ int64_t Timeline::global_to_local( const int64_t frame ) const
   void change_timeline_display( ViewerUI* uiMain )
   {
     int i = uiMain->uiTimecodeSwitch->value();
-    const char* label = uiMain->uiTimecodeSwitch->child(i)->value();
+    const char* label = uiMain->uiTimecodeSwitch->text(i);
 
     char buf[3]; buf[1] = ':'; buf[2] = 0;
     buf[0] = label[0];

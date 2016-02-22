@@ -1,5 +1,3 @@
-
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -702,7 +700,7 @@ class CMedia
 
 
     /// VCR play (and cache frames if needed) sequence
-    virtual void play( const Playback dir,
+    virtual void play( const mrv::CMedia::Playback dir,
                        ViewerUI* const uiMain,
                        const bool fg );
 

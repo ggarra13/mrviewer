@@ -52,6 +52,12 @@ public:
         Fl_Tree::add( text, item );
     }
 
+    void insert( Fl_Widget& w, int idx );
+    void replace( int idx, Fl_Widget& w );
+
+    void remove( int idx );
+
+    void add( Fl_Widget* w );
     void add( Fl_Group* g );
     void value( int x );
     int value();
