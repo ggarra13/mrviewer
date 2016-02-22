@@ -113,7 +113,7 @@ decl {\#include "FL/Fl.H"} {public global
 decl {\#include "namespace.h"} {public global
 } 
 
-Function {make_ctl_browser(std::string ctl, const char* prefix)} {open return_type {std::string}
+Function {make_ctl_browser(std::string ctl, const char* prefix)} {return_type {std::string}
 } {
   code {std::string orig = ctl;} {}
   Fl_Window {} {
@@ -132,18 +132,8 @@ if ( elem < 0 || elem >= o->children() ) { v->clear(); return; }
 *v = o->text(elem);}
         xywh {10 25 375 365}
         code0 {o->set_prefix(prefix);
-o->value(-1);
-if ( !ctl.empty() )
-{
-  Fl_Widget* elem = o->find( ctl.c_str() );
-
-  for (int i = 0; i < o->children(); ++i )
-  {
-    if ( o->child(i) == elem ) {
-      o->value(i); break;
-    }
-  }
-}}
+// @todo:  o->find( ctl.c_str() );
+}
         class {mrv::CTLBrowser}
       }
       Fl_Button {} {
@@ -493,7 +483,8 @@ main_ = main;
   }
 } 
 
-class HistogramUI {} {
+class HistogramUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
   Function {make_window(ViewerUI* main)} {open private
@@ -502,16 +493,20 @@ class HistogramUI {} {
       label Histogram
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send( "HistogramWindow 0" );
-o->hide();}
-      xywh {206 308 325 240} type Double hide resizable
+o->hide();} open
+      xywh {142 61 325 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;
 // o->child_of( main->uiMain );
-o->size_range(325, 80);}
+o->size_range(325, 80);} visible
     } {
       Fl_Pack {} {open
-        xywh {3 5 321 230}
+        xywh {3 0 322 235}
       } {
+        Fl_Box uiHistogram {selected
+          xywh {5 3 315 199}
+          class {mrv::Histogram}
+        }
         Fl_Group {} {
           xywh {10 200 310 30}
         } {
@@ -2450,8 +2445,7 @@ else
   }
 } 
 
-class ViewerUI {open
-} {
+class ViewerUI {} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -2554,7 +2548,7 @@ uiICCProfiles->uiMain->show();}
             }
             MenuItem {} {
               label Connections user_data_type {void*}
-              callback {uiConnection->uiMain->show();} selected
+              callback {uiConnection->uiMain->show();}
               xywh {0 0 100 20}
             }
             MenuItem {} {
