@@ -298,7 +298,8 @@ class ImageInfoUI {} {
   }
 } 
 
-class AboutUI {} {
+class AboutUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -321,8 +322,24 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
           label HW open
           xywh {4 24 440 371} hide
         } {
+          Fl_Text_Display {} {
+            xywh {15 15 415 345}
+            code0 {o->buffer( new Fl_Text_Buffer );}
+            code1 {o->buffer()->text( mrv::about_message().c_str() );}
+          }
+        }
+        Fl_Group {} {
+          label HW open
+          xywh {0 20 440 371}
+        } {
+          Fl_Text_Display uiCPUInfo {
+            label {CPU Information}
+            xywh {15 30 415 96}
+            code0 {o->buffer( new Fl_Text_Buffer );}
+            code1 {o->buffer()->text( mrv::cpu_information().c_str() );}
+          }
           Fl_Browser uiGPUInfo {
-            label {GPU Information}
+            label {GPU Information} selected
             xywh {20 175 415 205}
             code0 {static int widths[] = {
 160,
@@ -370,7 +387,7 @@ o->value(-1);}
         }
         Fl_Group {} {
           label Codecs open
-          xywh {4 24 445 375}
+          xywh {4 24 445 375} hide
         } {
           Fl_Browser {} {
             label Video
@@ -2476,8 +2493,7 @@ else
   }
 } 
 
-class ViewerUI {open
-} {
+class ViewerUI {} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -2506,17 +2522,17 @@ class ViewerUI {open
   }
   decl {EDLWindowUI* uiEDLWindow;} {public local
   }
-  Function {make_window()} {open private
+  Function {make_window()} {private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
       label mrViewer
       user_data this user_data_type {ViewerUI*}
-      callback {delete v;} open
-      xywh {354 146 640 535} type Double align 80 resizable
+      callback {delete v;}
+      xywh {354 146 640 535} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} visible
+      class {mrv::MainWindow}
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 640 530}
@@ -2610,7 +2626,8 @@ uiICCProfiles->uiMain->show();}
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
-              callback {v->uiView->channel( o->value() );} open selected
+              callback {fprintf(stderr, "selection was %d", o->value() );
+v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {30 5 90 19}
               class {mrv::PopupMenu}
             } {}

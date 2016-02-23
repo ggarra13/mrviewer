@@ -4178,40 +4178,30 @@ char* ImageView::get_layer_label( unsigned short c )
     Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
     char* lbl = NULL;
     unsigned short idx = 0;
+    std::string prefix;
     std::string layername;
     unsigned short num = uiColorChannel->size();
     const Fl_Menu_Item* w = uiColorChannel->menu();
-    for ( unsigned short i = 0; i < num; ++i, ++idx )
+    for ( unsigned short i = 0; i < num; ++i )
     {
-        if ( idx == c )
+        if ( i == c )
         {
-            lbl = strdup( w[i].label() );
-            if ( w[i].submenu() ||
-                 strcmp( lbl, _("Color") ) == 0 )
-                _old_channel = idx;
+            layername = prefix;
+            if ( w[i].label() )
+            {
+                if ( !prefix.empty() )
+                    layername += '.';
+                layername += w[i].label();
+            }
+
+            lbl = strdup( layername.c_str() );
             break;
         }
 
         if ( w[i].submenu() )
-        {
-            unsigned short numc = w[i].size();
-            layername = w[i].label();
-            for ( unsigned short j = i; 
-                  w[j].label() && j < numc; ++j )
-            {
-                ++idx;
-                if ( idx == c )
-                {
-                    if ( !layername.empty() ) layername += '.';
-                    layername += w[j].label();
-                    lbl = strdup( layername.c_str() );
-                    break;
-                }
-                
-            }
-        }
-
-        if ( lbl ) break;
+            prefix = w[i].label();
+        else if ( !w[i].label() )
+            prefix.clear();
     }
 
     if ( !lbl && num > 0 )
@@ -4281,9 +4271,11 @@ void ImageView::channel( unsigned short c )
 
   m = foreground();
 
+
   char* lbl = get_layer_label( c );
   if ( !lbl ) return;
 
+  std::cerr << "GET " << c << " LABEL " << lbl << std::endl;
 
 
   _channel = c;
@@ -4712,7 +4704,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     const stringArray& layers = img->layers();
 
-    stringArray::const_iterator i = layers.begin();
+    stringArray::const_iterator b = layers.begin();
+    stringArray::const_iterator i = b;
     stringArray::const_iterator e = layers.end();
 
 
@@ -4749,59 +4742,40 @@ int ImageView::update_shortcuts( const mrv::media& fg,
         }
     }
 
-    bool in_group = false;
-    bool group = false;
+
     std::string x;
     int o = 0;
+    idx = 0;
 
-    for ( ; i != e; ++i, ++idx )
+    for ( i = b; i != e; ++i, ++idx )
     {
-
         const std::string& name = *i;
 
         if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
-            if ( group )
-            {
-                // Copy shortcut to group and replace leaf with group
-                unsigned last = uiColorChannel->size()-1;
-                unsigned s = uiColorChannel->menu()[last].shortcut();
-                uiColorChannel->remove( last );
-                o = uiColorChannel->add( x.c_str(), s,
-                                         NULL, NULL, 
-                                         FL_SUBMENU );
-                group = false;
-                in_group = true;
-            }
-
             // Now add current leaf, but without # prefix and period
             std::string y = name;
 
             if ( x.size() != name.size() && x.size() < name.size() )
-                y = name.substr( x.size()+1, name.size() );
-            o = uiColorChannel->insert( o+1, y.c_str(), 0, NULL, NULL );
+                y = x + '/' + name.substr( x.size()+1, name.size() );
+            uiColorChannel->add( y.c_str() );
         }
         else
         {
-            if ( in_group )
-            {
-                in_group = false;
-                uiColorChannel->add( NULL );
-            }
 
-            // A new group, we add it here as empty group
-            group = true;
+            // A new group, we add it here as empty submenu or flat if not
             x = name;
 
             o = uiColorChannel->add( name.c_str(), 0,
-                                     NULL, NULL );
+                                     NULL, NULL, 0 );
         }
+
 
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
         if ( v == -1 && ( x == root || (channelName && name == channelName) ) )
         {
-            v = idx;
+           v = uiColorChannel->size() - 1;
         }
 
         // Get a shortcut to this layer
