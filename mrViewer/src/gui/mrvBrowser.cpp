@@ -45,6 +45,8 @@ namespace mrv
   Browser::Browser( int x, int y, int w, int h, const char* l ) :
   Fl_Tree( x, y, w, h, l ),
   _value( -1 ),
+  _column_widths( NULL ),
+  _column_headers( NULL ),
   _column_separator_color( FL_BLACK ),
   _last_cursor( FL_CURSOR_DEFAULT ),
   _column_separator( true ),

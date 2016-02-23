@@ -1732,6 +1732,13 @@ bool aviImage::initialize()
 	   }
 	   error = avformat_find_stream_info( _context, NULL );
 	}
+      else
+      {
+	  _context = NULL;
+          LOG_ERROR( filename() << _(" avformat_open_input failed. ")
+                     << strerror(error)  );
+	  return false;
+      }
 
       if ( error >= 0 )
 	{
@@ -1744,7 +1751,8 @@ bool aviImage::initialize()
       else
 	{
 	  _context = NULL;
-          LOG_ERROR( filename() << _(" Could not open file") );
+          LOG_ERROR( filename() << _(" Could not open file. ")
+                     << strerror(error) );
 	  return false;
 	}
     }

@@ -124,7 +124,7 @@ namespace mrv {
       w = pic->width();
       h = pic->height();
 
-#if 0
+#if 1
       // Fl_Shared_Image::add_handler( thumbImage::create );
       _thumbnail = Fl_Shared_Image::get( _image->fileroot(), w, h );
 
@@ -136,18 +136,19 @@ namespace mrv {
       }
 
       // @todo: fltk1.3
-      _thumbnail->setpixeltype( fltk::RGB );
-      _thumbnail->setsize( w, h );
+      // _thumbnail->setpixeltype( fltk::RGB );
+      // _thumbnail->setsize( w, h );
  
 
-      uchar* ptr = (uchar*) _thumbnail->buffer();
+      const char* const* ptr = _thumbnail->data(); 
       if (!ptr )
 	{
             IMG_ERROR( _("Could not allocate thumbnail buffer") );
             return;
 	}
 
-      fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
+
+      // fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
 
 
       // Copy to thumbnail and gamma it
@@ -171,11 +172,12 @@ namespace mrv {
 	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
 	      uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
 	      uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-	      thumbnail_pixel( ptr, r, g, b );
+              uchar* p = (uchar*) *ptr;
+	      thumbnail_pixel( p, r, g, b );
 	    }
 	}
 
-      _thumbnail->buffer_changed();
+      // _thumbnail->buffer_changed();
 #endif
 
       _image->image_damage( _image->image_damage() & 

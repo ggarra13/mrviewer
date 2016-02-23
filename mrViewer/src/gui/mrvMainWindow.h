@@ -48,6 +48,8 @@ namespace mrv {
       // virtual void layout();
     
     virtual int handle( int event );
+
+      virtual void resize( int x, int y, int w, int h );
     
     /** 
      * Make window appear always on top of others

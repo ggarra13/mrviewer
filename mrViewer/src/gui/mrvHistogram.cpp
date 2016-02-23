@@ -72,15 +72,15 @@ namespace mrv
 
 void Histogram::draw_grid(const mrv::Recti& r)
 {
-//     fltk::setcolor( fltk::GRAY75 );
+    fl_color( FL_GRAY );
 
-//     int X = r.x() + 2;
-//     int H = r.h() / 4;
-//     int H2 = ( H + fltk::getsize() ) / 2;
-//     fltk::drawtext( "L", 1, X, H2 );
-//     fltk::drawtext( "R", 1, X, H+H2 );
-//     fltk::drawtext( "G", 1, X, H*2+H2 );
-//     fltk::drawtext( "B", 1, X, H*3+H2 );
+    int X = r.x() + 2;
+    int H = r.h() / 4;
+    int H2 = ( H + fl_size() ) / 2;
+    fl_draw( "L", 1, X, H2 );
+    fl_draw( "R", 1, X, H+H2 );
+    fl_draw( "G", 1, X, H*2+H2 );
+    fl_draw( "B", 1, X, H*3+H2 );
 }
 
   void Histogram::draw()

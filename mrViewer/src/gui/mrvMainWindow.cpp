@@ -126,7 +126,7 @@ namespace mrv {
   {
     Fl_Window* uiReelWindow = uiMain->uiReelWindow->uiMain;
     if (uiReelWindow) uiReelWindow->iconize();
-    return Fl_Window::iconize();
+    return Fl_Double_Window::iconize();
   }
 
   /** 
@@ -138,19 +138,16 @@ namespace mrv {
    */
   int MainWindow::handle( int event )
   {
-    return Fl_Window::handle( event );
+    return Fl_Double_Window::handle( event );
   }
 
-// @todo: fltk1.3 
-// void MainWindow::layout()
-// {
-//    fltk::Window::layout();
 
-//    if ( layout_damage() & fltk::LAYOUT_W || layout_damage() & fltk::LAYOUT_H )
-//    {
-//       if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
-//          uiMain->uiView->fit_image();
-//    }
-// }
+void MainWindow::resize(int x, int y, int w, int h)
+{
+    Fl_Double_Window::resize(x, y, w, h);
+
+   if ( uiMain->uiPrefs->uiPrefsAutoFitImage->value() )
+       uiMain->uiView->fit_image();
+}
 
 } // namespace mrv

@@ -494,12 +494,16 @@ void window_cb( Fl_Widget* o, const ViewerUI* uiMain )
 
 
 
-void masking_cb( Fl_Widget* o, ViewerUI* uiMain )
+void masking_cb( Fl_Widget* w, ViewerUI* uiMain )
 {
+  Fl_Menu_* mw = (Fl_Menu_*)w;
+  const Fl_Menu_Item* o = mw->mvalue();
+
   mrv::ImageView* view = uiMain->uiView;
 
   float mask = 1.0f;
   const char* fmt = o->label();
+
 
   mask = (float) atof( fmt );
 
@@ -531,9 +535,12 @@ void change_subtitle_cb( Fl_Widget* o, mrv::ImageView* view )
 
 }
 
-void hud_cb( Fl_Widget* o, ViewerUI* uiMain )
+void hud_cb( Fl_Widget* w, ViewerUI* uiMain )
 {
   mrv::ImageView* view = uiMain->uiView;
+
+  Fl_Menu_* mw = (Fl_Menu_*)w;
+  const Fl_Menu_Item* o = mw->mvalue();
 
   int i;
   int num = uiMain->uiPrefs->uiPrefsHud->children();
@@ -816,8 +823,6 @@ ImageView::~ImageView()
    // make sure to stop any playback
    stop_playback();
 
-   foreground( mrv::media() );
-   background( mrv::media() );
 
    delete _engine; _engine = NULL;
 
@@ -2177,143 +2182,157 @@ int ImageView::leftMouseDown(int x, int y)
       {
 
           // @todo: fltk1.3
-#if 0
-	 fltk::Menu menu(0,0,0,0);
-	 menu.add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
-		   (Fl_Callback*)open_cb, browser() ); 
-	 menu.add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
-		   (Fl_Callback*)open_single_cb, browser() );
+          Fl_Menu_Button* menu = new Fl_Menu_Button(0, 0, 
+                                                    window()->w(), 
+                                                    window()->h());
+          menu->box( FL_NO_BOX );
+          menu->type( Fl_Menu_Button::POPUP3 );
+
+	 menu->add( _("File/Open/Movie or Sequence"), kOpenImage.hotkey(),
+                    (Fl_Callback*)open_cb, browser(), 0 ); 
+	 menu->add( _("File/Open/Single Image"), kOpenSingleImage.hotkey(),
+                    (Fl_Callback*)open_single_cb, browser(), 0 );
 	 mrv::media fg = foreground();
 	 if ( fg )
 	 {
-             menu.add( _("File/Open/Stereo Sequence or Movie"),
-                       kOpenStereoImage.hotkey(),
-                       (Fl_Callback*)open_stereo_cb, browser() );
-             menu.add( _("File/Open/Clip XML Metadata"),
-                       kOpenClipXMLMetadata.hotkey(),
-                       (Fl_Callback*)open_clip_xml_metadata_cb, this );
-	    menu.add( _("File/Save/Movie or Sequence As"), 
-                      kSaveSequence.hotkey(),
-		      (Fl_Callback*)save_sequence_cb, this ); 
-	    menu.add( _("File/Save/Reel As"), kSaveReel.hotkey(),
-		      (Fl_Callback*)save_reel_cb, this ); 
-	    menu.add( _("File/Save/Frame As"), kSaveImage.hotkey(),
-		      (Fl_Callback*)save_cb, this ); 
-	    menu.add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
-		      (Fl_Callback*)save_snap_cb, this ); 
-	    menu.add( _("File/Save/Clip XML Metadata As"),
-                      kSaveClipXMLMetadata.hotkey(),
-		      (Fl_Callback*)save_clip_xml_metadata_cb, this ); 
+             menu->add( _("File/Open/Stereo Sequence or Movie"),
+                        kOpenStereoImage.hotkey(),
+                        (Fl_Callback*)open_stereo_cb, browser(), 0 );
+             menu->add( _("File/Open/Clip XML Metadata"),
+                        kOpenClipXMLMetadata.hotkey(),
+                        (Fl_Callback*)open_clip_xml_metadata_cb, this, 0 );
+	    menu->add( _("File/Save/Movie or Sequence As"), 
+                       kSaveSequence.hotkey(),
+                       (Fl_Callback*)save_sequence_cb, this, 0 ); 
+	    menu->add( _("File/Save/Reel As"), kSaveReel.hotkey(),
+                       (Fl_Callback*)save_reel_cb, this, 0 ); 
+	    menu->add( _("File/Save/Frame As"), kSaveImage.hotkey(),
+                       (Fl_Callback*)save_cb, this, 0  ); 
+	    menu->add( _("File/Save/GL Snapshots As"), kSaveSnapshot.hotkey(),
+                       (Fl_Callback*)save_snap_cb, this, 0 ); 
+	    menu->add( _("File/Save/Clip XML Metadata As"),
+                       kSaveClipXMLMetadata.hotkey(),
+                       (Fl_Callback*)save_clip_xml_metadata_cb, this, 0 ); 
 	 }
 
 	 char buf[256];
 	 const char* tmp; 
-	 Fl_Widget* item;
-	 int num = uiMain->uiWindows->children();
+	 int item;
+	 int num = uiMain->uiWindows->size()-1;
 	 int i;
 	 for ( i = 0; i < num; ++i )
 	 {
-	    tmp = uiMain->uiWindows->child(i)->label();
+	    tmp = uiMain->uiWindows->text(i);
 	    sprintf( buf, _("Windows/%s"), tmp );
-	    menu.add( buf, 0, (Fl_Callback*)window_cb, uiMain );
+	    menu->add( buf, 0, (Fl_Callback*)window_cb, uiMain, 0 );
 	 }
-	 
+
 	 if ( fg && fg->image()->has_picture() )
 	 {
 
-	    menu.add( _("View/Safe Areas"), kSafeAreas.hotkey(), 
-		      (Fl_Callback*)safe_areas_cb, this );
-	    
-	    menu.add( _("View/Display Window"), kDisplayWindow.hotkey(), 
-		      (Fl_Callback*)display_window_cb, this );
+	    menu->add( _("View/Safe Areas"), kSafeAreas.hotkey(), 
+                       (Fl_Callback*)safe_areas_cb, this, 0 );
 
-	    menu.add( _("View/Data Window"), kDataWindow.hotkey(), 
-		      (Fl_Callback*)data_window_cb, this );
+            menu->add( _("View/Display Window"), kDisplayWindow.hotkey(), 
+                       (Fl_Callback*)display_window_cb, this, 0 );
 
-	    num = uiMain->uiPrefs->uiPrefsCropArea->children();
+	    menu->add( _("View/Data Window"), kDataWindow.hotkey(), 
+                       (Fl_Callback*)data_window_cb, this, 0 );
+
+	    num = uiMain->uiPrefs->uiPrefsCropArea->size()-1;
 	    for ( i = 0; i < num; ++i )
 	    {
-	       tmp = uiMain->uiPrefs->uiPrefsCropArea->child(i)->label();
+	       tmp = uiMain->uiPrefs->uiPrefsCropArea->text(i);
 	       sprintf( buf, _("View/Mask/%s"), tmp );
-	       item = menu.add( buf, 0, (Fl_Callback*)masking_cb, uiMain );
-	       item->type( FL_TOGGLE_BUTTON );
+	       item = menu->add( buf, 0, (Fl_Callback*)masking_cb, uiMain, 
+                                 FL_MENU_TOGGLE );
 	       float mask = -1.0f;
                mask = (float) atof( tmp );
-	       if ( mask == _masking ) item->set();
+	       if ( mask == _masking ) menu->mode( item, 
+                                                   FL_MENU_TOGGLE|
+                                                   FL_MENU_VALUE );
+               else menu->mode( item, FL_MENU_TOGGLE );
 	    }
-	    
+
+
 	    num = uiMain->uiPrefs->uiPrefsHud->children();
 	    for ( i = 0; i < num; ++i )
 	    {
 	       tmp = uiMain->uiPrefs->uiPrefsHud->child(i)->label();
 	       sprintf( buf, _("View/Hud/%s"), tmp );
-	       item = menu.add( buf, 0, (Fl_Callback*)hud_cb, uiMain );
-	       item->type( FL_TOGGLE_BUTTON );
-	       if ( hud() & (1 << i) ) item->set();
+	       item = menu->add( buf, 0, (Fl_Callback*)hud_cb, uiMain, 
+                                 FL_MENU_TOGGLE );
+	       if ( hud() & (1 << i) ) menu->mode( item, 
+                                                   FL_MENU_TOGGLE|
+                                                   FL_MENU_VALUE );
 	    }
-	    
-      	    menu.add( _("Image/Next"), kNextImage.hotkey(), 
-		      (Fl_Callback*)next_image_cb, browser());
-	    menu.add( _("Image/Previous"), kPreviousImage.hotkey(), 
+	   
+      	    menu->add( _("Image/Next"), kNextImage.hotkey(), 
+                       (Fl_Callback*)next_image_cb, browser(), 0 );
+	    menu->add( _("Image/Previous"), kPreviousImage.hotkey(), 
 		      (Fl_Callback*)previous_image_cb, 
-		      browser(), fltk::MENU_DIVIDER);
+		      browser(), FL_MENU_DIVIDER);
 
 	    const stubImage* img = dynamic_cast< const stubImage* >( image() );
 	    if ( img )
 	    {
-	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
+	       menu->add( _("Image/Clone"), kCloneImage.hotkey(),
 			(Fl_Callback*)clone_image_cb, browser());
-	       menu.add( _("Image/Clone All Channels"), 0,
+	       menu->add( _("Image/Clone All Channels"), 0,
 			(Fl_Callback*)clone_all_cb,
-			browser(), fltk::MENU_DIVIDER);
+			browser(), FL_MENU_DIVIDER);
 	    }
 	    else
 	    {
-	       menu.add( _("Image/Clone"), kCloneImage.hotkey(),
+	       menu->add( _("Image/Clone"), kCloneImage.hotkey(),
 			(Fl_Callback*)clone_image_cb, browser(),
-			fltk::MENU_DIVIDER );
+			FL_MENU_DIVIDER );
 	    }
+ 
 
-            item = menu.add( _("Image/Preload Caches"), kPreloadCache.hotkey(),
-                             (Fl_Callback*)preload_image_cache_cb, this );
-            item->type( FL_TOGGLE_BUTTON );
-            if ( CMedia::preload_cache() ) item->set();
+            item = menu->add( _("Image/Preload Caches"), kPreloadCache.hotkey(),
+                             (Fl_Callback*)preload_image_cache_cb, this, 
+                             FL_MENU_TOGGLE);
+            if ( CMedia::preload_cache() ) menu->mode( item, 
+                                                       FL_MENU_TOGGLE |
+                                                       FL_MENU_VALUE );
+            else menu->mode( item, FL_MENU_TOGGLE );
 
-            menu.add( _("Image/Clear Caches"), kClearCache.hotkey(),
-                      (Fl_Callback*)clear_image_cache_cb, this,
-                      fltk::MENU_DIVIDER );
+            menu->add( _("Image/Clear Caches"), kClearCache.hotkey(),
+                       (Fl_Callback*)clear_image_cache_cb, this,
+                       FL_MENU_DIVIDER );
 
 
-	    menu.add( _("Image/Attach CTL Input Device Transform"),
-		      kIDTScript.hotkey(),
-		      (Fl_Callback*)attach_ctl_idt_script_cb,
-		      this);
-	    menu.add( _("Image/Add CTL Look Mod Transform"),
+	    menu->add( _("Image/Attach CTL Input Device Transform"),
+                       kIDTScript.hotkey(),
+                       (Fl_Callback*)attach_ctl_idt_script_cb,
+                       this, 0);
+	    menu->add( _("Image/Add CTL Look Mod Transform"),
 		      kLookModScript.hotkey(),
 		      (Fl_Callback*)attach_ctl_lmt_script_cb,
-		      this);
-	    menu.add( _("Image/Attach CTL Rendering Transform"),
+                       this, 0);
+	    menu->add( _("Image/Attach CTL Rendering Transform"),
 		      kCTLScript.hotkey(),
 		      (Fl_Callback*)attach_ctl_script_cb,
-		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Attach ICC Color Profile"),
+		      this, FL_MENU_DIVIDER);
+	    menu->add( _("Image/Attach ICC Color Profile"),
 		      kIccProfile.hotkey(),
 		      (Fl_Callback*)attach_color_profile_cb,
-		      this, fltk::MENU_DIVIDER);
-	    menu.add( _("Image/Mirror/Horizontal"),
+                       this, FL_MENU_DIVIDER);
+	    menu->add( _("Image/Mirror/Horizontal"),
 		      kFlipX.hotkey(),
 		      (Fl_Callback*)flip_x_cb,
-		      this);
-	    menu.add( _("Image/Mirror/Vertical"),
+                       this, 0);
+	    menu->add( _("Image/Mirror/Vertical"),
 		      kFlipY.hotkey(),
 		      (Fl_Callback*)flip_y_cb,
-		      this);
-	    menu.add( _("Image/Set as Background"), kSetAsBG.hotkey(),
-		      (Fl_Callback*)set_as_background_cb,
-		      (void*)this);
-	    menu.add( _("Image/Toggle Background"),
+		      this, 0);
+	    menu->add( _("Image/Set as Background"), kSetAsBG.hotkey(),
+                       (Fl_Callback*)set_as_background_cb,
+                       (void*)this, 0);
+	    menu->add( _("Image/Toggle Background"),
 		      kToggleBG.hotkey(),
-		      (Fl_Callback*)toggle_background_cb, (void*)this);
+		      (Fl_Callback*)toggle_background_cb, (void*)this, 0);
 
 	    Image_ptr image = fg->image();
 
@@ -2321,57 +2340,54 @@ int ImageView::leftMouseDown(int x, int y)
 	    size_t num = image->number_of_subtitle_streams();
 	    if ( num > 0 )
 	    {
-	       item = menu.add( _("Subtitle/No Subtitle"), 0,
-				(Fl_Callback*)change_subtitle_cb, this );
-	       item->type( FL_TOGGLE_BUTTON );
+	       item = menu->add( _("Subtitle/No Subtitle"), 0,
+                                 (Fl_Callback*)change_subtitle_cb, this, 
+                                 FL_MENU_TOGGLE );
 	       if ( image->subtitle_stream() == -1 )
-		  item->set();
+                   menu->mode( item, FL_MENU_TOGGLE|FL_MENU_VALUE );
+
 	       for ( unsigned i = 0; i < num; ++i )
 	       {
 		  char buf[256];
 		  sprintf( buf, _("Subtitle/Track #%d - %s"), i,
 			   image->subtitle_info(i).language.c_str() );
 
-		  item = menu.add( buf, 0,
-				   (Fl_Callback*)change_subtitle_cb, this );
-		  item->type( FL_TOGGLE_BUTTON );
+		  item = menu->add( buf, 0, (Fl_Callback*)change_subtitle_cb,
+                                    this, FL_MENU_TOGGLE );
 		  if ( image->subtitle_stream() == i )
-		     item->set();
+                      menu->mode( item, FL_MENU_TOGGLE|FL_MENU_VALUE );
 	       }
 	    }
 
 	    if ( 1 )
 	    {
    
-	       menu.add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
-	     		 (Fl_Callback*)attach_audio_cb, this );
-	       menu.add( _("Audio/Edit Audio Frame Offset"),
-                         kEditAudio.hotkey(), 
-                         (Fl_Callback*)edit_audio_cb, this );
-	       menu.add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
-	     		 (Fl_Callback*)detach_audio_cb, this );
+	       menu->add( _("Audio/Attach Audio File"), kAttachAudio.hotkey(),
+                          (Fl_Callback*)attach_audio_cb, this, 0 );
+	       menu->add( _("Audio/Edit Audio Frame Offset"),
+                          kEditAudio.hotkey(), 
+                          (Fl_Callback*)edit_audio_cb, this, 0 );
+	       menu->add( _("Audio/Detach Audio File"), kDetachAudio.hotkey(),
+                          (Fl_Callback*)detach_audio_cb, this, 0 );
 	    }
 
-	    menu.add( _("Pixel/Copy RGBA Values to Clipboard"),
-		      kCopyRGBAValues.hotkey(),
-		      (Fl_Callback*)copy_pixel_rgba_cb, (void*)this);
+	    menu->add( _("Pixel/Copy RGBA Values to Clipboard"),
+                       kCopyRGBAValues.hotkey(),
+                       (Fl_Callback*)copy_pixel_rgba_cb, (void*)this, 0);
 	 }
 
 
+	  menu->add( _("Monitor/Attach CTL Display Transform"),
+                     kMonitorCTLScript.hotkey(),
+                     (Fl_Callback*)monitor_ctl_script_cb,
+                     NULL, 0 );
+	  menu->add( _("Monitor/Attach ICC Color Profile"),
+                     kMonitorIccProfile.hotkey(),
+                     (Fl_Callback*)monitor_icc_profile_cb,
+                     this, FL_MENU_DIVIDER);
 
-	  menu.add( _("Monitor/Attach CTL Display Transform"),
-		    kMonitorCTLScript.hotkey(),
-		   (Fl_Callback*)monitor_ctl_script_cb,
-		   NULL);
-	  menu.add( _("Monitor/Attach ICC Color Profile"),
-		    kMonitorIccProfile.hotkey(),
-		    (Fl_Callback*)monitor_icc_profile_cb,
-		    this, fltk::MENU_DIVIDER);
 
-   
-	  menu.popup( fltk::Rectangle( fltk::event_x(),
-				       fltk::event_y(), 80, 1) );
-#endif
+         window()->add( menu );
 
 	}
       else
@@ -4690,6 +4706,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     CMedia* img = fg->image();
 
     Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
+    if ( !uiColorChannel ) return -1;
+
     uiColorChannel->clear();
 
     const stringArray& layers = img->layers();
@@ -4734,7 +4752,6 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     bool in_group = false;
     bool group = false;
     std::string x;
-    Fl_Menu_Item* g = NULL;
     int o = 0;
 
     for ( ; i != e; ++i, ++idx )
@@ -4750,9 +4767,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
                 unsigned last = uiColorChannel->size()-1;
                 unsigned s = uiColorChannel->menu()[last].shortcut();
                 uiColorChannel->remove( last );
-                uiColorChannel->add( x.c_str(), s,
-                                     NULL, NULL, 
-                                     FL_SUBMENU );
+                o = uiColorChannel->add( x.c_str(), s,
+                                         NULL, NULL, 
+                                         FL_SUBMENU );
                 group = false;
                 in_group = true;
             }
@@ -4762,7 +4779,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
             if ( x.size() != name.size() && x.size() < name.size() )
                 y = name.substr( x.size()+1, name.size() );
-            uiColorChannel->add( y.c_str() );
+            o = uiColorChannel->insert( o+1, y.c_str(), 0, NULL, NULL );
         }
         else
         {
@@ -4818,6 +4835,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 void ImageView::update_layers()
 {
     Fl_Menu_Button* uiColorChannel = uiMain->uiColorChannel;
+    if ( !uiColorChannel ) return;
 
     mrv::media fg = foreground();
     if ( !fg )
