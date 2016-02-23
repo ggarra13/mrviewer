@@ -56,7 +56,7 @@
 
 #include <GL/gl.h>
 
-#include "FLU/Flu_File_Chooser.h"
+//#include "FLU/Flu_File_Chooser.h"
 #include <boost/filesystem.hpp>
 
 namespace fs = boost::filesystem;
@@ -103,6 +103,8 @@ static const char* kModule = "file";
 }
 
 
+std::string retname;
+
 namespace mrv
 {
 
@@ -138,9 +140,11 @@ stringArray open_reel( const char* startfile,
       else
 #endif
       {
+#ifdef FLU_FILE_CHOOSER
           flu_multi_file_chooser( title.c_str(), 
                                   kREEL_PATTERN.c_str(), startfile,
                                   filelist, false );
+#endif
       }
       return filelist;
   }
@@ -192,9 +196,11 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
     else
 #endif
     {
+#ifdef FLU_FILE_CHOOSER
         flu_multi_file_chooser( title.c_str(), 
                                 kIMAGE_PATTERN.c_str(), startfile,
                                 filelist, compact_images );
+#endif
     }
     return filelist;
   }
@@ -257,9 +263,11 @@ stringArray open_image_file( const char* startfile, const bool compact_images,
     else
 #endif
     {
+#ifdef FLU_FILE_CHOOSER
         profile = flu_file_chooser(title, 
                                    kICC_PATTERN.c_str(), 
                                    path.c_str());
+#endif
     }
 
     if ( profile ) mrv::colorProfile::add( profile );
@@ -286,8 +294,9 @@ const char* open_ctl_dir( const char* startfile,
         path = path.substr( 0, len-1 );
     }
 
-    const char* profile = flu_dir_chooser(title, 
-                                          path.c_str());
+    const char* profile = NULL;
+#ifdef FLU_FILE_CHOOSER
+    profile = flu_dir_chooser(title, path.c_str());
     if ( profile )
     {
         path = profile;
@@ -296,6 +305,7 @@ const char* open_ctl_dir( const char* startfile,
         putenv( strdup( modulepath.c_str() ) );
         profile = strdup( ext.c_str() );
     }
+#endif
     return profile;
 }
 
@@ -334,8 +344,12 @@ const char* open_ctl_dir( const char* startfile,
       else
 #endif
       {
+#ifdef FLU_FILE_CHOOSER
           return flu_file_chooser( title.c_str(),
                                    kAUDIO_PATTERN.c_str(), startfile);
+#else
+          return NULL;
+#endif
       }
   }
 
@@ -459,8 +473,10 @@ void attach_ctl_lmt_script( CMedia* image, const size_t idx,
     else
 #endif
     {
+#ifdef FLU_FILE_CHOOSER
         file = flu_file_chooser( title.c_str(), 
                                  kXML_PATTERN.c_str(), xml.c_str());
+#endif
     }
 
     if ( !file ) return;
@@ -498,9 +514,11 @@ void save_clip_xml_metadata( const CMedia* img,
     else
 #endif
     {
+#ifdef FLU_FILE_CHOOSER
         const char* file = flu_save_chooser( title.c_str(), 
                                              kXML_PATTERN.c_str(), 
                                              xml.c_str());
+#endif
         if (!file) return;
     }
 
@@ -567,8 +585,11 @@ void save_image_file( CMedia* image, const char* startdir, bool aces,
                                 _("Audios (*.(") + kAudioPattern + 
                                 "})\t" + kREEL_PATTERN;
 
-   const char* file = flu_save_chooser( _("Save Image"), 
-				       kIMAGE_PATTERN.c_str(), startdir);
+   const char* file = NULL;
+#ifdef FLU_FILE_CHOOSER
+   file = flu_save_chooser( _("Save Image"), 
+                            kIMAGE_PATTERN.c_str(), startdir);
+#endif
    if ( main && (!main->uiMain || !main->uiMain->visible())) {
        return;
    }
@@ -640,8 +661,10 @@ void save_sequence_file( const ViewerUI* uiMain,
     else
 #endif
     {
+#ifdef FLU_FILE_CHOOSER
         file = flu_save_chooser( title.c_str(), 
                                  kIMAGE_PATTERN.c_str(), startdir);
+#endif
         if ( !file ) return;
     }
    
@@ -952,8 +975,12 @@ const char* save_reel( const char* startdir,
     else
 #endif
     {
+#ifdef FLU_FILE_CHOOSER
         return flu_save_chooser(title.c_str(), 
                                 kREEL_PATTERN.c_str(), startdir);
+#else
+        return NULL;
+#endif
     }
 }
 

@@ -330,10 +330,13 @@ namespace mrv {
     _reel( 0 ),
     dragging( NULL )
   {
+      std::cerr << "ROOT2 " << root() << std::endl;
   }
 
   ImageBrowser::~ImageBrowser()
   {
+      std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+                << " ROOT " << root() << std::endl;
       clear();
       wait_on_threads();
       uiMain = NULL;
@@ -795,7 +798,10 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     reel->images.push_back( m );
 
+    std::cerr << "++++ " << m->image()->name() << std::endl;
+
     Element* nw = new_item( m );
+    nw->label( m->image()->name().c_str() );
 
     mrv::Browser::add( nw );
 
@@ -997,12 +1003,12 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
    * @param root root file name ( mray.%l04d.exr )
    */
 mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
-                                  const char* root )
+                                  const char* file )
   {
     mrv::Reel reel = reel_at(r);
     if ( !reel ) return mrv::media();
 
-    CMedia* newImg = CMedia::guess_image( root );
+    CMedia* newImg = CMedia::guess_image( file );
 
     // did not recognize new image, keep old
     mrv::media m = reel->images[idx];
@@ -1027,11 +1033,17 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
     newImg->decode_video( frame );
     newImg->find_image( frame );
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     Element* nw = new_item( newm );
     mrv::Browser::replace( idx, *nw );
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     this->remove( m );
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
 
 
     reel->images.insert( reel->images.begin() + idx, newm );
@@ -1071,7 +1083,8 @@ void ImageBrowser::clear_bg()
   void ImageBrowser::change_reel()
   {
       DBG( "Change reel" );
-      clear();
+      // @todo: fltk1.3
+      // clear();
 
       mrv::Reel reel = current_reel();
       if ( !reel ) {
@@ -1094,6 +1107,8 @@ void ImageBrowser::clear_bg()
 
           DBG( "Add images in browser" );
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
           mrv::MediaList::iterator i = reel->images.begin();
           MediaList::iterator j;
           mrv::MediaList::iterator e = reel->images.end();
@@ -1142,6 +1157,8 @@ void ImageBrowser::clear_bg()
    */
   void ImageBrowser::change_image()
   {
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     int sel = value();
 
     mrv::ImageView* v = view();
@@ -1189,6 +1206,8 @@ void ImageBrowser::clear_bg()
 
 	if ( m != om && m && v )
 	{
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
 	   DBG( "FG REEL " << _reel );
 
 	   v->fg_reel( _reel );
@@ -1227,17 +1246,23 @@ void ImageBrowser::clear_bg()
 
 void ImageBrowser::value( int idx )
 {
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     mrv::Browser::value( idx );
 }
 
 int ImageBrowser::value()
 {
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     return mrv::Browser::value();
 }
 
   void ImageBrowser::change_image(unsigned i)
   { 
      // if ( i >= children() ) return;
+      std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+                << " ROOT " << root() << std::endl;
      value(i); 
      change_image(); 
   }
@@ -1251,6 +1276,8 @@ int ImageBrowser::value()
     mrv::Reel reel = current_reel();
     if ( !reel ) return;
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     if ( reel->images.empty() ) return;
     value( (int) reel->images.size()-1 ); 
     change_image(); 
@@ -1274,6 +1301,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 {
     CMedia* img;
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     if ( start != AV_NOPTS_VALUE )
         img = CMedia::guess_image( name, NULL, 0, start, end, false );
     else
@@ -1348,6 +1377,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
   {
     mrv::Reel reel = current_reel();
     if ( !reel ) reel = new_reel();
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
 
     if ( first != mrv::kMaxFrame ) frame( first );
 
@@ -1364,6 +1395,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     }
 
     
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     if ( first != mrv::kMaxFrame )
       {
 	img->first_frame( first );
@@ -1397,6 +1430,8 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     mrv::EDLGroup* e = edl_group();
 
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
     size_t i = 0;
     for ( i = 0; i < number_of_reels(); ++i )
     {
@@ -1606,6 +1641,8 @@ void ImageBrowser::load( const mrv::LoadList& files,
         Fl::check();
       }
 
+    std::cerr << this << " " << __FUNCTION__ << " " << __LINE__
+              << " ROOT " << root() << std::endl;
 
     view()->reset_caches(); // Redo preloaded sequence caches
 

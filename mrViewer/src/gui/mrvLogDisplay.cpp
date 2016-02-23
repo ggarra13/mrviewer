@@ -29,6 +29,8 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <iostream>
+
 #include <FL/fl_utf8.h>
 #include <FL/Fl_Text_Buffer.H>
 
@@ -51,6 +53,7 @@ namespace mrv {
   {
     color( FL_GRAY );
 
+    buffer( new Fl_Text_Buffer() );
     stylebuffer_ = new Fl_Text_Buffer();
 
     highlight_data(stylebuffer_, kLogStyles, 3, 'A', 0, 0);

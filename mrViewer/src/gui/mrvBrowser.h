@@ -77,7 +77,7 @@ public:
   void auto_resize( bool t ) { _auto_resize = t; }
 
     void column_headers( const char* c ) { _column_headers = c; }
-    void column_widths( int* w ) { _column_widths = w; }
+    void column_widths( const int* w ) { _column_widths = (int*)w; }
 
     const char* column_headers() const { return _column_headers; }
     const int* column_widths() const { return _column_widths; }
@@ -93,6 +93,7 @@ protected:
   int which_col_near_mouse();
 
 protected:
+    int       _value;
     int*      _column_widths;
     const char* _column_headers;
   Fl_Color  _column_separator_color;	// color of column separator lines 

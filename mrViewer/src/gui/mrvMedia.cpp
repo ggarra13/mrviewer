@@ -124,6 +124,7 @@ namespace mrv {
       w = pic->width();
       h = pic->height();
 
+#if 0
       // Fl_Shared_Image::add_handler( thumbImage::create );
       _thumbnail = Fl_Shared_Image::get( _image->fileroot(), w, h );
 
@@ -134,7 +135,6 @@ namespace mrv {
           return;
       }
 
-#if 0
       // @todo: fltk1.3
       _thumbnail->setpixeltype( fltk::RGB );
       _thumbnail->setsize( w, h );

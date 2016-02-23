@@ -25,10 +25,11 @@
 #include <FL/Fl.H>
 
 class HotkeyUI;
-class Fl_Browser;
 
 
 namespace mrv {
+
+class Browser;
 
 struct Hotkey
 {
@@ -200,7 +201,7 @@ struct TableText
 extern struct TableText table[];
 extern HotkeyEntry hotkeys[];
 
-void fill_ui_hotkeys( Fl_Browser* o );
+void fill_ui_hotkeys( mrv::Browser* o );
 void select_hotkey( HotkeyUI* m );
 
 }

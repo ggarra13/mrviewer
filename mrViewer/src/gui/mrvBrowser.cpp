@@ -44,24 +44,37 @@ namespace mrv
 
   Browser::Browser( int x, int y, int w, int h, const char* l ) :
   Fl_Tree( x, y, w, h, l ),
+  _value( -1 ),
   _column_separator_color( FL_BLACK ),
   _last_cursor( FL_CURSOR_DEFAULT ),
   _column_separator( true ),
   _dragging ( false ),
   _auto_resize( false )
 {
+    showroot( 0 );
 }
 
 
 void Browser::insert( Fl_Widget& w, int idx )
 {
-    Fl_Tree_Item* item = new Fl_Tree_Item( prefs() );
+    if (idx < 0 )
+    {
+        LOG_ERROR( "Index " << idx << " is invalid" );
+        return;
+    }
+
+    Fl_Tree_Item* item = Fl_Tree::insert( root(), w.label(), idx );
     item->widget(&w);
-    Fl_Tree::insert( item, w.label(), idx );
 }
 
 void Browser::replace( int idx, Fl_Widget& w )
 {
+    if (idx < 0 )
+    {
+        LOG_ERROR( "Index " << idx << " is invalid" );
+        return;
+    }
+
     Fl_Tree_Item* item = NULL;
     int i;
     bool found = false;
@@ -85,6 +98,12 @@ void Browser::replace( int idx, Fl_Widget& w )
 
 void Browser::remove( int idx )
 {
+    if (idx < 0 )
+    {
+        LOG_ERROR( "Index " << idx << " is invalid" );
+        return;
+    }
+
     Fl_Tree_Item* item = NULL;
     int i = 0;
     for ( item = first(); item; item = next(item), ++i )
@@ -92,23 +111,31 @@ void Browser::remove( int idx )
         if ( i == idx ) break;
     }
 
-    if (!item) return;
+    if (!item || item == root() ) return;
 
     Fl_Tree::remove( item );
 }
 
-void Browser::add( Fl_Widget* g )
+void Browser::add( Fl_Widget* w )
 {
-    Fl_Tree_Item* i = Fl_Tree::add( g->label(), NULL );
+    Fl_Tree_Item* i = Fl_Tree::add( root(), w->label() );
     if ( i )
     {
-        i->widget( g );
+        i->widget( w );
     }
 }
 
 void Browser::add( Fl_Group* g )
 {
-    Fl_Tree_Item* i = Fl_Tree::add( g->child(0)->label(), NULL );
+    Fl_Tree_Item* i = NULL;
+
+    if ( g->children() )
+        i = Fl_Tree::add( root(), g->child(0)->label() );
+    else
+    {
+        i = Fl_Tree::add( root(), g->label() );
+    }
+
     if ( i )
     {
         i->widget( g );
@@ -118,11 +145,13 @@ void Browser::add( Fl_Group* g )
 void Browser::value( int x )
 {
     //@todo: fltk1.3
+    _value = x;
 }
 
 int Browser::value()
 {
-    return absolute_item_index();
+    //@todo: fltk1.3
+    return _value;
 }
 
 // CHANGE CURSOR
@@ -173,13 +202,14 @@ int Browser::which_col_near_mouse() {
 void Browser::column_labels( const char** labels )
 {
     int i = 0;
-    const char* lbl;
-    Fl_Group* g = new Fl_Group( 0, 0, w(), 20 );
+    const char* lbl = labels[0];
+    Fl_Group* g = new Fl_Group( 0, 0, w(), 20, lbl );
 
     for ( ; lbl; ++i )
     {
         lbl = labels[i];
-        Fl_Box* b = new Fl_Box(0, 0, _column_widths[i], 20 );
+        Fl_Box* b = new Fl_Box(0, 0, 120, 20 );
+        // Fl_Box* b = new Fl_Box(0, 0, _column_widths[i], 20 );
         b->copy_label( lbl );
         g->add( b );
     }
@@ -247,11 +277,12 @@ int Browser::handle(int e)
       }
   } // switch
   if ( _dragging ) return(1);	// dragging? don't pass event to Fl_Browser
-  return(Fl_Tree::handle(e) ? 1 : ret);
+  return Fl_Tree::handle(e);
 }
 
-void Browser::layout() 
+void Browser::layout()
 {
+
   int nchildren = children();
 
 
@@ -295,7 +326,7 @@ void Browser::layout()
     }
 
 
-  for ( int i = 1; i <= nchildren; ++i )
+  for ( int i = 0; i < nchildren; ++i )
     {
       Fl_Widget* c = child(i);
       if ( ! c->as_group() ) continue;
@@ -318,7 +349,7 @@ void Browser::layout()
 
 void Browser::draw() {
   // DRAW BROWSER
-  layout();
+    // layout();
 
   Fl_Tree::draw();
   if (!column_widths()) return;

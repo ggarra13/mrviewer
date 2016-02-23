@@ -27,6 +27,7 @@
 #include "mrViewer.h"
 
 #include "core/mrvI8N.h"
+#include "gui/mrvBrowser.h"
 
 #include "mrvHotkey.h"
 
@@ -330,17 +331,16 @@ struct TableText table[] = {
 };
 
 
-void fill_ui_hotkeys( Fl_Browser* b )
+void fill_ui_hotkeys( mrv::Browser* b )
 {
    if (!b) return;
 
-   // const char* labels[] = { _("Function"), _("Hotkey"), NULL};
-   // b->column_labels( labels );
    const int widths[] = {240, -1, 0};
    b->column_widths( widths );
-   b->column_char( '\t' );
-   b->clear();
-   b->add( _("Function\tHotkey") );
+
+
+   const char* labels[] = { _("Function"), _("Hotkey"), NULL};
+   b->column_labels( labels );
    
 
 
@@ -356,13 +356,15 @@ void fill_ui_hotkeys( Fl_Browser* b )
       unsigned k = h.hotkey.key;
 
       bool special = false;
-      for ( int j = 0; j < 45; ++j )
+      for ( int j = 0; j < sizeof(table)/sizeof(TableText); ++j )
+      {
 	 if ( k == table[j].n )
 	 {
 	    key += table[j].text;
 	    special = true;
 	    break;
 	 }
+      }
 
       if ( !special )
       {
@@ -374,6 +376,7 @@ void fill_ui_hotkeys( Fl_Browser* b )
 	 else
 	 {
 	    if ( h.hotkey.key != 0 ) key += (char) h.hotkey.key;
+
 	    if ( h.hotkey.key == 0 && h.hotkey.text != "" ) 
 	       key += h.hotkey.text;
 	 }

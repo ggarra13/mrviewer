@@ -1635,7 +1635,6 @@ void ImageView::draw()
         _engine->reset_view_matrix();
 
         valid(1);
-
     }
 
 
@@ -1679,7 +1678,6 @@ void ImageView::draw()
   mrv::media bg = background();
   mrv::media fg = foreground();
 
-
   ImageList images;
   images.reserve(2);
 
@@ -1700,10 +1698,10 @@ void ImageView::draw()
        }
     }
 
+  
 
   if ( images.empty() ) return;
 
-  
   _engine->draw_images( images );
 
 
@@ -2844,7 +2842,6 @@ void ImageView::mouseMove(int x, int y)
           break;
   }
 
-
   //
   // Show this pixel as 8-bit fltk color box
   //
@@ -2861,7 +2858,7 @@ void ImageView::mouseMove(int x, int y)
   col[1] = uchar(rgba.g * 255.f);
   col[2] = uchar(rgba.b * 255.f);
 
-  Fl_Color c;
+  Fl_Color c = 255;
   Fl::set_color( c, col[0], col[1], col[2] );
   
   // bug in fltk color lookup? (0 != fltk::BLACK)
@@ -4382,6 +4379,7 @@ void ImageView::channel( unsigned short c )
   }
 
   update_image_info();
+    // @todo: fltk1.3
   update_shortcuts( fg, channelName.c_str() );
 
   oldChannel = channelName;
@@ -4737,14 +4735,14 @@ int ImageView::update_shortcuts( const mrv::media& fg,
     bool group = false;
     std::string x;
     Fl_Menu_Item* g = NULL;
-    Fl_Menu_Item* o = NULL;
+    int o = 0;
 
     for ( ; i != e; ++i, ++idx )
     {
 
         const std::string& name = *i;
 
-        if ( x != _("Alpha") && name.find(x + '.') == 0 )
+        if ( o && x != _("Alpha") && name.find(x + '.') == 0 )
         {
             if ( group )
             {
@@ -4778,9 +4776,8 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             group = true;
             x = name;
 
-            uiColorChannel->add( name.c_str(), 0,
-                                 NULL, NULL,
-                                 FL_SUBMENU );
+            o = uiColorChannel->add( name.c_str(), 0,
+                                     NULL, NULL );
         }
 
         // If name matches root name or name matches full channel name,
@@ -4801,7 +4798,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             if ( shortcut && shortcuts.find( shortcut ) == 
                  shortcuts.end())
             {
-                o->shortcut( shortcut );
+                uiColorChannel->shortcut( o, shortcut );
                 shortcuts.insert( shortcut );
             }
         }
@@ -4836,6 +4833,7 @@ void ImageView::update_layers()
     const char* lbl = uiColorChannel->label();
     if ( strcmp(lbl, _("(no image)")) == 0 ) lbl = _("Color");
 
+    // @todo: fltk1.3
     int v = update_shortcuts( fg, lbl );
 
     if ( v >= 0 )
@@ -4860,7 +4858,6 @@ void ImageView::update_layers()
  */
 void ImageView::foreground( mrv::media fg )
 {
-
     mrv::media old = foreground();
     if ( old == fg ) return;
 

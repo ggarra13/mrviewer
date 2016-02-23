@@ -47,7 +47,7 @@
 #endif
 
 #if defined(WIN32) || defined(WIN64)
-#  include <fltk/win32.h>   // for fltk::getDC()
+#  include <Fl/win32.h>   // for fltk::getDC()
 #endif
 
 #include <GL/glew.h>
@@ -326,9 +326,9 @@ void GLEngine::initialize()
 
   init_textures();
 
-  int argc = 1;
-  static char* args[] = { (char*)"GlEngine", NULL };
-  glutInit( &argc, args );
+  // int argc = 1;
+  // static char* args[] = { (char*)"GlEngine", NULL };
+  // glutInit( &argc, args );
 
 // #if defined(WIN32) || defined(WIN64)
 //   if ( WGLEW_WGL_swap_control )

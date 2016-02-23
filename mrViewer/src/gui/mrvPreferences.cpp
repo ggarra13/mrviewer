@@ -302,8 +302,9 @@ namespace mrv {
 	  }
       }
 
+
     Fl_Preferences base( prefspath().c_str(), "filmaura",
-			    "mrViewer" );
+                         "mrViewer" );
 
     base.get( "version", version, 1 );
 
@@ -472,7 +473,8 @@ namespace mrv {
     Fl_Preferences flu( ui, "file_requester" );
     flu.get("quick_folder_travel", tmp, 1 );
     uiPrefs->uiPrefsFileReqFolder->value( (bool) tmp );
-    Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
+    // @todo: fltk1.3
+    // Flu_File_Chooser::singleButtonTravelDrawer = (bool) tmp;
 
     //
     // playback x
@@ -637,7 +639,7 @@ namespace mrv {
     lut.get("quality", tmpS, "64x64x64", 2047 );
     uiPrefs->uiLUT_quality->value(2);
     int num = uiPrefs->uiLUT_quality->size();
-    for ( int i = 1; i <= num; ++i )
+    for ( int i = 0; i < num; ++i )
       {
 	const char* label = uiPrefs->uiLUT_quality->text(i);
 	if ( strcmp( label, tmpS ) == 0 )
@@ -646,7 +648,6 @@ namespace mrv {
 	  }
       }
 
- 
     {
       Fl_Preferences odt( lut, "ODT" );
       {
@@ -784,6 +785,7 @@ namespace mrv {
     }
 
     // Set the theme and colors for GUI
+    // @todo: fltk1.3
     // scheme = new fltk::StyleSet();
   }
 
@@ -791,7 +793,6 @@ namespace mrv {
   void Preferences::run( ViewerUI* main )
   {
     PreferencesUI* uiPrefs = main->uiPrefs;
-
 
     //
     // Windows
@@ -883,8 +884,10 @@ namespace mrv {
     //
     // Handle file requester
     //
-    Flu_File_Chooser::singleButtonTravelDrawer = (bool)
-    uiPrefs->uiPrefsFileReqFolder->value();
+    
+    // @todo: fltk1.3
+    //Flu_File_Chooser::singleButtonTravelDrawer = (bool)
+    //uiPrefs->uiPrefsFileReqFolder->value();
 
     native_file_chooser = uiPrefs->uiPrefsNativeFileChooser->value();
 
@@ -915,7 +918,6 @@ namespace mrv {
     {
         view->clear_caches();
     }
-
 
 
     //
@@ -984,7 +986,7 @@ namespace mrv {
 
 
     main->uiMain->show(0, NULL);
-    main->uiMain->set_icon();
+//    main->uiMain->set_icon();
     Fl::check();
 
 
@@ -1026,7 +1028,6 @@ namespace mrv {
 
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
-
 
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
@@ -1148,8 +1149,10 @@ namespace mrv {
     flu.set("quick_folder_travel", 
 	    uiPrefs->uiPrefsFileReqFolder->value());
     
-    Flu_File_Chooser::singleButtonTravelDrawer = 
-    uiPrefs->uiPrefsFileReqFolder->value();
+    
+    // @todo: fltk1.3
+    //Flu_File_Chooser::singleButtonTravelDrawer = 
+    //uiPrefs->uiPrefsFileReqFolder->value();
 
     //
     // playback prefs
