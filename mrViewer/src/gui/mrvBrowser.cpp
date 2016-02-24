@@ -362,8 +362,8 @@ void Browser::draw() {
   // @todo: fltk1.3
   // Rectangle r( w(), h() );
   // box()->inset(r);
-  int X = 0;
-  int Y = 0;
+  int X = x();
+  int Y = y();
   int W = w();
   int H = h();
   // @todo: fltk1.3

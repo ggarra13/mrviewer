@@ -52,17 +52,16 @@ effect to the widget.
 #include <mrvPopupMenu.h>
 #include <FL/Enumerations.H>
 #include <FL/fl_draw.H>
+#include <FL/Fl.H>
 #include <FL/Fl_Menu_Item.H>
+#include <FL/Fl_Menu_Button.H>
 
-#include <iostream>
 
 
-extern Fl_Widget* fl_did_clipping;
 
 namespace mrv {
 
-static mrv::PopupMenu* pushed;
-
+static Fl_Menu_Button	*pressed_menu_button_ = 0;
 
 /*! The little down-arrow indicator can be replaced by setting a new
   glyph() function and making it draw whatever you want.
@@ -70,44 +69,19 @@ static mrv::PopupMenu* pushed;
   subclass and replace draw() with your own function.
 */
 void PopupMenu::draw() {
-    Fl_Menu_Button::draw();
-
-#if 0
-  if (type()&7) { // draw nothing for the popup types
-    fl_did_clipping = this;
-    return;
-  }
-  // set_item() does not cause a redraw:
-  if (damage() == DAMAGE_VALUE) return;
-
-  Box* box = this->buttonbox();
-  if (!box->fills_rectangle()) draw_background();
-  Flags flags = this->flags()|OUTPUT;
-  if (mrv::pushed == this) flags |= PUSHED|HIGHLIGHT;
-  drawstyle(style(), flags);
-  Rectangle r(w(),h());
-  box->draw(r);
-  Rectangle r1(r); box->inset(r1);
-  // draw the little mark at the right:
-
-  if ( _enable_glyph )
-  {
-      box->inset(r);
-      int w1 = r.h();
-      r.move_r(-r.h());
-      r.x(r.r()); r.w(w1);
-      const Color saved_color = getcolor();
-      setcolor(fltk::GRAY35);
-      draw_glyph(ALIGN_BOTTOM, r);
-      //  draw_glyph(ALIGN_BOTTOM, x+w-w1, y, w1, h, flags);
-      setcolor(saved_color);
-  }
-
-  draw_label(r1, flags);
-
-
-  box->draw_symbol_overlay(r);
-#endif
+  if (!box() || type()) return;
+  int H = (labelsize()-3)&-2;
+  int X = x()+w()-H-Fl::box_dx(box())-Fl::box_dw(box())-1;
+  int Y = y()+(h()-H)/2;
+  draw_box(pressed_menu_button_ == this ? fl_down(box()) : box(), color());
+  draw_label(x()+Fl::box_dx(box()), y(), X-x()+2, h());
+  if (Fl::focus() == this) draw_focus();
+  // ** if (box() == FL_FLAT_BOX) return; // for XForms compatibility
+  if ( !_enable_glyph ) return;
+  fl_color(active_r() ? FL_DARK3 : fl_inactive(FL_DARK3));
+  fl_line(X+H/2, Y+H, X, Y, X+H, Y);
+  fl_color(active_r() ? FL_LIGHT3 : fl_inactive(FL_LIGHT3));
+  fl_line(X+H, Y, X+H/2, Y+H);
 
 }
 

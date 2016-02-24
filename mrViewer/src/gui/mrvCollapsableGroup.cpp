@@ -83,7 +83,7 @@ namespace mrv {
     _button = new Fl_Button( r.x(), r.y(), r.w(), 20 );
     _button->align( FL_ALIGN_LEFT| FL_ALIGN_INSIDE | FL_ALIGN_TOP );
     _button->labelsize( 16 );
-    _button->box( FL_NO_BOX );
+    _button->box( FL_FLAT_BOX );
 
     char buf[256];
     sprintf( buf, "  @Cb55@-22>@n %s", l );
@@ -92,6 +92,7 @@ namespace mrv {
 
     // @todo: fltk1.3
     // _button->box()->inset(r);
+
 
     _contents = new Fl_Pack( r.x(), r.y() + 20, r.w(), 20 );
 
@@ -137,11 +138,13 @@ namespace mrv {
     // box()->inset(r);
 
     int H = 2;
+
+    _contents->init_sizes();
+
     if ( _contents->visible() ) H += _contents->h() + 12;
 
     resize( 0, 0, w(), H + child(0)->h() );
 
-    init_sizes();
 
     Fl_Group::draw();
   }

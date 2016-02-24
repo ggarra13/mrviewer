@@ -126,7 +126,8 @@ namespace mrv {
 
 #if 1
       // Fl_Shared_Image::add_handler( thumbImage::create );
-      _thumbnail = Fl_Shared_Image::get( _image->fileroot(), w, h );
+      uchar* ptr = new uchar[ w*h*3 ]; 
+      _thumbnail = new Fl_RGB_Image( ptr, w, h, 3 );//Fl_Shared_Image::get( _image->fileroot(), w, h );
 
       if ( !_thumbnail )
       {
@@ -140,12 +141,11 @@ namespace mrv {
       // _thumbnail->setsize( w, h );
  
 
-      const char* const* ptr = _thumbnail->data(); 
-      if (!ptr )
-	{
-            IMG_ERROR( _("Could not allocate thumbnail buffer") );
-            return;
-	}
+      // if (!ptr )
+      //   {
+      //       IMG_ERROR( _("Could not allocate thumbnail buffer") );
+      //       return;
+      //   }
 
 
       // fltk::PixelType pixeltype = _thumbnail->buffer_pixeltype();
@@ -172,8 +172,7 @@ namespace mrv {
 	      uchar r = (uchar)(Imath::clamp(fp.r, 0.f, 1.f) * 255.0f);
 	      uchar g = (uchar)(Imath::clamp(fp.g, 0.f, 1.f) * 255.0f);
 	      uchar b = (uchar)(Imath::clamp(fp.b, 0.f, 1.f) * 255.0f);
-              uchar* p = (uchar*) *ptr;
-	      thumbnail_pixel( p, r, g, b );
+	      thumbnail_pixel( ptr, r, g, b );
 	    }
 	}
 

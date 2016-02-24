@@ -158,12 +158,21 @@ namespace mrv
     CMedia*   img;
 
     Fl_Button*                   m_button;
+#if 1
+    Fl_Group*       m_image;
+    Fl_Group*       m_video;
+    Fl_Group*       m_audio;
+    Fl_Group*       m_subtitle;
+    Fl_Group*       m_iptc;
+    Fl_Group*       m_exif;
+#else
     mrv::CollapsableGroup*       m_image;
     mrv::CollapsableGroup*       m_video;
     mrv::CollapsableGroup*       m_audio;
     mrv::CollapsableGroup*       m_subtitle;
     mrv::CollapsableGroup*       m_iptc;
     mrv::CollapsableGroup*       m_exif;
+#endif
 
     Fl_Pack* m_all;
     Fl_Pack* m_main;
