@@ -298,7 +298,8 @@ class ImageInfoUI {} {
   }
 } 
 
-class AboutUI {} {
+class AboutUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -309,8 +310,7 @@ class AboutUI {} {
     } {
       Fl_Tabs {} {
         user_data main user_data_type {ViewerUI*}
-        callback {v->uiAbout->uiGPUInfo->clear();
-v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
+        callback {} open
         xywh {4 4 441 391}
       } {
         Fl_Group {} {
@@ -325,7 +325,7 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
         }
         Fl_Group {} {
           label HW open
-          xywh {0 20 440 371} hide
+          xywh {0 20 440 371}
         } {
           Fl_Text_Display uiCPUInfo {
             label {CPU Information}
@@ -334,15 +334,17 @@ v->uiAbout->uiGPUInfo->add( mrv::gpu_information( v ).c_str() );} open
             code1 {o->buffer()->text( mrv::cpu_information().c_str() );}
           }
           Fl_Browser uiGPUInfo {
-            label {GPU Information}
-            xywh {20 175 415 205}
-            code0 {static int widths[] = {
+            label {GPU Information} selected
+            xywh {20 175 415 205} align 1
+            code0 {o->clear();
+static int widths[] = {
 160,
 o->w()-160,
 0
 };
 o->column_widths( widths );
-o->value(-1);}
+o->value(-1);
+o->add( mrv::gpu_information( main ).c_str() );}
             class {mrv::Browser}
           }
         }
@@ -419,7 +421,7 @@ o->value(-1);}
         }
         Fl_Group {} {
           label {Motion Estimation Methods} open
-          xywh {4 24 445 370}
+          xywh {4 24 445 370} hide
         } {
           Fl_Browser {} {
             xywh {19 39 415 345}
@@ -2488,8 +2490,7 @@ else
   }
 } 
 
-class ViewerUI {open
-} {
+class ViewerUI {} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -2518,7 +2519,7 @@ class ViewerUI {open
   }
   decl {EDLWindowUI* uiEDLWindow;} {public local
   }
-  Function {make_window()} {open private
+  Function {make_window()} {private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
@@ -3462,8 +3463,7 @@ mrv::Preferences prefs( uiPrefs );
 
 //uiHotkey = new HotkeyUI(this);
 //uiICCProfiles = new ICCProfileListUI(this);
-//uiEDLWindow = new EDLWindowUI(this);} {selected
-    }
+//uiEDLWindow = new EDLWindowUI(this);} {}
   }
   Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}

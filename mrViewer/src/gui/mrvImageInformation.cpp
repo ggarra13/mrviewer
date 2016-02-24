@@ -173,7 +173,7 @@ void change_stereo_image( Fl_Button* w, mrv::ImageInformation* info )
     //   resizable( m_all );  // this seems broken, that's why I redo layout
     end();
 
-    // hide_tabs();
+    hide_tabs();
 
   }
 

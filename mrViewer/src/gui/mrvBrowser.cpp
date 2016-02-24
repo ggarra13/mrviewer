@@ -43,132 +43,56 @@ namespace mrv
 {
 
   Browser::Browser( int x, int y, int w, int h, const char* l ) :
-  Fl_Tree( x, y, w, h, l ),
-  _value( -1 ),
+  Fl_Table( x, y, w, h, l ),
+  _column_labels( NULL ),
   _column_widths( NULL ),
-  _column_headers( NULL ),
+  _value( -1 ),
   _column_separator_color( FL_BLACK ),
-  _last_cursor( FL_CURSOR_DEFAULT ),
   _column_separator( true ),
   _dragging ( false ),
   _auto_resize( false )
 {
-    showroot( 0 );
+    col_header(1);
+    col_resize(1);
+    col_header_height(25);
+    row_header(0);
+    row_resize(1);
+    end();
 }
 
-
-void Browser::insert( Fl_Widget& w, int idx )
+void Browser::column_widths( const int* w )
 {
-    if (idx < 0 )
+    int idx = 0;
+    while ( *w != 0 )
     {
-        LOG_ERROR( "Index " << idx << " is invalid" );
-        return;
+        col_width( idx, *w );
+        ++w; ++idx;
     }
+}
 
-    Fl_Tree_Item* item = Fl_Tree::insert( root(), w.label(), idx );
-    item->widget(&w);
+void Browser::add( Fl_Widget* w )
+{ 
+    if (w) Fl_Table::add(w);
+ }
+
+void Browser::add( const char* t )
+{
+    Fl_Group* g = new Fl_Group( 0, 0, col_width(0), 20, t );
+    add( g );
 }
 
 void Browser::replace( int idx, Fl_Widget& w )
 {
-    if (idx < 0 )
-    {
-        LOG_ERROR( "Index " << idx << " is invalid" );
-        return;
-    }
+    if ( idx < 0 || idx >= children() ) return;
 
-    Fl_Tree_Item* item = NULL;
-    int i;
-    bool found = false;
-    for ( item = first(); item; item = next(item), ++i )
-    {
-        if ( i == idx ) {
-            found = true;
-            break;
-        }
-    }
-
-    if ( !found )
-    {
-        LOG_ERROR( "Widget index not in Browser" );
-        return;
-    }
-
-    item->widget( &w );
-    redraw();
+    Fl_Table::remove( *child(idx) );
+    Fl_Table::insert( w, idx );
 }
 
-void Browser::remove( int idx )
-{
-    if (idx < 0 )
-    {
-        LOG_ERROR( "Index " << idx << " is invalid" );
-        return;
-    }
 
-    Fl_Tree_Item* item = NULL;
-    int i = 0;
-    for ( item = first(); item; item = next(item), ++i )
-    {
-        if ( i == idx ) break;
-    }
 
-    if (!item || item == root() ) return;
 
-    Fl_Tree::remove( item );
-}
 
-void Browser::add( Fl_Widget* w )
-{
-    Fl_Tree_Item* i = Fl_Tree::add( root(), w->label() );
-    if ( i )
-    {
-        i->widget( w );
-    }
-}
-
-void Browser::add( Fl_Group* g )
-{
-    Fl_Tree_Item* i = NULL;
-
-    if ( g->children() )
-        i = Fl_Tree::add( root(), g->child(0)->label() );
-    else
-    {
-        i = Fl_Tree::add( root(), g->label() );
-    }
-
-    if ( i )
-    {
-        i->widget( g );
-    }
-}
-
-void Browser::value( int x )
-{
-    //@todo: fltk1.3
-    _value = x;
-}
-
-int Browser::value()
-{
-    //@todo: fltk1.3
-    return _value;
-}
-
-// CHANGE CURSOR
-//     Does nothing if cursor already set to value specified.
-//
-void Browser::change_cursor(Fl_Cursor newcursor) {
-  if ( newcursor != _last_cursor ) {
-      Fl_Widget* g = parent();
-      for ( ; g->as_window() ; g = g->parent() )
-          ;
-      Fl_Window* w = (Fl_Window*) g;
-      w->cursor(newcursor);
-      _last_cursor = newcursor;
-  }
-}
 // RETURN THE COLUMN MOUSE IS 'NEAR'
 //     Returns -1 if none.
 //
@@ -185,8 +109,7 @@ int Browser::which_col_near_mouse() {
   if (!widths) return -1;
 
   // @todo: fltk1.3
-  // int mousex = Fl::event_x() + xposition();
-  int mousex = Fl::event_x();
+  int mousex = Fl::event_x() + hscrollbar->value();
   int colx = 0;
   for ( int t=0; widths[t]; t++ ) {
     colx += widths[t];
@@ -201,28 +124,58 @@ int Browser::which_col_near_mouse() {
   return(-1);
 }
 
-void Browser::column_labels( const char** labels )
+void Browser::draw_cell( TableContext context, int R, int C,
+                         int X, int Y, int W, int H)
 {
-    int i = 0;
-    const char* lbl = labels[0];
-    Fl_Group* g = new Fl_Group( 0, 0, w(), 20, lbl );
-
-    for ( ; lbl; ++i )
-    {
-        lbl = labels[i];
-        Fl_Box* b = new Fl_Box(0, 0, 120, 20 );
-        // Fl_Box* b = new Fl_Box(0, 0, _column_widths[i], 20 );
-        b->copy_label( lbl );
-        g->add( b );
-    }
-    add( g );
+    std::cerr << "draw cell " << R << " " << C << std::endl;
+       static char s[40];
+       sprintf(s, "%d/%d", R, C);              // text for each cell
+       switch ( context ) {
+	   case CONTEXT_STARTPAGE:             // Fl_Table telling us its starting to draw page
+               std::cerr << "startpage" << std::endl;
+	       fl_font(FL_HELVETICA, 16);
+	       return;
+       
+	   case CONTEXT_ROW_HEADER:            // Fl_Table telling us it's draw row/col headers
+	   case CONTEXT_COL_HEADER:
+	       fl_push_clip(X, Y, W, H);
+	       {
+		   fl_draw_box(FL_THIN_UP_BOX, X, Y, W, H, color());
+		   fl_color(FL_BLACK);
+		   fl_draw( _column_labels[C], X, Y, W, H, FL_ALIGN_CENTER);
+	       }
+	       fl_pop_clip();
+	       return;
+	   
+	   case CONTEXT_CELL:                  // Fl_Table telling us to draw cells
+	       fl_push_clip(X, Y, W, H);
+	       {
+		   // BG COLOR
+		   fl_color( value() == R ? selection_color() : FL_WHITE);
+		   fl_rectf(X, Y, W, H);
+		   
+		   // TEXT
+		   fl_color(FL_BLACK);
+		   fl_draw(s, X, Y, W, H, FL_ALIGN_CENTER);
+		   
+		   // BORDER
+		   fl_color(FL_LIGHT2);
+		   fl_rect(X, Y, W, H);
+	       }
+	       fl_pop_clip();
+	       return;
+	   
+       default:
+	   return;
+       }
 }
+
 
 // MANAGE EVENTS TO HANDLE COLUMN RESIZING
 int Browser::handle(int e)
 {
   // Not showing column separators? Use default Fl_Browser::handle() logic
-  if ( ! column_separator() ) return(Fl_Tree::handle(e));
+  if ( ! column_separator() ) return(Fl_Table::handle(e));
   // Handle column resizing
   int ret = 0;
   switch ( e ) {
@@ -279,81 +232,81 @@ int Browser::handle(int e)
       }
   } // switch
   if ( _dragging ) return(1);	// dragging? don't pass event to Fl_Browser
-  return Fl_Tree::handle(e);
+  return Fl_Table::handle(e);
 }
 
-void Browser::layout()
-{
+// void Browser::layout()
+// {
 
-  int nchildren = children();
-
-
-  if ( _auto_resize )
-    {
-      int hh = 24;
-      int nchildren = children();
-      for ( int i = 1; i <= nchildren; ++i )
-	{
-	  Fl_Widget* c = child(i);;
-	  hh += c->h();
-	}
-
-      resize( x(), y(), w(), hh );
-    }
+//   int nchildren = children();
 
 
-  int* widths = (int*) column_widths();
-  if (!widths) return;
+//   if ( _auto_resize )
+//     {
+//       int hh = 24;
+//       int nchildren = children();
+//       for ( int i = 1; i <= nchildren; ++i )
+// 	{
+// 	  Fl_Widget* c = child(i);;
+// 	  hh += c->h();
+// 	}
 
-  // If widget is set to resizable, resize all columns equally,
-  // unless one column width is set to -1
-  if ( resizable() == this )
-    {
-      int sum = 0;
-      int*  c;
-      for ( c = widths; *c != 0; ++c )
-	{
-	  if ( *c < 0 ) { sum = 0; break; }
-	  sum += *c;
-	}
+//       resize( x(), y(), w(), hh );
+//     }
+
+
+//   int* widths = (int*) column_widths();
+//   if (!widths) return;
+
+//   // If widget is set to resizable, resize all columns equally,
+//   // unless one column width is set to -1
+//   if ( resizable() == this )
+//     {
+//       int sum = 0;
+//       int*  c;
+//       for ( c = widths; *c != 0; ++c )
+// 	{
+// 	  if ( *c < 0 ) { sum = 0; break; }
+// 	  sum += *c;
+// 	}
       
-      if ( sum > 0 )
-	{
-	  for ( c = widths; *c != 0; ++c )
-	    {
-	      int W = int( w() * ( (float) *c / (float) sum ) );
-	      *c = W;
-	    }
-	}
-    }
+//       if ( sum > 0 )
+// 	{
+// 	  for ( c = widths; *c != 0; ++c )
+// 	    {
+// 	      int W = int( w() * ( (float) *c / (float) sum ) );
+// 	      *c = W;
+// 	    }
+// 	}
+//     }
 
 
-  for ( int i = 0; i < nchildren; ++i )
-    {
-      Fl_Widget* c = child(i);
-      if ( ! c->as_group() ) continue;
+//   for ( int i = 0; i < nchildren; ++i )
+//     {
+//       Fl_Widget* c = child(i);
+//       if ( ! c->as_group() ) continue;
 
-      Fl_Group* g  = (Fl_Group*) c;
+//       Fl_Group* g  = (Fl_Group*) c;
 
-      int columns = g->children();
-      int x = 0;
-      for ( int j = 0; j < columns; ++j )
-	{
-	  c = g->child(j);
-	  int W = widths[j];
-	  if ( W == -1 ) W = w() - x;
-	  c->resize( x, c->y(), W, c->h() );
-	  x += W;
-	}
-    }
+//       int columns = g->children();
+//       int x = 0;
+//       for ( int j = 0; j < columns; ++j )
+// 	{
+// 	  c = g->child(j);
+// 	  int W = widths[j];
+// 	  if ( W == -1 ) W = w() - x;
+// 	  c->resize( x, c->y(), W, c->h() );
+// 	  x += W;
+// 	}
+//     }
 
-}
+// }
 
 void Browser::draw() {
   // DRAW BROWSER
     // layout();
 
-  Fl_Tree::draw();
+  Fl_Table::draw();
   if (!column_widths()) return;
 
   if (!column_separator() ) return;
@@ -421,18 +374,23 @@ void Browser::draw() {
   //   return idx;
   // }
 
-  int Browser::absolute_item_index()
+  int Browser::absolute_item_index( const Fl_Widget* w )
   {
-      Fl_Tree_Item* i = first_selected_item();
-      if ( i == NULL ) return -1;
+      int i = 0;
+      int idx;
+      for ( i = 0; i < children(); ++i, ++idx )
+      {
+          if ( w == child(i) ) break;
 
-      int idx = 0;
-      bool found = false;
-      for ( Fl_Tree_Item *item = first(); item; item = next(item), ++idx ) {
-          if ( i == item ) { found = true; break; }
-          for ( int j = 0; j < item->children(); ++j, ++idx )
+          if ( child(i)->as_group() )
           {
-              if ( i == item->child(j) ) { found = true; break; }
+              bool found = false;
+              Fl_Group* g = (Fl_Group*) child(i);
+              for (int j = 0; j < g->children(); ++j, ++idx )
+              {
+                  if ( g->child(j) == w ) { found = true; break; }
+              }
+              if ( found ) break;
           }
       }
 

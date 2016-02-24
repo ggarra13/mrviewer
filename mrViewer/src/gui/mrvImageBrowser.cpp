@@ -905,7 +905,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
 
-    mrv::Browser::remove( idx );
+    mrv::Browser::remove( *child(idx) );
 
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
@@ -963,7 +963,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
 
     int idx = (int) (i - reel->images.begin());
-    mrv::Browser::remove( idx );
+    mrv::Browser::remove( *child(idx) );
 
     reel->images.erase( i );
 
@@ -1954,7 +1954,7 @@ void ImageBrowser::load( const stringArray& files,
     size_t num = reel->images.size();
     for ( i = 0; i < num; ++i )
       {
-          mrv::Browser::remove( 0 );
+          mrv::Browser::remove( *child(0) );
           this->remove( reel->images[0] );
       }
 
@@ -2001,8 +2001,8 @@ void ImageBrowser::load( const stringArray& files,
   {
     if ( ! m ) return;
 
-    Fl_Tree_Item* ow = this->find_item( m->image()->filename() );
-    if (ow && ow->widget() ) ow->widget()->redraw();
+    Fl_Widget* ow = this->child( this->value() );
+    if (ow ) ow->redraw();
   }
 
 

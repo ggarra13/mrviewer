@@ -143,7 +143,7 @@ namespace mrv {
      Fl_Wizard* uiWizard = prefs->uiWizard;
      if (uiWizard == NULL ) return;
 
-    int wizard_index = absolute_item_index();
+     int wizard_index = value();  //@todo: fltk1.3 was absolute_item_index
 
     if ( wizard_index < 0 || wizard_index >= uiWizard->children() )
        return;

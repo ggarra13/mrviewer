@@ -3722,6 +3722,7 @@ void ImageView::toggle_fullscreen()
     }
   else
     { 
+        fltk_main()->fullscreen_off();
         resize_main_window();
     }
 
@@ -3782,7 +3783,7 @@ void ImageView::toggle_presentation()
 #else
       fltk_main()->fullscreen();
 
-#if 1
+#if 0
       // @todo: fltk1.3
       // const fltk::Monitor& m = fltk::Monitor::all();
       int X, Y, W, H;
@@ -3812,9 +3813,9 @@ void ImageView::toggle_presentation()
       if ( has_bottom_bar)  uiMain->uiBottomBar->show();
       if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
-#ifdef LINUX
-      fltk_main()->hide();  // @bug: window decoration is missing otherwise
-#endif
+// #ifdef LINUX
+//       fltk_main()->hide();  // @bug: window decoration is missing otherwise
+// #endif
       resize_main_window();
     }
 
