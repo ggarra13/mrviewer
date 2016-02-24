@@ -18,18 +18,18 @@
 
 #include "FLU/flu_export.h"
 
-FLU_EXPORT extern const char* monalisa_xpm[];
-FLU_EXPORT extern const char* filedetails_xpm[];
-FLU_EXPORT extern const char* filelist_xpm[];
-FLU_EXPORT extern const char* filelistwide_xpm[];
-FLU_EXPORT extern const char* bighome_xpm[];
-FLU_EXPORT extern const char* folder_favorite_xpm[];
-FLU_EXPORT extern const char* bigfavorites_xpm[];
-FLU_EXPORT extern const char* desktop_xpm[];
-FLU_EXPORT extern const char* bigtemporary_xpm[];
-FLU_EXPORT extern const char* bigdocuments_xpm[];
-FLU_EXPORT extern const char* mini_folder_favorites_xpm[];
-FLU_EXPORT extern const char* mini_desktop_xpm[];
-FLU_EXPORT extern const char* my_computer_xpm[];
+FLU_EXPORT extern char* monalisa_xpm[];
+FLU_EXPORT extern char* filedetails_xpm[];
+FLU_EXPORT extern char* filelist_xpm[];
+FLU_EXPORT extern char* filelistwide_xpm[];
+FLU_EXPORT extern char* bighome_xpm[];
+FLU_EXPORT extern char* folder_favorite_xpm[];
+FLU_EXPORT extern char* bigfavorites_xpm[];
+FLU_EXPORT extern char* desktop_xpm[];
+FLU_EXPORT extern char* bigtemporary_xpm[];
+FLU_EXPORT extern char* bigdocuments_xpm[];
+FLU_EXPORT extern char* mini_folder_favorites_xpm[];
+FLU_EXPORT extern char* mini_desktop_xpm[];
+FLU_EXPORT extern char* my_computer_xpm[];
 
 #endif

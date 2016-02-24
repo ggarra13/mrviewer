@@ -16,29 +16,35 @@
 #ifndef _FLU_COMBO_TREE_H
 #define _FLU_COMBO_TREE_H
 
-#include <fltk/InputBrowser.h>
+#include "FLU/Flu_Combo_Box.h"
+#include "FLU/Flu_Tree_Browser.h"
 
-#include <FLU/Flu_Enumerations.h>
-
-//! @todo: Just like the fltk::InputBrowser widget except branches of the tree
-//! can be selected.
-class FLU_EXPORT Flu_Combo_Tree : public fltk::InputBrowser
+//! Just like the Fl_Choice widget except the input area is editable and it can display a tree instead of a list (using Flu_Tree_Browser)
+class FLU_EXPORT Flu_Combo_Tree : public Flu_Combo_Box
 {
 
 public:
+
   //! Normal FLTK widget constructor
   Flu_Combo_Tree( int x, int y, int w, int h, const char *l = 0 );
 
-  virtual ~Flu_Combo_Tree() {};
+  //! Default destructor
+  ~Flu_Combo_Tree();
 
+  //! Publicly exposed tree widget (instance of Flu_Tree_Browser)
+  Flu_Tree_Browser tree;
 
-  virtual int popup(int x, int y, int w, int h);
+ protected:
 
-  void value(int i) { fltk::InputBrowser::value(i); }
-  int  value();
+  bool _value( const char *v );
+  const char* _next();
+  const char* _previous();
+  void _hilight( int x, int y );
 
-protected:
-  void popup();
+  inline static void _cb( Fl_Widget *w, void *arg )
+    { ((Flu_Combo_Tree*)arg)->cb(); }
+  void cb();
+
 };
 
 #endif

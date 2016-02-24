@@ -1736,7 +1736,7 @@ void ImageBrowser::load( const stringArray& files,
 	    loadlist.push_back( mrv::LoadInfo( fileroot, start, end ) );
 	  }
 
-	retname = file;
+	// retname = file;
       }
 
     load( loadlist, stereo, progress );

@@ -172,11 +172,17 @@ SET( SOURCES
  # # db/mrvPostgreSQL.cpp
  #  #   #db/mrvMySQL.cpp # unneeded
 
- #  gui/FLU/Flu_Combo_Box.cpp      # needed?
- #  gui/FLU/Flu_Combo_Tree.cpp     # needed?
- #  gui/FLU/flu_file_chooser_pixmaps.cpp  
- #  gui/FLU/Flu_Wrap_Group.cpp 
- #  gui/FLU/Flu_File_Chooser.cpp  
+ ../gui/FLU/Flu_Combo_Box.cpp      # needed?
+ ../gui/FLU/Flu_Combo_Tree.cpp     # needed?
+ ../gui/FLU/Flu_Combo_List.cpp     # needed?
+ ../gui/FLU/Flu_Separator.cpp     # needed?
+ ../gui/FLU/Flu_Tree_Browser.cpp     # needed?
+ ../gui/FLU/FluSimpleString.cpp
+ ../gui/FLU/Flu_Button.cpp
+ ../gui/FLU/Flu_Label.cpp
+ ../gui/FLU/flu_file_chooser_pixmaps.cpp  
+ ../gui/FLU/Flu_Wrap_Group.cpp 
+ ../gui/FLU/Flu_File_Chooser.cpp  
  ../gui/FLU/flu_pixmaps.cpp               
  #  gui/FLU/GridGroup.cpp
  #  #   #   FLU/Flu_Combo_List.cpp # unneeded

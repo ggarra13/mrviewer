@@ -13,19 +13,19 @@
 
 
 
-#include <cstdio>
-#include <cstring>
-#include <cstdlib>
-
-#include <fltk/draw.h>
-#include <fltk/events.h>
+#include <stdio.h>
+#include <FL/Fl.H>
+#include <FL/fl_draw.H>
+#include <string.h>
+#include <stdlib.h>
+#include <FL/math.h>
 
 #include "FLU/Flu_Combo_List.h"
 
 Flu_Combo_List :: Flu_Combo_List( int X, int Y, int W, int H, const char* l )
   : Flu_Combo_Box( X, Y, W, H, l ), list(0,0,0,0)
 {
-  list.box( fltk::FLAT_BOX );
+  list.box( FL_FLAT_BOX );
   list.callback( _cb, this );
   set_combo_widget( &list );
 }
@@ -49,14 +49,14 @@ void Flu_Combo_List :: _hilight( int x, int y )
       if( x > list.x() && y > list.y() &&
 	  x < (list.x()+list.w()-list.scrollbar.w()) &&
 	  y < (list.y()+list.h()) )
-	list.handle( fltk::DRAG );
+	list.handle( FL_DRAG );
     }
   else
     {
       if( x > list.x() && y > list.y() &&
 	  x < (list.x()+list.w()) &&
 	  y < (list.y()+list.h()) )
-	list.handle( fltk::DRAG );
+	list.handle( FL_DRAG );
     }
 }
 

@@ -13,37 +13,36 @@
 
 
 
-#include <cstdio>
-#include <fltk/draw.h>
-#include <cstring>
-#include <cstdlib>
-
-#include <fltk/Cursor.h>
-#include <fltk/Symbol.h>
-#include <fltk/events.h>
-#include <fltk/run.h>
+#include <stdio.h>
+#include <FL/Fl.H>
+#include <FL/fl_draw.H>
+#include <string.h>
+#include <stdlib.h>
+#include <FL/math.h>
 
 #include "FLU/Flu_Combo_Box.h"
 
-Flu_Combo_Box::Flu_Combo_Box( int X, int Y, int W, int H, const char* l )
-  : fltk::Group( X, Y, W, H, l ), input( X, Y, W, H )
+Flu_Combo_Box :: Flu_Combo_Box( int X, int Y, int W, int H, const char* l )
+  : Fl_Group( X, Y, W, H, l ), input( X, Y, W, H )
 {
-  box( fltk::DOWN_BOX );
-  align( fltk::ALIGN_LEFT );
+  box( FL_DOWN_BOX );
+  align( FL_ALIGN_LEFT );
   pop_height( 100 );
 
   _cbox = NULL;
-  _valbox = fltk::UP_BOX;
+  _valbox = FL_UP_BOX;
 
   input_callback( NULL );
-  input.box( fltk::FLAT_BOX );
+  input.box( FL_FLAT_BOX );
   input.callback( input_cb, this );
-  input.when( fltk::WHEN_ENTER_KEY_ALWAYS );
-  input.selection_color( fltk::WHITE );
-  input.textfont( fltk::HELVETICA );
+  input.when( FL_WHEN_ENTER_KEY_ALWAYS );
+  input.color( FL_WHITE, selection_color());
+  input.textfont( FL_HELVETICA );
+  input.textsize(  FL_NORMAL_SIZE );
+  input.textcolor( FL_FOREGROUND_COLOR );
 
-  input.resize( X + box()->dx(), Y + box()->dy(), 
-		W-18-box()->dw(), H - box()->dh() );
+  input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()), 
+		W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
 
   editable( true );
 
@@ -54,18 +53,18 @@ Flu_Combo_Box::~Flu_Combo_Box()
 {
 }
 
-void Flu_Combo_Box::set_combo_widget( fltk::Widget *w )
+void Flu_Combo_Box :: set_combo_widget( Fl_Widget *w )
 {
   _cbox = w;
   this->add( w );
 }
 
-void Flu_Combo_Box::input_cb( fltk::Widget*, void* v )
+void Flu_Combo_Box :: input_cb( Fl_Widget*, void* v )
 {
   // taken from Fl_Counter.cxx
   Flu_Combo_Box& t = *(Flu_Combo_Box*)v;
 
-  if( strcmp( t.input.value(), t.value() )!=0 || t.input.when() & fltk::WHEN_NOT_CHANGED)
+  if( strcmp( t.input.value(), t.value() )!=0 || t.input.when() & FL_WHEN_NOT_CHANGED)
     {
       if( t.when() )
 	{
@@ -82,68 +81,64 @@ void Flu_Combo_Box::input_cb( fltk::Widget*, void* v )
     }
 }
 
-void Flu_Combo_Box::resize( int X, int Y, int W, int H )
+void Flu_Combo_Box :: resize( int X, int Y, int W, int H )
 {
-  fltk::Group::resize( X, Y, W, H );
-  input.resize( X+ box()->dx(), Y + box()->dy(), 
-		W-18-box()->dw(), H - box()->dh() );
+  Fl_Group::resize( X, Y, W, H );
+  input.resize( X+Fl::box_dx(box()), Y+Fl::box_dy(box()), 
+		W-18-Fl::box_dw(box()), H-Fl::box_dh(box()) );
 }
 
-void Flu_Combo_Box::draw()
+void Flu_Combo_Box :: draw()
 {
   int W = 18, H = h()-4;
   int X = x()+w()-W-2, Y = y()+2;
 
-  draw_box();
+  fl_draw_box( box(), x(), y(), w(), h(), color() );
 
   // draw the arrow button
-  _valbox->draw( fltk::Rectangle( X, Y, W, H ) );
-  fltk::color( active_r() ? color() : fltk::inactive(color()) );
-  fltk::addvertex( X+W/2-5, Y+H/2-2 );
-  fltk::addvertex( X+W/2+3, Y+H/2-2 );
-  fltk::addvertex( X+W/2-1, Y+H/2+2 );   
-  fltk::fillpath();
+  fl_draw_box( (Fl_Boxtype)_valbox, X, Y, W, H, color() );
+  fl_color( active_r() ? FL_FOREGROUND_COLOR : fl_inactive(FL_FOREGROUND_COLOR) );
+  fl_polygon( X+W/2-5, Y+H/2-2, X+W/2+3, Y+H/2-2, X+W/2-1, Y+H/2+2 );
 
   draw_child( input );
-  if( fltk::focus() == this )
-    box()->draw_symbol_overlay( fltk::Rectangle( input.x(), input.y(), 
-						 input.w(), input.h() ) );
+  if( Fl::focus() == this )
+    draw_focus( FL_NO_BOX, input.x(), input.y(), input.w(), input.h() );
 }
 
-int global_x( fltk::Widget *w )
+int global_x( Fl_Widget *w )
 {
-  int x = w->x();
-  fltk::Widget *o = w->parent();
+  int x = Fl::x()+w->x();
+  Fl_Widget *o = w->parent();
   while( o )
     {
-      x += o->x();
+      if( o->type() >= FL_WINDOW ) x += o->x();
       o = o->parent();
     }
   return x;
 }
 
-int global_y( fltk::Widget *w )
+int global_y( Fl_Widget *w )
 {
-  int y = w->y();
-  fltk::Widget *o = w->parent();
+  int y = Fl::y()+w->y();
+  Fl_Widget *o = w->parent();
   while( o )
     {
-      y += o->y();
+      if( o->type() >= FL_WINDOW ) y += o->y();
       o = o->parent();
     }
   return y;
 }
 
-Flu_Combo_Box::Popup::Popup( Flu_Combo_Box *b, fltk::Widget *c, int H )
-  : fltk::DoubleBufferWindow( global_x(b)-2, //fltk::x()+b->window()->x()+b->x()-2,
-		      global_y(b)+b->h()-2, //fltk::y()+b->window()->y()+b->y()+b->h()-2,
+Flu_Combo_Box::Popup :: Popup( Flu_Combo_Box *b, Fl_Widget *c, int H )
+  : Fl_Double_Window( global_x(b)-2, //Fl::x()+b->window()->x()+b->x()-2,
+		      global_y(b)+b->h()-2, //Fl::y()+b->window()->y()+b->y()+b->h()-2,
 		      b->w()+4, H, 0 )
 {
   combo = b;
   dragging = false;
   selected = NULL;
 
-  box( fltk::BORDER_FRAME );
+  box( FL_BORDER_FRAME );
   border( 0 );
   add( c );
   end();
@@ -153,19 +148,19 @@ Flu_Combo_Box::Popup::Popup( Flu_Combo_Box *b, fltk::Widget *c, int H )
   c->resize( 1, 1, w()-2, h()-2 );
 }
 
-Flu_Combo_Box::Popup::~Popup()
+Flu_Combo_Box::Popup :: ~Popup()
 {
   while( children() )
     remove( child(0) );
 }
 
-void Flu_Combo_Box::value( const char *v )
+void Flu_Combo_Box :: value( const char *v )
 {
   if( _value( v ) )
     input.value( v );
 }
 
-void Flu_Combo_Box::selected( const char *v )
+void Flu_Combo_Box :: selected( const char *v )
 {
   if( v )
     input.value( v );
@@ -173,60 +168,59 @@ void Flu_Combo_Box::selected( const char *v )
   do_callback();
 }
 
-int Flu_Combo_Box::Popup::handle( int event )
+int Flu_Combo_Box::Popup :: handle( int event )
 {
-  if( event == fltk::MOVE )
+  if( event == FL_MOVE )
     {
-      // fltk::MOVE is also generated while the window is moving
+      // FL_MOVE is also generated while the window is moving
       // this attempts to keep the popup window moving with the enclosing window
       //position( combo->window()->x()+combo->x()-2, combo->window()->y()+combo->y()+combo->h()-2 );
       position( global_x(combo)-2, global_y(combo)+combo->h()-2 );
       // this lets the mouse move event also move the selected item
-      combo->_hilight( fltk::event_x(), fltk::event_y() );
+      combo->_hilight( Fl::event_x(), Fl::event_y() );
     }
 
-  if( event == fltk::DRAG )
+  if( event == FL_DRAG )
     dragging = true;
 
   // if push outside the popup window, popdown
-  if( event == fltk::PUSH &&
-      !fltk::event_inside( *child(0) ) )
+  if( event == FL_PUSH &&
+      !Fl::event_inside( child(0) ) )
     {
       combo->_popped = false;
       return 0;
     }
 
   // if release after dragging outside the popup window, popdown
-  if( event == fltk::RELEASE && dragging && 
-      !fltk::event_inside( *child(0) ) )
+  if( event == FL_RELEASE && dragging && 
+      !Fl::event_inside( child(0) ) )
     {
       combo->_popped = false;
       return 0;
     }
 
-  if( event == fltk::KEY )
+  if( event == FL_KEYDOWN )
     {
-      unsigned key = fltk::event_key();
-      if( key == fltk::EscapeKey )
+      if( Fl::event_key( FL_Escape ) )
 	{
 	  combo->_popped = false;
 	  return 0;
 	}
-      else if( key == fltk::UpKey )
+      else if( Fl::event_key( FL_Up ) )
 	{
 	  const char *s = combo->_previous();
 	  if( s )
 	    selected = s;
 	  return 1;
 	}
-      else if( key == fltk::DownKey )
+      else if( Fl::event_key( FL_Down ) )
 	{
 	  const char *s = combo->_next();
 	  if( s )
 	    selected = s;
 	  return 1;
 	}
-      else if( key == fltk::ReturnKey || key == ' ' )
+      else if( Fl::event_key( FL_Enter ) || Fl::event_key( ' ' ) )
 	{
 	  if( selected )
 	    {
@@ -238,53 +232,53 @@ int Flu_Combo_Box::Popup::handle( int event )
 	}
     }
 
-  return fltk::DoubleBufferWindow::handle( event );
+  return Fl_Double_Window::handle( event );
 }
 
-int Flu_Combo_Box::handle( int event )
+int Flu_Combo_Box :: handle( int event )
 {
-  if( event == fltk::KEY && fltk::event_key() == fltk::TabKey )
-    return fltk::Group::handle( event );
+  if( event == FL_KEYDOWN && Fl::event_key( FL_Tab ) )
+    return Fl_Group::handle( event );
 
   // is it time to popup?
-  bool open = ( event == fltk::PUSH ) && 
-    (!fltk::event_inside( input ) || ( !editable() && fltk::event_inside( input ) ) );
-  open |= ( event == fltk::KEY ) && (fltk::event_key() == ' ');
+  bool open = ( event == FL_PUSH ) && 
+    (!Fl::event_inside( &input ) || ( !editable() && Fl::event_inside( &input ) ) );
+  open |= ( event == FL_KEYDOWN ) && Fl::event_key( ' ' );
 
   if( open )
     {
-      fltk::cursor( fltk::CURSOR_DEFAULT );
+      fl_cursor( FL_CURSOR_DEFAULT );
 
-      _valbox = fltk::THIN_DOWN_BOX;
+      _valbox = FL_THIN_DOWN_BOX;
       redraw();
 
       // remember old current group
-      fltk::Group *c = fltk::Group::current();
+      Fl_Group *c = Fl_Group::current();
 
       // set current group to 0 so this is a top level popup window
-      fltk::Group::current( 0 );
+      Fl_Group::current( 0 );
       Popup *_popup = new Popup( this, _cbox, popHeight );
 
       // show it and make FLTK send all events there
       value( value() );
       _popup->show();
-      fltk::modal( _popup, true );
-      fltk::focus( _cbox );
+      Fl::grab( *_popup );
+      Fl::focus( _cbox );
       _popped = true;
-      fltk::pushed( _cbox );
+      Fl::pushed( _cbox );
 
       // wait for a selection to be made
       while( _popped )
-	fltk::wait();
+	Fl::wait();
 
       // restore things and delete the popup
       _popup->hide();
-      fltk::modal( 0 );
+      Fl::grab( 0 );
       delete _popup;
-      fltk::Group::current( c );
-      fltk::focus( this );
+      Fl_Group::current( c );
+      Fl::focus( this );
 
-      _valbox = fltk::UP_BOX;
+      _valbox = FL_UP_BOX;
       redraw();
 
       return 1;
@@ -292,8 +286,8 @@ int Flu_Combo_Box::handle( int event )
 
   if( input.handle(event) )
     {
-      if( !editable() && ( event == fltk::ENTER || event == fltk::LEAVE ) )
-	fltk::cursor( fltk::CURSOR_DEFAULT );
+      if( !editable() && ( event == FL_ENTER || event == FL_LEAVE ) )
+	fl_cursor( FL_CURSOR_DEFAULT );
       return 1;
     }
   else
