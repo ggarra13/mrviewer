@@ -2524,11 +2524,11 @@ class ViewerUI {open
     Fl_Window uiMain {
       label mrViewer
       user_data this user_data_type {ViewerUI*}
-      callback {delete v;} open
-      xywh {354 146 640 535} type Double align 80 resizable
+      callback {delete v;}
+      xywh {354 146 640 535} type Double align 80 hide resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
-      class {mrv::MainWindow} visible
+      class {mrv::MainWindow}
     } {
       Fl_Pack uiRegion {open
         xywh {0 0 640 535}
@@ -2828,7 +2828,7 @@ else
 f = float(t - 7);
 }
 v->uiView->zoom( f );
-o->value(8);} selected
+o->value(8);}
               tooltip {Image zoom setting.} xywh {5 461 26 20} color 1397969664 labelsize 10 labelcolor 26 textsize 10
               code0 {o->value(10); o->disable_glyph();}
               class {mrv::PopupMenu}
@@ -3440,7 +3440,8 @@ v->uiTimeline->redraw();}
         }
       }
     }
-    code {uiReelWindow = new ReelUI(this);
+    code {Fl_Group::current( uiMain );
+uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
 uiGL3dView = new GL3dViewUI(this);
@@ -3461,7 +3462,8 @@ mrv::Preferences prefs( uiPrefs );
 
 //uiHotkey = new HotkeyUI(this);
 //uiICCProfiles = new ICCProfileListUI(this);
-//uiEDLWindow = new EDLWindowUI(this);} {}
+//uiEDLWindow = new EDLWindowUI(this);} {selected
+    }
   }
   Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}

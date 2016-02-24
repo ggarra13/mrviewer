@@ -380,29 +380,13 @@ void save_sequence_cb( Fl_Widget* o, mrv::ImageView* view )
   view->browser()->save_sequence();
 }
 
-enum WindowList
-{
-kReelWindow = 0,
-kMediaInfo = 1,
-kColorInfo = 2,
-kEDLEdit = 3,
-kPaintTools = 4,
-k3dView = 5,
-kHistogram = 6,
-kVectorscope = 7,
-kICCProfiles = 8,
-kConnections = 9,
-kPreferences = 10,
-kHotkeys = 11,
-kLogs = 12,
-kAbout = 13,
-kLastWindow
-};
 
 void window_cb( Fl_Widget* w, const ViewerUI* uiMain )
 {
   Fl_Menu_* mw = (Fl_Menu_*)w;
   const Fl_Menu_Item* o = mw->mvalue();
+  uiMain->uiMain->take_focus();
+
    int idx = -1;
    std::string menu = o->label();
 
@@ -2382,7 +2366,7 @@ int ImageView::leftMouseDown(int x, int y)
 
           const Fl_Menu_Item* m = menu.popup();
           m->popup( Fl::event_x(), Fl::event_y(), NULL,
-                    NULL, NULL );
+                    NULL, &menu );
 
 	}
       else
