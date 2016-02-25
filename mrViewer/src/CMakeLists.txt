@@ -18,7 +18,7 @@ FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
-FIND_PACKAGE( FLTK2       REQUIRED )    # for window management
+FIND_PACKAGE( FLTK        REQUIRED )    # for window management
 FIND_PACKAGE( ImageMagick REQUIRED )    # for image formats
 FIND_PACKAGE( OpenEXR     REQUIRED )    # for EXR image loading
 FIND_PACKAGE( CTL         REQUIRED )    # for CTL color language
@@ -88,7 +88,7 @@ INCLUDE_DIRECTORIES(
   ${LIBINTL_INCLUDE_DIR}
   ${OPENGL_INCLUDE_DIR}
   ${GLUT_INCLUDE_DIR}
-  ${FLTK2_INCLUDE_DIR}
+  ${FLTK_INCLUDE_DIR}
   ${Boost_INCLUDE_DIRS}
   ${MAGICK_INCLUDE_DIR}
   ${OpenEXRCTL_INCLUDE_DIR}
@@ -173,15 +173,21 @@ SET( SOURCES
  # db/mrvPostgreSQL.cpp
   #   #db/mrvMySQL.cpp # unneeded
 
-  gui/FLU/Flu_Combo_Box.cpp      # needed?
-  gui/FLU/Flu_Combo_Tree.cpp     # needed?
-  gui/FLU/flu_file_chooser_pixmaps.cpp  
-  gui/FLU/Flu_Wrap_Group.cpp 
-  gui/FLU/Flu_File_Chooser.cpp  
-  gui/FLU/flu_pixmaps.cpp               
-  gui/FLU/GridGroup.cpp
+ gui/FLU/Flu_Combo_Box.cpp      # needed?
+ gui/FLU/Flu_Combo_Tree.cpp     # needed?
+ gui/FLU/Flu_Combo_List.cpp     # needed?
+ gui/FLU/Flu_Separator.cpp     # needed?
+ gui/FLU/Flu_Tree_Browser.cpp     # needed?
+ gui/FLU/FluSimpleString.cpp
+ gui/FLU/Flu_Button.cpp
+ gui/FLU/Flu_Label.cpp
+ gui/FLU/flu_file_chooser_pixmaps.cpp  
+ gui/FLU/Flu_Wrap_Group.cpp 
+ gui/FLU/Flu_File_Chooser.cpp  
+ gui/FLU/flu_pixmaps.cpp         
   #   #   FLU/Flu_Combo_List.cpp # unneeded
 
+  gui/mrvDoubleWindow.cpp
   gui/mrvGlWindow3d.cpp
   gui/mrvHotkey.cpp
   gui/mrvColorOps.cpp
@@ -294,7 +300,7 @@ SET( LIBRARIES
   ${CTL_LIBRARIES}
   ${OPENEXR_LIBRARIES}
   ${OS_LIBRARIES}
-  ${FLTK2_LIBRARIES}
+  ${FLTK_LIBRARIES}
   ${OPENGL_LIBRARIES}
   ${BOOST_LIBRARIES}
   ${SampleICC_LIBRARIES}
@@ -520,7 +526,7 @@ MESSAGE( STATUS "Summary for mrViewer:" )
 MESSAGE( STATUS 
   "-------------------------------------------------------------" )
 
-MESSAGE( STATUS "FLTK2:         ${FLTK2_FOUND} ${FLTK2_VERSION}" )
+MESSAGE( STATUS "FLTK:         ${FLTK_FOUND} ${FLTK_VERSION}" )
 MESSAGE( STATUS "OpenEXR:       ${OPENEXR_FOUND} ${OPENEXR_VERSION}" )
 MESSAGE( STATUS "ImageMagick:   ${MAGICK_FOUND} ${MAGICK_VERSION}" )
 MESSAGE( STATUS "ffmpeg:        ${FFMPEG_FOUND} ${FFMPEG_VERSION}" )
@@ -536,10 +542,10 @@ IF(GLUT_FOUND)
   MESSAGE( STATUS "GLUT LIBRARIES=${GLUT_LIBRARIES}" )
 ENDIF(GLUT_FOUND)
 
-IF(FLTK2_FOUND)
-  MESSAGE( STATUS "FLTK2 INCLUDE DIR=${FLTK2_INCLUDE_DIR}" )
-  MESSAGE( STATUS "FLTK2 LIBRARIES=${FLTK2_LIBRARIES}" )
-ENDIF(FLTK2_FOUND)
+IF(FLTK_FOUND)
+  MESSAGE( STATUS "FLTK INCLUDE DIR=${FLTK_INCLUDE_DIR}" )
+  MESSAGE( STATUS "FLTK LIBRARIES=${FLTK_LIBRARIES}" )
+ENDIF(FLTK_FOUND)
 
 IF(MAGICK_FOUND)
   MESSAGE( STATUS "ImageMagick   include: ${MAGICK_INCLUDE_DIR}" )
@@ -558,11 +564,11 @@ IF(OPENEXR_FOUND)
   MESSAGE( STATUS "OpenEXR libs:          ${OPENEXR_LIBRARIES}" )
 ENDIF(OPENEXR_FOUND)
 
-IF(FLTK2_FOUND)
-  MESSAGE( STATUS "FLTK2 include:         ${FLTK2_INCLUDE_DIR}" )
-  MESSAGE( STATUS "FLTK2 library:         ${FLTK2_LIBRARY_DIR}" )
-  MESSAGE( STATUS "FLTK2 libs:            ${FLTK2_LIBRARIES}" )
-ENDIF(FLTK2_FOUND)
+IF(FLTK_FOUND)
+  MESSAGE( STATUS "FLTK include:         ${FLTK_INCLUDE_DIR}" )
+  MESSAGE( STATUS "FLTK library:         ${FLTK_LIBRARY_DIR}" )
+  MESSAGE( STATUS "FLTK libs:            ${FLTK_LIBRARIES}" )
+ENDIF(FLTK_FOUND)
 
 IF(Boost_FOUND)
   MESSAGE( STATUS "Boost include:         ${Boost_INCLUDE_DIR}" )

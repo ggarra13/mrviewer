@@ -22,12 +22,11 @@ Function {edit_audio_cb( Fl_Widget* o, mrv::ImageView* view )} {open
     Fl_Group {} {open
       xywh {12 12 203 139}
     } 
-    code0 {mrv::CMedia* img = NULL;}
     {
       Fl_Value_Input uiFrameOffset {
         label {Frame Offset}
         xywh {75 50 70 25} align 1 minimum -1000 maximum 1000 step 1
-        code0 {mrv::media fg = view->foreground();
+        code {mrv::media fg = view->foreground();
 
 if ( !fg ) return NULL;
 
