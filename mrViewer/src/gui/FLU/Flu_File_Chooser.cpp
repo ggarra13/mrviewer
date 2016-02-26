@@ -3807,15 +3807,13 @@ void Flu_File_Chooser::cd( const char *path )
   else
     {
       filelist->hide();
-      //filecolumns->show();
-      //filescroll->show();
-      //filescroll->parent()->resizable( filescroll );
+
       fileDetailsGroup->show();
-
       fileDetailsGroup->parent()->resizable( fileDetailsGroup );
+      updateEntrySizes();
 
-
-      //updateEntrySizes();
+      filedetails->yposition(0);
+      filedetails->xposition(0);
     }
 
   std::string currentFile = filename.value();
