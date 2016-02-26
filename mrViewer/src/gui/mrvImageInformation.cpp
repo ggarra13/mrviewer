@@ -304,7 +304,7 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
     if ( img )
     {
         img->first_frame( w->ivalue() );
-        update_float_slider( w );
+        update_int_slider( w );
         mrv::ImageView* view = info->main()->uiView;
         view->redraw();
     }
@@ -339,7 +339,7 @@ static void change_last_frame_cb( fltk::IntInput* w,
     {
         img->last_frame( w->ivalue() );
         info->main()->uiView->redraw();
-        update_float_slider( w );
+        update_int_slider( w );
     }
 }
 
