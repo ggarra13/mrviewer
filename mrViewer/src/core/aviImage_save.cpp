@@ -38,6 +38,7 @@ extern "C" {
 #include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
 #include <libavformat/avformat.h>
+#include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
 }
 
@@ -185,6 +186,8 @@ int       dst_samples_linesize;
 boost::uint64_t samples_count = 0;
 
 struct SwrContext *swr_ctx = NULL;
+struct SwsContext* sws_ctx = NULL;
+
 
 /* Add an output stream. */
 static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
@@ -259,12 +262,8 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
           if ( c->codec_id == AV_CODEC_ID_PRORES )
           {
-              if ( opts->video_color == "YUV420" )
-                  c->pix_fmt = AV_PIX_FMT_YUV420P10LE;
-              else if ( opts->video_color == "YUV422" )
-                  c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
-              else if ( opts->video_color == "YUV444" )
-                  c->pix_fmt = AV_PIX_FMT_YUV444P10LE;
+              std::cerr << "PRORES" << std::endl;
+              c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
           }
           else
           {
@@ -702,6 +701,53 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     return picture;
 }
 
+AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
+                                   const mrv::image_type::PixelType& p )
+{
+    switch( f )
+    {
+        case mrv::image_type::kITU_601_YCbCr410:
+        case mrv::image_type::kITU_601_YCbCr410A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr410:
+        case mrv::image_type::kITU_709_YCbCr410A: // @todo: not done
+            return AV_PIX_FMT_YUV410P;
+        case mrv::image_type::kITU_601_YCbCr420:
+        case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr420:
+        case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
+            return AV_PIX_FMT_YUV420P;
+        case mrv::image_type::kITU_601_YCbCr422:
+        case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr422:
+        case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
+            return AV_PIX_FMT_YUV422P;
+        case mrv::image_type::kITU_601_YCbCr444:
+        case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr444:
+        case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
+            return AV_PIX_FMT_YUV444P;
+        case mrv::image_type::kLumma:
+        case mrv::image_type::kLummaA:
+        case mrv::image_type::kRGB:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_RGB48;
+            return AV_PIX_FMT_RGB24;
+        case mrv::image_type::kRGBA:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_RGBA64;
+            return AV_PIX_FMT_RGBA;
+        case mrv::image_type::kBGR:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_BGR48;
+            return AV_PIX_FMT_BGR24;
+        case mrv::image_type::kBGRA:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_BGRA64;
+            return AV_PIX_FMT_BGRA;
+    }
+}
+
+
 static AVFrame *frame;
 
 static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
@@ -729,7 +775,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 
         std::string key = i->first;
         std::string val = i->second;
-        key = key.substr( 6, key.size() );
+        if ( key.size() > 6 )
+            key = key.substr( 6, key.size() );
         av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
     }
 
@@ -742,7 +789,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         {
             std::string key = i->first;
             std::string val = i->second;
-            key = key.substr( 6, key.size() );
+            if ( key.size() > 6 )
+                key = key.substr( 6, key.size() );
             av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
         }
     }
@@ -781,63 +829,80 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        return;
    }
 
+
    unsigned w = c->width;
    unsigned h = c->height;
 
    if ( img->width() < w )  w = img->width();
    if ( img->height() < h ) h = img->height();
 
-
-   float one_gamma = 1.0f / img->gamma();
-
-   for ( unsigned y = 0; y < h; ++y )
+   if ( hires->pixel_type() != mrv::image_type::kByte )
    {
-       unsigned y2 = y;
-       if ( c->pix_fmt == AV_PIX_FMT_YUV420P )
+
+
+       float one_gamma = 1.0f / img->gamma();
+
+       for ( unsigned y = 0; y < h; ++y )
        {
-           y2 /= 2;
-       }
+           unsigned y2 = y;
+           if ( c->pix_fmt == AV_PIX_FMT_YUV420P )
+              y2 /= 2;
 
 
-       unsigned yoff  = y  * pict->linesize[0];
-       unsigned yoff1 = y2 * pict->linesize[1];
-       unsigned yoff2 = y2 * pict->linesize[2];
+           unsigned yoff  = y  * pict->linesize[0];
+           unsigned yoff1 = y2 * pict->linesize[1];
+           unsigned yoff2 = y2 * pict->linesize[2];
 
-       for ( unsigned x = 0; x < w; ++x )
-       {
-           ImagePixel p = hires->pixel( x, y );
-           
-           if ( p.r > 0.0f && isfinite(p.r) )
-               p.r = powf( p.r, one_gamma );
-           if ( p.g > 0.0f && isfinite(p.g) )
-               p.g = powf( p.g, one_gamma );
-           if ( p.b > 0.0f && isfinite(p.b) )
-               p.b = powf( p.b, one_gamma );
-
-           if      (p.r < 0.0f) p.r = 0.0f;
-           else if (p.r > 1.0f) p.r = 1.0f;
-           if      (p.g < 0.0f) p.g = 0.0f;
-           else if (p.g > 1.0f) p.g = 1.0f;
-           if      (p.b < 0.0f) p.b = 0.0f;
-           else if (p.b > 1.0f) p.b = 1.0f;
-
-           ImagePixel yuv = color::rgb::to_ITU601( p );
-
-           pict->data[0][yoff + x] = uint8_t(yuv.r);
-
-           unsigned x2 = x;
-           if ( c->pix_fmt == AV_PIX_FMT_YUV422P ||
-                c->pix_fmt == AV_PIX_FMT_YUV420P )
+           for ( unsigned x = 0; x < w; ++x )
            {
-               x2 /= 2;
-           }
+               ImagePixel p = hires->pixel( x, y );
+               
+               if ( p.r > 0.0f && isfinite(p.r) )
+                   p.r = powf( p.r, one_gamma );
+               if ( p.g > 0.0f && isfinite(p.g) )
+                   p.g = powf( p.g, one_gamma );
+               if ( p.b > 0.0f && isfinite(p.b) )
+                   p.b = powf( p.b, one_gamma );
+               
+               if      (p.r < 0.0f) p.r = 0.0f;
+               else if (p.r > 1.0f) p.r = 1.0f;
+               if      (p.g < 0.0f) p.g = 0.0f;
+               else if (p.g > 1.0f) p.g = 1.0f;
+               if      (p.b < 0.0f) p.b = 0.0f;
+               else if (p.b > 1.0f) p.b = 1.0f;
+               
+               ImagePixel yuv = color::rgb::to_ITU601( p );
+               
+               pict->data[0][yoff + x] = uint8_t(yuv.r);
+               
+               unsigned x2 = x;
+               if ( c->pix_fmt == AV_PIX_FMT_YUV422P ||
+                    c->pix_fmt == AV_PIX_FMT_YUV420P )
+                   x2 /= 2;
 
-           pict->data[1][yoff1 + x2 ] = uint8_t(yuv.g);
-           pict->data[2][yoff2 + x2 ] = uint8_t(yuv.b);
+               pict->data[1][yoff1 + x2 ] = uint8_t(yuv.g);
+               pict->data[2][yoff2 + x2 ] = uint8_t(yuv.b);
+           }
        }
+
+       pict->extended_data = pict->data;
+   }
+   else
+   {
+       AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
+                                                hires->pixel_type() );
+       sws_ctx = sws_getCachedContext( sws_ctx, img->width(), img->height(),
+                                       fmt, w, h, c->pix_fmt, 0, 
+                                       NULL, NULL, NULL );
+       uint8_t* buf = (uint8_t*)hires->data().get();
+       uint8_t* data[4] = {NULL, NULL, NULL, NULL};
+       int linesize[4] = { 0, 0, 0, 0 };
+       av_image_fill_arrays( data, linesize, buf, fmt, 
+                             img->width(), img->height(), 1 );
+       sws_scale( sws_ctx, data, linesize, 0, h, 
+                  picture->data, picture->linesize );
    }
 
-   pict->extended_data = pict->data;
 
 }
 
@@ -1244,6 +1309,13 @@ bool aviImage::close_movie( const CMedia* img )
     {
         LOG_ERROR( _("Flushing of buffers failed") );
     }
+
+    if ( sws_ctx )
+    {
+        sws_freeContext( sws_ctx );
+        sws_ctx = NULL;
+    }
+
 
    /* Write the trailer, if any. The trailer must be written before you
     * close the CodecContexts open when you wrote the header; otherwise
