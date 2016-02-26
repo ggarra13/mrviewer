@@ -390,7 +390,7 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     int h = img->h();
     e->icon = img;
-    //e->updateSize();
+    e->updateSize();
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -2459,7 +2459,7 @@ void Flu_File_Chooser::Entry::updateSize()
       dateW = cw[3];
       ownerW = cw[4];
       permW = cw[5];
-      resize( x(), y(), chooser->filedetails->w(), H );
+      //resize( x(), y(), chooser->filedetails->w(), H );
     }
   else
     nameW = w();
