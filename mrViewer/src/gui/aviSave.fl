@@ -39,8 +39,9 @@ namespace mrv {open
           xywh {60 36 160 114} box UP_BOX
         } {
           {fltk::Choice} uiVideoColor {
-            label Color open
+            label Color
             xywh {55 41 90 25}
+            extra_code {video_color = "YUV420";}
           } {
             {fltk::Item} {} {
               label YUV420
@@ -69,8 +70,9 @@ item->deactivate();
 item = v->child(2);
 item = v->child(2);
 v->value(0);
-}} selected
+}} open selected
             xywh {55 10 91 26}
+            extra_code {video_codec = "H264";}
           } {
             {fltk::Item} {} {
               label H264
@@ -91,6 +93,7 @@ v->value(0);
           {fltk::Choice} uiAudioCodec {
             label Codec open
             xywh {55 20 91 26}
+            extra_code {audio_codec = "AC3";}
           } {
             {fltk::Item} {} {
               label AC3

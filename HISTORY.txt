@@ -4,6 +4,13 @@ v3.1.2   - Made file requester leave headroom for icons on images and
 	 - Made name of movie or sequence not overlap type, but use
 	   ..., like "batman-vs-superm..."
 	 - Made icon creation in file requester faster. 
+	 - Made the file requester not reset its position as images
+	   appear.
+	 - Made the file requester reset its position on dir change.
+	 - Made transcoding of movie files much faster and creation of
+	   movie files from 8 or 16 bits images, too.
+	 - Added partial support for ProRes, but did not expose it in
+	   the GUI as it does not support half or float datatypes yet.
 
 v3.1.1   - Relaxed the minimum zoom factor to 1/64 or less.  This allows
 	   displaying 16K images properly if the card allows it.
