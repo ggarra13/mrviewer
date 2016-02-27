@@ -726,8 +726,12 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
         case mrv::image_type::kITU_709_YCbCr444:
         case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
             return AV_PIX_FMT_YUV444P;
-        case mrv::image_type::kLumma:
         case mrv::image_type::kLummaA:
+            return AV_PIX_FMT_GRAY8A;
+        case mrv::image_type::kLumma:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_GRAY16LE;
+            return AV_PIX_FMT_GRAY8;
         case mrv::image_type::kRGB:
             if ( p == mrv::image_type::kShort )
                 return AV_PIX_FMT_RGB48;
@@ -744,6 +748,8 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
             if ( p == mrv::image_type::kShort )
                 return AV_PIX_FMT_BGRA64;
             return AV_PIX_FMT_BGRA;
+        default:
+            return AV_PIX_FMT_NONE;
     }
 }
 
@@ -833,10 +839,11 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
    unsigned w = c->width;
    unsigned h = c->height;
 
-   if ( img->width() < w )  w = img->width();
-   if ( img->height() < h ) h = img->height();
+   if ( hires->width() < w )  w = hires->width();
+   if ( hires->height() < h ) h = hires->height();
 
-   if ( hires->pixel_type() != mrv::image_type::kByte )
+   if ( hires->pixel_type() != mrv::image_type::kByte &&
+        hires->pixel_type() != mrv::image_type::kShort )
    {
 
 
@@ -895,10 +902,10 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                                        fmt, w, h, c->pix_fmt, 0, 
                                        NULL, NULL, NULL );
        uint8_t* buf = (uint8_t*)hires->data().get();
-       uint8_t* data[4] = {NULL, NULL, NULL, NULL};
-       int linesize[4] = { 0, 0, 0, 0 };
+       uint8_t* data[4];
+       int linesize[4];
        av_image_fill_arrays( data, linesize, buf, fmt, 
-                             img->width(), img->height(), 1 );
+                             hires->width(), hires->height(), 1 );
        sws_scale( sws_ctx, data, linesize, 0, h, 
                   picture->data, picture->linesize );
    }
