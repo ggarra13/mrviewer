@@ -811,6 +811,7 @@ void video_thread( PlaybackData* data )
 
 
    mrv::Timer timer;
+   int delay_counter = 0;
    double fps = img->play_fps();
    timer.setDesiredFrameRate( fps );
 
@@ -952,6 +953,7 @@ void video_thread( PlaybackData* data )
 
 
       DBG( img->name() << " find image " << frame );
+
       bool ok = img->find_image( frame );
 
       if ( fg && !img->has_audio_data() && reel->edl && img->is_left_eye() )

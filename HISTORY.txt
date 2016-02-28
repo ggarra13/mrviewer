@@ -1,3 +1,7 @@
+v3.1.3   - Made mousewheel on Windows work when multiple screens are
+	   used.  This might fix ticket #21 (mousewheel not working).
+	 - Bug fixed scrollbar in file requester when set to wide view.
+
 v3.1.2   - Made file requester leave headroom for icons on images and
 	   movies.  This avoids the resizing of the scrollbar each
 	   time a movie icon is created.
