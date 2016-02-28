@@ -309,8 +309,7 @@ class AboutUI {open
 // o->child_of( main->uiMain );} modal
     } {
       Fl_Tabs {} {
-        user_data main user_data_type {ViewerUI*}
-        callback {} open
+        user_data main user_data_type {ViewerUI*} open
         xywh {4 4 441 391}
       } {
         Fl_Group {} {
@@ -336,16 +335,8 @@ class AboutUI {open
           Fl_Browser uiGPUInfo {
             label {GPU Information} selected
             xywh {20 175 415 205} align 1
-            code0 {o->clear();
-static int widths[] = {
-160,
-o->w()-160,
-0
-};
-o->column_widths( widths );
-o->value(-1);
-o->add( mrv::gpu_information( main ).c_str() );}
-            class {mrv::Browser}
+            code0 {o->clear();o->column_char('\\t');static int widths[] = {160,o->w()-160,0};o->column_widths( widths );o->value(-1);o->add( mrv::gpu_information( main ).c_str() );}
+            class Fl_Browser
           }
         }
         Fl_Group {} {

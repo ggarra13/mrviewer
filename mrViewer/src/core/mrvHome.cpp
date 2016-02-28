@@ -19,7 +19,6 @@
 #include <stdlib.h>
 
 #include <FL/filename.H>
-// #include <fltk/string.h>
 
 #include <boost/filesystem.hpp>
 

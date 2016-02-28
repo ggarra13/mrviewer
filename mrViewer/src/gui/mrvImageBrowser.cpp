@@ -313,6 +313,7 @@ namespace mrv {
 		 img->end_frame()
 		 );
       }
+    labelsize( 12 );
     copy_label( info );
   }
 
@@ -905,7 +906,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     if ( idx < 0 || unsigned(idx) >= reel->images.size() ) return;
 
-    mrv::Browser::remove( *child(idx) );
+    mrv::Browser::remove( idx );
 
     mrv::MediaList::iterator i = reel->images.begin();
     reel->images.erase( i + idx );
@@ -963,7 +964,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
       }
 
     int idx = (int) (i - reel->images.begin());
-    mrv::Browser::remove( *child(idx) );
+    mrv::Browser::remove( idx );
 
     reel->images.erase( i );
 
@@ -1954,7 +1955,7 @@ void ImageBrowser::load( const stringArray& files,
     size_t num = reel->images.size();
     for ( i = 0; i < num; ++i )
       {
-          mrv::Browser::remove( *child(0) );
+          mrv::Browser::remove( 0 );
           this->remove( reel->images[0] );
       }
 

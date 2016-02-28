@@ -146,27 +146,12 @@ void change_stereo_image( Fl_Button* w, mrv::ImageInformation* info )
     m_button->callback( (Fl_Callback*)change_stereo_image, this );
     m_button->hide();
 
-#if 0
-    m_image = new Fl_Group( 0, 0, w, 400, _("Main")  );
-    m_image->box( FL_ROUNDED_BOX );
-    m_iptc  = new Fl_Group( 0, 400, w, 200, _("IPTC")  );
-    m_iptc->box( FL_ROUNDED_BOX );
-    m_exif  = new Fl_Group( 0, 600, w, 200, _("EXIF")  );
-    m_exif->box( FL_ROUNDED_BOX );
-    m_video = new Fl_Group( 0, 800, w, 100, _("Video") );
-    m_video->box( FL_ROUNDED_BOX );
-    m_audio = new Fl_Group( 0, 900, w, 100, _("Audio") );
-    m_audio->box( FL_ROUNDED_BOX );
-    m_subtitle = new Fl_Group( 0, 1000, w, 100, _("Subtitle") );
-    m_subtitle->box( FL_ROUNDED_BOX );
-#else
     m_image = new mrv::CollapsableGroup( 0, 0, w, 400, _("Main")  );
     m_iptc  = new mrv::CollapsableGroup( 0, 400, w, 200, _("IPTC")  );
     m_exif  = new mrv::CollapsableGroup( 0, 600, w, 200, _("EXIF")  );
     m_video = new mrv::CollapsableGroup( 0, 800, w, 100, _("Video") );
     m_audio = new mrv::CollapsableGroup( 0, 900, w, 100, _("Audio") );
     m_subtitle = new mrv::CollapsableGroup( 0, 1000, w, 100, _("Subtitle") );
-#endif
 
     m_all->end();
 
@@ -441,9 +426,7 @@ void ImageInformation::hide_tabs()
 
 void ImageInformation::fill_data()
 {
-    return;
 
-#if 0
     m_curr = add_browser(m_image);
 
     
@@ -910,13 +893,12 @@ void ImageInformation::fill_data()
 	m_subtitle->parent()->show();
       }
 
-#endif
 
 }
 
   void ImageInformation::refresh()
   {
-#if 0
+
     hide_tabs();
 
  
@@ -935,7 +917,6 @@ void ImageInformation::fill_data()
         m_button->hide();
 
     fill_data();
-#endif
 
   }
 
