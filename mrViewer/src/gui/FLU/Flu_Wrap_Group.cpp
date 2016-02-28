@@ -1,3 +1,4 @@
+
 // $Id: Flu_Wrap_Group.cpp,v 1.8 2004/01/27 21:44:24 jbryan Exp $
 
 /***************************************************************
@@ -109,7 +110,7 @@ void Flu_Wrap_Group::layout_grid()
 
   rows = cols = 1;
   int sw = scrollbar_width();
-
+  int rowsH = 0;
 
   // Do vertical arrangement
   if ( flags() & fltk::LAYOUT_VERTICAL )
@@ -136,6 +137,7 @@ void Flu_Wrap_Group::layout_grid()
 	  if( !c->visible() ) continue;
 	  c->position( X, Y );
 	  Y += c->h();
+          rowsH += Y;
 	  if ( i != nchildren-1 && Y + maxH >= lastY ) 
 	    {
 	      Y = OY;
@@ -172,6 +174,7 @@ void Flu_Wrap_Group::layout_grid()
 	    {
 	      X = OX;
 	      Y += c->h();
+              rowsH += c->h();
 	      ++rows;
 	    }
 	}
@@ -195,7 +198,7 @@ void Flu_Wrap_Group::layout_grid()
 	}
     }
 
-  int H = maxH;
+  int H = rowsH;
   if ( H > r.h() )
     {
       scrollbar.set_visible();

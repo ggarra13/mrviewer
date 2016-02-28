@@ -627,6 +627,12 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
        view()->stop();
 
     if ( _reels.empty() ) return;
+
+    int ok = fltk::choice( _( "Are you sure you want to\n"
+                              "remove the reel?" ),
+                           _("Yes"), _("No"), NULL );
+    if ( ok == 1 ) return; // No
+
     _reel_choice->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
 
@@ -1903,6 +1909,11 @@ void ImageBrowser::load( const stringArray& files,
     if ( view()->playback() != ImageView::kStopped )
        view()->stop();
 
+    int ok = fltk::choice( _( "Are you sure you want to\n"
+                              "remove image from reel?" ),
+                           _("Yes"), _("No"), NULL );
+    if ( ok == 1 ) return; // No
+
     int sel = value();
     if ( sel < 0 ) return;
 
@@ -1923,31 +1934,6 @@ void ImageBrowser::load( const stringArray& files,
   }
 
 
-
-  /** 
-   * Remove all reel->images.
-   * 
-   */
-  void ImageBrowser::remove_all()
-  {
-    mrv::Reel reel = current_reel();
-    if (!reel) return;
-
-    int ok = fltk::ask( _( "Are you sure you want to\n"
-			   "remove all images from reel?" ) );
-    if ( !ok ) return;
-
-    unsigned i;
-    size_t num = reel->images.size();
-    for ( i = 0; i < num; ++i )
-      {
-	fltk::Browser::remove( 0 );
-	this->remove( reel->images[0] );
-      }
-
-    value(-1);
-    change_image();
-  }
 
 
   /** 
