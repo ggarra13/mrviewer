@@ -761,9 +761,11 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
                if ( fs::exists( buf ) )
                {
-                   int ok = fltk::ask( "Do you want to replace '%s'",
-                                       buf );
-                   if (!ok) 
+                   char text[256];
+                   sprintf( text, _("Do you want to replace '%s'"),
+                            buf );
+                   int ok = fltk::choice( text, _("Yes"), _("No"), NULL );
+                   if (ok == 1) // No
                    {
                        break;
                    }
