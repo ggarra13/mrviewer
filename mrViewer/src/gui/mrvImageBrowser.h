@@ -104,7 +104,6 @@ class ImageBrowser : public fltk::Browser
      void attach_profile();
 
      void remove_current();
-     void remove_all();
 
      void last_image();
 
