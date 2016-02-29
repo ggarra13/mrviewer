@@ -2614,8 +2614,7 @@ uiICCProfiles->uiMain->show();}
             Fl_Menu_Button uiColorChannel {
               label {(no image)}
               user_data this user_data_type {ViewerUI*}
-              callback {fprintf(stderr, "selection was %d", o->value() );
-v->uiView->channel( o->value() );} open
+              callback {v->uiView->channel( o->value() );} open
               tooltip {Allows you to select different image channels or layers.} xywh {30 5 90 19}
               class {mrv::PopupMenu}
             } {}

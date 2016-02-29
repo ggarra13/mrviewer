@@ -155,7 +155,7 @@ void load_new_files( void* s )
    Fl::repeat_timeout( 1.0, load_new_files, ui ); 
 }
 
-int main( const int argc, char** argv ) 
+int main( const int argc, const char** argv ) 
 {
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);

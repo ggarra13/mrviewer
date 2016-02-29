@@ -62,7 +62,7 @@ typedef std::vector< std::string > stringArray;
   //
   // Command-line parser
   //
-  void parse_command_line( const int argc, char** argv,
+  void parse_command_line( const int argc, const char** argv,
 			   ViewerUI* ui, 
                            mrv::Options& opts);
 }

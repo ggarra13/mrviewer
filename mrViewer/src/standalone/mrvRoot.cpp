@@ -185,7 +185,7 @@ namespace {
 namespace mrv {
 
 
-  void set_root_path( const int argc, char** argv )
+  void set_root_path( const int argc, const char** argv )
   {
     char* root = getenv("MRV_ROOT");
 

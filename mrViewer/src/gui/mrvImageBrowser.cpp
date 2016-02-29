@@ -1938,31 +1938,6 @@ void ImageBrowser::load( const stringArray& files,
 
 
 
-  /** 
-   * Remove all reel->images.
-   * 
-   */
-  void ImageBrowser::remove_all()
-  {
-    mrv::Reel reel = current_reel();
-    if (!reel) return;
-
-    int ok = fl_ask( _( "Are you sure you want to\n"
-			   "remove all images from reel?" ) );
-    if ( !ok ) return;
-
-    unsigned i;
-    size_t num = reel->images.size();
-    for ( i = 0; i < num; ++i )
-      {
-          mrv::Browser::remove( 0 );
-          this->remove( reel->images[0] );
-      }
-
-    value(-1);
-    change_image();
-  }
-
 
   /** 
    * Change background image to current image
