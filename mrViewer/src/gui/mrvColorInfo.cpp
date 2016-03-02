@@ -213,20 +213,20 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
 {
     dcol = new ColorWidget( 16, 10, 32, 32 );
     dcol->box( FL_EMBOSSED_BOX );
-    dcol->color( FL_BLACK );
+    dcol->color( FL_WHITE );
 
-    area = new Fl_Box( 100, 0, w, 50 );
+    area = new Fl_Box( 50, 0, w-50, 50 );
     area->box( FL_FLAT_BOX );
-    area->align( FL_ALIGN_LEFT | FL_ALIGN_INSIDE );
+    area->align( FL_ALIGN_CENTER | FL_ALIGN_INSIDE );
 
-  int w5 = w / 5;
-  static int col_widths[] = { w5, w5, w5, w5, w5, 0 };
-  browser = new ColorBrowser( 0, area->h(), w, h - area->h() );
-  browser->column_widths( col_widths );
-  browser->resizable(browser);
-  resizable(this);
+    int w5 = w / 5;
+    static int col_widths[] = { w5, w5, w5, w5, w5, 0 };
+    browser = new ColorBrowser( 0, area->h(), w, h - area->h() );
+    browser->column_widths( col_widths );
+    browser->resizable(browser);
+    resizable(this);
 
-  dcol->color_browser( browser );
+    dcol->color_browser( browser );
 
 }
 
@@ -531,10 +531,10 @@ void ColorInfo::update( const CMedia* img,
       static const char* kV = "@C5";
       static const char* kL = "@C5";
       static const char* kN = "@C8";
-
+      static const char* kC = "      ";
       
 
-      Fl_Color col;
+      Fl_Color col = 32;
 
       {
 
@@ -552,7 +552,9 @@ void ColorInfo::update( const CMedia* img,
           else if ( b > 1.f ) b = 1.0f;
           
           if ( r <= 0.001f && g <= 0.001f && b <= 0.001f )
+          {
               col = FL_BLACK;
+          }
           else
           {
               Fl::set_color(col, (uchar)(r*255), (uchar)(g*255), (uchar)(b*255));
@@ -566,26 +568,27 @@ void ColorInfo::update( const CMedia* img,
       unsigned spanY = ymax-ymin+1;
       unsigned numPixels = spanX * spanY;
 
-      text << std::endl << kN
+      text << std::endl
 	   << _("Area") << ": (" << xmin << ", " << ymin 
 	   << ") - (" << xmax 
-	   << ", " << ymax << ")" << std::endl << kN
+	   << ", " << ymax << ")" << std::endl
 	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
 	   << numPixels << " "
 	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
 	   << std::endl;
+      area->labelcolor( FL_BLACK );
       area->copy_label( text.str().c_str() );
 
 
       text.str("");
       text << "@b\t"
-	   << kR
+	   << kR << kC
 	   << _("R") << "\t"
-	   << kG
+	   << kG << kC
 	   << _("G") << "\t"
-	   << kB
+	   << kB << kC
 	   << _("B") << "\t"
-	   << kA
+	   << kA << kC
 	   << _("A") 
 	   << std::endl
            << kN
@@ -640,64 +643,64 @@ void ColorInfo::update( const CMedia* img,
       switch( uiMain->uiBColorType->value()+1 )
       {
 	 case color::kITU_709:
-	    text << kH << N_("7") << "\t"
-		 << kS << N_("0") << "\t"
-		 << kL << N_("9");
+	    text << kH << kC << N_("7") << "\t"
+		 << kS << kC << N_("0") << "\t"
+		 << kL << kC << N_("9");
 	    break;
 	 case color::kITU_601:
-	    text << kH << N_("6") << "\t"
-		 << kS << N_("0") << "\t"
-		 << kL << N_("1");
+	    text << kH << kC << N_("6") << "\t"
+		 << kS << kC << N_("0") << "\t"
+		 << kL << kC << N_("1");
 	    break;
 	 case color::kYIQ:
-	    text << kH << N_("Y") << "\t"
-		 << kS << N_("I") << "\t"
-		 << kL << N_("Q");
+	    text << kH << kC << N_("Y") << "\t"
+		 << kS << kC << N_("I") << "\t"
+		 << kL << kC << N_("Q");
 	    break;
 	 case color::kYDbDr:
-	    text << kH << N_("Y") << "\t"
-		 << kS << N_("Db") << "\t"
-		 << kL << N_("Dr");
+	    text << kH << kC << N_("Y") << "\t"
+		 << kS << kC << N_("Db") << "\t"
+		 << kL << kC << N_("Dr");
 	    break;
 	 case color::kYUV:
-	    text << kH << N_("Y") << "\t"
-		 << kS << N_("U") << "\t"
-		 << kL << N_("V");
+	    text << kH << kC << N_("Y") << "\t"
+		 << kS << kC << N_("U") << "\t"
+		 << kL << kC << N_("V");
 	    break;
 	 case color::kCIE_Luv:
-	    text << kH << N_("L") << "\t"
-		 << kS << N_("u") << "\t"
-		 << kL << N_("v");
+	    text << kH << kC << N_("L") << "\t"
+		 << kS << kC << N_("u") << "\t"
+		 << kL << kC << N_("v");
 	    break;
 	 case color::kCIE_Lab:
-	    text << kH << N_("L") << "\t"
-		 << kS << N_("a") << "\t"
-		 << kL << N_("b");
+	    text << kH << kC << N_("L") << "\t"
+		 << kS << kC << N_("a") << "\t"
+		 << kL << kC << N_("b");
 	    break;
 	 case color::kCIE_xyY:
-	    text << kH << N_("x") << "\t"
-		 << kS << N_("y") << "\t"
-		 << kL << N_("Y");
+	    text << kH << kC << N_("x") << "\t"
+		 << kS << kC << N_("y") << "\t"
+		 << kL << kC << N_("Y");
 	    break;
 	 case color::kCIE_XYZ:
-	    text << kH << N_("X") << "\t"
-		 << kS << N_("Y") << "\t"
-		 << kL << N_("Z");
+	    text << kH << kC << N_("X") << "\t"
+		 << kS << kC << N_("Y") << "\t"
+		 << kL << kC << N_("Z");
 	    break;
 	 case color::kHSL:
-	    text << kH << N_("H") << "\t"
-		 << kS << N_("S") << "\t"
-		 << kL << N_("L");
+	    text << kH << kC << N_("H") << "\t"
+		 << kS << kC << N_("S") << "\t"
+		 << kL << kC << N_("L");
 	    break;
 	 case color::kHSV:
 	 default:
-	    text << kH << N_("H") << "\t"
-		 << kS << N_("S") << "\t"
-		 << kV << N_("V");
+	    text << kH << kC << N_("H") << "\t"
+		 << kS << kC << N_("S") << "\t"
+		 << kV << kC << N_("V");
 	    break;
       }
 
-      text << "\t" << kL;
+      text << "\t" << kL << kC;
 
       switch( brightness_type )
 	{
@@ -769,8 +772,8 @@ void ColorInfo::update( const CMedia* img,
   area->redraw_label();
   for ( ; i != e; ++i )
     {
-        browser->add( (*i).c_str() );
         browser->align( FL_ALIGN_CENTER );
+        browser->add( (*i).c_str() );
 #if 0  // @todo: fltk1.3
         Fl_Widget* w = browser->item();
         w->align( FL_ALIGN_CENTER );
