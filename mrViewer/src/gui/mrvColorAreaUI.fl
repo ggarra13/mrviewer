@@ -17,6 +17,9 @@ decl {\#include "gui/mrvColorInfo.h"} {private local
 decl {\#include "gui/mrvImageView.h"} {private local
 } 
 
+decl {\#include "gui/mrvMainWindow.h"} {selected private local
+} 
+
 decl {\#include "mrViewer.h"} {public global
 } 
 
@@ -26,13 +29,12 @@ class ColorAreaUI {open
   }
   Function {make_window(ViewerUI* main)} {open private
   } {
-    code {Fl_Group::current( (Fl_Group*)main->uiMain );} {selected
-    }
+    code {main->uiMain->make_current();} {}
     Fl_Window uiMain {
       label {Color Information}
       user_data this user_data_type {ColorAreaUI*}
       callback {v->main()->uiView->send( "ColorInfoWindow 0" );
-o->hide();}
+o->hide();} open
       xywh {430 501 400 260} type Double resizable
       code0 {// Make the window transient
 main_ = main;

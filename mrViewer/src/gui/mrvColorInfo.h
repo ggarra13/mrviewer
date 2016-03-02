@@ -30,7 +30,7 @@
 
 // #include <mrvBrowser.h>
 #include <core/mrvRectangle.h>
-#include <gui/mrvBrowser.h>
+#include <FL/Fl_Browser.H>
 
 
 class Fl_Widget;

@@ -116,39 +116,6 @@ void Histogram::draw_grid(const mrv::Recti& r)
   void Histogram::count_pixels()
   {
 
-#if 0
-    if ( GLEW_ARB_imaging )
-      {
-	memset( red,   0, sizeof(float) * 256 );
-	memset( green, 0, sizeof(float) * 256 );
-	memset( blue,  0, sizeof(float) * 256 );
-	memset( lumma, 0, sizeof(float) * 256 );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_RED, GL_UNSIGNED_INT,
-			   red );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_GREEN, GL_UNSIGNED_INT,
-			   green );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_BLUE, GL_UNSIGNED_INT,
-			   blue );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_LUMMA, 
-			   GL_UNSIGNED_INT, lumma );
-	unsigned int minmax[2];
-	minmax[0] = minmax[1] = 0;
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_RED, GL_UNSIGNED_INT,
-			minmax );
-	maxRed = minmax[1];
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_GREEN, GL_UNSIGNED_INT,
-			minmax );
-	maxGreen = minmax[1];
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_BLUE, GL_UNSIGNED_INT,
-			minmax );
-	maxBlue = minmax[1];
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_LUMMA, GL_UNSIGNED_INT,
-			minmax );
-	maxLumma = minmax[1];
-      }
-
-#else
-
     media m = uiMain->uiView->foreground();
     if (!m) return;
 
@@ -244,7 +211,6 @@ void Histogram::draw_grid(const mrv::Recti& r)
               count_pixel( rgb );
 	  }
       }
-#endif
 
   }
 

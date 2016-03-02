@@ -50,6 +50,7 @@ extern "C" {
 #include <GL/glew.h>
 #include <wand/magick-wand.h>
 
+#include <FL/Fl_Browser.H>
 
 //#include <fltk/visual.h>
 //#include <fltk/Monitor.h>
@@ -129,7 +130,7 @@ namespace mrv
     return kVersion;
   }
 
-void ffmpeg_formats( mrv::Browser& browser )
+void ffmpeg_formats( Fl_Browser& browser )
   {
     using namespace std;
 
@@ -658,8 +659,8 @@ void  memory_information( uint64_t& totalVirtualMem,
 }  // memory_information
 #endif // LINUX
 
-  std::string gpu_information( ViewerUI* uiMain )
-  {
+void gpu_information( Fl_Browser& b, ViewerUI* uiMain )
+{
     using std::endl;
     std::ostringstream o;
 
@@ -673,7 +674,7 @@ void  memory_information( uint64_t& totalVirtualMem,
     mrv::DrawEngine* engine = uiMain->uiView->engine();
     if ( engine )
       {
-	o << uiMain->uiView->engine()->options();
+	o << engine->options();
       }
     else
       {
@@ -687,7 +688,16 @@ void  memory_information( uint64_t& totalVirtualMem,
       << ( uiMain->uiView->can_do_overlay() ? "Yes" : "No" )
       << endl; 
 
-    return o.str();
+    std::string t = o.str();
+    size_t x;
+    while ( ( x = t.find( '\n' ) ) != std::string::npos )
+    {
+        std::string f = t.substr( 0, x );
+        b.add( f.c_str() );
+
+        if ( x == t.size() ) t = "";
+        else t = t.substr( x+1, t.size() );
+    }
   }
 
 

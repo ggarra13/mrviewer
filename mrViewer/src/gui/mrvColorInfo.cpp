@@ -43,6 +43,7 @@ using namespace std;
 #include <FL/Fl_Menu.H>
 // #include <fltk/PopupMenu.h> // @todo: fltk1.3
 #include <FL/Fl_Group.H>
+#include <FL/Fl_Browser.H>
 #include <FL/Fl_Box.H>
 #include <FL/Fl.H>
 //#include <fltk/Color.h>
@@ -64,7 +65,7 @@ using namespace std;
 namespace
 {
 
-  void copy_color_cb( void*, mrv::Browser* w )
+  void copy_color_cb( void*, Fl_Browser* w )
   {
       if ( w->value() < 0 || w->value() >= w->children() )
           return;
@@ -112,11 +113,11 @@ namespace mrv
 
 
 
-  class ColorBrowser : public mrv::Browser
+  class ColorBrowser : public Fl_Browser
   {
   public:
     ColorBrowser( int x, int y, int w, int h, const char* l = 0 ) :
-      mrv::Browser( x, y, w, h, l )
+      Fl_Browser( x, y, w, h, l )
     {
     }
 
@@ -145,29 +146,29 @@ namespace mrv
 	  if ( Fl::event_button() == 3 )
 	    return mousePush( Fl::event_x(), Fl::event_y() );
 	default:
-            int ok = mrv::Browser::handle( event );
+            int ok = Fl_Browser::handle( event );
 	  
-	  int line = value();
-	  if (( line < 1 || line > 10 ) ||
-	      ( line > 4 && line < 7 ))
+            int line = value();
+            if (( line < 1 || line > 10 ) ||
+                ( line > 4 && line < 7 ))
 	    {
-	      value(-1);
-	      return 0;
+                value(-1);
+                return 0;
 	    }
-	  
-	  return ok;
+            
+            return ok;
 	}
     }
   };
 
 
-class ColorWidget : public Fl_Group
+class ColorWidget : public Fl_Box
 {
     ColorBrowser* color_browser_;
 
   public:
     ColorWidget( int x, int y, int w, int h, const char* l = 0 ) :
-    Fl_Group( x, y, w, h, l )
+    Fl_Box( x, y, w, h, l )
     {
     }
 
@@ -211,6 +212,8 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
   Fl_Group( x, y, w, h, l )
 {
     dcol = new ColorWidget( 16, 10, 32, 32 );
+    dcol->box( FL_EMBOSSED_BOX );
+    dcol->color( FL_BLACK );
 
     area = new Fl_Box( 100, 0, w, 50 );
     area->box( FL_FLAT_BOX );
@@ -518,16 +521,16 @@ void ColorInfo::update( const CMedia* img,
       hmean.b /= c;
       hmean.a /= c;
 
-      static const char* kR = "@C0xFF808000;";
-      static const char* kG = "@C0x80FF8000;";
-      static const char* kB = "@C0x8080FF00;";
-      static const char* kA = "@C0xB0B0B000;";
+      static const char* kR = "@C1";
+      static const char* kG = "@C2";
+      static const char* kB = "@C4";
+      static const char* kA = "@C6";
 
-      static const char* kH = "@C0xB0B00000;";
-      static const char* kS = "@C0xB0B00000;";
-      static const char* kV = "@C0xB0B00000;";
-      static const char* kL = "@C0xB0B0B000;";
-
+      static const char* kH = "@C5";
+      static const char* kS = "@C5";
+      static const char* kV = "@C5";
+      static const char* kL = "@C5";
+      static const char* kN = "@C8";
 
       
 
@@ -563,10 +566,10 @@ void ColorInfo::update( const CMedia* img,
       unsigned spanY = ymax-ymin+1;
       unsigned numPixels = spanX * spanY;
 
-      text << std::endl
+      text << std::endl << kN
 	   << _("Area") << ": (" << xmin << ", " << ymin 
 	   << ") - (" << xmax 
-	   << ", " << ymax << ")" << std::endl
+	   << ", " << ymax << ")" << std::endl << kN
 	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
 	   << numPixels << " "
 	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
@@ -575,7 +578,7 @@ void ColorInfo::update( const CMedia* img,
 
 
       text.str("");
-      text << "@b;\t"
+      text << "@b\t"
 	   << kR
 	   << _("R") << "\t"
 	   << kG
@@ -583,17 +586,27 @@ void ColorInfo::update( const CMedia* img,
 	   << kB
 	   << _("B") << "\t"
 	   << kA
-	   << _("A") << "@n;" 
+	   << _("A") 
 	   << std::endl
+           << kN
 	   << _("Maximum") << ":\t"
+           << kN
 	   << float_printf(pmax.r) << "\t" 
+           << kN
 	   << float_printf(pmax.g) << "\t" 
+           << kN
 	   << float_printf(pmax.b) << "\t" 
+           << kN
 	   << float_printf(pmax.a) << std::endl
+           << kN
 	   << _("Minimum") << ":\t" 
+           << kN
 	   << float_printf(pmin.r) << "\t" 
+           << kN
 	   << float_printf(pmin.g) << "\t" 
+           << kN
 	   << float_printf(pmin.b) << "\t" 
+           << kN
 	   << float_printf(pmin.a) << std::endl;
 
       CMedia::Pixel r(pmax);
@@ -602,12 +615,17 @@ void ColorInfo::update( const CMedia* img,
       r.b -= pmin.b;
       r.a -= pmin.a;
 
-      text << _("Range") << ":\t" 
+      text << kN
+           << _("Range") << ":\t" 
+           << kN
 	   << float_printf(r.r) << "\t" 
+           << kN
 	   << float_printf(r.g) << "\t" 
+           << kN
 	   << float_printf(r.b) << "\t" 
+           << kN
 	   << float_printf(r.a) << std::endl
-	   << "@b;" << _("Mean") << ":@n;\t" 
+	   << "@b" << kN << _("Mean") << ":\t" 
 	   << kR
 	   << float_printf(pmean.r) << "\t" 
 	   << kG
@@ -617,7 +635,7 @@ void ColorInfo::update( const CMedia* img,
 	   << kA
 	   << float_printf(pmean.a) << std::endl
 	   << std::endl
-	   << "@b;\t";
+	   << "@b\t";
 
       switch( uiMain->uiBColorType->value()+1 )
       {
@@ -694,17 +712,26 @@ void ColorInfo::update( const CMedia* img,
 	  break;
 	}
 
-      text << "@n;" 
-	   << std::endl
-	   << _("Maximum") << ":\t"
+      text << std::endl
+	   << kN
+           << _("Maximum") << ":\t"
+           << kN
 	   << float_printf(hmax.r) << "\t" 
+           << kN
 	   << float_printf(hmax.g) << "\t" 
-	   << float_printf(hmax.b) << "\t" 
+           << kN
+	   << float_printf(hmax.b) << "\t"
+           << kN 
 	   << float_printf(hmax.a) << std::endl
+           << kN 
 	   << _("Minimum") << ":\t" 
-	   << float_printf(hmin.r) << "\t" 
-	   << float_printf(hmin.g) << "\t" 
-	   << float_printf(hmin.b) << "\t" 
+           << kN
+	   << float_printf(hmin.r) << "\t"
+           << kN 
+	   << float_printf(hmin.g) << "\t"
+           << kN 
+	   << float_printf(hmin.b) << "\t"
+           << kN 
 	   << float_printf(hmin.a) << std::endl;
 
       r = hmax;
@@ -713,12 +740,18 @@ void ColorInfo::update( const CMedia* img,
       r.b -= hmin.b;
       r.a -= hmin.a;
 
-      text << _("Range") << ":\t" 
+      text << kN
+           << _("Range") << ":\t" 
+           << kN
 	   << float_printf(r.r) << "\t" 
+           << kN
 	   << float_printf(r.g) << "\t" 
+           << kN
 	   << float_printf(r.b) << "\t" 
+           << kN
 	   << float_printf(r.a) << std::endl
-	   << "@b;" << _("Mean") << ":@n;\t" 
+           << kN 
+	   << "@b" << _("Mean") << ":\t" 
 	   << kH
 	   << float_printf(hmean.r) << "\t" 
 	   << kS
@@ -737,6 +770,7 @@ void ColorInfo::update( const CMedia* img,
   for ( ; i != e; ++i )
     {
         browser->add( (*i).c_str() );
+        browser->align( FL_ALIGN_CENTER );
 #if 0  // @todo: fltk1.3
         Fl_Widget* w = browser->item();
         w->align( FL_ALIGN_CENTER );

@@ -298,8 +298,7 @@ class ImageInfoUI {} {
   }
 } 
 
-class AboutUI {open
-} {
+class AboutUI {} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
@@ -309,8 +308,11 @@ class AboutUI {open
 // o->child_of( main->uiMain );} modal
     } {
       Fl_Tabs {} {
-        user_data main user_data_type {ViewerUI*} open
+        user_data main user_data_type {ViewerUI*}
+        callback {v->uiAbout->uiGPUInfo->clear();
+mrv::gpu_information( *(v->uiAbout->uiGPUInfo), v );} open
         xywh {4 4 441 391}
+        code0 {o->value(0);}
       } {
         Fl_Group {} {
           label mrViewer open
@@ -333,10 +335,10 @@ class AboutUI {open
             code1 {o->buffer()->text( mrv::cpu_information().c_str() );}
           }
           Fl_Browser uiGPUInfo {
-            label {GPU Information} selected
+            label {GPU Information}
             xywh {20 175 415 205} align 1
-            code0 {o->clear();o->column_char('\\t');static int widths[] = {160,o->w()-160,0};o->column_widths( widths );o->value(-1);o->add( mrv::gpu_information( main ).c_str() );}
-            class Fl_Browser
+            code0 {o->column_char('\\t');}
+            code1 {static int widths[] = {160,-1,0};o->column_widths( widths );}
           }
         }
         Fl_Group {} {
@@ -345,17 +347,7 @@ class AboutUI {open
         } {
           Fl_Browser {} {
             xywh {19 39 415 345}
-            code0 {static const char* col_labels[] = {
-"",
-"",
-"",
-"Extension",
-"Handler",
-"Format Name",
-0
-};
-
-static int col_widths[] = {
+            code0 {static int col_widths[] = {
 20,
 20,
 20,
@@ -364,13 +356,13 @@ static int col_widths[] = {
 300,
 0
 };
-o->column_labels( col_labels );
+static const char* col_labels =
+"			Extension	Handler	Format Name";
 o->column_widths( col_widths );
+o->add( col_labels );
 
 
-mrv::ffmpeg_formats(*o);
-o->value(-1);}
-            class {mrv::Browser}
+mrv::ffmpeg_formats(*o);}
           }
         }
         Fl_Group {} {
@@ -469,21 +461,26 @@ main_ = main;
   }
 } 
 
-class VectorscopeUI {} {
+class VectorscopeUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
-  Function {make_window(ViewerUI* main)} {private
+  Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
       label Vectorscope
       user_data this user_data_type {VectorscopeUI*}
       callback {v->main()->uiView->send( "VectorscopeWindow 0" );
 o->hide();} open
-      xywh {107 386 325 240} type Double hide resizable
+      xywh {65 143 325 240} type Double resizable
       code0 {// Make the window transient
-main_ = main;
-// o->child_of( main->uiMain );}
-    } {}
+main_ = main;} visible
+    } {
+      Fl_Box uiVectorscope {selected
+        xywh {0 0 325 240} resizable
+        class {mrv::Vectorscope}
+      }
+    }
   }
   Function {VectorscopeUI(ViewerUI* m)} {} {
     code {make_window( m );} {}
@@ -500,7 +497,7 @@ main_ = main;
 class HistogramUI {} {
   decl {ViewerUI* main_;} {private local
   }
-  Function {make_window(ViewerUI* main)} {private
+  Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
       label Histogram
@@ -518,6 +515,7 @@ o->size_range(325, 80);}
       } {
         Fl_Box uiHistogram {
           xywh {5 3 315 199}
+          code0 {o->main( main );}
           class {mrv::Histogram}
         }
         Fl_Group {} {
@@ -2481,7 +2479,8 @@ else
   }
 } 
 
-class ViewerUI {} {
+class ViewerUI {open
+} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -2510,7 +2509,7 @@ class ViewerUI {} {
   }
   decl {EDLWindowUI* uiEDLWindow;} {public local
   }
-  Function {make_window()} {private
+  Function {make_window()} {open private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
@@ -3431,31 +3430,39 @@ v->uiTimeline->redraw();}
         }
       }
     }
-    code {Fl_Group::current( uiMain );
+    code {uiMain->show();
+uiMain->make_current();
 uiReelWindow = new ReelUI(this);
+uiMain->make_current();
 uiImageInfo = new ImageInfoUI(this);
+uiMain->make_current();
 uiColorArea = new ColorAreaUI(this);
+uiMain->make_current();
 uiGL3dView = new GL3dViewUI(this);
+uiMain->make_current();
 uiVectorscope = new VectorscopeUI(this);
+uiMain->make_current();
 uiHistogram = new HistogramUI(this);
+uiMain->make_current();
 uiPaint = new PaintUI(this);
+uiMain->make_current();
 if (!uiLog) uiLog   = new LogUI(this);
+uiMain->make_current();
 if (!uiAbout) uiAbout = new AboutUI(this); // should be static
-
+uiMain->make_current();
 if (!uiConnection) uiConnection = new ConnectionUI( this );
-
+uiMain->make_current();
 uiHotkey = new HotkeyUI(this);
+uiMain->make_current();
 uiICCProfiles = new ICCProfileListUI(this);
+uiMain->make_current();
 uiEDLWindow = new EDLWindowUI(this);
 
 // read and use preferences
-mrv::Preferences prefs( uiPrefs );
-
-//uiHotkey = new HotkeyUI(this);
-//uiICCProfiles = new ICCProfileListUI(this);
-//uiEDLWindow = new EDLWindowUI(this);} {}
+mrv::Preferences prefs( uiPrefs );} {}
   }
-  Function {ViewerUI()} {} {
+  Function {ViewerUI()} {open
+  } {
     code {uiMain = make_window();} {}
   }
   Function {~ViewerUI()} {open

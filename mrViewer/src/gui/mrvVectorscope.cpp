@@ -40,7 +40,7 @@ namespace mrv
 {
 
   Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
-    Fl_Widget( x, y, w, h, l )
+    Fl_Box( x, y, w, h, l )
   {
       color( FL_BLACK );
       // @todo: fltk1.3
@@ -54,19 +54,20 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     int W = diameter_/2;
     int H = diameter_/2;
 
-    fl_color( FL_GRAY );
+    fl_color( FL_BLACK );
 
     mrv::Recti r2( diameter_, diameter_ );
-
-    fl_push_matrix();
-    fl_translate( r.w()/2 - W, r.h()/2 - H );
-    fl_line( W, 0, W, diameter_ );
-    fl_line( 0, H, diameter_, H );
-    fl_pop_matrix();
 
     int W2 = r.w() / 2;
     int H2 = r.h() / 2;
     int R2 = diameter_ / 2;
+
+    fl_push_matrix();
+    fl_translate( W2, H2);
+    fl_line( W2, 0, W2, diameter_ );
+    fl_line( 0, H2, diameter_, H2 );
+    fl_pop_matrix();
+
     int angle = 32;
     for ( i = 0; i < 4; ++i, angle += 90 )
       {
@@ -77,11 +78,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_pop_matrix();
       }
 
-    fl_push_matrix();
-    fl_translate( r.w()/2 - W, r.h()/2 - H );
-    fl_arc( r2.x(), r2.y(), r2.w(), r2.h(), 0, 360 );
-    // fl_strokepath();
-    fl_pop_matrix();
+    fl_circle( W2, H2, R2 );
 
 
     int RW  = int( diameter_ * 0.05f );
@@ -106,10 +103,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_rotate(angle);
 	fl_translate( 0, int(W * 0.75f) );
 
-        fl_line( -RW, -RH, RW, -RH ); 
-	fl_line( RW, -RH, RW, RH ); 
-	fl_line( -RW,  RH, RW, RH ); 
-	fl_line( -RW,  RH, -RW, -RH );
+        fl_rect( -RW, -RH, RW, RH );
 
 	fl_translate( 0, int(W * 0.15f) );
 
@@ -133,7 +127,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     diameter_ = int(diameter_ * 0.9f );
 
     draw_grid(r);
-    draw_pixels(r);
+    //draw_pixels(r);
   }
 
 

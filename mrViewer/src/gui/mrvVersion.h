@@ -1,3 +1,4 @@
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -31,13 +32,14 @@
 #include <string>
 
 class ViewerUI;
+class Fl_Browser;
 
 namespace mrv
 {
 
 class Browser;
 
-void ffmpeg_formats( mrv::Browser& b );
+void ffmpeg_formats( Fl_Browser& b );
 void ffmpeg_video_codecs( mrv::Browser& b );
 void ffmpeg_audio_codecs( mrv::Browser& b  );
 void ffmpeg_subtitle_codecs( mrv::Browser& b);
@@ -59,7 +61,7 @@ void  memory_information( uint64_t& totalVirtualMem,
                           uint64_t& physMemUsedByMe);
 
   std::string cpu_information();
-  std::string gpu_information( ViewerUI* uiMain );
+void gpu_information( Fl_Browser& b, ViewerUI* uiMain );
 
 } // namespace mrv
 
