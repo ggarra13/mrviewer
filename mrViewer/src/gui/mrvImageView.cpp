@@ -955,6 +955,12 @@ bool ImageView::should_update( mrv::media fg )
   return update;
 }
 
+
+void static_preload( mrv::ImageView* v )
+{
+    v->preload();
+}
+
 bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
@@ -1051,19 +1057,32 @@ bool ImageView::preload()
 
 void ImageView::timeout()
 {
+    mrv::ImageBrowser* b = browser();
+    if (!b) return;
 
+    if ( b && !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
+         ( _reel < b->number_of_reels() ) )
+    {
+        Fl::add_idle( (Fl_Timeout_Handler)static_preload, this );
+        _idle_callback = true;
+    }
+    else
+    {
+        if ( _idle_callback && _reel >= b->number_of_reels() )
+        {
+            Fl::remove_idle( (Fl_Timeout_Handler)static_preload, this );
+            _idle_callback = false;
+        }
+    }
 
   //
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
-
    mrv::Timeline* timeline = this->timeline();
    if  (!timeline) return;
 
    // Redraw browser to update thumbnail
-   mrv::ImageBrowser* b = browser();
-   if (!b) return;
 
    mrv::Reel reel = b->reel_at( _fg_reel );
    mrv::Reel bgreel = b->reel_at( _bg_reel );
@@ -1196,10 +1215,6 @@ void ImageView::draw_text( unsigned char r, unsigned char g, unsigned char b,
    _engine->draw_text( int(x), int(y), text );  // draw text
 }
 
-void static_preload( mrv::ImageView* v )
-{
-    v->preload();
-}
 
 /** 
  * Main fltk drawing routine
@@ -3467,21 +3482,6 @@ int ImageView::handle(int event)
 #if 0
         case FL_TIMEOUT:
             {
-                mrv::ImageBrowser* b = browser();
-                if ( b && !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
-                     ( _reel < b->number_of_reels() ) )
-                {
-                    add_idle( (Fl_Timeout_Handler)static_preload, this );
-                    _idle_callback = true;
-                }
-                else
-                {
-                    if ( _idle_callback && _reel >= b->number_of_reels() )
-                    {
-                        Fl::remove_idle( (Fl_Timeout_Handler)static_preload, this );
-                        _idle_callback = false;
-                    }
-                }
                 timeout();
                 return 1;
             }
@@ -3489,7 +3489,7 @@ int ImageView::handle(int event)
         case FL_FOCUS:
             return 1;
         case FL_ENTER:
-            focus(this);
+            focus(this); // needed
             if ( _wait )
             {
                 window()->cursor( FL_CURSOR_WAIT );
