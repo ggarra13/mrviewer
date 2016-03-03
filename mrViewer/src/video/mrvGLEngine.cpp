@@ -326,9 +326,9 @@ void GLEngine::initialize()
 
   init_textures();
 
-  // int argc = 1;
-  // static char* args[] = { (char*)"GlEngine", NULL };
-  // glutInit( &argc, args );
+  int argc = 1;
+  static char* args[] = { (char*)"GlEngine", NULL };
+  glutInit( &argc, args );  // Needed for glut stroke paths
 
 // #if defined(WIN32) || defined(WIN64)
 //   if ( WGLEW_WGL_swap_control )
