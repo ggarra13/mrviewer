@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-03-03 15:51-0300\n"
+"POT-Creation-Date: 2016-03-03 21:58-0300\n"
 "PO-Revision-Date: 2016-01-12 21:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -142,7 +142,7 @@ msgstr " falló. "
 msgid " failed. "
 msgstr " falló. "
 
-#: gui/mrvImageView.cpp:3829
+#: gui/mrvImageView.cpp:3820
 msgid " for channel"
 msgstr " para el canal "
 
@@ -305,8 +305,8 @@ msgid "(PAL Fields)"
 msgstr "(Campos PAL)"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3681
-#: gui/mrvImageView.cpp:4394 gui/mrvImageView.cpp:4395
-#: gui/mrvImageView.cpp:4402
+#: gui/mrvImageView.cpp:4385 gui/mrvImageView.cpp:4386
+#: gui/mrvImageView.cpp:4393
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -446,20 +446,20 @@ msgid ": Error "
 msgstr ": Error"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3723
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4182
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4183
 msgid "@<"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4186
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4188
 msgid "@<|"
 msgstr ""
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3734
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4198
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4203
 msgid "@>"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4202
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4208
 msgid "@>|"
 msgstr ""
 
@@ -471,15 +471,15 @@ msgstr ""
 msgid "@|<"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4194
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4198
 msgid "@|>"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4190
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4193
 msgid "@||"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4249
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4256
 #: gui/mrvColorInfo.cpp:592
 msgid "A"
 msgstr ""
@@ -537,7 +537,7 @@ msgstr "Activar el 3D LUT del visor."
 msgid "Adopted Neutral"
 msgstr "Neutral Adoptado"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4195
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4199
 msgid "Advance one frame."
 msgstr "Avance un cuadro."
 
@@ -558,7 +558,7 @@ msgstr "Todos los Posibles"
 msgid "All Recognized (*.{"
 msgstr "Todos los Reconocidos (*.{"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4232
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4239
 msgid "Allows you to adjust frame rate playback."
 msgstr "Permite ajustar la velocidad de playback."
 
@@ -583,23 +583,23 @@ msgstr "Permite seleccionar el estándard de mascara alrededor de la imagen."
 msgid "Allows you to select different image channels or layers."
 msgstr "Permite seleccionar un diferente canal o capas de la imagen."
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4278
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4285
 msgid "Allows you to set starting frame for timeline."
 msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4292
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4299
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1165 core/CMedia.cpp:1252 core/exrImage.cpp:2537
-#: core/wandImage.cpp:649 gui/mrvImageView.cpp:168 gui/mrvImageView.cpp:3918
-#: gui/mrvImageView.cpp:4311 gui/mrvImageView.cpp:4328
+#: core/wandImage.cpp:649 gui/mrvImageView.cpp:168 gui/mrvImageView.cpp:3909
+#: gui/mrvImageView.cpp:4302 gui/mrvImageView.cpp:4319
 msgid "Alpha"
 msgstr "Alfa"
 
 #: core/CMedia.cpp:1167 core/CMedia.cpp:1252 core/exrImage.cpp:2535
-#: core/wandImage.cpp:647 gui/mrvImageView.cpp:169 gui/mrvImageView.cpp:3899
-#: gui/mrvImageView.cpp:4312
+#: core/wandImage.cpp:647 gui/mrvImageView.cpp:169 gui/mrvImageView.cpp:3890
+#: gui/mrvImageView.cpp:4303
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -663,7 +663,7 @@ msgstr "Pista de Audio #%d"
 msgid "Audio Streams"
 msgstr "Pistas de Audio"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4264
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4271
 msgid "Audio Volume"
 msgstr "Volumen de Audio"
 
@@ -724,7 +724,7 @@ msgstr "Auto Reajuste Imagen"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:590 gui/mrvImageView.cpp:5330
+#: gui/mrvColorInfo.cpp:590 gui/mrvImageView.cpp:5321
 msgid "B"
 msgstr "B"
 
@@ -764,8 +764,8 @@ msgstr "Modo de Mezcla"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1964
 #: core/CMedia.cpp:1181 core/CMedia.cpp:1251 core/exrImage.cpp:2537
-#: core/wandImage.cpp:649 gui/mrvImageView.cpp:167 gui/mrvImageView.cpp:3913
-#: gui/mrvImageView.cpp:4311
+#: core/wandImage.cpp:649 gui/mrvImageView.cpp:167 gui/mrvImageView.cpp:3904
+#: gui/mrvImageView.cpp:4302
 msgid "Blue"
 msgstr "Azul"
 
@@ -958,7 +958,7 @@ msgstr "Codecs"
 #: core/exrImage.cpp:2539 core/exrImage.cpp:2546 core/exrImage.cpp:2558
 #: core/exrImage.cpp:2563 core/exrImage.cpp:2599 core/exrImage.cpp:2630
 #: core/wandImage.cpp:608 core/wandImage.cpp:672 gui/mrvImageView.cpp:160
-#: gui/mrvImageView.cpp:4315 gui/mrvImageView.cpp:4402
+#: gui/mrvImageView.cpp:4306 gui/mrvImageView.cpp:4393
 msgid "Color"
 msgstr ""
 
@@ -1596,8 +1596,8 @@ msgstr "Cuadros Perdidos"
 msgid "Duration"
 msgstr "Duración"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4291
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4308
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4298
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4315
 msgid "E"
 msgstr "E"
 
@@ -1703,7 +1703,7 @@ msgstr "Separación de las Vistas"
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3800
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4017
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4160
-#: gui/mrvImageView.cpp:5328
+#: gui/mrvImageView.cpp:5319
 msgid "F"
 msgstr "C"
 
@@ -1718,7 +1718,7 @@ msgstr "C: "
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1539
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1692
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1780
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4209
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4216
 #: gui/mrvImageInformation.cpp:465 gui/mrvImageInformation.cpp:814
 #: gui/mrvProgressReport.cpp:67
 msgid "FPS"
@@ -1994,7 +1994,7 @@ msgstr "Gama a usar cuando se carga un exr."
 msgid "Ghosting"
 msgstr "Fantasma"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4187
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4189
 msgid "Go back one frame."
 msgstr "Volver atrás un cuadro."
 
@@ -2002,7 +2002,7 @@ msgstr "Volver atrás un cuadro."
 msgid "Go to the beginning of the sequence."
 msgstr "Ir al principio de la secuencia."
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4203
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4209
 msgid "Go to the end of the sequence."
 msgstr "Ir al final de la secuencia."
 
@@ -2012,8 +2012,8 @@ msgstr "Obtuve: "
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1947
 #: core/CMedia.cpp:1180 core/CMedia.cpp:1250 core/exrImage.cpp:2536
-#: core/wandImage.cpp:648 gui/mrvImageView.cpp:166 gui/mrvImageView.cpp:3908
-#: gui/mrvImageView.cpp:4310
+#: core/wandImage.cpp:648 gui/mrvImageView.cpp:166 gui/mrvImageView.cpp:3899
+#: gui/mrvImageView.cpp:4301
 msgid "Green"
 msgstr "Verde"
 
@@ -2319,7 +2319,7 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid host: "
 msgstr "Servidor inválido: "
 
-#: gui/mrvImageView.cpp:3829
+#: gui/mrvImageView.cpp:3820
 msgid "Invalid index "
 msgstr "Índice inválido "
 
@@ -2406,7 +2406,7 @@ msgstr "TransformaciónLM %u"
 msgid "LUT"
 msgstr "LUT"
 
-#: gui/mrvImageView.cpp:3785
+#: gui/mrvImageView.cpp:3776
 msgid "Label not found for index "
 msgstr "Etiqueta no encontrada para índice "
 
@@ -2548,8 +2548,8 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: core/CMedia.cpp:1192 core/CMedia.cpp:1252 core/exrImage.cpp:2535
-#: core/wandImage.cpp:647 gui/mrvImageView.cpp:170 gui/mrvImageView.cpp:3922
-#: gui/mrvImageView.cpp:4313 gui/mrvImageInformation.cpp:571
+#: core/wandImage.cpp:647 gui/mrvImageView.cpp:170 gui/mrvImageView.cpp:3913
+#: gui/mrvImageView.cpp:4304 gui/mrvImageInformation.cpp:571
 msgid "Lumma"
 msgstr "Luma"
 
@@ -2767,7 +2767,7 @@ msgstr "Normales"
 msgid "Not a GLErasePathShape pointer"
 msgstr "No es un puntero a GLErasePathShape"
 
-#: gui/mrvImageView.cpp:2040 gui/mrvImageView.cpp:2714
+#: gui/mrvImageView.cpp:2040 gui/mrvImageView.cpp:2715
 msgid "Not a GLPathShape pointer"
 msgstr "No es un puntero a GLPathShape"
 
@@ -2775,7 +2775,7 @@ msgstr "No es un puntero a GLPathShape"
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "No es un puntero a GLTextShape en mouseRelease"
 
-#: gui/mrvImageView.cpp:2738
+#: gui/mrvImageView.cpp:2739
 msgid "Not a GLTextShape pointer in position"
 msgstr "No es un puntero a GLPathShape en posición"
 
@@ -3028,11 +3028,11 @@ msgstr "Reproducir para Adelante a 1/2 Velocidad"
 msgid "Play Forwards X2  Speed"
 msgstr "Reproducir para Adelante a X2 Velocidad"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4183
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4184
 msgid "Play sequence backwards."
 msgstr "Reproducir secuencia para atrás."
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4199
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4204
 msgid "Play sequence forward."
 msgstr "Reproducir secuencia hacia delante."
 
@@ -3179,8 +3179,8 @@ msgstr "Leer"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1930
 #: core/CMedia.cpp:1179 core/CMedia.cpp:1250 core/exrImage.cpp:2536
-#: core/wandImage.cpp:648 gui/mrvImageView.cpp:165 gui/mrvImageView.cpp:3903
-#: gui/mrvImageView.cpp:4310
+#: core/wandImage.cpp:648 gui/mrvImageView.cpp:165 gui/mrvImageView.cpp:3894
+#: gui/mrvImageView.cpp:4301
 msgid "Red"
 msgstr "Rojo"
 
@@ -3318,8 +3318,8 @@ msgstr "Shift Derecho"
 msgid "Rounding Mode"
 msgstr "Modo de Redondeo"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4277
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4305
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4284
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4312
 msgid "S"
 msgstr "S"
 
@@ -3429,7 +3429,7 @@ msgstr "Bloq Scroll"
 msgid "Scrub"
 msgstr "Fregar"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4250
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4257
 msgid "Select Audio Track"
 msgstr "Seleccionar Pista de Audio"
 
@@ -3591,7 +3591,7 @@ msgstr "Creación de enchufe falló\n"
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4210
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4217
 msgid "Some default frame rate settings."
 msgstr "Algunos seteos de velocidad de reproducción por defecto"
 
@@ -3632,7 +3632,7 @@ msgstr "Estéreo"
 msgid "Stop"
 msgstr "Parar"
 
-#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4191
+#: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:4194
 msgid "Stop playback."
 msgstr "Detener reproducción."
 
@@ -3733,7 +3733,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2850
-#: gui/mrvImageView.cpp:5329
+#: gui/mrvImageView.cpp:5320
 msgid "T"
 msgstr "T"
 
@@ -4595,7 +4595,7 @@ msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: gui/mrvImageView.cpp:4314
+#: gui/mrvImageView.cpp:4305
 msgid "Z"
 msgstr "Z"
 
@@ -4716,12 +4716,12 @@ msgstr "Escuchar al enchufe falló\n"
 msgid "mrViewer"
 msgstr "mrViewer"
 
-#: gui/mrvImageView.cpp:4449 gui/mrvImageView.cpp:4620
+#: gui/mrvImageView.cpp:4440 gui/mrvImageView.cpp:4611
 #, c-format
 msgid "mrViewer    FG: %s"
 msgstr "mrViewer    FRENTE: %s"
 
-#: gui/mrvImageView.cpp:4443 gui/mrvImageView.cpp:4592
+#: gui/mrvImageView.cpp:4434 gui/mrvImageView.cpp:4583
 #, c-format
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"

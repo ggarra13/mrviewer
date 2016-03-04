@@ -2216,7 +2216,6 @@ void ImageView::mouseMove(int x, int y)
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
 
-
   mrv::media fg = foreground();
   if ( !fg ) return;
 
@@ -2466,7 +2465,7 @@ void ImageView::mouseMove(int x, int y)
   col[1] = uchar(rgba.g * 255.f);
   col[2] = uchar(rgba.b * 255.f);
 
-  Fl_Color c = 255;
+  Fl_Color c = 250;
   Fl::set_color( c, col[0], col[1], col[2] );
   
   // bug in fltk color lookup? (0 != fltk::BLACK)
@@ -3477,15 +3476,6 @@ int ImageView::handle(int event)
 {
     switch( event ) 
     {
-
-        // @todo: fltk1.3
-#if 0
-        case FL_TIMEOUT:
-            {
-                timeout();
-                return 1;
-            }
-#endif
         case FL_FOCUS:
             return 1;
         case FL_ENTER:
@@ -3499,11 +3489,9 @@ int ImageView::handle(int event)
                 window()->cursor( FL_CURSOR_CROSS );
             }
             uiMain->uiMain->setup_menu();
-            Fl_Gl_Window::handle( event );
             return 1;
         case FL_LEAVE:
             window()->cursor( FL_CURSOR_DEFAULT);
-            Fl_Gl_Window::handle( event );
             return 1;
         case FL_PUSH:
             return leftMouseDown(Fl::event_x(), Fl::event_y());
@@ -3562,6 +3550,7 @@ int ImageView::handle(int event)
             X = Fl::event_x();
             Y = Fl::event_y();
             mouseDrag( int(X), int(Y) );
+            return 1;
             break;
             //     case Fl::SHORTCUT:
         case FL_KEYDOWN:

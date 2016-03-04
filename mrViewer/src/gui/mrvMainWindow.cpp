@@ -502,7 +502,7 @@ void MainWindow::setup_menu()
     }
     else 
     {
-        m = new Fl_Menu_Button(0,0,w(),h());
+        m = new Fl_Menu_Button(0,0,0,0);
         m->type( Fl_Menu_Button::POPUP3 );
         this->add( m );
     }
