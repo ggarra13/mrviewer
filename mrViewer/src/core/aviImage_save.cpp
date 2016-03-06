@@ -262,8 +262,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
           if ( c->codec_id == AV_CODEC_ID_PRORES )
           {
-              std::cerr << "PRORES" << std::endl;
-              c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
+              c->pix_fmt = AV_PIX_FMT_YUV420P10;
           }
           else
           {
@@ -1066,7 +1065,6 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_MPEG4;
    else if ( opts->video_codec == "ProRes" )
        fmt->video_codec = AV_CODEC_ID_PRORES;
-
 
    if ( opts->audio_codec == "NONE" )
        fmt->audio_codec = AV_CODEC_ID_NONE;
