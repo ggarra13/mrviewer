@@ -655,7 +655,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    bool movie = false;
 
    if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
-	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" )
+	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" || ext == ".mxf" )
    {
       movie = true;
    }
@@ -722,7 +722,6 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    {
        unsigned w = uiMain->uiView->w();
        unsigned h = uiMain->uiView->h();
-       delete [] data;
        data = new float[ 4 * w * h ];
    }
 
@@ -762,7 +761,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                if ( fs::exists( buf ) )
                {
                    char text[256];
-                   sprintf( text, _("Do you want to replace '%s'"),
+                   sprintf( text, _("Do you want to replace '%s'?"),
                             buf );
                    int ok = fltk::choice( text, _("Yes"), _("No"), NULL );
                    if (ok == 1) // No
