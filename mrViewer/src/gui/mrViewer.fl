@@ -162,10 +162,10 @@ class ReelUI {} {
   } {
     Fl_Window uiMain {
       label {Reel List} open
-      xywh {463 411 405 350} type Double hide resizable
+      xywh {463 411 405 350} type Double resizable
       code0 {o->size_range(350,320);
 // Make the window transient
-// o->child_of( main->uiMain );}
+// o->child_of( main->uiMain );} non_modal visible
     } {
       Fl_Browser uiBrowser {
         xywh {0 32 405 318} box UP_BOX
@@ -279,9 +279,9 @@ class ImageInfoUI {} {
   } {
     Fl_Window uiMain {
       label {Media Information} open
-      xywh {374 107 505 530} type Double hide resizable
+      xywh {374 107 505 530} type Double resizable
       code0 {// Make the window transient
-// o->child_of( main->uiMain );}
+// o->child_of( main->uiMain );} non_modal visible
     } {
       Fl_Group uiInfoText {
         xywh {2 2 498 526}
@@ -303,9 +303,9 @@ class AboutUI {} {
   } {
     Fl_Window uiMain {
       label {About mrViewer} open
-      xywh {24 65 445 395} type Double hide resizable
+      xywh {646 142 445 395} type Double resizable
       code0 {// Make the window transient
-// o->child_of( main->uiMain );} modal
+// o->child_of( main->uiMain );} modal visible
     } {
       Fl_Tabs {} {
         user_data main user_data_type {ViewerUI*}
@@ -326,7 +326,7 @@ mrv::gpu_information( *(v->uiAbout->uiGPUInfo), v );} open
         }
         Fl_Group {} {
           label HW open
-          xywh {0 20 440 371}
+          xywh {0 20 440 371} hide
         } {
           Fl_Text_Display uiCPUInfo {
             label {CPU Information}
@@ -367,28 +367,25 @@ mrv::ffmpeg_formats(*o);}
         }
         Fl_Group {} {
           label Codecs open
-          xywh {4 24 445 375} hide
+          xywh {4 24 445 375}
         } {
           Fl_Browser {} {
             label Video
             xywh {19 44 410 150}
             code0 {mrv::ffmpeg_video_codecs(*o);
 o->value(-1);}
-            class {mrv::Browser}
           }
           Fl_Browser {} {
             label Audio
             xywh {19 214 415 110}
             code0 {mrv::ffmpeg_audio_codecs(*o);
 o->value(-1);}
-            class {mrv::Browser}
           }
           Fl_Browser {} {
             label Subtitles
             xywh {19 339 415 55}
             code0 {mrv::ffmpeg_subtitle_codecs(*o);
 o->value(-1);}
-            class {mrv::Browser}
           }
         }
         Fl_Group {} {
@@ -399,7 +396,6 @@ o->value(-1);}
             xywh {19 39 415 345}
             code0 {o->add( mrv::ffmpeg_protocols().c_str() );
 o->value(-1);}
-            class {mrv::Browser}
           }
         }
         Fl_Group {} {
@@ -414,9 +410,8 @@ o->value(-1);}
 0
 };
 o->column_widths( col_widths );
-o->add( mrv::ffmpeg_motion_estimation_methods().c_str() );
+mrv::ffmpeg_motion_estimation_methods( *o );
 o->value(-1);}
-            class {mrv::Browser}
           }
         }
       }
@@ -442,11 +437,11 @@ class GL3dViewUI {} {
       user_data this user_data_type {GL3dViewUI*}
       callback {v->main()->uiView->send( "GL3dView 0" );
 o->hide();}
-      xywh {158 529 325 240} type Double hide resizable
+      xywh {158 521 325 240} type Double hide resizable
       code0 {// Make the window transient
 main_ = main;
 // o->child_of( main->uiMain );}
-      class {mrv::GlWindow3d}
+      class {mrv::GlWindow3d} non_modal
     } {}
   }
   Function {GL3dViewUI(ViewerUI* m)} {} {
@@ -461,8 +456,7 @@ main_ = main;
   }
 } 
 
-class VectorscopeUI {open
-} {
+class VectorscopeUI {} {
   decl {ViewerUI* main_;} {private local
   }
   Function {make_window(ViewerUI* main)} {open private
@@ -472,9 +466,9 @@ class VectorscopeUI {open
       user_data this user_data_type {VectorscopeUI*}
       callback {v->main()->uiView->send( "VectorscopeWindow 0" );
 o->hide();} open
-      xywh {65 143 325 240} type Double resizable
+      xywh {65 143 325 240} type Double hide resizable
       code0 {// Make the window transient
-main_ = main;} visible
+main_ = main;} non_modal
     } {
       Fl_Box uiVectorscope {
         xywh {0 0 325 240} resizable
@@ -504,11 +498,11 @@ class HistogramUI {} {
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send( "HistogramWindow 0" );
 o->hide();} open
-      xywh {142 61 325 240} type Double hide resizable
+      xywh {142 61 325 240} type Double resizable
       code0 {// Make the window transient
 main_ = main;
 // o->child_of( main->uiMain );
-o->size_range(325, 80);}
+o->size_range(325, 80);} non_modal visible
     } {
       Fl_Pack {} {open
         xywh {3 0 322 235}
@@ -609,7 +603,7 @@ class PreferencesUI {} {
   } {
     Fl_Window uiMain {
       label Preferences open
-      xywh {608 36 670 450} type Double hide resizable
+      xywh {141 278 670 450} type Double hide resizable non_modal
     } {
       Fl_Wizard uiWizard {
         label Settings open
@@ -2090,11 +2084,12 @@ class SaveOptionsUI {} {
 } 
 
 class StatisticsUI {} {
-  Function {make_window(ViewerUI* main)} {} {
+  Function {make_window(ViewerUI* main)} {open
+  } {
     Fl_Window uiMain {
-      label Statistics
-      xywh {623 472 445 235} type Double hide resizable
-      code0 {//o->child_of( main->uiMain );}
+      label Statistics open
+      xywh {623 472 445 235} type Double resizable
+      code0 {//o->child_of( main->uiMain );} non_modal visible
     } {
       Fl_Group {} {open
         xywh {9 5 344 218}
@@ -2178,7 +2173,8 @@ class StatisticsUI {} {
       }
     }
   }
-  Function {StatisticsUI(ViewerUI* m)} {} {
+  Function {StatisticsUI(ViewerUI* m)} {open
+  } {
     code {make_window( m );} {}
   }
   Function {~StatisticsUI()} {} {
@@ -2191,8 +2187,8 @@ class LogUI {} {
   } {
     Fl_Window uiMain {
       label {Log Messages} open
-      xywh {487 205 635 250} type Double hide resizable
-      code0 {//o->child_of( main->uiMain );}
+      xywh {487 205 635 250} type Double resizable
+      code0 {//o->child_of( main->uiMain );} non_modal visible
     } {
       Fl_Group {} {open
         xywh {5 5 630 240} resizable
@@ -2234,9 +2230,9 @@ class HotkeyUI {} {
   } {
     Fl_Window uiMain {
       label Hotkeys open
-      xywh {364 235 450 400} type Double hide resizable
+      xywh {364 235 450 400} type Double resizable
       code0 {// Make the window transient
-//o->child_of( main->uiMain );} modal
+//o->child_of( main->uiMain );} modal visible
     } {
       Fl_Group {} {open
         xywh {5 25 445 375}
@@ -2271,7 +2267,7 @@ class PaintUI {} {
   } {
     Fl_Window uiMain {
       label Paint open
-      xywh {733 95 155 395} type Double hide resizable
+      xywh {733 95 155 395} type Double resizable non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 9 149 376}
@@ -2316,7 +2312,7 @@ v->uiView->text_mode();}
         }
         Fl_Value_Slider uiPenSize {
           label {Pen Size}
-          tooltip {Selects the size of brush.} xywh {32 115 85 30} align 1 minimum 1 maximum 10 step 1 value 5
+          tooltip {Selects the size of brush.} xywh {32 115 85 30} type Horizontal align 1 minimum 1 maximum 10 step 1 value 5
         }
         Fl_Group {} {open
           xywh {30 345 82 40}
@@ -2407,14 +2403,15 @@ v->uiView->redraw();}
   }
 } 
 
-class ConnectionUI {} {
+class ConnectionUI {open
+} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
-      label Connections open
-      xywh {630 357 450 400} type Double hide resizable
+      label Connections open selected
+      xywh {630 357 450 400} type Double resizable
       code0 {// Make the window transient
-//o->child_of( main->uiMain );}
+//o->child_of( main->uiMain );} non_modal visible
     } {
       Fl_Group {} {open
         xywh {0 5 445 390}
@@ -2479,8 +2476,7 @@ else
   }
 } 
 
-class ViewerUI {open
-} {
+class ViewerUI {} {
   decl {static PreferencesUI* uiPrefs;} {public local
   }
   decl {static LogUI* uiLog;} {public local
@@ -2509,7 +2505,7 @@ class ViewerUI {open
   }
   decl {EDLWindowUI* uiEDLWindow;} {public local
   }
-  Function {make_window()} {open private
+  Function {make_window()} {private
   } {
     code {uiPrefs = new PreferencesUI(this);} {}
     Fl_Window uiMain {
@@ -2787,7 +2783,7 @@ Value is:  pow( 2, 1/x );} xywh {490 5 60 18} type {Horz Knob} minimum 0.25 maxi
           xywh {0 28 640 430} resizable
           class Fl_Group
         } {
-          Fl_Group uiView {selected
+          Fl_Group uiView {
             xywh {0 28 640 430}
             code0 {o->main(this);}
             class {mrv::ImageView}
@@ -3461,12 +3457,10 @@ uiEDLWindow = new EDLWindowUI(this);
 // read and use preferences
 mrv::Preferences prefs( uiPrefs );} {}
   }
-  Function {ViewerUI()} {open
-  } {
+  Function {ViewerUI()} {} {
     code {uiMain = make_window();} {}
   }
-  Function {~ViewerUI()} {open
-  } {
+  Function {~ViewerUI()} {} {
     code {delete uiICCProfiles; uiICCProfiles = NULL;
 delete uiImageInfo; uiImageInfo = NULL;
 delete uiColorArea; uiColorArea = NULL;

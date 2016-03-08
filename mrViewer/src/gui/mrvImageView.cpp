@@ -3198,6 +3198,7 @@ int ImageView::keyDown(unsigned int rawkey)
         // uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
         //                             fltk::LAYOUT_DAMAGE |
         //                             fltk::LAYOUT_CHILD );
+        uiMain->uiRegion->damage( FL_DAMAGE_ALL );
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -3208,6 +3209,7 @@ int ImageView::keyDown(unsigned int rawkey)
         // uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
         //                             fltk::LAYOUT_DAMAGE |
         //                             fltk::LAYOUT_CHILD );
+        uiMain->uiRegion->damage( FL_DAMAGE_ALL );
         uiMain->uiRegion->redraw();
         return 1;
     }
@@ -3218,6 +3220,7 @@ int ImageView::keyDown(unsigned int rawkey)
         // uiMain->uiRegion->relayout( fltk::LAYOUT_XYWH |
         //                             fltk::LAYOUT_DAMAGE |
         //                             fltk::LAYOUT_CHILD );
+        uiMain->uiRegion->damage( FL_DAMAGE_ALL );
         uiMain->uiRegion->redraw();
         return 1;
     }

@@ -81,7 +81,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "3.1.2";
+  static const char* kVersion = "3.5.0";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 
@@ -280,9 +280,15 @@ void ffmpeg_formats( Fl_Browser& browser )
 
   }
 
-static void ffmpeg_codecs(mrv::Browser& browser, int type)
+static void ffmpeg_codecs( Fl_Browser& browser, int type)
   {
     using namespace std;
+
+    static const int widths[] = {
+    20, 20, 20, 20, 20, 200, 0
+    };
+
+    browser.column_widths( widths );
 
     AVCodec *p, *p2;
     const char* last_name;
@@ -293,7 +299,6 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       int decode=0;
       int encode=0;
       int cap=0;
-      const char *type_str;
 
       p2=NULL;
 
@@ -317,20 +322,6 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
       if ( p2->type != type )
 	continue;
 
-      switch(p2->type) {
-      case AVMEDIA_TYPE_VIDEO:
-	type_str = "V";
-	break;
-      case AVMEDIA_TYPE_AUDIO:
-	type_str = "A";
-	break;
-      case AVMEDIA_TYPE_SUBTITLE:
-	type_str = "S";
-	break;
-      default:
-	type_str = "?";
-	break;
-      }
 
       std::ostringstream o;
       o << ( decode ? "D\t" : " \t" )
@@ -350,17 +341,17 @@ static void ffmpeg_codecs(mrv::Browser& browser, int type)
   }
 
 
-void ffmpeg_audio_codecs(mrv::Browser& browser )
+void ffmpeg_audio_codecs( Fl_Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_AUDIO );
   }
 
-void ffmpeg_video_codecs(mrv::Browser& browser )
+void ffmpeg_video_codecs( Fl_Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_VIDEO );
   }
 
-void ffmpeg_subtitle_codecs(mrv::Browser& browser )
+void ffmpeg_subtitle_codecs(Fl_Browser& browser )
   {
      return ffmpeg_codecs( browser, AVMEDIA_TYPE_SUBTITLE );
   }
@@ -369,7 +360,6 @@ void ffmpeg_subtitle_codecs(mrv::Browser& browser )
   std::string ffmpeg_protocols()
   {
     std::ostringstream o;
-#if LIBAVUTIL_VERSION_MAJOR > 50
     void* opaque = NULL;
     const char* up;
     for( up = avio_enum_protocols( &opaque, 0 ); up; 
@@ -377,17 +367,10 @@ void ffmpeg_subtitle_codecs(mrv::Browser& browser )
       {
 	o << " " << up << ":";
       }
-#else
-    URLProtocol* up;
-    for(up = av_protocol_next(NULL); up; up = av_protocol_next(up) )
-     {
-    	o << " " << up->name << ":";
-     }
-#endif
     return o.str();
   }
 
-  std::string ffmpeg_motion_estimation_methods()
+  void ffmpeg_motion_estimation_methods( Fl_Browser& b )
   {
     static const char *motion_str[] = {
       "zero",
@@ -402,34 +385,33 @@ void ffmpeg_subtitle_codecs(mrv::Browser& browser )
       NULL,
     };
 
-    using namespace std;
-    std::ostringstream o;
 
     const char** pp = motion_str;
     while (*pp) {
-      o << *pp << "\t";
-      size_t idx = (pp - motion_str + 1);
-      switch(idx)
+        using namespace std;
+        std::ostringstream o;
+        o << *pp << "\t";
+        size_t idx = (pp - motion_str + 1);
+        switch(idx)
 	{
-	case ME_ZERO:
-	  o << "(fastest)"; break;
-	case ME_FULL:
-	  o << "(slowest)"; break;
-	case ME_EPZS:
-	  o << "(default)"; break;
-	case ME_HEX:
-	case ME_UMH:
-	  o << "[x264 codec]"; break;
-	case ME_ITER:
-	  o << "[snow codec]"; break;
-	default:
-	  break;
+            case ME_ZERO:
+                o << "(fastest)"; break;
+            case ME_FULL:
+                o << "(slowest)"; break;
+            case ME_EPZS:
+                o << "(default)"; break;
+            case ME_HEX:
+            case ME_UMH:
+                o << "[x264 codec]"; break;
+            case ME_ITER:
+                o << "[snow codec]"; break;
+            default:
+                break;
 	}
-      o << endl;
-      pp++;
+        b.add( o.str().c_str() );
+        pp++;
     }
 
-    return o.str();
   }
 
 

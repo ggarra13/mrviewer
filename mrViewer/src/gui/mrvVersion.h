@@ -40,11 +40,11 @@ namespace mrv
 class Browser;
 
 void ffmpeg_formats( Fl_Browser& b );
-void ffmpeg_video_codecs( mrv::Browser& b );
-void ffmpeg_audio_codecs( mrv::Browser& b  );
-void ffmpeg_subtitle_codecs( mrv::Browser& b);
+void ffmpeg_video_codecs( Fl_Browser& b );
+void ffmpeg_audio_codecs( Fl_Browser& b  );
+void ffmpeg_subtitle_codecs( Fl_Browser& b);
 std::string ffmpeg_protocols();
-std::string ffmpeg_motion_estimation_methods();
+void ffmpeg_motion_estimation_methods( Fl_Browser& b );
 
 
   const char* version();
