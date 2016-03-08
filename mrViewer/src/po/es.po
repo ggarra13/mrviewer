@@ -85,9 +85,8 @@ msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
 #: core/aviImage.cpp:1754
-#, fuzzy
 msgid " Could not open file. "
-msgstr " No pude abrir el archivo avi"
+msgstr " No pude abrir el archivo. "
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2141
 msgid " Load Sequence on Drag&&Drop"
@@ -287,12 +286,11 @@ msgid "' does not exist or no directory"
 msgstr "' no existe o no es una carpeta"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1975
-#, fuzzy
+#
 msgid ""
 "(Environment variable:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 msgstr ""
-"\n"
 "(Variable de entorno:\n"
 "CTL_DISPLAY_WHITE_LUMINANCE)"
 
@@ -464,19 +462,18 @@ msgid "1:1"
 msgstr "1:1"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:816
-#, fuzzy
+#
 msgid "1:2"
-msgstr "12"
+msgstr "1:2"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:817
-#, fuzzy
+#
 msgid "1:4"
-msgstr "1:1"
+msgstr "1:4"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:818
-#, fuzzy
 msgid "1:8"
-msgstr "1:1"
+msgstr "1:8"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:674
 msgid "2.10 VistaVision"
@@ -4778,7 +4775,6 @@ msgid "When selected, mrViewer will start in presentation mode."
 msgstr "Cuando seleccionado, mrViewer comenzará en modo presentación."
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1311
-#, fuzzy
 msgid ""
 "When selected, mrViewer will start with its channel, gain, gamma toolbar "
 "visible."
@@ -4856,7 +4852,6 @@ msgstr ""
 "puede hacer a la Interfaz del Usuario menos responsiva."
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1830
-#, fuzzy
 msgid ""
 "When using luts with ICC profiles, this setting allows you to select the ICC "
 "rendering intent.   Rendering intents are mostly used for printing to film "
@@ -4868,7 +4863,7 @@ msgstr ""
 "intención de rendereo de ICC.   Intenciones de Rendereo son principalmente "
 "usados para imprimir a film o papel para emular o probar la salida del "
 "equipo de salida (ODT), particularmente cuando no tiene el mismo gamut "
-"(rango de color/blanco) como el espacio lineal RGB/XYZ.\n"
+"(rango de color/blanco) como el espacio lineal RGB/XYZ."
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2253
 msgid "Whether to save ACES clip metadata in a sidecar."
@@ -4912,7 +4907,6 @@ msgid "Wipe Mode"
 msgstr "Modo de Wipe"
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1804
-#, fuzzy
 msgid ""
 "With modern graphics cards, mrViewer emulates color transforms by baking "
 "them into a 3D Lut.  This setting controls how accurate the 3D lut is.  The "
@@ -4947,7 +4941,7 @@ msgstr ""
 "El seteo \"No Cocinado\" realiza la corrección de color en la imagen "
 "directamente en vez de en una 3D Lut.  Esta operación no es en tiempo real y "
 "su velocidad depende del tamaño de la imagen y puede solo ser usada cuando "
-"no se reproduce una película.\n"
+"no se reproduce una película."
 
 #: core/exrImage.cpp:1154
 msgid "Wrap Modes"
@@ -5217,7 +5211,6 @@ msgid "mrViewer supports YUVA images through shaders."
 msgstr "mrViewer soporta imágenes YUVA con shaders."
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1778
-#, fuzzy
 msgid ""
 "mrViewer supports either ICC profiles or a CTL script for the render "
 "transform (RT) of your images.  This setting prioritizes choosing one over "
@@ -5236,7 +5229,7 @@ msgstr ""
 "necesario que la script CTL RT pase datos en espacio XYZ_OCES (ICC v4 "
 "relativa colorimetrica).\n"
 "Si no está seguro qué significa esto, mantenga su seteo de display e "
-"imágenes siempre usando el mismo algoritmo (CTL or ICC).\n"
+"imágenes siempre usando el mismo algoritmo (CTL or ICC)."
 
 #: /media/Linux/code/applications/mrViewer-fltk1.3/BUILD/Linux-3.16.0-62-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1753
 msgid ""
@@ -5542,9 +5535,9 @@ msgstr ""
 #~ msgid "Go to the parent directory"
 #~ msgstr "Ir a la carpeta anterior"
 
-#, fuzzy
+#
 #~ msgid "HDRI Picture"
-#~ msgstr "Imagen SGI"
+#~ msgstr "Imagen HDRI"
 
 #~ msgid "ICC Profiles Inspector"
 #~ msgstr "Inspector de Perfiles ICC"
