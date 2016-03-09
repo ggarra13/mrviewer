@@ -279,9 +279,9 @@ class ImageInfoUI {} {
   } {
     Fl_Window uiMain {
       label {Media Information} open
-      xywh {374 107 505 530} type Double resizable
+      xywh {374 107 505 530} type Double hide resizable
       code0 {// Make the window transient
-// o->child_of( main->uiMain );} non_modal visible
+// o->child_of( main->uiMain );} non_modal
     } {
       Fl_Group uiInfoText {
         xywh {2 2 498 526}
@@ -303,9 +303,9 @@ class AboutUI {} {
   } {
     Fl_Window uiMain {
       label {About mrViewer} open
-      xywh {646 142 445 395} type Double resizable
+      xywh {646 142 445 395} type Double hide resizable
       code0 {// Make the window transient
-// o->child_of( main->uiMain );} modal visible
+// o->child_of( main->uiMain );} modal
     } {
       Fl_Tabs {} {
         user_data main user_data_type {ViewerUI*}
@@ -456,7 +456,8 @@ main_ = main;
   }
 } 
 
-class VectorscopeUI {} {
+class VectorscopeUI {open
+} {
   decl {ViewerUI* main_;} {private local
   }
   Function {make_window(ViewerUI* main)} {open private
@@ -470,8 +471,9 @@ o->hide();} open
       code0 {// Make the window transient
 main_ = main;} non_modal
     } {
-      Fl_Box uiVectorscope {
+      Fl_Box uiVectorscope {selected
         xywh {0 0 325 240} resizable
+        code0 {o->main( main );}
         class {mrv::Vectorscope}
       }
     }
@@ -498,11 +500,11 @@ class HistogramUI {} {
       user_data this user_data_type {HistogramUI*}
       callback {v->main()->uiView->send( "HistogramWindow 0" );
 o->hide();} open
-      xywh {142 61 325 240} type Double resizable
+      xywh {142 61 325 240} type Double hide resizable
       code0 {// Make the window transient
 main_ = main;
 // o->child_of( main->uiMain );
-o->size_range(325, 80);} non_modal visible
+o->size_range(325, 80);} non_modal
     } {
       Fl_Pack {} {open
         xywh {3 0 322 235}
@@ -2088,8 +2090,8 @@ class StatisticsUI {} {
   } {
     Fl_Window uiMain {
       label Statistics open
-      xywh {623 472 445 235} type Double resizable
-      code0 {//o->child_of( main->uiMain );} non_modal visible
+      xywh {623 472 445 235} type Double hide resizable
+      code0 {//o->child_of( main->uiMain );} non_modal
     } {
       Fl_Group {} {open
         xywh {9 5 344 218}
@@ -2187,8 +2189,8 @@ class LogUI {} {
   } {
     Fl_Window uiMain {
       label {Log Messages} open
-      xywh {487 205 635 250} type Double resizable
-      code0 {//o->child_of( main->uiMain );} non_modal visible
+      xywh {487 205 635 250} type Double hide resizable
+      code0 {//o->child_of( main->uiMain );} non_modal
     } {
       Fl_Group {} {open
         xywh {5 5 630 240} resizable
@@ -2230,9 +2232,9 @@ class HotkeyUI {} {
   } {
     Fl_Window uiMain {
       label Hotkeys open
-      xywh {364 235 450 400} type Double resizable
+      xywh {364 235 450 400} type Double hide resizable
       code0 {// Make the window transient
-//o->child_of( main->uiMain );} modal visible
+//o->child_of( main->uiMain );} modal
     } {
       Fl_Group {} {open
         xywh {5 25 445 375}
@@ -2267,7 +2269,7 @@ class PaintUI {} {
   } {
     Fl_Window uiMain {
       label Paint open
-      xywh {733 95 155 395} type Double resizable non_modal visible
+      xywh {733 95 155 395} type Double hide resizable non_modal
     } {
       Fl_Group {} {open
         xywh {0 9 149 376}
@@ -2403,15 +2405,14 @@ v->uiView->redraw();}
   }
 } 
 
-class ConnectionUI {open
-} {
+class ConnectionUI {} {
   Function {make_window(ViewerUI* main)} {open private
   } {
     Fl_Window uiMain {
-      label Connections open selected
-      xywh {630 357 450 400} type Double resizable
+      label Connections open
+      xywh {630 357 450 400} type Double hide resizable
       code0 {// Make the window transient
-//o->child_of( main->uiMain );} non_modal visible
+//o->child_of( main->uiMain );} non_modal
     } {
       Fl_Group {} {open
         xywh {0 5 445 390}
@@ -2512,7 +2513,7 @@ class ViewerUI {} {
       label mrViewer
       user_data this user_data_type {ViewerUI*}
       callback {delete v;} open
-      xywh {354 146 640 535} type Double align 80 resizable
+      xywh {655 159 640 535} type Double align 80 resizable
       code0 {o->size_range(640, 550);
 o->main( this );}
       class {mrv::MainWindow} visible

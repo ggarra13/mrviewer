@@ -40,7 +40,8 @@ namespace mrv
 {
 
   Vectorscope::Vectorscope( int x, int y, int w, int h, const char* l ) :
-    Fl_Box( x, y, w, h, l )
+  Fl_Box( x, y, w, h, l ),
+  uiMain( NULL )
   {
       color( FL_BLACK );
       // @todo: fltk1.3
@@ -62,11 +63,8 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     int H2 = r.h() / 2;
     int R2 = diameter_ / 2;
 
-    fl_push_matrix();
-    fl_translate( W2, H2);
-    fl_line( W2, 0, W2, diameter_ );
-    fl_line( 0, H2, diameter_, H2 );
-    fl_pop_matrix();
+    fl_line( W2, H2-R2, W2, H2+R2 );
+    fl_line( W2-R2, H2, W2+R2, H2 );
 
     int angle = 32;
     for ( i = 0; i < 4; ++i, angle += 90 )
@@ -74,7 +72,10 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_push_matrix();
         fl_translate( W2, H2 );
 	fl_rotate(angle);
-	fl_line( 0, 4, 0, R2 );
+        fl_begin_line();
+        fl_vertex( 0, 4 );
+        fl_vertex( 0, R2 );
+        fl_end_line();
 	fl_pop_matrix();
       }
 
@@ -103,7 +104,16 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
 	fl_rotate(angle);
 	fl_translate( 0, int(W * 0.75f) );
 
-        fl_rect( -RW, -RH, RW, RH );
+        fl_begin_line();
+	fl_vertex( -RW, -RH );
+        fl_vertex( RW, -RH );
+	fl_vertex( RW, -RH );
+        fl_vertex( RW, RH );
+        fl_vertex( -RW,  RH );
+        fl_vertex( RW, RH );
+        fl_vertex( -RW,  RH );
+        fl_vertex( -RW, -RH );
+        fl_end_line();
 
 	fl_translate( 0, int(W * 0.15f) );
 
@@ -127,7 +137,7 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
     diameter_ = int(diameter_ * 0.9f );
 
     draw_grid(r);
-    //draw_pixels(r);
+    draw_pixels(r);
   }
 
 
@@ -145,12 +155,17 @@ void Vectorscope::draw_pixel( const mrv::Recti& r,
     fl_translate( r.w()/2, r.h()/2 );
     fl_rotate( -165.0f + hsv.r * 360.0f );
     fl_scale( hsv.g * 0.375f );
-    fl_line( 0, diameter_, 1, diameter_+1 );
+    fl_begin_line();
+    fl_vertex( 0, diameter_);
+    fl_vertex( 1, diameter_+1 );
+    fl_end_line();
     fl_pop_matrix();
 }
 
 void Vectorscope::draw_pixels( const mrv::Recti& r )
 {
+    if ( !uiMain ) return;
+
     mrv::media m = uiMain->uiView->foreground();
     if (!m) return;
 
