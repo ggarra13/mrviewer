@@ -260,12 +260,17 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           // c->qcompress = ptr->qcompress;
           // c->max_qdiff = ptr->max_qdiff;
 
+          // Use a profile if possible
+          c->profile = opts->video_profile;
+
           if ( c->codec_id == AV_CODEC_ID_PRORES )
           {
-              c->pix_fmt = AV_PIX_FMT_YUV420P10;
+              // ProRes supports only a pixel format.
+              c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
           }
           else
           {
+              // Select a piel format based on user option.
               if ( opts->video_color == "YUV420" )
                   c->pix_fmt = AV_PIX_FMT_YUV420P;
               if ( opts->video_color == "YUV422" )
@@ -841,28 +846,24 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
    if ( hires->width() < w )  w = hires->width();
    if ( hires->height() < h ) h = hires->height();
 
+   float one_gamma = 1.0f / img->gamma();
+
+   // Convert half and float pictures to 16-bits
    if ( hires->pixel_type() != mrv::image_type::kByte &&
         hires->pixel_type() != mrv::image_type::kShort )
    {
-
-
-       float one_gamma = 1.0f / img->gamma();
+       mrv::image_type_ptr ptr( new image_type( hires->frame(),
+                                                w, h,
+                                                hires->channels(),
+                                                mrv::image_type::kRGBA,
+                                                mrv::image_type::kShort ) );
 
        for ( unsigned y = 0; y < h; ++y )
        {
-           unsigned y2 = y;
-           if ( c->pix_fmt == AV_PIX_FMT_YUV420P )
-              y2 /= 2;
-
-
-           unsigned yoff  = y  * pict->linesize[0];
-           unsigned yoff1 = y2 * pict->linesize[1];
-           unsigned yoff2 = y2 * pict->linesize[2];
-
            for ( unsigned x = 0; x < w; ++x )
            {
                ImagePixel p = hires->pixel( x, y );
-               
+
                if ( p.r > 0.0f && isfinite(p.r) )
                    p.r = powf( p.r, one_gamma );
                if ( p.g > 0.0f && isfinite(p.g) )
@@ -876,39 +877,31 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                else if (p.g > 1.0f) p.g = 1.0f;
                if      (p.b < 0.0f) p.b = 0.0f;
                else if (p.b > 1.0f) p.b = 1.0f;
-               
-               ImagePixel yuv = color::rgb::to_ITU601( p );
-               
-               pict->data[0][yoff + x] = uint8_t(yuv.r);
-               
-               unsigned x2 = x;
-               if ( c->pix_fmt == AV_PIX_FMT_YUV422P ||
-                    c->pix_fmt == AV_PIX_FMT_YUV420P )
-                   x2 /= 2;
 
-               pict->data[1][yoff1 + x2 ] = uint8_t(yuv.g);
-               pict->data[2][yoff2 + x2 ] = uint8_t(yuv.b);
+               ptr->pixel(x, y, p );
            }
        }
 
-       pict->extended_data = pict->data;
-   }
-   else
-   {
-       AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
-                                                hires->pixel_type() );
-       sws_ctx = sws_getCachedContext( sws_ctx, img->width(), img->height(),
-                                       fmt, w, h, c->pix_fmt, 0, 
-                                       NULL, NULL, NULL );
-       uint8_t* buf = (uint8_t*)hires->data().get();
-       uint8_t* data[4];
-       int linesize[4];
-       av_image_fill_arrays( data, linesize, buf, fmt, 
-                             hires->width(), hires->height(), 1 );
-       sws_scale( sws_ctx, data, linesize, 0, h, 
-                  picture->data, picture->linesize );
+       hires = ptr;
    }
 
+   AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
+                                            hires->pixel_type() );
+   sws_ctx = sws_getCachedContext( sws_ctx, img->width(), img->height(),
+                                   fmt, w, h, c->pix_fmt, 0, 
+                                   NULL, NULL, NULL );
+   if ( !sws_ctx )
+   {
+       LOG_ERROR( _("Failed to initialize swscale conversion context") );
+       return;
+   }
+
+   uint8_t* buf = (uint8_t*)hires->data().get();
+   uint8_t* data[4];
+   int linesize[4];
+   av_image_fill_arrays( data, linesize, buf, fmt, 
+                         hires->width(), hires->height(), 1 );
+   sws_scale( sws_ctx, data, linesize, 0, h, picture->data, picture->linesize );
 
 }
 
@@ -1065,6 +1058,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->video_codec = AV_CODEC_ID_MPEG4;
    else if ( opts->video_codec == "ProRes" )
        fmt->video_codec = AV_CODEC_ID_PRORES;
+
 
    if ( opts->audio_codec == "NONE" )
        fmt->audio_codec = AV_CODEC_ID_NONE;
