@@ -22,7 +22,9 @@ namespace mrv {open
     }
     decl {std::string video_color;} {public
     }
-    decl {int video_bitrate;} {public
+    decl {unsigned video_bitrate;} {public
+    }
+    decl {unsigned video_profile;} {selected public
     }
     decl {std::string audio_codec;} {public
     }
@@ -32,14 +34,14 @@ namespace mrv {open
     } {
       {fltk::Window} uiMain {
         label {Movie Saving Preferences} open
-        xywh {581 381 300 380} horizontal resizable modal noborder visible
+        xywh {510 73 300 495} horizontal resizable modal noborder visible
       } {
         {fltk::Group} {} {
           label {Video Options} open
-          xywh {60 36 160 114} box UP_BOX
+          xywh {60 46 175 169} box UP_BOX
         } {
           {fltk::Choice} uiVideoColor {
-            label Color
+            label Color open
             xywh {55 41 90 25}
             extra_code {video_color = "YUV420";}
           } {
@@ -58,7 +60,9 @@ namespace mrv {open
             user_data uiVideoColor user_data_type {fltk::Choice*}
             callback {if ( o->value() == 0)
 {
-fltk::Widget* item = v->child(1);
+fltk::Widget* item = v->child(0);
+item->activate();
+item = v->child(1);
 item->activate();
 item = v->child(2);
 item->activate();
@@ -67,10 +71,22 @@ else if ( o->value() == 1 )
 {
 fltk::Widget* item = v->child(1);
 item->deactivate();
+item = v->child(0);
+item->activate();
 item = v->child(2);
-item = v->child(2);
+item->activate();
 v->value(0);
-}} open selected
+}
+else if ( o->value() == 2 )
+{
+fltk::Widget* item = v->child(1);
+item->activate();
+item = v->child(0);
+item->deactivate();
+item = v->child(2);
+item->deactivate();
+v->value(1);
+}}
             xywh {55 10 91 26}
             extra_code {video_codec = "H264";}
           } {
@@ -80,15 +96,32 @@ v->value(0);
             {fltk::Item} {} {
               label MPEG4
               }
+            {fltk::Item} {} {
+              label ProRes
+              }
           }
           {fltk::ValueInput} uiVideoBitrate {
             label Bitrate
             xywh {55 71 90 25} minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
           }
+          {fltk::Choice} uiVideoProfile {
+            label Profile open
+            xywh {55 114 90 25}
+          } {
+            {fltk::Item} {} {
+              label Baseline
+              }
+            {fltk::Item} {} {
+              label Main
+              }
+            {fltk::Item} {} {
+              label High
+              }
+          }
         }
         {fltk::Group} {} {
           label {Audio Options} open
-          xywh {60 195 160 105} box UP_BOX
+          xywh {65 284 160 101} box UP_BOX
         } {
           {fltk::Choice} uiAudioCodec {
             label Codec open
@@ -118,12 +151,13 @@ v->value(0);
           user_data this user_data_type {AviSaveUI*}
           callback {video_codec = v->uiVideoCodec->child( v->uiVideoCodec->value() )->label();
 video_color = v->uiVideoColor->child( v->uiVideoColor->value() )->label();
+video_profile = (unsigned)v->uiVideoProfile->value();
 video_bitrate = (unsigned)v->uiVideoBitrate->value();
 audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
 audio_bitrate = (unsigned)v->uiAudioBitrate->value();
 
 this->uiMain->make_exec_return(true);}
-          xywh {75 330 55 35}
+          xywh {75 429 55 46}
         }
         {fltk::Button} {} {
           label Cancel
@@ -136,7 +170,7 @@ audio_codec = "";
 audio_bitrate = 0;
 
 v->uiMain->make_exec_return(false);}
-          xywh {145 330 60 35}
+          xywh {145 429 60 46}
         }
       }
     }
