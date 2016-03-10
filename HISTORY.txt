@@ -10,6 +10,8 @@ v3.1.3   - Made mousewheel on Windows work when multiple screens are
 	   taking gamma into account and then encoded.
 	 - Added a profile option to movie saving.  This allows selecting
 	   the algorithms for compatability with other movie software.
+	 - Added an alert and abort to saving over the same movie you are
+	   playing.
 
 v3.1.2   - Made file requester leave headroom for icons on images and
 	   movies.  This avoids the resizing of the scrollbar each
