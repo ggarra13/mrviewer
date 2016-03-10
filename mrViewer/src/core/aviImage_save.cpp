@@ -238,56 +238,77 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           break;
 
        case AVMEDIA_TYPE_VIDEO:
-           c->codec_id = codec_id;
-           c->bit_rate = opts->video_bitrate;
-          // c->rc_min_rate = c->bit_rate;
-          // c->rc_max_rate = c->bit_rate;
-          /* Resolution must be a multiple of two. */
-           c->width    = (( img->width() + 1 ) / 2) * 2;
-           c->height   = (( img->height() + 1 ) / 2) * 2;
-          /* timebase: This is the fundamental unit of time (in seconds) in terms
-           * of which frame timestamps are represented. For fixed-fps content,
-           * timebase should be 1/framerate and timestamp increments should be
-           * identical to 1. */
-          c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
-          c->time_base.num = st->time_base.num = 1000;
-          c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
-          // c->qmin = ptr->qmin;
-          // c->qmax = ptr->qmax;
-          // c->me_method = ptr->me_method;
-          // c->me_subpel_quality = ptr->me_subpel_quality;
-          // c->i_quant_factor = ptr->i_quant_factor;
-          // c->qcompress = ptr->qcompress;
-          // c->max_qdiff = ptr->max_qdiff;
+           {
+               c->codec_id = codec_id;
+               c->bit_rate = opts->video_bitrate;
+               // c->rc_min_rate = c->bit_rate;
+               // c->rc_max_rate = c->bit_rate;
+               /* Resolution must be a multiple of two. */
+               c->width    = (( img->width() + 1 ) / 2) * 2;
+               c->height   = (( img->height() + 1 ) / 2) * 2;
+               /* timebase: This is the fundamental unit of time (in seconds) in terms
+                * of which frame timestamps are represented. For fixed-fps content,
+                * timebase should be 1/framerate and timestamp increments should be
+                * identical to 1. */
+               c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
+               c->time_base.num = st->time_base.num = 1000;
+               c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
+               // c->qmin = ptr->qmin;
+               // c->qmax = ptr->qmax;
+               // c->me_method = ptr->me_method;
+               // c->me_subpel_quality = ptr->me_subpel_quality;
+               // c->i_quant_factor = ptr->i_quant_factor;
+               // c->qcompress = ptr->qcompress;
+               // c->max_qdiff = ptr->max_qdiff;
+               
+               // Use a profile if possible
+               c->profile = opts->video_profile;
 
-          // Use a profile if possible
-          c->profile = opts->video_profile;
+               if ( c->codec_id == AV_CODEC_ID_H264 )
+               {
+                   switch( opts->video_profile )
+                   {
+                       case 0:
+                           c->profile = FF_PROFILE_H264_BASELINE; break;
+                       case 1:
+                           c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
+                       case 2:
+                           c->profile = FF_PROFILE_H264_MAIN; break;
+                       case 3:
+                           c->profile = FF_PROFILE_H264_EXTENDED; break;
+                       case 4:
+                           c->profile = FF_PROFILE_H264_HIGH; break;
+                   }
+               }
 
-          if ( c->codec_id == AV_CODEC_ID_PRORES )
-          {
-              // ProRes supports only a pixel format.
-              c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
-          }
-          else
-          {
-              // Select a piel format based on user option.
-              if ( opts->video_color == "YUV420" )
-                  c->pix_fmt = AV_PIX_FMT_YUV420P;
-              if ( opts->video_color == "YUV422" )
-                  c->pix_fmt = AV_PIX_FMT_YUV422P;
-              else if ( opts->video_color == "YUV444" )
-                  c->pix_fmt = AV_PIX_FMT_YUV444P;
-          }
-          if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
-             /* just for testing, we also add B frames */
-             c->max_b_frames = 2;
-          }
-          if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
-             /* just for testing, we also add B frames */
-             c->mb_decision = 2;
-          }
-          break;
-          
+               const char* name = avcodec_profile_name( codec_id, c->profile );
+               if (name) LOG_INFO( "Profile name " << name );
+
+               if ( c->codec_id == AV_CODEC_ID_PRORES )
+               {
+                   // ProRes supports only a pixel format.
+                   c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
+               }
+               else
+               {
+                   // Select a piel format based on user option.
+                   if ( opts->video_color == "YUV420" )
+                       c->pix_fmt = AV_PIX_FMT_YUV420P;
+                   if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P;
+               }
+               if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
+                   /* just for testing, we also add B frames */
+                   c->max_b_frames = 2;
+               }
+               if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
+                   /* just for testing, we also add B frames */
+                   c->mb_decision = 2;
+               }
+               break;
+           }
     default:
         break;
     }
@@ -1020,6 +1041,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
    avcodec_register_all();
    av_register_all();
+
+
+   if ( strcmp( img->filename(), filename ) == 0 )
+   {
+       mrvALERT( "You are saving over the movie you are playing. Aborting..." );
+       return false;
+   }
 
    oc = NULL;
 

@@ -800,6 +800,13 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                    open_movie = true;
                    ++movie_count;
                }
+               else
+               {
+                   delete opts;
+                   delete w;
+                   w = NULL;
+                   break;
+               }
 
                if ( opengl )
                {
