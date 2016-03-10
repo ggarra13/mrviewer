@@ -276,7 +276,7 @@ namespace mrv {
 
 
   Element::Element( mrv::media& m ) :
-  Fl_Group( 0, 0, 120, 60, m->image()->fileroot() ),
+  Fl_Box( 0, 0, 120, 60 ),
   _elem( m )
   {
     CMedia* img = m->image();
@@ -314,6 +314,7 @@ namespace mrv {
 		 );
       }
     labelsize( 12 );
+    align( Fl_Align(264) );
     copy_label( info );
   }
 
@@ -686,9 +687,9 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
   Element* ImageBrowser::new_item( mrv::media m )
   {
     Element* nw = new Element( m );
-
-    nw->labelsize( 30 );
-    // nw->box( FL_BORDER_BOX );
+    nw->labelsize(12);
+    nw->align( Fl_Align(264) );
+    nw->box( FL_BORDER_BOX );
     return nw;
   }
 
@@ -708,8 +709,8 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
 
     reel->images.insert( reel->images.begin() + idx, m );
 
-    Element* nw = new_item( m );
 
+    Element* nw = new_item( m );
     mrv::Browser::insert( *nw, idx );
 
     char buf[256];
@@ -797,8 +798,6 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     reel->images.push_back( m );
 
     Element* nw = new_item( m );
-    nw->label( m->image()->name().c_str() );
-
     mrv::Browser::add( nw );
 
     if ( reel->images.size() == 1 )
@@ -1072,7 +1071,7 @@ void ImageBrowser::clear_bg()
   {
       DBG( "Change reel" );
       // @todo: fltk1.3
-      // clear();
+      mrv::Browser::clear_children( root() );
 
       mrv::Reel reel = current_reel();
       if ( !reel ) {
@@ -1101,9 +1100,8 @@ void ImageBrowser::clear_bg()
           for ( ; i != e; ++i )
           {
               Element* nw = new_item( *i );
-
               mrv::Browser::add( nw );
-	 }
+          }
 
          DBG( "Make images contiguous in timeline" );
          // adjust_timeline();
@@ -1388,7 +1386,6 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
     img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
-
 
     mrv::media m = this->add( img );
     send_reel( reel );

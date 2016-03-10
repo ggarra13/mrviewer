@@ -16,18 +16,18 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 
-#include <FL/Fl_Group.H>
+#include <FL/Fl_Box.H>
 
 #include "gui/mrvMedia.h"
 
 namespace mrv {
 
-class Element : public Fl_Group
+class Element : public Fl_Box
 {
   public:
     Element( mrv::media& );
 
-    virtual void draw() { Fl_Group::draw(); }
+    virtual void draw() { Fl_Box::draw(); }
 
     const mrv::media& element() { return _elem; }
     mrv::media element() const { return _elem; }

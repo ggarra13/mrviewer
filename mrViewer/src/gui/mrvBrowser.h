@@ -70,6 +70,9 @@ public:
     return _column_separator_color; 
   }
 
+    int xposition() { return _hscroll ? _hscroll->value() : 0; }
+    int yposition() { return _vscroll ? _vscroll->value() : 0; }
+
   //
   // Returns the absolute (selected) item index by adding all children.
     int absolute_item_index();

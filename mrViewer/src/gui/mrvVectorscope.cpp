@@ -115,11 +115,18 @@ void Vectorscope::draw_grid(const mrv::Recti& r)
         fl_vertex( -RW, -RH );
         fl_end_line();
 
-	fl_translate( 0, int(W * 0.15f) );
+        fl_pop_matrix();
 
-	fl_draw(names[i], 1, 0, 0);
+        int X = W2;
+        int Y = H2;
+        if ( i == 0 ) Y += int( W*.75 );
+        else if ( i == 1 ) { X = W2+int(W*.85); Y = H2+int(W*0.25); }
+        else if ( i == 2 ) { X = W2+int(W*.25); Y = H2-int(W*.50);}
+        else if ( i == 3 ) { X = W2-int(W*.05f); Y = H2 - int(W*.75);}
+        else if ( i == 4 ) { X = W2 - int(W*.6); Y = H2-int(W*.25);}
+        else if ( i == 5 ) { X = W2 - int(W*.75); Y = H2+int(W*.45);}
 
-	fl_pop_matrix();
+	fl_draw(names[i], 1, X, Y);
 
       }
     fl_pop_matrix();

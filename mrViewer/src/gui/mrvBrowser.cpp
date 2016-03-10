@@ -130,14 +130,7 @@ void Browser::add( Fl_Widget* w )
 
 void Browser::add( Fl_Group* g )
 {
-    Fl_Tree_Item* i = NULL;
-
-    if ( g->children() )
-        i = Fl_Tree::add( root(), g->child(0)->label() );
-    else
-    {
-        i = Fl_Tree::add( root(), g->label() );
-    }
+    Fl_Tree_Item* i = Fl_Tree::add( root(), g->label() );
 
     if ( i )
     {
@@ -211,8 +204,8 @@ void Browser::column_labels( const char** labels )
     for ( ; lbl; ++i )
     {
         lbl = labels[i];
-        Fl_Box* b = new Fl_Box(0, 0, 120, 20 );
-        // Fl_Box* b = new Fl_Box(0, 0, _column_widths[i], 20 );
+        // Fl_Box* b = new Fl_Box(0, 0, 120, 20 );
+        Fl_Box* b = new Fl_Box(0, 0, _column_widths[i], 20 );
         b->copy_label( lbl );
         g->add( b );
     }
@@ -258,7 +251,8 @@ int Browser::handle(int e)
               // Sum up column widths to determine position
               // @todo: fltk1.3
               // int mousex = Fl::event_x() + xposition();
-              int mousex = Fl::event_x();
+
+              int mousex = Fl::event_x() + xposition();
               int newwidth = mousex - x();
         
               if ( newwidth > 0 ) {
@@ -279,7 +273,7 @@ int Browser::handle(int e)
           break;
       }
   } // switch
-  if ( _dragging ) return(1);	// dragging? don't pass event to Fl_Browser
+  if ( _dragging ) return(1);	// dragging? don't pass event to Fl_Tree
   return Fl_Tree::handle(e);
 }
 
@@ -295,7 +289,7 @@ void Browser::layout()
       int nchildren = children();
       for ( int i = 1; i <= nchildren; ++i )
 	{
-	  Fl_Widget* c = child(i);;
+	  Fl_Widget* c = child(i);
 	  hh += c->h();
 	}
 
@@ -369,7 +363,7 @@ void Browser::draw() {
   int H = h();
   // @todo: fltk1.3
   //  int colx = X - xposition();
-  int colx = X;
+  int colx = X - _hscroll->value();
   fl_color( column_separator_color() );
   const int* widths = column_widths();
   for ( int t=0; widths[t]; t++ ) {
