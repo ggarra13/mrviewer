@@ -6,7 +6,8 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
-decl {\#include <iostream>} {} 
+decl {\#include <iostream>} {selected
+} 
 
 decl {\#include <gui/mrvIO.h>} {public
 } 
@@ -24,7 +25,7 @@ namespace mrv {open
     }
     decl {unsigned video_bitrate;} {public
     }
-    decl {unsigned video_profile;} {selected public
+    decl {unsigned video_profile;} {public
     }
     decl {std::string audio_codec;} {public
     }
@@ -57,35 +58,58 @@ namespace mrv {open
           }
           {fltk::Choice} uiVideoCodec {
             label Codec
-            user_data uiVideoColor user_data_type {fltk::Choice*}
-            callback {if ( o->value() == 0)
+            user_data this user_data_type {AviSaveUI*}
+            callback {fltk::Choice* c = v->uiVideoColor;
+fltk::Choice* p = v->uiVideoProfile;
+
+if ( o->value() == 0)
 {
-fltk::Widget* item = v->child(0);
+fltk::Widget* item = c->child(0);
 item->activate();
-item = v->child(1);
+item = c->child(1);
 item->activate();
-item = v->child(2);
+item = c->child(2);
 item->activate();
+  for ( int i = 0; i < 5; ++i )
+  {
+    item = p->child(i);
+    item->activate();
+  }
+p->value(4);
 }
 else if ( o->value() == 1 )
 {
-fltk::Widget* item = v->child(1);
+fltk::Widget* item = c->child(1);
 item->deactivate();
-item = v->child(0);
+item = c->child(0);
 item->activate();
-item = v->child(2);
+item = c->child(2);
 item->activate();
-v->value(0);
+c->value(0);
+  for ( int i = 0; i < 5; ++i )
+  {
+    item = p->child(i);
+    item->activate();
+  }
+p->value(4);
 }
 else if ( o->value() == 2 )
 {
-fltk::Widget* item = v->child(1);
+fltk::Widget* item = c->child(1);
 item->activate();
-item = v->child(0);
+item = c->child(0);
 item->deactivate();
-item = v->child(2);
+item = c->child(2);
 item->deactivate();
-v->value(1);
+c->value(1);
+  for ( int i = 0; i < 4; ++i )
+  {
+    item = p->child(i);
+    item->activate();
+  }
+item = p->child(4);
+item->deactivate();
+p->value(3);
 }}
             xywh {55 10 91 26}
             extra_code {video_codec = "H264";}
