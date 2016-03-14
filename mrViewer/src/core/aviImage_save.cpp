@@ -277,6 +277,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                        case 3:
                            c->profile = FF_PROFILE_H264_EXTENDED; break;
                        case 4:
+                       default:
                            c->profile = FF_PROFILE_H264_HIGH; break;
                    }
                }
@@ -291,13 +292,16 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                }
                else
                {
-                   // Select a piel format based on user option.
+                   // Select a pixel format based on user option.
                    if ( opts->video_color == "YUV420" )
                        c->pix_fmt = AV_PIX_FMT_YUV420P;
-                   if ( opts->video_color == "YUV422" )
+                   else if ( opts->video_color == "YUV422" )
                        c->pix_fmt = AV_PIX_FMT_YUV422P;
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P;
+                   else
+                       LOG_ERROR( "Unknown c->pix_fmt (" 
+                                  << opts->video_color << ") for movie file" );
                }
                if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
                    /* just for testing, we also add B frames */
@@ -876,7 +880,7 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        mrv::image_type_ptr ptr( new image_type( hires->frame(),
                                                 w, h,
                                                 hires->channels(),
-                                                mrv::image_type::kRGBA,
+                                                hires->format(),
                                                 mrv::image_type::kShort ) );
 
        for ( unsigned y = 0; y < h; ++y )
@@ -902,14 +906,13 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
                ptr->pixel(x, y, p );
            }
        }
-
        hires = ptr;
    }
 
    AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
                                             hires->pixel_type() );
-   sws_ctx = sws_getCachedContext( sws_ctx, img->width(), img->height(),
-                                   fmt, w, h, c->pix_fmt, 0, 
+   sws_ctx = sws_getCachedContext( sws_ctx, w, h,
+                                   fmt, c->width, c->height, c->pix_fmt, 0, 
                                    NULL, NULL, NULL );
    if ( !sws_ctx )
    {
@@ -918,10 +921,9 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
    }
 
    uint8_t* buf = (uint8_t*)hires->data().get();
-   uint8_t* data[4];
-   int linesize[4];
-   av_image_fill_arrays( data, linesize, buf, fmt, 
-                         hires->width(), hires->height(), 1 );
+   uint8_t* data[4] = {NULL, NULL, NULL, NULL};
+   int linesize[4] = { 0, 0, 0, 0 };
+   av_image_fill_arrays( data, linesize, buf, fmt, w, h, 1 );
    sws_scale( sws_ctx, data, linesize, 0, h, picture->data, picture->linesize );
 
 }
