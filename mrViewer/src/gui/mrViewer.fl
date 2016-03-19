@@ -624,7 +624,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {610 36 670 450} resizable visible
+        xywh {608 36 670 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1800,14 +1800,14 @@ else
           {fltk::Group} {} {
             label Images open
             tooltip {Options controlling the OpenEXR reader/writer}
-            xywh {12 24 427 367} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {12 24 427 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {
               label Saving open
               xywh {54 78 330 130} box ROUNDED_BOX labelsize 15
             } {
               {fltk::LightButton} uiPrefsACESClipMetadata {
-                label {ACES Clip Metadata} selected
+                label {ACES Clip Metadata}
                 tooltip {Whether to save ACES clip metadata in a sidecar.}
                 xywh {60 20 210 30}
               }
@@ -1909,7 +1909,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2482,7 +2482,8 @@ v->uiView->redraw();}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ConnectionUI {} {
+  class ConnectionUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -2505,10 +2506,10 @@ o->child_of( main->uiMain );}
             {fltk::Button} uiCreate {
               label Create
               user_data main user_data_type {mrv::ViewerUI*}
-              callback {if ( strcmp( o->label(), "Create" ) == 0 )
+              callback {if ( strcmp( o->label(), _("Create") ) == 0 )
     mrv::server::create(v);
 else
-    mrv::server::remove(v);}
+    mrv::server::remove(v);} selected
               xywh {195 25 100 25}
             }
           }
@@ -2611,7 +2612,8 @@ o->main( this );}
               {fltk::Item} {} {
                 label Reels
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiReelWindow->uiMain->show();}
+                callback {v->uiReelWindow->uiMain->child_of( v->uiMain );
+v->uiReelWindow->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label {Media Info}
@@ -2677,7 +2679,8 @@ v->uiHotkey->uiMain->show();}
               {fltk::Item} {} {
                 label Logs
                 user_data this user_data_type {mrv::ViewerUI*}
-                callback {v->uiLog->uiMain->show();}
+                callback {v->uiLog->uiMain->child_of( v->uiMain );
+v->uiLog->uiMain->show();}
                 }
               {fltk::Item} {} {
                 label About
