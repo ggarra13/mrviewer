@@ -781,7 +781,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                }
 
                audio_stream = img->audio_stream();
-               if ( opts->audio_codec == "NONE" )
+               if ( opts->audio_codec == _("None") )
                {
                    img->audio_stream( -1 );
                }
