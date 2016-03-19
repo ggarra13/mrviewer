@@ -579,6 +579,7 @@ bool Parser::parse( const std::string& s )
       }
 
       browser()->remove( unsigned(idx) );
+      browser()->redraw();
       edl_group()->redraw();
 
       ok = true;
@@ -605,6 +606,7 @@ bool Parser::parse( const std::string& s )
          {
              browser()->value( int(j) );
              browser()->clone_current();
+             browser()->redraw();
 
              ok = true;
          }
@@ -659,7 +661,7 @@ bool Parser::parse( const std::string& s )
 	   
 	    if ( j == e && m->image()->fileroot() == imgname )
 	    {
-	       browser()->insert( unsigned(e), m );
+	       browser()->add( m );
 	       browser()->change_image( unsigned(e) );
 	       browser()->redraw();
 	       edl_group()->refresh();
@@ -703,6 +705,7 @@ bool Parser::parse( const std::string& s )
 	    files.push_back( LoadInfo( imgname, start, end ) );
 	   
 	    browser()->load( files, false );
+            browser()->redraw();
 	 }
       }
 
@@ -1008,7 +1011,7 @@ bool Parser::parse( const std::string& s )
           deliver( buf );
       }
 
-
+      browser()->redraw();
       view()->redraw();
 
       ok = true;
@@ -1476,7 +1479,7 @@ void server::remove( mrv::ViewerUI* ui )
       (*i)->stop();
    }
 
-   ui->uiConnection->uiCreate->label("Create");
+   ui->uiConnection->uiCreate->label( _("Create") );
    ui->uiConnection->uiClientGroup->activate();
 
    v->_clients.clear();
@@ -1499,7 +1502,7 @@ void server_thread( const ServerData* s )
 							     listen_endpoint,
 							     s->ui);
 
-      s->ui->uiConnection->uiCreate->label("Disconnect");
+      s->ui->uiConnection->uiCreate->label( _("Disconnect") );
       s->ui->uiConnection->uiClientGroup->deactivate();
 
       LOG_CONN( "Created server at port " << s->port );

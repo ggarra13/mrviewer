@@ -95,10 +95,9 @@ int Browser::handle(int e)
   // Not showing column separators? Use default fltk::Browser::handle() logic
   if ( ! column_separator() ) return(fltk::Browser::handle(e));
   // Handle column resizing
-  int ret = 0;
   switch ( e ) {
   case fltk::ENTER: {
-    ret = 1;
+    return 1;
     break;
   }
   case fltk::MOVE: {
@@ -107,14 +106,13 @@ int Browser::handle(int e)
     } else {
       change_cursor(fltk::CURSOR_DEFAULT);
     }
-    ret = 1;
+    return 1;
     break;
   }
   case fltk::PUSH: {
     int whichcol = which_col_near_mouse();
     if ( whichcol >= 0 ) {
       // CLICKED ON RESIZER? START DRAGGING
-      ret = 1;
       _dragging = true;
       _dragcol = whichcol + 1;
       change_cursor(fltk::CURSOR_DEFAULT);
@@ -132,6 +130,7 @@ int Browser::handle(int e)
 	relayout();
 	redraw();
       }
+      return 1;
     }
     break;
   }
@@ -139,13 +138,13 @@ int Browser::handle(int e)
   case fltk::RELEASE: {
     _dragging = false;				// disable drag mode
     change_cursor(fltk::CURSOR_DEFAULT);	// ensure normal cursor
-    ret = 1;
+    return 1;
     break;
 
   }
   }
   if ( _dragging ) return(1);	// dragging? don't pass event to fltk::Browser
-  return(fltk::Browser::handle(e) ? 1 : ret);
+  return fltk::Browser::handle(e);
 }
 
 void Browser::layout() 
