@@ -796,38 +796,53 @@ fltk::StyleSet*     newscheme = NULL;
   {
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
+    main->uiMain->show();
+    main->uiMain->set_icon();
+    fltk::check();
 
     //
     // Windows
     //
 
     if ( uiPrefs->uiPrefsEDLEdit->value() )
-      main->uiEDLWindow->uiMain->show();
+    {
+        main->uiEDLWindow->uiMain->show();
+    }
     else
       main->uiEDLWindow->uiMain->hide();
 
     if ( uiPrefs->uiPrefsReelList->value() )
-      main->uiReelWindow->uiMain->show();
+    {
+        main->uiReelWindow->uiMain->show();
+    }
     else
       main->uiReelWindow->uiMain->hide();
 
     if ( uiPrefs->uiPrefsImageInfo->value() )
-      main->uiImageInfo->uiMain->show();
+    {
+        main->uiImageInfo->uiMain->show();
+    }
     else
       main->uiImageInfo->uiMain->hide();
 
     if ( uiPrefs->uiPrefsColorArea->value() )
-      main->uiColorArea->uiMain->show();
+    {
+        main->uiColorArea->uiMain->show();
+    }
     else
       main->uiColorArea->uiMain->hide();
 
     if ( uiPrefs->uiPrefsHistogram->value() )
-      main->uiHistogram->uiMain->show();
+    {
+        main->uiHistogram->uiMain->show();
+    }
     else
       main->uiHistogram->uiMain->hide();
 
     if ( uiPrefs->uiPrefsVectorscope->value() )
-      main->uiVectorscope->uiMain->show();
+    {
+        main->uiVectorscope->uiMain->show();
+    }
     else
       main->uiVectorscope->uiMain->hide();
 
@@ -987,9 +1002,6 @@ fltk::StyleSet*     newscheme = NULL;
     }
 
 
-    main->uiMain->show(0, NULL);
-    main->uiMain->set_icon();
-    fltk::check();
 
 
 #if defined(_WIN32) || defined(_WIN64)
