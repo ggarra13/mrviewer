@@ -1,3 +1,14 @@
+v3.1.4   - Bug fixed windows preference of child windows (Reel List, etc),
+	   appearing at the beginning under the main window.  Now they
+	   appear above and don't go behind the main window when not 
+	   selected.
+	 - Bug fixed None audio saving in Spanish to Ninguno.
+	 - Made default saver h264, with High profile.
+	 - Made conversion to 16 bits from float/half images 10% faster.
+	 - Bug fixed the opening of the browser in the media info window,
+	   which would create a display bug.  Now you can no longer 
+	   open it.
+
 v3.1.3   - Made mousewheel on Windows work when multiple screens are
 	   used.  This might fix ticket #21 (mousewheel not working).
 	 - Bug fixed scrollbar in file requester when set to wide view.

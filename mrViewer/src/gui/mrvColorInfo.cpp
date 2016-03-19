@@ -409,12 +409,15 @@ void ColorInfo::update( const CMedia* img,
 
                if ( v != ImageView::kRGBA_Original ) 
                {
+                   // The code below is same as
+                   //   rp.r = powf(rp.r * gain, one_gamma);
+                   // but faster
                    if ( rp.r > 0.0f && isfinite(rp.r) )
-                       rp.r = powf(rp.r * gain, one_gamma);
+                       rp.r = expf( logf(rp.r * gain) * one_gamma );
                    if ( rp.g > 0.0f && isfinite(rp.g) )
-                       rp.g = powf(rp.g * gain, one_gamma);
+                       rp.g = expf( logf(rp.g * gain) * one_gamma );
                    if ( rp.b > 0.0f && isfinite(rp.b) )
-                       rp.b = powf(rp.b * gain, one_gamma);
+                       rp.b = expf( logf(rp.b * gain) * one_gamma );
                }
 
                if ( rp.r < pmin.r ) pmin.r = rp.r;

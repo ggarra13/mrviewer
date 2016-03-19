@@ -6,8 +6,7 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
-decl {\#include <iostream>} {selected
-} 
+decl {\#include <iostream>} {} 
 
 decl {\#include <gui/mrvIO.h>} {public
 } 
@@ -112,16 +111,16 @@ item->deactivate();
 p->value(3);
 }}
             xywh {55 10 91 26}
-            extra_code {video_codec = "H264";}
+            extra_code {video_codec = "h264";}
           } {
             {fltk::Item} {} {
-              label H264
+              label h264
               }
             {fltk::Item} {} {
-              label MPEG4
+              label mpeg4
               }
             {fltk::Item} {} {
-              label ProRes
+              label prores_ks
               }
           }
           {fltk::ValueInput} uiVideoBitrate {
@@ -129,8 +128,9 @@ p->value(3);
             xywh {55 71 90 25} minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
           }
           {fltk::Choice} uiVideoProfile {
-            label Profile open
+            label Profile open selected
             xywh {55 114 90 25}
+            extra_code {o->value(4);}
           } {
             {fltk::Item} {} {
               label Baseline
@@ -156,19 +156,19 @@ p->value(3);
           {fltk::Choice} uiAudioCodec {
             label Codec open
             xywh {55 20 91 26}
-            extra_code {audio_codec = "AC3";}
+            extra_code {audio_codec = "ac3";}
           } {
             {fltk::Item} {} {
-              label AC3
+              label ac3
               }
             {fltk::Item} {} {
-              label AAC
+              label aac
               }
             {fltk::Item} {} {
-              label MP3
+              label mp3
               }
             {fltk::Item} {} {
-              label NONE
+              label None
               }
           }
           {fltk::ValueInput} uiAudioBitrate {
