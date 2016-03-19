@@ -191,22 +191,33 @@ struct SwsContext* sws_ctx = NULL;
 
 /* Add an output stream. */
 static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
+                            const char* name, // codec name
                             enum AVCodecID codec_id, const CMedia* const img,
                             const AviSaveUI* opts)
 {
     AVCodecContext *c;
     AVStream *st;
 
+    const AVCodecDescriptor *desc;
+    *codec = avcodec_find_encoder_by_name( name );
+    if ( !*codec )
+    {
+        desc = avcodec_descriptor_get_by_name( name );
+        if ( desc )
+        {
+            codec_id = desc->id;
+            *codec = avcodec_find_encoder(codec_id);
+        }
+    }
+
     /* find the encoder */
-    *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
-        LOG_ERROR( _("Could not find encoder for '") << 
-                   avcodec_get_name(codec_id) << "'" );
+        LOG_ERROR( _("Could not find encoder for '") << name << "'" );
        return NULL;
     }
 
 
-    LOG_INFO( _("Open encoder ") << avcodec_get_name(codec_id) );
+    LOG_INFO( _("Open encoder ") << (*codec)->name );
 
     st = avformat_new_stream(oc, *codec);
     if (!st) {
@@ -220,7 +231,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
        case AVMEDIA_TYPE_AUDIO:
           c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
           aformat = AudioEngine::ffmpeg_format( img->audio_format() );
-          if ( opts->audio_codec == "PCM" )
+          if ( opts->audio_codec == "pcm_s16le" )
               c->sample_fmt = AV_SAMPLE_FMT_S16;
           else
               c->sample_fmt = select_sample_format(*codec, aformat );
@@ -889,13 +900,15 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
            {
                ImagePixel p = hires->pixel( x, y );
 
+               // This code is equivalent to p.r = powf( p.r, gamma )
+               // but faster
                if ( p.r > 0.0f && isfinite(p.r) )
-                   p.r = powf( p.r, one_gamma );
+                   p.r = expf( logf(p.r) * one_gamma );
                if ( p.g > 0.0f && isfinite(p.g) )
-                   p.g = powf( p.g, one_gamma );
+                   p.g = expf( logf(p.g) * one_gamma );
                if ( p.b > 0.0f && isfinite(p.b) )
-                   p.b = powf( p.b, one_gamma );
-               
+                   p.b = expf( logf(p.b) * one_gamma );
+
                if      (p.r < 0.0f) p.r = 0.0f;
                else if (p.r > 1.0f) p.r = 1.0f;
                if      (p.g < 0.0f) p.g = 0.0f;
@@ -1080,39 +1093,38 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    fmt = oc->oformat;
    assert( fmt != NULL );
 
-   if ( opts->video_codec == "H264" )
+   if ( opts->video_codec == "h264" )
        fmt->video_codec = AV_CODEC_ID_H264;
-   else if ( opts->video_codec == "HEVC" )
-       fmt->video_codec = AV_CODEC_ID_HEVC;
-   else if ( opts->video_codec == "MPEG4" )
+   else if ( opts->video_codec == "mpeg4" )
        fmt->video_codec = AV_CODEC_ID_MPEG4;
-   else if ( opts->video_codec == "ProRes" )
+   else if ( opts->video_codec == "prores_ks" )
        fmt->video_codec = AV_CODEC_ID_PRORES;
 
 
-   if ( opts->audio_codec == "NONE" )
+   if ( opts->audio_codec == _("None") )
        fmt->audio_codec = AV_CODEC_ID_NONE;
-   else if ( opts->audio_codec == "MP3" )
+   else if ( opts->audio_codec == "mp3" )
        fmt->audio_codec = AV_CODEC_ID_MP3; 
-   else if ( opts->audio_codec == "AC3" )
+   else if ( opts->audio_codec == "ac3" )
        fmt->audio_codec = AV_CODEC_ID_AC3;
-   else if ( opts->audio_codec == "AAC" )
+   else if ( opts->audio_codec == "aac" )
        fmt->audio_codec = AV_CODEC_ID_AAC; 
-   else if ( opts->audio_codec == "VORBIS" )
+   else if ( opts->audio_codec == "vorbis" )
        fmt->audio_codec = AV_CODEC_ID_VORBIS; 
-   else if ( opts->audio_codec == "PCM" )
+   else if ( opts->audio_codec == "pcm" )
        fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
 
 
    video_st = NULL;
    audio_st = NULL;
    if (img->has_picture() && fmt->video_codec != AV_CODEC_ID_NONE) {
-       video_st = add_stream(oc, &video_codec, fmt->video_codec, img, opts);
+       video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
+                             fmt->video_codec, img, opts);
    }
 
    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
-      audio_st = add_stream(oc, &audio_cdc, fmt->audio_codec,
-                            img, opts );
+       audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
+                             fmt->audio_codec, img, opts );
    }
 
    if ( video_st == NULL && audio_st == NULL )
