@@ -2590,12 +2590,14 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.b *= _gain;
 
     float one_gamma = 1.0f / _gamma;
+    // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
+    // but faster.
     if ( isfinite(rgba.r) )
-        rgba.r = powf(rgba.r, one_gamma);
+        rgba.r = expf( logf(rgba.r) * one_gamma );
     if ( isfinite(rgba.g) )
-        rgba.g = powf(rgba.g, one_gamma);
+        rgba.g = expf( logf(rgba.g) * one_gamma );
     if ( isfinite(rgba.b) )
-        rgba.b = powf(rgba.b, one_gamma);
+        rgba.b = expf( logf(rgba.b) * one_gamma );
 
 }
 
