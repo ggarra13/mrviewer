@@ -72,6 +72,7 @@ namespace mrv {
 std::string GLPathShape::send() const
 {
    std::string buf = "GLPathShape ";
+   setlocale( LC_NUMERIC, "C" );
    char tmp[256];
    sprintf( tmp, "%g %g %g %g %g %" PRId64, r, g, b, a,
             pen_size, frame );
@@ -83,6 +84,7 @@ std::string GLPathShape::send() const
       sprintf( tmp, " %g %g", (*i).x, (*i).y );
       buf += tmp;
    }
+   setlocale( LC_NUMERIC, "" );
    return buf;
 }
 
@@ -148,6 +150,7 @@ void GLPathShape::draw( double z )
 std::string GLErasePathShape::send() const
 {
    std::string buf = "GLErasePathShape ";
+   setlocale( LC_NUMERIC, "C" );
    char tmp[128];
    sprintf( tmp, "%g %" PRId64, pen_size, frame );
 
@@ -159,6 +162,7 @@ std::string GLErasePathShape::send() const
       sprintf( tmp, " %g %g", (*i).x, (*i).y );
       buf += tmp;
    }
+   setlocale( LC_NUMERIC, "" );
 
    return buf;
 }
@@ -199,11 +203,13 @@ std::string GLTextShape::send() const
    fltk::Font* f = font();
    if (!f) return "";
 
+   setlocale( LC_NUMERIC, "C" );
    char tmp[512];
    sprintf( tmp, "\"%s\" ^%s^ %d %g %g %g %g %" PRId64, font()->name(),
             text().c_str(), size(), r, g, b, a, frame );
    buf += tmp;
    sprintf( tmp, " %g %g", pts[0].x, pts[0].y );
+   setlocale( LC_NUMERIC, "" );
    buf += tmp;
 
    return buf;

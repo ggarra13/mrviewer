@@ -264,7 +264,6 @@ static const char* kModule = "alsa";
 			 const AudioFormat format,
 			 const unsigned bits )
   {
-    if ( !_enabled )   return true;
 
     int                  status;
     unsigned int         test_format = (unsigned int) format;
