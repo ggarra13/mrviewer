@@ -822,6 +822,8 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("sync_image") )
    {
+       setlocale( LC_NUMERIC, "C" );
+
       std::string cmd;
       size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
@@ -1014,6 +1016,7 @@ bool Parser::parse( const std::string& s )
       browser()->redraw();
       view()->redraw();
 
+      setlocale( LC_NUMERIC, "" );
       ok = true;
    }
    else if ( cmd == N_("stop") )
