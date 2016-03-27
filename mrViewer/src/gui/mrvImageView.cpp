@@ -509,11 +509,9 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 
   mask = (float) atof( fmt );
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[128];
   sprintf( buf, "Mask %g", mask );
   view->send( buf );
-  setlocale( LC_NUMERIC, "" );
 
   view->masking( mask );
 
@@ -714,13 +712,13 @@ void ImageView::text_mode()
 void ImageView::send( std::string m )
 {
 
-   ParserList::iterator i = _clients.begin();
-   ParserList::iterator e = _clients.end();
-
-   if ( i != e )
-   {
-      (*i)->write( m, "" );  //<- this line writes all clients
-   }
+    ParserList::iterator i = _clients.begin();
+    ParserList::iterator e = _clients.end();
+   
+    if ( i != e )
+    {
+        (*i)->write( m, "" );  //<- this line writes all clients
+    }
 }
 
 
@@ -736,6 +734,7 @@ void ImageView::delete_timeout()
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 fltk::GlWindow( X, Y, W, H, l ),
+_broadcast( false ),
 uiMain( NULL ),
 _engine( NULL ),
 _wait( false ),
@@ -1040,9 +1039,7 @@ void ImageView::copy_pixel() const
   }
 
   char buf[256];
-  setlocale( LC_NUMERIC, "C" );
   sprintf( buf, "%g %g %g %g", rgba.r, rgba.g, rgba.b, rgba.a );
-  setlocale( LC_NUMERIC, "" );
 
   // Copy text to both the clipboard and to X's XA_PRIMARY
   fltk::copy( buf, unsigned( strlen(buf) ), true );
@@ -1165,11 +1162,9 @@ void ImageView::center_image()
     yoffset = ( dpw.y() + dpw.h() / 2.0 ) / pr;
 
 
-    setlocale( LC_NUMERIC, "C" );
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
     send( buf );
-    setlocale( LC_NUMERIC, "" );
     redraw();
 }
 
@@ -1244,11 +1239,9 @@ void ImageView::fit_image()
 
   yoffset = (dpw.y()+H / 2.0) / pr;
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
   send( buf );
-  setlocale( LC_NUMERIC, "" );
   zoom( float(z) );
 
   mouseMove( fltk::event_x(), fltk::event_y() );
@@ -1479,7 +1472,6 @@ bool ImageView::preload()
 
 void ImageView::timeout()
 {
-
 
   //
   // If in EDL mode, we check timeline to see if frame points to
@@ -2958,11 +2950,9 @@ void ImageView::mouseDrag(int x,int y)
 	   xoffset += double(dx) / _zoom;
            yoffset -= double(dy) / _zoom;
 
-           setlocale( LC_NUMERIC, "C" );
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
 	   send( buf );
-           setlocale( LC_NUMERIC, "" );
 
 	   lastX = x;
 	   lastY = y;
@@ -3098,11 +3088,9 @@ void ImageView::mouseDrag(int x,int y)
                _selection = mrv::Rectd( xt, yt, dx, dy );
 
 
-               setlocale( LC_NUMERIC, "C" );
                char buf[256];
                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
                         _selection.y(), _selection.w(), _selection.h() );
-               setlocale( LC_NUMERIC, "" );
 
 
                send( buf );
@@ -3370,11 +3358,9 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe_dir = kWipeVertical;
             _wipe = (float) fltk::event_x() / float( w() );
 
-            setlocale( LC_NUMERIC, "C" );
             char buf[128];
             sprintf( buf, "WipeVertical %g", _wipe );
             send( buf );
-            setlocale( LC_NUMERIC, "" );
 
             window()->cursor(fltk::CURSOR_WE);
         }
@@ -3383,10 +3369,8 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe_dir = kWipeHorizontal;
             _wipe = (float) (h() - fltk::event_y()) / float( h() );
             char buf[128];
-            setlocale( LC_NUMERIC, "C" );
             sprintf( buf, "WipeHorizontal %g", _wipe );
             send( buf );
-            setlocale( LC_NUMERIC, "" );
             window()->cursor(fltk::CURSOR_NS);
         }
         else if ( _wipe_dir & kWipeHorizontal ) {
@@ -3896,7 +3880,8 @@ int ImageView::handle(int event)
         case fltk::TIMEOUT:
             {
                 mrv::ImageBrowser* b = browser();
-                if ( b && !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
+                if ( b && !_idle_callback && CMedia::cache_active() &&
+                     CMedia::preload_cache() &&
                      ( _reel < b->number_of_reels() ) )
                 {
                     add_idle( (fltk::TimeoutHandler)static_preload, this );
@@ -3951,18 +3936,14 @@ int ImageView::handle(int event)
                 {
                     case kWipeVertical:
                         _wipe = (float) fltk::event_x() / (float)w();
-                        setlocale( LC_NUMERIC, "C" );
                         sprintf( buf, "WipeVertical %g", _wipe );
                         send( buf );
-                        setlocale( LC_NUMERIC, "" );
                         window()->cursor(fltk::CURSOR_WE);
                         break;
                     case kWipeHorizontal:
                         _wipe = (float) (h() - fltk::event_y()) / (float)h();
-                        setlocale( LC_NUMERIC, "C" );
                         sprintf( buf, "WipeHorizontal %g", _wipe );
                         send( buf );
-                        setlocale( LC_NUMERIC, "" );
                         window()->cursor(fltk::CURSOR_NS);
                         break;
                     default:
@@ -3994,6 +3975,7 @@ int ImageView::handle(int event)
             X = fltk::event_x();
             Y = fltk::event_y();
             mouseDrag( int(X), int(Y) );
+            return 1;
             break;
             //     case fltk::SHORTCUT:
         case fltk::KEY:
@@ -4014,6 +3996,7 @@ int ImageView::handle(int event)
                     zoom_under_mouse( _zoom * 0.5f, 
                                       fltk::event_x(), fltk::event_y() );
                 }
+                return 1;
                 break;
             }
         case fltk::DND_ENTER:
@@ -4223,7 +4206,7 @@ char* ImageView::get_layer_label( unsigned short c )
         if ( lbl ) break;
     }
 
-    if ( !lbl && num > 0 )
+    if ( !lbl )
     {
         LOG_ERROR( _("Label not found for index ") << c );
     }
@@ -4462,11 +4445,9 @@ void ImageView::gain( const float f )
 
   _gain = f;
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[256];
   sprintf( buf, "Gain %g", f );
   send( buf );
-  setlocale( LC_NUMERIC, "" );
 
   refresh_fstop();
   flush_caches();
@@ -4493,11 +4474,9 @@ void ImageView::gamma( const float f )
   }
 
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[256];
   sprintf( buf, "Gamma %g", f );
   send( buf );
-  setlocale( LC_NUMERIC, "" );
 
   uiMain->uiGamma->value( f );
   uiMain->uiGammaInput->value( f );
@@ -4529,11 +4508,9 @@ void ImageView::zoom( float z )
   uiMain->uiZoom->label( tmp );
   uiMain->uiZoom->redraw();
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[128];
   sprintf( buf, "Zoom %g", z );
   send( buf );
-  setlocale( LC_NUMERIC, "" );
 
   _zoom = z;
   redraw();
@@ -4726,11 +4703,9 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
   if ( _showPixelRatio ) ratio = img->pixel_ratio();
   yoffset += (offy / _zoom * ratio);
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
   send( buf );
-  setlocale( LC_NUMERIC, "" );
 
   mouseMove( x, y );
 }
@@ -5737,11 +5712,9 @@ void ImageView::fps( double x )
 
     uiMain->uiFPS->value( x );
 
-    setlocale( LC_NUMERIC, "C" );
     char buf[128];
     sprintf( buf, "FPS %g", x );
     send( buf );
-    setlocale( LC_NUMERIC, "" );
 }
 
 /** 
@@ -5771,11 +5744,9 @@ void ImageView::volume( float v )
   uiMain->uiVolume->redraw();
 
 
-  setlocale( LC_NUMERIC, "C" );
   char buf[128];
   sprintf( buf, "Volume %g", v );
   send( buf );
-  setlocale( LC_NUMERIC, "" );
 
 }
 
