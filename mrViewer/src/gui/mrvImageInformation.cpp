@@ -363,8 +363,8 @@ static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
     view->redraw();
 }
 
-boost::int64_t ImageInformation::to_memory( boost::int64_t value,
-					    const char*& extension )
+double ImageInformation::to_memory( double value,
+                                    const char*& extension )
 {
     if ( value >= 1099511627776 )
     {
@@ -699,7 +699,7 @@ void ImageInformation::fill_data()
 
     const char* space_type = NULL;
     double memory_space = double( to_memory( img->memory(), space_type ) );
-    sprintf( buf, N_("%.1f %s"), memory_space, space_type );
+    sprintf( buf, N_("%.3f %s"), memory_space, space_type );
     add_text( _("Memory"), buf );
 
     
@@ -712,7 +712,7 @@ void ImageInformation::fill_data()
 	double pct   = double( 100.0 * ( (long double) img->disk_space() /
                                          (long double) img->memory() ) );
 	
-	sprintf( buf, N_("%.1f %s  (%.2f %% of memory size)"), 
+	sprintf( buf, N_("%.3f %s  (%.2f %% of memory size)"), 
 		 disk_space, space_type, pct );
 	add_text( _("Disk space"), buf );
 
