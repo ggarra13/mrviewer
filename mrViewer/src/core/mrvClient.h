@@ -37,35 +37,47 @@ namespace mrv {
 
 class ViewerUI;
 
-class client : public Parser
+class client : public Parser,
+               public boost::enable_shared_from_this< client >
 {
-   public:
-     client(boost::asio::io_service& io_service,
-	    mrv::ViewerUI* v); 
+  public:
+    client(boost::asio::io_service& io_service,
+           mrv::ViewerUI* v); 
+    virtual ~client() { stop(); };
 
-     void start(tcp::resolver::iterator endpoint_iter);
+    void start(tcp::resolver::iterator endpoint_iter);
 
-     virtual void stop();
-     virtual void deliver( std::string m );
+    virtual void stop();
+    virtual void deliver( const std::string& msg );
 
-     bool stopped() { return stopped_; }
-     void start_connect(tcp::resolver::iterator endpoint_iter);
-     void handle_connect(const boost::system::error_code& ec,
-			 tcp::resolver::iterator endpoint_iter);
-     void start_read();
-     void handle_read( const boost::system::error_code& ec );
-     void start_write( const std::string& s );
-     void handle_write( const boost::system::error_code& ec );
-     void check_deadline();
+    bool stopped() { return stopped_; }
 
-     static void create( mrv::ViewerUI* main );
-     static void remove( mrv::ViewerUI* main );
+    void start_connect(tcp::resolver::iterator endpoint_iter);
+    void handle_connect(const boost::system::error_code& ec,
+                        tcp::resolver::iterator endpoint_iter);
 
-private:
-  bool stopped_;
-  boost::asio::streambuf input_buffer_;
-  deadline_timer deadline_;
+    void start_read();
+    void handle_read( const boost::system::error_code& ec );
+
+    void await_output();
+    void start_write();
+    void handle_write( const boost::system::error_code& ec );
+
+    void check_deadline();
+
+    static void create( mrv::ViewerUI* main );
+    static void remove( mrv::ViewerUI* main );
+
+  private:
+    bool stopped_;
+    deadline_timer non_empty_output_queue_;
+    std::deque< std::string > output_queue_;
+    boost::asio::streambuf input_buffer_;
+    deadline_timer deadline_;
 };
+
+typedef boost::shared_ptr< client > client_ptr;
+typedef std::vector< client* >      ClientList;
 
 void client_thread( const ServerData* s );
 

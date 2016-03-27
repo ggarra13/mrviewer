@@ -65,6 +65,7 @@ namespace mrv {
       uiMain->uiView->stop();
   }
 
+
   void MainWindow::set_icon()
   {
     fltk::open_display();  // Needed for icons 
@@ -76,13 +77,21 @@ namespace mrv {
 
     // XpmCreatePixmapFromData comes from libXpm (libgd-xpm* on Debian)
     Pixmap p, mask;
-    if ( XpmCreatePixmapFromData(fltk::xdisplay,
-				 DefaultRootWindow(fltk::xdisplay),
-				 (char**)viewer16_xpm, &p, &mask, NULL) == 
-         XpmSuccess )
+    int ErrorStatus = XpmCreatePixmapFromData(fltk::xdisplay,
+                                              DefaultRootWindow(fltk::xdisplay),
+                                              (char**)viewer16_xpm,
+                                              &p, &mask, 
+                                              NULL);
+
+    if ( ErrorStatus == XpmSuccess )
       {
-	 this->icon((const void*)p);
+         this->icon((const void*)p);
       }
+    else
+    {
+        std::cerr << "XpmCreatePixmapFromData returned " << ErrorStatus 
+                  << std::endl;
+    }
 #endif
 
   }
