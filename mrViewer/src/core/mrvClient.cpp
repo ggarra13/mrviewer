@@ -26,6 +26,7 @@
 //
 
 // #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
+// #define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING 1
 
 #include <boost/lexical_cast.hpp>
 #include <boost/asio/deadline_timer.hpp>
@@ -117,9 +118,14 @@ client::client(boost::asio::io_service& io_service,
 	       mrv::ViewerUI* v) :
 stopped_(false),
 deadline_(io_service),
+non_empty_output_queue_(io_service),
 Parser( io_service, v )
 {
-   ui->uiView->_clients.push_back( this );
+   // The non_empty_output_queue_ deadline_timer is set to pos_infin 
+   // whenever the output queue is empty. This ensures that the output 
+   // actor stays asleep until a message is put into the queue.
+   non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
+
 }
 
 // Called by the user of the client class to initiate the connection process.
@@ -128,7 +134,8 @@ void client::start(tcp::resolver::iterator endpoint_iter)
 {
    // Start the connect actor.
    start_connect(endpoint_iter);
-   // connected = true;
+   
+   //connected = true;
    
    // Start the deadline actor. You will note that we're not setting any
    // particular deadline here. Instead, the connect and input actors will
@@ -146,6 +153,7 @@ void client::stop()
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
    deadline_.cancel();
+   non_empty_output_queue_.cancel();
 }
 
 
@@ -157,12 +165,11 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
-      
 
       // Start the asynchronous connect operation.
       socket_.async_connect(endpoint_iter->endpoint(),
 			    boost::bind(&client::handle_connect,
-					this, _1, endpoint_iter));
+					shared_from_this(), _1, endpoint_iter));
    }
    else
    {
@@ -211,8 +218,11 @@ void client::handle_connect(const boost::system::error_code& ec,
 
       connected = true;
 
+      ui->uiView->_clients.push_back( this );
       ui->uiConnection->uiServerGroup->deactivate();
-      ui->uiConnection->uiConnect->label("Disconnect");
+      ui->uiConnection->uiConnect->label( _("Disconnect") );
+
+      await_output();
 
       write( N_("sync_image"), "" );
 
@@ -223,9 +233,13 @@ void client::handle_connect(const boost::system::error_code& ec,
 }
 
 
-void client::deliver( const std::string s )
+void client::deliver( const std::string& msg )
 {
-   start_write( s + "\n" );
+    SCOPED_LOCK( mtx );
+
+   output_queue_.push_back(msg + "\n");
+
+   non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0)); 
 }
 
 void client::start_read()
@@ -236,72 +250,108 @@ void client::start_read()
 
    // Start an asynchronous operation to read a newline-delimited message.
    boost::asio::async_read_until(socket_, input_buffer_, '\n',
-    				 boost::bind(&client::handle_read, this, _1));
+    				 boost::bind(&client::handle_read, 
+                                             shared_from_this(), 
+                                             boost::asio::placeholders::error));
 }
 
 void client::handle_read(const boost::system::error_code& ec)
 {
+    if (stopped_)
+        return;
 
-   if (stopped_)
-      return;
-   
     if (!ec)
     {
-       // Extract the newline-delimited message from the buffer.
-       std::string line;
-       std::istream is(&input_buffer_);
-       is.exceptions( std::ifstream::failbit | std::ifstream::badbit | 
-        	      std::ifstream::eofbit );
+        // Extract the newline-delimited message from the buffer.
+        std::istream is(&input_buffer_);
+        // is.exceptions( std::ifstream::failbit | std::ifstream::badbit | 
+        //                std::ifstream::eofbit );
 
-       try {
-	  if ( std::getline(is, line) )
-	  {
-    	     if ( line == N_("OK") || line == N_("") )
-	     {
-	     }
-	     else if ( line == N_("Not OK") )
-	     {
-		LOG_CONN( N_("Not OK") );
-	     }
-	     else
-	     {
-		if ( parse( line ) )
-		{
-		   std::string id = boost::lexical_cast<std::string>(socket_.remote_endpoint() );
-		   write( N_("OK"), id );
-		}
-		else
-		{ 
-		   std::string id = boost::lexical_cast<std::string>(socket_.remote_endpoint() );
-		   write( N_("Not OK"), id );
-		}
-	     }
-	  }
-       } 
-       catch ( const std::ios_base::failure& e )
-       {
-          LOG_ERROR( "Parse failure " << e.what() );
-       }
+
+        std::string id = boost::lexical_cast<std::string>(socket_.remote_endpoint() );
+        try {
+            std::string msg;
+            is.clear();
+            if ( std::getline(is, msg) )
+            {
+                if ( msg == N_("OK") || msg.empty() )
+                {
+                    LOG_CONN("OK");
+                }
+                else if ( msg == N_("Not OK") )
+                {
+                    LOG_CONN( N_("Not OK") );
+                }
+                else if ( parse( msg ) )
+                {
+                    write( N_("OK"), "" );
+                }
+                else
+                {
+                    write( N_("Not OK"), id );
+                }
+            }
+        } 
+        catch ( const std::ios_base::failure& e )
+        {
+            LOG_ERROR( "Parse failure " << e.what() );
+        }
+        catch ( const std::exception& e )
+        {
+            LOG_ERROR( "Parse std failure " << e.what() );
+        }
        
-       start_read();
+
+        start_read();
     }
     else
     {
-       LOG_CONN( "Error on receive: " << ec.message() );
+        LOG_CONN( ">>>>>>>>>>>> Error on receive: " << ec.message() );
        
-       stop();
+        stop();
     }
 }
 
-void client::start_write( const std::string& s )
+void client::await_output()
+{
+    SCOPED_LOCK( mtx );
+
+   if (stopped_)
+   {
+      return;
+   }
+   
+   if (output_queue_.empty())
+   {
+      // There are no messages that are ready to be sent. The actor goes to
+      // sleep by waiting on the non_empty_output_queue_ timer. When a new
+      // message is added, the timer will be modified and the actor will
+      // wake.
+      
+      non_empty_output_queue_.async_wait(
+                                         boost::bind(&mrv::client::await_output,
+						     shared_from_this() )
+					 );
+      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
+   }
+   else
+   {
+      start_write();
+   }
+}
+
+void client::start_write()
 {
    if (stopped_)
       return;
 
 
    // Start an asynchronous operation to send a message.
-   boost::asio::async_write(socket_, boost::asio::buffer(s),
-			    boost::bind(&client::handle_write, this, _1));
+   boost::asio::async_write(socket_,
+			    boost::asio::buffer(output_queue_.front()),
+			    boost::bind(&client::handle_write, 
+                                        shared_from_this(), 
+                                        boost::asio::placeholders::error));
 }
 
 
@@ -312,8 +362,8 @@ void client::handle_write(const boost::system::error_code& ec)
 
    if (!ec)
    {
-      // Wait 10 seconds before sending the next heartbeat.
-
+       output_queue_.pop_front();
+       await_output();
    }
    else
    {
@@ -377,7 +427,7 @@ void client::remove( mrv::ViewerUI* ui )
    }
 
    ui->uiConnection->uiServerGroup->activate();
-   ui->uiConnection->uiConnect->label("Connect");
+   ui->uiConnection->uiConnect->label( _("Connect") );
 
    ui->uiView->_clients.clear();
 }
@@ -390,15 +440,18 @@ void client_thread( const ServerData* s )
     boost::asio::io_service io_service;
     tcp::resolver r(io_service);
 
-    client c(io_service, s->ui);
-    c.start(r.resolve(tcp::resolver::query(s->host, s->group)));
+    client_ptr c( boost::make_shared<client>( boost::ref(io_service),
+                                              boost::ref(s->ui) ) );
+
+    c->start(r.resolve(tcp::resolver::query(s->host, s->group)));
+
+
+    int runs = io_service.run();
 
     delete s;
 
-    io_service.run();
-
    }
-   catch (std::exception& e)
+   catch (const std::exception& e)
    {
       LOG_ERROR( "Client Exception: " << e.what() );
    }

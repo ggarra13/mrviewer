@@ -297,15 +297,21 @@ delete uiMain; uiMain = NULL;} {}
     }
   }
   class ImageInfoUI {} {
+    decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
-        label {Media Information} open
-        xywh {374 107 505 530} hide resizable
+        label {Media Information}
+        user_data this user_data_type {ImageInfoUI*}
+        callback {v->main()->uiView->send( "MediaInfoWindow 0" );
+o->hide();}
+        xywh {374 107 505 530} resizable
         extra_code {// Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );
+main_ = main;} visible
       } {
         {fltk::Group} uiInfoText {
+          user_data uiInfoText user_data_type {mrv::ImageInformation*} open
           xywh {2 2 498 526}
           extra_code {o->main( main );}
           class {mrv::ImageInformation}
@@ -317,6 +323,10 @@ o->child_of( main->uiMain );}
     }
     Function {~ImageInfoUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {main()} {open return_type {ViewerUI*}
+    } {
+      code {return main_;} {}
     }
   }
   class AboutUI {} {
@@ -618,8 +628,7 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
@@ -2509,7 +2518,7 @@ o->child_of( main->uiMain );}
               callback {if ( strcmp( o->label(), _("Create") ) == 0 )
     mrv::server::create(v);
 else
-    mrv::server::remove(v);} selected
+    mrv::server::remove(v);}
               xywh {195 25 100 25}
             }
           }
@@ -2529,10 +2538,10 @@ else
             {fltk::Button} uiConnect {
               label Connect
               user_data main user_data_type {mrv::ViewerUI*}
-              callback {if ( strcmp( o->label(), "Connect" ) == 0 )
+              callback {if ( strcmp( o->label(), _("Connect") ) == 0 )
    mrv::client::create(v);
 else
-   mrv::client::remove(v);}
+   mrv::client::remove(v);} selected
               xywh {310 20 85 25}
             }
           }
@@ -2554,8 +2563,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public

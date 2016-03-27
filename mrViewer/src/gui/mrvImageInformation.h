@@ -91,7 +91,7 @@ namespace mrv
     static void int_slider_cb( fltk::Slider* w, void* data );
     static void float_slider_cb( fltk::Slider* w, void* data );
 
-    int64_t to_memory( int64_t value, const char*& extension );
+    double to_memory( double value, const char*& extension );
 
     mrv::Browser* add_browser( mrv::CollapsableGroup* g );
 
