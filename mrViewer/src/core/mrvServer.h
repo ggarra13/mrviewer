@@ -20,6 +20,7 @@
 
 #include <deque>
 
+#include <boost/thread/recursive_mutex.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/shared_ptr.hpp>
@@ -34,6 +35,8 @@
 #include <boost/asio/write.hpp>
 #include <boost/asio.hpp>
 
+#include "gui/mrvReel.h"
+
 namespace mrv {
 
 using boost::asio::deadline_timer;
@@ -45,38 +48,44 @@ class ImageView;
 class ImageBrowser;
 class EDLGroup;
 
-typedef std::vector< Parser* > ParserList;
 
 class Parser
-{
-   public:
-     Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
-     ~Parser();
+{ 
+  public:
+    typedef boost::recursive_mutex Mutex;
+
+  public:
+    Parser( boost::asio::io_service& io_service, mrv::ViewerUI* v );
+    virtual ~Parser();
      
-     bool parse( const std::string& m );
-     void write( std::string s, const std::string id );
+    bool parse( const std::string& m );
+    void write( const std::string& s, const std::string& id );
 
-     mrv::ImageView* view() const;
-     mrv::ImageBrowser* browser() const;
-     mrv::EDLGroup*     edl_group() const;
+    mrv::ImageView* view() const;
+    mrv::ImageBrowser* browser() const;
+    mrv::EDLGroup*     edl_group() const;
 
-     virtual void deliver( std::string m ) = 0;
-     virtual void stop() = 0;
+    virtual void deliver( const std::string& m ) = 0;
+    virtual void stop() = 0;
 
-   public:
-     bool connected;
-     tcp::socket socket_;
-     mrv::ViewerUI* ui;
+
+  public:
+    bool connected;
+    tcp::socket socket_;
+    Mutex mtx;
+    mrv::Reel r;
+    mrv::media m;
+    mrv::ViewerUI* ui;
 };
 
 
-class tcp_session : public boost::enable_shared_from_this< tcp_session >,
-		    public Parser
+class tcp_session : public Parser,
+                    public boost::enable_shared_from_this< tcp_session >
 {
    public:
      tcp_session(boost::asio::io_service& io_service,
 		 mrv::ViewerUI* const v);
-     ~tcp_session();
+     virtual ~tcp_session();
 
      tcp::socket& socket();
      void start();
@@ -87,7 +96,7 @@ class tcp_session : public boost::enable_shared_from_this< tcp_session >,
      void handle_read(const boost::system::error_code& ec);
      void await_output();
 
-     virtual void deliver( std::string m );
+     virtual void deliver( const std::string& m );
 
      virtual void stop();
 
@@ -97,11 +106,8 @@ class tcp_session : public boost::enable_shared_from_this< tcp_session >,
 
    protected:
      boost::asio::streambuf input_buffer_;
-     deadline_timer input_deadline_;
      deadline_timer non_empty_output_queue_;
-     deadline_timer output_deadline_;
      std::deque< std::string > output_queue_;
-
 };
 
 typedef boost::shared_ptr<tcp_session> tcp_session_ptr;
@@ -124,11 +130,12 @@ public:
      static void remove(mrv::ViewerUI* ui);
 
 private:
-  boost::asio::io_service& io_service_;
-  tcp::acceptor acceptor_;
-  mrv::ViewerUI* ui_;
+    boost::asio::io_service& io_service_;
+    tcp::acceptor acceptor_;
+    mrv::ViewerUI* ui_;
 };
 
+typedef std::vector< Parser* > ParserList;
 typedef boost::shared_ptr<server> tcp_server_ptr;
 
 struct ServerData

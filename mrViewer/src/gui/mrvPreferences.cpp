@@ -797,7 +797,6 @@ fltk::StyleSet*     newscheme = NULL;
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     main->uiMain->show();
-    main->uiMain->set_icon();
     fltk::check();
 
     //

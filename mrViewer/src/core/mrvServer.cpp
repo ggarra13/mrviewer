@@ -25,6 +25,10 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 //
+// #define DEBUG_COMMANDS
+// #define BOOST_ASIO_ENABLE_HANDLER_TRACKING
+// #define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
+
 #include <algorithm>
 #include <cstdlib>
 #include <deque>
@@ -35,8 +39,6 @@
 #define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
-// #define DEBUG_COMMANDS
-// #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
 
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
@@ -75,7 +77,7 @@ using boost::asio::ip::tcp;
 //----------------------------------------------------------------------
 
 namespace {
-const char* const kModule = "server";
+const char* const kModule = "parser";
 }
 
 
@@ -93,22 +95,9 @@ ui( v )
 
 Parser::~Parser()
 {
-   if ( !ui || !ui->uiView ) return;
-
-   ParserList::iterator i = ui->uiView->_clients.begin();
-   ParserList::iterator e = ui->uiView->_clients.end();
-   for ( ; i != e; ++i  )
-   {
-      if ( *i == this )
-      {
-	 ui->uiView->_clients.erase( i );
-	 break;
-      }
-   }
-   ui = NULL;
 }
 
-void Parser::write( std::string s, std::string id )
+void Parser::write( const std::string& s, const std::string& id )
 {
     if ( !connected || !ui || !ui->uiView ) {
         return;
@@ -117,13 +106,16 @@ void Parser::write( std::string s, std::string id )
    ParserList::const_iterator i = ui->uiView->_clients.begin();
    ParserList::const_iterator e = ui->uiView->_clients.end();
 
+   bool sent = false;
    for ( ; i != e; ++i )
    {
       std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
-      if ( p == id ) {
-	 continue;
+      if ( p == id )
+      {
+          continue;
       }
-      LOG_CONN( s << " sent to " << p );
+      sent = true;
+      // LOG_CONN( s << " sent to " << *i << " " << p );
       (*i)->deliver( s );
    }
 }
@@ -149,11 +141,12 @@ bool Parser::parse( const std::string& s )
 
 
    std::istringstream is( s );
+
+   std::locale mylocale("");   // get global locale
+   is.imbue(mylocale);  // imbue global locale
+
    std::string cmd;
    is >> cmd;
-
-   static mrv::Reel r;
-   static mrv::media m;
 
    bool ok = false;
 
@@ -162,7 +155,7 @@ bool Parser::parse( const std::string& s )
    ParserList c = v->_clients;
    v->_clients.clear();
 
-   LOG_CONN( "Received: " << s );
+   //LOG_CONN( "Received: " << s );
 
 #ifdef DEBUG_COMMANDS
    DBG( "received: " << cmd );
@@ -173,6 +166,7 @@ bool Parser::parse( const std::string& s )
       Point xy;
       std::string points;
       GLPathShape* shape = new GLPathShape;
+      is.clear();
       std::getline( is, points );
       is.str( points );
       is.clear();
@@ -211,10 +205,15 @@ bool Parser::parse( const std::string& s )
       static string old_text;
       static string old_font;
       unsigned font_size;
+      is.clear();
       std::getline( is, font, '"' ); // skip first quote
+      is.clear();
       std::getline( is, font, '"' );
+      is.clear();
       std::getline( is, text, '^' ); // skip first quote
+      is.clear();
       std::getline( is, text, '^' );
+      is.clear();
 
       GLTextShape* shape;
       mrv::ImageView* view = ui->uiView;
@@ -291,7 +290,6 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("Selection") )
    {
-      
       double x, y, w, h;
       is >> x >> y >> w >> h;
       v->selection( mrv::Rectd( x, y, w, h ) );
@@ -313,6 +311,7 @@ bool Parser::parse( const std::string& s )
       float z;
       is >> z;
       v->zoom( z );
+      v->redraw();
       ok = true;
    }
    else if ( cmd == N_("Offset") )
@@ -468,8 +467,11 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("Reel") )
    {
       std::string name;
+      is.clear();
       std::getline( is, name, '"' ); // skip first quote
+      is.clear();
       std::getline( is, name, '"' );
+      is.clear();
 
       r = browser()->reel( name.c_str() );
       if (!r) {
@@ -517,7 +519,9 @@ bool Parser::parse( const std::string& s )
       is >> reel;
 
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
 
       boost::int64_t diff;
@@ -533,7 +537,9 @@ bool Parser::parse( const std::string& s )
       is >> reel;
 
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
 
       boost::int64_t diff;
@@ -546,8 +552,11 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("CurrentReel") )
    {
       std::string name;
+      is.clear();
       std::getline( is, name, '"' ); // skip first quote
+      is.clear();
       std::getline( is, name, '"' );
+      is.clear();
 
       mrv::Reel now = browser()->current_reel();
       if ( now && now->name == name )
@@ -587,7 +596,9 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("CloneImage") )
    {
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
 
       if ( r )
@@ -618,8 +629,11 @@ bool Parser::parse( const std::string& s )
       is >> idx;
 
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
+      is.clear();
 
       r = browser()->current_reel();
 
@@ -677,8 +691,11 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("Image") )
    {
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
+      is.clear();
 
       boost::int64_t start, end;
       is >> start;
@@ -716,8 +733,11 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("CurrentImage") )
    {
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
+      is.clear();
 
       boost::int64_t first, last;
       is >> first;
@@ -783,11 +803,14 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("CurrentBGImage") )
    {
       std::string imgname;
+      is.clear();
       std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
       std::getline( is, imgname, '"' );
+      is.clear();
 
 
-      if ( imgname == "" )
+      if ( imgname.empty() )
       {
           v->background( mrv::media() );
       }
@@ -822,42 +845,40 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("sync_image") )
    {
-       setlocale( LC_NUMERIC, "C" );
-
       std::string cmd;
       size_t num = browser()->number_of_reels();
       for (size_t i = 0; i < num; ++i )
       {
-	 r = browser()->reel( unsigned(i) );
-	 cmd = N_("Reel \"");
-	 cmd += r->name;
-	 cmd += "\"";
-	 deliver( cmd );
+         r = browser()->reel( unsigned(i) );
+         cmd = N_("Reel \"");
+         cmd += r->name;
+         cmd += "\"";
+         deliver( cmd );
 
-	 mrv::MediaList::iterator j = r->images.begin();
-	 mrv::MediaList::iterator e = r->images.end();
- 	 for ( ; j != e; ++j )
-	 {
-	    cmd = N_("Image \"");
-	    cmd += (*j)->image()->directory();
-	    cmd += "/";
-	    cmd += (*j)->image()->name();
-	    cmd += "\" ";
+         mrv::MediaList::iterator j = r->images.begin();
+         mrv::MediaList::iterator e = r->images.end();
+         for ( ; j != e; ++j )
+         {
+            cmd = N_("Image \"");
+            cmd += (*j)->image()->directory();
+            cmd += "/";
+            cmd += (*j)->image()->name();
+            cmd += "\" ";
 
-	    char buf[128];
-	    boost::int64_t start = (*j)->image()->first_frame();
-	    boost::int64_t end   = (*j)->image()->last_frame();
+            char buf[128];
+            boost::int64_t start = (*j)->image()->first_frame();
+            boost::int64_t end   = (*j)->image()->last_frame();
 
-	    sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
-		     start, end );
-	    cmd += buf;
+            sprintf( buf, N_("%") PRId64 N_(" %") PRId64,
+        	     start, end );
+            cmd += buf;
 
-	    deliver( cmd );
+            deliver( cmd );
 
-	    boost::int64_t frame = (*j)->image()->frame();
-	    sprintf( buf, N_("seek %") PRId64, frame );
-	    deliver( buf );
-	 }
+            boost::int64_t frame = (*j)->image()->frame();
+            sprintf( buf, N_("seek %") PRId64, frame );
+            deliver( buf );
+         }
       }
 
       if ( num == 0 ) {
@@ -868,24 +889,24 @@ bool Parser::parse( const std::string& s )
       r = browser()->current_reel();
       if (r)
       {
-	 cmd = N_("CurrentReel \"");
-	 cmd += r->name;
-	 cmd += "\"";
-	 deliver( cmd );
+         cmd = N_("CurrentReel \"");
+         cmd += r->name;
+         cmd += "\"";
+         deliver( cmd );
       }
       if ( r->edl )
       {
-	 cmd = N_("EDL 1");
-	 deliver( cmd );
+         cmd = N_("EDL 1");
+         deliver( cmd );
       }
 
       {
-          mrv::media m = v->background();
-          if ( m )
+          mrv::media bg = v->background();
+          if ( bg )
           {
               cmd = N_("CurrentBGImage \"");
 
-              CMedia* img = m->image();
+              CMedia* img = bg->image();
               cmd += img->fileroot();
 
               char buf[128];
@@ -894,14 +915,14 @@ bool Parser::parse( const std::string& s )
               cmd += buf;
               deliver( cmd );
 
-              boost::int64_t frame = m->image()->frame();
+              boost::int64_t frame = img->frame();
               sprintf( buf, N_("seek %") PRId64, frame );
               deliver( buf );
           }
       }
 
-      mrv::media m = v->foreground();
-      if ( m )
+      mrv::media fg = v->foreground();
+      if ( fg )
       {
           //
           // handle all shapes in images in reels
@@ -948,7 +969,7 @@ bool Parser::parse( const std::string& s )
               }
           }
 
-          CMedia* img = m->image();
+          CMedia* img = fg->image();
           cmd = N_("CurrentImage \"");
           cmd += img->fileroot();
 
@@ -990,7 +1011,7 @@ bool Parser::parse( const std::string& s )
       deliver( buf );
 
       sprintf(buf, N_("ShowPixelRatio %d"), 
-	      (int)v->show_pixel_ratio() );
+              (int)v->show_pixel_ratio() );
       deliver( buf );
 
       sprintf(buf, N_("Normalize %d"), (int)v->normalize() );
@@ -1016,7 +1037,6 @@ bool Parser::parse( const std::string& s )
       browser()->redraw();
       view()->redraw();
 
-      setlocale( LC_NUMERIC, "" );
       ok = true;
    }
    else if ( cmd == N_("stop") )
@@ -1044,6 +1064,22 @@ bool Parser::parse( const std::string& s )
       v->seek( f );
 
       ok = true;
+   }
+   else if ( cmd == N_("MediaInfoWindow") )
+   {
+       int x;
+       is >> x;
+       if ( x ) 
+       {
+           ui->uiImageInfo->uiMain->show();
+           v->update_image_info();
+       }
+       else
+       {
+           ui->uiImageInfo->uiMain->hide();
+       }
+
+       ok = true;
    }
    else if ( cmd == N_("ColorInfoWindow") )
    {
@@ -1106,6 +1142,8 @@ bool Parser::parse( const std::string& s )
        ok = true;
    }
 
+   if (!ok) LOG_ERROR( "Parsing failed for " << cmd << " " << s );
+
    v->_clients = c;
 
    return ok;
@@ -1116,21 +1154,15 @@ bool Parser::parse( const std::string& s )
 
 //----------------------------------------------------------------------
 
+namespace {
+const char* const kModule = "server";
+}
 
 tcp_session::tcp_session(boost::asio::io_service& io_service,
 			 mrv::ViewerUI* const v) :
-input_deadline_(io_service),
 non_empty_output_queue_(io_service),
-output_deadline_(io_service),
 Parser(io_service, v)
 {
- 
-   // boost::asio::socket_base::debug option(true);
-   // socket_.set_option( option );
-
-   input_deadline_.expires_at(boost::posix_time::pos_infin);
-   output_deadline_.expires_at(boost::posix_time::pos_infin);
-   
 
    // The non_empty_output_queue_ deadline_timer is set to pos_infin 
    // whenever the output queue is empty. This ensures that the output 
@@ -1140,6 +1172,7 @@ Parser(io_service, v)
 
 tcp_session::~tcp_session()
 {
+    stop();
 }
 
 tcp::socket& tcp_session::socket()
@@ -1158,15 +1191,17 @@ void tcp_session::start()
    
    //	std::cerr << "start1: " << socket_.native_handle() << std::endl;
    // input_deadline_.async_wait(
-   //     boost::bind(&tcp_session::check_deadline,
-   //     shared_from_this(), &input_deadline_));
+   //                            boost::bind(&tcp_session::check_deadline,
+   //                                        shared_from_this(),
+   //                                        &input_deadline_));
    
    await_output();
    
    // std::cerr << "start2: " << socket_.native_handle() << std::endl;
    // output_deadline_.async_wait(
-   //     boost::bind(&tcp_session::check_deadline,
-   //     shared_from_this(), &output_deadline_));
+   //                             boost::bind(&tcp_session::check_deadline,
+   //                                         shared_from_this(),
+   //                                         &output_deadline_));
    
 }
 
@@ -1175,14 +1210,15 @@ bool tcp_session::stopped()
    return !socket_.is_open();
 }
 
-void tcp_session::deliver(std::string msg)
+void tcp_session::deliver( const std::string& msg )
 {
+    SCOPED_LOCK( mtx );
+
    output_queue_.push_back(msg + "\n");
 
    // Signal that the output queue contains messages. Modifying the expiry
    // will wake the output actor, if it is waiting on the timer.
-   non_empty_output_queue_.expires_at(boost::posix_time::neg_infin);  
-   //non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));  
+   non_empty_output_queue_.expires_from_now(boost::posix_time::seconds(0));  
 }
 
 
@@ -1191,9 +1227,7 @@ void tcp_session::stop()
    connected = false;
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
-   input_deadline_.cancel();
    non_empty_output_queue_.cancel();
-   output_deadline_.cancel();
 }
 
 
@@ -1215,74 +1249,79 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
 {
    if (stopped())
       return;
-   
+
    if (!ec)
    {
       // Extract the newline-delimited message from the buffer.
-      std::string msg;
       std::istream is(&input_buffer_);
+      is.exceptions( std::ifstream::failbit | std::ifstream::badbit | 
+                     std::ifstream::eofbit );
       
-      try {
-	 if ( std::getline(is, msg) )
-	 {
-	    if ( msg != "" && msg != "OK" && msg != "Not OK")
-	    {
-	       if ( parse( msg ) )
-	       {
-		  // send message to all clients
-		  // We need to do this to update multiple clients.
-		  // Note that the original client that sent the
-		  // message will be skipped as it is IDed.
+      std::string id = boost::lexical_cast<std::string>(socket().remote_endpoint() );
 
-		  std::string id;
-		  id = boost::lexical_cast<std::string>(socket().remote_endpoint() );
-		  write( msg, id );  
-		  deliver( "OK" );
-	       }
-	       else
-	       {
-		  std::string err = "Not OK for '";
-		  err += msg;
-		  err += "'";
-		  deliver( err );
-	       }
-	    }
-	 }
-      } 
-      catch ( std::ios_base::failure& e )
-      {
-         LOG_ERROR( "Failure in getline " << e.what() );
+      try {
+          std::string msg;
+          is.clear();
+          if ( std::getline(is, msg) )
+          {
+              if ( msg == N_("OK") || msg.empty() )
+              {
+              }
+              else if ( msg == N_("Not OK") )
+              {
+                  LOG_CONN( N_("Not OK") );
+              }
+              else if ( parse( msg ) )
+              {
+                 // send message to all clients
+                 // We need to do this to update multiple clients.
+                 // Note that the original client that sent the
+                 // message will be skipped as it is IDed.
+                  write( msg, id );
+              }
+              else
+              {
+                  write( N_("Not OK"), "" );
+              }
+          }
       }
-      
+      catch ( const std::exception& e )
+      {
+          LOG_ERROR( "Failure in getline " << e.what() );
+      }
+   
+
       
       start_read();
    }
    else
    {
-      LOG_ERROR( "ERROR handle_read " << ec );
-      stop();
+       LOG_ERROR( ">>>>>>>>>>>> ERROR handle_read " << ec );
+       stop();
    }
 }
 
 void tcp_session::await_output()
 {
 
+
+    SCOPED_LOCK( mtx );
+
    if (stopped())
       return;
 
-   
+
    if (output_queue_.empty())
    {
       // There are no messages that are ready to be sent. The actor goes to
       // sleep by waiting on the non_empty_output_queue_ timer. When a new
       // message is added, the timer will be modified and the actor will
       // wake.
-      
 
       non_empty_output_queue_.async_wait(
 					 boost::bind(&tcp_session::await_output,
 						     shared_from_this())
-					 ); 
+					 );
       non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
    }
    else
@@ -1297,8 +1336,8 @@ void tcp_session::start_write()
    boost::asio::async_write(socket(),
 			    boost::asio::buffer(output_queue_.front()),
 			    boost::bind(&tcp_session::handle_write, 
-					shared_from_this(), _1));
-   
+					shared_from_this(), 
+                                        boost::asio::placeholders::error));
 }
 
 void tcp_session::handle_write(const boost::system::error_code& ec)
@@ -1330,14 +1369,14 @@ void tcp_session::check_deadline(deadline_timer* deadline)
    {
       // The deadline has passed. Stop the session. The other actors will
       // terminate as soon as possible.
-      stop();
+       stop();
    }
    else
    {
       // Put the actor back to sleep.
       deadline->async_wait(
-			   boost::bind(&tcp_session::check_deadline,
-				       shared_from_this(), deadline));
+         		   boost::bind(&tcp_session::check_deadline,
+         			       shared_from_this(), deadline));
    }
 }
 
@@ -1430,15 +1469,15 @@ server::~server()
 
 void server::start_accept()
 {
-   //    tcp_session_ptr new_session(new tcp_session(io_service_, ui_));
+    // tcp_session_ptr new_session(new tcp_session(io_service_, ui_));
    tcp_session_ptr new_session(
-			       boost::make_shared<tcp_session>(
-							       boost::ref(
-									  io_service_
-									  ),
-							       boost::ref(ui_)
-							       )
-			       );
+        		       boost::make_shared<tcp_session>(
+        						       boost::ref(
+        								  io_service_
+        								  ),
+        						       boost::ref(ui_)
+        						       )
+        		       );
    
 
    acceptor_.async_accept(new_session->socket(),
@@ -1501,6 +1540,11 @@ void server_thread( const ServerData* s )
 
       tcp::endpoint listen_endpoint(tcp::v4(), s->port);
 
+      if ( !s->ui || !s->ui->uiView || !s->ui->uiConnection )
+      {
+          LOG_ERROR( "Trashing memory" );
+      }
+
       s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
 							     listen_endpoint,
 							     s->ui);
@@ -1508,14 +1552,16 @@ void server_thread( const ServerData* s )
       s->ui->uiConnection->uiCreate->label( _("Disconnect") );
       s->ui->uiConnection->uiClientGroup->deactivate();
 
-      LOG_CONN( "Created server at port " << s->port );
+      LOG_CONN( _("Created server at port ") << s->port );
+
+
+      int runs = io_service.run();
 
       delete s;
 
-
-      io_service.run();
+      LOG_CONN( "Server run exit runs: " << runs );
    }
-   catch (std::exception& e)
+   catch (const std::exception& e)
    {
       LOG_ERROR( "Exception: " << e.what() );
    }
