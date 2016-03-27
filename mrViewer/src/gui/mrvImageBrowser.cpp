@@ -2095,6 +2095,7 @@ void ImageBrowser::load( const stringArray& files,
 	      {
 		fltk::event_clicks(0);
 		uiMain->uiImageInfo->uiMain->show();
+                view()->send( "MediaInfoWindow 1" );
 		view()->update_image_info();
 		return ok;
 	      }

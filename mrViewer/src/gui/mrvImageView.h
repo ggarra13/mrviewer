@@ -38,6 +38,7 @@
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
 #include "core/mrvServer.h"
+#include "core/mrvClient.h"
 
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
@@ -466,8 +467,9 @@ class server;
       bool preload();
 
      public:
-       ParserList   _clients;
-       tcp_server_ptr _server;
+      bool           _broadcast;
+      ParserList     _clients;
+      tcp_server_ptr _server;
 
   protected:
 
