@@ -40,6 +40,7 @@
 
 #include "mrViewer.h"
 #include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 #include "gui/mrvPreferencesBrowser.h"
 #include "gui/FLU/flu_pixmaps.h"
 
@@ -48,14 +49,16 @@ namespace fs = boost::filesystem;
 typedef boost::tokenizer< boost::char_separator<char> > Tokenizer_t;
 
 namespace {
-  fltk::xpmImage book_closed(book_xpm);
-  fltk::xpmImage book_open(question_book_xpm);
-  fltk::xpmImage folder_filled(filled_folder_xpm);
-  fltk::xpmImage folder_closed(folder_closed_xpm);
-  fltk::MultiImage folder( folder_closed, 
-			   fltk::OPENED, folder_filled );
-  fltk::MultiImage book( book_closed, 
-			 fltk::SELECTED, book_open );
+fltk::xpmImage book_closed(book_xpm);
+fltk::xpmImage book_open(question_book_xpm);
+fltk::xpmImage folder_filled(filled_folder_xpm);
+fltk::xpmImage folder_closed(folder_closed_xpm);
+fltk::MultiImage folder( folder_closed, 
+                         fltk::OPENED, folder_filled );
+fltk::MultiImage book( book_closed, 
+                       fltk::SELECTED, book_open );
+
+const char* kModule = "pbrowser";
 }
 
 namespace mrv {
@@ -142,7 +145,10 @@ namespace mrv {
     int wizard_index = absolute_item_index();
 
     if ( wizard_index < 0 || wizard_index >= uiWizard->children() )
-       return;
+    {
+        LOG_ERROR( _("Internal error in wizard selection") );
+        return;
+    }
 
     fltk::Widget* child = uiWizard->child( wizard_index );
     if ( !child ) return;

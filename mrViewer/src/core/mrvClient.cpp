@@ -25,8 +25,8 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 
-// #define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
-// #define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING 1
+//#define BOOST_ASIO_ENABLE_HANDLER_TRACKING 1
+//#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING 1
 
 #include <boost/lexical_cast.hpp>
 #include <boost/asio/deadline_timer.hpp>
@@ -314,7 +314,6 @@ void client::handle_read(const boost::system::error_code& ec)
 
 void client::await_output()
 {
-    SCOPED_LOCK( mtx );
 
    if (stopped_)
    {
@@ -328,11 +327,11 @@ void client::await_output()
       // message is added, the timer will be modified and the actor will
       // wake.
       
+      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
       non_empty_output_queue_.async_wait(
                                          boost::bind(&mrv::client::await_output,
 						     shared_from_this() )
 					 );
-      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
    }
    else
    {
@@ -342,9 +341,8 @@ void client::await_output()
 
 void client::start_write()
 {
-   if (stopped_)
-      return;
 
+    SCOPED_LOCK( mtx );
 
    // Start an asynchronous operation to send a message.
    boost::asio::async_write(socket_,
@@ -446,7 +444,7 @@ void client_thread( const ServerData* s )
     c->start(r.resolve(tcp::resolver::query(s->host, s->group)));
 
 
-    int runs = io_service.run();
+    size_t runs = io_service.run();
 
     delete s;
 

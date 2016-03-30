@@ -464,7 +464,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     char buf[256];
     sprintf( buf, "Reel \"%s\"", reel->name.c_str() );
-    view()->send( buf );
+    view()->send_network( buf );
 
     _reel = (unsigned int) _reels.size() - 1;
     _reel_choice->add( name.c_str() );
@@ -707,7 +707,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     send_reel( reel );
 
     sprintf( buf, "InsertImage %d \"%s\"", idx, m->image()->fileroot() );
-    view()->send( buf );
+    view()->send_network( buf );
 
     redraw();
   }
@@ -719,7 +719,7 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
 {
     char buf[128];
     sprintf( buf, "CurrentReel \"%s\"", reel->name.c_str() );
-    view()->send( buf );
+    view()->send_network( buf );
 }
 
 void ImageBrowser::send_image( const mrv::media& m )
@@ -736,34 +736,34 @@ void ImageBrowser::send_image( const mrv::media& m )
              img->last_frame() );
     buf += txt;
 
-    v->send( buf );
+    v->send_network( buf );
 
     sprintf( txt, N_("Gamma %g"), v->gamma() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Gain %g"), v->gain() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Channel %d"), v->channel() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("UseLUT %d"), (int)v->use_lut() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("SafeAreas %d"), (int)v->safe_areas() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Normalize %d"), (int)v->normalize() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Mask %g"), v->masking() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf( txt, N_("FPS %g"), v->fps() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf( txt, N_("Looping %d"), (int)v->looping() );
-    v->send( txt );
+    v->send_network( txt );
 }
 
 void ImageBrowser::send_images( const mrv::Reel& reel)
@@ -911,7 +911,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     char buf[256];
     sprintf( buf, "RemoveImage %d", idx );
-    view()->send( buf );
+    view()->send_network( buf );
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -969,7 +969,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     char buf[256];
     sprintf( buf, "RemoveImage %d", idx );
 
-    view()->send( buf );
+    view()->send_network( buf );
 
 
     if ( p != ImageView::kStopped )
@@ -1860,7 +1860,7 @@ void ImageBrowser::load( const stringArray& files,
 
     char buf[256];
     sprintf(buf, "CloneImage \"%s\"", img->fileroot() ); 
-    view()->send( buf );
+    view()->send_network( buf );
 
     adjust_timeline();
   }
@@ -1891,7 +1891,7 @@ void ImageBrowser::load( const stringArray& files,
 
     char buf[256];
     sprintf(buf, "CloneImageAll \"%s\"", img->fileroot() ); 
-    view()->send( buf );
+    view()->send_network( buf );
 
     adjust_timeline();
   }
@@ -2095,8 +2095,8 @@ void ImageBrowser::load( const stringArray& files,
 	      {
 		fltk::event_clicks(0);
 		uiMain->uiImageInfo->uiMain->show();
-                view()->send( "MediaInfoWindow 1" );
 		view()->update_image_info();
+                //view()->send_network( "MediaInfoWindow 1" );
 		return ok;
 	      }
 
@@ -2391,13 +2391,13 @@ void ImageBrowser::handle_dnd()
 
     char buf[1024];
     sprintf( buf, "RemoveImage %d", oldsel );
-    view()->send( buf );
+    view()->send_network( buf );
 
     reel->images.erase( reel->images.begin() + oldsel );
     if ( oldsel < sel ) sel -= 1;
 
     sprintf( buf, "InsertImage %d \"%s\"", sel, m->image()->fileroot() );
-    view()->send( buf );
+    view()->send_network( buf );
 
     reel->images.insert( reel->images.begin() + sel, m );
 
@@ -2477,7 +2477,7 @@ void ImageBrowser::handle_dnd()
 
      char buf[64];
      sprintf( buf, "seek %" PRId64, f );
-     view()->send(buf);
+     view()->send_network(buf);
 
 
 
@@ -2658,7 +2658,7 @@ void ImageBrowser::handle_dnd()
 
     char buf[64];
     sprintf( buf, "EDL 0" );
-    view()->send( buf );
+    view()->send_network( buf );
   }
 
   void ImageBrowser::set_edl()
@@ -2687,7 +2687,7 @@ void ImageBrowser::handle_dnd()
 
     char buf[64];
     sprintf( buf, "EDL 1" );
-    view()->send( buf );
+    view()->send_network( buf );
 
   }
 
