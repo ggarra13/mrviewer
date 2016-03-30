@@ -138,7 +138,7 @@ namespace mrv
 	    return mousePush( fltk::event_x(), fltk::event_y() );
 	default:
 	  int ok = fltk::Browser::handle( event );
-	  
+
 	  int line = value();
 	  if (( line < 1 || line > 10 ) ||
 	      ( line > 4 && line < 7 ))
@@ -146,7 +146,7 @@ namespace mrv
 	      value(-1);
 	      return 0;
 	    }
-	  
+
 	  return ok;
 	}
     }
@@ -215,13 +215,15 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
 
 void ColorInfo::update()
 {
-  mrv::media fg = uiMain->uiView->foreground();
-  if (!fg) return;
+    if ( ! uiMain->uiView ) return;
 
-  CMedia* img = fg->image();
-  mrv::Rectd selection = uiMain->uiView->selection();
-  update( img, selection );
-  redraw();
+    mrv::media fg = uiMain->uiView->foreground();
+    if (!fg) return;
+
+    CMedia* img = fg->image();
+    mrv::Rectd selection = uiMain->uiView->selection();
+    update( img, selection );
+    redraw();
 }
 
 void ColorInfo::selection_to_coord( const CMedia* img,
@@ -282,8 +284,7 @@ void ColorInfo::update( const CMedia* img,
 {
   if ( !visible_r() ) return;
 
-  browser->clear();
-  area->copy_label( "" );
+  area->label( "" );
 
   std::ostringstream text;
   if ( img && (selection.w() > 0 || selection.h() < 0) )
@@ -351,6 +352,20 @@ void ColorInfo::update( const CMedia* img,
 	 ymax = ymin;
 	 ymin = tmp;
       }
+
+      unsigned spanX = xmax-xmin+1;
+      unsigned spanY = ymax-ymin+1;
+      unsigned numPixels = spanX * spanY;
+
+      text << std::endl
+	   << _("Area") << ": (" << xmin << ", " << ymin 
+	   << ") - (" << xmax 
+	   << ", " << ymax << ")" << std::endl
+	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
+	   << numPixels << " "
+	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
+	   << std::endl;
+      area->copy_label( text.str().c_str() );
 
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
@@ -550,19 +565,6 @@ void ColorInfo::update( const CMedia* img,
       dcol->color( col );
       dcol->redraw();
 
-      unsigned spanX = xmax-xmin+1;
-      unsigned spanY = ymax-ymin+1;
-      unsigned numPixels = spanX * spanY;
-
-      text << std::endl
-	   << _("Area") << ": (" << xmin << ", " << ymin 
-	   << ") - (" << xmax 
-	   << ", " << ymax << ")" << std::endl
-	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
-	   << numPixels << " "
-	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
-	   << std::endl;
-      area->copy_label( text.str().c_str() );
 
 
       text.str("");
@@ -725,11 +727,13 @@ void ColorInfo::update( const CMedia* img,
   stringArray::iterator i = lines.begin();
   stringArray::iterator e = lines.end();
   area->redraw_label();
+  browser->clear();
   for ( ; i != e; ++i )
     {
       fltk::Widget* w = browser->add( (*i).c_str() );
-      w->align( fltk::ALIGN_CENTER );
+      if ( w ) w->align( fltk::ALIGN_CENTER );
     }
+  browser->redraw();
 }
 
 }  // namespace mrv

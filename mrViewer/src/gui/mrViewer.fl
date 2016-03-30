@@ -303,7 +303,7 @@ delete uiMain; uiMain = NULL;} {}
       {fltk::Window} uiMain {
         label {Media Information}
         user_data this user_data_type {ImageInfoUI*}
-        callback {v->main()->uiView->send( "MediaInfoWindow 0" );
+        callback {//v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();}
         xywh {374 107 505 530} resizable
         extra_code {// Make the window transient
@@ -476,7 +476,7 @@ o->value(-1);}
       {fltk::Window} uiMain {
         label {3d View}
         user_data this user_data_type {GL3dViewUI*}
-        callback {v->main()->uiView->send( "GL3dView 0" );
+        callback {v->main()->uiView->send_network( "GL3dView 0" );
 o->hide();}
         xywh {158 529 325 240} set_xy hide resizable
         extra_code {// Make the window transient
@@ -503,7 +503,7 @@ o->child_of( main->uiMain );}
       {fltk::Window} uiMain {
         label Vectorscope
         user_data this user_data_type {VectorscopeUI*}
-        callback {v->main()->uiView->send( "VectorscopeWindow 0" );
+        callback {v->main()->uiView->send_network( "VectorscopeWindow 0" );
 o->hide();} open
         xywh {107 386 325 240} hide resizable
         extra_code {// Make the window transient
@@ -535,7 +535,7 @@ o->child_of( main->uiMain );}
       {fltk::Window} uiMain {
         label Histogram
         user_data this user_data_type {HistogramUI*}
-        callback {v->main()->uiView->send( "HistogramWindow 0" );
+        callback {v->main()->uiView->send_network( "HistogramWindow 0" );
 o->hide();}
         xywh {206 308 325 240} hide resizable
         extra_code {// Make the window transient

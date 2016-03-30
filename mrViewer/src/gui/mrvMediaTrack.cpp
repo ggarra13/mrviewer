@@ -319,7 +319,7 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
                sprintf( buf, N_("ShiftMediaStart %d") 
                         N_(" \"%s\" %") PRId64,
                         _reel_idx, img->fileroot(), img->first_frame() );
-               main()->uiView->send( buf );
+               main()->uiView->send_network( buf );
            }
            break;
        }
@@ -439,7 +439,7 @@ void media_track::shift_media_end( mrv::media m, boost::int64_t diff )
 	    sprintf( buf, N_( "ShiftMediaEnd %d" ) 
 		     N_(" \"%s\" %" ) PRId64,
 		     _reel_idx, img->fileroot(), img->last_frame() );
-	    main()->uiView->send( buf );
+	    main()->uiView->send_network( buf );
 
 	    main()->uiImageInfo->uiInfoText->refresh();
 	    break;
