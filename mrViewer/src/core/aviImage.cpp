@@ -224,7 +224,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   unsigned int magic = ntohl( *((unsigned int*)data) );
 
 
-  if ( magic == 0x000001ba )
+  if ( magic == 0x000001ba || magic == 0x00000001 )
     {
       // MPEG movie
       return true;

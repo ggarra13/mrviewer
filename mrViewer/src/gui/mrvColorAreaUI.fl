@@ -34,7 +34,7 @@ namespace mrv {open
       {fltk::Window} uiMain {
         label {Color Information}
         user_data this user_data_type {ColorAreaUI*}
-        callback {v->main()->uiView->send( "ColorInfoWindow 0" );
+        callback {v->main()->uiView->send_network( "ColorInfoWindow 0" );
 o->hide();} selected
         xywh {430 501 400 260} resizable
         extra_code {// Make the window transient

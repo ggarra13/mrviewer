@@ -25,9 +25,9 @@
 // file LICENSE_1_0.txt or copy at http://www.boost.org/LICENSE_1_0.txt)
 //
 //
-// #define DEBUG_COMMANDS
-// #define BOOST_ASIO_ENABLE_HANDLER_TRACKING
-// #define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
+
+//#define BOOST_ASIO_ENABLE_HANDLER_TRACKING
+//#define BOOST_ASIO_ENABLE_BUFFER_DEBUGGING
 
 #include <algorithm>
 #include <cstdlib>
@@ -58,6 +58,7 @@
 
 #include "mrvClient.h"
 #include "mrvServer.h"
+#include "gui/mrvEvents.h"
 #include "gui/mrvEDLGroup.h"
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvLogDisplay.h"
@@ -166,7 +167,6 @@ bool Parser::parse( const std::string& s )
       Point xy;
       std::string points;
       GLPathShape* shape = new GLPathShape;
-      is.clear();
       std::getline( is, points );
       is.str( points );
       is.clear();
@@ -205,15 +205,13 @@ bool Parser::parse( const std::string& s )
       static string old_text;
       static string old_font;
       unsigned font_size;
-      is.clear();
       std::getline( is, font, '"' ); // skip first quote
-      is.clear();
       std::getline( is, font, '"' );
-      is.clear();
       std::getline( is, text, '^' ); // skip first quote
-      is.clear();
       std::getline( is, text, '^' );
-      is.clear();
+
+      std::cerr << "font " << font << " text " << text << std::endl;
+
 
       GLTextShape* shape;
       mrv::ImageView* view = ui->uiView;
@@ -250,9 +248,13 @@ bool Parser::parse( const std::string& s )
       shape->size( font_size );
       shape->pts.clear();
       shape->pts.push_back( xy );
+      std::cerr << "font size " << font_size << std::endl;
+      std::cerr << "shape frame " << shape->frame << std::endl;
+      std::cerr << xy.x << ", " << xy.y << std::endl;
 
       if ( font != old_font || text != old_text )
       {
+          std::cerr << "add shape " << shape << std::endl;
          v->add_shape( mrv::shape_type_ptr(shape) );
          old_text = text;
          old_font = font;
@@ -503,14 +505,14 @@ bool Parser::parse( const std::string& s )
    {
        int on;
        is >> on;
-       ui->uiView->toggle_fullscreen();
+       ui->uiView->handle( mrv::kFULLSCREEN );
        ok = true;
    }
    else if ( cmd == N_("PresentationMode" ) )
    {
        int on;
        is >> on;
-       ui->uiView->toggle_presentation();
+       ui->uiView->handle( mrv::kPRESENTATION );
        ok = true;
    }
    else if ( cmd == N_("ShiftMediaStart") )
@@ -1071,12 +1073,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           ui->uiImageInfo->uiMain->show();
-           v->update_image_info();
+           v->handle( mrv::kMEDIA_INFO_WINDOW_SHOW );
        }
        else
        {
-           ui->uiImageInfo->uiMain->hide();
+           v->handle( mrv::kMEDIA_INFO_WINDOW_HIDE );
        }
 
        ok = true;
@@ -1087,12 +1088,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           ui->uiColorArea->uiMain->show();
-           v->update_color_info();
+           v->handle( mrv::kCOLOR_AREA_WINDOW_SHOW );
        }
        else
        {
-           ui->uiColorArea->uiMain->hide();
+           v->handle( mrv::kCOLOR_AREA_WINDOW_HIDE );
        }
 
        ok = true;
@@ -1103,11 +1103,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x )
        {
-           ui->uiGL3dView->uiMain->show();
+           v->handle( mrv::k3D_VIEW_WINDOW_SHOW );
        }
        else
        {
-           ui->uiGL3dView->uiMain->hide();
+           v->handle( mrv::k3D_VIEW_WINDOW_HIDE );
        }
        ok = true;
    }
@@ -1117,12 +1117,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           ui->uiHistogram->uiMain->show();
-           v->update_color_info();
+           v->handle( mrv::kHISTOGRAM_WINDOW_SHOW );
        }
        else
        {
-           ui->uiHistogram->uiMain->hide();
+           v->handle( mrv::kHISTOGRAM_WINDOW_HIDE );
        }
        ok = true;
    }
@@ -1132,12 +1131,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           ui->uiVectorscope->uiMain->show();
-           v->update_color_info();
+           v->handle( mrv::kVECTORSCOPE_WINDOW_SHOW );
        }
        else
        {
-           ui->uiVectorscope->uiMain->hide();
+           v->handle( mrv::kVECTORSCOPE_WINDOW_HIDE );
        }
        ok = true;
    }
@@ -1296,16 +1294,13 @@ void tcp_session::handle_read(const boost::system::error_code& ec)
    }
    else
    {
-       LOG_ERROR( ">>>>>>>>>>>> ERROR handle_read " << ec );
+       LOG_ERROR( "handle_read " << ec );
        stop();
    }
 }
 
 void tcp_session::await_output()
 {
-
-
-    SCOPED_LOCK( mtx );
 
    if (stopped())
       return;
@@ -1318,11 +1313,11 @@ void tcp_session::await_output()
       // message is added, the timer will be modified and the actor will
       // wake.
 
+      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
       non_empty_output_queue_.async_wait(
 					 boost::bind(&tcp_session::await_output,
 						     shared_from_this())
 					 );
-      non_empty_output_queue_.expires_at(boost::posix_time::pos_infin);
    }
    else
    {
@@ -1332,6 +1327,8 @@ void tcp_session::await_output()
 
 void tcp_session::start_write()
 {
+    SCOPED_LOCK( mtx );
+
    // Start an asynchronous operation to send a message.
    boost::asio::async_write(socket(),
 			    boost::asio::buffer(output_queue_.front()),
@@ -1554,8 +1551,8 @@ void server_thread( const ServerData* s )
 
       LOG_CONN( _("Created server at port ") << s->port );
 
-
-      int runs = io_service.run();
+      
+      size_t runs = io_service.run();
 
       delete s;
 

@@ -425,13 +425,16 @@ void ImageInformation::hide_tabs()
 
 void ImageInformation::fill_data()
 {
-    
+
     m_curr = add_browser(m_image);
+
 
     
     add_text( _("Directory"), img->directory() );
+
     char buf[1024];
     add_text( _("Filename"), img->name().c_str() );
+
 
     ++group;
 
@@ -457,17 +460,21 @@ void ImageInformation::fill_data()
 		  (fltk::Callback*)change_last_frame_cb, 2, 55 );
       }
 
+
     
     add_int64( _("Frame Start"), img->start_frame() );
     add_int64( _("Frame End"), img->end_frame() );
 
+
     add_float( _("FPS"), (float) img->fps(), true, 
                (fltk::Callback*)change_fps_cb, 1.0f, 100.0f );
+
 
     ++group;
     
     add_int( _("Width"), img->width() );
     add_int( _("Height"), img->height() );
+
 
     double aspect_ratio = 0;
     const mrv::Recti& dpw = img->display_window();
@@ -478,6 +485,7 @@ void ImageInformation::fill_data()
     else
         if ( img->height() > 0 )
             aspect_ratio = ( img->width() / (double) img->height() );
+
 
     const char* name = _("Unknown");
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
@@ -491,11 +499,13 @@ void ImageInformation::fill_data()
 	  }
       }
 
+
     
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
     add_text( _("Aspect Ratio"), buf );
     add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
 	       (fltk::Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
+
 
     const mrv::Recti& window = img->data_window();
     const mrv::Recti& dwindow = img->display_window();
@@ -503,6 +513,7 @@ void ImageInformation::fill_data()
     {
         add_rect( _("Data Window"), window );
     }
+
 
     add_rect( _("Display Window"), dwindow );
 
@@ -521,6 +532,7 @@ void ImageInformation::fill_data()
             add_rect( _("Display Window 2"), dwindow2 );
         }
 
+
         if ( img->right() )
             add_float( _("Eye Separation"), img->eye_separation(), true,
                        (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
@@ -530,6 +542,7 @@ void ImageInformation::fill_data()
         add_float( _("Eye Separation"), img->eye_separation(), true,
                    (fltk::Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
+
 
     ++group;
 
@@ -550,6 +563,7 @@ void ImageInformation::fill_data()
 	depth = _("Unknown bit depth"); break;
       }
 
+
     add_text( _("Depth"), depth );
     add_int( _("Image Channels"), img->number_of_channels() );
 
@@ -560,6 +574,7 @@ void ImageInformation::fill_data()
         add_text( _("Color Range"), avi->color_range() );
     }
     
+
 
     ++group;
 
@@ -623,6 +638,7 @@ void ImageInformation::fill_data()
     add_text( _("Render Pixel Format"), format );
 
 
+
     
     static const char* kRenderingIntent[] = {
       _("Undefined"),
@@ -633,11 +649,13 @@ void ImageInformation::fill_data()
     };
 
     
+
     add_text( _("Rendering Intent"), 
 	      kRenderingIntent[ (int) img->rendering_intent() ] );
  
     
     
+
     add_float( _("Gamma"), img->gamma(), true, 
 	       (fltk::Callback*)change_gamma_cb, 0.01f,	4.0f );
 
@@ -654,10 +672,13 @@ void ImageInformation::fill_data()
     }
 
     
+
     add_ctl_idt( _("Input Device Transform"), img->idt_transform() );
 
     
+
         clear_callback_data();
+
         
     {
 
@@ -670,6 +691,7 @@ void ImageInformation::fill_data()
     }
     
 
+
     add_ctl( _("Render Transform"), img->rendering_transform() );
     
 
@@ -678,6 +700,7 @@ void ImageInformation::fill_data()
 
     ++group;
     
+
     add_text( _("Format"), img->format() );
     
     
@@ -685,6 +708,7 @@ void ImageInformation::fill_data()
       {
 	add_text( _("Line Order"), img->line_order() );
       }
+
 
 
     if ( !img->has_video() )
@@ -697,10 +721,12 @@ void ImageInformation::fill_data()
 
     ++group;
 
+
     const char* space_type = NULL;
     double memory_space = double( to_memory( img->memory(), space_type ) );
     sprintf( buf, N_("%.3f %s"), memory_space, space_type );
     add_text( _("Memory"), buf );
+
 
     
     
@@ -712,9 +738,11 @@ void ImageInformation::fill_data()
 	double pct   = double( 100.0 * ( (long double) img->disk_space() /
                                          (long double) img->memory() ) );
 	
+
 	sprintf( buf, N_("%.3f %s  (%.2f %% of memory size)"), 
 		 disk_space, space_type, pct );
 	add_text( _("Disk space"), buf );
+
 
         if ( !img->has_video() )
         {
@@ -724,36 +752,45 @@ void ImageInformation::fill_data()
         }
       }
     
+
     ++group;
     add_text( _("Creation Date"), img->creation_date() );
 
     
+
     
     m_curr->relayout();
 
     
 
+
     m_image->relayout();
     m_image->show();
 
+
     
+
 
     CMedia::Attributes attrs = img->iptc();
     if ( ! attrs.empty() )
       {
+
 	m_curr = add_browser(m_iptc);
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
 	   add_text( i->first.c_str(), i->second.c_str(), false );
-	m_curr->layout();
-	m_curr->parent()->layout();
+
+	m_curr->relayout();
+	m_curr->parent()->relayout();
       }
     
+
     attrs = img->exif();
     if ( ! attrs.empty() )
       {
 	m_curr = add_browser( m_exif );
+
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
@@ -786,11 +823,15 @@ void ImageInformation::fill_data()
                                (fltk::Callback*)change_y_ripmap_cb, 0, 20 );
                   }
               }
+
 	    add_text( i->first.c_str(), i->second.c_str(), false );
 	  }
-	m_curr->layout();
-	m_curr->parent()->layout();
+	m_curr->relayout();
+
+	m_curr->parent()->relayout();
+
       }
+
 
 
     if ( num_video_streams > 0 )
@@ -802,6 +843,7 @@ void ImageInformation::fill_data()
 	    m_curr = add_browser( m_video );
 	    m_curr->copy_label( buf );
 
+
 	    const CMedia::video_info_t& s = img->video_info(i);
 	    add_bool( _("Known Codec"), s.has_codec );
 	    add_text( _("Codec"), s.codec_name );
@@ -811,6 +853,7 @@ void ImageInformation::fill_data()
 
 	    add_text( _("Pixel Format"), s.pixel_format );
 	    ++group;
+
 
 
 	    const char* name = "";
@@ -824,11 +867,14 @@ void ImageInformation::fill_data()
 	    sprintf( buf, "%g %s", s.fps, name );
 	    add_text( _("FPS"), buf );
 
+
 	    ++group;
 	    add_time( _("Start"), s.start, s.fps );
 	    add_time( _("Duration"), s.duration, s.fps );
-	    m_curr->layout();
-	    m_curr->parent()->layout();
+
+	    m_curr->relayout();
+
+	    m_curr->parent()->relayout();
 	  }
       }
 
@@ -837,11 +883,13 @@ void ImageInformation::fill_data()
 	for ( unsigned i = 0; i < num_audio_streams; ++i )
 	  {
 	    char buf[256];
+
 	    m_curr = add_browser( m_audio );
 	    sprintf( buf, _("Audio Stream #%d"), i+1 );
 	    m_curr->copy_label( buf );
 
 	    const CMedia::audio_info_t& s = img->audio_info(i);
+
 
 	    add_bool( _("Known Codec"), s.has_codec );
 	    add_text( _("Codec"), s.codec_name );
@@ -857,6 +905,7 @@ void ImageInformation::fill_data()
 	      sprintf( buf, N_("%d"), s.channels );
 	      channels = buf;
 	    }
+
 	    add_text( _("Format"), s.format );
 	    add_text( _("Channels"), channels );
 	    sprintf( buf, _("%d Hz."), s.frequency );
@@ -868,12 +917,14 @@ void ImageInformation::fill_data()
 	    add_text( _("Language"), s.language );
 
 	    ++group;
+
 	    add_time( _("Start"), s.start, img->fps() );
 	    add_time( _("Duration"), s.duration, img->fps() );
 
-	    m_curr->layout();
-	    m_curr->parent()->layout();
+	    m_curr->relayout();
+	    m_curr->parent()->relayout();
 	  }
+
 	m_audio->parent()->show();
       }
 
@@ -903,8 +954,8 @@ void ImageInformation::fill_data()
 	    add_time( _("Start"), s.start, img->fps() );
 	    add_time( _("Duration"), s.duration, img->fps() );
 
-	    m_curr->layout();
-	    m_curr->parent()->layout();
+	    m_curr->relayout();
+	    m_curr->parent()->relayout();
 	  }
 
 	m_subtitle->parent()->show();
