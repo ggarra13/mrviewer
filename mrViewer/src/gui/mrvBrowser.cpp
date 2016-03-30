@@ -95,56 +95,56 @@ int Browser::handle(int e)
   // Not showing column separators? Use default fltk::Browser::handle() logic
   if ( ! column_separator() ) return(fltk::Browser::handle(e));
   // Handle column resizing
+  int ret = 0;
   switch ( e ) {
-  case fltk::ENTER: {
-    return 1;
-    break;
-  }
-  case fltk::MOVE: {
-    if ( which_col_near_mouse() >= 0 ) {
-      change_cursor(fltk::CURSOR_WE);
-    } else {
-      change_cursor(fltk::CURSOR_DEFAULT);
-    }
-    return 1;
-    break;
-  }
-  case fltk::PUSH: {
-    int whichcol = which_col_near_mouse();
-    if ( whichcol >= 0 ) {
-      // CLICKED ON RESIZER? START DRAGGING
-      _dragging = true;
-      _dragcol = whichcol + 1;
-      change_cursor(fltk::CURSOR_DEFAULT);
-    }
-    break;
-  }
-  case fltk::DRAG: {
-    if ( _dragging ) {
-      // Sum up column widths to determine position
-      int mousex = fltk::event_x() + xposition();
-      int newwidth = mousex - x();
-
-      if ( newwidth > 0 ) {
-	set_column_start( _dragcol, newwidth );
-	relayout();
-	redraw();
+      case fltk::ENTER: {
+          ret = 1;
+          break;
       }
-      return 1;
-    }
-    break;
-  }
-  case fltk::LEAVE:
-  case fltk::RELEASE: {
-    _dragging = false;				// disable drag mode
-    change_cursor(fltk::CURSOR_DEFAULT);	// ensure normal cursor
-    return 1;
-    break;
+      case fltk::MOVE: {
+          if ( which_col_near_mouse() >= 0 ) {
+              change_cursor(fltk::CURSOR_WE);
+          } else {
+              change_cursor(fltk::CURSOR_DEFAULT);
+          }
+          ret = 1;
+          break;
+      }
+      case fltk::PUSH: {
+          int whichcol = which_col_near_mouse();
+          if ( whichcol >= 0 ) {
+              // CLICKED ON RESIZER? START DRAGGING
+              ret = 1;
+              _dragging = true;
+              _dragcol = whichcol + 1;
+              change_cursor(fltk::CURSOR_DEFAULT);
+          }
+          break;
+      }
+      case fltk::DRAG: {
+          if ( _dragging ) {
+              // Sum up column widths to determine position
+              int mousex = fltk::event_x() + xposition();
+              int newwidth = mousex - x();
 
-  }
+              if ( newwidth > 0 ) {
+                  set_column_start( _dragcol, newwidth );
+                  relayout();
+                  redraw();
+              }
+          }
+          break;
+      }
+      case fltk::LEAVE:
+      case fltk::RELEASE: {
+          _dragging = false;				// disable drag mode
+          change_cursor(fltk::CURSOR_DEFAULT);	// ensure normal cursor
+          ret = 1;
+          break;
+      }
   }
   if ( _dragging ) return(1);	// dragging? don't pass event to fltk::Browser
-  return fltk::Browser::handle(e);
+  return(fltk::Browser::handle(e) ? 1 : ret);
 }
 
 void Browser::layout() 
@@ -199,6 +199,7 @@ void Browser::layout()
   for ( int i = 0; i < nchildren; ++i )
     {
       fltk::Widget* c = child(i);
+      if (!c) continue;
       if ( ! c->is_group() ) continue;
 
       fltk::Group* g  = (fltk::Group*) c;
@@ -208,8 +209,10 @@ void Browser::layout()
       for ( int j = 0; j < columns; ++j )
 	{
 	  c = g->child(j);
+          if (!c) continue;
 	  int W = widths[j];
 	  if ( W == -1 ) W = w() - x;
+          if ( W == 0 ) break;
 	  c->resize( x, c->y(), W, c->h() );
 	  x += W;
 	}
@@ -276,6 +279,7 @@ void Browser::draw() {
     for ( int i = 0; i < num; ++i )
       {
 	fltk::Widget* c = g->child(i);
+        if (!c) continue;
 	idx += absolute_item_index( found, item, c );
 	if ( found ) break;
       }
@@ -292,6 +296,7 @@ void Browser::draw() {
     for (int i = 0; i < main_idx; ++i)
       {
 	fltk::Widget* c = child(i);
+        if (!c) continue;
 
 	if ( c->is_group() )
 	  idx += absolute_item_index( (fltk::Group*)c );
