@@ -108,6 +108,7 @@
 #include "core/ctlToLut.h"
 
 // GUI classes
+#include "gui/mrvEvents.h"
 #include "gui/mrvColorInfo.h"
 #include "gui/mrvFileRequester.h"
 #include "gui/mrvImageBrowser.h"
@@ -426,14 +427,14 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
        // Media Info
       uiMain->uiImageInfo->uiMain->show();
       uiMain->uiView->update_image_info();
-      uiMain->uiView->send( "MediaInfoWindow 1" );
+      uiMain->uiView->send_network( "MediaInfoWindow 1" );
   }
   else if ( idx == kColorInfo )
     {
        // Color Area
       uiMain->uiColorArea->uiMain->show();
       uiMain->uiView->update_color_info();
-      uiMain->uiView->send( "ColorInfoWindow 1" );
+      uiMain->uiView->send_network( "ColorInfoWindow 1" );
     }
   else if ( idx == kEDLEdit )
   {
@@ -444,7 +445,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
   else if ( idx == k3dView )
   {
       uiMain->uiGL3dView->uiMain->show();
-      uiMain->uiView->send( "GL3dView 1" );
+      uiMain->uiView->send_network( "GL3dView 1" );
   }
   else if ( idx == kPaintTools )
     {
@@ -455,12 +456,12 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
   else if ( idx == kHistogram )
     {
       uiMain->uiHistogram->uiMain->show();
-      uiMain->uiView->send( "HistogramWindow 1" );
+      uiMain->uiView->send_network( "HistogramWindow 1" );
     }
   else if ( idx == kVectorscope )
     {
       uiMain->uiVectorscope->uiMain->show();
-      uiMain->uiView->send( "VectorscopeWindow 1" );
+      uiMain->uiView->send_network( "VectorscopeWindow 1" );
     }
   else if ( idx == kICCProfiles )
     {
@@ -511,7 +512,7 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 
   char buf[128];
   sprintf( buf, "Mask %g", mask );
-  view->send( buf );
+  view->send_network( buf );
 
   view->masking( mask );
 
@@ -709,7 +710,7 @@ void ImageView::text_mode()
 }
 
 
-void ImageView::send( std::string m )
+void ImageView::send_network( std::string m )
 {
 
     ParserList::iterator i = _clients.begin();
@@ -770,6 +771,7 @@ _old_fg_frame( 0 ),
 _old_bg_frame( 0 ),
 _reel( 0 ),
 _idle_callback( false ),
+_event( 0 ),
 _timeout( NULL ),
 _fg_reel( -1 ),
 _bg_reel( -1 ),
@@ -786,6 +788,8 @@ _lastFrame( 0 )
 
   mode( fltk::RGB24_COLOR | fltk::DOUBLE_BUFFER | fltk::ALPHA_BUFFER |
 	fltk::STENCIL_BUFFER | stereo );
+
+  create_timeout( 0.2f );
 
 }
 
@@ -932,7 +936,7 @@ void ImageView::fg_reel(int idx)
 
     char buf[128];
     sprintf( buf, "FGReel %d", idx );
-    send( buf );
+    send_network( buf );
 }
 
 void ImageView::bg_reel(int idx)
@@ -941,7 +945,7 @@ void ImageView::bg_reel(int idx)
 
     char buf[128];
     sprintf( buf, "BGReel %d", idx );
-    send( buf );
+    send_network( buf );
 }
 
 
@@ -1164,7 +1168,7 @@ void ImageView::center_image()
 
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
-    send( buf );
+    send_network( buf );
     redraw();
 }
 
@@ -1241,7 +1245,7 @@ void ImageView::fit_image()
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send( buf );
+  send_network( buf );
   zoom( float(z) );
 
   mouseMove( fltk::event_x(), fltk::event_y() );
@@ -1580,7 +1584,7 @@ void ImageView::redo_draw()
         uiMain->uiPaint->uiUndoDraw->activate();
         undo_shapes.pop_back();
 
-        send( "RedoDraw" );
+        send_network( "RedoDraw" );
         redraw();
     }
 }
@@ -1598,7 +1602,7 @@ void ImageView::undo_draw()
         undo_shapes.push_back( shapes.back() );
         uiMain->uiPaint->uiRedoDraw->activate();
         shapes.pop_back();
-        send( "UndoDraw" );
+        send_network( "UndoDraw" );
         redraw();
     }
 
@@ -2146,7 +2150,7 @@ int ImageView::leftMouseDown(int x, int y)
 	 s->pts.push_back( p );
 
 
-	 send( str );
+	 send_network( str );
 
 	 add_shape( mrv::shape_type_ptr(s) );
       }
@@ -2435,7 +2439,7 @@ void ImageView::leftMouseUp( int x, int y )
       }
       else
       {
-          send( s->send() );
+          send_network( s->send() );
       }
   }
   else if ( _mode == kErase )
@@ -2448,7 +2452,7 @@ void ImageView::leftMouseUp( int x, int y )
       }
       else
       {
-          send( s->send() );
+          send_network( s->send() );
       }
   }
   else if ( _mode == kText )
@@ -2461,7 +2465,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-        send( s->send() );
+         send_network( s->send() );
      }
   }
 
@@ -2952,7 +2956,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-	   send( buf );
+	   send_network( buf );
 
 	   lastX = x;
 	   lastY = y;
@@ -3088,12 +3092,12 @@ void ImageView::mouseDrag(int x,int y)
                _selection = mrv::Rectd( xt, yt, dx, dy );
 
 
-               char buf[256];
+               char buf[128];
                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
                         _selection.y(), _selection.w(), _selection.h() );
 
 
-               send( buf );
+               send_network( buf );
 
 	   }
 
@@ -3360,7 +3364,7 @@ int ImageView::keyDown(unsigned int rawkey)
 
             char buf[128];
             sprintf( buf, "WipeVertical %g", _wipe );
-            send( buf );
+            send_network( buf );
 
             window()->cursor(fltk::CURSOR_WE);
         }
@@ -3370,7 +3374,7 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe = (float) (h() - fltk::event_y()) / float( h() );
             char buf[128];
             sprintf( buf, "WipeHorizontal %g", _wipe );
-            send( buf );
+            send_network( buf );
             window()->cursor(fltk::CURSOR_NS);
         }
         else if ( _wipe_dir & kWipeHorizontal ) {
@@ -3378,7 +3382,7 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe = 0.0f;
             char buf[128];
             sprintf( buf, "NoWipe" );
-            send( buf );
+            send_network( buf );
             window()->cursor(fltk::CURSOR_CROSS);
         }
 
@@ -3717,7 +3721,7 @@ void ImageView::show_background( const bool b )
 
    char buf[128];
    sprintf( buf, "ShowBG %d", (int) b );
-   send( buf );
+   send_network( buf );
 }
 
 /** 
@@ -3726,21 +3730,21 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
-  bool full = false;
+    bool full = false;
   // full screen...
   if ( fltk_main()->border() )
     {
-      full = true;
-      posX = fltk_main()->x();
-      posY = fltk_main()->y();
-      fltk_main()->fullscreen();
+        full = true;
+        posX = fltk_main()->x();
+        posY = fltk_main()->y();
+        fltk_main()->fullscreen();
     }
   else
     { 
 #ifdef LINUX
-      fltk_main()->hide();  // @bug: window decoration is missing otherwise
+        fltk_main()->hide();  // @bug: window decoration is missing otherwise
 #endif
-      resize_main_window();
+        resize_main_window();
     }
   fltk_main()->relayout();
   
@@ -3748,7 +3752,7 @@ void ImageView::toggle_fullscreen()
   
   char buf[128];
   sprintf( buf, "FullScreen %d", full );
-  send( buf );
+  send_network( buf );
 }
 
 void ImageView::toggle_presentation()
@@ -3843,7 +3847,7 @@ void ImageView::toggle_presentation()
 
   char buf[128];
   sprintf( buf, "PresentationMode %d", presentation );
-  send( buf );
+  send_network( buf );
 
   fit_image();
 }
@@ -3866,6 +3870,68 @@ void ImageView::scrub( double dx )
   update_color_info();
 }
 
+void ImageView::toggle_color_area( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiColorArea->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiColorArea->uiMain->show();
+        update_color_info();
+    }
+}
+
+void ImageView::toggle_histogram( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiHistogram->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiHistogram->uiMain->show();
+    }
+}
+
+void ImageView::toggle_vectorscope( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiVectorscope->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiVectorscope->uiMain->show();
+    }
+}
+
+void ImageView::toggle_3d_view( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiGL3dView->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiGL3dView->uiMain->show();
+    }
+}
+
+void ImageView::toggle_media_info( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiImageInfo->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiImageInfo->uiMain->show();
+        update_image_info();
+    }
+}
+
 /** 
  * Main fltk event handler
  * 
@@ -3877,8 +3943,25 @@ int ImageView::handle(int event)
 {
     switch( event ) 
     {
+        case mrv::kFULLSCREEN:
+        case mrv::kPRESENTATION:
+        case mrv::kMEDIA_INFO_WINDOW_SHOW:
+        case mrv::kMEDIA_INFO_WINDOW_HIDE:
+        case mrv::kCOLOR_AREA_WINDOW_SHOW:
+        case mrv::kCOLOR_AREA_WINDOW_HIDE:
+        case mrv::k3D_VIEW_WINDOW_SHOW:
+        case mrv::k3D_VIEW_WINDOW_HIDE:
+        case mrv::kHISTOGRAM_WINDOW_SHOW:
+        case mrv::kHISTOGRAM_WINDOW_HIDE:
+        case mrv::kVECTORSCOPE_WINDOW_SHOW:
+        case mrv::kVECTORSCOPE_WINDOW_HIDE:
+            {
+                _event = event;
+                return 1;
+            }
         case fltk::TIMEOUT:
             {
+
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active() &&
                      CMedia::preload_cache() &&
@@ -3899,7 +3982,56 @@ int ImageView::handle(int event)
                 return 1;
             }
         case fltk::FOCUS:
-            return 1;
+            {
+            unsigned e = _event;
+            bool ok = false;
+            switch( e )
+            {
+                case 0:
+                    break;
+                case mrv::kFULLSCREEN:
+                    toggle_fullscreen();
+                    ok = true; break;
+                case mrv::kPRESENTATION:
+                    toggle_presentation();
+                    ok = true; break;
+                case mrv::kMEDIA_INFO_WINDOW_SHOW:
+                    toggle_media_info(true);
+                    ok = true; break;
+                case mrv::kMEDIA_INFO_WINDOW_HIDE:
+                    toggle_media_info(false);
+                    ok = true; break;
+                case mrv::kCOLOR_AREA_WINDOW_SHOW:
+                    toggle_color_area(true);
+                    ok = true; break;
+                case mrv::kCOLOR_AREA_WINDOW_HIDE:
+                    toggle_color_area(false);
+                    ok = true; break;
+                case mrv::k3D_VIEW_WINDOW_SHOW:
+                    toggle_3d_view(true);
+                    ok = true; break;
+                case mrv::k3D_VIEW_WINDOW_HIDE:
+                    toggle_3d_view(false);
+                    ok = true; break;
+                case mrv::kHISTOGRAM_WINDOW_SHOW:
+                    toggle_histogram(true);
+                    ok = true; break;
+                case mrv::kHISTOGRAM_WINDOW_HIDE:
+                    toggle_histogram(false);
+                    ok = true; break;
+                case mrv::kVECTORSCOPE_WINDOW_SHOW:
+                    toggle_vectorscope(true); 
+                    ok = true; break;
+                case mrv::kVECTORSCOPE_WINDOW_HIDE:
+                    toggle_vectorscope(false);
+                    ok = true; break;
+                default:
+                    LOG_ERROR( "Unknown mrv event" );
+            }
+
+            if ( ok ) { _event = 0; }
+            return fltk::GlWindow::handle( event );
+            }
         case fltk::ENTER:
             focus(this);
             if ( _wait )
@@ -3937,13 +4069,13 @@ int ImageView::handle(int event)
                     case kWipeVertical:
                         _wipe = (float) fltk::event_x() / (float)w();
                         sprintf( buf, "WipeVertical %g", _wipe );
-                        send( buf );
+                        send_network( buf );
                         window()->cursor(fltk::CURSOR_WE);
                         break;
                     case kWipeHorizontal:
                         _wipe = (float) (h() - fltk::event_y()) / (float)h();
                         sprintf( buf, "WipeHorizontal %g", _wipe );
-                        send( buf );
+                        send_network( buf );
                         window()->cursor(fltk::CURSOR_NS);
                         break;
                     default:
@@ -4310,7 +4442,7 @@ void ImageView::channel( unsigned short c )
 
   char buf[128];
   sprintf( buf, "Channel %d", c );
-  send( buf );
+  send_network( buf );
 
 
   std::string channelName( lbl );
@@ -4447,7 +4579,7 @@ void ImageView::gain( const float f )
 
   char buf[256];
   sprintf( buf, "Gain %g", f );
-  send( buf );
+  send_network( buf );
 
   refresh_fstop();
   flush_caches();
@@ -4476,7 +4608,7 @@ void ImageView::gamma( const float f )
 
   char buf[256];
   sprintf( buf, "Gamma %g", f );
-  send( buf );
+  send_network( buf );
 
   uiMain->uiGamma->value( f );
   uiMain->uiGammaInput->value( f );
@@ -4510,7 +4642,7 @@ void ImageView::zoom( float z )
 
   char buf[128];
   sprintf( buf, "Zoom %g", z );
-  send( buf );
+  send_network( buf );
 
   _zoom = z;
   redraw();
@@ -4705,7 +4837,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send( buf );
+  send_network( buf );
 
   mouseMove( x, y );
 }
@@ -5055,7 +5187,7 @@ void ImageView::background( mrv::media bg )
 
       sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64, 
                img->fileroot(), img->first_frame(), img->last_frame() );
-      send( buf );
+      send_network( buf );
 
       img->volume( _volume );
       CMedia* right = img->right_eye();
@@ -5079,7 +5211,7 @@ void ImageView::background( mrv::media bg )
           uiMain->uiMain->copy_label( buf );
       }
       sprintf( buf, "CurrentBGImage \"\"" );
-      send( buf );
+      send_network( buf );
   }
 
 //   _BGpixelSize = 0;
@@ -5162,7 +5294,7 @@ void ImageView::data_window( const bool b )
 
   char buf[128];
   sprintf( buf, "DataWindow %d", (int)b );
-  send( buf );
+  send_network( buf );
 }
 
 void ImageView::display_window( const bool b ) 
@@ -5171,7 +5303,7 @@ void ImageView::display_window( const bool b )
 
   char buf[128];
   sprintf( buf, "DisplayWindow %d", (int)b );
-  send( buf );
+  send_network( buf );
 }
 
 void ImageView::safe_areas( const bool b ) 
@@ -5180,7 +5312,7 @@ void ImageView::safe_areas( const bool b )
 
   char buf[128];
   sprintf( buf, "SafeAreas %d", (int)b );
-  send( buf );
+  send_network( buf );
 }
 
 /**
@@ -5199,7 +5331,7 @@ void ImageView::normalize( const bool normalize)
 
    char buf[128];
    sprintf( buf, "Normalize %d", (int) _normalize );
-   send( buf );
+   send_network( buf );
 
 }
 
@@ -5252,7 +5384,7 @@ void ImageView::show_pixel_ratio( const bool b )
 
    char buf[64];
    sprintf( buf, "ShowPixelRatio %d", (int) b );
-   send( buf );
+   send_network( buf );
 
    uiMain->uiPixelRatio->value( b );
 
@@ -5272,7 +5404,7 @@ void ImageView::toggle_lut()
 
   char buf[128];
   sprintf( buf, "UseLUT %d", (int)_useLUT );
-  send( buf );
+  send_network( buf );
 
   flush_caches();
   if ( _useLUT ) {
@@ -5582,11 +5714,11 @@ void ImageView::play( const CMedia::Playback dir )
 { 
    if ( dir == CMedia::kForwards )
    {
-      send("playfwd");
+      send_network("playfwd");
    }
    else if ( dir == CMedia::kBackwards )
    {
-      send("playback");
+      send_network("playback");
    }
    else
    {
@@ -5661,7 +5793,7 @@ void ImageView::stop()
 
   stop_playback();
 
-  send( "stop" );
+  send_network( "stop" );
 
   if ( uiMain->uiPlayForwards )
       uiMain->uiPlayForwards->value(0);
@@ -5714,7 +5846,7 @@ void ImageView::fps( double x )
 
     char buf[128];
     sprintf( buf, "FPS %g", x );
-    send( buf );
+    send_network( buf );
 }
 
 /** 
@@ -5746,7 +5878,7 @@ void ImageView::volume( float v )
 
   char buf[128];
   sprintf( buf, "Volume %g", v );
-  send( buf );
+  send_network( buf );
 
 }
 
@@ -5761,7 +5893,7 @@ void  ImageView::looping( Looping x )
 
   char buf[64];
   sprintf( buf, "Looping %d", x );
-  send( buf );
+  send_network( buf );
 
 }
 
@@ -5784,7 +5916,7 @@ void ImageView::field( FieldDisplay p )
 
   char buf[128];
   sprintf( buf, "FieldDisplay %d", _field );
-  send( buf );
+  send_network( buf );
 
   damage_contents();
   redraw();

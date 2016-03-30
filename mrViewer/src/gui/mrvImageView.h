@@ -387,6 +387,12 @@ class server;
     // Toggle between fullscreen presentation and normal resolution
     void toggle_presentation();
 
+      void toggle_media_info(bool show);
+      void toggle_color_area(bool show);
+      void toggle_3d_view(bool show);
+      void toggle_histogram(bool show);
+      void toggle_vectorscope(bool show);
+
       void toggle_wait() { _wait ^= 1; }
 
       inline void offset_x( double x ) { xoffset = x; }
@@ -433,7 +439,7 @@ class server;
        void undo_draw();
        void redo_draw();
 
-       void send( std::string msg );
+       void send_network( std::string msg );
 
       GLShapeList& shapes();
 
@@ -594,6 +600,11 @@ class server;
       int64_t     _old_bg_frame;  // <- old frame used to stat fileroot's bg
       unsigned    _reel;
       bool        _idle_callback;
+
+      ////////////////////////////////////////////////
+      // Events needed to be handled in main thread
+      ////////////////////////////////////////////////
+      unsigned _event;
 
     ///////////////////
     // Popup menu

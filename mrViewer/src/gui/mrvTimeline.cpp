@@ -85,7 +85,7 @@ Timeline::~Timeline()
     {
         char buf[1024];
         sprintf( buf, N_("TimelineMin %g"), x );
-        uiMain->uiView->send( buf );
+        uiMain->uiView->send_network( buf );
     }
   }
 
@@ -97,7 +97,7 @@ Timeline::~Timeline()
     {
         char buf[1024];
         sprintf( buf, N_("TimelineMax %g"), x );
-        uiMain->uiView->send( buf );
+        uiMain->uiView->send_network( buf );
     }
   }
 
