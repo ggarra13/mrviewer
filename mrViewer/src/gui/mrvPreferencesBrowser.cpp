@@ -76,6 +76,11 @@ namespace mrv {
   {
   }
 
+int PreferencesBrowser::handle( int e )
+{
+    return fltk::Browser::handle( e );
+}
+
   //
   // Routine to update the main CTL group (paths and ctl scripts)
   //
