@@ -111,6 +111,7 @@ int Browser::handle(int e)
           break;
       }
       case fltk::PUSH: {
+          fltk::event_clicks(0);
           int whichcol = which_col_near_mouse();
           if ( whichcol >= 0 ) {
               // CLICKED ON RESIZER? START DRAGGING
