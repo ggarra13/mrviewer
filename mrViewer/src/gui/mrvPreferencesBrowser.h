@@ -43,6 +43,8 @@ namespace mrv {
 			const char* lbl = 0 );
     ~PreferencesBrowser();
 
+      virtual int handle( int e );
+
     void update( mrv::PreferencesUI* prefs );
 
   protected:
