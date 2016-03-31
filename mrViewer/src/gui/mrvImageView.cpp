@@ -3844,12 +3844,12 @@ void ImageView::toggle_presentation()
 
   fltk::check();
   
+  fit_image();
 
   char buf[128];
   sprintf( buf, "PresentationMode %d", presentation );
   send_network( buf );
 
-  fit_image();
 }
 
 /** 
@@ -3961,6 +3961,57 @@ int ImageView::handle(int event)
             }
         case fltk::TIMEOUT:
             {
+                unsigned e = _event;
+                ParserList c = _clients;
+                _clients.clear();
+                bool ok = false;
+                switch( e )
+                {
+                    case 0:
+                        break;
+                    case mrv::kFULLSCREEN:
+                        toggle_fullscreen();
+                        ok = true; break;
+                    case mrv::kPRESENTATION:
+                        toggle_presentation();
+                        ok = true; break;
+                    case mrv::kMEDIA_INFO_WINDOW_SHOW:
+                        toggle_media_info(true);
+                        ok = true; break;
+                    case mrv::kMEDIA_INFO_WINDOW_HIDE:
+                        toggle_media_info(false);
+                        ok = true; break;
+                    case mrv::kCOLOR_AREA_WINDOW_SHOW:
+                        toggle_color_area(true);
+                        ok = true; break;
+                    case mrv::kCOLOR_AREA_WINDOW_HIDE:
+                        toggle_color_area(false);
+                        ok = true; break;
+                    case mrv::k3D_VIEW_WINDOW_SHOW:
+                        toggle_3d_view(true);
+                        ok = true; break;
+                    case mrv::k3D_VIEW_WINDOW_HIDE:
+                        toggle_3d_view(false);
+                        ok = true; break;
+                    case mrv::kHISTOGRAM_WINDOW_SHOW:
+                        toggle_histogram(true);
+                        ok = true; break;
+                    case mrv::kHISTOGRAM_WINDOW_HIDE:
+                        toggle_histogram(false);
+                        ok = true; break;
+                    case mrv::kVECTORSCOPE_WINDOW_SHOW:
+                        toggle_vectorscope(true); 
+                        ok = true; break;
+                    case mrv::kVECTORSCOPE_WINDOW_HIDE:
+                        toggle_vectorscope(false);
+                        ok = true; break;
+                    default:
+                        LOG_ERROR( "Unknown mrv event" );
+                }
+
+                if ( ok ) { _event = 0; }
+
+                _clients = c;
 
                 mrv::ImageBrowser* b = browser();
                 if ( b && !_idle_callback && CMedia::cache_active() &&
@@ -3983,53 +4034,6 @@ int ImageView::handle(int event)
             }
         case fltk::FOCUS:
             {
-            unsigned e = _event;
-            bool ok = false;
-            switch( e )
-            {
-                case 0:
-                    break;
-                case mrv::kFULLSCREEN:
-                    toggle_fullscreen();
-                    ok = true; break;
-                case mrv::kPRESENTATION:
-                    toggle_presentation();
-                    ok = true; break;
-                case mrv::kMEDIA_INFO_WINDOW_SHOW:
-                    toggle_media_info(true);
-                    ok = true; break;
-                case mrv::kMEDIA_INFO_WINDOW_HIDE:
-                    toggle_media_info(false);
-                    ok = true; break;
-                case mrv::kCOLOR_AREA_WINDOW_SHOW:
-                    toggle_color_area(true);
-                    ok = true; break;
-                case mrv::kCOLOR_AREA_WINDOW_HIDE:
-                    toggle_color_area(false);
-                    ok = true; break;
-                case mrv::k3D_VIEW_WINDOW_SHOW:
-                    toggle_3d_view(true);
-                    ok = true; break;
-                case mrv::k3D_VIEW_WINDOW_HIDE:
-                    toggle_3d_view(false);
-                    ok = true; break;
-                case mrv::kHISTOGRAM_WINDOW_SHOW:
-                    toggle_histogram(true);
-                    ok = true; break;
-                case mrv::kHISTOGRAM_WINDOW_HIDE:
-                    toggle_histogram(false);
-                    ok = true; break;
-                case mrv::kVECTORSCOPE_WINDOW_SHOW:
-                    toggle_vectorscope(true); 
-                    ok = true; break;
-                case mrv::kVECTORSCOPE_WINDOW_HIDE:
-                    toggle_vectorscope(false);
-                    ok = true; break;
-                default:
-                    LOG_ERROR( "Unknown mrv event" );
-            }
-
-            if ( ok ) { _event = 0; }
             return fltk::GlWindow::handle( event );
             }
         case fltk::ENTER:

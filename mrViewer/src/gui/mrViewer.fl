@@ -171,15 +171,16 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {} {
+  class ReelUI {open
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {463 411 405 350} hide resizable
+        xywh {463 411 405 350} resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
-o->child_of( main->uiMain );}
+o->child_of( main->uiMain );} visible
       } {
         {fltk::Browser} uiBrowser {
           xywh {0 32 405 318} box UP_BOX
@@ -190,7 +191,7 @@ o->scrollbar.color( o->buttoncolor() );
 o->hscrollbar.color( o->buttoncolor() );}
           class {mrv::ImageBrowser}
         } {}
-        {fltk::Group} {} {
+        {fltk::Group} {} {open
           xywh {0 0 405 32} box UP_BOX
         } {
           {fltk::Choice} {} {
@@ -226,7 +227,7 @@ v->new_reel(name);}
               extra_code {o->image( reel_delete_24 );}
             }
           }
-          {fltk::Group} uiImageOps {
+          {fltk::Group} uiImageOps {open
             xywh {216 3 105 26}
           } {
             {fltk::Button} {} {
@@ -238,8 +239,8 @@ v->new_reel(name);}
             }
             {fltk::Button} {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->save();}
-              tooltip {Save current image, sequence or movie.}
+              callback {v->save_sequence();} selected
+              tooltip {Save sequence or movie.}
               xywh {27 0 26 26} box UP_BOX shortcut 0x40073
               extra_code {o->image(file_save_24);}
             }
@@ -305,10 +306,10 @@ delete uiMain; uiMain = NULL;} {}
         user_data this user_data_type {ImageInfoUI*}
         callback {//v->main()->uiView->send_network( "MediaInfoWindow 0" );
 o->hide();}
-        xywh {374 107 505 530} resizable
+        xywh {374 107 505 530} hide resizable
         extra_code {// Make the window transient
 o->child_of( main->uiMain );
-main_ = main;} visible
+main_ = main;}
       } {
         {fltk::Group} uiInfoText {
           user_data uiInfoText user_data_type {mrv::ImageInformation*} open
@@ -2491,8 +2492,7 @@ v->uiView->redraw();}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ConnectionUI {open
-  } {
+  class ConnectionUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -2541,7 +2541,7 @@ else
               callback {if ( strcmp( o->label(), _("Connect") ) == 0 )
    mrv::client::create(v);
 else
-   mrv::client::remove(v);} selected
+   mrv::client::remove(v);}
               xywh {310 20 85 25}
             }
           }
