@@ -204,18 +204,34 @@ bool Parser::parse( const std::string& s )
       std::string font, text;
       static string old_text;
       static string old_font;
-      static unsigned old_size;
+      static unsigned old_size = 0;
       static ImagePixel oldcolor;
+      static int64_t old_frame = AV_NOPTS_VALUE;
       unsigned font_size;
       std::getline( is, font, '"' ); // skip first quote
       std::getline( is, font, '"' );
       std::getline( is, text, '^' ); // skip first quote
       std::getline( is, text, '^' );
 
+      ImagePixel color;
+      int64_t frame;
+
+      is >> font_size >> color.r >> color.g >> color.b >> color.a
+         >> frame;
+
+      bool same = true;
+      if ( font != old_font || text != old_text || font_size != old_size || 
+           color.r != oldcolor.r || color.g != oldcolor.g ||
+           color.b != oldcolor.b || color.a != oldcolor.a ||
+           frame != old_frame )
+      {
+          same = false;
+      }
+
 
       GLTextShape* shape;
       mrv::ImageView* view = ui->uiView;
-      if ( font == old_font && text == old_text && !view->shapes().empty() )
+      if ( same && !view->shapes().empty() )
       {
          shape = dynamic_cast< GLTextShape* >( view->shapes().back().get() );
          if ( shape == NULL ) {
@@ -236,26 +252,33 @@ bool Parser::parse( const std::string& s )
       unsigned num = fltk::list_fonts(fonts);
       for ( i = 0; i < num; ++i )
       {
-         if ( font == fonts[i]->name() ) break;
+          if ( font == fonts[i]->name() ) break;
       }
       if ( i >= num ) i = 0;
 
 
       shape->font( fonts[i] );
-      is >> font_size >> shape->r >> shape->g >> shape->b >> shape->a
-         >> shape->frame;
       is >> xy.x >> xy.y;
       shape->size( font_size );
+      shape->r = color.r;
+      shape->g = color.g;
+      shape->b = color.b;
+      shape->a = color.a;
+      shape->frame = frame;
       shape->pts.clear();
       shape->pts.push_back( xy );
 
-      if ( font != old_font || text != old_text || font_size != old_size || 
-           shape->r != oldcolor.r || shape->g != oldcolor.g ||
-           shape->b != oldcolor.b || shape->a != oldcolor.a  )
+      if ( !same )
       {
-         v->add_shape( mrv::shape_type_ptr(shape) );
-         old_text = text;
-         old_font = font;
+          v->add_shape( mrv::shape_type_ptr(shape) );
+          old_text = text;
+          old_font = font;
+          old_size = font_size;
+          oldcolor.r = shape->r;
+          oldcolor.g = shape->g;
+          oldcolor.b = shape->b;
+          oldcolor.a = shape->a;
+          old_frame = frame;
       }
 
       v->redraw();
@@ -503,14 +526,14 @@ bool Parser::parse( const std::string& s )
    {
        int on;
        is >> on;
-       ui->uiView->handle( mrv::kFULLSCREEN );
+       ui->uiView->send( mrv::kFULLSCREEN );
        ok = true;
    }
    else if ( cmd == N_("PresentationMode" ) )
    {
        int on;
        is >> on;
-       ui->uiView->handle( mrv::kPRESENTATION );
+       ui->uiView->send( mrv::kPRESENTATION );
        ok = true;
    }
    else if ( cmd == N_("ShiftMediaStart") )
@@ -1071,11 +1094,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           v->handle( mrv::kMEDIA_INFO_WINDOW_SHOW );
+           v->send( mrv::kMEDIA_INFO_WINDOW_SHOW );
        }
        else
        {
-           v->handle( mrv::kMEDIA_INFO_WINDOW_HIDE );
+           v->send( mrv::kMEDIA_INFO_WINDOW_HIDE );
        }
 
        ok = true;
@@ -1086,11 +1109,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           v->handle( mrv::kCOLOR_AREA_WINDOW_SHOW );
+           v->send( mrv::kCOLOR_AREA_WINDOW_SHOW );
        }
        else
        {
-           v->handle( mrv::kCOLOR_AREA_WINDOW_HIDE );
+           v->send( mrv::kCOLOR_AREA_WINDOW_HIDE );
        }
 
        ok = true;
@@ -1101,11 +1124,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x )
        {
-           v->handle( mrv::k3D_VIEW_WINDOW_SHOW );
+           v->send( mrv::k3D_VIEW_WINDOW_SHOW );
        }
        else
        {
-           v->handle( mrv::k3D_VIEW_WINDOW_HIDE );
+           v->send( mrv::k3D_VIEW_WINDOW_HIDE );
        }
        ok = true;
    }
@@ -1115,11 +1138,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           v->handle( mrv::kHISTOGRAM_WINDOW_SHOW );
+           v->send( mrv::kHISTOGRAM_WINDOW_SHOW );
        }
        else
        {
-           v->handle( mrv::kHISTOGRAM_WINDOW_HIDE );
+           v->send( mrv::kHISTOGRAM_WINDOW_HIDE );
        }
        ok = true;
    }
@@ -1129,11 +1152,11 @@ bool Parser::parse( const std::string& s )
        is >> x;
        if ( x ) 
        {
-           v->handle( mrv::kVECTORSCOPE_WINDOW_SHOW );
+           v->send( mrv::kVECTORSCOPE_WINDOW_SHOW );
        }
        else
        {
-           v->handle( mrv::kVECTORSCOPE_WINDOW_HIDE );
+           v->send( mrv::kVECTORSCOPE_WINDOW_HIDE );
        }
        ok = true;
    }
