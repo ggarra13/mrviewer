@@ -204,13 +204,13 @@ bool Parser::parse( const std::string& s )
       std::string font, text;
       static string old_text;
       static string old_font;
+      static unsigned old_size;
+      static ImagePixel oldcolor;
       unsigned font_size;
       std::getline( is, font, '"' ); // skip first quote
       std::getline( is, font, '"' );
       std::getline( is, text, '^' ); // skip first quote
       std::getline( is, text, '^' );
-
-      std::cerr << "font " << font << " text " << text << std::endl;
 
 
       GLTextShape* shape;
@@ -248,13 +248,11 @@ bool Parser::parse( const std::string& s )
       shape->size( font_size );
       shape->pts.clear();
       shape->pts.push_back( xy );
-      std::cerr << "font size " << font_size << std::endl;
-      std::cerr << "shape frame " << shape->frame << std::endl;
-      std::cerr << xy.x << ", " << xy.y << std::endl;
 
-      if ( font != old_font || text != old_text )
+      if ( font != old_font || text != old_text || font_size != old_size || 
+           shape->r != oldcolor.r || shape->g != oldcolor.g ||
+           shape->b != oldcolor.b || shape->a != oldcolor.a  )
       {
-          std::cerr << "add shape " << shape << std::endl;
          v->add_shape( mrv::shape_type_ptr(shape) );
          old_text = text;
          old_font = font;
