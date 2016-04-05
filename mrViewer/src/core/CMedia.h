@@ -564,7 +564,7 @@ class CMedia
 
 
 
-    virtual std::string const creation_date() const;
+    virtual const std::string creation_date() const;
 
     /// Returns image ICC color profile
     const char* icc_profile() const;
