@@ -1014,6 +1014,9 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     glLineWidth( 1.0 );
 
+    // glEnable(GL_COLOR_LOGIC_OP);
+    // glLogicOp(GL_XOR);
+
     glBegin(GL_LINE_LOOP);
 
     glVertex2d(0.0, 0.0);
@@ -1022,6 +1025,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     glVertex2d(0.0, -rh);
 
     glEnd();
+
+    // glDisable(GL_COLOR_LOGIC_OP);
 
     glPopAttrib();
     glPopMatrix();
