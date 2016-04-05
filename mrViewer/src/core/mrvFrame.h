@@ -108,7 +108,8 @@ namespace mrv
     unsigned int                _width;
     unsigned int                _height;
     short unsigned int          _channels; //!< number of channels of image
-    time_t                      _mtime;  //!< creation time of frame
+    time_t                      _ctime;  //!< creation time of frame
+    time_t                      _mtime;  //!< modification time of frame
     Format                      _format; //!< rgb/yuv format
     PixelType                   _type;   //!< pixel type
     PixelData                   _data;   //!< video data
@@ -123,6 +124,7 @@ namespace mrv
       _width( 0 ),
       _height( 0 ),
       _channels( 0 ),
+      _ctime( 0 ),
       _mtime( 0 ),
       _format( kRGBA ),
       _type( kByte )
@@ -142,6 +144,7 @@ namespace mrv
       _width( w ),
       _height( h ),
       _channels( c ),
+      _ctime( 0 ),
       _mtime( 0 ),
       _format( format ),
       _type( type )
@@ -182,6 +185,9 @@ namespace mrv
 
     inline void frame( const boost::int64_t& f ) { _frame = f; }
     inline boost::int64_t frame() const          { return _frame; }
+
+    inline void    ctime(const time_t c) { _ctime = c; }
+    inline time_t  ctime() const         { return _ctime; }
 
     inline void    mtime(const time_t c) { _mtime = c; }
     inline time_t  mtime() const         { return _mtime; }
