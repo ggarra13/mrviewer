@@ -1,3 +1,7 @@
+v3.1.5   - Bug fixed some exif and iptc metadata that was not kept in
+	   OpenEXR saver.
+	 - Bug fixed creation date information on sequences of images.
+
 v3.1.4   - Bug fixed windows preference of child windows (Reel List, etc),
 	   appearing at the beginning under the main window.  Now they
 	   appear above and don't go behind the main window when not 

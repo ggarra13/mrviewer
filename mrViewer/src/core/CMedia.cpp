@@ -1006,6 +1006,9 @@ bool CMedia::has_changed()
       if ( (result == -1) || (_frame < _frame_start) ||
 			      ( _frame > _frame_end ) ) return false;
 
+      _mtime = sbuf.st_mtime;
+      _ctime = sbuf.st_ctime;
+
       assert( _frame <= _frame_end );
       assert( _frame >= _frame_start );
       boost::uint64_t idx = _frame - _frame_start;
@@ -1394,6 +1397,9 @@ void CMedia::timestamp(const boost::uint64_t idx,
   int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
   if ( result < 0 ) return;
 
+  _ctime = sbuf.st_ctime;
+  _mtime = sbuf.st_mtime;
+  pic->ctime( sbuf.st_ctime );
   pic->mtime( sbuf.st_mtime );
   _disk_space += sbuf.st_size;
   image_damage( image_damage() | kDamageData );
@@ -1408,9 +1414,20 @@ void CMedia::timestamp(const boost::uint64_t idx,
  */
 const std::string CMedia::creation_date() const
 {
-  std::string date( ::ctime( &_ctime ) );
-  date = date.substr( 0, date.length() - 1 );
-  return date;
+    if ( is_sequence() && hires() )
+    {
+        time_t t = hires()->ctime();
+        if ( t != 0 )
+        {
+            CMedia* img = const_cast< CMedia* >(this);
+            img->_ctime = hires()->ctime();
+            img->_mtime = hires()->mtime();
+        }
+    }
+
+    std::string date( ::ctime( &_ctime ) );
+    date = date.substr( 0, date.length() - 1 );
+    return date;
 }
 
 /** 
