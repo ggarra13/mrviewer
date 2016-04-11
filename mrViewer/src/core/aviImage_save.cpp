@@ -319,7 +319,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    c->max_b_frames = 2;
                }
                if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
-                   /* just for testing, we also add B frames */
                    c->mb_decision = 2;
                }
                break;
