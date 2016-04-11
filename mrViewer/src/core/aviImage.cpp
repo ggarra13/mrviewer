@@ -1660,29 +1660,29 @@ void aviImage::populate()
 
     dump_metadata( _context->metadata );
 
+    char buf[128];
   
     for (unsigned i = 0; i < _context->nb_chapters; ++i) 
     {
-     
         AVChapter *ch = _context->chapters[i];
-     
-        dump_metadata(ch->metadata);
+        sprintf( buf, "Chapter %d ", i+1 );
+        dump_metadata(ch->metadata, buf);
     }
-       
+
     if ( _context->nb_programs )
     {
-     
         for (unsigned i = 0; i < _context->nb_programs; ++i) 
         {
-	
             AVDictionaryEntry* tag = 
             av_dict_get(_context->programs[i]->metadata,
                         "name", NULL, 0);
-            char buf[256];
-            sprintf( buf, "Program %d", i );
             if ( tag ) 
+            {
+                sprintf( buf, "Program %d: %s", i+1, tag->key );
                 _iptc.insert( std::make_pair(buf, tag->value) );
-            dump_metadata( _context->programs[i]->metadata );
+            }
+            sprintf( buf, "Program %d ", i+1 );
+            dump_metadata( _context->programs[i]->metadata, buf );
         }
     }
  

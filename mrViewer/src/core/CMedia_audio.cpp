@@ -682,6 +682,7 @@ void CMedia::populate_audio()
   if ( stream->metadata ) m = stream->metadata;
 
   dump_metadata( c->metadata );
+  dump_metadata( m, "Audio " );
 
 }
 
