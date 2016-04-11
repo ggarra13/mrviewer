@@ -119,40 +119,6 @@ namespace mrv
 
   void Histogram::count_pixels()
   {
-
-#if 0
-    if ( GLEW_ARB_imaging )
-      {
-	memset( red,   0, sizeof(float) * 256 );
-	memset( green, 0, sizeof(float) * 256 );
-	memset( blue,  0, sizeof(float) * 256 );
-	memset( lumma, 0, sizeof(float) * 256 );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_RED, GL_UNSIGNED_INT,
-			   red );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_GREEN, GL_UNSIGNED_INT,
-			   green );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_BLUE, GL_UNSIGNED_INT,
-			   blue );
-	glGetHistogramEXT( GL_HISTOGRAM, GL_FALSE, GL_LUMMA, 
-			   GL_UNSIGNED_INT, lumma );
-	unsigned int minmax[2];
-	minmax[0] = minmax[1] = 0;
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_RED, GL_UNSIGNED_INT,
-			minmax );
-	maxRed = minmax[1];
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_GREEN, GL_UNSIGNED_INT,
-			minmax );
-	maxGreen = minmax[1];
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_BLUE, GL_UNSIGNED_INT,
-			minmax );
-	maxBlue = minmax[1];
-	glGetMinmaxEXT( GL_MINMAX, GL_FALSE, GL_LUMMA, GL_UNSIGNED_INT,
-			minmax );
-	maxLumma = minmax[1];
-      }
-
-#else
-
     media m = uiMain->uiView->foreground();
     if (!m) return;
 
@@ -195,6 +161,8 @@ namespace mrv
         if (!pic) return;
     }
 
+    // Check if xmin/ymin is below 0 is done in selection_to_coord
+
     if ( xmin >= (int)pic->width() ) xmin = (int) pic->width()-1;
     if ( ymin >= (int)pic->height() ) ymin = (int) pic->height()-1;
 
@@ -216,9 +184,9 @@ namespace mrv
 
     CMedia::Pixel rp;
     uchar rgb[3];
-    for ( unsigned y = ymin; y <= ymax; y += stepY )
+    for ( int y = ymin; y <= ymax; y += stepY )
       {
-	for ( unsigned x = xmin; x <= xmax; x += stepX )
+	for ( int x = xmin; x <= xmax; x += stepX )
 	  { 
               CMedia::Pixel op = pic->pixel( x, y );
 
@@ -248,8 +216,6 @@ namespace mrv
               count_pixel( rgb );
 	  }
       }
-#endif
-
   }
 
   float Histogram::histogram_scale( float val, float maxVal )

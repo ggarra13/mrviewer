@@ -1426,7 +1426,7 @@ const std::string CMedia::creation_date() const
     }
 
     std::string date( ::ctime( &_ctime ) );
-    date = date.substr( 0, date.length() - 1 );
+    date = date.substr( 0, date.size() - 1 ); // eliminate \n
     return date;
 }
 
