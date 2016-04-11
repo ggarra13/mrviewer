@@ -1,6 +1,15 @@
-v3.1.5   - Bug fixed some exif and iptc metadata that was not kept in
+v3.1.5 	 - Bug fixed focus (hotkeys not working) when loading and 
+	   resizing window (a bug introduced in v3.1.4 on Windows 
+	   mainly).
+         - Bug fixed some exif and iptc metadata that was not kept in
 	   OpenEXR saver.
 	 - Bug fixed creation date information on sequences of images.
+	 - Removed a warning about stereo images not being found in
+	   an image when stereo came from two image pairs.
+	 - Bug fixed a NAN display of pixel values when they were 0, due
+	   to a bad optimization added in v3.1.4.
+	 - Made integer entry grow to accomodate values below the 100
+	   range in Media Information window.
 
 v3.1.4   - Bug fixed windows preference of child windows (Reel List, etc),
 	   appearing at the beginning under the main window.  Now they

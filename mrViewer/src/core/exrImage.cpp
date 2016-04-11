@@ -866,9 +866,10 @@ bool exrImage::find_channels( const Imf::Header& h,
                 size_t pos = prefix.rfind( '.' );
                 std::string ext = prefix;
                 if ( pos != std::string::npos )
+                {
                     ext = prefix.substr( pos+1, prefix.size() );
-
-                if ( ext == "z" ) prefix = prefix.substr(0, pos);
+                    if ( ext == "z" ) prefix = prefix.substr(0, pos);
+                }
 
                 std::transform( ext.begin(), ext.end(), ext.begin(),
                                 (int(*)(int)) toupper );
@@ -1687,7 +1688,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
    
    if ( _is_stereo && _multiview && ( st[0] == -1 || st[1] == -1 ) )
    {
-       IMG_ERROR( _("Could not find both stereo images in file") );
+       IMG_ERROR( _("Could not find both stereo images in multiview file") );
        if ( st[0] != -1 ) st[1] = st[0];
        else if ( st[1] != -1 ) st[0] = st[1];
        if ( st[0] == -1 ) return false;
@@ -1698,6 +1699,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
        else if ( st[1] == -1 ) st[1] = 0;
        if ( st[0] == st[1] )
        {
+           std::string root( _fileroot );
+           if ( root.find( "%V" ) != std::string::npos ||
+                root.find( "%v" ) != std::string::npos )
+               return true;
            IMG_ERROR( _("Could not find both stereo images in file") );
            return false;
        }

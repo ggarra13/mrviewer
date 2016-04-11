@@ -969,7 +969,6 @@ void ImageInformation::fill_data()
   {
     hide_tabs();
 
- 
     m_image->clear();
     m_video->clear();
     m_audio->clear();
@@ -979,7 +978,7 @@ void ImageInformation::fill_data()
 
     if ( img == NULL || !visible_r() ) return;
 
-    if ( img->is_stereo() && img->right_eye() )
+    if ( img->is_stereo() && (img->right_eye() || !img->is_left_eye()) )
         m_button->show();
     else
         m_button->hide();
@@ -1388,6 +1387,7 @@ void ImageInformation::fill_data()
 	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
 	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
 	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
+          else if ( content > maxV ) maxS = content+50;
 	  slider->maximum( maxS );
 
 	  slider->value( content );
@@ -1543,6 +1543,7 @@ void ImageInformation::fill_data()
 	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
 	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
 	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
+          else if ( content > maxV ) maxS = content+50;
 	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );

@@ -131,7 +131,7 @@ if ( !ctl.empty() )
 return ctl;} {}
 } 
 
-namespace mrv {open
+namespace mrv {open selected
 } {
   decl {class Browser;} {public
   }
@@ -171,16 +171,15 @@ namespace mrv {open
   }
   decl {class EDLWindowUI;} {public
   }
-  class ReelUI {open
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
         label {Reel List} open
-        xywh {463 411 405 350} resizable
+        xywh {463 411 405 350} hide resizable
         extra_code {o->size_range(350,320);
 // Make the window transient
-o->child_of( main->uiMain );} visible
+o->child_of( main->uiMain );}
       } {
         {fltk::Browser} uiBrowser {
           xywh {0 32 405 318} box UP_BOX
@@ -239,7 +238,7 @@ v->new_reel(name);}
             }
             {fltk::Button} {} {
               user_data uiBrowser user_data_type {mrv::ImageBrowser*}
-              callback {v->save_sequence();} selected
+              callback {v->save_sequence();}
               tooltip {Save sequence or movie.}
               xywh {27 0 26 26} box UP_BOX shortcut 0x40073
               extra_code {o->image(file_save_24);}
@@ -2015,152 +2014,6 @@ for ( ; w ; w = w->next() )
 fltk::Window* w = fltk::Window::first();
 for ( ; w ; w = w->next() )
    w->redraw();} {}
-    }
-  }
-  class SaveOptionsUI {} {
-    Function {make_window(ViewerUI* main)} {open private
-    } {
-      {fltk::Window} uiMain {
-        label {Save Options} open
-        xywh {493 194 315 375} horizontal hide resizable
-        extra_code {// Make the window transient
-o->child_of( main->uiMain );} modal
-      } {
-        {fltk::Group} {} {open
-          xywh {8 14 302 356} box EMBOSSED_BOX
-        } {
-          {fltk::Group} {} {
-            xywh {16 16 275 45} box ENGRAVED_BOX
-          } {
-            {fltk::InvisibleBox} {} {
-              label Format
-              xywh {10 10 75 25} box FLAT_BOX
-            }
-            {fltk::PopupMenu} uiSaveFormat {
-              label {Name (.ext)}
-              xywh {80 10 180 25}
-            } {
-              {fltk::Item} {} {
-                label {ILM OpenEXR (.exr)}
-                }
-              {fltk::Item} {} {
-                label {JPEG (.jpg)}
-                }
-              {fltk::Item} {} {
-                label {Microsoft Bitmap (.bmp)}
-                }
-              {fltk::Item} {} {
-                label {TIFF (.tif)}
-                }
-              {fltk::Item} {} {
-                label {Targa (.tga)}
-                }
-            }
-          }
-          {fltk::Group} {} {
-            xywh {16 71 275 45} box ENGRAVED_BOX
-          } {
-            {fltk::InvisibleBox} {} {
-              label Compression
-              xywh {25 10 90 25} box FLAT_BOX
-            }
-            {fltk::PopupMenu} uiSaveCompression {
-              label None
-              xywh {115 10 95 25}
-            } {}
-          }
-          {fltk::Group} {} {
-            xywh {16 126 275 45} box ENGRAVED_BOX
-          } {
-            {fltk::InvisibleBox} {} {
-              label {Render Intent}
-              xywh {5 10 110 25} box FLAT_BOX
-            }
-            {fltk::PopupMenu} uiSaveRenderIntent {
-              label Relative
-              xywh {115 10 95 25}
-            } {
-              {fltk::Item} {} {
-                label Saturation
-                }
-              {fltk::Item} {} {
-                label Perceptual
-                }
-              {fltk::Item} {} {
-                label Absolute
-                }
-              {fltk::Item} {} {
-                label Relative
-                }
-            }
-          }
-          {fltk::Group} {} {
-            xywh {16 181 275 45} box ENGRAVED_BOX
-          } {
-            {fltk::InvisibleBox} {} {
-              label Channels
-              xywh {15 10 100 25} box FLAT_BOX
-            }
-            {fltk::PopupMenu} uiSaveChannels {
-              label {All Possible}
-              xywh {115 10 95 25}
-            } {
-              {fltk::Item} {} {
-                label {All Possible}
-                }
-              {fltk::Item} {} {
-                label RGBA
-                }
-              {fltk::Item} {} {
-                label RGB
-                }
-              {fltk::Item} {} {
-                label {Alpha Only}
-                }
-            }
-          }
-          {fltk::Group} {} {
-            xywh {16 236 275 45} box ENGRAVED_BOX
-          } {
-            {fltk::InvisibleBox} {} {
-              label Frames
-              xywh {15 10 100 25} box FLAT_BOX
-            }
-            {fltk::PopupMenu} uiSaveFrames {
-              label Current
-              xywh {115 10 95 25}
-            } {
-              {fltk::Item} {} {
-                label All
-                }
-              {fltk::Item} {} {
-                label Timeline
-                }
-              {fltk::Item} {} {
-                label Current
-                }
-            }
-          }
-          {fltk::Group} {} {
-            xywh {136 321 150 25}
-          } {
-            {fltk::ReturnButton} {} {
-              label Save
-              xywh {80 0 70 25}
-            }
-            {fltk::Button} {} {
-              label Cancel
-              xywh {0 0 70 25}
-            }
-          }
-        }
-      }
-    }
-    Function {SaveOptionsUI(ViewerUI* m)} {} {
-      code {make_window( m );} {}
-    }
-    Function {~SaveOptionsUI()} {} {
-      code {delete uiMain; uiMain = NULL;} {}
     }
   }
   class StatisticsUI {} {

@@ -209,7 +209,7 @@ std::string get_short_view( bool left )
     if ( ! pairs ) pairs = "L:R";
 
     std::string view = pairs;
-    int idx = view.find( ':' );
+    size_t idx = view.find( ':' );
     if ( idx == std::string::npos )
     {
         LOG_ERROR( "MRV_STEREO_CHAR_PAIRS does not have two letters separated by colon" );
@@ -231,7 +231,7 @@ std::string get_long_view( bool left )
     if ( ! pairs ) pairs = "left:right";
 
     std::string view = pairs;
-    int idx = view.find( ':' );
+    size_t idx = view.find( ':' );
     if ( idx == std::string::npos )
     {
         LOG_ERROR( "MRV_STEREO_NAME_PAIRS does not have two names separated by colon" );
@@ -309,7 +309,7 @@ bool is_valid_view( std::string view )
 	if ( *i == '/' || *i == '\\' ) break;
       }
 
-    int64_t len = i - e + 1;
+    size_t len = i - e + 1;
     f = f.substr( len, f.size() );
 
     StringList periods;
