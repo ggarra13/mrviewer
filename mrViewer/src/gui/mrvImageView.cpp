@@ -582,8 +582,6 @@ static const float kMaxZoom = 32.f;   // Zoom 32x
 
 namespace mrv {
 
-typedef boost::recursive_mutex              Mutex;
-
 static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 {
   mrv::media fg = view->foreground();
@@ -2596,11 +2594,11 @@ void ImageView::pixel_processed( const CMedia* img,
     float one_gamma = 1.0f / _gamma;
     // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
     // but faster.
-    if ( isfinite(rgba.r) )
+    if ( rgba.r > 0.0f && isfinite(rgba.r) )
         rgba.r = expf( logf(rgba.r) * one_gamma );
-    if ( isfinite(rgba.g) )
+    if ( rgba.g > 0.0f && isfinite(rgba.g) )
         rgba.g = expf( logf(rgba.g) * one_gamma );
-    if ( isfinite(rgba.b) )
+    if ( rgba.b > 0.0f && isfinite(rgba.b) )
         rgba.b = expf( logf(rgba.b) * one_gamma );
 
 }
@@ -2645,6 +2643,14 @@ void ImageView::mouseMove(int x, int y)
   if ( w == 0 ) w = pic->width();
   if ( h == 0 ) h = pic->height();
 
+  if ( _wait )
+  {
+      window()->cursor( fltk::CURSOR_WAIT );
+  }
+  else
+  {
+      window()->cursor(fltk::CURSOR_CROSS);
+  }
 
   CMedia::Pixel rgba;
 
@@ -2702,12 +2708,14 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  if ( xp < 0 || xp >= pic->width() || yp < 0 || yp >= pic->height() )
+  if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
+       yp >= (int)pic->height() )
   {
       pic = img->left();
       if ( !pic ) return;
 
-      if ( xp < 0 || xp >= pic->width() || yp < 0 || yp >= pic->height() )
+      if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
+           yp >= (int)pic->height() )
           outside = true;
   }
 
@@ -2735,8 +2743,8 @@ void ImageView::mouseMove(int x, int y)
           if ( pic )
           {
 
-              if ( xp < 0 || xp >= pic->width() || yp < 0 ||
-                   yp >= pic->height() )
+              if ( xp < 0 || xp >= (int)pic->width() || yp < 0 ||
+                   yp >= (int)pic->height() )
                   outside = true;
 
               if (!outside)
@@ -3837,10 +3845,6 @@ void ImageView::toggle_presentation()
     }
 
   fltk_main()->take_focus();
-  //   window()->take_focus();
-  //   fltk::focus( fltk_main() );
-
-  take_focus();
 
   fltk::check();
   
@@ -4034,22 +4038,22 @@ int ImageView::handle(int event)
             }
         case fltk::FOCUS:
             {
-            return fltk::GlWindow::handle( event );
-            }
-        case fltk::ENTER:
-            focus(this);
             if ( _wait )
             {
                 window()->cursor( fltk::CURSOR_WAIT );
-                fltk::cursor( fltk::CURSOR_WAIT );
             }
             else
             {
                 window()->cursor(fltk::CURSOR_CROSS);
-                fltk::cursor( fltk::CURSOR_CROSS );
             }
             fltk::GlWindow::handle( event );
             return 1;
+            }
+        case fltk::ENTER:
+            focus(this);
+            fltk::GlWindow::handle( event );
+            return 1;
+        case fltk::UNFOCUS:
         case fltk::LEAVE:
             window()->cursor(fltk::CURSOR_DEFAULT);
             fltk::GlWindow::handle( event );
@@ -4092,7 +4096,7 @@ int ImageView::handle(int event)
             {
                 double dx = (fltk::event_x() - lastX) / 20.0;
                 if ( std::abs(dx) >= 1.0f )
-                { 
+                {
                     scrub( dx );
                     lastX = fltk::event_x();
                 }
@@ -4105,6 +4109,7 @@ int ImageView::handle(int event)
             if ( _mode == kDraw || _mode == kErase )
                 redraw();
 
+            fltk::GlWindow::handle( event );
             return 1;
             break;
         case fltk::DRAG:
@@ -4144,6 +4149,7 @@ int ImageView::handle(int event)
             browser()->handle_dnd();
             return 1;
         default:
+            window()->cursor(fltk::CURSOR_CROSS);
             return fltk::GlWindow::handle( event ); 
     }
 
