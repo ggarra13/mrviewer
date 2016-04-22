@@ -945,6 +945,7 @@ void video_thread( PlaybackData* data )
           }
       }
 
+
       timer.setDesiredSecondsPerFrame( delay );
       //timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
@@ -964,7 +965,6 @@ void video_thread( PlaybackData* data )
              view->frame( f );
          }
       }
-
 
       frame += step;
    }
