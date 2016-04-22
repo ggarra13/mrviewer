@@ -3844,10 +3844,13 @@ void ImageView::toggle_presentation()
       resize_main_window();
     }
 
-  fltk_main()->take_focus();
+  // These two take focus are needed
+  // fltk_main()->take_focus();
+
+  take_focus();
 
   fltk::check();
-  
+
   fit_image();
 
   char buf[128];
