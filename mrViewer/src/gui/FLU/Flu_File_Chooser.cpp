@@ -376,7 +376,6 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     if ( ! fs::exists( buf ) ) return;
 
-
     fltk::SharedImage* img;
     try {
         img = mrv::fltk_handler( buf, NULL, 0 );
@@ -2633,7 +2632,7 @@ int Flu_File_Chooser::Entry::handle( int event )
      }
      return 1;
   }
-  if( event == fltk::LEAVE || event == fltk::MOUSEWHEEL )
+  if( event == fltk::LEAVE )
   {
      // if user leaves an entry cell, color it gray or blue
      if (selected()) {

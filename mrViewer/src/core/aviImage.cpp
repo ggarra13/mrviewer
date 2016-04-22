@@ -409,6 +409,8 @@ void aviImage::open_video_codec()
   // _video_ctx->skip_loop_filter= skip_loop_filter;
   // _video_ctx->error_concealment= error_concealment;
 
+  // _video_ctx->flags2 |= AV_CODEC_FLAG2_FAST;
+
   if(_video_codec->capabilities & CODEC_CAP_DR1)
      _video_ctx->flags |= CODEC_FLAG_EMU_EDGE;
 
@@ -418,6 +420,7 @@ void aviImage::open_video_codec()
   else
     aspect_ratio = av_q2d( _video_ctx->sample_aspect_ratio ) *
     _video_ctx->width / _video_ctx->height;
+
 
 
 
@@ -431,7 +434,7 @@ void aviImage::open_video_codec()
   }
 
   AVDictionary* info = NULL;
-  av_dict_set(&info, "threads", "2", 0);
+  av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
 
   if ( _video_codec == NULL ||
        avcodec_open2( _video_ctx, _video_codec, &info ) < 0 )
