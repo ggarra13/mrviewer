@@ -40,6 +40,8 @@ namespace mrv {
   class AviSaveUI;
   class ViewerUI;
 
+  extern const char* const kColorSpaces[];
+
   class aviImage : public CMedia 
   {
     aviImage();
@@ -128,8 +130,11 @@ namespace mrv {
 
     virtual void subtitle_stream( int idx );
 
-      const char* const colorspace();
-      const char* const color_range();
+      virtual const char* const colorspace() const;
+      virtual const size_t colorspace_index() const;
+      virtual void colorspace_index( int x ) { _colorspace_index = x; }
+
+      const char* const color_range() const;
 
        virtual void probe_size( unsigned p );
 

@@ -275,6 +275,9 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                // Use a profile if possible
                c->profile = opts->video_profile;
 
+               if ( img->colorspace_index() >= 0 )
+                   c->colorspace = (AVColorSpace) img->colorspace_index();
+
                if ( c->codec_id == AV_CODEC_ID_H264 )
                {
                    switch( opts->video_profile )
@@ -295,6 +298,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
                const char* name = avcodec_profile_name( codec_id, c->profile );
                if (name) LOG_INFO( "Profile name " << name );
+
 
                if ( c->codec_id == AV_CODEC_ID_PRORES )
                {

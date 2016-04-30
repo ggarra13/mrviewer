@@ -556,6 +556,9 @@ class CMedia
     /// Returns the image original colorspace (RGB, YUV, CMYK, etc)
     virtual const char* const colorspace() const { return "RGB"; };
 
+    virtual size_t const colorspace_index() const { return 2; }
+    virtual void colorspace_index( int x ) { _colorspace_index = x; }
+
     /// Returns the disk space used by image or movie (in bytes)
     inline size_t disk_space() const { return _disk_space; }
 
@@ -1200,6 +1203,8 @@ class CMedia
     Mutex     _subtitle_mutex; //!< to mark subtitle routines
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
+
+    int _colorspace_index;
 
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads

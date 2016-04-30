@@ -927,21 +927,24 @@ namespace mrv {
         const mrv::ViewerUI* v = _view->main();
         if (!v) return;
 
+        int premult = 0, unpremult = 0;
+
         switch ( v->uiPrefs->uiPrefsBlendMode->value() )
         {
             case ImageView::kBlendPremultNonGamma:
-                _shader->setUniform( "unpremult", 1 );
-                _shader->setUniform( "premult", 1 );
+                unpremult = premult = 1;
                 break;
             case ImageView::kBlendTraditionalNonGamma:
-                _shader->setUniform( "unpremult", 1 );
-                _shader->setUniform( "premult", 1 );
+                unpremult = premult = 1;
                 break;
             default:
-                _shader->setUniform( "unpremult", 0 );
-                _shader->setUniform( "premult", 0 );
+                unpremult = premult = 0;
                 break;
         }
+
+        _shader->setUniform( "premult", premult );
+        if ( _shader == GLEngine::rgbaShader() )
+            _shader->setUniform( "unpremult", unpremult );
 
 	if ( _view->normalize() )
 	  {
@@ -962,24 +965,35 @@ namespace mrv {
 	else if ( _shader == GLEngine::YCbCrShader() ||
 		  _shader == GLEngine::YCbCrAShader() )
 	  {
-	    if ( _format >= image_type::kITU_709_YCbCr420 )
-	      {
-		// HDTV  YCbCr
-		_shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
-		_shader->setUniform( "Kr", 1.0f, 0.0f, 1.402f );
-		_shader->setUniform( "Kg", 1.0f, -0.344136f, -0.714136f );
-		_shader->setUniform( "Kb", 1.0f, 1.772f, 0.0f );
-	      }
-	    else
-	      {
-		// STV  YCbCr
-		_shader->setUniform( "Koff", 
-				    -16/255.0f, -128/255.f, -128/255.f );
-		_shader->setUniform( "Kr", 1.16438355f, 0.0f, 1.59602715f );
-		_shader->setUniform( "Kg", 1.16438355f, -0.3917616f, 
-				    -0.81296805f );
-		_shader->setUniform( "Kb", 1.16438355f, 2.01723105f, 0.0f );
-	      }
+              std::string colorspace = _("Unspecified");
+              if ( _image && _image->colorspace() )
+                  colorspace = _image->colorspace();
+              if ( colorspace == _("Unspecified") || colorspace == "RGB" )
+              {
+                  _shader->setUniform( "coeffs", 0 );
+              }
+              else
+              {
+                  _shader->setUniform( "coeffs", 1 );
+                  if ( colorspace == "BT709" )
+                  {
+                      // HDTV  YCbCr coefficients
+                      _shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
+                      _shader->setUniform( "Kr", 1.0f, 0.0f, 1.28033f );
+                      _shader->setUniform( "Kg", 1.0f, -0.21482f, -0.38059f );
+                      _shader->setUniform( "Kb", 1.0f, 2.12798f, 0.0f );
+                  }
+                  else if ( colorspace == "BT470BG" || 
+                            colorspace == "SMPTE170M" )
+                  {
+                      // STV  YCbCr coefficients
+                      _shader->setUniform( "Koff", -16/255.0f, -0.5f, -0.5f );
+                      _shader->setUniform( "Kr", 1.0f, 0.0f, 1.59602715f );
+                      _shader->setUniform( "Kg", 1.0f, -0.39465, 
+                                           -0.58060f );
+                      _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
+                  }
+              }
 	  }
 
 	CHECK_GL( "draw_quad shader parameters" );
@@ -1059,8 +1073,6 @@ namespace mrv {
     _image = img;
 
     _view->window()->cursor( fltk::CURSOR_DEFAULT );
-
-
 
   }
 

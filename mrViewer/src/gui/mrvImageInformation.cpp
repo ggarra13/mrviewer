@@ -69,6 +69,7 @@ const char* kModule = "info";
 namespace mrv
 {
 
+
 struct CtlLMTData
 {
     fltk::Widget* widget;
@@ -244,6 +245,17 @@ void ImageInformation::int_slider_cb( fltk::Slider* s, void* data )
     fltk::IntInput* n = (fltk::IntInput*) data;
     n->value( (int)s->value() );
     n->do_callback();
+}
+
+static void change_colorspace( fltk::PopupMenu* w, ImageInformation* info )
+{
+    aviImage* img = dynamic_cast<aviImage*>( info->get_image() );
+    if ( !img ) return;
+
+    int v = w->value();
+    w->label( _(kColorSpaces[v]) );
+    img->colorspace_index( (int)v );
+    img->image_damage( mrv::CMedia::kDamageAll );
 }
 
 static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
@@ -570,8 +582,9 @@ void ImageInformation::fill_data()
     aviImage* avi = dynamic_cast< aviImage* >( img );
     if ( avi )
     {
-        add_text( _("Color Space"), avi->colorspace() );
-        add_text( _("Color Range"), avi->color_range() );
+        add_enum( _("Color Space"), avi->colorspace_index(), kColorSpaces, 
+                  7, true, (fltk::Callback*)change_colorspace );
+        add_text( _("Color Range"), _(avi->color_range()) );
     }
     
 
@@ -583,7 +596,6 @@ void ImageInformation::fill_data()
       {
       case VideoFrame::kLumma:
 	format = _("Lumma"); break;
-
       case VideoFrame::kRGB:
 	format = N_("RGB"); break;
       case VideoFrame::kRGBA:
@@ -1408,7 +1420,7 @@ void ImageInformation::fill_data()
 
   void ImageInformation::add_enum( const char* name,
 				   const size_t content,
-				   const char** options,
+				   const char* const* options,
 				   const size_t num,
 				   const bool editable,
 				   fltk::Callback* callback 
@@ -1434,10 +1446,10 @@ void ImageInformation::fill_data()
       widget->color( colB );
       for ( size_t i = 0; i < num; ++i )
 	{
-	  widget->add( options[i] );
+            widget->add( _( options[i] ) );
 	}
       widget->value( unsigned(content) );
-      widget->copy_label( options[content] );
+      widget->copy_label( _( options[content] ) );
 
       if ( !editable )
 	{
