@@ -27,6 +27,8 @@ Out main(
 	 uniform half   gain  = 1.0,
 	 uniform half   gamma = 1.0,
 	 uniform int    channel = 0,
+         uniform bool   premult = 0,
+         uniform bool   unpremult = 0,
 	 uniform bool   enableNormalization = 0,
 	 uniform half   normMin = 0,
 	 uniform half   normSpan  = 1,
@@ -60,11 +62,6 @@ Out main(
     {
       c.rgb = (c.rgb - normMin) / normSpan;
     }
-
-  //
-  // Apply gain 
-  //
-  c.rgb *= gain;
 
 
   //
@@ -110,6 +107,16 @@ Out main(
 	  c.rgb = exp( tex3D(lut, c.rgb).rgb );
 	}
     }
+
+  if ( unpremult && c.a > 0.0001 )
+  {
+    c.rgb /= c.a;
+  }
+
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
 
   //
   // Apply video gamma correction.
@@ -166,6 +173,12 @@ Out main(
   {
       c.rgba = 0.0f;
   }
+
+  if ( premult )
+  {
+      c.rgb *= c.a;
+  }
+
 
   Out output;
   output.pixel = c;
