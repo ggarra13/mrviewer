@@ -376,20 +376,26 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     if ( ! fs::exists( buf ) ) return;
 
+    fltk::lock();
+
     fltk::SharedImage* img;
     try {
         img = mrv::fltk_handler( buf, NULL, 0 );
     } catch( const std::exception& e )
     {
         LOG_ERROR( e.what() );
+        fltk::unlock();
         return;
     }
 
-    if ( !img ) return;
-
-    int h = img->h();
+    if ( !img ) {
+        fltk::unlock();
+        return;
+    }
     e->icon = img;
     e->updateSize();
+
+    fltk::unlock();
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -1579,7 +1585,7 @@ int Flu_File_Chooser::FileInput::handle( int event )
 	      }
 #endif
 	  chooser->delayedCd = v + "*";
-	  fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	  fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, chooser );
 	  return 1;
 	}
       else if( fltk::event_key() == fltk::LeftKey )
@@ -2663,7 +2669,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 	{
             fltk::event_clicks(0);
             chooser->delayedCd = filename;
-            fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+            fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, chooser );
 	}
 	else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
 	{
@@ -2673,7 +2679,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 	   else
 #endif
 	      chooser->delayedCd = chooser->currentDir + filename + "/";
-	   fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	   fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, chooser );
 	}
      }
      
@@ -2683,7 +2689,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 	   {
 	      fltk::event_clicks(0);
 	      chooser->delayedCd = filename;
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	      fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, chooser );
 	   }
 	   else if( type != ENTRY_FILE && type != ENTRY_SEQUENCE )
 	   {
@@ -2694,14 +2700,14 @@ int Flu_File_Chooser::Entry::handle( int event )
 	      else
 #endif
 		 chooser->delayedCd = chooser->currentDir + filename + "/";
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, chooser );
+	      fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, chooser );
 	   }
 	   // double-clicking a file chooses it if we are in file selection mode
 	   else if( !(chooser->selectionType & DIRECTORY) ||
 		    (chooser->selectionType & STDFILE) )
 	   {
 	      fltk::event_clicks(0);
-	      fltk::add_timeout( 0.0f, Flu_File_Chooser::selectCB, chooser );
+	      fltk::add_timeout( 0.1f, Flu_File_Chooser::selectCB, chooser );
 	   }
 	   if( selected() )
 	      chooser->trashBtn->activate();
@@ -2741,7 +2747,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 		  chooser->redraw();
 		}
 	      else
-		{
+              {
 		  // get the index of the last selected item and this item
 		  int lastindex = -1, thisindex = -1;
 		  int i;
@@ -2754,10 +2760,10 @@ int Flu_File_Chooser::Entry::handle( int event )
 		      if( lastindex >= 0 && thisindex >= 0 )
 			break;
 		    }
-		  if( lastindex >= 0 && thisindex >= 0 )
+                    if( lastindex >= 0 && thisindex >= 0 )
 		    {
 		      // loop from this item to the last item, toggling each item except the last
-		      int inc;
+			      int inc;
 		      if( thisindex > lastindex )
 			inc = -1;
 		      else
@@ -2769,7 +2775,7 @@ int Flu_File_Chooser::Entry::handle( int event )
 			  e->selected() ? e->clear_selected() : e->set_selected();
 			  e->redraw();
 			}
-		      chooser->lastSelected = this;
+                      chooser->lastSelected = this;
 		      chooser->redraw();
 		    }
 		}
@@ -3313,7 +3319,7 @@ void Flu_File_Chooser::backCB()
       currentHist = currentHist->last;
       walkingHistory = true;
       delayedCd = currentHist->path;
-      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, this );
+      fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, this );
     }
 }
 
@@ -3325,7 +3331,7 @@ void Flu_File_Chooser::forwardCB()
       currentHist = currentHist->next;
       walkingHistory = true;
       delayedCd = currentHist->path;
-      fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, this );
+      fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, this );
     }
 }
 
@@ -3752,6 +3758,7 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 
 void Flu_File_Chooser::cd( const char *path )
 {
+
   Entry *entry;
   char cwd[1024];
 
@@ -4525,7 +4532,7 @@ void Flu_File_Chooser::cd( const char *path )
 	  currentFile == (std::string(lastAddedDir)+"*") )
 	{
 	  delayedCd = lastAddedDir;
-	  fltk::add_timeout( 0.0f, Flu_File_Chooser::delayedCdCB, this );
+	  fltk::add_timeout( 0.1f, Flu_File_Chooser::delayedCdCB, this );
 	}
 
       if( numDirs == 1 && numFiles == 0 )
@@ -4666,8 +4673,12 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
 {
    static Flu_File_Chooser *fc = NULL;
 
+
+  filename = retname.c_str();
+
   if( !fc )
     {
+
        fc = new Flu_File_Chooser( filename, pattern, type, message, 
 				  compact_files );
        if (fc && retname.size() )
@@ -4676,7 +4687,15 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
        }
     }
   else
-    {
+  {
+      std::string dir = retname;
+      size_t pos = dir.rfind( '/' );
+      if ( pos != std::string::npos )
+      {
+          dir = dir.substr( 0, pos );
+      }
+      fc->currentDir = dir;
+
       fc->type( type );
       fc->clear_history();
       fc->label( message );
@@ -4702,9 +4721,11 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
 	}
       else
 	{
-	  fc->filter( pattern );
-	  fc->value( filename );
+            fc->filter( pattern );
+            fc->value( filename );
 	}
+
+
     }
 
   fc->exec();

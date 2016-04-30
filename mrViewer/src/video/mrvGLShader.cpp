@@ -240,6 +240,7 @@ namespace mrv {
 	glGetObjectParameterivARB( _program, GL_OBJECT_LINK_STATUS_ARB, &ok );
 	if (!ok) {
 	  delete [] code;
+          glDeleteObjectARB( _program );
 
 	  THROW (Iex::BaseExc, _("GLSL error in file ")
 		 << filename << ": " << get_glsl_error() );
