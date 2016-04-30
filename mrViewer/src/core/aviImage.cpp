@@ -1,4 +1,5 @@
 
+
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2016  Gonzalo Garramuño
@@ -113,16 +114,16 @@ namespace mrv {
 
 
 const char* const kColorRange[] = {
-    "Unspecified",
-    "MPEG", ///< the normal 219*2^(n-8) "MPEG" YUV ranges
-    "JPEG", ///< the normal     2^n-1   "JPEG" YUV ranges
+_("Unspecified"),
+"MPEG", ///< the normal 219*2^(n-8) "MPEG" YUV ranges
+"JPEG", ///< the normal     2^n-1   "JPEG" YUV ranges
 };
 
 const char* const kColorSpaces[] = {
     "RGB",
     "BT709",
-    "Unspecified",
-    "Reserved",
+    _("Unspecified"),
+    _("Reserved"),
     "FCC",
     "BT470BG", ///< also ITU-R BT601-6 625 / ITU-R BT1358 625 / ITU-R BT1700 625 PAL & SECAM / IEC 61966-2-4 xvYCC601
     "SMPTE170M", ///< also ITU-R BT601-6 525 / ITU-R BT1358 525 / ITU-R BT1700 NTSC / functionally identical to above
@@ -133,13 +134,23 @@ const char* const kColorSpaces[] = {
     "",
 };
 
-const char* const aviImage::colorspace()
+const char* const aviImage::colorspace() const
 {
-    if ( !_av_frame ) return kColorSpaces[0];
-    return kColorSpaces[av_frame_get_colorspace(_av_frame)];
+    aviImage* img = const_cast< aviImage* >( this );
+    return _( kColorSpaces[img->colorspace_index()] );
 }
 
-const char* const aviImage::color_range()
+const size_t aviImage::colorspace_index() const
+{
+    if ( !_av_frame ) return 2; // Unspecified
+    aviImage* img = const_cast< aviImage* >( this );
+    if ( _colorspace_index < 0 || 
+         _colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
+        img->_colorspace_index = av_frame_get_colorspace(_av_frame);
+    return _colorspace_index;
+}
+
+const char* const aviImage::color_range() const
 {
     if ( !_av_frame ) return kColorRange[0];
     return kColorRange[av_frame_get_color_range(_av_frame)];

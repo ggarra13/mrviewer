@@ -1,3 +1,21 @@
+v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
+	   YByRy movie or sequence.  The error would show in debug
+	   builds of mrViewer, as an assert failing due to unpremult
+	   missing in shader.
+	 - File requester now opens on the last directory of any
+	   drag and drop file.
+	 - Fixed a rare hanging bug when multiselecting files in the
+	   file requester.
+	 - Shader's YUV conversion is no longer YCbCr based on 
+	   resolution but covers the full gamut of Y.  
+	   The type of YUV display is controlled from the 
+	   Image Information window, Color Space enum, which in turn
+	   can be specified in the saved movie file.  
+	   To obtain the previous behavior, set the Color Space to 
+	   BT709.  This addresses the question why movie files 
+	   created and displayed with mrViewer had a high black
+	   pedestal.
+
 v3.1.5 	 - Bug fixed focus (hotkeys not working) when loading and 
 	   resizing window (a bug introduced in v3.1.4 on Windows 
 	   mainly).
@@ -8,7 +26,7 @@ v3.1.5 	 - Bug fixed focus (hotkeys not working) when loading and
 	   an image when stereo came from two image pairs.
 	 - Bug fixed a NAN display of pixel values when they were 0, due
 	   to a bad optimization added in v3.1.4.
-	 - Made integer entry grow to accomodate values below the 100
+	 - Made integer slider grow to accomodate values below the 100
 	   range in Media Information window.
 
 v3.1.4   - Bug fixed windows preference of child windows (Reel List, etc),

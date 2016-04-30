@@ -131,7 +131,7 @@ namespace mrv
                    const double fps, const bool editable = false );
 
     void add_enum( const char* name, const size_t content, 
-		   const char** options,
+		   const char* const* options,
 		   const size_t num, const bool editable = false,
 		   fltk::Callback* callback = NULL );
 
