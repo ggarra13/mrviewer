@@ -6,15 +6,15 @@ v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
 	   drag and drop file.
 	 - Fixed a rare hanging bug when multiselecting files in the
 	   file requester.
-	 - Shader's YUV conversion is no longer YCbCr based on 
-	   resolution but covers the full gamut of Y.  
-	   The type of YUV display is controlled from the 
-	   Image Information window, Color Space enum, which in turn
-	   can be specified in the saved movie file.  
+	 - Shader's YUV display conversion is no longer YCbCr based 
+	   on resolution but covers the full gamut of Y.  
+	   The type of YUV display conversion is controlled from the 
+	   Media Information window, Color Space enum, which in turn
+	   can be hinted in the saved movie file.  
 	   To obtain the previous behavior, set the Color Space to 
 	   BT709.  This addresses the question why movie files 
 	   created and displayed with mrViewer had a high black
-	   pedestal.
+	   pedestal (they were displayed as BT709).
 
 v3.1.5 	 - Bug fixed focus (hotkeys not working) when loading and 
 	   resizing window (a bug introduced in v3.1.4 on Windows 
