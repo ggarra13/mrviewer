@@ -26,8 +26,8 @@ Out main(
 	 uniform half   gain  = 1.0,
 	 uniform half   gamma = 0.45,
 	 uniform int    channel = 0,
-	 uniform bool   unpremult = 0,
 	 uniform bool   premult = 0,
+	 uniform bool   unpremult = 0,
 	 uniform bool   enableNormalization = 0,
 	 uniform half   normMin = 0,
 	 uniform half   normSpan  = 1,
@@ -98,7 +98,7 @@ Out main(
       }
     }
 
-  if ( unpremult && c.a != 0.0 )
+  if ( unpremult && c.a > 0.0001 )
   {
     c.rgb /= c.a;
   }

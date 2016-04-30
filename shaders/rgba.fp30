@@ -1,6 +1,6 @@
 !!FP1.0
 # cgc version 3.1.0013, build date Apr 24 2012
-# command line args: -I/media/Linux/code/applications/mrViewer/shaders -profile fp30
+# command line args: -I/media/Linux/code/applications/mrViewer-fltk1.3/shaders -profile fp30
 # source file: rgba.cg
 #vendor NVIDIA Corporation
 #version 3.1.0.13
@@ -15,8 +15,8 @@
 #semantic main.gain
 #semantic main.gamma
 #semantic main.channel
-#semantic main.unpremult
 #semantic main.premult
+#semantic main.unpremult
 #semantic main.enableNormalization
 #semantic main.normMin
 #semantic main.normSpan
@@ -36,8 +36,8 @@
 #var half gain :  : gain : 7 : 1
 #var half gamma :  : gamma : 8 : 1
 #var int channel :  : channel : 9 : 1
-#var bool unpremult :  : unpremult : 10 : 1
-#var bool premult :  : premult : 11 : 1
+#var bool premult :  : premult : 10 : 1
+#var bool unpremult :  : unpremult : 11 : 1
 #var bool enableNormalization :  : enableNormalization : 12 : 1
 #var half normMin :  : normMin : 13 : 1
 #var half normSpan :  : normSpan : 14 : 1
@@ -55,8 +55,8 @@
 #default gain = 1
 #default gamma = 0.44995117
 #default channel = 0
-#default unpremult = 0
 #default premult = 0
+#default unpremult = 0
 #default enableNormalization = 0
 #default normMin = 0
 #default normSpan = 1
@@ -160,7 +160,7 @@ POWR  H0.z, {2.718282}.x, R0.z;
 MOVH  H1.xyz(NE.x), H0;
 MOVR  R0.x, {1};
 MOVR  R0.y, {2}.x;
-SNEH  H0.x, H1.w, {0};
+SGTH  H0.x, H1.w, {0.00010001659};
 SEQR  H2.x, channel, R0.y;
 MULXC HC.x, H0, unpremult;
 RCPH  H0.y, H1.w;

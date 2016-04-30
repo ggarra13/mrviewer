@@ -26,6 +26,8 @@ uniform float gamma;
 uniform int   channel;
 
 // Normalization variables
+uniform bool  premult;
+uniform bool  unpremult;
 uniform bool  enableNormalization;
 uniform float normMin;
 uniform float normSpan;
