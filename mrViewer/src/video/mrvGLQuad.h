@@ -35,39 +35,41 @@ namespace mrv {
   class ImageView;
 
 
-  class GLQuad
-  {
+class GLQuad
+{
   protected:
     struct uvCoords {
-      float u;
-      float v;
+        float u;
+        float v;
     };
-
+    
   public:
     GLQuad( const ImageView* view );
     ~GLQuad();
+    
 
-      void mask( unsigned int m ) { _mask = m; }
-      void mask_value( unsigned int m ) { _mask_value = m; }
-
-       float gamma() const { return _gamma; }
-       void gamma( const float f ) { _gamma = f; }
-
+    void mask( unsigned int m ) { _mask = m; }
+    void mask_value( unsigned int m ) { _mask_value = m; }
+    
+    float gamma() const { return _gamma; }
+    void gamma( const float f ) { _gamma = f; }
+    
     void bind( const image_type_ptr& pic );
-
+    
     void draw( const unsigned dw, const unsigned dh ) const;
 
     inline const GLLut3d* lut() const { return _lut; }
     void lut( const CMedia* img );
 
+    inline void image( CMedia* const img ) { _image = img; }
     inline const CMedia* image() const { return _image; }
 
     void clear_lut();
 
-       inline void minmax( float fmin, float fmax ) {
-	  _normMin = fmin;
-	  _normMax = fmax;
-       }
+    inline void minmax( float fmin, float fmax ) {
+        _normMin = fmin;
+        _normMax = fmax;
+    }
 
   protected:
     void init_texture();
@@ -113,7 +115,7 @@ namespace mrv {
     const ImageView*   _view;
     GLShader*    _shader;
     GLLut3d*     _lut;
-      unsigned short _lut_attempt;
+    unsigned short _lut_attempt;
     const CMedia*   _image;
 
     float        _gamma;
@@ -129,8 +131,8 @@ namespace mrv {
     GLenum       _pixel_type;
 
     image_type::Format _format; 
-      unsigned int _mask;
-      unsigned int _mask_value;
+    unsigned int _mask;
+    unsigned int _mask_value;
     unsigned int _width;
     unsigned int _height;
     unsigned int _channels;
@@ -141,7 +143,7 @@ namespace mrv {
     float        _normMax;
 
     image_type::PixelData _pixels;
-  };
+};
 
 
 } // namespace mrv

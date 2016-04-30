@@ -2261,6 +2261,11 @@ void ImageBrowser::handle_dnd()
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();
     std::string oldroot, oldview, oldext;
+
+    if ( i != e ) {
+        retname = *i;  // to open file requester in last directory
+    }
+
     for ( ; i != e; ++i )
     {
        std::string file = hex_to_char_filename( *i );

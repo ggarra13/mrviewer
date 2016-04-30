@@ -1307,6 +1307,7 @@ void GLEngine::draw_images( ImageList& images )
 
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
+      quad->image( img );
 
       if ( _view->use_lut() )
       {
