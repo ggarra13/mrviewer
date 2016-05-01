@@ -15,6 +15,9 @@ v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
 	   BT709.  This addresses the question why movie files 
 	   created and displayed with mrViewer had a high black
 	   pedestal (they were displayed as BT709).
+	   Note that this does not currently change the values of
+	   pixels in the pixel info toolbar nor in the color area
+	   window.
 
 v3.1.5 	 - Bug fixed focus (hotkeys not working) when loading and 
 	   resizing window (a bug introduced in v3.1.4 on Windows 
