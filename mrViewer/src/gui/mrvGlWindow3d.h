@@ -78,6 +78,7 @@ public:
     typedef boost::recursive_mutex Mutex;
 
     GlWindow3d (int x, int y, int w, int h, const char *l = 0);
+    GlWindow3d (int w, int h, const char* l = 0 );
     ~GlWindow3d ();
 
     void load_data( int zsize,
@@ -96,6 +97,8 @@ public:
     int handle (int event);
 
 protected:
+    void init();
+
     float**                              _dataZ;
     unsigned int *                       _sampleCount;
     int                                  _dx;
