@@ -87,16 +87,29 @@ using std::cerr;
 
 namespace mrv {
 
+
 GlWindow3d::GlWindow3d (int x,int y, int w,int h, const char *l ) 
-  : fltk::GlWindow (x,y,w,h,l),
-    _dataZ( NULL ),
-    _sampleCount( NULL ),
-    _dx( 100 ),
-    _dy( 80 ),
-    _zmax( 100.0f ),
-    _zmin( 1.0f ),
-    _farPlane( 20.0f )
+: fltk::GlWindow (x,y,w,h,l)
 {
+    init();
+}
+
+GlWindow3d::GlWindow3d (int w,int h, const char *l ) :
+fltk::GlWindow( w, h, l )
+{
+    init();
+}
+
+void
+GlWindow3d::init()
+{
+    _dataZ = NULL;
+    _sampleCount = NULL;
+    _dx = 100;
+    _dy = 80;
+    _zmax = 100.0f;
+    _zmin = 1.0f;
+    _farPlane = 20.0f;
     _fitTran = -(_zmax + _zmin) / 2.0;
     _fitScale = 1.0;
 

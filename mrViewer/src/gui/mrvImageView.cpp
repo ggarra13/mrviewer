@@ -3845,7 +3845,7 @@ void ImageView::toggle_presentation()
     }
 
   // These two take focus are needed
-  // fltk_main()->take_focus();
+  fltk_main()->take_focus();
 
   take_focus();
 
