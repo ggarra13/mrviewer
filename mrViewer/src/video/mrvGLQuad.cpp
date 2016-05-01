@@ -968,31 +968,30 @@ namespace mrv {
               std::string colorspace = _("Unspecified");
               if ( _image && _image->colorspace() )
                   colorspace = _image->colorspace();
-              if ( colorspace == _("Unspecified") || colorspace == "RGB" )
+
+              if ( colorspace == "BT709" )
               {
-                  _shader->setUniform( "coeffs", 0 );
+                  _shader->setUniform( "coeffs", 1 );
+                  // HDTV  YCbCr coefficients
+                  _shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
+                  _shader->setUniform( "Kr", 1.0f, 0.0f, 1.28033f );
+                  _shader->setUniform( "Kg", 1.0f, -0.21482f, -0.38059f );
+                  _shader->setUniform( "Kb", 1.0f, 2.12798f, 0.0f );
+              }
+              else if ( colorspace == "BT470BG" || 
+                        colorspace == "SMPTE170M" )
+              {
+                  _shader->setUniform( "coeffs", 1 );
+                  // STV  YCbCr coefficients
+                  _shader->setUniform( "Koff", -16/255.0f, -0.5f, -0.5f );
+                  _shader->setUniform( "Kr", 1.0f, 0.0f, 1.59602715f );
+                  _shader->setUniform( "Kg", 1.0f, -0.39465f, 
+                                       -0.58060f );
+                  _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
               }
               else
               {
-                  _shader->setUniform( "coeffs", 1 );
-                  if ( colorspace == "BT709" )
-                  {
-                      // HDTV  YCbCr coefficients
-                      _shader->setUniform( "Koff", 0.0f, -0.5f, -0.5f );
-                      _shader->setUniform( "Kr", 1.0f, 0.0f, 1.28033f );
-                      _shader->setUniform( "Kg", 1.0f, -0.21482f, -0.38059f );
-                      _shader->setUniform( "Kb", 1.0f, 2.12798f, 0.0f );
-                  }
-                  else if ( colorspace == "BT470BG" || 
-                            colorspace == "SMPTE170M" )
-                  {
-                      // STV  YCbCr coefficients
-                      _shader->setUniform( "Koff", -16/255.0f, -0.5f, -0.5f );
-                      _shader->setUniform( "Kr", 1.0f, 0.0f, 1.59602715f );
-                      _shader->setUniform( "Kg", 1.0f, -0.39465, 
-                                           -0.58060f );
-                      _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
-                  }
+                  _shader->setUniform( "coeffs", 0 );
               }
 	  }
 

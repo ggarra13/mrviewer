@@ -102,13 +102,13 @@ namespace mrv
     uchar g = rgb[1];
     uchar b = rgb[2];
 
-    red[ r ]   += 1;
+    ++red[ r ];
     if ( red[r] > maxRed ) maxRed = red[r];
 
-    green[ g ] += 1;
+    ++green[ g ];
     if ( green[g] > maxGreen ) maxGreen = green[g];
 
-    blue[ b ]  += 1;
+    ++blue[ b ];
     if ( blue[b] > maxBlue ) maxBlue = blue[b];
 
     unsigned int lum = unsigned(r * 0.30f + g * 0.59f + b * 0.11f);

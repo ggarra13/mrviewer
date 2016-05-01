@@ -1,5 +1,3 @@
-
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2016  Gonzalo Garramuño
@@ -1249,25 +1247,25 @@ void aviImage::video_stream( int x )
       case AV_PIX_FMT_RGBA:
           _pix_fmt = VideoFrame::kRGBA; break;
       case AV_PIX_FMT_YUV444P:
-          if ( w > 768 )
+          if ( ctx->colorspace == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr444; 
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr444; 
           break;
       case AV_PIX_FMT_YUV422P:
-          if ( w > 768 )
+          if ( ctx->colorspace == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr422;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr422;
           break;
       case AV_PIX_FMT_YUV420P:
-          if ( w > 768 )
+          if ( ctx->colorspace == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr420;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr420;
           break;
       case AV_PIX_FMT_YUVA420P:
-          if ( w > 768 )
+          if ( ctx->colorspace == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr420A;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr420A;
