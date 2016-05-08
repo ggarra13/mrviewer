@@ -129,7 +129,6 @@ const char* const kColorSpaces[] = {
     "YCOCG", ///< Used by Dirac / VC-2 and H.264 FRext, see ITU-T SG16
     "BT2020_NCL", ///< ITU-R BT2020 non-constant luminance system
     "BT2020_CL", ///< ITU-R BT2020 constant luminance system
-    "",
 };
 
 const char* const aviImage::colorspace() const
@@ -204,7 +203,8 @@ aviImage::~aviImage()
 
 bool aviImage::test_filename( const char* buf )
 { 
-   AVFormatContext* ctx = NULL; 
+   AVFormatContext* ctx = NULL;
+   std::cerr << "test filename " << buf << std::endl;
    int error = avformat_open_input( &ctx, buf, NULL, NULL );
    if ( ctx )
       avformat_close_input( &ctx );
@@ -312,6 +312,10 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
       tag = ntohl( *((unsigned int*)data+2) );
       if ( tag != 0x0D010201 ) return false;
 
+      return true;
+  }
+  else if ( strncmp( (char*)data, "YUV4MPEG2", 9 ) == 0 )
+  {
       return true;
   }
   else
