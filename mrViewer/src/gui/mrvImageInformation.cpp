@@ -583,7 +583,7 @@ void ImageInformation::fill_data()
     if ( avi )
     {
         add_enum( _("Color Space"), avi->colorspace_index(), kColorSpaces, 
-                  7, true, (fltk::Callback*)change_colorspace );
+                  11, true, (fltk::Callback*)change_colorspace );
         add_text( _("Color Range"), _(avi->color_range()) );
     }
     
@@ -1579,16 +1579,17 @@ void ImageInformation::fill_data()
                                    const double fps, const bool editable )
   {
     boost::int64_t seconds = (boost::int64_t) content;
-    int ms = (int) ((boost::int64_t(content) - seconds) * 1000);
+    int ms = (int) ((content - (double) seconds) * 1000);
 
     char buf[128];
 
-    boost::int64_t frames = boost::int64_t( content * fps ) + 1;
+    boost::int64_t frame = boost::int64_t( content * fps + 0.5 );
+    if ( frame == 0 ) frame = 1;
 
-    sprintf( buf, _( "Frame %" PRId64 " " ), frames );
+    sprintf( buf, _( "Frame %" PRId64 " " ), frame );
     std::string text = buf;
 
-    sprintf( buf, _("% 8.0f seconds %d ms."), content, ms );
+    sprintf( buf, _("%" PRId64 " seconds %d ms."), seconds, ms );
     text += buf;
 
     if ( content > 60.0 )
