@@ -38,6 +38,7 @@ extern "C" {
 #include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
 #include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
 #include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
 }
@@ -60,6 +61,58 @@ const char* kModule = "save";
 
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;
+
+#define MAX_STORED_Q 16
+
+#define MAX_MBS_PER_SLICE 8
+
+#define MAX_PLANES 4
+
+typedef struct FDCTDSPContext {
+    void (*fdct)(int16_t *block /* align 16 */);
+    void (*fdct248)(int16_t *block /* align 16 */);
+} FDCTDSPContext;
+
+typedef struct ProresContext {
+    AVClass *klass;
+    DECLARE_ALIGNED(16, int16_t, blocks)[MAX_PLANES][64 * 4 * MAX_MBS_PER_SLICE];
+    DECLARE_ALIGNED(16, uint16_t, emu_buf)[16*16];
+    int16_t quants[MAX_STORED_Q][64];
+    int16_t custom_q[64];
+    const uint8_t *quant_mat;
+    const uint8_t *scantable;
+
+    void (*fdct)(FDCTDSPContext *fdsp, const uint16_t *src,
+                 int linesize, int16_t *block);
+    FDCTDSPContext fdsp;
+
+    const AVFrame *pic;
+    int mb_width, mb_height;
+    int mbs_per_slice;
+    int num_chroma_blocks, chroma_factor;
+    int slices_width;
+    int slices_per_picture;
+    int pictures_per_frame; // 1 for progressive, 2 for interlaced
+    int cur_picture_idx;
+    int num_planes;
+    int bits_per_mb;
+    int force_quant;
+    int alpha_bits;
+    int warn;
+
+    char *vendor;
+    int quant_sel;
+
+    int frame_size_upper_bound;
+
+    int profile;
+    //const struct prores_profile *profile_info;
+
+    int *slice_q;
+
+    //ProresThreadData *tdata;
+} ProresContext;
+
 
 namespace mrv {
 
@@ -274,9 +327,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                
                // Use a profile if possible
                c->profile = opts->video_profile;
-
-               if ( img->colorspace_index() >= 0 )
-                   c->colorspace = (AVColorSpace) img->colorspace_index();
+               c->colorspace = (AVColorSpace) opts->yuv_hint;
 
                if ( c->codec_id == AV_CODEC_ID_H264 )
                {
@@ -295,6 +346,23 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                            c->profile = FF_PROFILE_H264_HIGH; break;
                    }
                }
+               else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
+               {
+                   switch( opts->video_profile )
+                   {
+                       case 0:
+                           c->profile = FF_PROFILE_MPEG4_SIMPLE; break;
+                       case 1:
+                           c->profile = FF_PROFILE_MPEG4_CORE; break;
+                       case 2:
+                           c->profile = FF_PROFILE_MPEG4_MAIN; break;
+                       case 3:
+                       default:
+                           c->profile = FF_PROFILE_MPEG4_HYBRID; break;
+                       case 4:
+                           c->profile = FF_PROFILE_MPEG4_ADVANCED_CORE; break;
+                   }
+               }
 
                const char* name = avcodec_profile_name( codec_id, c->profile );
                if (name) LOG_INFO( "Profile name " << name );
@@ -302,8 +370,12 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
                if ( c->codec_id == AV_CODEC_ID_PRORES )
                {
-                   // ProRes supports only a pixel format.
-                   c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
+                   // ProRes supports YUV422 10bit
+                   // (and YUV444P10 YUVA444P10) pixel formats.
+                   if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P10;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P10;
                }
                else
                {
@@ -749,26 +821,29 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
 {
     switch( f )
     {
+        case mrv::image_type::kITU_601_YCbCr410A: 
+        case mrv::image_type::kITU_709_YCbCr410A:
         case mrv::image_type::kITU_601_YCbCr410:
-        case mrv::image_type::kITU_601_YCbCr410A: // @todo: not done
         case mrv::image_type::kITU_709_YCbCr410:
-        case mrv::image_type::kITU_709_YCbCr410A: // @todo: not done
             return AV_PIX_FMT_YUV410P;
         case mrv::image_type::kITU_601_YCbCr420:
-        case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
         case mrv::image_type::kITU_709_YCbCr420:
-        case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
             return AV_PIX_FMT_YUV420P;
+        case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
+            return AV_PIX_FMT_YUVA420P;
         case mrv::image_type::kITU_601_YCbCr422:
-        case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
         case mrv::image_type::kITU_709_YCbCr422:
-        case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
             return AV_PIX_FMT_YUV422P;
+        case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
+            return AV_PIX_FMT_YUVA422P;
         case mrv::image_type::kITU_601_YCbCr444:
-        case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
         case mrv::image_type::kITU_709_YCbCr444:
-        case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
             return AV_PIX_FMT_YUV444P;
+        case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
+            return AV_PIX_FMT_YUVA444P;
         case mrv::image_type::kLummaA:
             return AV_PIX_FMT_GRAY8A;
         case mrv::image_type::kLumma:
@@ -843,6 +918,7 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
             av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
         }
     }
+
 
 
     /* Allocate the encoded raw frame. */

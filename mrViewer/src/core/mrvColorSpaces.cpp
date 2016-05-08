@@ -316,13 +316,13 @@ namespace mrv {
       // Analog PAL
       ImagePixel to_rgb( const ImagePixel& yuv )
       {
-	ImagePixel   rgb(
-			  1.164f * (yuv.r - 16) + 2.018f * (yuv.g - 128),
-			  1.164f * (yuv.r - 16) - 0.813f * (yuv.b - 128) 
-			  - 0.391f * (yuv.g - 128),
-			  1.164f * (yuv.r - 16) + 1.596f * (yuv.b - 128) 
-			 );
-	return rgb;
+          float y2 = 1.164f * (yuv.r - 16);
+          ImagePixel   rgb(
+          y2 + 2.018f * (yuv.g - 128),
+          y2 - 0.813f * (yuv.b - 128) - 0.391f * (yuv.g - 128),
+          y2 + 1.596f * (yuv.b - 128) 
+          );
+          return rgb;
       }
   }
 

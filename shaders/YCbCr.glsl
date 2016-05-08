@@ -33,7 +33,7 @@ uniform float normMin;
 uniform float normSpan;
 
 // YCbCr variables
-uniform bool  coeffs;
+uniform bool  coeffs;  // Use fed coefficients instead of builtin ones
 uniform vec3  Koff;
 uniform vec3  Kr;
 uniform vec3  Kg;
