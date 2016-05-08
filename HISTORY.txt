@@ -1,3 +1,19 @@
+v3.1.7   - Made MPEG4 profiles choose more sensible ones.
+	 - Fixed typo in ITU 709 being called ITU 702 in Spanish.
+	 - Bug fixed display of duration and start frame of videos 
+	   and audios in Media Information Window.
+	 - Bug fixed duration extraction for video/audio tabs in
+	   Media Information Window.
+	 - Added YUV Hint to the saving of movie files.  This setting
+	   can be set to control the Color Space in the Media Info
+	   Window when the movie is loaded back.  The setting
+	   controls how the YUV->RGB display conversion is done.
+	   For HDTV movies, it is recommended you set the setting to
+	   BT709.  For others, it is recommended you set the setting
+	   to BT470BG (PAL/Secam) or SMPTE170M (NTSC).
+	 - Added tooltips to all settings in the Save Movie dialog
+	   box.
+
 v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
 	   YByRy movie or sequence.  The error would show in debug
 	   builds of mrViewer, as an assert failing due to unpremult
