@@ -2336,9 +2336,10 @@ void CMedia::populate_stream_info( StreamInfo& s,
   AVStream* stream = context->streams[stream_index];
   double time  = av_q2d( stream->time_base );
 
+
   if ( stream->start_time == AV_NOPTS_VALUE )
     {
-      s.start = 1;
+        s.start = 1;
     }
   else
     {
@@ -2351,7 +2352,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
   else
     {
-        s.duration = ((double) _context->duration * time);
+        s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
     }
 }
 

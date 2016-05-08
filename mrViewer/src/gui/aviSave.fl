@@ -26,6 +26,8 @@ namespace mrv {open
     }
     decl {unsigned video_profile;} {public
     }
+    decl {unsigned yuv_hint;} {public
+    }
     decl {std::string audio_codec;} {public
     }
     decl {int audio_bitrate;} {public
@@ -38,23 +40,8 @@ namespace mrv {open
       } {
         {fltk::Group} {} {
           label {Video Options} open
-          xywh {60 46 175 169} box UP_BOX
+          xywh {45 46 190 219} box UP_BOX
         } {
-          {fltk::Choice} uiVideoColor {
-            label Color open
-            xywh {55 41 90 25}
-            extra_code {video_color = "YUV420";}
-          } {
-            {fltk::Item} {} {
-              label YUV420
-              }
-            {fltk::Item} {} {
-              label YUV422
-              }
-            {fltk::Item} {} {
-              label YUV444
-              }
-          }
           {fltk::Choice} uiVideoCodec {
             label Codec
             user_data this user_data_type {AviSaveUI*}
@@ -99,7 +86,7 @@ item->activate();
 item = c->child(0);
 item->deactivate();
 item = c->child(2);
-item->deactivate();
+item->activate();
 c->value(1);
   for ( int i = 0; i < 4; ++i )
   {
@@ -110,7 +97,8 @@ item = p->child(4);
 item->deactivate();
 p->value(3);
 }}
-            xywh {55 10 91 26}
+            tooltip {Codec (encoder) used to encode the movie.  h264 is the preferred codec in terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a good codec for editing jobs.}
+            xywh {75 15 91 26}
             extra_code {video_codec = "h264";}
           } {
             {fltk::Item} {} {
@@ -123,13 +111,31 @@ p->value(3);
               label prores_ks
               }
           }
+          {fltk::Choice} uiVideoColor {
+            label Color
+            tooltip {This setting controls the YUV color subsampling of the movie.  YUV444 is the best, with no subsampling, just 3 bytes per pixel.  YUV422 uses 4 bytes per 2 pixels, and YUV420 uses 6 bytes per 4 pixels.}
+            xywh {75 46 90 25}
+            extra_code {video_color = "YUV420";}
+          } {
+            {fltk::Item} {} {
+              label YUV420
+              }
+            {fltk::Item} {} {
+              label YUV422
+              }
+            {fltk::Item} {} {
+              label YUV444
+              }
+          }
           {fltk::ValueInput} uiVideoBitrate {
             label Bitrate
-            xywh {55 71 90 25} minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
+            tooltip {This setting controls the quality of the movie file.  A smaller bitrate has more compression and artifacts.}
+            xywh {75 76 90 25} minimum 10000 maximum 8e+06 step 1000 value 6.2208e+06
           }
           {fltk::Choice} uiVideoProfile {
-            label Profile open selected
-            xywh {55 114 90 25}
+            label Profile
+            tooltip {The profile controls the characteristics and quality of the codec.  If in doubt, set it to the highest setting.}
+            xywh {75 119 90 25}
             extra_code {o->value(4);}
           } {
             {fltk::Item} {} {
@@ -148,6 +154,46 @@ p->value(3);
               label High
               }
           }
+          {fltk::Choice} uiYUVHint {
+            label {YUV Hint}
+            tooltip {This setting controls how the YUV->RGB conversion is done once the movie is decoded.  It is a hint to the viewer program and does not effect the colors saved in the movie file.}
+            xywh {75 164 90 25}
+            extra_code {o->value(2);}
+          } {
+            {fltk::Item} {} {
+              label RGB
+              }
+            {fltk::Item} {} {
+              label BT709
+              }
+            {fltk::Item} {} {
+              label Unspecified
+              }
+            {fltk::Item} {} {
+              label Reserved
+              }
+            {fltk::Item} {} {
+              label FCC
+              }
+            {fltk::Item} {} {
+              label BT470BG
+              }
+            {fltk::Item} {} {
+              label SMPTE170M
+              }
+            {fltk::Item} {} {
+              label SMPTE240M
+              }
+            {fltk::Item} {} {
+              label YCOCG
+              }
+            {fltk::Item} {} {
+              label BT2020_NCL
+              }
+            {fltk::Item} {} {
+              label BT2020_CL
+              }
+          }
         }
         {fltk::Group} {} {
           label {Audio Options} open
@@ -155,6 +201,7 @@ p->value(3);
         } {
           {fltk::Choice} uiAudioCodec {
             label Codec open
+            tooltip {This setting controls the encoder (codec) used for audio saving.  ac3 and aac are the best codecs to use.  mp3 is popular as it is commonly used for compressing CDs.}
             xywh {55 20 91 26}
             extra_code {audio_codec = "ac3";}
           } {
@@ -172,7 +219,8 @@ p->value(3);
               }
           }
           {fltk::ValueInput} uiAudioBitrate {
-            label Bitrate
+            label Bitrate selected
+            tooltip {This setting controls the quality of the audio encoding.  A smaller setting yields less quality but smaller sizes.}
             xywh {55 50 90 25} minimum 100 maximum 4.48e+06 step 1000 value 128000
           }
         }
@@ -183,6 +231,7 @@ p->value(3);
 video_color = v->uiVideoColor->child( v->uiVideoColor->value() )->label();
 video_profile = (unsigned)v->uiVideoProfile->value();
 video_bitrate = (unsigned)v->uiVideoBitrate->value();
+yuv_hint = (unsigned) v->uiYUVHint->value();
 audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
 audio_bitrate = (unsigned)v->uiAudioBitrate->value();
 

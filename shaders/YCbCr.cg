@@ -35,18 +35,13 @@ Out main(
 	 uniform bool   lutF = 0,
 
 	 // For YCbCr (Poyton's matrix * 255)
-         uniform bool   coeffs = 0,  // use the following coeffs 
+         uniform bool   coeffs = 0,  // use the fed coeffs 
                                      // instead of builtin
+//       // for YCbCr
          uniform half3  Koff = half3(-0.0625, -0.5, -0.5 ),
 	 uniform half3  Kr   = half3(1.1643, 0.0, 1.5958),
 	 uniform half3  Kg   = half3(1.1643, -0.39173, -0.81290),
 	 uniform half3  Kb   = half3(1.1643, 2.017, 0.0),
-
-//       // for YCbCr
-//       uniform half3  Koff = half3(-0.0627450980392157, -0.501960784313725, -0.501960784313725 ),
-//       uniform half3  Kr   = half3(1.16438355, 0.0, 1.59602715),
-//       uniform half3  Kg   = half3(1.16438355, -0.3917616, -0.81296805),
-//       uniform half3  Kb   = half3(1.16438355, 2.01723105, 0.0),
 
 // 	 // For YPbPr
 //  	 uniform half3  Koff = half3(0.0, -0.5, -0.5 ),

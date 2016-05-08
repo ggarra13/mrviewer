@@ -989,6 +989,14 @@ namespace mrv {
                                        -0.58060f );
                   _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
               }
+              else if ( colorspace == "YCOCG" )
+              {
+                  _shader->setUniform( "coeffs", 1 );
+                  _shader->setUniform( "Koff", 0.f, 0.f, 0.f );
+                  _shader->setUniform( "Kr", 1.0f, -1.0f, 1.0f );  // Y
+                  _shader->setUniform( "Kg", 1.0f,  1.0f, 0.0f );  // Cg
+                  _shader->setUniform( "Kb", 1.0f, -1.0f, -1.0f ); // Co
+              }
               else
               {
                   _shader->setUniform( "coeffs", 0 );
