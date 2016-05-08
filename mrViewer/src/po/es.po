@@ -1,13 +1,13 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-05-01 13:52-0300\n"
-"PO-Revision-Date: 2016-03-19 08:11-0300\n"
+"POT-Creation-Date: 2016-05-08 15:06-0300\n"
+"PO-Revision-Date: 2016-05-08 15:05-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
 "Language: es_AR\n"
@@ -36,7 +36,7 @@ msgstr ""
 "\n"
 "No es un codec conocido"
 
-#: core/CMedia_audio.cpp:588 core/aviImage.cpp:1396
+#: core/CMedia_audio.cpp:588 core/aviImage.cpp:1400
 msgid ""
 "\n"
 "\n"
@@ -81,7 +81,7 @@ msgstr "==>  Usando "
 msgid "  INF.  "
 msgstr ""
 
-#: gui/mrvImageInformation.cpp:1603
+#: gui/mrvImageInformation.cpp:1604
 #, c-format
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
@@ -98,7 +98,7 @@ msgstr "- error de decodificacion del cuadro de audio "
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
-#: core/aviImage.cpp:1759
+#: core/aviImage.cpp:1763
 msgid " Could not open file"
 msgstr " No pude abrir el archivo avi"
 
@@ -114,7 +114,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " Load Sequence on Drag&&Drop"
 msgstr " Cargar secuencia en Drag&&Drop"
 
-#: core/aviImage.cpp:1411
+#: core/aviImage.cpp:1415
 msgid " No audio or video stream in file"
 msgstr " No hay audio o video en el archivo"
 
@@ -139,11 +139,11 @@ msgstr " total de audio: "
 msgid " audio used: "
 msgstr " audio usado: "
 
-#: core/aviImage_save.cpp:454 core/aviImage_save.cpp:460
+#: core/aviImage_save.cpp:526 core/aviImage_save.cpp:532
 msgid " channels "
 msgstr " canales "
 
-#: core/aviImage_save.cpp:1318
+#: core/aviImage_save.cpp:1394
 msgid " encoding"
 msgstr " codificando"
 
@@ -163,7 +163,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:2768
+#: core/CMedia_audio.cpp:1944 core/aviImage.cpp:2772
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -171,7 +171,7 @@ msgstr " para cuadro "
 msgid " for stream #"
 msgstr " para pista #"
 
-#: core/aviImage_save.cpp:1335
+#: core/aviImage_save.cpp:1411
 msgid " frame"
 msgstr " cuadro"
 
@@ -179,7 +179,7 @@ msgstr " cuadro"
 msgid " frame: "
 msgstr " cuadro: "
 
-#: core/aviImage_save.cpp:1325
+#: core/aviImage_save.cpp:1401
 msgid " frames"
 msgstr " cuadros"
 
@@ -191,15 +191,15 @@ msgstr " frecuencia: "
 msgid " has different display window than "
 msgstr "  tiene diferente ventana de vista que "
 
-#: core/aviImage.cpp:1123
+#: core/aviImage.cpp:1127
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2694
+#: core/CMedia.cpp:2695
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1599 core/aviImage.cpp:1129
+#: core/CMedia_audio.cpp:1599 core/aviImage.cpp:1133
 msgid " not found"
 msgstr " no encontrado"
 
@@ -207,7 +207,7 @@ msgstr " no encontrado"
 msgid " not found in reel"
 msgstr " no encontrada en el carrete"
 
-#: core/aviImage.cpp:1122
+#: core/aviImage.cpp:1126
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
@@ -215,7 +215,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:2780
+#: core/aviImage.cpp:2784
 msgid " status: "
 msgstr " estatus: "
 
@@ -223,15 +223,15 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:457 gui/FLU/Flu_File_Chooser.cpp:4448
+#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4448
 msgid " to "
 msgstr " a "
 
-#: core/aviImage.cpp:870
+#: core/aviImage.cpp:874
 msgid " type "
 msgstr " tipo "
 
-#: core/aviImage.cpp:1100
+#: core/aviImage.cpp:1104
 msgid " video frame, cache "
 msgstr " cuadro de video, cache "
 
@@ -274,11 +274,6 @@ msgstr ""
 "\n"
 "Version 2.0\n"
 
-#: gui/mrvImageInformation.cpp:1591
-#, c-format
-msgid "% 8.0f seconds %d ms."
-msgstr "% 8.0f segundos %d ms."
-
 #: gui/mrvTimecode.cpp:263
 #, c-format
 msgid "%.2f"
@@ -288,6 +283,11 @@ msgstr "%.2f"
 #, c-format
 msgid "%.2g %%"
 msgstr "%.2g %%"
+
+#: gui/mrvImageInformation.cpp:1592
+#, c-format
+msgid "%<PRId64> seconds %d ms."
+msgstr "%<PRId64> segundos %d ms."
 
 #: gui/mrvImageInformation.cpp:923
 #, c-format
@@ -317,7 +317,7 @@ msgstr "(Campos PAL)"
 msgid "(no image)"
 msgstr "(sin imagen)"
 
-#: core/aviImage.cpp:1101
+#: core/aviImage.cpp:1105
 msgid ") cache size: "
 msgstr ") tamaño de cache: "
 
@@ -333,7 +333,7 @@ msgstr ", canales "
 msgid ", format "
 msgstr ", formato "
 
-#: core/aviImage_save.cpp:454 core/aviImage_save.cpp:461
+#: core/aviImage_save.cpp:526 core/aviImage_save.cpp:533
 msgid ", freq "
 msgstr ", frecuencia "
 
@@ -928,7 +928,7 @@ msgstr "Atributo"
 msgid "Audio"
 msgstr "Audio"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:138
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:169
 msgid "Audio Options"
 msgstr "Opciones de Audio:"
 
@@ -945,7 +945,7 @@ msgstr "Pistas de Audio"
 msgid "Audio Volume"
 msgstr "Volumen de Audio"
 
-#: core/aviImage_save.cpp:452
+#: core/aviImage_save.cpp:524
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
@@ -1029,6 +1029,22 @@ msgstr "FD"
 msgid "BLUE"
 msgstr "AZUL"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:163
+msgid "BT2020_CL"
+msgstr ""
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:162
+msgid "BT2020_NCL"
+msgstr ""
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:158
+msgid "BT470BG"
+msgstr ""
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:154
+msgid "BT709"
+msgstr ""
+
 #: gui/mrvHotkey.cpp:285
 msgid "BackSpace"
 msgstr "Borrado para Atrás"
@@ -1042,7 +1058,7 @@ msgstr "Fondo"
 msgid "Bad port number "
 msgstr "Mal numero de puerto"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:128
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:140
 msgid "Baseline"
 msgstr "Básica"
 
@@ -1050,8 +1066,8 @@ msgstr "Básica"
 msgid "Bitmap Picture"
 msgstr "Imagen Bitmap"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:120
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:150
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:128
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:184
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2954
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2967
 msgid "Bitrate"
@@ -1147,7 +1163,7 @@ msgstr "Tamaño de Cache"
 msgid "Caches"
 msgstr "Caches"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:161
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:197
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:60
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:107
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:82
@@ -1157,7 +1173,7 @@ msgstr "Caches"
 msgid "Cancel"
 msgstr "Cancelar"
 
-#: core/aviImage_save.cpp:568
+#: core/aviImage_save.cpp:640
 msgid "Cannot allocate dst samples"
 msgstr "No puedo asignar dst samples"
 
@@ -1267,18 +1283,28 @@ msgstr ""
 "Fecha: %s\n"
 "Resolución: %dx%d"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:111
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:141
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:105
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:172
 #: gui/mrvImageInformation.cpp:861 gui/mrvImageInformation.cpp:907
 #: gui/mrvImageInformation.cpp:955
 msgid "Codec"
 msgstr "Codec"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:107
+msgid ""
+"Codec (encoder) used to encode the movie.  h264 is the preferred codec in "
+"terms of quality/compression.  mpeg4 is an encoder for DVD and prores is a "
+"good codec for editing jobs."
+msgstr ""
+"Codec (codificador) usado para codificar la película.  h264 es el codec "
+"preferido en cuanto a calidad/compresión.  mpeg4 es el codificador para DVD "
+"y prores es un buen codec para trabajos de edición."
+
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1551
 msgid "Codecs"
 msgstr "Codecs"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:103
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:117
 #: core/CMedia.cpp:1182 core/CMedia.cpp:1254 core/exrImage.cpp:2429
 #: core/exrImage.cpp:2588 core/exrImage.cpp:2595 core/exrImage.cpp:2607
 #: core/exrImage.cpp:2612 core/exrImage.cpp:2648 core/exrImage.cpp:2679
@@ -1370,7 +1396,7 @@ msgstr "Copiar/Color"
 msgid "Copyright String"
 msgstr "Texto de Copyright"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:130
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:142
 msgid "Core"
 msgstr ""
 
@@ -1379,35 +1405,35 @@ msgstr ""
 msgid "Could not add profile \"%s\" to CMM: "
 msgstr "No pude agregar perfil \"%s\" a CMM: "
 
-#: core/aviImage_save.cpp:428
+#: core/aviImage_save.cpp:500
 msgid "Could not alloc swr_ctx"
 msgstr "No pude asignar swr_ctx"
 
-#: core/aviImage_save.cpp:352
+#: core/aviImage_save.cpp:424
 msgid "Could not allocate audio frame"
 msgstr "No pude alojar cuadro de audio"
 
-#: core/aviImage_save.cpp:478
+#: core/aviImage_save.cpp:550
 msgid "Could not allocate destination samples"
 msgstr "No pude asignar samples de destino"
 
-#: core/aviImage_save.cpp:401
+#: core/aviImage_save.cpp:473
 msgid "Could not allocate output frame samples. Error: "
 msgstr "No pude asignar samples de cuadro de salida.  Error:"
 
-#: core/aviImage_save.cpp:851
+#: core/aviImage_save.cpp:927
 msgid "Could not allocate picture"
 msgstr "No pude assignar imagen"
 
-#: core/aviImage_save.cpp:740
+#: core/aviImage_save.cpp:812
 msgid "Could not allocate raw picture buffer"
 msgstr "No pude asignar el buffer de imagen"
 
-#: core/aviImage_save.cpp:412
+#: core/aviImage_save.cpp:484
 msgid "Could not allocate source samples. Error: "
 msgstr "No pude asignar samples de fuente.  Error:"
 
-#: core/aviImage_save.cpp:224
+#: core/aviImage_save.cpp:277
 msgid "Could not allocate stream"
 msgstr "No pude alojar pista"
 
@@ -1440,11 +1466,11 @@ msgstr "No pude crear dibujo en miniatura para '"
 msgid "Could not create wand"
 msgstr "No pude crear varita"
 
-#: core/aviImage.cpp:869
+#: core/aviImage.cpp:873
 msgid "Could not decode video frame "
 msgstr "No pude decodificar cuadro de video "
 
-#: core/aviImage_save.cpp:1083
+#: core/aviImage_save.cpp:1159
 msgid "Could not deduce output format from file extension: using MPEG."
 msgstr ""
 "No pude deducir el formato de salida de la extensión del archivo: usando "
@@ -1454,7 +1480,7 @@ msgstr ""
 msgid "Could not draw image"
 msgstr "No pude dibujar imagen"
 
-#: core/aviImage_save.cpp:667 core/aviImage_save.cpp:1267
+#: core/aviImage_save.cpp:739 core/aviImage_save.cpp:1343
 msgid "Could not encode audio frame: "
 msgstr "No pude codificar cuadro de audio:"
 
@@ -1466,11 +1492,11 @@ msgstr "No pude encontrar ambas imágenes de estereo en el archivo"
 msgid "Could not find both stereo images in multiview file"
 msgstr "No pude encontrar ambas imágenes de estereo en el archivo multivista"
 
-#: core/aviImage_save.cpp:215
+#: core/aviImage_save.cpp:268
 msgid "Could not find encoder for '"
 msgstr "No pude encontrar codificador para '"
 
-#: core/aviImage.cpp:743
+#: core/aviImage.cpp:747
 msgid "Could not get image conversion context."
 msgstr "No pude obtener contexto de conversion de imagen."
 
@@ -1502,7 +1528,7 @@ msgstr "No pude localizar el perfil ICC \""
 msgid "Could not locate channels in header"
 msgstr "No pude localizar canales en el encabezado"
 
-#: core/aviImage_save.cpp:1156
+#: core/aviImage_save.cpp:1232
 msgid "Could not open '"
 msgstr "No pude cargar '"
 
@@ -1518,7 +1544,7 @@ msgstr "No pude localizar el perfil ICC dentro de \""
 msgid "Could not open any font of size "
 msgstr "No pude abrir ningun font de tamaño "
 
-#: core/aviImage_save.cpp:360
+#: core/aviImage_save.cpp:432
 msgid "Could not open audio codec"
 msgstr "No pude abrir el codec de audio"
 
@@ -1530,11 +1556,11 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
-#: core/aviImage_save.cpp:1088
+#: core/aviImage_save.cpp:1164
 msgid "Could not open mpeg movie"
 msgstr "No pude abrir película mpeg"
 
-#: core/aviImage_save.cpp:809
+#: core/aviImage_save.cpp:884
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
@@ -1542,11 +1568,11 @@ msgstr "No puede abrir video codec"
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
-#: core/aviImage_save.cpp:1255
+#: core/aviImage_save.cpp:1331
 msgid "Could not read audio fifo: "
 msgstr "No pude leer audio fifo: "
 
-#: core/aviImage_save.cpp:654
+#: core/aviImage_save.cpp:726
 msgid "Could not read samples from fifo buffer.  Error: "
 msgstr "No pude leer samples del fifo buffer.  Error: "
 
@@ -1563,11 +1589,11 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:1714 core/aviImage.cpp:551 core/aviImage.cpp:566
+#: core/CMedia.cpp:1714 core/aviImage.cpp:555 core/aviImage.cpp:570
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
-#: core/aviImage_save.cpp:614 core/aviImage_save.cpp:628
+#: core/aviImage_save.cpp:686 core/aviImage_save.cpp:700
 msgid "Could not write to fifo buffer. Error:"
 msgstr "No pude escribir al buffer fifo. Error:"
 
@@ -1917,11 +1943,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1942 core/aviImage.cpp:2752 core/aviImage.cpp:2766
+#: core/CMedia_audio.cpp:1942 core/aviImage.cpp:2756 core/aviImage.cpp:2770
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:2778
+#: core/aviImage.cpp:2782
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2161,11 +2187,11 @@ msgstr "Editar Status"
 msgid "Elapsed"
 msgstr "Transcurrido"
 
-#: core/aviImage.cpp:2269
+#: core/aviImage.cpp:2273
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2283
+#: core/aviImage.cpp:2287
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -2182,23 +2208,23 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-#: core/aviImage_save.cpp:1165
+#: core/aviImage_save.cpp:1241
 msgid "Error occurred when opening output file: "
 msgstr "Un error ocurrió al intentar abrir el archivo de salida: "
 
-#: core/aviImage_save.cpp:584
+#: core/aviImage_save.cpp:656
 msgid "Error while converting audio: "
 msgstr "Error mientras se convertia el audio: "
 
-#: core/aviImage_save.cpp:964
+#: core/aviImage_save.cpp:1040
 msgid "Error while encoding video frame: "
 msgstr "Error codificando el cuadro de video: "
 
-#: core/aviImage_save.cpp:977
+#: core/aviImage_save.cpp:1053
 msgid "Error while writing video frame: "
 msgstr "Error al escribir el cuadro de video: "
 
-#: core/aviImage_save.cpp:1335
+#: core/aviImage_save.cpp:1411
 msgid "Error writing "
 msgstr "Error escribiendo "
 
@@ -2246,6 +2272,10 @@ msgstr "C:"
 msgid "F: "
 msgstr "C: "
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:157
+msgid "FCC"
+msgstr "FCC"
+
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3510
 msgid "FIT"
 msgstr "Encajar"
@@ -2264,7 +2294,7 @@ msgstr "CPS"
 msgid "FPS: %.3f"
 msgstr "CPS: %.3f"
 
-#: core/aviImage_save.cpp:1318
+#: core/aviImage_save.cpp:1394
 msgid "Failed "
 msgstr "Falló "
 
@@ -2280,11 +2310,11 @@ msgstr "No pude asignar la biblioteca swresample"
 msgid "Failed to init swresample library with "
 msgstr "Fallé en inicializar biblioteca swresample con "
 
-#: core/aviImage_save.cpp:935
+#: core/aviImage_save.cpp:1011
 msgid "Failed to initialize swscale conversion context"
 msgstr "Fallé al inicializar el contexto de conversion de swscale"
 
-#: core/aviImage_save.cpp:485
+#: core/aviImage_save.cpp:557
 msgid "Failed to initialize the resampling context"
 msgstr "Fallé al inicializar el contexto de resampleo"
 
@@ -2399,7 +2429,7 @@ msgstr "Texturas de Coma Flotante:\t"
 msgid "Floppy Disk"
 msgstr "Disco Floppy"
 
-#: core/aviImage_save.cpp:1354
+#: core/aviImage_save.cpp:1430
 msgid "Flushing of buffers failed"
 msgstr "Vaciar los buffers falló"
 
@@ -2425,7 +2455,7 @@ msgstr "CuatroCC"
 msgid "Frame"
 msgstr "Cuadro"
 
-#: gui/mrvImageInformation.cpp:1588
+#: gui/mrvImageInformation.cpp:1589
 #, c-format
 msgid "Frame %<PRId64> "
 msgstr "Cuadro %<PRId64> "
@@ -2660,7 +2690,7 @@ msgstr "Altura"
 msgid "Hex"
 msgstr "Hex"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:132
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:144
 msgid "High"
 msgstr ""
 
@@ -2736,7 +2766,7 @@ msgstr "ITU-601 (PAL/NTSC YCbCr Digital)"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3604
 msgid "ITU-709 (Digital HDTV YCbCr)"
-msgstr "ITU-702 (HDTV YCbCr Digital)"
+msgstr "ITU-709 (HDTV YCbCr Digital)"
 
 #: gui/mrvImageBrowser.cpp:941
 msgid "Image"
@@ -2939,7 +2969,7 @@ msgstr "Entero"
 
 #: gui/mrvPreferencesBrowser.cpp:154
 msgid "Internal error in wizard selection"
-msgstr ""
+msgstr "Error interno en selección del wizard."
 
 #: video/mrvGLLut3d.cpp:603
 msgid "Invalid Profile for CMM: "
@@ -2969,7 +2999,7 @@ msgstr "Inválidas coordenadas del buffer de pixeles "
 msgid "Invalid source profile/image pixel format"
 msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 
-#: core/aviImage.cpp:1168
+#: core/aviImage.cpp:1172
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
@@ -3276,7 +3306,7 @@ msgstr "Película MPEG"
 msgid "MXF Movie"
 msgstr "Película MXF"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:131
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:143
 #: gui/mrvImageInformation.cpp:153
 msgid "Main"
 msgstr "Principal"
@@ -3344,7 +3374,7 @@ msgstr "Niveles de Mipmap"
 msgid "Missing Convert_from_WorkSpace.  LUT will probably look wrong."
 msgstr "Falta Convert_from_WorkSpace.  LUT probablemente se verá mal."
 
-#: core/aviImage_save.cpp:1043
+#: core/aviImage_save.cpp:1119
 msgid "Missing audio frame "
 msgstr "Cuadro faltante de audio "
 
@@ -3396,7 +3426,7 @@ msgstr "Monitor/Agregar Perfil de Color ICC"
 msgid "Motion Estimation Methods"
 msgstr "Métodos de Estimación de Movimiento"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:95
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:96
 msgid "Movie Saving Preferences"
 msgstr "Preferencias de Grabado de Películas"
 
@@ -3460,7 +3490,7 @@ msgid "Next Image"
 msgstr "Próxima Imagen"
 
 #: gui/mrvFileRequester.cpp:766 gui/mrvImageBrowser.cpp:633
-#: gui/mrvImageBrowser.cpp:1914 gui/mrvImageInformation.cpp:1817
+#: gui/mrvImageBrowser.cpp:1914 gui/mrvImageInformation.cpp:1818
 #: video/mrvGLEngine.cpp:176 video/mrvGLEngine.cpp:177
 #: video/mrvGLEngine.cpp:178 video/mrvGLEngine.cpp:180
 #: video/mrvGLEngine.cpp:184 video/mrvGLEngine.cpp:185
@@ -3484,7 +3514,7 @@ msgstr "No existe escritura CTL o perfil ICC"
 msgid "No ICC profile"
 msgstr "No existe perfil ICC"
 
-#: core/aviImage_save.cpp:1135
+#: core/aviImage_save.cpp:1211
 msgid "No audio nor video stream created"
 msgstr "Ningun audio o video creado"
 
@@ -3529,10 +3559,10 @@ msgstr "Codigo de Tiempo Sin Derrochar Cuadros"
 msgid "Non-POT Textures:\t"
 msgstr "Texturas Non-POT:\t"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:146
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:180
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:62
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2817
-#: core/aviImage_save.cpp:1107 core/exrImage.cpp:88 core/iffImage.cpp:54
+#: core/aviImage_save.cpp:1183 core/exrImage.cpp:88 core/iffImage.cpp:54
 #: gui/mrvFileRequester.cpp:784 gui/mrvImageInformation.cpp:1094
 msgid "None"
 msgstr "Ninguno"
@@ -3602,7 +3632,7 @@ msgstr ""
 msgid "OGG music"
 msgstr "Música OGG"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:158
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:194
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/WandOptionsUI.cxx:57
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/EXROptionsUI.cxx:104
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2893
@@ -3648,7 +3678,7 @@ msgstr "Abrir Sólo una Imágen"
 msgid "Open a new reel"
 msgstr "Crear nuevo carrete"
 
-#: core/aviImage_save.cpp:220
+#: core/aviImage_save.cpp:273
 msgid "Open encoder "
 msgstr "Abrir codificador "
 
@@ -3988,7 +4018,7 @@ msgstr "Prioridad"
 msgid "Problem with tile"
 msgstr "Problema con azulejo"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:126
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:136
 msgid "Profile"
 msgstr "Perfil"
 
@@ -4037,6 +4067,7 @@ msgstr "Disco RAM"
 msgid "RED"
 msgstr "ROJO"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:153
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1692
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1696
 #: gui/mrvImageView.cpp:171
@@ -4211,6 +4242,7 @@ msgstr "Intención de Render"
 msgid "Resampling failed"
 msgstr "Resampleo falló"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:156
 #: core/aviImage.cpp:124
 msgid "Reserved"
 msgstr "Reservada"
@@ -4288,6 +4320,14 @@ msgstr "TOMA"
 #: core/mrvACES.cpp:132
 msgid "SHOW"
 msgstr "SHOW"
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:159
+msgid "SMPTE170M"
+msgstr ""
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:160
+msgid "SMPTE240M"
+msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1952
 #: gui/mrvHotkey.cpp:231
@@ -4540,7 +4580,7 @@ msgstr "Mostrar el fantasma de las figuras del proximo cuadro"
 msgid "Show shapes of previous frame ghosted."
 msgstr "Mostrat el fantasma de las figuras del cuadro previo"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:129
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:141
 msgid "Simple"
 msgstr ""
 
@@ -4639,7 +4679,7 @@ msgstr "Parar"
 msgid "Stop playback."
 msgstr "Detener reproducción."
 
-#: core/aviImage_save.cpp:1324
+#: core/aviImage_save.cpp:1400
 msgid "Stopped encoding cached "
 msgstr "Paré cacheo de codificación "
 
@@ -4975,6 +5015,14 @@ msgstr ""
 "El nombre del perfil ICC defecto para tu ODT (monitor)\n"
 "(Variable de entorno: MRV_ODT_ICC_PROFILE)"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:137
+msgid ""
+"The profile controls the characteristics and quality of the codec.  If in "
+"doubt, set it to the highest setting."
+msgstr ""
+"El perfil controla las característica y calidad del codec.  Si esta en duda, "
+"setéelo al mas alto perfil."
+
 #: audio/mrvALSAEngine.cpp:385
 msgid "The rate "
 msgstr "Velocidad de sampleo "
@@ -5001,6 +5049,52 @@ msgid "This option controls stereo viewing of interlaced and checkerboard."
 msgstr ""
 "Esta opcion controla la vista de estéreo de los modos entrelazados y "
 "cuadriculados."
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:149
+msgid ""
+"This setting controls how the YUV->RGB conversion is done once the movie is "
+"decoded.  It is a hint to the viewer program and does not effect the colors "
+"saved in the movie file."
+msgstr ""
+"Este seteo controla como se realiza la conversion YUV->RGB para display una "
+"vez que la pelicula fue decodificada.  Es una sugerencia al programa "
+"reproductor y no afecta los colores grabados en el archivo de la película."
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:118
+msgid ""
+"This setting controls the YUV color subsampling of the movie.  YUV444 is the "
+"best, with no subsampling, just 3 bytes per pixel.  YUV422 uses 4 bytes per "
+"2 pixels, and YUV420 uses 6 bytes per 4 pixels."
+msgstr ""
+"Este seteo controla el subsampleo de YUV de la película.  YUV444 es lo "
+"mejor, sin subsample, solo 3 bytes por pixel.  YUV422 usa 4 bytes por 2 "
+"pixels y YUV420 usa 6 bytes por 4 pixels."
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:173
+msgid ""
+"This setting controls the encoder (codec) used for audio saving.  ac3 and "
+"aac are the best codecs to use.  mp3 is popular as it is commonly used for "
+"compressing CDs."
+msgstr ""
+"Este seteo controla el codificador (codec) usado para  grabar audio.  ac3 y "
+"aac son los mejores codecs a usar.  mp3 es popular por ser comunmente usado "
+"para comprimir CDs."
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:189
+msgid ""
+"This setting controls the quality of the audio encoding.  A smaller setting "
+"yields less quality but smaller sizes."
+msgstr ""
+"Esta opción controla la calidad de la codificación de audio.  Un seteo menor "
+"resulta en menor calidad pero un más pequeño tamaño de archivo."
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:133
+msgid ""
+"This setting controls the quality of the movie file.  A smaller bitrate has "
+"more compression and artifacts."
+msgstr ""
+"Esta opción controla la calidad del archivo de la pelicula.  Un menor "
+"bitrate tiene mas compresión y más artefactos."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2793
 msgid "Thread Count"
@@ -5178,7 +5272,7 @@ msgstr "Tipo de anaglífico desconocido"
 msgid "Unknown bit depth"
 msgstr "Profundidad de bits desconocida"
 
-#: core/aviImage.cpp:1274
+#: core/aviImage.cpp:1278
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
@@ -5214,6 +5308,7 @@ msgstr "Tipo de stereo desconocido"
 msgid "Unknown wipe direction"
 msgstr "Dirección de wipe desconocida"
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:155
 #: core/aviImage.cpp:115 core/aviImage.cpp:123 video/mrvGLQuad.cpp:968
 msgid "Unspecified"
 msgstr "Sin Especificar"
@@ -5296,7 +5391,7 @@ msgstr "Versión:\t"
 msgid "Video"
 msgstr "Vídeo"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:100
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:101
 msgid "Video Options"
 msgstr "Grabar Opciones"
 
@@ -5309,7 +5404,7 @@ msgstr "Pista de Vídeo #%d"
 msgid "Video Streams"
 msgstr "Pistas de Video"
 
-#: core/aviImage.cpp:1098
+#: core/aviImage.cpp:1102
 msgid "Video Sync master frame "
 msgstr "Video Sync cuadro principal "
 
@@ -5624,7 +5719,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2196
+#: core/aviImage.cpp:2200
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -5685,6 +5780,10 @@ msgstr ""
 msgid "YBYRY"
 msgstr ""
 
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:161
+msgid "YCOCG"
+msgstr ""
+
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3601
 msgid "YDbDr (Analog SECAM/PAL-N)"
 msgstr "YDbDr (SECAM/PAL-N Analógico)"
@@ -5701,15 +5800,19 @@ msgstr "Soporte YUV:\t"
 msgid "YUV (Analog PAL)"
 msgstr "YUV (PAL Analógico)"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:105
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:148
+msgid "YUV Hint"
+msgstr "Sug. YUV"
+
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:122
 msgid "YUV420"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:106
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:123
 msgid "YUV422"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:107
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:124
 msgid "YUV444"
 msgstr ""
 
@@ -5718,7 +5821,7 @@ msgid "YUVA Support:\t"
 msgstr "Soporte YUVA:\t"
 
 #: gui/mrvFileRequester.cpp:766 gui/mrvImageBrowser.cpp:633
-#: gui/mrvImageBrowser.cpp:1914 gui/mrvImageInformation.cpp:1817
+#: gui/mrvImageBrowser.cpp:1914 gui/mrvImageInformation.cpp:1818
 #: video/mrvGLEngine.cpp:176 video/mrvGLEngine.cpp:177
 #: video/mrvGLEngine.cpp:178 video/mrvGLEngine.cpp:180
 #: video/mrvGLEngine.cpp:184 video/mrvGLEngine.cpp:185
@@ -5752,11 +5855,11 @@ msgstr ""
 msgid "ZIP SCANLINE"
 msgstr "ZIP POR LINEAS"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:144
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:178
 msgid "aac"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:143
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:177
 msgid "ac3"
 msgstr ""
 
@@ -5773,11 +5876,11 @@ msgstr "audio"
 msgid "avcodec_copy_context failed for audio"
 msgstr "avcodec_copy_context falló para el audio"
 
-#: core/aviImage.cpp:985
+#: core/aviImage.cpp:989
 msgid "avcodec_copy_context failed for subtitle"
 msgstr "avcodec_copy_context falló para el subtítulo"
 
-#: core/aviImage.cpp:399
+#: core/aviImage.cpp:403
 msgid "avcodec_copy_context failed for video"
 msgstr "avcodec_copy_context falló para el video"
 
@@ -5814,7 +5917,7 @@ msgstr "decode_audio_packet falló para cuadro "
 msgid "files"
 msgstr "archivos"
 
-#: core/aviImage.cpp:1121 core/aviImage.cpp:1129
+#: core/aviImage.cpp:1125 core/aviImage.cpp:1133
 msgid "find_image: frame "
 msgstr "busca_imagen: cuadro "
 
@@ -5831,7 +5934,7 @@ msgstr "coma flotante (32-bits por canal)"
 msgid "format "
 msgstr "formato "
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:114
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:111
 msgid "h264"
 msgstr ""
 
@@ -5900,11 +6003,11 @@ msgstr "Imagen de sombras de mental ray"
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de profundidad Z de mental ray"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:145
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:179
 msgid "mp3"
 msgstr ""
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:115
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:112
 msgid "mpeg4"
 msgstr ""
 
@@ -6008,7 +6111,7 @@ msgstr "pixel"
 msgid "pixels"
 msgstr "pixeles"
 
-#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:116
+#: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-70-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:113
 msgid "prores_ks"
 msgstr ""
 
