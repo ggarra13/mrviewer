@@ -161,10 +161,10 @@ aviImage::aviImage() :
   _pix_fmt( VideoFrame::kRGB ),
   _ptype( VideoFrame::kHalf ),
   _av_frame( NULL ),
+  _filt_frame( NULL ),
   _video_codec( NULL ),
   _subtitle_ctx( NULL ),
   _convert_ctx( NULL ),
-  _video_images( 0 ),
   _max_images( kMaxCacheImages ),
   _subtitle_codec( NULL )
 {
@@ -204,7 +204,6 @@ aviImage::~aviImage()
 bool aviImage::test_filename( const char* buf )
 { 
    AVFormatContext* ctx = NULL;
-   std::cerr << "test filename " << buf << std::endl;
    int error = avformat_open_input( &ctx, buf, NULL, NULL );
    if ( ctx )
       avformat_close_input( &ctx );
@@ -892,9 +891,9 @@ void aviImage::clear_packets()
 
   _video_packets.clear();
   _audio_packets.clear();
+  _subtitle_packets.clear();
 
   _audio_buf_used = 0;
-  _video_images = 0;
 }
 
 
