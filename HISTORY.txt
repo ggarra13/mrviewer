@@ -13,6 +13,8 @@ v3.1.7   - Made MPEG4 profiles choose more sensible ones.
 	   to BT470BG (PAL/Secam) or SMPTE170M (NTSC).
 	 - Added tooltips to all settings in the Save Movie dialog
 	   box.
+	 - Bug fixed a memory leak in subtitles when stopping
+	   playback.
 
 v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
 	   YByRy movie or sequence.  The error would show in debug
