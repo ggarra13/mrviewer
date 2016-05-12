@@ -37,13 +37,13 @@ extern "C" {
 
 namespace mrv {
 
-  class AviSaveUI;
-  class ViewerUI;
+class AviSaveUI;
+class ViewerUI;
 
-  extern const char* const kColorSpaces[];
+extern const char* const kColorSpaces[];
 
-  class aviImage : public CMedia 
-  {
+class aviImage : public CMedia 
+{
     aviImage();
 
     static CMedia* create() { return new aviImage(); }
@@ -53,10 +53,10 @@ namespace mrv {
     typedef std::vector< mrv::image_type_ptr > subtitle_cache_t;
 
   public:
-       static bool test_filename( const char* filename );
+    static bool test_filename( const char* filename );
     static bool test(const boost::uint8_t *data, unsigned len);
     static CMedia* get(const char* name, const boost::uint8_t* datas = 0) {
-      return CMedia::get(create, name, datas);
+        return CMedia::get(create, name, datas);
     }
 
     virtual ~aviImage();
@@ -76,21 +76,21 @@ namespace mrv {
     virtual void preroll( const boost::int64_t frame );
     virtual bool fetch( const boost::int64_t frame );
     /// VCR play (and cache frames if needed) sequence
-       virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
-			  const bool fg );
+    virtual void play( const Playback dir, mrv::ViewerUI* const uiMain,
+                       const bool fg );
 
-      virtual void clear_cache();
+    virtual void clear_cache();
 
-      virtual bool is_cache_filled( int64_t frame );
+    virtual bool is_cache_filled( int64_t frame );
 
     virtual boost::int64_t wait_subtitle();
 
     virtual void wait_image();
 
-      virtual bool find_image( const boost::int64_t frame );
+    virtual bool find_image( const boost::int64_t frame );
 
     virtual boost::uint64_t video_pts() { 
-       return frame2pts( get_video_stream(), _frame ); 
+        return frame2pts( get_video_stream(), _frame ); 
     }
 
     virtual bool has_video() const;
@@ -101,24 +101,24 @@ namespace mrv {
 
     virtual AVStream* get_video_stream() const;
 
-      virtual bool valid_video() const;
+    virtual bool valid_video() const;
 
     virtual const video_info_t& video_info( unsigned int i ) const
     {
-      assert( i < _video_info.size() );
-      return _video_info[i];
+        assert( i < _video_info.size() );
+        return _video_info[i];
     }
 
     virtual size_t number_of_video_streams() const { 
-      return _video_info.size(); 
+        return _video_info.size(); 
     }
 
-      static bool open_movie( const char* filename, const CMedia* img,
-                              const AviSaveUI* opts );
-      static bool save_movie_frame( CMedia* img );
-       static bool close_movie( const CMedia* img );
+    static bool open_movie( const char* filename, const CMedia* img,
+                            const AviSaveUI* opts );
+    static bool save_movie_frame( CMedia* img );
+    static bool close_movie( const CMedia* img );
 
-       bool save_frame( const mrv::image_type_ptr pic );
+    bool save_frame( const mrv::image_type_ptr pic );
 
 
 
@@ -130,13 +130,13 @@ namespace mrv {
 
     virtual void subtitle_stream( int idx );
 
-      virtual const char* const colorspace() const;
-      virtual const size_t colorspace_index() const;
-      virtual void colorspace_index( int x ) { _colorspace_index = x; }
+    virtual const char* const colorspace() const;
+    virtual const size_t colorspace_index() const;
+    virtual void colorspace_index( int x ) { _colorspace_index = x; }
 
-      const char* const color_range() const;
+    const char* const color_range() const;
 
-       virtual void probe_size( unsigned p );
+    virtual void probe_size( unsigned p );
 
     void debug_video_stores(const boost::int64_t frame, 
 			    const char* routine = "",
@@ -151,11 +151,11 @@ namespace mrv {
 
   protected:
 
-       boost::int64_t queue_packets( const boost::int64_t frame,
-				     const bool is_seek,
-				     bool& got_video,
-				     bool& got_audio,
-				     bool& got_subtitle );
+    boost::int64_t queue_packets( const boost::int64_t frame,
+                                  const bool is_seek,
+                                  bool& got_video,
+                                  bool& got_audio,
+                                  bool& got_subtitle );
 
     void open_video_codec();
     void close_video_codec();
@@ -197,8 +197,8 @@ namespace mrv {
      * @param pts          video pts to store
      * 
      */
-       void store_image( boost::int64_t frame,
-			 const boost::int64_t pts );
+    void store_image( boost::int64_t frame,
+                      const boost::int64_t pts );
 
     /** 
      * Decode a video packet, returning success or not.
@@ -226,7 +226,7 @@ namespace mrv {
     DecodeStatus decode_video_packet( boost::int64_t& pktframe,
 				      const boost::int64_t frame,
 				      const AVPacket& pkt
-				      );
+    );
 
     DecodeStatus audio_video_display( const boost::int64_t& frame );
     void limit_video_store( const boost::int64_t frame );
@@ -234,23 +234,23 @@ namespace mrv {
 
     virtual bool seek_to_position( const boost::int64_t frame );
     int video_stream_index() const;
-       mrv::image_type_ptr allocate_image(const boost::int64_t& frame,
-					  const boost::int64_t& pts);
+    mrv::image_type_ptr allocate_image(const boost::int64_t& frame,
+                                       const boost::int64_t& pts);
 
 
     AVStream* get_subtitle_stream() const;
     void flush_subtitle();
     bool in_subtitle_store( const boost::int64_t frame );
     int  subtitle_stream_index() const;
-       void store_subtitle( const boost::int64_t& frame,
-			    const boost::int64_t& repeat );
+    void store_subtitle( const boost::int64_t& frame,
+                         const boost::int64_t& repeat );
     DecodeStatus handle_subtitle_packet_seek( boost::int64_t& frame, 
 					      const bool is_seek );
     DecodeStatus decode_subtitle_packet( boost::int64_t& pktframe,
 					 boost::int64_t& repeat,
 					 const boost::int64_t frame,
 					 const AVPacket& pkt
-					 );
+    );
     virtual bool    find_subtitle( const boost::int64_t frame );
 
 
@@ -262,23 +262,23 @@ namespace mrv {
     int                _video_index;
     AVPixelFormat      _av_dst_pix_fmt;
     VideoFrame::Format _pix_fmt;
-       VideoFrame::PixelType _ptype;
-    AVFrame*         _av_frame;
-    AVCodec*         _video_codec;
-    AVCodecContext* _subtitle_ctx;           //!< current video context
-    SwsContext*      _convert_ctx;
+    VideoFrame::PixelType _ptype;
+    AVFrame*              _av_frame;
+    AVFrame*              _filt_frame;
+    AVCodec*              _video_codec;
+    AVCodecContext*       _subtitle_ctx;           //!< current video context
+    SwsContext*           _convert_ctx;
 
-    video_info_list_t    _video_info;
+    video_info_list_t     _video_info;
 
-    unsigned int         _video_images;
-    video_cache_t        _images;
-    unsigned int         _max_images;
+    video_cache_t         _images;
+    unsigned int          _max_images;
 
 
-    AVCodec*         _subtitle_codec;
-    subtitle_cache_t _subtitles;
-    AVSubtitle       _sub;
-  };
+    AVCodec*              _subtitle_codec;
+    subtitle_cache_t      _subtitles;
+    AVSubtitle            _sub;
+};
 
 } // namespace mrv
 
