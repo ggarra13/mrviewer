@@ -54,6 +54,7 @@
 
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
+#include "core/aviImage.h"
 
 #include <GL/gl.h>
 
@@ -520,6 +521,7 @@ void masking_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
   view->redraw();
 }
 
+
 void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
 {
    fltk::Group* g = o->parent();
@@ -532,7 +534,8 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
    mrv::media fg = view->foreground();
    if ( !fg ) return;
 
-   int i = (int)p->value() - 1;
+   int i = (int)p->value() - 2;  // Load Subtitle,  No subtitle
+   std::cerr << "subtitle " << i << std::endl;
    fg->image()->subtitle_stream(i);
 
 }
@@ -590,6 +593,26 @@ static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
   attach_icc_profile( fg->image() );
 }
 
+
+void load_subtitle_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
+{
+    const char* file = open_subtitle_file( NULL, uiMain );
+
+    mrv::ImageView* view = uiMain->uiView;
+
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+
+
+    aviImage* img = dynamic_cast< aviImage* >( fg->image() );
+    if ( !img )
+    {
+        LOG_ERROR( _("Subtitles are only valid on video files") );
+        return;
+    }
+
+    img->subtitle_file( file );
+}
 
 static void flip_x_cb( fltk::Widget* o, mrv::ImageView* view )
 {
@@ -2325,6 +2348,13 @@ int ImageView::leftMouseDown(int x, int y)
 
    
 	    size_t num = image->number_of_subtitle_streams();
+
+            if ( dynamic_cast< aviImage* >( image ) != NULL )
+            {
+	       item = menu.add( _("Subtitle/Load"), 0,
+				(fltk::Callback*)load_subtitle_cb, uiMain );
+            }
+
 	    if ( num > 0 )
 	    {
 	       item = menu.add( _("Subtitle/No Subtitle"), 0,

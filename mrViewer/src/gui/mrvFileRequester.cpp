@@ -1,6 +1,6 @@
 
 /*
-    mrViewer - the professional movie and flipbook playback
+    mrViewer - the professional movie and flipbook player
     Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
@@ -76,7 +76,7 @@ static const char* kModule = "file";
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,qt,QT,avi,AVI,flv,FLV,divx,DIVX,,vob,VOB,vp9,VP9,webm,WEBM,wmv,WMV,y4m,Y4M";
+  static const std::string kMoviePattern = "mkv,MKV,mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,qt,QT,avi,AVI,flv,FLV,divx,DIVX,,vob,VOB,vp9,VP9,webm,WEBM,wmv,WMV,y4m,Y4M";
 
   static const std::string kImagePattern =
     "bmp,bit,cin,CIN,ct,dpx,DPX,exr,EXR,gif,GIF,hdr,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,miff,MIFF,mt,pic,PIC,png,PNG,psd,PSD,rgb,RGB,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
@@ -84,6 +84,8 @@ static const char* kModule = "file";
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
   static const std::string kAudioPattern = "m4a,mp3,MP3,ogg,OGG,wav,WAV";
+
+  static const std::string kSubtitlePattern = "srt,SRT,sub,SUB,ass,ASS";
 
   static const std::string kCTLPattern = "ctl,CTL";
 
@@ -300,6 +302,46 @@ const char* open_ctl_dir( const char* startfile,
     }
     return profile;
 }
+
+/** 
+   * Opens a file requester to load subtitle files
+   * 
+   * @param startfile  start filename (directory)
+   * 
+   * @return  opened subtitle file or null
+   */
+  const char* open_subtitle_file( const char* startfile, 
+                                  const mrv::ViewerUI* main )
+  {
+      std::string kSUBTITLE_PATTERN = _( "Subtitles (*.{" ) +
+                                      kSubtitlePattern + "})\t";
+
+      std::string title = _("Load Subtitle");
+
+      stringArray filelist;
+
+#ifdef _WIN32
+      bool native = mrv::Preferences::native_file_chooser;
+      fltk::use_system_file_chooser( native );
+      if ( native )
+      {
+        if ( !startfile ) startfile = "";
+        const char* file = fltk::file_chooser( title.c_str(),
+                                               kSUBTITLE_PATTERN.c_str(),
+                                               startfile );
+        if ( main && (!main->uiMain || !main->uiMain->visible())) {
+            return NULL;
+        }
+        if ( !file ) return NULL;
+        return file;
+      }
+      else
+#endif
+      {
+          return flu_file_chooser( title.c_str(),
+                                   kSUBTITLE_PATTERN.c_str(), startfile);
+      }
+  }
 
 /** 
    * Opens a file requester to load audio files

@@ -87,6 +87,11 @@ FIND_LIBRARY(FFMPEG_avutil_LIBRARY
     PATHS ${SEARCH_DIRS}
 )
 
+FIND_LIBRARY(FFMPEG_avfilter_LIBRARY 
+    NAMES avfilter avfilter-6
+    PATHS ${SEARCH_DIRS}
+)
+
 FIND_LIBRARY(FFMPEG_avdevice_LIBRARY 
     NAMES avdevice avdevice-52 avdevice-53 avdevice-54
     PATHS ${SEARCH_DIRS}
@@ -106,6 +111,7 @@ MESSAGE( STATUS "FFMPEG_INCLUDE_DIR=" ${FFMPEG_INCLUDE_DIR} )
 MESSAGE( STATUS "FFMPEG_avutil_LIBRARY=" ${FFMPEG_avutil_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_avformat_LIBRARY=" ${FFMPEG_avformat_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_avcodec_LIBRARY=" ${FFMPEG_avcodec_LIBRARY} )
+MESSAGE( STATUS "FFMPEG_avfilter_LIBRARY=" ${FFMPEG_avfilter_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_avdevice_LIBRARY=" ${FFMPEG_avdevice_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_swscale_LIBRARY=" ${FFMPEG_swscale_LIBRARY} )
 MESSAGE( STATUS "FFMPEG_swresample_LIBRARY=" ${FFMPEG_swresample_LIBRARY} )
@@ -114,12 +120,14 @@ IF(FFMPEG_INCLUDE_DIR)
   IF(FFMPEG_avformat_LIBRARY)
     IF(FFMPEG_avcodec_LIBRARY)
       IF(FFMPEG_avutil_LIBRARY)
+	IF(FFMPEG_avfilter_LIBRARY)
           SET( FFMPEG_FOUND "YES" )
 	  
           SET( FFMPEG_BASIC_LIBRARIES 
             ${FFMPEG_avcodec_LIBRARY}  # LGPL, but Sorenson patent may apply
             ${FFMPEG_avformat_LIBRARY} # LGPL
 	    ${FFMPEG_swscale_LIBRARY}  # LGPL
+	    ${FFMPEG_avfilter_LIBRARY}  # LGPL
 	    ${FFMPEG_swresample_LIBRARY}  # LGPL
             ${FFMPEG_avutil_LIBRARY}   # LGPL
             )
@@ -153,6 +161,7 @@ IF(FFMPEG_INCLUDE_DIR)
             # (after 100,000 copies sold)
 	    ${FFMPEG_lagarith_LIBRARY} # as XviD (shares code)
 	    )
+	ENDIF(FFMPEG_avfilter_LIBRARY)
       ENDIF(FFMPEG_avutil_LIBRARY)
     ENDIF(FFMPEG_avcodec_LIBRARY)
   ENDIF(FFMPEG_avformat_LIBRARY)

@@ -376,7 +376,6 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     if ( ! fs::exists( buf ) ) return;
 
-    fltk::lock();
 
     fltk::SharedImage* img;
     try {
@@ -384,12 +383,10 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
     } catch( const std::exception& e )
     {
         LOG_ERROR( e.what() );
-        fltk::unlock();
         return;
     }
 
     if ( !img ) {
-        fltk::unlock();
         return;
     }
     e->icon = img;
@@ -532,6 +529,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("qt"),    _( "Quicktime Movie"), &reel );
   add_type( N_("avi"),   _( "AVI Movie"), &reel );
   add_type( N_("divx"),  _( "DIVX Movie"), &reel );
+  add_type( N_("mkv"),   _( "Matroska Movie"), &reel );
   add_type( N_("mpg"),   _( "MPEG Movie"), &reel );
   add_type( N_("mpeg"),  _( "MPEG Movie"), &reel );
   add_type( N_("mxf"),   _( "MXF Movie"), &reel );
@@ -4280,7 +4278,8 @@ void Flu_File_Chooser::cd( const char *path )
 			 tmp == N_(".vob")  || tmp == N_(".icc")  ||
 			 tmp == N_(".wav")  || tmp == N_(".icm")  ||
                          tmp == N_(".vp9")  || tmp == N_(".ctl") || 
-                         tmp == N_(".xml")  )
+                         tmp == N_(".xml")  || tmp == N_(".srt") ||
+                         tmp == N_(".sub")  || tmp == N_(".ass") )
 		       is_sequence = false;
 		 }
 		 else
@@ -4725,6 +4724,7 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
             fc->value( filename );
 	}
 
+      fc->cd( "./" );
 
     }
 
