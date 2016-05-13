@@ -30,6 +30,7 @@
 
 extern "C" {
 #include "libswscale/swscale.h"
+#include "libavfilter/avfilter.h"
 }
 
 #include "CMedia.h"
@@ -129,6 +130,9 @@ class aviImage : public CMedia
     virtual void clear_packets();
 
     virtual void subtitle_stream( int idx );
+    void subtitle_file( const char* f );
+
+    int init_filters(const char *filters_descr);
 
     virtual const char* const colorspace() const;
     virtual const size_t colorspace_index() const;
@@ -275,6 +279,11 @@ class aviImage : public CMedia
     unsigned int          _max_images;
 
 
+    std::string           _subtitle_file;
+    std::string           _filter_description;
+    AVFilterContext*      buffersink_ctx;
+    AVFilterContext*      buffersrc_ctx;
+    AVFilterGraph*        filter_graph;
     AVCodec*              _subtitle_codec;
     subtitle_cache_t      _subtitles;
     AVSubtitle            _sub;
