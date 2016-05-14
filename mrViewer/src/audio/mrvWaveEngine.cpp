@@ -73,35 +73,15 @@ namespace mrv {
 #define WAVE_SPEAKER_TOP_BACK_RIGHT         0x20000
 #define WAVE_SPEAKER_RESERVED               0x80000000
 
-/* Values available for physical and original channels */
-#define AOUT_CHAN_CENTER            0x1
-#define AOUT_CHAN_LEFT              0x2
-#define AOUT_CHAN_RIGHT             0x4
-#define AOUT_CHAN_REARCENTER        0x10
-#define AOUT_CHAN_REARLEFT          0x20
-#define AOUT_CHAN_REARRIGHT         0x40
-#define AOUT_CHAN_MIDDLELEFT        0x100
-#define AOUT_CHAN_MIDDLERIGHT       0x200
-#define AOUT_CHAN_LFE               0x1000
+static const int channel_mask[] = {
+SPEAKER_FRONT_CENTER,
+SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT,
+SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_RIGHT  | SPEAKER_LOW_FREQUENCY,
+SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_LOW_FREQUENCY,
+SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_CENTER  | SPEAKER_LOW_FREQUENCY,
+SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_BACK_LEFT    | SPEAKER_BACK_RIGHT     | SPEAKER_LOW_FREQUENCY
+};
 
-/* Values available for original channels only */
-#define AOUT_CHAN_DOLBYSTEREO       0x10000
-#define AOUT_CHAN_DUALMONO          0x20000
-#define AOUT_CHAN_REVERSESTEREO     0x40000
-
-#define AOUT_CHAN_PHYSMASK          0xFFFF
-#define AOUT_CHAN_MAX               9
-
-static const uint32_t pi_channels_src[] =
-{ WAVE_SPEAKER_FRONT_LEFT, WAVE_SPEAKER_FRONT_RIGHT,
-  WAVE_SPEAKER_FRONT_CENTER, WAVE_SPEAKER_LOW_FREQUENCY,
-  WAVE_SPEAKER_BACK_LEFT, WAVE_SPEAKER_BACK_RIGHT, WAVE_SPEAKER_BACK_CENTER,
-  WAVE_SPEAKER_SIDE_LEFT, WAVE_SPEAKER_SIDE_RIGHT, 0 };
-static const uint32_t pi_channels_in[] =
-{ AOUT_CHAN_LEFT, AOUT_CHAN_RIGHT,
-  AOUT_CHAN_CENTER, AOUT_CHAN_LFE,
-  AOUT_CHAN_REARLEFT, AOUT_CHAN_REARRIGHT, AOUT_CHAN_REARCENTER,
-  AOUT_CHAN_MIDDLELEFT, AOUT_CHAN_MIDDLERIGHT, 0 };
 
   static void MMerror(char *function, MMRESULT code)
   {
@@ -395,11 +375,7 @@ static const uint32_t pi_channels_in[] =
 	WAVEFORMATEXTENSIBLE wavefmt;
 	memset( &wavefmt, 0, sizeof(wavefmt) );
 
-	for( unsigned i = 0; i < sizeof(pi_channels_src)/sizeof(uint32_t); i++ )
-	{
-	   if( channels & pi_channels_src[i] )
-	      wavefmt.dwChannelMask |= pi_channels_in[i];
-	}
+        wavefmt.dwChannelMask = channel_mask[ channels-1 ];
 
 	switch( format )
 	{

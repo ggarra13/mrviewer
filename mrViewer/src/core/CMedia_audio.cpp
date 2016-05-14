@@ -125,11 +125,6 @@ std::ostream& operator<<( std::ostream& o, mrv::AudioEngine::AudioFormat s )
 
 namespace mrv {
 
-#if defined(_WIN32) || defined(_WIN64)
-AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
-#else
-AudioEngine::AudioFormat kSampleFormat = mrv::AudioEngine::kFloatLSB;
-#endif
 
 
 
@@ -1480,7 +1475,7 @@ bool CMedia::open_audio( const short channels,
 
   _samples_per_sec = nSamplesPerSec;
 
-  AudioEngine::AudioFormat format = kSampleFormat;
+  AudioEngine::AudioFormat format = _audio_format;
 
   // Avoid conversion to float if unneeded
   if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
@@ -1497,21 +1492,13 @@ bool CMedia::open_audio( const short channels,
   int ch = channels;
   for ( int fmt = format; fmt > 0; fmt -= 2 )
   {
-     for ( ; ch > 0; ch -= 2 )
-     {
-	ok = _audio_engine->open( ch, nSamplesPerSec,
-				  (AudioEngine::AudioFormat)fmt, bps );
-	if ( ok ) break;
-     }
-     if ( ok ) break;
+      ok = _audio_engine->open( ch, nSamplesPerSec,
+                                (AudioEngine::AudioFormat)fmt, bps );
+      if ( ok ) break;
   }
 
   _audio_format = _audio_engine->format();
-
-  if ( ch <= 0 )
-      _audio_channels = 1;
-  else
-      _audio_channels = (unsigned short) ch;
+  _audio_channels = _audio_engine->channels();
 
   return ok;
 }
