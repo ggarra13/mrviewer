@@ -1430,9 +1430,8 @@ msgid "Could not allocate destination samples"
 msgstr "No pude asignar samples de destino"
 
 #: core/aviImage.cpp:608
-#, fuzzy
 msgid "Could not allocate filter frame"
-msgstr "No pude alojar cuadro de audio"
+msgstr "No pude alojar cuadro de filtro de video"
 
 #: core/aviImage_save.cpp:473
 msgid "Could not allocate output frame samples. Error: "
@@ -3581,9 +3580,8 @@ msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
 #: core/aviImage.cpp:454
-#, fuzzy
 msgid "No memory to allocate filter graph"
-msgstr "Sin memoria para cuadro de audio"
+msgstr "Sin memoria para grafica de filtro"
 
 #: core/stubImage.cpp:970
 msgid "No such framebuffer - cannot set pixel"
