@@ -3247,10 +3247,7 @@ void aviImage::store_subtitle( const boost::int64_t& frame,
   }
 
 
-
-  av_freep(&_sub.rects);
-
-  memset(&_sub, 0, sizeof(AVSubtitle));
+  avsubtitle_free( &_sub );
 
 }
 
