@@ -1,6 +1,12 @@
 
+cmake_minimum_required( VERSION 3.1 )
+
+PROJECT( mrViewer )
 
 
+IF( NOT CMAKE_MODULE_PATH )
+  SET( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
+ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 1 )
@@ -342,7 +348,7 @@ ENDIF(WIN64)
 
 IF(UNIX)
 	SET(EXE_DIR /usr/local/bin )
-	FILE( COPY ${CMAKE_SOURCE_DIR}/bin/mrViewer.sh 
+	FILE( COPY ${CMAKE_SOURCE_DIR}/../../bin/mrViewer.sh 
 	      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF(UNIX)
 
@@ -352,16 +358,20 @@ FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+FILE(COPY ${CMAKE_SOURCE_DIR}/../../HISTORY.txt 
+	  ${CMAKE_SOURCE_DIR}/../../LICENSE.txt
+	  DESTINATION ${CMAKE_BINARY_DIR}/.. )
 
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/ctl/ DESTINATION ctl )
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/shaders/ DESTINATION shaders )
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/docs/ DESTINATION docs )
+INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../ctl/ DESTINATION ctl )
+INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../shaders/ DESTINATION shaders )
+INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../docs/ DESTINATION docs )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 INSTALL( FILES 
-	 ${CMAKE_SOURCE_DIR}/HISTORY.txt 
-	 ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION . )
+	 ${CMAKE_SOURCE_DIR}/../../HISTORY.txt 
+	 ${CMAKE_SOURCE_DIR}/../../LICENSE.txt
+	  DESTINATION ./ )
 
 SET( LANGUAGES "es" )
 
@@ -409,8 +419,8 @@ IF(WIN32)
   
   include(InstallRequiredSystemLibraries)
   
-  SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/mrViewer/src/icons/viewer.ico)
-  SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/mrViewer/src/icons/viewer.ico)
+  SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
+  SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
     
   if (CMAKE_BUILD_ARCH EQUAL 32)
     
@@ -429,20 +439,20 @@ IF(WIN32)
 ELSEIF (UNIX)
 
     # SET the type of package to build.
-    INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ DESTINATION bin )
+    INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../bin/ DESTINATION bin )
 
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
 
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
-                    "${CMAKE_SOURCE_DIR}/etc/mrViewer-v${VERSION}.desktop" )
+    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
+                    "${CMAKE_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
 
 
-    INSTALL(FILES "${CMAKE_SOURCE_DIR}/etc/mrViewer-v${VERSION}.desktop" 
+    INSTALL(FILES "${CMAKE_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" 
             DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/mrViewer.png 
+    INSTALL(FILES ${CMAKE_SOURCE_DIR}/../../etc/mrViewer.png 
             DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
@@ -457,20 +467,20 @@ ELSEIF (UNIX)
     # Configure install/uninstall scripts
 
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/install.sh.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/install.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/uninstall.sh.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/postinst.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postinst.in
         ${PROJECT_BINARY_DIR}/etc/Linux/postinst
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/postrm.in
-        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
+        ${PROJECT_BINARY_DIR}/../../etc/Linux/postrm
         @ONLY)  
 
       # SET RPM options.
@@ -510,7 +520,7 @@ ENDIF(WIN32)
 
 
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
-SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/LICENSE.txt)
+SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../LICENSE.txt)
 
 
 #

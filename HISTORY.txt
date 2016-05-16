@@ -15,6 +15,9 @@ v3.1.7   - Made MPEG4 profiles choose more sensible ones.
 	   box.
 	 - Bug fixed a memory leak in subtitles when stopping
 	   playback.
+	 - Added subtitles in different files ( .srt, .sub, .ass ).
+	 - Bug fixed Windows audio playback playing only in mono.
+	   Now stereo and 5:1 is respected.
 
 v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
 	   YByRy movie or sequence.  The error would show in debug

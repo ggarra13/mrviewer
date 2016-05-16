@@ -14,7 +14,7 @@ EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 release = `uname -r`.chop!
 
-build = "BUILD/Linux-#{release}-64/"
+build = "mrViewer/src/BUILD/Linux-#{release}-64/"
 
 Dir.chdir( build )
 

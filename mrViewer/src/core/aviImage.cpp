@@ -34,6 +34,7 @@
 #include <iostream>
 #include <algorithm>
 #include <limits>
+#include <cstring>
 using namespace std;
 
 
@@ -56,6 +57,7 @@ extern "C" {
 #include <libavfilter/buffersrc.h>
 #include <libavfilter/buffersink.h>
 }
+
 
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
@@ -120,12 +122,24 @@ namespace mrv {
 fs::path relativePath( const fs::path &path, const fs::path &relative_to )
 {
     // create absolute paths
-    fs::path p = fs::absolute(path);
-    fs::path r = fs::absolute(relative_to);
+    std::string ps = fs::absolute(path).generic_string();
+    std::string rs = fs::absolute(relative_to).generic_string();
+
+#ifdef _WIN32
+    std::transform( ps.begin(), ps.end(), ps.begin(), toupper );
+    std::transform( rs.begin(), rs.end(), rs.begin(), toupper );
+#endif
+
+    fs::path p = ps;
+    fs::path r = rs;
 
     // if root paths are different, return absolute path
     if( p.root_path() != r.root_path() )
+    {
+        LOG_ERROR( "Path " << p.root_path() << " different than "
+                   << r.root_path() );
         return p;
+    }
 
     // initialize relative path
     fs::path result;
@@ -139,12 +153,9 @@ fs::path relativePath( const fs::path &path, const fs::path &relative_to )
     }
 
     // add "../" for each remaining token in relative_to
-    if( itr_relative_to != r.end() ) {
+    while( itr_relative_to != r.end() ) {
+        result /= "..";
         ++itr_relative_to;
-        while( itr_relative_to != r.end() ) {
-            result /= "..";
-            ++itr_relative_to;
-        }
     }
 
     // add remaining path
@@ -562,16 +573,19 @@ void aviImage::subtitle_file( const char* f )
 
         _subtitle_file = f;
     
-        fs::path p = relativePath( _subtitle_file, fs::current_path() );
+        fs::path sp = _subtitle_file;
+        _subtitle_file = sp.filename().string();
+        sp = sp.parent_path();
+
+        fs::path p = relativePath( sp, fs::current_path() );
 
         _filter_description = "subtitles=";
-        _subtitle_file = p.string();
+        _subtitle_file = p.generic_string() + '/' + _subtitle_file;
 
+        LOG_INFO( "Current Path " << fs::current_path() );
         LOG_INFO( "Subtitle file " << _subtitle_file );
         _filter_description += _subtitle_file;
 
-
-        _subtitle_index = 0;
 
         int ret;
         if ( ret = init_filters( _filter_description.c_str() ) < 0 )
@@ -579,6 +593,13 @@ void aviImage::subtitle_file( const char* f )
             LOG_ERROR( "Could not init filters: ret " << ret
                        << " " << get_error_text(ret) );
             _subtitle_index = -1;
+            avfilter_graph_free( &filter_graph );
+            filter_graph = NULL;
+            return;
+        }
+        else
+        {
+            _subtitle_index = 0;
         }
 
         _filt_frame = av_frame_alloc();
@@ -3161,7 +3182,7 @@ void aviImage::subtitle_stream( int idx )
 
   _subtitle_index = idx;
 
-  if ( _subtitle_index >= 0 )
+  if ( _subtitle_index >= 0 && !filter_graph )
     {
       open_subtitle_codec();
       seek( _frame );
