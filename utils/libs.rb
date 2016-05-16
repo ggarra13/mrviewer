@@ -60,12 +60,12 @@ FileUtils.rm_f( "Release/ctl" )
 FileUtils.rm_f( "Release/HISTORY.txt" )
 FileUtils.rm_f( "Release/LICENSE.txt" )
 FileUtils.rm_f( "Release/Videos.txt" )
-FileUtils.cp_r( "../../shaders", "Release/" )
-FileUtils.cp_r( "../../docs", "Release/" )
-FileUtils.cp_r( "../../ctl", "Release/" )
-FileUtils.cp( "../../HISTORY.txt", "Release/" )
-FileUtils.cp( "../../LICENSE.txt", "Release/" )
-FileUtils.cp( "../../Videos.txt", "Release/" )
+FileUtils.cp_r( "../../../../shaders", "Release/" )
+FileUtils.cp_r( "../../../../docs", "Release/" )
+FileUtils.cp_r( "../../../../ctl", "Release/" )
+FileUtils.cp( "../../../../HISTORY.txt", "Release/" )
+FileUtils.cp( "../../../../LICENSE.txt", "Release/" )
+FileUtils.cp( "../../../../Videos.txt", "Release/" )
 
 `find . -name '*fuse*' -exec rm {} \\;`
 
