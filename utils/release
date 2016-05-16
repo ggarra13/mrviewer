@@ -45,13 +45,19 @@ function create_symlinks()
     rm -rf rails
 }
 
+if [[ "$RELEASE" == "" ]]; then
+    $RELEASE=`cmd.exe /c 'ver'`
+    echo $RELEASE
+    echo "Could not determine OS version"
+    exit 1
+fi
 
-cd BUILD/Windows-6.1-32/Release
+cd BUILD/Windows-$RELEASE-32/Release
 create_copies
 remove_mo_files
 cd ../../..
 
-cd BUILD/Windows-6.1-64/Release
+cd BUILD/Windows-$RELEASE-64/Release
 create_copies
 remove_mo_files
 cd ../../..
