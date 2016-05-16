@@ -3,7 +3,7 @@
 #
 CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
 
-CMAKE_POLICY( SET CMP0003 NEW )
+# CMAKE_POLICY( SET CMP0003 NEW )
 
 #
 # Modify CMake's module path so our custom modules take precedence over
@@ -35,7 +35,7 @@ ENDIF( UNIX )
 set( LIB_ACES_CLIP_ONLY 1 )
 
 ADD_SUBDIRECTORY( libACESclip )
-ADD_SUBDIRECTORY( mrViewer )
+ADD_SUBDIRECTORY( mrViewer/src )
 ADD_SUBDIRECTORY( tools )
 
 IF( UNIX )
