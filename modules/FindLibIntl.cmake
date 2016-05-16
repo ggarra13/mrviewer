@@ -8,6 +8,7 @@
 #  LIBINTL_LIBRARIES    - libraries you need to link to
 #
 
+
 SET(LIBINTL_FOUND "NO")
 
 IF( LIBINTL_LIBRARY_DIR )
@@ -15,11 +16,11 @@ IF( LIBINTL_LIBRARY_DIR )
 ELSE( LIBINTL_LIBRARY_DIR )
   SET( SEARCH_DIRS 
     "$ENV{LIBINTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
-    "$ENV{LIBINTL_ROOT}/lib/Win32/Release"
     "$ENV{LIBINTL_ROOT}/lib/Release"
     "$ENV{LIBINTL_ROOT}/lib"
     "$ENV{LIBINTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
     "$ENV{LIBINTL_ROOT}/lib/Debug"
+    "$ENV{LIBINTL_ROOT}/lib/Win32/Release"
     "$ENV{LIBINTL_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{LIBINTL_ROOT}/bin/Release"
     "$ENV{LIBINTL_ROOT}/bin/x${CMAKE_BUILD_ARCH}/Debug"
@@ -42,14 +43,18 @@ FIND_PATH( LIBINTL_INCLUDE_DIR libintl.h
 IF( WIN32 )
   FIND_LIBRARY( libintl_library
     NAMES libintl 
+    NO_DEFAULT_PATH
     PATHS ${SEARCH_DIRS}
     DOC   "LIBINTL library"
     )
+
 
   SET(LIBINTL_LIBRARIES ${libintl_library} )
 ELSE( WIN32 )
   SET( LIBINTL_LIBRARIES "" )  # on linux, it resides on libc
 ENDIF( WIN32 )
+
+
 
 IF(NOT LIBINTL_FOUND)
   IF (LIBINTL_INCLUDE_DIR)
