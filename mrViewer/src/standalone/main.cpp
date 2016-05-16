@@ -26,7 +26,7 @@
  * 
  */
 
-// #define ALLOC_CONSOLE
+//#define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
@@ -164,9 +164,9 @@ int main( const int argc, char** argv )
 
   const char* tmp = setlocale(LC_ALL, "");
 
-#ifdef _WIN32
-  libintl_setlocale( LC_ALL, tmp );
-#endif
+// #ifdef _WIN32
+//   libintl_setlocale( LC_ALL, tmp );
+// #endif
 
   // Create and install global locale
   std::locale::global(boost::locale::generator().generate(""));
