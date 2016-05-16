@@ -1,52 +1,52 @@
 #-*-cmake-*-
 #
-# Test for AO libraries
+# Test for ACESclip libraries
 #
 # Once loaded this will define
-#  AO_FOUND        - system has AO
-#  AO_INCLUDE_DIR  - include directory for AO
-#  AO_LIBRARY_DIR  - library directory for AO
-#  AO_LIBRARIES    - libraries you need to link to
+#  ACESclip_FOUND        - system has ACESclip
+#  ACESclip_INCLUDE_DIR  - include directory for ACESclip
+#  ACESclip_LIBRARY_DIR  - library directory for ACESclip
+#  ACESclip_LIBRARIES    - libraries you need to link to
 #
 
-SET(AO_FOUND "NO")
+SET(ACESclip_FOUND "NO")
 
-FIND_PATH( AO_INCLUDE_DIR ao.h
-  $ENV{AO_LOCATION}
-  $ENV{AO_LOCATION}/ao
-  $ENV{AO_LOCATION}/include/ao
+FIND_PATH( ACESclip_INCLUDE_DIR ao.h
+  $ENV{ACESclip_LOCATION}
+  $ENV{ACESclip_LOCATION}/ao
+  $ENV{ACESclip_LOCATION}/include/ao
   /usr/local/include/ao
   /usr/include/ao
   )
 
-FIND_LIBRARY( AO     ao2 ao
-  PATHS $ENV{AO_LOCATION}/lib${CMAKE_BUILD_ARCH}
+FIND_LIBRARY( ACESclip     ACESclip
+  PATHS $ENV{ACESclip_LOCATION}/lib${CMAKE_BUILD_ARCH}
         /usr/local/lib${CMAKE_BUILD_ARCH}
         /usr/lib${CMAKE_BUILD_ARCH}
-  DOC   "AO library"
+  DOC   "ACESclip library"
 )
 
-SET( AO_LIBRARIES ${AO} )
+SET( ACESclip_LIBRARIES ${ACESclip} )
 
 
-IF (AO_INCLUDE_DIR)
-  IF(AO_LIBRARIES)
-    SET(AO_FOUND "YES")
-    GET_FILENAME_COMPONENT(AO_LIBRARY_DIR ${AO} PATH)
-  ENDIF(AO_LIBRARIES)
-ENDIF(AO_INCLUDE_DIR)
+IF (ACESclip_INCLUDE_DIR)
+  IF(ACESclip_LIBRARIES)
+    SET(ACESclip_FOUND "YES")
+    GET_FILENAME_COMPONENT(ACESclip_LIBRARY_DIR ${ACESclip} PATH)
+  ENDIF(ACESclip_LIBRARIES)
+ENDIF(ACESclip_INCLUDE_DIR)
 
-IF(NOT AO_FOUND)
+IF(NOT ACESclip_FOUND)
   # make FIND_PACKAGE friendly
-  IF(NOT AO_FIND_QUIETLY)
-    IF(AO_FIND_REQUIRED)
+  IF(NOT ACESclip_FIND_QUIETLY)
+    IF(ACESclip_FIND_REQUIRED)
       MESSAGE(FATAL_ERROR
-              "libao required, please specify it's location with AO_LOCATION")
-    ELSE(AO_FIND_REQUIRED)
+              "libao required, please specify it's location with ACESclip_LOCATION")
+    ELSE(ACESclip_FIND_REQUIRED)
       MESSAGE(STATUS "libao was not found.")
-    ENDIF(AO_FIND_REQUIRED)
-  ENDIF(NOT AO_FIND_QUIETLY)
-ENDIF(NOT AO_FOUND)
+    ENDIF(ACESclip_FIND_REQUIRED)
+  ENDIF(NOT ACESclip_FIND_QUIETLY)
+ENDIF(NOT ACESclip_FOUND)
 
 
 #####

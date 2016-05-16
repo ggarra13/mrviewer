@@ -1,7 +1,7 @@
 #
 # This cmake file must be run under cmake 2.5 or later
 #
-CMAKE_MINIMUM_REQUIRED(VERSION 2.4.8 FATAL_ERROR)
+CMAKE_MINIMUM_REQUIRED(VERSION 3.1 FATAL_ERROR)
 
 CMAKE_POLICY( SET CMP0003 NEW )
 
@@ -23,8 +23,6 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 # You can also specify support for languages other than C++, using
 # additional arguments.  mrLiquid only needs C++, so we don't bother.
 #
-PROJECT( mrViewer )
-
 
 IF( UNIX )
   SET( CMAKE_SYSTEM_LIBRARY_PATH )
