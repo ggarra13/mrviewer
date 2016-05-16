@@ -348,7 +348,7 @@ ENDIF(WIN64)
 
 IF(UNIX)
 	SET(EXE_DIR /usr/local/bin )
-	FILE( COPY ${CMAKE_SOURCE_DIR}/../../bin/mrViewer.sh 
+	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh 
 	      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF(UNIX)
 
@@ -358,19 +358,19 @@ FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
-FILE(COPY ${CMAKE_SOURCE_DIR}/../../HISTORY.txt 
-	  ${CMAKE_SOURCE_DIR}/../../LICENSE.txt
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt 
+	  ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE.txt
 	  DESTINATION ${CMAKE_BINARY_DIR}/.. )
 
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../ctl/ DESTINATION ctl )
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../shaders/ DESTINATION shaders )
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../docs/ DESTINATION docs )
+INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ctl/ DESTINATION ctl )
+INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../shaders/ DESTINATION shaders )
+INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ DESTINATION docs )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 INSTALL( FILES 
-	 ${CMAKE_SOURCE_DIR}/../../HISTORY.txt 
-	 ${CMAKE_SOURCE_DIR}/../../LICENSE.txt
+	 ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt 
+	 ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE.txt
 	  DESTINATION ./ )
 
 SET( LANGUAGES "es" )
@@ -439,20 +439,20 @@ IF(WIN32)
 ELSEIF (UNIX)
 
     # SET the type of package to build.
-    INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/../../bin/ DESTINATION bin )
+    INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/ DESTINATION bin )
 
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
 
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
-                    "${CMAKE_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
+                    "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
 
 
-    INSTALL(FILES "${CMAKE_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" 
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" 
             DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/../../etc/mrViewer.png 
+    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer.png 
             DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
