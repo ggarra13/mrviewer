@@ -3242,10 +3242,13 @@ void aviImage::store_subtitle( const boost::int64_t& frame,
 	      subtitle_rect_to_image( *rect );
 	      break;
 	}
+
      }
   }
 
-  av_free(_sub.rects);
+
+
+  av_freep(&_sub.rects);
 
   memset(&_sub, 0, sizeof(AVSubtitle));
 
