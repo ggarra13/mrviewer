@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-05-17 13:03-0300\n"
+"POT-Creation-Date: 2016-05-17 16:06-0300\n"
 "PO-Revision-Date: 2016-05-08 15:05-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2326
+#: core/CMedia.cpp:2323
 msgid ""
 "\n"
 "\n"
@@ -163,11 +163,11 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1931 core/aviImage.cpp:3064
+#: core/CMedia_audio.cpp:1929 core/aviImage.cpp:3064
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2327
+#: core/CMedia.cpp:2324
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -195,7 +195,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2695
+#: core/CMedia.cpp:2692
 msgid " is missing."
 msgstr " está faltante."
 
@@ -223,7 +223,7 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4447
+#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4445
 msgid " to "
 msgstr " a "
 
@@ -341,7 +341,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2327
+#: core/CMedia.cpp:2324
 msgid ", type "
 msgstr ", tipo "
 
@@ -725,7 +725,7 @@ msgstr "Metadata ACES"
 msgid "ALPHA"
 msgstr "ALFA"
 
-#: gui/FLU/Flu_File_Chooser.cpp:530
+#: gui/FLU/Flu_File_Chooser.cpp:528
 msgid "AVI Movie"
 msgstr "Pelicula AVI"
 
@@ -829,13 +829,13 @@ msgstr "Permite setear el cuadro de comienzo de la línea de tiempo."
 msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
-#: core/CMedia.cpp:1169 core/CMedia.cpp:1256 core/exrImage.cpp:2586
+#: core/CMedia.cpp:1166 core/CMedia.cpp:1253 core/exrImage.cpp:2586
 #: core/wandImage.cpp:649 gui/mrvImageView.cpp:176 gui/mrvImageView.cpp:4547
 #: gui/mrvImageView.cpp:4936 gui/mrvImageView.cpp:4954
 msgid "Alpha"
 msgstr "Alfa"
 
-#: core/CMedia.cpp:1171 core/CMedia.cpp:1256 core/exrImage.cpp:2584
+#: core/CMedia.cpp:1168 core/CMedia.cpp:1253 core/exrImage.cpp:2584
 #: core/wandImage.cpp:647 gui/mrvImageView.cpp:177 gui/mrvImageView.cpp:4528
 #: gui/mrvImageView.cpp:4937
 msgid "Alpha Overlay"
@@ -957,11 +957,11 @@ msgstr "Cuadro de audio "
 msgid "Audio missed for ptsframe: "
 msgstr "Audio faltante para el cuadro: "
 
-#: core/CMedia_audio.cpp:1682
+#: core/CMedia_audio.cpp:1680
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1727
+#: core/CMedia_audio.cpp:1725
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -1062,7 +1062,7 @@ msgstr "Mal numero de puerto"
 msgid "Baseline"
 msgstr "Básica"
 
-#: gui/FLU/Flu_File_Chooser.cpp:541
+#: gui/FLU/Flu_File_Chooser.cpp:539
 msgid "Bitmap Picture"
 msgstr "Imagen Bitmap"
 
@@ -1079,7 +1079,7 @@ msgstr "Modo de Mezcla"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1699
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2432
-#: core/CMedia.cpp:1185 core/CMedia.cpp:1255 core/exrImage.cpp:2586
+#: core/CMedia.cpp:1182 core/CMedia.cpp:1252 core/exrImage.cpp:2586
 #: core/wandImage.cpp:649 gui/mrvImageView.cpp:175 gui/mrvImageView.cpp:4542
 #: gui/mrvImageView.cpp:4936
 msgid "Blue"
@@ -1254,7 +1254,7 @@ msgstr "Cromaticidades (CIE)"
 msgid "Cinemascope"
 msgstr "Cinemascope"
 
-#: gui/FLU/Flu_File_Chooser.cpp:543
+#: gui/FLU/Flu_File_Chooser.cpp:541
 msgid "Cineon Picture"
 msgstr "Imagen Cineon"
 
@@ -1317,7 +1317,7 @@ msgid "Codecs"
 msgstr "Codecs"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/aviSave.cxx:117
-#: core/CMedia.cpp:1182 core/CMedia.cpp:1254 core/exrImage.cpp:2429
+#: core/CMedia.cpp:1179 core/CMedia.cpp:1251 core/exrImage.cpp:2429
 #: core/exrImage.cpp:2588 core/exrImage.cpp:2595 core/exrImage.cpp:2607
 #: core/exrImage.cpp:2612 core/exrImage.cpp:2648 core/exrImage.cpp:2679
 #: core/wandImage.cpp:608 core/wandImage.cpp:672 gui/mrvImageView.cpp:168
@@ -1609,7 +1609,7 @@ msgstr ""
 "No pude grabar secuencia o película, solo una imagen especificada. Use la "
 "sintáxis %%d para secuencias"
 
-#: core/CMedia.cpp:1714 core/aviImage.cpp:801 core/aviImage.cpp:816
+#: core/CMedia.cpp:1711 core/aviImage.cpp:801 core/aviImage.cpp:816
 msgid "Could not seek to frame "
 msgstr "No pude buscar al cuadro "
 
@@ -1876,11 +1876,11 @@ msgstr "Campo Personalizado 9"
 msgid "Cut Clip at current location"
 msgstr "Cortar Clip en el lugar actual"
 
-#: gui/FLU/Flu_File_Chooser.cpp:531
+#: gui/FLU/Flu_File_Chooser.cpp:529
 msgid "DIVX Movie"
 msgstr "Película DIVX"
 
-#: gui/FLU/Flu_File_Chooser.cpp:545
+#: gui/FLU/Flu_File_Chooser.cpp:543
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
@@ -1963,7 +1963,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1929 core/aviImage.cpp:3048 core/aviImage.cpp:3062
+#: core/CMedia_audio.cpp:1927 core/aviImage.cpp:3048 core/aviImage.cpp:3062
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -2183,7 +2183,7 @@ msgstr "Ventana de LDE"
 msgid "EXIF"
 msgstr "EXIF"
 
-#: gui/FLU/Flu_File_Chooser.cpp:546
+#: gui/FLU/Flu_File_Chooser.cpp:544
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
@@ -2435,7 +2435,7 @@ msgstr "Posición Fija"
 msgid "Fixture Identifier"
 msgstr "Identificador de Parte Integral"
 
-#: gui/FLU/Flu_File_Chooser.cpp:540
+#: gui/FLU/Flu_File_Chooser.cpp:538
 msgid "Flash Movie"
 msgstr "Pelicula Flash"
 
@@ -2573,7 +2573,7 @@ msgstr "Función"
 msgid "G"
 msgstr "V"
 
-#: gui/FLU/Flu_File_Chooser.cpp:553
+#: gui/FLU/Flu_File_Chooser.cpp:551
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
@@ -2658,7 +2658,7 @@ msgstr "Obtuve: "
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1698
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2414
-#: core/CMedia.cpp:1184 core/CMedia.cpp:1254 core/exrImage.cpp:2585
+#: core/CMedia.cpp:1181 core/CMedia.cpp:1251 core/exrImage.cpp:2585
 #: core/wandImage.cpp:648 gui/mrvImageView.cpp:174 gui/mrvImageView.cpp:4537
 #: gui/mrvImageView.cpp:4935
 msgid "Green"
@@ -2668,7 +2668,7 @@ msgstr "Verde"
 msgid "Green value of image pixel under mouse."
 msgstr "Valor de Verde del pixel bajo el mouse."
 
-#: gui/FLU/Flu_File_Chooser.cpp:547
+#: gui/FLU/Flu_File_Chooser.cpp:545
 msgid "HDRI Picture"
 msgstr "Imagen HDRI"
 
@@ -2777,7 +2777,7 @@ msgstr "Inspector de Perfiles ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/FLU/Flu_File_Chooser.cpp:549
+#: gui/FLU/Flu_File_Chooser.cpp:547
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
@@ -3036,7 +3036,7 @@ msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
-#: gui/FLU/Flu_File_Chooser.cpp:550 gui/FLU/Flu_File_Chooser.cpp:551
+#: gui/FLU/Flu_File_Chooser.cpp:548 gui/FLU/Flu_File_Chooser.cpp:549
 msgid "JPEG Picture"
 msgstr "Imagen JPEG"
 
@@ -3309,7 +3309,7 @@ msgid "Luminance of image pixel under mouse."
 msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1700
-#: core/CMedia.cpp:1196 core/CMedia.cpp:1256 core/exrImage.cpp:2584
+#: core/CMedia.cpp:1193 core/CMedia.cpp:1253 core/exrImage.cpp:2584
 #: core/wandImage.cpp:647 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:4551
 #: gui/mrvImageView.cpp:4938 gui/mrvImageInformation.cpp:598
 msgid "Lumma"
@@ -3327,19 +3327,19 @@ msgstr "Luv CIELUV (L*u*v*)"
 msgid "MGM Camera 65"
 msgstr "MGM Camara 65"
 
-#: gui/FLU/Flu_File_Chooser.cpp:569
+#: gui/FLU/Flu_File_Chooser.cpp:567
 msgid "MP3 music"
 msgstr "Música MP3"
 
-#: gui/FLU/Flu_File_Chooser.cpp:538
+#: gui/FLU/Flu_File_Chooser.cpp:536
 msgid "MP4 Movie"
 msgstr "Película MP4"
 
-#: gui/FLU/Flu_File_Chooser.cpp:533 gui/FLU/Flu_File_Chooser.cpp:534
+#: gui/FLU/Flu_File_Chooser.cpp:531 gui/FLU/Flu_File_Chooser.cpp:532
 msgid "MPEG Movie"
 msgstr "Película MPEG"
 
-#: gui/FLU/Flu_File_Chooser.cpp:535
+#: gui/FLU/Flu_File_Chooser.cpp:533
 msgid "MXF Movie"
 msgstr "Película MXF"
 
@@ -3348,11 +3348,11 @@ msgstr "Película MXF"
 msgid "Main"
 msgstr "Principal"
 
-#: gui/FLU/Flu_File_Chooser.cpp:552
+#: gui/FLU/Flu_File_Chooser.cpp:550
 msgid "Map Picture"
 msgstr "Imagen Map"
 
-#: gui/FLU/Flu_File_Chooser.cpp:532
+#: gui/FLU/Flu_File_Chooser.cpp:530
 msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
@@ -3673,7 +3673,7 @@ msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
 "fue encontrada en ODT."
 
-#: gui/FLU/Flu_File_Chooser.cpp:570
+#: gui/FLU/Flu_File_Chooser.cpp:568
 msgid "OGG music"
 msgstr "Música OGG"
 
@@ -3838,7 +3838,7 @@ msgstr ""
 msgid "PMem: %<PRId64>/%<PRId64> MB  VMem: %<PRId64>/%<PRId64> MB"
 msgstr "MemF: %<PRId64>/%<PRId64> MB  MemV: %<PRId64>/%<PRId64> MB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:557
+#: gui/FLU/Flu_File_Chooser.cpp:555
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
@@ -3906,7 +3906,7 @@ msgstr "Perfs por Cuadro"
 msgid "Permissions"
 msgstr "Permisos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:558
+#: gui/FLU/Flu_File_Chooser.cpp:556
 msgid "Photoshop Picture"
 msgstr "Imagen de Photoshop"
 
@@ -4091,7 +4091,7 @@ msgstr "Provincia Estado"
 msgid "Quality"
 msgstr "Cualidad"
 
-#: gui/FLU/Flu_File_Chooser.cpp:528 gui/FLU/Flu_File_Chooser.cpp:529
+#: gui/FLU/Flu_File_Chooser.cpp:526 gui/FLU/Flu_File_Chooser.cpp:527
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
@@ -4119,7 +4119,7 @@ msgstr "ROJO"
 msgid "RGB"
 msgstr "RGB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:559
+#: gui/FLU/Flu_File_Chooser.cpp:557
 msgid "RGB Picture"
 msgstr "Imagen RGB"
 
@@ -4163,29 +4163,29 @@ msgstr "Rango"
 msgid "Read"
 msgstr "Leer"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1374
+#: gui/FLU/Flu_File_Chooser.cpp:1372
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1387
+#: gui/FLU/Flu_File_Chooser.cpp:1385
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1368
+#: gui/FLU/Flu_File_Chooser.cpp:1366
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1382
+#: gui/FLU/Flu_File_Chooser.cpp:1380
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1697
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2396
-#: core/CMedia.cpp:1183 core/CMedia.cpp:1254 core/exrImage.cpp:2585
+#: core/CMedia.cpp:1180 core/CMedia.cpp:1251 core/exrImage.cpp:2585
 #: core/wandImage.cpp:648 gui/mrvImageView.cpp:173 gui/mrvImageView.cpp:4532
 #: gui/mrvImageView.cpp:4935
 msgid "Red"
@@ -4309,7 +4309,7 @@ msgstr "Revertir"
 msgid "Revert settings to last saved preferences."
 msgstr "Revertir seteos a la la ultima preferencias grabadas."
 
-#: gui/FLU/Flu_File_Chooser.cpp:560
+#: gui/FLU/Flu_File_Chooser.cpp:558
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
@@ -4354,7 +4354,7 @@ msgstr "S"
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
-#: gui/FLU/Flu_File_Chooser.cpp:562
+#: gui/FLU/Flu_File_Chooser.cpp:560
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
@@ -4657,7 +4657,7 @@ msgstr "Creación de enchufe falló\n"
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
-#: gui/FLU/Flu_File_Chooser.cpp:556
+#: gui/FLU/Flu_File_Chooser.cpp:554
 msgid "Softimage Picture"
 msgstr "Imagen Softimage"
 
@@ -4711,7 +4711,7 @@ msgstr "Estadísticas"
 msgid "Stereo"
 msgstr "Estéreo"
 
-#: gui/FLU/Flu_File_Chooser.cpp:564
+#: gui/FLU/Flu_File_Chooser.cpp:562
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
@@ -4873,8 +4873,8 @@ msgstr ""
 msgid "TC bgf2"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:548 gui/FLU/Flu_File_Chooser.cpp:566
-#: gui/FLU/Flu_File_Chooser.cpp:567
+#: gui/FLU/Flu_File_Chooser.cpp:546 gui/FLU/Flu_File_Chooser.cpp:564
+#: gui/FLU/Flu_File_Chooser.cpp:565
 msgid "TIFF Picture"
 msgstr "Imagen TIFF"
 
@@ -4886,7 +4886,7 @@ msgstr "Tab"
 msgid "Tags"
 msgstr "Tags"
 
-#: gui/FLU/Flu_File_Chooser.cpp:565
+#: gui/FLU/Flu_File_Chooser.cpp:563
 msgid "Targa Picture"
 msgstr "Imagen Targa"
 
@@ -5321,7 +5321,7 @@ msgstr "Show Desconocido"
 msgid "Unknown Window \""
 msgstr "Ventana Desconocida \""
 
-#: core/CMedia.cpp:1302
+#: core/CMedia.cpp:1299
 msgid "Unknown anaglyph type"
 msgstr "Tipo de anaglífico desconocido"
 
@@ -5357,7 +5357,7 @@ msgstr "Formato de render de pixel desconocido"
 msgid "Unknown rounding mode"
 msgstr "Modo de Redondeo desconocido"
 
-#: core/CMedia.cpp:1293
+#: core/CMedia.cpp:1290
 msgid "Unknown stereo type"
 msgstr "Tipo de stereo desconocido"
 
@@ -5414,7 +5414,7 @@ msgstr "V-A: "
 msgid "VA Difference"
 msgstr "Diferencia V-A"
 
-#: gui/FLU/Flu_File_Chooser.cpp:537
+#: gui/FLU/Flu_File_Chooser.cpp:535
 msgid "VOB Movie"
 msgstr "Pelicula VOB"
 
@@ -5505,7 +5505,7 @@ msgstr "W"
 msgid "W: %g %g"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:536
+#: gui/FLU/Flu_File_Chooser.cpp:534
 msgid "WMV Movie"
 msgstr "Película WMV"
 
@@ -5514,11 +5514,11 @@ msgstr "Película WMV"
 msgid "WSA not ready\n"
 msgstr "WSA no esta listo\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:571
+#: gui/FLU/Flu_File_Chooser.cpp:569
 msgid "Wave music"
 msgstr "Musica WAVE"
 
-#: gui/FLU/Flu_File_Chooser.cpp:539
+#: gui/FLU/Flu_File_Chooser.cpp:537
 msgid "WebM Movie"
 msgstr "Película WebM"
 
@@ -5920,12 +5920,12 @@ msgstr ""
 msgid "ac3"
 msgstr ""
 
-#: core/CMedia.cpp:1295 core/CMedia.cpp:1321 core/exrImage.cpp:2538
+#: core/CMedia.cpp:1292 core/CMedia.cpp:1318 core/exrImage.cpp:2538
 #: core/wandImage.cpp:651
 msgid "anaglyph"
 msgstr "anaglífico"
 
-#: core/CMedia.cpp:2162
+#: core/CMedia.cpp:2159
 msgid "audio"
 msgstr "audio"
 
@@ -5950,15 +5950,15 @@ msgstr "Unir enchufe falló\n"
 msgid "cd/m2"
 msgstr ""
 
-#: core/CMedia.cpp:1290
+#: core/CMedia.cpp:1287
 msgid "checkerboard"
 msgstr "cuadriculado"
 
-#: core/CMedia.cpp:1284
+#: core/CMedia.cpp:1281
 msgid "crossed"
 msgstr "cruzado"
 
-#: core/CMedia.cpp:2165
+#: core/CMedia.cpp:2162
 msgid "data"
 msgstr "datos"
 
@@ -5966,7 +5966,7 @@ msgstr "datos"
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
-#: core/CMedia_audio.cpp:1719
+#: core/CMedia_audio.cpp:1717
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
@@ -6003,15 +6003,15 @@ msgstr "media coma flotante (16 bits por canal)"
 msgid "hdtv"
 msgstr "hdtv"
 
-#: core/CMedia.cpp:1282
+#: core/CMedia.cpp:1279
 msgid "horizontal"
 msgstr "horizontal"
 
-#: core/CMedia.cpp:1286
+#: core/CMedia.cpp:1283
 msgid "interlaced"
 msgstr "entrelaceado"
 
-#: core/CMedia.cpp:1288
+#: core/CMedia.cpp:1285
 msgid "interlaced columns"
 msgstr "columnas entrelaceado"
 
@@ -6020,11 +6020,11 @@ msgstr "columnas entrelaceado"
 msgid "kb/s"
 msgstr "kb/s"
 
-#: core/CMedia.cpp:1297
+#: core/CMedia.cpp:1294
 msgid "left"
 msgstr "izquierda"
 
-#: core/CMedia.cpp:1232
+#: core/CMedia.cpp:1229
 msgid "left.anaglyph"
 msgstr "izquierda.anaglífico"
 
@@ -6032,31 +6032,31 @@ msgstr "izquierda.anaglífico"
 msgid "listen to socket failed\n"
 msgstr "Escuchar al enchufe falló\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:542
+#: gui/FLU/Flu_File_Chooser.cpp:540
 msgid "mental ray Bit Picture"
 msgstr "Imagen de mental ray de 1 Bit"
 
-#: gui/FLU/Flu_File_Chooser.cpp:544
+#: gui/FLU/Flu_File_Chooser.cpp:542
 msgid "mental ray Contour Picture"
 msgstr "Imagen de Contornos de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:555
+#: gui/FLU/Flu_File_Chooser.cpp:553
 msgid "mental ray Motion Picture"
 msgstr "Imagen de Movimiento de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:554
+#: gui/FLU/Flu_File_Chooser.cpp:552
 msgid "mental ray Normal Picture"
 msgstr "Imagen de Normales de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:563
+#: gui/FLU/Flu_File_Chooser.cpp:561
 msgid "mental ray Scalar Picture"
 msgstr "Imagen de coma flotante de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:561
+#: gui/FLU/Flu_File_Chooser.cpp:559
 msgid "mental ray Shadow Map"
 msgstr "Imagen de sombras de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:568
+#: gui/FLU/Flu_File_Chooser.cpp:566
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de profundidad Z de mental ray"
 
@@ -6176,11 +6176,11 @@ msgstr ""
 msgid "recv() failed"
 msgstr "recv() falló"
 
-#: core/CMedia.cpp:1299
+#: core/CMedia.cpp:1296
 msgid "right"
 msgstr "derecha"
 
-#: core/CMedia.cpp:1225 core/CMedia.cpp:1233
+#: core/CMedia.cpp:1222 core/CMedia.cpp:1230
 msgid "right.anaglyph"
 msgstr "derecha.anaglífico"
 
@@ -6188,32 +6188,32 @@ msgstr "derecha.anaglífico"
 msgid "send() failed"
 msgstr "send() falló"
 
-#: core/CMedia.cpp:1279 core/CMedia.cpp:1320 core/exrImage.cpp:2537
+#: core/CMedia.cpp:1276 core/CMedia.cpp:1317 core/exrImage.cpp:2537
 #: core/wandImage.cpp:652
 msgid "stereo"
 msgstr "estéreo"
 
-#: core/CMedia.cpp:1231
+#: core/CMedia.cpp:1228
 msgid "stereo.checkerboard"
 msgstr "estéreo.cuadriculado"
 
-#: core/CMedia.cpp:1228
+#: core/CMedia.cpp:1225
 msgid "stereo.crossed"
 msgstr "estéreo.cruzado"
 
-#: core/CMedia.cpp:1227
+#: core/CMedia.cpp:1224
 msgid "stereo.horizontal"
 msgstr "estéreo.horizontal"
 
-#: core/CMedia.cpp:1229
+#: core/CMedia.cpp:1226
 msgid "stereo.interlaced"
 msgstr "estéreo.entrelaceado"
 
-#: core/CMedia.cpp:1230
+#: core/CMedia.cpp:1227
 msgid "stereo.interlaced columns"
 msgstr "estéreo.columnas entrelaceado"
 
-#: core/CMedia.cpp:2168
+#: core/CMedia.cpp:2165
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -6225,7 +6225,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2171 core/wandImage.cpp:500 standalone/main.cpp:163
+#: core/CMedia.cpp:2168 core/wandImage.cpp:500 standalone/main.cpp:163
 msgid "unknown"
 msgstr "desconocido"
 
@@ -6241,7 +6241,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2159
+#: core/CMedia.cpp:2156
 msgid "video"
 msgstr "video"
 
