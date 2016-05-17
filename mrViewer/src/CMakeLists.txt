@@ -21,7 +21,7 @@ set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_
 #
 
 # For window management
-FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
+FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
@@ -342,7 +342,7 @@ IF(WIN32)
 	SET(EXE_DIR F:/code/lib/Windows_32/bin/ )
 ENDIF(WIN32)
 
-IF(WIN64)
+IF(WIN64) # defined in FindBuilDir
 	SET(EXE_DIR F:/code/lib/Windows_64/bin/ )
 ENDIF(WIN64)
 
