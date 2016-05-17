@@ -219,15 +219,12 @@ _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( 0 ),
 _aframe( NULL ),
-next_pts( 0 ),
 audio_callback_time( 0 ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    next_pts_tb.num = 1;
-    next_pts_tb.den = 30;
 
     _aframe = av_frame_alloc();
     audio_initialize();
