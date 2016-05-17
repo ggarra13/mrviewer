@@ -78,6 +78,10 @@ MACRO( CHECK_ARCHITECTURE )
 
   ELSE( UNIX )
 
+  IF(NOT "$ENV{PROCESSOR_ARCHITEW6432}" STREQUAL "")
+     SET( WIN64 1 )
+  ENDIF(NOT "$ENV{PROCESSOR_ARCHITEW6432}" STREQUAL "")
+
     #
     # @todo: add windows 64-bit OS detection here
     #
