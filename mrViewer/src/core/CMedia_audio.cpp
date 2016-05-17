@@ -1619,8 +1619,6 @@ void CMedia::flush_audio()
     {
         SCOPED_LOCK( _audio_mutex );
         avcodec_flush_buffers( _audio_ctx );
-        next_pts = get_audio_stream()->start_time;
-        next_pts_tb = get_audio_stream()->time_base;
     }
 }
 
