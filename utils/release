@@ -5,6 +5,19 @@ if [ ! -e bin ]; then
     exit
 fi
 
+KERNEL=`uname -s`
+
+if [[ $KERNEL == CYGWIN* ]]; then
+    KERNEL=Windows
+    RELEASE=(`cmd /c 'ver'`)
+    RELEASE=${RELEASE[3]%.[0-9]*}
+elif [[ $KERNEL == MINGW* ]]; then
+    RELEASE=(`cmd /c 'ver'`)
+    RELEASE=${RELEASE[3]/]/}
+    KERNEL=Windows
+else
+    RELEASE=`uname -r`
+fi
 
 function remove_mo_files
 {
@@ -28,22 +41,6 @@ function create_copies()
     rm -rf rails
 }
 
-function create_symlinks()
-{
-    rm -rf LICENSE.txt
-    ln -s ../../../LICENSE.txt .
-    rm -rf HISTORY.txt
-    ln -s ../../../HISTORY.txt .
-    rm -rf Videos.txt
-    ln -s ../../../Videos.txt .
-    rm -rf ctl
-    ln -s ../../../ctl .
-    rm -rf shaders
-    ln -s ../../../shaders .
-    rm -rf docs
-    ln -s ../../../docs .
-    rm -rf rails
-}
 
 if [[ "$RELEASE" == "" ]]; then
     $RELEASE=`cmd.exe /c 'ver'`
@@ -52,18 +49,23 @@ if [[ "$RELEASE" == "" ]]; then
     exit 1
 fi
 
-cd BUILD/Windows-$RELEASE-32/Release
-create_copies
-remove_mo_files
-cd ../../..
+if [[ $KERNEL == Windows ]]; then
+    echo BUILD/Windows-$RELEASE-32/Release
+    cd BUILD/Windows-$RELEASE-32/Release
+    create_copies
+    remove_mo_files
+    cd ../../..
 
-cd BUILD/Windows-$RELEASE-64/Release
-create_copies
-remove_mo_files
-cd ../../..
+    echo BUILD/Windows-$RELEASE-64/Release
+    cd BUILD/Windows-$RELEASE-64/Release
+    create_copies
+    remove_mo_files
+    cd ../../..
+else
+    release=`uname -r`
+    cd BUILD/Linux-$release-64/Release
+    create_copies
+    remove_mo_files
+    cd ../../..
+fi
 
-release=`uname -r`
-cd BUILD/Linux-$release-64/Release
-create_symlinks
-remove_mo_files
-cd ../../..
