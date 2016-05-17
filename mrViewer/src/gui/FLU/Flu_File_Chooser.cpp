@@ -392,8 +392,6 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
     e->icon = img;
     e->updateSize();
 
-    fltk::unlock();
-
     // e->chooser->relayout();
     // e->chooser->redraw();
 }
