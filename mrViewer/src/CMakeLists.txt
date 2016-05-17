@@ -480,7 +480,7 @@ ELSEIF (UNIX)
         @ONLY)
     CONFIGURE_FILE(
         ${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
-        ${PROJECT_BINARY_DIR}/../../etc/Linux/postrm
+        ${PROJECT_BINARY_DIR}/etc/Linux/postrm
         @ONLY)  
 
       # SET RPM options.
