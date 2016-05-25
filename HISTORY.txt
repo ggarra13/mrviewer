@@ -1,3 +1,32 @@
+v3.1.8   - Removed a buggy fltk::unlock() that could cause 
+	   inestability in the file requester.
+	 - Fixed some compilation issues and upgraded all cmake to
+	   latest version.  This was probably the fix to the audio
+	   playing in mono only.
+	 - Fixed cmake scripts to use WIN64 correctly.
+	 - Removed debugging message when switching subtitle tracks.
+	 - Bug fixed surround sound on Windows when 4 channels are 
+	   in the audio track.
+	 - Made selecting no subtitle in the file requester not 
+	   effect on subtitle track display.
+	 - Cleaned up docs/ directory which was full of unrelated
+	   technical documents.
+	 - Added more Spanish translations.
+	 - Made file size report in file requester support more than 
+	   4GB on Windows.
+	 - mrViewer on Windows now correctly reports multilingual
+	   (utf8) filenames' size
+	 - Fixed warning of smpteImage not being aligned on 16 bits
+	   boundaries for Windows 32 bits.
+	 - Windows installer will now register most of the file
+	   extensions with the latest installed mrViewer.  Extensions 
+	   which belong to editing programs (PSD, etc) are not
+	   registered.  This is somewhat controversial, so we expect
+	   feedback if users don't like the registry entries.
+	 - Created the web page for mrviewer at 
+	   mrviewer.sourceforge.net.  Also, uploaded the latest
+	   manual to the web.
+
 v3.1.7   - Made MPEG4 profiles choose more sensible ones.
 	 - Fixed typo in ITU 709 being called ITU 702 in Spanish.
 	 - Bug fixed display of duration and start frame of videos 
@@ -17,7 +46,9 @@ v3.1.7   - Made MPEG4 profiles choose more sensible ones.
 	   playback.
 	 - Added subtitles in different files ( .srt, .sub, .ass ).
 	 - Bug fixed Windows audio playback playing only in mono.
-	   Now stereo and 5:1 is respected.
+	   Now stereo and 5:1 is respected.  The problem seemed to
+	   be the cmake compilation.  Upgrading to latest cmake
+	   seemed to fix the issue.
 
 v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
 	   YByRy movie or sequence.  The error would show in debug

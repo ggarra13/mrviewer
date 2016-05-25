@@ -14,7 +14,7 @@ EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
 release = `uname -r`.chop!
 
-build = "mrViewer/src/BUILD/Linux-#{release}-64/"
+build = "BUILD/Linux-#{release}-64/"
 
 Dir.chdir( build )
 
@@ -60,12 +60,11 @@ FileUtils.rm_f( "Release/ctl" )
 FileUtils.rm_f( "Release/HISTORY.txt" )
 FileUtils.rm_f( "Release/LICENSE.txt" )
 FileUtils.rm_f( "Release/Videos.txt" )
-FileUtils.cp_r( "../../../../shaders", "Release/" )
-FileUtils.cp_r( "../../../../docs", "Release/" )
-FileUtils.cp_r( "../../../../ctl", "Release/" )
-FileUtils.cp( "../../../../HISTORY.txt", "Release/" )
-FileUtils.cp( "../../../../LICENSE.txt", "Release/" )
-FileUtils.cp( "../../../../Videos.txt", "Release/" )
+FileUtils.cp_r( "../../shaders", "Release/" )
+FileUtils.cp_r( "../../docs", "Release/" )
+FileUtils.cp_r( "../../ctl", "Release/" )
+FileUtils.cp( "../../HISTORY.txt", "Release/" )
+FileUtils.cp( "../../LICENSE.txt", "Release/" )
 
 `find . -name '*fuse*' -exec rm {} \\;`
 
