@@ -64,6 +64,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvImageView.h"
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvFLTKHandler.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 #include "gui/mrvPreferences.h"
@@ -739,6 +740,9 @@ fltk::StyleSet*     newscheme = NULL;
     video.get( "blend_mode", tmp, 0 );
     uiPrefs->uiPrefsBlendMode->value(tmp);
 
+    fltk::Preferences errors( base, "errors" );
+    errors.get( "raise_log_window_on_error", tmp, 0 );
+    uiPrefs->uiPrefsRaiseLogWindowOnError->value(tmp);
 
     //
     // Hotkeys
@@ -1042,6 +1046,8 @@ fltk::StyleSet*     newscheme = NULL;
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
+    b = (bool)main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
+    mrv::LogDisplay::shown = !b;
 
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
@@ -1284,6 +1290,10 @@ fltk::StyleSet*     newscheme = NULL;
 	}
       }
     }
+
+    fltk::Preferences errors( base, "errors" );
+    errors.set( "raise_log_window_on_error", 
+                uiPrefs->uiPrefsRaiseLogWindowOnError->value() );
 
     // Images
     fltk::Preferences images( base, "images" );

@@ -55,6 +55,16 @@ namespace mrv {
 
     bool fetch( const boost::int64_t frame );
 
+#ifdef _WIN32
+    void* operator new(size_t sz) {
+        return _aligned_malloc( sz, 16 );
+    }
+      void operator delete( void* p )
+      {
+          _aligned_free( p );
+      }
+#endif
+
   protected:
     void luminance_gradient();
     void linear_gradient();

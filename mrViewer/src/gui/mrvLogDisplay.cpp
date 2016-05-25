@@ -29,6 +29,7 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <fltk/Window.h>
 #include <fltk/TextBuffer.h>
 #include <fltk/run.h>
 
@@ -45,6 +46,8 @@ namespace mrv {
     {  fltk::DARK_YELLOW, fltk::COURIER, 14,   0 }, // B - Warning
     {  fltk::RED,    fltk::COURIER, 14,   0 }, // C - Error
   };
+
+bool LogDisplay::shown = false;
 
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
     fltk::TextDisplay( x, y, w, h, l )
@@ -127,6 +130,13 @@ namespace mrv {
     size_t t = strlen(x);
     while( t-- )
       stylebuffer_->append( "C" );
+
+
+    if ( !shown )
+    {
+        shown = true;
+        window()->show();
+    }
   }
 
 }

@@ -535,7 +535,6 @@ void change_subtitle_cb( fltk::Widget* o, mrv::ImageView* view )
    if ( !fg ) return;
 
    int i = (int)p->value() - 2;  // Load Subtitle,  No subtitle
-   std::cerr << "subtitle " << i << std::endl;
    fg->image()->subtitle_stream(i);
 
 }
@@ -597,6 +596,7 @@ static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
 void load_subtitle_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
 {
     const char* file = open_subtitle_file( NULL, uiMain );
+    if ( !file ) return;
 
     mrv::ImageView* view = uiMain->uiView;
 

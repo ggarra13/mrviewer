@@ -95,7 +95,7 @@ namespace
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
-//#define DEBUG_VIDEO_STORES
+// #define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
@@ -108,6 +108,7 @@ namespace
 
 //  in ffmpeg, sizes are in bytes...
 #define kMAX_QUEUE_SIZE (15 * 2048 * 2048)
+#define kMAX_PACKET_SIZE 50
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
 #define kMIN_FRAMES 5
@@ -262,8 +263,8 @@ aviImage::~aviImage()
   if ( _filt_frame )
       av_frame_unref( _filt_frame );
 
-  if ( _video_index >= 0 )
-      close_video_codec();
+  close_video_codec();
+  close_subtitle_codec();
 
   if ( _av_frame )
       av_frame_free( &_av_frame );
@@ -693,6 +694,8 @@ void aviImage::open_video_codec()
 
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
+
+  // recounted frames needed for subtitles
   av_opt_set_int(_video_ctx, "refcounted_frames", 1, 0);
 
   if ( _video_codec == NULL ||
@@ -2111,7 +2114,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     unsigned int audio_bytes = 0;
 
     int eof = false;
-    unsigned packets_added = 0;
 
     // Loop until an error or we have what we need
     while( !got_video || (!got_audio && audio_context() == _context) )
@@ -2123,7 +2125,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 pkt.size = 0;
                 pkt.data = NULL;
                 pkt.stream_index = video_stream_index();
-                ++packets_added;
                 _video_packets.push_back( pkt );
                 got_video = true;
                 got_subtitle = true;
@@ -2153,7 +2154,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 }
             }
 
-            if ( is_seek || playback() == kBackwards )
+            if ( !got_subtitle && ( is_seek || playback() == kBackwards ) )
             {
                 _subtitle_packets.seek_end(spts);
             }
@@ -2200,7 +2201,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             {
                 if ( pktframe <= frame )
                 {
-                    ++packets_added;
                     _video_packets.push_back( pkt );
                 }
                 // should be pktframe without +1 but it works better with it.
@@ -2208,7 +2208,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             }
             else
             {
-                ++packets_added;
                 _video_packets.push_back( pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
@@ -2422,16 +2421,17 @@ bool aviImage::fetch(const boost::int64_t frame)
 bool aviImage::frame( const boost::int64_t f )
 {
 
-   if ( ( playback() != kStopped &&
-	  (( has_video() && _video_packets.size() > kMIN_FRAMES ) &&
-           ( has_audio() && _audio_packets.size() > kMIN_FRAMES ) &&
-           ( _video_packets.bytes() +  _audio_packets.bytes() + 
-             _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
-           ) ) ) )
+   if ( playback() != kStopped &&
+        (( !has_video() || _video_packets.size() > kMIN_FRAMES ||
+           (get_video_stream()->disposition & AV_DISPOSITION_ATTACHED_PIC)) &&
+         ( !has_audio() || _audio_packets.size() > kMIN_FRAMES ) &&
+         ( _video_packets.bytes() +  _audio_packets.bytes() + 
+           _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
+          ) ) )
     {
-       // std::cerr << "false return: " << std::endl;
-       // std::cerr << "vp: " << _video_packets.size() << std::endl;
-       // std::cerr << "ap: " << _audio_packets.size() << std::endl;
+    // std::cerr << "false return: " << std::endl;
+    // std::cerr << "vp: " << _video_packets.size() << std::endl;
+    // std::cerr << "ap: " << _audio_packets.size() << std::endl;
        // std::cerr << "sum: " <<
        // ( _video_packets.bytes() +  _audio_packets.bytes() + 
        // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
@@ -2467,9 +2467,9 @@ CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& pktframe,
     if ( status == kDecodeOK && !in_video_store(pktframe) )
     {
         store_image( pktframe, pkt.dts );
-        av_frame_unref(_av_frame);
-        av_frame_unref(_filt_frame);
     }
+    av_frame_unref(_av_frame);
+    av_frame_unref(_filt_frame);
     return status;
 }
 
@@ -2833,12 +2833,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
                return kDecodeOK;
 	    }
    
-	  // // Limit storage of frames to twice fps.  For example, 60 frames
-	  // // for a fps of 30.
-	  // if ( _images.size() >= max_video_frames() )
-	  // {   // must be frame or else stutters happen in PoTC.VOB
-          //     limit_video_store( frame );
-	  // }
 
 
 	  got_video = decode_image( pktframe, pkt );
