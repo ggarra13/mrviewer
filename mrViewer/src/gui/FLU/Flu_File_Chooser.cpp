@@ -3680,8 +3680,16 @@ bool Flu_File_Chooser::stripPatterns( std::string s, FluStringVector* patterns )
 
 void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 {
+#ifdef _WIN32
+    wchar_t buf[1024];
+    struct _stati64 s;
+    s.st_size = 0;
+    utf8towc( file, strlen(file), buf, 1024 ); 
+    ::_wstati64( buf, &s );
+#else
     struct stat s;
     ::stat( file, &s );
+#endif
 
     bool isDir = ( fltk::filename_isdir( file ) != 0 );
 
