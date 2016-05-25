@@ -990,7 +990,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
                                   const char* root )
   {
-    mrv::Reel reel = reel_at(r);
+      mrv::Reel reel = reel_at(unsigned(r));
     if ( !reel ) return mrv::media();
 
     CMedia* newImg = CMedia::guess_image( root );
@@ -1019,7 +1019,7 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
     newImg->find_image( frame );
 
     Element* nw = new_item( newm );
-    fltk::Group::replace( idx, *nw );
+    fltk::Group::replace( int(idx), *nw );
 
     this->remove( m );
 

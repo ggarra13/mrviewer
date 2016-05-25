@@ -10,7 +10,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 1 )
-SET( VersionPatch 7 )
+SET( VersionPatch 8 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -435,6 +435,8 @@ IF(WIN32)
   SET( CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
   SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
   SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
+
+  INCLUDE( CMakeRegistry.cmake )
 
 ELSEIF (UNIX)
 
