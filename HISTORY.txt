@@ -15,7 +15,7 @@ v3.1.8   - Removed a buggy fltk::unlock() that could cause
 	 - Made file size report in file requester support more than 
 	   4GB on Windows.
 	 - mrViewer on Windows now correctly reports multilingual
-	   (utf8) filenames' size
+	   (utf8) filenames' size.
 	 - Fixed warning of smpteImage not being aligned on 16 bits
 	   boundaries for Windows 32 bits.
 	 - Windows installer will now register most of the file

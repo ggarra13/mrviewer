@@ -1046,8 +1046,9 @@ fltk::StyleSet*     newscheme = NULL;
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
-    b = (bool)main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
-    mrv::LogDisplay::shown = !b;
+    LogDisplay::prefs = (LogDisplay::ShowPreferences)
+                        main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
+    LogDisplay::shown = false;
 
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
