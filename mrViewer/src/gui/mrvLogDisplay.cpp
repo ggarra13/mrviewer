@@ -47,6 +47,7 @@ namespace mrv {
     {  fltk::RED,    fltk::COURIER, 14,   0 }, // C - Error
   };
 
+LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 bool LogDisplay::shown = false;
 
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
@@ -132,7 +133,7 @@ bool LogDisplay::shown = false;
       stylebuffer_->append( "C" );
 
 
-    if ( !shown )
+    if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
         shown = true;
         window()->show();

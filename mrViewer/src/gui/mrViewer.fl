@@ -1809,14 +1809,24 @@ else
           }
           {fltk::Group} {} {
             label Errors open
-            xywh {14 24 425 367} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {14 24 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
-              xywh {43 32 340 227} box ENGRAVED_BOX
+              xywh {43 32 355 227} box ENGRAVED_BOX
             } {
-              {fltk::CheckButton} uiPrefsRaiseLogWindowOnError {
-                label {Raise Log Window on Error} selected
-                xywh {25 25 25 25}
+              {fltk::Choice} uiPrefsRaiseLogWindowOnError {
+                label {Raise Log Window on Error}
+                xywh {210 25 110 25}
+              } {
+                {fltk::Item} {} {
+                  label Never
+                  }
+                {fltk::Item} {} {
+                  label Once
+                  }
+                {fltk::Item} {} {
+                  label Always
+                  }
               }
             }
           }
@@ -1932,7 +1942,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -1968,6 +1978,9 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
             {fltk::Item} {} {
               label Loading
+              }
+            {fltk::Item} {} {
+              label Errors selected
               }
             {fltk::Item} {} {
               label Video
