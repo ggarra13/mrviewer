@@ -32,12 +32,19 @@
 
 namespace mrv {
 
-  class LogDisplay : public fltk::TextDisplay
-  {
+class LogDisplay : public fltk::TextDisplay
+{
+  public:
+    enum ShowPreferences
+    {
+    kNever,
+    kOnce,
+    kAlways,
+    };
   public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~LogDisplay();
-
+      
     void clear();
     void save( const char* file = NULL );
 
@@ -45,9 +52,10 @@ namespace mrv {
     void warning( const char* x );
     void error( const char* x );
 
-    public:
-      static bool shown;
-  };
+  public:
+    static ShowPreferences prefs;
+    static bool shown;
+};
 
 }
 
