@@ -457,7 +457,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
         unsigned char pU, pG, pO; // 3-bit unix style permissions
         unsigned int type;
         time_t idate;
-        unsigned long isize;
+        uint64_t isize;
         int editMode;
         Flu_File_Chooser *chooser;
         fltk::Image *icon;

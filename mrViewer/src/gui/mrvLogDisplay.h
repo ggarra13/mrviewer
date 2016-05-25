@@ -44,6 +44,9 @@ namespace mrv {
     void info( const char* x );
     void warning( const char* x );
     void error( const char* x );
+
+    public:
+      static bool shown;
   };
 
 }

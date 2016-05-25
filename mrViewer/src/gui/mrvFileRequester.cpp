@@ -76,10 +76,10 @@ static const char* kModule = "file";
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "mkv,MKV,mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,qt,QT,avi,AVI,flv,FLV,divx,DIVX,,vob,VOB,vp9,VP9,webm,WEBM,wmv,WMV,y4m,Y4M";
+  static const std::string kMoviePattern = "avi,AVI,divx,DIVX,dv,DV,flv,FLV,mkv,MKV,m4v,M4V,mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,qt,QT,vob,VOB,vp9,VP9,webm,WEBM,wmv,WMV,y4m,Y4M";
 
   static const std::string kImagePattern =
-    "bmp,bit,cin,CIN,ct,dpx,DPX,exr,EXR,gif,GIF,hdr,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,miff,MIFF,mt,pic,PIC,png,PNG,psd,PSD,rgb,RGB,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
+    "bmp,bit,cin,CIN,ct,dpx,DPX,exr,EXR,gif,GIF,hdr,HDR,hdri,HDRI,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,miff,MIFF,mt,pic,PIC,png,PNG,ppm,pnm,pgm,pbm,psd,PSD,rgb,RGB,rla,RLA,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
 
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
