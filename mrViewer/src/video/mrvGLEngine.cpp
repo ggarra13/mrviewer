@@ -328,9 +328,15 @@ void GLEngine::initialize()
 
   init_textures();
 
-  int argc = 1;
-  static char* args[] = { (char*)"GlEngine", NULL };
-  glutInit( &argc, args );
+  static bool glut_init = false;
+
+  if ( !glut_init )
+  {
+      int argc = 1;
+      static char* args[] = { (char*)"GlEngine", NULL };
+      glutInit( &argc, args );
+      glut_init = true;
+  }
 
 // #if defined(WIN32) || defined(WIN64)
 //   if ( WGLEW_WGL_swap_control )
@@ -378,13 +384,14 @@ void GLEngine::initialize()
 	_hardwareShaders = kNV30;
 #endif
 
-      LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
 #endif
 
     }
 
   if ( _hardwareShaders != kNone )
-    {
+  {
+      LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
+
       std::string directory;
 
       if ( _has_yuv )
