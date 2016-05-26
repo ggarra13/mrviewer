@@ -270,6 +270,7 @@ static void change_mipmap_cb( fltk::IntInput* w, ImageInformation* info )
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
+            img->refresh();
             view->fit_image();
             view->redraw();
         }
@@ -287,6 +288,7 @@ static void change_x_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
+            img->refresh();
             view->fit_image();
             view->redraw();
         }
@@ -304,6 +306,7 @@ static void change_y_ripmap_cb( fltk::IntInput* w, ImageInformation* info )
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
+            img->refresh();
             view->fit_image();
             view->redraw();
         }
