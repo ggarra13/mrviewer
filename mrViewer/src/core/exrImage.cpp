@@ -211,7 +211,6 @@ bool exrImage::channels_order(
    int dx = dataWindow.min.x;
    int dy = dataWindow.min.y;
 
-
    // First, count and store the channels
    bool no_layer = false;
    order[0] = order[1] = order[2] = order[3] = -1;
@@ -484,6 +483,7 @@ bool exrImage::fetch_mipmap( const boost::int64_t& frame )
 
 	SCOPED_LOCK( _mutex );
 	
+
 	std::string fileName = sequence_filename(frame);
 
 	TiledInputFile in( fileName.c_str() );
