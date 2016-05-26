@@ -155,7 +155,7 @@ void load_new_files( void* s )
    fltk::repeat_timeout( 1.0, load_new_files, ui ); 
 }
 
-int main( const int argc, char** argv ) 
+int main( int argc, char** argv ) 
 {
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
@@ -194,174 +194,182 @@ int main( const int argc, char** argv )
 
   int ok = -1;
 
-  try {
-      file = fs::absolute( file );
+  file = fs::absolute( file );
 
-      fs::path dir = file.parent_path().branch_path();
-      std::string path = fs::canonical( dir ).string();
+  fs::path dir = file.parent_path().branch_path();
+  std::string path = fs::canonical( dir ).string();
 
-      path += "/share/locale";
-      bindtextdomain(buf, path.c_str() );
-      textdomain(buf);
+  path += "/share/locale";
+  bindtextdomain(buf, path.c_str() );
+  textdomain(buf);
 
-      if ( loc )
-      {
-          LOG_INFO( _("Changed locale to ") << loc );
-          free(loc);
-      }
+  if ( loc )
+  {
+      LOG_INFO( _("Changed locale to ") << loc );
+      free(loc);
+  }
 
-      // Try to set MRV_ROOT if not set already
-      mrv::set_root_path( argc, argv );
-
-
-
-      // Adjust ui based on preferences
-      mrv::ViewerUI* ui = new mrv::ViewerUI();
+  // Try to set MRV_ROOT if not set already
+  mrv::set_root_path( argc, argv );
 
 
 
-      mrv::Options opts;
+  // Adjust ui based on preferences
+  for (;;) {
 
-      mrv::parse_command_line( argc, argv, ui, opts );
+      mrv::ViewerUI* ui = NULL;
+      std::string lockfile;
 
+      try {
 
-      std::string lockfile = mrv::lockfile();
+          ui = new mrv::ViewerUI();
 
-      bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
-      if ( opts.port != 0 ) {
-          ui->uiPrefs->uiPrefsSingleInstance->value(0);
-          single_instance = false;
-          if ( fs::exists( lockfile ) )
-          {
-              if ( ! fs::remove( lockfile ) )
-                  LOG_ERROR("Could not remove lock file");
-          }
-      }
-
-      if ( single_instance )
-      {
-          LOG_INFO( "lockfile " << lockfile << ". ");
-          LOG_INFO( "(Remove if mrViewer does not start)" );
-      }
+          mrv::Options opts;
+          if ( argc > 0 )
+              mrv::parse_command_line( argc, argv, ui, opts );
+          argc = 0;
 
 
-      if ( fs::exists( lockfile ) && single_instance )
-      {
-          int idx;
-          {
-              fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
-                                      "mrViewer.lock" );
-	
-              mrv::LoadList::iterator i = opts.files.begin();
-              mrv::LoadList::iterator e = opts.files.end();
-              for ( idx = 0; i != e ; ++i, ++idx )
+          lockfile = mrv::lockfile();
+
+          bool single_instance = ui->uiPrefs->uiPrefsSingleInstance->value();
+          if ( opts.port != 0 ) {
+              ui->uiPrefs->uiPrefsSingleInstance->value(0);
+              single_instance = false;
+              if ( fs::exists( lockfile ) )
               {
-                  char buf[256];
-                  sprintf( buf, "file%d", idx );
-	
-                  fltk::Preferences ui( base, buf );
-                  ui.set( "filename", (*i).filename.c_str() );
-                  ui.set( "audio", (*i).audio.c_str() );
-
-                  sprintf( buf, "%" PRId64, (*i).first );
-                  ui.set( "first", buf );
-
-                  sprintf( buf, "%" PRId64, (*i).last );
-                  ui.set( "last", buf );
-
-                  sprintf( buf, "%" PRId64, (*i).start );
-                  ui.set( "start", buf );
-
-                  sprintf( buf, "%" PRId64, (*i).end );
-                  ui.set( "end", buf );
-
-                  ui.flush();
+                  if ( ! fs::remove( lockfile ) )
+                      LOG_ERROR("Could not remove lock file");
               }
-              base.flush();
           }
-     
-          if ( idx == 0 )
+
+          if ( single_instance )
           {
-              mrvALERT( "Another instance of mrViewer is open.\n"
-                        "Remove " << lockfile << " if mrViewer crashed\n"
-                        "or modify Preferences->User Interface->Single Instance.");
-              fltk::check();
+              LOG_INFO( "lockfile " << lockfile << ". ");
+              LOG_INFO( "(Remove if mrViewer does not start)" );
           }
 
-          exit(0);
-      }
+          if ( fs::exists( lockfile ) && single_instance )
+          {
+              int idx;
+              {
+                  fltk::Preferences base( mrv::prefspath().c_str(), "filmaura",
+                                          "mrViewer.lock" );
 
-      {
-          fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
-                                  "mrViewer.lock" );
-          lock.set( "pid", 1 );
+                  mrv::LoadList::iterator i = opts.files.begin();
+                  mrv::LoadList::iterator e = opts.files.end();
+                  for ( idx = 0; i != e ; ++i, ++idx )
+                  {
+                      char buf[256];
+                      sprintf( buf, "file%d", idx );
+	
+                      fltk::Preferences ui( base, buf );
+                      ui.set( "filename", (*i).filename.c_str() );
+                      ui.set( "audio", (*i).audio.c_str() );
+
+                      sprintf( buf, "%" PRId64, (*i).first );
+                      ui.set( "first", buf );
+
+                      sprintf( buf, "%" PRId64, (*i).last );
+                      ui.set( "last", buf );
+
+                      sprintf( buf, "%" PRId64, (*i).start );
+                      ui.set( "start", buf );
+
+                      sprintf( buf, "%" PRId64, (*i).end );
+                      ui.set( "end", buf );
+
+                      ui.flush();
+                  }
+                  base.flush();
+              }
      
-      }
+              if ( idx == 0 )
+              {
+                  mrvALERT( "Another instance of mrViewer is open.\n"
+                            "Remove " << lockfile << " if mrViewer crashed\n"
+                            "or modify Preferences->User Interface->Single Instance.");
+                  fltk::check();
+              }
 
-      MagickWandGenesis();
+              exit(0);
+          }
+
+          {
+              fltk::Preferences lock( mrv::prefspath().c_str(), "filmaura",
+                                      "mrViewer.lock" );
+              lock.set( "pid", 1 );
+     
+          }
+
+          MagickWandGenesis();
 
       // mrv::open_license( argv[0] );
       // mrv::checkout_license();
 
-      load_files( opts.files, ui );
-      if ( opts.stereo.size() > 1 )
-          load_files( opts.stereo, ui, true );
+          load_files( opts.files, ui );
+          if ( opts.stereo.size() > 1 )
+              load_files( opts.stereo, ui, true );
 
-      if ( opts.edl )
-      {
-          ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
-          ui->uiTimeline->edl( true );
-      }
+          if ( opts.edl )
+          {
+              ui->uiReelWindow->uiBrowser->current_reel()->edl = true;
+              ui->uiTimeline->edl( true );
+          }
 
-      if (opts.fps > 0 )
-      {
-          ui->uiView->fps( opts.fps );
-      }
+          if (opts.fps > 0 )
+          {
+              ui->uiView->fps( opts.fps );
+          }
 
-      if (opts.host == "" && opts.port != 0)
-      {
+          if (opts.host == "" && opts.port != 0)
+          {
 
-          mrv::ServerData* data = new mrv::ServerData;
-          data->ui = ui;
-          data->port = opts.port;
-          boost::thread( boost::bind( mrv::server_thread, 
-                                      data ) );
-      }
-      else if ( opts.host != "" && opts.port != 0 )
-      {
-          mrv::ServerData* data = new mrv::ServerData;
-          data->ui = ui;
-          data->host = opts.host;
-          data->port = opts.port;
-          char buf[128];
-          sprintf( buf, "%d", opts.port );
-          data->group = buf;
+              mrv::ServerData* data = new mrv::ServerData;
+              data->ui = ui;
+              data->port = opts.port;
+              boost::thread( boost::bind( mrv::server_thread, 
+                                          data ) );
+          }
+          else if ( opts.host != "" && opts.port != 0 )
+          {
+              mrv::ServerData* data = new mrv::ServerData;
+              data->ui = ui;
+              data->host = opts.host;
+              data->port = opts.port;
+              char buf[128];
+              sprintf( buf, "%d", opts.port );
+              data->group = buf;
 
-          boost::thread( boost::bind( mrv::client_thread, 
-                                      data ) );
-      }
+              boost::thread( boost::bind( mrv::client_thread, 
+                                          data ) );
+          }
 
-      if ( single_instance )
-          fltk::add_timeout( 1.0, load_new_files, ui );
+          if ( single_instance )
+              fltk::add_timeout( 1.0, load_new_files, ui );
 
-
-
-      try {
+          ui->uiMain->show();   // so run() does something
           ok = fltk::run();
+      }
+      catch( const mrv::reinit_exception& e )
+      {
+          LOG_INFO( _(e.what()) );
+          delete ui;
+          continue;
       }
       catch( const std::exception& e )
       {
-          std::cerr << e.what() << std::endl;
+          LOG_ERROR( _( e.what() ) );
           ok = -1;
       }
       catch( const char* e )
       {
-          std::cerr << e << std::endl;
+          LOG_ERROR( _(e) );
           ok = -1;
       }
       catch( ... )
       {
-          std::cerr << "Unhandled exception" << std::endl;
+          LOG_ERROR( _("Unhandled exception") );
           ok = -1;
       }
 
@@ -373,25 +381,21 @@ int main( const int argc, char** argv )
           }
           catch( const fs::filesystem_error& e )
           {
-              LOG_ERROR( "Filesystem error: " << e.what() );
+              LOG_ERROR( _("Filesystem error: ") << e.what() );
           }
           catch( const boost::exception& e )
           {
-              LOG_ERROR( "Boost exception: " << boost::diagnostic_information(e) );
+              LOG_ERROR( _("Boost exception: ") << boost::diagnostic_information(e) );
           }
           catch( ... )
           {
-              LOG_ERROR( "Unknown error" );
+              LOG_ERROR( _("Unknown error") );
           }
       }
-
+      break;
   }
-  catch ( const std::exception& e )
-  {
-      LOG_ERROR( e.what() );
-  }
-
   MagickWandTerminus();
+  
 
   return ok;
 }
@@ -407,21 +411,21 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
 {
    
 #ifdef ALLOC_CONSOLE
-   AllocConsole();
-   freopen("conin$", "r", stdin);
-   freopen("conout$", "w", stdout);
-   freopen("conout$", "w", stderr);
+    AllocConsole();
+    freopen("conin$", "r", stdin);
+    freopen("conout$", "w", stdout);
+    freopen("conout$", "w", stderr);
 #endif
 
-  int rc = main( __argc, __argv );
+    int rc = main( __argc, __argv );
    
 #ifdef ALLOC_CONSOLE
-   fclose(stdin);
-   fclose(stdout);
-   fclose(stderr);
+    fclose(stdin);
+    fclose(stdout);
+    fclose(stderr);
 #endif
 
-  return rc; 
+    return rc; 
 }
 
 #endif

@@ -348,6 +348,8 @@ fltk::StyleSet*     newscheme = NULL;
     ui.get( "timeline_display", tmp, 0 );
     uiPrefs->uiPrefsTimelineDisplay->value(tmp);
 
+    ui.get( "language", tmp, 0 );
+    uiPrefs->uiPrefsLanguage->value( tmp );
 
     //
     // ui/window preferences
@@ -373,6 +375,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  r = (fltk::RadioButton*)uiPrefs->uiPrefsOpenMode->child( tmp );
 	  r->value(1);
        }
+
     }
 
 
@@ -801,6 +804,16 @@ fltk::StyleSet*     newscheme = NULL;
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     main->uiMain->show();
+
+    const char* loc = setlocale( LC_ALL, NULL );
+
+    if ( strcmp( loc, "C" ) != 0 && 
+         uiPrefs->uiPrefsLanguage->value() == 1 )
+    {
+        setlocale( LC_ALL, "C" );
+        throw mrv::reinit_exception( "Changed locale to C" );
+    }
+
     fltk::check();
 
     //
@@ -1097,6 +1110,8 @@ fltk::StyleSet*     newscheme = NULL;
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
     ui.set( "vectorscope", (int) uiPrefs->uiPrefsVectorscope->value() );
+
+    ui.set( "language", uiPrefs->uiPrefsLanguage->value() );
 
     ui.set( "timeline_display", 
 	    uiPrefs->uiPrefsTimelineDisplay->value() );
