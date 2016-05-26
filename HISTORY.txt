@@ -3,6 +3,8 @@ v3.1.9   - Added an option in main UI preferences to select what
 	   Native (as in Native to the OS) or English.  Currently
 	   only Spanish and English are supported.
 	 - Updated the English and Spanish documentation.
+	 - Fixed level queries of OpenEXR's mipmaps and ripmaps.
+	   Previously the image was not refreshed properly.
 
 v3.1.8   - Removed a buggy fltk::unlock() that could cause 
 	   inestability in the file requester.
