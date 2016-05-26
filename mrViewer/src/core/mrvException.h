@@ -64,6 +64,17 @@ namespace mrv
     unsigned int _line;
   };
 
+class reinit_exception : public mrv::exception
+{
+  public:
+    reinit_exception( const std::string what,
+                      const char* file = 0, const unsigned line = 0) :
+    mrv::exception( what, file, line )
+    {
+    }
+};
+
+
 }  // namespace mrv
 
 
