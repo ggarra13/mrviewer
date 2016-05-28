@@ -26,7 +26,7 @@
  * 
  */
 
-//#define ALLOC_CONSOLE
+// #define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
@@ -163,6 +163,7 @@ int main( int argc, char** argv )
     char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
+
 
 // #ifdef _WIN32
 //   libintl_setlocale( LC_ALL, tmp );
@@ -354,6 +355,7 @@ int main( int argc, char** argv )
       catch( const mrv::reinit_exception& e )
       {
           LOG_INFO( _(e.what()) );
+
           delete ui;
           continue;
       }
