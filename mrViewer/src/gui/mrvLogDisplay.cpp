@@ -132,6 +132,8 @@ bool LogDisplay::shown = false;
     while( t-- )
       stylebuffer_->append( "C" );
 
+    // Set the line to end of text display
+    scroll( total_lines(), 0 );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
