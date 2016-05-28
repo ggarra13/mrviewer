@@ -1,111 +1,22 @@
 # Extra install commands for NSIS	
 
 	set(CPACK_NSIS_EXTRA_INSTALL_COMMANDS "
-	
-		WriteRegStr HKCR '.bmp' '' 'mrViewer'
-		WriteRegStr HKCR '.bit' '' 'mrViewer'
-		WriteRegStr HKCR '.bw'  '' 'mrViewer'
-		WriteRegStr HKCR '.cin' '' 'mrViewer'
-		WriteRegStr HKCR '.ct'  '' 'mrViewer'
-		WriteRegStr HKCR '.dpx' '' 'mrViewer'
-		WriteRegStr HKCR '.exr' '' 'mrViewer'
-		WriteRegStr HKCR '.gif' '' 'mrViewer'
-		WriteRegStr HKCR '.hdr' '' 'mrViewer'
-		WriteRegStr HKCR '.hdri' '' 'mrViewer'
-		WriteRegStr HKCR '.iff' '' 'mrViewer'
-		WriteRegStr HKCR '.jpeg' '' 'mrViewer'
-		WriteRegStr HKCR '.jpg' '' 'mrViewer'
-		WriteRegStr HKCR '.jfif' '' 'mrViewer'
-		WriteRegStr HKCR '.nt' '' 'mrViewer'
-		WriteRegStr HKCR '.mt' '' 'mrViewer'
-		WriteRegStr HKCR '.pbm' '' 'mrViewer'
-		WriteRegStr HKCR '.pgm' '' 'mrViewer'
-		WriteRegStr HKCR '.pic' '' 'mrViewer'
-		WriteRegStr HKCR '.png' '' 'mrViewer'
-		WriteRegStr HKCR '.pnm' '' 'mrViewer'
-		WriteRegStr HKCR '.ppm' '' 'mrViewer'
-		WriteRegStr HKCR '.rgb' '' 'mrViewer'
-		WriteRegStr HKCR '.rgba' '' 'mrViewer'
-		WriteRegStr HKCR '.rla' '' 'mrViewer'
-		WriteRegStr HKCR '.rpf' '' 'mrViewer'
-		WriteRegStr HKCR '.sgi' '' 'mrViewer'
-		WriteRegStr HKCR '.st'  '' 'mrViewer'
-		WriteRegStr HKCR '.sxr' '' 'mrViewer'
-		WriteRegStr HKCR '.tga' '' 'mrViewer'
-		WriteRegStr HKCR '.tiff' '' 'mrViewer'
-		WriteRegStr HKCR '.tif' '' 'mrViewer'
-		WriteRegStr HKCR '.z' '' 'mrViewer'
-
-
-		WriteRegStr HKCR '.avi' '' 'mrViewer'
-		WriteRegStr HKCR '.divx' '' 'mrViewer'
-		WriteRegStr HKCR '.dv' '' 'mrViewer'
-		WriteRegStr HKCR '.flv' '' 'mrViewer'
-		WriteRegStr HKCR '.m4v' '' 'mrViewer'
-		WriteRegStr HKCR '.mkv' '' 'mrViewer'
-		WriteRegStr HKCR '.mov' '' 'mrViewer'
-		WriteRegStr HKCR '.mpg' '' 'mrViewer'
-		WriteRegStr HKCR '.mpeg' '' 'mrViewer'
-		WriteRegStr HKCR '.mp4' '' 'mrViewer'
-		WriteRegStr HKCR '.mxf' '' 'mrViewer'
-
-		
-		
 		WriteRegStr HKCR 'mrViewer' '' 'mrViewer'
 		WriteRegStr HKCR 'mrViewer\\\\shell' '' 'open'
 		WriteRegStr HKCR 'mrViewer\\\\shell\\\\open\\\\command' '' '$INSTDIR\\\\bin\\\\mrViewer.exe \\\"%1\\\"'
+	SectionEnd
+	!addincludedir ${CMAKE_CURRENT_SOURCE_DIR}/nsis
+	!include fileext.nsh
+	Section \\\"empty\\\"
 		"
 		)
 
 
 	set(CPACK_NSIS_EXTRA_UNINSTALL_COMMANDS "
- 
-		DeleteRegKey HKCR '.bmp'
-		DeleteRegKey HKCR '.bit'
-		DeleteRegKey HKCR '.bw' 
-		DeleteRegKey HKCR '.cin'
-		DeleteRegKey HKCR '.ct' 
-		DeleteRegKey HKCR '.dpx'
-		DeleteRegKey HKCR '.exr'
-		DeleteRegKey HKCR '.gif'
-		DeleteRegKey HKCR '.hdr'
-		DeleteRegKey HKCR '.hdri'
-		DeleteRegKey HKCR '.iff'
-		DeleteRegKey HKCR '.jpeg'
-		DeleteRegKey HKCR '.jpg'
-		DeleteRegKey HKCR '.jfif'
-		DeleteRegKey HKCR '.nt'
-		DeleteRegKey HKCR '.mt'
-		DeleteRegKey HKCR '.pbm'
-		DeleteRegKey HKCR '.pgm'
-		DeleteRegKey HKCR '.pic'
-		DeleteRegKey HKCR '.png'
-		DeleteRegKey HKCR '.pnm'
-		DeleteRegKey HKCR '.ppm'
-		DeleteRegKey HKCR '.rgb'
-		DeleteRegKey HKCR '.rgba'
-		DeleteRegKey HKCR '.rla'
-		DeleteRegKey HKCR '.rpf'
-		DeleteRegKey HKCR '.sgi'
-		DeleteRegKey HKCR '.st' 
-		DeleteRegKey HKCR '.sxr'
-		DeleteRegKey HKCR '.tga'
-		DeleteRegKey HKCR '.tiff'
-		DeleteRegKey HKCR '.tif'
-		DeleteRegKey HKCR '.z'
-
-		DeleteRegKey HKCR '.avi'
-		DeleteRegKey HKCR '.divx'
-		DeleteRegKey HKCR '.dv'
-		DeleteRegKey HKCR '.flv'
-		DeleteRegKey HKCR '.m4v'
-		DeleteRegKey HKCR '.mkv'
-		DeleteRegKey HKCR '.mov'
-		DeleteRegKey HKCR '.mpg'
-		DeleteRegKey HKCR '.mpeg'
-		DeleteRegKey HKCR '.mp4'
-		DeleteRegKey HKCR '.mxf'
-		
                 DeleteRegKey HKCR 'mrViewer'
+	SectionEnd
+	!addincludedir ${CMAKE_CURRENT_SOURCE_DIR}/nsis
+	!include fileext_uninstall.nsh
+	Section \\\"un.empty\\\"
         "
         )
