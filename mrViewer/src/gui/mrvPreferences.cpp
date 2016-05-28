@@ -25,6 +25,7 @@
  * 
  */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -32,6 +33,7 @@
 #include <iostream>
 #include <algorithm>
 
+#include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
@@ -56,6 +58,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvHome.h"
+#include "core/mrvI8N.h"
 #include "core/mrvOS.h"
 #include "core/CMedia.h"
 
@@ -798,6 +801,7 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::load_theme();
   }
 
+static const char* kCLocale = "English";
 
   void Preferences::run( mrv::ViewerUI* main )
   {
@@ -805,12 +809,31 @@ fltk::StyleSet*     newscheme = NULL;
 
     main->uiMain->show();
 
+    //
+    // Changing the locale on windows does not work.  Not sure why.
+    // Floating point numbers change, but LC_MESSAGES do not.
+    //
     const char* loc = setlocale( LC_ALL, NULL );
-
-    if ( strcmp( loc, "C" ) != 0 && 
+    if ( strncmp( loc, kCLocale, strlen(kCLocale) ) != 0 && 
          uiPrefs->uiPrefsLanguage->value() == 1 )
     {
-        setlocale( LC_ALL, "C" );
+        const char* loc = setlocale( LC_ALL, kCLocale );
+        if (!loc)
+        {
+            LOG_ERROR( "Could not set locale to " << kCLocale );
+        }
+        std::locale::global(boost::locale::generator().generate(kCLocale));
+        // Make boost.filesystem use it
+        boost::filesystem::path::imbue(std::locale());
+
+        // @bug: windows does not change LC_MESSAGES in C locale.
+        //       Thus, we force a dummy textdomain, so gettext will fail.
+#ifdef _WIN32
+        char buf[1024];
+        sprintf( buf, "dummy" );
+        textdomain(buf);
+#endif
+
         throw mrv::reinit_exception( "Changed locale to C" );
     }
 
