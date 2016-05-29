@@ -5,6 +5,10 @@ v3.1.9   - Added an option in main UI preferences to select what
 	 - Updated the English and Spanish documentation.
 	 - Fixed level queries of OpenEXR's mipmaps and ripmaps.
 	   Previously the image was not refreshed properly.
+	 - Made Windows Installer ask if you want to remove a
+	   previous version of the software first.
+	 - Made Windows Installer provide a GUI at the end to
+	   select which extensions get associated with mrViewer.
 
 v3.1.8   - Removed a buggy fltk::unlock() that could cause 
 	   inestability in the file requester.
