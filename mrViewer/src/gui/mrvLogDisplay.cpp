@@ -113,6 +113,9 @@ bool LogDisplay::shown = false;
     size_t t = strlen(x);
     while( t-- )
       stylebuffer_->append( "A" );
+
+    // Set the line to end of text display
+    scroll( total_lines(), 0 );
   }
 
   void LogDisplay::warning( const char* x )
@@ -122,6 +125,9 @@ bool LogDisplay::shown = false;
     size_t t = strlen(x);
     while( t-- )
       stylebuffer_->append( "B" );
+
+    // Set the line to end of text display
+    scroll( total_lines(), 0 );
   }
 
   void LogDisplay::error( const char* x )
