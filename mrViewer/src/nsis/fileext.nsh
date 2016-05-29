@@ -52,47 +52,70 @@ System::Free $9
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".bit" "mental ray Bitmap" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".cin" "Kodak Cineon" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".ct" "mental ray contour" 1 
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".dds" "DirectDraw Surface" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".dib" "Windows Device Independent Bitmap" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".dng" "Adobe Digital Negative Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".dpx" "Digital Picture Exchange" 1 
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".exr" "ILM OpenEXR" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".gif" "Graphics Interchange Format" 1
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".hdr" "High Dynamic Range" 1
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".hdri" "High Dynamic Range Imaging" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".hdr" "Radiance High Dynamic Range" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".hdri" "Radiance High Dynamic Range Imaging" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".iff" "Interchange File Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".jpeg" "JPEG File Interchange Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".jpg" "JPEG File Interchange Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".jfif" "JPEG File Interchange Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".nt" "mental ray normal map" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mt" "mental ray motion map" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".map" "mental ray rip map (non-tiled)" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".pbm" "Portable Bit Map" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".pgm" "Portable Gray Map" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".pic" "Softimage picture format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".png" "Portable Network Graphics" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".pnm" "Portable Anymap Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".ppm" "Portable PixMap" 1
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".psd" "Photoshop" 0 
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".psd" "Photoshop" 0
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".ras" "Sun Raster Format" 1 
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".reel" "mrViewer's EDL Reel Format" 1 
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".rgb" "SGI RGB Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".rgba" "SGI RGBA Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".rla" "Run Length Encoded A SGI Format" 1 
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".rpf" "Autodesk's Rich Pixel Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".sgi" "SGI Format" 1
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".st" "mental ray st format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".shmap" "mental ray Shadow Map" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".st" "mental ray Scalar Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".sxr" "ILM Stereo OpenEXR Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".tga" "TrueVision TARGA Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".tiff" "Tagged Image File Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".tif" "Tagged Image File Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".xcf" "GIMP single layer" 0
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".z" "mental ray Z depth files" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".zt" "mental ray Z depth files" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".z" "Pixar Renderman Z files" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".avi" "Audio Video Interleave" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".divx" "DIVX Media Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".dv" "Digital Video Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".flv" "Flash Video Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".m4v" "Apple M4V Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mkv" "Matroska Video Format" 1
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mov" "Quicktime Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mov" "Apple's Quicktime Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mp4" "MPEG4 Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mpg" "MPEG Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mpeg" "MPEG Format" 1
-!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mp4" "MPEG4 Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mpeg2" "MPEG2 Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mpeg3" "MPEG3 Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mpeg4" "MPEG4 Format" 1
 !insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mxf" "Material eXchange Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".qt" "Apple's Quicktime" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".rm" "RealNetwork's Real Media" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".vob" "DVD Video Object Format" 0
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".vp9" "WebM Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".webm" "WebM Format" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".wmv" "Windows Media Video" 1
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".y4m" "YUV4MPEG2 Format" 1
+
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".ogg" "Ogg Audio Format" 0
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".vorbis" "Ogg Vorbis Audio Format" 0
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".mp3" "MPEG1/2 Audio Layer III" 0
+!insertmacro AddCheckedListViewItemWith1SubItem $hListCtl ".wav" "Waveform Audio Format" 0
 
 SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 0 -1 
 SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 1 -1 
