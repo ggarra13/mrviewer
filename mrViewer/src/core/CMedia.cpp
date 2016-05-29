@@ -2853,8 +2853,8 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
   }
   else
   {
-     if ( _video_packets.is_loop_end( *(last-1) ) ||
-	  _video_packets.is_loop_start( *(last-1) ) )
+     if ( _video_packets.is_loop_end( *iter ) ||
+	  _video_packets.is_loop_start( *iter ) )
      {
 	std::cerr << (*iter).dts;
      }

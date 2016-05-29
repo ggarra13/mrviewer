@@ -2499,7 +2499,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   }
   else if ( !is_seek && _video_packets.is_preroll() )
   {
-      _video_packets.pop_front();  // pop seek begin packet
+      _video_packets.pop_front();  // pop preroll begin packet
   }
   else
      IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
