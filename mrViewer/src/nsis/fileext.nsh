@@ -39,7 +39,7 @@ Pop $0
 
 ${NSD_CreateLabel} 0 0 100% 12u "File associations for mrViewer"
 
-nsDialogs::CreateControl "SysListView32" ${DEFAULT_STYLES}|${WS_TABSTOP}|${WS_VSCROLL}|${LVS_REPORT}|${LVS_SORTASCENDING} ${WS_EX_WINDOWEDGE}|${WS_EX_CLIENTEDGE} 0 20 100% 90% "" 
+nsDialogs::CreateControl "SysListView32" ${DEFAULT_STYLES}|${WS_TABSTOP}|${WS_VSCROLL}|${LVS_REPORT} ${WS_EX_WINDOWEDGE}|${WS_EX_CLIENTEDGE} 0 20 100% 90% "" 
 Pop $hListCtl 
 IntOp $0 ${LVS_EX_FULLROWSELECT} | ${LVS_EX_CHECKBOXES} 
 SendMessage $hListCtl ${LVM_SETEXTENDEDLISTVIEWSTYLE} 0 $0 
@@ -119,6 +119,7 @@ System::Free $9
 
 SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 0 -1 
 SendMessage $hListCtl ${LVM_SETCOLUMNWIDTH} 1 -1 
+System::Call 'USER32::PostMessage(p $hwndparent, i ${WM_NEXTDLGCTL}, p $hListCtl, i1)'
 nsDialogs::Show 
 FunctionEnd 
 
