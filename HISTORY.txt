@@ -1,14 +1,27 @@
-v3.1.9   - Added an option in main UI preferences to select what
+v3.1.9   **NOTE** If using the Windows installer, it is 
+	 	  recommended you uninstall v3.1.8 before
+	   	  installing v3.1.9.
+	 - Added an option in main UI preferences to select what
 	   language the UI works in.  Currently, the options are
 	   Native (as in Native to the OS) or English.  Currently
-	   only Spanish and English are supported.
+	   only Spanish and English are fully supported.
 	 - Updated the English and Spanish documentation.
 	 - Fixed level queries of OpenEXR's mipmaps and ripmaps.
 	   Previously the image was not refreshed properly.
 	 - Made Windows Installer ask if you want to remove a
-	   previous version of the software first.
+	   previous version of the software first.  This should
+	   work with this version on of the program.
 	 - Made Windows Installer provide a GUI at the end to
-	   select which extensions get associated with mrViewer.
+	   select which file extensions get associated with
+	   mrViewer.  The association is with the mrViewer 
+	   installed last.  
+	 - Made Windows Installer detect a previous version of
+	   mrViewer and allows desinstalling it before the new
+	   install.
+	 - Added libswscale and libavfilter versions to
+	   About mrViewer.
+	 - About mrViewer now reports 32-bits or 64-bits mrViewer
+	   (compilation).
 
 v3.1.8   - Removed a buggy fltk::unlock() that could cause 
 	   inestability in the file requester.
