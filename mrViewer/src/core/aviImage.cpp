@@ -696,7 +696,7 @@ void aviImage::open_video_codec()
   av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
 
   // recounted frames needed for subtitles
-  av_opt_set_int(_video_ctx, "refcounted_frames", 1, 0);
+  av_dict_set(&info, "refcounted_frames", "1", 0);
 
   if ( _video_codec == NULL ||
        avcodec_open2( _video_ctx, _video_codec, &info ) < 0 )
@@ -791,7 +791,6 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( !skip ) --start;
     if ( playback() == kBackwards ) --start;
 
-    if ( start < _frame_start ) start = _frame_start;
 
     boost::int64_t offset = boost::int64_t( double(start) * AV_TIME_BASE
                                             / fps() );
@@ -2660,9 +2659,9 @@ aviImage::audio_video_display( const boost::int64_t& frame )
     int channels = result->channels();
 
     /* total height for one channel */
-    size_t h = _h / channels;
+    int h = _h / channels;
     /* graph height / 2 */
-    size_t h2 = (h * 9) / 20;
+    int h2 = (h * 9) / 20;
     int y1, y, ys, i;
     int i_start = 0;
 
@@ -2675,7 +2674,7 @@ aviImage::audio_video_display( const boost::int64_t& frame )
         {
             i = i_start + ch;
             y1 = ch * h + ( h / 2 );
-            for (int x = 0; x < _w; ++x )
+            for (unsigned x = 0; x < _w; ++x )
             {
                 y = (int(data[i] * 24000 * h2)) >> 15;
                 if (y < 0) {
@@ -2698,7 +2697,7 @@ aviImage::audio_video_display( const boost::int64_t& frame )
         {
             i = i_start + ch;
             y1 = ch * h + ( h / 2 );
-            for (int x = 0; x < _w; ++x )
+            for (unsigned x = 0; x < _w; ++x )
             {
                 y = (data[i] * h2) >> 15;
                 if (y < 0) {
