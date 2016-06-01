@@ -90,8 +90,8 @@ using namespace fltk;
 
 static const char* kModule = "filereq";
 
-#undef DBG
-#define DBG(x) std::cerr << __FUNCTION__ << " " << x << std::endl;
+// #undef DBG
+// #define DBG(x) std::cerr << __FUNCTION__ << " " << __LINE__ << ": " << x << std::endl;
 
 // set default language strings
 std::string Flu_File_Chooser::favoritesTxt = _("Favorites");
@@ -334,14 +334,30 @@ static int flu_filename_match(const char *s, const char *p,
   }
 }
 
-static void loadRealIcon( Flu_File_Chooser::Entry* e)
+struct RealIcon
+{
+    Flu_File_Chooser*  chooser;
+    Flu_File_Chooser::Entry* entry;
+};
+
+
+static void loadRealIcon( RealIcon* e)
 {
     namespace fs = boost::filesystem;
     typedef boost::recursive_mutex Mutex;
+
+    DBG( "lri start " << e->entry << " chooser " << e->chooser );
+
     Mutex::scoped_lock lk_m( e->chooser->mutex );
 
-    if ( e->chooser->quick_exit ) return;
+    if ( e->chooser->quick_exit ) {
+        DBG( "lri quick exit " << e->entry << " chooser " << e->chooser );
+        delete e;
+        return;
+    }
 
+    DBG( "lri process icon " << e->entry << " " << e->entry->filename 
+         << " chooser " << e->chooser );
 
     char fmt[1024];
     char buf[1024];
@@ -350,24 +366,24 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
 
     std::string view;
 
-    if ( e->filename.find( "%v" ) )
+    if ( e->entry->filename.find( "%v" ) )
         view = mrv::get_short_view(true);
-    else if ( e->filename.find( "%V" ) )
+    else if ( e->entry->filename.find( "%V" ) )
         view = mrv::get_long_view(true);
 
-    int frameStart = atoi( e->filesize.c_str() );
+    int frameStart = atoi( e->entry->filesize.c_str() );
 
 
     if ( view.size() )
     {
-        std::string tmp = mrv::parse_view( e->filename, true );
+        std::string tmp = mrv::parse_view( e->entry->filename, true );
         sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
                  tmp.c_str() );
     }
     else
     {
       sprintf( fmt, "%s%s", e->chooser->get_current_directory(),
-	       e->filename.c_str() );
+	       e->entry->filename.c_str() );
     }
 
     sprintf( buf, fmt, frameStart );
@@ -380,17 +396,24 @@ static void loadRealIcon( Flu_File_Chooser::Entry* e)
     fltk::SharedImage* img;
     try {
         img = mrv::fltk_handler( buf, NULL, 0 );
-    } catch( const std::exception& e )
+    } catch( const std::exception& er )
     {
-        LOG_ERROR( e.what() );
+        LOG_ERROR( er.what() );
+        delete e;
         return;
     }
 
     if ( !img ) {
+        delete e;
         return;
     }
-    e->icon = img;
-    e->updateSize();
+
+
+    DBG( "lri processed icon " << e->entry << " " << e->entry->filename
+         << " chooser " << e->chooser  );
+    e->entry->icon = img;
+    e->entry->updateSize();
+    delete e;
 
     // e->chooser->relayout();
     // e->chooser->redraw();
@@ -963,7 +986,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   pattern( pat );
   default_file_icon( &default_file );
-  // cd( NULL ); // prime with the current directory (gga: not needed)
+
   clear_history();
 
   cd( pathname );
@@ -1652,8 +1675,19 @@ void Flu_File_Chooser::previewCB()
 
     if ( previewBtn->value() )
     {
+        // Make sure all other previews have finished
+        thread_pool_t::iterator it = threads.begin();
+        thread_pool_t::iterator ie = threads.end();
+        
+        for ( ;it != ie; ++it )
+        {
+            (*it)->join();
+        }
+
         quick_exit = false;
 
+        // Clear the thread pool
+        threads.clear();
 
         for ( int i = 0; i < c; ++i )
         {
@@ -1661,7 +1695,13 @@ void Flu_File_Chooser::previewCB()
             e->set_colors();
             if ( e->type == ENTRY_SEQUENCE || e->type == ENTRY_FILE )
             {
-                boost::thread t( boost::bind( loadRealIcon, e ) );
+                // Add new thread to handle icon
+                RealIcon* ri = new RealIcon;
+                ri->entry = e;
+                ri->chooser = this;
+                boost::thread* t = new boost::thread( boost::bind( loadRealIcon,
+                                                                   ri ) );
+                threads.push_back( t );
             }
         }
 
@@ -2527,6 +2567,9 @@ void Flu_File_Chooser::Entry::updateSize()
 
 Flu_File_Chooser::Entry::~Entry()
 {
+    type = ENTRY_DIR;
+    details = false;
+    chooser = NULL;
 }
 
 void Flu_File_Chooser::Entry::inputCB()
@@ -3762,6 +3805,8 @@ void Flu_File_Chooser::statFile( Entry* entry, const char* file )
 
 void Flu_File_Chooser::cd( const char *path )
 {
+
+    quick_exit = true;
 
   Entry *entry;
   char cwd[1024];
