@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-05-30 16:50-0300\n"
+"POT-Creation-Date: 2016-06-01 09:44-0300\n"
 "PO-Revision-Date: 2016-05-25 21:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -223,7 +223,7 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4453
+#: core/aviImage_save.cpp:529 gui/FLU/Flu_File_Chooser.cpp:4498
 msgid " to "
 msgstr " a "
 
@@ -725,7 +725,7 @@ msgstr "Metadata ACES"
 msgid "ALPHA"
 msgstr "ALFA"
 
-#: gui/FLU/Flu_File_Chooser.cpp:528
+#: gui/FLU/Flu_File_Chooser.cpp:551
 msgid "AVI Movie"
 msgstr "Pelicula AVI"
 
@@ -1067,7 +1067,7 @@ msgstr "Mal numero de puerto"
 msgid "Baseline"
 msgstr "Básica"
 
-#: gui/FLU/Flu_File_Chooser.cpp:539
+#: gui/FLU/Flu_File_Chooser.cpp:562
 msgid "Bitmap Picture"
 msgstr "Imagen Bitmap"
 
@@ -1263,7 +1263,7 @@ msgstr "Cromaticidades (CIE)"
 msgid "Cinemascope"
 msgstr "Cinemascope"
 
-#: gui/FLU/Flu_File_Chooser.cpp:541
+#: gui/FLU/Flu_File_Chooser.cpp:564
 msgid "Cineon Picture"
 msgstr "Imagen Cineon"
 
@@ -1885,11 +1885,11 @@ msgstr "Campo Personalizado 9"
 msgid "Cut Clip at current location"
 msgstr "Cortar Clip en el lugar actual"
 
-#: gui/FLU/Flu_File_Chooser.cpp:529
+#: gui/FLU/Flu_File_Chooser.cpp:552
 msgid "DIVX Movie"
 msgstr "Película DIVX"
 
-#: gui/FLU/Flu_File_Chooser.cpp:543
+#: gui/FLU/Flu_File_Chooser.cpp:566
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
@@ -2192,7 +2192,7 @@ msgstr "Ventana de LDE"
 msgid "EXIF"
 msgstr "EXIF"
 
-#: gui/FLU/Flu_File_Chooser.cpp:544
+#: gui/FLU/Flu_File_Chooser.cpp:567
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
@@ -2457,7 +2457,7 @@ msgstr "Posición Fija"
 msgid "Fixture Identifier"
 msgstr "Identificador de Parte Integral"
 
-#: gui/FLU/Flu_File_Chooser.cpp:538
+#: gui/FLU/Flu_File_Chooser.cpp:561
 msgid "Flash Movie"
 msgstr "Pelicula Flash"
 
@@ -2595,7 +2595,7 @@ msgstr "Función"
 msgid "G"
 msgstr "V"
 
-#: gui/FLU/Flu_File_Chooser.cpp:551
+#: gui/FLU/Flu_File_Chooser.cpp:574
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
@@ -2690,7 +2690,7 @@ msgstr "Verde"
 msgid "Green value of image pixel under mouse."
 msgstr "Valor de Verde del pixel bajo el mouse."
 
-#: gui/FLU/Flu_File_Chooser.cpp:545
+#: gui/FLU/Flu_File_Chooser.cpp:568
 msgid "HDRI Picture"
 msgstr "Imagen HDRI"
 
@@ -2799,7 +2799,7 @@ msgstr "Inspector de Perfiles ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/FLU/Flu_File_Chooser.cpp:547
+#: gui/FLU/Flu_File_Chooser.cpp:570
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
@@ -3058,7 +3058,7 @@ msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
-#: gui/FLU/Flu_File_Chooser.cpp:548 gui/FLU/Flu_File_Chooser.cpp:549
+#: gui/FLU/Flu_File_Chooser.cpp:571 gui/FLU/Flu_File_Chooser.cpp:572
 msgid "JPEG Picture"
 msgstr "Imagen JPEG"
 
@@ -3355,19 +3355,19 @@ msgstr "Luv CIELUV (L*u*v*)"
 msgid "MGM Camera 65"
 msgstr "MGM Camara 65"
 
-#: gui/FLU/Flu_File_Chooser.cpp:567
+#: gui/FLU/Flu_File_Chooser.cpp:590
 msgid "MP3 music"
 msgstr "Música MP3"
 
-#: gui/FLU/Flu_File_Chooser.cpp:536
+#: gui/FLU/Flu_File_Chooser.cpp:559
 msgid "MP4 Movie"
 msgstr "Película MP4"
 
-#: gui/FLU/Flu_File_Chooser.cpp:531 gui/FLU/Flu_File_Chooser.cpp:532
+#: gui/FLU/Flu_File_Chooser.cpp:554 gui/FLU/Flu_File_Chooser.cpp:555
 msgid "MPEG Movie"
 msgstr "Película MPEG"
 
-#: gui/FLU/Flu_File_Chooser.cpp:533
+#: gui/FLU/Flu_File_Chooser.cpp:556
 msgid "MXF Movie"
 msgstr "Película MXF"
 
@@ -3376,11 +3376,11 @@ msgstr "Película MXF"
 msgid "Main"
 msgstr "Principal"
 
-#: gui/FLU/Flu_File_Chooser.cpp:550
+#: gui/FLU/Flu_File_Chooser.cpp:573
 msgid "Map Picture"
 msgstr "Imagen Map"
 
-#: gui/FLU/Flu_File_Chooser.cpp:530
+#: gui/FLU/Flu_File_Chooser.cpp:553
 msgid "Matroska Movie"
 msgstr "Pelicula Matroska"
 
@@ -3711,7 +3711,7 @@ msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
 "fue encontrada en ODT."
 
-#: gui/FLU/Flu_File_Chooser.cpp:568
+#: gui/FLU/Flu_File_Chooser.cpp:591
 msgid "OGG music"
 msgstr "Música OGG"
 
@@ -3880,7 +3880,7 @@ msgstr ""
 msgid "PMem: %<PRId64>/%<PRId64> MB  VMem: %<PRId64>/%<PRId64> MB"
 msgstr "MemF: %<PRId64>/%<PRId64> MB  MemV: %<PRId64>/%<PRId64> MB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:555
+#: gui/FLU/Flu_File_Chooser.cpp:578
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
@@ -3948,7 +3948,7 @@ msgstr "Perfs por Cuadro"
 msgid "Permissions"
 msgstr "Permisos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:556
+#: gui/FLU/Flu_File_Chooser.cpp:579
 msgid "Photoshop Picture"
 msgstr "Imagen de Photoshop"
 
@@ -4133,7 +4133,7 @@ msgstr "Provincia Estado"
 msgid "Quality"
 msgstr "Cualidad"
 
-#: gui/FLU/Flu_File_Chooser.cpp:526 gui/FLU/Flu_File_Chooser.cpp:527
+#: gui/FLU/Flu_File_Chooser.cpp:549 gui/FLU/Flu_File_Chooser.cpp:550
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
@@ -4161,7 +4161,7 @@ msgstr "ROJO"
 msgid "RGB"
 msgstr "RGB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:557
+#: gui/FLU/Flu_File_Chooser.cpp:580
 msgid "RGB Picture"
 msgstr "Imagen RGB"
 
@@ -4209,22 +4209,22 @@ msgstr "Rango"
 msgid "Read"
 msgstr "Leer"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1372
+#: gui/FLU/Flu_File_Chooser.cpp:1395
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1385
+#: gui/FLU/Flu_File_Chooser.cpp:1408
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1366
+#: gui/FLU/Flu_File_Chooser.cpp:1389
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1380
+#: gui/FLU/Flu_File_Chooser.cpp:1403
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
@@ -4355,7 +4355,7 @@ msgstr "Revertir"
 msgid "Revert settings to last saved preferences."
 msgstr "Revertir seteos a la la ultima preferencias grabadas."
 
-#: gui/FLU/Flu_File_Chooser.cpp:558
+#: gui/FLU/Flu_File_Chooser.cpp:581
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
@@ -4400,7 +4400,7 @@ msgstr "S"
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
-#: gui/FLU/Flu_File_Chooser.cpp:560
+#: gui/FLU/Flu_File_Chooser.cpp:583
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
@@ -4703,7 +4703,7 @@ msgstr "Creación de enchufe falló\n"
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
-#: gui/FLU/Flu_File_Chooser.cpp:554
+#: gui/FLU/Flu_File_Chooser.cpp:577
 msgid "Softimage Picture"
 msgstr "Imagen Softimage"
 
@@ -4757,7 +4757,7 @@ msgstr "Estadísticas"
 msgid "Stereo"
 msgstr "Estéreo"
 
-#: gui/FLU/Flu_File_Chooser.cpp:562
+#: gui/FLU/Flu_File_Chooser.cpp:585
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
@@ -4919,8 +4919,8 @@ msgstr ""
 msgid "TC bgf2"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:546 gui/FLU/Flu_File_Chooser.cpp:564
-#: gui/FLU/Flu_File_Chooser.cpp:565
+#: gui/FLU/Flu_File_Chooser.cpp:569 gui/FLU/Flu_File_Chooser.cpp:587
+#: gui/FLU/Flu_File_Chooser.cpp:588
 msgid "TIFF Picture"
 msgstr "Imagen TIFF"
 
@@ -4932,7 +4932,7 @@ msgstr "Tab"
 msgid "Tags"
 msgstr "Tags"
 
-#: gui/FLU/Flu_File_Chooser.cpp:563
+#: gui/FLU/Flu_File_Chooser.cpp:586
 msgid "Targa Picture"
 msgstr "Imagen Targa"
 
@@ -5472,7 +5472,7 @@ msgstr "V-A: "
 msgid "VA Difference"
 msgstr "Diferencia V-A"
 
-#: gui/FLU/Flu_File_Chooser.cpp:535
+#: gui/FLU/Flu_File_Chooser.cpp:558
 msgid "VOB Movie"
 msgstr "Pelicula VOB"
 
@@ -5563,7 +5563,7 @@ msgstr "W"
 msgid "W: %g %g"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:534
+#: gui/FLU/Flu_File_Chooser.cpp:557
 msgid "WMV Movie"
 msgstr "Película WMV"
 
@@ -5572,11 +5572,11 @@ msgstr "Película WMV"
 msgid "WSA not ready\n"
 msgstr "WSA no esta listo\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:569
+#: gui/FLU/Flu_File_Chooser.cpp:592
 msgid "Wave music"
 msgstr "Musica WAVE"
 
-#: gui/FLU/Flu_File_Chooser.cpp:537
+#: gui/FLU/Flu_File_Chooser.cpp:560
 msgid "WebM Movie"
 msgstr "Película WebM"
 
@@ -6090,31 +6090,31 @@ msgstr "izquierda.anaglífico"
 msgid "listen to socket failed\n"
 msgstr "Escuchar al enchufe falló\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:540
+#: gui/FLU/Flu_File_Chooser.cpp:563
 msgid "mental ray Bit Picture"
 msgstr "Imagen de mental ray de 1 Bit"
 
-#: gui/FLU/Flu_File_Chooser.cpp:542
+#: gui/FLU/Flu_File_Chooser.cpp:565
 msgid "mental ray Contour Picture"
 msgstr "Imagen de Contornos de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:553
+#: gui/FLU/Flu_File_Chooser.cpp:576
 msgid "mental ray Motion Picture"
 msgstr "Imagen de Movimiento de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:552
+#: gui/FLU/Flu_File_Chooser.cpp:575
 msgid "mental ray Normal Picture"
 msgstr "Imagen de Normales de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:561
+#: gui/FLU/Flu_File_Chooser.cpp:584
 msgid "mental ray Scalar Picture"
 msgstr "Imagen de coma flotante de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:559
+#: gui/FLU/Flu_File_Chooser.cpp:582
 msgid "mental ray Shadow Map"
 msgstr "Imagen de sombras de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:566
+#: gui/FLU/Flu_File_Chooser.cpp:589
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de profundidad Z de mental ray"
 
