@@ -115,7 +115,7 @@ bool LogDisplay::shown = false;
       stylebuffer_->append( "A" );
 
     // Set the line to end of text display
-    scroll( total_lines(), 0 );
+    // scroll( total_lines(), 0 );
   }
 
   void LogDisplay::warning( const char* x )
@@ -127,7 +127,7 @@ bool LogDisplay::shown = false;
       stylebuffer_->append( "B" );
 
     // Set the line to end of text display
-    scroll( total_lines(), 0 );
+    // scroll( total_lines(), 0 );
   }
 
   void LogDisplay::error( const char* x )
@@ -139,7 +139,7 @@ bool LogDisplay::shown = false;
       stylebuffer_->append( "C" );
 
     // Set the line to end of text display
-    scroll( total_lines(), 0 );
+    // scroll( total_lines(), 0 );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
