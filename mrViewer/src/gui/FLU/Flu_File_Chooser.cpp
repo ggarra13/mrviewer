@@ -1020,10 +1020,24 @@ Flu_File_Chooser::~Flu_File_Chooser()
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
 
+  // Make sure all other previews have finished
+  quick_exit = true;
+
+  thread_pool_t::iterator it = threads.begin();
+  thread_pool_t::iterator ie = threads.end();
+
+  for ( ;it != ie; ++it )
+  {
+      (*it)->join();
+      delete *it;
+  }
+
   clear_lists();
 
   clear_history();
   unselect_all();
+
+
 }
 
 void Flu_File_Chooser::hideCB()
