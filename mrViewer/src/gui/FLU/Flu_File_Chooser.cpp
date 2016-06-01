@@ -1682,6 +1682,7 @@ void Flu_File_Chooser::previewCB()
         for ( ;it != ie; ++it )
         {
             (*it)->join();
+            delete *it;
         }
 
         quick_exit = false;
@@ -4774,8 +4775,6 @@ static const char* _flu_file_chooser( const char *message, const char *pattern,
             fc->filter( pattern );
             fc->value( filename );
 	}
-
-      fc->cd( "./" );
 
     }
 
