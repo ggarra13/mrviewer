@@ -44,13 +44,16 @@ class LogDisplay : public fltk::TextDisplay
   public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~LogDisplay();
-      
+
     void clear();
     void save( const char* file = NULL );
 
     void info( const char* x );
     void warning( const char* x );
     void error( const char* x );
+
+  protected:
+    unsigned int _lines;
 
   public:
     static ShowPreferences prefs;

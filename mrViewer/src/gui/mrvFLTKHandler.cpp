@@ -28,8 +28,13 @@
 
 #include "core/CMedia.h"
 
+#include "gui/mrvIO.h"
 #include "gui/mrvFLTKHandler.h"
 #include "gui/mrvMedia.h"
+
+namespace {
+const char* kModule = "icon";
+}
 
 namespace mrv {
 
@@ -53,9 +58,11 @@ namespace mrv {
 
 
     // Fetch first frame
-    img->probe_size( 50 );
-    img->fetch( img->first_frame() );
-    img->probe_size( 50000 );
+    int64_t f = img->first_frame();
+    f += int64_t( img->duration() * 0.25f);
+    img->audio_stream( -1 );
+    img->seek( f );
+    img->fetch( f );
 
 
     mrv::gui::media m( img );

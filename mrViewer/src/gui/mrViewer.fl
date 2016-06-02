@@ -2496,8 +2496,8 @@ else
         label mrViewer
         user_data this user_data_type {mrv::ViewerUI*}
         callback {delete v;}
-        xywh {354 146 640 535} when CHANGED hide resizable
-        extra_code {o->size_range(640, 550);
+        xywh {354 146 640 530} when CHANGED hide resizable
+        extra_code {o->size_range(640, 530);
 o->main( this );}
         class {mrv::MainWindow}
       } {
