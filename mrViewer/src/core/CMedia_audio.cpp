@@ -1098,7 +1098,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
                                 ( int16_t * )( (char*)_audio_buf + 
                                                _audio_buf_used ), 
                                 &audio_size, &pkt_temp );
-       assert( audio_size > 0 );
        assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
 
       // If no samples are returned, then break now
@@ -1112,14 +1111,14 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
                           << _(" frame: ") << frame );
                IMG_ERROR(  get_error_text(ret) );
                IMG_ERROR( "DATA: " << (void*) pkt_temp.data
-                          << _(" audio total: ") << _audio_buf_used 
-                          << _(" audio used: ") << audio_size 
+                          << _(" audio total: ") << _audio_buf_used
+                          << _(" audio used: ") << audio_size
                           << _(" audio max: ")  << _audio_max );
            }
 	  return kDecodeMissingSamples;
 	}
 
-
+      assert( audio_size > 0 );
       assert( audio_size + _audio_buf_used <= _audio_max );
 
       // Decrement the length by the number of bytes parsed
