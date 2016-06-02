@@ -342,8 +342,8 @@ class CMedia
     void image_size( int w, int h );
 
     /////////////// Set to true if image is internal and no filename is used
-    bool internal() const { return _internal; }
-    const void internal(bool t) { _internal = t; }
+    inline bool internal() const { return _internal; }
+    inline const void internal(bool t) { _internal = t; }
 
     ///
     virtual void channel( const char* c );

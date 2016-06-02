@@ -563,6 +563,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   add_type( N_("bit"),   _( "mental ray Bit Picture"), &picture );
   add_type( N_("cin"),   _( "Cineon Picture"), &picture );
   add_type( N_("ct"),    _( "mental ray Contour Picture"), &picture );
+  add_type( N_("dng"),   _( "Kodak Digital Negative"), &picture );
   add_type( N_("dpx"),   _( "DPX Picture"), &picture );
   add_type( N_("exr"),   _( "EXR Picture"), &picture );
   add_type( N_("hdr"),   _( "HDRI Picture"), &picture );
@@ -1002,6 +1003,20 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
      filename.value( pathname );
 }
 
+void Flu_File_Chooser::clear_threads()
+{
+  quick_exit = true;
+
+  thread_pool_t::iterator it = threads.begin();
+  thread_pool_t::iterator ie = threads.end();
+
+  for ( ;it != ie; ++it )
+  {
+      (*it)->join();
+      delete *it;
+  }
+}
+
 void Flu_File_Chooser::clear_lists()
 {
     quick_exit = true;
@@ -1021,16 +1036,8 @@ Flu_File_Chooser::~Flu_File_Chooser()
     free( (void*)locationQuickJump->child(i)->label() );
 
   // Make sure all other previews have finished
-  quick_exit = true;
 
-  thread_pool_t::iterator it = threads.begin();
-  thread_pool_t::iterator ie = threads.end();
-
-  for ( ;it != ie; ++it )
-  {
-      (*it)->join();
-      delete *it;
-  }
+  clear_threads();
 
   clear_lists();
 
@@ -1690,14 +1697,7 @@ void Flu_File_Chooser::previewCB()
     if ( previewBtn->value() )
     {
         // Make sure all other previews have finished
-        thread_pool_t::iterator it = threads.begin();
-        thread_pool_t::iterator ie = threads.end();
-        
-        for ( ;it != ie; ++it )
-        {
-            (*it)->join();
-            delete *it;
-        }
+        clear_threads();
 
         quick_exit = false;
 
