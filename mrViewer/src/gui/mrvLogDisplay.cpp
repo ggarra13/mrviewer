@@ -51,7 +51,8 @@ LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 bool LogDisplay::shown = false;
 
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
-    fltk::TextDisplay( x, y, w, h, l )
+  fltk::TextDisplay( x, y, w, h, l ),
+  _lines( 0 )
   {
     color( fltk::GRAY75 );
 
@@ -112,10 +113,12 @@ bool LogDisplay::shown = false;
 
     size_t t = strlen(x);
     while( t-- )
+    {
       stylebuffer_->append( "A" );
-
+      if ( x[t] == '\n' ) ++_lines;
+    }
     // Set the line to end of text display
-    // scroll( total_lines(), 0 );
+    scroll( _lines, 0 );
   }
 
   void LogDisplay::warning( const char* x )
@@ -124,10 +127,12 @@ bool LogDisplay::shown = false;
 
     size_t t = strlen(x);
     while( t-- )
+    {
       stylebuffer_->append( "B" );
+      if ( x[t] == '\n' ) ++_lines;
+    }
 
-    // Set the line to end of text display
-    // scroll( total_lines(), 0 );
+    scroll( _lines, 0 );
   }
 
   void LogDisplay::error( const char* x )
@@ -136,10 +141,13 @@ bool LogDisplay::shown = false;
 
     size_t t = strlen(x);
     while( t-- )
+    {
       stylebuffer_->append( "C" );
+      if ( x[t] == '\n' ) ++_lines;
+    }
 
     // Set the line to end of text display
-    // scroll( total_lines(), 0 );
+    scroll( _lines, 0 );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {

@@ -1,12 +1,12 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-#
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-06-01 13:12-0300\n"
+"POT-Creation-Date: 2016-06-02 15:27-0300\n"
 "PO-Revision-Date: 2016-05-25 21:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -127,15 +127,15 @@ msgstr " CNM: %<PRId64> "
 msgid " at port "
 msgstr " en el puerto "
 
-#: core/CMedia_audio.cpp:1117
+#: core/CMedia_audio.cpp:1116
 msgid " audio max: "
 msgstr " max. audio: "
 
-#: core/CMedia_audio.cpp:1115
+#: core/CMedia_audio.cpp:1114
 msgid " audio total: "
 msgstr " total de audio: "
 
-#: core/CMedia_audio.cpp:1116
+#: core/CMedia_audio.cpp:1115
 msgid " audio used: "
 msgstr " audio usado: "
 
@@ -151,7 +151,7 @@ msgstr " codificando"
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1530
+#: core/CMedia_audio.cpp:1529
 msgid " failed"
 msgstr " falló. "
 
@@ -163,7 +163,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1929 core/aviImage.cpp:3057
+#: core/CMedia_audio.cpp:1928 core/aviImage.cpp:3057
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -175,7 +175,7 @@ msgstr " para pista #"
 msgid " frame"
 msgstr " cuadro"
 
-#: core/CMedia_audio.cpp:1112
+#: core/CMedia_audio.cpp:1111
 msgid " frame: "
 msgstr " cuadro: "
 
@@ -199,7 +199,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1586 core/aviImage.cpp:1423
+#: core/CMedia_audio.cpp:1585 core/aviImage.cpp:1423
 msgid " not found"
 msgstr " no encontrado"
 
@@ -853,7 +853,7 @@ msgstr "Alt"
 msgid "Altitude"
 msgstr "Altitud"
 
-#
+# 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2786
 msgid "Always"
 msgstr "Siempre"
@@ -954,19 +954,19 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
-#: core/CMedia_audio.cpp:1586
+#: core/CMedia_audio.cpp:1585
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
-#: core/CMedia_audio.cpp:1111
+#: core/CMedia_audio.cpp:1110
 msgid "Audio missed for ptsframe: "
 msgstr "Audio faltante para el cuadro: "
 
-#: core/CMedia_audio.cpp:1680
+#: core/CMedia_audio.cpp:1679
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1725
+#: core/CMedia_audio.cpp:1724
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -982,7 +982,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: core/CMedia_audio.cpp:1344
+#: core/CMedia_audio.cpp:1343
 msgid "Audios #"
 msgstr "Audios #"
 
@@ -1581,7 +1581,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1517
+#: core/CMedia_audio.cpp:1516
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -1593,7 +1593,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/CMedia_audio.cpp:1597
+#: core/CMedia_audio.cpp:1596
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -1889,7 +1889,7 @@ msgstr "Cortar Clip en el lugar actual"
 msgid "DIVX Movie"
 msgstr "Película DIVX"
 
-#: gui/FLU/Flu_File_Chooser.cpp:566
+#: gui/FLU/Flu_File_Chooser.cpp:567
 msgid "DPX Picture"
 msgstr "Imagen DPX"
 
@@ -1972,7 +1972,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1927 core/aviImage.cpp:3041 core/aviImage.cpp:3055
+#: core/CMedia_audio.cpp:1926 core/aviImage.cpp:3041 core/aviImage.cpp:3055
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -2192,7 +2192,7 @@ msgstr "Ventana de LDE"
 msgid "EXIF"
 msgstr "EXIF"
 
-#: gui/FLU/Flu_File_Chooser.cpp:567
+#: gui/FLU/Flu_File_Chooser.cpp:568
 msgid "EXR Picture"
 msgstr "Imagen EXR"
 
@@ -2241,7 +2241,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-#
+# 
 #: core/aviImage.cpp:531
 msgid "Error configuring filter graph"
 msgstr "Error configurando la gráfica de filtros"
@@ -2595,7 +2595,7 @@ msgstr "Función"
 msgid "G"
 msgstr "V"
 
-#: gui/FLU/Flu_File_Chooser.cpp:574
+#: gui/FLU/Flu_File_Chooser.cpp:575
 msgid "GIF Picture"
 msgstr "Imagen GIF"
 
@@ -2690,7 +2690,7 @@ msgstr "Verde"
 msgid "Green value of image pixel under mouse."
 msgstr "Valor de Verde del pixel bajo el mouse."
 
-#: gui/FLU/Flu_File_Chooser.cpp:568
+#: gui/FLU/Flu_File_Chooser.cpp:569
 msgid "HDRI Picture"
 msgstr "Imagen HDRI"
 
@@ -2799,7 +2799,7 @@ msgstr "Inspector de Perfiles ICC"
 msgid "ICC profile"
 msgstr "Perfil ICC"
 
-#: gui/FLU/Flu_File_Chooser.cpp:570
+#: gui/FLU/Flu_File_Chooser.cpp:571
 msgid "IFF Picture"
 msgstr "Imagen IFF"
 
@@ -3058,7 +3058,7 @@ msgstr "Inválido perfil fuente/formato de pixel de la imagen"
 msgid "Invalid video stream "
 msgstr "Pista de video inválido "
 
-#: gui/FLU/Flu_File_Chooser.cpp:571 gui/FLU/Flu_File_Chooser.cpp:572
+#: gui/FLU/Flu_File_Chooser.cpp:572 gui/FLU/Flu_File_Chooser.cpp:573
 msgid "JPEG Picture"
 msgstr "Imagen JPEG"
 
@@ -3127,6 +3127,10 @@ msgstr "Palabra clave"
 #: gui/mrvImageInformation.cpp:957
 msgid "Known Codec"
 msgstr "Codec Conocido"
+
+#: gui/FLU/Flu_File_Chooser.cpp:566
+msgid "Kodak Digital Negative"
+msgstr "Negativo Digital de Kodak"
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3699
 msgid "L (Lightness)"
@@ -3355,7 +3359,7 @@ msgstr "Luv CIELUV (L*u*v*)"
 msgid "MGM Camera 65"
 msgstr "MGM Camara 65"
 
-#: gui/FLU/Flu_File_Chooser.cpp:590
+#: gui/FLU/Flu_File_Chooser.cpp:591
 msgid "MP3 music"
 msgstr "Música MP3"
 
@@ -3376,7 +3380,7 @@ msgstr "Película MXF"
 msgid "Main"
 msgstr "Principal"
 
-#: gui/FLU/Flu_File_Chooser.cpp:573
+#: gui/FLU/Flu_File_Chooser.cpp:574
 msgid "Map Picture"
 msgstr "Imagen Map"
 
@@ -3538,7 +3542,7 @@ msgstr ""
 "Los nombres no pueden contener espacios en sus directorios.\n"
 "\n"
 
-#
+# 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1881
 msgid "Native"
 msgstr "Nativo"
@@ -3547,7 +3551,7 @@ msgstr "Nativo"
 msgid "Network Disk"
 msgstr "Disco de Red"
 
-#
+# 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
 msgid "Never"
 msgstr "Nunca"
@@ -3613,7 +3617,7 @@ msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
 msgid "No left image to attach a stereo image pair"
 msgstr "No hay imagen izquierda para atar a un par de imágenes estéreo."
 
-#: core/CMedia_audio.cpp:1343
+#: core/CMedia_audio.cpp:1342
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
@@ -3711,7 +3715,7 @@ msgstr ""
 "ODT Lut está seteado para preferir un perfil ICC pero solo una escritura CTL "
 "fue encontrada en ODT."
 
-#: gui/FLU/Flu_File_Chooser.cpp:591
+#: gui/FLU/Flu_File_Chooser.cpp:592
 msgid "OGG music"
 msgstr "Música OGG"
 
@@ -3880,7 +3884,7 @@ msgstr ""
 msgid "PMem: %<PRId64>/%<PRId64> MB  VMem: %<PRId64>/%<PRId64> MB"
 msgstr "MemF: %<PRId64>/%<PRId64> MB  MemV: %<PRId64>/%<PRId64> MB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:578
+#: gui/FLU/Flu_File_Chooser.cpp:579
 msgid "PNG Picture"
 msgstr "Imagen PNG"
 
@@ -3948,7 +3952,7 @@ msgstr "Perfs por Cuadro"
 msgid "Permissions"
 msgstr "Permisos"
 
-#: gui/FLU/Flu_File_Chooser.cpp:579
+#: gui/FLU/Flu_File_Chooser.cpp:580
 msgid "Photoshop Picture"
 msgstr "Imagen de Photoshop"
 
@@ -4025,7 +4029,7 @@ msgstr "Reproducir secuencia hacia delante."
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1529
+#: core/CMedia_audio.cpp:1528
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -4161,7 +4165,7 @@ msgstr "ROJO"
 msgid "RGB"
 msgstr "RGB"
 
-#: gui/FLU/Flu_File_Chooser.cpp:580
+#: gui/FLU/Flu_File_Chooser.cpp:581
 msgid "RGB Picture"
 msgstr "Imagen RGB"
 
@@ -4209,22 +4213,22 @@ msgstr "Rango"
 msgid "Read"
 msgstr "Leer"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1409
+#: gui/FLU/Flu_File_Chooser.cpp:1416
 #, c-format
 msgid "Really delete '%s'?"
 msgstr "¿Realmente borrar '%s'?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1422
+#: gui/FLU/Flu_File_Chooser.cpp:1429
 #, c-format
 msgid "Really delete these %d files?"
 msgstr "¿Realmente borrar estos %d archivos?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1403
+#: gui/FLU/Flu_File_Chooser.cpp:1410
 #, c-format
 msgid "Really send '%s' to the Recycle Bin?"
 msgstr "¿Realmente enviar '%s' al Basurero?"
 
-#: gui/FLU/Flu_File_Chooser.cpp:1417
+#: gui/FLU/Flu_File_Chooser.cpp:1424
 #, c-format
 msgid "Really send these %d files to the Recycle Bin?"
 msgstr "¿Realmente enviar estos %d archivos al Basurero?"
@@ -4355,7 +4359,7 @@ msgstr "Revertir"
 msgid "Revert settings to last saved preferences."
 msgstr "Revertir seteos a la la ultima preferencias grabadas."
 
-#: gui/FLU/Flu_File_Chooser.cpp:581
+#: gui/FLU/Flu_File_Chooser.cpp:582
 msgid "Rich Picture Format"
 msgstr "Imagen de Formato Rich Picture"
 
@@ -4400,7 +4404,7 @@ msgstr "S"
 msgid "SDI Output:\t"
 msgstr "SDI Output:\t"
 
-#: gui/FLU/Flu_File_Chooser.cpp:583
+#: gui/FLU/Flu_File_Chooser.cpp:584
 msgid "SGI Picture"
 msgstr "Imagen SGI"
 
@@ -4703,7 +4707,7 @@ msgstr "Creación de enchufe falló\n"
 msgid "Socket error: Could not connect to "
 msgstr "Error de Socket: No pude conectar a "
 
-#: gui/FLU/Flu_File_Chooser.cpp:577
+#: gui/FLU/Flu_File_Chooser.cpp:578
 msgid "Softimage Picture"
 msgstr "Imagen Softimage"
 
@@ -4757,7 +4761,7 @@ msgstr "Estadísticas"
 msgid "Stereo"
 msgstr "Estéreo"
 
-#: gui/FLU/Flu_File_Chooser.cpp:585
+#: gui/FLU/Flu_File_Chooser.cpp:586
 msgid "Stereo EXR Picture"
 msgstr "Imagen Estéreo de EXR"
 
@@ -4919,8 +4923,8 @@ msgstr ""
 msgid "TC bgf2"
 msgstr ""
 
-#: gui/FLU/Flu_File_Chooser.cpp:569 gui/FLU/Flu_File_Chooser.cpp:587
-#: gui/FLU/Flu_File_Chooser.cpp:588
+#: gui/FLU/Flu_File_Chooser.cpp:570 gui/FLU/Flu_File_Chooser.cpp:588
+#: gui/FLU/Flu_File_Chooser.cpp:589
 msgid "TIFF Picture"
 msgstr "Imagen TIFF"
 
@@ -4932,7 +4936,7 @@ msgstr "Tab"
 msgid "Tags"
 msgstr "Tags"
 
-#: gui/FLU/Flu_File_Chooser.cpp:586
+#: gui/FLU/Flu_File_Chooser.cpp:587
 msgid "Targa Picture"
 msgstr "Imagen Targa"
 
@@ -5572,7 +5576,7 @@ msgstr "Película WMV"
 msgid "WSA not ready\n"
 msgstr "WSA no esta listo\n"
 
-#: gui/FLU/Flu_File_Chooser.cpp:592
+#: gui/FLU/Flu_File_Chooser.cpp:593
 msgid "Wave music"
 msgstr "Musica WAVE"
 
@@ -6020,11 +6024,11 @@ msgstr "cruzado"
 msgid "data"
 msgstr "datos"
 
-#: core/CMedia_audio.cpp:1157
+#: core/CMedia_audio.cpp:1156
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
-#: core/CMedia_audio.cpp:1717
+#: core/CMedia_audio.cpp:1716
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
@@ -6098,23 +6102,23 @@ msgstr "Imagen de mental ray de 1 Bit"
 msgid "mental ray Contour Picture"
 msgstr "Imagen de Contornos de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:576
+#: gui/FLU/Flu_File_Chooser.cpp:577
 msgid "mental ray Motion Picture"
 msgstr "Imagen de Movimiento de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:575
+#: gui/FLU/Flu_File_Chooser.cpp:576
 msgid "mental ray Normal Picture"
 msgstr "Imagen de Normales de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:584
+#: gui/FLU/Flu_File_Chooser.cpp:585
 msgid "mental ray Scalar Picture"
 msgstr "Imagen de coma flotante de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:582
+#: gui/FLU/Flu_File_Chooser.cpp:583
 msgid "mental ray Shadow Map"
 msgstr "Imagen de sombras de mental ray"
 
-#: gui/FLU/Flu_File_Chooser.cpp:589
+#: gui/FLU/Flu_File_Chooser.cpp:590
 msgid "mental ray Z Depth Picture"
 msgstr "Imagen de profundidad Z de mental ray"
 
