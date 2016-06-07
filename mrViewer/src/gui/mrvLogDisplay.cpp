@@ -73,6 +73,7 @@ bool LogDisplay::shown = false;
   {
     buffer_->text("");
     stylebuffer_->text("");
+    _lines = 0;
   }
 
   void LogDisplay::save( const char* file )
