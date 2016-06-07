@@ -2420,13 +2420,13 @@ bool aviImage::fetch(const boost::int64_t frame)
 bool aviImage::frame( const boost::int64_t f )
 {
 
-   if ( playback() != kStopped &&
-        (( !has_video() || _video_packets.size() > kMIN_FRAMES ||
-           (get_video_stream()->disposition & AV_DISPOSITION_ATTACHED_PIC)) &&
-         ( !has_audio() || _audio_packets.size() > kMIN_FRAMES ) &&
-         ( _video_packets.bytes() +  _audio_packets.bytes() + 
-           _subtitle_packets.bytes() > kMAX_QUEUE_SIZE  
-          ) ) )
+    if ( playback() != kStopped &&
+         (_audio_packets.bytes() + _video_packets.bytes() + 
+          _subtitle_packets.bytes() > kMAX_QUEUE_SIZE
+          || ( (_audio_packets.size() > kMIN_FRAMES || !has_audio() ) &&
+               (_video_packets.size() > kMIN_FRAMES || !has_video() ) &&
+               (_subtitle_packets.size() > kMIN_FRAMES || !has_subtitle()
+               ) )) )
     {
     // std::cerr << "false return: " << std::endl;
     // std::cerr << "vp: " << _video_packets.size() << std::endl;
