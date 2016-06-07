@@ -1046,7 +1046,7 @@ bool CMedia::has_changed()
 /** 
  * Change the image size.
  * This function may also set the pixel ratio for some common video
- * formats.
+ * formats and also their fps if fps == 0.
  * 
  * @param w width of image
  * @param h height of image
@@ -1687,7 +1687,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   _dts = _frame;
 
-  DBG( name() << " Play from frame " << _dts );
+  DBG( name() << " Play from frame " << _dts << " expected " << _expected );
 
   _audio_clock = double( av_gettime_relative() ) / 1000000.0;
   _video_clock = double( av_gettime_relative() ) / 1000000.0;
@@ -1700,9 +1700,8 @@ void CMedia::play(const CMedia::Playback dir,
   _audio_buf_used = 0;
 
 
-  // clear all packets and caches
+  // clear all packets
   clear_packets();
-  clear_stores();
 
   // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
@@ -1880,7 +1879,7 @@ bool CMedia::frame( const boost::int64_t f )
 #define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
   if ( _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
-       _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE )
+       _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
     {
       return false;
     }
