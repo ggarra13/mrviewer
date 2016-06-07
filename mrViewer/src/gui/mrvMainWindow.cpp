@@ -85,7 +85,8 @@ namespace mrv {
 
     if ( ErrorStatus == XpmSuccess )
       {
-         this->icon((const void*)p);
+          std::cerr << "XpmCreatePixmapFromData returned success" << std::endl;
+         this->icon((const void*)&p);
       }
     else
     {
