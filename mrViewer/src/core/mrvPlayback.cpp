@@ -93,19 +93,20 @@ typedef boost::recursive_mutex Mutex;
 typedef boost::condition_variable Condition;
 
 
-#if defined(WIN32) || defined(WIN64)
 
-struct timespec {
-   time_t tv_sec;        /* seconds */
-   long   tv_nsec;       /* nanoseconds */
-};
-
-void nanosleep( const struct timespec* req, struct timespec* rem )
+void sleep_ms(int milliseconds) // cross-platform sleep function
 {
-   Sleep( DWORD(1000 * req->tv_sec + req->tv_nsec / 1e7f) );
-}
-
+#ifdef WIN32
+    Sleep(milliseconds);
+#elif _POSIX_C_SOURCE >= 199309L
+    struct timespec ts;
+    ts.tv_sec = milliseconds / 1000;
+    ts.tv_nsec = (milliseconds % 1000) * 1000000;
+    nanosleep(&ts, NULL);
+#else
+    usleep(milliseconds * 1000);
 #endif
+}
 
 
 
@@ -1072,12 +1073,9 @@ void decode_thread( PlaybackData* data )
 
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      if ( !img->frame( frame ) )
+      while ( !img->frame( frame ) )
       {
-	 timespec req;
-	 req.tv_sec = 0;
-	 req.tv_nsec = (long)( 10 * 1e7f); // 10 ms.
-	 nanosleep( &req, NULL );
+	 sleep_ms( 10 );
       }
 
 

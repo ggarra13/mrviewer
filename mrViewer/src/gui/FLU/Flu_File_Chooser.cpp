@@ -390,8 +390,10 @@ static void loadRealIcon( RealIcon* e)
 
 
 
-    if ( ! fs::exists( buf ) ) return;
-
+    if ( ! fs::exists( buf ) ) {
+        delete e;
+        return;
+    }
 
     fltk::SharedImage* img;
     try {

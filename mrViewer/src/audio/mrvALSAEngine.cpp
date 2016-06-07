@@ -351,7 +351,7 @@ static const char* kModule = "alsa";
               THROW( _("Couldn't find any hardware audio formats") );
           }
 
-          _audio_format = (mrv::AudioEngine::AudioFormat) (int)(test_format + 1);
+          _audio_format = (mrv::AudioEngine::AudioFormat) test_format;
 
 
           /* Set the number of channels */
@@ -370,7 +370,7 @@ static const char* kModule = "alsa";
           }
 
           _channels = ch;
-          _sample_size = bits * ch / 8;
+          _sample_size = ( bits * ch ) / 8;
 
           /* Set the audio rate */
           unsigned int exact_rate = freq;
@@ -485,7 +485,6 @@ static const char* kModule = "alsa";
 
           // All okay, enable device
           _enabled = true;
-
 
           /* We're ready to rock and roll. :-) */
           return true;

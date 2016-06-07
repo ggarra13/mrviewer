@@ -384,7 +384,11 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
                                             / fps() );
     if ( offset < 0 ) offset = 0;
 
-    int ret = av_seek_frame( _acontext, -1, offset, AVSEEK_FLAG_BACKWARD );
+    int flag = AVSEEK_FLAG_BACKWARD;
+    // int flag;
+    // flag &= ~AVSEEK_FLAG_BYTE;
+
+    int ret = av_seek_frame( _acontext, -1, offset, flag );
     if (ret < 0)
     {
         IMG_ERROR( "Could not seek to frame " << frame << ". Error: "
@@ -1472,7 +1476,6 @@ bool CMedia::open_audio( const short channels,
 {
   close_audio();
 
-  _samples_per_sec = nSamplesPerSec;
 
   AudioEngine::AudioFormat format = _audio_format;
 
@@ -1484,12 +1487,12 @@ bool CMedia::open_audio( const short channels,
   }
 
 
-  AVSampleFormat fmt = AudioEngine::ffmpeg_format( format );
-  unsigned bps = av_get_bytes_per_sample( fmt ) * 8;
+  AVSampleFormat ft = AudioEngine::ffmpeg_format( format );
+  unsigned bps = av_get_bytes_per_sample( ft ) * 8;
 
   bool ok = false;
   int ch = channels;
-  for ( int fmt = format; fmt > 0; fmt -= 2 )
+  for ( int fmt = format; fmt > 0; fmt -= 2 ) // to skip be/le versions
   {
       ok = _audio_engine->open( ch, nSamplesPerSec,
                                 (AudioEngine::AudioFormat)fmt, bps );
@@ -1498,6 +1501,8 @@ bool CMedia::open_audio( const short channels,
 
   _audio_format = _audio_engine->format();
   _audio_channels = _audio_engine->channels();
+  _samples_per_sec = nSamplesPerSec;
+
 
   return ok;
 }
@@ -1506,7 +1511,7 @@ bool CMedia::open_audio( const short channels,
 bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 {
   double speedup = _play_fps / _fps;
-  unsigned nSamplesPerSec = unsigned( result->frequency() * speedup );
+  unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
   if ( nSamplesPerSec != _samples_per_sec ||
        result->channels() != _audio_channels )
     {
@@ -1517,7 +1522,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 	  _audio_index = -1;
 	  return false;
 	}
-      // _audio_channels = result->channels();
+
     }
 
 
