@@ -801,7 +801,11 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::load_theme();
   }
 
+#ifdef _WIN32
 static const char* kCLocale = "English";
+#else
+static const char* kCLocale = "C";
+#endif
 
   void Preferences::run( mrv::ViewerUI* main )
   {
@@ -834,7 +838,7 @@ static const char* kCLocale = "English";
         textdomain(buf);
 #endif
 
-        throw mrv::reinit_exception( "Changed locale to C" );
+        throw mrv::reinit_exception( "Changed locale to English" );
     }
 
     fltk::check();

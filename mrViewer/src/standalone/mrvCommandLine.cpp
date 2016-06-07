@@ -492,8 +492,6 @@ void parse_command_line( const int argc, char** argv,
 
                if ( (size_t)(e - i) <= files.size() - normalFiles )
                {
-                   std::cerr << "files " << files.size() 
-                             << "normalFiles " << normalFiles << std::endl;
                   // Add audio file to last stereo fileroot
                   if ( ai != ae )
                   {
