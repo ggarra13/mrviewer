@@ -349,7 +349,10 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
   {
     if (!_audio_device) return;
 
-    DWORD x = (DWORD) ( 0xFFFF * v );
+    unsigned short left = unsigned(0xFFFF * v);
+    unsigned short right = unsigned(0xFFFF * v);
+
+    unsigned long x = left + (right << 16);
 
     MMRESULT result = waveOutSetVolume( _audio_device, x );
     if ( result != MMSYSERR_NOERROR )
@@ -469,6 +472,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
 	// All okay, enable device
 	_enabled = true;
+        volume( 1.0f );
 	return true;
       }
     catch( const AudioEngine::exception& e )
