@@ -305,7 +305,7 @@ _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( other->_audio_channels ),
 _aframe( NULL ),
-_audio_format( AudioEngine::kFloatLSB ),
+_audio_format( other->_audio_format ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )

@@ -164,11 +164,6 @@ int main( int argc, char** argv )
 
   const char* tmp = setlocale(LC_ALL, "");
 
-
-// #ifdef _WIN32
-//   libintl_setlocale( LC_ALL, tmp );
-// #endif
-
   // Create and install global locale
   std::locale::global(boost::locale::generator().generate(""));
   // Make boost.filesystem use it
@@ -177,7 +172,6 @@ int main( int argc, char** argv )
 #ifdef LINUX
   XInitThreads();
 #endif
-  fltk::lock();   // Initialize X11 thread system
 
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
