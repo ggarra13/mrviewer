@@ -12,6 +12,7 @@ if [[ $KERNEL == CYGWIN* ]]; then
     RELEASE=${RELEASE[3]%.[0-9]*}
 elif [[ $KERNEL == MINGW* ]]; then
     RELEASE=(`cmd /c 'ver'`)
+    #RELEASE=${RELEASE[3]%.[0-9]*}
     RELEASE=${RELEASE[3]/]/}
     KERNEL=Windows
 else

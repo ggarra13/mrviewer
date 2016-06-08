@@ -37,7 +37,6 @@
 
 #include <mmreg.h>   // for manufacturer and product IDs
 
-
 namespace 
 {
   const char* kModule = "wmm";
@@ -396,11 +395,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
 	wavefmt.Samples.wValidBitsPerSample = wavefmt.Format.wBitsPerSample;
 
-	unsigned ch = channels;
-	if ( ch > _channels && _channels > 0 )
-	{
-	   ch = _channels;
-	}
+        unsigned ch = channels;
 	_channels = ch;
 	wavefmt.Format.nChannels = ch;
 	wavefmt.Format.nSamplesPerSec = freq;
@@ -464,6 +459,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	    memset( &hdr, 0, sizeof(WAVEHDR) );
 
 	    assert( (((unsigned long)ptr) % wavefmt.Format.nBlockAlign) == 0 );
+	    assert( (((unsigned long)ptr) % 16) == 0 );
 
 	    hdr.lpData  = ptr;
 	    hdr.dwFlags = WHDR_DONE;
@@ -499,7 +495,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
     if ( !_audio_device) return false;
     if ( !_enabled ) return true;
-
+    
 
     MMRESULT result;
 
