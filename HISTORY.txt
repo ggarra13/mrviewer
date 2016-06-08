@@ -13,6 +13,8 @@ v3.2.0   - Thumbnails in file requester are created with the audio
 	   result in white noise.
 	 - Bug fixed changing from Native locale to C locale on
 	   Linux.
+	 - Bug fixed volume control on Windows which would sometimes
+	   play the audio in mono.
 
 v3.1.9   **NOTE** If using the Windows installer, it is 
 	 	  recommended you uninstall v3.1.8 before
