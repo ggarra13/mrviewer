@@ -472,7 +472,6 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
 	// All okay, enable device
 	_enabled = true;
-        volume( 1.0f );
 	return true;
       }
     catch( const AudioEngine::exception& e )
