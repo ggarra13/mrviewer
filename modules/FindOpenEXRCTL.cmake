@@ -17,14 +17,10 @@ ELSE( OpenEXRCTL_LIBRARY_DIR )
     "$ENV{OpenEXRCTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{OpenEXRCTL_ROOT}/lib/Win32/Release"
     "$ENV{OpenEXRCTL_ROOT}/lib/Release"
-    "$ENV{OpenEXRCTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
-    "$ENV{OpenEXRCTL_ROOT}/lib/Debug"
-    "$ENV{OpenEXRCTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Release"
     "$ENV{CTL_ROOT}/lib/Win32/Release"
     "$ENV{CTL_ROOT}/lib/Release"
-    "$ENV{CTL_ROOT}/lib/x${CMAKE_BUILD_ARCH}/Debug"
-    "$ENV{CTL_ROOT}/lib/Debug"
+    "$ENV{OpenEXRCTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib"
     /usr/local/lib${CMAKE_BUILD_ARCH}
     /usr/lib${CMAKE_BUILD_ARCH}
@@ -49,6 +45,7 @@ FIND_LIBRARY( IlmImfCtl
   PATHS ${SEARCH_DIRS}
   DOC   "OpenEXRCTL IlmImfCtl library"
 )
+
 
 FIND_LIBRARY( IlmCtlSimd
   NAMES IlmCtlSimd_dll IlmCtlSimd_dll_d IlmCtlSimd IlmCtlSimdd

@@ -334,7 +334,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                     _audio_packets.push_back( pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
-         
+
             if ( !got_audio )
             {
                 if ( pktframe > frame ) got_audio = true;
@@ -346,8 +346,8 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                 if ( is_seek && got_audio )
                     _audio_packets.seek_end(apts);
                 }
-	   
-	   
+
+
 #ifdef DEBUG_DECODE
             fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
                      " audio pts: %07" PRId64 
@@ -1516,6 +1516,8 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
        result->channels() != _audio_channels )
     {
       SCOPED_LOCK( _audio_mutex );
+      LOG_INFO( "result->channels " << result->channels() << " ac: "
+                << _audio_channels );
       if ( ! open_audio( result->channels(), nSamplesPerSec ) )
 	{
 	  IMG_ERROR( _("Could not open audio driver") );
