@@ -45,6 +45,8 @@ AudioEngine::DeviceList AudioEngine::_devices;
 
 AudioEngine::AudioEngine() :
 _device_idx( 0 ),
+_enabled( false ),
+_volume( 1.0f ),
 _channels( 0 ),
 _audio_format( kFloatLSB )
 {

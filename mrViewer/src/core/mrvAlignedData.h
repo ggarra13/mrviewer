@@ -32,7 +32,7 @@
 
 #include <boost/cstdint.hpp>
 
-#if defined(WIN32) || defined(WIN64)
+#if defined(_WIN32) || defined(_WIN64)
 #  define memalign( b, a )   _aligned_malloc( a, b )
 #  define memalign_free( a ) _aligned_free( a ) 
 #else
