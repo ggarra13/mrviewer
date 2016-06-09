@@ -318,7 +318,14 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->first_frame( w->ivalue() );
+        int v = w->ivalue();
+        if ( v < img->start_frame() )
+            v = img->start_frame();
+        if ( v > img->last_frame() )
+            v = img->last_frame();
+        w->value( v );
+
+        img->first_frame( v );
         update_int_slider( w );
         mrv::ImageView* view = info->main()->uiView;
         view->redraw();
@@ -352,7 +359,14 @@ static void change_last_frame_cb( fltk::IntInput* w,
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->last_frame( w->ivalue() );
+        int v = w->ivalue();
+        if ( v < img->first_frame() )
+            v = img->first_frame();
+        if ( v > img->end_frame() )
+            v = img->end_frame();
+        w->value( v );
+
+        img->last_frame( v );
         info->main()->uiView->redraw();
         update_int_slider( w );
     }
