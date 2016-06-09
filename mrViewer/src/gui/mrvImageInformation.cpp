@@ -392,7 +392,7 @@ static void change_gamma_cb( fltk::FloatInput* w, ImageInformation* info )
     view->redraw();
 }
 
-double ImageInformation::to_memory( double value,
+double ImageInformation::to_memory( long double value,
                                     const char*& extension )
 {
     if ( value >= 1099511627776 )
