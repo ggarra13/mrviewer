@@ -1516,8 +1516,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
        result->channels() != _audio_channels )
     {
       SCOPED_LOCK( _audio_mutex );
-      LOG_INFO( "result->channels " << result->channels() << " ac: "
-                << _audio_channels );
       if ( ! open_audio( result->channels(), nSamplesPerSec ) )
 	{
 	  IMG_ERROR( _("Could not open audio driver") );
