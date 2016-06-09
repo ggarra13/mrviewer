@@ -6,14 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-06-07 15:36-0300\n"
+"POT-Creation-Date: 2016-06-09 16:09-0300\n"
 "PO-Revision-Date: 2016-05-25 21:16-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
+"Language: es_AR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_AR\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: core/CMedia_audio.cpp:601
@@ -191,12 +191,6 @@ msgstr " frecuencia: "
 msgid " has different display window than "
 msgstr "  tiene diferente ventana de vista que "
 
-#: standalone/main.cpp:292
-msgid ""
-" if mrViewer crashed\n"
-"or modify Preferences->User Interface->Single Instance."
-msgstr ""
-
 #: core/aviImage.cpp:1417
 msgid " instead"
 msgstr " en remplazo"
@@ -316,10 +310,6 @@ msgstr "(Campos NTSC)"
 #: gui/mrvImageInformation.cpp:879
 msgid "(PAL Fields)"
 msgstr "(Campos PAL)"
-
-#: standalone/main.cpp:250
-msgid "(Remove if mrViewer does not start)"
-msgstr ""
 
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3354
 #: gui/mrvImageView.cpp:5027 gui/mrvImageView.cpp:5028
@@ -887,12 +877,6 @@ msgstr "Siempre Arriba de Otras"
 msgid "An error ocurred while trying to delete '%s'."
 msgstr "Un error ocurrió al intentar borrar '%s'."
 
-#: standalone/main.cpp:290
-msgid ""
-"Another instance of mrViewer is open.\n"
-"Remove "
-msgstr ""
-
 #: core/exrImage.cpp:1063 core/exrImage.cpp:2136
 msgid "Aperture"
 msgstr "Apertura"
@@ -1110,7 +1094,7 @@ msgstr "Azul"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: standalone/main.cpp:391
+#: standalone/main.cpp:384
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -1242,7 +1226,7 @@ msgstr "Categoría"
 msgid "Center Image"
 msgstr "Clonar la Imagen"
 
-#: standalone/main.cpp:209
+#: standalone/main.cpp:203
 msgid "Changed locale to "
 msgstr "Cambio de localidad a "
 
@@ -2445,7 +2429,7 @@ msgstr "Archivo/Grabar/Carrete Como"
 msgid "Filename"
 msgstr "Nombre del archivo"
 
-#: standalone/main.cpp:387
+#: standalone/main.cpp:380
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -5366,7 +5350,7 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr "Deshacer La Última Figura Dibujada"
 
-#: standalone/main.cpp:375
+#: standalone/main.cpp:368
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
@@ -5403,7 +5387,7 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: standalone/main.cpp:395
+#: standalone/main.cpp:388
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -6110,11 +6094,6 @@ msgstr "izquierda.anaglífico"
 msgid "listen to socket failed\n"
 msgstr "Escuchar al enchufe falló\n"
 
-#: standalone/main.cpp:249
-#, fuzzy
-msgid "lockfile "
-msgstr "Perfil"
-
 #: gui/FLU/Flu_File_Chooser.cpp:565
 msgid "mental ray Bit Picture"
 msgstr "Imagen de mental ray de 1 Bit"
@@ -6372,6 +6351,10 @@ msgstr ""
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-71-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3630
 msgid "xyY CIE xyY"
 msgstr ""
+
+#, fuzzy
+#~ msgid "lockfile "
+#~ msgstr "Perfil"
 
 #~ msgid "Options on Error behavior."
 #~ msgstr "Opciones de comportamiento en caso de error."
