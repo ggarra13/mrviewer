@@ -1269,11 +1269,9 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img = CMedia::guess_image( name, NULL, 0, start, end, false );
     else
         img = CMedia::guess_image( name, NULL, 0, first, last, false );
+
     if ( img == NULL )
-    {
-        LOG_ERROR( name << ": not a recognized format." );
         return;
-    }
 
     
     if ( first != mrv::kMaxFrame )
@@ -1348,11 +1346,9 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     else
         img = CMedia::guess_image( name, NULL, 0, first, last, use_threads );
+
     if ( img == NULL )
-    {
-        LOG_ERROR( name << ": not a recognized format." );
         return mrv::media();
-    }
 
     
     if ( first != mrv::kMaxFrame )
