@@ -68,9 +68,6 @@
 #include <fltk/layout.h>
 #include <fltk/draw.h>
 #include <fltk/run.h>
-#ifdef LINUX
-#include <fltk/x11.h>
-#endif
 
 #include <fltk/Color.h>
 #include <fltk/Cursor.h>
@@ -84,7 +81,7 @@
 #include <fltk/Monitor.h>
 #include <fltk/Button.h>
 #include <fltk/Preferences.h>
-
+#include <fltk/x.h>
 
 #include "ImathMath.h" // for Math:: functions
 
@@ -3778,7 +3775,7 @@ void ImageView::toggle_fullscreen()
         fltk_main()->fullscreen();
     }
   else
-    { 
+    {
 #ifdef LINUX
         fltk_main()->hide();  // @bug: window decoration is missing otherwise
 #endif
@@ -3843,16 +3840,30 @@ void ImageView::toggle_presentation()
 #else
       fltk_main()->fullscreen();
 
-      const fltk::Monitor& m = fltk::Monitor::all();
-      fltk_main()->resize( 0, 0, m.w(), m.h() );
+      // // const fltk::Monitor& m = fltk::Monitor::all();
+      // // fltk_main()->resize( m.x(), m.y(), m.w(), m.h() );
 
-      // fltk_main()->resize( 0, 0,
-      //                      XDisplayWidth( fltk::xdisplay, 0 ),
-      //                      XDisplayHeight( fltk::xdisplay, 0 ));
-      // XWindowAttributes xwa;
-      // XGetWindowAttributes(fltk::xdisplay, DefaultRootWindow(fltk::xdisplay),
-      //                      &xwa);
-      // fltk_main()->resize(0, 0, xwa.width, xwa.height );
+      Atom wm_state = XInternAtom(fltk::xdisplay, "_NET_WM_STATE", False);
+      Atom fullscreen = XInternAtom(fltk::xdisplay, "_NET_WM_STATE_FULLSCREEN", False);
+
+      XWindow win = fltk::xid( fltk_main() );
+
+      XEvent xev;
+      memset(&xev, 0, sizeof(xev));
+      xev.type = ClientMessage;
+      xev.xclient.window = win;
+      xev.xclient.message_type = wm_state;
+      xev.xclient.format = 32;
+      xev.xclient.data.l[0] = 1;
+      xev.xclient.data.l[1] = fullscreen;
+      xev.xclient.data.l[2] = 0;
+
+      XMapWindow(fltk::xdisplay, win);
+
+      XSendEvent (fltk::xdisplay, DefaultRootWindow(fltk::xdisplay), False,
+                  SubstructureRedirectMask | SubstructureNotifyMask, &xev);
+      XFlush(fltk::xdisplay);
+
 #endif
     }
   else
