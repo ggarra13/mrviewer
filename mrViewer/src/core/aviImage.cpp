@@ -1045,12 +1045,16 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   bool eof_found = false;
   bool eof = false;
-  if ( pkt.data == NULL ) eof = true;
+  if ( pkt.data == NULL ) {
+      eof = true;
+      pkt.size = 0;
+  }
 
   while( pkt.size > 0 || pkt.data == NULL )
   {
      int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, 
 				      &pkt );
+
 
      if ( got_pict ) {
          ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
@@ -1065,6 +1069,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
          _av_frame->pts = ptsframe;
 
+         // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
          {
              ptsframe = get_frame( stream, pkt );
@@ -2112,7 +2117,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     unsigned int audio_bytes = 0;
 
-    int eof = false;
+    bool eof = false;
 
     // Loop until an error or we have what we need
     while( !got_video || (!got_audio && audio_context() == _context) )
@@ -2330,6 +2335,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
     return dts;
 }
+
 
 
 bool aviImage::fetch(const boost::int64_t frame)
@@ -2831,7 +2837,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
                }
                return kDecodeOK;
 	    }
-   
 
 
 	  got_video = decode_image( pktframe, pkt );
