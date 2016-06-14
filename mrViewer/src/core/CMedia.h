@@ -321,6 +321,7 @@ class CMedia
     /// Fetch (load) the image for a frame
     virtual bool fetch(const boost::int64_t frame) { return true; }
 
+
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
     
