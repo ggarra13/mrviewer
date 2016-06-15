@@ -78,8 +78,8 @@ namespace
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-//#undef DBG
-//#define DBG(x) std::cerr << x << std::endl
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -312,7 +312,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL) 
 	       {
-                   if ( video )
+                   //if ( video )
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
@@ -398,7 +398,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL )
 	       {
-                   if ( video )
+                   //if ( video )
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
