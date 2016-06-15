@@ -81,7 +81,9 @@
 #include <fltk/Monitor.h>
 #include <fltk/Button.h>
 #include <fltk/Preferences.h>
-#include <fltk/x.h>
+#ifdef LINUX
+#include <fltk/x11.h>
+#endif
 
 #include "ImathMath.h" // for Math:: functions
 
@@ -140,10 +142,11 @@ using namespace std;
 
 namespace fs = boost::filesystem;
 
-// FLTK2 currently has a problem with timout's fltk::event_x/y not 
+// FLTK2 currently has a problem on Linux with timout's fltk::event_x/y not 
 // taking into account other child widgets.  This works around it.
-#define FLTK_TIMEOUT_EVENT_BUG
-
+#ifndef _WIN32
+#  define FLTK_TIMEOUT_EVENT_BUG
+#endif
 
 
 
