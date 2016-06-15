@@ -33,9 +33,9 @@
 
 
 #include <windows.h>
-// #define IN
-// #define OUT
-// #define INOUT
+#define IN
+#define OUT
+#define INOUT
 #include <mmsystem.h>
 
 #include "core/mrvAlignedData.h"
