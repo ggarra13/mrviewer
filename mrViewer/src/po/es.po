@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-06-15 13:31-0300\n"
+"POT-Creation-Date: 2016-06-16 09:46-0300\n"
 "PO-Revision-Date: 2016-06-10 18:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -163,7 +163,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1933 core/aviImage.cpp:3062
+#: core/CMedia_audio.cpp:1933 core/aviImage.cpp:3063
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -215,7 +215,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3074
+#: core/aviImage.cpp:3075
 msgid " status: "
 msgstr " estatus: "
 
@@ -2012,11 +2012,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1931 core/aviImage.cpp:3046 core/aviImage.cpp:3060
+#: core/CMedia_audio.cpp:1931 core/aviImage.cpp:3047 core/aviImage.cpp:3061
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3072
+#: core/aviImage.cpp:3073
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2280,11 +2280,11 @@ msgstr "Editar Status"
 msgid "Elapsed"
 msgstr "Transcurrido"
 
-#: core/aviImage.cpp:2570
+#: core/aviImage.cpp:2571
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2584
+#: core/aviImage.cpp:2585
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -6015,7 +6015,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2497
+#: core/aviImage.cpp:2498
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
