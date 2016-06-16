@@ -886,6 +886,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             }
 
             AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
+            if ( _audio_channels == 0 ) 
+                _audio_channels = (unsigned short) ctx->channels;
 
             if ( ( ctx->sample_fmt != fmt  ||
                    unsigned(ctx->channels) != _audio_channels ) )

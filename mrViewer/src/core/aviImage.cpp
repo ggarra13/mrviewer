@@ -2641,21 +2641,18 @@ aviImage::audio_video_display( const boost::int64_t& frame )
     else if ( frame < _frameStart ) return kDecodeLoopStart;
 
 
+    SCOPED_LOCK( _audio_mutex );
     audio_type_ptr result;
 
-    {
-        SCOPED_LOCK( _audio_mutex );
-
-        audio_cache_t::iterator end = _audio.end();
-        audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end,
-                                                       frame,
-                                                       LessThanFunctor() );
-        if ( it == end ) {
-            return kDecodeMissingFrame;
-        }
-
-        result = *it;
+    audio_cache_t::iterator end = _audio.end();
+    audio_cache_t::iterator it = std::lower_bound( _audio.begin(), end,
+                                                   frame,
+                                                   LessThanFunctor() );
+    if ( it == end ) {
+        return kDecodeMissingFrame;
     }
+
+    result = *it;
 
     _hires->frame( frame );
     uint8_t* ptr = (uint8_t*) _hires->data().get();
@@ -2733,10 +2730,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 
     if ( !has_video() )
     {
-        if ( playback() == kBackwards )
-            return audio_video_display(_audio_frame);
-        else
-            return audio_video_display(frame);
+        return audio_video_display(_audio_frame);
     }
 
 #ifdef DEBUG_VIDEO_PACKETS
