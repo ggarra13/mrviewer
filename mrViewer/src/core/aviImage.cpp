@@ -2430,18 +2430,17 @@ bool aviImage::frame( const boost::int64_t f )
          (_audio_packets.bytes() + _video_packets.bytes() + 
           _subtitle_packets.bytes() > kMAX_QUEUE_SIZE
           || ( (_audio_packets.size() > kMIN_FRAMES || !has_audio() ) &&
-               (_video_packets.size() > kMIN_FRAMES || !has_video() ) &&
-               (_subtitle_packets.size() > kMIN_FRAMES || !has_subtitle()
-               ) )) )
+               (_video_packets.size() > kMIN_FRAMES || !has_video() )
+               ) ) )
     {
-    // std::cerr << "false return: " << std::endl;
-    // std::cerr << "vp: " << _video_packets.size() << std::endl;
-    // std::cerr << "ap: " << _audio_packets.size() << std::endl;
-       // std::cerr << "sum: " <<
-       // ( _video_packets.bytes() +  _audio_packets.bytes() + 
-       // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
-       // 		 << std::endl;
-     return false;
+        // std::cerr << "false return: " << std::endl;
+        // std::cerr << "vp: " << _video_packets.size() << std::endl;
+        // std::cerr << "ap: " << _audio_packets.size() << std::endl;
+        // std::cerr << "sum: " <<
+        // ( _video_packets.bytes() +  _audio_packets.bytes() + 
+        // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
+        // 		 << std::endl;
+        return false;
     }
 
   if ( f < _frameStart )    _dts = _frameStart;
