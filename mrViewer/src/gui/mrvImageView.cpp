@@ -123,6 +123,7 @@
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvAudioOffset.h"
 #include "gui/mrvVersion.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvImageView.h"
 
 
@@ -2643,7 +2644,11 @@ void ImageView::mouseMove(int x, int y)
 {
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-
+  if ( mrv::LogDisplay::show == true )
+  {
+      mrv::LogDisplay::show = false;
+      main()->uiLog->uiMain->show();
+  }
 
   mrv::media fg = foreground();
   if ( !fg ) return;

@@ -1581,6 +1581,49 @@ void aviImage::video_stream( int x )
 
 }
 
+bool aviImage::readFrame(int64_t & pts)
+{
+    AVPacket packet;
+
+    int got_video = 0;
+
+    while (! got_video)
+    {
+        int r = av_read_frame(_context, &packet);
+
+        if (r < 0)
+        {
+            packet.data = 0;
+            packet.size = 0;
+        }
+
+        if ( video_stream_index() == packet.stream_index)
+        {
+            if (avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
+                                       &packet) <= 0)
+            {
+                break;
+            }
+        }
+    }
+
+    pts = av_frame_get_best_effort_timestamp( _av_frame );
+
+    if ( pts == AV_NOPTS_VALUE )
+    {
+        if ( _av_frame->pkt_pts != AV_NOPTS_VALUE )
+            pts = _av_frame->pkt_pts;
+        else if ( _av_frame->pkt_dts != AV_NOPTS_VALUE )
+            pts = _av_frame->pkt_dts;
+    }
+
+    pts = av_rescale_q( pts,
+                        get_video_stream()->time_base,
+                        AV_TIME_BASE_Q );
+
+    return got_video;
+}
+
 int aviImage::video_stream_index() const
 {
     assert( _video_index >= 0 && 
@@ -1810,8 +1853,19 @@ void aviImage::populate()
         {
             if ( stream->nb_frames != 0 )
                 duration = stream->nb_frames;
-            else
-                duration = 200; // GIF89
+            else {
+                // As a last resort, count the frames manually.
+                int64_t pts = 0;
+
+                duration = 0; // GIF89
+                while ( readFrame(pts) )
+                    ++duration;
+
+                av_seek_frame( _context,
+                               video_stream_index(),
+                               0,
+                               AVSEEK_FLAG_BACKWARD);
+            }
         }
     }
 

@@ -58,6 +58,7 @@ class LogDisplay : public fltk::TextDisplay
   public:
     static ShowPreferences prefs;
     static bool shown;
+    static bool show;  // whether to show this in fltk thread
 };
 
 }
