@@ -31,6 +31,7 @@
 
 #include <fltk/Window.h>
 #include <fltk/TextBuffer.h>
+#include <fltk/events.h>
 #include <fltk/run.h>
 
 #include "core/mrvHome.h"
@@ -49,6 +50,7 @@ namespace mrv {
 
 LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
 bool LogDisplay::shown = false;
+bool LogDisplay::show  = false;
 
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
   fltk::TextDisplay( x, y, w, h, l ),
@@ -153,7 +155,7 @@ bool LogDisplay::shown = false;
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
         shown = true;
-        window()->show();
+        show = true;
     }
   }
 

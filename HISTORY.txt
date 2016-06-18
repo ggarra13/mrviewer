@@ -5,6 +5,8 @@ v3.2.1   - Presentation Mode (F12) now covers the taskbar on Linux,
 	   cursor in playback mode.
 	 - Bug fixed dummy errors at the end of clips when in 
 	   EDL mode.
+	 - Made Log Window show up on Errors on Windows based on
+	   user preferences.  Previously, it would hang the GUI.
 
 v3.2.0   - Thumbnails in file requester are created with the audio
 	   off.  This makes thumbnails a tad faster.
