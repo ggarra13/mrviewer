@@ -872,8 +872,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                                                        _aframe->nb_samples,
                                                        ctx->sample_fmt, 0);
             if (*audio_size < data_size) {
-                IMG_ERROR( "decode_audio3 - Output buffer size is too small for "
-                           "the current frame (" 
+                IMG_ERROR( _("Output buffer size is too small for "
+                             "the current frame (")
                            << *audio_size << " < " << data_size << ")" );
                 return AVERROR(EINVAL);
             }
@@ -1084,7 +1084,8 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   assert( _audio_buf != NULL );
   assert( pkt.size + _audio_buf_used < _audio_max );
 
-  int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
+  // Here we add 8192 as max audio frame size is small (see ABBA_Voulez_Vous).
+  int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE + 8192;  //< correct
   assert( pkt_temp.size <= audio_size );
 
   if ( _audio_buf_used + audio_size > _audio_max )
@@ -1097,14 +1098,15 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   }
 
   while ( pkt_temp.size > 0 || pkt_temp.data == NULL )
-    {
-       // Decode the audio into the buffer
-       // assert( _audio_buf_used % 16 == 0 );
-       int ret = decode_audio3( _audio_ctx, 
-                                ( int16_t * )( (char*)_audio_buf + 
-                                               _audio_buf_used ), 
-                                &audio_size, &pkt_temp );
-       assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
+  {
+      // Decode the audio into the buffer
+      // assert( _audio_buf_used % 16 == 0 );
+
+      int ret = decode_audio3( _audio_ctx, 
+                               ( int16_t * )( (char*)_audio_buf + 
+                                              _audio_buf_used ), 
+                               &audio_size, &pkt_temp );
+      assert( audio_size <= AVCODEC_MAX_AUDIO_FRAME_SIZE );
 
       // If no samples are returned, then break now
       if ( ret <= 0 )
@@ -1116,10 +1118,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
                IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
                           << _(" frame: ") << frame );
                IMG_ERROR(  get_error_text(ret) );
-               IMG_ERROR( "DATA: " << (void*) pkt_temp.data
-                          << _(" audio total: ") << _audio_buf_used
-                          << _(" audio used: ") << audio_size
-                          << _(" audio max: ")  << _audio_max );
+               IMG_ERROR( _("Audio total: ") << _audio_buf_used
+                          << _(" Audio used: ") << audio_size
+                          << _(" Audio max: ")  << _audio_max );
            }
 	  return kDecodeMissingSamples;
 	}
