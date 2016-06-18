@@ -155,6 +155,9 @@ class aviImage : public CMedia
 
   protected:
 
+    // For counting frames
+    bool readFrame(int64_t & pts);
+
     boost::int64_t queue_packets( const boost::int64_t frame,
                                   const bool is_seek,
                                   bool& got_video,
