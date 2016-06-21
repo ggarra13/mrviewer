@@ -56,8 +56,7 @@ namespace mrv {
       CMedia* img = CMedia::guess_image( filename, header, len );
       if ( img == NULL ) return NULL;
 
-
-    // Fetch first frame
+    // Fetch frame in the 1/4 of duration
     int64_t f = img->first_frame();
     f += int64_t( img->duration() * 0.25f);
     img->audio_stream( -1 );

@@ -128,7 +128,7 @@ static const char* kModule = "alsa";
 		  }
 
 	      }
-
+          
 
             if ( p_ctl )
                 snd_ctl_close( p_ctl );
