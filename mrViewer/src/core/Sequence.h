@@ -103,7 +103,7 @@ struct SequenceSort
                 const boost::int64_t e = AV_NOPTS_VALUE,
                 const std::string& a = "",
                 const std::string& right = "",
-                const unsigned aoffset = 0) :
+                const boost::int64_t aoffset = 0) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
@@ -123,7 +123,7 @@ struct SequenceSort
                 const boost::int64_t e = AV_NOPTS_VALUE,
                 const std::string& a = "",
                 const std::string& right = "",
-                const unsigned aoffset = 0 ) :
+                const boost::int64_t aoffset = 0 ) :
       filename( fileroot ),
       right_filename( right ),
       audio( a ),
