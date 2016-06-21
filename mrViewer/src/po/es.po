@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-06-21 13:41-0300\n"
+"POT-Creation-Date: 2016-06-21 14:08-0300\n"
 "PO-Revision-Date: 2016-06-18 16:21-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -147,7 +147,7 @@ msgstr " codificando"
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1538
+#: core/CMedia_audio.cpp:1536
 msgid " failed"
 msgstr " falló. "
 
@@ -159,7 +159,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1937 core/aviImage.cpp:3105
+#: core/CMedia_audio.cpp:1935 core/aviImage.cpp:3105
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -195,7 +195,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1594 core/aviImage.cpp:1424
+#: core/CMedia_audio.cpp:1592 core/aviImage.cpp:1424
 msgid " not found"
 msgstr " no encontrado"
 
@@ -966,7 +966,7 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
-#: core/CMedia_audio.cpp:1594
+#: core/CMedia_audio.cpp:1592
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
@@ -974,11 +974,11 @@ msgstr "Cuadro de audio "
 msgid "Audio missed for ptsframe: "
 msgstr "Audio faltante para el cuadro: "
 
-#: core/CMedia_audio.cpp:1688
+#: core/CMedia_audio.cpp:1686
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1733
+#: core/CMedia_audio.cpp:1731
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -1617,7 +1617,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1525
+#: core/CMedia_audio.cpp:1523
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -1629,7 +1629,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/CMedia_audio.cpp:1605
+#: core/CMedia_audio.cpp:1603
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -2012,7 +2012,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1935 core/aviImage.cpp:3089 core/aviImage.cpp:3103
+#: core/CMedia_audio.cpp:1933 core/aviImage.cpp:3089 core/aviImage.cpp:3103
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -4178,7 +4178,7 @@ msgstr "Reproducir secuencia hacia delante."
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1537
+#: core/CMedia_audio.cpp:1535
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -6217,7 +6217,7 @@ msgstr "datos"
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
-#: core/CMedia_audio.cpp:1725
+#: core/CMedia_audio.cpp:1723
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
