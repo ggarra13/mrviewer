@@ -175,6 +175,7 @@ _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
+_adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
 _frame( 1 ),
@@ -225,7 +226,6 @@ _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
@@ -266,6 +266,7 @@ _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
+_adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
 _frame( 1 ),
@@ -293,10 +294,10 @@ _playback( kStopped ),
 _aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
-_video_ctx( NULL ),
-_audio_ctx( NULL ),
 _context(NULL),
+_video_ctx( NULL ),
 _acontext(NULL),
+_audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
 _audio_index(-1),
@@ -363,6 +364,7 @@ _gamma( other->_gamma ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts ),
+_adts( other->_adts ),
 _audio_frame( 0 ),
 _audio_offset( 0 ),
 _frame( other->_frame ),
@@ -390,10 +392,10 @@ _playback( kStopped ),
 _aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
-_video_ctx( NULL ),
-_audio_ctx( NULL ),
 _context(NULL),
+_video_ctx( NULL ),
 _acontext(NULL),
+_audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
 _audio_index(-1),
@@ -850,7 +852,7 @@ void CMedia::sequence( const char* fileroot,
 
 
   _is_sequence = true;
-  _dts = _frame = start;
+  _dts = _adts = _frame = start;
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
 
@@ -919,7 +921,7 @@ void CMedia::filename( const char* n )
 
   _is_sequence = false;
   _is_stereo = false;
-  _dts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
+  _dts = _adts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
 
 
   timestamp();
@@ -1899,7 +1901,8 @@ bool CMedia::frame( const boost::int64_t f )
 
   if ( has_audio() )
   {
-      fetch_audio( _dts + _audio_offset );
+      _adts = _dts + _audio_offset;
+      fetch_audio( _adts );
   }
 
   _dts = f;
