@@ -1384,8 +1384,6 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   return aud->size();
 }
 
-#undef DBG
-#define DBG(x) std::cerr << x << std::endl;
 
 /** 
  * Fetch audio packet for a particular frame.
