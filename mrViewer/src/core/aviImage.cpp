@@ -17,7 +17,7 @@
 */
 /**
  * @file   aviImage.cpp
- * @author 
+ * @author gga
  * @date   Tue Sep 26 17:54:48 2006
  * 
  * @brief  Read and play an avi/mov/wmv file with audio.
@@ -190,12 +190,6 @@ const char* const kColorSpaces[] = {
     "BT2020_CL", ///< ITU-R BT2020 constant luminance system
 };
 
-const char* const aviImage::colorspace() const
-{
-    aviImage* img = const_cast< aviImage* >( this );
-    return _( kColorSpaces[img->colorspace_index()] );
-}
-
 const size_t aviImage::colorspace_index() const
 {
     if ( !_av_frame ) return 2; // Unspecified
@@ -204,6 +198,12 @@ const size_t aviImage::colorspace_index() const
          _colorspace_index >= sizeof( kColorSpaces )/sizeof(char*) )
         img->_colorspace_index = av_frame_get_colorspace(_av_frame);
     return _colorspace_index;
+}
+
+const char* const aviImage::colorspace() const
+{
+    aviImage* img = const_cast< aviImage* >( this );
+    return _( kColorSpaces[img->colorspace_index()] );
 }
 
 const char* const aviImage::color_range() const
@@ -651,7 +651,6 @@ void aviImage::open_video_codec()
 
 
   static int workaround_bugs = 1;
-  static int lowres = 0;
   static enum AVDiscard skip_frame= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_idct= AVDISCARD_DEFAULT;
   static enum AVDiscard skip_loop_filter= AVDISCARD_DEFAULT;
@@ -659,16 +658,12 @@ void aviImage::open_video_codec()
   static int error_concealment = 3;
 
   _video_ctx->codec_id        = _video_codec->id;
-  // _video_ctx->idct_algo         = FF_IDCT_AUTO;
-  // _video_ctx->workaround_bugs = workaround_bugs;
-  // _video_ctx->lowres          = lowres;
+  _video_ctx->workaround_bugs = workaround_bugs;
   // _video_ctx->skip_frame= skip_frame;
   // _video_ctx->skip_idct = skip_idct;
-  // _video_ctx->idct_algo = idct;
   // _video_ctx->skip_loop_filter= skip_loop_filter;
-  // _video_ctx->error_concealment= error_concealment;
+  // _video_ctx->idct_algo = idct;
 
-  // _video_ctx->flags2 |= AV_CODEC_FLAG2_FAST;
 
   if(_video_codec->capabilities & CODEC_CAP_DR1)
      _video_ctx->flags |= CODEC_FLAG_EMU_EDGE;
@@ -701,6 +696,7 @@ void aviImage::open_video_codec()
   if ( _video_codec == NULL ||
        avcodec_open2( _video_ctx, _video_codec, &info ) < 0 )
     _video_index = -1;
+
 
 }
 
