@@ -294,7 +294,8 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                 {
                     if ( is_seek || playback() == kBackwards )
                     {
-                        if ( !got_audio ) _audio_packets.seek_end(apts);
+                        if ( !got_audio && apts >= 0 )
+                            _audio_packets.seek_end(apts);
                     }
                     break;
                 }
@@ -310,7 +311,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
          
             if ( is_seek )
             {
-                if ( !got_audio ) _audio_packets.seek_end(apts);
+                if ( !got_audio && apts >= 0 ) _audio_packets.seek_end(apts);
             }
          
             av_packet_unref( &pkt );
@@ -343,7 +344,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
                     audio_bytes += pkt.size;
                     if ( audio_bytes >= bytes_per_frame ) got_audio = true;
                 }
-                if ( is_seek && got_audio )
+                if ( is_seek && got_audio && apts >= 0 )
                     _audio_packets.seek_end(apts);
                 }
 
@@ -414,7 +415,7 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
     }
     else
     {
-        if ( !got_audio )    _audio_packets.seek_begin(apts);
+        if ( !got_audio && apts >= 0 )    _audio_packets.seek_begin(apts);
     }
 
     bool got_video = true;
