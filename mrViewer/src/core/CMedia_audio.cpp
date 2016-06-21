@@ -82,7 +82,7 @@ namespace {
 #define IMG_INFO(x) LOG_INFO( name() << " - " << x )
 
 #ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
-#define AVCODEC_MAX_AUDIO_FRAME_SIZE 192000
+#  define AVCODEC_MAX_AUDIO_FRAME_SIZE 198000
 #endif
 
 //#undef DBG
@@ -233,7 +233,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
     if ( audio_context() != _acontext ) return frame;
 
 #ifdef DEBUG_QUEUE
-    LOG_INFO( "BEFORE QUEUE:  D: " << _dts << " E: " << _expected_audio );
+    LOG_INFO( "BEFORE QUEUE:  D: " << _adts << " E: " << _expected_audio );
     debug_audio_packets(frame, "queue", true);
 #endif
 
@@ -429,13 +429,13 @@ bool CMedia::seek_to_position( const boost::int64_t frame )
     _expected_audio = frame+1;
 
 
-    _dts = dts;
+    _adts = dts;
     _expected = dts+1;
     _seek_req = false;
 
 
 #ifdef DEBUG_SEEK
-    LOG_INFO( "AFTER SEEK:  D: " << _dts << " E: " << _expected_audio );
+    LOG_INFO( "AFTER SEEK:  D: " << _adts << " E: " << _expected_audio );
     debug_audio_packets(frame);
 #endif
     return true;
@@ -667,9 +667,8 @@ void CMedia::populate_audio()
     }
 
 
-  _frame = _dts = _frameStart;
-
-  _expected = _expected_audio = _frame + 1;
+  _adts = _frameStart;
+  _expected_audio = _adts + 1;
 
 
   //
@@ -775,7 +774,7 @@ void CMedia::audio_file( const char* file )
 
 //
 // Limit the audio store to approx. max frames images on each side.
-// We have to check both where frame is as well as where _dts is.
+// We have to check both where frame is as well as where _adts is.
 //
 void CMedia::limit_audio_store(const boost::int64_t frame)
 {
@@ -789,18 +788,18 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
         case kBackwards:
             first = frame - max_audio_frames();
             last  = frame;
-            if ( _dts < first ) first = _dts;
+            if ( _adts < first ) first = _adts;
             break;
         case kForwards:
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
-            if ( _dts < first ) first = _dts;
-            if ( _dts > last )   last = _dts;
+            if ( _adts < first ) first = _adts;
+            if ( _adts > last )   last = _adts;
             break;
         default:
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
-            if ( _dts > last )   last = _dts;
+            if ( _adts > last )   last = _adts;
             break;
     }
   
@@ -1084,8 +1083,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
   assert( _audio_buf != NULL );
   assert( pkt.size + _audio_buf_used < _audio_max );
 
-  // Here we add 8192 as max audio frame size is small (see ABBA_Voulez_Vous).
-  int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE + 8192;  //< correct
+  int audio_size = AVCODEC_MAX_AUDIO_FRAME_SIZE;  //< correct
   assert( pkt_temp.size <= audio_size );
 
   if ( _audio_buf_used + audio_size > _audio_max )
@@ -1386,10 +1384,13 @@ CMedia::store_audio( const boost::int64_t audio_frame,
   return aud->size();
 }
 
+#undef DBG
+#define DBG(x) std::cerr << x << std::endl;
+
 /** 
  * Fetch audio packet for a particular frame.
  * 
- * @param frame   frame to find audio for
+ * @param frame   frame to find audio for (with offsets taken into account)
  */
 void CMedia::fetch_audio( const boost::int64_t frame )
 {
@@ -1432,7 +1433,7 @@ void CMedia::fetch_audio( const boost::int64_t frame )
   if ( dts > last ) dts = last;
   else if ( dts < first ) dts = first;
 
-  _dts = dts;
+  _adts = dts;
 
   _expected_audio = dts + 1;
   DBG( "DTS " << dts << " EXPECTED " << _expected_audio );
@@ -1607,7 +1608,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = result->frame() / _orig_fps; //av_q2d( get_audio_stream()->avg_frame_rate );
+  _audio_pts = (result->frame() - _audio_offset ) / _orig_fps; //av_q2d( get_audio_stream()->avg_frame_rate );
 
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
   set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
@@ -1788,7 +1789,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
   SCOPED_LOCK( apm );
 
-  boost::int64_t first = first_frame() + audio_offset();
+  boost::int64_t first = first_frame();
 
   if ( frame < first )
        return kDecodeNoStream;
@@ -1959,7 +1960,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
   audio_cache_t::const_iterator iter = _audio.begin();
   audio_cache_t::const_iterator last = _audio.end();
 
-  std::cerr << name() << " S:" << _frame << " D:" << _dts 
+  std::cerr << name() << " S:" << _frame << " D:" << _adts 
 	    << " A:" << frame << " " << routine << " audio stores #"
 	    << _audio.size() << ": ";
 
@@ -1976,7 +1977,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
      {
 	boost::int64_t f = (*iter)->frame();
 	if ( f == frame )  std::cerr << "P";
-	if ( f == _dts )   std::cerr << "D";
+	if ( f == _adts )   std::cerr << "D";
 	if ( f == _frame ) std::cerr << "F";
 	std::cerr << f << " (" << (void*)(*iter)->data() << ") ";
      }
@@ -2039,7 +2040,7 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
 
   mrv::PacketQueue::const_iterator iter = _audio_packets.begin();
   mrv::PacketQueue::const_iterator last = _audio_packets.end();
-  std::cerr << name() << " F:" << frame << " D:" << _dts 
+  std::cerr << name() << " F:" << frame << " D:" << _adts 
 	    << " A:" << _audio_frame << " " << routine << " audio packets #"
 	    << _audio_packets.size() << " (" << _audio_packets.bytes() << "): ";
 
@@ -2154,7 +2155,7 @@ void CMedia::debug_audio_packets(const boost::int64_t frame,
             // if ( f == last_frame ) continue;
 	   
 	   if ( f == frame )  std::cerr << "S";
-	   if ( f == _dts )   std::cerr << "D";
+	   if ( f == _adts )  std::cerr << "D";
 	   if ( f == _frame ) std::cerr << "F";
 	   std::cerr << f << " ";
 	   last_frame = f;
