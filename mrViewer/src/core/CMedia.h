@@ -477,7 +477,7 @@ class CMedia
 
     ///////////////// Decoding time stamp
     inline boost::int64_t   dts()                      { return _dts; }
-    inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
+    //inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
 
     ///////////////// Audio frame
     inline void audio_frame( const boost::int64_t f ) { _audio_frame = f; }
@@ -905,42 +905,65 @@ class CMedia
 				       const bool detail = false) {};
 
     virtual void probe_size( unsigned p ) {}
+
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
-    CMedia* left_eye() { return this; }
+    // Return this image as the left eye
+    inline CMedia* left_eye() { return this; }
 
-    void right_eye( CMedia* c ) { _right_eye = c; refresh(); }
-    CMedia* right_eye() const { return _right_eye; }
+    // Set an image as the right eye for stereo decoding
+    inline void right_eye( CMedia* c ) { _right_eye = c; refresh(); }
 
-    bool is_left_eye() const { return _is_left_eye; }
-    void is_left_eye( bool left ) { _is_left_eye = left; }
+    // Return the image as the right eye for stereo decoding or NULL if none
+    inline CMedia* right_eye() const { return _right_eye; }
 
+    // Return if this image is the left eye on stereo decoding
+    inline bool is_left_eye() const { return _is_left_eye; }
+
+    // Set this image as the left (true) or right (false) eye on stereo decoding
+    inline void is_left_eye( bool left ) { _is_left_eye = left; }
+
+    // Return the sequence filename for frame 'frame'
     std::string sequence_filename( const boost::int64_t frame );
 
+    // Return the video clock as a double
     double video_clock() const { return _video_clock; }
-    
+    // Return the audio clock as a double
     double audio_clock() const { return _audio_clock; }
     
+    // Return the video stream being decoded or NULL if none
     virtual AVStream* get_video_stream() const { return NULL; } ;
+    // Return the subtitlee stream being decoded or NULL if none
     virtual AVStream* get_subtitle_stream() const { return NULL; } ;
 
+    // Return the video pts as a double
     double video_pts() const { return _video_pts; }
+    // Return the audio pts as a double
     double audio_pts() const { return _audio_pts; }
 
+    // Return the shape list
     const GLShapeList& shapes() const { return _shapes; }
+    // Return the shape list
     GLShapeList& shapes() { return _shapes; }
 
+    // Return the undo shape list
     const GLShapeList& undo_shapes() const { return _undo_shapes; }
 
+    // Return the undo shape list
     GLShapeList& undo_shapes() { return _undo_shapes; }
+
+    // Add a GL drawn shape to image
     void add_shape( shape_type_ptr s );
 
     void fetch_audio( const boost::int64_t frame );
+
+    // Wait for load threads to exit (unused)
     void wait_for_load_threads();
 
+    // Wait for all threads to exit
     void wait_for_threads();
 
-    void audio_offset( const boost::int64_t& f ) { _audio_offset = f; }
+    void audio_offset( const boost::int64_t f ) { _audio_offset = f; }
     boost::int64_t audio_offset() const { return _audio_offset; }
 
     void debug_audio_stores(const boost::int64_t frame,
@@ -1233,6 +1256,8 @@ class CMedia
     Imf::Chromaticities _chromaticities;
 
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
+    boost::int64_t   _adts;        //!< decoding time stamp of audio
+                                   //   (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _audio_offset;//!< offset of additional audio
 
@@ -1298,7 +1323,7 @@ class CMedia
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
                                     //!  right float frame
     ACES::ASC_CDL _sops;            //!< Slope,Offset,Pivot,Saturation
-    ACES::ACESclipReader::GradeRefs _grade_refs; 
+    ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
@@ -1310,8 +1335,8 @@ class CMedia
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
     AVCodecContext* _video_ctx;          //!< current video context
-    AVFormatContext* _acontext;          //!< current audio file context
-    AVCodecContext* _audio_ctx;          //!< current video context
+    AVFormatContext* _acontext;          //!< current audio read file context
+    AVCodecContext* _audio_ctx;          //!< current audio context
 
     // Drawings
     GLShapeList      _shapes;
