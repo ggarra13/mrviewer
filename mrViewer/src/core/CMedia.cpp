@@ -2773,7 +2773,7 @@ void CMedia::default_rendering_transform()
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-  if ( stream->codec->codec_type != AVMEDIA_TYPE_VIDEO ) return;
+  if ( stream->codecpar->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
   int64_t  max_distance  = 0;
   unsigned num_keyframes = 0;
