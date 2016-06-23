@@ -2333,6 +2333,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
   s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
 
   AVStream* stream = context->streams[stream_index];
+  std::cerr << "TB: " << stream->time_base.num << "/" << stream->time_base.den
+            << std::endl;
   double time  = av_q2d( stream->time_base );
 
 
