@@ -1307,7 +1307,6 @@ bool aviImage::save_movie_frame( CMedia* img )
 
 bool flush_video_and_audio( const CMedia* img )
 {
-    int stop_encoding = 0;
     int ret = 0;
 
     if ( audio_st && fifo )
@@ -1356,6 +1355,7 @@ bool flush_video_and_audio( const CMedia* img )
         AVStream* s = st[i];
         if ( !s ) continue;
             
+        int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
         if ( !( c->codec->capabilities & CODEC_CAP_DELAY ) )
