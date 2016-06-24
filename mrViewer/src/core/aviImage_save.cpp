@@ -231,6 +231,7 @@ static bool add_stream(OutputStream*& ost,
         LOG_ERROR( _("Could not allocate stream") );
         return false;
     }
+
     ost->st->id = oc->nb_streams-1;
 
     AVStream* st = ost->st;
@@ -286,9 +287,11 @@ static bool add_stream(OutputStream*& ost,
                 * of which frame timestamps are represented. For fixed-fps content,
                 * timebase should be 1/framerate and timestamp increments should be
                 * identical to 1. */
-               c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
-               c->time_base.num = st->time_base.num = 1000;
-               c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
+               st->time_base.den = int( 1000.0 * img->fps() );
+               st->time_base.num = 1000;
+               c->time_base = st->avg_frame_rate = st->time_base;
+
+               c->gop_size = 12; /* emit one intra frame every twelve frames at most */
                // c->qmin = ptr->qmin;
                // c->qmax = ptr->qmax;
                // c->me_method = ptr->me_method;
@@ -340,8 +343,6 @@ static bool add_stream(OutputStream*& ost,
                if (name) LOG_INFO( "Profile name " << name );
 
 
-               c->pix_fmt = AV_PIX_FMT_YUV420P;
-
                if ( c->codec_id == AV_CODEC_ID_PRORES )
                {
                    // ProRes supports YUV422 10bit
@@ -380,19 +381,6 @@ static bool add_stream(OutputStream*& ost,
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
         c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
-
-
-    int err = avcodec_parameters_from_context( ost->st->codecpar, c );
-    if ( err < 0 )
-    {
-        LOG_ERROR( _("Could not copy the stream parameters") );
-        return false;
-    }
-
-    if ( c->codec_type == AVMEDIA_TYPE_VIDEO )
-    {
-        std::cerr << "PIXFMT: " << c->pix_fmt << " == " << st->codecpar->format << std::endl;
-    }
 
 
     return true;
@@ -559,6 +547,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
     assert( max_dst_nb_samples > 0 );
  
+    int err = avcodec_parameters_from_context( st->codecpar, c );
+    if ( err < 0 )
+    {
+        LOG_ERROR( _("Could not copy the stream parameters") );
+        return false;
+    }
+
     return true;
 }
 
@@ -794,10 +789,8 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     picture->width = width;
     picture->height = height;
 
-    /* the image can be allocated by any means and av_image_alloc() is
-     * just the most convenient way if av_malloc() is to be used */
-    ret = av_image_alloc(picture->data, picture->linesize, width, height,
-                         pix_fmt, 32);
+    /* allocate the buffers for the frame data */
+    ret = av_frame_get_buffer(picture, 32);
     if ( ret < 0 )
     {
         LOG_ERROR( _("Could not allocate raw picture buffer") );
@@ -921,6 +914,13 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, OutputStream* ost,
     }
 
     picture->pts = 0;
+    int ret = avcodec_parameters_from_context(st->codecpar, c);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not copy the stream parameters") );
+        return false;
+    }
+
 
     return true;
 }
@@ -1272,11 +1272,11 @@ bool write_va_frame( CMedia* img )
                            av_q2d( vost->st->time_base ) )
    		  : INFINITY );
 
-   // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
-   //           << " " << video_st->time_base.num 
-   //           << "/" << video_st->time_base.den 
-   //           << " c: " << video_st->codec->time_base.num 
-   //           << "/" << video_st->codec->time_base.den << std::endl;
+   std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
+             << " " << vost->st->time_base.num 
+             << "/" << vost->st->time_base.den 
+             << " c: " << vost->c->time_base.num 
+             << "/" << vost->c->time_base.den << std::endl;
     
 
     /* write interleaved audio and video frames */
