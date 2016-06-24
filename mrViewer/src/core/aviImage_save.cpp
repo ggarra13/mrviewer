@@ -1163,8 +1163,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
       }
    }
 
-   // oc->flags |= AVFMT_FLAG_NOBUFFER|AVFMT_FLAG_FLUSH_PACKETS;
-   // oc->max_interleave_delta = 1;
+   oc->flags |= AVFMT_FLAG_NOBUFFER|AVFMT_FLAG_FLUSH_PACKETS;
+   oc->max_interleave_delta = 1;
 
    fmt = oc->oformat;
    assert( fmt != NULL );
@@ -1209,7 +1209,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        }
    }
 
-   if ( vost->st == NULL && aost->st == NULL )
+   if ( vost == NULL && aost == NULL )
    {
        LOG_ERROR( _("No audio nor video stream created") );
        return false;
