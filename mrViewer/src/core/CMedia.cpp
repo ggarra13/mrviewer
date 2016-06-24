@@ -2149,10 +2149,10 @@ size_t CMedia::memory() const
  * 
  * @return stream type as a character string.
  */
-const char* CMedia::stream_type( const AVCodecContext* codec_context )
+const char* CMedia::stream_type( const AVCodecParameters* c )
 {
   const char* stream;
-  switch( codec_context->codec_type ) 
+  switch( c->codec_type ) 
     {
     case AVMEDIA_TYPE_VIDEO:
        stream = _("video");
@@ -2218,7 +2218,7 @@ std::string CMedia::codec_tag2fourcc( unsigned int codec_tag )
  * 
  * @return      name of codec.
  */
-std::string CMedia::codec_name( const AVCodecContext* enc )
+std::string CMedia::codec_name( const AVCodecParameters* enc )
 {
   AVCodec* p = avcodec_find_decoder(enc->codec_id);
   const char* codec_name;
@@ -2310,7 +2310,7 @@ double CMedia::calculate_fps( const AVStream* stream )
 void CMedia::populate_stream_info( StreamInfo& s, 
 				   std::ostringstream& msg,
 				   const AVFormatContext* context,
-				   const AVCodecContext* ctx, 
+				   const AVCodecParameters* ctx, 
 				   const int stream_index )
 {
 
