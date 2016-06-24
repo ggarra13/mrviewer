@@ -62,57 +62,6 @@ const char* kModule = "save";
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;
 
-#define MAX_STORED_Q 16
-
-#define MAX_MBS_PER_SLICE 8
-
-#define MAX_PLANES 4
-
-typedef struct FDCTDSPContext {
-    void (*fdct)(int16_t *block /* align 16 */);
-    void (*fdct248)(int16_t *block /* align 16 */);
-} FDCTDSPContext;
-
-typedef struct ProresContext {
-    AVClass *klass;
-    DECLARE_ALIGNED(16, int16_t, blocks)[MAX_PLANES][64 * 4 * MAX_MBS_PER_SLICE];
-    DECLARE_ALIGNED(16, uint16_t, emu_buf)[16*16];
-    int16_t quants[MAX_STORED_Q][64];
-    int16_t custom_q[64];
-    const uint8_t *quant_mat;
-    const uint8_t *scantable;
-
-    void (*fdct)(FDCTDSPContext *fdsp, const uint16_t *src,
-                 int linesize, int16_t *block);
-    FDCTDSPContext fdsp;
-
-    const AVFrame *pic;
-    int mb_width, mb_height;
-    int mbs_per_slice;
-    int num_chroma_blocks, chroma_factor;
-    int slices_width;
-    int slices_per_picture;
-    int pictures_per_frame; // 1 for progressive, 2 for interlaced
-    int cur_picture_idx;
-    int num_planes;
-    int bits_per_mb;
-    int force_quant;
-    int alpha_bits;
-    int warn;
-
-    char *vendor;
-    int quant_sel;
-
-    int frame_size_upper_bound;
-
-    int profile;
-    //const struct prores_profile *profile_info;
-
-    int *slice_q;
-
-    //ProresThreadData *tdata;
-} ProresContext;
-
 
 namespace mrv {
 
