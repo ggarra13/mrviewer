@@ -1613,9 +1613,11 @@ bool aviImage::readFrame(int64_t & pts)
             pts = _av_frame->pkt_dts;
     }
 
+    AVRational q = { 1, AV_TIME_BASE };
+
     pts = av_rescale_q( pts,
                         get_video_stream()->time_base,
-                        AV_TIME_BASE_Q );
+                        q );
 
     return got_video;
 }

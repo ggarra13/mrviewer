@@ -54,6 +54,7 @@ namespace mrv {
     int media::_thumbnail_height = 64;
 
     media::media( CMedia* const img ) :
+    _start( img->first_frame() ),
     _pos( 1 ),
     _image( img ),
     _thumbnail( NULL ),
@@ -147,15 +148,17 @@ namespace mrv {
       mrv::image_type_ptr pic = _image->hires();
       if ( !pic ) return;
 
+
       // Resize image to thumbnail size
       pic.reset( pic->quick_resize( w, h ) );
       w = pic->width();
       h = pic->height();
 
+      // Create a unique name for this element, using fileroot and start frame
+      char buf[2048];
+      sprintf( buf, "%s_%" PRId64, _image->fileroot(), _start );
 
-      _thumbnail = fltk::SharedImage::get( thumbImage::create, 
-					   _image->fileroot(),
-					   0);
+      _thumbnail = fltk::SharedImage::get( thumbImage::create, buf, 0);
 
       if ( !_thumbnail )
       {

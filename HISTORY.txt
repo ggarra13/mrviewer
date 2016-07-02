@@ -1,8 +1,12 @@
 v3.2.2   - GIFs now return their proper duration, instead of 200 
 	   frames.
-	 - Audio offset now works without speeding up the image.
+	 - Saving of images with audio added now works again.
+	   Audio offset now works without speeding up the image or
+	   jumping frames.
 	   This bug is a regression from v3.1.0 when it was 
 	   introduced.
+	 - Audio offset now works forwards and backwards (negative
+	   values).
 
 v3.2.1   - Presentation Mode (F12) now covers the taskbar on Linux,
 	   just like Windows.
