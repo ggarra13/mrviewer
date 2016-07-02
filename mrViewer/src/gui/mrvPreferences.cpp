@@ -1565,17 +1565,21 @@ static const char* kCLocale = "C";
     //
     fltk::FrameBox* box;
     box = (fltk::FrameBox*) fltk::Symbol::find( "down_" );
-    if ( box ) box->data(  "2HHOODD" );
+    if ( box ) box->data( "2HHOODD" );
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "up" );
-    if ( box ) box->data(  "CCOOHH" );
+    if ( box ) box->data( "CCOOCC" );
 
     box = (fltk::FrameBox*) fltk::Symbol::find( "engraved" );
-    if ( box ) box->data(  "2HHOOOOOOHH" );
+    if ( box ) box->data( "2HHOOOOOOHH" );
 
     // This is for slider lines
     box = (fltk::FrameBox*) fltk::Symbol::find( "thin_down" );
-    if ( box ) box->data(  "OOLL" );
+    if ( box ) box->data( "OOLL" );
+
+    box = (fltk::FrameBox*) fltk::Symbol::find( "embossed" );
+    if ( box ) box->data( "LLOO" );
+
 
     // this has default_style
     style = fltk::Style::find( "PopupMenu" );
