@@ -614,18 +614,19 @@ void EDLGroup::cut( boost::int64_t frame )
                                          img->last_frame() );
     if (!right) return;
 
+    right->seek( f );
+    right->fetch( f );
+    right->decode_video( f );
+    right->find_image( f );
+    right->first_frame( f );
+
     mrv::media m( new mrv::gui::media( right ) );
 
     right->last_frame( img->last_frame() );
     img->last_frame( f-1 );
     img->clear_cache();
 
-
-    right->first_frame( f );
-    right->fetch( f );
-    right->decode_video( f );
-    right->find_image( f );
-    right->clear_cache();
+    m->create_thumbnail();
 
     r->edl = true;
 

@@ -46,38 +46,39 @@ namespace mrv {
 
     class media
     {
-    public:
-      typedef CMedia::Mutex Mutex;
+      public:
+        typedef CMedia::Mutex Mutex;
 
-      media( CMedia* const img );
-      ~media();
+        media( CMedia* const img );
+        ~media();
 
 
-	 void position( boost::int64_t x ) { _pos = x; }
-	 boost::int64_t position() const { return _pos; }
+        void position( boost::int64_t x ) { _pos = x; }
+        boost::int64_t position() const { return _pos; }
 
-      CMedia* image()             { return _image; }
-      const CMedia* image() const { return _image; }
+        CMedia* image()             { return _image; }
+        const CMedia* image() const { return _image; }
 
-      std::string name() const { return _image->name(); }
+        std::string name() const { return _image->name(); }
 
-      fltk::Image* thumbnail()             { return _thumbnail; }
-      const fltk::Image* thumbnail() const { return _thumbnail; }
+        fltk::Image* thumbnail()             { return _thumbnail; }
+        const fltk::Image* thumbnail() const { return _thumbnail; }
 
-      bool thumbnail_frozen() const    { return _thumbnail_frozen; }
-      void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
+        bool thumbnail_frozen() const    { return _thumbnail_frozen; }
+        void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
 
-      void create_thumbnail();
+        void create_thumbnail();
 
-    protected:
-      void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
-			    uchar r, uchar g, uchar b );
-
-	 boost::int64_t  _pos;
-	 CMedia*   _image;
-	 fltk::Image* _thumbnail;
-	 bool         _thumbnail_frozen;
-
+      protected:
+        void thumbnail_pixel( uchar*& ptr, fltk::PixelType pixeltype,
+                              uchar r, uchar g, uchar b );
+        
+        boost::int64_t  _start;
+        boost::int64_t  _pos;
+        CMedia*   _image;
+        fltk::Image* _thumbnail;
+        bool         _thumbnail_frozen;
+        
       public:
 	 static       int _thumbnail_width;
 	 static       int _thumbnail_height;
