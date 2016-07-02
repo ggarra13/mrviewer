@@ -320,6 +320,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        if ( next->stopped() )
                        {
                            next->seek( f );
+                           next->do_seek();
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
 
@@ -406,6 +407,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        if ( video && next->stopped() )
                        {
                            next->seek( f );
+                           next->do_seek();
                            next->play( CMedia::kBackwards, uiMain, fg );
                        }
 
