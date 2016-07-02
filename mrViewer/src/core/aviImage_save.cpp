@@ -103,7 +103,7 @@ static AVSampleFormat select_sample_format( AVCodec* c, AVSampleFormat input )
         r = AV_SAMPLE_FMT_DBLP;
 
     const AVSampleFormat* p = c->sample_fmts;
-    while (*p) {
+    while (*p != -1) {
         if ( *p == r )
             return r;
         ++p;

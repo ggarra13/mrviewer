@@ -2627,6 +2627,13 @@ void ImageBrowser::handle_dnd()
           t->value( double(f) );
           t->redraw();
       }
+
+      if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiMain->visible() )
+      {
+          t = uiMain->uiEDLWindow->uiTimeline;
+          t->value( double(f) );
+          t->redraw();
+      }
   }
 
   void ImageBrowser::clear_edl()

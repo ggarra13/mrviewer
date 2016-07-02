@@ -983,10 +983,9 @@ namespace mrv {
               {
                   _shader->setUniform( "coeffs", 1 );
                   // STV  YCbCr coefficients
-                  _shader->setUniform( "Koff", -16/255.0f, -0.5f, -0.5f );
+                  _shader->setUniform( "Koff", -16.0f/255.0f, -0.5f, -0.5f );
                   _shader->setUniform( "Kr", 1.0f, 0.0f, 1.59602715f );
-                  _shader->setUniform( "Kg", 1.0f, -0.39465f, 
-                                       -0.58060f );
+                  _shader->setUniform( "Kg", 1.0f, -0.39465f, -0.58060f );
                   _shader->setUniform( "Kb", 1.0f, 2.03211f, 0.0f );
               }
               else if ( colorspace == "YCOCG" )
