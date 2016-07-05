@@ -76,8 +76,9 @@ ImageView* EDLGroup::view() const
 unsigned EDLGroup::add_media_track( int r )
 {
    unsigned e = children();
+   if (e >= 2) return 0;
 
-   mrv::media_track* o = new mrv::media_track(x(), y() + 78 * e,
+   mrv::media_track* o = new mrv::media_track(x(), y() + 94 * e,
 					      w(), kTrackHeight);
  
    o->main( timeline()->main() );
