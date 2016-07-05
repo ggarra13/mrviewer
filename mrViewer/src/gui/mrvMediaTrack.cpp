@@ -53,9 +53,13 @@ namespace mrv {
 mrv::Element* media_track::_selected = NULL; 
 
 media_track::media_track(int x, int y, int w, int h) : 
-fltk::Group( x, y, w, h ),
+fltk::Group( x, y, w, h+20 ),
 _zoom( 1.0 )
 {
+    begin();
+    fltk::Group* video = new fltk::Group( x, y, w, h-20 );
+    fltk::Group* audio = new fltk::Group( x, y+h-20, w, 20 );
+    end();
 }
  
 media_track::~media_track()
@@ -681,8 +685,9 @@ void media_track::draw()
       int dw = t->slider_position( double( pos + fg->image()->duration() ),
                                    ww );
       dw -= dx;
- 
-      fltk::Rectangle r(rx+dx, y(), dw, h() );
+
+
+      fltk::Rectangle r(rx+dx, y(), dw, h()-20 );
  
       if ( browser()->current_image() == fg )
       {
@@ -694,6 +699,57 @@ void media_track::draw()
       }
 
       fltk::fillrect( r );
+
+      const CMedia* img = fg->image();
+
+      int stream = img->audio_stream();
+      if ( stream >= 0 )
+      {
+          const CMedia::audio_info_t& info = img->audio_info( stream );
+
+          double fps = img->fps();
+          boost::int64_t first = boost::int64_t( info.start * fps + 0.5 );
+          if ( first == 0 ) first = 1;
+
+          boost::int64_t vlen = img->last_frame() - img->first_frame() + 1;
+          boost::int64_t length = boost::int64_t( info.duration * fps + 0.5 );
+          if ( length > vlen ) length = vlen;
+          boost::int64_t last = first + length - 1;
+
+          int64_t offset = img->audio_offset();
+
+          int dx = t->slider_position( double( first-offset ), ww );
+          int dw = t->slider_position( double( last-offset ), ww );
+
+
+          if ( browser()->current_image() == fg )
+              fltk::setcolor( fltk::DARK_CYAN );
+          else
+              fltk::setcolor( fltk::DARK_GREEN );
+
+          fltk::Rectangle ra(rx+dx, h()+y()-20, dw, 20 );
+          fltk::fillrect( ra );
+
+
+          int aw, ah;
+          char buf[128];
+          sprintf( buf, _("Offset: %" PRId64 ), offset );
+          fltk::measure( buf, aw, ah );
+
+          fltk::Rectangle off( rx + dx + dw/2 - aw/2,
+                               y() + h()-ah/2, aw, ah );
+          fltk::drawtext( buf, float( off.x()+2 ), float( off.y()+2 ) );
+
+          if ( _selected && _selected->element() == fg )
+              fltk::setcolor( fltk::WHITE );
+          else
+              fltk::setcolor( fltk::BLACK );
+
+          fltk::drawtext( buf, float( off.x() ), float( off.y() ) );
+
+
+      }
+
 
       fltk::Image* thumb = fg->thumbnail();
 
@@ -719,7 +775,6 @@ void media_track::draw()
 	    fltk::addvertex( r.x() + dw/2, yh );
 	    fltk::closepath();
 	    fltk::strokepath();
-
 	 }
 	 else
 	 {
@@ -733,40 +788,38 @@ void media_track::draw()
       }
 
 
-      fltk::setcolor( fltk::GRAY33 );
       if ( _selected && _selected->element() == fg )
-   	 fltk::setcolor( fltk::BLACK );
+          fltk::setcolor( fltk::BLACK );
+      else
+          fltk::setcolor( fltk::GRAY33 );
 
       int ww, hh;
       fltk::setfont( textfont(), 10 );
-      std::string name = fg->image()->name();
-      const char* buf = name.c_str();
-      fltk::measure( buf, ww, hh );
+      std::string name = img->name();
+      const char* txt = name.c_str();
+      fltk::measure( txt, ww, hh );
+
+
 
       fltk::Rectangle text( rx + dx + dw/2 - ww/2,
-			    y() + h()/2, ww, hh );
+			    y() + (h()-20)/2, ww, hh );
       r.intersect( text );
       if ( r.empty() ) continue;
 
 
-      fltk::drawtext( buf,
-		      float( rx + dx + dw/2 - ww/2 + 2 ), 
-                      float( y() + 2 + h()/2 ) );
 
+      fltk::drawtext( txt,
+		      float( text.x() + 2 ), 
+                      float( text.y() + 2 ) );
 
-      fltk::setcolor( fltk::BLACK );
       if ( _selected && _selected->element() == fg )
-   	 fltk::setcolor( fltk::WHITE );
+          fltk::setcolor( fltk::WHITE );
+      else
+          fltk::setcolor( fltk::BLACK );
 
-      fltk::setfont( textfont(), 10 );
-      name = fg->image()->name();
-      buf = name.c_str();
-      fltk::measure( buf, ww, hh );
-
-
-      fltk::drawtext( buf,
-		      float( rx + dx + dw/2 - ww/2 ), 
-                      float( y() + h()/2 ) );
+      fltk::drawtext( txt,
+		      float( text.x() ), 
+                      float( text.y() ) );
    }
 
    fltk::pop_clip();
