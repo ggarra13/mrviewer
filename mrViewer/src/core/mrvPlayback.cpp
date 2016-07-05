@@ -285,10 +285,10 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       f -= img->first_frame();
 	       f += reel->location(img);
 
+
 	       if ( f <= timeline->maximum() )
 	       {
                    next = reel->image_at( f );
-                   if ( next == img ) return status;
 	       }
 
 
@@ -404,7 +404,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
 
-                       if ( video && next->stopped() )
+                       if ( next->stopped() )
                        {
                            next->seek( f );
                            next->do_seek();
@@ -607,12 +607,19 @@ void audio_thread( PlaybackData* data )
           case CMedia::kDecodeNoStream:
               DBG( "Decode No stream" );
               timer.setDesiredFrameRate( img->play_fps() );
-             timer.waitUntilNextFrameIsDue();
-             frame += step;
-             continue;
+              timer.waitUntilNextFrameIsDue();
+              if ( fg && reel->edl && img->is_left_eye() )
+              {
+                  int64_t f = frame + reel->location(img) - img->first_frame();
+                  f -= img->audio_offset();
+                  view->frame( f );
+              }
+              frame += step;
+              continue;
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
               {
+
                   DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
                   CMedia::Barrier* barrier = img->loop_barrier();
@@ -640,6 +647,8 @@ void audio_thread( PlaybackData* data )
 	    break;
       }
 
+
+
       if ( ! img->has_audio() && img->has_picture() )
       {
 	 // if audio was turned off, follow video.
@@ -652,11 +661,9 @@ void audio_thread( PlaybackData* data )
 
       if ( fg && img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
+          int64_t offset = img->audio_offset();
           int64_t f = frame + reel->location(img) - img->first_frame();
-          if ( f > timeline->maximum() )
-              f = int64_t( timeline->maximum() );
-          if ( f < timeline->minimum() )
-              f = int64_t( timeline->minimum() );
+          f -= offset;
           view->frame( f );
       }
 
