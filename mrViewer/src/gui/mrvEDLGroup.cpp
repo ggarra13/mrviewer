@@ -623,11 +623,15 @@ void EDLGroup::cut( boost::int64_t frame )
 
     right->audio_file( img->audio_file().c_str() );
     right->audio_offset( img->audio_offset() );
+    right->last_frame( img->last_frame() );
 
     mrv::media m( new mrv::gui::media( right ) );
 
-    right->last_frame( img->last_frame() );
-    img->last_frame( f-1 );
+    f -= 1;
+    img->last_frame( f );
+    img->fetch( f );
+    img->decode_video( f );
+    img->find_image( f );
     img->clear_cache();
 
     m->create_thumbnail();
