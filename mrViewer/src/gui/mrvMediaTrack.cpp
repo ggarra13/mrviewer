@@ -56,10 +56,6 @@ media_track::media_track(int x, int y, int w, int h) :
 fltk::Group( x, y, w, h+20 ),
 _zoom( 1.0 )
 {
-    begin();
-    fltk::Group* video = new fltk::Group( x, y, w, h-20 );
-    fltk::Group* audio = new fltk::Group( x, y+h-20, w, 20 );
-    end();
 }
  
 media_track::~media_track()
@@ -660,16 +656,17 @@ void media_track::draw()
 
    fltk::load_identity();
 
-   {
-      fltk::setcolor( fltk::WHITE );
-      int ww, hh;
-      fltk::setfont( textfont(), 12 );
-      const char* buf = reel->name.c_str();
-      fltk::measure( buf, ww, hh );
-      fltk::drawtext( buf, 4.0f, float( y()+h()/2 ) ); 
-   }
+   // {
+   //    fltk::setcolor( fltk::WHITE );
+   //    int ww, hh;
+   //    const char* buf = reel->name.c_str();
+   //    fltk::setfont( textfont(), 12 );
+   //    fltk::measure( buf, ww, hh );
+   //    fltk::drawtext( buf, 4.0f, float( y()+h()/2 ) ); 
+   // }
 
    mrv::Timeline* t = timeline();
+   assert( t != NULL );
 
    int ww = t->w();
    int rx = t->x() + (t->slider_size()-1)/2;
@@ -680,15 +677,18 @@ void media_track::draw()
       if (!fg) continue;
 
       int64_t pos = fg->position();
+      const CMedia* img = fg->image();
+      assert( img != NULL );
 
       int dx = t->slider_position( double( pos ), ww );
-      int dw = t->slider_position( double( pos + fg->image()->duration() ),
+      int dw = t->slider_position( double( pos + img->duration() ),
                                    ww );
       dw -= dx;
 
 
       fltk::Rectangle r(rx+dx, y(), dw, h()-20 );
  
+
       if ( browser()->current_image() == fg )
       {
 	 fltk::setcolor( fltk::DARK_YELLOW );
@@ -700,54 +700,73 @@ void media_track::draw()
 
       fltk::fillrect( r );
 
-      const CMedia* img = fg->image();
-
       int stream = img->audio_stream();
       if ( stream >= 0 )
       {
           const CMedia::audio_info_t& info = img->audio_info( stream );
 
           double fps = img->fps();
-          boost::int64_t first = boost::int64_t( info.start * fps + 0.5 );
-          if ( first == 0 ) first = 1;
-
-          boost::int64_t vlen = img->last_frame() - img->first_frame() + 1;
-          boost::int64_t length = boost::int64_t( info.duration * fps + 0.5 );
-          if ( length > vlen ) length = vlen;
-          boost::int64_t last = first + length - 1;
+          boost::int64_t first = boost::int64_t( info.start * fps - 0.5 );
 
           int64_t offset = img->audio_offset();
+          boost::int64_t vlen = img->duration();
+          boost::int64_t length = boost::int64_t( info.duration * fps + 0.5 );
+          if ( length > vlen ) length = vlen + offset;
+          boost::int64_t last = first + length;
 
-          int dx = t->slider_position( double( first-offset ), ww );
-          int dw = t->slider_position( double( last-offset ), ww );
-
-
-          if ( browser()->current_image() == fg )
-              fltk::setcolor( fltk::DARK_CYAN );
+          if ( offset >= 0 )
+          {
+              first += pos;
+          }
           else
-              fltk::setcolor( fltk::DARK_GREEN );
+          {
+              first += pos - offset;
+          }
+
+          // std::cerr << img->name() << "  first: " << first
+          //           << " last: " << pos+last << " length " << length
+          //           << " vlen: " << vlen
+          //           << " pos: " << pos << " offset " << offset << std::endl;
+
+          int dx = t->slider_position( double( first ), ww );
+          int dw = t->slider_position( double( pos+last-offset ), ww );
+          dw -= dx;
 
           fltk::Rectangle ra(rx+dx, h()+y()-20, dw, 20 );
           fltk::fillrect( ra );
-
-
-          int aw, ah;
-          char buf[128];
-          sprintf( buf, _("Offset: %" PRId64 ), offset );
-          fltk::measure( buf, aw, ah );
-
-          fltk::Rectangle off( rx + dx + dw/2 - aw/2,
-                               y() + h()-ah/2, aw, ah );
-          fltk::drawtext( buf, float( off.x()+2 ), float( off.y()+2 ) );
 
           if ( _selected && _selected->element() == fg )
               fltk::setcolor( fltk::WHITE );
           else
               fltk::setcolor( fltk::BLACK );
+          fltk::strokerect( ra );
 
-          fltk::drawtext( buf, float( off.x() ), float( off.y() ) );
 
+          if ( _selected && _selected->element() == fg )
+              fltk::setcolor( fltk::BLACK );
+          else
+              fltk::setcolor( fltk::GRAY33 );
 
+          int aw = 0, ah = 0;
+          char buf[128];
+          sprintf( buf, _("Offset: %" PRId64 ), offset );
+          fltk::setfont( textfont(), textsize() );
+          fltk::measure( buf, aw, ah );
+
+          fltk::Rectangle off( rx + dx + dw/2 - aw/2,
+                               y() + h()-ah/2, aw, ah );
+          ra.intersect( off );
+          if ( !ra.empty() )
+          {
+              fltk::drawtext( buf, float( off.x()+2 ), float( off.y()+2 ) );
+
+              if ( _selected && _selected->element() == fg )
+                  fltk::setcolor( fltk::WHITE );
+              else
+                  fltk::setcolor( fltk::BLACK );
+
+              fltk::drawtext( buf, float( off.x() ), float( off.y() ) );
+          }
       }
 
 
@@ -758,9 +777,10 @@ void media_track::draw()
 	 thumb->draw( r.x()+2, y()+2 );
       }
 
-      fltk::setcolor( fltk::BLACK );
       if ( _selected && _selected->element() == fg )
-   	 fltk::setcolor( fltk::WHITE );
+          fltk::setcolor( fltk::WHITE );
+      else
+          fltk::setcolor( fltk::BLACK );
       fltk::strokerect( r );
 
       if ( _selected && _selected->element() == fg )
@@ -793,13 +813,11 @@ void media_track::draw()
       else
           fltk::setcolor( fltk::GRAY33 );
 
-      int ww, hh;
-      fltk::setfont( textfont(), 10 );
+      int ww = 0, hh = 0;
       std::string name = img->name();
       const char* txt = name.c_str();
+      fltk::setfont( textfont(), textsize() );
       fltk::measure( txt, ww, hh );
-
-
 
       fltk::Rectangle text( rx + dx + dw/2 - ww/2,
 			    y() + (h()-20)/2, ww, hh );
