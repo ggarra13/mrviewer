@@ -828,7 +828,7 @@ class CMedia
 
     static void audio_cache_size( unsigned x ) { _audio_cache_size = x; }
 
-    void audio_file( const char* file = "" );
+    void audio_file( const char* file );
     std::string audio_file() const { return _audio_file; }
 
     audio_type_ptr get_audio_frame( const boost::int64_t f );  // const
