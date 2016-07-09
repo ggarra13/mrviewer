@@ -2462,7 +2462,6 @@ void ImageBrowser::handle_dnd()
      view()->send_network(buf);
 
 
-
      frame( tframe );
 
     ImageView::Playback playback = view()->playback();
@@ -2504,8 +2503,7 @@ void ImageBrowser::handle_dnd()
 	     size_t i = t->index( f );
 	     f = t->global_to_local( f );
              img = t->image_at( f );
-
-	     DBG( "seek f local1: " << f );
+             if ( !img ) return;
 
 
              if ( ! img->stopped() ) img->stop();
@@ -2522,7 +2520,8 @@ void ImageBrowser::handle_dnd()
 	     DBG( "seek f local2: " << f );
 
              if ( ! img->stopped() ) img->stop();
-	     img->seek( f );
+
+             img->seek( f );
 	  }
 
 	mrv::Reel reel = reel_at( view()->bg_reel() );
@@ -2558,7 +2557,7 @@ void ImageBrowser::handle_dnd()
 	
 	CMedia* img = fg->image();
         if ( !img->stopped() ) img->stop();
-	img->seek( f );
+        img->seek( f );
 
 	mrv::media bg = view()->background();
 	if ( bg )
@@ -2573,7 +2572,7 @@ void ImageBrowser::handle_dnd()
            if ( !img->stopped() ) img->stop();
 
            f += img->first_frame();
-	   img->seek( f );
+           img->seek( f );
 	}
       }
 
