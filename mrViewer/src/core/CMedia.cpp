@@ -367,8 +367,8 @@ _dts( other->_dts ),
 _adts( other->_adts ),
 _audio_frame( 0 ),
 _audio_offset( 0 ),
-_frame( other->_frame ),
-_expected( _frame ),
+_frame( f ),
+_expected( f+1 ),
 _expected_audio( 0 ),
 _frameStart( other->_frameStart ),
 _frameEnd( other->_frameEnd ),
@@ -413,6 +413,14 @@ _audio_engine( NULL )
     _aframe = av_frame_alloc();
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
+
+  TRACE( "copy constructor" );
+
+  audio_initialize();
+  mrv::PacketQueue::initialize();
+
+  audio_file( other->audio_file().c_str() );
+  _audio_offset = other->audio_offset() + f - 1;
 
   fetch( f );
   cache( hires() );
