@@ -689,7 +689,9 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
   CMedia* img = fg->image();
   if ( img == NULL ) return;
 
+  DBG( "Attach audio file " << file << " first frame: " << img->first_frame() );
   img->audio_file( file );
+  DBG( "Attached audio file " << file << " first frame: " << img->first_frame() );
   view->refresh_audio_tracks();
 
 }

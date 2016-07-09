@@ -162,12 +162,17 @@ namespace mrv {
 
 #ifdef DEBUG
 #define DBG(x) do { \
-    mrv::io::info << _("mrViewer DBG : ") << x << " at "            \
-		  << __FUNCTION__ << ", " << __LINE__ << std::endl; \
-  } while(0)
+    std::cerr << _("mrViewer DBG : ") << x << " at "                    \
+              << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
+} while(0)
 #else
 #define DBG(x)
 #endif
+
+#define TRACE(x) do { \
+    std::cerr << _("mrViewer TRACE : ") << x << " at "                    \
+              << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
+} while(0)
 
 
 #endif 

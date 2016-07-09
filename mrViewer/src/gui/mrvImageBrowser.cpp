@@ -407,7 +407,7 @@ void ImageBrowser::wait_on_threads()
     return _reels[ idx ];
   }
 
-mrv::Reel ImageBrowser::reel_at( unsigned idx )
+mrv::Reel ImageBrowser::reel_at( int idx )
 {
    size_t len = _reels.size();
    if ( len == 0 || idx >= len ) return mrv::Reel();
@@ -1164,14 +1164,6 @@ void ImageBrowser::clear_bg()
 
         mrv::Timeline* t = timeline();
 
-	if ( t && t->edl() )
-	{
-	   if ( om )
-	   {
-	      sub_idx = om->image()->subtitle_stream();
-	      audio_idx = om->image()->audio_stream();
-	   }
-	}
 
 	mrv::media m;
 	if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
@@ -1191,17 +1183,6 @@ void ImageBrowser::clear_bg()
                e->redraw();
            }
 
-	   if ( t && t->edl() )
-	   {
-	      if ( sub_idx != -1 &&
-		   sub_idx < int(m->image()->number_of_subtitle_streams()) )
-		 m->image()->subtitle_stream( sub_idx );
-
-	      if ( audio_idx != -1 &&
-		   audio_idx < int(m->image()->number_of_audio_streams()) )
-		 m->image()->audio_stream( audio_idx );
-
-	   }
 
            adjust_timeline();
 
@@ -2495,6 +2476,9 @@ void ImageBrowser::handle_dnd()
 	 if (! m ) return;
 
 	CMedia* img = m->image();
+        if ( ! img ) return;
+
+
 	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 
@@ -2519,6 +2503,7 @@ void ImageBrowser::handle_dnd()
 
 	     size_t i = t->index( f );
 	     f = t->global_to_local( f );
+             img = t->image_at( f );
 
 	     DBG( "seek f local1: " << f );
 
