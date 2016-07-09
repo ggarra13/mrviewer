@@ -520,6 +520,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    return CMedia::kDecodeOK;
 }
 
+
 //
 // Main loop used to play audio (of any image)
 //
@@ -531,7 +532,6 @@ void audio_thread( PlaybackData* data )
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
-
 
    bool fg = data->fg;
 
@@ -605,7 +605,7 @@ void audio_thread( PlaybackData* data )
              frame += step;
              continue;
           case CMedia::kDecodeNoStream:
-              DBG( "Decode No stream" );
+              DBG( "Decode No Stream" );
               timer.setDesiredFrameRate( img->play_fps() );
               timer.waitUntilNextFrameIsDue();
               if ( fg && reel->edl && img->is_left_eye() )
@@ -620,6 +620,7 @@ void audio_thread( PlaybackData* data )
           case  CMedia::kDecodeLoopStart:
               {
 
+
                   DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
                   CMedia::Barrier* barrier = img->loop_barrier();
@@ -629,6 +630,8 @@ void audio_thread( PlaybackData* data )
                   DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
 
                   if ( img->stopped() ) continue;
+
+                  frame -= img->audio_offset();
 
                   EndStatus end = handle_loop( frame, step, img, fg, uiMain,
                                                reel, timeline, status,
@@ -675,6 +678,7 @@ void audio_thread( PlaybackData* data )
 
       frame += step;
    }
+
 
 #ifdef DEBUG_THREADS
    cerr << endl << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 

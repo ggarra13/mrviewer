@@ -850,11 +850,13 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     if ( !got_audio ) {
         if ( _acontext )
         {
-            apts = frame2pts( get_audio_stream(), start + _audio_offset );
+            apts = frame2pts( get_audio_stream(), start + 1 + _audio_offset );
+            DBG( "++++++++ SET APTS " << apts << " START " << start
+                 << " offset " << _audio_offset );
         }
         else
         {
-            apts = frame2pts( get_audio_stream(), start );
+            apts = frame2pts( get_audio_stream(), start + 1);
         }
     }
 
@@ -870,6 +872,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
     else
     {
+        DBG( "SEEK REQ: " << _seek_req << " GOT AUDIO: " << got_audio
+             << " APTS: " << apts );
         if ( !got_video )    _video_packets.seek_begin(vpts);
         if ( !got_audio && apts >= 0 )    _audio_packets.seek_begin(apts);
         if ( !got_subtitle ) _subtitle_packets.seek_begin(spts);
