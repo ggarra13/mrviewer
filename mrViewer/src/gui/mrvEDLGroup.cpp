@@ -40,7 +40,7 @@ const char* kModule = "edl";
 
 namespace mrv {
 
-static int kTrackHeight = 68;
+static int kTrackHeight = 88;
 static int kXOffset = 64;
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
