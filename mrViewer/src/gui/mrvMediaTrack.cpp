@@ -53,7 +53,7 @@ namespace mrv {
 mrv::Element* media_track::_selected = NULL; 
 
 media_track::media_track(int x, int y, int w, int h) : 
-fltk::Group( x, y, w, h+20 ),
+fltk::Group( x, y, w, h ),
 _zoom( 1.0 )
 {
 }
@@ -785,6 +785,7 @@ void media_track::draw()
 
       if ( _selected && _selected->element() == fg )
       {
+          char buf[128];
    	 fltk::setcolor( fltk::BLUE );
 	 int yh = y() + h();
 	 if ( _at_start )
@@ -795,6 +796,8 @@ void media_track::draw()
 	    fltk::addvertex( r.x() + dw/2, yh );
 	    fltk::closepath();
 	    fltk::strokepath();
+            sprintf( buf, "%" PRId64, img->first_frame() );
+            fltk::drawtext( buf, r.x() + dw/4, yh-5 );
 	 }
 	 else
 	 {
@@ -804,6 +807,8 @@ void media_track::draw()
 	    fltk::addvertex( r.x()+dw/2, yh );
 	    fltk::closepath();
 	    fltk::strokepath();
+            sprintf( buf, "%" PRId64, img->last_frame() );
+            fltk::drawtext( buf, r.x() + dw/2 + dw/4, yh-5 );
 	 }
       }
 
