@@ -51,6 +51,7 @@ void open_track_cb( fltk::Widget* o, mrv::media_track* track )
 namespace mrv {
 
 mrv::Element* media_track::_selected = NULL; 
+bool media_track::_audio_selected = false; 
 
 media_track::media_track(int x, int y, int w, int h) : 
 fltk::Group( x, y, w, h ),
@@ -288,6 +289,66 @@ void media_track::shift_media( mrv::media m, boost::int64_t frame )
    return;
 }
 
+void media_track::shift_audio( mrv::media m, boost::int64_t diff )
+{
+   const mrv::Reel& reel = browser()->reel_at( _reel_idx );
+   if ( !reel ) return;
+
+
+   unsigned idx = 0;
+   unsigned e = (unsigned)reel->images.size();
+   for ( unsigned i = 0; i < e; ++i )
+   {
+       mrv::media fg = reel->images[i];
+       if ( fg == m )
+       {
+           idx = i;
+           CMedia* img = m->image();
+           if ( !img ) continue;
+
+           int64_t newoff = img->audio_offset() + diff;
+           img->audio_offset( newoff );
+           img->seek( img->frame() );
+           main()->uiView->foreground( fg );
+
+           char buf[1024];
+           sprintf( buf, N_("ShiftAudio %d") 
+                    N_(" \"%s\" %") PRId64,
+                    _reel_idx, img->fileroot(), img->audio_offset() );
+           main()->uiView->send_network( buf );
+           break;
+       }
+   }
+
+   // Shift medias that come after
+   for (size_t i = idx+1; i < e; ++i )
+   {
+      mrv::media& o = reel->images[i-1];
+      boost::int64_t end = o->position() + o->image()->duration();
+      mrv::media& fg = reel->images[i];
+      fg->position( end );
+   }
+
+
+   if ( idx == 0 ) {
+      return;
+   }
+
+   // Shift medias that come before
+   for (int i = int(idx)-1; i >= 0; --i )
+   {
+      boost::int64_t start = reel->images[i+1]->position();
+      mrv::media& o = reel->images[i];
+      boost::int64_t ee = o->position() + o->image()->duration() - 1;
+      boost::int64_t ss = o->position();
+      
+      // Shift indexes of position
+      o->position( start - (ee - ss ) );
+   }
+
+}
+
+
 void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 {
    const mrv::Reel& reel = browser()->reel_at( _reel_idx );
@@ -353,7 +414,8 @@ void media_track::shift_media_start( mrv::media m, boost::int64_t diff )
 
 }
 
-bool media_track::select_media( const boost::int64_t pos )
+bool media_track::select_media( const boost::int64_t pos,
+                                const int Y )
 {
    bool ok = false;
    delete _selected; _selected = NULL;
@@ -385,9 +447,12 @@ bool media_track::select_media( const boost::int64_t pos )
 	 }
 
 	 ok = true;
+         _audio_selected = false;
+         if ( Y > h()-20 && Y < h() ) _audio_selected = true;
 	 _selected = ImageBrowser::new_item( fg );
 	 focus(this);
          if ( _reel_idx < 0 ) break;
+
 
 	 browser()->reel( _reel_idx );
 	 browser()->change_image( i );
@@ -530,12 +595,11 @@ int media_track::handle( int event )
       case fltk::PUSH:
 	 {
 	    int xx = _dragX = fltk::event_x();
-	    int yy = fltk::event_y();
+	    int yy = y() + fltk::event_y();
  
 	    if ( fltk::event_key() == fltk::RightButton )
 	    {
-
-	       cursor( fltk::CURSOR_ARROW );
+                cursor( fltk::CURSOR_ARROW );
 	       _playback = (CMedia::Playback) main()->uiView->playback();
 	       main()->uiView->stop();
 	       _frame = main()->uiView->frame();
@@ -548,7 +612,7 @@ int media_track::handle( int event )
 	       double p = double(xx+t->x()) / double(ww);
 	       p = t->minimum() + p * len + 0.5f;
 
-	       if ( select_media( int64_t(p) ) )
+	       if ( select_media( int64_t(p), yy ) )
                   return 1;
                else
                {
@@ -598,12 +662,19 @@ int media_track::handle( int event )
 	       {
 		  if ( *i == _selected->element() )
 		  {
-		     if ( _at_start )
-			shift_media_start( _selected->element(), diff );
-		     else
-			shift_media_end( _selected->element(), diff );
-		     
-		     _selected->element()->create_thumbnail();
+                      if ( _audio_selected )
+                      {
+                          shift_audio( _selected->element(), diff );
+                      }
+                      else
+                      {
+                          if ( _at_start )
+                              shift_media_start( _selected->element(), diff );
+                          else
+                              shift_media_end( _selected->element(), diff );
+                          _selected->element()->create_thumbnail();
+                      }
+
 
 		     break;
 		  }
@@ -711,7 +782,7 @@ void media_track::draw()
           int64_t offset = img->audio_offset();
           boost::int64_t vlen = img->duration();
           boost::int64_t length = boost::int64_t( info.duration * fps + 0.5 );
-          if ( length > vlen ) length = vlen + offset;
+          if ( length - offset > vlen ) length = vlen + offset;
           boost::int64_t last = first + length;
 
           if ( offset >= 0 )
@@ -787,28 +858,38 @@ void media_track::draw()
       {
           char buf[128];
    	 fltk::setcolor( fltk::BLUE );
+         int Y = y();
+
+         if ( _audio_selected ) Y += h() - 20;
+
 	 int yh = y() + h();
 	 if ( _at_start )
 	 {
 	    fltk::newpath();
-	    fltk::addvertex( r.x(), y() );
+	    fltk::addvertex( r.x(), Y );
 	    fltk::addvertex( r.x(), yh );
 	    fltk::addvertex( r.x() + dw/2, yh );
 	    fltk::closepath();
 	    fltk::strokepath();
-            sprintf( buf, "%" PRId64, img->first_frame() );
-            fltk::drawtext( buf, r.x() + dw/4, yh-5 );
+            if ( ! _audio_selected )
+            {
+                sprintf( buf, "%" PRId64, img->first_frame() );
+                fltk::drawtext( buf, r.x() + dw/4, yh-5 );
+            }
 	 }
 	 else
 	 {
 	    fltk::newpath();
-	    fltk::addvertex( r.x()+dw, y() );
+	    fltk::addvertex( r.x()+dw, Y );
 	    fltk::addvertex( r.x()+dw, yh );
 	    fltk::addvertex( r.x()+dw/2, yh );
 	    fltk::closepath();
 	    fltk::strokepath();
-            sprintf( buf, "%" PRId64, img->last_frame() );
-            fltk::drawtext( buf, r.x() + dw/2 + dw/4, yh-5 );
+            if ( ! _audio_selected )
+            {
+                sprintf( buf, "%" PRId64, img->last_frame() );
+                fltk::drawtext( buf, r.x() + dw/2 + dw/4, yh-5 );
+            }
 	 }
       }
 
