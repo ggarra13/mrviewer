@@ -2,6 +2,11 @@ v3.2.3   - Audio offsets play nicely with EDL now.
 	 - There's a new audio track in the EDL Window.  Currently,
 	   it does nothing, but report the audio offset.  A future
 	   version will allow sliding the audio.
+	 - Avoided a crash in EDL when shifting to a missing frame.
+	 - Made EDL play correctly when audio offset is different
+	   than 0.
+	 - Shifting (RMB+drag) of clips in EDL now show the frame
+	   being displayed.
 
 v3.2.2   - GIFs now return their proper duration, instead of 200 
 	   frames.
