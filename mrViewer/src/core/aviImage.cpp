@@ -1524,6 +1524,7 @@ void aviImage::video_stream( int x )
   _ptype = VideoFrame::kByte;
   unsigned int w = ctx->width;
 
+  _colorspace_index = ctx->colorspace;
 
   switch( _av_dst_pix_fmt )
   {
