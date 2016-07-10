@@ -662,6 +662,7 @@ void audio_thread( PlaybackData* data )
       }
 
 
+
       if ( fg && img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
           int64_t offset = img->audio_offset();
@@ -970,6 +971,7 @@ void video_thread( PlaybackData* data )
       DBG( img->name() << " find image " << frame );
 
       bool ok = img->find_image( frame );
+
 
       if ( fg && !img->has_audio_data() && reel->edl && img->is_left_eye() )
       {

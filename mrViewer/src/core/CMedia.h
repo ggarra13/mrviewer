@@ -167,9 +167,11 @@ class CMedia
         {
         }
 
-        bool has_data( const boost::int64_t& frame, const double& fps ) const
+        bool has_data( const boost::int64_t& frame, const int64_t offset,
+                       const double& fps ) const
         {
             int64_t last = boost::int64_t( ( duration + start ) * fps );
+            last -= offset;
             return frame <= last;
         }
 
@@ -767,7 +769,9 @@ class CMedia
     inline bool has_audio_data() const
     {
         return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec
-                 && _audio_info[ _audio_index ].has_data( _frame, _fps ) );
+                 && _audio_info[ _audio_index ].has_data( _frame, 
+                                                          _audio_offset,
+                                                          _fps ) );
     }
 
     inline bool has_audio() const
