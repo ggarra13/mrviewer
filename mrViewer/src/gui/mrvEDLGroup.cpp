@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -89,6 +89,24 @@ unsigned EDLGroup::add_media_track( int r )
    return e;
 }
 
+bool  EDLGroup::shift_audio( unsigned reel_idx, std::string s, 
+                             boost::int64_t offset )
+{
+
+   for ( int i = 0; i < 2; ++i )
+   {
+      mrv::media_track* t = (mrv::media_track*)child(i);
+      if ( t->reel() == reel_idx )
+      {
+	 int idx = t->index_for(s);
+	 mrv::media m = t->media( idx );
+	 m->image()->audio_offset( offset );
+	 t->refresh();
+	 return true;
+      }
+   }
+   return false;
+}
 bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s, 
 				   boost::int64_t f )
 {
