@@ -11,6 +11,12 @@ decl {\#include <iostream>} {}
 decl {\#include <gui/mrvIO.h>} {public
 } 
 
+decl {\#include <mrViewer.h>} {public
+} 
+
+decl {\#include "gui/mrvImageView.h"} {public
+} 
+
 decl {\#include <string>} {public
 } 
 
@@ -28,6 +34,8 @@ namespace mrv {open
     }
     decl {unsigned yuv_hint;} {public
     }
+    decl {double fps;} {public
+    }
     decl {std::string audio_codec;} {public
     }
     decl {int audio_bitrate;} {public
@@ -40,7 +48,7 @@ namespace mrv {open
       } {
         {fltk::Group} {} {
           label {Video Options} open
-          xywh {45 46 190 219} box UP_BOX
+          xywh {50 46 185 279} box UP_BOX
         } {
           {fltk::Choice} uiVideoCodec {
             label Codec
@@ -194,10 +202,21 @@ p->value(3);
               label BT2020_CL
               }
           }
+          {fltk::CheckButton} uiOverrideFPS {
+            label {Override FPS}
+            tooltip {When this setting is on, Media Information Window's FPS setting is not taken into account, but the setting from this GUI is.}
+            xywh {55 199 20 25} type RADIO
+            class {fltk::RadioButton}
+          }
+          {fltk::ValueInput} uiFPS {
+            label FPS
+            tooltip {When Override FPS is on, this setting controls the FPS of all movie files saved, instead of relying in Media Information->FPS.}
+            xywh {75 229 90 25} minimum 0.1 maximum 180 step 0.001 linesize 10 value 24
+          }
         }
         {fltk::Group} {} {
           label {Audio Options} open
-          xywh {65 284 160 101} box UP_BOX
+          xywh {65 339 160 101} box UP_BOX
         } {
           {fltk::Choice} uiAudioCodec {
             label Codec open
@@ -219,7 +238,7 @@ p->value(3);
               }
           }
           {fltk::ValueInput} uiAudioBitrate {
-            label Bitrate selected
+            label Bitrate
             tooltip {This setting controls the quality of the audio encoding.  A smaller setting yields less quality but smaller sizes.}
             xywh {55 50 90 25} minimum 100 maximum 4.48e+06 step 1000 value 128000
           }
@@ -232,11 +251,16 @@ video_color = v->uiVideoColor->child( v->uiVideoColor->value() )->label();
 video_profile = (unsigned)v->uiVideoProfile->value();
 video_bitrate = (unsigned)v->uiVideoBitrate->value();
 yuv_hint = (unsigned) v->uiYUVHint->value();
+fps = -1.0;
+if ( v->uiOverrideFPS->value() )
+{
+  fps = v->uiFPS->value();
+}
 audio_codec = v->uiAudioCodec->child( v->uiAudioCodec->value() )->label();
 audio_bitrate = (unsigned)v->uiAudioBitrate->value();
 
 this->uiMain->make_exec_return(true);}
-          xywh {75 429 55 46}
+          xywh {75 444 55 46}
         }
         {fltk::Button} {} {
           label Cancel
@@ -244,18 +268,21 @@ this->uiMain->make_exec_return(true);}
           callback {video_bitrate = 0;
 video_codec = "";
 video_color = "";
+yuv_hint = 0;
+fps = -1.0;
 
 audio_codec = "";
 audio_bitrate = 0;
 
 v->uiMain->make_exec_return(false);}
-          xywh {145 429 60 46}
+          xywh {145 444 60 46}
         }
       }
     }
-    Function {AviSaveUI()} {open
+    Function {AviSaveUI(const mrv::ViewerUI* main)} {selected
     } {
       code {fltk::Window* w = make_window();
+uiFPS->value( main->uiFPS->value() );
 w->exec();} {}
     }
   }

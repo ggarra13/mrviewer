@@ -1,7 +1,7 @@
 
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -584,7 +584,6 @@ void audio_thread( PlaybackData* data )
       boost::int64_t f = frame;
       DBG( "decode audio " << frame );
 
-      // img->debug_audio_packets( frame, "play", true );
 
 
       CMedia::DecodeStatus status = img->decode_audio( f );
@@ -608,7 +607,8 @@ void audio_thread( PlaybackData* data )
               DBG( "Decode No Stream" );
               timer.setDesiredFrameRate( img->play_fps() );
               timer.waitUntilNextFrameIsDue();
-              if ( fg && reel->edl && img->is_left_eye() )
+              if ( fg && reel->edl && img->has_audio_data() && 
+                   img->is_left_eye() )
               {
                   int64_t f = frame + reel->location(img) - img->first_frame();
                   f -= img->audio_offset();

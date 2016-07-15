@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -532,7 +532,7 @@ static void ffmpeg_codecs(fltk::Browser& browser, int type)
       << endl
       << "AMPAS CTL v1.5 or later" << endl
       << "https://github.com/ampas/CTL" << endl
-      << "(C) 2014-2015 AMPAS" << endl
+      << "(C) 2016-2015 AMPAS" << endl
       << endl
 #ifdef GPL
       << "libdvdread" << endl

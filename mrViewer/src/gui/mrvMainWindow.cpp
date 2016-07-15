@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -42,7 +42,7 @@
 #if !defined(_WIN32)
 #  include <fltk/x11.h>
 #  include <X11/xpm.h>
-#  include "icons/viewer16.xpm"
+#  include "icons/viewer48_48.xpm"
 #else
 #  include <windows.h>
 #  include <fltk/win32.h>
@@ -79,19 +79,13 @@ namespace mrv {
     Pixmap p, mask;
     int ErrorStatus = XpmCreatePixmapFromData(fltk::xdisplay,
                                               DefaultRootWindow(fltk::xdisplay),
-                                              (char**)viewer16_xpm,
+                                              (char**)viewer48_48_xpm,
                                               &p, &mask, 
                                               NULL);
 
     if ( ErrorStatus == XpmSuccess )
-      {
-          std::cerr << "XpmCreatePixmapFromData returned success" << std::endl;
-         this->icon((const void*)&p);
-      }
-    else
     {
-        std::cerr << "XpmCreatePixmapFromData returned " << ErrorStatus 
-                  << std::endl;
+        this->icon( &p );
     }
 #endif
 
