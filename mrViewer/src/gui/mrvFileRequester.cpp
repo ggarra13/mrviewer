@@ -1,7 +1,7 @@
 
 /*
     mrViewer - the professional movie and flipbook player
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -812,7 +812,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                    }
                }
 
-               AviSaveUI* opts = new AviSaveUI;
+               AviSaveUI* opts = new AviSaveUI( uiMain );
                if ( opts->video_bitrate == 0 &&
                     opts->audio_bitrate == 0 )
                {
