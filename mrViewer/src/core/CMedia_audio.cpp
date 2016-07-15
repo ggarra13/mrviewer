@@ -804,8 +804,8 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
         case kForwards:
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
-            if ( _adts < first ) first = _adts;
-            if ( _adts > last )   last = _adts;
+            if ( _adts < first )     first = _adts;
+            else if ( _adts > last )  last = _adts;
             break;
         default:
             first = frame - max_audio_frames();
@@ -814,6 +814,9 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             break;
     }
   
+  // std::cerr << frame << " limit " << first << " to " << last
+  //           << std::endl;
+
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
 				NotInRangeFunctor( first, last ) ), end );
