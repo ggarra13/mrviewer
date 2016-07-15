@@ -814,16 +814,6 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             break;
     }
   
-#if 0
-  if ( first > last ) 
-  {
-     boost::int64_t tmp = last;
-     last = first;
-     first = tmp;
-  }
-#endif
-
-
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
 				NotInRangeFunctor( first, last ) ), end );
@@ -1611,7 +1601,6 @@ bool CMedia::find_audio( const boost::int64_t frame )
       IMG_ERROR( _("Could not play audio frame ") << frame  );
   }
 
-
   limit_audio_store( frame );
 
   _audio_pts = (result->frame() - _audio_offset ) / _orig_fps;
@@ -1990,7 +1979,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 	if ( f == frame )  std::cerr << "P";
 	if ( f == _adts )   std::cerr << "D";
 	if ( f == _frame ) std::cerr << "F";
-	std::cerr << f << " (" << (void*)(*iter)->data() << ") ";
+	std::cerr << f << " ";
      }
      std::cerr << std::endl;
   }
