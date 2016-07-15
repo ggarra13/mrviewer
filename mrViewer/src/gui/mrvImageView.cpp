@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -689,9 +689,8 @@ static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
   CMedia* img = fg->image();
   if ( img == NULL ) return;
 
-  DBG( "Attach audio file " << file << " first frame: " << img->first_frame() );
   img->audio_file( file );
-  DBG( "Attached audio file " << file << " first frame: " << img->first_frame() );
+  
   view->refresh_audio_tracks();
 
 }

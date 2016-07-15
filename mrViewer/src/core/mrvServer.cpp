@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -535,6 +535,22 @@ bool Parser::parse( const std::string& s )
        is >> on;
        ui->uiView->send( mrv::kPRESENTATION );
        ok = true;
+   }
+   else if ( cmd == N_("ShiftAudio") )
+   {
+      int reel_idx;
+      is >> reel_idx;
+
+      std::string imgname;
+      is.clear();
+      std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t offset;
+      is >> offset;
+
+      return edl_group()->shift_audio( reel_idx, imgname, offset );
    }
    else if ( cmd == N_("ShiftMediaStart") )
    {
