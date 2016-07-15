@@ -825,7 +825,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         if ( f > _frame_end ) f = _frame_end;
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
-        _dts = dts-1;
+        _dts = _adts = dts-1;
         _expected = _dts;
         _seek_req = false;
         return true;
@@ -892,7 +892,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
                                         got_audio, got_subtitle );
 
 
-    _dts = dts;
+    _dts = _adts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
 
     _expected = dts + 1;
@@ -1993,7 +1993,7 @@ void aviImage::populate()
     }
   
 
-    _dts = dts;
+    _dts = _adts = dts;
     _frame = _audio_frame = _frameStart;
     _expected = dts;
 
@@ -2124,7 +2124,7 @@ bool aviImage::initialize()
 
 void aviImage::preroll( const boost::int64_t frame )
 {
-  _dts = _frame = _audio_frame = frame;
+  _dts = _adts = _frame = _audio_frame = frame;
 
   _images.reserve( _max_images );
 
@@ -2446,7 +2446,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 				      got_audio, got_subtitle);
 
 
-  _dts = dts;
+  _dts = _adts = dts;
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected = dts + 1;
@@ -2500,9 +2500,9 @@ bool aviImage::frame( const boost::int64_t f )
         return false;
     }
 
-  if ( f < _frameStart )    _dts = _frameStart;
-  else if ( f > _frameEnd ) _dts = _frameEnd;
-  else                      _dts = f;
+  if ( f < _frameStart )    _dts = _adts = _frameStart;
+  else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
+  else                      _dts = _adts = f;
 
 
 
@@ -3064,7 +3064,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-    _dts = _seek_frame;
+    _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
