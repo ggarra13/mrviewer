@@ -343,6 +343,7 @@ int main( int argc, char** argv )
           if ( single_instance )
               fltk::add_timeout( 1.0, load_new_files, ui );
 
+          ui->uiMain->set_icon();
           ui->uiMain->show();   // so run() does something
           ok = fltk::run();
       }

@@ -1,6 +1,6 @@
 /*
     mrViewer - the professional movie and flipbook playback
-    Copyright (C) 2007-2014  Gonzalo Garramuño
+    Copyright (C) 2007-2016  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
     it under the terms of the GNU General Public License as published by
@@ -1138,11 +1138,9 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       assert( audio_size + _audio_buf_used <= _audio_max );
 
       // Decrement the length by the number of bytes parsed
-      assert0( pkt_temp.size >= ret );
+      assert( pkt_temp.size >= ret );
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
-
-      // if ( pkt_temp.size == 0 ) pkt_temp.data = NULL;
 
       if ( audio_size <= 0 ) break;
 
@@ -1150,7 +1148,6 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
     }
 
   if ( pkt_temp.size == 0 ) {
-
 
       if ( _audio_ctx->codec->capabilities & CODEC_CAP_DELAY )
       {
@@ -1617,12 +1614,11 @@ bool CMedia::find_audio( const boost::int64_t frame )
 
   limit_audio_store( frame );
 
-  _audio_pts = (result->frame() - _audio_offset ) / _orig_fps; //av_q2d( get_audio_stream()->avg_frame_rate );
+  _audio_pts = (result->frame() - _audio_offset ) / _orig_fps;
 
   _audio_clock = double(av_gettime_relative()) / 1000000.0;
   set_clock_at(&audclk, _audio_pts, 0, _audio_clock );
 
-  //set_clock_at(&audclk, _audio_pts, 0, audio_callback_time / 1000000.0 );
   sync_clock_to_slave( &extclk, &audclk );
 
   return ok;
