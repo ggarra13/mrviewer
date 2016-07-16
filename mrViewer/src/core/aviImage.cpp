@@ -564,15 +564,19 @@ void aviImage::subtitle_file( const char* f )
     else
     {
         std::ostringstream msg;
-  
 
+        _subtitle_file = f;
+
+        // Populate with video_ctx is not a typo.  It is needed.
         subtitle_info_t s;
         populate_stream_info( s, msg, _context, _video_ctx, 0 );
-        s.has_codec  = false;
+        s.has_codec  = true;
+        s.codec_name = "sub";
+        s.fourcc     = _subtitle_file.substr( _subtitle_file.size()-3, 
+                                              _subtitle_file.size() );
         s.bitrate    = 256;
         _subtitle_info.push_back( s );
 
-        _subtitle_file = f;
     
         fs::path sp = _subtitle_file;
         _subtitle_file = sp.filename().string();
@@ -638,15 +642,15 @@ void aviImage::open_video_codec()
   AVStream *stream = get_video_stream();
   if ( stream == NULL ) return;
 
-  AVCodecContext* ictx = stream->codec;
+  AVCodecParameters* ictx = stream->codecpar;
 
   _video_codec = avcodec_find_decoder( ictx->codec_id );
 
   _video_ctx = avcodec_alloc_context3(_video_codec);
-  int r = avcodec_copy_context(_video_ctx, ictx);
+  int r = avcodec_parameters_to_context(_video_ctx, ictx);
   if ( r < 0 )
   {
-      throw _("avcodec_copy_context failed for video"); 
+      throw _("avcodec_parameters_to_context failed for video"); 
   }
 
 
@@ -1272,14 +1276,14 @@ void aviImage::open_subtitle_codec()
   AVStream* stream = get_subtitle_stream();
   if (!stream) return;
 
-  AVCodecContext* ictx = stream->codec;
+  AVCodecParameters* ictx = stream->codecpar;
   _subtitle_codec = avcodec_find_decoder( ictx->codec_id );
 
   _subtitle_ctx = avcodec_alloc_context3(_subtitle_codec);
-  int r = avcodec_copy_context(_subtitle_ctx, ictx);
+  int r = avcodec_parameters_to_context(_subtitle_ctx, ictx);
   if ( r < 0 )
   {
-      LOG_ERROR( _("avcodec_copy_context failed for subtitle") );
+      LOG_ERROR( _("avcodec_parameters_to_context failed for subtitle") );
       return;
   }
 
@@ -1491,7 +1495,9 @@ void aviImage::video_stream( int x )
     }
 
   AVStream* stream = get_video_stream();
-  AVCodecContext* ctx = stream->codec;
+  AVCodecParameters* par = stream->codecpar;
+  AVCodecContext* ctx = avcodec_alloc_context3(_video_codec);
+  avcodec_parameters_to_context( ctx, par );
 
   int has_alpha = ( ( ctx->pix_fmt == AV_PIX_FMT_RGBA    ) |
 		    ( ctx->pix_fmt == AV_PIX_FMT_ABGR    ) |
@@ -1502,8 +1508,7 @@ void aviImage::video_stream( int x )
 		    ( ctx->pix_fmt == AV_PIX_FMT_BGR32   ) | 
 		    ( ctx->pix_fmt == AV_PIX_FMT_BGR32_1 ) );
 
-  _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, 
-						       ctx->pix_fmt,
+  _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, ctx->pix_fmt,
 						       has_alpha, NULL );
 
 
