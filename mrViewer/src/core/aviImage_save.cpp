@@ -217,23 +217,31 @@ static bool add_stream(OutputStream*& ost,
     /* find the encoder */
     if (!(*codec)) {
         LOG_ERROR( _("Could not find encoder for '") << name << "'" );
-        delete ost; ost = NULL;
         return false;
     }
 
+
+    ost = new OutputStream;
 
     LOG_INFO( _("Open encoder ") << (*codec)->name );
 
-    ost->st = avformat_new_stream(oc, *codec);
+    // ost->st = avformat_new_stream(oc, *codec);  // previous
+    ost->st = avformat_new_stream(oc, NULL);
     if (!ost->st) {
         LOG_ERROR( _("Could not allocate stream") );
-        delete ost; ost = NULL;
         return false;
     }
+
     ost->st->id = oc->nb_streams-1;
 
     AVStream* st = ost->st;
     AVCodecContext* c = avcodec_alloc_context3(*codec);
+    if (!c)
+    {
+        LOG_ERROR( _("Could not allocate an encoding context" ) );
+        return false;
+    }
+
     ost->c = c;
     c->codec_id = codec_id;
     c->codec_type = (*codec)->type;
@@ -249,9 +257,17 @@ static bool add_stream(OutputStream*& ost,
            c->bit_rate    = opts->audio_bitrate;
            c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
            c->channels    = img->audio_channels();
-           c->time_base.num = st->time_base.num = 1;
-           c->time_base.den = st->time_base.den = c->sample_rate;
-           
+
+           c->channel_layout = AV_CH_LAYOUT_STEREO;
+           if ((*codec)->channel_layouts) {
+               c->channel_layout = (*codec)->channel_layouts[0];
+               for (int i = 0; (*codec)->channel_layouts[i]; ++i) {
+                   if ((*codec)->channel_layouts[i] == AV_CH_LAYOUT_STEREO)
+                       c->channel_layout = AV_CH_LAYOUT_STEREO;
+               }
+           }
+           st->time_base = (AVRational){ 1, c->sample_rate };
+
           if((c->block_align == 1 || c->block_align == 1152 || 
               c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
               c->block_align = 0;
@@ -542,6 +558,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
     assert( max_dst_nb_samples > 0 );
  
+    int err = avcodec_parameters_from_context( st->codecpar, c );
+    if ( err < 0 )
+    {
+        LOG_ERROR( _("Could not copy the stream parameters") );
+        return false;
+    }
+
     return true;
 }
 
@@ -746,7 +769,7 @@ static bool write_audio_frame(AVFormatContext *oc, OutputStream* ost,
 
 static void close_audio_static(AVFormatContext *oc, OutputStream* ost)
 {
-    avcodec_close(ost->c);
+    avcodec_free_context(&ost->c);
    
     av_audio_fifo_free( fifo ); fifo = NULL;
     swr_free( &swr_ctx );
@@ -777,10 +800,8 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     picture->width = width;
     picture->height = height;
 
-    /* the image can be allocated by any means and av_image_alloc() is
-     * just the most convenient way if av_malloc() is to be used */
-    ret = av_image_alloc(picture->data, picture->linesize, width, height,
-                         pix_fmt, 32);
+    /* allocate the buffers for the frame data */
+    ret = av_frame_get_buffer(picture, 32);
     if ( ret < 0 )
     {
         LOG_ERROR( _("Could not allocate raw picture buffer") );
@@ -904,14 +925,23 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, OutputStream* ost,
     }
 
     picture->pts = 0;
+    int ret = avcodec_parameters_from_context(st->codecpar, c);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not copy the stream parameters") );
+        return false;
+    }
+
 
     return true;
 }
 
 static void close_video(AVFormatContext *oc, OutputStream* ost)
 {
-    avcodec_close(ost->c);
+    avcodec_free_context(&ost->c);
     av_frame_free(&picture);
+    sws_freeContext( sws_ctx );
+    sws_ctx = NULL;
 }
 
 /* prepare a yuv image */
@@ -1105,11 +1135,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    assert( filename != NULL );
    assert( img != NULL );
 
+   AVDictionary *opt = NULL;
+   
    frame_audio = img->first_frame();
    samples_count = 0;
    frame_count = 0;
 
-   avcodec_register_all();
+   /* Initialize libavcodec, and register all codecs and formats. */
    av_register_all();
 
 
@@ -1135,10 +1167,10 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        LOG_WARNING( _("Could not deduce output format from file extension: using MPEG.") );
 
       err = avformat_alloc_output_context2(&oc, NULL, "mpeg", filename);
-      if ( err < 0 )
+      if ( err < 0 || !oc )
       {
-	 LOG_ERROR( _("Could not open mpeg movie") );
-	 return false;
+          LOG_ERROR( _("Could not open mpeg movie: ") << get_error_text(err) );
+          return false;
       }
    }
 
@@ -1171,16 +1203,15 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
 
    if (img->has_picture() && fmt->video_codec != AV_CODEC_ID_NONE) {
-       vost = new OutputStream;
        if ( ! add_stream(vost, oc, &video_codec, opts->video_codec.c_str(),
                          fmt->video_codec, img, opts) )
        {
            LOG_ERROR( _("Could not create video output stream") );
+           delete vost; vost = NULL;
        }
    }
 
    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
-       aost = new OutputStream;
        if ( !add_stream(aost, oc, &audio_cdc, opts->audio_codec.c_str(),
                         fmt->audio_codec, img, opts ))
        {
@@ -1201,7 +1232,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        if ( ! open_video(oc, video_codec, vost, img, opts ) )
        {
            delete vost; vost = NULL;
-           return false;
+           if (!aost) return false;
        }
 
    if (aost)
@@ -1210,7 +1241,8 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
            delete aost; aost = NULL;
            if ( !vost ) return false;
        }
-   
+
+   av_dump_format( oc, 0, filename, 1 );
 
    if (!(fmt->flags & AVFMT_NOFILE)) {
       if (avio_open(&oc->pb, filename, AVIO_FLAG_WRITE) < 0) {
@@ -1221,7 +1253,7 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    
 
    /* Write the stream header, if any. */
-   err = avformat_write_header(oc, NULL);
+   err = avformat_write_header(oc, &opt);
    if ( err < 0 )
    {
       LOG_ERROR( _("Error occurred when writing header of output file: ") << 
@@ -1338,11 +1370,10 @@ bool flush_video_and_audio( const CMedia* img )
     ost[0] = aost ? aost : NULL;
     ost[1] = vost ? vost : NULL;
     for ( int i = 0; i < 2; ++i ) {
-        if ( ost[i] == NULL ) continue;
+        if ( !ost[i] ) continue;
 
         AVStream* s = ost[i]->st;
-        if ( !s ) continue;
-            
+
         int stop_encoding = 0;
         AVCodecContext* c = ost[i]->c;
 
@@ -1416,12 +1447,6 @@ bool aviImage::close_movie( const CMedia* img )
     if ( !flush_video_and_audio(img) )
     {
         LOG_ERROR( _("Flushing of buffers failed") );
-    }
-
-    if ( sws_ctx )
-    {
-        sws_freeContext( sws_ctx );
-        sws_ctx = NULL;
     }
 
 
