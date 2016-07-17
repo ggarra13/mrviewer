@@ -179,10 +179,10 @@ void CMedia::open_audio_codec()
       return;
     }
 
-  AVCodecContext* ictx = stream->codec;
+  AVCodecParameters* ictx = stream->codecpar;
   if ( ictx == NULL )
   {
-     IMG_ERROR( _("No codec context for audio stream.") );
+     IMG_ERROR( _("No codec parameters for audio stream.") );
       _audio_index = -1;
      return;
   }
@@ -197,10 +197,10 @@ void CMedia::open_audio_codec()
   }
   
   _audio_ctx = avcodec_alloc_context3(_audio_codec);
-  int r = avcodec_copy_context(_audio_ctx, ictx);
+  int r = avcodec_parameters_to_context(_audio_ctx, ictx);
   if ( r < 0 )
   {
-      throw _("avcodec_copy_context failed for audio"); 
+      throw _("avcodec_parameters_to_context failed for audio"); 
   }
 
   AVDictionary* opts = NULL;
@@ -473,7 +473,7 @@ void CMedia::close_audio_codec()
  * 
  * @return bitrate
  */
-unsigned int CMedia::calculate_bitrate( const AVCodecContext* enc )
+unsigned int CMedia::calculate_bitrate( const AVCodecParameters* enc )
 {
   unsigned int bitrate;
   /* for PCM codecs, compute bitrate directly */
@@ -552,8 +552,8 @@ void CMedia::populate_audio()
       // Get the codec context
       const AVStream* stream = c->streams[ i ];
       assert( stream != NULL );
-
-      const AVCodecContext* ctx = stream->codec;
+      
+      const AVCodecParameters* ctx = stream->codecpar;
       assert( ctx != NULL );
 
       // Determine the type and obtain the first index of each type
@@ -582,7 +582,7 @@ void CMedia::populate_audio()
 		    s.language = "und";
 		 }
 
-		 const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
+		 const char* fmt = av_get_sample_fmt_name( (AVSampleFormat)ctx->format );
 		 if ( fmt ) s.format = fmt; 
 		 
 		 _audio_info.push_back( s );
