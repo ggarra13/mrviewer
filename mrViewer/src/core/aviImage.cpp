@@ -569,11 +569,10 @@ void aviImage::subtitle_file( const char* f )
 
         // Populate with video_ctx is not a typo.  It is needed.
         subtitle_info_t s;
-        populate_stream_info( s, msg, _context, _video_ctx, 0 );
-        s.has_codec  = true;
-        s.codec_name = "sub";
-        s.fourcc     = _subtitle_file.substr( _subtitle_file.size()-3, 
-                                              _subtitle_file.size() );
+        AVCodecParameters par;
+        avcodec_parameters_from_context( &par, _video_ctx );
+        populate_stream_info( s, msg, _context, &par, 0 );
+        s.has_codec  = false;
         s.bitrate    = 256;
         _subtitle_info.push_back( s );
 
@@ -1495,20 +1494,20 @@ void aviImage::video_stream( int x )
     }
 
   AVStream* stream = get_video_stream();
-  AVCodecParameters* par = stream->codecpar;
-  AVCodecContext* ctx = avcodec_alloc_context3(_video_codec);
-  avcodec_parameters_to_context( ctx, par );
+  AVCodecParameters* ctx = stream->codecpar;
 
-  int has_alpha = ( ( ctx->pix_fmt == AV_PIX_FMT_RGBA    ) |
-		    ( ctx->pix_fmt == AV_PIX_FMT_ABGR    ) |
-		    ( ctx->pix_fmt == AV_PIX_FMT_ARGB    ) |
-		    ( ctx->pix_fmt == AV_PIX_FMT_RGB32   ) |
-		    ( ctx->pix_fmt == AV_PIX_FMT_RGB32_1 ) |
-		    ( ctx->pix_fmt == AV_PIX_FMT_PAL8    ) | 
-		    ( ctx->pix_fmt == AV_PIX_FMT_BGR32   ) | 
-		    ( ctx->pix_fmt == AV_PIX_FMT_BGR32_1 ) );
+  int has_alpha = ( ( ctx->format == AV_PIX_FMT_RGBA    ) |
+		    ( ctx->format == AV_PIX_FMT_ABGR    ) |
+		    ( ctx->format == AV_PIX_FMT_ARGB    ) |
+		    ( ctx->format == AV_PIX_FMT_RGB32   ) |
+		    ( ctx->format == AV_PIX_FMT_RGB32_1 ) |
+		    ( ctx->format == AV_PIX_FMT_PAL8    ) | 
+		    ( ctx->format == AV_PIX_FMT_BGR32   ) | 
+		    ( ctx->format == AV_PIX_FMT_BGR32_1 ) );
 
-  _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, ctx->pix_fmt,
+  _av_dst_pix_fmt = avcodec_find_best_pix_fmt_of_list( fmts, 
+						       (AVPixelFormat)
+                                                       ctx->format,
 						       has_alpha, NULL );
 
 
@@ -1522,14 +1521,14 @@ void aviImage::video_stream( int x )
        _av_dst_pix_fmt == AV_PIX_FMT_BGRA ||
        _av_dst_pix_fmt == AV_PIX_FMT_YUVA420P) alpha_layers();
 
-  if (ctx->lowres) {
-      ctx->flags |= CODEC_FLAG_EMU_EDGE;
-  }
+  // if (ctx->lowres) {
+  //     ctx->flags |= CODEC_FLAG_EMU_EDGE;
+  // }
 
   _ptype = VideoFrame::kByte;
   unsigned int w = ctx->width;
 
-  _colorspace_index = ctx->colorspace;
+  _colorspace_index = ctx->color_space;
 
   switch( _av_dst_pix_fmt )
   {
@@ -1552,25 +1551,25 @@ void aviImage::video_stream( int x )
       case AV_PIX_FMT_RGBA:
           _pix_fmt = VideoFrame::kRGBA; break;
       case AV_PIX_FMT_YUV444P:
-          if ( ctx->colorspace == AVCOL_SPC_BT709 )
+          if ( ctx->color_space == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr444; 
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr444; 
           break;
       case AV_PIX_FMT_YUV422P:
-          if ( ctx->colorspace == AVCOL_SPC_BT709 )
+          if ( ctx->color_space == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr422;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr422;
           break;
       case AV_PIX_FMT_YUV420P:
-          if ( ctx->colorspace == AVCOL_SPC_BT709 )
+          if ( ctx->color_space == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr420;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr420;
           break;
       case AV_PIX_FMT_YUVA420P:
-          if ( ctx->colorspace == AVCOL_SPC_BT709 )
+          if ( ctx->color_space == AVCOL_SPC_BT709 )
               _pix_fmt = VideoFrame::kITU_709_YCbCr420A;
           else
               _pix_fmt = VideoFrame::kITU_601_YCbCr420A;
@@ -1658,8 +1657,7 @@ void aviImage::populate()
 
         if ( stream == NULL ) continue;
 
-        const AVCodecContext* ctx = stream->codec;
-        if ( ctx == NULL ) continue;
+        const AVCodecParameters* ctx = stream->codecpar;
 
       
         // Determine the type and obtain the first index of each type
@@ -1681,10 +1679,10 @@ void aviImage::populate()
 		 
                     video_info_t s;
                     populate_stream_info( s, msg, _context, ctx, i );
-                    s.has_b_frames = ( ctx->has_b_frames != 0 );
+                    s.has_b_frames = ( ctx->video_delay != 0 );
                     s.fps          = calculate_fps( stream );
-                    if ( av_get_pix_fmt_name( ctx->pix_fmt ) )
-                        s.pixel_format = av_get_pix_fmt_name( ctx->pix_fmt );
+                    if ( av_get_pix_fmt_name( (AVPixelFormat)ctx->format ) )
+                        s.pixel_format = av_get_pix_fmt_name( (AVPixelFormat)ctx->format );
                     _video_info.push_back( s );
                     if ( _video_index < 0 && s.has_codec )
                     {
@@ -1717,7 +1715,7 @@ void aviImage::populate()
                         s.language = "und";
                     }
 
-                    const char* fmt = av_get_sample_fmt_name( ctx->sample_fmt );
+                    const char* fmt = av_get_sample_fmt_name( (AVSampleFormat)ctx->format );
                     if ( fmt ) s.format = fmt;
 
                     _audio_info.push_back( s );
