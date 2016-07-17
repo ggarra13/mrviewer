@@ -65,6 +65,10 @@ const char* kModule = "save";
 
 namespace mrv {
 
+struct OutputStream {
+    AVStream* st;
+    AVCodecContext* c;
+};
 
 static AVFrame *picture = NULL;
 static boost::int64_t frame_count = 0;
@@ -192,14 +196,12 @@ struct SwsContext* sws_ctx = NULL;
 
 
 /* Add an output stream. */
-static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
-                            const char* name, // codec name
-                            enum AVCodecID codec_id, const CMedia* const img,
-                            const AviSaveUI* opts)
+static bool add_stream(OutputStream*& ost,
+                       AVFormatContext *oc, AVCodec **codec,
+                       const char* name, // codec name
+                       enum AVCodecID codec_id, const CMedia* const img,
+                       const AviSaveUI* opts)
 {
-    AVCodecContext *c;
-    AVStream *st;
-
     const AVCodecDescriptor *desc;
     *codec = avcodec_find_encoder_by_name( name );
     if ( !*codec )
@@ -215,34 +217,41 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
     /* find the encoder */
     if (!(*codec)) {
         LOG_ERROR( _("Could not find encoder for '") << name << "'" );
-       return NULL;
+        delete ost; ost = NULL;
+        return false;
     }
 
 
     LOG_INFO( _("Open encoder ") << (*codec)->name );
 
-    st = avformat_new_stream(oc, *codec);
-    if (!st) {
+    ost->st = avformat_new_stream(oc, *codec);
+    if (!ost->st) {
         LOG_ERROR( _("Could not allocate stream") );
-        return NULL;
+        delete ost; ost = NULL;
+        return false;
     }
-    st->id = oc->nb_streams-1;
-    c = st->codec;
+    ost->st->id = oc->nb_streams-1;
+
+    AVStream* st = ost->st;
+    AVCodecContext* c = avcodec_alloc_context3(*codec);
+    ost->c = c;
+    c->codec_id = codec_id;
+    c->codec_type = (*codec)->type;
 
     switch ((*codec)->type) {
        case AVMEDIA_TYPE_AUDIO:
-          c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
-          aformat = AudioEngine::ffmpeg_format( img->audio_format() );
-          if ( opts->audio_codec == "pcm_s16le" )
-              c->sample_fmt = AV_SAMPLE_FMT_S16;
-          else
-              c->sample_fmt = select_sample_format(*codec, aformat );
-          c->bit_rate    = opts->audio_bitrate;
-          c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
-          c->channels    = img->audio_channels();
-          c->time_base.num = st->time_base.num = 1;
-          c->time_base.den = st->time_base.den = c->sample_rate;
-
+           c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
+           aformat = AudioEngine::ffmpeg_format( img->audio_format() );
+           if ( opts->audio_codec == "pcm_s16le" )
+               c->sample_fmt = AV_SAMPLE_FMT_S16;
+           else
+               c->sample_fmt = select_sample_format(*codec, aformat );
+           c->bit_rate    = opts->audio_bitrate;
+           c->sample_rate = select_sample_rate( *codec, img->audio_frequency() );
+           c->channels    = img->audio_channels();
+           c->time_base.num = st->time_base.num = 1;
+           c->time_base.den = st->time_base.den = c->sample_rate;
+           
           if((c->block_align == 1 || c->block_align == 1152 || 
               c->block_align == 576) && c->codec_id == AV_CODEC_ID_MP3)
               c->block_align = 0;
@@ -252,7 +261,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
        case AVMEDIA_TYPE_VIDEO:
            {
-               c->codec_id = codec_id;
                c->bit_rate = opts->video_bitrate;
                // c->rc_min_rate = c->bit_rate;
                // c->rc_max_rate = c->bit_rate;
@@ -357,18 +365,30 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
     /* Some formats want stream headers to be separate. */
     if (oc->oformat->flags & AVFMT_GLOBALHEADER)
-        c->flags |= CODEC_FLAG_GLOBAL_HEADER;
+        c->flags |= AV_CODEC_FLAG_GLOBAL_HEADER;
 
-    return st;
+    int err = avcodec_parameters_from_context( ost->st->codecpar, c );
+    if ( err < 0 )
+    {
+        LOG_ERROR( _("Could not copy the stream parameters") );
+        delete ost; ost = NULL;
+        return false;
+    }
+
+    ost->st->codec->ticks_per_frame = c->ticks_per_frame;
+    ost->st->codec->time_base       = c->time_base;
+
+    return true;
 }
 
 
 static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
-			      AVStream* st, const CMedia* img,
+			      OutputStream* ost, const CMedia* img,
                               const AviSaveUI* opts)
 
 {
-    AVCodecContext* c = st->codec;
+    AVStream* st = ost->st;
+    AVCodecContext* c = ost->c;
 
     /* allocate and init a re-usable frame */
     audio_frame = av_frame_alloc();
@@ -403,7 +423,9 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         }
     }
 
-    if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
+    if ( c->frame_size <= 0 ) c->frame_size = c->sample_rate * c->channels / img->fps();
+
+    if (c->codec->capabilities & AV_CODEC_CAP_VARIABLE_FRAME_SIZE)
     {
         c->frame_size = 10000;
     }
@@ -524,7 +546,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 }
 
 
-static bool write_audio_frame(AVFormatContext *oc, AVStream *st, 
+static bool write_audio_frame(AVFormatContext *oc, OutputStream* ost, 
 			      CMedia* img)
 {
    AVPacket pkt = {0};
@@ -533,7 +555,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
    av_init_packet(&pkt);
 
-   AVCodecContext* c = st->codec;
+   AVCodecContext* c = ost->c;
 
 
    const audio_type_ptr audio = img->get_audio_frame( frame_audio );
@@ -703,7 +725,7 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
        samples_count += frame_size;
 
 
-       ret = write_frame(oc, &c->time_base, st, &pkt);
+       ret = write_frame(oc, &c->time_base, ost->st, &pkt);
        if (ret < 0) {
            LOG_ERROR( "Error while writing audio frame: " << 
                       get_error_text(ret) );
@@ -722,9 +744,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
 
 
-static void close_audio_static(AVFormatContext *oc, AVStream *st)
+static void close_audio_static(AVFormatContext *oc, OutputStream* ost)
 {
-    avcodec_close(st->codec);
+    avcodec_close(ost->c);
    
     av_audio_fifo_free( fifo ); fifo = NULL;
     swr_free( &swr_ctx );
@@ -826,10 +848,11 @@ AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
 
 static AVFrame *frame;
 
-static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
+static bool open_video(AVFormatContext *oc, AVCodec* codec, OutputStream* ost,
 		       const CMedia* img, const AviSaveUI* opts )
 {
-    AVCodecContext* c = st->codec;
+    AVStream* st = ost->st;
+    AVCodecContext* c = ost->c;
 
     /* open the codec */
     if (avcodec_open2(c, codec, NULL) < 0) {
@@ -885,9 +908,9 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     return true;
 }
 
-static void close_video(AVFormatContext *oc, AVStream *st)
+static void close_video(AVFormatContext *oc, OutputStream* ost)
 {
-    avcodec_close(st->codec);
+    avcodec_close(ost->c);
     av_frame_free(&picture);
 }
 
@@ -972,11 +995,11 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
 
 }
 
-static bool write_video_frame(AVFormatContext* oc, AVStream* st,
+static bool write_video_frame(AVFormatContext* oc, OutputStream* ost,
 			      const CMedia* img )
 {
    int ret;
-   AVCodecContext* c = st->codec;
+   AVCodecContext* c = ost->c;
 
    fill_yuv_image( c, picture, img );
 
@@ -997,7 +1020,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
    /* If size is zero, it means the image was buffered. */
    if ( got_packet )
    {
-       ret = write_frame( oc, &c->time_base, st, &pkt );
+       ret = write_frame( oc, &c->time_base, ost->st, &pkt );
 
        av_packet_unref( &pkt );
 
@@ -1016,8 +1039,9 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
 
 
 static AVFormatContext *oc = NULL;
+OutputStream* vost = NULL;
+OutputStream* aost = NULL;
 static AVOutputFormat* fmt = NULL;
-static AVStream* audio_st = NULL, *video_st = NULL;
 
 AVCodec* audio_cdc, *video_codec;
 
@@ -1146,19 +1170,25 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
        fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
 
 
-   video_st = NULL;
-   audio_st = NULL;
    if (img->has_picture() && fmt->video_codec != AV_CODEC_ID_NONE) {
-       video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
-                             fmt->video_codec, img, opts);
+       vost = new OutputStream;
+       if ( ! add_stream(vost, oc, &video_codec, opts->video_codec.c_str(),
+                         fmt->video_codec, img, opts) )
+       {
+           LOG_ERROR( _("Could not create video output stream") );
+       }
    }
 
    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
-       audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
-                             fmt->audio_codec, img, opts );
+       aost = new OutputStream;
+       if ( !add_stream(aost, oc, &audio_cdc, opts->audio_codec.c_str(),
+                        fmt->audio_codec, img, opts ))
+       {
+           LOG_ERROR( _("Could not create audio output stream") );
+       }
    }
 
-   if ( video_st == NULL && audio_st == NULL )
+   if ( vost->st == NULL && aost->st == NULL )
    {
        LOG_ERROR( _("No audio nor video stream created") );
        return false;
@@ -1167,16 +1197,19 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
 
    /* Now that all the parameters are set, we can open the audio and
     * video codecs and allocate the necessary encode buffers. */
-   if (video_st)
-       if ( ! open_video(oc, video_codec, video_st, img, opts ) )
-	 return false;
+   if (vost)
+       if ( ! open_video(oc, video_codec, vost, img, opts ) )
+       {
+           delete vost; vost = NULL;
+           return false;
+       }
 
-   if (audio_st)
-       if ( ! open_audio_static(oc, audio_cdc, audio_st, img, opts) )
-      {
-	 audio_st = NULL;
-	 if ( !video_st ) return false;
-      }
+   if (aost)
+       if ( ! open_audio_static(oc, audio_cdc, aost, img, opts) )
+       {
+           delete aost; aost = NULL;
+           if ( !vost ) return false;
+       }
    
 
    if (!(fmt->flags & AVFMT_NOFILE)) {
@@ -1186,11 +1219,12 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
       }
    }
    
+
    /* Write the stream header, if any. */
    err = avformat_write_header(oc, NULL);
    if ( err < 0 )
    {
-      LOG_ERROR( _("Error occurred when opening output file: ") << 
+      LOG_ERROR( _("Error occurred when writing header of output file: ") << 
                  get_error_text(err) );
       return false;
    }
@@ -1205,15 +1239,15 @@ bool write_va_frame( CMedia* img )
    double audio_time, video_time;
 
     /* Compute current audio and video time. */
-   audio_time = ( audio_st ? ( double(audio_frame->pts) *
-                               av_q2d( audio_st->time_base ) )
+   audio_time = ( aost ? ( double(audio_frame->pts) *
+                           av_q2d( aost->st->time_base ) )
 		  : INFINITY );
    // This is wrong as it does not get updated properly with h264
    //video_time = ( video_st ? video_st->pts.val * av_q2d( video_st->time_base )
    //     	  : INFINITY );
    
-   video_time = ( video_st ? ( double(picture->pts) * 
-                               av_q2d( video_st->codec->time_base ) )
+   video_time = ( vost ? ( double(picture->pts) * 
+                           av_q2d( vost->st->time_base ) )
    		  : INFINITY );
 
    // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
@@ -1226,20 +1260,20 @@ bool write_va_frame( CMedia* img )
     /* write interleaved audio and video frames */
 
 
-    if ( video_st ) {
-        write_video_frame(oc, video_st, img);
+    if ( vost ) {
+        write_video_frame(oc, vost, img);
 
        // av_rescale_q(1, video_st->codec->time_base,
        // video_st->time_base);
     }
 
-    if ( audio_st )
+    if ( aost )
     {
         while( audio_time <= video_time ) {
-            if ( ! write_audio_frame(oc, audio_st, img) )
+            if ( ! write_audio_frame(oc, aost, img) )
                 break;
             audio_time = (double)audio_frame->pts *
-                         av_q2d( audio_st->time_base);
+                         av_q2d( aost->st->time_base);
        }
     }
     
@@ -1250,7 +1284,7 @@ bool aviImage::save_movie_frame( CMedia* img )
 {
 
 
-   if (!audio_st && !video_st)
+   if (!aost && !vost)
       return false;
 
    return write_va_frame( img );
@@ -1261,9 +1295,9 @@ bool flush_video_and_audio( const CMedia* img )
 {
     int ret = 0;
 
-    if ( audio_st && fifo )
+    if ( aost && fifo )
     {
-        AVCodecContext* c = audio_st->codec;
+        AVCodecContext* c = aost->c;
 
         unsigned cache_size = av_audio_fifo_size( fifo );
         AVRational ratio = { 1, c->sample_rate };
@@ -1300,15 +1334,17 @@ bool flush_video_and_audio( const CMedia* img )
 
     }
 
-    AVStream* st[2];
-    st[0] = audio_st;
-    st[1] = video_st;
+    OutputStream* ost[2];
+    ost[0] = aost ? aost : NULL;
+    ost[1] = vost ? vost : NULL;
     for ( int i = 0; i < 2; ++i ) {
-        AVStream* s = st[i];
+        if ( ost[i] == NULL ) continue;
+
+        AVStream* s = ost[i]->st;
         if ( !s ) continue;
             
         int stop_encoding = 0;
-        AVCodecContext* c = s->codec;
+        AVCodecContext* c = ost[i]->c;
 
         if ( !( c->codec->capabilities & CODEC_CAP_DELAY ) )
             continue;
@@ -1322,7 +1358,7 @@ bool flush_video_and_audio( const CMedia* img )
             int (*encode)(AVCodecContext*, AVPacket*, const AVFrame*, int*) = NULL;
             const char *desc;
                 
-            switch (s->codec->codec_type) {
+            switch (c->codec_type) {
                 case AVMEDIA_TYPE_AUDIO:
                     encode = avcodec_encode_audio2;
                     desc   = "audio";
@@ -1396,10 +1432,10 @@ bool aviImage::close_movie( const CMedia* img )
    av_write_trailer(oc);
     
     /* Close each codec. */
-    if (video_st)
-        close_video(oc, video_st);
-    if (audio_st)
-        close_audio_static(oc, audio_st);
+    if (vost)
+        close_video(oc, vost);
+    if (aost)
+        close_audio_static(oc, aost);
 
     if (!(fmt->flags & AVFMT_NOFILE))
        /* Close the output file. */
