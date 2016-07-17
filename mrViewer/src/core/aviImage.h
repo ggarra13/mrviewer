@@ -273,7 +273,7 @@ class aviImage : public CMedia
     AVFrame*              _av_frame;
     AVFrame*              _filt_frame;
     AVCodec*              _video_codec;
-    AVCodecContext*       _subtitle_ctx;           //!< current video context
+    AVCodecContext*       _subtitle_ctx;     //!< current subtitle context
     SwsContext*           _convert_ctx;
 
     video_info_list_t     _video_info;

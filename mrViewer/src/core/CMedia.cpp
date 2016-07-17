@@ -2340,6 +2340,8 @@ void CMedia::populate_stream_info( StreamInfo& s,
   s.fourcc       = codec_tag2fourcc( ctx->codec_tag );
 
   AVStream* stream = context->streams[stream_index];
+  std::cerr << "TB: " << stream->time_base.num << "/" << stream->time_base.den
+            << std::endl;
   double time  = av_q2d( stream->time_base );
 
 
@@ -2778,7 +2780,7 @@ void CMedia::default_rendering_transform()
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-  if ( stream->codec->codec_type != AVMEDIA_TYPE_VIDEO ) return;
+  if ( stream->codecpar->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
   int64_t  max_distance  = 0;
   unsigned num_keyframes = 0;
