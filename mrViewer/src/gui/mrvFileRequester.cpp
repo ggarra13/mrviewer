@@ -812,7 +812,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                    }
                }
 
-               AviSaveUI* opts = new AviSaveUI;
+               AviSaveUI* opts = new AviSaveUI( uiMain );
                if ( opts->video_bitrate == 0 &&
                     opts->audio_bitrate == 0 )
                {
