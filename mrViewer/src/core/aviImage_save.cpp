@@ -577,7 +577,9 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                       src_nb_samples, dst_rate, src_rate,
                       AV_ROUND_UP) );
 
+
        if (dst_nb_samples > max_dst_nb_samples) {
+
 
            av_free(dst_samples_data[0]);
 
