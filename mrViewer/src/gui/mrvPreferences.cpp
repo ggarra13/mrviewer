@@ -1403,18 +1403,11 @@ static const char* kCLocale = "C";
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set Browser style") );
+    }
 
-    style = fltk::Style::find( "TextDisplay" );
-    if ( style )
-      {
-	style->color( bgcolor );
-	style->textcolor( textcolor );
-	style->buttoncolor( bgcolor );
-	style->labelsize( 12 );
-	style->labelcolor( textcolor );
-	style->selection_color( selectioncolor );
-	style->selection_textcolor( selectiontextcolor );
-      }
 
     // this has default_style
     style = fltk::Style::find( "ValueInput" );
@@ -1428,6 +1421,10 @@ static const char* kCLocale = "C";
 	 // style->buttoncolor( selectioncolor );
           style->labelcolor( textcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set ValueInput style") );
+    }
 
     // this has default_style
     style = fltk::Style::find( "InputBrowser" );
@@ -1435,11 +1432,16 @@ static const char* kCLocale = "C";
       {
 	style->color( bgcolor );
 	style->textcolor( textcolor );
+	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
 	style->buttoncolor( bgcolor );
 	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set InputBrowser style") );
+    }
 
     // this has default_style
     style = fltk::Style::find( "Item" );
@@ -1447,11 +1449,16 @@ static const char* kCLocale = "C";
       {
 	style->color( bgcolor );
 	style->textcolor( textcolor );
+        style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
 	style->buttoncolor( bgcolor );
 	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set Item style") );
+    }
 
     // this has default_style
     // style = fltk::Style::find( "Group" );
@@ -1465,6 +1472,10 @@ static const char* kCLocale = "C";
 	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set Group style") );
+    }
 
     style = fltk::Style::find( "Choice" );
     if ( style )
@@ -1477,6 +1488,10 @@ static const char* kCLocale = "C";
 	style->labelcolor( textcolor );
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
+    }
+    else
+    {
+        LOG_ERROR( _("Could not set Choice style") );
     }
 
     style = fltk::Style::find( "Message" );
@@ -1491,6 +1506,10 @@ static const char* kCLocale = "C";
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set Message style") );
+    }
 
     // this has default_style
     // style = fltk::Style::find( "InvisibleBox" );
@@ -1500,6 +1519,10 @@ static const char* kCLocale = "C";
 	style->labelsize( 12 );
 	style->labelcolor( textcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set InvisibleBox style") );
+    }
 
     // this has default_styl
     style = fltk::Style::find( "Button" );
@@ -1514,6 +1537,10 @@ static const char* kCLocale = "C";
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( selectiontextcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set Button style") );
+    }
 
 
     // Make CheckButton draw as a radio button
@@ -1532,6 +1559,10 @@ static const char* kCLocale = "C";
 	style->selection_color( selectioncolor );
 	style->selection_textcolor( fltk::YELLOW   );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set CheckButton style") );
+    }
 
     style = fltk::Style::find( "RadioButton" );
     if ( style )
@@ -1545,6 +1576,10 @@ static const char* kCLocale = "C";
           style->selection_color( fltk::YELLOW );
           style->selection_textcolor( fltk::YELLOW );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set RadioButton style") );
+    }
 
 
     // this has default_style
@@ -1558,6 +1593,11 @@ static const char* kCLocale = "C";
 	//       style->labelsize( 10 );
 	//       style->labelcolor( textcolor );
       }
+    else
+    {
+        LOG_ERROR( _("Could not set Tooltip style") );
+    }
+
 
 
     //
@@ -1604,6 +1644,8 @@ static const char* kCLocale = "C";
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->labelcolor( textcolor );
+        style->selection_color( selectioncolor );
+        style->selection_textcolor( selectiontextcolor );
 	style->textsize( 10 );
 	style->labelsize( 10 );
       }
@@ -1615,6 +1657,8 @@ static const char* kCLocale = "C";
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->labelcolor( textcolor );
+        style->selection_color( selectioncolor );
+        style->selection_textcolor( selectiontextcolor );
 	style->textsize( 10 );
 	style->labelsize( 10 );
       }
@@ -1626,6 +1670,8 @@ static const char* kCLocale = "C";
 	style->color( bgcolor );
 	style->textcolor( textcolor );
 	style->buttoncolor( bgcolor );
+        style->selection_color( selectioncolor );
+        style->selection_textcolor( selectiontextcolor );
 	style->labelsize( 10 );
 	style->labelcolor( textcolor );
       }
