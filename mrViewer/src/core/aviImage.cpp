@@ -821,11 +821,11 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     // Skip the seek packets when playback is stopped
     if ( skip )
     {
-        boost::int64_t f = frame + 1;
+        boost::int64_t f = frame;
         if ( f > _frame_end ) f = _frame_end;
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
-        _dts = _adts = dts-1;
+        _dts = _adts = dts; // dts-1
         _expected = _expected_audio = _dts;
         _seek_req = false;
         return true;
@@ -948,6 +948,7 @@ void aviImage::store_image( const boost::int64_t frame,
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
 
+
   mrv::image_type_ptr image;
   try {
 
@@ -1011,7 +1012,7 @@ void aviImage::store_image( const boost::int64_t frame,
   }
   else
   {
-     video_cache_t::iterator at = std::lower_bound( _images.begin(), 
+      video_cache_t::iterator at = std::lower_bound( _images.begin(), 
 						    _images.end(),
 						    frame, 
 						    LessThanFunctor() );
@@ -1375,8 +1376,12 @@ bool aviImage::find_image( const boost::int64_t frame )
     }
     else
     {
+#if 0
        i = std::lower_bound( _images.begin(), end, 
 			     frame, LessThanFunctor() );
+#else
+       i = std::find_if( _images.begin(), end, EqualFunctor(frame) );
+#endif
     }
 
     if ( i != end && *i )
