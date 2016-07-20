@@ -1193,7 +1193,7 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     unsigned int index = 0;
 
     boost::int64_t last = audio_frame;
-    
+
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
 
@@ -1202,8 +1202,6 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
         if ( bytes_per_frame > _audio_buf_used && _audio_buf_used != 0 )
             bytes_per_frame = _audio_buf_used;
     }
-
-    
 
     // Split audio read into frame chunks
     for (;;)
@@ -1365,7 +1363,7 @@ CMedia::store_audio( const boost::int64_t audio_frame,
     {
         audio_cache_t::iterator end = _audio.end();
 
-#if 0
+#if 1
         audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
                                                        end,
                                                        f,
