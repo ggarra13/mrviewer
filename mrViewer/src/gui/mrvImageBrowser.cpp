@@ -972,7 +972,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     view()->send_network( buf );
 
 
-    if ( p != ImageView::kStopped )
+    if ( p != ImageView::kStopped && p != ImageView::kScrubbing )
         view()->play( (CMedia::Playback) p );
 
     redraw();
@@ -1032,7 +1032,7 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
     // Make sure no alert message is printed
     mrv::alert( NULL );
 
-    if ( playback != CMedia::kStopped )
+    if ( playback != CMedia::kStopped && playback != CMedia::kScrubbing )
         newImg->play( playback, uiMain, (r == view()->fg_reel()) );
 
     return newm;
@@ -2576,7 +2576,7 @@ void ImageBrowser::handle_dnd()
 	}
       }
 
-    if ( playback != ImageView::kStopped )
+    if ( playback != ImageView::kStopped && playback != ImageView::kScrubbing )
     {
         view()->play( (CMedia::Playback)playback);
        // img->play( (CMedia::Playback)playback, uiMain, true);
