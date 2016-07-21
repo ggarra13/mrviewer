@@ -89,6 +89,25 @@ unsigned EDLGroup::add_media_track( int r )
    return e;
 }
 
+bool  EDLGroup::shift_audio( unsigned reel_idx, std::string s, 
+                             boost::int64_t f )
+{
+
+   for ( int i = 0; i < 2; ++i )
+   {
+      mrv::media_track* t = (mrv::media_track*)child(i);
+      if ( t->reel() == reel_idx )
+      {
+	 int idx = t->index_for(s);
+         if ( idx < 0 ) return false;
+	 mrv::media m = t->media( idx );
+	 m->image()->audio_offset( f );
+	 t->refresh();
+	 return true;
+      }
+   }
+   return false;
+}
 bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s, 
 				   boost::int64_t f )
 {
@@ -99,6 +118,7 @@ bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s,
       if ( t->reel() == reel_idx )
       {
 	 int idx = t->index_for(s);
+         if ( idx < 0 ) return false;
 	 mrv::media m = t->media( idx );
 	 m->image()->first_frame( f );
 	 t->refresh();
@@ -118,6 +138,7 @@ bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s,
       if ( t->reel() == reel_idx )
       {
 	 int idx = t->index_for(s);
+         if ( idx < 0 ) return false;
 	 mrv::media m = t->media( idx );
 	 m->image()->last_frame( f );
 	 t->refresh();
