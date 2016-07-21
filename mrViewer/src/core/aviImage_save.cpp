@@ -437,7 +437,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     ret = av_samples_alloc_array_and_samples(&src_samples_data,
                                              &src_samples_linesize, 
                                              c->channels,
-                                             src_nb_samples, aformat, 0);
+                                             src_nb_samples, aformat, 1);
     if (ret < 0) {
         LOG_ERROR( _("Could not allocate source samples. Error: ")
                    << get_error_text( ret ) );
@@ -502,7 +502,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
                                                      &dst_samples_linesize,
                                                      c->channels,
                                                      max_dst_nb_samples,
-                                                     c->sample_fmt, 0);
+                                                     c->sample_fmt, 1);
         if ( ret < 0 )
         {
            LOG_ERROR( _("Could not allocate destination samples") );
@@ -589,12 +589,11 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
 
        if (dst_nb_samples > max_dst_nb_samples) {
 
-
            av_free(dst_samples_data[0]);
 
            ret = av_samples_alloc(dst_samples_data, &dst_samples_linesize,
                                   c->channels, dst_nb_samples, 
-                                  c->sample_fmt, 0);
+                                  c->sample_fmt, 1);
            if (ret < 0)
            {
                LOG_ERROR( _("Cannot allocate dst samples") );
