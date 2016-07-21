@@ -203,9 +203,12 @@ void CMedia::open_audio_codec()
       throw _("avcodec_copy_context failed for audio"); 
   }
 
-  AVDictionary* opts = NULL;
+  AVDictionary* info = NULL;
+  av_dict_set(&info, "threads", "auto", 0);
 
-  if ( avcodec_open2( _audio_ctx, _audio_codec, NULL ) < 0 )
+  av_dict_set(&info, "refcounted_frames", "1", 0);
+
+  if ( avcodec_open2( _audio_ctx, _audio_codec, &info ) < 0 )
   {
      IMG_ERROR( _("Could not open audio codec.") );
      _audio_index = -1;
@@ -1584,7 +1587,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
     if ( frame < first_frame() )
         return true;
 
-#if 0
+#if 1
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
 						  frame, LessThanFunctor() );

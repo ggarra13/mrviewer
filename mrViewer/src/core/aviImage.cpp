@@ -107,11 +107,8 @@ namespace
 
 
 //  in ffmpeg, sizes are in bytes...
-#define kMAX_QUEUE_SIZE (15 * 2048 * 2048)
-#define kMAX_PACKET_SIZE 50
-#define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
-#define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-#define kMIN_FRAMES 5
+#define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
+#define kMIN_FRAMES 25
 
 namespace {
   const unsigned int  kMaxCacheImages = 70;
@@ -690,7 +687,7 @@ void aviImage::open_video_codec()
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
 
-  // recounted frames needed for subtitles
+  // refcounted frames needed for subtitles
   av_dict_set(&info, "refcounted_frames", "1", 0);
 
   if ( _video_codec == NULL ||
@@ -772,7 +769,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     int flag = AVSEEK_FLAG_BACKWARD;
 
-    if ( playback() == kStopped &&
+    if ( playback() == kScrubbing &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -825,8 +822,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         if ( f > _frame_end ) f = _frame_end;
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
-        _dts = _adts = dts; // dts-1
-        _expected = _expected_audio = _dts;
+        _dts = _adts = dts;
+        _expected = _expected_audio = _dts + 1;
         _seek_req = false;
         return true;
     }
@@ -1340,7 +1337,7 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
-    if ( _right_eye && playback() == kStopped )
+    if ( _right_eye && ( playback() == kStopped || playback() == kScrubbing ) )
         _right_eye->find_image( frame );
 
 #ifdef DEBUG_VIDEO_PACKETS
@@ -1376,7 +1373,7 @@ bool aviImage::find_image( const boost::int64_t frame )
     }
     else
     {
-#if 0
+#if 1
        i = std::lower_bound( _images.begin(), end, 
 			     frame, LessThanFunctor() );
 #else
@@ -2406,10 +2403,12 @@ bool aviImage::fetch(const boost::int64_t frame)
     cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
-   if ( playback() == kStopped && _right_eye ) {
-       _right_eye->stop();
-       _right_eye->fetch( frame );
-   }
+    if ( ( playback() == kStopped || playback() == kScrubbing) && 
+         _right_eye )
+    {
+        _right_eye->stop();
+        _right_eye->fetch( frame );
+    }
 
    bool got_video = !has_video();
    bool got_audio = !has_audio();
@@ -2488,7 +2487,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 bool aviImage::frame( const boost::int64_t f )
 {
 
-    if ( playback() != kStopped &&
+    if ( ( playback() != kStopped && playback() != kScrubbing ) &&
          (_audio_packets.bytes() + _video_packets.bytes() + 
           _subtitle_packets.bytes() > kMAX_QUEUE_SIZE
           || ( (_audio_packets.size() > kMIN_FRAMES || !has_audio() ) &&
@@ -2498,10 +2497,11 @@ bool aviImage::frame( const boost::int64_t f )
         // std::cerr << "false return: " << std::endl;
         // std::cerr << "vp: " << _video_packets.size() << std::endl;
         // std::cerr << "ap: " << _audio_packets.size() << std::endl;
-        // std::cerr << "sum: " <<
-        // ( _video_packets.bytes() +  _audio_packets.bytes() + 
-        // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
-        // 		 << std::endl;
+        // std::cerr << "vq= " << _video_packets.bytes() / 1024 
+        //           << "KB aq= " << _audio_packets.bytes() / 1024 << "KB sq="
+        //           << _subtitle_packets.bytes() 
+        //           << "B as=" << _audio.size() << " used=" 
+        //           << _audio_buf_used / 1024 << "KB" << std::endl;
         return false;
     }
 
@@ -3093,30 +3093,13 @@ void aviImage::do_seek()
        if ( has_audio() )
        {
            boost::int64_t f = _seek_frame;
-           if ( _acontext == NULL )
-           {
-               status = decode_audio( f );
-               if ( status > kDecodeOK )
-               {
-                   IMG_ERROR( _("Decode audio error: ")
-                              << decode_error( status )
-                              << (" for frame ") << _seek_frame );
-               }
-               else
-               {
-                   find_audio( _seek_frame );
-               }
-           }
-           else
-           {
-               f += _audio_offset;
-               status = decode_audio( f );
-               if ( status > kDecodeOK )
-                   IMG_ERROR( _("Decode audio error: ") 
-                              << decode_error( status ) 
-                              << _(" for frame ") << _seek_frame );
-               find_audio( _seek_frame + _audio_offset );
-           }
+           f += _audio_offset;
+           status = decode_audio( f );
+           if ( status > kDecodeOK )
+               IMG_ERROR( _("Decode audio error: ") 
+                          << decode_error( status ) 
+                          << _(" for frame ") << _seek_frame );
+           find_audio( _seek_frame + _audio_offset );
        }
        
        if ( has_video() || has_audio() )
