@@ -369,12 +369,6 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
 
 {
     AVCodecContext* c = st->codec;
-    int ret = avcodec_parameters_from_context(st->codecpar, c);
-    if ( ret < 0 )
-    {
-        LOG_ERROR( _("Could not copy context to parameters") );
-        return false;
-    }
 
     /* allocate and init a re-usable frame */
     audio_frame = av_frame_alloc();
@@ -389,6 +383,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     if (avcodec_open2(c, codec, NULL) < 0) {
        LOG_ERROR( _("Could not open audio codec" ) );
        return false;
+    }
+
+    int ret = avcodec_parameters_from_context(st->codecpar, c);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not copy context to parameters") );
+        return false;
     }
 
     const CMedia::Attributes& attrs = img->iptc();
@@ -837,17 +838,18 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 		       const CMedia* img, const AviSaveUI* opts )
 {
     AVCodecContext* c = st->codec;
-    int ret = avcodec_parameters_from_context(st->codecpar, c);
-    if ( ret < 0 )
-    {
-        LOG_ERROR( _("Could not copy context to parameters") );
-        return false;
-    }
 
     /* open the codec */
     if (avcodec_open2(c, codec, NULL) < 0) {
        LOG_ERROR( _("Could not open video codec") );
        return false;
+    }
+
+    int ret = avcodec_parameters_from_context(st->codecpar, c);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not copy context to parameters") );
+        return false;
     }
 
     const CMedia::Attributes& attrs = img->iptc();
