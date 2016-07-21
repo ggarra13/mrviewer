@@ -536,6 +536,24 @@ bool Parser::parse( const std::string& s )
        ui->uiView->send( mrv::kPRESENTATION );
        ok = true;
    }
+   else if ( cmd == N_("ShiftAudio") )
+   {
+      int reel;
+      is >> reel;
+
+      std::string imgname;
+      is.clear();
+      std::getline( is, imgname, '"' ); // skip first quote
+      is.clear();
+      std::getline( is, imgname, '"' );
+
+      boost::int64_t offset;
+      is >> offset;
+
+      edl_group()->shift_audio( reel, imgname, offset );
+
+      ok = true;
+   }
    else if ( cmd == N_("ShiftMediaStart") )
    {
       int reel;

@@ -1,8 +1,12 @@
 v3.2.4   - Added shift audio offset to server-client communication.
 	 - Added an Override FPS setting to the Save Movie requester
-	   to clarify where FPS for movies saved is set.
+	   to simplify where FPS for saving movies is set.
 	 - Bug fixed audio video sync playback for some movies.
-	   (See Babalar.mp4 sample).
+	   (See Babalar.mp4 sample).  This change fixes audio
+	   stores, too.
+	 - Bug fixed saving of some movies that would result in
+	   mixed frames.
+	 - Made audio offset work in network connections.
 
 v3.2.3   - Audio offsets play nicely with EDL now.
 	 - There's a new audio track below the video track in the 

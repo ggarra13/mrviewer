@@ -139,18 +139,18 @@ namespace mrv {
 
           _bytes += pkt.size;
 
-          _cond.notify_one();
-
 #ifdef DEBUG_PACKET_QUEUE
           std::cerr << "PUSH BACK " << pkt.stream_index 
                     << " PTS: " << pkt.pts
                     << " DTS: " << pkt.dts
                     << " DATA: " << (void*)pkt.data
                     << " SIZE: " << pkt.size
-                    << " AT: " << &(_packets.back()) 
+                    << " AT: " << &(_packets.back())
                     << " TOTAL " << _bytes
                     << std::endl;
 #endif
+
+          _cond.notify_one();
 
       }
 

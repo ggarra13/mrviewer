@@ -277,6 +277,7 @@ class CMedia
     kBackwards = -1,
     kStopped   =  0,
     kForwards  =  1,
+    kScrubbing =  4,
     };
 
     enum Damage {
