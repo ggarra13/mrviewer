@@ -204,9 +204,9 @@ void CMedia::open_audio_codec()
   }
 
   AVDictionary* info = NULL;
-  av_dict_set(&info, "threads", "auto", 0);
+  // av_dict_set(&info, "threads", "auto", 0);
 
-  av_dict_set(&info, "refcounted_frames", "1", 0);
+  // av_dict_set(&info, "refcounted_frames", "1", 0);
 
   if ( avcodec_open2( _audio_ctx, _audio_codec, &info ) < 0 )
   {
