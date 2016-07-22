@@ -1944,7 +1944,7 @@ void CMedia::seek( const boost::int64_t f )
       _right_eye->_seek_frame = f;
   }
 
-  if ( stopped() )
+  if ( stopped() || saving() )
     {
       do_seek();
     }

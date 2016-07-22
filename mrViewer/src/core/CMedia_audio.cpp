@@ -203,12 +203,9 @@ void CMedia::open_audio_codec()
       throw _("avcodec_copy_context failed for audio"); 
   }
 
-  AVDictionary* info = NULL;
-  // av_dict_set(&info, "threads", "auto", 0);
+  AVDictionary* opts = NULL;
 
-  // av_dict_set(&info, "refcounted_frames", "1", 0);
-
-  if ( avcodec_open2( _audio_ctx, _audio_codec, &info ) < 0 )
+  if ( avcodec_open2( _audio_ctx, _audio_codec, NULL ) < 0 )
   {
      IMG_ERROR( _("Could not open audio codec.") );
      _audio_index = -1;
@@ -816,6 +813,16 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             if ( _adts > last )   last = _adts;
             break;
     }
+  
+#if 0
+  if ( first > last ) 
+  {
+     boost::int64_t tmp = last;
+     last = first;
+     first = tmp;
+  }
+#endif
+
 
   audio_cache_t::iterator end = _audio.end();
   _audio.erase( std::remove_if( _audio.begin(), end,
@@ -1196,15 +1203,10 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     unsigned int index = 0;
 
     boost::int64_t last = audio_frame;
-
+    
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
-
-    if ( last == first_frame() )
-    {
-        if ( bytes_per_frame > _audio_buf_used && _audio_buf_used != 0 )
-            bytes_per_frame = _audio_buf_used;
-    }
+    
 
     // Split audio read into frame chunks
     for (;;)
@@ -1587,7 +1589,7 @@ bool CMedia::find_audio( const boost::int64_t frame )
     if ( frame < first_frame() )
         return true;
 
-#if 0
+#if 1
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = std::lower_bound( _audio.begin(), end, 
 						  frame, LessThanFunctor() );

@@ -277,7 +277,7 @@ class CMedia
     kBackwards = -1,
     kStopped   =  0,
     kForwards  =  1,
-    kScrubbing =  4,
+    kSaving    =  16,
     };
 
     enum Damage {
@@ -726,6 +726,8 @@ class CMedia
     inline void playback( const Playback p ) { _playback = p; }
 
     inline bool stopped() const { return ( _playback == kStopped ); }
+
+    inline bool saving() const { return ( _playback == kSaving ); }
 
     /// Original play rate of movie
     inline double fps() const { return _fps; }
