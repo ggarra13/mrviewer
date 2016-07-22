@@ -818,14 +818,14 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
-    // Skip the seek packets when playback is stopped
+    // Skip the seek packets when playback is stopped (scrubbing)
     if ( skip )
     {
-        boost::int64_t f = frame + 1;
+        boost::int64_t f = frame;
         if ( f > _frame_end ) f = _frame_end;
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
-        _dts = _adts = dts-1;
+        _dts = _adts = dts;
         _expected = _expected_audio = _dts;
         _seek_req = false;
         return true;
