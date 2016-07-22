@@ -972,7 +972,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     view()->send_network( buf );
 
 
-    if ( p != ImageView::kStopped && p != ImageView::kScrubbing )
+    if ( p != ImageView::kStopped )
         view()->play( (CMedia::Playback) p );
 
     redraw();
@@ -1032,7 +1032,7 @@ mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
     // Make sure no alert message is printed
     mrv::alert( NULL );
 
-    if ( playback != CMedia::kStopped && playback != CMedia::kScrubbing )
+    if ( playback != CMedia::kStopped )
         newImg->play( playback, uiMain, (r == view()->fg_reel()) );
 
     return newm;
@@ -2506,7 +2506,11 @@ void ImageBrowser::handle_dnd()
              if ( !img ) return;
 
 
-             if ( ! img->stopped() ) img->stop();
+             if ( ! img->saving() ) {
+                 img->stop();
+                 img->playback( CMedia::kSaving );
+             }
+
 	     img->seek( f );
 
              if ( (int) i < children() )
@@ -2519,7 +2523,10 @@ void ImageBrowser::handle_dnd()
 
 	     DBG( "seek f local2: " << f );
 
-             if ( ! img->stopped() ) img->stop();
+             if ( ! img->saving() ) {
+                 img->stop();
+                 img->playback( CMedia::kSaving );
+             }
 
              img->seek( f );
 	  }
@@ -2531,7 +2538,11 @@ void ImageBrowser::handle_dnd()
 	   if ( bg )
 	   {
 	      img = bg->image();
-	      if (!img->stopped()) img->stop();
+
+              if ( ! img->saving() ) {
+                  img->stop();
+                  img->playback( CMedia::kSaving );
+              }
 
 	      bg = reel->media_at( tframe );
 
@@ -2540,7 +2551,12 @@ void ImageBrowser::handle_dnd()
                   f = reel->global_to_local( tframe );
 
                   img = bg->image();
-                  if ( !img->stopped() ) img->stop();
+
+                  if ( ! img->saving() ) {
+                      img->stop();
+                      img->playback( CMedia::kSaving );
+                  }
+
                   img->seek( f );
 	      }
 	   }
@@ -2556,7 +2572,10 @@ void ImageBrowser::handle_dnd()
 	if (!fg) return;
 	
 	CMedia* img = fg->image();
-        if ( !img->stopped() ) img->stop();
+        if ( ! img->saving() ) {
+            img->stop();
+            img->playback( CMedia::kSaving );
+        }
         img->seek( f );
 
 	mrv::media bg = view()->background();
@@ -2569,14 +2588,17 @@ void ImageBrowser::handle_dnd()
 
 	   img = bg->image();
 
-           if ( !img->stopped() ) img->stop();
+           if ( ! img->saving() ) {
+               img->stop();
+               img->playback( CMedia::kSaving );
+           }
 
            f += img->first_frame();
            img->seek( f );
 	}
       }
 
-    if ( playback != ImageView::kStopped && playback != ImageView::kScrubbing )
+    if ( playback != ImageView::kStopped )
     {
         view()->play( (CMedia::Playback)playback);
        // img->play( (CMedia::Playback)playback, uiMain, true);

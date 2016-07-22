@@ -107,8 +107,11 @@ namespace
 
 
 //  in ffmpeg, sizes are in bytes...
-#define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
-#define kMIN_FRAMES 25
+#define kMAX_QUEUE_SIZE (15 * 2048 * 2048)
+#define kMAX_PACKET_SIZE 50
+#define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
+#define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
+#define kMIN_FRAMES 5
 
 namespace {
   const unsigned int  kMaxCacheImages = 70;
@@ -687,7 +690,7 @@ void aviImage::open_video_codec()
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
 
-  // refcounted frames needed for subtitles
+  // recounted frames needed for subtitles
   av_dict_set(&info, "refcounted_frames", "1", 0);
 
   if ( _video_codec == NULL ||
@@ -769,7 +772,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
 
     int flag = AVSEEK_FLAG_BACKWARD;
 
-    if ( playback() == kScrubbing &&
+    if ( playback() == kStopped &&
          (got_video || in_video_store( frame )) &&
          (got_audio || in_audio_store( frame + _audio_offset )) &&
          (got_subtitle || in_subtitle_store( frame )) )
@@ -815,7 +818,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
     }
 
 
-    // Skip the seek packets when playback is scrubbing
+    // Skip the seek packets when playback is stopped
     if ( skip )
     {
         boost::int64_t f = frame + 1;
@@ -823,7 +826,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
         _dts = _adts = dts-1;
-        _expected = _expected_audio = dts;
+        _expected = _expected_audio = _dts;
         _seek_req = false;
         return true;
     }
@@ -945,7 +948,6 @@ void aviImage::store_image( const boost::int64_t frame,
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
 
-
   mrv::image_type_ptr image;
   try {
 
@@ -1009,7 +1011,7 @@ void aviImage::store_image( const boost::int64_t frame,
   }
   else
   {
-      video_cache_t::iterator at = std::lower_bound( _images.begin(), 
+     video_cache_t::iterator at = std::lower_bound( _images.begin(), 
 						    _images.end(),
 						    frame, 
 						    LessThanFunctor() );
@@ -1337,7 +1339,7 @@ bool aviImage::find_subtitle( const boost::int64_t frame )
 bool aviImage::find_image( const boost::int64_t frame )
 {
 
-    if ( _right_eye && ( playback() == kStopped || playback() == kScrubbing ) )
+    if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
         _right_eye->find_image( frame );
 
 #ifdef DEBUG_VIDEO_PACKETS
@@ -1373,12 +1375,8 @@ bool aviImage::find_image( const boost::int64_t frame )
     }
     else
     {
-#if 1
        i = std::lower_bound( _images.begin(), end, 
 			     frame, LessThanFunctor() );
-#else
-       i = std::find_if( _images.begin(), end, EqualFunctor(frame) );
-#endif
     }
 
     if ( i != end && *i )
@@ -2383,8 +2381,9 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
     // For secondary audio
     if ( _acontext )
     {
-        CMedia::queue_packets( frame + _audio_offset, is_seek,
-                               got_video, got_audio, got_subtitle );
+        _adts = CMedia::queue_packets( frame + _audio_offset, is_seek,
+                                       got_video, got_audio, got_subtitle );
+        _expected_audio = _adts + 1;
     }
 
     //debug_video_packets( dts, "queue_packets");
@@ -2403,11 +2402,10 @@ bool aviImage::fetch(const boost::int64_t frame)
     cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
 #endif
 
-    if ( ( playback() == kStopped || playback() == kScrubbing) && 
-         _right_eye )
+    if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
     {
-        _right_eye->stop();
-        _right_eye->fetch( frame );
+       _right_eye->stop();
+       _right_eye->fetch( frame );
     }
 
    bool got_video = !has_video();
@@ -2487,7 +2485,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 bool aviImage::frame( const boost::int64_t f )
 {
 
-    if ( ( playback() != kStopped && playback() != kScrubbing ) &&
+    if ( playback() != kStopped && playback() != kSaving &&
          (_audio_packets.bytes() + _video_packets.bytes() + 
           _subtitle_packets.bytes() > kMAX_QUEUE_SIZE
           || ( (_audio_packets.size() > kMIN_FRAMES || !has_audio() ) &&
@@ -2497,11 +2495,10 @@ bool aviImage::frame( const boost::int64_t f )
         // std::cerr << "false return: " << std::endl;
         // std::cerr << "vp: " << _video_packets.size() << std::endl;
         // std::cerr << "ap: " << _audio_packets.size() << std::endl;
-        // std::cerr << "vq= " << _video_packets.bytes() / 1024 
-        //           << "KB aq= " << _audio_packets.bytes() / 1024 << "KB sq="
-        //           << _subtitle_packets.bytes() 
-        //           << "B as=" << _audio.size() << " used=" 
-        //           << _audio_buf_used / 1024 << "KB" << std::endl;
+        // std::cerr << "sum: " <<
+        // ( _video_packets.bytes() +  _audio_packets.bytes() + 
+        // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
+        // 		 << std::endl;
         return false;
     }
 
@@ -2665,9 +2662,9 @@ void aviImage::wait_image()
 
   for(;;)
     {
-      if ( stopped() || ! _video_packets.empty() ) break;
+        if ( stopped() || saving() || ! _video_packets.empty() ) break;
 
-      CONDITION_WAIT( _video_packets.cond(), vpm );
+        CONDITION_WAIT( _video_packets.cond(), vpm );
     }
   return;
 }
@@ -3086,7 +3083,7 @@ void aviImage::do_seek()
   // Seeking done, turn flag off
   _seek_req = false;
 
-  if ( stopped() )
+  if ( stopped() || saving() )
     {
 
        DecodeStatus status;
@@ -3445,7 +3442,7 @@ int64_t aviImage::wait_subtitle()
 
   for(;;)
     {
-      if ( stopped() ) break;
+        if ( stopped() || saving() ) break;
 
       if ( ! _subtitle_packets.empty() )
 	{
