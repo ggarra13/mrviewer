@@ -2490,9 +2490,9 @@ void ImageBrowser::handle_dnd()
 	    f = int64_t(t->minimum() - t->maximum()) + f - 1;
         }
 
-	
+
 	DBG( "seek f: " << f );
-        
+
         mrv::media fg = view()->foreground();
 
 	if ( m != fg && fg )
@@ -2506,9 +2506,8 @@ void ImageBrowser::handle_dnd()
              if ( !img ) return;
 
 
-             if ( ! img->saving() ) {
+             if ( ! img->saving() && !img->stopped() ) {
                  img->stop();
-                 img->playback( CMedia::kSaving );
              }
 
 	     img->seek( f );
@@ -2523,9 +2522,8 @@ void ImageBrowser::handle_dnd()
 
 	     DBG( "seek f local2: " << f );
 
-             if ( ! img->saving() ) {
+             if ( ! img->saving() && !img->stopped() ) {
                  img->stop();
-                 img->playback( CMedia::kSaving );
              }
 
              img->seek( f );
@@ -2539,10 +2537,9 @@ void ImageBrowser::handle_dnd()
 	   {
 	      img = bg->image();
 
-              if ( ! img->saving() ) {
-                  img->stop();
-                  img->playback( CMedia::kSaving );
-              }
+             if ( ! img->saving() && !img->stopped() ) {
+                 img->stop();
+             }
 
 	      bg = reel->media_at( tframe );
 
@@ -2552,9 +2549,8 @@ void ImageBrowser::handle_dnd()
 
                   img = bg->image();
 
-                  if ( ! img->saving() ) {
+                  if ( ! img->saving() && !img->stopped() ) {
                       img->stop();
-                      img->playback( CMedia::kSaving );
                   }
 
                   img->seek( f );
@@ -2567,15 +2563,15 @@ void ImageBrowser::handle_dnd()
       {
 	mrv::Reel reel = current_reel();
 	if (!reel) return;
- 
+
 	mrv::media fg = view()->foreground();
 	if (!fg) return;
-	
+
 	CMedia* img = fg->image();
-        if ( ! img->saving() ) {
+        if ( ! img->saving() && !img->stopped() ) {
             img->stop();
-            img->playback( CMedia::kSaving );
         }
+
         img->seek( f );
 
 	mrv::media bg = view()->background();
@@ -2588,9 +2584,8 @@ void ImageBrowser::handle_dnd()
 
 	   img = bg->image();
 
-           if ( ! img->saving() ) {
+           if ( ! img->saving() && !img->stopped() ) {
                img->stop();
-               img->playback( CMedia::kSaving );
            }
 
            f += img->first_frame();
