@@ -3919,19 +3919,7 @@ void ImageView::scrub( double dx )
 {
   stop();
 
-  mrv::media m = foreground();
-  if (m)
-  {
-      m->image()->playback( CMedia::kScrubbing );
-  }
-
-  m = background();
-  if (m)
-  {
-      m->image()->playback( CMedia::kScrubbing );
-  }
-
-  // _playback = kScrubbing;
+  //  _playback = kStopped; //kScrubbing;
   uiMain->uiPlayForwards->value(0);
   uiMain->uiPlayBackwards->value(0);
 
@@ -4169,23 +4157,6 @@ int ImageView::handle(int event)
             }
             else
             {
-                mrv::media m = foreground();
-                if ( m )
-                {
-                    CMedia* img = m->image();
-                    if ( img->playback() == CMedia::kScrubbing )
-                    {
-                        _playback = kStopped;
-                        img->playback( CMedia::kStopped );
-                    }
-                }
-                m = background();
-                if ( m )
-                {
-                    CMedia* img = m->image();
-                    if ( img->playback() == CMedia::kScrubbing )
-                        img->playback( CMedia::kStopped );
-                }
                 mouseMove(fltk::event_x(), fltk::event_y());
             }
 
@@ -5246,7 +5217,7 @@ void ImageView::audio_stream( unsigned int idx )
   else
     img->audio_stream( idx );
 
-  if ( p != kStopped && p != kScrubbing ) play( (CMedia::Playback) p );
+  if ( p != kStopped ) play( (CMedia::Playback) p );
 
 }
 
@@ -5622,6 +5593,7 @@ void ImageView::step_frame( int64_t n )
 	  f += n;
 	}
     }
+
 
   seek( f );
 }
