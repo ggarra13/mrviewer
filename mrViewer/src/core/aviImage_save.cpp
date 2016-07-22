@@ -1209,6 +1209,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
       return false;
    }
 
+   CMedia* image = const_cast<CMedia*>(img);
+   image->playback( CMedia::kSaving );
+
    return true;
 
 }
@@ -1402,6 +1405,8 @@ bool aviImage::close_movie( const CMedia* img )
         sws_ctx = NULL;
     }
 
+    CMedia* image = const_cast<CMedia*>(img);
+    image->playback( CMedia::kStopped );
 
    /* Write the trailer, if any. The trailer must be written before you
     * close the CodecContexts open when you wrote the header; otherwise
