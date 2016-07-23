@@ -1939,7 +1939,7 @@ void CMedia::do_seek()
   }
 
   // Seeking done, turn flag off
-  if ( stopped() )
+  if ( stopped() || saving() )
   {
 
      if ( has_audio() && !got_audio )
