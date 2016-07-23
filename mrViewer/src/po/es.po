@@ -1,19 +1,19 @@
 # mrViewer
 # Copyright (C) 2015 Free Software Foundation, Inc.
 # Gonzalo Garramuño <ggarra13@gmail.com>, 2015.
-# 
+#
 msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-07-22 20:21-0300\n"
+"POT-Creation-Date: 2016-07-23 14:30-0300\n"
 "PO-Revision-Date: 2016-07-20 15:46-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
+"Language: es_AR\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=iso-8859-1\n"
 "Content-Transfer-Encoding: 8bit\n"
-"Language: es_AR\n"
 "X-Generator: Poedit 1.5.4\n"
 
 #: core/CMedia_audio.cpp:611
@@ -147,7 +147,7 @@ msgstr " codificando"
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1547
+#: core/CMedia_audio.cpp:1554
 msgid " failed"
 msgstr " falló. "
 
@@ -159,7 +159,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1952 core/aviImage.cpp:3098
+#: core/CMedia_audio.cpp:1959 core/aviImage.cpp:3098
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -195,7 +195,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1603 core/aviImage.cpp:1428
+#: core/CMedia_audio.cpp:1610 core/aviImage.cpp:1428
 msgid " not found"
 msgstr " no encontrado"
 
@@ -861,7 +861,7 @@ msgstr "Alt"
 msgid "Altitude"
 msgstr "Altitud"
 
-# 
+#
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-76-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2786
 msgid "Always"
 msgstr "Siempre"
@@ -966,7 +966,7 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
-#: core/CMedia_audio.cpp:1603
+#: core/CMedia_audio.cpp:1610
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
@@ -974,11 +974,11 @@ msgstr "Cuadro de audio "
 msgid "Audio missed for ptsframe: "
 msgstr "Audio faltante para el cuadro: "
 
-#: core/CMedia_audio.cpp:1697
+#: core/CMedia_audio.cpp:1704
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1742
+#: core/CMedia_audio.cpp:1749
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -998,7 +998,7 @@ msgstr "Audio/Disasociar Archivo de Audio"
 msgid "Audio/Edit Audio Frame Offset"
 msgstr "Audio/Editar Cuadro Comienzo de Audio"
 
-#: core/CMedia_audio.cpp:1359
+#: core/CMedia_audio.cpp:1366
 msgid "Audios #"
 msgstr "Audios #"
 
@@ -1621,7 +1621,7 @@ msgstr "No pude abrir el codec de audio"
 msgid "Could not open audio codec."
 msgstr "No pude abrir el codec de audio"
 
-#: core/CMedia_audio.cpp:1534
+#: core/CMedia_audio.cpp:1541
 msgid "Could not open audio driver"
 msgstr "No pude abrir el driver de audio"
 
@@ -1633,7 +1633,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/CMedia_audio.cpp:1614
+#: core/CMedia_audio.cpp:1621
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -2064,7 +2064,7 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1950 core/aviImage.cpp:3096
+#: core/CMedia_audio.cpp:1957 core/aviImage.cpp:3096
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
@@ -2357,7 +2357,7 @@ msgstr ""
 msgid "Eraser Tool"
 msgstr "Herramienta de Borrado"
 
-# 
+#
 #: core/aviImage.cpp:531
 msgid "Error configuring filter graph"
 msgstr "Error configurando la gráfica de filtros"
@@ -3716,7 +3716,7 @@ msgstr ""
 "Los nombres no pueden contener espacios en sus directorios.\n"
 "\n"
 
-# 
+#
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-76-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1881
 msgid "Native"
 msgstr "Nativo"
@@ -3725,7 +3725,7 @@ msgstr "Nativo"
 msgid "Network Disk"
 msgstr "Disco de Red"
 
-# 
+#
 #: /media/Linux/code/applications/mrViewer/BUILD/Linux-3.16.0-76-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2784
 msgid "Never"
 msgstr "Nunca"
@@ -3791,7 +3791,7 @@ msgstr "Ningún decodificador encontrado para la pista de audio.  ID: "
 msgid "No left image to attach a stereo image pair"
 msgstr "No hay imagen izquierda para atar a un par de imágenes estéreo."
 
-#: core/CMedia_audio.cpp:1358
+#: core/CMedia_audio.cpp:1365
 msgid "No memory for audio frame"
 msgstr "Sin memoria para cuadro de audio"
 
@@ -4240,7 +4240,7 @@ msgstr "Reproducir secuencia hacia delante."
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1546
+#: core/CMedia_audio.cpp:1553
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -6296,7 +6296,7 @@ msgstr "datos"
 msgid "decode_audio - missed decoding some samples"
 msgstr "decode_audio - faltó decodificar algunos sampleos"
 
-#: core/CMedia_audio.cpp:1734
+#: core/CMedia_audio.cpp:1741
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
