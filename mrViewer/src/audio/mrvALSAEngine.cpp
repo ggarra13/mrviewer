@@ -127,9 +127,9 @@ static const char* kModule = "alsa";
 		    _devices.push_back( dev );
 		  }
 
+
 	      }
           
-
             if ( p_ctl )
                 snd_ctl_close( p_ctl );
 

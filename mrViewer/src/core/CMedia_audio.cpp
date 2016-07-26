@@ -336,8 +336,7 @@ boost::int64_t CMedia::queue_packets( const boost::int64_t frame,
             }
             else
             {
-                if ( pktframe <= last )
-                    _audio_packets.push_back( pkt );
+                _audio_packets.push_back( pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
 
@@ -805,7 +804,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
             if ( _adts < first ) first = _adts;
-            if ( _adts > last )   last = _adts;
+            else if ( _adts > last )   last = _adts;
             break;
         default:
             first = frame - max_audio_frames();
@@ -814,6 +813,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             break;
     }
   
+
 #if 0
   if ( first > last ) 
   {
@@ -1122,15 +1122,15 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
 	{
 	   pkt_temp.size = 0;
 
-           if ( ptsframe > 1 ) // needed for Essa.wmv audio replacement
-           {
-               IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
-                          << _(" frame: ") << frame );
-               IMG_ERROR(  get_error_text(ret) );
-               IMG_ERROR( _("Audio total: ") << _audio_buf_used
-                          << _(" Audio used: ") << audio_size
-                          << _(" Audio max: ")  << _audio_max );
-           }
+           // if ( ptsframe > 1 ) // needed for Essa.wmv audio replacement
+           // {
+           //     IMG_ERROR( _("Audio missed for ptsframe: ") << ptsframe
+           //                << _(" frame: ") << frame );
+           //     IMG_ERROR(  get_error_text(ret) );
+           //     IMG_ERROR( _("Audio total: ") << _audio_buf_used
+           //                << _(" Audio used: ") << audio_size
+           //                << _(" Audio max: ")  << _audio_max );
+           // }
 	  return kDecodeMissingSamples;
 	}
 
@@ -1207,13 +1207,13 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     unsigned int bytes_per_frame = audio_bytes_per_frame();
     assert( bytes_per_frame != 0 );
     
-    if ( last == first_frame() )
-    {
-        if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
-        {
-            bytes_per_frame = _audio_buf_used;
-        }
-    }
+    // if ( last == first_frame() )
+    // {
+    //     if ( bytes_per_frame > _audio_buf_used && _audio_buf_used > 0 )
+    //     {
+    //         bytes_per_frame = _audio_buf_used;
+    //     }
+    // }
 
     // Split audio read into frame chunks
     for (;;)
@@ -1375,7 +1375,7 @@ CMedia::store_audio( const boost::int64_t audio_frame,
     {
         audio_cache_t::iterator end = _audio.end();
 
-#if 1
+#if 0
         audio_cache_t::iterator at = std::lower_bound( _audio.begin(),
                                                        end,
                                                        f,
@@ -1809,7 +1809,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   boost::int64_t last  = last_frame();
 
   if ( frame < first )
-       return kDecodeNoStream;
+      return kDecodeNoStream;
 
   if ( _audio_packets.empty() )
   {
@@ -1853,11 +1853,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	  {
 	     return kDecodeOK;
 	  }
-
-          if ( frame < last - audio_offset() )
-          {
-              return kDecodeNoStream;
-          }
 
 
           flush_audio();
@@ -1905,6 +1900,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
               continue;
           }
 #endif
+
 
 	  got_audio = decode_audio( frame, pkt );
 	  _audio_packets.pop_front();
@@ -2001,7 +1997,7 @@ void CMedia::debug_audio_stores(const boost::int64_t frame,
 	if ( f == frame )  std::cerr << "P";
 	if ( f == _adts )   std::cerr << "D";
 	if ( f == _frame ) std::cerr << "F";
-	std::cerr << f << " (" << (void*)(*iter)->data() << ") ";
+	std::cerr << f << " ";
      }
      std::cerr << std::endl;
   }
