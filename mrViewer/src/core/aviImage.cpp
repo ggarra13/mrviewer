@@ -1942,9 +1942,11 @@ void aviImage::populate()
                 {
                     boost::int64_t pktframe = get_frame( get_audio_stream(), 
                                                          pkt ) - _frame_offset;
+                    _adts = pktframe;
+
                     if ( playback() == kBackwards )
                     {
-                        // Only add packet if it comes before seek frame
+                        // Only add packet if it comes before first frame
                         if ( pktframe >= first_frame() )  
                             _audio_packets.push_back( pkt );
                         if ( !has_video() && pktframe < dts ) dts = pktframe;
@@ -1993,13 +1995,14 @@ void aviImage::populate()
     }
   
 
-    _dts = _adts = dts;
+    _dts = dts;
     _frame = _audio_frame = _frameStart;
-    _expected = dts;
+    _expected = dts + 1;
+    _expected_audio = _adts + 1;
 
     if ( _frame_offset > 3 ) _frame_offset = 0;
 
-  if ( !has_video() )
+    if ( !has_video() )
     {
         if ( !_hires )
         {
@@ -2317,6 +2320,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                 boost::int64_t pktframe = pts2frame( get_audio_stream(), 
                                                      pkt.dts )
                                           - _frame_offset;
+                _adts = pktframe;
 
                 if ( playback() == kBackwards )
                 {
@@ -2330,8 +2334,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                     // ffmpeg @bug:  audio seeks in long mp3s while playing can
                     // result in ffmpeg going backwards too far.
                     // This pktframe >= frame-10 is to avoid that.
-                    if ( has_video() || pktframe >= frame-10 )
-                        _audio_packets.push_back( pkt );
+                    _audio_packets.push_back( pkt );
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
 
@@ -2448,10 +2451,11 @@ bool aviImage::fetch(const boost::int64_t frame)
 				      got_audio, got_subtitle);
 
 
-  _dts = _adts = dts;
+  _dts = dts;
   assert( _dts >= first_frame() && _dts <= last_frame() );
 
-  _expected = _expected_audio = dts + 1;
+  _expected = _dts + 1;
+  _expected_audio = _adts + 1;
 
 
 #ifdef DEBUG_DECODE
@@ -3109,7 +3113,7 @@ void aviImage::do_seek()
                          << _(" status: ") << decode_error( status ) );
        }
        
-       if ( has_subtitle() )
+       if ( has_subtitle() && !saving() )
        {
 	  decode_subtitle( _seek_frame );
 	  find_subtitle( _seek_frame );

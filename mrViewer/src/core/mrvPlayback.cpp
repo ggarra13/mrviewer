@@ -589,12 +589,13 @@ void audio_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status = img->decode_audio( f );
 
+      if ( img->stopped() ) break;
 
       switch( status )
       {
 	 case CMedia::kDecodeError:
              LOG_ERROR( img->name() 
-                         << _(" - decode Error audio frame ") << frame );
+                        << _(" - decode Error audio frame ") << frame );
              frame += step;
              continue;
 	 case CMedia::kDecodeMissingFrame:
