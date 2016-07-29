@@ -10,7 +10,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 2 )
-SET( VersionPatch 5 )
+SET( VersionPatch 6 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -71,10 +71,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/lib
       )
     # 
-    ADD_DEFINITIONS( -DLINUX -msse ) 
+    ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 ) 
     SET(OS_LIBRARIES
-      asound
-      ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 pthread m
+      asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
 
   ENDIF(APPLE)
