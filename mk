@@ -307,6 +307,11 @@ run_cmake()
 	installdir="F:/code/lib/Windows_${CMAKE_BUILD_ARCH}"
     fi
 
+    if [ ! -d $installdir ]; then
+	cmd="mkdir -p $installdir"
+	run_cmd $cmd
+    fi
+
     echo "Buildir ${builddir}"
     if [ ! -d $builddir ]; then
 	cmd="mkdir -p $builddir $builddir/bin $builddir/lib $builddir/tmp"
