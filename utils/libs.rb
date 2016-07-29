@@ -7,7 +7,10 @@ libGL\.so
 libm\.so
 libgcc_s.*
 libc\.so*
+libdl\.so*
 libstdc\+\+.*
+libpthread.*
+libX.*
 .*nvidia.*
 )
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
