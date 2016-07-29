@@ -2,6 +2,8 @@ v3.2.6   - Audio offset was conflicting with audio loop.  This
 	   got broken in v3.2.3.  Fixed.
 	 - Bug fixed an audio store problem that would remove needed
 	   audio frames.  See Matrix_Reloaded_Trailer.mkv.
+	 - Removed libdl and libpthreads from Linux distribution as
+	   that made them less compatible with current distros.
 
 v3.2.5   - Bug fix release to address the saving of images with
 	   an audio track added.  This got broken in v3.2.4.
