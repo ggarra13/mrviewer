@@ -306,10 +306,10 @@ void media_track::shift_audio( mrv::media m, boost::int64_t diff )
            CMedia* img = m->image();
            if ( !img ) continue;
 
-           int64_t newoff = img->audio_offset() + diff;
+           int64_t newoff = img->audio_offset() - diff;
            img->audio_offset( newoff );
-           img->seek( img->frame() );
            main()->uiView->foreground( fg );
+           img->seek( img->frame() );
 
            char buf[1024];
            sprintf( buf, N_("ShiftAudio %d") 
@@ -318,32 +318,6 @@ void media_track::shift_audio( mrv::media m, boost::int64_t diff )
            main()->uiView->send_network( buf );
            break;
        }
-   }
-
-   // Shift medias that come after
-   for (size_t i = idx+1; i < e; ++i )
-   {
-      mrv::media& o = reel->images[i-1];
-      boost::int64_t end = o->position() + o->image()->duration();
-      mrv::media& fg = reel->images[i];
-      fg->position( end );
-   }
-
-
-   if ( idx == 0 ) {
-      return;
-   }
-
-   // Shift medias that come before
-   for (int i = int(idx)-1; i >= 0; --i )
-   {
-      boost::int64_t start = reel->images[i+1]->position();
-      mrv::media& o = reel->images[i];
-      boost::int64_t ee = o->position() + o->image()->duration() - 1;
-      boost::int64_t ss = o->position();
-      
-      // Shift indexes of position
-      o->position( start - (ee - ss ) );
    }
 
 }

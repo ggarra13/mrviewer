@@ -2808,7 +2808,9 @@ void ImageBrowser::handle_dnd()
 
 
 
+     uiMain->uiStartButton->value(0);
      uiMain->uiStartFrame->value( first );
+     uiMain->uiEndButton->value(0);
      uiMain->uiEndFrame->value( last );
 
      frame( f );
