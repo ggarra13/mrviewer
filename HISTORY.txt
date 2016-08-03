@@ -1,3 +1,8 @@
+v3.2.7   - Made audio offset in EDL window shift in opposite
+	   direction as it is more intuitive.
+	 - Audio offset no longer effects other videos in the
+	   timeline.
+
 v3.2.6   - Audio offset was conflicting with audio loop.  This
 	   got broken in v3.2.3.  Fixed.
 	 - Bug fixed an audio store problem that would remove needed
