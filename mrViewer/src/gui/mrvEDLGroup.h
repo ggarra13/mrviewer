@@ -63,6 +63,9 @@ class EDLGroup : public Fl_Group
 	return (mrv::media_track*)this->child(i); 
      }
 
+    bool shift_audio( unsigned track_idx, std::string image,
+                      boost::int64_t offset );
+
      bool shift_media_start( unsigned track_idx, std::string image,
 			     boost::int64_t diff );
 

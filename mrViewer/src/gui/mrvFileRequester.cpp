@@ -1,6 +1,6 @@
 
 /*
-    mrViewer - the professional movie and flipbook playback
+    mrViewer - the professional movie and flipbook player
     Copyright (C) 2007-2014  Gonzalo Garramuño
 
     This program is free software: you can redistribute it and/or modify
@@ -74,14 +74,16 @@ static const char* kModule = "file";
   // File extension patterns
   static const std::string kReelPattern = "reel";
 
-  static const std::string kMoviePattern = "mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,qt,QT,avi,AVI,flv,FLV,divx,DIVX,vp9,VP9,webm,WEBM,wmv,WMV,vob,VOB";
+  static const std::string kMoviePattern = "avi,AVI,divx,DIVX,dv,DV,flv,FLV,mkv,MKV,m4v,M4V,mp4,MP4,mpg,MPG,mpeg,MPEG,mov,MOV,mxf,MXF,qt,QT,vob,VOB,vp9,VP9,webm,WEBM,wmv,WMV,y4m,Y4M";
 
   static const std::string kImagePattern =
-    "bmp,bit,cin,CIN,ct,dpx,DPX,exr,EXR,gif,GIF,hdr,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,miff,MIFF,mt,pic,PIC,png,PNG,psd,PSD,rgb,RGB,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
+    "bmp,bit,cin,CIN,ct,dng,DNG,dpx,DPX,exr,EXR,gif,GIF,hdr,HDR,hdri,HDRI,iff,IFF,jpg,JPG,jpeg,JPEG,map,nt,miff,MIFF,mt,pic,PIC,png,PNG,ppm,pnm,pgm,pbm,psd,PSD,ras,RAS,rgb,RGB,rla,RLA,rpf,RPF,shmap,sgi,st,sun,SUN,sxr,SXR,tga,TGA,tif,tiff,TIF,TIFF,zt";
 
   static const std::string kProfilePattern = "icc,icm,ICC,ICM";
 
   static const std::string kAudioPattern = "m4a,mp3,MP3,ogg,OGG,wav,WAV";
+
+  static const std::string kSubtitlePattern = "srt,SRT,sub,SUB,ass,ASS";
 
   static const std::string kCTLPattern = "ctl,CTL";
 
@@ -311,6 +313,46 @@ const char* open_ctl_dir( const char* startfile,
 
     return profile;
 }
+
+/** 
+   * Opens a file requester to load subtitle files
+   * 
+   * @param startfile  start filename (directory)
+   * 
+   * @return  opened subtitle file or null
+   */
+  const char* open_subtitle_file( const char* startfile, 
+                                  const mrv::ViewerUI* main )
+  {
+      std::string kSUBTITLE_PATTERN = _( "Subtitles (*.{" ) +
+                                      kSubtitlePattern + "})\t";
+
+      std::string title = _("Load Subtitle");
+
+      stringArray filelist;
+
+#ifdef _WIN32
+      bool native = mrv::Preferences::native_file_chooser;
+      fltk::use_system_file_chooser( native );
+      if ( native )
+      {
+        if ( !startfile ) startfile = "";
+        const char* file = fltk::file_chooser( title.c_str(),
+                                               kSUBTITLE_PATTERN.c_str(),
+                                               startfile );
+        if ( main && (!main->uiMain || !main->uiMain->visible())) {
+            return NULL;
+        }
+        if ( !file ) return NULL;
+        return file;
+      }
+      else
+#endif
+      {
+          return flu_file_chooser( title.c_str(),
+                                   kSUBTITLE_PATTERN.c_str(), startfile);
+      }
+  }
 
 /** 
    * Opens a file requester to load audio files
@@ -667,7 +709,7 @@ void save_sequence_file( const ViewerUI* uiMain,
    bool movie = false;
 
    if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
-	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" )
+	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" || ext == ".mxf" )
    {
       movie = true;
    }
@@ -734,7 +776,6 @@ void save_sequence_file( const ViewerUI* uiMain,
    {
        unsigned w = uiMain->uiView->w();
        unsigned h = uiMain->uiView->h();
-       delete [] data;
        data = new float[ 4 * w * h ];
    }
 
@@ -773,15 +814,17 @@ void save_sequence_file( const ViewerUI* uiMain,
 
                if ( fs::exists( buf ) )
                {
-                   int ok = fl_ask( "Do you want to replace '%s'",
-                                    buf );
-                   if (!ok) 
+                   char text[256];
+                   sprintf( text, _("Do you want to replace '%s'?"),
+                            buf );
+                   int ok = fl_choice( text, _("Yes"), _("No"), NULL );
+                   if (ok == 1) // No
                    {
                        break;
                    }
                }
 
-               AviSaveUI* opts = new AviSaveUI;
+               AviSaveUI* opts = new AviSaveUI( uiMain );
                if ( opts->video_bitrate == 0 &&
                     opts->audio_bitrate == 0 )
                {
@@ -792,7 +835,7 @@ void save_sequence_file( const ViewerUI* uiMain,
                }
 
                audio_stream = img->audio_stream();
-               if ( opts->audio_codec == "NONE" )
+               if ( opts->audio_codec == _("None") )
                {
                    img->audio_stream( -1 );
                }
@@ -810,6 +853,13 @@ void save_sequence_file( const ViewerUI* uiMain,
                    LOG_INFO( "Open movie '" << buf << "' to save." );
                    open_movie = true;
                    ++movie_count;
+               }
+               else
+               {
+                   delete opts;
+                   delete w;
+                   w = NULL;
+                   break;
                }
 
                if ( opengl )

@@ -141,6 +141,16 @@ void save_clip_xml_metadata( const CMedia* image,
                              const ViewerUI* main = NULL  );
 
   /** 
+   * Opens a file requester to load a subtitle file
+   *  
+   * @param startfile  start filename (directory)
+   * 
+   * @return  opened subtitle file or null
+   */
+  const char* open_subtitle_file( const char* startfile = NULL,
+                               const mrv::ViewerUI* main = NULL  );
+
+  /** 
    * Opens a file requester to load audio files
    * 
    * @param startfile  start filename (directory)

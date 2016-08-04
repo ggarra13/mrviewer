@@ -67,6 +67,9 @@ private:
   deadline_timer deadline_;
 };
 
+typedef boost::shared_ptr< client > client_ptr;
+typedef std::vector< client* >      ClientList;
+
 void client_thread( const ServerData* s );
 
 } // namespace mrv

@@ -98,13 +98,13 @@ void Histogram::draw_grid(const mrv::Recti& r)
     uchar g = rgb[1];
     uchar b = rgb[2];
 
-    red[ r ]   += 1;
+    ++red[ r ];
     if ( red[r] > maxRed ) maxRed = red[r];
 
-    green[ g ] += 1;
+    ++green[ g ];
     if ( green[g] > maxGreen ) maxGreen = green[g];
 
-    blue[ b ]  += 1;
+    ++blue[ b ];
     if ( blue[b] > maxBlue ) maxBlue = blue[b];
 
     unsigned int lum = unsigned(r * 0.30f + g * 0.59f + b * 0.11f);
@@ -115,7 +115,6 @@ void Histogram::draw_grid(const mrv::Recti& r)
 
   void Histogram::count_pixels()
   {
-
     media m = uiMain->uiView->foreground();
     if (!m) return;
 
@@ -158,6 +157,8 @@ void Histogram::draw_grid(const mrv::Recti& r)
         if (!pic) return;
     }
 
+    // Check if xmin/ymin is below 0 is done in selection_to_coord
+
     if ( xmin >= (int)pic->width() ) xmin = (int) pic->width()-1;
     if ( ymin >= (int)pic->height() ) ymin = (int) pic->height()-1;
 
@@ -179,9 +180,9 @@ void Histogram::draw_grid(const mrv::Recti& r)
 
     CMedia::Pixel rp;
     uchar rgb[3];
-    for ( unsigned y = ymin; y <= ymax; y += stepY )
+    for ( int y = ymin; y <= ymax; y += stepY )
       {
-	for ( unsigned x = xmin; x <= xmax; x += stepX )
+	for ( int x = xmin; x <= xmax; x += stepX )
 	  { 
               CMedia::Pixel op = pic->pixel( x, y );
 
@@ -211,7 +212,6 @@ void Histogram::draw_grid(const mrv::Recti& r)
               count_pixel( rgb );
 	  }
       }
-
   }
 
   float Histogram::histogram_scale( float val, float maxVal )

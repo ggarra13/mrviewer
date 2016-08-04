@@ -122,8 +122,8 @@ namespace mrv {
     virtual bool open( 
 		      const unsigned int channels,
 		      const unsigned int frequency,
-		      const AudioFormat  format = kS16LSB,
-		      const unsigned int bits = 16
+		      const AudioFormat  format = kFloatLSB,
+		      const unsigned int bits = 32
 		       ) = 0;
 
     // Play some samples (this function does not return until

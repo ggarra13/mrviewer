@@ -1,3 +1,4 @@
+
 // $Id: Flu_Wrap_Group.cpp,v 1.8 2004/01/27 21:44:24 jbryan Exp $
 
 /***************************************************************
@@ -109,7 +110,32 @@ Fl_Widget* Flu_Wrap_Group :: next( Fl_Widget* w )
 
 Fl_Widget* Flu_Wrap_Group :: previous( Fl_Widget* w )
 {
-  for( int i = 1; i < group.children(); i++ )
+  int rows = 0; int cols = 0;
+
+  int nchildren = children();
+  if ( nchildren == 0 ) return;
+
+  // First, find max size of child widgets
+  fltk::Widget* c;
+  int maxW, maxH;
+  _measure( maxW, maxH );
+
+  hscrollbar.clear_visible();
+  scrollbar.clear_visible();
+
+  Rectangle r;
+  r.set(0,0,w(),h()); box()->inset(r);
+
+  int X = -xposition() + box()->dx();
+  int Y = -yposition() + box()->dy();
+  int OX, OY;
+
+  rows = cols = 1;
+  int sw = scrollbar_width();
+  int rowsH = 0;
+
+  // Do vertical arrangement
+  if ( flags() & FL::LAYOUT_VERTICAL )
     {
       if( w == group.child(i) )
 	return group.child(i-1);
@@ -130,7 +156,24 @@ Fl_Widget* Flu_Wrap_Group :: above( Fl_Widget* w )
 	  if( index >= 0 )
 	    return group.child(index);
 	  else
-	    return group.child(0);
+	    lastY -= sw;
+	}
+
+      OX = X; OY = Y;
+      rows = (lastY - Y) / maxH;
+      for ( int i = 0; i < nchildren; ++i )
+	{
+	  c = child(i);
+	  if( !c->visible() ) continue;
+	  c->position( X, Y );
+	  Y += c->h();
+          rowsH += Y;
+	  if ( i != nchildren-1 && Y + maxH >= lastY ) 
+	    {
+	      Y = OY;
+	      X += maxW;
+	      ++cols;
+	    }
 	}
     }
   return NULL;
@@ -149,7 +192,24 @@ Fl_Widget* Flu_Wrap_Group :: below( Fl_Widget* w )
 	  if( index >= 0 )
 	    return group.child(index);
 	  else
-	    return group.child(group.children()-1);
+	    lastX -= sw;
+	}
+
+      OX = X; OY = Y;
+      cols = (lastX - X) / maxW;
+      for ( int i = 0; i < nchildren; ++i )
+	{
+	  c = child(i);
+	  if( !c->visible() ) continue;
+	  c->position( X, Y );
+	  X += maxW;
+	  if ( i != nchildren-1 && X + maxW >= lastX ) 
+	    {
+	      X = OX;
+	      Y += c->h();
+              rowsH += c->h();
+	      ++rows;
+	    }
 	}
     }
   return NULL;
@@ -176,7 +236,15 @@ Fl_Widget* Flu_Wrap_Group :: left( Fl_Widget* w )
 
 Fl_Widget* Flu_Wrap_Group :: right( Fl_Widget* w )
 {
-  for( int i = 0; i < group.children(); i++ )
+  int H = rowsH;
+  if ( H > r.h() )
+    {
+      scrollbar.set_visible();
+      scrollbar.resize(scrollbar_align()&fltk::ALIGN_LEFT ? 
+		       r.x() : r.r()-sw, r.y(), sw, r.h());
+      scrollbar.value(r.y()-OY, r.h(), 0, H);
+    }
+  else
     {
       if( w == group.child(i) )
 	{

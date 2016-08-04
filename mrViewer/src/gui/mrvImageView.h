@@ -38,6 +38,7 @@
 #include "core/mrvRectangle.h"
 #include "core/mrvTimer.h"
 #include "core/mrvServer.h"
+#include "core/mrvClient.h"
 
 #include "mrvChannelType.h"
 #include "gui/mrvMedia.h"
@@ -383,6 +384,12 @@ class ImageView : public Fl_Gl_Window
     // Toggle between fullscreen presentation and normal resolution
     void toggle_presentation();
 
+      void toggle_media_info(bool show);
+      void toggle_color_area(bool show);
+      void toggle_3d_view(bool show);
+      void toggle_histogram(bool show);
+      void toggle_vectorscope(bool show);
+
       void toggle_wait() { _wait ^= 1; }
 
       inline void offset_x( double x ) { xoffset = x; }
@@ -429,7 +436,7 @@ class ImageView : public Fl_Gl_Window
        void undo_draw();
        void redo_draw();
 
-       void send( std::string msg );
+       void send_network( std::string msg );
 
       GLShapeList& shapes();
 
@@ -463,8 +470,9 @@ class ImageView : public Fl_Gl_Window
       bool preload();
 
      public:
-       ParserList   _clients;
-       tcp_server_ptr _server;
+      bool           _broadcast;
+      ParserList     _clients;
+      tcp_server_ptr _server;
 
   protected:
 
@@ -589,6 +597,11 @@ class ImageView : public Fl_Gl_Window
       int64_t     _old_bg_frame;  // <- old frame used to stat fileroot's bg
       unsigned    _reel;
       bool        _idle_callback;
+
+      ////////////////////////////////////////////////
+      // Events needed to be handled in main thread
+      ////////////////////////////////////////////////
+      unsigned _event;
 
     ///////////////////
     // Popup menu

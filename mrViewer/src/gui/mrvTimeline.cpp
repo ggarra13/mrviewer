@@ -85,7 +85,7 @@ Timeline::~Timeline()
     {
         char buf[1024];
         sprintf( buf, N_("TimelineMin %g"), x );
-        uiMain->uiView->send( buf );
+        uiMain->uiView->send_network( buf );
     }
   }
 
@@ -97,7 +97,7 @@ Timeline::~Timeline()
     {
         char buf[1024];
         sprintf( buf, N_("TimelineMax %g"), x );
-        uiMain->uiView->send( buf );
+        uiMain->uiView->send_network( buf );
     }
   }
 
@@ -350,12 +350,15 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
             }
         }
 
+        if ( dx == NO_FRAME_VALUE )
+            break;
+
         t = j - pos + 1;
         for ( ; j <= max; ++j, ++t )
         {
-            if ( dx != NO_FRAME_VALUE && ! img->is_cache_filled( t ) )
+            if ( ! img->is_cache_filled( t ) )
             {
-                int dx2 = rx + slider_position( double(j-1), ww );
+                int dx2 = rx + slider_position( double(j), ww );
                 int wh = dx2-dx;
                 fillrect( dx, r.y()+r2, wh, r2+1 );
                 dx = NO_FRAME_VALUE;
@@ -364,10 +367,10 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         }
     }
 
-    int64_t t = j - pos;
+    int64_t t = j - pos;  // not +1
     if ( dx != NO_FRAME_VALUE && img->is_cache_filled( t )  )
     {
-        int dx2 = rx + slider_position( double(j-1), ww );
+        int dx2 = rx + slider_position( double(j), ww );
         int wh = dx2-dx;
         fillrect( dx, r.y()+r2, wh, r2+1 );
     }

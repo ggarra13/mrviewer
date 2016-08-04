@@ -28,8 +28,13 @@
 
 #include "core/CMedia.h"
 
+#include "gui/mrvIO.h"
 #include "gui/mrvFLTKHandler.h"
 #include "gui/mrvMedia.h"
+
+namespace {
+const char* kModule = "icon";
+}
 
 namespace mrv {
 
@@ -40,18 +45,23 @@ namespace mrv {
       size_t start = ext.rfind( '.' );
       if ( start != ext.size() )
           ext = ext.substr( start + 1, ext.size() );
-      if ( ext == "ctl" || ext == "CTL" || ext == "XML" || ext == "xml" ||
-	   ext == "reel" || ext == "REEL" || ext == "txt" || ext == "TXT" )
+
+      std::transform( ext.begin(), ext.end(), ext.begin(), 
+                      (int(*)(int))tolower);
+
+      if ( ext == "ctl" || ext == "xml" || ext == "reel" || ext == "ass" || 
+           ext == "srt" || ext == "sub" || ext == "txt" || ext == "TXT" )
           return NULL;
 
       CMedia* img = CMedia::guess_image( filename, header, len );
       if ( img == NULL ) return NULL;
 
-
-    // Fetch first frame
-    img->probe_size( 50 );
-    img->fetch( img->first_frame() );
-    img->probe_size( 50000 );
+    // Fetch frame in the 1/4 of duration
+    int64_t f = img->first_frame();
+    f += int64_t( img->duration() * 0.25f);
+    img->audio_stream( -1 );
+    img->seek( f );
+    img->fetch( f );
 
 
     mrv::gui::media m( img );

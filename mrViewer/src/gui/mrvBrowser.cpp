@@ -335,8 +335,10 @@ void Browser::layout()
       for ( int j = 0; j < columns; ++j )
 	{
 	  c = g->child(j);
+          if (!c) continue;
 	  int W = widths[j];
 	  if ( W == -1 ) W = w() - x;
+          if ( W == 0 ) break;
 	  c->resize( x, c->y(), W, c->h() );
 	  x += W;
 	}

@@ -38,6 +38,8 @@ extern "C" {
 #include <libavutil/audio_fifo.h>
 #include <libavutil/imgutils.h>
 #include <libavformat/avformat.h>
+#include <libavcodec/avcodec.h>
+#include <libswscale/swscale.h>
 #include <libswresample/swresample.h>
 }
 
@@ -59,6 +61,7 @@ const char* kModule = "save";
 
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;
+
 
 namespace mrv {
 
@@ -100,7 +103,7 @@ static AVSampleFormat select_sample_format( AVCodec* c, AVSampleFormat input )
         r = AV_SAMPLE_FMT_DBLP;
 
     const AVSampleFormat* p = c->sample_fmts;
-    while (*p) {
+    while (*p != -1) {
         if ( *p == r )
             return r;
         ++p;
@@ -185,25 +188,38 @@ int       dst_samples_linesize;
 boost::uint64_t samples_count = 0;
 
 struct SwrContext *swr_ctx = NULL;
+struct SwsContext* sws_ctx = NULL;
+
 
 /* Add an output stream. */
 static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
+                            const char* name, // codec name
                             enum AVCodecID codec_id, const CMedia* const img,
                             const AviSaveUI* opts)
 {
     AVCodecContext *c;
     AVStream *st;
 
+    const AVCodecDescriptor *desc;
+    *codec = avcodec_find_encoder_by_name( name );
+    if ( !*codec )
+    {
+        desc = avcodec_descriptor_get_by_name( name );
+        if ( desc )
+        {
+            codec_id = desc->id;
+            *codec = avcodec_find_encoder(codec_id);
+        }
+    }
+
     /* find the encoder */
-    *codec = avcodec_find_encoder(codec_id);
     if (!(*codec)) {
-        LOG_ERROR( _("Could not find encoder for '") << 
-                   avcodec_get_name(codec_id) << "'" );
+        LOG_ERROR( _("Could not find encoder for '") << name << "'" );
        return NULL;
     }
 
 
-    LOG_INFO( _("Open encoder ") << avcodec_get_name(codec_id) );
+    LOG_INFO( _("Open encoder ") << (*codec)->name );
 
     st = avformat_new_stream(oc, *codec);
     if (!st) {
@@ -217,7 +233,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
        case AVMEDIA_TYPE_AUDIO:
           c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
           aformat = AudioEngine::ffmpeg_format( img->audio_format() );
-          if ( opts->audio_codec == "PCM" )
+          if ( opts->audio_codec == "pcm_s16le" )
               c->sample_fmt = AV_SAMPLE_FMT_S16;
           else
               c->sample_fmt = select_sample_format(*codec, aformat );
@@ -235,56 +251,106 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
           break;
 
        case AVMEDIA_TYPE_VIDEO:
-           c->codec_id = codec_id;
-           c->bit_rate = opts->video_bitrate;
-          // c->rc_min_rate = c->bit_rate;
-          // c->rc_max_rate = c->bit_rate;
-          /* Resolution must be a multiple of two. */
-           c->width    = (( img->width() + 1 ) / 2) * 2;
-           c->height   = (( img->height() + 1 ) / 2) * 2;
-          /* timebase: This is the fundamental unit of time (in seconds) in terms
-           * of which frame timestamps are represented. For fixed-fps content,
-           * timebase should be 1/framerate and timestamp increments should be
-           * identical to 1. */
-          c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
-          c->time_base.num = st->time_base.num = 1000;
-          c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
-          // c->qmin = ptr->qmin;
-          // c->qmax = ptr->qmax;
-          // c->me_method = ptr->me_method;
-          // c->me_subpel_quality = ptr->me_subpel_quality;
-          // c->i_quant_factor = ptr->i_quant_factor;
-          // c->qcompress = ptr->qcompress;
-          // c->max_qdiff = ptr->max_qdiff;
+           {
+               c->codec_id = codec_id;
+               c->bit_rate = opts->video_bitrate;
+               // c->rc_min_rate = c->bit_rate;
+               // c->rc_max_rate = c->bit_rate;
+               /* Resolution must be a multiple of two. */
+               c->width    = (( img->width() + 1 ) / 2) * 2;
+               c->height   = (( img->height() + 1 ) / 2) * 2;
+               /* timebase: This is the fundamental unit of time (in seconds) in terms
+                * of which frame timestamps are represented. For fixed-fps content,
+                * timebase should be 1/framerate and timestamp increments should be
+                * identical to 1. */
+               if ( opts->fps <= 0 )
+                   c->time_base.den = st->time_base.den = int( 1000.0 * img->fps() );
+               else
+                   c->time_base.den = st->time_base.den = int( 1000.0 * opts->fps );
+               c->time_base.num = st->time_base.num = 1000;
+               c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
+               // c->qmin = ptr->qmin;
+               // c->qmax = ptr->qmax;
+               // c->me_method = ptr->me_method;
+               // c->me_subpel_quality = ptr->me_subpel_quality;
+               // c->i_quant_factor = ptr->i_quant_factor;
+               // c->qcompress = ptr->qcompress;
+               // c->max_qdiff = ptr->max_qdiff;
+               
+               // Use a profile if possible
+               c->profile = opts->video_profile;
+               c->colorspace = (AVColorSpace) opts->yuv_hint;
 
-          if ( c->codec_id == AV_CODEC_ID_PRORES )
-          {
-              if ( opts->video_color == "YUV420" )
-                  c->pix_fmt = AV_PIX_FMT_YUV420P10LE;
-              else if ( opts->video_color == "YUV422" )
-                  c->pix_fmt = AV_PIX_FMT_YUV422P10LE;
-              else if ( opts->video_color == "YUV444" )
-                  c->pix_fmt = AV_PIX_FMT_YUV444P10LE;
-          }
-          else
-          {
-              if ( opts->video_color == "YUV420" )
-                  c->pix_fmt = AV_PIX_FMT_YUV420P;
-              if ( opts->video_color == "YUV422" )
-                  c->pix_fmt = AV_PIX_FMT_YUV422P;
-              else if ( opts->video_color == "YUV444" )
-                  c->pix_fmt = AV_PIX_FMT_YUV444P;
-          }
-          if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
-             /* just for testing, we also add B frames */
-             c->max_b_frames = 2;
-          }
-          if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
-             /* just for testing, we also add B frames */
-             c->mb_decision = 2;
-          }
-          break;
-          
+               if ( c->codec_id == AV_CODEC_ID_H264 )
+               {
+                   switch( opts->video_profile )
+                   {
+                       case 0:
+                           c->profile = FF_PROFILE_H264_BASELINE; break;
+                       case 1:
+                           c->profile = FF_PROFILE_H264_CONSTRAINED_BASELINE; break;
+                       case 2:
+                           c->profile = FF_PROFILE_H264_MAIN; break;
+                       case 3:
+                           c->profile = FF_PROFILE_H264_EXTENDED; break;
+                       case 4:
+                       default:
+                           c->profile = FF_PROFILE_H264_HIGH; break;
+                   }
+               }
+               else if ( c->codec_id == AV_CODEC_ID_MPEG4 )
+               {
+                   switch( opts->video_profile )
+                   {
+                       case 0:
+                           c->profile = FF_PROFILE_MPEG4_SIMPLE; break;
+                       case 1:
+                           c->profile = FF_PROFILE_MPEG4_CORE; break;
+                       case 2:
+                           c->profile = FF_PROFILE_MPEG4_MAIN; break;
+                       case 3:
+                       default:
+                           c->profile = FF_PROFILE_MPEG4_HYBRID; break;
+                       case 4:
+                           c->profile = FF_PROFILE_MPEG4_ADVANCED_CORE; break;
+                   }
+               }
+
+               const char* name = avcodec_profile_name( codec_id, c->profile );
+               if (name) LOG_INFO( "Profile name " << name );
+
+
+               if ( c->codec_id == AV_CODEC_ID_PRORES )
+               {
+                   // ProRes supports YUV422 10bit
+                   // (and YUV444P10 YUVA444P10) pixel formats.
+                   if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P10;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P10;
+               }
+               else
+               {
+                   // Select a pixel format based on user option.
+                   if ( opts->video_color == "YUV420" )
+                       c->pix_fmt = AV_PIX_FMT_YUV420P;
+                   else if ( opts->video_color == "YUV422" )
+                       c->pix_fmt = AV_PIX_FMT_YUV422P;
+                   else if ( opts->video_color == "YUV444" )
+                       c->pix_fmt = AV_PIX_FMT_YUV444P;
+                   else
+                       LOG_ERROR( "Unknown c->pix_fmt (" 
+                                  << opts->video_color << ") for movie file" );
+               }
+               if (c->codec_id == AV_CODEC_ID_MPEG2VIDEO) {
+                   /* just for testing, we also add B frames */
+                   c->max_b_frames = 2;
+               }
+               if (c->codec_id == AV_CODEC_ID_MPEG1VIDEO) {
+                   c->mb_decision = 2;
+               }
+               break;
+           }
     default:
         break;
     }
@@ -319,6 +385,13 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
        return false;
     }
 
+    int ret = avcodec_parameters_from_context(st->codecpar, c);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not copy context to parameters") );
+        return false;
+    }
+
     const CMedia::Attributes& attrs = img->iptc();
     CMedia::Attributes::const_iterator i = attrs.begin();
     CMedia::Attributes::const_iterator e = attrs.end();
@@ -342,7 +415,6 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
         c->frame_size = 10000;
     }
 
-    int ret;
     src_nb_samples = c->frame_size;
 
     audio_frame->nb_samples     = c->frame_size;
@@ -365,7 +437,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
     ret = av_samples_alloc_array_and_samples(&src_samples_data,
                                              &src_samples_linesize, 
                                              c->channels,
-                                             src_nb_samples, aformat, 0);
+                                             src_nb_samples, aformat, 1);
     if (ret < 0) {
         LOG_ERROR( _("Could not allocate source samples. Error: ")
                    << get_error_text( ret ) );
@@ -430,7 +502,7 @@ static bool open_audio_static(AVFormatContext *oc, AVCodec* codec,
                                                      &dst_samples_linesize,
                                                      c->channels,
                                                      max_dst_nb_samples,
-                                                     c->sample_fmt, 0);
+                                                     c->sample_fmt, 1);
         if ( ret < 0 )
         {
            LOG_ERROR( _("Could not allocate destination samples") );
@@ -514,13 +586,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
                       src_nb_samples, dst_rate, src_rate,
                       AV_ROUND_UP) );
 
+
        if (dst_nb_samples > max_dst_nb_samples) {
 
            av_free(dst_samples_data[0]);
 
            ret = av_samples_alloc(dst_samples_data, &dst_samples_linesize,
                                   c->channels, dst_nb_samples, 
-                                  c->sample_fmt, 0);
+                                  c->sample_fmt, 1);
            if (ret < 0)
            {
                LOG_ERROR( _("Cannot allocate dst samples") );
@@ -702,6 +775,62 @@ static AVFrame *alloc_picture(enum AVPixelFormat pix_fmt, int width, int height)
     return picture;
 }
 
+AVPixelFormat ffmpeg_pixel_format( const mrv::image_type::Format& f,
+                                   const mrv::image_type::PixelType& p )
+{
+    switch( f )
+    {
+        case mrv::image_type::kITU_601_YCbCr410A: 
+        case mrv::image_type::kITU_709_YCbCr410A:
+        case mrv::image_type::kITU_601_YCbCr410:
+        case mrv::image_type::kITU_709_YCbCr410:
+            return AV_PIX_FMT_YUV410P;
+        case mrv::image_type::kITU_601_YCbCr420:
+        case mrv::image_type::kITU_709_YCbCr420:
+            return AV_PIX_FMT_YUV420P;
+        case mrv::image_type::kITU_601_YCbCr420A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr420A: // @todo: not done
+            return AV_PIX_FMT_YUVA420P;
+        case mrv::image_type::kITU_601_YCbCr422:
+        case mrv::image_type::kITU_709_YCbCr422:
+            return AV_PIX_FMT_YUV422P;
+        case mrv::image_type::kITU_601_YCbCr422A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr422A: // @todo: not done
+            return AV_PIX_FMT_YUVA422P;
+        case mrv::image_type::kITU_601_YCbCr444:
+        case mrv::image_type::kITU_709_YCbCr444:
+            return AV_PIX_FMT_YUV444P;
+        case mrv::image_type::kITU_601_YCbCr444A: // @todo: not done
+        case mrv::image_type::kITU_709_YCbCr444A: // @todo: not done
+            return AV_PIX_FMT_YUVA444P;
+        case mrv::image_type::kLummaA:
+            return AV_PIX_FMT_GRAY8A;
+        case mrv::image_type::kLumma:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_GRAY16LE;
+            return AV_PIX_FMT_GRAY8;
+        case mrv::image_type::kRGB:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_RGB48;
+            return AV_PIX_FMT_RGB24;
+        case mrv::image_type::kRGBA:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_RGBA64;
+            return AV_PIX_FMT_RGBA;
+        case mrv::image_type::kBGR:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_BGR48;
+            return AV_PIX_FMT_BGR24;
+        case mrv::image_type::kBGRA:
+            if ( p == mrv::image_type::kShort )
+                return AV_PIX_FMT_BGRA64;
+            return AV_PIX_FMT_BGRA;
+        default:
+            return AV_PIX_FMT_NONE;
+    }
+}
+
+
 static AVFrame *frame;
 
 static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
@@ -713,6 +842,13 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
     if (avcodec_open2(c, codec, NULL) < 0) {
        LOG_ERROR( _("Could not open video codec") );
        return false;
+    }
+
+    int ret = avcodec_parameters_from_context(st->codecpar, c);
+    if ( ret < 0 )
+    {
+        LOG_ERROR( _("Could not copy context to parameters") );
+        return false;
     }
 
     const CMedia::Attributes& attrs = img->iptc();
@@ -729,7 +865,8 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
 
         std::string key = i->first;
         std::string val = i->second;
-        key = key.substr( 6, key.size() );
+        if ( key.size() > 6 )
+            key = key.substr( 6, key.size() );
         av_dict_set( &oc->metadata, key.c_str(), val.c_str(), 0 );
     }
 
@@ -742,10 +879,12 @@ static bool open_video(AVFormatContext *oc, AVCodec* codec, AVStream *st,
         {
             std::string key = i->first;
             std::string val = i->second;
-            key = key.substr( 6, key.size() );
+            if ( key.size() > 6 )
+                key = key.substr( 6, key.size() );
             av_dict_set( &st->metadata, key.c_str(), val.c_str(), 0 );
         }
     }
+
 
 
     /* Allocate the encoded raw frame. */
@@ -781,63 +920,69 @@ static void fill_yuv_image(AVCodecContext* c,AVFrame *pict, const CMedia* img)
        return;
    }
 
+
    unsigned w = c->width;
    unsigned h = c->height;
 
-   if ( img->width() < w )  w = img->width();
-   if ( img->height() < h ) h = img->height();
-
+   if ( hires->width() < w )  w = hires->width();
+   if ( hires->height() < h ) h = hires->height();
 
    float one_gamma = 1.0f / img->gamma();
 
-   for ( unsigned y = 0; y < h; ++y )
+   // Convert half and float pictures to 16-bits
+   if ( hires->pixel_type() != mrv::image_type::kByte &&
+        hires->pixel_type() != mrv::image_type::kShort )
    {
-       unsigned y2 = y;
-       if ( c->pix_fmt == AV_PIX_FMT_YUV420P )
+       mrv::image_type_ptr ptr( new image_type( hires->frame(),
+                                                w, h,
+                                                hires->channels(),
+                                                hires->format(),
+                                                mrv::image_type::kShort ) );
+
+       for ( unsigned y = 0; y < h; ++y )
        {
-           y2 /= 2;
-       }
-
-
-       unsigned yoff  = y  * pict->linesize[0];
-       unsigned yoff1 = y2 * pict->linesize[1];
-       unsigned yoff2 = y2 * pict->linesize[2];
-
-       for ( unsigned x = 0; x < w; ++x )
-       {
-           ImagePixel p = hires->pixel( x, y );
-           
-           if ( p.r > 0.0f && isfinite(p.r) )
-               p.r = powf( p.r, one_gamma );
-           if ( p.g > 0.0f && isfinite(p.g) )
-               p.g = powf( p.g, one_gamma );
-           if ( p.b > 0.0f && isfinite(p.b) )
-               p.b = powf( p.b, one_gamma );
-
-           if      (p.r < 0.0f) p.r = 0.0f;
-           else if (p.r > 1.0f) p.r = 1.0f;
-           if      (p.g < 0.0f) p.g = 0.0f;
-           else if (p.g > 1.0f) p.g = 1.0f;
-           if      (p.b < 0.0f) p.b = 0.0f;
-           else if (p.b > 1.0f) p.b = 1.0f;
-
-           ImagePixel yuv = color::rgb::to_ITU601( p );
-
-           pict->data[0][yoff + x] = uint8_t(yuv.r);
-
-           unsigned x2 = x;
-           if ( c->pix_fmt == AV_PIX_FMT_YUV422P ||
-                c->pix_fmt == AV_PIX_FMT_YUV420P )
+           for ( unsigned x = 0; x < w; ++x )
            {
-               x2 /= 2;
-           }
+               ImagePixel p = hires->pixel( x, y );
 
-           pict->data[1][yoff1 + x2 ] = uint8_t(yuv.g);
-           pict->data[2][yoff2 + x2 ] = uint8_t(yuv.b);
+               // This code is equivalent to p.r = powf( p.r, gamma )
+               // but faster
+               if ( p.r > 0.0f && isfinite(p.r) )
+                   p.r = expf( logf(p.r) * one_gamma );
+               if ( p.g > 0.0f && isfinite(p.g) )
+                   p.g = expf( logf(p.g) * one_gamma );
+               if ( p.b > 0.0f && isfinite(p.b) )
+                   p.b = expf( logf(p.b) * one_gamma );
+
+               if      (p.r < 0.0f) p.r = 0.0f;
+               else if (p.r > 1.0f) p.r = 1.0f;
+               if      (p.g < 0.0f) p.g = 0.0f;
+               else if (p.g > 1.0f) p.g = 1.0f;
+               if      (p.b < 0.0f) p.b = 0.0f;
+               else if (p.b > 1.0f) p.b = 1.0f;
+
+               ptr->pixel(x, y, p );
+           }
        }
+       hires = ptr;
    }
 
-   pict->extended_data = pict->data;
+   AVPixelFormat fmt = ffmpeg_pixel_format( hires->format(),
+                                            hires->pixel_type() );
+   sws_ctx = sws_getCachedContext( sws_ctx, w, h,
+                                   fmt, c->width, c->height, c->pix_fmt, 0, 
+                                   NULL, NULL, NULL );
+   if ( !sws_ctx )
+   {
+       LOG_ERROR( _("Failed to initialize swscale conversion context") );
+       return;
+   }
+
+   uint8_t* buf = (uint8_t*)hires->data().get();
+   uint8_t* data[4] = {NULL, NULL, NULL, NULL};
+   int linesize[4] = { 0, 0, 0, 0 };
+   av_image_fill_arrays( data, linesize, buf, fmt, w, h, 1 );
+   sws_scale( sws_ctx, data, linesize, 0, h, picture->data, picture->linesize );
 
 }
 
@@ -921,7 +1066,7 @@ audio_type_ptr CMedia::get_audio_frame(const boost::int64_t f )
 
     audio_cache_t::iterator end = _audio.end();
     audio_cache_t::iterator i = end;
-#if 1
+#if 1  // correct
     {
         i = std::lower_bound( _audio.begin(), end, x, LessThanFunctor() );
         if ( i != end ) {
@@ -957,6 +1102,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    avcodec_register_all();
    av_register_all();
 
+
+   if ( strcmp( img->filename(), filename ) == 0 )
+   {
+       mrvALERT( "You are saving over the movie you are playing. Aborting..." );
+       return false;
+   }
+
    oc = NULL;
 
    std::string ext = "avi";
@@ -986,39 +1138,38 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    fmt = oc->oformat;
    assert( fmt != NULL );
 
-   if ( opts->video_codec == "H264" )
+   if ( opts->video_codec == "h264" )
        fmt->video_codec = AV_CODEC_ID_H264;
-   else if ( opts->video_codec == "HEVC" )
-       fmt->video_codec = AV_CODEC_ID_HEVC;
-   else if ( opts->video_codec == "MPEG4" )
+   else if ( opts->video_codec == "mpeg4" )
        fmt->video_codec = AV_CODEC_ID_MPEG4;
-   else if ( opts->video_codec == "ProRes" )
+   else if ( opts->video_codec == "prores_ks" )
        fmt->video_codec = AV_CODEC_ID_PRORES;
 
 
-   if ( opts->audio_codec == "NONE" )
+   if ( opts->audio_codec == _("None") )
        fmt->audio_codec = AV_CODEC_ID_NONE;
-   else if ( opts->audio_codec == "MP3" )
+   else if ( opts->audio_codec == "mp3" )
        fmt->audio_codec = AV_CODEC_ID_MP3; 
-   else if ( opts->audio_codec == "AC3" )
+   else if ( opts->audio_codec == "ac3" )
        fmt->audio_codec = AV_CODEC_ID_AC3;
-   else if ( opts->audio_codec == "AAC" )
+   else if ( opts->audio_codec == "aac" )
        fmt->audio_codec = AV_CODEC_ID_AAC; 
-   else if ( opts->audio_codec == "VORBIS" )
+   else if ( opts->audio_codec == "vorbis" )
        fmt->audio_codec = AV_CODEC_ID_VORBIS; 
-   else if ( opts->audio_codec == "PCM" )
+   else if ( opts->audio_codec == "pcm" )
        fmt->audio_codec = AV_CODEC_ID_PCM_S16LE;
 
 
    video_st = NULL;
    audio_st = NULL;
    if (img->has_picture() && fmt->video_codec != AV_CODEC_ID_NONE) {
-       video_st = add_stream(oc, &video_codec, fmt->video_codec, img, opts);
+       video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
+                             fmt->video_codec, img, opts);
    }
 
    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
-      audio_st = add_stream(oc, &audio_cdc, fmt->audio_codec,
-                            img, opts );
+       audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
+                             fmt->audio_codec, img, opts );
    }
 
    if ( video_st == NULL && audio_st == NULL )
@@ -1057,6 +1208,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
                  get_error_text(err) );
       return false;
    }
+
+   CMedia* image = const_cast<CMedia*>(img);
+   image->playback( CMedia::kSaving );
 
    return true;
 
@@ -1122,7 +1276,6 @@ bool aviImage::save_movie_frame( CMedia* img )
 
 bool flush_video_and_audio( const CMedia* img )
 {
-    int stop_encoding = 0;
     int ret = 0;
 
     if ( audio_st && fifo )
@@ -1171,6 +1324,7 @@ bool flush_video_and_audio( const CMedia* img )
         AVStream* s = st[i];
         if ( !s ) continue;
             
+        int stop_encoding = 0;
         AVCodecContext* c = s->codec;
 
         if ( !( c->codec->capabilities & CODEC_CAP_DELAY ) )
@@ -1244,6 +1398,15 @@ bool aviImage::close_movie( const CMedia* img )
     {
         LOG_ERROR( _("Flushing of buffers failed") );
     }
+
+    if ( sws_ctx )
+    {
+        sws_freeContext( sws_ctx );
+        sws_ctx = NULL;
+    }
+
+    CMedia* image = const_cast<CMedia*>(img);
+    image->playback( CMedia::kStopped );
 
    /* Write the trailer, if any. The trailer must be written before you
     * close the CodecContexts open when you wrote the header; otherwise

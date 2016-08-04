@@ -325,10 +325,15 @@ void GLEngine::initialize()
   init_charset();
 
   init_textures();
+  static bool glut_init = false;
 
-  int argc = 1;
-  static char* args[] = { (char*)"GlEngine", NULL };
-  glutInit( &argc, args );  // Needed for glut stroke paths
+  if ( !glut_init )
+  {
+      int argc = 1;
+      static char* args[] = { (char*)"GlEngine", NULL };
+      glutInit( &argc, args );
+      glut_init = true;
+  }
 
 // #if defined(WIN32) || defined(WIN64)
 //   if ( WGLEW_WGL_swap_control )
@@ -376,13 +381,14 @@ void GLEngine::initialize()
 	_hardwareShaders = kNV30;
 #endif
 
-      LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
 #endif
 
     }
 
   if ( _hardwareShaders != kNone )
-    {
+  {
+      LOG_INFO( _("Using hardware shader profile: ") << shader_type_name() );
+
       std::string directory;
 
       if ( _has_yuv )
@@ -1012,6 +1018,9 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
 
     glLineWidth( 1.0 );
 
+    // glEnable(GL_COLOR_LOGIC_OP);
+    // glLogicOp(GL_XOR);
+
     glBegin(GL_LINE_LOOP);
 
     glVertex2d(0.0, 0.0);
@@ -1020,6 +1029,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     glVertex2d(0.0, -rh);
 
     glEnd();
+
+    // glDisable(GL_COLOR_LOGIC_OP);
 
     glPopAttrib();
     glPopMatrix();
@@ -1300,6 +1311,7 @@ void GLEngine::draw_images( ImageList& images )
 
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
+      quad->image( img );
 
       if ( _view->use_lut() )
       {

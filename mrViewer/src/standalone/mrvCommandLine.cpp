@@ -369,7 +369,7 @@ void parse_command_line( const int argc, const char** argv,
     aaudio( N_("a"), N_("audio"), 
             _("Set each movie/sequence default audio."), false, "audio files");
 
-    MultiArg< unsigned > 
+    MultiArg< int > 
     aoffset( N_("o"), N_("audio_offset"), 
              _("Set added audio offset."), false, "offset");
 
@@ -434,7 +434,7 @@ void parse_command_line( const int argc, const char** argv,
 #endif
 
     const stringArray& audios = aaudio.getValue();
-    const UnsignedArray& aoffsets = aoffset.getValue();
+    const IntArray& aoffsets = aoffset.getValue();
 
     if ( audios.size() < aoffsets.size() )
         LOG_ERROR( "Too many audio offsets for fewer audios" );
@@ -443,8 +443,8 @@ void parse_command_line( const int argc, const char** argv,
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
     stringArray::const_iterator ae = audios.end();
-    UnsignedArray::const_iterator oi = aoffsets.begin();
-    UnsignedArray::const_iterator oe = aoffsets.end();
+    IntArray::const_iterator oi = aoffsets.begin();
+    IntArray::const_iterator oe = aoffsets.end();
     for ( ; i != e; ++i )
       {
 	const std::string& arg = *i;
@@ -495,7 +495,7 @@ void parse_command_line( const int argc, const char** argv,
                   // Add audio file to last stereo fileroot
                   if ( ai != ae )
                   {
-                      unsigned offset = 0;
+                      int offset = 0;
                       if ( oi != oe ) {
                           offset = *oi;
                           ++oi;
@@ -517,7 +517,7 @@ void parse_command_line( const int argc, const char** argv,
                   // Add audio file to last fileroot
                   if ( ai != ae )
                   {
-                      unsigned offset = 0;
+                      int offset = 0;
                       if ( oi != oe ) {
                           offset = *oi;
                           ++oi;

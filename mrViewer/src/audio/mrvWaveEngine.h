@@ -27,7 +27,7 @@
 #ifndef mrvWaveEngine_h
 #define mrvWaveEngine_h
 
-#if !defined(WIN32) && !defined(WIN64)
+#if !defined(_WIN32) && !defined(_WIN64)
 #  error WaveEngine is for mswindows only
 #endif
 

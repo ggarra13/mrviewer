@@ -26,6 +26,8 @@ Out main(
 	 uniform half   gain  = 1.0,
 	 uniform half   gamma = 1.0,
 	 uniform int     channel = 0,
+         uniform bool   premult = 0,
+         uniform bool   unpremult = 0,
 	 uniform bool   enableNormalization = 0,
 	 uniform half   normMin = 0,
 	 uniform half   normSpan  = 1,
@@ -33,10 +35,13 @@ Out main(
 	 uniform bool   lutF = 0,
 
 	 // For YCbCr (Poyton's matrix * 255)
-	 uniform half3  Koff = half3(-0.0627450980392157, -0.501960784313725, -0.501960784313725 ),
-	 uniform half3  Kr   = half3(1.16438355, 0.0, 1.59602715),
-	 uniform half3  Kg   = half3(1.16438355, -0.3917616, -0.81296805),
-	 uniform half3  Kb   = half3(1.16438355, 2.01723105, 0.0),
+         uniform bool   coeffs = 0,  // use the fed coeffs 
+                                     // instead of builtin
+//       // for YCbCr
+         uniform half3  Koff = half3(-0.0625, -0.5, -0.5 ),
+	 uniform half3  Kr   = half3(1.1643, 0.0, 1.5958),
+	 uniform half3  Kg   = half3(1.1643, -0.39173, -0.81290),
+	 uniform half3  Kb   = half3(1.1643, 2.017, 0.0),
 
 // 	 // For YPbPr
 //  	 uniform half3  Koff = half3(0.0, -0.5, -0.5 ),
@@ -59,13 +64,29 @@ Out main(
   pre.g = tex2D(UImage, tc).r;  // U
   pre.b = tex2D(VImage, tc).r;  // V
 
-  pre += Koff;
-
   half4 c;
 
-  c.r = dot(Kr, pre);
-  c.g = dot(Kg, pre);
-  c.b = dot(Kb, pre);
+  if ( coeffs )
+  {
+      pre += Koff;
+
+      c.r = dot(Kr, pre);
+      c.g = dot(Kg, pre);
+      c.b = dot(Kb, pre);
+  }
+  else
+  {
+      half3 yuv;
+
+      yuv.r = 1.1643 * ( pre.r - 0.0625 );
+      yuv.g = pre.g - 0.5;
+      yuv.b = pre.b - 0.5;
+
+      c.r = yuv.r + 1.5958 * yuv.b;
+      c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;
+      c.b = yuv.r + 2.017 * yuv.g;
+  }
+
   c.a = 1.0f;
 
   //
@@ -76,10 +97,6 @@ Out main(
       c.rgb = (c.rgb - normMin) / normSpan;
     }
 
-  //
-  // Apply gain 
-  //
-  c.rgb *= gain;
 
 
   //
@@ -125,6 +142,16 @@ Out main(
 	  c.rgb = exp( tex3D(lut, c.rgb).rgb );
 	}
     }
+
+  if ( unpremult )
+  {
+    c.rgb /= c.a;
+  }
+
+  //
+  // Apply gain 
+  //
+  c.rgb *= gain;
 
   //
   // Apply video gamma correction.
@@ -180,6 +207,11 @@ Out main(
   if ( x == mask_value )
   {
       c.rgba = 0.0f;
+  }
+
+  if ( premult )
+  {
+      c.rgb *= c.a;
   }
 
   Out output;

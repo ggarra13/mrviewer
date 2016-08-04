@@ -43,6 +43,8 @@ namespace mrv {
     ~PreferencesBrowser();
 
     void update( PreferencesUI* prefs );
+      virtual int handle( int e );
+
 
   protected:
     void update_ctl_tab( PreferencesUI* prefs );

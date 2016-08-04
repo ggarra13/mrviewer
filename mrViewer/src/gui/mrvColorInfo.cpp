@@ -147,7 +147,7 @@ namespace mrv
 	    return mousePush( Fl::event_x(), Fl::event_y() );
 	default:
             int ok = Fl_Browser::handle( event );
-	  
+            
             int line = value();
             if (( line < 1 || line > 10 ) ||
                 ( line > 4 && line < 7 ))
@@ -155,7 +155,6 @@ namespace mrv
                 value(-1);
                 return 0;
 	    }
-            
             return ok;
 	}
     }
@@ -232,13 +231,15 @@ ColorInfo::ColorInfo( int x, int y, int w, int h, const char* l ) :
 
 void ColorInfo::update()
 {
-  mrv::media fg = uiMain->uiView->foreground();
-  if (!fg) return;
+    if ( ! uiMain->uiView ) return;
 
-  CMedia* img = fg->image();
-  mrv::Rectd selection = uiMain->uiView->selection();
-  update( img, selection );
-  redraw();
+    mrv::media fg = uiMain->uiView->foreground();
+    if (!fg) return;
+
+    CMedia* img = fg->image();
+    mrv::Rectd selection = uiMain->uiView->selection();
+    update( img, selection );
+    redraw();
 }
 
 void ColorInfo::selection_to_coord( const CMedia* img,
@@ -299,8 +300,7 @@ void ColorInfo::update( const CMedia* img,
 {
   if ( !visible_r() ) return;
 
-  browser->clear();
-  area->copy_label( "" );
+  area->label( "" );
 
   std::ostringstream text;
   if ( img && (selection.w() > 0 || selection.h() < 0) )
@@ -369,6 +369,20 @@ void ColorInfo::update( const CMedia* img,
 	 ymin = tmp;
       }
 
+      unsigned spanX = xmax-xmin+1;
+      unsigned spanY = ymax-ymin+1;
+      unsigned numPixels = spanX * spanY;
+
+      text << std::endl
+	   << _("Area") << ": (" << xmin << ", " << ymin 
+	   << ") - (" << xmax 
+	   << ", " << ymax << ")" << std::endl
+	   << _("Size") << ": [ " << spanX << "x" << spanY << " ] = " 
+	   << numPixels << " "
+	   << ( numPixels == 1 ? _("pixel") : _("pixels") )
+	   << std::endl;
+      area->copy_label( text.str().c_str() );
+
       mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
 	uiMain->uiLType->value();
 
@@ -426,12 +440,15 @@ void ColorInfo::update( const CMedia* img,
 
                if ( v != ImageView::kRGBA_Original ) 
                {
+                   // The code below is same as
+                   //   rp.r = powf(rp.r * gain, one_gamma);
+                   // but faster
                    if ( rp.r > 0.0f && isfinite(rp.r) )
-                       rp.r = powf(rp.r * gain, one_gamma);
+                       rp.r = expf( logf(rp.r * gain) * one_gamma );
                    if ( rp.g > 0.0f && isfinite(rp.g) )
-                       rp.g = powf(rp.g * gain, one_gamma);
+                       rp.g = expf( logf(rp.g * gain) * one_gamma );
                    if ( rp.b > 0.0f && isfinite(rp.b) )
-                       rp.b = powf(rp.b * gain, one_gamma);
+                       rp.b = expf( logf(rp.b * gain) * one_gamma );
                }
 
                if ( rp.r < pmin.r ) pmin.r = rp.r;
@@ -770,6 +787,7 @@ void ColorInfo::update( const CMedia* img,
   stringArray::iterator i = lines.begin();
   stringArray::iterator e = lines.end();
   area->redraw_label();
+  browser->clear();
   for ( ; i != e; ++i )
     {
         browser->align( FL_ALIGN_CENTER );
@@ -779,6 +797,7 @@ void ColorInfo::update( const CMedia* img,
         w->align( FL_ALIGN_CENTER );
 #endif
     }
+  browser->redraw();
 }
 
 }  // namespace mrv

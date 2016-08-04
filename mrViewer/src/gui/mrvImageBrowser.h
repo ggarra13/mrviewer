@@ -92,7 +92,7 @@ class ImageBrowser : public mrv::Browser
      mrv::Reel current_reel() const;
      mrv::Reel reel( const char* name );
      mrv::Reel reel( unsigned int idx );
-     mrv::Reel reel_at( unsigned int idx );
+     mrv::Reel reel_at( int idx );
 
      mrv::media current_image();
 

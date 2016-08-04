@@ -43,28 +43,26 @@ namespace mrv {
 
     class media
     {
-    public:
-      typedef CMedia::Mutex Mutex;
+      public:
+        typedef CMedia::Mutex Mutex;
 
-      media( CMedia* const img );
-      ~media();
+        media( CMedia* const img );
+        ~media();
 
 
-	 void position( boost::int64_t x ) { _pos = x; }
-	 boost::int64_t position() const { return _pos; }
-
-      CMedia* image()             { return _image; }
-      const CMedia* image() const { return _image; }
-
-      std::string name() const { return _image->name(); }
+        void position( boost::int64_t x ) { _pos = x; }
+        boost::int64_t position() const { return _pos; }
 
       Fl_Image* thumbnail()             { return _thumbnail; }
       const Fl_Image* thumbnail() const { return _thumbnail; }
+        
+        CMedia* image()             { return _image; }
+        const CMedia* image() const { return _image; }
 
-      bool thumbnail_frozen() const    { return _thumbnail_frozen; }
-      void thumbnail_freeze( bool t )  { _thumbnail_frozen = t; }
+        std::string name() const { return _image->name(); }
 
-      void create_thumbnail();
+        fltk::Image* thumbnail()             { return _thumbnail; }
+        const fltk::Image* thumbnail() const { return _thumbnail; }
 
     protected:
         void thumbnail_pixel( uchar*& ptr, /* PixelType pixeltype,*/
@@ -75,6 +73,9 @@ namespace mrv {
 	 Fl_Image* _thumbnail;
 	 bool         _thumbnail_frozen;
 
+      protected:
+        boost::int64_t  _start;
+        
       public:
 	 static       int _thumbnail_width;
 	 static       int _thumbnail_height;

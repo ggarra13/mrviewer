@@ -1,9 +1,238 @@
+v3.2.7   - Made audio offset in EDL window shift in opposite
+	   direction as it is more intuitive.
+	 - Audio offset no longer effects other videos in the
+	   timeline.
+
+v3.2.6   - Audio offset was conflicting with audio loop.  This
+	   got broken in v3.2.3.  Fixed.
+	 - Bug fixed an audio store problem that would remove needed
+	   audio frames.  See Matrix_Reloaded_Trailer.mkv.
+	 - Removed libdl and libpthreads from Linux distribution as
+	   that made them less compatible with current distros.
+
+v3.2.5   - Bug fix release to address the saving of images with
+	   an audio track added.  This got broken in v3.2.4.
+
+v3.2.4   - Added shift audio offset to server-client communication.
+	 - Added an Override FPS setting to the Save Movie requester
+	   to simplify where FPS for saving movies is set.
+	 - Bug fixed audio video sync playback for some movies.
+	   (See Babalar.mp4 sample).  This change fixes audio
+	   stores, too.
+	 - Bug fixed saving of some movies that would result in
+	   mixed frames.
+	 - Made audio offset work in network connections.
+
+v3.2.3   - Audio offsets play nicely with EDL now.
+	 - There's a new audio track below the video track in the 
+	   EDL Window.  It reports the audio offset which can be
+	   shifted by RMB+drag on the audio line.  This is 
+	   equivalent to setting the offset from the menus 
+	   ( Audio->Edit Audio Frame Offset ).
+	 - Avoided a crash in EDL when shifting to a missing frame.
+	 - Made EDL play correctly when audio offset is different
+	   than 0.
+	 - Shifting (RMB+drag) of clips in EDL now shows the frame
+	   being displayed.
+
+v3.2.2   - GIFs now return their proper duration, instead of 200 
+	   frames.
+	 - Saving of images with audio added now works again.
+	   Audio offset now works without speeding up the image or
+	   jumping frames.
+	   This bug is a regression from v3.1.0 when it was 
+	   introduced.
+	 - Audio offset now works forwards and backwards (negative
+	   values).
+
+v3.2.1   - Presentation Mode (F12) now covers the taskbar on Linux,
+	   just like Windows.
+	 - Removed idle workaround for Windows as it was not needed.
+	   Now the pixel toolbar respects the position of the 
+	   cursor in playback mode.
+	 - Bug fixed dummy errors at the end of clips when in 
+	   EDL mode.
+	 - Made Log Window show up on Errors on Windows based on
+	   user preferences.  Previously, it would hang the GUI.
+
+v3.2.0   - Thumbnails in file requester are created with the audio
+	   off.  This makes thumbnails a tad faster.
+	 - Thumbnails in file requester now select frame in 1/4 of 
+	   the movie to create the thumbnail.  This means thumbnail
+	   creation is slower but more representative of the movie.
+	 - Made fullscreen in presentation mode (F12) cover all the 
+	   screen space in Windows, instead of leaving 5 pixels
+	   visible at the bottom.
+	 - Log Window now displays always the bottom of the log so
+	   that it can be read properly on playback.
+	 - Bug fixed audio playback when changing fps on Linux.
+	   Previously, it would change the format of the audio and
+	   result in white noise.
+	 - Bug fixed changing from Native locale to C locale on
+	   Linux.
+	 - Bug fixed volume control on Windows which would sometimes
+	   play the audio in mono.  Previous fix was incorrect.
+
+v3.1.9   **NOTE** If using the Windows installer, it is 
+	 	  recommended you uninstall v3.1.8 before
+	   	  installing v3.1.9.
+	 - Fixed multithreading issues in file requester.  It should
+	   not crash anymore.
+	 - Added an option in main UI preferences to select what
+	   language the UI works in.  Currently, the options are
+	   Native (as in Native to the OS) or English.  Currently
+	   only Spanish and English are fully supported.
+	 - Updated the English and Spanish documentation.
+	 - Fixed level queries of OpenEXR's mipmaps and ripmaps.
+	   Previously the image was not refreshed properly.
+	 - Made Windows Installer ask if you want to remove a
+	   previous version of the software first.  This should
+	   work with this version on of the program.
+	 - Made Windows Installer provide a GUI at the end to
+	   select which file extensions get associated with
+	   mrViewer.  The association is with the mrViewer 
+	   installed last.  
+	 - Added libswscale and libavfilter versions to
+	   About mrViewer.
+	 - About mrViewer now reports 32-bits or 64-bits mrViewer
+	   (compilation).
+
+v3.1.8   - Removed a buggy fltk::unlock() that could cause 
+	   inestability in the file requester.
+	 - Fixed some compilation issues and upgraded all cmake to
+	   latest version.  This was probably the fix to the audio
+	   playing in mono only.
+	 - Fixed cmake scripts to use WIN64 correctly.
+	 - Removed debugging message when switching subtitle tracks.
+	 - Bug fixed surround sound on Windows when 4 channels are 
+	   in the audio track.
+	 - Made selecting no subtitle in the file requester not 
+	   effect on subtitle track display.
+	 - Cleaned up docs/ directory which was full of unrelated
+	   technical documents.
+	 - Added more Spanish translations.
+	 - Made file size report in file requester support more than 
+	   4GB on Windows.
+	 - mrViewer on Windows now correctly reports multilingual
+	   (utf8) filenames' size.
+	 - Fixed warning of smpteImage not being aligned on 16 bits
+	   boundaries for Windows 32 bits.
+	 - Windows installer will now register most of the file
+	   extensions with the latest installed mrViewer.  Extensions 
+	   which belong to editing programs (PSD, etc) are not
+	   registered.  This is somewhat controversial, so we expect
+	   feedback if users don't like the registry entries.
+	 - Created the web page for mrviewer at 
+	   mrviewer.sourceforge.net.  Also, uploaded the latest
+	   manual to the web.
+
+v3.1.7   - Made MPEG4 profiles choose more sensible ones.
+	 - Fixed typo in ITU 709 being called ITU 702 in Spanish.
+	 - Bug fixed display of duration and start frame of videos 
+	   and audios in Media Information Window.
+	 - Bug fixed duration extraction for video/audio tabs in
+	   Media Information Window.
+	 - Added YUV Hint to the saving of movie files.  This setting
+	   can be set to control the Color Space in the Media Info
+	   Window when the movie is loaded back.  The setting
+	   controls how the YUV->RGB display conversion is done.
+	   For HDTV movies, it is recommended you set the setting to
+	   BT709.  For others, it is recommended you set the setting
+	   to BT470BG (PAL/Secam) or SMPTE170M (NTSC).
+	 - Added tooltips to all settings in the Save Movie dialog
+	   box.
+	 - Bug fixed a memory leak in subtitles when stopping
+	   playback.
+	 - Added subtitles in different files ( .srt, .sub, .ass ).
+	 - Bug fixed Windows audio playback playing only in mono.
+	   Now stereo and 5:1 is respected.  The problem seemed to
+	   be the cmake compilation.  Upgrading to latest cmake
+	   seemed to fix the issue.
+
+v3.1.6   - Bug fixed an error in shaders when playing a YCrCb or
+	   YByRy movie or sequence.  The error would show in debug
+	   builds of mrViewer, as an assert failing due to unpremult
+	   missing in shader.
+	 - File requester now opens on the last directory of any
+	   drag and drop file.
+	 - Fixed a rare hanging bug when multiselecting files in the
+	   file requester.
+	 - Shader's YUV display conversion is no longer YCbCr based 
+	   on resolution but covers the full gamut of Y.  
+	   The type of YUV display conversion is controlled from the 
+	   Media Information window, Color Space enum, which in turn
+	   can be hinted in the saved movie file.  
+	   To obtain the previous behavior, set the Color Space to 
+	   BT709.  This addresses the question why movie files 
+	   created and displayed with mrViewer had a high black
+	   pedestal (they were displayed as BT709).
+	   Note that this does not currently change the values of
+	   pixels in the pixel info toolbar nor in the color area
+	   window.
+
+v3.1.5 	 - Bug fixed focus (hotkeys not working) when loading and 
+	   resizing window (a bug introduced in v3.1.4 on Windows 
+	   mainly).
+         - Bug fixed some exif and iptc metadata that was not kept in
+	   OpenEXR saver.
+	 - Bug fixed creation date information on sequences of images.
+	 - Removed a warning about stereo images not being found in
+	   an image when stereo came from two image pairs.
+	 - Bug fixed a NAN display of pixel values when they were 0, due
+	   to a bad optimization added in v3.1.4.
+	 - Made integer slider grow to accomodate values below the 100
+	   range in Media Information window.
+
+v3.1.4   - Bug fixed windows preference of child windows (Reel List, etc),
+	   appearing at the beginning under the main window.  Now they
+	   appear above and don't go behind the main window when not 
+	   selected.
+	 - Bug fixed network communication crashes due to server
+	   running in a different thread than the gfx toolkit.  Now
+	   the network thread sends signals to the gfx toolkit, instead
+	   of trying to apply the change in the same thread.
+	 - Bug fixed None audio codec in audio saving in Spanish to Ninguno.
+	 - Made default saver h264, with High profile.
+	 - Made conversion to 16 bits from float/half images 10% faster.
+	 - Bug fixed a display bug in the browser in the media info window
+	   when you clicked and "opened" a category.
+	 - Bug fixed a crash when audio could not be initialized.
+	 - Localized all audio messages.  Added Spanish translation.
+	 - Bug fixed Connections' Create button in Spanish locale.
+	 - Bug fixed audio muting when not saving with audio in Spanish
+	   locale.
+	 - Bug fixed memory and disk space reports in media info.
+	 - Made Reel List save image button save sequences or movie files
+	   instead of a single picture.
+
+v3.1.3   - Made mousewheel on Windows work when multiple screens are
+	   used.  This might fix ticket #21 (mousewheel not working).
+	 - Bug fixed scrollbar in file requester when set to wide view.
+	 - Added some missing Spanish translations.
+	 - Removing a reel or removing an image now present a requester
+	   for confirmation.
+	 - Added support for ProRes movie creation.  The movies are
+	   created with yuv420p10 color information from 16-bits images.
+	   Half and Float images are translated to 16-bits first
+	   taking gamma into account and then encoded.
+	 - Added a profile option to movie saving.  This allows selecting
+	   the algorithms for compatability with other movie software.
+	 - Added an alert and abort to saving over the same movie you are
+	   playing.
+
 v3.1.2   - Made file requester leave headroom for icons on images and
 	   movies.  This avoids the resizing of the scrollbar each
 	   time a movie icon is created.
 	 - Made name of movie or sequence not overlap type, but use
 	   ..., like "batman-vs-superm..."
 	 - Made icon creation in file requester faster. 
+	 - Made the file requester not reset its position as images
+	   appear.
+	 - Made the file requester reset its position on dir change.
+	 - Made transcoding of movie files much faster and creation of
+	   movie files from 8 or 16 bits images, too.
+	 - Added partial support for ProRes, but did not expose it in
+	   the GUI as it does not support half or float datatypes yet.
 
 v3.1.1   - Relaxed the minimum zoom factor to 1/64 or less.  This allows
 	   displaying 16K images properly if the card allows it.

@@ -78,8 +78,8 @@ namespace
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-//#undef DBG
-//#define DBG(x) std::cerr << x << std::endl
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -93,19 +93,20 @@ typedef boost::recursive_mutex Mutex;
 typedef boost::condition_variable Condition;
 
 
-#if defined(WIN32) || defined(WIN64)
 
-struct timespec {
-   time_t tv_sec;        /* seconds */
-   long   tv_nsec;       /* nanoseconds */
-};
-
-void nanosleep( const struct timespec* req, struct timespec* rem )
+void sleep_ms(int milliseconds) // cross-platform sleep function
 {
-   Sleep( DWORD(1000 * req->tv_sec + req->tv_nsec / 1e7f) );
-}
-
+#ifdef WIN32
+    Sleep(milliseconds);
+#elif _POSIX_C_SOURCE >= 199309L
+    struct timespec ts;
+    ts.tv_sec = milliseconds / 1000;
+    ts.tv_nsec = (milliseconds % 1000) * 1000000;
+    nanosleep(&ts, NULL);
+#else
+    usleep(milliseconds * 1000);
 #endif
+}
 
 
 
@@ -284,10 +285,10 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       f -= img->first_frame();
 	       f += reel->location(img);
 
+
 	       if ( f <= timeline->maximum() )
 	       {
                    next = reel->image_at( f );
-                   if ( next == img ) return status;
 	       }
 
 
@@ -311,7 +312,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL) 
 	       {
-                   if ( video )
+                   //if ( video )
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
@@ -319,6 +320,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                        if ( next->stopped() )
                        {
                            next->seek( f );
+                           next->do_seek();
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
 
@@ -397,14 +399,15 @@ EndStatus handle_loop( boost::int64_t& frame,
 
 	       if ( next != img && next != NULL )
 	       {
-                   if ( video )
+                   //if ( video )
                    {
                        CMedia::Mutex& m2 = next->video_mutex();
                        SCOPED_LOCK( m2 );
 
-                       if ( video && next->stopped() )
+                       if ( next->stopped() )
                        {
                            next->seek( f );
+                           next->do_seek();
                            next->play( CMedia::kBackwards, uiMain, fg );
                        }
 
@@ -517,6 +520,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    return CMedia::kDecodeOK;
 }
 
+
 //
 // Main loop used to play audio (of any image)
 //
@@ -528,7 +532,6 @@ void audio_thread( PlaybackData* data )
    assert( uiMain != NULL );
    CMedia* img = data->image;
    assert( img != NULL );
-
 
    bool fg = data->fg;
 
@@ -586,12 +589,13 @@ void audio_thread( PlaybackData* data )
 
       CMedia::DecodeStatus status = img->decode_audio( f );
 
+      if ( img->stopped() ) break;
 
       switch( status )
       {
 	 case CMedia::kDecodeError:
              LOG_ERROR( img->name() 
-                         << _(" - decode Error audio frame ") << frame );
+                        << _(" - decode Error audio frame ") << frame );
              frame += step;
              continue;
 	 case CMedia::kDecodeMissingFrame:
@@ -602,14 +606,22 @@ void audio_thread( PlaybackData* data )
              frame += step;
              continue;
           case CMedia::kDecodeNoStream:
-              DBG( "Decode No stream" );
+              DBG( "Decode No Stream" );
               timer.setDesiredFrameRate( img->play_fps() );
-             timer.waitUntilNextFrameIsDue();
-             frame += step;
-             continue;
+              timer.waitUntilNextFrameIsDue();
+              if ( fg && reel->edl && img->is_left_eye() )
+              {
+                  int64_t f = frame + reel->location(img) - img->first_frame();
+                  f -= img->audio_offset();
+                  view->frame( f );
+              }
+              frame += step;
+              continue;
           case  CMedia::kDecodeLoopEnd:
           case  CMedia::kDecodeLoopStart:
               {
+
+
                   DBG( img->name() << " BARRIER IN AUDIO " << frame );
 
                   CMedia::Barrier* barrier = img->loop_barrier();
@@ -619,6 +631,8 @@ void audio_thread( PlaybackData* data )
                   DBG( img->name() << " BARRIER PASSED IN AUDIO " << frame );
 
                   if ( img->stopped() ) continue;
+
+                  frame -= img->audio_offset();
 
                   EndStatus end = handle_loop( frame, step, img, fg, uiMain,
                                                reel, timeline, status,
@@ -637,6 +651,8 @@ void audio_thread( PlaybackData* data )
 	    break;
       }
 
+
+
       if ( ! img->has_audio() && img->has_picture() )
       {
 	 // if audio was turned off, follow video.
@@ -647,13 +663,12 @@ void audio_thread( PlaybackData* data )
       }
 
 
+
       if ( fg && img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
+          int64_t offset = img->audio_offset();
           int64_t f = frame + reel->location(img) - img->first_frame();
-          if ( f > timeline->maximum() )
-              f = int64_t( timeline->maximum() );
-          if ( f < timeline->minimum() )
-              f = int64_t( timeline->minimum() );
+          f -= offset;
           view->frame( f );
       }
 
@@ -665,6 +680,7 @@ void audio_thread( PlaybackData* data )
 
       frame += step;
    }
+
 
 #ifdef DEBUG_THREADS
    cerr << endl << "EXIT " << (fg ? "FG" : "BG") << " AUDIO THREAD " << img->name() << " stopped? " 
@@ -811,6 +827,7 @@ void video_thread( PlaybackData* data )
 
 
    mrv::Timer timer;
+   int delay_counter = 0;
    double fps = img->play_fps();
    timer.setDesiredFrameRate( fps );
 
@@ -944,6 +961,7 @@ void video_thread( PlaybackData* data )
           }
       }
 
+
       timer.setDesiredSecondsPerFrame( delay );
       //timer.setDesiredFrameRate( fps );
       timer.waitUntilNextFrameIsDue();
@@ -952,7 +970,9 @@ void video_thread( PlaybackData* data )
 
 
       DBG( img->name() << " find image " << frame );
+
       bool ok = img->find_image( frame );
+
 
       if ( fg && !img->has_audio_data() && reel->edl && img->is_left_eye() )
       {
@@ -962,7 +982,6 @@ void video_thread( PlaybackData* data )
              view->frame( f );
          }
       }
-
 
       frame += step;
    }
@@ -1070,12 +1089,9 @@ void decode_thread( PlaybackData* data )
 
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      if ( !img->frame( frame ) )
+      while ( !img->frame( frame ) )
       {
-	 timespec req;
-	 req.tv_sec = 0;
-	 req.tv_nsec = (long)( 10 * 1e7f); // 10 ms.
-	 nanosleep( &req, NULL );
+	 sleep_ms( 10 );
       }
 
 

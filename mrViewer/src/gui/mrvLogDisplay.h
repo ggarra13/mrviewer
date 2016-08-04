@@ -35,6 +35,13 @@ namespace mrv {
   class LogDisplay : public Fl_Text_Display
   {
   public:
+      enum ShowPreferences
+      {
+      kNever,
+      kOnce,
+      kAlways,
+      };
+  public:
     LogDisplay( int x, int y, int w, int h, const char* l = 0 );
     ~LogDisplay();
 
@@ -45,7 +52,14 @@ namespace mrv {
     void warning( const char* x );
     void error( const char* x );
 
+    protected:
+      unsigned int _lines;
       Fl_Text_Buffer* stylebuffer_;
+
+    public:
+      static ShowPreferences prefs;
+      static bool shown;
+      static bool show;  // whether to show this in fltk thread
   };
 
 }

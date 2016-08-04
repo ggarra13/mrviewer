@@ -97,6 +97,8 @@ public:
     int handle (int event);
 
 protected:
+    void init();
+
     float**                              _dataZ;
     unsigned int *                       _sampleCount;
     int                                  _dx;

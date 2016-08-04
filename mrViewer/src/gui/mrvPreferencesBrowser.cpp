@@ -39,6 +39,7 @@
 
 #include "mrViewer.h"
 #include "core/mrvI8N.h"
+#include "gui/mrvIO.h"
 #include "gui/mrvPreferencesBrowser.h"
 #include "gui/FLU/flu_pixmaps.h"
 
@@ -59,6 +60,8 @@ namespace {
   //       		 fltk::SELECTED, book_open ); 
   Fl_Pixmap folder( folder_closed_xpm );
   Fl_Pixmap book( book_xpm );
+
+const char* kModule = "pbrowser";
 }
 
 namespace mrv {
@@ -76,6 +79,11 @@ namespace mrv {
   PreferencesBrowser::~PreferencesBrowser()
   {
   }
+
+int PreferencesBrowser::handle( int e )
+{
+    return fltk::Browser::handle( e );
+}
 
   //
   // Routine to update the main CTL group (paths and ctl scripts)
@@ -146,7 +154,10 @@ namespace mrv {
      int wizard_index = value();  //@todo: fltk1.3 was absolute_item_index
 
     if ( wizard_index < 0 || wizard_index >= uiWizard->children() )
-       return;
+    {
+        LOG_ERROR( _("Internal error in wizard selection") );
+        return;
+    }
 
     Fl_Widget* child = uiWizard->child( wizard_index );
     if ( !child ) return;

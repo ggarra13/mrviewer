@@ -720,12 +720,15 @@ void MainWindow::setup_menu()
 
     // XpmCreatePixmapFromData comes from libXpm (libgd-xpm* on Debian)
     Pixmap p, mask;
-    if ( XpmCreatePixmapFromData(fl_display,
-				 DefaultRootWindow(fl_display),
-				 (char**)viewer16_xpm, &p, &mask, NULL) == 
-         XpmSuccess )
+    int ErrorStatus = XpmCreatePixmapFromData(fltk::xdisplay,
+                                              DefaultRootWindow(fltk::xdisplay),
+                                              (char**)viewer16_xpm,
+                                              &p, &mask, 
+                                              NULL);
+
+    if ( ErrorStatus == XpmSuccess )
       {
-	 this->icon((const void*)p);
+         this->icon((const void*)&p);
       }
 #endif
 

@@ -7,7 +7,10 @@ libGL\.so
 libm\.so
 libgcc_s.*
 libc\.so*
+libdl\.so*
 libstdc\+\+.*
+libpthread.*
+libX.*
 .*nvidia.*
 )
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
@@ -65,7 +68,6 @@ FileUtils.cp_r( "../../docs", "Release/" )
 FileUtils.cp_r( "../../ctl", "Release/" )
 FileUtils.cp( "../../HISTORY.txt", "Release/" )
 FileUtils.cp( "../../LICENSE.txt", "Release/" )
-FileUtils.cp( "../../Videos.txt", "Release/" )
 
 `find . -name '*fuse*' -exec rm {} \\;`
 

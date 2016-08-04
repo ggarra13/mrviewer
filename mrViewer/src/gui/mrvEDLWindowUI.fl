@@ -154,6 +154,7 @@ uiEDLChoiceTwo->value( idx );}
               user_data main user_data_type {ViewerUI*}
               callback {mrv::ImageBrowser* b = v->uiReelWindow->uiBrowser;
 Fl_Choice* c = v->uiEDLWindow->uiEDLChoiceTwo;
+
 if ( c->value() < 0 ) return;
 
 b->reel( c->value() );

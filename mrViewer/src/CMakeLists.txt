@@ -1,9 +1,16 @@
 
+cmake_minimum_required( VERSION 3.1 )
 
+PROJECT( mrViewer )
+
+
+IF( NOT CMAKE_MODULE_PATH )
+  SET( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
+ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
-SET( VersionMinor 1 )
-SET( VersionPatch 2 )
+SET( VersionMinor 2 )
+SET( VersionPatch 7 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -14,7 +21,7 @@ set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_
 #
 
 # For window management
-FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling
+FIND_PACKAGE( BuildDir    REQUIRED )    # for 32/64 bits handling (WIN64)
 FIND_PACKAGE( OpenGL      REQUIRED )    # for drawing images/shapes
 FIND_PACKAGE( GLUT        REQUIRED )    # for geometric fonts
 FIND_PACKAGE( Boost       REQUIRED )    # for file system support
@@ -64,10 +71,9 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       /usr/lib
       )
     # 
-    ADD_DEFINITIONS( -DLINUX -msse ) 
+    ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 ) 
     SET(OS_LIBRARIES
-      asound
-      ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 pthread m
+      asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
 
   ENDIF(APPLE)
@@ -232,6 +238,13 @@ SET( SOURCES
   )
 
 
+IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+  SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
+  SET( SOURCES gui/resource.rc ${SOURCES} )
+ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
+  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
+ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
+
 SET( _absPotFile "${CMAKE_CURRENT_SOURCE_DIR}/po/messages.pot" )
 
 
@@ -281,12 +294,6 @@ ELSE(NOT WIN32)
   LINK_DIRECTORIES( ${Boost_LIBRARY_DIRS} )
 ENDIF(NOT WIN32)
 
-IF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
-  SET( SOURCES audio/mrvWaveEngine.cpp ${SOURCES} )
-  SET( SOURCES gui/resource.rc ${SOURCES} )
-ELSE( WIN32 OR WIN64 OR CYGWIN OR MINGW )
-  SET( SOURCES audio/mrvALSAEngine.cpp ${SOURCES} )
-ENDIF(WIN32 OR WIN64 OR CYGWIN OR MINGW)
  
  
 
@@ -340,13 +347,13 @@ IF(WIN32)
 	SET(EXE_DIR F:/code/lib/Windows_32/bin/ )
 ENDIF(WIN32)
 
-IF(WIN64)
+IF(WIN64) # defined in FindBuilDir
 	SET(EXE_DIR F:/code/lib/Windows_64/bin/ )
 ENDIF(WIN64)
 
 IF(UNIX)
 	SET(EXE_DIR /usr/local/bin )
-	FILE( COPY ${CMAKE_SOURCE_DIR}/bin/mrViewer.sh 
+	FILE( COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/mrViewer.sh 
 	      DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 ENDIF(UNIX)
 
@@ -356,16 +363,20 @@ FILE(GLOB exrfiles ${EXE_DIR}/exr* )
 FILE(COPY ${exrfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
 FILE(GLOB ctlfiles ${EXE_DIR}/ctl* )
 FILE(COPY ${ctlfiles} DESTINATION ${CMAKE_BINARY_DIR}/../bin/ )
+FILE(COPY ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt 
+	  ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE.txt
+	  DESTINATION ${CMAKE_BINARY_DIR}/.. )
 
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/ctl/ DESTINATION ctl )
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/shaders/ DESTINATION shaders )
-INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/docs/ DESTINATION docs )
+INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../ctl/ DESTINATION ctl )
+INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../shaders/ DESTINATION shaders )
+INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../docs/ DESTINATION docs )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../bin/ DESTINATION bin )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../lib/ DESTINATION lib )
 INSTALL( DIRECTORY ${CMAKE_BINARY_DIR}/../share/ DESTINATION share )
 INSTALL( FILES 
-	 ${CMAKE_SOURCE_DIR}/HISTORY.txt 
-	 ${CMAKE_SOURCE_DIR}/LICENSE.txt DESTINATION . )
+	 ${CMAKE_CURRENT_SOURCE_DIR}/../../HISTORY.txt 
+	 ${CMAKE_CURRENT_SOURCE_DIR}/../../LICENSE.txt
+	  DESTINATION ./ )
 
 SET( LANGUAGES "es" )
 
@@ -407,14 +418,14 @@ IF(WIN32)
   # sure there is at least one SET of four (4) backlasshes.
   SET(CPACK_NSIS_MODIFY_PATH ON)
 
-  SET(CPACK_GENERATOR ZIP NSIS)
+  SET(CPACK_GENERATOR NSIS ZIP )
 
   #  SET(CMAKE_INSTALL_DEBUG_LIBRARIES true)
   
   include(InstallRequiredSystemLibraries)
   
-  SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/mrViewer/src/icons/viewer.ico)
-  SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/mrViewer/src/icons/viewer.ico)
+  SET(CPACK_NSIS_MUI_ICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
+  SET(CPACK_NSIS_MUI_UNICON ${PROJECT_SOURCE_DIR}/icons/viewer.ico)
     
   if (CMAKE_BUILD_ARCH EQUAL 32)
     
@@ -426,27 +437,33 @@ IF(WIN32)
     
   endif (CMAKE_BUILD_ARCH EQUAL 32)
 
+  SET( CPACK_NSIS_DISPLAY_NAME "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
+  SET( CPACK_NSIS_PACKAGE_NAME "${CPACK_NSIS_DISPLAY_NAME}" )
   SET( CPACK_PACKAGE_INSTALL_DIRECTORY ${mrViewerPackageName})
   SET( CPACK_PACKAGE_EXECUTABLES "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
   SET( CPACK_CREATE_DESKTOP_LINKS "mrViewer" "mrViewer-${CMAKE_BUILD_ARCH} v${VERSION}" )
 
+  SET( CPACK_NSIS_ENABLE_UNINSTALL_BEFORE_INSTALL ON )
+
+  INCLUDE( CMakeRegistry.cmake )
+
 ELSEIF (UNIX)
 
     # SET the type of package to build.
-    INSTALL( DIRECTORY ${CMAKE_SOURCE_DIR}/bin/ DESTINATION bin )
+    INSTALL( DIRECTORY ${CMAKE_CURRENT_SOURCE_DIR}/../../bin/ DESTINATION bin )
 
     SET(MRV_DESKTOP_DIR     /usr/share/applications/)
     SET(MRV_PIXMAPS_DIR     /usr/share/icons/hicolor/32x32/apps/)
 
 
 
-    CONFIGURE_FILE( ${CMAKE_SOURCE_DIR}/etc/Linux/mrViewer.desktop.in
-                    "${CMAKE_SOURCE_DIR}/etc/mrViewer-v${VERSION}.desktop" )
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/Linux/mrViewer.desktop.in
+                    "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" )
 
 
-    INSTALL(FILES "${CMAKE_SOURCE_DIR}/etc/mrViewer-v${VERSION}.desktop" 
+    INSTALL(FILES "${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer-v${VERSION}.desktop" 
             DESTINATION ${MRV_DESKTOP_DIR})
-    INSTALL(FILES ${CMAKE_SOURCE_DIR}/etc/mrViewer.png 
+    INSTALL(FILES ${CMAKE_CURRENT_SOURCE_DIR}/../../etc/mrViewer.png 
             DESTINATION ${MRV_PIXMAPS_DIR})
 
     # try to set up the menu system
@@ -461,19 +478,19 @@ ELSEIF (UNIX)
     # Configure install/uninstall scripts
 
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/install.sh.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/install.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/install.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/uninstall.sh.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/uninstall.sh.in
         ${PROJECT_BINARY_DIR}/etc/Linux/uninstall.sh
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/postinst.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postinst.in
         ${PROJECT_BINARY_DIR}/etc/Linux/postinst
         @ONLY)
     CONFIGURE_FILE(
-        ${PROJECT_SOURCE_DIR}/etc/Linux/postrm.in
+        ${PROJECT_SOURCE_DIR}/../../etc/Linux/postrm.in
         ${PROJECT_BINARY_DIR}/etc/Linux/postrm
         @ONLY)  
 
@@ -514,7 +531,7 @@ ENDIF(WIN32)
 
 
 #SET(CPACK_PACKAGE_INSTALL_REGISTRY_KEY ${mrViewerPackageName} )
-SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/LICENSE.txt)
+SET(CPACK_RESOURCE_FILE_LICENSE ${PROJECT_SOURCE_DIR}/../../LICENSE.txt)
 
 
 #
@@ -598,9 +615,9 @@ IF(CTL_FOUND)
 ENDIF(CTL_FOUND)
 
 IF(LIBINTL_FOUND)
-  MESSAGE( STATUS "LibIntl include:    ${LIBINTL_INCLUDE_DIR}" )
-  MESSAGE( STATUS "LibIntl library:    ${LIBINTL_LIBRARY_DIR}" )
-  MESSAGE( STATUS "LibIntl libraries:  ${LIBINTL_LIBRARIES}" )
+  MESSAGE( STATUS "LibIntl include:     ${LIBINTL_INCLUDE_DIR}" )
+  MESSAGE( STATUS "LibIntl library dir: ${LIBINTL_LIBRARY_DIR}" )
+  MESSAGE( STATUS "LibIntl libraries:   ${LIBINTL_LIBRARIES}" )
 ENDIF(LIBINTL_FOUND)
 
 IF(OpenEXRCTL_FOUND)

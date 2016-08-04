@@ -43,6 +43,8 @@ extern "C" {
 
 #include <libavcodec/avcodec.h>
 #include <libavformat/avformat.h>
+#include <libavfilter/version.h>
+#include <libswscale/version.h>
 #include <libswresample/version.h>
 }
 
@@ -81,8 +83,16 @@ namespace mrv
 
 
 
-  static const char* kVersion = "3.5.0";
+  static const char* kVersion = "3.2.7";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
+
+#if INTPTR_MAX == INT64_MAX
+static const char* kArch = "64";
+#elif INTPTR_MAX == INT32_MAX
+static const char* kArch = "32";
+#else
+#error Unknown pointer size or missing size macros!
+#endif
 
 
   struct FormatInfo
@@ -465,7 +475,8 @@ void ffmpeg_subtitle_codecs(Fl_Browser& browser )
     unsigned int boost_minor = BOOST_VERSION / 100 % 1000;
     unsigned int boost_teeny = BOOST_VERSION % 100;
 
-    o << "mrViewer - v" << kVersion << " " << kBuild << endl
+    o << "mrViewer " << kArch << " bits - v" << kVersion << " " 
+      << kBuild << endl
       << "(C) 2007-2016 Film Aura, LLC." << endl
       << endl
       << "mrViewer depends on:" << endl
@@ -485,10 +496,12 @@ void ffmpeg_subtitle_codecs(Fl_Browser& browser )
       << MagickGetVersion(&magic) << endl
       << MagickGetCopyright() << endl
       << endl
-      << "libavutil\tv" << AV_STRINGIFY( LIBAVUTIL_VERSION ) << endl
-      << "libavcodec\tv" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
-      << "libavformat\tv" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
-      << "libswresample\tv" << AV_STRINGIFY( LIBSWRESAMPLE_VERSION ) << endl
+      << "libavutil          v" << AV_STRINGIFY( LIBAVUTIL_VERSION ) << endl
+      << "libavcodec      v" << AV_STRINGIFY( LIBAVCODEC_VERSION ) << endl
+      << "libavformat     v" << AV_STRINGIFY( LIBAVFORMAT_VERSION ) << endl
+      << "libavfilter        v" << AV_STRINGIFY( LIBAVFILTER_VERSION ) << endl
+      << "libswresample v" << AV_STRINGIFY( LIBSWRESAMPLE_VERSION ) << endl
+      << "libswscale       v" << AV_STRINGIFY( LIBSWSCALE_VERSION ) << endl
       << "http://ffmpeg.mplayerhq.hu/" << endl
       << "License: " << avcodec_license() << endl
       << "(C) 2000-2015 Fabrice Bellard, et al." << endl

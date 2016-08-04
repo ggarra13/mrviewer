@@ -423,7 +423,7 @@ void ImageBrowser::wait_on_threads()
     return _reels[ idx ];
   }
 
-mrv::Reel ImageBrowser::reel_at( unsigned idx )
+mrv::Reel ImageBrowser::reel_at( int idx )
 {
    size_t len = _reels.size();
    if ( len == 0 || idx >= len ) return mrv::Reel();
@@ -480,7 +480,7 @@ mrv::Reel ImageBrowser::reel_at( unsigned idx )
 
     char buf[256];
     sprintf( buf, "Reel \"%s\"", reel->name.c_str() );
-    view()->send( buf );
+    view()->send_network( buf );
 
     _reel = (unsigned int) _reels.size() - 1;
     _reel_choice->add( name.c_str() );
@@ -643,6 +643,12 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
        view()->stop();
 
     if ( _reels.empty() ) return;
+
+    int ok = fltk::choice( _( "Are you sure you want to\n"
+                              "remove the reel?" ),
+                           _("Yes"), _("No"), NULL );
+    if ( ok == 1 ) return; // No
+
     _reel_choice->remove(_reel);
     _reels.erase( _reels.begin() + _reel );
 
@@ -718,7 +724,7 @@ mrv::EDLGroup* ImageBrowser::edl_group() const
     send_reel( reel );
 
     sprintf( buf, "InsertImage %d \"%s\"", idx, m->image()->fileroot() );
-    view()->send( buf );
+    view()->send_network( buf );
 
     redraw();
   }
@@ -730,7 +736,7 @@ void ImageBrowser::send_reel( const mrv::Reel& reel )
 {
     char buf[128];
     sprintf( buf, "CurrentReel \"%s\"", reel->name.c_str() );
-    view()->send( buf );
+    view()->send_network( buf );
 }
 
 void ImageBrowser::send_image( const mrv::media& m )
@@ -747,34 +753,34 @@ void ImageBrowser::send_image( const mrv::media& m )
              img->last_frame() );
     buf += txt;
 
-    v->send( buf );
+    v->send_network( buf );
 
     sprintf( txt, N_("Gamma %g"), v->gamma() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Gain %g"), v->gain() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Channel %d"), v->channel() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("UseLUT %d"), (int)v->use_lut() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("SafeAreas %d"), (int)v->safe_areas() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Normalize %d"), (int)v->normalize() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf(txt, N_("Mask %g"), v->masking() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf( txt, N_("FPS %g"), v->fps() );
-    v->send( txt );
+    v->send_network( txt );
 
     sprintf( txt, N_("Looping %d"), (int)v->looping() );
-    v->send( txt );
+    v->send_network( txt );
 }
 
 void ImageBrowser::send_images( const mrv::Reel& reel)
@@ -921,7 +927,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 
     char buf[256];
     sprintf( buf, "RemoveImage %d", idx );
-    view()->send( buf );
+    view()->send_network( buf );
 
     mrv::EDLGroup* e = edl_group();
     if ( e )
@@ -979,7 +985,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
     char buf[256];
     sprintf( buf, "RemoveImage %d", idx );
 
-    view()->send( buf );
+    view()->send_network( buf );
 
 
     if ( p != ImageView::kStopped )
@@ -1000,7 +1006,7 @@ void ImageBrowser::send_images( const mrv::Reel& reel)
 mrv::media ImageBrowser::replace( const size_t r, const size_t idx,
                                   const char* file )
   {
-    mrv::Reel reel = reel_at(r);
+      mrv::Reel reel = reel_at(unsigned(r));
     if ( !reel ) return mrv::media();
 
     CMedia* newImg = CMedia::guess_image( file );
@@ -1172,14 +1178,6 @@ void ImageBrowser::clear_bg()
 
         mrv::Timeline* t = timeline();
 
-	if ( t && t->edl() )
-	{
-	   if ( om )
-	   {
-	      sub_idx = om->image()->subtitle_stream();
-	      audio_idx = om->image()->audio_stream();
-	   }
-	}
 
 	mrv::media m;
 	if ( unsigned(sel) < reel->images.size() ) m = reel->images[sel];
@@ -1199,17 +1197,6 @@ void ImageBrowser::clear_bg()
                e->redraw();
            }
 
-	   if ( t && t->edl() )
-	   {
-	      if ( sub_idx != -1 &&
-		   sub_idx < int(m->image()->number_of_subtitle_streams()) )
-		 m->image()->subtitle_stream( sub_idx );
-
-	      if ( audio_idx != -1 &&
-		   audio_idx < int(m->image()->number_of_audio_streams()) )
-		 m->image()->audio_stream( audio_idx );
-
-	   }
 
            adjust_timeline();
 
@@ -1277,11 +1264,9 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img = CMedia::guess_image( name, NULL, 0, start, end, false );
     else
         img = CMedia::guess_image( name, NULL, 0, first, last, false );
+
     if ( img == NULL )
-    {
-        LOG_ERROR( name << ": not a recognized format." );
         return;
-    }
 
     
     if ( first != mrv::kMaxFrame )
@@ -1356,11 +1341,9 @@ void ImageBrowser::load_stereo( mrv::media& fg,
         img = CMedia::guess_image( name, NULL, 0, start, end, use_threads );
     else
         img = CMedia::guess_image( name, NULL, 0, first, last, use_threads );
+
     if ( img == NULL )
-    {
-        LOG_ERROR( name << ": not a recognized format." );
         return mrv::media();
-    }
 
     if ( first != mrv::kMaxFrame )
       {
@@ -1865,7 +1848,7 @@ void ImageBrowser::load( const stringArray& files,
 
     char buf[256];
     sprintf(buf, "CloneImage \"%s\"", img->fileroot() ); 
-    view()->send( buf );
+    view()->send_network( buf );
 
     adjust_timeline();
   }
@@ -1896,7 +1879,7 @@ void ImageBrowser::load( const stringArray& files,
 
     char buf[256];
     sprintf(buf, "CloneImageAll \"%s\"", img->fileroot() ); 
-    view()->send( buf );
+    view()->send_network( buf );
 
     adjust_timeline();
   }
@@ -1913,6 +1896,11 @@ void ImageBrowser::load( const stringArray& files,
 
     if ( view()->playback() != ImageView::kStopped )
        view()->stop();
+
+    int ok = fltk::choice( _( "Are you sure you want to\n"
+                              "remove image from reel?" ),
+                           _("Yes"), _("No"), NULL );
+    if ( ok == 1 ) return; // No
 
     int sel = value();
     if ( sel < 0 ) return;
@@ -2096,6 +2084,7 @@ void ImageBrowser::load( const stringArray& files,
 		Fl::event_clicks(0);
 		uiMain->uiImageInfo->uiMain->show();
 		view()->update_image_info();
+                //view()->send_network( "MediaInfoWindow 1" );
 		return ok;
 	      }
 
@@ -2265,6 +2254,11 @@ void ImageBrowser::handle_dnd()
     stringArray::iterator i = files.begin();
     stringArray::iterator e = files.end();
     std::string oldroot, oldview, oldext;
+
+    if ( i != e ) {
+        retname = *i;  // to open file requester in last directory
+    }
+
     for ( ; i != e; ++i )
     {
        std::string file = hex_to_char_filename( *i );
@@ -2395,13 +2389,13 @@ void ImageBrowser::handle_dnd()
 
     char buf[1024];
     sprintf( buf, "RemoveImage %d", oldsel );
-    view()->send( buf );
+    view()->send_network( buf );
 
     reel->images.erase( reel->images.begin() + oldsel );
     if ( oldsel < sel ) sel -= 1;
 
     sprintf( buf, "InsertImage %d \"%s\"", sel, m->image()->fileroot() );
-    view()->send( buf );
+    view()->send_network( buf );
 
     reel->images.insert( reel->images.begin() + sel, m );
 
@@ -2481,8 +2475,7 @@ void ImageBrowser::handle_dnd()
 
      char buf[64];
      sprintf( buf, "seek %" PRId64, f );
-     view()->send(buf);
-
+     view()->send_network(buf);
 
 
      frame( tframe );
@@ -2498,6 +2491,9 @@ void ImageBrowser::handle_dnd()
 	 if (! m ) return;
 
 	CMedia* img = m->image();
+        if ( ! img ) return;
+
+
 	DBG( "SEEK FRAME " << f << " IMAGE " << img->name() );
 
 
@@ -2510,9 +2506,9 @@ void ImageBrowser::handle_dnd()
 	    f = int64_t(t->minimum() - t->maximum()) + f - 1;
         }
 
-	
+
 	DBG( "seek f: " << f );
-        
+
         mrv::media fg = view()->foreground();
 
 	if ( m != fg && fg )
@@ -2522,11 +2518,14 @@ void ImageBrowser::handle_dnd()
 
 	     size_t i = t->index( f );
 	     f = t->global_to_local( f );
+             img = t->image_at( f );
+             if ( !img ) return;
 
-	     DBG( "seek f local1: " << f );
 
+             if ( ! img->saving() && !img->stopped() ) {
+                 img->stop();
+             }
 
-             if ( ! img->stopped() ) img->stop();
 	     img->seek( f );
 
              if ( (int) i < children() )
@@ -2539,8 +2538,11 @@ void ImageBrowser::handle_dnd()
 
 	     DBG( "seek f local2: " << f );
 
-             if ( ! img->stopped() ) img->stop();
-	     img->seek( f );
+             if ( ! img->saving() && !img->stopped() ) {
+                 img->stop();
+             }
+
+             img->seek( f );
 	  }
 
 	mrv::Reel reel = reel_at( view()->bg_reel() );
@@ -2550,7 +2552,10 @@ void ImageBrowser::handle_dnd()
 	   if ( bg )
 	   {
 	      img = bg->image();
-	      if (!img->stopped()) img->stop();
+
+             if ( ! img->saving() && !img->stopped() ) {
+                 img->stop();
+             }
 
 	      bg = reel->media_at( tframe );
 
@@ -2559,7 +2564,11 @@ void ImageBrowser::handle_dnd()
                   f = reel->global_to_local( tframe );
 
                   img = bg->image();
-                  if ( !img->stopped() ) img->stop();
+
+                  if ( ! img->saving() && !img->stopped() ) {
+                      img->stop();
+                  }
+
                   img->seek( f );
 	      }
 	   }
@@ -2570,13 +2579,16 @@ void ImageBrowser::handle_dnd()
       {
 	mrv::Reel reel = current_reel();
 	if (!reel) return;
- 
+
 	mrv::media fg = view()->foreground();
 	if (!fg) return;
-	
+
 	CMedia* img = fg->image();
-        if ( !img->stopped() ) img->stop();
-	img->seek( f );
+        if ( ! img->saving() && !img->stopped() ) {
+            img->stop();
+        }
+
+        img->seek( f );
 
 	mrv::media bg = view()->background();
 	if ( bg )
@@ -2588,10 +2600,12 @@ void ImageBrowser::handle_dnd()
 
 	   img = bg->image();
 
-           if ( !img->stopped() ) img->stop();
+           if ( ! img->saving() && !img->stopped() ) {
+               img->stop();
+           }
 
            f += img->first_frame();
-	   img->seek( f );
+           img->seek( f );
 	}
       }
 
@@ -2630,6 +2644,13 @@ void ImageBrowser::handle_dnd()
           t->value( double(f) );
           t->redraw();
       }
+
+      if ( uiMain->uiEDLWindow && uiMain->uiEDLWindow->uiMain->visible() )
+      {
+          t = uiMain->uiEDLWindow->uiTimeline;
+          t->value( double(f) );
+          t->redraw();
+      }
   }
 
   void ImageBrowser::clear_edl()
@@ -2662,7 +2683,7 @@ void ImageBrowser::handle_dnd()
 
     char buf[64];
     sprintf( buf, "EDL 0" );
-    view()->send( buf );
+    view()->send_network( buf );
   }
 
   void ImageBrowser::set_edl()
@@ -2691,7 +2712,7 @@ void ImageBrowser::handle_dnd()
 
     char buf[64];
     sprintf( buf, "EDL 1" );
-    view()->send( buf );
+    view()->send_network( buf );
 
   }
 
@@ -2803,7 +2824,9 @@ void ImageBrowser::handle_dnd()
 
 
 
+     uiMain->uiStartButton->value(0);
      uiMain->uiStartFrame->value( first );
+     uiMain->uiEndButton->value(0);
      uiMain->uiEndFrame->value( last );
 
      frame( f );

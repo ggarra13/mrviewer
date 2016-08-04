@@ -48,8 +48,13 @@ namespace mrv {
     {  FL_RED,    FL_COURIER, 14,   0 }, // C - Error
   };
 
+LogDisplay::ShowPreferences LogDisplay::prefs = LogDisplay::kNever;
+bool LogDisplay::shown = false;
+bool LogDisplay::show  = false;
+
   LogDisplay::LogDisplay( int x, int y, int w, int h, const char* l  ) :
-  Fl_Text_Display( x, y, w, h, l )
+  Fl_Text_Display( x, y, w, h, l ),
+  _lines( 0 )
   {
     color( FL_GRAY );
 
@@ -68,6 +73,9 @@ namespace mrv {
   {
       buffer()->text("");
       stylebuffer_->text("");
+      buffer_->text("");
+      stylebuffer_->text("");
+      _lines = 0;
   }
 
   void LogDisplay::save( const char* file )
@@ -109,6 +117,15 @@ namespace mrv {
       size_t t = strlen(x);
       while( t-- )
           stylebuffer_->append( "A" );
+      
+      size_t t = strlen(x);
+      while( t-- )
+      {
+          stylebuffer_->append( "A" );
+          if ( x[t] == '\n' ) ++_lines;
+      }
+      // Set the line to end of text display
+      scroll( _lines, 0 );
   }
 
   void LogDisplay::warning( const char* x )
@@ -118,6 +135,15 @@ namespace mrv {
       size_t t = strlen(x);
       while( t-- )
           stylebuffer_->append( "B" );
+      
+      size_t t = strlen(x);
+      while( t-- )
+      {
+          stylebuffer_->append( "B" );
+          if ( x[t] == '\n' ) ++_lines;
+      }
+
+      scroll( _lines, 0 );
   }
 
   void LogDisplay::error( const char* x )
@@ -126,7 +152,19 @@ namespace mrv {
 
     size_t t = strlen(x);
     while( t-- )
+    {
       stylebuffer_->append( "C" );
+      if ( x[t] == '\n' ) ++_lines;
+    }
+
+    // Set the line to end of text display
+    scroll( _lines, 0 );
+
+    if ( prefs == kAlways || (prefs == kOnce && !shown) )
+    {
+        shown = true;
+        show = true;
+    }
   }
 
 }

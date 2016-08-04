@@ -158,6 +158,7 @@ _filename( NULL ),
 _ctime( 0 ),
 _mtime( 0 ),
 _disk_space( 0 ),
+_colorspace_index( -1 ),
 _avdiff( 0.0 ),
 _loop_barrier( NULL ),
 _seek_req( false ),
@@ -174,6 +175,7 @@ _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
+_adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
 _frame( 1 ),
@@ -218,16 +220,12 @@ _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( 0 ),
 _aframe( NULL ),
-next_pts( 0 ),
 audio_callback_time( 0 ),
 _audio_format( AudioEngine::kFloatLSB ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
 {
-    next_pts_tb.num = 1;
-    next_pts_tb.den = 30;
-
     _aframe = av_frame_alloc();
     audio_initialize();
     mrv::PacketQueue::initialize();
@@ -268,6 +266,7 @@ _rendering_intent( kUndefinedIntent ),
 _gamma( 1 ),
 _has_chromaticities( false ),
 _dts( 1 ),
+_adts( 1 ),
 _audio_frame( 1 ),
 _audio_offset( 0 ),
 _frame( 1 ),
@@ -295,10 +294,10 @@ _playback( kStopped ),
 _aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
-_video_ctx( NULL ),
-_audio_ctx( NULL ),
 _context(NULL),
+_video_ctx( NULL ),
 _acontext(NULL),
+_audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
 _audio_index(-1),
@@ -307,7 +306,7 @@ _audio_buf_used( 0 ),
 _audio_last_frame( 0 ),
 _audio_channels( other->_audio_channels ),
 _aframe( NULL ),
-_audio_format( AudioEngine::kFloatLSB ),
+_audio_format( other->_audio_format ),
 _audio_buf( NULL ),
 forw_ctx( NULL ),
 _audio_engine( NULL )
@@ -365,10 +364,11 @@ _gamma( other->_gamma ),
 _has_chromaticities( other->has_chromaticities() ),
 _chromaticities( other->chromaticities() ),
 _dts( other->_dts ),
+_adts( other->_adts ),
 _audio_frame( 0 ),
 _audio_offset( 0 ),
-_frame( other->_frame ),
-_expected( _frame ),
+_frame( f ),
+_expected( f+1 ),
 _expected_audio( 0 ),
 _frameStart( other->_frameStart ),
 _frameEnd( other->_frameEnd ),
@@ -392,10 +392,10 @@ _playback( kStopped ),
 _aborted( false ),
 _sequence( NULL ),
 _right( NULL ),
-_video_ctx( NULL ),
-_audio_ctx( NULL ),
 _context(NULL),
+_video_ctx( NULL ),
 _acontext(NULL),
+_audio_ctx( NULL ),
 _audio_codec(NULL),
 _subtitle_index(-1),
 _audio_index(-1),
@@ -413,6 +413,14 @@ _audio_engine( NULL )
     _aframe = av_frame_alloc();
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
+
+  TRACE( "copy constructor" );
+
+  audio_initialize();
+  mrv::PacketQueue::initialize();
+
+  audio_file( other->audio_file().c_str() );
+  _audio_offset = other->audio_offset() + f - 1;
 
   fetch( f );
   cache( hires() );
@@ -852,7 +860,7 @@ void CMedia::sequence( const char* fileroot,
 
 
   _is_sequence = true;
-  _dts = _frame = start;
+  _dts = _adts = _frame = start;
   _frameStart = _frame_start = start;
   _frameEnd = _frame_end = end;
 
@@ -921,7 +929,7 @@ void CMedia::filename( const char* n )
 
   _is_sequence = false;
   _is_stereo = false;
-  _dts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
+  _dts = _adts = _frame = _frameStart = _frameEnd = _frame_start = _frame_end = 1;
 
 
   timestamp();
@@ -1006,6 +1014,9 @@ bool CMedia::has_changed()
       if ( (result == -1) || (_frame < _frame_start) ||
 			      ( _frame > _frame_end ) ) return false;
 
+      _mtime = sbuf.st_mtime;
+      _ctime = sbuf.st_ctime;
+
       assert( _frame <= _frame_end );
       assert( _frame >= _frame_start );
       boost::uint64_t idx = _frame - _frame_start;
@@ -1045,7 +1056,7 @@ bool CMedia::has_changed()
 /** 
  * Change the image size.
  * This function may also set the pixel ratio for some common video
- * formats.
+ * formats and also their fps if fps == 0.
  * 
  * @param w width of image
  * @param h height of image
@@ -1394,6 +1405,9 @@ void CMedia::timestamp(const boost::uint64_t idx,
   int result = stat( sequence_filename( pic->frame() ).c_str(), &sbuf );
   if ( result < 0 ) return;
 
+  _ctime = sbuf.st_ctime;
+  _mtime = sbuf.st_mtime;
+  pic->ctime( sbuf.st_ctime );
   pic->mtime( sbuf.st_mtime );
   _disk_space += sbuf.st_size;
   image_damage( image_damage() | kDamageData );
@@ -1408,9 +1422,20 @@ void CMedia::timestamp(const boost::uint64_t idx,
  */
 const std::string CMedia::creation_date() const
 {
-  std::string date( ::ctime( &_ctime ) );
-  date = date.substr( 0, date.length() - 1 );
-  return date;
+    if ( is_sequence() && hires() )
+    {
+        time_t t = hires()->ctime();
+        if ( t != 0 )
+        {
+            CMedia* img = const_cast< CMedia* >(this);
+            img->_ctime = hires()->ctime();
+            img->_mtime = hires()->mtime();
+        }
+    }
+
+    std::string date( ::ctime( &_ctime ) );
+    date = date.substr( 0, date.size() - 1 ); // eliminate \n
+    return date;
 }
 
 /** 
@@ -1672,7 +1697,7 @@ void CMedia::play(const CMedia::Playback dir,
 
   _dts = _frame;
 
-  DBG( name() << " Play from frame " << _dts );
+  DBG( name() << " Play from frame " << _dts << " expected " << _expected );
 
   _audio_clock = double( av_gettime_relative() ) / 1000000.0;
   _video_clock = double( av_gettime_relative() ) / 1000000.0;
@@ -1685,9 +1710,8 @@ void CMedia::play(const CMedia::Playback dir,
   _audio_buf_used = 0;
 
 
-  // clear all packets and caches
+  // clear all packets
   clear_packets();
-  clear_stores();
 
   // This seek is needed to sync audio playback and flush buffers
   if ( dir == kForwards ) _seek_req = true;
@@ -1857,7 +1881,8 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( playback() == kStopped && _right_eye ) _right_eye->frame(f);
+  if ( ( playback() == kStopped || playback() == kScrubbing ) &&
+       _right_eye ) _right_eye->frame(f);
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
@@ -1865,7 +1890,7 @@ bool CMedia::frame( const boost::int64_t f )
 #define MAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
   if ( _video_packets.bytes() > MAX_VIDEOQ_SIZE ||
        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
-       _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE )
+       _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
     {
       return false;
     }
@@ -1885,7 +1910,8 @@ bool CMedia::frame( const boost::int64_t f )
 
   if ( has_audio() )
   {
-      fetch_audio( _dts + _audio_offset );
+      _adts = _dts + _audio_offset;
+      fetch_audio( _adts );
   }
 
   _dts = f;
@@ -1918,7 +1944,7 @@ void CMedia::seek( const boost::int64_t f )
       _right_eye->_seek_frame = f;
   }
 
-  if ( stopped() )
+  if ( stopped() || saving() )
     {
       do_seek();
     }
@@ -2318,9 +2344,10 @@ void CMedia::populate_stream_info( StreamInfo& s,
   AVStream* stream = context->streams[stream_index];
   double time  = av_q2d( stream->time_base );
 
+
   if ( stream->start_time == AV_NOPTS_VALUE )
     {
-      s.start = 1;
+        s.start = 1;
     }
   else
     {
@@ -2333,7 +2360,7 @@ void CMedia::populate_stream_info( StreamInfo& s,
     }
   else
     {
-        s.duration = ((double) _context->duration * time);
+        s.duration = ((double) _context->duration / ( double )AV_TIME_BASE );
     }
 }
 
@@ -2523,7 +2550,8 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
-    if ( playback() == kStopped && _right_eye && _stereo_type ) {
+    if ( ( playback() == kStopped || playback() == kScrubbing ) &&
+         _right_eye && _stereo_type ) {
         boost::int64_t f = frame;
         _right_eye->decode_video(f);
     }
@@ -2602,7 +2630,8 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  if ( playback() == kStopped && _right_eye && _stereo_type )
+  if ( ( playback() == kStopped || playback() == kScrubbing ) &&
+       _right_eye && _stereo_type )
       _right_eye->find_image(f);
 
   _video_pts   = f / _orig_fps;
@@ -2837,8 +2866,8 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
   }
   else
   {
-     if ( _video_packets.is_loop_end( *(last-1) ) ||
-	  _video_packets.is_loop_start( *(last-1) ) )
+     if ( _video_packets.is_loop_end( *iter ) ||
+	  _video_packets.is_loop_start( *iter ) )
      {
 	std::cerr << (*iter).dts;
      }

@@ -26,11 +26,14 @@ uniform float gamma;
 uniform int   channel;
 
 // Normalization variables
+uniform bool  premult;
+uniform bool  unpremult;
 uniform bool  enableNormalization;
 uniform float normMin;
 uniform float normSpan;
 
 // YCbCr variables
+uniform bool  coeffs;  // Use fed coefficients instead of builtin ones
 uniform vec3  Koff;
 uniform vec3  Kr;
 uniform vec3  Kg;
@@ -55,13 +58,28 @@ void main()
   pre.g = texture2D(UImage, gl_TexCoord[0].st).r;  // U
   pre.b = texture2D(VImage, gl_TexCoord[0].st).r;  // V
 
-  pre += Koff;
+  if ( coeffs )
+  {
+	pre += Koff;
 
-  vec4 c;
-  c.r = dot(Kr, pre);
-  c.g = dot(Kg, pre);
-  c.b = dot(Kb, pre);
-  c.a = 1.0;
+  	vec4 c;
+  	c.r = dot(Kr, pre);
+  	c.g = dot(Kg, pre);
+  	c.b = dot(Kb, pre);
+  	c.a = 1.0;
+  }
+  else
+  {
+      half3 yuv;
+
+      yuv.r = 1.1643 * ( pre.r - 0.0625 );
+      yuv.g = pre.g - 0.5;
+      yuv.b = pre.b - 0.5;
+
+      c.r = yuv.r + 1.5958 * yuv.b;
+      c.g = yuv.r - 0.39173 * yuv.g - 0.81290 * yuv.b;
+      c.b = yuv.r + 2.017 * yuv.g;
+  }
 
   //
   // Apply normalization

@@ -16,6 +16,10 @@
 #ifndef _FLU_FILE_CHOOSER_H
 #define _FLU_FILE_CHOOSER_H
 
+#include <vector>
+#include <string>
+#include <ctime>
+
 #include <FL/Fl_Double_Window.H>
 #include <FL/Fl_Input.H>
 #include <FL/Fl_Menu_Button.H>
@@ -26,6 +30,11 @@
 
 #include "FLU/Flu_Button.h"
 #include "FLU/Flu_Return_Button.h"
+
+#include <boost/thread/recursive_mutex.hpp>
+#include <boost/thread.hpp>
+
+
 #include "FLU/Flu_Wrap_Group.h"
 #include "FLU/Flu_Combo_Tree.h"
 #include "FLU/Flu_Combo_List.h"
@@ -113,6 +122,15 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       virtual ~PreviewWidgetBase();
       virtual int preview( const char *filename ) = 0;
     };
+  
+  typedef boost::recursive_mutex Mutex;
+  Mutex  mutex;
+
+  typedef std::vector< boost::thread* > thread_pool_t;
+
+  thread_pool_t threads;
+
+  bool quick_exit;
 
   //! File entry type
   enum { 
@@ -214,6 +232,12 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
   //! \return the current directory that the browser is visiting
   inline const char* get_current_directory() const
     { return currentDir.c_str(); }
+
+  //! Clear the threads allowing them to finish first
+  void clear_threads();
+
+  //! Clear the filelist and filedetails of all widgets
+  void clear_lists();
 
   //! Override of Fl_Double_Window::handle()
   int handle( int event );
@@ -426,8 +450,9 @@ class FLU_EXPORT Flu_File_Chooser : public Fl_Double_Window
       Flu_File_Chooser *chooser;
       Fl_Image *icon;
 
-      int nameW, typeW, sizeW, dateW;
+        int nameW, typeW, sizeW, dateW, ownerW, permW;
       bool details;
+        bool selected_;
 
       inline static void _inputCB( Fl_Widget *w, void *arg )
 	{ ((Entry*)arg)->inputCB(); }

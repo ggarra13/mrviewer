@@ -40,7 +40,7 @@ const char* kModule = "edl";
 
 namespace mrv {
 
-static int kTrackHeight = 68;
+static int kTrackHeight = 88;
 static int kXOffset = 64;
 
 EDLGroup::EDLGroup(int x, int y, int w, int h) :
@@ -76,8 +76,9 @@ ImageView* EDLGroup::view() const
 unsigned EDLGroup::add_media_track( int r )
 {
    unsigned e = children();
+   if (e >= 2) return 0;
 
-   mrv::media_track* o = new mrv::media_track(x(), y() + 78 * e,
+   mrv::media_track* o = new mrv::media_track(x(), y() + 94 * e,
 					      w(), kTrackHeight);
  
    o->main( timeline()->main() );
@@ -88,6 +89,25 @@ unsigned EDLGroup::add_media_track( int r )
    return e;
 }
 
+bool  EDLGroup::shift_audio( unsigned reel_idx, std::string s, 
+                             boost::int64_t f )
+{
+
+   for ( int i = 0; i < 2; ++i )
+   {
+      mrv::media_track* t = (mrv::media_track*)child(i);
+      if ( t->reel() == reel_idx )
+      {
+	 int idx = t->index_for(s);
+         if ( idx < 0 ) return false;
+	 mrv::media m = t->media( idx );
+	 m->image()->audio_offset( f );
+	 t->refresh();
+	 return true;
+      }
+   }
+   return false;
+}
 bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s, 
 				   boost::int64_t f )
 {
@@ -98,6 +118,7 @@ bool  EDLGroup::shift_media_start( unsigned reel_idx, std::string s,
       if ( t->reel() == reel_idx )
       {
 	 int idx = t->index_for(s);
+         if ( idx < 0 ) return false;
 	 mrv::media m = t->media( idx );
 	 m->image()->first_frame( f );
 	 t->refresh();
@@ -117,6 +138,7 @@ bool  EDLGroup::shift_media_end( unsigned reel_idx, std::string s,
       if ( t->reel() == reel_idx )
       {
 	 int idx = t->index_for(s);
+         if ( idx < 0 ) return false;
 	 mrv::media m = t->media( idx );
 	 m->image()->last_frame( f );
 	 t->refresh();
@@ -618,18 +640,26 @@ void EDLGroup::cut( boost::int64_t frame )
                                          img->last_frame() );
     if (!right) return;
 
-    mrv::media m( new mrv::gui::media( right ) );
-
-    right->last_frame( img->last_frame() );
-    img->last_frame( f-1 );
-    img->clear_cache();
-
-
     right->first_frame( f );
+    right->seek( f );
     right->fetch( f );
     right->decode_video( f );
     right->find_image( f );
-    right->clear_cache();
+
+    right->audio_file( img->audio_file().c_str() );
+    right->audio_offset( img->audio_offset() );
+    right->last_frame( img->last_frame() );
+
+    mrv::media m( new mrv::gui::media( right ) );
+
+    f -= 1;
+    img->last_frame( f );
+    img->fetch( f );
+    img->decode_video( f );
+    img->find_image( f );
+    img->clear_cache();
+
+    m->create_thumbnail();
 
     r->edl = true;
 

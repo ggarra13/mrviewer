@@ -127,8 +127,9 @@ static const char* kModule = "alsa";
 		    _devices.push_back( dev );
 		  }
 
-	      }
 
+	      }
+          
             if ( p_ctl )
                 snd_ctl_close( p_ctl );
 
@@ -264,6 +265,7 @@ static const char* kModule = "alsa";
 			 const AudioFormat format,
 			 const unsigned bits )
   {
+
     int                  status;
     unsigned int         test_format = (unsigned int) format;
     char buf[256];
@@ -349,7 +351,7 @@ static const char* kModule = "alsa";
               THROW( _("Couldn't find any hardware audio formats") );
           }
 
-          _audio_format = (mrv::AudioEngine::AudioFormat) (int)(test_format + 1);
+          _audio_format = (mrv::AudioEngine::AudioFormat) test_format;
 
 
           /* Set the number of channels */
@@ -368,7 +370,7 @@ static const char* kModule = "alsa";
           }
 
           _channels = ch;
-          _sample_size = bits * ch / 8;
+          _sample_size = ( bits * ch ) / 8;
 
           /* Set the audio rate */
           unsigned int exact_rate = freq;
@@ -426,7 +428,7 @@ static const char* kModule = "alsa";
           /* "set" the hardware with the desired parameters */
           status = snd_pcm_hw_params(_pcm_handle, hwparams);
           if ( status < 0 ) {
-              sprintf(buf, "Couldn't set hardware audio parameters: %s", 
+              sprintf(buf, _("Couldn't set hardware audio parameters: %s"), 
                       snd_strerror(status));
               THROW(buf);
           }
@@ -448,7 +450,7 @@ static const char* kModule = "alsa";
           snd_pcm_sw_params_alloca(&swparams);
           status = snd_pcm_sw_params_current(_pcm_handle, swparams);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't get software config: %s",
+              sprintf( buf, _("Couldn't get software config: %s"),
                        snd_strerror(status));
               THROW(buf);
           }
@@ -457,7 +459,7 @@ static const char* kModule = "alsa";
           status = snd_pcm_sw_params_set_start_threshold(_pcm_handle, swparams, 
                                                          0);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't set start threshold: %s", 
+              sprintf( buf, _("Couldn't set start threshold: %s"), 
                        snd_strerror(status));
               THROW(buf);
           }
@@ -465,7 +467,7 @@ static const char* kModule = "alsa";
           status = snd_pcm_sw_params_set_avail_min(_pcm_handle, swparams, 
                                                    period_size);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't set avail min: %s", snd_strerror(status));
+              sprintf( buf, _("Couldn't set avail min: %s"), snd_strerror(status));
               THROW(buf);
           }
 
@@ -474,7 +476,7 @@ static const char* kModule = "alsa";
           /* commit the params structure to ALSA */
           status = snd_pcm_sw_params(_pcm_handle, swparams);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't set software audio parameters: %s", 
+              sprintf( buf, _("Couldn't set software audio parameters: %s"), 
                        snd_strerror(status));
               THROW(buf);
           }
@@ -483,7 +485,6 @@ static const char* kModule = "alsa";
 
           // All okay, enable device
           _enabled = true;
-
 
           /* We're ready to rock and roll. :-) */
           return true;

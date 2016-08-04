@@ -9,13 +9,16 @@ KERNEL=`uname -s`
 if [[ $KERNEL == CYGWIN* ]]; then
     KERNEL=Windows
     RELEASE=(`cmd /c 'ver'`)
-    RELEASE=${RELEASE[4]%.[0-9]*}
+    RELEASE=${RELEASE[3]%.[0-9]*}
 elif [[ $KERNEL == MINGW* ]]; then
-    RELEASE=${KERNEL//*-/}
+    RELEASE=(`cmd /c 'ver'`)
+    #RELEASE=${RELEASE[3]%.[0-9]*}
+    RELEASE=${RELEASE[3]/]/}
     KERNEL=Windows
 else
     RELEASE=`uname -r`
 fi
+
 
 if [[ "$RELEASE" == "" ]]; then
     $RELEASE=`cmd.exe /c 'ver'`
@@ -304,6 +307,11 @@ run_cmake()
 	installdir="F:/code/lib/Windows_${CMAKE_BUILD_ARCH}"
     fi
 
+    if [ ! -d $installdir ]; then
+	cmd="mkdir -p $installdir"
+	run_cmd $cmd
+    fi
+
     echo "Buildir ${builddir}"
     if [ ! -d $builddir ]; then
 	cmd="mkdir -p $builddir $builddir/bin $builddir/lib $builddir/tmp"
@@ -360,11 +368,10 @@ run_clean()
 
     builddir=BUILD/$OS-$CMAKE_BUILD_ARCH/$CMAKE_BUILD_TYPE/tmp
     if [ -d $builddir ]; then
-	cd $builddir
+	if [ -e ninja.build ]; then
+	    run_make clean
+	fi
 	rm -rf $builddir/*
-	# if [ -e ninja.build ]; then
-	#     run_make clean
-	# fi
 	echo "-------------------------------"
 	echo "Cleaned $builddir"
 	echo "-------------------------------"

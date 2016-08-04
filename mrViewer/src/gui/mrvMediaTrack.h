@@ -92,6 +92,9 @@ class media_track : public Fl_Group
      // If media overlaps other media, everything is shifted
      void shift_media( mrv::media m, boost::int64_t frame );
 
+     // Shift the audio start changing its offset value
+     void shift_audio( mrv::media m, boost::int64_t start );
+
      // Shift the media start changing its start value
      void shift_media_start( mrv::media m, boost::int64_t start );
 
@@ -99,7 +102,8 @@ class media_track : public Fl_Group
      void shift_media_end( mrv::media m, boost::int64_t end );
 
      // Select the media 
-     bool select_media( const boost::int64_t pos );
+    bool select_media( const boost::int64_t pos,
+                       const int Y );
 
      int64_t minimum() const;
      int64_t maximum() const;
@@ -119,6 +123,7 @@ class media_track : public Fl_Group
      int        _dragX;
      bool       _at_start;
      static  mrv::Element* _selected;
+     static  bool          _audio_selected;
 
      // static mrv::media _selected; 
      double     _zoom;

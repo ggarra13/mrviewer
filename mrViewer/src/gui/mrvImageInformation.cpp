@@ -65,6 +65,7 @@ const char* kModule = "info";
 namespace mrv
 {
 
+
 struct CtlLMTData
 {
     Fl_Widget* widget;
@@ -247,6 +248,17 @@ void ImageInformation::int_slider_cb( Fl_Slider* s, void* data )
     n->do_callback();
 }
 
+static void change_colorspace( FL_Menu_Item* w, ImageInformation* info )
+{
+    aviImage* img = dynamic_cast<aviImage*>( info->get_image() );
+    if ( !img ) return;
+
+    int v = w->value();
+    w->label( _(kColorSpaces[v]) );
+    img->colorspace_index( (int)v );
+    img->image_damage( mrv::CMedia::kDamageAll );
+}
+
 static void change_mipmap_cb( Fl_Int_Input* w, ImageInformation* info )
 {
     exrImage* img = dynamic_cast<exrImage*>( info->get_image() );
@@ -259,6 +271,7 @@ static void change_mipmap_cb( Fl_Int_Input* w, ImageInformation* info )
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
+            img->refresh();
             view->fit_image();
             view->redraw();
         }
@@ -276,6 +289,7 @@ static void change_x_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
+            img->refresh();
             view->fit_image();
             view->redraw();
         }
@@ -293,6 +307,7 @@ static void change_y_ripmap_cb( Fl_Int_Input* w, ImageInformation* info )
         bool ok = img->fetch( view->frame() );
         if (ok)
         {
+            img->refresh();
             view->fit_image();
             view->redraw();
         }
@@ -304,7 +319,14 @@ static void change_first_frame_cb( Fl_Int_Input* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->first_frame( atoi(w->value()) );
+        int v = w->ivalue();
+        if ( v < img->start_frame() )
+            v = img->start_frame();
+        if ( v > img->last_frame() )
+            v = img->last_frame();
+        w->value( v );
+
+        img->first_frame( v );
         update_int_slider( w );
         mrv::ImageView* view = info->main()->uiView;
         view->redraw();
@@ -338,7 +360,14 @@ static void change_last_frame_cb( Fl_Int_Input* w,
     CMedia* img = info->get_image();
     if ( img )
     {
-        img->last_frame( atoi(w->value()) );
+        int v = w->ivalue();
+        if ( v < img->first_frame() )
+            v = img->first_frame();
+        if ( v > img->end_frame() )
+            v = img->end_frame();
+        w->value( v );
+
+        img->last_frame( v );
         info->main()->uiView->redraw();
         update_int_slider( w );
     }
@@ -364,8 +393,8 @@ static void change_gamma_cb( Fl_Float_Input* w, ImageInformation* info )
     view->redraw();
 }
 
-boost::int64_t ImageInformation::to_memory( boost::int64_t value,
-					    const char*& extension )
+double ImageInformation::to_memory( long double value,
+                                    const char*& extension )
 {
     if ( value >= 1099511627776 )
     {
@@ -429,10 +458,13 @@ void ImageInformation::fill_data()
 
     m_curr = add_browser(m_image);
 
+
     
-    add_text( _("Directory"), img->directory() );
+    add_text( _("Directory"), _("Directory where clip resides"), img->directory() );
+
     char buf[1024];
-    add_text( _("Filename"), img->name().c_str() );
+    add_text( _("Filename"), _("Filename of the clip"), img->name().c_str() );
+
 
     ++group;
 
@@ -441,34 +473,44 @@ void ImageInformation::fill_data()
     unsigned int num_subtitle_streams = unsigned( img->number_of_subtitle_streams() );
     if ( img->has_video() || img->has_audio() )
       {
-	add_int( _("Video Streams"), num_video_streams );
-	add_int( _("Audio Streams"), num_audio_streams );
-	add_int( _("Subtitle Streams"), num_subtitle_streams );
+          add_int( _("Video Streams"), _("Number of video streams in file"),
+                   num_video_streams );
+          add_int( _("Audio Streams"), _("Number of audio streams in file"),
+                   num_audio_streams );
+          add_int( _("Subtitle Streams"), 
+                   _("Number of subtitle streams in file"), 
+                   num_subtitle_streams );
       }
     else
       {
-	add_bool( _("Sequence"), img->is_sequence() );
+          add_bool( _("Sequence"), _("Clip is a sequence of frames"), img->is_sequence() );
       }
 
     if ( img->first_frame() != img->last_frame() )
       {
-          add_int( _("First Frame"), (int)img->first_frame(), true,
+          add_int( _("First Frame"), _("First frame of clip - User selected"), 
+                   (int)img->first_frame(), true,
 		  (Fl_Callback*)change_first_frame_cb, 1, 50 );
-          add_int( _("Last Frame"), (int)img->last_frame(), true,
-		  (Fl_Callback*)change_last_frame_cb, 2, 55 );
+          add_int( _("Last Frame"), _("Last frame of clip - User selected"),
+                   (int)img->last_frame(), true,
+                   (Fl_Callback*)change_last_frame_cb, 2, 55 );
       }
 
-    
-    add_int64( _("Frame Start"), img->start_frame() );
-    add_int64( _("Frame End"), img->end_frame() );
 
-    add_float( _("FPS"), (float) img->fps(), true, 
+    
+    add_int64( _("Frame Start"), _("Frame start of clip in file"), img->start_frame() );
+    add_int64( _("Frame End"), _("Frame end of clip in file"), img->end_frame() );
+
+
+    add_float( _("FPS"), _("Frames Per Second"), (float) img->fps(), true, 
                (Fl_Callback*)change_fps_cb, 1.0f, 100.0f );
+
 
     ++group;
     
-    add_int( _("Width"), img->width() );
-    add_int( _("Height"), img->height() );
+    add_int( _("Width"), _("Width of clip"), img->width() );
+    add_int( _("Height"), _("Height of clip"), img->height() );
+
 
     double aspect_ratio = 0;
     const mrv::Recti& dpw = img->display_window();
@@ -479,6 +521,7 @@ void ImageInformation::fill_data()
     else
         if ( img->height() > 0 )
             aspect_ratio = ( img->width() / (double) img->height() );
+
 
     const char* name = _("Unknown");
     int num = sizeof( kAspectRatioNames ) / sizeof(aspectName_t);
@@ -492,20 +535,24 @@ void ImageInformation::fill_data()
 	  }
       }
 
+
     
     sprintf( buf, N_("%g (%s)"), aspect_ratio, name );
-    add_text( _("Aspect Ratio"), buf );
-    add_float( _("Pixel Ratio"), float(img->pixel_ratio()), true,
+    add_text( _("Aspect Ratio"), _("Aspect ratio of clip"), buf );
+    add_float( _("Pixel Ratio"), _("Pixel ratio of clip"),
+               float(img->pixel_ratio()), true,
 	       (Fl_Callback*)change_pixel_ratio_cb, 0.01f, 4.0f );
+
 
     const mrv::Recti& window = img->data_window();
     const mrv::Recti& dwindow = img->display_window();
     if ( dwindow != window )
     {
-        add_rect( _("Data Window"), window );
+        add_rect( _("Data Window"), _("Data Window of Clip"), window );
     }
 
-    add_rect( _("Display Window"), dwindow );
+
+    add_rect( _("Display Window"), _("Display Window of Clip"), dwindow );
 
 
     if ( ! img->is_stereo() )
@@ -513,24 +560,30 @@ void ImageInformation::fill_data()
         const mrv::Recti& window2 = img->data_window2();
         if ( window != window2 )
         {
-            add_rect( _("Data Window 2"), window2 );
+            add_rect( _("Data Window 2"), _("Second Data Window of Clip"),
+                      window2 );
         }
 
         const mrv::Recti& dwindow2 = img->display_window2();
         if ( dwindow != dwindow2 )
         {
-            add_rect( _("Display Window 2"), dwindow2 );
+            add_rect( _("Display Window 2"), _("Second Display Window of Clip"),
+                      dwindow2 );
         }
 
+
         if ( img->right() )
-            add_float( _("Eye Separation"), img->eye_separation(), true,
+            add_float( _("Eye Separation"), _("Stereo eye separation"),
+                       img->eye_separation(), true,
                        (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
     else
     {
-        add_float( _("Eye Separation"), img->eye_separation(), true,
+        add_float( _("Eye Separation"), _("Stereo eye separation"), 
+                   img->eye_separation(), true,
                    (Fl_Callback*)eye_separation_cb, -20.0f, 20.0f );
     }
+
 
     ++group;
 
@@ -551,16 +604,22 @@ void ImageInformation::fill_data()
 	depth = _("Unknown bit depth"); break;
       }
 
-    add_text( _("Depth"), depth );
-    add_int( _("Image Channels"), img->number_of_channels() );
+
+    add_text( _("Depth"), _("Bit depth of clip"), depth );
+    add_int( _("Image Channels"), _("Number of channels in clip"),
+             img->number_of_channels() );
 
     aviImage* avi = dynamic_cast< aviImage* >( img );
     if ( avi )
     {
-        add_text( _("Color Space"), avi->colorspace() );
-        add_text( _("Color Range"), avi->color_range() );
+        add_enum( _("Color Space"), _("YUV Color Space conversion"),
+                  avi->colorspace_index(), kColorSpaces, 
+                  11, true, (Fl_Callback*)change_colorspace );
+        add_text( _("Color Range"), _("YUV Color Range"),
+                  _(avi->color_range()) );
     }
     
+
 
     ++group;
 
@@ -569,7 +628,6 @@ void ImageInformation::fill_data()
       {
       case VideoFrame::kLumma:
 	format = _("Lumma"); break;
-
       case VideoFrame::kRGB:
 	format = N_("RGB"); break;
       case VideoFrame::kRGBA:
@@ -621,7 +679,8 @@ void ImageInformation::fill_data()
 	format = _("Unknown render pixel format"); break;
       }
 
-    add_text( _("Render Pixel Format"), format );
+    add_text( _("Render Pixel Format"), _("Render Pixel Format"), format );
+
 
 
     
@@ -634,12 +693,13 @@ void ImageInformation::fill_data()
     };
 
     
-    add_text( _("Rendering Intent"), 
+
+    add_text( _("Rendering Intent"), _("ICC Rendering Intent"),
 	      kRenderingIntent[ (int) img->rendering_intent() ] );
  
     
-    
-    add_float( _("Gamma"), img->gamma(), true, 
+
+    add_float( _("Gamma"), _("Display Gamma of Image"), img->gamma(), true, 
 	       (Fl_Callback*)change_gamma_cb, 0.01f,	4.0f );
 
 
@@ -649,62 +709,66 @@ void ImageInformation::fill_data()
         sprintf( buf, _("R: %g %g    G: %g %g    B: %g %g"),
                  c.red.x, c.red.y, c.green.x, c.green.y,
                  c.blue.x, c.blue.y );
-        add_text( _("CIExy Chromaticities"), buf );
+        add_text( _("CIExy Chromaticities"), _("CIExy Chromaticities"), buf );
         sprintf( buf, _("W: %g %g"),c.white.x, c.white.y );
-        add_text( _("CIExy White Point"), buf );
+        add_text( _("CIExy White Point"), _("CIExy White Point"), buf );
     }
 
-    
-    add_ctl_idt( _("Input Device Transform"), img->idt_transform() );
 
-    
-        clear_callback_data();
-        
+
+    add_ctl_idt( _("Input Device Transform"), 
+                 _("(IDT) Input Device Transform"), 
+                 img->idt_transform() );
+
+    clear_callback_data();
+
     {
 
         unsigned count = (unsigned) img->number_of_lmts();
         for ( unsigned i = 0; i <= count; ++i )
         {
             sprintf( buf, _("LMTransform %u"), i+1 );
-            add_ctl_lmt( strdup( buf ), img->look_mod_transform(i), i );
+            add_ctl_lmt( strdup( buf ), _("(LMT) Look Mod Transform"), 
+                         img->look_mod_transform(i), i );
         }
     }
     
 
-    add_ctl( _("Render Transform"), img->rendering_transform() );
+
+    add_ctl( _("Render Transform"), _("(RT) Render Transform"), 
+             img->rendering_transform() );
     
 
-    add_icc( _("ICC Profile"), img->icc_profile() );
+    add_icc( _("ICC Profile"), _("ICC Profile"), img->icc_profile() );
     
 
     ++group;
-    
-    add_text( _("Format"), img->format() );
-    
-    
+
+
+    add_text( _("Format"), _("Format"), img->format() );
+
     if ( !img->has_video() )
-      {
-	add_text( _("Line Order"), img->line_order() );
-      }
+    {
+        add_text( _("Line Order"), _("Line order in file"), 
+                  img->line_order() );
+    }
 
 
     if ( !img->has_video() )
     {
         ++group;
 
-        add_text( _("Compression"), img->compression() );
+        add_text( _("Compression"), _("Clip Compression"), img->compression() );
 
     }
 
     ++group;
 
+
     const char* space_type = NULL;
     double memory_space = double( to_memory( img->memory(), space_type ) );
-    sprintf( buf, N_("%.1f %s"), memory_space, space_type );
-    add_text( _("Memory"), buf );
-
-    
-    
+    sprintf( buf, N_("%.3f %s"), memory_space, space_type );
+    add_text( _("Memory"), _("Memory without Compression"), buf );
 
     if ( img->disk_space() >= 0 )
       {
@@ -712,21 +776,23 @@ void ImageInformation::fill_data()
 						     space_type ) );
 	double pct   = double( 100.0 * ( (long double) img->disk_space() /
                                          (long double) img->memory() ) );
-	
-	sprintf( buf, N_("%.1f %s  (%.2f %% of memory size)"), 
+
+	sprintf( buf, N_("%.3f %s  (%.2f %% of memory size)"), 
 		 disk_space, space_type, pct );
-	add_text( _("Disk space"), buf );
+	add_text( _("Disk space"), _("Disk space"), buf );
+
 
         if ( !img->has_video() )
         {
             double ratio = 100.0 - double(pct);
             sprintf( buf, _("%.2g %%"), ratio );
-            add_text( _("Compression Ratio"), buf );
+            add_text( _("Compression Ratio"), _("Compression Ratio"), buf );
         }
       }
     
+
     ++group;
-    add_text( _("Creation Date"), img->creation_date() );
+    add_text( _("Creation Date"), _("Creation Date"), img->creation_date() );
 
     m_image->show();
 
@@ -738,13 +804,16 @@ void ImageInformation::fill_data()
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
-	   add_text( i->first.c_str(), i->second.c_str(), false );
+            add_text( i->first.c_str(), i->first.c_str(),
+                      i->second.c_str(), false );
       }
     
+
     attrs = img->exif();
     if ( ! attrs.empty() )
       {
 	m_curr = add_browser( m_exif );
+
 	CMedia::Attributes::const_iterator i = attrs.begin();
 	CMedia::Attributes::const_iterator e = attrs.end();
 	for ( ; i != e; ++i )
@@ -754,7 +823,8 @@ void ImageInformation::fill_data()
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
                   {
-                      add_int( _("Mipmap Level"), exr->levelX(), true,
+                      add_int( _("Mipmap Level"), _("Mipmap Level"),
+                               exr->levelX(), true,
                                (Fl_Callback*)change_mipmap_cb, 0, 20 );
                       exr->levelY( exr->levelX() );
                   }
@@ -764,7 +834,8 @@ void ImageInformation::fill_data()
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
                   {
-                      add_int( _("X Ripmap Level"), exr->levelX(), true,
+                      add_int( _("X Ripmap Level"), _("X Ripmap Level"), 
+                               exr->levelX(), true,
                                (Fl_Callback*)change_x_ripmap_cb, 0, 20 );
                   }
               }
@@ -773,13 +844,17 @@ void ImageInformation::fill_data()
                   exrImage* exr = dynamic_cast< exrImage* >( img );
                   if ( exr )
                   {
-                      add_int( _("Y Ripmap Level"), exr->levelY(), true,
+                      add_int( _("Y Ripmap Level"), _("Y Ripmap Level"), 
+                               exr->levelY(), true,
                                (Fl_Callback*)change_y_ripmap_cb, 0, 20 );
                   }
               }
-	    add_text( i->first.c_str(), i->second.c_str(), false );
+
+              add_text( i->first.c_str(), i->first.c_str(),
+                        i->second.c_str(), false );
 	  }
       }
+
 
 
     if ( num_video_streams > 0 )
@@ -791,15 +866,18 @@ void ImageInformation::fill_data()
 	    m_curr = add_browser( m_video );
 	    m_curr->copy_label( buf );
 
+
 	    const CMedia::video_info_t& s = img->video_info(i);
-	    add_bool( _("Known Codec"), s.has_codec );
-	    add_text( _("Codec"), s.codec_name );
-	    add_text( _("FourCC"), s.fourcc );
-	    add_bool( _("B Frames"), s.has_b_frames );
+	    add_bool( _("Known Codec"), _("mrViewer knows codec used"),
+                      s.has_codec );
+	    add_text( _("Codec"), _("Codec Name"), s.codec_name );
+	    add_text( _("FourCC"), _("Four letter ID"), s.fourcc );
+	    add_bool( _("B Frames"), _("Video has B frames"), s.has_b_frames );
 	    ++group;
 
-	    add_text( _("Pixel Format"), s.pixel_format );
+	    add_text( _("Pixel Format"), _("Pixel Format"), s.pixel_format );
 	    ++group;
+
 
 
 	    const char* name = "";
@@ -811,11 +889,14 @@ void ImageInformation::fill_data()
 	    else if ( is_equal( s.fps, 59.940059 ) ) name = _("(NTSC Fields)");
 
 	    sprintf( buf, "%g %s", s.fps, name );
-	    add_text( _("FPS"), buf );
+	    add_text( _("FPS"), _("Frames per Second"), buf );
+
 
 	    ++group;
-	    add_time( _("Start"), s.start, s.fps );
-	    add_time( _("Duration"), s.duration, s.fps );
+	    add_time( _("Start"), _("Start of Video"), s.start, s.fps );
+	    add_time( _("Duration"), _("Duration of Video"), 
+                      s.duration, s.fps );
+
 	  }
       }
 
@@ -824,15 +905,18 @@ void ImageInformation::fill_data()
 	for ( unsigned i = 0; i < num_audio_streams; ++i )
 	  {
 	    char buf[256];
+
 	    m_curr = add_browser( m_audio );
 	    sprintf( buf, _("Audio Stream #%d"), i+1 );
 	    m_curr->copy_label( buf );
 
 	    const CMedia::audio_info_t& s = img->audio_info(i);
 
-	    add_bool( _("Known Codec"), s.has_codec );
-	    add_text( _("Codec"), s.codec_name );
-	    add_text( _("FourCC"), s.fourcc );
+
+	    add_bool( _("Known Codec"), _("mrViewer knows the codec used"),
+                      s.has_codec );
+	    add_text( _("Codec"), _("Codec Name"), s.codec_name );
+	    add_text( _("FourCC"), _("Four letter ID"), s.fourcc );
 	    ++group;
 
 	    const char* channels = "Stereo";
@@ -844,21 +928,24 @@ void ImageInformation::fill_data()
 	      sprintf( buf, N_("%d"), s.channels );
 	      channels = buf;
 	    }
-	    add_text( _("Format"), s.format );
-	    add_text( _("Channels"), channels );
-	    sprintf( buf, _("%d Hz."), s.frequency );
-	    add_text( _("Frequency"), buf );
+
+	    add_text( _("Format"), _("Format"), s.format );
+	    add_text( _("Channels"), _("Number of audio channels"), channels );
+            sprintf( buf, _("%d Hz."), s.frequency );
+	    add_text( _("Frequency"), _("Frequency of audio"), buf );
 	    sprintf( buf, _("%d kb/s"), s.bitrate/1000 );
-	    add_text( _("Avg. Bitrate"), buf );
+            add_text( _("Avg. Bitrate"), _("Avg. Bitrate"), buf );
 
 	    ++group;
-	    add_text( _("Language"), s.language );
+	    add_text( _("Language"), _("Language if known"), s.language );
 
 	    ++group;
-	    add_time( _("Start"), s.start, img->fps() );
-	    add_time( _("Duration"), s.duration, img->fps() );
 
+	    add_time( _("Start"), _("Start of Audio"), s.start, img->fps() );
+	    add_time( _("Duration"), _("Duration of Audio"), 
+                      s.duration, img->fps() );
 	  }
+
 	m_audio->parent()->show();
       }
 
@@ -873,20 +960,22 @@ void ImageInformation::fill_data()
 
 	    const CMedia::subtitle_info_t& s = img->subtitle_info(i);
 
-	    add_bool( _("Known Codec"), s.has_codec );
-	    add_text( _("Codec"), s.codec_name );
-	    add_text( _("FourCC"), s.fourcc );
+	    add_bool( _("Known Codec"), _("mrViewer knows the codec used"),
+                      s.has_codec );
+	    add_text( _("Codec"), _("Codec name"), s.codec_name );
+	    add_text( _("FourCC"), _("Four letter ID"), s.fourcc );
 	    ++group;
 
 	    sprintf( buf, _("%d kb/s"), s.bitrate/1000 );
-	    add_text( _("Avg. Bitrate"), buf );
+	    add_text( _("Avg. Bitrate"), _("Avg. Bitrate"), buf );
 
 	    ++group;
-	    add_text( _("Language"), s.language );
+	    add_text( _("Language"), _("Language if known"), s.language );
 
 	    ++group;
-	    add_time( _("Start"), s.start, img->fps() );
-	    add_time( _("Duration"), s.duration, img->fps() );
+	    add_time( _("Start"), _("Start of Subtitle"), s.start, img->fps() );
+	    add_time( _("Duration"), _("Duration of Subtitle"), 
+                      s.duration, img->fps() );
 
 	  }
 
@@ -901,7 +990,6 @@ void ImageInformation::fill_data()
 
     hide_tabs();
 
- 
     m_image->clear();
     m_video->clear();
     m_audio->clear();
@@ -911,7 +999,7 @@ void ImageInformation::fill_data()
 
     if ( img == NULL || !visible_r() ) return;
 
-    if ( img->is_stereo() && img->right_eye() )
+    if ( img->is_stereo() && (img->right_eye() || !img->is_left_eye()) )
         m_button->show();
     else
         m_button->hide();
@@ -1013,6 +1101,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 }
 
   void ImageInformation::add_icc( const char* name,
+                                  const char* tooltip,
 				  const char* content,
 				  const bool editable,
 				  Fl_Callback* callback )
@@ -1021,7 +1110,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
         content = _("None");
 
     if ( !editable )
-      return add_text( name, content );
+        return add_text( name, tooltip, content );
 
     Fl_Color colA = get_title_color();
     Fl_Color colB = get_widget_color();
@@ -1044,6 +1133,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
+      widget->tooltip( tooltip );
       if ( callback )
 	widget->callback( (Fl_Callback*)icc_callback, (void*)this );
 
@@ -1063,12 +1153,13 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
   }
 
   void ImageInformation::add_ctl( const char* name,
+                                  const char* tooltip,
 				  const char* content,
 				  const bool editable,
 				  Fl_Callback* callback )
   { 
     if ( !editable )
-      return add_text( name, content );
+        return add_text( name, tooltip, content );
 
     Fl_Color colA = get_title_color();
     Fl_Color colB = get_widget_color();
@@ -1091,6 +1182,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
+      widget->tooltip( tooltip );
       if ( callback )
 	widget->callback( (Fl_Callback*)ctl_callback, (void*)this );
 
@@ -1111,12 +1203,13 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 
 
   void ImageInformation::add_ctl_idt( const char* name,
+                                      const char* tooltip,
                                       const char* content,
                                       const bool editable,
                                       Fl_Callback* callback )
   { 
     if ( !editable )
-      return add_text( name, content );
+        return add_text( name, tooltip, content );
 
     Fl_Color colA = get_title_color();
     Fl_Color colB = get_widget_color();
@@ -1139,6 +1232,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
+      widget->tooltip( tooltip );
       if ( callback )
 	widget->callback( (Fl_Callback*)ctl_idt_callback, (void*)this );
 
@@ -1159,13 +1253,14 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 
 
   void ImageInformation::add_ctl_lmt( const char* name,
+                                      const char* tooltip,
                                       const char* content,
                                       const size_t idx,
                                       const bool editable,
                                       Fl_Callback* callback )
   { 
     if ( !editable )
-      return add_text( name, content );
+        return add_text( name, tooltip, content );
 
     Fl_Color colA = get_title_color();
     Fl_Color colB = get_widget_color();
@@ -1188,7 +1283,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
-
+      widget->tooltip( tooltip );
 
       CtlLMTData* c = new CtlLMTData;
       c->widget = this;
@@ -1215,6 +1310,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 
 
   void ImageInformation::add_text( const char* name,
+                                   const char* tooltip,
 				   const char* content,
 				   const bool editable,
 				   Fl_Callback* callback )
@@ -1250,6 +1346,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->align( FL_ALIGN_LEFT);
       widget->box( FL_FLAT_BOX );
       widget->color( colB );
+      widget->tooltip( tooltip );
       if ( !editable )
 	{
 	  widget->box( FL_FLAT_BOX );
@@ -1268,21 +1365,22 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 
 
   void ImageInformation::add_text( const char* name,
+                                   const char* tooltip,
 				   const std::string& content,
 				   const bool editable,
 				   Fl_Callback* callback )
   {
-    add_text( name, content.c_str(), editable );
+      add_text( name, tooltip, content.c_str(), editable );
   }
 
-  void ImageInformation::add_int( const char* name,
-				  const int content, const bool editable,
-				  Fl_Callback* callback, 
-				  const int minV, const int maxV )
-  {
-      
-      Fl_Color colA = get_title_color();
-      Fl_Color colB = get_widget_color();
+void ImageInformation::add_int( const char* name, const char* tooltip,
+                                const int content, const bool editable,
+                                Fl_Callback* callback, 
+                                const int minV, const int maxV )
+{
+
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
 
     int hh = line_height();
     Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
@@ -1311,6 +1409,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( FL_FLAT_BOX );
+          widget->tooltip( tooltip );
 	}
       else 
 	{
@@ -1318,6 +1417,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  widget->value( buf );
 	  widget->align( FL_ALIGN_LEFT );
 	  widget->color( colB );
+          widget->tooltip( tooltip );
 
 	  if ( callback ) widget->callback( callback, this );
 
@@ -1330,12 +1430,14 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
 	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
 	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
+          else if ( content > maxV ) maxS = content+50;
 	  slider->maximum( maxS );
 
 	  slider->value( content );
 	  slider->step( 1.0 );
 	  // slider->linesize(1);
 	  // slider->slider_size(10);
+          slider->tooltip( tooltip );
 	  slider->when( FL_WHEN_CHANGED );
 	  slider->callback( (Fl_Callback*)int_slider_cb, widget );
 
@@ -1349,8 +1451,9 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
   }
 
   void ImageInformation::add_enum( const char* name,
+                                   const char* tooltip,
 				   const size_t content,
-				   const char** options,
+				   const char* const* options,
 				   const size_t num,
 				   const bool editable,
 				   Fl_Callback* callback 
@@ -1376,10 +1479,11 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->color( colB );
       for ( size_t i = 0; i < num; ++i )
 	{
-	  widget->add( options[i] );
+            widget->add( _( options[i] ) );
 	}
       widget->value( unsigned(content) );
-      widget->copy_label( options[content] );
+      widget->copy_label( _( options[content] ) );
+      widget->tooltip( tooltip );
 
       if ( !editable )
 	{
@@ -1400,6 +1504,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 
 
   void ImageInformation::add_enum( const char* name,
+                                   const char* tooltip,
 				   const std::string& content,
 				   stringArray& options,
 				   const bool editable,
@@ -1424,7 +1529,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     for ( size_t i = 0; i < num; ++i )
       opts[i] = options[i].c_str();
 
-    add_enum( name, index, opts, num, editable, callback );
+    add_enum( name, tooltip,index, opts, num, editable, callback );
 
     delete [] opts;
   }
@@ -1432,15 +1537,16 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 
 
 
-  void ImageInformation::add_int( const char* name,
-				  const unsigned int content,
-				  const bool editable,
-				  Fl_Callback* callback, 
-				  const unsigned int minV,
-				  const unsigned int maxV )
-  {
-     Fl_Color colA = get_title_color();
-    Fl_Color colB = get_widget_color();
+void ImageInformation::add_int( const char* name,
+                                const char* tooltip,
+                                const unsigned int content,
+                                const bool editable,
+                                Fl_Callback* callback, 
+                                const unsigned int minV,
+                                const unsigned int maxV )
+{
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
 
     int hh = line_height();
     Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
@@ -1469,6 +1575,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( FL_FLAT_BOX );
+          widget->tooltip( tooltip );
 	}
       else 
 	{
@@ -1476,6 +1583,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  widget->value( buf );
 	  widget->align( FL_ALIGN_LEFT );
 	  widget->color( colB );
+          widget->tooltip( tooltip );
 
 	  if ( callback ) widget->callback( callback, this );
 
@@ -1488,10 +1596,12 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  else if ( content > 10000 && maxV <= 10000 ) maxS = 100000;
 	  else if ( content > 1000 && maxV <= 1000 ) maxS = 10000;
 	  else if ( content > 100 && maxV <= 100 ) maxS = 1000;
+          else if ( content > maxV ) maxS = content+50;
 	  slider->maximum( maxS );
 	  slider->value( content );
 	  slider->step( 1.0 );
 	  // slider->linesize(1);
+          slider->tooltip( tooltip );
 	  // slider->slider_size(10);
 	  slider->when( FL_WHEN_CHANGED );
 	  slider->callback( (Fl_Callback*)int_slider_cb, widget );
@@ -1507,20 +1617,22 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
   }
 
 
-  void ImageInformation::add_time( const char* name, const double content,
-                                   const double fps, const bool editable )
-  {
+void ImageInformation::add_time( const char* name, const char* tooltip,
+                                 const double content,
+                                 const double fps, const bool editable )
+{
     boost::int64_t seconds = (boost::int64_t) content;
-    int ms = (int) ((boost::int64_t(content) - seconds) * 1000);
+    int ms = (int) ((content - (double) seconds) * 1000);
 
     char buf[128];
 
-    boost::int64_t frames = boost::int64_t( content * fps ) + 1;
+    boost::int64_t frame = boost::int64_t( content * fps + 0.5 );
+    if ( frame == 0 ) frame = 1;
 
-    sprintf( buf, _( "Frame %" PRId64 " " ), frames );
+    sprintf( buf, _( "Frame %" PRId64 " " ), frame );
     std::string text = buf;
 
-    sprintf( buf, _("% 8.0f seconds %d ms."), content, ms );
+    sprintf( buf, _("%" PRId64 " seconds %d ms."), seconds, ms );
     text += buf;
 
     if ( content > 60.0 )
@@ -1537,22 +1649,24 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	text += buf;
       }
 
-    add_text( name, text, false );
-  }
+    add_text( name, tooltip, text, false );
+}
 
-  void ImageInformation::add_int64( const char* name,
-				    const int64_t content )
-  {
+void ImageInformation::add_int64( const char* name,
+                                  const char* tooltip,
+                                  const int64_t content )
+{
     char buf[128];
     sprintf( buf, N_("%" PRId64), content );
-    add_text( name, buf, false );
-  }
+    add_text( name, tooltip, buf, false );
+}
 
-  void ImageInformation::add_rect( const char* name, const mrv::Recti& content, 
-				   const bool editable, Fl_Callback* callback )
-  {
-      Fl_Color colA = get_title_color();
-      Fl_Color colB = get_widget_color();
+void ImageInformation::add_rect( const char* name, const char* tooltip,
+                                 const mrv::Recti& content,
+                                 const bool editable, Fl_Callback* callback )
+{
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
 
     int hh = line_height();
     Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
@@ -1567,6 +1681,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     char buf[64];
     unsigned dw = (w() - kMiddle) / 6;
     Fl_Group* g2 = new Fl_Group( kMiddle, 0, w()-kMiddle, hh );
+    g2->tooltip( tooltip );
     {
       Fl_Int_Input* widget = new Fl_Int_Input( 0, 0, dw, hh );
       sprintf( buf, "%d", content.l() );
@@ -1671,6 +1786,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
   }
 
   void ImageInformation::add_float( const char* name,
+                                    const char* tooltip,
 				    const float content, const bool editable,
 				    Fl_Callback* callback, 
 				    const float minV, float maxV )
@@ -1705,6 +1821,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  widget->color( colB );
 	  widget->deactivate();
 	  widget->box( FL_FLAT_BOX );
+          widget->tooltip( tooltip );
 	}
       else 
 	{
@@ -1712,6 +1829,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  widget->value( buf );
 	  widget->align(FL_ALIGN_LEFT);
 	  widget->color( colB );
+          widget->tooltip( tooltip );
 
 	  if ( callback ) widget->callback( callback, this );
 
@@ -1723,6 +1841,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
 	  slider->value( content );
 	  // slider->linesize(1);
 	  // slider->slider_size(10);
+          slider->tooltip( tooltip );
 	  slider->when( FL_WHEN_CHANGED );
 	  slider->callback( (Fl_Callback*)float_slider_cb, widget );
 
@@ -1735,13 +1854,14 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
     m_curr->add( g );
   }
 
-  void ImageInformation::add_bool( const char* name,
-				   const bool content,
-				   const bool editable,
-				   Fl_Callback* callback )
-  {
-    Fl_Color colA = get_title_color();
-    Fl_Color colB = get_widget_color();
+void ImageInformation::add_bool( const char* name,
+                                 const char* tooltip,
+                                 const bool content,
+                                 const bool editable,
+                                 Fl_Callback* callback )
+{
+    fltk::Color colA = get_title_color();
+    fltk::Color colB = get_widget_color();
 
     int hh = line_height();
     Fl_Group* g = new Fl_Group( 0, 0, w(), hh );
@@ -1760,6 +1880,7 @@ void ImageInformation::compression_cb( Fl_Menu_Button* t, ImageInformation* v )
       widget->box( FL_FLAT_BOX );
       widget->align(FL_ALIGN_LEFT);
       widget->color( colB );
+      widget->tooltip( tooltip );
       if ( !editable )
 	{
 	  widget->deactivate();

@@ -289,6 +289,10 @@ class ImageInfoUI {} {
         class {mrv::ImageInformation}
       } {}
     }
+    Function {main()} {open return_type {ViewerUI*}
+    } {
+      code {return main_;} {}
+    }
   }
   Function {ImageInfoUI(ViewerUI* m)} {} {
     code {make_window( m );} {}
@@ -3376,7 +3380,6 @@ if ( fg )
   img = fg->image();
 }
 
-
 if ( !o->value() )
 {
   o->value(1);
@@ -3385,7 +3388,24 @@ if ( !o->value() )
 else
 {
   o->value(0);
-  f = img->first_frame();
+  if ( !v->uiTimeline->edl() )
+  {
+     mrv::media fg = v->uiView->foreground();
+     if ( fg )
+     {
+        Image_ptr img = fg->image();
+        f = img->first_frame();
+     }
+   }
+   else
+   {
+     // edl
+     mrv::Reel reel = v->uiReelWindow->uiBrowser->current_reel();
+     if ( !reel || reel->images.size() == 0 ) return;
+
+     mrv::media fg = reel->images[0];
+     if ( fg ) f = fg->position();
+  }
 }
 
 v->uiStartFrame->value( f );
@@ -3406,12 +3426,25 @@ if ( !o->value() )
 else
 {
   o->value(0);
-  mrv::media fg = v->uiView->foreground();
-  if ( fg )
+  if ( ! v->uiTimeline->edl() )
   {
-    mrv::CMedia* img = fg->image();
-    f = img->last_frame();
-  }
+     mrv::media fg = v->uiView->foreground();
+     if ( fg )
+     {
+        Image_ptr img = fg->image();
+        f = img->last_frame();
+     }
+   }
+   else
+   {
+     // edl
+     mrv::Reel reel = v->uiReelWindow->uiBrowser->current_reel();
+     size_t size  = reel->images.size();
+     if ( !reel || size == 0 ) return;
+
+     mrv::media fg = reel->images[ size - 1 ];
+     if ( fg ) f = fg->position() + fg->image()->duration() - 1;
+   }
 }
 
 v->uiEndFrame->value( f );

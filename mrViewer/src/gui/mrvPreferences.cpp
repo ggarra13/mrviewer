@@ -25,6 +25,7 @@
  * 
  */
 
+#include <locale.h>
 #include <stdlib.h>
 #include <stdio.h>
 #include <string.h>
@@ -32,6 +33,7 @@
 #include <iostream>
 #include <algorithm>
 
+#include <boost/locale.hpp>
 #include <boost/filesystem.hpp>
 namespace fs = boost::filesystem;
 
@@ -55,6 +57,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvException.h"
 #include "core/mrvColorProfile.h"
 #include "core/mrvHome.h"
+#include "core/mrvI8N.h"
 #include "core/mrvOS.h"
 #include "core/CMedia.h"
 
@@ -63,6 +66,7 @@ namespace fs = boost::filesystem;
 #include "gui/mrvImageView.h"
 #include "gui/mrvMainWindow.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvFLTKHandler.h"
 #include "gui/FLU/Flu_File_Chooser.h"
 #include "gui/mrvPreferences.h"
@@ -346,6 +350,8 @@ namespace mrv {
     ui.get( "timeline_display", tmp, 0 );
     uiPrefs->uiPrefsTimelineDisplay->value(tmp);
 
+    ui.get( "language", tmp, 0 );
+    uiPrefs->uiPrefsLanguage->value( tmp );
 
     //
     // ui/window preferences
@@ -371,6 +377,7 @@ namespace mrv {
 	  r = (Fl_Radio_Button*)uiPrefs->uiPrefsOpenMode->child( tmp );
 	  r->value(1);
        }
+
     }
 
 
@@ -738,6 +745,9 @@ namespace mrv {
     video.get( "blend_mode", tmp, 0 );
     uiPrefs->uiPrefsBlendMode->value(tmp);
 
+    fltk::Preferences errors( base, "errors" );
+    errors.get( "raise_log_window_on_error", tmp, 0 );
+    uiPrefs->uiPrefsRaiseLogWindowOnError->value(tmp);
 
     //
     // Hotkeys
@@ -789,42 +799,91 @@ namespace mrv {
     // scheme = new fltk::StyleSet();
   }
 
+#ifdef _WIN32
+static const char* kCLocale = "English";
+#else
+static const char* kCLocale = "C";
+#endif
 
   void Preferences::run( ViewerUI* main )
   {
     PreferencesUI* uiPrefs = main->uiPrefs;
+
+    main->uiMain->show();
+
+    //
+    // Changing the locale on windows does not work.  Not sure why.
+    // Floating point numbers change, but LC_MESSAGES do not.
+    //
+    const char* loc = setlocale( LC_ALL, NULL );
+    if ( strncmp( loc, kCLocale, strlen(kCLocale) ) != 0 && 
+         uiPrefs->uiPrefsLanguage->value() == 1 )
+    {
+        const char* loc = setlocale( LC_ALL, kCLocale );
+        if (!loc)
+        {
+            LOG_ERROR( "Could not set locale to " << kCLocale );
+        }
+        std::locale::global(boost::locale::generator().generate(kCLocale));
+        // Make boost.filesystem use it
+        boost::filesystem::path::imbue(std::locale());
+
+        // @bug: windows does not change LC_MESSAGES in C locale.
+        //       Thus, we force a dummy textdomain, so gettext will fail.
+#ifdef _WIN32
+        char buf[1024];
+        sprintf( buf, "dummy" );
+        textdomain(buf);
+#endif
+
+        throw mrv::reinit_exception( "Changed locale to English" );
+    }
+
+    Fl::check();
 
     //
     // Windows
     //
 
     if ( uiPrefs->uiPrefsEDLEdit->value() )
-      main->uiEDLWindow->uiMain->show();
+    {
+        main->uiEDLWindow->uiMain->show();
+    }
     else
       main->uiEDLWindow->uiMain->hide();
 
     if ( uiPrefs->uiPrefsReelList->value() )
-      main->uiReelWindow->uiMain->show();
+    {
+        main->uiReelWindow->uiMain->show();
+    }
     else
       main->uiReelWindow->uiMain->hide();
 
     if ( uiPrefs->uiPrefsImageInfo->value() )
-      main->uiImageInfo->uiMain->show();
+    {
+        main->uiImageInfo->uiMain->show();
+    }
     else
       main->uiImageInfo->uiMain->hide();
 
     if ( uiPrefs->uiPrefsColorArea->value() )
-      main->uiColorArea->uiMain->show();
+    {
+        main->uiColorArea->uiMain->show();
+    }
     else
       main->uiColorArea->uiMain->hide();
 
     if ( uiPrefs->uiPrefsHistogram->value() )
-      main->uiHistogram->uiMain->show();
+    {
+        main->uiHistogram->uiMain->show();
+    }
     else
       main->uiHistogram->uiMain->hide();
 
     if ( uiPrefs->uiPrefsVectorscope->value() )
-      main->uiVectorscope->uiMain->show();
+    {
+        main->uiVectorscope->uiMain->show();
+    }
     else
       main->uiVectorscope->uiMain->hide();
 
@@ -1029,6 +1088,10 @@ namespace mrv {
     b = (bool)main->uiPrefs->uiPrefsACESClipMetadata->value();
     CMedia::aces_metadata( b );
 
+    LogDisplay::prefs = (LogDisplay::ShowPreferences)
+                        main->uiPrefs->uiPrefsRaiseLogWindowOnError->value();
+    LogDisplay::shown = false;
+
     if ( main->uiPrefs->uiPrefsAlwaysOnTop->value() )
       main->uiMain->always_on_top();
   }
@@ -1076,6 +1139,8 @@ namespace mrv {
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
     ui.set( "vectorscope", (int) uiPrefs->uiPrefsVectorscope->value() );
+
+    ui.set( "language", uiPrefs->uiPrefsLanguage->value() );
 
     ui.set( "timeline_display", 
 	    uiPrefs->uiPrefsTimelineDisplay->value() );
@@ -1273,6 +1338,10 @@ namespace mrv {
       }
     }
 
+    fltk::Preferences errors( base, "errors" );
+    errors.set( "raise_log_window_on_error", 
+                uiPrefs->uiPrefsRaiseLogWindowOnError->value() );
+
     // Images
     Fl_Preferences images( base, "images" );
     images.set( "all_layers", (int) uiPrefs->uiPrefsAllLayers->value() );
@@ -1319,9 +1388,6 @@ namespace mrv {
 
     // this is ugly and fucks up all gray75 colors
     //   fltk::set_background( bgcolor );
-
-    // this has default_style
-
 
 
     // Set ui window settings

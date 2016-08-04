@@ -55,12 +55,12 @@ namespace mrv
   class CMedia;
   struct CtlLMTData;
 
-  class ImageInformation : public ImageInfoParent
-  {
+class ImageInformation : public ImageInfoParent
+{
   public:
     ImageInformation( int x, int y, int w, int h, const char* l = NULL );
-      ~ImageInformation() { clear_callback_data(); }
-
+    ~ImageInformation() { clear_callback_data(); }
+    
     CMedia* get_image() { return img; };
     void set_image( CMedia* img );
 
@@ -74,7 +74,7 @@ namespace mrv
     Fl_Color get_title_color();
     Fl_Color get_widget_color();
 
-      void clear_callback_data();
+    void clear_callback_data();
 
     void hide_tabs();
 
@@ -89,70 +89,86 @@ namespace mrv
     static void int_slider_cb( Fl_Slider* w, void* data );
     static void float_slider_cb( Fl_Slider* w, void* data );
 
-    int64_t to_memory( int64_t value, const char*& extension );
+    double to_memory( long double value, const char*& extension );
 
     mrv::Browser* add_browser( mrv::CollapsableGroup* g );
 
-    void add_icc( const char* name, const char* content, 
-		  const bool editable = true, 
-		  Fl_Callback* callback = NULL );
+    void add_icc( const char* name, const char* tooltip,
+                  const char* content, 
+                  const bool editable = true, 
+                  Fl_Callback* callback = NULL );
 
-    void add_ctl( const char* name, const char* content, 
-		  const bool editable = true, 
-		  Fl_Callback* callback = NULL );
-
-    void add_ctl_lmt( const char* name, const char* content, 
+    void add_ctl( const char* name, const char* tooltip,
+                  const char* content, 
+                  const bool editable = true, 
+                  Fl_Callback* callback = NULL );
+    
+    void add_ctl_lmt( const char* name, const char* tooltip,
+                      const char* content, 
                       const size_t idx,
                       const bool editable = true, 
                       Fl_Callback* callback = NULL );
 
-    void add_ctl_idt( const char* name, const char* content, 
+    void add_ctl_idt( const char* name, const char* tooltip,
+                      const char* content, 
                       const bool editable = true, 
                       Fl_Callback* callback = NULL );
 
 
-    void add_text( const char* name, const char* content, 
-		   const bool editable = false, 
-		   Fl_Callback* callback = NULL );
-    void add_text( const char* name, const std::string& content, 
-		   const bool editable = false,
-		   Fl_Callback* callback = NULL );
-    void add_float( const char* name, const float content, 
-		    const bool editable = false, 
-		    Fl_Callback* callback = NULL, 
-		    const float minV = 0.0f, const float maxV = 1.0f );
-    void add_rect( const char* name, const mrv::Recti& content, 
-		   const bool editable = false, 
-		   Fl_Callback* callback = NULL );
+    void add_text( const char* name, const char* tooltip,
+                   const char* content, 
+                   const bool editable = false, 
+                   Fl_Callback* callback = NULL );
+    void add_text( const char* name, const char* tooltip,
+                   const std::string& content, 
+                   const bool editable = false,
+                   Fl_Callback* callback = NULL );
+    void add_float( const char* name, const char* tooltip,
+                    const float content, 
+                    const bool editable = false, 
+                    Fl_Callback* callback = NULL, 
+                    const float minV = 0.0f, const float maxV = 1.0f );
+    void add_rect( const char* name, const char* tooltip,
+                   const mrv::Recti& content, 
+                   const bool editable = false, 
+                   Fl_Callback* callback = NULL );
 
-    void add_time( const char* name, const double content,
+    void add_time( const char* name, const char* tooltip,
+                   const double content,
                    const double fps, const bool editable = false );
 
-    void add_enum( const char* name, const size_t content, 
-		   const char** options,
-		   const size_t num, const bool editable = false,
-		   Fl_Callback* callback = NULL );
+    void add_enum( const char* name, const char* tooltip,
+                   const size_t content, 
+                   const char* const* options,
+                   const size_t num, const bool editable = false,
+                   Fl_Callback* callback = NULL );
 
-    void add_enum( const char* name, const std::string& content, 
-		   stringArray& options, const bool editable = false,
-		   Fl_Callback* callback = NULL );
+    void add_enum( const char* name, const char* tooltip,
+                   const std::string& content, 
+                   stringArray& options, const bool editable = false,
+                   Fl_Callback* callback = NULL );
 
-    void add_int64( const char* name, const int64_t content );
+    void add_int64( const char* name, const char* tooltip,
+                    const int64_t content );
 
-    void add_int( const char* name, const int content, 
-		  const bool editable = false,
-		  Fl_Callback* callback = NULL,
+    void add_int( const char* name, const char* tooltip,
+                  const int content, 
+                  const bool editable = false,
+                  Fl_Callback* callback = NULL,
 		  const int minV = -9999, const int maxV = 9999 );
-    void add_int( const char* name, const unsigned int content, 
-		  const bool editable = false, 
-		  Fl_Callback* callback = NULL,
-		  const unsigned int minV = 0, const unsigned int maxV = 9999 );
-    void add_bool( const char* name, const bool content, 
-		   const bool editable = false,
-		   Fl_Callback* callback = NULL );
+    void add_int( const char* name, const char* tooltip,
+                  const unsigned int content, 
+                  const bool editable = false, 
+                  Fl_Callback* callback = NULL,
+                  const unsigned int minV = 0, 
+                  const unsigned int maxV = 9999 );
+    void add_bool( const char* name, const char* tooltip,
+                   const bool content, 
+                   const bool editable = false,
+                   Fl_Callback* callback = NULL );
 
     int line_height();
-      void fill_data();
+    void fill_data();
 
     ViewerUI*    uiMain;
     CMedia*   img;
@@ -172,7 +188,7 @@ namespace mrv
     Fl_Color           m_color;
     unsigned int group;
     unsigned int row;
-  };
+};
 
 } // namespace mrv
 

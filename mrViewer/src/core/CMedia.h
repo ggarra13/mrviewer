@@ -166,9 +166,11 @@ class CMedia
         {
         }
 
-        bool has_data( const boost::int64_t& frame, const double& fps ) const
+        bool has_data( const boost::int64_t& frame, const int64_t offset,
+                       const double& fps ) const
         {
             int64_t last = boost::int64_t( ( duration + start ) * fps );
+            last -= offset;
             return frame <= last;
         }
 
@@ -274,6 +276,7 @@ class CMedia
     kBackwards = -1,
     kStopped   =  0,
     kForwards  =  1,
+    kSaving    =  16,
     };
 
     enum Damage {
@@ -320,6 +323,7 @@ class CMedia
     /// Fetch (load) the image for a frame
     virtual bool fetch(const boost::int64_t frame) { return true; }
 
+
     /// Constructor used to create a resized image from another image.
     CMedia( const CMedia* other, int nw, int nh );
     
@@ -341,8 +345,8 @@ class CMedia
     void image_size( int w, int h );
 
     /////////////// Set to true if image is internal and no filename is used
-    bool internal() const { return _internal; }
-    const void internal(bool t) { _internal = t; }
+    inline bool internal() const { return _internal; }
+    inline const void internal(bool t) { _internal = t; }
 
     ///
     virtual void channel( const char* c );
@@ -475,7 +479,7 @@ class CMedia
 
     ///////////////// Decoding time stamp
     inline boost::int64_t   dts()                      { return _dts; }
-    inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
+    //inline void      dts( const boost::int64_t frame ) { _dts = frame; _expected = _dts + 1; _expected_audio = _expected + _audio_offset; } 
 
     ///////////////// Audio frame
     inline void audio_frame( const boost::int64_t f ) { _audio_frame = f; }
@@ -555,6 +559,9 @@ class CMedia
     /// Returns the image original colorspace (RGB, YUV, CMYK, etc)
     virtual const char* const colorspace() const { return "RGB"; };
 
+    virtual size_t const colorspace_index() const { return 2; }
+    virtual void colorspace_index( int x ) { _colorspace_index = x; }
+
     /// Returns the disk space used by image or movie (in bytes)
     inline size_t disk_space() const { return _disk_space; }
 
@@ -563,7 +570,7 @@ class CMedia
 
 
 
-    virtual std::string const creation_date() const;
+    virtual const std::string creation_date() const;
 
     /// Returns image ICC color profile
     const char* icc_profile() const;
@@ -719,6 +726,8 @@ class CMedia
 
     inline bool stopped() const { return ( _playback == kStopped ); }
 
+    inline bool saving() const { return ( _playback == kSaving ); }
+
     /// Original play rate of movie
     inline double fps() const { return _fps; }
 
@@ -762,7 +771,9 @@ class CMedia
     inline bool has_audio_data() const
     {
         return ( _audio_index >= 0 && _audio_info[ _audio_index ].has_codec
-                 && _audio_info[ _audio_index ].has_data( _frame, _fps ) );
+                 && _audio_info[ _audio_index ].has_data( _frame, 
+                                                          _audio_offset,
+                                                          _fps ) );
     }
 
     inline bool has_audio() const
@@ -823,7 +834,7 @@ class CMedia
 
     static void audio_cache_size( unsigned x ) { _audio_cache_size = x; }
 
-    void audio_file( const char* file = "" );
+    void audio_file( const char* file );
     std::string audio_file() const { return _audio_file; }
 
     audio_type_ptr get_audio_frame( const boost::int64_t f );  // const
@@ -900,42 +911,65 @@ class CMedia
 				       const bool detail = false) {};
 
     virtual void probe_size( unsigned p ) {}
+
     inline mrv::AudioEngine* audio_engine() const { return _audio_engine; }
 
-    CMedia* left_eye() { return this; }
+    // Return this image as the left eye
+    inline CMedia* left_eye() { return this; }
 
-    void right_eye( CMedia* c ) { _right_eye = c; refresh(); }
-    CMedia* right_eye() const { return _right_eye; }
+    // Set an image as the right eye for stereo decoding
+    inline void right_eye( CMedia* c ) { _right_eye = c; refresh(); }
 
-    bool is_left_eye() const { return _is_left_eye; }
-    void is_left_eye( bool left ) { _is_left_eye = left; }
+    // Return the image as the right eye for stereo decoding or NULL if none
+    inline CMedia* right_eye() const { return _right_eye; }
 
+    // Return if this image is the left eye on stereo decoding
+    inline bool is_left_eye() const { return _is_left_eye; }
+
+    // Set this image as the left (true) or right (false) eye on stereo decoding
+    inline void is_left_eye( bool left ) { _is_left_eye = left; }
+
+    // Return the sequence filename for frame 'frame'
     std::string sequence_filename( const boost::int64_t frame );
 
+    // Return the video clock as a double
     double video_clock() const { return _video_clock; }
-    
+    // Return the audio clock as a double
     double audio_clock() const { return _audio_clock; }
     
+    // Return the video stream being decoded or NULL if none
     virtual AVStream* get_video_stream() const { return NULL; } ;
+    // Return the subtitlee stream being decoded or NULL if none
     virtual AVStream* get_subtitle_stream() const { return NULL; } ;
 
+    // Return the video pts as a double
     double video_pts() const { return _video_pts; }
+    // Return the audio pts as a double
     double audio_pts() const { return _audio_pts; }
 
+    // Return the shape list
     const GLShapeList& shapes() const { return _shapes; }
+    // Return the shape list
     GLShapeList& shapes() { return _shapes; }
 
+    // Return the undo shape list
     const GLShapeList& undo_shapes() const { return _undo_shapes; }
 
+    // Return the undo shape list
     GLShapeList& undo_shapes() { return _undo_shapes; }
+
+    // Add a GL drawn shape to image
     void add_shape( shape_type_ptr s );
 
     void fetch_audio( const boost::int64_t frame );
+
+    // Wait for load threads to exit (unused)
     void wait_for_load_threads();
 
+    // Wait for all threads to exit
     void wait_for_threads();
 
-    void audio_offset( const boost::int64_t& f ) { _audio_offset = f; }
+    void audio_offset( const boost::int64_t f ) { _audio_offset = f; }
     boost::int64_t audio_offset() const { return _audio_offset; }
 
     void debug_audio_stores(const boost::int64_t frame,
@@ -1200,6 +1234,8 @@ class CMedia
     Mutex     _audio_mutex;    //!< to mark audio routines
     Mutex     _decode_mutex;   //!< to mark looping section routines
 
+    int _colorspace_index;
+
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
     static Barrier*  _bg_barrier;     //!< Barrier to sync bg and fg images
@@ -1226,6 +1262,8 @@ class CMedia
     Imf::Chromaticities _chromaticities;
 
     boost::int64_t   _dts;         //!< decoding time stamp (current fetch pkt)
+    boost::int64_t   _adts;        //!< decoding time stamp of audio
+                                   //   (current fetch pkt)
     boost::int64_t   _audio_frame; //!< presentation time stamp (current audio)
     boost::int64_t   _audio_offset;//!< offset of additional audio
 
@@ -1291,7 +1329,7 @@ class CMedia
     mrv::image_type_ptr* _right;    //!< For stereo sequences, holds each 
                                     //!  right float frame
     ACES::ASC_CDL _sops;            //!< Slope,Offset,Pivot,Saturation
-    ACES::ACESclipReader::GradeRefs _grade_refs; 
+    ACES::ACESclipReader::GradeRefs _grade_refs; //!< SOPS Nodes in ASCII
 
     stringArray  _layers;                //!< list of layers in file
     PixelBuffers _pixelBuffers;          //!< float pixel buffers
@@ -1303,8 +1341,8 @@ class CMedia
     // Audio/Video
     AVFormatContext* _context;           //!< current read file context
     AVCodecContext* _video_ctx;          //!< current video context
-    AVFormatContext* _acontext;          //!< current audio file context
-    AVCodecContext* _audio_ctx;          //!< current video context
+    AVFormatContext* _acontext;          //!< current audio read file context
+    AVCodecContext* _audio_ctx;          //!< current audio context
 
     // Drawings
     GLShapeList      _shapes;
@@ -1327,8 +1365,6 @@ class CMedia
     boost::int64_t   _audio_last_frame;  //!< last audio frame decoded
     unsigned short   _audio_channels;
     AVFrame*         _aframe;   //!< audio ffmpeg frame
-    boost::int64_t   next_pts;
-    AVRational       next_pts_tb;
     int64_t          audio_callback_time;
 
     mrv::AudioEngine::AudioFormat _audio_format;

@@ -54,6 +54,7 @@
 
 #include "video/mrvGLLut3d.h"
 #include "core/CMedia.h"
+#include "core/aviImage.h"
 
 #include <GL/gl.h>
 
@@ -102,6 +103,7 @@
 #include "core/ctlToLut.h"
 
 // GUI classes
+#include "gui/mrvEvents.h"
 #include "gui/mrvColorInfo.h"
 #include "gui/mrvFileRequester.h"
 #include "gui/mrvImageBrowser.h"
@@ -115,6 +117,7 @@
 #include "mrvEDLWindowUI.h"
 #include "gui/mrvFontsWindowUI.h"
 #include "gui/mrvVersion.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvImageView.h"
 
 
@@ -135,10 +138,11 @@ using namespace std;
 
 namespace fs = boost::filesystem;
 
-// FLTK2 currently has a problem with timout's fltk::event_x/y not 
+// FLTK2 currently has a problem on Linux with timout's fltk::event_x/y not 
 // taking into account other child widgets.  This works around it.
-#define FLTK_TIMEOUT_EVENT_BUG
-
+#ifndef _WIN32
+#  define FLTK_TIMEOUT_EVENT_BUG
+#endif
 
 
 
@@ -267,6 +271,133 @@ static const float kMaxZoom = 32.f;   // Zoom 32x
 namespace mrv {
 
 typedef boost::recursive_mutex              Mutex;
+static void attach_color_profile_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  attach_icc_profile( fg->image() );
+}
+
+
+void load_subtitle_cb( fltk::Widget* o, mrv::ViewerUI* uiMain )
+{
+    const char* file = open_subtitle_file( NULL, uiMain );
+    if ( !file ) return;
+
+    mrv::ImageView* view = uiMain->uiView;
+
+    mrv::media fg = view->foreground();
+    if ( !fg ) return;
+
+
+    aviImage* img = dynamic_cast< aviImage* >( fg->image() );
+    if ( !img )
+    {
+        LOG_ERROR( _("Subtitles are only valid on video files") );
+        return;
+    }
+
+    img->subtitle_file( file );
+}
+
+static void flip_x_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    mrv::ImageView::FlipDirection dir = view->flip();
+    view->flip( (mrv::ImageView::FlipDirection)
+                ( dir ^ mrv::ImageView::kFlipVertical ) );
+    view->redraw();
+}
+
+static void flip_y_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+    mrv::ImageView::FlipDirection dir = view->flip();
+    view->flip( (mrv::ImageView::FlipDirection) 
+                ( dir ^ mrv::ImageView::kFlipHorizontal ) );
+    view->redraw();
+}
+
+static void attach_ctl_script_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  attach_ctl_script( fg->image() );
+}
+
+
+static void attach_ctl_lmt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  CMedia* img = fg->image();
+
+  attach_ctl_lmt_script( img, img->number_of_lmts() );
+}
+
+static void attach_ctl_idt_script_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  attach_ctl_idt_script( fg->image() );
+}
+
+static void monitor_icc_profile_cb( fltk::Widget* o, void* data )
+{
+  monitor_icc_profile();
+}
+
+
+static void monitor_ctl_script_cb( fltk::Widget* o, void* data )
+{
+  monitor_ctl_script();
+}
+
+static void copy_pixel_rgba_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( ! fg ) return;
+
+  view->copy_pixel();
+}
+
+
+static void attach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  const char* file = open_audio_file();
+  if ( file == NULL ) return;
+
+  CMedia* img = fg->image();
+  if ( img == NULL ) return;
+
+  DBG( "Attach audio file " << file << " first frame: " << img->first_frame() );
+  img->audio_file( file );
+  DBG( "Attached audio file " << file << " first frame: " << img->first_frame() );
+  view->refresh_audio_tracks();
+
+}
+
+
+static void detach_audio_cb( fltk::Widget* o, mrv::ImageView* view )
+{
+  mrv::media fg = view->foreground();
+  if ( !fg ) return;
+
+  view->stop();
+
+  CMedia* img = fg->image();
+  if ( img == NULL ) return;
+
+  img->audio_file( NULL );
+  view->refresh_audio_tracks();
+
+}
+>>>>>>> master
 
 void ImageView::text_mode()
 {
@@ -290,16 +421,16 @@ void ImageView::text_mode()
 }
 
 
-void ImageView::send( std::string m )
+void ImageView::send_network( std::string m )
 {
 
-   ParserList::iterator i = _clients.begin();
-   ParserList::iterator e = _clients.end();
-
-   if ( i != e )
-   {
-      (*i)->write( m, "" );  //<- this line writes all clients
-   }
+    ParserList::iterator i = _clients.begin();
+    ParserList::iterator e = _clients.end();
+   
+    if ( i != e )
+    {
+        (*i)->write( m, "" );  //<- this line writes all clients
+    }
 }
 
 void stimeout( void* o )
@@ -320,6 +451,7 @@ void ImageView::delete_timeout()
 
 ImageView::ImageView(int X, int Y, int W, int H, const char *l) :
 Fl_Gl_Window( X, Y, W, H, l ),
+_broadcast( false ),
 uiMain( NULL ),
 _engine( NULL ),
 _wait( false ),
@@ -355,6 +487,7 @@ _old_fg_frame( 0 ),
 _old_bg_frame( 0 ),
 _reel( 0 ),
 _idle_callback( false ),
+_event( 0 ),
 _timeout( NULL ),
 _fg_reel( -1 ),
 _bg_reel( -1 ),
@@ -370,6 +503,8 @@ _lastFrame( 0 )
   if ( !can_do( FL_STEREO ) ) stereo = 0;
 
   mode( FL_RGB | FL_DOUBLE | FL_ALPHA | FL_STENCIL | stereo );
+
+  create_timeout( 0.2f );
 
 }
 
@@ -511,7 +646,7 @@ void ImageView::fg_reel(int idx)
 
     char buf[128];
     sprintf( buf, "FGReel %d", idx );
-    send( buf );
+    send_network( buf );
 }
 
 void ImageView::bg_reel(int idx)
@@ -520,7 +655,7 @@ void ImageView::bg_reel(int idx)
 
     char buf[128];
     sprintf( buf, "BGReel %d", idx );
-    send( buf );
+    send_network( buf );
 }
 
 
@@ -743,7 +878,7 @@ void ImageView::center_image()
 
     char buf[128];
     sprintf( buf, N_("Offset %g %g"), xoffset, yoffset );
-    send( buf );
+    send_network( buf );
     redraw();
 }
 
@@ -820,7 +955,7 @@ void ImageView::fit_image()
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send( buf );
+  send_network( buf );
   zoom( float(z) );
 
   mouseMove( Fl::event_x(), Fl::event_y() );
@@ -1060,7 +1195,7 @@ void ImageView::timeout()
     mrv::ImageBrowser* b = browser();
     if (!b) return;
 
-    if ( b && !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
+    if ( !_idle_callback && CMedia::cache_active() && CMedia::preload_cache() &&
          ( _reel < b->number_of_reels() ) )
     {
         Fl::add_idle( (Fl_Timeout_Handler)static_preload, this );
@@ -1180,7 +1315,7 @@ void ImageView::redo_draw()
         uiMain->uiPaint->uiUndoDraw->activate();
         undo_shapes.pop_back();
 
-        send( "RedoDraw" );
+        send_network( "RedoDraw" );
         redraw();
     }
 }
@@ -1198,7 +1333,7 @@ void ImageView::undo_draw()
         undo_shapes.push_back( shapes.back() );
         uiMain->uiPaint->uiRedoDraw->activate();
         shapes.pop_back();
-        send( "UndoDraw" );
+        send_network( "UndoDraw" );
         redraw();
     }
 
@@ -1740,7 +1875,7 @@ int ImageView::leftMouseDown(int x, int y)
 	 s->pts.push_back( p );
 
 
-	 send( str );
+	 send_network( str );
 
 	 add_shape( mrv::shape_type_ptr(s) );
       }
@@ -1929,6 +2064,13 @@ int ImageView::leftMouseDown(int x, int y)
 
    
 	    size_t num = image->number_of_subtitle_streams();
+
+            if ( dynamic_cast< aviImage* >( image ) != NULL )
+            {
+	       item = menu.add( _("Subtitle/Load"), 0,
+				(fltk::Callback*)load_subtitle_cb, uiMain );
+            }
+
 	    if ( num > 0 )
 	    {
 	       item = menu.add( _("Subtitle/No Subtitle"), 0,
@@ -2041,7 +2183,7 @@ void ImageView::leftMouseUp( int x, int y )
       }
       else
       {
-          send( s->send() );
+          send_network( s->send() );
       }
   }
   else if ( _mode == kErase )
@@ -2054,7 +2196,7 @@ void ImageView::leftMouseUp( int x, int y )
       }
       else
       {
-          send( s->send() );
+          send_network( s->send() );
       }
   }
   else if ( _mode == kText )
@@ -2067,7 +2209,7 @@ void ImageView::leftMouseUp( int x, int y )
      }
      else
      {
-        send( s->send() );
+         send_network( s->send() );
      }
   }
 
@@ -2196,12 +2338,14 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.b *= _gain;
 
     float one_gamma = 1.0f / _gamma;
-    if ( isfinite(rgba.r) )
-        rgba.r = powf(rgba.r, one_gamma);
-    if ( isfinite(rgba.g) )
-        rgba.g = powf(rgba.g, one_gamma);
-    if ( isfinite(rgba.b) )
-        rgba.b = powf(rgba.b, one_gamma);
+    // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
+    // but faster.
+    if ( rgba.r > 0.0f && isfinite(rgba.r) )
+        rgba.r = expf( logf(rgba.r) * one_gamma );
+    if ( rgba.g > 0.0f && isfinite(rgba.g) )
+        rgba.g = expf( logf(rgba.g) * one_gamma );
+    if ( rgba.b > 0.0f && isfinite(rgba.b) )
+        rgba.b = expf( logf(rgba.b) * one_gamma );
 
 }
 
@@ -2215,6 +2359,11 @@ void ImageView::mouseMove(int x, int y)
 {
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
+  if ( mrv::LogDisplay::show == true )
+  {
+      mrv::LogDisplay::show = false;
+      main()->uiLog->uiMain->show();
+  }
 
   mrv::media fg = foreground();
   if ( !fg ) return;
@@ -2244,6 +2393,14 @@ void ImageView::mouseMove(int x, int y)
   if ( w == 0 ) w = pic->width();
   if ( h == 0 ) h = pic->height();
 
+  if ( _wait )
+  {
+      window()->cursor( fltk::CURSOR_WAIT );
+  }
+  else
+  {
+      window()->cursor(fltk::CURSOR_CROSS);
+  }
 
   CMedia::Pixel rgba;
 
@@ -2301,12 +2458,14 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  if ( xp < 0 || xp >= pic->width() || yp < 0 || yp >= pic->height() )
+  if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
+       yp >= (int)pic->height() )
   {
       pic = img->left();
       if ( !pic ) return;
 
-      if ( xp < 0 || xp >= pic->width() || yp < 0 || yp >= pic->height() )
+      if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
+           yp >= (int)pic->height() )
           outside = true;
   }
 
@@ -2334,8 +2493,8 @@ void ImageView::mouseMove(int x, int y)
           if ( pic )
           {
 
-              if ( xp < 0 || xp >= pic->width() || yp < 0 ||
-                   yp >= pic->height() )
+              if ( xp < 0 || xp >= (int)pic->width() || yp < 0 ||
+                   yp >= (int)pic->height() )
                   outside = true;
 
               if (!outside)
@@ -2555,7 +2714,7 @@ void ImageView::mouseDrag(int x,int y)
 
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-	   send( buf );
+	   send_network( buf );
 
 	   lastX = x;
 	   lastY = y;
@@ -2691,12 +2850,12 @@ void ImageView::mouseDrag(int x,int y)
                _selection = mrv::Rectd( xt, yt, dx, dy );
 
 
-               char buf[256];
+               char buf[128];
                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
                         _selection.y(), _selection.w(), _selection.h() );
 
 
-               send( buf );
+               send_network( buf );
 
 	   }
 
@@ -2962,7 +3121,7 @@ int ImageView::keyDown(unsigned int rawkey)
 
             char buf[128];
             sprintf( buf, "WipeVertical %g", _wipe );
-            send( buf );
+            send_network( buf );
 
             window()->cursor( FL_CURSOR_WE );
         }
@@ -2972,7 +3131,7 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe = (float) (h() - Fl::event_y()) / float( h() );
             char buf[128];
             sprintf( buf, "WipeHorizontal %g", _wipe );
-            send( buf );
+            send_network( buf );
             window()->cursor( FL_CURSOR_NS );
         }
         else if ( _wipe_dir & kWipeHorizontal ) {
@@ -2980,7 +3139,7 @@ int ImageView::keyDown(unsigned int rawkey)
             _wipe = 0.0f;
             char buf[128];
             sprintf( buf, "NoWipe" );
-            send( buf );
+            send_network( buf );
             window()->cursor( FL_CURSOR_CROSS );
         }
 
@@ -3317,7 +3476,7 @@ void ImageView::show_background( const bool b )
 
    char buf[128];
    sprintf( buf, "ShowBG %d", (int) b );
-   send( buf );
+   send_network( buf );
 }
 
 /** 
@@ -3326,14 +3485,14 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
-  bool full = false;
+    bool full = false;
   // full screen...
   if ( fltk_main()->border() )
     {
-      full = true;
-      posX = fltk_main()->x();
-      posY = fltk_main()->y();
-      fltk_main()->fullscreen();
+        full = true;
+        posX = fltk_main()->x();
+        posY = fltk_main()->y();
+        fltk_main()->fullscreen();
     }
   else
     { 
@@ -3345,7 +3504,7 @@ void ImageView::toggle_fullscreen()
   
   char buf[128];
   sprintf( buf, "FullScreen %d", full );
-  send( buf );
+  send_network( buf );
 }
 
 void ImageView::toggle_presentation()
@@ -3405,14 +3564,31 @@ void ImageView::toggle_presentation()
       Fl::screen_work_area( X, Y, W, H );
       fltk_main()->resize( X, Y, W, H );
 #endif
+      // // const fltk::Monitor& m = fltk::Monitor::all();
+      // // fltk_main()->resize( m.x(), m.y(), m.w(), m.h() );
 
-      // fltk_main()->resize( 0, 0,
-      //                      XDisplayWidth( fltk::xdisplay, 0 ),
-      //                      XDisplayHeight( fltk::xdisplay, 0 ));
-      // XWindowAttributes xwa;
-      // XGetWindowAttributes(fltk::xdisplay, DefaultRootWindow(fltk::xdisplay),
-      //                      &xwa);
-      // fltk_main()->resize(0, 0, xwa.width, xwa.height );
+      Atom wm_state = XInternAtom(fltk::xdisplay, "_NET_WM_STATE", False);
+      Atom fullscreen = XInternAtom(fltk::xdisplay, "_NET_WM_STATE_FULLSCREEN", False);
+
+      XWindow win = fltk::xid( fltk_main() );
+
+      XEvent xev;
+      memset(&xev, 0, sizeof(xev));
+      xev.type = ClientMessage;
+      xev.xclient.window = win;
+      xev.xclient.message_type = wm_state;
+      xev.xclient.format = 32;
+      xev.xclient.data.l[0] = 1;
+      xev.xclient.data.l[1] = fullscreen;
+      xev.xclient.data.l[2] = 0;
+
+      XMapWindow(fltk::xdisplay, win);
+
+      XSendEvent (fltk::xdisplay, DefaultRootWindow(fltk::xdisplay), False,
+                  SubstructureRedirectMask | SubstructureNotifyMask, &xev);
+      XFlush(fltk::xdisplay);
+>>>>>>> master
+
 #endif
     }
   else
@@ -3434,20 +3610,19 @@ void ImageView::toggle_presentation()
       resize_main_window();
     }
 
+  // These two take focus are needed
   fltk_main()->take_focus();
-  //   window()->take_focus();
-  //   fltk::focus( fltk_main() );
 
   take_focus();
 
   Fl::check();
   
+  fit_image();
 
   char buf[128];
   sprintf( buf, "PresentationMode %d", presentation );
-  send( buf );
+  send_network( buf );
 
-  fit_image();
 }
 
 /** 
@@ -3468,6 +3643,68 @@ void ImageView::scrub( double dx )
   update_color_info();
 }
 
+void ImageView::toggle_color_area( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiColorArea->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiColorArea->uiMain->show();
+        update_color_info();
+    }
+}
+
+void ImageView::toggle_histogram( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiHistogram->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiHistogram->uiMain->show();
+    }
+}
+
+void ImageView::toggle_vectorscope( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiVectorscope->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiVectorscope->uiMain->show();
+    }
+}
+
+void ImageView::toggle_3d_view( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiGL3dView->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiGL3dView->uiMain->show();
+    }
+}
+
+void ImageView::toggle_media_info( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiImageInfo->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiImageInfo->uiMain->show();
+        update_image_info();
+    }
+}
+
 /** 
  * Main fltk event handler
  * 
@@ -3479,7 +3716,87 @@ int ImageView::handle(int event)
 {
     switch( event ) 
     {
+        case mrv::kFULLSCREEN:
+        case mrv::kPRESENTATION:
+        case mrv::kMEDIA_INFO_WINDOW_SHOW:
+        case mrv::kMEDIA_INFO_WINDOW_HIDE:
+        case mrv::kCOLOR_AREA_WINDOW_SHOW:
+        case mrv::kCOLOR_AREA_WINDOW_HIDE:
+        case mrv::k3D_VIEW_WINDOW_SHOW:
+        case mrv::k3D_VIEW_WINDOW_HIDE:
+        case mrv::kHISTOGRAM_WINDOW_SHOW:
+        case mrv::kHISTOGRAM_WINDOW_HIDE:
+        case mrv::kVECTORSCOPE_WINDOW_SHOW:
+        case mrv::kVECTORSCOPE_WINDOW_HIDE:
+            {
+                _event = event;
+                return 1;
+            }
+        case mrv::TIMEOUT:
+            {
+                unsigned e = _event;
+                ParserList c = _clients;
+                _clients.clear();
+                bool ok = false;
+                switch( e )
+                {
+                    case 0:
+                        break;
+                    case mrv::kFULLSCREEN:
+                        toggle_fullscreen();
+                        ok = true; break;
+                    case mrv::kPRESENTATION:
+                        toggle_presentation();
+                        ok = true; break;
+                    case mrv::kMEDIA_INFO_WINDOW_SHOW:
+                        toggle_media_info(true);
+                        ok = true; break;
+                    case mrv::kMEDIA_INFO_WINDOW_HIDE:
+                        toggle_media_info(false);
+                        ok = true; break;
+                    case mrv::kCOLOR_AREA_WINDOW_SHOW:
+                        toggle_color_area(true);
+                        ok = true; break;
+                    case mrv::kCOLOR_AREA_WINDOW_HIDE:
+                        toggle_color_area(false);
+                        ok = true; break;
+                    case mrv::k3D_VIEW_WINDOW_SHOW:
+                        toggle_3d_view(true);
+                        ok = true; break;
+                    case mrv::k3D_VIEW_WINDOW_HIDE:
+                        toggle_3d_view(false);
+                        ok = true; break;
+                    case mrv::kHISTOGRAM_WINDOW_SHOW:
+                        toggle_histogram(true);
+                        ok = true; break;
+                    case mrv::kHISTOGRAM_WINDOW_HIDE:
+                        toggle_histogram(false);
+                        ok = true; break;
+                    case mrv::kVECTORSCOPE_WINDOW_SHOW:
+                        toggle_vectorscope(true); 
+                        ok = true; break;
+                    case mrv::kVECTORSCOPE_WINDOW_HIDE:
+                        toggle_vectorscope(false);
+                        ok = true; break;
+                    default:
+                        LOG_ERROR( "Unknown mrv event" );
+                }
+
+                if ( ok ) { _event = 0; }
+
+                _clients = c;
+                timeout();
+                return 1;
+            }
         case FL_FOCUS:
+            if ( _wait )
+            {
+                window()->cursor( fltk::CURSOR_WAIT );
+            }
+            else
+            {
+                window()->cursor(fltk::CURSOR_CROSS);
+            }
             return 1;
         case FL_ENTER:
             focus(this); // needed
@@ -3491,10 +3808,12 @@ int ImageView::handle(int event)
             {
                 window()->cursor( FL_CURSOR_CROSS );
             }
-            uiMain->uiMain->setup_menu();
+            Fl_Gl_Window::handle( event );
             return 1;
+        case FL_UNFOCUS:
         case FL_LEAVE:
             window()->cursor( FL_CURSOR_DEFAULT);
+            Fl_Gl_Window::handle( event );
             return 1;
         case FL_PUSH:
             return leftMouseDown(Fl::event_x(), Fl::event_y());
@@ -3515,14 +3834,14 @@ int ImageView::handle(int event)
                     case kWipeVertical:
                         _wipe = (float) Fl::event_x() / (float)w();
                         sprintf( buf, "WipeVertical %g", _wipe );
-                        send( buf );
-                        window()->cursor( FL_CURSOR_WE );
+                        send_network( buf );
+                        window()->cursor(FL_CURSOR_WE);
                         break;
                     case kWipeHorizontal:
                         _wipe = (float) (h() - Fl::event_y()) / (float)h();
                         sprintf( buf, "WipeHorizontal %g", _wipe );
-                        send( buf );
-                        window()->cursor( FL_CURSOR_NS );
+                        send_network( buf );
+                        window()->cursor(FL_CURSOR_NS);
                         break;
                     default:
                         break;
@@ -3534,7 +3853,7 @@ int ImageView::handle(int event)
             {
                 double dx = (Fl::event_x() - lastX) / 20.0;
                 if ( std::abs(dx) >= 1.0f )
-                { 
+                {
                     scrub( dx );
                     lastX = Fl::event_x();
                 }
@@ -3547,6 +3866,7 @@ int ImageView::handle(int event)
             if ( _mode == kDraw || _mode == kErase )
                 redraw();
 
+            fltk::GlWindow::handle( event );
             return 1;
             break;
         case FL_DRAG:
@@ -3574,6 +3894,7 @@ int ImageView::handle(int event)
                     zoom_under_mouse( _zoom * 0.5f, 
                                       Fl::event_x(), Fl::event_y() );
                 }
+                return 1;
                 break;
             }
         case FL_DND_ENTER:
@@ -3585,7 +3906,8 @@ int ImageView::handle(int event)
             browser()->handle_dnd();
             return 1;
         default:
-            return Fl_Gl_Window::handle( event ); 
+            window()->cursor(fltk::CURSOR_CROSS);
+            return Fl_Gl_Window::handle( event );
     }
 
     return 0;
@@ -3772,7 +4094,7 @@ char* ImageView::get_layer_label( unsigned short c )
             prefix.clear();
     }
 
-    if ( !lbl && num > 0 )
+    if ( !lbl )
     {
         LOG_ERROR( _("Label not found for index ") << c );
     }
@@ -3848,7 +4170,7 @@ void ImageView::channel( unsigned short c )
 
   char buf[128];
   sprintf( buf, "Channel %d", c );
-  send( buf );
+  send_network( buf );
 
 
   std::string channelName( lbl );
@@ -3986,7 +4308,7 @@ void ImageView::gain( const float f )
 
   char buf[256];
   sprintf( buf, "Gain %g", f );
-  send( buf );
+  send_network( buf );
 
   refresh_fstop();
   flush_caches();
@@ -4015,7 +4337,7 @@ void ImageView::gamma( const float f )
 
   char buf[256];
   sprintf( buf, "Gamma %g", f );
-  send( buf );
+  send_network( buf );
 
   uiMain->uiGamma->value( f );
   uiMain->uiGammaInput->value( f );
@@ -4049,7 +4371,7 @@ void ImageView::zoom( float z )
 
   char buf[128];
   sprintf( buf, "Zoom %g", z );
-  send( buf );
+  send_network( buf );
 
   _zoom = z;
   redraw();
@@ -4244,7 +4566,7 @@ void ImageView::zoom_under_mouse( float z, int x, int y )
 
   char buf[128];
   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-  send( buf );
+  send_network( buf );
 
   mouseMove( x, y );
 }
@@ -4589,7 +4911,7 @@ void ImageView::background( mrv::media bg )
 
       sprintf( buf, "CurrentBGImage \"%s\" %" PRId64 " %" PRId64, 
                img->fileroot(), img->first_frame(), img->last_frame() );
-      send( buf );
+      send_network( buf );
 
       img->volume( _volume );
       CMedia* right = img->right_eye();
@@ -4613,7 +4935,7 @@ void ImageView::background( mrv::media bg )
           uiMain->uiMain->copy_label( buf );
       }
       sprintf( buf, "CurrentBGImage \"\"" );
-      send( buf );
+      send_network( buf );
   }
 
 //   _BGpixelSize = 0;
@@ -4704,7 +5026,7 @@ void ImageView::data_window( const bool b )
 
   char buf[128];
   sprintf( buf, "DataWindow %d", (int)b );
-  send( buf );
+  send_network( buf );
 }
 
 void ImageView::display_window( const bool b ) 
@@ -4713,7 +5035,7 @@ void ImageView::display_window( const bool b )
 
   char buf[128];
   sprintf( buf, "DisplayWindow %d", (int)b );
-  send( buf );
+  send_network( buf );
 }
 
 void ImageView::safe_areas( const bool b ) 
@@ -4722,7 +5044,7 @@ void ImageView::safe_areas( const bool b )
 
   char buf[128];
   sprintf( buf, "SafeAreas %d", (int)b );
-  send( buf );
+  send_network( buf );
 }
 
 /**
@@ -4741,7 +5063,7 @@ void ImageView::normalize( const bool normalize)
 
    char buf[128];
    sprintf( buf, "Normalize %d", (int) _normalize );
-   send( buf );
+   send_network( buf );
 
 }
 
@@ -4794,7 +5116,7 @@ void ImageView::show_pixel_ratio( const bool b )
 
    char buf[64];
    sprintf( buf, "ShowPixelRatio %d", (int) b );
-   send( buf );
+   send_network( buf );
 
    uiMain->uiPixelRatio->value( b );
 
@@ -4814,7 +5136,7 @@ void ImageView::toggle_lut()
 
   char buf[128];
   sprintf( buf, "UseLUT %d", (int)_useLUT );
-  send( buf );
+  send_network( buf );
 
   flush_caches();
   if ( _useLUT ) {
@@ -5124,11 +5446,11 @@ void ImageView::play( const CMedia::Playback dir )
 { 
    if ( dir == CMedia::kForwards )
    {
-      send("playfwd");
+      send_network("playfwd");
    }
    else if ( dir == CMedia::kBackwards )
    {
-      send("playback");
+      send_network("playback");
    }
    else
    {
@@ -5203,7 +5525,7 @@ void ImageView::stop()
 
   stop_playback();
 
-  send( "stop" );
+  send_network( "stop" );
 
   if ( uiMain->uiPlayForwards )
       uiMain->uiPlayForwards->value(0);
@@ -5256,7 +5578,7 @@ void ImageView::fps( double x )
 
     char buf[128];
     sprintf( buf, "FPS %g", x );
-    send( buf );
+    send_network( buf );
 }
 
 /** 
@@ -5288,7 +5610,7 @@ void ImageView::volume( float v )
 
   char buf[128];
   sprintf( buf, "Volume %g", v );
-  send( buf );
+  send_network( buf );
 
 }
 
@@ -5303,7 +5625,7 @@ void  ImageView::looping( Looping x )
 
   char buf[64];
   sprintf( buf, "Looping %d", x );
-  send( buf );
+  send_network( buf );
 
 }
 
@@ -5326,7 +5648,7 @@ void ImageView::field( FieldDisplay p )
 
   char buf[128];
   sprintf( buf, "FieldDisplay %d", _field );
-  send( buf );
+  send_network( buf );
 
   damage_contents();
   redraw();
