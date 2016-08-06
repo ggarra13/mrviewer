@@ -1,0 +1,21 @@
+# Test environment
+top_srcdir='/media/Linux/code/lib/ImageMagick-6.9.3-0'
+top_builddir='/media/Linux/code/lib/ImageMagick-6.9.3-0'
+
+set -a
+COMPARE="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/compare"
+COMPOSITE="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/composite"
+CONJURE="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/conjure"
+CONVERT="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/convert"
+DISPLAY="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/display"
+IDENTIFY="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/identify"
+MONTAGE="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities/montage" 
+VALIDATE="/media/Linux/code/lib/ImageMagick-6.9.3-0/tests/validate"
+DRAWTEST="/media/Linux/code/lib/ImageMagick-6.9.3-0/tests/drawtest"
+WANDTEST="/media/Linux/code/lib/ImageMagick-6.9.3-0/tests/wandtest"
+LD_LIBRARY_PATH="/media/Linux/code/lib/ImageMagick-6.9.3-0/magick/.libs:${LD_LIBRARY_PATH}"
+MAGICK_CODER_MODULE_PATH="/media/Linux/code/lib/ImageMagick-6.9.3-0/coders"
+MAGICK_CONFIGURE_PATH="/media/Linux/code/lib/ImageMagick-6.9.3-0/config:/media/Linux/code/lib/ImageMagick-6.9.3-0/config"
+MAGICK_FILTER_MODULE_PATH="/media/Linux/code/lib/ImageMagick-6.9.3-0/filters"
+PATH="/media/Linux/code/lib/ImageMagick-6.9.3-0/utilities:/media/Linux/code/lib/ImageMagick-6.9.3-0/tests:${PATH}"
+set +a
