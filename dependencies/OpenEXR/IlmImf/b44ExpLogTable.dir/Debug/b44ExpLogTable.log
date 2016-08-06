@@ -1,0 +1,33 @@
+﻿Build started 12/08/2014 04:53:25 p.m..
+     1>Project "f:\code\lib\openexr-git\OpenEXR\IlmImf\b44ExpLogTable.vcxproj" on node 2 (build target(s)).
+     1>PrepareForBuild:
+         Creating directory "F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\".
+       InitializeBuildStatus:
+         Creating "b44ExpLogTable.dir\Debug\b44ExpLogTable.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         Building Custom Rule F:/code/lib/openexr-git/OpenEXR/IlmImf/CMakeLists.txt
+         CMake does not need to re-run because F:\code\lib\openexr-git\OpenEXR\IlmImf\CMakeFiles\generate.stamp is up-to-date.
+       ClCompile:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\CL.exe /c /I"F:/code/lib/openexr-git/OpenEXR/IlmImf" /I"F:/code/lib/openexr-git/OpenEXR/config" /I"F:/code/lib/openexr-git/OpenEXR/IlmImfUtil" /I"F:/code/lib/openexr-git/OpenEXR/exrmaketiled" /I"F:/code/lib/openexr-git/OpenEXR/exrenvmap" /I"F:/code/lib/openexr-git/OpenEXR/exrmakepreview" /I"F:/code/lib/openexr-git/OpenEXR/exrmultiview" /I"F:/code/lib/openexr-git/OpenEXR/IlmImfFuzzTest" /I"f:/code/lib/zlib-1.2.8-win64" /If:/code/lib/Windows_64/include/OpenEXR /Zi /nologo /W3 /WX- /Od /Ob0 /D WIN32 /D _WINDOWS /D _DEBUG /D HAVE_CONFIG_H /D "ILM_IMF_TEST_IMAGEDIR=\"F:/code/lib/openexr-git/OpenEXR/IlmImfTest/\"" /D OPENEXR_DLL /D ILMIMF_EXPORTS /D "CMAKE_INTDIR=\"Debug\"" /D _MBCS /Gm- /EHsc /RTC1 /MDd /GS /fp:precise /Zc:wchar_t /Zc:forScope /GR /Fo"b44ExpLogTable.dir\Debug\\" /Fd"F:/code/lib/openexr-git/OpenEXR/IlmImf/Debug/b44ExpLogTable.pdb" /Gd /TP /errorReport:prompt "F:\code\lib\openexr-git\OpenEXR\IlmImf\b44ExpLogTable.cpp"  /Zm1000 
+         b44ExpLogTable.cpp
+       ManifestResourceCompile:
+         C:\Program Files\Microsoft SDKs\Windows\v7.1\bin\rc.exe /nologo /fo"b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.embed.manifest.res" b44ExpLogTable.dir\Debug\b44ExpLogTable_manifest.rc 
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\b44ExpLogTable.exe" /INCREMENTAL /NOLOGO /LIBPATH:f:/code/lib/Windows_64/lib /LIBPATH:f:/code/lib/Windows_64/lib/Debug kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib Half.lib "Iex-2_2.lib" "IlmThread-2_2.lib" /MANIFEST /ManifestFile:"b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\b44ExpLogTable.pdb" /SUBSYSTEM:CONSOLE /STACK:"10000000" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/code/lib/openexr-git/OpenEXR/IlmImf/Debug/b44ExpLogTable.lib" /MACHINE:X64 b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.embed.manifest.res
+         b44ExpLogTable.dir\Debug\b44ExpLogTable.obj  /machine:x64 /debug 
+         b44ExpLogTable.vcxproj -> F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\b44ExpLogTable.exe
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.1\bin\mt.exe /nologo /verbose /out:"b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.embed.manifest" /manifest b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.intermediate.manifest
+         C:\Program Files\Microsoft SDKs\Windows\v7.1\bin\rc.exe /nologo /fo"b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.embed.manifest.res" b44ExpLogTable.dir\Debug\b44ExpLogTable_manifest.rc 
+       LinkEmbedManifest:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\b44ExpLogTable.exe" /INCREMENTAL /NOLOGO /LIBPATH:f:/code/lib/Windows_64/lib /LIBPATH:f:/code/lib/Windows_64/lib/Debug kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib Half.lib "Iex-2_2.lib" "IlmThread-2_2.lib" /MANIFEST /ManifestFile:"b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /DEBUG /PDB:"F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\b44ExpLogTable.pdb" /SUBSYSTEM:CONSOLE /STACK:"10000000" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/code/lib/openexr-git/OpenEXR/IlmImf/Debug/b44ExpLogTable.lib" /MACHINE:X64 b44ExpLogTable.dir\Debug\b44ExpLogTable.exe.embed.manifest.res
+         b44ExpLogTable.dir\Debug\b44ExpLogTable.obj  /machine:x64 /debug 
+         b44ExpLogTable.vcxproj -> F:\code\lib\openexr-git\OpenEXR\IlmImf\Debug\b44ExpLogTable.exe
+       FinalizeBuildStatus:
+         Deleting file "b44ExpLogTable.dir\Debug\b44ExpLogTable.unsuccessfulbuild".
+         Touching "b44ExpLogTable.dir\Debug\b44ExpLogTable.lastbuildstate".
+     1>Done Building Project "f:\code\lib\openexr-git\OpenEXR\IlmImf\b44ExpLogTable.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:02.21

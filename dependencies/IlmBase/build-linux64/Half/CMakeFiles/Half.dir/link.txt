@@ -1,0 +1,1 @@
+/usr/bin/c++  -fPIC -O3 -DNDEBUG   -shared -Wl,-soname,libHalf.so.12 -o libHalf.so.12.0.0 CMakeFiles/Half.dir/half.cpp.o 
