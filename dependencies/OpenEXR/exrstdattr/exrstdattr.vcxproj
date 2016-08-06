@@ -1,0 +1,328 @@
+﻿<?xml version="1.0" encoding="Windows-1252"?>
+<Project DefaultTargets="Build" ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGUID>{24BD111C-833B-4253-B5E2-107C9E4CBA4E}</ProjectGUID>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>exrstdattr</ProjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <UseOfMfc>false</UseOfMfc>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>Windows7.1SDK</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+    <PropertyGroup>
+      <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\Debug\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">exrstdattr.dir\Debug\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">exrstdattr</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\Release\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">exrstdattr.dir\Release\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">exrstdattr</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\MinSizeRel\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">exrstdattr.dir\MinSizeRel\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">exrstdattr</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+      <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\RelWithDebInfo\</OutDir>
+      <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">exrstdattr.dir\RelWithDebInfo\</IntDir>
+      <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">exrstdattr</TargetName>
+      <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+      <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+      <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+    </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Debug/</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="F:/code/lib/openexr-git/OpenEXR/IlmImfTest/";OPENEXR_DLL;CMAKE_INTDIR="Debug";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;_DEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"F:/code/lib/openexr-git/OpenEXR/IlmImfTest/\";OPENEXR_DLL;CMAKE_INTDIR=\"Debug\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\IlmImf\Debug\IlmImf-2_2.lib;IlmThread-2_2.lib;Iex-2_2.lib;Half.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib;Imath-2_2.lib;IlmThread-2_2.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>f:/code/lib/Windows_64/lib;f:/code/lib/Windows_64/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>F:/code/lib/openexr-git/OpenEXR/exrstdattr/Debug/exrstdattr.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/code/lib/openexr-git/OpenEXR/exrstdattr/Debug/exrstdattr.pdb</ProgramDataBaseFile>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>Release/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="F:/code/lib/openexr-git/OpenEXR/IlmImfTest/";OPENEXR_DLL;CMAKE_INTDIR="Release";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"F:/code/lib/openexr-git/OpenEXR/IlmImfTest/\";OPENEXR_DLL;CMAKE_INTDIR=\"Release\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\IlmImf\Release\IlmImf-2_2.lib;IlmThread-2_2.lib;Iex-2_2.lib;Half.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib;Imath-2_2.lib;IlmThread-2_2.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>f:/code/lib/Windows_64/lib;f:/code/lib/Windows_64/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>F:/code/lib/openexr-git/OpenEXR/exrstdattr/Release/exrstdattr.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/code/lib/openexr-git/OpenEXR/exrstdattr/Release/exrstdattr.pdb</ProgramDataBaseFile>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>MinSizeRel/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <DebugInformationFormat></DebugInformationFormat>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="F:/code/lib/openexr-git/OpenEXR/IlmImfTest/";OPENEXR_DLL;CMAKE_INTDIR="MinSizeRel";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"F:/code/lib/openexr-git/OpenEXR/IlmImfTest/\";OPENEXR_DLL;CMAKE_INTDIR=\"MinSizeRel\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\IlmImf\MinSizeRel\IlmImf-2_2.lib;IlmThread-2_2.lib;Iex-2_2.lib;Half.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib;Imath-2_2.lib;IlmThread-2_2.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>f:/code/lib/Windows_64/lib;f:/code/lib/Windows_64/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <ImportLibrary>F:/code/lib/openexr-git/OpenEXR/exrstdattr/MinSizeRel/exrstdattr.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/code/lib/openexr-git/OpenEXR/exrstdattr/MinSizeRel/exrstdattr.pdb</ProgramDataBaseFile>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalOptions> /Zm1000 %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>RelWithDebInfo/</AssemblerListingLocation>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR="F:/code/lib/openexr-git/OpenEXR/IlmImfTest/";OPENEXR_DLL;CMAKE_INTDIR="RelWithDebInfo";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>WIN32;_WINDOWS;NDEBUG;HAVE_CONFIG_H;ILM_IMF_TEST_IMAGEDIR=\"F:/code/lib/openexr-git/OpenEXR/IlmImfTest/\";OPENEXR_DLL;CMAKE_INTDIR=\"RelWithDebInfo\";%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>F:\code\lib\openexr-git\OpenEXR\config;F:\code\lib\openexr-git\OpenEXR\IlmImf;F:\code\lib\openexr-git\OpenEXR\IlmImfUtil;F:\code\lib\openexr-git\OpenEXR\exrmaketiled;F:\code\lib\openexr-git\OpenEXR\exrenvmap;F:\code\lib\openexr-git\OpenEXR\exrmakepreview;F:\code\lib\openexr-git\OpenEXR\exrmultiview;F:\code\lib\openexr-git\OpenEXR\IlmImfFuzzTest;f:\code\lib\zlib-1.2.8-win64;f:\code\lib\Windows_64\include\OpenEXR;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <Link>
+      <AdditionalOptions> /machine:x64 /debug %(AdditionalOptions)</AdditionalOptions>
+      <AdditionalDependencies>kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib;..\IlmImf\RelWithDebInfo\IlmImf-2_2.lib;IlmThread-2_2.lib;Iex-2_2.lib;Half.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib;Imath-2_2.lib;IlmThread-2_2.lib;f:\code\lib\zlib-1.2.8-win64\zlib.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>f:/code/lib/Windows_64/lib;f:/code/lib/Windows_64/lib/$(Configuration);%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <ImportLibrary>F:/code/lib/openexr-git/OpenEXR/exrstdattr/RelWithDebInfo/exrstdattr.lib</ImportLibrary>
+      <ProgramDataBaseFile>F:/code/lib/openexr-git/OpenEXR/exrstdattr/RelWithDebInfo/exrstdattr.pdb</ProgramDataBaseFile>
+      <StackReserveSize>10000000</StackReserveSize>
+      <SubSystem>Console</SubSystem>
+      <Version></Version>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="CMakeLists.txt">
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -HF:/code/lib/openexr-git/OpenEXR -BF:/code/lib/openexr-git/OpenEXR --check-stamp-file F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -HF:/code/lib/openexr-git/OpenEXR -BF:/code/lib/openexr-git/OpenEXR --check-stamp-file F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -HF:/code/lib/openexr-git/OpenEXR -BF:/code/lib/openexr-git/OpenEXR --check-stamp-file F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp</Outputs>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+"c:\Program Files (x86)\CMake\bin\cmake.exe" -HF:/code/lib/openexr-git/OpenEXR -BF:/code/lib/openexr-git/OpenEXR --check-stamp-file F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">F:/code/lib/openexr-git/OpenEXR/exrstdattr/CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeLists.txt;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">F:\code\lib\openexr-git\OpenEXR\exrstdattr\CMakeFiles\generate.stamp</Outputs>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="main.cpp"  />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="F:/code/lib/openexr-git/OpenEXR/IlmImf/IlmImf.vcxproj">
+      <Project>20F91A55-48A1-4B0E-B059-EECB5B2206E7</Project>
+    </ProjectReference>
+    <ProjectReference Include="F:/code/lib/openexr-git/OpenEXR/ZERO_CHECK.vcxproj">
+      <Project>3572FADA-7EDC-4078-974E-C031C0F80100</Project>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

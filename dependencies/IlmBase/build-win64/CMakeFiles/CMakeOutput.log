@@ -1,0 +1,101 @@
+The system is: Windows - 6.1 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: c:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64/cl.exe 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Version 18.00.21005.1 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+CMakeCCompilerId.c
+Microsoft (R) Incremental Linker Version 12.00.21005.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCCompilerId.exe 
+CMakeCCompilerId.obj 
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+
+The C compiler identification is MSVC, found in "F:/code/lib/openexr-git/IlmBase/build-win64/CMakeFiles/3.1.2/CompilerIdC/CMakeCCompilerId.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: c:/Program Files (x86)/Microsoft Visual Studio 12.0/VC/bin/amd64/cl.exe 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Version 18.00.21005.1 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+CMakeCXXCompilerId.cpp
+Microsoft (R) Incremental Linker Version 12.00.21005.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCXXCompilerId.exe 
+CMakeCXXCompilerId.obj 
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+
+The CXX compiler identification is MSVC, found in "F:/code/lib/openexr-git/IlmBase/build-win64/CMakeFiles/3.1.2/CompilerIdCXX/CMakeCXXCompilerId.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: F:/code/lib/openexr-git/IlmBase/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTryCompileExec1183303645\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTryCompileExec1183303645.dir\build.make /nologo -L                  CMakeFiles\cmTryCompileExec1183303645.dir\build
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E cmake_progress_report F:\code\lib\openexr-git\IlmBase\build-win64\CMakeFiles\CMakeTmp\CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec1183303645.dir/testCCompiler.c.obj
+	c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\cl.exe  @.\nm9B5C.tmp
+testCCompiler.c
+Linking C executable cmTryCompileExec1183303645.exe
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E vs_link_exe c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTryCompileExec1183303645.dir\objects1.rsp @.\nm9CF2.tmp
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: F:/code/lib/openexr-git/IlmBase/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTryCompileExec3124525821\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTryCompileExec3124525821.dir\build.make /nologo -L                  CMakeFiles\cmTryCompileExec3124525821.dir\build
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E cmake_progress_report F:\code\lib\openexr-git\IlmBase\build-win64\CMakeFiles\CMakeTmp\CMakeFiles 1
+Building C object CMakeFiles/cmTryCompileExec3124525821.dir/CMakeCCompilerABI.c.obj
+	c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\cl.exe  @.\nmA193.tmp
+CMakeCCompilerABI.c
+Linking C executable cmTryCompileExec3124525821.exe
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E vs_link_exe c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTryCompileExec3124525821.dir\objects1.rsp @.\nmA201.tmp
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: F:/code/lib/openexr-git/IlmBase/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTryCompileExec79420427\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTryCompileExec79420427.dir\build.make /nologo -L                  CMakeFiles\cmTryCompileExec79420427.dir\build
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E cmake_progress_report F:\code\lib\openexr-git\IlmBase\build-win64\CMakeFiles\CMakeTmp\CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec79420427.dir/testCXXCompiler.cxx.obj
+	c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\cl.exe  @.\nmA3D4.tmp
+testCXXCompiler.cxx
+Linking CXX executable cmTryCompileExec79420427.exe
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E vs_link_exe c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTryCompileExec79420427.dir\objects1.rsp @.\nmA442.tmp
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: F:/code/lib/openexr-git/IlmBase/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTryCompileExec3221743361\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTryCompileExec3221743361.dir\build.make /nologo -L                  CMakeFiles\cmTryCompileExec3221743361.dir\build
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E cmake_progress_report F:\code\lib\openexr-git\IlmBase\build-win64\CMakeFiles\CMakeTmp\CMakeFiles 1
+Building CXX object CMakeFiles/cmTryCompileExec3221743361.dir/CMakeCXXCompilerABI.cpp.obj
+	c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\cl.exe  @.\nmA5D7.tmp
+CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTryCompileExec3221743361.exe
+	"c:\Program Files (x86)\cmake-3.1.2-win32-x86\bin\cmake.exe" -E vs_link_exe c:\PROGRA~2\MICROS~4.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTryCompileExec3221743361.dir\objects1.rsp @.\nmA626.tmp
+
+
