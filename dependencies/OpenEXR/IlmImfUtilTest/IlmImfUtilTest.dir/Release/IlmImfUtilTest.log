@@ -1,0 +1,24 @@
+﻿Build started 12/08/2014 05:25:33 p.m..
+     1>Project "f:\code\lib\openexr-git\OpenEXR\IlmImfUtilTest\IlmImfUtilTest.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Touching "IlmImfUtilTest.dir\Release\IlmImfUtilTest.unsuccessfulbuild".
+       CustomBuild:
+         All outputs are up-to-date.
+       ClCompile:
+         All outputs are up-to-date.
+       Link:
+         C:\Program Files (x86)\Microsoft Visual Studio 10.0\VC\bin\x86_amd64\link.exe /ERRORREPORT:PROMPT /OUT:"F:\code\lib\openexr-git\OpenEXR\IlmImfUtilTest\Release\IlmImfUtilTest.exe" /INCREMENTAL:NO /NOLOGO /LIBPATH:f:/code/lib/Windows_64/lib /LIBPATH:f:/code/lib/Windows_64/lib/Release /LIBPATH:"F:/code/lib/openexr-git/OpenEXR/IlmImfUtilTest/../IlmImf" /LIBPATH:"F:/code/lib/openexr-git/OpenEXR/IlmImfUtilTest/../IlmImf/Release" kernel32.lib user32.lib gdi32.lib winspool.lib shell32.lib ole32.lib oleaut32.lib uuid.lib comdlg32.lib advapi32.lib "..\IlmImfUtil\Release\IlmImfUtil-2_2.lib" "..\IlmImf\Release\IlmImf-2_2.lib" Half.lib "Iex-2_2.lib" "Imath-2_2.lib" "IlmThread-2_2.lib" "f:\code\lib\zlib-1.2.8-win64\zlib.lib" /MANIFEST /ManifestFile:"IlmImfUtilTest.dir\Release\IlmImfUtilTest.exe.intermediate.manifest" /MANIFESTUAC:"level='asInvoker' uiAccess='false'" /PDB:"F:\code\lib\openexr-git\OpenEXR\IlmImfUtilTest\Release\IlmImfUtilTest.pdb" /SUBSYSTEM:CONSOLE /STACK:"10000000" /TLBID:1 /DYNAMICBASE /NXCOMPAT /IMPLIB:"F:/code/lib/openexr-git/OpenEXR/IlmImfUtilTest/Release/IlmImfUtilTest.lib" /MACHINE:X64 IlmImfUtilTest.dir\Release\main.obj
+         IlmImfUtilTest.dir\Release\testFlatImage.obj
+         IlmImfUtilTest.dir\Release\testDeepImage.obj
+         IlmImfUtilTest.dir\Release\testIO.obj  /machine:x64 
+         IlmImfUtilTest.vcxproj -> F:\code\lib\openexr-git\OpenEXR\IlmImfUtilTest\Release\IlmImfUtilTest.exe
+       Manifest:
+         C:\Program Files\Microsoft SDKs\Windows\v7.1\bin\mt.exe /nologo /verbose /outputresource:"F:\code\lib\openexr-git\OpenEXR\IlmImfUtilTest\Release\IlmImfUtilTest.exe;#1" /manifest IlmImfUtilTest.dir\Release\IlmImfUtilTest.exe.intermediate.manifest
+       FinalizeBuildStatus:
+         Deleting file "IlmImfUtilTest.dir\Release\IlmImfUtilTest.unsuccessfulbuild".
+         Touching "IlmImfUtilTest.dir\Release\IlmImfUtilTest.lastbuildstate".
+     1>Done Building Project "f:\code\lib\openexr-git\OpenEXR\IlmImfUtilTest\IlmImfUtilTest.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.52
