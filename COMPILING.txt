@@ -16,14 +16,11 @@ Compiling mrViewer requires a number of dependencies:
 
 The files win32_vars and win64_vars contain definitions for compiling
 on the windows platform.
-Compiling on linux often means using a tool like apt-get to get the
-dependencies.  And those dependencies not in a repository to compile 
-them and install them locally with:
 
-$ configure && make && make install
+The dependencies directory now contains the latest libraries used to
+compile mrViewer.
 
-or:
-
-$ mkdir build
-$ cd build
-$ cmake .. -G'Unix Makefiles' && make && make install
+More often than not, there will be a build-linux64 directory, for
+example, with a runme.sh shell script for easy compilation.
+Same for windows, albeit on windows you will need some bash emulation,
+like MSYS/MingW.
