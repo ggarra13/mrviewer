@@ -1,0 +1,30 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+/media/Linux/code/lib/openexr-git/IlmBase/Half/eLut.h
+
+/media/Linux/code/lib/openexr-git/IlmBase/Half/half.cpp
+assert.h
+-
+half.h
+/media/Linux/code/lib/openexr-git/IlmBase/Half/half.h
+toFloat.h
+/media/Linux/code/lib/openexr-git/IlmBase/Half/toFloat.h
+eLut.h
+/media/Linux/code/lib/openexr-git/IlmBase/Half/eLut.h
+
+/media/Linux/code/lib/openexr-git/IlmBase/Half/half.h
+halfExport.h
+/media/Linux/code/lib/openexr-git/IlmBase/Half/halfExport.h
+iostream
+-
+
+/media/Linux/code/lib/openexr-git/IlmBase/Half/halfExport.h
+
+/media/Linux/code/lib/openexr-git/IlmBase/Half/toFloat.h
+

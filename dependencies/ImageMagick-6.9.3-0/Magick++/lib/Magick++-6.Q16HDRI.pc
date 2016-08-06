@@ -1,0 +1,14 @@
+prefix=/usr/local
+exec_prefix=${prefix}
+libdir=${exec_prefix}/lib
+includedir=${prefix}/include/ImageMagick-6
+includearchdir=/usr/local/include/ImageMagick-6
+libname=Magick++-6.Q16HDRI
+ 
+Name: Magick++
+Description: Magick++ - C++ API for ImageMagick (ABI Q16HDRI)
+Version: 6.9.3
+Requires: MagickWand
+Libs: -L${libdir} -l${libname}
+Libs.private: -L${libdir} -l${libname}  -ljbig  -ltiff -lfreetype   -ljpeg   -lpng12       -lfontconfig -lfreetype      -lXext -lXt   -lSM -lICE -lX11  -llzma          -L/usr/local/lib -lz    -lm -lgomp     -lm
+Cflags: -I${includearchdir} -I${includedir} -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=16
