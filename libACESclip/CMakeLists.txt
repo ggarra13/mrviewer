@@ -1,7 +1,7 @@
 
 
 cmake_minimum_required(VERSION 2.8)
-set( PROJECT LibAcesClip )
+set( PROJECT ACESclip )
 
 set( SOVERSION "0.2.6" )
 

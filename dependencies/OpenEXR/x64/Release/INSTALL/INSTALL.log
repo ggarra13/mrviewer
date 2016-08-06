@@ -1,0 +1,163 @@
+﻿Build started 12/08/2014 05:25:35 p.m..
+     1>Project "f:\code\lib\openexr-git\OpenEXR\INSTALL.vcxproj" on node 3 (build target(s)).
+     1>InitializeBuildStatus:
+         Creating "x64\Release\INSTALL\INSTALL.unsuccessfulbuild" because "AlwaysCreate" was specified.
+       CustomBuild:
+         Building Custom Rule F:/code/lib/openexr-git/OpenEXR/CMakeLists.txt
+         CMake does not need to re-run because F:\code\lib\openexr-git\OpenEXR\CMakeFiles\generate.stamp is up-to-date.
+       PostBuildEvent:
+         setlocal
+         "c:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -DBUILD_TYPE=Release -P cmake_install.cmake
+         if %errorlevel% neq 0 goto :cmEnd
+         :cmEnd
+         endlocal & call :cmErrorLevel %errorlevel% & goto :cmDone
+         :cmErrorLevel
+         exit /b %1
+         :cmDone
+         if %errorlevel% neq 0 goto :VCEnd
+         :VCEnd
+         -- Install configuration: "Release"
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/OpenEXRConfig.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/TechnicalIntroduction.pdf
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/ReadingAndWritingImageFiles.pdf
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/OpenEXRFileLayout.pdf
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/MultiViewOpenEXR.pdf
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/InterpretingDeepPixels.pdf
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/TheoryDeepPixels.pdf
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/main.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/drawImage.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/rgbaInterfaceExamples.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/rgbaInterfaceTiledExamples.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/generalInterfaceExamples.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/lowLevelIoExamples.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/previewImageExamples.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/generalInterfaceTiledExamples.cpp
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/generalInterfaceTiledExamples.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/drawImage.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/rgbaInterfaceExamples.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/generalInterfaceExamples.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/rgbaInterfaceTiledExamples.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/lowLevelIoExamples.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/previewImageExamples.h
+         -- Installing: f:/code/lib/Windows_64/share/doc/OpenEXR-2.2.0/examples/namespaceAlias.h
+         -- Installing: f:/code/lib/Windows_64/lib/IlmImf-2_2.lib
+         -- Installing: f:/code/lib/Windows_64/lib/IlmImf-2_2.dll
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfForward.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfExport.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfBoxAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfCRgbaFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfChannelList.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfChannelListAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfCompressionAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDoubleAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFloatAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFrameBuffer.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfHeader.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfIO.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfInputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfIntAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfLineOrderAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfMatrixAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfOpaqueAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfOutputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfRgbaFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfStringAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfVecAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfHuf.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfWav.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfLut.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfArray.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfCompression.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfLineOrder.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfName.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfPixelType.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfVersion.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfXdr.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfConvert.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfPreviewImage.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfPreviewImageAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfChromaticities.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfChromaticitiesAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfKeyCode.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfKeyCodeAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTimeCode.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTimeCodeAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfRational.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfRationalAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFramesPerSecond.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfStandardAttributes.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfEnvmap.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfEnvmapAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfInt64.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfRgba.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTileDescription.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTileDescriptionAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTiledInputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTiledOutputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTiledRgbaFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfRgbaYca.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTestFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfThreading.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfB44Compressor.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfStringVectorAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfMultiView.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfAcesFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfMultiPartOutputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfGenericOutputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfMultiPartInputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfGenericInputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfPartType.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfPartHelper.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfOutputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTiledOutputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfInputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfTiledInputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepScanLineOutputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepScanLineOutputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepScanLineInputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepScanLineInputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepTiledInputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepTiledInputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepTiledOutputFile.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepTiledOutputPart.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepFrameBuffer.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepCompositing.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfCompositeDeepScanLine.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfNamespace.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfMisc.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepImageState.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepImageStateAttribute.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFloatVectorAttribute.h
+         -- Installing: f:/code/lib/Windows_64/lib/IlmImfUtil-2_2.lib
+         -- Installing: f:/code/lib/Windows_64/lib/IlmImfUtil-2_2.dll
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfImageChannel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFlatImageChannel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepImageChannel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfSampleCountChannel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfImageLevel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFlatImageLevel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepImageLevel.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfImage.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFlatImage.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepImage.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfImageIO.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfFlatImageIO.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfDeepImageIO.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfImageDataWindow.h
+         -- Installing: f:/code/lib/Windows_64/include/OpenEXR/ImfImageChannelRenaming.h
+         -- Installing: f:/code/lib/Windows_64/bin/exrheader.exe
+         -- Installing: f:/code/lib/Windows_64/bin/exrmaketiled.exe
+         -- Installing: f:/code/lib/Windows_64/bin/exrstdattr.exe
+         -- Installing: f:/code/lib/Windows_64/bin/exrmakepreview.exe
+         -- Installing: f:/code/lib/Windows_64/bin/exrenvmap.exe
+         -- Installing: f:/code/lib/Windows_64/bin/exrmultiview.exe
+         -- Installing: f:/code/lib/Windows_64/bin/exrmultipart.exe
+       FinalizeBuildStatus:
+         Deleting file "x64\Release\INSTALL\INSTALL.unsuccessfulbuild".
+         Touching "x64\Release\INSTALL\INSTALL.lastbuildstate".
+     1>Done Building Project "f:\code\lib\openexr-git\OpenEXR\INSTALL.vcxproj" (build target(s)).
+
+Build succeeded.
+
+Time Elapsed 00:00:00.85
