@@ -271,7 +271,8 @@ namespace mrv
     for ( int i = 0; i <= W; ++i )
       {
 	int x = i + 4;
-
+        int y1, y2, y3;
+        
 	idx = int( ((float) i / (float) W) * 255 );
 	if ( _channel == kLumma )
 	  {
@@ -285,14 +286,15 @@ namespace mrv
 	  {
 	    fltk::setcolor( fltk::RED );
 	    v = histogram_scale( red[idx], maxR );
-	    fltk::drawline( x, H, x, H-int(HH*v) );
+            int y = y1 = int(HH*v);
+	    fltk::drawline( x, H, x, H-y );
 	  }
 
 	if ( _channel == kGreen || _channel == kRGB )
 	  {
 	    fltk::setcolor( fltk::GREEN );
 	    v = histogram_scale( green[idx], maxG );
-            int y = int(HH*v);
+            int y = y2 = int(HH*v);
 	    fltk::drawline( x, H, x, H-y );
 	  }
 
@@ -300,9 +302,38 @@ namespace mrv
 	  {
 	    fltk::setcolor( fltk::BLUE );
 	    v = histogram_scale( blue[idx], maxB );
-            int y = int(HH*v);
+            int y = y3 = int(HH*v);
 	    fltk::drawline( x, H, x, H-y );
 	  }
+
+        if ( _channel == kRGB )
+        {
+            if ( y1 > 0 && y2 > 0 )
+            {
+                fltk::setcolor( fltk::YELLOW );
+                fltk::drawline( x, H, x, H-(y1 < y2 ? y1 : y2 ) );
+            }
+            if ( y2 > 0 && y3 > 0 )
+            {
+                fltk::setcolor( fltk::CYAN );
+                fltk::drawline( x, H, x, H-(y2 < y3 ? y2 : y3 ) );
+            }
+            if ( y1 > 0 && y3 > 0 )
+            {
+                fltk::setcolor( fltk::MAGENTA );
+                fltk::drawline( x, H, x, H-(y1 < y3 ? y1 : y3 ) );
+            }
+            if ( y1 > 0 && y2 > 0 && y3 > 0 )
+            {
+                fltk::setcolor( fltk::GRAY75 );
+                if ( y1 < y2 && y1 < y3 )
+                    fltk::drawline( x, H, x, H-y1 );
+                else if ( y2 < y1 && y2 < y3 )
+                    fltk::drawline( x, H, x, H-y2 );
+                else
+                    fltk::drawline( x, H, x, H-y3 );
+            }
+        }
       }
   }
 
