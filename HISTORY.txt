@@ -1,3 +1,11 @@
+v3.2.8   - Updated Histogram in RGB to show colors mixed in areas
+	   where R, G and B overlap.  So you get R+G=YELLOW,
+	   G+B=CYAN, R+B=MAGENTA, R+G+B=WHITE.
+	 - Bug fixed histogram so R,G,B are averaged with the
+	   same maximum value.
+	   Previously, each channel was averaged individually,
+	   leading to overshooting of histogram.
+
 v3.2.7   - Made audio offset in EDL window shift in opposite
 	   direction as it is more intuitive.
 	 - Audio offset no longer effects other videos in the
