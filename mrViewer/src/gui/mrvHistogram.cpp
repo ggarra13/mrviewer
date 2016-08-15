@@ -60,9 +60,7 @@ namespace mrv
     _channel( kRGB ),
     _histtype( kLog ),
     maxLumma( 0 ),
-    maxRed( 0 ),
-    maxGreen( 0 ),
-    maxBlue( 0 ),
+    maxColor( 0 ),
     lastImg( NULL ),
     lastFrame( std::numeric_limits< int64_t >::min() )
   {
@@ -103,13 +101,13 @@ namespace mrv
     uchar b = rgb[2];
 
     ++red[ r ];
-    if ( red[r] > maxRed ) maxRed = red[r];
+    if ( red[r] > maxColor ) maxColor = red[r];
 
     ++green[ g ];
-    if ( green[g] > maxGreen ) maxGreen = green[g];
+    if ( green[g] > maxColor ) maxColor = green[g];
 
     ++blue[ b ];
-    if ( blue[b] > maxBlue ) maxBlue = blue[b];
+    if ( blue[b] > maxColor ) maxColor = blue[b];
 
     unsigned int lum = unsigned(r * 0.30f + g * 0.59f + b * 0.11f);
     lumma[ lum ] += 1;
@@ -136,7 +134,7 @@ namespace mrv
 
 
 
-    maxRed = maxGreen = maxBlue = maxLumma = 0;
+    maxColor = maxLumma = 0;
     memset( red,   0, sizeof(float) * 256 );
     memset( green, 0, sizeof(float) * 256 );
     memset( blue,  0, sizeof(float) * 256 );
@@ -243,27 +241,21 @@ namespace mrv
     int idx;
     float v;
 
-    float maxR, maxG, maxB, maxL;
+    float maxC, maxL;
 
     switch( _histtype )
       {
       case kLog:
 	  maxL = logf( 1+maxLumma );
-	  maxR = logf( 1+maxRed );
-	  maxG = logf( 1+maxGreen );
-	  maxB = logf( 1+maxBlue );
+	  maxC = logf( 1+maxColor );
 	  break;
       case kSqrt:
 	  maxL = sqrtf( 1+maxLumma );
-	  maxR = sqrtf( 1+maxRed );
-	  maxG = sqrtf( 1+maxGreen );
-	  maxB = sqrtf( 1+maxBlue );
+	  maxC = sqrtf( 1+maxColor );
 	  break;
       default:
-	  maxL = maxLumma;
-	  maxR = maxRed;
-	  maxG = maxGreen;
-	  maxB = maxBlue;
+          maxL = maxLumma;
+          maxC = maxColor;
 	break;
       }
 
@@ -285,7 +277,7 @@ namespace mrv
 	if ( _channel == kRed || _channel == kRGB )
 	  {
 	    fltk::setcolor( fltk::RED );
-	    v = histogram_scale( red[idx], maxR );
+	    v = histogram_scale( red[idx], maxC );
             int y = y1 = int(HH*v);
 	    fltk::drawline( x, H, x, H-y );
 	  }
@@ -293,7 +285,7 @@ namespace mrv
 	if ( _channel == kGreen || _channel == kRGB )
 	  {
 	    fltk::setcolor( fltk::GREEN );
-	    v = histogram_scale( green[idx], maxG );
+	    v = histogram_scale( green[idx], maxC );
             int y = y2 = int(HH*v);
 	    fltk::drawline( x, H, x, H-y );
 	  }
@@ -301,38 +293,37 @@ namespace mrv
 	if ( _channel == kBlue || _channel == kRGB )
 	  {
 	    fltk::setcolor( fltk::BLUE );
-	    v = histogram_scale( blue[idx], maxB );
+	    v = histogram_scale( blue[idx], maxC );
             int y = y3 = int(HH*v);
 	    fltk::drawline( x, H, x, H-y );
 	  }
 
-        if ( _channel == kRGB )
+        if ( _channel != kRGB ) continue;
+        
+        if ( y1 > 0 && y2 > 0 )
         {
-            if ( y1 > 0 && y2 > 0 )
-            {
-                fltk::setcolor( fltk::YELLOW );
-                fltk::drawline( x, H, x, H-(y1 < y2 ? y1 : y2 ) );
-            }
-            if ( y2 > 0 && y3 > 0 )
-            {
-                fltk::setcolor( fltk::CYAN );
-                fltk::drawline( x, H, x, H-(y2 < y3 ? y2 : y3 ) );
-            }
-            if ( y1 > 0 && y3 > 0 )
-            {
-                fltk::setcolor( fltk::MAGENTA );
-                fltk::drawline( x, H, x, H-(y1 < y3 ? y1 : y3 ) );
-            }
-            if ( y1 > 0 && y2 > 0 && y3 > 0 )
-            {
-                fltk::setcolor( fltk::GRAY75 );
-                if ( y1 < y2 && y1 < y3 )
-                    fltk::drawline( x, H, x, H-y1 );
-                else if ( y2 < y1 && y2 < y3 )
-                    fltk::drawline( x, H, x, H-y2 );
-                else
-                    fltk::drawline( x, H, x, H-y3 );
-            }
+            fltk::setcolor( fltk::YELLOW );
+            fltk::drawline( x, H, x, H-(y1 < y2 ? y1 : y2 ) );
+        }
+        if ( y2 > 0 && y3 > 0 )
+        {
+            fltk::setcolor( fltk::CYAN );
+            fltk::drawline( x, H, x, H-(y2 < y3 ? y2 : y3 ) );
+        }
+        if ( y1 > 0 && y3 > 0 )
+        {
+            fltk::setcolor( fltk::MAGENTA );
+            fltk::drawline( x, H, x, H-(y1 < y3 ? y1 : y3 ) );
+        }
+        if ( y1 > 0 && y2 > 0 && y3 > 0 )
+        {
+            fltk::setcolor( fltk::GRAY75 );
+            if ( y1 < y2 && y1 < y3 )
+                fltk::drawline( x, H, x, H-y1 );
+            else if ( y2 < y1 && y2 < y3 )
+                fltk::drawline( x, H, x, H-y2 );
+            else
+                fltk::drawline( x, H, x, H-y3 );
         }
       }
   }
