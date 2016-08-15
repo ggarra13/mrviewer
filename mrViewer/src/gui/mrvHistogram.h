@@ -86,15 +86,10 @@ namespace mrv
     float maxLumma;
     float lumma[256];
 
-    float maxValues[3];
+    float maxColor;
 
-    float maxRed;
     float red[256];
-
-    float maxGreen;
     float green[256];
-
-    float maxBlue;
     float blue[256];
 
 
