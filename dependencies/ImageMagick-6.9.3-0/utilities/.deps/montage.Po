@@ -1,11 +1,11 @@
 utilities/montage.o: utilities/montage.c /usr/include/stdc-predef.h \
  wand/studio.h magick/magick-config.h magick/magick-baseconfig.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h /usr/include/stdio.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h /usr/include/stdio.h \
  /usr/include/features.h /usr/include/x86_64-linux-gnu/sys/cdefs.h \
  /usr/include/x86_64-linux-gnu/bits/wordsize.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs.h \
  /usr/include/x86_64-linux-gnu/gnu/stubs-64.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h \
  /usr/include/x86_64-linux-gnu/bits/types.h \
  /usr/include/x86_64-linux-gnu/bits/typesizes.h /usr/include/libio.h \
  /usr/include/_G_config.h /usr/include/wchar.h \
@@ -34,10 +34,9 @@ utilities/montage.o: utilities/montage.c /usr/include/stdc-predef.h \
  /usr/include/string.h /usr/include/x86_64-linux-gnu/bits/string.h \
  /usr/include/x86_64-linux-gnu/bits/string2.h \
  /usr/include/x86_64-linux-gnu/bits/string3.h /usr/include/strings.h \
- /usr/include/inttypes.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h /usr/include/stdint.h \
- /usr/include/x86_64-linux-gnu/bits/wchar.h /usr/include/unistd.h \
- /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
+ /usr/include/inttypes.h /usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h \
+ /usr/include/stdint.h /usr/include/x86_64-linux-gnu/bits/wchar.h \
+ /usr/include/unistd.h /usr/include/x86_64-linux-gnu/bits/posix_opt.h \
  /usr/include/x86_64-linux-gnu/bits/environments.h \
  /usr/include/x86_64-linux-gnu/bits/confname.h /usr/include/getopt.h \
  /usr/include/x86_64-linux-gnu/bits/unistd.h /usr/include/ctype.h \
@@ -49,6 +48,8 @@ utilities/montage.o: utilities/montage.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl-linux.h \
  /usr/include/x86_64-linux-gnu/bits/uio.h \
  /usr/include/x86_64-linux-gnu/bits/fcntl2.h /usr/include/math.h \
+ /usr/include/x86_64-linux-gnu/bits/math-vector.h \
+ /usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h \
  /usr/include/x86_64-linux-gnu/bits/huge_val.h \
  /usr/include/x86_64-linux-gnu/bits/huge_valf.h \
  /usr/include/x86_64-linux-gnu/bits/huge_vall.h \
@@ -58,8 +59,8 @@ utilities/montage.o: utilities/montage.c /usr/include/stdc-predef.h \
  /usr/include/x86_64-linux-gnu/bits/mathcalls.h \
  /usr/include/x86_64-linux-gnu/bits/mathinline.h \
  /usr/include/x86_64-linux-gnu/bits/timex.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h \
  /usr/include/limits.h /usr/include/x86_64-linux-gnu/bits/posix1_lim.h \
  /usr/include/x86_64-linux-gnu/bits/local_lim.h \
  /usr/include/linux/limits.h \
@@ -75,7 +76,7 @@ utilities/montage.o: utilities/montage.c /usr/include/stdc-predef.h \
  /usr/include/pthread.h /usr/include/sched.h \
  /usr/include/x86_64-linux-gnu/bits/sched.h \
  /usr/include/x86_64-linux-gnu/bits/setjmp.h \
- /usr/lib/gcc/x86_64-linux-gnu/4.8/include/omp.h \
+ /usr/lib/gcc/x86_64-linux-gnu/5/include/omp.h \
  /usr/include/x86_64-linux-gnu/sys/timeb.h /usr/include/dirent.h \
  /usr/include/x86_64-linux-gnu/bits/dirent.h \
  /usr/include/x86_64-linux-gnu/sys/wait.h /usr/include/pwd.h \
@@ -125,7 +126,7 @@ magick/magick-config.h:
 
 magick/magick-baseconfig.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdarg.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stdarg.h:
 
 /usr/include/stdio.h:
 
@@ -139,7 +140,7 @@ magick/magick-baseconfig.h:
 
 /usr/include/x86_64-linux-gnu/gnu/stubs-64.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stddef.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stddef.h:
 
 /usr/include/x86_64-linux-gnu/bits/types.h:
 
@@ -219,7 +220,7 @@ magick/magick-baseconfig.h:
 
 /usr/include/inttypes.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include/stdint.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/stdint.h:
 
 /usr/include/stdint.h:
 
@@ -267,6 +268,10 @@ magick/magick-baseconfig.h:
 
 /usr/include/math.h:
 
+/usr/include/x86_64-linux-gnu/bits/math-vector.h:
+
+/usr/include/x86_64-linux-gnu/bits/libm-simd-decl-stubs.h:
+
 /usr/include/x86_64-linux-gnu/bits/huge_val.h:
 
 /usr/include/x86_64-linux-gnu/bits/huge_valf.h:
@@ -285,9 +290,9 @@ magick/magick-baseconfig.h:
 
 /usr/include/x86_64-linux-gnu/bits/timex.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/limits.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/limits.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include-fixed/syslimits.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include-fixed/syslimits.h:
 
 /usr/include/limits.h:
 
@@ -327,7 +332,7 @@ magick/magick-baseconfig.h:
 
 /usr/include/x86_64-linux-gnu/bits/setjmp.h:
 
-/usr/lib/gcc/x86_64-linux-gnu/4.8/include/omp.h:
+/usr/lib/gcc/x86_64-linux-gnu/5/include/omp.h:
 
 /usr/include/x86_64-linux-gnu/sys/timeb.h:
 

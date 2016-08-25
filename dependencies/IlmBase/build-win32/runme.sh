@@ -1,6 +1,6 @@
 #!/bin/sh
 
-install=/f/code/lib/Windows_32/
+install=../../../../../lib/Windows_32/
 
 cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$install -G 'NMake Makefiles'
 
