@@ -114,7 +114,7 @@ char *GetCpuFriendlyName(std::ostringstream& out,
 
 #if defined(ARCH_X86) || defined(ARCH_X86_64)
 
-#include <stdio.h>
+// #include <stdio.h>
 #include <string.h>
 
 #if defined (__NetBSD__) || defined(__OpenBSD__)

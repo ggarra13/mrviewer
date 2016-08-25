@@ -31,9 +31,6 @@
 
 #if (defined(_WIN32) || defined(_WIN64))
 
-#if !(defined vsnprintf)
-#  define vsnprintf       _vsnprintf
-#endif
 
 #if !(defined putenv)
 #  define putenv(x)       _putenv(x)
@@ -53,9 +50,6 @@
 #  define strtok_r(a,b,c) strtok(a,b)
 #endif
 
-#if !(defined snprintf)
-#  define snprintf        _snprintf
-#endif
 
 #if !(defined access)
 #  define access          _access
