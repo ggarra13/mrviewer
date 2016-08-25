@@ -163,7 +163,6 @@ int main( int argc, char** argv )
     char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
-  std::cerr << "setlocale " << tmp << std::endl;
 
   // Create and install global locale
   std::locale::global(boost::locale::generator().generate(""));
