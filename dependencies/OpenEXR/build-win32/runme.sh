@@ -1,11 +1,11 @@
 #!/bin/sh
 
-install=/f/code/lib/Windows_32/
-zlib=/f/code/lib/zlib-1.2.8-win32/lib/zdll.lib
+install=/D/code/lib/Windows_32/
+zlib=/D/code/applications/mrViewer/dependencies/zlib-1.2.8-win32/
 
 
 
-cmake .. -DCMAKE_BUILD_TYPE=Release -DILMBASE_PACKAGE_PREFIX=$install -DCMAKE_INSTALL_PREFIX=$install -DZLIB_LIBRARY=$zlib -DZLIB_INCLUDE_DIR=/f/code/lib/zlib-1.2.8-win32/include -G 'NMake Makefiles'
+cmake .. -DCMAKE_BUILD_TYPE=Release -DILMBASE_PACKAGE_PREFIX=$install -DCMAKE_INSTALL_PREFIX=$install -DZLIB_LIBRARY=$zlib/lib/zdll.lib -DZLIB_INCLUDE_DIR=$zlib/include -G 'NMake Makefiles'
 
 cp $zlib $install/lib
 
