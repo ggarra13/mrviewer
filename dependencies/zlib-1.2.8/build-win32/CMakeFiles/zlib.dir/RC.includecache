@@ -1,0 +1,34 @@
+#IncludeRegexLine: ^[ 	]*#[ 	]*(include|import)[ 	]*[<"]([^">]+)([">])
+
+#IncludeRegexScan: ^.*$
+
+#IncludeRegexComplain: ^$
+
+#IncludeRegexTransform: 
+
+D:/code/applications/mrViewer/dependencies/zlib-1.2.8/win32/zlib1.rc
+winver.h
+-
+../zlib.h
+D:/code/applications/mrViewer/dependencies/zlib-1.2.8/zlib.h
+
+D:/code/applications/mrViewer/dependencies/zlib-1.2.8/zlib.h
+zconf.h
+D:/code/applications/mrViewer/dependencies/zlib-1.2.8/zconf.h
+
+zconf.h
+windows.h
+-
+limits.h
+-
+sys/types.h
+-
+stdarg.h
+-
+stddef.h
+-
+unistd.h
+-
+unixio.h
+-
+
