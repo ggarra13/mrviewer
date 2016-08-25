@@ -577,31 +577,31 @@
 #define HAVE_TEMPNAM 1
 
 /* Define to 1 if you have the <tiffconf.h> header file. */
-#define HAVE_TIFFCONF_H 1
+/* #undef HAVE_TIFFCONF_H */
 
 /* Define to 1 if you have the `TIFFIsBigEndian' function. */
-#define HAVE_TIFFISBIGENDIAN 1
+/* #undef HAVE_TIFFISBIGENDIAN */
 
 /* Define to 1 if you have the `TIFFIsCODECConfigured' function. */
-#define HAVE_TIFFISCODECCONFIGURED 1
+/* #undef HAVE_TIFFISCODECCONFIGURED */
 
 /* Define to 1 if you have the `TIFFMergeFieldInfo' function. */
-#define HAVE_TIFFMERGEFIELDINFO 1
+/* #undef HAVE_TIFFMERGEFIELDINFO */
 
 /* Define to 1 if you have the `TIFFReadEXIFDirectory' function. */
-#define HAVE_TIFFREADEXIFDIRECTORY 1
+/* #undef HAVE_TIFFREADEXIFDIRECTORY */
 
 /* Define to 1 if you have the `TIFFSetErrorHandlerExt' function. */
-#define HAVE_TIFFSETERRORHANDLEREXT 1
+/* #undef HAVE_TIFFSETERRORHANDLEREXT */
 
 /* Define to 1 if you have the `TIFFSetTagExtender' function. */
-#define HAVE_TIFFSETTAGEXTENDER 1
+/* #undef HAVE_TIFFSETTAGEXTENDER */
 
 /* Define to 1 if you have the `TIFFSetWarningHandlerExt' function. */
-#define HAVE_TIFFSETWARNINGHANDLEREXT 1
+/* #undef HAVE_TIFFSETWARNINGHANDLEREXT */
 
 /* Define to 1 if you have the `TIFFSwabArrayOfTriples' function. */
-#define HAVE_TIFFSWABARRAYOFTRIPLES 1
+/* #undef HAVE_TIFFSWABARRAYOFTRIPLES */
 
 /* Define to 1 if you have the `times' function. */
 #define HAVE_TIMES 1
@@ -726,10 +726,10 @@
 #define INSTALLED_SUPPORT 1
 
 /* Define if you have JBIG library */
-#define JBIG_DELEGATE 1
+/* #undef JBIG_DELEGATE */
 
 /* Define if you have JPEG library */
-#define JPEG_DELEGATE 1
+/* #undef JPEG_DELEGATE */
 
 /* Define if you have LCMS library */
 /* #undef LCMS_DELEGATE */
@@ -758,7 +758,7 @@
 #define LT_OBJDIR ".libs/"
 
 /* Define if you have LZMA library */
-#define LZMA_DELEGATE 1
+/* #undef LZMA_DELEGATE */
 
 /* Define to prepend to default font search path. */
 /* #undef MAGICK_FONT_PATH */
@@ -919,7 +919,7 @@
 #define THREAD_SUPPORT 1
 
 /* Define if you have TIFF library */
-#define TIFF_DELEGATE 1
+/* #undef TIFF_DELEGATE */
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #define TIME_WITH_SYS_TIME 1
