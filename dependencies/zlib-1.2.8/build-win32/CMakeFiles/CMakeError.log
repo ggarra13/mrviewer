@@ -1,0 +1,95 @@
+Determining size of off64_t failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/zlib-1.2.8/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_2afa5\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_2afa5.dir\build.make /nologo -L                  CMakeFiles\cmTC_2afa5.dir\build
+Building C object CMakeFiles/cmTC_2afa5.dir/OFF64_T.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nmDA7A.tmp
+OFF64_T.c
+D:\code\applications\mrViewer\dependencies\zlib-1.2.8\build-win32\CMakeFiles\CheckTypeSize\OFF64_T.c(19): error C2065: 'off64_t': undeclared identifier
+D:\code\applications\mrViewer\dependencies\zlib-1.2.8\build-win32\CMakeFiles\CheckTypeSize\OFF64_T.c(20): error C2065: 'off64_t': undeclared identifier
+D:\code\applications\mrViewer\dependencies\zlib-1.2.8\build-win32\CMakeFiles\CheckTypeSize\OFF64_T.c(21): error C2065: 'off64_t': undeclared identifier
+D:\code\applications\mrViewer\dependencies\zlib-1.2.8\build-win32\CMakeFiles\CheckTypeSize\OFF64_T.c(22): error C2065: 'off64_t': undeclared identifier
+D:\code\applications\mrViewer\dependencies\zlib-1.2.8\build-win32\CMakeFiles\CheckTypeSize\OFF64_T.c(23): error C2065: 'off64_t': undeclared identifier
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+D:/code/applications/mrViewer/dependencies/zlib-1.2.8/build-win32/CMakeFiles/CheckTypeSize/OFF64_T.c:
+#include <sys/types.h>
+#include <stdint.h>
+#include <stddef.h>
+
+
+#undef KEY
+#if defined(__i386)
+# define KEY '_','_','i','3','8','6'
+#elif defined(__x86_64)
+# define KEY '_','_','x','8','6','_','6','4'
+#elif defined(__ppc__)
+# define KEY '_','_','p','p','c','_','_'
+#elif defined(__ppc64__)
+# define KEY '_','_','p','p','c','6','4','_','_'
+#endif
+
+#define SIZE (sizeof(off64_t))
+char info_size[] =  {'I', 'N', 'F', 'O', ':', 's','i','z','e','[',
+  ('0' + ((SIZE / 10000)%10)),
+  ('0' + ((SIZE / 1000)%10)),
+  ('0' + ((SIZE / 100)%10)),
+  ('0' + ((SIZE / 10)%10)),
+  ('0' +  (SIZE    % 10)),
+  ']',
+#ifdef KEY
+  ' ','k','e','y','[', KEY, ']',
+#endif
+  '\0'};
+
+#ifdef __CLASSIC_C__
+int main(argc, argv) int argc; char *argv[];
+#else
+int main(int argc, char *argv[])
+#endif
+{
+  int require = 0;
+  require += info_size[argc];
+  (void)argv;
+  return require;
+}
+
+
+Determining if the function fseeko exists failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/zlib-1.2.8/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_bf92a\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_bf92a.dir\build.make /nologo -L                  CMakeFiles\cmTC_bf92a.dir\build
+Building C object CMakeFiles/cmTC_bf92a.dir/CheckFunctionExists.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nmDAD8.tmp
+CheckFunctionExists.c
+Linking C executable cmTC_bf92a.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_bf92a.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\link.exe /nologo @CMakeFiles\cmTC_bf92a.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nmDB08.tmp
+CheckFunctionExists.c.obj : error LNK2019: unresolved external symbol _fseeko referenced in function _main
+cmTC_bf92a.exe : fatal error LNK1120: 1 unresolved externals
+LINK Pass 1 failed. with 1120
+NMAKE : fatal error U1077: '"C:\Program Files\CMake\bin\cmake.exe"' : return code '0xffffffff'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+
+Determining if the include file unistd.h exists failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/zlib-1.2.8/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_78a45\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_78a45.dir\build.make /nologo -L                  CMakeFiles\cmTC_78a45.dir\build
+Building C object CMakeFiles/cmTC_78a45.dir/CheckIncludeFile.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nmDB74.tmp
+CheckIncludeFile.c
+D:\code\applications\mrViewer\dependencies\zlib-1.2.8\build-win32\CMakeFiles\CMakeTmp\CheckIncludeFile.c(1): fatal error C1083: Cannot open include file: 'unistd.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+

@@ -1,0 +1,124 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 11 
+snap 3
+Function {} {open
+} {
+  {fltk::Window} foo_window {open
+    xywh {457 236 320 296} resizable visible
+  } {
+    {fltk::TabGroup} {} {open
+      xywh {10 10 300 191} resizable
+    } {
+      {fltk::Group} {} {
+        label Label1 open
+        xywh {0 20 300 171} resizable
+      } {
+        {fltk::Input} {} {
+          label {input:}
+          xywh {50 14 240 22}
+        }
+        {fltk::Input} {} {
+          label {input2:}
+          xywh {50 36 240 22}
+        }
+        {fltk::Input} {} {
+          label {input3:}
+          xywh {50 58 240 99} type Wordwrap
+        }
+      }
+      {fltk::Group} {} {
+        label tab2 open
+        xywh {0 20 300 171} hide
+      } {
+        {fltk::Button} {} {
+          label button1
+          xywh {10 25 100 22}
+        }
+        {fltk::Input} {} {
+          label {input in box2}
+          xywh {130 58 100 22}
+        }
+        {fltk::Button} {} {
+          label {This is stuff inside the Fl_Group "tab2"}
+          xywh {20 113 260 22}
+        }
+      }
+      {fltk::Group} {} {
+        label tab3 open
+        xywh {0 20 300 171} hide
+      } {
+        {fltk::Button} {} {
+          label button2
+          xywh {10 30 60 80}
+        }
+        {fltk::Button} {} {
+          label button
+          xywh {70 30 60 80}
+        }
+        {fltk::Button} {} {
+          label button
+          xywh {130 30 60 80}
+        }
+      }
+      {fltk::Group} {} {
+        label tab4 open
+        xywh {0 20 300 171} hide labelfont 2
+      } {
+        {fltk::Button} {} {
+          label button2
+          xywh {10 20 60 110}
+        }
+        {fltk::Button} {} {
+          label button
+          xywh {70 20 60 110}
+        }
+        {fltk::Button} {} {
+          label button
+          xywh {130 20 60 110}
+        }
+      }
+      {fltk::Group} {} {
+        label {very long tab text} open
+        xywh {0 20 300 171} hide labeltype ENGRAVED_LABEL
+      } {
+        {fltk::Button} {} {
+          label button2
+          xywh {10 50 60 80}
+        }
+        {fltk::Button} {} {
+          label button
+          xywh {80 60 60 80}
+        }
+        {fltk::Clock} {} {
+          label {Make sure this clock does not use processor time when this tab is hidden or window is iconized}
+          xywh {155 13 100 100} align 130 box OSHADOW_BOX labelfont 8 color 238 labelsize 10
+        }
+      }
+    }
+    {fltk::Input} {} {
+      label {inputA:}
+      xywh {60 211 130 22}
+    }
+    {fltk::Input} {} {
+      label {inputB:}
+      xywh {60 233 250 22}
+    }
+    {fltk::Button} {} {
+      label cancel
+      callback {exit(1);}
+      xywh {180 266 60 22}
+      extra_code {\#include <stdlib.h>}
+    }
+    {fltk::ReturnButton} {} {
+      label OK
+      callback {exit(0);}
+      xywh {250 266 60 22} shortcut 0xff0d
+      extra_code {\#include <stdlib.h>}
+    }
+  }
+} 

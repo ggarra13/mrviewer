@@ -1,0 +1,107 @@
+# DO NOT DELETE
+
+jmemnobs.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jmemnobs.o: jpegint.h jerror.h jmemsys.h
+jcapimin.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcapimin.o: jpegint.h jerror.h
+jcapistd.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcapistd.o: jpegint.h jerror.h
+jccoefct.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jccoefct.o: jpegint.h jerror.h
+jccolor.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jccolor.o: jerror.h
+jcdctmgr.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcdctmgr.o: jpegint.h jerror.h jdct.h
+jchuff.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jchuff.o: jerror.h 
+jcinit.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jcinit.o: jerror.h
+jcmainct.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcmainct.o: jpegint.h jerror.h
+jcmarker.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcmarker.o: jpegint.h jerror.h
+jcmaster.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcmaster.o: jpegint.h jerror.h
+jcomapi.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jcomapi.o: jerror.h
+jcparam.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jcparam.o: jerror.h
+jcphuff.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jcphuff.o: jerror.h 
+jcprepct.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcprepct.o: jpegint.h jerror.h
+jcsample.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcsample.o: jpegint.h jerror.h
+jctrans.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jctrans.o: jerror.h
+jdapimin.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdapimin.o: jpegint.h jerror.h
+jdapistd.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdapistd.o: jpegint.h jerror.h
+jdatadst.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdatadst.o: jpegint.h jerror.h
+jdatasrc.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdatasrc.o: jpegint.h jerror.h
+jdcoefct.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdcoefct.o: jpegint.h jerror.h
+jdcolor.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jdcolor.o: jerror.h
+jddctmgr.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jddctmgr.o: jpegint.h jerror.h jdct.h
+jdhuff.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jdhuff.o: jerror.h 
+jdinput.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jdinput.o: jerror.h
+jdmainct.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdmainct.o: jpegint.h jerror.h
+jdmarker.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdmarker.o: jpegint.h jerror.h
+jdmaster.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdmaster.o: jpegint.h jerror.h
+jdmerge.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jdmerge.o: jerror.h
+jdphuff.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jdphuff.o: jerror.h 
+jdpostct.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdpostct.o: jpegint.h jerror.h
+jdsample.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdsample.o: jpegint.h jerror.h
+jdtrans.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jdtrans.o: jerror.h
+jerror.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jerror.o: jerror.h jversion.h
+jfdctflt.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jfdctflt.o: jpegint.h jerror.h jdct.h
+jfdctfst.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jfdctfst.o: jpegint.h jerror.h jdct.h
+jfdctint.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jfdctint.o: jpegint.h jerror.h jdct.h
+jidctflt.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jidctflt.o: jpegint.h jerror.h jdct.h
+jidctfst.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jidctfst.o: jpegint.h jerror.h jdct.h
+jidctint.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jidctint.o: jpegint.h jerror.h jdct.h
+jidctred.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jidctred.o: jpegint.h jerror.h jdct.h
+jquant1.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jquant1.o: jerror.h
+jquant2.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jquant2.o: jerror.h
+jutils.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jutils.o: jerror.h
+jmemmgr.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h jpegint.h
+jmemmgr.o: jerror.h jmemsys.h
+jcarith.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jcarith.o: jpegint.h jerror.h
+jdarith.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jdarith.o: jpegint.h jerror.h
+jmemansi.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jmemansi.o: jpegint.h jerror.h jmemsys.h
+jmemdos.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jmemdos.o: jpegint.h jerror.h jmemsys.h
+jmemmac.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jmemmac.o: jpegint.h jerror.h jmemsys.h
+jmemname.o: jinclude.h jconfig.h ../../config.h jpeglib.h jmorecfg.h
+jmemname.o: jpegint.h jerror.h jmemsys.h
+
