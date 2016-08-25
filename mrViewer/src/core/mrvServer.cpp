@@ -36,7 +36,6 @@
 #include <fstream>
 #include <set>
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 
