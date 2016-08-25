@@ -25,12 +25,11 @@
  * 
  */
 
-#include <cassert>
-
 #include <iostream>
 #include <limits>    // for quietNaN
 
 #include <half.h>
+
 
 #include "core/mrvFrame.h"
 
