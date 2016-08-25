@@ -1,0 +1,108 @@
+<html><head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>FLTK Class Hierarchy</title></head><body>
+
+<h1>Class Reference</h1>
+<h2>Class Hierarchy</h2>
+
+This appendix describes all of the classes and structures in FLTK.
+
+<p>The "class" <a href="Fl.html"><tt>fltk::</tt></a> should actually be
+considered a namespace, it contains only static methods.
+
+<p>FLTK also provides a number of global functions with
+<tt>fltk::xyz</tt> names. The majority of these are concerned with
+drawing or graphics state, and are described in the <a
+href="drawing.html">Drawing</a> chapter. The others are a set of modal
+popup utility functions for asking questions described in 
+the <a href="utility.html">Utility Function</a> chapter.
+
+<ul>
+  <li><a href="Fl.html">Fl</a>
+  <li><a href="Fl_Boxtype.html">fltk::Box</a>
+  <li><a href="Fl_Color.html">fltk::Color</a>
+  <li><a href="Fl_End.html">fltk::End</a>
+  <li><a href="Fl_Font.html">fltk::Font</a>
+  <li><a href="Fl_Image.html">fltk::Image</a>
+  <ul>
+    <li><a href="Fl_Bitmap.html">fltk::Bitmap</a>
+    <li><a href="Fl_Pixmap.html">fltk::Pixmap</a>
+    <li><a href="Fl_RGB_Image.html">fltk::RGB_Image</a>
+    <li><a href="Fl_Multi_Image.html">fltk::MultiImage</a>
+  </ul>
+  <li><a href="Fl_Labeltype.html">fltk::Labeltype</a>
+  <li><a href="Fl_List.html">fltk::List</a>
+  <li><a href="Fl_Style.html">fltk::Style</a>
+  <li><a href="Fl_Style_Set.html">class fltk::StyleSet</a>
+  <li><a href="Fl_Widget.html">fltk::Widget</a>
+  <ul>
+    <li><a href="Fl_Box.html">fltk::InvisibleBox</a>
+    <li><a href="Fl_Button.html">fltk::Button</a>
+    <ul>
+      <li><a href="Fl_Check_Button.html">fltk::CheckButton</a>
+      <li><a href="Fl_Light_Button.html">fltk::LightButton</a>
+      <li><a href="Fl_Repeat_Button.html">fltk::RepeatButton</a>
+      <li><a href="Fl_Return_Button.html">fltk::ReturnButton</a>
+      <li><a href="Fl_Round_Button.html">fltk::RoundButton</a>
+    </ul>
+    <li><a href="Fl_Chart.html">fltk::Chart</a>
+    <li><a href="Fl_Clock.html">fltk::Clock</a>
+    <li><a href="Fl_Group.html">fltk::Group</a>
+    <ul>
+      <li><a href="Fl_Bar.html">fltk::Bar</a>
+      <li><a href="Fl_Color_Chooser.html">fltk::Color_Chooser</a>
+      <li><a href="Fl_Pack.html">fltk::Pack</a>
+      <li><a href="Fl_Menu_.html">fltk::Menu</a>
+      <ul>
+        <li><a href="Fl_Browser.html">fltk::Browser</a>
+	<ul>
+	  <li><a href="Fl_Multi_Browser.html">fltk::MultiBrowser</a>
+	</ul>
+	<li><a href="Fl_Choice.html">fltk::Choice</a>
+	<li><a href="Fl_Item_Group.html">fltk::ItemGroup</a>
+	<li><a href="Fl_Menu_Bar.html">fltk::MenuBar</a>
+	<li><a href="Fl_Menu_Button.html">fltk::MenuButton</a>
+      </ul>
+      <li><a href="Fl_Scroll.html">fltk::Scroll</a>
+      <li><a href="Fl_Tabs.html">fltk::Tabs</a>
+      <li><a href="Fl_Tile.html">fltk::Tile</a>
+      <li><a href="Fl_Window.html">fltk::Window</a>
+      <ul>
+	<li><a href="Fl_Double_Window.html">fltk::DoubleBufferWindow</a>
+	<li><a href="Fl_Gl_Window.html">fltk::GlWindow</a>
+	<li><a href="Fl_Menu_Window.html">fltk::MenuWindow</a>
+	<li><a href="Fl_Overlay_Window.html">fltk::OverlayWindow</a>
+      </ul>
+    </ul>
+    <li><a href="Fl_Input.html">fltk::Input</a>
+    <ul>
+      <li><a href="Fl_Numeric_Input.html">fltk::NumericInput</a>
+      <ul>
+        <li><a href="Fl_Float_Input.html">fltk::FloatInput</a>
+        <li><a href="Fl_Int_Input.html">fltk::IntInput</a>
+      </ul>
+      <li><a href="Fl_Secret_Input.html">fltk::SecretInput</a>
+      <li><a href="Fl_Multiline_Input.html">fltk::MultilineInput</a>
+      <li><a href="Fl_Wordwrap_Input.html">fltk::WordwrapInput</a>
+      <li><a href="Fl_Output.html">fltk::Output</a>
+      <ul>
+	<li><a href="Fl_Multiline_Output.html">fltk::MultilineOutput</a>
+	<li><a href="Fl_Wordwrap_Output.html">fltk::WordwrapOutput</a>
+      </ul>
+    </ul>
+    <li><a href="Fl_Item.html">fltk::Item</a>
+    <li><a href="Fl_Positioner.html">fltk::Positioner</a>
+    <li><a href="Fl_Valuator.html">fltk::Valuator</a>
+    <ul>
+      <li><a href="Fl_Dial.html">fltk::Dial</a>
+      <li><a href="Fl_Roller.html">fltk::Roller</a>
+      <li><a href="Fl_Slider.html">fltk::Slider</a>
+      <ul>
+	<li><a href="Fl_Scrollbar.html">fltk::Scrollbar</a>
+	<li><a href="Fl_Value_Slider.html">fltk::ValueSlider</a>
+      </ul>
+      <li><a href="Fl_Value_Input.html">fltk::ValueInput</a>
+    </ul>
+  </ul>
+</ul>
+
+</body></html>

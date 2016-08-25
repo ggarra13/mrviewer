@@ -1,0 +1,144 @@
+// This file is for Doxygen input. It is not compiled.
+
+#include <fltk/Window.h>
+#include <fltk/Widget.h>
+#include <fltk/run.h>
+
+using namespace fltk;
+
+/*! \page example4 Example 4: Drawing Things
+
+Programs get a lot more interesting if you can output your own
+graphics. Fltk does this by having you define your own subclass of
+Widget and defining a "draw" method for it.
+
+Fltk has a built-in drawing library which is similar to PostScript or
+Cairo. You can also use OpenGL (but this requires more setup, a
+problem I hope to fix) or you can use native drawing functions for
+your operating system (but then your program is not portable, and
+fltk's functions are better anyway).
+
+\include drawing.cxx
+
+This program displays a window that looks like this:
+
+\image html drawing.gif
+
+Let's look at the pieces of this program:
+
+\dontinclude drawing.cxx
+\skip public
+\until sides
+
+This is defining a new subclass of the fltk::Widget class called
+ShapeWidget. This widget's only purpose is to draw an n-sided polygon
+and to calculate and show some interesting information about it.
+
+The most important method defined for this widget is the draw()
+method, which we start defining here. This will replace the
+fltk::Widget::draw() method defined on the base class (that one draws
+the box() and centers the label() inside it).
+
+\skip draw
+\until fillrect
+
+Normally you must draw all the pixels inside your widget. So the first
+thing we do is fill the entire background with black.
+
+Fltk's drawing functions are similar to PostScript. Here we first set
+the drawing color to black, then we draw a rectangle in that
+color.
+
+By default, the coordinate system is set up so one unit is a pixel and
+positive is right and down, and 0,0 is the upper-left corner of the
+widget being drawn. Widget::w() and Widget::h() return a widget's
+current width and height.
+
+The fltk::Rectangle class is a very simple container for four
+integers. The constructor here initializes the top-left corner to 0,0
+and the size to Widget::w(),Widget::h(), thus the rectangle fills the
+widget.
+
+\until translate
+
+Now we change the coordinate system to one that makes it easier to
+draw the shape. It is scaled so the widget is 2 units on each side,
+then the origin is moved to the center.
+
+Various tests show that modern processors are somewhat faster working
+with float instead of double data, so all of fltk's drawing functions
+take float for real numbers. This also makes it harder to accidentally
+mix calls to the integer versions of some of fltk's functions, most
+compilers will produce a warning unless you clearly mark all arguments
+as float. The integer versions sometimes have different behavior, such
+as ignoring rotations in the current coordinate system.
+
+\until setcolor
+
+Fltk colors are 32-bit integers, with 8 bits of red, 8 bits of green,
+and 8 bits of blue, and then 8 bits that may be used as a transparency
+value or an index number, depending on context. It is safe to make
+these last bits be 00 or 0xff.
+
+You can also use any of the constants defined in <fltk/Color.h>
+
+\until fillstrokepath
+
+Now we build a "path" by calling addvertex(float,float) once for each
+corner of the polygon. You should set the color first (this is for
+compatibility with future fltk versions where you may be able to
+change the color per vertex).
+
+We then fill it and draw a white line around the outside with
+fillstrokepath(Color). You could also just fill the path with
+fillpath(), only draw the line with strokepath(), or draw a dot at
+each vertex with drawpoints(). All of these do an automatic "newpath",
+unlike PostScript.
+
+\until pop_matrix
+
+This restores the transformation back to what it was before the
+push_matrix() was called. Your draw() function \e must put the
+transformation and clipping back, or nasty things will happen!
+
+\until setfont
+
+Next we select the font we want to draw the text in the middle in. It
+is recommended you use the labelfont() or textfont() so that user's
+preferences will affect your widgets.
+
+\until drawtext
+
+Now we format some interesting information using snprintf (fltk
+provides an implementation of the buffer-overrun-safe functions like
+snprintf, vsnprintf, and the BSD strlcat and strlcpy in the file
+<fltk/string.h> for portability to systems that don't have them).
+
+This information is formatted into a box in the middle of the drawing
+with the drawtext() function. This is the same function used to draw
+labels on all the widgets, and it can justify and word-wrap the text
+(resize the window smaller to see it attempt to wrap the text), as
+well as print a number of interesting formatting commands and symbols
+indicated with '@' signs in the text.
+
+\skip }
+\skip inline
+\until }
+
+Even though it seems easy to modify the sides field and call redraw()
+yourself, it is recommended you make methods for any changes to the
+widget. This makes it harder to forget to do things (such as redraw
+the widget in this case) and it makes it easier for the widget to
+change the implementation (for instance it may have a more efficient
+way to redraw itself if nothing changes other than the number of
+sides).
+
+\skip main
+\until }
+
+The main function creates a window, into which we put an instance of
+our shape-drawing widget. It also creates a slider and hooks it up to
+change the number of sides of the widget. And then it shows the window
+and calls the fltk main loop.
+
+*/
