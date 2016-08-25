@@ -10,5 +10,5 @@ Description: Magick++ - C++ API for ImageMagick (ABI Q32HDRI)
 Version: 6.9.3
 Requires: MagickWand
 Libs: -L${libdir} -l${libname}
-Libs.private: -L${libdir} -l${libname}  -ljbig  -ltiff -lfreetype   -ljpeg   -lpng12       -lfontconfig -lfreetype      -lXext -lXt   -lSM -lICE -lX11  -llzma          -L/usr/local/lib -lz    -lm -lgomp     -lm
+Libs.private: -L${libdir} -l${libname}     -lfreetype    -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11          -lz  -lm -lgomp     -lm
 Cflags: -I${includearchdir} -I${includedir} -fopenmp -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
