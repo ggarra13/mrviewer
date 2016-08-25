@@ -1,0 +1,72 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 10 
+gridy 10 
+snap 3
+decl {\#include <fltk/events.h>} {} 
+
+Function {warp(int dx, int dy)} {open return_type void
+} {
+  code {fltk::warp_mouse(fltk::event_x_root()+dx, fltk::event_y_root()+dy);} {}
+} 
+
+Function {} {open
+} {
+  {fltk::Window} {} {open
+    xywh {439 389 320 240} resizable visible
+  } {
+    {fltk::Button} {} {
+      label {@8->}
+      callback {fltk::Window* w = o->window();
+w->position(w->x(),w->y()-50);
+warp(0,-50);}
+      xywh {60 0 39 40}
+    }
+    {fltk::InvisibleBox} {} {
+      label {This is a test of program-generated resize() of a window.  The window should move or resize once when each button is clicked.  The program and window manager should not go into fits echoing resizes back and forth!}
+      xywh {148 10 157 218} align 180 resizable box BORDER_BOX
+    }
+    {fltk::Button} {} {
+      label {@<-}
+      callback {fltk::Window* w = o->window();
+w->position(w->x()-50,w->y());
+warp(-50,0);}
+      xywh {20 40 40 40} vertical
+    }
+    {fltk::Button} {} {
+      label {@->}
+      callback {fltk::Window* w = o->window();
+w->position(w->x()+50,w->y());
+warp(+50,0);}
+      xywh {99 40 39 40}
+    }
+    {fltk::Button} {} {
+      label {@2->}
+      callback {fltk::Window* w = o->window();
+w->position(w->x(),w->y()+50);
+warp(0,+50);}
+      xywh {60 80 39 39} vertical
+    }
+    {fltk::Button} {} {
+      label grow
+      callback {fltk::Window* w = o->window();
+int mx = fltk::event_x_root()-w->x();
+int my = fltk::event_y_root()-w->y();
+warp(mx*20/w->w(), my*20/w->h());
+w->resize(w->w()+20, w->h()+20);}
+      xywh {30 129 108 40} labelfont 1 labelsize 18
+    }
+    {fltk::Button} {} {
+      label shrink
+      callback {fltk::Window* w = o->window();
+int mx = fltk::event_x_root()-w->x();
+int my = fltk::event_y_root()-w->y();
+warp(-mx*20/w->w(), -my*20/w->h());
+w->resize(w->w()-20, w->h()-20);} selected
+      xywh {30 188 108 40} labelfont 1 labelsize 18
+    }
+  }
+} 
