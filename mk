@@ -1,4 +1,4 @@
-#!/bin/bash --norc
+!/bin/bash --norc
 
 
 #
@@ -31,6 +31,7 @@ CMAKE_OPTS=${CMAKE_OPTS=""}
 
 export CMAKE_NATIVE_ARCH=32
 export CMAKE_BUILD_TYPE=Release
+export CMAKE_PROCS=8
 export OS_32_BITS=1
 export OS_64_BITS=
 export LDFLAGS=
@@ -83,7 +84,7 @@ Options:
 
   -q         quiet build (default)
   -v         verbose build
-  -j N       number of cpus to use (default: ${CMAKE_PROCS=2})
+  -j N       number of cpus to use (default: ${CMAKE_PROCS=8})
   -G <name>  use a different cmake generator (default: Ninja)
 
   debug|release|reldebug|small
@@ -283,7 +284,7 @@ run_make()
     elif [[ $cmake_generator == Visual* ]]; then
 	return
     else
-	cmd="ninja -j ${CMAKE_PROCS=2} $@"
+	cmd="ninja -j ${CMAKE_PROCS} $@"
     fi
     run_cmd $cmd
     status=$?
