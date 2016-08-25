@@ -17,7 +17,6 @@
 */
 
 
-#define __STDC_FORMAT_MACROS
 #define __STDC_LIMIT_MACROS
 #include <inttypes.h>
 
