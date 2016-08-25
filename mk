@@ -305,7 +305,7 @@ run_cmake()
     installdir=/usr/local
 
     if [[ $OS == Windows* ]]; then
-	installdir="F:/code/lib/Windows_${CMAKE_BUILD_ARCH}"
+	installdir="D:/code/lib/Windows_${CMAKE_BUILD_ARCH}"
     fi
 
     if [ ! -d $installdir ]; then

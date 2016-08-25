@@ -163,6 +163,7 @@ int main( int argc, char** argv )
     char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
+  std::cerr << "setlocale " << tmp << std::endl;
 
   // Create and install global locale
   std::locale::global(boost::locale::generator().generate(""));
@@ -195,8 +196,9 @@ int main( int argc, char** argv )
   std::string path = fs::canonical( dir ).string();
 
   path += "/share/locale";
-  bindtextdomain(buf, path.c_str() );
-  textdomain(buf);
+  
+  const char* bind = bindtextdomain(buf, path.c_str() );
+  const char* domain = textdomain(buf);
 
   if ( loc )
   {
