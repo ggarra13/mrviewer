@@ -28,7 +28,6 @@
 #ifndef mrvImageInformation_h
 #define mrvImageInformation_h
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #include <fltk/ScrollGroup.h>
