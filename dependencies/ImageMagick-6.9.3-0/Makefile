@@ -582,8 +582,8 @@ coders_ept_la_OBJECTS = $(am_coders_ept_la_OBJECTS)
 coders_ept_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(coders_ept_la_LDFLAGS) $(LDFLAGS) -o $@
-#am_coders_ept_la_rpath =  \
-#	-rpath $(codersdir)
+##am_coders_ept_la_rpath =  \
+##	-rpath $(codersdir)
 coders_exr_la_DEPENDENCIES = $(MAGICKCORE_LIBS) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_coders_exr_la_OBJECTS = coders/coders_exr_la-exr.lo
@@ -727,8 +727,8 @@ coders_jbig_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(coders_jbig_la_LDFLAGS) $(LDFLAGS) -o \
 	$@
-#am_coders_jbig_la_rpath =  \
-#	-rpath $(codersdir)
+##am_coders_jbig_la_rpath =  \
+##	-rpath $(codersdir)
 coders_jnx_la_DEPENDENCIES = $(MAGICKCORE_LIBS)
 am_coders_jnx_la_OBJECTS = coders/coders_jnx_la-jnx.lo
 coders_jnx_la_OBJECTS = $(am_coders_jnx_la_OBJECTS)
@@ -754,8 +754,8 @@ coders_jpeg_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(coders_jpeg_la_LDFLAGS) $(LDFLAGS) -o \
 	$@
-#am_coders_jpeg_la_rpath =  \
-#	-rpath $(codersdir)
+##am_coders_jpeg_la_rpath =  \
+##	-rpath $(codersdir)
 coders_json_la_DEPENDENCIES = $(MAGICKCORE_LIBS)
 am_coders_json_la_OBJECTS = coders/coders_json_la-json.lo
 coders_json_la_OBJECTS = $(am_coders_json_la_OBJECTS)
@@ -1186,8 +1186,8 @@ coders_tiff_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(coders_tiff_la_LDFLAGS) $(LDFLAGS) -o \
 	$@
-#am_coders_tiff_la_rpath =  \
-#	-rpath $(codersdir)
+##am_coders_tiff_la_rpath =  \
+##	-rpath $(codersdir)
 coders_tile_la_DEPENDENCIES = $(MAGICKCORE_LIBS)
 am_coders_tile_la_OBJECTS = coders/coders_tile_la-tile.lo
 coders_tile_la_OBJECTS = $(am_coders_tile_la_OBJECTS)
@@ -1603,12 +1603,12 @@ am__objects_1 = magick/magick_libMagickCore_6_Q32HDRI_la-accelerate.lo \
 #am__objects_6 = coders/magick_libMagickCore_6_Q32HDRI_la-fpx.lo
 #am__objects_7 = coders/magick_libMagickCore_6_Q32HDRI_la-clipboard.lo \
 #	coders/magick_libMagickCore_6_Q32HDRI_la-emf.lo
-am__objects_8 = coders/magick_libMagickCore_6_Q32HDRI_la-jbig.lo
-am__objects_9 = coders/magick_libMagickCore_6_Q32HDRI_la-jpeg.lo
+#am__objects_8 = coders/magick_libMagickCore_6_Q32HDRI_la-jbig.lo
+#am__objects_9 = coders/magick_libMagickCore_6_Q32HDRI_la-jpeg.lo
 #am__objects_10 = coders/magick_libMagickCore_6_Q32HDRI_la-jp2.lo
 am__objects_11 = coders/magick_libMagickCore_6_Q32HDRI_la-png.lo
-am__objects_12 = coders/magick_libMagickCore_6_Q32HDRI_la-ept.lo \
-	coders/magick_libMagickCore_6_Q32HDRI_la-tiff.lo
+#am__objects_12 = coders/magick_libMagickCore_6_Q32HDRI_la-ept.lo \
+#	coders/magick_libMagickCore_6_Q32HDRI_la-tiff.lo
 #am__objects_13 = coders/magick_libMagickCore_6_Q32HDRI_la-webp.lo
 #am__objects_14 = coders/magick_libMagickCore_6_Q32HDRI_la-wmf.lo
 am__objects_15 = coders/magick_libMagickCore_6_Q32HDRI_la-x.lo \
@@ -2533,17 +2533,17 @@ distuninstallcheck_listfiles = find . -type f -print
 am__distuninstallcheck_listfiles = $(distuninstallcheck_listfiles) \
   | sed 's|^\./|$(prefix)/|' | grep -v '$(infodir)/dir$$'
 distcleancheck_listfiles = find . -type f -print
-ACLOCAL = ${SHELL} /media/Linux/code/lib/ImageMagick-6.9.3-0/config/missing aclocal-1.15
+ACLOCAL = ${SHELL} /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config/missing aclocal-1.15
 AMTAR = $${TAR-tar}
 AM_DEFAULT_VERBOSITY = 0
 AR = ar
 AS = as
-AUTOCONF = ${SHELL} /media/Linux/code/lib/ImageMagick-6.9.3-0/config/missing autoconf
-AUTOHEADER = ${SHELL} /media/Linux/code/lib/ImageMagick-6.9.3-0/config/missing autoheader
-AUTOMAKE = ${SHELL} /media/Linux/code/lib/ImageMagick-6.9.3-0/config/missing automake-1.15
+AUTOCONF = ${SHELL} /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config/missing autoconf
+AUTOHEADER = ${SHELL} /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config/missing autoheader
+AUTOMAKE = ${SHELL} /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config/missing automake-1.15
 AUTOTRACE_CFLAGS = 
 AUTOTRACE_LIBS = 
-AWK = gawk
+AWK = mawk
 AutotraceDecodeDelegate = autotrace
 BGPDecodeDelegate = bpgdec
 BGPEncodeDelegate = bpgenc
@@ -2556,10 +2556,10 @@ BlenderDecodeDelegate = blender
 BrowseDelegate = xdg-open
 CAIRO_SVG_CFLAGS = 
 CAIRO_SVG_LIBS = 
-CC = gcc -std=gnu99 -std=gnu99
+CC = gcc
 CCDEPMODE = depmode=gcc3
 CCMALLOCDelegate = 
-CFLAGS = -I/usr/include/libpng12     -I/usr/include/freetype2   -I/usr/include/freetype2   -I/usr/local/include    -fopenmp -g -O2 -Wall -mtune=core2 -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
+CFLAGS = -I/usr/include/libpng12 -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
 CL_CFLAGS = 
 CL_LIBS = 
 CODER_DIRNAME = coders
@@ -2607,22 +2607,22 @@ FFTW_LIBS =
 FGREP = /bin/grep -F
 FILTER_DIRNAME = filters
 FILTER_PATH = /usr/local/lib/ImageMagick-6.9.3/modules-Q32HDRI/filters
-FONTCONFIG_CFLAGS = -I/usr/include/freetype2  
-FONTCONFIG_LIBS = -lfontconfig -lfreetype  
+FONTCONFIG_CFLAGS = -I/usr/include/freetype2
+FONTCONFIG_LIBS = -lfontconfig -lfreetype
 FPX_LIBS = 
-FREETYPE_CFLAGS = -I/usr/include/freetype2  
-FREETYPE_LIBS = -lfreetype  
+FREETYPE_CFLAGS = -I/usr/include/freetype2
+FREETYPE_LIBS = -lfreetype
 GDI32_LIBS = 
 GOMP_LIBS = -lgomp
 GREP = /bin/grep
 GSAlphaDevice = pngalpha
 GSCMYKDevice = pamcmyk32
 GSColorDevice = pnmraw
-GSEPSDevice = epswrite
+GSEPSDevice = eps2write
 GSMonoDevice = pbmraw
 GSPDFDevice = pdfwrite
 GSPSDevice = ps2write
-GSVersion = 9.10
+GSVersion = 9.18
 GS_LIBS = 
 GVCDecodeDelegate = dot
 GVC_CFLAGS = 
@@ -2648,9 +2648,9 @@ INT32_T = signed int
 INT64_F = "l"
 INT64_T = signed long
 INT8_T = signed char
-JBIG_LIBS = -ljbig
+JBIG_LIBS = 
 JEMALLOC_LIBS = 
-JPEG_LIBS = -ljpeg
+JPEG_LIBS = 
 JXRDecodeDelegate = JxrDecApp
 JXREncodeDelegate = JxrEncApp
 LCMS2_CFLAGS = 
@@ -2687,8 +2687,8 @@ LQR_CFLAGS =
 LQR_LIBS = 
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
-LZMA_CFLAGS =  
-LZMA_LIBS = -llzma  
+LZMA_CFLAGS = 
+LZMA_LIBS = 
 LaunchDelegate = gimp
 MAGICKCORE_PATH = /usr/local/lib
 MAGICKPP_LIBRARY_AGE = 0
@@ -2699,16 +2699,16 @@ MAGICKPP_LIBRARY_VERSION_INFO = 6:0:0
 MAGICKPP_LIB_VERSION = 0x060000
 MAGICKPP_LIB_VERSION_TEXT = 6.9.3
 MAGICK_ABI_SUFFIX = Q32HDRI
-MAGICK_CFLAGS = -I/usr/include/libpng12     -I/usr/include/freetype2   -I/usr/include/freetype2   -I/usr/local/include    -fopenmp -g -O2 -Wall -mtune=core2 -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
-MAGICK_CODER_MODULE_PATH = /media/Linux/code/lib/ImageMagick-6.9.3-0/coders
-MAGICK_CONFIGURE_BUILD_PATH = /media/Linux/code/lib/ImageMagick-6.9.3-0/config
-MAGICK_CONFIGURE_SRC_PATH = /media/Linux/code/lib/ImageMagick-6.9.3-0/config
+MAGICK_CFLAGS = -I/usr/include/libpng12 -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
+MAGICK_CODER_MODULE_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/coders
+MAGICK_CONFIGURE_BUILD_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config
+MAGICK_CONFIGURE_SRC_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config
 MAGICK_CPPFLAGS = -I/usr/local/include/ImageMagick-6
 MAGICK_CXXFLAGS = -g -O2 -pthread
-MAGICK_DELEGATES = mpeg fontconfig freetype jbig jng jpeg lzma png ps tiff x zlib
-MAGICK_DEP_LIBS =  -ljbig  -ltiff -lfreetype   -ljpeg   -lpng12       -lfontconfig -lfreetype      -lXext -lXt   -lSM -lICE -lX11  -llzma          -L/usr/local/lib -lz    -lm -lgomp    
+MAGICK_DELEGATES = mpeg fontconfig freetype png ps x zlib
+MAGICK_DEP_LIBS =     -lfreetype    -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11          -lz  -lm -lgomp    
 MAGICK_FEATURES = DPC HDRI Cipher OpenMP
-MAGICK_FILTER_MODULE_PATH = /media/Linux/code/lib/ImageMagick-6.9.3-0/filters
+MAGICK_FILTER_MODULE_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/filters
 MAGICK_GIT_REVISION = 10443:31160e3:20160101
 MAGICK_HDRI = HDRI
 MAGICK_LDFLAGS = -L/usr/local/lib  
@@ -2717,7 +2717,7 @@ MAGICK_LIBRARY_CURRENT = 2
 MAGICK_LIBRARY_CURRENT_MIN = 2
 MAGICK_LIBRARY_REVISION = 0
 MAGICK_LIBRARY_VERSION_INFO = 2:0:0
-MAGICK_LIBS =  -ljbig  -ltiff -lfreetype   -ljpeg   -lpng12       -lfontconfig -lfreetype      -lXext -lXt   -lSM -lICE -lX11  -llzma          -L/usr/local/lib -lz    -lm -lgomp    
+MAGICK_LIBS =     -lfreetype    -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11          -lz  -lm -lgomp    
 MAGICK_LIB_VERSION = 0x020000
 MAGICK_LIB_VERSION_NUMBER = 2,0,0
 MAGICK_LIB_VERSION_TEXT = 6.9.3
@@ -2732,7 +2732,7 @@ MAGICK_TARGET_OS = linux-gnu
 MAGICK_TARGET_VENDOR = unknown
 MAGICK_VERSION = 6.9.3-0
 MAINT = #
-MAKEINFO = ${SHELL} /media/Linux/code/lib/ImageMagick-6.9.3-0/config/missing makeinfo
+MAKEINFO = ${SHELL} /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config/missing makeinfo
 MANDelegate = groff
 MANIFEST_TOOL = :
 MAN_DIR = /usr/local/share/man
@@ -2743,8 +2743,8 @@ MODULES_DIRNAME = modules-Q32HDRI
 MODULES_PATH = /usr/local/lib/ImageMagick-6.9.3/modules-Q32HDRI
 MODULES_RELATIVE_PATH = modules-Q32HDRI
 MODULE_EXTRA_CPPFLAGS = 
-MPEGDecodeDelegate = avconv
-MPEGEncodeDelegate = avconv
+MPEGDecodeDelegate = ffmpeg
+MPEGEncodeDelegate = ffmpeg
 MVDelegate = mv
 MogrifyDelegate = mogrify
 MrSIDDecodeDelegate = mrsidgeodecode
@@ -2759,7 +2759,7 @@ OPENMP_CXXFLAGS = -fopenmp
 OSX_GCOV_LDFLAG = 
 OTOOL = 
 OTOOL64 = 
-P7ZIP = 7za
+P7ZIP = 
 PACKAGE = ImageMagick
 PACKAGE_BUGREPORT = http://www.imagemagick.org
 PACKAGE_CHANGE_DATE = 20160101
@@ -2768,7 +2768,7 @@ PACKAGE_LIB_VERSION_NUMBER = 6,9,3,0
 PACKAGE_NAME = ImageMagick
 PACKAGE_PERL_VERSION = 6.93
 PACKAGE_RELEASE = 0
-PACKAGE_RELEASE_DATE = 2016-01-15
+PACKAGE_RELEASE_DATE = 2016-08-24
 PACKAGE_STRING = ImageMagick 6.9.3
 PACKAGE_TARNAME = ImageMagick
 PACKAGE_URL = 
@@ -2792,14 +2792,14 @@ PGPDecodeDelegate = pgpv
 PKG_CONFIG = /usr/bin/pkg-config
 PKG_CONFIG_LIBDIR = 
 PKG_CONFIG_PATH = 
-PNG_CFLAGS = -I/usr/include/libpng12  
-PNG_LIBS = -lpng12  
+PNG_CFLAGS = -I/usr/include/libpng12
+PNG_LIBS = -lpng12
 POVDelegate = povray
 POW_LIB = 
 PREFIX_DIR = /usr/local
 PRTDIAG = 
 PSDelegate = gs
-PTHREAD_CC = gcc -std=gnu99 -std=gnu99
+PTHREAD_CC = gcc
 PTHREAD_CFLAGS = -pthread
 PTHREAD_LIBS = 
 PrintDelegate = /usr/bin/lpr
@@ -2807,7 +2807,7 @@ QUANTUM_DEPTH = 32
 RANLIB = ranlib
 RLEEncodeDelegate = rawtorle
 RMDelegate = rm
-RPM = rpmbuild
+RPM = 
 RSVGDecodeDelegate = rsvg-convert
 RSVG_CFLAGS = 
 RSVG_LIBS = 
@@ -2829,7 +2829,7 @@ SYSCONF_DIR = /usr/local/etc
 ShowImageDelegate = 
 TAR = tar
 THREAD_LIBS = 
-TIFF_LIBS = -ltiff
+TIFF_LIBS = 
 TXTDelegate = enscript
 UINT16_T = unsigned short
 UINT32_F = ""
@@ -2851,7 +2851,7 @@ WMF_LIBS =
 WWWDecodeDelegate = curl
 WebPDecodeDelegate = dwebp
 WebPEncodeDelegate = cwebp
-WinPathScript = /media/Linux/code/lib/ImageMagick-6.9.3-0/winpath.sh
+WinPathScript = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/winpath.sh
 X11_LIBS =  -lSM -lICE -lX11 
 XEXT_LIBS = -lXext
 XMKMF = 
@@ -2867,13 +2867,13 @@ X_EXTRA_LIBS =
 X_LIBS = 
 X_PRE_LIBS =  -lSM -lICE
 ZIP = zip
-ZLIB_CFLAGS = -I/usr/local/include  
-ZLIB_LIBS = -L/usr/local/lib -lz  
+ZLIB_CFLAGS = 
+ZLIB_LIBS = -lz
 ZipDelegate = gzip
-abs_builddir = /media/Linux/code/lib/ImageMagick-6.9.3-0
-abs_srcdir = /media/Linux/code/lib/ImageMagick-6.9.3-0
-abs_top_builddir = /media/Linux/code/lib/ImageMagick-6.9.3-0
-abs_top_srcdir = /media/Linux/code/lib/ImageMagick-6.9.3-0
+abs_builddir = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0
+abs_srcdir = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0
+abs_top_builddir = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0
+abs_top_srcdir = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0
 ac_ct_AR = ar
 ac_ct_CC = gcc
 ac_ct_CXX = g++
@@ -2913,7 +2913,7 @@ host_vendor = unknown
 htmldir = ${docdir}
 includedir = ${prefix}/include
 infodir = ${datarootdir}/info
-install_sh = ${SHELL} /media/Linux/code/lib/ImageMagick-6.9.3-0/config/install-sh
+install_sh = ${SHELL} /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config/install-sh
 libdir = ${exec_prefix}/lib
 libexecdir = ${exec_prefix}/libexec
 localedir = ${datarootdir}/locale
@@ -2974,7 +2974,7 @@ noinst_HEADERS = \
 	$(MAGICK_NOINST_HDRS)
 
 SRCDIR = "$(srcdir)/"
-#SRCDIR = '$(shell /media/Linux/code/lib/ImageMagick-6.9.3-0/winpath.sh $(srcdir)/)'
+#SRCDIR = '$(shell /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/winpath.sh $(srcdir)/)'
 
 # Tests with .tap extensions use the TAP protocol and TAP driver
 LOG_COMPILER = $(SHELL)
@@ -3125,16 +3125,16 @@ codersdir = $(CODER_PATH)
 #MAGICK_EXR_SRCS = coders/exr.c
 #MAGICK_FPX_MODULES = coders/fpx.la
 #MAGICK_FPX_SRCS = coders/fpx.c
-MAGICK_JBIG_MODULES = coders/jbig.la
-MAGICK_JBIG_SRCS = coders/jbig.c
-MAGICK_JPEG_MODULES = coders/jpeg.la
-MAGICK_JPEG_SRCS = coders/jpeg.c
+#MAGICK_JBIG_MODULES = coders/jbig.la
+#MAGICK_JBIG_SRCS = coders/jbig.c
+#MAGICK_JPEG_MODULES = coders/jpeg.la
+#MAGICK_JPEG_SRCS = coders/jpeg.c
 #MAGICK_JP2_MODULES = coders/jp2.la
 #MAGICK_JP2_SRCS = coders/jp2.c
 MAGICK_PNG_MODULES = coders/png.la
 MAGICK_PNG_SRCS = coders/png.c
-MAGICK_TIFF_MODULES = coders/ept.la coders/tiff.la
-MAGICK_TIFF_SRCS = coders/ept.c coders/tiff.c
+#MAGICK_TIFF_MODULES = coders/ept.la coders/tiff.la
+#MAGICK_TIFF_SRCS = coders/ept.c coders/tiff.c
 #MAGICK_WEBP_MODULES = coders/webp.la
 #MAGICK_WEBP_SRCS = coders/webp.c
 #MAGICK_GDI32_MODULES = coders/clipboard.la coders/emf.la
@@ -5173,22 +5173,22 @@ HTML_UNINSTALL_DATA_TARGETS = uninstall-data-html
 # Build Windows source Zip and 7Zip balls
 #
 DIST_WINDOWS_SRC_ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.zip
-#DIST_WINDOWS_SRC_7ZIP = 
-DIST_WINDOWS_SRC_7ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.7z
+DIST_WINDOWS_SRC_7ZIP = 
+#DIST_WINDOWS_SRC_7ZIP = $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-windows.7z
 
 #
 # RPM build support
 #
-DIST_ARCHIVE_SRPM = $(distdir)-1.src.rpm
-RPMDIR = rpmbuild
-RPMARCH = $(MAGICK_TARGET_CPU)
-#DIST_ARCHIVE_RPM = 
-DIST_ARCHIVE_RPM = \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
-	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-perl-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm
+#DIST_ARCHIVE_SRPM = $(distdir)-1.src.rpm
+#RPMDIR = rpmbuild
+#RPMARCH = $(MAGICK_TARGET_CPU)
+DIST_ARCHIVE_RPM = 
+#DIST_ARCHIVE_RPM = \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-c++-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-devel-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm \
+#	$(RPMDIR)/$(RPMARCH)/$(PACKAGE_NAME)-perl-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)-$(PACKAGE_RELEASE).$(RPMARCH).rpm
 
 all: $(BUILT_SOURCES)
 	$(MAKE) $(AM_MAKEFLAGS) all-am
@@ -11457,8 +11457,8 @@ perl-sources: perl-quantum-sources
 ##	cd $(PERLMAGICK) && perl Makefile.PL $(PERL_MAKE_OPTIONS)
 
 ##install-exec-perl: $(PERLMAKEFILE)
-##	( cd $(PERLMAGICK) && $(MAKE) CC='gcc -std=gnu99 -std=gnu99' && \
-##	$(MAKE) CC='gcc -std=gnu99 -std=gnu99' install )
+##	( cd $(PERLMAGICK) && $(MAKE) CC='gcc' && \
+##	$(MAKE) CC='gcc' install )
 
 ##all-perl: perl-sources
 
@@ -11466,16 +11466,16 @@ perl-sources: perl-quantum-sources
 ##	echo "Uninstall not supported for PerlMagick"
 
 ##check-perl: $(PERLMAKEFILE)
-##	cd $(PERLMAGICK) && $(abs_top_builddir)/magick.sh $(MAKE) CC='gcc -std=gnu99 -std=gnu99' test
+##	cd $(PERLMAGICK) && $(abs_top_builddir)/magick.sh $(MAKE) CC='gcc' test
 
 ##perl-build: $(PERLMAKEFILE)
-##	( cd $(PERLMAGICK) && $(MAKE) CC='gcc -std=gnu99 -std=gnu99' )
+##	( cd $(PERLMAGICK) && $(MAKE) CC='gcc' )
 
 ##$(PERLMAKEFILE): perl-sources $(MAGICKCORE_LIBS) $(MAGICKWAND_LIBS) $(PERLMAKEMAKER)
 ##	cd $(PERLMAGICK) && perl Makefile.PL MAP_TARGET=$(PERLSTATICNAME) $(PERL_MAKE_OPTIONS) && $(MAKE) Makefile ; $(MAKE) Makefile
 
 ##$(PERLMAGICK)/$(PERLSTATICNAME): $(MAGICKCORE_LIBS) $(MAGICKWAND_LIBS) $(PERLMAKEFILE)
-##	( rm -f $(PERLMAGICK)/$(PERLSTATICNAME) ; cd $(PERLMAGICK) && $(MAKE) CC='gcc -std=gnu99 -std=gnu99' $(PERLSTATICNAME) ; $(MAKE) CC='gcc -std=gnu99 -std=gnu99' $(PERLSTATICNAME) )
+##	( rm -f $(PERLMAGICK)/$(PERLSTATICNAME) ; cd $(PERLMAGICK) && $(MAKE) CC='gcc' $(PERLSTATICNAME) ; $(MAKE) CC='gcc' $(PERLSTATICNAME) )
 
 ##all-perl: $(PERLMAGICK)/$(PERLSTATICNAME)
 
@@ -11483,12 +11483,12 @@ perl-sources: perl-quantum-sources
 ##	rm -f "$(DESTDIR)$(BIN_DIR)/$(PERLSTATICNAME)"
 ##	if test "x$(DESTDIR)" = "x" -o "$(PERL_SUPPORTS_DESTDIR)" = 'yes' ; then \
 ##	  ( cd $(PERLMAGICK) && \
-##	    $(MAKE) -f Makefile.aperl CC='gcc -std=gnu99 -std=gnu99' inst_perl MAP_TARGET=$(PERLSTATICNAME) \
+##	    $(MAKE) -f Makefile.aperl CC='gcc' inst_perl MAP_TARGET=$(PERLSTATICNAME) \
 ##	    INSTALLBIN="$(BIN_DIR)" \
 ##	  ) ; \
 ##	else \
 ##	  ( cd $(PERLMAGICK) && \
-##	    $(MAKE) -f Makefile.aperl CC='gcc -std=gnu99 -std=gnu99' inst_perl MAP_TARGET=$(PERLSTATICNAME) \
+##	    $(MAKE) -f Makefile.aperl CC='gcc' inst_perl MAP_TARGET=$(PERLSTATICNAME) \
 ##	    INSTALLBIN="$(DESTDIR)$(BIN_DIR)" PREFIX="$(DESTDIR)$(prefix)" \
 ##	  ) ; \
 ##	fi
@@ -11497,15 +11497,15 @@ perl-sources: perl-quantum-sources
 ##	rm -f '$(DESTDIR)$(BIN_DIR)/$(PERLSTATICNAME)'
 
 ##check-perl: $(PERLMAGICK)/$(PERLSTATICNAME)
-##	cd $(PERLMAGICK) && $(abs_top_builddir)/magick.sh $(MAKE) -f Makefile.aperl CC='gcc -std=gnu99 -std=gnu99' test
+##	cd $(PERLMAGICK) && $(abs_top_builddir)/magick.sh $(MAKE) -f Makefile.aperl CC='gcc' test
 
 ##perl-build: $(PERLMAGICK)/$(PERLSTATICNAME)
 
 #clean-perl:
 #	(cd $(PERLMAGICK) && \
-#	( if test -f Makefile.old ; then $(MAKE) -f Makefile.old CC='gcc -std=gnu99 -std=gnu99' clean ; fi ) ; \
-#	( if test -f Makefile ; then $(MAKE) CC='gcc -std=gnu99 -std=gnu99' clean ; fi ) ; \
-#	( if test -f Makefile ; then $(MAKE) CC='gcc -std=gnu99 -std=gnu99' clean ; fi ) ; \
+#	( if test -f Makefile.old ; then $(MAKE) -f Makefile.old CC='gcc' clean ; fi ) ; \
+#	( if test -f Makefile ; then $(MAKE) CC='gcc' clean ; fi ) ; \
+#	( if test -f Makefile ; then $(MAKE) CC='gcc' clean ; fi ) ; \
 #	rm -f Makefile.old PerlMagick ; \
 #	rm -f t/output* t/jng/*_tmp.jng t/*/output* ; \
 #	rm -f quantum/Q32HDRI.xs;\
@@ -11641,28 +11641,28 @@ $(DIST_WINDOWS_SRC_ZIP) $(DIST_WINDOWS_SRC_7ZIP) windows-dist:
   git clone -b ImageMagick-6 --single-branch git@git.imagemagick.org:repos/ImageMagick.git $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
 	rm -f $(DIST_WINDOWS_SRC_ZIP)
 	$(ZIP) -r -9 -q  $(DIST_WINDOWS_SRC_ZIP) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
-	rm -f $(DIST_WINDOWS_SRC_7ZIP)
-	$(P7ZIP) a -t7z -mx=9 $(DIST_WINDOWS_SRC_7ZIP) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
-	chmod 644 $(DIST_WINDOWS_SRC_7ZIP)
+#	rm -f $(DIST_WINDOWS_SRC_7ZIP)
+#	$(P7ZIP) a -t7z -mx=9 $(DIST_WINDOWS_SRC_7ZIP) $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
+#	chmod 644 $(DIST_WINDOWS_SRC_7ZIP)
 	rm -rf $(PACKAGE_NAME)-$(PACKAGE_VERSION)$(PACKAGE_VERSION_ADDENDUM)
-.PHONY: srpm
-$(DIST_ARCHIVE_SRPM) srpm: dist-bzip2
-	rm -f $(DIST_ARCHIVE_SRPM)
-	$(RPM) --define="_sourcedir `pwd`" --define="_srcrpmdir `pwd`" --nodeps --bs ImageMagick.spec
-	@echo ==============================================================
-	@echo $(DIST_ARCHIVE_SRPM) is ready for distribution.
-	@echo ==============================================================
+#.PHONY: srpm
+#$(DIST_ARCHIVE_SRPM) srpm: dist-bzip2
+#	rm -f $(DIST_ARCHIVE_SRPM)
+#	$(RPM) --define="_sourcedir `pwd`" --define="_srcrpmdir `pwd`" --nodeps --bs ImageMagick.spec
+#	@echo ==============================================================
+#	@echo $(DIST_ARCHIVE_SRPM) is ready for distribution.
+#	@echo ==============================================================
 
-.PHONY: rpm
-rpm:	dist
-	rm -rf $(RPMDIR)
-	$(MKDIR_P) $(RPMDIR)
-	$(MKDIR_P) $(RPMDIR)/BUILD
-	$(MKDIR_P) $(RPMDIR)/RPMS
-	$(RPM) --define="_sourcedir `pwd`" --define="_rpmdir `pwd`/$(RPMDIR)/RPMS" --define="_builddir `pwd`/$(RPMDIR)/BUILD" --nodeps -bb ImageMagick.spec
-	@echo ==============================================================
-	@echo $(DIST_ARCHIVE_RPM) is ready for distribution.
-	@echo ==============================================================
+#.PHONY: rpm
+#rpm:	dist
+#	rm -rf $(RPMDIR)
+#	$(MKDIR_P) $(RPMDIR)
+#	$(MKDIR_P) $(RPMDIR)/BUILD
+#	$(MKDIR_P) $(RPMDIR)/RPMS
+#	$(RPM) --define="_sourcedir `pwd`" --define="_rpmdir `pwd`/$(RPMDIR)/RPMS" --define="_builddir `pwd`/$(RPMDIR)/BUILD" --nodeps -bb ImageMagick.spec
+#	@echo ==============================================================
+#	@echo $(DIST_ARCHIVE_RPM) is ready for distribution.
+#	@echo ==============================================================
 
 #
 # Build a validated snapshot release and move to the snapshots directory.
