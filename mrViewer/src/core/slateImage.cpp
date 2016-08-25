@@ -25,7 +25,6 @@
  * 
  */
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #include <iostream>
