@@ -163,7 +163,7 @@ foreach my $delegate (@tested_delegates) {
 # defaults for LIBS & INC & CCFLAGS params that we later pass to Writemakefile
 my $INC_magick = '-I../ -I..   -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32  -I"' . $Config{'usrinc'} . '/ImageMagick"';
 my $LIBS_magick = '-L../magick/.libs -lMagickCore-6.Q32HDRI -lperl -lm';
-my $CCFLAGS_magick = "$Config{'ccflags'} -I/usr/include/libpng12     -I/usr/include/freetype2   -I/usr/include/freetype2   -I/usr/local/include    -fopenmp -g -O2 -Wall -mtune=core2 -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32";
+my $CCFLAGS_magick = "$Config{'ccflags'} -I/usr/include/libpng12 -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32";
 my $LDFLAGS_magick   = "-L../magick/.libs -lMagickCore-6.Q32HDRI $Config{'ldflags'}  ";
 my $LDDLFLAGS_magick = "-L../magick/.libs -lMagickCore-6.Q32HDRI $Config{'lddlflags'}  ";
 
@@ -206,7 +206,7 @@ WriteMakefile
    'INC'	=> $INC_magick,
 
    # C compiler
-   #'CC' => 'gcc -std=gnu99 -std=gnu99',
+   #'CC' => 'gcc',
 
    # C pre-processor flags (e.g. -I & -D options)
    # 'CPPFLAGS' => "$Config{'cppflags'}   -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32 ",
@@ -215,7 +215,7 @@ WriteMakefile
    'CCFLAGS' => $CCFLAGS_magick,
 
    # Linker
-   #'LD' => $Config{'ld'} == $Config{'cc'} ? 'gcc -std=gnu99 -std=gnu99' : $Config{'ld'},
+   #'LD' => $Config{'ld'} == $Config{'cc'} ? 'gcc' : $Config{'ld'},
 
    # Linker flags for building an executable
    'LDFLAGS' =>  $LDFLAGS_magick,
