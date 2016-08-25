@@ -19,13 +19,13 @@
 #
 #    magick.sh convert -size 640x480 gradient:black-yellow gradient.png
 
-top_srcdir='/media/Linux/code/lib/ImageMagick-6.9.3-0'
-top_builddir='/media/Linux/code/lib/ImageMagick-6.9.3-0'
+top_srcdir='/media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0'
+top_builddir='/media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0'
 
-MAGICK_CODER_MODULE_PATH='/media/Linux/code/lib/ImageMagick-6.9.3-0/coders'
-MAGICK_CONFIGURE_SRC_PATH='/media/Linux/code/lib/ImageMagick-6.9.3-0/config'
-MAGICK_CONFIGURE_BUILD_PATH='/media/Linux/code/lib/ImageMagick-6.9.3-0/config'
-MAGICK_FILTER_MODULE_PATH='/media/Linux/code/lib/ImageMagick-6.9.3-0/filters'
+MAGICK_CODER_MODULE_PATH='/media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/coders'
+MAGICK_CONFIGURE_SRC_PATH='/media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config'
+MAGICK_CONFIGURE_BUILD_PATH='/media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config'
+MAGICK_FILTER_MODULE_PATH='/media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/filters'
 DIRSEP=':'
 
 PATH="${top_builddir}/utilities:${PATH}"
