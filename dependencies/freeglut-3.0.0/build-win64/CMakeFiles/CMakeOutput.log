@@ -1,0 +1,225 @@
+The system is: Windows - 6.3.9600 - AMD64
+Compiling the C compiler identification source file "CMakeCCompilerId.c" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/amd64/cl.exe 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Version 19.00.24213.1 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+CMakeCCompilerId.c
+Microsoft (R) Incremental Linker Version 14.00.24213.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCCompilerId.exe 
+CMakeCCompilerId.obj 
+
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.exe"
+
+Compilation of the C compiler identification source "CMakeCCompilerId.c" produced "CMakeCCompilerId.obj"
+
+The C compiler identification is MSVC, found in "D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/3.6.1/CompilerIdC/CMakeCCompilerId.exe"
+
+Compiling the CXX compiler identification source file "CMakeCXXCompilerId.cpp" succeeded.
+Compiler: C:/Program Files (x86)/Microsoft Visual Studio 14.0/VC/bin/amd64/cl.exe 
+Build flags: 
+Id flags: 
+
+The output was:
+0
+Microsoft (R) C/C++ Optimizing Compiler Version 19.00.24213.1 for x64
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+CMakeCXXCompilerId.cpp
+Microsoft (R) Incremental Linker Version 14.00.24213.1
+Copyright (C) Microsoft Corporation.  All rights reserved.
+
+/out:CMakeCXXCompilerId.exe 
+CMakeCXXCompilerId.obj 
+
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.exe"
+
+Compilation of the CXX compiler identification source "CMakeCXXCompilerId.cpp" produced "CMakeCXXCompilerId.obj"
+
+The CXX compiler identification is MSVC, found in "D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/3.6.1/CompilerIdCXX/CMakeCXXCompilerId.exe"
+
+Determining if the C compiler works passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_6408e\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_6408e.dir\build.make /nologo -L                  CMakeFiles\cmTC_6408e.dir\build
+Building C object CMakeFiles/cmTC_6408e.dir/testCCompiler.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm2D15.tmp
+testCCompiler.c
+Linking C executable cmTC_6408e.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_6408e.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_6408e.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm2D45.tmp
+
+
+Detecting C compiler ABI info compiled with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_42baa\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_42baa.dir\build.make /nologo -L                  CMakeFiles\cmTC_42baa.dir\build
+Building C object CMakeFiles/cmTC_42baa.dir/CMakeCCompilerABI.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm2ECA.tmp
+CMakeCCompilerABI.c
+Linking C executable cmTC_42baa.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_42baa.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_42baa.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm2EFA.tmp
+
+
+Determining if the CXX compiler works passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_af46c\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_af46c.dir\build.make /nologo -L                  CMakeFiles\cmTC_af46c.dir\build
+Building CXX object CMakeFiles/cmTC_af46c.dir/testCXXCompiler.cxx.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm309F.tmp
+testCXXCompiler.cxx
+Linking CXX executable cmTC_af46c.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_af46c.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_af46c.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm30DF.tmp
+
+
+Detecting CXX compiler ABI info compiled with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_6b627\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_6b627.dir\build.make /nologo -L                  CMakeFiles\cmTC_6b627.dir\build
+Building CXX object CMakeFiles/cmTC_6b627.dir/CMakeCXXCompilerABI.cpp.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm32A3.tmp
+CMakeCXXCompilerABI.cpp
+Linking CXX executable cmTC_6b627.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_6b627.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_6b627.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm32D3.tmp
+
+
+
+
+Detecting CXX [] compiler features compiled with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_da60c\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_da60c.dir\build.make /nologo -L                  CMakeFiles\cmTC_da60c.dir\build
+Building CXX object CMakeFiles/cmTC_da60c.dir/feature_tests.cxx.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm34E5.tmp
+feature_tests.cxx
+Linking CXX executable cmTC_da60c.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_da60c.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_da60c.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm3515.tmp
+
+
+    Feature record: CXX_FEATURE:1cxx_alias_templates
+    Feature record: CXX_FEATURE:1cxx_alignas
+    Feature record: CXX_FEATURE:1cxx_alignof
+    Feature record: CXX_FEATURE:1cxx_attributes
+    Feature record: CXX_FEATURE:1cxx_attribute_deprecated
+    Feature record: CXX_FEATURE:1cxx_auto_type
+    Feature record: CXX_FEATURE:1cxx_binary_literals
+    Feature record: CXX_FEATURE:1cxx_constexpr
+    Feature record: CXX_FEATURE:1cxx_contextual_conversions
+    Feature record: CXX_FEATURE:1cxx_decltype
+    Feature record: CXX_FEATURE:1cxx_decltype_auto
+    Feature record: CXX_FEATURE:1cxx_default_function_template_args
+    Feature record: CXX_FEATURE:1cxx_defaulted_functions
+    Feature record: CXX_FEATURE:1cxx_defaulted_move_initializers
+    Feature record: CXX_FEATURE:1cxx_delegating_constructors
+    Feature record: CXX_FEATURE:1cxx_deleted_functions
+    Feature record: CXX_FEATURE:1cxx_digit_separators
+    Feature record: CXX_FEATURE:1cxx_enum_forward_declarations
+    Feature record: CXX_FEATURE:1cxx_explicit_conversions
+    Feature record: CXX_FEATURE:1cxx_extended_friend_declarations
+    Feature record: CXX_FEATURE:1cxx_extern_templates
+    Feature record: CXX_FEATURE:1cxx_final
+    Feature record: CXX_FEATURE:1cxx_func_identifier
+    Feature record: CXX_FEATURE:1cxx_generalized_initializers
+    Feature record: CXX_FEATURE:1cxx_generic_lambdas
+    Feature record: CXX_FEATURE:1cxx_inheriting_constructors
+    Feature record: CXX_FEATURE:1cxx_inline_namespaces
+    Feature record: CXX_FEATURE:1cxx_lambdas
+    Feature record: CXX_FEATURE:1cxx_lambda_init_captures
+    Feature record: CXX_FEATURE:1cxx_local_type_template_args
+    Feature record: CXX_FEATURE:1cxx_long_long_type
+    Feature record: CXX_FEATURE:1cxx_noexcept
+    Feature record: CXX_FEATURE:1cxx_nonstatic_member_init
+    Feature record: CXX_FEATURE:1cxx_nullptr
+    Feature record: CXX_FEATURE:1cxx_override
+    Feature record: CXX_FEATURE:1cxx_range_for
+    Feature record: CXX_FEATURE:1cxx_raw_string_literals
+    Feature record: CXX_FEATURE:1cxx_reference_qualified_functions
+    Feature record: CXX_FEATURE:1cxx_return_type_deduction
+    Feature record: CXX_FEATURE:1cxx_right_angle_brackets
+    Feature record: CXX_FEATURE:1cxx_rvalue_references
+    Feature record: CXX_FEATURE:1cxx_sizeof_member
+    Feature record: CXX_FEATURE:1cxx_static_assert
+    Feature record: CXX_FEATURE:1cxx_strong_enums
+    Feature record: CXX_FEATURE:1cxx_template_template_parameters
+    Feature record: CXX_FEATURE:1cxx_thread_local
+    Feature record: CXX_FEATURE:1cxx_trailing_return_types
+    Feature record: CXX_FEATURE:1cxx_unicode_literals
+    Feature record: CXX_FEATURE:1cxx_uniform_initialization
+    Feature record: CXX_FEATURE:1cxx_unrestricted_unions
+    Feature record: CXX_FEATURE:1cxx_user_literals
+    Feature record: CXX_FEATURE:1cxx_variable_templates
+    Feature record: CXX_FEATURE:1cxx_variadic_macros
+    Feature record: CXX_FEATURE:1cxx_variadic_templates
+Determining if files sys/types.h exist passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_bf578\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_bf578.dir\build.make /nologo -L                  CMakeFiles\cmTC_bf578.dir\build
+Building C object CMakeFiles/cmTC_bf578.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3746.tmp
+CheckIncludeFiles.c
+Linking C executable cmTC_bf578.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_bf578.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_bf578.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm3766.tmp
+
+
+Determining if files stdbool.h exist passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_4fe88\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_4fe88.dir\build.make /nologo -L                  CMakeFiles\cmTC_4fe88.dir\build
+Building C object CMakeFiles/cmTC_4fe88.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm39C7.tmp
+CheckIncludeFiles.c
+Linking C executable cmTC_4fe88.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_4fe88.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_4fe88.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm39E7.tmp
+
+
+Determining if files fcntl.h exist passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_1f51c\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_1f51c.dir\build.make /nologo -L                  CMakeFiles\cmTC_1f51c.dir\build
+Building C object CMakeFiles/cmTC_1f51c.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3C47.tmp
+CheckIncludeFiles.c
+Linking C executable cmTC_1f51c.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_1f51c.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_1f51c.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm3C77.tmp
+
+
+Determining if files stdint.h exist passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_708e4\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_708e4.dir\build.make /nologo -L                  CMakeFiles\cmTC_708e4.dir\build
+Building C object CMakeFiles/cmTC_708e4.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3FA3.tmp
+CheckIncludeFiles.c
+Linking C executable cmTC_708e4.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_708e4.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_708e4.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm3FD3.tmp
+
+
+Determining if files inttypes.h exist passed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_af589\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_af589.dir\build.make /nologo -L                  CMakeFiles\cmTC_af589.dir\build
+Building C object CMakeFiles/cmTC_af589.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm4158.tmp
+CheckIncludeFiles.c
+Linking C executable cmTC_af589.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_af589.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_af589.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm4188.tmp
+
+

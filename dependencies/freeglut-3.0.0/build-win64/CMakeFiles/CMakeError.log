@@ -1,0 +1,143 @@
+Determining if files unistd.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_ad4dc\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_ad4dc.dir\build.make /nologo -L                  CMakeFiles\cmTC_ad4dc.dir\build
+Building C object CMakeFiles/cmTC_ad4dc.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm391B.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win64\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Cannot open include file: 'unistd.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <unistd.h>
+
+
+int main(void){return 0;}
+
+Determining if files sys/time.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_4d4a7\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_4d4a7.dir\build.make /nologo -L                  CMakeFiles\cmTC_4d4a7.dir\build
+Building C object CMakeFiles/cmTC_4d4a7.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3979.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win64\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Cannot open include file: 'sys/time.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <sys/time.h>
+
+
+int main(void){return 0;}
+
+Determining if files sys/param.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_5c602\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_5c602.dir\build.make /nologo -L                  CMakeFiles\cmTC_5c602.dir\build
+Building C object CMakeFiles/cmTC_5c602.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3BAB.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win64\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Cannot open include file: 'sys/param.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <sys/param.h>
+
+
+int main(void){return 0;}
+
+Determining if files sys/ioctl.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_f790a\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_f790a.dir\build.make /nologo -L                  CMakeFiles\cmTC_f790a.dir\build
+Building C object CMakeFiles/cmTC_f790a.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3BF9.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win64\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Cannot open include file: 'sys/ioctl.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <sys/ioctl.h>
+
+
+int main(void){return 0;}
+
+Determining if files usbhid.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_17985\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_17985.dir\build.make /nologo -L                  CMakeFiles\cmTC_17985.dir\build
+Building C object CMakeFiles/cmTC_17985.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3E1C.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win64\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2): fatal error C1083: Cannot open include file: 'usbhid.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <usbhid.h>
+
+
+int main(void){return 0;}
+
+Determining if the function gettimeofday exists failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_da473\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_da473.dir\build.make /nologo -L                  CMakeFiles\cmTC_da473.dir\build
+Building C object CMakeFiles/cmTC_da473.dir/CheckFunctionExists.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3E6A.tmp
+CheckFunctionExists.c
+Linking C executable cmTC_da473.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_da473.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_da473.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm3E9A.tmp
+CheckFunctionExists.c.obj : error LNK2019: unresolved external symbol gettimeofday referenced in function main
+cmTC_da473.exe : fatal error LNK1120: 1 unresolved externals
+LINK Pass 1 failed. with 1120
+NMAKE : fatal error U1077: '"C:\Program Files\CMake\bin\cmake.exe"' : return code '0xffffffff'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+
+Determining if the function XParseGeometry exists failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win64/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_1b961\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe" -f CMakeFiles\cmTC_1b961.dir\build.make /nologo -L                  CMakeFiles\cmTC_1b961.dir\build
+Building C object CMakeFiles/cmTC_1b961.dir/CheckFunctionExists.c.obj
+	C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3F16.tmp
+CheckFunctionExists.c
+Linking C executable cmTC_1b961.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_1b961.dir --manifests  -- C:\PROGRA~2\MICROS~1.0\VC\bin\amd64\link.exe /nologo @CMakeFiles\cmTC_1b961.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm3F46.tmp
+CheckFunctionExists.c.obj : error LNK2019: unresolved external symbol XParseGeometry referenced in function main
+cmTC_1b961.exe : fatal error LNK1120: 1 unresolved externals
+LINK Pass 1 failed. with 1120
+NMAKE : fatal error U1077: '"C:\Program Files\CMake\bin\cmake.exe"' : return code '0xffffffff'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 14.0\VC\BIN\amd64\nmake.exe"' : return code '0x2'
+Stop.
+
+
