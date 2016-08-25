@@ -21,9 +21,15 @@ FIND_PATH( GLEW_INCLUDE_DIR GL/glew.h
   /usr/local/glew/include
   )
 
+SET( LOOKUP_DIR "Win32" )
+IF (CMAKE_BUILD_ARCH EQUAL "64")
+   SET( LOOKUP_DIR "x64" )
+ENDIF(CMAKE_BUILD_ARCH EQUAL "64" )
+
+
 FIND_LIBRARY( GLEW   glew32 glew GLEW
   PATHS 
-  $ENV{GLEW_ROOT}/lib/Release/Win${CMAKE_BUILD_ARCH}
+  $ENV{GLEW_ROOT}/lib/Release/${LOOKUP_DIR}
   $ENV{GLEW_ROOT}/lib/
   $ENV{GLEW_ROOT}
   /usr/local/glew/lib

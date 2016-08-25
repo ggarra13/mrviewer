@@ -18,7 +18,7 @@ include_directories(
 if(WIN32)
   add_definitions( -DACES_DLL -DACES_EXPORTS )
 else(WIN32)
-  add_definitions( -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 )
+#  add_definitions( -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 )
 endif(WIN32)
 
 
