@@ -17,7 +17,7 @@ old_library='libMagick++-6.Q32HDRI.a'
 inherited_linker_flags=' -pthread -fopenmp'
 
 # Libraries that this one depends upon.
-dependency_libs=' -L/usr/local/lib /usr/local/lib/libMagickWand-6.Q32HDRI.la /usr/local/lib/libMagickCore-6.Q32HDRI.la -ltiff -ljbig /usr/lib/x86_64-linux-gnu/libtiff.la -ljpeg -lpng12 -lfontconfig /usr/lib/x86_64-linux-gnu/libfreetype.la -lXext -lXt -llzma -lz -lSM -lICE -lX11 -lgomp'
+dependency_libs=' /usr/local/lib/libMagickWand-6.Q32HDRI.la /usr/local/lib/libMagickCore-6.Q32HDRI.la /usr/lib/x86_64-linux-gnu/libfreetype.la -lpng12 -lfontconfig -lXext -lXt -lz -lSM -lICE -lX11 -lgomp'
 
 # Names of additional weak libraries provided by this library
 weak_library_names=''
