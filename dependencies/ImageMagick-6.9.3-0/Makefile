@@ -582,8 +582,8 @@ coders_ept_la_OBJECTS = $(am_coders_ept_la_OBJECTS)
 coders_ept_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC $(AM_LIBTOOLFLAGS) \
 	$(LIBTOOLFLAGS) --mode=link $(CCLD) $(AM_CFLAGS) $(CFLAGS) \
 	$(coders_ept_la_LDFLAGS) $(LDFLAGS) -o $@
-##am_coders_ept_la_rpath =  \
-##	-rpath $(codersdir)
+#am_coders_ept_la_rpath =  \
+#	-rpath $(codersdir)
 coders_exr_la_DEPENDENCIES = $(MAGICKCORE_LIBS) $(am__DEPENDENCIES_1) \
 	$(am__DEPENDENCIES_1)
 am_coders_exr_la_OBJECTS = coders/coders_exr_la-exr.lo
@@ -727,8 +727,8 @@ coders_jbig_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(coders_jbig_la_LDFLAGS) $(LDFLAGS) -o \
 	$@
-##am_coders_jbig_la_rpath =  \
-##	-rpath $(codersdir)
+#am_coders_jbig_la_rpath =  \
+#	-rpath $(codersdir)
 coders_jnx_la_DEPENDENCIES = $(MAGICKCORE_LIBS)
 am_coders_jnx_la_OBJECTS = coders/coders_jnx_la-jnx.lo
 coders_jnx_la_OBJECTS = $(am_coders_jnx_la_OBJECTS)
@@ -754,8 +754,8 @@ coders_jpeg_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(coders_jpeg_la_LDFLAGS) $(LDFLAGS) -o \
 	$@
-##am_coders_jpeg_la_rpath =  \
-##	-rpath $(codersdir)
+#am_coders_jpeg_la_rpath =  \
+#	-rpath $(codersdir)
 coders_json_la_DEPENDENCIES = $(MAGICKCORE_LIBS)
 am_coders_json_la_OBJECTS = coders/coders_json_la-json.lo
 coders_json_la_OBJECTS = $(am_coders_json_la_OBJECTS)
@@ -1186,8 +1186,8 @@ coders_tiff_la_LINK = $(LIBTOOL) $(AM_V_lt) --tag=CC \
 	$(AM_LIBTOOLFLAGS) $(LIBTOOLFLAGS) --mode=link $(CCLD) \
 	$(AM_CFLAGS) $(CFLAGS) $(coders_tiff_la_LDFLAGS) $(LDFLAGS) -o \
 	$@
-##am_coders_tiff_la_rpath =  \
-##	-rpath $(codersdir)
+#am_coders_tiff_la_rpath =  \
+#	-rpath $(codersdir)
 coders_tile_la_DEPENDENCIES = $(MAGICKCORE_LIBS)
 am_coders_tile_la_OBJECTS = coders/coders_tile_la-tile.lo
 coders_tile_la_OBJECTS = $(am_coders_tile_la_OBJECTS)
@@ -1603,12 +1603,12 @@ am__objects_1 = magick/magick_libMagickCore_6_Q32HDRI_la-accelerate.lo \
 #am__objects_6 = coders/magick_libMagickCore_6_Q32HDRI_la-fpx.lo
 #am__objects_7 = coders/magick_libMagickCore_6_Q32HDRI_la-clipboard.lo \
 #	coders/magick_libMagickCore_6_Q32HDRI_la-emf.lo
-#am__objects_8 = coders/magick_libMagickCore_6_Q32HDRI_la-jbig.lo
-#am__objects_9 = coders/magick_libMagickCore_6_Q32HDRI_la-jpeg.lo
+am__objects_8 = coders/magick_libMagickCore_6_Q32HDRI_la-jbig.lo
+am__objects_9 = coders/magick_libMagickCore_6_Q32HDRI_la-jpeg.lo
 #am__objects_10 = coders/magick_libMagickCore_6_Q32HDRI_la-jp2.lo
 am__objects_11 = coders/magick_libMagickCore_6_Q32HDRI_la-png.lo
-#am__objects_12 = coders/magick_libMagickCore_6_Q32HDRI_la-ept.lo \
-#	coders/magick_libMagickCore_6_Q32HDRI_la-tiff.lo
+am__objects_12 = coders/magick_libMagickCore_6_Q32HDRI_la-ept.lo \
+	coders/magick_libMagickCore_6_Q32HDRI_la-tiff.lo
 #am__objects_13 = coders/magick_libMagickCore_6_Q32HDRI_la-webp.lo
 #am__objects_14 = coders/magick_libMagickCore_6_Q32HDRI_la-wmf.lo
 am__objects_15 = coders/magick_libMagickCore_6_Q32HDRI_la-x.lo \
@@ -2559,12 +2559,12 @@ CAIRO_SVG_LIBS =
 CC = gcc
 CCDEPMODE = depmode=gcc3
 CCMALLOCDelegate = 
-CFLAGS = -I/usr/include/libpng12 -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
+CFLAGS = -I/usr/include/libpng12  -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
 CL_CFLAGS = 
 CL_LIBS = 
 CODER_DIRNAME = coders
 CODER_PATH = /usr/local/lib/ImageMagick-6.9.3/modules-Q32HDRI/coders
-CONFIGURE_ARGS = ./configure  '--enable-hdri' '--with-quantum-depth=32' '--without-openexr'
+CONFIGURE_ARGS = ./configure  '--enable-hdri' '--with-quantum-depth=32' '--without-openexr' '--with-libtiff'
 CONFIGURE_PATH = /usr/local/etc/ImageMagick-6/
 CONFIG_STATUS_DEPENDENCIES = $(top_srcdir)/version.sh
 CPP = gcc -E
@@ -2648,9 +2648,9 @@ INT32_T = signed int
 INT64_F = "l"
 INT64_T = signed long
 INT8_T = signed char
-JBIG_LIBS = 
+JBIG_LIBS = -ljbig
 JEMALLOC_LIBS = 
-JPEG_LIBS = 
+JPEG_LIBS = -ljpeg
 JXRDecodeDelegate = JxrDecApp
 JXREncodeDelegate = JxrEncApp
 LCMS2_CFLAGS = 
@@ -2688,7 +2688,7 @@ LQR_LIBS =
 LTLIBOBJS = 
 LT_SYS_LIBRARY_PATH = 
 LZMA_CFLAGS = 
-LZMA_LIBS = 
+LZMA_LIBS = -llzma
 LaunchDelegate = gimp
 MAGICKCORE_PATH = /usr/local/lib
 MAGICKPP_LIBRARY_AGE = 0
@@ -2699,14 +2699,14 @@ MAGICKPP_LIBRARY_VERSION_INFO = 6:0:0
 MAGICKPP_LIB_VERSION = 0x060000
 MAGICKPP_LIB_VERSION_TEXT = 6.9.3
 MAGICK_ABI_SUFFIX = Q32HDRI
-MAGICK_CFLAGS = -I/usr/include/libpng12 -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
+MAGICK_CFLAGS = -I/usr/include/libpng12  -I/usr/include/freetype2 -I/usr/include/freetype2   -fopenmp -g -O2 -Wall -mtune=haswell -fexceptions -pthread -DMAGICKCORE_HDRI_ENABLE=1 -DMAGICKCORE_QUANTUM_DEPTH=32
 MAGICK_CODER_MODULE_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/coders
 MAGICK_CONFIGURE_BUILD_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config
 MAGICK_CONFIGURE_SRC_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/config
 MAGICK_CPPFLAGS = -I/usr/local/include/ImageMagick-6
 MAGICK_CXXFLAGS = -g -O2 -pthread
-MAGICK_DELEGATES = mpeg fontconfig freetype png ps x zlib
-MAGICK_DEP_LIBS =     -lfreetype    -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11          -lz  -lm -lgomp    
+MAGICK_DELEGATES = mpeg fontconfig freetype jbig jng jpeg lzma png ps tiff x zlib
+MAGICK_DEP_LIBS =  -ljbig  -ltiff -lfreetype -ljpeg   -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11  -llzma        -lz  -lm -lgomp    
 MAGICK_FEATURES = DPC HDRI Cipher OpenMP
 MAGICK_FILTER_MODULE_PATH = /media/gga/Datos/code/applications/mrViewer/dependencies/ImageMagick-6.9.3-0/filters
 MAGICK_GIT_REVISION = 10443:31160e3:20160101
@@ -2717,7 +2717,7 @@ MAGICK_LIBRARY_CURRENT = 2
 MAGICK_LIBRARY_CURRENT_MIN = 2
 MAGICK_LIBRARY_REVISION = 0
 MAGICK_LIBRARY_VERSION_INFO = 2:0:0
-MAGICK_LIBS =     -lfreetype    -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11          -lz  -lm -lgomp    
+MAGICK_LIBS =  -ljbig  -ltiff -lfreetype -ljpeg   -lpng12     -lfontconfig -lfreetype    -lXext -lXt   -lSM -lICE -lX11  -llzma        -lz  -lm -lgomp    
 MAGICK_LIB_VERSION = 0x020000
 MAGICK_LIB_VERSION_NUMBER = 2,0,0
 MAGICK_LIB_VERSION_TEXT = 6.9.3
@@ -2768,7 +2768,7 @@ PACKAGE_LIB_VERSION_NUMBER = 6,9,3,0
 PACKAGE_NAME = ImageMagick
 PACKAGE_PERL_VERSION = 6.93
 PACKAGE_RELEASE = 0
-PACKAGE_RELEASE_DATE = 2016-08-24
+PACKAGE_RELEASE_DATE = 2016-08-25
 PACKAGE_STRING = ImageMagick 6.9.3
 PACKAGE_TARNAME = ImageMagick
 PACKAGE_URL = 
@@ -2829,7 +2829,7 @@ SYSCONF_DIR = /usr/local/etc
 ShowImageDelegate = 
 TAR = tar
 THREAD_LIBS = 
-TIFF_LIBS = 
+TIFF_LIBS = -ltiff
 TXTDelegate = enscript
 UINT16_T = unsigned short
 UINT32_F = ""
@@ -3125,16 +3125,16 @@ codersdir = $(CODER_PATH)
 #MAGICK_EXR_SRCS = coders/exr.c
 #MAGICK_FPX_MODULES = coders/fpx.la
 #MAGICK_FPX_SRCS = coders/fpx.c
-#MAGICK_JBIG_MODULES = coders/jbig.la
-#MAGICK_JBIG_SRCS = coders/jbig.c
-#MAGICK_JPEG_MODULES = coders/jpeg.la
-#MAGICK_JPEG_SRCS = coders/jpeg.c
+MAGICK_JBIG_MODULES = coders/jbig.la
+MAGICK_JBIG_SRCS = coders/jbig.c
+MAGICK_JPEG_MODULES = coders/jpeg.la
+MAGICK_JPEG_SRCS = coders/jpeg.c
 #MAGICK_JP2_MODULES = coders/jp2.la
 #MAGICK_JP2_SRCS = coders/jp2.c
 MAGICK_PNG_MODULES = coders/png.la
 MAGICK_PNG_SRCS = coders/png.c
-#MAGICK_TIFF_MODULES = coders/ept.la coders/tiff.la
-#MAGICK_TIFF_SRCS = coders/ept.c coders/tiff.c
+MAGICK_TIFF_MODULES = coders/ept.la coders/tiff.la
+MAGICK_TIFF_SRCS = coders/ept.c coders/tiff.c
 #MAGICK_WEBP_MODULES = coders/webp.la
 #MAGICK_WEBP_SRCS = coders/webp.c
 #MAGICK_GDI32_MODULES = coders/clipboard.la coders/emf.la
