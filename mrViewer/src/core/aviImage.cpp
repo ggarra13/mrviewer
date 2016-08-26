@@ -2496,11 +2496,11 @@ bool aviImage::frame( const boost::int64_t f )
          ) )
     {
         // std::cerr << "false return: " << std::endl;
-        std::cerr << "vp: " << vpkts
-                  << " vs: " << _images.size()
-                  << " ap: " << apkts
-                  << " as: " << _audio.size()
-                  << std::endl;
+        // std::cerr << "vp: " << vpkts
+        //           << " vs: " << _images.size()
+        //           << " ap: " << apkts
+        //           << " as: " << _audio.size()
+        //           << std::endl;
         // std::cerr << "sum: " <<
         // ( _video_packets.bytes() +  _audio_packets.bytes() + 
         // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
