@@ -1939,7 +1939,7 @@ void aviImage::populate()
                 if ( has_audio() && pkt.stream_index == audio_stream_index() )
                 {
                     boost::int64_t pktframe = get_frame( get_audio_stream(), 
-                                                         pkt );
+                                                         pkt ) - _frame_offset;
                     _adts = pktframe;
 
                     if ( playback() == kBackwards )
@@ -2315,8 +2315,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             if ( has_audio() && audio_context() == _context &&
                  pkt.stream_index == audio_stream_index() )
             {
-                boost::int64_t pktframe = pts2frame( get_audio_stream(), 
-                                                     pkt.dts );
+                boost::int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )                                      - _frame_offset; // needed
                 _adts = pktframe;
 
                 if ( playback() == kBackwards )
@@ -2332,29 +2331,35 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                     // result in ffmpeg going backwards too far.
                     // This pktframe >= frame-10 is to avoid that.
                     _audio_packets.push_back( pkt );
-                    got_audio = true;
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
-                
-                if ( got_audio && !has_video() )
+
+                if ( !got_audio )
                 {
-                    for (int64_t t = frame; t <= pktframe; ++t )
+                    if ( pktframe > frame ) got_audio = true;
+                    else if ( pktframe == frame )
                     {
-                        AVPacket pkt;
-                        av_init_packet( &pkt );
-                        pkt.size = 0;
-                        pkt.data = NULL;
-                        pkt.dts = pkt.pts = t;
-                        _video_packets.push_back( pkt );
+                        audio_bytes += pkt.size;
+                        if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+                    }
+                    if ( got_audio && !has_video() )
+                     {
+                        for (int64_t t = frame; t <= pktframe; ++t )
+                        {
+                            AVPacket pkt;
+                            av_init_packet( &pkt );
+                            pkt.size = 0;
+                            pkt.data = NULL;
+                            pkt.dts = pkt.pts = t;
+                            _video_packets.push_back( pkt );
+                        }
+                     }
+
+                    if ( is_seek && got_audio ) {
+                        if ( !has_video() ) _video_packets.seek_end(vpts);
+                        _audio_packets.seek_end(apts);
                     }
                 }
-
-                if ( is_seek && got_audio ) {
-                    if ( !has_video() ) _video_packets.seek_end(vpts);
-                    _audio_packets.seek_end(apts);
-                }
-
-
 #ifdef DEBUG_DECODE_AUDIO
                 fprintf( stderr, "\t[avi] FETCH A f: %05" PRId64 
                          " audio pts: %07" PRId64 
@@ -2879,6 +2884,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
               pktframe = frame;
           }
 
+          // Avoid storing too many frames in advance
           if ( playback() == kForwards &&
                pktframe > _frame + max_video_frames() )
           {
