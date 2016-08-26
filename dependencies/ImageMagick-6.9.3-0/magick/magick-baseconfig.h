@@ -883,31 +883,49 @@
 #endif
 
 /* Define to 1 if you have the <tiffconf.h> header file. */
-/* #undef HAVE_TIFFCONF_H */
+#ifndef MAGICKCORE_HAVE_TIFFCONF_H
+#define MAGICKCORE_HAVE_TIFFCONF_H 1
+#endif
 
 /* Define to 1 if you have the `TIFFIsBigEndian' function. */
-/* #undef HAVE_TIFFISBIGENDIAN */
+#ifndef MAGICKCORE_HAVE_TIFFISBIGENDIAN
+#define MAGICKCORE_HAVE_TIFFISBIGENDIAN 1
+#endif
 
 /* Define to 1 if you have the `TIFFIsCODECConfigured' function. */
-/* #undef HAVE_TIFFISCODECCONFIGURED */
+#ifndef MAGICKCORE_HAVE_TIFFISCODECCONFIGURED
+#define MAGICKCORE_HAVE_TIFFISCODECCONFIGURED 1
+#endif
 
 /* Define to 1 if you have the `TIFFMergeFieldInfo' function. */
-/* #undef HAVE_TIFFMERGEFIELDINFO */
+#ifndef MAGICKCORE_HAVE_TIFFMERGEFIELDINFO
+#define MAGICKCORE_HAVE_TIFFMERGEFIELDINFO 1
+#endif
 
 /* Define to 1 if you have the `TIFFReadEXIFDirectory' function. */
-/* #undef HAVE_TIFFREADEXIFDIRECTORY */
+#ifndef MAGICKCORE_HAVE_TIFFREADEXIFDIRECTORY
+#define MAGICKCORE_HAVE_TIFFREADEXIFDIRECTORY 1
+#endif
 
 /* Define to 1 if you have the `TIFFSetErrorHandlerExt' function. */
-/* #undef HAVE_TIFFSETERRORHANDLEREXT */
+#ifndef MAGICKCORE_HAVE_TIFFSETERRORHANDLEREXT
+#define MAGICKCORE_HAVE_TIFFSETERRORHANDLEREXT 1
+#endif
 
 /* Define to 1 if you have the `TIFFSetTagExtender' function. */
-/* #undef HAVE_TIFFSETTAGEXTENDER */
+#ifndef MAGICKCORE_HAVE_TIFFSETTAGEXTENDER
+#define MAGICKCORE_HAVE_TIFFSETTAGEXTENDER 1
+#endif
 
 /* Define to 1 if you have the `TIFFSetWarningHandlerExt' function. */
-/* #undef HAVE_TIFFSETWARNINGHANDLEREXT */
+#ifndef MAGICKCORE_HAVE_TIFFSETWARNINGHANDLEREXT
+#define MAGICKCORE_HAVE_TIFFSETWARNINGHANDLEREXT 1
+#endif
 
 /* Define to 1 if you have the `TIFFSwabArrayOfTriples' function. */
-/* #undef HAVE_TIFFSWABARRAYOFTRIPLES */
+#ifndef MAGICKCORE_HAVE_TIFFSWABARRAYOFTRIPLES
+#define MAGICKCORE_HAVE_TIFFSWABARRAYOFTRIPLES 1
+#endif
 
 /* Define to 1 if you have the `times' function. */
 #ifndef MAGICKCORE_HAVE_TIMES
@@ -1084,10 +1102,14 @@
 #endif
 
 /* Define if you have JBIG library */
-/* #undef JBIG_DELEGATE */
+#ifndef MAGICKCORE_JBIG_DELEGATE
+#define MAGICKCORE_JBIG_DELEGATE 1
+#endif
 
 /* Define if you have JPEG library */
-/* #undef JPEG_DELEGATE */
+#ifndef MAGICKCORE_JPEG_DELEGATE
+#define MAGICKCORE_JPEG_DELEGATE 1
+#endif
 
 /* Define if you have LCMS library */
 /* #undef LCMS_DELEGATE */
@@ -1124,7 +1146,9 @@
 #endif
 
 /* Define if you have LZMA library */
-/* #undef LZMA_DELEGATE */
+#ifndef MAGICKCORE_LZMA_DELEGATE
+#define MAGICKCORE_LZMA_DELEGATE 1
+#endif
 
 /* Define to prepend to default font search path. */
 /* #undef MAGICK_FONT_PATH */
@@ -1365,7 +1389,9 @@
 #endif
 
 /* Define if you have TIFF library */
-/* #undef TIFF_DELEGATE */
+#ifndef MAGICKCORE_TIFF_DELEGATE
+#define MAGICKCORE_TIFF_DELEGATE 1
+#endif
 
 /* Define to 1 if you can safely include both <sys/time.h> and <time.h>. */
 #ifndef MAGICKCORE_TIME_WITH_SYS_TIME

@@ -804,7 +804,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
             if ( _adts < first ) first = _adts;
-            else if ( _adts > last )   last = _adts;
+            if ( _adts > last )   last = _adts;
             break;
         default:
             first = frame - max_audio_frames();
