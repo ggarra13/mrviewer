@@ -1,3 +1,8 @@
+v3.2.8   - Fixed video stores being kept too long and eating ton
+	   of memory.
+	 - Upgraded Windows compiling to MSVC 2015 Community.
+	   This potentially removes Windows NT compatability.
+
 v3.2.7   - Updated Histogram in RGB to show colors mixed in areas
 	   where R, G and B overlap.  So you get R+G=YELLOW,
 	   G+B=CYAN, R+B=MAGENTA, R+G+B=WHITE.
