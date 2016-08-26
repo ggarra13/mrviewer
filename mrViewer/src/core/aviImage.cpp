@@ -94,7 +94,7 @@ namespace
 //#define DEBUG_SEEK_SUBTITLE_PACKETS
 //#define DEBUG_HSEEK_VIDEO_PACKETS
 //#define DEBUG_VIDEO_PACKETS
-// #define DEBUG_VIDEO_STORES
+//#define DEBUG_VIDEO_STORES
 //#define DEBUG_AUDIO_PACKETS
 //#define DEBUG_PACKETS
 //#define DEBUG_PACKETS_DETAIL
@@ -106,11 +106,11 @@ namespace
 
 
 //  in ffmpeg, sizes are in bytes...
-#define kMAX_QUEUE_SIZE (15 * 2048 * 2048)
+#define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
 #define kMAX_PACKET_SIZE 50
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
-#define kMIN_FRAMES 5
+#define kMIN_FRAMES 25
 
 namespace {
   const unsigned int  kMaxCacheImages = 70;
@@ -1146,7 +1146,6 @@ CMedia::DecodeStatus
 aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
 {
   boost::int64_t ptsframe = frame;
-
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
 
   if ( status == kDecodeOK )
@@ -1208,7 +1207,7 @@ void aviImage::limit_video_store(const boost::int64_t frame)
           first = frame - max_video_frames();
           last  = frame + max_video_frames();
           if ( _dts > last )   last  = _dts;
-          // if ( _dts < first )  first = _dts;
+          if ( _dts < first )  first = _dts;
           break;
       default:
           first = frame - max_video_frames();
@@ -1940,7 +1939,7 @@ void aviImage::populate()
                 if ( has_audio() && pkt.stream_index == audio_stream_index() )
                 {
                     boost::int64_t pktframe = get_frame( get_audio_stream(), 
-                                                         pkt ) - _frame_offset;
+                                                         pkt );
                     _adts = pktframe;
 
                     if ( playback() == kBackwards )
@@ -2317,8 +2316,7 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                  pkt.stream_index == audio_stream_index() )
             {
                 boost::int64_t pktframe = pts2frame( get_audio_stream(), 
-                                                     pkt.dts )
-                                          - _frame_offset;
+                                                     pkt.dts );
                 _adts = pktframe;
 
                 if ( playback() == kBackwards )
@@ -2334,34 +2332,26 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
                     // result in ffmpeg going backwards too far.
                     // This pktframe >= frame-10 is to avoid that.
                     _audio_packets.push_back( pkt );
+                    got_audio = true;
                     if ( !has_video() && pktframe > dts ) dts = pktframe;
                 }
-
-                if ( !got_audio )
+                
+                if ( got_audio && !has_video() )
                 {
-                    if ( pktframe > frame ) got_audio = true;
-                    else if ( pktframe == frame )
+                    for (int64_t t = frame; t <= pktframe; ++t )
                     {
-                        audio_bytes += pkt.size;
-                        if ( audio_bytes >= bytes_per_frame ) got_audio = true;
+                        AVPacket pkt;
+                        av_init_packet( &pkt );
+                        pkt.size = 0;
+                        pkt.data = NULL;
+                        pkt.dts = pkt.pts = t;
+                        _video_packets.push_back( pkt );
                     }
-                    if ( got_audio && !has_video() )
-                    {
-                        for (int64_t t = frame; t <= pktframe; ++t )
-                        {
-                            AVPacket pkt;
-                            av_init_packet( &pkt );
-                            pkt.size = 0;
-                            pkt.data = NULL;
-                            pkt.dts = pkt.pts = t;
-                            _video_packets.push_back( pkt );
-                        }
-                    }
+                }
 
-                    if ( is_seek && got_audio ) {
-                        if ( !has_video() ) _video_packets.seek_end(vpts);
-                        _audio_packets.seek_end(apts);
-                    }
+                if ( is_seek && got_audio ) {
+                    if ( !has_video() ) _video_packets.seek_end(vpts);
+                    _audio_packets.seek_end(apts);
                 }
 
 
@@ -2401,7 +2391,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 bool aviImage::fetch(const boost::int64_t frame)
 {
 #ifdef DEBUG_DECODE
-    cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected << endl;
+    cerr << "FETCH BEGIN: " << frame << " EXPECTED: " << _expected
+         << " DTS: " << _dts << endl;
 #endif
 
     if ( _right_eye && (playback() == kStopped || playback() == kSaving) )
@@ -2425,6 +2416,7 @@ bool aviImage::fetch(const boost::int64_t frame)
        return ok;
    }
 
+   
 #ifdef DEBUG_DECODE
   cerr << "------------------------------------------------------" << endl;
   cerr << "FETCH START: " << frame << " gotV:" << got_video << " gotA:" << got_audio << endl;
@@ -2488,30 +2480,36 @@ bool aviImage::fetch(const boost::int64_t frame)
 bool aviImage::frame( const boost::int64_t f )
 {
 
+    size_t vpkts = _video_packets.size();
+    size_t apkts = _audio_packets.size();
+    
     if ( playback() != kStopped && playback() != kSaving &&
-         (_audio_packets.bytes() + _video_packets.bytes() + 
-          _subtitle_packets.bytes() > kMAX_QUEUE_SIZE
-          || ( (_audio_packets.size() > kMIN_FRAMES || !has_audio() ) &&
-               (_video_packets.size() > kMIN_FRAMES || !has_video() )
-               ) ) )
+         ( (_video_packets.bytes() +  _audio_packets.bytes() + 
+            _subtitle_packets.bytes() )  >  kMAX_QUEUE_SIZE ) ||
+         ( ( apkts > kMIN_FRAMES || !has_audio() ) &&
+           ( vpkts > kMIN_FRAMES || !has_video() )
+         ) )
     {
         // std::cerr << "false return: " << std::endl;
-        // std::cerr << "vp: " << _video_packets.size() << std::endl;
-        // std::cerr << "ap: " << _audio_packets.size() << std::endl;
+        std::cerr << "vp: " << vpkts
+                  << " vs: " << _images.size()
+                  << " ap: " << apkts
+                  << " as: " << _audio.size()
+                  << std::endl;
         // std::cerr << "sum: " <<
         // ( _video_packets.bytes() +  _audio_packets.bytes() + 
         // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
         // 		 << std::endl;
-        return false;
+        return true;
     }
 
     if ( f < _frameStart )    _dts = _adts = _frameStart;
     else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
-    else                      _dts = _adts = f;
+    // else                      _dts = _adts = f;
 
 
 
-  bool ok = fetch(_dts);
+  bool ok = fetch(f);
   
 
 
@@ -2787,7 +2785,6 @@ aviImage::audio_video_display( const boost::int64_t& frame )
 
 CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 {
-
     boost::int64_t frame = f;
 
     if ( !has_video() )
@@ -2880,6 +2877,12 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
           else
           {
               pktframe = frame;
+          }
+
+          if ( playback() == kForwards &&
+               pktframe > _frame + max_video_frames() )
+          {
+              got_video = kDecodeOK; continue;
           }
 
 	  bool ok = in_video_store( pktframe );
