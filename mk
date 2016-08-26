@@ -1,5 +1,4 @@
-!/bin/bash --norc
-
+#!/bin/bash --norc
 
 #
 # Determine CPU architecture
