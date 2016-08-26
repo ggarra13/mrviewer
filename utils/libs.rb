@@ -4,6 +4,10 @@ require 'fileutils'
 
 EXCLUDE = %w(
 libGL\.so
+libGLdispatch\.so
+libGLX\.so
+libGL\.so
+libGL\.so
 libm\.so
 libgcc_s.*
 libc\.so*
@@ -12,6 +16,7 @@ libstdc\+\+.*
 libpthread.*
 libX.*
 .*nvidia.*
+librt.*
 )
 EXCLUDE_REGEX = /(?:#{EXCLUDE.join('|')}).*/
 
