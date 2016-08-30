@@ -1,0 +1,73 @@
+Compiling the library in Windows
+================================
+
+DISCLAIMER: these notes are not very reliable, as they're
+based on some very simple tests, without much knowledge of
+the Windows operating system.
+
+1) Using MinGW/MSYS
+
+Everything goes as in standard *nix systems (you should
+probably change the default installation location with the
+--prefix option in `configure').
+With the default options, the `configure' sctipt produces a
+DLL.  If you want to build a static library, you should pass the
+options --disable-shared and --disable-declspec to
+`configure', and make sure you define the preprocessor
+LQR_DISABLE_DECLSPEC whenever you want to compile/link
+against the static library.
+
+2) Using MS Visual C++
+
+The library compiles with `Microsoft Visual C++ 2008 Express
+edition' and `Microsoft Visual C++ 2010 Express Edition'.
+Follow these steps:
+
+  a) Create a new project (suggested name: `liblqr-1-0')
+  
+   *) In the 2008 edition, create an empty DLL project with
+      the default setup (choose Console Application then
+      Advanced Settings -> DLL + Empty Project). The
+      suggested name is liblr-1-0
+   
+   *) In the 2010 edition, choose Empty project
+
+  b) Copy the `lqr' directory in the project directory you
+  have created
+
+  c) Add all the source files within the `lqr' directory to
+  the project (right-click -> Add -> Existing item...)
+   
+  d) Go to Project -> Properties in the menu. This opens a
+  dialog. At the top, set "Configuration:" to "All
+  Configurations". Then, go to "Configuration Properties"
+  and set the options as follows:
+  
+   *) [2010 edition only] General -> Configuration Type:
+      Dynamic Library
+
+   *) C/C++ -> General -> Additional Include Directories:
+      add the directory `lqr' and its parent, and also the
+      directory where all the necessary glib-2.0 headers are
+      found (usually, there are 2 of those, one ends with
+      `include\glib-2.0', another with
+      `lib\glib-2.0\include')
+
+   *) C/C++ -> Preprocessor -> Preprocessor Definitions: add
+      LQR_EXPORTS to the list
+
+   *) C/C++ -> Advanced -> Compile As: Compile as C Code (it
+      also works otherwise, but this option seems to make
+      sense given that the library is ANSI C)
+
+   *) Linker -> General -> Version: set version number
+
+   *) Linker -> General -> Additional Library Directories:
+      add the directory where glib-2.0.lib is found
+
+   *) Linker -> Input -> Additional Dependencies: add
+      glib-2.0.lib
+
+When you build the project, it should produce the library
+liblqr-1-0.lib and liblqr-1-0.dll files (assuming your
+project is called `liblqr-1-0').

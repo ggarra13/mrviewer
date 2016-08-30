@@ -1,0 +1,35 @@
+
+BUILDING AND INSTALLING FLTK UNDER APPLE OS X
+
+    The support for OS X on FLTK2 at this time is in alpha stage. FLTK1.1.6
+    offers full support for OS X based on Carbon and QuickDraw. There is also
+    a flag to compile a somewhat experimental Carbon/Quartz version of 
+    FLTK1.1.6.
+    
+    Currently, and experimental port of FLTK2 compiles successfully using
+    Quartz by running the following commands from a shell window:
+    
+      > autoconf
+      > ./configure --enable-debug
+      > make
+      > test/demo
+      
+    Not all demo applications will be compiled. A few test will fail and abort.
+   
+    Only a subset of FLTK2 is currently supported on Apple's OS X using 
+    Carbon and Quartz as the core libraries. We will improve the Mac support
+    as need, but we would also like to ask our users to contribute bug 
+    reports, bug fixes, and code improvements. 
+ 
+     - All standard widget types including Menus and GlWindow are supported. 
+     - Bitmap support is fully implemented, pixmap support is somewhat of a hack 
+       though and does not include grayed out images. 
+     - Image creation and drawing is very buggy an likely to crash.
+     - Pie and Arc code draws additional lines.
+     - Text editor does not support fractional character lengths.
+     - UTF 8 is not supported.
+     - fltk::Window as a subwindow is not supported.
+ 
+
+    Matthias Melcher
+    

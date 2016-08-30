@@ -1,0 +1,162 @@
+// This file is for Doxygen input. It is not compiled.
+
+#include <fltk/Window.h>
+#include <fltk/Widget.h>
+#include <fltk/run.h>
+
+using namespace fltk;
+
+/*! \page intro Introduction to FLTK
+
+This manual describes FLTK version 2.0, a cross-platform C++ Graphical
+User Interface (GUI) toolkit.  Each of the "related pages" in this
+manual is designed as a tutorial for using FLTK, while the main
+sections provide a complete reference for all FLTK widgets and
+functions.
+
+FLTK (pronounced "fulltick") is a LGPL'd C++ graphical user interface
+toolkit for X (UNIX&reg;), OpenGL&reg;, Microsoft&reg; Windows&reg;,
+OS/X, and several other platforms. It was originally developed by
+Mr. Bill Spitzak and is currently maintained by a small group of
+developers across the world with a central repository in the US.
+
+\section licensing Licensing
+
+FLTK comes with complete free source code. FLTK is &copy;1998-2011
+by Bill Spitzak and others.  Use and distribution of FLTK is governed
+by the <A HREF=license.html>FLTK Library License</a>, which is the GNU
+Library General Public License with an \e exception added that allows you
+to distribute statically-linked programs using the library without
+providing source code to the program or the library). You can thus use
+FLTK in any software, whether or not you include the source code.
+
+\section name What Does "FLTK" Mean?
+
+FLTK was originally designed to be compatible with the Forms Library
+written for SGI machines (a derivative of this library called "XForms"
+is still used quite often). In that library all the functions and
+structures started with &quot;fl_&quot;. This naming was extended to
+all new methods and widgets in the C++ library, and this prefix "FL"
+was taken as the name of the library.
+
+After FL was released as open source, it was discovered it was
+impossible to search &quot;FL&quot; on the Internet, due to the fact
+that it is also the abbreviation for Florida. After much debating and
+searching for a new name for the toolkit, which was already in use by
+several people, Bill came up with &quot;FLTK&quot;, with the bogus
+excuse that it stands for the &quot;Fast Light Tool Kit&quot;.
+
+\section features Features
+
+FLTK was designed to be statically linked. This was done by splitting 
+it into many small objects and designing it so that functions that are 
+not used do not have pointers to them in the parts that are used, and 
+thus do not get linked in. It is also designed so that all data used by
+the GUI, such as images and widget layout, can be inlined into source
+code.
+
+This allows you to make an easy-to-install program, or to modify FLTK
+to the exact requirements of your application, without worrying about
+bloat.
+
+However, FLTK works fine as a shared library. It is often included in
+this form on Linux distributions.
+
+Here are some of the core features unique to FLTK:
+- sizeof(fltk::Widget) == 60.
+- The &quot;core&quot; (the &quot;hello&quot; program compiled &amp; linked with a static 
+FLTK  library using gcc on a 486 and then stripped) is 82K.
+- The FLUID program (which includes every widget) is 352k.
+- Written directly atop Xlib (or WIN32) for maximum speed,  and 
+carefully optimized for code size and performance.
+- Precise low-level compatibility between the X11 and WIN32  version 
+(only about 10% of the code is different).
+- Interactive user interface builder program. Output is 
+ human-readable and editable C++ source code.
+- Support for X11 overlay hardware (emulation if none and under
+WIN32.)
+- Very small &amp; fast portable 2-D drawing library with PostScript
+style functions, to hide  Xlib and WIN32.
+- OpenGL/Mesa drawing area widget.
+- Support for OpenGL overlay hardware on both X11 and WIN32. 
+Emulation if none.
+- Text input fields with Emacs key bindings, X cut &amp; paste, and 
+foreign letter compose!
+- Compatibility header file for the GLUT library.
+- Compatibility header file for the XForms library.
+- Much too much to list here...
+
+\section history History of FLTK
+
+It has always been Bill's belief that the "operating system" does not
+have to provide <i>any</i> of what people call "GUI".  Toolkits (even
+FLTK) are <I>not</I> what should be provided, the system only has to
+provide arbitrary shaped but featureless windows, a <i>powerful</i>
+set of graphics drawing calls, and a <i>simple, unalterable</i> method
+of delivering events to the owners of the windows. Much of the design
+of FLTK is to prove that complex UI ideas could be entirely
+implemented in a user space toolkit, with no knowledge or support by
+the system.
+
+Many of the ideas in FLTK were developed on a NeXT (but <I>not</I>
+using NextStep) in 1987 in a C toolkit Bill called
+&quot;viewkit&quot;.  Here he came up with passing events downward in
+the tree and having the handle routine return a value indicating they
+used the event, which got rid of the need for "interests" that so
+complicated Motif and NeWS.
+
+After going to film school for a few years, Bill worked at Sun
+Microsystems on the (doomed) NeWS project.  Here he found an even
+better and cleaner windowing system, and he reimplemented
+&quot;viewkit&quot; atop that.  NeWS did have an unnecessarily complex
+method of delivering events which hurt it.
+
+With the death of NeWS Bill realized that he would have to live
+with X. The biggest problem with X is the &quot;window manager&quot;,
+which means that the toolkit can no longer control the window borders
+or drag the window around. Indeed far more code is spent trying to
+talk to window managers than would be needed to draw the borders
+themselves. (fortunately the problems with X are also replicated on
+Windows, and thus solving them helped with the porting to Windows).
+
+At Digital Domain Bill discovered another toolkit,
+&quot;Forms&quot;.  Forms was similar to his work, but provided many
+more widgets, since it was used in many real applications, rather then
+as theoretical work. Several large pieces of software were written
+using a version of Forms with the menus and file browser replaced with
+code from viewkit.
+
+The need to switch to OpenGL, a desire to use C++, and the
+closed-source nature of XForms, all led to a requirement to rewrite
+Forms.  This produced the first version of FLTK.  The conversion to
+C++ required so many changes it made it impossible to recompile any
+Forms objects.  Since it was incompatible anyway, Bill decided to
+incorporate his older ideas as much as possible.
+
+Bill received permission to release it for free on the Internet, 
+with the GNU general public license.  Response from Internet users 
+indicated that the Linux market dwarfed the SGI and high-speed GL 
+market, so he rewrote it to use X for all drawing, greatly speeding it 
+up on these machines.  That is the version you have now.
+
+FLTK 2.0 is a rewrite to make the interfaces to each widget more
+consistent, to use C++ more correctly, including the ability (but not
+the requirement) to support functor style callbacks, exceptions, and a
+namespace, and to support themeing of the GUI without having to set
+the color of every widget.
+
+\section www Internet Resources
+
+FLTK is hosted on a web site, http://www.fltk.org operated by Michael
+Sweet of the Easy Software Corporation (the developer of CUPS). An SVN
+repository of the source code, downloads of the fltk package, mailing
+list and newsserver, bug tracking, and programs using FLTK are all here.
+
+FLTK also has a SourceForge page at http://fltk.sourceforge.net,
+though currently all source code is actually on the fltk.org site.
+
+(Other stuff was here but I believe it was inaccurate. Need info on how
+to read the mailing lists using usenet, get svn access, post bugs,
+etc. This information is currently available at http://www.fltk.org)
+
+*/
