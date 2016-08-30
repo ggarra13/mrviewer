@@ -1,0 +1,106 @@
+'\" t
+.\"     Title: pango-querymodules
+.\"    Author: Owen Taylor
+.\" Generator: DocBook XSL Stylesheets v1.78.1 <http://docbook.sf.net/>
+.\"      Date: 09/23/2013
+.\"    Manual: User Commands
+.\"    Source: Pango
+.\"  Language: English
+.\"
+.TH "PANGO\-QUERYMODULES" "1" "09/23/2013" "Pango" "User Commands"
+.\" -----------------------------------------------------------------
+.\" * Define some portability stuff
+.\" -----------------------------------------------------------------
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.\" http://bugs.debian.org/507673
+.\" http://lists.gnu.org/archive/html/groff/2009-02/msg00013.html
+.\" ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+.ie \n(.g .ds Aq \(aq
+.el       .ds Aq '
+.\" -----------------------------------------------------------------
+.\" * set default formatting
+.\" -----------------------------------------------------------------
+.\" disable hyphenation
+.nh
+.\" disable justification (adjust text to left margin only)
+.ad l
+.\" -----------------------------------------------------------------
+.\" * MAIN CONTENT STARTS HERE *
+.\" -----------------------------------------------------------------
+.SH "NAME"
+pango-querymodules \- Module registration utility
+.SH "SYNOPSIS"
+.HP \w'\fBpango\-querymodules\fR\ 'u
+\fBpango\-querymodules\fR [OPTION...] [MODULE...]
+.SH "DESCRIPTION"
+.PP
+\fBpango\-querymodules\fR
+collects information about loadable modules for Pango and writes it to
+stdout\&.
+.PP
+If called without MODULE arguments, it looks for modules in the Pango module path, which is specified by the key
+Pango/ModulesPath
+in the Pango configuration database\&.
+.PP
+If called with MODULE arguments, it looks for the specified modules\&. The arguments may be absolute or relative paths\&.
+.PP
+At runtime, Pango looks for the loadable module information (i\&.e\&. the output of pango\-querymodules) in
+\fIlibdir\fR/pango/1\&.8\&.0/modules\&.cache\&.
+.SH "OPTIONS"
+.PP
+\fB\-?\fR, \fB\-\-help\fR
+.RS 4
+Prints a short help text and exits\&.
+.RE
+.PP
+\fB\-\-version\fR
+.RS 4
+Prints version information\&.
+.RE
+.PP
+\fB\-\-system\fR
+.RS 4
+Do not load user\-specific configuration\&.
+.RE
+.PP
+\fB\-\-update\-cache\fR
+.RS 4
+Update the Pango module cache file directly, instead of writing the information to
+stdout\&.
+.RE
+.SH "ENVIRONMENT"
+.PP
+\fBPANGO_RC_FILE\fR
+.RS 4
+Specifies an additional rc file for the Pango configuration database, in addition to the system\-wide and per\-user files\&.
+.RE
+.SH "FILES"
+.PP
+\fIsysconfdir\fR/pango/pangorc
+.RS 4
+System\-wide Pango configuration file\&.
+.RE
+.PP
+\fB$XDG_CONFIG_HOME\fR/pango/pangorc
+.RS 4
+User\-specific Pango configuration file\&.
+.RE
+.PP
+\fIlibdir\fR/pango/1\&.8\&.0/modules\&.cache
+.RS 4
+Location of the module cache file read by Pango\&.
+.RE
+.SH "BUGS"
+.PP
+None known yet\&.
+.SH "AUTHORS"
+.PP
+\fBOwen Taylor\fR
+.RS 4
+Developer
+.RE
+.PP
+\fBBehdad Esfahbod\fR
+.RS 4
+Developer
+.RE
