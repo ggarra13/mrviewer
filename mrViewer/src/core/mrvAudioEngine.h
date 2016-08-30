@@ -106,14 +106,17 @@ class ViewerUI;
     static const DeviceList& devices();
 
     // Return default device (must be first one added)
-    std::string default_device() const;
+    static std::string default_device();
 
     // Allow the user to select a device for playback
-    bool device( const std::string& b );
+    static bool device( const std::string& b );
 
-    bool device( const unsigned int idx );
+    static bool device( const unsigned int idx );
 
-    std::string device() const;
+    static std::string device();
+      
+      static unsigned device_index() { return _device_idx; }
+      static unsigned old_device_index() { return _old_device_idx; }
 
     // Name of audio engine
     virtual const char* name() = 0;
@@ -163,7 +166,8 @@ class ViewerUI;
 
   protected:
     static DeviceList _devices;     //!< list of devices available
-    unsigned int _device_idx;  //!< index to current device being used
+    static unsigned int _device_idx;  //!< index to current device being used
+    static unsigned int _old_device_idx;  //!< index to previous device used
     bool         _enabled;
     float        _volume;
     unsigned int _channels;
