@@ -75,7 +75,6 @@ static const char* kModule = "alsa";
 	// Create default device
 	Device def( "default", "Default Audio Device" );
 	_devices.push_back( def );
-	_device_idx = 0;
 
 	// Now get all others
 	int err = 0;
@@ -285,6 +284,7 @@ static const char* kModule = "alsa";
               THROW(buf);
           }
 
+          _old_device_idx = _device_idx;
 
           /* Figure out what the hardware is capable of */
           snd_pcm_hw_params_t *hwparams = NULL;
@@ -310,6 +310,7 @@ static const char* kModule = "alsa";
                        snd_strerror(status));
               THROW( buf );
           }
+
 
           /* Try for a closest match on audio format */
           status = -1;
@@ -352,7 +353,6 @@ static const char* kModule = "alsa";
           }
 
           _audio_format = (mrv::AudioEngine::AudioFormat) test_format;
-
 
           /* Set the number of channels */
           unsigned int ch = channels;
@@ -493,7 +493,6 @@ static const char* kModule = "alsa";
     {
 	close();
 	_enabled = false;
-	throw(e);
     }
   }
 
