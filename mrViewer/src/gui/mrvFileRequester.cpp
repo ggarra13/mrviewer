@@ -27,8 +27,6 @@
  * 
  */
 
-#define __STDC_FORMAT_MACROS
-
 #include <inttypes.h>
 
 #include <fltk/file_chooser.h>
