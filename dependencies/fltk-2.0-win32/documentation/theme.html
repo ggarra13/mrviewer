@@ -1,0 +1,169 @@
+<head><link href="fltk.css" rel="stylesheet" type="text/css">
+<title>FLTK Themes</title></head><body>
+
+<h1>Themes</h1>
+
+<h2><a name=tplugins>Theme plugins</a></h2>
+
+Just before the first window is shown, fltk calls the "theme"
+function, which is used to initialize the styles to the user's and
+programmer's preferences. This is a function pointer and it is set and
+read with <a href="#theme">fltk::theme(x)</a> and <a
+href="#theme">fltk::theme()</a>.  This function should set all the <a
+href="Fl_Named_Style.html">NamedStyle</a> structures to the correct
+values for the appearance selected by the user and operating system.
+The return value is ignored but you should return true for future
+compatability.
+
+<p>This pointer is declared as a "C" function to make it easier to
+load the correct function by name from a plugin. Theme functions are
+actually of the form
+<tt>extern&nbsp;"C"&nbsp;bool&nbsp;fltk_theme()</tt>. A typedef of
+<tt>fltk::Theme</tt> is provided.
+
+<p>By default this points at a C function called "fltk_theme" that in
+turn calls the function <a
+href="#system_theme">fltk::system_theme()</a>.  You can "override" the
+theme function and customize fltk's appearance in several ways:
+
+<ol>
+
+<li>If fltk is dynamically linked (or statically linked on some Unix
+systems, including Linux if -shared was given to the linker) a "theme
+plugin" can be loaded. You can use the function <a
+href="#load_plugin">fltk::load_plugin()</a> to read such a plugin in a
+portable way. The default <a href="utility.html#args">fltk::args()</a>
+function does this.
+
+<li>If fltk is statically linked (or in all cases on some Unix systems
+such as Irix), your program can replace fltk_theme with it's own
+definition at compile time. The one you supply will replace the one in
+the fltk library.
+
+<li>You can call fltk::theme(function) to set the function
+directly.
+
+</ol>
+
+<h2><a name=tcontrol>Controlling themes</a></h2>
+
+<h4><a name=theme>static fltk::Theme fltk::theme();
+<br>static void fltk::theme(fltk::Theme f);</a></h4>
+
+Get or set the function that will be called when the theme is loaded.
+
+<h4><a name=scheme>static const char* fltk::scheme();
+<br>static void fltk::scheme(const char* f);</a></h4>
+
+(NYI) This string is maintained so that a theme plugin can look at it
+and use it for any purpose it wants. <a
+href="utility.html#args">fltk::args()</a> will set this if the user gives the
+"-scheme" switch. The default value is null.
+
+<h4><a name=load_theme2>static void fltk::load_theme();</a></h4>
+
+Force the theme to be loaded. Calling this multiple times does nothing
+(call <a href="#reload_theme">reload_theme()</a> if you want to make a
+change to <a href="#theme">theme()</a>. take effect). Normally fltk
+calls this just before the first window is shown(). You can call this
+earlier to make sure all the styles are correct, for instance if you
+want to measure the size of labels, which depends on the font
+selected.
+
+<h4><a name=reload_theme>static void fltk::reload_theme();</a></h4>
+
+If <a href="#load_theme">load_theme()</a> has been called, this will
+restore all the Style information back to the compiled-in default
+values, and then call the theme() function again. This is useful if
+theme() changes, or if external information that your theme uses changes.
+
+<p>If load_theme() has never been called this returns and does
+nothing.  This allows your code to change the themes several times
+without wasting time before the first window is shown.
+
+<p>On Windows this is automatically called in response to a
+<tt>WM_SYSCOLORCHANGE</tt>. On X the theme itself needs to set up some
+event handler to call this, see the KDE theme source code for an example.
+
+<h2><a name=timplement>Implementing a Theme</a></h2>
+
+To implement "themes" the theme code needs to write a number of static
+locations, primarily the default style of several classes. You
+ususally only need to change a few styles to implement a theme.  All
+widgets inherit from the default style anything that they don't set
+themselves.
+
+<p>The following functions are useful when writing a theme.
+
+<h4><a name=system_theme>bool fltk::system_theme();</a></h4>
+
+System-specific "theme". This is called by default by fltk, and if you
+write a theme function you probably want to call it as well. On Window
+it uses GetSysColor(), and it does similar things on other operating
+systems to get the appearance to match the user's settings for other
+software as much as possible.
+
+<h4><a name=load_plugin>void* fltk::load_plugin(const char* name, const char* symbol);</a></h4>
+
+Loads a shared object (DLL) in a portable way. <i>name</i> is a
+complete filename and <i>symbol</i> is the name of some object in the
+plugin.
+
+<p>If the plugin file successfully loads (or has already been loaded)
+then a pointer to the given symbol is returned. If the plugin is not
+found or the symbol is not in it then an appropriate error message is
+printed on stderr and null is returned.
+
+<p>You can pass <tt>NULL</tt> as the <i>symbol</i> to indicate that
+you just want to load the plugin. In this case a non-zero value is
+returned if the plugin successfully loads, but you cannot use this
+value for anything other than to test for success.
+
+<h4>fltk::Widget::default_style</h4>
+
+Provides all the defaults described above.  This is the only style
+that does not have a parent.  Highlighting is disabled by default, to
+turn it on you should set highlight color.
+
+<h4>fltk::Style::find("input")</h4>
+
+This style is used by fltk::Input, but a few other widgets directly refer
+to it to draw imbedded text editing fields.
+
+<h4>fltk::Style::find("output")</h4>
+
+This style is used by fltk::Output, but a few other widgets directly
+refer to it to draw imbedded display fields.  Setting the color to
+gray will simulate NeXTStep or other user interfaces where
+interactivity is indicated by color.
+
+<h4>fltk::Style::find("CheckButton")</h4>
+
+Styles usually need to mess with the button_color and glyph function
+here to get check marks correct.
+
+<h4>fltk::Style::find("menu")</h4>
+
+This style is used for the pop-up menu windows.
+<code>button_box</code> is drawn around each item, and
+<code>selection_color</code> is used to color the current one.
+
+<h4>fltk::Style::find("item")</h4>
+
+Menu items.  If you use checkmarks in menus you will have to make
+similar fixes to this as to CheckButton.  Notice that the box drawn
+around each item is chosen by "menu", not by this.
+
+<h4>fltk::Style::find("Scrollbar")</h4>
+
+Styles usually need to mess with the box, button_box, button_color,
+and glyph function to get these to appear correctly.
+
+<h4>fltk::Tooltip::default_style</h4>
+
+The box and color of this controls the appearance of the tooltips.
+This is always linked in, so you don't need find().  Tooltips also
+have some other static fields to set the timeout and position, see the
+<a href="Fl_Tooltip.html">fltk::Tooltip</a> documentation.
+
+</body></html>
