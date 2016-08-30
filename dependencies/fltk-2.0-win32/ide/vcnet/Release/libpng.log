@@ -1,0 +1,40 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\Release\) contains files shared from another project (cairo_test.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  png.c
+..\..\images\libpng\png.c(541): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+  pngerror.c
+  pngget.c
+  pngmem.c
+  pngpread.c
+  pngread.c
+..\..\images\libpng\pngread.c(138): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+  pngrio.c
+  pngrtran.c
+..\..\images\libpng\pngrtran.c(1415): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+  pngrutil.c
+..\..\images\libpng\pngrutil.c(399): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+..\..\images\libpng\pngrutil.c(507): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+..\..\images\libpng\pngrutil.c(1253): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+  pngset.c
+  pngtrans.c
+  pngwio.c
+  pngwrite.c
+..\..\images\libpng\pngwrite.c(434): warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\time.inl(99) : see declaration of 'gmtime'
+..\..\images\libpng\pngwrite.c(537): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+  pngwtran.c
+  pngwutil.c
+..\..\images\libpng\pngwutil.c(237): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+..\..\images\libpng\pngwutil.c(1320): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+          C:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\include\stdio.h(346) : see declaration of '_snprintf'
+  Generating Code...
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1361,5): warning MSB8012: TargetPath(d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\ide\vcnet\.\Release\libpng.lib) does not match the Library's OutputFile property value (d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\lib\fltk2_png.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1363,5): warning MSB8012: TargetName(libpng) does not match the Library's OutputFile property value (fltk2_png). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+  libpng.vcxproj -> d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\ide\vcnet\.\Release\libpng.lib
