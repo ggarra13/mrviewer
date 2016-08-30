@@ -1,0 +1,9 @@
+"libs\thread\src\win32\tss_pe.cpp" -Fo"bin.v2\libs\thread\build\msvc-14.0\release\threading-multi\win32\tss_pe.obj"    -TP /O2 /Ob2 /W4 /GR /MD /Zc:forScope /Zc:wchar_t /wd4675 /EHs /wd4100 /wd4512 /wd6246 -c 
+-DBOOST_ALL_NO_LIB=1 
+-DBOOST_CHRONO_DYN_LINK=1 
+-DBOOST_SYSTEM_DYN_LINK=1 
+-DBOOST_SYSTEM_NO_DEPRECATED 
+-DBOOST_THREAD_BUILD_DLL=1 
+-DBOOST_THREAD_USES_CHRONO 
+-DNDEBUG 
+"-I."
