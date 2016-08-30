@@ -555,10 +555,10 @@ fltk::StyleSet*     newscheme = NULL;
 	unsigned idx = 0;
 	for ( ; i != e; ++i, ++idx )
 	  {
-	    if ( (*i).name == device ) 
+              if ( (*i).name == device ) 
 	      {
-		uiPrefs->uiPrefsAudioDevice->value(idx); 
-		break;
+                  uiPrefs->uiPrefsAudioDriver->value(idx);
+                  break;
 	      }
 	  }
 	
@@ -624,22 +624,6 @@ fltk::StyleSet*     newscheme = NULL;
 
     putenv( strdup( ctlEnv.c_str() ) );
 
-
-    //
-    // Get/set Image Magick preferences
-    //
-    env = getenv( "MAGICK_CODER_MODULE_PATH");
-    if ( !env )
-      {
-	static const std::string magick_version = "6.6.8";
-
-	std::string ctl = "MAGICK_CODER_MODULE_PATH=" + root;
-	ctl += "/lib/ImageMagick-";
-	ctl += magick_version;
-	ctl += "/modules-Q32/coders";
-
-	putenv( strdup( ctl.c_str() ) );
-      }
 
 
     fltk::Preferences lut( base, "lut" );
@@ -1029,6 +1013,9 @@ static const char* kCLocale = "C";
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
     change_timeline_display(main);
 
+    unsigned idx = uiPrefs->uiPrefsAudioDriver->value();
+    mrv::AudioEngine::device( idx );
+    
     double x = uiPrefs->uiPrefsAudioVolume->value();
     if ( uiPrefs->uiPrefsAudioMute->value() )
         x = 0.0;
@@ -1247,7 +1234,7 @@ static const char* kCLocale = "C";
     // Audio prefs
     //
     fltk::Preferences audio( base, "audio" );
-    unsigned int idx = uiPrefs->uiPrefsAudioDevice->value();
+    unsigned int idx = uiPrefs->uiPrefsAudioDriver->value();
 
     const AudioEngine::DeviceList& devices = AudioEngine::devices();
 
