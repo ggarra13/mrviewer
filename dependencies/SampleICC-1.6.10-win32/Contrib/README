@@ -1,0 +1,54 @@
+
+Many of the materials in this Contrib section were formerly in the
+Tools/CmdLine section.  Pretty much all of these materials were
+developed to help bring ICC profile use into the Digital Motion
+Picture industry.  And except for a few tweaks, all this code was
+written by me (Joseph Goldstone) and not by the SampleICC primary
+author (Max Derhak).  My coding style, and my module naming
+conventions, are different from those Max uses, and it seemed as if
+things would be less confusing if we separated the two.  Thus this new
+Contrib directory.
+
+The general idea of the tools in this section is that DMP facilities
+often have a homebrew color management system with which they can map
+code values for a film recorder (Cineon or DPX encodings, usually)
+into CIE XYZ values for a projected film image.  That, or they are
+using someone else's color management system to the same end.
+
+The create_CLUT_profile tool in the CmdLine directory is meant to
+handle the former case; the create_CLUT_profile_from_probe tool is
+meant to handle the latter (in conjunction with platform-specific
+tools; for the Mac OS X platform, appropriate tools can be found in
+the Mac_OS_X subdirectory of this directory).  And the
+create_display_profile tool is useful in both cases.
+
+An extended example is given in the examples/RSR directory; see the
+README file there.  Basically this is a system for facilities that are
+already using the Rising Sun Research cineSpace tool suite for
+applications like Shake, or Fusion, or other applications that can
+support the Rising Sun 3D LUT engine via a plug-in architecture; but
+that want to bring that same characterization into ICC-savvy tools
+like Adobe Photoshop CS2.  Again, the README file in examples/RSR goes
+into great detail about the use of create_CLUT_profile_from_probe, and
+the interested user should look there.
+
+It would be inappropriate and a form of theft to use these tools to
+take a Rising Sun Research characterization that you did not own, and
+use them to make matching ICC profiles to which you would not have IP
+rights.  Don't do this; if you do, I will stop maintaining this tool,
+not respond to feature requests, etc.  You won't benefit and you'll
+injure the community.
+
+But __DO__ use these contributed tools to get a good match to your
+existing color management system; you will find the ICC-compatible
+applications out there give very good results when fed the right
+profiles.  These tools will help you make them.  Have fun.
+
+--joseph goldstone
+  Lilliputian Pictures LLC
+  joseph -*- at -*- lp -*- dot -*- com
+  [former] vice-chair, ICC DMP working group
+
+
+
+

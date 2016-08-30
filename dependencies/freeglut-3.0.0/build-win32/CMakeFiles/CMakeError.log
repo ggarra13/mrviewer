@@ -1,0 +1,143 @@
+Determining if files unistd.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_6f32a\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_6f32a.dir\build.make /nologo -L                  CMakeFiles\cmTC_6f32a.dir\build
+Building C object CMakeFiles/cmTC_6f32a.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3D21.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win32\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2) : fatal error C1083: Cannot open include file: 'unistd.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <unistd.h>
+
+
+int main(void){return 0;}
+
+Determining if files sys/time.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_0f923\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_0f923.dir\build.make /nologo -L                  CMakeFiles\cmTC_0f923.dir\build
+Building C object CMakeFiles/cmTC_0f923.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3D6F.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win32\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2) : fatal error C1083: Cannot open include file: 'sys/time.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <sys/time.h>
+
+
+int main(void){return 0;}
+
+Determining if files sys/param.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_80b21\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_80b21.dir\build.make /nologo -L                  CMakeFiles\cmTC_80b21.dir\build
+Building C object CMakeFiles/cmTC_80b21.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm3FB1.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win32\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2) : fatal error C1083: Cannot open include file: 'sys/param.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <sys/param.h>
+
+
+int main(void){return 0;}
+
+Determining if files sys/ioctl.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_4e5c8\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_4e5c8.dir\build.make /nologo -L                  CMakeFiles\cmTC_4e5c8.dir\build
+Building C object CMakeFiles/cmTC_4e5c8.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm4000.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win32\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2) : fatal error C1083: Cannot open include file: 'sys/ioctl.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <sys/ioctl.h>
+
+
+int main(void){return 0;}
+
+Determining if files usbhid.h exist failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_c7b88\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_c7b88.dir\build.make /nologo -L                  CMakeFiles\cmTC_c7b88.dir\build
+Building C object CMakeFiles/cmTC_c7b88.dir/CheckIncludeFiles.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm4280.tmp
+CheckIncludeFiles.c
+D:\code\applications\mrViewer\dependencies\freeglut-3.0.0\build-win32\CMakeFiles\CMakeTmp\CheckIncludeFiles.c(2) : fatal error C1083: Cannot open include file: 'usbhid.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source:
+/* */
+#include <usbhid.h>
+
+
+int main(void){return 0;}
+
+Determining if the function gettimeofday exists failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_a93f3\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_a93f3.dir\build.make /nologo -L                  CMakeFiles\cmTC_a93f3.dir\build
+Building C object CMakeFiles/cmTC_a93f3.dir/CheckFunctionExists.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm42CE.tmp
+CheckFunctionExists.c
+Linking C executable cmTC_a93f3.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_a93f3.dir --manifests  -- C:\PROGRA~2\MICROS~2.0\VC\bin\link.exe /nologo @CMakeFiles\cmTC_a93f3.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm42EF.tmp
+CheckFunctionExists.c.obj : error LNK2019: unresolved external symbol _gettimeofday referenced in function _main
+cmTC_a93f3.exe : fatal error LNK1120: 1 unresolved externals
+LINK Pass 1 failed. with 1120
+NMAKE : fatal error U1077: '"C:\Program Files\CMake\bin\cmake.exe"' : return code '0xffffffff'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+
+Determining if the function XParseGeometry exists failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/freeglut-3.0.0/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_0c793\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_0c793.dir\build.make /nologo -L                  CMakeFiles\cmTC_0c793.dir\build
+Building C object CMakeFiles/cmTC_0c793.dir/CheckFunctionExists.c.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm437A.tmp
+CheckFunctionExists.c
+Linking C executable cmTC_0c793.exe
+	"C:\Program Files\CMake\bin\cmake.exe" -E vs_link_exe --intdir=CMakeFiles\cmTC_0c793.dir --manifests  -- C:\PROGRA~2\MICROS~2.0\VC\bin\link.exe /nologo @CMakeFiles\cmTC_0c793.dir\objects1.rsp @C:/Users/Gonzalo/AppData/Local/Temp\nm439A.tmp
+CheckFunctionExists.c.obj : error LNK2019: unresolved external symbol _XParseGeometry referenced in function _main
+cmTC_0c793.exe : fatal error LNK1120: 1 unresolved externals
+LINK Pass 1 failed. with 1120
+NMAKE : fatal error U1077: '"C:\Program Files\CMake\bin\cmake.exe"' : return code '0xffffffff'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+
