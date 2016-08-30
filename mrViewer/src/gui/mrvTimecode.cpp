@@ -30,7 +30,6 @@
 #include <cstdio> // for sprintf()
 #include <cstring> // for strchr
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 #include <iostream>
 using namespace std;

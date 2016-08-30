@@ -628,7 +628,8 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
@@ -1778,16 +1779,15 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             }
           }
           {fltk::Group} {} {
-            label Audio
+            label Audio open
             xywh {13 22 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Choice} AudioDriver {
-              label Driver open
+            {fltk::Choice} uiPrefsAudioDriver {
+              label Driver
+              callback {unsigned idx = o->value();
+
+std::cerr << "Selected " << o->value() << std::endl;} open selected
               xywh {63 22 316 25} box THIN_DOWN_BOX
-            } {}
-            {fltk::Browser} uiPrefsAudioDevice {
-              label Devices open
-              xywh {25 70 379 107} type Multi
               extra_code {//
 // Initialize an audio engine to get devices
 //
@@ -1801,7 +1801,6 @@ for ( ; i != e; ++i )
    {
       o->add( (*i).description.c_str() );
    }}
-              class {fltk::Browser}
             } {}
             {fltk::Group} {} {open
               xywh {64 189 300 60} box ROUND_DOWN_BOX
@@ -2459,8 +2458,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3412,7 +3410,7 @@ else
 v->uiEndFrame->value( f );
 v->uiTimeline->maximum( f );
 v->uiTimeToolbar->redraw();
-v->uiTimeline->redraw();} selected
+v->uiTimeline->redraw();}
                       xywh {91 4 20 20} vertical
                     }
                   }
