@@ -1,0 +1,237 @@
+// This file is for Doxygen input. It is not compiled.
+
+#include <fltk/Window.h>
+#include <fltk/Widget.h>
+#include <fltk/run.h>
+
+using namespace fltk;
+
+/*! \page editor Example 6: A Text Editor
+
+\dontinclude editor.cxx
+
+This chapter takes you through the design of a simple FLTK-based text
+editor. This is an example of how you can build a complex application
+out of just the widgets provided by FLTK.
+
+The full source code is at the end of this document.
+
+This chapter needs some work!
+
+\section goals Determining the Goals of the Text Editor
+
+Since this will be the first big project you'll be doing with FLTK,
+lets define what we want our text editor to do:
+- Menubar/menus for all functions. 
+- Edit a single text file. 
+- Load from a file. 
+- Save to a file. 
+- Cut/copy/delete/paste functions. 
+- Search and replace functions. 
+- Keep track of when the file has been changed. 
+
+\section window Designing the Main Window
+
+Now that we've outlined the goals for our editor, we can begin with
+the design of our GUI. Obviously the first thing that we need is a
+window:
+\skip EditorWindow
+\until ~EditorWindow
+
+\section Variables
+
+Our text editor window will need some variables to keep track of
+stuff. In addition we will use some global variables for stuff that is
+shared between all editor windows, such as the search string:
+\until }
+
+\section menu Menubars and Menus
+
+In the constructor for EditorWindow, most of the work is in building
+the menubar that goes across the top. Menus are populated by "items",
+which are actually normal Widgets, each with a callback function to do
+the actual work. Here though we call the Menu::add() function, which
+is a convenience function for creating a large hierarchy of widgets:
+\skip ::EditorWindow
+\until replace2
+
+We'll define the callback functions later.
+
+\section text Editing the Text
+
+To keep things simple our text editor will use the
+fltk::TextEditor widget to edit the text.
+
+So that we can keep track of changes to the file, we also want to add
+a "changed" callback:
+
+input->callback(changed_cb); input->when(fltk::WHEN_CHANGED);
+
+Finally, we want to use a mono-spaced font like fltk::COURIER:
+input->textfont(fltk::COURIER);
+
+\section replace The Replace Dialog
+
+We can use the FLTK convenience functions for many of the editor's
+dialogs, however the replace dialog needs its own custom window. To
+keep things simple we will have a "find" string, a "replace" string,
+and "replace all", "replace next", and "cancel" buttons. The strings
+are just fltk::Input widgets, the "replace all" and "cancel" buttons
+are fltk::Button widgets, and the "replace next " button is a
+fltk::ReturnButton widget:
+
+\image html editor-replace.gif
+
+(code to generate replace dialog here)
+
+\section Callbacks
+
+Now that we've defined the GUI components of our editor, we need to
+define our callback functions.
+
+\dontinclude editor.cxx
+
+This callback function will call input->copy() to copy the currently
+selected text to the clipboard:
+\skip copy_cb
+\until }
+
+This callback function will call input->copy() to copy the currently
+selected text to the clipboard and then input->cut() to delete it:
+\skip cut_cb
+\until }
+
+This callback function will call input->cut() to delete the selected
+text:
+\skip delete_cb
+\until }
+
+This callback function asks for a search string using the
+fltk::input() convenience function and then calls the find2_cb()
+function to find the string:
+\skip find_cb
+\until }
+\until }
+
+This function will find the next occurrence of the search string. If
+the search string is blank then we want to pop up the search dialog:
+
+\skip find2_cb
+\until alert
+\until }
+
+This callback function will clear the input widget and current
+filename. It also calls the check_save() function to give the user
+the opportunity to save the current file first as needed:
+\skip new_cb
+\until }
+
+This callback function will ask the user for a filename and then load
+the specified file into the input widget and current filename. It also
+calls the check_save() function to give the user the opportunity to
+save the current file first as needed:
+\skip open_cb
+\until }
+
+This callback function will send a fltk::PASTE message to the input
+widget using the fltk::paste() method:
+\skip paste_cb
+\until }
+
+The quit callback will first see if the current file has been
+modified, and if so give the user a chance to save it. It then hides
+the main window:
+\skip quit_cb
+\until }
+
+The replace callback just shows the replace dialog:
+\skip replace_cb
+\until }
+
+This callback will replace the next occurrence of the replacement
+string. If nothing has been entered for the replacement string, then
+the replace dialog is displayed instead:
+\skip replace2_cb
+\until alert
+\until }
+
+This callback will replace all occurrences of the search string in the
+file:
+\skip replall_cb
+\until alert
+\until }
+
+This callback just hides the replace dialog:
+\skip replcan_cb
+\until }
+
+This callback saves the current file. If the current filename is blank
+it calls the "save as" callback. The save_file() function saves the
+current file to the specified filename:
+\skip save_cb
+\until save_file
+\until }
+
+This callback asks the user for a filename and saves the current file.
+The save_file() function saves the current file to the specified
+filename:
+\skip saveas_cb
+\until }
+
+The undo callback just calls the undo() method:
+\skip undo_cb
+\until }
+
+\section Other Other Functions
+
+\dontinclude editor.cxx
+
+Now that we've defined the callback functions, we need our support
+functions to make it all work:
+
+This function checks to see if the current file needs to be saved. If
+so, it asks the user if they want to save it:
+\skip check_save
+\until r == 1
+\until }
+
+This function loads the specified file into the input widget:
+\skip loading
+\until }
+
+This function saves the current buffer to the specified file:
+\skip save_file
+\until }
+
+This function sets the changed variable and updates the window label
+accordingly:
+\skip set_title
+\until }
+\until }
+
+\section compiling Compiling the Editor
+
+The complete source for our text editor can be found in the
+test/editor.cxx source file. Both the Makefile and Visual C++
+workspace include the necessary rules to build the editor. You can
+also compile it using a standard compiler with:
+
+CC -o editor editor.cxx -lfltk2 -lXext -lX11 -lm
+
+As noted in Fltk Basics Chapter, you may need to include compiler and
+linker options to tell them where to find the FLTK library. Also, the
+CC command may also be called gcc or c++ on your system.
+
+Congratulations, you've just built your own text editor!
+
+\section final The Final Product
+
+The final editor window should look like the image below: 
+
+\image html editor.gif
+
+Here is all the code in it, in the correct order:
+
+\include editor.cxx
+
+*/

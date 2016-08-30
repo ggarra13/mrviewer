@@ -1,0 +1,53 @@
+Performing C++ SOURCE FILE Test HAVE_GCC_INLINE_ASM_AVX failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/OpenEXR/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_cae6f\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_cae6f.dir\build.make /nologo -L                  CMakeFiles\cmTC_cae6f.dir\build
+Building CXX object CMakeFiles/cmTC_cae6f.dir/src.cxx.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm90B8.tmp
+src.cxx
+D:\code\applications\mrViewer\dependencies\OpenEXR\build-win32\CMakeFiles\CMakeTmp\src.cxx(13) : fatal error C1189: #error :  No GCC style inline asm supported for AVX instructions
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source file was:
+
+	int main()
+	{
+	 #if defined(__GNUC__) && defined(__SSE2__) 
+		 int n   = 0;
+		 int eax = 0;
+		 int edx = 0;
+		 __asm__(
+			 "xgetbv     ;"
+			 "vzeroupper  "
+			 : "=a"(eax), "=d"(edx) : "c"(n) : );
+	 #else
+		 #error No GCC style inline asm supported for AVX instructions
+	 #endif
+	}
+	
+Performing C++ SOURCE FILE Test HAVE_SYSCONF_NPROCESSORS_ONLN failed with the following output:
+Change Dir: D:/code/applications/mrViewer/dependencies/OpenEXR/build-win32/CMakeFiles/CMakeTmp
+
+Run Build Command:"nmake" "/NOLOGO" "cmTC_d512d\fast"
+	"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe" -f CMakeFiles\cmTC_d512d.dir\build.make /nologo -L                  CMakeFiles\cmTC_d512d.dir\build
+Building CXX object CMakeFiles/cmTC_d512d.dir/src.cxx.obj
+	C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe  @C:/Users/Gonzalo/AppData/Local/Temp\nm9106.tmp
+src.cxx
+D:\code\applications\mrViewer\dependencies\OpenEXR\build-win32\CMakeFiles\CMakeTmp\src.cxx(2) : fatal error C1083: Cannot open include file: 'unistd.h': No such file or directory
+NMAKE : fatal error U1077: 'C:\PROGRA~2\MICROS~2.0\VC\bin\cl.exe' : return code '0x2'
+Stop.
+NMAKE : fatal error U1077: '"c:\Program Files (x86)\Microsoft Visual Studio 12.0\VC\BIN\nmake.exe"' : return code '0x2'
+Stop.
+
+Source file was:
+
+    #include <unistd.h>
+    int main()
+    {
+        sysconf(_SC_NPROCESSORS_ONLN);
+    }
+    
