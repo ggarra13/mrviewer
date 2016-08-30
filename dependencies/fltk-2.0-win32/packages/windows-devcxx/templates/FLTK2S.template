@@ -1,0 +1,19 @@
+[Template]
+ver=5
+Name=FLTK2 (Static)
+Icon=eide.ico
+Description=Create GUI application using FLTK2.
+Catagory=GUI
+
+[Unit0]
+CppName=main.cpp
+Cpp=FLTK2.txt
+
+[Project]
+UnitCount=1
+Type=0
+IsCpp=1
+Name=FLTK2 (Static) Project
+ProjectIcon=eide.ico
+Compiler=-DWIN32_EXTRA_LEAN -DWIN32 -W -D_MSC_DLL -fno-exceptions -g -O0 -D_DEBUG -D_WIN32
+Linker=-lfltk2_images -lfltk2 -lwsock32 -lkernel32 -luser32 -lgdi32 -lwinspool -lcomdlg32 -ladvapi32 -lshell32 -lole32 -loleaut32 -luuid -lmsimg32
