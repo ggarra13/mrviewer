@@ -28,7 +28,6 @@
 #include <iostream>
 #include <algorithm>
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #include <boost/filesystem/operations.hpp>
@@ -1278,7 +1277,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     img->default_rendering_transform();
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
-    img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
+    img->audio_engine()->device( prefs->uiPrefsAudioDriver->value() );
 
     if ( fg )
     {
@@ -1355,7 +1354,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     img->default_rendering_transform();
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
-    img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
+    img->audio_engine()->device( prefs->uiPrefsAudioDriver->value() );
 
 
     mrv::media m = this->add( img );
