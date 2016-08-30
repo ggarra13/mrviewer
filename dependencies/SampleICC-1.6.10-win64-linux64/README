@@ -1,0 +1,76 @@
+ABOUT THE SAMPLEICC LIBRARY
+---------------------------
+
+IccProfLib (originally IccLib, but that conflicted with the Argyll library of
+the same name) is both an ICC profile I/O library and a reference CMM.
+
+LICENSE
+-------
+
+The ICC Software License, Version 0.2
+
+Copyright © 2003-2010 - The International Color Consortium. All rights reserved.
+
+Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:
+
+ 1. Redistributions of source code must retain the above copyright
+    notice, this list of conditions and the following disclaimer. 
+
+ 2. Redistributions in binary form must reproduce the above copyright
+    notice, this list of conditions and the following disclaimer in
+    the documentation and/or other materials provided with the
+    distribution.
+
+ 3. In the absence of prior written permission, the names "ICC" and "The
+    International Color Consortium" must not be used to imply that the
+    ICC organization endorses or promotes products derived from this
+    software.
+
+====================================================================
+THIS SOFTWARE IS PROVIDED ``AS IS'' AND ANY EXPRESSED OR IMPLIED
+WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES
+OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE
+DISCLAIMED. IN NO EVENT SHALL THE INTERNATIONAL COLOR CONSORTIUM OR
+ITS CONTRIBUTING MEMBERS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL,
+SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT
+LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF
+USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND
+ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY,
+OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT
+OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF
+SUCH DAMAGE.
+====================================================================
+
+This software consists of voluntary contributions made by many
+individuals on behalf of the The International Color Consortium.
+
+Membership in the ICC is encouraged when this software is used for 
+commercial purposes.
+
+WHAT'S INCLUDED
+---------------
+
+Besides the IccProfLib library the release includes four command-line
+utilities that demonstrate how one might use the libraries to write,
+read and apply ICC profiles.
+
+BUILDING SampleICC
+------------------
+
+Mac OS X users, see README.OSX for build details.
+
+As one might expect, on GNU/Linux or other UNIX-like systems, a simple
+        ./configure
+        make
+        make install
+
+will configure, compile and install the IccProfLib headers and the
+SampleICC build products.  See the INSTALL file for more details or try 
+       ./configure --help
+
+All include files needed to use the IccProfLib library are installed in
+the SampleICC subdirectory of the install prefix, e.g.
+	/usr/local/include/SampleICC
+
+Windows users, see README.win for build details.
+
