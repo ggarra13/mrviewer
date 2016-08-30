@@ -26,7 +26,6 @@
  */
 
 
-#define __STDC_FORMAT_MACROS
 #define __STDC_LIMIT_MACROS
 #include <inttypes.h>
 
@@ -899,8 +898,8 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             if ( _audio_channels == 0 ) 
                 _audio_channels = (unsigned short) ctx->channels;
 
-            if ( ( ctx->sample_fmt != fmt  ||
-                   unsigned(ctx->channels) != _audio_channels ) )
+            if ( ctx->sample_fmt != fmt  ||
+                 unsigned(ctx->channels) != _audio_channels )
             {
                 if (!forw_ctx)
                 {
@@ -1497,7 +1496,7 @@ bool CMedia::open_audio( const short channels,
   close_audio();
 
 
-  AudioEngine::AudioFormat format = _audio_format;
+  AudioEngine::AudioFormat format = AudioEngine::kFloatLSB;
 
   // Avoid conversion to float if unneeded
   if ( _audio_ctx->sample_fmt == AV_SAMPLE_FMT_S16P ||
@@ -1533,7 +1532,8 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
   double speedup = _play_fps / _fps;
   unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
   if ( nSamplesPerSec != _samples_per_sec ||
-       result->channels() != _audio_channels )
+       result->channels() != _audio_channels ||
+       AudioEngine::device_index() != AudioEngine::old_device_index())
     {
       SCOPED_LOCK( _audio_mutex );
       if ( ! open_audio( result->channels(), nSamplesPerSec ) )
