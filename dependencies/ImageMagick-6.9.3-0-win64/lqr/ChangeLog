@@ -1,0 +1,121 @@
+2009-05-12  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Forgot (undocumented) legacy macro
+
+2009-05-09  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Changed lqr_carver_get_[true_]energy
+	* Added lqr_carver_get_energy_image
+
+2009-05-05  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Updated the example files with the new features
+
+2009-05-04  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added lqr_carver_bias/rigmask_clear
+
+2009-05-03  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Changed CATCH* macros to LQR_CATCH*
+	* No alpha by default for LQR_CUSTOM_IMAGE
+	* Improved set alpha/black channel
+	* Bias activates energy (for using with
+	  lqr_carver_get_energy)
+	* Fixes in lqr_carver_bias/rigmask_add_area
+	* Added lqr_carver_rigmask_add_xy
+	* Don't call transpose when adding rigmasks
+	* Rigmask init set to 0 instead of 1
+	* Removed energy previews
+	* Added lqr_carvre_get_true_energy
+
+2009-04-28  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Heavily optimised the update_mmap code
+	* Progress report spans whole sessions instead
+	  of being divided into steps when enlagement
+	  exceeds the enl_step
+
+2009-04-27  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* New framework for energy definition, 
+	  including energy previews
+	* Added lqr_carver_bias_add_xy
+	* Better bias managment (saves memory if
+	  bias is not used, no unnecessary
+	  transpositions)
+
+2009-04-16  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added cancel methods and structures
+	* Fixed recursiveness of some calls to
+	  lqr_carver_list_foreach
+	* Fixed return value of lqr_carver_resize
+
+2009-04-09  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added lqr_carver_set_preserve_input_image
+	* Version bump 0.4
+
+2009-04-08  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Fixed bug with 16-bit images
+
+2009-01-26  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added readouts for current visiblity map
+
+2008-11-01  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Bugfix in update_mmap causing crashes with
+	  delta_x > 1
+	* Removed unnecessary includes of stdio.h
+	* Added debug_checkrows
+
+2008-10-22  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Moved classes definitions to private headers
+
+2008-10-21  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Removed 2-fold scale-up limit, added
+	  enl_step setting
+
+2008-10-12  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added 32 bit and 64 bit floating point support
+	* Added get_col_depth
+	* Turned all internal floating point maps from
+	  gdouble to gfloat
+	* Collapsed all the nonstandard constructors
+	  and span functions to a single version (*_ext)
+
+2008-09-04  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added set_no_dump_vmaps
+
+2008-09-04  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Hid private symbols
+
+2008-07-30  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Optimized vsmap memory management
+	* Bugfixes
+
+2008-04-06  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added 16 bit support
+
+2008-02-25  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added left-right switches
+
+2008-02-20  Carlo Baldassi  <carlobaldassi@gmail.com>
+
+	* Added rigidity mask
+
+2007-12-07  Carlo Baldassi  <carlobaldassi@yahoo.it>
+
+	* initial revision.
+
