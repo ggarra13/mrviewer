@@ -100,7 +100,7 @@ Hotkey kTogglePixelBar( false, false, false, false, fltk::F2Key );
 Hotkey kToggleTimeline( false, false, false, false, fltk::F3Key );
 Hotkey kTogglePresentation( false, false, false, false, fltk::F12Key );
 
-Hotkey kScrub( false, false, false, true, fltk::LeftShiftKey, "",
+Hotkey kScrub( false, false, false, false, fltk::LeftShiftKey, "",
                fltk::RightShiftKey );
 
 Hotkey kPreviousChannel( false, false, false, false, 0, "{" );
