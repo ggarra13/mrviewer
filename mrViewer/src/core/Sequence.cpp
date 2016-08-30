@@ -37,7 +37,6 @@
 #endif
 
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64 macro
 
 #include <cstdio>

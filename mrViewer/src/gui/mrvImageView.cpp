@@ -30,7 +30,6 @@
 #include <cmath>
 
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 
@@ -4146,6 +4145,7 @@ int ImageView::handle(int event)
                 redraw();
                 return 1;
             }
+
             if ( kScrub.match( fltk::event_key() ) )
             {
                 double dx = (fltk::event_x() - lastX) / 20.0;
