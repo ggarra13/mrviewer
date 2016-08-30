@@ -1,0 +1,85 @@
+Microsoft Visual Studio Solution File, Format Version 9.00
+# Visual Studio 2005
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libjpeg", "libjpeg.vcproj", "{C1E5804B-938F-4DAD-84E7-5C162448E6DE}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "libpng", "libpng.vcproj", "{D5CE085C-6326-497C-B38F-6442476B1EED}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "zlib", "zlib.vcproj", "{A114E21B-0244-4FD8-95B8-509306CF705B}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltk", "fltk.lib.vcproj", "{B1555792-E8A6-44A8-8DC2-447995C4D4C5}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltk_glut", "fltk_glut.vcproj", "{4A763473-C79B-498D-B202-212908BC7450}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltk_images", "fltk_images.lib.vcproj", "{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "fltk_opengl", "fltk_opengl.vcproj", "{A1660643-CBDC-48E4-9F90-E899A9332253}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug Cairo|Win32 = Debug Cairo|Win32
+		Debug|Win32 = Debug|Win32
+		Release MinSize|Win32 = Release MinSize|Win32
+		Release|Win32 = Release|Win32
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Debug Cairo|Win32.ActiveCfg = Debug|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Debug Cairo|Win32.Build.0 = Debug|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Debug|Win32.ActiveCfg = Debug|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Debug|Win32.Build.0 = Debug|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Release|Win32.ActiveCfg = Release|Win32
+		{C1E5804B-938F-4DAD-84E7-5C162448E6DE}.Release|Win32.Build.0 = Release|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Debug Cairo|Win32.ActiveCfg = Debug|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Debug Cairo|Win32.Build.0 = Debug|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Debug|Win32.ActiveCfg = Debug|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Debug|Win32.Build.0 = Debug|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Release|Win32.ActiveCfg = Release|Win32
+		{D5CE085C-6326-497C-B38F-6442476B1EED}.Release|Win32.Build.0 = Release|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Debug Cairo|Win32.ActiveCfg = Debug|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Debug Cairo|Win32.Build.0 = Debug|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Debug|Win32.Build.0 = Debug|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Release|Win32.ActiveCfg = Release|Win32
+		{A114E21B-0244-4FD8-95B8-509306CF705B}.Release|Win32.Build.0 = Release|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Debug Cairo|Win32.ActiveCfg = Debug Cairo|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Debug Cairo|Win32.Build.0 = Debug Cairo|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Debug|Win32.Build.0 = Debug|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Release|Win32.ActiveCfg = Release|Win32
+		{B1555792-E8A6-44A8-8DC2-447995C4D4C5}.Release|Win32.Build.0 = Release|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Debug Cairo|Win32.ActiveCfg = Debug|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Debug Cairo|Win32.Build.0 = Debug|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Debug|Win32.ActiveCfg = Debug|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Debug|Win32.Build.0 = Debug|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Release MinSize|Win32.ActiveCfg = Release|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Release MinSize|Win32.Build.0 = Release|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Release|Win32.ActiveCfg = Release|Win32
+		{4A763473-C79B-498D-B202-212908BC7450}.Release|Win32.Build.0 = Release|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Debug Cairo|Win32.ActiveCfg = Debug Cairo|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Debug Cairo|Win32.Build.0 = Debug Cairo|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Debug|Win32.ActiveCfg = Debug|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Debug|Win32.Build.0 = Debug|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Release|Win32.ActiveCfg = Release|Win32
+		{AF5AFBD4-ADDC-4B66-8EF3-7D882412BFEC}.Release|Win32.Build.0 = Release|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Debug Cairo|Win32.ActiveCfg = Debug|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Debug Cairo|Win32.Build.0 = Debug|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Debug|Win32.ActiveCfg = Debug|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Debug|Win32.Build.0 = Debug|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Release MinSize|Win32.ActiveCfg = Release MinSize|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Release MinSize|Win32.Build.0 = Release MinSize|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Release|Win32.ActiveCfg = Release|Win32
+		{A1660643-CBDC-48E4-9F90-E899A9332253}.Release|Win32.Build.0 = Release|Win32
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

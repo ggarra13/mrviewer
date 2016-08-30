@@ -1,0 +1,79 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0002 
+header_name {.h} 
+code_name {.cxx} 
+gridx 10 
+gridy 10 
+snap 3
+decl {\#include "mandelbrot.h"} {public
+} 
+
+class Drawing_Window {open
+} {
+  Function {make_window()} {open return_type void
+  } {
+    {fltk::Window} window {open
+      xywh {142 207 430 510} resizable
+      extra_code {o->size_range(220,220);} visible
+    } {
+      {fltk::InvisibleBox} d {
+        user_data this user_data_type {void*}
+        tooltip {Left-click will zoom out by 2.
+Left-drag will select a region to zoom in to.
+Right-click will create the Julia set viewer and set it to that point.}
+        xywh {10 70 410 430} resizable box DOWN_BOX color 56 selection_color 47
+        class Drawing_Area
+      }
+      {fltk::Input} x_input {
+        label x
+        callback {d->X = o->fvalue();
+d->new_display();}
+        tooltip {x coordinate of window center}
+        xywh {10 10 130 25} type Float align 20 labelfont 2 textfont 1 labelsize 10
+        extra_code {o->when(FL_WHEN_ENTER_KEY|FL_WHEN_RELEASE);}
+      }
+      {fltk::Input} y_input {
+        label y
+        callback {d->Y = o->fvalue();
+d->new_display();}
+        tooltip {y coordinate of window center}
+        xywh {150 10 130 25} type Float align 20 labelfont 2 textfont 1 labelsize 10
+        extra_code {o->when(FL_WHEN_ENTER_KEY|FL_WHEN_RELEASE);}
+      }
+      {fltk::Input} w_input {
+        label w
+        callback {d->scale = o->fvalue();
+d->new_display();}
+        tooltip {width of the window}
+        xywh {290 10 130 25} type Float align 20 labelfont 2 textfont 1 labelsize 10
+        extra_code {o->when(FL_WHEN_ENTER_KEY|FL_WHEN_RELEASE);}
+      }
+      {fltk::Slider} {} {
+        label {brightness:}
+        callback {d->brightness = int(o->value());
+d->new_display();}
+        tooltip {Change mapping from iteration count to gray level so that details are visible.}
+        xywh {70 40 160 15} align 4 box THIN_DOWN_BOX labelsize 10 step 1 slider_size 16
+        extra_code {o->bounds(0,d->MAX_BRIGHTNESS);
+o->value(d->DEFAULT_BRIGHTNESS);
+o->slider(FL_UP_BOX);}
+      }
+      {fltk::InvisibleBox} {} {
+        label {FLTK Mandelbrot Viewer} selected
+        xywh {240 40 180 26} align 24 deactivate box EMBOSSED_BOX labelfont 1 labelsize 10
+      }
+      {fltk::Slider} {} {
+        label {iterations:}
+        callback {d->iterations = 1<<int(o->value());
+d->new_display();}
+        tooltip {Set number of iterations before it colors the pixel black. Higher values make it more accurate.}
+        xywh {70 55 160 15} align 4 box THIN_DOWN_BOX labelsize 10 step 1 slider_size 16
+        extra_code {o->bounds(1,d->MAX_ITERATIONS);
+o->value(d->DEFAULT_ITERATIONS);
+o->slider(FL_UP_BOX);}
+      }
+    }
+  }
+  decl {void update_label();} {public
+  }
+} 
