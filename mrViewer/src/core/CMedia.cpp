@@ -601,8 +601,17 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
        << format << " pixel type: " << pixel_type );
 
   image_damage( image_damage() & ~kDamageContents );
-  _hires.reset(  new image_type( frame, w, h, 
-                                 channels, format, pixel_type ) );
+  try {
+      _hires.reset(  new image_type( frame, w, h, 
+                                     channels, format, pixel_type ) );
+      if (! _hires->data().get() )
+          LOG_ERROR( "Out of memory" );
+  }
+  catch( const std::bad_alloc& e )
+  {
+      LOG_ERROR( e.what() );
+  }
+  
 }
 
 
