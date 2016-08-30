@@ -11,7 +11,6 @@
  *
  ***************************************************************/
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #include <iostream>
@@ -1353,6 +1352,7 @@ void Flu_File_Chooser::recursiveScan( const char *dir, FluStringVector *files )
   for( int i = 0; i < num; i++ )
     {
       name = e[i]->d_name;
+        std::cerr << dir << " " << name << std::endl;
 
       // if 'name' ends in '/' or '\', remove it
       if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
