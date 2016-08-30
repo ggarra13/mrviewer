@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{c9f0a1d8-5e89-40f6-b6c0-9fc37a543bfa}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Library Files">
+      <UniqueIdentifier>{611b3f95-886e-4893-b1c2-db4656fd5524}</UniqueIdentifier>
+      <Extensions>lib</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{f475f651-8153-44d7-a220-47d79c0be97d}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{5966eab3-b4f8-4b15-973c-9a8eac8f6f32}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="iccRoundTrip.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\IccProfLib\Debug\IccProfLib.lib">
+      <Filter>Library Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\IccProfLib\Release\IccProfLib.lib">
+      <Filter>Library Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

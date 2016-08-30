@@ -6,3 +6,5 @@ cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$install -G 'NMake Ma
 
 export PATH="$install/lib:$PATH"
 nmake
+
+cp ../zlib.h .

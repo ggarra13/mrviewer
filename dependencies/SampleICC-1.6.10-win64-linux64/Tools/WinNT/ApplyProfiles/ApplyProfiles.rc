@@ -1,0 +1,266 @@
+//Microsoft Developer Studio generated resource script.
+//
+#include "resource.h"
+
+#define APSTUDIO_READONLY_SYMBOLS
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 2 resource.
+//
+#include "afxres.h"
+
+/////////////////////////////////////////////////////////////////////////////
+#undef APSTUDIO_READONLY_SYMBOLS
+
+/////////////////////////////////////////////////////////////////////////////
+// English (U.S.) resources
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if defined(_WIN32) || defined(_WIN64)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
+#endif //_WIN32 || _WIN64
+
+#ifdef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// TEXTINCLUDE
+//
+
+1 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "resource.h\0"
+END
+
+2 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#include ""afxres.h""\r\n"
+    "\0"
+END
+
+3 TEXTINCLUDE DISCARDABLE 
+BEGIN
+    "#define _AFX_NO_SPLITTER_RESOURCES\r\n"
+    "#define _AFX_NO_OLE_RESOURCES\r\n"
+    "#define _AFX_NO_TRACKER_RESOURCES\r\n"
+    "#define _AFX_NO_PROPERTY_RESOURCES\r\n"
+    "\r\n"
+    "#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)\r\n"
+    "#if defined(_WIN32) || defined(_WIN64)\r\n"
+    "LANGUAGE 9, 1\r\n"
+    "#pragma code_page(1252)\r\n"
+    "#endif //_WIN32 || _WIN64\r\n"
+    "#include ""res\\ApplyProfiles.rc2""  // non-Microsoft Visual C++ edited resources\r\n"
+    "#include ""afxres.rc""         // Standard components\r\n"
+    "#endif\r\n"
+    "\0"
+END
+
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog
+//
+
+IDD_ABOUTBOX DIALOG DISCARDABLE  0, 0, 235, 55
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "About ApplyProfiles"
+FONT 8, "MS Sans Serif"
+BEGIN
+    ICON            IDR_MAINFRAME,IDC_STATIC,11,17,20,20
+    LTEXT           "ApplyProfiles Version 1.0",IDC_STATIC,40,10,119,8,
+                    SS_NOPREFIX
+    LTEXT           "Copyright (C) 2003-2015",IDC_STATIC,40,25,119,8
+    DEFPUSHBUTTON   "OK",IDOK,178,7,50,14,WS_GROUP
+END
+
+IDD_APPLYPROFILES_DIALOG DIALOGEX 0, 0, 303, 124
+STYLE DS_MODALFRAME | WS_POPUP | WS_VISIBLE | WS_CAPTION | WS_SYSMENU
+EXSTYLE WS_EX_APPWINDOW
+CAPTION "ApplyProfiles"
+FONT 8, "MS Sans Serif", 0, 0, 0x1
+BEGIN
+    DEFPUSHBUTTON   "OK",IDOK,95,103,50,14
+    PUSHBUTTON      "Cancel",IDCANCEL,159,103,50,14
+    LTEXT           "Source Image:",IDC_STATIC,20,9,47,8
+    LTEXT           "Source Profile:",IDC_STATIC,20,26,47,8
+    LTEXT           "Destination Profile:",IDC_STATIC,7,42,60,8
+    LTEXT           "Destination Image:",IDC_STATIC,7,59,60,8
+    EDITTEXT        IDC_EDIT_SRC_IMAGE,70,7,209,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_SRC_PROFILE,70,24,209,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DST_PROFILE,70,41,209,14,ES_AUTOHSCROLL
+    EDITTEXT        IDC_EDIT_DST_IMAGE,70,58,209,14,ES_AUTOHSCROLL
+    COMBOBOX        IDC_RENDERING_INTENT,70,78,226,97,CBS_DROPDOWNLIST | 
+                    WS_VSCROLL | WS_TABSTOP
+    LTEXT           "Rendering Intent:",IDC_STATIC,11,80,56,8
+    PUSHBUTTON      "...",IDC_BROWSE_SRC_IMAGE,282,7,14,14
+    PUSHBUTTON      "...",IDC_BROWSE_SRC_PROFILE,282,24,14,14
+    PUSHBUTTON      "...",IDC_BROWSE_DST_PROFILE,282,41,14,14
+    PUSHBUTTON      "...",IDC_BROWSE_DST_IMAGE,282,58,14,14
+END
+
+IDD_APPLY_STAT_DLG DIALOG DISCARDABLE  0, 0, 167, 76
+STYLE DS_MODALFRAME | WS_POPUP | WS_CAPTION | WS_SYSMENU
+CAPTION "Profile Apply Status"
+FONT 8, "MS Sans Serif"
+BEGIN
+    PUSHBUTTON      "Cancel",IDCANCEL,58,55,50,14
+    LTEXT           "Total Time: ",IDC_STATIC,7,7,38,8
+    RTEXT           "00:00:00",IDC_TOTAL_TIME,99,7,61,8
+    LTEXT           "Percent Done:",IDC_STATIC,7,19,47,8
+    RTEXT           "100%",IDC_PERCENT,126,19,34,8
+    CONTROL         "Progress1",IDC_PROGRESS,"msctls_progress32",WS_BORDER,7,
+                    33,153,14
+END
+
+
+#ifndef _MAC
+/////////////////////////////////////////////////////////////////////////////
+//
+// Version
+//
+
+VS_VERSION_INFO VERSIONINFO
+ FILEVERSION 1,0,0,1
+ PRODUCTVERSION 1,0,0,1
+ FILEFLAGSMASK 0x3fL
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x4L
+ FILETYPE 0x1L
+ FILESUBTYPE 0x0L
+BEGIN
+    BLOCK "StringFileInfo"
+    BEGIN
+        BLOCK "040904B0"
+        BEGIN
+            VALUE "CompanyName", "\0"
+            VALUE "FileDescription", "ApplyProfiles MFC Application\0"
+            VALUE "FileVersion", "1, 0, 0, 1\0"
+            VALUE "InternalName", "ApplyProfiles\0"
+            VALUE "LegalCopyright", "Copyright (C) 2003-2015\0"
+            VALUE "LegalTrademarks", "\0"
+            VALUE "OriginalFilename", "ApplyProfiles.EXE\0"
+            VALUE "ProductName", "ApplyProfiles Application\0"
+            VALUE "ProductVersion", "1, 0, 0, 1\0"
+        END
+    END
+    BLOCK "VarFileInfo"
+    BEGIN
+        VALUE "Translation", 0x409, 1200
+    END
+END
+
+#endif    // !_MAC
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// DESIGNINFO
+//
+
+#ifdef APSTUDIO_INVOKED
+GUIDELINES DESIGNINFO DISCARDABLE 
+BEGIN
+    IDD_ABOUTBOX, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 228
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 48
+    END
+
+    IDD_APPLYPROFILES_DIALOG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 296
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 117
+    END
+
+    IDD_APPLY_STAT_DLG, DIALOG
+    BEGIN
+        LEFTMARGIN, 7
+        RIGHTMARGIN, 160
+        TOPMARGIN, 7
+        BOTTOMMARGIN, 69
+    END
+END
+#endif    // APSTUDIO_INVOKED
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Dialog Info
+//
+
+IDD_APPLYPROFILES_DIALOG DLGINIT
+BEGIN
+    IDC_RENDERING_INTENT, 0x403, 26, 0
+0x6544, 0x6966, 0x656e, 0x2064, 0x7962, 0x5320, 0x756f, 0x6372, 0x2065, 
+0x7250, 0x666f, 0x6c69, 0x0065, 
+    IDC_RENDERING_INTENT, 0x403, 12, 0
+0x6550, 0x6372, 0x7065, 0x7574, 0x6c61, 0x0020, 
+    IDC_RENDERING_INTENT, 0x403, 22, 0
+0x6552, 0x616c, 0x6974, 0x6576, 0x4320, 0x6c6f, 0x726f, 0x6d69, 0x7465, 
+0x6972, 0x0063, 
+    IDC_RENDERING_INTENT, 0x403, 11, 0
+0x6153, 0x7574, 0x6172, 0x6974, 0x6e6f, "\000" 
+    IDC_RENDERING_INTENT, 0x403, 22, 0
+0x6241, 0x6f73, 0x756c, 0x6574, 0x4320, 0x6c6f, 0x726f, 0x6d69, 0x7465, 
+0x6972, 0x0063, 
+    0
+END
+
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// Icon
+//
+
+// Icon with lowest ID value placed first to ensure application icon
+// remains consistent on all systems.
+IDR_MAINFRAME           ICON    DISCARDABLE     "res\\ApplyProfiles.ico"
+
+/////////////////////////////////////////////////////////////////////////////
+//
+// String Table
+//
+
+STRINGTABLE DISCARDABLE 
+BEGIN
+    IDS_ABOUTBOX            "&About ApplyProfiles..."
+END
+
+#endif    // English (U.S.) resources
+/////////////////////////////////////////////////////////////////////////////
+
+
+
+#ifndef APSTUDIO_INVOKED
+/////////////////////////////////////////////////////////////////////////////
+//
+// Generated from the TEXTINCLUDE 3 resource.
+//
+#define _AFX_NO_SPLITTER_RESOURCES
+#define _AFX_NO_OLE_RESOURCES
+#define _AFX_NO_TRACKER_RESOURCES
+#define _AFX_NO_PROPERTY_RESOURCES
+
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+#if defined(_WIN32) || defined(_WIN64)
+LANGUAGE 9, 1
+#pragma code_page(1252)
+#endif //_WIN32 || _WIN64
+#include "res\ApplyProfiles.rc2"  // non-Microsoft Visual C++ edited resources
+#include "afxres.rc"         // Standard components
+#endif
+
+/////////////////////////////////////////////////////////////////////////////
+#endif    // not APSTUDIO_INVOKED
+
