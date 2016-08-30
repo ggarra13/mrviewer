@@ -1,7 +1,7 @@
 #!/bin/sh
 
 install=/D/code/lib/Windows_32/
-zlib=/D/code/applications/mrViewer/dependencies/zlib-1.2.8-win32/
+zlib=/D/code/lib/Windows_32/
 
 
 
