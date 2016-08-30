@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{798bb7ca-3d9a-4c8e-a097-850f6e0d40a2}</UniqueIdentifier>
+      <Extensions>cpp;c;cxx;rc;def;r;odl;idl;hpj;bat</Extensions>
+    </Filter>
+    <Filter Include="Library Files">
+      <UniqueIdentifier>{0bae05b6-e902-413a-906e-20ef29d3e338}</UniqueIdentifier>
+      <Extensions>lib</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{4493ecb7-fbb8-414b-930d-da2109223e08}</UniqueIdentifier>
+      <Extensions>h;hpp;hxx;hm;inl</Extensions>
+    </Filter>
+    <Filter Include="Resource Files">
+      <UniqueIdentifier>{4a4828df-e7c4-4bc3-996d-9fdeae24ca4c}</UniqueIdentifier>
+      <Extensions>ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe</Extensions>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="iccGamutMapGirdle.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="ReadMe.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <CustomBuild Include="..\..\..\IccProfLib\Release\IccProfLib.lib">
+      <Filter>Library Files</Filter>
+    </CustomBuild>
+    <CustomBuild Include="..\..\..\IccProfLib\Debug\IccProfLib.lib">
+      <Filter>Library Files</Filter>
+    </CustomBuild>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,254 @@
+Microsoft Developer Studio Workspace File, Format Version 6.00
+# WARNING: DO NOT EDIT OR DELETE THIS WORKSPACE FILE!
+
+###############################################################################
+
+Project: "All"=".\BuildAll.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name ApplyProfiles
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CmdApplyProfiles
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CmdDumpProfile
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ProfileDump
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name SampleICCcmm
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name ApplyNamedCmm
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name CmdIccProfLibTest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccApplyNamedCmm
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccApplyProfiles
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccStripUnknownTags
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccDumpProfile
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccProflibTest
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccCreateCLUTInputProfile
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccCreateTRCMatrixDisplayProfile
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name wxProfileDump
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccFlattenAToBTag
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name iccRoundTrip
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "ApplyProfiles"="..\..\Tools\ApplyProfiles\ApplyProfiles.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libtiff
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "IccProfLib"="..\..\IccProfLib\IccProfLib.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IccProfLib_CRTDLL"="..\..\IccProfLib\IccProfLib_CRTDLL.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "IccV4ToMpe"="..\..\Tools\CmdLine\IccV4ToMPE\iccV4ToMPE.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "iccApplyNamedCmm"="..\..\Tools\CmdLine\IccApplyNamedCmm\iccApplyNamedCmm.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "iccApplyProfiles"="..\..\Tools\CmdLine\IccApplyProfiles\iccApplyProfiles.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+    Begin Project Dependency
+    Project_Dep_Name libtiff
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "iccDumpProfile"="..\..\Tools\CmdLine\IccDumpProfile\iccDumpProfile.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "iccProflibTest"="..\..\Tools\CmdLine\IccProfLibTest\iccProfLibTest.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "iccRoundTrip"="..\..\Tools\CmdLine\IccRoundTrip\iccRoundTrip.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "iccStripUnknownTags"="..\..\Tools\CmdLine\IccStripUnknownTags\iccStripUnknownTags.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Project: "libtiff"=".\BuildLibTiff\libtiff.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+}}}
+
+###############################################################################
+
+Project: "wxProfileDump"="..\..\Tools\wxWidget\wxProfileDump\wxProfileDump.dsp" - Package Owner=<4>
+
+Package=<5>
+{{{
+}}}
+
+Package=<4>
+{{{
+    Begin Project Dependency
+    Project_Dep_Name IccProfLib_CRTDLL
+    End Project Dependency
+}}}
+
+###############################################################################
+
+Global:
+
+Package=<5>
+{{{
+}}}
+
+Package=<3>
+{{{
+}}}
+
+###############################################################################
+
