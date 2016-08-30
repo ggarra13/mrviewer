@@ -485,6 +485,7 @@ namespace mrv {
     GLenum         pixel_type = gl_pixel_type( pic->pixel_type() );
     unsigned short pixel_size = pic->pixel_size();
     _pixels = pic->data();
+    if ( !_pixels ) return;
 
     //
     // Choose best internal format based on gfx card capabilities
@@ -647,7 +648,7 @@ namespace mrv {
     unsigned short pixel_size = pic->pixel_size();
     GLenum glformat   = gl_format( pic->format() );
     _pixels = pic->data();
-  
+    if (!_pixels) return;
 
     GLenum internalFormat = GL_RGB8;
 
@@ -768,7 +769,7 @@ namespace mrv {
     GLenum pixel_type = gl_pixel_type( pic->pixel_type() );
     GLenum glformat = gl_format( pic->format() );
     _pixels = pic->data();
-
+    if ( !_pixels ) return;
 
     if ( _width  != dw || 
 	 _height != dh || 
