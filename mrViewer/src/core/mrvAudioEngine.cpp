@@ -42,9 +42,10 @@
 namespace mrv {
 
 AudioEngine::DeviceList AudioEngine::_devices;
+unsigned  AudioEngine::_device_idx = 0;
+unsigned  AudioEngine::_old_device_idx = 99999;
 
 AudioEngine::AudioEngine() :
-_device_idx( 0 ),
 _enabled( false ),
 _volume( 1.0f ),
 _channels( 0 ),
@@ -88,8 +89,8 @@ AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
    return ffmpegformat;
 }
 
-std::string AudioEngine::default_device() const
-{ 
+std::string AudioEngine::default_device()
+{
    if ( _devices.empty() )
       EXCEPTION( "No audio device found" );
 
@@ -102,7 +103,7 @@ const AudioEngine::DeviceList& AudioEngine::devices()
    return _devices; 
 }
 
-std::string AudioEngine::device() const
+std::string AudioEngine::device()
 { 
    if ( _devices.empty() )
       EXCEPTION( "No audio device found" );
@@ -113,8 +114,6 @@ std::string AudioEngine::device() const
 bool AudioEngine::device( const unsigned int idx )
 {
    if ( idx >= _devices.size() ) return false;
-
-   close();
 
    _device_idx = idx;
 
@@ -134,7 +133,7 @@ bool AudioEngine::device( const std::string& d )
 
    return device( idx );
 }
-
+ 
 
 AudioEngine* AudioEngine::factory()
 {
