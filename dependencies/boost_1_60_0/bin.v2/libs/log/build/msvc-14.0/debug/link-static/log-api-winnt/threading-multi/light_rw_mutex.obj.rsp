@@ -1,0 +1,21 @@
+"libs\log\src\light_rw_mutex.cpp" -Fo"bin.v2\libs\log\build\msvc-14.0\debug\link-static\log-api-winnt\threading-multi\light_rw_mutex.obj"    -TP /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t /wd4675 /EHs /bigobj /wd4003 /wd4456 /wd4459 /wd4503 -c 
+-DBOOST_ALL_NO_LIB=1 
+-DBOOST_ATOMIC_STATIC_LINK=1 
+-DBOOST_CHRONO_STATIC_LINK=1 
+-DBOOST_FILESYSTEM_STATIC_LINK=1 
+-DBOOST_LOG_BUILDING_THE_LIB=1 
+-DBOOST_LOG_USE_AVX2 
+-DBOOST_LOG_USE_SSSE3 
+-DBOOST_SPIRIT_USE_PHOENIX_V3=1 
+-DBOOST_SYSTEM_NO_DEPRECATED 
+-DBOOST_SYSTEM_STATIC_LINK=1 
+-DBOOST_THREAD_BUILD_LIB=1 
+-DBOOST_THREAD_DONT_USE_CHRONO=1 
+-DBOOST_THREAD_USE_LIB=1 
+-DDATE_TIME_INLINE 
+-D_CRT_SECURE_NO_DEPRECATE 
+-D_CRT_SECURE_NO_WARNINGS 
+-D_SCL_SECURE_NO_DEPRECATE 
+-D_SCL_SECURE_NO_WARNINGS 
+"-I." 
+"-Ibin.v2\libs\log\build\msvc-14.0\debug\link-static\log-api-winnt\threading-multi"

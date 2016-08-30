@@ -1,0 +1,18 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\fltk\) contains files shared from another project (fltk.vcxproj, fltk_glut.vcxproj, fltk_opengl.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  FileIcon2.cxx
+  Fl_Guess_Image.cxx
+  fl_jpeg.cxx
+  fl_png.cxx
+  HelpDialog.cxx
+  images_core.cxx
+  pnmImage.cxx
+..\..\images\pnmImage.cxx(164): warning C4390: ';' : empty controlled statement found; is this the intent?
+  xpmFileImage.cxx
+..\..\images\xpmFileImage.cxx(69): warning C4390: ';' : empty controlled statement found; is this the intent?
+  Generating Code...
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\Release\) contains files shared from another project (cairo_test.vcxproj, fltkdll_glut.vcxproj, fltkdll_opengl.vcxproj, libpng.vcxproj, zlib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\Release\) contains files shared from another project (cairo_test.vcxproj, fltkdll_glut.vcxproj, fltkdll_opengl.vcxproj, libjpeg.vcxproj, libpng.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (.\Release\) contains files shared from another project (cairo_test.vcxproj, fltkdll_glut.vcxproj, fltkdll_opengl.vcxproj, libjpeg.vcxproj, zlib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1361,5): warning MSB8012: TargetPath(d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\ide\vcnet\.\fltk\fltk_images.lib) does not match the Library's OutputFile property value (d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\lib\fltk2_images.lib). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1363,5): warning MSB8012: TargetName(fltk_images) does not match the Library's OutputFile property value (fltk2_images). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Lib.OutputFile).
+  fltk_images.lib.vcxproj -> d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\ide\vcnet\.\fltk\fltk_images.lib
