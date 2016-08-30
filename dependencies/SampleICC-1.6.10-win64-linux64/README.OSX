@@ -1,0 +1,17 @@
+Mac OS X users will need a copy of the TIFF library.  One way to do
+this is to install the MacPorts system from www.macports.org.  Having
+done that, install the library with
+
+	port install tiff
+
+This will install the TIFF library into /opt/local/lib, and the TIFF
+header files into /opt/local/include.  The configure script will look
+for the library and header files in those locations, but if you have
+installed them somewhere else (e.g. you prefer using Fink to MacPorts,
+so your downloaded software is under /sw instead of /opt), you can
+indicate this by supplying the --with-tifflib option, as follows:
+
+	./configure --with-tifflib=/sw
+
+This indicates that the configure script should check for the library
+in /sw/lib and the header files in /sw/include.

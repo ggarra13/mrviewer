@@ -1,0 +1,13 @@
+prefix=@prefix@
+exec_prefix=@exec_prefix@
+libdir=${exec_prefix}/lib
+includedir=@includedir@/SampleICC
+datarootdir=@datarootdir@
+datadir=@datadir@
+
+Name: sampleicc
+Description: ICC profiles i/o and manipulating library and CMM
+Version: @SAMPLEICC_MAJOR_VERSION@.@SAMPLEICC_MINOR_VERSION@.@SAMPLEICC_MICRO_VERSION@
+Libs: -L${libdir} -lSampleICC -lICC_utils -lm
+Cflags: -I${includedir}
+
