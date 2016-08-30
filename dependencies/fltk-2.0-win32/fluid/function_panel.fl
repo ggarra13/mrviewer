@@ -1,0 +1,369 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 10 
+gridy 11 
+snap 3
+Function {make_function_panel()} {open
+} {
+  {fltk::Window} function_panel {
+    label {function/method}
+    xywh {488 153 400 208} resizable modal visible
+  } {
+    {fltk::CheckButton} f_public_button {
+      label public
+      xywh {13 8 95 25} when NEVER
+    }
+    {fltk::CheckButton} f_c_button {
+      label {C declaration}
+      xywh {129 8 133 25}
+    }
+    {fltk::Input} f_name_input {
+      label {Name(args): (blank for main())}
+      xywh {13 55 237 22} align 5 when NEVER
+    }
+    {fltk::Input} f_attributes_input {
+      label {Attributes (virtual, static, __declspec, ...)}
+      xywh {13 99 237 22} align 5 when NEVER
+    }
+    {fltk::Input} f_return_type_input {
+      label {Return Type: (blank to return outermost widget)}
+      xywh {13 143 377 22} align 5 when NEVER
+    }
+    {fltk::ReturnButton} f_panel_ok {
+      label OK
+      xywh {220 176 80 22} hotspot box UP_BOX
+    }
+    {fltk::Button} f_panel_cancel {
+      label Cancel
+      xywh {310 176 80 22} box UP_BOX buttonbox NO_BOX shortcut 0xff1b
+    }
+    {fltk::Choice} {} {
+      label {attr:} open
+      xywh {280 99 110 22}
+    } {
+      {fltk::Item} {} {
+        label static
+        callback {f_attributes_input->value("static");}
+        }
+      {fltk::Item} {} {
+        label virtual
+        callback {f_attributes_input->value("virtual");}
+        }
+      {fltk::Item} {} {
+        label const
+        callback {f_attributes_input->value("const");}
+        }
+      {fltk::Item} {} {
+        label inline
+        callback {f_attributes_input->value("inline");}
+        buttonbox THIN_UP_BOX
+      }
+      {fltk::Item} {} {
+        label export
+        callback {f_attributes_input->value("export");}
+        buttonbox THIN_UP_BOX
+      }
+      {fltk::Item} {} {
+        label {__declspec(dllexport)}
+        callback {f_attributes_input->value("__declspec(dllexport)");}
+        vertical buttonbox THIN_UP_BOX
+      }
+      {fltk::Item} {} {
+        label {__declspec(dllimport)}
+        callback {f_attributes_input->value("__declspec(dllimport)");}
+        vertical buttonbox THIN_UP_BOX
+      }
+      {fltk::Item} {} {
+        label __stdcall
+        callback {f_attributes_input->value("__stdcall");}
+        vertical buttonbox THIN_UP_BOX
+      }
+    }
+    {fltk::Button} {} {
+      label {Set main()}
+      callback {f_name_input->value("");
+f_attributes_input->value("");
+f_return_type_input->value("");
+f_public_button->value(1);
+f_c_button->value(0);}
+      xywh {280 55 110 22} box UP_BOX buttonbox DOWN_BOX
+    }
+  }
+} 
+
+Function {make_code_panel()} {open
+} {
+  {fltk::Window} code_panel {
+    label code
+    callback {o->resizable(code_input);}
+    xywh {599 205 290 175} resizable modal visible
+  } {
+    {fltk::Input} code_input {
+      xywh {6 5 280 138} type Multiline align 0 when NEVER resizable
+      extra_code {\#include "CodeEditor.h"}
+      class CodeEditor
+    }
+    {fltk::Group} {} {open
+      xywh {6 148 279 22}
+    } {
+      {fltk::InvisibleBox} {} {
+        xywh {0 0 99 22} resizable
+      }
+      {fltk::ReturnButton} code_panel_ok {
+        label OK
+        xywh {109 0 80 22} hotspot
+      }
+      {fltk::Button} code_panel_cancel {
+        label Cancel
+        xywh {199 0 80 22} shortcut 0xff1b
+      }
+    }
+  }
+} 
+
+Function {make_codeblock_panel()} {open
+} {
+  {fltk::Window} codeblock_panel {
+    label codeblock open
+    xywh {539 536 290 131} resizable modal visible
+  } {
+    {fltk::Input} code_before_input {
+      label {Conditional code block}
+      xywh {10 22 270 22} align 5 when NEVER
+    }
+    {fltk::Input} code_after_input {
+      label {"{...child code...}" is inserted here}
+      xywh {10 65 270 23} align 5 when NEVER
+    }
+    {fltk::ReturnButton} codeblock_panel_ok {
+      label OK
+      xywh {110 99 80 22} hotspot
+    }
+    {fltk::Button} codeblock_panel_cancel {
+      label Cancel
+      xywh {200 99 80 22} shortcut 0xff1b
+    }
+  }
+} 
+
+Function {make_declblock_panel()} {open
+} {
+  {fltk::Window} declblock_panel {
+    label {declaration block} open
+    xywh {448 327 290 131} resizable modal visible
+  } {
+    {fltk::Input} decl_before_input {
+      label {Block start}
+      xywh {10 22 270 22} align 5 when NEVER
+    }
+    {fltk::Input} decl_after_input {
+      label {"\\n...child code...\\n" is inserted here}
+      xywh {10 66 270 22} align 5 when NEVER
+    }
+    {fltk::ReturnButton} declblock_panel_ok {
+      label OK
+      xywh {110 99 80 22} hotspot
+    }
+    {fltk::Button} declblock_panel_cancel {
+      label Cancel
+      xywh {200 99 80 22} shortcut 0xff1b
+    }
+  }
+} 
+
+Function {make_decl_panel()} {open
+} {
+  {fltk::Window} decl_panel {
+    label declaration open
+    xywh {389 398 290 175} resizable visible
+  } {
+    {fltk::CheckButton} decl_public_button {
+      label public
+      xywh {10 11 65 22} when NEVER
+    }
+    {fltk::Input} decl_input {
+      label {can be any declartion, like "int x;",
+an external symbol like "extern int foo();",
+a \#directive like "\#include <foo.h>",
+or a comment like "//foo" or "/*foo*/"}
+      xywh {10 44 270 22} align 6 when NEVER
+    }
+    {fltk::ReturnButton} decl_panel_ok {
+      label OK
+      xywh {110 143 80 22} hotspot
+    }
+    {fltk::Button} decl_panel_cancel {
+      label Cancel
+      xywh {200 143 80 22} shortcut 0xff1b
+    }
+  }
+} 
+
+Function {make_class_panel()} {open
+} {
+  {fltk::Window} class_panel {
+    label class open
+    xywh {356 346 280 164} resizable modal visible
+  } {
+    {fltk::CheckButton} c_public_button {
+      label public
+      xywh {10 11 65 22} when NEVER
+    }
+    {fltk::Input} c_name_input {
+      label {name:}
+      xywh {10 44 260 22} align 5 when NEVER
+    }
+    {fltk::Input} c_subclass_input {
+      label {subclass of (text between : and \{)}
+      xywh {10 89 260 21} align 5 when NEVER
+    }
+    {fltk::ReturnButton} c_panel_ok {
+      label OK
+      xywh {100 132 80 22} hotspot
+    }
+    {fltk::Button} c_panel_cancel {
+      label Cancel
+      xywh {190 132 80 22} shortcut 0xff1b
+    }
+  }
+} 
+
+Function {make_namespace_panel()} {open
+} {
+  {fltk::Window} namespace_panel {
+    label namespace open
+    xywh {688 486 300 120} resizable visible
+  } {
+    {fltk::Input} namespace_input {
+      label {default is  "fltk", can be declared at the root or  imbricated into another namespace}
+      xywh {10 21 281 20} align 134 when NEVER
+    }
+    {fltk::ReturnButton} namespace_panel_ok {
+      label OK
+      xywh {120 92 80 20} hotspot
+    }
+    {fltk::Button} namespace_panel_cancel {
+      label Cancel
+      xywh {210 92 80 20} shortcut 0xff1b
+    }
+  }
+} 
+
+Function {make_comment_panel()} {open
+} {
+  {fltk::Window} comment_panel {
+    label {Comment Properties}
+    callback {o->hide();} open
+    xywh {409 235 550 318} type Double resizable labelsize 11
+    extra_code {o->size_range(320, 180);} modal visible
+  } {
+    {fltk::Input} comment_input {
+      label input
+      xywh {110 10 430 265} type Multiline align 6 when NEVER
+      extra_code {o->when(fltk::WHEN_ENTER_KEY_CHANGED|fltk::WHEN_RELEASE);}
+    }
+    {fltk::Group} {} {open
+      xywh {0 -1 550 318} labelsize 11
+    } {
+      {fltk::ReturnButton} comment_panel_ok {
+        label OK
+        xywh {371 286 80 21} hotspot
+      }
+      {fltk::Button} comment_panel_cancel {
+        label Cancel
+        callback {comment_panel->hide();}
+        xywh {460 286 79 21} shortcut 0xff1b
+      }
+      {fltk::InvisibleBox} {} {
+        xywh {110 285 244 21} resizable labelsize 11
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {7 10 103 291} resizable labelsize 11
+    } {
+      {fltk::LightButton} comment_in_source {
+        label {In Source}
+        tooltip {Put the comment into the source (.cxx) file.}
+        xywh {0 10 90 20} when NEVER labelsize 11
+      }
+      {fltk::LightButton} comment_in_header {
+        label {In Header}
+        tooltip {Put the comment into the header (.h) file.}
+        xywh {0 40 90 20} when NEVER labelsize 11
+      }
+      {fltk::PopupMenu} comment_predefined {
+        label Predefined open
+        xywh {0 69 90 20} labelsize 11 textsize 11
+      } {}
+      {fltk::Button} comment_load {
+        label {Import...}
+        xywh {0 100 90 20} labelsize 11
+      }
+      {fltk::InvisibleBox} {} {
+        xywh {0 132 93 131} resizable labelsize 11
+      }
+    }
+  }
+} 
+
+Function {make_sourceview()} {open
+} {
+  {fltk::Window} sourceview_panel {
+    label {Code View}
+    callback toggle_sourceview_cb open
+    xywh {804 133 520 483} type Double resizable visible
+  } {
+    {fltk::TabGroup} sv_tab {
+      callback update_sourceview_position_cb open
+      xywh {10 10 500 433} resizable selection_color 4 labelcolor 7
+    } {
+      {fltk::Group} {} {
+        label Source
+        xywh {0 25 500 408} hide resizable
+      } {
+        {fltk::TextEditor} sv_source {
+          xywh {10 15 480 383} resizable textfont 4 textsize 11
+          class CodeViewer
+        }
+      }
+      {fltk::Group} {} {
+        label Header open
+        xywh {0 25 500 408}
+      } {
+        {fltk::TextEditor} sv_header {selected
+          xywh {10 15 480 383} resizable textfont 4 textsize 11
+          class CodeViewer
+        }
+      }
+    }
+    {fltk::Group} {} {open
+      xywh {10 453 500 20}
+    } {
+      {fltk::Button} {} {
+        label Refresh
+        callback update_sourceview_cb
+        xywh {0 0 61 20} labelsize 11
+      }
+      {fltk::LightButton} sv_autorefresh {
+        label {Auto-Refresh}
+        xywh {66 0 91 20} labelsize 11
+        extra_code {o->callback((fltk::Callback*)update_sourceview_cb);}
+      }
+      {fltk::LightButton} sv_autoposition {
+        label {Auto-Position}
+        xywh {162 0 89 20} labelsize 11
+      }
+      {fltk::Button} {} {
+        label Close
+        callback toggle_sourceview_b_cb
+        xywh {450 0 50 20} labelsize 11
+      }
+      {fltk::InvisibleBox} {} {
+        xywh {255 0 190 20} resizable
+      }
+    }
+  }
+} 
