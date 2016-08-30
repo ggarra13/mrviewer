@@ -1,0 +1,84 @@
+##
+## This is a FLTK scheme configuration file.
+##
+
+description = Ancient Motif scheme
+author = Carl Thompson (clip@home.net)
+version = 1
+FLTK version = 2.0.0
+
+[general]
+  themes = motif
+
+[global colors]
+  background = motif blue
+#  LIGHT1 =
+  LIGHT2 = light2
+  LIGHT3 = light3
+  DARK1 = dark1
+  DARK2 = dark2
+  DARK3 = dark3
+
+[widgets]
+
+  [widgets/default]
+    box = motif thick
+    label font = courier
+    text font = courier
+    label size = 12
+
+  [widgets/light button]
+    box = motif thick up
+
+  [widgets/window]
+    box = motif thick
+
+  [widgets/choice]
+    box = motif thick
+
+  [widgets/menu button]
+    box = motif thick
+
+  [widgets/menu]
+    box = motif thick
+    glyph box = motif thick menu
+
+  [widgets/menu bar]
+    box = motif thick
+    text box = motif thick menu
+
+#  [widgets/scrollbar]
+#    box = motif thick down
+#    glyph box = motif thick
+
+  [widgets/slider]
+    box = motif thick down
+#    glyph box = motif thick
+
+  [widgets/value slider]
+    box = motif thick down
+#    glyph box = motif thick
+
+  [widgets/input]
+    box = motif thick down
+
+  [widgets/output]
+    box = motif thick down
+
+  [widgets/counter]
+    box = motif thick down
+    glyph box = motif thick
+
+  [widgets/adjuster]
+    glyph box = motif thick
+
+  [widgets/highlight button]
+    box = motif thick highlight
+
+[aliases]
+  motif blue = #729eff
+  light2 = #aeefff
+  light3 = #aeefff
+  dark3 = #394d80
+  dark2 = #496eb7
+  dark1 = #597ecf

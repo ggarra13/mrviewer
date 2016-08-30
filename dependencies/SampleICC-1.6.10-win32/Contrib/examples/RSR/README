@@ -1,0 +1,155 @@
+Making ICC input profiles to match RSR target + monitor profiles
+
+last revised Saturday 29 July 2007
+Joseph Goldstone (joseph@lp.com), Lilliputian Pictures LLC
+
+The process of making ICC input profiles, usable by (e.g.) Photoshop CS2 as
+something that can be assigned to a DPX image to provide a reasonable match to
+the results of the Rising Run Research's cineShake plug-in, is as follows:
+
+0) choose the machine on which your profile will be used.  To make up
+   a concrete example, let's say an artist named Bill is going to be
+   using this profile in Photoshop CS2 on a PC running Windows XP.
+
+1) choose a Mac that
+     1a) has been profiled with cineProfiler, and
+     1b) has been profiled with an ICC-compliant profiler, e.g. Eye-One Match
+     1c) has Shake installed, with a valid license for it
+     1d) has RSR's cineShake plug-in installed, and a valid license for it
+   
+   Make sure that the directory in which the SampleICC binaries have
+   been installed is in your search path (i.e. your shell's PATH variable).
+
+   To continue our example we'll say that an administrator named Steve
+   is running these tools; so you'll be running 01_make_probe_image.sh
+   on Steve's Mac.
+
+   So on Steve's Mac, run the 01_make_probe_image.sh shell script to
+   make a 'probe' image, basically a flattened color cube.  That
+   script can be found in the same directory as this README document.
+   
+     % ./01_make_probe_image.sh
+
+   (The '%' representing your shell prompt.)
+
+   The resulting probe image is in 32-bit-per-component TIFF format in
+   the directory /var/tmp:
+
+     -rw-rw-r--   1 steve  wheel  485830 Mar 26 11:17 /var/tmp/32bpcProbe.tiff
+
+2) continuing on Steve's Mac, use a third-party tool such as After
+   Effects to convert the 32-bit-per-component TIFF image to a
+   10-bit-per-component Cineon image.  A tiny After Effects 7 project,
+   ConversionProject.aep, is included in this software distribution in
+   the same directory as this README file.
+
+   If After Effects is not available, look around for something that is;
+   perhaps CS2 can do this itself, or you might use a public-domain utility
+   such as those found in ImageMagik or (if it's still around) pbmplus.
+
+3) back on Bill's PC, find the cineSpace monitor profile that is
+   appropriate for that machine.  By default, these are placed in
+   \Program Files\RisingSunResearch\cinespace\monitor-profiles\.
+   Put this monitor profile onto a USB flash drive.
+
+4) Take that USB flash drive over to Steve's Mac, and copy it into the
+   place where RSR monitor profiles are stored (by default, this will
+   be in /Applications/cineSpace/monitor-profiles).
+
+5) Open the Shake application, and create a FileIn node to read in the
+   32-bit-per-component TIFF image [i.e. /var/tmp/32bpcProbe.tiff].
+   Create a cineShake node which takes as input the output of the
+   FileIn node.  Set the monitor profile of the cineShake node to be
+   that which you just copied from Bill's PC.  Set the target profile
+   to be the one obtained from Rising Sun which describes the
+   relationship between the Cineon values you send to your film
+   recorder or service bureau, and the CIE XYZ values of the projected
+   film image in your screening room.  Set the cineEngine parameters
+   to be the 3DAccurate cineEngineType, the Scaling scalingType, the
+   None gamutTreatment and the none PretransformType.  Set the
+   Advanced parameters to be bradfordTransform Off and
+   BlackPointCorrection off.
+
+6) Open Grab.app (located in the /Applications/Utilities/ directory on
+   Steve's Mac) to capture a magenta-bordered chunk of the
+   color-corrected display of the probe image in Shake.  In
+   particular, use Grab's "Capture Selection" option [shortcut:
+   cmd-shift-A] to capture the color-corrected image. Be sure that you
+   are leaving enough room around the 'data' part of the probe image
+   to capture the transformed probe data, but that you are not
+   exceeding the bounds of the magenta area. The magenta region is
+   used to automatically detect the border of the probe data, so it is
+   critical that you get your grab boundary within this region. (The
+   region is quite wide, maybe 20 pixels, so this should not be a hard
+   thing to do.)
+
+   Save the resulting grab to cineSpace's directory of monitor
+   profiles (/Applications/cineSpace/monitor-profiles by default),
+   naming it something like Bill_monitor_profile_probe.tiff.
+
+7) Next, you will be running the 02_make_input_profile_from_probe.sh
+   script, found in the same directory as this README.
+   
+   Run the script, supplying it with four or five command-line arguments.
+   The first argument is the path to the captured and Shaken probe
+   image, which if you've been following along with this example will
+   be in /Applications/cineSpace/monitor-profiles.  The second
+   argument is a description of the profile.  If you want to embed
+   spaces in this description, then put the description in quotes.
+   The third is a copyrght string; ifyou want to embed spaces in this
+   string, then put the string in quotes. And the fourth is the name
+   of the profile that you'll be carrying back to Bill's machine.
+
+   If you are using a pre-transform curve on your images (e.g. you are
+   storing your images as 8-bit-per-component companded TIFF files,
+   where the transformed files are created from 10-bit Cineon scans,
+   stored during artists' manipulations as 8-bit TIFF, and taken back
+   to 10-bit Cineon on the way out to the film recorder) you can
+   specify a file containing that curve as a fifth argument to the
+   02_make_input_profile_from_probe.sh script.
+
+   To make an example pretransform file, for an 8-bit-per-component
+   TIFF, use 
+   
+        create_pretransform_curve 8 pretransform.txt
+   
+   which will make a file named pretransform.txt in the current
+   directory.  Note that this file may not be appropriate for your
+   site; the parameters for this particular pretransform are a
+   particular, and lossy, method of compressing 10 bits into 8 from
+   Rising Sun Research.
+
+   Here is an example pair of commands that include a pre-transform
+   suitable for files of limited bit-depth.  The definition of MPDIR
+   is only to keep the lines from wrapping in this README file.  You
+   could either type this on one long line, or use the shell's
+   continuation character, the backslash, to spread it across multiple
+   lines as I do here:
+
+        % export MPDIR=/Applications/cineSpace/monitor-profiles
+	% ./02_make_input_profile_from_probe.sh \
+		$MPDIR/Bill_monitor_profile_probe.tiff \
+		"ICC RSR-style input profile for Bill" \
+   		"Copyright (c) My Effects Company LLC" \
+		$MPDIR/Bill_input_profile.icc \
+		$MPDIR/pretransform.txt
+
+8) Copy the resulting ICC input profile onto the USB flash drive, take
+   the flash drive to Bill's machine, and put the ICC input profile
+   into the directory
+	C:\Program Files\Common Files\Adobe\Color\Profiles
+
+9) Read the image on which Bill will be working into Photoshop CS2.
+   Use the Edit->Assign Profile (Image->Mode->Assign Profile in the
+   older Photoshop CS) command to assign the input profile you just
+   made to the image.  Note that the name that appears in the pop-up
+   menu is not the name of the profile on disk; it's the description
+   of the profile that you entered above, in this case "ICC RSR-style
+   input profile for Bill".
+
+----
+
+Acknowledgements:
+   The 32-bit-TIFF-to-Cineon conversion example After Effects project
+   is reproduced here with the kind permission of its author, Richard
+   Patterson.
