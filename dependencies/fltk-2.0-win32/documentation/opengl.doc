@@ -1,0 +1,241 @@
+// This file is for Doxygen input. It is not compiled.
+
+using namespace fltk;
+
+/*! \page opengl Using OpenGL in FLTK
+
+This chapter needs to be rewritten to be a real example program showing
+how to draw an OpenGL window and do some mouse events, including OpenGL
+hit detection, in it.
+
+The easiest way to make an OpenGL display is to subclass
+fltk::GlWindow. Your subclass must implement a GlWindow::draw()
+method which uses OpenGL calls to draw the display.  Your main program 
+should call Widget::redraw() when the display needs to change, and 
+(somewhat later) FLTK will call draw() for you.
+
+The functions glstart() and glfinish() may allow you to use OpenGL to
+draw into any normal FLTK window or widget, just put glstart() before
+it and glfinish() afterwards.  This allows you to use Gouraud shading
+for drawing your widgets. (note: not really working currently but I
+want to get it to work. You may have to initially call glvisual(int)
+to indicate you are going to do this).
+
+<h2>Making a Subclass of fltk::GlWindow</h2>
+
+To define the subclass you just subclass the GlWindow class:
+
+\code
+class MyWindow : public fltk::GlWindow {
+  void draw();
+  int handle(int);
+
+public:
+  MyWindow(int X, int Y, int W, int H, const char *L)
+    : fltk::GlWindow(X, Y, W, H, L) {}
+};
+\endcode
+
+Like any widget, you can include additional private and public data in 
+your class (such as scene graph information, etc.) 
+
+The GlWindow::draw() method is where you actually do your OpenGL 
+drawing. The header file gl.h provides some convenience functions
+so that you can reuse FLTK fonts and colors in your OpenGL drawing:
+
+\code
+void MyWindow::draw() {
+  if (!valid()) {
+    ... set up projection, viewport, etc ...
+    ... window size is in w() and h().
+    ... valid() is turned on by FLTK after draw() returns
+  }
+  ... draw ...
+}
+\endcode
+
+The GlWindow::handle() method handles mouse and keyboard events for the 
+window: 
+
+\code
+int MyWindow::handle(int event) {
+  switch(event) {
+  case fltk::PUSH:
+    ... mouse down event ...
+    ... position in fltk::event_x() and fltk::event_y()
+    return 1;
+  case fltk::DRAG:
+    ... mouse moved while down event ...
+    return 1;
+  case fltk::RELEASE:    
+    ... mouse up event ...
+    return 1;
+  case fltk::FOCUS :
+  case fltk::UNFOCUS :
+    ... Return 1 if you want keyboard events, 0 otherwise
+    return 1;
+  case fltk::KEY:
+    ... keypress, key is in fltk::event_key(), ascii in fltk::event_text()
+    ... Return 1 if you understand/use the keyboard event, 0 otherwise...
+    return 1;
+  case fltk::SHORTCUT:
+    ... shortcut, key is in fltk::event_key(), ascii in fltk::event_text()
+    ... Return 1 if you understand/use the shortcut event, 0 otherwise...
+    return 1;
+  default:
+    // let the base class handle all other events:
+    return fltk::GlWindow::handle(event);
+  }
+}
+\endcode
+
+Note that the event_y() is in FLTK coordinates, with 0 at the top of
+the window. Use h()-event_y() to get OpenGL coordinates with 0 at the
+bottom.
+
+handle() may make OpenGL calls if it first calls GlWindow::make_current().
+If this is not done, the current OpenGL context may be another window. You
+should only call non-drawing functions in handle():
+
+\code
+  case fltk::PUSH:
+    make_current(); // make OpenGL context current
+    if (!valid()) {
+      ... set up projection exactly the same as draw ...
+      valid(1); // stop it from doing this next time
+    }
+    ... ok to call NON-DRAWING OpenGL code here, such as hit
+    detection, loading textures, etc...
+\endcode
+
+Your main program can now create one of your windows by doing <TT>new 
+MyWindow(...)</TT>.  You can also use <A href=fluid.html>FLUID</A>
+by: 
+- Putting your class definition in a <tt>MyWindow.h</tt> file.
+- Creating a <tt>fltk::InvisibleBox</tt> widget in FLUID.
+- In the widget panel fill in the "class" field with <tt>MyWindow</tt>.
+This will make FLUID produce constructors for your new class.
+- In the "Extra Code" field put <TT>#include "MyWindow.h"</TT>, so that
+the FLUID output file will compile.
+
+<h2>Using OpenGL Optimizer with FLTK</h2>
+
+This section needs to be updated. Several OpenGL-using libraries
+insist on creating their own contexts, often requiring you to include
+system-specific header files just to communicate the window id to
+them. This example shows how to do that with FLTK.
+
+<A href=http://www.sgi.com/software/optimizer>OpenGL Optimizer</A> is a 
+scene graph toolkit for OpenGL available from Silicon Graphics for IRIX 
+and Microsoft Windows.  Versions are in the works for Solaris and 
+HP-UX.  It allows you to view large scenes without writing a lot of 
+OpenGL code. 
+
+<H4>OptimizerWindow Class Definition</h4>
+
+To use OpenGL Optimizer with FLTK you'll need to create a subclass of
+GlWindow that includes several state variables: 
+
+\code
+class OptimizerWindow : public fltk::GlWindow {
+  csContext *context_; // Initialized to 0 and set by draw()...
+  csDrawAction *draw_action_; // Draw action...
+  csGroup *scene_; // Scene to draw...
+  csCamara *camera_; // Viewport for scene...
+
+  void draw();
+
+public:
+  OptimizerWindow(int X, int Y, int W, int H, const char *L)
+    : fltk::GlWindow(X, Y, W, H, L) {
+      context_ = (csContext *)0;
+      draw_action_ = (csDrawAction *)0;
+      scene_ = (csGroup *)0;
+      camera_ = (csCamera *)0;
+    }
+
+  void scene(csGroup *g) { scene_ = g; redraw(); }
+
+  void camera(csCamera *c) {
+    camera_ = c;
+    if (context_) {
+      draw_action_-&gt;setCamera(camera_);
+      camera_-&gt;draw(draw_action_);
+      redraw();
+    }
+  }
+};
+\endcode
+
+<h4>The camera() Method</h4>
+
+The <TT>camera()</TT> method sets the camera (projection and 
+viewpoint) to use when drawing the scene. The scene is redrawn after 
+this call. 
+
+<h4>The draw() Method</h4>
+
+The <TT>draw()</TT> method performs the needed initialization and does 
+the actual drawing: 
+
+\code
+void OptimizerWindow::draw() {
+  if (!context_) {
+    // This is the first time we've been asked to draw; create the
+    // Optimizer context for the scene...
+
+#ifdef WIN32
+    context_ = new csContext((HDC)fltk::getHDC());
+    context_->ref();
+    context_->makeCurrent((HDC)fltk::getHDC());
+#else
+    context_ = new csContext(fltk::display, fltk::visual);
+    context_->ref();
+    context_->makeCurrent(fltk::display, fltk::window);
+#endif // WIN32
+
+    ... perform other context setup as desired ...    
+
+    // Then create the draw action to handle drawing things...
+
+    draw_action_ = new csDrawAction;
+    if (camera_) {
+      draw_action_->setCamera(camera_);
+      camera_->draw(draw_action_);
+    }
+  } else {
+#ifdef WIN32
+    context_->makeCurrent((HDC)fltk::getHDC());
+#else
+    context_->makeCurrent(fltk::display, fltk::window);
+#endif // WIN32
+  }
+
+  if (!valid()) {
+    // Update the viewport for this context...
+    context_->setViewport(0, 0, w(), h());
+  }
+
+  // Clear the window...
+
+  context_->clear(csContext::COLOR_CLEAR | csContext::DEPTH_CLEAR,
+                  0.0f,		// Red
+		  0.0f,		// Green
+		  0.0f,		// Blue
+		  1.0f);	// Alpha
+
+  // Then draw the scene (if any)...
+
+  if (scene_)
+    draw_action_->apply(scene_);
+}
+\endcode
+
+<h4>The scene() Method</h4>
+
+The <TT>scene()</TT> method sets the scene to be drawn.  The scene is 
+a collection of 3D objects in a <TT>csGroup</TT>.  The scene is redrawn 
+after this call.
+
+*/
+

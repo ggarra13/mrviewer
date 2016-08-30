@@ -1,0 +1,178 @@
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (arc.vcxproj, ask.vcxproj, bitmap.vcxproj, boxtype.vcxproj, browser.vcxproj, button.vcxproj, buttons.vcxproj, checkers.vcxproj, clock.vcxproj, color_chooser.vcxproj, CubeView.vcxproj, cursor.vcxproj, curve.vcxproj, demo.vcxproj, drawing.vcxproj, editor.vcxproj, file_chooser.vcxproj, fltk.vcxproj, fltkdll.vcxproj, fltkdll_glut.vcxproj, fltkdll_opengl.vcxproj, fltk_glut.vcxproj, fltk_images.vcxproj, fltk_opengl.vcxproj, fluid.vcxproj, fluid_wdll.vcxproj, fonts.vcxproj, fractals.vcxproj, glpuzzle.vcxproj, hello.vcxproj, help.vcxproj, image.vcxproj, inactive.vcxproj, input.vcxproj, keyboard.vcxproj, label.vcxproj, libjpeg.vcxproj, libpng.vcxproj, line_style.vcxproj, mandelbrot.vcxproj, menubar.vcxproj, message.vcxproj, navigation.vcxproj, output.vcxproj, pack.vcxproj, qubix.vcxproj, radio.vcxproj, resize.vcxproj, size_range.vcxproj, symbols.vcxproj, tabs.vcxproj, tile.vcxproj, valuators.vcxproj, wizard.vcxproj, zlib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
+  FileIcon2.cxx
+..\..\images\FileIcon2.cxx(91): warning C4273: 'fltk::FileIcon::load': inconsistent dll linkage
+  d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/FileIcon.h(88): note: see previous definition of 'load'
+..\..\images\FileIcon2.cxx(111): warning C4273: 'fltk::FileIcon::load_fti': inconsistent dll linkage
+  d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/FileIcon.h(105): note: see previous definition of 'load_fti'
+..\..\images\FileIcon2.cxx(252): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
+..\..\images\FileIcon2.cxx(323): warning C4273: 'fltk::FileIcon::load_system_icons': inconsistent dll linkage
+  d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/FileIcon.h(96): note: see previous definition of 'load_system_icons'
+  Fl_Guess_Image.cxx
+..\..\images\Fl_Guess_Image.cxx(77): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
+  fl_jpeg.cxx
+  fl_png.cxx
+  HelpDialog.cxx
+d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
+d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
+  images_core.cxx
+  pnmImage.cxx
+..\..\images\pnmImage.cxx(163): warning C4390: ';': empty controlled statement found; is this the intent?
+  xpmFileImage.cxx
+..\..\images\xpmFileImage.cxx(69): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
+..\..\images\xpmFileImage.cxx(69): warning C4390: ';': empty controlled statement found; is this the intent?
+  Generating Code...
+  jaricom.c
+  jcapimin.c
+  jcapistd.c
+  jcarith.c
+  jccoefct.c
+  jccolor.c
+  jcdctmgr.c
+  jchuff.c
+  jcinit.c
+  jcmainct.c
+  jcmarker.c
+  jcmaster.c
+  jcomapi.c
+  jcparam.c
+  jcprepct.c
+  jcsample.c
+  jctrans.c
+  jdapimin.c
+  jdapistd.c
+  jdarith.c
+  Generating Code...
+  Compiling...
+  jdatadst.c
+..\..\images\libjpeg\jdatadst.c(185): warning C4267: '=': conversion from 'size_t' to 'unsigned long', possible loss of data
+  jdatasrc.c
+  jdcoefct.c
+  jdcolor.c
+  jddctmgr.c
+  jdhuff.c
+  jdinput.c
+  jdmainct.c
+  jdmarker.c
+  jdmaster.c
+  jdmerge.c
+  jdpostct.c
+  jdsample.c
+  jdtrans.c
+  jerror.c
+..\..\images\libjpeg\jerror.c(193): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+..\..\images\libjpeg\jerror.c(195): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+  jfdctflt.c
+  jfdctfst.c
+  jfdctint.c
+  jidctflt.c
+  jidctfst.c
+  Generating Code...
+  Compiling...
+  jidctint.c
+  jmemmgr.c
+..\..\images\libjpeg\jmemmgr.c(306): warning C4267: '+=': conversion from 'size_t' to 'long', possible loss of data
+..\..\images\libjpeg\jmemmgr.c(366): warning C4267: '+=': conversion from 'size_t' to 'long', possible loss of data
+..\..\images\libjpeg\jmemmgr.c(976): warning C4267: '-=': conversion from 'size_t' to 'long', possible loss of data
+..\..\images\libjpeg\jmemmgr.c(990): warning C4267: '-=': conversion from 'size_t' to 'long', possible loss of data
+..\..\images\libjpeg\jmemmgr.c(1106): warning C4996: 'getenv': This function or variable may be unsafe. Consider using _dupenv_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdlib.h(1183): note: see declaration of 'getenv'
+..\..\images\libjpeg\jmemmgr.c(1109): warning C4996: 'sscanf': This function or variable may be unsafe. Consider using sscanf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(2254): note: see declaration of 'sscanf'
+  jmemnobs.c
+  jquant1.c
+  jquant2.c
+  jutils.c
+  png.c
+..\..\images\libpng\png.c(538): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngerror.c
+  pngget.c
+  pngmem.c
+  pngpread.c
+  pngread.c
+..\..\images\libpng\pngread.c(134): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngrio.c
+  pngrtran.c
+..\..\images\libpng\pngrtran.c(1413): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngrutil.c
+..\..\images\libpng\pngrutil.c(399): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+..\..\images\libpng\pngrutil.c(506): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+..\..\images\libpng\pngrutil.c(1249): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngset.c
+  pngtrans.c
+  pngwio.c
+  pngwrite.c
+..\..\images\libpng\pngwrite.c(434): warning C4996: 'gmtime': This function or variable may be unsafe. Consider using gmtime_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\time.h(495): note: see declaration of 'gmtime'
+..\..\images\libpng\pngwrite.c(533): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  pngwtran.c
+  Generating Code...
+  Compiling...
+  pngwutil.c
+..\..\images\libpng\pngwutil.c(237): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+..\..\images\libpng\pngwutil.c(1319): warning C4996: '_snprintf': This function or variable may be unsafe. Consider using _snprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1952): note: see declaration of '_snprintf'
+  adler32.c
+  compress.c
+  crc32.c
+  deflate.c
+  gzclose.c
+  gzlib.c
+..\..\images\zlib\gzlib.c(156): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
+..\..\images\zlib\gzlib.c(160): warning C4996: 'open': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _open. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(514): note: see declaration of 'open'
+..\..\images\zlib\gzlib.c(184): warning C4996: 'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(501): note: see declaration of 'lseek'
+..\..\images\zlib\gzlib.c(221): warning C4996: 'sprintf': This function or variable may be unsafe. Consider using sprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1769): note: see declaration of 'sprintf'
+..\..\images\zlib\gzlib.c(268): warning C4996: 'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(501): note: see declaration of 'lseek'
+..\..\images\zlib\gzlib.c(309): warning C4996: 'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(501): note: see declaration of 'lseek'
+..\..\images\zlib\gzlib.c(404): warning C4996: 'lseek': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _lseek. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(501): note: see declaration of 'lseek'
+..\..\images\zlib\gzlib.c(514): warning C4996: 'strcpy': This function or variable may be unsafe. Consider using strcpy_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(119): note: see declaration of 'strcpy'
+..\..\images\zlib\gzlib.c(515): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+..\..\images\zlib\gzlib.c(516): warning C4996: 'strcat': This function or variable may be unsafe. Consider using strcat_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(90): note: see declaration of 'strcat'
+  gzread.c
+..\..\images\zlib\gzread.c(31): warning C4996: 'read': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _read. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(521): note: see declaration of 'read'
+..\..\images\zlib\gzread.c(37): warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(178): note: see declaration of 'strerror'
+..\..\images\zlib\gzread.c(650): warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _close. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(457): note: see declaration of 'close'
+  gzwrite.c
+..\..\images\zlib\gzwrite.c(79): warning C4996: 'write': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _write. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(556): note: see declaration of 'write'
+..\..\images\zlib\gzwrite.c(81): warning C4996: 'strerror': This function or variable may be unsafe. Consider using strerror_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\string.h(178): note: see declaration of 'strerror'
+..\..\images\zlib\gzwrite.c(333): warning C4996: '_vsnprintf': This function or variable may be unsafe. Consider using _vsnprintf_s instead. To disable deprecation, use _CRT_SECURE_NO_WARNINGS. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\stdio.h(1396): note: see declaration of '_vsnprintf'
+..\..\images\zlib\gzwrite.c(528): warning C4996: 'close': The POSIX name for this item is deprecated. Instead, use the ISO C and C++ conformant name: _close. See online help for details.
+  C:\Program Files (x86)\Windows Kits\10\Include\10.0.10240.0\ucrt\corecrt_io.h(457): note: see declaration of 'close'
+  infback.c
+  inffast.c
+  inflate.c
+  inftrees.c
+  trees.c
+  uncompr.c
+  zutil.c
+  Generating Code...
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1189,5): warning MSB8012: TargetPath(d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\x64\Release\fltkdll_images.dll) does not match the Linker's OutputFile property value (d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\lib\fltk2dll_images.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1191,5): warning MSB8012: TargetName(fltkdll_images) does not match the Linker's OutputFile property value (fltk2dll_images). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
+     Creating library .\..\..\lib/fltk2dll_images.lib and object .\..\..\lib/fltk2dll_images.exp
+  fltkdll_images.vcxproj -> d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\x64\Release\fltkdll_images.dll
+  fltkdll_images.vcxproj -> fltkdll_images.pdb (Full PDB)
