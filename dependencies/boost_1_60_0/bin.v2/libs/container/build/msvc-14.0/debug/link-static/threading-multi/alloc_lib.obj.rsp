@@ -1,0 +1,4 @@
+"libs\container\src\alloc_lib.c" -Fo"bin.v2\libs\container\build\msvc-14.0\debug\link-static\threading-multi\alloc_lib.obj"    -TC /Z7 /Od /Ob0 /W3 /GR /MDd /Zc:forScope /Zc:wchar_t -c 
+-DBOOST_ALL_NO_LIB=1 
+-DBOOST_CONTAINER_STATIC_LINK=1 
+"-I."
