@@ -1,0 +1,701 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.0100 
+images_dir ./ 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include <fltk/events.h>} {} 
+
+Function {make_window()} {open
+} {
+  {fltk::Window} {} {open
+    xywh {416 379 490 190} resizable
+    extra_code {o->shortcut(0);} visible
+  } {
+    {fltk::Output} key_output {
+      label {Fl::event_key():}
+      xywh {15 15 170 30} align 5 textfont 4 labelsize 10
+    }
+    {fltk::Output} text_output {
+      label {Fl::event_text():}
+      xywh {195 15 190 30} align 5 textfont 4 labelsize 10
+    }
+    {fltk::Button} {} {
+      label {Esc }
+      user_data {fltk::EscapeKey} user_data_type {void*}
+      callback key_cb
+      xywh {15 50 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label F1
+      user_data {fltk::F1Key} user_data_type {void*}
+      callback key_cb
+      xywh {50 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F2
+      user_data {fltk::F2Key} user_data_type {void*}
+      callback key_cb
+      xywh {70 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F3
+      user_data {fltk::F3Key} user_data_type {void*}
+      callback key_cb
+      xywh {90 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F4
+      user_data {fltk::F4Key} user_data_type {void*}
+      callback key_cb
+      xywh {110 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F5
+      user_data {fltk::F5Key} user_data_type {void*}
+      callback key_cb
+      xywh {140 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F6
+      user_data {fltk::F6Key} user_data_type {void*}
+      callback key_cb
+      xywh {160 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F7
+      user_data {fltk::F7Key} user_data_type {void*}
+      callback key_cb
+      xywh {180 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F8
+      user_data {fltk::F8Key} user_data_type {void*}
+      callback key_cb
+      xywh {200 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F9
+      user_data {fltk::F9Key} user_data_type {void*}
+      callback key_cb
+      xywh {230 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F10
+      user_data {fltk::F10Key} user_data_type {void*}
+      callback key_cb
+      xywh {250 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F11
+      user_data {fltk::F11Key} user_data_type {void*}
+      callback key_cb
+      xywh {270 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F12
+      user_data {fltk::F12Key} user_data_type {void*}
+      callback key_cb
+      xywh {290 50 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {Print }
+      user_data {fltk::PrintKey} user_data_type {void*}
+      callback key_cb
+      xywh {325 50 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {Sclk }
+      user_data {fltk::ScrollLockKey} user_data_type {void*}
+      callback key_cb
+      xywh {345 50 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {Paus }
+      user_data {fltk::PauseKey} user_data_type {void*}
+      callback key_cb
+      xywh {365 50 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {`}
+      callback key_cb
+      xywh {15 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 1
+      callback key_cb
+      xywh {35 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 2
+      callback key_cb
+      xywh {55 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 3
+      callback key_cb
+      xywh {75 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 4
+      callback key_cb
+      xywh {95 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 5
+      callback key_cb
+      xywh {115 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 6
+      callback key_cb
+      xywh {135 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 7
+      callback key_cb
+      xywh {155 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 8
+      callback key_cb
+      xywh {175 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 9
+      callback key_cb
+      xywh {195 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 0
+      callback key_cb
+      xywh {215 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {-}
+      callback key_cb
+      xywh {235 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {=}
+      callback key_cb
+      xywh {255 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label Bksp
+      user_data {fltk::BackSpaceKey} user_data_type {void*}
+      callback key_cb
+      xywh {275 80 35 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {Ins }
+      user_data {fltk::InsertKey} user_data_type {void*}
+      callback key_cb
+      xywh {325 80 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label Home
+      user_data {fltk::HomeKey} user_data_type {void*}
+      callback key_cb
+      xywh {345 80 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {pgup }
+      user_data {fltk::PageUpKey} user_data_type {void*}
+      callback key_cb
+      xywh {365 80 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label Num
+      user_data {fltk::NumLockKey} user_data_type {void*}
+      callback key_cb
+      xywh {400 80 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {/}
+      user_data {fltk::Keypad+'/'} user_data_type {void*}
+      callback key_cb
+      xywh {420 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {*}
+      user_data {fltk::Keypad+'*'} user_data_type {void*}
+      callback key_cb
+      xywh {440 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {-}
+      user_data {fltk::Keypad+'-'} user_data_type {void*}
+      callback key_cb
+      xywh {460 80 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label Tab
+      user_data {fltk::TabKey} user_data_type {void*}
+      callback key_cb
+      xywh {15 100 27 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label Q
+      callback key_cb
+      xywh {42 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label W
+      callback key_cb
+      xywh {62 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label E
+      callback key_cb
+      xywh {82 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label R
+      callback key_cb
+      xywh {102 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label T
+      callback key_cb
+      xywh {122 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label Y
+      callback key_cb
+      xywh {142 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label U
+      callback key_cb
+      xywh {162 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label I
+      callback key_cb
+      xywh {182 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label O
+      callback key_cb
+      xywh {202 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label P
+      callback key_cb
+      xywh {222 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {[}
+      callback key_cb
+      xywh {242 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {]}
+      callback key_cb
+      xywh {262 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {\\}
+      callback key_cb
+      xywh {282 100 28 20} align 52 labelsize 10
+    }
+    {fltk::Button} {} {
+      label {Del }
+      user_data {fltk::DeleteKey} user_data_type {void*}
+      callback key_cb
+      xywh {325 100 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {End }
+      user_data {fltk::EndKey} user_data_type {void*}
+      callback key_cb
+      xywh {345 100 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {pgdn }
+      user_data {fltk::PageDownKey} user_data_type {void*}
+      callback key_cb
+      xywh {365 100 20 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label 7
+      user_data {fltk::Keypad+'7'} user_data_type {void*}
+      callback key_cb
+      xywh {400 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 8
+      user_data {fltk::Keypad+'8'} user_data_type {void*}
+      callback key_cb
+      xywh {420 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 9
+      user_data {fltk::Keypad+'9'} user_data_type {void*}
+      callback key_cb
+      xywh {440 100 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {+}
+      user_data {fltk::Keypad+'+'} user_data_type {void*}
+      callback key_cb
+      xywh {460 100 20 40} align 49 labelsize 10
+    }
+    {fltk::Button} {} {
+      label Lock
+      user_data {fltk::CapsLockKey} user_data_type {void*}
+      callback key_cb
+      xywh {15 120 36 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label A
+      callback key_cb
+      xywh {51 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label S
+      callback key_cb
+      xywh {71 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label D
+      callback key_cb
+      xywh {91 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label F
+      callback key_cb
+      xywh {111 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label G
+      callback key_cb
+      xywh {131 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label H
+      callback key_cb
+      xywh {151 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label J
+      callback key_cb
+      xywh {171 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label K
+      callback key_cb
+      xywh {191 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label L
+      callback key_cb
+      xywh {211 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {;}
+      callback key_cb
+      xywh {231 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {'}
+      callback key_cb
+      xywh {251 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label Enter
+      user_data {fltk::ReturnKey} user_data_type {void*}
+      callback key_cb
+      xywh {271 120 39 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label 4
+      user_data {fltk::Keypad+'4'} user_data_type {void*}
+      callback key_cb
+      xywh {400 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 5
+      user_data {fltk::Keypad+'5'} user_data_type {void*}
+      callback key_cb
+      xywh {420 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 6
+      user_data {fltk::Keypad+'6'} user_data_type {void*}
+      callback key_cb
+      xywh {440 120 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label Shift
+      user_data {fltk::LeftShiftKey} user_data_type {void*}
+      callback key_cb
+      xywh {15 140 45 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label Z
+      callback key_cb
+      xywh {60 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label X
+      callback key_cb
+      xywh {80 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label C
+      callback key_cb
+      xywh {100 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label V
+      callback key_cb
+      xywh {120 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label B
+      callback key_cb
+      xywh {140 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label N
+      callback key_cb
+      xywh {160 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label M
+      callback key_cb
+      xywh {180 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {,}
+      callback key_cb
+      xywh {200 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {.}
+      callback key_cb
+      xywh {220 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {/}
+      callback key_cb
+      xywh {240 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label Shift
+      user_data {fltk::RightShiftKey} user_data_type {void*}
+      callback key_cb
+      xywh {260 140 50 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {@8->}
+      user_data {fltk::UpKey} user_data_type {void*}
+      callback key_cb
+      xywh {345 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 1
+      user_data {fltk::Keypad+'1'} user_data_type {void*}
+      callback key_cb
+      xywh {400 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 2
+      user_data {fltk::Keypad+'2'} user_data_type {void*}
+      callback key_cb
+      xywh {420 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 3
+      user_data {fltk::Keypad+'3'} user_data_type {void*}
+      callback key_cb
+      xywh {440 140 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      user_data {fltk::KeypadEnter} user_data_type {void*}
+      callback key_cb selected
+      xywh {460 140 20 40}
+    }
+    {fltk::Button} {} {
+      label Ctrl
+      user_data {fltk::LeftCtrlKey} user_data_type {void*}
+      callback key_cb
+      xywh {15 160 30 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label Meta
+      user_data {fltk::LeftMetaKey} user_data_type {void*}
+      callback key_cb
+      xywh {45 160 30 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {Alt }
+      user_data {fltk::LeftAltKey} user_data_type {void*}
+      callback key_cb
+      xywh {75 160 30 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      user_data {' '} user_data_type {void*}
+      callback key_cb
+      xywh {105 160 85 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {Alt }
+      user_data {fltk::RightAltKey} user_data_type {void*}
+      callback key_cb
+      xywh {190 160 30 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label Meta
+      user_data {fltk::RightMetaKey} user_data_type {void*}
+      callback key_cb
+      xywh {220 160 30 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label {Menu }
+      user_data {fltk::MenuKey} user_data_type {void*}
+      callback key_cb
+      xywh {250 160 30 20} labelsize 8
+    }
+    {fltk::Button} {} {
+      label Ctrl
+      user_data {fltk::RightCtrlKey} user_data_type {void*}
+      callback key_cb
+      xywh {280 160 30 20} align 52 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {@4->}
+      user_data {fltk::LeftKey} user_data_type {void*}
+      callback key_cb
+      xywh {325 160 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {@2->}
+      user_data {fltk::DownKey} user_data_type {void*}
+      callback key_cb
+      xywh {345 160 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label {@6->}
+      user_data {fltk::RightKey} user_data_type {void*}
+      callback key_cb
+      xywh {365 160 20 20} labelsize 10
+    }
+    {fltk::Button} {} {
+      label 0
+      user_data {fltk::Keypad+'0'} user_data_type {void*}
+      callback key_cb
+      xywh {400 160 40 20} align 52 labelsize 10
+    }
+    {fltk::Button} {} {
+      label {.}
+      user_data {fltk::Keypad+'.'} user_data_type {void*}
+      callback key_cb
+      xywh {440 160 20 20} labelsize 10
+    }
+    {fltk::Widget} {} {
+      label {Fl::event_state():}
+      xywh {400 15 80 40} align 5 box NO_BOX labelsize 10
+    }
+    {fltk::Button} {} {
+      label {shift }
+      user_data {fltk::SHIFT} user_data_type {void*}
+      callback shift_cb
+      xywh {400 15 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {lock }
+      user_data {fltk::CAPSLOCK} user_data_type {void*}
+      callback shift_cb
+      xywh {420 15 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label ctrl
+      user_data {fltk::CTRL} user_data_type {void*}
+      callback shift_cb
+      xywh {440 15 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label alt
+      user_data {fltk::ALT} user_data_type {void*}
+      callback shift_cb
+      xywh {460 15 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label num
+      user_data {fltk::NUMLOCK} user_data_type {void*}
+      callback shift_cb
+      xywh {400 25 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {?}
+      user_data 0x20 user_data_type {void*}
+      callback shift_cb
+      xywh {420 25 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label meta
+      user_data {fltk::META} user_data_type {void*}
+      callback shift_cb
+      xywh {440 25 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label sclk
+      user_data {fltk::SCROLLLOCK} user_data_type {void*}
+      callback shift_cb
+      xywh {460 25 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label b1
+      user_data {fltk::BUTTON1} user_data_type {void*}
+      callback shift_cb
+      xywh {400 35 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label b2
+      user_data {fltk::BUTTON2} user_data_type {void*}
+      callback shift_cb
+      xywh {420 35 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label b3
+      user_data {fltk::BUTTON3} user_data_type {void*}
+      callback shift_cb
+      xywh {440 35 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {?}
+      user_data 0x800 user_data_type {void*}
+      callback shift_cb
+      xywh {460 35 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {?}
+      user_data 0x1000 user_data_type {void*}
+      callback shift_cb
+      xywh {400 45 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {?}
+      user_data 0x2000 user_data_type {void*}
+      callback shift_cb
+      xywh {420 45 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {?}
+      user_data 0x4000 user_data_type {void*}
+      callback shift_cb
+      xywh {440 45 20 10} selection_color 3 labelsize 8
+    }
+    {fltk::Button} {} {
+      label {?}
+      user_data 0x8000 user_data_type {void*}
+      callback shift_cb
+      xywh {460 45 20 10} selection_color 3 labelsize 8
+    }
+  }
+} 

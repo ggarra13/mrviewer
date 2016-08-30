@@ -1,0 +1,16 @@
+[DLL]
+
+[DIRECTORIES]
+..\..\ImageMagick\Magick++\lib
+..\..\ImageMagick\Magick++\lib\Magick++
+
+[INCLUDES]
+..\..\ImageMagick
+..\..\ImageMagick\magick
+
+[DEPENDENCIES]
+magick
+wand
+
+[WARNING_LEVEL]
+4
