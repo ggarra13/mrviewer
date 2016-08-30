@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -32,7 +31,6 @@
 #include <locale.h>
 #include <iostream>
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>
 
 #ifdef LINUX
