@@ -1,0 +1,16 @@
+[DLLMODULE]
+
+[DIRECTORIES]
+..\..\ImageMagick\filters
+
+[INCLUDES]
+..\..\ImageMagick
+
+[MODULE_PREFIX]
+FILTER
+
+[DEPENDENCIES]
+magick
+
+[WARNING_LEVEL]
+4
