@@ -401,6 +401,7 @@ bool exrImage::channels_order(
    }
 
    char* pixels = (char*)_hires->data().get();
+   if (!pixels) return false;
    memset( pixels, 0, _hires->data_size() ); // Needed for lumma pics (Fog.exr)
 
    // Then, prepare frame buffer for them
@@ -1318,6 +1319,8 @@ exrImage::loadDeepTileImage( Imf::MultiPartInputFile& inmaster,
 
     // display black right now
     Imf::Rgba* pixels = (Imf::Rgba*)_hires->data().get();
+    if (!pixels) return;
+    
     memset( pixels, 0, _hires->data_size() ); // Needed
 
 
