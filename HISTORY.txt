@@ -1,7 +1,22 @@
-v3.2.8   - Fixed video stores being kept too long and eating ton
-	   of memory.
-	 - Upgraded Windows compiling to MSVC 2015 Community.
-	   This potentially removes Windows NT compatability.
+v3.2.8   - Fixed playback being too fast on 4K video
+	   (Disney's Moana Trailer).
+	 - Fixed video stores being kept too long and eating ton
+	   of memory.  This improves playback of long movies and
+	   4K movies.  On Win32 when playing 4K movies, it may
+	   be needed to size the cache smaller.
+	 - Upgraded Windows compiling to MSVC 2015 Community on
+	   x64.  Win32 uses the MSVC 2012 compiler.
+	   This potentially removes Windows NT and XP compatability.
+	 - When mrViewer runs out of memory it will print an error
+	   into its message console, instead of crashing.
+	 - Bug fixed scrubbing on Windows 8.1.
+	   It works as a toggle now.  You press SHIFT and enter
+	   scrub mode.  Move the mouse left and right.
+	   You press CTRL and exit scrub mode.
+	   If you have preferences (.filmaura/mrViewer.prefs) saved,
+	   no change in scrubbing is made.
+	   If you want the new scrubbing, Untoggle Shift button and
+	   leave hotkey1 to LeftShift and hotkey2 to RightShift.
 
 v3.2.7   - Updated Histogram in RGB to show colors mixed in areas
 	   where R, G and B overlap.  So you get R+G=YELLOW,

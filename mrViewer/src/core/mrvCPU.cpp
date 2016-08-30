@@ -107,6 +107,11 @@ CpuCaps gCpuCaps;
 #define LOG_INFO(x)    out << x << std::endl
 #define LOG_VERBOSE(x) // std::cout << x << std::endl
 
+#ifdef _MSC_VER
+#  if _MSC_VER < 1900
+#    define snprintf _snprintf
+#  endif
+#endif
 
 /* returned value is malloc()'ed so free() it after use */
 char *GetCpuFriendlyName(std::ostringstream& out, 
