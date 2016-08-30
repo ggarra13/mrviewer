@@ -421,6 +421,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	if ( device == 0 )
 	   device = WAVE_MAPPER; // default device
 
+        LOG_INFO( "Open device " << device );
 
 	MMRESULT result = 
 	waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
@@ -446,6 +447,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	    return false;
 	  }
 
+        _old_device_idx = _device_idx;
 	_audio_format = format;
 
 	// Allocate internal sound buffer
