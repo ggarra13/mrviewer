@@ -1277,7 +1277,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     img->default_rendering_transform();
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
-    img->audio_engine()->device( prefs->uiPrefsAudioDriver->value() );
+    img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
     if ( fg )
     {
@@ -1354,7 +1354,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     img->default_rendering_transform();
 
     PreferencesUI* prefs = ViewerUI::uiPrefs;
-    img->audio_engine()->device( prefs->uiPrefsAudioDriver->value() );
+    img->audio_engine()->device( prefs->uiPrefsAudioDevice->value() );
 
 
     mrv::media m = this->add( img );
