@@ -686,6 +686,8 @@ void aviImage::open_video_codec()
      else _pixel_ratio = aspect_ratio / image_ratio;
   }
 
+  avcodec_parameters_from_context( stream->codecpar, _video_ctx );
+  
   AVDictionary* info = NULL;
   av_dict_set(&info, "threads", "2", 0);  // not "auto" nor "4"
 
