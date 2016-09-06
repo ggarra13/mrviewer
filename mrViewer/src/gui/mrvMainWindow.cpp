@@ -41,8 +41,12 @@
 
 #if !defined(_WIN32)
 #  include <fltk/x11.h>
+#undef Bool
+#define Bool int
 #  include <X11/xpm.h>
+#undef Bool
 #  include "icons/viewer16.xpm"
+Pixmap p, mask;
 #else
 #  include <windows.h>
 #  include <fltk/win32.h>
@@ -57,6 +61,10 @@ namespace mrv {
   MainWindow::MainWindow( int W, int H, const char* title ) :
     fltk::Window( W, H, title )
   {
+#ifdef _WIN32
+      // Set icon does not work on Linux yet
+      set_icon();
+#endif
   }
 
   MainWindow::~MainWindow()
@@ -76,23 +84,15 @@ namespace mrv {
 #else
 
     // XpmCreatePixmapFromData comes from libXpm (libgd-xpm* on Debian)
-    Pixmap p, mask;
-    int ErrorStatus = XpmCreatePixmapFromData(fltk::xdisplay,
-                                              DefaultRootWindow(fltk::xdisplay),
-                                              (char**)viewer16_xpm,
-                                              &p, &mask, 
-                                              NULL);
+    int ok = XpmCreatePixmapFromData(fltk::xdisplay,
+                                     DefaultRootWindow(fltk::xdisplay),
+                                     const_cast<char**>( viewer16_xpm ),
+                                     &p, NULL, NULL);
 
-    if ( ErrorStatus == XpmSuccess )
+    if ( ok == XpmSuccess )
       {
-          std::cerr << "XpmCreatePixmapFromData returned success" << std::endl;
-         this->icon((const void*)&p);
+          // this->icon(reinterpret_cast<char*>( p ) );
       }
-    else
-    {
-        std::cerr << "XpmCreatePixmapFromData returned " << ErrorStatus 
-                  << std::endl;
-    }
 #endif
 
   }
