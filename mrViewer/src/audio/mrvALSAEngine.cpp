@@ -1,4 +1,4 @@
-/*
+ /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
 
@@ -16,7 +16,7 @@
     along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 /**
- * @file   mrvALSAEngine.cpp
+ * @file   mrvALSAEngine.cpp 
  * @author gga
  * @date   Tue Jul 10 03:26:02 2007
  * 
@@ -171,85 +171,94 @@ static const char* kModule = "alsa";
 
     if ( !_mixer )
       {
-	int err;
-	if ( (err = snd_mixer_open(&_mixer, 0)) < 0) {
-	  sprintf( buf, _("Mixer %s open error: %s\n"), 
+          try {
+              int err;
+              if ( (err = snd_mixer_open(&_mixer, 0)) < 0) {
+                  sprintf( buf, _("Mixer %s open error: %s\n"), 
 		   device().c_str(), snd_strerror(err) );
-	  THROW(buf);
-	}
+                  THROW(buf);
+              }
+              
+              if ( (err = snd_mixer_attach( _mixer, device().c_str() )) < 0) {
+                  sprintf(buf, _("Mixer attach %s error: %s"), 
+                          device().c_str(), snd_strerror(err) );
+                  snd_mixer_close( _mixer );
+                  _mixer = NULL;
+                  THROW(buf);
+              }
 
-	if ( (err = snd_mixer_attach( _mixer, device().c_str() )) < 0) {
-	  sprintf(buf, _("Mixer attach %s error: %s"), 
-		  device().c_str(), snd_strerror(err) );
-	  snd_mixer_close( _mixer );
-	  _mixer = NULL;
-	  THROW(buf);
-	}
+              if ((err = snd_mixer_selem_register(_mixer, NULL, NULL)) < 0) {
+                  sprintf( buf, _("Mixer register error: %s"),
+                           snd_strerror(err));
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
 
-	if ((err = snd_mixer_selem_register(_mixer, NULL, NULL)) < 0) {
-	  sprintf( buf, _("Mixer register error: %s"), snd_strerror(err));
-	  snd_mixer_close(_mixer);
-	  _mixer = NULL;
-	  THROW(buf);
-	}
+              err = snd_mixer_load( _mixer );
+              if (err < 0) {
+                  sprintf( buf, _("Mixer %s load error: %s"), 
+                           device().c_str(), snd_strerror(err));
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
 
-	err = snd_mixer_load( _mixer );
-	if (err < 0) {
-	  sprintf( buf, _("Mixer %s load error: %s"), 
-		   device().c_str(), snd_strerror(err));
-	  snd_mixer_close(_mixer);
-	  _mixer = NULL;
-	  THROW(buf);
-	}
+
+              snd_mixer_selem_id_t *sid;
+              snd_mixer_selem_id_alloca(&sid);
+              snd_mixer_selem_id_set_name( sid, "PCM" );
+          
+              snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
+              if ( !elem )
+              {
+                  // Try with master        
+                  snd_mixer_selem_id_alloca(&sid);
+                  snd_mixer_selem_id_set_name(sid, "Master");
+                  elem = snd_mixer_find_selem( _mixer, sid );
+              }
+
+              if ( !elem )
+              {
+                  sprintf( buf,
+                           _("Unable to find simple control '%s', id: %i\n"),
+                           snd_mixer_selem_id_get_name(sid), 
+                           snd_mixer_selem_id_get_index(sid) );
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+              
+              long pmin, pmax;
+              if ( snd_mixer_selem_get_playback_volume_range( elem,
+                                                          &pmin, &pmax ) < 0 )
+              {
+                  sprintf( buf, _("Unable to find volume range '%s', id: %i\n"),
+                           snd_mixer_selem_id_get_name(sid), 
+                           snd_mixer_selem_id_get_index(sid) );
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+              
+              float orig_v= v;
+              if ( v > 1.0f ) v = 1.0f;
+              
+              long smixer_level = pmin + long( float(pmax-pmin) * v);
+              
+              for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i) {
+        snd_mixer_selem_channel_id_t chn = (snd_mixer_selem_channel_id_t) i;
+        if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
+            continue;
+        snd_mixer_selem_set_playback_volume( elem, chn, smixer_level );
+              }
+          }
+          catch( const exception& e )
+          {
+              LOG_ERROR( e.what() );
+          }
       }
-
-
-    snd_mixer_selem_id_t *sid;
-    snd_mixer_selem_id_alloca(&sid);
-    snd_mixer_selem_id_set_name( sid, "PCM" );
-
-    snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
-    if ( !elem )
-      {
-	// Try with master        
-	snd_mixer_selem_id_alloca(&sid);
-        snd_mixer_selem_id_set_name(sid, "Master");
-	elem = snd_mixer_find_selem( _mixer, sid );
-      }
-
-    if ( !elem )
-      {
-	sprintf( buf, _("Unable to find simple control '%s', id: %i\n"),
-		 snd_mixer_selem_id_get_name(sid), 
-		 snd_mixer_selem_id_get_index(sid) );
-	snd_mixer_close(_mixer);
-	_mixer = NULL;
-	THROW(buf);
-      }
-
-    long pmin, pmax;
-    if ( snd_mixer_selem_get_playback_volume_range( elem, &pmin, &pmax ) < 0 )
-      {
-	sprintf( buf, _("Unable to find volume range '%s', id: %i\n"),
-		 snd_mixer_selem_id_get_name(sid), 
-		 snd_mixer_selem_id_get_index(sid) );
-	snd_mixer_close(_mixer);
-	_mixer = NULL;
-	THROW(buf);
-      }
-
-    float orig_v= v;
-    if ( v > 1.0f ) v = 1.0f;
-
-    long smixer_level = pmin + long( float(pmax-pmin) * v);
-
-    for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i) {
-      snd_mixer_selem_channel_id_t chn = (snd_mixer_selem_channel_id_t) i;
-      if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
-	continue;
-      snd_mixer_selem_set_playback_volume( elem, chn, smixer_level );
-    }
-
+    
 #else
     int smixer_level = int(v * 31);
     char cmd[256];
