@@ -419,7 +419,9 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 
 	unsigned device = _device_idx;
 	if ( device == 0 )
-	   device = WAVE_MAPPER; // default device
+            device = WAVE_MAPPER; // default device
+        else
+            device -= 1;
 
 	MMRESULT result = 
 	waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
