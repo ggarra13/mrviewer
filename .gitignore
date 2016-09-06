@@ -2,8 +2,10 @@
 *.obj
 *.plo
 *.Plo
-*.so
-*.la
-*.lo
+*.so*
+*.la*
+*.lai*
+*.a
+*.lo*
 CMakeCache.txt
 CMakeFiles
