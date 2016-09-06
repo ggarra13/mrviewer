@@ -634,7 +634,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 41 670 450} hide resizable
+        xywh {607 41 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1779,14 +1779,13 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             }
           }
           {fltk::Group} {} {
-            label Audio open
+            label Audio selected
             xywh {13 22 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
-            {fltk::Choice} uiPrefsAudioDriver {
-              label Driver
+            {fltk::Choice} uiPrefsAudioDevice {
+              label Device
               callback {unsigned idx = o->value();
-
-std::cerr << "Selected " << o->value() << std::endl;} open selected
+mrv::AudioEngine::device( idx );}
               xywh {63 22 316 25} box THIN_DOWN_BOX
               extra_code {//
 // Initialize an audio engine to get devices
