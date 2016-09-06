@@ -421,8 +421,6 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
 	if ( device == 0 )
 	   device = WAVE_MAPPER; // default device
 
-        LOG_INFO( "Open device " << device );
-
 	MMRESULT result = 
 	waveOutOpen(&_audio_device, device, (LPCWAVEFORMATEX) &wavefmt,
 		      // 0, 0, CALLBACK_NULL|WAVE_ALLOWSYNC );
