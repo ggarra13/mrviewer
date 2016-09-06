@@ -588,7 +588,9 @@ void audio_thread( PlaybackData* data )
 
 
       CMedia::DecodeStatus status = img->decode_audio( f );
+      DBG( "decoded audio " << f << " status " << status );
 
+      
       if ( img->stopped() ) break;
 
       switch( status )
@@ -675,7 +677,9 @@ void audio_thread( PlaybackData* data )
 
       if ( !img->stopped() )
       {
+          DBG( "find audio " << frame );
           img->find_audio(frame);
+          DBG( "found audio " << frame );
       }
 
       frame += step;
