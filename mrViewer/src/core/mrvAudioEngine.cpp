@@ -49,7 +49,7 @@ AudioEngine::AudioEngine() :
 _enabled( false ),
 _volume( 1.0f ),
 _channels( 0 ),
-_audio_format( kFloatLSB )
+_audio_format( kS16LSB )
 {
 }
 
