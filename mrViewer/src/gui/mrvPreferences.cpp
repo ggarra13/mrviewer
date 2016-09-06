@@ -557,7 +557,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  {
               if ( (*i).name == device ) 
 	      {
-                  uiPrefs->uiPrefsAudioDriver->value(idx);
+                  uiPrefs->uiPrefsAudioDevice->value(idx);
                   break;
 	      }
 	  }
@@ -1013,7 +1013,7 @@ static const char* kCLocale = "C";
     main->uiTimecodeSwitch->value( uiPrefs->uiPrefsTimelineDisplay->value() );
     change_timeline_display(main);
 
-    unsigned idx = uiPrefs->uiPrefsAudioDriver->value();
+    unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
     
     double x = uiPrefs->uiPrefsAudioVolume->value();
@@ -1234,7 +1234,7 @@ static const char* kCLocale = "C";
     // Audio prefs
     //
     fltk::Preferences audio( base, "audio" );
-    unsigned int idx = uiPrefs->uiPrefsAudioDriver->value();
+    unsigned int idx = uiPrefs->uiPrefsAudioDevice->value();
 
     const AudioEngine::DeviceList& devices = AudioEngine::devices();
 
