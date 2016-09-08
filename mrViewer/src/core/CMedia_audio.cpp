@@ -1191,7 +1191,7 @@ CMedia::decode_audio( const boost::int64_t frame, const AVPacket& pkt )
     CMedia::DecodeStatus got_audio = decode_audio_packet( audio_frame, 
                                                           frame, pkt );
     if ( got_audio != kDecodeOK ) {
-        IMG_ERROR( "decode_audio_packet failed with " <<
+        IMG_ERROR( _("decode_audio_packet ") << frame << _(" failed with ") <<
                    get_error_text( got_audio ) );
         return got_audio;
     }
