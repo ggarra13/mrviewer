@@ -634,7 +634,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 41 670 450} resizable visible
+        xywh {607 69 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1779,14 +1779,14 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             }
           }
           {fltk::Group} {} {
-            label Audio selected
-            xywh {13 22 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Audio open
+            xywh {13 22 426 367} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsAudioDevice {
               label Device
               callback {unsigned idx = o->value();
-mrv::AudioEngine::device( idx );}
-              xywh {63 22 316 25} box THIN_DOWN_BOX
+mrv::AudioEngine::device( idx );} selected
+              xywh {84 22 310 25} box THIN_DOWN_BOX
               extra_code {//
 // Initialize an audio engine to get devices
 //
@@ -1822,7 +1822,7 @@ else
             }
           }
           {fltk::Group} {} {
-            label Errors open
+            label Errors
             xywh {14 24 425 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
@@ -1944,13 +1944,13 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
             }
           }
         }
-        {fltk::Group} {} {open
+        {fltk::Group} {} {
           xywh {5 5 207 430}
         } {
           {fltk::Browser} {} {
             label Module
             user_data this user_data_type {mrv::PreferencesUI*}
-            callback {o->update( v );}
+            callback {o->update( v );} open
             xywh {0 20 195 410}
             class {mrv::PreferencesBrowser}
           } {
