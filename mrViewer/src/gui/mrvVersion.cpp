@@ -81,7 +81,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "3.2.8";
+  static const char* kVersion = "3.2.9";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 #if INTPTR_MAX == INT64_MAX

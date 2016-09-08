@@ -118,7 +118,7 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
       {
 	_devices.clear();
 
-	Device def( "default", "Default Audio Device" );
+	Device def( "default", _("Default Audio Device") );
 	_devices.push_back( def );
 
 	unsigned int num = waveOutGetNumDevs();
