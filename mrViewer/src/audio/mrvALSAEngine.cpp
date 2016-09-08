@@ -73,7 +73,7 @@ static const char* kModule = "alsa";
     if ( _devices.empty() )
       {
 	// Create default device
-	Device def( "default", "Default Audio Device" );
+          Device def( "default", _("Default Audio Device") );
 	_devices.push_back( def );
 
 	// Now get all others
@@ -89,8 +89,8 @@ static const char* kModule = "alsa";
 	    snd_pcm_info_t* pcm_info = NULL;
 	    int pcm_device = -1;
 
-	    char psz_dev[64];
-	    sprintf(psz_dev, "hw:%i", card);
+	    char psz_dev[20];
+	    sprintf(psz_dev, "hw:%d", card);
 
 	    err = snd_ctl_open(&p_ctl, psz_dev, 0);
 
@@ -118,7 +118,7 @@ static const char* kModule = "alsa";
 		      continue;
 
 		    char psz_device[256], psz_descr[1024];
-		    sprintf( psz_device, "hw:%d,%d", card, pcm_device );
+		    sprintf( psz_device, "plughw:%d,%d", card, pcm_device );
 		    sprintf( psz_descr, "%s: %s (%s)", psz_card_name,
 			     snd_pcm_info_get_name(pcm_info), psz_device );
 
@@ -288,12 +288,10 @@ static const char* kModule = "alsa";
                                 SND_PCM_STREAM_PLAYBACK, 0);
 
           if ( status < 0 || _pcm_handle == NULL ) {
-              sprintf( buf, "Couldn't open audio device: %s", 
+              sprintf( buf, _("Couldn't open audio device: %s"), 
                        snd_strerror(status));
               THROW(buf);
           }
-
-          _old_device_idx = _device_idx;
 
           /* Figure out what the hardware is capable of */
           snd_pcm_hw_params_t *hwparams = NULL;
@@ -305,7 +303,7 @@ static const char* kModule = "alsa";
           // Fill it with default values
           status = snd_pcm_hw_params_any(_pcm_handle, hwparams);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't get hardware config: %s", 
+              sprintf( buf, _("Couldn't get hardware config: %s"), 
                        snd_strerror(status));
               THROW(buf);
           }
@@ -315,7 +313,7 @@ static const char* kModule = "alsa";
           status = snd_pcm_hw_params_set_access(_pcm_handle, hwparams, 
                                                 SND_PCM_ACCESS_RW_INTERLEAVED);
           if ( status < 0 ) {
-              sprintf( buf, "Couldn't set access: %s", 
+              sprintf( buf, _("Couldn't set access: %s"), 
                        snd_strerror(status));
               THROW( buf );
           }
@@ -494,6 +492,8 @@ static const char* kModule = "alsa";
 
           // All okay, enable device
           _enabled = true;
+          _old_device_idx = _device_idx;
+
 
           /* We're ready to rock and roll. :-) */
           return true;
@@ -516,7 +516,7 @@ static const char* kModule = "alsa";
 
     unsigned sample_len = (unsigned)size / _sample_size;
     const char* sample_buf = data;
-
+    
     while ( sample_len > 0 ) {
         status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
         if ( status < 0 ) {
