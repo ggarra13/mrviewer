@@ -1522,13 +1522,13 @@ bool CMedia::open_audio( const short channels,
   _audio_channels = _audio_engine->channels();
   _samples_per_sec = nSamplesPerSec;
 
-
   return ok;
 }
 
 
 bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 {
+  
   double speedup = _play_fps / _fps;
   unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
   if ( nSamplesPerSec != _samples_per_sec ||
@@ -1544,7 +1544,6 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
 	}
 
     }
-
 
   if ( ! _audio_engine ) return false;
 
