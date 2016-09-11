@@ -3335,7 +3335,8 @@ void Flu_File_Chooser::cleanupPath( std::string &s )
 	oldPos += 2;
 
       // convert "//" to "/"
-      else if( s[oldPos] == '/' && oldPos+1 < s.size() && s[oldPos+1] == '/' )
+      else if( oldPos != 0 &&
+               s[oldPos] == '/' && oldPos+1 < s.size() && s[oldPos+1] == '/' )
 	oldPos++;
 
 #ifdef WIN32
