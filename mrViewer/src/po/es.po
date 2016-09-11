@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-09-07 21:13-0300\n"
+"POT-Creation-Date: 2016-09-11 15:29-0300\n"
 "PO-Revision-Date: 2016-07-20 15:46-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -74,7 +74,7 @@ msgstr ""
 msgid "   NAN  "
 msgstr ""
 
-#: audio/mrvALSAEngine.cpp:396
+#: audio/mrvALSAEngine.cpp:441
 msgid "  ==> Using "
 msgstr "==>  Usando "
 
@@ -99,15 +99,15 @@ msgstr "- error de decodificacion del cuadro de audio "
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
-#: core/aviImage.cpp:2130
+#: core/aviImage.cpp:2132
 msgid " Could not open file"
 msgstr " No pude abrir el archivo avi"
 
-#: audio/mrvALSAEngine.cpp:396
+#: audio/mrvALSAEngine.cpp:442
 msgid " Hz instead."
 msgstr " Hz en remplazo."
 
-#: audio/mrvALSAEngine.cpp:394
+#: audio/mrvALSAEngine.cpp:439
 msgid " Hz is not supported by your hardware."
 msgstr " Hz no es soportado por su hardware."
 
@@ -115,7 +115,7 @@ msgstr " Hz no es soportado por su hardware."
 msgid " Load Sequence on Drag&&Drop"
 msgstr " Cargar secuencia en Drag&&Drop"
 
-#: core/aviImage.cpp:1766
+#: core/aviImage.cpp:1768
 msgid " No audio or video stream in file"
 msgstr " No hay audio o video en el archivo"
 
@@ -140,7 +140,7 @@ msgstr " codificando"
 msgid " expected: "
 msgstr " esperado: "
 
-#: core/CMedia_audio.cpp:1554
+#: core/CMedia_audio.cpp:1553
 msgid " failed"
 msgstr " falló. "
 
@@ -156,7 +156,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1955 core/aviImage.cpp:3122
+#: core/CMedia_audio.cpp:1954 core/aviImage.cpp:3124
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -188,7 +188,7 @@ msgstr " en remplazo"
 msgid " is missing."
 msgstr " está faltante."
 
-#: core/CMedia_audio.cpp:1610 core/aviImage.cpp:1428
+#: core/CMedia_audio.cpp:1609 core/aviImage.cpp:1428
 msgid " not found"
 msgstr " no encontrado"
 
@@ -204,7 +204,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3133
+#: core/aviImage.cpp:3135
 msgid " status: "
 msgstr " estatus: "
 
@@ -212,7 +212,7 @@ msgstr " estatus: "
 msgid " to"
 msgstr " a "
 
-#: core/aviImage_save.cpp:486 gui/FLU/Flu_File_Chooser.cpp:4515
+#: core/aviImage_save.cpp:486 gui/FLU/Flu_File_Chooser.cpp:4516
 msgid " to "
 msgstr " a "
 
@@ -960,15 +960,15 @@ msgstr "Volumen de Audio"
 msgid "Audio conversion of "
 msgstr "Conversion de audio de "
 
-#: core/CMedia_audio.cpp:1610
+#: core/CMedia_audio.cpp:1609
 msgid "Audio frame "
 msgstr "Cuadro de audio "
 
-#: core/CMedia_audio.cpp:1704
+#: core/CMedia_audio.cpp:1703
 msgid "Audio packet is unknown, expected seek or preroll"
 msgstr "Paquete de audio es desconocido, esperaba seek o preroll"
 
-#: core/CMedia_audio.cpp:1749
+#: core/CMedia_audio.cpp:1748
 msgid "Audio packets empty in end of seek"
 msgstr "Paquetes de audio vacios al final de la busqueda"
 
@@ -1100,7 +1100,7 @@ msgstr "Azul"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: standalone/main.cpp:383
+#: standalone/main.cpp:386
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -1108,7 +1108,7 @@ msgstr "Excepción de Boost: "
 msgid "Bottom Field"
 msgstr "Campo Inferior"
 
-#: audio/mrvALSAEngine.cpp:535
+#: audio/mrvALSAEngine.cpp:587
 msgid "Buffer underrun: "
 msgstr "Buffer infrautilizado: "
 
@@ -1496,10 +1496,10 @@ msgstr "No pude clonar cuadro de subtítulos"
 msgid "Could not copy context to parameters"
 msgstr "No pude copiar el contexto a los parámetros"
 
+#
 #: core/aviImage.cpp:1667
-#, fuzzy
 msgid "Could not copy parameters to context"
-msgstr "No pude copiar el contexto a los parámetros"
+msgstr "No pude copiar los parámetros al contexto de codec"
 
 #: gui/FLU/Flu_File_Chooser.cpp:135
 #, c-format
@@ -1624,7 +1624,7 @@ msgstr "No pude abrir película mpeg"
 msgid "Could not open video codec"
 msgstr "No puede abrir video codec"
 
-#: core/CMedia_audio.cpp:1621
+#: core/CMedia_audio.cpp:1620
 msgid "Could not play audio frame "
 msgstr "No pude tocar cuadro de audio "
 
@@ -1705,77 +1705,88 @@ msgstr "No pude setear el estilo del ValueInput"
 msgid "Could not write to fifo buffer. Error:"
 msgstr "No pude escribir al buffer fifo. Error:"
 
-#: audio/mrvALSAEngine.cpp:359
+#: audio/mrvALSAEngine.cpp:341
+#, c-format
+msgid "Couldn't allocate hwparams %s"
+msgstr "No pude alojar hwparams %s"
+
+#: audio/mrvALSAEngine.cpp:403
 msgid "Couldn't find any hardware audio formats"
 msgstr "No pude encontrar ningun formato de audio de hardware"
 
-#: audio/mrvALSAEngine.cpp:306
+#: audio/mrvALSAEngine.cpp:350
 #, c-format
 msgid "Couldn't get hardware config: %s"
 msgstr "No pude obtener configuración de hardware: %s"
 
-#: audio/mrvALSAEngine.cpp:409
+#: audio/mrvALSAEngine.cpp:455
 #, c-format
 msgid "Couldn't get hw_params_set_period_time_near: %s"
 msgstr "No pude obtener hw_params_set_period_time_near: %s"
 
-#: audio/mrvALSAEngine.cpp:430
+#: audio/mrvALSAEngine.cpp:476
 #, c-format
 msgid "Couldn't get period size: %s"
 msgstr "No pude obtener el tamaño del período: %s"
 
-#: audio/mrvALSAEngine.cpp:460
+#: audio/mrvALSAEngine.cpp:496
 #, c-format
 msgid "Couldn't get software config: %s"
 msgstr "No pude obtener configuración de software: %s"
 
 # c-format
-#: audio/mrvALSAEngine.cpp:291
+#: audio/mrvALSAEngine.cpp:329
 #, c-format
-msgid "Couldn't open audio device: %s"
-msgstr "No pude abrir el aparato de audio: %s"
+msgid "Couldn't open audio device %s: %s"
+msgstr "No pude abrir el dispositivo de audio %s: %s"
 
 # c-format
-#: audio/mrvALSAEngine.cpp:316
+#: audio/mrvALSAEngine.cpp:532
+#, c-format
+msgid "Couldn't prepare sound device: %s"
+msgstr "No pude preparar el dispositivo de audio %s: %s"
+
+# c-format
+#: audio/mrvALSAEngine.cpp:360
 #, c-format
 msgid "Couldn't set access: %s"
 msgstr "No pude setear el acceso: %s"
 
-#: audio/mrvALSAEngine.cpp:375
+#: audio/mrvALSAEngine.cpp:419
 msgid "Couldn't set audio channels"
 msgstr "No pude setear los canales de audio"
 
-#: audio/mrvALSAEngine.cpp:387
+#: audio/mrvALSAEngine.cpp:431
 #, c-format
 msgid "Couldn't set audio frequency: %s"
 msgstr "No pude setear la frecuencia de audio: %s"
 
-#: audio/mrvALSAEngine.cpp:477
+#: audio/mrvALSAEngine.cpp:513
 #, c-format
 msgid "Couldn't set avail min: %s"
 msgstr "No pude setear el minimo disponible: %s"
 
-#: audio/mrvALSAEngine.cpp:421
+#: audio/mrvALSAEngine.cpp:467
 #, c-format
 msgid "Couldn't set buffer time near: %s"
 msgstr "No pude setear el tiempo cercano del buffer: %s"
 
-#: audio/mrvALSAEngine.cpp:438
+#: audio/mrvALSAEngine.cpp:484
 #, c-format
 msgid "Couldn't set hardware audio parameters: %s"
 msgstr "No pude setear los parametros de audio de hardware: %s"
 
-#: audio/mrvALSAEngine.cpp:486
+#: audio/mrvALSAEngine.cpp:522
 #, c-format
 msgid "Couldn't set software audio parameters: %s"
 msgstr "No pude setear los parametros de softare de audio: %s"
 
-#: audio/mrvALSAEngine.cpp:469
+#: audio/mrvALSAEngine.cpp:505
 #, c-format
 msgid "Couldn't set start threshold: %s"
 msgstr "No pude setear el límite del comienzo: %s"
 
-#: audio/mrvALSAEngine.cpp:370
+#: audio/mrvALSAEngine.cpp:414
 msgid "Couldn't set/get audio channels"
 msgstr "No pude setear/obtener los canales de audio"
 
@@ -2072,11 +2083,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1953 core/aviImage.cpp:3120
+#: core/CMedia_audio.cpp:1952 core/aviImage.cpp:3122
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3131
+#: core/aviImage.cpp:3133
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2097,9 +2108,9 @@ msgstr "Decrementando en Y"
 msgid "Default"
 msgstr "Defecto"
 
-#: audio/mrvALSAEngine.cpp:76
+#: audio/mrvALSAEngine.cpp:104
 msgid "Default Audio Device"
-msgstr "Aparato de Audio por Defecto"
+msgstr "Dispositivo de Audio por Defecto"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-36-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2931
 msgid "Default ODT"
@@ -2175,7 +2186,7 @@ msgstr "Modo de Detalle"
 #
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-36-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2768
 msgid "Device"
-msgstr "Aparatos"
+msgstr "Dispositivos"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-36-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2013
 #: gui/FLU/Flu_File_Chooser.cpp:119 gui/mrvImageInformation.cpp:462
@@ -2345,11 +2356,11 @@ msgstr "Editar Status"
 msgid "Elapsed"
 msgstr "Transcurrido"
 
-#: core/aviImage.cpp:2646
+#: core/aviImage.cpp:2648
 msgid "Empty packets for video seek"
 msgstr "Paquetes vacíos para búsqueda de video"
 
-#: core/aviImage.cpp:2660
+#: core/aviImage.cpp:2662
 msgid "Empty seek or preroll"
 msgstr "Vacía busqueda o preroll"
 
@@ -2563,7 +2574,7 @@ msgstr "Nombre del archivo"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:379
+#: standalone/main.cpp:382
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -3644,22 +3655,22 @@ msgstr "Cuadro faltante de audio "
 msgid "Missing transforms for aces:GradeRef in '"
 msgstr "Faltan transformaciones para aces:GradeRef en '"
 
-#: audio/mrvALSAEngine.cpp:200
+#: audio/mrvALSAEngine.cpp:234
 #, c-format
 msgid "Mixer %s load error: %s"
 msgstr "Error de cargar Mixer %s: %s"
 
-#: audio/mrvALSAEngine.cpp:177
+#: audio/mrvALSAEngine.cpp:211
 #, c-format
 msgid "Mixer %s open error: %s\n"
 msgstr "Error de abrir el Mixer %s: %s\n"
 
-#: audio/mrvALSAEngine.cpp:183
+#: audio/mrvALSAEngine.cpp:217
 #, c-format
 msgid "Mixer attach %s error: %s"
 msgstr "Error de unir el Mixer %s: %s"
 
-#: audio/mrvALSAEngine.cpp:191
+#: audio/mrvALSAEngine.cpp:225
 #, c-format
 msgid "Mixer register error: %s"
 msgstr "Error de registrar el Mixer: %s"
@@ -4256,7 +4267,7 @@ msgstr "Reproducir secuencia hacia delante."
 msgid "Playback"
 msgstr "Reproducir"
 
-#: core/CMedia_audio.cpp:1553
+#: core/CMedia_audio.cpp:1552
 msgid "Playback of audio frame "
 msgstr "Reproducción de cuadro de audio "
 
@@ -5395,7 +5406,7 @@ msgstr ""
 "El perfil controla las característica y calidad del codec.  Si esta en duda, "
 "setéelo al mas alto perfil."
 
-#: audio/mrvALSAEngine.cpp:393
+#: audio/mrvALSAEngine.cpp:438
 msgid "The rate "
 msgstr "Velocidad de sampleo "
 
@@ -5593,12 +5604,12 @@ msgstr ""
 msgid "UTC Offset"
 msgstr "Desplazamiento UTC"
 
-#: audio/mrvALSAEngine.cpp:224
+#: audio/mrvALSAEngine.cpp:258
 #, c-format
 msgid "Unable to find simple control '%s', id: %i\n"
 msgstr "No pude encontrar un control simple '%s', id %i\n"
 
-#: audio/mrvALSAEngine.cpp:236
+#: audio/mrvALSAEngine.cpp:270
 #, c-format
 msgid "Unable to find volume range '%s', id: %i\n"
 msgstr "No pude encontrar el rango de volumen '%s', id: %i\n"
@@ -5616,12 +5627,13 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr "Deshacer La Última Figura Dibujada"
 
-#: standalone/main.cpp:367
+#: standalone/main.cpp:370
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
-#: gui/mrvImageInformation.cpp:525 video/mrvGLEngine.cpp:164
-#: video/mrvGLEngine.cpp:167 video/mrvGLEngine.cpp:170
+#: audio/mrvALSAEngine.cpp:132 gui/mrvImageInformation.cpp:525
+#: video/mrvGLEngine.cpp:164 video/mrvGLEngine.cpp:167
+#: video/mrvGLEngine.cpp:170
 msgid "Unknown"
 msgstr "Desconocido"
 
@@ -5653,7 +5665,7 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: standalone/main.cpp:387
+#: standalone/main.cpp:390
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
@@ -5835,6 +5847,10 @@ msgstr "W"
 #: gui/mrvImageInformation.cpp:713
 #, c-format
 msgid "W: %g %g"
+msgstr ""
+
+#: audio/mrvALSAEngine.cpp:437
+msgid "WARNING: [alsa] "
 msgstr ""
 
 #: gui/FLU/Flu_File_Chooser.cpp:558
@@ -6132,7 +6148,7 @@ msgstr "Escritor"
 msgid "Wrond data size received."
 msgstr "Recibí un tamaño de datos incorrectos."
 
-#: core/aviImage.cpp:2573
+#: core/aviImage.cpp:2575
 msgid "Wrong packets in handle_video_packet_seek"
 msgstr "Paquetes equivocados en handle_video_packet_seek"
 
@@ -6294,9 +6310,8 @@ msgid "audio"
 msgstr "audio"
 
 #: core/aviImage.cpp:648
-#, fuzzy
 msgid "avcodec_context_from_parameters failed for video"
-msgstr "avcodec_copy_context falló para el video"
+msgstr "avcodec_context_from_parameters falló para el video"
 
 #: core/CMedia_audio.cpp:202
 msgid "avcodec_copy_context failed for audio"
@@ -6335,7 +6350,7 @@ msgstr "decode_audio - faltó decodificar algunos sampleos"
 msgid "decode_audio_packet "
 msgstr "decode_audio_packet "
 
-#: core/CMedia_audio.cpp:1741
+#: core/CMedia_audio.cpp:1740
 msgid "decode_audio_packet failed for frame "
 msgstr "decode_audio_packet falló para cuadro "
 
@@ -6668,6 +6683,10 @@ msgstr ""
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-36-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3659
 msgid "xyY CIE xyY"
 msgstr ""
+
+#, fuzzy
+#~ msgid "Could not open audio engine"
+#~ msgstr "No pude abrir el driver de audio"
 
 #~ msgid " Audio max: "
 #~ msgstr " Max. audio: "
