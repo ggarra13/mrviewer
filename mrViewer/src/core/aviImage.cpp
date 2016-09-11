@@ -1752,7 +1752,9 @@ void aviImage::populate()
                         << i << (", type ") << stream;
                     break;
                 }
-	}
+        }
+
+        avcodec_free_context( &ctx );
     }
 
 

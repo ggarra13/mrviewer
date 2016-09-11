@@ -25,7 +25,7 @@
  * 
  */
 
-//#define ALLOC_CONSOLE
+// #define ALLOC_CONSOLE
 
 #include <string.h>
 #include <locale.h>
@@ -165,7 +165,7 @@ int main( int argc, char** argv )
   // Create and install global locale
   std::locale::global(boost::locale::generator().generate(""));
   // Make boost.filesystem use it
-  boost::filesystem::path::imbue(std::locale());
+  fs::path::imbue(std::locale());
 
 #ifdef LINUX
   XInitThreads();
@@ -216,7 +216,9 @@ int main( int argc, char** argv )
 
       try {
 
+
           ui = new mrv::ViewerUI();
+
 
           mrv::Options opts;
           if ( argc > 0 )
@@ -302,6 +304,7 @@ int main( int argc, char** argv )
       // mrv::checkout_license();
 
           load_files( opts.files, ui );
+
           if ( opts.stereo.size() > 1 )
               load_files( opts.stereo, ui, true );
 
@@ -418,6 +421,7 @@ int APIENTRY WinMain(HINSTANCE hInstance, HINSTANCE hPrevInstance,
     fclose(stdin);
     fclose(stdout);
     fclose(stderr);
+    Sleep(100000);
 #endif
 
     return rc; 
