@@ -3,6 +3,11 @@ v3.2.9   - It is now possible to switch audio device in the
 	   For Linux, use the default system audio control
 	   (alsamixer).
 	   By default, the system default audio device is used.
+	 - In Windows, UNC network paths are now accepted.
+	   For example:
+	       //gga-desktop1/D/movies/test.mov
+	   They can be used from Drag and Drop.  Currently,
+	   it is not possible to type or pick them in yourself.
 
 v3.2.8   - Fixed playback being too fast on 4K video
 	   (Disney's Moana Trailer).
