@@ -49,7 +49,7 @@ static const char* kModule = "alsa";
 #define AO_ALSA_SAMPLE_XFER 256
 
 
-#define THROW(x) throw( exception(x) )
+#define THROW(x) throw( AudioEngine::exception(x) )
 
   unsigned int ALSAEngine::_instances = 0;
   snd_mixer_t* ALSAEngine::_mixer = NULL;
@@ -71,71 +71,105 @@ static const char* kModule = "alsa";
   {
 
     if ( _devices.empty() )
-      {
+    {
+#if 0
+	void **hints, **n;
+	char *name = NULL, *descr = NULL, *io = NULL;
+	const char *filter = "Output";
+	if (snd_device_name_hint(-1, "pcm", &hints) < 0)
+            return false;
+	n = hints;
+	while (*n != NULL) {
+            name = snd_device_name_get_hint(*n, "NAME");
+            descr = snd_device_name_get_hint(*n, "DESC");
+            io = snd_device_name_get_hint(*n, "IOID");
+            if (io != NULL && strcmp(io, filter) != 0)
+            {
+                free(name);
+                free(descr);
+                free(io);
+                n++;
+                continue;
+            }
+            Device dev( name, descr );
+            _devices.push_back( dev );
+            free(name);
+            free(descr);
+            free(io);
+            n++;
+	}
+	snd_device_name_free_hint(hints);
+#else
 	// Create default device
-          Device def( "default", _("Default Audio Device") );
-	_devices.push_back( def );
+        Device def( "default", _("Default Audio Device") );
+        _devices.push_back( def );
 
-	// Now get all others
-	int err = 0;
-	int card = -1;
-	if ( (err = snd_card_next(&card)) != 0 )
-	  return false;
+        // Now get all others
+        int err = 0;
+        int card = -1;
+        if ( (err = snd_card_next(&card)) != 0 )
+            return false;
 
-	while ( card > -1 )
-	  {
-	    char* psz_card_name = NULL;
-	    snd_ctl_t*      p_ctl = NULL;
-	    snd_pcm_info_t* pcm_info = NULL;
-	    int pcm_device = -1;
+        while ( card > -1 )
+        {
+            char* psz_card_name = NULL;
+            snd_ctl_t*      p_ctl = NULL;
+            snd_pcm_info_t* pcm_info = NULL;
+            int pcm_device = -1;
 
-	    char psz_dev[20];
-	    sprintf(psz_dev, "hw:%d", card);
+            char psz_dev[20];
+            sprintf(psz_dev, "hw:%i", card);
 
-	    err = snd_ctl_open(&p_ctl, psz_dev, 0);
+            err = snd_ctl_open(&p_ctl, psz_dev, 0);
+            if ( err < 0 )
+            {
+                std::cerr << "ERROR: [alsa] Can't open card " << card
+                          << " " << snd_strerror(err) << std::endl;
+                continue;
+            }
 
-	    if ( err == 0 )
-	      {
-		err = snd_card_get_name(card, &psz_card_name);
-		if ( err == 0 ) psz_card_name = (char*)"Unknown";
+            err = snd_card_get_name(card, &psz_card_name);
+            if ( err < 0 ) psz_card_name = _("Unknown");
 
-		snd_pcm_info_alloca(&pcm_info);
+            snd_pcm_info_alloca(&pcm_info);
+            memset(pcm_info, 0, snd_pcm_info_sizeof());
 
-		for (;;)
-		  {
-		    err = snd_ctl_pcm_next_device(p_ctl, &pcm_device);
-		    if (err < 0)
-		      break;
+            for (;;)
+            {
+                err = snd_ctl_pcm_next_device(p_ctl, &pcm_device);
+                if (err < 0 || pcm_device < 0 )
+                    break;
 
-		    if ( pcm_device < 0 )
-		      break;
+                snd_pcm_info_set_device(pcm_info, pcm_device);
+                snd_pcm_info_set_subdevice(pcm_info, 0);
+                snd_pcm_info_set_stream(pcm_info,
+                                        SND_PCM_STREAM_PLAYBACK);
 
-		    snd_pcm_info_set_device(pcm_info, pcm_device);
-		    snd_pcm_info_set_subdevice(pcm_info, 0);
-		    snd_pcm_info_set_stream(pcm_info, SND_PCM_STREAM_PLAYBACK);
+                if ((err = snd_ctl_pcm_info(p_ctl, pcm_info)) < 0)
+                    continue;
 
-		    if ((err = snd_ctl_pcm_info(p_ctl, pcm_info)) < 0)
-		      continue;
+                char psz_device[256], psz_descr[1024];
+                sprintf( psz_device, "plughw:%d,%d", card, pcm_device );
+                sprintf( psz_descr, "%s: %s (%s)", psz_card_name,
+                         snd_pcm_info_get_name(pcm_info), psz_device );
 
-		    char psz_device[256], psz_descr[1024];
-		    sprintf( psz_device, "plughw:%d,%d", card, pcm_device );
-		    sprintf( psz_descr, "%s: %s (%s)", psz_card_name,
-			     snd_pcm_info_get_name(pcm_info), psz_device );
+                Device dev( psz_device, psz_descr );
+                _devices.push_back( dev );
+            }
 
-		    Device dev( psz_device, psz_descr );
-		    _devices.push_back( dev );
-		  }
-
-
-	      }
-          
             if ( p_ctl )
                 snd_ctl_close( p_ctl );
 
-	    err = snd_card_next(&card);
-	    if ( err != 0 ) break;
-	  }
-      }
+            err = snd_card_next(&card);
+            if ( err != 0 ) break;
+        }
+
+        // ALSA allocates some mem to load its config file when we call some
+        // of the above functions. Now that we're done getting the info,
+        // let's tell ALSA to unload the info and free up that mem
+        snd_config_update_free_global();
+#endif
+    }
     ++_instances;
     return true;
   }
@@ -246,21 +280,24 @@ static const char* kModule = "alsa";
               
               long smixer_level = pmin + long( float(pmax-pmin) * v);
               
-              for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i) {
-        snd_mixer_selem_channel_id_t chn = (snd_mixer_selem_channel_id_t) i;
-        if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
-            continue;
-        snd_mixer_selem_set_playback_volume( elem, chn, smixer_level );
+              for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i)
+              {
+                  snd_mixer_selem_channel_id_t chn =
+                  (snd_mixer_selem_channel_id_t) i;
+                  if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
+                      continue;
+                  snd_mixer_selem_set_playback_volume( elem, chn,
+                                                       smixer_level );
               }
           }
           catch( const exception& e )
           {
-              LOG_ERROR( e.what() );
+              std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
           }
       }
     
 #else
-    int smixer_level = int(v * 31);
+    int smixer_level = int(v * 255);
     char cmd[256];
     sprintf( cmd, N_("amixer -q set PCM %d"), smixer_level );
     system( cmd );
@@ -274,31 +311,38 @@ static const char* kModule = "alsa";
 			 const unsigned bits )
   {
 
-    int                  status;
-    unsigned int         test_format = (unsigned int) format;
-    char buf[256];
-
-
-    try
+      try
       {
-	/* Open the audio device */
-	/* Name of device should depend on # channels in spec */
+          close();
+          
+          int                  status;
+          unsigned int         test_format = (unsigned int) format;
+          char buf[256];
+
+          /* Open the audio device */
+          /* Name of device should depend on # channels in spec */
           _pcm_handle = NULL;
           status = snd_pcm_open(&_pcm_handle, device().c_str(), 
                                 SND_PCM_STREAM_PLAYBACK, 0);
 
           if ( status < 0 || _pcm_handle == NULL ) {
-              sprintf( buf, _("Couldn't open audio device: %s"), 
-                       snd_strerror(status));
+              sprintf( buf, _("Couldn't open audio device %s: %s"), 
+                       device().c_str(), snd_strerror(status));
               THROW(buf);
           }
 
+          
           /* Figure out what the hardware is capable of */
-          snd_pcm_hw_params_t *hwparams = NULL;
+          hwparams = NULL;
 
           // Allocate a hardware parameters object
-          snd_pcm_hw_params_alloca(&hwparams);
-
+          status = snd_pcm_hw_params_malloc(&hwparams);
+          if ( status < 0 || _pcm_handle == NULL ) {
+              sprintf( buf, _("Couldn't allocate hwparams %s"), 
+                       snd_strerror(status));
+              THROW(buf);
+          }
+          
 
           // Fill it with default values
           status = snd_pcm_hw_params_any(_pcm_handle, hwparams);
@@ -390,10 +434,12 @@ static const char* kModule = "alsa";
           }
 
           if (freq != exact_rate) {
-              LOG_WARNING( _("The rate ") << freq 
-                           << _(" Hz is not supported by your hardware.") 
-                           << std::endl
-                           << _("  ==> Using ") << exact_rate << _(" Hz instead.") );
+              std::cerr  << _("WARNING: [alsa] ")
+                         << _("The rate ") << freq 
+                         << _(" Hz is not supported by your hardware.") 
+                         << std::endl
+                         << _("  ==> Using ") << exact_rate
+                         << _(" Hz instead.") << std::endl;
           }
 
           /* calculate a period time of one half sample time */
@@ -440,21 +486,11 @@ static const char* kModule = "alsa";
               THROW(buf);
           }
 
-          //snd_pcm_hw_params_free( hwparams );
-
-          /* This is useful for debugging... */
-          //   { 
-          //     snd_pcm_sframes_t bufsize; int fragments;
-          //     bufsize = snd_pcm_hw_params_get_period_size(hwparams);
-          //     fragments = snd_pcm_hw_params_get_periods(hwparams);
-    
-          //     fprintf(stderr, "ALSA: bufsize = %ld, fragments = %d\n", bufsize, fragments);
-          //   }
-
 
           /* Set the software parameters */
-          snd_pcm_sw_params_t *swparams = NULL;
-          snd_pcm_sw_params_alloca(&swparams);
+          swparams = NULL;
+          snd_pcm_sw_params_malloc(&swparams);
+          
           status = snd_pcm_sw_params_current(_pcm_handle, swparams);
           if ( status < 0 ) {
               sprintf( buf, _("Couldn't get software config: %s"),
@@ -474,11 +510,11 @@ static const char* kModule = "alsa";
           status = snd_pcm_sw_params_set_avail_min(_pcm_handle, swparams, 
                                                    period_size);
           if ( status < 0 ) {
-              sprintf( buf, _("Couldn't set avail min: %s"), snd_strerror(status));
+              sprintf( buf, _("Couldn't set avail min: %s"),
+                       snd_strerror(status));
               THROW(buf);
           }
 
-          /* do not align transfers */
 
           /* commit the params structure to ALSA */
           status = snd_pcm_sw_params(_pcm_handle, swparams);
@@ -488,8 +524,16 @@ static const char* kModule = "alsa";
               THROW(buf);
           }
 
-
-
+          snd_pcm_sw_params_free( swparams );
+          
+          status = snd_pcm_prepare( _pcm_handle );
+          if ( status < 0 )
+          {
+              sprintf(buf, _("Couldn't prepare sound device: %s"), 
+                      snd_strerror(status));
+              THROW(buf);
+          }
+          
           // All okay, enable device
           _enabled = true;
           _old_device_idx = _device_idx;
@@ -500,7 +544,11 @@ static const char* kModule = "alsa";
       }
     catch( const AudioEngine::exception& e )
     {
+        std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
 	close();
+        struct timespec req = {
+        7, 0 };
+        nanosleep( &req, NULL );
 	_enabled = false;
     }
   }
@@ -508,12 +556,15 @@ static const char* kModule = "alsa";
 
   bool ALSAEngine::play( const char* data, const size_t size )
   {
-    if ( !_pcm_handle || size == 0 || data == NULL ) return false;
-    if ( !_enabled )   return true;
+      if ( !_enabled )   return true;
+      
+      if ( !_pcm_handle || size == 0 || data == NULL )
+          return false;
 
-    long int           status = 0;
+      long int           status = 0;
 
 
+      
     unsigned sample_len = (unsigned)size / _sample_size;
     const char* sample_buf = data;
     
@@ -521,7 +572,8 @@ static const char* kModule = "alsa";
         status = snd_pcm_writei(_pcm_handle, sample_buf, sample_len);
         if ( status < 0 ) {
             if ( status == -EAGAIN ) {
-                LOG_WARNING( "EAGAIN: " << snd_strerror( status ) );
+                std::cerr << "ERROR: [alsa] EAGAIN: "
+                          << snd_strerror( status ) << std::endl;
                 continue;
             }
             if ( status == -ESTRPIPE ) {
@@ -535,14 +587,17 @@ static const char* kModule = "alsa";
                 DBG( _("Buffer underrun: ") << snd_strerror( status ) );
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
-                    LOG_ERROR( "snd_pcm_prepare failed" );
+                    std::cerr << "ERROR: [alsa] snd_pcm_prepare failed"
+                              << std::endl;
             }
             if ( status == -EBADFD )
             {
-                LOG_ERROR( "EBADFD: " << snd_strerror( status ) );
+                std::cerr << "ERROR: [alsa] EBADFD: "
+                          << snd_strerror( status ) << std::endl;
                 status = snd_pcm_prepare(_pcm_handle);
                 if ( status < 0 )
-                    LOG_ERROR( "snd_pcm_prepare failed" );
+                    std::cerr << "ERROR: [alsa] snd_pcm_prepare failed "
+                              << snd_strerror( status ) << std::endl;
             } 
             if ( status < 0 ) {
                 /* Hmm, not much we can do - abort */
@@ -562,20 +617,34 @@ static const char* kModule = "alsa";
   void ALSAEngine::flush()
   {
     if ( _pcm_handle ) {
-      snd_pcm_drain( _pcm_handle ); 
+      snd_pcm_drop( _pcm_handle ); 
     }
   }
 
 
   bool ALSAEngine::close()
   {
-    if ( _pcm_handle )
+
+      if ( _pcm_handle )
       {
-	snd_pcm_drain( _pcm_handle ); 
-	snd_pcm_close( _pcm_handle );
-	_pcm_handle = NULL;
+          int err = snd_pcm_drop( _pcm_handle );
+          if ( err < 0 )
+          {
+              std::cerr << "ERROR: [alsa] snd_pcm_drop failed with "
+                        << snd_strerror(err)
+                        << std::endl;
+          }
+          err = snd_pcm_close( _pcm_handle );
+          if ( err < 0 )
+          {
+              std::cerr << "ERROR: [alsa] snd_pcm_close failed with "
+                        << snd_strerror(err)
+                        << std::endl;
+          }
+          _pcm_handle = NULL;
       }
-    return true;
+
+      return true;
   }
 
 } // namespace mrv
