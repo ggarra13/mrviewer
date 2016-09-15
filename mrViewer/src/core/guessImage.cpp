@@ -42,6 +42,7 @@
 #include "mrayImage.h"
 #include "ddsImage.h"
 #include "hdrImage.h"
+#include "picImage.h"
 
 #include "Sequence.h"
 #include "mrvIO.h"
@@ -78,6 +79,7 @@ namespace mrv {
       { mapImage::test,   NULL,            mapImage::get },
       { hdrImage::test,   NULL,            hdrImage::get },
       { aviImage::test,   NULL,            aviImage::get },
+      { picImage::test,   NULL,            picImage::get },
       { NULL,             wandImage::test, wandImage::get },
       { ddsImage::test,   NULL,            ddsImage::get },
       { shmapImage::test, NULL,            shmapImage::get },
@@ -88,23 +90,26 @@ namespace mrv {
 
 
   CMedia* test_image( const char* name, 
-		      boost::uint8_t* datas, int size )
+		      boost::uint8_t* datas, int size,
+                      const bool is_seq )
   {
     ImageTypes* type = image_filetypes;
     for ( ; type->get; ++type )
       {
-	if ( type->test )
+          if ( is_seq && type->test == aviImage::test )
+              continue;
+          if ( type->test )
 	  {
-	    if ( type->test( datas, size ) ) 
-	      return type->get( name, datas );
-	    else
-	       if ( type->test_filename && type->test_filename( name ) )
-		  return type->get( name, datas );
+              if ( type->test( datas, size ) ) 
+                  return type->get( name, datas );
+              else
+                  if ( type->test_filename && type->test_filename( name ) )
+                      return type->get( name, datas );
 	  }
-	else
+          else
 	  {
-	    if ( type->test_filename( name ) ) 
-	      return type->get( name, datas );
+              if ( type->test_filename( name ) ) 
+                  return type->get( name, datas );
 	  }
       }
     return NULL;
@@ -236,7 +241,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
 
 
     CMedia* image = test_image( name, (boost::uint8_t*)test_data, 
-				(unsigned int)size );
+				(unsigned int)size, is_seq );
     if ( image ) 
     {
         image->is_left_eye( left );
@@ -279,6 +284,7 @@ CMedia* guess( bool is_stereo, bool is_seq, bool left,
         is_stereo = true;
     }
 
+    
     if ( start != std::numeric_limits<boost::int64_t>::max() ||
          end   != std::numeric_limits<boost::int64_t>::min() )
     {
