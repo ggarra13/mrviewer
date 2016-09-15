@@ -208,11 +208,9 @@ const char* picImage::kCompression[] = {
   {
     if (!data || len < 7) return false;
     
-    uint32_t magic = ((uint32_t*)data)[0];
-    fprintf( stderr, "%X\n", magic );
-    if ( magic != 0x34F68053 ) // 'S' + 845-1636 (SI's phone no :-)
+    uint32_t magic = ntohl(((uint32_t*)data)[0]);
+    if(magic != 0x5380F634) // 'S' + 845-1636 (SI's phone no in LE :-)
       return false;
-
     return true;
   }
 
@@ -317,18 +315,13 @@ const char* picImage::kCompression[] = {
         return false;
 
 noerror:
-        
-	while(chan) {
-		Channel		*prev;
-
-		prev = chan;
-		chan = chan->next;
-		free(prev);
-	}
-        // if ( status )
-        // {
-        //     _hires->data().reset();
-        // }
+    
+    while(chan) {
+        Channel		*prev;
+        prev = chan;
+        chan = chan->next;
+        free(prev);
+    }
 
     fclose(file);
     return true;
@@ -336,27 +329,23 @@ noerror:
 
 
 
-uint32_t picImage::readScanlines(FILE *file, uint32_t *image,
-                                 int32_t width, int32_t height, 
-                                 Channel *channel, uint32_t alpha)
+bool picImage::readScanlines(FILE *file, uint32_t *image,
+                             int32_t width, int32_t height, 
+                             Channel *channel, uint32_t alpha)
 {
     int32_t		i;
-	
-    (void)alpha;
-	
     for(i = 0; i < height; ++i) {
         uint32_t	*scan = image + i * width;
-		
         if(!readScanline(file, (uint8_t *)scan, width, channel, 4))
             return false;
     }
-	
     return true;
 }
 
-uint32_t picImage::readScanline(FILE *file, uint8_t *scan, int32_t width, Channel *chan,  int32_t bytes)
+bool picImage::readScanline(FILE *file, uint8_t *scan, int32_t width, Channel *chan,  int32_t bytes)
 {
-    int32_t		noCol, status;
+    bool status;
+    int32_t		noCol;
     int32_t		off[4];
 	
     while(chan) {
@@ -397,7 +386,7 @@ uint32_t picImage::readScanline(FILE *file, uint8_t *scan, int32_t width, Channe
     return status;
 }
 
-uint32_t picImage::channelReadRaw(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes)
+bool picImage::channelReadRaw(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes)
 {
     int			i, j;
 	
@@ -411,7 +400,7 @@ uint32_t picImage::channelReadRaw(FILE *file, uint8_t *scan, int32_t width, int3
     return true;
 }
 
-uint32_t picImage::channelReadPure(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes)
+bool picImage::channelReadPure(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes)
 {
     uint8_t		col[4];
     int32_t		count;
@@ -437,7 +426,7 @@ uint32_t picImage::channelReadPure(FILE *file, uint8_t *scan, int32_t width, int
     return true;
 }
 
-uint32_t picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes)
+bool picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes)
 {
     int32_t	count;
     int		i, j, k;
