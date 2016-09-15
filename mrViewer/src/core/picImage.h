@@ -75,11 +75,11 @@ namespace mrv {
     bool fetch( const boost::int64_t frame );
 
     protected:
-      uint32_t readScanlines(FILE *file, uint32_t *image, int32_t width, int32_t height, Channel *channel, uint32_t alpha);
-      uint32_t readScanline(FILE *file, uint8_t *scan, int32_t width, Channel *channel,  int32_t bytes);
-      uint32_t channelReadRaw(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes);
-      uint32_t channelReadPure(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes);
-      uint32_t channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes);
+      bool readScanlines(FILE *file, uint32_t *image, int32_t width, int32_t height, Channel *channel, uint32_t alpha);
+      bool readScanline(FILE *file, uint8_t *scan, int32_t width, Channel *channel,  int32_t bytes);
+      bool channelReadRaw(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes);
+      bool channelReadPure(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes);
+      bool channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_t noCol, int32_t *off, int32_t bytes);
       
   protected:
     kCompressionType _compression;
