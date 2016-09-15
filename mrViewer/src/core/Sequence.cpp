@@ -329,6 +329,8 @@ bool is_valid_view( std::string view )
        if ( view.size() ) view += ".";
        if ( mrv::is_valid_movie( ext.c_str() ) )
        {
+           if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
+               return true;
            root += view + frame + ext;
            view = "";
            frame = "";
@@ -347,6 +349,9 @@ bool is_valid_view( std::string view )
         ext = '.' + periods[2];
         if ( mrv::is_valid_movie( ext.c_str() ) )
         {
+           if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
+               return true;
+           
             if ( ! mrv::is_valid_frame( frame ) &&
                  ! mrv::is_valid_frame_spec( frame ) &&
                  mrv::is_valid_view( frame ) )
@@ -420,6 +425,9 @@ bool is_valid_view( std::string view )
 
         if ( is_valid_movie( ext.c_str() ) )
         {
+           if ( frame != "" && ( ext == ".gif" || ext == ".GIF" ) )
+               return true;
+           
            root = "";
            return false;
         }
