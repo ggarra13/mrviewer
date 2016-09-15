@@ -37,9 +37,9 @@ namespace mrv {
   {
       enum kCompressionType
       {
-      None,
-      RLE,
-      Mixed
+      kNone,
+      kRLE,
+      kMixed
       };
       
       static const char* kCompression[];
