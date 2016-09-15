@@ -338,7 +338,7 @@ bool aviImage::test(const boost::uint8_t *data, unsigned len)
   else if ( ( strncmp( (char*)data, "GIF89a", 6 ) == 0 ) ||
             ( strncmp( (char*)data, "GIF87a", 6 ) == 0 ) )
     {
-      // GIF89
+      // GIF89a/87a
       return true;
     }
   else if ( strncmp( (char*)data, ".RMF", 4 ) == 0 )
@@ -1872,14 +1872,21 @@ void aviImage::populate()
                 // As a last resort, count the frames manually.
                 int64_t pts = 0;
 
-                duration = 0; // GIF89
-                while ( readFrame(pts) )
-                    ++duration;
-
-                av_seek_frame( _context,
-                               video_stream_index(),
-                               0,
-                               AVSEEK_FLAG_BACKWARD);
+                if ( fileroot() == filename() )
+                {
+                    duration = 0; // GIF89
+                    while ( readFrame(pts) )
+                        ++duration;
+                    
+                    av_seek_frame( _context,
+                                   video_stream_index(),
+                                   0,
+                                   AVSEEK_FLAG_BACKWARD);
+                }
+                else
+                {
+                    duration = _frameEnd - _frameStart + 1;
+                }
             }
         }
     }
