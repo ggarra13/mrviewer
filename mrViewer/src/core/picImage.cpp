@@ -232,32 +232,36 @@ const char* picImage::kCompression[] = {
       Channel		*chan = NULL;
       uint32_t          dw, dh;
 
-    FILE* file = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+      FILE* file = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
 
-    tmp = readInt(file);
-    if(tmp != 0x5380F634) {		// 'S' + 845-1636 (SI's phone no :-)
-        IMG_ERROR( "has invalid magic number in the header." );
-        return false;
-    }
+      tmp = readInt(file);
+      if(tmp != 0x5380F634) {		// 'S' + 845-1636 (SI's phone no :-)
+          IMG_ERROR( "has invalid magic number in the header." );
+          return false;
+      }
         
-    tmp = readInt(file);
-    fseek(file, 88, SEEK_SET);	// Skip over creator string
+      tmp = readInt(file);
+      
+      char buf[81];
+      buf[81] = 0;
+      tmp = fread(buf, 80, 1, file );
+      _iptc.insert( std::make_pair( "Creator", buf ) );
     
-    tmp = readInt(file);		// File identifier 'PICT'
-    /* pdb - if(tmp != 'PICT') { */
-    if (tmp != 0x50494354) {
-        IMG_ERROR( "is a Softimage file, but not a PIC file." );
-        return false;
-    }
+      tmp = readInt(file);		// File identifier 'PICT'
+      /* pdb - if(tmp != 'PICT') { */
+      if (tmp != 0x50494354) {
+          IMG_ERROR( "is a Softimage file, but not a PIC file." );
+          return false;
+      }
    
-    dw = readShort(file);
-    dh = readShort(file);
+      dw = readShort(file);
+      dh = readShort(file);
     
-    readInt(file);			// Aspect ratio (ignored)
-    readShort(file);		// Interlace type (ignored)
-    readShort(file);		// Read padding
-    
-    image_size( dw, dh );
+      readInt(file);			// Aspect ratio (ignored)
+      readShort(file);		// Interlace type (ignored)
+      readShort(file);		// Read padding
+      
+      image_size( dw, dh );
     allocate_pixels(frame);
 
     // Read channels
@@ -369,12 +373,15 @@ bool picImage::readScanline(FILE *file, uint8_t *scan, int32_t width, Channel *c
 
         switch(chan->type & 0x0F) {
             case PIC_UNCOMPRESSED:
+                _compression = kNone;
                 status = channelReadRaw(file, scan, width, noCol, off, bytes);
                 break;
             case PIC_PURE_RUN_LENGTH:
+                _compression = kRLE;
                 status = channelReadPure(file, scan, width, noCol, off, bytes);
                 break;
             case PIC_MIXED_RUN_LENGTH:
+                _compression = kMixed;
                 status = channelReadMixed(file, scan, width, noCol, off, bytes);
                 break;
         }
