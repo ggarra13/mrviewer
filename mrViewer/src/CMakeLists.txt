@@ -151,6 +151,7 @@ SET( SOURCES
   core/smpteImage.cpp
   core/stubImage.cpp
   core/wandImage.cpp
+  core/picImage.cpp
   # core/magickImage.cpp
 
   core/mrSocket.cpp
