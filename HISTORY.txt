@@ -1,7 +1,12 @@
+v3.3.0   - Bug fixed gif sequence detection.  Now mrViewer can
+	   load both animated gif as well as a sequence of gif
+	   files.
+
 v3.2.9   - It is now possible to switch audio device in the
 	   Preferences window, Audio section on Windows.
-	   For Linux, use the default system audio control
-	   (alsamixer).
+	   For Linux, the preferred way is to leave the
+	   setting as default and use the default system
+	   audio control (gnome-control-center).
 	   By default, the system default audio device is used.
 	 - In Windows, UNC network paths are now accepted.
 	   For example:
