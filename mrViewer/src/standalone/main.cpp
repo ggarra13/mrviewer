@@ -163,10 +163,17 @@ int main( int argc, char** argv )
   const char* tmp = setlocale(LC_ALL, "");
 
   // Create and install global locale
-  std::locale::global(boost::locale::generator().generate(""));
-  // Make boost.filesystem use it
-  fs::path::imbue(std::locale());
-
+  try {
+      
+      std::locale::global(boost::locale::generator().generate(""));
+      // Make boost.filesystem use it
+      fs::path::imbue(std::locale());
+  }
+  catch( const std::runtime_error& e )
+  {
+      std::cerr << e.what() << std::endl;
+  }
+  
 #ifdef LINUX
   XInitThreads();
 #endif
