@@ -81,7 +81,7 @@ namespace mrv
 
 
 
-  static const char* kVersion = "3.2.9";
+  static const char* kVersion = "3.3.0";
   static const char* kBuild = "- Built " __DATE__ " " __TIME__;
 
 #if INTPTR_MAX == INT64_MAX
@@ -163,7 +163,7 @@ void ffmpeg_formats( fltk::Browser& browser )
 			"Microsoft Direct Draw Surface" );
     formats.push_back(f);
 
-    f = new FormatInfo( true, false, false, "PIC", "internal",
+    f = new FormatInfo( true, true, false, "PIC", "internal",
 			"Softimage pic" );
     formats.push_back(f);
 
