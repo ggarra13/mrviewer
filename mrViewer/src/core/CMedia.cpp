@@ -1890,8 +1890,8 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  if ( ( playback() == kStopped || playback() == kScrubbing ) &&
-       _right_eye ) _right_eye->frame(f);
+  if ( ( playback() == kStopped ) && _right_eye && _stereo_type )
+      _right_eye->frame(f);
 
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
@@ -2559,8 +2559,7 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
-    if ( ( playback() == kStopped || playback() == kScrubbing ) &&
-         _right_eye && _stereo_type ) {
+    if ( ( playback() == kStopped ) && _right_eye && _stereo_type ) {
         boost::int64_t f = frame;
         _right_eye->decode_video(f);
     }
@@ -2639,8 +2638,7 @@ bool CMedia::find_image( const boost::int64_t frame )
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
-  if ( ( playback() == kStopped || playback() == kScrubbing ) &&
-       _right_eye && _stereo_type )
+  if ( ( playback() == kStopped ) && _right_eye && _stereo_type )
       _right_eye->find_image(f);
 
   _video_pts   = f / _orig_fps;
