@@ -72,7 +72,10 @@ namespace mrv {
     }
 
 
-    bool fetch( const boost::int64_t frame );
+      bool fetch( const boost::int64_t frame );
+      
+      static bool save( const char* file, const CMedia* img,
+                        const ImageOpts* opts );
 
     protected:
       bool readScanlines(FILE *file, uint32_t *image, int32_t width, int32_t height, Channel *channel, uint32_t alpha);
