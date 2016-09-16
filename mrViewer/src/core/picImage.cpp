@@ -170,7 +170,7 @@ char *readStr(FILE *file)
 namespace mrv {
 
 
-  using namespace std;
+using namespace std;
 
 const char* picImage::kCompression[] = {
 "None",
@@ -178,94 +178,97 @@ const char* picImage::kCompression[] = {
 "Mixed"
 };
 
-  /** 
-   * Constructor
-   * 
-   */
-  picImage::picImage() :
-    CMedia()
-  {
-  }
+/** 
+ * Constructor
+ * 
+ */
+picImage::picImage() :
+CMedia()
+{
+}
 
 
 
-  /** 
-   * Destructor
-   * 
-   */
-  picImage::~picImage()
-  {
-  }
+/** 
+ * Destructor
+ * 
+ */
+picImage::~picImage()
+{
+}
 
 
 
-  /*! Test a block of data read from the start of the file to see if it
-    looks like the start of an .map file. This returns true if the 
-    data contains PIC's magic number (0x10) and a short of 1 in the
-    as the number of components.
-  */
-  bool picImage::test(const boost::uint8_t *data, unsigned len)
-  {
+/*! Test a block of data read from the start of the file to see if it
+  looks like the start of an .map file. This returns true if the 
+  data contains PIC's magic number (0x10) and a short of 1 in the
+  as the number of components.
+*/
+bool picImage::test(const boost::uint8_t *data, unsigned len)
+{
     if (!data || len < 7) return false;
     
     uint32_t magic = ntohl(((uint32_t*)data)[0]);
     if(magic != 0x5380F634) // 'S' + 845-1636 (SI's phone no in LE :-)
-      return false;
+        return false;
     return true;
-  }
+}
 
 
 
 
-  /** 
-   * Fetch the shadow map image
-   * 
-   * 
-   * @return true on success, false if not
-   */
-  bool picImage::fetch(const boost::int64_t frame) 
-  {
-      uint32_t		tmp, status;
-      bool              has_rgb = false;
-      bool		alpha = false;
-      uint8_t		chained;
-      Channel		*chan = NULL;
-      uint32_t          dw, dh;
+/** 
+ * Fetch the shadow map image
+ * 
+ * 
+ * @return true on success, false if not
+ */
+bool picImage::fetch(const boost::int64_t frame) 
+{
+    uint32_t		tmp;
+    bool              has_rgb = false;
+    bool		alpha = false;
+    uint8_t		chained;
+    Channel		*chan = NULL;
+    uint32_t          dw, dh;
 
-      FILE* file = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
+    FILE* file = fltk::fltk_fopen( sequence_filename(frame).c_str(), "rb" );
 
-      tmp = readInt(file);
-      if(tmp != 0x5380F634) {		// 'S' + 845-1636 (SI's phone no :-)
-          IMG_ERROR( "has invalid magic number in the header." );
-          return false;
-      }
+    tmp = readInt(file);
+    if(tmp != 0x5380F634) {		// 'S' + 845-1636 (SI's phone no :-)
+        IMG_ERROR( "has invalid magic number in the header." );
+        fclose(file);
+        return false;
+    }
         
-      tmp = readInt(file);
+    tmp = readInt(file);
       
-      char buf[81];
-      buf[81] = 0;
-      tmp = fread(buf, 80, 1, file );
-      _iptc.insert( std::make_pair( "Creator", buf ) );
-    
-      tmp = readInt(file);		// File identifier 'PICT'
-      /* pdb - if(tmp != 'PICT') { */
-      if (tmp != 0x50494354) {
-          IMG_ERROR( "is a Softimage file, but not a PIC file." );
-          return false;
-      }
-   
-      dw = readShort(file);
-      dh = readShort(file);
-    
-      readInt(file);			// Aspect ratio (ignored)
-      readShort(file);		// Interlace type (ignored)
-      readShort(file);		// Read padding
+    char buf[81];
+    buf[80] = 0;
+    size_t read = fread(buf, 80, 1, file );
+    if ( buf[0] != 0 )
+    {
+        _iptc.insert( std::make_pair( "Creator", buf ) );
+    }
+
+    tmp = readInt(file);		// File identifier 'PICT'
+    /* pdb - if(tmp != 'PICT') { */
+    if (tmp != 0x50494354) {
+        IMG_ERROR( "is a Softimage file, but not a PIC file." );
+        fclose(file);
+        return false;
+    }
       
-      image_size( dw, dh );
-    allocate_pixels(frame);
+      
+    dw = readShort(file);
+    dh = readShort(file);
+    
+    readInt(file);			// Aspect ratio (ignored)
+    readShort(file);		// Interlace type (ignored)
+    readShort(file);		// Read padding
+      
 
     // Read channels
-    _layers.clear();
     
     do {
         Channel	*c;
@@ -301,6 +304,8 @@ const char* picImage::kCompression[] = {
 
     image_type::PixelType pixel_type = image_type::kByte;
     
+    _layers.clear();
+    
     if ( has_rgb )
         rgb_layers();
     
@@ -312,14 +317,11 @@ const char* picImage::kCompression[] = {
     image_size( dw, dh );
 
     // Read pixel values
+    image_size( dw, dh );
     allocate_pixels( frame, 4, image_type::kRGBA, pixel_type, dw, dh );
-    
-    if(!readScanlines(file, (uint32_t*)_hires->data().get(), dw, dh,
-                      chan, alpha))
-        return false;
 
-noerror:
-    
+    bool ok = readScanlines(file, (uint32_t*)_hires->data().get(), dw, dh,
+                            chan, alpha);
     while(chan) {
         Channel		*prev;
         prev = chan;
@@ -328,8 +330,8 @@ noerror:
     }
 
     fclose(file);
-    return true;
-  }
+    return ok;
+}
 
 
 
@@ -483,5 +485,356 @@ bool picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_
     }
     return true;
 } 
+
+
+
+
+
+static bool ff_pic_writeScanline(FILE *file, uint32_t *line, uint32_t width)
+{
+    bool seqSame;
+    int		same, count;
+    int		i, k;
+    uint8_t	pixel[128][3], col[3];
+	
+    count = 0;
+    for(k = 0; k < width; k++) {
+        col[0] = (line[k]) & 0xFF;
+        col[1] = (line[k] >> 8) & 0xFF;
+        col[2] = (line[k] >> 16) & 0xFF;
+		
+        if(count == 0) {
+            pixel[0][0] = col[0];
+            pixel[0][1] = col[1];
+            pixel[0][2] = col[2];
+            count++;
+        } else
+            if(count == 1) {
+                seqSame  = (col[0] == pixel[0][0]);
+                seqSame &= (col[1] == pixel[0][1]);
+                seqSame &= (col[2] == pixel[0][2]);
+			
+                if(!seqSame) {
+                    pixel[count][0] = col[0];
+                    pixel[count][1] = col[1];
+                    pixel[count][2] = col[2];
+                }
+                count++;
+            } else
+		if(count > 1) { 
+                    if(seqSame) {
+                        same  = (col[0] == pixel[0][0]);
+                        same &= (col[1] == pixel[0][1]);
+                        same &= (col[2] == pixel[0][2]);
+                    } else {
+                        same  = (col[0] == pixel[count - 1][0]);
+                        same &= (col[1] == pixel[count - 1][1]);
+                        same &= (col[2] == pixel[count - 1][2]);
+                    }
+			
+                    if(same ^ seqSame) {
+                        if(!seqSame) {
+                            putc((uint8_t)(count - 2), file);
+                            for(i = 0; i < count - 1; i++) {
+                                putc(pixel[i][0], file);
+                                putc(pixel[i][1], file);
+                                putc(pixel[i][2], file);
+                            }
+                            pixel[0][0] = pixel[1][0] = col[0];
+                            pixel[0][1] = pixel[1][1] = col[1];
+                            pixel[0][2] = pixel[1][2] = col[2];
+                            count = 2;
+                            seqSame = true;
+                        } else {
+                            if(count < 128)
+                                putc((uint8_t)(count + 127), file);
+                            else {
+                                putc(128, file);
+                                writeShort(file, count);
+                            }
+                            putc(pixel[0][0], file);
+                            putc(pixel[0][1], file);
+                            putc(pixel[0][2], file);
+                            pixel[0][0] = col[0];
+                            pixel[0][1] = col[1];
+                            pixel[0][2] = col[2];
+                            count = 1;
+                        }
+                    } else {
+                        if(!same) {
+                            pixel[count][0] = col[0];
+                            pixel[count][1] = col[1];
+                            pixel[count][2] = col[2];
+                        }
+                        count++;
+                        if((count == 128) && !seqSame) {
+                            putc(127, file);
+                            for(i = 0; i < count; i++) {
+                                putc(pixel[i][0], file);
+                                putc(pixel[i][1], file);
+                                putc(pixel[i][2], file);
+                            }
+                            count = 0;
+                        }
+                        if((count == 65536) && seqSame) {
+                            putc(128, file);
+                            writeShort(file, count);
+                            putc(pixel[0][0], file);
+                            putc(pixel[0][1], file);
+                            putc(pixel[0][2], file);
+                            count = 0;
+                        }
+                    }
+		}
+        if(ferror(file))
+            return false;
+    }
+    if(count) {
+        if((count == 1) || (!seqSame)) {
+            putc((uint8_t)(count - 1), file);
+            for(i = 0; i < count; i++) {
+                putc(pixel[i][0], file);
+                putc(pixel[i][1], file);
+                putc(pixel[i][2], file);
+            }
+        } else {
+            if(count < 128)
+                putc((uint8_t)(count + 127), file);
+            else {
+                putc(128, file);
+                writeShort(file, count);
+            }
+            putc(pixel[0][0], file);
+            putc(pixel[0][1], file);
+            putc(pixel[0][2], file);
+        }
+        if(ferror(file))
+            return false;
+    }
+
+    count = 0;
+    for(k = 0; k < width; k++) {
+        col[0] = (line[k] >> 24) & 0xFF;
+		
+        if(count == 0) {
+            pixel[0][0] = col[0];
+            count++;
+        } else
+            if(count == 1) {
+                seqSame  = (col[0] == pixel[0][0]);
+			
+                if(!seqSame) {
+                    pixel[count][0] = col[0];
+                }
+                count++;
+            } else
+		if(count > 1) { 
+                    if(seqSame) {
+                        same  = (col[0] == pixel[0][0]);
+                    } else {
+                        same  = (col[0] == pixel[count - 1][0]);
+                    }
+			
+                    if(same ^ seqSame) {
+                        if(!seqSame) {
+                            putc((uint8_t)(count - 2), file);
+                            for(i = 0; i < count - 1; i++) {
+                                putc(pixel[i][0], file);
+                            }
+                            pixel[0][0] = pixel[1][0] = col[0];
+                            count = 2;
+                            seqSame = true;
+                        } else {
+                            if(count < 128)
+                                putc((uint8_t)(count + 127), file);
+                            else {
+                                putc(128, file);
+                                writeShort(file, count);
+                            }
+                            putc(pixel[0][0], file);
+                            pixel[0][0] = col[0];
+                            count = 1;
+                        }
+                    } else {
+                        if(!same) {
+                            pixel[count][0] = col[0];
+                        }
+                        count++;
+                        if((count == 128) && !seqSame) {
+                            putc(127, file);
+                            for(i = 0; i < count; i++) {
+                                putc(pixel[i][0], file);
+                            }
+                            count = 0;
+                        }
+                        if((count == 65536) && seqSame) {
+                            putc(128, file);
+                            writeShort(file, count);
+                            putc(pixel[0][0], file);
+                            count = 0;
+                        }
+                    }
+		}
+        if(ferror(file))
+            return false;
+    }
+    if(count) {
+        if((count == 1) || (!seqSame)) {
+            putc((uint8_t)(count - 1), file);
+            for(i = 0; i < count; i++) {
+                putc(pixel[i][0], file);
+            }
+        } else {
+            if(count < 128)
+                putc((uint8_t)(count + 127), file);
+            else {
+                putc(128, file);
+                writeShort(file, count);
+            }            putc(pixel[0][0], file);
+        }
+        if(ferror(file))
+            return false;
+    }
+    
+    return true;
+}
+
+bool picImage::save( const char* path, const CMedia* img,
+                     const ImageOpts* opts )
+{
+	FILE	*file;
+	char	str[80], myPath[4096];
+	int		line;
+	
+	strcpy(myPath, path);
+	if(strlen(myPath) < 4 ||
+           strcasecmp(myPath + strlen(myPath) - 4, ".pic") != 0)
+            strcat(myPath, ".pic");
+	
+	if((file = fopen(myPath, "wb")) == NULL) {
+            LOG_ERROR( _("Couldn't open '") << myPath <<
+                       _("' for writing. Reason: " ) << strerror(errno));
+            return false;
+	}
+	
+	// Write Softimage file header
+	writeInt(file, 0x5380F634);
+	writeInt(file, 0x406001A3);
+	memset(str, 0, 80);
+	sprintf(str, "File written by mrViewer.");
+	fwrite(str, 1, 80, file);
+	
+        mrv::image_type_ptr pic = img->hires();
+        unsigned dw = pic->width();
+        unsigned dh = pic->height();
+        
+	// Write picture file header
+	writeInt(file, 0x50494354);
+	writeShort(file, dw);
+	writeShort(file, dh);
+	writeInt(file, 0x3F800000);
+	writeShort(file, 3);
+	writeShort(file, 0);
+	
+	// Info for RGB stream.
+	fputc(1, file);
+	fputc(8, file);
+	fputc(2, file);
+	fputc(0xE0, file);
+	
+	// Info for alpha channel stream
+	fputc(0, file);
+	fputc(8, file);
+	fputc(2, file);
+	fputc(0x10, file);
+	
+	if(ferror(file)) {
+            LOG_ERROR( _("Couldn't write out to '") << path
+                       << _("'. Reason: ") << strerror(errno) );
+            fclose(file);
+            return false;
+	}
+	
+        bool must_convert = false;
+        
+        bool  has_alpha = pic->has_alpha();
+        image_type::Format format = pic->format();
+        
+        if ( format == image_type::kRGB ||
+             pic->pixel_type() != image_type::kByte ||
+             img->gamma() != 1.0f )
+            must_convert = true;
+
+        boost::uint8_t* pixels = NULL;
+        if ( must_convert )
+        {
+            // Memory is kept until we save the image
+            unsigned data_size = dw*dh*4;
+            pixels = new boost::uint8_t[ data_size ];
+
+            double one_gamma = 1.0 / img->gamma();
+            
+            for ( unsigned y = 0; y < dh; ++y )
+            {
+                unsigned step = 4*dw*y;
+                for ( unsigned x = 0; x < dw; ++x )
+                {
+                    ImagePixel p = pic->pixel( x, y );
+                    
+                    if ( p.r > 0.f && isfinite(p.r) )
+                        p.r = pow( p.r, one_gamma );
+                    if ( p.g > 0.f && isfinite(p.g) )
+                        p.g = pow( p.g, one_gamma );
+                    if ( p.b > 0.f && isfinite(p.b) )
+                        p.b = pow( p.b, one_gamma );
+
+                    p.r *= 255.0f;
+                    p.g *= 255.0f;
+                    p.b *= 255.0f;
+                    p.a *= 255.0f;
+
+                    if ( p.r > 255.f ) p.r = 255.f;
+                    else if ( p.r < 0.f ) p.r = 0.f;
+                    if ( p.g > 255.f ) p.g = 255.f;
+                    else if ( p.g < 0.f ) p.g = 0.f;
+                    if ( p.b > 255.f ) p.b = 255.f;
+                    else if ( p.b < 0.f ) p.b = 0.f;
+                    if ( p.a > 255.f ) p.a = 255.f;
+                    else if ( p.a < 0.f ) p.a = 0.f;
+
+                    unsigned x4 = x*4;
+                    pixels[x4 + step] = p.r;
+                    pixels[x4 + step + 1] = p.g;
+                    pixels[x4 + step + 2] = p.b;
+                    pixels[x4 + step + 3] = p.a;
+                }
+            }
+        }
+        else
+        {
+            pixels = (boost::uint8_t*)pic->data().get();
+        }
+        
+	
+	for(line = 0; line < dh; ++line) {
+		uint32_t		*linePtr;
+		linePtr = (uint32_t*) pixels;
+		linePtr += line * dw;
+		
+		if(!ff_pic_writeScanline(file, linePtr, dw)) {
+                    LOG_ERROR( _("Couldn't write out to '") << path
+                               << _("'. Reason: " ) << strerror(errno) );
+		}
+	}
+
+        if ( must_convert )
+        {
+            delete [] pixels;
+        }
+        
+	fclose(file);
+	return true;
+}
+
 
 } // namespace mrv
