@@ -18,7 +18,6 @@
 
 
 
-#define __STDC_FORMAT_MACROS
 #include <inttypes.h>  // for PRId64
 
 #if defined(WIN32) || defined(WIN64)
