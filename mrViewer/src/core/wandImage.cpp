@@ -45,6 +45,7 @@ using namespace std;
 #include "core/mrvColorProfile.h"
 #include "core/mrvString.h"
 #include "core/wandImage.h"
+#include "core/picImage.h"
 #include "core/exrImage.h"
 #include "core/aviImage.h"
 #include "core/mrvThread.h"
@@ -572,6 +573,12 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
     if ( dynamic_cast< const EXROpts* >( opts ) != NULL )
     {
 	return exrImage::save( file, this, opts );
+    }
+
+    std::string f = file;
+    if ( f.substr( f.size()-4, f.size() ) == ".pic" )
+    {
+        return picImage::save( file, this, opts );
     }
 
     if ( dynamic_cast< const WandOpts* >( opts ) == NULL )
