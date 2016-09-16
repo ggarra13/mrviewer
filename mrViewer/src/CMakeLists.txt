@@ -9,8 +9,8 @@ IF( NOT CMAKE_MODULE_PATH )
 ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
-SET( VersionMinor 2 )
-SET( VersionPatch 9 )
+SET( VersionMinor 3 )
+SET( VersionPatch 0 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
