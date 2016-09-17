@@ -807,8 +807,6 @@ bool CMedia::save( const char* file, const ImageOpts* opts ) const
         MagickSetImageColorspace( w, colorspace );
 
 
-        LOG_INFO( "Alpha? " << has_alpha << " Channels " << channels );
-
         status = MagickConstituteImage( w, dw, dh, channels, 
                                         o->pixel_type(), pixels );
         if (status == MagickFalse)
