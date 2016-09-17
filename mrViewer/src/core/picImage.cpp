@@ -760,7 +760,7 @@ bool picImage::save( const char* path, const CMedia* img,
         bool  has_alpha = pic->has_alpha();
         image_type::Format format = pic->format();
         
-        if ( format == image_type::kRGB ||
+        if ( format != image_type::kRGBA ||
              pic->pixel_type() != image_type::kByte ||
              img->gamma() != 1.0f )
             must_convert = true;
