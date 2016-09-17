@@ -1011,8 +1011,8 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     set_matrix( flip, true );
 
     float x = 0.0f, y = 0.0f;
-    if ( flip & ImageView::kFlipVertical )    x = -dpw.w();
-    if ( flip & ImageView::kFlipHorizontal )  y = dpw.h();
+    if ( flip & ImageView::kFlipVertical )    x = (float)-dpw.w();
+    if ( flip & ImageView::kFlipHorizontal )  y = (float) dpw.h();
 
     glTranslated( x + r.x(), y - r.y(), 0 );
 
@@ -1275,8 +1275,8 @@ void GLEngine::draw_images( ImageList& images )
       if ( flip )
       {
           float x = 0.0f, y = 0.0f;
-          if ( flip & ImageView::kFlipVertical )   x = -dp.w();
-          if ( flip & ImageView::kFlipHorizontal ) y = dp.h();
+          if ( flip & ImageView::kFlipVertical )   x = (float) -dp.w();
+          if ( flip & ImageView::kFlipHorizontal ) y = (float) dp.h();
           glTranslatef( x, y, 0.0f );
       }
 
