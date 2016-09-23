@@ -1,509 +1,142 @@
 ﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(392,5): warning MSB8028: The intermediate directory (x64\Release\) contains files shared from another project (arc.vcxproj, ask.vcxproj, bitmap.vcxproj, boxtype.vcxproj, browser.vcxproj, button.vcxproj, buttons.vcxproj, checkers.vcxproj, clock.vcxproj, color_chooser.vcxproj, CubeView.vcxproj, cursor.vcxproj, curve.vcxproj, demo.vcxproj, drawing.vcxproj, editor.vcxproj, file_chooser.vcxproj, fltk.vcxproj, fltkdll_glut.vcxproj, fltkdll_images.vcxproj, fltkdll_opengl.vcxproj, fltk_glut.vcxproj, fltk_images.vcxproj, fltk_opengl.vcxproj, fluid.vcxproj, fluid_wdll.vcxproj, fonts.vcxproj, fractals.vcxproj, glpuzzle.vcxproj, hello.vcxproj, help.vcxproj, image.vcxproj, inactive.vcxproj, input.vcxproj, keyboard.vcxproj, label.vcxproj, libjpeg.vcxproj, libpng.vcxproj, line_style.vcxproj, mandelbrot.vcxproj, menubar.vcxproj, message.vcxproj, navigation.vcxproj, output.vcxproj, pack.vcxproj, qubix.vcxproj, radio.vcxproj, resize.vcxproj, size_range.vcxproj, symbols.vcxproj, tabs.vcxproj, tile.vcxproj, valuators.vcxproj, wizard.vcxproj, zlib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  addarc.cxx
-..\..\src\addarc.cxx(123): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-  addcurve.cxx
-..\..\src\addcurve.cxx(113): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-  add_idle.cxx
-  Adjuster.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  AlignGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  args.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  BarGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  bmpImage.cxx
-..\..\src\bmpImage.cxx(59): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  Browser.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\Browser.cxx(1800): warning C4311: '<function-style-cast>': pointer truncation from 'void *' to 'long'
-..\..\src\Browser.cxx(1800): warning C4302: '<function-style-cast>': truncation from 'void *' to 'long'
-..\..\src\Browser.cxx(1870): warning C4244: 'argument': conversion from 'float' to 'int', possible loss of data
-  Button.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  CheckButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Choice.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  clip.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Clock.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Color.cxx
-..\..\src\Color.cxx(41): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  color_chooser.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  ComboBox.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  compose.cxx
-..\..\src\compose.cxx(351): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-..\..\src\compose.cxx(383): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-  Cursor.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  CycleButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Generating Code...
-  Compiling...
-  default_glyph.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Dial.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  DiamondBox.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  dnd.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  drawtext.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\drawtext.cxx(393): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\drawtext.cxx(396): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-..\..\src\drawtext.cxx(443): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-..\..\src\drawtext.cxx(448): warning C4244: 'initializing': conversion from 'double' to 'float', possible loss of data
-..\..\src\drawtext.cxx(624): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-..\..\src\drawtext.cxx(627): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\drawtext.cxx(635): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-..\..\src\drawtext.cxx(638): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-  EngravedLabel.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  error.cxx
-  event_key_state.cxx
-  FileBrowser.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\FileBrowser.cxx(267): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  FileChooser.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\FileChooser.cxx(350): warning C4800: 'int': forcing value to bool 'true' or 'false' (performance warning)
-  FileChooser2.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\FileChooser2.cxx(737): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(753): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(792): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(792): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(798): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(1094): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\FileChooser2.cxx(1095): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\FileChooser2.cxx(1133): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(1338): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(1386): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\FileChooser2.cxx(1387): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-  FileIcon.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  FileInput.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\FileInput.cxx(148): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-  filename_absolute.cxx
-..\..\src\filename_absolute.cxx(84): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(108): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(119): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(123): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(143): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(157): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(163): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\filename_absolute.cxx(191): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-  filename_ext.cxx
-  filename_isdir.cxx
-..\..\src\filename_isdir.cxx(57): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\filename_isdir.cxx(59): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  filename_list.cxx
-  filename_match.cxx
-  filename_name.cxx
-  file_chooser.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\file_chooser.cxx(180): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\file_chooser.cxx(183): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\file_chooser.cxx(184): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\file_chooser.cxx(187): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\file_chooser.cxx(190): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\file_chooser.cxx(339): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-..\..\src\file_chooser.cxx(342): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-  Generating Code...
-  Compiling...
-  fillrect.cxx
-  FloatInput.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  fltk_theme.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\fltk_theme.cxx(344): warning C4305: 'argument': truncation from 'double' to 'float'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/fltk_theme.cxx(161): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/fltk_theme.cxx(174): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/fltk_theme.cxx(186): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Fl_Menu_Item.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk\compat\FL/Fl_Menu_Item.H(96): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk\compat\FL/Fl_Menu_Item.H(96): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\Fl_Menu_Item.cxx(42): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Fl_Menu_Item.cxx(123): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-  Font.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/Font.cxx(107): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\Font.cxx(129): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Font.cxx(151): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  gifImage.cxx
-  Group.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  GSave.cxx
-..\..\src\GSave.cxx(86): warning C4311: 'type cast': pointer truncation from 'void *' to 'unsigned long'
-..\..\src\GSave.cxx(86): warning C4302: 'type cast': truncation from 'void *' to 'unsigned long'
-  HelpView.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\HelpView.cxx(930): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-..\..\src\HelpView.cxx(1408): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\HelpView.cxx(1491): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\HelpView.cxx(2323): warning C4390: ';': empty controlled statement found; is this the intent?
-..\..\src\HelpView.cxx(2445): warning C4390: ';': empty controlled statement found; is this the intent?
-..\..\src\HelpView.cxx(2668): warning C4390: ';': empty controlled statement found; is this the intent?
-  HighlightButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Image.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Input.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\Input.cxx(115): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(151): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(422): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Input.cxx(510): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(533): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(595): warning C4244: 'return': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(664): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(855): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Input.cxx(1049): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Input.cxx(1068): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Input.cxx(1161): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(1173): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(1252): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Input.cxx(1264): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
   InputBrowser.cxx
 d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
 d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  InvisibleWidget.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Item.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  key_name.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  LightButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  list_fonts.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/list_fonts.cxx(95): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/list_fonts.cxx(137): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\list_fonts.cxx(77): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  load_plugin.cxx
-..\..\src\load_plugin.cxx(30): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  lock.cxx
-  Generating Code...
-  Compiling...
-  Menu.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  MenuBar.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  MenuWindow.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Menu_add.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\Menu_add.cxx(147): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Menu_add.cxx(440): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  Menu_global.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Menu_popup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  message.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\message.cxx(237): warning C4244: '+=': conversion from 'float' to 'int', possible loss of data
-  MultiImage.cxx
-  NumericInput.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  numericsort.cxx
-  Output.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  OvalBox.cxx
-  overlay_rect.cxx
-  own_colormap.cxx
-  PackedGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  path.cxx
-  PlasticBox.cxx
-..\..\src\PlasticBox.cxx(62): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  PopupMenu.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Preferences.cxx
-..\..\src\Preferences.cxx(437): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(533): warning C4267: 'return': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(620): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Preferences.cxx(640): warning C4244: 'initializing': conversion from '__int64' to 'int', possible loss of data
-..\..\src\Preferences.cxx(655): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(786): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(792): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(801): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(777): warning C4390: ';': empty controlled statement found; is this the intent?
-..\..\src\Preferences.cxx(778): warning C4390: ';': empty controlled statement found; is this the intent?
-..\..\src\Preferences.cxx(779): warning C4390: ';': empty controlled statement found; is this the intent?
-..\..\src\Preferences.cxx(1005): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(1006): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(1051): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(1105): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\Preferences.cxx(1108): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  ProgressBar.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Generating Code...
-  Compiling...
-  RadioButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  readimage.cxx
-  RepeatButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  ReturnButton.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  RoundBox.cxx
-..\..\src\RoundBox.cxx(146): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  RoundedBox.cxx
-  run.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\run.cxx(131): warning C4267: 'initializing': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(919): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(936): warning C4244: '=': conversion from '__int64' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(942): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(960): warning C4244: '=': conversion from '__int64' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(1176): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(1247): warning C4273: 'TrackMouseEvent': inconsistent dll linkage
-  C:\Program Files (x86)\Windows Kits\8.1\Include\um\winuser.h(2658): note: see previous definition of 'TrackMouseEvent'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(1595): warning C4244: 'argument': conversion from 'WPARAM' to 'int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(1837): warning C4244: 'argument': conversion from 'WPARAM' to 'UINT', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2108): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2229): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2499): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2601): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2603): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2604): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/run.cxx(2606): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-  Scrollbar.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  ScrollGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  scrollrect.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  setcolor.cxx
-  setdisplay.cxx
-  setvisual.cxx
-  ShadowBox.cxx
-  ShapedWindow.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  SharedImage.cxx
-..\..\src\SharedImage.cxx(131): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\SharedImage.cxx(132): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\SharedImage.cxx(178): warning C4390: ';': empty controlled statement found; is this the intent?
-  ShortcutAssignment.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\ShortcutAssignment.cxx(123): warning C4311: '<function-style-cast>': pointer truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(123): warning C4302: '<function-style-cast>': truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(212): warning C4311: '<function-style-cast>': pointer truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(212): warning C4302: '<function-style-cast>': truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(275): warning C4311: '<function-style-cast>': pointer truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(275): warning C4302: '<function-style-cast>': truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(310): warning C4311: '<function-style-cast>': pointer truncation from 'void *' to 'long'
-..\..\src\ShortcutAssignment.cxx(310): warning C4302: '<function-style-cast>': truncation from 'void *' to 'long'
-  show_colormap.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Slider.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\Slider.cxx(306): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-..\..\src\Slider.cxx(322): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-..\..\src\Slider.cxx(342): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-..\..\src\Slider.cxx(352): warning C4244: '=': conversion from 'int' to 'float', possible loss of data
-  StatusBarGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Generating Code...
-  Compiling...
-  StringList.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Style.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  StyleSet.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Symbol.cxx
-..\..\src\Symbol.cxx(96): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\Symbol.cxx(144): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\Symbol.cxx(149): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\Symbol.cxx(197): warning C4267: 'argument': conversion from 'size_t' to 'unsigned int', possible loss of data
-..\..\src\Symbol.cxx(222): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-..\..\src\Symbol.cxx(239): warning C4244: 'argument': conversion from '__int64' to 'unsigned int', possible loss of data
-  TabGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  TabGroup2.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  TextBuffer.cxx
-..\..\src\TextBuffer.cxx(185): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(490): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1234): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1261): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1425): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1427): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1480): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1481): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1551): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1553): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1600): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1626): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1642): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1643): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1684): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1700): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1701): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1759): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1785): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1797): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1798): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(1876): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(2203): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(2305): warning C4244: '=': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(2323): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextBuffer.cxx(2340): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-  TextDisplay.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\TextDisplay.cxx(633): warning C4267: '=': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextDisplay.cxx(646): warning C4267: 'initializing': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextDisplay.cxx(1551): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextDisplay.cxx(1579): warning C4244: 'argument': conversion from '__int64' to 'int', possible loss of data
-..\..\src\TextDisplay.cxx(3103): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-..\..\src\TextDisplay.cxx(3129): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  TextEditor.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-..\..\src\TextEditor.cxx(191): warning C4838: conversion from 'int' to 'char' requires a narrowing conversion
-..\..\src\TextEditor.cxx(360): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-  ThumbWheel.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  TiledGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  TiledImage.cxx
-  Tooltip.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  UpBox.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Valuator.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  ValueInput.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  ValueOutput.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  ValueSlider.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Widget.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  WidgetAssociation.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Generating Code...
-  Compiling...
-  Widget_draw.cxx
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\fltk/Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  WinMain.cxx
-  Window.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Window_fullscreen.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Window_hotspot.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  Window_iconize.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  WizardGroup.cxx
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4311: 'type cast': pointer truncation from 'void *const ' to 'long'
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\fltk\Widget.h(123): warning C4302: 'type cast': truncation from 'void *const ' to 'long'
-  xbmImage.cxx
-  xpmImage.cxx
-  Generating Code...
-  dump_compose.c
-..\..\src\dump_compose.c(17): warning C4477: 'printf' : format string '%c' requires an argument of type 'int', but variadic argument 2 has type '__int64'
-..\..\src\dump_compose.c(20): warning C4477: 'printf' : format string '%c' requires an argument of type 'int', but variadic argument 3 has type '__int64'
-  scandir.c
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/scandir.c(54): warning C4267: '=': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/scandir.c(71): warning C4267: 'function': conversion from 'size_t' to 'unsigned int', possible loss of data
-d:\code\applications\mrviewer\dependencies\fltk-2.0-win64\src\win32/scandir.c(89): warning C4267: 'function': conversion from 'size_t' to 'unsigned int', possible loss of data
-  string.c
-  utf.c
-  vsnprintf.c
-  Generating Code...
 C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1189,5): warning MSB8012: TargetPath(d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\x64\Release\fltkdll.dll) does not match the Linker's OutputFile property value (d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\lib\fltk2dll.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
 C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V140\Microsoft.CppBuild.targets(1191,5): warning MSB8012: TargetName(fltkdll) does not match the Linker's OutputFile property value (fltk2dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      Creating library .\..\..\lib/fltk2dll.lib and object .\..\..\lib/fltk2dll.exp
+xpmImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'xpmImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+xbmImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'xbmImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+WizardGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'WizardGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Window_iconize.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Window_iconize.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Window_hotspot.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Window_hotspot.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Window_fullscreen.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Window_fullscreen.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Window.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Window.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+WinMain.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'WinMain.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Widget_draw.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Widget_draw.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+WidgetAssociation.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'WidgetAssociation.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Widget.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Widget.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+vsnprintf.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'vsnprintf.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ValueSlider.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ValueSlider.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ValueOutput.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ValueOutput.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ValueInput.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ValueInput.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Valuator.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Valuator.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+utf.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'utf.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+UpBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'UpBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Tooltip.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Tooltip.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TiledImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TiledImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TiledGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TiledGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ThumbWheel.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ThumbWheel.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TextEditor.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TextEditor.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TextDisplay.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TextDisplay.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TextBuffer.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TextBuffer.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TabGroup2.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TabGroup2.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+TabGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'TabGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Symbol.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Symbol.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+StyleSet.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'StyleSet.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Style.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Style.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+StringList.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'StringList.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+string.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'string.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+StatusBarGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'StatusBarGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Slider.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Slider.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+show_colormap.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'show_colormap.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ShortcutAssignment.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ShortcutAssignment.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+SharedImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'SharedImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ShapedWindow.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ShapedWindow.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ShadowBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ShadowBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+setvisual.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'setvisual.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+setdisplay.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'setdisplay.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+setcolor.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'setcolor.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+scrollrect.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'scrollrect.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ScrollGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ScrollGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Scrollbar.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Scrollbar.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+scandir.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'scandir.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+run.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'run.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+RoundedBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'RoundedBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+RoundBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'RoundBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ReturnButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ReturnButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+RepeatButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'RepeatButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+readimage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'readimage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+RadioButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'RadioButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ProgressBar.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ProgressBar.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Preferences.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Preferences.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+PopupMenu.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'PopupMenu.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+PlasticBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'PlasticBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+path.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'path.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+PackedGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'PackedGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+own_colormap.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'own_colormap.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+overlay_rect.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'overlay_rect.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+OvalBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'OvalBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Output.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Output.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+numericsort.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'numericsort.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+NumericInput.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'NumericInput.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+MultiImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'MultiImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+message.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'message.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Menu_popup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Menu_popup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Menu_global.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Menu_global.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Menu_add.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Menu_add.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+MenuWindow.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'MenuWindow.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+MenuBar.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'MenuBar.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Menu.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Menu.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+lock.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'lock.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+load_plugin.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'load_plugin.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+list_fonts.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'list_fonts.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+LightButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'LightButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+key_name.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'key_name.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Item.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Item.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+InvisibleWidget.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'InvisibleWidget.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Input.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Input.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Image.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Image.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+HighlightButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'HighlightButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+HelpView.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'HelpView.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+GSave.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'GSave.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Group.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Group.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+gifImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'gifImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Font.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Font.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Fl_Menu_Item.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Fl_Menu_Item.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+fltk_theme.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'fltk_theme.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+FloatInput.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'FloatInput.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+fillrect.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'fillrect.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+file_chooser.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'file_chooser.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+filename_name.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'filename_name.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+filename_match.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'filename_match.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+filename_list.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'filename_list.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+filename_isdir.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'filename_isdir.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+filename_ext.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'filename_ext.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+filename_absolute.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'filename_absolute.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+FileInput.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'FileInput.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+FileIcon.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'FileIcon.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+FileChooser2.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'FileChooser2.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+FileChooser.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'FileChooser.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+FileBrowser.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'FileBrowser.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+event_key_state.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'event_key_state.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+error.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'error.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+EngravedLabel.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'EngravedLabel.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+dump_compose.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'dump_compose.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+drawtext.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'drawtext.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+dnd.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'dnd.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+DiamondBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'DiamondBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Dial.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Dial.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+default_glyph.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'default_glyph.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+CycleButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'CycleButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Cursor.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Cursor.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+compose.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'compose.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+ComboBox.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'ComboBox.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+color_chooser.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'color_chooser.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Color.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Color.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Clock.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Clock.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+clip.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'clip.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Choice.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Choice.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+CheckButton.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'CheckButton.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Button.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Button.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Browser.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Browser.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+bmpImage.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'bmpImage.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+BarGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'BarGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+args.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'args.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+AlignGroup.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'AlignGroup.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+Adjuster.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'Adjuster.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+add_idle.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'add_idle.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+addcurve.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'addcurve.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
+addarc.obj : warning LNK4099: PDB 'vc140.pdb' was not found with 'addarc.obj' or at 'd:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\vc140.pdb'; linking object as if no debug info
   fltkdll.vcxproj -> d:\code\applications\mrViewer\dependencies\fltk-2.0-win64\ide\vcnet\x64\Release\fltkdll.dll
   fltkdll.vcxproj -> fltkdll.pdb (Full PDB)

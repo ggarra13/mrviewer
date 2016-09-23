@@ -10,7 +10,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 3 )
-SET( VersionPatch 0 )
+SET( VersionPatch 1 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -170,7 +170,7 @@ SET( SOURCES
   core/mrvACES.cpp
   # core/generic/mrEvent.cpp
 
-  core/mrvPC1.cpp
+  # core/mrvPC1.cpp
   core/Sequence.cpp
   core/mrStackTrace.cpp
   core/mrvCPU.cpp
