@@ -789,8 +789,8 @@ void subtitle_thread( PlaybackData* data )
 
   }  // subtitle_thread
 
-//#undef DBG
-//#define DBG(x) std::cerr << x << std::endl
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
 //
 // Main loop used to play video (of any image)
