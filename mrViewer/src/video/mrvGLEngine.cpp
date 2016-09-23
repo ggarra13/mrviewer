@@ -1236,10 +1236,8 @@ void GLEngine::draw_images( ImageList& images )
     {
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
-      if (!pic) continue;
-
-
-
+      if (!pic)  continue;
+      
       CMedia::StereoType stereo = img->stereo_type();
 
       const boost::int64_t& frame = pic->frame();
