@@ -82,6 +82,8 @@
 #include <fltk/Preferences.h>
 #ifdef LINUX
 #include <fltk/x11.h>
+static Atom fl_NET_WM_STATE;
+static Atom fl_NET_WM_STATE_FULLSCREEN;
 #endif
 
 #include "ImathMath.h" // for Math:: functions
@@ -187,6 +189,9 @@ ChannelShortcuts shortcuts[] = {
 
 namespace
 {
+bool FullScreen = false;
+bool presentation = false;
+
   /** 
    * Get a shortcut for a channel by looking at the channel mappings
    * 
@@ -260,6 +265,35 @@ namespace
     return 0;
   }
 
+#ifdef LINUX
+void send_wm_event(XWindow wnd, Atom message,
+                   unsigned long d0, unsigned long d1=0,
+                   unsigned long d2=0, unsigned long d3=0,
+                   unsigned long d4=0) {
+  XEvent e;
+  e.xany.type = ClientMessage;
+  e.xany.window = wnd;
+  e.xclient.message_type = message;
+  e.xclient.format = 32;
+  e.xclient.data.l[0] = d0;
+  e.xclient.data.l[1] = d1;
+  e.xclient.data.l[2] = d2;
+  e.xclient.data.l[3] = d3;
+  e.xclient.data.l[4] = d4;
+  XSendEvent(fltk::xdisplay, RootWindow(fltk::xdisplay, fltk::xscreen),
+             0, SubstructureNotifyMask | SubstructureRedirectMask,
+             &e);
+}
+
+#define _NET_WM_STATE_REMOVE        0  /* remove/unset property */
+#define _NET_WM_STATE_ADD           1  /* add/set property */
+#define _NET_WM_STATE_TOGGLE        2  /* toggle property  */
+
+void send_wm_state_event(XWindow wnd, int add, Atom prop) {
+    send_wm_event(wnd, fl_NET_WM_STATE,
+                  add ? _NET_WM_STATE_ADD : _NET_WM_STATE_REMOVE, prop);
+}
+#endif
 
 }
 
@@ -732,6 +766,10 @@ void ImageView::text_mode()
    }
 }
 
+bool ImageView::in_presentation() const
+{
+    return presentation;
+}
 
 void ImageView::send_network( std::string m )
 {
@@ -947,7 +985,11 @@ void ImageView::init_draw_engine()
       mrvALERT( _("Could not initialize draw engine") );
       return;
     }
-
+#ifdef LINUX
+  fl_NET_WM_STATE       = XInternAtom(fltk::xdisplay, "_NET_WM_STATE",       0);
+  fl_NET_WM_STATE_FULLSCREEN = XInternAtom(fltk::xdisplay, "_NET_WM_STATE_FULLSCREEN", 0);
+#endif
+  
   CMedia::supports_yuv( _engine->supports_yuv() );
 }
 
@@ -1676,7 +1718,7 @@ void ImageView::draw()
   //
   {
     float r, g, b, a = 0.0f;
-    if ( fltk_main()->border() ) 
+    if ( !presentation && !FullScreen ) 
     {
       uchar ur, ug, ub;
       fltk::split_color( uiPrefs->uiPrefsViewBG->color(), ur, ug, ub );
@@ -1732,7 +1774,6 @@ void ImageView::draw()
 
 
   if ( images.empty() ) return;
-
   
   _engine->draw_images( images );
 
@@ -3774,28 +3815,28 @@ void ImageView::show_background( const bool b )
  */
 void ImageView::toggle_fullscreen()
 {
-    bool full = false;
   // full screen...
-  if ( fltk_main()->border() )
+  if ( !FullScreen && !presentation )
     {
-        full = true;
+        FullScreen = true;
+        presentation = false;
         posX = fltk_main()->x();
         posY = fltk_main()->y();
         fltk_main()->fullscreen();
     }
   else
     {
-#ifdef LINUX
-        fltk_main()->hide();  // @bug: window decoration is missing otherwise
-#endif
+        FullScreen = false;
+        presentation = false;
         resize_main_window();
     }
   fltk_main()->relayout();
   
+  fltk::check();
   fit_image();
   
   char buf[128];
-  sprintf( buf, "FullScreen %d", full );
+  sprintf( buf, "FullScreen %d", FullScreen );
   send_network( buf );
 }
 
@@ -3808,12 +3849,11 @@ void ImageView::toggle_presentation()
   fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
 
-  bool presentation = false;
 
   static bool has_image_info, has_color_area, has_reel, has_edl_edit,
   has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar;
 
-  if ( fltk_main()->border() )
+  if ( !presentation )
     {
       posX = fltk_main()->x();
       posY = fltk_main()->y();
@@ -3840,39 +3880,15 @@ void ImageView::toggle_presentation()
 
 
       presentation = true;
-
+      
 #ifdef WIN32
       fltk_main()->fullscreen();
       fltk_main()->resize(0, 0, 
                           GetSystemMetrics(SM_CXSCREEN),
                           GetSystemMetrics(SM_CYSCREEN));
 #else
-      fltk_main()->fullscreen();
-
-      // // const fltk::Monitor& m = fltk::Monitor::all();
-      // // fltk_main()->resize( m.x(), m.y(), m.w(), m.h() );
-
-      Atom wm_state = XInternAtom(fltk::xdisplay, "_NET_WM_STATE", False);
-      Atom fullscreen = XInternAtom(fltk::xdisplay, "_NET_WM_STATE_FULLSCREEN", False);
-
-      XWindow win = fltk::xid( fltk_main() );
-
-      XEvent xev;
-      memset(&xev, 0, sizeof(xev));
-      xev.type = ClientMessage;
-      xev.xclient.window = win;
-      xev.xclient.message_type = wm_state;
-      xev.xclient.format = 32;
-      xev.xclient.data.l[0] = 1;
-      xev.xclient.data.l[1] = fullscreen;
-      xev.xclient.data.l[2] = 0;
-
-      XMapWindow(fltk::xdisplay, win);
-
-      XSendEvent (fltk::xdisplay, DefaultRootWindow(fltk::xdisplay), False,
-                  SubstructureRedirectMask | SubstructureNotifyMask, &xev);
-      XFlush(fltk::xdisplay);
-
+      send_wm_state_event(fltk::xid( fltk_main() ), 1,
+                          fl_NET_WM_STATE_FULLSCREEN);
 #endif
     }
   else
@@ -3888,12 +3904,20 @@ void ImageView::toggle_presentation()
       if ( has_bottom_bar)  uiMain->uiBottomBar->show();
       if ( has_pixel_bar )  uiMain->uiPixelBar->show();
 
-#ifdef LINUX
-      fltk_main()->hide();  // @bug: window decoration is missing otherwise
+#ifndef _WIN32
+      send_wm_state_event(fltk::xid( fltk_main() ), 0,
+                          fl_NET_WM_STATE_FULLSCREEN);
 #endif
+      presentation = false;
+      FullScreen = false;
       resize_main_window();
     }
 
+  fltk_main()->relayout();
+  fltk::check();
+  
+  fit_image();
+  
   // These two take focus are needed
   fltk_main()->take_focus();
 
@@ -3901,7 +3925,6 @@ void ImageView::toggle_presentation()
 
   fltk::check();
 
-  fit_image();
 
   char buf[128];
   sprintf( buf, "PresentationMode %d", presentation );
@@ -5132,7 +5155,7 @@ void ImageView::foreground( mrv::media fg )
 
             refresh_fstop();
 	 
-            if ( img->width() > 160 && !fltk_main()->border() ) {
+            if ( img->width() > 160 && (FullScreen || presentation) ) {
                 fit_image();
             }
 
@@ -5332,13 +5355,15 @@ void ImageView::resize_main_window()
 
   if ( posY + h > maxh ) posY = maxh - h;
   if ( posY < miny )     posY = miny;
-
-
-
+  
   fltk_main()->fullscreen_off( posX, posY, w, h);
+#ifdef LINUX
+  fltk_main()->hide();
   fltk_main()->show();
+#endif
 
   if ( fit ) fit_image();
+
 }
 
 
