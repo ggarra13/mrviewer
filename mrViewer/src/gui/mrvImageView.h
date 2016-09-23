@@ -472,6 +472,9 @@ class server;
       // Preload an image into sequence cache
       bool preload();
 
+      // Return if in presentation mode or not
+      bool in_presentation() const;
+      
      public:
       bool           _broadcast;
       ParserList     _clients;
