@@ -303,18 +303,17 @@ bool picImage::fetch(const boost::int64_t frame)
     } while(chained);
 
     image_type::PixelType pixel_type = image_type::kByte;
-    
-    _layers.clear();
-    
-    if ( has_rgb )
-        rgb_layers();
-    
-    if ( alpha )
-        alpha_layers();
+
+    if ( _layers.empty() )
+    {
+        if ( has_rgb )
+            rgb_layers();
+        if ( alpha )
+            alpha_layers();
+    }
 
     _pixel_ratio = 1.0;
     _gamma = 1.0f;
-    image_size( dw, dh );
 
     // Read pixel values
     image_size( dw, dh );
@@ -330,6 +329,7 @@ bool picImage::fetch(const boost::int64_t frame)
     }
 
     fclose(file);
+    
     return ok;
 }
 
@@ -492,11 +492,11 @@ bool picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_
 
 static bool ff_pic_writeScanline(FILE *file, uint32_t *line, uint32_t width)
 {
-    bool seqSame;
-    int		same, count;
-    int		i, k;
+    int		same, seqSame, count;
+    unsigned    k;
+    int         i;
     uint8_t	pixel[128][3], col[3];
-	
+	 
     count = 0;
     for(k = 0; k < width; k++) {
         col[0] = (line[k]) & 0xFF;
@@ -704,7 +704,7 @@ bool picImage::save( const char* path, const CMedia* img,
 {
 	FILE	*file;
 	char	str[80], myPath[4096];
-	int		line;
+	unsigned  line;
 	
 	strcpy(myPath, path);
 	if(strlen(myPath) < 4 ||
@@ -772,7 +772,7 @@ bool picImage::save( const char* path, const CMedia* img,
             unsigned data_size = dw*dh*4;
             pixels = new boost::uint8_t[ data_size ];
 
-            double one_gamma = 1.0 / img->gamma();
+            float one_gamma = 1.0f / img->gamma();
             
             for ( unsigned y = 0; y < dh; ++y )
             {
@@ -803,10 +803,10 @@ bool picImage::save( const char* path, const CMedia* img,
                     else if ( p.a < 0.f ) p.a = 0.f;
 
                     unsigned x4 = x*4;
-                    pixels[x4 + step] = p.r;
-                    pixels[x4 + step + 1] = p.g;
-                    pixels[x4 + step + 2] = p.b;
-                    pixels[x4 + step + 3] = p.a;
+                    pixels[x4 + step] = (uint8_t)p.r;
+                    pixels[x4 + step + 1] = (uint8_t)p.g;
+                    pixels[x4 + step + 2] = (uint8_t)p.b;
+                    pixels[x4 + step + 3] = (uint8_t)p.a;
                 }
             }
         }
