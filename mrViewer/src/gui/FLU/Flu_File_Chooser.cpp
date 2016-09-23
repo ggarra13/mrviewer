@@ -1,4 +1,4 @@
-// $Id: Flu_File_Chooser.cpp,v 1.98 2004/11/02 00:33:31 jbryan Exp $
+ // $Id: Flu_File_Chooser.cpp,v 1.98 2004/11/02 00:33:31 jbryan Exp $
 
 /***************************************************************
  *                FLU - FLTK Utility Widgets
@@ -541,6 +541,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
   fltk::Group *g;
 
   filename.label( filenameTxt.c_str() );
+  filename.take_focus();
   ok.label( okTxt.c_str() );
   ok.labelsize( (float)normal_size );
   cancel.label( cancelTxt.c_str() );
@@ -757,6 +758,7 @@ Flu_File_Chooser::Flu_File_Chooser( const char *pathname,
 
   location = new Flu_Combo_Tree( 56, 15, w()-171, 22,
                                  _(locationTxt.c_str()) );
+  location->type( location->type() & Flu_Combo_Tree::NONEDITABLE );
   location->minh( 200 );
   location->maxh( 500 );
   // location->pop_height( 200 );
@@ -1192,22 +1194,12 @@ int Flu_File_Chooser::handle( int event )
       fltk::DoubleBufferWindow::callback( _hideCB, this );
     }
 
-  if ( event == fltk::PUSH )
-    {
-      dragX = fltk::event_x();
-      dragY = fltk::event_y();
-    }
-
-  if( fltk::DoubleBufferWindow::handle( event ) )
-    {
-      return 1;
-    }
-  else if( event == fltk::KEY && fltk::event_key() == fltk::EscapeKey )
+  if ( event == fltk::KEY && fltk::event_key() == fltk::EscapeKey )
     {
       cancel.do_callback();
       return 1;
     }
-  else if( event == fltk::KEY && fltk::event_key() == 'a' &&
+  else if ( event == fltk::KEY && fltk::event_key() == 'a' &&
 	   fltk::event_state(fltk::CTRL) )
     {
       select_all();
@@ -1262,8 +1254,9 @@ int Flu_File_Chooser::handle( int event )
 	      return 1;
 	      }
 	   }
-	}
- 
+        }
+      default:
+          return fltk::DoubleBufferWindow::handle( event );
   }
   return 0;
 }
@@ -1352,7 +1345,6 @@ void Flu_File_Chooser::recursiveScan( const char *dir, FluStringVector *files )
   for( int i = 0; i < num; i++ )
     {
       name = e[i]->d_name;
-        std::cerr << dir << " " << name << std::endl;
 
       // if 'name' ends in '/' or '\', remove it
       if( name[strlen(name)-1] == '/' || name[strlen(name)-1] == '\\' )
@@ -1542,6 +1534,7 @@ void Flu_File_Chooser::trashCB( bool recycle )
 
 void Flu_File_Chooser::updateLocationQJ()
 {
+
   const char *path = location->text();
   for( int i = 0; i < locationQuickJump->children(); i++ )
     free( (void*)locationQuickJump->child(i)->label() );
@@ -1875,11 +1868,14 @@ void Flu_File_Chooser::okCB()
 
 	  // prepend the path
 	  std::string path = currentDir + filename.value();
-          value( path.c_str() );
-	  filename.value( path.c_str() );
-	  filename.position( filename.size(), filename.size() );
-	  do_callback();
-	  hide();
+          if ( boost::filesystem::exists( path ) )
+          {
+              value( path.c_str() );
+              filename.value( path.c_str() );
+              filename.position( filename.size(), filename.size() );
+              do_callback();
+              hide();
+          }
 	}
     }
 
@@ -3324,7 +3320,7 @@ void Flu_File_Chooser::cleanupPath( std::string &s )
 {
   // convert all '\' to '/'
   win2unix( s );
-
+    
   std::string newS(s.size()+1, '\0');
 
   size_t oldPos, newPos;
@@ -3340,7 +3336,7 @@ void Flu_File_Chooser::cleanupPath( std::string &s )
 	oldPos++;
 
 #ifdef WIN32
-      // downcase "c:" to "C:"
+      // upcase "c:" to "C:"
       else if( oldPos+1 < s.size() && s[oldPos+1] == ':' )
 	s[oldPos] = toupper( s[oldPos] );
 #endif
@@ -3364,7 +3360,7 @@ void Flu_File_Chooser::cleanupPath( std::string &s )
       newS[newPos] = s[oldPos];
       newPos++;
     }
-
+  
   s = newS.c_str();
 }
 
@@ -3397,18 +3393,21 @@ bool Flu_File_Chooser::correctPath( std::string &path )
   // the path may or may not be an alias, needing corrected
 #ifdef WIN32
   // point to the correct desktop
-  if( path == "/"+desktopTxt+"/" )
+    std::string desk = _( desktopTxt.c_str() );
+    std::string comp = _( myComputerTxt.c_str() );
+    std::string docs = _( myDocumentsTxt.c_str() );
+  if( path == "/"+desk+"/" )
     {
       path = userDesktop;
       return true;
     }
   else if( path == userDesktop )
     return true;
-  else if( path == "/"+desktopTxt+"/"+myComputerTxt+"/" ||
-	   path == userDesktop+myComputerTxt+"/" )
+  else if( path == "/"+desk+"/"+comp+"/" ||
+	   path == userDesktop+comp+"/" )
     path = "/";
-  else if( path == "/"+desktopTxt+"/"+myDocumentsTxt+"/" ||
-	   path == userDesktop+myDocumentsTxt+"/" )
+  else if( path == "/"+desk+"/"+docs+"/" ||
+	   path == userDesktop+docs+"/" )
     path = userDocs;
 #endif
   return false;
@@ -3418,16 +3417,20 @@ void Flu_File_Chooser::locationCB( const char *path )
 {
 #ifdef WIN32
   std::string p = path;
-  if( p == favoritesTxt+"/" )
+  std::string fav = _( favoritesTxt.c_str() );
+  std::string desk = _( desktopTxt.c_str() );
+  std::string comp = _( myComputerTxt.c_str() );
+  std::string docs = _( myDocumentsTxt.c_str() );
+  if( p == fav+"/" )
     favoritesCB();
-  else if( p == desktopTxt+"/"+myComputerTxt+"/" )
+  else if( p == desk+"/"+comp+"/" || p == comp )
     myComputerCB();
-  else if( p == desktopTxt+"/"+myDocumentsTxt+"/" )
+  else if( p == desk+"/"+docs+"/" || p == docs )
     documentsCB();
-  else if( p == desktopTxt+"/" )
+  else if( p == desk+"/" || p == desk )
     desktopCB();
-  // if the path leads off with "/Desktop/My Computer", then strip that part off and cd
-  // to the remaining
+  // if the path leads off with "/Desktop/My Computer", then strip that part
+  // off and cd to the remaining
   else
     {
       // seach for '(' and if present, extract the drive name and cd to it
@@ -3457,22 +3460,26 @@ void Flu_File_Chooser::buildLocationCombo()
 
   fltk::Widget* n;
   std::string s;
-  s = favoritesTxt+"/";
+  s = _(favoritesTxt.c_str());
+  s += "/";
   fltk::ItemGroup* favoritesGrp = (fltk::ItemGroup*)location->add( s.c_str(), 0, NULL  );
   favoritesGrp->image( little_favorites );
   favoritesGrp->set_flag( fltk::OPENED );
 
 #ifdef WIN32
   char volumeName[1024];
-  s = desktopTxt+"/";
+  std::string desk = _(desktopTxt.c_str() );
+  std::string docs = _(myDocumentsTxt.c_str() );
+  std::string comp = _(myComputerTxt.c_str() );
+  s = desk + "/";
   n = location->add( s.c_str(), 0, NULL );
   n->image( little_desktop );
   n->set_flag( fltk::OPENED );
-  s = desktopTxt+"/"+myDocumentsTxt+"/";
+  s = desk+"/"+docs+"/";
   n = location->add( s.c_str(), 0, NULL );
   n->image( documents );
   n->set_flag( fltk::OPENED );
-  s = desktopTxt+"/"+myComputerTxt+"/";
+  s = desk+"/"+comp+"/";
   n = location->add( s.c_str(), 0, NULL );
   n->image( computer );
   n->set_flag( fltk::OPENED );
@@ -3488,7 +3495,7 @@ void Flu_File_Chooser::buildLocationCombo()
 	driveIcons[i] = &disk_drive;
 	if( mask & 1 )
 	  {
-	    s = desktopTxt+"/"+myComputerTxt+"/";
+	    s = desk+"/"+comp+"/";
 	    char drive[] = "A:";
 	    char windrive[] = "A:\\";
 	    windrive[0] = drive[0] = 'A' + i;
@@ -3512,23 +3519,28 @@ void Flu_File_Chooser::buildLocationCombo()
 	    switch( type )
 	      {
 	      case DRIVE_REMOVABLE:
-		disk = strlen(volumeName)?volumeName: ( 1 < 2 ? diskTypesTxt[0].c_str() : diskTypesTxt[1].c_str() );
+                  disk = strlen(volumeName)?
+                         volumeName :  _(diskTypesTxt[0].c_str());
 		driveIcons[i] = &floppy_drive;
 		break;
 	      case DRIVE_FIXED:
-		disk = strlen(volumeName)?volumeName:diskTypesTxt[2].c_str();
+                  disk = strlen(volumeName)?
+                         volumeName : _(diskTypesTxt[2].c_str());
 		//driveIcons[i] = &disk_drive;
 		break;
 	      case DRIVE_CDROM:
-		disk = strlen(volumeName)?volumeName:diskTypesTxt[3].c_str();
+		disk = strlen(volumeName)?
+                       volumeName : _(diskTypesTxt[3].c_str());
 		driveIcons[i] = &cd_drive;
 		break;
 	      case DRIVE_REMOTE:
-		disk = strlen(volumeName)?volumeName:diskTypesTxt[4].c_str();
+		disk = strlen(volumeName)?
+                       volumeName : _(diskTypesTxt[4].c_str());
 		driveIcons[i] = &network_drive;
 		break;
 	      case DRIVE_RAMDISK:
-		disk = strlen(volumeName)?volumeName:diskTypesTxt[5].c_str();
+		disk = strlen(volumeName)?
+                       volumeName : _(diskTypesTxt[5].c_str());
 		driveIcons[i] = &ram_drive;
 		break;
 	      }
@@ -3615,9 +3627,9 @@ void Flu_File_Chooser::buildLocationCombo()
   // Add current dir as first favorite
   xpmImage* icon = NULL;
 #ifdef WIN32
-  if( currentDir == (userHome+desktopTxt+"/") )
+  if( currentDir == (userHome+desk+"/") )
     icon = &little_desktop;
-  if( currentDir == (userHome+myDocumentsTxt+"/") )
+  if( currentDir == (userHome+docs+"/") )
     icon = &documents;
   n = favoritesGrp->add( currentDir.c_str() );
 #else
@@ -3858,7 +3870,7 @@ void Flu_File_Chooser::cd( const char *path )
     refreshDrives = true;
 #endif
 
-  filename.take_focus();
+  filename.take_focus();  // @changed
 
   trashBtn->deactivate();
   reloadBtn->activate();
@@ -3906,7 +3918,7 @@ void Flu_File_Chooser::cd( const char *path )
       reloadBtn->deactivate();
       addFavoriteBtn->deactivate();
       hiddenFiles->deactivate();
-      location->text( favoritesTxt.c_str() );
+      location->text( _(favoritesTxt.c_str()) );
       updateLocationQJ();
 
       clear_lists();
@@ -4012,7 +4024,9 @@ void Flu_File_Chooser::cd( const char *path )
   cleanupPath( currentDir );
 
 #ifdef _WIN32
-  bool isTopDesktop = ( currentDir == (desktopTxt+"/") );
+  std::string desk;
+  if ( desktopTxt.c_str() ) desk = _(desktopTxt.c_str());
+  bool isTopDesktop = ( currentDir == (desk+"/") );
   bool isDesktop = correctPath( currentDir );
   if( isTopDesktop )
     upDirBtn->deactivate();
@@ -4037,11 +4051,16 @@ void Flu_File_Chooser::cd( const char *path )
 	      entry = new Entry( drive, ENTRY_DRIVE, fileDetailsBtn->value(), this );
 	      switch( driveTypes[i] )
 		{
-		case DRIVE_REMOVABLE: entry->description = diskTypesTxt[0].c_str(); break;
-		case DRIVE_FIXED: entry->description = diskTypesTxt[2].c_str(); break;
-		case DRIVE_CDROM: entry->description = diskTypesTxt[3].c_str(); break;
-		case DRIVE_REMOTE: entry->description = diskTypesTxt[4].c_str(); break;
-		case DRIVE_RAMDISK: entry->description = diskTypesTxt[5].c_str(); break;
+                    case DRIVE_REMOVABLE:
+                        entry->description = _(diskTypesTxt[0].c_str()); break;
+                    case DRIVE_FIXED:
+                        entry->description = _(diskTypesTxt[2].c_str()); break;
+                    case DRIVE_CDROM:
+                        entry->description = _(diskTypesTxt[3].c_str()); break;
+                    case DRIVE_REMOTE:
+                        entry->description = _(diskTypesTxt[4].c_str()); break;
+                    case DRIVE_RAMDISK:
+                        entry->description = _(diskTypesTxt[5].c_str()); break;
 		}
 	      entry->icon = driveIcons[i];
 	      entry->altname = drives[i];
@@ -4073,7 +4092,7 @@ void Flu_File_Chooser::cd( const char *path )
   // check for desktop. if so, add My Computer and My Documents
   else if( isDesktop )
     {
-      entry = new Entry( myDocumentsTxt.c_str(), ENTRY_MYDOCUMENTS, fileDetailsBtn->value(), this );
+        entry = new Entry( _(myDocumentsTxt.c_str()), ENTRY_MYDOCUMENTS, fileDetailsBtn->value(), this );
       entry->updateIcon();
       entry->updateSize();
       if( listMode )
@@ -4084,7 +4103,7 @@ void Flu_File_Chooser::cd( const char *path )
 	{
 	  filedetails->add(entry);
 	}
-      entry = new Entry( myComputerTxt.c_str(), ENTRY_MYCOMPUTER, fileDetailsBtn->value(), this );
+      entry = new Entry( _(myComputerTxt.c_str()), ENTRY_MYCOMPUTER, fileDetailsBtn->value(), this );
       entry->updateIcon();
       entry->updateSize();
       if( listMode )
@@ -4138,8 +4157,9 @@ void Flu_File_Chooser::cd( const char *path )
 #ifdef _WIN32
   {
     std::string tmp = currentDir;
+    std::string desk = _( desktopTxt.c_str() );
     if( isTopDesktop )
-      currentDir = desktopTxt+"/";
+      currentDir = desk+"/";
     addToHistory();
     if( isTopDesktop )
       currentDir = tmp;
@@ -4159,12 +4179,12 @@ void Flu_File_Chooser::cd( const char *path )
       location->text( currentDir.c_str() );
     }
   else if( currentDir == "/" )
-    location->text( myComputerTxt.c_str() );
+      location->text( _(myComputerTxt.c_str()) );
   else
 #endif
-    {
+  {
       location->text( currentDir.c_str() );
-    }
+  }
 
   buildLocationCombo();
   updateLocationQJ();
@@ -4678,22 +4698,22 @@ void Flu_File_Chooser::cd( const char *path )
     filename.position( 0, filename.size() );
   else
     filename.position( filename.size(), filename.size() );
-  filename.take_focus();
+  filename.take_focus();  // @changed
 
   // Handle loading of icons
   previewCB();
 
-  if( listMode )
-  {
-    filelist->relayout();
-    filelist->redraw();
-  }
-  else
-  {
-    filedetails->relayout();
-    filedetails->redraw();
-  }
-  relayout();
+  // if( listMode )
+  // {
+  //   filelist->relayout();
+  //   filelist->redraw();
+  // }
+  // else
+  // {
+  //   filedetails->relayout();
+  //   filedetails->redraw();
+  // }
+  // relayout();
   redraw();
 }
 
