@@ -207,7 +207,7 @@ void ComboBrowser::browser_cb(Widget*, void*) {
   Widget *item = browser->item();
 
   if (!item) return;
-  if (item->is_group()) return; // can't select a group!
+  // if (item->is_group()) return; // can select a group!
 
   ib->item(item);
   ib->text(item->label());
