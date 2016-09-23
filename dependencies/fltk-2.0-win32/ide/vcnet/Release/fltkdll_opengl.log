@@ -1,10 +1,4 @@
-﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (cairo_test.vcxproj, libjpeg.vcxproj, libpng.vcxproj, zlib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
-  Fl_Gl_Choice.cxx
-  Fl_Gl_Overlay.cxx
-  Fl_Gl_Window.cxx
-  gl_draw.cxx
-  gl_start.cxx
-  Generating Code...
+﻿C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(388,5): warning MSB8028: The intermediate directory (Release\) contains files shared from another project (cairo_test.vcxproj, fltkdll_glut.vcxproj, libjpeg.vcxproj, libpng.vcxproj, zlib.vcxproj).  This can lead to incorrect clean and rebuild behavior.
 C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1193,5): warning MSB8012: TargetPath(d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\ide\vcnet\Release\fltkdll_opengl.dll) does not match the Linker's OutputFile property value (d:\code\applications\mrViewer\dependencies\fltk-2.0-win32\lib\fltk2dll_gl.dll). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
 C:\Program Files (x86)\MSBuild\Microsoft.Cpp\v4.0\V120\Microsoft.CppBuild.targets(1195,5): warning MSB8012: TargetName(fltkdll_opengl) does not match the Linker's OutputFile property value (fltk2dll_gl). This may cause your project to build incorrectly. To correct this, please make sure that $(OutDir), $(TargetName) and $(TargetExt) property values match the value specified in %(Link.OutputFile).
      Creating library .\..\..\lib/fltk2dll_gl.lib and object .\..\..\lib/fltk2dll_gl.exp
