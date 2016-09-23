@@ -846,8 +846,8 @@ namespace mrv {
 
     // If in presentation mode (fullscreen), we use a linear texture filter.
     // Otherwise, use a nearest one to clearly show pixels.
-    bool fullscreen = !_view->fltk_main()->border();
-    GLenum filter = fullscreen ? GL_LINEAR : GL_NEAREST;
+    bool presentation = _view->in_presentation();
+    GLenum filter = presentation ? GL_LINEAR : GL_NEAREST;
 
     if ( _shader && _shader != GLEngine::rgbaShader() )
       {
