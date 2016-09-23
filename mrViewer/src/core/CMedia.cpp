@@ -611,7 +611,6 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
   {
       LOG_ERROR( e.what() );
   }
-  
 }
 
 
@@ -2054,20 +2053,20 @@ void CMedia::cache( const mrv::image_type_ptr pic )
 {
    assert( pic != NULL );
 
-   if ( ( !is_sequence() ) || ( !_cache_active ) ) 
+   if ( !is_sequence() || !_cache_active || !pic ) 
       return;
 
    SCOPED_LOCK( _mutex );
 
-  update_cache_pic( _sequence, pic );
+   update_cache_pic( _sequence, pic );
 
 
-  if ( _stereo[1] ) {
-      assert( _stereo[1]->frame() == pic->frame() );
+   if ( _stereo[1] ) {
+       assert( _stereo[1]->frame() == pic->frame() );
 
-      update_cache_pic( _right, _stereo[1] );
+       update_cache_pic( _right, _stereo[1] );
 
-  }
+   }
 
 }
 
