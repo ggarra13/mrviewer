@@ -3832,8 +3832,14 @@ void ImageView::toggle_fullscreen()
     }
   fltk_main()->relayout();
   
-  fltk::check();
   fit_image();
+  
+  // These two take focus are needed
+  fltk_main()->take_focus();
+
+  take_focus();
+
+  fltk::check();
   
   char buf[128];
   sprintf( buf, "FullScreen %d", FullScreen );
@@ -3914,7 +3920,6 @@ void ImageView::toggle_presentation()
     }
 
   fltk_main()->relayout();
-  fltk::check();
   
   fit_image();
   
@@ -5355,10 +5360,11 @@ void ImageView::resize_main_window()
 
   if ( posY + h > maxh ) posY = maxh - h;
   if ( posY < miny )     posY = miny;
+
   
   fltk_main()->fullscreen_off( posX, posY, w, h);
 #ifdef LINUX
-  fltk_main()->hide();
+  fltk_main()->hide();  // needed to show decorations under some window managers
   fltk_main()->show();
 #endif
 

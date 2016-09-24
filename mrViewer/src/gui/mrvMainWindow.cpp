@@ -91,7 +91,7 @@ namespace mrv {
 
     if ( ok == XpmSuccess )
       {
-          // this->icon(reinterpret_cast<char*>( p ) );
+          this->icon(reinterpret_cast<char*>( p ) );
       }
 #endif
 
