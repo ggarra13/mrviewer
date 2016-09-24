@@ -1868,7 +1868,7 @@ void Flu_File_Chooser::okCB()
 
 	  // prepend the path
 	  std::string path = currentDir + filename.value();
-          if ( boost::filesystem::exists( path ) )
+          if ( (selectionType & SAVING ) || boost::filesystem::exists( path ) )
           {
               value( path.c_str() );
               filename.value( path.c_str() );
