@@ -226,7 +226,6 @@ int main( int argc, char** argv )
 
           ui = new mrv::ViewerUI();
 
-
           mrv::Options opts;
           if ( argc > 0 )
               mrv::parse_command_line( argc, argv, ui, opts );
