@@ -364,7 +364,7 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
     { ((Flu_File_Chooser*)arg)->cd( ((Flu_File_Chooser*)arg)->delayedCd.c_str() ); }
 
   inline static void selectCB( void *arg )
-  { std::cerr << "selectCB" << std::endl; ((Flu_File_Chooser*)arg)->okCB(); }
+  { ((Flu_File_Chooser*)arg)->okCB(); }
 
   inline static void _cancelCB( fltk::Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->cancelCB(); }
