@@ -290,12 +290,12 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
   //! For MULTI file queries, get selected file \b n (base 1 - i.e. 1 returns the first file, 2 the second, etc)
   const char *value( int n );
 
-  FileInput filename;
 
   bool _compact;
 
-  fltk::ReturnButton ok;
-  fltk::Button cancel;
+  FileInput* filename;
+  fltk::ReturnButton* ok;
+  fltk::Button* cancel;
 
   // apparently there is a bug in VC6 that prevents friend classes 
   // from accessing non-public members. stupid windows
@@ -364,14 +364,14 @@ class FLU_EXPORT Flu_File_Chooser : public fltk::DoubleBufferWindow
     { ((Flu_File_Chooser*)arg)->cd( ((Flu_File_Chooser*)arg)->delayedCd.c_str() ); }
 
   inline static void selectCB( void *arg )
-    { ((Flu_File_Chooser*)arg)->okCB(); }
+  { std::cerr << "selectCB" << std::endl; ((Flu_File_Chooser*)arg)->okCB(); }
 
   inline static void _cancelCB( fltk::Widget*, void *arg )
     { ((Flu_File_Chooser*)arg)->cancelCB(); }
   void cancelCB();
 
   inline static void _okCB( fltk::Widget*, void *arg )
-    { ((Flu_File_Chooser*)arg)->okCB(); }
+    { std::cerr << "_okCB" << std::endl; ((Flu_File_Chooser*)arg)->okCB(); }
   void okCB();
 
   inline static void _trashCB( fltk::Widget*, void *arg )
