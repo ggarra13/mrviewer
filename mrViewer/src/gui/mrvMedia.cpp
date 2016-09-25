@@ -151,6 +151,7 @@ namespace mrv {
 
       // Resize image to thumbnail size
       pic.reset( pic->quick_resize( w, h ) );
+      
       w = pic->width();
       h = pic->height();
 
