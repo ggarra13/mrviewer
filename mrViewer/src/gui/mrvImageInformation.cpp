@@ -318,12 +318,12 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
     CMedia* img = info->get_image();
     if ( img )
     {
-        int v = w->ivalue();
+        int64_t v = w->ivalue();
         if ( v < img->start_frame() )
             v = img->start_frame();
         if ( v > img->last_frame() )
             v = img->last_frame();
-        w->value( v );
+        w->value( (int)v );
 
         img->first_frame( v );
         update_int_slider( w );
@@ -337,7 +337,7 @@ static void change_first_frame_cb( fltk::IntInput* w, ImageInformation* info )
       CMedia* img = info->get_image();
       if ( img )
       {
-          img->eye_separation( w->fvalue() );
+          img->eye_separation( (float)w->fvalue() );
           update_float_slider( w );
           info->main()->uiView->redraw();
       }
@@ -359,12 +359,12 @@ static void change_last_frame_cb( fltk::IntInput* w,
     CMedia* img = info->get_image();
     if ( img )
     {
-        int v = w->ivalue();
+        int64_t v = w->ivalue();
         if ( v < img->first_frame() )
             v = img->first_frame();
         if ( v > img->end_frame() )
             v = img->end_frame();
-        w->value( v );
+        w->value( (int)v );
 
         img->last_frame( v );
         info->main()->uiView->redraw();
@@ -766,14 +766,15 @@ void ImageInformation::fill_data()
 
 
     const char* space_type = NULL;
-    double memory_space = double( to_memory( img->memory(), space_type ) );
+    double memory_space = double( to_memory( (long double)img->memory(),
+                                             space_type ) );
     sprintf( buf, N_("%.3f %s"), memory_space, space_type );
     add_text( _("Memory"), _("Memory without Compression"), buf );
 
     if ( img->disk_space() >= 0 )
       {
-	double disk_space = double( to_memory( img->disk_space(),
-						     space_type ) );
+          double disk_space = double( to_memory( (long double)img->disk_space(),
+                                                 space_type ) );
 	double pct   = double( 100.0 * ( (long double) img->disk_space() /
                                          (long double) img->memory() ) );
 
