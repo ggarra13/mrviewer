@@ -232,9 +232,11 @@ class aviImage : public CMedia
      */
     DecodeStatus decode_video_packet( boost::int64_t& pktframe,
 				      const boost::int64_t frame,
-				      const AVPacket& pkt
-    );
+				      const AVPacket& pkt );
 
+    bool receive_video_frame(const boost::int64_t frame,
+                             const AVPacket& pkt );
+    
     DecodeStatus audio_video_display( const boost::int64_t& frame );
     void limit_video_store( const boost::int64_t frame );
     void limit_subtitle_store( const boost::int64_t frame );

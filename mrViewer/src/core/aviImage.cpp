@@ -943,7 +943,6 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 void aviImage::store_image( const boost::int64_t frame, 
 			    const boost::int64_t pts )
 {
-
   SCOPED_LOCK( _mutex );
 
   AVStream* stream = get_video_stream();
@@ -1031,6 +1030,83 @@ void aviImage::store_image( const boost::int64_t frame,
  
 }
 
+bool
+aviImage::receive_video_frame( const boost::int64_t frame,
+                               const AVPacket& pkt )
+{
+    int err = avcodec_receive_frame( _video_ctx, _av_frame );
+    if (err)
+    {
+        bool ok = (err == AVERROR(EAGAIN));
+        return ok;
+    }
+
+    AVStream* stream = get_video_stream();
+    
+    int64_t ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
+
+    if ( ptsframe == AV_NOPTS_VALUE )
+    {
+        if ( _av_frame->pkt_pts != AV_NOPTS_VALUE )
+            ptsframe = _av_frame->pkt_pts;
+        else if ( _av_frame->pkt_dts != AV_NOPTS_VALUE )
+            ptsframe = _av_frame->pkt_dts;
+    }
+
+    _av_frame->pts = ptsframe;
+
+    // Turn PTS into a frame
+    if ( ptsframe == AV_NOPTS_VALUE )
+    {
+        ptsframe = get_frame( stream, pkt );
+        if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
+    }
+    else
+    {
+        ptsframe = pts2frame( stream, ptsframe );
+    }
+
+
+    if ( filter_graph && _subtitle_index >= 0 )
+    {
+        /* push the decoded frame into the filtergraph */
+        if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
+                                         AV_BUFFERSRC_FLAG_KEEP_REF) < 0) {
+            LOG_ERROR( _("Error while feeding the filtergraph") );
+            close_subtitle_codec();
+            return false;
+        }
+
+        int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
+        if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
+            return false;
+        
+        if (ret < 0)
+        {
+            LOG_ERROR( "av_buffersink_get frame failed" );
+            close_subtitle_codec();
+            return false;
+        }
+
+        av_frame_unref( _av_frame );
+        _av_frame = av_frame_clone( _filt_frame );
+        if (!_av_frame )
+        {
+            LOG_ERROR( _("Could not clone subtitle frame") );
+            close_subtitle_codec();
+            return false;
+        }
+    }
+
+    
+    store_image( ptsframe, pkt.dts );
+    av_frame_unref(_av_frame);
+    av_frame_unref(_filt_frame);
+    
+    return true;
+
+}
+
 CMedia::DecodeStatus
 aviImage::decode_video_packet( boost::int64_t& ptsframe, 
 			       const boost::int64_t frame, 
@@ -1038,107 +1114,26 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 			       )
 {
    AVPacket pkt = p;
+   AVPacket* ptr = &pkt;
 
-  AVStream* stream = get_video_stream();
-  assert( stream != NULL );
-
-  int got_pict = 0;
-
-  bool eof_found = false;
-  bool eof = false;
   if ( pkt.data == NULL ) {
-      eof = true;
-      pkt.size = 0;
+      ptr = NULL;
   }
-
-  while( pkt.size > 0 || pkt.data == NULL )
+ 
+  int err = AVERROR(EAGAIN);
+  while ( err == AVERROR(EAGAIN) )
   {
-     int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, 
-				      &pkt );
+     err = avcodec_send_packet( _video_ctx, ptr );
+     std::cerr << "send packet " << err << " " << pkt.size << std::endl;
 
-
-     if ( got_pict ) {
-         ptsframe = av_frame_get_best_effort_timestamp( _av_frame );
-
-         if ( ptsframe == AV_NOPTS_VALUE )
-         {
-             if ( _av_frame->pkt_pts != AV_NOPTS_VALUE )
-                 ptsframe = _av_frame->pkt_pts;
-             else if ( _av_frame->pkt_dts != AV_NOPTS_VALUE )
-                 ptsframe = _av_frame->pkt_dts;
-         }
-
-         _av_frame->pts = ptsframe;
-
-         // Turn PTS into a frame
-         if ( ptsframe == AV_NOPTS_VALUE )
-         {
-             ptsframe = get_frame( stream, pkt );
-             if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
-         }
-         else
-         {
-             ptsframe = pts2frame( stream, ptsframe );
-         }
-
-
-         if ( filter_graph && _subtitle_index >= 0 )
-         {
-             /* push the decoded frame into the filtergraph */
-             if (av_buffersrc_add_frame_flags(buffersrc_ctx, _av_frame,
-                                              AV_BUFFERSRC_FLAG_KEEP_REF) < 0) {
-                 LOG_ERROR( _("Error while feeding the filtergraph") );
-                 close_subtitle_codec();
-                 break;
-             }
-
-             int ret = av_buffersink_get_frame(buffersink_ctx, _filt_frame);
-             if (ret == AVERROR(EAGAIN) || ret == AVERROR_EOF)
-                 break;
-             if (ret < 0)
-             {
-                 LOG_ERROR( "av_buffersink_get frame failed" );
-                 close_subtitle_codec();
-                 return kDecodeError;
-             }
-
-             av_frame_unref( _av_frame );
-             _av_frame = av_frame_clone( _filt_frame );
-             if (!_av_frame )
-             {
-                 LOG_ERROR( _("Could not clone subtitle frame") );
-                 close_subtitle_codec();
-                 return kDecodeError;
-             }
-         }
-
-
-        if ( eof )
-        {
-            eof_found = true;
-            store_image( ptsframe, pkt.dts );
-            av_frame_unref(_av_frame);
-            av_frame_unref(_filt_frame);
-            continue;
-        }
-
-	return kDecodeOK;
-     }
-
-
-     if ( err < 0 ) {
-         IMG_ERROR( "avcodec_decode_video2: " << get_error_text(err) );
+     if ( !receive_video_frame( ptsframe, pkt ) )
+     {
+         std::cerr << "! receive video frame" << std::endl;
          return kDecodeError;
      }
-
-     if ( err == 0 ) return kDecodeLoopEnd;
-
-
-     pkt.size -= err;
-     pkt.data += err;
   }
 
-  return kDecodeMissingFrame;
+  return kDecodeOK;
 }
 
 
@@ -1150,13 +1145,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
   boost::int64_t ptsframe = frame;
   DecodeStatus status = decode_video_packet( ptsframe, frame, pkt );
 
-  if ( status == kDecodeOK )
-  {
-      store_image( ptsframe, pkt.dts );
-      av_frame_unref(_av_frame);
-      av_frame_unref(_filt_frame);
-  }
-  else if ( status == kDecodeError )
+  if ( status == kDecodeError )
   {
        char ftype = av_get_picture_type_char( _av_frame->pict_type );
        if ( ptsframe >= first_frame() && ptsframe <= last_frame() )
@@ -1601,11 +1590,21 @@ bool aviImage::readFrame(int64_t & pts)
 
         if ( video_stream_index() == packet.stream_index)
         {
-            if (avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
-                                       &packet) <= 0)
+            AVPacket* ptr = &packet;
+            if ( packet.data = NULL ) ptr = NULL;
+
+            int err2 = AVERROR(EAGAIN);
+            int err = AVERROR(EAGAIN);
+            while( err == AVERROR(EAGAIN) )
             {
-                break;
+                err = avcodec_send_packet( _video_ctx, ptr );
+                while ( err2 == AVERROR(EAGAIN) )
+                {
+                    err2 = avcodec_receive_frame( _video_ctx, _av_frame );
+                }
             }
+
+            got_video = true;
         }
     }
 
@@ -1942,6 +1941,7 @@ void aviImage::populate()
                     DecodeStatus status = decode_image( _frameStart, pkt ); 
                     if ( status == kDecodeOK )
                     {
+                        std::cerr << "got video " << _frameStart << std::endl;
                         got_video = true;
                     }
                     else
@@ -2553,14 +2553,7 @@ CMedia::DecodeStatus aviImage::decode_vpacket( boost::int64_t& pktframe,
                                                const AVPacket& pkt )
 {
     //boost::int64_t oldpktframe = pktframe;
-    CMedia::DecodeStatus status = decode_video_packet( pktframe, frame, pkt );
-    if ( status == kDecodeOK && !in_video_store(pktframe) )
-    {
-        store_image( pktframe, pkt.dts );
-    }
-    av_frame_unref(_av_frame);
-    av_frame_unref(_filt_frame);
-    return status;
+    return decode_video_packet( pktframe, frame, pkt );
 }
 
 CMedia::DecodeStatus 
