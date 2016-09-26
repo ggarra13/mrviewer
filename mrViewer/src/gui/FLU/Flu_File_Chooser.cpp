@@ -3137,8 +3137,8 @@ const char* Flu_File_Chooser::value()
 #ifdef WIN32
       // on windows, be sure the drive letter is lowercase for
       // compatibility with fl_filename_relative()
-      if( filename.size() > 1 && filename->value()[1] == ':' )
-	((char*)(filename->value()))[0] = tolower( filename->value()[0] );
+        if( filename->size() > 1 && filename->value()[1] == ':' )
+            ((char*)(filename->value()))[0] = tolower( filename->value()[0] );
 #endif
       return filename->value();
     }
