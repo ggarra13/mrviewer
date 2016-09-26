@@ -1055,16 +1055,16 @@ static const char* kCLocale = "C";
 	view->toggle_presentation();
       }
 
-    int num = main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
+    int num = (int)main->uiPrefs->uiPrefsOpenEXRThreadCount->value();
     Imf::setGlobalThreadCount( num );
 
-    float tmpF = main->uiPrefs->uiPrefsOpenEXRGamma->value();
+    float tmpF = (float)main->uiPrefs->uiPrefsOpenEXRGamma->value();
     exrImage::_default_gamma = tmpF;
 
     num = main->uiPrefs->uiPrefsOpenEXRCompression->value();
     exrImage::_default_compression = (Imf::Compression) num;
 
-    tmpF = main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
+    tmpF = (float) main->uiPrefs->uiPrefsOpenEXRDWACompression->value();
     exrImage::_default_dwa_compression = tmpF;
 
     bool b = (bool)main->uiPrefs->uiPrefsAllLayers->value();
