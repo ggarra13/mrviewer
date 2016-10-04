@@ -226,10 +226,13 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
         return NULL;
     }
     st->id = oc->nb_streams-1;
+    std::cerr << "st id: " << st->id << "  # streams " << oc->nb_streams
+              << std::endl;
     c = st->codec;
 
     switch ((*codec)->type) {
        case AVMEDIA_TYPE_AUDIO:
+           std::cerr << "AVMEDIA_TYPE_AUDIO" << std::endl;
           c->strict_std_compliance = FF_COMPLIANCE_EXPERIMENTAL;
           aformat = AudioEngine::ffmpeg_format( img->audio_format() );
           if ( opts->audio_codec == "pcm_s16le" )
@@ -251,6 +254,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
 
        case AVMEDIA_TYPE_VIDEO:
            {
+               std::cerr << "AVMEDIA_TYPE_VIDEO" << std::endl;
                c->codec_id = codec_id;
                c->bit_rate = opts->video_bitrate;
                // c->rc_min_rate = c->bit_rate;
@@ -268,14 +272,6 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    c->time_base.den = st->time_base.den = int( 1000.0 * opts->fps );
                c->time_base.num = st->time_base.num = 1000;
                c->gop_size      = 12; /* emit one intra frame every twelve frames at most */
-               // c->qmin = ptr->qmin;
-               // c->qmax = ptr->qmax;
-               // c->me_method = ptr->me_method;
-               // c->me_subpel_quality = ptr->me_subpel_quality;
-               // c->i_quant_factor = ptr->i_quant_factor;
-               // c->qcompress = ptr->qcompress;
-               // c->max_qdiff = ptr->max_qdiff;
-               
                // Use a profile if possible
                c->profile = opts->video_profile;
                c->colorspace = (AVColorSpace) opts->yuv_hint;
@@ -328,7 +324,7 @@ static AVStream *add_stream(AVFormatContext *oc, AVCodec **codec,
                    else if ( opts->video_color == "YUV444" )
                        c->pix_fmt = AV_PIX_FMT_YUV444P10;
                }
-               else
+               else if ( c->codec_id != AV_CODEC_ID_NONE )
                {
                    // Select a pixel format based on user option.
                    if ( opts->video_color == "YUV420" )
@@ -541,22 +537,20 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    AVCodecContext* c = st->codec;
 
 
-   const audio_type_ptr audio = img->get_audio_frame( frame_audio );
+
+   const audio_type_ptr audio = img->get_audio_frame( img->audio_frame() );
 
    if ( !audio ) return false;
-
-
-   ++frame_audio;
 
    if ( audio->frame() == AV_NOPTS_VALUE ) return false;
 
    src_nb_samples = audio->size();
-   src_nb_samples /= img->audio_channels();
-   src_nb_samples /= av_get_bytes_per_sample( aformat );
-
    if ( src_nb_samples == 0 ) {
        return false;
    }
+   src_nb_samples /= img->audio_channels();
+   src_nb_samples /= av_get_bytes_per_sample( aformat );
+
 
 
    if (c->codec->capabilities & CODEC_CAP_VARIABLE_FRAME_SIZE)
@@ -999,7 +993,7 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
    int got_packet = 0;
 
    /* encode the image */
-   picture->pts = frame_count;
+   picture->pts = img->frame();
    ret = avcodec_encode_video2(c, &pkt, picture, &got_packet);
    if (ret < 0) {
        LOG_ERROR( _("Error while encoding video frame: ") << 
@@ -1020,9 +1014,9 @@ static bool write_video_frame(AVFormatContext* oc, AVStream* st,
            return false;
        }
 
+       frame_count++;
    }
 
-   frame_count++;
 
    return true;
 }
@@ -1137,7 +1131,9 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    fmt = oc->oformat;
    assert( fmt != NULL );
 
-   if ( opts->video_codec == "h264" )
+   if ( opts->video_codec == _("None") )
+       fmt->video_codec = AV_CODEC_ID_NONE;
+   else if (opts->video_codec == "h264" )
        fmt->video_codec = AV_CODEC_ID_H264;
    else if ( opts->video_codec == "mpeg4" )
        fmt->video_codec = AV_CODEC_ID_MPEG4;
@@ -1162,11 +1158,13 @@ bool aviImage::open_movie( const char* filename, const CMedia* img,
    video_st = NULL;
    audio_st = NULL;
    if (img->has_picture() && fmt->video_codec != AV_CODEC_ID_NONE) {
+       std::cerr << "add video stream" << std::endl;
        video_st = add_stream(oc, &video_codec, opts->video_codec.c_str(),
                              fmt->video_codec, img, opts);
    }
 
    if (img->has_audio() && fmt->audio_codec != AV_CODEC_ID_NONE) {
+       std::cerr << "add audio stream" << std::endl;
        audio_st = add_stream(oc, &audio_cdc, opts->audio_codec.c_str(),
                              fmt->audio_codec, img, opts );
    }
@@ -1220,6 +1218,7 @@ bool write_va_frame( CMedia* img )
 
    double audio_time, video_time;
 
+   
     /* Compute current audio and video time. */
    audio_time = ( audio_st ? ( double(audio_frame->pts) *
                                av_q2d( audio_st->time_base ) )
@@ -1230,8 +1229,9 @@ bool write_va_frame( CMedia* img )
    
    video_time = ( video_st ? ( double(picture->pts) * 
                                av_q2d( video_st->codec->time_base ) )
-   		  : INFINITY );
+   		  : audio_time );
 
+   
    // std::cerr << "VIDEO TIME " << video_time << " " << picture->pts 
    //           << " " << video_st->time_base.num 
    //           << "/" << video_st->time_base.den 
@@ -1251,7 +1251,8 @@ bool write_va_frame( CMedia* img )
 
     if ( audio_st )
     {
-        while( audio_time <= video_time ) {
+
+        while( audio_time <= video_time  ) {
             if ( ! write_audio_frame(oc, audio_st, img) )
                 break;
             audio_time = (double)audio_frame->pts *
@@ -1348,6 +1349,7 @@ bool flush_video_and_audio( const CMedia* img )
                     desc   = "video";
                     break;
                 default:
+                    encode = NULL;
                     stop_encoding = 1;
             }
                 
