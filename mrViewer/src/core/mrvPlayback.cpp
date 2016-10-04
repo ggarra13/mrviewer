@@ -78,8 +78,8 @@ namespace
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-// #undef DBG
-// #define DBG(x) std::cerr << x << std::endl
+//#undef DBG
+//#define DBG(x) std::cerr << x << std::endl
 
 #if 0
 #  define DEBUG_DECODE
@@ -87,7 +87,7 @@ namespace
 #  define DEBUG_AUDIO
 #endif
 
-// #define DEBUG_THREADS
+//#define DEBUG_THREADS
 
 typedef boost::recursive_mutex Mutex;
 typedef boost::condition_variable Condition;
@@ -1095,6 +1095,7 @@ void decode_thread( PlaybackData* data )
       // wait a little.
       while ( !img->frame( frame ) )
       {
+          if ( img->stopped() ) break;
 	 sleep_ms( 10 );
       }
 
