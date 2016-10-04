@@ -1,5 +1,14 @@
 v3.3.2   - Bug fixed file requester closing after typing a filename
 	   and choosing a button other than OK or Cancel.
+	 - Bug fixed file requester not accepting list of images
+	   in the form of %04d.  This was a problem introduced
+	   in v3.3.1.
+	 - Bug fixed thread hanging in decode thread when audio was
+	   on in a sequence of frames.
+	 - Bug fixed name of movie files saving when in EDL mode.
+	   Previously, a number suffix was always added.  Now,
+	   only when more than a single movie is saved the suffix
+	   is added.
 
 v3.3.1   - Bug fixed window fullscreen and presentation on Linux
 	   Ubuntu's Gnome Unity, which would lock the windows in
@@ -47,7 +56,8 @@ v3.2.8   - Fixed playback being too fast on 4K video
 	   If you have preferences (.filmaura/mrViewer.prefs) saved,
 	   no change in scrubbing is made.
 	   If you want the new scrubbing, Untoggle Shift button and
-	   leave hotkey1 to LeftShift and hotkey2 to RightShift.
+	   leave hotkey1 to LeftShift and hotkey2 to RightShift in
+	   the Hotkeys selection window for Scrubbing.
 
 v3.2.7   - Updated Histogram in RGB to show colors mixed in areas
 	   where R, G and B overlap.  So you get R+G=YELLOW,
