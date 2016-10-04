@@ -809,6 +809,7 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
             if ( _adts > last )   last = _adts;
+            if ( _adts < first ) first = _adts;
             break;
     }
   
@@ -1940,10 +1941,8 @@ void CMedia::do_seek()
       fetch_audio( x );
   }
 
-  // Seeking done, turn flag off
   if ( stopped() || saving() )
   {
-
      if ( has_audio() && !got_audio )
      {
          boost::int64_t f = x;
