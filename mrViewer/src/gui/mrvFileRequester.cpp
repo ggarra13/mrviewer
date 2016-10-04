@@ -694,7 +694,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    bool movie = false;
 
-   if ( ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
+   if ( ext == ".mp3" || ext == ".ogg" || ext == ".webm" || ext == ".vorbis" ||
+        ext == ".avi" || ext == ".mov" || ext == ".mp4" || ext == ".wmv" || 
 	ext == ".mpg" || ext == ".mpeg" || ext == ".flv" || ext == ".mxf" )
    {
       movie = true;
@@ -714,7 +715,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
    
    if ( movie )
    {
-      root = root.substr( 0, root.size() - 4 );
+       root = root.substr( 0, root.size() - ext.size() );
    }
 
    fltk::Window* main = (fltk::Window*)uiMain->uiMain;
@@ -767,13 +768,14 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    for ( ; frame <= last; ++frame )
    {
-
+       std::cerr << "seek " << frame << std::endl;
        uiMain->uiReelWindow->uiBrowser->seek( frame );
 
        mrv::media fg = uiMain->uiView->foreground();
        if (!fg) break;
 
        img = fg->image();
+       std::cerr << "img->frame() " << img->frame() << std::endl;
 
 
        if ( old != fg )
@@ -782,12 +784,13 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
            if ( open_movie )
            {
                aviImage::close_movie(img);
+               img->audio_stream( audio_stream );
                open_movie = false;
            }
            if ( movie )
            {
-               char buf[256];
-               if ( edl )
+               char buf[4096];
+               if ( edl && movie_count > 1 )
                {
                    sprintf( buf, "%s%d%s", root.c_str(), movie_count,
                             ext.c_str() );
@@ -800,7 +803,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
                if ( fs::exists( buf ) )
                {
-                   char text[256];
+                   char text[4096];
                    sprintf( text, _("Do you want to replace '%s'?"),
                             buf );
                    int ok = fltk::choice( text, _("Yes"), _("No"), NULL );
@@ -811,8 +814,10 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                }
 
                AviSaveUI* opts = new AviSaveUI( uiMain );
-               if ( opts->video_bitrate == 0 &&
-                    opts->audio_bitrate == 0 )
+               if ( ( opts->video_bitrate == 0 &&
+                      opts->audio_bitrate == 0 ) ||
+                    ( opts->audio_codec == _("None") &&
+                      opts->video_codec == _("None") ) )
                {
                    delete opts;
                    delete w;
@@ -825,6 +830,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
                {
                    img->audio_stream( -1 );
                }
+
 
                if ( opengl )
                {
@@ -861,7 +867,8 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        } // old != fg
 
        if ( w )  w->show();
-	
+
+
        {
            if ( opengl )
            {
@@ -931,7 +938,7 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
               img->hires( old_i );
               img->gamma( gamma );
           } // opengl
-      }
+       }
 
        if ( ! w->tick() ) break;
    }
@@ -942,9 +949,9 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    if ( open_movie && img )
    {
-      img->audio_stream( audio_stream );
-      aviImage::close_movie(img);
-      open_movie = false;
+       aviImage::close_movie(img);
+       img->audio_stream( audio_stream );
+       open_movie = false;
    }
 
 
