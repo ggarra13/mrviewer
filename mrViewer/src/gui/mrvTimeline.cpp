@@ -171,7 +171,7 @@ Timeline::~Timeline()
     
     if ( _display != Timecode::kFrames ) 
       {
-          nummod = _fps;
+          nummod = int(_fps);
       }
 
     int powincr = 10000;
@@ -304,11 +304,11 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 
     using namespace fltk;
 
-    int j = frame;
+    int64_t j = frame;
     if ( pos < j ) j = pos;
     if ( mn > j ) j = mn;
 
-    int max = frame + size;
+    int64_t max = frame + size;
     if ( mx < max ) max = mx;
 
     // If too many frames, playback suffers, so we exit here
