@@ -504,7 +504,7 @@ int EDLGroup::handle( int event )
 	    }
 
             browser()->set_edl();
-            timeline()->value( pt );
+            timeline()->value( (double)pt );
             view()->seek( pt );
 	    delete _drag;
 	    _drag = NULL;
@@ -597,7 +597,7 @@ void EDLGroup::zoom( double z )
    tmin = tcur - int64_t( double(tlen) * pct );
 
 
-   if ( tmin < 0.0 ) tmin = 0.0;
+   if ( tmin < 0 ) tmin = 0;
 
    t->minimum( double(tmin) );
    t->maximum( double(tmax) );
@@ -686,14 +686,14 @@ void EDLGroup::merge( boost::int64_t frame )
     int64_t f = r->global_to_local( frame );
 
     int idx2 = idx;
-    if ( f < img->first_frame() + img->duration() / 2 )
+    if ( f < img->first_frame() + (int64_t) img->duration() / 2 )
     {
         idx -= 1;
     }
 
     idx2 = idx + 1;
 
-    if ( idx < 0 || idx2 >= r->images.size() ) return;
+    if ( idx < 0 || idx2 >= (int)r->images.size() ) return;
 
     mrv::media lm( r->images[idx] );
     if (!lm) return;
