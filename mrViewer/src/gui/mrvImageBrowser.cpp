@@ -406,7 +406,7 @@ void ImageBrowser::wait_on_threads()
     return _reels[ idx ];
   }
 
-mrv::Reel ImageBrowser::reel_at( int idx )
+mrv::Reel ImageBrowser::reel_at( unsigned idx )
 {
    size_t len = _reels.size();
    if ( len == 0 || idx >= len ) return mrv::Reel();
@@ -2572,6 +2572,7 @@ void ImageBrowser::handle_dnd()
         }
 
         img->seek( f );
+        std::cerr << "browser img->frame " << img->frame() << std::endl;
 
 	mrv::media bg = view()->background();
 	if ( bg )
