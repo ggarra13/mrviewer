@@ -637,6 +637,7 @@ class CMedia
     }
 
     virtual void video_stream( int x ) {}
+    virtual int video_stream() { return -1; }
 
     virtual size_t number_of_video_streams() const { return 0; }
 
