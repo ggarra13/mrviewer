@@ -2572,7 +2572,6 @@ void ImageBrowser::handle_dnd()
         }
 
         img->seek( f );
-        std::cerr << "browser img->frame " << img->frame() << std::endl;
 
 	mrv::media bg = view()->background();
 	if ( bg )
