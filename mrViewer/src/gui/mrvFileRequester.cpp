@@ -768,14 +768,12 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
 
    for ( ; frame <= last; ++frame )
    {
-       std::cerr << "seek " << frame << std::endl;
        uiMain->uiReelWindow->uiBrowser->seek( frame );
 
        mrv::media fg = uiMain->uiView->foreground();
        if (!fg) break;
 
        img = fg->image();
-       std::cerr << "img->frame() " << img->frame() << std::endl;
 
 
        if ( old != fg )
