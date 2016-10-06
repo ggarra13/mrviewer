@@ -827,7 +827,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
         _dts = _adts = dts;
-        _expected = _expected_audio = _dts;
+        _expected = _expected_audio = _dts + 1;
         _seek_req = false;
         return true;
     }

@@ -551,7 +551,23 @@ void CMedia::populate_audio()
       const AVStream* stream = c->streams[ i ];
       assert( stream != NULL );
 
-      const AVCodecContext* ctx = stream->codec;
+      const AVCodecParameters* par = stream->codecpar;
+      AVCodecContext* ctx = NULL;
+      
+      switch( par->codec_type ) 
+	{
+	   case AVMEDIA_TYPE_AUDIO:
+               ctx = avcodec_alloc_context3( _audio_codec );
+               break;
+            default:
+                break;
+        }
+
+
+      if ( ctx == NULL ) continue;
+
+      avcodec_parameters_to_context( ctx, par );
+      
       assert( ctx != NULL );
 
       // Determine the type and obtain the first index of each type
