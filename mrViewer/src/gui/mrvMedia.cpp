@@ -137,17 +137,9 @@ namespace mrv {
       float yScale = (float)(h+1) / (float)dh;
       unsigned int w = (float)(dw+1) * (float)yScale;
 
-      if ( _thumbnail )
-      {
-          // once we set thumbnail size we cannot change it
-          w = _thumbnail->width();
-          h = _thumbnail->height();
-      }
-
       // Audio only clip?  Return
       mrv::image_type_ptr pic = _image->hires();
       if ( !pic ) return;
-
 
       // Resize image to thumbnail size
       pic.reset( pic->quick_resize( w, h ) );
