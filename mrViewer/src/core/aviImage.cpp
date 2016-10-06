@@ -1156,6 +1156,8 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       store_image( ptsframe, pkt.dts );
       av_frame_unref(_av_frame);
       av_frame_unref(_filt_frame);
+      if ( ( stopped() || saving() ) && ptsframe != frame )
+          return kDecodeMissingFrame;
   }
   else if ( status == kDecodeError )
   {
@@ -3100,7 +3102,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-    _dts = _adts = _seek_frame;
+    // _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
@@ -3110,7 +3112,7 @@ void aviImage::do_seek()
     {
         if ( _seek_frame != _expected )
             clear_packets();
-        fetch( _seek_frame );
+        bool ok = fetch( _seek_frame );
     }
 
 
@@ -3135,7 +3137,8 @@ void aviImage::do_seek()
        
        if ( has_video() || has_audio() )
        {
-	  status = decode_video( _seek_frame );
+           boost::int64_t f = _seek_frame;
+           status = decode_video( f );
 
 	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
               IMG_ERROR( _("Decode video error seek frame " )
