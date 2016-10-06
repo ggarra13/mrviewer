@@ -1157,11 +1157,7 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       av_frame_unref(_filt_frame);
       if ( ( stopped() || saving() ) && ptsframe != frame &&
            frame != first_frame() )
-      {
-          std::cerr << "stopped " << stopped() << " saving " << saving()
-                    << std::endl;
           return kDecodeMissingFrame;
-      }
   }
   else if ( status == kDecodeError )
   {
