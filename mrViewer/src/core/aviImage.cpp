@@ -826,8 +826,8 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         if ( f > _frame_end ) f = _frame_end;
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
-        _dts = dts;
-        _expected = _dts + 1;
+        _dts = _adts = dts;
+        _expected = _expected_audio = _dts;
         _seek_req = false;
         return true;
     }
@@ -893,11 +893,10 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
                                         got_audio, got_subtitle );
 
 
-    _dts = dts;
+    _dts = _adts = dts;
     assert( _dts >= first_frame() && _dts <= last_frame() );
 
-    _expected = dts + 1;
-    _expected_audio = _adts + 1;
+    _expected = _expected_audio = dts + 1;
     _seek_req = false;
 
 
@@ -1156,8 +1155,13 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       store_image( ptsframe, pkt.dts );
       av_frame_unref(_av_frame);
       av_frame_unref(_filt_frame);
-      if ( ( stopped() || saving() ) && ptsframe != frame )
+      if ( ( stopped() || saving() ) && ptsframe != frame &&
+           frame != first_frame() )
+      {
+          std::cerr << "stopped " << stopped() << " saving " << saving()
+                    << std::endl;
           return kDecodeMissingFrame;
+      }
   }
   else if ( status == kDecodeError )
   {
@@ -3102,7 +3106,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-    // _dts = _adts = _seek_frame;
+    _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
     bool got_audio = !has_audio();
@@ -3112,7 +3116,7 @@ void aviImage::do_seek()
     {
         if ( _seek_frame != _expected )
             clear_packets();
-        bool ok = fetch( _seek_frame );
+        fetch( _seek_frame );
     }
 
 
@@ -3137,8 +3141,7 @@ void aviImage::do_seek()
        
        if ( has_video() || has_audio() )
        {
-           boost::int64_t f = _seek_frame;
-           status = decode_video( f );
+	  status = decode_video( _seek_frame );
 
 	  if ( !find_image( _seek_frame ) && status != kDecodeOK )
               IMG_ERROR( _("Decode video error seek frame " )
