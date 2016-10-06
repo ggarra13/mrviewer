@@ -121,7 +121,8 @@ bool LogDisplay::show  = false;
       if ( x[t] == '\n' ) ++_lines;
     }
     // Set the line to end of text display
-    scroll( _lines, 0 );
+    if ( visible() )
+        scroll( _lines, 0 );
   }
 
   void LogDisplay::warning( const char* x )
@@ -135,7 +136,9 @@ bool LogDisplay::show  = false;
       if ( x[t] == '\n' ) ++_lines;
     }
 
-    scroll( _lines, 0 );
+    // Set the line to end of text display
+    if ( visible() )
+        scroll( _lines, 0 );
   }
 
   void LogDisplay::error( const char* x )
@@ -150,7 +153,8 @@ bool LogDisplay::show  = false;
     }
 
     // Set the line to end of text display
-    scroll( _lines, 0 );
+    if ( visible() )
+        scroll( _lines, 0 );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
