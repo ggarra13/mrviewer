@@ -121,7 +121,7 @@ bool LogDisplay::show  = false;
       if ( x[t] == '\n' ) ++_lines;
     }
     // Set the line to end of text display
-    if ( visible() )
+    if ( visible() && fltk::in_main_thread() )
         scroll( _lines, 0 );
   }
 
@@ -137,7 +137,7 @@ bool LogDisplay::show  = false;
     }
 
     // Set the line to end of text display
-    if ( visible() )
+    if ( visible() && fltk::in_main_thread() )
         scroll( _lines, 0 );
   }
 
@@ -153,7 +153,7 @@ bool LogDisplay::show  = false;
     }
 
     // Set the line to end of text display
-    if ( visible() )
+    if ( visible() && fltk::in_main_thread() )
         scroll( _lines, 0 );
 
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
