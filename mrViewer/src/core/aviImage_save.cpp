@@ -537,10 +537,14 @@ static bool write_audio_frame(AVFormatContext *oc, AVStream *st,
    AVCodecContext* c = st->codec;
 
 
+   int64_t x = img->audio_frame();
+   if ( x == frame_audio ) ++x;
 
-   const audio_type_ptr audio = img->get_audio_frame( img->audio_frame() );
+   const audio_type_ptr audio = img->get_audio_frame( x );
 
    if ( !audio ) return false;
+
+   frame_audio = x;
 
    if ( audio->frame() == AV_NOPTS_VALUE ) return false;
 
