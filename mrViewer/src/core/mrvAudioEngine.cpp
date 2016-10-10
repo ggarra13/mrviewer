@@ -83,7 +83,7 @@ AVSampleFormat AudioEngine::ffmpeg_format( const AudioFormat f )
 	 ffmpegformat = AV_SAMPLE_FMT_DBL;
 	 break;
       default:
-	 ffmpegformat = (AVSampleFormat) 0;
+	 ffmpegformat = AV_SAMPLE_FMT_NONE;
 	 break;
    }
    return ffmpegformat;
