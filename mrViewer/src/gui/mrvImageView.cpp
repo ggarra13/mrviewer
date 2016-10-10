@@ -1338,7 +1338,6 @@ bool ImageView::should_update( mrv::media fg )
       CMedia* img = fg->image();
 
 
-
       if ( img->image_damage() & CMedia::kDamageLayers )
       {
           update_layers();
@@ -1594,12 +1593,22 @@ void ImageView::timeout()
    // Try to cache forward images
    //
    static double kMinDelay = 0.0001666;
-
+   static unsigned kDelayCheck = 2;
+   static unsigned check_delay = 0;
+   
    double delay = 0.005;
    if ( fg )
    {
       CMedia* img = fg->image();
       delay = 1.0 / (img->play_fps() * 2.0);
+
+      // If not a video image check if image has changed on disk
+      if ( ! img->has_video() &&
+           uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
+      {
+          img->has_changed();
+      }
+      
       // if ( delay < kMinDelay ) delay = kMinDelay;
    }
 
@@ -2689,13 +2698,15 @@ void ImageView::mouseMove(int x, int y)
   if ( mrv::LogDisplay::show == true )
   {
       mrv::LogDisplay::show = false;
-      main()->uiLog->uiMain->show();
+      if (main() && main()->uiLog && main()->uiLog->uiMain )
+          main()->uiLog->uiMain->show();
   }
 
   mrv::media fg = foreground();
   if ( !fg ) return;
 
   CMedia* img = fg->image();
+  
 
   double xf = (double) x;
   double yf = (double) y;
@@ -5139,11 +5150,14 @@ void ImageView::foreground( mrv::media fg )
         uiMain->uiStartFrame->fps( fps );
         uiMain->uiEndFrame->fps( fps );
         uiMain->uiFPS->value( img->play_fps() );
-      
-        img->volume( _volume );
 
-        CMedia* right = img->right_eye();
-        if ( right ) right->volume( _volume );
+        if ( uiMain->uiPrefs->uiPrefsOverrideAudio->value() )
+        {
+            img->volume( _volume );
+
+            CMedia* right = img->right_eye();
+            if ( right ) right->volume( _volume );
+        }
     }
 
     _fg = fg;
@@ -5281,9 +5295,6 @@ void ImageView::background( mrv::media bg )
                img->fileroot(), img->first_frame(), img->last_frame() );
       send_network( buf );
 
-      img->volume( _volume );
-      CMedia* right = img->right_eye();
-      if ( right ) right->volume( _volume );
 
       img->refresh();
 
@@ -5951,6 +5962,7 @@ void ImageView::fps( double x )
  */
 void ImageView::volume( float v )
 {
+
   _volume = v;
 
   mrv::media fg = foreground();
