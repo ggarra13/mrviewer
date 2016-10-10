@@ -634,7 +634,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 97 670 450} resizable visible
+        xywh {607 125 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1714,8 +1714,8 @@ uiICC_float_profile->do_callback();}
             }
           }
           {fltk::Group} {} {
-            label Loading
-            xywh {15 22 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
+            label Loading open
+            xywh {15 22 424 360} align 5 box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {13 45 400 104} box ROUNDED_BOX
@@ -1724,6 +1724,15 @@ uiICC_float_profile->do_callback();}
                 label { Load Sequence on Drag&&Drop}
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
                 xywh {20 44 25 25} box UP_BOX value 1
+              }
+            }
+            {fltk::Group} {} {open
+              xywh {22 194 395 79} box ROUNDED_BOX
+            } {
+              {fltk::CheckButton} uiPrefsAutoLoadImages {
+                label {Auto load images as they change on disk}
+                tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
+                xywh {30 25 25 25} box UP_BOX value 1
               }
             }
           }
@@ -1785,7 +1794,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
             {fltk::Choice} uiPrefsAudioDevice {
               label Device
               callback {unsigned idx = o->value();
-mrv::AudioEngine::device( idx );} selected
+mrv::AudioEngine::device( idx );}
               xywh {99 22 275 25} box THIN_DOWN_BOX
               extra_code {//
 // Initialize an audio engine to get devices
@@ -1801,7 +1810,7 @@ for ( ; i != e; ++i )
       o->add( (*i).description.c_str() );
    }}
             } {}
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {64 189 300 60} box ROUND_DOWN_BOX
             } {
               {fltk::Slider} uiPrefsAudioVolume {
@@ -1819,6 +1828,10 @@ else
    v->activate();}
                 xywh {40 20 40 25}
               }
+            }
+            {fltk::LightButton} uiPrefsOverrideAudio {
+              label {Override Audio} selected
+              xywh {149 144 135 35}
             }
           }
           {fltk::Group} {} {
@@ -1956,7 +1969,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              vertical value 1
+              value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open

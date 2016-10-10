@@ -568,6 +568,9 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
+    audio.get( "override_audio", tmp, 0 );
+    uiPrefs->uiPrefsOverrideAudio->value( tmp );
+
     audio.get( "volume", tmpF, 1.0f );
     uiPrefs->uiPrefsAudioVolume->value( tmpF );
 
@@ -721,6 +724,10 @@ fltk::StyleSet*     newscheme = NULL;
     fltk::Preferences loading( base, "loading" );
     loading.get( "drag_load_seq", tmp, 1 );
     uiPrefs->uiPrefsLoadSequence->value( (bool) tmp );
+
+    loading.get( "autoload_images", tmp, 0 );
+    uiPrefs->uiPrefsAutoLoadImages->value( (bool) tmp );
+    
     loading.get( "native_file_chooser", tmp, 0 );
     uiPrefs->uiPrefsNativeFileChooser->value( (bool) tmp );
 
@@ -1015,12 +1022,15 @@ static const char* kCLocale = "C";
 
     unsigned idx = uiPrefs->uiPrefsAudioDevice->value();
     mrv::AudioEngine::device( idx );
-    
-    double x = uiPrefs->uiPrefsAudioVolume->value();
-    if ( uiPrefs->uiPrefsAudioMute->value() )
-        x = 0.0;
-    view->volume( float(x) );
 
+    if ( uiPrefs->uiPrefsOverrideAudio->value() )
+    {
+        double x = uiPrefs->uiPrefsAudioVolume->value();
+        if ( uiPrefs->uiPrefsAudioMute->value() )
+            x = 0.0;
+        view->volume( float(x) );
+    }
+    
     //
     // Handle fullscreen and presentation mode
     //
@@ -1222,6 +1232,8 @@ static const char* kCLocale = "C";
 
     fltk::Preferences loading( base, "loading" );
     loading.set( "drag_load_seq", (int) uiPrefs->uiPrefsLoadSequence->value() );
+    loading.set( "autoload_images",
+                 (int) uiPrefs->uiPrefsAutoLoadImages->value() );
     loading.set( "native_file_chooser", (int) uiPrefs->uiPrefsNativeFileChooser->value() );
 
     fltk::Preferences video( base, "video" );
@@ -1249,6 +1261,7 @@ static const char* kCLocale = "C";
       }
 
 
+    audio.set( "override_audio", uiPrefs->uiPrefsOverrideAudio->value() );
     audio.set( "volume", uiPrefs->uiPrefsAudioVolume->value() );
 
     audio.set( "volume_mute", uiPrefs->uiPrefsAudioMute->value() );
