@@ -1,3 +1,16 @@
+v3.3.3   - Audio volume is no longer set at start up unless the
+	   value the Preferences->Override Audio is set.  This
+	   allows you to control the volume from the system's
+	   preferences (gnome-control-center, for example)
+	 - Images (not movies) saved on disk can now be updated and
+	   the viewer will refresh the image by itself.  You
+	   need to check the option in the "Preferences->Loading->
+	   Auto update images when changed on disk"
+	 - Made exit of playback more solid when there are errors
+	   and the error window is up.
+	 - Made the error of a missing frame in the sequence be a
+	   warning instead.
+
 v3.3.2   - Bug fixed file requester closing after typing a filename
 	   and choosing a button other than OK or Cancel.
 	 - Bug fixed file requester not accepting list of images
