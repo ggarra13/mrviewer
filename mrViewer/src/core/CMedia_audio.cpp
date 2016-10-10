@@ -518,7 +518,8 @@ unsigned int CMedia::audio_bytes_per_frame()
     if (_audio_engine->channels() > 0 && channels > 0 ) {
         channels = FFMIN(_audio_engine->channels(), channels);
     }
-    if ( channels <= 0 ) return ret;
+    if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
+        return ret;
 
     int frequency = _audio_ctx->sample_rate;
     AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
@@ -744,7 +745,7 @@ void CMedia::audio_file( const char* file )
    audio_stream( -1 );
    audio_offset( 0 );
    _audio_channels = 0;
-   _audio_format = AudioEngine::kFloatLSB;
+   _audio_format = AudioEngine::kNoAudioFormat;
 
    if ( _acontext )
    {
@@ -909,6 +910,10 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                  ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
             {
                 _audio_format = AudioEngine::kS16LSB;
+            }
+            else
+            {
+                _audio_format = AudioEngine::kFloatLSB;
             }
 
             AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
@@ -1321,7 +1326,7 @@ void CMedia::audio_stream( int idx )
       swr_free( &forw_ctx );
       forw_ctx = NULL;
       _audio_channels = 0;
-      _audio_format = AudioEngine::kFloatLSB;
+      _audio_format = AudioEngine::kNoAudioFormat;
     }
 
   clear_stores();
@@ -1550,6 +1555,7 @@ bool CMedia::play_audio( const mrv::audio_type_ptr& result )
   unsigned nSamplesPerSec = unsigned( (double) result->frequency() * speedup );
   if ( nSamplesPerSec != _samples_per_sec ||
        result->channels() != _audio_channels ||
+       _audio_format == AudioEngine::kNoAudioFormat ||
        AudioEngine::device_index() != AudioEngine::old_device_index())
     {
       SCOPED_LOCK( _audio_mutex );
