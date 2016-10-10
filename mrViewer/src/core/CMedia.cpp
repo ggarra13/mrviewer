@@ -1022,21 +1022,22 @@ bool CMedia::has_changed()
       if ( (result == -1) || (_frame < _frame_start) ||
 			      ( _frame > _frame_end ) ) return false;
 
-      _mtime = sbuf.st_mtime;
-      _ctime = sbuf.st_ctime;
 
-      assert( _frame <= _frame_end );
-      assert( _frame >= _frame_start );
       boost::uint64_t idx = _frame - _frame_start;
 
-      if ( !_sequence[idx] || _sequence[idx]->mtime() != sbuf.st_mtime )
+      if ( !_sequence[idx] ||
+           _sequence[idx]->mtime() != sbuf.st_mtime ||
+           _sequence[idx]->ctime() != sbuf.st_ctime )
 	{
 	   assert( _frame == _sequence[idx]->frame() );
 	   // update frame...
 	   _sequence[idx].reset();
+           _mtime = sbuf.st_mtime;
+           _ctime = sbuf.st_ctime;
 
 	   fetch( _frame );
 	   cache( _hires );
+           refresh();
 	   return true;
 	}
     }
@@ -1054,6 +1055,7 @@ bool CMedia::has_changed()
           _ctime = sbuf.st_ctime;
           fetch( _frame );
           cache( _hires );
+          refresh();
           return true;
       }
     }
@@ -2708,7 +2710,7 @@ bool CMedia::find_image( const boost::int64_t frame )
      {
 	if ( ! internal() )
 	{
-	   LOG_ERROR( file << _(" is missing.") );
+	   LOG_WARNING( file << _(" is missing.") );
 	   return false;
 	}
      }
