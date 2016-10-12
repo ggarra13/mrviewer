@@ -634,7 +634,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 125 670 450} resizable visible
+        xywh {607 153 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1726,13 +1726,13 @@ uiICC_float_profile->do_callback();}
                 xywh {20 44 25 25} box UP_BOX value 1
               }
             }
-            {fltk::Group} {} {open
-              xywh {22 194 395 79} box ROUNDED_BOX
+            {fltk::Group} {} {open selected
+              xywh {12 194 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
                 label {Auto load images as they change on disk}
                 tooltip {When dragging and dropping a frame from a sequence, make mrViewerr load the full sequence.   Otherwise it loads the frame only.}
-                xywh {30 25 25 25} box UP_BOX value 1
+                xywh {20 25 25 25} box UP_BOX value 1
               }
             }
           }
@@ -1789,7 +1789,7 @@ where SC is source color, SA is source alpha, and DC is destination color.}
           }
           {fltk::Group} {} {
             label Audio open
-            xywh {13 22 426 367} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {13 22 426 367} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Choice} uiPrefsAudioDevice {
               label Device
@@ -1830,7 +1830,7 @@ else
               }
             }
             {fltk::LightButton} uiPrefsOverrideAudio {
-              label {Override Audio} selected
+              label {Override Audio}
               xywh {149 144 135 35}
             }
           }
@@ -1969,7 +1969,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
