@@ -1,4 +1,3 @@
-
 /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
@@ -423,7 +422,6 @@ _audio_engine( NULL )
   _audio_offset = other->audio_offset() + f - 1;
 
   fetch( f );
-  cache( hires() );
 }
 
 boost::int64_t CMedia::get_frame( const AVStream* stream, const AVPacket& pkt )
@@ -884,9 +882,11 @@ void CMedia::sequence( const char* fileroot,
   if ( ! initialize() )
     return;
 
-  fetch( start );
-  cache( _hires );
-
+  if ( fetch( start ) )
+  {
+      cache( _hires );
+  }
+  
   default_icc_profile();
   default_rendering_transform();
 
@@ -1032,13 +1032,24 @@ bool CMedia::has_changed()
 	   assert( _frame == _sequence[idx]->frame() );
 	   // update frame...
 	   _sequence[idx].reset();
-           _mtime = sbuf.st_mtime;
-           _ctime = sbuf.st_ctime;
 
-	   fetch( _frame );
-	   cache( _hires );
-           refresh();
-	   return true;
+           
+           int tries = 0;
+           while ( tries < 3 )
+           {
+               
+               if ( fetch( _frame ) )
+               {
+                   _mtime = sbuf.st_mtime;
+                   _ctime = sbuf.st_ctime;
+                   cache( _hires );
+                   refresh();
+                   return true;
+               }
+
+               ++tries;
+           }
+	   return false;
 	}
     }
   else
@@ -1051,12 +1062,21 @@ bool CMedia::has_changed()
       if ( ( _mtime != sbuf.st_mtime ) ||
            ( _ctime != sbuf.st_ctime ) )
       {
-          _mtime = sbuf.st_mtime;
-          _ctime = sbuf.st_ctime;
-          fetch( _frame );
-          cache( _hires );
-          refresh();
-          return true;
+           int tries = 0;
+           while ( tries < 3 )
+           {
+               if ( fetch( _frame ) )
+               {
+                   _mtime = sbuf.st_mtime;
+                   _ctime = sbuf.st_ctime;
+                   cache( _hires );
+                   refresh();
+                   return true;
+               }
+               
+               ++tries;
+           }
+           return false;
       }
     }
   return false;
@@ -2059,7 +2079,7 @@ void CMedia::cache( const mrv::image_type_ptr pic )
       return;
 
    SCOPED_LOCK( _mutex );
-
+   
    update_cache_pic( _sequence, pic );
 
 
@@ -2703,8 +2723,10 @@ bool CMedia::find_image( const boost::int64_t frame )
          SCOPED_LOCK( _mutex );
          SCOPED_LOCK( _audio_mutex );
          SCOPED_LOCK( _subtitle_mutex );
-         fetch( f );
-         cache( _hires );
+         if ( fetch( f ) )
+         {
+             cache( _hires );
+         }
      }
      else
      {
@@ -2790,7 +2812,7 @@ void CMedia::default_rendering_transform()
 // (keyframes are used only for video streams)
 void CMedia::debug_stream_keyframes( const AVStream* stream )
 {
-  if ( stream->codec->codec_type != AVMEDIA_TYPE_VIDEO ) return;
+  if ( stream->codecpar->codec_type != AVMEDIA_TYPE_VIDEO ) return;
 
   int64_t  max_distance  = 0;
   unsigned num_keyframes = 0;
