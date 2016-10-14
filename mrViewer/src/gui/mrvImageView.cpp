@@ -5158,6 +5158,16 @@ void ImageView::foreground( mrv::media fg )
             CMedia* right = img->right_eye();
             if ( right ) right->volume( _volume );
         }
+        else
+        {
+            LOG_INFO( "Set volume from engine" );
+            mrv::AudioEngine* engine = img->audio_engine();
+            if ( engine )
+            {
+                LOG_INFO( "engine volume " << engine->volume() );
+                uiMain->uiVolume->value( engine->volume() );
+            }
+        }
     }
 
     _fg = fg;
