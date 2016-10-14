@@ -192,6 +192,112 @@ static const char* kModule = "alsa";
   }
 
 
+float ALSAEngine::volume() const
+{
+    //
+    // This code is a modified version of similar code in amixer.
+    //
+    char buf[1024];
+
+    if ( !_mixer )
+      {
+          try {
+              int err;
+              if ( (err = snd_mixer_open(&_mixer, 0)) < 0) {
+                  sprintf( buf, _("Mixer %s open error: %s\n"), 
+		   device().c_str(), snd_strerror(err) );
+                  THROW(buf);
+              }
+              
+              if ( (err = snd_mixer_attach( _mixer, device().c_str() )) < 0) {
+                  sprintf(buf, _("Mixer attach %s error: %s"), 
+                          device().c_str(), snd_strerror(err) );
+                  snd_mixer_close( _mixer );
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+
+              if ((err = snd_mixer_selem_register(_mixer, NULL, NULL)) < 0) {
+                  sprintf( buf, _("Mixer register error: %s"),
+                           snd_strerror(err));
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+
+              err = snd_mixer_load( _mixer );
+              if (err < 0) {
+                  sprintf( buf, _("Mixer %s load error: %s"), 
+                           device().c_str(), snd_strerror(err));
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+
+
+              snd_mixer_selem_id_t *sid;
+              snd_mixer_selem_id_alloca(&sid);
+              snd_mixer_selem_id_set_name( sid, "PCM" );
+          
+              snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
+              if ( !elem )
+              {
+                  // Try with master        
+                  snd_mixer_selem_id_set_name(sid, "Master");
+                  elem = snd_mixer_find_selem( _mixer, sid );
+              }
+
+              if ( !elem )
+              {
+                  sprintf( buf,
+                           _("Unable to find simple control '%s', id: %i\n"),
+                           snd_mixer_selem_id_get_name(sid), 
+                           snd_mixer_selem_id_get_index(sid) );
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+              
+              long pmin, pmax;
+              if ( snd_mixer_selem_get_playback_volume_range( elem,
+                                                          &pmin, &pmax ) < 0 )
+              {
+                  sprintf( buf, _("Unable to find volume range '%s', id: %i\n"),
+                           snd_mixer_selem_id_get_name(sid), 
+                           snd_mixer_selem_id_get_index(sid) );
+                  snd_mixer_close(_mixer);
+                  _mixer = NULL;
+                  THROW(buf);
+              }
+              
+              unsigned channels = 0;
+              long smixer_level = 0;
+              
+              for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i)
+              {
+                  snd_mixer_selem_channel_id_t chn =
+                  (snd_mixer_selem_channel_id_t) i;
+                  if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
+                      continue;
+                  long level;
+                  snd_mixer_selem_get_playback_volume( elem, chn, &level );
+                  smixer_level += level;
+                  ++channels;
+              }
+              float v = smixer_level / (float) channels;
+              v -= pmin;
+              v /= (pmax - pmin);
+              return v;
+          }
+          catch( const exception& e )
+          {
+              std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
+          }
+      }
+    
+    return 1.0; 
+}
+
   void ALSAEngine::volume( float v )
   {
 #if 1
@@ -246,8 +352,7 @@ static const char* kModule = "alsa";
               snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
               if ( !elem )
               {
-                  // Try with master        
-                  snd_mixer_selem_id_alloca(&sid);
+                  // Try with master
                   snd_mixer_selem_id_set_name(sid, "Master");
                   elem = snd_mixer_find_selem( _mixer, sid );
               }
