@@ -153,7 +153,6 @@ namespace mrv {
     return true;
   }
 
-
   bool wandImage::fetch( const boost::int64_t frame ) 
   {
 
