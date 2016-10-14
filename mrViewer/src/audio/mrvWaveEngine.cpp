@@ -345,6 +345,30 @@ SPEAKER_FRONT_LEFT   | SPEAKER_FRONT_CENTER | SPEAKER_FRONT_RIGHT  | SPEAKER_SID
   }
 
 
+  float WaveEngine::volume() const
+  {
+      WaveEngine* w = NULL;
+      if (!_audio_device) return 1.0;
+      
+      DWORD vol;
+      MMRESULT result = waveOutGetVolume( _audio_device, &vol );
+      if ( result != MMSYSERR_NOERROR )
+      {
+          MMerror( "waveOutGetVolume", result );
+          return 1.0;
+      }
+
+      unsigned short left = unsigned(0xFFFF & vol);
+      unsigned short right = unsigned(0xFFFF & (vol >> 16));
+
+      float v = (float)( left + right );
+      v /= 2; // 2 channels
+      v /= 0xFFFF;
+
+      return v;
+  }
+
+
   void WaveEngine::volume( float v )
   {
     if (!_audio_device) return;
