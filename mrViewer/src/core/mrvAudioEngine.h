@@ -133,6 +133,9 @@ class ViewerUI;
     // playback has finished)
     virtual bool play( const char* data, const size_t size ) = 0;
 
+    // Return current master volume
+    virtual float volume() const = 0;
+
     // Change volume
     virtual void volume( float f ) = 0;
 

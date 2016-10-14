@@ -1,3 +1,9 @@
+v3.3.4   - Made reloading of images on disk when changed work
+	   slower so as to allow the image to be fully saved.  Also
+	   three attempts are made to try to load the file.
+	   This should avoid problems when reading files that have
+	   not been saved in its entirety.
+
 v3.3.3   - Audio volume is no longer set at start up unless the
 	   value the Preferences->Override Audio is set.  This
 	   allows you to control the volume from the system's
