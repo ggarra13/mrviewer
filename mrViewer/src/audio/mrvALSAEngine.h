@@ -59,6 +59,9 @@ public:
   // playback has finished)
   virtual bool play( const char* data, const size_t size );
 
+  // Retrieve current master volume
+  virtual float volume() const;
+    
   // Change volume of playback
   virtual void volume( float f );
   
