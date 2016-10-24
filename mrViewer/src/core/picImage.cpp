@@ -236,7 +236,7 @@ bool picImage::fetch(const boost::int64_t frame)
 
     tmp = readInt(file);
     if(tmp != 0x5380F634) {		// 'S' + 845-1636 (SI's phone no :-)
-        IMG_ERROR( "has invalid magic number in the header." );
+        IMG_ERROR( _("has invalid magic number in the header.") );
         fclose(file);
         return false;
     }
@@ -254,7 +254,7 @@ bool picImage::fetch(const boost::int64_t frame)
     tmp = readInt(file);		// File identifier 'PICT'
     /* pdb - if(tmp != 'PICT') { */
     if (tmp != 0x50494354) {
-        IMG_ERROR( "is a Softimage file, but not a PIC file." );
+        IMG_ERROR( _("is a Softimage file, but not a PIC file.") );
         fclose(file);
         return false;
     }
@@ -455,7 +455,7 @@ bool picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_
 			
             // We've run past...
             if((i + count) > width) {
-                IMG_ERROR( "Overrun scanline (Repeat) [" << i
+                IMG_ERROR( _("Overrun scanline (Repeat) [") << i
                            << " + " << count << " > "
                            << width << " (NC=" << noCol << ")" );
                 return false;
@@ -471,7 +471,7 @@ bool picImage::channelReadMixed(FILE *file, uint8_t *scan, int32_t width, int32_
         } else {				// Raw sequence
             count++;
             if((i + count) > width) {
-                IMG_ERROR( "Overrun scanline (Raw) [" << i
+                IMG_ERROR( _("Overrun scanline (Raw) [") << i
                            << " + " << count << " > " << width
                            << "] (NC=" << noCol << ")" );
                 return false;
