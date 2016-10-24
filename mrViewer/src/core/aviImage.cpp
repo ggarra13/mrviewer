@@ -78,9 +78,6 @@ namespace
 }
 
 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
-#define IMG_INFO(x) LOG_INFO( name() << " - " << x )
-#define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
 //#define DEBUG_STREAM_INDICES
@@ -1031,6 +1028,30 @@ void aviImage::store_image( const boost::int64_t frame,
  
 }
 
+int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt)
+{
+    int ret;
+
+    *got_frame = 0;
+
+    if (pkt) {
+        ret = avcodec_send_packet(avctx, pkt);
+        // In particular, we don't expect AVERROR(EAGAIN), because we read all
+        // decoded frames with avcodec_receive_frame() until done.
+        if (ret < 0)
+            return ret == AVERROR_EOF ? 0 : ret;
+    }
+
+    ret = avcodec_receive_frame(avctx, frame);
+    if (ret < 0 && ret != AVERROR(EAGAIN) && ret != AVERROR_EOF)
+        return ret;
+    if (ret >= 0)
+        *got_frame = 1;
+
+    return 0;
+}
+
+
 CMedia::DecodeStatus
 aviImage::decode_video_packet( boost::int64_t& ptsframe, 
 			       const boost::int64_t frame, 
@@ -1053,8 +1074,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   while( pkt.size > 0 || pkt.data == NULL )
   {
-     int err = avcodec_decode_video2( _video_ctx, _av_frame, &got_pict, 
-				      &pkt );
+     int err = decode( _video_ctx, _av_frame, &got_pict, &pkt );
 
 
      if ( got_pict ) {
