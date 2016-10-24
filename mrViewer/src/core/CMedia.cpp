@@ -78,8 +78,6 @@ namespace {
 
 }
 
-#define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;
@@ -1034,22 +1032,15 @@ bool CMedia::has_changed()
 	   _sequence[idx].reset();
 
            
-           int tries = 0;
-           while ( tries < 3 )
+           if ( fetch( _frame ) )
            {
-               
-               if ( fetch( _frame ) )
-               {
-                   _mtime = sbuf.st_mtime;
-                   _ctime = sbuf.st_ctime;
-                   cache( _hires );
-                   refresh();
-                   return true;
-               }
-
-               ++tries;
+               _mtime = sbuf.st_mtime;
+               _ctime = sbuf.st_ctime;
+               cache( _hires );
+               refresh();
+               return true;
            }
-	   return false;
+           return false;
 	}
     }
   else
@@ -1062,21 +1053,16 @@ bool CMedia::has_changed()
       if ( ( _mtime != sbuf.st_mtime ) ||
            ( _ctime != sbuf.st_ctime ) )
       {
-           int tries = 0;
-           while ( tries < 3 )
-           {
-               if ( fetch( _frame ) )
-               {
-                   _mtime = sbuf.st_mtime;
-                   _ctime = sbuf.st_ctime;
-                   cache( _hires );
-                   refresh();
-                   return true;
-               }
+          if ( fetch( _frame ) )
+          {
+              _mtime = sbuf.st_mtime;
+              _ctime = sbuf.st_ctime;
+              cache( _hires );
+              refresh();
+              return true;
+          }
                
-               ++tries;
-           }
-           return false;
+          return false;
       }
     }
   return false;
@@ -1145,6 +1131,21 @@ void CMedia::image_size( int w, int h )
   else if ( w == 1280 && h == 1024 )
     {
       _pixel_ratio = 1.066f; // HDTV full
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+    }
+  else if ( w == 1920 && h == 1080 )
+    {
+      _pixel_ratio = 1.0f; // HDTV full
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+    }
+  else if ( w == 3840 && h == 2160 )
+    {
+      _pixel_ratio = 1.0f; // 4K full
+      if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
+    }
+  else if ( w == 7680 && h == 4320 )
+    {
+      _pixel_ratio = 1.0f; // 8K full
       if ( _fps == 0 ) _orig_fps = _fps = _play_fps = 29.97;
     }
   else if ( (float)w/(float)h == 1.56 )
