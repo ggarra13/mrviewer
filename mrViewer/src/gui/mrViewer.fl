@@ -634,7 +634,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 153 670 450} resizable visible
+        xywh {607 181 670 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -1715,7 +1715,7 @@ uiICC_float_profile->do_callback();}
           }
           {fltk::Group} {} {
             label Loading open
-            xywh {15 22 424 360} align 5 box EMBOSSED_BOX labelsize 14
+            xywh {15 22 424 360} align 5 hide box EMBOSSED_BOX labelsize 14
           } {
             {fltk::Group} {} {open
               xywh {13 45 400 104} box ROUNDED_BOX
@@ -1726,7 +1726,7 @@ uiICC_float_profile->do_callback();}
                 xywh {20 44 25 25} box UP_BOX value 1
               }
             }
-            {fltk::Group} {} {open selected
+            {fltk::Group} {} {open
               xywh {12 194 400 79} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAutoLoadImages {
@@ -2470,7 +2470,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -3110,7 +3111,7 @@ v->uiView->seek( frame );}
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {int c = o->value();
 o->label(o->child(c)->label());
-v->uiView->looping( (mrv::ImageView::Looping)c );} open
+v->uiView->looping( (mrv::ImageView::Looping)c );}
                   tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )}
                   xywh {615 2 21 23} box UP_BOX
                   class {mrv::PopupMenu}
@@ -3201,8 +3202,8 @@ v->uiView->seek( f );}
                       {fltk::Button} {} {
                         label {@||}
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->stop();}
-                        tooltip {Stop playback.}
+                        callback {v->uiView->stop();} selected
+                        tooltip {Stop playback.  You can use SHIFT and then the mouse for scrubbing.}
                         xywh {93 2 30 18} labelcolor 0x98a8a800
                       }
                       {fltk::Button} {} {
