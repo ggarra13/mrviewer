@@ -4369,7 +4369,7 @@ void Flu_File_Chooser::cd( const char *path )
 
 
 		 if ( is_sequence )
-		  {
+                 {
                      mrv::Sequence seq;
                      seq.ext = ext;
                      seq.view = view;
@@ -4583,7 +4583,6 @@ void Flu_File_Chooser::cd( const char *path )
 	      //break;
 	    }
 	} // i != e
-
       }
 
       for( i = 0; i < num; i++ )
