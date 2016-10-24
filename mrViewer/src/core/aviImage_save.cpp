@@ -54,8 +54,6 @@ namespace {
 const char* kModule = "save";
 }
 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
-#define IMG_WARNING(x) LOG_WARNING( name() << " - " << x )
 #define LOG(x) std::cerr << x << std::endl;
 
 // #undef DBG

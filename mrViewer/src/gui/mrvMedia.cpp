@@ -40,6 +40,8 @@
 #define isfinite(x) _finite(x)
 #endif
 
+#undef IMG_ERROR
+#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 namespace 
 {
