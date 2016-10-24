@@ -46,7 +46,6 @@
 
 #undef max   // LOVE windows!
 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
 
 namespace 
 {
