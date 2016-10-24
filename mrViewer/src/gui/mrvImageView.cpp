@@ -5160,11 +5160,9 @@ void ImageView::foreground( mrv::media fg )
         }
         else
         {
-            LOG_INFO( "Set volume from engine" );
             mrv::AudioEngine* engine = img->audio_engine();
             if ( engine )
             {
-                LOG_INFO( "engine volume " << engine->volume() );
                 uiMain->uiVolume->value( engine->volume() );
             }
         }
