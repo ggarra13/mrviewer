@@ -53,8 +53,6 @@ using namespace std;
 #include "gui/mrvIO.h"
 
 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
-
 #define ThrowWandException( wand ) \
   { \
     ExceptionType severity; \
