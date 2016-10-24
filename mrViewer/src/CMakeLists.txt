@@ -10,7 +10,7 @@ ENDIF( NOT CMAKE_MODULE_PATH )
 
 SET( VersionMajor 3 )
 SET( VersionMinor 3 )
-SET( VersionPatch 3 )
+SET( VersionPatch 4 )
 
 SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
 
@@ -72,7 +72,7 @@ ELSE(WIN32 OR WIN64 OR CYGWIN OR MINGW)
       )
     # 
     # ADD_DEFINITIONS( -DLINUX -msse -std=c++98 -D_GLIBCXX_USE_CXX11_ABI=0 ) 
-    ADD_DEFINITIONS( -DLINUX -msse  ) 
+    ADD_DEFINITIONS( -DLINUX -msse -fdiagnostics-color=always  ) 
     SET(OS_LIBRARIES
       asound ass ${Xpm} png X11 Xi Xft Xrender Xinerama Xext stdc++ GLEW fontconfig lzma mp3lame vpx theoraenc theoradec theora vorbisenc vorbis x264 vpx pthread m
       )
