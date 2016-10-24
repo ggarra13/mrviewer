@@ -76,9 +76,6 @@ namespace {
 
 }
 
-#define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
-#define IMG_ERROR(x) LOG_ERROR( name() << " - " << x )
-#define IMG_INFO(x) LOG_INFO( name() << " - " << x )
 
 #ifndef AVCODEC_MAX_AUDIO_FRAME_SIZE
 #  define AVCODEC_MAX_AUDIO_FRAME_SIZE 198000
@@ -516,7 +513,7 @@ unsigned int CMedia::audio_bytes_per_frame()
 
     int channels = _audio_ctx->channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
-        channels = FFMIN(_audio_engine->channels(), channels);
+        channels = FFMIN(_audio_engine->channels(), (unsigned)channels);
     }
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
@@ -941,9 +938,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                     av_get_channel_layout_string( buf, 256, ctx->channels, 
                                                   in_ch_layout );
 
-                    IMG_INFO( _("Create audio conversion from ") << buf 
+                    IMG_INFO_NF( _("Create audio conversion from ") << buf 
                               << _(", channels ") << ctx->channels << N_(", ") );
-                    IMG_INFO( _("format ") 
+                    IMG_INFO_NF( _("format ") 
                               << av_get_sample_fmt_name( ctx->sample_fmt ) 
                               << _(", sample rate ") << ctx->sample_rate << _(" to") );
 
@@ -964,11 +961,11 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                     int in_sample_rate = ctx->sample_rate;
                     int out_sample_rate = in_sample_rate;
 
-                    IMG_INFO( buf << _(", channels ") << out_channels 
-                              << _(", format " )
-                              << av_get_sample_fmt_name( out_sample_fmt )
-                              << _(", sample rate ")
-                              << out_sample_rate);
+                    IMG_INFO_NF( buf << _(", channels ") << out_channels 
+                                 << _(", format " )
+                                 << av_get_sample_fmt_name( out_sample_fmt )
+                                 << _(", sample rate ")
+                                 << out_sample_rate);
 	      
 
                     forw_ctx  = swr_alloc_set_opts(NULL, out_ch_layout,
