@@ -128,11 +128,13 @@ class ImageBrowser : public fltk::Browser
                      const boost::int64_t end = -999999 );
     
 
-     void load( const LoadList& files, bool stereo = false, 
-                bool progressBar = true );
+     void load( const LoadList& files, const bool stereo = false,
+                std::string bgfile = "",
+                const bool progressBar = true );
     void load( const stringArray& files, const bool seqs = true,
-               bool stereo = false,
-               bool progressBar = true );
+               const bool stereo = false,
+               const std::string bgfile = "",
+               const bool progressBar = true );
 
 
     mrv::media replace( const size_t r, const size_t img, const char* root );
