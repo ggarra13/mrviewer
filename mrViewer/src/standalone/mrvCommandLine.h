@@ -39,6 +39,7 @@ typedef std::vector< std::string > stringArray;
   struct Options
   {
        mrv::LoadList files;
+       std::string bgfile;
        mrv::LoadList stereo;
        bool edl;
        float gamma;
