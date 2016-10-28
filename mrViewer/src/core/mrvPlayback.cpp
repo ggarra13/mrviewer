@@ -362,8 +362,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 if (fg)
                     view->playback( ImageView::kStopped );
-                std::cerr << img->name() << " " << img->frame()
-                          << " stopped" << std::endl;
                 img->playback( CMedia::kStopped );
             }
 	    break;
