@@ -1393,12 +1393,27 @@ void load_sequence( ImageBrowser::LThreadData* data )
   /** 
    * Open new image, sequence or movie file(s) from a load list.
    * If stereo is on, every two files are treated as stereo pairs.
-   * 
+   * If bg image is not "", load image as background
    */
 void ImageBrowser::load( const mrv::LoadList& files,
-                         bool stereo,
-			 bool progressBar )
+                         const bool stereo,
+                         std::string bgimage,
+			 const bool progressBar )
 {
+    if ( bgimage != "" )
+    {
+        int64_t start = mrv::kMaxFrame;
+        int64_t end   = mrv::kMinFrame;
+        if ( mrv::is_valid_sequence( bgimage.c_str() ) )
+        {
+            mrv::get_sequence_limits( start, end, bgimage );
+        }
+        mrv::media bg = load_image( bgimage.c_str(),
+                                    start, end, start, end, false );
+        view()->bg_reel( _reel );
+        view()->background( bg );
+    }
+    
     //
     // Create a progress window
     //
@@ -1555,6 +1570,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
 
                  std::string xml = aces_xml_filename( img->fileroot() );
                  load_aces_xml( img, xml.c_str() );
+
              }
 	  }
 
@@ -1647,7 +1663,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
      
      new_reel( reelname.c_str() );
 
-     load( sequences, false, true );
+     load( sequences, false, "", true );
 
      mrv::Reel reel = current_reel();
 
@@ -1668,6 +1684,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
 void ImageBrowser::load( const stringArray& files,
                          const bool seqs,
                          const bool stereo,
+                         const std::string bgfile,
 			 const bool progress )
   {
     stringArray::const_iterator i = files.begin();
@@ -1708,7 +1725,7 @@ void ImageBrowser::load( const stringArray& files,
 	retname = file;
       }
 
-    load( loadlist, stereo, progress );
+    load( loadlist, stereo, bgfile, progress );
   }
 
   /** 
