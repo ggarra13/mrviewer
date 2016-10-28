@@ -307,7 +307,7 @@ bool Parser::parse( const std::string& s )
       int i;
       is >> i;
 
-      v->looping( (ImageView::Looping)i );
+      v->looping( (CMedia::Looping)i );
       ok = true;
    }
    else if ( cmd == N_("Selection") )
@@ -1019,6 +1019,9 @@ bool Parser::parse( const std::string& s )
           cmd += buf;
           deliver( cmd );
 
+          sprintf( buf, N_("Looping %d"), (int)img->looping() );
+          deliver( buf );
+      
           boost::int64_t frame = img->frame() - img->first_frame() + 1;
           sprintf( buf, N_("seek %") PRId64, frame );
           deliver( buf );
@@ -1061,9 +1064,6 @@ bool Parser::parse( const std::string& s )
       deliver( buf );
 
       sprintf( buf, N_("FPS %g"), v->fps() );
-      deliver( buf );
-
-      sprintf( buf, N_("Looping %d"), (int)v->looping() );
       deliver( buf );
 
       const mrv::Rectd& s = v->selection();
