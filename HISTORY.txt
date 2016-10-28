@@ -5,6 +5,9 @@ v3.3.4   - Bug fixed reloading of images from disk when the creation
 	   finished being saved).
 	   Previously, the image would not get loaded on a second
 	   attempt.
+	 - Made loop mode be an attribute of the movie or sequence
+	   loaded.  It is now possible to have a foreground sequence
+	   with loop on and a background movie with ping pong on.
 
 v3.3.3   - Audio volume is no longer set at start up unless the
 	   value the Preferences->Override Audio is set.  This
