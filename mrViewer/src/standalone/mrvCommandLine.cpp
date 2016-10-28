@@ -373,6 +373,10 @@ void parse_command_line( const int argc, char** argv,
     aoffset( N_("o"), N_("audio_offset"), 
              _("Set added audio offset."), false, "offset");
 
+    ValueArg< std::string > 
+    abg( N_("b"), N_("bg"), 
+         _("Provide a sequence or movie for background."), false, "", "image");
+
 #ifdef USE_STEREO
     MultiArg< std::string > 
     astereo( N_("s"), N_("stereo"), 
@@ -390,6 +394,7 @@ void parse_command_line( const int argc, char** argv,
 #ifdef USE_STEREO
     cmd.add(astereo);
 #endif
+    cmd.add(abg);
     cmd.add(afiles);
 
     //
@@ -407,9 +412,11 @@ void parse_command_line( const int argc, char** argv,
     opts.port = aport.getValue();
     opts.edl  = aedl.getValue();
     opts.fps  = afps.getValue();
+    opts.bgfile = abg.getValue();
 
     stringArray files = afiles.getValue();
     size_t normalFiles = files.size();
+
 
 #ifdef USE_STEREO
     stringArray stereo = astereo.getValue();
@@ -439,6 +446,7 @@ void parse_command_line( const int argc, char** argv,
     if ( audios.size() < aoffsets.size() )
         LOG_ERROR( "Too many audio offsets for fewer audios" );
 
+    
     stringArray::const_iterator i = files.begin();
     stringArray::const_iterator e = files.end();
     stringArray::const_iterator ai = audios.begin();
