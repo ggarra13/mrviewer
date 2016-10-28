@@ -1082,10 +1082,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
          if ( ptsframe == AV_NOPTS_VALUE )
          {
-             if ( _av_frame->pkt_pts != AV_NOPTS_VALUE )
-                 ptsframe = _av_frame->pkt_pts;
-             else if ( _av_frame->pkt_dts != AV_NOPTS_VALUE )
-                 ptsframe = _av_frame->pkt_dts;
+             ptsframe = _av_frame->pkt_dts;
          }
 
          _av_frame->pts = ptsframe;
@@ -1636,10 +1633,7 @@ bool aviImage::readFrame(int64_t & pts)
 
     if ( pts == AV_NOPTS_VALUE )
     {
-        if ( _av_frame->pkt_pts != AV_NOPTS_VALUE )
-            pts = _av_frame->pkt_pts;
-        else if ( _av_frame->pkt_dts != AV_NOPTS_VALUE )
-            pts = _av_frame->pkt_dts;
+        pts = _av_frame->pkt_dts;
     }
 
     AVRational q = { 1, AV_TIME_BASE };
@@ -1680,10 +1674,8 @@ void aviImage::populate()
         const AVCodecParameters* par = stream->codecpar;
         if ( par == NULL ) continue;
 
-        AVCodecContext* ctx;
-
         AVCodec* codec = avcodec_find_decoder( par->codec_id );
-        ctx = avcodec_alloc_context3( codec );
+        AVCodecContext* ctx = avcodec_alloc_context3( codec );
         int err = avcodec_parameters_to_context( ctx, par );
         if ( err < 0 )
         {
@@ -2653,7 +2645,7 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
               }
           }
 
-          if ( status == kDecodeOK )  got_video = status;
+          if ( status == kDecodeOK && pktframe <= frame )  got_video = status;
       }
       else
       {
@@ -2876,8 +2868,10 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
 	   if ( ok ) 
 	   {
                SCOPED_LOCK( _mutex );
-               video_cache_t::const_iterator iter = _images.begin();
-               if ( (*iter)->frame() >= frame )
+               AVPacket& pkt = _video_packets.front();
+               int64_t pktframe = pts2frame( get_video_stream(), pkt.dts )
+                                  - _frame_offset;
+               if ( pktframe >= frame )
                {
                    got_video = handle_video_packet_seek( frame, false );
                }
