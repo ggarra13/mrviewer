@@ -81,11 +81,6 @@ class server;
     kText      = 1 << 3,
     };
 
-    enum Looping {
-      kNoLoop   = 0,
-      kLooping  = 1,
-      kPingPong = 2,
-    };
 
     enum Playback {
       kBackwards = -1,
@@ -329,10 +324,7 @@ class server;
       bool previous_channel();
 
     /// Set Playback looping mode
-    void  looping( Looping x );
-
-    /// Return Playback looping mode
-    Looping  looping() const { return _looping; }
+      void  looping( CMedia::Looping x );
 
     /// Set Playback status/direction
     void playback( Playback b );
@@ -640,8 +632,6 @@ class server;
     // Playback state
     ///////////////////
     Playback   _playback;         //!< status of view
-    Looping    _looping;          //!< looping mode of view -- unneeded
-                                  //!< we should use uiMain->uiLoopMode instead
 
     ///////////////////
     // FPS calculation
