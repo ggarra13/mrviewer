@@ -839,7 +839,6 @@ _bg_reel( -1 ),
 _mode( kSelection ),
 _selection( mrv::Rectd(0,0) ),
 _playback( kStopped ),
-_looping( kLooping ),
 _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
@@ -1585,16 +1584,23 @@ void ImageView::timeout()
       {
          background( bg );
       }
-
    }
 
+   bg = background();
+   
+   if ( bg && bg != fg )
+   {
+       CMedia* img = bg->image();
+       if ( img->stopped() && playback() != kStopped )
+       {
+           if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
+           {
+               img->seek( tframe );
+               img->play((CMedia::Playback) playback(), uiMain, false );
+           }
+       }
+   }
 
-   //
-   // Try to cache forward images
-   //
-   static double kMinDelay = 0.0001666;
-   static unsigned kDelayCheck = 2;
-   static unsigned check_delay = 0;
    
    double delay = 0.005;
    if ( fg )
@@ -1608,8 +1614,6 @@ void ImageView::timeout()
       {
           img->has_changed();
       }
-      
-      // if ( delay < kMinDelay ) delay = kMinDelay;
    }
 
   if ( timeline && timeline->visible() ) 
@@ -5176,7 +5180,8 @@ void ImageView::foreground( mrv::media fg )
       
         if ( img )
         {
-	 
+            looping( img->looping() );
+        
             // Per session gamma: requested by Willa
             if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
@@ -5605,13 +5610,13 @@ void ImageView::step_frame( int64_t n )
 
   int64_t f = frame();
 
-  ImageView::Looping loop = looping();
+  CMedia::Looping loop = (CMedia::Looping)uiMain->uiLoopMode->value();
 
   if ( n > 0 )
     {
        if ( f + n > end )
        {
-	  if ( loop == ImageView::kLooping )
+           if ( loop == CMedia::kLoop )
 	  {
 	     f = start + ( f + n - end) - 1;
 	  }
@@ -5629,7 +5634,7 @@ void ImageView::step_frame( int64_t n )
     {
       if ( f + n < start )
 	{
-	   if ( loop == ImageView::kLooping )
+            if ( loop == CMedia::kLoop )
 	   {
 	      f = end - (start - f + n) - 1;
 	   }
@@ -5998,9 +6003,14 @@ void ImageView::volume( float v )
 }
 
 /// Set Playback looping mode
-void  ImageView::looping( Looping x )
+void  ImageView::looping( CMedia::Looping x )
 {
-  _looping = x;
+  media fg = foreground();
+  if (fg)
+  {
+      CMedia* img = fg->image();
+      img->looping( x );
+  }
 
   uiMain->uiLoopMode->value( x );
   uiMain->uiLoopMode->label(uiMain->uiLoopMode->child(x)->label());
