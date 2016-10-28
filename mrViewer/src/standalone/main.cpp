@@ -80,13 +80,14 @@ const char* const kModule = "main";
 
 void load_files( mrv::LoadList& files, 
                  mrv::ViewerUI* ui,
-                 bool stereo = false )
+                 bool stereo = false,
+                 std::string bgimage = "" )
 {
    //
    // Window must be shown after images have been loaded.
    // 
    mrv::ImageBrowser* image_list = ui->uiReelWindow->uiBrowser;
-   image_list->load( files, stereo );
+   image_list->load( files, stereo, bgimage );
 }
 
 void load_new_files( void* s )
@@ -309,10 +310,10 @@ int main( int argc, char** argv )
       // mrv::open_license( argv[0] );
       // mrv::checkout_license();
 
-          load_files( opts.files, ui );
+          load_files( opts.files, ui, false, opts.bgfile );
 
           if ( opts.stereo.size() > 1 )
-              load_files( opts.stereo, ui, true );
+              load_files( opts.stereo, ui, true, opts.bgfile );
 
           if ( opts.edl )
           {
