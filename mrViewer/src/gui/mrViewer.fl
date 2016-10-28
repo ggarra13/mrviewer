@@ -3111,7 +3111,7 @@ v->uiView->seek( frame );}
                   user_data this user_data_type {mrv::ViewerUI*}
                   callback {int c = o->value();
 o->label(o->child(c)->label());
-v->uiView->looping( (mrv::ImageView::Looping)c );}
+v->uiView->looping( (CMedia::Looping)c );}
                   tooltip {Looping Behavior ( Stop, Loop, Ping-Pong )}
                   xywh {615 2 21 23} box UP_BOX
                   class {mrv::PopupMenu}
