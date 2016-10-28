@@ -242,6 +242,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     SCOPED_LOCK( m );
 
     mrv::ImageView* view = uiMain->uiView;
+    mrv::media bg = view->background();
 
     EndStatus status = kEndIgnore;
     mrv::media c;
@@ -270,7 +271,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     }
 
 
-   ImageView::Looping loop = view->looping();
+    CMedia::Looping loop = img->looping();
 
 
    switch( end )
@@ -298,16 +299,16 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	       else
 	       {
-		  if ( loop == ImageView::kLooping )
-		  {
-		     f = boost::int64_t(timeline->minimum());
-                     next = reel->image_at( f );
-		     f = reel->global_to_local( f );
-		  }
-		  else
-		  {
-		     next = img;
-		  }
+                   if ( loop == CMedia::kLoop )
+                   {
+                       f = boost::int64_t(timeline->minimum());
+                       next = reel->image_at( f );
+                       f = reel->global_to_local( f );
+                   }
+                   else
+                   {
+                       next = img;
+                   }
 	       }
 
 	       if ( next != img && next != NULL) 
@@ -333,7 +334,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	       }
 	    }
 
-            if ( loop == ImageView::kLooping )
+            if ( loop == CMedia::kLoop )
             {
                 frame = first;
                 if ( img->right_eye() ) img->right_eye()->seek( frame );
@@ -343,11 +344,11 @@ EndStatus handle_loop( boost::int64_t& frame,
                 init_clock(&img->extclk, NULL);
                 set_clock(&img->extclk, get_clock(&img->extclk), false);
             }
-            else if ( loop == ImageView::kPingPong )
+            else if ( loop == CMedia::kPingPong )
             {
                 frame = last;
                 step  = -1;
-                // img->frame( frame );
+                img->seek( frame );
                 img->playback( CMedia::kBackwards );
                 if (fg)
                     view->playback( ImageView::kBackwards );
@@ -361,6 +362,8 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 if (fg)
                     view->playback( ImageView::kStopped );
+                std::cerr << img->name() << " " << img->frame()
+                          << " stopped" << std::endl;
                 img->playback( CMedia::kStopped );
             }
 	    break;
@@ -384,16 +387,16 @@ EndStatus handle_loop( boost::int64_t& frame,
 
                if ( !next )
 	       {
-		  if ( loop == ImageView::kLooping )
-		  {
-		     f = boost::int64_t( timeline->maximum() );
-		     next = reel->image_at( f );
-		     f = reel->global_to_local( f );
-		  }
-		  else
-		  {
-		     next = img;
-		  }
+                   if ( loop == CMedia::kLoop )
+                   {
+                       f = boost::int64_t( timeline->maximum() );
+                       next = reel->image_at( f );
+                       f = reel->global_to_local( f );
+                   }
+                   else
+                   {
+                       next = img;
+                   }
 	       }
 
 
@@ -421,7 +424,7 @@ EndStatus handle_loop( boost::int64_t& frame,
 	    }
 
 
-            if ( loop == ImageView::kLooping )
+            if ( loop == CMedia::kLoop )
             {
                 frame = last;
                 if ( img->right_eye() ) img->right_eye()->seek( frame );
@@ -431,11 +434,11 @@ EndStatus handle_loop( boost::int64_t& frame,
                 init_clock(&img->extclk, NULL);
                 set_clock(&img->extclk, get_clock(&img->extclk), false);
             }
-            else if ( loop == ImageView::kPingPong )
+            else if ( loop == CMedia::kPingPong )
             {
                 frame = first;
                 step = 1;
-                //img->frame( frame );
+                img->seek( frame );
                 img->playback( CMedia::kForwards );
                 if (fg)
                     view->playback( ImageView::kForwards );
@@ -789,6 +792,7 @@ void subtitle_thread( PlaybackData* data )
 
   }  // subtitle_thread
 
+
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl
 
@@ -848,10 +852,11 @@ void video_thread( PlaybackData* data )
        int step = (int) img->playback();
        if ( step == 0 ) break;
 
-       //DBG( img->name() << " decode image " << frame );
+       
+       DBG( img->name() << " decode image " << frame );
        CMedia::DecodeStatus status = img->decode_video( frame );
-       // DBG( img->name() << " decoded image " << frame << " status " 
-       //      << CMedia::decode_error(status) );
+       DBG( img->name() << " decoded image " << frame << " status " 
+            << CMedia::decode_error(status) );
 
       switch( status )
       {
