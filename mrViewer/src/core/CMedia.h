@@ -256,6 +256,13 @@ class CMedia
     typedef std::vector< char* >          LMT;
     typedef std::vector< boost::thread* > thread_pool_t;
 
+    enum Looping
+    {
+    kNoLoop,
+    kLoop,
+    kPingPong
+    };
+    
     enum InterlaceType
     {
     kNoInterlace,
@@ -931,6 +938,9 @@ class CMedia
     // Set this image as the left (true) or right (false) eye on stereo decoding
     inline void is_left_eye( bool left ) { _is_left_eye = left; }
 
+    inline Looping looping() const { return _looping; }
+    inline void looping( Looping x ) { _looping = x; }
+    
     // Return the sequence filename for frame 'frame'
     std::string sequence_filename( const boost::int64_t frame );
 
@@ -1226,6 +1236,7 @@ class CMedia
     bool   _is_sequence;      //!< true if a sequence
     bool   _is_stereo;        //!< true if part of stereo pair of images
     StereoType   _stereo_type;//!< Stereo type
+    Looping      _looping;   //!< End behavior of playback (loop, stop, swing)
     char*  _fileroot;         //!< root name of image sequence
     char*  _filename;         //!< generated filename of a frame
     time_t _ctime, _mtime;    //!< creation and modification time of image

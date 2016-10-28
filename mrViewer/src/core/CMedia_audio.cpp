@@ -1827,7 +1827,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   boost::int64_t first = first_frame();
   boost::int64_t last  = last_frame();
 
-  if ( frame < first )
+  if ( frame < first && looping() != kPingPong )
       return kDecodeNoStream;
 
   if ( _audio_packets.empty() )
@@ -1889,12 +1889,14 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	{
 	   bool ok = in_audio_store( frame );
 	   if ( ok ) {
-	      audio_cache_t::const_iterator iter = _audio.begin();
-	      if ( (*iter)->frame() >= frame )
+               SCOPED_LOCK( _audio_mutex );
+               AVPacket& pkt = _audio_packets.front();
+               int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )
+                                  - _frame_offset;
+	      if ( pktframe >= frame )
 	      {
 		 _audio_buf_used = 0;
 		 got_audio = handle_audio_packet_seek( frame, false );
-		 continue;
 	      }
 	      return kDecodeOK;
 	   }
@@ -1906,9 +1908,9 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
       else
 	{
 	  AVPacket& pkt = _audio_packets.front();
-	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 
 #if 0
+	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
           // This does not work as decode_audio_packet may decode more
           // than one frame of audio (see Essa.wmv)
 	  bool ok = in_audio_store( frame );
