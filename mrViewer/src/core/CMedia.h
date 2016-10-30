@@ -1028,6 +1028,30 @@ class CMedia
 
   protected:
 
+    
+    /** 
+     * Given a frame number, returns another frame number taking into
+     * account the loops in the sequence.
+     * 
+     * @param f      frame in local units of image
+     * @param frame  frame to handle in loops
+     * 
+     * @return offset to bring local frame as returned by handle_loops
+     *                to timeline frame
+     */
+    int64_t loops_offset( boost::int64_t f,
+                          const boost::int64_t frame ) const;
+    
+    /** 
+     * Given a frame number, returns another frame number taking into
+     * account the loops in the sequence.
+     * 
+     * @param frame  frame to handle in loops
+     * 
+     * @return frame number in _frame_start - _frame_end range
+     */
+    int64_t handle_loops( const boost::int64_t frame ) const;
+    
     /** 
      * Given a frame number, returns whether subtitle for that frame is already
      * in packet queue.
