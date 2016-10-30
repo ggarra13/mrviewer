@@ -1674,8 +1674,10 @@ void aviImage::populate()
         const AVCodecParameters* par = stream->codecpar;
         if ( par == NULL ) continue;
 
+        AVCodecContext* ctx;
+
         AVCodec* codec = avcodec_find_decoder( par->codec_id );
-        AVCodecContext* ctx = avcodec_alloc_context3( codec );
+        ctx = avcodec_alloc_context3( codec );
         int err = avcodec_parameters_to_context( ctx, par );
         if ( err < 0 )
         {
