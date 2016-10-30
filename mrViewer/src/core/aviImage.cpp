@@ -1058,7 +1058,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 			       const AVPacket& p
 			       )
 {
-   AVPacket pkt = p;
+    AVPacket* pkt = (AVPacket*)&p;
 
   AVStream* stream = get_video_stream();
   assert( stream != NULL );
@@ -1067,14 +1067,14 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 
   bool eof_found = false;
   bool eof = false;
-  if ( pkt.data == NULL ) {
+  if ( pkt->data == NULL ) {
       eof = true;
-      pkt.size = 0;
+      pkt = NULL;
   }
 
-  while( pkt.size > 0 || pkt.data == NULL )
+  while( pkt || pkt->size > 0 )
   {
-     int err = decode( _video_ctx, _av_frame, &got_pict, &pkt );
+     int err = decode( _video_ctx, _av_frame, &got_pict, pkt );
 
 
      if ( got_pict ) {
@@ -1090,7 +1090,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
          // Turn PTS into a frame
          if ( ptsframe == AV_NOPTS_VALUE )
          {
-             ptsframe = get_frame( stream, pkt );
+             ptsframe = get_frame( stream, p );
              if ( ptsframe == AV_NOPTS_VALUE ) ptsframe = frame;
          }
          else
@@ -1133,7 +1133,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
         if ( eof )
         {
             eof_found = true;
-            store_image( ptsframe, pkt.dts );
+            store_image( ptsframe, p.dts );
             av_frame_unref(_av_frame);
             av_frame_unref(_filt_frame);
             continue;
@@ -1151,8 +1151,8 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
      if ( err == 0 ) return kDecodeLoopEnd;
 
 
-     pkt.size -= err;
-     pkt.data += err;
+     pkt->size -= err;
+     pkt->data += err;
   }
 
   return kDecodeMissingFrame;
@@ -1615,7 +1615,7 @@ bool aviImage::readFrame(int64_t & pts)
 
         if (r < 0)
         {
-            packet.data = 0;
+            packet.data = NULL;
             packet.size = 0;
         }
 
@@ -2423,8 +2423,6 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
     //debug_video_packets( dts, "queue_packets");
   
-    if ( dts > last_frame() ) dts = last_frame();
-    else if ( dts < first_frame() ) dts = first_frame();
 
     return dts;
 }
@@ -2448,11 +2446,12 @@ bool aviImage::fetch(const boost::int64_t frame)
    bool got_audio = !has_audio();
    bool got_subtitle = !has_subtitle();
 
+   int64_t f = frame;
 
-   if ( (!got_video || !got_audio || !got_subtitle) && frame != _expected )
+   if ( (!got_video || !got_audio || !got_subtitle) && f != _expected )
    {
-       DBG( "frame " << frame << "  EXPECTED " << _expected );
-       bool ok = seek_to_position( frame );
+       //TRACE( "frame " << frame << " f: " << f << " EXPECTED " << _expected );
+       bool ok = seek_to_position( f );
        if ( !ok )
            IMG_ERROR("seek_to_position: Could not seek to frame " 
                      << frame );
@@ -2481,12 +2480,12 @@ bool aviImage::fetch(const boost::int64_t frame)
 
 
 
-  boost::int64_t dts = queue_packets( frame, false, got_video, 
+  boost::int64_t dts = queue_packets( f, false, got_video, 
 				      got_audio, got_subtitle);
 
-
+  // f = handle_loops( dts );
+  // int64_t offset = loops_offset( f, dts );
   _dts = dts;
-  assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected = _dts + 1;
   _expected_audio = _adts + 1;
@@ -2520,7 +2519,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 }
 
 
-bool aviImage::frame( const boost::int64_t f )
+bool aviImage::frame( const boost::int64_t frame )
 {
 
     size_t vpkts = _video_packets.size();
@@ -2546,13 +2545,15 @@ bool aviImage::frame( const boost::int64_t f )
         return true;
     }
 
-    if ( f < _frameStart )    _dts = _adts = _frameStart;
-    else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
+    int64_t f = handle_loops( frame );
+    
+    // if ( f < _frameStart )    _dts = _adts = _frameStart;
+    // else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
     // else                      _dts = _adts = f;
 
 
 
-  bool ok = fetch(f);
+  bool ok = fetch(frame);
   
 
 
