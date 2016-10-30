@@ -1,3 +1,21 @@
+v3.3.5   - Made loop mode be an attribute of the movie or sequence
+	   loaded instead of the timeline.
+	   It is now possible, for example, to have a foreground
+	   sequence with loop on and a background movie with swing
+	   (ping pong) on.
+	 - Allowed image sequences to extend beyond their natural
+	   image boundaries.  The behavior is controlled by the
+	   loop mode.  If a sequence of 100 frames is played for
+	   200 frames, the end behavior of the sequence will be to
+	   stop, loop or ping pong as set accordingly.
+	   Note that this feature does not yet work with videos.
+	 - Added the -b flag to the command line to load a sequence
+	   or a movie in the background of the view window.
+	 - Made reloading of images work for images in the background
+	   of the view window.
+	 - Bug fixed a problem in ping pong playback of some short
+	   movie files.
+
 v3.3.4   - Bug fixed reloading of images from disk when the creation
 	   or modification time changed and the image is not complete.
 	   You will get an error when loading the image, but it will
