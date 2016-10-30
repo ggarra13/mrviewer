@@ -264,10 +264,15 @@ EndStatus handle_loop( boost::int64_t& frame,
     }
     else
     {
-       if ( img->last_frame() < last )
-           last = img->last_frame();
-       if ( img->first_frame() > first )
-           first = img->first_frame();
+#if 1
+        if ( img->has_video() )
+        {
+            if ( img->last_frame() < last )
+                last = img->last_frame();
+            if ( img->first_frame() > first )
+                first = img->first_frame();
+        }
+#endif
     }
 
 
@@ -348,7 +353,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 frame = last;
                 step  = -1;
-                img->seek( frame );
                 img->playback( CMedia::kBackwards );
                 if (fg)
                     view->playback( ImageView::kBackwards );
@@ -498,13 +502,18 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    }
    else
    {
-       CMedia::Mutex& m = img->video_mutex();
-       SCOPED_LOCK( m );
+#if 1
+       if ( img->has_video() )
+       {
+           CMedia::Mutex& m = img->video_mutex();
+           SCOPED_LOCK( m );
 
-       if ( last > img->last_frame() )
-           last = img->last_frame();
-       else if ( img->first_frame() > first )
-           first = img->first_frame();
+           if ( last > img->last_frame() )
+               last = img->last_frame();
+           else if ( img->first_frame() > first )
+               first = img->first_frame();
+       }
+#endif
    }
 
    if ( f > last )
