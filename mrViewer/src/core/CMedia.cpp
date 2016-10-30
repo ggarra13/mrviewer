@@ -414,7 +414,7 @@ _audio_engine( NULL )
   _fileroot = strdup( other->fileroot() );
   _filename = strdup( other->filename() );
 
-  TRACE( "copy constructor" );
+  // TRACE( "copy constructor" );
 
   audio_initialize();
   mrv::PacketQueue::initialize();
@@ -615,32 +615,29 @@ void CMedia::allocate_pixels( const boost::int64_t& frame,
 
 mrv::image_type_ptr CMedia::left() const
 {
-    assert( _frame >= _frame_start );
-    assert( _frame <= _frame_end );
-   boost::uint64_t idx = _frame - _frame_start;
-   if ( _is_sequence && _sequence[idx] )
-      return _sequence[idx];
-   else
-       if ( _stereo[0] )
-           return _stereo[0];
-       else
-           return _hires;
+    int64_t f = handle_loops( _frame );
+    boost::uint64_t idx = f - _frame_start;
+    if ( _is_sequence && _sequence[idx] )
+        return _sequence[idx];
+    else
+        if ( _stereo[0] )
+            return _stereo[0];
+        else
+            return _hires;
 }
 
 mrv::image_type_ptr CMedia::right() const
 {
-    assert( _frame >= _frame_start );
-    assert( _frame <= _frame_end );
-    boost::uint64_t idx = _frame - _frame_start;
-   if ( _right_eye ) {
-       return _right_eye->left();
-   }
-   if ( _is_sequence && _right[idx] )
-      return _right[idx];
-   else
-      return _stereo[1];
+    int64_t f = handle_loops( _frame );
+    boost::uint64_t idx = f - _frame_start;
+    if ( _right_eye ) {
+        return _right_eye->left();
+    }
+    if ( _is_sequence && _right[idx] )
+        return _right[idx];
+    else
+        return _stereo[1];
 }
-
 
 
 
@@ -652,7 +649,10 @@ const mrv::Recti CMedia::display_window( boost::int64_t f ) const
     if ( !_displayWindow || _numWindows == 0 ) 
         return mrv::Recti( 0, 0, width(), height() );
 
+    
     if ( f == AV_NOPTS_VALUE ) f = _frame;
+
+    f = handle_loops( f );
     boost::int64_t idx = f - _frame_start;
 
     if ( idx >= (int64_t)_numWindows ) idx = _numWindows-1;
@@ -671,6 +671,8 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
         return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
+    
+    f = handle_loops( f );
     boost::int64_t idx = f - _frame_start;
 
     if ( idx >= (int64_t)_numWindows ) idx = _numWindows-1;
@@ -686,6 +688,8 @@ const mrv::Recti CMedia::data_window( boost::int64_t f ) const
         return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
+    
+    f = handle_loops( f );
     boost::uint64_t idx = f - _frame_start;
 
     if ( idx >= _numWindows ) idx = _numWindows-1;
@@ -703,6 +707,7 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
         return mrv::Recti( 0, 0, width(), height() );
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
+    f = handle_loops( f );
     boost::uint64_t idx = f - _frame_start;
 
     if ( idx >= _numWindows ) idx = _numWindows-1;
@@ -720,7 +725,9 @@ void CMedia::display_window( const int xmin, const int ymin,
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_displayWindow )
       _displayWindow = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = frame - _frame_start;
+  
+  int64_t f = handle_loops( frame );
+  boost::uint64_t idx = f - _frame_start;
 
   if ( idx >= _numWindows || idx < 0 ) return;
 
@@ -739,7 +746,9 @@ void CMedia::display_window2( const int xmin, const int ymin,
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_displayWindow2 )
       _displayWindow2 = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = frame - _frame_start;
+
+  int64_t f = handle_loops( frame );
+  boost::uint64_t idx = f - _frame_start;
 
   if ( idx >= _numWindows || idx < 0 ) return;
 
@@ -758,7 +767,9 @@ void CMedia::data_window( const int xmin, const int ymin,
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_dataWindow )
       _dataWindow = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = frame - _frame_start;
+  
+  int64_t f = handle_loops( frame );
+  boost::uint64_t idx = f - _frame_start;
 
   if ( idx >= _numWindows || idx < 0 ) return;
 
@@ -779,7 +790,9 @@ void CMedia::data_window2( const int xmin, const int ymin,
   _numWindows = _frame_end - _frame_start + 1;
   if ( !_dataWindow2 )
       _dataWindow2 = new mrv::Recti[_numWindows];
-  boost::uint64_t idx = frame - _frame_start;
+  
+  int64_t f = handle_loops( frame );
+  boost::uint64_t idx = f - _frame_start;
 
   if ( idx >= _numWindows || idx < 0 ) return;
 
@@ -1017,25 +1030,25 @@ bool CMedia::has_changed()
     {
       if ( !_sequence ) return false;
 
-      std::string file = sequence_filename(_frame);
+      boost::int64_t f = handle_loops( _frame );
+      std::string file = sequence_filename(f);
+
 
       int result = stat( file.c_str(), &sbuf );
-      if ( (result == -1) || (_frame < _frame_start) ||
-			      ( _frame > _frame_end ) ) return false;
+      if ( (result == -1) || (f < _frame_start) ||
+			      ( f > _frame_end ) ) return false;
 
-
-      boost::uint64_t idx = _frame - _frame_start;
+      boost::uint64_t idx = f - _frame_start;
 
       if ( !_sequence[idx] ||
            _sequence[idx]->mtime() != sbuf.st_mtime ||
            _sequence[idx]->ctime() != sbuf.st_ctime )
 	{
-	   assert( _frame == _sequence[idx]->frame() );
+	   assert( f == _sequence[idx]->frame() );
 	   // update frame...
 	   _sequence[idx].reset();
 
-           
-           if ( fetch( _frame ) )
+           if ( fetch( f ) )
            {
                _mtime = sbuf.st_mtime;
                _ctime = sbuf.st_ctime;
@@ -1056,7 +1069,8 @@ bool CMedia::has_changed()
       if ( ( _mtime != sbuf.st_mtime ) ||
            ( _ctime != sbuf.st_ctime ) )
       {
-          if ( fetch( _frame ) )
+          boost::int64_t f = handle_loops( _frame );
+          if ( fetch( f ) )
           {
               _mtime = sbuf.st_mtime;
               _ctime = sbuf.st_ctime;
@@ -1403,7 +1417,11 @@ void CMedia::channel( const char* c )
   {
       SCOPED_LOCK( _mutex );
       clear_cache();
-      fetch(_frame);
+      boost::int64_t f = handle_loops( _frame );
+      if ( fetch( f ) )
+      {
+          cache( _hires );
+      }
       refresh();
   }
 }
@@ -1929,9 +1947,9 @@ bool CMedia::frame( const boost::int64_t f )
       return false;
     }
 
-  if ( f < _frameStart )     _dts = _frameStart;
-  else if ( f > _frameEnd )  _dts = _frameEnd;
-  else                       _dts = f;
+  // if ( f < _frameStart )     _dts = _frameStart;
+  // else if ( f > _frameEnd )  _dts = _frameEnd;
+  // else                       _dts = f;
 
 
   AVPacket pkt;
@@ -1969,13 +1987,13 @@ void CMedia::seek( const boost::int64_t f )
 #endif
 
 
-  _seek_req   = true;
   _seek_frame = f;
+  _seek_req   = true;
 
   if ( _right_eye )
   {
-      _right_eye->_seek_req = true;
       _right_eye->_seek_frame = f;
+      _right_eye->_seek_req = true;
   }
 
   if ( stopped() || saving() )
@@ -1995,8 +2013,6 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 {
 
   boost::int64_t f = pic->frame();
-  if      ( f < _frame_start ) f = _frame_start;
-  else if ( f > _frame_end )   f = _frame_end;
 
   boost::int64_t idx = f - _frame_start;
   if ( seq[idx] ) return;
@@ -2110,9 +2126,9 @@ bool CMedia::is_cache_filled(boost::int64_t frame)
 
     SCOPED_LOCK( _mutex );
 
-    if ( frame < _frame_start ) return false;
-    else if ( frame > _frame_end )  return false;
-
+    if ( frame > _frame_end ) return false;
+    else if ( frame < _frame_start ) return false;
+    
     boost::uint64_t i = frame - _frame_start;
     if ( !_sequence[i] ) return false;
 
@@ -2657,14 +2673,65 @@ bool CMedia::find_subtitle( const boost::int64_t f )
   return false;
 }
 
-bool CMedia::find_image( const boost::int64_t frame )
-{ 
+int64_t CMedia::loops_offset( boost::int64_t f,
+                              const boost::int64_t frame ) const
+{
+  if ( looping() == kLoop )
+  {
+      while ( frame < f )
+      {
+          int64_t len = duration();
+          f += len;
+      }
+      // std::cerr << frame << " len " << len << " f " << f << std::endl;
+  }
+  else if ( looping() == kPingPong )
+  {
+      int64_t len = duration();
+      while ( frame < f )
+      {
+          int64_t len = duration();
+          f += len;
+      }
+  }
+  return f;
+}
+
+
+int64_t CMedia::handle_loops( const boost::int64_t frame ) const
+{
   boost::int64_t f = frame;
+  
+  if ( looping() == kLoop )
+  {
+      int64_t len = duration();
+      f = (f-1) % len + _frameStart;
+      // std::cerr << frame << " len " << len << " f " << f << std::endl;
+  }
+  else if ( looping() == kPingPong )
+  {
+      int64_t len = duration();
+      f -= 1;
+      int64_t v   = f / len;
+      f = f % len + _frameStart;
+      if ( v % 2 == 1 )
+      {
+          f = len - f + _frameStart;
+      }
+  }
+  
   if ( f > _frameEnd )       f = _frameEnd;
   else if ( f < _frameStart) f = _frameStart;
 
+  return f;
+}
+
+bool CMedia::find_image( const boost::int64_t frame )
+{ 
   if ( ( playback() == kStopped ) && _right_eye && _stereo_type )
-      _right_eye->find_image(f);
+      _right_eye->find_image(frame);
+
+  boost::int64_t f = handle_loops( frame );
 
   _video_pts   = f / _orig_fps;
   _video_clock = double(av_gettime_relative()) / 1000000.0;
@@ -2685,7 +2752,7 @@ bool CMedia::find_image( const boost::int64_t frame )
             _stereo[1] = _right[idx];
 
         assert( _hires != NULL );
-        _frame = f;
+        _frame = frame;
 
         free(_filename);
         _filename = NULL;
@@ -2719,7 +2786,7 @@ bool CMedia::find_image( const boost::int64_t frame )
         should_load = true;
     }
 
-
+  
   if ( should_load )
   {
      if ( fs::exists(file) )
@@ -2742,7 +2809,7 @@ bool CMedia::find_image( const boost::int64_t frame )
      }
   }
 
-  _frame = f;
+  _frame = frame;
 
   refresh();
   return true;
