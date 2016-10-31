@@ -8,7 +8,8 @@ v3.3.5   - Made loop mode be an attribute of the movie or sequence
 	   loop mode.  If a sequence of 100 frames is played for
 	   200 frames, the end behavior of the sequence will be to
 	   stop, loop or ping pong as set accordingly.
-	   Note that this feature does not yet work with videos.
+	   Note that this feature does not yet work with videos or
+	   with sequences with audio attached.
 	 - Added the -b flag to the command line to load a sequence
 	   or a movie in the background of the view window.
 	 - Made reloading of images work for images in the background
