@@ -440,7 +440,6 @@ EndStatus handle_loop( boost::int64_t& frame,
             {
                 frame = first;
                 step = 1;
-                img->seek( frame );
                 img->playback( CMedia::kForwards );
                 if (fg)
                     view->playback( ImageView::kForwards );
