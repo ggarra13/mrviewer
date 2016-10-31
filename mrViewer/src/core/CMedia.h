@@ -260,7 +260,8 @@ class CMedia
     {
     kNoLoop,
     kLoop,
-    kPingPong
+    kPingPong,
+    kUnknownLoop
     };
     
     enum InterlaceType
@@ -838,6 +839,16 @@ class CMedia
         return _audio_index;
     }
 
+    /** 
+     * Given a frame number, returns another frame number taking into
+     * account the loops in the sequence.
+     * 
+     * @param frame  frame to handle in loops
+     * 
+     * @return frame number in _frame_start - _frame_end range
+     */
+    int64_t handle_loops( const boost::int64_t frame ) const;
+    
 
     static void video_cache_size( unsigned x ) { _video_cache_size = x; }
 
@@ -1041,16 +1052,6 @@ class CMedia
      */
     int64_t loops_offset( boost::int64_t f,
                           const boost::int64_t frame ) const;
-    
-    /** 
-     * Given a frame number, returns another frame number taking into
-     * account the loops in the sequence.
-     * 
-     * @param frame  frame to handle in loops
-     * 
-     * @return frame number in _frame_start - _frame_end range
-     */
-    int64_t handle_loops( const boost::int64_t frame ) const;
     
     /** 
      * Given a frame number, returns whether subtitle for that frame is already
