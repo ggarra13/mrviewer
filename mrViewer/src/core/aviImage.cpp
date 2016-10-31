@@ -1072,7 +1072,7 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
       pkt = NULL;
   }
 
-  while( pkt || pkt->size > 0 )
+  while( ( !eof_found && !pkt ) || pkt->size > 0 )
   {
      int err = decode( _video_ctx, _av_frame, &got_pict, pkt );
 
@@ -1621,8 +1621,8 @@ bool aviImage::readFrame(int64_t & pts)
 
         if ( video_stream_index() == packet.stream_index)
         {
-            if (avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
-                                       &packet) <= 0)
+            if ((r = avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
+                                            &packet)) <= 0)
             {
                 break;
             }
@@ -2545,15 +2545,12 @@ bool aviImage::frame( const boost::int64_t frame )
         return true;
     }
 
-    int64_t f = handle_loops( frame );
     
     // if ( f < _frameStart )    _dts = _adts = _frameStart;
     // else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
-    // else                      _dts = _adts = f;
+    // else  _dts = _adts = frame;
 
-
-
-  bool ok = fetch(frame);
+    bool ok = fetch(frame);
   
 
 
