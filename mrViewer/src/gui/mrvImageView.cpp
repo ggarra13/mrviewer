@@ -1591,6 +1591,13 @@ void ImageView::timeout()
    if ( bg && bg != fg )
    {
        CMedia* img = bg->image();
+      // If not a video image check if image has changed on disk
+      if ( ! img->has_video() &&
+           uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
+      {
+          img->has_changed();
+      }
+      
        if ( img->stopped() && playback() != kStopped )
        {
            if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
@@ -5180,8 +5187,15 @@ void ImageView::foreground( mrv::media fg )
       
         if ( img )
         {
-            looping( img->looping() );
-        
+            if ( img->looping() == CMedia::kUnknownLoop )
+            {
+                img->looping( looping() );
+            }
+            else
+            {
+                looping( img->looping() );
+            }
+            
             // Per session gamma: requested by Willa
             if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
@@ -5610,7 +5624,7 @@ void ImageView::step_frame( int64_t n )
 
   int64_t f = frame();
 
-  CMedia::Looping loop = (CMedia::Looping)uiMain->uiLoopMode->value();
+  CMedia::Looping loop = looping();
 
   if ( n > 0 )
     {
@@ -6000,6 +6014,11 @@ void ImageView::volume( float v )
   sprintf( buf, "Volume %g", v );
   send_network( buf );
 
+}
+
+CMedia::Looping ImageView::looping() const
+{
+    return (CMedia::Looping) uiMain->uiLoopMode->value();
 }
 
 /// Set Playback looping mode
