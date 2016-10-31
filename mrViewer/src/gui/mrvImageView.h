@@ -323,6 +323,9 @@ class server;
       bool next_channel();
       bool previous_channel();
 
+      /// Get Playback looping mode from timeline widget
+      CMedia::Looping looping() const;
+      
     /// Set Playback looping mode
       void  looping( CMedia::Looping x );
 
