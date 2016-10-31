@@ -265,7 +265,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     else
     {
 #if 1
-        if ( img->has_video() )
+        if ( img->has_video() || img->has_audio() )
         {
             if ( img->last_frame() < last )
                 last = img->last_frame();
@@ -503,7 +503,7 @@ CMedia::DecodeStatus check_loop( const int64_t frame,
    else
    {
 #if 1
-       if ( img->has_video() )
+       if ( img->has_video() || img->has_audio() )
        {
            CMedia::Mutex& m = img->video_mutex();
            SCOPED_LOCK( m );
@@ -861,6 +861,8 @@ void video_thread( PlaybackData* data )
 
        
        DBG( img->name() << " decode image " << frame );
+       // int64_t f = img->handle_loops( frame );
+       DBG( img->name() << " decode2 image " << frame );
        CMedia::DecodeStatus status = img->decode_video( frame );
        DBG( img->name() << " decoded image " << frame << " status " 
             << CMedia::decode_error(status) );
@@ -1070,6 +1072,7 @@ void decode_thread( PlaybackData* data )
       step = (int) img->playback();
       frame += step;
 
+
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
 
 
@@ -1115,10 +1118,12 @@ void decode_thread( PlaybackData* data )
       // After read, when playing backwards or playing audio files,
       // decode position may be several frames advanced as we buffer
       // multiple frames, so get back the dts frame from image.
+
       if ( img->has_video() || img->has_audio() )
       {
           frame = img->dts();
       }
+
 
    }
 
