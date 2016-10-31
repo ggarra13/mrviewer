@@ -150,7 +150,7 @@ _internal( false ),
 _is_sequence( false ),
 _is_stereo( false ),
 _stereo_type( kNoStereo ),
-_looping( kLoop ),
+_looping( kUnknownLoop ),
 _fileroot( NULL ),
 _filename( NULL ),
 _ctime( 0 ),
@@ -243,7 +243,7 @@ _w( 0 ),
 _h( 0 ),
 _is_stereo( false ),
 _stereo_type( kNoStereo ),
-_looping( kLoop ),
+_looping( kUnknownLoop ),
 _is_sequence( false ),
 _fileroot( NULL ),
 _filename( NULL ),
@@ -1947,9 +1947,9 @@ bool CMedia::frame( const boost::int64_t f )
       return false;
     }
 
-  // if ( f < _frameStart )     _dts = _frameStart;
-  // else if ( f > _frameEnd )  _dts = _frameEnd;
-  // else                       _dts = f;
+  if ( f < _frameStart )     _dts = _frameStart;
+  else if ( f > _frameEnd )  _dts = _frameEnd;
+  else                       _dts = f;
 
 
   AVPacket pkt;
