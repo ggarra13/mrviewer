@@ -2463,6 +2463,7 @@ void ImageBrowser::handle_dnd()
     return ok;
   }
 
+
   /** 
    * Switch to a new frame on one image if in EDL mode or
    * in all images of reel if not.
@@ -2517,8 +2518,8 @@ void ImageBrowser::handle_dnd()
                  view()->stop();
 
 	     size_t i = t->index( f );
-	     f = t->global_to_local( f );
              img = t->image_at( f );
+	     f = t->global_to_local( f );
              if ( !img ) return;
 
 
