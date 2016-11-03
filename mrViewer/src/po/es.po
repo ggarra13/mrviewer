@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-10-31 19:49-0300\n"
+"POT-Creation-Date: 2016-11-03 17:47-0300\n"
 "PO-Revision-Date: 2016-10-30 19:21-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -91,11 +91,11 @@ msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:610
+#: core/mrvPlayback.cpp:609
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:615
+#: core/mrvPlayback.cpp:614
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -156,7 +156,7 @@ msgstr " falló. "
 msgid " for channel"
 msgstr " para el canal "
 
-#: core/CMedia_audio.cpp:1974 core/aviImage.cpp:3148
+#: core/CMedia_audio.cpp:1974 core/aviImage.cpp:3150
 msgid " for frame "
 msgstr " para cuadro "
 
@@ -204,7 +204,7 @@ msgstr " no encontrado, eligiendo "
 msgid " returned "
 msgstr " retornó "
 
-#: core/aviImage.cpp:3159
+#: core/aviImage.cpp:3161
 msgid " status: "
 msgstr " estatus: "
 
@@ -1112,7 +1112,7 @@ msgstr "Azul"
 msgid "Blue value of image pixel under mouse."
 msgstr "Valor Azul de la imagen del pixel bajo el ratón."
 
-#: standalone/main.cpp:393
+#: standalone/main.cpp:394
 msgid "Boost exception: "
 msgstr "Excepción de Boost: "
 
@@ -2103,11 +2103,11 @@ msgstr "Decodificacion sin Pista"
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
-#: core/CMedia_audio.cpp:1972 core/aviImage.cpp:3146
+#: core/CMedia_audio.cpp:1972 core/aviImage.cpp:3148
 msgid "Decode audio error: "
 msgstr "Error de decodificación de audio:"
 
-#: core/aviImage.cpp:3157
+#: core/aviImage.cpp:3159
 msgid "Decode video error seek frame "
 msgstr "Error de decodificación de video buscando imagen "
 
@@ -2594,7 +2594,7 @@ msgstr "Nombre"
 msgid "Filename of the clip"
 msgstr "Nombre del archivo del clip"
 
-#: standalone/main.cpp:389
+#: standalone/main.cpp:390
 msgid "Filesystem error: "
 msgstr "Error del sistema de archivos: "
 
@@ -5667,7 +5667,7 @@ msgstr "Indefinido"
 msgid "Undo Last Shape Drawn"
 msgstr "Deshacer La Última Figura Dibujada"
 
-#: standalone/main.cpp:377
+#: standalone/main.cpp:378
 msgid "Unhandled exception"
 msgstr "Excepción sin manejo"
 
@@ -5705,7 +5705,7 @@ msgstr "Profundidad de bits desconocida"
 msgid "Unknown destination video frame format: "
 msgstr "Formato de cuadro de vídeo destinatario desconocido: "
 
-#: standalone/main.cpp:397
+#: standalone/main.cpp:398
 msgid "Unknown error"
 msgstr "Error Desconocido"
 
