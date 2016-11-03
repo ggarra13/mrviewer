@@ -620,7 +620,8 @@ void audio_thread( PlaybackData* data )
               DBG( "Decode No Stream" );
               timer.setDesiredFrameRate( img->play_fps() );
               timer.waitUntilNextFrameIsDue();
-              if ( fg && reel->edl && img->is_left_eye() )
+              if ( fg && !img->has_picture() && reel->edl &&
+                   img->is_left_eye() )
               {
                   int64_t f = frame + reel->location(img) - img->first_frame();
                   f -= img->audio_offset();
@@ -675,7 +676,7 @@ void audio_thread( PlaybackData* data )
 
 
 
-      if ( fg && img->has_audio_data() && reel->edl && img->is_left_eye() )
+      if ( fg && !img->has_picture() && reel->edl && img->is_left_eye() )
       {
           int64_t offset = img->audio_offset();
           int64_t f = frame + reel->location(img) - img->first_frame();
@@ -991,13 +992,10 @@ void video_thread( PlaybackData* data )
       bool ok = img->find_image( frame );
 
 
-      if ( fg && !img->has_audio_data() && reel->edl && img->is_left_eye() )
+      if ( fg && reel->edl && img->is_left_eye() )
       {
-	 int64_t f = frame + reel->location(img) - img->first_frame();
-         if ( frame <= img->last_frame() )
-         {
-             view->frame( f );
-         }
+          int64_t f = frame + reel->location(img) - img->first_frame();
+          view->frame( f );
       }
 
       frame += step;
