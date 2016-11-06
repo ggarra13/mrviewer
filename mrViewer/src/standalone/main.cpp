@@ -215,7 +215,7 @@ int main( int argc, char** argv )
   mrv::set_root_path( argc, argv );
 
 
-  fltk::lock(); // start FLTK's lock mechanism
+  //fltk::lock(); // start FLTK's lock mechanism
 
   // Adjust ui based on preferences
   for (;;) {
