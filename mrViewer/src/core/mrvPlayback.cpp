@@ -78,14 +78,9 @@ namespace
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-//#undef DBG
-//#define DBG(x) std::cerr << x << std::endl
+// #undef DBG
+// #define DBG(x) std::cerr << x << std::endl
 
-#if 0
-#  define DEBUG_DECODE
-#  define DEBUG_VIDEO
-#  define DEBUG_AUDIO
-#endif
 
 //#define DEBUG_THREADS
 
