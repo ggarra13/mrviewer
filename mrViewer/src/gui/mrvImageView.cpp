@@ -5594,6 +5594,11 @@ void ImageView::seek( const int64_t f )
 {
     _preframe = f;
 
+    if ( std::abs( f - frame() ) < fps() / 2.0 )
+    {
+        stop();
+    }
+
     mrv::ImageBrowser* b = browser();
     if ( b ) b->seek( f );
 
@@ -5601,8 +5606,9 @@ void ImageView::seek( const int64_t f )
 
     update_color_info();
     mouseMove( lastX, lastY );
-
+    
     _lastFrame = f;
+
 }
 
 
@@ -5924,22 +5930,23 @@ void ImageView::stop()
     _last_fps = 0.0;
     _real_fps = 0.0;
 
-  stop_playback();
+    stop_playback();
 
-  send_network( "stop" );
+    send_network( "stop" );
 
-  if ( uiMain->uiPlayForwards )
-      uiMain->uiPlayForwards->value(0);
+    if ( uiMain->uiPlayForwards )
+        uiMain->uiPlayForwards->value(0);
 
-  if ( uiMain->uiPlayBackwards )
-      uiMain->uiPlayBackwards->value(0);
+    if ( uiMain->uiPlayBackwards )
+        uiMain->uiPlayBackwards->value(0);
 
 
-  seek( int64_t(timeline()->value()) );
+    seek( int64_t(timeline()->value()) );
 
-  redraw();
+    redraw();
 
-  thumbnails();
+    thumbnails();
+
 }
 
 
