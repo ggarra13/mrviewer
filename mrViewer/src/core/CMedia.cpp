@@ -1892,7 +1892,6 @@ void CMedia::stop()
 }
 
 
-
 /** 
  * 
  * @return the image's name sans directory
@@ -3078,7 +3077,41 @@ void CMedia::add_shape( mrv::shape_type_ptr s )
 char *const get_error_text(const int error)
 {
     static char error_buffer[255];
-    av_strerror(error, error_buffer, sizeof(error_buffer));
+    if ( error < 0 )
+        av_strerror(error, error_buffer, sizeof(error_buffer));
+    else
+    {
+        switch( error )
+        {
+            case CMedia::kDecodeMissingFrame:
+                strcpy( error_buffer, _( "Decode Missing Frame" ) );
+                break;
+            case CMedia::kDecodeOK:
+                strcpy( error_buffer, _( "Decode OK" ) );
+                break;
+            case CMedia::kDecodeDone:
+                strcpy( error_buffer, _( "Decode Done" ) );
+                break;
+            case CMedia::kDecodeError:
+                strcpy( error_buffer, _( "Decode Error" ) );
+                break;
+            case CMedia::kDecodeMissingSamples:
+                strcpy( error_buffer, _( "Decode Missing Samples" ) );
+                break;
+            case CMedia::kDecodeNoStream:
+                strcpy( error_buffer, _( "Decode No Stream" ) );
+                break;
+            case CMedia::kDecodeLoopStart:
+                strcpy( error_buffer, _( "Decode Loop Start" ) );
+                break;
+            case CMedia::kDecodeLoopEnd:
+                strcpy( error_buffer, _( "Decode Loop End" ) );
+                break;
+            case CMedia::kDecodeBufferFull:
+                strcpy( error_buffer, _( "Decode Buffer Full" ) );
+                break;
+        }
+    }
     return error_buffer;
 }
 
