@@ -73,11 +73,9 @@ bool LogDisplay::show  = false;
 
   void LogDisplay::clear()
   {
-      fltk::lock();
       buffer_->text("");
       stylebuffer_->text("");
       _lines = 0;
-      fltk::unlock();
   }
 
   void LogDisplay::save( const char* file )
@@ -114,7 +112,6 @@ bool LogDisplay::show  = false;
   
   void LogDisplay::info( const char* x )
   {
-      fltk::lock();
     buffer_->append( x );
 
     size_t t = strlen(x);
@@ -126,12 +123,10 @@ bool LogDisplay::show  = false;
     // Set the line to end of text display
     if ( visible() && fltk::in_main_thread() )
         scroll( _lines, 0 );
-    fltk::unlock();
   }
 
   void LogDisplay::warning( const char* x )
   {
-      fltk::lock();
     buffer_->append( x );
 
     size_t t = strlen(x);
@@ -144,12 +139,10 @@ bool LogDisplay::show  = false;
     // Set the line to end of text display
     if ( visible() && fltk::in_main_thread() )
         scroll( _lines, 0 );
-    fltk::unlock();
   }
 
   void LogDisplay::error( const char* x )
   {
-      fltk::lock();
     buffer_->append( x );
 
     size_t t = strlen(x);
@@ -163,7 +156,6 @@ bool LogDisplay::show  = false;
     if ( visible() && fltk::in_main_thread() )
         scroll( _lines, 0 );
 
-    fltk::unlock();
     
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
     {
