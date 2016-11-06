@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-11-03 17:47-0300\n"
+"POT-Creation-Date: 2016-11-05 22:40-0300\n"
 "PO-Revision-Date: 2016-10-30 19:21-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -26,7 +26,7 @@ msgstr ""
 "\n"
 "No hay audio o video en el archivo"
 
-#: core/CMedia.cpp:2384
+#: core/CMedia.cpp:2383
 msgid ""
 "\n"
 "\n"
@@ -87,15 +87,15 @@ msgstr ""
 msgid " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 msgstr " ( %02<PRId64>:%02<PRId64>:%02<PRId64>  %d ms. )"
 
-#: core/mrvPlayback.cpp:876
+#: core/mrvPlayback.cpp:871
 msgid " - Decode of image frame "
 msgstr " - Decodificación de cuadro de imagen "
 
-#: core/mrvPlayback.cpp:609
+#: core/mrvPlayback.cpp:604
 msgid " - decode Error audio frame "
 msgstr "- error de decodificacion del cuadro de audio "
 
-#: core/mrvPlayback.cpp:614
+#: core/mrvPlayback.cpp:609
 msgid " - decode missing audio frame "
 msgstr "- decodificación faltante en cuadro de audio "
 
@@ -160,7 +160,7 @@ msgstr " para el canal "
 msgid " for frame "
 msgstr " para cuadro "
 
-#: core/CMedia.cpp:2385
+#: core/CMedia.cpp:2384
 msgid " for stream #"
 msgstr " para pista #"
 
@@ -184,7 +184,7 @@ msgstr "  tiene diferente ventana de vista que "
 msgid " instead"
 msgstr " en remplazo"
 
-#: core/CMedia.cpp:2806
+#: core/CMedia.cpp:2805
 msgid " is missing."
 msgstr " está faltante."
 
@@ -200,7 +200,7 @@ msgstr " no encontrada en el carrete"
 msgid " not found, choosing "
 msgstr " no encontrado, eligiendo "
 
-#: core/mrvPlayback.cpp:877
+#: core/mrvPlayback.cpp:872
 msgid " returned "
 msgstr " retornó "
 
@@ -350,7 +350,7 @@ msgstr ", frecuencia "
 msgid ", sample rate "
 msgstr ", velocidad de sampleo "
 
-#: core/CMedia.cpp:2385
+#: core/CMedia.cpp:2384
 msgid ", type "
 msgstr ", tipo "
 
@@ -1021,7 +1021,7 @@ msgstr "Auto cargar imágenes si cambian en el disco"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:577 gui/mrvImageView.cpp:6056
+#: gui/mrvColorInfo.cpp:577 gui/mrvImageView.cpp:6063
 msgid "B"
 msgstr "B"
 
@@ -2067,39 +2067,39 @@ msgstr "Fecha"
 msgid "Decimal"
 msgstr "Decimal"
 
-#: core/CMedia.cpp:132
+#: core/CMedia.cpp:132 core/CMedia.cpp:3111
 msgid "Decode Buffer Full"
 msgstr "Buffer de Decodificación Lleno"
 
-#: core/CMedia.cpp:126
+#: core/CMedia.cpp:126 core/CMedia.cpp:3093
 msgid "Decode Done"
 msgstr "Decodificación Terminada"
 
-#: core/CMedia.cpp:127
+#: core/CMedia.cpp:127 core/CMedia.cpp:3096
 msgid "Decode Error"
 msgstr "Error de Decodificación"
 
-#: core/CMedia.cpp:131
+#: core/CMedia.cpp:131 core/CMedia.cpp:3108
 msgid "Decode Loop End"
 msgstr "Loop de Final en Decodificación"
 
-#: core/CMedia.cpp:130
+#: core/CMedia.cpp:130 core/CMedia.cpp:3105
 msgid "Decode Loop Start"
 msgstr "Loop de Comienzo en Decodificación"
 
-#: core/CMedia.cpp:124
+#: core/CMedia.cpp:124 core/CMedia.cpp:3087
 msgid "Decode Missing Frame"
 msgstr "Decodificación Faltante de Cuadro"
 
-#: core/CMedia.cpp:128
+#: core/CMedia.cpp:128 core/CMedia.cpp:3099
 msgid "Decode Missing Samples"
 msgstr "Decodificacion Faltante de Samples"
 
-#: core/CMedia.cpp:129
+#: core/CMedia.cpp:129 core/CMedia.cpp:3102
 msgid "Decode No Stream"
 msgstr "Decodificacion sin Pista"
 
-#: core/CMedia.cpp:125
+#: core/CMedia.cpp:125 core/CMedia.cpp:3090
 msgid "Decode OK"
 msgstr "Decodificación OK"
 
@@ -2471,7 +2471,7 @@ msgstr "Separación de las Vistas"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-45-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3516
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-45-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3710
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-45-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3821
-#: gui/mrvImageView.cpp:6054
+#: gui/mrvImageView.cpp:6061
 msgid "F"
 msgstr "C"
 
@@ -5190,7 +5190,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-45-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3174
-#: gui/mrvImageView.cpp:6055
+#: gui/mrvImageView.cpp:6062
 msgid "T"
 msgstr "T"
 
@@ -6346,7 +6346,7 @@ msgstr ""
 msgid "anaglyph"
 msgstr "anaglífico"
 
-#: core/CMedia.cpp:2220
+#: core/CMedia.cpp:2219
 msgid "audio"
 msgstr "audio"
 
@@ -6379,7 +6379,7 @@ msgstr "cuadriculado"
 msgid "crossed"
 msgstr "cruzado"
 
-#: core/CMedia.cpp:2223
+#: core/CMedia.cpp:2222
 msgid "data"
 msgstr "datos"
 
@@ -6656,7 +6656,7 @@ msgstr "estéreo.entrelaceado"
 msgid "stereo.interlaced columns"
 msgstr "estéreo.columnas entrelaceado"
 
-#: core/CMedia.cpp:2226
+#: core/CMedia.cpp:2225
 msgid "subtitle"
 msgstr "subtítulo"
 
@@ -6668,7 +6668,7 @@ msgstr "acción de tv"
 msgid "tv title"
 msgstr "título de tv"
 
-#: core/CMedia.cpp:2229 core/wandImage.cpp:497 standalone/main.cpp:162
+#: core/CMedia.cpp:2228 core/wandImage.cpp:497 standalone/main.cpp:162
 msgid "unknown"
 msgstr "desconocido"
 
@@ -6684,7 +6684,7 @@ msgstr "entero sin signo (32-bits por canal)"
 msgid "unsigned short (16-bits per channel)"
 msgstr "corto sin signo (16-bits por canal)"
 
-#: core/CMedia.cpp:2217
+#: core/CMedia.cpp:2216
 msgid "video"
 msgstr "video"
 
