@@ -21,6 +21,8 @@ v3.3.5   - Made loop mode be an attribute of the movie or sequence
 	   needed.
 	 - Bug fixed playback of some movies with audio in EDL.
 	   Previously, some frames would get skipped.
+	 - Removed a hanging bug which would happen if step frame was
+	   set on continuosly while the movie played.
 
 v3.3.4   - Bug fixed reloading of images from disk when the creation
 	   or modification time changed and the image is not complete.
