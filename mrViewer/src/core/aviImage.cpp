@@ -824,7 +824,7 @@ bool aviImage::seek_to_position( const boost::int64_t frame )
         boost::int64_t dts = queue_packets( f, false, got_video,
                                             got_audio, got_subtitle );
         _dts = _adts = dts;
-        _expected = _expected_audio = _dts + 1;
+        _expected = _expected_audio = _dts;
         _seek_req = false;
         return true;
     }
@@ -1172,9 +1172,6 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       store_image( ptsframe, pkt.dts );
       av_frame_unref(_av_frame);
       av_frame_unref(_filt_frame);
-      if ( ( stopped() || saving() ) && ptsframe != frame &&
-           frame != first_frame() )
-          return kDecodeMissingFrame;
   }
   else if ( status == kDecodeError )
   {
