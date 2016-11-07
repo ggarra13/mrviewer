@@ -49,6 +49,7 @@
 #include "gui/mrvPreferences.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvTimeline.h"
+#include "gui/mrvLogDisplay.h"
 #include "gui/mrvProgressReport.h"
 #include "gui/mrvMainWindow.h"
 #include "mrViewer.h"
@@ -865,7 +866,13 @@ void save_sequence_file( const mrv::ViewerUI* uiMain,
        } // old != fg
 
        if ( w )  w->show();
-
+       
+       if ( mrv::LogDisplay::show == true )
+       {
+           mrv::LogDisplay::show = false;
+           if (uiMain->uiLog && uiMain->uiLog->uiMain )
+               uiMain->uiLog->uiMain->show();
+       }
 
        {
            if ( opengl )
