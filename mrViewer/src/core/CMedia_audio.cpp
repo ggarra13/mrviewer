@@ -516,7 +516,7 @@ unsigned int CMedia::audio_bytes_per_frame()
 
     int channels = _audio_ctx->channels;
     if (_audio_engine->channels() > 0 && channels > 0 ) {
-        channels = FFMIN(_audio_engine->channels(), channels);
+        channels = FFMIN(_audio_engine->channels(), (unsigned)channels);
     }
     if ( channels <= 0 || _audio_format == AudioEngine::kNoAudioFormat)
         return ret;
@@ -552,23 +552,7 @@ void CMedia::populate_audio()
       const AVStream* stream = c->streams[ i ];
       assert( stream != NULL );
 
-      const AVCodecParameters* par = stream->codecpar;
-      AVCodecContext* ctx = NULL;
-      
-      switch( par->codec_type ) 
-	{
-	   case AVMEDIA_TYPE_AUDIO:
-               ctx = avcodec_alloc_context3( _audio_codec );
-               break;
-            default:
-                break;
-        }
-
-
-      if ( ctx == NULL ) continue;
-
-      avcodec_parameters_to_context( ctx, par );
-      
+      const AVCodecContext* ctx = stream->codec;
       assert( ctx != NULL );
 
       // Determine the type and obtain the first index of each type
@@ -745,7 +729,7 @@ void CMedia::audio_file( const char* file )
    audio_stream( -1 );
    audio_offset( 0 );
    _audio_channels = 0;
-   _audio_format = AudioEngine::kNoAudioFormat;
+   _audio_format = AudioEngine::kFloatLSB;
 
    if ( _acontext )
    {
@@ -826,7 +810,6 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
             if ( _adts > last )   last = _adts;
-            if ( _adts < first ) first = _adts;
             break;
     }
   
@@ -910,10 +893,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                  ctx->sample_fmt == AV_SAMPLE_FMT_S16 )
             {
                 _audio_format = AudioEngine::kS16LSB;
-            }
-            else
-            {
-                _audio_format = AudioEngine::kFloatLSB;
             }
 
             AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
@@ -1326,7 +1305,7 @@ void CMedia::audio_stream( int idx )
       swr_free( &forw_ctx );
       forw_ctx = NULL;
       _audio_channels = 0;
-      _audio_format = AudioEngine::kNoAudioFormat;
+      _audio_format = AudioEngine::kFloatLSB;
     }
 
   clear_stores();
@@ -1830,7 +1809,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   boost::int64_t first = first_frame();
   boost::int64_t last  = last_frame();
 
-  if ( frame < first )
+  if ( frame < first && looping() != kPingPong )
       return kDecodeNoStream;
 
   if ( _audio_packets.empty() )
@@ -1892,8 +1871,11 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	{
 	   bool ok = in_audio_store( frame );
 	   if ( ok ) {
-	      audio_cache_t::const_iterator iter = _audio.begin();
-	      if ( (*iter)->frame() >= frame )
+               SCOPED_LOCK( _audio_mutex );
+               AVPacket& pkt = _audio_packets.front();
+               int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )
+                                  - _frame_offset;
+	      if ( pktframe >= frame )
 	      {
 		 _audio_buf_used = 0;
 		 got_audio = handle_audio_packet_seek( frame, false );
@@ -1912,7 +1894,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	  boost::int64_t pktframe = get_frame( get_audio_stream(), pkt );
 
 #if 0
-          // This does not work as decode_audio_packet may decode more
+	  // This does not work as decode_audio_packet may decode more
           // than one frame of audio (see Essa.wmv)
 	  bool ok = in_audio_store( frame );
 	  if ( ok ) 
@@ -1963,8 +1945,10 @@ void CMedia::do_seek()
       fetch_audio( x );
   }
 
+  // Seeking done, turn flag off
   if ( stopped() || saving() )
   {
+
      if ( has_audio() && !got_audio )
      {
          boost::int64_t f = x;
