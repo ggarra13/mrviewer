@@ -256,6 +256,14 @@ class CMedia
     typedef std::vector< char* >          LMT;
     typedef std::vector< boost::thread* > thread_pool_t;
 
+    enum Looping
+    {
+    kNoLoop,
+    kLoop,
+    kPingPong,
+    kUnknownLoop
+    };
+    
     enum InterlaceType
     {
     kNoInterlace,
@@ -831,6 +839,16 @@ class CMedia
         return _audio_index;
     }
 
+    /** 
+     * Given a frame number, returns another frame number taking into
+     * account the loops in the sequence.
+     * 
+     * @param frame  frame to handle in loops
+     * 
+     * @return frame number in _frame_start - _frame_end range
+     */
+    int64_t handle_loops( const boost::int64_t frame ) const;
+    
 
     static void video_cache_size( unsigned x ) { _video_cache_size = x; }
 
@@ -931,6 +949,9 @@ class CMedia
     // Set this image as the left (true) or right (false) eye on stereo decoding
     inline void is_left_eye( bool left ) { _is_left_eye = left; }
 
+    inline Looping looping() const { return _looping; }
+    inline void looping( Looping x ) { _looping = x; }
+    
     // Return the sequence filename for frame 'frame'
     std::string sequence_filename( const boost::int64_t frame );
 
@@ -1018,6 +1039,20 @@ class CMedia
 
   protected:
 
+    
+    /** 
+     * Given a frame number, returns another frame number taking into
+     * account the loops in the sequence.
+     * 
+     * @param f      frame in local units of image
+     * @param frame  frame to handle in loops
+     * 
+     * @return offset to bring local frame as returned by handle_loops
+     *                to timeline frame
+     */
+    int64_t loops_offset( boost::int64_t f,
+                          const boost::int64_t frame ) const;
+    
     /** 
      * Given a frame number, returns whether subtitle for that frame is already
      * in packet queue.
@@ -1226,6 +1261,7 @@ class CMedia
     bool   _is_sequence;      //!< true if a sequence
     bool   _is_stereo;        //!< true if part of stereo pair of images
     StereoType   _stereo_type;//!< Stereo type
+    Looping      _looping;   //!< End behavior of playback (loop, stop, swing)
     char*  _fileroot;         //!< root name of image sequence
     char*  _filename;         //!< generated filename of a frame
     time_t _ctime, _mtime;    //!< creation and modification time of image
