@@ -549,23 +549,7 @@ void CMedia::populate_audio()
       const AVStream* stream = c->streams[ i ];
       assert( stream != NULL );
 
-      const AVCodecParameters* par = stream->codecpar;
-      AVCodecContext* ctx = NULL;
-      
-      switch( par->codec_type ) 
-	{
-	   case AVMEDIA_TYPE_AUDIO:
-               ctx = avcodec_alloc_context3( _audio_codec );
-               break;
-            default:
-                break;
-        }
-
-
-      if ( ctx == NULL ) continue;
-
-      avcodec_parameters_to_context( ctx, par );
-      
+      const AVCodecContext* ctx = stream->codec;
       assert( ctx != NULL );
 
       // Determine the type and obtain the first index of each type
@@ -742,7 +726,7 @@ void CMedia::audio_file( const char* file )
    audio_stream( -1 );
    audio_offset( 0 );
    _audio_channels = 0;
-   _audio_format = AudioEngine::kNoAudioFormat;
+   _audio_format = AudioEngine::kFloatLSB;
 
    if ( _acontext )
    {
@@ -823,7 +807,6 @@ void CMedia::limit_audio_store(const boost::int64_t frame)
             first = frame - max_audio_frames();
             last  = frame + max_audio_frames();
             if ( _adts > last )   last = _adts;
-            if ( _adts < first ) first = _adts;
             break;
     }
   
@@ -908,10 +891,6 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
             {
                 _audio_format = AudioEngine::kS16LSB;
             }
-            else
-            {
-                _audio_format = AudioEngine::kFloatLSB;
-            }
 
             AVSampleFormat fmt = AudioEngine::ffmpeg_format( _audio_format );
             if ( _audio_channels == 0 ) 
@@ -938,9 +917,9 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                     av_get_channel_layout_string( buf, 256, ctx->channels, 
                                                   in_ch_layout );
 
-                    IMG_INFO_NF( _("Create audio conversion from ") << buf 
+                    IMG_INFO( _("Create audio conversion from ") << buf 
                               << _(", channels ") << ctx->channels << N_(", ") );
-                    IMG_INFO_NF( _("format ") 
+                    IMG_INFO( _("format ") 
                               << av_get_sample_fmt_name( ctx->sample_fmt ) 
                               << _(", sample rate ") << ctx->sample_rate << _(" to") );
 
@@ -961,7 +940,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                     int in_sample_rate = ctx->sample_rate;
                     int out_sample_rate = in_sample_rate;
 
-                    IMG_INFO_NF( buf << _(", channels ") << out_channels 
+                    IMG_INFO( buf << _(", channels ") << out_channels 
                                  << _(", format " )
                                  << av_get_sample_fmt_name( out_sample_fmt )
                                  << _(", sample rate ")
@@ -1323,7 +1302,7 @@ void CMedia::audio_stream( int idx )
       swr_free( &forw_ctx );
       forw_ctx = NULL;
       _audio_channels = 0;
-      _audio_format = AudioEngine::kNoAudioFormat;
+      _audio_format = AudioEngine::kFloatLSB;
     }
 
   clear_stores();
@@ -1962,8 +1941,10 @@ void CMedia::do_seek()
       fetch_audio( x );
   }
 
+  // Seeking done, turn flag off
   if ( stopped() || saving() )
   {
+
      if ( has_audio() && !got_audio )
      {
          boost::int64_t f = x;
