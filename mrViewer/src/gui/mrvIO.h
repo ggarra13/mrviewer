@@ -159,6 +159,7 @@ namespace mrv {
 #define LOG_CONN(x)    mrvCONN_INFO( kModule, x << std::endl )
 #define IMG_ERROR(x)   LOG_ERROR( name() << " - " << x )
 #define IMG_WARNING(x) LOG_WARNING( name() << " - " << x ) 
+#define IMG_INFO_NF(x) LOG_WARNING( name() << " - " << x ) 
 
 #ifdef DEBUG
 #define DBG(x) do { \
