@@ -1343,7 +1343,7 @@ void ImageBrowser::load_stereo( mrv::media& fg,
 
     if ( img->has_video() || img->has_audio() )
     {
-        img->fetch( img->first_frame() );
+        img->seek( first );
     }
     else
     {
