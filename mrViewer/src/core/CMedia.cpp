@@ -2700,17 +2700,18 @@ int64_t CMedia::loops_offset( boost::int64_t f,
 int64_t CMedia::handle_loops( const boost::int64_t frame ) const
 {
   boost::int64_t f = frame;
-  int64_t len = _frame_end - _frame_start + 1;
   
   if ( looping() == kLoop )
   {
-      f = (f-1) % len + _frame_start;
+      int64_t len = _frame_end - _frame_start + 1;
+      f = (f-1) % len + _frameStart;
   }
   else if ( looping() == kPingPong )
   {
+      int64_t len = duration();
       f -= 1;
       int64_t v   = f / len;
-      f = f % len + _frame_start;
+      f = f % len + _frameStart;
       if ( v % 2 == 1 )
       {
           f = len - f + _frame_start;
