@@ -3119,6 +3119,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
+    _seek_frame = handle_loops( _seek_frame );
    
     _dts = _adts = _seek_frame;
 
