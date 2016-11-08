@@ -1172,6 +1172,9 @@ aviImage::decode_image( const boost::int64_t frame, AVPacket& pkt )
       store_image( ptsframe, pkt.dts );
       av_frame_unref(_av_frame);
       av_frame_unref(_filt_frame);
+      if ( ( stopped() || saving() ) && ptsframe != frame &&
+           frame != first_frame() )
+          return kDecodeMissingFrame;
   }
   else if ( status == kDecodeError )
   {
@@ -1618,8 +1621,8 @@ bool aviImage::readFrame(int64_t & pts)
 
         if ( video_stream_index() == packet.stream_index)
         {
-            if ((r = avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
-                                            &packet)) <= 0)
+            if (avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
+                                       &packet) <= 0)
             {
                 break;
             }
@@ -2420,6 +2423,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
 
     //debug_video_packets( dts, "queue_packets");
   
+    if ( dts > last_frame() ) dts = last_frame();
+    else if ( dts < first_frame() ) dts = first_frame();
 
     return dts;
 }
@@ -2480,9 +2485,9 @@ bool aviImage::fetch(const boost::int64_t frame)
   boost::int64_t dts = queue_packets( f, false, got_video, 
 				      got_audio, got_subtitle);
 
-  // f = handle_loops( dts );
-  // int64_t offset = loops_offset( f, dts );
+
   _dts = dts;
+  assert( _dts >= first_frame() && _dts <= last_frame() );
 
   _expected = _dts + 1;
   _expected_audio = _adts + 1;
@@ -2516,7 +2521,7 @@ bool aviImage::fetch(const boost::int64_t frame)
 }
 
 
-bool aviImage::frame( const boost::int64_t frame )
+bool aviImage::frame( const boost::int64_t f )
 {
 
     size_t vpkts = _video_packets.size();
@@ -2542,12 +2547,13 @@ bool aviImage::frame( const boost::int64_t frame )
         return true;
     }
 
-    
-    // if ( f < _frameStart )    _dts = _adts = _frameStart;
-    // else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
-    // else  _dts = _adts = frame;
+    if ( f < _frameStart )    _dts = _adts = _frameStart;
+    else if ( f > _frameEnd ) _dts = _adts = _frameEnd;
+    // else                      _dts = _adts = f;
 
-    bool ok = fetch(frame);
+
+
+  bool ok = fetch(f);
   
 
 
@@ -3113,8 +3119,7 @@ void aviImage::do_seek()
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
 
-    _seek_frame = handle_loops( _seek_frame );
-    
+   
     _dts = _adts = _seek_frame;
 
     bool got_video = !has_video();
