@@ -1095,7 +1095,8 @@ void decode_thread( PlaybackData* data )
       // wait a little.
       while ( !img->frame( frame ) )
       {
-	 sleep_ms( 10 );
+          if ( img->stopped() ) break;
+          sleep_ms( 10 );
       }
 
 
