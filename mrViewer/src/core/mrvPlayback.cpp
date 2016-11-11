@@ -271,7 +271,7 @@ EndStatus handle_loop( boost::int64_t& frame,
     }
 
 
-    CMedia::Looping loop = img->looping();
+    CMedia::Looping loop = view->looping();
 
 
    switch( end )
@@ -324,7 +324,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                            next->do_seek();
                            next->play( CMedia::kForwards, uiMain, fg );
                        }
-
+                       
                        img->playback( CMedia::kStopped );
                        if ( img->has_video() ) img->clear_cache();
                    }
@@ -332,6 +332,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                    status = kEndNextImage;
                    return status;
 	       }
+               if ( img->stopped() ) return kEndNextImage;
 	    }
 
             if ( loop == CMedia::kLoop )
@@ -410,7 +411,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                            next->do_seek();
                            next->play( CMedia::kBackwards, uiMain, fg );
                        }
-
+                       
                        img->playback( CMedia::kStopped );
                        if ( img->has_video() ) img->clear_cache();
                    }
@@ -418,8 +419,8 @@ EndStatus handle_loop( boost::int64_t& frame,
 		  status = kEndNextImage;
 		  return status;
 	       }
+               if ( img->stopped() ) return kEndNextImage;
 	    }
-
 
             if ( loop == CMedia::kLoop )
             {
