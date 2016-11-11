@@ -1,9 +1,9 @@
 v3.3.6   - Bug fixed EDL playback which got broken in v3.3.5.
-	 - Bug fixed hangings and crashings due to log window.
-	   This should remove all sporadic crashings in mrViewer.
+	 - Minimized (fixed) hangings and crashings due to log window.
 	 - Made audio track selection in EDL control all clips of EDL.
 	 - Made Timebar Looping control in EDL control the looping
 	   of all clips in EDL.
+	 - Fixed cache line to not extend beyond the start of clips.
 
 v3.3.5   - Made loop mode be an attribute of the movie or sequence
 	   loaded instead of the timeline.
