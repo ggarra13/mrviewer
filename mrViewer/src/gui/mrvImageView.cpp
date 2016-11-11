@@ -2706,6 +2706,9 @@ void ImageView::mouseMove(int x, int y)
 {
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
+  //
+  // First, handle log window showing up and scrolling
+  //
   if (main() && main()->uiLog && main()->uiLog->uiMain )
   {
       fltk::Window* logwindow = main()->uiLog->uiMain;
@@ -2713,7 +2716,7 @@ void ImageView::mouseMove(int x, int y)
       if ( logUI )
       {
           mrv::LogDisplay* log = logUI->uiLogText;
-          
+
           if ( mrv::LogDisplay::show == true )
           {
               mrv::LogDisplay::show = false;
@@ -2729,13 +2732,13 @@ void ImageView::mouseMove(int x, int y)
               lines = log->lines();
           }
       }
-      
   }
+
   mrv::media fg = foreground();
   if ( !fg ) return;
 
   CMedia* img = fg->image();
-  
+
 
   double xf = (double) x;
   double yf = (double) y;
