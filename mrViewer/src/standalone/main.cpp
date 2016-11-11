@@ -156,6 +156,9 @@ void load_new_files( void* s )
 
 int main( int argc, char** argv ) 
 {
+    
+  fltk::lock(); // start FLTK's lock mechanism
+  
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
@@ -175,9 +178,6 @@ int main( int argc, char** argv )
       std::cerr << e.what() << std::endl;
   }
   
-#ifdef LINUX
-  XInitThreads();
-#endif
 
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
 
@@ -215,7 +215,6 @@ int main( int argc, char** argv )
   mrv::set_root_path( argc, argv );
 
 
-  //fltk::lock(); // start FLTK's lock mechanism
 
   // Adjust ui based on preferences
   for (;;) {
