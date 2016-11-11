@@ -2703,13 +2703,13 @@ int64_t CMedia::handle_loops( const boost::int64_t frame ) const
   
   if ( looping() == kLoop )
   {
-      int64_t len = _frame_end - _frame_start + 1;
-      f = (f-1) % len + _frameStart;
+      int64_t len = duration();
+      f = (f-_frameStart) % len + _frameStart;
   }
   else if ( looping() == kPingPong )
   {
       int64_t len = duration();
-      f -= 1;
+      f -= _frameStart;
       int64_t v   = f / len;
       f = f % len + _frameStart;
       if ( v % 2 == 1 )
@@ -2717,10 +2717,13 @@ int64_t CMedia::handle_loops( const boost::int64_t frame ) const
           f = len - f + _frame_start;
       }
   }
+  else
+  {
+      if ( f > _frameEnd )       f = _frameEnd;
+      else if ( f < _frameStart) f = _frameStart;
+  }
   
-  if ( f > _frameEnd )       f = _frameEnd;
-  else if ( f < _frameStart) f = _frameStart;
-
+  
   return f;
 }
 
