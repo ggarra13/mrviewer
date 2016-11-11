@@ -29,6 +29,8 @@
 #include <cstring>
 #include <cstdlib>
 
+#include <iostream>
+
 #include <fltk/Window.h>
 #include <fltk/TextBuffer.h>
 #include <fltk/events.h>
@@ -73,8 +75,8 @@ bool LogDisplay::show  = false;
 
   void LogDisplay::clear()
   {
-      buffer_->text("");
       stylebuffer_->text("");
+      buffer_->text("");
       _lines = 0;
   }
 
@@ -92,11 +94,13 @@ bool LogDisplay::show  = false;
 
     try {
       
+      
        f = fltk::fltk_fopen( file, "w" );
 
       if ( !f ) throw;
       if ( fputs( buffer_->text(), f ) < 0 ) throw;
-
+      
+      
       info( "Saved log as \"" );
       info( file );
       info( "\"." );
@@ -112,49 +116,51 @@ bool LogDisplay::show  = false;
   
   void LogDisplay::info( const char* x )
   {
-    buffer_->append( x );
 
     size_t t = strlen(x);
+    char* buf = new char[t+1];
+    buf[t] = 0;
     while( t-- )
     {
-      stylebuffer_->append( "A" );
-      if ( x[t] == '\n' ) ++_lines;
+        if ( x[t] == '\n' ) ++_lines;
+        buf[t] = 'A';
     }
-    // Set the line to end of text display
-    if ( visible() && fltk::in_main_thread() )
-        scroll( _lines, 0 );
+    stylebuffer_->append( buf );
+    buffer_->append( x );
+    delete [] buf;
   }
 
   void LogDisplay::warning( const char* x )
   {
-    buffer_->append( x );
-
+    
     size_t t = strlen(x);
+    char* buf = new char[t+1];
+    buf[t] = 0;
     while( t-- )
     {
-      stylebuffer_->append( "B" );
-      if ( x[t] == '\n' ) ++_lines;
+        if ( x[t] == '\n' ) ++_lines;
+        buf[t] = 'B';
     }
+    stylebuffer_->append( buf );
+    buffer_->append( x );
+    delete [] buf;
 
-    // Set the line to end of text display
-    if ( visible() && fltk::in_main_thread() )
-        scroll( _lines, 0 );
   }
 
   void LogDisplay::error( const char* x )
   {
-    buffer_->append( x );
 
     size_t t = strlen(x);
+    char* buf = new char[t+1];
+    buf[t] = 0;
     while( t-- )
     {
-      stylebuffer_->append( "C" );
-      if ( x[t] == '\n' ) ++_lines;
+        if ( x[t] == '\n' ) ++_lines;
+        buf[t] = 'C';
     }
-
-    // Set the line to end of text display
-    if ( visible() && fltk::in_main_thread() )
-        scroll( _lines, 0 );
+    stylebuffer_->append( buf );
+    buffer_->append( x );
+    delete [] buf;
 
     
     if ( prefs == kAlways || (prefs == kOnce && !shown) )
