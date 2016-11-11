@@ -2595,7 +2595,6 @@ aviImage::handle_video_packet_seek( boost::int64_t& frame, const bool is_seek )
   Mutex& vpm = _video_packets.mutex();
   SCOPED_LOCK( vpm );
 
-
   if ( _video_packets.empty() || _video_packets.is_flush() )
       LOG_ERROR( _("Wrong packets in handle_video_packet_seek" ) );
 
@@ -3118,6 +3117,8 @@ void aviImage::do_seek()
 {
     // No need to set seek frame for right eye here
     if ( _right_eye )  _right_eye->do_seek();
+
+    _seek_frame = handle_loops( _seek_frame );
 
     _dts = _adts = _seek_frame;
 
