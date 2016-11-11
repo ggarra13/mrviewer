@@ -85,38 +85,45 @@ namespace mrv {
     
     void errorbuffer::print( const char* c )
     {
+      std::cerr << c;
+      
       // Send string to Log Window
       if ( ViewerUI::uiLog )
-	ViewerUI::uiLog->uiLogText->error( c );
-
-      std::cerr << c;
+      {
+          ViewerUI::uiLog->uiLogText->error( c );
+      }
     }
 
     void warnbuffer::print( const char* c )
     {
-      // Send string to Log Window
-      if ( ViewerUI::uiLog )
-	ViewerUI::uiLog->uiLogText->warning( c );
-
-      std::cerr << c;
+        std::cerr << c;
+        
+        // Send string to Log Window
+        if ( ViewerUI::uiLog )
+        {
+            ViewerUI::uiLog->uiLogText->warning( c );
+        }
     }
 
     void infobuffer::print( const char* c )
     {
+      std::cout << c;
+      
       // Send string to Log Window
       if ( ViewerUI::uiLog )
-	ViewerUI::uiLog->uiLogText->info( c );
-
-      std::cout << c;
+      {
+          ViewerUI::uiLog->uiLogText->info( c );
+      }
     }
 
     void connbuffer::print( const char* c )
     {
+       std::cout << c;
       // Send string to Log Window in Connection panel
        if ( ViewerUI::uiConnection )
+       {
 	  ViewerUI::uiConnection->uiLog->info( c );
-       
-       std::cout << c;
+       }
     }
 
     connstream  conn;
