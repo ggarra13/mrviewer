@@ -203,7 +203,7 @@ Timeline::~Timeline()
 	  char* p = buffer;
 	  setfont(textfont(), textsize());
 	  setcolor(textcolor);
-	  int wt = 0, ht;
+	  int wt = 0, ht = 0;
 	  measure( p, wt, ht );
 	  drawtext(p, float(x1+dx*t-wt/2), 
 		   float(y1+dy*t+getsize()-getdescent()));
@@ -218,8 +218,8 @@ Timeline::~Timeline()
 	  char* p = buffer;
 	  setfont(textfont(), textsize());
 	  setcolor(textcolor);
-	  int wt = 0, ht;
-	  measure( p, wt, ht );
+	  // int wt = 0, ht = 0;
+	  // measure( p, wt, ht );
 	  drawtext(p, float(x1+dx*t),
 		   float(y1+dy*t+getsize()-getdescent()));
 	  setcolor(linecolor);
