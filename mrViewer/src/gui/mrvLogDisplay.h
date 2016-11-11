@@ -52,6 +52,8 @@ class LogDisplay : public fltk::TextDisplay
     void warning( const char* x );
     void error( const char* x );
 
+    inline unsigned lines() const { return _lines; }
+    
   protected:
     unsigned int _lines;
 
