@@ -2706,13 +2706,31 @@ void ImageView::mouseMove(int x, int y)
 {
   if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
 
-  if ( mrv::LogDisplay::show == true )
+  if (main() && main()->uiLog && main()->uiLog->uiMain )
   {
-      mrv::LogDisplay::show = false;
-      if (main() && main()->uiLog && main()->uiLog->uiMain )
-          main()->uiLog->uiMain->show();
+      fltk::Window* logwindow = main()->uiLog->uiMain;
+      mrv::LogUI* logUI = main()->uiLog;
+      if ( logUI )
+      {
+          mrv::LogDisplay* log = logUI->uiLogText;
+          
+          if ( mrv::LogDisplay::show == true )
+          {
+              mrv::LogDisplay::show = false;
+              if (main() && main()->uiLog && logwindow )
+              {
+                  logwindow->show();
+              }
+          }
+          static int lines = 0;
+          if ( log->visible() && log->lines() != lines )
+          {
+              log->scroll( log->lines(), 0 );
+              lines = log->lines();
+          }
+      }
+      
   }
-
   mrv::media fg = foreground();
   if ( !fg ) return;
 
@@ -5272,22 +5290,45 @@ void ImageView::refresh_audio_tracks() const
 /// Change audio stream
 void ImageView::audio_stream( unsigned int idx )
 {
-  mrv::media fg = foreground();
-  if ( ! fg ) return;
 
   Playback p = playback();
   stop();
 
-  CMedia* img = fg->image();
+    mrv::Reel reel = browser()->current_reel();
+    if ( !reel ) return;
 
-  unsigned int numAudioTracks = uiMain->uiAudioTracks->children();
-  if ( idx >= numAudioTracks - 1 )
-    img->audio_stream( -1 );
-  else
-    img->audio_stream( idx );
+    if ( reel->edl )
+    {
+        mrv::MediaList::iterator i = reel->images.begin();
+        mrv::MediaList::iterator e = reel->images.end();
+        for ( ; i != e; ++i )
+        {
+            if (! *i) continue;
+            CMedia* img = (*i)->image();
+            if ( idx >= img->number_of_audio_streams() )
+            {
+                img->audio_stream( -1 );
+            }
+            else
+            {
+                img->audio_stream( idx );
+            }
+        }
+    }
+    else
+    {
+        mrv::media fg = foreground();
+        if ( ! fg ) return;
+        CMedia* img = fg->image();
 
-  if ( p != kStopped ) play( (CMedia::Playback) p );
+        unsigned int numAudioTracks = uiMain->uiAudioTracks->children();
+        if ( idx >= numAudioTracks - 1 )
+            img->audio_stream( -1 );
+        else
+            img->audio_stream( idx );
+    }
 
+    if ( p != kStopped ) play( (CMedia::Playback) p );
 }
 
 
@@ -6031,12 +6072,30 @@ CMedia::Looping ImageView::looping() const
 /// Set Playback looping mode
 void  ImageView::looping( CMedia::Looping x )
 {
-  media fg = foreground();
-  if (fg)
-  {
-      CMedia* img = fg->image();
-      img->looping( x );
-  }
+    mrv::Reel reel = browser()->current_reel();
+    if ( !reel ) return;
+
+    if ( reel->edl )
+    {
+        mrv::MediaList::iterator i = reel->images.begin();
+        mrv::MediaList::iterator e = reel->images.end();
+        for ( ; i != e; ++i )
+        {
+            if (! *i) continue;
+            CMedia* img = (*i)->image();
+            img->looping(x);
+        }
+    }
+    else
+    {
+        
+        media fg = foreground();
+        if (fg)
+        {
+            CMedia* img = fg->image();
+            img->looping( x );
+        }
+    }
 
   uiMain->uiLoopMode->value( x );
   uiMain->uiLoopMode->label(uiMain->uiLoopMode->child(x)->label());
