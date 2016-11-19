@@ -1135,7 +1135,7 @@ CMedia::decode_audio_packet( boost::int64_t& ptsframe,
       assert( audio_size + _audio_buf_used <= _audio_max );
 
       // Decrement the length by the number of bytes parsed
-      assert0( pkt_temp.size >= ret );
+      //assert0( pkt_temp.size >= ret );
       pkt_temp.data += ret;
       pkt_temp.size -= ret;
 
