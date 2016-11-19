@@ -10,6 +10,7 @@
 
 SET(CTL_FOUND "NO")
 
+
 IF( CTL_LIBRARY_DIR )
   SET( SEARCH_DIRS "${CTL_LIBRARY_DIR}" )
 ELSE( CTL_LIBRARY_DIR )
@@ -42,18 +43,21 @@ FIND_PATH( CTL_INCLUDE_DIR CtlModule.h
 FIND_LIBRARY( IlmCtl
   NAMES IlmCtl_dll IlmCtl_dll_d IlmCtl IlmCtld libIlmCtl 
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "CTL IlmCtl library"
 )
 
 FIND_LIBRARY( IlmCtlMath
   NAMES IlmCtlMath_dll IlmCtlMath_dll_d IlmCtlMath IlmCtlMathd libIlmCtlMath
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "CTL IlmCtlMath library"
 )
 
 FIND_LIBRARY( IlmCtlSimd
   NAMES IlmCtlSimd_dll IlmCtlSimd_dll_d IlmCtlSimd IlmCtlSimdd libIlmCtlSimd 
   PATHS ${SEARCH_DIRS}
+  NO_SYSTEM_PATH
   DOC   "CTL IlmCtlSimd library"
 )
 
