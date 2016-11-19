@@ -71,6 +71,7 @@
 
 namespace mr {
 
+ExceptionHandler gExceptionHandler;
 
 // SymCleanup()
 EH::tSC            ExceptionHandler::pSC = NULL;

@@ -87,6 +87,9 @@
 #include "video/mrvGLQuad.h"
 #include "video/mrvGLLut3d.h"
 
+#undef TRACE
+#define TRACE(x) 
+
 
 namespace 
 {
@@ -1140,6 +1143,7 @@ void GLEngine::translate( double x, double y )
 
 void GLEngine::draw_images( ImageList& images )
 {
+    TRACE( "" );
     CHECK_GL("draw_images");
 
   // Check if lut types changed since last time
@@ -1185,6 +1189,7 @@ void GLEngine::draw_images( ImageList& images )
     }
 
 
+    TRACE( "" );
   float normMin = 0.0f, normMax = 1.0f;
   if ( _view->normalize() )
   {
@@ -1193,6 +1198,7 @@ void GLEngine::draw_images( ImageList& images )
   }
 
 
+    TRACE( "" );
   size_t num_quads = 0;
   ImageList::iterator i = images.begin();
   ImageList::iterator e = images.end();
@@ -1205,6 +1211,7 @@ void GLEngine::draw_images( ImageList& images )
       if ( img->stereo_type() != CMedia::kNoStereo )    ++num_quads;
     }
 
+    TRACE( "" );
 
   CHECK_GL( "glPrealloc quads GL_BLEND" );
 
@@ -1220,6 +1227,7 @@ void GLEngine::draw_images( ImageList& images )
 
 
 
+    TRACE( "" );
   QuadList::iterator q = _quads.begin();
 
   assert( q != _quads.end() );
@@ -1234,10 +1242,12 @@ void GLEngine::draw_images( ImageList& images )
 
   for ( i = images.begin(); i != e; ++i, ++q )
     {
+    TRACE( "" );
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
       if (!pic)  continue;
       
+    TRACE( "" );
       CMedia::StereoType stereo = img->stereo_type();
 
       const boost::int64_t& frame = pic->frame();
@@ -1252,6 +1262,7 @@ void GLEngine::draw_images( ImageList& images )
           daw = img->data_window2(frame);
       }
 
+    TRACE( "" );
       // Handle background image size
       if ( fg != img && stereo == CMedia::kNoStereo )
       {
@@ -1265,6 +1276,7 @@ void GLEngine::draw_images( ImageList& images )
           texHeight = daw.h();
       }
 
+    TRACE( "" );
       ImageView::FlipDirection flip = _view->flip();
 
       set_matrix( flip, false );
@@ -1278,6 +1290,7 @@ void GLEngine::draw_images( ImageList& images )
           glTranslatef( x, y, 0.0f );
       }
 
+    TRACE( "" );
 
       if ( dpw != daw )
       {
@@ -1293,6 +1306,7 @@ void GLEngine::draw_images( ImageList& images )
           }
       }
 
+    TRACE( "" );
       glDisable( GL_BLEND );
 
       glPushMatrix();
@@ -1301,6 +1315,7 @@ void GLEngine::draw_images( ImageList& images )
                     float(-daw.y()), 0 );
 
 
+    TRACE( "" );
       if ( _view->main()->uiPixelRatio->value() )
           glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
                     1.0 );
@@ -1310,10 +1325,13 @@ void GLEngine::draw_images( ImageList& images )
       glTranslated( 0.5, -0.5, 0.0 );
 
 
+    TRACE( "" );
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
+    TRACE( "" );
       quad->image( img );
 
+    TRACE( "" );
       if ( _view->use_lut() )
       {
 	  if ( img->image_damage() & CMedia::kDamageLut )
@@ -1463,8 +1481,10 @@ void GLEngine::draw_images( ImageList& images )
       }
       else if ( img->hires() || img->has_subtitle() )
       {
+    TRACE( "" );
           pic = img->hires();
           
+    TRACE( "" );
           if ( shader_type() == kNone && img->stopped() && 
                pic->pixel_type() != image_type::kByte )
           {
@@ -1506,11 +1526,15 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
+    TRACE( "" );
           quad->bind( pic );
+    TRACE( "" );
       }
 
       quad->gamma( g );
+    TRACE( "" );
       quad->draw( texWidth, texHeight );
+    TRACE( "" );
 
 
       if ( img->has_subtitle() )
@@ -1535,9 +1559,11 @@ void GLEngine::draw_images( ImageList& images )
       img->image_damage( img->image_damage() & 
 			 ~(CMedia::kDamageContents | CMedia::kDamageLut |
 			   CMedia::kDamageSubtitle) );
+    TRACE( "" );
 
     }
 
+    TRACE( "" );
   glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
   glDisable( GL_SCISSOR_TEST );
   glDisable( GL_BLEND );
