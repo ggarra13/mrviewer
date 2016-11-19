@@ -1276,8 +1276,7 @@ class CMedia
 
     double    _avdiff;      //!< Audio-Video Difference
     Barrier*  _loop_barrier;   //!< Barrier used to sync loops across threads
-    static Barrier*  _bg_barrier;     //!< Barrier to sync bg and fg images
-
+ 
     bool    _seek_req;        //!< set internally for seeking
     boost::int64_t _seek_frame;      //!< seek frame requested
 
