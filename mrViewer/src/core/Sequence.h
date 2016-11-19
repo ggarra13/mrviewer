@@ -114,6 +114,11 @@ struct SequenceSort
       reel( false ),
       audio_offset( aoffset )
       {
+	size_t len = filename.size();
+	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
+	  {
+              reel = true;
+          }
       }
 
       LoadInfo( const std::string& fileroot,
@@ -135,6 +140,11 @@ struct SequenceSort
       shapes( shl ),
       audio_offset( aoffset )
       {
+	size_t len = filename.size();
+	if ( len > 5 && filename.substr( len - 5, len ) == ".reel" )
+	  {
+              reel = true;
+          }
       }
 
       LoadInfo( const std::string& reel ) :
