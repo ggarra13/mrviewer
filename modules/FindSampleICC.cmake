@@ -49,6 +49,7 @@ IF( WIN32 )
     "${SampleICC_ROOT}/${compiler}/lib"
     "${SampleICC_ROOT}/lib/x${CMAKE_BUILD_ARCH}/${CMAKE_BUILD_TYPE}"
     "${SampleICC_ROOT}/lib"
+    "${SampleICC_ROOT}/IccProfLib/${CMAKE_BUILD_TYPE}_CRTDLL"
     "${SampleICC_ROOT}/IccProfLib/${CMAKE_BUILD_TYPE}"
     ${SEARCH_PATHS}
     )
@@ -65,7 +66,7 @@ MESSAGE( "SEARCH_INCLUDE_PATHS=  ${SEARCH_INCLUDE_PATHS}" )
 MESSAGE( "SEARCH_PATHS=  ${SEARCH_PATHS}" )
 
 FIND_LIBRARY( SampleICC 
-  NAMES SampleICC IccProfLib_CRTDLL IccProfLib 
+  NAMES IccProfLib_CRTDLL SampleICC IccProfLib 
   PATHS ${SEARCH_PATHS}
   NO_DEFAULT_PATH
 )
