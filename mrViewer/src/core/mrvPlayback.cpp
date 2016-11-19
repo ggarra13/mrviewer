@@ -78,6 +78,9 @@ namespace
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
+#undef TRACE
+#define TRACE(x)
+
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl
 
@@ -983,10 +986,15 @@ void video_thread( PlaybackData* data )
       img->real_fps( timer.actualFrameRate() );
 
 
-      DBG( img->name() << " find image " << frame );
+      TRACE( img->name() << " find image " << frame );
 
       bool ok = img->find_image( frame );
+      if ( !ok )
+      {
+          LOG_ERROR( "Could not find image frame " << frame );
+      }
 
+      TRACE("");
 
       if ( fg && reel->edl && img->is_left_eye() )
       {
@@ -1065,12 +1073,13 @@ void decode_thread( PlaybackData* data )
       step = (int) img->playback();
       frame += step;
 
-
+      TRACE("");
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
 
 
       if ( status != CMedia::kDecodeOK )
       {
+          TRACE("");
 
           CMedia::Barrier* barrier = img->loop_barrier();
           DBG( img->name() << " BARRIER DECODE WAIT      gen: " 
@@ -1094,6 +1103,7 @@ void decode_thread( PlaybackData* data )
 
          if ( img->stopped() ) continue;
 
+      TRACE("");
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
       }
@@ -1101,8 +1111,10 @@ void decode_thread( PlaybackData* data )
 
       // If we could not get a frame (buffers full, usually),
       // wait a little.
+      TRACE("");
       while ( !img->frame( frame ) )
       {
+      TRACE("");
           if ( img->stopped() ) break;
 	 sleep_ms( 10 );
       }

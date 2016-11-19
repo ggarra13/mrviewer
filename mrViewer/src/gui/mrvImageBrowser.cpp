@@ -1362,15 +1362,14 @@ void ImageBrowser::load_stereo( mrv::media& fg,
     send_image( m );
 
     mrv::EDLGroup* e = edl_group();
-
-
+    
     size_t i = 0;
     for ( i = 0; i < number_of_reels(); ++i )
     {
         if ( e && reel == this->reel( (unsigned int)i ) )
         {
            mrv::media_track* track = e->media_track((int)i);
-	  if ( m )
+	  if ( track && m )
           {
              track->add( m );
              track->redraw();
@@ -2266,6 +2265,8 @@ void ImageBrowser::handle_dnd()
        if ( file.substr(0, 7) == "file://" && file.size() > 7 )
           file = file.substr( 7, file.size() );
 
+       if ( file.empty() ) continue;
+
        if ( mrv::is_directory( file.c_str() ) )
        {
           parse_directory( file, opts );
@@ -2303,6 +2304,7 @@ void ImageBrowser::handle_dnd()
           }
           else
           {
+              std::cerr << "opt-files " << file << std::endl;
              opts.files.push_back( mrv::LoadInfo( file, frameStart,
                                                   frameEnd, frameStart,
                                                   frameEnd ) );
