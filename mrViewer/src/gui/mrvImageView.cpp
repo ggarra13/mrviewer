@@ -127,6 +127,8 @@ static Atom fl_NET_WM_STATE_FULLSCREEN;
 #include "gui/mrvLogDisplay.h"
 #include "gui/mrvImageView.h"
 
+#undef TRACE
+#define TRACE(x) 
 
 
 // Widgets
@@ -1539,7 +1541,7 @@ bool ImageView::preload()
 
 void ImageView::timeout()
 {
-
+    TRACE( "" );
   //
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
@@ -1561,10 +1563,12 @@ void ImageView::timeout()
 
    if ( reel && reel->edl )
    {
+       TRACE("");
       fg = reel->media_at( tframe );
 
       if ( fg && fg != foreground() ) 
       {
+       TRACE("");
          DBG( "CHANGE TO FG " << fg->image()->name() << " due to frame "
               << tframe );
          foreground( fg );
@@ -1578,10 +1582,12 @@ void ImageView::timeout()
 
    if ( bgreel && bgreel->edl )
    {
+       TRACE("");
       bg = bgreel->media_at( tframe );
 
       if ( bg && bg != background() ) 
       {
+       TRACE("");
          background( bg );
       }
    }
@@ -1590,18 +1596,22 @@ void ImageView::timeout()
    
    if ( bg && bg != fg )
    {
+       TRACE("");
        CMedia* img = bg->image();
       // If not a video image check if image has changed on disk
       if ( ! img->has_video() &&
            uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
       {
+       TRACE("");
           img->has_changed();
       }
       
        if ( img->stopped() && playback() != kStopped )
        {
+       TRACE("");
            if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
            {
+       TRACE("");
                img->seek( tframe );
                img->play((CMedia::Playback) playback(), uiMain, false );
            }
@@ -1612,27 +1622,34 @@ void ImageView::timeout()
    double delay = 0.005;
    if ( fg )
    {
+       TRACE("");
       CMedia* img = fg->image();
       delay = 1.0 / (img->play_fps() * 2.0);
 
       // If not a video image check if image has changed on disk
+
       if ( ! img->has_video() &&
            uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
       {
+       TRACE("");
           img->has_changed();
       }
+
    }
 
   if ( timeline && timeline->visible() ) 
   {
      
+       TRACE("");
       if ( reel && !reel->edl && fg )
       {
+       TRACE("");
           CMedia* img = fg->image();
           int64_t frame = img->frame();
 
           if ( this->frame() != frame )
           {
+       TRACE("");
               this->frame( frame );
           }
       }
@@ -1640,11 +1657,14 @@ void ImageView::timeout()
 
   if ( fg && should_update( fg ) )
   {
+       TRACE("");
       update_color_info( fg );
+       TRACE("");
       uiMain->uiEDLWindow->uiEDLGroup->redraw();
   }
 
   repeat_timeout( float(delay) );
+  TRACE( "delay " << float(delay) );
 }
 
 void ImageView::selection( const mrv::Rectd& r )
@@ -1715,6 +1735,7 @@ void static_preload( mrv::ImageView* v )
  */
 void ImageView::draw()
 {
+    TRACE("");
   if ( !valid() ) 
     {
         if ( ! _engine )
@@ -1768,8 +1789,8 @@ void ImageView::draw()
   }
 
 
-  mrv::media bg = background();
-  mrv::media fg = foreground();
+  const mrv::media& bg = background();
+  const mrv::media& fg = foreground();
 
 
   ImageList images;
@@ -1782,7 +1803,7 @@ void ImageView::draw()
 	  images.push_back( img );
     }
 
-  if ( fg && fg->image() )
+  if ( fg )
     {
        CMedia* img = fg->image();
        if ( img->has_picture() )
@@ -1931,6 +1952,8 @@ void ImageView::draw()
 
      _engine->draw_cursor( xf, yf );
   }
+
+  TRACE("");
 
   if ( _hud == kHudNone )
     return;
@@ -2095,6 +2118,7 @@ void ImageView::draw()
 	}
     }
 
+  TRACE("");
 }
 
 
@@ -2704,23 +2728,23 @@ void ImageView::pixel_processed( const CMedia* img,
  */
 void ImageView::mouseMove(int x, int y)	
 {
-  if ( !uiMain->uiPixelBar->visible() || !_engine ) return;
+    if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
 
   //
   // First, handle log window showing up and scrolling
   //
   if (main() && main()->uiLog && main()->uiLog->uiMain )
   {
-      fltk::Window* logwindow = main()->uiLog->uiMain;
       mrv::LogUI* logUI = main()->uiLog;
-      if ( logUI )
+      fltk::Window* logwindow = logUI->uiMain;
+      if ( logwindow )
       {
           mrv::LogDisplay* log = logUI->uiLogText;
 
           if ( mrv::LogDisplay::show == true )
           {
               mrv::LogDisplay::show = false;
-              if (main() && main()->uiLog && logwindow )
+              if (main() && logUI && logwindow )
               {
                   logwindow->show();
               }
@@ -2728,12 +2752,12 @@ void ImageView::mouseMove(int x, int y)
           static int lines = 0;
           if ( log->visible() && log->lines() != lines )
           {
-              log->scroll( log->lines(), 0 );
+              log->scroll( log->lines()-1, 0 );
               lines = log->lines();
           }
       }
   }
-
+  
   mrv::media fg = foreground();
   if ( !fg ) return;
 
@@ -2771,7 +2795,7 @@ void ImageView::mouseMove(int x, int y)
   {
       window()->cursor(fltk::CURSOR_CROSS);
   }
-
+  
   CMedia::Pixel rgba;
 
   bool outside = false;
@@ -2797,7 +2821,6 @@ void ImageView::mouseMove(int x, int y)
   int xp = (int)floor(xf);
   int yp = (int)floor(yf);
 
-
   if ( xp >= (int)w && ( stereo_type() & CMedia::kStereoSideBySide ) )
   {
       if ( _stereo & CMedia::kStereoRight ) pic = img->left();
@@ -2807,8 +2830,6 @@ void ImageView::mouseMove(int x, int y)
 
       xp -= w;
   }
-
-
 
 
   if ( stereo_type() == CMedia::kStereoInterlaced )
@@ -2827,7 +2848,6 @@ void ImageView::mouseMove(int x, int y)
       if ( !pic ) return;
   }
 
-
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
   {
@@ -2838,7 +2858,7 @@ void ImageView::mouseMove(int x, int y)
            yp >= (int)pic->height() )
           outside = true;
   }
-
+  
   char buf[40];
   sprintf( buf, "%5d, %5d", xp, yp );
   uiMain->uiCoord->text(buf);
@@ -2880,7 +2900,6 @@ void ImageView::mouseMove(int x, int y)
               }
           }
       }
-
       // double yp = yf;
       // if ( _showPixelRatio ) yp /= img->pixel_ratio();
   }
@@ -2890,11 +2909,10 @@ void ImageView::mouseMove(int x, int y)
   if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
   {
 
-      const mrv::image_type_ptr& picb = bgr->hires();
+      const mrv::image_type_ptr picb = bgr->hires();
       const mrv::Recti& dpwb = bgr->display_window(picb->frame());
       const mrv::Recti& dawb = bgr->data_window(picb->frame());
       if ( picb )
-
       {
           w = dawb.w();
           h = dawb.h();
@@ -2978,7 +2996,6 @@ void ImageView::mouseMove(int x, int y)
           break;
   }
 
-
   //
   // Show this pixel as 8-bit fltk color box
   //
@@ -3008,7 +3025,6 @@ void ImageView::mouseMove(int x, int y)
     }
 
   uiMain->uiPixelView->redraw();
-
 
 
 
@@ -3048,7 +3064,6 @@ void ImageView::mouseMove(int x, int y)
   uiMain->uiPixelH->text( float_printf( hsv.r ).c_str() );
   uiMain->uiPixelS->text( float_printf( hsv.g ).c_str() );
   uiMain->uiPixelV->text( float_printf( hsv.b ).c_str() );
-
 
   mrv::BrightnessType brightness_type = (mrv::BrightnessType) 
     uiMain->uiLType->value();
@@ -4069,6 +4084,7 @@ void ImageView::toggle_media_info( bool show )
  */
 int ImageView::handle(int event) 
 {
+    TRACE("");
     switch( event ) 
     {
         case mrv::kFULLSCREEN:
@@ -4084,11 +4100,14 @@ int ImageView::handle(int event)
         case mrv::kVECTORSCOPE_WINDOW_SHOW:
         case mrv::kVECTORSCOPE_WINDOW_HIDE:
             {
+                TRACE("");
                 _event = event;
+                TRACE("");
                 return 1;
             }
         case fltk::TIMEOUT:
             {
+                TRACE("");
                 unsigned e = _event;
                 ParserList c = _clients;
                 _clients.clear();
@@ -4096,41 +4115,54 @@ int ImageView::handle(int event)
                 switch( e )
                 {
                     case 0:
+                TRACE("");
                         break;
                     case mrv::kFULLSCREEN:
+                TRACE("");
                         toggle_fullscreen();
                         ok = true; break;
                     case mrv::kPRESENTATION:
+                TRACE("");
                         toggle_presentation();
                         ok = true; break;
                     case mrv::kMEDIA_INFO_WINDOW_SHOW:
+                TRACE("");
                         toggle_media_info(true);
                         ok = true; break;
                     case mrv::kMEDIA_INFO_WINDOW_HIDE:
+                TRACE("");
                         toggle_media_info(false);
                         ok = true; break;
                     case mrv::kCOLOR_AREA_WINDOW_SHOW:
+                TRACE("");
                         toggle_color_area(true);
                         ok = true; break;
                     case mrv::kCOLOR_AREA_WINDOW_HIDE:
+                TRACE("");
                         toggle_color_area(false);
                         ok = true; break;
                     case mrv::k3D_VIEW_WINDOW_SHOW:
+                TRACE("");
                         toggle_3d_view(true);
                         ok = true; break;
                     case mrv::k3D_VIEW_WINDOW_HIDE:
+                TRACE("");
                         toggle_3d_view(false);
                         ok = true; break;
                     case mrv::kHISTOGRAM_WINDOW_SHOW:
+                TRACE("");
                         toggle_histogram(true);
                         ok = true; break;
                     case mrv::kHISTOGRAM_WINDOW_HIDE:
+                TRACE("");
                         toggle_histogram(false);
                         ok = true; break;
                     case mrv::kVECTORSCOPE_WINDOW_SHOW:
+                TRACE("");
                         toggle_vectorscope(true); 
                         ok = true; break;
                     case mrv::kVECTORSCOPE_WINDOW_HIDE:
+                TRACE("");
                         toggle_vectorscope(false);
                         ok = true; break;
                     default:
@@ -4139,6 +4171,7 @@ int ImageView::handle(int event)
 
                 if ( ok ) { _event = 0; }
 
+                TRACE("");
                 _clients = c;
 
                 mrv::ImageBrowser* b = browser();
@@ -4158,6 +4191,7 @@ int ImageView::handle(int event)
                     }
                 }
                 timeout();
+                TRACE("");
                 return 1;
             }
         case fltk::FOCUS:
@@ -4170,17 +4204,25 @@ int ImageView::handle(int event)
             {
                 window()->cursor(fltk::CURSOR_CROSS);
             }
+                TRACE("");
             fltk::GlWindow::handle( event );
+                TRACE("");
             return 1;
             }
         case fltk::ENTER:
+                TRACE("");
             focus(this);
+                TRACE("");
             fltk::GlWindow::handle( event );
+                TRACE("");
             return 1;
         case fltk::UNFOCUS:
         case fltk::LEAVE:
+                TRACE("");
             window()->cursor(fltk::CURSOR_DEFAULT);
+                TRACE("");
             fltk::GlWindow::handle( event );
+                TRACE("");
             return 1;
         case fltk::PUSH:
             return leftMouseDown(fltk::event_x(), fltk::event_y());
@@ -4190,6 +4232,7 @@ int ImageView::handle(int event)
             return 1;
             break;
         case fltk::MOVE:
+                TRACE("");
             X = fltk::event_x();
             Y = fltk::event_y();
 
@@ -4234,7 +4277,9 @@ int ImageView::handle(int event)
             if ( _mode == kDraw || _mode == kErase )
                 redraw();
 
+                TRACE("");
             fltk::GlWindow::handle( event );
+                TRACE("");
             return 1;
             break;
         case fltk::DRAG:
@@ -4274,7 +4319,9 @@ int ImageView::handle(int event)
             browser()->handle_dnd();
             return 1;
         default:
+                TRACE("");
             window()->cursor(fltk::CURSOR_CROSS);
+                TRACE("");
             return fltk::GlWindow::handle( event ); 
     }
 
@@ -5622,6 +5669,8 @@ int64_t ImageView::frame() const
  */
 void ImageView::frame( const int64_t f )
 {
+    uiMain->uiFrame->frame(f);
+    
     // Redraw browser to update thumbnail
     mrv::ImageBrowser* b = browser();
     if (b) b->frame( f );

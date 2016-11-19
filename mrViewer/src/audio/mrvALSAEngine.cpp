@@ -301,7 +301,6 @@ float ALSAEngine::volume() const
   void ALSAEngine::volume( float v )
   {
 #if 1
-
      _volume = v;
 
     //
@@ -309,9 +308,9 @@ float ALSAEngine::volume() const
     //
     char buf[1024];
 
-    if ( !_mixer )
-      {
-          try {
+      try {
+          if ( !_mixer )
+          {
               int err;
               if ( (err = snd_mixer_open(&_mixer, 0)) < 0) {
                   sprintf( buf, _("Mixer %s open error: %s\n"), 
@@ -343,62 +342,63 @@ float ALSAEngine::volume() const
                   _mixer = NULL;
                   THROW(buf);
               }
-
-
-              snd_mixer_selem_id_t *sid;
-              snd_mixer_selem_id_alloca(&sid);
-              snd_mixer_selem_id_set_name( sid, "PCM" );
-          
-              snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
-              if ( !elem )
-              {
-                  // Try with master
-                  snd_mixer_selem_id_set_name(sid, "Master");
-                  elem = snd_mixer_find_selem( _mixer, sid );
-              }
-
-              if ( !elem )
-              {
-                  sprintf( buf,
-                           _("Unable to find simple control '%s', id: %i\n"),
-                           snd_mixer_selem_id_get_name(sid), 
-                           snd_mixer_selem_id_get_index(sid) );
-                  snd_mixer_close(_mixer);
-                  _mixer = NULL;
-                  THROW(buf);
-              }
-              
-              long pmin, pmax;
-              if ( snd_mixer_selem_get_playback_volume_range( elem,
-                                                          &pmin, &pmax ) < 0 )
-              {
-                  sprintf( buf, _("Unable to find volume range '%s', id: %i\n"),
-                           snd_mixer_selem_id_get_name(sid), 
-                           snd_mixer_selem_id_get_index(sid) );
-                  snd_mixer_close(_mixer);
-                  _mixer = NULL;
-                  THROW(buf);
-              }
-              
-              float orig_v= v;
-              if ( v > 1.0f ) v = 1.0f;
-              
-              long smixer_level = pmin + long( float(pmax-pmin) * v);
-              
-              for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i)
-              {
-                  snd_mixer_selem_channel_id_t chn =
-                  (snd_mixer_selem_channel_id_t) i;
-                  if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
-                      continue;
-                  snd_mixer_selem_set_playback_volume( elem, chn,
-                                                       smixer_level );
-              }
           }
-          catch( const exception& e )
+
+    
+          snd_mixer_selem_id_t *sid;
+          snd_mixer_selem_id_alloca(&sid);
+          snd_mixer_selem_id_set_name( sid, "PCM" );
+      
+          snd_mixer_elem_t* elem = snd_mixer_find_selem( _mixer, sid);
+          if ( !elem )
           {
-              std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
+              // Try with master
+              snd_mixer_selem_id_set_name(sid, "Master");
+              elem = snd_mixer_find_selem( _mixer, sid );
           }
+          
+          if ( !elem )
+          {
+              sprintf( buf,
+                   _("Unable to find simple control '%s', id: %i\n"),
+                       snd_mixer_selem_id_get_name(sid), 
+                       snd_mixer_selem_id_get_index(sid) );
+              snd_mixer_close(_mixer);
+              _mixer = NULL;
+              THROW(buf);
+          }
+              
+          long pmin, pmax;
+          if ( snd_mixer_selem_get_playback_volume_range( elem,
+                                                          &pmin, &pmax ) < 0 )
+          {
+              sprintf( buf, _("Unable to find volume range '%s', id: %i\n"),
+                       snd_mixer_selem_id_get_name(sid), 
+                       snd_mixer_selem_id_get_index(sid) );
+              snd_mixer_close(_mixer);
+              _mixer = NULL;
+              THROW(buf);
+          }
+      
+          float orig_v= v;
+          if ( v > 1.0f ) v = 1.0f;
+      
+          long smixer_level = pmin + long( float(pmax-pmin) * v);
+      
+          for (unsigned int i = 0; i <= SND_MIXER_SCHN_LAST; ++i)
+          {
+              snd_mixer_selem_channel_id_t chn =
+              (snd_mixer_selem_channel_id_t) i;
+              if ( ! snd_mixer_selem_has_playback_channel(elem, chn) )
+                  continue;
+          
+              snd_mixer_selem_set_playback_volume( elem, chn,
+                                                   smixer_level );
+          }
+      }
+      catch( const exception& e )
+      {
+          std::cerr << "ERROR: [alsa] " << e.what() << std::endl;
       }
     
 #else
