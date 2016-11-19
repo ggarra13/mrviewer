@@ -172,7 +172,7 @@ namespace mrv {
 #endif
 
 #define TRACE(x) do { \
-    std::cerr << _("mrViewer TRACE : ") << x << " at "                    \
+    std::cerr << _("mrViewer TRACE : ") << x << std::flush << " at "          \
               << __FUNCTION__ << ", " << __LINE__ << std::endl;         \
 } while(0)
 

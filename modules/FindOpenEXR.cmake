@@ -41,38 +41,44 @@ FIND_PATH( OPENEXR_INCLUDE_DIR ImfHeader.h
 FIND_LIBRARY( IlmImfUtil 
   NAMES IlmImfUtil-2_2 IlmImfUtil_dll IlmImfUtil_dll_d IlmImfUtil IlmImfUtild
   PATHS ${SEARCH_DIRS}
+  NO_DEFAULT_PATH
   DOC   "OpenEXR IlmImf library"
 )
 
 FIND_LIBRARY( IlmImf 
   NAMES IlmImf-2_2 IlmImf_dll IlmImf_dll_d IlmImf IlmImfd
   PATHS ${SEARCH_DIRS}
+  NO_DEFAULT_PATH
   DOC   "OpenEXR IlmImf library"
 )
 
-MESSAGE( "IlmImf=" ${IlmImf} )
+MESSAGE( "OpenEXR Root=$ENV{OPENEXR_ROOT} SEARCH_DIRS=${SEARCH_DIRS} IlmImf=" ${IlmImf} )
 
 FIND_LIBRARY( Imath 
   NAMES Imath-2_2 Imath_dll Imath_dll_d Imath Imathd 
   PATHS ${SEARCH_DIRS}
+  NO_DEFAULT_PATH
   DOC   "OpenEXR Imath library"
 )
 
 FIND_LIBRARY( Iex
   NAMES Iex-2_2 Iex_dll Iex_dll_d Iex Iexd libIex Iex-2_1
   PATHS ${SEARCH_DIRS}
+  NO_DEFAULT_PATH
   DOC   "OpenEXR Iex library"
 )
 
 FIND_LIBRARY( IexMath
   NAMES IexMath-2_2 IexMath
   PATHS ${SEARCH_DIRS}
+  NO_DEFAULT_PATH
   DOC   "OpenEXR IexMath library"
 )
 
 FIND_LIBRARY( Half
   NAMES Half_dll Half_dll_d Half Halfd
   PATHS ${SEARCH_DIRS}
+  NO_DEFAULT_PATH
   DOC   "OpenEXR Half library"
 )
 
