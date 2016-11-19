@@ -1,4 +1,4 @@
-/*
+ /*
     mrViewer - the professional movie and flipbook playback
     Copyright (C) 2007-2014  Gonzalo Garramuño
 
@@ -305,6 +305,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     using namespace fltk;
 
     int64_t j = frame;
+//    if ( !img->has_video() && pos < j ) j = pos;
 
     int64_t max = frame + size;
     if ( mx < max ) max = mx;
@@ -460,7 +461,8 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 	    if ( frame + size < mn || frame > mx ) continue;
 
             if ( _draw_cache )
-                draw_cacheline( img, pos, size, mn, mx, frame, r );
+                draw_cacheline( img, pos, size, int64_t(mn), int64_t(mx),
+                                frame, r );
 
 	    int dx = rx + slider_position( double(frame), ww );
 
@@ -474,13 +476,14 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     {
         if ( _draw_cache )
         {
-            const mrv::media& m = browser()->current_image();
+            mrv::media m = browser()->current_image();
             if ( m )
             {
                 CMedia* img = m->image();
                 CMedia::Mutex& mtx = img->video_mutex();
                 SCOPED_LOCK( mtx );
-                draw_cacheline( img, 1, img->duration(), mn, mx, v, r );
+                draw_cacheline( img, 1, img->duration(), int64_t(mn),
+                                int64_t(mx), 1, r );
             }
         }
     }

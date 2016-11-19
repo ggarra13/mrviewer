@@ -171,7 +171,7 @@ class ExceptionHandler
 
 
 // global instance of class
-extern mr::ExceptionHandler* gExceptionHandler;
+extern mr::ExceptionHandler gExceptionHandler;
 
 
 #endif  // mrStackTrace_win32_h
