@@ -103,7 +103,7 @@ namespace
 
 
 //  in ffmpeg, sizes are in bytes...
-#define kMAX_QUEUE_SIZE (15 * 1024 * 1024)
+#define kMAX_QUEUE_SIZE (30 * 1024 * 1024)
 #define kMAX_PACKET_SIZE 50
 #define kMAX_AUDIOQ_SIZE (20 * 16 * 1024)
 #define kMAX_SUBTITLEQ_SIZE (5 * 30 * 1024)
@@ -2544,7 +2544,7 @@ bool aviImage::frame( const boost::int64_t f )
         // ( _video_packets.bytes() +  _audio_packets.bytes() + 
         // 	 _subtitle_packets.bytes() ) << " > " <<  kMAX_QUEUE_SIZE
         // 		 << std::endl;
-        return true;
+        return false;
     }
 
     if ( f < _frameStart )    _dts = _adts = _frameStart;
