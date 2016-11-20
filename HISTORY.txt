@@ -7,6 +7,8 @@ v3.3.7   - Fixed cache line in timeline for sequences which would
 	   half the volume.
 	 - Bug fixed audio volume control on Linux.
 	 - Removed empty filename from drag and drop on Linux.
+	 - Made queue size bigger to handle some movies
+	   (Abba_Chiquitita_Español.wmv )
 
 v3.3.6   - Bug fixed EDL playback which got broken in v3.3.5.
 	 - Minimized (fixed) hangings and crashings due to log window.
