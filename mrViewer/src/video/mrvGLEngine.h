@@ -132,6 +132,9 @@ namespace mrv {
 
       void draw_shape( GLShape* const shape );
 
+      // Clear quads and spheres from draw queue
+      void clear_quads();
+      
     /// Auxiliary function used to check for Cg errors;
     static void handle_cg_errors();
 
@@ -139,6 +142,9 @@ namespace mrv {
                                const double th,
                                const char* name = 0 );
 
+    /// Allocate a number of quads
+    void alloc_spheres( size_t num );
+      
     /// Allocate a number of quads
     void alloc_quads( size_t num );
 
