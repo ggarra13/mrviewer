@@ -2709,7 +2709,6 @@ void aviImage::wait_image()
     {
         if ( stopped() || saving() || ! _video_packets.empty() ) break;
 
-        std::cerr << _frame << std::endl;
         CONDITION_WAIT( _video_packets.cond(), vpm );
     }
   return;
