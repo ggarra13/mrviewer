@@ -54,9 +54,9 @@ class GLQuad
     float gamma() const { return _gamma; }
     void gamma( const float f ) { _gamma = f; }
     
-    void bind( const image_type_ptr& pic );
+    virtual void bind( const image_type_ptr& pic );
     
-    void draw( const unsigned dw, const unsigned dh ) const;
+    virtual void draw( const unsigned dw, const unsigned dh ) const;
 
     inline const GLLut3d* lut() const { return _lut; }
     void lut( const CMedia* img );
