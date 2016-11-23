@@ -812,6 +812,8 @@ _gain( 1.0f ),
 _zoom( 1 ),
 xoffset( 0 ),
 yoffset( 0 ),
+rotx( 0 ),
+roty( 0 ),
 posX( 4 ),
 posY( 22 ),
 flags( 0 ),
@@ -834,6 +836,7 @@ _old_fg_frame( 0 ),
 _old_bg_frame( 0 ),
 _reel( 0 ),
 _idle_callback( false ),
+_vr( false ),
 _event( 0 ),
 _timeout( NULL ),
 _fg_reel( -1 ),
@@ -1663,6 +1666,11 @@ void ImageView::timeout()
       uiMain->uiEDLWindow->uiEDLGroup->redraw();
   }
 
+  if ( vr() )
+  {
+      redraw();
+  }
+  
   repeat_timeout( float(delay) );
   TRACE( "delay " << float(delay) );
 }
@@ -1736,6 +1744,22 @@ void static_preload( mrv::ImageView* v )
 void ImageView::draw()
 {
     TRACE("");
+
+    const mrv::media& fg = foreground();
+    if ( fg )
+    {
+        if ( fg->image()->vr() )
+        {
+            if ( _vr == false ) valid(0);
+            _vr = true;
+        }
+        else
+        {
+            if ( _vr == true ) valid(0);
+            _vr = false;
+        }
+    }
+
   if ( !valid() ) 
     {
         if ( ! _engine )
@@ -1790,7 +1814,6 @@ void ImageView::draw()
 
 
   const mrv::media& bg = background();
-  const mrv::media& fg = foreground();
 
 
   ImageList images;
@@ -3094,15 +3117,30 @@ void ImageView::mouseDrag(int x,int y)
       else if ( flags & kMouseMove )
 	{
 	   window()->cursor( fltk::CURSOR_MOVE );
-	   xoffset += double(dx) / _zoom;
-           yoffset -= double(dy) / _zoom;
-
+           if ( vr() )
+           {
+#define ROTY_MAX 0.5
+#define ROTX_MAX 0.1
+               roty += double(dx) / 360.0;
+               if ( roty > ROTY_MAX ) roty = ROTY_MAX;
+               else if ( roty < -ROTY_MAX ) roty = -ROTY_MAX;
+               rotx += double(dy) / 90.0;
+               if ( rotx > ROTX_MAX ) rotx = ROTX_MAX;
+               else if ( rotx < -ROTX_MAX ) rotx = -ROTX_MAX;
+           }
+           else
+           {
+               xoffset += double(dx) / _zoom;
+               yoffset -= double(dy) / _zoom;
+           }
+           
+           lastX = x;
+           lastY = y;
+           
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
 	   send_network( buf );
 
-	   lastX = x;
-	   lastY = y;
 	}
       else
 	{
