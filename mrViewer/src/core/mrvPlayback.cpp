@@ -851,7 +851,7 @@ void video_thread( PlaybackData* data )
    {
        DBG( img->name() << " wait image " << frame );
        img->wait_image();
-
+       // std::cerr << frame << std::endl;
 
        // img->debug_video_stores( frame, "BACK" );
 
@@ -860,8 +860,6 @@ void video_thread( PlaybackData* data )
 
        
        DBG( img->name() << " decode image " << frame );
-       // int64_t f = img->handle_loops( frame );
-       DBG( img->name() << " decode2 image " << frame );
        CMedia::DecodeStatus status = img->decode_video( frame );
        DBG( img->name() << " decoded image " << frame << " status " 
             << CMedia::decode_error(status) );
@@ -986,6 +984,7 @@ void video_thread( PlaybackData* data )
       img->real_fps( timer.actualFrameRate() );
 
 
+      
       TRACE( img->name() << " find image " << frame );
 
       bool ok = img->find_image( frame );
@@ -1114,9 +1113,9 @@ void decode_thread( PlaybackData* data )
       TRACE("");
       while ( !img->frame( frame ) )
       {
-      TRACE("");
+          TRACE("");
           if ( img->stopped() ) break;
-	 sleep_ms( 10 );
+          sleep_ms( 10 );
       }
 
 
