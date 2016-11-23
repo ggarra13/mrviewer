@@ -352,6 +352,10 @@ class server;
     /// Change audio stream
     void audio_stream( unsigned int idx );
 
+      ///
+      void vr( bool t ) { _vr = t; valid(0); redraw(); }
+      bool vr() const { return _vr; }
+      
     /// Attaches main window class to this viewer
     void main( mrv::ViewerUI* b ) { uiMain = b; }
 
@@ -395,6 +399,12 @@ class server;
       
       inline double offset_x() const { return xoffset; }
       inline double offset_y() const { return yoffset; }
+      
+      inline void rot_x( double x ) { rotx = x; }
+      inline void rot_y( double x ) { roty = x; }
+      
+      inline double rot_x() const { return rotx; }
+      inline double rot_y() const { return roty; }
     double pixel_ratio() const;
 
     DrawEngine* const engine() const { return _engine; }
@@ -564,7 +574,7 @@ class server;
     float        _gain;       //<- display gain (exposure)
     float	 _zoom;       //<- display zoom
     double	 xoffset, yoffset; //<- display offsets
-
+      double     rotx, roty;   //<- VR's rotation offsets
 
 
 
@@ -599,6 +609,8 @@ class server;
       unsigned    _reel;
       bool        _idle_callback;
 
+      bool        _vr;  // Spherical VR 360
+      
       ////////////////////////////////////////////////
       // Events needed to be handled in main thread
       ////////////////////////////////////////////////

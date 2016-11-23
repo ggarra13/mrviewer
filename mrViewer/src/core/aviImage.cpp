@@ -2308,6 +2308,8 @@ boost::int64_t aviImage::queue_packets( const boost::int64_t frame,
             }
             else
             {
+                // std::cerr << "push back pkt "
+                //           << get_frame( get_video_stream(), pkt );
                 _video_packets.push_back( pkt );
                 if ( pktframe > dts ) dts = pktframe;
             }
@@ -2554,7 +2556,6 @@ bool aviImage::frame( const boost::int64_t f )
 
 
   bool ok = fetch(f);
-  
 
 
 #ifdef DEBUG_DECODE
@@ -2708,6 +2709,7 @@ void aviImage::wait_image()
     {
         if ( stopped() || saving() || ! _video_packets.empty() ) break;
 
+        std::cerr << _frame << std::endl;
         CONDITION_WAIT( _video_packets.cond(), vpm );
     }
   return;
@@ -2836,18 +2838,19 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
     }
 
 #ifdef DEBUG_VIDEO_PACKETS
-        debug_video_packets(frame, "decode_video", true);
+    debug_video_packets(frame, "decode_video", true);
 #endif
 
-  mrv::PacketQueue::Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
+    {
+        SCOPED_LOCK( _mutex );
 
-  if ( _video_packets.empty() )
-  {
-     bool ok = in_video_store( frame );
-     if ( ok ) return kDecodeOK;
-     return kDecodeError;
-  }
+        if ( _video_packets.empty() )
+        {
+            bool ok = in_video_store( frame );
+            if ( ok ) return kDecodeOK;
+            return kDecodeError;
+        }
+    }
 
   DecodeStatus got_video = kDecodeMissingFrame;
 
@@ -2856,6 +2859,7 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
     {
       if ( _video_packets.is_flush() )
 	{
+            SCOPED_LOCK( _mutex );
             flush_video();
             _video_packets.pop_front();
             continue;
