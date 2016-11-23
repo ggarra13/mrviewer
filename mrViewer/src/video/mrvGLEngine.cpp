@@ -85,6 +85,7 @@
 #include "video/mrvGLShader.h"
 #include "video/mrvGLEngine.h"
 #include "video/mrvGLQuad.h"
+#include "video/mrvGLSphere.h"
 #include "video/mrvGLLut3d.h"
 
 #undef TRACE
@@ -515,7 +516,10 @@ void GLEngine::initialize()
   _pow2Textures      = !GLEW_ARB_texture_non_power_of_two;
   _fboRenderBuffer   = ( GLEW_ARB_framebuffer_object != GL_FALSE );
 
-  alloc_quads( 4 );
+  if ( _view->vr() )
+      alloc_spheres( 4 );
+  else
+      alloc_quads( 4 );
 
   CHECK_GL("initGL");
 }
@@ -527,14 +531,36 @@ void GLEngine::initialize()
  */
 void GLEngine::reset_view_matrix()
 {
-  glMatrixMode(GL_PROJECTION);
+    glMatrixMode(GL_PROJECTION);
 
-  ImageView* view = const_cast< ImageView* >( _view );
-  view->ortho();
+    static bool vr = false;
+
+    if ( _view->vr() != vr )
+    {
+        vr = _view->vr();
+        clear_quads();
+    }
+    
+    ImageView* view = const_cast< ImageView* >( _view );
+    if (! view->vr() )
+    {
+        view->ortho();
+    }
+    else
+    {
+        unsigned w = _view->w();
+        unsigned h = _view->h();
+        glViewport(0, 0, w, h);
+        glLoadIdentity();
+        gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
+        gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
+        //gluLookAt( 0, 1, 0, 0, -1, 0, 1, 0, 0 );
+        
+    }
   
-  // Makes gl a tad faster
-  glDisable(GL_DEPTH_TEST);
-  glDisable(GL_LIGHTING);
+    // Makes gl a tad faster
+    glDisable(GL_DEPTH_TEST);
+    glDisable(GL_LIGHTING);
 }
 
 void GLEngine::evaluate( const CMedia* img,
@@ -879,11 +905,11 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 inline
 void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
                            const bool pixel_ratio )
-{  
+{
+    if ( _view->vr() ) return;
 
     glMatrixMode(GL_MODELVIEW);
     glLoadIdentity();
-
 
     //
     // Translate to center of screen
@@ -954,8 +980,8 @@ void GLEngine::draw_mask( const float pct )
 
   glTranslated( dpw.x(), -dpw.y(), 0.0 );
   glScaled( dpw.w(), dpw.h(), 1.0 );
-
   glTranslated( 0.5, -0.5, 0.0 );
+  
 
   double aspect = (double) dpw.w() / (double) dpw.h();   // 1.3
   double target_aspect = 1.0 / pct;
@@ -1111,6 +1137,17 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
 
 
+void GLEngine::alloc_spheres( size_t num )
+{
+  size_t num_quads = _quads.size();
+  _quads.reserve( num );
+  for ( size_t q = num_quads; q < num; ++q )
+    {
+      mrv::GLSphere* quad = new mrv::GLSphere( _view );
+      _quads.push_back( quad );
+    }
+}
+
 void GLEngine::alloc_quads( size_t num )
 {
   size_t num_quads = _quads.size();
@@ -1218,7 +1255,14 @@ void GLEngine::draw_images( ImageList& images )
   size_t num = _quads.size();
   if ( num_quads > num )
     {
-      alloc_quads( num_quads );
+        if ( _view->vr() )
+        {
+            alloc_spheres( num_quads );
+        }
+        else
+        {
+            alloc_quads( num_quads );
+        }
     }
 
 
@@ -1311,20 +1355,21 @@ void GLEngine::draw_images( ImageList& images )
 
       glPushMatrix();
 
-      glTranslatef( float(daw.x() - img->eye_separation()),
-                    float(-daw.y()), 0 );
+      if ( !_view->vr() )
+      {
+          glTranslatef( float(daw.x() - img->eye_separation()),
+                        float(-daw.y()), 0 );
 
+          TRACE( "" );
+          if ( _view->main()->uiPixelRatio->value() )
+              glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
+                        1.0 );
+          else
+              glScaled( double(texWidth), double(texHeight), 1.0 );
 
-    TRACE( "" );
-      if ( _view->main()->uiPixelRatio->value() )
-          glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
-                    1.0 );
-      else
-          glScaled( double(texWidth), double(texHeight), 1.0 );
-
-      glTranslated( 0.5, -0.5, 0.0 );
-
-
+          glTranslated( 0.5, -0.5, 0.0 );
+      }
+      
     TRACE( "" );
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
@@ -2281,24 +2326,31 @@ GLEngine::loadBuiltinFragShader()
 }
 
 
+void GLEngine::clear_quads()
+{
+    QuadList::iterator i = _quads.begin();
+    QuadList::iterator e = _quads.end();
+    for ( ; i != e; ++i )
+    {
+        delete *i;
+    }
+    _quads.clear();
+
+}
+
+
 void GLEngine::release()
 {
-  QuadList::iterator i = _quads.begin();
-  QuadList::iterator e = _quads.end();
-  for ( ; i != e; ++i )
-    {
-      delete *i;
-    }
-  _quads.clear();
+    clear_quads();
 
-  GLLut3d::clear();
+    GLLut3d::clear();
 
-  if ( sCharset )
-     glDeleteLists( sCharset, 255 );
-
-  if (_rgba)  delete _rgba;
-  if (_YByRy) delete _YByRy;
-  if (_YCbCr) delete _YCbCr;
+    if ( sCharset )
+        glDeleteLists( sCharset, 255 );
+    
+    if (_rgba)  delete _rgba;
+    if (_YByRy) delete _YByRy;
+    if (_YCbCr) delete _YCbCr;
 }
 
 
