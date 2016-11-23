@@ -373,6 +373,9 @@ class CMedia
 
     // Add default Color, Red, Green, Blue, Alpha, Overlay, Lumma layers
     void default_layers();
+    
+    // Add VR360 layer
+    void vr_layers();
 
 
     // Add default stereo.horizontal, stereo.crossed
