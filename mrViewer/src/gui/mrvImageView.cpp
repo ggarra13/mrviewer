@@ -2184,7 +2184,8 @@ int ImageView::leftMouseDown(int x, int y)
   int button = fltk::event_button();
   if (button == 1) 
     {
-      if (fltk::event_key_state(fltk::LeftAltKey) )
+      if (fltk::event_key_state(fltk::LeftAltKey) ||
+          vr() )
       {
 	 // Handle ALT+LMB moves
 	 flags  = kMouseDown;
@@ -2997,6 +2998,11 @@ void ImageView::mouseMove(int x, int y)
       }
   }
 
+  if ( vr() )
+  {
+      rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits<float>::quiet_NaN();
+  }
+
   switch( uiMain->uiAColorType->value() )
   {
       case kRGBA_Float:
@@ -3119,14 +3125,18 @@ void ImageView::mouseDrag(int x,int y)
 	   window()->cursor( fltk::CURSOR_MOVE );
            if ( vr() )
            {
-#define ROTY_MAX 0.5
-#define ROTX_MAX 0.1
+#define ROTY_MIN 0.01
+#define ROTX_MIN 0.01
+#define ROTY_MAX 1.0
+#define ROTX_MAX 0.5
                roty += double(dx) / 360.0;
                if ( roty > ROTY_MAX ) roty = ROTY_MAX;
                else if ( roty < -ROTY_MAX ) roty = -ROTY_MAX;
+               else if ( std::abs(roty) <= ROTY_MIN ) roty = 0.0;
                rotx += double(dy) / 90.0;
                if ( rotx > ROTX_MAX ) rotx = ROTX_MAX;
                else if ( rotx < -ROTX_MAX ) rotx = -ROTX_MAX;
+               else if ( std::abs(rotx) <= ROTX_MIN ) rotx = 0.0;
            }
            else
            {
