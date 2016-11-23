@@ -2882,6 +2882,11 @@ void ImageView::mouseMove(int x, int y)
            yp >= (int)pic->height() )
           outside = true;
   }
+
+  if ( vr() )
+  {
+      xp = yp = 0; outside = true;
+  }
   
   char buf[40];
   sprintf( buf, "%5d, %5d", xp, yp );
@@ -3000,7 +3005,8 @@ void ImageView::mouseMove(int x, int y)
 
   if ( vr() )
   {
-      rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits<float>::quiet_NaN();
+      rgba.r = rgba.g = rgba.b = rgba.a =
+               std::numeric_limits<float>::quiet_NaN();
   }
 
   switch( uiMain->uiAColorType->value() )
@@ -4858,6 +4864,8 @@ void ImageView::zoom( float z )
 {
   if ( z > kMaxZoom || z < kMinZoom ) return;
 
+  if ( vr() ) z = 1.0f;
+  
   static char tmp[128];
   if ( z >= 1.0f )
     {
