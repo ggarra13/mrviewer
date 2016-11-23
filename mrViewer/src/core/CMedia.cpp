@@ -200,6 +200,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_vr360( false ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
@@ -288,6 +289,7 @@ _displayWindow2( NULL ),
 _is_left_eye( true ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_vr360( false ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
@@ -387,6 +389,7 @@ _displayWindow2( NULL ),
 _is_left_eye( false ),
 _right_eye( NULL ),
 _eye_separation( 0.0f ),
+_vr360( false ),
 _profile( NULL ),
 _rendering_transform( NULL ),
 _idt_transform( NULL ),
@@ -1245,6 +1248,13 @@ void CMedia::rgb_layers()
     _layers.push_back( _("Green") );
     _layers.push_back( _("Blue") );
     _num_channels += 3;
+
+    // If width is double the height, we have a potential VR image.
+    if ( _h * 2 == _w )
+    {
+        _layers.push_back( _("VR360") );
+    }
+    
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
@@ -1311,11 +1321,25 @@ void CMedia::channel( const char* c )
     if (c)
     {
         ch = c;
+        if ( _vr360 )
+        {
+            c = NULL;
+            ch = "";
+            _vr360 = false;
+            image_damage( image_damage() | kDamageContents );
+        }
 
         if ( ch == _("Color") || ch == _("Red") || ch == _("Green") || 
              ch == _("Blue")  || ch == "" ||
              ch == _("Alpha") || ch == _("Alpha Overlay") || ch == _("Lumma") ) 
         {
+            c = NULL;
+            ch = "";
+        }
+        else if ( ch == _("VR360") )
+        {
+            _vr360 = true;
+            image_damage( image_damage() | kDamageContents );
             c = NULL;
             ch = "";
         }
