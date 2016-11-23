@@ -851,7 +851,6 @@ void video_thread( PlaybackData* data )
    {
        DBG( img->name() << " wait image " << frame );
        img->wait_image();
-       // std::cerr << frame << std::endl;
 
        // img->debug_video_stores( frame, "BACK" );
 
