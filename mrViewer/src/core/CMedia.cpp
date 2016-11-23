@@ -1187,6 +1187,8 @@ void CMedia::image_size( int w, int h )
 
   _w = w;
   _h = h;
+
+  vr_layers();
 }
 
 
@@ -1249,23 +1251,30 @@ void CMedia::rgb_layers()
     _layers.push_back( _("Blue") );
     _num_channels += 3;
 
-    // If width is double the height, we have a potential VR image.
-    if ( _h * 2 == _w )
-    {
-        _layers.push_back( _("VR360") );
-    }
-    
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
 /** 
- * Add r,g,b and lumma to list of layers
+ * Add lumma to list of layers
  * 
  */
 void CMedia::lumma_layers()
 {
     _layers.push_back( _("Lumma") );
     image_damage( image_damage() | kDamageLayers | kDamageData );
+}
+
+/** 
+ * Add vr360 to list of layers
+ * 
+ */
+void CMedia::vr_layers()
+{
+    if ( _h * 2 == _w )
+    {
+        _layers.push_back( _("VR360") );
+        image_damage( image_damage() | kDamageLayers | kDamageData );
+    }
 }
 
 /** 
