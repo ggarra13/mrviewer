@@ -325,6 +325,9 @@ class CMedia
     kStereoRightAnaglyph = 16 + 2,
     kStereoInterlacedColumns = 4 + 32,
     kStereoCheckerboard = 4 + 64,
+    kStereoTopAndBottom = 128,
+    kStereoTopAnaglyph = 16 + 128,
+    kStereoBottomAnaglyph = 16 + 2 + 128,
     };
 
 
