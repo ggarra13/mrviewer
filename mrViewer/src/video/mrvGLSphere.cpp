@@ -88,7 +88,10 @@ namespace mrv {
   _rotY( 0.0 )
   { 
     if (!qObj) qObj = gluNewQuadric();
-    
+    gluQuadricDrawStyle( qObj, GLU_FILL );
+    gluQuadricOrientation( qObj, GLU_INSIDE );
+    gluQuadricNormals( qObj, GLU_SMOOTH );
+    gluQuadricTexture( qObj, GL_TRUE );
   }
 
 GLSphere::~GLSphere()
@@ -305,10 +308,6 @@ GLSphere::~GLSphere()
     glRotated( 90.0, 1, 0, 0 );
 
     
-    gluQuadricDrawStyle( qObj, GLU_FILL );
-    gluQuadricOrientation( qObj, GLU_INSIDE );
-    gluQuadricNormals( qObj, GLU_SMOOTH );
-    gluQuadricTexture( qObj, GL_TRUE );
     gluSphere( qObj, 1.0f, 30, 30 );
 
     if ( _shader )
