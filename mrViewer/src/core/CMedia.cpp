@@ -1270,7 +1270,7 @@ void CMedia::lumma_layers()
  */
 void CMedia::vr_layers()
 {
-    if ( _h * 2 == _w )
+    if ( _h * 2 == _w || _layers.size() < 6 )
     {
         _layers.push_back( _("VR360") );
         image_damage( image_damage() | kDamageLayers | kDamageData );
@@ -1302,7 +1302,7 @@ void CMedia::add_stereo_layers()
     stringArray::const_reverse_iterator e = _layers.rend();
     for ( ; i != e; ++i )
     {
-        if ( *i == _("right.anaglyph") ) return;
+        if ( *i == _("right.anaglyph") || *i == _("bottom.anaglyph")) return;
     }
     _layers.push_back( _("stereo.horizontal") );
     _layers.push_back( _("stereo.crossed") );
