@@ -82,7 +82,7 @@ namespace mrv {
 
 
   GLSphere::GLSphere( const ImageView* view ) :
-  GLQuad::GLQuad( view ),
+  GLQuad( view ),
   qObj( NULL ),
   _rotX( 0.0 ),
   _rotY( 0.0 )
