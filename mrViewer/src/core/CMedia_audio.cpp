@@ -701,6 +701,16 @@ void CMedia::dump_metadata( AVDictionary *m, const std::string prefix )
    while((tag=av_dict_get(m, "", tag, AV_DICT_IGNORE_SUFFIX))) {
       std::string name = prefix;
       name += tag->key;
+      if ( tag->key == "stereo_mode" )
+      {
+          _is_stereo = true;
+          if ( tag->value == "top_bottom" )
+          {
+              _stereo_type = kStereoTopAndBottom;
+              _layers.push_back( "top.anaglyph" );
+              _layers.push_back( "bottom.anaglyph" );
+          }
+      }
       _iptc.insert( std::make_pair( name, tag->value ) ); 
    }
 }
