@@ -1272,7 +1272,7 @@ void CMedia::vr_layers()
 {
     if ( _h * 2 == _w || _layers.size() < 6 )
     {
-        _layers.push_back( _("VR360") );
+        _layers.push_back( _("VR 360°") );
         image_damage( image_damage() | kDamageLayers | kDamageData );
     }
 }
@@ -1345,7 +1345,7 @@ void CMedia::channel( const char* c )
             c = NULL;
             ch = "";
         }
-        else if ( ch == _("VR360") )
+        else if ( ch == _("VR 360°") )
         {
             _vr360 = true;
             image_damage( image_damage() | kDamageContents );
