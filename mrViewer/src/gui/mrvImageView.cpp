@@ -3131,8 +3131,8 @@ void ImageView::mouseDrag(int x,int y)
 	   window()->cursor( fltk::CURSOR_MOVE );
            if ( vr() )
            {
-#define ROTY_MIN 0.01
-#define ROTX_MIN 0.01
+#define ROTY_MIN 0.025
+#define ROTX_MIN 0.025
 #define ROTY_MAX 1.0
 #define ROTX_MAX 0.5
                roty += double(dx) / 360.0;
