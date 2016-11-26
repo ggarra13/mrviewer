@@ -110,7 +110,6 @@ GLSphere::~GLSphere()
     }
 
     _width = _height = 0;
-    _uvMax.u = _uvMax.v = 1.0f;
 
 
     //
@@ -121,9 +120,6 @@ GLSphere::~GLSphere()
     {
       poww = calculate_pow2( dw );
       powh = calculate_pow2( dh );
-
-      _uvMax.u  = (float) dw / (float) poww;
-      _uvMax.v  = (float) dh / (float) powh;
     }
 
 
