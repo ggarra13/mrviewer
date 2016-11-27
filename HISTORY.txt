@@ -1,18 +1,20 @@
 v3.3.8   - Added VR 360 support for environment maps and VR videos.
 	   Images or Videos whose width is twice the height will show
-	   a VR360 channel in the channel pop up and also those with
+	   a VR 360 channel in the channel pop up and also those with
 	   less than 6 channels.
-	   When in VR360 mode, dragging the mouse with the left
+	   When in VR 360° mode, dragging the mouse with the left
 	   mouse button (or the middle mouse button) will orient you
 	   around and up and down.
 	   The resolution supported is the maximum supported by your
 	   graphics card ( See About/HW ).  On relatively new graphics
 	   cards, the maximum resolution is 16384x16384.
-	   Note that 3D VR360 is unsupported.
+	   Note that 3D VR 360 is currently unsupported.
 	 - Documented VR support in the Main Toolbar section of the
 	   html docs.
-	 - Added a video with the VR360 workflow
+	 - Added a video with the VR 360 workflow
 	   https://youtu.be/hihPKB8En7c     - VR360 workflow
+	 - Removed an error display in preferences wizard selection when
+	   no item is selected.
 
 v3.3.7   - Fixed cache line in timeline for sequences which would
 	   show only the cache from frame forwards.
