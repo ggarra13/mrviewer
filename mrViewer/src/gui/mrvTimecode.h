@@ -31,7 +31,7 @@
 
 #include <fltk/ValueInput.h>
 
-#include "mrvInteger.h"
+#include "core/mrvInteger.h"
 
 
 namespace mrv
