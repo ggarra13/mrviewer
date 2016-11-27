@@ -36,7 +36,7 @@
 #include <fltk/ask.h>
 #include <boost/thread/recursive_mutex.hpp>
 
-#include "mrvI8N.h"
+#include "core/mrvI8N.h"
 
 namespace mrv {
 

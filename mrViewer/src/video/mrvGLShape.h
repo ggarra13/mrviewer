@@ -22,7 +22,7 @@
 #include <vector>
 #include <iostream>
 
-#include "mrvPacketQueue.h" // For MRV_NOPTS_VALUE
+#include "core/mrvPacketQueue.h" // For MRV_NOPTS_VALUE
 
 #include <boost/shared_ptr.hpp>
 
