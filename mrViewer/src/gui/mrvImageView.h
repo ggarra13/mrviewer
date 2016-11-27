@@ -40,7 +40,7 @@
 #include "core/mrvServer.h"
 #include "core/mrvClient.h"
 
-#include "mrvChannelType.h"
+#include "core/mrvChannelType.h"
 #include "gui/mrvMedia.h"
 #include "gui/mrvReel.h"
 
