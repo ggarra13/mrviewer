@@ -148,10 +148,11 @@ int PreferencesBrowser::handle( int e )
     if (uiWizard == NULL ) return;
 
     int wizard_index = absolute_item_index();
+    if ( wizard_index < 0 ) return;
 
-    if ( wizard_index < 0 || wizard_index >= uiWizard->children() )
+    if ( wizard_index >= uiWizard->children() )
     {
-        LOG_ERROR( _("Internal error in wizard selection") );
+        LOG_ERROR( _("Internal error in wizard selection: ") << wizard_index);
         return;
     }
 
