@@ -308,6 +308,7 @@ fltk::StyleSet*     newscheme = NULL;
 	  }
       }
 
+
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
 
@@ -786,6 +787,7 @@ fltk::StyleSet*     newscheme = NULL;
 
     }
 
+    
     // Set the theme and colors for GUI
     // scheme = new fltk::StyleSet();
     fltk::theme( &Preferences::set_theme );
@@ -1097,6 +1099,7 @@ static const char* kCLocale = "C";
     int i;
     mrv::PreferencesUI* uiPrefs = mrv::ViewerUI::uiPrefs;
 
+    
     fltk::Preferences base( prefspath().c_str(), "filmaura",
 			    "mrViewer" );
     base.set( "version", 2 );
