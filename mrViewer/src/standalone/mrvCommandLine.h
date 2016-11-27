@@ -28,7 +28,7 @@
 #ifndef mrvCommandLine_h
 #define mrvCommandLine_h
 
-#include "Sequence.h"
+#include "core/Sequence.h"
 
 namespace mrv {
 
