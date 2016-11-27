@@ -4841,7 +4841,6 @@ void ImageView::gamma( const float f )
      fg->image()->gamma( f );
   }
 
-
   char buf[256];
   sprintf( buf, "Gamma %g", f );
   send_network( buf );
