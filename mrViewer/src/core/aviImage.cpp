@@ -1621,8 +1621,7 @@ bool aviImage::readFrame(int64_t & pts)
 
         if ( video_stream_index() == packet.stream_index)
         {
-            if (decode( _video_ctx, _av_frame, &got_video, pkt )
-                <= 0)
+            if (decode( _video_ctx, _av_frame, &got_video, pkt ) <= 0)
             {
                 break;
             }
