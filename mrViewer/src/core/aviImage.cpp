@@ -1613,16 +1613,16 @@ bool aviImage::readFrame(int64_t & pts)
     {
         int r = av_read_frame(_context, &packet);
 
+        AVPacket* pkt = &packet;
         if (r < 0)
         {
-            packet.data = NULL;
-            packet.size = 0;
+            pkt = NULL;
         }
 
         if ( video_stream_index() == packet.stream_index)
         {
-            if (avcodec_decode_video2( _video_ctx, _av_frame, &got_video,
-                                       &packet) <= 0)
+            if (decode( _video_ctx, _av_frame, &got_video, pkt )
+                <= 0)
             {
                 break;
             }
