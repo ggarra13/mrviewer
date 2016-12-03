@@ -434,7 +434,6 @@ class server;
        void wipe_amount(float w) { _wipe = w; }
        float wipe_amount() const { return _wipe; }
 
-      CMedia::StereoType stereo_type() const { return _stereo; }
 
        void text_mode();
        void selection_mode() { _mode = kSelection; }
@@ -601,7 +600,6 @@ class server;
 
     //! Flags for state of display - unneeded?, should use uiMain->uiLUT, etc.
     FieldDisplay  _field;
-    CMedia::StereoType _stereo;
       bool          _displayWindow, _dataWindow, _showBG;
       bool          _showPixelRatio, _useLUT;
     float         _volume;
