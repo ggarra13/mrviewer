@@ -838,7 +838,7 @@ bool exrImage::find_channels( const Imf::Header& h,
     if ( channelPrefix != NULL )
     {
 
-        if ( _stereo_type & kStereoSideBySide )
+        if ( _stereo_output & kStereoSideBySide )
         {
             free( channelPrefix );
             channelPrefix = NULL;
@@ -846,10 +846,10 @@ bool exrImage::find_channels( const Imf::Header& h,
         }
         else
         {
-            if ( _stereo_type & kStereoAnaglyph ||
-                 _stereo_type & kStereoInterlaced )
+            if ( _stereo_output & kStereoAnaglyph ||
+                 _stereo_output & kStereoInterlaced )
             {
-                if ( _stereo_type != kStereoRightAnaglyph ) 
+                if ( _stereo_output != kStereoRightAnaglyph ) 
                     _left_red = true;
                 else
                     _left_red = false;
@@ -1737,7 +1737,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
        for ( int i = 0 ; i < 2; ++i )
        {
-           if ( _stereo_type != kNoStereo && st[i] >= 0 ) _curpart = st[i];
+           if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
 
            const Header& header = inmaster.header(_curpart);
 
@@ -1745,7 +1745,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            const Box2i& displayWindow = header.displayWindow();
            const Box2i& dataWindow = header.dataWindow();
 
-           if ( i == 0 || _stereo_type == kNoStereo )
+           if ( i == 0 || _stereo_output == kNoStereo )
            {
                data_window( dataWindow.min.x, dataWindow.min.y,
                             dataWindow.max.x, dataWindow.max.y, frame );
@@ -1790,7 +1790,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
 
            // Quick exit if stereo is off or multiview
-           if ( _stereo_type == kNoStereo ) break;
+           if ( _stereo_output == kNoStereo ) break;
 
            if ( st[0] != st[1] )
            {

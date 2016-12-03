@@ -130,7 +130,7 @@ int PreferencesBrowser::handle( int e )
 	    std::string ext  = fs::extension( *itr );
 
 	    // Make extension lowercase and compare it against "ctl"
-	    std::transform( ext.begin(), ext.end(), ext.begin(), tolower );
+	    std::transform( ext.begin(), ext.end(), ext.begin(), ::tolower );
 	    if ( ext != ".ctl" ) continue;
 
 	    // valid CTL, add it to the browser
