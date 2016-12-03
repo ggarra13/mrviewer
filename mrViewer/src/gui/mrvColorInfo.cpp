@@ -244,7 +244,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
 
       if ( selection.x() >= W && 
-           uiMain->uiView->stereo_type() & CMedia::kStereoSideBySide )
+           uiMain->uiView->stereo_output() & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dpw2 = img->display_window2();
           const mrv::Recti& daw2 = img->data_window2();
@@ -321,16 +321,16 @@ void ColorInfo::update( const CMedia* img,
 
       selection_to_coord( img, selection, xmin, ymin, xmax, ymax, right );
 
-      CMedia::StereoType stereo_type = uiMain->uiView->stereo_type();
+      CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
       if ( right )
       {
-          if ( stereo_type == CMedia::kStereoCrossed )
+          if ( stereo_output == CMedia::kStereoCrossed )
               pic = img->left();
-          else if ( stereo_type & CMedia::kStereoSideBySide )
+          else if ( stereo_output & CMedia::kStereoSideBySide )
               pic = img->right();
           if (!pic) return;
       }
-      else if ( stereo_type & CMedia::kStereoSideBySide )
+      else if ( stereo_output & CMedia::kStereoSideBySide )
       {
           pic = img->left();
       }
@@ -387,17 +387,17 @@ void ColorInfo::update( const CMedia* img,
 	  for ( int x = xmin; x <= xmax; ++x, ++count )
           {
 
-              if ( stereo_type == CMedia::kStereoInterlaced )
+              if ( stereo_output == CMedia::kStereoInterlaced )
               {
                   if ( y % 2 == 1 ) pic = img->right();
                   else pic = img->left();
               }
-              else if ( stereo_type == CMedia::kStereoInterlacedColumns )
+              else if ( stereo_output == CMedia::kStereoInterlacedColumns )
               {
                   if ( x % 2 == 1 ) pic = img->right();
                   else pic = img->left();
               }
-              else if ( stereo_type == CMedia::kStereoCheckerboard )
+              else if ( stereo_output == CMedia::kStereoCheckerboard )
               {
                   if ( (x + y) % 2 == 0 ) pic = img->right();
                   else pic = img->left();
