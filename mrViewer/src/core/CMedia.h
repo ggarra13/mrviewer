@@ -321,39 +321,24 @@ class CMedia
     kStreamRightStereoInput = kSeparateStreamsStereoInput + 4,
     kMultiViewStereoInput = 8,
     kTopBottomStereoInput = 16,
-    kLeftRightStereoInput = 64,
+    kLeftRightStereoInput = 32,
     };
     
     enum StereoOutput {
-    kNoStereoOutput = 0,
-    kOpenGLStereoOutput = 1,
-    kLeftViewStereoOutput = 2,
-    kRightViewStereoOutput = 4,
-    kTopBottomStereoOutput = 8,
-    kInverseStereoOutput = 16, // not a type, but a modifier
-    kBottomTopStereoOutput = 8 + 16,
-    kLeftRightStereoOutput = 32,
-    kRightLeftStereoOutput = 32 + 16,
-    kEvenOddRowsStereoOutput = 64,
-    kEvenOddColumnsStereoOutput = 128,
-    kCheckerboardStereoOutput = 256,
-    kAnaglyphStereoOutput = 512,
-    };
-    
-    enum StereoType {
     kNoStereo = 0,
-    kStereoSideBySide = 1,
-    kStereoRight      = 2,
-    kStereoCrossed    = 1 + 2,
-    kStereoInterlaced = 4,
-    kStereoOpenGL     = 8,
-    kStereoAnaglyph   = 16,
-    kStereoRightAnaglyph = 16 + 2,
-    kStereoInterlacedColumns = 4 + 32,
-    kStereoCheckerboard = 4 + 64,
-    kStereoTopAndBottom = 128,
-    kStereoTopAnaglyph = 16 + 128,
-    kStereoBottomAnaglyph = 16 + 2 + 128,
+    kStereoLeftView = 1,
+    kStereoRightView = 2,
+    kStereoOpenGL    = 4,
+    kStereoTopBottom = 8,
+    kStereoBottomTop = 16,
+    kStereoSideBySide = 32,
+    kStereoRight      = 64,
+    kStereoCrossed    = kStereoSideBySide + kStereoRight,
+    kStereoInterlaced = 128,
+    kStereoInterlacedColumns = kStereoInterlaced + 256,
+    kStereoCheckerboard = kStereoInterlaced + 512,
+    kStereoAnaglyph   = 1024,
+    kStereoRightAnaglyph = kStereoAnaglyph + kStereoRight,
     };
 
 
@@ -499,14 +484,12 @@ class CMedia
     inline void is_stereo( bool x ) { _is_stereo = x; }
     inline bool  is_stereo() const { return _is_stereo; }
 
-    inline void stereo_input( StereoInput x ) { _stereo_input = x; }
+    inline void stereo_input( StereoInput x ) { _stereo_input = x; refresh(); }
     inline StereoInput stereo_input() const { return _stereo_input; }
 
-    inline void stereo_output( StereoOutput x ) { _stereo_output = x; }
+    inline void stereo_output( StereoOutput x )
+    { _stereo_output = x; refresh(); }
     inline StereoOutput stereo_output() const { return _stereo_output; }
-    
-    inline void stereo_type( StereoType x ) { _stereo_type = x; }
-    inline StereoType stereo_type() const { return _stereo_type; }
 
     mrv::image_type_ptr left() const;
 
@@ -1039,6 +1022,12 @@ class CMedia
 			    const char* routine = "",
 			    const bool detail = true);
 
+    static int from_stereo_input( StereoInput x );
+    static StereoInput to_stereo_input( int x );
+    
+    static int from_stereo_output( StereoOutput x );
+    static StereoOutput to_stereo_output( int x );
+    
     static bool supports_yuv()         { return _supports_yuv; }
     static void supports_yuv( bool x ) { _supports_yuv = x; }
 
@@ -1302,7 +1291,6 @@ class CMedia
     bool   _is_stereo;        //!< true if part of stereo pair of images
     StereoInput  _stereo_input; //!< Stereo input (feed)
     StereoOutput _stereo_output; //!< Stereo output display
-    StereoType   _stereo_type;//!< Stereo type
     Looping      _looping;   //!< End behavior of playback (loop, stop, swing)
     char*  _fileroot;         //!< root name of image sequence
     char*  _filename;         //!< generated filename of a frame
