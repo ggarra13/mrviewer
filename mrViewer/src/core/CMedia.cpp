@@ -150,8 +150,10 @@ _w( 0 ),
 _h( 0 ),
 _internal( false ),
 _is_sequence( false ),
-_is_stereo( false ),
-_stereo_type( kNoStereo ),
+_is_stereo( true ),
+_stereo_input( kLeftRightStereoInput ),
+_stereo_output( kNoStereoOutput ),
+_stereo_type( kStereoAnaglyph ),
 _looping( kUnknownLoop ),
 _fileroot( NULL ),
 _filename( NULL ),
@@ -245,6 +247,8 @@ av_sync_type( other->av_sync_type ),
 _w( 0 ),
 _h( 0 ),
 _is_stereo( false ),
+_stereo_input( kNoStereoInput ),
+_stereo_output( kNoStereoOutput ),
 _stereo_type( kNoStereo ),
 _looping( kUnknownLoop ),
 _is_sequence( false ),
@@ -344,6 +348,8 @@ av_sync_type( other->av_sync_type ),
 _w( 0 ),
 _h( 0 ),
 _is_stereo( other->_is_stereo ),
+_stereo_input( other->_stereo_input ),
+_stereo_output( other->_stereo_output ),
 _stereo_type( other->_stereo_type ),
 _looping( other->looping() ),
 _is_sequence( other->_is_sequence ),
@@ -649,7 +655,12 @@ mrv::image_type_ptr CMedia::right() const
     if ( _is_sequence && _right[idx] )
         return _right[idx];
     else
+    {
+        if ( stereo_input() == kTopBottomStereoInput ||
+             stereo_input() == kLeftRightStereoInput )
+            return _hires;
         return _stereo[1];
+    }
 }
 
 
@@ -659,9 +670,14 @@ mrv::image_type_ptr CMedia::right() const
 
 const mrv::Recti CMedia::display_window( boost::int64_t f ) const
 {
-    if ( !_displayWindow || _numWindows == 0 ) 
-        return mrv::Recti( 0, 0, width(), height() );
-
+    int dw = width();
+    int dh = height();
+    if ( !_displayWindow || _numWindows == 0 )
+    {
+        if ( stereo_input() & kTopBottomStereoInput ) dh /= 2;
+        else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
+        return mrv::Recti( 0, 0, dw, dh );
+    }
     
     if ( f == AV_NOPTS_VALUE ) f = _frame;
 
@@ -680,8 +696,22 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
     if ( _right_eye )
         return _right_eye->display_window(f);
 
+    int dx = 0;
+    int dy = 0;
+    int dw = width();
+    int dh = height();
     if ( !_displayWindow2 || _numWindows == 0 )
-        return mrv::Recti( 0, 0, width(), height() );
+    {
+        if ( stereo_input() & kTopBottomStereoInput ) {
+            dh /= 2;
+            dy = dh;
+        }
+        else if ( stereo_input() & kLeftRightStereoInput ) {
+            dw /= 2;
+            dx = dw;
+        }
+        return mrv::Recti( dx, dy, dw, dh );
+    }
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     
@@ -697,9 +727,15 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
 
 const mrv::Recti CMedia::data_window( boost::int64_t f ) const
 {
-    if ( !_dataWindow || _numWindows == 0 ) 
-        return mrv::Recti( 0, 0, width(), height() );
-
+    int dw = width();
+    int dh = height();
+    if ( !_dataWindow || _numWindows == 0 )
+    {
+        if ( stereo_input() & kTopBottomStereoInput ) dh /= 2;
+        else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
+        return mrv::Recti( 0, 0, dw, dh );
+    }
+    
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     
     f = handle_loops( f );
@@ -716,8 +752,20 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
     if ( _right_eye )
         return _right_eye->data_window(f);
 
-    if ( !_dataWindow2 || _numWindows == 0 ) 
-        return mrv::Recti( 0, 0, width(), height() );
+    int dx = 0;
+    int dy = 0;
+    int dw = width();
+    int dh = height();
+    if ( !_dataWindow || _numWindows == 0 )
+    {
+        if ( stereo_input() & kTopBottomStereoInput ) {
+            dh /= 2;
+        }
+        else if ( stereo_input() & kLeftRightStereoInput ) {
+            dw /= 2;
+        }
+        return mrv::Recti( dx, dy, dw, dh );
+    }
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     f = handle_loops( f );
@@ -1264,6 +1312,11 @@ void CMedia::lumma_layers()
     image_damage( image_damage() | kDamageLayers | kDamageData );
 }
 
+bool vr360_layer(const std::string& s )
+{
+    return ( s == _("VR 360") );
+}
+
 /** 
  * Add vr360 to list of layers
  * 
@@ -1272,6 +1325,8 @@ void CMedia::vr_layers()
 {
     if ( _h * 2 == _w || _layers.size() < 6 )
     {
+        if ( find_if( _layers.begin(), _layers.end(), vr360_layer) != _layers.end() )
+            return;
         _layers.push_back( _("VR 360") );
         image_damage( image_damage() | kDamageLayers | kDamageData );
     }
@@ -1366,7 +1421,8 @@ void CMedia::channel( const char* c )
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) tolower);
 
-       _stereo_type = kNoStereo;
+       // _stereo_type = kNoStereo; //
+       _stereo_type = kStereoAnaglyph;
 
        if ( is_stereo() )
        {
@@ -2797,8 +2853,7 @@ bool CMedia::find_image( const boost::int64_t frame )
 
   if ( _sequence && _sequence[idx] )
     {
-        // _hires = _stereo[0] = _sequence[idx];
-        _hires = _sequence[idx];
+        _hires = _stereo[0] = _sequence[idx];
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
 

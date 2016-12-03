@@ -61,7 +61,7 @@
                            // with GL_BGR formats and high resolutions
 
 
-#ifdef DEBUG
+#if 1
 #  define CHECK_GL(x) GLEngine::handle_gl_errors(x)
 #else
 #  define CHECK_GL(x)
@@ -259,6 +259,7 @@ namespace mrv {
     _lut( NULL ),
     _image( NULL ),
     _gamma( 1.f ),
+    _right( false ),
     _blend( true ),
     _blend_mode( GL_ALPHA ),
     _num_textures( 1 ),
@@ -337,8 +338,12 @@ namespace mrv {
     assert( rx+rw <= tw );
     assert( ry+rh <= th );
 
+    std::cerr << rx << ", " << ry << " " << rw << "x" << rh << " " << tw
+              << "x" << th << std::endl;
+    
     if ( _view->field() == ImageView::kFrameDisplay )
       {
+#define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
 #ifdef NVIDIA_PBO_BUG 
@@ -356,8 +361,10 @@ namespace mrv {
 	      //
 	      // This avoids a potential stall.
 	      //
+              // glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
+	      //   	   rw*rh*pixel_size, NULL, GL_STREAM_DRAW);
 	      glBufferData(GL_PIXEL_UNPACK_BUFFER_ARB,
-			   tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
+	        	   tw*th*pixel_size*channels, NULL, GL_STREAM_DRAW);
               CHECK_GL( "glBufferData" );
 
 	      // Acquire a pointer to the first data item in this buffer object
@@ -389,7 +396,7 @@ namespace mrv {
 	      // doing the explicit conversion to single precision.
 	      //
 	      unsigned offset = ( ry * tw + rx ) * pixel_size * channels;
-	      unsigned size   = rw * rh * pixel_size * channels;
+	      unsigned size   = tw * rh * pixel_size * channels;
 
 	      memcpy( ioMem + offset, pixels, size );
 
@@ -401,6 +408,9 @@ namespace mrv {
 		  LOG_ERROR("Could not unmap pixel buffer #" << idx );
 		  return;
 		}
+
+              glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
+              glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
 	      //
 	      // Since the buffer object is still bound, this call populates our
@@ -430,13 +440,17 @@ namespace mrv {
 	  else
 #endif // TEST_NO_PBO_TEXTURES
 	    {
+              glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
+
+              std::cerr << "rx " << rx << " ry " << ry << " rw " << rw
+                        << "rh " << rh << std::endl;
 	      //
 	      // Handle copying FRAME AREA to 2D texture
 	      //
 	      glTexSubImage2D( GL_TEXTURE_2D, 
 			       0,             // level 
 			       rx, ry,        // offset
-			       rw, rh, 
+			       rw, rh,
 			       format,        // format
 			       pixel_type, 
 			       pixels );
@@ -479,7 +493,6 @@ namespace mrv {
     unsigned dw = pic->width();
     unsigned dh = pic->height();
 
-    unsigned offset = 0;
 
     unsigned int   channels = pic->channels();
     GLenum         pixel_type = gl_pixel_type( pic->pixel_type() );
@@ -487,6 +500,8 @@ namespace mrv {
     _pixels = pic->data();
     if ( !_pixels ) return;
 
+    unsigned offset = 0;
+    
     //
     // Choose best internal format based on gfx card capabilities
     //
@@ -611,10 +626,28 @@ namespace mrv {
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
 	      }
 
+            unsigned htw = tw;
+            unsigned hth = th;
+
+
+#if 1
+            if ( _view->stereo_input() &
+                 CMedia::kTopBottomStereoInput )
+            {
+                hth /= 2;
+            }
+            else if ( _view->stereo_input() &
+                      CMedia::kLeftRightStereoInput )
+            {
+                htw /= 2;
+            }
+#endif
+            std::cerr  << "tex " << htw << " " << hth << std::endl;
+
 	    glTexImage2D( GL_TEXTURE_2D,
 			  0,              // level
 			  internalFormat,  // internalFormat
-			  tw, th, 
+			  htw, hth, 
 			  0,             // border
 			  GL_LUMINANCE,  // texture data format
 			  pixel_type,         // texture pixel type
@@ -622,15 +655,39 @@ namespace mrv {
 
 
 	    CHECK_GL( "bind_texture_yuv glTexImage2D" );
-	  }    
+	  }
 
+          unsigned dx = 0;
+          unsigned dy = 0;
+          unsigned off = 0;
+          if ( _right )
+          {
+              if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+              {
+                  dy = oh / 2;
+                  off = ( dy * ow ) * pixel_size;
+              }
+              else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+              {
+                  dx = ow / 2;
+                  off = dx * pixel_size;
+              }
+          }
 
-	boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + offset;
-	offset += ow * oh * pixel_size;
+          boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + offset + off;
+          offset += ow * oh * pixel_size;
 
-	update_texsub( i, 0, 0, ow, oh, tw, th, GL_LUMINANCE, pixel_type, 
-		       1, pixel_size, p );
+          if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+          {
+              oh /= 2;
+          }
+          else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+          {
+              ow /= 2;
+          }
 
+          update_texsub( i, 0, 0, ow, oh, tw, th, GL_LUMINANCE, pixel_type, 
+                         1, pixel_size, p );
       }
   }
 
@@ -638,7 +695,7 @@ namespace mrv {
 				  const unsigned poww, const unsigned int powh )
   {
     if ( pic->format() >= image_type::kITU_601_YCbCr420 )
-      return bind_texture_yuv( pic, poww, powh );
+        return bind_texture_yuv( pic, poww, powh );
 
     unsigned dw = pic->width();
     unsigned dh = pic->height();
@@ -737,6 +794,14 @@ namespace mrv {
             CHECK_GL( "glBindBuffer" );
 	  }
 
+        if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+        {
+            th /= 2;
+        }
+        else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+        {
+            tw /= 2;
+        }
 
 	glTexImage2D( GL_TEXTURE_2D, 
 		      0,               // level
@@ -753,9 +818,21 @@ namespace mrv {
 
 
     // Upload converted rectangle
+    unsigned dx = 0;
+    unsigned dy = dh / 2;
+    unsigned off = ( dx + dy * dw ) * pixel_size;
+          
+    boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;
 
-    boost::uint8_t* p = (boost::uint8_t*)_pixels.get();
-    update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type, 
+    if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+    {
+        dh /= 2;
+    }
+    else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+    {
+        dw /= 2;
+    }
+    update_texsub( 0, dx, dy, dw, dh, tw, th, _glformat, _pixel_type, 
 		   short(_channels), short(pixel_size), p );
   }
 
