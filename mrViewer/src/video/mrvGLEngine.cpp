@@ -110,7 +110,7 @@ namespace fltk {
 
 
 
-#ifdef DEBUG
+#if 1
 #  define CHECK_GL(x) GLEngine::handle_gl_errors( N_( x ) )
 #else
 #  define CHECK_GL(x)
@@ -756,6 +756,7 @@ void GLEngine::draw_title( const float size,
 
   void* font = GLUT_STROKE_MONO_ROMAN;
 
+  glMatrixMode(GL_MODELVIEW);
   glPushMatrix();
   glLoadIdentity();
 
@@ -865,6 +866,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     glStencilOp( GL_REPLACE, GL_REPLACE, GL_REPLACE );
     CHECK_GL( "draw_square_stencil glStencilOp" );
 
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
 
     double pr = 1.0;
@@ -1033,6 +1035,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     mrv::Recti dpw = img->display_window();
 
 
+    glMatrixMode(GL_MODELVIEW);
     glPushMatrix();
     glPushAttrib( GL_STENCIL_TEST );
     glDisable( GL_STENCIL_TEST );
@@ -1084,6 +1087,7 @@ void GLEngine::draw_safe_area_inner( const double tw, const double th,
 
   if ( name )
     {
+      glMatrixMode(GL_MODELVIEW);
       glPushMatrix();
       glTranslated(tw+5, th, 0);
       glScalef( 0.1f, 0.1f, 1.0f );
@@ -1347,6 +1351,7 @@ void GLEngine::draw_images( ImageList& images )
 
       glDisable( GL_BLEND );
 
+      glMatrixMode(GL_MODELVIEW);
       glPushMatrix();
 
       if ( !_view->vr() )
@@ -1459,6 +1464,7 @@ void GLEngine::draw_images( ImageList& images )
          }
 
 
+         glMatrixMode(GL_MODELVIEW);
          glPushMatrix();
 
 
@@ -1590,11 +1596,9 @@ void GLEngine::draw_images( ImageList& images )
       img->image_damage( img->image_damage() & 
 			 ~(CMedia::kDamageContents | CMedia::kDamageLut |
 			   CMedia::kDamageSubtitle) );
-    TRACE( "" );
 
     }
 
-    TRACE( "" );
   glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
   glDisable( GL_SCISSOR_TEST );
   glDisable( GL_BLEND );
