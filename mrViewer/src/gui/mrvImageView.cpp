@@ -429,17 +429,18 @@ enum WindowList
 kReelWindow = 0,
 kMediaInfo = 1,
 kColorInfo = 2,
-kEDLEdit = 3,
-kPaintTools = 4,
-k3dView = 5,
-kHistogram = 6,
-kVectorscope = 7,
-kICCProfiles = 8,
-kConnections = 9,
-kPreferences = 10,
-kHotkeys = 11,
-kLogs = 12,
-kAbout = 13,
+kStereoEdit = 3,
+kEDLEdit = 4,
+kPaintTools = 5,
+k3dView = 6,
+kHistogram = 7,
+kVectorscope = 8,
+kICCProfiles = 9,
+kConnections = 10,
+kPreferences = 11,
+kHotkeys = 12,
+kLogs = 13,
+kAbout = 14,
 kLastWindow
 };
 
@@ -473,6 +474,11 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
       uiMain->uiView->update_color_info();
       uiMain->uiView->send_network( "ColorInfoWindow 1" );
     }
+  else if ( idx == kStereoEdit )
+  {
+      uiMain->uiStereo->uiMain->child_of( uiMain->uiMain );
+      uiMain->uiStereo->uiMain->show();
+  }
   else if ( idx == kEDLEdit )
   {
      uiMain->uiReelWindow->uiBrowser->set_edl();
@@ -823,7 +829,6 @@ _channel( 0 ),
 _old_channel( 0 ),
 _channelType( kRGB ),
 _field( kFrameDisplay ),
-_stereo( CMedia::kStereoAnaglyph ),
 _displayWindow( true ),
 _dataWindow( true ),
 _showBG( true ),
@@ -1046,7 +1051,7 @@ void ImageView::copy_pixel() const
 
   mrv::image_type_ptr pic = img->left();
 
-  if ( _stereo & CMedia::kStereoRight ) pic = img->right();
+  if ( stereo_output() & CMedia::kStereoRight ) pic = img->right();
 
   if ( !pic ) return;
 
@@ -1058,7 +1063,7 @@ void ImageView::copy_pixel() const
 
   bool outside = false;
 
-  if ( img->is_stereo() && _stereo & CMedia::kStereoSideBySide )
+  if ( img->is_stereo() && stereo_output() & CMedia::kStereoSideBySide )
   {
       if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
            xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
@@ -1078,9 +1083,9 @@ void ImageView::copy_pixel() const
   unsigned xp = (unsigned)floor(xf);
   unsigned yp = (unsigned)floor(yf);
 
-  if ( xp > w && _stereo & CMedia::kStereoSideBySide )
+  if ( xp > w && stereo_output() & CMedia::kStereoSideBySide )
   {
-      if ( _stereo & CMedia::kStereoRight ) pic = img->left();
+      if ( stereo_output() & CMedia::kStereoRight ) pic = img->left();
       else pic = img->right();
       xp -= w;
   }
@@ -1095,9 +1100,9 @@ void ImageView::copy_pixel() const
   CMedia::Pixel rgba = pic->pixel( xp, yp );
   pixel_processed( img, rgba );
 
-  if ( stereo_type() & CMedia::kStereoAnaglyph )
+  if ( stereo_output() & CMedia::kStereoAnaglyph )
   {
-      if ( stereo_type() == CMedia::kStereoRightAnaglyph )
+      if ( stereo_output() == CMedia::kStereoRightAnaglyph )
           pic = img->left();
       else
           pic = img->right();
@@ -1219,7 +1224,7 @@ void ImageView::center_image()
         }
     }
 
-    if ( img && _stereo & CMedia::kStereoSideBySide )
+    if ( img && stereo_output() & CMedia::kStereoSideBySide )
     {
         int w = dpw.w();
         xoffset = -w/2.0 + 0.5;
@@ -1261,7 +1266,7 @@ void ImageView::fit_image()
   if ( display_window() )
   {
       dpw = img->display_window();
-      if ( _stereo & CMedia::kStereoSideBySide )
+      if ( stereo_output() & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dpw2 = img->display_window2();
           dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
@@ -1270,7 +1275,7 @@ void ImageView::fit_image()
   else
   {
       dpw = img->data_window();
-      if ( _stereo & CMedia::kStereoSideBySide )
+      if ( stereo_output() & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dp = img->display_window();
           mrv::Recti daw = img->data_window2();
@@ -1284,7 +1289,7 @@ void ImageView::fit_image()
   double H = dpw.h();
   if ( H == 0 ) H = pic->height();
 
-  // if ( display_window() && _stereo & CMedia::kStereoSideBySide )
+  // if ( display_window() && stereo_output() & CMedia::kStereoSideBySide )
   //     W *= 2;
 
   double w = (double) fltk_main()->w();
@@ -1307,7 +1312,7 @@ void ImageView::fit_image()
   if ( h < z ) { z = h; }
 
   xoffset = -dpw.x() - W / 2.0;
-  if ( (_flip & kFlipVertical) && _stereo & CMedia::kStereoSideBySide  )
+  if ( (_flip & kFlipVertical) && stereo_output() & CMedia::kStereoSideBySide  )
       xoffset = 0.0;
 
   yoffset = (dpw.y()+H / 2.0) / pr;
@@ -1336,7 +1341,7 @@ CMedia::StereoInput ImageView::stereo_input() const
 CMedia::StereoOutput ImageView::stereo_output() const
 {
     mrv::media fg = foreground();
-    if (!fg) return CMedia::kNoStereoOutput;
+    if (!fg) return CMedia::kNoStereo;
     
     CMedia* img = fg->image();
     return img->stereo_output();
@@ -1849,7 +1854,6 @@ void ImageView::draw()
        if ( img->has_picture() )
        {
 	  images.push_back( img );
-          _stereo = img->stereo_type();
        }
     }
 
@@ -2813,7 +2817,7 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic = img->left();
 
-  if ( stereo_type() & CMedia::kStereoRight ) pic = img->right();
+  if ( stereo_output() & CMedia::kStereoRight ) pic = img->right();
 
   if ( !pic ) return;
 
@@ -2841,7 +2845,7 @@ void ImageView::mouseMove(int x, int y)
 
   bool outside = false;
 
-  if ( img->is_stereo() && _stereo & CMedia::kStereoSideBySide )
+  if ( img->is_stereo() && stereo_output() & CMedia::kStereoSideBySide )
   {
       if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
            xf < 0 || yf < 0 || xf >= w+dpw2.w() || yf >= h )
@@ -2862,9 +2866,9 @@ void ImageView::mouseMove(int x, int y)
   int xp = (int)floor(xf);
   int yp = (int)floor(yf);
 
-  if ( xp >= (int)w && ( stereo_type() & CMedia::kStereoSideBySide ) )
+  if ( xp >= (int)w && ( stereo_output() & CMedia::kStereoSideBySide ) )
   {
-      if ( _stereo & CMedia::kStereoRight ) pic = img->left();
+      if ( stereo_output() & CMedia::kStereoRight ) pic = img->left();
       else pic = img->right();
 
       if (!pic) return;
@@ -2873,17 +2877,17 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  if ( stereo_type() == CMedia::kStereoInterlaced )
+  if ( stereo_output() == CMedia::kStereoInterlaced )
   {
       if ( yp % 2 == 1 ) pic = img->right();
       if ( !pic ) return;
   }
-  else if ( stereo_type() == CMedia::kStereoInterlacedColumns )
+  else if ( stereo_output() == CMedia::kStereoInterlacedColumns )
   {
       if ( xp % 2 == 1 ) pic = img->right();
       if ( !pic ) return;
   }
-  else if ( stereo_type() == CMedia::kStereoCheckerboard )
+  else if ( stereo_output() == CMedia::kStereoCheckerboard )
   {
       if ( (xp + yp) % 2 == 0 ) pic = img->right();
       if ( !pic ) return;
@@ -2919,9 +2923,9 @@ void ImageView::mouseMove(int x, int y)
 
       pixel_processed( img, rgba );
 
-      if ( stereo_type() & CMedia::kStereoAnaglyph )
+      if ( stereo_output() & CMedia::kStereoAnaglyph )
       {
-          if ( stereo_type() == CMedia::kStereoRightAnaglyph )
+          if ( stereo_output() == CMedia::kStereoRightAnaglyph )
               pic = img->left();
           else
               pic = img->right();
@@ -3224,7 +3228,7 @@ void ImageView::mouseDrag(int x,int y)
            int diffX = 0;
            int diffY = 0;
            if ( xf >= W - daw[0].x() &&
-                stereo_type() & CMedia::kStereoSideBySide )
+                stereo_output() & CMedia::kStereoSideBySide )
            {
                right = true;
                xf -= W;
