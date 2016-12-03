@@ -152,8 +152,7 @@ _internal( false ),
 _is_sequence( false ),
 _is_stereo( true ),
 _stereo_input( kTopBottomStereoInput ),
-_stereo_output( kNoStereoOutput ),
-_stereo_type( kStereoAnaglyph ),
+_stereo_output( kNoStereo ),
 _looping( kUnknownLoop ),
 _fileroot( NULL ),
 _filename( NULL ),
@@ -248,8 +247,7 @@ _w( 0 ),
 _h( 0 ),
 _is_stereo( false ),
 _stereo_input( kNoStereoInput ),
-_stereo_output( kNoStereoOutput ),
-_stereo_type( kNoStereo ),
+_stereo_output( kNoStereo ),
 _looping( kUnknownLoop ),
 _is_sequence( false ),
 _fileroot( NULL ),
@@ -350,7 +348,6 @@ _h( 0 ),
 _is_stereo( other->_is_stereo ),
 _stereo_input( other->_stereo_input ),
 _stereo_output( other->_stereo_output ),
-_stereo_type( other->_stereo_type ),
 _looping( other->looping() ),
 _is_sequence( other->_is_sequence ),
 _fileroot( NULL ),
@@ -590,6 +587,77 @@ void CMedia::hires( const mrv::image_type_ptr pic)
     refresh();
 }
  
+int CMedia::from_stereo_output( CMedia::StereoOutput x )
+{
+    switch( x )
+    {
+        case kStereoLeftView: return 0;
+        case kStereoRightView: return 1;
+        case kStereoOpenGL: return 2;
+        case kStereoTopBottom: return 3;
+        case kStereoBottomTop: return 4;
+        case kStereoSideBySide: return 5;
+        case kStereoCrossed: return 6;
+        case kStereoInterlaced: return 7;
+        case kStereoInterlacedColumns: return 8;
+        case kStereoCheckerboard: return 9;
+        case kStereoAnaglyph: return 10;
+        case kStereoRightAnaglyph: return 11;
+        default:
+            return -1;
+    }
+}
+
+CMedia::StereoOutput CMedia::to_stereo_output( int x )
+{
+    switch( x )
+    {
+        case 0: return kStereoLeftView;
+        case 1: return kStereoRightView;
+        case 2: return kStereoOpenGL;
+        case 3: return kStereoTopBottom;
+        case 4: return kStereoBottomTop;
+        case 5: return kStereoSideBySide;
+        case 6: return kStereoCrossed;
+        case 7: return kStereoInterlaced;
+        case 8: return kStereoInterlacedColumns;
+        case 9: return kStereoCheckerboard;
+        case 10: return kStereoAnaglyph;
+        case 11: return kStereoRightAnaglyph;
+        default:
+            return kNoStereo;
+    }
+}
+
+int CMedia::from_stereo_input( CMedia::StereoInput x )
+{
+    switch( x )
+    {
+        case kStreamLeftStereoInput: return 0;
+        case kStreamRightStereoInput: return 1;
+        case kMultiViewStereoInput: return 2;
+        case kTopBottomStereoInput: return 3;
+        case kLeftRightStereoInput: return 4;
+        case kNoStereoInput:
+        default:
+            return -1;
+    }
+}
+
+CMedia::StereoInput CMedia::to_stereo_input( int x )
+{
+    switch( x )
+    {
+        case 0: return kStreamLeftStereoInput;
+        case 1: return kStreamRightStereoInput;
+        case 2: return kMultiViewStereoInput;
+        case 3: return kTopBottomStereoInput;
+        case 4: return kLeftRightStereoInput;
+        default:
+            return kNoStereoInput;
+    }
+}
+
 /** 
  * Allocate the float pixels for the image
  * 
@@ -1421,8 +1489,8 @@ void CMedia::channel( const char* c )
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) tolower);
 
-       // _stereo_type = kNoStereo; //
-       _stereo_type = kStereoAnaglyph;
+       // _stereo_output = kNoStereo; //
+       _stereo_output = kStereoAnaglyph;
 
        if ( is_stereo() )
        {
@@ -1430,24 +1498,24 @@ void CMedia::channel( const char* c )
            {
                // Set the stereo type based on channel name extension
                if ( ext == _("horizontal") )
-                   _stereo_type = kStereoSideBySide;
+                   _stereo_output = kStereoSideBySide;
                else if ( ext == _("crossed") )
-                   _stereo_type = kStereoCrossed;
+                   _stereo_output = kStereoCrossed;
                else if ( ext == _("interlaced") )
-                   _stereo_type = kStereoInterlaced;
+                   _stereo_output = kStereoInterlaced;
                else if ( ext == _("interlaced columns") )
-                   _stereo_type = kStereoInterlacedColumns;
+                   _stereo_output = kStereoInterlacedColumns;
                else if ( ext == _("checkerboard") )
-                   _stereo_type = kStereoCheckerboard;
+                   _stereo_output = kStereoCheckerboard;
                else
                    LOG_ERROR( _("Unknown stereo type") );
            }
            else if ( ext == _("anaglyph") )
            {
                if ( root == _("left") )
-                   _stereo_type = kStereoAnaglyph;
+                   _stereo_output = kStereoAnaglyph;
                else if ( root == _("right") )
-                   _stereo_type = kStereoRightAnaglyph;
+                   _stereo_output = kStereoRightAnaglyph;
                else
                    LOG_ERROR( _("Unknown anaglyph type") );
            }
@@ -1469,7 +1537,7 @@ void CMedia::channel( const char* c )
         if ( ((_channel == NULL && _right_eye ) || 
               ch2.find(_("stereo")) != std::string::npos ||
               ch2.find(_("anaglyph")) != std::string::npos ) &&
-             _stereo_type != kNoStereo ) to_fetch = false;
+             _stereo_output != kNoStereo ) to_fetch = false;
         else
         {
             // No easy case.  Check the root names to see if one of them
@@ -2028,7 +2096,7 @@ bool CMedia::frame( const boost::int64_t f )
   assert( _fileroot != NULL );
 
   TRACE("");
-  if ( ( playback() == kStopped ) && _right_eye && _stereo_type )
+  if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
       _right_eye->frame(f);
 
   TRACE("");
@@ -2703,7 +2771,7 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
 
 CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 { 
-    if ( ( playback() == kStopped ) && _right_eye && _stereo_type ) {
+    if ( ( playback() == kStopped ) && _right_eye && _stereo_output ) {
         boost::int64_t f = frame;
         _right_eye->decode_video(f);
     }
@@ -2833,7 +2901,7 @@ int64_t CMedia::handle_loops( const boost::int64_t frame ) const
 
 bool CMedia::find_image( const boost::int64_t frame )
 { 
-  if ( ( playback() == kStopped ) && _right_eye && _stereo_type )
+  if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
       _right_eye->find_image(frame);
 
   SCOPED_LOCK( _mutex );
