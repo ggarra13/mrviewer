@@ -46,13 +46,15 @@ class GLQuad
   public:
     GLQuad( const ImageView* view );
     ~GLQuad();
-    
 
-    void mask( unsigned int m ) { _mask = m; }
-    void mask_value( unsigned int m ) { _mask_value = m; }
+    inline void right( bool x ) { _right = x; }
+    inline bool right() const { return _right; }
+
+    inline void mask( unsigned int m ) { _mask = m; }
+    inline void mask_value( unsigned int m ) { _mask_value = m; }
     
-    float gamma() const { return _gamma; }
-    void gamma( const float f ) { _gamma = f; }
+    inline float gamma() const { return _gamma; }
+    inline void gamma( const float f ) { _gamma = f; }
     
     virtual void bind( const image_type_ptr& pic );
     
@@ -119,6 +121,7 @@ class GLQuad
     const CMedia*   _image;
 
     float        _gamma;
+    bool         _right;
     bool         _blend;
     GLenum       _blend_mode;
     unsigned     _num_textures;
