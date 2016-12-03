@@ -970,7 +970,7 @@ void GLEngine::draw_mask( const float pct )
   mrv::Recti dpw2 = img->display_window2();
   mrv::Recti dpw = img->display_window();
 
-  if ( img->stereo_type() & CMedia::kStereoSideBySide )
+  if ( img->stereo_output() & CMedia::kStereoSideBySide )
   {
       dpw.w( dpw.w() + dpw2.w() );
   }
@@ -1130,7 +1130,7 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
 
     draw_safe_area_inner( tw, th, name );
 
-    if ( img->stereo_type() & CMedia::kStereoSideBySide )
+    if ( img->stereo_output() & CMedia::kStereoSideBySide )
     {
         glTranslated( dpw.w(), 0, 0 );
         draw_safe_area_inner( tw, th, name );
@@ -1249,7 +1249,7 @@ void GLEngine::draw_images( ImageList& images )
       const Image_ptr& img = *i;
       if ( img->has_subtitle() ) ++num_quads;
       if ( img->has_picture()  ) ++num_quads;
-      if ( img->stereo_type() != CMedia::kNoStereo )    ++num_quads;
+      if ( img->stereo_output() != CMedia::kNoStereo )    ++num_quads;
     }
 
     TRACE( "" );
@@ -1294,7 +1294,7 @@ void GLEngine::draw_images( ImageList& images )
       mrv::image_type_ptr pic = img->hires();
       if (!pic)  continue;
 
-      CMedia::StereoType stereo = img->stereo_type();
+      CMedia::StereoOutput stereo = img->stereo_output();
 
       const boost::int64_t& frame = pic->frame();
 
