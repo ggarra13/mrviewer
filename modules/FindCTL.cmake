@@ -23,7 +23,9 @@ ELSE( CTL_LIBRARY_DIR )
     "$ENV{CTL_ROOT}/lib/"
     "$ENV{CTL_ROOT}/bin"
     /usr/local/lib${CMAKE_BUILD_ARCH}
+    /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
+    /usr/lib
     )
 ENDIF( CTL_LIBRARY_DIR )
 

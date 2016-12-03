@@ -1286,12 +1286,10 @@ void GLEngine::draw_images( ImageList& images )
 
   for ( i = images.begin(); i != e; ++i, ++q )
     {
-    TRACE( "" );
       const Image_ptr& img = *i;
       mrv::image_type_ptr pic = img->hires();
       if (!pic)  continue;
-      
-    TRACE( "" );
+
       CMedia::StereoType stereo = img->stereo_type();
 
       const boost::int64_t& frame = pic->frame();
@@ -1306,7 +1304,6 @@ void GLEngine::draw_images( ImageList& images )
           daw = img->data_window2(frame);
       }
 
-    TRACE( "" );
       // Handle background image size
       if ( fg != img && stereo == CMedia::kNoStereo )
       {
@@ -1320,7 +1317,6 @@ void GLEngine::draw_images( ImageList& images )
           texHeight = daw.h();
       }
 
-    TRACE( "" );
       ImageView::FlipDirection flip = _view->flip();
 
       set_matrix( flip, false );
@@ -1334,7 +1330,6 @@ void GLEngine::draw_images( ImageList& images )
           glTranslatef( x, y, 0.0f );
       }
 
-    TRACE( "" );
 
       if ( dpw != daw )
       {
@@ -1350,7 +1345,6 @@ void GLEngine::draw_images( ImageList& images )
           }
       }
 
-    TRACE( "" );
       glDisable( GL_BLEND );
 
       glPushMatrix();
@@ -1360,7 +1354,6 @@ void GLEngine::draw_images( ImageList& images )
           glTranslatef( float(daw.x() - img->eye_separation()),
                         float(-daw.y()), 0 );
 
-          TRACE( "" );
           if ( _view->main()->uiPixelRatio->value() )
               glScaled( double(texWidth), double(texHeight) / _view->pixel_ratio(),
                         1.0 );
@@ -1370,13 +1363,10 @@ void GLEngine::draw_images( ImageList& images )
           glTranslated( 0.5, -0.5, 0.0 );
       }
       
-    TRACE( "" );
       GLQuad* quad = *q;
       quad->minmax( normMin, normMax );
-    TRACE( "" );
       quad->image( img );
 
-    TRACE( "" );
       if ( _view->use_lut() )
       {
 	  if ( img->image_damage() & CMedia::kDamageLut )
@@ -1442,6 +1432,7 @@ void GLEngine::draw_images( ImageList& images )
          glDisable( GL_BLEND );
          if ( img->image_damage() & CMedia::kDamageContents )
          {
+             quad->right( false );
              quad->bind( pic );
          }
          quad->gamma( g );
@@ -1526,10 +1517,8 @@ void GLEngine::draw_images( ImageList& images )
       }
       else if ( img->hires() || img->has_subtitle() )
       {
-    TRACE( "" );
           pic = img->hires();
           
-    TRACE( "" );
           if ( shader_type() == kNone && img->stopped() && 
                pic->pixel_type() != image_type::kByte )
           {
@@ -1571,15 +1560,12 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
-    TRACE( "" );
+          quad->right( true );
           quad->bind( pic );
-    TRACE( "" );
       }
-
+      
       quad->gamma( g );
-    TRACE( "" );
       quad->draw( texWidth, texHeight );
-    TRACE( "" );
 
 
       if ( img->has_subtitle() )

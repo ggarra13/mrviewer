@@ -25,7 +25,9 @@ ELSE( OPENEXR_LIBRARY_DIR )
     $ENV{OPENEXR_ROOT}/bin/Release
     $ENV{OPENEXR_ROOT}/bin/Debug
     /usr/local/lib${CMAKE_BUILD_ARCH}
+    /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
+    /usr/lib
     )
 ENDIF( OPENEXR_LIBRARY_DIR )
 
