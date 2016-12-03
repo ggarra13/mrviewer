@@ -23,7 +23,9 @@ ELSE( OpenEXRCTL_LIBRARY_DIR )
     "$ENV{OpenEXRCTL_ROOT}/lib"
     "$ENV{CTL_ROOT}/lib"
     /usr/local/lib${CMAKE_BUILD_ARCH}
+    /usr/local/lib
     /usr/lib${CMAKE_BUILD_ARCH}
+    /usr/lib
     )
 ENDIF( OpenEXRCTL_LIBRARY_DIR )
 
