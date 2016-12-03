@@ -151,7 +151,7 @@ _h( 0 ),
 _internal( false ),
 _is_sequence( false ),
 _is_stereo( true ),
-_stereo_input( kLeftRightStereoInput ),
+_stereo_input( kTopBottomStereoInput ),
 _stereo_output( kNoStereoOutput ),
 _stereo_type( kStereoAnaglyph ),
 _looping( kUnknownLoop ),
@@ -704,11 +704,11 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
     {
         if ( stereo_input() & kTopBottomStereoInput ) {
             dh /= 2;
-            dy = dh;
+            // dy = dh;
         }
         else if ( stereo_input() & kLeftRightStereoInput ) {
             dw /= 2;
-            dx = dw;
+            // dx = dw;
         }
         return mrv::Recti( dx, dy, dw, dh );
     }
