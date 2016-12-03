@@ -57,6 +57,8 @@ FIND_LIBRARY( Magick
   "$ENV{MAGICK_HOME}/VisualMagick/lib"
   "$ENV{MAGICK_HOME}/lib"
   /usr/local/lib${CMAKE_BUILD_ARCH}
+  /usr/local/lib
+  /usr/lib${CMAKE_BUILD_ARCH}
   /usr/lib
   DOC   "ImageMagick's Magick library"
 )
