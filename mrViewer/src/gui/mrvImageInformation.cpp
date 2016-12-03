@@ -1457,7 +1457,7 @@ void ImageInformation::add_int( const char* name, const char* tooltip,
 	  slider->linesize(1);
 	  // slider->slider_size(10);
           slider->tooltip( tooltip );
-	  slider->when( fltk::WHEN_CHANGED );
+	  slider->when( fltk::WHEN_RELEASE );
 	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
 
 	  p->resizable(slider);
@@ -1619,7 +1619,7 @@ void ImageInformation::add_int( const char* name,
 	  slider->linesize(1);
           slider->tooltip( tooltip );
 	  // slider->slider_size(10);
-	  slider->when( fltk::WHEN_CHANGED );
+	  slider->when( fltk::WHEN_RELEASE );
 	  slider->callback( (fltk::Callback*)int_slider_cb, widget );
 
 	  p->resizable(slider);
