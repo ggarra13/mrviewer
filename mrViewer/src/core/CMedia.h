@@ -314,6 +314,32 @@ class CMedia
     kDecodeBufferFull = 8
     };
 
+    enum StereoInput {
+    kNoStereoInput = 0,
+    kSeparateStreamsStereoInput = 1,
+    kStreamLeftStereoInput = kSeparateStreamsStereoInput + 2,
+    kStreamRightStereoInput = kSeparateStreamsStereoInput + 4,
+    kMultiViewStereoInput = 8,
+    kTopBottomStereoInput = 16,
+    kLeftRightStereoInput = 64,
+    };
+    
+    enum StereoOutput {
+    kNoStereoOutput = 0,
+    kOpenGLStereoOutput = 1,
+    kLeftViewStereoOutput = 2,
+    kRightViewStereoOutput = 4,
+    kTopBottomStereoOutput = 8,
+    kInverseStereoOutput = 16, // not a type, but a modifier
+    kBottomTopStereoOutput = 8 + 16,
+    kLeftRightStereoOutput = 32,
+    kRightLeftStereoOutput = 32 + 16,
+    kEvenOddRowsStereoOutput = 64,
+    kEvenOddColumnsStereoOutput = 128,
+    kCheckerboardStereoOutput = 256,
+    kAnaglyphStereoOutput = 512,
+    };
+    
     enum StereoType {
     kNoStereo = 0,
     kStereoSideBySide = 1,
@@ -473,6 +499,12 @@ class CMedia
     inline void is_stereo( bool x ) { _is_stereo = x; }
     inline bool  is_stereo() const { return _is_stereo; }
 
+    inline void stereo_input( StereoInput x ) { _stereo_input = x; }
+    inline StereoInput stereo_input() const { return _stereo_input; }
+
+    inline void stereo_output( StereoOutput x ) { _stereo_output = x; }
+    inline StereoOutput stereo_output() const { return _stereo_output; }
+    
     inline void stereo_type( StereoType x ) { _stereo_type = x; }
     inline StereoType stereo_type() const { return _stereo_type; }
 
@@ -1268,6 +1300,8 @@ class CMedia
     bool   _internal;      //!< image is internal with no filename
     bool   _is_sequence;      //!< true if a sequence
     bool   _is_stereo;        //!< true if part of stereo pair of images
+    StereoInput  _stereo_input; //!< Stereo input (feed)
+    StereoOutput _stereo_output; //!< Stereo output display
     StereoType   _stereo_type;//!< Stereo type
     Looping      _looping;   //!< End behavior of playback (loop, stop, swing)
     char*  _fileroot;         //!< root name of image sequence

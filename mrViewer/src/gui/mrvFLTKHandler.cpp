@@ -56,18 +56,20 @@ namespace mrv {
       CMedia* img = CMedia::guess_image( filename, header, len );
       if ( img == NULL ) return NULL;
 
-    // Fetch frame in the 1/4 of duration
-    int64_t f = img->first_frame();
-    f += int64_t( img->duration() * 0.25f);
-    img->audio_stream( -1 );
-    img->seek( f );
-    img->fetch( f );
+
+      // Fetch frame in the 1/4 of duration
+      int64_t f = img->first_frame();
+      f += int64_t( img->duration() * 0.25f);
+      img->audio_stream( -1 );
+      img->seek( f );
+      img->fetch( f );
+
+      if ( ! img->hires() ) return NULL;
+
+      mrv::gui::media m( img );
+      m.create_thumbnail();
 
 
-    mrv::gui::media m( img );
-    m.create_thumbnail();
-
-
-    return (fltk::SharedImage*) m.thumbnail();
+      return (fltk::SharedImage*) m.thumbnail();
   }
 }
