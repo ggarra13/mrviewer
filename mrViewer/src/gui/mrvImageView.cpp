@@ -1330,7 +1330,6 @@ CMedia::StereoInput ImageView::stereo_input() const
     if (!fg) return CMedia::kNoStereoInput;
 
     CMedia* img = fg->image();
-    std::cerr << img->stereo_input() << std::endl;
     return img->stereo_input();
 }
 
