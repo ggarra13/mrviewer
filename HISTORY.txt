@@ -1,3 +1,10 @@
+v3.3.9   - Made VR 360 channel appear only once.  Previously, when
+	   switching resolutions of a multiresolution image, several
+	   VR 360 channels would appear.
+	 - Made int slider in Image Information update on release,
+	   instead of on value change.  This makes it behave more
+	   nicely with mipmaps and ripmaps.
+
 v3.3.8   - Added VR 360 support for environment maps and VR videos.
 	   Images or Videos whose width is twice the height will show
 	   a VR 360 channel in the channel pop up and also those with
