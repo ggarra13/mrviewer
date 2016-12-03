@@ -66,6 +66,9 @@ decl {\#include "mrvPlayback.h"} {}
 
 decl {\#include "mrvVersion.h"} {} 
 
+decl {\#include "mrvStereoUI.h"} {public
+} 
+
 decl {\#include "mrvIccProfileUI.h"} {} 
 
 decl {\#include "mrvColorAreaUI.h"} {} 
@@ -158,6 +161,8 @@ namespace mrv {open
   decl {class ViewerUI;} {public
   }
   decl {class ICCProfileListUI;} {public
+  }
+  decl {class StereoUI;} {public
   }
   decl {class ColorAreaUI;} {public
   }
@@ -628,8 +633,7 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
@@ -2490,6 +2494,8 @@ else
     }
     decl {GL3dViewUI* uiGL3dView;} {public
     }
+    decl {StereoUI* uiStereo;} {public
+    }
     decl {ColorAreaUI* uiColorArea;} {public
     }
     decl {HistogramUI* uiHistogram;} {public
@@ -2519,7 +2525,7 @@ o->main( this );}
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W
+              label W open
               tooltip {Opens different windows}
               xywh {5 5 20 20}
               extra_code {o->disable_glyph();}
@@ -2542,6 +2548,11 @@ v->uiView->update_image_info();}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiColorArea->uiMain->show();
 v->uiView->update_color_info();}
+                }
+              {fltk::Item} {} {
+                label {Stereo Edit}
+                user_data this user_data_type {mrv::ViewerUI*}
+                callback {v->uiStereo->uiMain->show();} selected
                 }
               {fltk::Item} {} {
                 label {EDL Edit}
@@ -3202,7 +3213,7 @@ v->uiView->seek( f );}
                       {fltk::Button} {} {
                         label {@||}
                         user_data this user_data_type {mrv::ViewerUI*}
-                        callback {v->uiView->stop();} selected
+                        callback {v->uiView->stop();}
                         tooltip {Stop playback.  You can use SHIFT and then the mouse for scrubbing.}
                         xywh {93 2 30 18} labelcolor 0x98a8a800
                       }
@@ -3436,6 +3447,7 @@ v->uiTimeline->redraw();}
       code {uiReelWindow = new ReelUI(this);
 uiImageInfo = new ImageInfoUI(this);
 uiColorArea = new ColorAreaUI(this);
+uiStereo = new StereoUI(this);
 uiGL3dView = new GL3dViewUI(this);
 uiVectorscope = new VectorscopeUI(this);
 uiHistogram = new HistogramUI(this);
