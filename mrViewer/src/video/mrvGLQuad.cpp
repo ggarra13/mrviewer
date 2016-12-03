@@ -338,12 +338,9 @@ namespace mrv {
     assert( rx+rw <= tw );
     assert( ry+rh <= th );
 
-    std::cerr << rx << ", " << ry << " " << rw << "x" << rh << " " << tw
-              << "x" << th << std::endl;
-    
     if ( _view->field() == ImageView::kFrameDisplay )
       {
-#define TEST_NO_PBO_TEXTURES
+//#define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
 #ifdef NVIDIA_PBO_BUG 
@@ -442,8 +439,6 @@ namespace mrv {
 	    {
               glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
 
-              std::cerr << "rx " << rx << " ry " << ry << " rw " << rw
-                        << "rh " << rh << std::endl;
 	      //
 	      // Handle copying FRAME AREA to 2D texture
 	      //
@@ -624,13 +619,13 @@ namespace mrv {
 		// pass NULL for the image data leaves the texture image
 		// unspecified.
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
+                CHECK_GL( "bind_texture_yuv glBindBuffer" );
 	      }
 
             unsigned htw = tw;
             unsigned hth = th;
 
 
-#if 1
             if ( _view->stereo_input() &
                  CMedia::kTopBottomStereoInput )
             {
@@ -641,8 +636,6 @@ namespace mrv {
             {
                 htw /= 2;
             }
-#endif
-            std::cerr  << "tex " << htw << " " << hth << std::endl;
 
 	    glTexImage2D( GL_TEXTURE_2D,
 			  0,              // level
@@ -652,7 +645,6 @@ namespace mrv {
 			  GL_LUMINANCE,  // texture data format
 			  pixel_type,         // texture pixel type
 			  NULL );        // texture pixel data
-
 
 	    CHECK_GL( "bind_texture_yuv glTexImage2D" );
 	  }
@@ -932,11 +924,12 @@ namespace mrv {
 	for ( ; i >= 0 ; --i )
 	  {
               short idx = (i == 3 ? (short) 4 : i ); 
-	    glActiveTexture(GL_TEXTURE0 + idx);
-	    glEnable(GL_TEXTURE_2D);
-	    glBindTexture(GL_TEXTURE_2D, _texId[i] );
-            CHECK_GL( "shader bind_texture glBindTexture" );
-	    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
+              glActiveTexture(GL_TEXTURE0 + idx);
+              CHECK_GL( "shader bind_texture glActiveTexture" );
+              glEnable(GL_TEXTURE_2D);
+              glBindTexture(GL_TEXTURE_2D, _texId[i] );
+              CHECK_GL( "shader bind_texture glBindTexture" );
+              glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, filter);
 	  }
       }
     else
