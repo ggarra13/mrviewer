@@ -823,7 +823,7 @@ _channel( 0 ),
 _old_channel( 0 ),
 _channelType( kRGB ),
 _field( kFrameDisplay ),
-_stereo( CMedia::kNoStereo ),
+_stereo( CMedia::kStereoAnaglyph ),
 _displayWindow( true ),
 _dataWindow( true ),
 _showBG( true ),
@@ -1324,6 +1324,24 @@ void ImageView::fit_image()
 
 
 
+CMedia::StereoInput ImageView::stereo_input() const
+{
+    mrv::media fg = foreground();
+    if (!fg) return CMedia::kNoStereoInput;
+
+    CMedia* img = fg->image();
+    std::cerr << img->stereo_input() << std::endl;
+    return img->stereo_input();
+}
+
+CMedia::StereoOutput ImageView::stereo_output() const
+{
+    mrv::media fg = foreground();
+    if (!fg) return CMedia::kNoStereoOutput;
+    
+    CMedia* img = fg->image();
+    return img->stereo_output();
+}
 
 
 /** 
