@@ -173,10 +173,10 @@ namespace mrv
 
     if ( right )
     {
-        CMedia::StereoType stereo_type = uiMain->uiView->stereo_type();
-        if ( stereo_type == CMedia::kStereoCrossed )
+        CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
+        if ( stereo_output == CMedia::kStereoCrossed )
             pic = img->left();
-        else if ( stereo_type & CMedia::kStereoSideBySide )
+        else if ( stereo_output & CMedia::kStereoSideBySide )
             pic = img->right();
         if (!pic) return;
     }
