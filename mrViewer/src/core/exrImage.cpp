@@ -853,6 +853,8 @@ bool exrImage::find_channels( const Imf::Header& h,
                     _left_red = false;
 
                 std::cerr << "anaglyph" << std::endl;
+                std::cerr << "data window  " << data_window(_frame) << std::endl
+                          << "data window2 " << data_window2(_frame) << std::endl;
                 free( channelPrefix );
                 channelPrefix = NULL;
                 return handle_stereo(frame, h, fb);
@@ -1752,6 +1754,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            const Box2i& displayWindow = header.displayWindow();
            const Box2i& dataWindow = header.dataWindow();
 
+           std::cerr << "i " << i << " output " << _stereo_output << std::endl;
            if ( i == 0 || _stereo_output == kNoStereo )
            {
                data_window( dataWindow.min.x, dataWindow.min.y,
@@ -1760,9 +1763,24 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                display_window( displayWindow.min.x, displayWindow.min.y,
                                displayWindow.max.x, displayWindow.max.y,
                                frame );
+               
+               if ( _multiview )
+               {
+                   data_window2( dataWindow.min.x, dataWindow.min.y,
+                                 dataWindow.max.x, dataWindow.max.y, frame );
+
+                   display_window2( displayWindow.min.x, displayWindow.min.y,
+                                    displayWindow.max.x, displayWindow.max.y,
+                                    frame );
+               }
+
            }
            else
            {
+               std::cerr << "set datawindow2 " << dataWindow.min.x
+                         << ", " << dataWindow.min.y
+                         << " - " << dataWindow.max.x << ", "
+                         << dataWindow.max.y << std::endl;
                data_window2( dataWindow.min.x, dataWindow.min.y,
                              dataWindow.max.x, dataWindow.max.y, frame );
 
@@ -1797,7 +1815,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
 
            // Quick exit if stereo is off or multiview
-           if ( _multiview ) break;
+           if ( _stereo_output == kNoStereo ) break;
 
            if ( st[0] != st[1] )
            {
@@ -1905,6 +1923,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    }
 
+   
    return true;
 }
 
