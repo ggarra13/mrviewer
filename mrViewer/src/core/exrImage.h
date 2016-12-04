@@ -155,7 +155,6 @@ namespace mrv {
       int _levelX, _levelY; //<- r/mipmap levels
       bool _multiview;
       bool _has_alpha, _has_yca, _use_yca;
-      bool _left_red;
 
       char* _has_left_eye;
       char* _has_right_eye;
