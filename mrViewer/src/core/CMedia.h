@@ -488,7 +488,7 @@ class CMedia
     inline StereoInput stereo_input() const { return _stereo_input; }
 
     inline void stereo_output( StereoOutput x )
-    { _stereo_output = x; refresh(); }
+    { _stereo_output = x; fetch(_frame); refresh(); }
     inline StereoOutput stereo_output() const { return _stereo_output; }
 
     mrv::image_type_ptr left() const;
