@@ -584,16 +584,17 @@ bool exrImage::find_layers( const Imf::Header& h )
                if ( !_has_left_eye &&
                     layer.find( N_("left") ) == 0 )
                {
+                   std::cerr << "has left eye" << std::endl;
                    _has_left_eye = strdup( layer.c_str() );
                }
            }
        }
 
-       // std::cerr << "_has_left_eye " 
-       //           << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
-       // std::cerr << "_has_right_eye " 
-       //           << ( _has_right_eye ? _has_right_eye : "NULL" ) 
-       //           << std::endl;
+       std::cerr << "_has_left_eye " 
+                 << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
+       std::cerr << "_has_right_eye " 
+                 << ( _has_right_eye ? _has_right_eye : "NULL" ) 
+                 << std::endl;
 
        if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
        {
@@ -649,11 +650,6 @@ bool exrImage::find_layers( const Imf::Header& h )
       {
 	 _has_alpha = true;
 	 alpha_layers();
-      }
-
-      if ( _is_stereo )
-      {
-          add_stereo_layers();
       }
 
 
@@ -781,6 +777,8 @@ bool exrImage::find_channels( const Imf::Header& h,
     char* channelPrefix = NULL;
     if ( _channel ) channelPrefix = strdup( _channel );
 
+    std::cerr << "channelPrefix " << ( channelPrefix ? channelPrefix : "NULL" )
+              << std::endl;
 
     // If channel starts with #, we are dealing with a multipart exr
 
@@ -835,7 +833,7 @@ bool exrImage::find_channels( const Imf::Header& h,
         }
     }
 
-    if ( channelPrefix != NULL )
+    if ( channelPrefix != NULL || _stereo_output )
     {
 
         if ( _stereo_output & kStereoSideBySide )
@@ -854,11 +852,12 @@ bool exrImage::find_channels( const Imf::Header& h,
                 else
                     _left_red = false;
 
+                std::cerr << "anaglyph" << std::endl;
                 free( channelPrefix );
                 channelPrefix = NULL;
                 return handle_stereo(frame, h, fb);
             }
-            else
+            else if ( channelPrefix )
             {
                 Imf::ChannelList::ConstIterator s;
                 Imf::ChannelList::ConstIterator e;
@@ -891,6 +890,12 @@ bool exrImage::find_channels( const Imf::Header& h,
                 free( channelPrefix );
                 channelPrefix = NULL;
 
+                return channels_order( frame, s, e, channels, h, fb );
+            }
+            else
+            {
+                Imf::ChannelList::ConstIterator s = channels.begin();
+                Imf::ChannelList::ConstIterator e = channels.end();
                 return channels_order( frame, s, e, channels, h, fb );
             }
         }
@@ -1734,7 +1739,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    if ( _is_stereo )
    {
-
+       std::cerr << "is stereo cp:" << _curpart << " st0 " << st[0] << " st1 "
+                 << st[1] << std::endl;
+       
        for ( int i = 0 ; i < 2; ++i )
        {
            if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
@@ -1790,10 +1797,11 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
 
            // Quick exit if stereo is off or multiview
-           if ( _stereo_output == kNoStereo ) break;
+           if ( _multiview ) break;
 
            if ( st[0] != st[1] )
            {
+               std::cerr << "stereo " << i << " = _hires  st " << st[i] << std::endl;
                _stereo[i] = _hires;
            }
        }
@@ -2536,8 +2544,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         {
             const std::string& name = *i;
 
-            if ( name.find( _("stereo") ) != std::string::npos ||
-                 name.find( _("anaglyph") ) != std::string::npos ) continue;
 
             if ( name.find(x + '.') == 0 )
             {
