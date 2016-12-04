@@ -152,7 +152,6 @@ exrImage::exrImage() :
   _use_yca( false ),
   _has_left_eye( NULL ),
   _has_right_eye( NULL ),
-  _left_red( false ),
   _curpart( -1 ),
   _clear_part( 0 ),
   _numparts( -1 ),
@@ -226,8 +225,7 @@ bool exrImage::channels_order(
    for (Imf::ChannelList::ConstIterator i = s; i != e; ++i )
    {
        const std::string& layerName = i.name();
-
-
+       
        const Imf::Channel& ch = i.channel();
 
        std::string ext = layerName;
@@ -410,7 +408,6 @@ bool exrImage::channels_order(
 
    char* base = pixels + start;
 
-   
    for ( int idx = 0; idx < 4; ++idx )
    {
       int k = order[idx];
@@ -584,17 +581,16 @@ bool exrImage::find_layers( const Imf::Header& h )
                if ( !_has_left_eye &&
                     layer.find( N_("left") ) == 0 )
                {
-                   std::cerr << "has left eye" << std::endl;
                    _has_left_eye = strdup( layer.c_str() );
                }
            }
        }
 
-       std::cerr << "_has_left_eye " 
-                 << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
-       std::cerr << "_has_right_eye " 
-                 << ( _has_right_eye ? _has_right_eye : "NULL" ) 
-                 << std::endl;
+       // std::cerr << "_has_left_eye " 
+       //           << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
+       // std::cerr << "_has_right_eye " 
+       //           << ( _has_right_eye ? _has_right_eye : "NULL" ) 
+       //           << std::endl;
 
        if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
        {
@@ -651,6 +647,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 	 _has_alpha = true;
 	 alpha_layers();
       }
+
 
 
       Imf::ChannelList::ConstIterator i = channels.begin();
@@ -723,6 +720,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     std::string prefix;
     if ( _has_right_eye ) prefix = _has_right_eye;
 
+    
     // Find the iterators for a right channel prefix or all channels
     if ( !prefix.empty() )
     {
@@ -748,6 +746,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     //
     prefix.clear();
     if ( _has_left_eye ) prefix = _has_left_eye;
+    
     if ( !prefix.empty() )
     {
         channels.channelsInLayer( prefix, s, e );
@@ -760,7 +759,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
 
     channels_order( frame, s, e, channels, h, fb );
     _stereo[0] = _hires;
-
 
     return true;
 }
@@ -777,8 +775,6 @@ bool exrImage::find_channels( const Imf::Header& h,
     char* channelPrefix = NULL;
     if ( _channel ) channelPrefix = strdup( _channel );
 
-    std::cerr << "channelPrefix " << ( channelPrefix ? channelPrefix : "NULL" )
-              << std::endl;
 
     // If channel starts with #, we are dealing with a multipart exr
 
@@ -833,72 +829,46 @@ bool exrImage::find_channels( const Imf::Header& h,
         }
     }
 
-    if ( channelPrefix != NULL || _stereo_output )
+    if ( _stereo_output != kNoStereo )
     {
-
-        if ( _stereo_output & kStereoSideBySide )
+        free( channelPrefix );
+        channelPrefix = NULL;
+        return handle_stereo(frame, h, fb);
+    }
+    else if ( channelPrefix != NULL )
+    {
+        Imf::ChannelList::ConstIterator s;
+        Imf::ChannelList::ConstIterator e;
+        std::string prefix = channelPrefix;
+        size_t pos = prefix.rfind( '.' );
+        std::string ext = prefix;
+        if ( pos != std::string::npos )
         {
-            free( channelPrefix );
-            channelPrefix = NULL;
-            return handle_stereo(frame, h, fb);
+            ext = prefix.substr( pos+1, prefix.size() );
+            if ( ext == "z" ) prefix = prefix.substr(0, pos);
         }
-        else
+
+        std::transform( ext.begin(), ext.end(), ext.begin(),
+                        (int(*)(int)) toupper );
+
+
+        // If extension is one of a group, load all channels
+        if ( ext == "A" || ext == "R" || ext == "G" ||
+             ext == "B" || ext == "X" || ext == "Y" ||
+             ext == "U" || ext == "V" ||
+             ext == "W" ) prefix = prefix.substr(0, pos);
+
+        channels.channelsWithPrefix( prefix, s, e );
+        if ( s == e )
         {
-            if ( _stereo_output & kStereoAnaglyph ||
-                 _stereo_output & kStereoInterlaced )
-            {
-                if ( _stereo_output != kStereoRightAnaglyph ) 
-                    _left_red = true;
-                else
-                    _left_red = false;
-
-                std::cerr << "anaglyph" << std::endl;
-                free( channelPrefix );
-                channelPrefix = NULL;
-                return handle_stereo(frame, h, fb);
-            }
-            else if ( channelPrefix )
-            {
-                Imf::ChannelList::ConstIterator s;
-                Imf::ChannelList::ConstIterator e;
-                std::string prefix = channelPrefix;
-                size_t pos = prefix.rfind( '.' );
-                std::string ext = prefix;
-                if ( pos != std::string::npos )
-                {
-                    ext = prefix.substr( pos+1, prefix.size() );
-                    if ( ext == "z" ) prefix = prefix.substr(0, pos);
-                }
-
-                std::transform( ext.begin(), ext.end(), ext.begin(),
-                                (int(*)(int)) toupper );
-
-
-                // If extension is one of a group, load all channels
-                if ( ext == "A" || ext == "R" || ext == "G" ||
-                     ext == "B" || ext == "X" || ext == "Y" ||
-                     ext == "U" || ext == "V" ||
-                     ext == "W" ) prefix = prefix.substr(0, pos);
-
-                channels.channelsWithPrefix( prefix, s, e );
-                if ( s == e )
-                {
-                    s = channels.begin();
-                    e = channels.end();
-                }
-
-                free( channelPrefix );
-                channelPrefix = NULL;
-
-                return channels_order( frame, s, e, channels, h, fb );
-            }
-            else
-            {
-                Imf::ChannelList::ConstIterator s = channels.begin();
-                Imf::ChannelList::ConstIterator e = channels.end();
-                return channels_order( frame, s, e, channels, h, fb );
-            }
+            s = channels.begin();
+            e = channels.end();
         }
+
+        free( channelPrefix );
+        channelPrefix = NULL;
+
+        return channels_order( frame, s, e, channels, h, fb );
     }
     else
     {
@@ -1739,9 +1709,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    if ( _is_stereo )
    {
-       std::cerr << "is stereo cp:" << _curpart << " st0 " << st[0] << " st1 "
-                 << st[1] << std::endl;
-       
+
        for ( int i = 0 ; i < 2; ++i )
        {
            if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
@@ -1797,11 +1765,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            }
 
            // Quick exit if stereo is off or multiview
-           if ( _multiview ) break;
+           if ( _stereo_output == kNoStereo ) break;
 
            if ( st[0] != st[1] )
            {
-               std::cerr << "stereo " << i << " = _hires  st " << st[i] << std::endl;
                _stereo[i] = _hires;
            }
        }
@@ -2544,6 +2511,8 @@ bool exrImage::save( const char* file, const CMedia* img,
         {
             const std::string& name = *i;
 
+            if ( name.find( _("stereo") ) != std::string::npos ||
+                 name.find( _("anaglyph") ) != std::string::npos ) continue;
 
             if ( name.find(x + '.') == 0 )
             {

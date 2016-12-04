@@ -589,8 +589,8 @@ int CMedia::from_stereo_output( CMedia::StereoOutput x )
 {
     switch( x )
     {
-        case kStereoLeftView:          return 1;
-        case kStereoRightView:         return 2;
+        case kStereoLeft:              return 1;
+        case kStereoRight:             return 2;
         case kStereoOpenGL:            return 3;
         case kStereoTopBottom:         return 4;
         case kStereoBottomTop:         return 5;
@@ -610,8 +610,8 @@ CMedia::StereoOutput CMedia::to_stereo_output( int x )
 {
     switch( x )
     {
-        case 1: return kStereoLeftView;
-        case 2: return kStereoRightView;
+        case 1: return kStereoLeft;
+        case 2: return kStereoRight;
         case 3: return kStereoOpenGL;
         case 4: return kStereoTopBottom;
         case 5: return kStereoBottomTop;
@@ -697,8 +697,10 @@ mrv::image_type_ptr CMedia::left() const
 {
     int64_t f = handle_loops( _frame );
     boost::int64_t idx = f - _frame_start;
-    if ( idx >= (int64_t)_numWindows || idx < 0 )
-        return _hires;
+
+    if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+    else if ( idx < 0 ) idx = 0;
+    
     if ( _is_sequence && _sequence[idx] )
         return _sequence[idx];
     else
@@ -1429,6 +1431,17 @@ void CMedia::add_stereo_layers()
     _layers.push_back( _("left.anaglyph") );
     _layers.push_back( _("right.anaglyph") );
     image_damage( image_damage() | kDamageLayers );
+}
+
+void CMedia::stereo_output( StereoOutput x )
+{
+    _stereo_output = x;
+    clear_cache();
+    if ( fetch(_frame) )
+    {
+        cache( _hires );
+    }
+    refresh();
 }
 
 /** 
