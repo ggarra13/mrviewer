@@ -78,8 +78,6 @@ namespace {
 
 }
 
-#undef TRACE
-#define TRACE(x) 
 
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl;
@@ -150,8 +148,8 @@ _w( 0 ),
 _h( 0 ),
 _internal( false ),
 _is_sequence( false ),
-_is_stereo( true ),
-_stereo_input( kTopBottomStereoInput ),
+_is_stereo( false ),
+_stereo_input( kNoStereoInput ),
 _stereo_output( kNoStereo ),
 _looping( kUnknownLoop ),
 _fileroot( NULL ),
@@ -591,20 +589,20 @@ int CMedia::from_stereo_output( CMedia::StereoOutput x )
 {
     switch( x )
     {
-        case kStereoLeftView: return 0;
-        case kStereoRightView: return 1;
-        case kStereoOpenGL: return 2;
-        case kStereoTopBottom: return 3;
-        case kStereoBottomTop: return 4;
-        case kStereoSideBySide: return 5;
-        case kStereoCrossed: return 6;
-        case kStereoInterlaced: return 7;
-        case kStereoInterlacedColumns: return 8;
-        case kStereoCheckerboard: return 9;
-        case kStereoAnaglyph: return 10;
-        case kStereoRightAnaglyph: return 11;
+        case kStereoLeftView:          return 1;
+        case kStereoRightView:         return 2;
+        case kStereoOpenGL:            return 3;
+        case kStereoTopBottom:         return 4;
+        case kStereoBottomTop:         return 5;
+        case kStereoSideBySide:        return 6;
+        case kStereoCrossed:           return 7;
+        case kStereoInterlaced:        return 8;
+        case kStereoInterlacedColumns: return 9;
+        case kStereoCheckerboard:      return 10;
+        case kStereoAnaglyph:          return 11;
+        case kStereoRightAnaglyph:     return 12;
         default:
-            return -1;
+            return 0;
     }
 }
 
@@ -612,18 +610,19 @@ CMedia::StereoOutput CMedia::to_stereo_output( int x )
 {
     switch( x )
     {
-        case 0: return kStereoLeftView;
-        case 1: return kStereoRightView;
-        case 2: return kStereoOpenGL;
-        case 3: return kStereoTopBottom;
-        case 4: return kStereoBottomTop;
-        case 5: return kStereoSideBySide;
-        case 6: return kStereoCrossed;
-        case 7: return kStereoInterlaced;
-        case 8: return kStereoInterlacedColumns;
-        case 9: return kStereoCheckerboard;
-        case 10: return kStereoAnaglyph;
-        case 11: return kStereoRightAnaglyph;
+        case 1: return kStereoLeftView;
+        case 2: return kStereoRightView;
+        case 3: return kStereoOpenGL;
+        case 4: return kStereoTopBottom;
+        case 5: return kStereoBottomTop;
+        case 6: return kStereoSideBySide;
+        case 7: return kStereoCrossed;
+        case 8: return kStereoInterlaced;
+        case 9: return kStereoInterlacedColumns;
+        case 10: return kStereoCheckerboard;
+        case 11: return kStereoAnaglyph;
+        case 12: return kStereoRightAnaglyph;
+        case 0:
         default:
             return kNoStereo;
     }
@@ -633,14 +632,14 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
 {
     switch( x )
     {
-        case kStreamLeftStereoInput: return 0;
-        case kStreamRightStereoInput: return 1;
-        case kMultiViewStereoInput: return 2;
-        case kTopBottomStereoInput: return 3;
-        case kLeftRightStereoInput: return 4;
+        case kStreamLeftStereoInput: return 1;
+        case kStreamRightStereoInput: return 2;
+        case kMultiViewStereoInput: return 3;
+        case kTopBottomStereoInput: return 4;
+        case kLeftRightStereoInput: return 5;
         case kNoStereoInput:
         default:
-            return -1;
+            return 0;
     }
 }
 
@@ -648,11 +647,11 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 {
     switch( x )
     {
-        case 0: return kStreamLeftStereoInput;
-        case 1: return kStreamRightStereoInput;
-        case 2: return kMultiViewStereoInput;
-        case 3: return kTopBottomStereoInput;
-        case 4: return kLeftRightStereoInput;
+        case 1: return kStreamLeftStereoInput;
+        case 2: return kStreamRightStereoInput;
+        case 3: return kMultiViewStereoInput;
+        case 4: return kTopBottomStereoInput;
+        case 5: return kLeftRightStereoInput;
         default:
             return kNoStereoInput;
     }
@@ -799,7 +798,7 @@ const mrv::Recti CMedia::data_window( boost::int64_t f ) const
     int dh = height();
     if ( !_dataWindow || _numWindows == 0 )
     {
-        if ( stereo_input() & kTopBottomStereoInput ) dh /= 2;
+        if ( stereo_input() & kTopBottomStereoInput )      dh /= 2;
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
         return mrv::Recti( 0, 0, dw, dh );
     }
@@ -820,19 +819,13 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
     if ( _right_eye )
         return _right_eye->data_window(f);
 
-    int dx = 0;
-    int dy = 0;
     int dw = width();
     int dh = height();
-    if ( !_dataWindow || _numWindows == 0 )
+    if ( !_dataWindow2 || _numWindows == 0 )
     {
-        if ( stereo_input() & kTopBottomStereoInput ) {
-            dh /= 2;
-        }
-        else if ( stereo_input() & kLeftRightStereoInput ) {
-            dw /= 2;
-        }
-        return mrv::Recti( dx, dy, dw, dh );
+        if ( stereo_input() & kTopBottomStereoInput )      dh /= 2;
+        else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
+        return mrv::Recti( 0, 0, dw, dh );
     }
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
@@ -917,6 +910,7 @@ void CMedia::data_window2( const int xmin, const int ymin,
   assert( xmax >= xmin );
   assert( ymax >= ymin );
   _numWindows = _frame_end - _frame_start + 1;
+  assert( _numWindows > 0 );
   if ( !_dataWindow2 )
       _dataWindow2 = new mrv::Recti[_numWindows];
   
@@ -1475,52 +1469,7 @@ void CMedia::channel( const char* c )
             c = NULL;
             ch = "";
         }
-       ext = ch;
-       std::string root;
-       size_t pos = ext.rfind( N_(".") );
-       if ( pos != std::string::npos && pos != ext.size() )
-       {
-           root = ext.substr( 0, pos );
-           ext = ext.substr( pos+1, ext.size() );
-       }
 
-       std::transform( root.begin(), root.end(), root.begin(),
-                       (int(*)(int)) tolower);
-       std::transform( ext.begin(), ext.end(), ext.begin(),
-                       (int(*)(int)) tolower);
-
-       // _stereo_output = kNoStereo; //
-       _stereo_output = kStereoAnaglyph;
-
-       if ( is_stereo() )
-       {
-           if ( root == _("stereo") )
-           {
-               // Set the stereo type based on channel name extension
-               if ( ext == _("horizontal") )
-                   _stereo_output = kStereoSideBySide;
-               else if ( ext == _("crossed") )
-                   _stereo_output = kStereoCrossed;
-               else if ( ext == _("interlaced") )
-                   _stereo_output = kStereoInterlaced;
-               else if ( ext == _("interlaced columns") )
-                   _stereo_output = kStereoInterlacedColumns;
-               else if ( ext == _("checkerboard") )
-                   _stereo_output = kStereoCheckerboard;
-               else
-                   LOG_ERROR( _("Unknown stereo type") );
-           }
-           else if ( ext == _("anaglyph") )
-           {
-               if ( root == _("left") )
-                   _stereo_output = kStereoAnaglyph;
-               else if ( root == _("right") )
-                   _stereo_output = kStereoRightAnaglyph;
-               else
-                   LOG_ERROR( _("Unknown anaglyph type") );
-           }
-           refresh();
-       }
     }
 
     bool to_fetch = false;
@@ -2095,11 +2044,9 @@ bool CMedia::frame( const boost::int64_t f )
 {
   assert( _fileroot != NULL );
 
-  TRACE("");
   if ( ( playback() == kStopped ) && _right_eye && _stereo_output )
       _right_eye->frame(f);
 
-  TRACE("");
 //  in ffmpeg, sizes are in bytes...
 #define MAX_VIDEOQ_SIZE (5 * 2048 * 1024)
 #define MAX_AUDIOQ_SIZE (5 * 60 * 1024)
@@ -2108,15 +2055,12 @@ bool CMedia::frame( const boost::int64_t f )
        _audio_packets.bytes() > MAX_AUDIOQ_SIZE ||
        _subtitle_packets.bytes() > MAX_SUBTITLEQ_SIZE  )
     {
-        TRACE("");
       return false;
     }
 
   if ( f < _frameStart )     _dts = _frameStart;
   else if ( f > _frameEnd )  _dts = _frameEnd;
   else                       _dts = f;
-
-  TRACE("");
 
   AVPacket pkt;
   av_init_packet( &pkt );
@@ -2136,7 +2080,6 @@ bool CMedia::frame( const boost::int64_t f )
   _expected = _dts + 1;
   _expected_audio = _expected + _audio_offset;
 
-  TRACE("");
 
   return true;
 }
