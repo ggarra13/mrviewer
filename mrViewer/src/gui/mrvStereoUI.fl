@@ -1,0 +1,157 @@
+# data file for the FLTK User Interface Designer (FLUID)
+version 2.1000 
+images_dir fltk::Item 
+header_name {.h} 
+code_name {.cxx} 
+gridx 5 
+gridy 5 
+snap 3
+decl {\#include "core/mrvI8N.h"} {public
+} 
+
+decl {\#include "fltk/visual.h"} {public
+} 
+
+decl {\#include "gui/mrvImageView.h"} {public
+} 
+
+decl {\#include "mrViewer.h"} {public
+} 
+
+namespace mrv {open
+} {
+  class StereoUI {open
+  } {
+    Function {make_window( mrv::ViewerUI* main )} {open
+    } {
+      {fltk::Window} uiMain {
+        label {Stereo Options} open
+        xywh {526 722 720 100} resizable visible
+      } {
+        {fltk::Choice} uiStereoInput {
+          label Input
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {mrv::media fg = v->uiView->foreground();
+
+if ( fg )
+{
+CMedia* img = fg->image();
+int x = o->value(); 
+CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
+img->stereo_input( in );
+}} open
+          xywh {120 20 250 25}
+          extra_code {mrv::media fg = main->uiView->foreground();
+
+if ( fg )
+{
+CMedia* img = fg->image();
+CMedia::StereoInput in = img->stereo_input();
+int x = CMedia::from_stereo_input( in );
+o->value( x ); 
+}}
+        } {
+          {fltk::Item} {} {
+            label {No Stereo Input}
+            }
+          {fltk::Item} {} {
+            label {Separate streams, left first}
+            }
+          {fltk::Item} {} {
+            label {Separate streams, right first}
+            }
+          {fltk::Item} uiStereoInputMultiview {
+            label Multiview
+            }
+          {fltk::Item} {} {
+            label {Top/bottom}
+            }
+          {fltk::Item} {} {
+            label {Left/right}
+            }
+        }
+        {fltk::Choice} uiStereoOutput {
+          label Output
+          user_data main user_data_type {mrv::ViewerUI*}
+          callback {mrv::media fg = v->uiView->foreground();
+
+if ( fg )
+{
+CMedia* img = fg->image();
+int x = o->value(); 
+CMedia::StereoOutput in = CMedia::to_stereo_output( x ); 
+img->stereo_output( in );
+}} open selected
+          xywh {120 60 155 25}
+          extra_code {mrv::media fg = main->uiView->foreground();
+
+if ( fg )
+{
+CMedia* img = fg->image();
+CMedia::StereoOutput in = img->stereo_output();
+int x = CMedia::from_stereo_output( in );
+o->value( x ); 
+}}
+        } {
+          {fltk::Item} {} {
+            label {No Stereo Output}
+            }
+          {fltk::Item} {} {
+            label {Left view}
+            }
+          {fltk::Item} {} {
+            label {Right view}
+            }
+          {fltk::Item} uiStereoOpenGL {
+            label Stereo
+            
+            extra_code {if ( main->uiView->can_do( fltk::STEREO ) )
+  uiStereoOpenGL->activate();
+else
+  uiStereoOpenGL->deactivate();}
+          }
+          {fltk::Item} {} {
+            label {Top/bottom}
+            }
+          {fltk::Item} {} {
+            label {Bottom/top}
+            }
+          {fltk::Item} {} {
+            label {Left/right}
+            }
+          {fltk::Item} {} {
+            label {Right/left}
+            }
+          {fltk::Item} {} {
+            label {Even/odd rows}
+            }
+          {fltk::Item} {} {
+            label {Even/odd columns}
+            }
+          {fltk::Item} {} {
+            label {Checkerboard pattern}
+            }
+          {fltk::Item} {} {
+            label {Red/cyan glasses}
+            }
+        }
+        {fltk::LightButton} uiVR360 {
+          label {VR 360}
+          xywh {419 17 70 30}
+        }
+        {fltk::ValueSlider} uiEyeSeparation {
+          label {Eye Separation}
+          xywh {419 59 240 25} align 4 minimum -10 maximum 10
+        }
+      }
+    }
+    Function {StereoUI( ViewerUI* main )} {open
+    } {
+      code {make_window(main);} {}
+    }
+    Function {~StereoUI()} {open
+    } {
+      code {delete uiMain; uiMain = NULL;} {}
+    }
+  }
+} 
