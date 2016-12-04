@@ -326,13 +326,12 @@ class CMedia
     
     enum StereoOutput {
     kNoStereo = 0,
-    kStereoLeftView = 1,
-    kStereoRightView = 2,
+    kStereoLeft      = 1,
+    kStereoRight     = 2,
     kStereoOpenGL    = 4,
     kStereoTopBottom = 8,
     kStereoBottomTop = 16,
     kStereoSideBySide = 32,
-    kStereoRight      = 64,
     kStereoCrossed    = kStereoSideBySide + kStereoRight,
     kStereoInterlaced = 128,
     kStereoInterlacedColumns = kStereoInterlaced + 256,
@@ -487,8 +486,7 @@ class CMedia
     inline void stereo_input( StereoInput x ) { _stereo_input = x; refresh(); }
     inline StereoInput stereo_input() const { return _stereo_input; }
 
-    inline void stereo_output( StereoOutput x )
-    { _stereo_output = x; fetch(_frame); refresh(); }
+    void stereo_output( StereoOutput x );
     inline StereoOutput stereo_output() const { return _stereo_output; }
 
     mrv::image_type_ptr left() const;
