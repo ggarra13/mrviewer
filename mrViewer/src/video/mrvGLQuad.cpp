@@ -811,9 +811,21 @@ namespace mrv {
 
     // Upload converted rectangle
     unsigned dx = 0;
-    unsigned dy = dh / 2;
-    unsigned off = ( dx + dy * dw ) * pixel_size;
-          
+    unsigned dy = 0;
+    unsigned off = 0;
+    if ( _right )
+    {
+        if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+        {
+            dy = dh / 2;
+            off = ( dy * dw ) * pixel_size;
+        }
+        else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+        {
+            dx = dw / 2;
+            off = dx * pixel_size;
+        }
+    }
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;
 
     if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
@@ -824,7 +836,7 @@ namespace mrv {
     {
         dw /= 2;
     }
-    update_texsub( 0, dx, dy, dw, dh, tw, th, _glformat, _pixel_type, 
+    update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type, 
 		   short(_channels), short(pixel_size), p );
   }
 
