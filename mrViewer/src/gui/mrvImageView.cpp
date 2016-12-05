@@ -429,7 +429,7 @@ enum WindowList
 kReelWindow = 0,
 kMediaInfo = 1,
 kColorInfo = 2,
-kStereoEdit = 3,
+k3DStereoOptions = 3,
 kEDLEdit = 4,
 kPaintTools = 5,
 k3dView = 6,
@@ -474,7 +474,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
       uiMain->uiView->update_color_info();
       uiMain->uiView->send_network( "ColorInfoWindow 1" );
     }
-  else if ( idx == kStereoEdit )
+  else if ( idx == k3DStereoOptions )
   {
       uiMain->uiStereo->uiMain->child_of( uiMain->uiMain );
       uiMain->uiStereo->uiMain->show();
@@ -1052,7 +1052,7 @@ void ImageView::copy_pixel() const
   mrv::image_type_ptr pic = img->left();
 
   if ( stereo_output() & CMedia::kStereoRight ) pic = img->right();
-
+  
   if ( !pic ) return;
 
   mrv::Recti daw = img->data_window();
@@ -2909,6 +2909,7 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
+  std::cerr << "hires " << img->hires() << " left " << img->left() << " right " << img->right() << " pic " << pic << std::endl;
   int xp = (int)floor(xf);
   int yp = (int)floor(yf);
 
@@ -2916,7 +2917,6 @@ void ImageView::mouseMove(int x, int y)
   {
       if ( stereo_output() & CMedia::kStereoRight ) pic = img->left();
       else pic = img->right();
-
       if (!pic) return;
 
       xp -= w;
