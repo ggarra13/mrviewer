@@ -1038,76 +1038,16 @@ void ImageView::copy_pixel() const
 
   CMedia* img = fg->image();
 
-  double x = double(lastX);
-  double y = double(lastY);
+  int x = lastX;
+  int y = lastY;
 
   if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() )
     return;
 
-
-  double xf = (double) x;
-  double yf = (double) y;
-  data_window_coordinates( img, xf, yf );
-
-  mrv::image_type_ptr pic = img->left();
-
-  if ( stereo_output() & CMedia::kStereoRight ) pic = img->right();
-  
-  if ( !pic ) return;
-
-  mrv::Recti daw = img->data_window();
-  mrv::Recti dpw = img->display_window();
-  unsigned w = dpw.w();
-  unsigned h = dpw.h();
-
-
-  bool outside = false;
-
-  if ( img->is_stereo() && stereo_output() & CMedia::kStereoSideBySide )
-  {
-      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-           xf < 0 || yf < 0 || xf >= w*2 || yf >= h )
-      {
-          outside = true;
-      }
-  }
-  else if ( img->is_stereo() && stereo_output() & CMedia::kStereoTopBottom )
-  {
-      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-           xf < 0 || yf < 0 || xf >= w || yf >= h*2 )
-      {
-          outside = true;
-      }
-  }
-  else
-  {
-      if ( x < 0 || y < 0 || x >= this->w() || y >= this->h() ||
-           xf < 0 || yf < 0 || xf >= w || yf >= h )
-      {
-          outside = true;
-      }
-  }
-
-  unsigned xp = (unsigned)floor(xf);
-  unsigned yp = (unsigned)floor(yf);
-
-  if ( xp > w && stereo_output() & CMedia::kStereoSideBySide )
-  {
-      if ( stereo_output() & CMedia::kStereoRight ) pic = img->left();
-      else pic = img->right();
-      xp -= w;
-  }
-  else if ( yp > h && stereo_output() & CMedia::kStereoTopBottom )
-  {
-      if ( stereo_output() & CMedia::kStereoRight ) pic = img->left();
-      else pic = img->right();
-      yp -= h;
-  }
-
-
-  if ( xp >= pic->width() || yp >= pic->height() ) {
-      outside = true;
-  }
+  mrv::image_type_ptr pic;
+  bool outside;
+  int xp, yp;
+  picture_coordinates( img, x, y, outside, pic, xp, yp );
 
   if ( outside ) return;
 
@@ -1139,7 +1079,7 @@ void ImageView::copy_pixel() const
 }
 
 
-void ImageView::data_window_coordinates( const Image_ptr img,
+void ImageView::data_window_coordinates( const CMedia* const img,
                                          double& x, double& y,
                                          const bool flipon ) const
 {
@@ -1193,7 +1133,7 @@ void ImageView::data_window_coordinates( const Image_ptr img,
  * @param x   window's x position
  * @param y   window's y position
  */
-void ImageView::image_coordinates( const Image_ptr img, 
+void ImageView::image_coordinates( const CMedia* const img, 
 				   double& x, double& y ) const
 {
     const mrv::Recti& dpw = img->display_window();
@@ -2804,58 +2744,18 @@ void ImageView::pixel_processed( const CMedia* img,
 
 }
 
-/** 
- * Handle a mouse release
- * 
- * @param x fltk::event_x() coordinate
- * @param y fltk::event_y() coordinate
- */
-void ImageView::mouseMove(int x, int y)	
+void ImageView::picture_coordinates( const CMedia* const img, const int x,
+                                     const int y, bool& outside,
+                                     mrv::image_type_ptr& pic,
+                                     int& xp, int& yp ) const
 {
-    if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
-
-  //
-  // First, handle log window showing up and scrolling
-  //
-  if (main() && main()->uiLog && main()->uiLog->uiMain )
-  {
-      mrv::LogUI* logUI = main()->uiLog;
-      fltk::Window* logwindow = logUI->uiMain;
-      if ( logwindow )
-      {
-          mrv::LogDisplay* log = logUI->uiLogText;
-
-          if ( mrv::LogDisplay::show == true )
-          {
-              mrv::LogDisplay::show = false;
-              if (main() && logUI && logwindow )
-              {
-                  logwindow->show();
-              }
-          }
-          static int lines = 0;
-          if ( log->visible() && log->lines() != lines )
-          {
-              log->scroll( log->lines()-1, 0 );
-              lines = log->lines();
-          }
-      }
-  }
-  
-  mrv::media fg = foreground();
-  if ( !fg ) return;
-
-  CMedia* img = fg->image();
-
-
   double xf = (double) x;
   double yf = (double) y;
 
   data_window_coordinates( img, xf, yf );
 
 
-  mrv::image_type_ptr pic = img->left();
-
+  pic = img->left();
   if ( stereo_output() & CMedia::kStereoRight ) pic = img->right();
 
   if ( !pic ) return;
@@ -2880,9 +2780,8 @@ void ImageView::mouseMove(int x, int y)
       window()->cursor(fltk::CURSOR_CROSS);
   }
   
-  CMedia::Pixel rgba;
 
-  bool outside = false;
+  outside = false;
 
   if ( img->is_stereo() && stereo_output() & CMedia::kStereoSideBySide )
   {
@@ -2911,8 +2810,8 @@ void ImageView::mouseMove(int x, int y)
 
 
   // std::cerr << "hires " << img->hires() << " left " << img->left() << " right " << img->right() << " pic " << pic << std::endl;
-  int xp = (int)floor(xf);
-  int yp = (int)floor(yf);
+  xp = (int)floor(xf);
+  yp = (int)floor(yf);
 
   if ( xp >= (int)w && ( stereo_output() & CMedia::kStereoSideBySide ) )
   {
@@ -2974,11 +2873,62 @@ void ImageView::mouseMove(int x, int y)
   {
       xp = yp = 0; outside = true;
   }
+
+}
+
+/** 
+ * Handle a mouse release
+ * 
+ * @param x fltk::event_x() coordinate
+ * @param y fltk::event_y() coordinate
+ */
+void ImageView::mouseMove(int x, int y)	
+{
+    if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
+
+  //
+  // First, handle log window showing up and scrolling
+  //
+  if (main() && main()->uiLog && main()->uiLog->uiMain )
+  {
+      mrv::LogUI* logUI = main()->uiLog;
+      fltk::Window* logwindow = logUI->uiMain;
+      if ( logwindow )
+      {
+          mrv::LogDisplay* log = logUI->uiLogText;
+
+          if ( mrv::LogDisplay::show == true )
+          {
+              mrv::LogDisplay::show = false;
+              if (main() && logUI && logwindow )
+              {
+                  logwindow->show();
+              }
+          }
+          static int lines = 0;
+          if ( log->visible() && log->lines() != lines )
+          {
+              log->scroll( log->lines()-1, 0 );
+              lines = log->lines();
+          }
+      }
+  }
+  
+  mrv::media fg = foreground();
+  if ( !fg ) return;
+
+  CMedia* img = fg->image();
+
+  mrv::image_type_ptr pic;
+  bool outside;
+  int xp, yp;
+  picture_coordinates( img, x, y, outside, pic, xp, yp );
   
   char buf[40];
   sprintf( buf, "%5d, %5d", xp, yp );
   uiMain->uiCoord->text(buf);
   
+  CMedia::Pixel rgba;
   if ( outside )
   {
       rgba.r = rgba.g = rgba.b = rgba.a = std::numeric_limits< float >::quiet_NaN();
@@ -3024,14 +2974,16 @@ void ImageView::mouseMove(int x, int y)
 
   if ( _showBG && bgr && ( outside || rgba.a < 1.0f ) )
   {
-
+      double xf, yf;
       const mrv::image_type_ptr picb = bgr->hires();
+      const mrv::Recti& dpw = img->display_window();
+      const mrv::Recti& daw = img->data_window();
       const mrv::Recti& dpwb = bgr->display_window(picb->frame());
       const mrv::Recti& dawb = bgr->data_window(picb->frame());
       if ( picb )
       {
-          w = dawb.w();
-          h = dawb.h();
+          int w = dawb.w();
+          int h = dawb.h();
           if ( w == 0 ) w = picb->width()-1;
           if ( h == 0 ) h = picb->height()-1;
 
