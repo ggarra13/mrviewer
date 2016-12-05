@@ -2550,7 +2550,7 @@ v->uiView->update_image_info();}
 v->uiView->update_color_info();}
                 }
               {fltk::Item} {} {
-                label {Stereo Edit}
+                label {Stereo Options}
                 user_data this user_data_type {mrv::ViewerUI*}
                 callback {v->uiStereo->uiMain->show();} selected
                 }
