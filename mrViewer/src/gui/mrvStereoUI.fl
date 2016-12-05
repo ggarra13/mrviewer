@@ -25,8 +25,8 @@ namespace mrv {open
     Function {make_window( mrv::ViewerUI* main )} {open
     } {
       {fltk::Window} uiMain {
-        label {Stereo Options} open
-        xywh {526 722 720 100} resizable visible
+        label {3D Stereo Options} selected
+        xywh {526 750 720 100} resizable visible
       } {
         {fltk::Choice} uiStereoInput {
           label Input
@@ -81,7 +81,7 @@ CMedia* img = fg->image();
 int x = o->value(); 
 CMedia::StereoOutput in = CMedia::to_stereo_output( x ); 
 img->stereo_output( in );
-}} open selected
+}} open
           xywh {120 60 155 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
