@@ -974,6 +974,10 @@ void GLEngine::draw_mask( const float pct )
   {
       dpw.w( dpw.w() + dpw2.w() );
   }
+  else if ( img->stereo_output() & CMedia::kStereoTopBottom )
+  {
+      dpw.h( dpw.h() + dpw2.h() );
+  }
 
   glColor3f( 0.0f, 0.0f, 0.0f );
   glDisable( GL_STENCIL_TEST );
@@ -1133,6 +1137,11 @@ void GLEngine::draw_safe_area( const double percentX, const double percentY,
     if ( img->stereo_output() & CMedia::kStereoSideBySide )
     {
         glTranslated( dpw.w(), 0, 0 );
+        draw_safe_area_inner( tw, th, name );
+    }
+    else if ( img->stereo_output() & CMedia::kStereoTopBottom )
+    {
+        glTranslated( 0, -dpw.h(), 0 );
         draw_safe_area_inner( tw, th, name );
     }
 
@@ -1452,7 +1461,8 @@ void GLEngine::draw_images( ImageList& images )
 
          if ( stereo & CMedia::kStereoSideBySide )
              glTranslated( dpw.w(), 0, 0 );
-
+         else if ( stereo & CMedia::kStereoTopBottom )
+             glTranslated( 0, -dpw.h(), 0 );
 
          mrv::Recti dpw2 = img->display_window2(frame);
          mrv::Recti daw2 = img->data_window2(frame);
@@ -1481,11 +1491,14 @@ void GLEngine::draw_images( ImageList& images )
              {
                  
                  double x = 0;
-
+                 double y = 0;
+                 
                  if ( stereo & CMedia::kStereoSideBySide )
                      x = dpw.w();
+                 else if ( stereo & CMedia::kStereoTopBottom )
+                     y = dpw.h();
 
-                 mrv::Rectd r( daw2.x() + x, daw2.y(), daw2.w(), daw2.h() );
+                 mrv::Rectd r( daw2.x() + x, daw2.y() + y, daw2.w(), daw2.h() );
                  draw_data_window( r );
              }
          }
