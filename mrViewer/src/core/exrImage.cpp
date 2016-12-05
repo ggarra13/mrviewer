@@ -220,12 +220,12 @@ bool exrImage::channels_order(
    LayerList channelList;
    channelList.reserve(5); // R,G,B,A,Z
 
+   int idx = 0;
    int xsampling[4], ysampling[4];
 
-   for (Imf::ChannelList::ConstIterator i = s; i != e; ++i )
+   for (Imf::ChannelList::ConstIterator i = s; i != e; ++i, ++idx )
    {
        const std::string& layerName = i.name();
-       
        const Imf::Channel& ch = i.channel();
 
        std::string ext = layerName;
@@ -298,8 +298,10 @@ bool exrImage::channels_order(
                       _("\" has no channels named with prefix \"") 
                       << channel() << "\"." );
        else
+       {
            LOG_ERROR( _("Image file \"") << filename() << 
                       _("\" has no channels.") );
+       }
        return false;
    }
 
@@ -563,10 +565,94 @@ bool exrImage::find_layers( const Imf::Header& h )
 
 
    const Imf::ChannelList& channels = h.channels();
-   if ( layers.empty() )
+   if ( layers.empty() || _stereo_output != kNoStereo && _multiview )
    {
        channels.layers( layers );
 
+       free( _has_left_eye ); _has_left_eye = NULL;
+       free( _has_right_eye ); _has_right_eye = NULL;
+       
+       int right = -1;
+       if ( channel() != NULL )
+       {
+           std::string prefix, suffix;
+           std::string c = channel();
+           std::string ch = c;
+           if ( c[0] == '#' )
+           {
+               int idx = c.find( ' ' );
+               if ( idx != std::string::npos )
+               {
+                   c = c.substr( idx+1, c.size() );
+               }
+           }
+
+           
+           int idx = c.find( N_("left") );
+           if ( idx != std::string::npos )
+           {
+               _has_left_eye = strdup( c.c_str() );
+               right = 1;
+               prefix = c.substr( 0, idx );
+               suffix = c.substr( idx + 4, c.size() );
+           }
+           else
+           {
+               idx = c.find( N_("right") );
+               if ( idx != std::string::npos )
+               {
+                   _has_right_eye = strdup( c.c_str() );
+                   right = 0;
+                   prefix = c.substr( 0, idx );
+                   suffix = c.substr( idx + 5, c.size() );
+               }
+           }
+
+           
+           std::string match = N_("left");
+           if ( right == 0 ) match = N_("right");
+
+           
+           stringSet::const_iterator i = layers.begin();
+           stringSet::const_iterator e = layers.end();
+
+           for ( ; i != e; ++i )
+           {
+               const std::string& layer = *i;
+
+               idx = layer.find( match );
+               if ( idx != std::string::npos ) {
+                   continue;
+               }
+               
+               if ( !prefix.empty() )
+               {
+                   idx = layer.find( prefix );
+                   if ( idx == std::string::npos ) {
+                       continue;
+                   }
+               }
+               if ( !suffix.empty() )
+               {
+                   idx = layer.rfind( suffix );
+                   if ( idx == std::string::npos ) {
+                       continue;
+                   }
+               }
+               
+               if ( right == 1 )
+               {
+                   _has_right_eye = strdup( layer.c_str() );
+               }
+               else if ( right == 0 )
+               {
+                   _has_left_eye = strdup( layer.c_str() );
+               }
+           }
+
+       }
+
+       if ( right == -1 )
        {
            stringSet::const_iterator i = layers.begin();
            stringSet::const_iterator e = layers.end();
@@ -585,7 +671,6 @@ bool exrImage::find_layers( const Imf::Header& h )
                }
            }
        }
-
        // std::cerr << "_has_left_eye " 
        //           << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
        // std::cerr << "_has_right_eye " 
@@ -719,12 +804,16 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     Imf::ChannelList::ConstIterator e;
     std::string prefix;
     if ( _has_right_eye ) prefix = _has_right_eye;
-
     
     // Find the iterators for a right channel prefix or all channels
     if ( !prefix.empty() )
     {
         channels.channelsInLayer( prefix, s, e );
+        if ( s == e )
+        {
+            s = channels.begin();
+            e = channels.end();
+        }
     }
     else
     {
@@ -750,6 +839,11 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     if ( !prefix.empty() )
     {
         channels.channelsInLayer( prefix, s, e );
+        if ( s == e )
+        {
+            s = channels.begin();
+            e = channels.end();
+        }
     }
     else
     {
@@ -1544,18 +1638,44 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                                 const boost::int64_t& frame )
 {
-
-   if ( _num_layers == 0 && _numparts > 1 )
+   if (  _numparts > 1 )
    {
+       _num_layers == 0;
+       _layers.clear();
+       
        st[0] = st[1] = -1;
-  
-      int i = 0;
-      for ( ; i < _numparts; ++i )
-      {
-          const Header& header = inmaster.header(i);
-          if ( ! header.hasType() )
-              _type = SCANLINEIMAGE;
-          else
+
+       std::string prefix, suffix;
+       std::string c;
+       if  ( channel() ) c = channel();
+
+       if ( c[0] == '#' )
+       {
+           int idx = c.find( ' ' );
+           if ( idx != std::string::npos )
+           {
+               c = c.substr( idx+1, c.size() );
+           }
+
+           idx = c.find( N_("left") );
+           if ( idx == std::string::npos )
+           {
+               idx = c.find( N_("right") );
+               suffix = c.substr( idx+5, c.size() );
+           }
+           else
+               suffix = c.substr( idx+4, c.size() );
+
+           prefix = c.substr( 0, idx-1 );
+       }
+       
+       int i = 0;
+       for ( ; i < _numparts; ++i )
+       {
+           const Header& header = inmaster.header(i);
+           if ( ! header.hasType() )
+               _type = SCANLINEIMAGE;
+           else
               _type = header.type();
 
          if ( _type != SCANLINEIMAGE &&
@@ -1577,7 +1697,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          Imf::ChannelList::ConstIterator e = channels.end();
          unsigned numChannels = 0;
          for ( ; s != e; ++s )
-            ++numChannels;
+             ++numChannels;
 
          char buf[256];
          std::string name;
@@ -1620,15 +1740,36 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
          std::transform( ext.begin(), ext.end(), ext.begin(),
                          (int(*)(int)) toupper);
 
-         if ( numChannels >= 3 && st[1] == -1 &&
+         
+         if ( st[1] == -1 &&
               ext.find( N_("RIGHT") ) != std::string::npos )
          {
+             if ( !prefix.empty() )
+             {
+                 if ( name.find( prefix ) == std::string::npos )
+                     continue;
+             }
+             if ( !suffix.empty() )
+             {
+                 if ( name.rfind( suffix ) == std::string::npos )
+                     continue;
+             }
             st[1] = i;
             _is_stereo = true;
          }
-         if ( numChannels >= 3 && st[0] == -1 && 
+         if ( st[0] == -1 && 
               ext.find( N_("LEFT") ) != std::string::npos )
          {
+             if ( !prefix.empty() )
+             {
+                 if ( name.find( prefix ) == std::string::npos )
+                     continue;
+             }
+             if ( !suffix.empty() )
+             {
+                 if ( name.rfind( suffix ) == std::string::npos )
+                     continue;
+             }
             st[0] = i;
             _is_stereo = true;
          }
@@ -1709,7 +1850,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    if ( _is_stereo )
    {
-
        for ( int i = 0 ; i < 2; ++i )
        {
            if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
