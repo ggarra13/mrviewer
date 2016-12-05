@@ -1165,6 +1165,7 @@ void ImageView::data_window_coordinates( const Image_ptr img,
         }
     }
 
+    
     const mrv::Recti& daw = img->data_window();
     x -= daw.x();
     y -= daw.y();
@@ -2909,7 +2910,7 @@ void ImageView::mouseMove(int x, int y)
   }
 
 
-  std::cerr << "hires " << img->hires() << " left " << img->left() << " right " << img->right() << " pic " << pic << std::endl;
+  // std::cerr << "hires " << img->hires() << " left " << img->left() << " right " << img->right() << " pic " << pic << std::endl;
   int xp = (int)floor(xf);
   int yp = (int)floor(yf);
 
@@ -2920,6 +2921,11 @@ void ImageView::mouseMove(int x, int y)
       if (!pic) return;
 
       xp -= w;
+      xp += daw.x();
+      yp += daw.y();
+      const mrv::Recti& daw2 = img->data_window2();
+      xp -= daw2.x();
+      yp -= daw2.y();
   }
   else if ( yp >= (int)h && ( stereo_output() & CMedia::kStereoTopBottom ) )
   {
@@ -2929,6 +2935,11 @@ void ImageView::mouseMove(int x, int y)
       if (!pic) return;
 
       yp -= h;
+      xp += daw.x();
+      yp += daw.y();
+      const mrv::Recti& daw2 = img->data_window2();
+      xp -= daw2.x();
+      yp -= daw2.y();
   }
 
 
