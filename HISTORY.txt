@@ -4,6 +4,11 @@ v3.3.9   - Made VR 360 channel appear only once.  Previously, when
 	 - Made int slider in Image Information update on release,
 	   instead of on value change.  This makes it behave more
 	   nicely with mipmaps and ripmaps.
+	 - Fixed image coordinates when data window is smaller than
+	   display window.  Previously there would be an offset.
+	 - Added new Stereo Options panel.  This panel allows selecting
+	   the input and output options of stereo images.  It allows
+	   you to show in stereo any group of left/right paired channels.
 
 v3.3.8   - Added VR 360 support for environment maps and VR videos.
 	   Images or Videos whose width is twice the height will show
