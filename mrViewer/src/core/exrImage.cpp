@@ -56,6 +56,7 @@
 
 #include "core/mrvACES.h"
 #include "core/mrvThread.h"
+#include "core/Sequence.h"
 #include "core/exrImage.h"
 #include "core/mrvImageOpts.h"
 #include "gui/mrvProgressReport.h"
@@ -572,9 +573,15 @@ bool exrImage::find_layers( const Imf::Header& h )
        free( _has_left_eye ); _has_left_eye = NULL;
        free( _has_right_eye ); _has_right_eye = NULL;
        
-       int right = -1;
+       int rightView = -1;
+       std::string left = get_long_view( true );
+       std::string right = get_long_view( false );
+       std::string L = get_short_view( true );
+       std::string R = get_short_view( false );
+           
        if ( channel() != NULL )
        {
+       
            std::string prefix, suffix;
            std::string c = channel();
            std::string ch = c;
@@ -587,31 +594,52 @@ bool exrImage::find_layers( const Imf::Header& h )
                }
            }
 
-           
-           int idx = c.find( N_("left") );
+           std::string match;
+           int idx = c.find( left );
            if ( idx != std::string::npos )
            {
                _has_left_eye = strdup( c.c_str() );
-               right = 1;
+               rightView = 1;
+               match = left;
                prefix = c.substr( 0, idx );
-               suffix = c.substr( idx + 4, c.size() );
+               suffix = c.substr( idx + left.size(), c.size() );
            }
            else
            {
-               idx = c.find( N_("right") );
+               idx = c.find( L );
                if ( idx != std::string::npos )
                {
-                   _has_right_eye = strdup( c.c_str() );
-                   right = 0;
+                   _has_left_eye = strdup( c.c_str() );
+                   rightView = 1;
+                   match = L;
                    prefix = c.substr( 0, idx );
-                   suffix = c.substr( idx + 5, c.size() );
+                   suffix = c.substr( idx + L.size(), c.size() );
+               }
+               else
+               {
+                   idx = c.find( right );
+                   if ( idx != std::string::npos )
+                   {
+                       _has_right_eye = strdup( c.c_str() );
+                       rightView = 0;
+                       match = right;
+                       prefix = c.substr( 0, idx );
+                       suffix = c.substr( idx + right.size(), c.size() );
+                   }
+                   else
+                   {
+                       idx = c.find( R );
+                       if ( idx != std::string::npos )
+                       {
+                           _has_right_eye = strdup( c.c_str() );
+                           rightView = 0;
+                           match = R;
+                           prefix = c.substr( 0, idx );
+                           suffix = c.substr( idx + R.size(), c.size() );
+                       }
+                   }
                }
            }
-
-           
-           std::string match = N_("left");
-           if ( right == 0 ) match = N_("right");
-
            
            stringSet::const_iterator i = layers.begin();
            stringSet::const_iterator e = layers.end();
@@ -640,11 +668,11 @@ bool exrImage::find_layers( const Imf::Header& h )
                    }
                }
                
-               if ( right == 1 )
+               if ( rightView == 1 )
                {
                    _has_right_eye = strdup( layer.c_str() );
                }
-               else if ( right == 0 )
+               else if ( rightView == 0 )
                {
                    _has_left_eye = strdup( layer.c_str() );
                }
@@ -652,7 +680,7 @@ bool exrImage::find_layers( const Imf::Header& h )
 
        }
 
-       if ( right == -1 )
+       if ( rightView == -1 )
        {
            stringSet::const_iterator i = layers.begin();
            stringSet::const_iterator e = layers.end();
@@ -661,11 +689,13 @@ bool exrImage::find_layers( const Imf::Header& h )
            {
                const std::string& layer = *i;
                if ( !_has_right_eye &&
-                    layer.find( N_( "right" ) ) == 0 )
+                    ( layer.find( right ) != std::string::npos ||
+                      layer.find( R ) != std::string::npos ) )
                    _has_right_eye = strdup( layer.c_str() );
 
                if ( !_has_left_eye &&
-                    layer.find( N_("left") ) == 0 )
+                    ( layer.find( left ) != std::string::npos ||
+                      layer.find( L ) != std::string::npos ) )
                {
                    _has_left_eye = strdup( layer.c_str() );
                }
@@ -1638,181 +1668,251 @@ exrImage::loadDeepScanlineImage ( Imf::MultiPartInputFile& inmaster,
 bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                                 const boost::int64_t& frame )
 {
-   if (  _numparts > 1 )
-   {
-       _num_layers == 0;
-       _layers.clear();
+    if (  _numparts > 1 )
+    {
+        std::string left = get_long_view( true );
+        std::string right = get_long_view( false );
+        std::string L = get_short_view( true );
+        std::string R = get_short_view( false );
+        std::string prefix, suffix;
+        
+        st[0] = st[1] = -1;
+
+        std::string c = inmaster.header(0).name();
+        if  ( channel() ) c = channel();
+
        
-       st[0] = st[1] = -1;
+        if ( !c.empty() )
+        {
+            if ( c[0] == '#' )
+            {
+                int idx = c.find( ' ' );
+                if ( idx != std::string::npos )
+                {
+                    c = c.substr( idx+1, c.size() );
+                }
+            }
 
-       std::string prefix, suffix;
-       std::string c;
-       if  ( channel() ) c = channel();
+            int idx = c.find( left );
+            if ( idx != std::string::npos )
+            {
+                suffix = c.substr( idx+left.size(), c.size() );
+            }
+            else
+            {
+                idx = c.find( L );
+                if ( idx != std::string::npos )
+                {
+                    suffix = c.substr( idx+L.size(), c.size() );
+                }
+                else
+                {
+                    idx = c.find( right );
+                    if ( idx != std::string::npos )
+                    {
+                        suffix = c.substr( idx+right.size(), c.size() );
+                    }
+                    else
+                    {
+                        idx = c.find( R );
+                        if ( idx != std::string::npos )
+                        {
+                            suffix = c.substr( idx+R.size(), c.size() );
+                        }
+                    }
+                }
+            }
 
-       if ( c[0] == '#' )
-       {
-           int idx = c.find( ' ' );
-           if ( idx != std::string::npos )
-           {
-               c = c.substr( idx+1, c.size() );
-           }
+            prefix = c.substr( 0, idx-1 );
+        }
+            
+        if ( _layers.empty() )
+        {
+            for ( int i = 0; i < _numparts; ++i )
+            {
+                const Header& header = inmaster.header(i);
+                if ( ! header.hasType() )
+                    _type = SCANLINEIMAGE;
+                else
+                    _type = header.type();
 
-           idx = c.find( N_("left") );
-           if ( idx == std::string::npos )
-           {
-               idx = c.find( N_("right") );
-               suffix = c.substr( idx+5, c.size() );
-           }
-           else
-               suffix = c.substr( idx+4, c.size() );
+                if ( _type != SCANLINEIMAGE &&
+                     _type != TILEDIMAGE &&
+                     _type != DEEPSCANLINE &&
+                     _type != DEEPTILE ) continue;
 
-           prefix = c.substr( 0, idx-1 );
-       }
-       
-       int i = 0;
-       for ( ; i < _numparts; ++i )
-       {
-           const Header& header = inmaster.header(i);
-           if ( ! header.hasType() )
-               _type = SCANLINEIMAGE;
-           else
-              _type = header.type();
-
-         if ( _type != SCANLINEIMAGE &&
-              _type != TILEDIMAGE &&
-              _type != DEEPSCANLINE &&
-              _type != DEEPTILE ) continue;
-
-         if ( ! _read_attr )
-             read_header_attr( header, frame );
+                if ( ! _read_attr )
+                    read_header_attr( header, frame );
 
 
-         _pixel_ratio = header.pixelAspectRatio();
-         _lineOrder   = header.lineOrder();
-         _compression = header.compression(); 
+                _pixel_ratio = header.pixelAspectRatio();
+                _lineOrder   = header.lineOrder();
+                _compression = header.compression(); 
 
-         const Imf::ChannelList& channels = header.channels();
+                const Imf::ChannelList& channels = header.channels();
 
-         Imf::ChannelList::ConstIterator s = channels.begin();
-         Imf::ChannelList::ConstIterator e = channels.end();
-         unsigned numChannels = 0;
-         for ( ; s != e; ++s )
-             ++numChannels;
+                Imf::ChannelList::ConstIterator s = channels.begin();
+                Imf::ChannelList::ConstIterator e = channels.end();
+                unsigned numChannels = 0;
+                for ( ; s != e; ++s )
+                    ++numChannels;
 
-         char buf[256];
-         std::string name;
-         if ( header.hasName() ) name = header.name();
+                char buf[256];
+                std::string name;
+                if ( header.hasName() ) name = header.name();
 
-         // If layer name is empty it is the one with "Color".  We set it
-         // as default.
-         if ( name.empty() )
-         {
-             _curpart = _clear_part = i;
-         }
+                // If layer name is empty it is the one with "Color".  We set it
+                // as default.
+                if ( name.empty() )
+                {
+                    _curpart = _clear_part = i;
+                }
 
-         //
-         // For simplicity sake, we don't accept periods in header name
-         //
+                //
+                // For simplicity sake, we don't accept periods in header name
+                //
 #ifdef CHANGE_PERIODS_TO_UNDERSCORES
-         size_t pos;
-         while ( (pos = name.find( '.' )) != std::string::npos )
-         {
-             std::string n = name.substr( 0, pos );
-             n += '_';
-             if ( pos != name.size() )
-                 n += name.substr( pos+1, name.size() );
-             name = n;
-         }
+                size_t pos;
+                while ( (pos = name.find( '.' )) != std::string::npos )
+                {
+                    std::string n = name.substr( 0, pos );
+                    n += '_';
+                    if ( pos != name.size() )
+                        n += name.substr( pos+1, name.size() );
+                    name = n;
+                }
 #endif
 
-         buf[0] = 0;
-         if ( !name.empty() )
-         {
-             sprintf( buf, "#%d %s", i, name.c_str() );
-             _layers.push_back( buf );
-             ++_num_layers;
-         }
+                buf[0] = 0;
+                if ( !name.empty() )
+                {
+                    sprintf( buf, "#%d %s", i, name.c_str() );
+                    _layers.push_back( buf );
+                    ++_num_layers;
+                }
 
 
-         std::string ext = name;
-         if ( header.hasView() ) ext = header.view();
+                std::string ext = name;
+                if ( header.hasView() ) ext = header.view();
 
-         std::transform( ext.begin(), ext.end(), ext.begin(),
-                         (int(*)(int)) toupper);
-
+                if ( !name.empty() || !ext.empty() )
+                {
+                    for ( s = channels.begin(); s != e; ++s )
+                    {
+                        std::string layerName = buf;
+                        if ( !layerName.empty() ) layerName += '.';
+                        layerName += s.name();
+                        _layers.push_back( layerName );
+                        ++_num_layers;
+                    }
+                }
          
-         if ( st[1] == -1 &&
-              ext.find( N_("RIGHT") ) != std::string::npos )
-         {
-             if ( !prefix.empty() )
-             {
-                 if ( name.find( prefix ) == std::string::npos )
-                     continue;
-             }
-             if ( !suffix.empty() )
-             {
-                 if ( name.rfind( suffix ) == std::string::npos )
-                     continue;
-             }
-            st[1] = i;
-            _is_stereo = true;
-         }
-         if ( st[0] == -1 && 
-              ext.find( N_("LEFT") ) != std::string::npos )
-         {
-             if ( !prefix.empty() )
-             {
-                 if ( name.find( prefix ) == std::string::npos )
-                     continue;
-             }
-             if ( !suffix.empty() )
-             {
-                 if ( name.rfind( suffix ) == std::string::npos )
-                     continue;
-             }
-            st[0] = i;
-            _is_stereo = true;
-         }
+            }
+        }
 
-         if ( !name.empty() || !ext.empty() )
-         {
-             for ( s = channels.begin(); s != e; ++s )
-             {
-                 std::string layerName = buf;
-                 if ( !layerName.empty() ) layerName += '.';
-                 layerName += s.name();
-                 _layers.push_back( layerName );
-                 ++_num_layers;
-             }
-         }
-      }
+        for ( int i = 0; i < _numparts; ++i )
+        {
+            const Header& header = inmaster.header(i);
+            if ( ! header.hasType() )
+                _type = SCANLINEIMAGE;
+            else
+                _type = header.type();
 
-   }
-   else if ( _numparts == 1 )
-   {
-       const Imf::Header& header = inmaster.header(0);
-       if ( header.hasType() ) _type = header.type();
+            if ( _type != SCANLINEIMAGE &&
+                 _type != TILEDIMAGE &&
+                 _type != DEEPSCANLINE &&
+                 _type != DEEPTILE ) continue;
 
-       if ( ! _read_attr )
-           read_header_attr( header, frame );
+            const Imf::ChannelList& channels = header.channels();
 
-       if ( _multiview )
-       {
-           st[0] = st[1] = 0;
-       }
-   }
+            std::string name;
+            if ( header.hasName() ) name = header.name();
+
+            //
+            // For simplicity sake, we don't accept periods in header name
+            //
+#ifdef CHANGE_PERIODS_TO_UNDERSCORES
+            size_t pos;
+            while ( (pos = name.find( '.' )) != std::string::npos )
+            {
+                std::string n = name.substr( 0, pos );
+                n += '_';
+                if ( pos != name.size() )
+                    n += name.substr( pos+1, name.size() );
+                name = n;
+            }
+#endif
+
+            std::string ext = name;
+            if ( header.hasView() ) ext = header.view();
+
+#if 1
+            std::transform( ext.begin(), ext.end(), ext.begin(),
+                            (int(*)(int)) tolower);
+#endif
+
+            if ( st[1] == -1 &&
+                 ( ext.find( right ) != std::string::npos ||
+                   ext.find( R ) != std::string::npos ) )
+            {
+                if ( !prefix.empty() )
+                {
+                    if ( name.find( prefix ) == std::string::npos )
+                        continue;
+                }
+                if ( !suffix.empty() )
+                {
+                    if ( name.rfind( suffix ) == std::string::npos )
+                        continue;
+                }
+                st[1] = i;
+                _is_stereo = true;
+            }
+            if ( st[0] == -1 && 
+                 ( ext.find( left ) != std::string::npos ||
+                   ext.find( L ) != std::string::npos ) )
+            {
+                if ( !prefix.empty() )
+                {
+                    if ( name.find( prefix ) == std::string::npos )
+                        continue;
+                }
+                if ( !suffix.empty() )
+                {
+                    if ( name.rfind( suffix ) == std::string::npos )
+                        continue;
+                }
+                st[0] = i;
+                _is_stereo = true;
+            }
+
+        }
+    }
+    else if ( _numparts == 1 )
+    {
+        const Imf::Header& header = inmaster.header(0);
+        if ( header.hasType() ) _type = header.type();
+        
+        if ( ! _read_attr )
+            read_header_attr( header, frame );
+
+        if ( _multiview )
+        {
+            st[0] = st[1] = 0;
+        }
+    }
 
 
    
-   if ( _is_stereo && _multiview && ( st[0] == -1 || st[1] == -1 ) )
-   {
-       IMG_ERROR( _("Could not find both stereo images in multiview file") );
-       if ( st[0] != -1 ) st[1] = st[0];
-       else if ( st[1] != -1 ) st[0] = st[1];
-       if ( st[0] == -1 ) return false;
-   }
-   else if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
-   {
+    if ( _is_stereo && _multiview && ( st[0] == -1 || st[1] == -1 ) )
+    {
+        IMG_ERROR( _("Could not find both stereo images in multiview file") );
+        if ( st[0] != -1 ) st[1] = st[0];
+        else if ( st[1] != -1 ) st[0] = st[1];
+        if ( st[0] == -1 ) return false;
+    }
+    else if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
+    {
        if ( st[0] == -1 ) st[0] = 0;
        else if ( st[1] == -1 ) st[1] = 0;
        if ( st[0] == st[1] )
@@ -1850,7 +1950,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    if ( _is_stereo )
    {
-       for ( int i = 0 ; i < 2; ++i )
+       for ( int i = 1; i >= 0; --i )
        {
            if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
 
@@ -2522,11 +2622,14 @@ void add_layer( HeaderList& headers, FrameBufferList& fbs,
 
     hdr.setName( root );
 
-    if ( root.find( "right" ) != std::string::npos )
-        hdr.setView( "right" );
+    std::string left = get_long_view( true );
+    std::string right = get_long_view( false );
+       
+    if ( root.find( right ) != std::string::npos )
+        hdr.setView( right );
 
-    if ( root.find( "left" ) != std::string::npos )
-        hdr.setView( "left" );
+    if ( root.find( left ) != std::string::npos )
+        hdr.setView( left );
     
 
     if ( x == N_("Z") || x == N_("Y") )
