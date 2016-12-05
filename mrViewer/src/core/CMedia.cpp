@@ -1097,10 +1097,10 @@ const char* const CMedia::filename() const
   Mutex& vpm = const_cast< Mutex& >( _mutex );
   SCOPED_LOCK( vpm );
 
-  // CMedia* self = const_cast< CMedia* >(this);
-  // std::string file = self->sequence_filename( _dts );
-  // self->_filename = (char*) malloc( 1024 * sizeof(char) );
-  // strncpy( self->_filename, file.c_str(), 1023 );
+  CMedia* self = const_cast< CMedia* >(this);
+  std::string file = self->sequence_filename( _dts );
+  self->_filename = (char*) malloc( 1024 * sizeof(char) );
+  strncpy( self->_filename, file.c_str(), 1023 );
   return _filename;
 }
 
