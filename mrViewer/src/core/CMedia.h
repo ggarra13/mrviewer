@@ -330,7 +330,7 @@ class CMedia
     kStereoRight     = 2,
     kStereoOpenGL    = 4,
     kStereoTopBottom = 8,
-    kStereoBottomTop = 8 + 2,
+    kStereoBottomTop = kStereoTopBottom + kStereoRight,
     kStereoSideBySide = 16,
     kStereoCrossed    = kStereoSideBySide + kStereoRight,
     kStereoInterlaced = 32,
