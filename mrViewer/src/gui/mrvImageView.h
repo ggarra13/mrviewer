@@ -536,16 +536,23 @@ class server;
     float calculate_fstop( float exposure ) const;
 
     /// Given two window coordinates, return pixel coordinates
-    void image_coordinates( const Image_ptr img,
-			    double& x, double& y ) const;
+      void image_coordinates( const CMedia* const img,
+                              double& x, double& y ) const;
 
     /// Given two window coordinates, return pixel coordinates 
     /// in the data window (which may be offset)
-    void data_window_coordinates( const Image_ptr img,
+    void data_window_coordinates( const CMedia* const img,
                                   double& x, double& y,
                                   const bool flipon = true ) const;
 
-
+      
+    /// Given two window coordinates, return pixel coordinates 
+    /// in the returned picture (or outside set to true)
+      void picture_coordinates( const CMedia* const img, const int x,
+                                const int y, bool& outside,
+                                mrv::image_type_ptr& pic,
+                                int& xp, int& yp ) const;
+      
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
 
