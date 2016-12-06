@@ -316,12 +316,9 @@ class CMedia
 
     enum StereoInput {
     kNoStereoInput = 0,
-    kSeparateStreamsStereoInput = 1,
-    kStreamLeftStereoInput = kSeparateStreamsStereoInput + 2,
-    kStreamRightStereoInput = kSeparateStreamsStereoInput + 4,
-    kMultiViewStereoInput = 8,
-    kTopBottomStereoInput = 16,
-    kLeftRightStereoInput = 32,
+    kSeparateLayersInput = 1,
+    kTopBottomStereoInput = 2,
+    kLeftRightStereoInput = 4,
     };
     
     enum StereoOutput {
