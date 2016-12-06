@@ -632,11 +632,9 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
 {
     switch( x )
     {
-        case kStreamLeftStereoInput: return 1;
-        case kStreamRightStereoInput: return 2;
-        case kMultiViewStereoInput: return 3;
-        case kTopBottomStereoInput: return 4;
-        case kLeftRightStereoInput: return 5;
+        case kSeparateLayersInput: return 1;
+        case kTopBottomStereoInput: return 2;
+        case kLeftRightStereoInput: return 4;
         case kNoStereoInput:
         default:
             return 0;
@@ -647,11 +645,9 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 {
     switch( x )
     {
-        case 1: return kStreamLeftStereoInput;
-        case 2: return kStreamRightStereoInput;
-        case 3: return kMultiViewStereoInput;
-        case 4: return kTopBottomStereoInput;
-        case 5: return kLeftRightStereoInput;
+        case 1: return kSeparateLayersInput;
+        case 2: return kTopBottomStereoInput;
+        case 4: return kLeftRightStereoInput;
         default:
             return kNoStereoInput;
     }
