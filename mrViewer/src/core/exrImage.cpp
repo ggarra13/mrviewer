@@ -711,6 +711,7 @@ bool exrImage::find_layers( const Imf::Header& h )
        {
            _multiview = true;
            _is_stereo = true;
+           _stereo_input = kSeparateLayersInput;
        }
    }
 
