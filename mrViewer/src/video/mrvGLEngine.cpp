@@ -33,6 +33,7 @@
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
+#define USE_STEREO_GL
 
 #include <vector>
 #include <iostream>
@@ -1446,7 +1447,10 @@ void GLEngine::draw_images( ImageList& images )
          glDisable( GL_BLEND );
          if ( img->image_damage() & CMedia::kDamageContents )
          {
-             quad->right( false );
+             if ( stereo & CMedia::kStereoRight )
+                 quad->right( true );
+             else
+                 quad->right( false );
              quad->bind( pic );
          }
          quad->gamma( g );
@@ -1454,6 +1458,7 @@ void GLEngine::draw_images( ImageList& images )
 
          ++q;
          quad = *q;
+         quad->image( img );
 
 
          glPopMatrix();
@@ -1579,10 +1584,13 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
-          quad->right( true );
+          if ( stereo & CMedia::kStereoRight )
+              quad->right( false );
+          else
+              quad->right( true );
           quad->bind( pic );
       }
-      
+
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
 
