@@ -224,16 +224,27 @@ bool exrImage::channels_order(
    int idx = 0;
    int xsampling[4], ysampling[4];
 
+   bool Zchannel = false;
+   std::string c;
+   if ( channel() ) c = channel();
+   std::string ext = c;
+   size_t pos = ext.rfind( '.' );
+   if ( pos != std::string::npos )
+   {
+       ext = ext.substr( pos+1, ext.size() );
+   }
+   if ( ext == "Z" ) Zchannel = true;
+   
    for (Imf::ChannelList::ConstIterator i = s; i != e; ++i, ++idx )
    {
        const std::string& layerName = i.name();
        const Imf::Channel& ch = i.channel();
-
-       std::string ext = layerName;
+       
+       ext = layerName;
 
        if ( no_layer == false )
        {
-           size_t pos = ext.rfind( '.' );
+           pos = ext.rfind( '.' );
            if ( pos != std::string::npos )
            {
                ext = ext.substr( pos+1, ext.size() );
@@ -248,7 +259,7 @@ bool exrImage::channels_order(
                        (int(*)(int)) toupper);
 
 
-       if ( order[0] == -1 && (ext == N_("R") ||
+       if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
                                ext == N_("Y") || ext == N_("U") ||
                                ext == N_("X") || ext == N_("Z")) )
        {
@@ -256,7 +267,7 @@ bool exrImage::channels_order(
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
-       else if ( order[1] == -1 && (ext == N_("G")  ||
+       else if ( order[1] == -1 && ((ext == N_("G")  && Zchannel == false) ||
                                     ext == N_("RY") || ext == N_("V") ||
                                     ext == N_("Y") ) )
        {
@@ -264,7 +275,7 @@ bool exrImage::channels_order(
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
-       else if ( order[2] == -1 && (ext == N_("B") ||
+       else if ( order[2] == -1 && ((ext == N_("B") && Zchannel == false) ||
                                     ext == N_("BY") || ext == N_("W") ||
                                     ext == N_("Z") ) )
        {
@@ -272,14 +283,15 @@ bool exrImage::channels_order(
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
-       else if ( order[3] == -1 && ext == N_("A") ) 
+       else if ( order[3] == -1 && (ext == N_("A") && Zchannel == false) ) 
        {
            int k = order[3] = (int)channelList.size(); imfPixelType = ch.type;
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
            _has_alpha = true;
        }
-       else if ( order[0] == -1 && order[1] == -1 && order[2] == -1 &&
+       else if ( Zchannel == false &&
+                 order[0] == -1 && order[1] == -1 && order[2] == -1 &&
                  order[3] == -1 && (no_layer || ext.size() > 1) )
        {
            int k = order[0] = (int) channelList.size(); imfPixelType = ch.type;
@@ -594,13 +606,14 @@ bool exrImage::find_layers( const Imf::Header& h )
                }
            }
 
-           std::string match;
+           std::string match, discard;
            int idx = c.find( left );
            if ( idx != std::string::npos )
            {
                _has_left_eye = strdup( c.c_str() );
                rightView = 1;
-               match = left;
+               match = right;
+               discard = left;
                prefix = c.substr( 0, idx );
                suffix = c.substr( idx + left.size(), c.size() );
            }
@@ -611,7 +624,8 @@ bool exrImage::find_layers( const Imf::Header& h )
                {
                    _has_left_eye = strdup( c.c_str() );
                    rightView = 1;
-                   match = L;
+                   discard = L;
+                   match = R;
                    prefix = c.substr( 0, idx );
                    suffix = c.substr( idx + L.size(), c.size() );
                }
@@ -622,7 +636,8 @@ bool exrImage::find_layers( const Imf::Header& h )
                    {
                        _has_right_eye = strdup( c.c_str() );
                        rightView = 0;
-                       match = right;
+                       discard = right;
+                       match = left;
                        prefix = c.substr( 0, idx );
                        suffix = c.substr( idx + right.size(), c.size() );
                    }
@@ -633,7 +648,8 @@ bool exrImage::find_layers( const Imf::Header& h )
                        {
                            _has_right_eye = strdup( c.c_str() );
                            rightView = 0;
-                           match = R;
+                           discard = R;
+                           match = L;
                            prefix = c.substr( 0, idx );
                            suffix = c.substr( idx + R.size(), c.size() );
                        }
@@ -648,10 +664,11 @@ bool exrImage::find_layers( const Imf::Header& h )
            {
                const std::string& layer = *i;
 
-               idx = layer.find( match );
+               idx = layer.find( discard );
                if ( idx != std::string::npos ) {
                    continue;
                }
+
                
                if ( !prefix.empty() )
                {
@@ -668,6 +685,9 @@ bool exrImage::find_layers( const Imf::Header& h )
                    }
                }
                
+               if ( prefix.empty() && suffix.empty() )
+                       continue;
+               
                if ( rightView == 1 )
                {
                    _has_right_eye = strdup( layer.c_str() );
@@ -677,7 +697,6 @@ bool exrImage::find_layers( const Imf::Header& h )
                    _has_left_eye = strdup( layer.c_str() );
                }
            }
-
        }
 
        if ( rightView == -1 )
@@ -685,19 +704,43 @@ bool exrImage::find_layers( const Imf::Header& h )
            stringSet::const_iterator i = layers.begin();
            stringSet::const_iterator e = layers.end();
 
-           for ( ; i != e; ++i )
+           std::string c;
+           if ( channel() ) c = channel();
+           
+           if ( c.empty() || c == "Z" )
            {
-               const std::string& layer = *i;
-               if ( !_has_right_eye &&
-                    ( layer.find( right ) != std::string::npos ||
-                      layer.find( R ) != std::string::npos ) )
-                   _has_right_eye = strdup( layer.c_str() );
-
-               if ( !_has_left_eye &&
-                    ( layer.find( left ) != std::string::npos ||
-                      layer.find( L ) != std::string::npos ) )
+               for ( ; i != e; ++i )
                {
-                   _has_left_eye = strdup( layer.c_str() );
+                   const std::string& layer = *i;
+                   if ( !_has_right_eye &&
+                        ( layer.find( right ) == 0 &&
+                          layer.size() == right.size() ) )
+                       _has_right_eye = strdup( layer.c_str() );
+
+                   if ( !_has_left_eye &&
+                        ( layer.find( left ) == 0 ) &&
+                        layer.size() == left.size() )
+                   {
+                       _has_left_eye = strdup( layer.c_str() );
+                   }
+               }
+           }
+           else
+           {
+               for ( ; i != e; ++i )
+               {
+                   const std::string& layer = *i;
+                   if ( !_has_right_eye &&
+                        ( layer.find( right ) != std::string::npos ||
+                          layer.find( R ) != std::string::npos ) )
+                       _has_right_eye = strdup( layer.c_str() );
+
+                   if ( !_has_left_eye &&
+                        ( layer.find( left ) != std::string::npos ||
+                          layer.find( L ) != std::string::npos ) )
+                   {
+                       _has_left_eye = strdup( layer.c_str() );
+                   }
                }
            }
        }
@@ -851,12 +894,12 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         s = channels.begin();
         e = channels.end();
     }
-    channels_order( frame, s, e, channels, h, fb );
+    bool ok = channels_order( frame, s, e, channels, h, fb );
 
     // If 3d is because of different headers exit now
     if ( !_multiview )
     {
-        return true;
+        return ok;
     }
 
     _stereo[1] = _hires;
@@ -866,10 +909,11 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     //
     prefix.clear();
     if ( _has_left_eye ) prefix = _has_left_eye;
+
     
     if ( !prefix.empty() )
     {
-        channels.channelsInLayer( prefix, s, e );
+        channels.channelsWithPrefix( prefix, s, e );
         if ( s == e )
         {
             s = channels.begin();
@@ -882,10 +926,10 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         e = channels.end();
     }
 
-    channels_order( frame, s, e, channels, h, fb );
+    ok = channels_order( frame, s, e, channels, h, fb );
     _stereo[0] = _hires;
 
-    return true;
+    return ok;
 }
 
 bool exrImage::find_channels( const Imf::Header& h,
@@ -1847,11 +1891,12 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             std::string ext = name;
             if ( header.hasView() ) ext = header.view();
 
-#if 1
+#if 0
             std::transform( ext.begin(), ext.end(), ext.begin(),
                             (int(*)(int)) tolower);
 #endif
 
+     
             if ( st[1] == -1 &&
                  ( ext.find( right ) != std::string::npos ||
                    ext.find( R ) != std::string::npos ) )
@@ -2754,9 +2799,6 @@ bool exrImage::save( const char* file, const CMedia* img,
         for ( i = s; i != e; ++i )
         {
             const std::string& name = *i;
-
-            if ( name.find( _("stereo") ) != std::string::npos ||
-                 name.find( _("anaglyph") ) != std::string::npos ) continue;
 
             if ( name.find(x + '.') == 0 )
             {
