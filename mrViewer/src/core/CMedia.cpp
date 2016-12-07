@@ -632,12 +632,12 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
 {
     switch( x )
     {
-        case kSeparateLayersInput: return 1;
-        case kTopBottomStereoInput: return 2;
-        case kLeftRightStereoInput: return 4;
+        case kSeparateLayersInput: return 0;
+        case kTopBottomStereoInput: return 1;
+        case kLeftRightStereoInput: return 2;
         case kNoStereoInput:
         default:
-            return 0;
+            return -1;
     }
 }
 
@@ -645,9 +645,9 @@ CMedia::StereoInput CMedia::to_stereo_input( int x )
 {
     switch( x )
     {
-        case 1: return kSeparateLayersInput;
-        case 2: return kTopBottomStereoInput;
-        case 4: return kLeftRightStereoInput;
+        case 0: return kSeparateLayersInput;
+        case 1: return kTopBottomStereoInput;
+        case 2: return kLeftRightStereoInput;
         default:
             return kNoStereoInput;
     }
@@ -1405,37 +1405,16 @@ void CMedia::default_layers()
     alpha_layers();
 }
 
-/** 
- * Add image's stereo layers
- * 
- */
-void CMedia::add_stereo_layers()
-{
-    // Make sure we don't add stereo layers twice.  This can happen
-    // if user has a multiview image and loads a second stereo image.
-    stringArray::const_reverse_iterator i = _layers.rbegin();
-    stringArray::const_reverse_iterator e = _layers.rend();
-    for ( ; i != e; ++i )
-    {
-        if ( *i == _("right.anaglyph") || *i == _("bottom.anaglyph")) return;
-    }
-    _layers.push_back( _("stereo.horizontal") );
-    _layers.push_back( _("stereo.crossed") );
-    _layers.push_back( _("stereo.interlaced") );
-    _layers.push_back( _("stereo.interlaced columns") );
-    _layers.push_back( _("stereo.checkerboard") );
-    _layers.push_back( _("left.anaglyph") );
-    _layers.push_back( _("right.anaglyph") );
-    image_damage( image_damage() | kDamageLayers );
-}
-
 void CMedia::stereo_output( StereoOutput x )
 {
     _stereo_output = x;
-    clear_cache();
-    if ( fetch(_frame) )
+    if ( playback() == kStopped )
     {
-        cache( _hires );
+        clear_cache();
+        if ( fetch(_frame) )
+        {
+            cache( _hires );
+        }
     }
     refresh();
 }
