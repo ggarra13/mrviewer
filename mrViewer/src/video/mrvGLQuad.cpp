@@ -1051,7 +1051,7 @@ namespace mrv {
               std::string colorspace = _("Unspecified");
               if ( _image && _image->colorspace() )
                   colorspace = _image->colorspace();
-
+              
               if ( colorspace == "BT709" )
               {
                   _shader->setUniform( "coeffs", 1 );
