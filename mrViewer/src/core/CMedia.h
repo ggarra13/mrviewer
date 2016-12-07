@@ -388,8 +388,6 @@ class CMedia
     void vr_layers();
 
 
-    // Add default stereo.horizontal, stereo.crossed
-    void add_stereo_layers();
 
     const mrv::Recti data_window( boost::int64_t f = AV_NOPTS_VALUE) const;
     const mrv::Recti display_window( boost::int64_t f = AV_NOPTS_VALUE) const;
