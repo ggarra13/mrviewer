@@ -6,11 +6,22 @@ v3.3.9   - Made VR 360 channel appear only once.  Previously, when
 	   nicely with mipmaps and ripmaps.
 	 - Fixed image coordinates when data window is smaller than
 	   display window.  Previously there would be an offset.
-	 - Added new Stereo Options panel.  This panel allows selecting
+	 - Added new 3D Stereo Options panel.  This panel allows selecting
 	   the input and output options of stereo images.  It allows
-	   you to show in stereo any group of left/right paired channels.
+	   you to show in stereo any group of left/right paired channels
+	   in OpenEXRs, instead of just the beauty channels as before.
+	   It also allows selecting input of images which have the two
+	   stereo channels in them by selecting top-bottom or left-right.
+	   This type of movies is typical of youtube.
+	   You can also mix this with VR360 for a virtual reality 3D
+	   stereo movie.
+	 - Removed old stereo channels from the channels pulldown.  Use
+	   the new stereo options window for controlling 3D stereo.
 	 - Fixed image coordinates and color information on cursor
-	   position when in stereo mode.
+	   position when in 3D stereo mode.
+	 - Made fit image when changing stereo output.
+	 - Activated untested OpenGL stereo output for 3d stereo.  This
+	   requires a graphics card that supports stereo (high end).
 
 v3.3.8   - Added VR 360 support for environment maps and VR videos.
 	   Images or Videos whose width is twice the height will show

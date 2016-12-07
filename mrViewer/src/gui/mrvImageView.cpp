@@ -1049,7 +1049,7 @@ void ImageView::copy_pixel() const
   int xp, yp;
   picture_coordinates( img, x, y, outside, pic, xp, yp );
 
-  if ( outside ) return;
+  if ( outside || !pic ) return;
 
   CMedia::Pixel rgba = pic->pixel( xp, yp );
   pixel_processed( img, rgba );
@@ -2923,6 +2923,7 @@ void ImageView::mouseMove(int x, int y)
   bool outside;
   int xp, yp;
   picture_coordinates( img, x, y, outside, pic, xp, yp );
+  if ( !pic ) return;
   
   char buf[40];
   sprintf( buf, "%5d, %5d", xp, yp );
