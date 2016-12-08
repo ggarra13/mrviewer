@@ -1056,7 +1056,7 @@ void ImageView::copy_pixel() const
 
   if ( stereo_output() & CMedia::kStereoAnaglyph )
   {
-      if ( stereo_output() == CMedia::kStereoRightAnaglyph )
+      if ( stereo_output() & CMedia::kStereoRight )
           pic = img->left();
       else
           pic = img->right();
@@ -1106,10 +1106,11 @@ void ImageView::data_window_coordinates( const CMedia* const img,
     }
 
     
-    const mrv::Recti& daw = img->data_window();
-    x -= daw.x();
-    y -= daw.y();
-
+    {
+        const mrv::Recti& daw = img->data_window();
+        x -= daw.x();
+        y -= daw.y();
+    }
     
     //
     // If image is smaller than display window, we are dealing
@@ -1744,7 +1745,6 @@ void static_preload( mrv::ImageView* v )
  */
 void ImageView::draw()
 {
-    TRACE("");
 
     const mrv::media& fg = foreground();
     if ( fg )
@@ -2942,7 +2942,7 @@ void ImageView::mouseMove(int x, int y)
 
       if ( stereo_output() & CMedia::kStereoAnaglyph )
       {
-          if ( stereo_output() == CMedia::kStereoRightAnaglyph )
+          if ( stereo_output() & CMedia::kStereoRight )
               pic = img->left();
           else
               pic = img->right();
