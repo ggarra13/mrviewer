@@ -805,6 +805,7 @@ void GLEngine::draw_title( const float size,
     glutStrokeCharacter( font, *p );
   CHECK_GL( "glutStrokeCharacter" );
 
+  glMatrixMode( GL_MODELVIEW );
   glPopMatrix();
 
   glDisable(GL_BLEND);
@@ -912,6 +913,7 @@ void GLEngine::draw_square_stencil( const int x, const int y,
     }
     glEnd();
 
+    glMatrixMode( GL_MODELVIEW );
     glPopMatrix();
 
     // just draw where inside of the mask
@@ -1088,6 +1090,7 @@ void GLEngine::draw_rectangle( const mrv::Rectd& r,
     // glDisable(GL_COLOR_LOGIC_OP);
 
     glPopAttrib();
+    glMatrixMode( GL_MODELVIEW );
     glPopMatrix();
 }
 
@@ -1113,6 +1116,7 @@ void GLEngine::draw_safe_area_inner( const double tw, const double th,
       glScalef( 0.1f, 0.1f, 1.0f );
       for (const char* p = name; *p; ++p)
         glutStrokeCharacter(GLUT_STROKE_ROMAN, *p);
+      glMatrixMode(GL_MODELVIEW);
       glPopMatrix();
     }
 
@@ -1423,6 +1427,7 @@ void GLEngine::draw_images( ImageList& images )
       {
          if ( stereo & CMedia::kStereoRight )
          {
+             std::cerr << "stereo right" << std::endl;
              pic = img->right();
              CMedia* right = img->right_eye();
              if ( right ) g = right->gamma();
@@ -1477,84 +1482,89 @@ void GLEngine::draw_images( ImageList& images )
          quad = *q;
          quad->image( img );
 
-
-         glPopMatrix();
-
-
-         if ( stereo & CMedia::kStereoSideBySide )
-             glTranslated( dpw.w(), 0, 0 );
-         else if ( stereo & CMedia::kStereoTopBottom )
-             glTranslated( 0, -dpw.h(), 0 );
-
-         mrv::Recti dpw2 = img->display_window2(frame);
-         mrv::Recti daw2 = img->data_window2(frame);
-
-         if ( stereo & CMedia::kStereoRight )
+         if ( stereo != CMedia::kStereoLeft &&
+              stereo != CMedia::kStereoRight )
          {
-             dpw2 = img->display_window(frame);
-             daw2 = img->data_window(frame);
-         }
+             glMatrixMode( GL_MODELVIEW );
+             glPopMatrix();
+         
+             if ( stereo & CMedia::kStereoSideBySide )
+                 glTranslated( dpw.w(), 0, 0 );
+             else if ( stereo & CMedia::kStereoTopBottom )
+                 glTranslated( 0, -dpw.h(), 0 );
 
+             mrv::Recti dpw2 = img->display_window2(frame);
+             mrv::Recti daw2 = img->data_window2(frame);
 
-         glMatrixMode(GL_MODELVIEW);
-         glPushMatrix();
-
-
-         if ( dpw2 != daw2 )
-         {
-             if ( _view->display_window() &&
-                  ( !( stereo & CMedia::kStereoAnaglyph ) &&
-                    ( !(stereo & CMedia::kStereoInterlaced ) ) ) )
+             if ( stereo & CMedia::kStereoRight )
              {
-                 draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
+                 dpw2 = img->display_window(frame);
+                 daw2 = img->data_window(frame);
              }
 
-             if ( _view->data_window() )
+
+             glMatrixMode(GL_MODELVIEW);
+             glPushMatrix();
+
+
+             if ( dpw2 != daw2 )
              {
-                 
-                 double x = 0;
-                 double y = 0;
-                 
-                 if ( stereo & CMedia::kStereoSideBySide )
-                     x = dpw.w();
-                 else if ( stereo & CMedia::kStereoTopBottom )
-                     y = dpw.h();
+                 if ( _view->display_window() &&
+                      ( !( stereo & CMedia::kStereoAnaglyph ) &&
+                        ( !(stereo & CMedia::kStereoInterlaced ) ) ) )
+                 {
+                     draw_square_stencil( dpw2.l(), dpw2.t(), dpw2.r(), dpw2.b() );
+                 }
 
-                 mrv::Rectd r( daw2.x() + x, daw2.y() + y, daw2.w(), daw2.h() );
-                 draw_data_window( r );
+                 if ( _view->data_window() )
+                 {
+                 
+                     double x = 0;
+                     double y = 0;
+                 
+                     if ( stereo & CMedia::kStereoSideBySide )
+                         x = dpw.w();
+                     else if ( stereo & CMedia::kStereoTopBottom )
+                         y = dpw.h();
+
+                     mrv::Rectd r( daw2.x() + x, daw2.y() + y, daw2.w(), daw2.h() );
+                     draw_data_window( r );
+                 }
              }
-         }
 
-         g = img->gamma();
+             g = img->gamma();
 
-         if ( stereo & CMedia::kStereoRight )
-         {
-            pic = img->left();
-         }
-         else
-         {
-            pic = img->right();
-            CMedia* right = img->right_eye();
-            if ( right ) g = right->gamma();
-         }
+             if ( stereo & CMedia::kStereoRight )
+             {
+                 std::cerr << "stereo right - get left" << std::endl;
+                 pic = img->left();
+             }
+             else
+             {
+                 pic = img->right();
+                 CMedia* right = img->right_eye();
+                 if ( right ) g = right->gamma();
+             }
 
-         texWidth = daw2.w();
-         texHeight = daw2.h();
+             std::cerr << "pic2 " << pic << " right " << img->right() << std::endl;
+
+             texWidth = daw2.w();
+             texHeight = daw2.h();
 
  
-         glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
+             glTranslatef( float(daw2.x()), float(-daw2.y()), 0 );
 
 
-         if ( _view->main()->uiPixelRatio->value() )
-             glScaled( double(texWidth), 
-                       double(texHeight) / _view->pixel_ratio(),
-                       1.0 );
-         else
-             glScaled( double(texWidth), double(texHeight), 1.0 );
+             if ( _view->main()->uiPixelRatio->value() )
+                 glScaled( double(texWidth), 
+                           double(texHeight) / _view->pixel_ratio(),
+                           1.0 );
+             else
+                 glScaled( double(texWidth), double(texHeight), 1.0 );
 
-         glTranslated( 0.5, -0.5, 0 );
+             glTranslated( 0.5, -0.5, 0 );
 
-
+         }
       }
       else if ( img->hires() || img->has_subtitle() )
       {
@@ -1610,7 +1620,7 @@ void GLEngine::draw_images( ImageList& images )
 
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
-
+      
 
       if ( img->has_subtitle() )
 	{
@@ -1629,6 +1639,7 @@ void GLEngine::draw_images( ImageList& images )
            }
 	}
 
+      glMatrixMode(GL_MODELVIEW);
       glPopMatrix();
 
       img->image_damage( img->image_damage() & 
