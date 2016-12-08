@@ -882,7 +882,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     // Find the iterators for a right channel prefix or all channels
     if ( !prefix.empty() )
     {
-        channels.channelsInLayer( prefix, s, e );
+        channels.channelsWithPrefix( prefix, s, e );
         if ( s == e )
         {
             s = channels.begin();
@@ -902,6 +902,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
         return ok;
     }
 
+    std::cerr << "stereo1 " << _hires << std::endl;
     _stereo[1] = _hires;
 
     //
@@ -928,6 +929,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
 
     ok = channels_order( frame, s, e, channels, h, fb );
     _stereo[0] = _hires;
+    std::cerr << "stereo0 " << _hires << std::endl;
 
     return ok;
 }
