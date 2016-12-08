@@ -6,6 +6,8 @@ code_name {.cxx}
 gridx 5 
 gridy 5 
 snap 3
+decl {\#include "gui/mrvIO.h"} {public
+} 
 decl {\#include "core/mrvI8N.h"} {public
 } 
 
@@ -138,7 +140,7 @@ else
     }
     Function {~StereoUI()} {open
     } {
-      code {delete uiMain; uiMain = NULL;} {}
+      code { delete uiMain; uiMain = NULL;} {}
     }
   }
 } 
