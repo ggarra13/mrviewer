@@ -33,7 +33,7 @@
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
-#define USE_STEREO_GL
+//#define USE_STEREO_GL
 
 #include <vector>
 #include <iostream>
@@ -545,23 +545,25 @@ void GLEngine::reset_view_matrix()
     ImageView* view = const_cast< ImageView* >( _view );
     if (! view->vr() )
     {
+        CHECK_GL( "view ortho next" );
         view->ortho();
+        CHECK_GL( "view ortho returned" );
     }
     else
     {
         unsigned w = _view->w();
         unsigned h = _view->h();
-        glViewport(0, 0, w, h);
         glLoadIdentity();
+        glViewport(0, 0, w, h);
         gluPerspective(45.0, (float)w / (float)h, 1.0, 200.0);
         gluLookAt( 0, 0, 1, 0, 0, -1, 0, 1, 0 );
-        //gluLookAt( 0, 1, 0, 0, -1, 0, 1, 0, 0 );
-        
     }
   
     // Makes gl a tad faster
     glDisable(GL_DEPTH_TEST);
+    CHECK_GL( "glDisable GL_DEPTH_TEST" );
     glDisable(GL_LIGHTING);
+    CHECK_GL( "glDisable GL_LIGHTING" );
 }
 
 void GLEngine::evaluate( const CMedia* img,
@@ -607,8 +609,10 @@ void GLEngine::refresh_luts()
  */
 void GLEngine::clear_canvas( float r, float g, float b, float a )
 {
+    CHECK_GL( "Clear canvas mask next" );
     glColorMask( GL_TRUE, GL_TRUE, GL_TRUE, GL_TRUE );
     glClearColor(r, g, b, a );
+    CHECK_GL( "Clear canvas color" );
     glClear( GL_STENCIL_BUFFER_BIT );
     glClear( GL_COLOR_BUFFER_BIT );
     glShadeModel( GL_FLAT );
@@ -638,10 +642,15 @@ bool GLEngine::init_fbo( ImageList& images )
    if ( ! _fboRenderBuffer ) return false;
 
    glGenTextures(1, &textureId);
+   CHECK_GL( "glGenTextures" );
    glBindTexture(GL_TEXTURE_2D, textureId);
+   CHECK_GL( "glBindTexture" );
    glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+   CHECK_GL( "glPixelStorei" );
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_CLAMP_TO_EDGE);
+   CHECK_GL( "glTexParameterf" );
    glTexParameterf(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
+   CHECK_GL( "glTexParameterf" );
 
    GLenum internalFormat = GL_RGBA32F_ARB;
    GLenum dataFormat = GL_RGBA;
@@ -666,10 +675,12 @@ bool GLEngine::init_fbo( ImageList& images )
    CHECK_GL( "glTexImage2D" );
 
    glGenFramebuffers(1, &id);
+   CHECK_GL( "glGenFramebuffers" );
    glBindFramebuffer(GL_FRAMEBUFFER, id);
    CHECK_GL( "glBindFramebuffer" );
 
    glGenRenderbuffers(1, &rid);
+   CHECK_GL( "glGenRenderbuffers" );
    glBindRenderbuffer( GL_RENDERBUFFER, rid );
    CHECK_GL( "glBindRenderbuffer" );
 
@@ -680,6 +691,7 @@ bool GLEngine::init_fbo( ImageList& images )
 
    glRenderbufferStorage( GL_RENDERBUFFER, GL_DEPTH_STENCIL, 
 			  w, h );
+   CHECK_GL( "glBindRenderbufferStorage" );
    glBindRenderbuffer( GL_RENDERBUFFER, 0 );
    CHECK_GL( "glBindRenderbuffer" );
  
@@ -770,7 +782,8 @@ void GLEngine::draw_title( const float size,
   int sum = 0;
   for (const char* p = text; *p; ++p)
       sum += glutStrokeWidth( font, *p );
-
+  CHECK_GL( "glutStrokeWidth" );
+  
   float x = ( float( _view->w() ) - float(sum) * size ) / 2.0f;
 
   float rgb[4];
@@ -782,6 +795,7 @@ void GLEngine::draw_title( const float size,
   glScalef( size, size, 1.0 );
   for (const char* p = text; *p; ++p)
     glutStrokeCharacter( font, *p );
+  CHECK_GL( "glutStrokeCharacter" );
 
   glColor4f( rgb[0], rgb[1], rgb[2], rgb[3] );
   glLoadIdentity();
@@ -789,6 +803,7 @@ void GLEngine::draw_title( const float size,
   glScalef( size, size, 1.0 );
   for (const char* p = text; *p; ++p)
     glutStrokeCharacter( font, *p );
+  CHECK_GL( "glutStrokeCharacter" );
 
   glPopMatrix();
 
@@ -1417,6 +1432,8 @@ void GLEngine::draw_images( ImageList& images )
              pic = img->left();
          }
 
+         std::cerr << "pic " << pic << " left " << img->left() << std::endl;
+         
          if ( stereo & CMedia::kStereoAnaglyph )
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
          else
@@ -2339,6 +2356,7 @@ GLEngine::loadBuiltinFragShader()
 
 void GLEngine::clear_quads()
 {
+    TRACE("");
     QuadList::iterator i = _quads.begin();
     QuadList::iterator e = _quads.end();
     for ( ; i != e; ++i )
@@ -2352,15 +2370,23 @@ void GLEngine::clear_quads()
 
 void GLEngine::release()
 {
+    TRACE("");
     clear_quads();
 
+    TRACE("");
     GLLut3d::clear();
 
-    if ( sCharset )
+    TRACE("");
+    if ( sCharset ) {
         glDeleteLists( sCharset, 255 );
+        CHECK_GL( "glDeleteLists" );
+    }
     
+    TRACE("");
     if (_rgba)  delete _rgba;
+    TRACE("");
     if (_YByRy) delete _YByRy;
+    TRACE("");
     if (_YCbCr) delete _YCbCr;
 }
 
@@ -2379,6 +2405,7 @@ texHeight( 0 )
  
 GLEngine::~GLEngine()
 {
+    TRACE("");
   release();
 }
 
