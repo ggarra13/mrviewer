@@ -1427,7 +1427,6 @@ void GLEngine::draw_images( ImageList& images )
       {
          if ( stereo & CMedia::kStereoRight )
          {
-             std::cerr << "stereo right" << std::endl;
              pic = img->right();
              CMedia* right = img->right_eye();
              if ( right ) g = right->gamma();
