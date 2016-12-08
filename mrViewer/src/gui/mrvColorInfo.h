@@ -59,7 +59,7 @@ namespace mrv
       static void selection_to_coord( const CMedia* img,
                                       const mrv::Rectd& selection,
                                       int& xmin, int& ymin, int& xmax,
-                                      int& ymax, bool& right );
+                                      int& ymax, bool& right, bool& bottom );
 
   protected:
     ColorWidget*    dcol;
