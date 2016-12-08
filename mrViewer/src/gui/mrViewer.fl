@@ -3479,12 +3479,12 @@ delete uiColorArea; uiColorArea = NULL;
 delete uiHistogram; uiHistogram = NULL;
 delete uiVectorscope; uiVectorscope = NULL;
 delete uiGL3dView; uiGL3dView = NULL;
-delete uiStereo; uiStereo = NULL;
 delete uiAbout; uiAbout = NULL;
 delete uiLog; uiLog = NULL;
 delete uiPaint; uiPaint = NULL;
 delete uiEDLWindow; uiEDLWindow = NULL;
 delete uiMain; uiMain = NULL;
+delete uiStereo; uiStereo = NULL;
 delete uiReelWindow; uiReelWindow = NULL;} {}
     }
   }
