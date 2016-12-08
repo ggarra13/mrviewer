@@ -2834,17 +2834,38 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   
   if ( stereo_output() == CMedia::kStereoInterlaced )
   {
-      if ( yp % 2 == 1 ) pic = img->right();
+      if ( yp % 2 == 1 )
+      {
+          pic = img->right();
+          xp += daw[0].x();
+          yp += daw[0].y();
+          xp -= daw[1].x();
+          yp -= daw[1].y();
+      }
       if ( !pic ) return;
   }
   else if ( stereo_output() == CMedia::kStereoInterlacedColumns )
   {
-      if ( xp % 2 == 1 ) pic = img->right();
+      if ( xp % 2 == 1 )
+      {
+          pic = img->right();
+          xp += daw[0].x();
+          yp += daw[0].y();
+          xp -= daw[1].x();
+          yp -= daw[1].y();
+      }
       if ( !pic ) return;
   }
   else if ( stereo_output() == CMedia::kStereoCheckerboard )
   {
-      if ( (xp + yp) % 2 == 0 ) pic = img->right();
+      if ( (xp + yp) % 2 == 0 )
+      {
+          pic = img->right();
+          xp += daw[0].x();
+          yp += daw[0].y();
+          xp -= daw[1].x();
+          yp -= daw[1].y();
+      }
       if ( !pic ) return;
   }
 
@@ -2878,12 +2899,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
   {
-      pic = img->left();
-      if ( !pic ) return;
-
-      if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
-           yp >= (int)pic->height() )
-          outside = true;
+      outside = true;
   }
 
   if ( vr() )
@@ -2957,12 +2973,29 @@ void ImageView::mouseMove(int x, int y)
 
       pixel_processed( img, rgba );
 
+
       if ( stereo_output() & CMedia::kStereoAnaglyph )
       {
+          mrv::Recti daw[2];
+
+          daw[0] = img->data_window();
+          daw[1] = img->data_window2();
           if ( stereo_output() & CMedia::kStereoRight )
+          {
               pic = img->left();
+              xp += daw[1].x();
+              yp += daw[1].y();
+              xp -= daw[0].x();
+              yp -= daw[0].y();
+          }
           else
+          {
               pic = img->right();
+              xp += daw[0].x();
+              yp += daw[0].y();
+              xp -= daw[1].x();
+              yp -= daw[1].y();
+          }
 
           if ( pic )
           {
