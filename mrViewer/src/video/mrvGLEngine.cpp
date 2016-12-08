@@ -1437,8 +1437,6 @@ void GLEngine::draw_images( ImageList& images )
              pic = img->left();
          }
 
-         std::cerr << "pic " << pic << " left " << img->left() << std::endl;
-         
          if ( stereo & CMedia::kStereoAnaglyph )
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
          else
@@ -1536,7 +1534,6 @@ void GLEngine::draw_images( ImageList& images )
 
              if ( stereo & CMedia::kStereoRight )
              {
-                 std::cerr << "stereo right - get left" << std::endl;
                  pic = img->left();
              }
              else
@@ -1546,7 +1543,6 @@ void GLEngine::draw_images( ImageList& images )
                  if ( right ) g = right->gamma();
              }
 
-             std::cerr << "pic2 " << pic << " right " << img->right() << std::endl;
 
              texWidth = daw2.w();
              texHeight = daw2.h();
