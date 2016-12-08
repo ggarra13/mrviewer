@@ -229,7 +229,7 @@ void ColorInfo::update()
 void ColorInfo::selection_to_coord( const CMedia* img,
                                     const mrv::Rectd& selection,
                                     int& xmin, int& ymin, int& xmax,
-                                    int& ymax, bool& right )
+                                    int& ymax, bool& right, bool& bottom )
 {
       const mrv::Recti& dpw = img->display_window();
       const mrv::Recti& daw = img->data_window();
@@ -239,6 +239,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       if ( H == 0 ) H = img->height();
 
       unsigned wt = W;
+      unsigned ht = H;
       xmin = (int) selection.x();
       ymin = (int) selection.y();
 
@@ -254,6 +255,18 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           ymin -= daw2.y();
           xmin -= wt;
           right = true;
+      }
+      else if ( selection.y() >= H &&
+                uiMain->uiView->stereo_output() & CMedia::kStereoTopBottom )
+      {
+          const mrv::Recti& dpw2 = img->display_window2();
+          const mrv::Recti& daw2 = img->data_window2();
+          W = dpw2.w();
+          H = dpw2.h();
+          xmin -= daw2.x();
+          ymin -= daw2.y();
+          ymin -= ht;
+          bottom = true;
       }
       else
       {
@@ -318,8 +331,9 @@ void ColorInfo::update( const CMedia* img,
 
       int xmin, ymin, xmax, ymax;
       bool right = false;
-
-      selection_to_coord( img, selection, xmin, ymin, xmax, ymax, right );
+      bool bottom = false;
+      selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
+                          right, bottom );
 
       CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
       if ( right )
@@ -331,6 +345,19 @@ void ColorInfo::update( const CMedia* img,
           if (!pic) return;
       }
       else if ( stereo_output & CMedia::kStereoSideBySide )
+      {
+          pic = img->left();
+      }
+
+      if ( bottom )
+      {
+          if ( stereo_output == CMedia::kStereoBottomTop )
+              pic = img->left();
+          else if ( stereo_output & CMedia::kStereoTopBottom )
+              pic = img->right();
+          if (!pic) return;
+      }
+      else if ( stereo_output & CMedia::kStereoTopBottom )
       {
           pic = img->left();
       }
