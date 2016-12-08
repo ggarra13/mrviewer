@@ -744,11 +744,11 @@ bool exrImage::find_layers( const Imf::Header& h )
                }
            }
        }
-       // std::cerr << "_has_left_eye " 
-       //           << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
-       // std::cerr << "_has_right_eye " 
-       //           << ( _has_right_eye ? _has_right_eye : "NULL" ) 
-       //           << std::endl;
+       std::cerr << "_has_left_eye " 
+                 << ( _has_left_eye ? _has_left_eye : "NULL" ) << std::endl;
+       std::cerr << "_has_right_eye " 
+                 << ( _has_right_eye ? _has_right_eye : "NULL" ) 
+                 << std::endl;
 
        if ( !_is_stereo && ( _has_left_eye || _has_right_eye ) )
        {
@@ -1914,6 +1914,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                         continue;
                 }
                 st[1] = i;
+                _has_right_eye = strdup( name.c_str() );
+                std::cerr << "st1 " << i << " " << name << std::endl;
                 _is_stereo = true;
             }
             if ( st[0] == -1 && 
@@ -1930,6 +1932,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                     if ( name.rfind( suffix ) == std::string::npos )
                         continue;
                 }
+                std::cerr << "st0 " << i << " " << name << std::endl;
+                _has_left_eye = strdup( name.c_str() );
                 st[0] = i;
                 _is_stereo = true;
             }
@@ -1998,7 +2002,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
 
    if ( _is_stereo )
    {
-       for ( int i = 1; i >= 0; --i )
+       for ( int i = 0; i < 2; ++i )
        {
            if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
 
@@ -2058,6 +2062,9 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            if ( st[0] != st[1] )
            {
                _stereo[i] = _hires;
+               std::cerr << i << ") " << _stereo[i]
+                         << " " << st[i] << " left " << left()
+                         << " right " << right() << std::endl;
            }
        }
    }
