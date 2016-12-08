@@ -3244,6 +3244,7 @@ void ImageView::mouseDrag(int x,int y)
            unsigned H = dpw[0].h();
 
            bool right = false;
+           bool bottom = false;
            int diffX = 0;
            int diffY = 0;
            if ( xf >= W - daw[0].x() &&
@@ -3260,7 +3261,7 @@ void ImageView::mouseDrag(int x,int y)
            else if ( yf >= H - daw[0].y() &&
                 stereo_output() & CMedia::kStereoTopBottom )
            {
-               right = true;
+               bottom = true;
                yf -= H;
                yn -= H;
                diffX = daw[1].x() - daw[0].x();
@@ -3336,7 +3337,7 @@ void ImageView::mouseDrag(int x,int y)
                }
 
                double xt = (xf + daw[0].x() + dpw[0].w() * right);
-               double yt = yf + daw[0].y();
+               double yt = yf + daw[0].y() + dpw[0].h() * bottom;
                _selection = mrv::Rectd( xt, yt, dx, dy );
 
 
