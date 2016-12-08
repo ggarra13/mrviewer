@@ -22,6 +22,7 @@ v3.3.9   - Made VR 360 channel appear only once.  Previously, when
 	 - Made fit image when changing stereo output.
 	 - Activated untested OpenGL stereo output for 3d stereo.  This
 	   requires a graphics card that supports stereo (high end).
+	 - Bug fixed a memory leak when exiting.
 
 v3.3.8   - Added VR 360 support for environment maps and VR videos.
 	   Images or Videos whose width is twice the height will show
