@@ -142,12 +142,12 @@ namespace mrv
 
 
     int xmin, ymin, xmax, ymax;
-    bool right;
+    bool right, bottom;
 
     mrv::Rectd selection = uiMain->uiView->selection();
 
     ColorInfo::selection_to_coord( img, selection, xmin, ymin, xmax, ymax,
-                                   right );
+                                   right, bottom );
 
     if ( right )
     {
@@ -155,6 +155,15 @@ namespace mrv
         if ( stereo_output == CMedia::kStereoCrossed )
             pic = img->left();
         else if ( stereo_output & CMedia::kStereoSideBySide )
+            pic = img->right();
+        if (!pic) return;
+    }
+    else if ( bottom )
+    {
+        CMedia::StereoOutput stereo_output = uiMain->uiView->stereo_output();
+        if ( stereo_output == CMedia::kStereoBottomTop )
+            pic = img->left();
+        else if ( stereo_output & CMedia::kStereoTopBottom )
             pic = img->right();
         if (!pic) return;
     }
