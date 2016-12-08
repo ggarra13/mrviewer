@@ -283,9 +283,11 @@ namespace mrv {
 
     if ( GLEngine::pboTextures() ) {
        glGenBuffers( _num_textures, _pbo );
+       CHECK_GL( "glGenBuffers" );
     }
 
     glGenTextures( _num_textures, _texId );
+    CHECK_GL( "glGenTextures" );
 
 
     for ( unsigned i = 0; i < _num_textures; ++i )
