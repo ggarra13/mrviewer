@@ -704,7 +704,10 @@ mrv::image_type_ptr CMedia::left() const
     else if ( idx < 0 ) idx = 0;
     
     if ( _is_sequence && _sequence[idx] )
+    {
+        std::cerr << "seq " << _sequence[idx] << " " << _stereo[0] << std::endl;
         return _sequence[idx];
+    }
     else
         if ( _stereo[0] )
             return _stereo[0];
@@ -724,7 +727,10 @@ mrv::image_type_ptr CMedia::right() const
     else if ( idx < 0 ) idx = 0;
     
     if ( _is_sequence && _right[idx] )
+    {
+        std::cerr << "right[idx] " << _right[idx] << std::endl;
         return _right[idx];
+    }
     else
     {
         if ( stereo_input() == kTopBottomStereoInput ||
@@ -2207,13 +2213,22 @@ void CMedia::cache( const mrv::image_type_ptr pic )
       return;
 
    SCOPED_LOCK( _mutex );
+ 
    
-   update_cache_pic( _sequence, pic );
-
+   if ( _stereo[0] ) {
+       std::cerr << "pic for sequence " << pic << " "
+                 << _stereo[0] << std::endl;
+       update_cache_pic( _sequence, _stereo[0] );
+   }
+   else
+   {
+       update_cache_pic( _sequence, pic );
+   }
 
    if ( _stereo[1] ) {
        assert( _stereo[1]->frame() == pic->frame() );
-
+       std::cerr << "pic for sequence2 " << _stereo[1] << std::endl;
+  
        update_cache_pic( _right, _stereo[1] );
 
    }
