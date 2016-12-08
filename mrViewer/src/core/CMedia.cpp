@@ -705,7 +705,6 @@ mrv::image_type_ptr CMedia::left() const
     
     if ( _is_sequence && _sequence[idx] )
     {
-        std::cerr << "seq " << _sequence[idx] << " " << _stereo[0] << std::endl;
         return _sequence[idx];
     }
     else
@@ -728,7 +727,6 @@ mrv::image_type_ptr CMedia::right() const
     
     if ( _is_sequence && _right[idx] )
     {
-        std::cerr << "right[idx] " << _right[idx] << std::endl;
         return _right[idx];
     }
     else
@@ -2216,8 +2214,6 @@ void CMedia::cache( const mrv::image_type_ptr pic )
  
    
    if ( _stereo[0] ) {
-       std::cerr << "pic for sequence " << pic << " "
-                 << _stereo[0] << std::endl;
        update_cache_pic( _sequence, _stereo[0] );
    }
    else
@@ -2227,10 +2223,8 @@ void CMedia::cache( const mrv::image_type_ptr pic )
 
    if ( _stereo[1] ) {
        assert( _stereo[1]->frame() == pic->frame() );
-       std::cerr << "pic for sequence2 " << _stereo[1] << std::endl;
-  
-       update_cache_pic( _right, _stereo[1] );
 
+       update_cache_pic( _right, _stereo[1] );
    }
 
 }
