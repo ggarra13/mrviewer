@@ -71,6 +71,8 @@ namespace mrv {
   {
       DBG( "*****************************************************" );
       uiMain->uiView->stop();
+      delete uiMain->uiView;
+      uiMain->uiView = NULL;
   }
 
 
