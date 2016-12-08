@@ -504,6 +504,7 @@ CMedia::~CMedia()
 {
   SCOPED_LOCK( _mutex );
   SCOPED_LOCK( _audio_mutex );
+  SCOPED_LOCK( _subtitle_mutex );
 
 
   if ( !stopped() )
@@ -524,11 +525,14 @@ CMedia::~CMedia()
   clear_look_mod_transform();
   free( _idt_transform );
 
-
   delete [] _dataWindow;
+  _dataWindow = NULL;
   delete [] _dataWindow2;
+  _dataWindow2 = NULL;
   delete [] _displayWindow;
+  _displayWindow = NULL;
   delete [] _displayWindow2;
+  _displayWindow2 = NULL;
 
   clear_cache();
   delete [] _sequence;
@@ -536,6 +540,7 @@ CMedia::~CMedia()
   delete [] _right;
   _right = NULL;
 
+  
   if ( has_audio() )
     {
       close_audio();
@@ -559,9 +564,10 @@ CMedia::~CMedia()
 
 
   free( _fileroot );
+  _fileroot = NULL;
   free( _filename );
   _filename = NULL;
-
+  
   if ( _context )
   {
     avformat_close_input( &_context );
@@ -1408,9 +1414,9 @@ void CMedia::default_layers()
 void CMedia::stereo_output( StereoOutput x )
 {
     _stereo_output = x;
+    clear_cache();
     if ( playback() == kStopped )
     {
-        clear_cache();
         if ( fetch(_frame) )
         {
             cache( _hires );
