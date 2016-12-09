@@ -1435,6 +1435,7 @@ void GLEngine::draw_images( ImageList& images )
          {
              pic = img->left();
          }
+         
 
          if ( stereo & CMedia::kStereoAnaglyph )
              glColorMask( GL_TRUE, GL_FALSE, GL_FALSE, GL_TRUE );
@@ -1606,10 +1607,22 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
+          bool rightView = false;
           if ( stereo & CMedia::kStereoRight )
-              quad->right( false );
+          {
+              rightView = false;
+          }
           else
-              quad->right( true );
+          {
+              rightView = true;
+          }
+
+          if ( stereo == CMedia::kStereoRight )
+              rightView = true;
+          else if ( stereo == CMedia::kStereoLeft )
+              rightView = false;
+          
+          quad->right( rightView );
           quad->bind( pic );
       }
 
