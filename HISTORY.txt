@@ -1,3 +1,8 @@
+v3.4.0   - Bug fixed cache saving for image sequences.  Regression
+	   from v3.3.9.
+	 - Made Stereo Window settings be persistent when loading
+	   new images.
+
 v3.3.9   - Made VR 360 channel appear only once.  Previously, when
 	   switching resolutions of a multiresolution image, several
 	   VR 360 channels would appear.
