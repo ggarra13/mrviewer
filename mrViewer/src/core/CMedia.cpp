@@ -456,6 +456,7 @@ void CMedia::clear_cache()
 {
   if ( !_sequence ) return;
 
+  
   SCOPED_LOCK( _mutex);
 
   boost::uint64_t num = _frame_end - _frame_start + 1;
@@ -717,7 +718,7 @@ mrv::image_type_ptr CMedia::left() const
 mrv::image_type_ptr CMedia::right() const
 {
     int64_t f = handle_loops( _frame );
-    boost::uint64_t idx = f - _frame_start;
+    boost::int64_t idx = f - _frame_start;
     if ( _right_eye ) {
         return _right_eye->left();
     }
@@ -2121,11 +2122,12 @@ void CMedia::update_cache_pic( mrv::image_type_ptr*& seq,
 {
 
   boost::int64_t f = pic->frame();
-
+  
   boost::int64_t idx = f - _frame_start;
 
   if ( idx < 0 ) idx = 0;
   else if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
+
   
   if ( seq[idx] ) return;
 
@@ -2213,18 +2215,20 @@ void CMedia::cache( const mrv::image_type_ptr pic )
    SCOPED_LOCK( _mutex );
  
    
-   if ( _stereo[0] ) {
+   if ( _stereo[0] && _stereo[0]->frame() == pic->frame() ) {
        update_cache_pic( _sequence, _stereo[0] );
+       _stereo[0].reset();
    }
    else
    {
        update_cache_pic( _sequence, pic );
    }
 
-   if ( _stereo[1] ) {
+   if ( _stereo[1] && _stereo[1]->frame() == pic->frame()  ) {
        assert( _stereo[1]->frame() == pic->frame() );
 
        update_cache_pic( _right, _stereo[1] );
+       _stereo[1].reset();
    }
 
 }
@@ -2247,6 +2251,11 @@ bool CMedia::is_cache_filled(boost::int64_t frame)
     else if ( frame < _frame_start ) return false;
     
     boost::uint64_t i = frame - _frame_start;
+
+    if ( _stereo_output != kNoStereo &&
+         _stereo_output != kStereoLeft &&
+         _right && !_right[i] ) return false;
+    
     if ( !_sequence[i] ) return false;
 
     return true;
