@@ -5358,7 +5358,9 @@ void ImageView::foreground( mrv::media fg )
     mrv::media old = foreground();
     if ( old == fg ) return;
 
-
+    CMedia::StereoInput  stereo_in = stereo_input();
+    CMedia::StereoOutput stereo_out = stereo_output();
+    
     CMedia* img = NULL;
     if ( fg ) 
     {
@@ -5424,6 +5426,9 @@ void ImageView::foreground( mrv::media fg )
             // Per session gamma: requested by Willa
             if ( img->gamma() > 0.0f ) gamma( img->gamma() );
 
+            img->stereo_input( stereo_in );
+            img->stereo_output( stereo_out );
+            
             refresh_fstop();
 	 
             if ( img->width() > 160 && (FullScreen || presentation) ) {
