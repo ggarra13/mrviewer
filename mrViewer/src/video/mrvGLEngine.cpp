@@ -1564,6 +1564,7 @@ void GLEngine::draw_images( ImageList& images )
       }
       else if ( img->hires() || img->has_subtitle() )
       {
+          stereo = CMedia::kNoStereo;
           pic = img->hires();
           
           if ( shader_type() == kNone && img->stopped() && 
