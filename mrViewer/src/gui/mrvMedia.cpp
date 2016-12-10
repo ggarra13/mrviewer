@@ -130,17 +130,18 @@ namespace mrv {
       // Make sure frame memory is not deleted
       Mutex& mutex = _image->video_mutex();
       SCOPED_LOCK( mutex );
+      
+      // Audio only clip?  Return
+      mrv::image_type_ptr pic = _image->hires();
 
-      unsigned dw = _image->width();
-      unsigned dh = _image->height();
+      unsigned dw = pic->width();
+      unsigned dh = pic->height();
 
       unsigned int h = _thumbnail_height;
 
       float yScale = (float)(h+1) / (float)dh;
       unsigned int w = (float)(dw+1) * (float)yScale;
 
-      // Audio only clip?  Return
-      mrv::image_type_ptr pic = _image->hires();
       if ( !pic ) return;
 
       // Resize image to thumbnail size
@@ -164,7 +165,7 @@ namespace mrv {
 
       _thumbnail->setpixeltype( fltk::RGB );
       _thumbnail->setsize( w, h );
- 
+      _thumbnail->destroy();
 
       uchar* ptr = (uchar*) _thumbnail->buffer();
       if (!ptr )

@@ -82,7 +82,7 @@ class aviImage : public CMedia
 
     virtual void clear_cache();
 
-    virtual bool is_cache_filled( int64_t frame );
+    virtual Cache is_cache_filled( int64_t frame );
 
     virtual boost::int64_t wait_subtitle();
 
