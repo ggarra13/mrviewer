@@ -464,12 +464,14 @@ void CMedia::clear_cache()
     {
         if ( _sequence[i] )
             _sequence[i].reset();
-        if ( _right[i] )
+        if ( _right && _right[i] )
             _right[i].reset();
     }
 
   _stereo[0].reset();
   _stereo[1].reset();
+
+  image_damage( image_damage() | kDamageCache );
 
 }
 
@@ -1418,16 +1420,19 @@ void CMedia::default_layers()
 
 void CMedia::stereo_output( StereoOutput x )
 {
-    _stereo_output = x;
-    clear_cache();
-    if ( playback() == kStopped )
+    if ( _stereo_output != x )
     {
-        if ( fetch(_frame) )
+        _stereo_output = x;
+        clear_cache();
+        if ( playback() == kStopped )
         {
-            cache( _hires );
+            if ( fetch(_frame) )
+            {
+                cache( _hires );
+            }
         }
+        refresh();
     }
-    refresh();
 }
 
 /** 
@@ -2213,9 +2218,9 @@ void CMedia::cache( const mrv::image_type_ptr pic )
       return;
 
    SCOPED_LOCK( _mutex );
- 
-   
-   if ( _stereo[0] && _stereo[0]->frame() == pic->frame() ) {
+
+   if ( _stereo[0] && _stereo[0]->frame() == pic->frame() )
+   {
        update_cache_pic( _sequence, _stereo[0] );
        _stereo[0].reset();
    }
@@ -2224,9 +2229,8 @@ void CMedia::cache( const mrv::image_type_ptr pic )
        update_cache_pic( _sequence, pic );
    }
 
-   if ( _stereo[1] && _stereo[1]->frame() == pic->frame()  ) {
-       assert( _stereo[1]->frame() == pic->frame() );
-
+   if ( _stereo[1] && _stereo[1]->frame() == pic->frame() )
+   {
        update_cache_pic( _right, _stereo[1] );
        _stereo[1].reset();
    }
@@ -2241,24 +2245,26 @@ void CMedia::cache( const mrv::image_type_ptr pic )
  * 
  * @return true or false if cache is already filled.
  */
-bool CMedia::is_cache_filled(boost::int64_t frame)
+CMedia::Cache CMedia::is_cache_filled(boost::int64_t frame)
 {
-    if ( !_sequence ) return false;
+    if ( !_sequence ) return kNoCache;
 
     SCOPED_LOCK( _mutex );
 
-    if ( frame > _frame_end ) return false;
-    else if ( frame < _frame_start ) return false;
+    if ( frame > _frame_end ) return kNoCache;
+    else if ( frame < _frame_start ) return kNoCache;
     
     boost::uint64_t i = frame - _frame_start;
 
+    CMedia::Cache cache = kNoCache;
+    
+    if ( _sequence[i] ) cache = kLeftCache;
+
     if ( _stereo_output != kNoStereo &&
          _stereo_output != kStereoLeft &&
-         _right && !_right[i] ) return false;
+         _right && _right[i] ) cache = kStereoCache;
     
-    if ( !_sequence[i] ) return false;
-
-    return true;
+    return cache;
 }
 
 
@@ -2874,15 +2880,15 @@ bool CMedia::find_image( const boost::int64_t frame )
   
   image_damage( image_damage() | kDamageData | kDamage3DData );
 
+  
   if ( _sequence && _sequence[idx] )
     {
-        _hires = _stereo[0] = _sequence[idx];
+        _hires = _sequence[idx];
         if ( _right && _right[idx])
             _stereo[1] = _right[idx];
 
-        assert( _hires != NULL );
         _frame = frame;
-        
+
         free(_filename);
         _filename = NULL;
 
