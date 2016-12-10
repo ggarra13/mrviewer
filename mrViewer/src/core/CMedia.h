@@ -297,9 +297,10 @@ class CMedia
     kDamageData      = 1 << 5,
     kDamageLut       = 1 << 6,
     kDamage3DData    = 1 << 7,
+    kDamageCache     = 1 << 8,
     kDamageAll       = (kDamageLayers | kDamageContents | kDamageLut | 
                         kDamageThumbnail | kDamageData | kDamageSubtitle |
-                        kDamage3DData)
+                        kDamage3DData | kDamageCache )
     };
 
     enum DecodeStatus {
@@ -335,6 +336,13 @@ class CMedia
     kStereoCheckerboard = kStereoInterlaced + 128,
     kStereoAnaglyph   = 256,
     kStereoRightAnaglyph = kStereoAnaglyph + kStereoRight,
+    };
+
+    enum Cache
+    {
+    kNoCache = 0,
+    kLeftCache = 1,
+    kStereoCache = 2,
     };
 
 
@@ -458,7 +466,7 @@ class CMedia
     inline bool has_sequence() const { return (_sequence != NULL); }
 
     // Returns true if cache for the frame is already filled, false if not
-    virtual bool is_cache_filled(int64_t frame);
+    virtual Cache is_cache_filled(int64_t frame);
 
     // Store a frame in sequence cache
     void cache( const mrv::image_type_ptr pic );
