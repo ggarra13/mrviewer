@@ -1367,6 +1367,11 @@ bool ImageView::should_update( mrv::media fg )
 	  update_image_info();
 	  uiMain->uiICCProfiles->fill();
       }
+      
+      if ( img->image_damage() & CMedia::kDamageCache )
+      {
+	  uiMain->uiTimeline->redraw();
+      }
 
       if ( uiMain->uiGL3dView->uiMain->visible() && 
            uiMain->uiGL3dView->uiMain->shown() &&
