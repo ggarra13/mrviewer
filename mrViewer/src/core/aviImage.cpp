@@ -1028,13 +1028,14 @@ void aviImage::store_image( const boost::int64_t frame,
  
 }
 
-int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt)
+int decode(AVCodecContext *avctx, AVFrame *frame, int *got_frame, AVPacket *pkt,
+           bool eof)
 {
     int ret;
 
     *got_frame = 0;
 
-    if (pkt) {
+    if (!eof) {
         ret = avcodec_send_packet(avctx, pkt);
         // In particular, we don't expect AVERROR(EAGAIN), because we read all
         // decoded frames with avcodec_receive_frame() until done.
@@ -1069,12 +1070,12 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
   bool eof = false;
   if ( pkt->data == NULL ) {
       eof = true;
-      pkt = NULL;
+      pkt->size = 0;
   }
 
-  while( ( !eof_found && !pkt ) || pkt->size > 0 )
+  while(  pkt->size > 0 || pkt->data == NULL )
   {
-     int err = decode( _video_ctx, _av_frame, &got_pict, pkt );
+      int err = decode( _video_ctx, _av_frame, &got_pict, pkt, eof_found );
 
 
      if ( got_pict ) {
@@ -1618,10 +1619,10 @@ bool aviImage::readFrame(int64_t & pts)
         {
             pkt = NULL;
         }
-
+        bool eof = false;
         if ( video_stream_index() == packet.stream_index)
         {
-            if (decode( _video_ctx, _av_frame, &got_video, pkt ) <= 0)
+            if (decode( _video_ctx, _av_frame, &got_video, pkt, eof ) <= 0)
             {
                 break;
             }
