@@ -736,9 +736,9 @@ void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
    CMedia::play( dir, uiMain, fg );
 }
 
-bool aviImage::is_cache_filled( int64_t frame )
+CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
-    return in_video_store( frame );
+    return (CMedia::Cache) in_video_store( frame );
 }
 
 // Seek to the requested frame
