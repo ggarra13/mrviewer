@@ -317,8 +317,16 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     int r2 = r.b()/2;
     int ww = r.w();
 
+    CMedia::Cache c = CMedia::kLeftCache;
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
+    
+    if ( img->stereo_output() != CMedia::kNoStereo )
+    {
+        c = CMedia::kStereoCache;
+        setcolor( fltk::GREEN );
+    }
+    
 
 
     int dx;
@@ -326,13 +334,14 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
 #define NO_FRAME_VALUE std::numeric_limits<int>::min()
 
 
+    
     while ( j <= max )
-    { 
+    {
         dx = NO_FRAME_VALUE;
         int64_t t = j - pos + 1;
         for ( ; j < max; ++j, ++t )
         {
-            if ( img->is_cache_filled( t ) )
+            if ( img->is_cache_filled( t ) >= c )
             {
                 dx = rx + slider_position( double(j), ww );
                 break;
@@ -345,7 +354,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
         t = j - pos + 1;
         for ( ; j <= max; ++j, ++t )
         {
-            if ( ! img->is_cache_filled( t ) )
+            if ( img->is_cache_filled( t ) < c )
             {
                 int dx2 = rx + slider_position( double(j), ww );
                 int wh = dx2-dx;
@@ -357,7 +366,7 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     }
 
     int64_t t = j - pos;  // not +1
-    if ( dx != NO_FRAME_VALUE && img->is_cache_filled( t )  )
+    if ( dx != NO_FRAME_VALUE && img->is_cache_filled( t ) >= c )
     {
         int dx2 = rx + slider_position( double(j), ww );
         int wh = dx2-dx;
