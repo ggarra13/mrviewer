@@ -56,7 +56,7 @@
 
 
 //#define TEST_NO_QUAD         // test not using textures
-//#define TEST_NO_PBO_TEXTURES // test not using pbo textures
+#define TEST_NO_PBO_TEXTURES // test not using pbo textures
 #define NVIDIA_PBO_BUG     // with pbo textures, my nvidia card has problems
                            // with GL_BGR formats and high resolutions
 
@@ -342,7 +342,7 @@ namespace mrv {
 
     if ( _view->field() == ImageView::kFrameDisplay )
       {
-//#define TEST_NO_PBO_TEXTURES
+// #define TEST_NO_PBO_TEXTURES
 #ifndef TEST_NO_PBO_TEXTURES
 
 #ifdef NVIDIA_PBO_BUG 
@@ -353,6 +353,9 @@ namespace mrv {
 #endif
 	    {
 
+              glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
+              glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
+              
 	      // bind pixel buffer
 	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, _pbo[idx]);
               CHECK_GL( "glBindBuffer" );
@@ -408,8 +411,6 @@ namespace mrv {
 		  return;
 		}
 
-              glPixelStorei( GL_UNPACK_ROW_LENGTH, tw );
-              glPixelStorei( GL_UNPACK_ALIGNMENT, 1 );
 
 	      //
 	      // Since the buffer object is still bound, this call populates our
@@ -428,9 +429,10 @@ namespace mrv {
               CHECK_GL( "glTexSubImage2D" );
 	      //
 	      // Unbind buffer object by binding it to zero.
-	      // This call is crucial, as doing the following computations while 
-	      // the buffer object is still bound will result in all sorts of
-	      // weird side effects, eventually even delivering wrong results.
+	      // This call is crucial, as doing the following computations
+              // while the buffer object is still bound will result in all
+              // sorts of weird side effects, eventually even delivering wrong
+              // results.
 	      // Refer to the specification to learn more about which 
 	      // GL calls act differently while a buffer is bound.
 	      glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
@@ -614,6 +616,7 @@ namespace mrv {
 		_internalFormat = internalFormat;
 	      }
 
+#ifndef TEST_NO_PBO_TEXTURES
 	    if ( GLEngine::pboTextures() )
 	      {
 		// Define texture level zero (without an image); notice the
@@ -623,6 +626,7 @@ namespace mrv {
 		glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
                 CHECK_GL( "bind_texture_yuv glBindBuffer" );
 	      }
+#endif
 
             unsigned htw = tw;
             unsigned hth = th;
@@ -651,19 +655,17 @@ namespace mrv {
 	    CHECK_GL( "bind_texture_yuv glTexImage2D" );
 	  }
 
-          unsigned dx = 0;
-          unsigned dy = 0;
           unsigned off = 0;
           if ( _right )
           {
               if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
               {
-                  dy = oh / 2;
+                  unsigned dy = oh / 2;
                   off = ( dy * ow ) * pixel_size;
               }
               else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
               {
-                  dx = ow / 2;
+                  unsigned dx = ow / 2;
                   off = dx * pixel_size;
               }
           }
@@ -756,6 +758,15 @@ namespace mrv {
 	tw = poww;
 	th = powh;
       }
+    
+    if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+    {
+        dh /= 2;
+    }
+    else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+    {
+        dw /= 2;
+    }
 
 
     // If texture size is different than old frame/image,
@@ -777,7 +788,7 @@ namespace mrv {
 	if ( GLEngine::shader_type() ) _shader = GLEngine::rgbaShader();
 	else                           _shader = NULL;
 
-
+#ifndef TEST_NO_PBO_TEXTURES
 	if ( GLEngine::pboTextures() )
 	  {
 	    // Define texture level zero (without an image); notice the
@@ -787,20 +798,27 @@ namespace mrv {
 	    glBindBuffer(GL_PIXEL_UNPACK_BUFFER_ARB, 0);
             CHECK_GL( "glBindBuffer" );
 	  }
+#endif
 
-        if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
-        {
-            th /= 2;
-        }
-        else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
-        {
-            tw /= 2;
-        }
+        unsigned htw = tw;
+        unsigned hth = th;
 
+
+        if ( _view->stereo_input() &
+             CMedia::kTopBottomStereoInput )
+        {
+            hth /= 2;
+            th = hth;
+        }
+        else if ( _view->stereo_input() &
+                  CMedia::kLeftRightStereoInput )
+        {
+            htw /= 2;
+        }
 	glTexImage2D( GL_TEXTURE_2D, 
 		      0,               // level
 		      _internalFormat,  // internalFormat
-		      tw, th, 
+		      htw, hth, 
 		      0,               // border
 		      _glformat, 
 		      _pixel_type, 
@@ -812,32 +830,23 @@ namespace mrv {
 
 
     // Upload converted rectangle
-    unsigned dx = 0;
-    unsigned dy = 0;
     unsigned off = 0;
     if ( _right )
     {
+        unsigned psize = pixel_size * channels;
         if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
         {
-            dy = dh / 2;
-            off = ( dy * dw ) * pixel_size;
+            unsigned dy = dh;
+            off = ( dy * tw ) * psize;
         }
         else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
         {
-            dx = dw / 2;
-            off = dx * pixel_size;
+            unsigned dx = dw;
+            off = dx * psize;
         }
     }
     boost::uint8_t* p = (boost::uint8_t*)_pixels.get() + off;
 
-    if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
-    {
-        dh /= 2;
-    }
-    else if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
-    {
-        dw /= 2;
-    }
     update_texsub( 0, 0, 0, dw, dh, tw, th, _glformat, _pixel_type, 
 		   short(_channels), short(pixel_size), p );
   }
