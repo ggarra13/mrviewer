@@ -725,6 +725,10 @@ mrv::image_type_ptr CMedia::right() const
         return _right_eye->left();
     }
 
+    if ( stereo_input() == kTopBottomStereoInput ||
+         stereo_input() == kLeftRightStereoInput )
+        return _stereo[0] ? _stereo[0] : _hires;
+    
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
     
@@ -734,9 +738,6 @@ mrv::image_type_ptr CMedia::right() const
     }
     else
     {
-        if ( stereo_input() == kTopBottomStereoInput ||
-             stereo_input() == kLeftRightStereoInput )
-            return _hires;
         return _stereo[1];
     }
 }
@@ -2298,10 +2299,14 @@ CMedia::Cache CMedia::is_cache_filled(boost::int64_t frame)
     
     if ( _sequence[i] ) cache = kLeftCache;
 
-    if ( _stereo_output != kNoStereo &&
-         _stereo_output != kStereoLeft &&
-         _right && _right[i] ) cache = kStereoCache;
-    
+    if ( _stereo_output != kNoStereo )
+    {
+        if ( _stereo_input  == kSeparateLayersInput &&
+             _right && _right[i] ) cache = kStereoCache;
+        else if ( _stereo_input != kSeparateLayersInput && cache == kLeftCache )
+            cache = kStereoCache;
+    }
+
     return cache;
 }
 
