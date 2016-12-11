@@ -5,6 +5,13 @@ v3.4.1   - Improved the cache saving with stereo sequences.
 	   For non stereo caches, the line remains dark green.
 	 - Bug fixed some movies not showing the last frames of
 	   the film on playback.
+	 - Bug fixed stereo input on images with data/display windows
+	   (OpenEXRs).  Now selecting stereo input Top/Bottom will
+	   correctly split the image in half to use the top as the
+	   left eye and the bottom as the right eye (or viceversa
+	   according to stereo output).
+	 - Made main window appear maximized on startup when showing
+	   some large video or image.
 
 v3.4.0   - Bug fixed cache saving for image sequences.  Regression
 	   from v3.3.9.
