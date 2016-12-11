@@ -765,6 +765,16 @@ const mrv::Recti CMedia::display_window( boost::int64_t f ) const
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    if ( stereo_input() & kTopBottomStereoInput ) {
+        mrv::Recti r = _displayWindow[idx];
+        r.h( r.h() / 2 );
+        return r;
+    }
+    else if ( stereo_input() & kLeftRightStereoInput ) {
+        mrv::Recti r = _displayWindow[idx];
+        r.w( r.w() / 2 );
+        return r;
+    }
     assert( idx < _numWindows );
     return _displayWindow[idx];
 }
@@ -782,11 +792,9 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
     {
         if ( stereo_input() & kTopBottomStereoInput ) {
             dh /= 2;
-            // dy = dh;
         }
         else if ( stereo_input() & kLeftRightStereoInput ) {
             dw /= 2;
-            // dx = dw;
         }
         return mrv::Recti( dx, dy, dw, dh );
     }
@@ -799,6 +807,16 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    if ( stereo_input() & kTopBottomStereoInput ) {
+        mrv::Recti r = _displayWindow2[idx];
+        r.h( r.h() / 2 );
+        return r;
+    }
+    else if ( stereo_input() & kLeftRightStereoInput ) {
+        mrv::Recti r = _displayWindow2[idx];
+        r.w( r.w() / 2 );
+        return r;
+    }
     assert( idx < _numWindows );
     return _displayWindow2[idx];
 }
@@ -822,6 +840,16 @@ const mrv::Recti CMedia::data_window( boost::int64_t f ) const
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    if ( stereo_input() & kTopBottomStereoInput ) {
+        mrv::Recti r = _dataWindow[idx];
+        r.h( r.h() / 2 );
+        return r;
+    }
+    else if ( stereo_input() & kLeftRightStereoInput ) {
+        mrv::Recti r = _dataWindow[idx];
+        r.w( r.w() / 2 );
+        return r;
+    }
     return _dataWindow[idx];
 }
 
@@ -846,6 +874,16 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
     if ( _numWindows && idx >= (int64_t)_numWindows ) idx = _numWindows-1;
     else if ( idx < 0 ) idx = 0;
 
+    if ( stereo_input() & kTopBottomStereoInput ) {
+        mrv::Recti r = _dataWindow2[idx];
+        r.h( r.h() / 2 );
+        return r;
+    }
+    else if ( stereo_input() & kLeftRightStereoInput ) {
+        mrv::Recti r = _dataWindow2[idx];
+        r.w( r.w() / 2 );
+        return r;
+    }
     return _dataWindow2[idx];
 }
 
