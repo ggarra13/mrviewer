@@ -3266,25 +3266,9 @@ void ImageView::mouseDrag(int x,int y)
            mrv::Recti daw[2], dpw[2];
 
            daw[0] = img->data_window();
-           if ( daw[0].w() == 0 )
-           {
-               daw[0] = mrv::Recti( 0, 0, img->width(), img->height() );
-           }
            daw[1] = img->data_window2();
-           if ( daw[1].w() == 0 )
-           {
-               daw[1] = mrv::Recti( 0, 0, img->width(), img->height() );
-           }
            dpw[0] = img->display_window();
-           if ( dpw[0].w() == 0 )
-           {
-               dpw[0] = mrv::Recti( 0, 0, img->width(), img->height() );
-           }
-           dpw[1] = img->display_window();
-           if ( dpw[1].w() == 0 )
-           {
-               dpw[1] = mrv::Recti( 0, 0, img->width(), img->height() );
-           }
+           dpw[1] = img->display_window2();
 
 	   double xn = double(x);
 	   double yn = double(y);
