@@ -738,7 +738,9 @@ void aviImage::play( const Playback dir, mrv::ViewerUI* const uiMain,
 
 CMedia::Cache aviImage::is_cache_filled( int64_t frame )
 {
-    return (CMedia::Cache) in_video_store( frame );
+    bool ok = in_video_store( frame );
+    if ( ok && _stereo_input != kSeparateLayersInput ) return kStereoCache;
+    return (CMedia::Cache) ok;
 }
 
 // Seek to the requested frame
