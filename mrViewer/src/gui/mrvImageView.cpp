@@ -5648,14 +5648,21 @@ void ImageView::resize_main_window()
   if ( h > maxh ) { fit = true; h = maxh; }
   if ( h < 550 )  h = 550;
 
-  if ( posX + w > maxw ) posX = maxw - w;
+  bool maximize = false;
+
+  if ( posX + w > maxw ) { maximize = true; fit = true; }
   if ( posX < minx )     posX = minx;
 
-  if ( posY + h > maxh ) posY = maxh - h;
+  if ( posY + h > maxh ) { maximize = true; fit = true; }
   if ( posY < miny )     posY = miny;
 
-  
-  fltk_main()->fullscreen_off( posX, posY, w, h);
+  if ( maximize )
+  {
+      fltk_main()->resize( posX, posY, w, h );
+      fltk_main()->maximize();
+  }
+  else
+      fltk_main()->fullscreen_off( posX, posY, w, h );
 #ifdef LINUX
   fltk_main()->hide();  // needed to show decorations under some window managers
   fltk_main()->show();
