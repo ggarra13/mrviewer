@@ -321,7 +321,9 @@ void Timeline::draw_cacheline( CMedia* img, int64_t pos, int64_t size,
     setcolor( fltk::DARK_GREEN );
     line_style( SOLID, 1 );
     
-    if ( img->stereo_output() != CMedia::kNoStereo )
+    if ( ( img->stereo_output() != CMedia::kNoStereo &&
+           img->stereo_output() != CMedia::kStereoLeft ) ||
+         img->stereo_input() > CMedia::kSeparateLayersInput )
     {
         c = CMedia::kStereoCache;
         setcolor( fltk::GREEN );
