@@ -1099,7 +1099,6 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
              ptsframe = pts2frame( stream, ptsframe );
          }
 
-
          if ( filter_graph && _subtitle_index >= 0 )
          {
              /* push the decoded frame into the filtergraph */
@@ -1143,9 +1142,14 @@ aviImage::decode_video_packet( boost::int64_t& ptsframe,
 	return kDecodeOK;
      }
 
+     if ( eof_found )
+     {
+         flush_video();
+     }
 
+     
      if ( err < 0 ) {
-         IMG_ERROR( "avcodec_decode_video2: " << get_error_text(err) );
+         IMG_ERROR( "Decode video error: " << get_error_text(err) );
          return kDecodeError;
      }
 
