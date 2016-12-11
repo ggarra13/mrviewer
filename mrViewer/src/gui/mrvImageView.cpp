@@ -1612,16 +1612,13 @@ void ImageView::timeout()
       if ( ! img->has_video() &&
            uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
       {
-       TRACE("");
           img->has_changed();
       }
       
        if ( img->stopped() && playback() != kStopped )
        {
-       TRACE("");
            if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
            {
-       TRACE("");
                img->seek( tframe );
                img->play((CMedia::Playback) playback(), uiMain, false );
            }
@@ -3226,8 +3223,8 @@ void ImageView::mouseDrag(int x,int y)
 	   window()->cursor( fltk::CURSOR_MOVE );
            if ( vr() )
            {
-#define ROTY_MIN 0.025
-#define ROTX_MIN 0.025
+#define ROTY_MIN 0.005
+#define ROTX_MIN 0.005
 #define ROTY_MAX 1.0
 #define ROTX_MAX 0.5
                roty += double(dx) / 360.0;
@@ -5934,7 +5931,8 @@ void ImageView::step_frame( int64_t n )
 }
 
 
-/// Change frame number to first frame of image
+/// Change frame number to first frame of image or previous EDL image if
+/// already on first frame
 void ImageView::first_frame()
 {
   mrv::media fg = foreground();
@@ -5966,7 +5964,8 @@ void ImageView::first_frame()
   seek( f );
 }
 
-/// Change frame number to last frame of image
+/// Change frame number to last frame of image or next image in EDL
+/// if on last frame
 void ImageView::last_frame()
 {
 
