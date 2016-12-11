@@ -2772,7 +2772,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   daw[0] = img->data_window();
   daw[1] = img->data_window2();
   dpw[0] = img->display_window();
-  dpw[1] = img->display_window();
+  dpw[1] = img->display_window2();
 
   mrv::Recti dpm = dpw[0];
   dpm.merge( daw[0] );
@@ -5650,12 +5650,19 @@ void ImageView::resize_main_window()
 
   bool maximize = false;
 
+#ifdef LINUX
   if ( posX + w > maxw ) { maximize = true; fit = true; }
   if ( posX < minx )     posX = minx;
 
   if ( posY + h > maxh ) { maximize = true; fit = true; }
   if ( posY < miny )     posY = miny;
+#else
+  if ( posX + w > maxw ) posX = maxw - w;
+  if ( posX < minx )     posX = minx;
 
+  if ( posY + h > maxh ) posY = maxh - h;
+  if ( posY < miny )     posY = miny;
+#endif
   if ( maximize )
   {
       fltk_main()->resize( posX, posY, w, h );
