@@ -17,6 +17,9 @@ v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Fixed pixel queries on all stereo input/output states.
 	   Previously the pixel shown could be wrong or point to
 	   undefined memory (leading to crashes).
+	 - Made stereo output changes not clear caches on movies.
+	   This removes warnings and errors that would happen
+	   otherwise if the movie was in playback.
 
 v3.4.0   - Bug fixed cache saving for image sequences.  Regression
 	   from v3.3.9.
