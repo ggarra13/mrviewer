@@ -2766,6 +2766,16 @@ void ImageView::separate_layers( const CMedia* const img,
 
             xp -= w;
         }
+        else
+        {
+            if ( stereo_output() & CMedia::kStereoRight ) {
+                idx = 1;
+            }
+            else
+            {
+                idx = 0;
+            }
+        }
     }
     else if ( stereo_output() & CMedia::kStereoTopBottom )
     {
@@ -2787,6 +2797,10 @@ void ImageView::separate_layers( const CMedia* const img,
         {
             if ( stereo_output() & CMedia::kStereoRight ) {
                 idx = 1;
+            }
+            else
+            {
+                idx = 0;
             }
         }
     }
@@ -2970,8 +2984,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   dpw[0] = img->display_window();
   dpw[1] = img->display_window2();
 
-  mrv::Recti dpm = dpw[0];
-  dpm.merge( daw[0] );
+  mrv::Recti dpm = dpw[idx];
+  dpm.merge( daw[idx] );
   unsigned w = dpm.w();
   unsigned h = dpm.h();
   
