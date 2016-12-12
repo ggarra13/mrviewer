@@ -785,8 +785,6 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
     if ( _right_eye )
         return _right_eye->display_window(f);
 
-    int dx = 0;
-    int dy = 0;
     int dw = width();
     int dh = height();
     if ( !_displayWindow2 || _numWindows == 0 )
@@ -797,7 +795,7 @@ const mrv::Recti CMedia::display_window2( boost::int64_t f ) const
         else if ( stereo_input() & kLeftRightStereoInput ) {
             dw /= 2;
         }
-        return mrv::Recti( dx, dy, dw, dh );
+        return mrv::Recti( 0, 0, dw, dh );
     }
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
@@ -863,8 +861,8 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
     int dh = height();
     if ( !_dataWindow2 || _numWindows == 0 )
     {
-        if ( stereo_input() & kTopBottomStereoInput )      dh /= 2;
-        else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
+        if ( stereo_input() & kTopBottomStereoInput )      { dh /= 2; }
+        else if ( stereo_input() & kLeftRightStereoInput ) { dw /= 2; }
         return mrv::Recti( 0, 0, dw, dh );
     }
 
