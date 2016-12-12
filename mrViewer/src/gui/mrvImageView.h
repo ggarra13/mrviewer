@@ -565,7 +565,15 @@ class server;
     /// Refresh the fstop display
     void refresh_fstop() const;
 
-
+      void separate_layers( const CMedia* const img,
+                            mrv::image_type_ptr& pic, int& xp, int& yp,
+                            short& idx, int w, int h ) const;
+      void top_bottom( const CMedia* const img,
+                       mrv::image_type_ptr& pic, int& xp, int& yp,
+                       short& idx, int w, int h ) const;
+      void left_right( const CMedia* const img,
+                       mrv::image_type_ptr& pic, int& xp, int& yp,
+                       short& idx, int w, int h ) const;
 
   protected:
     mrv::ViewerUI* uiMain;
