@@ -1460,9 +1460,10 @@ void CMedia::stereo_output( StereoOutput x )
     if ( _stereo_output != x )
     {
         _stereo_output = x;
-        clear_cache();
+        if ( is_sequence() ) clear_cache();
         if ( playback() == kStopped )
         {
+            SCOPED_LOCK( _mutex );
             if ( fetch(_frame) )
             {
                 cache( _hires );
