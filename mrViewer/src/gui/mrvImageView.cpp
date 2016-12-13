@@ -2804,6 +2804,18 @@ void ImageView::separate_layers( const CMedia* const img,
             }
         }
     }
+    else if ( stereo_output() & CMedia::kStereoAnaglyph )
+    {
+        if ( stereo_output() & CMedia::kStereoRight )
+        {
+            idx = 1;
+            pic = img->right();
+        }
+        else
+        {
+            pic = img->left();
+        }
+    }
 }
 
 void ImageView::top_bottom( const CMedia* const img,
@@ -3044,10 +3056,10 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
           else
           {
               pic = img->right();
-              // xp += daw[0].x();
-              // yp += daw[0].y();
-              // xp -= daw[1].x();
-              // yp -= daw[1].y();
+              xp += daw[0].x();
+              yp += daw[0].y();
+              xp -= daw[1].x();
+              yp -= daw[1].y();
           }
       }
       if ( !pic ) return;
@@ -3067,10 +3079,10 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
           else
           {
               pic = img->right();
-              // xp += daw[0].x();
-              // yp += daw[0].y();
-              // xp -= daw[1].x();
-              // yp -= daw[1].y();
+              xp += daw[0].x();
+              yp += daw[0].y();
+              xp -= daw[1].x();
+              yp -= daw[1].y();
           }
       }
       if ( !pic ) return;
@@ -3090,10 +3102,10 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
           else
           {
               pic = img->right();
-              // xp += daw[0].x();
-              // yp += daw[0].y();
-              // xp -= daw[1].x();
-              // yp -= daw[1].y();
+              xp += daw[0].x();
+              yp += daw[0].y();
+              xp -= daw[1].x();
+              yp -= daw[1].y();
           }
       }
       if ( !pic ) return;
@@ -3179,6 +3191,9 @@ void ImageView::mouseMove(int x, int y)
 
       pixel_processed( img, rgba );
 
+      mrv::Recti daw[2];
+      daw[0] = img->data_window();
+      daw[1] = img->data_window2();
 
       if ( stereo_output() & CMedia::kStereoAnaglyph )
       {
@@ -3194,19 +3209,21 @@ void ImageView::mouseMove(int x, int y)
           if ( stereo_output() & CMedia::kStereoRight )
           {
               pic = img->left();
-              reversed = true;
-              // xp += daw[1].x();
-              // yp += daw[1].y();
-              // xp -= daw[0].x();
-              // yp -= daw[0].y();
+              if ( stereo_input() != CMedia::kSeparateLayersInput &&
+                   stereo_input() != CMedia::kNoStereoInput )
+                  reversed = true;
+              xp += daw[1].x();
+              yp += daw[1].y();
+              xp -= daw[0].x();
+              yp -= daw[0].y();
           }
           else
           {
               pic = img->right();
-              // xp += daw[0].x();
-              // yp += daw[0].y();
-              // xp -= daw[1].x();
-              // yp -= daw[1].y();
+              xp += daw[0].x();
+              yp += daw[0].y();
+              xp -= daw[1].x();
+              yp -= daw[1].y();
           }
 
           if ( pic )
