@@ -1046,8 +1046,8 @@ void ImageView::copy_pixel() const
 
   mrv::image_type_ptr pic;
   bool outside;
-  int xp, yp;
-  picture_coordinates( img, x, y, outside, pic, xp, yp );
+  int xp, yp, w, h;
+  picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
 
   if ( outside || !pic ) return;
 
@@ -2959,7 +2959,8 @@ void ImageView::left_right( const CMedia* const img,
 void ImageView::picture_coordinates( const CMedia* const img, const int x,
                                      const int y, bool& outside,
                                      mrv::image_type_ptr& pic,
-                                     int& xp, int& yp ) const
+                                     int& xp, int& yp,
+                                     int& w, int& h ) const
 {
   double xf = (double) x;
   double yf = (double) y;
@@ -2986,8 +2987,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   mrv::Recti dpm = dpw[idx];
   dpm.merge( daw[idx] );
-  unsigned w = dpm.w();
-  unsigned h = dpm.h();
+  w = dpm.w();
+  h = dpm.h();
   
   if ( w == 0 ) w = pic->width();
   if ( h == 0 ) h = pic->height();
@@ -3007,12 +3008,9 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   xp = (int)floor(xf);
   yp = (int)floor(yf);
 
-  std::cerr << "0 xp yp " << xp << " " << yp << " idx1 " << idx << std::endl;
-  
   xp += daw[idx].x();
   yp += daw[idx].y();
 
-  std::cerr << "1 xp yp " << xp << " " << yp << std::endl;
 
   if ( stereo_input() == CMedia::kNoStereoInput ||
        stereo_input() == CMedia::kSeparateLayersInput )
@@ -3028,21 +3026,29 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
       left_right( img, pic, xp, yp, idx, w, h );
   }
 
-  std::cerr << "2 xp yp " << xp << " " << yp << " idx " << idx << std::endl;
-  std::cerr << "dawx " << daw[0].x() << " " << daw[1].x() << std::endl;
   xp -= daw[idx].x();
   yp -= daw[idx].y();
-  std::cerr << "3 xp yp " << xp << " " << yp << std::endl;
   
   if ( stereo_output() == CMedia::kStereoInterlaced )
   {
       if ( yp % 2 == 1 )
       {
-          pic = img->right();
-          xp += daw[0].x();
-          yp += daw[0].y();
-          xp -= daw[1].x();
-          yp -= daw[1].y();
+          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          {
+              yp += h;
+          }
+          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          {
+              xp += w;
+          }
+          else
+          {
+              pic = img->right();
+              // xp += daw[0].x();
+              // yp += daw[0].y();
+              // xp -= daw[1].x();
+              // yp -= daw[1].y();
+          }
       }
       if ( !pic ) return;
   }
@@ -3050,11 +3056,22 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   {
       if ( xp % 2 == 1 )
       {
-          pic = img->right();
-          xp += daw[0].x();
-          yp += daw[0].y();
-          xp -= daw[1].x();
-          yp -= daw[1].y();
+          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          {
+              yp += h;
+          }
+          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          {
+              xp += w;
+          }
+          else
+          {
+              pic = img->right();
+              // xp += daw[0].x();
+              // yp += daw[0].y();
+              // xp -= daw[1].x();
+              // yp -= daw[1].y();
+          }
       }
       if ( !pic ) return;
   }
@@ -3062,11 +3079,22 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   {
       if ( (xp + yp) % 2 == 0 )
       {
-          pic = img->right();
-          xp += daw[0].x();
-          yp += daw[0].y();
-          xp -= daw[1].x();
-          yp -= daw[1].y();
+          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          {
+              yp += h;
+          }
+          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          {
+              xp += w;
+          }
+          else
+          {
+              pic = img->right();
+              // xp += daw[0].x();
+              // yp += daw[0].y();
+              // xp -= daw[1].x();
+              // yp -= daw[1].y();
+          }
       }
       if ( !pic ) return;
   }
@@ -3124,7 +3152,7 @@ void ImageView::mouseMove(int x, int y)
           }
       }
   }
-  
+
   mrv::media fg = foreground();
   if ( !fg ) return;
 
@@ -3132,8 +3160,8 @@ void ImageView::mouseMove(int x, int y)
 
   mrv::image_type_ptr pic;
   bool outside;
-  int xp, yp;
-  picture_coordinates( img, x, y, outside, pic, xp, yp );
+  int xp, yp, w, h;
+  picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
   if ( !pic ) return;
   
   char buf[40];
@@ -3154,25 +3182,31 @@ void ImageView::mouseMove(int x, int y)
 
       if ( stereo_output() & CMedia::kStereoAnaglyph )
       {
-          mrv::Recti daw[2];
-
-          daw[0] = img->data_window();
-          daw[1] = img->data_window2();
+          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          {
+              yp += h;
+          }
+          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          {
+              xp += w;
+          }
+          bool reversed = false;
           if ( stereo_output() & CMedia::kStereoRight )
           {
               pic = img->left();
-              xp += daw[1].x();
-              yp += daw[1].y();
-              xp -= daw[0].x();
-              yp -= daw[0].y();
+              reversed = true;
+              // xp += daw[1].x();
+              // yp += daw[1].y();
+              // xp -= daw[0].x();
+              // yp -= daw[0].y();
           }
           else
           {
               pic = img->right();
-              xp += daw[0].x();
-              yp += daw[0].y();
-              xp -= daw[1].x();
-              yp -= daw[1].y();
+              // xp += daw[0].x();
+              // yp += daw[0].y();
+              // xp -= daw[1].x();
+              // yp -= daw[1].y();
           }
 
           if ( pic )
@@ -3184,10 +3218,22 @@ void ImageView::mouseMove(int x, int y)
 
               if (!outside)
               {
-                  float r = rgba.r;
-                  rgba = pic->pixel( xp, yp );
-                  pixel_processed( img, rgba );
-                  rgba.r = r;
+                  if ( reversed )
+                  {
+                      float g = rgba.g;
+                      float b = rgba.b;
+                      rgba = pic->pixel( xp, yp );
+                      pixel_processed( img, rgba );
+                      rgba.g = g;
+                      rgba.b = b;
+                  }
+                  else
+                  {
+                      float r = rgba.r;
+                      rgba = pic->pixel( xp, yp );
+                      pixel_processed( img, rgba );
+                      rgba.r = r;
+                  }
               }
               else
               {
