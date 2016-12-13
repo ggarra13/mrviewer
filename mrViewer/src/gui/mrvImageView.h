@@ -551,7 +551,7 @@ class server;
       void picture_coordinates( const CMedia* const img, const int x,
                                 const int y, bool& outside,
                                 mrv::image_type_ptr& pic,
-                                int& xp, int& yp ) const;
+                                int& xp, int& yp, int& w, int& h ) const;
       
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
