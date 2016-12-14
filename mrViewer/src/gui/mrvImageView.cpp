@@ -3130,18 +3130,16 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   outside = false;
 
-  if ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) {
-      outside = true;
-  }
   
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
   {
       outside = true;
   }
-
-
-  if ( vr() )
+  else if ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) {
+      outside = true;
+  }
+  else if ( vr() )
   {
       xp = yp = 0; outside = true;
   }
