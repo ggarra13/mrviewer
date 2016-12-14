@@ -2841,7 +2841,7 @@ void ImageView::top_bottom( const CMedia* const img,
     {
         idx = 0;
         yp += h;
-        if ( yp <= h ) yp = -1; // outside
+        if ( yp < h ) yp = -1; // outside
     }
     else if ( stereo_output() & CMedia::kStereoSideBySide )
     {
@@ -2910,7 +2910,7 @@ void ImageView::left_right( const CMedia* const img,
     if ( stereo_output() == CMedia::kStereoLeft )
     {
         idx = 1;
-        if ( xp > w ) xp = -1; // outside
+        if ( xp >= w ) xp = -1; // outside
     }
     else if ( stereo_output() == CMedia::kNoStereo ||
               stereo_output() == CMedia::kStereoRight )
@@ -3136,7 +3136,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   {
       outside = true;
   }
-  else if ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) {
+  else if ( stereo_input() == CMedia::kSeparateLayersInput &&
+            ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) ) {
       outside = true;
   }
   else if ( vr() )
