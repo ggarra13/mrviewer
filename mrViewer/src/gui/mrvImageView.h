@@ -567,7 +567,8 @@ class server;
 
       void separate_layers( const CMedia* const img,
                             mrv::image_type_ptr& pic, int& xp, int& yp,
-                            short& idx, int w, int h ) const;
+                            short& idx, int w, int h,
+                            const mrv::Recti& dpw ) const;
       void top_bottom( const CMedia* const img,
                        mrv::image_type_ptr& pic, int& xp, int& yp,
                        short& idx, int w, int h ) const;
