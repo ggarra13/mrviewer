@@ -75,7 +75,7 @@ CMedia* img = fg->image();
 int x = o->value(); 
 CMedia::StereoOutput in = CMedia::to_stereo_output( x ); 
 img->stereo_output( in );
-v->uiView->fit_image();
+//v->uiView->fit_image();
 }} open
           xywh {80 60 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
