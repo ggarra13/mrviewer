@@ -336,6 +336,10 @@ fltk::StyleSet*     newscheme = NULL;
 
     ui.get( "edl_edit", tmp, 0 );
     uiPrefs->uiPrefsEDLEdit->value(tmp);
+    
+    ui.get( "stereo3d_options", tmp, 0 );
+    uiPrefs->uiPrefsStereoOptions->value(tmp);
+
 
     ui.get( "image_info", tmp, 0 );
     uiPrefs->uiPrefsImageInfo->value(tmp);
@@ -847,6 +851,13 @@ static const char* kCLocale = "C";
     else
       main->uiEDLWindow->uiMain->hide();
 
+    if ( uiPrefs->uiPrefsStereoOptions->value() )
+    {
+        main->uiStereo->uiMain->show();
+    }
+    else
+      main->uiStereo->uiMain->hide();
+    
     if ( uiPrefs->uiPrefsReelList->value() )
     {
         main->uiReelWindow->uiMain->show();
@@ -1133,6 +1144,7 @@ static const char* kCLocale = "C";
     ui.set( "timeline_toolbar", (int) uiPrefs->uiPrefsTimeline->value() );
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
+    ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );
     ui.set( "image_info", (int) uiPrefs->uiPrefsImageInfo->value() );
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
