@@ -2748,11 +2748,16 @@ void ImageView::pixel_processed( const CMedia* img,
 
 void ImageView::separate_layers( const CMedia* const img,
                                  mrv::image_type_ptr& pic, int& xp, int& yp,
-                                 short& idx, int w, int h ) const
+                                 short& idx, int w, int h,
+                                 const mrv::Recti& dpw ) const
 {
-    if (  stereo_output() & CMedia::kStereoSideBySide )
+    if ( stereo_output() == CMedia::kStereoRight )
     {
-        if ( xp >= w )
+        idx = 1;
+    }
+    else if ( stereo_output() & CMedia::kStereoSideBySide )
+    {
+        if ( xp >= dpw.x()+dpw.w())
         {
             if ( stereo_output() & CMedia::kStereoRight ) {
                 pic = img->left();
@@ -2779,7 +2784,7 @@ void ImageView::separate_layers( const CMedia* const img,
     }
     else if ( stereo_output() & CMedia::kStereoTopBottom )
     {
-        if ( yp >= h )
+        if ( yp >= dpw.y()+dpw.h() )
         {
             if ( stereo_output() & CMedia::kStereoRight ) {
                 pic = img->left();
@@ -2816,6 +2821,10 @@ void ImageView::separate_layers( const CMedia* const img,
             pic = img->left();
         }
     }
+
+    // if ( xp > dpw.w() || yp > dpw.h() ) {
+    //     xp = -1;  // outside
+    // }
 }
 
 void ImageView::top_bottom( const CMedia* const img,
@@ -2997,10 +3006,18 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   dpw[0] = img->display_window();
   dpw[1] = img->display_window2();
 
+  xp = (int)floor(xf);
+  yp = (int)floor(yf);
+
+  xp += daw[idx].x();
+  yp += daw[idx].y();
+  
   mrv::Recti dpm = dpw[idx];
-  dpm.merge( daw[idx] );
   w = dpm.w();
   h = dpm.h();
+  
+  if ( ! display_window() )
+      dpm.merge( daw[idx] );
   
   if ( w == 0 ) w = pic->width();
   if ( h == 0 ) h = pic->height();
@@ -3016,18 +3033,11 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   
 
 
-  // std::cerr << "hires " << img->hires() << " left " << img->left() << " right " << img->right() << " pic " << pic << std::endl;
-  xp = (int)floor(xf);
-  yp = (int)floor(yf);
-
-  xp += daw[idx].x();
-  yp += daw[idx].y();
-
 
   if ( stereo_input() == CMedia::kNoStereoInput ||
        stereo_input() == CMedia::kSeparateLayersInput )
   {
-      separate_layers( img, pic, xp, yp, idx, w, h );
+      separate_layers( img, pic, xp, yp, idx, w, h, dpm );
   }
   else if ( stereo_input() == CMedia::kTopBottomStereoInput )
   {
@@ -3040,6 +3050,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   xp -= daw[idx].x();
   yp -= daw[idx].y();
+
   
   if ( stereo_output() == CMedia::kStereoInterlaced )
   {
@@ -3111,8 +3122,18 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
       if ( !pic ) return;
   }
 
+  dpm = dpw[idx];
+  if ( ! display_window() )
+      dpm.merge( daw[idx] );
+  w = dpm.w();
+  h = dpm.h();
+
   outside = false;
 
+  if ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) {
+      outside = true;
+  }
+  
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
   {
