@@ -895,8 +895,8 @@ void GLEngine::draw_square_stencil( const int x, const int y,
 
 
 
-    double W = (x2-x+1);
-    double H = (y2-y+1);
+    double W = (x2-x);
+    double H = (y2-y);
 
     glTranslated( x, -y, 0 );
 
