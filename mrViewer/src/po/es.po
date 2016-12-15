@@ -6,7 +6,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: mrViewer\n"
 "Report-Msgid-Bugs-To: ggarra13@gmail.com\n"
-"POT-Creation-Date: 2016-12-14 20:54-0300\n"
+"POT-Creation-Date: 2016-12-15 13:32-0300\n"
 "PO-Revision-Date: 2016-12-03 13:33-0300\n"
 "Last-Translator: Gonzalo Garramuno <ggarra13@gmail.com>\n"
 "Language-Team: Español <ggarra13@gmail.com>\n"
@@ -152,7 +152,7 @@ msgstr " falló con "
 msgid " failed. "
 msgstr " falló. "
 
-#: gui/mrvImageView.cpp:4998
+#: gui/mrvImageView.cpp:5003
 msgid " for channel"
 msgstr " para el canal "
 
@@ -321,8 +321,8 @@ msgid "(RT) Render Transform"
 msgstr "Transformación de Render"
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3412
-#: gui/mrvImageView.cpp:5568 gui/mrvImageView.cpp:5569
-#: gui/mrvImageView.cpp:5576
+#: gui/mrvImageView.cpp:5573 gui/mrvImageView.cpp:5574
+#: gui/mrvImageView.cpp:5581
 msgid "(no image)"
 msgstr "(sin imagen)"
 
@@ -706,7 +706,7 @@ msgid "@||"
 msgstr ""
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3926
-#: gui/mrvColorInfo.cpp:606
+#: gui/mrvColorInfo.cpp:657
 msgid "A"
 msgstr ""
 
@@ -846,14 +846,14 @@ msgid "Allows you to set the ending frame for timeline."
 msgstr "Permite setear el cuadro final para la línea de tiempo."
 
 #: core/CMedia.cpp:1393 core/CMedia.cpp:1502 core/exrImage.cpp:2851
-#: core/wandImage.cpp:652 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5087
-#: gui/mrvImageView.cpp:5477 gui/mrvImageView.cpp:5495
+#: core/wandImage.cpp:652 gui/mrvImageView.cpp:180 gui/mrvImageView.cpp:5092
+#: gui/mrvImageView.cpp:5482 gui/mrvImageView.cpp:5500
 msgid "Alpha"
 msgstr "Alfa"
 
 #: core/CMedia.cpp:1395 core/CMedia.cpp:1502 core/exrImage.cpp:2849
-#: core/wandImage.cpp:650 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5068
-#: gui/mrvImageView.cpp:5478
+#: core/wandImage.cpp:650 gui/mrvImageView.cpp:181 gui/mrvImageView.cpp:5073
+#: gui/mrvImageView.cpp:5483
 msgid "Alpha Overlay"
 msgstr "Alfa Sobreimpreso"
 
@@ -917,7 +917,7 @@ msgstr ""
 "¿Estás seguro que querés\n"
 "borrar el carrete?"
 
-#: gui/mrvColorInfo.cpp:388
+#: gui/mrvColorInfo.cpp:439
 msgid "Area"
 msgstr "Area"
 
@@ -1027,7 +1027,7 @@ msgstr "Auto cargar imágenes si cambian en el disco"
 msgid "Avg. Bitrate"
 msgstr "Bitrate Promedio"
 
-#: gui/mrvColorInfo.cpp:604 gui/mrvImageView.cpp:6597
+#: gui/mrvColorInfo.cpp:655 gui/mrvImageView.cpp:6602
 msgid "B"
 msgstr "B"
 
@@ -1109,8 +1109,8 @@ msgstr "Modo de Mezcla"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1737
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2489
 #: core/CMedia.cpp:1409 core/CMedia.cpp:1501 core/exrImage.cpp:2851
-#: core/wandImage.cpp:652 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5082
-#: gui/mrvImageView.cpp:5477
+#: core/wandImage.cpp:652 gui/mrvImageView.cpp:179 gui/mrvImageView.cpp:5087
+#: gui/mrvImageView.cpp:5482
 msgid "Blue"
 msgstr "Azul"
 
@@ -1378,8 +1378,8 @@ msgstr "Codecs"
 #: core/exrImage.cpp:2853 core/exrImage.cpp:2860 core/exrImage.cpp:2872
 #: core/exrImage.cpp:2877 core/exrImage.cpp:2913 core/exrImage.cpp:2944
 #: core/wandImage.cpp:611 core/wandImage.cpp:675 gui/mrvImageView.cpp:172
-#: gui/mrvImageView.cpp:4896 gui/mrvImageView.cpp:5481
-#: gui/mrvImageView.cpp:5576
+#: gui/mrvImageView.cpp:4901 gui/mrvImageView.cpp:5486
+#: gui/mrvImageView.cpp:5581
 msgid "Color"
 msgstr ""
 
@@ -2497,7 +2497,7 @@ msgstr "Separación de las Vistas"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3532
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3726
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3837
-#: gui/mrvImageView.cpp:6595
+#: gui/mrvImageView.cpp:6600
 msgid "F"
 msgstr "C"
 
@@ -2811,7 +2811,7 @@ msgstr "Pantalla Completa"
 msgid "Function"
 msgstr "Función"
 
-#: gui/mrvColorInfo.cpp:602
+#: gui/mrvColorInfo.cpp:653
 msgid "G"
 msgstr "V"
 
@@ -2901,8 +2901,8 @@ msgstr "Obtuve: "
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1736
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2471
 #: core/CMedia.cpp:1408 core/CMedia.cpp:1500 core/exrImage.cpp:2850
-#: core/wandImage.cpp:651 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:5077
-#: gui/mrvImageView.cpp:5476
+#: core/wandImage.cpp:651 gui/mrvImageView.cpp:178 gui/mrvImageView.cpp:5082
+#: gui/mrvImageView.cpp:5481
 msgid "Green"
 msgstr "Verde"
 
@@ -3269,7 +3269,7 @@ msgstr "Inválido perfil de destinacion/formato de imagen "
 msgid "Invalid host: "
 msgstr "Servidor inválido: "
 
-#: gui/mrvImageView.cpp:4998
+#: gui/mrvImageView.cpp:5003
 msgid "Invalid index "
 msgstr "Índice inválido "
 
@@ -3380,7 +3380,7 @@ msgstr "LUT"
 msgid "Lab CIELAB (L*a*b*)"
 msgstr "Lab CIELAB (L*a*b*)"
 
-#: gui/mrvImageView.cpp:4926
+#: gui/mrvImageView.cpp:4931
 msgid "Label not found for index "
 msgstr "Etiqueta no encontrada para índice "
 
@@ -3595,8 +3595,8 @@ msgstr "Luminancia del pixel de la imagen bajo el ratón."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1738
 #: core/CMedia.cpp:1421 core/CMedia.cpp:1502 core/exrImage.cpp:2849
-#: core/wandImage.cpp:650 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5091
-#: gui/mrvImageView.cpp:5479 gui/mrvImageInformation.cpp:629
+#: core/wandImage.cpp:650 gui/mrvImageView.cpp:182 gui/mrvImageView.cpp:5096
+#: gui/mrvImageView.cpp:5484 gui/mrvImageInformation.cpp:629
 msgid "Lumma"
 msgstr "Luma"
 
@@ -3645,11 +3645,11 @@ msgstr "Pelicula Matroska"
 msgid "Max. Texture Size:\t"
 msgstr "Max. Tamaño Textura:\t"
 
-#: gui/mrvColorInfo.cpp:608 gui/mrvColorInfo.cpp:719
+#: gui/mrvColorInfo.cpp:659 gui/mrvColorInfo.cpp:770
 msgid "Maximum"
 msgstr "Máximo"
 
-#: gui/mrvColorInfo.cpp:630 gui/mrvColorInfo.cpp:741
+#: gui/mrvColorInfo.cpp:681 gui/mrvColorInfo.cpp:792
 msgid "Mean"
 msgstr "Promedio"
 
@@ -3688,7 +3688,7 @@ msgstr ""
 msgid "Meta"
 msgstr "Meta"
 
-#: gui/mrvColorInfo.cpp:613 gui/mrvColorInfo.cpp:724
+#: gui/mrvColorInfo.cpp:664 gui/mrvColorInfo.cpp:775
 msgid "Minimum"
 msgstr "Mínimo"
 
@@ -3938,7 +3938,7 @@ msgstr "Normales"
 msgid "Not a GLErasePathShape pointer"
 msgstr "No es un puntero a GLErasePathShape"
 
-#: gui/mrvImageView.cpp:2579 gui/mrvImageView.cpp:3658
+#: gui/mrvImageView.cpp:2579 gui/mrvImageView.cpp:3663
 msgid "Not a GLPathShape pointer"
 msgstr "No es un puntero a GLPathShape"
 
@@ -3946,7 +3946,7 @@ msgstr "No es un puntero a GLPathShape"
 msgid "Not a GLTextShape pointer in mouseRelease"
 msgstr "No es un puntero a GLTextShape en mouseRelease"
 
-#: gui/mrvImageView.cpp:3682
+#: gui/mrvImageView.cpp:3687
 msgid "Not a GLTextShape pointer in position"
 msgstr "No es un puntero a GLPathShape en posición"
 
@@ -4462,7 +4462,7 @@ msgstr "Cualidad"
 msgid "Quicktime Movie"
 msgstr "Película Quicktime"
 
-#: gui/mrvColorInfo.cpp:600
+#: gui/mrvColorInfo.cpp:651
 msgid "R"
 msgstr "R"
 
@@ -4526,7 +4526,7 @@ msgstr "Ventana de Mensajes en Error"
 msgid "Random Y"
 msgstr "Al Azar en Y"
 
-#: gui/mrvColorInfo.cpp:625 gui/mrvColorInfo.cpp:736
+#: gui/mrvColorInfo.cpp:676 gui/mrvColorInfo.cpp:787
 msgid "Range"
 msgstr "Rango"
 
@@ -4557,8 +4557,8 @@ msgstr "¿Realmente enviar estos %d archivos al Basurero?"
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:1735
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:2453
 #: core/CMedia.cpp:1407 core/CMedia.cpp:1500 core/exrImage.cpp:2850
-#: core/wandImage.cpp:651 gui/mrvImageView.cpp:177 gui/mrvImageView.cpp:5072
-#: gui/mrvImageView.cpp:5476
+#: core/wandImage.cpp:651 gui/mrvImageView.cpp:177 gui/mrvImageView.cpp:5077
+#: gui/mrvImageView.cpp:5481
 msgid "Red"
 msgstr "Rojo"
 
@@ -5032,7 +5032,7 @@ msgstr "Un Solo Click para Viajar a las Carpetas"
 msgid "Single Instance"
 msgstr "Una Sola Instancia"
 
-#: gui/FLU/Flu_File_Chooser.cpp:107 gui/mrvColorInfo.cpp:391
+#: gui/FLU/Flu_File_Chooser.cpp:107 gui/mrvColorInfo.cpp:442
 msgid "Size"
 msgstr "Tamaño"
 
@@ -5257,7 +5257,7 @@ msgid ""
 msgstr "Cambiar el muestreo del espacio de color del pixel bajo el cursor."
 
 #: /media/gga/Datos/code/applications/mrViewer/BUILD/Linux-4.4.0-53-generic-64/Release/tmp/mrViewer/src/mrViewer.cxx:3187
-#: gui/mrvImageView.cpp:6596
+#: gui/mrvImageView.cpp:6601
 msgid "T"
 msgstr "T"
 
@@ -6401,7 +6401,7 @@ msgstr "Puedes cargar solo una imagen estéreo para combinar con la actual."
 msgid "You cannot load a reel as a stereo image."
 msgstr "No podés cargar un carrete como imágen estéreo."
 
-#: gui/mrvImageView.cpp:5480
+#: gui/mrvImageView.cpp:5485
 msgid "Z"
 msgstr "Z"
 
@@ -6563,12 +6563,12 @@ msgstr ""
 msgid "mrViewer"
 msgstr "mrViewer"
 
-#: gui/mrvImageView.cpp:5625 gui/mrvImageView.cpp:5838
+#: gui/mrvImageView.cpp:5630 gui/mrvImageView.cpp:5843
 #, c-format
 msgid "mrViewer    FG: %s"
 msgstr "mrViewer    FRENTE: %s"
 
-#: gui/mrvImageView.cpp:5619 gui/mrvImageView.cpp:5813
+#: gui/mrvImageView.cpp:5624 gui/mrvImageView.cpp:5818
 #, c-format
 msgid "mrViewer    FG: %s   BG: %s"
 msgstr "mrVIewer     FRENTE: %s    FONDO: %s"
@@ -6660,11 +6660,11 @@ msgstr ""
 msgid "mrv::Frame No pixel data to change"
 msgstr "mrv::Frame No hay datos de pixel a cambiar"
 
-#: gui/mrvColorInfo.cpp:393
+#: gui/mrvColorInfo.cpp:444
 msgid "pixel"
 msgstr "pixel"
 
-#: gui/mrvColorInfo.cpp:393
+#: gui/mrvColorInfo.cpp:444
 msgid "pixels"
 msgstr "pixeles"
 
