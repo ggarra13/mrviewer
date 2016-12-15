@@ -2822,9 +2822,9 @@ void ImageView::separate_layers( const CMedia* const img,
         }
     }
 
-    // if ( xp > dpw.w() || yp > dpw.h() ) {
-    //     xp = -1;  // outside
-    // }
+    if ( xp > dpw.w() || yp > dpw.h() ) {
+        xp = -1;  // outside
+    }
 }
 
 void ImageView::top_bottom( const CMedia* const img,

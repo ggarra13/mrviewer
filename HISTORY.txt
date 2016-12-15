@@ -1,7 +1,7 @@
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
 	   data windows.
-	 - Made stereo cache line in the timeline be bright green.
+	 - Made stereo 3D cache line in the timeline be bright green.
 	   For non stereo caches, the line remains dark green.
 	 - Bug fixed some movies not showing the last frames of
 	   the film on playback.
@@ -13,13 +13,15 @@ v3.4.1   - Improved the cache saving with stereo sequences.
 	   Using stereo input top/bottom or left/right on images
 	   with different data windows will not work well.
 	 - Made main window appear maximized on startup when showing
-	   some large video or image.
+	   some large video or image (Linux only).
 	 - Fixed pixel queries on all stereo input/output states.
 	   Previously the pixel shown could be wrong or point to
-	   undefined memory (leading to crashes).
+	   undefined memory (leading to potential crashes).
 	 - Made stereo output changes not clear caches on movies.
 	   This removes warnings and errors that would happen
 	   otherwise if the movie was in playback.
+	 - Added Stereo 3D Options Window to preferences, so the
+	   window can be shown on starting up mrViewer.
 
 v3.4.0   - Bug fixed cache saving for image sequences.  Regression
 	   from v3.3.9.
