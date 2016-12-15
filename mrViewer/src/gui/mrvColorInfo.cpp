@@ -233,6 +233,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 {
       const mrv::Recti& dpw = img->display_window();
       const mrv::Recti& daw = img->data_window();
+      const mrv::Recti& dpw2 = img->display_window2();
+      const mrv::Recti& daw2 = img->data_window2();
       unsigned W = dpw.w();
       unsigned H = dpw.h();
       if ( W == 0 ) W = img->width();
@@ -243,38 +245,79 @@ void ColorInfo::selection_to_coord( const CMedia* img,
       xmin = (int) selection.x();
       ymin = (int) selection.y();
 
+      
+      CMedia::StereoOutput output = uiMain->uiView->stereo_output();
 
-      if ( selection.x() >= W && 
-           uiMain->uiView->stereo_output() & CMedia::kStereoSideBySide )
+      if ( output == CMedia::kStereoRight )
       {
-          const mrv::Recti& dpw2 = img->display_window2();
-          const mrv::Recti& daw2 = img->data_window2();
           W = dpw2.w();
           H = dpw2.h();
           xmin -= daw2.x();
           ymin -= daw2.y();
+          right = true;
+      }
+      else if ( selection.x() >= W && 
+                ( output & CMedia::kStereoSideBySide ) )
+      {
+          W = dpw2.w();
+          H = dpw2.h();
+          if ( output & CMedia::kStereoRight )
+          {
+              xmin -= daw.x();
+              ymin -= daw.y();
+          }
+          else
+          {
+              xmin -= daw2.x();
+              ymin -= daw2.y();
+          }
           xmin -= wt;
           right = true;
       }
       else if ( selection.y() >= H &&
-                uiMain->uiView->stereo_output() & CMedia::kStereoTopBottom )
+                (output & CMedia::kStereoTopBottom) )
       {
-          const mrv::Recti& dpw2 = img->display_window2();
-          const mrv::Recti& daw2 = img->data_window2();
           W = dpw2.w();
           H = dpw2.h();
-          xmin -= daw2.x();
-          ymin -= daw2.y();
+          if ( output & CMedia::kStereoRight )
+          {
+              xmin -= daw.x();
+              ymin -= daw.y();
+          }
+          else
+          {
+              xmin -= daw2.x();
+              ymin -= daw2.y();
+          }
           ymin -= ht;
           bottom = true;
       }
       else
       {
-          xmin -= daw.x();
-          ymin -= daw.y();
+          if ( output & CMedia::kStereoRight )
+          {
+              xmin -= daw2.x();
+              ymin -= daw2.y();
+          }
+          else
+          {
+              xmin -= daw.x();
+              ymin -= daw.y();
+          }
       }
 
-
+      CMedia::StereoInput input = uiMain->uiView->stereo_input();
+      if ( input == CMedia::kTopBottomStereoInput &&
+           ( output & CMedia::kStereoRight ) )
+      {
+          ymin += ht;
+      }
+      else if ( input == CMedia::kLeftRightStereoInput &&
+                ( output & CMedia::kStereoRight ) )
+      {
+          xmin += wt;
+      }
+      
       if ( selection.w() > 0 ) W = (int)selection.w();
       if ( selection.h() > 0 ) H = (int)selection.h();
 
@@ -340,16 +383,18 @@ void ColorInfo::update( const CMedia* img,
       {
           if ( stereo_output == CMedia::kStereoCrossed )
               pic = img->left();
-          else if ( stereo_output & CMedia::kStereoSideBySide )
+          else
               pic = img->right();
           if (!pic) return;
       }
       else if ( stereo_output & CMedia::kStereoSideBySide )
       {
-          pic = img->left();
+          if ( stereo_output & CMedia::kStereoRight )
+              pic = img->right();
+          else
+              pic = img->left();
       }
-
-      if ( bottom )
+      else if ( bottom )
       {
           if ( stereo_output == CMedia::kStereoBottomTop )
               pic = img->left();
@@ -359,9 +404,15 @@ void ColorInfo::update( const CMedia* img,
       }
       else if ( stereo_output & CMedia::kStereoTopBottom )
       {
+          if ( stereo_output & CMedia::kStereoRight )
+              pic = img->right();
+          else
+              pic = img->left();
+      }
+      else
+      {
           pic = img->left();
       }
-
       if ( xmin >= (int) pic->width() ) xmin = (int) pic->width()-1;
       if ( ymin >= (int) pic->height() ) ymin = (int) pic->height()-1;
 
