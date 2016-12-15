@@ -2751,15 +2751,16 @@ void ImageView::separate_layers( const CMedia* const img,
                                  short& idx, int w, int h,
                                  const mrv::Recti& dpw ) const
 {
-    if ( stereo_output() == CMedia::kStereoRight )
+    CMedia::StereoOutput output = img->stereo_output();
+    if ( output == CMedia::kStereoRight )
     {
         idx = 1;
     }
-    else if ( stereo_output() & CMedia::kStereoSideBySide )
+    else if ( output & CMedia::kStereoSideBySide )
     {
         if ( xp >= dpw.x()+dpw.w())
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 pic = img->left();
                 idx = 0;
             }
@@ -2773,7 +2774,7 @@ void ImageView::separate_layers( const CMedia* const img,
         }
         else
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 idx = 1;
             }
             else
@@ -2782,11 +2783,11 @@ void ImageView::separate_layers( const CMedia* const img,
             }
         }
     }
-    else if ( stereo_output() & CMedia::kStereoTopBottom )
+    else if ( output & CMedia::kStereoTopBottom )
     {
         if ( yp >= dpw.y()+dpw.h() )
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 pic = img->left();
                 idx = 0;
             }
@@ -2800,7 +2801,7 @@ void ImageView::separate_layers( const CMedia* const img,
         }
         else
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 idx = 1;
             }
             else
@@ -2809,9 +2810,9 @@ void ImageView::separate_layers( const CMedia* const img,
             }
         }
     }
-    else if ( stereo_output() & CMedia::kStereoAnaglyph )
+    else if ( output & CMedia::kStereoAnaglyph )
     {
-        if ( stereo_output() & CMedia::kStereoRight )
+        if ( output & CMedia::kStereoRight )
         {
             idx = 1;
             pic = img->right();
@@ -2831,23 +2832,24 @@ void ImageView::top_bottom( const CMedia* const img,
                             mrv::image_type_ptr& pic, int& xp, int& yp,
                             short& idx, int w, int h ) const
 {
-    if ( stereo_output() == CMedia::kStereoLeft )
+    CMedia::StereoOutput output = img->stereo_output();
+    if ( output == CMedia::kStereoLeft )
     {
         idx = 1;
         if ( yp >= h ) yp = -1; // outside
     }
-    else if ( stereo_output() == CMedia::kNoStereo ||
-              stereo_output() == CMedia::kStereoRight )
+    else if ( output == CMedia::kNoStereo ||
+              output == CMedia::kStereoRight )
     {
         idx = 0;
         yp += h;
         if ( yp < h ) yp = -1; // outside
     }
-    else if ( stereo_output() & CMedia::kStereoSideBySide )
+    else if ( output & CMedia::kStereoSideBySide )
     {
         if ( xp >= w )
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 if ( yp >= h ) yp = -1;
                 idx = 0;
             }
@@ -2860,7 +2862,7 @@ void ImageView::top_bottom( const CMedia* const img,
         }
         else
         {
-            if ( stereo_output() & CMedia::kStereoRight )
+            if ( output & CMedia::kStereoRight )
             {
                 idx = 0;
                 yp += h;
@@ -2873,11 +2875,11 @@ void ImageView::top_bottom( const CMedia* const img,
             }
         }
     }
-    else if ( stereo_output() & CMedia::kStereoTopBottom )
+    else if ( output & CMedia::kStereoTopBottom )
     {
         if ( yp >= h )
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 yp -= h;
                 idx = 0;
             }
@@ -2888,7 +2890,7 @@ void ImageView::top_bottom( const CMedia* const img,
         }
         else
         {
-            if ( stereo_output() & CMedia::kStereoRight )
+            if ( output & CMedia::kStereoRight )
             {
                 idx = 0;
                 yp += h;
@@ -2907,23 +2909,24 @@ void ImageView::left_right( const CMedia* const img,
                             mrv::image_type_ptr& pic, int& xp, int& yp,
                             short& idx, int w, int h ) const
 {
-    if ( stereo_output() == CMedia::kStereoLeft )
+    CMedia::StereoOutput output = img->stereo_output();
+    if ( output == CMedia::kStereoLeft )
     {
         idx = 1;
         if ( xp >= w ) xp = -1; // outside
     }
-    else if ( stereo_output() == CMedia::kNoStereo ||
-              stereo_output() == CMedia::kStereoRight )
+    else if ( output == CMedia::kNoStereo ||
+              output == CMedia::kStereoRight )
     {
         idx = 0;
         xp += w;
         if ( xp < w ) xp = -1; // outside
     }
-    else if ( stereo_output() & CMedia::kStereoSideBySide )
+    else if ( output & CMedia::kStereoSideBySide )
     {
         if ( xp >= w )
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 xp -= w;
                 idx = 0;
             }
@@ -2934,7 +2937,7 @@ void ImageView::left_right( const CMedia* const img,
         }
         else
         {
-            if ( stereo_output() & CMedia::kStereoRight )
+            if ( output & CMedia::kStereoRight )
             {
                 xp += w;
                 idx = 0;
@@ -2945,11 +2948,11 @@ void ImageView::left_right( const CMedia* const img,
             }
         }
     }
-    else if ( stereo_output() & CMedia::kStereoTopBottom )
+    else if ( output & CMedia::kStereoTopBottom )
     {
         if ( yp >= h )
         {
-            if ( stereo_output() & CMedia::kStereoRight ) {
+            if ( output & CMedia::kStereoRight ) {
                 idx = 0;
                 if ( xp >= w ) xp = -1;
             }
@@ -2962,7 +2965,7 @@ void ImageView::left_right( const CMedia* const img,
         }
         else
         {
-            if ( stereo_output() & CMedia::kStereoRight )
+            if ( output & CMedia::kStereoRight )
             {
                 xp += w;
                 idx = 0;
@@ -2988,10 +2991,12 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
   data_window_coordinates( img, xf, yf );
 
+  CMedia::StereoOutput output = img->stereo_output();
+  CMedia::StereoInput  input  = img->stereo_input();
 
   short idx = 0;
   pic = img->left();
-  if ( stereo_output() & CMedia::kStereoRight )
+  if ( output & CMedia::kStereoRight )
   {
       pic = img->right();
       idx = 0;
@@ -3034,16 +3039,16 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
 
 
-  if ( stereo_input() == CMedia::kNoStereoInput ||
-       stereo_input() == CMedia::kSeparateLayersInput )
+  if ( input == CMedia::kNoStereoInput ||
+       input == CMedia::kSeparateLayersInput )
   {
       separate_layers( img, pic, xp, yp, idx, w, h, dpm );
   }
-  else if ( stereo_input() == CMedia::kTopBottomStereoInput )
+  else if ( input == CMedia::kTopBottomStereoInput )
   {
       top_bottom( img, pic, xp, yp, idx, w, h );
   }
-  else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+  else if ( input == CMedia::kLeftRightStereoInput )
   {
       left_right( img, pic, xp, yp, idx, w, h );
   }
@@ -3052,15 +3057,15 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   yp -= daw[idx].y();
 
   
-  if ( stereo_output() == CMedia::kStereoInterlaced )
+  if ( output == CMedia::kStereoInterlaced )
   {
       if ( yp % 2 == 1 )
       {
-          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          if ( input == CMedia::kTopBottomStereoInput )
           {
               yp += h;
           }
-          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          else if ( input == CMedia::kLeftRightStereoInput )
           {
               xp += w;
           }
@@ -3075,15 +3080,15 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
       }
       if ( !pic ) return;
   }
-  else if ( stereo_output() == CMedia::kStereoInterlacedColumns )
+  else if ( output == CMedia::kStereoInterlacedColumns )
   {
       if ( xp % 2 == 1 )
       {
-          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          if ( input == CMedia::kTopBottomStereoInput )
           {
               yp += h;
           }
-          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          else if ( input == CMedia::kLeftRightStereoInput )
           {
               xp += w;
           }
@@ -3098,15 +3103,15 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
       }
       if ( !pic ) return;
   }
-  else if ( stereo_output() == CMedia::kStereoCheckerboard )
+  else if ( output == CMedia::kStereoCheckerboard )
   {
       if ( (xp + yp) % 2 == 0 )
       {
-          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          if ( input == CMedia::kTopBottomStereoInput )
           {
               yp += h;
           }
-          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          else if ( input == CMedia::kLeftRightStereoInput )
           {
               xp += w;
           }
@@ -3136,7 +3141,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   {
       outside = true;
   }
-  else if ( stereo_input() == CMedia::kSeparateLayersInput &&
+  else if ( input == CMedia::kSeparateLayersInput &&
             ( xp > w-daw[idx].x() || yp > h-daw[idx].y() ) ) {
       outside = true;
   }
@@ -3606,10 +3611,10 @@ void ImageView::mouseDrag(int x,int y)
                else
                {
                    X = diffX;
-                   XM = daw[idx].w() + diffX - 1;
+                   XM = daw[idx].w() + diffX;
 
                    Y = diffY;
-                   YM = daw[idx].h() + diffY - 1;
+                   YM = daw[idx].h() + diffY;
                }
 
                if ( xf < X ) xf = X;
@@ -3631,7 +3636,7 @@ void ImageView::mouseDrag(int x,int y)
                    dy = 0.0;
                }
 
-               double xt = (xf + daw[0].x() + dpw[0].w() * right);
+               double xt = xf + daw[0].x() + dpw[0].w() * right;
                double yt = yf + daw[0].y() + dpw[0].h() * bottom;
                _selection = mrv::Rectd( xt, yt, dx, dy );
 
