@@ -773,7 +773,10 @@ class CMedia
     inline double real_fps() const { return _real_fps; }
 
     /// Change play rate of movie
-    inline void play_fps( double fps ) { _play_fps = fps; }
+    inline void play_fps( double fps ) {
+        if ( fps < 6.0 ) fps = 6.0;
+        _play_fps = fps;
+    }
 
     /// Return current play rate of movie
     inline double play_fps() const { return _play_fps; }
