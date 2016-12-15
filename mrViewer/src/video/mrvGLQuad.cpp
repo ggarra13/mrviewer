@@ -996,13 +996,13 @@ namespace mrv {
 
         _shader->setUniform( "mask", (int) _mask );
         _shader->setUniform( "mask_value", (int) _mask_value );
-         if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
-             _shader->setUniform( "width", (int) _width/2 );
-         else
+         // if ( _view->stereo_input() & CMedia::kLeftRightStereoInput )
+         //     _shader->setUniform( "width", (int) (_width/2) );
+         // else
              _shader->setUniform( "width", (int) _width );
-         if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
-             _shader->setUniform( "height", (int) _height/2 );
-         else
+         // if ( _view->stereo_input() & CMedia::kTopBottomStereoInput )
+         //     _shader->setUniform( "height", (int) (_height/2) );
+         // else
              _shader->setUniform( "height", (int) _height );
 
 	_shader->setUniform( "gain",  _view->gain() );
