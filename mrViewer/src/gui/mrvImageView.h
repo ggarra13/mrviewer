@@ -542,16 +542,16 @@ class server;
     /// Given two window coordinates, return pixel coordinates 
     /// in the data window (which may be offset)
     void data_window_coordinates( const CMedia* const img,
-                                  double& x, double& y,
-                                  const bool flipon = true ) const;
+                                         double& x, double& y,
+                                         const bool flipon = true ) const;
 
       
     /// Given two window coordinates, return pixel coordinates 
     /// in the returned picture (or outside set to true)
-      void picture_coordinates( const CMedia* const img, const int x,
-                                const int y, bool& outside,
-                                mrv::image_type_ptr& pic,
-                                int& xp, int& yp, int& w, int& h ) const;
+    void picture_coordinates( const CMedia* const img, const int x,
+                                     const int y, bool& outside,
+                                     mrv::image_type_ptr& pic,
+                                     int& xp, int& yp, int& w, int& h ) const;
       
     /// Refresh only if not a hardware shader, otherwise just redraw
     void smart_refresh();
