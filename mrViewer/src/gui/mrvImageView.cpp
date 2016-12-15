@@ -3601,8 +3601,7 @@ void ImageView::mouseDrag(int x,int y)
 
 
                double X, XM, Y, YM;
-               if ( display_window() &&
-                    dpw[idx] != daw[idx] )
+               if ( display_window() )
                {
                    X = dpw[idx].l()-daw[idx].x();
                    XM = dpw[idx].r()-daw[idx].x();
