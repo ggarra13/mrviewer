@@ -3601,7 +3601,8 @@ void ImageView::mouseDrag(int x,int y)
 
 
                double X, XM, Y, YM;
-               if ( display_window() )
+               if ( display_window() &&
+                    dpw[idx] != daw[idx] )
                {
                    X = dpw[idx].l()-daw[idx].x();
                    XM = dpw[idx].r()-daw[idx].x();
@@ -3617,13 +3618,14 @@ void ImageView::mouseDrag(int x,int y)
                    YM = daw[idx].h() + diffY;
                }
 
+
                if ( xf < X ) xf = X;
                else if ( xf > XM )  xf = XM;
                if ( yf < Y ) yf = Y;
                else if ( yf > YM ) yf = YM;
 
                if ( xn < X ) xn = X;
-               else if ( xn > XM )  xn = XM;
+               else if ( xn > XM ) xn = XM;
                if ( yn < Y ) yn = Y;
                else if ( yn > YM ) yn = YM;
 
@@ -3638,9 +3640,10 @@ void ImageView::mouseDrag(int x,int y)
 
                double xt = xf + daw[0].x() + dpw[0].w() * right;
                double yt = yf + daw[0].y() + dpw[0].h() * bottom;
+
+               
                _selection = mrv::Rectd( xt, yt, dx, dy );
-
-
+               
                char buf[128];
                sprintf( buf, "Selection %g %g %g %g", _selection.x(),
                         _selection.y(), _selection.w(), _selection.h() );
