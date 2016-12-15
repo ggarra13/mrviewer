@@ -308,12 +308,12 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
       CMedia::StereoInput input = uiMain->uiView->stereo_input();
       if ( input == CMedia::kTopBottomStereoInput &&
-           ( output & CMedia::kStereoRight ) )
+           ( ( output & CMedia::kStereoRight ) || right ) )
       {
           ymin += ht;
       }
       else if ( input == CMedia::kLeftRightStereoInput &&
-                ( output & CMedia::kStereoRight ) )
+                ( ( output & CMedia::kStereoRight ) || bottom ) )
       {
           xmin += wt;
       }
