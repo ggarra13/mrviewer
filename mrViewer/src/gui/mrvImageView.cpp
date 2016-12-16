@@ -1054,13 +1054,43 @@ void ImageView::copy_pixel() const
   CMedia::Pixel rgba = pic->pixel( xp, yp );
   pixel_processed( img, rgba );
 
-  if ( stereo_output() & CMedia::kStereoAnaglyph )
-  {
-      if ( stereo_output() & CMedia::kStereoRight )
-          pic = img->left();
-      else
-          pic = img->right();
+  mrv::Recti daw[2];
+  daw[0] = img->data_window();
+  daw[1] = img->data_window2();
 
+  CMedia::StereoOutput stereo_out = img->stereo_output();
+  CMedia::StereoInput  stereo_in  = img->stereo_input();
+  
+  if ( stereo_out & CMedia::kStereoAnaglyph )
+  {
+      if ( stereo_in == CMedia::kTopBottomStereoInput )
+      {
+          yp += h;
+      }
+      else if ( stereo_in == CMedia::kLeftRightStereoInput )
+      {
+          xp += w;
+      }
+      else
+      {
+          if ( stereo_out & CMedia::kStereoRight )
+          {
+                pic = img->left();
+              xp += daw[1].x();
+              yp += daw[1].y();
+              xp -= daw[0].x();
+              yp -= daw[0].y();
+          }
+          else
+          {
+              pic = img->right();
+              xp += daw[0].x();
+              yp += daw[0].y();
+              xp -= daw[1].x();
+              yp -= daw[1].y();
+          }
+      }
+      
       if ( pic && xp < pic->width() && yp < pic->height() )
       {
           float r = rgba.r;
@@ -1187,13 +1217,15 @@ void ImageView::center_image()
     if ( _showPixelRatio ) pr = pixel_ratio();
 
     yoffset = ( dpw.y() + dpw.h() / 2.0 ) / pr;
+
+    CMedia::StereoOutput stereo_out = img->stereo_output();
     
-    if ( img && stereo_output() & CMedia::kStereoSideBySide )
+    if ( img && stereo_out & CMedia::kStereoSideBySide )
     {
         int w = dpw.w();
         xoffset = -w/2.0 + 0.5;
     }
-    else if ( img && stereo_output() & CMedia::kStereoTopBottom )
+    else if ( img && stereo_out & CMedia::kStereoTopBottom )
     {
         int h = dpw.h();
         yoffset = (( -h/2.0 ) / pr + 0.5 );
@@ -1227,16 +1259,17 @@ void ImageView::fit_image()
   mrv::image_type_ptr pic = img->left();
   if ( !pic ) return;
 
+  CMedia::StereoOutput stereo_out = img->stereo_output();
   mrv::Recti dpw;
   if ( display_window() )
   {
       dpw = img->display_window();
-      if ( stereo_output() & CMedia::kStereoSideBySide )
+      if ( stereo_out & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dpw2 = img->display_window2();
           dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
       }
-      else if ( stereo_output() & CMedia::kStereoTopBottom )
+      else if ( stereo_out & CMedia::kStereoTopBottom )
       {
           const mrv::Recti& dpw2 = img->display_window2();
           dpw.h( dpw.h() + dpw2.y() + dpw2.h() );
@@ -1245,14 +1278,14 @@ void ImageView::fit_image()
   else
   {
       dpw = img->data_window();
-      if ( stereo_output() & CMedia::kStereoSideBySide )
+      if ( stereo_out & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dp = img->display_window();
           mrv::Recti daw = img->data_window2();
           daw.x( dp.w() + daw.x() );
           dpw.merge( daw );
       }
-      else if ( stereo_output() & CMedia::kStereoTopBottom )
+      else if ( stereo_out & CMedia::kStereoTopBottom )
       {
           const mrv::Recti& dp = img->display_window();
           mrv::Recti daw = img->data_window2();
@@ -1266,7 +1299,7 @@ void ImageView::fit_image()
   double H = dpw.h();
   if ( H == 0 ) H = pic->height();
 
-  // if ( display_window() && stereo_output() & CMedia::kStereoSideBySide )
+  // if ( display_window() && stereo_out & CMedia::kStereoSideBySide )
   //     W *= 2;
 
   double w = (double) fltk_main()->w();
@@ -1289,12 +1322,12 @@ void ImageView::fit_image()
   if ( h < z ) { z = h; }
 
   xoffset = -dpw.x() - W / 2.0;
-  if ( (_flip & kFlipVertical) && stereo_output() & CMedia::kStereoSideBySide  )
+  if ( (_flip & kFlipVertical) && stereo_out & CMedia::kStereoSideBySide  )
       xoffset = 0.0;
 
   yoffset = (dpw.y()+H / 2.0) / pr;
   if ( (_flip & kFlipHorizontal) &&
-       stereo_output() & CMedia::kStereoTopBottom  )
+       stereo_out & CMedia::kStereoTopBottom  )
       yoffset = 0.0;
 
   char buf[128];
@@ -3220,62 +3253,51 @@ void ImageView::mouseMove(int x, int y)
       daw[0] = img->data_window();
       daw[1] = img->data_window2();
 
-      if ( stereo_output() & CMedia::kStereoAnaglyph )
+      CMedia::StereoOutput stereo_out = img->stereo_output();
+      CMedia::StereoInput  stereo_in  = img->stereo_input();
+
+      if ( stereo_out & CMedia::kStereoAnaglyph )
       {
-          if ( stereo_input() == CMedia::kTopBottomStereoInput )
+          if ( stereo_in == CMedia::kTopBottomStereoInput )
           {
               yp += h;
           }
-          else if ( stereo_input() == CMedia::kLeftRightStereoInput )
+          else if ( stereo_in == CMedia::kLeftRightStereoInput )
           {
               xp += w;
           }
-          bool reversed = false;
-          if ( stereo_output() & CMedia::kStereoRight )
-          {
-              pic = img->left();
-              if ( stereo_input() != CMedia::kSeparateLayersInput &&
-                   stereo_input() != CMedia::kNoStereoInput )
-                  reversed = true;
-              xp += daw[1].x();
-              yp += daw[1].y();
-              xp -= daw[0].x();
-              yp -= daw[0].y();
-          }
           else
           {
-              pic = img->right();
-              xp += daw[0].x();
-              yp += daw[0].y();
-              xp -= daw[1].x();
-              yp -= daw[1].y();
+              if ( stereo_out & CMedia::kStereoRight )
+              {
+                  pic = img->left();
+                  xp += daw[1].x();
+                  yp += daw[1].y();
+                  xp -= daw[0].x();
+                  yp -= daw[0].y();
+              }
+              else
+              {
+                  pic = img->right();
+                  xp += daw[0].x();
+                  yp += daw[0].y();
+                  xp -= daw[1].x();
+                  yp -= daw[1].y();
+              }
           }
-
           if ( pic )
           {
-
+              outside = false;
               if ( xp < 0 || xp >= (int)pic->width() || yp < 0 ||
                    yp >= (int)pic->height() )
                   outside = true;
 
               if (!outside)
               {
-                  if ( reversed )
-                  {
-                      float g = rgba.g;
-                      float b = rgba.b;
-                      rgba = pic->pixel( xp, yp );
-                      pixel_processed( img, rgba );
-                      rgba.g = g;
-                      rgba.b = b;
-                  }
-                  else
-                  {
-                      float r = rgba.r;
-                      rgba = pic->pixel( xp, yp );
-                      pixel_processed( img, rgba );
-                      rgba.r = r;
-                  }
+                  float r = rgba.r;
+                  rgba = pic->pixel( xp, yp );
+                  pixel_processed( img, rgba );
+                  rgba.r = r;
               }
               else
               {
@@ -3547,8 +3569,9 @@ void ImageView::mouseDrag(int x,int y)
            bool bottom = false;
            int diffX = 0;
            int diffY = 0;
+           CMedia::StereoOutput stereo_out = img->stereo_output();
            if ( xf >= W - daw[0].x() &&
-                stereo_output() & CMedia::kStereoSideBySide )
+                stereo_out & CMedia::kStereoSideBySide )
            {
                right = true;
                xf -= W;
@@ -3559,7 +3582,7 @@ void ImageView::mouseDrag(int x,int y)
                idx = 1;
            }
            else if ( yf >= H - daw[0].y() &&
-                stereo_output() & CMedia::kStereoTopBottom )
+                     stereo_out & CMedia::kStereoTopBottom )
            {
                bottom = true;
                yf -= H;
