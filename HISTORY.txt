@@ -13,7 +13,8 @@ v3.4.1   - Improved the cache saving with stereo sequences.
 	   Using stereo input top/bottom or left/right on images
 	   with different data windows will not work well.
 	 - Made main window appear maximized on startup when showing
-	   some large video or image (Linux only).
+	   some large video or image (Linux only). This works very
+	   nice in Ubuntu's Unity.
 	 - Fixed pixel queries on all stereo input/output states.
 	   Previously the pixel shown could be wrong or point to
 	   undefined memory (leading to potential crashes).
@@ -22,6 +23,13 @@ v3.4.1   - Improved the cache saving with stereo sequences.
 	   otherwise if the movie was in playback.
 	 - Added Stereo 3D Options Window to preferences, so the
 	   window can be shown on starting up mrViewer.
+	 - Bug fixed color info rectangle to reach the ends of the
+	   image when the image has a data window.
+	 - Bug fixed color info rectangle to work properly on stereo
+	   displays (left/right, top/bottom, interlaced, etc).
+	 - Bug fixed a bug when typing a speed of fps which could
+	   hang the viewer.
+	 - Added documentation for Stereo 3D Options.
 
 v3.4.0   - Bug fixed cache saving for image sequences.  Regression
 	   from v3.3.9.
