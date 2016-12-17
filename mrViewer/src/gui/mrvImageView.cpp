@@ -2781,7 +2781,7 @@ void ImageView::pixel_processed( const CMedia* img,
 
 void ImageView::separate_layers( const CMedia* const img,
                                  mrv::image_type_ptr& pic, int& xp, int& yp,
-                                 short& idx, int w, int h,
+                                 short& idx, bool& outside, int w, int h,
                                  const mrv::Recti& dpw ) const
 {
     CMedia::StereoOutput output = img->stereo_output();
@@ -2856,40 +2856,40 @@ void ImageView::separate_layers( const CMedia* const img,
         }
     }
 
-    if ( xp > dpw.w() || yp > dpw.h() ) {
-        xp = -1;  // outside
+    if ( xp < dpw.x() || yp < dpw.y() || xp > dpw.w() || yp > dpw.h() ) {
+        outside = true;
     }
 }
 
 void ImageView::top_bottom( const CMedia* const img,
                             mrv::image_type_ptr& pic, int& xp, int& yp,
-                            short& idx, int w, int h ) const
+                            short& idx, bool& outside, int w, int h ) const
 {
     CMedia::StereoOutput output = img->stereo_output();
     if ( output == CMedia::kStereoLeft )
     {
         idx = 1;
-        if ( yp >= h ) yp = -1; // outside
+        if ( yp >= h ) outside = true;
     }
     else if ( output == CMedia::kNoStereo ||
               output == CMedia::kStereoRight )
     {
         idx = 0;
         yp += h;
-        if ( yp < h ) yp = -1; // outside
+        if ( yp < h ) outside = true;
     }
     else if ( output & CMedia::kStereoSideBySide )
     {
         if ( xp >= w )
         {
             if ( output & CMedia::kStereoRight ) {
-                if ( yp >= h ) yp = -1;
+                if ( yp >= h ) outside = true;
                 idx = 0;
             }
             else {
                 idx = 1;
                 yp += h;
-                if ( yp <= h ) yp = -1;
+                if ( yp <= h ) outside = true;
             }
             xp -= w;
         }
@@ -2899,12 +2899,12 @@ void ImageView::top_bottom( const CMedia* const img,
             {
                 idx = 0;
                 yp += h;
-                if ( yp <= h ) yp = -1;
+                if ( yp <= h ) outside = true;
             }
             else
             {
                 idx = 1;
-                if ( yp >= h ) yp = -1;
+                if ( yp >= h ) outside = true;
             }
         }
     }
@@ -2927,7 +2927,7 @@ void ImageView::top_bottom( const CMedia* const img,
             {
                 idx = 0;
                 yp += h;
-                if ( yp < h ) yp = -1;
+                if ( yp < h ) outside = true;
             }
             else
             {
@@ -2940,20 +2940,20 @@ void ImageView::top_bottom( const CMedia* const img,
 
 void ImageView::left_right( const CMedia* const img,
                             mrv::image_type_ptr& pic, int& xp, int& yp,
-                            short& idx, int w, int h ) const
+                            short& idx, bool& outside, int w, int h ) const
 {
     CMedia::StereoOutput output = img->stereo_output();
     if ( output == CMedia::kStereoLeft )
     {
         idx = 1;
-        if ( xp >= w ) xp = -1; // outside
+        if ( xp >= w ) outside = true;
     }
     else if ( output == CMedia::kNoStereo ||
               output == CMedia::kStereoRight )
     {
         idx = 0;
         xp += w;
-        if ( xp < w ) xp = -1; // outside
+        if ( xp < w ) outside = true;
     }
     else if ( output & CMedia::kStereoSideBySide )
     {
@@ -2987,12 +2987,12 @@ void ImageView::left_right( const CMedia* const img,
         {
             if ( output & CMedia::kStereoRight ) {
                 idx = 0;
-                if ( xp >= w ) xp = -1;
+                if ( xp >= w ) outside = true;
             }
             else {
                 idx = 1;
                 xp += w;
-                if ( xp <= w ) xp = -1;
+                if ( xp <= w ) outside = true;
             }
             yp -= h;
         }
@@ -3002,12 +3002,12 @@ void ImageView::left_right( const CMedia* const img,
             {
                 xp += w;
                 idx = 0;
-                if ( xp <= w ) xp = -1;
+                if ( xp <= w ) outside = true;
             }
             else
             {
                 idx = 1;
-                if ( xp >= w ) xp = -1;
+                if ( xp >= w ) outside = true;
             }
         }
     }
@@ -3070,20 +3070,18 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   }
   
 
-
-
   if ( input == CMedia::kNoStereoInput ||
        input == CMedia::kSeparateLayersInput )
   {
-      separate_layers( img, pic, xp, yp, idx, w, h, dpm );
+      separate_layers( img, pic, xp, yp, idx, outside, w, h, dpm );
   }
   else if ( input == CMedia::kTopBottomStereoInput )
   {
-      top_bottom( img, pic, xp, yp, idx, w, h );
+      top_bottom( img, pic, xp, yp, idx, outside, w, h );
   }
   else if ( input == CMedia::kLeftRightStereoInput )
   {
-      left_right( img, pic, xp, yp, idx, w, h );
+      left_right( img, pic, xp, yp, idx, outside, w, h );
   }
 
   xp -= daw[idx].x();
@@ -3166,8 +3164,6 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   w = dpm.w();
   h = dpm.h();
 
-  outside = false;
-
   
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
@@ -3229,7 +3225,7 @@ void ImageView::mouseMove(int x, int y)
   CMedia* img = fg->image();
 
   mrv::image_type_ptr pic;
-  bool outside;
+  bool outside = false;
   int xp, yp, w, h;
   picture_coordinates( img, x, y, outside, pic, xp, yp, w, h );
   if ( !pic ) return;
