@@ -3570,29 +3570,65 @@ void ImageView::mouseDrag(int x,int y)
            int diffX = 0;
            int diffY = 0;
            CMedia::StereoOutput stereo_out = img->stereo_output();
-           if ( xf >= W - daw[0].x() &&
-                stereo_out & CMedia::kStereoSideBySide )
+           if ( stereo_out == CMedia::kStereoRight )
            {
-               right = true;
-               xf -= W;
-               xn -= W;
+               idx = 1;
                diffX = daw[1].x() - daw[0].x();
                diffY = daw[1].y() - daw[0].y();
-
-               idx = 1;
            }
-           else if ( yf >= H - daw[0].y() &&
-                     stereo_out & CMedia::kStereoTopBottom )
+           else if ( stereo_out & CMedia::kStereoSideBySide )
            {
-               bottom = true;
-               yf -= H;
-               yn -= H;
-               diffX = daw[1].x() - daw[0].x();
-               diffY = daw[1].y() - daw[0].y();
+               if ( xf >= W - daw[0].x() )
+               {
+                   right = true;
+                   xf -= W;
+                   xn -= W;
 
-               idx = 1;
+                   if ( stereo_out & CMedia::kStereoRight )
+                   {
+                       idx = 0;
+                   }
+                   else
+                   {
+                       diffX = daw[1].x() - daw[0].x();
+                       diffY = daw[1].y() - daw[0].y();
+                       idx = 1;
+                   }
+               }
+               else if ( stereo_out & CMedia::kStereoRight )
+               {
+                   idx = 1;
+                   diffX = daw[1].x() - daw[0].x();
+                   diffY = daw[1].y() - daw[0].y();
+               }
            }
+           else if ( stereo_out & CMedia::kStereoTopBottom )
+           {
+               if ( yf >= H - daw[0].y() )
+               {
+                   bottom = true;
+                   yf -= H;
+                   yn -= H;
 
+                   if ( stereo_out & CMedia::kStereoRight )
+                   {
+                       idx = 0;
+                   }
+                   else
+                   {
+                       diffX = daw[1].x() - daw[0].x();
+                       diffY = daw[1].y() - daw[0].y();
+                       idx = 1;
+                   }
+               }
+               else if ( stereo_out & CMedia::kStereoRight )
+               {
+                   idx = 1;
+                   diffX = daw[1].x() - daw[0].x();
+                   diffY = daw[1].y() - daw[0].y();
+               }
+           }
+           
 	   W = dpw[idx].w();
 	   H = dpw[idx].h();
 
@@ -3619,17 +3655,19 @@ void ImageView::mouseDrag(int x,int y)
                    yf = yn;
                    yn = tmp;
                }
-               assert( xf <= xn );
-               assert( yf <= yn );
 
 
                double X, XM, Y, YM;
                if ( display_window() )
                {
-                   X = dpw[idx].l()-daw[idx].x();
-                   XM = dpw[idx].r()-daw[idx].x();
-                   Y = dpw[idx].t()-daw[idx].y();
-                   YM = dpw[idx].b()-daw[idx].y();
+                   // X = dpw[idx].l()-daw[idx].x();
+                   // XM = dpw[idx].r()-daw[idx].x();
+                   // Y = dpw[idx].t()-daw[idx].y();
+                   // YM = dpw[idx].b()-daw[idx].y();
+                   X = dpw[idx].l()-daw[0].x();
+                   XM = dpw[idx].r()-daw[0].x();
+                   Y = dpw[idx].t()-daw[0].y();
+                   YM = dpw[idx].b()-daw[0].y();
                }
                else
                {
