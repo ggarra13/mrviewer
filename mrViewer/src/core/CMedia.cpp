@@ -2721,9 +2721,15 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
   SCOPED_LOCK( vpm );
 
   if ( is_seek && _video_packets.is_seek() )
-     _video_packets.pop_front();  // pop seek begin packet
+  {
+      assert( !_video_packets.empty() );
+      _video_packets.pop_front();  // pop seek begin packet
+  }
   else if ( !is_seek && _video_packets.is_preroll() )
+  {
+      assert( !_video_packets.empty() );
      _video_packets.pop_front();
+  }
   else
      IMG_ERROR( "handle_video_packet_seek error - no seek/preroll packet" );
 
@@ -2743,6 +2749,7 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
            got_video = kDecodeOK;
 	}
 
+      assert( !_video_packets.empty() );
       _video_packets.pop_front();
     }
 
@@ -2759,8 +2766,10 @@ CMedia::DecodeStatus CMedia::handle_video_seek( boost::int64_t& frame,
   }
 
   if ( _video_packets.is_seek_end() )
+  {
+      assert( !_video_packets.empty() );
      _video_packets.pop_front();  // pop seek end packet
-
+  }
       
 #ifdef DEBUG_VIDEO_PACKETS
   debug_video_packets(frame, "AFTER HSEEK");
@@ -2792,7 +2801,9 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
     {
       if ( _video_packets.is_flush() )
 	{
+            assert( !_video_packets.empty() );
 	   flush_video();
+            assert( !_video_packets.empty() );
 	  _video_packets.pop_front();
 	}
       else if ( _video_packets.is_seek() )
@@ -2807,11 +2818,13 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
 	}
       else if ( _video_packets.is_loop_start() )
       {
+            assert( !_video_packets.empty() );
           // We check packet integrity as the length of packets is
           // not accurate.
           const AVPacket& pkt = _video_packets.front();
           if ( pkt.pts != frame ) return kDecodeOK;
 
+            assert( !_video_packets.empty() );
           _video_packets.pop_front();
           return kDecodeLoopStart;
       }
@@ -2819,14 +2832,17 @@ CMedia::DecodeStatus CMedia::decode_video( boost::int64_t& frame )
       {
           // We check packet integrity as the length of packets is
           // not accurate.
+            assert( !_video_packets.empty() );
           const AVPacket& pkt = _video_packets.front();
           if ( pkt.pts != frame ) return kDecodeOK;
 
+            assert( !_video_packets.empty() );
 	  _video_packets.pop_front();
 	  return kDecodeLoopEnd;
       }
       else
       {
+            assert( !_video_packets.empty() );
           _video_packets.pop_front();
           return kDecodeOK;
       }
@@ -3158,7 +3174,7 @@ void CMedia::debug_video_packets(const boost::int64_t frame,
      if ( _video_packets.is_loop_end( *(last-1) ) ||
 	  _video_packets.is_loop_start( *(last-1) ) )
      {
-	std::cerr << (*(last-1)).dts;
+         std::cerr << (*(last-1)).dts;
      }
      else
      {
