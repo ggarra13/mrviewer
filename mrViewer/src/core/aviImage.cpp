@@ -2857,6 +2857,9 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
     debug_video_packets(frame, "decode_video", true);
 #endif
 
+    Mutex& vpm = _video_packets.mutex();
+    SCOPED_LOCK( vpm );
+    
     {
         SCOPED_LOCK( _mutex );
 
@@ -2871,8 +2874,6 @@ CMedia::DecodeStatus aviImage::decode_video( boost::int64_t& f )
   DecodeStatus got_video = kDecodeMissingFrame;
 
 
-  Mutex& vpm = _video_packets.mutex();
-  SCOPED_LOCK( vpm );
   while ( !_video_packets.empty() && got_video != kDecodeOK )
     {
       if ( _video_packets.is_flush() )
