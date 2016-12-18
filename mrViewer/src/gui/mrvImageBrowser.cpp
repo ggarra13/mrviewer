@@ -1603,7 +1603,7 @@ void ImageBrowser::load( const mrv::LoadList& files,
     if ( reel == oldreel && numImages > 0 )
       {
 	this->change_image( (unsigned int)reel->images.size()-1 );
-	frame( m->image()->first_frame() );
+	frame( img->first_frame() );
       }
     else
       {
