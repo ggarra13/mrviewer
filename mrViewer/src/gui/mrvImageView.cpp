@@ -3019,6 +3019,8 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
                                      int& xp, int& yp,
                                      int& w, int& h ) const
 {
+    assert( img != NULL );
+    assert( outside == false );
   double xf = (double) x;
   double yf = (double) y;
 
@@ -3241,6 +3243,8 @@ void ImageView::mouseMove(int x, int y)
   }
   else
   {
+      assert0( xp >= 0 && yp >= 0 && xp < pic->width() && yp < pic->height() );
+
       rgba = pic->pixel( xp, yp );
 
       pixel_processed( img, rgba );
@@ -6451,7 +6455,7 @@ void ImageView::play( const CMedia::Playback dir )
    delete_timeout();
 
    double fps = uiMain->uiFPS->value();
-   create_timeout( 1.0/(fps*2.0) );
+   create_timeout( 0.5/fps );
 
    mrv::media fg = foreground();
    if ( fg )
