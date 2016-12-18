@@ -247,6 +247,7 @@ void ColorInfo::selection_to_coord( const CMedia* img,
 
       
       CMedia::StereoOutput output = uiMain->uiView->stereo_output();
+      CMedia::StereoInput  input = uiMain->uiView->stereo_input();
 
       if ( output == CMedia::kStereoRight )
       {
@@ -265,6 +266,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           {
               xmin -= daw.x();
               ymin -= daw.y();
+              if ( input & CMedia::kTopBottomStereoInput )
+                  ymin -= ht;
           }
           else
           {
@@ -283,6 +286,8 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           {
               xmin -= daw.x();
               ymin -= daw.y();
+              if ( input & CMedia::kLeftRightStereoInput )
+                  xmin -= wt;
           }
           else
           {
@@ -306,7 +311,6 @@ void ColorInfo::selection_to_coord( const CMedia* img,
           }
       }
 
-      CMedia::StereoInput input = uiMain->uiView->stereo_input();
       if ( input == CMedia::kTopBottomStereoInput &&
            ( ( output & CMedia::kStereoRight ) || right ) )
       {
