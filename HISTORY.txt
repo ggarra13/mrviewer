@@ -4,6 +4,15 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   stereo output.
 	 - Bug fixed a wrong memory access due to a missing mutex.
 	   This bug would show up as a crash in stereo reels.
+	 - Fixed a bug that would crash the viewer when selecting
+	   stereo viewing and no image was present on the right eye.
+	 - Allowed fit image to fit the right image only when it is
+	   selected in the stereo options window.
+	 - Allowed gamma control on each stereo image.  If both images
+	   are shown, both images change gamma.  If only one image
+	   is shown, only that image will change gamma.  For stereo
+	   OpenEXRs (sxr) or Top/Bottom or Left/Right inputs, both
+	   images change gamma always.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
