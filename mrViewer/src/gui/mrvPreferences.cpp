@@ -339,6 +339,9 @@ fltk::StyleSet*     newscheme = NULL;
     
     ui.get( "stereo3d_options", tmp, 0 );
     uiPrefs->uiPrefsStereoOptions->value(tmp);
+    
+    ui.get( "paint_tools", tmp, 0 );
+    uiPrefs->uiPrefsPaintTools->value(tmp);
 
 
     ui.get( "image_info", tmp, 0 );
@@ -850,6 +853,14 @@ static const char* kCLocale = "C";
     }
     else
       main->uiEDLWindow->uiMain->hide();
+    
+    if ( uiPrefs->uiPrefsPaintTools->value() )
+    {
+        main->uiPaint->uiMain->show();
+    }
+    else
+      main->uiPaint->uiMain->hide();
+    
 
     if ( uiPrefs->uiPrefsStereoOptions->value() )
     {
@@ -1145,6 +1156,7 @@ static const char* kCLocale = "C";
     ui.set( "reel_list", (int) uiPrefs->uiPrefsReelList->value() );
     ui.set( "edl_edit", (int) uiPrefs->uiPrefsEDLEdit->value() );
     ui.set( "stereo3d_options", (int) uiPrefs->uiPrefsStereoOptions->value() );
+    ui.set( "paint_tools", (int) uiPrefs->uiPrefsPaintTools->value() );
     ui.set( "image_info", (int) uiPrefs->uiPrefsImageInfo->value() );
     ui.set( "color_area", (int) uiPrefs->uiPrefsColorArea->value() );
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
