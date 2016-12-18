@@ -129,7 +129,7 @@ namespace mrv {
           return _packets.end();
       }
 
-      inline void push_back( AVPacket& pkt )
+      inline void push_back( const AVPacket& pkt )
       {
           Mutex::scoped_lock lk( _mutex );
 
