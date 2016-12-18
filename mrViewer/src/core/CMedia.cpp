@@ -1371,8 +1371,14 @@ image_type::PixelType CMedia::depth() const
 
 void CMedia::gamma( const float x )
 {
-    _gamma = x;
-    refresh();
+    CMedia::StereoInput  stereo_in  = stereo_input();
+    CMedia::StereoOutput stereo_out = stereo_output();
+    if ( _right_eye ) _right_eye->gamma( x );
+    if ( stereo_in != kSeparateLayersInput || stereo_out != kStereoRight )
+    {
+        _gamma = x;
+        refresh();
+    }
 }
 
 
