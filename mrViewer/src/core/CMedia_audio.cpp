@@ -1809,8 +1809,6 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 
   DecodeStatus got_audio = kDecodeMissingFrame;
 
-  mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
-  SCOPED_LOCK( apm );
 
   boost::int64_t first = first_frame();
   boost::int64_t last  = last_frame();
@@ -1818,6 +1816,9 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
   if ( frame < first && looping() != kPingPong )
       return kDecodeNoStream;
 
+  mrv::PacketQueue::Mutex& apm = _audio_packets.mutex();
+  SCOPED_LOCK( apm );
+  
   if ( _audio_packets.empty() )
   {
     bool ok = in_audio_store( frame );
