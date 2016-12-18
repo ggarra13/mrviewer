@@ -2854,6 +2854,7 @@ void ImageView::separate_layers( const CMedia* const img,
         {
             pic = img->left();
         }
+        if (!pic) return;
     }
 
     if ( xp < dpw.x() || yp < dpw.y() || xp > dpw.w() || yp > dpw.h() ) {
@@ -3166,6 +3167,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   w = dpm.w();
   h = dpm.h();
 
+  if (!pic) return;
   
   if ( xp < 0 || xp >= (int)pic->width() || yp < 0 || 
        yp >= (int)pic->height() )
