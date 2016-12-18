@@ -146,37 +146,38 @@ namespace mrv {open
   }
   decl {class ImageView;} {public
   }
-  decl {class LogDisplay;} {public
+  decl {class LogDisplay;} {selected public
   }
-  decl {class MainWindow;} {public
+  decl {class MainWindow;} {selected public
   }
-  decl {class PreferencesBrowser;} {public
+  decl {class PreferencesBrowser;} {selected public
   }
-  decl {class Timecode;} {public
+  decl {class Timecode;} {selected public
   }
-  decl {class Timeline;} {public
+  decl {class Timeline;} {selected public
   }
-  decl {class Vectorscope;} {public
+  decl {class Vectorscope;} {selected public
   }
-  decl {class ViewerUI;} {public
+  decl {class ViewerUI;} {selected public
   }
-  decl {class ICCProfileListUI;} {public
+  decl {class ICCProfileListUI;} {selected public
   }
-  decl {class StereoUI;} {public
+  decl {class StereoUI;} {selected public
   }
-  decl {class ColorAreaUI;} {public
+  decl {class ColorAreaUI;} {selected public
   }
-  decl {class GL3dViewUI;} {public
+  decl {class GL3dViewUI;} {selected public
   }
-  decl {class HotkeyUI;} {public
+  decl {class HotkeyUI;} {selected public
   }
-  decl {class PaintUI;} {public
+  decl {class PaintUI;} {selected public
   }
-  decl {class ConnectionUI;} {public
+  decl {class ConnectionUI;} {selected public
   }
-  decl {class EDLWindowUI;} {public
+  decl {class EDLWindowUI;} {selected public
   }
-  class ReelUI {} {
+  class ReelUI {selected
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -301,7 +302,8 @@ v->new_reel(name);}
 delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ImageInfoUI {} {
+  class ImageInfoUI {selected
+  } {
     decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -334,7 +336,8 @@ main_ = main;}
       code {return main_;} {}
     }
   }
-  class AboutUI {} {
+  class AboutUI {selected
+  } {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -474,7 +477,8 @@ o->value(-1);}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class GL3dViewUI {} {
+  class GL3dViewUI {selected
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -501,7 +505,8 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class VectorscopeUI {} {
+  class VectorscopeUI {selected
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {private
     } {
@@ -533,7 +538,8 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class HistogramUI {} {
+  class HistogramUI {selected
+  } {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(mrv::ViewerUI* main)} {open private
     } {
@@ -633,13 +639,12 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {open
-  } {
+  class PreferencesUI {} {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {607 209 670 450} resizable visible
+        xywh {669 428 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -716,12 +721,12 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsHistogram {
                 label Histogram
                 tooltip {When selected, mrViewer will start with the histogram already open.}
-                xywh {275 35 25 25} align 8 box UP_BOX
+                xywh {280 35 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsVectorscope {
                 label Vectorscope
                 tooltip {When selected, mrViewer will start with the vectorscope already open.}
-                xywh {275 64 25 25} align 8 box UP_BOX
+                xywh {280 64 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsImageInfo {
                 label {Media Info}
@@ -736,12 +741,17 @@ If you try to open several mrViewers with different images, all these images wil
               {fltk::CheckButton} uiPrefsEDLEdit {
                 label {EDL Edit}
                 tooltip {When selected, mrViewer will start with the EDL Edit window already open.}
-                xywh {275 8 25 25} align 8 box UP_BOX
+                xywh {280 8 25 25} align 8 box UP_BOX
               }
               {fltk::CheckButton} uiPrefsStereoOptions {
-                label {Stereo 3D Options} selected
+                label {Stereo 3D Options}
                 tooltip {When selected, mrViewer will start with the stereo options window already open.}
-                xywh {140 92 25 25} align 8 box UP_BOX
+                xywh {6 92 25 25} align 8 box UP_BOX
+              }
+              {fltk::CheckButton} uiPrefsPaintTools {
+                label {Paint Tools}
+                tooltip {When selected, mrViewer will start with the stereo options window already open.}
+                xywh {217 91 25 25} align 8 box UP_BOX
               }
             }
             {fltk::Group} {} {
@@ -1979,7 +1989,7 @@ v->uiPrefsOpenEXRDWACompression->deactivate();
           } {
             {fltk::ItemGroup} {} {
               label {User Interface}
-              value 1
+              vertical value 1
             } {
               {fltk::ItemGroup} {} {
                 label {View Window} open
@@ -2080,8 +2090,7 @@ for ( ; w ; w = w->next() )
    w->redraw();} {}
     }
   }
-  class StatisticsUI {open
-  } {
+  class StatisticsUI {} {
     Function {make_window(ViewerUI* main)} {} {
       {fltk::Window} uiMain {
         label Statistics
@@ -2254,12 +2263,14 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {} {
+  class PaintUI {open
+  } {
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
-        label Paint open
-        xywh {446 374 155 395} horizontal hide resizable
+        label Paint
+        xywh {446 430 155 395} horizontal resizable
+        extra_code {o->child_of( m->uiMain );} visible
       } {
         {fltk::Group} {} {open
           xywh {0 9 149 376}
