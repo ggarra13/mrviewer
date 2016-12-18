@@ -1264,7 +1264,11 @@ void ImageView::fit_image()
   if ( display_window() )
   {
       dpw = img->display_window();
-      if ( stereo_out & CMedia::kStereoSideBySide )
+      if ( stereo_out == CMedia::kStereoRight )
+      {
+          dpw = img->display_window2();
+      }
+      else if ( stereo_out & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dpw2 = img->display_window2();
           dpw.w( dpw.w() + dpw2.x() + dpw2.w() );
@@ -1278,7 +1282,11 @@ void ImageView::fit_image()
   else
   {
       dpw = img->data_window();
-      if ( stereo_out & CMedia::kStereoSideBySide )
+      if ( stereo_out == CMedia::kStereoRight )
+      {
+          dpw = img->data_window2();
+      }
+      else if ( stereo_out & CMedia::kStereoSideBySide )
       {
           const mrv::Recti& dp = img->display_window();
           mrv::Recti daw = img->data_window2();
