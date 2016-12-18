@@ -1694,10 +1694,14 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   if ( is_seek && _audio_packets.is_seek() )
   {
+      assert( !_audio_packets.empty() );
      _audio_packets.pop_front();  // pop seek begin packet
   }
   else if ( !is_seek && _audio_packets.is_preroll() )
+  {
+      assert( !_audio_packets.empty() );
      _audio_packets.pop_front();
+  }
   else
       IMG_ERROR( _("Audio packet is unknown, expected seek or preroll") );
 
@@ -1740,6 +1744,7 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
                            << frame );
       }
 
+      assert( !_audio_packets.empty() );
       _audio_packets.pop_front();
     }
 
@@ -1751,13 +1756,17 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
 
   if ( is_seek )
     {
+      assert( !_audio_packets.empty() );
       const AVPacket& pkt = _audio_packets.front();
       frame = get_frame( get_audio_stream(), pkt ) + _audio_offset;
     }
 
   if ( _audio_packets.is_seek_end() )
+  {
+      assert( !_audio_packets.empty() );
      _audio_packets.pop_front();  // pop seek/preroll end packet
-
+  }
+  
 #ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DOSEEK END");
 #endif
@@ -1824,6 +1833,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
       if ( _audio_packets.is_flush() )
 	{
 	  flush_audio();
+          assert( !_audio_packets.empty() );
 	  _audio_packets.pop_front();
 	}
       else if ( _audio_packets.is_loop_start() )
@@ -1838,6 +1848,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	  }
 
           flush_audio();
+          assert( !_audio_packets.empty() );
           _audio_packets.pop_front();
           return kDecodeLoopStart;
 	}
@@ -1854,6 +1865,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 
 
           flush_audio();
+          assert( !_audio_packets.empty() );
           _audio_packets.pop_front();
           return kDecodeLoopEnd;
       }
@@ -1869,6 +1881,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	   bool ok = in_audio_store( frame );
 	   if ( ok ) {
                SCOPED_LOCK( _audio_mutex );
+               assert( !_audio_packets.empty() );
                AVPacket& pkt = _audio_packets.front();
                int64_t pktframe = pts2frame( get_audio_stream(), pkt.dts )
                                   - _frame_offset;
@@ -1886,6 +1899,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	}
       else
 	{
+            assert( !_audio_packets.empty() );
 	  AVPacket& pkt = _audio_packets.front();
 
 #if 0
@@ -1896,6 +1910,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	  if ( ok ) 
           {
               got_audio = decode_audio_packet( pktframe, frame, pkt );
+              assert( !_audio_packets.empty() );
               _audio_packets.pop_front();
               continue;
           }
@@ -1903,6 +1918,7 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 
 
 	  got_audio = decode_audio( frame, pkt );
+          assert( !_audio_packets.empty() );
 	  _audio_packets.pop_front();
           continue;
 	}
