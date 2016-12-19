@@ -522,6 +522,12 @@ void GLEngine::initialize()
   else
       alloc_quads( 4 );
 
+  for ( int i = 0; i < 2; ++i )
+  {
+      normMin[i] = 0.0;
+      normMax[i] = 1.0;
+  }
+
   CHECK_GL("initGL");
 }
 
@@ -1210,6 +1216,18 @@ void GLEngine::translate( double x, double y )
    glTranslated( x, y, 0 );
 }
 
+float GLEngine::norm_min( unsigned short idx )
+{
+    if ( idx > 1 ) return 0.0f;
+    return normMin[idx];
+}
+
+float GLEngine::norm_max( unsigned short idx )
+{
+    if ( idx > 1 ) return 1.0f;
+    return normMax[idx];
+}
+
 
 void GLEngine::draw_images( ImageList& images )
 {
@@ -1260,11 +1278,10 @@ void GLEngine::draw_images( ImageList& images )
 
 
     TRACE( "" );
-  float normMin = 0.0f, normMax = 1.0f;
   if ( _view->normalize() )
   {
       minmax(); // calculate min-max
-      minmax( normMin, normMax ); // retrieve them
+      minmax( normMin[0], normMax[0] ); // retrieve them
   }
 
 
@@ -1398,7 +1415,7 @@ void GLEngine::draw_images( ImageList& images )
       }
       
       GLQuad* quad = *q;
-      quad->minmax( normMin, normMax );
+      quad->minmax( normMin[0], normMax[0] );
       quad->image( img );
 
       if ( _view->use_lut() )
@@ -1478,6 +1495,7 @@ void GLEngine::draw_images( ImageList& images )
 
          ++q;
          quad = *q;
+         quad->minmax( normMin[1], normMax[1] );
          quad->image( img );
 
          if ( stereo != CMedia::kStereoLeft &&
