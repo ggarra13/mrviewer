@@ -1481,7 +1481,6 @@ bool ImageView::should_update( mrv::media fg )
       }
   }
 
-
   if ( update && _playback != kStopped ) {
 #ifdef FLTK_TIMEOUT_EVENT_BUG
     int y = fltk::event_y();
@@ -1496,6 +1495,36 @@ bool ImageView::should_update( mrv::media fg )
   return update;
 }
 
+void ImageView::log() const
+{
+    //
+    // First, handle log window showing up and scrolling
+    //
+    if (main() && main()->uiLog && main()->uiLog->uiMain )
+    {
+        mrv::LogUI* logUI = main()->uiLog;
+        fltk::Window* logwindow = logUI->uiMain;
+        if ( logwindow )
+        {
+            mrv::LogDisplay* log = logUI->uiLogText;
+
+            if ( mrv::LogDisplay::show == true )
+            {
+                mrv::LogDisplay::show = false;
+                if (main() && logUI && logwindow )
+                {
+                    logwindow->show();
+                }
+            }
+            static int lines = 0;
+            if ( log->visible() && log->lines() != lines )
+            {
+                log->scroll( log->lines()-1, 0 );
+                lines = log->lines();
+            }
+        }
+    }
+}
 bool ImageView::preload()
 {
     if ( !browser() || !timeline() ) return false;
@@ -1597,6 +1626,7 @@ void ImageView::timeout()
   // If in EDL mode, we check timeline to see if frame points to
   // new image.
   //
+    log();
 
    mrv::Timeline* timeline = this->timeline();
    if  (!timeline) return;
@@ -2775,6 +2805,7 @@ void ImageView::pixel_processed( const CMedia* img,
     rgba.g *= _gain;
     rgba.b *= _gain;
 
+    
     float one_gamma = 1.0f / _gamma;
     // the code below is equivalent to rgba.g = powf(rgba.g, one_gamma);
     // but faster.
@@ -3193,6 +3224,21 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 
 }
 
+void ImageView::normalize( CMedia::Pixel& rgba, unsigned short idx ) const
+{
+    if ( !_engine ) return;
+    
+    float pMin = _engine->norm_min( idx );
+    float pMax = _engine->norm_max( idx );
+    if ( pMin != 0.0 || pMax != 1.0 )
+    {
+        float span = pMax - pMin;
+        rgba.r = (rgba.r - pMin) / span;
+        rgba.g = (rgba.g - pMin) / span;
+        rgba.b = (rgba.b - pMin) / span;
+    }
+}
+
 /** 
  * Handle a mouse release
  * 
@@ -3202,35 +3248,7 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
 void ImageView::mouseMove(int x, int y)	
 {
     if ( !uiMain || !uiMain->uiPixelBar->visible() || !_engine ) return;
-
-  //
-  // First, handle log window showing up and scrolling
-  //
-  if (main() && main()->uiLog && main()->uiLog->uiMain )
-  {
-      mrv::LogUI* logUI = main()->uiLog;
-      fltk::Window* logwindow = logUI->uiMain;
-      if ( logwindow )
-      {
-          mrv::LogDisplay* log = logUI->uiLogText;
-
-          if ( mrv::LogDisplay::show == true )
-          {
-              mrv::LogDisplay::show = false;
-              if (main() && logUI && logwindow )
-              {
-                  logwindow->show();
-              }
-          }
-          static int lines = 0;
-          if ( log->visible() && log->lines() != lines )
-          {
-              log->scroll( log->lines()-1, 0 );
-              lines = log->lines();
-          }
-      }
-  }
-
+ 
   mrv::media fg = foreground();
   if ( !fg ) return;
 
@@ -3257,6 +3275,11 @@ void ImageView::mouseMove(int x, int y)
 
       rgba = pic->pixel( xp, yp );
 
+      if ( normalize() )
+      {
+          normalize( rgba );
+      }
+      
       pixel_processed( img, rgba );
 
       mrv::Recti daw[2];
@@ -6056,6 +6079,8 @@ void ImageView::normalize( const bool normalize)
    sprintf( buf, "Normalize %d", (int) _normalize );
    send_network( buf );
 
+   damage_contents();
+   redraw();
 }
 
 void ImageView::damage_contents()
@@ -6083,8 +6108,6 @@ void ImageView::damage_contents()
 void ImageView::toggle_normalize()
 {
    normalize( !_normalize );
-   damage_contents();
-   redraw();
 }
 
 /** 
