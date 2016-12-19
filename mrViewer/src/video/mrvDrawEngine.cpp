@@ -420,8 +420,19 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
     unsigned int yh = yl + d->rect.h();
 
     const CMedia* img = d->image;
-    mrv::image_type_ptr frame = img->hires();
-    if ( !frame ) return;
+    mrv::image_type_ptr pic;
+    if ( img->stereo_output() & CMedia::kStereoRight )
+    {
+        pic = img->right();
+    }
+    else
+    {
+        pic = img->left();
+    }
+    if ( !pic ) return;
+
+    if ( xh >= pic->height() ) xh = pic->width();
+    if ( yh >= pic->height() ) yh = pic->height();
 
     d->pMin = std::numeric_limits< float >::max();
     d->pMax = std::numeric_limits< float >::min();
@@ -430,7 +441,7 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
       {
 	for ( unsigned int x = xl; x < xh; ++x )
 	  {
-	    const CMedia::Pixel& p = frame->pixel( x, y );
+	    const CMedia::Pixel& p = pic->pixel( x, y );
 
             if ( half(p.r).isFinite() )
             {
