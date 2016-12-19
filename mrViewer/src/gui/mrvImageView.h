@@ -298,6 +298,9 @@ class server;
     /// Toggle pixel normalization on and off
     void toggle_normalize();
 
+    /// Normalize a pixel value
+      void normalize( CMedia::Pixel& rgba, unsigned short idx = 0 ) const;
+      
     /// Toggle 3D LUT on and off
     void toggle_lut();
 
@@ -576,6 +579,8 @@ class server;
                        mrv::image_type_ptr& pic, int& xp, int& yp,
                        short& idx, bool& outside, int w, int h ) const;
 
+      void log() const;
+      
   protected:
     mrv::ViewerUI* uiMain;
     mrv::DrawEngine*    _engine;
