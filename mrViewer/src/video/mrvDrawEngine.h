@@ -154,6 +154,10 @@ namespace mrv {
     /// Convert fg image to engine's drawable image
        virtual void translate( double x, double y ) = 0;
 
+      // Return the normalized min and max of image
+    virtual float norm_min( unsigned short idx ) = 0;
+    virtual float norm_max( unsigned short idx ) = 0;
+      
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images ) = 0;
 
