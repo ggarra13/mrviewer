@@ -93,6 +93,8 @@ namespace mrv {
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images );
 
+    virtual float norm_min( unsigned short idx );
+    virtual float norm_max( unsigned short idx );
 
     virtual void draw_title(const float size,
 			    const int y, const char* text );
@@ -179,6 +181,7 @@ namespace mrv {
     static GLShader* _YCbCrA;   //!< YCbCrA Fragment shader ( Y Cb  Cr  A )
     static GLShader* _YByRyA;   //!< YBYRYA Fragment shader ( Y B-Y R-Y A )
 
+    float normMin[2], normMax[2];
     int	texWidth, texHeight;   //!< The texture dimensions (powers of two)
 
        GLuint textureId;       //!< The off-screen texture
