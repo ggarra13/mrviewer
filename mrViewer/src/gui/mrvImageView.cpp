@@ -6080,7 +6080,6 @@ void ImageView::normalize( const bool normalize)
    send_network( buf );
 
    damage_contents();
-   redraw();
 }
 
 void ImageView::damage_contents()
@@ -6380,7 +6379,7 @@ void ImageView::update_color_info( const mrv::media& fg ) const
     {
       fltk::Window*  uiColorWindow = uiMain->uiColorArea->uiMain;
       if ( uiColorWindow->visible() ) 
-	uiMain->uiColorArea->uiColorText->update();
+          uiMain->uiColorArea->uiColorText->update();
     }
 
   if ( uiMain->uiVectorscope )
