@@ -197,6 +197,11 @@ namespace mrv
 	  { 
               CMedia::Pixel op = pic->pixel( x, y );
 
+              if ( uiMain->uiView->normalize() )
+              {
+                  uiMain->uiView->normalize( op );
+              }
+               
               if ( uiMain->uiView->use_lut() && v == ImageView::kRGBA_Full )
               {
                   engine->evaluate( img, 
