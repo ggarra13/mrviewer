@@ -13,6 +13,12 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   is shown, only that image will change gamma.  For stereo
 	   OpenEXRs (sxr) or Top/Bottom or Left/Right inputs, both
 	   images change gamma always.
+	 - Updated log window so it appears as soon as an error is
+	   raised (and the Preferences' option is set to such).
+	   Previously, the mouse had to be moving or the movie had
+	   to be playing.
+	 - Made normalize pixel values (Norm button) be displayed
+	   in pixel bar.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
