@@ -391,6 +391,8 @@ class server;
 
       void toggle_media_info(bool show);
       void toggle_color_area(bool show);
+      void toggle_stereo_options(bool show);
+      void toggle_paint_tools(bool show);
       void toggle_3d_view(bool show);
       void toggle_histogram(bool show);
       void toggle_vectorscope(bool show);
