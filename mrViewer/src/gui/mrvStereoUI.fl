@@ -8,6 +8,7 @@ gridy 5
 snap 3
 decl {\#include "gui/mrvIO.h"} {public
 } 
+
 decl {\#include "core/mrvI8N.h"} {public
 } 
 
@@ -24,12 +25,21 @@ namespace mrv {open
 } {
   class StereoUI {open
   } {
-    Function {make_window( mrv::ViewerUI* main )} {open
+    decl {mrv::ViewerUI* main_;} {}
+    Function {main()} {return_type {mrv::ViewerUI*}
     } {
+      code {return main_;} {selected
+      }
+    }
+    Function {make_window( mrv::ViewerUI* main )} {} {
       {fltk::Window} uiMain {
-        label {3D Stereo Options} open selected
-        xywh {814 761 280 100}
-        extra_code {o->child_of( (fltk::Window*)main->uiMain );} visible
+        label {3D Stereo Options}
+        user_data this user_data_type {mrv::StereoUI*}
+        callback {v->main()->uiView->send_network( "StereoOptions 0" );
+o->hide();}
+        xywh {814 845 280 100} resizable
+        extra_code {main_ = main;
+o->child_of( (fltk::Window*)main->uiMain );} visible
       } {
         {fltk::Choice} uiStereoInput {
           label Input
@@ -42,7 +52,7 @@ CMedia* img = fg->image();
 int x = o->value(); 
 CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
 img->stereo_input( in );
-}} open
+}}
           xywh {80 20 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
@@ -76,7 +86,7 @@ int x = o->value();
 CMedia::StereoOutput in = CMedia::to_stereo_output( x ); 
 img->stereo_output( in );
 //v->uiView->fit_image();
-}} open
+}}
           xywh {80 60 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
@@ -138,9 +148,8 @@ else
     Function {StereoUI( ViewerUI* main )} {} {
       code {make_window(main);} {}
     }
-    Function {~StereoUI()} {open
-    } {
-      code { delete uiMain; uiMain = NULL;} {}
+    Function {~StereoUI()} {} {
+      code {delete uiMain; uiMain = NULL;} {}
     }
   }
 } 
