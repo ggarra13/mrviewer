@@ -146,38 +146,37 @@ namespace mrv {open
   }
   decl {class ImageView;} {public
   }
-  decl {class LogDisplay;} {selected public
+  decl {class LogDisplay;} {public
   }
-  decl {class MainWindow;} {selected public
+  decl {class MainWindow;} {public
   }
-  decl {class PreferencesBrowser;} {selected public
+  decl {class PreferencesBrowser;} {public
   }
-  decl {class Timecode;} {selected public
+  decl {class Timecode;} {public
   }
-  decl {class Timeline;} {selected public
+  decl {class Timeline;} {public
   }
-  decl {class Vectorscope;} {selected public
+  decl {class Vectorscope;} {public
   }
-  decl {class ViewerUI;} {selected public
+  decl {class ViewerUI;} {public
   }
-  decl {class ICCProfileListUI;} {selected public
+  decl {class ICCProfileListUI;} {public
   }
-  decl {class StereoUI;} {selected public
+  decl {class StereoUI;} {public
   }
-  decl {class ColorAreaUI;} {selected public
+  decl {class ColorAreaUI;} {public
   }
-  decl {class GL3dViewUI;} {selected public
+  decl {class GL3dViewUI;} {public
   }
-  decl {class HotkeyUI;} {selected public
+  decl {class HotkeyUI;} {public
   }
-  decl {class PaintUI;} {selected public
+  decl {class PaintUI;} {public
   }
-  decl {class ConnectionUI;} {selected public
+  decl {class ConnectionUI;} {public
   }
-  decl {class EDLWindowUI;} {selected public
+  decl {class EDLWindowUI;} {public
   }
-  class ReelUI {selected
-  } {
+  class ReelUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -302,8 +301,7 @@ v->new_reel(name);}
 delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ImageInfoUI {selected
-  } {
+  class ImageInfoUI {} {
     decl {ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -336,8 +334,7 @@ main_ = main;}
       code {return main_;} {}
     }
   }
-  class AboutUI {selected
-  } {
+  class AboutUI {} {
     Function {make_window(ViewerUI* main)} {open private
     } {
       {fltk::Window} uiMain {
@@ -477,8 +474,7 @@ o->value(-1);}
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class GL3dViewUI {selected
-  } {
+  class GL3dViewUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {open private
     } {
@@ -487,11 +483,11 @@ o->value(-1);}
         user_data this user_data_type {GL3dViewUI*}
         callback {v->main()->uiView->send_network( "GL3dView 0" );
 o->hide();}
-        xywh {158 529 325 240} set_xy hide resizable
+        xywh {158 613 325 240} set_xy resizable
         extra_code {// Make the window transient
 main_ = main;
 o->child_of( main->uiMain );}
-        class {mrv::GlWindow3d}
+        class {mrv::GlWindow3d} visible
       } {}
     }
     Function {GL3dViewUI(ViewerUI* m)} {} {
@@ -505,8 +501,7 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class VectorscopeUI {selected
-  } {
+  class VectorscopeUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(ViewerUI* main)} {private
     } {
@@ -538,8 +533,7 @@ o->child_of( main->uiMain );}
       code {return main_;} {}
     }
   }
-  class HistogramUI {selected
-  } {
+  class HistogramUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window(mrv::ViewerUI* main)} {open private
     } {
@@ -644,7 +638,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {669 428 670 450} resizable visible
+        xywh {669 512 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2265,12 +2259,17 @@ o->child_of( main->uiMain );} modal
   }
   class PaintUI {open
   } {
+    decl {mrv::ViewerUI* main_;} {}
     Function {make_window( ViewerUI* m )} {open
     } {
       {fltk::Window} uiMain {
         label Paint
-        xywh {446 430 155 395} horizontal resizable
-        extra_code {o->child_of( m->uiMain );} visible
+        user_data this user_data_type {mrv::PaintUI*}
+        callback {v->main()->uiView->send_network( "PaintTools 0" );
+o->hide();}
+        xywh {446 514 155 395} horizontal resizable
+        extra_code {o->child_of( m->uiMain );
+main_ = m;} visible
       } {
         {fltk::Group} {} {open
           xywh {0 9 149 376}
@@ -2412,13 +2411,17 @@ v->uiView->redraw();}
         }
       }
     }
-    Function {PaintUI(ViewerUI* m)} {open
-    } {
+    Function {PaintUI(ViewerUI* m)} {} {
       code {make_window( m );} {}
     }
     Function {~PaintUI()} {open
     } {
       code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {main()} {open return_type {mrv::ViewerUI*}
+    } {
+      code {return main_;} {selected
+      }
     }
   }
   class ConnectionUI {} {
