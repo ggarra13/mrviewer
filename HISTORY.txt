@@ -8,17 +8,23 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   stereo viewing and no image was present on the right eye.
 	 - Allowed fit image to fit the right image only when it is
 	   selected in the stereo options window.
-	 - Allowed gamma control on each stereo image.  If both images
-	   are shown, both images change gamma.  If only one image
-	   is shown, only that image will change gamma.  For stereo
-	   OpenEXRs (sxr) or Top/Bottom or Left/Right inputs, both
-	   images change gamma always.
+	 - Allowed gamma control on each stereo image when two
+	   sequences or movies are fed.
+	   If both images are shown, both images change gamma.
+	   If only one image is shown, only that image will change
+	   gamma.
+	   Note that for stereo OpenEXRs (sxr) or Top/Bottom or
+	   Left/Right inputs, both images change gamma always.
 	 - Updated log window so it appears as soon as an error is
 	   raised (and the Preferences' option is set to such).
 	   Previously, the mouse had to be moving or the movie had
 	   to be playing.
 	 - Made normalize pixel values (Norm button) be displayed
 	   in pixel bar and in color area, vectorscope and histogram.
+	 - Added stereo options window and paint tools window to those
+	   that get hidden on presentation mode (F12 key).  Previously
+	   it would leave the main window in full screen mode only
+	   with OS's toolbars open.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
