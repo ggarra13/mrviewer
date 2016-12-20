@@ -21,10 +21,12 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   to be playing.
 	 - Made normalize pixel values (Norm button) be displayed
 	   in pixel bar and in color area, vectorscope and histogram.
-	 - Added stereo options window and paint tools window to those
+	 - Added Stereo 3D Options window and Paint Tools Window to those
 	   that get hidden on presentation mode (F12 key).  Previously
 	   it would leave the main window in full screen mode only
 	   with OS's toolbars open.
+	 - Made Stereo Options Window and Paint Tools Window appear/
+	   disappear on network connections.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
