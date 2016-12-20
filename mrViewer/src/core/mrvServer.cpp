@@ -1149,6 +1149,34 @@ bool Parser::parse( const std::string& s )
        }
        ok = true;
    }
+   else if ( cmd == N_("StereoOptions") )
+   {
+       int x;
+       is >> x;
+       if ( x )
+       {
+           v->send( mrv::kSTEREO_OPTIONS_WINDOW_SHOW );
+       }
+       else
+       {
+           v->send( mrv::kSTEREO_OPTIONS_WINDOW_HIDE );
+       }
+       ok = true;
+   }
+   else if ( cmd == N_("PaintTools") )
+   {
+       int x;
+       is >> x;
+       if ( x )
+       {
+           v->send( mrv::kPAINT_TOOLS_WINDOW_SHOW );
+       }
+       else
+       {
+           v->send( mrv::kPAINT_TOOLS_WINDOW_HIDE );
+       }
+       ok = true;
+   }
    else if ( cmd == N_("HistogramWindow") )
    {
        int x;

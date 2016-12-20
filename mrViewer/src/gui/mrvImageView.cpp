@@ -478,6 +478,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
   {
       uiMain->uiStereo->uiMain->child_of( uiMain->uiMain );
       uiMain->uiStereo->uiMain->show();
+      uiMain->uiView->send_network( "StereoOptions 1" );
   }
   else if ( idx == kEDLEdit )
   {
@@ -494,6 +495,7 @@ void window_cb( fltk::Widget* o, const mrv::ViewerUI* uiMain )
     {
        // Paint Tools
       uiMain->uiPaint->uiMain->child_of( uiMain->uiMain );
+      uiMain->uiView->send_network( "PaintTools 1" );
       uiMain->uiPaint->uiMain->show();
     }
   else if ( idx == kHistogram )
@@ -4414,10 +4416,13 @@ void ImageView::toggle_presentation()
   fltk::Window* uiReel  = uiMain->uiReelWindow->uiMain;
   fltk::Window* uiPrefs = uiMain->uiPrefs->uiMain;
   fltk::Window* uiAbout = uiMain->uiAbout->uiMain;
+  fltk::Window* uiStereo = uiMain->uiStereo->uiMain;
+  fltk::Window* uiPaint = uiMain->uiPaint->uiMain;
 
 
   static bool has_image_info, has_color_area, has_reel, has_edl_edit,
-  has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar;
+  has_prefs, has_about, has_top_bar, has_bottom_bar, has_pixel_bar,
+  has_stereo, has_paint;
 
   if ( !presentation )
     {
@@ -4433,7 +4438,11 @@ void ImageView::toggle_presentation()
       has_top_bar    = uiMain->uiTopBar->visible();
       has_bottom_bar = uiMain->uiBottomBar->visible();
       has_pixel_bar  = uiMain->uiPixelBar->visible();
+      has_paint      = uiPaint->visible();
+      has_stereo     = uiStereo->visible();
 
+      uiPaint->hide();
+      uiStereo->hide();
       uiImageInfo->hide();
       uiColorArea->hide();
       uiReel->hide();
@@ -4465,6 +4474,8 @@ void ImageView::toggle_presentation()
       if ( has_edl_edit )   uiEDLWindow->show();
       if ( has_prefs )      uiPrefs->show();
       if ( has_about )      uiAbout->show();
+      if ( has_paint )      uiPaint->show();
+      if ( has_stereo )     uiStereo->show();
 
       if ( has_top_bar )    uiMain->uiTopBar->show();
       if ( has_bottom_bar)  uiMain->uiBottomBar->show();
@@ -4552,6 +4563,30 @@ void ImageView::toggle_vectorscope( bool show )
     }
 }
 
+void ImageView::toggle_stereo_options( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiStereo->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiStereo->uiMain->show();
+    }
+}
+
+void ImageView::toggle_paint_tools( bool show )
+{
+    if ( !show )
+    {
+        uiMain->uiPaint->uiMain->hide();
+    }
+    else
+    {
+        uiMain->uiPaint->uiMain->show();
+    }
+}
+
 void ImageView::toggle_3d_view( bool show )
 {
     if ( !show )
@@ -4601,15 +4636,16 @@ int ImageView::handle(int event)
         case mrv::kHISTOGRAM_WINDOW_HIDE:
         case mrv::kVECTORSCOPE_WINDOW_SHOW:
         case mrv::kVECTORSCOPE_WINDOW_HIDE:
+        case mrv::kSTEREO_OPTIONS_WINDOW_SHOW:
+        case mrv::kSTEREO_OPTIONS_WINDOW_HIDE:
+        case mrv::kPAINT_TOOLS_WINDOW_SHOW:
+        case mrv::kPAINT_TOOLS_WINDOW_HIDE:
             {
-                TRACE("");
                 _event = event;
-                TRACE("");
                 return 1;
             }
         case fltk::TIMEOUT:
             {
-                TRACE("");
                 unsigned e = _event;
                 ParserList c = _clients;
                 _clients.clear();
@@ -4617,55 +4653,54 @@ int ImageView::handle(int event)
                 switch( e )
                 {
                     case 0:
-                TRACE("");
                         break;
                     case mrv::kFULLSCREEN:
-                TRACE("");
                         toggle_fullscreen();
                         ok = true; break;
                     case mrv::kPRESENTATION:
-                TRACE("");
                         toggle_presentation();
                         ok = true; break;
                     case mrv::kMEDIA_INFO_WINDOW_SHOW:
-                TRACE("");
                         toggle_media_info(true);
                         ok = true; break;
                     case mrv::kMEDIA_INFO_WINDOW_HIDE:
-                TRACE("");
                         toggle_media_info(false);
                         ok = true; break;
                     case mrv::kCOLOR_AREA_WINDOW_SHOW:
-                TRACE("");
                         toggle_color_area(true);
                         ok = true; break;
                     case mrv::kCOLOR_AREA_WINDOW_HIDE:
-                TRACE("");
                         toggle_color_area(false);
                         ok = true; break;
                     case mrv::k3D_VIEW_WINDOW_SHOW:
-                TRACE("");
                         toggle_3d_view(true);
                         ok = true; break;
                     case mrv::k3D_VIEW_WINDOW_HIDE:
-                TRACE("");
                         toggle_3d_view(false);
                         ok = true; break;
                     case mrv::kHISTOGRAM_WINDOW_SHOW:
-                TRACE("");
                         toggle_histogram(true);
                         ok = true; break;
                     case mrv::kHISTOGRAM_WINDOW_HIDE:
-                TRACE("");
                         toggle_histogram(false);
                         ok = true; break;
                     case mrv::kVECTORSCOPE_WINDOW_SHOW:
-                TRACE("");
                         toggle_vectorscope(true); 
                         ok = true; break;
                     case mrv::kVECTORSCOPE_WINDOW_HIDE:
-                TRACE("");
                         toggle_vectorscope(false);
+                        ok = true; break;
+                    case mrv::kSTEREO_OPTIONS_WINDOW_SHOW:
+                        toggle_stereo_options(true); 
+                        ok = true; break;
+                    case mrv::kSTEREO_OPTIONS_WINDOW_HIDE:
+                        toggle_stereo_options(false);
+                        ok = true; break;
+                    case mrv::kPAINT_TOOLS_WINDOW_SHOW:
+                        toggle_paint_tools(true); 
+                        ok = true; break;
+                    case mrv::kPAINT_TOOLS_WINDOW_HIDE:
+                        toggle_paint_tools(false);
                         ok = true; break;
                     default:
                         LOG_ERROR( "Unknown mrv event" );
