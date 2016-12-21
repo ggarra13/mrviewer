@@ -113,7 +113,8 @@ o->value( x );
             extra_code {if ( main->uiView->can_do( fltk::STEREO ) )
   uiStereoOpenGL->activate();
 else
-  uiStereoOpenGL->deactivate();}
+  uiStereoOpenGL->deactivate();
+  }
           }
           {fltk::Item} {} {
             label {Top/bottom}
