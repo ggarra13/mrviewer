@@ -33,7 +33,7 @@
 #define USE_NV_SHADERS
 #define USE_OPENGL2_SHADERS
 #define USE_ARBFP1_SHADERS
-//#define USE_STEREO_GL
+#define USE_STEREO_GL
 
 #include <vector>
 #include <iostream>
@@ -1461,7 +1461,10 @@ void GLEngine::draw_images( ImageList& images )
 
 #ifdef USE_STEREO_GL
          if ( stereo & CMedia::kStereoOpenGL )
-             glDrawBuffer( GL_LEFT );
+         {
+             glDrawBuffer( GL_BACK_LEFT );
+             CHECK_GL( "glDrawBuffer GL_BACK_LEFT" );
+         }
 #endif
 
          quad->mask( 0 );
@@ -1600,7 +1603,10 @@ void GLEngine::draw_images( ImageList& images )
 
 #ifdef USE_STEREO_GL
       if ( stereo & CMedia::kStereoOpenGL )
-          glDrawBuffer( GL_RIGHT );
+      {
+          glDrawBuffer( GL_BACK_RIGHT );
+          CHECK_GL( "glDrawBuffer GL_BACK_RIGHT" );
+      }
 #endif
 
       quad->mask( 0 );
