@@ -1163,6 +1163,20 @@ bool Parser::parse( const std::string& s )
        }
        ok = true;
    }
+   else if ( cmd == N_("StereoOutput") )
+   {
+       int x;
+       is >> x;
+       v->stereo_output( (CMedia::StereoOutput) x );
+       ok = true;
+   }
+   else if ( cmd == N_("StereoInput") )
+   {
+       int x;
+       is >> x;
+       v->stereo_input( (CMedia::StereoInput) x );
+       ok = true;
+   }
    else if ( cmd == N_("PaintTools") )
    {
        int x;
