@@ -44,15 +44,11 @@ o->child_of( (fltk::Window*)main->uiMain );} visible
         {fltk::Choice} uiStereoInput {
           label Input
           user_data main user_data_type {mrv::ViewerUI*}
-          callback {mrv::media fg = v->uiView->foreground();
-
-if ( fg )
-{
-CMedia* img = fg->image();
+          callback {
 int x = o->value(); 
 CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
-img->stereo_input( in );
-}}
+v->uiView->stereo_input( in );
+}
           xywh {80 20 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
@@ -77,16 +73,11 @@ o->value( x );
         {fltk::Choice} uiStereoOutput {
           label Output
           user_data main user_data_type {mrv::ViewerUI*}
-          callback {mrv::media fg = v->uiView->foreground();
-
-if ( fg )
-{
-CMedia* img = fg->image();
+          callback {
 int x = o->value(); 
-CMedia::StereoOutput in = CMedia::to_stereo_output( x ); 
-img->stereo_output( in );
-//v->uiView->fit_image();
-}}
+CMedia::StereoOutput out = CMedia::to_stereo_output( x ); 
+v->uiView->stereo_output( out );
+}
           xywh {80 60 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
@@ -108,7 +99,7 @@ o->value( x );
             label {Right view}
             }
           {fltk::Item} uiStereoOpenGL {
-            label Stereo
+            label {Stereo OpenGL}
             
             extra_code {if ( main->uiView->can_do( fltk::STEREO ) )
   uiStereoOpenGL->activate();
