@@ -1352,6 +1352,32 @@ void ImageView::fit_image()
 
 
 
+void ImageView::stereo_input( CMedia::StereoInput x )
+{
+    mrv::media fg = foreground();
+    if (!fg) return;
+
+    CMedia* img = fg->image();
+    img->stereo_input(x);
+    
+    char buf[64];
+    sprintf( buf, "StereoInput %d", x );
+    send_network( buf );
+}
+
+void ImageView::stereo_output( CMedia::StereoOutput x ) 
+{
+    mrv::media fg = foreground();
+    if (!fg) return;
+
+    CMedia* img = fg->image();
+    img->stereo_output(x);
+
+    char buf[64];
+    sprintf( buf, "StereoOutput %d", x );
+    send_network( buf );
+}
+
 CMedia::StereoInput ImageView::stereo_input() const
 {
     mrv::media fg = foreground();
