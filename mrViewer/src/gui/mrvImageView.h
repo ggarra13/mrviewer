@@ -399,6 +399,8 @@ class server;
 
       void toggle_wait() { _wait ^= 1; }
 
+      void stereo_input( CMedia::StereoInput x );
+      void stereo_output( CMedia::StereoOutput x );
       CMedia::StereoInput stereo_input() const;
       CMedia::StereoOutput stereo_output() const;
       
