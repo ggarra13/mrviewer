@@ -2,8 +2,9 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   on startup.
 	 - Bug fixed color area of bottom/top and right/left on
 	   stereo output.
-	 - Bug fixed a wrong memory access due to a missing mutex.
-	   This bug would show up as a crash in stereo reels.
+	 - Bug fixed a wrong memory access due to a race condition
+	   on a missing mutex.
+	   This bug would often show up as a crash in stereo reels.
 	 - Fixed a bug that would crash the viewer when selecting
 	   stereo viewing and no image was present on the right eye.
 	 - Allowed fit image to fit the right image only when it is
@@ -27,6 +28,8 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   with OS's toolbars open.
 	 - Made Stereo Options Window and Paint Tools Window appear/
 	   disappear on network connections.
+	 - Made Stereo OpenGL active on card capability albeit it has
+	   not been tested.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
