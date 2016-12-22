@@ -3546,8 +3546,8 @@ CMedia::DecodeStatus aviImage::decode_subtitle( const boost::int64_t f )
 
    boost::int64_t frame = f;
 
-  mrv::PacketQueue::Mutex& vpm = _subtitle_packets.mutex();
-  SCOPED_LOCK( vpm );
+  mrv::PacketQueue::Mutex& spm = _subtitle_packets.mutex();
+  SCOPED_LOCK( spm );
 
   if ( _subtitle_packets.empty() )
     {
