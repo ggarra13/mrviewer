@@ -894,10 +894,14 @@ namespace mrv {
   void GLQuad::bind( const image_type_ptr& pic )
   {
       CHECK_GL( "bind" );
+    if ( ! pic ) {
+        LOG_ERROR( _("Not a picture to be bound") );
+        return;
+    }
     unsigned dw = pic->width();
     unsigned dh = pic->height();
-    if ( ! pic || dw <= 0 || dh <= 0 ) {
-        LOG_ERROR( _("Not a picture to be bound") );
+    if ( dw <= 0 || dh <= 0 ) {
+        LOG_ERROR( _("Not a valid picture to be bound") );
         return;
     }
 
