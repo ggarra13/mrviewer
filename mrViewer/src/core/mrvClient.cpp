@@ -416,6 +416,8 @@ void client::create(mrv::ViewerUI* ui)
 
 void client::remove( mrv::ViewerUI* ui )
 {
+    if ( !ui || !ui->uiView ) return;
+    
    ParserList::iterator i = ui->uiView->_clients.begin();
    ParserList::iterator e = ui->uiView->_clients.end();
 
@@ -424,9 +426,12 @@ void client::remove( mrv::ViewerUI* ui )
       (*i)->stop();
    }
 
-   ui->uiConnection->uiServerGroup->activate();
-   ui->uiConnection->uiConnect->label( _("Connect") );
-
+   if ( ui->uiConnection )
+   {
+       ui->uiConnection->uiServerGroup->activate();
+       ui->uiConnection->uiConnect->label( _("Connect") );
+   }
+   
    ui->uiView->_clients.clear();
 }
 
