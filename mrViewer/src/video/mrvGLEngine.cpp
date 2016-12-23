@@ -955,6 +955,9 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
     //
     glTranslated( _view->offset_x(), _view->offset_y(), 0.0 );
 
+    //
+    // Handle flip
+    //
     if ( flip != ImageView::kFlipNone )
     {
         float x = 1.0f, y = 1.0f;
@@ -974,6 +977,7 @@ void GLEngine::set_matrix( const mrv::ImageView::FlipDirection flip,
         glScaled( 1.0, pr, 1.0 );
     }
 
+    CHECK_GL( "set_matrix flip" );
 
 }
 
@@ -1412,6 +1416,7 @@ void GLEngine::draw_images( ImageList& images )
               glScaled( double(texWidth), double(texHeight), 1.0 );
 
           glTranslated( 0.5, -0.5, 0.0 );
+          CHECK_GL( "!view_vr translate" );
       }
       
       GLQuad* quad = *q;
@@ -1491,6 +1496,7 @@ void GLEngine::draw_images( ImageList& images )
                  quad->right( true );
              else
                  quad->right( false );
+             CHECK_GL( "bind1" );
              quad->bind( pic );
          }
          quad->gamma( g );
@@ -1648,6 +1654,7 @@ void GLEngine::draw_images( ImageList& images )
               rightView = false;
           
           quad->right( rightView );
+          CHECK_GL( "bind2" );
           quad->bind( pic );
       }
 
