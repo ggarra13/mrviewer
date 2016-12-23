@@ -39,6 +39,7 @@
 #include <inttypes.h>  // for PRId64
 
 
+#include <boost/locale.hpp>
 #include <boost/bind.hpp>
 #include <boost/thread.hpp>
 #include <boost/lexical_cast.hpp>
@@ -142,8 +143,9 @@ bool Parser::parse( const std::string& s )
 
    std::istringstream is( s );
 
-   std::locale mylocale("");   // get global locale
-   is.imbue(mylocale);  // imbue global locale
+   std::locale::global(boost::locale::generator().generate(""));
+   //is.imbue(mylocale);  // imbue global locale
+   is.imbue(std::locale());
 
    std::string cmd;
    is >> cmd;
@@ -338,7 +340,7 @@ bool Parser::parse( const std::string& s )
    }
    else if ( cmd == N_("Offset") )
    {
-      float x, y;
+      double x, y;
       is >> x >> y;
       v->offset_x( x );
       v->offset_y( y );
@@ -1006,6 +1008,7 @@ bool Parser::parse( const std::string& s )
                       std::string s = (*k)->send();
                       deliver( s );
                   }
+
               }
           }
 
@@ -1022,6 +1025,14 @@ bool Parser::parse( const std::string& s )
           sprintf( buf, N_("Looping %d"), (int)img->looping() );
           deliver( buf );
       
+          CMedia::StereoOutput out = img->stereo_output();
+          sprintf( buf, "StereoOutput %d", out );
+          deliver( buf );
+          
+          CMedia::StereoInput in = img->stereo_input();
+          sprintf( buf, "StereoInput %d", in );
+          deliver( buf );
+          
           boost::int64_t frame = img->frame() - img->first_frame() + 1;
           sprintf( buf, N_("seek %") PRId64, frame );
           deliver( buf );
@@ -1589,6 +1600,7 @@ void server::create(mrv::ViewerUI* ui)
 void server::remove( mrv::ViewerUI* ui )
 {
    mrv::ImageView* v = ui->uiView;
+   if (!v) return;
 
    ParserList::iterator i = v->_clients.begin();
    ParserList::iterator e = v->_clients.end();

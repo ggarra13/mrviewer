@@ -28,27 +28,25 @@ namespace mrv {open
     decl {mrv::ViewerUI* main_;} {}
     Function {main()} {return_type {mrv::ViewerUI*}
     } {
-      code {return main_;} {selected
-      }
+      code {return main_;} {}
     }
-    Function {make_window( mrv::ViewerUI* main )} {} {
+    Function {make_window( mrv::ViewerUI* main )} {open
+    } {
       {fltk::Window} uiMain {
         label {3D Stereo Options}
         user_data this user_data_type {mrv::StereoUI*}
         callback {v->main()->uiView->send_network( "StereoOptions 0" );
-o->hide();}
-        xywh {814 845 280 100} resizable
+o->hide();} open
+        xywh {814 957 280 100} resizable
         extra_code {main_ = main;
 o->child_of( (fltk::Window*)main->uiMain );} visible
       } {
         {fltk::Choice} uiStereoInput {
           label Input
           user_data main user_data_type {mrv::ViewerUI*}
-          callback {
-int x = o->value(); 
+          callback {int x = o->value(); 
 CMedia::StereoInput in = CMedia::to_stereo_input( x ); 
-v->uiView->stereo_input( in );
-}
+v->uiView->stereo_input( in );}
           xywh {80 20 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
@@ -73,19 +71,17 @@ o->value( x );
         {fltk::Choice} uiStereoOutput {
           label Output
           user_data main user_data_type {mrv::ViewerUI*}
-          callback {
-int x = o->value(); 
+          callback {int x = o->value(); 
 CMedia::StereoOutput out = CMedia::to_stereo_output( x ); 
-v->uiView->stereo_output( out );
-}
+v->uiView->stereo_output( out );} open
           xywh {80 60 175 25}
           extra_code {mrv::media fg = main->uiView->foreground();
 
 if ( fg )
 {
 CMedia* img = fg->image();
-CMedia::StereoOutput in = img->stereo_output();
-int x = CMedia::from_stereo_output( in );
+CMedia::StereoOutput out = img->stereo_output();
+int x = CMedia::from_stereo_output( out );
 o->value( x ); 
 }}
         } {
@@ -104,8 +100,7 @@ o->value( x );
             extra_code {if ( main->uiView->can_do( fltk::STEREO ) )
   uiStereoOpenGL->activate();
 else
-  uiStereoOpenGL->deactivate();
-  }
+  uiStereoOpenGL->deactivate();}
           }
           {fltk::Item} {} {
             label {Top/bottom}
@@ -142,6 +137,29 @@ else
     }
     Function {~StereoUI()} {} {
       code {delete uiMain; uiMain = NULL;} {}
+    }
+    Function {refresh()} {open
+    } {
+      code {mrv::ViewerUI* m = main();
+
+if ( m && m->uiView )
+{
+	mrv::media fg = m->uiView->foreground();
+
+	if ( fg )
+	{
+		CMedia* img = fg->image();
+		CMedia::StereoInput in = img->stereo_input();
+		int x = CMedia::from_stereo_input( in );
+		uiStereoInput->value( x ); 
+
+		CMedia::StereoOutput out = img->stereo_output();
+		x = CMedia::from_stereo_output( out );
+		uiStereoOutput->value( x );
+	}
+
+}} {selected
+      }
     }
   }
 } 
