@@ -1359,6 +1359,12 @@ void ImageView::stereo_input( CMedia::StereoInput x )
 
     CMedia* img = fg->image();
     img->stereo_input(x);
+
+    mrv::ViewerUI* m = main();
+    if ( m )
+    {
+        m->uiStereo->refresh();
+    }
     
     char buf[64];
     sprintf( buf, "StereoInput %d", x );
@@ -1373,6 +1379,12 @@ void ImageView::stereo_output( CMedia::StereoOutput x )
     CMedia* img = fg->image();
     img->stereo_output(x);
 
+    mrv::ViewerUI* m = main();
+    if ( m )
+    {
+        m->uiStereo->refresh();
+    }
+    
     char buf[64];
     sprintf( buf, "StereoOutput %d", x );
     send_network( buf );
@@ -3591,7 +3603,7 @@ void ImageView::mouseDrag(int x,int y)
            
            lastX = x;
            lastY = y;
-           
+
 	   char buf[128];
 	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
 	   send_network( buf );
