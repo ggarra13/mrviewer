@@ -646,7 +646,7 @@ int CMedia::from_stereo_input( CMedia::StereoInput x )
         case kLeftRightStereoInput: return 2;
         case kNoStereoInput:
         default:
-            return -1;
+            return 0;
     }
 }
 
