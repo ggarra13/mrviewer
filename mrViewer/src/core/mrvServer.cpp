@@ -140,12 +140,13 @@ bool Parser::parse( const std::string& s )
 {
    if ( !connected || !ui || !view() ) return false;
 
-
+   // LOG_CONN( "Received: " << s );
    std::istringstream is( s );
-
-   std::locale::global(boost::locale::generator().generate(""));
-   //is.imbue(mylocale);  // imbue global locale
+   
+   // Set locale globally to user locale
+   std::locale::global( std::locale("") );
    is.imbue(std::locale());
+
 
    std::string cmd;
    is >> cmd;
@@ -157,7 +158,6 @@ bool Parser::parse( const std::string& s )
    ParserList c = v->_clients;
    v->_clients.clear();
 
-   //LOG_CONN( "Received: " << s );
 
 #ifdef DEBUG_COMMANDS
    DBG( "received: " << cmd );
@@ -1631,7 +1631,9 @@ void server_thread( const ServerData* s )
 
       if ( !s->ui || !s->ui->uiView || !s->ui->uiConnection )
       {
-          LOG_ERROR( "Trashing memory" );
+          std::cerr << "Trashing memory1 " << s->ui << std::endl;
+          std::cerr << "Trashing memory2 " << s->ui->uiView << std::endl;
+          std::cerr << "Trashing memory3 " << s->ui->uiConnection << std::endl;
       }
 
       s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
