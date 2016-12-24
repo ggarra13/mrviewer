@@ -25,7 +25,7 @@
  * 
  */
 
-//#define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+#define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 
 #include <string.h>
 #include <locale.h>
@@ -166,11 +166,12 @@ int main( int argc, char** argv )
     char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
-
+  
   // Create and install global locale
   try {
       
-      std::locale::global(boost::locale::generator().generate(""));
+      //std::locale::global(boost::locale::generator().generate(""));
+      std::locale::global( std::locale("") );
       // Make boost.filesystem use it
       fs::path::imbue(std::locale());
   }
@@ -181,11 +182,12 @@ int main( int argc, char** argv )
   
 
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
-
+#undef setlocale
   if ( tmp )
   {
       loc = strdup( tmp );
   }
+  setlocale( LC_ALL, loc );
   
 
   char buf[1024];
