@@ -36,8 +36,8 @@
 #define N_(String) gettext_noop (String)
 
 #ifdef _WIN32
-#undef fprintf
-#undef setlocale
+//#undef fprintf
+//#undef setlocale
 // #undef sprintf
 #endif
 
