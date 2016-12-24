@@ -826,7 +826,7 @@ static const char* kCLocale = "C";
         {
             LOG_ERROR( "Could not set locale to " << kCLocale );
         }
-        std::locale::global(boost::locale::generator().generate(kCLocale));
+        std::locale::global(std::locale(kCLocale));
         // Make boost.filesystem use it
         boost::filesystem::path::imbue(std::locale());
 
