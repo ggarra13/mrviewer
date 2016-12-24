@@ -49,6 +49,9 @@ decl {\#include "gui/mrvColorOps.h"} {}
 
 decl {\#include "gui/mrvHistogram.h"} {} 
 
+decl {\#include "gui/mrvValueInput.h"} {public
+} 
+
 decl {\#include "gui/mrvVectorscope.h"} {} 
 
 decl {\#include "gui/mrvImageInformation.h"} {} 
@@ -638,7 +641,7 @@ o->label( o->child( o->value() )->label() );}
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {669 512 670 450} resizable visible
+        xywh {669 512 670 450} hide resizable
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -2257,8 +2260,7 @@ o->child_of( main->uiMain );} modal
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class PaintUI {open
-  } {
+  class PaintUI {} {
     decl {mrv::ViewerUI* main_;} {}
     Function {make_window( ViewerUI* m )} {open
     } {
@@ -2420,8 +2422,7 @@ v->uiView->redraw();}
     }
     Function {main()} {open return_type {mrv::ViewerUI*}
     } {
-      code {return main_;} {selected
-      }
+      code {return main_;} {}
     }
   }
   class ConnectionUI {} {
@@ -2495,7 +2496,8 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {} {
+  class ViewerUI {open
+  } {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2545,7 +2547,7 @@ o->main( this );}
             xywh {0 0 640 28} box ENGRAVED_BOX
           } {
             {fltk::PopupMenu} uiWindows {
-              label W open
+              label W
               tooltip {Opens different windows}
               xywh {5 5 20 20}
               extra_code {o->disable_glyph();}
@@ -2635,7 +2637,7 @@ v->uiLog->uiMain->show();}
                 callback {v->uiAbout->uiMain->show();}
                 }
             }
-            {fltk::Group} {} {open
+            {fltk::Group} {} {
               xywh {30 5 90 20} color 0x53535300
             } {
               {fltk::PopupMenu} uiColorChannel {
@@ -2647,10 +2649,10 @@ v->uiLog->uiMain->show();}
                 class {mrv::PopupMenu}
               } {}
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {130 5 264 20} color 0x53535300
             } {
-              {fltk::Group} {} {open
+              {fltk::Group} {} {
                 xywh {0 0 264 20}
               } {
                 {fltk::InvisibleBox} {} {
@@ -2664,6 +2666,7 @@ v->uiGain->value( (float) o->value() );}
                   tooltip {Gain image value.  A simple multiplier of the image pixel values.}
                   xywh {30 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 minimum 0.01 maximum 1024 step 0.001 value 1
                   extra_code {o->textsize( 12 );}
+                  class {mrv::ValueInput}
                 }
                 {fltk::Slider} uiGain {
                   user_data this user_data_type {mrv::ViewerUI*}
@@ -2722,7 +2725,7 @@ Click to toggle between current and normal exposure.}
                 }
               }
             }
-            {fltk::Group} {} {
+            {fltk::Group} {} {open
               xywh {405 5 155 20} color 0x53535300
             } {
               {fltk::Group} {} {open
@@ -2761,11 +2764,12 @@ v->uiView->gamma(g);}
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-v->uiGamma->value( (float) o->value() );}
+v->uiGamma->value( (float) o->value() );} selected
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
                     extra_code {o->textsize(12);}
+                    class {mrv::ValueInput}
                   }
                   {fltk::Slider} uiGamma {
                     user_data this user_data_type {mrv::ViewerUI*}
