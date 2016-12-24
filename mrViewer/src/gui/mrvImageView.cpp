@@ -5338,6 +5338,9 @@ void ImageView::gain( const float f )
   sprintf( buf, "Gain %g", f );
   send_network( buf );
 
+  uiMain->uiGain->value( f );
+  uiMain->uiGainInput->value( f );
+  
   refresh_fstop();
   flush_caches();
   smart_refresh();
@@ -5544,6 +5547,10 @@ void ImageView::exposure_change( float d )
   gain( Imath::Math<float>::pow( 2.0f, exposure ) );
   uiMain->uiGain->value( _gain );
   uiMain->uiGainInput->value( _gain );
+
+  char buf[64];
+  sprintf( buf, "Gain %g", _gain );
+  uiMain->uiView->send_network( buf );
 }
 
 
