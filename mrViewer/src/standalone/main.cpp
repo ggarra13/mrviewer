@@ -25,7 +25,7 @@
  * 
  */
 
-#define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+// #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 
 #include <string.h>
 #include <locale.h>
@@ -163,15 +163,17 @@ int main( int argc, char** argv )
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
 
-    char* loc = _("unknown");
 
   const char* tmp = setlocale(LC_ALL, "");
-  
   // Create and install global locale
   try {
       
       //std::locale::global(boost::locale::generator().generate(""));
-      std::locale::global( std::locale("") );
+      const char* env = getenv("LC_ALL");
+      if ( !env )
+          std::locale::global( std::locale("") );
+      else
+          std::locale::global( std::locale(env) );
       // Make boost.filesystem use it
       fs::path::imbue(std::locale());
   }
@@ -182,12 +184,12 @@ int main( int argc, char** argv )
   
 
   if ( !tmp )  tmp = setlocale( LC_ALL, NULL );
-#undef setlocale
-  if ( tmp )
-  {
-      loc = strdup( tmp );
-  }
-  setlocale( LC_ALL, loc );
+// #undef setlocale
+//   if ( tmp )
+//   {
+//       loc = strdup( tmp );
+//       setlocale( LC_ALL, loc );
+//   }
   
 
   char buf[1024];
@@ -207,13 +209,7 @@ int main( int argc, char** argv )
   
   const char* bind = bindtextdomain(buf, path.c_str() );
   const char* domain = textdomain(buf);
-
-  if ( loc )
-  {
-      LOG_INFO( _("Changed locale to ") << loc );
-      free(loc);
-  }
-
+  
   // Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
 
@@ -225,6 +221,7 @@ int main( int argc, char** argv )
       mrv::ViewerUI* ui = NULL;
       std::string lockfile;
 
+  
       try {
 
 
