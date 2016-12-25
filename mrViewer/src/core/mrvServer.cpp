@@ -140,11 +140,14 @@ bool Parser::parse( const std::string& s )
 {
    if ( !connected || !ui || !view() ) return false;
 
-   // LOG_CONN( "Received: " << s );
    std::istringstream is( s );
    
    // Set locale globally to user locale
-   std::locale::global( std::locale("") );
+   const char* env = getenv("LC_ALL");
+   if ( !env )
+       std::locale::global( std::locale("") );
+   else
+       std::locale::global( std::locale(env) );
    is.imbue(std::locale());
 
 
