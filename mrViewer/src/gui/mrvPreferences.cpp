@@ -359,8 +359,6 @@ fltk::StyleSet*     newscheme = NULL;
     ui.get( "timeline_display", tmp, 0 );
     uiPrefs->uiPrefsTimelineDisplay->value(tmp);
 
-    ui.get( "language", tmp, 0 );
-    uiPrefs->uiPrefsLanguage->value( tmp );
 
     //
     // ui/window preferences
@@ -812,35 +810,7 @@ static const char* kCLocale = "C";
     mrv::PreferencesUI* uiPrefs = main->uiPrefs;
 
     main->uiMain->show();
-
-    //
-    // Changing the locale on windows does not work.  Not sure why.
-    // Floating point numbers change, but LC_MESSAGES do not.
-    //
-    const char* loc = setlocale( LC_ALL, NULL );
-    if ( strncmp( loc, kCLocale, strlen(kCLocale) ) != 0 && 
-         uiPrefs->uiPrefsLanguage->value() == 1 )
-    {
-        const char* loc = setlocale( LC_ALL, kCLocale );
-        if (!loc)
-        {
-            LOG_ERROR( "Could not set locale to " << kCLocale );
-        }
-        std::locale::global(std::locale(kCLocale));
-        // Make boost.filesystem use it
-        boost::filesystem::path::imbue(std::locale());
-
-        // @bug: windows does not change LC_MESSAGES in C locale.
-        //       Thus, we force a dummy textdomain, so gettext will fail.
-#ifdef _WIN32
-        char buf[1024];
-        sprintf( buf, "dummy" );
-        textdomain(buf);
-#endif
-
-        throw mrv::reinit_exception( "Changed locale to English" );
-    }
-
+    
     fltk::check();
 
     //
@@ -1162,7 +1132,6 @@ static const char* kCLocale = "C";
     ui.set( "histogram", (int) uiPrefs->uiPrefsHistogram->value() );
     ui.set( "vectorscope", (int) uiPrefs->uiPrefsVectorscope->value() );
 
-    ui.set( "language", uiPrefs->uiPrefsLanguage->value() );
 
     ui.set( "timeline_display", 
 	    uiPrefs->uiPrefsTimelineDisplay->value() );
