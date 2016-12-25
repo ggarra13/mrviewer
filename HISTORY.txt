@@ -32,6 +32,8 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   not been tested.
 	 - Made stereo input and output work in network connections.
 	 - Bug fixed network connections on different locale (Spanish).
+	 - Removed language selection from the interface.  Now all
+	   is controlled with the environment variable LC_ALL.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
