@@ -486,11 +486,11 @@ o->value(-1);}
         user_data this user_data_type {GL3dViewUI*}
         callback {v->main()->uiView->send_network( "GL3dView 0" );
 o->hide();}
-        xywh {158 613 325 240} set_xy resizable
+        xywh {158 641 325 240} set_xy hide resizable
         extra_code {// Make the window transient
 main_ = main;
 o->child_of( main->uiMain );}
-        class {mrv::GlWindow3d} visible
+        class {mrv::GlWindow3d}
       } {}
     }
     Function {GL3dViewUI(ViewerUI* m)} {} {
@@ -636,12 +636,13 @@ o->label( o->child( o->value() )->label() );}
       code {return main_;} {}
     }
   }
-  class PreferencesUI {} {
+  class PreferencesUI {open
+  } {
     Function {make_window(mrv::ViewerUI* m)} {open private
     } {
       {fltk::Window} uiMain {
         label Preferences open
-        xywh {669 512 670 450} hide resizable
+        xywh {669 540 670 450} resizable visible
       } {
         {fltk::WizardGroup} uiWizard {
           label Settings open
@@ -653,7 +654,7 @@ o->label( o->child( o->value() )->label() );}
           } {
             {fltk::Group} {} {
               label {Window Behavior}
-              xywh {9 32 410 100} box ROUNDED_BOX
+              xywh {9 44 410 100} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsAlwaysOnTop {
                 label {Always on Top}
@@ -692,8 +693,8 @@ If you try to open several mrViewers with different images, all these images wil
               }
             }
             {fltk::Group} {} {
-              label {UI Elements} open
-              xywh {9 161 410 123} box ROUNDED_BOX
+              label {UI Elements} open selected
+              xywh {9 196 410 123} box ROUNDED_BOX
             } {
               {fltk::CheckButton} uiPrefsTopbar {
                 label Topbar
@@ -749,23 +750,6 @@ If you try to open several mrViewers with different images, all these images wil
                 label {Paint Tools}
                 tooltip {When selected, mrViewer will start with the stereo options window already open.}
                 xywh {217 91 25 25} align 8 box UP_BOX
-              }
-            }
-            {fltk::Group} {} {
-              label {User Language} open
-              xywh {9 304 410 50} box ROUNDED_BOX
-            } {
-              {fltk::Choice} uiPrefsLanguage {
-                label Language open
-                tooltip {Language used in the GUI.  It requires a restart of the GUI.}
-                xywh {105 10 190 25} box THIN_DOWN_BOX
-              } {
-                {fltk::Item} {} {
-                  label Native
-                  }
-                {fltk::Item} {} {
-                  label English
-                  }
               }
             }
           }
@@ -2269,12 +2253,12 @@ o->child_of( main->uiMain );} modal
         user_data this user_data_type {mrv::PaintUI*}
         callback {v->main()->uiView->send_network( "PaintTools 0" );
 o->hide();}
-        xywh {446 514 155 395} horizontal resizable
+        xywh {451 542 150 395} horizontal hide resizable
         extra_code {o->child_of( m->uiMain );
-main_ = m;} visible
+main_ = m;}
       } {
         {fltk::Group} {} {open
-          xywh {0 9 149 376}
+          xywh {0 9 145 376}
         } {
           {fltk::Button} uiSelection {
             user_data m user_data_type {mrv::ViewerUI*}
@@ -2496,8 +2480,7 @@ else
       code {delete uiMain; uiMain = NULL;} {}
     }
   }
-  class ViewerUI {open
-  } {
+  class ViewerUI {} {
     decl {static PreferencesUI* uiPrefs;} {public
     }
     decl {static LogUI* uiLog;} {public
@@ -2528,7 +2511,7 @@ else
     }
     decl {EDLWindowUI* uiEDLWindow;} {public
     }
-    Function {make_window()} {open private
+    Function {make_window()} {private
     } {
       code {uiPrefs = new PreferencesUI(this);} {}
       {fltk::Window} uiMain {
@@ -2764,7 +2747,7 @@ v->uiView->gamma(g);}
                   {fltk::ValueInput} uiGammaInput {
                     user_data this user_data_type {mrv::ViewerUI*}
                     callback {v->uiView->gamma( (float) o->value() );
-v->uiGamma->value( (float) o->value() );} selected
+v->uiGamma->value( (float) o->value() );}
                     tooltip {Allows you to adjust gamma curve for display.
 Value is:  pow( 2, 1/x );}
                     xywh {50 0 35 18} when CHANGED color 0x98a8a800 textcolor 0x3030300 selection_color 0xe8e8d800 labelcolor 0xababab00 highlight_textcolor 56 minimum 0.015625 maximum 64 step 0.01 value 1
