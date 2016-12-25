@@ -91,12 +91,22 @@ abriendo una ventana de Windows Explorer y cliqueando doblemente sobre dichos ar
 <br>
 mrViewer comenzará en el lenguaje natural del Sistema Operativo, si hay traduccioes disponibles.  Si usted quiere que mrViewer comience siempre en Inglés, setee la variable de entorno LC_ALL.
 <br>
-En Linux bash:
+En Linux bash, agregue a mrViewer.sh:
 <div class="console">
 export LC_ALL=C
 </div>
-Bajo Windows, el seteo esta en las Preferencias del Sistema, Avanzado, Variables de Entorno.
+Bajo Windows, cree una .bat file como:
+<div class="console">
+  @echo off
+  <br>
+  export LC_ALL=C
+  <br>
+start "" "/Directorio/a/mrViewer.exe"
+</div>
+<br>
+Tenga en cuenta que las asociaciones de archivos tendran que ser cambiadas.
 
+<br>
 <br>
 Si mrViewer tiene la opcion de una sola instancia de mrViewer en sus preferencias, solo un mrViewer arrancará y cualquier otra imagen que iria a un nuevo visor será redireccionada de vuelta a la primera instancia de mrViewer. <br>
 Para que esto funciones, mrViewer crea un archivo de traba en tu
