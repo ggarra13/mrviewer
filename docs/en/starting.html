@@ -101,12 +101,20 @@ mrViewer recognizes may automatically invoke a new copy of mrViewer.
 <br>
 mrViewer will start in the natural language of the OS, if there are translations available.  If you want mrViewer to open always in English, set the environment variable:
 <br>
-On Linux bash:
+On Linux bash, look in mrViewer.sh and add:
 <div class="console">
 export LC_ALL=C
 </div>
-Under Windows, the setting is in the System Preferences, Advanced, Environment Variables.
+Under Windows, create a .bat file, like:
+<div class="console">
+@echo off<br>
+set LC_ALL=C<br>
+start "" "Path/To/mrViewer.exe"
+</div>
+<br>
+Note that file associations will need changing.
 
+<br>
 <br>
 If mrViewer has the single instance preference set, only one mrViewer will
 get started and any other image that would go to a new viewer will get
