@@ -2060,6 +2060,7 @@ void ImageView::draw()
 
   if ( !fg ) return;
 
+
   CMedia* img = fg->image();
 
   _engine->draw_annotation( img->shapes() );
