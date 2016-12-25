@@ -150,7 +150,7 @@ namespace mrv {
     mrv::io::info << _("       ") << N_("[") << m << N_("] ") << x; \
   } while(0)
 #define mrvCONN_INFO(m, x)    do {		 \
-    mrv::io::conn << _("{conn} ") << N_("[") << m << N_("] ") << x; \
+    std::cerr << _("{conn} ") << N_("[") << m << N_("] ") << x;     \
   } while(0)
 
 #define LOG_ERROR(x)   mrvLOG_ERROR( kModule, x << std::endl )
