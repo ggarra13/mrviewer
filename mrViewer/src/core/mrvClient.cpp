@@ -161,7 +161,7 @@ void client::start_connect(tcp::resolver::iterator endpoint_iter)
 {
    if (endpoint_iter != tcp::resolver::iterator())
    {
-      LOG_CONN( "Trying " << endpoint_iter->endpoint() << "..." );
+       LOG_CONN( "Trying " << endpoint_iter->endpoint() << "..." );
 
       // Set a deadline for the connect operation.
       deadline_.expires_from_now(boost::posix_time::seconds(60));
@@ -189,7 +189,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // the timeout handler must have run first.
    if (!socket_.is_open())
    {
-      LOG_CONN( "Connect timed out." );
+       // LOG_CONN( "Connect timed out." );
       
       connected = false;
 
@@ -200,7 +200,7 @@ void client::handle_connect(const boost::system::error_code& ec,
    // Check if the connect operation failed before the deadline expired.
    else if (ec)
    {
-      LOG_CONN( "Connect error: " << ec.message() );
+       LOG_CONN( "Connect error: " << ec.message() );
  
       connected = false;
 
@@ -276,7 +276,7 @@ void client::handle_read(const boost::system::error_code& ec)
             {
                 if ( msg == N_("OK") || msg.empty() )
                 {
-                    LOG_CONN("OK");
+                    // LOG_CONN("OK");
                 }
                 else if ( msg == N_("Not OK") )
                 {
@@ -306,7 +306,7 @@ void client::handle_read(const boost::system::error_code& ec)
     }
     else
     {
-        LOG_CONN( ">>>>>>>>>>>> Error on receive: " << ec.message() );
+        // LOG_CONN( ">>>>>>>>>>>> Error on receive: " << ec.message() );
        
         stop();
     }
@@ -365,7 +365,7 @@ void client::handle_write(const boost::system::error_code& ec)
    }
    else
    {
-      LOG_CONN( "Error on send: " << ec.message() );
+       LOG_CONN( "Error on send: " << ec.message() );
       
       stop();
    }
@@ -418,8 +418,10 @@ void client::remove( mrv::ViewerUI* ui )
 {
     if ( !ui || !ui->uiView ) return;
     
-   ParserList::iterator i = ui->uiView->_clients.begin();
-   ParserList::iterator e = ui->uiView->_clients.end();
+    mrv::ImageView* v = ui->uiView;
+
+   ParserList::iterator i = v->_clients.begin();
+   ParserList::iterator e = v->_clients.end();
 
    for ( ; i != e; ++i )
    {
@@ -432,7 +434,7 @@ void client::remove( mrv::ViewerUI* ui )
        ui->uiConnection->uiConnect->label( _("Connect") );
    }
    
-   ui->uiView->_clients.clear();
+   v->_clients.clear();
 }
 
 
