@@ -66,7 +66,7 @@ class Parser
     mrv::EDLGroup*     edl_group() const;
 
     virtual void deliver( const std::string& m ) = 0;
-    virtual void stop() = 0;
+    virtual void stop() {};
 
 
   public:
