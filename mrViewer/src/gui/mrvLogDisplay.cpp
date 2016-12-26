@@ -125,8 +125,10 @@ bool LogDisplay::show  = false;
         if ( x[t] == '\n' ) ++_lines;
         buf[t] = 'A';
     }
+    fltk::lock();
     stylebuffer_->append( buf );
     buffer_->append( x );
+    fltk::unlock();
     delete [] buf;
   }
 
@@ -141,8 +143,10 @@ bool LogDisplay::show  = false;
         if ( x[t] == '\n' ) ++_lines;
         buf[t] = 'B';
     }
+    fltk::lock();
     stylebuffer_->append( buf );
     buffer_->append( x );
+    fltk::unlock();
     delete [] buf;
 
   }
@@ -158,8 +162,10 @@ bool LogDisplay::show  = false;
         if ( x[t] == '\n' ) ++_lines;
         buf[t] = 'C';
     }
+    fltk::lock();
     stylebuffer_->append( buf );
     buffer_->append( x );
+    fltk::unlock();
     delete [] buf;
 
     
