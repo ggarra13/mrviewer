@@ -417,6 +417,9 @@ class CMedia
 
     ////////////////// Return the list of available layers in the image
     inline const stringArray& layers() const { return _layers; }
+    
+    ////////////////// Return the list of available layers in the image
+    inline stringArray& layers() { return _layers; }
 
     ////////////////// Return the current damage area in the image
     inline const mrv::Recti& damage_rectangle() const 
