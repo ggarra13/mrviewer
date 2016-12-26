@@ -5059,9 +5059,8 @@ char* ImageView::get_layer_label( unsigned short c )
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     char* lbl = NULL;
     unsigned short idx = 0;
-    std::string layername;
-    unsigned short num = uiColorChannel->children();
-    for ( unsigned short i = 0; i < num; ++i, ++idx )
+    unsigned num = uiColorChannel->children();
+    for ( unsigned i = 0; i < num; ++i, ++idx )
     {
         fltk::Widget* w = uiColorChannel->child(i);
         if ( idx == c )
@@ -5077,8 +5076,9 @@ char* ImageView::get_layer_label( unsigned short c )
         {
             fltk::Group* g = (fltk::Group*) w;
             unsigned short numc = g->children();
-            unsigned short gidx = idx;
-            layername = w->label();
+            std::string layername;
+            if ( w->label() )
+                layername = w->label();
             for ( unsigned short j = 0; j < numc; ++j )
             {
                 ++idx;
@@ -5100,6 +5100,7 @@ char* ImageView::get_layer_label( unsigned short c )
     {
         LOG_ERROR( _("Label not found for index ") << c );
     }
+
     return lbl;
 }
 
@@ -5156,6 +5157,7 @@ void ImageView::channel( unsigned short c )
   unsigned short num = uiColorChannel->children();
   if ( num == 0 ) return; // Audio only - no channels
 
+  boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
 
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -5170,7 +5172,8 @@ void ImageView::channel( unsigned short c )
 
   if ( c >= idx ) 
   {
-      LOG_ERROR( _("Invalid index ") << c << _(" for channel" ) );
+      LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum:" )
+                 << idx );
       return;
   }
 
@@ -5199,14 +5202,13 @@ void ImageView::channel( unsigned short c )
   _channel = c;
 
   char buf[128];
-  sprintf( buf, "Channel %d", c );
+  sprintf( buf, "Channel %d %s", c, lbl );
   send_network( buf );
-
 
   std::string channelName( lbl );
 
   static std::string oldChannel;
-
+  
   std::string ext = channelName;
   std::string oext = oldChannel;
 
@@ -5619,18 +5621,21 @@ double ImageView::pixel_ratio() const
 int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
-
+    TRACE("");
+    boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
+    TRACE("");
+    
     CMedia* img = fg->image();
 
     fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
     uiColorChannel->clear();
-
+    
     const stringArray& layers = img->layers();
 
     stringArray::const_iterator i = layers.begin();
     stringArray::const_iterator e = layers.end();
 
-
+    
     int v   = -1;
     int idx = 0;
     std::set< short > shortcuts;
@@ -5680,8 +5685,9 @@ int ImageView::update_shortcuts( const mrv::media& fg,
             {
                 // Copy shortcut to group and replace leaf with group
                 unsigned last = uiColorChannel->children()-1;
-                unsigned s = uiColorChannel->child(last)->shortcut();
-                uiColorChannel->remove( last );
+                fltk::Widget* w = uiColorChannel->child(last);
+                unsigned s = w->shortcut();
+                uiColorChannel->remove( w );
                 g = uiColorChannel->add_group( x.c_str(), NULL );
                 g->shortcut( s );
                 group = false;
@@ -5703,7 +5709,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
             o = uiColorChannel->add( name.c_str(), NULL );
         }
-
+        
         // If name matches root name or name matches full channel name,
         // store the index to the channel.
         if ( v == -1 && ( x == root || (channelName && name == channelName) ) )
@@ -6731,6 +6737,7 @@ void  ImageView::looping( CMedia::Looping x )
     mrv::Reel reel = browser()->current_reel();
     if ( !reel ) return;
 
+
     if ( reel->edl )
     {
         mrv::MediaList::iterator i = reel->images.begin();
@@ -6753,13 +6760,16 @@ void  ImageView::looping( CMedia::Looping x )
         }
     }
 
-  uiMain->uiLoopMode->value( x );
-  uiMain->uiLoopMode->label(uiMain->uiLoopMode->child(x)->label());
-  uiMain->uiLoopMode->redraw();
-
-  char buf[64];
-  sprintf( buf, "Looping %d", x );
-  send_network( buf );
+    if ( x != CMedia::kUnknownLoop )
+    {
+        uiMain->uiLoopMode->value( x );
+        uiMain->uiLoopMode->label(uiMain->uiLoopMode->child(x)->label());
+        uiMain->uiLoopMode->redraw();
+    }
+    
+    char buf[64];
+    sprintf( buf, "Looping %d", x );
+    send_network( buf );
 
 }
 
