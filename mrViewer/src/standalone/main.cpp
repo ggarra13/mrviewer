@@ -25,7 +25,7 @@
  * 
  */
 
-// #define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
+#define ALLOC_CONSOLE  // ALLOC a Console for debugging stderr/stdout
 
 #include <string.h>
 #include <locale.h>
@@ -159,6 +159,8 @@ int main( int argc, char** argv )
 #ifdef LINUX
     XInitThreads();
 #endif
+    fltk::lock();
+
     
     // Avoid repetition in ffmpeg's logs
     av_log_set_flags(AV_LOG_SKIP_REPEATED);
@@ -210,7 +212,8 @@ int main( int argc, char** argv )
   const char* bind = bindtextdomain(buf, path.c_str() );
   const char* domain = textdomain(buf);
   
-  // Try to set MRV_ROOT if not set already
+
+// Try to set MRV_ROOT if not set already
   mrv::set_root_path( argc, argv );
 
 
