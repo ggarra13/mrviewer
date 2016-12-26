@@ -107,15 +107,14 @@ void Parser::write( const std::string& s, const std::string& id )
    ParserList::const_iterator i = ui->uiView->_clients.begin();
    ParserList::const_iterator e = ui->uiView->_clients.end();
 
-   bool sent = false;
    for ( ; i != e; ++i )
    {
       std::string p = boost::lexical_cast<std::string>( (*i)->socket_.remote_endpoint() );
+      
       if ( p == id )
       {
           continue;
       }
-      sent = true;
       // LOG_CONN( s << " sent to " << *i << " " << p );
       (*i)->deliver( s );
    }
@@ -157,7 +156,7 @@ bool Parser::parse( const std::string& s )
    bool ok = false;
 
    mrv::ImageView* v = view();
-
+   
    ParserList c = v->_clients;
    v->_clients.clear();
 
@@ -353,7 +352,9 @@ bool Parser::parse( const std::string& s )
    else if ( cmd == N_("Channel") )
    {
       unsigned short ch;
-      is >> ch;
+      std::string name;
+      is >> ch >> name;
+      std::cerr << ">>>>>>>>>>>>>>>>>>>>>>>> Channel " << ch << " " << name <<std::endl;
       
       if ( v->foreground() )
 	 v->channel( ch );
@@ -1049,8 +1050,6 @@ bool Parser::parse( const std::string& s )
       sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
       deliver( buf );
 
-      sprintf(buf, N_("Channel %d"), v->channel() );
-      deliver( buf );
       
       sprintf(buf, N_("UseLUT %d"), (int)v->use_lut() );
       deliver( buf );
@@ -1080,6 +1079,10 @@ bool Parser::parse( const std::string& s )
       sprintf( buf, N_("FPS %g"), v->fps() );
       deliver( buf );
 
+      // sprintf(buf, N_("Channel %d %s"), v->channel(),
+      //         v->get_layer_label(v->channel()) );
+      // deliver( buf );
+      
       const mrv::Rectd& s = v->selection();
       if ( s.w() != 0 )
       {
@@ -1320,6 +1323,22 @@ void tcp_session::stop()
    boost::system::error_code ignored_ec;
    socket_.close(ignored_ec);
    non_empty_output_queue_.cancel();
+
+   if ( ui && ui->uiView )
+   {
+       mrv::ImageView* v = ui->uiView;
+       ParserList::iterator i = v->_clients.begin();
+       ParserList::iterator e = v->_clients.end();
+
+       for ( ; i != e; ++i )
+       {
+           if ( *i == this )
+           {
+               v->_clients.erase( i );
+               break;
+           }
+       }
+   }
 }
 
 
@@ -1570,7 +1589,6 @@ void server::start_accept()
         						       )
         		       );
    
-
    acceptor_.async_accept(new_session->socket(),
 			  boost::bind(&server::handle_accept, this, 
 				      new_session, _1));
@@ -1602,8 +1620,9 @@ void server::create(mrv::ViewerUI* ui)
 
 void server::remove( mrv::ViewerUI* ui )
 {
-   mrv::ImageView* v = ui->uiView;
-   if (!v) return;
+    if ( !ui || !ui->uiView ) return;
+    
+    mrv::ImageView* v = ui->uiView;
 
    ParserList::iterator i = v->_clients.begin();
    ParserList::iterator e = v->_clients.end();
@@ -1613,9 +1632,12 @@ void server::remove( mrv::ViewerUI* ui )
       (*i)->stop();
    }
 
-   ui->uiConnection->uiCreate->label( _("Create") );
-   ui->uiConnection->uiClientGroup->activate();
-
+   if ( ui->uiConnection )
+   {
+       ui->uiConnection->uiCreate->label( _("Create") );
+       ui->uiConnection->uiClientGroup->activate();
+   }
+   
    v->_clients.clear();
    v->_server.reset();
 }
