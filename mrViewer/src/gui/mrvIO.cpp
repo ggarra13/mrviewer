@@ -73,6 +73,7 @@ namespace mrv {
 
       // freeze and call the virtual print method
       char* c = strdup( str().c_str() );
+      if (!c) return 1;
 
       print( c );
 
@@ -122,7 +123,7 @@ namespace mrv {
       // Send string to Log Window in Connection panel
        if ( ViewerUI::uiConnection )
        {
-	  ViewerUI::uiConnection->uiLog->info( c );
+           ViewerUI::uiConnection->uiLog->info( c );
        }
     }
 

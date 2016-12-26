@@ -34,6 +34,8 @@ v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	 - Bug fixed network connections on different locale (Spanish).
 	 - Removed language selection from the interface.  Now all
 	   is controlled with the environment variable LC_ALL.
+	 - Bug fixed network connections which were severely broken.
+	   Now they shouldn't crash and reconnects should be possible.
 
 v3.4.1   - Improved the cache saving with stereo sequences.
 	 - Bug fixed thumbnail creation for sequences with varying
