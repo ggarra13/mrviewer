@@ -683,6 +683,7 @@ class server;
     int          _redraws_fps;  //!< # of redraws done for fps calculation
     int64_t      _lastFrame;    //!< last frame for fps calculation
 
+      CMedia::Mutex _shortcut_mutex; 
       CMedia::Mutex _draw_mutex; 
 
     mrv::Timer   _dtimer;
