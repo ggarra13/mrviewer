@@ -189,7 +189,7 @@ namespace mrv {
     float lutMin, lutMax, lutM, lutT, lutF; //!< The lut calculated parameters
 
        GLuint id, rid;
-
+      bool    vr;
     QuadList  _quads;
 
 
