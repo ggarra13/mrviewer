@@ -973,8 +973,7 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                 assert( _aframe->nb_samples > 0 );
                 assert( _aframe->extended_data != NULL );
                 assert( _aframe->extended_data[0] != NULL );
-
-
+               
                 int len2 = swr_convert(forw_ctx, (uint8_t**)&samples, 
                                        _aframe->nb_samples, 
                                        (const uint8_t **)_aframe->extended_data, 
@@ -1732,9 +1731,6 @@ CMedia::handle_audio_packet_seek( boost::int64_t& frame,
           // if ( (status = decode_audio( frame, pkt )) == kDecodeOK )
           if ( (status = decode_audio( f, pkt )) == kDecodeOK )
               got_audio = kDecodeOK;
-          // else
-          //     LOG_WARNING( _( "decode_audio failed for frame " ) 
-          //                  << f );
       }
       else
       {
@@ -1829,8 +1825,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 
 
   while ( got_audio != kDecodeOK && !_audio_packets.empty() )
-    {
-        assert( !_audio_packets.is_seek_end() );
+  {
+      assert( !_audio_packets.is_seek_end() );
       if ( _audio_packets.is_flush() )
 	{
 	  flush_audio();
@@ -1899,8 +1895,8 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
 	   continue;
 	}
       else
-	{
-            assert( !_audio_packets.empty() );
+      {
+          assert( !_audio_packets.empty() );
 	  AVPacket& pkt = _audio_packets.front();
 
 #if 0
@@ -1917,14 +1913,13 @@ CMedia::DecodeStatus CMedia::decode_audio( boost::int64_t& f )
           }
 #endif
 
-
 	  got_audio = decode_audio( frame, pkt );
           assert( !_audio_packets.empty() );
 	  _audio_packets.pop_front();
           continue;
-	}
+      }
 
-    }
+  }
 
 #ifdef DEBUG_AUDIO_PACKETS
   debug_audio_packets(frame, "DECODE END");
