@@ -120,7 +120,8 @@ namespace mrv {
     void connbuffer::print( const char* c )
     {
        std::cout << c;
-      // Send string to Log Window in Connection panel
+       
+       // Send string to Log Window in Connection panel
        if ( ViewerUI::uiConnection )
        {
            ViewerUI::uiConnection->uiLog->info( c );
