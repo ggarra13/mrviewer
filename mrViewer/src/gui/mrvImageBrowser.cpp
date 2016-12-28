@@ -2303,7 +2303,6 @@ void ImageBrowser::handle_dnd()
           }
           else
           {
-              std::cerr << "opt-files " << file << std::endl;
              opts.files.push_back( mrv::LoadInfo( file, frameStart,
                                                   frameEnd, frameStart,
                                                   frameEnd ) );
