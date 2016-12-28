@@ -450,15 +450,15 @@ void client_thread( const ServerData* s )
 
     c->start(r.resolve(tcp::resolver::query(s->host, s->group)));
 
-
+    delete s;
+    
     size_t runs = io_service.run();
 
-    delete s;
 
    }
    catch (const std::exception& e)
    {
-      LOG_ERROR( "Client Exception: " << e.what() );
+       LOG_ERROR( "Client Exception: " << e.what() );
    }
 }
 
