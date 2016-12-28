@@ -1497,8 +1497,6 @@ void CMedia::channel( const char* c )
         ch = c;
         if ( _vr360 )
         {
-            c = NULL;
-            ch = "";
             _vr360 = false;
             image_damage( image_damage() | kDamageContents );
         }
