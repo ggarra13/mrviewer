@@ -983,6 +983,7 @@ void aviImage::store_image( const boost::int64_t frame,
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
 
+  
   // We handle all cases directly except YUV410 and PAL8
   _convert_ctx = sws_getCachedContext(_convert_ctx,
                                       _video_ctx->width, 

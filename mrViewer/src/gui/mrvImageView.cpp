@@ -1862,27 +1862,38 @@ void ImageView::draw()
     const mrv::media& fg = foreground();
     if ( fg )
     {
-        if ( fg->image()->vr() )
+        CMedia* img = fg->image();
+        if ( img->vr() )
         {
-            if ( _vr == false ) valid(0);
+            if ( _vr == false ) {
+                img->image_damage( img->image_damage() |
+                                   CMedia::kDamageContents );
+                valid(0);
+            }
             _vr = true;
         }
         else
         {
-            if ( _vr == true ) valid(0);
+            if ( _vr == true ) {
+                img->image_damage( img->image_damage() |
+                                   CMedia::kDamageContents );
+                valid(0);
+            }
             _vr = false;
         }
     }
 
+ 
   if ( !valid() ) 
     {
-        if ( ! _engine )
+       if ( ! _engine )
 	{
             init_draw_engine();
 	}
 
         if ( !_engine ) return;
 
+        
         _engine->reset_view_matrix();
 
         valid(1);
@@ -1910,6 +1921,7 @@ void ImageView::draw()
       r = g = b = a = 0.0f;
     }
 
+    
     _engine->clear_canvas( r, g, b, a );
 
 
@@ -3595,19 +3607,24 @@ void ImageView::mouseDrag(int x,int y)
                if ( rotx > ROTX_MAX ) rotx = ROTX_MAX;
                else if ( rotx < -ROTX_MAX ) rotx = -ROTX_MAX;
                else if ( std::abs(rotx) <= ROTX_MIN ) rotx = 0.0;
+               
+               char buf[128];
+               sprintf( buf, "Spin %g %g", rotx, roty );
+               send_network( buf );
            }
            else
            {
                xoffset += double(dx) / _zoom;
                yoffset -= double(dy) / _zoom;
+
+               char buf[128];
+               sprintf( buf, "Offset %g %g", xoffset, yoffset );
+               send_network( buf );
            }
            
            lastX = x;
            lastY = y;
 
-	   char buf[128];
-	   sprintf( buf, "Offset %g %g", xoffset, yoffset );
-	   send_network( buf );
 
 	}
       else
@@ -5153,11 +5170,11 @@ void ImageView::channel( fltk::Widget* o )
  */
 void ImageView::channel( unsigned short c )
 {
+  boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
+  
   fltk::PopupMenu* uiColorChannel = uiMain->uiColorChannel;
   unsigned short num = uiColorChannel->children();
   if ( num == 0 ) return; // Audio only - no channels
-
-  boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
 
   unsigned short idx = 0;
   for ( unsigned short i = 0; i < num; ++i, ++idx )
@@ -5172,7 +5189,7 @@ void ImageView::channel( unsigned short c )
 
   if ( c >= idx ) 
   {
-      LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum:" )
+      LOG_ERROR( _("Invalid index ") << c << _(" for channel.  Maximum: " )
                  << idx );
       return;
   }
@@ -5621,9 +5638,7 @@ double ImageView::pixel_ratio() const
 int ImageView::update_shortcuts( const mrv::media& fg,
                                  const char* channelName )
 {
-    TRACE("");
     boost::recursive_mutex::scoped_lock lk( _shortcut_mutex );
-    TRACE("");
     
     CMedia* img = fg->image();
 
@@ -5737,7 +5752,7 @@ int ImageView::update_shortcuts( const mrv::media& fg,
 
     // If no channel was selected, select first channel
     if ( v == -1 ) v = 0;
-
+    
     return v;
 }
 
