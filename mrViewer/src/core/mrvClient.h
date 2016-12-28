@@ -43,7 +43,7 @@ class client : public Parser,
   public:
     client(boost::asio::io_service& io_service,
            mrv::ViewerUI* v); 
-    virtual ~client() { stop(); };
+    virtual ~client() {};
 
     void start(tcp::resolver::iterator endpoint_iter);
 
