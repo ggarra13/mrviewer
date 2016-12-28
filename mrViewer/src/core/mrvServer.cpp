@@ -340,6 +340,15 @@ bool Parser::parse( const std::string& s )
       v->redraw();
       ok = true;
    }
+   else if ( cmd == N_("Spin") )
+   {
+      double x, y;
+      is >> x >> y;
+      v->rot_x( x );
+      v->rot_y( y );
+      v->redraw();
+      ok = true;
+   }
    else if ( cmd == N_("Offset") )
    {
       double x, y;
@@ -354,11 +363,16 @@ bool Parser::parse( const std::string& s )
       unsigned short ch;
       std::string name;
       is >> ch >> name;
-      std::cerr << ">>>>>>>>>>>>>>>>>>>>>>>> Channel " << ch << " " << name <<std::endl;
-      
+
       if ( v->foreground() )
 	 v->channel( ch );
       v->redraw();
+      ok = true;
+   }
+   else if ( cmd == N_("VR") )
+   {
+      // unsigned short value;
+      // is >> value;
       ok = true;
    }
    else if ( cmd == N_("FieldDisplay") )
@@ -1049,6 +1063,9 @@ bool Parser::parse( const std::string& s )
 
       sprintf(buf, N_("Offset %g %g"), v->offset_x(), v->offset_y() );
       deliver( buf );
+      
+      sprintf(buf, N_("Spin %g %g"), v->rot_x(), v->rot_y() );
+      deliver( buf );
 
       
       sprintf(buf, N_("UseLUT %d"), (int)v->use_lut() );
@@ -1079,9 +1096,12 @@ bool Parser::parse( const std::string& s )
       sprintf( buf, N_("FPS %g"), v->fps() );
       deliver( buf );
 
-      // sprintf(buf, N_("Channel %d %s"), v->channel(),
-      //         v->get_layer_label(v->channel()) );
-      // deliver( buf );
+      sprintf(buf, N_("Channel %d %s"), v->channel(),
+              v->get_layer_label(v->channel()) );
+      deliver( buf );
+      
+      sprintf(buf, N_("VR %d"), v->vr() );
+      deliver( buf );
       
       const mrv::Rectd& s = v->selection();
       if ( s.w() != 0 )
@@ -1092,7 +1112,7 @@ bool Parser::parse( const std::string& s )
       }
 
       browser()->redraw();
-      view()->redraw();
+      v->redraw();
 
       ok = true;
    }
@@ -1575,6 +1595,7 @@ server::server(boost::asio::io_service& io_service,
 
 server::~server()
 {
+    io_service_.stop();
 }
 
 void server::start_accept()
@@ -1654,12 +1675,6 @@ void server_thread( const ServerData* s )
 
       tcp::endpoint listen_endpoint(tcp::v4(), s->port);
 
-      if ( !s->ui || !s->ui->uiView || !s->ui->uiConnection )
-      {
-          std::cerr << "Trashing memory1 " << s->ui << std::endl;
-          std::cerr << "Trashing memory2 " << s->ui->uiView << std::endl;
-          std::cerr << "Trashing memory3 " << s->ui->uiConnection << std::endl;
-      }
 
       s->ui->uiView->_server = boost::make_shared< server >( boost::ref(io_service),
 							     listen_endpoint,
@@ -1670,12 +1685,11 @@ void server_thread( const ServerData* s )
 
       LOG_CONN( _("Created server at port ") << s->port );
 
-      
-      size_t runs = io_service.run();
+      io_service.run();
+      LOG_CONN( _("Closed server at port ") << s->port );
 
       delete s;
 
-      LOG_CONN( "Server run exit runs: " << runs );
    }
    catch (const std::exception& e)
    {
