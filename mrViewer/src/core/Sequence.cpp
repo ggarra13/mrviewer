@@ -635,6 +635,7 @@ bool parse_reel( mrv::LoadList& sequences, bool& edl,
 
               std::string st = c;
               std::istringstream is( st );
+              is.imbue( std::locale("C") );
               std::string cmd;
               is >> cmd;
 
