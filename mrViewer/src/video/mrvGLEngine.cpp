@@ -540,7 +540,6 @@ void GLEngine::reset_view_matrix()
 {
     glMatrixMode(GL_PROJECTION);
 
-    static bool vr = false;
 
     if ( _view->vr() != vr )
     {
@@ -1309,7 +1308,7 @@ void GLEngine::draw_images( ImageList& images )
   size_t num = _quads.size();
   if ( num_quads > num )
     {
-        if ( _view->vr() )
+        if ( vr )
         {
             alloc_spheres( num_quads );
         }
@@ -1496,7 +1495,6 @@ void GLEngine::draw_images( ImageList& images )
                  quad->right( true );
              else
                  quad->right( false );
-             CHECK_GL( "bind1" );
              quad->bind( pic );
          }
          quad->gamma( g );
@@ -1654,10 +1652,12 @@ void GLEngine::draw_images( ImageList& images )
               rightView = false;
           
           quad->right( rightView );
-          CHECK_GL( "bind2" );
           quad->bind( pic );
       }
-
+      else
+      {
+      }
+      
       quad->gamma( g );
       quad->draw( texWidth, texHeight );
       
@@ -2449,14 +2449,14 @@ void GLEngine::resize_background()
 GLEngine::GLEngine(const mrv::ImageView* v) :
 DrawEngine( v ),
 texWidth( 0 ),
-texHeight( 0 )
+texHeight( 0 ),
+vr( false )
 {
   initialize();
 }
  
 GLEngine::~GLEngine()
 {
-    TRACE("");
   release();
 }
 
