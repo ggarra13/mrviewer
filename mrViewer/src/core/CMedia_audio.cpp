@@ -918,10 +918,12 @@ int CMedia::decode_audio3(AVCodecContext *ctx, int16_t *samples,
                                                   in_ch_layout );
 
                     IMG_INFO( _("Create audio conversion from ") << buf 
-                              << _(", channels ") << ctx->channels << N_(", ") );
+                              << _(", channels ") << ctx->channels
+                              << N_(", ") );
                     IMG_INFO( _("format ") 
-                              << av_get_sample_fmt_name( ctx->sample_fmt ) 
-                              << _(", sample rate ") << ctx->sample_rate << _(" to") );
+                              << av_get_sample_fmt_name( ctx->sample_fmt )
+                              << _(", sample rate ") << ctx->sample_rate
+                              << _(" to") );
 
                     uint64_t out_ch_layout = in_ch_layout;
                     unsigned out_channels = ctx->channels;
