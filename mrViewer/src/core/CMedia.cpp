@@ -867,6 +867,7 @@ const mrv::Recti CMedia::data_window2( boost::int64_t f ) const
     }
 
     if ( f == AV_NOPTS_VALUE ) f = _frame;
+    
     f = handle_loops( f );
     boost::int64_t idx = f - _frame_start;
 
@@ -1188,6 +1189,7 @@ std::string CMedia::sequence_filename( const boost::int64_t frame )
  */
 bool CMedia::has_changed()
 {
+    return false;
   struct stat sbuf;
 
   SCOPED_LOCK( _mutex );
@@ -2979,8 +2981,6 @@ bool CMedia::find_image( const boost::int64_t frame )
         should_load = true;
     }
 
-  _frame = frame;
-  
   if ( should_load )
   {
      if ( fs::exists(file) )
@@ -3003,7 +3003,8 @@ bool CMedia::find_image( const boost::int64_t frame )
      }
   }
 
-
+  _frame = frame;
+  
   refresh();
   return true;
 }
