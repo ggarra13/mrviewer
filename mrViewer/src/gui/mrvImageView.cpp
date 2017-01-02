@@ -1703,12 +1703,10 @@ void ImageView::timeout()
 
    if ( bgreel && bgreel->edl )
    {
-       TRACE("");
       bg = bgreel->media_at( tframe );
 
       if ( bg && bg != background() ) 
       {
-       TRACE("");
          background( bg );
       }
    }
@@ -1725,7 +1723,8 @@ void ImageView::timeout()
       {
           img->has_changed();
       }
-      
+
+#if 0
        if ( img->stopped() && playback() != kStopped )
        {
            if ( tframe >= img->first_frame() && tframe <= img->last_frame() )
@@ -1734,6 +1733,7 @@ void ImageView::timeout()
                img->play((CMedia::Playback) playback(), uiMain, false );
            }
        }
+#endif
    }
 
    
@@ -1750,7 +1750,7 @@ void ImageView::timeout()
            uiMain->uiPrefs->uiPrefsAutoLoadImages->value() )
       {
        TRACE("");
-          img->has_changed();
+       img->has_changed();
       }
 
    }
@@ -1939,32 +1939,39 @@ void ImageView::draw()
   }
 
 
-  const mrv::media& bg = background();
-
+  mrv::media bg = background();
+  TRACE("");
 
   ImageList images;
   images.reserve(2);
 
   if ( _showBG && bg && bg != fg && bg->image()  )
     {
+  TRACE("");
        CMedia* img = bg->image();
+  TRACE("");
        if ( img->has_picture() )
 	  images.push_back( img );
+  TRACE("");
     }
 
   if ( fg )
     {
+  TRACE("");
        CMedia* img = fg->image();
        if ( img->has_picture() )
        {
 	  images.push_back( img );
        }
+  TRACE("");
     }
 
 
   if ( images.empty() ) return;
+  TRACE("");
   
   _engine->draw_images( images );
+  TRACE("");
 
 
   if ( _masking != 0.0f )
@@ -1972,20 +1979,23 @@ void ImageView::draw()
       _engine->draw_mask( _masking );
     }
 
-  const char* label = fg->image()->label();
-  if ( label )
-    {
-      uchar r, g, b;
-      fltk::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
+  if ( fg )
+  {
+      const char* label = fg->image()->label();
+      if ( label )
+      {
+          uchar r, g, b;
+          fltk::split_color( uiPrefs->uiPrefsViewTextOverlay->color(), r, g, b );
 
 
-      int dx, dy;
-      dx = int( (double) w() / (double)2 - (unsigned)strlen(label)*3 );
-      dy = 24;
+          int dx, dy;
+          dx = int( (double) w() / (double)2 - (unsigned)strlen(label)*3 );
+          dy = 24;
 
-      draw_text( r, g, b, dx, dy, label );
-    }
-
+          draw_text( r, g, b, dx, dy, label );
+      }
+  }
+  
   if ( _selection.w() > 0 || _selection.h() > 0 )
     {
         uchar r, g, b;
@@ -1996,7 +2006,7 @@ void ImageView::draw()
 
 
 
-  if ( _safeAreas ) 
+  if ( fg && _safeAreas ) 
     {
       const CMedia* img = fg->image();
       const mrv::Recti& dpw = img->display_window();
@@ -3281,8 +3291,8 @@ void ImageView::normalize( CMedia::Pixel& rgba, unsigned short idx ) const
 {
     if ( !_engine ) return;
     
-    float pMin = _engine->norm_min( idx );
-    float pMax = _engine->norm_max( idx );
+    float pMin = _engine->norm_min();
+    float pMax = _engine->norm_max();
     if ( pMin != 0.0 || pMax != 1.0 )
     {
         float span = pMax - pMin;
@@ -3328,12 +3338,12 @@ void ImageView::mouseMove(int x, int y)
 
       rgba = pic->pixel( xp, yp );
 
+      pixel_processed( img, rgba );
+
       if ( normalize() )
       {
           normalize( rgba );
       }
-      
-      pixel_processed( img, rgba );
 
       mrv::Recti daw[2];
       daw[0] = img->data_window();
@@ -3383,6 +3393,12 @@ void ImageView::mouseMove(int x, int y)
                   float r = rgba.r;
                   rgba = pic->pixel( xp, yp );
                   pixel_processed( img, rgba );
+                  
+                  if ( normalize() )
+                  {
+                      normalize( rgba );
+                  }
+
                   rgba.r = r;
               }
               else
