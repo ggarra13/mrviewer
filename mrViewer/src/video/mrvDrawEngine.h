@@ -78,10 +78,11 @@ namespace mrv {
 	pMax( std::numeric_limits< float >::min() )
       {};
 
-      const CMedia*     image;
-      mrv::Recti      rect;
-      float pMin;
-      float pMax;
+        mrv::image_type_ptr pic;
+        const CMedia*     image;
+        mrv::Recti      rect;
+        float pMin;
+        float pMax;
     };
 
   public:
@@ -155,8 +156,8 @@ namespace mrv {
        virtual void translate( double x, double y ) = 0;
 
       // Return the normalized min and max of image
-    virtual float norm_min( unsigned short idx ) = 0;
-    virtual float norm_max( unsigned short idx ) = 0;
+      inline float norm_min() { return _normMin; }
+      inline float norm_max() { return _normMax; }
       
     /// Convert fg image to engine's drawable image
     virtual void draw_images( ImageList& images ) = 0;
