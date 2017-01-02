@@ -1,3 +1,20 @@
+v3.4.3   - Bug fixed VR360 on network communication not always opening
+	   in the VR360 view.
+	 - Bug fixed a dead lock of log window due to multiple threads
+	   accessing it when in stereo.
+	 - Bug fixed normalized pixel values when in some stereo mode,
+	   like Red/Cyan glasses.
+	 - Allowed graphics cards with small textures display videos
+	   thru scaling down the original video.
+	 - Bug fixed crash of switching to an empty reel when
+	   background image was active.
+	 - Bug fixed background image being shifted by start frame
+	   when not in EDL mode.
+	 - Bug fixed stereo of Z (depth) channels in stereo OpenEXRs
+	   with multipart files.
+	   Previously only one channel would be shown or multiple
+	   errors would show up if the deepest Z channel was chosen.
+
 v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   on startup.
 	 - Bug fixed color area of bottom/top and right/left on
