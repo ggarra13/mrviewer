@@ -2605,7 +2605,6 @@ void ImageBrowser::handle_dnd()
                img->stop();
            }
 
-           f += img->first_frame();
            img->seek( f );
 	}
       }
