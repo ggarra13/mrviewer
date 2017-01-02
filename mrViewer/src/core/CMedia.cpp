@@ -2981,6 +2981,8 @@ bool CMedia::find_image( const boost::int64_t frame )
         should_load = true;
     }
 
+  _frame = frame;
+  
   if ( should_load )
   {
      if ( fs::exists(file) )
@@ -3003,8 +3005,6 @@ bool CMedia::find_image( const boost::int64_t frame )
      }
   }
 
-  _frame = frame;
-  
   refresh();
   return true;
 }
