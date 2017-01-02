@@ -58,7 +58,7 @@ void sync_clock_to_slave(Clock *c, Clock *slave);
   // Callback data that must be filled
   //
   struct PlaybackData {
-       bool fg;;
+       bool fg;
        mrv::ViewerUI*   uiMain;
        CMedia*  image;
 
