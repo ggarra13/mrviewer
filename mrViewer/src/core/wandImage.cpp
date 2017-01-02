@@ -512,6 +512,7 @@ namespace mrv {
      }
      DestroyMagickWand( wand );
 
+     
      return true;
   }
 
