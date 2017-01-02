@@ -69,6 +69,7 @@ namespace fs = boost::filesystem;
 #include "core/mrvColorSpaces.h"
 #include "gui/mrvImageView.h"
 #include "gui/mrvIO.h"
+#include "video/mrvGLEngine.h"
 #include "mrViewer.h"
 
 
@@ -929,6 +930,11 @@ mrv::image_type_ptr aviImage::allocate_image( const boost::int64_t& frame,
 					      const boost::int64_t& pts
 )
 {
+    double aspect_ratio = (double)_w / (double) _h;
+    if ( _w > mrv::GLEngine::maxTexWidth() )
+        _w = mrv::GLEngine::maxTexWidth();
+    if ( _h > mrv::GLEngine::maxTexHeight() )
+        _h = mrv::GLEngine::maxTexHeight() / aspect_ratio;
     return mrv::image_type_ptr( new image_type( frame,
                                                 width(), 
                                                 height(), 
@@ -982,14 +988,16 @@ void aviImage::store_image( const boost::int64_t frame,
                         w, h, 1);
 
   AVPixelFormat fmt = _video_ctx->pix_fmt;
-
+  int sws_flags = 0;
+  if ( w < _video_ctx->width || h < _video_ctx->height )
+      sws_flags = SWS_BICUBIC;
   
   // We handle all cases directly except YUV410 and PAL8
   _convert_ctx = sws_getCachedContext(_convert_ctx,
                                       _video_ctx->width, 
                                       _video_ctx->height,
                                       fmt, w, h,
-                                      _av_dst_pix_fmt, 0, 
+                                      _av_dst_pix_fmt, sws_flags, 
                                       NULL, NULL, NULL);
 
   if ( _convert_ctx == NULL )
