@@ -258,7 +258,7 @@ bool exrImage::channels_order(
        std::transform( ext.begin(), ext.end(), ext.begin(),
                        (int(*)(int)) toupper);
 
-
+       
        if ( order[0] == -1 && (( ext == N_("R") && Zchannel == false) ||
                                ext == N_("Y") || ext == N_("U") ||
                                ext == N_("X") || ext == N_("Z")) )
@@ -267,7 +267,7 @@ bool exrImage::channels_order(
            xsampling[k] = ch.xSampling; ysampling[k] = ch.ySampling;
            channelList.push_back( layerName );
        }
-       else if ( order[1] == -1 && ((ext == N_("G")  && Zchannel == false) ||
+       else if ( order[1] == -1 && ((ext == N_("G") && Zchannel == false) ||
                                     ext == N_("RY") || ext == N_("V") ||
                                     ext == N_("Y") ) )
        {
@@ -878,6 +878,7 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     Imf::ChannelList::ConstIterator e;
     std::string prefix;
     if ( _has_right_eye ) prefix = _has_right_eye;
+
     
     // Find the iterators for a right channel prefix or all channels
     if ( !prefix.empty() )
@@ -909,7 +910,6 @@ bool exrImage::handle_stereo( const boost::int64_t& frame,
     //
     prefix.clear();
     if ( _has_left_eye ) prefix = _has_left_eye;
-
     
     if ( !prefix.empty() )
     {
@@ -1724,6 +1724,7 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         st[0] = st[1] = -1;
 
         std::string c = inmaster.header(0).name();
+                
         if  ( channel() ) c = channel();
 
        
@@ -1896,6 +1897,10 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
                             (int(*)(int)) tolower);
 #endif
 
+            // std::cerr << "ext " << ext << std::endl;
+            // std::cerr << "name " << name << std::endl;
+            // std::cerr << "prefix " << prefix << std::endl
+            //           << "suffix " << suffix << std::endl;
      
             if ( st[1] == -1 &&
                  ( ext.find( right ) != std::string::npos ||
@@ -1903,17 +1908,20 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             {
                 if ( !prefix.empty() )
                 {
-                    if ( name.find( prefix ) == std::string::npos )
+                    if ( prefix != "Z" &&
+                         name.find( prefix ) == std::string::npos )
                         continue;
                 }
                 if ( !suffix.empty() )
                 {
-                    if ( name.rfind( suffix ) == std::string::npos )
+                    if ( suffix != ".Z" &&
+                         name.rfind( suffix ) == std::string::npos )
                         continue;
                 }
                 st[1] = i;
                 _has_right_eye = strdup( name.c_str() );
                 _is_stereo = true;
+                continue;
             }
             if ( st[0] == -1 && 
                  ( ext.find( left ) != std::string::npos ||
@@ -1921,12 +1929,14 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
             {
                 if ( !prefix.empty() )
                 {
-                    if ( name.find( prefix ) == std::string::npos )
+                    if ( prefix != "Z" &&
+                         name.find( prefix ) == std::string::npos )
                         continue;
                 }
                 if ( !suffix.empty() )
                 {
-                    if ( name.rfind( suffix ) == std::string::npos )
+                    if ( suffix != ".Z" &&
+                         name.rfind( suffix ) == std::string::npos )
                         continue;
                 }
                 _has_left_eye = strdup( name.c_str() );
@@ -1959,7 +1969,8 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
         else if ( st[1] != -1 ) st[0] = st[1];
         if ( st[0] == -1 ) return false;
     }
-    else if ( _is_stereo && ( st[0] == -1 || st[1] == -1 ) )
+    else if ( _is_stereo && stereo_output() != CMedia::kNoStereo &&
+              ( st[0] == -1 || st[1] == -1 ) )
     {
        if ( st[0] == -1 ) st[0] = 0;
        else if ( st[1] == -1 ) st[1] = 0;
@@ -2003,7 +2014,6 @@ bool exrImage::fetch_multipart( Imf::MultiPartInputFile& inmaster,
            if ( _stereo_output != kNoStereo && st[i] >= 0 ) _curpart = st[i];
 
            const Header& header = inmaster.header(_curpart);
-
 
            const Box2i& displayWindow = header.displayWindow();
            const Box2i& dataWindow = header.dataWindow();
