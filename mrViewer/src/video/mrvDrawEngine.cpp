@@ -419,16 +419,8 @@ void display_cb( mrv::DrawEngine::DisplayData* d )
     unsigned int xh = xl + d->rect.w();
     unsigned int yh = yl + d->rect.h();
 
+    const mrv::image_type_ptr pic = d->pic;
     const CMedia* img = d->image;
-    mrv::image_type_ptr pic;
-    if ( img->stereo_output() & CMedia::kStereoRight )
-    {
-        pic = img->right();
-    }
-    else
-    {
-        pic = img->left();
-    }
     if ( !pic ) return;
 
     if ( xh >= pic->height() ) xh = pic->width();
@@ -750,12 +742,24 @@ namespace mrv {
 
     MinMaxData data;
     data.image  = img;
-    data.rect   = mrv::Recti( 0, 0, xh, yh );
+    data.pic   = img->left();
+    data.rect   = mrv::Recti( 0, 0, data.pic->width(), data.pic->height() );
 
     minmax_cb( &data );
 
     pMin = data.pMin;
     pMax = data.pMax;
+    
+    if ( img->stereo_output() )
+    {
+        data.pic = img->right();
+        data.rect = mrv::Recti( 0, 0, data.pic->width(), data.pic->height() );
+        minmax_cb( &data );
+
+        if ( data.pMin < pMin ) pMin = data.pMin;
+        if ( data.pMax > pMax ) pMax = data.pMax;
+    }
+    
 
   }
 
