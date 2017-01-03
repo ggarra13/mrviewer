@@ -14,6 +14,8 @@ v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   with multipart files.
 	   Previously only one channel would be shown or multiple
 	   errors would show up if the deepest Z channel was chosen.
+	 - Fixed error reporting with frame number to report the
+	   actual frame, not one before.
 
 v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   on startup.
