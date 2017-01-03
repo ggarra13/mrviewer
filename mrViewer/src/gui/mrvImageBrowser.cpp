@@ -2485,10 +2485,11 @@ void ImageBrowser::handle_dnd()
     mrv::Timeline* t = timeline();
 
 
-    if ( t && t->edl() )
-      {
+    mrv::Reel reel = reel_at( view()->fg_reel() );
+    if ( reel )
+    {
 	// Check if we need to change to a new sequence based on frame
-	 mrv::media m = t->media_at( tframe );
+	 mrv::media m = reel->media_at( tframe );
 	 if (! m ) return;
 
 	CMedia* img = m->image();
@@ -2517,9 +2518,9 @@ void ImageBrowser::handle_dnd()
 	     if ( playback != ImageView::kStopped )
                  view()->stop();
 
-	     size_t i = t->index( f );
-             img = t->image_at( f );
-	     f = t->global_to_local( f );
+	     size_t i = reel->index( f );
+             img = reel->image_at( f );
+	     f = reel->global_to_local( f );
              if ( !img ) return;
 
 
@@ -2535,7 +2536,7 @@ void ImageBrowser::handle_dnd()
 	  }
 	else
 	  {
-	     f = t->global_to_local( f );
+	     f = reel->global_to_local( f );
 
 	     DBG( "seek f local2: " << f );
 
