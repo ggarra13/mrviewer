@@ -34,6 +34,11 @@ int64_t Reel_t::maximum() const
    return m->position() + m->image()->duration() - 1;
 }
 
+size_t Reel_t::duration() const
+{
+    return maximum() - minimum() + 1;
+}
+
 size_t Reel_t::index( const CMedia* const img ) const
 {
     mrv::MediaList::const_iterator i = images.begin();
