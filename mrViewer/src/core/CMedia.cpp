@@ -2919,8 +2919,7 @@ int64_t CMedia::handle_loops( const boost::int64_t frame ) const
       if ( f > _frameEnd )       f = _frameEnd;
       else if ( f < _frameStart) f = _frameStart;
   }
-  
-  
+
   return f;
 }
 

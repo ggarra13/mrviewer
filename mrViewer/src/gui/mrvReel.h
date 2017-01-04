@@ -50,6 +50,8 @@ namespace mrv
 	  return m->image();
        }
 
+      size_t duration() const;
+
        size_t index( const CMedia* const img ) const;
        size_t index( const int64_t frame ) const;
        boost::int64_t global_to_local( const boost::int64_t f ) const;
