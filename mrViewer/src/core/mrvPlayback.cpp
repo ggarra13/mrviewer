@@ -78,8 +78,8 @@ namespace
 /* no AV correction is done if too big error */
 #define AV_NOSYNC_THRESHOLD 10.0
 
-#undef TRACE
-#define TRACE(x)
+// #undef TRACE
+// #define TRACE(x)
 
 // #undef DBG
 // #define DBG(x) std::cerr << x << std::endl
@@ -240,7 +240,6 @@ EndStatus handle_loop( boost::int64_t& frame,
     SCOPED_LOCK( m );
 
     mrv::ImageView* view = uiMain->uiView;
-    mrv::media bg = view->background();
 
     EndStatus status = kEndIgnore;
     mrv::media c;
@@ -312,7 +311,7 @@ EndStatus handle_loop( boost::int64_t& frame,
                    {
                        next = img;
                    }
-	       }
+               }
 
 	       if ( next != img && next != NULL) 
 	       {
@@ -830,6 +829,17 @@ void video_thread( PlaybackData* data )
    mrv::Reel   reel = browser->reel_at( idx );
    if (!reel) return;
 
+   if (!fg)
+   {
+       mrv::Reel fgreel = browser->reel_at( view->fg_reel() );
+       if ( fgreel->duration() > reel->duration() &&
+            view->looping() != CMedia::kNoLoop )
+       {
+           LOG_ERROR( _( "Background reel duration is too short.  "
+                         "Looping will not work correctly." ) );
+       }
+   }
+   
    int64_t frame        = img->frame();
    int64_t failed_frame = std::numeric_limits< int64_t >::min();
 
@@ -984,15 +994,12 @@ void video_thread( PlaybackData* data )
 
 
       
-      TRACE( img->name() << " find image " << frame );
-
       bool ok = img->find_image( frame );
       if ( !ok )
       {
           LOG_ERROR( "Could not find image frame " << frame );
       }
 
-      TRACE("");
 
       if ( fg && reel->edl && img->is_left_eye() )
       {
@@ -1071,14 +1078,11 @@ void decode_thread( PlaybackData* data )
       step = (int) img->playback();
       frame += step;
 
-      TRACE("");
       CMedia::DecodeStatus status = check_loop( frame, img, reel, timeline );
 
 
       if ( status != CMedia::kDecodeOK )
       {
-          TRACE("");
-
           CMedia::Barrier* barrier = img->loop_barrier();
           DBG( img->name() << " BARRIER DECODE WAIT      gen: " 
                << barrier->generation() 
@@ -1101,7 +1105,6 @@ void decode_thread( PlaybackData* data )
 
          if ( img->stopped() ) continue;
 
-      TRACE("");
          EndStatus end = handle_loop( frame, step, img, fg,
                                       uiMain, reel, timeline, status );
       }
@@ -1109,10 +1112,8 @@ void decode_thread( PlaybackData* data )
 
       // If we could not get a frame (buffers full, usually),
       // wait a little.
-      TRACE("");
       while ( !img->frame( frame ) )
       {
-          TRACE("");
           if ( img->stopped() ) break;
           sleep_ms( 10 );
       }
