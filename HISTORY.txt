@@ -1,7 +1,8 @@
 v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   in the VR360 view.
 	 - Bug fixed a dead lock of log window due to multiple threads
-	   accessing it when in stereo.
+	   accessing it when in stereo.  The problem would show up
+	   in Linux, mainly.
 	 - Bug fixed normalized pixel values when in some stereo mode,
 	   like Red/Cyan glasses.
 	 - Allowed graphics cards with small textures display videos
@@ -16,6 +17,8 @@ v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   errors would show up if the deepest Z channel was chosen.
 	 - Fixed error reporting with frame number to report the
 	   actual frame, not one before.
+	 - Improved synchronism of background images/movies with
+	   foreground sequences.
 
 v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   on startup.
