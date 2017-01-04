@@ -855,6 +855,7 @@ _lastFrame( 0 )
 {
   _timer.setDesiredSecondsPerFrame(0.0f);
 
+  
   int stereo = fltk::STEREO;
   if ( !can_do( fltk::STEREO ) ) stereo = 0;
 
@@ -6765,30 +6766,12 @@ CMedia::Looping ImageView::looping() const
 /// Set Playback looping mode
 void  ImageView::looping( CMedia::Looping x )
 {
-    mrv::Reel reel = browser()->current_reel();
-    if ( !reel ) return;
-
-
-    if ( reel->edl )
-    {
-        mrv::MediaList::iterator i = reel->images.begin();
-        mrv::MediaList::iterator e = reel->images.end();
-        for ( ; i != e; ++i )
-        {
-            if (! *i) continue;
-            CMedia* img = (*i)->image();
-            img->looping(x);
-        }
-    }
-    else
-    {
         
-        media fg = foreground();
-        if (fg)
-        {
-            CMedia* img = fg->image();
-            img->looping( x );
-        }
+    media fg = foreground();
+    if (fg)
+    {
+        CMedia* img = fg->image();
+        img->looping( x );
     }
 
     if ( x != CMedia::kUnknownLoop )
