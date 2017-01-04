@@ -604,7 +604,6 @@ class server;
       double     rotx, roty;   //<- VR's rotation offsets
 
 
-
     //
     // Old state for actions
     //
