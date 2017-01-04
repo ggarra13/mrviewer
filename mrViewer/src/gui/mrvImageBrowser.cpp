@@ -761,7 +761,7 @@ void ImageBrowser::send_image( const mrv::media& m )
     sprintf( txt, N_("FPS %g"), v->fps() );
     v->send_network( txt );
 
-    sprintf( txt, N_("Looping %d"), (int)img->looping() );
+    sprintf( txt, N_("Looping %d"), (int)v->looping() );
     v->send_network( txt );
 }
 
