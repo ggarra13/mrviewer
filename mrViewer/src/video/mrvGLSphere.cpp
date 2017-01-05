@@ -297,8 +297,12 @@ GLSphere::~GLSphere()
     glMatrixMode( GL_MODELVIEW );
     glLoadIdentity();
     GLSphere* sp = const_cast< GLSphere* >( this );
-    sp->_rotY += _view->rot_y();
-    sp->_rotX += _view->rot_x();
+    ImageView* v = const_cast< ImageView* >( _view );
+    double x = _view->rot_x();
+    double y = _view->rot_y();
+    sp->_rotY += y;
+    sp->_rotX += x;
+    
     glRotated( _rotX, 1, 0, 0 );
     glRotated( _rotY, 0, 1, 0 );
     glRotated( 90.0, 1, 0, 0 );

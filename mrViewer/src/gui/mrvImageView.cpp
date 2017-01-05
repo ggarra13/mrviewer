@@ -1784,6 +1784,16 @@ void ImageView::timeout()
 
   if ( vr() )
   {
+#define sumX 0.005
+#define sumY 0.005
+      if (rotx >= sumX ) rotx -= sumX;
+      else if ( rotx <= -sumX ) rotx += sumX;
+      else rotx = 0.0;
+      
+      if (roty >= sumY ) roty -= sumY;
+      else if ( roty <= -sumY ) roty += sumY;
+      else roty = 0.0;
+      
       redraw();
   }
   
