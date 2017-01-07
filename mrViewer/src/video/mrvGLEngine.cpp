@@ -1343,7 +1343,8 @@ void GLEngine::draw_images( ImageList& images )
       // Handle background image size
       if ( fg != img && stereo == CMedia::kNoStereo )
       {
-          const mrv::Recti& dp = fg->display_window(frame);
+          // NOT display_window(frame)
+          const mrv::Recti& dp = fg->display_window();
           texWidth = dp.w();
           texHeight = dp.h();
       }
@@ -1353,11 +1354,14 @@ void GLEngine::draw_images( ImageList& images )
           texHeight = daw.h();
       }
 
+      if ( texWidth == 0 ) texWidth = fg->width();
+      if ( texHeight == 0 ) texHeight = fg->height();
+
       ImageView::FlipDirection flip = _view->flip();
 
       set_matrix( flip, false );
 
-      mrv::Recti dp = fg->display_window(frame);
+      mrv::Recti dp = fg->display_window();
       if ( flip )
       {
           float x = 0.0f, y = 0.0f;
@@ -1619,26 +1623,25 @@ void GLEngine::draw_images( ImageList& images )
 
       if ( img->image_damage() & CMedia::kDamageContents )
       {
-          bool rightView = false;
-          if ( stereo & CMedia::kStereoRight )
+          if ( stereo )
           {
-              rightView = false;
-          }
-          else
-          {
-              rightView = true;
-          }
+              bool rightView = false;
+              if ( stereo & CMedia::kStereoRight )
+              {
+                  rightView = false;
+              }
+              else
+              {
+                  rightView = true;
+              }
 
-          if ( stereo == CMedia::kStereoRight )
-              rightView = true;
-          else if ( stereo == CMedia::kStereoLeft )
-              rightView = false;
-          
-          quad->right( rightView );
+              if ( stereo == CMedia::kStereoRight )
+                  rightView = true;
+              else if ( stereo == CMedia::kStereoLeft )
+                  rightView = false;
+              quad->right( rightView );
+          }
           quad->bind( pic );
-      }
-      else
-      {
       }
       
       quad->gamma( g );
