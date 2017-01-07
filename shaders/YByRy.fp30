@@ -102,8 +102,9 @@ MULR  R1.y, f[TEX0], height.x;
 MADH  H0.y, -H0.z, yw.z, H0;
 RCPH  H0.x, yw.y;
 MULH  H2.y, H0, H0.x;
-MOVH  H1.xyz, H2;
-ADDH  H0.xyz, H2, -normMin.x;
+MOVH_SAT H0.xyz, H2;
+MOVH_SAT H1.xyz, H2;
+ADDH  H0.xyz, H0, -normMin.x;
 RCPH  H0.w, normSpan.x;
 MOVXC RC.x, enableNormalization;
 MULH  H1.xyz(NE.x), H0, H0.w;
@@ -278,4 +279,4 @@ MOVXC RC.x, premult;
 MULH  o[COLH].xyz(NE.x), H0, H0.w;
 MOVH  o[COLH].w, H0;
 END
-# 190 instructions, 2 R-regs, 8 H-regs
+# 191 instructions, 2 R-regs, 8 H-regs

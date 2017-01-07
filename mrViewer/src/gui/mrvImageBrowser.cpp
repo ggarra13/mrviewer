@@ -2484,9 +2484,9 @@ void ImageBrowser::handle_dnd()
     ImageView::Playback playback = view()->playback();
     mrv::Timeline* t = timeline();
 
-
     mrv::Reel reel = reel_at( view()->fg_reel() );
-    if ( reel )
+    mrv::Reel bgreel = reel_at( view()->bg_reel() );
+    if ( reel && reel != bgreel )
     {
 	// Check if we need to change to a new sequence based on frame
 	 mrv::media m = reel->media_at( tframe );
@@ -2595,9 +2595,6 @@ void ImageBrowser::handle_dnd()
 	mrv::media bg = view()->background();
 	if ( bg )
 	{
-           mrv::Reel reel = reel_at( view()->bg_reel() );
-           if (!reel) return;
-
            f = tframe;
 
 	   img = bg->image();
@@ -2605,6 +2602,7 @@ void ImageBrowser::handle_dnd()
            if ( ! img->saving() && !img->stopped() ) {
                img->stop();
            }
+
 
            img->seek( f );
 	}
