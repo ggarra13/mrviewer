@@ -81,6 +81,9 @@ void main()
       c.b = yuv.r + 2.017 * yuv.g;
   }
 
+  c.rgb = clamp( c.rgb, 0.0, 1.0 );
+  c.a = 1.0;
+
   //
   // Apply normalization
   //
