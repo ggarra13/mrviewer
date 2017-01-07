@@ -830,7 +830,7 @@ const mrv::Recti CMedia::data_window( boost::int64_t f ) const
         else if ( stereo_input() & kLeftRightStereoInput ) dw /= 2;
         return mrv::Recti( 0, 0, dw, dh );
     }
-    
+
     if ( f == AV_NOPTS_VALUE ) f = _frame;
     
     f = handle_loops( f );
