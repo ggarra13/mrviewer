@@ -58,6 +58,7 @@ void main()
   c.r = (pre.g + 1) * pre.r;
   c.b = (pre.b + 1) * pre.r;
   c.g = (pre.r - c.r * yw.x - c.b * yw.z) / yw.y;
+  c.rgb = clamp( c.rgb, 0.0, 1.0 );
   c.a = 1.0;
 
   //
