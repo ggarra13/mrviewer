@@ -15,6 +15,8 @@ v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   with multipart files.
 	   Previously only one channel would be shown or multiple
 	   errors would show up if the deepest Z channel was chosen.
+	 - Fixed a bug where background images would not appear once
+	   they were offset in the EDL.
 	 - Fixed error reporting with frame number to report the
 	   actual frame, not one before.
 	 - Improved synchronism of background images/movies with
@@ -23,6 +25,12 @@ v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   foreground image.
 	 - Made VR 360 dragging stop after a while.  This makes it
 	   easier to control.
+	 - Fixed stepping on background images when they are in the
+	   same reel as the foreground image.
+	 - Fixed compositing of foreground images on background
+	   movies due to an overflow in calculations.  Now the values
+	   are clamped to prevent the error, which showed up on
+	   Windows only.
 
 v3.4.2   - Added Paint Tools to the Preferences so it can be opened
 	   on startup.
