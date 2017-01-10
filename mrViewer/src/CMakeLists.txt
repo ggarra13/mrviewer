@@ -445,6 +445,16 @@ IF(WIN32)
 
   INCLUDE( CMakeRegistry.cmake )
 
+#
+# CONFIGURE Chocolatey files
+#
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../installer/mrViewer/mrviewer.nuspec.in ${CMAKE_CURRENT_SOURCE_DIR}/../../installer/mrViewer/mrviewer.nuspec @ONLY NEWLINE_STYLE WIN32 )
+    
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../installer/mrViewer/tools/chocolateyinstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../installer/mrViewer/tools/chocolateyinstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
+
+    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../installer/mrViewer/tools/chocolateyuninstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../installer/mrViewer/tools/chocolateyuninstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
+
+
 ELSEIF (UNIX)
 
     # SET the type of package to build.
