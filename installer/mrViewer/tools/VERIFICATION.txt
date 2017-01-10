@@ -1,0 +1,7 @@
+﻿
+VERIFICATION
+
+<Include details of how to verify checksum contents>
+checksum -type sha256 "https://sourceforge.net/projects/mrviewer/files"
+
+Checksum corresponds to the zip files of version VERSION ($softVersion) in the chocolateyinstall.ps1

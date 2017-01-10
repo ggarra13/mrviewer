@@ -1,0 +1,77 @@
+﻿
+
+
+$ErrorActionPreference = 'Stop';
+
+$softVersion = '@VERSION@'
+
+$osBitness = Get-ProcessorBits
+
+$packageName = 'mrViewer'
+$softwareName = 'mrViewer*'
+$installerType = 'EXE'
+$toolsDir   = "$(Split-Path -parent $MyInvocation.MyCommand.Definition)"
+
+$fileLocation = "${packageName}-v${softVersion}-Windows-${osBitness}.zip"
+
+
+$validExitCodes = @(0, 3010, 1605, 1614, 1641)
+if ($installerType -ne 'MSI') {
+  $validExitCodes = @(0)
+}
+
+$uninstalled = $false
+[array]$key = Get-UninstallRegistryKey -SoftwareName $softwareName
+
+if ($key.Count -eq 1) {
+  $key | % { 
+    $file = "$($_.UninstallString)"
+
+    Uninstall-ChocolateyPackage -PackageName $packageName `
+                                -FileType $installerType `
+                                -SilentArgs "$silentArgs" `
+                                -ValidExitCodes $validExitCodes `
+                                -File "$file"
+  }
+} elseif ($key.Count -eq 0) {
+  Write-Warning "$packageName has already been uninstalled by other means."
+} elseif ($key.Count -gt 1) {
+  Write-Warning "$key.Count matches found!"
+  Write-Warning "To prevent accidental data loss, no programs will be uninstalled."
+  Write-Warning "Please alert package maintainer the following keys were matched:"
+  $key | % {Write-Warning "- $_.DisplayName"}
+}
+
+
+Uninstall-ChocolateyZipPackage -PackageName $packageName -ZipFileName "$fileLocation"
+$DesktopPath = [Environment]::GetFolderPath("Desktop")
+Remove-Item -Path  "${DesktopPath}/${packageName}-${osBitness} v${softVersion}.lnk"
+
+$osBitness = Get-ProcessorBits
+
+If ( $osBitness -Match "32" )
+{
+	$programFiles = $env:ProgramFiles
+}
+Else
+{
+	$programFiles = $env:ProgramW6432
+}
+
+$target = Join-Path $programFiles "${packageName}-v${softVersion}-Windows-${osBitness}/bin"
+
+
+$PathToRemove = $target
+foreach ($path in [Environment]::GetEnvironmentVariable("PATH","User").split(';'))
+{
+  If ($Path)
+  {
+    If (($path -ine "$PathToRemove") -AND ($path -ine "$PathToRemove\"))
+    {
+      [string[]]$Newpath += "$path"
+    }
+  }
+}
+$AssembledNewPath = ($newpath -join(';')).trimend(';')
+
+[Environment]::SetEnvironmentVariable("PATH",$AssembledNewPath,"User")
