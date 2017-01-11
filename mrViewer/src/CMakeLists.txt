@@ -8,13 +8,6 @@ IF( NOT CMAKE_MODULE_PATH )
   SET( CMAKE_MODULE_PATH ${CMAKE_CURRENT_SOURCE_DIR}/../../modules )
 ENDIF( NOT CMAKE_MODULE_PATH )
 
-SET( VersionMajor 3 )
-SET( VersionMinor 4 )
-SET( VersionPatch 3 )
-
-SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
-
-set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
 
 #
 # These are the libraries we will depend on
@@ -445,15 +438,7 @@ IF(WIN32)
 
   INCLUDE( CMakeRegistry.cmake )
 
-#
-# CONFIGURE Chocolatey files
-#
-    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/mrviewer.nuspec.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/mrviewer.nuspec @ONLY NEWLINE_STYLE WIN32 )
-    
-    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyinstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
-
-    CONFIGURE_FILE( ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1.in ${CMAKE_CURRENT_SOURCE_DIR}/../../chocolatey/mrViewer/tools/chocolateyuninstall.ps1 @ONLY NEWLINE_STYLE WIN32 )
-
+  
 
 ELSEIF (UNIX)
 
@@ -656,3 +641,9 @@ MESSAGE( STATUS "mrViewer version: " ${VERSION} )
 
 
 include(CPack)
+
+
+ADD_CUSTOM_COMMAND( TARGET ${PROJECT_NAME}
+		    POST_BUILD 
+		    COMMAND echo "WORKS"
+		    DEPENDS package )
