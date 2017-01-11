@@ -38,14 +38,14 @@ This is a nuspec. It mostly adheres to https://docs.nuget.org/create/Nuspec-Refe
     <authors>Gonzalo Garramuño, Film Aura LLC</authors>
     <!-- projectUrl is required for the community feed -->
     <projectUrl>https://mrviewer.sourceforge.net</projectUrl>
-    <!--<iconUrl>http://cdn.rawgit.com/__REPLACE_YOUR_REPO__/master/icons/mrviewer.png</iconUrl>-->
+    <iconUrl>http://mrviewer.sourceforge.net/files/mrViewer.png</iconUrl>
     <copyright>2017 Film Aura, LLC</copyright>
     <licenseUrl>https://www.gnu.org/licenses/old-licenses/gpl-2.0.html</licenseUrl>
     <requireLicenseAcceptance>true</requireLicenseAcceptance>
-    <!--<projectSourceUrl>Software Source Location - is the software FOSS somewhere? Link to it with this</projectSourceUrl>-->
-    <!--<docsUrl>At what url are the software docs located?</docsUrl>-->
-    <!--<mailingListUrl></mailingListUrl>-->
-    <!--<bugTrackerUrl></bugTrackerUrl>-->
+    <projectSourceUrl>git://git.code.sf.net/p/mrviewer/code</projectSourceUrl>
+    <docsUrl>http://mrviewer.sourceforge.net/docs/en/index.html</docsUrl>
+    <mailingListUrl>https://sourceforge.net/p/mrviewer/mailman/mrviewer-news/</mailingListUrl>
+    <bugTrackerUrl>https://sourceforge.net/p/mrviewer/tickets/</bugTrackerUrl>
     <tags>mrviewer admin flipbook viewer image video audio player</tags>
     <summary>Flipbook player and image viewer</summary>
     <description>Flipbook, interactive image viewer and video/audio player</description>
