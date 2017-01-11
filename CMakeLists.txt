@@ -29,6 +29,14 @@ IF( UNIX )
   INCLUDE( Platform/UnixPaths )
 ENDIF( UNIX )
 
+SET( VersionMajor 3 )
+SET( VersionMinor 4 )
+SET( VersionPatch 3 )
+
+SET( VERSION "${VersionMajor}.${VersionMinor}.${VersionPatch}" )
+
+set(mrViewerPackageName mrViewer-v${VERSION}-${CMAKE_SYSTEM_NAME}-${CMAKE_BUILD_ARCH})
+
 #
 # Project's subdirectories
 #
@@ -44,3 +52,6 @@ IF( UNIX )
     WORKING_DIRECTORY ${CMAKE_SOURCE_DIR} )
 ENDIF( UNIX )
 
+IF(WIN32)
+   ADD_SUBDIRECTORY( chocolatey/mrViewer )
+ENDIF(WIN32)
