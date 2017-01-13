@@ -3173,9 +3173,17 @@ void ImageView::picture_coordinates( const CMedia* const img, const int x,
   if ( ! display_window() )
       dpm.merge( daw[idx] );
   
-  if ( w == 0 ) w = pic->width();
-  if ( h == 0 ) h = pic->height();
-
+  if ( w == 0 ) {
+      w = pic->width();
+      dpm.x( 0 );
+      dpm.w( w );
+  }
+  if ( h == 0 ) {
+      h = pic->height();
+      dpm.y( 0 );
+      dpm.h( h );
+  }
+  
   if ( _wait )
   {
       window()->cursor( fltk::CURSOR_WAIT );
