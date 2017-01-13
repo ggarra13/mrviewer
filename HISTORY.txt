@@ -1,3 +1,6 @@
+v3.4.4   - Bug fixed stuterring NaNs in pixel info bar when loading
+	   an OpenEXR sequence.  Regression from v3.4.0.
+
 v3.4.3   - Bug fixed VR360 on network communication not always opening
 	   in the VR360 view.
 	 - Bug fixed a dead lock of log window due to multiple threads
